@@ -1,0 +1,12 @@
+_css/
+cy/
+EnchantEquipment/
+img/
+js/
+svg/
+backup_index.html
+
+*.txt
+
+BaseStatData_[0-9].csv
+SkillData_[0-9].csv
