@@ -1,0 +1,92 @@
+article#SkillQuery {
+
+}
+article#SkillQuery > section.main {
+
+}
+
+
+article#SkillQuery  div.SkillRoot_scope > div._menu {
+}
+article#SkillQuery  div.SkillRoot_scope > div._menu > ul {
+	list-style: none;
+	padding: 0 1rem;
+	margin: 1rem;
+	border-bottom: 1px var(--primary-color-light) solid;
+}
+article#SkillQuery  div.SkillRoot_scope > div._menu > ul > li {
+	display: inline-block;
+	padding: 0.5rem 0.7rem;
+	margin: 0.1rem;
+	cursor: pointer;
+}
+
+
+article#SkillQuery  div.SkillTreeCategory_scope > div._menu > ul {
+	list-style: none;
+	padding: 0 1rem;
+	margin: 1rem;
+}
+article#SkillQuery  div.SkillTreeCategory_scope > div._menu > ul > li {
+	display: inline-block;
+	border-left: 1px var(--primary-color-light) solid;
+	padding: 0.5rem 0.7rem;
+	margin: 0.1rem;
+	cursor: pointer;
+}
+
+
+article#SkillQuery  div.SkillTree_scope > table {
+	border-spacing: 0.2rem;
+}
+article#SkillQuery  div.SkillTree_scope > table td {
+	text-align: center;
+	cursor: pointer;
+	border-bottom: 1px var(--primary-color-light) solid;
+	padding: 0.4rem;
+	min-width: 5rem;
+}
+
+article#SkillQuery  div.Skill_scope {
+	border-top: 1px var(--primary-color-dark) solid;
+}
+article#SkillQuery  div.Skill_scope > div.skill_attributes {
+	padding: 0.6rem;
+	display: inline-block;
+}
+
+
+article#SkillQuery div.skill_attribute {
+	margin: 0.4rem;
+	padding: 0.2rem 0.4rem;
+	border-bottom: 1px var(--primary-color-light-2) solid;
+	display: inline-block;
+}
+article#SkillQuery div.skill_attribute > span {
+	display: inline-block;
+}
+article#SkillQuery div.skill_attribute > span._icon > svg {
+
+}
+article#SkillQuery div.skill_attribute > span._icon {
+	margin-right: 0.4rem;
+}
+article#SkillQuery div.skill_attribute > span._title {
+	margin-right: 1rem;
+}
+article#SkillQuery div.skill_attribute > span._value {
+	color: var(--primary-color-light-3);
+}
+article#SkillQuery div.skill_attribute > span._tail {
+	margin-left: 0.5rem;
+}
+
+
+article#SkillQuery  div.Skill_scope > div.skill_branchs {
+	padding: 0.6rem;
+	display: inline-block;
+}
+
+article#SkillQuery  div.Skill_scope div.no_data {
+	padding: 1rem;
+}

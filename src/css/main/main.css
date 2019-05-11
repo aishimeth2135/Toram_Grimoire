@@ -1,0 +1,32 @@
+:root {
+	--primary-color-dark: #85005F;
+	--primary-color-light: #FFD1EA;
+	--primary-color-light-2: #ff5fb7;
+	--primary-color-light-3: #ff008d;
+}
+
+body {
+	background-color: #FFF;
+	color: var(--primary-color-dark);
+	font-family: 'Itim', Microsoft JhengHei, sans-serif;
+}
+
+div#top_menu {
+
+}
+div#top_menu > ul {
+	list-style: none;
+	padding: 0px 0.6rem;
+	margin: 1rem 0px;
+}
+
+div#top_menu > ul > li {
+	display: inline-block;
+	padding: 0.5rem 0.7rem;
+	border-right: 1px var(--primary-color-light) solid;
+}
+
+div#top_menu, body > article, body > section, body > footer {
+	width: 40rem;
+	margin: 0 auto;
+}
