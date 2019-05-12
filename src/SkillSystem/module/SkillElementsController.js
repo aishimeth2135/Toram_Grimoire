@@ -186,6 +186,8 @@ Controller.prototype = {
 					};
 					const he = SkillTreeTable(SkillTreeTableData(stcn, stn));
 					Array.from(he.getElementsByTagName('td')).forEach(function(td, i){
+						if ( td.getAttribute('data-empty') == '1' )
+							return;
 						const s = st.skills[i];
 						if ( !s ){
 							td.innerHTML = '-';
