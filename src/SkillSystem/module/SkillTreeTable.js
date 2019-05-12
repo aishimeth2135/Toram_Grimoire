@@ -131,7 +131,9 @@ function SkillTreeTable(/**/data){
 				++tdD;
 				while (tdD != 0){
 					++tdD;
-					frg.appendChild(document.createElement("td"));
+					const t = document.createElement("td");
+					t.setAttribute('data-empty', "1");
+					frg.appendChild(t);
 				}
 			}
 		});
