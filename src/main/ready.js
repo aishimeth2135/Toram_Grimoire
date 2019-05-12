@@ -1,4 +1,4 @@
-import {toLangText, ConvertLangText} from "./_module/_language.js";
+import {toLangText, ConvertLangText} from "./module/LangText.js";
 
 function LoadingMenu(hnode){
 	const menu = [

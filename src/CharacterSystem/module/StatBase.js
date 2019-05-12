@@ -1,4 +1,4 @@
-import {toLangText} from "../../main/_module/_language.js";
+import {toLangText} from "../../main/module/LangText.js";
 
 "use strict";
 

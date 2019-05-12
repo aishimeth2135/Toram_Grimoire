@@ -2,7 +2,7 @@ import {SkillRoot, SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch
 import {SkillTreeTable, SkillTreeTableData} from "./SkillTreeTable.js";
 import AnalysisSkill from "./AnalysisSkill.js";
 
-import {ConvertLangText, toLangText} from "../../main/_module/_language.js";
+import {ConvertLangText, toLangText} from "../../main/module/LangText.js";
 import strings from "./strings.js";
 
 /*
