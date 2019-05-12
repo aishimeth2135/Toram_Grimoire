@@ -1,7 +1,7 @@
 import {Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
 import Grimoire from "../../main/Grimoire.js";
-import {toLangText} from "../../main/_module/_language.js";
-import cy from "../../main/_module/cyteria.js";
+import {toLangText} from "../../main/module/LangText.js";
+import cy from "../../main/module/cyteria.js";
 "use strict";
 
 const GLOBAL_EXTRA_ATTRIBUTE_VALUE = {

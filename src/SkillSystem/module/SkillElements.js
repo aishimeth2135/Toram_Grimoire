@@ -1,6 +1,6 @@
 import SkillElementsController from './SkillElementsController.js';
 import Grimoire from "../../main/Grimoire.js";
-import StatBase from "../../CharacterSystem/_module/StatBase.js";
+import StatBase from "../../CharacterSystem/module/StatBase.js";
 
 /*| @param arguments */
 function checkConstructorArgs(){

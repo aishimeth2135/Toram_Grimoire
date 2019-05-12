@@ -1,7 +1,6 @@
-import {SkillRoot} from "./_module/SkillElements.js";
-import csv_string from "./_module/SkillData.js";
-import LoadSkillData from "./_module/LoadSkillData.js";
-import InitSkillData from "./_module/InitSkillData.js";
+import {SkillRoot} from "./module/SkillElements.js";
+import LoadSkillData from "./module/LoadSkillData.js";
+import InitSkillData from "./module/InitSkillData.js";
 
 function SkillSystem(){
 	this.skillRoot = new SkillRoot(this);
