@@ -533,7 +533,7 @@ function getBranchHTML(branch, data){
  			const condition = c != 'none' ? simpleCreateHTML('span', ['_main_title', 'light'], toLangText(c)) : null;
  			let end_condition = null;
  			if ( attr['end_condition'] )
- 				end_condition = simpleCreateHTML('span', ['_main_title', 'light'], toLangText(end_condition));
+ 				end_condition = simpleCreateHTML('span', ['_main_title', 'light'], toLangText(attr['end_condition']));
  			let duration = null;
  			if ( attr['duration'] ){
  				let v = safeEval(attr['duration']);

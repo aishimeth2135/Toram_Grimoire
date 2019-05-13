@@ -35,7 +35,9 @@ article#SkillQuery  div.SkillTreeCategory_scope > div._menu > ul > li {
 	cursor: pointer;
 }
 
-
+article#SkillQuery  div.SkillTree_scope {
+	overflow-y: auto;
+}
 article#SkillQuery  div.SkillTree_scope > table {
 	border-spacing: 0.2rem;
 }
