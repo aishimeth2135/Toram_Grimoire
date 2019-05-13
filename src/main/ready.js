@@ -2,10 +2,10 @@ import {toLangText, ConvertLangText} from "./module/LangText.js";
 
 function LoadingMenu(hnode){
 	const menu = [
-		'Skills Information|,|技能資料|,|スキルインフォ',
-		'Game Mechanics|,|資料查詢|,|ゲーム関連資料',
-		'Website Version|,|版本資訊|,|サイト更新履歴',
-		'Web Tool|,|小工具|,|WEBツール'
+		'Skills Information|,|技能資料|,|スキルインフォ'
+		// 'Game Mechanics|,|資料查詢|,|ゲーム関連資料',
+		// 'Website Version|,|版本資訊|,|サイト更新履歴',
+		// 'Web Tool|,|小工具|,|WEBツール'
 	];
 	const listener = function(event){
 		const loc = Array.from(this.parentNode.getElementsByTagName('li')).indexOf(this);
