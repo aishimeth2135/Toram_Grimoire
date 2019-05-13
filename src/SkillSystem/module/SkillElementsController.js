@@ -185,10 +185,12 @@ Controller.prototype = {
 						ConvertLangText(scope);
 					};
 					const he = SkillTreeTable(SkillTreeTableData(stcn, stn));
-					Array.from(he.getElementsByTagName('td')).forEach(function(td, i){
+					let cnt = -1;
+					Array.from(he.getElementsByTagName('td')).forEach(function(td){
 						if ( td.getAttribute('data-empty') == '1' )
 							return;
-						const s = st.skills[i];
+						++cnt;
+						const s = st.skills[cnt];
 						if ( !s ){
 							td.innerHTML = '-';
 							return;
