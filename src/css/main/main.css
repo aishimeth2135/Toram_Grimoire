@@ -33,3 +33,7 @@ div#top_menu, body > article, body > section, body > footer {
 footer {
 	text-align: center;
 }
+
+footer a {
+	color: var(--primary-color-light-3);
+}
