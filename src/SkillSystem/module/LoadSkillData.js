@@ -29,7 +29,7 @@ const
 	ACTION_TIME = 15,
 	CASTING_TIME = 16,
 	CAPTION_FROM_GAME = 17,
-	SKILL_TYPE_LIST = ['瞬發', '須詠唱', '須蓄力'],
+	SKILL_TYPE_LIST = ['瞬發', '須詠唱', '須蓄力', '被動'],
 	IN_COMBO_LIST = ['可以放入連擊', '無法放入連擊', '不可放入連擊的第一招'],
 	ACTION_TIME_LIST = ['極慢', '慢', '稍慢', '一般', '稍快', '快', '極快'],
 /* Skill Tree Category */

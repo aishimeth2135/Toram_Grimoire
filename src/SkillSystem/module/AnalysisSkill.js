@@ -144,7 +144,7 @@ function getEffectHTML(sef, attr_name, data){
 	const ICON_DATA = {
 		[SkillEffect.MP_COST]: '',
 		[SkillEffect.RANGE]: '',
-		[SkillEffect.SKILL_TYPE]: ['', '', ''], 
+		[SkillEffect.SKILL_TYPE]: ['', '', '', ''], 
 		[SkillEffect.DAMAGE_TYPE]: ['', ''],
 		[SkillEffect.PORATION_TYPE]: ['', ''],
 		[SkillEffect.IN_COMBO]: ['', '', ''],
@@ -162,7 +162,7 @@ function getEffectHTML(sef, attr_name, data){
 		[SkillEffect.CASTING_TIME]: ['', '詠唱時間', '蓄力時間']
 	};
 	const TEXT_LIST = {
-		[SkillEffect.SKILL_TYPE]: ['瞬發', '須詠唱', '須蓄力'],
+		[SkillEffect.SKILL_TYPE]: ['瞬發', '須詠唱', '須蓄力', '被動'],
 		[SkillEffect.DAMAGE_TYPE]: ['物理', '魔法'],
 		[SkillEffect.PORATION_TYPE]: ['物理', '魔法', '普通攻擊'],
 		[SkillEffect.IN_COMBO]: ['可以放入連擊', '無法放入連擊', '不可放入連擊的第一招'],
@@ -410,9 +410,14 @@ function getBranchHTML(branch, data){
 			//異常狀態
 			let aliment = null;
 			if ( attr['aliment_name'] ) {
-				aliment = simpleCreateHTML('div', ['aliment', 'line_scope']);
-				text = `有${lightText(safeEval(attr['aliment_chance']) + '%')}的機率附帶${lightText(attr['aliment_name'])}。`;
-				aliment.innerHTML = text;
+				aliment = simpleCreateHTML('div', ['content', 'content_line']);
+				const s1 = simpleCreateHTML('div', 'scope1');
+				s1.appendChild(simpleCreateHTML('span', ['_main_title', 'light'], toLangText('Aliment|,|異常狀態')));
+				const s2 = simpleCreateHTML('div', 'scope2');
+				s2.appendChild(createSkillAttributeScope(null, null, attr['aliment_name']));
+				s2.appendChild(createSkillAttributeScope(null, toLangText('Chance|,|機率'), safeEval(attr['aliment_chance']) + '%'));
+				aliment.appendChild(s1);
+				aliment.appendChild(s2);
 			}
 			
 			// 傷害目標類型
@@ -425,11 +430,16 @@ function getBranchHTML(branch, data){
 			const target_type = createSkillAttributeScope(null, null, toLangText(text));
 
 			// 傷害次數
-			let damage_frequency = null;
+			let damage_frequency = null, damage_judgment = null;
 			if ( parseInt(attr['frequency']) > 1 ) {
 				damage_frequency = createSkillAttributeScope(
 					null, toLangText('Frequency|,|傷害次數'),
 					attr['frequency']
+				);
+				text = attr['judgment'] == 'common' ? 'common|,|共用判定' : 'separate|,|分開判定'
+				damage_judgment = createSkillAttributeScope(
+					null, null,
+					toLangText(text)
 				);
 			}
 
@@ -482,6 +492,8 @@ function getBranchHTML(branch, data){
 			const scope1 = simpleCreateHTML('div', 'scope1');
 			scope1.appendChild(title);
 			scope1.appendChild(target_type)
+			if ( damage_judgment !== null )
+				scope1.appendChild(damage_judgment);
 			if ( damage_frequency !== null )
 				scope1.appendChild(damage_frequency);
 			if ( poration_damage !== null )
@@ -497,13 +509,13 @@ function getBranchHTML(branch, data){
 			const content = simpleCreateHTML('div', 'content');
 			content.appendChild(scope1);
 			content.appendChild(scope2);
-			if ( aliment !== null )
-				content.appendChild(aliment);
 
 			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
 			if ( top.childElementCount != 0 )
 				he.appendChild(top);
 			he.appendChild(content);
+			if ( aliment !== null )
+				he.appendChild(aliment);
 			if ( damage_extras_frg.childElementCount > 0 )
 				he.appendChild(damage_extras_frg);
 

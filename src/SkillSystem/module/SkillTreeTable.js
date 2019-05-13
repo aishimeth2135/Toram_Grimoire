@@ -1,36 +1,29 @@
 function SkillTreeTableData(/*int*/stcn, /*int*/stn) {
-	let data_size = 0, data_ary = [];
+	let data_size = 0, data_ary = null;
 	switch (stcn)
 	{
 		case 0:
 			switch (stn)
 			{
 				case 0:
-					data_size = 14;
 					data_ary = [[4, 2, 2, 1], [1], [2, 2, 1], [1], [2, 2, -2], [1, 1]];
 					break;
 				case 1:
-					data_size = 14;
 					data_ary = [[3, 2, -3], [1, -2], [1, 1, 1, 1], [2, -4], [1, 1, -2]];
 					break;
 				case 2:
-					data_size = 14;
 					data_ary = [[2, 1, 1, 1, 1], [1, 1, 1, 1], [-5],[1, 1, 1, -2]];
 					break;
 				case 3:
-					data_size = 14;
 					data_ary = [[2, 1, 1, 1, 1], [1, 1, 1, 1], [1, 1, -3],[1, -4]];
 					break;
 				case 4:
-					data_size = 14;
 					data_ary = [[4, 1, 1, -2], [1, 1, 1, 1], [1, 1, -2],[1, 1, -2]];
 					break;
 				case 5:
-					data_size = 14;
 					data_ary = [[4, 2, 2, 1], [1], [2, 1, 1], [-2], [1, -3], [1, 1, -2]];
 					break;
 				case 6:
-					data_size = 14;
 					data_ary = [[2, 2, 2, 2, 1], [1], [1, 1, -3], [2, -4], [1, 1, -2]];
 					break;
 			}
@@ -39,27 +32,21 @@ function SkillTreeTableData(/*int*/stcn, /*int*/stn) {
 			switch (stn)
 			{
 				case 0:
-					data_size = 8;
 					data_ary = [[2, 1, 1], [-2], [2, 1, 1], [-2]];
 					break;
 				case 1:
-					data_size = 9;
 					data_ary = [[2, 1, 1, 1], [1, -2], [1, 1, -2]];
 					break;
 				case 2:
-					data_size = 9;
 					data_ary = [[2, 1, 1, 1], [1, -2], [1, 1, -2]];
 					break;
 				case 3:
-					data_size = 8;
 					data_ary = [[1, 1, 1, 1], [1, 1, 1, 1]];
 						break;
 				case 4:
-					data_size = 8;
 					data_ary = [[1, 1, 1, 1], [1, 1, 1, 1]];
 					break;
 				case 5:
-					data_size = 8;
 					data_ary = [[1, 1, 1, 1], [1, 1, 1, 1]];
 					break;
 			}
@@ -68,15 +55,12 @@ function SkillTreeTableData(/*int*/stcn, /*int*/stn) {
 			switch (stn)
 			{
 				case 0:
-					data_size = 9;
 					data_ary = [[-2], [-2], [-2], [2, 1], [1], [2, 1], [1]];
 					break;
 				case 1:
-					data_size = 13;
 					data_ary = [[-4], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]];
 					break;
 				case 2:
-					data_size = 15;
 					data_ary = [[1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1]];
 					break;
 			}
@@ -85,15 +69,12 @@ function SkillTreeTableData(/*int*/stcn, /*int*/stn) {
 			switch (stn)
 			{
 				case 0:
-					data_size = 15;
 					data_ary = [[4, 1, 1, 1, 1], [1, 1, -2], [2, 1, -2], [1, 1, 1], [-5]];
 					break;
 				case 1:
-					data_size = 12;
 					data_ary = [[3, 1, 1, 1, 1], [1, 1, -2], [1, 1, -2], [1]];
 					break;
 				case 2:
-					data_size = 7;
 					data_ary = [[3, 1, 1], [1, 1], [1, 1]];
 					break;
 			}
@@ -102,17 +83,17 @@ function SkillTreeTableData(/*int*/stcn, /*int*/stn) {
 			switch (stn)
 			{
 				case 0:
-					data_size = 6;
 					data_ary = [[1, 1, 1], [1, 1, 1]];
 					break;
 				case 1:
-					data_size = 6;
 					data_ary = [[1, 1, 1], [1, 1, 1]];
 					break;
 			}
 			break;
 	}
-	return {size: data_size, ary: data_ary};
+	if ( data_ary === null )
+		data_ary = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]];
+	return {ary: data_ary};
 }
 
 function SkillTreeTable(/**/data){
