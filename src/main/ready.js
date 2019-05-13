@@ -33,4 +33,6 @@ export default function(setting){
 	LoadingMenu(top_menu);
 
 	ConvertLangText(document);
+
+	document.getElementById('LoadingPage').classList.add('hidden');
 }
