@@ -473,6 +473,9 @@ function getBranchHTML(branch, data){
 						t = darkText(t);
 					s2.appendChild(createSkillAttributeScope(null, null, t));
 				}
+				if ( _attr['element'] ){
+					const t = _attr['constant'];
+				}
 				ex.stats.forEach(stat => {
 					const v = stat.statValue(safeEval(stat.statValue()));
 					let t = stat.show();
