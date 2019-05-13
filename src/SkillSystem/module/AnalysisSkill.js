@@ -291,6 +291,9 @@ function getBranchHTML(branch, data){
 	function darkText(text){
 		return '<span class="dark">' + text + '</span>';
 	}
+	function markText(text){
+		return lightText(text);
+	}
 	function getPorationHTML(poration_branch){
 		const _attr = poration_branch.branchAttributes;
 		const dict1 = {
@@ -305,6 +308,23 @@ function getBranchHTML(branch, data){
 		let two = createSkillAttributeScope(null, toLangText('造成慣性'), toLangText(dict2[_attr['poration']]));
 
 		return {one, two};
+	}
+	function getDamageElementHTML(ele_type){
+		const ELEMEMT_DICT = {
+			neutral: 'Neutral|,|無屬性',
+			fire: 'Fire|,|火屬性',
+			water: 'Water|,|水屬性',
+			earth: 'Earth|,|地屬性',
+			wind: 'Wind|,|風屬性',
+			light: 'Light|,|光屬性',
+			dark: 'Dark|,|暗屬性',
+			arrow: '同箭矢屬性'
+		};
+		const t = simpleCreateHTML('div', 'skill_attribute');
+		if ( ele_type != 'arrow' )
+			t.appendChild(simpleCreateHTML('span', ['_icon', 'element_' + ele_type, 'element_ball']));
+		t.appendChild(simpleCreateHTML('span', ['_value', 'element_value'], toLangText(ELEMEMT_DICT[ele_type])));
+		return t;
 	}
 
 	const {SLv, CLv} = data;
@@ -429,12 +449,17 @@ function getBranchHTML(branch, data){
 			}
 			const target_type = createSkillAttributeScope(null, null, toLangText(text));
 
+			let damage_element = null;
+			if ( attr['element'] ){
+				damage_element = getDamageElementHTML(attr['element']);
+			}
+
 			// 傷害次數
 			let damage_frequency = null, damage_judgment = null;
 			if ( parseInt(attr['frequency']) > 1 ) {
 				damage_frequency = createSkillAttributeScope(
 					null, toLangText('Frequency|,|傷害次數'),
-					attr['frequency']
+					safeEval(attr['frequency'])
 				);
 				text = attr['judgment'] == 'common' ? 'common|,|共用判定' : 'separate|,|分開判定'
 				damage_judgment = createSkillAttributeScope(
@@ -474,7 +499,10 @@ function getBranchHTML(branch, data){
 					s2.appendChild(createSkillAttributeScope(null, null, t));
 				}
 				if ( _attr['element'] ){
-					const t = _attr['constant'];
+					s2.appendChild(getDamageElementHTML(_attr['element']));
+				}
+				if ( _attr['caption'] ){
+					s2.appendChild(simpleCreateHTML('div', 'text_scope', processText(ex, 'caption')));
 				}
 				ex.stats.forEach(stat => {
 					const v = stat.statValue(safeEval(stat.statValue()));
@@ -494,7 +522,9 @@ function getBranchHTML(branch, data){
 			
 			const scope1 = simpleCreateHTML('div', 'scope1');
 			scope1.appendChild(title);
-			scope1.appendChild(target_type)
+			scope1.appendChild(target_type);
+			if ( damage_element !== null )
+				scope1.appendChild(damage_element);
 			if ( damage_judgment !== null )
 				scope1.appendChild(damage_judgment);
 			if ( damage_frequency !== null )
@@ -525,7 +555,7 @@ function getBranchHTML(branch, data){
 			branch.finish = true;
 			return he;
 		}
-		case 'buffs': case 'next': case 'passive': {
+		case 'buffs': case 'next': case 'passive': case 'heal': {
 			let text_name = null;
 			if ( attr['name'] ){
 				text_name = simpleCreateHTML('span', '_name', toLangText(attr['name']));
