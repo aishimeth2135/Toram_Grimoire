@@ -27,6 +27,9 @@ div#top_menu > ul > li {
 }
 
 div#top_menu, body > article, body > section, body > footer {
-	width: 40rem;
+	max-width: 40rem;
 	margin: 0 auto;
+}
+footer {
+	text-align: center;
 }

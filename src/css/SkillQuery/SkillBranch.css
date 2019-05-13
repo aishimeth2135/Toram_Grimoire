@@ -64,7 +64,7 @@ article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch_tips {
 }
 
 article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch_list > div.content > ul._lists {
-	list-style: none;
+	/*list-style: none;*/
 	margin: 0;
 	padding: 0 0.6rem;
 }
