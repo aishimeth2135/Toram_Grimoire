@@ -51,6 +51,7 @@ article#SkillQuery  div.SkillTree_scope > table td {
 
 article#SkillQuery  div.Skill_scope {
 	border-top: 1px var(--primary-color-dark) solid;
+	margin-bottom: 2rem;
 }
 article#SkillQuery  div.Skill_scope > div.skill_attributes {
 	padding: 0.6rem;
