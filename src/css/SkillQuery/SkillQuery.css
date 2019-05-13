@@ -69,7 +69,9 @@ article#SkillQuery div.skill_attribute > span {
 	display: inline-block;
 }
 article#SkillQuery div.skill_attribute > span._icon > svg {
-
+	width: 1rem;
+	height: 1rem;
+	vertical-align: middle;
 }
 article#SkillQuery div.skill_attribute > span._icon {
 	margin-right: 0.4rem;
@@ -84,6 +86,15 @@ article#SkillQuery div.skill_attribute > span._tail {
 	margin-left: 0.5rem;
 }
 
+article#SkillQuery span.element_ball {
+	height: 0.9rem;
+	width: 0.9rem;
+	border-radius: 50%;
+	vertical-align: middle;
+}
+article#SkillQuery div.skill_attribute > span.element_value {
+	vertical-align: middle;
+}
 
 article#SkillQuery  div.Skill_scope > div.skill_branchs {
 	padding: 0.6rem;

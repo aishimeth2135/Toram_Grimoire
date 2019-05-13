@@ -68,3 +68,33 @@ article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch_list > div.
 	margin: 0;
 	padding: 0 0.6rem;
 }
+
+article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch  div.scope1 div.skill_attribute > span.element_value {
+	vertical-align: baseline;
+}
+/*article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch  div.scope1 div.skill_attribute > span.element_ball {
+	height: 0.8rem;
+	width: 0.8rem;
+}*/
+
+article#SkillQuery div.skill_attribute > span.element_neutral {
+	background-color: #666;
+}
+article#SkillQuery div.skill_attribute > span.element_fire {
+	background-color: #ea0000;
+}
+article#SkillQuery div.skill_attribute > span.element_water {
+	background-color: #03a9f4;
+}
+article#SkillQuery div.skill_attribute > span.element_earth {
+	background-color: #d26900;
+}
+article#SkillQuery div.skill_attribute > span.element_wind {
+	background-color: #9aff02;
+}
+article#SkillQuery div.skill_attribute > span.element_light {
+	background-color: #f9f900;
+}
+article#SkillQuery div.skill_attribute > span.element_dark {
+	background-color: #5b00ae;
+}
