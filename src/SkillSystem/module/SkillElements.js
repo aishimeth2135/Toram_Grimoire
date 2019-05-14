@@ -124,14 +124,14 @@ Skill.prototype = {
 	}
 };
 Skill.CATEGORY_MAIN = Symbol();
-Skill.EQUIPMENT = Symbol();
+Skill.CATEGORY_EQUIPMENT = Symbol();
 
 function SkillEffect(sk, m, s, b){
 	this.parent = sk;
 	this.branchs = [];
-	this.mainWeapon = m || '';
-	this.subWeapon = s || '';
-	this.bodyArmor = b || '';
+	this.mainWeapon = m;
+	this.subWeapon = s;
+	this.bodyArmor = b;
 	this.attributes = {};
 }
 SkillEffect.TYPE = Symbol("SkillEffect");

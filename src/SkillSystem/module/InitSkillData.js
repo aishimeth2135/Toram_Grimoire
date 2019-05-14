@@ -21,7 +21,7 @@ function InitSkillBranch(branch){
 				min: '1', default: 'auto'
 			});
 		}	break;
-		case 'buffs': case 'hit':
+		case 'buffs': case 'hit': case 'heal':
 			set_default(branch, {
 				type: 'self', condition: 'auto'
 			});
@@ -48,10 +48,11 @@ export default function(sr){
 	sr.skillTreeCategorys.forEach(stc => {
 		stc.skillTrees.forEach(st => {
 			st.skills.forEach(skill => {
-				skill.effects.forEach(sef => {
-					sef.branchs.forEach(branch => {
-						InitSkillBranch(branch);
-					});
+				const sef = skill.defaultEffect;
+				if ( !sef )
+					return;
+				sef.branchs.forEach(branch => {
+					InitSkillBranch(branch);
 				});
 			});
 		});

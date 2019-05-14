@@ -42,11 +42,7 @@ TempSkillEffect.prototype = {
 		let branchs_no = sef.branchs.map(a => a.no);
 		sef.branchs.forEach(function(branch, i){
 			const loc = this.branchs.findIndex(b => b.no == branch.no);
-			if ( loc == -1 )
-				this.newBranch().from(branch);
-			else {
-				this.branchs[loc].overWrite(branch);
-			}
+			loc == -1 ? this.newBranch().from(branch) : this.branchs[loc].overWrite(branch);
 		}, this);
 	},
 	appendAttribute(name, v){
@@ -113,10 +109,7 @@ TempSkillBranch.prototype = {
 		}, this);
 		branch.stats.forEach(function(a){
 			let t = this.stats.find(b => a.base === b.base && a.type === b.type);
-			if ( t === void 0 )
-				this.appendStat(a.base.baseName, a.value, '').type = a.type;
-			else
-				t.value(a.value);
+			t === void 0 ? this.appendStat(a.base.baseName, a.value, '').type = a.type : t.statValue(a.value);
 		}, this);
 	}
 };
@@ -697,10 +690,15 @@ function getBranchHTML(branch, data){
 | @param Object equip ::使用者選取的裝備
 | @return documentFragment
 */
-export default function(skill, equip){
+export default function(data){
+	
+	const skill = data.currentSkill;
+	const equip = data;
+	const SLv = data.skillLevel, CLv = data.characterLevel;
+
 	/* Load Default SkillEffect */
 	let output = new TempSkillEffect().from(skill.defaultEffect);
-
+	
 	const equip_confirm = function(_equip){
 		/* 通用 */
 		if ( equip.mainWeapon == -1 && equip.subWeapon == -1 && equip.bodyArmor == -1 )
@@ -728,7 +726,7 @@ export default function(skill, equip){
 	});
 	/* 產生輸出介面 */
 	if ( find ){
-		let frg = document.createDocumentFragment();
+		const frg = document.createDocumentFragment();
 
 		const order = [
 			SkillEffect.MP_COST,
@@ -745,7 +743,7 @@ export default function(skill, equip){
 		order.forEach(function(item){
 			if ( output.attributes[item] === void 0 )
 				return;
-			let he = getEffectHTML(output, item, {SLv: 10, CLv: 180});
+			const he = getEffectHTML(output, item, {SLv, CLv});
 			if ( he )
 				one.appendChild(he);
 		});
@@ -755,13 +753,13 @@ export default function(skill, equip){
 		two.className = 'skill_branchs';
 		if ( output.checkData() ){
 			output.branchs.forEach(branch => {
-				let t = getBranchHTML(branch, {SLv: 10, CLv: 180});
+				const t = getBranchHTML(branch, {SLv, CLv});
 				if ( t !== null )
 					two.appendChild(t);
 			});
 		}
 		else {
-			let t = document.createElement('div');
+			const t = document.createElement('div');
 			t.classList.add('no_data');
 			t.innerHTML = '此技能資料尚未齊全。';
 			two.appendChild(t);

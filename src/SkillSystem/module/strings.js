@@ -1,8 +1,11 @@
+const STRINGS = {
+    menu: 'menu',
+    from: Symbol(),
+    data_skillElementNo: "data-seno",
+    data_mainWeapon: "data-mainw",
+    data_subWeapon: "data-subw",
+    data_bodyArmor: "data-armor"
+};
 export default function(){
-	return {
-		menu: "menu",
-		from: "form",
-		seNo: "data-seno",
-		main_scope: "main_scope"
-	};
+	return STRINGS;
 };
