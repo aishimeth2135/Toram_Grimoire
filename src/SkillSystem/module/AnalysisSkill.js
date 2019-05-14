@@ -42,7 +42,10 @@ TempSkillEffect.prototype = {
 		let branchs_no = sef.branchs.map(a => a.no);
 		sef.branchs.forEach(function(branch, i){
 			const loc = this.branchs.findIndex(b => b.no == branch.no);
-			loc == -1 ? this.newBranch().from(branch) : this.branchs[loc].overWrite(branch);
+			if ( loc == -1 )
+				this.newBranch().from(branch);
+			else
+				this.branchs[loc].overWrite(branch);
 		}, this);
 	},
 	appendAttribute(name, v){
@@ -109,7 +112,10 @@ TempSkillBranch.prototype = {
 		}, this);
 		branch.stats.forEach(function(a){
 			let t = this.stats.find(b => a.base === b.base && a.type === b.type);
-			t === void 0 ? this.appendStat(a.base.baseName, a.value, '').type = a.type : t.statValue(a.value);
+			if ( t === void 0 )
+				this.appendStat(a.base.baseName, a.value, '').type = a.type;
+			else
+				t.statValue(a.value);
 		}, this);
 	}
 };
