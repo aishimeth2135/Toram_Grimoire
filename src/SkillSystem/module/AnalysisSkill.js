@@ -207,10 +207,7 @@ function getBranchHTML(branch, data){
 		}
 		catch(e){
 			console.warn(e);
-			if ( dftv === void 0 )
-				return '?';
-			else
-				return dftv;
+			return dftv === void 0 ? '?' : dftv;
 		}
 	}
 	function replaceExtraFromulaValue(str){
