@@ -25,13 +25,14 @@ async function start(){
 
 	ready({
 		top_menu: document.getElementById('top_menu')
-	});
+	});	
 }
 
 try {
 	start();
 }
 catch(e) {
+	loadingMsg(e);
 	console.log(e);
 }
 

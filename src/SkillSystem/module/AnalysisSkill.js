@@ -449,7 +449,7 @@ function getBranchHTML(branch, data){
 
 			// 傷害次數
 			let damage_frequency = null, damage_judgment = null;
-			if ( parseInt(attr['frequency']) > 1 ) {
+			if ( parseInt(attr['frequency']) > 1 || attr['title'] == 'each' ) {
 				damage_frequency = createSkillAttributeScope(
 					null, toLangText('Frequency|,|傷害次數'),
 					safeEval(attr['frequency'])
