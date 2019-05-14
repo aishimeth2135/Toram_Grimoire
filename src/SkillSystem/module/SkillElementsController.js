@@ -5,66 +5,71 @@ import AnalysisSkill from "./AnalysisSkill.js";
 import {ConvertLangText, toLangText} from "../../main/module/LangText.js";
 import strings from "./strings.js";
 
-/*
-****Interface Controller {
-****	HTMLElement createSkillQueryScopeHTML(const string type);
-****}
-*/
+import cy from "../../main/module/cyteria.js";
 
+const TYPE_SKILL_LEVEL = Symbol();
+/*
+Interface Controller {
+	HTMLElement createSkillQueryScopeHTML(const string type);
+}
+*/
 function Controller(sr){
 /* implements Controller */
 	this.MAIN_NODE = null;
 	this.skillRoot = sr;
+	this.currentData = {
+		mainWeapon: -1,
+		subWeapon: -1,
+		bodyArmor: -1,
+		skillLevel: 10,
+		CharacterLevel: 10,
+		currentSkill: null
+	};
 }
 Controller.prototype = {
 	initSkillQueryHTML(main_node){
 		const sr = this.skillRoot;
 		this.MAIN_NODE = main_node;
-		this.SCOPE_NAME = {
-			SkillRoot: 'SkillRoot_scope',
-			SkillTreeCategory: 'SkillTreeCategory_scope',
-			SkillTree: 'SkillTree_scope',
-			Skill: 'Skill_scope'
-		};
+		const order = [
+			SkillRoot.TYPE, SkillTreeCategory.TYPE, SkillTree.TYPE,
+			TYPE_SKILL_LEVEL, Skill.CATEGORY_EQUIPMENT, Skill.TYPE
+		];
 		const frg = document.createDocumentFragment();
-
-		/* Skill Root */
-		const _SkillRoot_scope = document.createElement('div');
-		_SkillRoot_scope.classList.add(this.SCOPE_NAME.SkillRoot);
-		_SkillRoot_scope.appendChild(this.createSkillQueryScopeHTML(sr, strings().menu));
-		frg.appendChild(_SkillRoot_scope);
-
-		/* Skill Tree Category */
-		const _SkillTreeCategory_scope = document.createElement('div');
-		_SkillTreeCategory_scope.classList.add(this.SCOPE_NAME.SkillTreeCategory);
-		sr.skillTreeCategorys.forEach(function(stc){
-			_SkillTreeCategory_scope.appendChild(this.createSkillQueryScopeHTML(stc, strings().menu));
+		order.forEach(function(a){
+			const t = this.getSkillElementScope(a);
+			frg.appendChild(t);
+			switch(a){
+				case SkillRoot.TYPE:
+					t.appendChild(this.createSkillQueryScopeHTML(sr, strings().menu));
+					break;
+				case SkillTreeCategory.TYPE:
+					sr.skillTreeCategorys.forEach(function(stc){
+						t.appendChild(this.createSkillQueryScopeHTML(stc, strings().menu));
+					}, this);
+					break;
+				case TYPE_SKILL_LEVEL:
+					t.appendChild(this.createSkillQueryScopeHTML(null, a));
+					break;
+			}
 		}, this);
-		frg.appendChild(_SkillTreeCategory_scope);
-
-		/* Skill Tree */
-		const _SkillTree_scope = document.createElement('div');
-		_SkillTree_scope.classList.add(this.SCOPE_NAME.SkillTree);
-		frg.appendChild(_SkillTree_scope);
-
-		/* Skill */
-		const _Skill_scope = document.createElement('div');
-		_Skill_scope.classList.add(this.SCOPE_NAME.Skill);
-		frg.appendChild(_Skill_scope);
 
 		main_node.appendChild(frg);
 	},
 	getSkillElementScope(type){
-		switch (type){
-			case SkillRoot.type:
-				return this.MAIN_NODE.getElementsByClassName(this.SCOPE_NAME.SkillRoot)[0];
-			case SkillTreeCategory.TYPE:
-				return this.MAIN_NODE.getElementsByClassName(this.SCOPE_NAME.SkillTreeCategory)[0];
-			case SkillTree.TYPE:
-				return this.MAIN_NODE.getElementsByClassName(this.SCOPE_NAME.SkillTree)[0];
-			case Skill.TYPE:
-				return this.MAIN_NODE.getElementsByClassName(this.SCOPE_NAME.Skill)[0];
+		const SCOPE_NAME = {
+			[SkillRoot.TYPE]: 'SkillRoot_scope',
+			[SkillTreeCategory.TYPE]: 'SkillTreeCategory_scope',
+			[SkillTree.TYPE]: 'SkillTree_scope',
+			[Skill.TYPE]: 'Skill_scope',
+			[TYPE_SKILL_LEVEL]: 'SkillLevel_scope',
+			[Skill.CATEGORY_EQUIPMENT]: 'SkillEquipment_scope'
+		};
+		let node = this.MAIN_NODE.getElementsByClassName(SCOPE_NAME[type])[0];
+		if ( !node ){
+			node = document.createElement('div');
+			node.classList.add(SCOPE_NAME[type]);
 		}
+		return node;
 	},
 	/*| @param SkillElement ele */
 	getSkillElementNoStr(ele){
@@ -75,55 +80,59 @@ Controller.prototype = {
 		}
 		return nostr;
 	},
-	/*| @param string cmdstr : string of command */
-	command(cmdstr){
-		let match = cmdstr.match(/@([^:]+)\s*:\s*(.+)/);
-		let cmd = match[1], data = match[2];
-		switch (cmd){
-			case "select_se": {
-				let nos = data.split("-");
-				let cur = null;
-				nos.forEach(function(no, i){
-					no = parseInt(no);
-					switch (i){
-						case 0:
-							cur = this.skillRoot.skillTreeCategorys[no];
-							break;
-						case 1:
-							cur = cur.skillTrees[no];
-							break;
-						case 2:
-							cur = cur.skills[no];
-							break;
-						case 3:
-							cur = cur.branchs[no];
-							break;
-					}
-				}, this);
-				return cur;
+	selectSkillElement(se_no){
+		const nos = se_no.split("-");
+		let cur = null;
+		nos.forEach(function(no, i){
+			no = parseInt(no, 10);
+			switch (i){
+				case 0:
+					cur = this.skillRoot.skillTreeCategorys[no];
+					break;
+				case 1:
+					cur = cur.skillTrees[no];
+					break;
+				case 2:
+					cur = cur.skills[no];
+					break;
+				case 3:
+					cur = cur.branchs[no];
+					break;
 			}
-			default:
-				console.log("unknow command");
-		}
+		}, this);
+		return cur;
+	},
+	updateSkillHTML(){
+		const skill = this.currentData.currentSkill;
+		if ( !skill )
+			return;
+		const scope = this.getSkillElementScope(Skill.TYPE);
+		cy.element.removeAllChild(scope);
+		scope.appendChild(this.createSkillQueryScopeHTML(skill, Skill.CATEGORY_MAIN));
+		ConvertLangText(scope);
 	},
 	createSkillQueryScopeHTML(sEle, /*const string*/category){
-		const SE_TYPE = sEle.TYPE;
+		const SE_TYPE = sEle !== null ? sEle.TYPE : category;
 		//const type = sEle.TYPE.toString().match(/Symbol\((.+)\)/)[1];
 		switch (SE_TYPE){
 			case SkillRoot.TYPE: switch (category){
 				case strings().menu: {
 					const _C = this;
 					const li_listener = function(event){
-						const _root = this.parentNode.parentNode;
-						const cur = _root.querySelector('ul > .cur');
-						if ( cur ) cur.classList.remove('cur');
-						const scope = _root.parentNode.getElementsByClassName("SkillTreeCategory_scope")[0];
+						const cur = this.parentNode.getElementsByClassName('cur')[0];
+						if ( cur )
+							cur.classList.remove('cur');
+						this.classList.add('cur');
+						const scope = _C.getSkillElementScope(SkillTreeCategory.TYPE);
 						let loc = Array.from(this.parentNode.getElementsByTagName('li')).indexOf(this);
 						let menu_list = _C.getSkillElementScope(SkillTreeCategory.TYPE).querySelectorAll('div._menu');
 						const cur_menu = Array.from(menu_list).find(m => !m.classList.contains('hidden'));
-						if ( cur_menu ) cur_menu.classList.add('hidden');
+						if ( cur_menu )
+							cur_menu.classList.add('hidden');
 						menu_list[loc].classList.remove('hidden');
-						this.classList.add('cur');
+						cy.element.removeAllChild(_C.getSkillElementScope(SkillTree.TYPE));
+						cy.element.removeAllChild(_C.getSkillElementScope(Skill.TYPE));
+						cy.element.removeAllChild(_C.getSkillElementScope(Skill.CATEGORY_EQUIPMENT));
 					};
 					const he = document.createElement('div');
 					he.className = "_" + category;
@@ -131,7 +140,7 @@ Controller.prototype = {
 					sEle.skillTreeCategorys.forEach((stc) => {
 						const li = document.createElement('li');
 						li.innerHTML = toLangText(stc.name);
-						li.setAttribute(strings().seNo, _C.getSkillElementNoStr(stc));
+						li.setAttribute(strings().data_skillElementNo, _C.getSkillElementNoStr(stc));
 						li.addEventListener('click', li_listener);
 						frg.appendChild(li);
 					});
@@ -145,15 +154,16 @@ Controller.prototype = {
 				case strings().menu: {
 					const _C = this;
 					const li_listener = function(event){
-						const _root = this.parentNode.parentNode;
-						const cur = _root.querySelector('ul > .cur');
-						if (cur)
+						const cur = this.parentNode.getElementsByClassName('cur')[0];
+						if ( cur )
 							cur.classList.remove('cur');
+						this.classList.add('cur');
 						const scope = _C.getSkillElementScope(SkillTree.TYPE);
 						scope.innerHTML = "";
-						const ele = _C.command("@select_se: " + this.getAttribute(strings().seNo));
+						const ele = _C.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
 						scope.appendChild(_C.createSkillQueryScopeHTML(ele, SkillTree.CATEGORY_TABLE));
-						this.classList.add('cur');
+						cy.element.removeAllChild(_C.getSkillElementScope(Skill.TYPE));
+						cy.element.removeAllChild(_C.getSkillElementScope(Skill.CATEGORY_EQUIPMENT));
 					};
 					const he = document.createElement("div");
 					he.className = '_' + category;
@@ -162,7 +172,7 @@ Controller.prototype = {
 					sEle.skillTrees.forEach(function(st){
 						const li = document.createElement("li");
 						li.innerHTML = toLangText(st.name);
-						li.setAttribute(strings().seNo, _C.getSkillElementNoStr(st));
+						li.setAttribute(strings().data_skillElementNo, _C.getSkillElementNoStr(st));
 						li.addEventListener("click", li_listener);
 						frg.appendChild(li);
 					});
@@ -178,11 +188,22 @@ Controller.prototype = {
 					const stcn = st.parent.findLocation(), stn = st.findLocation();
 					const _C = this;
 					const td_listener = function(event){
-						const s = _C.command('@select_se:' + this.getAttribute(strings().seNo));
-						const scope = _C.getSkillElementScope(Skill.TYPE);
-						scope.innerHTML = '';
-						scope.appendChild(_C.createSkillQueryScopeHTML(s, Skill.CATEGORY_MAIN));
-						ConvertLangText(scope);
+						const cur = this.parentNode.parentNode.getElementsByClassName('cur')[0];
+						if ( cur )
+							cur.classList.remove('cur');
+						this.classList.add('cur');
+						const s = _C.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
+						_C.currentData.currentSkill = s;
+						const {mainWeapon, subWeapon, bodyArmor} = s.defaultEffect;
+						Object.assign(_C.currentData, {mainWeapon, subWeapon, bodyArmor});
+						const t = _C.createSkillQueryScopeHTML(s, Skill.CATEGORY_EQUIPMENT)
+						if ( t !== null ){
+							const scope = _C.getSkillElementScope(Skill.CATEGORY_EQUIPMENT);
+							cy.element.removeAllChild(scope);
+							scope.appendChild(t);
+							ConvertLangText(scope);
+						}
+						_C.updateSkillHTML();
 					};
 					const he = SkillTreeTable(SkillTreeTableData(stcn, stn));
 					let cnt = -1;
@@ -191,12 +212,12 @@ Controller.prototype = {
 							return;
 						++cnt;
 						const s = st.skills[cnt];
-						if ( !s ){
+						if ( s === void 0 ){
 							td.innerHTML = '-';
 							return;
 						}
 						td.innerHTML = s.name;
-						td.setAttribute(strings().seNo, _C.getSkillElementNoStr(s));
+						td.setAttribute(strings().data_skillElementNo, _C.getSkillElementNoStr(s));
 						td.addEventListener('click', td_listener);
 					});
 					return he;
@@ -205,14 +226,123 @@ Controller.prototype = {
 			case Skill.TYPE: switch (category){
 				case Skill.CATEGORY_MAIN: {
 					if ( sEle.checkData() ){
-						const {mainWeapon, subWeapon, bodyArmor} = sEle.defaultEffect;
-						return AnalysisSkill(sEle, {mainWeapon, subWeapon, bodyArmor});	
+						return AnalysisSkill(this.currentData);	
 					}
 					const div = document.createElement('div');
 					div.classList.add('no_data');
 					div.innerHTML = '此技能資料尚未更新。';
 					return div;
 				}
+				case Skill.CATEGORY_EQUIPMENT: {
+					const _C = this;
+					const listener = function(event){
+						const mw = this.getAttribute(strings().data_mainWeapon),
+							sw = this.getAttribute(strings().data_subWeapon),
+							ba = this.getAttribute(strings().data_bodyArmor);
+						const ary = ['mainWeapon', 'subWeapon', 'bodyArmor'];
+						const list = [mw, sw, ba];
+						for (let i=0; i<list.length; ++i){
+							const a = list[i];
+							if ( a !== null && a !== '' ){
+								_C.currentData[ary[i]] = parseInt(a, 10);
+								this.parentNode.getElementsByClassName('cur')[0].classList.remove('cur');
+								this.classList.add('cur');
+								_C.updateSkillHTML();
+								return;
+							}
+						}
+					};
+					const mainw = [], subw = [], armor = [];
+					sEle.effects.forEach(sef => {
+						const mw = sef.mainWeapon, sw = sef.subWeapon, ba = sef.bodyArmor;
+						if ( mainw.indexOf(mw) == -1 )
+							mainw.push(mw);
+						if ( subw.indexOf(sw) == -1 )
+							subw.push(sw);
+						if ( armor.indexOf(ba) == -1 )
+							armor.push(ba);
+					});
+					const he = document.createDocumentFragment();
+					const ary = [this.currentData.mainWeapon, this.currentData.subWeapon, this.currentData.bodyArmor];
+					[mainw, subw, armor].forEach((field, i) => {
+						if ( field.length != 1 || field[0] != -1 ){
+							let icons, names, ftitle, attrkey;
+							switch (field){
+								case mainw:
+									attrkey = strings().data_mainWeapon;
+									ftitle = 'Main Weapon|,|主手武器';
+									icons = ['', '', '', '', '', '', '', '', '', ''];
+									names = ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍'];
+									break;
+								case subw:
+									attrkey = strings().data_subWeapon;
+									ftitle = 'Sub Weapon|,|副手武器';
+									icons = ['', '', '', '', '', ''];
+									names = ['箭矢', '盾牌', '小刀', '魔導具', '套', '拔刀劍'];
+									break;
+								case armor:
+									attrkey = strings().data_bodyArmor;
+									ftitle = 'Body Armor|,|身體裝備';
+									icons = ['', '', ''];
+									names = ['輕量化', '重量化', '一般'];
+									break;
+							}
+							let end = null;
+							const ul = document.createElement('ul');
+							field.forEach(a => {
+								const li = document.createElement('li');
+								if ( ary[i] == a )
+									li.classList.add('cur');
+								li.setAttribute(attrkey, a);
+								li.addEventListener('click', listener);
+								if ( a != -1 ){
+									li.innerHTML = `<span class="icon">${icons[a]}</span><span class="value">${toLangText(names[a])}</span>`;
+									ul.appendChild(li);
+								}
+								else {
+									li.innerHTML = `<span class="icon"></span><span class="value">${toLangText('None|,|無限制')}</span>`;
+									end = li;
+								}
+							});
+							if ( end !== null ){
+								
+								ul.appendChild(end);
+							}
+							
+							const t = document.createElement('div');
+							const title = document.createElement('div');
+							title.innerHTML = toLangText(ftitle);
+							t.appendChild(title);
+							t.appendChild(ul);
+
+							he.appendChild(t);
+						}
+					});
+					return he.childElementCount != 0 ? he : null;
+				}
+			}
+			case TYPE_SKILL_LEVEL: {
+				const _C = this;
+				const listener = function(event){
+					const skill = _C.currentData.currentSkill;
+					this.parentNode.getElementsByClassName('cur')[0].classList.remove('cur');
+					this.classList.add('cur');
+					_C.currentData.skillLevel = parseInt(this.getAttribute(strings().data_skillLevel), 10);
+					if ( skill !== null && skill !== void 0 )
+						_C.updateSkillHTML();
+				};
+				const min = 1, max = 10;
+				const he = document.createElement('ul');
+				for (let i=min; i<=max; ++i){
+					const li = document.createElement('li');
+					li.innerHTML = 'Lv. ' + i;
+					li.setAttribute(strings().data_skillLevel, i);
+					li.addEventListener('click', listener);
+					if ( i == this.currentData.skillLevel )
+						li.classList.add('cur');
+					he.appendChild(li);
+				}
+				return he;
 			}
 		}
 	}
