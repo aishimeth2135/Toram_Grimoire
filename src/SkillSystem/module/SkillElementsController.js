@@ -196,10 +196,10 @@ Controller.prototype = {
 						_C.currentData.currentSkill = s;
 						const {mainWeapon, subWeapon, bodyArmor} = s.defaultEffect;
 						Object.assign(_C.currentData, {mainWeapon, subWeapon, bodyArmor});
-						const t = _C.createSkillQueryScopeHTML(s, Skill.CATEGORY_EQUIPMENT)
+						const t = _C.createSkillQueryScopeHTML(s, Skill.CATEGORY_EQUIPMENT);
+						cy.element.removeAllChild(scope);
 						if ( t !== null ){
 							const scope = _C.getSkillElementScope(Skill.CATEGORY_EQUIPMENT);
-							cy.element.removeAllChild(scope);
 							scope.appendChild(t);
 							ConvertLangText(scope);
 						}
