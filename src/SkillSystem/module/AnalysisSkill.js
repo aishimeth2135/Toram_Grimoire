@@ -172,6 +172,7 @@ function getEffectHTML(sef, attr_name, data){
 	switch (attr_name){
 		case SkillEffect.CASTING_TIME:
 			title = TITLE_DATA[attr_name][sef.attributes[SkillEffect.SKILL_TYPE]];
+			tail = 'sec|,|秒';
 		case SkillEffect.MP_COST:
 			v = safeEval(v);
 			break;
@@ -189,7 +190,7 @@ function getEffectHTML(sef, attr_name, data){
 	he.className = 'skill_attribute';
 	let res = `<span class="_icon">${icon}</span><span class="_title">${toLangText(title)}</span><span class="_value">${v}</span>`;
 	if ( tail !== null )
-		res += `<span class="_tail">${tail}</span>`;
+		res += `<span class="_tail">${toLangText(tail)}</span>`;
 	he.innerHTML = res;
 	return he;
 }
@@ -565,10 +566,10 @@ function getBranchHTML(branch, data){
 					s2.appendChild(simpleCreateHTML('div', 'text_scope', processText(ex, 'caption')));
 				}
 				ex.stats.forEach(stat => {
-					const v = stat.statValue(processValue(stat.statValue()));
+					const v = stat.statValue(safeEval(stat.statValue()));
 					let t = stat.show();
 					t = v < 0 ? darkText(t) : t;
-					s2.appendChild(createSkillAttributeScope(null, null, t));
+					s2.appendChild(createSkillAttributeScope(null, null, processValue(t, {calc: false})));
 				});
 				line.appendChild(s1);
 				line.appendChild(s2);
@@ -772,7 +773,7 @@ export default function(data){
 	
 	const equip_confirm = function(_equip){
 		/* 通用 */
-		if ( equip.mainWeapon == -1 && equip.subWeapon == -1 && equip.bodyArmor == -1 )
+		if ( _equip.mainWeapon == -1 && _equip.subWeapon == -1 && _equip.bodyArmor == -1 )
 			return true;
 		/* 非通用 */
 		if ( equip.mainWeapon != -1 && equip.mainWeapon == _equip.mainWeapon )
@@ -851,6 +852,9 @@ export default function(data){
 		return frg;
 	}
 	else {
-		return '<div>所選取的武器無法使用此技能。</div>';
+		const div = document.createElement('div');
+		div.classList.add('no_data');
+		div.innerHTML = '所選取的裝備無法使用此技能。';
+		return div;
 	}
 };
