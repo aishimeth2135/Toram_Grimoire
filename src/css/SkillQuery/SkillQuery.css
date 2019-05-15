@@ -68,6 +68,10 @@ article#SkillQuery div.SkillTree_scope > table td:hover {
 	border-bottom: 1px var(--primary-color-light-3) solid;
 	color: var(--primary-color-light-3);
 }
+article#SkillQuery div.SkillTree_scope > table td > svg {
+	fill: var(--primary-color-light);
+	vertical-align: middle;
+}
 
 article#SkillQuery div.Skill_scope {
 	margin-bottom: 2rem;

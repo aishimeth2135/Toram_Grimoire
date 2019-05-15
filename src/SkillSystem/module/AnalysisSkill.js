@@ -1,12 +1,18 @@
 import {Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
 import Grimoire from "../../main/Grimoire.js";
-import {toLangText} from "../../main/module/LangText.js";
+import {toLangText, ConvertLangText} from "../../main/module/LangText.js";
 import cy from "../../main/module/cyteria.js";
+import strings from "./strings.js";
+
 "use strict";
 
 const GLOBAL_EXTRA_ATTRIBUTE_VALUE = {
 	none: '@none'
 };
+
+function getStackBranchIdKey(stk){
+	return 'id' + stk.branchAttributes['id'];
+}	
 
 function TempSkillEffect(){
 	this.branchs = [];
@@ -71,11 +77,6 @@ TempSkillBranch.prototype = {
 		branch.stats.forEach(function(a){
 			this.appendStat(a.base.baseName, a.value, '').type = a.type;
 		}, this);
-		if ( this.name == 'stack' ){
-			const _attr = this.branchAttributes;
-			let v = _attr['default'] == 'auto' ? _attr['min'] : _attr['default'];
-			this.stackValue = v;
-		}
 		return this;
 	},
 	appendBranchAttribute(name, v){
@@ -251,6 +252,16 @@ function getBranchHTML(branch, data){
 		}
 		return toLangText(str);
 	}
+	function processValue(v, setting){
+		setting = Object.assign({
+			calc: true, tail: ''
+		}, setting);
+		const span = document.createElement('span');
+		span.innerHTML = (setting.calc ? safeEval(v) : v) + setting.tail;
+		if ( v.includes('stack') )
+			span.classList.add('effect_by_stack');
+		return span.outerHTML;
+	}
 	function simpleCreateHTML(type, classList, html){
 		const t = document.createElement(type);
 		if ( t !== null ){
@@ -305,7 +316,7 @@ function getBranchHTML(branch, data){
 			wind: 'Wind|,|風屬性',
 			light: 'Light|,|光屬性',
 			dark: 'Dark|,|暗屬性',
-			arrow: '同箭矢屬性'
+			arrow: '套用箭矢屬性'
 		};
 		const t = simpleCreateHTML('div', 'skill_attribute');
 		if ( ele_type != 'arrow' )
@@ -332,10 +343,72 @@ function getBranchHTML(branch, data){
 
 	const stack_value_list = extra_fix
 		.filter(b => b.name == 'stack' && (attr['stack_id'] || '').split(',').indexOf(b.branchAttributes['id']) != -1 )
-		.map(stk => safeEval(stk.stackValue));
+		.map(stk => safeEval(data.stackValues[getStackBranchIdKey(stk)]));
 	const stack = stack_value_list.length > 1 ? stack_value_list : stack_value_list[0];
 
 	switch (btype){
+		case 'stack': {
+			const left = simpleCreateHTML('span', 'left', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18 13H6c-.55 0-1-.45-1-1s.45-1 1-1h12c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg>');
+			const right = simpleCreateHTML('span', 'right', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg>');
+			const mid = simpleCreateHTML('input', 'mid');
+
+			mid.value = data.stackValues[getStackBranchIdKey(branch)];
+
+			const stk = branch;
+			left.addEventListener('click', function(event){
+				const min = parseInt(stk.branchAttributes['min'], 10);
+				const v = parseInt(mid.value, 10);
+				if ( v == min )
+					return;
+				mid.value = v - 1;
+				mid.dispatchEvent(new Event('change'));
+			});
+			right.addEventListener('click', function(event){
+				const max = parseInt(stk.branchAttributes['max'], 10);
+				const v = parseInt(mid.value, 10);
+				if ( v == max )
+					return;
+				mid.value = v + 1;
+				mid.dispatchEvent(new Event('change'));
+			});
+			mid.addEventListener('change', function(event){
+				const max = parseInt(stk.branchAttributes['max'], 10);
+				const min = parseInt(stk.branchAttributes['min'], 10);
+				const id = stk.branchAttributes['min'];
+				let v = parseInt(this.value, 10);
+				if ( v > max )
+					v = max;
+				else if ( v < min )
+					v = min;
+				this.value = v;
+				data.stackValues[getStackBranchIdKey(stk)] = v;
+				Grimoire.SkillSystem.skillRoot.controller.updateSkillHTML();
+			});
+			mid.addEventListener('focus', function(event){
+				this.select();
+			})
+
+			const scope1 = simpleCreateHTML('div', 'scope1');
+			if ( attr['name'] !== void 0 ){
+				scope1.appendChild(simpleCreateHTML('span', '_main_title', toLangText(attr['name'])));
+			}
+			scope1.appendChild(createSkillAttributeScope(null, toLangText('Min|,|最小值'), processValue(attr['min'])));
+			if ( attr['max'] !== void 0 )
+				scope1.appendChild(createSkillAttributeScope(null, toLangText('Max|,|最大值'), processValue(attr['max'])));
+
+			const main = simpleCreateHTML('div', 'scope2');
+			main.appendChild(left);
+			main.appendChild(mid);
+			main.appendChild(right);
+
+			const content = simpleCreateHTML('div', ['content', 'content_line']);
+			content.appendChild(scope1);
+			content.appendChild(main);
+
+			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
+			he.appendChild(content);
+			return he;
+		}
 		case 'poration': {
 			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
 			const content = simpleCreateHTML('div', 'content');
@@ -367,7 +440,7 @@ function getBranchHTML(branch, data){
 				case 'normal_attack':
 					text = '一般攻擊傷害提升'; break;
 			}
-			const title = simpleCreateHTML('span', ['_main_title', 'light'], toLangText(text));
+			const title = simpleCreateHTML('span', '_main_title', toLangText(text));
 
 			// 技能常數基底
 			const valid_base = createSkillAttributeScope(
@@ -379,7 +452,7 @@ function getBranchHTML(branch, data){
 			text = '';
 			attr['constant'].split(',,').forEach((v, i) => {
 				if ( i == 0 ){
-					v = safeEval(v);
+					v = processValue(v);
 					if ( v !== 0 )
 						text += v;
 				}
@@ -397,7 +470,7 @@ function getBranchHTML(branch, data){
 			text = '';
 			attr['multiplier'].split(',,').forEach((v, i) => {
 				if ( i == 0 ){
-					v = safeEval(v);
+					v = processValue(v);
 					if ( v !== 0 )
 						text += v;
 				}
@@ -419,10 +492,10 @@ function getBranchHTML(branch, data){
 			if ( attr['aliment_name'] ) {
 				aliment = simpleCreateHTML('div', ['content', 'content_line']);
 				const s1 = simpleCreateHTML('div', 'scope1');
-				s1.appendChild(simpleCreateHTML('span', ['_main_title', 'light'], toLangText('Aliment|,|異常狀態')));
+				s1.appendChild(simpleCreateHTML('span', '_main_title', toLangText('Aliment|,|異常狀態')));
 				const s2 = simpleCreateHTML('div', 'scope2');
 				s2.appendChild(createSkillAttributeScope(null, null, attr['aliment_name']));
-				s2.appendChild(createSkillAttributeScope(null, toLangText('Chance|,|機率'), safeEval(attr['aliment_chance']) + '%'));
+				s2.appendChild(createSkillAttributeScope(null, toLangText('Chance|,|機率'), processValue(attr['aliment_chance']) + '%'));
 				aliment.appendChild(s1);
 				aliment.appendChild(s2);
 			}
@@ -446,7 +519,7 @@ function getBranchHTML(branch, data){
 			if ( parseInt(attr['frequency']) > 1 || attr['title'] == 'each' ) {
 				damage_frequency = createSkillAttributeScope(
 					null, toLangText('Frequency|,|傷害次數'),
-					safeEval(attr['frequency'])
+					processValue(attr['frequency'])
 				);
 				text = attr['judgment'] == 'common' ? 'common|,|共用判定' : 'separate|,|分開判定'
 				damage_judgment = createSkillAttributeScope(
@@ -475,7 +548,7 @@ function getBranchHTML(branch, data){
 					c = '技能加成';
 				const line = simpleCreateHTML('div', ['content', 'content_line']);
 				const s1 = simpleCreateHTML('div', 'scope1');
-				s1.appendChild(simpleCreateHTML('span', ['_main_title', 'light'], toLangText(c)));
+				s1.appendChild(simpleCreateHTML('span', '_main_title', toLangText(c)));
 				const s2 = simpleCreateHTML('div', 'scope2');
 				if ( _attr['constant'] ){
 					const t = _attr['constant'];
@@ -492,7 +565,7 @@ function getBranchHTML(branch, data){
 					s2.appendChild(simpleCreateHTML('div', 'text_scope', processText(ex, 'caption')));
 				}
 				ex.stats.forEach(stat => {
-					const v = stat.statValue(safeEval(stat.statValue()));
+					const v = stat.statValue(processValue(stat.statValue()));
 					let t = stat.show();
 					t = v < 0 ? darkText(t) : t;
 					s2.appendChild(createSkillAttributeScope(null, null, t));
@@ -531,6 +604,7 @@ function getBranchHTML(branch, data){
 			content.appendChild(scope2);
 
 			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
+			he.setAttribute(strings().data_branchIndex, branch.findLocation());
 			if ( top.childElementCount != 0 )
 				he.appendChild(top);
 			he.appendChild(content);
@@ -562,14 +636,14 @@ function getBranchHTML(branch, data){
 			if ( btype == 'passive' )
 				c = 'Passive|,|被動效果';
 
- 			const condition = c != 'none' ? simpleCreateHTML('span', ['_main_title', 'light'], toLangText(c)) : null;
+ 			const condition = c != 'none' ? simpleCreateHTML('span', '_main_title', toLangText(c)) : null;
  			let end_condition = null;
  			if ( attr['end_condition'] )
- 				end_condition = simpleCreateHTML('span', ['_main_title', 'light'], toLangText(attr['end_condition']));
+ 				end_condition = simpleCreateHTML('span', '_main_title', toLangText(attr['end_condition']));
  			let duration = null;
  			if ( attr['duration'] ){
- 				let v = safeEval(attr['duration']);
- 				duration = simpleCreateHTML('span', ['_main_title', 'light'], toLangText(`in ${v} secs|,|${v}秒內`));
+ 				let v = processValue(attr['duration']);
+ 				duration = simpleCreateHTML('span', '_main_title', toLangText(`in ${v} secs|,|${v}秒內`));
  			}
  			let text;
  			switch (attr['type']){
@@ -582,7 +656,7 @@ function getBranchHTML(branch, data){
  				case 'none':
  					text = 'none'; break;
  			}
- 			const target_type = text != 'none' ? simpleCreateHTML('span', ['_main_title', 'light'], toLangText(text)) : null;
+ 			const target_type = text != 'none' ? simpleCreateHTML('span', '_main_title', toLangText(text)) : null;
  			
  			const scope1 = simpleCreateHTML('div', 'scope1');
  			if ( condition !== null )
@@ -607,7 +681,7 @@ function getBranchHTML(branch, data){
 					showList.push(t);
 				});
  				showList.forEach(l => {
-	 				scope2.appendChild(createSkillAttributeScope(null, null, l));
+	 				scope2.appendChild(createSkillAttributeScope(null, null, processValue(l, {calc: false})));
 	 			});
  			}
 
@@ -620,6 +694,7 @@ function getBranchHTML(branch, data){
  			content.appendChild(scope2);
 
  			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
+ 			he.setAttribute(strings().data_branchIndex, branch.findLocation());
  			if ( top.childElementCount != 0 )
 				he.appendChild(top);
  			he.appendChild(content);
@@ -635,6 +710,7 @@ function getBranchHTML(branch, data){
 			let main_text = simpleCreateHTML('div', 'text_scope', processText(branch));
 
 			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
+			he.setAttribute(strings().data_branchIndex, branch.findLocation());
 
 			const top = simpleCreateHTML('div', 'top');
 			if ( text_name !== null )
@@ -665,6 +741,7 @@ function getBranchHTML(branch, data){
 			});
 
 			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
+			he.setAttribute(strings().data_branchIndex, branch.findLocation());
 
 			const content = simpleCreateHTML('div', 'content');
 			content.appendChild(ul);
@@ -746,8 +823,19 @@ export default function(data){
 		const two = document.createElement('div');
 		two.className = 'skill_branchs';
 		if ( output.checkData() ){
+			if ( data.stackValues === null ){
+				data.stackValues = {};
+				output.branchs.forEach(branch => {
+					if ( branch.name == 'stack' ){
+						const _attr = branch.branchAttributes;
+						const v = _attr['default'] == 'auto' ? _attr['min'] : _attr['default'];
+						data.stackValues[getStackBranchIdKey(branch)] = v;
+					}
+				});
+			}
+			const stackValues = data.stackValues;
 			output.branchs.forEach(branch => {
-				const t = getBranchHTML(branch, {SLv, CLv});
+				const t = getBranchHTML(branch, {SLv, CLv, stackValues});
 				if ( t !== null )
 					two.appendChild(t);
 			});
