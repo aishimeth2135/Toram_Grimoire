@@ -1,81 +1,121 @@
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch {
 	border-top: 1px var(--primary-color-light) solid;
 	margin-bottom: 0.2rem;
 	padding: 0.6rem 0;
 }
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch span.light {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.light {
 	color: var(--primary-color-light-3);
 }
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch span.dark {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.dark {
 	color: #666;
 }
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch div.line_scope {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.line_scope {
 	padding-left: 0.4rem;
 }
 
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch > div.top {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.top {
 	padding: 0.1rem;
 	padding-top: 0;
 	position: relative;
 	border-bottom: 1px var(--primary-color-dark) solid;
 	margin-bottom: 0.1rem;
 }
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch > div.top > span._name {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.top > span._name {
 	margin-left: 0.6rem;
 }
 
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 {
 	font-size: 0.9rem;
 }
 
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 > span._main_title {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 > span._main_title {
 	padding-right: 0.6rem;
 	margin: 0.2rem 0;
 	display: inline-block;
+	color: var(--primary-color-light-3);
 }
 
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch > div.content div.text_scope {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content div.text_scope {
 	padding: 0.4rem;
 }
 
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 > div.skill_attribute {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 > div.skill_attribute {
 	padding: 0.1rem 0.3rem;
 	border-bottom: 1px var(--primary-color-light-2) solid;
 	margin: 0.2rem 0.4rem;
 }
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch > div.content_line > div.scope1,
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch > div.content_line > div.scope2 {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content_line > div.scope1,
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content_line > div.scope2 {
 	display: inline-block;
 }
 
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch > div.content {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content {
 	padding: 0 0.4rem;
 }
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch_damage > div.content > div.scope2 > div.skill_attribute {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_damage > div.content > div.scope2 > div.skill_attribute {
 	padding: 0.2rem 0.4rem;
 	margin: 0.4rem 0;
 	margin-right: 0.4rem;
 }
 
 
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch_tips {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_tips {
 	color: #c62899;
 	font-size: 0.9rem;
 }
 
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch_list > div.content > ul._lists {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_list > div.content > ul._lists {
 	/*list-style: none;*/
 	margin: 0;
 	padding: 0 0.6rem;
 }
 
-article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch  div.scope1 div.skill_attribute > span.element_value {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope1 {
+	margin-right: 1rem;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span,
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > input {
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span {
+	border-radius: 0.2rem;
+	padding: 0.3rem;
+	cursor: pointer;
+	border: 1px var(--primary-color-light-2) solid;
+	transition: 0.3s;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span:hover {
+	border: 1px var(--primary-color-light-3) solid;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > input {
+	padding: 0.3rem;
+	border: 0;
+	font-size: 1rem;
+	color: var(--primary-color-light-3);
+	width: 1.5rem;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > input:focus {
+	outline: none;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span > svg {
+	fill: var(--primary-color-light-2);
+	vertical-align: middle;
+	width: 1.2rem;
+	height: 1.2rem;
+}
+
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch  div.scope1 div.skill_attribute > span.element_value {
 	vertical-align: baseline;
 }
-/*article#SkillQuery  div.Skill_scope > div.skill_branchs > div.branch  div.scope1 div.skill_attribute > span.element_ball {
+/*article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch  div.scope1 div.skill_attribute > span.element_ball {
 	height: 0.8rem;
 	width: 0.8rem;
 }*/
+article#SkillQuery div.Skill_scope span.effect_by_stack {
+	color: #2196f3;
+}
 
 article#SkillQuery div.skill_attribute > span.element_neutral {
 	background-color: #666;

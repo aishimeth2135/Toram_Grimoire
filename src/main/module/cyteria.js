@@ -31,11 +31,15 @@ let Cyteria = {
 	},
 	object: {
 		empty(obj){
+			if ( typeof obj !== 'object' )
+				return;
 			Object.keys(obj).forEach(function(key){
 				delete obj[key];
 			});
 		},
 		isEmpty(obj){
+			if ( typeof obj !== 'object' )
+				return true;
 			return Object.keys(obj).length == 0;
 		}
 	}

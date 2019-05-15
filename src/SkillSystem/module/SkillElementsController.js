@@ -22,8 +22,9 @@ function Controller(sr){
 		subWeapon: -1,
 		bodyArmor: -1,
 		skillLevel: 10,
-		CharacterLevel: 10,
-		currentSkill: null
+		characterLevel: 10,
+		currentSkill: null,
+		stackValues: {}
 	};
 }
 Controller.prototype = {
@@ -162,6 +163,7 @@ Controller.prototype = {
 						scope.innerHTML = "";
 						const ele = _C.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
 						scope.appendChild(_C.createSkillQueryScopeHTML(ele, SkillTree.CATEGORY_TABLE));
+						ConvertLangText(scope);
 						cy.element.removeAllChild(_C.getSkillElementScope(Skill.TYPE));
 						cy.element.removeAllChild(_C.getSkillElementScope(Skill.CATEGORY_EQUIPMENT));
 					};
@@ -188,14 +190,22 @@ Controller.prototype = {
 					const stcn = st.parent.findLocation(), stn = st.findLocation();
 					const _C = this;
 					const td_listener = function(event){
+						const s = _C.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
+						if ( _C.currentData.currentSkill === s )
+							return;
 						const cur = this.parentNode.parentNode.getElementsByClassName('cur')[0];
 						if ( cur )
 							cur.classList.remove('cur');
 						this.classList.add('cur');
-						const s = _C.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
+
 						_C.currentData.currentSkill = s;
-						const {mainWeapon, subWeapon, bodyArmor} = s.defaultEffect;
-						Object.assign(_C.currentData, {mainWeapon, subWeapon, bodyArmor});
+						if ( s.checkData() ){
+							cy.object.empty(_C.currentData.stackValues);
+							_C.currentData.stackValues = null;
+							const {mainWeapon, subWeapon, bodyArmor} = s.defaultEffect;
+							Object.assign(_C.currentData, {mainWeapon, subWeapon, bodyArmor});
+						}
+
 						const t = _C.createSkillQueryScopeHTML(s, Skill.CATEGORY_EQUIPMENT);
 						const scope = _C.getSkillElementScope(Skill.CATEGORY_EQUIPMENT);
 						cy.element.removeAllChild(scope);
@@ -216,7 +226,11 @@ Controller.prototype = {
 							td.innerHTML = '-';
 							return;
 						}
-						td.innerHTML = s.name;
+						if ( s.name == '@lock' ){
+							td.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none"><path d="M0 0h24v24H0V0z"/><path opacity=".87" d="M0 0h24v24H0V0z"/></g><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/></svg>';
+							return;
+						}
+						td.innerHTML = toLangText(s.name);
 						td.setAttribute(strings().data_skillElementNo, _C.getSkillElementNoStr(s));
 						td.addEventListener('click', td_listener);
 					});
