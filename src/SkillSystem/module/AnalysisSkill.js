@@ -510,9 +510,14 @@ function getBranchHTML(branch, data){
 			}
 			const target_type = createSkillAttributeScope(null, null, toLangText(text));
 
+			// 屬性
 			let damage_element = null;
 			if ( attr['element'] ){
 				damage_element = getDamageElementHTML(attr['element']);
+			}
+			let damage_isPlace = null;
+			if ( attr['is_place'] == '1' ){
+				damage_isPlace = createSkillAttributeScope(null, null, toLangText('Is Place|,|設置型'));
 			}
 
 			// 傷害次數
@@ -551,6 +556,11 @@ function getBranchHTML(branch, data){
 				const s1 = simpleCreateHTML('div', 'scope1');
 				s1.appendChild(simpleCreateHTML('span', '_main_title', toLangText(c)));
 				const s2 = simpleCreateHTML('div', 'scope2');
+
+				if ( _attr['aliment_name'] )
+					s2.appendChild(createSkillAttributeScope(null, null, _attr['aliment_name']));
+				if ( _attr['aliment_chance'] )
+					s2.appendChild(createSkillAttributeScope(null, toLangText('Chance|,|機率'), processValue(_attr['aliment_chance']) + '%'));
 				if ( _attr['constant'] ){
 					const t = _attr['constant'];
 					const sign = t >= 0 ? '+' : '';
@@ -584,6 +594,8 @@ function getBranchHTML(branch, data){
 			const scope1 = simpleCreateHTML('div', 'scope1');
 			scope1.appendChild(title);
 			scope1.appendChild(target_type);
+			if ( damage_isPlace !== null )
+				scope1.appendChild(damage_isPlace);
 			if ( damage_element !== null )
 				scope1.appendChild(damage_element);
 			if ( damage_judgment !== null )
@@ -646,6 +658,10 @@ function getBranchHTML(branch, data){
  				let v = processValue(attr['duration']);
  				duration = simpleCreateHTML('span', '_main_title', toLangText(`in ${v} secs|,|${v}秒內`));
  			}
+ 			let isPlace = null;
+			if ( attr['is_place'] == '1' ){
+				isPlace = createSkillAttributeScope(null, null, toLangText('Is Place|,|設置型'))
+			}
  			let text;
  			switch (attr['type']){
  				case 'self':
@@ -685,6 +701,9 @@ function getBranchHTML(branch, data){
 	 				scope2.appendChild(createSkillAttributeScope(null, null, processValue(l, {calc: false})));
 	 			});
  			}
+ 			const scope3 = simpleCreateHTML('div', 'scope1');
+ 			if ( isPlace !== null )
+ 				scope3.appendChild(isPlace);
 
  			const top = simpleCreateHTML('div', 'top');
 			if ( text_name !== null )
@@ -693,11 +712,16 @@ function getBranchHTML(branch, data){
  			const content = simpleCreateHTML('div', ['content', 'content_line']);
  			content.appendChild(scope1);
  			content.appendChild(scope2);
+ 			const content2 = simpleCreateHTML('div', 'content');
+ 			if ( scope3.childElementCount !== 0 )
+ 				content2.appendChild(scope3);
 
  			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
  			he.setAttribute(strings().data_branchIndex, branch.findLocation());
  			if ( top.childElementCount != 0 )
 				he.appendChild(top);
+			if ( content2.childElementCount !== 0 )
+ 				he.appendChild(content2);
  			he.appendChild(content);
 
 			return he;

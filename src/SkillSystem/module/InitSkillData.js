@@ -35,6 +35,7 @@ function InitSkillBranch(branch){
 			set_default(branch, {poration: 'auto'});
 			break;
 		case 'passive': case 'text': case 'tips': case 'list': case 'head': case 'extra':
+		case '':
 			//Do Nothing
 			break;
 		default:
