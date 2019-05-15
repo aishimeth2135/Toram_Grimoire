@@ -23,7 +23,7 @@ StatBase.prototype = {
 		switch (type) {
 			case StatBase.TYPE_CONSTANT: {
 				let res = toLangText(this.caption);
-				res += v < 0 ? '-' : '+';
+				res += v < 0 ? '' : '+';
 				res += v;
 				if ( !this.hasMultiplier )
 					res += '%';
@@ -31,14 +31,14 @@ StatBase.prototype = {
 			}
 			case StatBase.TYPE_MULTIPLIER: {
 				let res = toLangText(this.caption);
-				res += v < 0 ? '-' : '+';
+				res += v < 0 ? '' : '+';
 				res += v;
 				res += '%';
 				return res;
 			}
 			case StatBase.TYPE_TOTAL: {
 				let res = toLangText('Total |,|總') + toLangText(this.caption);
-				res += v < 0 ? '-' : '+';
+				res += v < 0 ? '' : '+';
 				res += v;
 				res += '%';
 				return res;
