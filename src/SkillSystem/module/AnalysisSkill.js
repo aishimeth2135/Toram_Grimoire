@@ -42,10 +42,7 @@ TempSkillEffect.prototype = {
 		let branchs_no = sef.branchs.map(a => a.no);
 		sef.branchs.forEach(function(branch, i){
 			const loc = this.branchs.findIndex(b => b.no == branch.no);
-			if ( loc == -1 )
-				this.newBranch().from(branch);
-			else
-				this.branchs[loc].overWrite(branch);
+			loc == -1 ? this.newBranch().from(branch) : this.branchs[loc].overWrite(branch);
 		}, this);
 	},
 	appendAttribute(name, v){
@@ -112,10 +109,7 @@ TempSkillBranch.prototype = {
 		}, this);
 		branch.stats.forEach(function(a){
 			let t = this.stats.find(b => a.base === b.base && a.type === b.type);
-			if ( t === void 0 )
-				this.appendStat(a.base.baseName, a.value, '').type = a.type;
-			else
-				t.statValue(a.value);
+			t === void 0 ? this.appendStat(a.base.baseName, a.value, '').type = a.type : t.statValue(a.value);
 		}, this);
 	}
 };
@@ -260,10 +254,7 @@ function getBranchHTML(branch, data){
 	function simpleCreateHTML(type, classList, html){
 		const t = document.createElement(type);
 		if ( t !== null ){
-			if ( Array.isArray(classList) )
-				t.classList.add(...classList);
-			else
-				t.classList.add(classList);
+			Array.isArray(classList) ? t.classList.add(...classList): t.classList.add(classList);
 		}
 		if ( html !== void 0 && html !== null )
 			t.innerHTML = html;
