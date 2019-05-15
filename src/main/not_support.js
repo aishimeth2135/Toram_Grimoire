@@ -1,0 +1,1 @@
+document.getElementById('LoadingPage').innerHTML = "此瀏覽器版本不支援此網頁。";

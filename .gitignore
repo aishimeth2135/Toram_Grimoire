@@ -4,10 +4,12 @@ EnchantEquipment/
 img/
 js/
 svg/
+/node_modules/
 backup_index.html
 _EnchantCalc.html
 
 *.txt
+*.config.js
 
 BaseStatData_[0-9].csv
 SkillData_[0-9].csv
