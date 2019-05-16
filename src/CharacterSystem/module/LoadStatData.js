@@ -9,6 +9,6 @@ export default function(character_system, csvs){
 	c.forEach(function(p, index){
 		if ( index == 0 )
 			return;
-		character_system.appendStatBase(p[BASE_NAME], p[CAPTION], p[HAS_MULTIPLIER]);
+		character_system.appendStatBase(p[BASE_NAME], p[CAPTION], p[HAS_MULTIPLIER] == '無' ? false : true);
 	});
 };

@@ -17,10 +17,16 @@ function ConvertLangText(hnode){
 	});
 }
 
-function toLangText(s){
+function toLangText(s, setting={}){
     if ( s === void 0 || s === null ) return '';
 	s = s.replace(new RegExp('"', 'g'), '&quot;');
-	return `<a ${ATTRIBUTE_NAME}="${s}"></a>`;
+	const a = document.createElement('a');
+	a.setAttribute(ATTRIBUTE_NAME, s);
+	if ( setting.href )
+		a.href = setting.href;
+	if ( setting.class )
+		(!Array.isArray(setting.class)) ? a.classList.add(setting.class) : a.classList.add(...setting.class);
+	return a.outerHTML;
 }
 
 export {ConvertLangText, toLangText, currentLanguage};
