@@ -31,7 +31,7 @@ let Cyteria = {
 	},
 	object: {
 		empty(obj){
-			if ( typeof obj !== 'object' )
+			if ( obj === null || typeof obj !== 'object' )
 				return;
 			Object.keys(obj).forEach(function(key){
 				delete obj[key];

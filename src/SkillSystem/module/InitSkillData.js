@@ -21,9 +21,14 @@ function InitSkillBranch(branch){
 				min: '1', default: 'auto'
 			});
 		}	break;
-		case 'buffs': case 'hit': case 'heal':
+		case 'effect': case 'hit':
 			set_default(branch, {
 				type: 'self', condition: 'auto'
+			});
+			break;
+		case 'heal':
+			set_default(branch, {
+				target: 'self', frequency: '1', constant: '0'
 			});
 			break;
 		case 'next':
@@ -35,6 +40,7 @@ function InitSkillBranch(branch){
 			set_default(branch, {poration: 'auto'});
 			break;
 		case 'passive': case 'text': case 'tips': case 'list': case 'head': case 'extra':
+		case 'reference':
 		case '':
 			//Do Nothing
 			break;
