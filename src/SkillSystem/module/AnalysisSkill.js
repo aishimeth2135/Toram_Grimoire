@@ -255,14 +255,15 @@ function getBranchHTML(branch, data){
 	}
 	function processValue(v, setting){
 		setting = Object.assign({
-			calc: true, tail: '', toPercentage: false
+			calc: true, tail: '', toPercentage: false,
+			checkHasStack: v
 		}, setting);
 		const span = document.createElement('span');
 		let res = setting.calc ? safeEval(v) : v;
 		if ( setting.toPercentage )
 			res = res*100 + '%';
 		span.innerHTML = res + setting.tail;
-		if ( v.includes('stack') )
+		if ( setting.checkHasStack.includes('stack') )
 			span.classList.add('effect_by_stack');
 		return span.outerHTML;
 	}
@@ -594,7 +595,7 @@ function getBranchHTML(branch, data){
 					let res = toLangText('Skill Constant |,|技能常數') + sign + t;
 					if ( t < 0 )
 						res = darkText(res);
-					res = processValue(res, {calc: false});
+					res = processValue(res, {calc: false, checkHasStack: _attr['constant']});
 					s2.appendChild(createSkillAttributeScope(null, null, res));
 				}
 				if ( _attr['element'] ){
@@ -604,10 +605,11 @@ function getBranchHTML(branch, data){
 					s2.appendChild(simpleCreateHTML('div', 'text_scope', processText(ex, 'caption')));
 				}
 				ex.stats.forEach(stat => {
+					const check = stat.statValue();
 					const v = stat.statValue(safeEval(stat.statValue()));
 					let t = stat.show();
 					t = v < 0 ? darkText(t) : t;
-					s2.appendChild(createSkillAttributeScope(null, null, processValue(t, {calc: false})));
+					s2.appendChild(createSkillAttributeScope(null, null, processValue(t, {calc: false, checkHasStack: check})));
 				});
 				
 				damage_extras_frg.appendChild(createContentLine(simpleCreateHTML('span', '_main_title', processText(ex, 'condition')), s2));
@@ -708,10 +710,11 @@ function getBranchHTML(branch, data){
 					s2.appendChild(simpleCreateHTML('div', 'text_scope', processText(ex, 'caption')));
 				}
 				ex.stats.forEach(stat => {
+					const check = stat.statValue();
 					const v = stat.statValue(safeEval(stat.statValue()));
 					let t = stat.show();
 					t = v < 0 ? darkText(t) : t;
-					s2.appendChild(createSkillAttributeScope(null, null, processValue(t, {calc: false})));
+					s2.appendChild(createSkillAttributeScope(null, null, processValue(t, {calc: false, checkHasStack: check})));
 				});
 				const s1 = document.createDocumentFragment();
 				s1.appendChild(simpleCreateHTML('span', '_main_title', processText(ex, 'condition')));
@@ -734,16 +737,13 @@ function getBranchHTML(branch, data){
  				scope2.appendChild(simpleCreateHTML('div', 'text_scope', processText(branch, 'caption')));
  			else {
  				const statList = Grimoire.CharacterSystem.StatList();
-				const showList = [];
 				branch.stats.forEach(a => {
+					const check = a.statValue();
 					const v = a.statValue(safeEval(a.statValue()));
 					let t = a.show();
 					t = v < 0  ? darkText(t) : t;
-					showList.push(t);
+					scope2.appendChild(createSkillAttributeScope(null, null, processValue(t, {calc: false, checkHasStack: check})));
 				});
- 				showList.forEach(l => {
-	 				scope2.appendChild(createSkillAttributeScope(null, null, processValue(l, {calc: false})));
-	 			});
  			}
  			const scope3 = simpleCreateHTML('div', 'scope1');
  			if ( isPlace !== null ){
