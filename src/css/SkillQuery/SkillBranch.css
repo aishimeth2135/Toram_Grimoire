@@ -127,6 +127,10 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch  div.scope1 
 article#SkillQuery div.Skill_scope span.effect_by_stack {
 	color: #2196f3;
 }
+article#SkillQuery div.Skill_scope span.effect_by_stack span.dark,
+article#SkillQuery div.Skill_scope span.dark span.effect_by_stack {
+	color: #009688!important;
+}
 
 article#SkillQuery div.skill_attribute > span.element_neutral {
 	background-color: #666;

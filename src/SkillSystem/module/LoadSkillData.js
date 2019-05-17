@@ -113,7 +113,6 @@ export default function LoadSkillData(sr, csvs){
 					} break;
 				}
 			}
-			if ( !cur ) debugger;
 			if ( SKILL_ELEMENT_ORDER.indexOf(cur.TYPE) < SKILL_ELEMENT_ORDER.indexOf(SkillEffect.TYPE) )
 				return;
 			const bno = p[EFFECT_BRANCH_NO];
