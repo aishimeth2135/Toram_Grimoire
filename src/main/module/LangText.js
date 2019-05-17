@@ -19,7 +19,7 @@ function ConvertLangText(hnode){
 
 function toLangText(s, setting={}){
     if ( s === void 0 || s === null ) return '';
-	s = s.replace(new RegExp('"', 'g'), '&quot;');
+	//s = s.replace(new RegExp('"', 'g'), '&quot;');
 	const a = document.createElement('a');
 	a.setAttribute(ATTRIBUTE_NAME, s);
 	if ( setting.href )
