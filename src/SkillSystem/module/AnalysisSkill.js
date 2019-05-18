@@ -421,7 +421,7 @@ function getBranchHTML(branch, data){
 		const unit = v => v !== void 0 ? 10*v : 10;
 		const base_distance = 8, base_distance_long = 12;
 		let h, w, ox, oy, endx, endy;
-		const pcolor = '#ff5fb7', pcolorl = '#FFD1EA';
+		const pcolor = '#ff5fb7', pcolorl = '#FFD1EA', pcolorl2 = '#feeaf5';
 		
 		const dis = _attr['move_distance'] === void 0 ? base_distance : base_distance_long;
 		switch ( areaType ){
@@ -435,12 +435,16 @@ function getBranchHTML(branch, data){
 				
 				switch ( areaType ){
 					case 'circle': {
+						const area = cy.svg.drawCircle(endx, endy, unit(radius), {fill: pcolorl2});
+						frg.appendChild(area);
 						const ocircle = cy.svg.drawCircle(endx, endy, unit(radius), {stroke: pcolorl, fill: 'none'});
 						ocircle.appendChild(cy.svg.createAnimate('stroke', {values: `${pcolorl};${pcolor};${pcolor}`, keyTimes: '0;0.2;1', dur: '2.5s'}));
 						frg.appendChild(ocircle);
 					} break;
 					case 'line': {
 						const _end = ox + unit(dis);
+						const area = cy.svg.drawPath(`M${ox} ${oy-unit(radius)} A${unit(radius)} ${unit(radius)} 0 0 0 ${ox} ${oy+unit(radius)} L${_end} ${oy+unit(radius)} A${unit(radius)} ${unit(radius)} 0 0 0 ${_end} ${endy-unit(radius)} Z`, {fill: pcolorl2});
+						frg.appendChild(area);
 						const ocircle = cy.svg.drawCircle(ox, oy, unit(radius), {stroke: pcolorl, fill: 'none'});
 						ocircle.appendChild(cy.svg.createAnimate('stroke', {id: 'a1', values: `${pcolorl};${pcolor};${pcolor}`, keyTimes: '0;0.2;1', dur: '1s',repeatCount: '1', begin: '0s;a2.end', fill: 'freeze'}));
 						ocircle.appendChild(cy.svg.createAnimate('cx', {id: 'a2', values: `${ox};${_end};${_end}`, keyTimes: '0;0.2;1', dur: '1.5s', repeatCount: '1', begin: 'a1.end'}));
@@ -459,6 +463,8 @@ function getBranchHTML(branch, data){
 				const start_dis = 0, sector_width = 2;
 				radius = 2;
 
+				const area = cy.svg.drawSector(ox, oy, unit(start_dis), unit(dis), angle/2, 360-angle/2, 1, {fill: pcolorl2});
+				frg.appendChild(area);
 				const osector = cy.svg.drawSector(ox, oy, unit(start_dis), unit(start_dis+1), angle/2, 360-angle/2, 1, {stroke: pcolor});
 				osector.appendChild(cy.svg.createAnimate('d', {id: 'a1', to: cy.svg.getSectorD(ox, oy, unit(dis - sector_width), unit(dis), angle/2, 360-angle/2, 1), dur: '0.4s', repeatCount: 1, begin: '0s;a2.end', fill: 'freeze'}));
 				osector.appendChild(cy.svg.createAnimate('stroke', {id: 'a2', to: pcolor, dur: '2s', repeatCount: 1, begin: 'a1.end'}));
@@ -567,6 +573,8 @@ function getBranchHTML(branch, data){
 
 			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
 			he.appendChild(content);
+
+			branch.finish = true;
 			return he;
 		}
 		case 'poration': {
@@ -757,6 +765,7 @@ function getBranchHTML(branch, data){
 				});
 				
 				damage_extras_frg.appendChild(createContentLine(simpleCreateHTML('span', '_main_title', processText(ex, 'condition')), s2));
+				ex.finish = true;
 			});
 
 			/*** 開始介面配置 ***/
@@ -840,15 +849,15 @@ function getBranchHTML(branch, data){
  			}
  			let isPlace = null;
 			if ( attr['is_place'] === '1' ){
-				isPlace = createSkillAttributeScope(null, null, toLangText('Is Place|,|設置型'))
+				isPlace = createSkillAttributeScope(null, null, toLangText('Is Place|,|設置型'));
 			}
 
- 			let text = getTargetText(attr['type'], attr['is_place'] === '1');
+ 			let text = attr['type'] !== void 0 ? getTargetText(attr['type'], attr['is_place'] === '1') : null;
  			let target_type = null;
  			let area_scope = null;
  			
  			if ( attr['radius'] === void 0 )
- 				target_type = createSkillAttributeScope(null, null, text);
+ 				target_type = text !== null ? createSkillAttributeScope(null, null, text) : null;
  			else {
  				target_type = createSkillAttributeScope(
 					'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>',
@@ -887,6 +896,7 @@ function getBranchHTML(branch, data){
 					s1.appendChild(simpleCreateHTML('span', '_main_title', toLangText(_attr['target'])));
 				}
 				extras_frg.appendChild(createContentLine(s1, s2));
+				ex.finish = true;
  			});
 
  			const scope1 = document.createDocumentFragment();
@@ -941,6 +951,7 @@ function getBranchHTML(branch, data){
  			if ( area_scope !== null )
  				he.appendChild(area_scope);
 
+ 			branch.finish = true;
 			return he;
 		}
 		case 'heal': {
@@ -1012,6 +1023,7 @@ function getBranchHTML(branch, data){
 			if ( extra_frg.childElementCount !== 0 )
 				he.appendChild(extra_frg);
 
+			branch.finish = true;
 			return he;
 		}
 		case 'text': case 'tips': {
@@ -1035,6 +1047,7 @@ function getBranchHTML(branch, data){
 				he.appendChild(top);
 			he.appendChild(content);
 
+			branch.finish = true;
 			return he;
 		}
 		case 'list': {
@@ -1059,6 +1072,7 @@ function getBranchHTML(branch, data){
 
 			he.appendChild(content);
 
+			branch.finish = true;
 			return he;
 		}
 		case 'reference': {
@@ -1081,6 +1095,7 @@ function getBranchHTML(branch, data){
 			if ( url_scope !== null )
 				he.appendChild(createContentLine(simpleCreateHTML('span', '_main_title', toLangText('Reference url|,|資料參考連結')), url_scope));
 
+			branch.finish = true;
 			return he;
 		}
 	}

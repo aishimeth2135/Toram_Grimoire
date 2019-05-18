@@ -42,8 +42,7 @@ const
 	SKILL_TREE_SUB_WEAPON_LIST = 4,
 	SKILL_TREE_BODY_ARROMR_LIST = 5;
 
-export default function LoadSkillData(sr, csvs){
-	const c = $.csv.toArrays(csvs);
+export default function LoadSkillData(sr, c){
 	let cur = null;
 
 	const SKILL_ELEMENT_ORDER = [

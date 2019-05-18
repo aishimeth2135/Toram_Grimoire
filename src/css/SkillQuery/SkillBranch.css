@@ -172,5 +172,15 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.show_are
 	cursor: pointer;
 }
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.show_area:hover {
-	
+
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.effective_area > div > svg {
+	min-width: 15rem;
+    max-width: 100%;
+    height: auto;
+}
+@media screen and (max-width: 20rem) {
+	article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.effective_area > div > svg {
+		min-width: auto;
+	}
 }

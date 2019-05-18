@@ -13,16 +13,15 @@ CharacterSystem.prototype = {
 	init_statList(){
 		const _this = this;
 		return new Promise((resolve, reject) => {
-			$.ajax({
-				url: './src/CharacterSystem/module/other/BaseStatData.csv',
-				timeout: 12000,
-				success(res){
-					LoadStatData(_this, res);
+			Papa.parse('./src/CharacterSystem/module/other/BaseStatData.csv', {
+				download: true,
+				complete(res){
+					LoadStatData(_this, res.data);
 					resolve();
 				},
-				error(e){
-					console.warn('讀取角色能力清單時發生錯誤');
-					console.log(e);
+				error(err){
+					console.warn("讀取角色能力資料時發生錯誤");
+					console.log(err);
 					reject();
 				}
 			});

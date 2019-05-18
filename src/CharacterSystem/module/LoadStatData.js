@@ -4,8 +4,7 @@ const
 	HAS_MULTIPLIER = 2,
 	CONSTANT_UNIT = 3;
 
-export default function(character_system, csvs){
-	const c = $.csv.toArrays(csvs);
+export default function(character_system, c){
 	c.forEach(function(p, index){
 		if ( index == 0 )
 			return;
