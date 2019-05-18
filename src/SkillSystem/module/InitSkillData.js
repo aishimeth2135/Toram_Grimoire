@@ -11,9 +11,8 @@ function InitSkillBranch(branch){
 			set_default(branch, {
 				constant: '0', multiplier: '0', type: 'single', base: 'auto',
 				frequency: '1', end_position: 'target',
-				affective_area: 'circle',
-				title: 'normal', judgment: 'common', cycle: '1',
-				aliment_chance: '0', damage_type: 'physical'
+				effective_area: 'circle', title: 'normal', judgment: 'common',
+				damage_type: 'physical'
 			});
 			break;
 		case 'stack': {

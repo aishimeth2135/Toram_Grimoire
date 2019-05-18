@@ -153,3 +153,24 @@ article#SkillQuery div.skill_attribute > span.element_light {
 article#SkillQuery div.skill_attribute > span.element_dark {
 	background-color: #5b00ae;
 }
+
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.effective_area {
+	border: 1px var(--primary-color-light) solid;
+	box-shadow: 0.1rem 0.1rem 0.6rem var(--primary-color-light);
+	padding: 0.6rem;
+	margin: 0.5rem 0;
+	display: inline-block;
+}
+
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.effective_area span.ball_character {
+	background-color: #ff5fb7;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.effective_area span.ball_target {
+	background-color: #2196f3;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.show_area {
+	cursor: pointer;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.show_area:hover {
+	
+}
