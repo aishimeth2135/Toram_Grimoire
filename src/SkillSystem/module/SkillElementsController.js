@@ -22,7 +22,7 @@ function Controller(sr){
 		subWeapon: -1,
 		bodyArmor: -1,
 		skillLevel: 10,
-		characterLevel: 10,
+		characterLevel: 185,
 		currentSkill: null,
 		stackValues: {}
 	};

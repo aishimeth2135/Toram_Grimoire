@@ -54,7 +54,8 @@ let Cyteria = {
 			const svg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
 			attr = Object.assign({
 				xmlns: "http://www.w3.org/2000/svg",
-				width, height
+				width, height,
+				viewBox: `0 0 ${width} ${height}`
 			}, attr);
 			Cyteria.element.setAttributes(svg, attr);
 			return svg;
