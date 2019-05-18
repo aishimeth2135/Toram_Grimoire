@@ -167,6 +167,7 @@ article#SkillQuery div.skill_attribute > span._icon > svg {
 	width: 1rem;
 	height: 1rem;
 	vertical-align: middle;
+	fill: var(--primary-color-dark);
 }
 article#SkillQuery div.skill_attribute > span._icon {
 	margin-right: 0.4rem;

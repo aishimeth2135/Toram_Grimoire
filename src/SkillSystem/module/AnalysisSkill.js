@@ -235,7 +235,13 @@ function getBranchHTML(branch, data){
 	}
 	function processText(b, _main){
 		const _attr = b.branchAttributes;
-		let str = safeEval("`" + _attr[_main === void 0 ? 'text': _main] + "`");
+		let str = _attr[_main === void 0 ? 'text': _main];
+		str = str.replace(/(\$\{[^\}]+\})([%]?)/g, () =>
+			RegExp.$2 !== '%'
+			? processValue(RegExp.$1, {calc: false, light: true})
+			: processValue(RegExp.$1, {calc: false, tail: '%', light: true})
+		);
+		str = safeEval("`" + str + "`");
 		if ( _attr['mark'] !== void 0 ){
 			_attr['mark'].split(/\s*,\s*/).forEach(t => {
 				str = str.replace(new RegExp(t, 'g'), lightText(t));
@@ -256,15 +262,26 @@ function getBranchHTML(branch, data){
 	function processValue(v, setting){
 		setting = Object.assign({
 			calc: true, tail: '', toPercentage: false,
-			checkHasStack: v
+			checkHasStack: v, light: false
 		}, setting);
 		const span = document.createElement('span');
-		let res = setting.calc ? safeEval(v) : v;
+		let res;
+		if ( setting.calc ){
+			let t = safeEval(v);
+			if ( !Number.isInteger(t) )
+				t = t.toFixed(2);
+			res = t;
+		}
+		else
+			res = v;
+		res += setting.tail;
 		if ( setting.toPercentage )
 			res = res*100 + '%';
-		span.innerHTML = res + setting.tail;
 		if ( setting.checkHasStack.includes('stack') )
 			span.classList.add('effect_by_stack');
+		else if ( setting.light )
+			res = lightText(res);
+		span.innerHTML = res;
 		return span.outerHTML;
 	}
 	function simpleCreateHTML(type, classList, html){
@@ -345,13 +362,127 @@ function getBranchHTML(branch, data){
 		}
 		return t;
 	}
-	function getTargetText(s){
+	function getTargetText(s, _is_place){
 		const dict = {
-			self: 'Self|,|自身', party: 'Party|,|全隊伍',
+			self: 'Self|,|自身', party: !_is_place ? 'Party|,|全隊伍' : 'Team Members in Area|,|區域內的隊伍成員',
 			aura: 'Team Members in Aura|,|光環內的隊伍成員',
 			target: 'Target|,|目標', none: null
 		};
 		return toLangText(dict[s]);
+	}
+	function getEffectiveAreaHTML(b){
+		// radius, angle, end_position, effective_area, move_distance
+		const _attr = b.branchAttributes;
+		const is_self = _attr['end_position'] === 'self';
+
+		const caption = simpleCreateHTML('div', 'scope1');
+		{
+			const a = simpleCreateHTML('div', 'skill_attribute');
+			a.appendChild(simpleCreateHTML('span', ['_icon', 'element_ball', 'ball_character']));
+			a.appendChild(simpleCreateHTML('span', '_value', toLangText('Character Position|,|角色位置')));
+			caption.appendChild(a);
+			if ( !is_self ){
+				const b = simpleCreateHTML('div', 'skill_attribute');
+				b.appendChild(simpleCreateHTML('span', ['_icon', 'element_ball', 'ball_target']));
+				b.appendChild(simpleCreateHTML('span', '_value', toLangText('Target Position|,|目標位置')));
+				caption.appendChild(b);
+			}
+		}
+		let radius, angle, areaType;
+		['radius', 'angle', 'effective_area', 'move_distance'].forEach(a => {
+			if ( _attr[a] ){
+				let t, v = _attr[a];
+				switch (a){
+					case 'radius':
+						t = 'Radius|,|半徑';
+						radius = safeEval(v);
+						v = processValue(v, {tail: 'm'});
+						break;
+					case 'angle':
+						t = 'Angle|,|夾角';
+						angle = safeEval(v);
+						v = processValue(v, {tail: '°'});
+						break;
+					case 'effective_area':
+						areaType = _attr[a];
+						t = 'Type|,|類別';
+						v = toLangText({circle: 'Circle|,|圓形', line: 'Line|,|直線型', sector: 'Sector|,|扇型'}[v]);
+						break;
+					case 'move_distance':
+						t = 'Move Distance|,|移動距離';
+						v = processValue(v, {tail: 'm'});
+						break;
+				}
+				caption.appendChild(createSkillAttributeScope(null, toLangText(t), v));
+			}
+		});
+		const frg = document.createDocumentFragment();
+
+		const unit = v => v !== void 0 ? 10*v : 10;
+		const base_distance = 8, base_distance_long = 12;
+		let h, w, ox, oy, endx, endy;
+		const pcolor = '#ff5fb7', pcolorl = '#FFD1EA';
+		
+		const dis = _attr['move_distance'] === void 0 ? base_distance : base_distance_long;
+		switch ( areaType ){
+			case 'line': case 'circle': {
+				w = !is_self ? unit(radius*2 + dis + 2) : unit(radius*2 + 2);
+				h = unit(radius*2 + 2);
+				ox = unit(radius + 1),
+				oy = h/2,
+				endx = !is_self ? ox + unit(base_distance) : ox,
+				endy = oy;
+				
+				switch ( areaType ){
+					case 'circle': {
+						const ocircle = cy.svg.drawCircle(endx, endy, unit(radius), {stroke: pcolorl, fill: 'none'});
+						ocircle.appendChild(cy.svg.createAnimate('stroke', {values: `${pcolorl};${pcolor};${pcolor}`, keyTimes: '0;0.2;1', dur: '2.5s'}));
+						frg.appendChild(ocircle);
+					} break;
+					case 'line': {
+						const _end = ox + unit(dis);
+						const ocircle = cy.svg.drawCircle(ox, oy, unit(radius), {stroke: pcolorl, fill: 'none'});
+						ocircle.appendChild(cy.svg.createAnimate('stroke', {id: 'a1', values: `${pcolorl};${pcolor};${pcolor}`, keyTimes: '0;0.2;1', dur: '1s',repeatCount: '1', begin: '0s;a2.end', fill: 'freeze'}));
+						ocircle.appendChild(cy.svg.createAnimate('cx', {id: 'a2', values: `${ox};${_end};${_end}`, keyTimes: '0;0.2;1', dur: '1.5s', repeatCount: '1', begin: 'a1.end'}));
+						frg.appendChild(ocircle);
+					} break;
+				}
+			} break;
+			case 'sector': {
+				w = unit(dis + 6);
+				h = unit(dis)*Math.sin(angle*Math.PI/180) + unit(2);
+				ox = unit(4);
+				oy = h/2;
+				endx = ox + unit(base_distance);
+				endy = oy;
+
+				const start_dis = 0, sector_width = 2;
+				radius = 2;
+
+				const osector = cy.svg.drawSector(ox, oy, unit(start_dis), unit(start_dis+1), angle/2, 360-angle/2, 1, {stroke: pcolor});
+				osector.appendChild(cy.svg.createAnimate('d', {id: 'a1', to: cy.svg.getSectorD(ox, oy, unit(dis - sector_width), unit(dis), angle/2, 360-angle/2, 1), dur: '0.4s', repeatCount: 1, begin: '0s;a2.end', fill: 'freeze'}));
+				osector.appendChild(cy.svg.createAnimate('stroke', {id: 'a2', to: pcolor, dur: '2s', repeatCount: 1, begin: 'a1.end'}));
+				frg.appendChild(osector);
+			} break;
+		}
+		const point_radius = 0.5;
+		const chara = cy.svg.drawCircle(ox, oy, unit(radius <= point_radius && is_self ? point_radius/2 : point_radius), {fill: pcolor});
+		frg.appendChild(chara);
+		if ( !is_self ){
+			const targetPosition = cy.svg.drawCircle(endx, endy, unit(radius > point_radius ? point_radius : point_radius/2), {fill: '#2196f3'});	
+			frg.appendChild(targetPosition);
+		}
+
+		const svg = cy.svg.create(w, h);
+		svg.appendChild(frg);
+
+		const scope = simpleCreateHTML('div', ['effective_area', 'content', 'hidden']);
+		const svg_scope = document.createElement('div');
+		svg_scope.appendChild(svg);
+		scope.appendChild(svg_scope);
+		scope.appendChild(caption);
+
+		return scope;
 	}
 
 	const {SLv, CLv} = data;
@@ -477,6 +608,11 @@ function getBranchHTML(branch, data){
 				toLangText(attr['damage_type'] == 'physical' ? 'Valid ATK|,|有效ATK' : 'Valid MATK|,|有效MATK')
 			);
 
+			const damage_type = createSkillAttributeScope(
+				null, null,
+				toLangText({physical: 'Physical|,|物理', magic: 'Magic|,|魔法'}[attr['damage_type']])
+			);
+
 			// 技能常數
 			text = '';
 			attr['constant'].split(',,').forEach((v, i) => {
@@ -518,29 +654,37 @@ function getBranchHTML(branch, data){
 
 			//異常狀態
 			let aliment = null;
-			if ( attr['aliment_name'] ) {
+			if ( attr['aliment_name'] !== void 0 ) {
 				aliment = simpleCreateHTML('div', ['content', 'content_line']);
 				const s1 = simpleCreateHTML('div', 'scope1');
 				s1.appendChild(simpleCreateHTML('span', '_main_title', toLangText('Aliment|,|異常狀態')));
 				const s2 = simpleCreateHTML('div', 'scope2');
 				s2.appendChild(createSkillAttributeScope(null, null, attr['aliment_name']));
-				s2.appendChild(createSkillAttributeScope(null, toLangText('Chance|,|機率'), processValue(attr['aliment_chance']) + '%'));
+				s2.appendChild(createSkillAttributeScope(null, toLangText('Chance|,|機率'), processValue(attr['aliment_chance'] || '0') + '%'));
 				aliment.appendChild(s1);
 				aliment.appendChild(s2);
 			}
 			
 			// 傷害目標類型
-			if ( attr['type'] == 'single' ){
-				text = 'Single|,|單體';
-			}
+			let area_scope = null;
+			let target_type = null;
+			if ( attr['type'] == 'single' )
+				target_type = createSkillAttributeScope(null, null, toLangText('Single|,|單體'));
 			else {
-				text = 'AOE|,|範圍';	
+				target_type = createSkillAttributeScope(
+					'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>',
+					null, toLangText('AOE|,|範圍')
+				);
+				area_scope = getEffectiveAreaHTML(branch);
+				target_type.addEventListener('click', () => {
+					area_scope.classList.toggle('hidden');
+				});
+				target_type.classList.add('show_area');
 			}
-			const target_type = createSkillAttributeScope(null, null, toLangText(text));
 
 			// 屬性
 			let damage_element = null;
-			if ( attr['element'] ){
+			if ( attr['element'] !== void 0 ){
 				damage_element = getDamageElementHTML(attr['element']);
 			}
 			let damage_isPlace = null;
@@ -560,7 +704,7 @@ function getBranchHTML(branch, data){
 					null, null,
 					toLangText(text)
 				);
-				if ( attr['cycle'] ) {
+				if ( attr['is_place'] == '1' && attr['cycle'] !== void 0 ) {
 					damage_cycle = createSkillAttributeScope(null, null, toLangText('per |,|每') + processValue(attr['cycle'], {tail: toLangText(' sec|,|秒')}));
 				}
 			}
@@ -622,6 +766,7 @@ function getBranchHTML(branch, data){
 			
 			const scope1 = simpleCreateHTML('div', 'scope1');
 			scope1.appendChild(title);
+			scope1.appendChild(damage_type);
 			scope1.appendChild(target_type);
 			if ( damage_isPlace !== null )
 				scope1.appendChild(damage_isPlace);
@@ -656,6 +801,8 @@ function getBranchHTML(branch, data){
 				he.appendChild(aliment);
 			if ( damage_extras_frg.childElementCount > 0 )
 				he.appendChild(damage_extras_frg);
+			if ( area_scope !== null )
+				he.appendChild(area_scope);
 
 			branch.finish = true;
 			return he;
@@ -692,11 +839,29 @@ function getBranchHTML(branch, data){
  				duration = simpleCreateHTML('span', '_main_title', toLangText(`in ${v} secs|,|${v}秒內`));
  			}
  			let isPlace = null;
-			if ( attr['is_place'] == '1' ){
+			if ( attr['is_place'] === '1' ){
 				isPlace = createSkillAttributeScope(null, null, toLangText('Is Place|,|設置型'))
 			}
- 			let text = getTargetText(attr['type']);
- 			const target_type = text !== null ? simpleCreateHTML('span', '_main_title', text) : null;
+
+ 			let text = getTargetText(attr['type'], attr['is_place'] === '1');
+ 			let target_type = null;
+ 			let area_scope = null;
+ 			
+ 			if ( attr['radius'] === void 0 )
+ 				target_type = createSkillAttributeScope(null, null, text);
+ 			else {
+ 				target_type = createSkillAttributeScope(
+					'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>',
+					null, text
+				);
+ 				attr['end_position'] = 'self';
+ 				attr['effective_area'] = 'circle';
+ 				area_scope = getEffectiveAreaHTML(branch);
+				target_type.addEventListener('click', () => {
+					area_scope.classList.toggle('hidden');
+				});
+				target_type.classList.add('show_area');
+ 			}
  			
  			const extras = suffix.filter(a => a.name == 'extra');
  			const extras_frg = document.createDocumentFragment();
@@ -773,6 +938,8 @@ function getBranchHTML(branch, data){
  			he.appendChild(createContentLine(scope1, scope2));
  			if ( extras_frg.childElementCount !== 0 )
  				he.appendChild(extras_frg);
+ 			if ( area_scope !== null )
+ 				he.appendChild(area_scope);
 
 			return he;
 		}
@@ -793,13 +960,13 @@ function getBranchHTML(branch, data){
  			);
 
  			let duration = null;
- 			if ( attr['duration'] ){
+ 			if ( attr['duration'] !==  void 0 ){
  				let v = processValue(attr['duration']);
  				duration = createSkillAttributeScope(null, toLangText('Duration|,|持續時間'), processValue(attr['duration']));
  			}
 
  			let frequency = null;
- 			if ( attr['frequency'] ) {
+ 			if ( attr['frequency'] !==  void 0 ) {
 				frequency = createSkillAttributeScope(
 					null, toLangText('Frequency|,|作用次數'),
 					processValue(attr['frequency'])
@@ -807,12 +974,12 @@ function getBranchHTML(branch, data){
 			}
 
 			let cycle = null;
- 			if ( attr['cycle'] ) {
+ 			if ( attr['cycle'] !==  void 0 ) {
 				cycle = createSkillAttributeScope(null, null, toLangText('per |,|每') + processValue(attr['cycle'], {tail: toLangText(' sec|,|秒')}));
 			}
 
 			const extra_frg = document.createDocumentFragment();
-			if ( attr['extra_text'] ){
+			if ( attr['extra_text'] !==  void 0 ){
 				const ta = attr['extra_text'].split(','),
 					va = attr['extra_value'].split(',').map(a => processValue(a, {toPercentage: true}));
 				const frg2 = document.createDocumentFragment();
