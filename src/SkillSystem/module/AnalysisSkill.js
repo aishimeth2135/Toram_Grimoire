@@ -338,7 +338,8 @@ function getBranchHTML(branch, data){
 			wind: 'Wind|,|風屬性',
 			light: 'Light|,|光屬性',
 			dark: 'Dark|,|暗屬性',
-			arrow: '套用箭矢屬性'
+			arrow: '套用箭矢屬性',
+			one_hand_sword: '套用單手劍屬性'
 		};
 		const t = simpleCreateHTML('div', 'skill_attribute');
 		if ( ele_type != 'arrow' )
