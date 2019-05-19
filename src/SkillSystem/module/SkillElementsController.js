@@ -318,10 +318,18 @@ Controller.prototype = {
 									end = li;
 								}
 							});
-							if ( end !== null ){
-								
-								ul.appendChild(end);
+							if ( field === mainw ){
+								if ( mainw.indexOf(0/*單手劍*/) !== -1 && mainw.indexOf(9/*雙劍*/) === -1 ){
+									// 創建一個外觀為「雙劍」實為「單手劍」的按鈕
+									const li = document.createElement('li');
+									li.innerHTML = `<span class="icon">${icons[9]}</span><span class="value">${toLangText(names[9])}</span>`;
+									li.setAttribute(attrkey, 0);
+									ul.appendChild(li);
+									li.addEventListener('click', listener);
+								}
 							}
+							if ( end !== null )
+								ul.appendChild(end);
 							
 							const t = document.createElement('div');
 							const title = document.createElement('div');
