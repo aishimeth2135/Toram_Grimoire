@@ -19,6 +19,15 @@ let Cyteria = {
 				if ( dict[k] !== null )
 					ele.setAttribute(k, dict[k])
 			});
+		},
+		simpleCreateHTML(type, classList, html){
+			const t = document.createElement(type);
+			if ( t !== null ){
+				Array.isArray(classList) ? t.classList.add(...classList): t.classList.add(classList);
+			}
+			if ( html !== void 0 && html !== null )
+				t.innerHTML = html;
+			return t;
 		}
 	},
 	class: {

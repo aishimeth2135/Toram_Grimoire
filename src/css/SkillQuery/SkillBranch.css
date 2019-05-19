@@ -17,8 +17,9 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.top {
 	padding: 0.1rem;
 	padding-top: 0;
 	position: relative;
-	border-bottom: 1px var(--primary-color-dark) solid;
+	border-bottom: 1px #9c27b0 solid;
 	margin-bottom: 0.3rem;
+	color: #9c27b0;
 }
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.top > span._name {
 	margin-left: 0.6rem;
@@ -101,6 +102,7 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.
 	font-size: 1rem;
 	color: var(--primary-color-light-3);
 	width: 1.5rem;
+	text-align: center;
 }
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > input:focus {
 	outline: none;
@@ -156,7 +158,7 @@ article#SkillQuery div.skill_attribute > span.element_dark {
 
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.effective_area {
 	border: 1px var(--primary-color-light) solid;
-	box-shadow: 0.1rem 0.1rem 0.6rem var(--primary-color-light);
+	box-shadow: 0.1rem 0.1rem 0.4rem var(--primary-color-light);
 	padding: 0.6rem;
 	margin: 0.5rem 0;
 	display: inline-block;

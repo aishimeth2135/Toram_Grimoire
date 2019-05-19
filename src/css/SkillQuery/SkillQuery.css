@@ -29,7 +29,6 @@ article#SkillQuery div.SkillRoot_scope > div._menu > ul > li:hover {
 }
 
 article#SkillQuery div.SkillTreeCategory_scope {
-	border-bottom: 1px var(--primary-color-light-2) solid;
 }
 article#SkillQuery div.SkillTreeCategory_scope > div._menu > ul {
 	list-style: none;
@@ -52,9 +51,14 @@ article#SkillQuery div.SkillTreeCategory_scope > div._menu > ul > li:hover {
 
 article#SkillQuery div.SkillTree_scope {
 	overflow-y: auto;
+	border-bottom: 1px var(--primary-color-light-2) solid;
+	padding-bottom: 1rem;
 }
 article#SkillQuery div.SkillTree_scope > table {
 	border-spacing: 0.2rem;
+	box-shadow: 0.1rem 0.1rem 0.4rem var(--primary-color-light);
+	margin: 0.4rem;
+	border: 1px var(--primary-color-light) solid;
 }
 article#SkillQuery div.SkillTree_scope > table td {
 	text-align: center;
@@ -153,6 +157,44 @@ article#SkillQuery div.SkillEquipment_scope > div > ul > li > span.icon {
 }
 
 
+article#SkillQuery div.CharacterLevel_scope {
+	padding: 0 1rem 1rem 1rem;
+}
+article#SkillQuery div.CharacterLevel_scope > div.title {
+	color: var(--primary-color-light-3);
+	font-size: 0.9rem;
+	margin-right: 0.6rem;
+	display: inline-block;
+}
+article#SkillQuery div.CharacterLevel_scope > span {
+	border-radius: 0.2rem;
+	padding: 0.3rem;
+	cursor: pointer;
+	border: 1px var(--primary-color-light-2) solid;
+	transition: 0.3s;
+}
+article#SkillQuery div.CharacterLevel_scope > span:hover {
+	border: 1px var(--primary-color-light-3) solid;
+}
+article#SkillQuery div.CharacterLevel_scope > input {
+	padding: 0.3rem;
+	border: 0;
+	font-size: 1rem;
+	color: var(--primary-color-light-3);
+	width: 2.5rem;
+	text-align: center;
+}
+article#SkillQuery div.CharacterLevel_scope > input:focus {
+	outline: none;
+}
+article#SkillQuery div.CharacterLevel_scope > span > svg {
+	fill: var(--primary-color-light-2);
+	vertical-align: middle;
+	width: 1.2rem;
+	height: 1.2rem;
+}
+
+
 
 article#SkillQuery div.skill_attribute {
 	margin: 0.4rem;
@@ -180,6 +222,13 @@ article#SkillQuery div.skill_attribute > span._value {
 }
 article#SkillQuery div.skill_attribute > span._tail {
 	margin-left: 0.5rem;
+}
+
+article#SkillQuery div.stat_scope > span._title {
+	margin-right: 0.3rem;
+}
+article#SkillQuery div.stat_scope > span._tail {
+	margin-left: 0.2rem;
 }
 
 article#SkillQuery span.element_ball {

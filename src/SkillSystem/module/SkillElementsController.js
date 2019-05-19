@@ -7,7 +7,8 @@ import strings from "./strings.js";
 
 import cy from "../../main/module/cyteria.js";
 
-const TYPE_SKILL_LEVEL = Symbol();
+const TYPE_SKILL_LEVEL = Symbol(),
+	TYPE_CHARACTER_LEVEL = Symbol();
 /*
 Interface Controller {
 	HTMLElement createSkillQueryScopeHTML(const string type);
@@ -33,7 +34,7 @@ Controller.prototype = {
 		this.MAIN_NODE = main_node;
 		const order = [
 			SkillRoot.TYPE, SkillTreeCategory.TYPE, SkillTree.TYPE,
-			TYPE_SKILL_LEVEL, Skill.CATEGORY_EQUIPMENT, Skill.TYPE
+			TYPE_SKILL_LEVEL, TYPE_CHARACTER_LEVEL, Skill.CATEGORY_EQUIPMENT, Skill.TYPE
 		];
 		const frg = document.createDocumentFragment();
 		order.forEach(function(a){
@@ -49,6 +50,7 @@ Controller.prototype = {
 					}, this);
 					break;
 				case TYPE_SKILL_LEVEL:
+				case TYPE_CHARACTER_LEVEL:
 					t.appendChild(this.createSkillQueryScopeHTML(null, a));
 					break;
 			}
@@ -63,6 +65,7 @@ Controller.prototype = {
 			[SkillTree.TYPE]: 'SkillTree_scope',
 			[Skill.TYPE]: 'Skill_scope',
 			[TYPE_SKILL_LEVEL]: 'SkillLevel_scope',
+			[TYPE_CHARACTER_LEVEL]: 'CharacterLevel_scope',
 			[Skill.CATEGORY_EQUIPMENT]: 'SkillEquipment_scope'
 		};
 		let node = this.MAIN_NODE.getElementsByClassName(SCOPE_NAME[type])[0];
@@ -134,6 +137,9 @@ Controller.prototype = {
 						cy.element.removeAllChild(_C.getSkillElementScope(SkillTree.TYPE));
 						cy.element.removeAllChild(_C.getSkillElementScope(Skill.TYPE));
 						cy.element.removeAllChild(_C.getSkillElementScope(Skill.CATEGORY_EQUIPMENT));
+						const t = menu_list[loc].querySelector('li.cur');
+						if ( t )
+							t.click();
 					};
 					const he = document.createElement('div');
 					he.className = "_" + category;
@@ -342,6 +348,50 @@ Controller.prototype = {
 					});
 					return he.childElementCount != 0 ? he : null;
 				}
+			}
+			case TYPE_CHARACTER_LEVEL: {
+				const _C = this;
+				const left =  cy.element.simpleCreateHTML('span', 'left', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18 13H6c-.55 0-1-.45-1-1s.45-1 1-1h12c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg>');
+				const right = cy.element.simpleCreateHTML('span', 'right', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg>');
+				const mid = cy.element.simpleCreateHTML('input', 'mid');
+
+				mid.value = this.currentData.characterLevel;
+
+				const ctr_listener = function(event){
+					const max = 185;
+					const min = 0;
+					let v = parseInt(mid.value, 10);
+					switch ( this.getAttribute('data-ctr') ){
+						case '-': v = v - 10; break;
+						case '+': v = v + 10; break;
+					}
+					if ( v > max )
+						v = max;
+					else if ( v < min )
+						v = min;
+					mid.value = v;
+					_C.currentData.characterLevel = v;
+					_C.updateSkillHTML();
+				};
+				left.setAttribute('data-ctr', '-');
+				left.addEventListener('click', ctr_listener);
+
+				right.setAttribute('data-ctr', '+');
+				right.addEventListener('click', ctr_listener);
+
+				mid.type = 'number';
+				mid.addEventListener('change', ctr_listener);
+				mid.addEventListener('focus', function(event){
+					this.select();
+				});
+
+				const main = document.createDocumentFragment();
+				main.appendChild(cy.element.simpleCreateHTML('div', 'title', toLangText('Character Level|,|角色等級')));
+				main.appendChild(left);
+				main.appendChild(mid);
+				main.appendChild(right);
+
+				return main;
 			}
 			case TYPE_SKILL_LEVEL: {
 				const _C = this;
