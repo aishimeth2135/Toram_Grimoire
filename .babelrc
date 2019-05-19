@@ -3,7 +3,11 @@
         [
             "@babel/preset-env",
             {
-                "useBuiltIns": false,
+                "useBuiltIns": 'usage',
+                "corejs": 3,
+                "targets": {
+                    "safari": '9.0'
+                }
             }
         ],
     ],

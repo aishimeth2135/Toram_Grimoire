@@ -1,7 +1,7 @@
 import {Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
 import Grimoire from "../../main/Grimoire.js";
 import {toLangText, ConvertLangText} from "../../main/module/LangText.js";
-import cy from "../../main/module/cyteria.js";
+import CY from "../../main/module/cyteria.js";
 import strings from "./strings.js";
 
 "use strict";
@@ -98,7 +98,7 @@ TempSkillBranch.prototype = {
 		// 如果 branch.no 一樣但 branch.name 不一樣，先清空所有屬性。
 		if ( this.name != branch.name ){
 			this.name = branch.name;
-			cy.object.empty(this.branchAttributes);
+			CY.object.empty(this.branchAttributes);
 		}
 		Object.keys(branch.branchAttributes).forEach(function(key, i){
 			const v = branch.branchAttributes[key];
@@ -369,7 +369,8 @@ function getBranchHTML(branch, data){
 			aura: 'Team Members in Aura|,|光環內的隊伍成員',
 			target: 'Target|,|目標', none: null
 		};
-		return toLangText(dict[s]);
+		const res = dict[s];
+		return res !== null ? toLangText(res) : res;
 	}
 	function getEffectiveAreaHTML(b){
 		// radius, angle, end_position, effective_area, move_distance
@@ -436,19 +437,19 @@ function getBranchHTML(branch, data){
 				
 				switch ( areaType ){
 					case 'circle': {
-						const area = cy.svg.drawCircle(endx, endy, unit(radius), {fill: pcolorl2});
+						const area = CY.svg.drawCircle(endx, endy, unit(radius), {fill: pcolorl2});
 						frg.appendChild(area);
-						const ocircle = cy.svg.drawCircle(endx, endy, unit(radius), {stroke: pcolorl, fill: 'none'});
-						ocircle.appendChild(cy.svg.createAnimate('stroke', {values: `${pcolorl};${pcolor};${pcolor}`, keyTimes: '0;0.2;1', dur: '2.5s'}));
+						const ocircle = CY.svg.drawCircle(endx, endy, unit(radius), {stroke: pcolorl, fill: 'none'});
+						ocircle.appendChild(CY.svg.createAnimate('stroke', {values: `${pcolorl};${pcolor};${pcolor}`, keyTimes: '0;0.2;1', dur: '2.5s'}));
 						frg.appendChild(ocircle);
 					} break;
 					case 'line': {
 						const _end = ox + unit(dis);
-						const area = cy.svg.drawPath(`M${ox} ${oy-unit(radius)} A${unit(radius)} ${unit(radius)} 0 0 0 ${ox} ${oy+unit(radius)} L${_end} ${oy+unit(radius)} A${unit(radius)} ${unit(radius)} 0 0 0 ${_end} ${endy-unit(radius)} Z`, {fill: pcolorl2});
+						const area = CY.svg.drawPath(`M${ox} ${oy-unit(radius)} A${unit(radius)} ${unit(radius)} 0 0 0 ${ox} ${oy+unit(radius)} L${_end} ${oy+unit(radius)} A${unit(radius)} ${unit(radius)} 0 0 0 ${_end} ${endy-unit(radius)} Z`, {fill: pcolorl2});
 						frg.appendChild(area);
-						const ocircle = cy.svg.drawCircle(ox, oy, unit(radius), {stroke: pcolorl, fill: 'none'});
-						ocircle.appendChild(cy.svg.createAnimate('stroke', {id: 'a1', values: `${pcolorl};${pcolor};${pcolor}`, keyTimes: '0;0.2;1', dur: '1s',repeatCount: '1', begin: '0s;a2.end', fill: 'freeze'}));
-						ocircle.appendChild(cy.svg.createAnimate('cx', {id: 'a2', values: `${ox};${_end};${_end}`, keyTimes: '0;0.2;1', dur: '1.5s', repeatCount: '1', begin: 'a1.end'}));
+						const ocircle = CY.svg.drawCircle(ox, oy, unit(radius), {stroke: pcolorl, fill: 'none'});
+						ocircle.appendChild(CY.svg.createAnimate('stroke', {id: 'a1', values: `${pcolorl};${pcolor};${pcolor}`, keyTimes: '0;0.2;1', dur: '1s',repeatCount: '1', begin: '0s;a2.end', fill: 'freeze'}));
+						ocircle.appendChild(CY.svg.createAnimate('cx', {id: 'a2', values: `${ox};${_end};${_end}`, keyTimes: '0;0.2;1', dur: '1.5s', repeatCount: '1', begin: 'a1.end'}));
 						frg.appendChild(ocircle);
 					} break;
 				}
@@ -464,23 +465,25 @@ function getBranchHTML(branch, data){
 				const start_dis = 0, sector_width = 2;
 				radius = 2;
 
-				const area = cy.svg.drawSector(ox, oy, unit(start_dis), unit(dis), angle/2, 360-angle/2, 1, {fill: pcolorl2});
+				const area = CY.svg.drawSector(ox, oy, unit(start_dis), unit(dis), angle/2, 360-angle/2, 1, {fill: pcolorl2});
 				frg.appendChild(area);
-				const osector = cy.svg.drawSector(ox, oy, unit(start_dis), unit(start_dis+1), angle/2, 360-angle/2, 1, {stroke: pcolor});
-				osector.appendChild(cy.svg.createAnimate('d', {id: 'a1', to: cy.svg.getSectorD(ox, oy, unit(dis - sector_width), unit(dis), angle/2, 360-angle/2, 1), dur: '0.4s', repeatCount: 1, begin: '0s;a2.end', fill: 'freeze'}));
-				osector.appendChild(cy.svg.createAnimate('stroke', {id: 'a2', to: pcolor, dur: '2s', repeatCount: 1, begin: 'a1.end'}));
+				const osector = CY.svg.drawSector(ox, oy, unit(start_dis), unit(start_dis+1), angle/2, 360-angle/2, 1, {stroke: pcolor});
+				osector.appendChild(CY.svg.createAnimate('d', {id: 'a1', to: CY.svg.getSectorD(ox, oy, unit(dis - sector_width), unit(dis), angle/2, 360-angle/2, 1), dur: '0.4s', repeatCount: 1, begin: '0s;a2.end', fill: 'freeze'}));
+				osector.appendChild(CY.svg.createAnimate('stroke', {id: 'a2', to: pcolor, dur: '2s', repeatCount: 1, begin: 'a1.end'}));
 				frg.appendChild(osector);
 			} break;
 		}
 		const point_radius = 0.5;
-		const chara = cy.svg.drawCircle(ox, oy, unit(radius <= point_radius && is_self ? point_radius/2 : point_radius), {fill: pcolor});
+		const chara = CY.svg.drawCircle(ox, oy, unit(radius <= point_radius && is_self ? point_radius/2 : point_radius), {fill: pcolor});
+		if ( _attr['is_sprint'] === '1' )
+			chara.appendChild(CY.svg.createAnimate('cx', {values: `${ox};${ox + unit(dis)};${ox + unit(dis)}`, keyTimes: '0;0.2;1', dur: '1.5s', repeatCount: '1', begin: 'a1.end'}));
 		frg.appendChild(chara);
 		if ( !is_self ){
-			const targetPosition = cy.svg.drawCircle(endx, endy, unit(radius > point_radius ? point_radius : point_radius/2), {fill: '#2196f3'});	
+			const targetPosition = CY.svg.drawCircle(endx, endy, unit(radius > point_radius ? point_radius : point_radius/2), {fill: '#2196f3'});	
 			frg.appendChild(targetPosition);
 		}
 
-		const svg = cy.svg.create(w, h);
+		const svg = CY.svg.create(w, h);
 		svg.appendChild(frg);
 
 		const scope = simpleCreateHTML('div', ['effective_area', 'content', 'hidden']);
@@ -555,7 +558,7 @@ function getBranchHTML(branch, data){
 				this.select();
 			})
 
-			const scope1 = simpleCreateHTML('div', 'scope1');
+			const scope1 = document.createDocumentFragment();
 			if ( attr['name'] !== void 0 ){
 				scope1.appendChild(simpleCreateHTML('span', '_main_title', toLangText(attr['name'])));
 			}
@@ -563,14 +566,12 @@ function getBranchHTML(branch, data){
 			if ( attr['max'] !== void 0 )
 				scope1.appendChild(createSkillAttributeScope(null, toLangText('Max|,|最大值'), processValue(attr['max'])));
 
-			const main = simpleCreateHTML('div', 'scope2');
+			const main = document.createDocumentFragment();
 			main.appendChild(left);
 			main.appendChild(mid);
 			main.appendChild(right);
 
-			const content = simpleCreateHTML('div', ['content', 'content_line']);
-			content.appendChild(scope1);
-			content.appendChild(main);
+			const content = createContentLine(scope1, main);
 
 			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
 			he.appendChild(content);
@@ -664,14 +665,13 @@ function getBranchHTML(branch, data){
 			//異常狀態
 			let aliment = null;
 			if ( attr['aliment_name'] !== void 0 ) {
-				aliment = simpleCreateHTML('div', ['content', 'content_line']);
-				const s1 = simpleCreateHTML('div', 'scope1');
-				s1.appendChild(simpleCreateHTML('span', '_main_title', toLangText('Aliment|,|異常狀態')));
-				const s2 = simpleCreateHTML('div', 'scope2');
+				const s2 = document.createDocumentFragment();
 				s2.appendChild(createSkillAttributeScope(null, null, attr['aliment_name']));
 				s2.appendChild(createSkillAttributeScope(null, toLangText('Chance|,|機率'), processValue(attr['aliment_chance'] || '0') + '%'));
-				aliment.appendChild(s1);
-				aliment.appendChild(s2);
+				aliment = createContentLine(
+					simpleCreateHTML('span', '_main_title', toLangText('Aliment|,|異常狀態')),
+					s2
+				);
 			}
 			
 			// 傷害目標類型
