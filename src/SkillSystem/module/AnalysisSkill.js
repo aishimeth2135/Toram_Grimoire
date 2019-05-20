@@ -1,10 +1,14 @@
 import {Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
 import Grimoire from "../../main/Grimoire.js";
-import {toLangText, ConvertLangText} from "../../main/module/LangText.js";
+
+import GetLang from "../../main/module/LanguageSystem.js";
 import CY from "../../main/module/cyteria.js";
 import strings from "./strings.js";
 
-"use strict";
+function Lang(s){
+	return GetLang("Skill Query/Analysis Skill/" + s);
+}
+
 
 const GLOBAL_EXTRA_ATTRIBUTE_VALUE = {
 	none: '@none'
@@ -121,9 +125,9 @@ const GLOBAL_ICON_DATA = {
 };
 
 const
-	MAIN_WEAPON_TEXT_LIST = ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍'],
-	SUB_WEAPON_TEXT_LIST = ['箭矢', '盾牌', '小刀', '魔導具', '套', '拔刀劍'],
-	BODY_ARMOR_TEXT_LIST = ['輕量化', '重量化', '一般'];
+	MAIN_WEAPON_TEXT_LIST = Lang('Main Weapon List'),
+	SUB_WEAPON_TEXT_LIST = Lang('Sub Weapon List'),
+	BODY_ARMOR_TEXT_LIST = Lang('Body Armor List');
 
 function getEffectHTML(sef, attr_name, data){
 	const safeEval = str => {
@@ -146,21 +150,21 @@ function getEffectHTML(sef, attr_name, data){
 		[SkillEffect.CASTING_TIME]: ''
 	};
 	const TITLE_DATA = {
-		[SkillEffect.MP_COST]: 'MP消耗',
-		[SkillEffect.RANGE]: '射程',
-		[SkillEffect.SKILL_TYPE]: '類型', 
-		[SkillEffect.DAMAGE_TYPE]: '傷害類型',
-		[SkillEffect.PORATION_TYPE]: '慣性類型',
-		[SkillEffect.IN_COMBO]: '連擊',
-		[SkillEffect.ACTION_TIME]: '動作時間',
-		[SkillEffect.CASTING_TIME]: ['', '詠唱時間', '蓄力時間']
+		[SkillEffect.MP_COST]: Lang('mp cost'),
+		[SkillEffect.RANGE]: Lang('range'),
+		[SkillEffect.SKILL_TYPE]: Lang('skill type'), 
+		[SkillEffect.DAMAGE_TYPE]: Lang('damage type'),
+		[SkillEffect.PORATION_TYPE]: Lang('poration type'),
+		[SkillEffect.IN_COMBO]: Lang('in combo'),
+		[SkillEffect.ACTION_TIME]: Lang('action time'),
+		[SkillEffect.CASTING_TIME]: ['', Lang('casting time'), Lang('charging time')]
 	};
 	const TEXT_LIST = {
-		[SkillEffect.SKILL_TYPE]: ['瞬發', '須詠唱', '須蓄力', '被動'],
-		[SkillEffect.DAMAGE_TYPE]: ['物理', '魔法'],
-		[SkillEffect.PORATION_TYPE]: ['物理', '魔法', '普通攻擊'],
-		[SkillEffect.IN_COMBO]: ['可以放入連擊', '無法放入連擊', '不可放入連擊的第一招'],
-		[SkillEffect.ACTION_TIME]: ['極慢', '慢', '稍慢', '一般', '稍快', '快', '極快']
+		[SkillEffect.SKILL_TYPE]: Lang('skill type: List'),
+		[SkillEffect.DAMAGE_TYPE]: Lang('damage type: List'),
+		[SkillEffect.PORATION_TYPE]: Lang('poration type: List'),
+		[SkillEffect.IN_COMBO]: Lang('in combo: List'),
+		[SkillEffect.ACTION_TIME]: Lang('action time: List')
 	};
 
 	const {SLv, CLv} = data;
@@ -172,25 +176,25 @@ function getEffectHTML(sef, attr_name, data){
 	switch (attr_name){
 		case SkillEffect.CASTING_TIME:
 			title = TITLE_DATA[attr_name][sef.attributes[SkillEffect.SKILL_TYPE]];
-			tail = 'sec|,|秒';
+			tail = GetLang('global/second');
 		case SkillEffect.MP_COST:
 			v = safeEval(v);
 			break;
 		case SkillEffect.RANGE:
-			v = v != '-' ? safeEval(v) + 'm' : toLangText('無限制');
+			v = v != '-' ? safeEval(v) + 'm' : Lang('range: no limit');
 			break;
 		case SkillEffect.SKILL_TYPE:
 		case SkillEffect.IN_COMBO:
 		case SkillEffect.ACTION_TIME:
-			v = toLangText(TEXT_LIST[attr_name][v]);
+			v = TEXT_LIST[attr_name][v];
 			break;
 	}
 
 	const he = document.createElement('div');
 	he.className = 'skill_attribute';
-	let res = `<span class="_icon">${icon}</span><span class="_title">${toLangText(title)}</span><span class="_value">${v}</span>`;
+	let res = `<span class="_icon">${icon}</span><span class="_title">${title}</span><span class="_value">${v}</span>`;
 	if ( tail !== null )
-		res += `<span class="_tail">${toLangText(tail)}</span>`;
+		res += `<span class="_tail">${tail}</span>`;
 	he.innerHTML = res;
 	return he;
 }
@@ -212,37 +216,46 @@ function getBranchHTML(branch, data){
 			return dftv === void 0 ? '?' : dftv;
 		}
 	}
-	function replaceExtraFromulaValue(str){
+	function replaceExtraFormulaValue(str){
 		const FORMULA_EXTRA_VALUE_LIST = {
-			'STR': '角色STR',
-			'DEX': '角色DEX',
-			'INT': '角色INT',
-			'AGI': '角色AGI',
-			'VIT': '角色VIT',
-			'BSTR': '角色基礎STR',
-			'BDEX': '角色基礎DEX',
-			'BINT': '角色基礎INT',
-			'BAGI': '角色基礎AGI',
-			'BVIT': '角色基礎VIT',
-			'shield_refining': '盾精煉值',
-			'dagger_atk': '小刀ATK'
+			'STR': Lang('skill formula: STR'),
+			'DEX': Lang('skill formula: DEX'),
+			'INT': Lang('skill formula: INT'),
+			'AGI': Lang('skill formula: AGI'),
+			'VIT': Lang('skill formula: VIT'),
+			'BSTR': Lang('skill formula: BSTR'),
+			'BDEX': Lang('skill formula: BDEX'),
+			'BINT': Lang('skill formula: BINT'),
+			'BAGI': Lang('skill formula: BAGI'),
+			'BVIT': Lang('skill formula: BVIT'),
+			'shield_refining': Lang('skill formula: shield_refining'),
+			'dagger_atk': Lang('skill formula: dagger_atk')
 		};
 		Object.keys(FORMULA_EXTRA_VALUE_LIST).forEach(key => {
 			str = str.replace(new RegExp(key, 'g'), FORMULA_EXTRA_VALUE_LIST[key]);
 		});
 		str = str.replace(/\*/g, '×');
-		str = str.replace(/(\d+\.\d+)/, () => Number(RegExp.$1)*100 + '%');
+		str = str.replace(/(\d+\.\d+)/, () => parseFloat(RegExp.$1)*100 + '%');
 		return str;
 	}
 	function processText(b, _main){
 		const _attr = b.branchAttributes;
 		let str = _attr[_main === void 0 ? 'text': _main];
-		str = str.replace(/(\$\{[^\}]+\})([%]?)/g, () =>
-			RegExp.$2 !== '%'
-			? processValue(RegExp.$1, {calc: false, light: true})
-			: processValue(RegExp.$1, {calc: false, tail: '%', light: true})
-		);
-		str = safeEval("`" + str + "`");
+		if ( !data.showOriginalFormula ){
+			str = str.replace(/(\$\{[^\}]+\})([%]?)/g, () =>
+				RegExp.$2 !== '%'
+				? processValue(RegExp.$1, {calc: false, light: true})
+				: processValue(RegExp.$1, {calc: false, tail: '%', light: true})
+			);
+			str = safeEval("`" + str + "`");
+		}
+		else {
+			str = str.replace(/\$\{([^\}]+)\}([%]?)/g, () =>
+				RegExp.$2 !== '%'
+				? processValue(RegExp.$1, {preText: '(', light: true, tail: ')'})
+				: processValue(RegExp.$1, {preText: '(', tail: ')%', light: true})
+			);
+		}
 		if ( _attr['mark'] !== void 0 ){
 			_attr['mark'].split(/\s*,\s*/).forEach(t => {
 				str = str.replace(new RegExp(t, 'g'), lightText(t));
@@ -258,32 +271,43 @@ function getBranchHTML(branch, data){
 				str = str.replace(new RegExp(t, 'g'), lightText(t));
 			});
 		}
-		return toLangText(str);
+		return str;
 	}
 	function processValue(v, setting){
 		v = v.split(',,');
 		setting = Object.assign({
-			calc: true, tail: '', toPercentage: false,
+			calc: true, tail: '', preText: '',toPercentage: false,
 			checkHasStack: v[0], light: false
 		}, setting);
 		
 		let res;
 		v.forEach((a, i) => {
 			if ( i === 0 ){
-				if ( setting.calc ){
-					let t = safeEval(a);
-					if ( !Number.isInteger(t) )
-						t = t.toFixed(2);
-					res = t;
+				if ( !data.showOriginalFormula ){
+					if ( setting.calc ){
+						let t = safeEval(a);
+						if ( t !== void 0 && !Number.isInteger(t) )
+							t = t.toFixed(2);
+						res = t;
+					}
+					else
+						res = a;
+					if ( setting.toPercentage )
+						res = res*100 + '%';
 				}
-				else
+				else {
+					a = a.replace(/CLv/g, Lang('character level'));
+					a = a.replace(/SLv/g, Lang('skill level'));
+					a = a.replace(/\*/g, '×');
+					a = a.replace(/stack\[(\d+)\]/g, () => stack_name_list[parseInt(RegExp.$1, 10)]);
+					a = a.replace(/stack[\[]{0}/g, () => stack_name_list[0]);
 					res = a;
-				if ( setting.toPercentage )
-					res = res*100 + '%';
+				}
+				res = setting.preText + res;
 				res += setting.tail;
 			}
 			else {
-				a = replaceExtraFromulaValue(a);
+				a = replaceExtraFormulaValue(a);
 				res += a.charAt(0) !== '-' ? '+' + a : a;
 			}
 		});
@@ -331,34 +355,34 @@ function getBranchHTML(branch, data){
 	function getPorationHTML(poration_branch){
 		const _attr = poration_branch.branchAttributes;
 		const dict1 = {
-			physical: '物理', magic: '魔法',
-			normal_attack: '一般攻擊', none: '不受慣性影響'
+			physical: Lang('physical'), magic: Lang('magic'),
+			normal_attack: Lang('normal attack'), none: Lang('damage poration type: none')
 		};
 		const dict2 = Object.assign({}, dict1, {
 			auto: dict1[_attr['damage']],
-			none: '不影響慣性'
+			none: Lang('effective poration type: none')
 		});
-		let one = createSkillAttributeScope(null, toLangText('傷害慣性'), toLangText(dict1[_attr['damage']]));
-		let two = createSkillAttributeScope(null, toLangText('造成慣性'), toLangText(dict2[_attr['poration']]));
+		let one = createSkillAttributeScope(null, Lang('damage poration: title'), dict1[_attr['damage']]);
+		let two = createSkillAttributeScope(null, Lang('effective poration: title'), dict2[_attr['poration']]);
 
 		return {one, two};
 	}
 	function getDamageElementHTML(ele_type){
 		const ELEMEMT_DICT = {
-			neutral: 'Neutral|,|無屬性',
-			fire: 'Fire|,|火屬性',
-			water: 'Water|,|水屬性',
-			earth: 'Earth|,|地屬性',
-			wind: 'Wind|,|風屬性',
-			light: 'Light|,|光屬性',
-			dark: 'Dark|,|暗屬性',
-			arrow: '套用箭矢屬性',
-			one_hand_sword: '套用單手劍屬性'
+			neutral: Lang('element: netural'),
+			fire: Lang('element: fire'),
+			water: Lang('element: water'),
+			earth: Lang('element: earth'),
+			wind: Lang('element: wind'),
+			light: Lang('element: light'),
+			dark: Lang('element: dark'),
+			arrow: Lang('element: arrow'),
+			one_hand_sword: Lang('element: one hand sword')
 		};
 		const t = simpleCreateHTML('div', 'skill_attribute');
 		if ( ele_type != 'arrow' )
 			t.appendChild(simpleCreateHTML('span', ['_icon', 'element_' + ele_type, 'element_ball']));
-		t.appendChild(simpleCreateHTML('span', ['_value', 'element_value'], toLangText(ELEMEMT_DICT[ele_type])));
+		t.appendChild(simpleCreateHTML('span', ['_value', 'element_value'], ELEMEMT_DICT[ele_type]));
 		return t;
 	}
 	function createContentLine(frg1, frg2, extrafrgs){
@@ -379,12 +403,13 @@ function getBranchHTML(branch, data){
 	}
 	function getTargetText(s, _is_place){
 		const dict = {
-			self: 'Self|,|自身', party: !_is_place ? 'Party|,|全隊伍' : 'Team Members in Area|,|區域內的隊伍成員',
-			aura: 'Team Members in Aura|,|光環內的隊伍成員',
-			target: 'Target|,|目標', none: null
+			self: Lang('target type: self'),
+			party: !_is_place ? Lang('target type: party') : Lang('target type: party & is place'),
+			aura: Lang('target type: aura'),
+			target: Lang('target type: target'), none: null
 		};
 		const res = dict[s];
-		return res !== null ? toLangText(res) : res;
+		return res !== null ? res : res;
 	}
 	function getEffectiveAreaHTML(b){
 		// radius, angle, end_position, effective_area, move_distance
@@ -395,12 +420,12 @@ function getBranchHTML(branch, data){
 		{
 			const a = simpleCreateHTML('div', 'skill_attribute');
 			a.appendChild(simpleCreateHTML('span', ['_icon', 'element_ball', 'ball_character']));
-			a.appendChild(simpleCreateHTML('span', '_value', toLangText('Character Position|,|角色位置')));
+			a.appendChild(simpleCreateHTML('span', '_value', Lang('effective area: character position')));
 			caption.appendChild(a);
 			if ( !is_self ){
 				const b = simpleCreateHTML('div', 'skill_attribute');
 				b.appendChild(simpleCreateHTML('span', ['_icon', 'element_ball', 'ball_target']));
-				b.appendChild(simpleCreateHTML('span', '_value', toLangText('Target Position|,|目標位置')));
+				b.appendChild(simpleCreateHTML('span', '_value', Lang('effective area: target position')));
 				caption.appendChild(b);
 			}
 		}
@@ -410,26 +435,30 @@ function getBranchHTML(branch, data){
 				let t, v = _attr[a];
 				switch (a){
 					case 'radius':
-						t = 'Radius|,|半徑';
+						t = Lang('radius');
 						radius = safeEval(v);
 						v = processValue(v, {tail: 'm'});
 						break;
 					case 'angle':
-						t = 'Angle|,|夾角';
+						t = Lang('angle');
 						angle = safeEval(v);
 						v = processValue(v, {tail: '°'});
 						break;
 					case 'effective_area':
 						areaType = _attr[a];
-						t = 'Type|,|類別';
-						v = toLangText({circle: 'Circle|,|圓形', line: 'Line|,|直線型', sector: 'Sector|,|扇型'}[v]);
+						t = Lang('effective area: title');
+						v = {
+							circle: Lang('effective area type: circle'),
+							line: Lang('effective area type: line'),
+							sector: Lang('effective area type: sector')
+						}[v];
 						break;
 					case 'move_distance':
-						t = 'Move Distance|,|移動距離';
+						t = Lang('move distanve: title');
 						v = processValue(v, {tail: 'm'});
 						break;
 				}
-				caption.appendChild(createSkillAttributeScope(null, toLangText(t), v));
+				caption.appendChild(createSkillAttributeScope(null, t, v));
 			}
 		});
 		const frg = document.createDocumentFragment();
@@ -525,9 +554,9 @@ function getBranchHTML(branch, data){
 
 	const extra_fix = branch.parent.branchs.filter(b => EXTRA_FIX_LIST.indexOf(b.name) != -1);
 
-	const stack_value_list = extra_fix
-		.filter(b => b.name == 'stack' && (attr['stack_id'] || '').split(',').indexOf(b.branchAttributes['id']) != -1 )
-		.map(stk => safeEval(data.stackValues[getStackBranchIdKey(stk)]));
+	const stack_branch_list = extra_fix.filter(b => b.name == 'stack' && (attr['stack_id'] || '').split(',').indexOf(b.branchAttributes['id']) != -1 );
+	const stack_value_list = stack_branch_list.map(stk => safeEval(data.stackValues[getStackBranchIdKey(stk)]));
+	const stack_name_list = stack_branch_list.map(stk => data.stackNames[getStackBranchIdKey(stk)] || Lang('branch/stack/base name') + stk.branchAttributes['id']);
 	const stack = stack_value_list.length > 1 ? stack_value_list : stack_value_list[0];
 
 	switch (btype){
@@ -573,11 +602,11 @@ function getBranchHTML(branch, data){
 
 			const scope1 = document.createDocumentFragment();
 			if ( attr['name'] !== void 0 ){
-				scope1.appendChild(simpleCreateHTML('span', '_main_title', toLangText(attr['name'])));
+				scope1.appendChild(simpleCreateHTML('span', '_main_title', attr['name']));
 			}
-			scope1.appendChild(createSkillAttributeScope(null, toLangText('Min|,|最小值'), processValue(attr['min'])));
+			scope1.appendChild(createSkillAttributeScope(null, Lang('branch/stack/min value'), processValue(attr['min'])));
 			if ( attr['max'] !== void 0 )
-				scope1.appendChild(createSkillAttributeScope(null, toLangText('Max|,|最大值'), processValue(attr['max'])));
+				scope1.appendChild(createSkillAttributeScope(null, Lang('branch/stack/max value'), processValue(attr['max'])));
 
 			const main = document.createDocumentFragment();
 			main.appendChild(left);
@@ -610,42 +639,42 @@ function getBranchHTML(branch, data){
 			// 分支name
 			let damage_name = null;
 			if ( attr['name'] !== void 0 ){
-				damage_name = simpleCreateHTML('span', '_name', toLangText(attr['name']));
+				damage_name = simpleCreateHTML('span', '_name', attr['name']);
 			}
 
 			// 標題
 			let text = '';
 			switch ( attr['title'] ){
 				case 'normal': 
-					text = attr['frequency'] == '1' ? '單下傷害' : '總傷害'; break;
+					text = attr['frequency'] == '1' ? Lang('branch/damage/title type: one') : Lang('branch/damage/title type: total'); break;
 				case 'each':
-					text = '每下傷害'; break;
+					text = Lang('branch/damage/title type: each'); break;
 				case 'normal_attack':
-					text = '一般攻擊傷害提升'; break;
+					text = Lang('branch/damage/title type: normal attack'); break;
 			}
-			const title = simpleCreateHTML('span', '_main_title', toLangText(text));
+			const title = simpleCreateHTML('span', '_main_title', text);
 
 			// 技能常數基底
 			const valid_base = createSkillAttributeScope(
 				null, null,
-				toLangText(attr['damage_type'] == 'physical' ? 'Valid ATK|,|有效ATK' : 'Valid MATK|,|有效MATK')
+				attr['damage_type'] == 'physical' ? Lang('branch/damage/valid base: atk') : Lang('branch/damage/valid base: matk')
 			);
 
 			const damage_type = createSkillAttributeScope(
 				null, null,
-				toLangText({physical: 'Physical|,|物理', magic: 'Magic|,|魔法'}[attr['damage_type']])
+				{physical: Lang('physical'), magic: Lang('magic')}[attr['damage_type']]
 			);
 
 			// 技能常數
 			const constant = createSkillAttributeScope(
 				null, 
-				toLangText('Skill Constant|,|技能常數'),
+				Lang('branch/damage/skill constant'),
 				processValue(attr['constant'])
 			);
 
 			const multiplier = createSkillAttributeScope(
 				null,
-				toLangText('Skill Multiplier|,|技能倍率'),
+				Lang('branch/damage/skill multiplier'),
 				processValue(attr['multiplier']), '%'
 			);
 
@@ -654,9 +683,9 @@ function getBranchHTML(branch, data){
 			if ( attr['aliment_name'] !== void 0 ) {
 				const s2 = document.createDocumentFragment();
 				s2.appendChild(createSkillAttributeScope(null, null, attr['aliment_name']));
-				s2.appendChild(createSkillAttributeScope(null, toLangText('Chance|,|機率'), processValue(attr['aliment_chance'] || '0') + '%'));
+				s2.appendChild(createSkillAttributeScope(null, Lang('branch/damage/chance'), processValue(attr['aliment_chance'] || '0') + '%'));
 				aliment = createContentLine(
-					simpleCreateHTML('span', '_main_title', toLangText('Aliment|,|異常狀態')),
+					simpleCreateHTML('span', '_main_title', Lang('branch/damage/aliment')),
 					s2
 				);
 			}
@@ -665,11 +694,11 @@ function getBranchHTML(branch, data){
 			let area_scope = null;
 			let target_type = null;
 			if ( attr['type'] == 'single' )
-				target_type = createSkillAttributeScope(null, null, toLangText('Single|,|單體'));
+				target_type = createSkillAttributeScope(null, null, Lang('branch/damage/target type: single'));
 			else {
 				target_type = createSkillAttributeScope(
 					'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>',
-					null, toLangText('AOE|,|範圍')
+					null, Lang('branch/damage/target type: AOE')
 				);
 				area_scope = getEffectiveAreaHTML(branch);
 				target_type.addEventListener('click', () => {
@@ -685,23 +714,22 @@ function getBranchHTML(branch, data){
 			}
 			let damage_isPlace = null;
 			if ( attr['is_place'] == '1' ){
-				damage_isPlace = createSkillAttributeScope(null, null, toLangText('Is Place|,|設置型'));
+				damage_isPlace = createSkillAttributeScope(null, null, Lang('branch/damage/is place'));
 			}
 
 			// 傷害次數  週期、頻率
 			let damage_frequency = null, damage_judgment = null, damage_cycle = null;
 			if ( parseInt(attr['frequency']) > 1 || attr['title'] == 'each' ) {
 				damage_frequency = createSkillAttributeScope(
-					null, toLangText('Frequency|,|傷害次數'),
+					null, Lang('branch/damage/frequency'),
 					processValue(attr['frequency'])
 				);
-				text = attr['judgment'] == 'common' ? 'common|,|共用判定' : 'separate|,|分開判定'
+				text = attr['judgment'] == 'common' ? Lang('branch/damage/judgment: common') : Lang('branch/damage/judgment: separate')
 				damage_judgment = createSkillAttributeScope(
-					null, null,
-					toLangText(text)
+					null, null, text
 				);
 				if ( attr['is_place'] == '1' && attr['cycle'] !== void 0 ) {
-					damage_cycle = createSkillAttributeScope(null, null, toLangText('per |,|每') + processValue(attr['cycle'], {tail: toLangText(' sec|,|秒')}));
+					damage_cycle = createSkillAttributeScope(null, null, Lang('branch/damage/cycle: preText') + processValue(attr['cycle'], {tail: GetLang('global/second')}));
 				}
 			}
  			
@@ -722,17 +750,17 @@ function getBranchHTML(branch, data){
 			damage_extras.forEach(ex => {
 				const _attr = ex.branchAttributes;
 				if ( _attr['condition'] === void 0 )
-					_attr['condition'] = '額外效果';
+					_attr['condition'] = Lang('branch/damage/extra/base title');
 				const s2 = document.createDocumentFragment();
 
 				if ( _attr['aliment_name'] )
 					s2.appendChild(createSkillAttributeScope(null, null, _attr['aliment_name']));
 				if ( _attr['aliment_chance'] )
-					s2.appendChild(createSkillAttributeScope(null, toLangText('Chance|,|機率'), processValue(_attr['aliment_chance']) + '%'));
+					s2.appendChild(createSkillAttributeScope(null, Lang('branch/damage/chance'), processValue(_attr['aliment_chance']) + '%'));
 				if ( _attr['constant'] ){
 					let t = safeEval(_attr['constant']);
 					const sign = t >= 0 ? '+' : '';
-					let res = toLangText('Skill Constant |,|技能常數') + sign + t;
+					let res = Lang('branch/damage/skill constant') + sign + t;
 					if ( t < 0 )
 						res = darkText(res);
 					res = processValue(res, {calc: false, checkHasStack: _attr['constant']});
@@ -801,40 +829,44 @@ function getBranchHTML(branch, data){
 		case 'effect': case 'next': case 'passive': {
 			let text_name = null;
 			if ( attr['name'] ){
-				text_name = simpleCreateHTML('span', '_name', toLangText(attr['name']));
+				text_name = simpleCreateHTML('span', '_name', attr['name']);
 			}
 			
 			let c = attr['condition'];
 			if ( c == 'auto' )
-				c = '施放成功後';
+				c = Lang('branch/effect/condition: auto');
 			if ( c == 'hit' )
-				c = '命中成功後';
+				c = Lang('branch/effect/condition: hit');
 			if ( btype == 'next' ){
 				if ( attr['frequency'] == '1' )
-					c = '下一招技能';
-				else
-					c = `之後的${attr['frequency']}招技能`;
+					c = Lang('branch/effect/condition: next');
+				else {
+					const _t = Lang('branch/effect/condition: next-2');
+					c = `${_t[0]}${attr['frequency']}${_t[1]}`;
+				}
 			}
 			if ( btype == 'passive' )
-				c = 'Passive|,|被動效果';
+				c = Lang('branch/effect/condition: passive');
 
 			attr['condition'] = c;
 
  			const condition = c != 'none' ? simpleCreateHTML('span', '_main_title', processText(branch, 'condition')) : null;
  			let end_condition = null;
  			if ( attr['end_condition'] )
- 				end_condition = simpleCreateHTML('span', '_main_title', toLangText(attr['end_condition']));
+ 				end_condition = simpleCreateHTML('span', '_main_title', attr['end_condition']);
  			let duration = null;
  			if ( attr['duration'] ){
  				let v = processValue(attr['duration']);
  				if ( attr['is_place'] === '1' )
- 					duration = createSkillAttributeScope(null, toLangText('Duration|,|持續時間'), processValue(attr['duration']), toLangText('sec|,|秒'))
- 				else
- 					duration = simpleCreateHTML('span', '_main_title', toLangText(`in ${v} secs|,|${v}秒內`));
+ 					duration = createSkillAttributeScope(null, Lang('branch/effect/duration'), processValue(attr['duration']), GetLang('global/second'))
+ 				else {
+ 					const _t = Lang('branch/effect/duration-2');
+ 					duration = simpleCreateHTML('span', '_main_title', `${_t[0]}${v}${_t[1]}`);
+ 				}
  			}
  			let isPlace = null;
 			if ( attr['is_place'] === '1' ){
-				isPlace = createSkillAttributeScope(null, null, toLangText('Is Place|,|設置型'));
+				isPlace = createSkillAttributeScope(null, null, Lang('branch/damage/is place'));
 			}
 
  			let text = attr['type'] !== void 0 ? getTargetText(attr['type'], attr['is_place'] === '1') : null;
@@ -862,7 +894,7 @@ function getBranchHTML(branch, data){
  			extras.forEach(ex => {
  				const _attr = ex.branchAttributes;
 				if ( _attr['condition'] === void 0 )
-					_attr['condition'] = '額外效果';
+					_attr['condition'] = Lang('branch/damage/extra/base title');
 				const s2 = document.createDocumentFragment();
 
 				if ( _attr['caption'] ){
@@ -872,7 +904,7 @@ function getBranchHTML(branch, data){
 				const s1 = document.createDocumentFragment();
 				s1.appendChild(simpleCreateHTML('span', '_main_title', processText(ex, 'condition')));
 				if ( _attr['target'] !== void 0 ){
-					s1.appendChild(simpleCreateHTML('span', '_main_title', toLangText(_attr['target'])));
+					s1.appendChild(simpleCreateHTML('span', '_main_title', _attr['target']));
 				}
 				extras_frg.appendChild(createContentLine(s1, s2));
 				ex.finish = true;
@@ -918,38 +950,42 @@ function getBranchHTML(branch, data){
 			return he;
 		}
 		case 'heal': {
+			let heal_name = null;
+			if ( attr['name'] ){
+				heal_name = simpleCreateHTML('span', '_name', attr['name']);
+			}
 			let text = {
-				hp: 'Restore HP|,|恢復HP',
-				mp: 'Restore MP|,|恢復MP'
+				hp: Lang('branch/heal/title: hp'),
+				mp: Lang('branch/heal/title: mp')
 			}[attr['type']];
-			const title =  simpleCreateHTML('span', '_main_title', toLangText(text));
+			const title =  simpleCreateHTML('span', '_main_title', text);
 
 			text = getTargetText(attr['target']);
  			const target = text != null ? createSkillAttributeScope(null, null, text) : null;
 
  			const constant = createSkillAttributeScope(
  				null,
- 				attr['constant'] != '0' ? toLangText('Restore|,|恢復量') : toLangText('Base Restore|,|基本恢復量'),
+ 				attr['constant'] != '0' ? Lang('branch/heal/restore') : Lang('branch/heal/base restore'),
  				processValue(attr['constant'])
  			);
 
  			let duration = null;
  			if ( attr['duration'] !==  void 0 ){
  				let v = processValue(attr['duration']);
- 				duration = createSkillAttributeScope(null, toLangText('Duration|,|持續時間'), processValue(attr['duration']), toLangText('sec|,|秒'));
+ 				duration = createSkillAttributeScope(null, Lang('branch/effect/duration'), processValue(attr['duration']), GetLang('global/second'));
  			}
 
  			let frequency = null;
  			if ( attr['frequency'] !==  void 0 ) {
 				frequency = createSkillAttributeScope(
-					null, toLangText('Frequency|,|作用次數'),
+					null, Lang('branch/heal/frequency'),
 					processValue(attr['frequency'])
 				);
 			}
 
 			let cycle = null;
  			if ( attr['cycle'] !==  void 0 ) {
-				cycle = createSkillAttributeScope(null, null, toLangText('per |,|每') + processValue(attr['cycle'], {tail: toLangText(' sec|,|秒')}));
+				cycle = createSkillAttributeScope(null, null, Lang('branch/damage/cycle: preText') + processValue(attr['cycle'], {tail: GetLang('global/second')}));
 			}
 
 			const extra_frg = document.createDocumentFragment();
@@ -960,10 +996,16 @@ function getBranchHTML(branch, data){
 				ta.forEach((a, i) => {
 					frg2.appendChild(createSkillAttributeScope(null, a, va[i]));
 				});
-				extra_frg.appendChild(createContentLine(simpleCreateHTML('span', '_main_title', toLangText('extra|,|恢復量加成')),frg2));
+				extra_frg.appendChild(createContentLine(simpleCreateHTML('span', '_main_title', Lang('branch/heal/extra/base title')),frg2));
 			}
+			const top = simpleCreateHTML('div', 'top');
+			if ( heal_name !== null )
+				top.appendChild(heal_name);
 
 			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
+			if ( top.childElementCount != 0 )
+				he.appendChild(top);
+
 			const content = simpleCreateHTML('div', 'content');
 
 			const scope1 = simpleCreateHTML('div', 'scope1');
@@ -992,7 +1034,7 @@ function getBranchHTML(branch, data){
 		case 'text': case 'tips': {
 			let text_name = null;
 			if ( attr['name'] ){
-				text_name = simpleCreateHTML('span', '_name', toLangText(attr['name']));
+				text_name = simpleCreateHTML('span', '_name', attr['name']);
 			}
 
 			const main_text = simpleCreateHTML('div', 'text_scope', processText(branch));
@@ -1049,14 +1091,14 @@ function getBranchHTML(branch, data){
 				let urls = attr['url'].split(',');
 				let url_texts = attr['url_text'].split(',');
 				urls.forEach((a, i) => {
-					url_scope.appendChild(createSkillAttributeScope(null, null, toLangText(url_texts[i], {href: a, class: 'url_text'})));
+					url_scope.appendChild(createSkillAttributeScope(null, null, `<a href="${a}" target="_blank" class="url_text">url_texts[i]</a>`));
 				});
 			}
 			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
 			if ( main_text !== null)
 				he.appendChild(main_text);
 			if ( url_scope !== null )
-				he.appendChild(createContentLine(simpleCreateHTML('span', '_main_title', toLangText('Reference url|,|資料參考連結')), url_scope));
+				he.appendChild(createContentLine(simpleCreateHTML('span', '_main_title', Lang('branch/reference/reference url')), url_scope));
 
 			branch.finish = true;
 			return he;
@@ -1136,17 +1178,21 @@ export default function(data){
 		if ( output.checkData() ){
 			if ( data.stackValues === null ){
 				data.stackValues = {};
+				CY.object.empty(data.stackNames);
 				output.branchs.forEach(branch => {
 					if ( branch.name == 'stack' ){
 						const _attr = branch.branchAttributes;
 						const v = _attr['default'] == 'auto' ? _attr['min'] : _attr['default'];
 						data.stackValues[getStackBranchIdKey(branch)] = v;
+						data.stackNames[getStackBranchIdKey(branch)] = branch.branchAttributes['name'];
 					}
 				});
 			}
-			const stackValues = data.stackValues;
+			const stackValues = data.stackValues,
+				stackNames = data.stackNames,
+				showOriginalFormula = data.showOriginalFormula;
 			output.branchs.forEach(branch => {
-				const t = getBranchHTML(branch, {SLv, CLv, stackValues});
+				const t = getBranchHTML(branch, {SLv, CLv, stackNames, stackValues, showOriginalFormula});
 				if ( t !== null )
 					two.appendChild(t);
 			});
@@ -1154,7 +1200,7 @@ export default function(data){
 		else {
 			const t = document.createElement('div');
 			t.classList.add('no_data');
-			t.innerHTML = '此技能資料尚未齊全。';
+			t.innerHTML = Lang('no data');
 			two.appendChild(t);
 		}
 		frg.appendChild(two);
@@ -1164,7 +1210,7 @@ export default function(data){
 	else {
 		const div = document.createElement('div');
 		div.classList.add('no_data');
-		div.innerHTML = '所選取的裝備無法使用此技能。';
+		div.innerHTML = Lang('equipment not confirm');
 		return div;
 	}
 };

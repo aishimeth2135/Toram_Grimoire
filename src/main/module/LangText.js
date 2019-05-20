@@ -11,9 +11,12 @@ function AnalysisLangText(s){
 }
 
 function ConvertLangText(hnode){
-	let list = hnode.querySelectorAll(`a[${ATTRIBUTE_NAME}], input[${ATTRIBUTE_NAME}]`);
+	const list = hnode.querySelectorAll(`a[${ATTRIBUTE_NAME}], input[${ATTRIBUTE_NAME}]`);
+	if ( list.length === 0 )
+		return;
 	Array.from(list).forEach((item) => {
 		item.innerHTML = AnalysisLangText(item.getAttribute(ATTRIBUTE_NAME));
+		ConvertLangText(item);
 	});
 }
 
