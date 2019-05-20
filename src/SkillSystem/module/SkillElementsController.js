@@ -3,12 +3,18 @@ import {SkillTreeTable, SkillTreeTableData} from "./SkillTreeTable.js";
 import AnalysisSkill from "./AnalysisSkill.js";
 
 import {ConvertLangText, toLangText} from "../../main/module/LangText.js";
+import GetLang from "../../main/module/LanguageSystem.js";
 import strings from "./strings.js";
 
 import cy from "../../main/module/cyteria.js";
 
+function Lang(s){
+	return GetLang('Skill Query/Controller/' + s);
+}
+
 const TYPE_SKILL_LEVEL = Symbol(),
-	TYPE_CHARACTER_LEVEL = Symbol();
+	TYPE_CHARACTER_LEVEL = Symbol(),
+	TYPE_SWITCH_DISPLAY_MODE = Symbol();
 /*
 Interface Controller {
 	HTMLElement createSkillQueryScopeHTML(const string type);
@@ -25,7 +31,9 @@ function Controller(sr){
 		skillLevel: 10,
 		characterLevel: 185,
 		currentSkill: null,
-		stackValues: {}
+		stackValues: {},
+		stackNames: {},
+		showOriginalFormula: false
 	};
 }
 Controller.prototype = {
@@ -34,7 +42,8 @@ Controller.prototype = {
 		this.MAIN_NODE = main_node;
 		const order = [
 			SkillRoot.TYPE, SkillTreeCategory.TYPE, SkillTree.TYPE,
-			TYPE_SKILL_LEVEL, TYPE_CHARACTER_LEVEL, Skill.CATEGORY_EQUIPMENT, Skill.TYPE
+			TYPE_SKILL_LEVEL, TYPE_CHARACTER_LEVEL, TYPE_SWITCH_DISPLAY_MODE,
+			Skill.CATEGORY_EQUIPMENT, Skill.TYPE
 		];
 		const frg = document.createDocumentFragment();
 		order.forEach(function(a){
@@ -51,6 +60,7 @@ Controller.prototype = {
 					break;
 				case TYPE_SKILL_LEVEL:
 				case TYPE_CHARACTER_LEVEL:
+				case TYPE_SWITCH_DISPLAY_MODE:
 					t.appendChild(this.createSkillQueryScopeHTML(null, a));
 					break;
 			}
@@ -66,6 +76,7 @@ Controller.prototype = {
 			[Skill.TYPE]: 'Skill_scope',
 			[TYPE_SKILL_LEVEL]: 'SkillLevel_scope',
 			[TYPE_CHARACTER_LEVEL]: 'CharacterLevel_scope',
+			[TYPE_SWITCH_DISPLAY_MODE]: 'SwitchDisplayMode_scope',
 			[Skill.CATEGORY_EQUIPMENT]: 'SkillEquipment_scope'
 		};
 		let node = this.MAIN_NODE.getElementsByClassName(SCOPE_NAME[type])[0];
@@ -146,7 +157,7 @@ Controller.prototype = {
 					const frg = document.createDocumentFragment();
 					sEle.skillTreeCategorys.forEach((stc) => {
 						const li = document.createElement('li');
-						li.innerHTML = toLangText(stc.name);
+						li.innerHTML = stc.name;
 						li.setAttribute(strings().data_skillElementNo, _C.getSkillElementNoStr(stc));
 						li.addEventListener('click', li_listener);
 						frg.appendChild(li);
@@ -179,7 +190,7 @@ Controller.prototype = {
 					const frg = document.createDocumentFragment();
 					sEle.skillTrees.forEach(function(st){
 						const li = document.createElement("li");
-						li.innerHTML = toLangText(st.name);
+						li.innerHTML = st.name;
 						li.setAttribute(strings().data_skillElementNo, _C.getSkillElementNoStr(st));
 						li.addEventListener("click", li_listener);
 						frg.appendChild(li);
@@ -236,7 +247,7 @@ Controller.prototype = {
 							td.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none"><path d="M0 0h24v24H0V0z"/><path opacity=".87" d="M0 0h24v24H0V0z"/></g><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/></svg>';
 							return;
 						}
-						td.innerHTML = toLangText(s.name);
+						td.innerHTML = s.name;
 						td.setAttribute(strings().data_skillElementNo, _C.getSkillElementNoStr(s));
 						td.addEventListener('click', td_listener);
 					});
@@ -290,21 +301,21 @@ Controller.prototype = {
 							switch (field){
 								case mainw:
 									attrkey = strings().data_mainWeapon;
-									ftitle = 'Main Weapon|,|主手武器';
+									ftitle = Lang('main weapon');
 									icons = ['', '', '', '', '', '', '', '', '', ''];
-									names = ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍'];
+									names = GetLang('Skill Query/Analysis Skill/Main Weapon List');
 									break;
 								case subw:
 									attrkey = strings().data_subWeapon;
-									ftitle = 'Sub Weapon|,|副手武器';
+									ftitle = Lang('sub weapon');
 									icons = ['', '', '', '', '', ''];
-									names = ['箭矢', '盾牌', '小刀', '魔導具', '套', '拔刀劍'];
+									names = GetLang('Skill Query/Analysis Skill/Sub Weapon List');
 									break;
 								case armor:
 									attrkey = strings().data_bodyArmor;
-									ftitle = 'Body Armor|,|身體裝備';
+									ftitle = Lang('body armor');
 									icons = ['', '', ''];
-									names = ['輕量化', '重量化', '一般'];
+									names = GetLang('Skill Query/Analysis Skill/Body Armor List');
 									break;
 							}
 							let end = null;
@@ -316,11 +327,11 @@ Controller.prototype = {
 								li.setAttribute(attrkey, a);
 								li.addEventListener('click', listener);
 								if ( a != -1 ){
-									li.innerHTML = `<span class="icon">${icons[a]}</span><span class="value">${toLangText(names[a])}</span>`;
+									li.innerHTML = `<span class="icon">${icons[a]}</span><span class="value">${names[a]}</span>`;
 									ul.appendChild(li);
 								}
 								else {
-									li.innerHTML = `<span class="icon"></span><span class="value">${toLangText('None|,|無限制')}</span>`;
+									li.innerHTML = `<span class="icon"></span><span class="value">${Lang('equipment: unlimited')}</span>`;
 									end = li;
 								}
 							});
@@ -328,7 +339,7 @@ Controller.prototype = {
 								if ( mainw.indexOf(0/*單手劍*/) !== -1 && mainw.indexOf(9/*雙劍*/) === -1 ){
 									// 創建一個外觀為「雙劍」實為「單手劍」的按鈕
 									const li = document.createElement('li');
-									li.innerHTML = `<span class="icon">${icons[9]}</span><span class="value">${toLangText(names[9])}</span>`;
+									li.innerHTML = `<span class="icon">${icons[9]}</span><span class="value">${names[9]}</span>`;
 									li.setAttribute(attrkey, 0);
 									ul.appendChild(li);
 									li.addEventListener('click', listener);
@@ -339,7 +350,7 @@ Controller.prototype = {
 							
 							const t = document.createElement('div');
 							const title = document.createElement('div');
-							title.innerHTML = toLangText(ftitle);
+							title.innerHTML = ftitle;
 							t.appendChild(title);
 							t.appendChild(ul);
 
@@ -386,7 +397,7 @@ Controller.prototype = {
 				});
 
 				const main = document.createDocumentFragment();
-				main.appendChild(cy.element.simpleCreateHTML('div', 'title', toLangText('Character Level|,|角色等級')));
+				main.appendChild(cy.element.simpleCreateHTML('div', 'title', GetLang('Skill Query/Analysis Skill/character level')));
 				main.appendChild(left);
 				main.appendChild(mid);
 				main.appendChild(right);
@@ -406,14 +417,27 @@ Controller.prototype = {
 				const min = 1, max = 10;
 				const he = document.createElement('ul');
 				for (let i=min; i<=max; ++i){
-					const li = document.createElement('li');
-					li.innerHTML = 'Lv. ' + i;
+					const li = document.createElement('li')
+				;	li.innerHTML = 'Lv. ' + i;
 					li.setAttribute(strings().data_skillLevel, i);
 					li.addEventListener('click', listener);
 					if ( i == this.currentData.skillLevel )
 						li.classList.add('cur');
 					he.appendChild(li);
 				}
+				return he;
+			}
+			case TYPE_SWITCH_DISPLAY_MODE: {
+				const _C = this;
+				const he = document.createDocumentFragment();
+				const btn = document.createElement('span');
+				btn.appendChild(cy.element.simpleCreateHTML('span', 'icon', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18.65 8.35l-2.79 2.79c-.32.32-.1.86.35.86H18c0 3.31-2.69 6-6 6-.79 0-1.56-.15-2.25-.44-.36-.15-.77-.04-1.04.23-.51.51-.33 1.37.34 1.64.91.37 1.91.57 2.95.57 4.42 0 8-3.58 8-8h1.79c.45 0 .67-.54.35-.85l-2.79-2.79c-.19-.2-.51-.2-.7-.01zM6 12c0-3.31 2.69-6 6-6 .79 0 1.56.15 2.25.44.36.15.77.04 1.04-.23.51-.51.33-1.37-.34-1.64C14.04 4.2 13.04 4 12 4c-4.42 0-8 3.58-8 8H2.21c-.45 0-.67.54-.35.85l2.79 2.79c.2.2.51.2.71 0l2.79-2.79c.31-.31.09-.85-.36-.85H6z"/></svg>'));
+				btn.appendChild(cy.element.simpleCreateHTML('span', 'title', Lang('switch display')));
+				btn.addEventListener('click', function(event){
+					_C.currentData.showOriginalFormula = _C.currentData.showOriginalFormula ? false : true;
+					_C.updateSkillHTML();
+				});
+				he.appendChild(btn);
 				return he;
 			}
 		}

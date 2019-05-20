@@ -159,6 +159,7 @@ article#SkillQuery div.SkillEquipment_scope > div > ul > li > span.icon {
 
 article#SkillQuery div.CharacterLevel_scope {
 	padding: 0 1rem 1rem 1rem;
+	display: inline-block;
 }
 article#SkillQuery div.CharacterLevel_scope > div.title {
 	color: var(--primary-color-light-3);
@@ -194,6 +195,30 @@ article#SkillQuery div.CharacterLevel_scope > span > svg {
 	height: 1.2rem;
 }
 
+
+article#SkillQuery div.SwitchDisplayMode_scope {
+	display: inline-block;
+	padding: 0.6rem;
+}
+article#SkillQuery div.SwitchDisplayMode_scope > span {
+	display: inline-block;
+	padding: 0.3rem 0.4rem;
+	border-bottom: 1px var(--primary-color-light) solid;
+	cursor: pointer;
+}
+article#SkillQuery div.SwitchDisplayMode_scope > span:hover {
+	border-bottom: 1px var(--primary-color-light-3) solid;	
+}
+article#SkillQuery div.SwitchDisplayMode_scope > span > span.title {
+	
+}
+article#SkillQuery div.SwitchDisplayMode_scope > span > span.icon > svg {
+	width: 1rem;
+	height: 1rem;
+	vertical-align: middle;
+	fill: var(--primary-color-light-3);
+	margin-right: 0.6rem;
+}
 
 
 article#SkillQuery div.skill_attribute {
