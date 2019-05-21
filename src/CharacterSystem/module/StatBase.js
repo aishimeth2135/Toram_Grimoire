@@ -1,6 +1,8 @@
-import {toLangText} from "../../main/module/LangText.js";
+import GetLang from "../../main/module/LanguageSystem.js";
 
-"use strict";
+function Lang(s){
+	return GetLang('stat base/s');
+}
 
 function StatBase(bn, c, hm){
 	this.baseName = bn;
@@ -22,7 +24,7 @@ StatBase.prototype = {
 			v = parseInt(v);
 		switch (type) {
 			case StatBase.TYPE_CONSTANT: {
-				let res = toLangText(this.caption);
+				let res = this.caption;
 				res += v < 0 ? '' : '+';
 				res += v;
 				if ( !this.hasMultiplier )
@@ -30,14 +32,14 @@ StatBase.prototype = {
 				return res;
 			}
 			case StatBase.TYPE_MULTIPLIER: {
-				let res = toLangText(this.caption);
+				let res = this.caption;
 				res += v < 0 ? '' : '+';
 				res += v;
 				res += '%';
 				return res;
 			}
 			case StatBase.TYPE_TOTAL: {
-				let res = toLangText('Total |,|總') + toLangText(this.caption);
+				let res = Lang('type total: preText') + this.caption;
 				res += v < 0 ? '' : '+';
 				res += v;
 				res += '%';
@@ -49,16 +51,16 @@ StatBase.prototype = {
 		let title = '', tail = '';
 		switch (type) {
 			case StatBase.TYPE_CONSTANT: {
-				title = toLangText(this.caption);
+				title = this.caption;
 				if ( !this.hasMultiplier )
 					tail = '%';
 			} break;
 			case StatBase.TYPE_MULTIPLIER: {
-				title = toLangText(this.caption);
+				title = this.caption;
 				tail = '%';
 			} break;
 			case StatBase.TYPE_TOTAL: {
-				title = toLangText('Total |,|總') + toLangText(this.caption);
+				title = Lang('type total: preText') + tthis.caption;
 				tail = '%'
 			} break;
 		}
