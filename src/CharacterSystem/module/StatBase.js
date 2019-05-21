@@ -15,8 +15,8 @@ StatBase.TYPE_MULTIPLIER = Symbol();
 StatBase.TYPE_TOTAL = Symbol();
 StatBase.prototype = {
 	appendAttribute(n, v){
-		if ( n && this[n] === void 0 )
-			this[n] = v;
+		if ( n && v !== null && v !== void 0 )
+			this.attributes[n] = v;
 		return this;
 	},
 	show(type, v){
@@ -28,7 +28,7 @@ StatBase.prototype = {
 				res += v < 0 ? '' : '+';
 				res += v;
 				if ( !this.hasMultiplier )
-					res += '%';
+					res += this.attributes['constant_unit'] === void 0 ? '%' : this.attributes['constant_unit'];
 				return res;
 			}
 			case StatBase.TYPE_MULTIPLIER: {
@@ -53,7 +53,7 @@ StatBase.prototype = {
 			case StatBase.TYPE_CONSTANT: {
 				title = this.caption;
 				if ( !this.hasMultiplier )
-					tail = '%';
+					tail = this.attributes['constant_unit'] === void 0 ? '%' : this.attributes['constant_unit'];
 			} break;
 			case StatBase.TYPE_MULTIPLIER: {
 				title = this.caption;
