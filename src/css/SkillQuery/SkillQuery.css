@@ -82,7 +82,6 @@ article#SkillQuery div.Skill_scope {
 }
 article#SkillQuery div.Skill_scope > div.skill_attributes {
 	padding: 0.6rem;
-	display: inline-block;
 }
 article#SkillQuery div.Skill_scope > div.skill_branchs {
 	padding: 0.6rem;
