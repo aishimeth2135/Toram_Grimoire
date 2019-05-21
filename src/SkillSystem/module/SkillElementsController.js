@@ -2,7 +2,6 @@ import {SkillRoot, SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch
 import {SkillTreeTable, SkillTreeTableData} from "./SkillTreeTable.js";
 import AnalysisSkill from "./AnalysisSkill.js";
 
-import {ConvertLangText, toLangText} from "../../main/module/LangText.js";
 import GetLang from "../../main/module/LanguageSystem.js";
 import strings from "./strings.js";
 
@@ -124,7 +123,6 @@ Controller.prototype = {
 		const scope = this.getSkillElementScope(Skill.TYPE);
 		cy.element.removeAllChild(scope);
 		scope.appendChild(this.createSkillQueryScopeHTML(skill, Skill.CATEGORY_MAIN));
-		ConvertLangText(scope);
 	},
 	createSkillQueryScopeHTML(sEle, /*const string*/category){
 		const SE_TYPE = sEle !== null ? sEle.TYPE : category;
@@ -180,7 +178,6 @@ Controller.prototype = {
 						scope.innerHTML = "";
 						const ele = _C.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
 						scope.appendChild(_C.createSkillQueryScopeHTML(ele, SkillTree.CATEGORY_TABLE));
-						ConvertLangText(scope);
 						cy.element.removeAllChild(_C.getSkillElementScope(Skill.TYPE));
 						cy.element.removeAllChild(_C.getSkillElementScope(Skill.CATEGORY_EQUIPMENT));
 					};
@@ -228,7 +225,6 @@ Controller.prototype = {
 						cy.element.removeAllChild(scope);
 						if ( t !== null ){
 							scope.appendChild(t);
-							ConvertLangText(scope);
 						}
 						_C.updateSkillHTML();
 					};

@@ -9,7 +9,8 @@ function Lang(s){
 	return GetLang("Skill Query/Analysis Skill/" + s);
 }
 
-
+/* 特殊屬性
+ * @none: 無條件去除該屬性。*/
 const GLOBAL_EXTRA_ATTRIBUTE_VALUE = {
 	none: '@none'
 };
@@ -38,8 +39,6 @@ TempSkillEffect.prototype = {
 		return t;
 	},
 	overWrite: function(sef){
-		/* 特殊屬性
-		| @none: 無條件去除該屬性。*/
 		Object.getOwnPropertySymbols(sef.attributes).forEach(function(key){
 			const v = sef.attributes[key];
 			if ( v == GLOBAL_EXTRA_ATTRIBUTE_VALUE.none && this.attributes[key] ){
@@ -242,18 +241,18 @@ function getBranchHTML(branch, data){
 		const _attr = b.branchAttributes;
 		let str = _attr[_main === void 0 ? 'text': _main];
 		if ( !data.showOriginalFormula ){
-			str = str.replace(/(\$\{[^\}]+\})([%]?)/g, () =>
-				RegExp.$2 !== '%'
-				? processValue(RegExp.$1, {calc: false, light: true})
-				: processValue(RegExp.$1, {calc: false, tail: '%', light: true})
+			str = str.replace(/(\$\{[^\}]+\})([%]?)/g, (...args) => {
+				return args[2] !== '%'
+				? processValue(args[1], {calc: false, light: true})
+				: processValue(args[1], {calc: false, tail: '%', light: true})}
 			);
 			str = safeEval("`" + str + "`");
 		}
 		else {
-			str = str.replace(/\$\{([^\}]+)\}([%]?)/g, () =>
-				RegExp.$2 !== '%'
-				? processValue(RegExp.$1, {preText: '(', light: true, tail: ')'})
-				: processValue(RegExp.$1, {preText: '(', tail: ')%', light: true})
+			str = str.replace(/\$\{([^\}]+)\}([%]?)/g, (...args) =>
+				args[2] !== '%'
+				? processValue(args[1], {light: true, tail: '', separateText: true})
+				: processValue(args[1], {light: true, tail: '%', separateText: true})
 			);
 		}
 		if ( _attr['mark'] !== void 0 ){
@@ -277,7 +276,7 @@ function getBranchHTML(branch, data){
 		v = v.split(',,');
 		setting = Object.assign({
 			calc: true, tail: '', preText: '',toPercentage: false,
-			checkHasStack: v[0], light: false
+			checkHasStack: v[0], light: false, separateText: false
 		}, setting);
 		
 		let res;
@@ -303,14 +302,16 @@ function getBranchHTML(branch, data){
 					a = a.replace(/stack[\[]{0}/g, () => stack_name_list[0]);
 					res = a;
 				}
-				res = setting.preText + res;
-				res += setting.tail;
 			}
 			else {
 				a = replaceExtraFormulaValue(a);
 				res += a.charAt(0) !== '-' ? '+' + a : a;
 			}
 		});
+		res = setting.preText + res;
+		if ( setting.separateText || ( !( v.length === 1 && v[0].match(/^[\d\.]+$/) ) && data.showOriginalFormula) )
+			res = '<span class="separate_text">' + res + '</span>';
+		res += setting.tail;
 		
 		const span = document.createElement('span');
 		if ( setting.checkHasStack.includes('stack') )
@@ -321,13 +322,12 @@ function getBranchHTML(branch, data){
 		return span.outerHTML;
 	}
 	function processStat(stat){
-		const data = stat.getShowData();
-		const v = processValue(data.value);
-		const t = createSkillAttributeScope(null,
-			data.title, v,
-			data.tail !== '' ? data.tail : void 0
-		);
-		t.classList.add('stat_scope');
+		const showData = stat.getShowData();
+		const vs = showData.value.split(',,');
+		const sign = ( vs.length === 1 && safeEval(vs[0]) < 0 ) ? '-' : '+';
+		const set = (vs.length !== 1 ) ? {tail: showData.tail, separateText: true} : {tail: showData.tail};
+		const v = processValue(showData.value, set);
+		const t = createSkillAttributeScope(null, null, showData.title + sign +  v);
 		return t;
 	}
 	const simpleCreateHTML = CY.element.simpleCreateHTML;
@@ -369,7 +369,7 @@ function getBranchHTML(branch, data){
 	}
 	function getDamageElementHTML(ele_type){
 		const ELEMEMT_DICT = {
-			neutral: Lang('element: netural'),
+			neutral: Lang('element: neutral'),
 			fire: Lang('element: fire'),
 			water: Lang('element: water'),
 			earth: Lang('element: earth'),
@@ -440,7 +440,7 @@ function getBranchHTML(branch, data){
 						v = processValue(v, {tail: 'm'});
 						break;
 					case 'angle':
-						t = Lang('angle');
+						t = Lang('sector: angle');
 						angle = safeEval(v);
 						v = processValue(v, {tail: '°'});
 						break;

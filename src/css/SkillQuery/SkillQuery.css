@@ -249,12 +249,6 @@ article#SkillQuery div.skill_attribute > span._tail {
 	margin-left: 0.5rem;
 }
 
-article#SkillQuery div.stat_scope > span._title {
-	margin-right: 0.3rem;
-}
-article#SkillQuery div.stat_scope > span._tail {
-	margin-left: 0.2rem;
-}
 
 article#SkillQuery span.element_ball {
 	height: 0.9rem;
