@@ -17,9 +17,9 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.top {
 	padding: 0.1rem;
 	padding-top: 0;
 	position: relative;
-	border-bottom: 1px #9c27b0 solid;
+	border-bottom: 1px var(--primary-color-purple) solid;
 	margin-bottom: 0.3rem;
-	color: #9c27b0;
+	color: var(--primary-color-purple);
 }
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.top > span._name {
 	margin-left: 0.6rem;
@@ -36,7 +36,7 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.conten
 	color: var(--primary-color-light-3);
 }
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 > span._main_title span.light {
-	color: #9c27b0;
+	color: var(--primary-color-purple);
 }
 
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content div.text_scope {
@@ -197,4 +197,44 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.separat
 article#SkillQuery div.Skill_scope span.effect_by_stack span.separate_text {
 	border-left: 1px #9acbf3 solid!important;
 	border-right: 1px #9acbf3 solid!important;
+}
+
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_from_where_button {
+	color: var(--primary-color-light-3);
+	cursor: pointer;
+	padding: 0.2rem;
+	border-bottom: 1px var(--primary-color-light) solid;
+	transition: 0.3s;
+	position: relative;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_from_where_button:hover {
+	border-bottom: 1px var(--primary-color-light-2) solid;
+}
+
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_from_where_button > div.temp {
+	width: 0;
+	height: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_from_where_button > div.temp > div.show_skill_from_where {
+	position: relative;
+	width: 15rem;
+	min-height: 5rem;
+	padding: 0.6rem;
+	border: 1px var(--primary-color-light) solid;
+	box-shadow: 0.1rem 0.1rem 0.4rem var(--primary-color-light);
+	background: #FFF;
+	z-index: 5;
+	color: var(--primary-color-purple);
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_from_where_button > div.temp > div.show_skill_from_where span.global_button_1 {
+	min-width: 3rem;
+	margin: 0.3rem;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_from_where_button > div.temp > div.show_skill_from_where > div.button_scope {
+	margin-top: 0.4rem;
+	text-align: right;
 }

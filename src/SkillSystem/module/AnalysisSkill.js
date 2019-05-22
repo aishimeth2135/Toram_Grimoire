@@ -1,5 +1,4 @@
 import {Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
-import Grimoire from "../../main/Grimoire.js";
 
 import GetLang from "../../main/module/LanguageSystem.js";
 import CY from "../../main/module/cyteria.js";
@@ -127,6 +126,20 @@ const
 	MAIN_WEAPON_TEXT_LIST = Lang('Main Weapon List'),
 	SUB_WEAPON_TEXT_LIST = Lang('Sub Weapon List'),
 	BODY_ARMOR_TEXT_LIST = Lang('Body Armor List');
+
+const simpleCreateHTML = CY.element.simpleCreateHTML;
+function createSkillAttributeScope(icon, t, v, tail){
+	const a = simpleCreateHTML('div', 'skill_attribute');
+	if ( icon !== null )
+		a.appendChild(simpleCreateHTML('span', '_icon', icon));
+	if ( t !== null )
+		a.appendChild(simpleCreateHTML('span', '_title', t));
+	if ( v !== null && v !== void 0 )
+		a.appendChild(simpleCreateHTML('span', '_value', v));
+	if ( tail !== null && tail !== void 0 )
+		a.appendChild(simpleCreateHTML('span', '_tail', tail));
+	return a;
+}
 
 function getEffectHTML(sef, attr_name, data){
 	const safeEval = str => {
@@ -266,8 +279,18 @@ function getBranchHTML(branch, data){
 			});
 		}
 		if ( _attr['skill'] !== void 0 ){
+			const ctrr = data.skillRoot.controller,
+				sr = data.skillRoot;
 			_attr['skill'].split(/\s*,\s*/).forEach(t => {
-				str = str.replace(new RegExp(t, 'g'), lightText(t));
+				str = str.replace(new RegExp(t, 'g'), a => {
+					const skill = sr.findSkillByName(a);
+					if ( skill === void 0 )
+						return a;
+					const span = simpleCreateHTML('span', 'skill_from_where_button');
+					span.appendChild(simpleCreateHTML('span', 'skill_name', a));
+					span.setAttribute(strings().data_skillElementNo, ctrr.getSkillElementNoStr(skill));
+					return span.outerHTML;
+				});
 			});
 		}
 		return str;
@@ -324,24 +347,16 @@ function getBranchHTML(branch, data){
 	function processStat(stat){
 		const showData = stat.getShowData();
 		const vs = showData.value.split(',,');
-		const sign = ( vs.length === 1 && safeEval(vs[0]) < 0 ) ? '-' : '+';
-		const set = (vs.length !== 1 ) ? {tail: showData.tail, separateText: true} : {tail: showData.tail};
+		const sign = ( vs.length === 1 && safeEval(vs[0]) < 0 ) ? '' : '+';
+		const set = {tail: showData.tail, preText: showData.title + sign};
+		if (vs.length !== 1 )
+			set.separateText = true;
 		const v = processValue(showData.value, set);
-		const t = createSkillAttributeScope(null, null, showData.title + sign +  v);
+		let res = v;
+		if ( sign === '' )
+			res = darkText(res);
+		const t = createSkillAttributeScope(null, null, res);
 		return t;
-	}
-	const simpleCreateHTML = CY.element.simpleCreateHTML;
-	function createSkillAttributeScope(icon, t, v, tail){
-		const a = simpleCreateHTML('div', 'skill_attribute');
-		if ( icon !== null )
-			a.appendChild(simpleCreateHTML('span', '_icon', icon));
-		if ( t !== null )
-			a.appendChild(simpleCreateHTML('span', '_title', t));
-		if ( v !== null && v !== void 0 )
-			a.appendChild(simpleCreateHTML('span', '_value', v));
-		if ( tail !== null && tail !== void 0 )
-			a.appendChild(simpleCreateHTML('span', '_tail', tail));
-		return a;
 	}
 	function lightText(text){
 		return '<span class="light">' + text + '</span>';
@@ -584,7 +599,7 @@ function getBranchHTML(branch, data){
 					v = min;
 				mid.value = v;
 				data.stackValues[getStackBranchIdKey(stk)] = v;
-				Grimoire.SkillSystem.skillRoot.controller.updateSkillHTML();
+				data.skillRoot.controller.updateSkillHTML();
 			};
 			left.setAttribute('data-ctr', '-');
 			left.addEventListener('click', ctr_listener);
@@ -1107,7 +1122,57 @@ function getBranchHTML(branch, data){
 	return null;
 }
 
+function beforeExport(he, data){
+	const ctrr = data.skillRoot.controller;
+	const skill_text_button_listener = function(event){
+		const scope = ctrr.currentData.skill_from_where_scope;
+		CY.element.removeAllChild(scope);
+		scope.classList.remove('hidden');
 
+		let temp_scope = this.querySelector("div.temp");
+		if ( !temp_scope ){
+			temp_scope = simpleCreateHTML('div', 'temp');
+			this.appendChild(temp_scope);
+		}
+
+		temp_scope.appendChild(scope);
+
+		const remv = CY.element.convertRemToPixels(1);
+		const vr = this.getBoundingClientRect();
+		const pvr = scope.getBoundingClientRect();
+		let x = vr.left, y = vr.top,
+			w = pvr.width, mw = window.innerWidth,
+			h = pvr.height ,mh = window.innerHeight;
+		if ( x+w > mw - remv )
+			scope.style.left = ((-1*w + vr.width)/remv) + "rem";
+		else
+			scope.style.left = "0";
+		if ( y > mh/2 )
+			scope.style.top = ((-1*h)/remv - 0.5) + "rem";
+		else 
+			scope.style.top = (vr.height/remv + 0.5) + "rem";
+
+		const skill = ctrr.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
+		scope.appendChild(createSkillAttributeScope(null, GetLang('Skill Query/Skill Element/skill tree: from'), skill.parent.name));
+		const btns = simpleCreateHTML('div', 'button_scope');
+		const cancel = simpleCreateHTML('span', 'global_button_1', GetLang('global/cancel'));
+		cancel.addEventListener('click', function(event){
+			this.parentNode.parentNode.classList.add('hidden');
+			event.stopPropagation();
+		});
+		const to_skill = simpleCreateHTML('span', 'global_button_1',Lang('button text/to skill'));
+		to_skill.addEventListener('click', function(event){
+			this.parentNode.parentNode.classList.add('hidden');
+			ctrr.skillRecord(skill);
+			event.stopPropagation();
+		});
+		btns.appendChild(cancel);
+		btns.appendChild(to_skill);
+		scope.appendChild(btns);
+	}
+
+	he.querySelectorAll('span.skill_from_where_button').forEach(btn => btn.addEventListener('click', skill_text_button_listener));
+}
 
 /*
 | @param SkillElement.Skill skill ::使用者選取的技能
@@ -1190,9 +1255,13 @@ export default function(data){
 			}
 			const stackValues = data.stackValues,
 				stackNames = data.stackNames,
-				showOriginalFormula = data.showOriginalFormula;
+				showOriginalFormula = data.showOriginalFormula,
+				skillRoot = data.skillRoot;
 			output.branchs.forEach(branch => {
-				const t = getBranchHTML(branch, {SLv, CLv, stackNames, stackValues, showOriginalFormula});
+				const t = getBranchHTML(branch, {
+					SLv, CLv, stackNames, stackValues, showOriginalFormula,
+					skillRoot
+				});
 				if ( t !== null )
 					two.appendChild(t);
 			});
@@ -1204,6 +1273,8 @@ export default function(data){
 			two.appendChild(t);
 		}
 		frg.appendChild(two);
+
+		beforeExport(frg, data);
 
 		return frg;
 	}

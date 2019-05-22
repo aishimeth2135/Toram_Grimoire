@@ -1,3 +1,16 @@
 .hidden {
 	display: none!important;
 }
+
+.global_button_1 {
+    display: inline-block;
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px var(--primary-color-light) solid;
+    transition: 0.3s;
+    margin: 0.2rem;
+    cursor: pointer;
+    text-align: center;
+}
+.global_button_1:hover {
+    border-bottom: 1px var(--primary-color-light-2) solid;
+}
