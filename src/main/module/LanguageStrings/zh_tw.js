@@ -1,14 +1,19 @@
 const zh_tw = {
     'global': {
-        'second': '秒'
+        'second': '秒',
+        'cancel': '取消'
     },
     'Skill Query': {
+        'Skill Element': {
+            'skill tree: from': '所屬技能樹'
+        },
         'Controller': {
             'main weapon': '主手武器',
             'sub weapon': '副手武器',
             'body armor': '身體裝備',
             'equipment: unlimited': '無限制',
-            'switch display': '切換顯示'
+            'switch display': '切換顯示',
+            'current skill': '當前技能'
         },
         "Analysis Skill": {
             'no data': '此技能資料尚未齊全。',
@@ -125,7 +130,13 @@ const zh_tw = {
                 'reference': {
                     'reference url': '資料參考連結'
                 }
-            }           
+            },
+            'button text': {
+                'to skill': '查看'
+            }         
+        },
+        'button text': {
+            'back': '返回'
         }
     },
     'stat base': {

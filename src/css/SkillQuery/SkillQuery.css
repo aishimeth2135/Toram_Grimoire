@@ -100,21 +100,12 @@ article#SkillQuery div.SkillLevel_scope > ul {
 	margin: 0;
 	padding: 0 0.6rem;
 }
-article#SkillQuery div.SkillLevel_scope > ul > li {
-	display: inline-block;
-	padding: 0.4rem;
-	border-bottom: 1px var(--primary-color-light) solid;
-	transition: 0.3s;
-	margin: 0.2rem;
-	cursor: pointer;
-}
 
-article#SkillQuery div.SkillLevel_scope > ul > li.cur,
-article#SkillQuery div.SkillLevel_scope > ul > li:hover {
-	border-bottom: 1px var(--primary-color-light-2) solid;	
+article#SkillQuery div.SkillLevel_scope > ul > li.cur {
+	border-bottom: 1px var(--primary-color-light-3) solid;	
 }
 article#SkillQuery div.SkillEquipment_scope {
-	border-top: 1px var(--primary-color-light-2) solid;
+	border-top: 1px var(--primary-color-light) solid;
 	border-bottom: 1px var(--primary-color-light) solid;
 	padding: 1rem 0.6rem;
 }
@@ -220,6 +211,48 @@ article#SkillQuery div.SwitchDisplayMode_scope > span > span.icon > svg {
 }
 
 
+article#SkillQuery div.SkillRecord_scope {
+	padding: 1rem;
+	border-top: 1px var(--primary-color-light-2) solid;
+}
+article#SkillQuery div.SkillRecord_scope > div {
+	display: inline-block;
+}
+article#SkillQuery div.SkillRecord_scope > div.back_button {
+	margin-right: 1.8rem;
+	cursor: pointer;
+	transition: 0.3s;
+}
+article#SkillQuery div.SkillRecord_scope > div.back_button > span.icon {
+	margin-right: 0.8rem;
+}
+article#SkillQuery div.SkillRecord_scope > div.back_button > span.caption {
+	vertical-align: middle;
+	color: var(--primary-color-light-2);
+}
+article#SkillQuery div.SkillRecord_scope > div.back_button > span.icon > svg {
+	vertical-align: middle;
+	fill: var(--primary-color-light-2);
+	height: 2rem;
+	width: 2rem;
+}
+article#SkillQuery div.SkillRecord_scope > div.back_button:hover svg {
+	fill: var(--primary-color-light-3);
+}article#SkillQuery div.SkillRecord_scope > div.back_button:hover span.caption {
+	color: var(--primary-color-light-3);
+}
+article#SkillQuery div.SkillRecord_scope > div.tip {
+	color: var(--primary-color-light);
+	margin-right: 0.6rem;
+	vertical-align: middle;
+	font-size: 0.9rem;
+}
+article#SkillQuery div.SkillRecord_scope > div.current_skill {
+	vertical-align: middle;
+	color: var(--primary-color-purple);
+}
+
+
 article#SkillQuery div.skill_attribute {
 	margin: 0.4rem;
 	padding: 0.2rem 0.4rem;
@@ -258,3 +291,4 @@ article#SkillQuery span.element_ball {
 article#SkillQuery div.skill_attribute > span.element_value {
 	vertical-align: middle;
 }
+

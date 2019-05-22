@@ -13,7 +13,8 @@ function Lang(s){
 
 const TYPE_SKILL_LEVEL = Symbol(),
 	TYPE_CHARACTER_LEVEL = Symbol(),
-	TYPE_SWITCH_DISPLAY_MODE = Symbol();
+	TYPE_SWITCH_DISPLAY_MODE = Symbol(),
+	TYPE_SKILL_RECORD = Symbol();
 /*
 Interface Controller {
 	HTMLElement createSkillQueryScopeHTML(const string type);
@@ -24,6 +25,7 @@ function Controller(sr){
 	this.MAIN_NODE = null;
 	this.skillRoot = sr;
 	this.currentData = {
+		skillRoot: sr,
 		mainWeapon: -1,
 		subWeapon: -1,
 		bodyArmor: -1,
@@ -32,7 +34,8 @@ function Controller(sr){
 		currentSkill: null,
 		stackValues: {},
 		stackNames: {},
-		showOriginalFormula: false
+		showOriginalFormula: false,
+		skillRecords: []
 	};
 }
 Controller.prototype = {
@@ -42,7 +45,7 @@ Controller.prototype = {
 		const order = [
 			SkillRoot.TYPE, SkillTreeCategory.TYPE, SkillTree.TYPE,
 			TYPE_SKILL_LEVEL, TYPE_CHARACTER_LEVEL, TYPE_SWITCH_DISPLAY_MODE,
-			Skill.CATEGORY_EQUIPMENT, Skill.TYPE
+			TYPE_SKILL_RECORD, Skill.CATEGORY_EQUIPMENT, Skill.TYPE
 		];
 		const frg = document.createDocumentFragment();
 		order.forEach(function(a){
@@ -57,6 +60,8 @@ Controller.prototype = {
 						t.appendChild(this.createSkillQueryScopeHTML(stc, strings().menu));
 					}, this);
 					break;
+				case TYPE_SKILL_RECORD:
+					t.classList.add('hidden');
 				case TYPE_SKILL_LEVEL:
 				case TYPE_CHARACTER_LEVEL:
 				case TYPE_SWITCH_DISPLAY_MODE:
@@ -66,6 +71,8 @@ Controller.prototype = {
 		}, this);
 
 		main_node.appendChild(frg);
+
+		this.currentData.skill_from_where_scope = cy.element.simpleCreateHTML('div', ['show_skill_from_where', 'hidden']);
 	},
 	getSkillElementScope(type){
 		const SCOPE_NAME = {
@@ -76,7 +83,8 @@ Controller.prototype = {
 			[TYPE_SKILL_LEVEL]: 'SkillLevel_scope',
 			[TYPE_CHARACTER_LEVEL]: 'CharacterLevel_scope',
 			[TYPE_SWITCH_DISPLAY_MODE]: 'SwitchDisplayMode_scope',
-			[Skill.CATEGORY_EQUIPMENT]: 'SkillEquipment_scope'
+			[Skill.CATEGORY_EQUIPMENT]: 'SkillEquipment_scope',
+			[TYPE_SKILL_RECORD]: 'SkillRecord_scope'
 		};
 		let node = this.MAIN_NODE.getElementsByClassName(SCOPE_NAME[type])[0];
 		if ( !node ){
@@ -115,6 +123,43 @@ Controller.prototype = {
 			}
 		}, this);
 		return cur;
+	},
+	skillRecord(s){
+		this.currentData.skillRecords.push(this.currentData.currentSkill);
+		this.initCurrentSkill(s);
+		this.updateSkillHTML();
+	},
+	popSkillRecord(){
+		this.initCurrentSkill(this.currentData.skillRecords.pop());
+		this.updateSkillHTML();
+	},
+	clearSkillRecord(){
+		const t = this.currentData.skillRecords;
+		t.splice(0, t.length);
+	},
+	initCurrentSkill(s){
+		this.currentData.currentSkill = s;
+		if ( s.checkData() ){
+			cy.object.empty(this.currentData.stackValues);
+			this.currentData.stackValues = null;
+			const {mainWeapon, subWeapon, bodyArmor} = s.defaultEffect;
+			Object.assign(this.currentData, {mainWeapon, subWeapon, bodyArmor});
+		}
+
+		const t = this.createSkillQueryScopeHTML(s, Skill.CATEGORY_EQUIPMENT);
+		const scope = this.getSkillElementScope(Skill.CATEGORY_EQUIPMENT);
+		cy.element.removeAllChild(scope);
+		if ( t !== null ){
+			scope.appendChild(t);
+		}
+
+		const archs_scope = this.getSkillElementScope(TYPE_SKILL_RECORD);
+		archs_scope.classList.remove('hidden');
+		if ( this.currentData.skillRecords.length > 0 )
+			archs_scope.querySelector('.back_button').classList.remove('hidden');
+		else
+			archs_scope.querySelector('.back_button').classList.add('hidden');
+		archs_scope.querySelector('div.current_skill').innerHTML = s.name;
 	},
 	updateSkillHTML(){
 		const skill = this.currentData.currentSkill;
@@ -212,20 +257,9 @@ Controller.prototype = {
 							cur.classList.remove('cur');
 						this.classList.add('cur');
 
-						_C.currentData.currentSkill = s;
-						if ( s.checkData() ){
-							cy.object.empty(_C.currentData.stackValues);
-							_C.currentData.stackValues = null;
-							const {mainWeapon, subWeapon, bodyArmor} = s.defaultEffect;
-							Object.assign(_C.currentData, {mainWeapon, subWeapon, bodyArmor});
-						}
+						_C.clearSkillRecord();
 
-						const t = _C.createSkillQueryScopeHTML(s, Skill.CATEGORY_EQUIPMENT);
-						const scope = _C.getSkillElementScope(Skill.CATEGORY_EQUIPMENT);
-						cy.element.removeAllChild(scope);
-						if ( t !== null ){
-							scope.appendChild(t);
-						}
+						_C.initCurrentSkill(s);
 						_C.updateSkillHTML();
 					};
 					const he = SkillTreeTable(SkillTreeTableData(stcn, stn));
@@ -292,6 +326,8 @@ Controller.prototype = {
 					const he = document.createDocumentFragment();
 					const ary = [this.currentData.mainWeapon, this.currentData.subWeapon, this.currentData.bodyArmor];
 					[mainw, subw, armor].forEach((field, i) => {
+						if ( field.length === 0 )
+							return;
 						if ( field.length != 1 || field[0] != -1 ){
 							let icons, names, ftitle, attrkey;
 							switch (field){
@@ -417,6 +453,7 @@ Controller.prototype = {
 				;	li.innerHTML = 'Lv. ' + i;
 					li.setAttribute(strings().data_skillLevel, i);
 					li.addEventListener('click', listener);
+					li.classList.add('global_button_1');
 					if ( i == this.currentData.skillLevel )
 						li.classList.add('cur');
 					he.appendChild(li);
@@ -434,6 +471,21 @@ Controller.prototype = {
 					_C.updateSkillHTML();
 				});
 				he.appendChild(btn);
+				return he;
+			}
+			case TYPE_SKILL_RECORD: {
+				const _C = this;
+				const he = document.createDocumentFragment();
+				const back = cy.element.simpleCreateHTML('div', 'back_button');
+				back.appendChild(cy.element.simpleCreateHTML('span', 'icon', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M14.71 15.88L10.83 12l3.88-3.88c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L8.71 11.3c-.39.39-.39 1.02 0 1.41l4.59 4.59c.39.39 1.02.39 1.41 0 .38-.39.39-1.03 0-1.42z"/></svg>'));
+				back.appendChild(cy.element.simpleCreateHTML('span', 'caption', GetLang('Skill Query/button text/back')))
+				back.addEventListener('click', function(event){
+					_C.popSkillRecord();
+				});
+				const title = cy.element.simpleCreateHTML('div', 'current_skill');
+				he.appendChild(back);
+				he.appendChild(cy.element.simpleCreateHTML('div', 'tip', Lang('current skill')));
+				he.appendChild(title);
 				return he;
 			}
 		}

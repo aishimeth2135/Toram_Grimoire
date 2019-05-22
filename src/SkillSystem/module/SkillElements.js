@@ -40,6 +40,19 @@ SkillRoot.prototype = {
 			return stc;
 		}
 		return null;
+	},
+	findSkillByName(name){
+		let find = void 0;
+		this.skillTreeCategorys.forEach(stc => {
+			if ( find ) return;
+			stc.skillTrees.forEach(st => {
+				if ( find ) return;
+				const t = st.skills.find(skill => skill.name === name);
+				if ( t !== void 0 )
+					find = t;
+			});
+		});
+		return find;
 	}
 };
 

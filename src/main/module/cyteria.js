@@ -22,18 +22,21 @@ let Cyteria = {
 		},
 		simpleCreateHTML(type, classList, html){
 			const t = document.createElement(type);
-			if ( t !== null ){
+			if ( classList !== null ){
 				Array.isArray(classList) ? t.classList.add(...classList): t.classList.add(classList);
 			}
 			if ( html !== void 0 && html !== null )
 				t.innerHTML = html;
 			return t;
+		},
+		convertRemToPixels(rem){    
+		    return rem*parseFloat(getComputedStyle(document.documentElement).fontSize);
 		}
 	},
 	class: {
-		/*@param c : Child Class
-		| @param [... : Parent Class
-		*/
+		/* @param c : Child Class
+		 * @param [... : Parent Class
+		 */
 		extends: function(c){
 			let args = Array.from(arguments);
 			c.prototype = Object.create(args[1].prototype);
