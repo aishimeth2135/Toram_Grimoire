@@ -55,13 +55,13 @@ function SkillTreeTableData(/*int*/stcn, /*int*/stn) {
 			switch (stn)
 			{
 				case 0:
-					data_ary = [[-2], [-2], [-2], [2, 1], [1], [2, 1], [1]];
+					data_ary = [[-4], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]];
 					break;
 				case 1:
 					data_ary = [[1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1]];
 					break;
 				case 2:
-					data_ary = [[-4], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]];
+					data_ary = [[-2], [-2], [-2], [2, 1], [1], [2, 1], [1]];
 					break;
 			}
 			break;
