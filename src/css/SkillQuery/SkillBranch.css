@@ -25,6 +25,18 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.top > 
 	margin-left: 0.6rem;
 }
 
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > span.hidden_toggle_button {
+	float: right;
+	transition: 0.3s;
+	cursor: pointer;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > span.hidden_toggle_button > span > svg {
+	fill: var(--primary-color-light-2);
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > span.hidden_toggle_button > span > svg:hover {
+	fill: var(--primary-color-light-3);	
+}
+
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 {
 	font-size: 0.9rem;
 }
@@ -35,7 +47,8 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.conten
 	display: inline-block;
 	color: var(--primary-color-light-3);
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 > span._main_title span.light {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 > span._main_title span.light,
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 > span._main_title span.skill_from_where_button {
 	color: var(--primary-color-purple);
 }
 
@@ -75,7 +88,7 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_list > div.c
 }
 
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope1 {
-	margin-right: 1rem;
+	margin-right: 0.9rem;
 }
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 {
 	margin-top: 0.3rem;
@@ -86,23 +99,32 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.
 	text-align: center;
 	vertical-align: middle;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_button {
 	border-radius: 0.2rem;
 	padding: 0.3rem;
 	cursor: pointer;
 	border: 1px var(--primary-color-light-2) solid;
 	transition: 0.3s;
+	margin-left: 0.1rem;
+	margin-right: 0.3rem;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span:hover {
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_button:hover {
 	border: 1px var(--primary-color-light-3) solid;
 }
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_button:hover svg {
+	fill: 1px var(--primary-color-light-3) solid;
+}
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > input {
-	padding: 0.3rem;
+	padding: 0.3rem 0;
 	border: 0;
 	font-size: 1rem;
 	color: var(--primary-color-light-3);
-	width: 1.5rem;
-	text-align: center;
+	text-align: right;
+	width: 2rem;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.unit {
+	margin-right: 0.4rem;
+	color: var(--primary-color-light-3);
 }
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > input:focus {
 	outline: none;

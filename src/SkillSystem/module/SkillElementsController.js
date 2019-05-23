@@ -45,7 +45,7 @@ Controller.prototype = {
 		const order = [
 			SkillRoot.TYPE, SkillTreeCategory.TYPE, SkillTree.TYPE,
 			TYPE_SKILL_LEVEL, TYPE_CHARACTER_LEVEL, TYPE_SWITCH_DISPLAY_MODE,
-			TYPE_SKILL_RECORD, Skill.CATEGORY_EQUIPMENT, Skill.TYPE
+			SkillTree.CATEGORY_EQUIPMENT, TYPE_SKILL_RECORD, Skill.TYPE
 		];
 		const frg = document.createDocumentFragment();
 		order.forEach(function(a){
@@ -83,7 +83,7 @@ Controller.prototype = {
 			[TYPE_SKILL_LEVEL]: 'SkillLevel_scope',
 			[TYPE_CHARACTER_LEVEL]: 'CharacterLevel_scope',
 			[TYPE_SWITCH_DISPLAY_MODE]: 'SwitchDisplayMode_scope',
-			[Skill.CATEGORY_EQUIPMENT]: 'SkillEquipment_scope',
+			[SkillTree.CATEGORY_EQUIPMENT]: 'SkillEquipment_scope',
 			[TYPE_SKILL_RECORD]: 'SkillRecord_scope'
 		};
 		let node = this.MAIN_NODE.getElementsByClassName(SCOPE_NAME[type])[0];
@@ -137,20 +137,76 @@ Controller.prototype = {
 		const t = this.currentData.skillRecords;
 		t.splice(0, t.length);
 	},
+	equipmentCheck(eft, equip){
+		/* 通用 */
+		if ( eft.mainWeapon == -1 && eft.subWeapon == -1 && eft.bodyArmor == -1 )
+			return true;
+		/* 非通用 */
+		if ( equip.mainWeapon != -1 && equip.mainWeapon == eft.mainWeapon )
+			return true;
+		if ( equip.subWeapon != -1 && equip.subWeapon == eft.subWeapon )
+			return true;
+		if ( equip.bodyArmor != -1 && equip.bodyArmor == eft.bodyArmor )
+			return true;
+
+		return false;
+	},
+	setCurrentEquipment(fieldname, value){
+		const cur = this.currentData;
+		if ( cur[fieldname] === void 0 ){
+			console.warn("Unknow equipment field name");
+			return;
+		}
+		// 對應部位不能裝的武器類型清單
+		// ['箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍']
+		/* [
+			'單手劍', '雙手劍',
+			'弓', '弩', '法杖',
+			'魔導具',
+			'拳套', '旋風槍',
+			'拔刀劍', '雙劍'
+		] */
+		if ( value !== -1 ){
+			let disable_subw_of_mainw = [
+				[5], [0, 1, 2, 3, 4, 5],
+				[1, 2, 3, 4], [5], [3, 5],
+				[0, 1, 2, 3, 4, 5],
+				[4, 5], [1, 3, 4, 5],
+				[1, 3, 4, 5], [0, 1, 2, 3, 4, 5]
+			];
+			switch (fieldname){
+				case 'mainWeapon':
+					if ( disable_subw_of_mainw[value].indexOf(cur.subWeapon) !== -1 ){
+						const t = this.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT).querySelector(`li[${strings().data_subWeapon}="-1"]`);
+						t ? t.click() : cur.subWeapon = -1;
+					}
+					break;
+				case 'subWeapon':
+					if ( cur.mainWeapon !== -1 && disable_subw_of_mainw[cur.mainWeapon].indexOf(value) !== -1 ){
+						const t = this.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT).querySelector(`li[${strings().data_mainWeapon}="-1"]`);
+						t ? t.click() : cur.mainWeapon = -1;
+					}
+					break;
+				//case 'bodyArmor':
+			}
+		}
+		cur[fieldname] = value;
+
+		this.getSkillElementScope(SkillTree.TYPE).querySelectorAll('table td').forEach(td => {
+			const seno = td.getAttribute(strings().data_skillElementNo);
+			if ( seno === null )
+				return;
+			const skill = this.selectSkillElement(seno);
+			skill.effects.find(eft => this.equipmentCheck(eft, cur)) === void 0
+				? td.classList.add('disable')
+				: td.classList.remove('disable');
+		});
+	},
 	initCurrentSkill(s){
 		this.currentData.currentSkill = s;
 		if ( s.checkData() ){
 			cy.object.empty(this.currentData.stackValues);
 			this.currentData.stackValues = null;
-			const {mainWeapon, subWeapon, bodyArmor} = s.defaultEffect;
-			Object.assign(this.currentData, {mainWeapon, subWeapon, bodyArmor});
-		}
-
-		const t = this.createSkillQueryScopeHTML(s, Skill.CATEGORY_EQUIPMENT);
-		const scope = this.getSkillElementScope(Skill.CATEGORY_EQUIPMENT);
-		cy.element.removeAllChild(scope);
-		if ( t !== null ){
-			scope.appendChild(t);
 		}
 
 		const archs_scope = this.getSkillElementScope(TYPE_SKILL_RECORD);
@@ -190,7 +246,7 @@ Controller.prototype = {
 						menu_list[loc].classList.remove('hidden');
 						cy.element.removeAllChild(_C.getSkillElementScope(SkillTree.TYPE));
 						cy.element.removeAllChild(_C.getSkillElementScope(Skill.TYPE));
-						cy.element.removeAllChild(_C.getSkillElementScope(Skill.CATEGORY_EQUIPMENT));
+						cy.element.removeAllChild(_C.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT));
 						const t = menu_list[loc].querySelector('li.cur');
 						if ( t )
 							t.click();
@@ -223,8 +279,20 @@ Controller.prototype = {
 						scope.innerHTML = "";
 						const ele = _C.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
 						scope.appendChild(_C.createSkillQueryScopeHTML(ele, SkillTree.CATEGORY_TABLE));
+
+						const t = _C.createSkillQueryScopeHTML(ele, SkillTree.CATEGORY_EQUIPMENT);
+						const equip_scope = _C.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT);
+						cy.element.removeAllChild(equip_scope);
+						if ( t !== null ){
+							equip_scope.appendChild(t);
+							// 更新裝備邏輯
+							let temp = _C.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT).querySelector(`li[${strings().data_bodyArmor}="${_C.currentData.bodyArmor}"]`);
+							if ( temp ) temp.click();
+							temp = _C.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT).querySelector(`li[${strings().data_mainWeapon}="${_C.currentData.mainWeapon}"]`);
+							if ( temp ) temp.click();
+						}
+
 						cy.element.removeAllChild(_C.getSkillElementScope(Skill.TYPE));
-						cy.element.removeAllChild(_C.getSkillElementScope(Skill.CATEGORY_EQUIPMENT));
 					};
 					const he = document.createElement("div");
 					he.className = '_' + category;
@@ -250,7 +318,7 @@ Controller.prototype = {
 					const _C = this;
 					const td_listener = function(event){
 						const s = _C.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
-						if ( _C.currentData.currentSkill === s )
+						if ( this.classList.contains('disable') || _C.currentData.currentSkill === s )
 							return;
 						const cur = this.parentNode.parentNode.getElementsByClassName('cur')[0];
 						if ( cur )
@@ -283,18 +351,7 @@ Controller.prototype = {
 					});
 					return he;
 				}
-			}
-			case Skill.TYPE: switch (category){
-				case Skill.CATEGORY_MAIN: {
-					if ( sEle.checkData() ){
-						return AnalysisSkill(this.currentData);	
-					}
-					const div = document.createElement('div');
-					div.classList.add('no_data');
-					div.innerHTML = '此技能資料尚未更新。';
-					return div;
-				}
-				case Skill.CATEGORY_EQUIPMENT: {
+				case SkillTree.CATEGORY_EQUIPMENT: {
 					const _C = this;
 					const listener = function(event){
 						const mw = this.getAttribute(strings().data_mainWeapon),
@@ -305,7 +362,7 @@ Controller.prototype = {
 						for (let i=0; i<list.length; ++i){
 							const a = list[i];
 							if ( a !== null && a !== '' ){
-								_C.currentData[ary[i]] = parseInt(a, 10);
+								_C.setCurrentEquipment(ary[i], parseInt(a, 10));
 								this.parentNode.getElementsByClassName('cur')[0].classList.remove('cur');
 								this.classList.add('cur');
 								_C.updateSkillHTML();
@@ -314,17 +371,21 @@ Controller.prototype = {
 						}
 					};
 					const mainw = [], subw = [], armor = [];
-					sEle.effects.forEach(sef => {
-						const mw = sef.mainWeapon, sw = sef.subWeapon, ba = sef.bodyArmor;
-						if ( mainw.indexOf(mw) == -1 )
-							mainw.push(mw);
-						if ( subw.indexOf(sw) == -1 )
-							subw.push(sw);
-						if ( armor.indexOf(ba) == -1 )
-							armor.push(ba);
+					sEle.skills.forEach(skill => {
+						skill.effects.forEach(sef => {
+							const mw = sef.mainWeapon, sw = sef.subWeapon, ba = sef.bodyArmor;
+							if ( mainw.indexOf(mw) == -1 )
+								mainw.push(mw);
+							if ( subw.indexOf(sw) == -1 )
+								subw.push(sw);
+							if ( armor.indexOf(ba) == -1 )
+								armor.push(ba);
+						});
 					});
+
 					const he = document.createDocumentFragment();
-					const ary = [this.currentData.mainWeapon, this.currentData.subWeapon, this.currentData.bodyArmor];
+					//const ary = [this.currentData.mainWeapon, this.currentData.subWeapon, this.currentData.bodyArmor];
+					const field_order = ['mainWeapon', 'subWeapon', 'bodyArmor'];
 					[mainw, subw, armor].forEach((field, i) => {
 						if ( field.length === 0 )
 							return;
@@ -350,33 +411,26 @@ Controller.prototype = {
 									names = GetLang('Skill Query/Analysis Skill/Body Armor List');
 									break;
 							}
-							let end = null;
+							let end = null, find_default_button = false;
 							const ul = document.createElement('ul');
 							field.forEach(a => {
 								const li = document.createElement('li');
-								if ( ary[i] == a )
-									li.classList.add('cur');
 								li.setAttribute(attrkey, a);
 								li.addEventListener('click', listener);
 								if ( a != -1 ){
 									li.innerHTML = `<span class="icon">${icons[a]}</span><span class="value">${names[a]}</span>`;
 									ul.appendChild(li);
+									if ( !find_default_button ){
+										li.classList.add('cur');
+										this.currentData[field_order[i]] = a;
+										find_default_button = true;
+									}
 								}
 								else {
 									li.innerHTML = `<span class="icon"></span><span class="value">${Lang('equipment: unlimited')}</span>`;
 									end = li;
 								}
 							});
-							if ( field === mainw ){
-								if ( mainw.indexOf(0/*單手劍*/) !== -1 && mainw.indexOf(9/*雙劍*/) === -1 ){
-									// 創建一個外觀為「雙劍」實為「單手劍」的按鈕
-									const li = document.createElement('li');
-									li.innerHTML = `<span class="icon">${icons[9]}</span><span class="value">${names[9]}</span>`;
-									li.setAttribute(attrkey, 0);
-									ul.appendChild(li);
-									li.addEventListener('click', listener);
-								}
-							}
 							if ( end !== null )
 								ul.appendChild(end);
 							
@@ -390,6 +444,17 @@ Controller.prototype = {
 						}
 					});
 					return he.childElementCount != 0 ? he : null;
+				}
+			}
+			case Skill.TYPE: switch (category){
+				case Skill.CATEGORY_MAIN: {
+					if ( sEle.checkData() ){
+						return AnalysisSkill(this.currentData);	
+					}
+					const div = document.createElement('div');
+					div.classList.add('no_data');
+					div.innerHTML = '此技能資料尚未更新。';
+					return div;
 				}
 			}
 			case TYPE_CHARACTER_LEVEL: {

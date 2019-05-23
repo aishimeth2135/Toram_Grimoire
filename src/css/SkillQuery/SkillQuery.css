@@ -76,6 +76,14 @@ article#SkillQuery div.SkillTree_scope > table td > svg {
 	fill: var(--primary-color-light);
 	vertical-align: middle;
 }
+article#SkillQuery div.SkillTree_scope > table td.disable {
+	color: var(--primary-color-light);
+	cursor: not-allowed;
+}
+article#SkillQuery div.SkillTree_scope > table td.disable:hover {
+	border-bottom: 1px var(--primary-color-light) solid;
+	color: var(--primary-color-light);
+}
 
 article#SkillQuery div.Skill_scope {
 	margin-bottom: 2rem;

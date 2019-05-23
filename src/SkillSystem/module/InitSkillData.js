@@ -1,3 +1,5 @@
+import {SkillEffect} from "./SkillElements.js";
+
 function InitSkillBranch(branch){
 	const set_default = function(b, default_value){
 		Object.keys(default_value).forEach((key) => {
@@ -57,6 +59,12 @@ export default function(sr){
 				const sef = skill.defaultEffect;
 				if ( !sef )
 					return;
+				const have_1hsword = skill.effects.find(eft => eft.mainWeapon === 0);
+				if ( have_1hsword !== void 0 ){
+					const have_dualsword = skill.effects.find(eft => eft.mainWeapon === 9);
+					if ( have_dualsword === void 0 )
+						skill.newElement(SkillEffect.TYPE, {mainWeapon: 9, subWeapon: -1, bodyArmor: -1});
+				}
 				sef.branchs.forEach(branch => {
 					InitSkillBranch(branch);
 				});

@@ -104,6 +104,7 @@ SkillTree.prototype = {
 	}
 };
 SkillTree.CATEGORY_TABLE = Symbol();
+SkillTree.CATEGORY_EQUIPMENT = Symbol();
 
 function Skill(st, no, name){/* implements Parent, Child */
 	this.parent = st;
@@ -137,7 +138,6 @@ Skill.prototype = {
 	}
 };
 Skill.CATEGORY_MAIN = Symbol();
-Skill.CATEGORY_EQUIPMENT = Symbol();
 
 function SkillEffect(sk, m, s, b){
 	this.parent = sk;
