@@ -19,7 +19,7 @@ const zh_tw = {
             'no data': '此技能資料尚未齊全。',
             'equipment not confirm': '所選取的裝備無法使用此技能。',
             'Main Weapon List': ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍'],
-            'Sub Weapon List': ['箭矢', '盾牌', '小刀', '魔導具', '套', '拔刀劍'],
+            'Sub Weapon List': ['箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍'],
             'Body Armor List': ['輕量化', '重量化', '一般'],
             'mp cost': 'MP消耗',
             'range': '射程',
@@ -118,14 +118,9 @@ const zh_tw = {
                     'duration-2': ['', '秒內']
                 },
                 'heal': {
-                    'title: hp': '恢復HP',
-                    'title: mp': '恢復MP',
-                    'restore': '恢復量',
-                    'base restore': '基本恢復量',
+                    'title: hp': 'HP恢復',
+                    'title: mp': 'MP恢復',
                     'frequency': '作用次數',
-                    'extra': {
-                        'base title': '恢復量加成'
-                    }
                 },
                 'reference': {
                     'reference url': '資料參考連結'

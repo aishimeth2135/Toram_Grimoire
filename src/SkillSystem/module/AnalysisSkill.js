@@ -298,7 +298,7 @@ function getBranchHTML(branch, data){
 	function processValue(v, setting){
 		v = v.split(',,');
 		setting = Object.assign({
-			calc: true, tail: '', preText: '',toPercentage: false,
+			calc: true, tail: '', preText: '', toPercentage: false,
 			checkHasStack: v[0], light: false, separateText: false
 		}, setting);
 		
@@ -308,6 +308,8 @@ function getBranchHTML(branch, data){
 				if ( !data.showOriginalFormula ){
 					if ( setting.calc ){
 						let t = safeEval(a);
+						if ( setting.toPercentage )
+							t *= 100;
 						if ( t !== void 0 && !Number.isInteger(t) )
 							t = t.toFixed(2);
 						res = t;
@@ -315,7 +317,7 @@ function getBranchHTML(branch, data){
 					else
 						res = a;
 					if ( setting.toPercentage )
-						res = res*100 + '%';
+						res += '%';
 				}
 				else {
 					a = a.replace(/CLv/g, Lang('character level'));
@@ -576,14 +578,22 @@ function getBranchHTML(branch, data){
 
 	switch (btype){
 		case 'stack': {
-			const left = simpleCreateHTML('span', 'left', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18 13H6c-.55 0-1-.45-1-1s.45-1 1-1h12c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg>');
-			const right = simpleCreateHTML('span', 'right', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg>');
-			const mid = simpleCreateHTML('input', 'mid');
+			const stk = branch;
+			const left = simpleCreateHTML('span', 'ctr_button', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18 13H6c-.55 0-1-.45-1-1s.45-1 1-1h12c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg>'),
+				right = simpleCreateHTML('span', 'ctr_button', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg>'),
+				mid = simpleCreateHTML('input', 'mid'),
+				unit = stk.branchAttributes['unit'] !== void 0 ? simpleCreateHTML('span', 'unit', stk.branchAttributes['unit']) : null;
 
-			mid.value = data.stackValues[getStackBranchIdKey(branch)];
+			const ov = data.stackValues[getStackBranchIdKey(branch)];
+			mid.value = ov;
+			if ( unit === null ){
+				mid.style.width = "2rem";
+				mid.style.textAlign = "center";
+			}
+			else
+				mid.style.width = (0.6*String(ov).length + 0.2) + "rem";
 
-			const stk = branch,
-				maxv = parseInt(safeEval(stk.branchAttributes['max']), 10),
+			const maxv = parseInt(safeEval(stk.branchAttributes['max']), 10),
 				minv = parseInt(safeEval(stk.branchAttributes['min']), 10);
 			const ctr_listener = function(event){
 				const max = parseInt(mid.getAttribute('data-maxv'), 10);
@@ -597,6 +607,7 @@ function getBranchHTML(branch, data){
 					v = max;
 				else if ( v < min )
 					v = min;
+				v = String(v);
 				mid.value = v;
 				data.stackValues[getStackBranchIdKey(stk)] = v;
 				data.skillRoot.controller.updateSkillHTML();
@@ -607,7 +618,7 @@ function getBranchHTML(branch, data){
 			right.setAttribute('data-ctr', '+');
 			right.addEventListener('click', ctr_listener);
 
-			mid.type = 'number';
+			mid.type = "number";
 			mid.setAttribute('data-maxv', maxv);
 			mid.setAttribute('data-minv', minv);
 			mid.addEventListener('change', ctr_listener);
@@ -626,6 +637,8 @@ function getBranchHTML(branch, data){
 			const main = document.createDocumentFragment();
 			main.appendChild(left);
 			main.appendChild(mid);
+			if ( unit !== null )
+				main.appendChild(unit);
 			main.appendChild(right);
 
 			const content = createContentLine(scope1, main);
@@ -969,20 +982,15 @@ function getBranchHTML(branch, data){
 			if ( attr['name'] ){
 				heal_name = simpleCreateHTML('span', '_name', attr['name']);
 			}
-			let text = {
-				hp: Lang('branch/heal/title: hp'),
-				mp: Lang('branch/heal/title: mp')
-			}[attr['type']];
-			const title =  simpleCreateHTML('span', '_main_title', text);
 
-			text = getTargetText(attr['target']);
+			let text = getTargetText(attr['target']);
  			const target = text != null ? createSkillAttributeScope(null, null, text) : null;
 
- 			const constant = createSkillAttributeScope(
+ 			const constant = attr['constant'] != '0' ? createSkillAttributeScope(
  				null,
- 				attr['constant'] != '0' ? Lang('branch/heal/restore') : Lang('branch/heal/base restore'),
+ 				null,
  				processValue(attr['constant'])
- 			);
+ 			) : null;
 
  			let duration = null;
  			if ( attr['duration'] !==  void 0 ){
@@ -1007,11 +1015,9 @@ function getBranchHTML(branch, data){
 			if ( attr['extra_text'] !==  void 0 ){
 				const ta = attr['extra_text'].split(','),
 					va = attr['extra_value'].split(',').map(a => processValue(a, {toPercentage: true}));
-				const frg2 = document.createDocumentFragment();
 				ta.forEach((a, i) => {
-					frg2.appendChild(createSkillAttributeScope(null, a, va[i]));
-				});
-				extra_frg.appendChild(createContentLine(simpleCreateHTML('span', '_main_title', Lang('branch/heal/extra/base title')),frg2));
+					extra_frg.appendChild(createSkillAttributeScope(null, a, va[i]));
+				});;
 			}
 			const top = simpleCreateHTML('div', 'top');
 			if ( heal_name !== null )
@@ -1024,7 +1030,6 @@ function getBranchHTML(branch, data){
 			const content = simpleCreateHTML('div', 'content');
 
 			const scope1 = simpleCreateHTML('div', 'scope1');
-			scope1.appendChild(title);
 			scope1.appendChild(target);
 			if ( duration !== null )
 				scope1.appendChild(duration);
@@ -1033,15 +1038,22 @@ function getBranchHTML(branch, data){
 			if ( cycle !== null )
 				scope1.appendChild(cycle);
 
-			const scope2 = simpleCreateHTML('div', 'scope2');
-			scope2.appendChild(constant);
-
 			content.appendChild(scope1);
-			content.appendChild(scope2);
 
 			he.appendChild(content);
+			const frg2 = document.createDocumentFragment();
+			if ( constant !== null )
+				frg2.appendChild(constant);
 			if ( extra_frg.childElementCount !== 0 )
-				he.appendChild(extra_frg);
+				frg2.appendChild(extra_frg);
+			he.appendChild(createContentLine(
+				simpleCreateHTML(
+					'span', '_main_title', {
+						hp: Lang('branch/heal/title: hp'),
+						mp: Lang('branch/heal/title: mp')
+					}[attr['type']]
+				), frg2
+			));
 
 			branch.finish = true;
 			return he;
@@ -1172,6 +1184,24 @@ function beforeExport(he, data){
 	}
 
 	he.querySelectorAll('span.skill_from_where_button').forEach(btn => btn.addEventListener('click', skill_text_button_listener));
+
+	function hiddenSubCaption(event){
+		const scope1 = this.parentNode.querySelector('div.scope1');
+		scope1.classList.toggle('hidden');
+		this.querySelector('.open').classList.toggle('hidden');
+		this.querySelector('.close').classList.toggle('hidden');
+	}
+	he.querySelectorAll('div.content > div.scope1').forEach(sc1 => {
+		if ( sc1.parentNode.classList.contains('content_line') || sc1.childElementCount === 0 )
+			return;
+		const btn = simpleCreateHTML('span', 'hidden_toggle_button',
+			'<span class="open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/><path fill="none" d="M0 0h24v24H0V0z"/></svg></span><span class="close hidden"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8.12 14.71L12 10.83l3.88 3.88c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L12.7 8.71c-.39-.39-1.02-.39-1.41 0L6.7 13.3c-.39.39-.39 1.02 0 1.41.39.38 1.03.39 1.42 0z"/></svg></span>');
+
+		btn.addEventListener('click', hiddenSubCaption);
+		sc1.parentNode.insertBefore(btn, sc1.parentNode.firstChild);
+
+		btn.click();
+	});
 }
 
 /*
@@ -1180,33 +1210,17 @@ function beforeExport(he, data){
 | @return documentFragment
 */
 export default function(data){
-	
 	const skill = data.currentSkill;
 	const equip = data;
 	const SLv = data.skillLevel, CLv = data.characterLevel;
 
 	/* Load Default SkillEffect */
 	let output = new TempSkillEffect().from(skill.defaultEffect);
-	
-	const equip_confirm = function(_equip){
-		/* 通用 */
-		if ( _equip.mainWeapon == -1 && _equip.subWeapon == -1 && _equip.bodyArmor == -1 )
-			return true;
-		/* 非通用 */
-		if ( equip.mainWeapon != -1 && equip.mainWeapon == _equip.mainWeapon )
-			return true;
-		if ( equip.subWeapon != -1 && equip.subWeapon == _equip.subWeapon )
-			return true;
-		if ( equip.bodyArmor != -1 && equip.bodyArmor == _equip.bodyArmor )
-			return true;
-		return false;
-	};
 
 	let find = false;
 	skill.effects.forEach(function(eft){
 		if ( find ) return;
-		let {mainWeapon, subWeapon, bodyArmor} = eft;
-		if ( equip_confirm({mainWeapon, subWeapon, bodyArmor}) ){
+		if ( data.skillRoot.controller.equipmentCheck(eft, data) ){
 			if ( eft != skill.defaultEffect )
 				output.overWrite(eft);
 			find = true;
