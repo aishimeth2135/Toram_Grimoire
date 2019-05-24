@@ -293,12 +293,17 @@ function getBranchHTML(branch, data){
 				});
 			});
 		}
+		if ( _attr['skill_tree'] !== void 0 ){
+			_attr['skill_tree'].split(/\s*,\s*/).forEach(t => {
+				str = str.replace(new RegExp(t, 'g'), lightText(t));
+			});
+		}
 		return str;
 	}
 	function processValue(v, setting){
 		v = v.split(',,');
 		setting = Object.assign({
-			calc: true, tail: '', preText: '', toPercentage: false,
+			calc: true, tail: '', head: '', preText: '', toPercentage: false,
 			checkHasStack: v[0], light: false, separateText: false
 		}, setting);
 		
@@ -336,6 +341,7 @@ function getBranchHTML(branch, data){
 		res = setting.preText + res;
 		if ( setting.separateText || ( !( v.length === 1 && v[0].match(/^[\d\.]+$/) ) && data.showOriginalFormula) )
 			res = '<span class="separate_text">' + res + '</span>';
+		res = setting.head + res;
 		res += setting.tail;
 		
 		const span = document.createElement('span');
@@ -350,7 +356,7 @@ function getBranchHTML(branch, data){
 		const showData = stat.getShowData();
 		const vs = showData.value.split(',,');
 		const sign = ( vs.length === 1 && safeEval(vs[0]) < 0 ) ? '' : '+';
-		const set = {tail: showData.tail, preText: showData.title + sign};
+		const set = {tail: showData.tail, head: showData.title + sign};
 		if (vs.length !== 1 )
 			set.separateText = true;
 		const v = processValue(showData.value, set);
@@ -694,7 +700,9 @@ function getBranchHTML(branch, data){
 			);
 
 			// 技能常數
-			const constant = createSkillAttributeScope(
+			const constant = attr['title'] === 'normal_attack' && attr['constant'] === '0'
+			? null
+			: createSkillAttributeScope(
 				null, 
 				Lang('branch/damage/skill constant'),
 				processValue(attr['constant'])
@@ -811,39 +819,54 @@ function getBranchHTML(branch, data){
 			if ( damage_name !== null )
 				top.appendChild(damage_name);
 			
-			const scope1 = simpleCreateHTML('div', 'scope1');
-			scope1.appendChild(title);
-			scope1.appendChild(damage_type);
-			scope1.appendChild(target_type);
+			const frg1 = document.createDocumentFragment();
+			frg1.appendChild(damage_type);
+			frg1.appendChild(target_type);
 			if ( damage_isPlace !== null )
-				scope1.appendChild(damage_isPlace);
+				frg1.appendChild(damage_isPlace);
 			if ( damage_element !== null )
-				scope1.appendChild(damage_element);
+				frg1.appendChild(damage_element);
 			if ( damage_judgment !== null )
-				scope1.appendChild(damage_judgment);
+				frg1.appendChild(damage_judgment);
 			if ( damage_frequency !== null )
-				scope1.appendChild(damage_frequency);
+				frg1.appendChild(damage_frequency);
 			if ( damage_cycle !== null )
-				scope1.appendChild(damage_cycle);
+				frg1.appendChild(damage_cycle);
 			if ( poration_damage !== null )
-				scope1.appendChild(poration_damage);
+				frg1.appendChild(poration_damage);
 			if ( poration_poration != null )
-				scope1.appendChild(poration_poration);
+				frg1.appendChild(poration_poration);
 
-			const scope2 = simpleCreateHTML('div', 'scope2');
-			scope2.appendChild(valid_base);
-			scope2.appendChild(constant);
-			scope2.appendChild(multiplier);
+			const frg2 = document.createDocumentFragment();
+			frg2.appendChild(valid_base);
+			if ( constant !== null )
+				frg2.appendChild(constant);
+			frg2.appendChild(multiplier);
 
 			const content = simpleCreateHTML('div', 'content');
-			content.appendChild(scope1);
-			content.appendChild(scope2);
+			const scope1 = simpleCreateHTML('div', 'scope1');
+			const scope2 = simpleCreateHTML('div', 'scope2');
+			let line = null;
+			if ( attr['title'] === 'normal_attack' ){
+				line = createContentLine(title, frg2);
+			}
+			else {
+				scope1.appendChild(title);
+				scope2.appendChild(frg2);
+			}
+			scope1.appendChild(frg1);
+			if ( scope1.childElementCount !== 0 )
+				content.appendChild(scope1);
+			if ( scope2.childElementCount !== 0 )
+				content.appendChild(scope2);
 
 			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
 			
 			if ( top.childElementCount != 0 )
 				he.appendChild(top);
 			he.appendChild(content);
+			if ( line !== null )
+				he.appendChild(line);
 			if ( aliment !== null )
 				he.appendChild(aliment);
 			if ( damage_extras_frg.childElementCount > 0 )
@@ -1118,7 +1141,7 @@ function getBranchHTML(branch, data){
 				let urls = attr['url'].split(',');
 				let url_texts = attr['url_text'].split(',');
 				urls.forEach((a, i) => {
-					url_scope.appendChild(createSkillAttributeScope(null, null, `<a href="${a}" target="_blank" class="url_text">url_texts[i]</a>`));
+					url_scope.appendChild(createSkillAttributeScope(null, null, `<a href="${a}" target="_blank" class="url_text">${url_texts[i]}</a>`));
 				});
 			}
 			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
@@ -1155,8 +1178,10 @@ function beforeExport(he, data){
 		let x = vr.left, y = vr.top,
 			w = pvr.width, mw = window.innerWidth,
 			h = pvr.height ,mh = window.innerHeight;
-		if ( x+w > mw - remv )
-			scope.style.left = ((-1*w + vr.width)/remv) + "rem";
+		if ( x + pvr.width > mw - remv )
+			scope.style.left = ((mw -1*w - x)/remv - 0.5) + "rem";
+		else if ( x < pvr.width )
+			scope.style.left = (-1*x/remv + 0.5) + "rem";
 		else
 			scope.style.left = "0";
 		if ( y > mh/2 )
@@ -1195,7 +1220,7 @@ function beforeExport(he, data){
 		if ( sc1.parentNode.classList.contains('content_line') || sc1.childElementCount === 0 )
 			return;
 		const btn = simpleCreateHTML('span', 'hidden_toggle_button',
-			'<span class="open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/><path fill="none" d="M0 0h24v24H0V0z"/></svg></span><span class="close hidden"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8.12 14.71L12 10.83l3.88 3.88c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L12.7 8.71c-.39-.39-1.02-.39-1.41 0L6.7 13.3c-.39.39-.39 1.02 0 1.41.39.38 1.03.39 1.42 0z"/></svg></span>');
+			'<span class="close hidden"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/><path fill="none" d="M0 0h24v24H0V0z"/></svg></span><span class="open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8.12 14.71L12 10.83l3.88 3.88c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L12.7 8.71c-.39-.39-1.02-.39-1.41 0L6.7 13.3c-.39.39-.39 1.02 0 1.41.39.38 1.03.39 1.42 0z"/></svg></span>');
 
 		btn.addEventListener('click', hiddenSubCaption);
 		sc1.parentNode.insertBefore(btn, sc1.parentNode.firstChild);

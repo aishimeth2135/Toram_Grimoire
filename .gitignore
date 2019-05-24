@@ -3,7 +3,7 @@ cy/
 EnchantEquipment/
 img/
 js/
-svg/
+/svg/
 /node_modules/
 backup_index.html
 _EnchantCalc.html

@@ -15,7 +15,7 @@ const
 	SUB_WEAPON = 4,
 	BODY_ARMOR = 5,
 	MAIN_WEAPON_LIST = ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍'],
-	SUB_WEAPON_LIST = ['箭矢', '盾牌', '小刀', '魔導具', '套', '拔刀劍'],
+	SUB_WEAPON_LIST = ['箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍'],
 	BODY_ARMOR_LIST = ['輕量化', '重量化', '一般'],
 	EFFECT_BRANCH_NO = 6,
 	EFFECT_BRANCH_NAME = 7,
