@@ -93,14 +93,15 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_list > div.c
 	position: absolute;
 	left: 0;
 	top: 0.3rem;
-	content:'';
-	display:inline-block;
-	background-size:contain;
-	background-repeat:no-repeat;
+	content: '';
+	display: inline-block;
+	background-size: contain;
+	background-repeat: no-repeat;
 }
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_list > div.content > ul._lists > li {
 	position: relative;
 	padding-left: 1.2rem;
+	margin: 0.5rem 0;
 }
 
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope1 {
