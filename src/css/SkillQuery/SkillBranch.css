@@ -82,9 +82,25 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_tips {
 }
 
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_list > div.content > ul._lists {
-	/*list-style: none;*/
+	list-style: none;
 	margin: 0;
-	padding: 0 0.6rem;
+	padding: 0 0.4rem;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_list > div.content > ul._lists > li:before {
+	background-image: url(../../sourse/svg/li_icon.svg);
+	width: 0.75rem;
+	height: 0.75rem;
+	position: absolute;
+	left: 0;
+	top: 0.3rem;
+	content:'';
+	display:inline-block;
+	background-size:contain;
+	background-repeat:no-repeat;
+}
+article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_list > div.content > ul._lists > li {
+	position: relative;
+	padding-left: 1.2rem;
 }
 
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope1 {
@@ -225,9 +241,11 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_f
 	color: var(--primary-color-light-3);
 	cursor: pointer;
 	padding: 0.2rem;
+	margin: 0 0.1rem;
 	border-bottom: 1px var(--primary-color-light) solid;
 	transition: 0.3s;
 	position: relative;
+	white-space: nowrap;
 }
 article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_from_where_button:hover {
 	border-bottom: 1px var(--primary-color-light-2) solid;
