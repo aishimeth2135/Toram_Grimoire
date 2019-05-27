@@ -6,7 +6,7 @@
                 "useBuiltIns": 'usage',
                 "corejs": 3,
                 "targets": {
-                    "safari": '9.0'
+                    "safari": '8.0'
                 }
             }
         ],

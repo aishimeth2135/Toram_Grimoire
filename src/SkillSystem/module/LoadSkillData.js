@@ -1,8 +1,6 @@
 import {SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
 import Grimoire from "../../main/Grimoire.js";
 
-"use strict";
-
 const 
 /* all */
 	NO = 0,
@@ -28,7 +26,6 @@ const
 	IN_COMBO = 14,
 	ACTION_TIME = 15,
 	CASTING_TIME = 16,
-	CAPTION_FROM_GAME = 17,
 	SKILL_TYPE_LIST = ['瞬發', '須詠唱', '須蓄力', '被動'],
 	IN_COMBO_LIST = ['可以放入連擊', '無法放入連擊', '不可放入連擊的第一招'],
 	ACTION_TIME_LIST = ['極慢', '慢', '稍慢', '一般', '稍快', '快', '極快'],
