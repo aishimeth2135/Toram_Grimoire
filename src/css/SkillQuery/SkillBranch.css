@@ -1,19 +1,19 @@
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch {
+div.skill_branchs > div.branch {
 	border-top: 1px var(--primary-color-light) solid;
 	margin-bottom: 0.2rem;
 	padding: 0.6rem 0;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.light {
+div.skill_branchs > div.branch span.light {
 	color: var(--primary-color-light-3);
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.dark {
+div.skill_branchs > div.branch span.dark {
 	color: #666;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.line_scope {
+div.skill_branchs > div.branch div.line_scope {
 	padding-left: 0.4rem;
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.top {
+div.skill_branchs > div.branch > div.top {
 	padding: 0.1rem;
 	padding-top: 0;
 	position: relative;
@@ -21,72 +21,72 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.top {
 	margin-bottom: 0.3rem;
 	color: var(--primary-color-purple);
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.top > span._name {
+div.skill_branchs > div.branch > div.top > span._name {
 	margin-left: 0.6rem;
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > span.hidden_toggle_button {
+div.skill_branchs > div.branch > div.content > span.hidden_toggle_button {
 	float: right;
 	transition: 0.3s;
 	cursor: pointer;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > span.hidden_toggle_button > span > svg {
+div.skill_branchs > div.branch > div.content > span.hidden_toggle_button > span > svg {
 	fill: var(--primary-color-light-2);
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > span.hidden_toggle_button > span > svg:hover {
+div.skill_branchs > div.branch > div.content > span.hidden_toggle_button > span > svg:hover {
 	fill: var(--primary-color-light-3);	
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 {
+div.skill_branchs > div.branch > div.content > div.scope1 {
 	font-size: 0.9rem;
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 > span._main_title {
+div.skill_branchs div.scope1 > span._main_title {
 	padding-right: 0.6rem;
 	margin: 0.2rem 0;
 	display: inline-block;
 	color: var(--primary-color-light-3);
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 > span._main_title span.light,
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 > span._main_title span.skill_from_where_button {
+div.skill_branchs div.scope1 > span._main_title span.light,
+div.skill_branchs div.scope1 > span._main_title .skill_from_where_button {
 	color: var(--primary-color-purple);
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content div.text_scope {
+div.skill_branchs > div.branch > div.content div.text_scope {
 	padding: 0.4rem;
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content > div.scope1 > div.skill_attribute {
+div.skill_branchs > div.branch > div.content > div.scope1 > div.skill_attribute {
 	padding: 0.1rem 0.3rem;
 	border-bottom: 1px var(--primary-color-light-2) solid;
 	margin: 0.2rem 0.4rem;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content_line > div.scope1,
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content_line > div.scope2 {
+div.skill_branchs > div.branch > div.content_line > div.scope1,
+div.skill_branchs > div.branch > div.content_line > div.scope2 {
 	display: inline-block;
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch > div.content {
+div.skill_branchs > div.branch > div.content {
 	padding: 0 0.4rem;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_damage > div.content > div.scope2 > div.skill_attribute {
+div.branch_damage > div.content > div.scope2 > div.skill_attribute {
 	padding: 0.2rem 0.4rem;
 	margin: 0.4rem 0;
 	margin-right: 0.4rem;
 }
 
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_tips {
+div.skill_branchs > div.branch_tips {
 	color: #c62899;
 	font-size: 0.9rem;
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_list > div.content > ul._lists {
+div.skill_branchs > div.branch_list > div.content > ul._lists {
 	list-style: none;
 	margin: 0;
 	padding: 0 0.4rem;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_list > div.content > ul._lists > li:before {
+div.skill_branchs > div.branch_list > div.content > ul._lists > li:before {
 	background-image: url(../../sourse/svg/li_icon.svg);
 	width: 0.75rem;
 	height: 0.75rem;
@@ -98,25 +98,25 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_list > div.c
 	background-size: contain;
 	background-repeat: no-repeat;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_list > div.content > ul._lists > li {
+div.skill_branchs > div.branch_list > div.content > ul._lists > li {
 	position: relative;
 	padding-left: 1.2rem;
 	margin: 0.5rem 0;
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope1 {
+div.skill_branchs > div.branch_stack > div.content > div.scope1 {
 	margin-right: 0.9rem;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 {
+div.skill_branchs div.branch_stack > div.content > div.scope2 {
 	margin-top: 0.3rem;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span,
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > input {
+div.skill_branchs > div.branch_stack > div.content > div.scope2 > span,
+div.skill_branchs > div.branch_stack > div.content > div.scope2 > input {
 	display: inline-block;
 	text-align: center;
 	vertical-align: middle;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_button {
+div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_button {
 	border-radius: 0.2rem;
 	padding: 0.3rem;
 	cursor: pointer;
@@ -125,13 +125,13 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.
 	margin-left: 0.1rem;
 	margin-right: 0.3rem;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_button:hover {
+div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_button:hover {
 	border: 1px var(--primary-color-light-3) solid;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_button:hover svg {
+div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_button:hover svg {
 	fill: 1px var(--primary-color-light-3) solid;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > input {
+div.skill_branchs > div.branch_stack > div.content > div.scope2 > input {
 	padding: 0.3rem 0;
 	border: 0;
 	font-size: 1rem;
@@ -139,63 +139,63 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.
 	text-align: right;
 	width: 2rem;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.unit {
+div.skill_branchs > div.branch_stack > div.content > div.scope2 > .unit {
 	margin-right: 0.4rem;
 	color: var(--primary-color-light-3);
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > input:focus {
+div.skill_branchs > div.branch_stack > div.content > div.scope2 > input:focus {
 	outline: none;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_stack > div.content > div.scope2 > span > svg {
+div.skill_branchs > div.branch_stack > div.content > div.scope2 > span > svg {
 	fill: var(--primary-color-light-2);
 	vertical-align: middle;
 	width: 1.2rem;
 	height: 1.2rem;
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch_reference a.url_text {
+div.skill_branchs > div.branch_reference a.url_text {
 	color: var(--primary-color-light-3);
 	text-decoration: unset;
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch  div.scope1 div.skill_attribute > span.element_value {
+div.skill_branchs div.scope1 div.skill_attribute > span.element_value {
 	vertical-align: baseline;
 }
-/*article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch  div.scope1 div.skill_attribute > span.element_ball {
+/*#SkillQuery div.Skill_scope > div.skill_branchs > div.branch  div.scope1 div.skill_attribute > span.element_ball {
 	height: 0.8rem;
 	width: 0.8rem;
 }*/
-article#SkillQuery div.Skill_scope span.effect_by_stack {
+div.skill_branchs > div.branch span.effect_by_stack {
 	color: #2196f3;
 }
-article#SkillQuery div.Skill_scope span.effect_by_stack span.dark,
-article#SkillQuery div.Skill_scope span.dark span.effect_by_stack {
+div.skill_branchs > div.branch span.effect_by_stack span.dark,
+div.skill_branchs > div.branch span.dark span.effect_by_stack {
 	color: #009688!important;
 }
 
-article#SkillQuery div.skill_attribute > span.element_neutral {
+div.Skill_scope div.skill_attribute > .element_neutral {
 	background-color: #666;
 }
-article#SkillQuery div.skill_attribute > span.element_fire {
+div.Skill_scope div.skill_attribute > .element_fire {
 	background-color: #ea0000;
 }
-article#SkillQuery div.skill_attribute > span.element_water {
+div.Skill_scope div.skill_attribute > .element_water {
 	background-color: #03a9f4;
 }
-article#SkillQuery div.skill_attribute > span.element_earth {
+div.Skill_scope div.skill_attribute > .element_earth {
 	background-color: #d26900;
 }
-article#SkillQuery div.skill_attribute > span.element_wind {
+div.Skill_scope div.skill_attribute > .element_wind {
 	background-color: #9aff02;
 }
-article#SkillQuery div.skill_attribute > span.element_light {
+div.Skill_scope div.skill_attribute > .element_light {
 	background-color: #f9f900;
 }
-article#SkillQuery div.skill_attribute > span.element_dark {
+div.Skill_scope div.skill_attribute > .element_dark {
 	background-color: #5b00ae;
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.effective_area {
+div.skill_branchs > div.branch div.effective_area {
 	border: 1px var(--primary-color-light) solid;
 	box-shadow: 0.1rem 0.1rem 0.4rem var(--primary-color-light);
 	padding: 0.6rem;
@@ -203,42 +203,42 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.effectiv
 	display: inline-block;
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.effective_area span.ball_character {
+div.skill_branchs div.effective_area .ball_character {
 	background-color: #ff5fb7;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.effective_area span.ball_target {
+div.skill_branchs div.effective_area .ball_target {
 	background-color: #2196f3;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.show_area {
-	cursor: pointer;
-}
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.show_area:hover {
-
-}
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.effective_area > div > svg {
+div.skill_branchs div.effective_area > div > svg {
 	min-width: 15rem;
     max-width: 100%;
     height: auto;
 }
 @media screen and (max-width: 20rem) {
-	article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch div.effective_area > div > svg {
+	div.skill_branchs div.effective_area > div > svg {
 		min-width: auto;
 	}
 }
+div.skill_branchs div.show_area {
+	cursor: pointer;
+}
+div.skill_branchs div.show_area:hover {
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.separate_text {
+}
+
+div.skill_branchs > div.branch .separate_text {
 	border-left: 1px var(--primary-color-light) solid;
 	border-right: 1px var(--primary-color-light) solid;
 	display: inline-block;
 	padding: 0 0.5rem;
 	margin: 0 0.4rem;
 }
-article#SkillQuery div.Skill_scope span.effect_by_stack span.separate_text {
+div.skill_branchs > div.branch .effect_by_stack .separate_text {
 	border-left: 1px #9acbf3 solid!important;
 	border-right: 1px #9acbf3 solid!important;
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_from_where_button {
+div.skill_branchs .skill_from_where_button {
 	color: var(--primary-color-light-3);
 	cursor: pointer;
 	padding: 0.2rem;
@@ -248,11 +248,11 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_f
 	position: relative;
 	white-space: nowrap;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_from_where_button:hover {
+div.skill_branchs .skill_from_where_button:hover {
 	border-bottom: 1px var(--primary-color-light-2) solid;
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_from_where_button > div.temp {
+div.skill_branchs .skill_from_where_button > div.temp {
 	width: 0;
 	height: 0;
 	position: absolute;
@@ -260,7 +260,7 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_f
 	left: 0;
 }
 
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_from_where_button > div.temp > div.show_skill_from_where {
+div.skill_branchs .skill_from_where_button .show_skill_from_where {
 	position: relative;
 	width: 15rem;
 	min-height: 5rem;
@@ -271,11 +271,11 @@ article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_f
 	z-index: 5;
 	color: var(--primary-color-purple);
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_from_where_button > div.temp > div.show_skill_from_where span.global_button_1 {
+div.skill_branchs .skill_from_where_button .show_skill_from_where span.global_button_1 {
 	min-width: 3rem;
 	margin: 0.3rem;
 }
-article#SkillQuery div.Skill_scope > div.skill_branchs > div.branch span.skill_from_where_button > div.temp > div.show_skill_from_where > div.button_scope {
+div.skill_branchs .skill_from_where_button .show_skill_from_where > .button_scope {
 	margin-top: 0.4rem;
 	text-align: right;
 }

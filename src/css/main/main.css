@@ -24,28 +24,25 @@ input[type="number"]{
   -moz-appearance: textfield;
 }
 
-
-div#top_menu {
+#top_menu {
 
 }
-div#top_menu > ul {
+#top_menu > ul {
 	list-style: none;
 	padding: 0px 0.6rem;
 	margin: 1rem 0px;
 }
-
-div#top_menu > ul > li {
+#top_menu li {
 	display: inline-block;
 	padding: 0.5rem 0.7rem;
 	border-right: 1px var(--primary-color-light) solid;
 }
-
-div#top_menu, body > article, body > section, body > footer {
+#top_menu, body > article, body > section, body > footer {
 	max-width: 40rem;
 	margin: 0 auto;
 }
 
-div#LoadingPage {
+#LoadingPage {
 	text-align: center;
 	line-height: 2rem;
 	width: 100%;
@@ -56,7 +53,8 @@ div#LoadingPage {
 	background-color: #FFF;
 	padding-top: 2rem;
 }
-div#LoadingPage > div.main {
+
+#LoadingPage > .main {
 	margin-bottom: 2rem;
 }
 

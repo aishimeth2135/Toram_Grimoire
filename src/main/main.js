@@ -3,8 +3,6 @@ import SkillSystem from "../SkillSystem/SkillSystem.js";
 import CharacterSystem from "../CharacterSystem/CharacterSystem.js";
 import ready from "./ready.js";
 
-"use strict";
-
 function loadingMsg(s){
 	const div = document.createElement('div');
 	div.innerHTML = s;

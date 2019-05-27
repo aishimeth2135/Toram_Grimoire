@@ -131,12 +131,12 @@ const zh_tw = {
             }         
         },
         'button text': {
-            'back': '返回'
+            'back': '上一個技能'
         }
     },
     'stat base': {
         'type total: preText': '總'
-    }    
+    }
 };
 
 export default zh_tw;
