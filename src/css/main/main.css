@@ -66,3 +66,11 @@ footer {
 footer a {
 	color: var(--primary-color-light-3);
 }
+
+footer .switch_branch_development_mode {
+	cursor: pointer;
+	transition: 0.3s;
+}
+footer .switch_branch_development_mode:hover {
+	color: var(--primary-color-light-3);
+}

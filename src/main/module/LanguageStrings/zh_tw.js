@@ -80,6 +80,10 @@ const zh_tw = {
             'move distanve: title': '移動距離',
             'effective area: character position': '角色位置',
             'effective area: target position': '目標位置',
+            'branch development controller': {
+                'title: default': '預設',
+                'title: not default': '非預設'
+            },
             'branch': {
                 'stack': {
                     'base name': '技能層數',

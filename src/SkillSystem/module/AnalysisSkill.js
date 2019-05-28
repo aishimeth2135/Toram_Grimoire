@@ -14,6 +14,73 @@ const GLOBAL_EXTRA_ATTRIBUTE_VALUE = {
 	none: '@none'
 };
 
+/**
+ * 儲存被覆蓋前的 TempSkillEffect 鏡像
+ * @param  {SkillEffect} sef 複製用的
+ * @return {void}     branchDevelopmentController Object
+ */
+function branchDevelopmentController(sef){
+	this.baseEffect = new TempSkillEffect().from(sef);
+}
+branchDevelopmentController.prototype = {
+	/**
+	 * 取得此分支覆蓋前後的細節。
+	 * @param  {TempSkillBranck} branch 欲取得細節的分支
+	 * @return {dom element}      HTML介面
+	 */
+	branchDetail(branch, is_default){
+		const cmp = branch.no !== '-' ? this.baseEffect.branchs.find(b => b.no == branch.no) : branch;
+		const he = simpleCreateHTML('div', 'dev_branchDetail');
+
+		const top = simpleCreateHTML('div', 'top');
+		top.appendChild(simpleCreateHTML('span', '_no', branch.no));
+		top.appendChild(simpleCreateHTML('span', '_name', branch.name));
+		he.appendChild(top);
+
+		he.appendChild(simpleCreateHTML('div', '_title', Lang('branch development controller/title: default')));
+		const s1 = document.createElement('tbody');
+		Object.keys(cmp.branchAttributes).forEach(k => {
+			const t = document.createElement('tr');
+			t.appendChild(simpleCreateHTML('td', '_name', k));
+			t.appendChild(simpleCreateHTML('td', '_value', cmp.branchAttributes[k])); 
+			if ( branch.branchAttributes[k] !== void 0 && branch.branchAttributes[k] !== cmp.branchAttributes[k] )
+				t.classList.add('overwrite');
+			s1.appendChild(t);
+		});
+		cmp.stats.forEach(a => {
+			const t = document.createElement('tr');
+			t.appendChild(simpleCreateHTML('td', '_name', a.base.baseName));
+			t.appendChild(simpleCreateHTML('td', '_value', a.statValue()));
+			if ( branch.stats.find(b => a.base === b.base && a.type === b.type && a.statValue() != b.statValue()) )
+				t.classList.add('overwrite');
+			s1.appendChild(t);
+		});
+		const table1 = document.createElement('table');
+		table1.appendChild(s1);
+		he.appendChild(table1);
+		if ( !is_default && cmp != branch ){
+			const s2 = document.createElement('tbody');
+			Object.keys(branch.branchAttributes).forEach(k => {
+				const t = document.createElement('tr');
+				t.appendChild(simpleCreateHTML('td', '_name', k));
+				t.appendChild(simpleCreateHTML('td', '_value', branch.branchAttributes[k])); 
+				s2.appendChild(t);
+			});
+			branch.stats.forEach(a => {
+				const t = document.createElement('tr');
+				t.appendChild(simpleCreateHTML('td', '_name', a.base.baseName));
+				t.appendChild(simpleCreateHTML('td', '_value', a.statValue()));
+				s2.appendChild(t);
+			});
+			he.appendChild(simpleCreateHTML('div', '_title', Lang('branch development controller/title: not default')));
+			const table2 = document.createElement('table');
+			table2.appendChild(s2);
+			he.appendChild(table2);
+		}
+		return he;
+	}
+};
+
 function getStackBranchIdKey(stk){
 	return 'id' + stk.branchAttributes['id'];
 }	
@@ -24,12 +91,12 @@ function TempSkillEffect(){
 }
 TempSkillEffect.prototype = {
 	from(sef){
-		Object.getOwnPropertySymbols(sef.attributes).forEach(function(key){
+		Object.getOwnPropertySymbols(sef.attributes).forEach(key => {
 			this.appendAttribute(key, sef.attributes[key]);
-		}, this);
-		sef.branchs.forEach(function(branch){
+		});
+		sef.branchs.forEach(branch => {
 			this.newBranch().from(branch);
-		}, this);
+		});
 		return this;
 	},
 	newBranch(){
@@ -38,20 +105,19 @@ TempSkillEffect.prototype = {
 		return t;
 	},
 	overWrite: function(sef){
-		Object.getOwnPropertySymbols(sef.attributes).forEach(function(key){
+		Object.getOwnPropertySymbols(sef.attributes).forEach(key => {
 			const v = sef.attributes[key];
 			if ( v == GLOBAL_EXTRA_ATTRIBUTE_VALUE.none && this.attributes[key] ){
 				delete this.attributes[key];
 				return;
 			}
 			this.appendAttribute(key, v);
-		}, this);
+		});
 		// 如果 branch.no 一樣才執行覆蓋
-		let branchs_no = sef.branchs.map(a => a.no);
-		sef.branchs.forEach(function(branch, i){
-			const loc = this.branchs.findIndex(b => b.no == branch.no);
+		sef.branchs.forEach((branch, i) => {
+			const loc = this.branchs.findIndex(b => b.no !== '-' && b.no == branch.no);
 			loc == -1 ? this.newBranch().from(branch) : this.branchs[loc].overWrite(branch);
-		}, this);
+		});
 	},
 	appendAttribute(name, v){
 		this.attributes[name] = v;
@@ -69,16 +135,16 @@ function TempSkillBranch(tsef){
 	this.finish = false;
 }
 TempSkillBranch.prototype = {
-	from: function(branch){
+	from(branch){
 		this.no = branch.no;
 		this.name = branch.name;
 		this.branchAttributes = {};
-		Object.keys(branch.branchAttributes).forEach(function(key){
+		Object.keys(branch.branchAttributes).forEach(key => {
 			this.appendBranchAttribute(key, branch.branchAttributes[key]);
-		}, this);
-		branch.stats.forEach(function(a){
+		});
+		branch.stats.forEach(a => {
 			this.appendStat(a.base.baseName, a.value, '').type = a.type;
-		}, this);
+		});
 		return this;
 	},
 	appendBranchAttribute(name, v){
@@ -102,18 +168,18 @@ TempSkillBranch.prototype = {
 			this.name = branch.name;
 			CY.object.empty(this.branchAttributes);
 		}
-		Object.keys(branch.branchAttributes).forEach(function(key, i){
+		Object.keys(branch.branchAttributes).forEach((key, i) => {
 			const v = branch.branchAttributes[key];
 			if ( v == GLOBAL_EXTRA_ATTRIBUTE_VALUE.none && this.branchAttributes[key] ){
 				delete this.branchAttributes[key];
 				return;
 			}
 			this.appendBranchAttribute(key, v);
-		}, this);
-		branch.stats.forEach(function(a){
+		});
+		branch.stats.forEach(a => {
 			let t = this.stats.find(b => a.base === b.base && a.type === b.type);
 			t === void 0 ? this.appendStat(a.base.baseName, a.value, '').type = a.type : t.statValue(a.value);
-		}, this);
+		});
 	}
 };
 
@@ -964,14 +1030,16 @@ function getBranchHTML(branch, data){
  			const scope1 = document.createDocumentFragment();
  			if ( condition !== null )
  				scope1.appendChild(condition);
+
+ 			const frg1 = document.createDocumentFragment();
  			if ( isPlace !== null )
- 				scope1.appendChild(isPlace);
+ 				frg1.appendChild(isPlace);
  			if ( end_condition !== null )
- 				scope1.appendChild(end_condition);
+ 				frg1.appendChild(end_condition);
  			if ( duration !== null )
-				scope1.appendChild(duration);
+				frg1.appendChild(duration);
  			if ( target_type != null )
- 				scope1.appendChild(target_type);
+ 				frg1.appendChild(target_type);
 
  			const scope2 = document.createDocumentFragment();
  			if ( attr['caption'] )
@@ -988,9 +1056,20 @@ function getBranchHTML(branch, data){
  			
  			if ( top.childElementCount != 0 )
 				he.appendChild(top);
+
+			const content_top = simpleCreateHTML('div', 'content');
+			if ( isPlace !== null ){
+				const s1 = simpleCreateHTML('div', 'scope1');
+				s1.appendChild(frg1);
+				content_top.appendChild(s1);
+			}
+			else
+				scope1.appendChild(frg1);
+
 			const content = createContentLine(scope1, scope2, {headIcon: false});
-			if ( isPlace !== null )
-				content.classList.remove('content_line');
+
+			if ( content_top.childElementCount !== 0 )
+				he.appendChild(content_top);
  			he.appendChild(content);
  			if ( extras_frg.childElementCount !== 0 )
  				he.appendChild(extras_frg);
@@ -1148,7 +1227,7 @@ function getBranchHTML(branch, data){
 			if ( main_text !== null)
 				he.appendChild(main_text);
 			if ( url_scope !== null )
-				he.appendChild(createContentLine(simpleCreateHTML('span', '_main_title', Lang('branch/reference/reference url')), url_scope));
+				he.appendChild(createContentLine(simpleCreateHTML('span', '_main_title', Lang('branch/reference/reference url')), url_scope, {headIcon: false}));
 
 			branch.finish = true;
 			return he;
@@ -1242,12 +1321,15 @@ export default function(data){
 	/* Load Default SkillEffect */
 	let output = new TempSkillEffect().from(skill.defaultEffect);
 
+	let overwrite_eft;
+
 	let find = false;
 	skill.effects.forEach(function(eft){
 		if ( find ) return;
 		if ( data.skillRoot.controller.equipmentCheck(eft, data) ){
 			if ( eft != skill.defaultEffect )
 				output.overWrite(eft);
+			overwrite_eft = eft;
 			find = true;
 			return;
 		}
@@ -1296,13 +1378,35 @@ export default function(data){
 				stackNames = data.stackNames,
 				showOriginalFormula = data.showOriginalFormula,
 				skillRoot = data.skillRoot;
+			let branchDevCtr = null;
+			if ( data.branchDevelopmentMode )
+				branchDevCtr = new branchDevelopmentController(skill.defaultEffect);
 			output.branchs.forEach(branch => {
 				const t = getBranchHTML(branch, {
 					SLv, CLv, stackNames, stackValues, showOriginalFormula,
 					skillRoot
 				});
-				if ( t !== null )
+				if ( t !== null ){
+					if ( data.branchDevelopmentMode ){
+						const is_default = overwrite_eft === skill.defaultEffect;
+						let _t = overwrite_eft.branchs.find(b => branch.no == b.no);
+						two.appendChild(branchDevCtr.branchDetail(
+							( !is_default &&  _t) ? _t : branch, is_default
+						));
+						if ( branch.name == 'list' ){
+							let p = branch.findLocation() + 1;
+							let _cur = output.branchs[p];
+							while ( _cur && _cur.name == 'list' ){
+								_t = overwrite_eft.branchs.find(b => _cur.no == b.no);
+								two.appendChild(branchDevCtr.branchDetail(
+									( !is_default &&  _t) ? _t : _cur, is_default
+								));
+								++p; _cur = output.branchs[p];
+							}
+						}
+					}
 					two.appendChild(t);
+				}
 			});
 		}
 		else {
