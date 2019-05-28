@@ -35,7 +35,8 @@ function Controller(sr){
 		stackValues: {},
 		stackNames: {},
 		showOriginalFormula: false,
-		skillRecords: []
+		skillRecords: [],
+		branchDevelopmentMode: false
 	};
 }
 Controller.prototype = {
@@ -73,6 +74,12 @@ Controller.prototype = {
 		main_node.appendChild(frg);
 
 		this.currentData.skill_from_where_scope = cy.element.simpleCreateHTML('div', ['show_skill_from_where', 'hidden']);
+
+		const _C = this;
+		document.querySelector("footer .switch_branch_development_mode").addEventListener('click', function(event){
+			_C.currentData.branchDevelopmentMode = _C.currentData.branchDevelopmentMode ? false : true;
+			_C.updateSkillHTML();
+		});
 	},
 	getSkillElementScope(type){
 		const SCOPE_NAME = {
