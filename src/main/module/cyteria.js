@@ -1,28 +1,27 @@
 
 let Cyteria = {
 	element: {
-		remove: function(){
-			let args = Array.from(arguments);
-			Array.from(arguments).forEach(function(node){
+		remove(){
+			Array.from(arguments).forEach(node => {
 				if ( node )
 					node.parentNode.removeChild(node);
 			});
 		},
-		removeAllChild: function(node){
+		removeAllChild(node){
 			if ( !node ) return;
-			while( node.firstChild )
+			while ( node.firstChild )
 				node.removeChild(node.firstChild);
 			return node;
 		},
-		setAttributes: function(ele, dict){
-			Object.keys(dict).forEach(k =>{
+		setAttributes(ele, dict){
+			Object.keys(dict).forEach(k => {
 				if ( dict[k] !== null )
 					ele.setAttribute(k, dict[k])
 			});
 		},
 		simpleCreateHTML(type, classList, html){
 			const t = document.createElement(type);
-			if ( classList !== null ){
+			if ( classList !== void 0 && classList !== null ){
 				Array.isArray(classList) ? t.classList.add(...classList): t.classList.add(classList);
 			}
 			if ( html !== void 0 && html !== null )
@@ -31,20 +30,6 @@ let Cyteria = {
 		},
 		convertRemToPixels(rem){    
 		    return rem*parseFloat(getComputedStyle(document.documentElement).fontSize);
-		}
-	},
-	class: {
-		/* @param c : Child Class
-		 * @param [... : Parent Class
-		 */
-		extends: function(c){
-			let args = Array.from(arguments);
-			c.prototype = Object.create(args[1].prototype);
-			args.forEach(function(item, i){
-				if (i <= 1) return;
-				Object.assign(c.prototype, item.prototype);
-			});
-			c.constructor = c;
 		}
 	},
 	object: {
@@ -96,15 +81,16 @@ let Cyteria = {
 			return path;
 		},
 		getSectorD(cx, cy, startR, endR, startAngle , endAngle, clockwise){
-			const ssx = startR*Math.cos(endAngle*Math.PI/180) + cx,
-				ssy = -startR*Math.sin(endAngle*Math.PI/180) + cy,
-				sex = startR*Math.cos(startAngle*Math.PI/180) + cx,
-				sey = -startR*Math.sin(startAngle*Math.PI/180) + cy,
-				esx = endR*Math.cos(startAngle*Math.PI/180) + cx,
-				esy = -endR*Math.sin(startAngle*Math.PI/180) + cy,
-				eex = endR*Math.cos(endAngle*Math.PI/180) + cx,
-				eey = -endR*Math.sin(endAngle*Math.PI/180) + cy;
-			return `M${ssx} ${ssy} A${startR} ${startR} 0 0 ${clockwise == 1 ? 0 : 1} ${sex} ${sey} L${esx} ${esy} A${endR} ${endR} 0 0 ${clockwise} ${eex} ${eey} Z`;
+			const deg = Math.PI/180;
+			const ssx = startR*Math.cos(endAngle*deg) + cx,
+				ssy = -startR*Math.sin(endAngle*deg) + cy,
+				sex = startR*Math.cos(startAngle*deg) + cx,
+				sey = -startR*Math.sin(startAngle*deg) + cy,
+				esx = endR*Math.cos(startAngle*deg) + cx,
+				esy = -endR*Math.sin(startAngle*deg) + cy,
+				eex = endR*Math.cos(endAngle*deg) + cx,
+				eey = -endR*Math.sin(endAngle*deg) + cy;
+			return `M${ssx} ${ssy}A${startR} ${startR} 0 0 ${clockwise == 1 ? 0 : 1} ${sex} ${sey}L${esx} ${esy}A${endR} ${endR} 0 0 ${clockwise} ${eex} ${eey}Z`;
 		},
 		createAnimate(attributeName, attr={}){
 			attr = Object.assign({

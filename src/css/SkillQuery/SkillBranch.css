@@ -62,8 +62,18 @@ div.skill_branchs > div.branch > div.content > div.scope1 > div.skill_attribute 
 	margin: 0.2rem 0.4rem;
 }
 div.skill_branchs > div.branch > div.content_line > div.scope1,
-div.skill_branchs > div.branch > div.content_line > div.scope2 {
+div.skill_branchs > div.branch > div.content_line > div.scope2,
+div.skill_branchs > div.branch > div.content_line > div._icon {
 	display: inline-block;
+}
+div.skill_branchs > div.branch > div.content_line > div._icon {
+	margin-right: 0.3rem;
+	vertical-align: middle;
+}
+div.skill_branchs > div.branch > div.content_line > div._icon > svg {
+	height: 1.3rem;
+	width: 1.3rem;
+	fill: var(--primary-color-light);
 }
 
 div.skill_branchs > div.branch > div.content {

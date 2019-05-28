@@ -408,19 +408,25 @@ function getBranchHTML(branch, data){
 		t.appendChild(simpleCreateHTML('span', ['_value', 'element_value'], ELEMEMT_DICT[ele_type]));
 		return t;
 	}
-	function createContentLine(frg1, frg2, extrafrgs){
+	function createContentLine(frg1, frg2, options){
+		options =  Object.assign({
+			headIcon: true,
+			extrafrgs: null
+		}, options);
 		const t = simpleCreateHTML('div', ['content', 'content_line']);
 		const s1 = simpleCreateHTML('div', 'scope1');
 		const s2 = simpleCreateHTML('div', 'scope2');
 		s1.appendChild(frg1);
 		s2.appendChild(frg2);
+		if ( options.headIcon )
+			t.appendChild(simpleCreateHTML('div', '_icon', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9.29 15.88L13.17 12 9.29 8.12c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0l4.59 4.59c.39.39.39 1.02 0 1.41L10.7 17.3c-.39.39-1.02.39-1.41 0-.38-.39-.39-1.03 0-1.42z"/></svg>'));
 		t.appendChild(s1);
 		t.appendChild(s2);
-		if ( extrafrgs !== void 0 && extrafrgs !== null ){
-			if ( !Array.isArray(extrafrgs) )
-				t.appendChild(extrafrgs);
+		if ( options.extrafrgs !== void 0 && options.extrafrgs !== null ){
+			if ( !Array.isArray(options.extrafrgs) )
+				t.appendChild(options.extrafrgs);
 			else
-				[...extrafrgs].forEach(a => t.appendChild(a));
+				options.extrafrgs.forEach(a => t.appendChild(a));
 		}
 		return t;
 	}
@@ -647,7 +653,7 @@ function getBranchHTML(branch, data){
 				main.appendChild(unit);
 			main.appendChild(right);
 
-			const content = createContentLine(scope1, main);
+			const content = createContentLine(scope1, main, {headIcon: false});
 
 			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
 			he.appendChild(content);
@@ -756,9 +762,9 @@ function getBranchHTML(branch, data){
 			// 傷害次數  週期、頻率
 			let damage_frequency = null, damage_judgment = null, damage_cycle = null;
 			if ( parseInt(attr['frequency']) > 1 || attr['title'] == 'each' ) {
-				damage_frequency = createSkillAttributeScope(
-					null, Lang('branch/damage/frequency'),
-					processValue(attr['frequency'])
+				damage_frequency = simpleCreateHTML(
+					'span', '_main_title',
+					processValue(attr['frequency'], {tail: Lang('branch/damage/frequency: unit')})
 				);
 				text = attr['judgment'] == 'common' ? Lang('branch/damage/judgment: common') : Lang('branch/damage/judgment: separate')
 				damage_judgment = createSkillAttributeScope(
@@ -828,8 +834,6 @@ function getBranchHTML(branch, data){
 				frg1.appendChild(damage_element);
 			if ( damage_judgment !== null )
 				frg1.appendChild(damage_judgment);
-			if ( damage_frequency !== null )
-				frg1.appendChild(damage_frequency);
 			if ( damage_cycle !== null )
 				frg1.appendChild(damage_cycle);
 			if ( poration_damage !== null )
@@ -845,28 +849,24 @@ function getBranchHTML(branch, data){
 
 			const content = simpleCreateHTML('div', 'content');
 			const scope1 = simpleCreateHTML('div', 'scope1');
-			const scope2 = simpleCreateHTML('div', 'scope2');
-			let line = null;
-			if ( attr['title'] === 'normal_attack' ){
-				line = createContentLine(title, frg2);
-			}
-			else {
-				scope1.appendChild(title);
-				scope2.appendChild(frg2);
-			}
+
+			const line_frg1 = document.createDocumentFragment();
+			if ( damage_frequency !== null )
+				line_frg1.appendChild(damage_frequency);
+			line_frg1.appendChild(title);
+
+			const line = createContentLine(line_frg1, frg2, {headIcon: false});
+
 			scope1.appendChild(frg1);
 			if ( scope1.childElementCount !== 0 )
 				content.appendChild(scope1);
-			if ( scope2.childElementCount !== 0 )
-				content.appendChild(scope2);
 
 			const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
 			
 			if ( top.childElementCount != 0 )
 				he.appendChild(top);
 			he.appendChild(content);
-			if ( line !== null )
-				he.appendChild(line);
+			he.appendChild(line);
 			if ( aliment !== null )
 				he.appendChild(aliment);
 			if ( damage_extras_frg.childElementCount > 0 )
@@ -988,7 +988,7 @@ function getBranchHTML(branch, data){
  			
  			if ( top.childElementCount != 0 )
 				he.appendChild(top);
-			const content = createContentLine(scope1, scope2);
+			const content = createContentLine(scope1, scope2, {headIcon: false});
 			if ( isPlace !== null )
 				content.classList.remove('content_line');
  			he.appendChild(content);
@@ -1010,9 +1010,7 @@ function getBranchHTML(branch, data){
  			const target = text != null ? createSkillAttributeScope(null, null, text) : null;
 
  			const constant = attr['constant'] != '0' ? createSkillAttributeScope(
- 				null,
- 				null,
- 				processValue(attr['constant'])
+ 				null, null, processValue(attr['constant'])
  			) : null;
 
  			let duration = null;
@@ -1023,9 +1021,9 @@ function getBranchHTML(branch, data){
 
  			let frequency = null;
  			if ( attr['frequency'] !==  void 0 ) {
-				frequency = createSkillAttributeScope(
-					null, Lang('branch/heal/frequency'),
-					processValue(attr['frequency'])
+				frequency = simpleCreateHTML(
+					'span', '_main_title',
+					processValue(attr['frequency'], {tail: Lang('branch/heal/frequency: unit')})
 				);
 			}
 
@@ -1056,27 +1054,29 @@ function getBranchHTML(branch, data){
 			scope1.appendChild(target);
 			if ( duration !== null )
 				scope1.appendChild(duration);
-			if ( frequency !== null )
-				scope1.appendChild(frequency);
 			if ( cycle !== null )
 				scope1.appendChild(cycle);
 
 			content.appendChild(scope1);
 
 			he.appendChild(content);
+
+			const frg1 = document.createDocumentFragment();
+			frg1.appendChild(simpleCreateHTML(
+				'span', '_main_title', {
+					hp: Lang('branch/heal/title: hp'),
+					mp: Lang('branch/heal/title: mp')
+				}[attr['type']]
+			));
+			if ( frequency !== null )
+				frg1.appendChild(frequency);
+
 			const frg2 = document.createDocumentFragment();
 			if ( constant !== null )
 				frg2.appendChild(constant);
 			if ( extra_frg.childElementCount !== 0 )
 				frg2.appendChild(extra_frg);
-			he.appendChild(createContentLine(
-				simpleCreateHTML(
-					'span', '_main_title', {
-						hp: Lang('branch/heal/title: hp'),
-						mp: Lang('branch/heal/title: mp')
-					}[attr['type']]
-				), frg2
-			));
+			he.appendChild(createContentLine(frg1, frg2, {headIcon: false}));
 
 			branch.finish = true;
 			return he;
