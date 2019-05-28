@@ -100,7 +100,7 @@ const zh_tw = {
                     'target type: single': '單體',
                     'target type: AOE': '範圍',
                     'is place': '設置型',
-                    'frequency': '傷害次數',
+                    'frequency: unit': '次',
                     'judgment: common': '共同判定',
                     'judgment: separate': '分開判定',
                     'cycle: preText': '每',
@@ -120,7 +120,7 @@ const zh_tw = {
                 'heal': {
                     'title: hp': 'HP恢復',
                     'title: mp': 'MP恢復',
-                    'frequency': '作用次數',
+                    'frequency: unit': '次',
                 },
                 'reference': {
                     'reference url': '資料參考連結'

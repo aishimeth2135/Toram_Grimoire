@@ -247,6 +247,7 @@ Controller.prototype = {
 						cy.element.removeAllChild(_C.getSkillElementScope(SkillTree.TYPE));
 						cy.element.removeAllChild(_C.getSkillElementScope(Skill.TYPE));
 						cy.element.removeAllChild(_C.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT));
+						_C.getSkillElementScope(TYPE_SKILL_RECORD).classList.add('hidden');
 						const t = menu_list[loc].querySelector('li.cur');
 						if ( t )
 							t.click();
@@ -293,6 +294,8 @@ Controller.prototype = {
 						}
 
 						cy.element.removeAllChild(_C.getSkillElementScope(Skill.TYPE));
+						_C.getSkillElementScope(TYPE_SKILL_RECORD).classList.add('hidden');
+						_C.currentData.currentSkill = null;
 					};
 					const he = document.createElement("div");
 					he.className = '_' + category;
