@@ -12,7 +12,7 @@ function Lang(s){
 
 /* 特殊屬性
  * @none: 無條件去除該屬性。*/
-const GLOBAL_EXTRA_ATTRIBUTE_VALUE = {
+const GLOBAL_EXTRA_VALUE = {
 	none: '@none'
 };
 
@@ -46,7 +46,7 @@ branchDevelopmentController.prototype = {
 
 		const top = simpleCreateHTML('div', 'top');
 		top.appendChild(simpleCreateHTML('span', '_no', branch.no));
-		top.appendChild(simpleCreateHTML('span', '_name', branch.name));
+		top.appendChild(simpleCreateHTML('span', '_name', cmp.name));
 		he.appendChild(top);
 
 		const s1 = document.createElement('tbody');
@@ -130,7 +130,7 @@ TempSkillEffect.prototype = {
 	overWrite: function(sef){
 		Object.getOwnPropertySymbols(sef.attributes).forEach(key => {
 			const v = sef.attributes[key];
-			if ( v == GLOBAL_EXTRA_ATTRIBUTE_VALUE.none && this.attributes[key] ){
+			if ( v == GLOBAL_EXTRA_VALUE.none && this.attributes[key] ){
 				delete this.attributes[key];
 				return;
 			}
@@ -180,20 +180,20 @@ TempSkillBranch.prototype = {
 		return SkillBranch.prototype.appendStat.call(this, ...arguments);
 	},
 	overWrite: function(branch){
-		// 如果 branch.no 一樣但 branch.name 為空值。去除此 branch。
-		if ( branch.name == '' ){
+		// 如果 branch.no 一樣但 branch.name 為@node。去除此 branch。
+		if ( branch.name === GLOBAL_EXTRA_VALUE.none ){
 			const b = this.parent.branchs;
 			b.splice(b.indexOf(this), 1);
 			return;
 		}
-		// 如果 branch.no 一樣但 branch.name 不一樣，先清空所有屬性。
-		if ( this.name != branch.name ){
+		// 如果 branch.no 一樣但 branch.name 不一樣，先清空所有屬性。branch.name 為空值時，默認兩者同名。
+		if ( branch.name !== '' && this.name != branch.name ){
 			this.name = branch.name;
 			CY.object.empty(this.branchAttributes);
 		}
 		Object.keys(branch.branchAttributes).forEach((key, i) => {
 			const v = branch.branchAttributes[key];
-			if ( v == GLOBAL_EXTRA_ATTRIBUTE_VALUE.none && this.branchAttributes[key] ){
+			if ( v == GLOBAL_EXTRA_VALUE.none && this.branchAttributes[key] ){
 				delete this.branchAttributes[key];
 				return;
 			}
@@ -204,7 +204,7 @@ TempSkillBranch.prototype = {
 			if ( t === void 0 )
 				this.appendStat(a.base.baseName, a.value, '').type = a.type;
 			else {
-				if ( a.value == GLOBAL_EXTRA_ATTRIBUTE_VALUE.none )
+				if ( a.value == GLOBAL_EXTRA_VALUE.none )
 					this.stats.splice(this.stats.indexOf(t), 1);
 				else
 					t.statValue(a.value);
