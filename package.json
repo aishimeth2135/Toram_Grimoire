@@ -9,9 +9,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-v1": "webpack --mode production --config webpack.v1.config.js",
-    "build-v2": "webpack --mode production --config webpack.v2.config.js",
-    "build": "concurrently \"npm run build-v1\" \"npm run build-v2\""
+    "build": "webpack --mode production --config webpack.v2.config.js",
+    "//build-v1": "webpack --mode production --config webpack.v1.config.js",
+    "//build": "concurrently \"npm run build-v1\" \"npm run build-v2\""
   },
   "author": "cyteria",
   "license": "ISC",

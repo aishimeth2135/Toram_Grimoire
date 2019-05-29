@@ -1,1 +1,0 @@
-document.getElementById('LoadingPage').innerHTML = "此瀏覽器版本較舊，嘗試載入備用程式...";
