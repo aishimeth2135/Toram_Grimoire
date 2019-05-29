@@ -180,8 +180,8 @@ TempSkillBranch.prototype = {
 		return SkillBranch.prototype.appendStat.call(this, ...arguments);
 	},
 	overWrite: function(branch){
-		// 如果 branch.no 一樣但 branch.name 為@node。去除此 branch。
-		if ( branch.name === GLOBAL_EXTRA_VALUE.none ){
+		// 如果 branch.no 一樣但 branch.name 為空值且 brahch.branchAttributes 為空。去除此 branch。
+		if ( branch.name === '' &&  CY.object.isEmpty(branch.branchAttributes) ){
 			const b = this.parent.branchs;
 			b.splice(b.indexOf(this), 1);
 			return;
