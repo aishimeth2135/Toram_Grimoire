@@ -48,6 +48,8 @@ const zh_tw = {
             'skill formula: BVIT': '角色基礎VIT',
             'skill formula: shield_refining': '盾精煉值',
             'skill formula: dagger_atk': '小刀ATK',
+            'skill formula: target_def': '目標DEF',
+            'skill formula: target_level': '目標Lv',
             'character level': '角色等級',
             'skill level': '技能等級',
             'physical': '物理',
