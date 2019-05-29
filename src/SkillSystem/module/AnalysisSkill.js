@@ -130,7 +130,7 @@ TempSkillEffect.prototype = {
 	overWrite: function(sef){
 		Object.getOwnPropertySymbols(sef.attributes).forEach(key => {
 			const v = sef.attributes[key];
-			if ( v == GLOBAL_EXTRA_VALUE.none && this.attributes[key] ){
+			if ( v == '' && this.attributes[key] ){
 				delete this.attributes[key];
 				return;
 			}
@@ -193,7 +193,7 @@ TempSkillBranch.prototype = {
 		}
 		Object.keys(branch.branchAttributes).forEach((key, i) => {
 			const v = branch.branchAttributes[key];
-			if ( v == GLOBAL_EXTRA_VALUE.none && this.branchAttributes[key] ){
+			if ( v == '' && this.branchAttributes[key] ){
 				delete this.branchAttributes[key];
 				return;
 			}
@@ -204,7 +204,7 @@ TempSkillBranch.prototype = {
 			if ( t === void 0 )
 				this.appendStat(a.base.baseName, a.value, '').type = a.type;
 			else {
-				if ( a.value == GLOBAL_EXTRA_VALUE.none )
+				if ( a.value == '' )
 					this.stats.splice(this.stats.indexOf(t), 1);
 				else
 					t.statValue(a.value);
@@ -337,7 +337,9 @@ function getBranchHTML(branch, data){
 			'BAGI': Lang('skill formula: BAGI'),
 			'BVIT': Lang('skill formula: BVIT'),
 			'shield_refining': Lang('skill formula: shield_refining'),
-			'dagger_atk': Lang('skill formula: dagger_atk')
+			'dagger_atk': Lang('skill formula: dagger_atk'),
+			'target_def': Lang('skill formula: target_def'),
+			'target_level': Lang('skill formula: target_level')
 		};
 		Object.keys(FORMULA_EXTRA_VALUE_LIST).forEach(key => {
 			str = str.replace(new RegExp(key, 'g'), FORMULA_EXTRA_VALUE_LIST[key]);
