@@ -19,13 +19,15 @@ let Cyteria = {
 					ele.setAttribute(k, dict[k])
 			});
 		},
-		simpleCreateHTML(type, classList, html){
+		simpleCreateHTML(type, classList, html, attr){
 			const t = document.createElement(type);
 			if ( classList !== void 0 && classList !== null ){
 				Array.isArray(classList) ? t.classList.add(...classList): t.classList.add(classList);
 			}
 			if ( html !== void 0 && html !== null )
 				t.innerHTML = html;
+			if ( attr !== void 0 && attr !== null )
+				Cyteria.element.setAttributes(t, attr);
 			return t;
 		},
 		convertRemToPixels(rem){    

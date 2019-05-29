@@ -4,6 +4,8 @@ import GetLang from "../../main/module/LanguageSystem.js";
 import CY from "../../main/module/cyteria.js";
 import strings from "./strings.js";
 
+import StatBase from "../../CharacterSystem/module/StatBase.js";
+
 function Lang(s){
 	return GetLang("Skill Query/Analysis Skill/" + s);
 }
@@ -20,7 +22,7 @@ const GLOBAL_EXTRA_ATTRIBUTE_VALUE = {
  * @return {void}     branchDevelopmentController Object
  */
 function branchDevelopmentController(sef){
-	this.baseEffect = new TempSkillEffect().from(sef);
+	this.baseEffect = sef;
 }
 branchDevelopmentController.prototype = {
 	/**
@@ -29,6 +31,16 @@ branchDevelopmentController.prototype = {
 	 * @return {dom element}      HTML介面
 	 */
 	branchDetail(branch, is_default){
+		function getAttrEx(type){
+			switch (type){
+				case StatBase.TYPE_CONSTANT:
+					return '';
+				case StatBase.TYPE_MULTIPLIER:
+					return '%';
+				case StatBase.TYPE_TOTAL:
+					return '~';
+			}
+		}
 		const cmp = branch.no !== '-' ? this.baseEffect.branchs.find(b => b.no == branch.no) : branch;
 		const he = simpleCreateHTML('div', 'dev_branchDetail');
 
@@ -37,12 +49,18 @@ branchDevelopmentController.prototype = {
 		top.appendChild(simpleCreateHTML('span', '_name', branch.name));
 		he.appendChild(top);
 
-		he.appendChild(simpleCreateHTML('div', '_title', Lang('branch development controller/title: default')));
 		const s1 = document.createElement('tbody');
+		const title1_td = simpleCreateHTML('td', null, null, {colspan: cmp.stats.length !== 0 ? 3 : 2});
+		title1_td.appendChild(simpleCreateHTML('div', '_title', Lang('branch development controller/title: default')));
+		s1.appendChild(title1_td);
+
 		Object.keys(cmp.branchAttributes).forEach(k => {
 			const t = document.createElement('tr');
 			t.appendChild(simpleCreateHTML('td', '_name', k));
-			t.appendChild(simpleCreateHTML('td', '_value', cmp.branchAttributes[k])); 
+			const v = simpleCreateHTML('td', '_value', cmp.branchAttributes[k]);
+			if ( cmp.stats.length !== 0 )
+				v.setAttribute('colspan', 2);
+			t.appendChild(v); 
 			if ( branch.branchAttributes[k] !== void 0 && branch.branchAttributes[k] !== cmp.branchAttributes[k] )
 				t.classList.add('overwrite');
 			s1.appendChild(t);
@@ -51,32 +69,37 @@ branchDevelopmentController.prototype = {
 			const t = document.createElement('tr');
 			t.appendChild(simpleCreateHTML('td', '_name', a.base.baseName));
 			t.appendChild(simpleCreateHTML('td', '_value', a.statValue()));
+			t.appendChild(simpleCreateHTML('td', '_extra', getAttrEx(a.type)));
 			if ( branch.stats.find(b => a.base === b.base && a.type === b.type && a.statValue() != b.statValue()) )
 				t.classList.add('overwrite');
 			s1.appendChild(t);
 		});
-		const table1 = document.createElement('table');
-		table1.appendChild(s1);
-		he.appendChild(table1);
 		if ( !is_default && cmp != branch ){
-			const s2 = document.createElement('tbody');
+			const s2 = document.createDocumentFragment();
+			const title2_td = simpleCreateHTML('td', null, null, {colspan: branch.stats.length !== 0 ? 3 : 2});
+			title2_td.appendChild(simpleCreateHTML('div', '_title', Lang('branch development controller/title: not default')));
+			s2.appendChild(title2_td);
 			Object.keys(branch.branchAttributes).forEach(k => {
 				const t = document.createElement('tr');
 				t.appendChild(simpleCreateHTML('td', '_name', k));
-				t.appendChild(simpleCreateHTML('td', '_value', branch.branchAttributes[k])); 
+				const v = simpleCreateHTML('td', '_value', branch.branchAttributes[k]);
+				if ( branch.stats.length !== 0 )
+					v.setAttribute('colspan', 2);
+				t.appendChild(v); 
 				s2.appendChild(t);
 			});
 			branch.stats.forEach(a => {
 				const t = document.createElement('tr');
 				t.appendChild(simpleCreateHTML('td', '_name', a.base.baseName));
 				t.appendChild(simpleCreateHTML('td', '_value', a.statValue()));
+				t.appendChild(simpleCreateHTML('td', '_extra', getAttrEx(a.type)));
 				s2.appendChild(t);
 			});
-			he.appendChild(simpleCreateHTML('div', '_title', Lang('branch development controller/title: not default')));
-			const table2 = document.createElement('table');
-			table2.appendChild(s2);
-			he.appendChild(table2);
+			s1.appendChild(s2);
 		}
+		const table1 = document.createElement('table');
+		table1.appendChild(s1);
+		he.appendChild(table1);
 		return he;
 	}
 };
@@ -178,7 +201,14 @@ TempSkillBranch.prototype = {
 		});
 		branch.stats.forEach(a => {
 			let t = this.stats.find(b => a.base === b.base && a.type === b.type);
-			t === void 0 ? this.appendStat(a.base.baseName, a.value, '').type = a.type : t.statValue(a.value);
+			if ( t === void 0 )
+				this.appendStat(a.base.baseName, a.value, '').type = a.type;
+			else {
+				if ( a.value == GLOBAL_EXTRA_ATTRIBUTE_VALUE.none )
+					this.stats.splice(this.stats.indexOf(t), 1);
+				else
+					t.statValue(a.value);
+			}
 		});
 	}
 };
@@ -316,9 +346,9 @@ function getBranchHTML(branch, data){
 		str = str.replace(/(\d+\.\d+)/, () => parseFloat(RegExp.$1)*100 + '%');
 		return str;
 	}
-	function processText(b, _main){
+	function processText(b, _main, text){
 		const _attr = b.branchAttributes;
-		let str = _attr[_main === void 0 ? 'text': _main];
+		let str = _main === null ? text : _attr[_main === void 0 ? 'text': _main];
 		if ( !data.showOriginalFormula ){
 			str = str.replace(/(\$\{[^\}]+\})([%]?)/g, (...args) => {
 				return args[2] !== '%'
@@ -965,9 +995,7 @@ function getBranchHTML(branch, data){
 			if ( btype == 'passive' )
 				c = Lang('branch/effect/condition: passive');
 
-			attr['condition'] = c;
-
- 			const condition = c != 'none' ? simpleCreateHTML('span', '_main_title', processText(branch, 'condition')) : null;
+ 			const condition = c != 'none' ? simpleCreateHTML('span', '_main_title', processText(branch, null, c)) : null;
  			let end_condition = null;
  			if ( attr['end_condition'] )
  				end_condition = simpleCreateHTML('span', '_main_title', attr['end_condition']);
@@ -1381,33 +1409,28 @@ export default function(data){
 			let branchDevCtr = null;
 			if ( data.branchDevelopmentMode )
 				branchDevCtr = new branchDevelopmentController(skill.defaultEffect);
+
+			let temp_html= null;
 			output.branchs.forEach(branch => {
 				const t = getBranchHTML(branch, {
 					SLv, CLv, stackNames, stackValues, showOriginalFormula,
 					skillRoot
 				});
 				if ( t !== null ){
-					if ( data.branchDevelopmentMode ){
-						const is_default = overwrite_eft === skill.defaultEffect;
-						let _t = overwrite_eft.branchs.find(b => branch.no == b.no);
-						two.appendChild(branchDevCtr.branchDetail(
-							( !is_default &&  _t) ? _t : branch, is_default
-						));
-						if ( branch.name == 'list' ){
-							let p = branch.findLocation() + 1;
-							let _cur = output.branchs[p];
-							while ( _cur && _cur.name == 'list' ){
-								_t = overwrite_eft.branchs.find(b => _cur.no == b.no);
-								two.appendChild(branchDevCtr.branchDetail(
-									( !is_default &&  _t) ? _t : _cur, is_default
-								));
-								++p; _cur = output.branchs[p];
-							}
-						}
-					}
-					two.appendChild(t);
+					if ( temp_html !== null )
+						two.appendChild(temp_html);
+					temp_html = t;
+				}
+				if ( data.branchDevelopmentMode ){
+					const is_default = overwrite_eft === skill.defaultEffect;
+					let _t = overwrite_eft.branchs.find(b => branch.no == b.no);
+					two.appendChild(branchDevCtr.branchDetail(
+						( !is_default &&  _t) ? _t : branch, is_default
+					));
 				}
 			});
+			if ( temp_html !== null )
+				two.appendChild(temp_html);
 		}
 		else {
 			const t = document.createElement('div');
