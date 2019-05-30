@@ -1,7 +1,14 @@
 div.skill_branchs > div.branch {
-	border-top: 1px var(--primary-color-light) solid;
 	margin-bottom: 0.2rem;
-	padding: 0.6rem 0;
+	padding: 0.6rem 0.4rem;
+	border-top: 1px var(--primary-color-light) solid;
+}
+div.skill_branchs > div.branch.is_mark {
+	border-left: 2px var(--primary-color-light-2) solid;
+}
+div.skill_branchs > div.branch.is_mark,
+div.skill_branchs > div.branch.is_mark + div.branch {
+	border-top: unset;
 }
 div.skill_branchs > div.branch span.light {
 	color: var(--primary-color-light-3);
@@ -251,12 +258,12 @@ div.skill_branchs > div.branch .effect_by_stack .separate_text {
 div.skill_branchs .skill_from_where_button {
 	color: var(--primary-color-light-3);
 	cursor: pointer;
-	padding: 0.2rem;
-	margin: 0 0.1rem;
+	margin: 0 0.2rem;
 	border-bottom: 1px var(--primary-color-light) solid;
 	transition: 0.3s;
 	position: relative;
 	white-space: nowrap;
+	display: inline-block;
 }
 div.skill_branchs .skill_from_where_button:hover {
 	border-bottom: 1px var(--primary-color-light-2) solid;

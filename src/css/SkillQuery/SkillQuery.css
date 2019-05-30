@@ -74,13 +74,13 @@
 
 #SkillQuery div.Skill_scope {
 	margin-bottom: 2rem;
-	overflow-y: auto;
+	overflow-x: auto;
 }
 #SkillQuery div.Skill_scope > div.skill_attributes {
 	padding: 0.6rem;
 }
 #SkillQuery div.Skill_scope > div.skill_branchs {
-	padding: 0.6rem;
+	padding: 0.6rem 0.2rem;
 	display: inline-block;
 }
 
