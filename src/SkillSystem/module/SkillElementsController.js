@@ -36,6 +36,7 @@ function Controller(sr){
 		stackNames: {},
 		showOriginalFormula: false,
 		skillRecords: [],
+		skillEquipmentRecords: [],
 		branchDevelopmentMode: false
 	};
 }
@@ -133,12 +134,16 @@ Controller.prototype = {
 	},
 	skillRecord(s){
 		this.currentData.skillRecords.push(this.currentData.currentSkill);
+		const {mainWeapon, subWeapon, bodyArmor} = this.currentData;
+		this.currentData.skillEquipmentRecords.push({mainWeapon, subWeapon, bodyArmor});
 		this.initCurrentSkill(s);
-		this.updateSkillHTML();
+		//this.updateSkillHTML();
+		this.initEquipmentScope(s.parent);
 	},
 	popSkillRecord(){
 		this.initCurrentSkill(this.currentData.skillRecords.pop());
-		this.updateSkillHTML();
+		this.initEquipmentScope(this.currentData.currentSkill.parent, this.currentData.skillEquipmentRecords.pop());
+		//this.updateSkillHTML();
 	},
 	clearSkillRecord(){
 		const t = this.currentData.skillRecords;
@@ -232,6 +237,22 @@ Controller.prototype = {
 		cy.element.removeAllChild(scope);
 		scope.appendChild(this.createSkillQueryScopeHTML(skill, Skill.CATEGORY_MAIN));
 	},
+	initEquipmentScope(skilltree, equip){
+		const t = this.createSkillQueryScopeHTML(skilltree, SkillTree.CATEGORY_EQUIPMENT);
+		const equip_scope = this.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT);
+		cy.element.removeAllChild(equip_scope);
+		if ( t !== null ){
+			equip_scope.appendChild(t);
+			if ( equip ){
+				Object.assign(this.currentData, equip);
+			}
+			// 更新裝備邏輯
+			let temp = this.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT).querySelector(`li[${strings().data_bodyArmor}="${this.currentData.bodyArmor}"]`);
+			if ( temp ) temp.click();
+			temp = this.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT).querySelector(`li[${strings().data_mainWeapon}="${this.currentData.mainWeapon}"]`);
+			if ( temp ) temp.click();
+		}
+	},
 	createSkillQueryScopeHTML(sEle, /*const string*/category){
 		const SE_TYPE = sEle !== null ? sEle.TYPE : category;
 		//const type = sEle.TYPE.toString().match(/Symbol\((.+)\)/)[1];
@@ -288,17 +309,7 @@ Controller.prototype = {
 						const ele = _C.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
 						scope.appendChild(_C.createSkillQueryScopeHTML(ele, SkillTree.CATEGORY_TABLE));
 
-						const t = _C.createSkillQueryScopeHTML(ele, SkillTree.CATEGORY_EQUIPMENT);
-						const equip_scope = _C.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT);
-						cy.element.removeAllChild(equip_scope);
-						if ( t !== null ){
-							equip_scope.appendChild(t);
-							// 更新裝備邏輯
-							let temp = _C.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT).querySelector(`li[${strings().data_bodyArmor}="${_C.currentData.bodyArmor}"]`);
-							if ( temp ) temp.click();
-							temp = _C.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT).querySelector(`li[${strings().data_mainWeapon}="${_C.currentData.mainWeapon}"]`);
-							if ( temp ) temp.click();
-						}
+						_C.initEquipmentScope(ele);
 
 						cy.element.removeAllChild(_C.getSkillElementScope(Skill.TYPE));
 						_C.getSkillElementScope(TYPE_SKILL_RECORD).classList.add('hidden');
