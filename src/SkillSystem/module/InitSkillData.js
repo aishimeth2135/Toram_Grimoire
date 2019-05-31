@@ -7,15 +7,20 @@ function InitSkillBranch(branch){
 				b.appendBranchAttribute(key, default_value[key])
 		});
 	};
+
+	const attr = branch.branchAttributes;
 	
 	switch (branch.name){
 		case 'damage':
 			set_default(branch, {
 				constant: '0', multiplier: '0', type: 'single', base: 'auto',
-				frequency: '1', end_position: 'target',
-				effective_area: 'circle', title: 'normal', judgment: 'common',
+				frequency: '1', title: 'normal', judgment: 'common',
 				damage_type: 'physical'
 			});
+			if ( attr['type'] !== 'single' )
+				set_default(branch, {
+					end_position: 'target', effective_area: 'circle'
+				});
 			break;
 		case 'stack': {
 			set_default(branch, {
@@ -50,25 +55,28 @@ function InitSkillBranch(branch){
 			console.log(branch);
 			return;
 	}
+	return branch;
 };
 
-export default function(sr){
-	sr.skillTreeCategorys.forEach(stc => {
-		stc.skillTrees.forEach(st => {
-			st.skills.forEach(skill => {
-				const sef = skill.defaultEffect;
-				if ( !sef )
-					return;
-				const have_1hsword = skill.effects.find(eft => eft.mainWeapon === 0);
-				if ( have_1hsword !== void 0 ){
-					const have_dualsword = skill.effects.find(eft => eft.mainWeapon === 9);
-					if ( have_dualsword === void 0 )
-						skill.newElement(SkillEffect.TYPE, {mainWeapon: 9, subWeapon: -1, bodyArmor: -1});
-				}
-				sef.branchs.forEach(branch => {
-					InitSkillBranch(branch);
-				});
-			});
-		});
-	});
-};
+export {InitSkillBranch};
+
+// export default function(sr){
+// 	sr.skillTreeCategorys.forEach(stc => {
+// 		stc.skillTrees.forEach(st => {
+// 			st.skills.forEach(skill => {
+// 				const sef = skill.defaultEffect;
+// 				if ( !sef )
+// 					return;
+// 				const have_1hsword = skill.effects.find(eft => eft.mainWeapon === 0);
+// 				if ( have_1hsword !== void 0 ){
+// 					const have_dualsword = skill.effects.find(eft => eft.mainWeapon === 9);
+// 					if ( have_dualsword === void 0 )
+// 						skill.newElement(SkillEffect.TYPE, {mainWeapon: 9, subWeapon: -1, bodyArmor: -1});
+// 				}
+// 				sef.branchs.forEach(branch => {
+// 					InitSkillBranch(branch);
+// 				});
+// 			});
+// 		});
+// 	});
+// };

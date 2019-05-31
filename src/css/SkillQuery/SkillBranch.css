@@ -24,9 +24,9 @@ div.skill_branchs > div.branch > div.top {
 	padding: 0.1rem;
 	padding-top: 0;
 	position: relative;
-	border-bottom: 1px var(--primary-color-purple) solid;
+	border-bottom: 1px var(--primary-purple) solid;
 	margin-bottom: 0.3rem;
-	color: var(--primary-color-purple);
+	color: var(--primary-purple);
 }
 div.skill_branchs > div.branch > div.top > span._name {
 	margin-left: 0.6rem;
@@ -56,7 +56,7 @@ div.skill_branchs div.scope1 > span._main_title {
 }
 div.skill_branchs div.scope1 > span._main_title span.light,
 div.skill_branchs div.scope1 > span._main_title .skill_from_where_button {
-	color: var(--primary-color-purple);
+	color: var(--primary-purple);
 }
 
 div.skill_branchs > div.branch > div.content div.text_scope {
@@ -183,7 +183,7 @@ div.skill_branchs div.scope1 div.skill_attribute > span.element_value {
 	width: 0.8rem;
 }*/
 div.skill_branchs > div.branch span.effect_by_stack {
-	color: #2196f3;
+	color: var(--primary-water-blue);
 }
 div.skill_branchs > div.branch span.effect_by_stack span.dark,
 div.skill_branchs > div.branch span.dark span.effect_by_stack {
@@ -251,8 +251,8 @@ div.skill_branchs > div.branch .separate_text {
 	margin: 0 0.4rem;
 }
 div.skill_branchs > div.branch .effect_by_stack .separate_text {
-	border-left: 1px #9acbf3 solid!important;
-	border-right: 1px #9acbf3 solid!important;
+	border-left: 1px var(--primary-water-blue-light) solid!important;
+	border-right: 1px var(--primary-water-blue-light) solid!important;
 }
 
 div.skill_branchs .skill_from_where_button {
@@ -286,7 +286,7 @@ div.skill_branchs .skill_from_where_button .show_skill_from_where {
 	box-shadow: 0.1rem 0.1rem 0.4rem var(--primary-color-light);
 	background: #FFF;
 	z-index: 5;
-	color: var(--primary-color-purple);
+	color: var(--primary-purple);
 }
 div.skill_branchs .skill_from_where_button .show_skill_from_where span.global_button_1 {
 	min-width: 3rem;
@@ -300,26 +300,26 @@ div.skill_branchs .skill_from_where_button .show_skill_from_where > .button_scop
 div.skill_branchs > .dev_branchDetail {
 	padding: 0.6rem;
 	font-size: 0.9rem;
-	border-left: 2px var(--primary-color-purple) solid;
+	border-left: 2px var(--primary-purple) solid;
     border-top: 1px var(--primary-color-light) solid;
 }
 div.skill_branchs > .dev_branchDetail > .top {
 	margin-bottom: 0.8rem;
-	color: var(--primary-color-purple);
+	color: var(--primary-purple);
 }
 div.skill_branchs > .dev_branchDetail > .top > span {
 	display: inline-block;
 }
 div.skill_branchs > .dev_branchDetail > .top > ._no {
-	border-right: 1px var(--primary-color-purple) solid;
+	border-right: 1px var(--primary-purple) solid;
 	margin-right: 0.4rem;
 	padding: 0 0.4rem;
 }
 div.skill_branchs > .dev_branchDetail td > div._title {
 	padding: 0 0.1rem;
 	padding-left: 0.6rem;
-	border-bottom: 1px var(--primary-color-purple) solid;
-	color: var(--primary-color-purple);
+	border-bottom: 1px var(--primary-purple) solid;
+	color: var(--primary-purple);
 	margin-bottom: 0.1rem;
 	margin-top: 0.2rem;
 }
@@ -330,12 +330,18 @@ div.skill_branchs > .dev_branchDetail > table {
 div.skill_branchs > .dev_branchDetail > table tr.overwrite > td {
 	color: var(--primary-color-light)!important;
 }
+div.skill_branchs > .dev_branchDetail > table tr.by_default > td {
+	color: var(--primary-water-blue)!important;
+}
+div.skill_branchs > .dev_branchDetail > table tr.overwrite.by_default > td {
+	color: var(--primary-water-blue-light)!important;
+}
 div.skill_branchs > .dev_branchDetail > table td {
 	padding: 0.2rem 0.4rem;
 }
 div.skill_branchs > .dev_branchDetail > table td._name {
 	border-right: 1px var(--primary-color-light) solid;
-	color: var(--primary-color-purple);
+	color: var(--primary-purple);
 	text-align: right;
 }
 div.skill_branchs > .dev_branchDetail > table td._value,

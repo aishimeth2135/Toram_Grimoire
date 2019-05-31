@@ -245,7 +245,7 @@
 }
 #SkillQuery div.SkillRecord_scope > div.current_skill {
 	vertical-align: middle;
-	color: var(--primary-color-purple);
+	color: var(--primary-purple);
 }
 
 
