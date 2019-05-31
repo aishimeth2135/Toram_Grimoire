@@ -1,6 +1,5 @@
 import {SkillRoot} from "./module/SkillElements.js";
 import LoadSkillData from "./module/LoadSkillData.js";
-import InitSkillData from "./module/InitSkillData.js";
 
 function SkillSystem(){
 	this.skillRoot = new SkillRoot(this);
@@ -13,7 +12,6 @@ SkillSystem.prototype = {
 				download: true,
 				complete(res){
 					LoadSkillData(_this.skillRoot, res.data);
-					InitSkillData(_this.skillRoot);
 					resolve();
 				},
 				error(err){

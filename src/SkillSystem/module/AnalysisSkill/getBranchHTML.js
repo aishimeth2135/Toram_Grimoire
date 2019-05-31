@@ -126,9 +126,9 @@ function getBranchHTML(branch, data){
             return dftv === void 0 ? '?' : dftv;
         }
     }
-    function processText(b, _main, text){
+    function processText(b, _main='text', text='-1'){
         const _attr = b.branchAttributes;
-        let str = _main === null ? text : _attr[_main === void 0 ? 'text': _main];
+        let str = _main === null || _attr[_main] === void 0 ? text : _attr[_main];
         if ( !data.showOriginalFormula ){
             str = str.replace(/(\$\{[^\}]+\})([%]?)/g, (...args) => {
                 return args[2] !== '%'
@@ -595,8 +595,6 @@ function getBranchHTML(branch, data){
             const damage_extras_frg = document.createDocumentFragment();
             damage_extras.forEach(ex => {
                 const _attr = ex.branchAttributes;
-                if ( _attr['condition'] === void 0 )
-                    _attr['condition'] = Lang('branch/damage/extra/base title');
                 const s2 = document.createDocumentFragment();
 
                 if ( _attr['aliment_name'] )
@@ -620,7 +618,12 @@ function getBranchHTML(branch, data){
                 }
                 ex.stats.forEach(stat => s2.appendChild(processStat(stat)));
                 
-                damage_extras_frg.appendChild(createContentLine(simpleCreateHTML('span', '_main_title', processText(ex, 'condition')), s2));
+                damage_extras_frg.appendChild(createContentLine(simpleCreateHTML(
+                        'span', '_main_title',
+                        processText(ex, 'condition', Lang('branch/damage/extra/base title'))
+                    ),
+                    s2
+                ));
                 ex.finish = true;
             });
 

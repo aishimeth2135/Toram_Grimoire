@@ -4,8 +4,9 @@ import CY from "../../main/module/cyteria.js";
 import StatBase from "../../CharacterSystem/module/StatBase.js";
 import getBranchHTML from "./AnalysisSkill/getBranchHTML.js";
 import {createSkillAttributeScope, getStackBranchIdKey, simpleCreateHTML, Lang} from "./AnalysisSkill/main.js";
-import {TempSkillEffect} from "./AnalysisSkill/TempSkillElement.js";
+import {TempSkillEffect, TempSkillBranch} from "./AnalysisSkill/TempSkillElement.js";
 import strings from "./strings.js";
+import {InitSkillBranch} from "./InitSkillData.js";
 
 // /* 特殊屬性
 //  * @none: 無條件去除該屬性。*/
@@ -28,7 +29,7 @@ branchDevelopmentController.prototype = {
 	 * @param  {TempSkillBranch} branch 欲取得細節的分支
 	 * @return {dom element}      HTML介面
 	 */
-	branchDetail(branch, is_default){
+	branchDetail(branch, is_default, is_exist){
 		function getAttrEx(type){
 			switch (type){
 				case StatBase.TYPE_CONSTANT:
@@ -39,7 +40,8 @@ branchDevelopmentController.prototype = {
 					return '~';
 			}
 		}
-		const cmp = branch.no !== '-' ? this.baseEffect.branchs.find(b => b.no == branch.no) : branch;
+		const cmp_before = branch.no !== '-' ? this.baseEffect.branchs.find(b => b.no == branch.no) : branch;
+		const cmp = InitSkillBranch(new TempSkillBranch().from(cmp_before));
 		const he = simpleCreateHTML('div', 'dev_branchDetail');
 
 		const top = simpleCreateHTML('div', 'top');
@@ -59,6 +61,8 @@ branchDevelopmentController.prototype = {
 			if ( cmp.stats.length !== 0 )
 				v.setAttribute('colspan', 2);
 			t.appendChild(v); 
+			if ( cmp_before.branchAttributes[k] === void 0 )
+				t.classList.add('by_default');
 			if ( branch.branchAttributes[k] !== void 0 && branch.branchAttributes[k] !== cmp.branchAttributes[k] )
 				t.classList.add('overwrite');
 			s1.appendChild(t);
@@ -72,7 +76,7 @@ branchDevelopmentController.prototype = {
 				t.classList.add('overwrite');
 			s1.appendChild(t);
 		});
-		if ( !is_default && cmp != branch ){
+		if ( !is_default && branch.no !== '-' && is_exist ){
 			const s2 = document.createDocumentFragment();
 			const title2_td = simpleCreateHTML('td', null, null, {colspan: branch.stats.length !== 0 ? 3 : 2});
 			title2_td.appendChild(simpleCreateHTML('div', '_title', Lang('branch development controller/title: not default')));
@@ -297,6 +301,9 @@ export default function(data){
 		const two = document.createElement('div');
 		two.className = 'skill_branchs';
 		if ( output.checkData() ){
+			// 初始化
+			output.branchs.forEach(b => InitSkillBranch(b));
+			
 			if ( data.stackValues === null ){
 				data.stackValues = {};
 				CY.object.empty(data.stackNames);
@@ -333,7 +340,7 @@ export default function(data){
 					const is_default = overwrite_eft === skill.defaultEffect;
 					let _t = overwrite_eft.branchs.find(b => branch.no == b.no);
 					two.appendChild(branchDevCtr.branchDetail(
-						( !is_default &&  _t) ? _t : branch, is_default
+						( !is_default && _t ) ? _t : branch, is_default, _t !== void 0
 					));
 				}
 			});
