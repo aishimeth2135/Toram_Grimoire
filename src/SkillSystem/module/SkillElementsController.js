@@ -154,7 +154,7 @@ Controller.prototype = {
 		if ( eft.mainWeapon == -1 && eft.subWeapon == -1 && eft.bodyArmor == -1 )
 			return true;
 		/* 非通用 */
-		if ( equip.mainWeapon != -1 && equip.mainWeapon == eft.mainWeapon )
+		if ( equip.mainWeapon != -1 && equip.mainWeapon == eft.mainWeapon || (eft.mainWeapon === 0 && equip.mainWeapon === 9 && eft.parent.effects.find(a => a.mainWeapon == 9) === void 0) )
 			return true;
 		if ( equip.subWeapon != -1 && equip.subWeapon == eft.subWeapon )
 			return true;
