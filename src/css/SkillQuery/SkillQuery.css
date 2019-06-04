@@ -265,16 +265,16 @@
 	fill: var(--primary-color-dark);
 }
 #SkillQuery div.skill_attribute > ._icon {
-	margin-right: 0.4rem;
+	margin-right: 0.2rem;
 }
 #SkillQuery div.skill_attribute > ._title {
-	margin-right: 1rem;
+	margin-right: 0.8rem;
 }
 #SkillQuery div.skill_attribute > ._value {
 	color: var(--primary-color-light-3);
 }
 #SkillQuery div.skill_attribute > ._tail {
-	margin-left: 0.5rem;
+	margin-left: 0.4rem;
 }
 
 

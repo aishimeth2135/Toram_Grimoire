@@ -20,8 +20,9 @@ import {InitSkillBranch} from "./InitSkillData.js";
  * @param  {SkillEffect} sef 複製用的
  * @return {void}     branchDevelopmentController Object
  */
-function branchDevelopmentController(sef){
-	this.baseEffect = sef;
+function branchDevelopmentController(sef, output){
+	this.baseEffect = new TempSkillEffect().from(sef);
+    this.currentOutput = new TempSkillEffect().from(output); // 複製一份尚未init的output
 }
 branchDevelopmentController.prototype = {
 	/**
@@ -29,7 +30,7 @@ branchDevelopmentController.prototype = {
 	 * @param  {TempSkillBranch} branch 欲取得細節的分支
 	 * @return {dom element}      HTML介面
 	 */
-	branchDetail(branch, is_default, is_exist){
+	branchDetail(branch, currentBranch, is_default, is_exist){
 		function getAttrEx(type){
 			switch (type){
 				case StatBase.TYPE_CONSTANT:
@@ -40,8 +41,10 @@ branchDevelopmentController.prototype = {
 					return '~';
 			}
 		}
-		const cmp_before = branch.no !== '-' ? this.baseEffect.branchs.find(b => b.no == branch.no) : branch;
-		const cmp = InitSkillBranch(new TempSkillBranch().from(cmp_before));
+        const before_init = this.currentOutput.branchs[currentBranch.findLocation()];
+		const cmp = branch.no !== '-'
+            ? InitSkillBranch(this.baseEffect.branchs.find(b => b.no == branch.no))
+            : branch;
 		const he = simpleCreateHTML('div', 'dev_branchDetail');
 
 		const top = simpleCreateHTML('div', 'top');
@@ -61,7 +64,7 @@ branchDevelopmentController.prototype = {
 			if ( cmp.stats.length !== 0 )
 				v.setAttribute('colspan', 2);
 			t.appendChild(v); 
-			if ( cmp_before.branchAttributes[k] === void 0 )
+			if ( before_init.branchAttributes[k] === void 0 )
 				t.classList.add('by_default');
 			if ( branch.branchAttributes[k] !== void 0 && branch.branchAttributes[k] !== cmp.branchAttributes[k] )
 				t.classList.add('overwrite');
@@ -298,10 +301,15 @@ export default function(data){
 		});
 		frg.appendChild(one);
 
+
 		const two = document.createElement('div');
 		two.className = 'skill_branchs';
 		if ( output.checkData() ){
 			// 初始化
+            const branchDevelopmentMode = data.branchDevelopmentMode;
+            let branchDevCtr = null;
+            if ( branchDevelopmentMode )
+                branchDevCtr = new branchDevelopmentController(skill.defaultEffect, output);
 			output.branchs.forEach(b => InitSkillBranch(b));
 			
 			if ( data.stackValues === null ){
@@ -319,11 +327,7 @@ export default function(data){
 			const stackValues = data.stackValues,
 				stackNames = data.stackNames,
 				showOriginalFormula = data.showOriginalFormula,
-				skillRoot = data.skillRoot,
-				branchDevelopmentMode = data.branchDevelopmentMode;
-			let branchDevCtr = null;
-			if ( branchDevelopmentMode )
-				branchDevCtr = new branchDevelopmentController(skill.defaultEffect);
+				skillRoot = data.skillRoot;
 
 			let temp_html= null;
 			output.branchs.forEach(branch => {
@@ -340,7 +344,8 @@ export default function(data){
 					const is_default = overwrite_eft === skill.defaultEffect;
 					let _t = overwrite_eft.branchs.find(b => branch.no == b.no);
 					two.appendChild(branchDevCtr.branchDetail(
-						( !is_default && _t ) ? _t : branch, is_default, _t !== void 0
+						( !is_default && _t ) ? _t : branch, branch,
+                        is_default, _t !== void 0
 					));
 				}
 			});

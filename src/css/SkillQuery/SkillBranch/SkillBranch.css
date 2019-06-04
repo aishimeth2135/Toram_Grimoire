@@ -190,8 +190,9 @@ div.skill_branchs > div.branch span.dark span.effect_by_stack {
 	color: #009688!important;
 }
 
+/* Element */
 div.Skill_scope div.skill_attribute > .element_neutral {
-	background-color: #666;
+	background-color: #999;
 }
 div.Skill_scope div.skill_attribute > .element_fire {
 	background-color: #ea0000;
@@ -210,6 +211,9 @@ div.Skill_scope div.skill_attribute > .element_light {
 }
 div.Skill_scope div.skill_attribute > .element_dark {
 	background-color: #5b00ae;
+}
+div.Skill_scope div.skill_attribute > .element_multiple {
+	animation: multiple_element 4s infinite;
 }
 
 div.skill_branchs > div.branch div.effective_area {

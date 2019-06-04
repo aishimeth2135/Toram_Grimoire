@@ -1,5 +1,6 @@
 import LoadStatData from "./module/LoadStatData.js";
 import StatBase from './module/StatBase.js';
+import DataPath from "../main/module/DataPath.js";
 
 function CharacterSystem(){
 	this.statList = [];
@@ -13,7 +14,7 @@ CharacterSystem.prototype = {
 	init_statList(){
 		const _this = this;
 		return new Promise((resolve, reject) => {
-			Papa.parse('./src/CharacterSystem/module/other/BaseStatData.csv', {
+			Papa.parse(DataPath().CharacterStatData, {
 				download: true,
 				complete(res){
 					LoadStatData(_this, res.data);
