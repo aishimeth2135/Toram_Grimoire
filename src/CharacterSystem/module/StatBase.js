@@ -1,7 +1,7 @@
 import GetLang from "../../main/module/LanguageSystem.js";
 
 function Lang(s){
-	return GetLang('stat base/s');
+	return GetLang('stat base/' + s);
 }
 
 function StatBase(bn, c, hm){
@@ -60,7 +60,7 @@ StatBase.prototype = {
 				tail = '%';
 			} break;
 			case StatBase.TYPE_TOTAL: {
-				title = Lang('type total: preText') + tthis.caption;
+				title = Lang('type total: preText') + this.caption;
 				tail = '%'
 			} break;
 		}

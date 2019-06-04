@@ -18,31 +18,6 @@ function getTargetText(s, _is_place){
     return res !== null ? res : res;
 }
 
-function replaceExtraFormulaValue(str){
-    const FORMULA_EXTRA_VALUE_LIST = {
-        'STR': Lang('skill formula: STR'),
-        'DEX': Lang('skill formula: DEX'),
-        'INT': Lang('skill formula: INT'),
-        'AGI': Lang('skill formula: AGI'),
-        'VIT': Lang('skill formula: VIT'),
-        'BSTR': Lang('skill formula: BSTR'),
-        'BDEX': Lang('skill formula: BDEX'),
-        'BINT': Lang('skill formula: BINT'),
-        'BAGI': Lang('skill formula: BAGI'),
-        'BVIT': Lang('skill formula: BVIT'),
-        'shield_refining': Lang('skill formula: shield_refining'),
-        'dagger_atk': Lang('skill formula: dagger_atk'),
-        'target_def': Lang('skill formula: target_def'),
-        'target_level': Lang('skill formula: target_level')
-    };
-    Object.keys(FORMULA_EXTRA_VALUE_LIST).forEach(key => {
-        str = str.replace(new RegExp(key, 'g'), FORMULA_EXTRA_VALUE_LIST[key]);
-    });
-    str = str.replace(/\*/g, '×');
-    str = str.replace(/(\d+\.\d+)/, () => parseFloat(RegExp.$1)*100 + '%');
-    return str;
-}
-
 function lightText(text){
     return '<span class="light">' + text + '</span>';
 }
@@ -84,8 +59,10 @@ function getDamageElementHTML(ele_type){
         one_hand_sword: Lang('element: one hand sword')
     };
     const t = simpleCreateHTML('div', 'skill_attribute');
-    if ( ele_type != 'arrow' )
-        t.appendChild(simpleCreateHTML('span', ['_icon', 'element_' + ele_type, 'element_ball']));
+    let icon_type = ele_type;
+    if ( ele_type == 'arrow' || ele_type == 'one_hand_sword' )
+        icon_type = 'multiple';
+    t.appendChild(simpleCreateHTML('span', ['_icon', 'element_' + icon_type, 'element_ball']));
     t.appendChild(simpleCreateHTML('span', ['_value', 'element_value'], ELEMEMT_DICT[ele_type]));
     return t;
 }
@@ -117,6 +94,32 @@ function createContentLine(frg1, frg2, options){
 function getBranchHTML(branch, data){
     if ( branch.finish )
         return null;
+    function replaceExtraFormulaValue(str){
+        const FORMULA_EXTRA_VALUE_LIST = {
+            'STR': Lang('skill formula: STR'),
+            'DEX': Lang('skill formula: DEX'),
+            'INT': Lang('skill formula: INT'),
+            'AGI': Lang('skill formula: AGI'),
+            'VIT': Lang('skill formula: VIT'),
+            'BSTR': Lang('skill formula: BSTR'),
+            'BDEX': Lang('skill formula: BDEX'),
+            'BINT': Lang('skill formula: BINT'),
+            'BAGI': Lang('skill formula: BAGI'),
+            'BVIT': Lang('skill formula: BVIT'),
+            'shield_refining': Lang('skill formula: shield_refining'),
+            'dagger_atk': Lang('skill formula: dagger_atk'),
+            'target_def': Lang('skill formula: target_def'),
+            'target_level': Lang('skill formula: target_level')
+        };
+        Object.keys(FORMULA_EXTRA_VALUE_LIST).forEach(key => {
+            str = str.replace(new RegExp(key, 'g'), FORMULA_EXTRA_VALUE_LIST[key]);
+        });
+        str = str
+            .replace(/\*/g, '×').replace(/SLv/g, SLv).replace(/CLv/g, CLv)
+            .replace(/\d+(?:\.\d+)?[\*/]{1}\d+(?:\.\d+)?/g, s => safeEval(s))
+            .replace(/(\d+\.\d+)/g, () => parseFloat(RegExp.$1)*100 + '%');
+        return str;
+    }
     function safeEval(str, dftv){
         try {
             return eval(str);
@@ -141,7 +144,7 @@ function getBranchHTML(branch, data){
             str = str.replace(/\$\{([^\}]+)\}([%]?)/g, (...args) =>
                 args[2] !== '%'
                 ? processValue(args[1], {light: true, tail: '', separateText: true})
-                : processValue(args[1], {light: true, tail: '%', separateText: true})
+                : processValue(args[1], {light: true, tail: '%'})
             );
         }
         if ( _attr['mark'] !== void 0 ){
@@ -176,11 +179,12 @@ function getBranchHTML(branch, data){
         }
         return str;
     }
-    function processValue(v, setting){
+    function processValue(v, setting={}){
         v = v.split(',,');
         setting = Object.assign({
             calc: true, tail: '', head: '', preText: '', toPercentage: false,
-            checkHasStack: v[0], light: false, separateText: false
+            checkHasStack: v[0], light: false,
+            separateText: v.length > 1 && (setting.head !== void 0 || setting.tail !== void 0)
         }, setting);
         
         let res;
@@ -215,7 +219,7 @@ function getBranchHTML(branch, data){
             }
         });
         res = setting.preText + res;
-        if ( setting.separateText || ( !( v.length === 1 && v[0].match(/^[\d\.]+$/) ) && data.showOriginalFormula) )
+        if ( setting.separateText || ( data.showOriginalFormula && !( v.length === 1 && v[0].match(/^[\d\.]+$/) ) ) )
             res = '<span class="separate_text">' + res + '</span>';
         res = setting.head + res;
         res += setting.tail;
@@ -232,10 +236,7 @@ function getBranchHTML(branch, data){
         const showData = stat.getShowData();
         const vs = showData.value.split(',,');
         const sign = ( vs.length === 1 && safeEval(vs[0]) < 0 ) ? '' : '+';
-        const set = {tail: showData.tail, head: showData.title + sign};
-        if (vs.length !== 1 )
-            set.separateText = true;
-        const v = processValue(showData.value, set);
+        const v = processValue(showData.value, {tail: showData.tail, head: showData.title + sign});
         let res = v;
         if ( sign === '' )
             res = darkText(res);
@@ -521,7 +522,7 @@ function getBranchHTML(branch, data){
             const multiplier = createSkillAttributeScope(
                 null,
                 Lang('branch/damage/skill multiplier'),
-                processValue(attr['multiplier']), '%'
+                processValue(attr['multiplier'], {tail: '%'})
             );
 
             //異常狀態
@@ -529,7 +530,7 @@ function getBranchHTML(branch, data){
             if ( attr['aliment_name'] !== void 0 ) {
                 const s2 = document.createDocumentFragment();
                 s2.appendChild(createSkillAttributeScope(null, null, attr['aliment_name']));
-                s2.appendChild(createSkillAttributeScope(null, Lang('branch/damage/chance'), processValue(attr['aliment_chance'] || '0') + '%'));
+                s2.appendChild(createSkillAttributeScope(null, Lang('branch/damage/chance'), processValue(attr['aliment_chance'] || '0', {tail: '%'})));
                 aliment = createContentLine(
                     simpleCreateHTML('span', '_main_title', Lang('branch/damage/aliment')),
                     s2
@@ -565,7 +566,7 @@ function getBranchHTML(branch, data){
 
             // 傷害次數  週期、頻率
             let damage_frequency = null, damage_judgment = null, damage_cycle = null;
-            if ( parseInt(attr['frequency']) > 1 || attr['title'] == 'each' ) {
+            if ( attr['frequency'] !== '1' || attr['title'] == 'each' ) {
                 damage_frequency = simpleCreateHTML(
                     'span', '_main_title',
                     processValue(attr['frequency'], {tail: Lang('branch/damage/frequency: unit')})
@@ -634,7 +635,6 @@ function getBranchHTML(branch, data){
             
             const frg1 = document.createDocumentFragment();
             frg1.appendChild(damage_type);
-            frg1.appendChild(target_type);
             if ( damage_isPlace !== null )
                 frg1.appendChild(damage_isPlace);
             if ( damage_element !== null )
@@ -658,6 +658,7 @@ function getBranchHTML(branch, data){
             const scope1 = simpleCreateHTML('div', 'scope1');
 
             const line_frg1 = document.createDocumentFragment();
+            line_frg1.appendChild(target_type);
             if ( damage_frequency !== null )
                 line_frg1.appendChild(damage_frequency);
             line_frg1.appendChild(title);
