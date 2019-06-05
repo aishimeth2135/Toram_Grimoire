@@ -1,15 +1,30 @@
 div.skill_branchs > div.branch {
-	margin-bottom: 0.2rem;
-	padding: 0.6rem 0.4rem;
-	border-top: 1px var(--primary-color-light) solid;
+	margin-left: 0.5rem;
+	padding: 0.4rem 0.6rem;
+	border-left: 2px var(--primary-color-light) solid;
+	position: relative;
 }
-div.skill_branchs > div.branch.is_mark {
-	border-left: 2px var(--primary-color-light-2) solid;
+div.skill_branchs > div.branch::before {
+	position: absolute;
+	top: calc(50% - 0.4rem);
+	left: calc(-0.4rem - 1px);
+	height: 0.8rem;
+	width: 0.8rem;
+	border-radius: 50%;
+	background-color: var(--primary-color-light);
+	content: '';
 }
-div.skill_branchs > div.branch.is_mark,
+div.skill_branchs > div.branch.is_mark::before {
+	animation: mark 2s infinite;
+	/*background-color: var(--primary-color-light-2);*/
+}
+/*div.skill_branchs > div.branch.is_mark {
+	border-left-color: var(--primary-color-light-2);
+}*/
+/*div.skill_branchs > div.branch.is_mark,
 div.skill_branchs > div.branch.is_mark + div.branch {
 	border-top: unset;
-}
+}*/
 div.skill_branchs > div.branch span.light {
 	color: var(--primary-color-light-3);
 }
@@ -103,8 +118,8 @@ div.skill_branchs > div.branch_list > div.content > ul._lists {
 	margin: 0;
 	padding: 0 0.4rem;
 }
-div.skill_branchs > div.branch_list > div.content > ul._lists > li:before {
-	background-image: url(../../sourse/svg/li_icon.svg);
+div.skill_branchs > div.branch_list > div.content > ul._lists > li::before {
+	background-image: url(../../../sourse/svg/li_icon.svg);
 	width: 0.75rem;
 	height: 0.75rem;
 	position: absolute;

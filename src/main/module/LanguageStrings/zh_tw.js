@@ -50,6 +50,7 @@ const zh_tw = {
             'skill formula: dagger_atk': '小刀ATK',
             'skill formula: target_def': '目標DEF',
             'skill formula: target_level': '目標Lv',
+            'skill formula: guard_power': '阻擋力%',
             'character level': '角色等級',
             'skill level': '技能等級',
             'physical': '物理',
