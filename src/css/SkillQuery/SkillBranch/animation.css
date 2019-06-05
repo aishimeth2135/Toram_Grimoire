@@ -7,3 +7,9 @@
    84%  { background-color: #f9f900; }
    100% { background-color: #5b00ae; }
 }
+
+@keyframes mark {
+   0%   { background-color: var(--primary-color-light); }
+   50%  { background-color: var(--primary-color-light-2); }
+   100%   { background-color: var(--primary-color-light); }
+}

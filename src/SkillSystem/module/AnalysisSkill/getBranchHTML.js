@@ -109,7 +109,8 @@ function getBranchHTML(branch, data){
             'shield_refining': Lang('skill formula: shield_refining'),
             'dagger_atk': Lang('skill formula: dagger_atk'),
             'target_def': Lang('skill formula: target_def'),
-            'target_level': Lang('skill formula: target_level')
+            'target_level': Lang('skill formula: target_level'),
+            'guard_power': Lang('skill formula: guard_power')
         };
         Object.keys(FORMULA_EXTRA_VALUE_LIST).forEach(key => {
             str = str.replace(new RegExp(key, 'g'), FORMULA_EXTRA_VALUE_LIST[key]);
