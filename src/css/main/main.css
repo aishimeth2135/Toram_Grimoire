@@ -10,12 +10,10 @@
 
 body {
 	background-color: #FFF;
+}
+body, input, textarea {
 	color: var(--primary-dark);
 	font-family: 'Itim', 'SetoFont', Microsoft JhengHei, sans-serif;
-}
-input, textarea {
-	color: var(--primary-dark);
-	font-family: 'Itim', Microsoft JhengHei, sans-serif;
 }
 
 input::-webkit-outer-spin-button,
