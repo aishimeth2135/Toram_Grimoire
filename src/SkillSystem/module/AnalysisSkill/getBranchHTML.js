@@ -136,21 +136,11 @@ function getBranchHTML(branch, data){
     function processText(b, _main='text', text='-1'){
         const _attr = b.branchAttributes;
         let str = _main === null || _attr[_main] === void 0 ? text : _attr[_main];
-        if ( !data.showOriginalFormula ){
-            str = str.replace(/\$\{([^\}]+)\}([%m]?)/g, (...args) =>
-                processValue(args[1], {
-                    calc: false, light: true, beforeProcessText: true,
-                    pretext: '${', suffixText: '}', tail: args[2]
-                })
-            );
-            str = safeEval("`" + str + "`");
-        }
-        else {
-            // 由於showOriginalFormula。 ${}內的值丟進去會直接回傳結果。
-            str = str.replace(/\$\{([^\}]+)\}([%m]?)/g, (...args) =>
-                processValue(args[1], {light: true, tail: args[2], separateText: true})
-            );
-        }
+
+        str = str.replace(/\$\{([^\}]+)\}([%m]?)/g, (...args) =>
+            processValue(args[1], {light: true, tail: args[2]})
+        );
+        
         str = str.replace(/(\w?)\s#([^\s]+)\s(\w?)/g, (...args) => {
             let res = lightText(args[2]);
             if ( args[1] !== '' )
