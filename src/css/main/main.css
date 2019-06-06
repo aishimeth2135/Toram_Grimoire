@@ -11,7 +11,7 @@
 body {
 	background-color: #FFF;
 	color: var(--primary-dark);
-	font-family: 'Itim', Microsoft JhengHei, sans-serif;
+	font-family: 'Itim', 'SetoFont', Microsoft JhengHei, sans-serif;
 }
 input, textarea {
 	color: var(--primary-dark);
