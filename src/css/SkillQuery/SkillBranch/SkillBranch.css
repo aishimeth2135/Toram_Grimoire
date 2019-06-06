@@ -1,32 +1,40 @@
 div.skill_branchs > div.branch {
-	margin-left: 0.5rem;
-	padding: 0.4rem 0.6rem;
-	border-left: 2px var(--primary-color-light) solid;
+	margin-left: 0.4rem;
+	padding: 0.6rem 0.4rem;
+	/*border-left: 2px var(--primary-light) solid;*/
+	border-top: 1px var(--primary-light) solid;
+
 	position: relative;
 }
-div.skill_branchs > div.branch::before {
+/*div.skill_branchs > div.branch::before {
 	position: absolute;
-	top: calc(50% - 0.4rem);
-	left: calc(-0.4rem - 1px);
-	height: 0.8rem;
-	width: 0.8rem;
+	top: -0.3rem;
+	left: calc(-0.3rem - 1px);
+	height: 0.6rem;
+	width: 0.6rem;
 	border-radius: 50%;
-	background-color: var(--primary-color-light);
+	background-color: var(--primary-light);
 	content: '';
 }
 div.skill_branchs > div.branch.is_mark::before {
 	animation: mark 2s infinite;
-	/*background-color: var(--primary-color-light-2);*/
 }
-/*div.skill_branchs > div.branch.is_mark {
-	border-left-color: var(--primary-color-light-2);
+div.skill_branchs > div.branch.is_mark {
+	animation: border_mark 2s infinite;
 }*/
-/*div.skill_branchs > div.branch.is_mark,
-div.skill_branchs > div.branch.is_mark + div.branch {
+div.skill_branchs > div.branch.before_is_mark {
+	border-bottom: 1px var(--primary-light) solid;
+}
+div.skill_branchs > div.branch.is_mark {
+	border-left: 2px var(--primary-light-2) solid;
 	border-top: unset;
-}*/
+	margin: 0.6rem;
+	padding: 0.4rem;
+}
+/*div.skill_branchs > div.branch.is_mark + div.branch */
+
 div.skill_branchs > div.branch span.light {
-	color: var(--primary-color-light-3);
+	color: var(--primary-light-3);
 }
 div.skill_branchs > div.branch span.dark {
 	color: #666;
@@ -36,15 +44,20 @@ div.skill_branchs > div.branch div.line_scope {
 }
 
 div.skill_branchs > div.branch > div.top {
-	padding: 0.1rem;
-	padding-top: 0;
-	position: relative;
-	border-bottom: 1px var(--primary-purple) solid;
-	margin-bottom: 0.3rem;
+	padding: 0.2rem 0.4rem;
 	color: var(--primary-purple);
 }
 div.skill_branchs > div.branch > div.top > span._name {
 	margin-left: 0.6rem;
+	vertical-align: middle;
+}
+div.skill_branchs > div.branch > div.top > span._icon > svg {
+	height: 1.2rem;
+	width: 1.2rem;
+	vertical-align: middle;
+}
+div.skill_branchs > div.branch > div.top > span._icon > svg > g {
+	fill: var(--primary-light);
 }
 
 div.skill_branchs > div.branch > div.content > span.hidden_toggle_button {
@@ -53,10 +66,10 @@ div.skill_branchs > div.branch > div.content > span.hidden_toggle_button {
 	cursor: pointer;
 }
 div.skill_branchs > div.branch > div.content > span.hidden_toggle_button > span > svg {
-	fill: var(--primary-color-light-2);
+	fill: var(--primary-light-2);
 }
 div.skill_branchs > div.branch > div.content > span.hidden_toggle_button > span > svg:hover {
-	fill: var(--primary-color-light-3);	
+	fill: var(--primary-light-3);	
 }
 
 div.skill_branchs > div.branch > div.content > div.scope1 {
@@ -67,7 +80,7 @@ div.skill_branchs div.scope1 > span._main_title {
 	padding-right: 0.6rem;
 	margin: 0.2rem 0;
 	display: inline-block;
-	color: var(--primary-color-light-3);
+	color: var(--primary-light-3);
 }
 div.skill_branchs div.scope1 > span._main_title span.light,
 div.skill_branchs div.scope1 > span._main_title .skill_from_where_button {
@@ -80,7 +93,7 @@ div.skill_branchs > div.branch > div.content div.text_scope {
 
 div.skill_branchs > div.branch > div.content > div.scope1 > div.skill_attribute {
 	padding: 0.1rem 0.3rem;
-	border-bottom: 1px var(--primary-color-light-2) solid;
+	border-bottom: 1px var(--primary-light-2) solid;
 	margin: 0.2rem 0.4rem;
 }
 div.skill_branchs > div.branch > div.content_line > div.scope1,
@@ -95,7 +108,7 @@ div.skill_branchs > div.branch > div.content_line > div._icon {
 div.skill_branchs > div.branch > div.content_line > div._icon > svg {
 	height: 1.3rem;
 	width: 1.3rem;
-	fill: var(--primary-color-light);
+	fill: var(--primary-light);
 }
 
 div.skill_branchs > div.branch > div.content {
@@ -119,7 +132,7 @@ div.skill_branchs > div.branch_list > div.content > ul._lists {
 	padding: 0 0.4rem;
 }
 div.skill_branchs > div.branch_list > div.content > ul._lists > li::before {
-	background-image: url(../../../sourse/svg/li_icon.svg);
+	background-image: url(../../../picture/svg/li_icon.svg);
 	width: 0.75rem;
 	height: 0.75rem;
 	position: absolute;
@@ -152,41 +165,41 @@ div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_butto
 	border-radius: 0.2rem;
 	padding: 0.3rem;
 	cursor: pointer;
-	border: 1px var(--primary-color-light-2) solid;
+	border: 1px var(--primary-light-2) solid;
 	transition: 0.3s;
 	margin-left: 0.1rem;
 	margin-right: 0.3rem;
 }
 div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_button:hover {
-	border: 1px var(--primary-color-light-3) solid;
+	border: 1px var(--primary-light-3) solid;
 }
 div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_button:hover svg {
-	fill: 1px var(--primary-color-light-3) solid;
+	fill: 1px var(--primary-light-3) solid;
 }
 div.skill_branchs > div.branch_stack > div.content > div.scope2 > input {
 	padding: 0.3rem 0;
 	border: 0;
 	font-size: 1rem;
-	color: var(--primary-color-light-3);
+	color: var(--primary-light-3);
 	text-align: right;
 	width: 2rem;
 }
 div.skill_branchs > div.branch_stack > div.content > div.scope2 > .unit {
 	margin-right: 0.4rem;
-	color: var(--primary-color-light-3);
+	color: var(--primary-light-3);
 }
 div.skill_branchs > div.branch_stack > div.content > div.scope2 > input:focus {
 	outline: none;
 }
 div.skill_branchs > div.branch_stack > div.content > div.scope2 > span > svg {
-	fill: var(--primary-color-light-2);
+	fill: var(--primary-light-2);
 	vertical-align: middle;
 	width: 1.2rem;
 	height: 1.2rem;
 }
 
 div.skill_branchs > div.branch_reference a.url_text {
-	color: var(--primary-color-light-3);
+	color: var(--primary-light-3);
 	text-decoration: unset;
 }
 
@@ -232,8 +245,8 @@ div.Skill_scope div.skill_attribute > .element_multiple {
 }
 
 div.skill_branchs > div.branch div.effective_area {
-	border: 1px var(--primary-color-light) solid;
-	box-shadow: 0.1rem 0.1rem 0.4rem var(--primary-color-light);
+	border: 1px var(--primary-light) solid;
+	box-shadow: 0.1rem 0.1rem 0.4rem var(--primary-light);
 	padding: 0.6rem;
 	margin: 0.5rem 0;
 	display: inline-block;
@@ -263,8 +276,8 @@ div.skill_branchs div.show_area:hover {
 }
 
 div.skill_branchs > div.branch .separate_text {
-	border-left: 1px var(--primary-color-light) solid;
-	border-right: 1px var(--primary-color-light) solid;
+	border-left: 1px var(--primary-light) solid;
+	border-right: 1px var(--primary-light) solid;
 	display: inline-block;
 	padding: 0 0.5rem;
 	margin: 0 0.4rem;
@@ -275,17 +288,17 @@ div.skill_branchs > div.branch .effect_by_stack .separate_text {
 }
 
 div.skill_branchs .skill_from_where_button {
-	color: var(--primary-color-light-3);
+	color: var(--primary-light-3);
 	cursor: pointer;
 	margin: 0 0.2rem;
-	border-bottom: 1px var(--primary-color-light) solid;
+	border-bottom: 1px var(--primary-light) solid;
 	transition: 0.3s;
 	position: relative;
 	white-space: nowrap;
 	display: inline-block;
 }
 div.skill_branchs .skill_from_where_button:hover {
-	border-bottom: 1px var(--primary-color-light-2) solid;
+	border-bottom: 1px var(--primary-light-2) solid;
 }
 
 div.skill_branchs .skill_from_where_button > div.temp {
@@ -301,8 +314,8 @@ div.skill_branchs .skill_from_where_button .show_skill_from_where {
 	width: 15rem;
 	min-height: 5rem;
 	padding: 0.6rem;
-	border: 1px var(--primary-color-light) solid;
-	box-shadow: 0.1rem 0.1rem 0.4rem var(--primary-color-light);
+	border: 1px var(--primary-light) solid;
+	box-shadow: 0.1rem 0.1rem 0.4rem var(--primary-light);
 	background: #FFF;
 	z-index: 5;
 	color: var(--primary-purple);
@@ -320,7 +333,7 @@ div.skill_branchs > .dev_branchDetail {
 	padding: 0.6rem;
 	font-size: 0.9rem;
 	border-left: 2px var(--primary-purple) solid;
-    border-top: 1px var(--primary-color-light) solid;
+    border-top: 1px var(--primary-light) solid;
 }
 div.skill_branchs > .dev_branchDetail > .top {
 	margin-bottom: 0.8rem;
@@ -347,7 +360,7 @@ div.skill_branchs > .dev_branchDetail > table {
 	border-spacing: 0.2rem;
 }
 div.skill_branchs > .dev_branchDetail > table tr.overwrite > td {
-	color: var(--primary-color-light)!important;
+	color: var(--primary-light)!important;
 }
 div.skill_branchs > .dev_branchDetail > table tr.by_default > td {
 	color: var(--primary-water-blue)!important;
@@ -359,14 +372,14 @@ div.skill_branchs > .dev_branchDetail > table td {
 	padding: 0.2rem 0.4rem;
 }
 div.skill_branchs > .dev_branchDetail > table td._name {
-	border-right: 1px var(--primary-color-light) solid;
+	border-right: 1px var(--primary-light) solid;
 	color: var(--primary-purple);
 	text-align: right;
 }
 div.skill_branchs > .dev_branchDetail > table td._value,
 div.skill_branchs > .dev_branchDetail > table ._extra {
-	color: var(--primary-color-light-3);
+	color: var(--primary-light-3);
 }
 div.skill_branchs > .dev_branchDetail > table ._extra {
-	border-left: 1px var(--primary-color-light) solid;
+	border-left: 1px var(--primary-light) solid;
 }

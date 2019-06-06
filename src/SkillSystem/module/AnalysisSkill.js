@@ -178,6 +178,8 @@ function getEffectHTML(sef, attr_name, data){
 
 function beforeExport(he, data){
     const ctrr = data.skillRoot.controller;
+
+    // 處理因skill屬性而被標記的按鈕
     const skill_text_button_listener = function(event){
         const scope = ctrr.currentData.skill_from_where_scope;
         CY.element.removeAllChild(scope);
@@ -228,9 +230,9 @@ function beforeExport(he, data){
         btns.appendChild(to_skill);
         scope.appendChild(btns);
     }
-
     he.querySelectorAll('span.skill_from_where_button').forEach(btn => btn.addEventListener('click', skill_text_button_listener));
 
+    // 建立分支的展開/收合按鈕
     function hiddenSubCaption(event){
         const scope1 = this.parentNode.querySelector('div.scope1');
         scope1.classList.toggle('hidden');
@@ -247,6 +249,14 @@ function beforeExport(he, data){
         sc1.parentNode.insertBefore(btn, sc1.parentNode.firstChild);
 
         btn.click();
+    });
+
+    // 處理is_mark的介面
+    let branch_scopes = he.querySelectorAll('div.branch');
+    branch_scopes.forEach((scope, i) => {
+        if ( i == 0 ) return;
+        if ( scope.classList.contains('is_mark') )
+            branch_scopes[i-1].classList.add('before_is_mark');
     });
 }
 
