@@ -94,6 +94,9 @@ function createContentLine(frg1, frg2, options){
 function getBranchHTML(branch, data){
     if ( branch.finish )
         return null;
+    const ICONS = {
+        bodomu: '<svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="1250pt" height="1250pt" viewBox="0 0 1250 1250" preserveAspectRatio="xMidYMid meet"><g transform="translate(0,1250) scale(0.1,-0.1)" fill="#000000" stroke="none"><path d="M1468 11473 c-29 -34 -57 -98 -75 -173 -15 -62 -18 -111 -16 -277 l2 -201 -102 34 c-112 38 -148 42 -168 18 -15 -18 -20 -114 -8 -164 4 -19 15 -100 24 -180 56 -495 128 -757 306 -1113 76 -153 214 -396 234 -412 7 -6 78 -141 158 -300 364 -728 566 -1026 995 -1466 l163 -168 -50 -203 c-137 -556 -160 -746 -168 -1370 l-5 -428 -55 -82 c-70 -108 -155 -259 -203 -361 -96 -210 -132 -392 -146 -743 l-7 -159 27 -32 c67 -80 199 -105 317 -59 37 14 69 22 73 19 3 -3 8 2 12 11 3 9 15 16 25 16 10 0 62 11 115 25 102 27 198 71 252 118 l34 28 62 -133 c35 -73 79 -160 99 -193 l35 -60 -221 -6 c-231 -6 -245 -8 -492 -40 -169 -23 -172 -23 -310 -44 -354 -53 -385 -59 -435 -85 -45 -23 -42 -7 -42 -205 0 -139 -13 -216 -66 -397 -33 -112 -30 -132 28 -159 33 -16 55 -15 368 12 389 32 865 65 1177 79 264 13 1155 6 1345 -9 74 -6 218 -18 320 -26 221 -19 532 -53 920 -101 157 -19 292 -36 300 -36 8 0 107 9 220 21 113 11 230 23 260 26 30 3 150 14 265 24 950 88 1527 101 2285 51 204 -14 768 -65 993 -91 150 -17 181 -18 205 -7 30 15 28 -14 15 253 -5 103 -2 140 21 264 24 132 25 146 11 167 -8 13 -24 24 -34 24 -10 0 -72 13 -137 29 -467 115 -798 166 -1299 201 -88 7 -183 15 -211 18 l-52 7 80 95 c111 131 206 278 295 455 42 82 77 152 79 154 2 2 31 -19 66 -46 152 -120 255 -176 398 -218 52 -15 163 -61 245 -100 173 -84 230 -105 286 -105 73 0 119 41 148 130 10 32 6 47 -43 175 -168 435 -316 713 -586 1103 -127 183 -128 184 -134 332 -2 63 -7 122 -9 130 -3 8 -11 94 -17 190 -10 158 -18 263 -36 445 -3 33 -12 112 -20 175 -9 63 -18 144 -21 180 -3 36 -9 70 -13 75 -4 6 -13 39 -20 75 -16 81 -73 261 -114 360 -30 72 -31 76 -16 107 8 18 50 68 93 111 42 43 77 86 77 94 0 9 25 41 55 72 30 30 55 59 55 63 1 15 196 243 397 465 155 171 503 524 658 669 154 143 526 469 739 649 293 248 381 320 387 320 10 0 119 180 119 197 0 8 5 23 10 34 23 42 -16 69 -124 89 -33 5 -61 12 -63 13 -2 2 17 22 43 43 72 61 142 134 147 154 7 27 -18 56 -51 63 -52 10 -661 67 -822 76 -219 13 -695 5 -870 -14 -571 -62 -1039 -208 -1763 -551 -295 -140 -1053 -539 -1090 -573 -16 -16 -24 -16 -80 -5 -399 82 -658 113 -957 114 -287 2 -542 -22 -1110 -104 l-235 -34 -110 70 c-194 125 -241 156 -658 427 -423 275 -994 659 -1350 908 -230 161 -773 557 -1107 808 -118 89 -225 167 -237 173 -31 17 -68 15 -85 -5z"/></g></svg>',
+    }
     function replaceExtraFormulaValue(str){
         const FORMULA_EXTRA_VALUE_LIST = {
             'STR': Lang('skill formula: STR'),
@@ -134,20 +137,28 @@ function getBranchHTML(branch, data){
         const _attr = b.branchAttributes;
         let str = _main === null || _attr[_main] === void 0 ? text : _attr[_main];
         if ( !data.showOriginalFormula ){
-            str = str.replace(/(\$\{[^\}]+\})([%]?)/g, (...args) => {
-                return args[2] !== '%'
-                ? processValue(args[1], {calc: false, light: true})
-                : processValue(args[1], {calc: false, tail: '%', light: true})}
+            str = str.replace(/\$\{([^\}]+)\}([%m]?)/g, (...args) =>
+                processValue(args[1], {
+                    calc: false, light: true, beforeProcessText: true,
+                    pretext: '${', suffixText: '}', tail: args[2]
+                })
             );
             str = safeEval("`" + str + "`");
         }
         else {
-            str = str.replace(/\$\{([^\}]+)\}([%]?)/g, (...args) =>
-                args[2] !== '%'
-                ? processValue(args[1], {light: true, tail: '', separateText: true})
-                : processValue(args[1], {light: true, tail: '%'})
+            // 由於showOriginalFormula。 ${}內的值丟進去會直接回傳結果。
+            str = str.replace(/\$\{([^\}]+)\}([%m]?)/g, (...args) =>
+                processValue(args[1], {light: true, tail: args[2], separateText: true})
             );
         }
+        str = str.replace(/(\w?)\s#([^\s]+)\s(\w?)/g, (...args) => {
+            let res = lightText(args[2]);
+            if ( args[1] !== '' )
+                res = " " + res;
+            if ( args[3] !== '' )
+                res += " ";
+            return res;
+        });
         if ( _attr['mark'] !== void 0 ){
             _attr['mark'].split(/\s*,\s*/).forEach(t => {
                 str = str.replace(new RegExp(t, 'g'), lightText(t));
@@ -183,9 +194,10 @@ function getBranchHTML(branch, data){
     function processValue(v, setting={}){
         v = v.split(',,');
         setting = Object.assign({
-            calc: true, tail: '', head: '', preText: '', toPercentage: false,
+            calc: true, tail: '', head: '', suffixText: '', pretext: '', toPercentage: false,
             checkHasStack: v[0], light: false,
-            separateText: v.length > 1 && (setting.head !== void 0 || setting.tail !== void 0)
+            separateText: v.length > 1 || data.showOriginalFormula,
+            beforeProcessText: false
         }, setting);
         
         let res;
@@ -216,12 +228,22 @@ function getBranchHTML(branch, data){
             }
             else {
                 a = replaceExtraFormulaValue(a);
-                res += a.charAt(0) !== '-' ? '+' + a : a;
+                a = a.charAt(0) !== '-' ? '+' + a : a;
+                if ( setting.beforeProcessText )
+                    a = "+'" + a.replace(/'/g, "\\'") + "'";
+                res += a;
             }
         });
-        res = setting.preText + res;
-        if ( setting.separateText || ( data.showOriginalFormula && !( v.length === 1 && v[0].match(/^[\d\.]+$/) ) ) )
+
+        // pretext與suffixText，會在套用外框之前。
+        res = setting.pretext + res;
+        res += setting.suffixText;
+
+        //|| ( data.showOriginalFormula && !( v.length === 1 && v[0].match(/^[\d\.]+$/) ) )
+        if ( setting.separateText && !res.match(/^[\d\.]+$/) )
             res = '<span class="separate_text">' + res + '</span>';
+
+        // head與tail，會在套用外框之後。
         res = setting.head + res;
         res += setting.tail;
         
@@ -450,9 +472,10 @@ function getBranchHTML(branch, data){
             if ( attr['name'] !== void 0 ){
                 scope1.appendChild(simpleCreateHTML('span', '_main_title', attr['name']));
             }
-            scope1.appendChild(createSkillAttributeScope(null, Lang('branch/stack/min value'), processValue(attr['min'])));
-            if ( attr['max'] !== void 0 )
-                scope1.appendChild(createSkillAttributeScope(null, Lang('branch/stack/max value'), processValue(attr['max'])));
+            scope1.appendChild(simpleCreateHTML('span', '_main_title', processValue(attr['min']) + '~' + ( attr['max'] !== void 0 ? processValue(attr['max']) : '?') + (attr['unit'] !== void 0 ? attr['unit'] : '')));
+            // scope1.appendChild(createSkillAttributeScope(null, Lang('branch/stack/min value'), processValue(attr['min'])));
+            // if ( attr['max'] !== void 0 )
+            //     scope1.appendChild(createSkillAttributeScope(null, Lang('branch/stack/max value'), processValue(attr['max'])));
 
             const main = document.createDocumentFragment();
             main.appendChild(left);
@@ -485,7 +508,9 @@ function getBranchHTML(branch, data){
             // 分支name
             let damage_name = null;
             if ( attr['name'] !== void 0 ){
-                damage_name = simpleCreateHTML('span', '_name', attr['name']);
+                damage_name = document.createDocumentFragment();
+                damage_name.appendChild(simpleCreateHTML('span', '_icon', ICONS.bodomu));
+                damage_name.appendChild(simpleCreateHTML('span', '_name', attr['name']));
             }
 
             // 標題
@@ -577,7 +602,7 @@ function getBranchHTML(branch, data){
                     null, null, text
                 );
                 if ( attr['is_place'] == '1' && attr['cycle'] !== void 0 ) {
-                    damage_cycle = createSkillAttributeScope(null, null, Lang('branch/damage/cycle: preText') + processValue(attr['cycle'], {tail: GetLang('global/second')}));
+                    damage_cycle = createSkillAttributeScope(null, null, Lang('branch/damage/cycle: pretext') + processValue(attr['cycle'], {tail: GetLang('global/second')}));
                 }
             }
             
@@ -686,8 +711,10 @@ function getBranchHTML(branch, data){
         }
         case 'effect': case 'next': case 'passive': {
             let text_name = null;
-            if ( attr['name'] ){
-                text_name = simpleCreateHTML('span', '_name', attr['name']);
+            if ( attr['name'] !== void 0 ){
+                text_name = document.createDocumentFragment();
+                text_name.appendChild(simpleCreateHTML('span', '_icon', ICONS.bodomu));
+                text_name.appendChild(simpleCreateHTML('span', '_name', attr['name']));
             }
             
             let c = attr['condition'];
@@ -818,7 +845,9 @@ function getBranchHTML(branch, data){
         case 'heal': {
             let heal_name = null;
             if ( attr['name'] ){
-                heal_name = simpleCreateHTML('span', '_name', attr['name']);
+                heal_name = document.createDocumentFragment();
+                heal_name.appendChild(simpleCreateHTML('span', '_icon', ICONS.bodomu));
+                heal_name.appendChild(simpleCreateHTML('span', '_name', attr['name']));
             }
 
             let text = getTargetText(attr['target']);
@@ -844,7 +873,7 @@ function getBranchHTML(branch, data){
 
             let cycle = null;
             if ( attr['cycle'] !==  void 0 ) {
-                cycle = createSkillAttributeScope(null, null, Lang('branch/damage/cycle: preText') + processValue(attr['cycle'], {tail: GetLang('global/second')}));
+                cycle = createSkillAttributeScope(null, null, Lang('branch/damage/cycle: pretext') + processValue(attr['cycle'], {tail: GetLang('global/second')}));
             }
 
             const extra_frg = document.createDocumentFragment();

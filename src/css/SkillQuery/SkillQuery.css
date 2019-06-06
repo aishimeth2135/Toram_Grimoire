@@ -5,20 +5,20 @@
 	list-style: none;
 	padding: 0;
 	margin: 1rem 0;
-	border-bottom: 1px var(--primary-color-light) solid;
+	border-bottom: 1px var(--primary-light) solid;
 }
 #SkillQuery div.SkillRoot_scope > div._menu li {
 	display: inline-block;
 	padding: 0.6rem 0.8rem;
 	margin-bottom: -1px;
 	cursor: pointer;
-	border-bottom: 1px var(--primary-color-light) solid;
+	border-bottom: 1px var(--primary-light) solid;
 	transition: 0.3s;
 }
 #SkillQuery div.SkillRoot_scope > div._menu li.cur,
 #SkillQuery div.SkillRoot_scope > div._menu li:hover {
-	border-bottom: 1px var(--primary-color-light-3) solid;
-	color: var(--primary-color-light-3);
+	border-bottom: 1px var(--primary-light-3) solid;
+	color: var(--primary-light-3);
 }
 
 #SkillQuery div.SkillTreeCategory_scope > div._menu > ul {
@@ -28,7 +28,7 @@
 }
 #SkillQuery div.SkillTreeCategory_scope > div._menu li {
 	display: inline-block;
-	border-bottom: 1px var(--primary-color-light) solid;
+	border-bottom: 1px var(--primary-light) solid;
 	padding: 0.5rem 0.7rem;
 	margin: 0.1rem;
 	cursor: pointer;
@@ -36,39 +36,39 @@
 }
 #SkillQuery div.SkillTreeCategory_scope > div._menu li.cur,
 #SkillQuery div.SkillTreeCategory_scope > div._menu li:hover {
-	border-bottom: 1px var(--primary-color-light-3) solid;
-	color: var(--primary-color-light-3);
+	border-bottom: 1px var(--primary-light-3) solid;
+	color: var(--primary-light-3);
 }
 
 #SkillQuery div.SkillTree_scope {
 	overflow-y: auto;
-	border-bottom: 1px var(--primary-color-light-2) solid;
+	border-bottom: 1px var(--primary-light-2) solid;
 	padding-bottom: 1rem;
 }
 #SkillQuery div.SkillTree_scope > table {
 	border-spacing: 0.2rem;
-	box-shadow: 0.1rem 0.1rem 0.4rem var(--primary-color-light);
+	box-shadow: 0.1rem 0.1rem 0.4rem var(--primary-light);
 	margin: 0.4rem;
-	border: 1px var(--primary-color-light) solid;
+	border: 1px var(--primary-light) solid;
 }
 #SkillQuery div.SkillTree_scope td {
 	text-align: center;
 	cursor: pointer;
-	border-bottom: 1px var(--primary-color-light) solid;
+	border-bottom: 1px var(--primary-light) solid;
 	padding: 0.4rem;
 	min-width: 5rem;
 }
 #SkillQuery div.SkillTree_scope td.cur,
 #SkillQuery div.SkillTree_scope td:not(.disable):hover {
-	border-bottom: 1px var(--primary-color-light-3) solid;
-	color: var(--primary-color-light-3);
+	border-bottom: 1px var(--primary-light-3) solid;
+	color: var(--primary-light-3);
 }
 #SkillQuery div.SkillTree_scope td > svg {
-	fill: var(--primary-color-light);
+	fill: var(--primary-light);
 	vertical-align: middle;
 }
 #SkillQuery div.SkillTree_scope td.disable {
-	color: var(--primary-color-light);
+	color: var(--primary-light);
 	cursor: not-allowed;
 }
 
@@ -98,11 +98,11 @@
 }
 
 #SkillQuery div.SkillLevel_scope li.cur {
-	border-bottom: 1px var(--primary-color-light-3) solid;	
+	border-bottom: 1px var(--primary-light-3) solid;	
 }
 #SkillQuery div.SkillEquipment_scope {
-	border-top: 1px var(--primary-color-light) solid;
-	border-bottom: 1px var(--primary-color-light) solid;
+	border-top: 1px var(--primary-light) solid;
+	border-bottom: 1px var(--primary-light) solid;
 	padding: 1rem 0.6rem;
 }
 #SkillQuery div.SkillEquipment_scope > div,
@@ -119,7 +119,7 @@
 #SkillQuery div.SkillEquipment_scope > div > div {
 	margin-right: 0.4rem;
 	font-size: 0.9rem;
-	color: var(--primary-color-light-3);
+	color: var(--primary-light-3);
 }
 
 #SkillQuery div.SkillEquipment_scope ul {
@@ -129,14 +129,14 @@
 }
 #SkillQuery div.SkillEquipment_scope li {
 	padding: 0.2rem 0.4rem;
-	border-bottom: 1px var(--primary-color-light) solid;
+	border-bottom: 1px var(--primary-light) solid;
 	margin: 0.2rem;
 	transition: 0.3s;
 	cursor: pointer;
 }
 #SkillQuery div.SkillEquipment_scope li.cur,
 #SkillQuery div.SkillEquipment_scope li:hover {
-	border-bottom: 1px var(--primary-color-light-3) solid;
+	border-bottom: 1px var(--primary-light-3) solid;
 }
 #SkillQuery div.SkillEquipment_scope li > span.icon {
 	margin-left: 0.3rem;
@@ -148,7 +148,7 @@
 	display: inline-block;
 }
 #SkillQuery div.CharacterLevel_scope > div.title {
-	color: var(--primary-color-light-3);
+	color: var(--primary-light-3);
 	font-size: 0.9rem;
 	margin-right: 0.6rem;
 	display: inline-block;
@@ -157,17 +157,17 @@
 	border-radius: 0.2rem;
 	padding: 0.3rem;
 	cursor: pointer;
-	border: 1px var(--primary-color-light-2) solid;
+	border: 1px var(--primary-light-2) solid;
 	transition: 0.3s;
 }
 #SkillQuery div.CharacterLevel_scope > span:hover {
-	border: 1px var(--primary-color-light-3) solid;
+	border: 1px var(--primary-light-3) solid;
 }
 #SkillQuery div.CharacterLevel_scope > input {
 	padding: 0.3rem;
 	border: 0;
 	font-size: 1rem;
-	color: var(--primary-color-light-3);
+	color: var(--primary-light-3);
 	width: 2.5rem;
 	text-align: center;
 }
@@ -175,7 +175,7 @@
 	outline: none;
 }
 #SkillQuery div.CharacterLevel_scope > span > svg {
-	fill: var(--primary-color-light-2);
+	fill: var(--primary-light-2);
 	vertical-align: middle;
 	width: 1.2rem;
 	height: 1.2rem;
@@ -189,11 +189,11 @@
 #SkillQuery div.SwitchDisplayMode_scope > span {
 	display: inline-block;
 	padding: 0.3rem 0.4rem;
-	border-bottom: 1px var(--primary-color-light) solid;
+	border-bottom: 1px var(--primary-light) solid;
 	cursor: pointer;
 }
 #SkillQuery div.SwitchDisplayMode_scope > span:hover {
-	border-bottom: 1px var(--primary-color-light-3) solid;	
+	border-bottom: 1px var(--primary-light-3) solid;	
 }
 #SkillQuery div.SwitchDisplayMode_scope span.title {
 	
@@ -202,14 +202,14 @@
 	width: 1rem;
 	height: 1rem;
 	vertical-align: middle;
-	fill: var(--primary-color-light-3);
+	fill: var(--primary-light-3);
 	margin-right: 0.6rem;
 }
 
 
 #SkillQuery div.SkillRecord_scope {
 	padding: 1rem;
-	border-top: 1px var(--primary-color-light-2) solid;
+	border-top: 1px var(--primary-light-2) solid;
 }
 #SkillQuery div.SkillRecord_scope > div {
 	display: inline-block;
@@ -224,21 +224,21 @@
 }
 #SkillQuery div.SkillRecord_scope > div.back_button > .caption {
 	vertical-align: middle;
-	color: var(--primary-color-light-2);
+	color: var(--primary-light-2);
 }
 #SkillQuery div.SkillRecord_scope > div.back_button > .icon > svg {
 	vertical-align: middle;
-	fill: var(--primary-color-light-2);
+	fill: var(--primary-light-2);
 	height: 2rem;
 	width: 2rem;
 }
 #SkillQuery div.SkillRecord_scope > div.back_button:hover svg {
-	fill: var(--primary-color-light-3);
+	fill: var(--primary-light-3);
 }#SkillQuery div.SkillRecord_scope > div.back_button:hover .caption {
-	color: var(--primary-color-light-3);
+	color: var(--primary-light-3);
 }
 #SkillQuery div.SkillRecord_scope > div.tip {
-	color: var(--primary-color-light);
+	color: var(--primary-light);
 	margin-right: 0.6rem;
 	vertical-align: middle;
 	font-size: 0.9rem;
@@ -252,7 +252,7 @@
 #SkillQuery div.skill_attribute {
 	margin: 0.4rem;
 	padding: 0.2rem 0.4rem;
-	border-bottom: 1px var(--primary-color-light-2) solid;
+	border-bottom: 1px var(--primary-light-2) solid;
 	display: inline-block;
 }
 #SkillQuery div.skill_attribute > span {
@@ -262,7 +262,7 @@
 	width: 1rem;
 	height: 1rem;
 	vertical-align: middle;
-	fill: var(--primary-color-dark);
+	fill: var(--primary-dark);
 }
 #SkillQuery div.skill_attribute > ._icon {
 	margin-right: 0.2rem;
@@ -271,7 +271,7 @@
 	margin-right: 0.8rem;
 }
 #SkillQuery div.skill_attribute > ._value {
-	color: var(--primary-color-light-3);
+	color: var(--primary-light-3);
 }
 #SkillQuery div.skill_attribute > ._tail {
 	margin-left: 0.4rem;
