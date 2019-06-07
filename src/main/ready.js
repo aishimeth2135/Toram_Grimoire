@@ -1,4 +1,5 @@
 import {toLangText, ConvertLangText} from "./module/LangText.js";
+import GetLang from "./module/LanguageSystem.js"
 
 function LoadingMenu(hnode){
 	const menu = [
@@ -35,4 +36,6 @@ export default function(setting){
 	ConvertLangText(document);
 
 	document.getElementById('LoadingPage').classList.add('hidden');
+
+	document.title = GetLang('Page Title');
 }
