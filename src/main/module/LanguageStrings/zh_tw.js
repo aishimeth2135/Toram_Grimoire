@@ -1,5 +1,12 @@
 const zh_tw = {
     'Page Title': '布偶的魔法書',
+    'Top Menu': ['技能資料'],
+    'settings': {
+        'switch font': {
+            'caption': '若字體顯示有問題（特定裝置會發生），或是不喜歡現在的預設字體。<br />可切換字體為基本字體。',
+            'switch': '切換'
+        }
+    },
     'global': {
         'second': '秒',
         'cancel': '取消'

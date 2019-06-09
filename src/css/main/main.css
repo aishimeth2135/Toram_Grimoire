@@ -16,6 +16,10 @@ body, input, textarea {
 	font-family: 'Itim', 'SetoFont', Microsoft JhengHei, sans-serif;
 }
 
+body.font1, body.font1 > input, body.font1 > textarea {
+	font-family: 'Itim', Microsoft JhengHei, sans-serif!important;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -36,10 +40,29 @@ input[type="number"]{
 	display: inline-block;
 	padding: 0.5rem 0.7rem;
 	border-right: 1px var(--primary-light) solid;
+	cursor: pointer;
+	border-bottom: 1px transparent solid;
+	transition: 0.3s;
+}
+#top_menu li:hover {
+	border-bottom-color: var(--primary-light-2);
 }
 #top_menu, body > article, body > section, body > footer {
 	max-width: 40rem;
 	margin: 0 auto;
+}
+
+#top_menu .settings {
+	display: inline-block;
+	float: right;
+	cursor: pointer;
+	transition: 0.3s;
+}
+#top_menu .settings > svg {
+	fill: var(--primary-light);
+}
+#top_menu .settings:hover svg {
+	fill: var(--primary-light-2);
 }
 
 #LoadingPage {

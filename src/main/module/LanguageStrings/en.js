@@ -1,5 +1,6 @@
 const en = {
     'Page Title': "Cy's Grimoire",
+    'Top Menu': ['Skills Information'],
     'global': {
         'second': ' sec',
         'cancel': 'cancel'
