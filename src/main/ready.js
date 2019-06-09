@@ -52,18 +52,18 @@ function InitSettings(){
 		const k = 'main font family';
 		const cur = localStorage[k];
 		if ( cur && cur === '1' ){
-			document.querySelector('body').classList.remove('font1');
 			localStorage.removeItem(k);
+			document.querySelector('body').classList.add('font1');
 		}
 		else {
 			localStorage[k] = '1';
-			document.querySelector('body').classList.add('font1');
+			document.querySelector('body').classList.remove('font1');
 		}
 	});
 }
 
 function readyFirst(){
-	if ( localStorage['main font family'] === '1' )
+	if ( localStorage['main font family'] !== '1' )
 		document.querySelector('body').classList.add('font1');
 }
 

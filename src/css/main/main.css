@@ -13,11 +13,11 @@ body {
 }
 body, input, textarea {
 	color: var(--primary-dark);
-	font-family: 'Itim', 'SetoFont', Microsoft JhengHei, sans-serif;
+	font-family: 'Itim', Microsoft JhengHei, sans-serif;
 }
 
 body.font1, body.font1 > input, body.font1 > textarea {
-	font-family: 'Itim', Microsoft JhengHei, sans-serif!important;
+	font-family: 'Itim', 'SetoFont', Microsoft JhengHei, sans-serif;
 }
 
 input::-webkit-outer-spin-button,
