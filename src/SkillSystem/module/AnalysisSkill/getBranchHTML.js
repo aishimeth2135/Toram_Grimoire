@@ -141,11 +141,9 @@ function getBranchHTML(branch, data){
             processValue(args[1], {light: true, tail: args[2]})
         );
         
-        str = str.replace(/(\w?)\s#([^\s]+)\s(\w?)/g, (...args) => {
-            let res = lightText(args[2]);
-            if ( args[1] !== '' )
-                res = " " + res;
-            if ( args[3] !== '' )
+        str = str.replace(/#([^\s]+)\s(\w?)/g, (...args) => {
+            let res = lightText(args[1]);
+            if ( args[2] !== '' )
                 res += " ";
             return res;
         });

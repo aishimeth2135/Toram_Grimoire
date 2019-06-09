@@ -1,0 +1,24 @@
+.Cyteria.Button.simple {
+    display: inline-block;
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px var(--primary-light) solid;
+    transition: 0.3s;
+    margin: 0.2rem;
+    cursor: pointer;
+    text-align: center;
+    fill: var(--primary-light);
+}
+.Cyteria.Button.simple:hover {
+    border-bottom: 1px var(--primary-light-2) solid;
+    fill: var(--primary-light-2);
+}
+
+.Cyteria.Button.simple > .icon > svg {
+    height: 1rem;
+    width: 1rem;
+    vertical-align: middle;
+}
+.Cyteria.Button.simple > .text {
+    margin-left: 0.4rem;
+    vertical-align: middle;
+}

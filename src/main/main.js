@@ -1,7 +1,7 @@
 import Grimoire from "./Grimoire.js";
 import SkillSystem from "../SkillSystem/SkillSystem.js";
 import CharacterSystem from "../CharacterSystem/CharacterSystem.js";
-import ready from "./ready.js";
+import {readyFirst, ready} from "./ready.js";
 
 function loadingMsg(s){
 	const div = document.createElement('div');
@@ -18,6 +18,8 @@ function startLoadingMsg(s){
 }
 
 async function start(){
+	readyFirst();
+
 	Grimoire.SkillSystem = new SkillSystem();
 	Grimoire.CharacterSystem = new CharacterSystem();
 	await startLoadingMsg('載入角色能力清單...');
