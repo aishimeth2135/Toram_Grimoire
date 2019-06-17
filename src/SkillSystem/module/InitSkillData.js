@@ -45,8 +45,14 @@ function InitSkillBranch(branch){
 		case 'poration':
 			set_default(branch, {poration: 'auto'});
 			break;
+		case 'group':
+			set_default(branch, {
+				expandable: '1',
+				expansion_default: '0'
+			})
+			break;
 		case 'passive': case 'text': case 'tips': case 'list': case 'head': case 'extra':
-		case 'reference':
+		case 'reference': case 'formula_extra':
 		case '':
 			//Do Nothing
 			break;

@@ -53,9 +53,11 @@ branchDevelopmentController.prototype = {
 		he.appendChild(top);
 
 		const s1 = document.createElement('tbody');
+        const title1_tr = document.createElement('tr');
 		const title1_td = simpleCreateHTML('td', null, null, {colspan: cmp.stats.length !== 0 ? 3 : 2});
 		title1_td.appendChild(simpleCreateHTML('div', '_title', Lang('branch development controller/title: default')));
-		s1.appendChild(title1_td);
+		title1_tr.appendChild(title1_td);
+        s1.appendChild(title1_tr);
 
 		Object.keys(cmp.branchAttributes).forEach(k => {
 			const t = document.createElement('tr');
@@ -81,9 +83,11 @@ branchDevelopmentController.prototype = {
 		});
 		if ( !is_default && branch.no !== '-' && is_exist ){
 			const s2 = document.createDocumentFragment();
+            const title2_tr = document.createElement('tr');
 			const title2_td = simpleCreateHTML('td', null, null, {colspan: branch.stats.length !== 0 ? 3 : 2});
 			title2_td.appendChild(simpleCreateHTML('div', '_title', Lang('branch development controller/title: not default')));
-			s2.appendChild(title2_td);
+			title2_tr.appendChild(title2_td);
+            s2.appendChild(title2_tr);
 			Object.keys(branch.branchAttributes).forEach(k => {
 				const t = document.createElement('tr');
 				t.appendChild(simpleCreateHTML('td', '_name', k));
@@ -180,7 +184,7 @@ function beforeExport(he, data){
     const ctrr = data.skillRoot.controller;
 
     // 處理因skill屬性而被標記的按鈕
-    const skill_text_button_listener = function(event){
+    function skill_text_button_listener(event){
         const scope = ctrr.currentData.skill_from_where_scope;
         CY.element.removeAllChild(scope);
         scope.classList.remove('hidden');
@@ -215,12 +219,12 @@ function beforeExport(he, data){
         const skill = ctrr.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
         scope.appendChild(createSkillAttributeScope(null, GetLang('Skill Query/Skill Element/skill tree: from'), skill.parent.name));
         const btns = simpleCreateHTML('div', 'button_scope');
-        const cancel = simpleCreateHTML('span', 'global_button_1', GetLang('global/cancel'));
+        const cancel = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple'], GetLang('global/cancel'));
         cancel.addEventListener('click', function(event){
             this.parentNode.parentNode.classList.add('hidden');
             event.stopPropagation();
         });
-        const to_skill = simpleCreateHTML('span', 'global_button_1',Lang('button text/to skill'));
+        const to_skill = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple'],Lang('button text/to skill'));
         to_skill.addEventListener('click', function(event){
             this.parentNode.parentNode.classList.add('hidden');
             ctrr.skillRecord(skill);
@@ -238,6 +242,7 @@ function beforeExport(he, data){
         scope1.classList.toggle('hidden');
         this.querySelector('.open').classList.toggle('hidden');
         this.querySelector('.close').classList.toggle('hidden');
+        event.stopPropagation();
     }
     he.querySelectorAll('div.content > div.scope1').forEach(sc1 => {
         if ( sc1.parentNode.classList.contains('content_line') || sc1.childElementCount === 0 )
@@ -251,12 +256,80 @@ function beforeExport(he, data){
         btn.click();
     });
 
-    // 處理is_mark的介面
-    let branch_scopes = he.querySelectorAll('div.branch');
-    branch_scopes.forEach((scope, i) => {
-        if ( i == 0 ) return;
-        if ( scope.classList.contains('is_mark') )
-            branch_scopes[i-1].classList.add('before_is_mark');
+    // 處理group
+    function group_title_click(e){
+        function checkExpanded(node){
+            return node.getAttribute('data-expanded') === '1';
+        }
+        function getSize(node){
+            return parseInt(node.getAttribute('data-groupsize'), 10);
+        }
+        function setHidden(node, doHidden){
+            doHidden
+            ? node.classList.add('fadein')
+            : node.classList.remove('fadein');
+        }
+        const gs = this.parentNode.querySelectorAll('.branch');
+        let p = Array.from(gs).indexOf(this);
+        while ( p != -1 && !gs[p].hasAttribute('data-groupsize') )
+            --p;
+        if ( p == -1 )
+            return;
+
+        const mainExpanded = checkExpanded(gs[p]);
+        const stk = [], expandeds = [];
+        stk.push(getSize(gs[p]));
+        expandeds.push(mainExpanded);
+        while ( stk.length != 0 ){
+            ++p;
+            --stk[stk.length-1];
+            setHidden(gs[p], expandeds[expandeds.length-1]);
+            if ( stk[stk.length-1] == 0 ){
+                stk.pop();
+                expandeds.pop();
+            }
+            if ( gs[p].hasAttribute('data-expanded') ){
+                stk.push(getSize(gs[p]));
+                expandeds.push(!mainExpanded ? mainExpanded : checkExpanded(gs[p]));
+            }
+        }
+
+        this.setAttribute('data-expanded', mainExpanded ? '0' : '1');
+    }
+    const branch_scopes = he.querySelectorAll('.branch');
+    branch_scopes.forEach((a, i) => {
+        if ( !a.hasAttribute('data-groupsize') )
+            return;
+        a.classList.add('group_content');
+        let gtitle = null;
+        let end = i+parseInt(a.getAttribute('data-groupsize'), 10);
+        for (let t=i+1; t<=end && t<branch_scopes.length; ++t){
+            const cur = branch_scopes[t];
+            if ( cur.hasAttribute('data-groupsize') ){
+                const d = parseInt(cur.getAttribute('data-groupsize'), 10);
+                i += d;
+                end += d;
+            }
+            else {
+                cur.classList.add('group_content');
+                if ( cur.getAttribute('data-grouptitle') === '1' ){
+                    gtitle = cur;
+                    break;
+                }
+            }
+        }
+        if ( !gtitle )
+            gtitle = a;
+        gtitle.addEventListener('click', group_title_click);
+        gtitle.classList.add('group_title')
+        gtitle.click();
+    });
+    he.querySelectorAll('.group_content').forEach(a => {
+        if ( !a.classList.contains('group_title') ){
+            const pre = a.previousSibling;
+            if ( pre.tagName.toUpperCase() == 'HR' )
+                CY.element.remove(pre);
+        }
     });
 }
 
@@ -313,6 +386,7 @@ export default function(data){
 
 
 		const two = document.createElement('div');
+        two.appendChild(document.createElement('hr'));
 		two.className = 'skill_branchs';
 		if ( output.checkData() ){
 			// 初始化
@@ -346,8 +420,10 @@ export default function(data){
 					skillRoot, branchDevelopmentMode
 				});
 				if ( t !== null ){
-					if ( temp_html !== null )
+					if ( temp_html !== null ){
 						two.appendChild(temp_html);
+                        two.appendChild(document.createElement('hr'));
+                    }
 					temp_html = t;
 				}
 				if ( branchDevelopmentMode ){

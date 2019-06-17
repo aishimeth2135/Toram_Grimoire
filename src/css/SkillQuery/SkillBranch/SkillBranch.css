@@ -1,9 +1,12 @@
+div.skill_branchs > hr {
+	border: 0;
+	background-color: var(--primary-light);
+	height: 1px;
+	margin: 0.6rem;
+}
 div.skill_branchs > div.branch {
 	margin-left: 0.4rem;
-	padding: 0.6rem 0.4rem;
-	/*border-left: 2px var(--primary-light) solid;*/
-	border-top: 1px var(--primary-light) solid;
-
+	padding: 0 0.4rem;
 	position: relative;
 }
 /*div.skill_branchs > div.branch::before {
@@ -18,20 +21,13 @@ div.skill_branchs > div.branch {
 }
 div.skill_branchs > div.branch.is_mark::before {
 	animation: mark 2s infinite;
-}
-div.skill_branchs > div.branch.is_mark {
-	animation: border_mark 2s infinite;
 }*/
-div.skill_branchs > div.branch.before_is_mark {
-	border-bottom: 1px var(--primary-light) solid;
-}
+
 div.skill_branchs > div.branch.is_mark {
 	border-left: 2px var(--primary-light-2) solid;
-	border-top: unset;
-	margin: 0.6rem;
 	padding: 0.4rem;
+	margin: 0.4rem 0;
 }
-/*div.skill_branchs > div.branch.is_mark + div.branch */
 
 div.skill_branchs > div.branch span.light {
 	color: var(--primary-light-3);
@@ -90,6 +86,26 @@ div.skill_branchs div.scope1 > span._main_title .skill_from_where_button {
 div.skill_branchs > div.branch > div.content div.text_scope {
 	padding: 0.4rem;
 }
+div.skill_branchs > div.branch > div.content div.text_scope.has_icon {
+	padding-left: 2rem;
+	position: relative;
+}
+div.skill_branchs > div.branch > div.content div.text_scope.has_icon > span.text {
+	vertical-align: middle;
+}
+div.skill_branchs div.text_scope.has_icon > .icon {
+	position: absolute;
+	left: 0;
+}
+div.skill_branchs div.text_scope.has_icon > .icon > svg {
+	height: 1.2rem;
+	width: 1.2rem;
+	fill: var(--primary-light);
+	vertical-align: middle;
+}
+div.skill_branchs div.text_scope.has_icon > .icon > svg > g {
+	fill: var(--primary-light);	
+}
 
 div.skill_branchs > div.branch > div.content > div.scope1 > div.skill_attribute {
 	padding: 0.1rem 0.3rem;
@@ -125,11 +141,15 @@ div.skill_branchs > div.branch_tips {
 	color: #c62899;
 	font-size: 0.9rem;
 }
+div.skill_branchs > div.branch_tips > div.content div.text_scope.has_icon {
+	padding-left: 1.8rem;
+	position: relative;
+}
 
 div.skill_branchs > div.branch_list > div.content > ul._lists {
 	list-style: none;
 	margin: 0;
-	padding: 0 0.4rem;
+	padding: 0.1rem 0.4rem;
 }
 div.skill_branchs > div.branch_list > div.content > ul._lists > li::before {
 	background-image: url(../../../picture/svg/li_icon.svg);
@@ -146,7 +166,8 @@ div.skill_branchs > div.branch_list > div.content > ul._lists > li::before {
 div.skill_branchs > div.branch_list > div.content > ul._lists > li {
 	position: relative;
 	padding-left: 1.2rem;
-	margin: 0.5rem 0;
+	margin: 0.3rem 0;
+	display: block;
 }
 
 div.skill_branchs > div.branch_stack > div.content > div.scope1 {
@@ -320,7 +341,7 @@ div.skill_branchs .skill_from_where_button .show_skill_from_where {
 	z-index: 5;
 	color: var(--primary-purple);
 }
-div.skill_branchs .skill_from_where_button .show_skill_from_where span.global_button_1 {
+div.skill_branchs .skill_from_where_button .show_skill_from_where .Cyteria.Button.simple {
 	min-width: 3rem;
 	margin: 0.3rem;
 }
@@ -382,4 +403,30 @@ div.skill_branchs > .dev_branchDetail > table ._extra {
 }
 div.skill_branchs > .dev_branchDetail > table ._extra {
 	border-left: 1px var(--primary-light) solid;
+}
+
+
+div.skill_branchs > div.branch.group_content {
+	border-left: 2px var(--primary-light-2) solid;
+	padding: 0.4rem;
+	transition: 0.5s ease-out;
+	opacity: 1;
+}
+div.skill_branchs > div.branch.group_title {
+	cursor: pointer;
+}
+div.skill_branchs > div.branch.group_title[data-expanded="0"]:hover {
+	border-left-color: var(--primary-light-2);
+}
+div.skill_branchs > div.branch.group_title[data-expanded="0"] {
+	border-left-color: var(--primary-light);
+}
+div.skill_branchs > div.branch.group_title[data-expanded="1"] {
+	animation: border_mark 2s infinite;
+}
+div.skill_branchs > div.branch.group_content.fadein {
+    opacity: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
 }

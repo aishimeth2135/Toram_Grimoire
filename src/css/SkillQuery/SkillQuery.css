@@ -74,7 +74,6 @@
 
 #SkillQuery div.Skill_scope {
 	margin-bottom: 2rem;
-	overflow-x: auto;
 }
 #SkillQuery div.Skill_scope > div.skill_attributes {
 	padding: 0.6rem;
