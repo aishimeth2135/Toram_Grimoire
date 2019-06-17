@@ -32,7 +32,8 @@ TempSkillEffect.prototype = {
         // 如果 branch.no 一樣才執行覆蓋
         sef.branchs.forEach((branch, i) => {
             const loc = this.branchs.findIndex(b => b.no !== '-' && b.no == branch.no);
-            loc == -1 ? this.newBranch().from(branch) : this.branchs[loc].overWrite(branch);
+            if ( loc != -1 )
+                this.branchs[loc].overWrite(branch);
         });
     },
     appendAttribute(name, v){
