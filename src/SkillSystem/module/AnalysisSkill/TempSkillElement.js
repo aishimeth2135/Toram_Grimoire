@@ -74,8 +74,8 @@ TempSkillBranch.prototype = {
         return SkillBranch.prototype.appendStat.call(this, ...arguments);
     },
     overWrite: function(branch){
-        // 如果 branch.no 一樣但 branch.name 為空值且 brahch.branchAttributes 為空。去除此 branch。
-        if ( branch.name === '' &&  CY.object.isEmpty(branch.branchAttributes) && branch.stats.length == 0 ){
+        // 如果 branch.no 一樣但 branch.name 為空值且isEmpty。去除此 branch。
+        if ( branch.name === '' &&  this.isEmpty() ){
             const b = this.parent.branchs;
             b.splice(b.indexOf(this), 1);
             return;
@@ -104,6 +104,9 @@ TempSkillBranch.prototype = {
                     t.statValue(a.value);
             }
         });
+    },
+    isEmpty(){
+        return CY.object.isEmpty(this.branchAttributes) && this.stats.length == 0;
     }
 };
 

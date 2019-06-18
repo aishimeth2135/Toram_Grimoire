@@ -92,7 +92,7 @@ function createContentLine(frg1, frg2, options){
 
 
 function getBranchHTML(branch, data){
-    if ( CY.object.isEmpty(branch.branchAttributes) )
+    if ( branch.isEmpty() )
         branch.finish = true;
     if ( branch.finish )
         return null;
@@ -394,7 +394,7 @@ function getBranchHTML(branch, data){
 
     let p = branch.findLocation() + 1;
     let c = branch.parent.branchs[p];
-    while ( c !== void 0 && SUFFIX_LIST.indexOf(c.name) != -1 && !CY.object.isEmpty(c.branchAttributes) ){
+    while ( c !== void 0 && SUFFIX_LIST.indexOf(c.name) != -1 && !c.isEmpty() ){
         suffix.push(c);
         c = branch.parent.branchs[++p];
     }
