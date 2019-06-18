@@ -280,7 +280,7 @@ function beforeExport(he, data){
         const stk = [], expandeds = [];
         stk.push(getSize(gs[p]));
         expandeds.push(mainExpanded);
-        while ( stk.length != 0 ){
+        while ( p != gs.length && stk.length != 0 ){
             ++p;
             --stk[stk.length-1];
             setHidden(gs[p], expandeds[expandeds.length-1]);
