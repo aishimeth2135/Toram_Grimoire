@@ -76,9 +76,15 @@ input[type="number"]{
 	background-color: #FFF;
 	padding-top: 2rem;
 }
-
 #LoadingPage > .main {
 	margin-bottom: 2rem;
+}
+#LoadingPage > .content {
+	padding: 1rem 0;
+	margin: 1rem auto;
+	border-top: 1px var(--primary-light) solid;
+	border-bottom: 1px var(--primary-light) solid;
+	max-width: 30rem;
 }
 
 footer {

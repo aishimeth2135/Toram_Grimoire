@@ -77,8 +77,6 @@ function ready(setting){
 
 	InitSettings();
 
-	document.getElementById('LoadingPage').classList.add('hidden');
-
 	document.title = GetLang('Page Title');
 }
 
