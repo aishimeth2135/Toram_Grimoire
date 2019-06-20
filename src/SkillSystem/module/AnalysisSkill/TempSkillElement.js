@@ -75,7 +75,7 @@ TempSkillBranch.prototype = {
     },
     overWrite: function(branch){
         // 如果 branch.no 一樣但 branch.name 為空值且isEmpty。去除此 branch。
-        if ( branch.name === '' &&  this.isEmpty() ){
+        if ( branch.name === '' && branch.isEmpty() ){
             const b = this.parent.branchs;
             b.splice(b.indexOf(this), 1);
             return;
@@ -106,7 +106,7 @@ TempSkillBranch.prototype = {
         });
     },
     isEmpty(){
-        return CY.object.isEmpty(this.branchAttributes) && this.stats.length == 0;
+        return SkillBranch.prototype.isEmpty.call(this);
     }
 };
 

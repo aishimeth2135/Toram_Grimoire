@@ -38,6 +38,9 @@ CharacterSystem.prototype = {
 	},
 	findStatBase(bn){
 		return this.StatList().find(a => a.baseName == bn);
+	},
+	findStatBaseFromCaption(cap){
+		return this.StatList().find(a => a.caption == cap);
 	}
 }
 

@@ -1,6 +1,7 @@
 import SkillElementsController from './SkillElementsController.js';
 import Grimoire from "../../main/Grimoire.js";
 import StatBase from "../../CharacterSystem/module/StatBase.js";
+import CY from "../../main/module/cyteria.js";
 
 /*| @param arguments */
 function checkConstructorArgs(){
@@ -210,6 +211,9 @@ SkillBranch.prototype = {
 		const stat = Grimoire.CharacterSystem.findStatBase(baseName).createSimpleStat(type, v);
 		this.stats.push(stat);
 		return stat;
+	},
+	isEmpty(){
+		return CY.object.isEmpty(this.branchAttributes) && this.stats.length == 0;
 	}
 }
 
