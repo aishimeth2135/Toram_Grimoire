@@ -118,7 +118,7 @@ const zh_tw = {
                     'frequency: unit': '次',
                     'judgment: common': '共同判定',
                     'judgment: separate': '分開判定',
-                    'cycle: preText': '每',
+                    'cycle: pretext': '每',
                     'extra': {
                         'base title': '額外效果'
                     }
