@@ -2,10 +2,9 @@ div.skill_branchs > hr {
 	border: 0;
 	background-color: var(--primary-light);
 	height: 1px;
-	margin: 0.6rem;
+	margin: 0.6rem 0;
 }
 div.skill_branchs > div.branch {
-	margin-left: 0.4rem;
 	padding: 0 0.4rem;
 	position: relative;
 }
@@ -18,9 +17,6 @@ div.skill_branchs > div.branch {
 	border-radius: 50%;
 	background-color: var(--primary-light);
 	content: '';
-}
-div.skill_branchs > div.branch.is_mark::before {
-	animation: mark 2s infinite;
 }*/
 
 div.skill_branchs > div.branch.is_mark {
@@ -149,7 +145,7 @@ div.skill_branchs > div.branch_tips > div.content div.text_scope.has_icon {
 div.skill_branchs > div.branch_list > div.content > ul._lists {
 	list-style: none;
 	margin: 0;
-	padding: 0.1rem 0.4rem;
+	padding: 0.1rem 0;
 }
 div.skill_branchs > div.branch_list > div.content > ul._lists > li::before {
 	background-image: url(../../../picture/svg/li_icon.svg);
@@ -407,10 +403,11 @@ div.skill_branchs > .dev_branchDetail > table ._extra {
 
 
 div.skill_branchs > div.branch.group_content {
-	border-left: 2px var(--primary-light-2) solid;
+	border-left: 2px var(--primary-light) solid;
 	padding: 0.4rem;
 	transition: 0.5s ease-out;
 	opacity: 1;
+	margin: 0!important;
 }
 div.skill_branchs > div.branch.group_title {
 	cursor: pointer;
@@ -421,12 +418,25 @@ div.skill_branchs > div.branch.group_title[data-expanded="0"]:hover {
 div.skill_branchs > div.branch.group_title[data-expanded="0"] {
 	border-left-color: var(--primary-light);
 }
-div.skill_branchs > div.branch.group_title[data-expanded="1"] {
+/*div.skill_branchs > div.branch.group_title[data-expanded="1"] {
 	animation: border_mark 2s infinite;
-}
+}*/
 div.skill_branchs > div.branch.group_content.fadein {
     opacity: 0;
     height: 0;
     padding: 0;
     overflow: hidden;
+}
+div.skill_branchs > div.branch.group_title::before {
+	position: absolute;
+	top: calc(50% - 0.3rem);
+	left: calc(-0.3rem - 1px);
+	height: 0.6rem;
+	width: 0.6rem;
+	border-radius: 50%;
+	background-color: var(--primary-light);
+	content: '';
+}
+div.skill_branchs > div.branch.group_title[data-expanded="1"]::before {
+	animation: mark 2s infinite;
 }
