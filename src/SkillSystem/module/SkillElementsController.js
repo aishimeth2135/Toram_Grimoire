@@ -171,20 +171,22 @@ Controller.prototype = {
 		}
 		if ( value !== -1 ){
 			// 對應部位不能裝的武器類型清單
-			// ['箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍']
+			// ['箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍', '無裝備']
 			/* [
 				'單手劍', '雙手劍',
 				'弓', '弩', '法杖',
 				'魔導具',
 				'拳套', '旋風槍',
-				'拔刀劍', '雙劍'
+				'拔刀劍', '雙劍',
+				'空手'
 			] */
 			let disable_subw_of_mainw = [
 				[5], [0, 1, 2, 3, 4, 5],
 				[1, 2, 3, 4], [5], [3, 5],
 				[0, 1, 2, 3, 4, 5],
 				[4, 5], [1, 3, 4, 5],
-				[1, 3, 4, 5], [0, 1, 2, 3, 4, 5]
+				[1, 3, 4, 5], [0, 1, 2, 3, 4, 5],
+				[5]
 			];
 			switch (fieldname){
 				case 'mainWeapon':
@@ -416,19 +418,19 @@ Controller.prototype = {
 								case mainw:
 									attrkey = strings().data_mainWeapon;
 									ftitle = Lang('main weapon');
-									icons = ['', '', '', '', '', '', '', '', '', ''];
+									icons = ['', '', '', '', '', '', '', '', '', '', ''];
 									names = GetLang('Skill Query/Analysis Skill/Main Weapon List');
 									break;
 								case subw:
 									attrkey = strings().data_subWeapon;
 									ftitle = Lang('sub weapon');
-									icons = ['', '', '', '', '', ''];
+									icons = ['', '', '', '', '', '', ''];
 									names = GetLang('Skill Query/Analysis Skill/Sub Weapon List');
 									break;
 								case armor:
 									attrkey = strings().data_bodyArmor;
 									ftitle = Lang('body armor');
-									icons = ['', '', ''];
+									icons = ['', '', '', ''];
 									names = GetLang('Skill Query/Analysis Skill/Body Armor List');
 									break;
 							}

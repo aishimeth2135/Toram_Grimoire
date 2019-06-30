@@ -1,10 +1,9 @@
-const
-	BASE_NAME = 0,
-	CAPTION = 1,
-	HAS_MULTIPLIER = 2,
-	CONSTANT_UNIT = 3;
-
 export default function(character_system, c){
+	const
+		BASE_NAME = 0,
+		CAPTION = 1,
+		HAS_MULTIPLIER = 2,
+		CONSTANT_UNIT = 3;
 	c.forEach(function(p, index){
 		if ( index == 0 )
 			return;
