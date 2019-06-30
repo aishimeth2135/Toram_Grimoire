@@ -28,15 +28,15 @@ input[type="number"]{
   -moz-appearance: textfield;
 }
 
-#top_menu {
+#top-menu {
 
 }
-#top_menu > ul {
+#top-menu > ul {
 	list-style: none;
 	padding: 0px 0.6rem;
 	margin: 1rem 0px;
 }
-#top_menu li {
+#top-menu li {
 	display: inline-block;
 	padding: 0.5rem 0.7rem;
 	border-right: 1px var(--primary-light) solid;
@@ -44,28 +44,28 @@ input[type="number"]{
 	border-bottom: 1px transparent solid;
 	transition: 0.3s;
 }
-#top_menu li:hover {
+#top-menu li:hover {
 	border-bottom-color: var(--primary-light-2);
 }
-#top_menu, body > article, body > section, body > footer {
-	max-width: 40rem;
+#top-menu, body > article, body > section, body > footer {
+	max-width: 50rem;
 	margin: 0 auto;
 }
 
-#top_menu .settings {
+#top-menu .settings {
 	display: inline-block;
 	float: right;
 	cursor: pointer;
 	transition: 0.3s;
 }
-#top_menu .settings > svg {
+#top-menu .settings > svg {
 	fill: var(--primary-light);
 }
-#top_menu .settings:hover svg {
+#top-menu .settings:hover svg {
 	fill: var(--primary-light-2);
 }
 
-#LoadingPage {
+#loading-page {
 	text-align: center;
 	line-height: 2rem;
 	width: 100%;
@@ -76,10 +76,10 @@ input[type="number"]{
 	background-color: #FFF;
 	padding-top: 2rem;
 }
-#LoadingPage > .main {
+#loading-page > .main {
 	margin-bottom: 2rem;
 }
-#LoadingPage > .content {
+#loading-page > .content {
 	padding: 1rem 0;
 	margin: 1rem auto;
 	border-top: 1px var(--primary-light) solid;
@@ -92,14 +92,58 @@ footer {
 	text-align: center;
 }
 
-footer a {
-	color: var(--primary-light-3);
-}
-
 footer .switch_branch_development_mode {
 	cursor: pointer;
 	transition: 0.3s;
 }
 footer .switch_branch_development_mode:hover {
 	color: var(--primary-light-3);
+}
+
+a {
+	color: var(--primary-light-3);
+}
+
+nav {
+	border-bottom: 1px solid var(--primary-light);
+	margin-bottom: 1rem;
+}
+
+nav > ul {
+	list-style: none;
+	padding: 0.2rem 1rem;
+	margin: 0;
+	font-size: 0.9rem;
+}
+nav > ul > li {
+	display: inline-block;
+}
+
+nav > ul > li > a, nav > ul > li > span {
+	display: inline-block;
+	padding: 0.4rem 0.7rem;
+}
+
+nav > ul > li > a {
+	border-left: 2px solid transparent;
+	text-decoration: none;
+	color: var(--primary-dark);
+	transition: 0.3s;
+}
+
+nav > ul > li > a:hover {
+	border-left-color: var(--primary-light-2);
+	color: var(--primary-light-2);
+}
+
+nav > ul > li > a::after {
+	content: '';
+	background-image: url(../../picture/svg/li_icon.svg);
+	background-size: contain;
+	background-repeat: no-repeat;
+	width: 0.6rem;
+	height: 0.6rem;
+	display: inline-block;
+	margin-left: 1rem;
+	margin-right: -0.6rem;
 }

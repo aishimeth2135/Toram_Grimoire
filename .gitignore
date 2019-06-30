@@ -1,12 +1,4 @@
-_css/
-cy/
-EnchantEquipment/
-img/
-js/
-/svg/
 /node_modules/
-backup_index.html
-_EnchantCalc.html
 
 *.txt
 *.config.js

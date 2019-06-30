@@ -1,6 +1,6 @@
-import zh_tw from "./LanguageStrings/zh_tw.js";
-import en from "./LanguageStrings/en.js";
-import ja from "./LanguageStrings/ja.js";
+import zh_tw from "./LanguageData/zh_tw.js";
+import en from "./LanguageData/en.js";
+import ja from "./LanguageData/ja.js";
 
 function currentLanguage(){
     return 1;
@@ -19,7 +19,13 @@ function Search(lang, id){
     return cur;
 }
 
-export default function Lang(id){
+function InitLanguageData(data){
+    Object.assign(zh_tw, data.zh_tw);
+    Object.assign(en, data.en);
+    Object.assign(ja, data.ja);
+}
+
+function GetLang(id){
     const langs = [en, zh_tw, ja];
     const no = currentLanguage();
     let t = Search(langs[no], id);
@@ -44,3 +50,14 @@ export default function Lang(id){
     } 
     return t;
 };
+
+function PageInitLanguage(){
+    document.querySelectorAll("*[data-langid]").forEach(a => {
+        a.innerHTML = GetLang(a.getAttribute('data-langid'));
+        a.removeAttribute('data-langid');
+    });
+}
+
+export default GetLang;
+
+export {GetLang, InitLanguageData, PageInitLanguage};

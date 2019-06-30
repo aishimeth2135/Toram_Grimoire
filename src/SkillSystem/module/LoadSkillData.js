@@ -1,45 +1,45 @@
 import {SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
 import Grimoire from "../../main/Grimoire.js";
 
-const 
-/* all */
-	NO = 0,
-	CONFIRM = 1,
-/* Skill */
-	NAME = 1,
-	IS_DEFAULT = 2,
-	IS_DEFAULT_TRUE = '預設',
-	MAIN_WEAPON = 3,
-	SUB_WEAPON = 4,
-	BODY_ARMOR = 5,
-	MAIN_WEAPON_LIST = ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍'],
-	SUB_WEAPON_LIST = ['箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍'],
-	BODY_ARMOR_LIST = ['輕量化', '重量化', '一般'],
-	EFFECT_BRANCH_NO = 6,
-	EFFECT_BRANCH_NAME = 7,
-	EFFECT_BRANCH_ATTRIBUTE_NAME = 8,
-	EFFECT_BRANCH_ATTRIBUTE_VALUE = 9,
-	EFFECT_BRANCH_ATTRIBUTE_EXTRA = 10,
-	MP_COST = 11,
-	RANGE = 12,
-	SKILL_TYPE = 13,
-	IN_COMBO = 14,
-	ACTION_TIME = 15,
-	CASTING_TIME = 16,
-	SKILL_TYPE_LIST = ['瞬發', '須詠唱', '須蓄力', '被動'],
-	IN_COMBO_LIST = ['可以放入連擊', '無法放入連擊', '不可放入連擊的第一招'],
-	ACTION_TIME_LIST = ['極慢', '慢', '稍慢', '一般', '稍快', '快', '極快'],
-/* Skill Tree Category */
-	CONFIRM_SKILL_TREE_CATEGORY = 'Skill Tree Category',
-	SKILL_TREE_CATEGORY_NAME = 2,
-/* Skill Tree */
-	CONFIRM_SKILL_TREE = 'Skill Tree',
-	SKILL_TREE_NAME = 2,
-	SKILL_TREE_MAIN_WEAPON_LIST = 3,
-	SKILL_TREE_SUB_WEAPON_LIST = 4,
-	SKILL_TREE_BODY_ARROMR_LIST = 5;
-
 export default function LoadSkillData(sr, c){
+	const 
+	/* all */
+		NO = 0,
+		CONFIRM = 1,
+	/* Skill */
+		NAME = 1,
+		IS_DEFAULT = 2,
+		IS_DEFAULT_TRUE = '預設',
+		MAIN_WEAPON = 3,
+		SUB_WEAPON = 4,
+		BODY_ARMOR = 5,
+		MAIN_WEAPON_LIST = ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍', '空手'],
+		SUB_WEAPON_LIST = ['箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍', '無裝備'],
+		BODY_ARMOR_LIST = ['輕量化', '重量化', '一般', '無裝備'],
+		EFFECT_BRANCH_NO = 6,
+		EFFECT_BRANCH_NAME = 7,
+		EFFECT_BRANCH_ATTRIBUTE_NAME = 8,
+		EFFECT_BRANCH_ATTRIBUTE_VALUE = 9,
+		EFFECT_BRANCH_ATTRIBUTE_EXTRA = 10,
+		MP_COST = 11,
+		RANGE = 12,
+		SKILL_TYPE = 13,
+		IN_COMBO = 14,
+		ACTION_TIME = 15,
+		CASTING_TIME = 16,
+		SKILL_TYPE_LIST = ['瞬發', '須詠唱', '須蓄力', '被動'],
+		IN_COMBO_LIST = ['可以放入連擊', '無法放入連擊', '不可放入連擊的第一招'],
+		ACTION_TIME_LIST = ['極慢', '慢', '稍慢', '一般', '稍快', '快', '極快'],
+	/* Skill Tree Category */
+		CONFIRM_SKILL_TREE_CATEGORY = 'Skill Tree Category',
+		SKILL_TREE_CATEGORY_NAME = 2,
+	/* Skill Tree */
+		CONFIRM_SKILL_TREE = 'Skill Tree',
+		SKILL_TREE_NAME = 2,
+		SKILL_TREE_MAIN_WEAPON_LIST = 3,
+		SKILL_TREE_SUB_WEAPON_LIST = 4,
+		SKILL_TREE_BODY_ARROMR_LIST = 5;
+	
 	let cur = null;
 
 	const SKILL_ELEMENT_ORDER = [

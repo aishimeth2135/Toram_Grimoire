@@ -122,10 +122,15 @@ function getBranchHTML(branch, data){
             str = str.replace(new RegExp(key, 'g'), FORMULA_EXTRA_VALUE_LIST[key]);
         });
         str = str
-            .replace(/\*/g, '×').replace(/SLv/g, SLv).replace(/CLv/g, CLv)
-            .replace(/&(\d):/g, (m, no) => texts[parseInt(no)] || '(?)')
-            .replace(/\d+(?:\.\d+)?[\*/]{1}\d+(?:\.\d+)?/g, s => safeEval(s))
-            .replace(/(\d+\.\d+)/g, () => parseFloat(RegExp.$1)*100 + '%');
+            .replace(/SLv/g, SLv).replace(/CLv/g, CLv)
+            .replace(/stack(?:\[\d+\])?/, m => safeEval(m))
+            .replace(/&(\d):/g, (m, no) => texts[parseInt(no)] || '(?)');
+
+        const pat = /[a-zA-Z0-9_.]?\(?\d+(?:\.\d+)?[\*/\-\+]{1}\d+(?:\.\d+)?\)?/g;
+        while ( str.match(pat) )
+            str = str.replace(pat, s => safeEval(s));
+
+        str = str.replace(/\*/g, '×').replace(/(\d+\.\d+)/g, () => parseFloat(RegExp.$1)*100 + '%');
         return str;
     }
     function safeEval(str, dftv){
@@ -188,8 +193,7 @@ function getBranchHTML(branch, data){
         setting = Object.assign({
             calc: true, tail: '', head: '', suffixText: '', pretext: '', toPercentage: false,
             checkHasStack: v[0], light: false,
-            separateText: v.length > 1 || data.showOriginalFormula,
-            beforeProcessText: false
+            separateText: v.length > 1 || data.showOriginalFormula
         }, setting);
         
         let res;
@@ -202,7 +206,7 @@ function getBranchHTML(branch, data){
                             t *= 100;
                         if ( t !== void 0 && !Number.isInteger(t) )
                             t = t.toFixed(2);
-                        res = t;
+                        res = t.toString();
                     }
                     else
                         res = a;
@@ -220,10 +224,12 @@ function getBranchHTML(branch, data){
             }
             else {
                 a = replaceExtraFormulaValue(a);
-                a = a.charAt(0) !== '-' ? '+' + a : a;
-                if ( setting.beforeProcessText )
-                    a = "+'" + a.replace(/'/g, "\\'") + "'";
-                res += a;
+                if ( res === '0' )
+                    res = a;
+                else {
+                    a = a.charAt(0) !== '-' ? '+' + a : a;
+                    res += a;
+                }
             }
         });
 
@@ -555,11 +561,19 @@ function getBranchHTML(branch, data){
                 processValue(attr['constant'])
             );
 
+            // 技能倍率
             const multiplier = createSkillAttributeScope(
                 null,
                 Lang('branch/damage/skill multiplier'),
                 processValue(attr['multiplier'], {tail: '%'})
             );
+
+            // 最終傷害常數提升
+            const extra_constant = attr['extra_constant'] !== void 0 ? createSkillAttributeScope(
+                null,
+                Lang('branch/damage/skill extra constant'),
+                processValue(attr['extra_constant'])
+            ) : null;
 
             //異常狀態
             let aliment = null;

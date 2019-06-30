@@ -1,0 +1,78 @@
+#Home {
+    margin-bottom: 2rem;
+}
+
+#Home > section {
+    padding: 0.6rem;
+    display: flex;
+}
+#Home > section > div {
+    border: 1px solid transparent;
+}
+#Home > section > .picture {
+    border: 1px solid var(--primary-light-2);
+    width: 20rem;
+    height: 12rem;
+}
+
+#Home > section > .caption {
+    padding: 0 1.2rem;
+}
+#Home > section > .caption > .top {
+    margin: 0.4rem 0;
+}
+#Home > section > .caption > .top > .icon {
+    margin-right: 0.6rem;
+}
+#Home > section > .caption > .top > .icon > svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    vertical-align: middle;
+}
+#Home > section > .caption > .top > .icon > svg > g {
+    fill: var(--primary-light);
+}
+#Home > section > .caption > .top > .title {
+    font-size: 1.2rem;
+    vertical-align: middle;
+}
+
+.content > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0.1rem 0;
+}
+.content > ul > li::before {
+    background-image: url(../../picture/svg/li_icon.svg);
+    width: 0.75rem;
+    height: 0.75rem;
+    position: absolute;
+    left: 0;
+    top: 0.3rem;
+    content: '';
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.content > ul > li {
+    position: relative;
+    padding-left: 1.2rem;
+    margin: 0.3rem 0;
+    display: block;
+}
+
+#Home > section > .caption > .link {
+    margin: 0.4rem 0;
+    text-align: right
+}
+
+#Home > section > .caption > .link::before {
+    content: '';
+    background-image: url(../../picture/svg/li_icon.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 0.75rem;
+    height: 0.75rem;
+    display: inline-block;
+    margin-right: 0.6rem;
+}
