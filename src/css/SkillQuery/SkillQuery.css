@@ -57,7 +57,18 @@
 	border-bottom: 1px var(--primary-light) solid;
 	padding: 0.4rem;
 	min-width: 5rem;
+	position: relative;
 }
+/* #SkillQuery div.SkillTree_scope td[data-empty="0"]::before {
+	position: absolute;
+	top: calc(50% - 0.2rem);
+	left: -0.2rem;
+	height: 0.4rem;
+	width: 0.4rem;
+	border-radius: 50%;
+	background-color: var(--primary-light-2);
+	content: '';
+} */
 #SkillQuery div.SkillTree_scope td.cur,
 #SkillQuery div.SkillTree_scope td:not(.disable):hover {
 	border-bottom: 1px var(--primary-light-3) solid;
