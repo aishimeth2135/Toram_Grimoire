@@ -25,12 +25,6 @@ div.skill_branchs > div.branch.is_mark {
 	margin: 0.4rem 0;
 }
 
-div.skill_branchs > div.branch span.light {
-	color: var(--primary-light-3);
-}
-div.skill_branchs > div.branch span.dark {
-	color: #666;
-}
 div.skill_branchs > div.branch div.line_scope {
 	padding-left: 0.4rem;
 }
@@ -142,29 +136,14 @@ div.skill_branchs > div.branch_tips > div.content div.text_scope.has_icon {
 	position: relative;
 }
 
-div.skill_branchs > div.branch_list > div.content > ul._lists {
-	list-style: none;
-	margin: 0;
-	padding: 0.1rem 0;
+div.skill_branchs > div.branch_list > div.content > ul._lists.is_tips {
+	color: #c62899;
+	font-size: 0.9rem;
 }
-div.skill_branchs > div.branch_list > div.content > ul._lists > li::before {
-	background-image: url(../../../picture/svg/li_icon.svg);
-	width: 0.75rem;
-	height: 0.75rem;
-	position: absolute;
-	left: 0;
-	top: 0.3rem;
-	content: '';
-	display: inline-block;
-	background-size: contain;
-	background-repeat: no-repeat;
+div.skill_branchs > div.branch_list > div.content > ul._lists.is_tips > li {
+	margin: 0.2rem 0;
 }
-div.skill_branchs > div.branch_list > div.content > ul._lists > li {
-	position: relative;
-	padding-left: 1.2rem;
-	margin: 0.3rem 0;
-	display: block;
-}
+
 
 div.skill_branchs > div.branch_stack > div.content > div.scope1 {
 	margin-right: 0.9rem;
@@ -292,19 +271,13 @@ div.skill_branchs div.show_area:hover {
 
 }
 
-div.skill_branchs > div.branch .separate_text {
-	border-left: 1px var(--primary-light) solid;
-	border-right: 1px var(--primary-light) solid;
-	display: inline-block;
-	padding: 0 0.5rem;
-	margin: 0 0.4rem;
-}
 div.skill_branchs > div.branch .effect_by_stack .separate_text {
 	border-left: 1px var(--primary-water-blue-light) solid!important;
 	border-right: 1px var(--primary-water-blue-light) solid!important;
 }
 
-div.skill_branchs .skill_from_where_button {
+div.skill_branchs .skill_from_where_button,
+div.skill_branchs .show_tag_button {
 	color: var(--primary-light-3);
 	cursor: pointer;
 	margin: 0 0.2rem;
@@ -314,7 +287,8 @@ div.skill_branchs .skill_from_where_button {
 	white-space: nowrap;
 	display: inline-block;
 }
-div.skill_branchs .skill_from_where_button:hover {
+div.skill_branchs .skill_from_where_button:hover,
+div.skill_branchs .show_tag_button:hover {
 	border-bottom: 1px var(--primary-light-2) solid;
 }
 

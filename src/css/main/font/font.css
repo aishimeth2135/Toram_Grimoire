@@ -3,14 +3,14 @@
     src: local('SetoFont'),
         url('Setofont.woff2') format('woff2');
 }
-@font-face {
+/* @font-face {
     font-family: 'Itim';
     src: local('Itim'), 
         url('Itim-Regular.woff2') format('woff2'),
         url('Itim-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-}
+} */
 
 @font-face {
     font-family: 'SetoFont';
@@ -26,5 +26,14 @@
         local(Microsoft JhengHei);
     font-weight: normal;
     font-style: normal;
-    unicode-range: U+8eb2, U+95b1;
+    unicode-range: U+8eb2;
+}
+
+@font-face {
+    font-family: 'SetoFont';
+    src: url('XiLiangShaoNv.woff') format('woff'),
+        local(Microsoft JhengHei);
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+95b1;
 }
