@@ -399,7 +399,10 @@ export default function(data){
             let branchDevCtr = null;
             if ( branchDevelopmentMode )
                 branchDevCtr = new branchDevelopmentController(skill.defaultEffect, output);
-			output.branchs.forEach(b => InitSkillBranch(b));
+			output.branchs.forEach(b => {
+                if ( !b.isEmpty() )
+                    InitSkillBranch(b);
+            });
 			
 			if ( data.stackValues === null ){
 				data.stackValues = {};
