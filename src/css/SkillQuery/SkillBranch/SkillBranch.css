@@ -324,7 +324,6 @@ div.skill_branchs > .dev_branchDetail {
 	padding: 0.6rem;
 	font-size: 0.9rem;
 	border-left: 2px var(--primary-purple) solid;
-    border-top: 1px var(--primary-light) solid;
 }
 div.skill_branchs > .dev_branchDetail > .top {
 	margin-bottom: 0.8rem;
