@@ -27,7 +27,7 @@ class SkillElementsController {
 			subWeapon: -1,
 			bodyArmor: -1,
 			skillLevel: 10,
-			characterLevel: 185,
+			characterLevel: 190,
 			currentSkill: null,
 			stackValues: {},
 			stackNames: {},
@@ -216,7 +216,7 @@ class SkillElementsController {
 		}
 		cur[fieldname] = value;
 
-		this.getSkillElementScope(SkillTree.TYPE).querySelectorAll('table td').forEach(td => {
+		this.getSkillElementScope(SkillTree.TYPE).querySelectorAll('.skill-circle').forEach(td => {
 			const seno = td.getAttribute(strings().data_skillElementNo);
 			if ( seno === null )
 				return;
@@ -503,7 +503,7 @@ class SkillElementsController {
 				mid.value = this.status.characterLevel;
 
 				const ctr_listener = function(event){
-					const max = 185;
+					const max = 190;
 					const min = 0;
 					let v = parseInt(mid.value, 10);
 					switch ( this.getAttribute('data-ctr') ){
