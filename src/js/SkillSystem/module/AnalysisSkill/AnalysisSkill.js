@@ -1,14 +1,14 @@
-import {Skill, SkillEffect} from "./SkillElements.js";
-import GetLang from "../../main/module/LanguageSystem.js";
-import CY from "../../main/module/cyteria.js";
-import StatBase from "../../CharacterSystem/module/StatBase.js";
-import getBranchHTML from "./AnalysisSkill/getBranchHTML.js";
-import {createSkillAttributeScope, getStackBranchIdKey, simpleCreateHTML, Lang} from "./AnalysisSkill/main.js";
-import {TempSkillEffect, TempSkillBranch} from "./AnalysisSkill/TempSkillElement.js";
-import strings from "./strings.js";
+import {Skill, SkillEffect} from "../SkillElements.js";
+import GetLang from "../../../main/module/LanguageSystem.js";
+import CY from "../../../main/module/cyteria.js";
+import StatBase from "../../../CharacterSystem/module/StatBase.js";
+import getBranchHTML from "./getBranchHTML.js";
+import {createSkillAttributeScope, getStackBranchIdKey, simpleCreateHTML, Lang} from "./main.js";
+import {TempSkillEffect, TempSkillBranch} from "./TempSkillElement.js";
+import strings from "../strings.js";
 import {InitSkillBranch} from "./InitSkillData.js";
 
-import Grimoire from "../../main/Grimoire.js";
+import Grimoire from "../../../main/Grimoire.js";
 
 // /* 特殊屬性
 //  * @none: 無條件去除該屬性。*/

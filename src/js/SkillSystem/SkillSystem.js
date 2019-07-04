@@ -1,5 +1,5 @@
 import {SkillRoot} from "./module/SkillElements.js";
-import LoadSkillData from "./module/LoadSkillData.js";
+import {LoadSkillData, LoadSkillMainData} from "./module/LoadSkillData.js";
 import DataPath from "../main/module/DataPath.js";
 
 
@@ -7,13 +7,27 @@ class SkillSystem {
 	constructor(){
 		this.skillRoot = new SkillRoot(this);
 	}
-	init(){
+	async init(){
 		const _this = this;
-		return new Promise((resolve, reject) => {
+		await new Promise((resolve, reject) => {
 			Papa.parse(DataPath().SkillData, {
 				download: true,
 				complete(res){
 					LoadSkillData(_this.skillRoot, res.data);
+					resolve();
+				},
+				error(err){
+					console.warn("讀取技能資料時發生錯誤。");
+					console.log(err);
+					reject();
+				}
+			});
+		});
+		await new Promise((resolve, reject) => {
+			Papa.parse(DataPath().SkillMainData, {
+				download: true,
+				complete(res){
+					LoadSkillMainData(_this.skillRoot, res.data);
 					resolve();
 				},
 				error(err){

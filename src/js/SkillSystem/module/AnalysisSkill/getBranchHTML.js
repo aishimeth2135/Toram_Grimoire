@@ -21,16 +21,17 @@ function getTargetText(s, _is_place){
 function lightText(text){
     return '<span class="light">' + text + '</span>';
 }
-
 function darkText(text){
     return '<span class="dark">' + text + '</span>';
 }
 function separateText(text){
     return '<span class="separate_text">' + text + '</span>';
 }
-
 function markText(text){
     return lightText(text);
+}
+function setTagButton(text){
+    return '<span class="show_tag_button">' + text + '</span>';
 }
 
 function getPorationHTML(poration_branch){
@@ -153,9 +154,9 @@ function getBranchHTML(branch, data){
         .replace(/\$\{([^\}]+)\}([%m]?)/g, (...args) =>
             processValue(args[1], {light: true, tail: args[2]})
         )
-        .replace(/\(\(((?:(?!\(\().)+)\)\)/, (...args) => separateText(args[1]))
+        .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (...args) => separateText(args[1]))
         .replace(/#([^\s]+)\s(\w?)/g, (...args) => {
-            let res = '<span class="show_tag_button">' + args[1] + '</span>';
+            let res = setTagButton(args[1]);
             if ( args[2] !== '' )
                 res += " ";
             return res;
@@ -549,10 +550,16 @@ function getBranchHTML(branch, data){
             const title = simpleCreateHTML('span', '_main_title', text);
 
             // 技能常數基底
-            const valid_base = createSkillAttributeScope(
+            text = {
+                'auto': attr['damage_type'] == 'physical' ? Lang('branch/damage/valid base: atk') : Lang('branch/damage/valid base: matk'),
+                'atk': Lang('branch/damage/valid base: atk'),
+                'matk': Lang('branch/damage/valid base: matk'),
+                'none': null
+            }[attr['base']];
+            const valid_base = text !== null ? createSkillAttributeScope(
                 null, null,
                 attr['damage_type'] == 'physical' ? Lang('branch/damage/valid base: atk') : Lang('branch/damage/valid base: matk')
-            );
+            ) : null;
 
             const damage_type = createSkillAttributeScope(
                 null, null,
@@ -586,7 +593,7 @@ function getBranchHTML(branch, data){
             let aliment = null;
             if ( attr['aliment_name'] !== void 0 ) {
                 const s2 = document.createDocumentFragment();
-                s2.appendChild(createSkillAttributeScope(null, null, attr['aliment_name']));
+                s2.appendChild(createSkillAttributeScope(null, null, setTagButton(attr['aliment_name'])));
                 s2.appendChild(createSkillAttributeScope(null, Lang('branch/damage/chance'), processValue(attr['aliment_chance'] || '0', {tail: '%'})));
                 aliment = createContentLine(
                     simpleCreateHTML('span', '_main_title', Lang('branch/damage/aliment')),
@@ -656,7 +663,7 @@ function getBranchHTML(branch, data){
                 const s2 = document.createDocumentFragment();
 
                 if ( _attr['aliment_name'] )
-                    s2.appendChild(createSkillAttributeScope(null, null, _attr['aliment_name']));
+                    s2.appendChild(createSkillAttributeScope(null, null, setTagButton(_attr['aliment_name'])));
                 if ( _attr['aliment_chance'] )
                     s2.appendChild(createSkillAttributeScope(null, Lang('branch/damage/chance'), processValue(_attr['aliment_chance']) + '%'));
                 if ( _attr['constant'] ){
@@ -706,10 +713,13 @@ function getBranchHTML(branch, data){
                 frg1.appendChild(poration_poration);
 
             const frg2 = document.createDocumentFragment();
-            frg2.appendChild(valid_base);
+            if ( valid_base !== null )
+                frg2.appendChild(valid_base);
             if ( constant !== null )
                 frg2.appendChild(constant);
             frg2.appendChild(multiplier);
+            if ( extra_constant !== null )
+                frg2.appendChild(extra_constant);
 
             const content = simpleCreateHTML('div', 'content');
             const scope1 = simpleCreateHTML('div', 'scope1');
