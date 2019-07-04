@@ -1,6 +1,7 @@
 import {SkillRoot, SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
 import {SkillTreeTable, SkillTreeTableData} from "./SkillTreeTable.js";
-import AnalysisSkill from "./AnalysisSkill.js";
+import {DrawSkillTree} from "./DrawSkillTree.js";
+import AnalysisSkill from "./AnalysisSkill/AnalysisSkill.js";
 
 import GetLang from "../../main/module/LanguageSystem.js";
 import strings from "./strings.js";
@@ -318,7 +319,7 @@ class SkillElementsController {
 						const scope = _C.getSkillElementScope(SkillTree.TYPE);
 						scope.innerHTML = "";
 						const ele = _C.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
-						scope.appendChild(_C.createSkillQueryScopeHTML(ele, SkillTree.CATEGORY_TABLE));
+						scope.appendChild(_C.createSkillQueryScopeHTML(ele, SkillTree.CATEGORY_DRAW_TREE));
 
 						_C.initEquipmentScope(ele);
 
@@ -344,6 +345,10 @@ class SkillElementsController {
 				}
 			}
 			case SkillTree.TYPE: switch (category){
+				case SkillTree.CATEGORY_DRAW_TREE: {
+					const he = DrawSkillTree(sEle, this);
+					return he;
+				} break;
 				case SkillTree.CATEGORY_TABLE: {
 					const st = sEle;
 					const stcn = st.parent.findLocation(), stn = st.findLocation();

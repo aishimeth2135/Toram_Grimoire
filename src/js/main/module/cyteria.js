@@ -53,11 +53,21 @@ let Cyteria = {
 			const svg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
 			attr = Object.assign({
 				xmlns: "http://www.w3.org/2000/svg",
+				version: '1.1',
 				width, height,
 				viewBox: `0 0 ${width} ${height}`
 			}, attr);
 			Cyteria.element.setAttributes(svg, attr);
 			return svg;
+		},
+		drawText(x, y, content, attr={}){
+			const text = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+			attr = Object.assign({
+				x, y
+			}, attr);
+			Cyteria.element.setAttributes(text, attr);
+			text.innerHTML = content;
+			return text;
 		},
 		drawCircle(cx, cy, r, attr={}){
 			const circle = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
@@ -66,6 +76,14 @@ let Cyteria = {
 			}, attr);
 			Cyteria.element.setAttributes(circle, attr);
 			return circle;
+		},
+		drawLine(x1, y1, x2, y2, attr={}){
+			const line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
+			attr = Object.assign({
+				x1, y1, x2, y2
+			}, attr);
+			Cyteria.element.setAttributes(line, attr);
+			return line;
 		},
 		drawPath(d, attr={}){
 			const path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
@@ -102,6 +120,30 @@ let Cyteria = {
 			const ani = document.createElementNS("http://www.w3.org/2000/svg", 'animate');
 			Cyteria.element.setAttributes(ani, attr);
 			return ani;
+		},
+		drawImage(x, y, path, width, height, attr={}){
+			const img = document.createElementNS("http://www.w3.org/2000/svg", 'image');
+			attr = Object.assign({
+				'xlink:href': path,
+				x, y, width, height
+			}, attr);
+			Cyteria.element.setAttributes(image, attr);
+			return image;
+		},
+		createEmpty(name, attr={}){
+			const ele = document.createElementNS("http://www.w3.org/2000/svg", name);
+			Cyteria.element.setAttributes(ele, attr);
+			return ele;
+		},
+		createSimpleImagePattern(id, path, width, height, attr={}){
+			const pat = document.createElementNS("http://www.w3.org/2000/svg", 'pattern');
+			attr = Object.assign({
+				'xlink:href': path,
+				width, height
+			}, attr);
+			Cyteria.element.setAttributes(pat, attr);
+			pat.appendChild(Cyteria.svg.drawImage(0, 0, path, width, height));
+			return pat;
 		}
 	}
 };

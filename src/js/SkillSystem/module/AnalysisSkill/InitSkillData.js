@@ -1,4 +1,4 @@
-import {SkillEffect} from "./SkillElements.js";
+import {SkillEffect} from "../SkillElements.js";
 
 function InitSkillBranch(branch){
 	const set_default = function(b, default_value){

@@ -102,6 +102,9 @@ class SkillTree {
 		this.skills = [];
 		this.TYPE = SkillTree.TYPE;
 	}
+	init(dtc){
+		this.drawTreeCode = dtc;
+	}
 	newElement(type, cArgs){
 		if ( type == Skill.TYPE ){
 			const {name, no} = cArgs;
@@ -118,6 +121,7 @@ class SkillTree {
 }
 SkillTree.TYPE = Symbol("SkillTree");
 SkillTree.CATEGORY_TABLE = Symbol();
+SkillTree.CATEGORY_DRAW_TREE = Symbol();
 SkillTree.CATEGORY_EQUIPMENT = Symbol();
 
 
@@ -128,11 +132,16 @@ SkillTree.CATEGORY_EQUIPMENT = Symbol();
 class Skill {
 	constructor(st, no, name){
 		this.parent = st;
+		this.no = no;
 		this.name = name;
 		this.effects = [];
 		this.defaultEffect = null;
 		this.caption = "";
 		this.TYPE = Skill.TYPE;
+	}
+	init(pre, drawOrder){
+		this.previous = pre;
+		this.drawOrder = drawOrder;
 	}
 	newElement(type, cArgs){
 		if ( type == SkillEffect.TYPE ){

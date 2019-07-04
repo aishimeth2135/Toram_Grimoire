@@ -87,8 +87,8 @@ export default class TagController {
     createFrameHTML(f){
         function processText(t){
             return t
-            .replace(/\(\(!((?:(?!\(\().)+)\)\)/, (...args) => lightText(args[1]))
-            .replace(/\(\(((?:(?!\(\().)+)\)\)/, (...args) => separateText(args[1]))
+            .replace(/\(\(!((?:(?!\(\().)+)\)\)/g, (...args) => lightText(args[1]))
+            .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (...args) => separateText(args[1]))
             .replace(/#([^\s]+)\s(\w?)/g, (...args) => {
                 let res = '<span class="show_tag_button">' + args[1] + '</span>';
                 if ( args[2] !== '' )

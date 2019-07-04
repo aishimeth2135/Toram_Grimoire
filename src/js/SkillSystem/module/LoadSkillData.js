@@ -1,7 +1,7 @@
 import {SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
 import Grimoire from "../../main/Grimoire.js";
 
-export default function LoadSkillData(sr, c){
+function LoadSkillData(sr, c){
 	const 
 	/* all */
 		NO = 0,
@@ -31,14 +31,11 @@ export default function LoadSkillData(sr, c){
 		IN_COMBO_LIST = ['可以放入連擊', '無法放入連擊', '不可放入連擊的第一招'],
 		ACTION_TIME_LIST = ['極慢', '慢', '稍慢', '一般', '稍快', '快', '極快'],
 	/* Skill Tree Category */
-		CONFIRM_SKILL_TREE_CATEGORY = 'Skill Tree Category',
+		CONFIRM_SKILL_TREE_CATEGORY = '0',
 		SKILL_TREE_CATEGORY_NAME = 2,
 	/* Skill Tree */
-		CONFIRM_SKILL_TREE = 'Skill Tree',
-		SKILL_TREE_NAME = 2,
-		SKILL_TREE_MAIN_WEAPON_LIST = 3,
-		SKILL_TREE_SUB_WEAPON_LIST = 4,
-		SKILL_TREE_BODY_ARROMR_LIST = 5;
+		CONFIRM_SKILL_TREE = '1',
+		SKILL_TREE_NAME = 2
 	
 	let cur = null;
 
@@ -77,8 +74,9 @@ export default function LoadSkillData(sr, c){
 		try {
 			if ( index == 0 ) return;
 			//console.log(p);
-			const no = p[NO];
+			let no = p[NO];
 			if ( no != "" ){
+				no = parseInt(p[NO], 10);
 				const confirm_name = p[CONFIRM];
 				switch ( confirm_name ){
 					case CONFIRM_SKILL_TREE_CATEGORY: {
@@ -124,7 +122,7 @@ export default function LoadSkillData(sr, c){
 			if ( bno != "" ){
 				cur = _TreeBack(cur, SkillEffect.TYPE);
 				const bname = p[EFFECT_BRANCH_NAME];
-				cur = cur.newElement(SkillBranch.TYPE, {no: bno, name: bname});
+				cur = cur.newElement(SkillBranch.TYPE, {no: parseInt(bno, 10), name: bname});
 			}
 			const battrname = p[EFFECT_BRANCH_ATTRIBUTE_NAME],
 				battrvalue = p[EFFECT_BRANCH_ATTRIBUTE_VALUE];
@@ -140,6 +138,48 @@ export default function LoadSkillData(sr, c){
 			//console.log(e);
 			console.log(p);
 		}
-	});
-		
+	});		
 }
+
+
+function LoadSkillMainData(sr, c){
+	const CATEGORY = 0,
+		NO = 1,
+		PREVIOUS_SKILL = 2,
+		DRAW_SKILL_TREE_ORDER = 3,
+		CONFIRM_SKILL_TREE_CATEGORY = '0',
+		CONFIRM_SKILL_TREE = '1',
+		SKILL_TREE_DRAW_TREE_CODE = 3;
+
+	let cur_stc, cur_st;
+
+	c.forEach((p, i) => {
+		if ( i == 0 || p[NO] === '' )
+			return;
+		try {
+			const cat = p[CATEGORY], no = parseInt(p[NO], 10);
+			switch (cat){
+				case CONFIRM_SKILL_TREE_CATEGORY:
+					cur_stc = sr.skillTreeCategorys.find(a => a.no == no);
+					break;
+				case CONFIRM_SKILL_TREE:
+					cur_st = cur_stc.skillTrees.find(a => a.no == no);
+					cur_st.init(p[SKILL_TREE_DRAW_TREE_CODE]);
+					break;
+				case '': 
+					cur_st.skills.find(a => a.no == no).init(
+						parseInt(p[PREVIOUS_SKILL], 10),
+						parseInt(p[DRAW_SKILL_TREE_ORDER])
+					);
+			}
+		}
+		catch(e){
+			console.warn('[Error] When Load Skill Main Data');
+			console.log(e);
+			console.log(p);
+		}
+	});
+}
+
+
+export {LoadSkillData, LoadSkillMainData};

@@ -1,5 +1,5 @@
 function SkillTreeTableData(/*int*/stcn, /*int*/stn) {
-	const data_ary = [
+	let data_ary = [
 		[
 			[[4, 2, 2, 1], [1], [2, 2, 1], [1], [2, 2, -2], [1, 1]],
 			[[3, 2, -3], [1, -2], [1, 1, 1, 1], [2, -4], [1, 1, -2]],
@@ -37,7 +37,7 @@ function SkillTreeTableData(/*int*/stcn, /*int*/stn) {
 	][stcn][stn];
 
 	if ( !data_ary )
-		[[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]];
+		data_ary = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]];
 	return {ary: data_ary};
 }
 
