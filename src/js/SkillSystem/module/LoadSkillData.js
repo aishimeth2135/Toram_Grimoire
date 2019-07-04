@@ -74,9 +74,8 @@ function LoadSkillData(sr, c){
 		try {
 			if ( index == 0 ) return;
 			//console.log(p);
-			let no = p[NO];
+			const no = p[NO];
 			if ( no != "" ){
-				no = parseInt(p[NO], 10);
 				const confirm_name = p[CONFIRM];
 				switch ( confirm_name ){
 					case CONFIRM_SKILL_TREE_CATEGORY: {
@@ -122,7 +121,7 @@ function LoadSkillData(sr, c){
 			if ( bno != "" ){
 				cur = _TreeBack(cur, SkillEffect.TYPE);
 				const bname = p[EFFECT_BRANCH_NAME];
-				cur = cur.newElement(SkillBranch.TYPE, {no: parseInt(bno, 10), name: bname});
+				cur = cur.newElement(SkillBranch.TYPE, {no: bno, name: bname});
 			}
 			const battrname = p[EFFECT_BRANCH_ATTRIBUTE_NAME],
 				battrvalue = p[EFFECT_BRANCH_ATTRIBUTE_VALUE];
@@ -157,7 +156,7 @@ function LoadSkillMainData(sr, c){
 		if ( i == 0 || p[NO] === '' )
 			return;
 		try {
-			const cat = p[CATEGORY], no = parseInt(p[NO], 10);
+			const cat = p[CATEGORY], no = p[NO];
 			switch (cat){
 				case CONFIRM_SKILL_TREE_CATEGORY:
 					cur_stc = sr.skillTreeCategorys.find(a => a.no == no);
@@ -168,7 +167,7 @@ function LoadSkillMainData(sr, c){
 					break;
 				case '': 
 					cur_st.skills.find(a => a.no == no).init(
-						parseInt(p[PREVIOUS_SKILL], 10),
+						p[PREVIOUS_SKILL],
 						parseInt(p[DRAW_SKILL_TREE_ORDER])
 					);
 			}
