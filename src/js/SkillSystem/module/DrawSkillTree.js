@@ -82,6 +82,7 @@ function DrawSkillTree(st, ctrr){
                     const _skill = st.skills.find(a => a.drawOrder === cnt);
                     const name = _skill.name || '?';
                     const btn = Circle(tran(x), tran(y), w/2, {class: 'skill-circle'});
+                    t.appendChild(btn);
                     if ( name !== '?' ){
                         if ( name !== '@lock' ){
                             t.appendChild(Text(tran(x), tran(y) - w/2 - textMargin, name, {class: 'skill-name'}));
@@ -91,7 +92,6 @@ function DrawSkillTree(st, ctrr){
                             btn.classList.add('lock');
                         }
                     }
-                    t.appendChild(btn);
                     ++cnt;
                 }
                 frg.appendChild(t);
