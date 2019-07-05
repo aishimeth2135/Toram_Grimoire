@@ -113,7 +113,10 @@ export default class TagController {
                 break;
             case 'list': {
                 const ul = CY.element.simpleCreateHTML('ul', ['Cyteria', 'ul', 'simple']);
-                f.value.forEach(v => ul.appendChild(CY.element.simpleCreateHTML('li', null, processText(v))));
+                Array.isArray(f.value)
+                ? f.value.forEach(v => ul.appendChild(CY.element.simpleCreateHTML('li', null, processText(v))))
+                : ul.appendChild(CY.element.simpleCreateHTML('li', null, processText(f.value)));
+
                 he.appendChild(ul);
             }
         }

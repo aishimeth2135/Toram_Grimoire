@@ -1,5 +1,4 @@
 import {SkillRoot, SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
-import {SkillTreeTable, SkillTreeTableData} from "./SkillTreeTable.js";
 import {DrawSkillTree} from "./DrawSkillTree.js";
 import AnalysisSkill from "./AnalysisSkill/AnalysisSkill.js";
 
