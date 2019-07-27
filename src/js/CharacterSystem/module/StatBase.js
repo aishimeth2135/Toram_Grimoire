@@ -20,19 +20,21 @@ class StatBase {
 	show(type, v, config){
 		config = Object.assign({
 			processPositiveValue: null,
-			processNegativeValue: null
+			processNegativeValue: null,
+			set_sign: null,
+			calc: true
         }, config);
 
-		if ( typeof v != 'number' )
+		if ( typeof v != 'number' && config.calc )
 			v = parseFloat(v);
 		const processFormula = (formula, unit) => {
-			const sign = v < 0 ? '' : '+';
+			const sign = config.set_sign ? config.set_sign : (v < 0 ? '' : '+');
 			formula = formula.split('::')[v < 0 ? 1 : 0] || formula;
 			let res = formula
 				.replace('$t', this.text)
 				.replace('$u', unit)
 				.replace('$s', sign)
-				.replace('$v', Math.floor(v))
+				.replace('$v', config.calc ? Math.floor(v) : v)
 				.replace(/\$(\d+)d/, (m, m1) => v.toFixed(parseInt(m1)));
 			if ( config.processPositiveValue && v >= 0 )
 				res = config.processPositiveValue(res);
@@ -60,12 +62,17 @@ class StatBase {
 		switch (type) {
 			case StatBase.TYPE_CONSTANT: {
 				title = this.text;
+
 				if ( !this.hasMultiplier )
-					tail = this.attributes['constant_unit'] === void 0 ? '%' : this.attributes['constant_unit'];
+					tail = '%';
+				if ( this.attributes['constant_formula'] && !this.attributes['constant_formula'].includes('$u') )
+					tail = '';
 			} break;
 			case StatBase.TYPE_MULTIPLIER: {
 				title = this.text;
 				tail = '%';
+				if ( this.attributes['multiplier_formula'] && !this.attributes['multiplier_formula'].includes('$u') )
+					tail = '';
 			} break;
 			case StatBase.TYPE_TOTAL: {
 				title = Lang('type total: preText') + this.text;
