@@ -86,7 +86,7 @@ function DrawSkillTree(st, ctrr){
                             t.appendChild(Text(tran(x), tran(y) - w/2 - textMargin, name, {class: 'skill-name'}));
                             setSkillButton(btn, _skill);
                             const patid = 'si_' + _skill.no;
-                            const pat = CY.svg.createEmpty('pattern', {id: patid, width: w, height: w});
+                            const pat = CY.svg.createEmpty('pattern', {id: patid, width: 1, height: 1});
                             pat.appendChild(Circle(w/2, w/2, w/2, {fill: 'url(#skill-icon-bg)', 'stroke-width': 0}));
                             //pat.appendChild(Circle(w/2, w/2, w/2, {fill: 'url(#skill-icon-bg-l2)', 'stroke-width': 0}));
                             pat.appendChild(CY.svg.drawImage(skillIconPathRoot + patid + '.png', iconPad, iconPad, w-iconPad*2, w-iconPad*2));
@@ -121,10 +121,10 @@ function DrawSkillTree(st, ctrr){
 
 function GetDrawData(){
     return {
-        gridWidth: 41,
+        gridWidth: 50,
         svgPadding: 40,
         textMargin: 5,
-        iconPadding: 3
+        iconPadding: 4
     };
 }
 
