@@ -38,10 +38,6 @@
     color: var(--primary-purple);
 }
 
-#tag-scope > .top > .right {
-    float: right;
-}
-
 #tag-scope > .content {
     padding-bottom: 1rem;
 }

@@ -16,6 +16,11 @@ body, input, textarea {
 	font-family: 'Itim', Microsoft JhengHei, sans-serif;
 }
 
+input::-webkit-input-placeholder { color: var(--primary-light); }
+input::-moz-placeholder { color: var(--primary-light); } /* firefox 19+ */
+input:-ms-input-placeholder { color: var(--primary-light); } /* ie */
+input:-moz-placeholder { color: var(--primary-light); }
+
 body.font1, body.font1 > input, body.font1 > textarea {
 	font-family: 'Itim', 'SetoFont', Microsoft JhengHei, sans-serif;
 }
@@ -26,6 +31,10 @@ input::-webkit-inner-spin-button {
 }
 input[type="number"]{
   -moz-appearance: textfield;
+}
+
+input:focus {
+	outline: none;
 }
 
 #top-menu {

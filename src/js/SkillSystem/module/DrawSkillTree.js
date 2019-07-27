@@ -21,8 +21,15 @@ function DrawSkillTree(st, ctrr){
         node.setAttribute(strings().data_skillElementNo, ctrr.getSkillElementNoStr(skill));
     }
 
+    const skillIconPathRoot = '../src/picture/skill_icons/stc_' + st.parent.no + '/st_' + st.no + '/';
+
     const s = st.drawTreeCode || 'S E S E S E S L S E S E S E S L S E S E S E S L S E S E S E S';
-    const w = 50, pad = 40, textMargin = 5;
+    
+    const drawData = GetDrawData();
+    const w = drawData.gridWidth,
+        pad = drawData.svgPadding,
+        textMargin = drawData.textMargin,
+        iconPad = drawData.iconPadding;
 
     function tran(v){
         return pad + w/2 + v*w + textMargin;
@@ -35,15 +42,6 @@ function DrawSkillTree(st, ctrr){
     const frg = document.createDocumentFragment();
 
     const defs = CY.svg.createEmpty('defs');
-
-    const lock_pettern = CY.svg.createEmpty('pattern', {width: 1, height: 1, id: 'lock'});
-    const lock = CY.svg.create(w, w, {x: 13, y: 12});
-    lock.innerHTML = '<path fill="var(--primary-light)" d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/>';
-    lock_pettern.appendChild(Circle(w/2, w/2, w/2, {fill: '#FFF', 'stroke-width': 0}));
-    lock_pettern.appendChild(lock);
-
-    defs.appendChild(lock_pettern);
-
     frg.appendChild(defs);
 
     let x = 0, y = 0, maxw = 0, cnt = 0;
@@ -87,6 +85,13 @@ function DrawSkillTree(st, ctrr){
                         if ( name !== '@lock' ){
                             t.appendChild(Text(tran(x), tran(y) - w/2 - textMargin, name, {class: 'skill-name'}));
                             setSkillButton(btn, _skill);
+                            const patid = 'si_' + _skill.no;
+                            const pat = CY.svg.createEmpty('pattern', {id: patid, width: w, height: w});
+                            pat.appendChild(Circle(w/2, w/2, w/2, {fill: 'url(#skill-icon-bg)', 'stroke-width': 0}));
+                            //pat.appendChild(Circle(w/2, w/2, w/2, {fill: 'url(#skill-icon-bg-l2)', 'stroke-width': 0}));
+                            pat.appendChild(CY.svg.drawImage(skillIconPathRoot + patid + '.png', iconPad, iconPad, w-iconPad*2, w-iconPad*2));
+                            defs.appendChild(pat);
+                            btn.style.fill = 'url(#' + patid + ')';
                         }
                         else {
                             btn.classList.add('lock');
@@ -112,6 +117,15 @@ function DrawSkillTree(st, ctrr){
     he.appendChild(frg);
 
     return he;
+}
+
+function GetDrawData(){
+    return {
+        gridWidth: 46,
+        svgPadding: 40,
+        textMargin: 5,
+        iconPadding: 4
+    };
 }
 
 // function simpleDrawSkillTree(s){
@@ -176,4 +190,4 @@ function DrawSkillTree(st, ctrr){
 //     return he;
 // }
 
-export {DrawSkillTree};
+export {DrawSkillTree, GetDrawData};

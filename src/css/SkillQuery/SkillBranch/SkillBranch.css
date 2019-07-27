@@ -184,9 +184,6 @@ div.skill_branchs > div.branch_stack > div.content > div.scope2 > .unit {
 	margin-right: 0.4rem;
 	color: var(--primary-light-3);
 }
-div.skill_branchs > div.branch_stack > div.content > div.scope2 > input:focus {
-	outline: none;
-}
 div.skill_branchs > div.branch_stack > div.content > div.scope2 > span > svg {
 	fill: var(--primary-light-2);
 	vertical-align: middle;

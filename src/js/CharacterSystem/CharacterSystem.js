@@ -33,8 +33,8 @@ class CharacterSystem {
 			});
 		});
 	}
-	appendStatBase(base_name, caption, has_multiplier, other){
-		const t = new StatBase(base_name, caption, has_multiplier);
+	appendStatBase(base_name, text, has_multiplier){
+		const t = new StatBase(base_name, text, has_multiplier);
 		this.statList.push(t);
 		return t;
 	}

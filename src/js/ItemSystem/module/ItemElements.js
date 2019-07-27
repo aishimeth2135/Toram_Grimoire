@@ -1,6 +1,18 @@
 import Grimoire from "../../main/Grimoire.js";
+import StatBase from "../../CharacterSystem/module/StatBase.js";
 
-class Equimpent {
+class Items {
+    constructor(){
+        this.equipments = [];
+    }
+    appendEquipment(){
+        const t = new Equipment(...arguments);
+        this.equipments.push(t);
+        return t;
+    }
+}
+
+class Equipment {
     constructor(n, cat, bv, bstab, cap){
         this.name = n;
         this.category = cat;
@@ -41,4 +53,14 @@ class Equimpent {
     }
 }
 
-export {Equimpent};
+class Prop {
+    constructor(name, quantity, cat){
+        this.name = name;
+        this.quantity = quantity;
+        this.category = cat;
+    }
+}
+Prop.CATEGORY_MATERIAL = Symbol('Material');
+Prop.CATEGORY_MATERIAL_POINT = Symbol('Material Point');
+
+export {Items, Equipment, Prop};
