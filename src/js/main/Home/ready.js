@@ -1,4 +1,5 @@
 import {GetLang, InitLanguageData, PageInitLanguage} from "../module/LanguageSystem.js";
+import {PageInitFirst} from "../module/PageInit.js";
 
 import zh_tw from "./module/LanguageData/zh_tw.js";
 import en from "./module/LanguageData/en.js";
@@ -7,7 +8,8 @@ import ja from "./module/LanguageData/ja.js";
 function LoadingMenu(hnode){
 	const menu = GetLang('Top Menu');
 	const target = [
-		'Home'
+		'Home',
+		'About'
 	];
 	const listener = function(event){
 		const cur = document.querySelector('*[data-main-scope="1"]');
@@ -56,8 +58,7 @@ function InitSettings(){
 
 function readyFirst(){
 	InitLanguageData({zh_tw, en, ja});
-	if ( localStorage['main-font-family'] !== '1' )
-		document.querySelector('body').classList.add('font1');
+	PageInitFirst();
 }
 
 function ready(setting){

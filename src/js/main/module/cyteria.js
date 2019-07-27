@@ -49,7 +49,7 @@ let Cyteria = {
 		}
 	},
 	svg: {
-		create(width, height, attr={}){
+		create(width=0, height=0, attr={}){
 			const svg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
 			attr = Object.assign({
 				xmlns: "http://www.w3.org/2000/svg",
@@ -121,31 +121,48 @@ let Cyteria = {
 			Cyteria.element.setAttributes(ani, attr);
 			return ani;
 		},
-		drawImage(x, y, path, width, height, attr={}){
+		drawImage(path, x, y, width, height, attr={}){
 			const img = document.createElementNS("http://www.w3.org/2000/svg", 'image');
 			attr = Object.assign({
-				'xlink:href': path,
 				x, y, width, height
 			}, attr);
-			Cyteria.element.setAttributes(image, attr);
-			return image;
+			img.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', path);
+			Cyteria.element.setAttributes(img, attr);
+			return img;
 		},
 		createEmpty(name, attr={}){
 			const ele = document.createElementNS("http://www.w3.org/2000/svg", name);
 			Cyteria.element.setAttributes(ele, attr);
 			return ele;
 		},
-		createSimpleImagePattern(id, path, width, height, attr={}){
+		createSimpleImagePattern(id, path, width, height, attr={}, imgattr={}){
 			const pat = document.createElementNS("http://www.w3.org/2000/svg", 'pattern');
 			attr = Object.assign({
-				'xlink:href': path,
-				width, height
+				width, height, id
 			}, attr);
 			Cyteria.element.setAttributes(pat, attr);
-			pat.appendChild(Cyteria.svg.drawImage(0, 0, path, width, height));
+			pat.appendChild(Cyteria.svg.drawImage(0, 0, path, width, height, imgattr));
 			return pat;
+		},
+		createLinearGradient(id, x1, y1, x2, y2, stops, attr={}){
+			const lg = document.createElementNS("http://www.w3.org/2000/svg", 'linearGradient');
+			attr = Object.assign({
+				id, x1, y1, x2, y2
+			}, attr);
+			Cyteria.element.setAttributes(lg, attr);
+			stops.forEach(a => lg.appendChild(Cyteria.svg.createEmpty('stop', a)));
+			return lg;
+		},
+		createRadialGradient(id, cx, cy, r, stops, attr={}){
+			const rg = document.createElementNS("http://www.w3.org/2000/svg", 'radialGradient');
+			attr = Object.assign({
+				id, cx, cy, r
+			}, attr);
+			Cyteria.element.setAttributes(rg, attr);
+			stops.forEach(a => rg.appendChild(Cyteria.svg.createEmpty('stop', a)));
+			return rg;
 		}
-	}
+	},
 };
 
 export default Cyteria;

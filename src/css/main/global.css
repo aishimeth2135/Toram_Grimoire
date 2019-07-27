@@ -1,6 +1,12 @@
 .hidden {
 	display: none!important;
 }
+.right {
+    float: right;
+}
+.text-small {
+    font-size: 0.9rem;
+}
 
 .separate_text {
     border-left: 1px var(--primary-light) solid;

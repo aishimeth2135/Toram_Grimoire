@@ -25,7 +25,7 @@ function InitLanguageData(data){
     Object.assign(ja, data.ja);
 }
 
-function GetLang(id){
+function GetLang(id, values){
     const langs = [en, zh_tw, ja];
     const no = currentLanguage();
     let t = Search(langs[no], id);
@@ -47,7 +47,11 @@ function GetLang(id){
             return '???';
         }
         return t;
-    } 
+    }
+
+    if ( values )
+        t = t.replace(/\$(\d+)/, (v, i) => values[i] !== void 0 && values[i] !== null ? values[i] : '?');
+
     return t;
 };
 

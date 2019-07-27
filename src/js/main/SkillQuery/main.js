@@ -30,13 +30,12 @@ async function start(){
     if ( no_error )
         loadingFinished();
 }
-if ( document.getElementById('SkillQuery').getAttribute('data-ready') === '0' ){
-    try {
-        start();
-        document.getElementById('SkillQuery').setAttribute('data-ready', '1');
-    }
-    catch(e) {
-        loadingMsg(e);
-        console.log(e);
-    }
+
+try {
+    start();
 }
+catch(e) {
+    loadingMsg(e);
+    console.log(e);
+}
+

@@ -10,38 +10,48 @@ class StatBase {
 		this.baseName = bn;
 		this.text = t;
 		this.hasMultiplier = hm;
-		this.attributes = [];
+		this.attributes = {};
 	}
 	appendAttribute(n, v){
 		if ( n && v !== null && v !== void 0 )
 			this.attributes[n] = v;
 		return this;
 	}
-	show(type, v){
+	show(type, v, config){
+		config = Object.assign({
+			processPositiveValue: null,
+			processNegativeValue: null
+        }, config);
+
 		if ( typeof v != 'number' )
-			v = parseInt(v);
+			v = parseFloat(v);
+		const processFormula = (formula, unit) => {
+			const sign = v < 0 ? '' : '+';
+			formula = formula.split('::')[v < 0 ? 1 : 0] || formula;
+			let res = formula
+				.replace('$t', this.text)
+				.replace('$u', unit)
+				.replace('$s', sign)
+				.replace('$v', Math.floor(v))
+				.replace(/\$(\d+)d/, (m, m1) => v.toFixed(parseInt(m1)));
+			if ( config.processPositiveValue && v >= 0 )
+				res = config.processPositiveValue(res);
+			if ( config.processNegativeValue && v < 0 )
+				res = config.processNegativeValue(res);
+			return res;
+		}
 		switch (type) {
 			case StatBase.TYPE_CONSTANT: {
-				let res = this.text;
-				res += v < 0 ? '' : '+';
-				res += v;
-				if ( !this.hasMultiplier )
-					res += this.attributes['constant_unit'] === void 0 ? '%' : this.attributes['constant_unit'];
-				return res;
+				const formula = this.attributes['constant_formula'] || '$t$s$v$u';
+				return processFormula(formula, this.hasMultiplier ? '' : '%');
 			}
 			case StatBase.TYPE_MULTIPLIER: {
-				let res = this.text;
-				res += v < 0 ? '' : '+';
-				res += v;
-				res += '%';
-				return res;
+				const formula = this.attributes['multiplier_formula'] || '$t$s$v$u';
+				return processFormula(formula, '%');
 			}
 			case StatBase.TYPE_TOTAL: {
-				let res = Lang('type total: preText') + this.text;
-				res += v < 0 ? '' : '+';
-				res += v;
-				res += '%';
-				return res;
+				const formula = Lang('type total: preText') + '$t$s$v$u';
+				return processFormula(formula, '%');;
 			}
 		}
 	}
@@ -59,19 +69,24 @@ class StatBase {
 			} break;
 			case StatBase.TYPE_TOTAL: {
 				title = Lang('type total: preText') + this.text;
-				tail = '%'
+				tail = '%';
 			} break;
 		}
-		return {title, value: v, tail};
+		return {
+			result: this.show(type, v),
+			title,
+			value: v,
+			tail
+		};
 	}
 	createSimpleStat(type, v){
 		return new SimpleStat(this, type, v);
 	}
 }
 
-StatBase.TYPE_CONSTANT = Symbol();
-StatBase.TYPE_MULTIPLIER = Symbol();
-StatBase.TYPE_TOTAL = Symbol();
+StatBase.TYPE_CONSTANT = Symbol('constant');
+StatBase.TYPE_MULTIPLIER = Symbol('multiplier');
+StatBase.TYPE_TOTAL = Symbol('total');
 
 
 class SimpleStat {
@@ -80,8 +95,8 @@ class SimpleStat {
 		this.type = type;
 		this.value = v;
 	}
-	show(){
-		return this.base.show(this.type, this.value);
+	show(config){
+		return this.base.show(this.type, this.value, config);
 	}
 	getShowData(){
 		return this.base.getShowData(this.type, this.value);	
@@ -90,6 +105,9 @@ class SimpleStat {
 		if ( v !== void 0 )
 			this.value = v;
 		return this.value;
+	}
+	baseName(){
+		return this.base.baseName;
 	}
 }
 

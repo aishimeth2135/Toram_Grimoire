@@ -8,7 +8,9 @@
 #SkillQuery div.SkillTree_scope svg > circle.skill-circle {
     fill: #FFF;
     z-index: 5;
-    stroke: var(--primary-light-3);
+    /* stroke: url(#skill-icon-stroke); */
+    stroke: var(--primary-light-2);
+    stroke-width: 2px;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -18,20 +20,22 @@
 }
 #SkillQuery div.SkillTree_scope svg > circle.skill-circle:not(.disable):hover + text.skill-name,
 #SkillQuery div.SkillTree_scope svg > circle.skill-circle.cur + text.skill-name {
-    fill: var(--primary-water-blue);
+    /* fill: var(--primary-water-blue); */
+    display: block;
 }
 #SkillQuery div.SkillTree_scope svg > text.skill-name {
     text-anchor: middle;
     stroke-width: 0;
     fill: var(--primary-purple);
     transition: 0.3s;
+    display: none;
 }
 #SkillQuery div.SkillTree_scope svg > circle.skill-circle.lock {
-    fill: url(#lock);
+    fill: url(#skill-icon-lock);
     stroke: var(--primary-light);
 }
 #SkillQuery div.SkillTree_scope svg > circle.skill-circle.disable {
-    stroke: var(--primary-light);
+    stroke: #BBB;
 }
 /* #SkillQuery div.SkillTree_scope svg > line {
 } */
