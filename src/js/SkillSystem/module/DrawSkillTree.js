@@ -121,10 +121,10 @@ function DrawSkillTree(st, ctrr){
 
 function GetDrawData(){
     return {
-        gridWidth: 46,
+        gridWidth: 40,
         svgPadding: 40,
         textMargin: 5,
-        iconPadding: 4
+        iconPadding: 3
     };
 }
 
