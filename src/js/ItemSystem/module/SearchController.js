@@ -14,7 +14,7 @@ export default class SearchController {
             result: null
         };
         this.status = {
-            resultMaximum: 20
+            resultMaximum: 100
         };
     }
     init(main_node){
@@ -47,6 +47,19 @@ export default class SearchController {
         function checkItemCategory(node, item){
             const l = getSelectedOptions(node, 'data-i').map(a => parseInt(a));
             return l.indexOf(item.category) != -1;
+        }
+        function createSearchObtainTypeScope(){
+            const t = simpleCreateHTML('ul', 'search-category-type');
+            ['smith', 'boss', 'mini_boss', 'mobs', 'quest', 'other'].forEach(a => {
+                const li = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'cur'], Lang('item detail/obtains/' + a), {'data-type': a});
+                li.addEventListener('click', toggle_select_listener);
+                t.appendChild(li);
+            });
+            return t;
+        }
+        function checkItemObtainType(node, item){
+            const l = getSelectedOptions(node, 'data-type');
+            return item.obtains.find(a => l.indexOf(a['type']) != -1);
         }
         function toggle_select_listener(e){
             this.classList.toggle('cur');
@@ -121,30 +134,40 @@ export default class SearchController {
                     btn_scope.appendChild(createButtonScopeTitle('category'));
                     btn_scope.appendChild(search_category_ul);
 
+                    const search_obtain_type_ul = createSearchObtainTypeScope();
+                    btn_scope.appendChild(createButtonScopeTitle('obtain type'));
+                    btn_scope.appendChild(search_obtain_type_ul);
+
                     function search_listener(e){
-                        if ( input.value === '' )
-                            return;
+                        // if ( input.value === '' )
+                        //     return;
                         const searchList = getSelectedOptions(search_by_ul, 'data-name');
                         const res = [];
                         const search_values = input.value.toLowerCase().split(/\s*,\s*/);
                         ctrr.parent.items.equipments.forEach(item => {
-                            if ( !checkItemCategory(search_category_ul, item) )
+                            if ( res.length == ctrr.status.resultMaximum )
                                 return;
-                            const check = search_values.find(v => {
-                                return searchList.find(a => {
-                                    switch (a){
-                                        case 'name':
-                                            return item.name.toLowerCase().includes(v);
-                                        case 'material':
-                                            return item.recipe && item.recipe['materials'] && item.recipe['materials'].find(c => c.name.toLowerCase().includes(v));
-                                        case 'dye':
-                                            return item.obtains.find(b => b['dye'] && b['dye'].toLowerCase().includes(v));
-                                        case 'obtain-name':
-                                            return item.obtains.find(b => b['name'] && b['name'].toLowerCase().includes(v));
-                                    }
-                                })
-                            });
-                            if ( check )
+                            if ( !checkItemCategory(search_category_ul, item) || !checkItemObtainType(search_obtain_type_ul, item) )
+                                return;
+                            if ( input.value !== '' ){
+                                const check = search_values.find(v => {
+                                    return searchList.find(a => {
+                                        switch (a){
+                                            case 'name':
+                                                return item.name.toLowerCase().includes(v);
+                                            case 'material':
+                                                return item.recipe && item.recipe['materials'] && item.recipe['materials'].find(c => c.name.toLowerCase().includes(v));
+                                            case 'dye':
+                                                return item.obtains.find(b => b['dye'] && b['dye'].toLowerCase().includes(v));
+                                            case 'obtain-name':
+                                                return item.obtains.find(b => b['name'] && b['name'].toLowerCase().includes(v));
+                                        }
+                                    })
+                                });
+                                if ( check )
+                                    res.push(item);
+                            }
+                            else
                                 res.push(item);
                         });
                         ctrr.showResult(res);
@@ -173,10 +196,12 @@ export default class SearchController {
                     input.addEventListener('change', function(e){
                         if ( input.value === '' )
                             return;
+                        const stats_scope_list = stats_scope.querySelectorAll('.stat');
+                        stats_scope_list.forEach(a => a.classList.remove('cur'));
                         const _v = input.value.toLowerCase();
                         const l = _v.split(/\s*,\s*/);
                         let has = false;
-                        stats_scope.querySelectorAll('.stat').forEach(a => {
+                        stats_scope_list.forEach(a => {
                             if ( _v == '@all' ){
                                 a.classList.remove('hidden');
                                 return;
@@ -237,6 +262,10 @@ export default class SearchController {
                     btn_scope.appendChild(createButtonScopeTitle('category'));
                     btn_scope.appendChild(search_category_ul);
 
+                    const search_obtain_type_ul = createSearchObtainTypeScope();
+                    btn_scope.appendChild(createButtonScopeTitle('obtain type'));
+                    btn_scope.appendChild(search_obtain_type_ul);
+
                     function search_listener(e){
                         const search_list = getSelectedOptions(stats_scope, a => {
                             return {
@@ -252,7 +281,9 @@ export default class SearchController {
                         const res = [];
 
                         ctrr.parent.items.equipments.forEach(item => {
-                            if ( !checkItemCategory(search_category_ul, item) )
+                            if ( res.length == ctrr.status.resultMaximum )
+                                return;
+                            if ( !checkItemCategory(search_category_ul, item) || !checkItemObtainType(search_obtain_type_ul, item) )
                                 return;
                             const check = search_list.every(a => item.stats.find(b => a.baseName == b.baseName() && a.type == b.type));
                             if ( check )
@@ -347,6 +378,8 @@ export default class SearchController {
                         input2.value = max;
 
                         ctrr.parent.items.equipments.forEach(item => {
+                            if ( res.length == ctrr.status.resultMaximum )
+                                return;
                             if ( !item.recipe )
                                 return;
                             if ( !checkItemCategory(search_category_ul, item) )
@@ -483,8 +516,11 @@ export default class SearchController {
     }
     showItemDetail(item){
         const simpleCreateHTML = CY.element.simpleCreateHTML;
-        function getTitle(n, vs){
-            return '<svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="1250pt" height="1250pt" viewBox="0 0 1250 1250" preserveAspectRatio="xMidYMid meet"><g transform="translate(0,1250) scale(0.1,-0.1)" fill="#000000" stroke="none"><path d="M1468 11473 c-29 -34 -57 -98 -75 -173 -15 -62 -18 -111 -16 -277 l2 -201 -102 34 c-112 38 -148 42 -168 18 -15 -18 -20 -114 -8 -164 4 -19 15 -100 24 -180 56 -495 128 -757 306 -1113 76 -153 214 -396 234 -412 7 -6 78 -141 158 -300 364 -728 566 -1026 995 -1466 l163 -168 -50 -203 c-137 -556 -160 -746 -168 -1370 l-5 -428 -55 -82 c-70 -108 -155 -259 -203 -361 -96 -210 -132 -392 -146 -743 l-7 -159 27 -32 c67 -80 199 -105 317 -59 37 14 69 22 73 19 3 -3 8 2 12 11 3 9 15 16 25 16 10 0 62 11 115 25 102 27 198 71 252 118 l34 28 62 -133 c35 -73 79 -160 99 -193 l35 -60 -221 -6 c-231 -6 -245 -8 -492 -40 -169 -23 -172 -23 -310 -44 -354 -53 -385 -59 -435 -85 -45 -23 -42 -7 -42 -205 0 -139 -13 -216 -66 -397 -33 -112 -30 -132 28 -159 33 -16 55 -15 368 12 389 32 865 65 1177 79 264 13 1155 6 1345 -9 74 -6 218 -18 320 -26 221 -19 532 -53 920 -101 157 -19 292 -36 300 -36 8 0 107 9 220 21 113 11 230 23 260 26 30 3 150 14 265 24 950 88 1527 101 2285 51 204 -14 768 -65 993 -91 150 -17 181 -18 205 -7 30 15 28 -14 15 253 -5 103 -2 140 21 264 24 132 25 146 11 167 -8 13 -24 24 -34 24 -10 0 -72 13 -137 29 -467 115 -798 166 -1299 201 -88 7 -183 15 -211 18 l-52 7 80 95 c111 131 206 278 295 455 42 82 77 152 79 154 2 2 31 -19 66 -46 152 -120 255 -176 398 -218 52 -15 163 -61 245 -100 173 -84 230 -105 286 -105 73 0 119 41 148 130 10 32 6 47 -43 175 -168 435 -316 713 -586 1103 -127 183 -128 184 -134 332 -2 63 -7 122 -9 130 -3 8 -11 94 -17 190 -10 158 -18 263 -36 445 -3 33 -12 112 -20 175 -9 63 -18 144 -21 180 -3 36 -9 70 -13 75 -4 6 -13 39 -20 75 -16 81 -73 261 -114 360 -30 72 -31 76 -16 107 8 18 50 68 93 111 42 43 77 86 77 94 0 9 25 41 55 72 30 30 55 59 55 63 1 15 196 243 397 465 155 171 503 524 658 669 154 143 526 469 739 649 293 248 381 320 387 320 10 0 119 180 119 197 0 8 5 23 10 34 23 42 -16 69 -124 89 -33 5 -61 12 -63 13 -2 2 17 22 43 43 72 61 142 134 147 154 7 27 -18 56 -51 63 -52 10 -661 67 -822 76 -219 13 -695 5 -870 -14 -571 -62 -1039 -208 -1763 -551 -295 -140 -1053 -539 -1090 -573 -16 -16 -24 -16 -80 -5 -399 82 -658 113 -957 114 -287 2 -542 -22 -1110 -104 l-235 -34 -110 70 c-194 125 -241 156 -658 427 -423 275 -994 659 -1350 908 -230 161 -773 557 -1107 808 -118 89 -225 167 -237 173 -31 17 -68 15 -85 -5z"/></g></svg><span>' + Lang('item detail/scope title/' + n, vs) + '</span>'
+        function createTitle(n, v){
+            let t = '<svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="1250pt" height="1250pt" viewBox="0 0 1250 1250" preserveAspectRatio="xMidYMid meet"><g transform="translate(0,1250) scale(0.1,-0.1)" fill="#000000" stroke="none"><path d="M1468 11473 c-29 -34 -57 -98 -75 -173 -15 -62 -18 -111 -16 -277 l2 -201 -102 34 c-112 38 -148 42 -168 18 -15 -18 -20 -114 -8 -164 4 -19 15 -100 24 -180 56 -495 128 -757 306 -1113 76 -153 214 -396 234 -412 7 -6 78 -141 158 -300 364 -728 566 -1026 995 -1466 l163 -168 -50 -203 c-137 -556 -160 -746 -168 -1370 l-5 -428 -55 -82 c-70 -108 -155 -259 -203 -361 -96 -210 -132 -392 -146 -743 l-7 -159 27 -32 c67 -80 199 -105 317 -59 37 14 69 22 73 19 3 -3 8 2 12 11 3 9 15 16 25 16 10 0 62 11 115 25 102 27 198 71 252 118 l34 28 62 -133 c35 -73 79 -160 99 -193 l35 -60 -221 -6 c-231 -6 -245 -8 -492 -40 -169 -23 -172 -23 -310 -44 -354 -53 -385 -59 -435 -85 -45 -23 -42 -7 -42 -205 0 -139 -13 -216 -66 -397 -33 -112 -30 -132 28 -159 33 -16 55 -15 368 12 389 32 865 65 1177 79 264 13 1155 6 1345 -9 74 -6 218 -18 320 -26 221 -19 532 -53 920 -101 157 -19 292 -36 300 -36 8 0 107 9 220 21 113 11 230 23 260 26 30 3 150 14 265 24 950 88 1527 101 2285 51 204 -14 768 -65 993 -91 150 -17 181 -18 205 -7 30 15 28 -14 15 253 -5 103 -2 140 21 264 24 132 25 146 11 167 -8 13 -24 24 -34 24 -10 0 -72 13 -137 29 -467 115 -798 166 -1299 201 -88 7 -183 15 -211 18 l-52 7 80 95 c111 131 206 278 295 455 42 82 77 152 79 154 2 2 31 -19 66 -46 152 -120 255 -176 398 -218 52 -15 163 -61 245 -100 173 -84 230 -105 286 -105 73 0 119 41 148 130 10 32 6 47 -43 175 -168 435 -316 713 -586 1103 -127 183 -128 184 -134 332 -2 63 -7 122 -9 130 -3 8 -11 94 -17 190 -10 158 -18 263 -36 445 -3 33 -12 112 -20 175 -9 63 -18 144 -21 180 -3 36 -9 70 -13 75 -4 6 -13 39 -20 75 -16 81 -73 261 -114 360 -30 72 -31 76 -16 107 8 18 50 68 93 111 42 43 77 86 77 94 0 9 25 41 55 72 30 30 55 59 55 63 1 15 196 243 397 465 155 171 503 524 658 669 154 143 526 469 739 649 293 248 381 320 387 320 10 0 119 180 119 197 0 8 5 23 10 34 23 42 -16 69 -124 89 -33 5 -61 12 -63 13 -2 2 17 22 43 43 72 61 142 134 147 154 7 27 -18 56 -51 63 -52 10 -661 67 -822 76 -219 13 -695 5 -870 -14 -571 -62 -1039 -208 -1763 -551 -295 -140 -1053 -539 -1090 -573 -16 -16 -24 -16 -80 -5 -399 82 -658 113 -957 114 -287 2 -542 -22 -1110 -104 l-235 -34 -110 70 c-194 125 -241 156 -658 427 -423 275 -994 659 -1350 908 -230 161 -773 557 -1107 808 -118 89 -225 167 -237 173 -31 17 -68 15 -85 -5z"/></g></svg><span class="text">' + Lang('item detail/scope title/' + n) + '</span>';
+            if ( v )
+                t += '<span class="title-value">' + v + '</span>'
+            return simpleCreateHTML('div', 'scope-title', t);
         }
 
         const r = this.nodes.detail;
@@ -493,6 +529,11 @@ export default class SearchController {
         CY.element.removeAllChild(contents);
 
         name.innerHTML = item.name;
+
+        const cat = item.category;
+        contents.appendChild(createTitle([10, 12, 13, 14].indexOf(cat) == -1 ? 'base atk' : 'base def', item.baseValue));
+        if ( item.baseStability )
+            contents.appendChild(createTitle('base stability', item.baseStability + '%'));
 
         if ( item.stats.length != 0 ){
             const stats = simpleCreateHTML('div', ['scope', 'stats']);
@@ -510,7 +551,7 @@ export default class SearchController {
                     span.appendChild(rst_frg);
                 stats.appendChild(span);
             });
-            contents.appendChild(simpleCreateHTML('div', 'scope-title', getTitle('stats')));
+            contents.appendChild(createTitle('stats'));
             contents.appendChild(stats);
         }
         if ( item.recipe ){
@@ -531,7 +572,7 @@ export default class SearchController {
                 </tr>`;
                 const table = document.createElement('table');
                 table.appendChild(tb);
-                contents.appendChild(simpleCreateHTML('div', 'scope-title', getTitle('create', [rc['potential']])));
+                contents.appendChild(createTitle('create', rc['potential']));
                 create.appendChild(table);
                 contents.appendChild(create);
             }
@@ -559,7 +600,7 @@ export default class SearchController {
 
                 const mats_scope = simpleCreateHTML('div', ['scope', 'materials']);
                 mats_scope.appendChild(table);
-                contents.appendChild(simpleCreateHTML('div', 'scope-title', getTitle('materials')));
+                contents.appendChild(createTitle('materials'));
                 contents.appendChild(mats_scope);
             }
         }
@@ -579,7 +620,7 @@ export default class SearchController {
         });
         if ( item.obtains.length == 0 )
             obtains.innerHTML = '<div class="no-data">' + Lang('item detail/obtains/no data') + '</div>';
-        contents.appendChild(simpleCreateHTML('div', 'scope-title', getTitle('obtains')));
+        contents.appendChild(createTitle('obtains'));
         contents.appendChild(obtains);
 
         r.classList.remove('hidden');

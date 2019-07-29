@@ -290,8 +290,10 @@ function getBranchHTML(branch, data){
                 caption.appendChild(b);
             }
         }
-        let radius, angle, areaType;
-        ['radius', 'angle', 'effective_area', 'move_distance'].forEach(a => {
+        const is_sprint = _attr['is_sprint'] === '1';
+
+        let radius, angle, areaType, end_position_offsets;
+        ['radius', 'angle', 'effective_area', 'move_distance', 'end_position_offsets'].forEach(a => {
             if ( _attr[a] ){
                 let t, v = _attr[a];
                 switch (a){
@@ -318,6 +320,13 @@ function getBranchHTML(branch, data){
                         t = Lang('move distanve: title');
                         v = processValue(v, {tail: 'm'});
                         break;
+                    case 'end_position_offsets':
+                        if ( !v || !is_sprint )
+                            return;
+                        end_position_offsets = safeEval(v);
+                        v = end_position_offsets > 0 ? Lang('effective area: target behind') : Lang('effective area: target front');
+                        v += Math.abs(end_position_offsets) + 'm';
+                        t = Lang('effective area: end position');
                 }
                 caption.appendChild(createSkillAttributeScope(null, t, v));
             }
@@ -332,7 +341,7 @@ function getBranchHTML(branch, data){
         const dis = _attr['move_distance'] === void 0 ? base_distance : base_distance_long;
         switch ( areaType ){
             case 'line': case 'circle': {
-                w = !is_self ? unit(radius*2 + dis + 2) : unit(radius*2 + 2);
+                w = !is_self ? unit(radius*2 + dis + 2) : unit(radius*2 + 2) + unit(end_position_offsets);
                 h = unit(radius*2 + 2);
                 ox = unit(radius + 1),
                 oy = h/2,
@@ -348,7 +357,7 @@ function getBranchHTML(branch, data){
                         frg.appendChild(ocircle);
                     } break;
                     case 'line': {
-                        const _end = ox + unit(dis);
+                        const _end = ox + unit(dis) + unit(end_position_offsets);
                         const area = CY.svg.drawPath(`M${ox} ${oy-unit(radius)} A${unit(radius)} ${unit(radius)} 0 0 0 ${ox} ${oy+unit(radius)} L${_end} ${oy+unit(radius)} A${unit(radius)} ${unit(radius)} 0 0 0 ${_end} ${endy-unit(radius)} Z`, {fill: pcolorl2});
                         frg.appendChild(area);
                         const ocircle = CY.svg.drawCircle(ox, oy, unit(radius), {stroke: pcolorl, fill: 'none'});
@@ -360,7 +369,7 @@ function getBranchHTML(branch, data){
             } break;
             case 'sector': {
                 w = unit(dis + 6);
-                h = unit(dis)*Math.sin(angle*Math.PI/180) + unit(2);
+                h = unit(dis)*Math.sin((angle/2)*Math.PI/180)*2 + unit(2);
                 ox = unit(4);
                 oy = h/2;
                 endx = ox + unit(base_distance);
@@ -379,8 +388,10 @@ function getBranchHTML(branch, data){
         }
         const point_radius = 0.5;
         const chara = CY.svg.drawCircle(ox, oy, unit(radius <= point_radius && is_self ? point_radius/2 : point_radius), {fill: pcolor});
-        if ( _attr['is_sprint'] === '1' )
-            chara.appendChild(CY.svg.createAnimate('cx', {values: `${ox};${ox + unit(dis)};${ox + unit(dis)}`, keyTimes: '0;0.2;1', dur: '1.5s', repeatCount: '1', begin: 'a1.end'}));
+        if ( is_sprint ){
+            const _end = ox + unit(dis) + unit(end_position_offsets);
+            chara.appendChild(CY.svg.createAnimate('cx', {values: `${ox};${_end};${_end}`, keyTimes: '0;0.2;1', dur: '1.5s', repeatCount: '1', begin: 'a1.end'}));
+        }
         frg.appendChild(chara);
         if ( !is_self ){
             const targetPosition = CY.svg.drawCircle(endx, endy, unit(radius > point_radius ? point_radius : point_radius/2), {fill: '#2196f3'});   
