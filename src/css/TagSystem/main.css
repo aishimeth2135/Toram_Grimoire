@@ -8,7 +8,7 @@
     border: 1px solid var(--primary-light);
     background-color: #fff;
     padding: 0 1rem;
-    max-height: calc(100% - 3rem);
+    max-height: calc(100% - 1rem);
     overflow-y: auto;
 }
 

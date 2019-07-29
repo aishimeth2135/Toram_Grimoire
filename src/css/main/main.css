@@ -3,9 +3,14 @@
 	--primary-light: #FFD1EA;
 	--primary-light-2: #ff5fb7;
 	--primary-light-3: #ff008d;
+	--primary-light-4: #f7a8d3;
 	--primary-purple: #9c27b0;
 	--primary-water-blue-light: #9acbf3;
 	--primary-water-blue: #2196f3;
+}
+
+* {
+	box-sizing: border-box;
 }
 
 body {
@@ -146,6 +151,7 @@ nav > ul > li > a::after {
 	top: 0;
 	left: 0;
 	background-color: #FFF;
+	padding: 0 0.6rem;
 	padding-top: 2rem;
 }
 #loading-page > .main {

@@ -10,7 +10,7 @@
 }
 @media screen and (max-width: 22rem) {
     #ItemQuery > .result > .scope {
-        width: calc(100% - 1.8rem);
+        width: 100%;
     }
 }
 #ItemQuery > .result > .scope > .top > .name {
@@ -71,8 +71,11 @@
     border: 1px solid var(--primary-light);
     background-color: #fff;
     padding: 0 1rem;
-    max-height: calc(60% - 3rem);
+    max-height: 60%;
     overflow-y: auto;
+}
+#ItemQuery > .detail.unfold {
+    max-height: 100%;
 }
 #ItemQuery > .detail > .top {
     background-color: #fff;
@@ -85,6 +88,7 @@
     display: inline-block;
     cursor: pointer;
     transition: 0.3s;
+    margin-left: 0.3rem;
 }
 #ItemQuery > .detail > .top > span.button > svg {
     fill: var(--primary-light-2);

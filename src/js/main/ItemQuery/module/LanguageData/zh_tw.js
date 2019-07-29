@@ -65,6 +65,14 @@ const zh_tw = {
                 'sort: none': '不進行排序',
                 'stats search: first': '請於上方的輸入欄位搜尋能力名稱。',
                 'stats search: no result': '沒有符合的結果。請確認搜尋的關鍵字是否正確。'
+            },
+            'option scope title': {
+                'category': '裝備類型',
+                'search by': '搜尋目標',
+                'button': {
+                    'select all': '全選',
+                    'cancel all': '重置'
+                }
             }
         }
     }
