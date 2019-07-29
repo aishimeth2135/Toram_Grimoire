@@ -75,7 +75,7 @@
     overflow-y: auto;
 }
 #ItemQuery > .detail.unfold {
-    max-height: 100%;
+    max-height: calc(100% - 1rem);
 }
 #ItemQuery > .detail > .top {
     background-color: #fff;
