@@ -23,7 +23,11 @@ const zh_tw = {
         },
         'About': {
             'Donate Group': '贊助公會',
-            'Author': '作者'
+            'Author': '作者',
+            'Skill Data Maintenance': '技能資料維護',
+            'Write Skill Tree Draw Code': '技能樹繪製資料填寫',
+            'Sort Skill Icon': '技能圖示排列',
+            'Equipment Data Maintenance': '裝備資料維護'
         }
     }
 };

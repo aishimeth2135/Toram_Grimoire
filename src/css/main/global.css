@@ -7,6 +7,9 @@
 .text-small {
     font-size: 0.9rem;
 }
+.vertical-middle {
+    vertical-align: middle;
+}
 
 .separate_text {
     border-left: 1px var(--primary-light) solid;

@@ -25,6 +25,55 @@ export default class SearchController {
 
         const ctrr = this;
 
+        function createButtonScope(){
+            return simpleCreateHTML('div', 'button-scope');
+        }
+        function createSearchButtonScope(lis){
+            const t = simpleCreateHTML('div', 'search-button-scope');
+            const search_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple'], '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>' + '<span class="text">' + Lang('search') + '</span>');
+            search_btn.addEventListener('click', lis);
+            t.appendChild(search_btn);
+            return t;
+        }
+        function createSearchCategoryScope(){
+            const t = simpleCreateHTML('ul', 'search-category');
+            Lang('Equipmemt Category list').forEach((p, i) => {
+                const li = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'cur'], p, {'data-i': i});
+                li.addEventListener('click', toggle_select_listener);
+                t.appendChild(li);
+            });
+            return t;
+        }
+        function checkItemCategory(node, item){
+            const l = getSelectedOptions(node, 'data-i').map(a => parseInt(a));
+            return l.indexOf(item.category) != -1;
+        }
+        function toggle_select_listener(e){
+            this.classList.toggle('cur');
+        }
+        function getSelectedOptions(node, data_name){
+            return Array.from(node.querySelectorAll('.cur'))
+                .map(typeof data_name === 'function' ? data_name : a => a.getAttribute(data_name));
+        }
+        function selectAllOption_listener(e){
+            this.parentNode.nextSibling.querySelectorAll('li').forEach(a => a.classList.add('cur'));
+        }
+        function cancelAllOption_listener(e){
+            this.parentNode.nextSibling.querySelectorAll('li.cur').forEach(a => a.classList.remove('cur'));
+        }
+        function createButtonScopeTitle(name){
+            const t = simpleCreateHTML('div', 'title-scope');
+            t.appendChild(simpleCreateHTML('span', 'title', Lang('option scope title/' + name)));
+            const sel_all = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'text-small'], '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M17.3 6.3c-.39-.39-1.02-.39-1.41 0l-5.64 5.64 1.41 1.41L17.3 7.7c.38-.38.38-1.02 0-1.4zm4.24-.01l-9.88 9.88-3.48-3.47c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L22.95 7.71c.39-.39.39-1.02 0-1.41h-.01c-.38-.4-1.01-.4-1.4-.01zM1.12 14.12L5.3 18.3c.39.39 1.02.39 1.41 0l.7-.7-4.88-4.9c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.03 0 1.42z"/></svg><span class="text">' + Lang('option scope title/button/select all') + '</span>');
+            sel_all.addEventListener('click', selectAllOption_listener);
+            const cel_all = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'text-small'], '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/></svg><span class="text">' + Lang('option scope title/button/cancel all') + '</span>');
+            cel_all.addEventListener('click', cancelAllOption_listener);
+            t.appendChild(sel_all);
+            t.appendChild(cel_all);
+            return t;
+        }
+
+
         function li_listener(e){
             const c = this.getAttribute('data-category');
             const scope = ctrr.nodes.optionsScope.querySelector('.options-' + c);
@@ -37,6 +86,7 @@ export default class SearchController {
             }
             this.classList.add('cur');
             scope.classList.remove('hidden');
+            CY.element.removeAllChild(ctrr.nodes.result);
         }
 
         ['main', 'stat', 'item-level'].forEach((p, i) => {
@@ -55,23 +105,33 @@ export default class SearchController {
                     search_scope.appendChild(input);
                     frg.appendChild(search_scope);
 
-                    const btn_scope = simpleCreateHTML('div', 'button-scope');
-                    const SearchList = [];
-                    function search_by_listener(e){
-                        const name = this.getAttribute('data-name');
-                        this.classList.contains('cur')
-                            ? SearchList.splice(SearchList.indexOf(name), 1)
-                            : SearchList.push(name);
-                        this.classList.toggle('cur');
-                    }
+                    const btn_scope = createButtonScope();
+                    
+                    const search_by_ul = simpleCreateHTML('ul', 'search-by');
+                    ['name', 'material', 'dye', 'obtain-name'].forEach(a => {
+                        const _li = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple'], Lang('options: main/search by: ' + a), {'data-name': a});
+                        _li.addEventListener('click', toggle_select_listener);
+                        search_by_ul.appendChild(_li);
+                        _li.classList.add('cur');
+                    });
+                    btn_scope.appendChild(createButtonScopeTitle('search by'));
+                    btn_scope.appendChild(search_by_ul);
+
+                    const search_category_ul = createSearchCategoryScope();
+                    btn_scope.appendChild(createButtonScopeTitle('category'));
+                    btn_scope.appendChild(search_category_ul);
+
                     function search_listener(e){
                         if ( input.value === '' )
                             return;
+                        const searchList = getSelectedOptions(search_by_ul, 'data-name');
                         const res = [];
                         const search_values = input.value.toLowerCase().split(/\s*,\s*/);
                         ctrr.parent.items.equipments.forEach(item => {
+                            if ( !checkItemCategory(search_category_ul, item) )
+                                return;
                             const check = search_values.find(v => {
-                                return SearchList.find(a => {
+                                return searchList.find(a => {
                                     switch (a){
                                         case 'name':
                                             return item.name.toLowerCase().includes(v);
@@ -89,20 +149,8 @@ export default class SearchController {
                         });
                         ctrr.showResult(res);
                     }
-                    const search_by_ul = simpleCreateHTML('ul', 'search-by');
-                    ['name', 'material', 'dye', 'obtain-name'].forEach(a => {
-                        const _li = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple'], Lang('options: main/search by: ' + a), {'data-name': a});
-                        _li.addEventListener('click', search_by_listener);
-                        search_by_ul.appendChild(_li);
-                        _li.classList.add('cur');
-                        SearchList.push(a);
-                    });
-                    btn_scope.appendChild(search_by_ul);
 
-                    const search_result_scope = simpleCreateHTML('div', 'search-button-scope');
-                    const search_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple'], '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>' + '<span class="text">' + Lang('search') + '</span>');
-                    search_btn.addEventListener('click', search_listener);
-                    search_result_scope.appendChild(search_btn);
+                    const search_result_scope = createSearchButtonScope(search_listener);
                     btn_scope.appendChild(search_result_scope);
 
                     frg.appendChild(btn_scope);
@@ -161,9 +209,6 @@ export default class SearchController {
                         ][t];
                         e.stopPropagation();
                     }
-                    function select_stat(e){
-                        this.classList.toggle('cur');
-                    }
                     statList.forEach(a => {
                         [0, 1].forEach(b => {
                             if ( b == 1 && !a.hasMultiplier )
@@ -175,7 +220,7 @@ export default class SearchController {
                                     'data-type': b
                                 }
                             );
-                            stat.addEventListener('click', select_stat);
+                            stat.addEventListener('click', toggle_select_listener);
                             stat.appendChild(simpleCreateHTML('span', 'text', b == 0 ? a.text : a.text + '%'));
                             const toggle_sort_btn = simpleCreateHTML('span', ['icon', 'sort'], '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/><path fill="none" d="M0 0h24v24H0V0z"/></svg>');
                             toggle_sort_btn.addEventListener('click', switch_sort);
@@ -186,21 +231,29 @@ export default class SearchController {
                     const stat_scope_tips = simpleCreateHTML('div', 'tips', Lang('tips/stats search: first'));
                     stats_scope.appendChild(stat_scope_tips);
 
+                    const btn_scope = createButtonScope();
+
+                    const search_category_ul = createSearchCategoryScope();
+                    btn_scope.appendChild(createButtonScopeTitle('category'));
+                    btn_scope.appendChild(search_category_ul);
+
                     function search_listener(e){
-                        const l = Array.from(stats_scope.querySelectorAll('.stat.cur'));
-                        if ( l.length == 0 )
-                            return;
-
-                        const res = [];
-
-                        const search_list = l.map(a => {
+                        const search_list = getSelectedOptions(stats_scope, a => {
                             return {
                                 baseName: a.getAttribute('data-bn'),
                                 sort: parseInt(a.getAttribute('data-sort'), 10),
                                 type: a.getAttribute('data-type') === '0' ? StatBase.TYPE_CONSTANT : StatBase.TYPE_MULTIPLIER
                             }
                         });
+
+                        if ( search_list.length == 0 )
+                            return;
+
+                        const res = [];
+
                         ctrr.parent.items.equipments.forEach(item => {
+                            if ( !checkItemCategory(search_category_ul, item) )
+                                return;
                             const check = search_list.every(a => item.stats.find(b => a.baseName == b.baseName() && a.type == b.type));
                             if ( check )
                                 res.push(item);
@@ -224,10 +277,8 @@ export default class SearchController {
                         ctrr.showResult(res, {statShowList: search_list});
                     }
 
-                    const search_result_scope = simpleCreateHTML('div', 'search-button-scope');
-                    const search_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple'], '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>' + '<span class="text">' + Lang('search') + '</span>');
-                    search_btn.addEventListener('click', search_listener);
-                    search_result_scope.appendChild(search_btn);
+                    const search_result_scope = createSearchButtonScope(search_listener);
+                    btn_scope.appendChild(search_result_scope);
                     
                     const tips_scope = simpleCreateHTML('div', 'tips-scope');
                     [
@@ -240,8 +291,7 @@ export default class SearchController {
 
                     frg.appendChild(stats_scope);
                     frg.appendChild(tips_scope);
-
-                    frg.appendChild(search_result_scope);
+                    frg.appendChild(btn_scope);
                 }
                 break;
                 case 'item-level': {
@@ -259,6 +309,12 @@ export default class SearchController {
                     search_scope.appendChild(simpleCreateHTML('span', ['text', 'inner'], '~'));
                     search_scope.appendChild(input2);
                     frg.appendChild(search_scope);
+
+                    const btn_scope = createButtonScope();
+
+                    const search_category_ul = createSearchCategoryScope();
+                    btn_scope.appendChild(createButtonScopeTitle('category'));
+                    btn_scope.appendChild(search_category_ul);
 
                     function search_listener(e){
                         const res = [];
@@ -293,6 +349,8 @@ export default class SearchController {
                         ctrr.parent.items.equipments.forEach(item => {
                             if ( !item.recipe )
                                 return;
+                            if ( !checkItemCategory(search_category_ul, item) )
+                                return;
                             const v = parseInt(item.recipe['item_level'], 10);
                             if ( Number.isNaN(v) )
                                 return;
@@ -307,12 +365,10 @@ export default class SearchController {
                         ctrr.showResult(res, {showItemLevel: true});
                     }
 
-                    const search_result_scope = simpleCreateHTML('div', 'search-button-scope');
-                    const search_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple'], '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>' + '<span class="text">' + Lang('search') + '</span>');
-                    search_btn.addEventListener('click', search_listener);
-                    search_result_scope.appendChild(search_btn);
+                    const search_result_scope = createSearchButtonScope(search_listener);
+                    btn_scope.appendChild(search_result_scope);
 
-                    frg.appendChild(search_result_scope);
+                    frg.appendChild(btn_scope);
                 }
             }
             const scope = simpleCreateHTML('div', 'options-' + p);
@@ -335,8 +391,17 @@ export default class SearchController {
                 ctrr.nodes.detail.classList.add('hidden');
             });
 
+            const unfold = simpleCreateHTML('span', ['button', 'right'], '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M12 5.83l2.46 2.46c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L12.7 3.7c-.39-.39-1.02-.39-1.41 0L8.12 6.88c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 5.83zm0 12.34l-2.46-2.46c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l3.17 3.18c.39.39 1.02.39 1.41 0l3.17-3.17c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L12 18.17z"/></svg>');
+            unfold.addEventListener('click', function(e){
+                detail.classList.toggle('unfold');
+                this.innerHTML = detail.classList.contains('unfold')
+                    ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path opacity=".87" fill="none" d="M24 0v24H0V0h24z"/><path d="M8.12 19.3c.39.39 1.02.39 1.41 0L12 16.83l2.47 2.47c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41l-3.17-3.17c-.39-.39-1.02-.39-1.41 0l-3.17 3.17c-.4.38-.4 1.02-.01 1.41zm7.76-14.6c-.39-.39-1.02-.39-1.41 0L12 7.17 9.53 4.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.03 0 1.42l3.17 3.17c.39.39 1.02.39 1.41 0l3.17-3.17c.4-.39.4-1.03.01-1.42z"/></svg>'
+                    : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M12 5.83l2.46 2.46c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L12.7 3.7c-.39-.39-1.02-.39-1.41 0L8.12 6.88c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 5.83zm0 12.34l-2.46-2.46c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l3.17 3.18c.39.39 1.02.39 1.41 0l3.17-3.17c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L12 18.17z"/></svg>';
+            });
+
             top.appendChild(name);
             top.appendChild(close);
+            top.appendChild(unfold);
             detail.appendChild(top);
         }
         detail.appendChild(simpleCreateHTML('div', 'contents'));

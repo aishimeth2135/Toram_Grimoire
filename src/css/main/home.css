@@ -6,10 +6,7 @@
     padding: 0.6rem;
     display: flex;
 }
-.main-content > section > div {
-    border: 1px solid transparent;
-    width: 20rem;
-}
+
 .main-content > section > .picture {
     border: 1px solid var(--primary-light-2);
     height: 12rem;
@@ -17,6 +14,7 @@
 
 .main-content > section > .caption {
     padding: 0 1.2rem;
+    width: 20rem;
 }
 .main-content > section > .caption > .top {
     margin: 0.4rem 0;
@@ -56,9 +54,13 @@
 #About > section {
     border-left: 2px solid var(--primary-light-3);
     margin: 0.5rem 0;
+    padding: 0.3rem 0.6rem;
 }
-#About > section > .caption {
+section > .scope {
     padding: 0 0.8rem;
+}
+section > .scope > .content {
+    padding: 0.4rem 0;
 }
 
 .content > .title.text-small {

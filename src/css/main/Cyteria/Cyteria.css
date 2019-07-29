@@ -6,7 +6,7 @@
     margin: 0.2rem;
     cursor: pointer;
     text-align: center;
-    fill: var(--primary-light);
+    fill: var(--primary-light-4);
 }
 .Cyteria.Button.simple:hover, .Cyteria.Button.simple.cur {
     border-bottom: 1px var(--primary-light-3) solid;
