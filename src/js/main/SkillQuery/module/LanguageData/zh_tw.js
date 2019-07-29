@@ -83,6 +83,9 @@ const zh_tw = {
             'move distanve: title': '移動距離',
             'effective area: character position': '角色位置',
             'effective area: target position': '目標位置',
+            'effective area: end position': '終點位置',
+            'effective area: target front': '目標身前',
+            'effective area: target behind': '目標身後',
             'branch development controller': {
                 'title: default': '預設',
                 'title: not default': '非預設'

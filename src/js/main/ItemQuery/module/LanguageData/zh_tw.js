@@ -20,9 +20,12 @@ const zh_tw = {
             'item detail': {
                 'scope title': {
                     'stats': '裝備能力',
-                    'create': '基礎潛力值 ($0)', // 0: 基礎潛力值
+                    'create': '基礎潛力值',
                     'materials': '製作素材',
-                    'obtains': '取得方式'
+                    'obtains': '取得方式',
+                    'base atk': '基礎ATK',
+                    'base def': '基礎DEF',
+                    'base stability': '基礎穩定度'
                 },
                 'create': {
                     'item level': '道具等級',
@@ -69,6 +72,7 @@ const zh_tw = {
             'option scope title': {
                 'category': '裝備類型',
                 'search by': '搜尋目標',
+                'obtain type': '取得方式類型',
                 'button': {
                     'select all': '全選',
                     'cancel all': '重置'
