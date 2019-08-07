@@ -319,7 +319,7 @@ class EnchantStep {
             return 0;
         switch (this.type){
             case EnchantStep.TYPE_NORMAL:
-                return Math.ceil(this.stepStats.reduce((a, b) => a + b.getPotentialCost(), 0));
+                return Math.floor(this.stepStats.reduce((a, b) => a + b.getPotentialCost(), 0));
             case EnchantStep.TYPE_EACH:
                 return this.stepStats[0].getPotentialCost();
         }
