@@ -102,8 +102,10 @@ class SimpleStat {
 		this.type = type;
 		this.value = v;
 	}
-	show(config){
-		return this.base.show(this.type, this.value, config);
+	show(config, v){
+		if ( v === void 0 )
+			v = this.value;
+		return this.base.show(this.type, v, config);
 	}
 	getShowData(){
 		return this.base.getShowData(this.type, this.value);	
@@ -111,6 +113,10 @@ class SimpleStat {
 	statValue(v){
 		if ( v !== void 0 )
 			this.value = v;
+		return this.value;
+	}
+	addStatValue(v){
+		this.value += v;
 		return this.value;
 	}
 	baseName(){

@@ -1,12 +1,15 @@
-.Cyteria.Button.simple {
-    display: inline-block;
-    padding: 0.3rem 0.5rem;
-    border-bottom: 1px var(--primary-light) solid;
-    transition: 0.3s;
-    margin: 0.2rem;
+.Cyteria.Button {
     cursor: pointer;
     text-align: center;
     fill: var(--primary-light-4);
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.Cyteria.Button.simple {
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px var(--primary-light) solid;
+    margin: 0.2rem;
 }
 .Cyteria.Button.simple:hover, .Cyteria.Button.simple.cur {
     border-bottom: 1px var(--primary-light-3) solid;
@@ -21,6 +24,54 @@
 }
 .Cyteria.Button.simple > .text {
     margin-left: 0.4rem;
+    vertical-align: middle;
+}
+
+.Cyteria.Button.icon-only {
+    padding: 0.3rem;
+    margin: 0 0.2rem;
+}
+.Cyteria.Button.icon-only > svg {
+    fill: var(--primary-light-4);
+    vertical-align: middle;
+    width: 1.2rem;
+    height: 1.2rem;
+}
+.Cyteria.Button.icon-only:hover > svg {
+    fill: var(--primary-light-3);
+}
+
+.Cyteria.Button.border.icon-only {
+    border-radius: 0.2rem;
+    border: 1px var(--primary-light-4) solid;
+}
+.Cyteria.Button.border.icon-only:hover {
+    border: 1px var(--primary-light-3) solid;
+}
+
+.Cyteria.input.between-button {
+    padding: 0.3rem 0.2rem;
+    border: 0;
+    font-size: 1rem;
+    color: var(--primary-light-3);
+    width: 2.5rem;
+    text-align: center;
+    border-bottom: 1px transparent solid;
+}
+.Cyteria.input:focus {
+    outline: none;
+    border-bottom-color: var(--primary-light-3);
+}
+
+.Cyteria.text.between-button {
+    padding: 0.3rem 0.6rem;
+    color: var(--primary-light-3);
+    text-align: center;
+    display: inline-block;
+}
+.Cyteria.text.after-icon-button {
+    margin-left: 0.4rem;
+    display: inline-block;
     vertical-align: middle;
 }
 
@@ -63,4 +114,85 @@
     position: relative;
     padding-left: 1.2rem;
     margin: 0.3rem 0;
+}
+
+.Cyteria.window {
+    position: fixed;
+    width: 25rem;
+    margin: 0.5rem;
+    border: 1px solid var(--primary-light);
+    background-color: #fff;
+    padding: 1rem;
+    overflow-y: auto;
+    max-height: calc(100% - 1rem);
+}
+
+.Cyteria.window.top-right {
+    top: 0;
+    right: 0;
+}
+.Cyteria.window.bottom-right {
+    bottom: 0;
+    right: 0;
+}
+.Cyteria.window.top-center {
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0.5rem auto;
+}
+
+.Cyteria.window.h60 {
+    max-height: calc(60% - 1rem);
+}
+
+.Cyteria.window.frozen-top {
+    padding: 0 1rem;
+}
+.Cyteria.window.frozen-top > .top {
+
+}
+.Cyteria.window.frozen-top > .top {
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    padding-top: 1rem;
+    padding-bottom: 0.6rem;
+}
+.Cyteria.window.frozen-top > .top > span.button {
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-left: 0.3rem;
+}
+.Cyteria.window.frozen-top > .top > span.button > svg {
+    fill: var(--primary-light-2);
+    vertical-align: middle;
+}
+.Cyteria.window.frozen-top > .top > span.button:hover svg {
+    fill: var(--primary-light-3);
+}
+.Cyteria.window.frozen-top > .top > span.name {
+    margin: 0.2rem;
+    vertical-align: middle;
+    color: var(--primary-purple);
+}
+
+.Cyteria.window.bg-mask::before {
+    content: '';
+    position: fixed;
+    margin: 0;
+    top: -5%;
+    left: -5%;
+    width: 110%;
+    height: 110%;
+    background-color: var(--primary-color-light);
+    opacity: 0.3;
+    z-index: -1;
+}
+
+@media screen and (max-width: 26rem) {
+    .Cyteria.window {
+        width: calc(100% - 1rem);
+    }
 }

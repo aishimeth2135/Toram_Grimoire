@@ -10,6 +10,16 @@
 .vertical-middle {
     vertical-align: middle;
 }
+.text-pretext {
+    color: var(--primary-light-4);
+    margin-right: 0.4rem;
+}
+.space-left {
+    margin-left: 0.8rem;
+}
+.space-right {
+    margin-right: 0.8rem;   
+}
 
 .separate_text {
     border-left: 1px var(--primary-light) solid;

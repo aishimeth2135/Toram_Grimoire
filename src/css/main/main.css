@@ -26,7 +26,7 @@ input::-moz-placeholder { color: var(--primary-light); } /* firefox 19+ */
 input:-ms-input-placeholder { color: var(--primary-light); } /* ie */
 input:-moz-placeholder { color: var(--primary-light); }
 
-body.font1, body.font1 > input, body.font1 > textarea {
+body.font1, body.font1 input, body.font1 textarea {
 	font-family: 'Itim', 'SetoFont', Microsoft JhengHei, sans-serif;
 }
 
@@ -168,23 +168,29 @@ nav > ul > li > a::after {
 
 #show-message {
 	position: fixed;
-	top: 10rem;
+	top: 6rem;
 	max-width: 20rem;
 	margin: 0 auto;
+	left: 0;
+	right: 0;
 }
 #show-message > div {
 	margin: 0.2rem 0;
 	padding: 0.6rem;
 	background-color: #fff;
 	color: var(--primary-light-3);
-	border: 1px solid var(--primary-light);
-	animation: show-message 0.5s ease-out 4.5s;
+	border: 1px solid var(--primary-light-3);
+	animation: show-message 5s ease-out;
+	opacity: 0;
 }
 @keyframes show-message {
-	from {
+	0% {
 		opacity: 1;
 	}
-	to {
+	80% {
+		opacity: 1;
+	}
+	100% {
 		opacity: 0;
 	}
 }

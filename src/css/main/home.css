@@ -14,7 +14,7 @@
 
 .main-content > section > .caption {
     padding: 0 1.2rem;
-    width: 20rem;
+    width: 25rem;
 }
 .main-content > section > .caption > .top {
     margin: 0.4rem 0;
@@ -26,6 +26,7 @@
     width: 1.5rem;
     height: 1.5rem;
     vertical-align: middle;
+    fill: var(--primary-light);
 }
 .main-content > section > .caption > .top > .icon > svg > g {
     fill: var(--primary-light);

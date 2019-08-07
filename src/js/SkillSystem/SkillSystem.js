@@ -1,6 +1,7 @@
 import {SkillRoot} from "./module/SkillElements.js";
 import {LoadSkillData, LoadSkillMainData} from "./module/LoadSkillData.js";
 import DataPath from "../main/module/DataPath.js";
+import SkillQueryController from "./module/SkillQueryController.js";
 
 
 class SkillSystem {
@@ -39,7 +40,8 @@ class SkillSystem {
 		});
 	}
 	init_SkillQuery(sr_node){
-		this.skillRoot.controller.initSkillQueryHTML(sr_node);
+		this.skillQueryController = new SkillQueryController(this.skillRoot);
+		this.skillQueryController.initSkillQueryHTML(sr_node);
 	}
 }
 

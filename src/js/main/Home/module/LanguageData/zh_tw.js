@@ -21,6 +21,12 @@ const zh_tw = {
             'content-2': '基本的關鍵字查詢。',
             'content-3': '利用裝備能力、道具等級查詢。'
         },
+        'Enchant Simulator': {
+            'Title': '附魔模擬器',
+            'content-1': '模擬遊戲裡的附魔。',
+            'content-2': '查看每個步驟的潛力消耗、素材消耗。',
+            'content-3': '查看成功率與總素材耗量。'
+        },
         'About': {
             'Donate Group': '贊助公會',
             'Author': '作者',

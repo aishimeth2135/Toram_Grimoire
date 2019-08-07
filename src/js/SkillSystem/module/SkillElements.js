@@ -1,4 +1,3 @@
-import SkillElementsController from './SkillElementsController.js';
 import Grimoire from "../../main/Grimoire.js";
 import StatBase from "../../CharacterSystem/module/StatBase.js";
 import CY from "../../main/module/cyteria.js";
@@ -31,7 +30,6 @@ Interface SkillElementChild {
 class SkillRoot {
 	constructor(){
 		this.skillTreeCategorys = [];
-		this.controller = new SkillElementsController(this);
 		this.TYPE = SkillRoot.TYPE;
 	}
 	newElement(type, cArgs){

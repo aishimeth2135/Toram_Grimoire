@@ -1,6 +1,7 @@
 import Grimoire from "../../main/Grimoire.js";
 import StatBase from "../../CharacterSystem/module/StatBase.js";
 
+
 class Items {
     constructor(){
         this.equipments = [];
