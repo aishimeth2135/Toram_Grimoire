@@ -468,7 +468,7 @@ function getBranchHTML(branch, ctrr){
                 mid.style.textAlign = "center";
             }
             else
-                mid.style.width = (0.6*String(ov).length + 0.2) + "rem";
+                mid.style.width = (0.7*String(ov).length + 0.4) + "rem";
 
             const maxv = parseInt(safeEval(stk.branchAttributes['max']), 10),
                 minv = parseInt(safeEval(stk.branchAttributes['min']), 10);
