@@ -7,6 +7,7 @@ import {createSkillAttributeScope, getStackBranchIdKey, simpleCreateHTML, Lang} 
 import {TempSkillEffect, TempSkillBranch} from "./TempSkillElement.js";
 import strings from "../strings.js";
 import {InitSkillBranch} from "./InitSkillData.js";
+import Icons from "../../../main/module/SvgIcons.js";
 
 import Grimoire from "../../../main/Grimoire.js";
 
@@ -115,7 +116,9 @@ branchDevelopmentController.prototype = {
 	}
 };
 
-function getEffectHTML(sef, attr_name, data){
+function getEffectHTML(sef, attr_name, ctrr){
+    const data = ctrr.status;
+    const SLv = data.skillLevel, CLv = data.characterLevel;
 	const safeEval = str => {
 		try {
 			return eval(str);
@@ -153,8 +156,6 @@ function getEffectHTML(sef, attr_name, data){
 		[SkillEffect.ACTION_TIME]: Lang('action time: List')
 	};
 
-	const {SLv, CLv} = data;
-
 	let title = TITLE_DATA[attr_name],
 		v = sef.attributes[attr_name],
 		tail = null;
@@ -182,8 +183,8 @@ function getEffectHTML(sef, attr_name, data){
 }
 
 
-function beforeExport(he, data){
-    const ctrr = data.skillRoot.controller;
+function beforeExport(he, ctrr){
+    const data = ctrr.status;
 
     // 處理Tag按鈕
     Grimoire.TagSystem.controller.processShowTagButton(he.querySelectorAll('.show_tag_button'));
@@ -253,7 +254,7 @@ function beforeExport(he, data){
         if ( sc1.parentNode.classList.contains('content_line') || sc1.childElementCount === 0 )
             return;
         const btn = simpleCreateHTML('span', 'hidden_toggle_button',
-            '<span class="close hidden"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/><path fill="none" d="M0 0h24v24H0V0z"/></svg></span><span class="open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8.12 14.71L12 10.83l3.88 3.88c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L12.7 8.71c-.39-.39-1.02-.39-1.41 0L6.7 13.3c-.39.39-.39 1.02 0 1.41.39.38 1.03.39 1.42 0z"/></svg></span>');
+            '<span class="close">' + Icons('arrow-up') + '</span><span class="open hidden">' + Icons('arrow-down') + '</span>');
 
         btn.addEventListener('click', hiddenSubCaption);
         sc1.parentNode.insertBefore(btn, sc1.parentNode.firstChild);
@@ -343,7 +344,8 @@ function beforeExport(he, data){
 | @param Object equip ::使用者選取的裝備
 | @return documentFragment
 */
-export default function(data){
+export default function(ctrr){
+    const data = ctrr.status;
 	const skill = data.currentSkill;
 	const equip = data;
 	const SLv = data.skillLevel, CLv = data.characterLevel;
@@ -356,7 +358,7 @@ export default function(data){
 	let find = false;
 	skill.effects.forEach(eft => {
 		if ( find ) return;
-		if ( data.skillRoot.controller.equipmentCheck(eft, data) ){
+		if ( ctrr.equipmentCheck(eft, data) ){
 			if ( eft != skill.defaultEffect )
 				output.overWrite(eft);
 			overwrite_eft = eft;
@@ -383,7 +385,7 @@ export default function(data){
 		order.forEach(function(item){
 			if ( output.attributes[item] === void 0 )
 				return;
-			const he = getEffectHTML(output, item, {SLv, CLv});
+			const he = getEffectHTML(output, item, ctrr);
 			if ( he )
 				one.appendChild(he);
 		});
@@ -416,17 +418,10 @@ export default function(data){
 					}
 				});
 			}
-			const stackValues = data.stackValues,
-				stackNames = data.stackNames,
-				showOriginalFormula = data.showOriginalFormula,
-				skillRoot = data.skillRoot;
 
 			let temp_html= null;
 			output.branchs.forEach(branch => {
-				const t = getBranchHTML(branch, {
-					SLv, CLv, stackNames, stackValues, showOriginalFormula,
-					skillRoot, branchDevelopmentMode
-				});
+				const t = getBranchHTML(branch, ctrr);
 				if ( t !== null ){
 					if ( temp_html !== null ){
 						two.appendChild(temp_html);
@@ -454,7 +449,7 @@ export default function(data){
 		}
 		frg.appendChild(two);
 
-		beforeExport(frg, data);
+		beforeExport(frg, ctrr);
 
 		return frg;
 	}

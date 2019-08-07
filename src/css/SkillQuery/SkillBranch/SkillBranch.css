@@ -151,44 +151,13 @@ div.skill_branchs > div.branch_stack > div.content > div.scope1 {
 div.skill_branchs div.branch_stack > div.content > div.scope2 {
 	margin-top: 0.3rem;
 }
-div.skill_branchs > div.branch_stack > div.content > div.scope2 > span,
+
 div.skill_branchs > div.branch_stack > div.content > div.scope2 > input {
-	display: inline-block;
-	text-align: center;
-	vertical-align: middle;
-}
-div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_button {
-	border-radius: 0.2rem;
-	padding: 0.3rem;
-	cursor: pointer;
-	border: 1px var(--primary-light-2) solid;
-	transition: 0.3s;
-	margin-left: 0.1rem;
-	margin-right: 0.3rem;
-}
-div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_button:hover {
-	border: 1px var(--primary-light-3) solid;
-}
-div.skill_branchs > div.branch_stack > div.content > div.scope2 > span.ctr_button:hover svg {
-	fill: 1px var(--primary-light-3) solid;
-}
-div.skill_branchs > div.branch_stack > div.content > div.scope2 > input {
-	padding: 0.3rem 0;
-	border: 0;
-	font-size: 1rem;
-	color: var(--primary-light-3);
-	text-align: right;
 	width: 2rem;
 }
 div.skill_branchs > div.branch_stack > div.content > div.scope2 > .unit {
 	margin-right: 0.4rem;
 	color: var(--primary-light-3);
-}
-div.skill_branchs > div.branch_stack > div.content > div.scope2 > span > svg {
-	fill: var(--primary-light-2);
-	vertical-align: middle;
-	width: 1.2rem;
-	height: 1.2rem;
 }
 
 div.skill_branchs > div.branch_reference a.url_text {

@@ -1,5 +1,5 @@
 const config = {
-    node: document.getElementById('show-message')
+    node: null
 };
 
 function setShowMessageConfig(c){
@@ -7,15 +7,23 @@ function setShowMessageConfig(c){
 }
 
 function ShowMessage(s){
+    if ( !config.node ){
+        const t = document.createElement('div');
+        t.id = 'show-message';
+        document.body.appendChild(t);
+        config.node = t;
+    }
     const r = config.node;
 
     const div = document.createElement('div');
     div.innerHTML = s;
     r.insertBefore(div, r.firstChild);
 
-    const it = setInterval(() => {
+    const it = setTimeout(() => {
         div.parentNode.removeChild(div);
-    }, 5000);
+    }, 5500);
 }
+
+export default ShowMessage;
 
 export {ShowMessage, setShowMessageConfig};

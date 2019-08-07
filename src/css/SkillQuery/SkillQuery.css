@@ -128,33 +128,6 @@
 	margin-right: 0.6rem;
 	display: inline-block;
 }
-#SkillQuery div.CharacterLevel_scope > span {
-	border-radius: 0.2rem;
-	padding: 0.3rem;
-	cursor: pointer;
-	border: 1px var(--primary-light-2) solid;
-	transition: 0.3s;
-}
-#SkillQuery div.CharacterLevel_scope > span:hover {
-	border: 1px var(--primary-light-3) solid;
-}
-#SkillQuery div.CharacterLevel_scope > input {
-	padding: 0.3rem;
-	border: 0;
-	font-size: 1rem;
-	color: var(--primary-light-3);
-	width: 2.5rem;
-	text-align: center;
-}
-#SkillQuery div.CharacterLevel_scope > input:focus {
-	outline: none;
-}
-#SkillQuery div.CharacterLevel_scope > span > svg {
-	fill: var(--primary-light-2);
-	vertical-align: middle;
-	width: 1.2rem;
-	height: 1.2rem;
-}
 
 
 #SkillQuery div.SwitchDisplayMode_scope {

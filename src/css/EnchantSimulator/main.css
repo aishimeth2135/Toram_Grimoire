@@ -1,0 +1,141 @@
+.set-character-level {
+    padding-left: 0.6rem;
+}
+
+ul.equipments-list {
+    list-style: none;
+    padding: 0 0.6rem;
+    margin: 1rem 0;
+    border-bottom: 1px var(--primary-light) solid;
+}
+.equipments-list > .select {
+    padding: 0.5rem 0.8rem;
+    margin: 0;
+    margin-bottom: -1px;
+}
+
+.enchant-equipment > .field-menu {
+    list-style: none;
+    padding: 0.5rem 0.3rem;
+    margin: 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--primary-light);
+}
+
+
+.enchant-equipment > .set-original-potential {
+    margin-bottom: 1rem;
+    padding: 0 0.6rem;
+}
+
+.enchant-equipment > .show-result-scope {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0.6rem;
+    border-top: 1px solid var(--primary-light);
+    margin-top: 1rem;
+}
+.enchant-equipment .show-result-content {
+    clear: both;
+    padding: 0 0.6rem;
+}
+
+.enchant-equipment > .success-rate-scope {
+    padding: 1rem 0.6rem;
+    border-top: 1px solid var(--primary-light);
+    text-align: right;
+    position: sticky;
+    background-color: #FFF;
+    bottom: 0;
+}
+
+
+.enchant-equipment > .steps {
+    display: flex;
+    justify-content: flex-start;
+    align-content: flex-start;
+    flex-wrap: wrap;
+}
+.enchant-equipment > .steps > .create-step {
+    width: 20rem;
+    height: 12rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--primary-light-4);
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 0.4rem;
+    display: flex;
+}
+.enchant-equipment > .steps > .create-step:hover {
+    border-color: var(--primary-light-3);
+}
+.enchant-equipment > .steps > .create-step:hover > span > svg {
+    fill: var(--primary-light-3);
+}
+.enchant-equipment > .steps > .create-step > span > svg {
+    width: 3rem;
+    height: 3rem;
+    transition: 0.3s;
+    fill: var(--primary-light-4);
+}
+
+.step-scope {
+    border: 1px solid var(--primary-light-2);
+    padding: 0.8rem;
+    width: 20rem;
+    margin: 0.4rem;
+}
+.step-scope > .top {
+    margin-bottom: 0.3rem;
+}
+.step-scope > .top > .title {
+    color: var(--primary-purple);
+}
+.step-scope > .step-type {
+    padding: 0.6rem 0;
+    border-top: 1px solid var(--primary-light);
+    border-bottom: 1px solid var(--primary-light);
+}
+
+
+.step-scope .type-each-set-scope {
+    margin-left: 0.6rem;
+    display: inline-block;
+}
+
+
+.step-scope > .show-step-potential {
+    padding: 0.6rem 0.4rem;
+    margin-top: 1rem;
+    text-align: right;
+    border-top: 1px solid var(--primary-light);
+}
+
+.step-scope > .step-stats > .stat-scope {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--primary-light);
+}
+.step-scope > .step-stats > .stat-scope.invalid {
+    opacity: 0.6;
+    background-color: var(--primary-light);
+}
+
+.step-scope > .step-stats > .stat-scope > .sub {
+    padding-left: 0.6rem;
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+}
+
+
+.select-stat > .category-title {
+    font-size: 0.9rem;
+    padding: 0.3rem 0;
+    color: var(--primary-light-3);
+}
+.select-stat > ul.category-items {
+    list-style: none;
+    padding: 0 0.3rem;
+    margin: 0;
+    margin-bottom: 1rem;
+}

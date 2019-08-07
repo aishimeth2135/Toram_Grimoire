@@ -1,43 +1,4 @@
 
-#tag-scope {
-    position: fixed;
-    max-width: 25rem;
-    bottom: 0;
-    right: 0;
-    margin: 0.5rem;
-    border: 1px solid var(--primary-light);
-    background-color: #fff;
-    padding: 0 1rem;
-    max-height: calc(100% - 1rem);
-    overflow-y: auto;
-}
-
-#tag-scope > .top {
-    background-color: #fff;
-    position: sticky;
-    top: 0;
-    padding-top: 1rem;
-    padding-bottom: 0.4rem;
-}
-
-#tag-scope > .top > span.button {
-    display: inline-block;
-    cursor: pointer;
-    transition: 0.3s;
-}
-#tag-scope > .top > span.button > svg {
-    fill: var(--primary-light-2);
-    vertical-align: middle;
-}
-#tag-scope > .top > span.button:hover svg {
-    fill: var(--primary-light-3);
-}
-#tag-scope > .top > span.name {
-    margin: 0.2rem;
-    vertical-align: middle;
-    color: var(--primary-purple);
-}
-
 #tag-scope > .content {
     padding-bottom: 1rem;
 }

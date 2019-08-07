@@ -1,6 +1,7 @@
 import {SkillRoot, SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
 import {DrawSkillTree, GetDrawData} from "./DrawSkillTree.js";
 import AnalysisSkill from "./AnalysisSkill/AnalysisSkill.js";
+import Icons from "../../main/module/SvgIcons.js";
 
 import GetLang from "../../main/module/LanguageSystem.js";
 import strings from "./strings.js";
@@ -21,7 +22,6 @@ class SkillElementsController {
 		this.MAIN_NODE = null;
 		this.skillRoot = sr;
 		this.status = {
-			skillRoot: sr,
 			mainWeapon: -1,
 			subWeapon: -1,
 			bodyArmor: -1,
@@ -415,45 +415,6 @@ class SkillElementsController {
 					const he = DrawSkillTree(sEle, this);
 					return he;
 				} break;
-				case SkillTree.CATEGORY_TABLE: {
-					const st = sEle;
-					const stcn = st.parent.findLocation(), stn = st.findLocation();
-					const _C = this;
-					const td_listener = function(event){
-						const s = _C.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
-						if ( this.classList.contains('disable') || _C.status.currentSkill === s )
-							return;
-						const cur = this.parentNode.parentNode.getElementsByClassName('cur')[0];
-						if ( cur )
-							cur.classList.remove('cur');
-						this.classList.add('cur');
-
-						_C.clearSkillRecord();
-
-						_C.initCurrentSkill(s);
-						_C.updateSkillHTML();
-					};
-					const he = SkillTreeTable(SkillTreeTableData(stcn, stn));
-					let cnt = -1;
-					Array.from(he.getElementsByTagName('td')).forEach(function(td){
-						if ( td.getAttribute('data-empty') == '1' )
-							return;
-						++cnt;
-						const s = st.skills[cnt];
-						if ( s === void 0 ){
-							td.innerHTML = '-';
-							return;
-						}
-						if ( s.name == '@lock' ){
-							td.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none"><path d="M0 0h24v24H0V0z"/><path opacity=".87" d="M0 0h24v24H0V0z"/></g><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/></svg>';
-							return;
-						}
-						td.innerHTML = s.name;
-						td.setAttribute(strings().data_skillElementNo, _C.getSkillElementNoStr(s));
-						td.addEventListener('click', td_listener);
-					});
-					return he;
-				}
 				case SkillTree.CATEGORY_EQUIPMENT: {
 					const _C = this;
 					const listener = function(event){
@@ -552,7 +513,7 @@ class SkillElementsController {
 			case Skill.TYPE: switch (category){
 				case Skill.CATEGORY_MAIN: {
 					if ( sEle.checkData() ){
-						return AnalysisSkill(this.status);	
+						return AnalysisSkill(this);	
 					}
 					const div = document.createElement('div');
 					div.classList.add('no_data');
@@ -562,9 +523,9 @@ class SkillElementsController {
 			}
 			case TYPE_CHARACTER_LEVEL: {
 				const _C = this;
-				const left =  CY.element.simpleCreateHTML('span', 'left', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18 13H6c-.55 0-1-.45-1-1s.45-1 1-1h12c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg>');
-				const right = CY.element.simpleCreateHTML('span', 'right', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg>');
-				const mid = CY.element.simpleCreateHTML('input', 'mid');
+				const left =  CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only', 'left'], Icons('sub'));
+				const right = CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only', 'right'], Icons('add'));
+				const mid = CY.element.simpleCreateHTML('input', ['Cyteria', 'input', 'between-button', 'mid']);
 
 				mid.value = this.status.characterLevel;
 
@@ -630,7 +591,7 @@ class SkillElementsController {
 				const _C = this;
 				const he = document.createDocumentFragment();
 				const btn = document.createElement('span');
-				btn.appendChild(CY.element.simpleCreateHTML('span', 'icon', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18.65 8.35l-2.79 2.79c-.32.32-.1.86.35.86H18c0 3.31-2.69 6-6 6-.79 0-1.56-.15-2.25-.44-.36-.15-.77-.04-1.04.23-.51.51-.33 1.37.34 1.64.91.37 1.91.57 2.95.57 4.42 0 8-3.58 8-8h1.79c.45 0 .67-.54.35-.85l-2.79-2.79c-.19-.2-.51-.2-.7-.01zM6 12c0-3.31 2.69-6 6-6 .79 0 1.56.15 2.25.44.36.15.77.04 1.04-.23.51-.51.33-1.37-.34-1.64C14.04 4.2 13.04 4 12 4c-4.42 0-8 3.58-8 8H2.21c-.45 0-.67.54-.35.85l2.79 2.79c.2.2.51.2.71 0l2.79-2.79c.31-.31.09-.85-.36-.85H6z"/></svg>'));
+				btn.appendChild(CY.element.simpleCreateHTML('span', 'icon', Icons('switch')));
 				btn.appendChild(CY.element.simpleCreateHTML('span', 'title', Lang('switch display')));
 				btn.addEventListener('click', function(event){
 					_C.status.showOriginalFormula = _C.status.showOriginalFormula ? false : true;
@@ -643,7 +604,7 @@ class SkillElementsController {
 				const _C = this;
 				const he = document.createDocumentFragment();
 				const back = CY.element.simpleCreateHTML('div', 'back_button');
-				back.appendChild(CY.element.simpleCreateHTML('span', 'icon', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M14.71 15.88L10.83 12l3.88-3.88c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L8.71 11.3c-.39.39-.39 1.02 0 1.41l4.59 4.59c.39.39 1.02.39 1.41 0 .38-.39.39-1.03 0-1.42z"/></svg>'));
+				back.appendChild(CY.element.simpleCreateHTML('span', 'icon', Icons('arrow-left')));
 				back.appendChild(CY.element.simpleCreateHTML('span', 'caption', GetLang('Skill Query/button text/back')))
 				back.addEventListener('click', function(event){
 					_C.popSkillRecord();

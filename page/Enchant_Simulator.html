@@ -1,5 +1,5 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140158974-1"></script>
@@ -10,9 +10,10 @@
       gtag('config', 'UA-140158974-1');
     </script>
 
+    <meta charset="UTF-8">
     <title>Cy's Grimoire</title>
-    <meta charset="utf-8">
-    <meta name="description" content="Toram Online的技能查詢。">
+
+    <meta name="description" content="Toram Online的裝備查詢。">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
     
     <link rel="icon" sizes="any" href="../src/picture/icon/favicon.svg">
@@ -29,47 +30,38 @@
     <link rel="stylesheet" href="../src/css/main/main.css">
     <link rel="stylesheet" href="../src/css/main/Cyteria/Cyteria.css">
     <link rel="stylesheet" href="../src/css/main/global.css">
-    
-    <link rel="stylesheet" href="../src/css/SkillQuery/SkillQuery.css">
-    <link rel="stylesheet" href="../src/css/SkillQuery/SkillBranch/SkillBranch.css">
-    <link rel="stylesheet" href="../src/css/SkillQuery/SkillBranch/animation.css">
-    <link rel="stylesheet" href="../src/css/SkillQuery/DrawSkillTree.css">
 
-    <link rel="stylesheet" href="../src/css/TagSystem/main.css">
+    <link rel="stylesheet" href="../src/css/EnchantSimulator/main.css">
 </head>
 <body>
-    <div id="loading-page">
-        <div class="main">Loading...</div>
-        <div class="content">
-            載入資料中，請稍後...<br />
-            若載入途中發生錯誤，請先試著重新整理網頁。
-        </div>
-        <div class="msg"></div>
-    </div>
     <nav>
         <ul>
             <li><a href="../" data-langid="Top List/item 1"></a></li>
             <li><span data-langid="Top List/item 2"></span></li>
         </ul>
     </nav>
-    <article id="SkillQuery">
-        <section class="main">
-        </section>
+    <div id="loading-page">
+        <div class="main">Loading...</div>
+        <div class="content">
+            載入中，請稍後...<br />
+            若載入途中發生錯誤，請先試著重新整理網頁。
+        </div>
+        <div class="msg"></div>
+    </div>
+    <article id="EnchantSimulator">
     </article>
-    <div id="tag-scope"></div>
-    <div id="show-message"></div>
     <footer>
         <p>托蘭異世錄為<a href="https://asobimo.com/" target="_blank">アソビモ株式会社（ASOBIMO,Inc.）</a>所營運之遊戲。本網站僅作分享用途。</p>
         Toram Online｜托蘭異世錄｜トーラムオンライン
         <br /><a href="https://tw.toram.jp/" target="_blank">中文官方網站</a>｜<a href="https://twitter.com/toram_pr" target="_blank">官方Twitter</a>
         <p>
             ~ Toram Online - Cy's Grimoire ~<br />
-            測試版｜Update: 2019/07｜<span class="switch_branch_development_mode">技能資料對照</span>
+            測試用網站｜Update: 2019/07
         </p>
         <p><a href="https://home.gamer.com.tw/homeindex.php?owner=mushroom2135" target="_blank">巴哈小屋</a>｜<a href="https://twitter.com/Cyteria_w" target="_blank">Twitter: Cyteria_w</a></p>
     </footer>
+    <script type="text/javascript" src="../src/js/plugin/papaparse.min.js"></script>
+    <!-- <script type="module" src="../src/js/main/EnchantSimulator/main.js"></script> -->
+    <script type="text/javascript" src="../dist/enchant-simulator.min.js"></script>
 </body>
-<script type="text/javascript" src="../src/js/plugin/papaparse.min.js"></script>
-<!-- <script type="module" src="../src/js/main/SkillQuery/main.js"></script> -->
-<script type="text/javascript" src="../dist/skill-query.min.js"></script>
 </html>

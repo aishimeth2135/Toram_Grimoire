@@ -163,6 +163,15 @@ let Cyteria = {
 			return rg;
 		}
 	},
+	copyToClipboard(s){
+		const input = document.createElement('textarea');
+		input.value = s;
+		document.body.appendChild(input);
+		input.select();
+		const t = document.execCommand('copy');
+		document.body.removeChild(input);
+		return t;
+	}
 };
 
 export default Cyteria;
