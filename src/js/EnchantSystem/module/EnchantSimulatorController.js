@@ -127,7 +127,7 @@ export default class EnchantSimulatorController {
                         estat.add(-1);
                         break;
                     case '>>':
-                        estat.set(estat.itemBase.getLimit(estat.statType())[0] - estat.belongEquipment().stat(estat.itemBase, estat.statType()).statValue());
+                        estat.set(estat.itemBase.getLimit(estat.statType())[0] - Math.min(estat.getPreviousStepStatValue(), 0));
                         break;
                 }
                 ctrr.updateCurrentEquipmentScope();
@@ -359,7 +359,7 @@ export default class EnchantSimulatorController {
             }
             else {
                 const a = p.stepStats[0];
-                res += '每次附' + a.show(p.stepValue) + '，直到' + a.showCurrent();
+                res += '每次附' + a.show(p.stepValue()) + '，直到' + a.showCurrent();
             }
             res += '｜' + eq.currentPotential(p.index() + 1) + 'pt';
         });
@@ -388,7 +388,7 @@ export default class EnchantSimulatorController {
             }
             else {
                 const a = p.stepStats[0];
-                res += '每次附' + a.show(p.stepValue) + '，直到' + a.showCurrent();
+                res += '每次附' + a.show(p.stepValue()) + '，直到' + a.showCurrent();
             }
             res += '｜' + eq.currentPotential(p.index() + 1) + 'pt';
         });
@@ -445,7 +445,7 @@ export default class EnchantSimulatorController {
         scope.querySelector('.type-each-set-scope').classList[tn == 0 ? 'add' : 'remove']('hidden');
         scope.querySelector('.step-type-text').innerHTML = Lang('step type')[tn];
 
-        scope.querySelector('.step-value').innerHTML = step.stepValue;
+        scope.querySelector('.step-value').innerHTML = step.stepValue();
 
         scope.querySelector('.top .title').innerHTML = Lang('step title') + " " + (step_index + 1);
         scope.querySelectorAll('.step-stats > .' + this.scopeClassName['stat']).forEach((p, i) => {

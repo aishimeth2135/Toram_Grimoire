@@ -55,7 +55,7 @@ class EnchantCategory {
 
 
 class EnchantItemBase {
-    constructor(cat, baseName, cl, ml, sv, mt, cm, mm){
+    constructor(cat, baseName, cl, ml, uv, mt, cm, mm){
         this.category = cat;
         this.statBase = Grimoire.CharacterSystem.findStatBase(baseName);
         this.conditionalAttributes = [];
@@ -63,7 +63,7 @@ class EnchantItemBase {
             [StatBase.TYPE_CONSTANT]: cl,
             [StatBase.TYPE_MULTIPLIER]: ml
         };
-        this.stepValue = sv || 1;
+        this.unitValue = uv || 1;
         this.materialPointType = mt;
         this.materialPointValue = {
             [StatBase.TYPE_CONSTANT]: cm,
@@ -299,7 +299,7 @@ class EnchantStep {
         this.parent = parent;
         this.stepStats = [];
         this.type = EnchantStep.TYPE_NORMAL;
-        this.stepValue = 1;
+        this.step = 1;
     }
     appendStat(){
         if ( !this.parent.checkStats() )
@@ -311,18 +311,29 @@ class EnchantStep {
     setType(type){
         this.type = type;
     }
-    setStepValue(v){
-        this.stepValue = v;
+    addStepValue(v){
+        let t = this.stepValue() + v;
+        if ( t == 0 )
+            t = v > 0 ? t + 1 : t - 1;
+        return this.stepValue(t);
+    }
+    stepValue(v){
+        if ( v !== void 0 )
+            this.step = v;
+        return this.step;
     }
     getPotentialCost(){
         if ( this.stepStats.length == 0 )
             return 0;
         switch (this.type){
             case EnchantStep.TYPE_NORMAL:
-                return Math.floor(this.stepStats.reduce((a, b) => a + b.getPotentialCost(), 0));
+                return this.potentialCostToInteger(this.stepStats.reduce((a, b) => a + b.getPotentialCost(), 0));
             case EnchantStep.TYPE_EACH:
                 return this.stepStats[0].getPotentialCost();
         }
+    }
+    potentialCostToInteger(p){
+        return p > 0 ? Math.floor(p) : Math.ceil(p);
     }
     index(){
         return this.parent.steps.indexOf(this);
@@ -351,7 +362,7 @@ class EnchantStat {
         return this.stat.baseName();
     }
     show(v){
-        const sv = this.itemBase.stepValue;
+        const sv = this.itemBase.unitValue;
         return sv == 1 ? (v == void 0 ? this.stat.show() : this.stat.show({}, v)) : this.stat.show({}, v == void 0 ? this.stat.statValue()*sv : v*sv);
     }
     statType(){
@@ -387,22 +398,20 @@ class EnchantStepStat extends EnchantStat {
     }
     /**
      * Get the sum of potential cost of this EnchantStat
-     * @param  {EnchantStat[]}    cur_stats All current EnchantStat of Equipment
-     * @param  {Integer?} step    when type="each", how much it is each time
-     * @return {Inteter}
+     * @return {Float}
      */
     getPotentialCost(){
         if ( this.parent.type == EnchantStep.TYPE_NORMAL )
             return this.calcPotentialCost(this.stat.value);
         else {
-            let step = this.parent.stepValue;
+            let sv = this.parent.stepValue() || 1;
             const v = this.stat.value;
             let res = 0, cur = 0;
             while ( cur != v ){
-                if ( cur + step > v )
-                    step = v - cur;
-                cur += step;
-                res += Math.floor(this.calcPotentialCost(step));
+                if ( (sv > 0 && cur + sv > v) || (sv < 0 && cur + sv < v) )
+                    sv = v - cur;
+                cur += sv;
+                res += this.parent.potentialCostToInteger(this.calcPotentialCost(sv));
             }
             return res;
         }
