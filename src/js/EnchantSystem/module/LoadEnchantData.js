@@ -9,11 +9,12 @@ export default function LoadEnchantData(r, c){
         CONSTANT_LIMIT = 3,
         MULTIPLIER_POTENTIAL = 4,
         MULTIPLIER_LIMIT = 5,
-        UNIT_VALUE = 6,
-        MATERIAL_POINT_TYPE = 7,
+        CONSTANT_UNIT_VALUE = 6,
+        MULTIPLIER_UNIT_VALUE = 7,
+        MATERIAL_POINT_TYPE = 8,
         MATERIAL_POINT_TYPE_LIST = ['金屬' ,'獸品', '木材', '布料','藥品', '魔素'],
-        MATERIAL_POINT_CONSTANT_VALUE = 8,
-        MATERIAL_POINT_MULTIPLIER_VALUE = 9,
+        MATERIAL_POINT_CONSTANT_VALUE = 9,
+        MATERIAL_POINT_MULTIPLIER_VALUE = 10,
         CHECK = 1,
         CATEGORY_TITLE = 2;
 
@@ -58,7 +59,8 @@ export default function LoadEnchantData(r, c){
                 p[STAT_ID],
                 processLimit(p[CONSTANT_LIMIT]),
                 processLimit(p[MULTIPLIER_LIMIT]),
-                parseInt(p[UNIT_VALUE]),
+                parseInt(p[CONSTANT_UNIT_VALUE]),
+                parseInt(p[MULTIPLIER_UNIT_VALUE]),
                 MATERIAL_POINT_TYPE_LIST.indexOf(p[MATERIAL_POINT_TYPE]),
                 p[MATERIAL_POINT_CONSTANT_VALUE],
                 p[MATERIAL_POINT_MULTIPLIER_VALUE]

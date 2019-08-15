@@ -265,7 +265,7 @@ export default class EnchantSimulatorController {
 
             const eq = ctrr.currentEquipment();
             if ( !eq.checkStatsNumber() ){
-                ShowMessage(Lang('Warn/Number of Equipment Item Exceeding the maximum'));
+                ShowMessage(Lang('Warn/Number of Equipment Item exceeding the maximum'));
                 return;
             }
 
