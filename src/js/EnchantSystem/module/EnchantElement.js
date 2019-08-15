@@ -56,7 +56,7 @@ class EnchantCategory {
 
 
 class EnchantItemBase {
-    constructor(cat, baseName, cl, ml, uv, mt, cm, mm){
+    constructor(cat, baseName, cl, ml, cuv, muv, mt, cm, mm){
         this.category = cat;
         this.statBase = Grimoire.CharacterSystem.findStatBase(baseName);
         this.conditionalAttributes = [];
@@ -64,7 +64,10 @@ class EnchantItemBase {
             [StatBase.TYPE_CONSTANT]: cl,
             [StatBase.TYPE_MULTIPLIER]: ml
         };
-        this.unitValue = uv || 1;
+        this.unitValue = {
+            [StatBase.TYPE_CONSTANT]: cuv || 1,
+            [StatBase.TYPE_MULTIPLIER]: muv || 1
+        };
         this.materialPointType = mt;
         this.materialPointValue = {
             [StatBase.TYPE_CONSTANT]: cm,
@@ -111,6 +114,9 @@ class EnchantItemBase {
             Math.floor(Status.Character.level/10)
         );
         return t === '' ? [l, -1*l] : t;
+    }
+    getUnitValue(type){
+        return this.unitValue[type];
     }
     getMaterialPointType(){
         return this.materialPointType;
@@ -394,7 +400,7 @@ class EnchantStat {
         return this.stat.baseName();
     }
     show(v){
-        const sv = this.itemBase.unitValue;
+        const sv = this.itemBase.getUnitValue(this.statType());
         return sv == 1 ? (v == void 0 ? this.stat.show() : this.stat.show({}, v)) : this.stat.show({}, v == void 0 ? this.stat.statValue()*sv : v*sv);
     }
     statType(){
