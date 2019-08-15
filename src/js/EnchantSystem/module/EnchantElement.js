@@ -12,7 +12,8 @@ function InitEnchantElementStatus(set){
             tec: 255    
         },
         ItemPotentialLimit: 70,
-        EquipmentItemMaximumNumber: 6
+        EquipmentItemMaximumNumber: 6,
+        EquipmentBasePotentialMiniMum: 15
     }, set);
     Object.assign(Status, set);
 }
@@ -149,6 +150,7 @@ class EnchantEquipment {
     constructor(){
         this.steps = [];
         this.status = {
+            basePotential: Status.EquipmentBasePotentialMiniMum,
             originalPotential: 1,
             fieldType: 0, // 0: Main Weapon, 1: Body Armor
             isOriginalElement: false
@@ -166,14 +168,34 @@ class EnchantEquipment {
         return this.status.originalPotential;
     }
     addOriginalPotential(v){
-        this.originalPotential(this.status.originalPotential + v);
+        this.originalPotential(this.originalPotential() + v);
+    }
+    basePotential(v){
+        if ( v !== void 0 ){
+            if ( v < Status.EquipmentBasePotentialMiniMum || typeof v != 'number' )
+                v = Status.EquipmentBasePotentialMiniMum;
+            this.status.basePotential = v;
+        }
+        return this.status.basePotential;
+    }
+    addBasePotential(v){
+        return this.basePotential(this.basePotential() + v);
     }
     currentPotential(step_index){
-        if ( step_index === void 0 )
-            step_index = this.steps.length;
-        let res = this.status.originalPotential;
+        step_index = this.checkStepIndex(step_index);
+        let res = this.originalPotential();
         this.steps.slice(0, step_index).forEach(p => res -= p.getPotentialCost());
         return res;
+    }
+    checkStepIndex(i){
+        const l = this.steps.length;
+        if ( i === void 0 )
+            i = l;
+        if ( i < 0 )
+            i = l + i;
+        if ( i < 0 )
+            i = 0;
+        return i;
     }
     appendStep(){
         const step = new EnchantStep(this);
@@ -184,8 +206,7 @@ class EnchantEquipment {
         return this.steps[i];
     }
     stat(itemBase, type, step_index){
-        if ( step_index === void 0 )
-            step_index = this.steps.length;
+        step_index = this.checkStepIndex(step_index);
         let v = 0;
         this.steps.slice(0, step_index).forEach(p => {
             const t = p.stat(itemBase, type);
@@ -195,8 +216,7 @@ class EnchantEquipment {
         return new EnchantStat(itemBase, type, v);
     }
     currentStats(step_index){
-        if ( step_index === void 0 )
-            step_index = this.steps.length;
+        step_index = this.checkStepIndex(step_index);
         const stats = [];
         function find(t){
             return stats.find(a => a.baseName() == t.baseName() && a.statType() == t.statType());
@@ -215,12 +235,13 @@ class EnchantEquipment {
         });
         return stats;
     }
-    currentStatsNumber(){
+    currentStatsNumber(step_index){
+        step_index = this.checkStepIndex(step_index);
         const stats = [];
         function find(t){
             return stats.find(a => a.baseName() == t.baseName() && a.statType() == t.statType());
         }
-        this.steps.forEach(p => {
+        this.steps.slice(0, step_index).forEach(p => {
             p.stepStats.forEach(a => {
                 if ( !a.valid() )
                     return;
@@ -234,8 +255,18 @@ class EnchantEquipment {
     checkStats(){
         return this.checkStatsNumber();
     }
-    checkStatsNumber(){
-        return this.currentStatsNumber() < Status.EquipmentItemMaximumNumber;
+    checkStatsNumber(step_index){
+        return this.currentStatsNumber(step_index) < Status.EquipmentItemMaximumNumber;
+    }
+    checkCurrentPotential(){
+        return this.currentPotential() > 0;
+    }
+    checkStepsPotentialCost(){
+        let res = this.originalPotential();
+        return !this.steps.slice(0, -1).find(p => {
+            res -= p.getPotentialCost();
+            return res < 1;
+        });
     }
     getPotentialAdditionalRate(step_index){
         const stats = this.currentStats(step_index);
@@ -254,8 +285,9 @@ class EnchantEquipment {
     }
     successRate(){
         const pot = this.currentPotential();
-        if ( !this.checkStats() || pot < 1 )
-            return Math.max(130 + pot*230/this.currentPotential(this.steps.length - 1), 0);
+        const d = Math.max(this.currentPotential(-1), this.basePotential());
+        if ( !this.checkStats() || !this.checkCurrentPotential() )
+            return Math.max(130 + pot*230/d, 0);
         return -1;
     }
     refreshStats(){

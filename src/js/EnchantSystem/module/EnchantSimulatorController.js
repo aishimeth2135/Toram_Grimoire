@@ -1,4 +1,4 @@
-import {EnchantEquipment, EnchantStep,InitEnchantElementStatus, EnchantElementStatus} from "./EnchantElement.js";
+import {EnchantEquipment, EnchantStep, InitEnchantElementStatus, EnchantElementStatus} from "./EnchantElement.js";
 import CY from "../../main/module/cyteria.js";
 import GetLang from "../../main/module/LanguageSystem.js";
 import Icons from "../../main/module/SvgIcons.js";
@@ -41,12 +41,15 @@ export default class EnchantSimulatorController {
 
                 switch ( this.getAttribute('data-ctr') ){
                     case '+':
-                        v = EnchantElementStatus('Character/level', v + 10);
+                        v = v + 10;
                         break;
                     case '-':
-                        v = EnchantElementStatus('Character/level', v - 10);
+                        v = v - 10;
                         break;
                 }
+                if ( v > ctrr.status.character.levelLimit || v < 10 )
+                    return;
+                v = EnchantElementStatus('Character/level', v);
                 this.parentNode.querySelector('.character-level').innerHTML = v;
 
                 ctrr.equipments.forEach(eq => eq.refreshStats());
@@ -94,12 +97,34 @@ export default class EnchantSimulatorController {
                 eq.originalPotential(parseInt(this.value));
                 ctrr.updateCurrentEquipmentScope();
             },
+            setEquipmentBasePotential(e){
+                const eq = ctrr.currentEquipment();
+
+                switch ( this.getAttribute('data-ctr') ){
+                    case '+':
+                        eq.addBasePotential(1);
+                        break;
+                    case '-':
+                        eq.addBasePotential(-1);
+                        break;
+                }
+                ctrr.updateCurrentEquipmentScope();
+            },
+            inputEquipmentBasePotential(e){
+                const eq = ctrr.currentEquipment();
+                eq.basePotential(parseInt(this.value));
+                ctrr.updateCurrentEquipmentScope();
+            },
             createStep(e){
                 const t = ctrr.currentEquipment();
                 if ( !t )
                     return;
                 if ( !t.checkStatsNumber() ){
-                    ShowMessage(Lang('Warn/Number of Equipment Item Exceeding the maximum'));
+                    ShowMessage(Lang('Warn/Number of Equipment Item exceeding the maximum'));
+                    return;
+                }
+                if ( !t.checkCurrentPotential() ){
+                    ShowMessage(Lang('Warn/Potential of Equipment has been less than 1'))
                     return;
                 }
                 const step = t.appendStep();
@@ -346,6 +371,7 @@ export default class EnchantSimulatorController {
 
         const mats_text = Lang('Material Point Type List');
         res += Lang('Original Potential') + " " + eq.originalPotential()
+            + (eq.basePotential() != EnchantElementStatus('EquipmentBasePotentialMiniMum') ? ('｜' + Lang('Base Potential') + " " + eq.basePotential()) : '')
             + eq.getAllMaterialPointCost().reduce((a, b, i) => a + (b != 0 ? `｜${mats_text[i]} ${b}` : ''), '')
             + '\n\n';
         
@@ -375,6 +401,7 @@ export default class EnchantSimulatorController {
 
         const mats_text = Lang('Material Point Type List');
         res += Lang('Original Potential') + " " + eq.originalPotential()
+            + (eq.basePotential() != EnchantElementStatus('EquipmentBasePotentialMiniMum') ? ('｜' + Lang('Base Potential') + " " + eq.basePotential()) : '')
             + eq.getAllMaterialPointCost().reduce((a, b, i) => a + (b != 0 ? `｜${mats_text[i]} ${b}` : ''), '')
             + '<p>';
         
@@ -416,11 +443,16 @@ export default class EnchantSimulatorController {
         });
 
         scope.querySelector('.original-potential').value = eq.originalPotential();
+        scope.querySelector('.base-potential').value = eq.basePotential();
+
+        const checkStepsPt = eq.checkStepsPotentialCost();
+        if ( !checkStepsPt )
+            ShowMessage(Lang('Warn/Potential of Step is less than 1'));
 
         const sr = eq.successRate();
         const sr_scope = scope.querySelector('.success-rate-scope');
         const res_scope = scope.querySelector('.show-result-scope');
-        if ( sr != -1 ){
+        if ( sr != -1 && checkStepsPt ){
             sr_scope.querySelector('.success-rate').innerHTML = Math.floor(sr) + '%';
             const res = res_scope.querySelector('.show-result-content');
             CY.element.removeAllChild(res);
@@ -452,7 +484,11 @@ export default class EnchantSimulatorController {
             this.updateEnchantStatScope(p, step.stepStats[i]);
         });
 
-        scope.querySelector('.step-potential').innerHTML = step.parent.currentPotential(step.index() + 1);
+        const eq = step.parent;
+
+        const stepPt = eq.currentPotential(step.index() + 1);
+        scope.querySelector('.step-potential').innerHTML = stepPt;
+        scope.classList[(stepPt < 1 || !eq.checkStatsNumber(step.index())) ? 'add' : 'remove']('warn');
     }
     updateEnchantStatScope(scope, estat){
         if ( !estat.valid() )
@@ -521,6 +557,24 @@ export default class EnchantSimulatorController {
             set_orig_pot.appendChild(right);
         }
 
+        const set_base_pot = simpleCreateHTML('div', 'set-base-potential');
+        {
+            const left =  CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'), {'data-ctr': '-'});
+            left.addEventListener('click', this.listeners.setEquipmentBasePotential);
+            const right = CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('add'), {'data-ctr': '+'});
+            right.addEventListener('click', this.listeners.setEquipmentBasePotential);
+            const mid = CY.element.simpleCreateHTML('input', ['Cyteria', 'input', 'between-button', 'base-potential']);
+            mid.addEventListener('change', this.listeners.inputEquipmentBasePotential);
+            mid.addEventListener('click', this.listeners.inputClickSelect);
+            mid.type = 'number';
+
+            set_base_pot.appendChild(simpleCreateHTML('span', ['text-pretext', 'text-small', 'light'], Lang('Base Potential')));
+            set_base_pot.appendChild(left);
+            set_base_pot.appendChild(mid);
+            set_base_pot.appendChild(right);
+            set_base_pot.appendChild(simpleCreateHTML('span', ['Cyteria', 'text', 'tips'], Lang('tips/Base Potential')));
+        }
+
         const steps = simpleCreateHTML('div', 'steps');
 
         const create_step_btn = simpleCreateHTML('div', 'create-step');
@@ -545,6 +599,7 @@ export default class EnchantSimulatorController {
 
         r.appendChild(field_menu);
         r.appendChild(set_orig_pot);
+        r.appendChild(set_base_pot);
         r.appendChild(steps);
         r.appendChild(show_res_scope);
         r.appendChild(successRate);
