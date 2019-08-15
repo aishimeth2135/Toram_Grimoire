@@ -23,7 +23,8 @@ ul.equipments-list {
 }
 
 
-.enchant-equipment > .set-original-potential {
+.enchant-equipment > .set-original-potential,
+.enchant-equipment > .set-base-potential {
     margin-bottom: 1rem;
     padding: 0 0.6rem;
 }
@@ -85,6 +86,9 @@ ul.equipments-list {
     padding: 0.8rem;
     width: 20rem;
     margin: 0.4rem;
+}
+.step-scope.warn {
+    border-color: var(--primary-water-blue);
 }
 .step-scope > .top {
     margin-bottom: 0.3rem;
