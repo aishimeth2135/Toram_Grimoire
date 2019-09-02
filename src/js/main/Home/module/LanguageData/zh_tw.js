@@ -27,6 +27,12 @@ const zh_tw = {
             'content-2': '查看每個步驟的潛力消耗、素材消耗。',
             'content-3': '查看成功率與總素材耗量。'
         },
+        'Damage Calculation': {
+            'Title': '簡易傷害計算器',
+            'content-1': '自行輸入各數值，以計算傷害。',
+            'content-2': '可儲存或分享輸入完畢的數據。',
+            'content-3': '簡單的比較功能，可比較各配置的傷害高低。'
+        },
         'About': {
             'Donate Group': '贊助公會',
             'Author': '作者',

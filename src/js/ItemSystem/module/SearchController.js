@@ -243,7 +243,7 @@ export default class SearchController {
                                 }
                             );
                             stat.addEventListener('click', toggle_select_listener);
-                            stat.appendChild(simpleCreateHTML('span', 'text', b == 0 ? a.text : a.text + '%'));
+                            stat.appendChild(simpleCreateHTML('span', 'text', a.title(b == 0 ? StatBase.TYPE_CONSTANT : StatBase.TYPE_MULTIPLIER)));
                             const toggle_sort_btn = simpleCreateHTML('span', ['icon', 'sort'], Icons('arrow-down'));
                             toggle_sort_btn.addEventListener('click', switch_sort);
                             stat.appendChild(toggle_sort_btn);
@@ -421,7 +421,7 @@ export default class SearchController {
                 ctrr.nodes.detail.classList.add('hidden');
             });
 
-            const unfold = simpleCreateHTML('span', ['button', 'right'], Icons('arrow-left'));
+            const unfold = simpleCreateHTML('span', ['button', 'right'], Icons('unfold-more'));
             unfold.addEventListener('click', function(e){
                 detail.classList.toggle('unfold');
                 detail.classList.toggle('h60');

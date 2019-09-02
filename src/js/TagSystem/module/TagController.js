@@ -1,9 +1,5 @@
 import CY from "../../main/module/cyteria.js";
-import GetLang from "../../main/module/LanguageSystem.js";
-
-function Lang(s){
-    return GetLang("Tag System/" + s);
-}
+import Icons from "../../main/module/SvgIcons.js";
 
 
 export default class TagController {
@@ -31,7 +27,7 @@ export default class TagController {
 
         const top = simpleCreateHTML('div', 'top');
 
-        const pre_btn = simpleCreateHTML('span', 'button', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M14.71 15.88L10.83 12l3.88-3.88c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L8.71 11.3c-.39.39-.39 1.02 0 1.41l4.59 4.59c.39.39 1.02.39 1.41 0 .38-.39.39-1.03 0-1.42z"/></svg>');
+        const pre_btn = simpleCreateHTML('span', 'button', Icons('arrow-left'));
         pre_btn.addEventListener('click', function(e){
             const rs = ctrr.status.readRecords;
             if ( rs.length === 0 )
@@ -43,7 +39,7 @@ export default class TagController {
 
         const name = simpleCreateHTML('span', 'name');
 
-        const close = simpleCreateHTML('span', ['button', 'right'], '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/></svg>');
+        const close = simpleCreateHTML('span', ['button', 'right'], Icons('close'));
         close.addEventListener('click', function(e){
             ctrr.nodes.main.classList.add('hidden');
         });

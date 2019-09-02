@@ -30,7 +30,7 @@ const zh_tw = {
             'action time': '動作時間',
             'casting time': '詠唱時間',
             'charging time': '蓄力時間',
-            'skill type: List': ['瞬發', '須詠唱', '須蓄力', '被動'],
+            'skill type: List': ['瞬發', '須詠唱', '須蓄力', '被動', 'EX技能'],
             'damage type: List': ['物理', '魔法'],
             'poration type: List': ['物理', '魔法', '一般攻擊'],
             'in combo: List': ['可以放入連擊', '無法放入連擊', '不可放入連擊的第一招'],

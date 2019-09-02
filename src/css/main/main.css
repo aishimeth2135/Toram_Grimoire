@@ -168,7 +168,7 @@ nav > ul > li > a::after {
 
 #show-message {
 	position: fixed;
-	top: 6rem;
+	top: 3rem;
 	max-width: 20rem;
 	margin: 0 auto;
 	left: 0;

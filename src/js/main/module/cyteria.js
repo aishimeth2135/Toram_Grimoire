@@ -163,6 +163,43 @@ let Cyteria = {
 			return rg;
 		}
 	},
+	csv: {
+		saveFile(csv_str, file_name){
+			const blob = new Blob([csv_str], { type: 'text/csv;charset=utf-8;' });
+	        const link = document.createElement("a");
+
+	        const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', file_name + '.csv');
+            link.classList.add('hidden');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        },
+        loadFile(onload_fun, wrong_file_type_fun){
+        	const input = document.createElement('input');
+        	input.type = 'file';
+        	input.addEventListener('change', function(e){
+        		document.body.removeChild(input);
+        		const file = this.files[0];
+        		const type = file.name.split('.').slice(-1);
+        		if ( type != 'csv' ){
+        			if ( typeof wrong_file_type_fun == 'function' )
+        				wrong_file_type_fun();
+        			return;
+        		}
+        		const fr = new FileReader();
+        		fr.onload = function(e){
+        			onload_fun(this.result);
+        		};
+        		fr.readAsText(file);
+        	});
+
+        	input.classList.add('hidden');
+        	document.body.appendChild(input);
+        	input.click();
+        }
+	},
 	copyToClipboard(s){
 		const input = document.createElement('textarea');
 		input.value = s;
@@ -171,6 +208,30 @@ let Cyteria = {
 		const t = document.execCommand('copy');
 		document.body.removeChild(input);
 		return t;
+	},
+	storageAvailable(type){
+		//copy from: https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
+	    const storage = window[type];;
+	    try {
+	        var x = '__storage_test__';
+	        storage.setItem(x, x);
+	        storage.removeItem(x);
+	        return true;
+	    }
+	    catch(e) {
+	        return e instanceof DOMException && (
+	            // everything except Firefox
+	            e.code === 22 ||
+	            // Firefox
+	            e.code === 1014 ||
+	            // test name field too, because code might not be present
+	            // everything except Firefox
+	            e.name === 'QuotaExceededError' ||
+	            // Firefox
+	            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+	            // acknowledge QuotaExceededError only if there's something already stored
+	            (storage && storage.length !== 0);
+	    }
 	}
 };
 
