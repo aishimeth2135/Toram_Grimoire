@@ -17,6 +17,18 @@ class StatBase {
 			this.attributes[n] = v;
 		return this;
 	}
+	title(type){
+		if ( type == StatBase.TYPE_CONSTANT )
+			return this.hasMultiplier
+				? this.text
+				: this.text + (
+					(this.attributes['constant_formula'] && this.attributes['constant_formula'].includes('$u')) || !this.attributes['constant_formula']
+						? '%'
+						: ''
+				);
+		if ( type == StatBase.TYPE_MULTIPLIER )
+			return this.text + '%';
+	}
 	show(type, v, config){
 		config = Object.assign({
 			processPositiveValue: null,
@@ -121,6 +133,9 @@ class SimpleStat {
 	}
 	baseName(){
 		return this.base.baseName;
+	}
+	title(){
+		return this.base.title(this.type);
 	}
 }
 

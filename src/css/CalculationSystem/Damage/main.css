@@ -1,0 +1,229 @@
+.CalculationSystem-Damage.window {
+    width: 40rem;
+}
+@media screen and (max-width: 41rem) {
+    .CalculationSystem-Damage.window {
+        width: calc(100% - 1rem);
+    }
+}
+
+span.for-adjust-input-width {
+    position: absolute;
+    height: 0;
+    white-space: pre;
+    overflow: hidden;
+}
+
+.CalculationSystem-Damage .calculation-select {
+    padding: 0.3rem 0.4rem;
+    margin: 0;
+}
+.CalculationSystem-Damage .calculation-select > li {
+    max-width: 6rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.CalculationSystem-Damage > .save-load-scope > .content > .scope {
+    margin-bottom: 0.5rem;
+    border-left: 3px solid var(--primary-light-4);
+    transition: 0.3s;
+    cursor: pointer;
+    padding: 0.4rem 0.8rem;
+}
+.CalculationSystem-Damage > .save-load-scope > .content > .scope:hover {
+    border-left-color: var(--primary-light-3);
+}
+.CalculationSystem-Damage > .save-load-scope > .content > .scope .no-data {
+    text-align: center;
+    padding: 0.6rem;
+    color: var(--primary-light-4);
+}
+.CalculationSystem-Damage > .save-load-scope > .content > .tips {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+.CalculationSystem-Damage > .save-load-scope > .content > .tips:not(.hidden) {
+    animation: roll-down 0.5s ease;
+}
+@keyframes roll-down {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: none;
+    }
+}
+
+.CalculationSystem-Damage > .detail-scope {
+    padding: 1rem 0.6rem;
+    border-top: 1px solid var(--primary-light);
+    position: sticky;
+    background-color: #FFF;
+    bottom: 0;
+}
+.CalculationSystem-Damage .damage-result-scope > .scope {
+    margin-right: 1.2rem;
+    display: inline-block;
+}
+.CalculationSystem-Damage .damage-result-scope > .scope > .comparative-damage {
+    color: var(--primary-purple);
+}
+.CalculationSystem-Damage .damage-result-scope > .scope > .comparative-result {
+    color: var(--primary-light-3);
+}
+.CalculationSystem-Damage .damage-result-scope > .scope > .comparative-result-icon {
+    margin-right: 0.1rem;
+}
+.CalculationSystem-Damage .damage-result-scope > .scope > .down {
+    color: var(--primary-water-blue);
+}
+.CalculationSystem-Damage .damage-result-scope > .scope > .down > svg {
+    fill: var(--primary-water-blue);
+}
+
+.CalculationSystem-Damage .calculation > .calculation-top-scope {
+    padding: 0.6rem;
+}
+
+.CalculationSystem-Damage .calculation-menu {
+    display: inline-block;
+    margin-top: 0.6rem;
+    margin-left: 0.6rem;
+}
+
+.CalculationSystem-Damage .calculation-name {
+    position: relative;
+    display: inline-block;
+}
+.CalculationSystem-Damage .calculation-name > .icon {
+    left: 0.4rem;
+    top: 0.4rem;
+    position: absolute;
+}
+.CalculationSystem-Damage .calculation-name > .icon > svg {
+    fill: var(--primary-light);
+}
+.CalculationSystem-Damage .calculation-name > input {
+    padding: 0.5rem;
+    border: 0;
+    border-bottom: 1px solid var(--primary-light);
+    transition: 0.3s;
+    font-size: 1rem;
+    width: 20rem;
+    padding-left: 2.4rem;
+    display: flex;
+}
+.CalculationSystem-Damage .calculation-name > input:focus {
+    border-bottom-color: var(--primary-light-2);
+}
+
+.CalculationSystem-Damage .calculation > .sets {
+    padding: 1rem 0.6rem;
+}
+.CalculationSystem-Damage .calculation > .sets > .set-scope {
+    display: inline-block;
+    margin: 0.2rem 0.3rem;
+    border-bottom: 1px solid var(--primary-light-3);
+    padding: 0.2rem 0.3rem;
+}
+.CalculationSystem-Damage .calculation > .sets > .set-scope > .text {
+    margin-right: 0.6rem;
+}
+.CalculationSystem-Damage .calculation > .sets > .set-scope > input {
+    width: 3rem;
+    border: 0;
+    text-align: center;
+}
+
+.CalculationSystem-Damage .containers {
+    padding: 0 0.4rem;
+}
+.CalculationSystem-Damage .item-container {
+    margin-bottom: 0.6rem;
+}
+.CalculationSystem-Damage .item-container > .title-scope {
+    padding: 0.2rem 0;
+}
+.CalculationSystem-Damage .item-container > .title-scope > .title {
+    font-size: 0.9rem;
+    color: var(--primary-light-3);
+    vertical-align: middle;
+    transition: 0.3s;
+    border-bottom: 1px solid transparent;
+    padding: 0.2rem 0;
+}
+.CalculationSystem-Damage .item-container > .title-scope > .title.clickable {
+    cursor: pointer;
+}
+.CalculationSystem-Damage .item-container > .title-scope > .title.clickable:hover {
+    border-bottom-color: var(--primary-light-3);
+    color: var(--primary-light-3);
+}
+.CalculationSystem-Damage .item-container.invalid > .title-scope > .title {
+    color: var(--primary-light-4);
+    transition: 0.3s;
+}
+
+.CalculationSystem-Damage .item-container > .items {
+    padding: 0 0.4rem;
+}
+.CalculationSystem-Damage .calc-item {
+    margin: 0.3rem;
+    display: inline-block;
+    position: relative;
+}
+.CalculationSystem-Damage .calc-item.clickable {
+    cursor: pointer;
+}
+.CalculationSystem-Damage .item-container.invalid > .items > .calc-item {
+    opacity: 0.6;
+}
+.CalculationSystem-Damage .calc-item.invalid > .item-text {
+    color: var(--primary-light-4);
+}
+.CalculationSystem-Damage .calc-item > .item-text {
+    position: absolute;
+    line-height: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0.5rem;
+    color: var(--primary-purple);
+    transition: 0.3s;
+}
+.CalculationSystem-Damage .calc-item > input {
+    box-sizing: content-box;
+    padding: 0.3rem 0.5rem;
+    padding-right: 0.8rem;
+    text-align: right;
+    max-width: 3rem;
+    min-width: 1rem;
+}
+
+.CalculationSystem-Damage .calc-item.text-only > .item-text {
+    line-height: 1.25rem;
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px solid var(--primary-light-3);
+    color: var(--primary-purple);
+    position: static;
+    transform: none;
+}
+.CalculationSystem-Damage .calc-item.text-only.invalid:hover > .item-text {
+    color: var(--primary-purple);
+}
+.CalculationSystem-Damage .calc-item.text-only.invalid > .item-text {
+    border-bottom-color: var(--primary-light-4);
+    color: var(--primary-light-4);
+}
+
+.CalculationSystem-Damage .calc-item > .item-unit {
+    color: var(--primary-light-3);
+    margin-left: 0.1rem;
+    position: absolute;
+    right: 0;
+    line-height: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
