@@ -40,6 +40,9 @@
     padding: 0.3rem;
     margin: 0 0.2rem;
 }
+.Cyteria.Button.icon-only.single-line {
+    padding: 0 0.3rem;
+}
 .Cyteria.Button.icon-only > svg {
     fill: var(--primary-light-4);
     vertical-align: middle;

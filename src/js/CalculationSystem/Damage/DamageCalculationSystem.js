@@ -29,6 +29,12 @@ export default class DamageCalculationSystem {
             .initDefaultValue(1000);
         p0('matk')
             .initDefaultValue(1000);
+        p0('character_level')
+            .initRange(1, 200)
+            .initDefaultValue(100);
+        p0('target_level')
+            .initRange(1, 500)
+            .initDefaultValue(100);
         p0('target_def');
         p0('target_mdef');
         p0('physical_pierce', '%');
@@ -40,6 +46,7 @@ export default class DamageCalculationSystem {
         p0('skill_constant_agi', '%');
         p0('skill_constant_int', '%');
         p0('skill_constant_vit', '%');
+        p0('dagger_atk');
         p0('other_constant');
 
         p1('skill_multiplier')
@@ -54,7 +61,7 @@ export default class DamageCalculationSystem {
             .initRange(0)
             .initDefaultValue(150);
         p1('critical_rate')
-            .initRange(0, 100)
+            .initRange(0, 400)
             .initDefaultValue(25);
         p1('short_range_damage');
         p1('long_range_damage');
@@ -96,6 +103,9 @@ export default class DamageCalculationSystem {
             .initRange(null, 99);
         p1('target_magic_resistance')
             .initRange(null, 99);
+        p1('combo_multiplier')
+            .initRange(10, 150)
+            .initDefaultValue(100);
         p1('other_multiplier')
             .initDefaultValue(100);
         p1('stability')
