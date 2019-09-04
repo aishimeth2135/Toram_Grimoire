@@ -24,7 +24,6 @@ export default class DamageCalculationController {
             main: null,
             calculationSelect: null,
             calculations: null,
-            detail: null,
             spanForAdjustWidth: null
         };
 
@@ -172,10 +171,7 @@ export default class DamageCalculationController {
                     case 'agi':
                     case 'int':
                     case 'vit':
-                        if ( v < 0 )
-                            v = 0;
-                        if ( v > 255 )
-                            v = 255;
+                        v = CY.number.between(v, 0, 999);
                         break;
                 }
                 ctrr.currentCalculation().userSet(t, v);
@@ -285,6 +281,15 @@ export default class DamageCalculationController {
                             return (100 + v)/100;
                     }
                 },
+                levelDifference: function(){
+                    return this.getItem('character_level').itemValue() - this.getItem('target_level').itemValue();
+                },
+                otherConstant: function(){
+                    return this.item().reduce((a, b) => a + b.itemValue(), 0);
+                },
+                otherMultiplier: function(){
+                    return this.item().reduce((a, b) => a * b.itemValue() / 100, 1);
+                },
                 defenseCalc: function(){
                     const v = this.calculatedValue();
                     const p = this.belongCalculation().findContainer('physical_pierce').value();
@@ -309,8 +314,14 @@ export default class DamageCalculationController {
                     const dmg = this.getItem('critical_damage');
                     const d = dmg.itemValue();
                     if ( rate.isValid() ){
-                        const r = rate.itemValue();
-                        return ((100 * (100 - r)) + d * r) / 10000;
+                        if ( this.belongCalculation().findItem('physical_damage').isValid() ){
+                            const r = rate.itemValue();
+                            return ((100 * (100 - r)) + d * r) / 10000;
+                        }
+                        else {
+                            const r = rate.itemValue()/4;
+                            return ((100 * (100 - r)) + ((d - 100) / 2 + 100) * r) / 10000;
+                        }
                     }
                     return d / 100;
                 },
@@ -346,9 +357,9 @@ export default class DamageCalculationController {
         node.appendChild(calculations);
 
         //
-        const detail = simpleCreateHTML('div', 'detail-scope');
+        const detail = document.createDocumentFragment();
         
-        const result = simpleCreateHTML('div', 'damage-result-scope');
+        const result = simpleCreateHTML('div', ['damage', 'result-scope', 'frozen']);
 
         const damage_result_scope = simpleCreateHTML('div', 'scope');
         damage_result_scope.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], Icons('sword') + '<span class="text">' + Lang('Damage') + '</span>'));
@@ -359,7 +370,7 @@ export default class DamageCalculationController {
         cmp_dmg_scope.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], Icons('sword') + '<span class="text">' + Lang('Comparative Damage') + '</span>'));
         cmp_dmg_scope.appendChild(simpleCreateHTML('span', ['comparative-damage', 'vertical-middle', 'space-left'], 0));
 
-        const update_cmp_dmg = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('switch'));
+        const update_cmp_dmg = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'single-line'], Icons('switch'));
         update_cmp_dmg.addEventListener('click', this.listeners.setComparativeDamage);
         cmp_dmg_scope.appendChild(update_cmp_dmg);
 
@@ -370,7 +381,15 @@ export default class DamageCalculationController {
         cmp_res_scope.appendChild(simpleCreateHTML('span', ['comparative-result', 'vertical-middle'], 0));
         result.appendChild(cmp_res_scope);
 
+        const result_2 = simpleCreateHTML('div', 'result-scope');
+
+        const damage_floating_scope = simpleCreateHTML('div', 'scope');
+        damage_floating_scope.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], Icons('sword') + '<span class="text">' + Lang('Damage Floating') + '</span>'));
+        damage_floating_scope.appendChild(simpleCreateHTML('span', ['damage-floating', 'vertical-middle', 'space-left', 'light'], '1~1'));
+        result_2.appendChild(damage_floating_scope);
+
         detail.appendChild(result);
+        detail.appendChild(result_2);
 
         node.appendChild(detail);
 
@@ -418,7 +437,6 @@ export default class DamageCalculationController {
         this.nodes.main = node;
         this.nodes.calculationSelect = calculationSelect;
         this.nodes.calculations = calculations;
-        this.nodes.detail = detail;
 
         this.nodes.menu = menu_scope;
         this.nodes.save_load = sl_scope;
@@ -506,16 +524,17 @@ export default class DamageCalculationController {
         return ctner.getItem(scope.getAttribute('data-id'));
     }
     showResult(){
-        const res = Math.floor(this.currentCalculation().calcResult());
+        const cal = this.currentCalculation();
+        const res = Math.floor(cal.calcResult());
         const cmp = this.status.comparativeDamage;
 
-        const scope = this.nodes.detail;
-        scope.querySelector('.damage-result').innerHTML = res;
-        scope.querySelector('.comparative-damage').innerHTML = cmp;
+        const scope = this.nodes.main;
+        scope.querySelector('.result-scope .damage-result').innerHTML = res;
+        scope.querySelector('.result-scope .comparative-damage').innerHTML = cmp;
 
         //
-        const cmp_res_icon = scope.querySelector('.comparative-result-icon'),
-            cmp_res = scope.querySelector('.comparative-result');
+        const cmp_res_icon = scope.querySelector('.result-scope .comparative-result-icon'),
+            cmp_res = scope.querySelector('.result-scope .comparative-result');
 
         let t = (((res-cmp)/cmp)*100).toFixed(2);
 
@@ -526,6 +545,14 @@ export default class DamageCalculationController {
 
         t = Math.abs(t);
         cmp_res.innerHTML = t > 999 ? '999%+' : t + '%';
+
+        scope.querySelector('.result-scope .damage-floating').innerHTML =
+            Math.floor(cal.calcResult({
+                beforeCalculate: [{container: cal.findContainer('stability'), value: function(){ return this.value()/100; }}]
+            })) +'~' +
+            Math.floor(cal.calcResult({
+                beforeCalculate: [{container: cal.findContainer('stability'), value: 1}]
+            }));
     }
     currentCalculation(t){
         if ( t )
@@ -586,7 +613,7 @@ export default class DamageCalculationController {
             const cat = [
                 CalcItemContainer.CATEGORY_CONSTANT,
                 CalcItemContainer.CATEGORY_MULTIPLIER,
-                CalcItemContainer.CATEGOEY_NONE
+                CalcItemContainer.CATEGORY_NONE
             ][cati];
             const type = [
                 CalcItemContainer.TYPE_NORMAL,
@@ -613,6 +640,8 @@ export default class DamageCalculationController {
         p(0, ['atk', 'matk'], 'atk', 1)
             .link('atk/matk')
             .closeToggle();
+        p(0, ['character_level', 'target_level'], 'level_difference')
+            .setBeforeCalculateFunction(this.functions.calculation.levelDifference);
         p(0, ['target_def', 'target_mdef'], 'target_def', 1)
             .link('atk/matk')
             .setBeforeCalculateFunction(this.functions.calculation.defenseCalc);
@@ -632,7 +661,8 @@ export default class DamageCalculationController {
 
         p(0, 'unsheathe_attack', 'unsheathe_attack_contant')
             .link('unsheathe attack');
-        p(0, 'other_constant', 'other_constant');
+        p(0, ['dagger_atk', 'other_constant'], 'other_constant')
+            .setBeforeCalculateFunction(this.functions.calculation.otherConstant);
 
         p(1, [
             'skill_multiplier',
@@ -679,8 +709,8 @@ export default class DamageCalculationController {
             .setBeforeCalculateFunction(this.functions.calculation.negativeValue);
         p(1, 'stability', 'stability')
             .setBeforeCalculateFunction(this.functions.calculation.stabilityExpectedValue);
-        p(1, 'other_multiplier', 'other_multiplier')
-            .setBeforeCalculateFunction(this.functions.calculation.originalValue);
+        p(1, ['combo_multiplier', 'other_multiplier'], 'other_multiplier')
+            .setBeforeCalculateFunction(this.functions.calculation.otherMultiplier);
 
         this.calculations.push(c);
         c.calculationName(Lang('build') + ' ' + this.calculations.length);
@@ -692,7 +722,12 @@ export default class DamageCalculationController {
 
         function createContainerTitleScope(ctner){
             const t = simpleCreateHTML('div', 'title-scope');
-            t.appendChild(simpleCreateHTML('span', 'title', ctner.containerTitle()));
+            const icon = Icons({
+                [CalcItemContainer.CATEGORY_CONSTANT]: 'add',
+                [CalcItemContainer.CATEGORY_MULTIPLIER]: 'hexagon-multiple',
+                [CalcItemContainer.CATEGORY_NONE]: 'multiple-blank-circle'
+            }[ctner.category]);
+            t.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'title'], icon + '<span class="text">' + ctner.containerTitle() + '</span>'))
             return t;
         }
 

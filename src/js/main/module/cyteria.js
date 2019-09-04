@@ -163,6 +163,24 @@ let Cyteria = {
 			return rg;
 		}
 	},
+	number: {
+		between(v, min, max){
+			if ( typeof min != 'number' || typeof max != 'number' ){
+				console.warn('[arguments: max or min] is not the number.');
+				return v;
+			}
+			if ( max < min ){
+				const t = max;
+				max = min;
+				min = t;
+			}
+			if ( v < min )
+				v = min;
+			if ( v > max )
+				v = max;
+			return v;
+		}
+	},
 	csv: {
 		saveFile(csv_str, file_name){
 			const blob = new Blob([csv_str], { type: 'text/csv;charset=utf-8;' });

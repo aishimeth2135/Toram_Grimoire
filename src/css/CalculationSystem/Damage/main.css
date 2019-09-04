@@ -56,30 +56,36 @@ span.for-adjust-input-width {
     }
 }
 
-.CalculationSystem-Damage > .detail-scope {
+.CalculationSystem-Damage > .calculations {
+    margin-bottom: 1rem;
+}
+
+.CalculationSystem-Damage .result-scope {
     padding: 1rem 0.6rem;
     border-top: 1px solid var(--primary-light);
-    position: sticky;
     background-color: #FFF;
+}
+.CalculationSystem-Damage .result-scope.frozen {
+    position: sticky;
     bottom: 0;
 }
-.CalculationSystem-Damage .damage-result-scope > .scope {
+.CalculationSystem-Damage .damage.result-scope > .scope {
     margin-right: 1.2rem;
     display: inline-block;
 }
-.CalculationSystem-Damage .damage-result-scope > .scope > .comparative-damage {
+.CalculationSystem-Damage .damage.result-scope > .scope > .comparative-damage {
     color: var(--primary-purple);
 }
-.CalculationSystem-Damage .damage-result-scope > .scope > .comparative-result {
+.CalculationSystem-Damage .damage.result-scope > .scope > .comparative-result {
     color: var(--primary-light-3);
 }
-.CalculationSystem-Damage .damage-result-scope > .scope > .comparative-result-icon {
+.CalculationSystem-Damage .damage.result-scope > .scope > .comparative-result-icon {
     margin-right: 0.1rem;
 }
-.CalculationSystem-Damage .damage-result-scope > .scope > .down {
+.CalculationSystem-Damage .damage.result-scope > .scope > .down {
     color: var(--primary-water-blue);
 }
-.CalculationSystem-Damage .damage-result-scope > .scope > .down > svg {
+.CalculationSystem-Damage .damage.result-scope > .scope > .down > svg {
     fill: var(--primary-water-blue);
 }
 
@@ -132,7 +138,7 @@ span.for-adjust-input-width {
     margin-right: 0.6rem;
 }
 .CalculationSystem-Damage .calculation > .sets > .set-scope > input {
-    width: 3rem;
+    width: 2.5rem;
     border: 0;
     text-align: center;
 }

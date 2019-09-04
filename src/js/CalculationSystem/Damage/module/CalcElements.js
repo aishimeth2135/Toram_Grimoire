@@ -43,16 +43,24 @@ class Calculation {
         this.containers.push(t);
         return t;
     }
-    calcResult(){
+    calcResult(config){
+        config = Object.assign({
+            beforeCalculate: []
+        }, config);
         let cst = 0;
         let mul = 1;
         this.containers.forEach(ctner => {
+            if ( !ctner.beCalc || !ctner.isValid() )
+                return;
+            const find = config.beforeCalculate.find(a => a.container == ctner);
+            const v = !find ? ctner.beforeCalculate() : (typeof find.value == 'function' ? find.value.call(ctner) : find.value);
+
             switch (ctner.category){
                 case CalcItemContainer.CATEGORY_CONSTANT:
-                    cst += ctner.beCalc && ctner.isValid() ? ctner.beforeCalculate() : 0;
+                    cst += v;
                     break;
                 case CalcItemContainer.CATEGORY_MULTIPLIER:
-                    mul *= ctner.beCalc && ctner.isValid() ? ctner.beforeCalculate() : 1;
+                    mul *= v;
                     break;
             }
         });
