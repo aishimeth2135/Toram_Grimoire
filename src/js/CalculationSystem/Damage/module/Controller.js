@@ -770,6 +770,7 @@ export default class DamageCalculationController {
             ipt.addEventListener('click', this.listeners.inputClickSelect);
             ipt.addEventListener('click', this.listeners.stopBubble);
             ipt.addEventListener('change', this.listeners.calculationUserSet);
+            ipt.type = 'number';
             t.setAttribute('data-target', tar);
             t.appendChild(ipt);
             return t;
