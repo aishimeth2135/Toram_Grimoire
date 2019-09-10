@@ -205,6 +205,7 @@
 }
 #SkillQuery div.skill_attribute > span {
 	display: inline-block;
+	line-height: 1.25rem;
 }
 #SkillQuery div.skill_attribute > ._icon > svg {
 	width: 1rem;

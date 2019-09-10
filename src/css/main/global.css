@@ -21,7 +21,7 @@
     margin-right: 0.8rem;   
 }
 
-.separate_text {
+.separate_text, .separate-text {
     border-left: 1px var(--primary-light) solid;
     border-right: 1px var(--primary-light) solid;
     display: inline-block;
@@ -31,6 +31,12 @@
 span.light {
     color: var(--primary-light-3);
 }
+span.light-2 {
+    color: var(--primary-light-2);
+}
 span.dark {
     color: #666;
+}
+span.water-blue {
+    color: var(--primary-water-blue);
 }

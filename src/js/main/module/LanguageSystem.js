@@ -1,6 +1,7 @@
 import zh_tw from "./LanguageData/zh_tw.js";
 import en from "./LanguageData/en.js";
 import ja from "./LanguageData/ja.js";
+import zh_cn from "./LanguageData/zh_cn.js";
 
 function currentLanguage(){
     return 1;
@@ -20,26 +21,23 @@ function Search(lang, id){
 }
 
 function InitLanguageData(data){
-    Object.assign(zh_tw, data.zh_tw);
-    Object.assign(en, data.en);
-    Object.assign(ja, data.ja);
+    if ( typeof data.zh_tw != 'undefined' )
+        Object.assign(zh_tw, data.zh_tw);
+    if ( typeof data.en != 'undefined' )
+        Object.assign(en, data.en);
+    if ( typeof data.ja != 'undefined' )
+        Object.assign(ja, data.ja);
+    if ( typeof data.zh_cn != 'undefined' )
+        Object.assign(ja, data.zh_cn);
 }
 
 function GetLang(id, values){
-    const langs = [en, zh_tw, ja];
+    const langs = [en, zh_tw, ja, zh_cn];
     const no = currentLanguage();
     let t = Search(langs[no], id);
     
     if ( t === void 0 ){
-        let find = false;
-        langs.forEach(lang => {
-            if ( find )
-                return;
-            t = Search(lang, id);
-            if ( t !== void 0 ){
-                find = true;
-            }
-        });
+        t = langs.find(lang => Search(lang, id));
         if ( t === void 0 ){
             console.warn(`[Unknow Language data] id: ${id}`);
             console.log(new Error().stack);
@@ -49,7 +47,7 @@ function GetLang(id, values){
         return t;
     }
 
-    if ( values )
+    if ( Array.isArray(values) )
         t = t.replace(/\$(\d+)/, (v, i) => values[i] !== void 0 && values[i] !== null ? values[i] : '?');
 
     return t;

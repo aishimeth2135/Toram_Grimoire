@@ -60,6 +60,7 @@ const zh_tw = {
             'target_magic_resistance': '魔法抗性',
             'poration': '慣性加成',
             'stability': '穩定率',
+            'probability_of_graze': 'Graze機率',
             'combo_multiplier': '連擊倍率',
             'other_multiplier': '其它倍率'
         },
@@ -84,6 +85,48 @@ const zh_tw = {
             'stability': '穩定率',
             'other_multiplier': '其它倍率'
         },
+        'Container Tips': {
+            'damage_type': '攻擊的傷害類型。',
+            'atk': '角色的面板攻擊力。',
+            'level_difference': '角色與目標（怪物）的等級差值。',
+            'target_def': '目標的防禦力。',
+            'pierce': '角色的物理貫穿及魔法貫穿。貫穿會無視目標等比例的防禦力。',
+            'skill_constant': '技能的傷害常數。',
+            'unsheathe_attack_contant': [
+                '常數的拔刀攻擊加成。',
+                '例如：緞晶((葛瓦))提供的拔刀攻擊+100。'
+            ],
+            'other_constant': '特定情況下會有的其它常數。平常情況下不用特別設定',
+            'skill_multiplier': '技能的傷害倍率。',
+            'critical': [
+                '傷害計算為((暴擊率))與((暴擊傷害))對傷害的期望值。',
+                '((暴擊率))可透過點擊進行開關。關閉後，傷害計算會視為必定暴擊。意即傷害計算結果為暴擊時的傷害。',
+                '若想計算無暴擊時的傷害，可將此項目關閉。或將暴擊率設為0。',
+                '魔法傷害暴擊時的傷害與物理傷害略有不同，計算公式也不一樣。魔法傷害暴擊時的傷害加成減半，而暴擊機率則以1/4作計算。'
+            ],
+            'range_damage': [
+                '發動技能時，與目標的距離會有不同的傷害加成。',
+                '離目標8m以上（含）時，為視為遠距離，否則為近距離。'
+            ],
+            'unsheathe_attack_multiplier': [
+                '倍率的拔刀攻擊加成。',
+                '例如：緞晶((奧狄隆馬其納))提供的拔刀攻擊+10%。'
+            ],
+            'stronger_against_element': '對目標屬性的傷害加成。',
+            'target_element_resistance': '目標對屬性攻擊的抗性。',
+            'target_resistance': '目標的物理抗性或魔法抗性。例如物理抗性為30%時，受到的物理傷害會減少30%。',
+            'poration': '慣性帶來的傷害加成。最低為-50%，最高為+150%。',
+            'stability': [
+                '穩定率會造成傷害浮動，因此傷害計算以期望值作計算。期望值部分亦包含Graze機率帶來的影響。',
+                ' 傷害計算部分會顯示傷害的浮動。即最小傷害與最大傷害。',
+                '((Graze))會使穩定度減半，因此計算出來的最小傷害也會減半。',
+                '((Graze機率))可透過點擊進行開關。關閉後，傷害計算會視為必定不發生Graze。'
+            ],
+            'other_multiplier': [
+                '特定情況下會有的其它倍率。會直接乘上最終傷害。',
+                '多個其他倍率需自行相乘後，再填入((其他倍率))。例如：120%*120%=144%。計算完畢後填入144。'
+            ]
+        },
         'User Set': {
             'str': '角色STR', 'dex': '角色DEX', 'int': '角色INT',
             'agi': '角色AGI', 'vit': '角色VIT'
@@ -107,9 +150,10 @@ const zh_tw = {
             'Disable char': '已自動清除被禁用的字元。'
         },
         'build': '配置',
-        'Damage': '傷害',
+        'Damage': '傷害期望值',
         'Comparative Damage': '比較',
-        'Damage Floating': '傷害浮動',
+        'Damage Floating: without critical': '無暴擊傷害',
+        'Damage Floating: critical': '暴擊傷害',
         'save': '儲存',
         'load': '讀取',
         'save to csv': '儲存成檔案',

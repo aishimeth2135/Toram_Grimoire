@@ -60,6 +60,13 @@ span.for-adjust-input-width {
     margin-bottom: 1rem;
 }
 
+.CalculationSystem-Damage > .show-container-tips > .content > .text-scope {
+    border-left: 3px solid var(--primary-light-3);
+    padding: 0.4rem 0.6rem;
+    margin: 0.4rem 0;
+    padding-left: 1rem;
+}
+
 .CalculationSystem-Damage .result-scope {
     padding: 1rem 0.6rem;
     border-top: 1px solid var(--primary-light);
@@ -69,7 +76,7 @@ span.for-adjust-input-width {
     position: sticky;
     bottom: 0;
 }
-.CalculationSystem-Damage .damage.result-scope > .scope {
+.CalculationSystem-Damage .result-scope > .scope {
     margin-right: 1.2rem;
     display: inline-block;
 }
