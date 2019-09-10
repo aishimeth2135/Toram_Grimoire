@@ -152,7 +152,7 @@ class CalcItemContainer {
         if ( id !== void 0 )
             return this.getItem(id).itemValue();
         if ( this.type == CalcItemContainer.TYPE_NORMAL )
-            return 0;
+            return this.item(0).itemValue();
         return this.currentItem().itemValue();
     }
     calculatedValue(){
