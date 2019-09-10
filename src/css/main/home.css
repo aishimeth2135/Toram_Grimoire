@@ -2,6 +2,10 @@
     margin-bottom: 2rem;
 }
 
+#Home > section {
+    justify-content: center;
+}
+
 .main-content > section {
     padding: 0.6rem;
     display: flex;

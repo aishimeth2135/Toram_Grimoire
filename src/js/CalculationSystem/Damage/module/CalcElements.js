@@ -38,8 +38,8 @@ class Calculation {
             }
         };
     }
-    createContainer(cat, type){
-        const t = new CalcItemContainer(this, cat, type);
+    createContainer(id, cat, type){
+        const t = new CalcItemContainer(this, id, cat, type);
         this.containers.push(t);
         return t;
     }
@@ -110,8 +110,9 @@ class Calculation {
 
 
 class CalcItemContainer {
-    constructor(parent, cat, type){
+    constructor(parent, id, cat, type){
         this.parent = parent;
+        this.id = id;
         this.category = cat;
         this.type = type || CalcItemContainer.TYPE_NORMAL;
 
@@ -134,26 +135,24 @@ class CalcItemContainer {
         this.items.push(t);
         return t;
     }
-    currentItem(t){
-        if ( t )
+    currentItem(t, notifyLinked=true){
+        if ( t ){
             this.status.currentItem = t;
-        return this.status.currentItem;
-    }
-    notifyLinkedContainers(){
-        if ( this.beLink() ){
-            const t = this.currentItem();
-            const i = this.items.indexOf(t);
-            this.belongCalculation().container()
-                .filter(a => a.linked === this.linked)
-                .forEach(p => p.currentItem(p.item(i)));
+            if ( notifyLinked && this.beLinked() ){
+                const i = this.items.indexOf(t);
+                this.linkedContainers().forEach(p => p.currentItem(p.item(i), false));
+            }
         }
+        return this.status.currentItem;
     }
     base(){
         return this.currentItem().base;
     }
-    value(){
+    value(id){
+        if ( id !== void 0 )
+            return this.getItem(id).itemValue();
         if ( this.type == CalcItemContainer.TYPE_NORMAL )
-            return this.items.reduce((a, b) => a + b.itemValue(), 0);
+            return 0;
         return this.currentItem().itemValue();
     }
     calculatedValue(){
@@ -174,15 +173,22 @@ class CalcItemContainer {
         return this;
     }
     /**
-     * parent中的其它container，若擁有同樣的Link ID，彼此之間會具有連動性。Link ID預設值為null。
+     * parent中的其它container，若擁有同樣的Link ID，彼此之間會具有連動性。Link預設值為null。
      * @param {String} t Link ID
      */
     link(v){
-        this.linked = v;
+        const find = this.belongCalculation().container().find(c => c.beLinked() && c.getLink().linkId() == v);
+        this.linked = find ? find.getLink() : new CalcItemContainerLink(v);
         return this;
     }
-    beLink(){
-        return this.linked !== null;
+    getLink(){
+        return this.linked;
+    }
+    linkedContainers(){
+        return this.belongCalculation().container().filter(a => a != this && a.getLink() == this.getLink());
+    }
+    beLinked(){
+        return this.getLink() !== null;
     }
     checkCurrentItem(id){
         return this.base().id == id;
@@ -198,9 +204,12 @@ class CalcItemContainer {
             return this.items;
         return this.items[index];
     }
-    toggle(){
-        if ( this.beToggle )
+    toggle(notifyLinked=true){
+        if ( this.beToggle ){
             this.valid = this.valid ? false : true;
+            if ( notifyLinked && this.beLinked() && this.getLink().toggleContainer )
+                this.linkedContainers().forEach(p => p.toggle(false));
+        }
     }
     isValid(){
         return this.valid;
@@ -217,10 +226,21 @@ class CalcItemContainer {
         this.beInput = false;
         return this;
     }
+    openItemToggle(item_id){
+        this.getItem(item_id).beToggle = true;
+        return this;
+    }
+    openLinkedToggle(){
+        this.linkedToggle = true;
+        return this;
+    }
     containerTitle(t){
         if ( t || t === '' )
             this.title = t;
         return this.title;
+    }
+    containerId(){
+        return this.id;
     }
 }
 CalcItemContainer.CATEGORY_CONSTANT = Symbol('Constant');
@@ -228,6 +248,22 @@ CalcItemContainer.CATEGORY_MULTIPLIER = Symbol('Multiplier');
 CalcItemContainer.CATEGOEY_NONE = Symbol('None');
 CalcItemContainer.TYPE_NORMAL = Symbol('Normal');
 CalcItemContainer.TYPE_SELECT = Symbol('Select');
+
+
+class CalcItemContainerLink {
+    constructor(id){
+        this.id = id;
+
+        this.toggleContainer = false;
+    }
+    openToggleContainer(){
+        this.toggleContainer = true;
+        return this;
+    }
+    linkId(){
+        return this.id;
+    }
+}
 
 
 class CalcItem {
@@ -252,9 +288,6 @@ class CalcItem {
             this.value = v;
         }
         return this.value;
-    }
-    openToggle(){
-        this.beToggle = true;
     }
     toggle(){
         if ( this.beToggle )

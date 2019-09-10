@@ -29,6 +29,9 @@ input:-moz-placeholder { color: var(--primary-light); }
 body.font1, body.font1 input, body.font1 textarea {
 	font-family: 'Itim', 'SetoFont', Microsoft JhengHei, sans-serif;
 }
+body.font1.zh, body.font1.zh input, body.font1.zh textarea {
+	font-family: 'Itim', 'HandwrittenGirl', Microsoft JhengHei, sans-serif;
+}
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

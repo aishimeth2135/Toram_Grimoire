@@ -111,6 +111,8 @@ export default class DamageCalculationSystem {
         p1('stability')
             .initRange(1, 100)
             .initDefaultValue(50);
+        p1('probability_of_graze')
+            .initRange(0, 100);
 
         this.controller = new DamageCalculationController(this);
         this.controller.init(node);
