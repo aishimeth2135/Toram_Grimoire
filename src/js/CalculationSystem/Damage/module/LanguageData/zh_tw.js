@@ -9,6 +9,9 @@ const zh_tw = {
             'magic_damage': '魔法傷害',
             'atk': 'ATK',
             'matk': 'MATK',
+            'sub_atk': '副手ATK',
+            'sub_atk_multiplier': '副手倍率',
+            'two_handed_skill_level': '((雙手合持))等級',
             'character_level': '角色等級',
             'target_level': '目標等級',
             'target_def': '目標DEF',
@@ -67,6 +70,7 @@ const zh_tw = {
         'Container Title': {
             'damage_type': '傷害類型',
             'atk': '角色攻擊力',
+            'atk_other': '角色攻擊力（其它）',
             'level_difference': '等級差距',
             'target_def': '目標防禦力',
             'pierce': '防禦貫穿',
@@ -88,6 +92,13 @@ const zh_tw = {
         'Container Tips': {
             'damage_type': '攻擊的傷害類型。',
             'atk': '角色的面板攻擊力。',
+            'atk_other': [
+                '在特定條件下，會影響攻擊力的其它因素。',
+                '((副手ATK))及((雙手合持等級))皆可以開關。關閉後該項目便不會被計算。',
+                '((副手ATK))為裝備((雙劍))時特有的屬性。((雙劍技能))中的攻擊技能，((副手ATK))會被計入傷害公式內。',
+                '簡要而言，((副手ATK))會乘上((副手倍率))並加到有效ATK上。',
+                '技能((雙手合持))的觸發條件可於技能查詢中查看。'
+            ],
             'level_difference': '角色與目標（怪物）的等級差值。',
             'target_def': '目標的防禦力。',
             'pierce': '角色的物理貫穿及魔法貫穿。貫穿會無視目標等比例的防禦力。',
