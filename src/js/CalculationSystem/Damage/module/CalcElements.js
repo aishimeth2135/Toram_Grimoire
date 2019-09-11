@@ -78,6 +78,9 @@ class Calculation {
     findContainer(item_id){
         return this.containers.find(c => c.items.find(a => a.base.id == item_id));
     }
+    findContainerById(ctner_id){
+        return this.containers.find(c => c.containerId() == ctner_id);
+    }
     checkItemValid(id){
         const t = this.getItem(id);
         return t && t.isValid();
@@ -135,14 +138,9 @@ class CalcItemContainer {
         this.items.push(t);
         return t;
     }
-    currentItem(t, notifyLinked=true){
-        if ( t ){
+    currentItem(t){
+        if ( t )
             this.status.currentItem = t;
-            if ( notifyLinked && this.beLinked() ){
-                const i = this.items.indexOf(t);
-                this.linkedContainers().forEach(p => p.currentItem(p.item(i), false));
-            }
-        }
         return this.status.currentItem;
     }
     base(){
@@ -184,11 +182,21 @@ class CalcItemContainer {
     getLink(){
         return this.linked;
     }
-    linkedContainers(){
-        return this.belongCalculation().container().filter(a => a != this && a.getLink() == this.getLink());
-    }
     beLinked(){
         return this.getLink() !== null;
+    }
+    notifyLinkedContainers(type){
+        const ctners = this.belongCalculation().container().filter(a => a != this && a.getLink() == this.getLink());
+        switch (type){
+            case CalcItemContainer.NOTIFY_LINKED_TYPE_CONTAINER_TOGGLE: {
+                ctners.forEach(p => p.toggle());
+            }
+            case CalcItemContainer.NOTIFY_LINKED_TYPE_ITEM_SELECT: {
+                const i = this.item().indexOf(this.currentItem());
+                ctners.forEach(p => p.currentItem(p.item(i)));
+                break;
+            }
+        }
     }
     checkCurrentItem(id){
         return this.base().id == id;
@@ -199,17 +207,19 @@ class CalcItemContainer {
     getItem(id){
         return this.items.find(a => a.base.id == id);
     }
+    /**
+     * 取得指定index的item。如果無指定index，則回傳一個包含所有item的陣列。
+     * @param  {integer} index
+     * @return {CalcItem|Array<CalcItem>}
+     */
     item(index){
         if ( index === void 0 )
             return this.items;
         return this.items[index];
     }
-    toggle(notifyLinked=true){
-        if ( this.beToggle ){
+    toggle(){
+        if ( this.beToggle )
             this.valid = this.valid ? false : true;
-            if ( notifyLinked && this.beLinked() && this.getLink().toggleContainer )
-                this.linkedContainers().forEach(p => p.toggle(false));
-        }
     }
     isValid(){
         return this.valid;
@@ -226,8 +236,8 @@ class CalcItemContainer {
         this.beInput = false;
         return this;
     }
-    openItemToggle(item_id){
-        this.getItem(item_id).beToggle = true;
+    openItemToggle(...item_id){
+        item_id.forEach(id => this.getItem(id).beToggle = true);
         return this;
     }
     openLinkedToggle(){
@@ -248,6 +258,8 @@ CalcItemContainer.CATEGORY_MULTIPLIER = Symbol('Multiplier');
 CalcItemContainer.CATEGOEY_NONE = Symbol('None');
 CalcItemContainer.TYPE_NORMAL = Symbol('Normal');
 CalcItemContainer.TYPE_SELECT = Symbol('Select');
+CalcItemContainer.NOTIFY_LINKED_TYPE_CONTAINER_TOGGLE = Symbol();
+CalcItemContainer.NOTIFY_LINKED_TYPE_ITEM_SELECT = Symbol();
 
 
 class CalcItemContainerLink {

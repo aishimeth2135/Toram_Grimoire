@@ -242,8 +242,10 @@ export default class DamageCalculationController {
                 const ctner = ctrr.getItemContainerFromScope(scope);
                 ctner.toggle();
 
-                if ( ctner.beLinked() )
+                if ( ctner.beLinked() && ctner.getLink().toggleContainer ){
+                    ctner.notifyLinkedContainers(CalcItemContainer.NOTIFY_LINKED_TYPE_CONTAINER_TOGGLE);
                     ctrr.updateCalculationScope(ctner.belongCalculation());
+                }
                 else
                     scope.classList.toggle('invalid');
 
@@ -273,8 +275,10 @@ export default class DamageCalculationController {
                 const cal = ctner.belongCalculation();
                 ctner.currentItem(item);
 
-                if ( ctner.beLinked() )
+                if ( ctner.beLinked() ){
+                    ctner.notifyLinkedContainers(CalcItemContainer.NOTIFY_LINKED_TYPE_ITEM_SELECT);
                     ctrr.updateCalculationScope(cal);
+                }
                 else {
                     const cur = item_scope.parentNode.querySelector('.' + ctrr.scopeClassName['calc-item'] + ':not(.invalid)');
                     if ( cur )
@@ -310,6 +314,22 @@ export default class DamageCalculationController {
                         case CalcItemContainer.CATEGORY_MULTIPLIER:
                             return (100 + v)/100;
                     }
+                },
+                atkCalc: function(){
+                    let v = this.value();
+                    const cal = this.belongCalculation();
+                    if ( cal.findItem('atk') == this.currentItem() ){
+                        const two_handed_lv = cal.findItem('two_handed_skill_level');
+                        if ( two_handed_lv.isValid() )
+                            v = Math.floor(v * (100 + 5*two_handed_lv.itemValue()) / 100);
+                        const sub_atk = cal.findItem('sub_atk');
+                        if ( sub_atk.isValid() ){
+                            const a = sub_atk.itemValue(),
+                                b = cal.findItem('sub_atk_multiplier').itemValue();
+                            v += Math.floor(a*b/100);
+                        }
+                    }
+                    return v;
                 },
                 levelDifference: function(){
                     return this.getItem('character_level').itemValue() - this.getItem('target_level').itemValue();
@@ -749,7 +769,11 @@ export default class DamageCalculationController {
             .closeInputValue();
         p(0, ['atk', 'matk'], 'atk', 1)
             .link('atk/matk')
+            .setBeforeCalculateFunction(this.functions.calculation.atkCalc)
             .closeToggle();
+        p(0, ['sub_atk', 'sub_atk_multiplier','two_handed_skill_level'], 'atk_other')
+            .openItemToggle('sub_atk', 'two_handed_skill_level')
+            .closeCalc();
         p(0, ['character_level', 'target_level'], 'level_difference')
             .setBeforeCalculateFunction(this.functions.calculation.levelDifference);
         p(0, ['target_def', 'target_mdef'], 'target_def', 1)
@@ -904,6 +928,8 @@ export default class DamageCalculationController {
 
         const calcContainers = simpleCreateHTML('div', 'containers');
 
+        const processItemTitle = s => s.replace(/\(\(([^\)]+)\)\)/g, (m, m1) => `<span class="separate-text light">${m1}</span>`);
+
         const createContainerScope = (c, i) => {
             const scope = simpleCreateHTML('div', this.scopeClassName['container'], null, {'data-i': i});
 
@@ -913,7 +939,7 @@ export default class DamageCalculationController {
             const ary = [];
             c.item().forEach(a => {
                 const t = simpleCreateHTML('div', this.scopeClassName['calc-item'], null, {'data-id': a.itemId()});
-                t.appendChild(simpleCreateHTML('span', 'item-text', a.itemText()));
+                t.appendChild(simpleCreateHTML('span', 'item-text', processItemTitle(a.itemText())));
                 if ( c.beInput ){
                     const ipt = simpleCreateHTML('input', ['Cyteria', 'input', 'item-value-input']);
                     ipt.type = 'number';
@@ -990,7 +1016,8 @@ export default class DamageCalculationController {
         const type_List = {
             'calculation': 0,
             'sets': 1,
-            'item': 2
+            'item': 2,
+            'container': 3
         };
         const INDEX = {
             type: 0,
@@ -1003,9 +1030,17 @@ export default class DamageCalculationController {
             },
             item: {
                 id: 1,
-                value: 2
+                value: 2,
+                valid: 3
+            },
+            container: {
+                id: 1,
+                currentItemIndex: 2,
+                valid: 3
             }
         };
+
+        const bool_to_int = v => v ? 1 : 0;
 
         const data = [];
 
@@ -1029,8 +1064,17 @@ export default class DamageCalculationController {
                     ary[INDEX.type] = type_List['item'];
                     ary[INDEX.item.id] = item.itemId();
                     ary[INDEX.item.value] = item.value;
+                    ary[INDEX.item.valid] = bool_to_int(item.valid);
                     data.push(ary);
                 });
+            });
+            cal.container().forEach(ctner => {
+                ary = [];
+                ary[INDEX.type] = type_List['container'];
+                ary[INDEX.container.id] = ctner.containerId();
+                ary[INDEX.container.currentItemIndex] = ctner.item().indexOf(ctner.currentItem());
+                ary[INDEX.container.valid] = bool_to_int(ctner.valid);
+                data.push(ary);
             });
         });
 
@@ -1045,7 +1089,7 @@ export default class DamageCalculationController {
         }
 
         const type_List = [
-            'calculation', 'sets', 'item'
+            'calculation', 'sets', 'item', 'container'
         ];
         const INDEX = {
             type: 0,
@@ -1058,8 +1102,25 @@ export default class DamageCalculationController {
             },
             item: {
                 id: 1,
-                value: 2
+                value: 2,
+                valid: 3
+            },
+            container: {
+                id: 1,
+                currentItemIndex: 2,
+                valid: 3
             }
+        };
+
+        const check = v => v !== void 0 && v !== '';
+        const checkValue = (v, if_false) => check(v) ? v : if_false;
+
+        const strint_to_bool = v => v == '1' ? true : false;
+        const str_to_int = v => parseInt(v, 10);
+
+        const dataInput = (fun, ...datas) => {
+            if ( datas.every(a => check(a)) )
+                fun(...datas);
         };
 
         // 暫存載入前的資料
@@ -1075,16 +1136,50 @@ export default class DamageCalculationController {
                 switch (type){
                     case 'calculation':
                         cur_cal = this.createCalculation();
-                        cur_cal.calculationName(p[INDEX.calculation.name]);
+                        dataInput(
+                            v => cur_cal.calculationName(v),
+                            p[INDEX.calculation.name]
+                        );
                         break;
                     case 'sets':
-                        cur_cal.userSet(p[INDEX.sets.name], parseInt(p[INDEX.sets.value], 10));
+                        dataInput(
+                            (name, v) => cur_cal.userSet(name, str_to_int(v)),
+                            p[INDEX.sets.name],
+                            p[INDEX.sets.value]
+                        );
                         break;
                     case 'item': {
                         const item = cur_cal.findItem(p[INDEX.item.id]);
-                        if ( item )
-                            item.itemValue(parseInt(p[INDEX.item.value], 10));
-                    } break;
+                        if ( item ){
+                            dataInput(
+                                v => item.itemValue(str_to_int(v)),
+                                p[INDEX.item.value]
+                            );
+                            dataInput(
+                                v => item.valid = strint_to_bool(v),
+                                p[INDEX.item.valid]
+                            );
+                        }
+                        break;
+                    }
+                    case 'container': {
+                        const ctner = cur_cal.findContainerById(p[INDEX.container.id]);
+                        if ( ctner ){
+                            dataInput(
+                                v => {
+                                    v = str_to_int(v);
+                                    if ( v != -1 )
+                                        ctner.currentItem(ctner.item(v))
+                                },
+                                p[INDEX.container.currentItemIndex]
+                            );
+                            dataInput(
+                                v => ctner.valid = strint_to_bool(v),
+                                p[INDEX.container.valid]
+                            );
+                        }
+                        break;
+                    }
                 }
             });
         }

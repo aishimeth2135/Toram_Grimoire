@@ -205,6 +205,9 @@ span.for-adjust-input-width {
     color: var(--primary-purple);
     transition: 0.3s;
 }
+.CalculationSystem-Damage .calc-item.invalid > .item-text > .light {
+    color: var(--primary-light-4);
+}
 .CalculationSystem-Damage .calc-item > input {
     box-sizing: content-box;
     padding: 0.3rem 0.5rem;

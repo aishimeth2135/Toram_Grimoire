@@ -29,6 +29,10 @@ export default class DamageCalculationSystem {
             .initDefaultValue(1000);
         p0('matk')
             .initDefaultValue(1000);
+        p0('sub_atk');
+        p0('sub_atk_multiplier', '%');
+        p0('two_handed_skill_level')
+            .initRange(0, 10);
         p0('character_level')
             .initRange(1, 200)
             .initDefaultValue(100);
