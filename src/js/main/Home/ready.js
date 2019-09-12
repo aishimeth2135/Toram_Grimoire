@@ -48,11 +48,11 @@ function InitSettings(){
 		const cur = localStorage[k];
 		if ( cur && cur === '1' ){
 			localStorage.removeItem(k);
-			document.querySelector('body').classList.add('font1');
+			document.querySelector('body').classList.add('font1', 'zh');
 		}
 		else {
 			localStorage[k] = '1';
-			document.querySelector('body').classList.remove('font1');
+			document.querySelector('body').classList.remove('font1', 'zh');
 		}
 	});
 }

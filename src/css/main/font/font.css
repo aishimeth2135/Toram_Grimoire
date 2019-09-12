@@ -21,7 +21,7 @@
     unicode-range: U+28, U+29;
 }
 
-/* @font-face {
+@font-face {
     font-family: 'SetoFont';
     src: url('Fruit-icrecream.woff') format('woff'),
         local(Microsoft JhengHei);
@@ -32,14 +32,14 @@
 
 @font-face {
     font-family: 'SetoFont';
-    src: url('XiLiangShaoNv.woff') format('woff'),
+    src: url('XiLiangShaoNv-2.woff') format('woff'),
         local(Microsoft JhengHei);
     font-weight: normal;
     font-style: normal;
-    unicode-range: U+95b1;
-} */
-
-/* @font-face {
+    unicode-range: U+95b1, U+9631;
+}
+/* 
+@font-face {
     font-family: 'HandwrittenGirl';
     src: url('HandwrittenGirl.woff2') format('woff2'),
         url('HandwrittenGirl.woff') format('woff');
@@ -51,10 +51,10 @@
     /* 。 「 」 ， ： *\/
 } */
 
-@font-face {
+/* @font-face {
     font-family: 'JasonWriting2';
     src: url('JasonWriting2.woff2') format('woff2'),
         url('JasonWriting2.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-}
+} */
