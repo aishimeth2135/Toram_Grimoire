@@ -141,16 +141,45 @@ function LoadSkillData(sr, c){
 }
 
 
-function LoadSkillMainData(sr, c){
+function LoadSkillMainData(sr, c, lang_c){
 	const CATEGORY = 0,
 		NO = 1,
 		PREVIOUS_SKILL = 2,
 		DRAW_SKILL_TREE_ORDER = 3,
 		CONFIRM_SKILL_TREE_CATEGORY = '0',
 		CONFIRM_SKILL_TREE = '1',
-		SKILL_TREE_DRAW_TREE_CODE = 3;
+		SKILL_TREE_DRAW_TREE_CODE = 3,
+		LANG_DATA = {
+			CATEGORY_NAME: 0,
+			SKILL_TREE_NAME: 0,
+			SKILL_NAME: 0
+		};
 
 	let cur_stc, cur_st;
+
+	const loadLangData = (cat, target, index) => {
+		const data = lang_c[index];
+		switch (cat){
+			case CONFIRM_SKILL_TREE_CATEGORY: {
+				const name = data[LANG_DATA.CATEGORY_NAME];
+				if ( name )
+					target.name = name;
+				break;
+			}
+			case CONFIRM_SKILL_TREE: {
+				const name = data[LANG_DATA.SKILL_TREE_NAME];
+				if ( name )
+					target.name = name;
+				break;
+			}
+			case '': {
+				const name = data[LANG_DATA.SKILL_NAME];
+				if ( name )
+					target.name = name;
+				break;
+			}
+		}
+	};
 
 	c.forEach((p, i) => {
 		if ( i == 0 || p[NO] === '' )
@@ -160,16 +189,21 @@ function LoadSkillMainData(sr, c){
 			switch (cat){
 				case CONFIRM_SKILL_TREE_CATEGORY:
 					cur_stc = sr.skillTreeCategorys.find(a => a.no == no);
+					loadLangData(cat, cur_stc, i);
 					break;
 				case CONFIRM_SKILL_TREE:
 					cur_st = cur_stc.skillTrees.find(a => a.no == no);
 					cur_st.init(p[SKILL_TREE_DRAW_TREE_CODE]);
+					loadLangData(cat, cur_st, i);
 					break;
-				case '': 
-					cur_st.skills.find(a => a.no == no).init(
+				case '': {
+					const skill = cur_st.skills.find(a => a.no == no);
+					skill.init(
 						p[PREVIOUS_SKILL],
 						parseInt(p[DRAW_SKILL_TREE_ORDER])
 					);
+					loadLangData(cat, skill, i);
+				}
 			}
 		}
 		catch(e){

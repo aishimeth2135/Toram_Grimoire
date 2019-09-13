@@ -6,7 +6,9 @@ import CharacterSystem from "../../CharacterSystem/CharacterSystem.js";
 import ItemSystem from "../../ItemSystem/ItemSystem.js";
 
 async function start(){
-    let no_error = true;
+    const status = {
+        no_error: true
+    };
     
     readyFirst();
 
@@ -24,7 +26,7 @@ async function start(){
     
     ready();
 
-    if ( no_error )
+    if ( status.no_error )
         loadingFinished();
 }
 try {

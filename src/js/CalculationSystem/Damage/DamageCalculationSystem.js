@@ -6,6 +6,7 @@ import {GetLang, InitLanguageData} from "../../main/module/LanguageSystem.js";
 import zh_tw from "./module/LanguageData/zh_tw.js";
 import en from "./module/LanguageData/en.js";
 import ja from "./module/LanguageData/ja.js";
+import zh_cn from "./module/LanguageData/zh_cn.js";
 
 
 export default class DamageCalculationSystem {
@@ -13,7 +14,7 @@ export default class DamageCalculationSystem {
         this.calcItemList = [];
     }
     init(node){
-        InitLanguageData({zh_tw, en, ja});
+        InitLanguageData({zh_tw, en, ja, zh_cn});
 
         const p = (lid, u) => {
             const t = new CalcItemBase(lid, GetLang('Damage Calculation/Calc Item Base Text/' + lid), u);

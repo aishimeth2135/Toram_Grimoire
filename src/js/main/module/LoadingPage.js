@@ -15,12 +15,12 @@ function startLoadingMsg(s){
     });
 }
 
-function loadingMsg(s, err=false){
+function loadingMsg(s, err=false, status){
     const div = document.createElement('div');
     div.innerHTML = s;
     document.querySelector(`div#${options.node_id} > div.msg`).appendChild(div);
     if ( err )
-        no_error = false;
+        status.no_error = false;
 }
 
 function loadingFinished(){
