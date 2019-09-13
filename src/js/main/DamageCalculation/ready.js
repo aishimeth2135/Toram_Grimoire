@@ -12,7 +12,6 @@ function readyFirst(){
 
 function ready(setting){
     PageInitLanguage();
-
     document.title = GetLang('Page Title');
 }
 

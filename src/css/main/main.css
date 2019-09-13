@@ -29,7 +29,8 @@ input:-moz-placeholder { color: var(--primary-light); }
 body.font1, body.font1 input, body.font1 textarea {
 	font-family: 'Itim', 'SetoFont', Microsoft JhengHei, sans-serif;
 } */
-body.font1.zh, body.font1.zh input, body.font1.zh textarea {
+body.font1.lang-1, body.font1.lang-1 input, body.font1.lang-1 textarea,
+body.font1.lang-2, body.font1.lang-2 input, body.font1.lang-2 textarea {
 	font-family: 'Itim', 'SetoFont', Microsoft JhengHei, sans-serif;
 }
 

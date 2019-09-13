@@ -58,8 +58,8 @@
 
 #About > section {
     border-left: 2px solid var(--primary-light-3);
-    margin: 0.5rem 0;
-    padding: 0.3rem 0.6rem;
+    margin: 0.7rem 0;
+    padding: 0rem 0.6rem;
 }
 section > .scope {
     padding: 0 0.8rem;

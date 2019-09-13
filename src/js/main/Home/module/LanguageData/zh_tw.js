@@ -5,6 +5,18 @@ const zh_tw = {
         'switch font': {
             'caption': '若字體顯示有問題（特定裝置會發生），或是不喜歡現在的預設字體。<br />可切換字體為基本字體。',
             'switch': '切換'
+        },
+        'select language': {
+            'caption': '可選擇頁面顯示的語言，一般情況下不必特別設定。',
+            'warn 1': '設定完畢後，頁面需重新整理方得生效。',
+            'warn 2': '尚未翻譯的部分依然會顯示其他語言。',
+            'button text: list': {
+                'lang auto': '自動判定',
+                'lang 0': 'English',
+                'lang 1': '繁體中文',
+                'lang 2': '日本語',
+                'lang 3': '简体中文'
+            }
         }
     },
     'Home': {
@@ -37,9 +49,14 @@ const zh_tw = {
             'Donate Group': '贊助公會',
             'Author': '作者',
             'Skill Data Maintenance': '技能資料維護',
-            'Write Skill Tree Draw Code': '技能樹繪製資料填寫',
-            'Sort Skill Icon': '技能圖示排列',
-            'Equipment Data Maintenance': '裝備資料維護'
+            'Input Skill Tree Drawaing Code': '技能樹繪製資料填寫',
+            'Skill Icons Arrangement': '技能圖示排列',
+            'Equipment Data Maintenance': '裝備資料維護',
+            'translation': {
+                'zh-cn': {
+                    'Skill Name and Tag List': '技能名稱及標籤清單（簡體中文）'
+                }
+            }
         }
     }
 };
