@@ -1,4 +1,3 @@
-const en = {
-};
-
-export default en;
+export default function(){
+    return {};
+}

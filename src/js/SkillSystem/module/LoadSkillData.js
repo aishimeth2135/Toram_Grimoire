@@ -1,7 +1,7 @@
 import {SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
 import Grimoire from "../../main/Grimoire.js";
 
-function LoadSkillData(sr, c){
+function LoadSkillData(sr, c, lang_c, slang_c){
 	const 
 	/* all */
 		NO = 0,
@@ -35,7 +35,11 @@ function LoadSkillData(sr, c){
 		SKILL_TREE_CATEGORY_NAME = 2,
 	/* Skill Tree */
 		CONFIRM_SKILL_TREE = '1',
-		SKILL_TREE_NAME = 2
+		SKILL_TREE_NAME = 2,
+	/* Language Data */
+		LANG_DATA = {
+			EFFECT_BRANCH_ATTRIBUTE_VALUE: 0
+		};
 	
 	let cur = null;
 
@@ -69,6 +73,14 @@ function LoadSkillData(sr, c){
 				parent.setDefaultEffect(sef);
 		}
 	}
+
+	//
+	const loadEffectBranchAttributeValue = index => {
+		const d1 = c[index][EFFECT_BRANCH_ATTRIBUTE_VALUE],
+			d2 = lang_c && lang_c[index] ? lang_c[index][LANG_DATA.EFFECT_BRANCH_ATTRIBUTE_VALUE] : null,
+			d3 = slang_c && slang_c[index] ? slang_c[index][LANG_DATA.EFFECT_BRANCH_ATTRIBUTE_VALUE] : null;
+		return [d2, d3, d1].find(t => t !== '' && t !== null && t !== void 0) || '';
+	};
 
 	c.forEach(function(p, index){
 		try {
@@ -127,7 +139,7 @@ function LoadSkillData(sr, c){
 				battrvalue = p[EFFECT_BRANCH_ATTRIBUTE_VALUE];
 			if ( battrname != '' ){
 				if ( !Grimoire.CharacterSystem.findStatBase(battrname) )
-					cur.appendBranchAttribute(battrname, battrvalue);
+					cur.appendBranchAttribute(battrname, loadEffectBranchAttributeValue(index));
 				else
 					cur.appendStat(battrname, battrvalue, p[EFFECT_BRANCH_ATTRIBUTE_EXTRA]);
 			}
@@ -141,7 +153,7 @@ function LoadSkillData(sr, c){
 }
 
 
-function LoadSkillMainData(sr, c, lang_c){
+function LoadSkillMainData(sr, c, lang_c, slang_c){
 	const CATEGORY = 0,
 		NO = 1,
 		PREVIOUS_SKILL = 2,
@@ -158,26 +170,41 @@ function LoadSkillMainData(sr, c, lang_c){
 	let cur_stc, cur_st;
 
 	const loadLangData = (cat, target, index) => {
-		const data = lang_c[index];
+		const data = lang_c ? lang_c[index] : null,
+			sdata = slang_c ? slang_c[index] : null;
 		switch (cat){
-			case CONFIRM_SKILL_TREE_CATEGORY: {
-				const name = data[LANG_DATA.CATEGORY_NAME];
-				if ( name )
-					target.name = name;
+			case CONFIRM_SKILL_TREE_CATEGORY:
+				[data, sdata].find(t => {
+					if ( !t )
+						return;
+					const name = t[LANG_DATA.CATEGORY_NAME];
+					if ( name ){
+						target.name = name;
+						return true;
+					}
+				});
 				break;
-			}
-			case CONFIRM_SKILL_TREE: {
-				const name = data[LANG_DATA.SKILL_TREE_NAME];
-				if ( name )
-					target.name = name;
+			case CONFIRM_SKILL_TREE:
+				[data, sdata].find(t => {
+					if ( !t )
+						return;
+					const name = t[LANG_DATA.SKILL_TREE_NAME];
+					if ( name ){
+						target.name = name;
+						return true;
+					}
+				});
 				break;
-			}
-			case '': {
-				const name = data[LANG_DATA.SKILL_NAME];
-				if ( name )
-					target.name = name;
-				break;
-			}
+			case '':
+				[data, sdata].find(t => {
+					if ( !t )
+						return;
+					const name = t[LANG_DATA.SKILL_NAME];
+					if ( name ){
+						target.name = name;
+						return true;
+					}
+				});
 		}
 	};
 
