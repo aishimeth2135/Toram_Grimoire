@@ -51,7 +51,8 @@ const zh_tw = {
                     'all smith': '各個城鎮的鐵匠鋪',
                     'no data': '尚無資料',
                     'unknow': '未知',
-                    'other': '其它'
+                    'other': '其它',
+                    'exchange': '交換所'
                 }
             },
             'Equipmemt Category list': [
