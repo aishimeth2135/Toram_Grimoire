@@ -1,4 +1,3 @@
-const ja = {
-};
-
-export default ja;
+export default function(){
+    return {};
+}

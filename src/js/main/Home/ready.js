@@ -85,11 +85,33 @@ function InitSettings(){
 		});
 		lang_button_scope.appendChild(frg);
 	}
+	{
+		function listener(e){
+			if ( this.classList.contains('cur') )
+				return;
+			const set = this.getAttribute('data-set');
+			localStorage['Second-Language-Setting'] = set;
+
+			this.parentNode.querySelector('.cur').classList.remove('cur');
+			this.classList.add('cur');
+		}
+		const lang_button_scope = root.querySelector('.select-second-language > .buttons');
+		const frg = document.createDocumentFragment();
+		['0', '1', '2', '3'].forEach(p => {
+			const btn = CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'simple'], GetLang('settings/select language/button text: list/lang ' + p));
+			if ( p == localStorage['Second-Language-Setting'] )
+				btn.classList.add('cur');
+			btn.addEventListener('click', listener);
+			btn.setAttribute('data-set', p);
+			frg.appendChild(btn);
+		});
+		lang_button_scope.appendChild(frg);
+	}
 }
 
 function readyFirst(){
-	InitLanguageData({zh_tw, en, ja, zh_cn});
 	PageInitFirst();
+	InitLanguageData({zh_tw, en, ja, zh_cn});
 }
 
 function ready(setting){

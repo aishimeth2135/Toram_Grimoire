@@ -157,6 +157,7 @@ nav > ul > li > a::after {
 	background-color: #FFF;
 	padding: 0 0.6rem;
 	padding-top: 2rem;
+	z-index: 5;
 }
 #loading-page > .main {
 	margin-bottom: 2rem;
