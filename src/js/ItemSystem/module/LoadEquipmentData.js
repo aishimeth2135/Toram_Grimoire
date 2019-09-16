@@ -30,35 +30,41 @@ export default function(root, c){
     let cur, cur_equip, cur_attrcat;
     c.forEach((p, index) => {
         if ( index == 0 ) return;
-        if ( p[NAME] !== '' && p[CATEGORY] !== '' ){
-            cur = root.appendEquipment(p[NAME], CATEGORY_LIST.indexOf(p[CATEGORY]), p[BASE_VALUE], p[BASE_STABILITY], p[CAPTION]);
-            cur_equip = cur;
+        try {
+            if ( p[NAME] !== '' && p[CATEGORY] !== '' ){
+                cur = root.appendEquipment(p[NAME], CATEGORY_LIST.indexOf(p[CATEGORY]), p[BASE_VALUE], p[BASE_STABILITY], p[CAPTION]);
+                cur_equip = cur;
+            }
+            if ( p[ATTRIBUTE_CATEGORY] !== '' )
+                cur_attrcat = p[ATTRIBUTE_CATEGORY];
+            switch ( p[ATTRIBUTE_CATEGORY] ) {
+                case 'obtain':
+                    cur = cur_equip.appendObtain();
+                    break;
+                case 'recipe':
+                    cur = cur_equip.setRecipe();
+                    break;
+            }
+            switch (cur_attrcat){
+                case 'stats': {
+                    const t = p[ATTRIBUTE_VALUES[0]];
+                    let tail = t.slice(-1), v = t;
+                    if ( tail !== '%' && tail !== '~' )
+                        tail = '';
+                    else
+                        v = t.slice(0, -1);
+                    cur_equip.appendStat(p[ATTRIBUTE_NAME], v, tail, p[ATTRIBUTE_VALUES[1]]);
+                } break;
+                case 'obtain':
+                    cur[p[ATTRIBUTE_NAME]] = p[ATTRIBUTE_VALUES[0]];
+                    break;
+                case 'recipe':
+                    cur[p[ATTRIBUTE_NAME]] = p[ATTRIBUTE_NAME] != 'materials' ? p[ATTRIBUTE_VALUES[0]] : processMaterails(p[ATTRIBUTE_VALUES[0]]);
+            }
         }
-        if ( p[ATTRIBUTE_CATEGORY] !== '' )
-            cur_attrcat = p[ATTRIBUTE_CATEGORY];
-        switch ( p[ATTRIBUTE_CATEGORY] ) {
-            case 'obtain':
-                cur = cur_equip.appendObtain();
-                break;
-            case 'recipe':
-                cur = cur_equip.setRecipe();
-                break;
-        }
-        switch (cur_attrcat){
-            case 'stats': {
-                const t = p[ATTRIBUTE_VALUES[0]];
-                let tail = t.slice(-1), v = t;
-                if ( tail !== '%' && tail !== '~' )
-                    tail = '';
-                else
-                    v = t.slice(0, -1);
-                cur_equip.appendStat(p[ATTRIBUTE_NAME], v, tail, p[ATTRIBUTE_VALUES[1]]);
-            } break;
-            case 'obtain':
-                cur[p[ATTRIBUTE_NAME]] = p[ATTRIBUTE_VALUES[0]];
-                break;
-            case 'recipe':
-                cur[p[ATTRIBUTE_NAME]] = p[ATTRIBUTE_NAME] != 'materials' ? p[ATTRIBUTE_VALUES[0]] : processMaterails(p[ATTRIBUTE_VALUES[0]]);
+        catch(e){
+            console.log(p, index);
+            console.log(e.stack);
         }
     });
 }
