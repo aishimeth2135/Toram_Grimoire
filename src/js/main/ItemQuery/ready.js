@@ -7,8 +7,8 @@ import ja from "./module/LanguageData/ja.js";
 import zh_cn from "./module/LanguageData/zh_cn.js";
 
 function readyFirst(){
-    InitLanguageData({zh_tw, en, ja, zh_cn});
     PageInitFirst();
+    InitLanguageData({zh_tw, en, ja, zh_cn});
 }
 
 function ready(setting){
