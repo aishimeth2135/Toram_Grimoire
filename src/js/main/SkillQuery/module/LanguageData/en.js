@@ -8,7 +8,7 @@ export default function(){
             'Character Stats': 'Load Character Stats Data...',
             'Skill Data': 'Load Skill Data...',
             'Init Skill Data': 'Initialize Skill Data...',
-            'Tag Data': 'Load Tag Tag...',
+            'Tag Data': 'Load Tag Data...',
             'error': '...Loading failed.'
         },
         'Skill Query': {
