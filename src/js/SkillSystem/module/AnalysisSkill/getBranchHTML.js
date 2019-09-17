@@ -159,7 +159,7 @@ function getBranchHTML(branch, ctrr){
         .replace(/#([^\s]+)\s(\w?)/g, (...args) => {
             let res = setTagButton(args[1]);
             if ( args[2] !== '' )
-                res += " ";
+                res += " " + args[2];
             return res;
         });
         if ( _attr['mark'] !== void 0 ){

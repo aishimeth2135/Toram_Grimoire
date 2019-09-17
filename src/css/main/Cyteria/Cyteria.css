@@ -259,6 +259,22 @@
     z-index: -1;
 }
 
+.Cyteria.window:not(.hidden) {
+    animation: lighten-border 0.6s ease;
+}
+@keyframes lighten-border {
+    from {
+        /* outline-color: var(--primary-light-3); */
+        outline-width: 100vh;
+        opacity: 0.1;
+    }
+    to {
+        /* outline-color: var(--primary-light); */
+        outline-width: 1px;
+        opacity: 1;
+    }
+}
+
 @media screen and (max-width: 26rem) {
     .Cyteria.window {
         width: calc(100% - 1rem);
