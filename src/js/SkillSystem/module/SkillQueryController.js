@@ -332,6 +332,7 @@ class SkillElementsController {
 		}
 	}
 	createSkillQueryScopeHTML(sEle, /*const string*/category){
+		const simpleCreateHTML = CY.element.simpleCreateHTML;
 		const SE_TYPE = sEle !== null ? sEle.TYPE : category;
 		//const type = sEle.TYPE.toString().match(/Symbol\((.+)\)/)[1];
 		switch (SE_TYPE){
@@ -362,8 +363,7 @@ class SkillElementsController {
 					he.className = "_" + category;
 					const frg = document.createDocumentFragment();
 					sEle.skillTreeCategorys.forEach((stc) => {
-						const li = document.createElement('li');
-						li.innerHTML = stc.name;
+						const li = simpleCreateHTML('li', null, stc.name);
 						li.setAttribute(strings().data_skillElementNo, _C.getSkillElementNoStr(stc));
 						li.addEventListener('click', li_listener);
 						frg.appendChild(li);
@@ -393,13 +393,11 @@ class SkillElementsController {
 						_C.getSkillElementScope(TYPE_SKILL_RECORD).classList.add('hidden');
 						_C.status.currentSkill = null;
 					};
-					const he = document.createElement("div");
-					he.className = '_' + category;
-					he.classList.add('hidden');
+					const he = simpleCreateHTML('div', ['_' + category, 'hidden', 'Cyteria', 'entrance', 'fade-in']);
+
 					const frg = document.createDocumentFragment();
 					sEle.skillTrees.forEach(function(st){
-						const li = document.createElement("li");
-						li.innerHTML = st.name;
+						const li = simpleCreateHTML('li', null, st.name);
 						li.setAttribute(strings().data_skillElementNo, _C.getSkillElementNoStr(st));
 						li.addEventListener("click", li_listener);
 						frg.appendChild(li);

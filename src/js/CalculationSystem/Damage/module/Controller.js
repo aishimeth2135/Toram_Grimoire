@@ -565,8 +565,8 @@ export default class DamageCalculationController {
             frg.appendChild(t);
         });
 
-        frg.appendChild(simpleCreateHTML('div', ['Cyteria', 'text', 'tips', 'save-confirm-tips', 'hidden'], Lang('Save Load/Warn/Confirm to overwrite existing data')));
-        frg.appendChild(simpleCreateHTML('div', ['Cyteria', 'text', 'tips', 'load-confirm-tips', 'hidden'], Lang('Save Load/Warn/Confirm to load data')));
+        frg.appendChild(simpleCreateHTML('div', ['Cyteria', 'text', 'tips', 'save-confirm-tips', 'hidden', 'entrance', 'fade-in-down'], Lang('Save Load/Warn/Confirm to overwrite existing data')));
+        frg.appendChild(simpleCreateHTML('div', ['Cyteria', 'text', 'tips', 'load-confirm-tips', 'hidden', 'entrance', 'fade-in-down'], Lang('Save Load/Warn/Confirm to load data')));
 
         scope.appendChild(frg);
     }

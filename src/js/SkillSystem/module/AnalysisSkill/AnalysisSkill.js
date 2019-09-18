@@ -253,6 +253,7 @@ function beforeExport(he, ctrr){
     he.querySelectorAll('div.content > div.scope1').forEach(sc1 => {
         if ( sc1.parentNode.classList.contains('content_line') || sc1.childElementCount === 0 )
             return;
+        sc1.classList.add('Cyteria', 'entrance', 'fade-in-down');
         const btn = simpleCreateHTML('span', 'hidden_toggle_button',
             '<span class="close">' + Icons('arrow-up') + '</span><span class="open hidden">' + Icons('arrow-down') + '</span>');
 
@@ -272,8 +273,8 @@ function beforeExport(he, ctrr){
         }
         function setHidden(node, doHidden){
             doHidden
-            ? node.classList.add('fadein')
-            : node.classList.remove('fadein');
+            ? node.classList.add('hidden')
+            : node.classList.remove('hidden');
         }
         const gs = this.parentNode.querySelectorAll('.branch');
         let p = Array.from(gs).indexOf(this);
@@ -317,7 +318,7 @@ function beforeExport(he, ctrr){
                 end += d;
             }
             else {
-                cur.classList.add('group_content');
+                cur.classList.add('group_content', 'Cyteria', 'entrance', 'fade-in-down');
                 if ( cur.getAttribute('data-grouptitle') === '1' ){
                     gtitle = cur;
                     break;
@@ -327,7 +328,7 @@ function beforeExport(he, ctrr){
         if ( !gtitle )
             gtitle = a;
         gtitle.addEventListener('click', group_title_click);
-        gtitle.classList.add('group_title')
+        gtitle.classList.add('group_title');
         gtitle.click();
     });
     he.querySelectorAll('.group_content').forEach(a => {

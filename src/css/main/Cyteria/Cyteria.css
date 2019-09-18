@@ -1,3 +1,10 @@
+.hidden {
+    display: none!important;
+}
+
+/* ==========================================================================
+   Button
+   ========================================================================== */
 .Cyteria.Button {
     cursor: pointer;
     text-align: center;
@@ -6,6 +13,8 @@
     display: inline-block;
 }
 
+/* simple
+   ========================================================================== */
 .Cyteria.Button.simple {
     padding: 0.3rem 0.5rem;
     border-bottom: 1px var(--primary-light) solid;
@@ -36,6 +45,8 @@
     color: var(--primary-light-3);
 }
 
+/* icon-only
+   ========================================================================== */
 .Cyteria.Button.icon-only {
     padding: 0.3rem;
     margin: 0 0.2rem;
@@ -53,6 +64,8 @@
     fill: var(--primary-light-3);
 }
 
+/* border
+   ========================================================================== */
 .Cyteria.Button.border.icon-only {
     border-radius: 0.2rem;
     border: 1px var(--primary-light-4) solid;
@@ -61,6 +74,8 @@
     border: 1px var(--primary-light-3) solid;
 }
 
+/* line
+   ========================================================================== */
 .Cyteria.Button.line {
     margin: 0.3rem;
     padding: 0.4rem 0.7rem;
@@ -90,6 +105,9 @@
 }
 
 
+/* ==========================================================================
+   input
+   ========================================================================== */
 .Cyteria.input {
     border: 0;
     border-bottom: 1px solid var(--primary-light);
@@ -110,6 +128,9 @@
 }
 
 
+/* ==========================================================================
+   text
+   ========================================================================== */
 .Cyteria.text.between-button {
     padding: 0.3rem 0.6rem;
     color: var(--primary-light-3);
@@ -132,6 +153,9 @@
     margin-left: 1rem;
 }
 
+/* ==========================================================================
+   scope-icon
+   ========================================================================== */
 .Cyteria.scope-icon > svg {
     height: 1rem;
     width: 1rem;
@@ -150,6 +174,9 @@
     width: 0.9rem;
 }
 
+/* ==========================================================================
+   ul
+   ========================================================================== */
 .Cyteria.ul.simple {
     list-style: none;
     margin: 0;
@@ -173,6 +200,9 @@
     margin: 0.3rem 0;
 }
 
+/* ==========================================================================
+   window
+   ========================================================================== */
 .Cyteria.window {
     position: fixed;
     width: 25rem;
@@ -259,19 +289,25 @@
     z-index: -1;
 }
 
-.Cyteria.window:not(.hidden) {
-    animation: lighten-border 0.6s ease;
+.Cyteria.window.pop-right {
+    animation: pop-right 0.6s ease;
+}
+@keyframes pop-right {
+    from {
+        transform: translateX(100vw);
+    }
+    to {
+        transform: none;
+    }
 }
 @keyframes lighten-border {
     from {
-        /* outline-color: var(--primary-light-3); */
-        outline-width: 100vh;
-        opacity: 0.1;
+        outline-color: var(--primary-light-3);
+        outline-width: 3px;
     }
     to {
-        /* outline-color: var(--primary-light); */
+        outline-color: var(--primary-light);
         outline-width: 1px;
-        opacity: 1;
     }
 }
 
@@ -281,9 +317,48 @@
     }
 }
 
-
+/* ==========================================================================
+   hr
+   ========================================================================== */
 .Cyteria.hr {
     border: 0;
     height: 1px;
     background-color: var(--primary-light);
+}
+
+/* ==========================================================================
+   Transistions
+   ========================================================================== */
+.Cyteria.entrance {
+    animation-duration: 0.5s;
+    animation-timing-function: ease;
+}
+.Cyteria.entrance.hidden {
+    animation-name: none!important;
+}
+
+.Cyteria.entrance.fade-in {
+    animation-name: fade-in;
+}
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.Cyteria.entrance.fade-in-down {
+    animation-name: fade-in-down;
+}
+@keyframes fade-in-down {
+    from {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
 }

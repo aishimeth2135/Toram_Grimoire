@@ -84,7 +84,7 @@ function createContentLine(frg1, frg2, options){
     s1.appendChild(frg1);
     s2.appendChild(frg2);
     if ( options.headIcon )
-        t.appendChild(simpleCreateHTML('div', '_icon', Icons('arrow-right')));
+        t.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], Icons('arrow-right')));
     t.appendChild(s1);
     t.appendChild(s2);
     if ( options.extrafrgs !== void 0 && options.extrafrgs !== null ){
@@ -581,22 +581,22 @@ function getBranchHTML(branch, ctrr){
             const constant = attr['title'] === 'normal_attack' && attr['constant'] === '0'
             ? null
             : createSkillAttributeScope(
-                null, 
-                Lang('branch/damage/skill constant'),
+                null, null,
+                // Lang('branch/damage/skill constant'),
                 processValue(attr['constant'])
             );
 
             // 技能倍率
             const multiplier = createSkillAttributeScope(
-                null,
-                Lang('branch/damage/skill multiplier'),
+                null, null,
+                // Lang('branch/damage/skill multiplier'),
                 processValue(attr['multiplier'], {tail: '%'})
             );
 
             // 最終傷害常數提升
             const extra_constant = attr['extra_constant'] !== void 0 ? createSkillAttributeScope(
-                null,
-                Lang('branch/damage/skill extra constant'),
+                null, null,
+                // Lang('branch/damage/skill extra constant'),
                 processValue(attr['extra_constant'])
             ) : null;
 
@@ -721,13 +721,30 @@ function getBranchHTML(branch, ctrr){
                 frg1.appendChild(poration_poration);
 
             const frg2 = document.createDocumentFragment();
+            // (
+            if ( valid_base !== null || constant !== null )
+                frg2.appendChild(simpleCreateHTML('span', ['separate', 'between-skill-attribute']));
+            //
             if ( valid_base !== null )
                 frg2.appendChild(valid_base);
+            // +
+            if ( valid_base !== null || constant !== null )
+                frg2.appendChild(simpleCreateHTML('span', ['between-skill-attribute', 'Cyteria', 'scope-icon'], Icons('add')));
+            //
             if ( constant !== null )
                 frg2.appendChild(constant);
+            // )×
+            if ( valid_base !== null || constant !== null ){
+                frg2.appendChild(simpleCreateHTML('span', ['separate', 'between-skill-attribute', 'space-right']));
+                frg2.appendChild(simpleCreateHTML('span', ['between-skill-attribute', 'Cyteria', 'scope-icon'], Icons('close')));
+            }
+            //
             frg2.appendChild(multiplier);
-            if ( extra_constant !== null )
+            // + ..
+            if ( extra_constant !== null ){
+                frg2.appendChild(simpleCreateHTML('span', ['between-skill-attribute', 'Cyteria', 'scope-icon'], Icons('add')));
                 frg2.appendChild(extra_constant);
+            }
 
             const content = simpleCreateHTML('div', 'content');
             const scope1 = simpleCreateHTML('div', 'scope1');
@@ -923,6 +940,8 @@ function getBranchHTML(branch, ctrr){
                 const ta = attr['extra_text'].split(/\s*,\s*/),
                     va = attr['extra_value'].split(/\s*,\s*/).map(a => processValue(a, {toPercentage: true}));
                 ta.forEach((a, i) => {
+                    if ( constant !== null || i != 0 )
+                        extra_frg.appendChild(simpleCreateHTML('span', ['between-skill-attribute', 'Cyteria', 'scope-icon'], Icons('add')))
                     extra_frg.appendChild(createSkillAttributeScope(null, a, va[i]));
                 });;
             }

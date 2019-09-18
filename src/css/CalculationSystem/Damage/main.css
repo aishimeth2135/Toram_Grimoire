@@ -44,17 +44,6 @@ span.for-adjust-input-width {
     margin-top: 0;
     margin-bottom: 1rem;
 }
-.CalculationSystem-Damage > .save-load-scope > .content > .tips:not(.hidden) {
-    animation: roll-down 0.5s ease;
-}
-@keyframes roll-down {
-    from {
-        transform: translateY(-100%);
-    }
-    to {
-        transform: none;
-    }
-}
 
 .CalculationSystem-Damage > .calculations {
     margin-bottom: 1rem;
