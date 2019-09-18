@@ -23,7 +23,7 @@ export default class TagController {
         const root = this.nodes.main;
         const ctrr = this;
 
-        root.classList.add('Cyteria', 'window', 'top-right', 'frozen-top', 'hidden');
+        root.classList.add('Cyteria', 'window', 'top-right', 'pop-right', 'frozen-top', 'hidden');
 
         const top = simpleCreateHTML('div', 'top');
 

@@ -114,6 +114,7 @@ function DrawSkillTree(st, ctrr){
     });
 
     const he = CY.svg.create(tran(maxw) - w/2 + pad, tran(y) + w/2 + pad + textMargin, {'xmlns:xlink': 'http://www.w3.org/1999/xlink'});
+    he.classList.add('Cyteria', 'entrance', 'fade-in')
     he.appendChild(frg);
 
     return he;

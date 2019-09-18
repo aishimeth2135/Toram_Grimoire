@@ -103,18 +103,11 @@ div.skill_branchs > div.branch > div.content > div.scope1 > div.skill_attribute 
 	margin: 0.2rem 0.4rem;
 }
 div.skill_branchs > div.branch > div.content_line > div.scope1,
-div.skill_branchs > div.branch > div.content_line > div.scope2,
-div.skill_branchs > div.branch > div.content_line > div._icon {
+div.skill_branchs > div.branch > div.content_line > div.scope2 {
 	display: inline-block;
 }
-div.skill_branchs > div.branch > div.content_line > div._icon {
+div.skill_branchs > div.branch > div.content_line > .scope-icon {
 	margin-right: 0.3rem;
-	vertical-align: middle;
-}
-div.skill_branchs > div.branch > div.content_line > div._icon > svg {
-	height: 1.3rem;
-	width: 1.3rem;
-	fill: var(--primary-light);
 }
 
 div.skill_branchs > div.branch > div.content {
@@ -124,6 +117,13 @@ div.branch_damage > div.content > div.scope2 > div.skill_attribute {
 	padding: 0.2rem 0.4rem;
 	margin: 0.4rem 0;
 	margin-right: 0.4rem;
+}
+div.branch_damage > div.content > div.scope2 > .separate {
+	border-left: 1px solid var(--primary-light-4);
+	padding: 0.3rem 0;
+}
+div.branch_damage > div.content > div.scope2 > .separate.space-right {
+	margin-right: 0.6rem;
 }
 
 
@@ -344,7 +344,6 @@ div.skill_branchs > .dev_branchDetail > table ._extra {
 div.skill_branchs > div.branch.group_content {
 	border-left: 2px var(--primary-light) solid;
 	padding: 0.4rem;
-	transition: 0.5s ease-out;
 	opacity: 1;
 	margin: 0!important;
 }
@@ -360,12 +359,6 @@ div.skill_branchs > div.branch.group_title[data-expanded="0"] {
 /*div.skill_branchs > div.branch.group_title[data-expanded="1"] {
 	animation: border_mark 2s infinite;
 }*/
-div.skill_branchs > div.branch.group_content.fadein {
-    opacity: 0;
-    height: 0;
-    padding: 0;
-    overflow: hidden;
-}
 div.skill_branchs > div.branch.group_title::before {
 	position: absolute;
 	top: calc(50% - 0.3rem);
