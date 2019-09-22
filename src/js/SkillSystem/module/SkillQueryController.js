@@ -8,6 +8,8 @@ import strings from "./strings.js";
 
 import CY from "../../main/module/cyteria.js";
 
+import {getSkillAttributeData} from "./AnalysisSkill/main.js";
+
 function Lang(s){
 	return GetLang('Skill Query/Controller/' + s);
 }
@@ -26,7 +28,7 @@ class SkillElementsController {
 			subWeapon: -1,
 			bodyArmor: -1,
 			skillLevel: 10,
-			characterLevel: 190,
+			characterLevel: 195,
 			currentSkill: null,
 			stackValues: {},
 			stackNames: {},
@@ -34,6 +36,16 @@ class SkillElementsController {
 			skillRecords: [],
 			skillEquipmentRecords: [],
 			branchDevelopmentMode: false
+		};
+
+		this.nodes = {
+			openSkillAttributeIconTipsButton: null
+		};
+
+		this.listeners = {
+			closeWindow(e){
+				this.parentNode.parentNode.classList.add('hidden');
+			}
 		};
 	}
 	initSkillQueryHTML(main_node){
@@ -45,7 +57,7 @@ class SkillElementsController {
 			SkillTree.CATEGORY_EQUIPMENT, TYPE_SKILL_RECORD, Skill.TYPE
 		];
 		const frg = document.createDocumentFragment();
-		order.forEach(function(a){
+		order.forEach(a => {
 			const t = this.getSkillElementScope(a);
 			frg.appendChild(t);
 			switch(a){
@@ -93,19 +105,6 @@ class SkillElementsController {
 
 	    defs.appendChild(lock_pettern);
 
-	    // skill icon background
-	    // const skillIconBg = CY.svg.createRadialGradient('skill-icon-bg',
-	    //     '.5', '.5', '10', [
-	    //         {offset: '0%', 'stop-color': '#FFF'},
-	    //         {offset: '4.5%', 'stop-color': 'var(--primary-light)'},
-	    //         {offset: '9%', 'stop-color': 'var(--primary-light-3)'}
-	    //     ],
-	    //     {
-	    //     	// spreadMethod: 'repeat',
-	    //     	fx: '.5', fy: '.1'
-	    //     }
-	    // );
-	    // 
 	    const skillIconBg = CY.svg.createLinearGradient('skill-icon-bg',
 	        '.5', '0', '.5', '1', [
 	            {offset: '0%', 'stop-color': '#FFF'},
@@ -113,36 +112,51 @@ class SkillElementsController {
 	            {offset: '100%', 'stop-color': 'var(--primary-light-2)'}
 	        ]
 	    );
-	    const skillIconBg_layer2 = CY.svg.createRadialGradient('skill-icon-bg-l2',
-	        '.5', '.5', '1', [
-	            {offset: '0%', 'stop-color': 'transparent'},
-	            {offset: '53%', 'stop-color': 'transparent'},
-	            {offset: '62%', 'stop-color': '#FFF'},
-	            {offset: '65%', 'stop-color': '#FFF'}
-	        ],
-	        {
-	        	// spreadMethod: 'repeat',
-	        	fx: '.5', fy: '.1'
-	        }
-	    );
-
-	    // #FFD1EA
-	    // #85005F
 
 	    defs.appendChild(skillIconBg);
-	    defs.appendChild(skillIconBg_layer2);
-
-	    // skill icon stroke
-	    const skillIconStroke = CY.svg.createLinearGradient('skill-icon-stroke',
-	        '.5', '0', '.5', '1', [
-	        	{offset: '0%', 'stop-color': 'var(--primary-light)'},
-	            {offset: '100%', 'stop-color': 'var(--primary-light-3)'}
-	        ]
-	    );
-	    defs.appendChild(skillIconStroke);
 
 	    svg.appendChild(defs);
 	    this.MAIN_NODE.appendChild(svg);
+
+	    const simpleCreateHTML = CY.element.simpleCreateHTML;
+
+	    // skill attribute tips
+	    {
+	    	const skill_attribute_icon_tips = simpleCreateHTML('div', ['Cyteria', 'window', 'top-center', 'pop-right', 'hidden', 'skill-attribute-icon-tips']);
+	    	const top = simpleCreateHTML('div', 'top');
+	    	top.appendChild(simpleCreateHTML('span', 'name', Lang('skill attribute icon tips: title')));
+	    	const close_btn = simpleCreateHTML('span', ['button', 'right'], Icons('close'));
+	    	close_btn.addEventListener('click', this.listeners.closeWindow);
+	    	top.appendChild(close_btn);
+	    	skill_attribute_icon_tips.appendChild(top);
+
+		    const {ICON_DATA, TITLE_DATA, TEXT_LIST} = getSkillAttributeData();
+		    console.log(TITLE_DATA);
+		    Object.getOwnPropertySymbols(TITLE_DATA).forEach(k => {
+		    	const c = TITLE_DATA[k];
+		    	const a = ICON_DATA[k];
+		    	const icon = Array.isArray(a) ? Icons('label') : Icons(a);
+		    	const text = Array.isArray(c) ? c.filter(q => q !== '').join(GetLang('global/split string')) : c;
+
+		    	const frg = document.createDocumentFragment();
+		    	const t = simpleCreateHTML('div', 'title');
+	    		t.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], icon + '<span class="text">' + text + '</span>'));
+	    		frg.appendChild(t);
+		    	if ( Array.isArray(a) ){
+		    		const ct = simpleCreateHTML('div', 'content');
+		    		a.forEach((a, i) => ct.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'text-small', 'light'], Icons(a) + '<span class="text">' + TEXT_LIST[k][i] + '</span>')));
+		    		frg.appendChild(ct);
+		    	}
+		    	skill_attribute_icon_tips.appendChild(frg);
+		    });
+		    this.MAIN_NODE.appendChild(skill_attribute_icon_tips);
+		    const open_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('help-rhombus'));
+		    open_btn.addEventListener('click', function(e){
+		    	skill_attribute_icon_tips.classList.remove('hidden');
+		    	e.stopPropagation();
+		    });
+		    this.nodes.openSkillAttributeIconTipsButton = open_btn;
+	    }
 	}
 	getSkillElementScope(type){
 		const SCOPE_NAME = {
@@ -588,9 +602,7 @@ class SkillElementsController {
 			case TYPE_SWITCH_DISPLAY_MODE: {
 				const _C = this;
 				const he = document.createDocumentFragment();
-				const btn = document.createElement('span');
-				btn.appendChild(CY.element.simpleCreateHTML('span', 'icon', Icons('switch')));
-				btn.appendChild(CY.element.simpleCreateHTML('span', 'title', Lang('switch display')));
+				const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple'], Icons('switch') + '<span class="text">' + Lang('switch display') + '</span>');
 				btn.addEventListener('click', function(event){
 					_C.status.showOriginalFormula = _C.status.showOriginalFormula ? false : true;
 					_C.updateSkillHTML();

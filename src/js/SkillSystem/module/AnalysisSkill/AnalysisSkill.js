@@ -3,7 +3,7 @@ import GetLang from "../../../main/module/LanguageSystem.js";
 import CY from "../../../main/module/cyteria.js";
 import StatBase from "../../../CharacterSystem/module/StatBase.js";
 import getBranchHTML from "./getBranchHTML.js";
-import {createSkillAttributeScope, getStackBranchIdKey, simpleCreateHTML, Lang} from "./main.js";
+import {createSkillAttributeScope, getStackBranchIdKey, simpleCreateHTML, Lang, getSkillAttributeData} from "./main.js";
 import {TempSkillEffect, TempSkillBranch} from "./TempSkillElement.js";
 import strings from "../strings.js";
 import {InitSkillBranch} from "./InitSkillData.js";
@@ -128,37 +128,11 @@ function getEffectHTML(sef, attr_name, ctrr){
 			return '?';
 		}
 	};
-	const ICON_DATA = {
-		[SkillEffect.MP_COST]: '',
-		[SkillEffect.RANGE]: '',
-		[SkillEffect.SKILL_TYPE]: ['', '', '', ''], 
-		[SkillEffect.DAMAGE_TYPE]: ['', ''],
-		[SkillEffect.PORATION_TYPE]: ['', ''],
-		[SkillEffect.IN_COMBO]: ['', '', ''],
-		[SkillEffect.ACTION_TIME]: ['', '', '', '', '', '', ''],
-		[SkillEffect.CASTING_TIME]: ''
-	};
-	const TITLE_DATA = {
-		[SkillEffect.MP_COST]: Lang('mp cost'),
-		[SkillEffect.RANGE]: Lang('range'),
-		[SkillEffect.SKILL_TYPE]: Lang('skill type'), 
-		[SkillEffect.DAMAGE_TYPE]: Lang('damage type'),
-		[SkillEffect.PORATION_TYPE]: Lang('poration type'),
-		[SkillEffect.IN_COMBO]: Lang('in combo'),
-		[SkillEffect.ACTION_TIME]: Lang('action time'),
-		[SkillEffect.CASTING_TIME]: ['', Lang('casting time'), Lang('charging time')]
-	};
-	const TEXT_LIST = {
-		[SkillEffect.SKILL_TYPE]: Lang('skill type: List'),
-		[SkillEffect.DAMAGE_TYPE]: Lang('damage type: List'),
-		[SkillEffect.PORATION_TYPE]: Lang('poration type: List'),
-		[SkillEffect.IN_COMBO]: Lang('in combo: List'),
-		[SkillEffect.ACTION_TIME]: Lang('action time: List')
-	};
+	const {ICON_DATA, TITLE_DATA, TEXT_LIST} = getSkillAttributeData();
 
 	let title = TITLE_DATA[attr_name],
 		v = sef.attributes[attr_name],
-		tail = null;
+		tail = '';
 	const icon = !Array.isArray(ICON_DATA[attr_name]) ? ICON_DATA[attr_name] : ICON_DATA[attr_name][v];
 	switch (attr_name){
 		case SkillEffect.CASTING_TIME:
@@ -177,7 +151,7 @@ function getEffectHTML(sef, attr_name, ctrr){
 			break;
 	}
 
-	const he = createSkillAttributeScope(icon, title, v, tail);
+	const he = createSkillAttributeScope(Icons(icon), null, v + tail);
 
 	return he;
 }
@@ -251,11 +225,11 @@ function beforeExport(he, ctrr){
         event.stopPropagation();
     }
     he.querySelectorAll('div.content > div.scope1').forEach(sc1 => {
-        if ( sc1.parentNode.classList.contains('content_line') || sc1.childElementCount === 0 )
+        if ( sc1.parentNode.classList.contains('content-line') || sc1.childElementCount === 0 )
             return;
         sc1.classList.add('Cyteria', 'entrance', 'fade-in-down');
         const btn = simpleCreateHTML('span', 'hidden_toggle_button',
-            '<span class="close">' + Icons('arrow-up') + '</span><span class="open hidden">' + Icons('arrow-down') + '</span>');
+            '<span class="close Cyteria Button icon-only right">' + Icons('arrow-up') + '</span><span class="open hidden Cyteria Button icon-only right">' + Icons('arrow-down') + '</span>');
 
         btn.addEventListener('click', hiddenSubCaption);
         sc1.parentNode.insertBefore(btn, sc1.parentNode.firstChild);
@@ -375,8 +349,6 @@ export default function(ctrr){
 			SkillEffect.MP_COST,
 			SkillEffect.RANGE,
 			SkillEffect.SKILL_TYPE,
-			SkillEffect.DAMAGE_TYPE,
-			SkillEffect.PORATION_TYPE,
 			SkillEffect.IN_COMBO,
 			SkillEffect.ACTION_TIME,
 			SkillEffect.CASTING_TIME
@@ -390,6 +362,7 @@ export default function(ctrr){
 			if ( he )
 				one.appendChild(he);
 		});
+        one.appendChild(ctrr.nodes.openSkillAttributeIconTipsButton);
 		frg.appendChild(one);
 
 

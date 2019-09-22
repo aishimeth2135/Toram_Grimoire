@@ -51,9 +51,6 @@
     padding: 0.3rem;
     margin: 0 0.2rem;
 }
-.Cyteria.Button.icon-only.single-line {
-    padding: 0 0.3rem;
-}
 .Cyteria.Button.icon-only > svg {
     fill: var(--primary-light-4);
     vertical-align: middle;
@@ -62,6 +59,24 @@
 }
 .Cyteria.Button.icon-only:hover > svg {
     fill: var(--primary-light-3);
+}
+/* single-line
+   ========================================================================== */
+.Cyteria.Button.icon-only.single-line {
+    padding: 0 0.3rem;
+}
+/* select-fill
+   ========================================================================== */
+.Cyteria.Button.icon-only.select-fill {
+    border-radius: 50%;
+}
+.Cyteria.Button.icon-only.select-fill.select,
+.Cyteria.Button.icon-only.select-fill:hover {
+    background-color: var(--primary-light-3);
+}
+.Cyteria.Button.icon-only.select-fill.select > svg,
+.Cyteria.Button.icon-only.select-fill:hover > svg {
+    fill: #FFF;
 }
 
 /* border
@@ -165,8 +180,10 @@
 .Cyteria.scope-icon > svg > g {
     fill: var(--primary-light-2);
 }
-.Cyteria.scope-icon > .text {
+.Cyteria.scope-icon > svg + .text {
     margin-left: 0.4rem;
+}
+.Cyteria.scope-icon > .text {
     vertical-align: middle;
 }
 .Cyteria.scope-icon.text-small > svg {
@@ -246,6 +263,10 @@
     max-height: calc(60% - 1rem);
 }
 
+.Cyteria.window > .top {
+    padding-bottom: 0.6rem;
+}
+
 .Cyteria.window.frozen-top {
     padding: 0 1rem;
     padding-bottom: 1rem;
@@ -255,22 +276,21 @@
     position: sticky;
     top: 0;
     padding-top: 1rem;
-    padding-bottom: 0.6rem;
 }
-.Cyteria.window.frozen-top > .top > span.button {
+.Cyteria.window > .top > span.button {
     display: inline-block;
     cursor: pointer;
     transition: 0.3s;
     margin-left: 0.3rem;
 }
-.Cyteria.window.frozen-top > .top > span.button > svg {
+.Cyteria.window > .top > span.button > svg {
     fill: var(--primary-light-2);
     vertical-align: middle;
 }
-.Cyteria.window.frozen-top > .top > span.button:hover svg {
+.Cyteria.window > .top > span.button:hover svg {
     fill: var(--primary-light-3);
 }
-.Cyteria.window.frozen-top > .top > span.name {
+.Cyteria.window > .top > span.name {
     margin: 0.2rem;
     vertical-align: middle;
     color: var(--primary-purple);

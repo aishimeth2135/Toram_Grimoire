@@ -88,7 +88,6 @@ function DrawSkillTree(st, ctrr){
                             const patid = 'si_' + _skill.no;
                             const pat = CY.svg.createEmpty('pattern', {id: patid, width: 1, height: 1});
                             pat.appendChild(Circle(w/2, w/2, w/2, {fill: 'url(#skill-icon-bg)', 'stroke-width': 0}));
-                            //pat.appendChild(Circle(w/2, w/2, w/2, {fill: 'url(#skill-icon-bg-l2)', 'stroke-width': 0}));
                             pat.appendChild(CY.svg.drawImage(skillIconPathRoot + patid + '.png', iconPad, iconPad, w-iconPad*2, w-iconPad*2));
                             defs.appendChild(pat);
                             btn.style.fill = 'url(#' + patid + ')';
