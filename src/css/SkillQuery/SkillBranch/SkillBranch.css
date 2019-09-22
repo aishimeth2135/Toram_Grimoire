@@ -22,7 +22,7 @@ div.skill_branchs > div.branch {
 div.skill_branchs > div.branch.is_mark {
 	border-left: 2px var(--primary-light-2) solid;
 	padding: 0.4rem;
-	margin: 0.4rem 0;
+    padding-left: 0.6rem;
 }
 
 div.skill_branchs > div.branch div.line_scope {
@@ -45,65 +45,62 @@ div.skill_branchs div.scope1 > span._main_title {
 	color: var(--primary-light-3);
 	vertical-align: middle;
 }
-div.skill_branchs div.scope1 > span._main_title span.light,
+div.skill_branchs div.scope1 > span._main_title .light,
 div.skill_branchs div.scope1 > span._main_title .skill_from_where_button {
 	color: var(--primary-purple);
 }
 
-div.skill_branchs > div.branch > div.content div.text-scope {
+div.skill_branchs > div.branch > div.content .text-scope {
 	padding: 0.4rem;
+    display: inline-block;
 }
-div.skill_branchs > div.branch > div.content div.text-scope.has_icon {
-	padding-left: 2rem;
-	position: relative;
-}
-div.skill_branchs > div.branch > div.content div.text-scope.has_icon > span.text {
+div.skill_branchs > div.branch > div.content .text-scope.has_icon > .text {
 	vertical-align: middle;
 }
-div.skill_branchs div.text-scope.has_icon > .icon {
-	position: absolute;
-	left: 0;
+div.skill_branchs .text-scope.has_icon > .icon {
+    vertical-align: middle;
+    margin-right: 0.5rem;
 }
-div.skill_branchs div.text-scope.has_icon > .icon > svg {
-	height: 1.2rem;
-	width: 1.2rem;
+div.skill_branchs .text-scope.has_icon > .icon > svg {
+	height: 1.1rem;
+	width: 1.1rem;
 	fill: var(--primary-light);
 	vertical-align: middle;
 }
-div.skill_branchs div.text-scope.has_icon > .icon > svg > g {
+div.skill_branchs .text-scope.has_icon > .icon > svg > g {
 	fill: var(--primary-light);	
 }
 
-#SkillQuery div.content > div.scope1 > div.skill_attribute {
-	padding: 0.1rem 0.3rem;
+#SkillQuery div.content > div.scope1 > .skill_attribute {
+	padding: 0.2rem 0.3rem;
 	margin: 0.2rem 0.4rem;
 }
-#SkillQuery div.content > div.scope1 > div.skill_attribute > span {
+#SkillQuery div.content > div.scope1 > .skill_attribute > span {
 	line-height: normal;
 }
 
 div.skill_branchs > div.branch > div.content-line + .content-line {
-	margin-top: 0.6rem;
+	margin-top: 0.4rem;
 }
 
-div.skill_branchs > div.branch > div.content-line > div.scope1 {
-	margin-right: 0.4rem;
+div.skill_branchs > div.branch > div.content-line > div.scope2 {
+	margin-left: 0.4rem;
 }
 
 div.skill_branchs > div.branch > div.content-line > div.scope1,
 div.skill_branchs > div.branch > div.content-line > div.scope2 {
 	display: inline-block;
 	vertical-align: middle;
+    margin-top: 0.1rem;
 }
 div.skill_branchs > div.branch > div.content-line > .scope-icon {
-	margin-right: 0.3rem;
+	margin-right: 0.1rem;
 	vertical-align: middle;
 }
 
 div.skill_branchs > div.branch > div.content {
-	padding: 0 0.4rem;
 }
-div.branch_damage > div.content > div.scope2 > div.skill_attribute {
+div.branch_damage > div.content > div.scope2 > .skill_attribute {
 	padding: 0.2rem 0.4rem;
 	margin: 0.4rem 0;
 	margin-right: 0.4rem;
@@ -122,9 +119,8 @@ div.branch_damage > div.content > div.scope2 > .separate.space-right {
 div.skill_branchs > div.branch_tips {
 	color: #c62899;
 	font-size: 0.9rem;
-	padding: 0.3rem 0;
 }
-div.skill_branchs > div.branch_tips > div.content div.text-scope.has_icon {
+div.skill_branchs > div.branch_tips > div.content .text-scope.has_icon {
 	padding-left: 1.8rem;
 	position: relative;
 }
@@ -158,13 +154,13 @@ div.skill_branchs > div.branch_reference a.url_text {
 	text-decoration: unset;
 }
 
-div.skill_branchs div.scope1 div.skill_attribute > span.element_value {
+div.skill_branchs div.scope1 .skill_attribute > span.element_value {
 	vertical-align: baseline;
 }
-/*#SkillQuery div.Skill_scope > div.skill_branchs > div.branch  div.scope1 div.skill_attribute > span.element_ball {
-	height: 0.8rem;
-	width: 0.8rem;
-}*/
+#SkillQuery div.scope1 .skill_attribute > span.element_ball {
+	height: 0.6rem;
+	width: 0.6rem;
+}
 div.skill_branchs > div.branch span.effect_by_stack {
 	color: var(--primary-water-blue);
 }
@@ -345,7 +341,7 @@ div.skill_branchs > .dev_branchDetail > table ._extra {
 
 div.skill_branchs > div.branch.group_content {
 	border-left: 2px var(--primary-light) solid;
-	padding: 0.4rem;
+	padding: 0.4rem 0.6rem;
 	opacity: 1;
 	margin: 0!important;
 }
