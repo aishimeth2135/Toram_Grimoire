@@ -206,10 +206,12 @@
 
 
 #SkillQuery span.element_ball {
-	height: 0.9rem;
-	width: 0.9rem;
+	height: 0.8rem;
+	width: 0.8rem;
 	border-radius: 50%;
 	vertical-align: middle;
+	margin-right: 0.4rem;
+	display: inline-block;
 }
 #SkillQuery div.skill_attribute > .element_value {
 	vertical-align: middle;

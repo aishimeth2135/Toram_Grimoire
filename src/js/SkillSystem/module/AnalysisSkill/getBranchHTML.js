@@ -75,8 +75,8 @@ function getDamageElementHTML(ele_type){
     let icon_type = ele_type;
     if ( ele_type == 'arrow' || ele_type == 'one_hand_sword' )
         icon_type = 'multiple';
-    t.appendChild(simpleCreateHTML('span', ['_icon', 'element_' + icon_type, 'element_ball']));
-    t.appendChild(simpleCreateHTML('span', ['_value', 'element_value'], ELEMEMT_DICT[ele_type]));
+    t.appendChild(simpleCreateHTML('span', ['element_' + icon_type, 'element_ball']));
+    t.appendChild(simpleCreateHTML('span', ['value', 'element_value'], ELEMEMT_DICT[ele_type]));
     return t;
 }
 
