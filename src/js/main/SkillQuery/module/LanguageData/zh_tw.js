@@ -21,7 +21,8 @@ export default function(){
                 'body armor': '身體裝備',
                 'equipment: unlimited': '無限制',
                 'switch display': '切換顯示',
-                'current skill': '當前技能'
+                'current skill': '當前技能',
+                'skill attribute icon tips: title': '圖示說明'
             },
             "Analysis Skill": {
                 'no data': '此技能資料尚未齊全。',

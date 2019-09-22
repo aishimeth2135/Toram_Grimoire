@@ -1,24 +1,51 @@
 import GetLang from "../../../main/module/LanguageSystem.js";
 import CY from "../../../main/module/cyteria.js";
+import {SkillEffect} from "../SkillElements.js";
 
 const simpleCreateHTML = CY.element.simpleCreateHTML;
 
-const GLOBAL_ICON_DATA = {
-    Sword: '',
-    Staff: ''
-};
-
 function createSkillAttributeScope(icon, t, v, tail){
     const a = simpleCreateHTML('div', 'skill_attribute');
+
+    let html = '';
     if ( icon !== null )
-        a.appendChild(simpleCreateHTML('span', '_icon', icon));
+        html += icon;
     if ( t !== null )
-        a.appendChild(simpleCreateHTML('span', '_title', t));
+        html += '<span class="text">' + t + '</span>';
+    if ( html !== '' )
+        a.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], html));
+
     if ( v !== null && v !== void 0 )
-        a.appendChild(simpleCreateHTML('span', '_value', v));
+        a.appendChild(simpleCreateHTML('span', 'value', v));
     if ( tail !== null && tail !== void 0 )
-        a.appendChild(simpleCreateHTML('span', '_tail', tail));
+        a.appendChild(simpleCreateHTML('span', 'tail', tail));
     return a;
+}
+
+function getSkillAttributeData(){
+    const ICON_DATA = {
+        [SkillEffect.MP_COST]: 'water',
+        [SkillEffect.RANGE]: 'target',
+        [SkillEffect.SKILL_TYPE]: 'rhombus-split',
+        [SkillEffect.IN_COMBO]: ['selection-ellipse-arrow-inside', 'forbid', 'numeric-1-circle-outline'],
+        [SkillEffect.ACTION_TIME]: 'time-sand-fill',
+        [SkillEffect.CASTING_TIME]: 'clock-arrow'
+    };
+    const TITLE_DATA = {
+        [SkillEffect.MP_COST]: Lang('mp cost'),
+        [SkillEffect.RANGE]: Lang('range'),
+        [SkillEffect.SKILL_TYPE]: Lang('skill type'), 
+        [SkillEffect.IN_COMBO]: Lang('in combo'),
+        [SkillEffect.ACTION_TIME]: Lang('action time'),
+        [SkillEffect.CASTING_TIME]: ['', Lang('casting time'), Lang('charging time')]
+    };
+    const TEXT_LIST = {
+        [SkillEffect.SKILL_TYPE]: Lang('skill type: List'),
+        [SkillEffect.IN_COMBO]: Lang('in combo: List'),
+        [SkillEffect.ACTION_TIME]: Lang('action time: List')
+    };
+
+    return {ICON_DATA, TITLE_DATA, TEXT_LIST};
 }
 
 function getStackBranchIdKey(stk){
@@ -29,4 +56,4 @@ function Lang(s){
     return GetLang("Skill Query/Analysis Skill/" + s);
 }
 
-export {createSkillAttributeScope, getStackBranchIdKey, simpleCreateHTML, GLOBAL_ICON_DATA, Lang};
+export {createSkillAttributeScope, getStackBranchIdKey, simpleCreateHTML, Lang, getSkillAttributeData};

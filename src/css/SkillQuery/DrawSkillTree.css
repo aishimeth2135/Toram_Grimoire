@@ -8,7 +8,6 @@
 #SkillQuery div.SkillTree_scope svg > circle.skill-circle {
     fill: #FFF;
     z-index: 5;
-    /* stroke: url(#skill-icon-stroke); */
     stroke: var(--primary-light-2);
     stroke-width: 2px;
     cursor: pointer;
@@ -37,5 +36,3 @@
 #SkillQuery div.SkillTree_scope svg > circle.skill-circle.disable {
     stroke: #BBB;
 }
-/* #SkillQuery div.SkillTree_scope svg > line {
-} */

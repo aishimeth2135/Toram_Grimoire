@@ -46,8 +46,15 @@ function getPorationHTML(poration_branch){
         auto: dict1[_attr['damage']],
         none: Lang('effective poration type: none')
     });
-    let one = createSkillAttributeScope(null, Lang('damage poration: title'), dict1[_attr['damage']]);
-    let two = createSkillAttributeScope(null, Lang('effective poration: title'), dict2[_attr['poration']]);
+    const icon_dict = {
+        physical: 'sword', magic: 'meteor',
+        normal_attack: 'crosshair', none: 'selection-ellipse'
+    };
+    Object.assign(icon_dict, {
+        auto: icon_dict[_attr['damage']]
+    });
+    let one = createSkillAttributeScope(Icons(icon_dict[_attr['damage']]), Lang('damage poration: title'), dict1[_attr['damage']]);
+    let two = createSkillAttributeScope(Icons(icon_dict[_attr['poration']]), Lang('effective poration: title'), dict2[_attr['poration']]);
 
     return {one, two};
 }
@@ -78,7 +85,7 @@ function createContentLine(frg1, frg2, options){
         headIcon: true,
         extrafrgs: null
     }, options);
-    const t = simpleCreateHTML('div', ['content', 'content_line']);
+    const t = simpleCreateHTML('div', ['content', 'content-line']);
     const s1 = simpleCreateHTML('div', 'scope1');
     const s2 = simpleCreateHTML('div', 'scope2');
     s1.appendChild(frg1);
@@ -409,6 +416,15 @@ function getBranchHTML(branch, ctrr){
 
         return scope;
     }
+    function createBranchTitleScope(title){
+        return simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small'], Icons('book') + '<span class="text">' + title + '</span>');
+    }
+    function createAlimentFragment(name, chance){
+        const t = document.createDocumentFragment();
+        t.appendChild(createSkillAttributeScope(Icons('label'), null, setTagButton(name)));
+        t.appendChild(createSkillAttributeScope(null, Lang('branch/damage/chance'), processValue(chance || '0', {tail: '%'})));
+        return t;
+    }
 
     const SLv = data.skillLevel, CLv = data.characterLevel;
 
@@ -541,12 +557,7 @@ function getBranchHTML(branch, ctrr){
         }
         case 'damage': {
             // 分支name
-            let damage_name = null;
-            if ( attr['name'] !== void 0 ){
-                damage_name = document.createDocumentFragment();
-                damage_name.appendChild(simpleCreateHTML('span', '_icon', Icons('potum')));
-                damage_name.appendChild(simpleCreateHTML('span', '_name', attr['name']));
-            }
+            const damage_name = attr['name'] !== void 0 ? createBranchTitleScope(attr['name']) : null;
 
             // 標題
             let text = '';
@@ -578,7 +589,7 @@ function getBranchHTML(branch, ctrr){
             );
 
             // 技能常數
-            const constant = attr['title'] === 'normal_attack' && attr['constant'] === '0'
+            const constant = attr['constant'] === '0'
             ? null
             : createSkillAttributeScope(
                 null, null,
@@ -603,12 +614,9 @@ function getBranchHTML(branch, ctrr){
             //異常狀態
             let aliment = null;
             if ( attr['aliment_name'] !== void 0 ) {
-                const s2 = document.createDocumentFragment();
-                s2.appendChild(createSkillAttributeScope(null, null, setTagButton(attr['aliment_name'])));
-                s2.appendChild(createSkillAttributeScope(null, Lang('branch/damage/chance'), processValue(attr['aliment_chance'] || '0', {tail: '%'})));
                 aliment = createContentLine(
                     simpleCreateHTML('span', '_main_title', Lang('branch/damage/aliment')),
-                    s2
+                    createAlimentFragment(attr['aliment_name'], attr['aliment_chance'])
                 );
             }
             
@@ -618,12 +626,12 @@ function getBranchHTML(branch, ctrr){
             if ( attr['type'] == 'single' )
                 target_type = createSkillAttributeScope(null, null, Lang('branch/damage/target type: single'));
             else {
-                target_type = createSkillAttributeScope(Icons('search'), null, Lang('branch/damage/target type: AOE'));
+                target_type = createSkillAttributeScope(Icons('search'), Lang('branch/damage/target type: AOE'));
                 area_scope = getEffectiveAreaHTML(branch);
                 target_type.addEventListener('click', () => {
                     area_scope.classList.toggle('hidden');
                 });
-                target_type.classList.add('show_area');
+                target_type.classList.add('show-area');
             }
 
             // 屬性
@@ -671,9 +679,8 @@ function getBranchHTML(branch, ctrr){
                 const s2 = document.createDocumentFragment();
 
                 if ( _attr['aliment_name'] )
-                    s2.appendChild(createSkillAttributeScope(null, null, setTagButton(_attr['aliment_name'])));
-                if ( _attr['aliment_chance'] )
-                    s2.appendChild(createSkillAttributeScope(null, Lang('branch/damage/chance'), processValue(_attr['aliment_chance']) + '%'));
+                    s2.appendChild(createAlimentFragment(_attr['aliment_name'], _attr['aliment_chance']));
+
                 if ( _attr['constant'] ){
                     let t = safeEval(_attr['constant']);
                     const sign = t >= 0 ? '+' : '';
@@ -687,7 +694,7 @@ function getBranchHTML(branch, ctrr){
                     s2.appendChild(getDamageElementHTML(_attr['element']));
                 }
                 if ( _attr['caption'] ){
-                    s2.appendChild(simpleCreateHTML('div', 'text_scope', processText(ex, 'caption')));
+                    s2.appendChild(simpleCreateHTML('span', 'text-scope', processText(ex, 'caption')));
                 }
                 ex.stats.forEach(stat => s2.appendChild(processStat(stat)));
                 
@@ -721,23 +728,24 @@ function getBranchHTML(branch, ctrr){
                 frg1.appendChild(poration_poration);
 
             const frg2 = document.createDocumentFragment();
-            // (
-            if ( valid_base !== null || constant !== null )
-                frg2.appendChild(simpleCreateHTML('span', ['separate', 'between-skill-attribute']));
-            //
+            
+            const constant_ary = [];
             if ( valid_base !== null )
-                frg2.appendChild(valid_base);
-            // +
-            if ( valid_base !== null || constant !== null )
-                frg2.appendChild(simpleCreateHTML('span', ['between-skill-attribute', 'Cyteria', 'scope-icon'], Icons('add')));
-            //
+                constant_ary.push(valid_base);
             if ( constant !== null )
-                frg2.appendChild(constant);
-            // )×
-            if ( valid_base !== null || constant !== null ){
+                constant_ary.push(constant);
+
+            if ( constant_ary.length > 1 )
+                frg2.appendChild(simpleCreateHTML('span', ['separate', 'between-skill-attribute']));
+            constant_ary.forEach((a, i) => {
+                if ( i !== 0 )
+                    frg2.appendChild(simpleCreateHTML('span', ['between-skill-attribute', 'Cyteria', 'scope-icon'], Icons('add')));
+                frg2.appendChild(a);
+            });
+            if ( constant_ary.length > 1 )
                 frg2.appendChild(simpleCreateHTML('span', ['separate', 'between-skill-attribute', 'space-right']));
-                frg2.appendChild(simpleCreateHTML('span', ['between-skill-attribute', 'Cyteria', 'scope-icon'], Icons('close')));
-            }
+            frg2.appendChild(simpleCreateHTML('span', ['between-skill-attribute', 'Cyteria', 'scope-icon'], Icons('close')));
+
             //
             frg2.appendChild(multiplier);
             // + ..
@@ -776,12 +784,7 @@ function getBranchHTML(branch, ctrr){
             return he;
         }
         case 'effect': case 'next': case 'passive': {
-            let text_name = null;
-            if ( attr['name'] !== void 0 ){
-                text_name = document.createDocumentFragment();
-                text_name.appendChild(simpleCreateHTML('span', '_icon', Icons('potum')));
-                text_name.appendChild(simpleCreateHTML('span', '_name', attr['name']));
-            }
+            const text_name = attr['name'] !== void 0 ? createBranchTitleScope(attr['name']) : null;
             
             let c = attr['condition'];
             if ( c == 'auto' )
@@ -821,14 +824,14 @@ function getBranchHTML(branch, ctrr){
             if ( attr['radius'] === void 0 )
                 target_type = text !== null ? createSkillAttributeScope(null, null, text) : null;
             else {
-                target_type = createSkillAttributeScope(Icons('search'), null, text);
+                target_type = createSkillAttributeScope(Icons('search'), text);
                 attr['end_position'] = 'self';
                 attr['effective_area'] = 'circle';
                 area_scope = getEffectiveAreaHTML(branch);
                 target_type.addEventListener('click', () => {
                     area_scope.classList.toggle('hidden');
                 });
-                target_type.classList.add('show_area');
+                target_type.classList.add('show-area');
             }
             
             const extras = suffix.filter(a => a.name == 'extra');
@@ -840,7 +843,7 @@ function getBranchHTML(branch, ctrr){
                 const s2 = document.createDocumentFragment();
 
                 if ( _attr['caption'] ){
-                    s2.appendChild(simpleCreateHTML('div', 'text_scope', processText(ex, 'caption')));
+                    s2.appendChild(simpleCreateHTML('span', 'text-scope', processText(ex, 'caption')));
                 }
                 ex.stats.forEach(stat => s2.appendChild(processStat(stat)));
                 const s1 = document.createDocumentFragment();
@@ -868,7 +871,7 @@ function getBranchHTML(branch, ctrr){
 
             const scope2 = document.createDocumentFragment();
             if ( attr['caption'] )
-                scope2.appendChild(simpleCreateHTML('div', 'text_scope', processText(branch, 'caption')));
+                scope2.appendChild(simpleCreateHTML('span', 'text-scope', processText(branch, 'caption')));
             else
                 branch.stats.forEach(a => scope2.appendChild(processStat(a)));
 
@@ -902,12 +905,7 @@ function getBranchHTML(branch, ctrr){
             return he;
         }
         case 'heal': {
-            let heal_name = null;
-            if ( attr['name'] ){
-                heal_name = document.createDocumentFragment();
-                heal_name.appendChild(simpleCreateHTML('span', '_icon', Icons('potum')));
-                heal_name.appendChild(simpleCreateHTML('span', '_name', attr['name']));
-            }
+            const heal_name = attr['name'] !== void 0 ? createBranchTitleScope(attr['name']) : null;
 
             let text = getTargetText(attr['target']);
             const target = text != null ? createSkillAttributeScope(null, null, text) : null;
@@ -986,12 +984,9 @@ function getBranchHTML(branch, ctrr){
             return he;
         }
         case 'text': case 'tips': {
-            let text_name = null;
-            if ( attr['name'] ){
-                text_name = simpleCreateHTML('span', '_name', attr['name']);
-            }
+            const text_name = attr['name'] !== void 0 ? createBranchTitleScope(attr['name']) : null;
 
-            const main_text = simpleCreateHTML('div', 'text_scope', processText(branch));
+            const main_text = simpleCreateHTML('span', 'text-scope', processText(branch));
             if ( attr['icon'] !== void 0 ){
                 const iconStr = {
                     'potum': Icons('potum')
@@ -1043,7 +1038,7 @@ function getBranchHTML(branch, ctrr){
             return he;
         }
         case 'reference': {
-            const main_text = attr['text'] ? simpleCreateHTML('div', 'text_scope', processText(branch)) : null;
+            const main_text = attr['text'] ? simpleCreateHTML('span', 'text-scope', processText(branch)) : null;
 
             let url_scope = null;
             if ( attr['url'] ){
