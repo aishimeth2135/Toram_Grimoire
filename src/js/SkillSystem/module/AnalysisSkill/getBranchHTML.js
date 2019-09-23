@@ -164,7 +164,7 @@ function getBranchHTML(branch, ctrr){
         )
         .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (...args) => separateText(args[1]))
         .replace(/#([^\s]+)\s(\w?)/g, (...args) => {
-            let res = setTagButton(args[1]);
+            let res = setTagButton(args[1].replace(new RegExp('_', 'g'), ' '));
             if ( args[2] !== '' )
                 res += " " + args[2];
             return res;
