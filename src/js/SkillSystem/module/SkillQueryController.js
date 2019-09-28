@@ -666,7 +666,7 @@ class SkillElementsController {
 		btn.classList[date_ary.length == 0 ? 'add': 'remove']('hidden');
 
 		const last = date_ary[0] || '';
-		btn.querySelector('.text').innerHTML = last;
+		btn.querySelector('.text').innerHTML = this.status.currentSkillHistoryDate || last;
 		btn.setAttribute('data-last', last);
 
 		const frg = document.createDocumentFragment();
