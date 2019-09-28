@@ -4,6 +4,7 @@ export default function(){
         'global': {
             'second': '秒',
             'cancel': '取消',
+            'clear': '清除',
             'LocalStorage is inavailable': '此瀏覽器版本無法使用此儲存功能。',
             'split string': '、'
         },

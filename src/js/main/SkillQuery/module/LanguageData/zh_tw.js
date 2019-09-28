@@ -22,9 +22,11 @@ export default function(){
                 'equipment: unlimited': '無限制',
                 'switch display': '切換顯示',
                 'current skill': '當前技能',
-                'skill attribute icon tips: title': '圖示說明'
+                'skill attribute icon tips: title': '圖示說明',
+                'select skill history date: title': '選擇改版記錄'
             },
             "Analysis Skill": {
+                'unknow date': '未知的日期',
                 'no data': '此技能資料尚未齊全。',
                 'equipment not confirm': '所選取的裝備無法使用此技能。',
                 'Main Weapon List': ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍', '空手'],
@@ -151,7 +153,7 @@ export default function(){
                 }         
             },
             'button text': {
-                'back': '上一個技能'
+                'back': '上一個'
             }
         }
     };

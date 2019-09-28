@@ -10,12 +10,12 @@
 
 @keyframes mark {
    0%   { background-color: var(--primary-light); }
-   70%  { background-color: var(--primary-light-2); }
+   70%  { background-color: var(--primary-light-3); }
    100% { background-color: var(--primary-light); }
 }
 
 @keyframes border_mark {
    0%   { border-left-color: var(--primary-light); }
-   70%  { border-left-color: var(--primary-light-2); }
+   70%  { border-left-color: var(--primary-light-3); }
    100% { border-left-color: var(--primary-light); }
 }

@@ -31,7 +31,7 @@ branchDevelopmentController.prototype = {
 	/**
 	 * 取得此分支覆蓋前後的細節。
 	 * @param  {TempSkillBranch} branch 欲取得細節的分支
-	 * @return {dom element}      HTML介面
+	 * @return {HTMLElement}
 	 */
 	branchDetail(branch, currentBranch, is_default, is_exist){
 		function getAttrEx(type){
@@ -325,26 +325,31 @@ export default function(ctrr){
 	const equip = data;
 	const SLv = data.skillLevel, CLv = data.characterLevel;
 
-	/* Load Default SkillEffect */
-	let output = new TempSkillEffect().from(skill.defaultEffect);
+	// 複製一份預設Effect
+	const output = new TempSkillEffect().from(skill.defaultEffect);
 
-	let overwrite_eft;
-
-	let find = false;
-	skill.effects.forEach(eft => {
-		if ( find ) return;
+    // 執行覆蓋
+	const overwrite_eft = skill.effects.find(eft => {
 		if ( ctrr.equipmentCheck(eft, data) ){
 			if ( eft != skill.defaultEffect )
 				output.overWrite(eft);
-			overwrite_eft = eft;
-			find = true;
-			return;
+			return true;
 		}
 	});
-	/* 產生輸出介面 */
-	if ( find ){
+
+	// 產生輸出介面
+	if ( overwrite_eft !== void 0 ){
 		const frg = document.createDocumentFragment();
 
+        // 更新歷史記錄清單
+        ctrr.updateSelectSkillHistoryDateScope(
+            output.branchs
+            .filter(b => b.name == 'history')
+            .map(b => b.branchAttributes['date'])
+            .filter((b, i, self) => self.indexOf(b) == i)
+        );
+
+        // 基本屬性
 		const order = [
 			SkillEffect.MP_COST,
 			SkillEffect.RANGE,
@@ -353,9 +358,9 @@ export default function(ctrr){
 			SkillEffect.ACTION_TIME,
 			SkillEffect.CASTING_TIME
 		];
-		const one = document.createElement('div');
-		one.className = 'skill_attributes';
-		order.forEach(function(item){
+		const one = simpleCreateHTML('div', 'skill_attributes');
+		
+		order.forEach(item => {
 			if ( output.attributes[item] === void 0 )
 				return;
 			const he = getEffectHTML(output, item, ctrr);
@@ -366,9 +371,9 @@ export default function(ctrr){
 		frg.appendChild(one);
 
 
-		const two = document.createElement('div');
+		const two = simpleCreateHTML('div', 'skill_branchs');
         two.appendChild(document.createElement('hr'));
-		two.className = 'skill_branchs';
+		
 		if ( output.checkData() ){
 			// 初始化
             const branchDevelopmentMode = data.branchDevelopmentMode;
@@ -415,22 +420,15 @@ export default function(ctrr){
 			if ( temp_html !== null )
 				two.appendChild(temp_html);
 		}
-		else {
-			const t = document.createElement('div');
-			t.classList.add('no_data');
-			t.innerHTML = Lang('no data');
-			two.appendChild(t);
-		}
+		else
+            two.appendChild(simpleCreateHTML('div', 'no_data', Lang('no data')));
+
 		frg.appendChild(two);
 
 		beforeExport(frg, ctrr);
 
 		return frg;
 	}
-	else {
-		const div = document.createElement('div');
-		div.classList.add('no_data');
-		div.innerHTML = Lang('equipment not confirm');
-		return div;
-	}
+
+    return simpleCreateHTML('div', 'no_data', Lang('equipment not confirm'));
 };

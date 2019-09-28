@@ -1,9 +1,9 @@
 :root {
 	--primary-dark: #85005F;
 	--primary-light: #FFD1EA;
-	--primary-light-2: #ff5fb7;
-	--primary-light-3: #ff008d;
-	--primary-light-4: #f7a8d3;
+	--primary-light-2: #f7a8d3;
+	--primary-light-3: #ff5fb7;
+	--primary-light-4: #ff008d;
 	--primary-purple: #9c27b0;
 	--primary-water-blue-light: #9acbf3;
 	--primary-water-blue: #2196f3;
@@ -63,7 +63,7 @@ input:focus {
 	transition: 0.3s;
 }
 #top-menu li:hover {
-	border-bottom-color: var(--primary-light-2);
+	border-bottom-color: var(--primary-light-3);
 }
 #top-menu, body > article, body > section, body > footer {
 	max-width: 50rem;
@@ -80,7 +80,7 @@ input:focus {
 	fill: var(--primary-light);
 }
 #top-menu .settings:hover svg {
-	fill: var(--primary-light-2);
+	fill: var(--primary-light-3);
 }
 
 footer {
@@ -93,11 +93,11 @@ footer .switch_branch_development_mode {
 	transition: 0.3s;
 }
 footer .switch_branch_development_mode:hover {
-	color: var(--primary-light-3);
+	color: var(--primary-light-4);
 }
 
 a {
-	color: var(--primary-light-3);
+	color: var(--primary-light-4);
 }
 
 nav {
@@ -129,8 +129,8 @@ nav > ul > li > a {
 }
 
 nav > ul > li > a:hover {
-	border-left-color: var(--primary-light-2);
-	color: var(--primary-light-2);
+	border-left-color: var(--primary-light-3);
+	color: var(--primary-light-3);
 }
 
 nav > ul > li > a::after {
@@ -183,8 +183,8 @@ nav > ul > li > a::after {
 	margin: 0.2rem 0;
 	padding: 0.6rem;
 	background-color: #fff;
-	color: var(--primary-light-3);
-	border: 1px solid var(--primary-light-3);
+	color: var(--primary-light-4);
+	border: 1px solid var(--primary-light-4);
 	animation: show-message 5s ease-out;
 	opacity: 0;
 }

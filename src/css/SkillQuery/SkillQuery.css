@@ -17,8 +17,8 @@
 }
 #SkillQuery div.SkillRoot_scope > div._menu li:hover,
 #SkillQuery div.SkillRoot_scope > div._menu li.cur {
-	color: var(--primary-light-3);
-	border-bottom-color: var(--primary-light-3);
+	color: var(--primary-light-4);
+	border-bottom-color: var(--primary-light-4);
 }
 
 #SkillQuery div.SkillTreeCategory_scope > div._menu > ul {
@@ -37,13 +37,13 @@
 
 #SkillQuery div.SkillTreeCategory_scope > div._menu li:hover,
 #SkillQuery div.SkillTreeCategory_scope > div._menu li.cur {
-	color: var(--primary-light-3);
-	border-bottom-color: var(--primary-light-3);
+	color: var(--primary-light-4);
+	border-bottom-color: var(--primary-light-4);
 }
 
 #SkillQuery div.SkillTree_scope {
 	overflow-y: auto;
-	border-bottom: 1px var(--primary-light-2) solid;
+	border-bottom: 1px var(--primary-light-3) solid;
 	padding-bottom: 1rem;
 }
 
@@ -51,7 +51,7 @@
 #SkillQuery div.Skill_scope {
 	margin-bottom: 2rem;
 }
-#SkillQuery div.Skill_scope > div.skill_attributes {
+#SkillQuery div.Skill_scope > div.skill-attributes {
 	padding: 0.6rem;
 }
 #SkillQuery div.Skill_scope > div.skill_branchs {
@@ -91,7 +91,7 @@
 #SkillQuery div.SkillEquipment_scope > div > div {
 	margin-right: 0.4rem;
 	font-size: 0.9rem;
-	color: var(--primary-light-3);
+	color: var(--primary-light-4);
 }
 
 #SkillQuery div.SkillEquipment_scope ul {
@@ -108,8 +108,8 @@
 }
 #SkillQuery div.SkillEquipment_scope li:hover,
 #SkillQuery div.SkillEquipment_scope li.cur {
-	color: var(--primary-light-3);
-	border-bottom-color: var(--primary-light-3);
+	color: var(--primary-light-4);
+	border-bottom-color: var(--primary-light-4);
 }
 
 
@@ -123,7 +123,7 @@
 	display: inline-block;
 }
 #SkillQuery div.CharacterLevel_scope > div.title {
-	color: var(--primary-light-3);
+	color: var(--primary-light-4);
 	font-size: 0.9rem;
 	margin-right: 0.6rem;
 	display: inline-block;
@@ -137,35 +137,16 @@
 
 
 #SkillQuery div.SkillRecord_scope {
-	padding: 1rem;
-	border-top: 1px var(--primary-light-2) solid;
+	padding: 0.9rem 0.4rem;
+	border-top: 1px var(--primary-light-3) solid;
 }
 #SkillQuery div.SkillRecord_scope > div {
 	display: inline-block;
 }
-#SkillQuery div.SkillRecord_scope > div.back_button {
+#SkillQuery div.SkillRecord_scope > .back-button {
 	margin-right: 1.8rem;
-	cursor: pointer;
-	transition: 0.3s;
 }
-#SkillQuery div.SkillRecord_scope > div.back_button > .icon {
-	margin-right: 0.8rem;
-}
-#SkillQuery div.SkillRecord_scope > div.back_button > .caption {
-	vertical-align: middle;
-	color: var(--primary-light-2);
-}
-#SkillQuery div.SkillRecord_scope > div.back_button > .icon > svg {
-	vertical-align: middle;
-	fill: var(--primary-light-2);
-	height: 2rem;
-	width: 2rem;
-}
-#SkillQuery div.SkillRecord_scope > div.back_button:hover svg {
-	fill: var(--primary-light-3);
-}#SkillQuery div.SkillRecord_scope > div.back_button:hover .caption {
-	color: var(--primary-light-3);
-}
+
 #SkillQuery div.SkillRecord_scope > div.tip {
 	color: var(--primary-light);
 	margin-right: 0.6rem;
@@ -178,28 +159,28 @@
 }
 
 
-#SkillQuery div.skill_attribute {
+#SkillQuery div.skill-attribute {
 	margin: 0.2rem 0.3rem;
 	padding-top: 0.1rem;
 	padding: 0.2rem 0.4rem;
-	border-bottom: 1px var(--primary-light-4) solid;
+	border-bottom: 1px var(--primary-light-2) solid;
 	display: inline-block;
 }
-#SkillQuery div.skill_attribute > span {
+#SkillQuery div.skill-attribute > span {
 	line-height: 1.3125rem;
 }
-#SkillQuery div.skill_attribute {
+#SkillQuery div.skill-attribute {
 	display: inline-block;
 }
 
-#SkillQuery div.skill_attribute > .scope-icon + .value {
+#SkillQuery div.skill-attribute > .scope-icon + .value {
 	margin-left: 0.6rem;
 }
-#SkillQuery div.skill_attribute > .value {
-	color: var(--primary-light-3);
+#SkillQuery div.skill-attribute > .value {
+	color: var(--primary-light-4);
 	vertical-align: middle;
 }
-#SkillQuery div.skill_attribute > .tail {
+#SkillQuery div.skill-attribute > .tail {
 	margin-left: 0.4rem;
 	vertical-align: middle;
 }
@@ -213,7 +194,7 @@
 	margin-right: 0.4rem;
 	display: inline-block;
 }
-#SkillQuery div.skill_attribute > .element_value {
+#SkillQuery div.skill-attribute > .element_value {
 	vertical-align: middle;
 }
 
