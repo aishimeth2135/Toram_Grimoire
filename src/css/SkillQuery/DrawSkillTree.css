@@ -8,7 +8,7 @@
 #SkillQuery div.SkillTree_scope svg > circle.skill-circle {
     fill: #FFF;
     z-index: 5;
-    stroke: var(--primary-light-2);
+    stroke: var(--primary-light-3);
     stroke-width: 2px;
     cursor: pointer;
     transition: 0.3s;

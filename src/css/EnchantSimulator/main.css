@@ -62,27 +62,27 @@ ul.equipments-list {
     height: 12rem;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--primary-light-4);
+    border: 1px solid var(--primary-light-2);
     cursor: pointer;
     transition: 0.3s;
     margin: 0.4rem;
     display: flex;
 }
 .enchant-equipment > .steps > .create-step:hover {
-    border-color: var(--primary-light-3);
+    border-color: var(--primary-light-4);
 }
 .enchant-equipment > .steps > .create-step:hover > span > svg {
-    fill: var(--primary-light-3);
+    fill: var(--primary-light-4);
 }
 .enchant-equipment > .steps > .create-step > span > svg {
     width: 3rem;
     height: 3rem;
     transition: 0.3s;
-    fill: var(--primary-light-4);
+    fill: var(--primary-light-2);
 }
 
 .step-scope {
-    border: 1px solid var(--primary-light-2);
+    border: 1px solid var(--primary-light-3);
     padding: 0.8rem;
     width: 20rem;
     margin: 0.4rem;
@@ -135,7 +135,7 @@ ul.equipments-list {
 .select-stat > .category-title {
     font-size: 0.9rem;
     padding: 0.3rem 0;
-    color: var(--primary-light-3);
+    color: var(--primary-light-4);
 }
 .select-stat > ul.category-items {
     list-style: none;

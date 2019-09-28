@@ -8,7 +8,7 @@ import strings from "./strings.js";
 
 import CY from "../../main/module/cyteria.js";
 
-import {getSkillAttributeData} from "./AnalysisSkill/main.js";
+import {getSkillAttributeData, simpleCreateHTML} from "./AnalysisSkill/main.js";
 
 function Lang(s){
 	return GetLang('Skill Query/Controller/' + s);
@@ -35,16 +35,30 @@ class SkillElementsController {
 			showOriginalFormula: false,
 			skillRecords: [],
 			skillEquipmentRecords: [],
-			branchDevelopmentMode: false
+			branchDevelopmentMode: false,
+			currentSkillHistoryDate: null
 		};
 
 		this.nodes = {
-			openSkillAttributeIconTipsButton: null
+			openSkillAttributeIconTipsButton: null,
+			openSelectSkillHistoryDateButton: null
 		};
 
+		const ctrr = this;
 		this.listeners = {
 			closeWindow(e){
 				this.parentNode.parentNode.classList.add('hidden');
+			},
+			setCurrentSkillHistoryDate(e){
+				const t = this.getAttribute('data-date') || null;
+				ctrr.status.currentSkillHistoryDate = t;
+
+				const btn = ctrr.nodes.openSelectSkillHistoryDateButton;
+				btn.querySelector('.text').innerHTML = t || btn.getAttribute('data-last');
+				btn.classList[t ? 'add' : 'remove']('flip-icon');
+
+				ctrr.updateSkillHTML();
+				ctrr.MAIN_NODE.querySelector('.select-skill-history-date').classList.add('hidden');
 			}
 		};
 	}
@@ -81,7 +95,7 @@ class SkillElementsController {
 
 		main_node.appendChild(frg);
 
-		this.status.skill_from_where_scope = CY.element.simpleCreateHTML('div', ['show_skill_from_where', 'hidden']);
+		this.status.skill_from_where_scope = simpleCreateHTML('div', ['show_skill_from_where', 'hidden']);
 
 		const _C = this;
 		document.querySelector("footer .switch_branch_development_mode").addEventListener('click', function(event){
@@ -118,8 +132,6 @@ class SkillElementsController {
 	    svg.appendChild(defs);
 	    this.MAIN_NODE.appendChild(svg);
 
-	    const simpleCreateHTML = CY.element.simpleCreateHTML;
-
 	    // skill attribute tips
 	    {
 	    	const skill_attribute_icon_tips = simpleCreateHTML('div', ['Cyteria', 'window', 'top-center', 'pop-right', 'hidden', 'skill-attribute-icon-tips']);
@@ -131,7 +143,7 @@ class SkillElementsController {
 	    	skill_attribute_icon_tips.appendChild(top);
 
 		    const {ICON_DATA, TITLE_DATA, TEXT_LIST} = getSkillAttributeData();
-		    console.log(TITLE_DATA);
+		    
 		    Object.getOwnPropertySymbols(TITLE_DATA).forEach(k => {
 		    	const c = TITLE_DATA[k];
 		    	const a = ICON_DATA[k];
@@ -156,6 +168,28 @@ class SkillElementsController {
 		    	e.stopPropagation();
 		    });
 		    this.nodes.openSkillAttributeIconTipsButton = open_btn;
+	    }
+	    {
+	    	const select_skill_history_date = simpleCreateHTML('div', ['Cyteria', 'window', 'top-center', 'pop-right', 'hidden', 'bg-mask','select-skill-history-date']);
+	    	const top = simpleCreateHTML('div', 'top');
+	    	top.appendChild(simpleCreateHTML('span', 'name', Lang('select skill history date: title')));
+	    	const close_btn = simpleCreateHTML('span', ['button', 'right'], Icons('close'));
+	    	close_btn.addEventListener('click', this.listeners.closeWindow);
+	    	top.appendChild(close_btn);
+	    	select_skill_history_date.appendChild(top);
+
+	    	select_skill_history_date.appendChild(simpleCreateHTML('div', 'content'));
+	    	this.MAIN_NODE.appendChild(select_skill_history_date);
+
+	    	const open_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'after', 'text-light', 'no-border'], Icons('clock-arrow') + '<span class="text"></span>');
+		    open_btn.addEventListener('click', function(e){
+		    	select_skill_history_date.classList.remove('hidden');
+		    	e.stopPropagation();
+		    });
+
+		    this.nodes.openSelectSkillHistoryDateButton = open_btn;
+
+	    	this.getSkillElementScope(TYPE_SKILL_RECORD).appendChild(open_btn);
 	    }
 	}
 	getSkillElementScope(type){
@@ -316,10 +350,13 @@ class SkillElementsController {
 		const archs_scope = this.getSkillElementScope(TYPE_SKILL_RECORD);
 		archs_scope.classList.remove('hidden');
 		if ( this.status.skillRecords.length > 0 )
-			archs_scope.querySelector('.back_button').classList.remove('hidden');
+			archs_scope.querySelector('.back-button').classList.remove('hidden');
 		else
-			archs_scope.querySelector('.back_button').classList.add('hidden');
+			archs_scope.querySelector('.back-button').classList.add('hidden');
 		archs_scope.querySelector('div.current_skill').innerHTML = s.name;
+
+		this.status.currentSkillHistoryDate = null;
+		this.nodes.openSelectSkillHistoryDateButton.classList.remove('flip-icon');
 	}
 	updateSkillHTML(){
 		const skill = this.status.currentSkill;
@@ -346,7 +383,6 @@ class SkillElementsController {
 		}
 	}
 	createSkillQueryScopeHTML(sEle, /*const string*/category){
-		const simpleCreateHTML = CY.element.simpleCreateHTML;
 		const SE_TYPE = sEle !== null ? sEle.TYPE : category;
 		//const type = sEle.TYPE.toString().match(/Symbol\((.+)\)/)[1];
 		switch (SE_TYPE){
@@ -424,9 +460,8 @@ class SkillElementsController {
 			}
 			case SkillTree.TYPE: switch (category){
 				case SkillTree.CATEGORY_DRAW_TREE: {
-					const he = DrawSkillTree(sEle, this);
-					return he;
-				} break;
+					return DrawSkillTree(sEle, this);
+				}
 				case SkillTree.CATEGORY_EQUIPMENT: {
 					const _C = this;
 					const listener = function(event){
@@ -523,21 +558,14 @@ class SkillElementsController {
 				}
 			}
 			case Skill.TYPE: switch (category){
-				case Skill.CATEGORY_MAIN: {
-					if ( sEle.checkData() ){
-						return AnalysisSkill(this);	
-					}
-					const div = document.createElement('div');
-					div.classList.add('no_data');
-					div.innerHTML = '此技能資料尚未更新。';
-					return div;
-				}
+				case Skill.CATEGORY_MAIN:
+					return sEle.checkData() ? AnalysisSkill(this) : simpleCreateHTML('div', 'no_data', GetLang('Skill Query/Analysis Skill/no data'));
 			}
 			case TYPE_CHARACTER_LEVEL: {
 				const _C = this;
-				const left =  CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only', 'left'], Icons('sub'));
-				const right = CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only', 'right'], Icons('add'));
-				const mid = CY.element.simpleCreateHTML('input', ['Cyteria', 'input', 'between-button', 'mid']);
+				const left =  simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only', 'left'], Icons('sub'));
+				const right = simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only', 'right'], Icons('add'));
+				const mid = simpleCreateHTML('input', ['Cyteria', 'input', 'between-button', 'mid']);
 
 				mid.value = this.status.characterLevel;
 
@@ -570,7 +598,7 @@ class SkillElementsController {
 				});
 
 				const main = document.createDocumentFragment();
-				main.appendChild(CY.element.simpleCreateHTML('div', 'title', GetLang('Skill Query/Analysis Skill/character level')));
+				main.appendChild(simpleCreateHTML('div', 'title', GetLang('Skill Query/Analysis Skill/character level')));
 				main.appendChild(left);
 				main.appendChild(mid);
 				main.appendChild(right);
@@ -590,7 +618,7 @@ class SkillElementsController {
 				const min = 1, max = 10;
 				const he = document.createElement('ul');
 				for (let i=min; i<=max; ++i){
-					const li = CY.element.simpleCreateHTML('li', ['Cyteria', 'Button', 'simple'], 'Lv. ' + i);
+					const li = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple'], 'Lv. ' + i);
 					li.setAttribute(strings().data_skillLevel, i);
 					li.addEventListener('click', listener);
 					if ( i == this.status.skillLevel )
@@ -613,19 +641,48 @@ class SkillElementsController {
 			case TYPE_SKILL_RECORD: {
 				const _C = this;
 				const he = document.createDocumentFragment();
-				const back = CY.element.simpleCreateHTML('div', 'back_button');
-				back.appendChild(CY.element.simpleCreateHTML('span', 'icon', Icons('arrow-left')));
-				back.appendChild(CY.element.simpleCreateHTML('span', 'caption', GetLang('Skill Query/button text/back')))
+				const back = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'icon-big', 'back-button', 'no-border', 'no-padding'], Icons('arrow-left') + `<span class="text">${GetLang('Skill Query/button text/back')}</span>`);
 				back.addEventListener('click', function(event){
 					_C.popSkillRecord();
 				});
-				const title = CY.element.simpleCreateHTML('div', 'current_skill');
+				const title = simpleCreateHTML('div', 'current_skill');
 				he.appendChild(back);
-				he.appendChild(CY.element.simpleCreateHTML('div', 'tip', Lang('current skill')));
+				he.appendChild(simpleCreateHTML('div', 'tip', Lang('current skill')));
 				he.appendChild(title);
 				return he;
 			}
 		}
+	}
+	updateSelectSkillHistoryDateScope(date_ary){
+		date_ary.sort((a, b) => {
+			a = a.split('/').map(c => parseInt(c, 10));
+			b = b.split('/').map(c => parseInt(c, 10));
+			const da = new Date(a[0], a[1] - 1, a[2]),
+				db = new Date(b[0], b[1] - 1, b[2]);
+			return db >= da ? 1 : -1;
+		});
+
+		const btn = this.nodes.openSelectSkillHistoryDateButton;
+		btn.classList[date_ary.length == 0 ? 'add': 'remove']('hidden');
+
+		const last = date_ary[0] || '';
+		btn.querySelector('.text').innerHTML = last;
+		btn.setAttribute('data-last', last);
+
+		const frg = document.createDocumentFragment();
+		date_ary.forEach(p => {
+			const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('clock-outline') + `<span class="text">${p}</span>`);
+			btn.setAttribute('data-date', p);
+			btn.addEventListener('click', this.listeners.setCurrentSkillHistoryDate);
+			frg.appendChild(btn);
+		});
+		const clear = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('close') + `<span class="text">${GetLang('global/clear')}</span>`);
+		clear.addEventListener('click', this.listeners.setCurrentSkillHistoryDate);
+		frg.appendChild(clear);
+
+		const scope = this.MAIN_NODE.querySelector('.select-skill-history-date > .content');
+		CY.element.removeAllChild(scope);
+		scope.appendChild(frg);
 	}
 }
 

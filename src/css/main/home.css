@@ -12,7 +12,7 @@
 }
 
 .main-content > section > .picture {
-    border: 1px solid var(--primary-light-2);
+    border: 1px solid var(--primary-light-3);
     height: 12rem;
 }
 
@@ -57,7 +57,7 @@
 }
 
 #About > section {
-    border-left: 2px solid var(--primary-light-3);
+    border-left: 2px solid var(--primary-light-4);
     margin: 0.7rem 0;
     padding: 0rem 0.6rem;
 }
@@ -69,7 +69,7 @@ section > .scope > .content {
 }
 
 .content > .title.text-small {
-    color: var(--primary-light-3);
+    color: var(--primary-light-4);
     padding: 0.2rem 0;
 }
 .content > .content-line {

@@ -43,9 +43,7 @@ const object = {
 	empty(obj){
 		if ( obj === null || typeof obj !== 'object' )
 			return;
-		Object.keys(obj).forEach(function(key){
-			delete obj[key];
-		});
+		Object.keys(obj).forEach(key => delete obj[key]);
 	},
 	isEmpty(obj){
 		if ( typeof obj !== 'object' )

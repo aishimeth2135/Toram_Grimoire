@@ -49,10 +49,10 @@ function InitSkillBranch(branch){
 			set_default(branch, {
 				expandable: '1',
 				expansion_default: '0'
-			})
+			});
 			break;
 		case 'passive': case 'text': case 'tips': case 'list': case 'head': case 'extra':
-		case 'reference': case 'formula_extra':
+		case 'reference': case 'formula_extra': case 'history':
 		case '':
 			//Do Nothing
 			break;

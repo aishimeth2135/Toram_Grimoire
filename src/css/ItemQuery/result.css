@@ -17,7 +17,7 @@
     color: var(--primary-purple);
 }
 #ItemQuery > .result > .scope > .sub > .category {
-    color: var(--primary-light-3);
+    color: var(--primary-light-4);
     margin-left: 0.3rem;
 }
 #ItemQuery > .result > .scope > .sub > .obtain {
@@ -32,12 +32,12 @@
     border-top: 1px solid var(--primary-light);
 }
 #ItemQuery > .result > .scope > .search-stat-scope > .search-stat {
-    border-bottom: 1px solid var(--primary-light-2);
+    border-bottom: 1px solid var(--primary-light-3);
     padding: 0.1rem 0.3rem;
     margin: 0.2rem;
     display: inline-block;
     font-size: 0.9rem;
-    color: var(--primary-light-3);
+    color: var(--primary-light-4);
 }
 
 #ItemQuery > .result > .scope > .attribute-scope {
@@ -46,7 +46,7 @@
     border-top: 1px solid var(--primary-light);
 }
 #ItemQuery > .result > .scope > .attribute-scope > .attribute {
-    border-bottom: 1px solid var(--primary-light-2);
+    border-bottom: 1px solid var(--primary-light-3);
     padding: 0.2rem 0.5rem;
     margin: 0.2rem;
     display: inline-block;
@@ -56,7 +56,7 @@
     margin-right: 0.4rem;
 }
 .attribute-scope > .attribute > .value {
-    color: var(--primary-light-3);
+    color: var(--primary-light-4);
 }
 
 #ItemQuery > .result > .no-result {
@@ -69,9 +69,9 @@
 #ItemQuery > .detail > .contents > .scope-title {
     padding: 0.4rem 0.8rem;
     padding-bottom: 0.2rem;
-    border-left: 2px solid var(--primary-light-2);
+    border-left: 2px solid var(--primary-light-3);
     font-size: 0.9rem;
-    color: var(--primary-light-3);
+    color: var(--primary-light-4);
 }
 #ItemQuery > .detail > .contents > .scope-title > span {
     vertical-align: middle;
@@ -87,7 +87,7 @@
 }
 #ItemQuery > .detail > .contents > .scope {
     margin-bottom: 0.6rem;
-    border-left: 2px solid var(--primary-light-2);
+    border-left: 2px solid var(--primary-light-3);
     padding: 0 0.8rem;
     padding-bottom: 0.4rem;
 }
@@ -97,11 +97,11 @@
 }
 
 #ItemQuery > .detail > .contents > .stats > span {
-    border-bottom: 1px solid var(--primary-light-2);
+    border-bottom: 1px solid var(--primary-light-3);
     padding: 0.2rem 0.5rem;
     margin: 0.2rem;
     display: inline-block;
-    color: var(--primary-light-3);
+    color: var(--primary-light-4);
 }
 
 #ItemQuery > .detail > .contents > .stats > span > .restriction {
@@ -116,11 +116,11 @@
 }
 #ItemQuery > .detail > .contents td.title {
     text-align: right;
-    border-right: 1px solid var(--primary-light-4);
+    border-right: 1px solid var(--primary-light-2);
 }
 #ItemQuery > .detail > .contents td.value {
     text-align: left;
-    color: var(--primary-light-3);
+    color: var(--primary-light-4);
 }
 
 #ItemQuery > .detail .obtain-scope {
@@ -144,7 +144,7 @@
     padding: 0 0.3rem;
 }
 #ItemQuery > .detail .obtain-scope > .info-line > .text {
-    color: var(--primary-light-3);
+    color: var(--primary-light-4);
     font-size: 0.9rem;
 }
 #ItemQuery > .detail .obtain-scope > .info-line > svg {

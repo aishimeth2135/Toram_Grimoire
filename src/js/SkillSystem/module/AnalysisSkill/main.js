@@ -5,7 +5,7 @@ import {SkillEffect} from "../SkillElements.js";
 const simpleCreateHTML = CY.element.simpleCreateHTML;
 
 function createSkillAttributeScope(icon, t, v, tail){
-    const a = simpleCreateHTML('div', 'skill_attribute');
+    const a = simpleCreateHTML('div', 'skill-attribute');
 
     let html = '';
     if ( icon !== null )

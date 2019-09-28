@@ -17,7 +17,7 @@ function getTargetText(s, _is_place){
         target: Lang('target type: target'), none: null
     };
     const res = dict[s];
-    return res !== null ? res : res;
+    return res;
 }
 
 function lightText(text){
@@ -71,7 +71,7 @@ function getDamageElementHTML(ele_type){
         arrow: Lang('element: arrow'),
         one_hand_sword: Lang('element: one hand sword')
     };
-    const t = simpleCreateHTML('div', 'skill_attribute');
+    const t = simpleCreateHTML('div', 'skill-attribute');
     let icon_type = ele_type;
     if ( ele_type == 'arrow' || ele_type == 'one_hand_sword' )
         icon_type = 'multiple';
@@ -102,7 +102,9 @@ function createContentLine(frg1, frg2, options){
     }
     return t;
 }
-
+function createBranchTitleScope(title){
+    return simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small'], Icons('book') + '<span class="text">' + title + '</span>');
+}
 
 function getBranchHTML(branch, ctrr){
     const data = ctrr.status;
@@ -154,119 +156,147 @@ function getBranchHTML(branch, ctrr){
             return dftv === void 0 ? '?' : dftv;
         }
     }
-    function processText(b, _main='text', text='-1'){
-        const _attr = b.branchAttributes;
-        let str = _main === null || _attr[_main] === void 0 ? text : _attr[_main];
+    function processText(b, _main='text', text='-1', config){
+        config = Object.assign({
+            pluralValuesType: 'history'
+        }, config);
 
-        str = str
-        .replace(/\$\{([^\}]+)\}([%m]?)/g, (...args) =>
-            processValue(args[1], {light: true, tail: args[2]})
-        )
-        .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (...args) => separateText(args[1]))
-        .replace(/#([^\s]+)\s(\w?)/g, (...args) => {
-            let res = setTagButton(args[1].replace(new RegExp('_', 'g'), ' '));
-            if ( args[2] !== '' )
-                res += " " + args[2];
-            return res;
-        });
-        if ( _attr['mark'] !== void 0 ){
-            _attr['mark'].split(/\s*,\s*/).forEach(t => {
-                str = str.replace(new RegExp(t, 'g'), lightText(t));
+        const _attr = b.branchAttributes;
+        const strs = _main === null || _attr[_main] === void 0 ? [text] : (Array.isArray(_attr[_main]) ? _attr[_main] : [_attr[_main]]);
+
+        const resultAry = [];
+
+        strs.forEach((str, i) => {
+            str = str
+            .replace(/\$\{([^\}]+)\}([%m]?)/g, (...args) =>
+                processValue(args[1], {light: true, tail: args[2]})
+            )
+            .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (...args) => separateText(args[1]))
+            .replace(/#([^\s]+)\s(\w?)/g, (...args) => {
+                let res = setTagButton(args[1].replace(new RegExp('_', 'g'), ' '));
+                if ( args[2] !== '' )
+                    res += " " + args[2];
+                return res;
             });
-        }
-        if ( _attr['branch'] !== void 0 ){
-            _attr['branch'].split(/\s*,\s*/).forEach(t => {
-                str = str.replace(new RegExp(t, 'g'), lightText(t));
-            });
-        }
-        if ( _attr['skill'] !== void 0 ){
-            const sr = ctrr.skillRoot;
-            _attr['skill'].split(/\s*,\s*/).forEach(t => {
-                str = str.replace(new RegExp(t, 'g'), a => {
-                    const skill = sr.findSkillByName(a);
-                    if ( skill === void 0 )
-                        return a;
-                    const span = simpleCreateHTML('span', 'skill_from_where_button');
-                    span.appendChild(simpleCreateHTML('span', 'skill_name', a));
-                    span.setAttribute(strings().data_skillElementNo, ctrr.getSkillElementNoStr(skill));
-                    return span.outerHTML;
+            if ( _attr['mark'] !== void 0 ){
+                _attr['mark'].split(/\s*,\s*/).forEach(t => {
+                    str = str.replace(new RegExp(t, 'g'), lightText(t));
                 });
-            });
-        }
-        if ( _attr['skill_tree'] !== void 0 ){
-            _attr['skill_tree'].split(/\s*,\s*/).forEach(t => {
-                str = str.replace(new RegExp(t, 'g'), lightText(t));
-            });
-        }
-        return str;
+            }
+            if ( _attr['branch'] !== void 0 ){
+                _attr['branch'].split(/\s*,\s*/).forEach(t => {
+                    str = str.replace(new RegExp(t, 'g'), lightText(t));
+                });
+            }
+            if ( _attr['skill'] !== void 0 ){
+                const sr = ctrr.skillRoot;
+                _attr['skill'].split(/\s*,\s*/).forEach(t => {
+                    str = str.replace(new RegExp(t, 'g'), a => {
+                        const skill = sr.findSkillByName(a);
+                        if ( skill === void 0 )
+                            return a;
+                        const span = simpleCreateHTML('span', 'skill_from_where_button');
+                        span.appendChild(simpleCreateHTML('span', 'skill_name', a));
+                        span.setAttribute(strings().data_skillElementNo, ctrr.getSkillElementNoStr(skill));
+                        return span.outerHTML;
+                    });
+                });
+            }
+            if ( _attr['skill_tree'] !== void 0 ){
+                _attr['skill_tree'].split(/\s*,\s*/).forEach(t => {
+                    str = str.replace(new RegExp(t, 'g'), lightText(t));
+                });
+            }
+
+            if ( i !== strs.length - 1 )
+                str = `<div class="plural-texts text-${config.pluralValuesType}">${str}</div>`;
+
+            resultAry.push(str);
+        });
+
+        return resultAry.join('');
     }
-    function processValue(v, config={}){
-        v = v.split(/\s*,,\s*/);
+    function processValue(value, config={}){
+        value = (Array.isArray(value) ? value : [value]);
+        const split_str = /\s*,,\s*/;
+        const v = value[value.length - 1].split(split_str);
         config = Object.assign({
             calc: true, tail: '', head: '', suffixText: '', pretext: '', toPercentage: false,
             checkHasStack: v[0], light: false,
-            separateText: v.length > 1 || data.showOriginalFormula
+            separateText: v.length > 1 || data.showOriginalFormula,
+            pluralValuesType: 'history'
         }, config);
         
-        let res;
-        v.forEach((a, i) => {
-            if ( i === 0 ){
-                if ( !data.showOriginalFormula ){
-                    if ( config.calc ){
-                        let t = safeEval(a, '?');
+        const resultAry = [];
 
-                        if ( t !== '?' ){
-                            if ( config.toPercentage )
-                                t *= 100;
-                            if ( t !== void 0 && !Number.isInteger(t) )
-                                t = t.toFixed(2);
-                            res = t.toString();
+        value.forEach((p, i) => {
+            let res = '';
+
+            p.split(split_str).forEach((a, j) => {
+                if ( j == 0 ){
+                    if ( !data.showOriginalFormula ){
+                        if ( config.calc ){
+                            let t = safeEval(a, '?');
+
+                            if ( t !== '?' ){
+                                if ( config.toPercentage )
+                                    t *= 100;
+                                if ( t !== void 0 && !Number.isInteger(t) )
+                                    t = t.toFixed(2);
+                                res = t.toString();
+                            }
                         }
+                        else
+                            res = a;
+                        if ( config.toPercentage )
+                            res += '%';
                     }
-                    else
+                    else {
+                        a = a
+                            .replace(/CLv/g, Lang('character level'))
+                            .replace(/SLv/g, Lang('skill level'))
+                            .replace(/\*/g, '×')
+                            .replace(/stack\[(\d+)\]/g, () => stack_name_list[parseInt(RegExp.$1, 10)])
+                            .replace(/stack[\[]{0}/g, () => stack_name_list[0]);
                         res = a;
-                    if ( config.toPercentage )
-                        res += '%';
+                    }
                 }
                 else {
-                    a = a.replace(/CLv/g, Lang('character level'));
-                    a = a.replace(/SLv/g, Lang('skill level'));
-                    a = a.replace(/\*/g, '×');
-                    a = a.replace(/stack\[(\d+)\]/g, () => stack_name_list[parseInt(RegExp.$1, 10)]);
-                    a = a.replace(/stack[\[]{0}/g, () => stack_name_list[0]);
-                    res = a;
+                    a = replaceExtraFormulaValue(a);
+                    if ( res === '0' )
+                        res = a;
+                    else {
+                        a = a.charAt(0) !== '-' ? '+' + a : a;
+                        res += a;
+                    }
                 }
-            }
-            else {
-                a = replaceExtraFormulaValue(a);
-                if ( res === '0' )
-                    res = a;
-                else {
-                    a = a.charAt(0) !== '-' ? '+' + a : a;
-                    res += a;
-                }
-            }
+            });
+
+            // pretext與suffixText，會在套用外框之前。
+            res = config.pretext + res;
+            res += config.suffixText;
+
+            //|| ( data.showOriginalFormula && !( v.length === 1 && v[0].match(/^[\d\.]+$/) ) )
+            if ( config.separateText && !res.match(/^[\d\.]+$/) )
+                res = separateText(res);
+
+            // head與tail，會在套用外框之後。
+            res = config.head + res;
+            res += config.tail;
+            
+            const span = document.createElement('span');
+            if ( config.checkHasStack.includes('stack') )
+                span.classList.add('effect_by_stack');
+            else if ( config.light )
+                span.classList.add('light');;
+            span.innerHTML = res;
+
+            if ( i !== value.length - 1 )
+                span.classList.add(`value-${config.pluralValuesType}`);
+
+            resultAry.push(span.outerHTML);
         });
-
-        // pretext與suffixText，會在套用外框之前。
-        res = config.pretext + res;
-        res += config.suffixText;
-
-        //|| ( data.showOriginalFormula && !( v.length === 1 && v[0].match(/^[\d\.]+$/) ) )
-        if ( config.separateText && !res.match(/^[\d\.]+$/) )
-            res = separateText(res);
-
-        // head與tail，會在套用外框之後。
-        res = config.head + res;
-        res += config.tail;
-        
-        const span = document.createElement('span');
-        if ( config.checkHasStack.includes('stack') )
-            span.classList.add('effect_by_stack');
-        else if ( config.light )
-            span.classList.add('light');;
-        span.innerHTML = res;
-        return span.outerHTML;
+        return resultAry.join(`<span class="Cyteria scope-icon plural-values-icon">${Icons('arrow-right-triangle')}</span>`);
     }
     function processStat(stat){
         const showData = stat.getShowData();
@@ -286,12 +316,12 @@ function getBranchHTML(branch, ctrr){
 
         const caption = simpleCreateHTML('div', 'scope1');
         {
-            const a = simpleCreateHTML('div', 'skill_attribute');
+            const a = simpleCreateHTML('div', 'skill-attribute');
             a.appendChild(simpleCreateHTML('span', ['_icon', 'element_ball', 'ball_character']));
             a.appendChild(simpleCreateHTML('span', '_value', Lang('effective area: character position')));
             caption.appendChild(a);
             if ( !is_self ){
-                const b = simpleCreateHTML('div', 'skill_attribute');
+                const b = simpleCreateHTML('div', 'skill-attribute');
                 b.appendChild(simpleCreateHTML('span', ['_icon', 'element_ball', 'ball_target']));
                 b.appendChild(simpleCreateHTML('span', '_value', Lang('effective area: target position')));
                 caption.appendChild(b);
@@ -408,16 +438,13 @@ function getBranchHTML(branch, ctrr){
         const svg = CY.svg.create(w, h);
         svg.appendChild(frg);
 
-        const scope = simpleCreateHTML('div', ['effective_area', 'content', 'hidden']);
+        const scope = simpleCreateHTML('div', ['effective-area', 'content', 'hidden', 'Cyteria', 'entrance', 'fade-in']);
         const svg_scope = document.createElement('div');
         svg_scope.appendChild(svg);
         scope.appendChild(svg_scope);
         scope.appendChild(caption);
 
         return scope;
-    }
-    function createBranchTitleScope(title){
-        return simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small'], Icons('book') + '<span class="text">' + title + '</span>');
     }
     function createAlimentFragment(name, chance){
         const t = document.createDocumentFragment();
@@ -433,12 +460,17 @@ function getBranchHTML(branch, ctrr){
 
     let attr = branch.branchAttributes;
 
-    let p = branch.findLocation() + 1;
-    let c = branch.parent.branchs[p];
-    while ( c !== void 0 && SUFFIX_LIST.indexOf(c.name) != -1 && !c.isEmpty() ){
-        suffix.push(c);
-        c = branch.parent.branchs[++p];
-    }
+    branch.parent.branchs.slice(branch.findLocation() + 1).find(c => {
+        if ( SUFFIX_LIST.indexOf(c.name) != -1 && !c.isEmpty() ){
+            suffix.push(c);
+            return false;
+        }
+        if ( c.name == 'history' && c.branchAttributes['branch'] === void 0 ){
+            suffix.push(c);
+            return false;
+        }
+        return true;
+    });
 
     const extra_fix = branch.parent.branchs.filter(b => EXTRA_FIX_LIST.indexOf(b.name) != -1);
 
@@ -447,10 +479,31 @@ function getBranchHTML(branch, ctrr){
     const stack_name_list = stack_branch_list.map(stk => data.stackNames[getStackBranchIdKey(stk)] || Lang('branch/stack/base name') + stk.branchAttributes['id']);
     const stack = stack_value_list.length > 1 ? stack_value_list : stack_value_list[0];
 
+
+    // history
+    {
+        const hry = branch.parent.branchs.find(b => b.name == 'history' && b.branchAttributes['branch'] == branch.no && b.branchAttributes['date'] == data.currentSkillHistoryDate);
+        if ( hry )
+            Object.keys(hry.branchAttributes).forEach(k => branch.branchAttributes[k] = [hry.branchAttributes[k], branch.branchAttributes[k]]);
+    }
+
+
     const he = simpleCreateHTML('div', ['branch', 'branch_' + btype]);
 
     if ( attr['is_mark'] === '1' && !data.branchDevelopmentMode )
         he.classList.add('is_mark');
+    {
+        const hry = suffix.find(b => b.name == 'history');
+        if ( hry !== void 0 ){
+            // 如果日期不一，這個branch就不顯示
+            if ( hry.branchAttributes['date'] != data.currentSkillHistoryDate )
+                return null;
+            const hry_date = simpleCreateHTML('div', 'hisory-date');
+            const t = hry.branchAttributes['date'] || Lang('unknow date');
+            hry_date.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], Icons('clock-outline') + `<span class="text">${t}</span>`));
+            he.appendChild(hry_date);
+        }
+    }
     {
         const group = suffix.find(b => b.name == 'group');
         if ( group !== void 0 )
@@ -466,7 +519,7 @@ function getBranchHTML(branch, ctrr){
     }
     const formulaExtraTexts = (function(){
         const t = suffix.find(b => b.name == 'formula_extra');
-            return t !== void 0 ? t.branchAttributes['texts'].split(/\s*,\s*/) : [];
+        return t !== void 0 ? t.branchAttributes['texts'].split(/\s*,\s*/) : [];
     })();
 
     switch (btype){
