@@ -342,12 +342,7 @@ export default function(ctrr){
 		const frg = document.createDocumentFragment();
 
         // 更新歷史記錄清單
-        ctrr.updateSelectSkillHistoryDateScope(
-            output.branchs
-            .filter(b => b.name == 'history')
-            .map(b => b.branchAttributes['date'])
-            .filter((b, i, self) => self.indexOf(b) == i)
-        );
+        ctrr.updateSelectSkillHistoryDateScope(output.getHistoryDates());
 
         // 基本屬性
 		const order = [

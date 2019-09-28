@@ -82,7 +82,9 @@ div.skill_branchs .text-scope.has_icon > .icon > svg > g {
    plural texts
    ========================================================================== */
 .plural-texts.text-history {
-	color: var(--primary-light-4);
+	color: var(--primary-light-2);
+	margin-bottom: 0.3rem;
+	margin-top: 0.1rem;
 }
 
 /* ==========================================================================

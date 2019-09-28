@@ -209,7 +209,7 @@ function getBranchHTML(branch, ctrr){
             }
 
             if ( i !== strs.length - 1 )
-                str = `<div class="plural-texts text-${config.pluralValuesType}">${str}</div>`;
+                str = `<div><span class="Cyteria scope-icon light">${Icons('clock-outline')}<span class="text">${data.currentSkillHistoryDate}</span></span></div><div class="plural-texts text-${config.pluralValuesType}">${str}</div>`;
 
             resultAry.push(str);
         });
@@ -465,7 +465,7 @@ function getBranchHTML(branch, ctrr){
             suffix.push(c);
             return false;
         }
-        if ( c.name == 'history' && c.branchAttributes['branch'] === void 0 ){
+        if ( c.name == 'history' && c.branchAttributes['target_branch'] === void 0 ){
             suffix.push(c);
             return false;
         }
@@ -482,9 +482,33 @@ function getBranchHTML(branch, ctrr){
 
     // history
     {
-        const hry = branch.parent.branchs.find(b => b.name == 'history' && b.branchAttributes['branch'] == branch.no && b.branchAttributes['date'] == data.currentSkillHistoryDate);
-        if ( hry )
-            Object.keys(hry.branchAttributes).forEach(k => branch.branchAttributes[k] = [hry.branchAttributes[k], branch.branchAttributes[k]]);
+        const date = data.currentSkillHistoryDate;
+        const hry = branch.parent.branchs.find(b => b.name == 'history' && b.branchAttributes['target_branch'] == branch.no && b.branchAttributes['date'] == date);
+        if ( hry ){
+            const date_list = branch.parent.getHistoryDates();
+            const index = date_list.indexOf(date);
+            if ( index == 0 )
+                Object.keys(hry.branchAttributes).forEach(k => branch.branchAttributes[k] = [hry.branchAttributes[k], branch.branchAttributes[k]]);
+            else {
+                const list = date_list.slice(0, index).reverse();
+
+                const next_date = date_list[index - 1];
+                const next_hry = branch.parent.branchs.find(b => b.name == 'history' && b.branchAttributes['target_branch'] == branch.no && b.branchAttributes['date'] == next_date);
+                Object.keys(hry.branchAttributes).forEach(k => {
+                    const a = hry.branchAttributes[k];
+                    let b = null;
+                    list.find(p => {
+                        const t = branch.parent.branchs.find(b => b.name == 'history' && b.branchAttributes['target_branch'] == branch.no && b.branchAttributes['date'] == p && b.branchAttributes[k] !== void 0);
+                        if ( t )
+                            b = t.branchAttributes[k];
+                        return t;
+                    });
+                    b = b || branch.branchAttributes[k];
+
+                    branch.branchAttributes[k] = [a, b];
+                });
+            }
+        }
     }
 
 
