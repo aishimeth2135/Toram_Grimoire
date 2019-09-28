@@ -654,14 +654,6 @@ class SkillElementsController {
 		}
 	}
 	updateSelectSkillHistoryDateScope(date_ary){
-		date_ary.sort((a, b) => {
-			a = a.split('/').map(c => parseInt(c, 10));
-			b = b.split('/').map(c => parseInt(c, 10));
-			const da = new Date(a[0], a[1] - 1, a[2]),
-				db = new Date(b[0], b[1] - 1, b[2]);
-			return db >= da ? 1 : -1;
-		});
-
 		const btn = this.nodes.openSelectSkillHistoryDateButton;
 		btn.classList[date_ary.length == 0 ? 'add': 'remove']('hidden');
 

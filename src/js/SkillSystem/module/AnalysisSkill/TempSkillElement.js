@@ -43,6 +43,20 @@ class TempSkillEffect {
     checkData(){
         return this.branchs.length != 0;
     }
+    getHistoryDates(){
+        // 由大到小
+        return this.branchs
+            .filter(b => b.name == 'history')
+            .map(b => b.branchAttributes['date'])
+            .filter((b, i, self) => self.indexOf(b) == i)
+            .sort((a, b) => {
+                a = a.split('/').map(c => parseInt(c, 10));
+                b = b.split('/').map(c => parseInt(c, 10));
+                const da = new Date(a[0], a[1] - 1, a[2]),
+                    db = new Date(b[0], b[1] - 1, b[2]);
+                return db >= da ? 1 : -1;
+            });
+    }
 }
 
 
