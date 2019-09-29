@@ -188,18 +188,23 @@ div.skill_branchs > div.branch_stack > div.content > div.scope2 > .unit {
 	color: var(--primary-light-4);
 }
 
-div.skill_branchs > div.branch span.effect_by_stack span.dark,
-div.skill_branchs > div.branch span.dark span.effect_by_stack {
-	color: #009688!important;
+div.skill_branchs > div.branch .effect-by-stack.dark {
+	color: #009688;
+}
+div.skill_branchs > div.branch .effect-by-stack.dark.value-history {
+	color: #67d1c7;
 }
 
-div.skill_branchs > div.branch span.effect_by_stack {
+div.skill_branchs > div.branch .effect-by-stack {
 	color: var(--primary-water-blue);
 }
+div.skill_branchs > div.branch .effect-by-stack.value-history {
+	color: #7fbef1;
+}
 
-div.skill_branchs > div.branch .effect_by_stack .separate_text {
-	border-left: 1px var(--primary-water-blue-light) solid!important;
-	border-right: 1px var(--primary-water-blue-light) solid!important;
+div.skill_branchs > div.branch .effect-by-stack > .separate_text {
+	border-left: 1px var(--primary-water-blue-light) solid;
+	border-right: 1px var(--primary-water-blue-light) solid;
 }
 
 /* ==========================================================================

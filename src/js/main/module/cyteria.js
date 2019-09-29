@@ -32,10 +32,13 @@ const element = {
 	convertRemToPixels(rem){    
 	    return rem*parseFloat(getComputedStyle(document.documentElement).fontSize);
 	},
-	createFromHTMLCode(html){
+	createByCode(html){
 		const div = document.createElement('div');
 		div.innerHTML = html;
 		return div.firstChild;
+	},
+	isTextNode(node){
+		return node.nodeType == Node.TEXT_NODE;
 	}
 };
 
