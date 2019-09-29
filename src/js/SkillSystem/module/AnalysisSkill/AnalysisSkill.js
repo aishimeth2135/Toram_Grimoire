@@ -77,10 +77,10 @@ branchDevelopmentController.prototype = {
 		});
 		cmp.stats.forEach(a => {
 			const t = document.createElement('tr');
-			t.appendChild(simpleCreateHTML('td', '_name', a.base.baseName));
+			t.appendChild(simpleCreateHTML('td', '_name', a.baseName()));
 			t.appendChild(simpleCreateHTML('td', '_value', a.statValue()));
 			t.appendChild(simpleCreateHTML('td', '_extra', getAttrEx(a.type)));
-			if ( branch.stats.find(b => a.base === b.base && a.type === b.type && a.statValue() != b.statValue()) )
+			if ( branch.stats.find(b => a.equals(b) && a.statValue() != b.statValue()) )
 				t.classList.add('overwrite');
 			s1.appendChild(t);
 		});
@@ -102,7 +102,7 @@ branchDevelopmentController.prototype = {
 			});
 			branch.stats.forEach(a => {
 				const t = document.createElement('tr');
-				t.appendChild(simpleCreateHTML('td', '_name', a.base.baseName));
+				t.appendChild(simpleCreateHTML('td', '_name', a.baseName()));
 				t.appendChild(simpleCreateHTML('td', '_value', a.statValue()));
 				t.appendChild(simpleCreateHTML('td', '_extra', getAttrEx(a.type)));
 				s2.appendChild(t);
@@ -337,14 +337,51 @@ export default function(ctrr){
 		}
 	});
 
-	// 產生輸出介面
+	/*----------  產生輸出介面  ----------*/
+
 	if ( overwrite_eft !== void 0 ){
 		const frg = document.createDocumentFragment();
 
-        // 更新歷史記錄清單
+        /*----------  歷史紀錄  ----------*/
+        
+        /* 更新選擇介面 */
         ctrr.updateSelectSkillHistoryDateScope(output.getHistoryDates());
+        /* 處理 */
+        if ( data.currentSkillHistoryDate != null ){
+            const date = data.currentSkillHistoryDate;
+            const date_list = output.getHistoryDates();
 
-        // 基本屬性
+            const brhs = output.branchs;
+
+            brhs.forEach(brh => {
+                const hry = brhs.find(b => b.name == 'history' && b.branchAttributes['target_branch'] == brh.no && b.branchAttributes['date'] == date);
+                if ( hry ){
+                    // 將資料還原到date的下一個date
+                    const index = date_list.indexOf(date);
+                    date_list.slice(0, index).forEach(p => {
+                        // 屬性
+                        const cur_hry = brhs.find(b => b.name == 'history' && b.branchAttributes['target_branch'] == brh.no && b.branchAttributes['date'] == p);
+                        if ( cur_hry ){
+                            Object.keys(cur_hry.branchAttributes).forEach(k => brh.branchAttributes[k] = cur_hry.branchAttributes[k]);
+                            // 能力
+                            cur_hry.stats.forEach(st => {
+                                const brh_stat = brh.stats.find(_st => st.equals(_st));
+                                if ( brh_stat )
+                                    brh_stat.statValue(st.statValue());
+                                else
+                                    brh.appendExistingStat(st.copy());
+                            });
+                        }
+                    });
+
+                    brh.historyBranchAttributes = hry.branchAttributes;
+                    // Object.keys(hry.branchAttributes).forEach(k => brh.branchAttributes[k] = [hry.branchAttributes[k], brh.branchAttributes[k]]);
+                    brh.historyStats = hry.stats;
+                }
+            });
+        }
+
+        /*----------  基本屬性  ----------*/
 		const order = [
 			SkillEffect.MP_COST,
 			SkillEffect.RANGE,

@@ -23,11 +23,10 @@ class TempSkillEffect {
     overWrite(sef){
         Object.getOwnPropertySymbols(sef.attributes).forEach(key => {
             const v = sef.attributes[key];
-            if ( v == '' && this.attributes[key] ){
+            if ( v == '' && this.attributes[key] )
                 delete this.attributes[key];
-                return;
-            }
-            this.appendAttribute(key, v);
+            else
+                this.appendAttribute(key, v);
         });
         // 如果 branch.no 一樣才執行覆蓋
         sef.branchs.forEach((branch, i) => {
@@ -66,6 +65,9 @@ class TempSkillBranch {
         this.branchAttributes = {};
         this.stats = [];
         this.finished = false;
+
+        this.historyBranchAttributes = {};
+        this.historyStats = [];
     }
     from(branch){
         this.no = branch.no;
@@ -75,7 +77,7 @@ class TempSkillBranch {
             this.appendBranchAttribute(key, branch.branchAttributes[key]);
         });
         branch.stats.forEach(a => {
-            this.appendStat(a.base.baseName, a.value, '').type = a.type;
+            this.appendExistingStat(a.copy());
         });
         return this;
     }
@@ -84,6 +86,9 @@ class TempSkillBranch {
     }
     findLocation(){
         return SkillBranch.prototype.findLocation.call(this);
+    }
+    appendExistingStat(stat){
+        this.stats.push(stat);
     }
     appendStat(baseName, v, tail){
         return SkillBranch.prototype.appendStat.call(this, ...arguments);
@@ -109,9 +114,9 @@ class TempSkillBranch {
             this.appendBranchAttribute(key, v);
         });
         branch.stats.forEach(a => {
-            let t = this.stats.find(b => a.base === b.base && a.type === b.type);
+            let t = this.stats.find(b => a.equals(b));
             if ( t === void 0 )
-                this.appendStat(a.base.baseName, a.value, '').type = a.type;
+                this.appendExistingStat(a.copy());
             else {
                 if ( a.value == '' )
                     this.stats.splice(this.stats.indexOf(t), 1);

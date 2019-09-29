@@ -137,6 +137,17 @@ class SimpleStat {
 	title(){
 		return this.base.title(this.type);
 	}
+	/**
+	 * base及type都相等時，回傳true。
+	 * @param  {SimpleStat} stat
+	 * @return {boolean}
+	 */
+	equals(stat){
+		return stat.base == this.base && stat.type == this.type;
+	}
+	copy(){
+		return this.base.createSimpleStat(this.type, this.value);
+	}
 }
 
 export default StatBase;
