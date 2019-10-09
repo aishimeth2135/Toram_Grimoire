@@ -88,7 +88,6 @@
     padding: 0.2rem 0;
 }
 #ItemQuery .button-scope > .title-scope >.title {
-    font-size: 0.9rem;
     color: var(--primary-light-4);
     vertical-align: middle;
     margin-right: 0.6rem;
