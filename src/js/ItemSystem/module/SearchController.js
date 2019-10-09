@@ -13,10 +13,12 @@ export default class SearchController {
     constructor(parent){
         this.parent = parent;
         this.nodes = {
-            result: null
+            result: null,
+            optionsScope: null
         };
         this.status = {
-            resultMaximum: 100
+            resultMaximum: 100,
+            showDetailTargetDye: null
         };
     }
     init(main_node){
@@ -78,7 +80,7 @@ export default class SearchController {
         }
         function createButtonScopeTitle(name){
             const t = simpleCreateHTML('div', 'title-scope');
-            t.appendChild(simpleCreateHTML('span', 'title', Lang('option scope title/' + name)));
+            t.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small', 'title'], Icons('multiple-blank-circle') + `<span class="text">${Lang('option scope title/' + name)}</span>`));
             const sel_all = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'text-small'], Icons('select-all') + '<span class="text">' + Lang('option scope title/button/select all') + '</span>');
             sel_all.addEventListener('click', selectAllOption_listener);
             const cel_all = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'text-small'], Icons('close') + '<span class="text">' + Lang('option scope title/button/cancel all') + '</span>');
@@ -87,6 +89,51 @@ export default class SearchController {
             t.appendChild(cel_all);
             return t;
         }
+        function closeWindow_listener(e){
+            this.parentNode.parentNode.classList.add('hidden');
+        }
+        function showSearchCaption_listener(e){
+            if ( showSearchCaption.classList.contains('hidden') ){
+                const cat = opts_menu.querySelector('.cur').getAttribute('data-category');
+                const list = Lang('Show Search Caption/caption: ' + cat);
+                const ul = simpleCreateHTML('ul', ['Cyteria', 'ul', 'simple']);
+                list.forEach(a => {
+                    a = a
+                        .replace(/\(\(!((?:(?!\(\().)+)\)\)/g, (...args) => `<span class="light">${args[1]}</span>`)
+                        .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (...args) => `<span class="separate-text light">${args[1]}</span>`);
+                    ul.appendChild(simpleCreateHTML('li', null, a))
+                });
+
+                const ct = showSearchCaption.querySelector('.content');
+                CY.element.removeAllChild(ct);
+                ct.appendChild(ul);
+                showSearchCaption.classList.remove('hidden');
+            }
+            else
+                showSearchCaption.classList.add('hidden');
+        }
+        function createShowSearchCaptionButton(){
+            const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('help-rhombus'));
+            btn.addEventListener('click', showSearchCaption_listener);
+            return btn;
+        }
+
+        const showSearchCaption = simpleCreateHTML('div', ['Cyteria', 'window', 'top-center', 'pop-right', 'show-search-caption', 'hidden']);
+        {
+            const top = simpleCreateHTML('div', 'top');
+            const name = simpleCreateHTML('span', 'name', Lang('Show Search Caption/title'));
+
+            const close = simpleCreateHTML('span', ['button', 'right'], Icons('close'));
+            close.addEventListener('click', closeWindow_listener);
+
+            top.appendChild(name);
+            top.appendChild(close);
+            showSearchCaption.appendChild(top);
+
+            showSearchCaption.appendChild(simpleCreateHTML('div', 'content'));
+        }
+        main_node.appendChild(showSearchCaption);
+
 
 
         function li_listener(e){
@@ -118,6 +165,7 @@ export default class SearchController {
                     const input = simpleCreateHTML('input', 'search', null, {'placeholder': Lang('search placeholder')});
                     search_scope.appendChild(simpleCreateHTML('span', 'icon', Icons('search')));
                     search_scope.appendChild(input);
+                    search_scope.appendChild(createShowSearchCaptionButton());
                     frg.appendChild(search_scope);
 
                     const btn_scope = createButtonScope();
@@ -145,7 +193,8 @@ export default class SearchController {
                         //     return;
                         const searchList = getSelectedOptions(search_by_ul, 'data-name');
                         const res = [];
-                        const search_values = input.value.toLowerCase().split(/\s*,\s*/);
+                        const ov = input.value.toLowerCase();
+                        const search_values = ov.split(/\s*,\s*/);
                         ctrr.parent.items.equipments.forEach(item => {
                             if ( res.length == ctrr.status.resultMaximum )
                                 return;
@@ -172,6 +221,7 @@ export default class SearchController {
                             else
                                 res.push(item);
                         });
+                        ctrr.status.showDetailTargetDye = searchList.length == 1 && searchList[0] == 'dye' ? search_values.slice() : null;
                         ctrr.showResult(res);
                     }
 
@@ -188,6 +238,7 @@ export default class SearchController {
                     const input = simpleCreateHTML('input', 'search', null, {'placeholder': Lang('search placeholder')});
                     search_scope.appendChild(simpleCreateHTML('span', 'icon', Icons('search')));
                     search_scope.appendChild(input);
+                    search_scope.appendChild(createShowSearchCaptionButton());
                     frg.appendChild(search_scope);
 
                     input.addEventListener('change', function(e){
@@ -331,11 +382,12 @@ export default class SearchController {
                     const input2 = simpleCreateHTML('input', ['search', 'short'], null, {'type': 'number'});
                     input1.addEventListener('click', input_click);
                     input2.addEventListener('click', input_click);
-                    search_scope.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'title'], Icons('potum') + '<span class="text">' + Lang('item detail/create/item level') + '</span>'));
+                    search_scope.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'text-small', 'title'], Icons('multiple-blank-circle') + '<span class="text">' + Lang('item detail/create/item level') + '</span>'));
                     search_scope.appendChild(simpleCreateHTML('span', 'icon-before-short', Icons('search')));
                     search_scope.appendChild(input1);
                     search_scope.appendChild(simpleCreateHTML('span', ['text', 'inner'], '~'));
                     search_scope.appendChild(input2);
+                    search_scope.appendChild(createShowSearchCaptionButton());
                     frg.appendChild(search_scope);
 
                     const btn_scope = createButtonScope();
@@ -411,15 +463,13 @@ export default class SearchController {
         const res_scope = simpleCreateHTML('div', 'result');
         this.nodes.result = res_scope;
 
-        const detail = simpleCreateHTML('div', ['Cyteria', 'window', 'top-right','h60', 'frozen-top', 'detail', 'hidden']);
+        const detail = simpleCreateHTML('div', ['Cyteria', 'window', 'top-right', 'h60', 'frozen-top', 'pop-right', 'detail', 'hidden']);
         {
             const top = simpleCreateHTML('div', 'top');
             const name = simpleCreateHTML('span', 'name');
 
             const close = simpleCreateHTML('span', ['button', 'right'], Icons('close'));
-            close.addEventListener('click', function(e){
-                ctrr.nodes.detail.classList.add('hidden');
-            });
+            close.addEventListener('click', closeWindow_listener);
 
             const unfold = simpleCreateHTML('span', ['button', 'right'], Icons('unfold-more'));
             unfold.addEventListener('click', function(e){
@@ -604,6 +654,8 @@ export default class SearchController {
         }
         const obtains = simpleCreateHTML('div', ['scope', 'obtains']);
         item.obtains.forEach(a => {
+            if ( this.status.showDetailTargetDye !== null && ( !a['dye'] || !this.status.showDetailTargetDye.find(b => a['dye'].includes(b)) ) )
+                return;
             const scp = simpleCreateHTML('div', 'obtain-scope');
             const t = Lang('item detail/obtains/' + a.type);
             const s1 = simpleCreateHTML('div', 'title');

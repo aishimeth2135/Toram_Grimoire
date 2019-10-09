@@ -114,7 +114,7 @@ span.for-adjust-input-width {
     transition: 0.3s;
     font-size: 1rem;
     width: 20rem;
-    padding-left: 2.4rem;
+    padding-left: 2.7rem;
     display: flex;
 }
 .CalculationSystem-Damage .calculation-name > input:focus {
@@ -149,7 +149,6 @@ span.for-adjust-input-width {
     padding: 0.2rem 0;
 }
 .CalculationSystem-Damage .item-container > .title-scope > .title {
-    font-size: 0.9rem;
     color: var(--primary-light-4);
     vertical-align: middle;
     transition: 0.3s;

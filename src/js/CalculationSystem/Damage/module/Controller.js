@@ -870,7 +870,7 @@ export default class DamageCalculationController {
                 [CalcItemContainer.CATEGORY_MULTIPLIER]: 'hexagon-multiple',
                 [CalcItemContainer.CATEGORY_NONE]: 'multiple-blank-circle'
             }[ctner.category]);
-            t.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'title'], icon + '<span class="text">' + ctner.containerTitle() + '</span>'))
+            t.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small', 'title'], icon + '<span class="text">' + ctner.containerTitle() + '</span>'))
             const help_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('help-rhombus'));
             help_btn.addEventListener('click', this.listeners.openContainerTips);
             t.appendChild(help_btn);
