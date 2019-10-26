@@ -210,19 +210,19 @@
     position: sticky;
     background-color: var(--primary-light-2);
     border-radius: 50%;
-    padding: 0.6rem;
+    padding: 0.8rem;
     border-bottom: 1px solid var(--primary-light);
     box-shadow: 0 0 0.2rem 0.1rem var(--primary-light);
 }
 .Cyteria.Button.frozen-floating > svg {
-    width: 1.8rem;
-    height: 1.8rem;
+    width: 2.1rem;
+    height: 2.1rem;
     fill: white;
     display: block;
 }
 .Cyteria.Button.frozen-floating.bottom-right {
-    bottom: 1.5rem;
-    margin-right: 2rem;
+    bottom: 1.3rem;
+    margin-right: 1.3rem;
     margin-left: auto;
     align-self: flex-end;
 }
