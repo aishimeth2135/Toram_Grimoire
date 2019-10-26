@@ -29,7 +29,7 @@ export default function(root, c){
 
     let cur, cur_equip, cur_attrcat;
     c.forEach((p, index) => {
-        if ( index == 0 ) return;
+        //if ( index == 0 ) return;
         try {
             if ( p[NAME] !== '' && p[CATEGORY] !== '' ){
                 cur = root.appendEquipment(p[NAME], CATEGORY_LIST.indexOf(p[CATEGORY]), p[BASE_VALUE], p[BASE_STABILITY], p[CAPTION]);

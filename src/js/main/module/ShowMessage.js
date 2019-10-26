@@ -10,6 +10,7 @@ function ShowMessage(s){
     if ( !config.node ){
         const t = document.createElement('div');
         t.id = 'show-message';
+        t.classList.add('Cyteria', 'entrance', 'fade-in-down');
         document.body.appendChild(t);
         config.node = t;
     }

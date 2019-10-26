@@ -79,7 +79,7 @@ export default class SearchController {
             this.parentNode.nextSibling.querySelectorAll('li.cur').forEach(a => a.classList.remove('cur'));
         }
         function createButtonScopeTitle(name){
-            const t = simpleCreateHTML('div', 'title-scope');
+            const t = simpleCreateHTML('div', ['Cyteria', 'flex-vertical-middle', 'title-scope']);
             t.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small', 'title'], Icons('multiple-blank-circle') + `<span class="text">${Lang('option scope title/' + name)}</span>`));
             const sel_all = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'text-small'], Icons('select-all') + '<span class="text">' + Lang('option scope title/button/select all') + '</span>');
             sel_all.addEventListener('click', selectAllOption_listener);
@@ -286,7 +286,7 @@ export default class SearchController {
                         [0, 1].forEach(b => {
                             if ( b == 1 && !a.hasMultiplier )
                                 return;
-                            const stat = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'stat', 'hidden'], null,
+                            const stat = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'icon-fill', 'stat', 'hidden'], null,
                                 {
                                     'data-sort': '0',
                                     'data-bn': a.baseName,
@@ -364,7 +364,8 @@ export default class SearchController {
                         {name: 'down', icon: Icons('arrow-down')},
                         {name: 'up', icon: Icons('arrow-up')},
                         {name: 'none', icon: Icons('sub')}
-                    ].forEach(a => {
+                    ]
+                    .forEach(a => {
                         tips_scope.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small'], a.icon + '<span class="text">' + Lang('tips/sort: ' +　a.name) + '</span>'));
                     });
 
@@ -382,7 +383,7 @@ export default class SearchController {
                     const input2 = simpleCreateHTML('input', ['search', 'short'], null, {'type': 'number'});
                     input1.addEventListener('click', input_click);
                     input2.addEventListener('click', input_click);
-                    search_scope.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'text-small', 'title'], Icons('multiple-blank-circle') + '<span class="text">' + Lang('item detail/create/item level') + '</span>'));
+                    search_scope.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'text-small', 'line', 'title'], Icons('multiple-blank-circle') + '<span class="text">' + Lang('item detail/create/item level') + '</span>'));
                     search_scope.appendChild(simpleCreateHTML('span', 'icon-before-short', Icons('search')));
                     search_scope.appendChild(input1);
                     search_scope.appendChild(simpleCreateHTML('span', ['text', 'inner'], '~'));
@@ -564,11 +565,11 @@ export default class SearchController {
     }
     showItemDetail(item){
         const simpleCreateHTML = CY.element.simpleCreateHTML;
-        function createTitle(n, v){
-            let t = Icons('potum') + '<span class="text">' + Lang('item detail/scope title/' + n) + '</span>';
+        function createTitle(icon_id, n, v){
+            let t = Icons(icon_id) + '<span class="text">' + Lang('item detail/scope title/' + n) + '</span>';
             if ( v )
-                t += '<span class="title-value">' + v + '</span>'
-            return simpleCreateHTML('div', 'scope-title', t);
+                t += '<span class="value title-value">' + v + '</span>'
+            return simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'line', 'text-small', 'scope-title'], t);
         }
 
         const r = this.nodes.detail;
@@ -579,9 +580,9 @@ export default class SearchController {
         name.innerHTML = item.name;
 
         const cat = item.category;
-        contents.appendChild(createTitle([10, 12, 13, 14].indexOf(cat) == -1 ? 'base atk' : 'base def', item.baseValue));
+        contents.appendChild(createTitle('sword', [10, 12, 13, 14].indexOf(cat) == -1 ? 'base atk' : 'base def', item.baseValue));
         if ( item.baseStability )
-            contents.appendChild(createTitle('base stability', item.baseStability + '%'));
+            contents.appendChild(createTitle('sword', 'base stability', item.baseStability + '%'));
 
         if ( item.stats.length != 0 ){
             const stats = simpleCreateHTML('div', ['scope', 'stats']);
@@ -599,7 +600,7 @@ export default class SearchController {
                     span.appendChild(rst_frg);
                 stats.appendChild(span);
             });
-            contents.appendChild(createTitle('stats'));
+            contents.appendChild(createTitle('book', 'stats'));
             contents.appendChild(stats);
         }
         if ( item.recipe ){
@@ -620,7 +621,7 @@ export default class SearchController {
                 </tr>`;
                 const table = document.createElement('table');
                 table.appendChild(tb);
-                contents.appendChild(createTitle('create', rc['potential']));
+                contents.appendChild(createTitle('book', 'create', rc['potential']));
                 create.appendChild(table);
                 contents.appendChild(create);
             }
@@ -648,7 +649,7 @@ export default class SearchController {
 
                 const mats_scope = simpleCreateHTML('div', ['scope', 'materials']);
                 mats_scope.appendChild(table);
-                contents.appendChild(createTitle('materials'));
+                contents.appendChild(createTitle('cube-outline', 'materials'));
                 contents.appendChild(mats_scope);
             }
         }
@@ -671,7 +672,7 @@ export default class SearchController {
         });
         if ( item.obtains.length == 0 )
             obtains.innerHTML = '<div class="no-data">' + Lang('item detail/obtains/no data') + '</div>';
-        contents.appendChild(createTitle('obtains'));
+        contents.appendChild(createTitle('rhombus-split', 'obtains'));
         contents.appendChild(obtains);
 
         r.classList.remove('hidden');

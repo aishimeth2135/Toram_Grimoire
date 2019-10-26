@@ -227,7 +227,7 @@ export default class EnchantSimulatorController {
         const ctrr = this;
         const simpleCreateHTML = CY.element.simpleCreateHTML;
 
-        const set_clv = simpleCreateHTML('div', 'set-character-level');
+        const set_clv = simpleCreateHTML('div', ['Cyteria', 'set-button-line', 'set-character-level']);
         {
             const left =  CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'), {'data-ctr': '-'});
             left.addEventListener('click', this.listeners.setCharacterLevel);
@@ -235,7 +235,7 @@ export default class EnchantSimulatorController {
             right.addEventListener('click', this.listeners.setCharacterLevel);
             const mid = CY.element.simpleCreateHTML('span', ['Cyteria', 'text', 'between-button', 'character-level'], EnchantElementStatus('Character/level'));
 
-            set_clv.appendChild(simpleCreateHTML('span', ['text-pretext', 'text-small', 'light'], Lang('Character Level')));
+            set_clv.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'title', 'text-small', 'light'], Icons('cards') + `<span class="text">${Lang('Character Level')}</span>`));
             set_clv.appendChild(left);
             set_clv.appendChild(mid);
             set_clv.appendChild(right);
@@ -244,7 +244,7 @@ export default class EnchantSimulatorController {
         }
 
         const eq_list = simpleCreateHTML('ul', 'equipments-list');
-        const create_eq_btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'icon-only', 'create-equipment'], Icons('add-circle-outline'));
+        const create_eq_btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'no-border', 'create-equipment'], Icons('add-circle-outline') + `<span class="text">${Lang('create equipment')}</span>`);
         create_eq_btn.addEventListener('click', function(e){
             ctrr.createEquipment();
         });
@@ -532,15 +532,15 @@ export default class EnchantSimulatorController {
 
         const field_menu = simpleCreateHTML('ul', 'field-menu');
         const field_menu_text = Lang('Equipment Field List');
-        [0, 1].forEach((p, i) => {
-            const li = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple'], field_menu_text[i], {'data-no': p});
+        ['sword', 'six-star'].forEach((p, i) => {
+            const li = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple'], Icons(p) + `<span class="text">${field_menu_text[i]}</span>`, {'data-no': i});
             li.addEventListener('click', this.listeners.selectEquipmentField);
             field_menu.appendChild(li);
-            if ( p == 0 )
+            if ( i == 0 )
                 li.classList.add('cur');
         });
 
-        const set_orig_pot = simpleCreateHTML('div', 'set-original-potential');
+        const set_orig_pot = simpleCreateHTML('div', ['Cyteria', 'set-button-line', 'set-original-potential']);
         {
             const left =  CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'), {'data-ctr': '-'});
             left.addEventListener('click', this.listeners.setEquipmentOriginalPotential);
@@ -551,13 +551,13 @@ export default class EnchantSimulatorController {
             mid.addEventListener('click', this.listeners.inputClickSelect);
             mid.type = 'number';
 
-            set_orig_pot.appendChild(simpleCreateHTML('span', ['text-pretext', 'text-small', 'light'], Lang('Original Potential')));
+            set_orig_pot.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small', 'light', 'title'], Icons('multiple-blank-circle') + `<span class="text">${Lang('Original Potential')}</span>`));
             set_orig_pot.appendChild(left);
             set_orig_pot.appendChild(mid);
             set_orig_pot.appendChild(right);
         }
 
-        const set_base_pot = simpleCreateHTML('div', 'set-base-potential');
+        const set_base_pot = simpleCreateHTML('div', ['Cyteria', 'set-button-line', 'set-base-potential']);
         {
             const left =  CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'), {'data-ctr': '-'});
             left.addEventListener('click', this.listeners.setEquipmentBasePotential);
@@ -568,7 +568,7 @@ export default class EnchantSimulatorController {
             mid.addEventListener('click', this.listeners.inputClickSelect);
             mid.type = 'number';
 
-            set_base_pot.appendChild(simpleCreateHTML('span', ['text-pretext', 'text-small', 'light'], Lang('Base Potential')));
+            set_base_pot.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small', 'light', 'title'], Icons('multiple-blank-circle') + `<span class="text">${Lang('Base Potential')}</span>`));
             set_base_pot.appendChild(left);
             set_base_pot.appendChild(mid);
             set_base_pot.appendChild(right);
@@ -594,8 +594,7 @@ export default class EnchantSimulatorController {
         show_res_scope.appendChild(show_res);
 
         const successRate = simpleCreateHTML('div', ['success-rate-scope', 'hidden']);
-        successRate.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], Icons('star-border') + `<span class="text">${Lang('Success Rate')}</span>`));
-        successRate.appendChild(simpleCreateHTML('span', ['space-left', 'success-rate']));
+        successRate.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], Icons('star-border') + `<span class="text">${Lang('Success Rate')}</span><span class="value success-rate"></span>`));
 
         r.appendChild(field_menu);
         r.appendChild(set_orig_pot);
@@ -636,7 +635,7 @@ export default class EnchantSimulatorController {
         step_type.appendChild(switch_type_btn);
         step_type.appendChild(simpleCreateHTML('span', ['Cyteria', 'text', 'after-icon-button', 'step-type-text']));
 
-        const set_step_value = simpleCreateHTML('div', ['type-each-set-scope', 'vertical-middle', 'hidden']);
+        const set_step_value = simpleCreateHTML('div', ['type-each-set-scope', 'hidden']);
         set_step_value.appendChild(simpleCreateHTML('span', ['text-pretext', 'text-small'], Lang('enchant per time: title')));
         const set_step_left =  simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'), {'data-ctr': '-'});
         const set_step_right = simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('add'), {'data-ctr': '+'});
@@ -653,13 +652,13 @@ export default class EnchantSimulatorController {
 
         const stats = simpleCreateHTML('div', 'step-stats');
 
-        const create_stat_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'create-step'], Icons('add-circle-outline'));
+        const create_stat_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'no-border', 'create-step'], Icons('add-circle-outline') + `<span class="text">${Lang('create enchant stat')}</span>`);
         create_stat_btn.addEventListener('click', this.listeners.openCreateStatWindow);
         stats.appendChild(create_stat_btn);
 
         scope.appendChild(stats);
 
-        scope.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon','show-step-potential'], Icons('creation') + '<span class="text step-potential"></span>'));
+        scope.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'line', 'show-step-potential'], Icons('creation') + '<span class="text step-potential"></span>'));
 
         return scope;
     }
@@ -690,9 +689,9 @@ export default class EnchantSimulatorController {
         scope.appendChild(main);
 
         const sub = simpleCreateHTML('div', 'sub');
-        sub.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], Icons('label') + '<span class="text pre-stats-value"></span>'));
-        sub.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'space-left'], Icons('creation') + '<span class="text stat-potential"></span>'));
-        sub.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'space-left'], Icons('cube-outline') + '<span class="text stat-material-point-cost"></span>'));
+        sub.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small'], Icons('label') + '<span class="text pre-stats-value"></span>'));
+        sub.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small', 'space-left'], Icons('creation') + '<span class="text stat-potential"></span>'));
+        sub.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small', 'space-left'], Icons('cube-outline') + '<span class="text stat-material-point-cost"></span>'));
 
         scope.appendChild(sub);
 

@@ -390,7 +390,7 @@ export default function(ctrr){
 			SkillEffect.ACTION_TIME,
 			SkillEffect.CASTING_TIME
 		];
-		const one = simpleCreateHTML('div', 'skill_attributes');
+		const one = simpleCreateHTML('div', 'skill-attributes');
 		
 		order.forEach(item => {
 			if ( output.attributes[item] === void 0 )

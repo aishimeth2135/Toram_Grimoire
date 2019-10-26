@@ -1,5 +1,6 @@
 import {SkillRoot, SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
-import {DrawSkillTree, GetDrawData} from "./DrawSkillTree.js";
+import {DrawSkillTree, createDrawSkillTreeDefs} from "./DrawSkillTree.js";
+import {getSkillElementId, selectSkillElement} from "./SkillElementMethods.js";
 import AnalysisSkill from "./AnalysisSkill/AnalysisSkill.js";
 import Icons from "../../main/module/SvgIcons.js";
 
@@ -67,13 +68,36 @@ class SkillElementsController {
 		this.MAIN_NODE = main_node;
 		const order = [
 			SkillRoot.TYPE, SkillTreeCategory.TYPE, SkillTree.TYPE,
-			TYPE_SKILL_LEVEL, TYPE_CHARACTER_LEVEL, TYPE_SWITCH_DISPLAY_MODE,
+			TYPE_CHARACTER_LEVEL, TYPE_SWITCH_DISPLAY_MODE, TYPE_SKILL_LEVEL,
 			SkillTree.CATEGORY_EQUIPMENT, TYPE_SKILL_RECORD, Skill.TYPE
 		];
+		const result_options_list = [
+			TYPE_SKILL_LEVEL, SkillTree.CATEGORY_EQUIPMENT
+		];
+		const result_list = [
+			Skill.TYPE
+		];
+
 		const frg = document.createDocumentFragment();
+		const result_options_scope = simpleCreateHTML('div', ['skill-query-result-options-scope', 'Cyteria', 'animation']);
+		const result_scope = simpleCreateHTML('div', ['skill-query-result-scope', 'Cyteria', 'frozen-floating-button-parent', 'hidden']);
+
 		order.forEach(a => {
 			const t = this.getSkillElementScope(a);
-			frg.appendChild(t);
+
+			if ( result_options_list.indexOf(a) != -1 ){
+				if ( result_options_scope.childElementCount == 0 )
+					frg.appendChild(result_options_scope);
+				result_options_scope.appendChild(t);
+			}
+			else if ( result_list.indexOf(a) != -1 ){
+				if ( result_scope.childElementCount == 0 )
+					frg.appendChild(result_scope);
+				result_scope.appendChild(t);	
+			}
+			else
+				frg.appendChild(t);
+
 			switch(a){
 				case SkillRoot.TYPE:
 					t.appendChild(this.createSkillQueryScopeHTML(sr, strings().menu));
@@ -86,10 +110,12 @@ class SkillElementsController {
 				case TYPE_SKILL_RECORD:
 					t.classList.add('hidden');
 				case TYPE_SKILL_LEVEL:
-				case TYPE_CHARACTER_LEVEL:
 				case TYPE_SWITCH_DISPLAY_MODE:
 					t.appendChild(this.createSkillQueryScopeHTML(null, a));
 					break;
+				case TYPE_CHARACTER_LEVEL:
+					t.classList.add('Cyteria', 'set-button-line');
+					t.appendChild(this.createSkillQueryScopeHTML(null, a));
 			}
 		}, this);
 
@@ -97,40 +123,46 @@ class SkillElementsController {
 
 		this.status.skill_from_where_scope = simpleCreateHTML('div', ['show_skill_from_where', 'hidden']);
 
-		const _C = this;
+		const ctrr = this;
 		document.querySelector("footer .switch_branch_development_mode").addEventListener('click', function(event){
-			_C.status.branchDevelopmentMode = _C.status.branchDevelopmentMode ? false : true;
-			_C.updateSkillHTML();
+			ctrr.status.branchDevelopmentMode = ctrr.status.branchDevelopmentMode ? false : true;
+			ctrr.updateSkillHTML();
 		});
 
-		// defs of svg in Skill Query
+		// toogle display mode of result
+	    {
+	    	const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'frozen-floating', 'bottom-right'], Icons('multiple-blank-circle'));
+	    	btn.addEventListener('click', function(){
+	    		const c = result_options_scope.classList;
+	    		const f = c.contains('frozen');
+
+	    		if ( c.contains('frozen') ){
+	    			if ( window.AnimationEvent ){
+	    				result_options_scope.addEventListener('animationend', function lis(){
+		    				c.remove('frozen');
+		    				result_options_scope.removeEventListener('animationend', lis);
+		    			});
+	    			}
+	    			else
+	    				c.remove('frozen');
+	    			c.add('slide-up');
+	    			c.remove('slide-down');
+	    		}
+	    		else {
+	    			c.remove('slide-up');
+	    			c.add('frozen');
+	    			c.add('slide-down');
+	    		}
+	    		
+	    		this.innerHTML = !f ? Icons('close') : Icons('multiple-blank-circle');
+	    	});
+	    	result_scope.appendChild(btn);
+	    }
+
+		// svg reusable defs
 		const svg = CY.svg.create();
-		const defs = CY.svg.createEmpty('defs');
-
-		const w = GetDrawData().gridWidth,
-			Circle = CY.svg.drawCircle;
-
-	    // @lock
-	    const lock_pettern = CY.svg.createEmpty('pattern', {width: 1, height: 1, id: 'skill-icon-lock'});
-	    const lock = CY.svg.create(w, w, {x: (w-24)/2, y: (w-24)/2});
-	    lock.innerHTML = '<path fill="var(--primary-light)" d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/>';
-	    lock_pettern.appendChild(Circle(w/2, w/2, w/2, {fill: '#FFF', 'stroke-width': 0}));
-	    lock_pettern.appendChild(lock);
-
-	    defs.appendChild(lock_pettern);
-
-	    const skillIconBg = CY.svg.createLinearGradient('skill-icon-bg',
-	        '.5', '0', '.5', '1', [
-	            {offset: '0%', 'stop-color': '#FFF'},
-	            {offset: '50%', 'stop-color': 'var(--primary-light)'},
-	            {offset: '100%', 'stop-color': 'var(--primary-light-2)'}
-	        ]
-	    );
-
-	    defs.appendChild(skillIconBg);
-
-	    svg.appendChild(defs);
-	    this.MAIN_NODE.appendChild(svg);
+	    svg.appendChild(createDrawSkillTreeDefs());
+	    main_node.appendChild(svg);
 
 	    // skill attribute tips
 	    {
@@ -204,42 +236,12 @@ class SkillElementsController {
 			[SkillTree.CATEGORY_EQUIPMENT]: 'SkillEquipment_scope',
 			[TYPE_SKILL_RECORD]: 'SkillRecord_scope'
 		};
-		let node = this.MAIN_NODE.getElementsByClassName(SCOPE_NAME[type])[0];
+		let node = this.MAIN_NODE.querySelector('.' + SCOPE_NAME[type]);
 		if ( !node ){
 			node = document.createElement('div');
 			node.classList.add(SCOPE_NAME[type]);
 		}
 		return node;
-	}
-	getSkillElementNoStr(ele){
-		let nostr = '';
-		while (ele.parent){
-			nostr = ele.findLocation() + (nostr != "" ? "-" : "") + nostr;
-			ele = ele.parent;
-		}
-		return nostr;
-	}
-	selectSkillElement(se_no){
-		const nos = se_no.split("-");
-		let cur = null;
-		nos.forEach(function(no, i){
-			no = parseInt(no, 10);
-			switch (i){
-				case 0:
-					cur = this.skillRoot.skillTreeCategorys[no];
-					break;
-				case 1:
-					cur = cur.skillTrees[no];
-					break;
-				case 2:
-					cur = cur.skills[no];
-					break;
-				case 3:
-					cur = cur.branchs[no];
-					break;
-			}
-		}, this);
-		return cur;
 	}
 	skillRecord(s){
 		this.status.skillRecords.push(this.status.currentSkill);
@@ -334,7 +336,7 @@ class SkillElementsController {
 			const seno = td.getAttribute(strings().data_skillElementNo);
 			if ( seno === null )
 				return;
-			const skill = this.selectSkillElement(seno);
+			const skill = selectSkillElement(this.skillRoot, seno);
 			skill.effects.find(eft => this.equipmentCheck(eft, cur)) === void 0
 				? td.classList.add('disable')
 				: td.classList.remove('disable');
@@ -362,6 +364,7 @@ class SkillElementsController {
 		const skill = this.status.currentSkill;
 		if ( !skill )
 			return;
+		this.MAIN_NODE.querySelector('.skill-query-result-scope').classList.remove('hidden');
 		const scope = this.getSkillElementScope(Skill.TYPE);
 		CY.element.removeAllChild(scope);
 		scope.appendChild(this.createSkillQueryScopeHTML(skill, Skill.CATEGORY_MAIN));
@@ -382,29 +385,30 @@ class SkillElementsController {
 			if ( temp ) temp.click();
 		}
 	}
-	createSkillQueryScopeHTML(sEle, /*const string*/category){
+	createSkillQueryScopeHTML(sEle, category){
 		const SE_TYPE = sEle !== null ? sEle.TYPE : category;
 		//const type = sEle.TYPE.toString().match(/Symbol\((.+)\)/)[1];
 		switch (SE_TYPE){
 			case SkillRoot.TYPE: switch (category){
 				case strings().menu: {
-					const _C = this;
+					const ctrr = this;
 					const li_listener = function(event){
 						const cur = this.parentNode.getElementsByClassName('cur')[0];
 						if ( cur )
 							cur.classList.remove('cur');
 						this.classList.add('cur');
-						const scope = _C.getSkillElementScope(SkillTreeCategory.TYPE);
-						let loc = Array.from(this.parentNode.getElementsByTagName('li')).indexOf(this);
-						let menu_list = _C.getSkillElementScope(SkillTreeCategory.TYPE).querySelectorAll('div._menu');
+						const scope = ctrr.getSkillElementScope(SkillTreeCategory.TYPE);
+						const loc = Array.from(this.parentNode.getElementsByTagName('li')).indexOf(this);
+						let menu_list = ctrr.getSkillElementScope(SkillTreeCategory.TYPE).querySelectorAll('div._menu');
 						const cur_menu = Array.from(menu_list).find(m => !m.classList.contains('hidden'));
 						if ( cur_menu )
 							cur_menu.classList.add('hidden');
 						menu_list[loc].classList.remove('hidden');
-						CY.element.removeAllChild(_C.getSkillElementScope(SkillTree.TYPE));
-						CY.element.removeAllChild(_C.getSkillElementScope(Skill.TYPE));
-						CY.element.removeAllChild(_C.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT));
-						_C.getSkillElementScope(TYPE_SKILL_RECORD).classList.add('hidden');
+						CY.element.removeAllChild(ctrr.getSkillElementScope(SkillTree.TYPE));
+						CY.element.removeAllChild(ctrr.getSkillElementScope(Skill.TYPE));
+						CY.element.removeAllChild(ctrr.getSkillElementScope(SkillTree.CATEGORY_EQUIPMENT));
+						ctrr.MAIN_NODE.querySelector('.skill-query-result-scope').classList.add('hidden');
+						ctrr.getSkillElementScope(TYPE_SKILL_RECORD).classList.add('hidden');
 						const t = menu_list[loc].querySelector('li.cur');
 						if ( t )
 							t.click();
@@ -414,7 +418,7 @@ class SkillElementsController {
 					const frg = document.createDocumentFragment();
 					sEle.skillTreeCategorys.forEach((stc) => {
 						const li = simpleCreateHTML('li', null, stc.name);
-						li.setAttribute(strings().data_skillElementNo, _C.getSkillElementNoStr(stc));
+						li.setAttribute(strings().data_skillElementNo, getSkillElementId(stc));
 						li.addEventListener('click', li_listener);
 						frg.appendChild(li);
 					});
@@ -426,29 +430,30 @@ class SkillElementsController {
 			}
 			case SkillTreeCategory.TYPE: switch (category){
 				case strings().menu: {
-					const _C = this;
+					const ctrr = this;
 					const li_listener = function(event){
 						const cur = this.parentNode.getElementsByClassName('cur')[0];
 						if ( cur )
 							cur.classList.remove('cur');
 						this.classList.add('cur');
-						const scope = _C.getSkillElementScope(SkillTree.TYPE);
+						const scope = ctrr.getSkillElementScope(SkillTree.TYPE);
 						scope.innerHTML = "";
-						const ele = _C.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
-						scope.appendChild(_C.createSkillQueryScopeHTML(ele, SkillTree.CATEGORY_DRAW_TREE));
+						const ele = selectSkillElement(ctrr.skillRoot, this.getAttribute(strings().data_skillElementNo));
+						scope.appendChild(ctrr.createSkillQueryScopeHTML(ele, SkillTree.CATEGORY_DRAW_TREE));
 
-						_C.initEquipmentScope(ele);
+						ctrr.initEquipmentScope(ele);
 
-						CY.element.removeAllChild(_C.getSkillElementScope(Skill.TYPE));
-						_C.getSkillElementScope(TYPE_SKILL_RECORD).classList.add('hidden');
-						_C.status.currentSkill = null;
+						const skill_scope = ctrr.getSkillElementScope(Skill.TYPE);
+						CY.element.removeAllChild(skill_scope);
+						ctrr.getSkillElementScope(TYPE_SKILL_RECORD).classList.add('hidden');
+						ctrr.status.currentSkill = null;
 					};
 					const he = simpleCreateHTML('div', ['_' + category, 'hidden', 'Cyteria', 'entrance', 'fade-in']);
 
 					const frg = document.createDocumentFragment();
 					sEle.skillTrees.forEach(function(st){
 						const li = simpleCreateHTML('li', null, st.name);
-						li.setAttribute(strings().data_skillElementNo, _C.getSkillElementNoStr(st));
+						li.setAttribute(strings().data_skillElementNo, getSkillElementId(st));
 						li.addEventListener("click", li_listener);
 						frg.appendChild(li);
 					});
@@ -460,10 +465,33 @@ class SkillElementsController {
 			}
 			case SkillTree.TYPE: switch (category){
 				case SkillTree.CATEGORY_DRAW_TREE: {
-					return DrawSkillTree(sEle, this);
+					function setSkillButton(node, skill){
+					    
+					}
+					return DrawSkillTree(sEle, {
+						setSkillButton: (el, skill) => {
+							const ctrr = this;
+							function listener(event){
+							    const s = selectSkillElement(ctrr.skillRoot, this.getAttribute(strings().data_skillElementNo));
+							    if ( ctrr.status.currentSkill == s )
+							        return;
+							    const cur = this.parentNode.querySelector('.cur');
+							    if ( cur )
+							        cur.classList.remove('cur');
+							    this.classList.add('cur');
+
+							    ctrr.clearSkillRecord();
+
+							    ctrr.initCurrentSkill(s);
+							    ctrr.updateSkillHTML();
+							}
+							el.addEventListener('click', listener);
+						    el.setAttribute(strings().data_skillElementNo, getSkillElementId(skill));
+						}
+					});
 				}
 				case SkillTree.CATEGORY_EQUIPMENT: {
-					const _C = this;
+					const ctrr = this;
 					const listener = function(event){
 						const mw = this.getAttribute(strings().data_mainWeapon),
 							sw = this.getAttribute(strings().data_subWeapon),
@@ -473,10 +501,10 @@ class SkillElementsController {
 						for (let i=0; i<list.length; ++i){
 							const a = list[i];
 							if ( a !== null && a !== '' ){
-								_C.setCurrentEquipment(ary[i], parseInt(a, 10));
+								ctrr.setCurrentEquipment(ary[i], parseInt(a, 10));
 								this.parentNode.getElementsByClassName('cur')[0].classList.remove('cur');
 								this.classList.add('cur');
-								_C.updateSkillHTML();
+								ctrr.updateSkillHTML();
 								return;
 							}
 						}
@@ -562,9 +590,9 @@ class SkillElementsController {
 					return sEle.checkData() ? AnalysisSkill(this) : simpleCreateHTML('div', 'no_data', GetLang('Skill Query/Analysis Skill/no data'));
 			}
 			case TYPE_CHARACTER_LEVEL: {
-				const _C = this;
-				const left =  simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only', 'left'], Icons('sub'));
-				const right = simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only', 'right'], Icons('add'));
+				const ctrr = this;
+				const left =  simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'));
+				const right = simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('add'));
 				const mid = simpleCreateHTML('input', ['Cyteria', 'input', 'between-button', 'mid']);
 
 				mid.value = this.status.characterLevel;
@@ -582,8 +610,8 @@ class SkillElementsController {
 					else if ( v < min )
 						v = min;
 					mid.value = v;
-					_C.status.characterLevel = v;
-					_C.updateSkillHTML();
+					ctrr.status.characterLevel = v;
+					ctrr.updateSkillHTML();
 				};
 				left.setAttribute('data-ctr', '-');
 				left.addEventListener('click', ctr_listener);
@@ -598,7 +626,7 @@ class SkillElementsController {
 				});
 
 				const main = document.createDocumentFragment();
-				main.appendChild(simpleCreateHTML('div', 'title', GetLang('Skill Query/Analysis Skill/character level')));
+				main.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'title', 'text-small'], Icons('cards') + `<span class="text">${GetLang('Skill Query/Analysis Skill/character level')}</span>`));
 				main.appendChild(left);
 				main.appendChild(mid);
 				main.appendChild(right);
@@ -606,14 +634,14 @@ class SkillElementsController {
 				return main;
 			}
 			case TYPE_SKILL_LEVEL: {
-				const _C = this;
+				const ctrr = this;
 				const listener = function(event){
-					const skill = _C.status.currentSkill;
+					const skill = ctrr.status.currentSkill;
 					this.parentNode.getElementsByClassName('cur')[0].classList.remove('cur');
 					this.classList.add('cur');
-					_C.status.skillLevel = parseInt(this.getAttribute(strings().data_skillLevel), 10);
+					ctrr.status.skillLevel = parseInt(this.getAttribute(strings().data_skillLevel), 10);
 					if ( skill !== null && skill !== void 0 )
-						_C.updateSkillHTML();
+						ctrr.updateSkillHTML();
 				};
 				const min = 1, max = 10;
 				const he = document.createElement('ul');
@@ -628,22 +656,22 @@ class SkillElementsController {
 				return he;
 			}
 			case TYPE_SWITCH_DISPLAY_MODE: {
-				const _C = this;
+				const ctrr = this;
 				const he = document.createDocumentFragment();
 				const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple'], Icons('switch') + '<span class="text">' + Lang('switch display') + '</span>');
 				btn.addEventListener('click', function(event){
-					_C.status.showOriginalFormula = _C.status.showOriginalFormula ? false : true;
-					_C.updateSkillHTML();
+					ctrr.status.showOriginalFormula = ctrr.status.showOriginalFormula ? false : true;
+					ctrr.updateSkillHTML();
 				});
 				he.appendChild(btn);
 				return he;
 			}
 			case TYPE_SKILL_RECORD: {
-				const _C = this;
+				const ctrr = this;
 				const he = document.createDocumentFragment();
 				const back = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'icon-big', 'back-button', 'no-border', 'no-padding'], Icons('arrow-left') + `<span class="text">${GetLang('Skill Query/button text/back')}</span>`);
 				back.addEventListener('click', function(event){
-					_C.popSkillRecord();
+					ctrr.popSkillRecord();
 				});
 				const title = simpleCreateHTML('div', 'current_skill');
 				he.appendChild(back);

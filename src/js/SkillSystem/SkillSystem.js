@@ -1,6 +1,6 @@
 import {SkillRoot} from "./module/SkillElements.js";
 import {LoadSkillData, LoadSkillMainData} from "./module/LoadSkillData.js";
-import DataPath from "../main/module/DataPath.js";
+import {DataPath, createLoadDataPromise} from "../main/module/DataPath.js";
 import SkillQueryController from "./module/SkillQueryController.js";
 import {currentLanguage, secondLanguage} from "../main/module/LanguageSystem.js";
 
@@ -9,126 +9,42 @@ class SkillSystem {
 	constructor(){
 		this.skillRoot = new SkillRoot(this);
 	}
-	async init(){
+	async* init(){
 		const _this = this;
 
-		//
-		let SkillData, lang_SkillData = null, slang_SkillData  = null;
-		await new Promise((resolve, reject) => {
-			Papa.parse(DataPath().SkillData, {
-				download: true,
-				complete(res){
-					resolve();
-					SkillData = res.data;
-				},
-				error(err){
-					console.warn("讀取技能資料時發生錯誤。");
-					console.log(err);
-					reject();
-				}
-			});
-		});
-		// 語言資料。語言為繁體中文則無需載入。
-		if ( currentLanguage() != 1 ){
-			await new Promise((resolve, reject) => {
-				const data = DataPath().lang_SkillData[currentLanguage()];
-				if ( data ){
-					Papa.parse(data, {
-						download: true,
-						complete(res){
-							lang_SkillData = res.data;
-							resolve();
-						},
-						error(err){
-							console.warn("讀取技能資料時發生錯誤。");
-							console.log(err);
-							reject();
-						}
-					});
-				}
-			});
-			if ( currentLanguage() != secondLanguage() ){
-				await new Promise((resolve, reject) => {
-					const data = DataPath().lang_SkillData[secondLanguage()];
-					if ( data ){
-						Papa.parse(data, {
-							download: true,
-							complete(res){
-								slang_SkillData = res.data;
-								resolve();
-							},
-							error(err){
-								console.warn("讀取技能資料時發生錯誤。");
-								console.log(err);
-								reject();
-							}
-						});
-					}
-				});
-			}
-		}
-		LoadSkillData(this.skillRoot, SkillData, lang_SkillData, slang_SkillData);
+		const current = currentLanguage(), second = secondLanguage();
 
-		//
-		let SkillMainData, lang_SkillMainData = null, slang_SkillMainData = null;
-		await new Promise((resolve, reject) => {
-			Papa.parse(DataPath().SkillMainData, {
-				download: true,
-				complete(res){
-					SkillMainData = res.data;
-					resolve();
-				},
-				error(err){
-					console.warn("讀取技能資料時發生錯誤。");
-					console.log(err);
-					reject();
-				}
-			});
-		});
-		// 語言資料。語言為繁體中文則無需載入。
+		const promise_ary = [];
+
+		const SkillData_ary = Array(3), SkillMainData_ary = Array(3);
+
+		promise_ary.push(createLoadDataPromise(DataPath('Skill'), SkillData_ary, 0));
 		if ( currentLanguage() != 1 ){
-			await new Promise((resolve, reject) => {
-				const data = DataPath().lang_SkillMainData[currentLanguage()];
-				if ( data ){
-					Papa.parse(data, {
-						download: true,
-						complete(res){
-							lang_SkillMainData = res.data;
-							resolve();
-						},
-						error(err){
-							console.warn("讀取技能資料時發生錯誤。");
-							console.log(err);
-							reject();
-						}
-					});
-				}
-			});
-			if ( currentLanguage() != secondLanguage() ){
-				await new Promise((resolve, reject) => {
-					const data = DataPath().lang_SkillMainData[secondLanguage()];
-					if ( data ){
-						Papa.parse(data, {
-							download: true,
-							complete(res){
-								slang_SkillMainData = res.data;
-								resolve();
-							},
-							error(err){
-								console.warn("讀取技能資料時發生錯誤。");
-								console.log(err);
-								reject();
-							}
-						});
-					}
-				});
-			}
+			const path = DataPath('Skill/language');
+			promise_ary.push(createLoadDataPromise(path[current], SkillData_ary, 1));
+			if ( currentLanguage() != secondLanguage() )
+				promise_ary.push(createLoadDataPromise(path[second], SkillData_ary, 2));
 		}
-		LoadSkillMainData(this.skillRoot, SkillMainData, lang_SkillMainData, slang_SkillMainData);
+		promise_ary.push(createLoadDataPromise(DataPath('Skill Main'), SkillMainData_ary, 0));
+		if ( currentLanguage() != 1 ){
+			const path = DataPath('Skill Main/language');
+			promise_ary.push(createLoadDataPromise(path[current], SkillMainData_ary, 1));
+			if ( currentLanguage() != secondLanguage() )
+				promise_ary.push(createLoadDataPromise(path[second], SkillMainData_ary, 2));
+		}
+
+		await Promise.all(promise_ary);
+		yield;
+
+		LoadSkillData(this.skillRoot, ...SkillData_ary);
+		LoadSkillMainData(this.skillRoot, ...SkillMainData_ary);
 	}
 	init_SkillQuery(sr_node){
 		this.skillQueryController = new SkillQueryController(this.skillRoot);
-		this.skillQueryController.initSkillQueryHTML(sr_node);
+		return new Promise((resolve, reject) => {
+			this.skillQueryController.initSkillQueryHTML(sr_node);
+			resolve();
+		});
 	}
 }
 

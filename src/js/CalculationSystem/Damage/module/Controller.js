@@ -221,7 +221,7 @@ export default class DamageCalculationController {
                 }
                 const n = cal.calculationName(v);
                 this.value = n;
-                ctrr.getCalculationSelectButton(ctrr.getScopeFromChildNode(this, 'calculation')).innerHTML = n;
+                ctrr.getCalculationSelectButton(ctrr.getScopeFromChildNode(this, 'calculation')).querySelector('.text').innerHTML = n;
             },
             calculationSelect(e){
                 const cur = this.parentNode.querySelector('.cur');
@@ -254,7 +254,7 @@ export default class DamageCalculationController {
             setCalcItemValue(e){
                 const item_scope = ctrr.getScopeFromChildNode(this, 'calc-item');
                 const item = ctrr.getCalcItemFromScope(item_scope);
-                const v = item.itemValue(parseInt(this.value), 10);
+                const v = item.value(parseInt(this.value), 10);
                 this.value = v;
 
                 ctrr.showResult();
@@ -321,24 +321,24 @@ export default class DamageCalculationController {
                     if ( cal.findItem('atk') == this.currentItem() ){
                         const two_handed_lv = cal.findItem('two_handed_skill_level');
                         if ( two_handed_lv.isValid() )
-                            v = Math.floor(v * (100 + 5*two_handed_lv.itemValue()) / 100);
+                            v = Math.floor(v * (100 + 5*two_handed_lv.value()) / 100);
                         const sub_atk = cal.findItem('sub_atk');
                         if ( sub_atk.isValid() ){
-                            const a = sub_atk.itemValue(),
-                                b = cal.findItem('sub_atk_multiplier').itemValue();
+                            const a = sub_atk.value(),
+                                b = cal.findItem('sub_atk_multiplier').value();
                             v += Math.floor(a*b/100);
                         }
                     }
                     return v;
                 },
                 levelDifference: function(){
-                    return this.getItem('character_level').itemValue() - this.getItem('target_level').itemValue();
+                    return this.getItem('character_level').value() - this.getItem('target_level').value();
                 },
                 otherConstant: function(){
-                    return this.item().reduce((a, b) => a + b.itemValue(), 0);
+                    return this.item().reduce((a, b) => a + b.value(), 0);
                 },
                 otherMultiplier: function(){
-                    return this.item().reduce((a, b) => a * b.itemValue() / 100, 1);
+                    return this.item().reduce((a, b) => a * b.value() / 100, 1);
                 },
                 defenseCalc: function(){
                     const v = this.calculatedValue();
@@ -346,30 +346,30 @@ export default class DamageCalculationController {
                     return Math.floor(v * (p - 100) / 100);
                 },
                 skillConstantValue: function(){
-                    let v = this.getItem('skill_constant').itemValue();
+                    let v = this.getItem('skill_constant').value();
                     ['str', 'dex', 'int', 'agi', 'vit'].forEach(p => {
-                        v += this.getItem('skill_constant_' + p).itemValue() * this.belongCalculation().userSet(p) / 100;
+                        v += this.getItem('skill_constant_' + p).value() * this.belongCalculation().userSet(p) / 100;
                     });
                     return Math.floor(v);
                 },
                 skillMultiplierValue: function(){
-                    let v = this.getItem('skill_multiplier').itemValue();
+                    let v = this.getItem('skill_multiplier').value();
                     ['str', 'dex', 'int', 'agi', 'vit'].forEach(p => {
-                        v += this.getItem('skill_multiplier_' + p).itemValue() * this.belongCalculation().userSet(p) / 100;
+                        v += this.getItem('skill_multiplier_' + p).value() * this.belongCalculation().userSet(p) / 100;
                     });
                     return Math.floor(v)/100;
                 },
                 criticalExpectedValue: function(){
                     const rate = this.getItem('critical_rate');
                     const dmg = this.getItem('critical_damage');
-                    const d = dmg.itemValue();
+                    const d = dmg.value();
                     if ( rate.isValid() ){
                         if ( this.belongCalculation().findItem('physical_damage').isValid() ){
-                            const r = rate.itemValue();
+                            const r = rate.value();
                             return ((100 * (100 - r)) + d * r) / 10000;
                         }
                         else {
-                            const r = rate.itemValue()/4;
+                            const r = rate.value()/4;
                             return ((100 * (100 - r)) + ((d - 100) / 2 + 100) * r) / 10000;
                         }
                     }
@@ -379,8 +379,8 @@ export default class DamageCalculationController {
                     const graze = this.getItem('probability_of_graze');
                     const stab = this.getItem('stability');
 
-                    const a = graze.itemValue();
-                    const b = stab.itemValue();
+                    const a = graze.value();
+                    const b = stab.value();
 
                     const v = graze.isValid() ? (a*b/2 + (100-a)*b) / 100 : b;
                     return (v + 100)/200;
@@ -396,15 +396,15 @@ export default class DamageCalculationController {
         //
         const top = simpleCreateHTML('div', 'top');
 
-        const menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'right', 'menu-button'], Icons('cube-outline'));
-        menu_btn.addEventListener('click', this.listeners.openMainMenu);
-        top.appendChild(menu_btn);
-
         const calculationSelect = simpleCreateHTML('ul', 'calculation-select');
         const create_cal_btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'no-border', 'create-calclulation'], Icons('add-circle-outline') + '<span class="text">' + Lang('create calculation') + '</span>');
         create_cal_btn.addEventListener('click', this.listeners.createCalculation);
         calculationSelect.appendChild(create_cal_btn);
         top.appendChild(calculationSelect);
+
+        const menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'menu-button'], Icons('cube-outline'));
+        menu_btn.addEventListener('click', this.listeners.openMainMenu);
+        top.appendChild(menu_btn);
 
         node.appendChild(top);
 
@@ -418,13 +418,13 @@ export default class DamageCalculationController {
         const result = simpleCreateHTML('div', ['damage', 'result-scope', 'frozen']);
 
         const damage_result_scope = simpleCreateHTML('div', 'scope');
-        damage_result_scope.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], Icons('sword') + '<span class="text">' + Lang('Damage') + '</span>'));
-        damage_result_scope.appendChild(simpleCreateHTML('span', ['damage-result', 'vertical-middle', 'space-left', 'light'], 0));
+        damage_result_scope.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'],
+            `${Icons('sword')}<span class="text">${Lang('Damage')}</span><span class="value damage-result">0</span>`));
         result.appendChild(damage_result_scope);
 
         const cmp_dmg_scope = simpleCreateHTML('div', 'scope');
-        cmp_dmg_scope.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], Icons('sword') + '<span class="text">' + Lang('Comparative Damage') + '</span>'));
-        cmp_dmg_scope.appendChild(simpleCreateHTML('span', ['comparative-damage', 'vertical-middle', 'space-left'], 0));
+        cmp_dmg_scope.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'],
+            `${Icons('sword')}<span class="text">${Lang('Comparative Damage')}</span><span class="value comparative-damage">0</span>`));
 
         const update_cmp_dmg = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'single-line'], Icons('switch'));
         update_cmp_dmg.addEventListener('click', this.listeners.setComparativeDamage);
@@ -434,7 +434,7 @@ export default class DamageCalculationController {
 
         const cmp_res_scope = simpleCreateHTML('div', 'scope');
         cmp_res_scope.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'comparative-result-icon'], Icons('arrow-up')));
-        cmp_res_scope.appendChild(simpleCreateHTML('span', ['comparative-result', 'vertical-middle'], 0));
+        cmp_res_scope.appendChild(simpleCreateHTML('span', 'comparative-result', 0));
         result.appendChild(cmp_res_scope);
 
         const result_2 = simpleCreateHTML('div', 'result-scope');
@@ -496,7 +496,7 @@ export default class DamageCalculationController {
         node.appendChild(sl_scope);
 
         //
-        const showContainerTips = simpleCreateHTML('div', ['Cyteria', 'window', 'frozen-top', 'top-center', 'show-container-tips','hidden']);
+        const showContainerTips = simpleCreateHTML('div', ['Cyteria', 'window', 'frozen-top', 'top-center', 'pop-right', 'show-container-tips', 'hidden']);
         const showContainerTips_top = simpleCreateHTML('div', 'top');
         showContainerTips_top.appendChild(simpleCreateHTML('span', 'name'));
         showContainerTips_top.appendChild(createCloseWindowButton());
@@ -621,65 +621,49 @@ export default class DamageCalculationController {
 
         scope.querySelector('.result-scope .damage-floating-critical').innerHTML =
             Math.floor(cal.calcResult({
+                valueSet: {
+                    'critical_rate': 100
+                },
                 beforeCalculate: [
                     {
                         container: cal.findContainer('stability'),
                         value: function(){
                             const v = this.value('stability');
                             const g = this.getItem('probability_of_graze');
-                            return g.isValid() && g.itemValue() != 0 ? v/200 : v/100;
-                        }
-                    },
-                    {
-                        container: cal.findContainer('critical_damage'),
-                        value: function(){
-                            return this.value('critical_damage')/100;
+                            return g.isValid() && g.value() != 0 ? v/200 : v/100;
                         }
                     }
                 ]
             })) +'~' +
             Math.floor(cal.calcResult({
-                beforeCalculate: [
-                    {
-                        container: cal.findContainer('stability'),
-                        value: 1
-                    },
-                    {
-                        container: cal.findContainer('critical_damage'),
-                        value: function(){
-                            return this.value('critical_damage')/100;
-                        }
-                    }
-                ]
+                valueSet: {
+                    'probability_of_graze': 0,
+                    'stability': 100,
+                    'critical_rate': 100
+                }
             }));
         scope.querySelector('.result-scope .damage-floating-without-critical').innerHTML =
             Math.floor(cal.calcResult({
+                valueSet: {
+                    'critical_rate': 0
+                },
                 beforeCalculate: [
                     {
                         container: cal.findContainer('stability'),
                         value: function(){
                             const v = this.value('stability');
                             const g = this.getItem('probability_of_graze');
-                            return g.isValid() && g.itemValue() != 0 ? v/200 : v/100;
+                            return g.isValid() && g.value() != 0 ? v/200 : v/100;
                         }
-                    },
-                    {
-                        container: cal.findContainer('critical_damage'),
-                        value: 1
                     }
                 ]
             })) +'~' +
             Math.floor(cal.calcResult({
-                beforeCalculate: [
-                    {
-                        container: cal.findContainer('stability'),
-                        value: 1
-                    },
-                    {
-                        container: cal.findContainer('critical_damage'),
-                        value: 1
-                    }
-                ]
+                valueSet: {
+                    'probability_of_graze': 0,
+                    'stability': 100,
+                    'critical_rate': 0
+                }
             }));
     }
     currentCalculation(t){
@@ -715,7 +699,7 @@ export default class DamageCalculationController {
         }
 
         const name = cal.calculationName();
-        this.getCalculationSelectButton(scope).innerHTML = name;
+        this.getCalculationSelectButton(scope).querySelector('.text').innerHTML = name;
         scope.querySelector('.calculation-name > input').value = name;
 
         scope.querySelectorAll('.sets > .set-scope').forEach(p => {
@@ -732,7 +716,7 @@ export default class DamageCalculationController {
             const ipt = p.querySelector('.item-value-input');
             if ( !ipt )
                 return;
-            ipt.value = item.value;
+            ipt.value = item.value();
             this.adjustInputWidth(ipt);
         });
     }
@@ -877,7 +861,7 @@ export default class DamageCalculationController {
             return t;
         }
 
-        const select_btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'select-button']);
+        const select_btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'no-border', 'select-button'], Icons('rhombus-split') + '<span class="text"></span>');
         select_btn.addEventListener('click', this.listeners.calculationSelect);
         this.nodes.calculationSelect.insertBefore(select_btn, this.nodes.calculationSelect.querySelector('.create-calclulation'));
 
@@ -1152,7 +1136,7 @@ export default class DamageCalculationController {
                         const item = cur_cal.findItem(p[INDEX.item.id]);
                         if ( item ){
                             dataInput(
-                                v => item.itemValue(str_to_int(v)),
+                                v => item.value(str_to_int(v)),
                                 p[INDEX.item.value]
                             );
                             dataInput(

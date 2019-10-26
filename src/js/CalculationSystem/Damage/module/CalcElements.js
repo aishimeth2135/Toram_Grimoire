@@ -35,7 +35,8 @@ class Calculation {
         this.status = {
             sets: {
                 'str': 0, 'dex': 0, 'int': 0, 'agi': 0, 'vit': 0
-            }
+            },
+            valueSet: {}
         };
     }
     createContainer(id, cat, type){
@@ -45,10 +46,14 @@ class Calculation {
     }
     calcResult(config){
         config = Object.assign({
-            beforeCalculate: []
+            beforeCalculate: [],
+            valueSet: {}
         }, config);
         let cst = 0;
         let mul = 1;
+
+        this.status.valueSet = config.valueSet;
+
         this.containers.forEach(ctner => {
             if ( !ctner.beCalc || !ctner.isValid() )
                 return;
@@ -105,7 +110,7 @@ class Calculation {
         Object.keys(this.userSet()).forEach(k => this.userSet(k, cal.userSet(k)));
 
         // containers
-        this.containers.forEach(p => p.item().forEach(q => q.itemValue(cal.findItem(q.itemId()).itemValue())));
+        this.containers.forEach(p => p.item().forEach(q => q.value(cal.findItem(q.itemId()).value())));
 
         return this;
     }
@@ -130,7 +135,8 @@ class CalcItemContainer {
         this.title = '';
 
         this.status = {
-            currentItem: null
+            currentItem: null,
+            valueSet: {}
         };
     }
     appendItem(){
@@ -147,11 +153,11 @@ class CalcItemContainer {
         return this.currentItem().base;
     }
     value(id){
-        if ( id !== void 0 )
-            return this.getItem(id).itemValue();
+        if ( typeof id == 'string' )
+            return this.getItem(id).value();
         if ( this.type == CalcItemContainer.TYPE_NORMAL )
-            return this.item(0).itemValue();
-        return this.currentItem().itemValue();
+            return this.item(0).value();
+        return this.currentItem().value();
     }
     calculatedValue(){
         const v = this.value();
@@ -282,7 +288,7 @@ class CalcItem {
     constructor(parent, base){
         this.parent = parent;
         this.base = base;
-        this.value = base.defaultValue;
+        this._value = base.defaultValue;
         this.valid = true;
 
         this.beToggle = false;
@@ -290,16 +296,18 @@ class CalcItem {
     belongContainer(){
         return this.parent;
     }
-    itemValue(v){
+    value(v){
         if ( v || v === 0 ){
             const max = this.base.max, min = this.base.min;
             if ( max !== null && v > max )
                 v = max;
             if ( min !== null && v < min )
                 v = min;
-            this.value = v;
+            this._value = v;
         }
-        return this.value;
+        const vset = this.belongContainer().belongCalculation().status.valueSet[this.itemId()];
+        const res = vset !== void 0 ? (typeof vset == 'function' ? vset.call(this) : vset) : this._value;
+        return res;
     }
     toggle(){
         if ( this.beToggle )

@@ -120,9 +120,11 @@ export default class DamageCalculationSystem {
             .initRange(0, 100);
 
         this.controller = new DamageCalculationController(this);
-        this.controller.init(node);
 
-        return this;
+        return new Promise((resolve, reject) => {
+            this.controller.init(node);
+            resolve();
+        });
     }
     getCalcItemBase(id){
         try {

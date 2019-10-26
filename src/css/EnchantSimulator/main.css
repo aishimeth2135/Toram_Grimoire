@@ -7,6 +7,9 @@ ul.equipments-list {
     padding: 0 0.6rem;
     margin: 1rem 0;
     border-bottom: 1px var(--primary-light) solid;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 }
 .equipments-list > .select {
     padding: 0.5rem 0.8rem;
@@ -55,6 +58,7 @@ ul.equipments-list {
     display: flex;
     justify-content: flex-start;
     align-content: flex-start;
+    align-items: flex-start;
     flex-wrap: wrap;
 }
 .enchant-equipment > .steps > .create-step {
@@ -99,7 +103,9 @@ ul.equipments-list {
 .step-scope > .step-type {
     padding: 0.6rem 0;
     border-top: 1px solid var(--primary-light);
-    border-bottom: 1px solid var(--primary-light);
+    border-bottom: 1px solid var(--primary-light-2);
+    display: flex;
+    align-items: center;
 }
 
 
@@ -110,15 +116,18 @@ ul.equipments-list {
 
 
 .step-scope > .show-step-potential {
-    padding: 0.6rem 0.4rem;
-    margin-top: 1rem;
-    text-align: right;
-    border-top: 1px solid var(--primary-light);
+    padding: 0 0.4rem;
+    padding-top: 0.6rem;
+    justify-content: flex-end;
+    border-top: 1px solid var(--primary-light-2);
 }
 
 .step-scope > .step-stats > .stat-scope {
     padding: 0.6rem 0;
-    border-bottom: 1px solid var(--primary-light);
+    padding-bottom: 0.4rem;
+}
+.step-scope > .step-stats > .stat-scope + .stat-scope {
+    border-top: 1px solid var(--primary-light);
 }
 .step-scope > .step-stats > .stat-scope.invalid {
     opacity: 0.6;
@@ -128,7 +137,6 @@ ul.equipments-list {
 .step-scope > .step-stats > .stat-scope > .sub {
     padding-left: 0.6rem;
     margin-top: 0.4rem;
-    font-size: 0.9rem;
 }
 
 
