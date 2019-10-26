@@ -51,24 +51,30 @@
 }
 
 
-#SkillQuery div.Skill_scope {
-	margin-bottom: 2rem;
-}
-#SkillQuery div.Skill_scope > div.skill-attributes {
-	padding: 0.6rem;
-	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
-}
-#SkillQuery div.Skill_scope > div.skill_branchs {
-	padding: 0.2rem;
-	display: inline-block;
-	margin-bottom: 1rem;
+/* ==========================================================================
+   skill query options
+   ========================================================================== */
+#SkillQuery .skill-query-options-scope {
+	padding: 1rem 0;
 }
 
-#SkillQuery div.Skill_scope div.no_data {
-	padding: 1rem;
+#SkillQuery div.CharacterLevel_scope {
+	padding: 0 0.6rem;
+	display: inline-flex;
 }
+#SkillQuery div.CharacterLevel_scope > div.title {
+	color: var(--primary-light-4);
+}
+
+
+#SkillQuery div.SwitchDisplayMode_scope {
+	display: inline-block;
+	padding: 0 0.6rem;
+}
+
+/* ==========================================================================
+   skill query result options
+   ========================================================================== */
 
 #SkillQuery .skill-query-result-options-scope {
 	z-index: 4;	
@@ -134,21 +140,9 @@
 	margin-left: 0.3rem;
 }
 
-
-#SkillQuery div.CharacterLevel_scope {
-	padding: 0 1rem 1rem 1rem;
-	display: inline-block;
-}
-#SkillQuery div.CharacterLevel_scope > div.title {
-	color: var(--primary-light-4);
-}
-
-
-#SkillQuery div.SwitchDisplayMode_scope {
-	display: inline-block;
-	padding: 0.6rem;
-}
-
+/* ==========================================================================
+   skill record
+   ========================================================================== */
 
 #SkillQuery div.SkillRecord_scope {
 	padding: 0.9rem 0.4rem;
@@ -159,7 +153,8 @@
 	z-index: 2;
 	display: flex;
 	align-items: center;
-	flex-wrap: wrap;
+	white-space: nowrap;
+	overflow-x: auto;
 	box-shadow: 0 0.2rem 0.3rem -0.1rem var(--primary-light);
 }
 #SkillQuery div.SkillRecord_scope > div {
@@ -180,6 +175,31 @@
 	color: var(--primary-purple);
 }
 
+/* ==========================================================================
+   skill query result
+   ========================================================================== */
+#SkillQuery div.Skill_scope {
+	margin-bottom: 2rem;
+}
+#SkillQuery div.Skill_scope > div.skill-attributes {
+	padding: 0.6rem;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+}
+#SkillQuery div.Skill_scope > div.skill_branchs {
+	padding: 0.2rem;
+	display: inline-block;
+	margin-bottom: 1rem;
+}
+
+#SkillQuery div.Skill_scope div.no_data {
+	padding: 1rem;
+}
+
+/* ==========================================================================
+   skill attribute
+   ========================================================================== */
 
 #SkillQuery div.skill-attribute {
 	margin: 0.2rem 0.3rem;

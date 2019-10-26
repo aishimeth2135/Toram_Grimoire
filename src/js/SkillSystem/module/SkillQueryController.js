@@ -71,51 +71,50 @@ class SkillElementsController {
 			TYPE_CHARACTER_LEVEL, TYPE_SWITCH_DISPLAY_MODE, TYPE_SKILL_LEVEL,
 			SkillTree.CATEGORY_EQUIPMENT, TYPE_SKILL_RECORD, Skill.TYPE
 		];
-		const result_options_list = [
-			TYPE_SKILL_LEVEL, SkillTree.CATEGORY_EQUIPMENT
-		];
-		const result_list = [
-			Skill.TYPE
-		];
 
 		const frg = document.createDocumentFragment();
+		const options_scope = simpleCreateHTML('div', ['skill-query-options-scope']);
 		const result_options_scope = simpleCreateHTML('div', ['skill-query-result-options-scope', 'Cyteria', 'animation']);
 		const result_scope = simpleCreateHTML('div', ['skill-query-result-scope', 'Cyteria', 'frozen-floating-button-parent', 'hidden']);
 
 		order.forEach(a => {
 			const t = this.getSkillElementScope(a);
 
-			if ( result_options_list.indexOf(a) != -1 ){
-				if ( result_options_scope.childElementCount == 0 )
-					frg.appendChild(result_options_scope);
-				result_options_scope.appendChild(t);
-			}
-			else if ( result_list.indexOf(a) != -1 ){
-				if ( result_scope.childElementCount == 0 )
-					frg.appendChild(result_scope);
-				result_scope.appendChild(t);	
-			}
-			else
-				frg.appendChild(t);
-
 			switch(a){
 				case SkillRoot.TYPE:
 					t.appendChild(this.createSkillQueryScopeHTML(sr, strings().menu));
+					frg.appendChild(t);
 					break;
 				case SkillTreeCategory.TYPE:
 					sr.skillTreeCategorys.forEach(function(stc){
 						t.appendChild(this.createSkillQueryScopeHTML(stc, strings().menu));
 					}, this);
+					frg.appendChild(t);
 					break;
-				case TYPE_SKILL_RECORD:
-					t.classList.add('hidden');
-				case TYPE_SKILL_LEVEL:
-				case TYPE_SWITCH_DISPLAY_MODE:
-					t.appendChild(this.createSkillQueryScopeHTML(null, a));
+				case SkillTree.TYPE:
+					frg.appendChild(t);
 					break;
 				case TYPE_CHARACTER_LEVEL:
 					t.classList.add('Cyteria', 'set-button-line');
+					frg.appendChild(options_scope);
+				case TYPE_SWITCH_DISPLAY_MODE:
 					t.appendChild(this.createSkillQueryScopeHTML(null, a));
+					options_scope.appendChild(t);
+					break;
+				case TYPE_SKILL_LEVEL:
+					frg.appendChild(result_options_scope);
+					t.appendChild(this.createSkillQueryScopeHTML(null, a));
+				case SkillTree.CATEGORY_EQUIPMENT:
+					result_options_scope.appendChild(t);
+					break;
+				case TYPE_SKILL_RECORD:
+					t.classList.add('hidden');
+					t.appendChild(this.createSkillQueryScopeHTML(null, a));
+					frg.appendChild(t);
+					break;
+				case Skill.TYPE:
+					result_scope.appendChild(t);
+					frg.appendChild(result_scope);
 			}
 		}, this);
 
