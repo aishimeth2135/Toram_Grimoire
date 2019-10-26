@@ -55,14 +55,15 @@
 	margin-bottom: 2rem;
 }
 #SkillQuery div.Skill_scope > div.skill-attributes {
-	padding: 0 0.6rem;
+	padding: 0.6rem;
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
 }
 #SkillQuery div.Skill_scope > div.skill_branchs {
-	padding: 0.6rem 0.2rem;
+	padding: 0.2rem;
 	display: inline-block;
+	margin-bottom: 1rem;
 }
 
 #SkillQuery div.Skill_scope div.no_data {
@@ -156,6 +157,10 @@
 	top: 0;
 	background-color: white;
 	z-index: 2;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	box-shadow: 0 0.2rem 0.3rem -0.1rem var(--primary-light);
 }
 #SkillQuery div.SkillRecord_scope > div {
 	display: inline-block;

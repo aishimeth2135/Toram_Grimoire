@@ -213,7 +213,7 @@ class SkillElementsController {
 	    	select_skill_history_date.appendChild(simpleCreateHTML('div', 'content'));
 	    	this.MAIN_NODE.appendChild(select_skill_history_date);
 
-	    	const open_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'after', 'text-light', 'no-border'], Icons('clock-arrow') + '<span class="text"></span>');
+	    	const open_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'after', 'text-light', 'no-border', 'single-line'], Icons('clock-arrow') + '<span class="text"></span>');
 		    open_btn.addEventListener('click', function(e){
 		    	select_skill_history_date.classList.remove('hidden');
 		    	e.stopPropagation();
@@ -669,7 +669,7 @@ class SkillElementsController {
 			case TYPE_SKILL_RECORD: {
 				const ctrr = this;
 				const he = document.createDocumentFragment();
-				const back = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'icon-big', 'back-button', 'no-border', 'no-padding'], Icons('arrow-left') + `<span class="text">${GetLang('Skill Query/button text/back')}</span>`);
+				const back = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'single-line', 'back-button', 'no-border', 'no-padding'], Icons('arrow-left') + `<span class="text">${GetLang('Skill Query/button text/back')}</span>`);
 				back.addEventListener('click', function(event){
 					ctrr.popSkillRecord();
 				});
