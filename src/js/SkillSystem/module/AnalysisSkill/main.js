@@ -26,7 +26,7 @@ function getSkillAttributeData(){
     const ICON_DATA = {
         [SkillEffect.MP_COST]: 'water',
         [SkillEffect.RANGE]: 'target',
-        [SkillEffect.SKILL_TYPE]: 'rhombus-split',
+        [SkillEffect.SKILL_TYPE]: 'multiple-blank-circle',
         [SkillEffect.IN_COMBO]: ['selection-ellipse-arrow-inside', 'forbid', 'numeric-1-circle-outline'],
         [SkillEffect.ACTION_TIME]: 'time-sand-fill',
         [SkillEffect.CASTING_TIME]: 'clock-arrow'

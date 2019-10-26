@@ -1,5 +1,6 @@
 import {SkillRoot, SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
-import {DrawSkillTree, GetDrawData} from "./DrawSkillTree.js";
+import {DrawSkillTree, createDrawSkillTreeDefs} from "./DrawSkillTree.js";
+import {getSkillElementId, selectSkillElement} from "./SkillElementMethods.js";
 
 import Icons from "../../main/module/SvgIcons.js";
 import GetLang from "../../main/module/LanguageSystem.js";
@@ -23,7 +24,7 @@ export default class SkillSimulatorController {
             setStep(e){
 
             }
-        }
+        };
     }
     init(el){
         const simpleCreateHTML = CY.element.simpleCreateHTML;
@@ -42,5 +43,38 @@ export default class SkillSimulatorController {
             btn.addEventListener('click', this.listeners.setStep);
             set_step_scope.appendChild(btn);
         });
+
+        // svg reusable defs
+        const svg = CY.svg.create();
+        svg.appendChild(createDrawSkillTreeDefs);
+        el.appendChild(svg);
     }
+    initComponent(){
+        const CyComponent = CY.CyComponent;
+        const simpleCreateHTML = CY.element.simpleCreateHTML;
+
+        //
+        function setSkillButton(){
+
+        }
+
+        const SkillTree = new CyComponent({
+            create(st){
+                const main = simpleCreateHTML('div', 'skill-tree');
+
+                const skill_tree = DrawSkillTree(st, {setSkillButton});
+            }
+        });
+
+        const SkillTrees = new CyComponent({
+            create(){
+                const main = simpleCreateHTML('div', 'skill-trees');
+                return main;
+            },
+            update(){
+
+            }
+        });
+    }
+    
 }

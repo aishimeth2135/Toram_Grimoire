@@ -20,7 +20,7 @@ export default function(){
                 'sub weapon': 'Sub Weapon',
                 'body armor': 'Body Armor',
                 'equipment: unlimited': 'Unlimited',
-                'switch display': 'Switch Dispaly',
+                'switch display': 'Switch Display',
                 'current skill': 'Current Skill'
             },
             "Analysis Skill": {

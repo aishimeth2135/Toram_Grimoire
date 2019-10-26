@@ -4,7 +4,14 @@ export default function(){
             'item 1': '布偶的魔法書',
             'item 2': '附魔模擬器'
         },
+        'Loading Message': {
+            'Character Stats': '載入角色能力清單',
+            'Enchant Data': '載入附魔資料',
+            'Enchant System Init': '初始化附魔模擬器'
+        },
         'Enchant Simulator': {
+            'create equipment': '新增裝備',
+            'create enchant stat': '新增能力',
             'Equipment Field List': ['主手武器', '身體裝備'],
             'Material Point Type List': ['金屬' ,'獸品', '木材', '布料','藥品', '魔素'],
             'select stat title': '選取能力',

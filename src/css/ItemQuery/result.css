@@ -70,20 +70,7 @@
     padding: 0.4rem 0.8rem;
     padding-bottom: 0.2rem;
     border-left: 2px solid var(--primary-light-3);
-    font-size: 0.9rem;
     color: var(--primary-light-4);
-}
-#ItemQuery > .detail > .contents > .scope-title > span {
-    vertical-align: middle;
-}
-#ItemQuery > .detail > .contents > .scope-title > svg {
-    height: 1.2rem;
-    width: 1.2rem;
-    margin-right: 0.4rem;
-    vertical-align: middle;
-}
-#ItemQuery > .detail > .contents > .scope-title > svg > g {
-    fill: var(--primary-light);
 }
 #ItemQuery > .detail > .contents > .scope {
     margin-bottom: 0.6rem;
@@ -91,8 +78,7 @@
     padding: 0 0.8rem;
     padding-bottom: 0.4rem;
 }
-#ItemQuery > .detail > .contents > .scope-title > .title-value {
-    margin-left: 0.5rem;
+#ItemQuery > .detail > .contents > .scope-title > .value {
     color: var(--primary-purple);
 }
 

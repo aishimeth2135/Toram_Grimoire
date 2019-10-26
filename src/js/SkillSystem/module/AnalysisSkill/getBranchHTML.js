@@ -1,5 +1,6 @@
 import GetLang from "../../../main/module/LanguageSystem.js";
 import {createSkillAttributeScope, getStackBranchIdKey, simpleCreateHTML, Lang} from "./main.js";
+import {getSkillElementId} from "../SkillElementMethods.js";
 import CY from "../../../main/module/cyteria.js";
 import strings from "../strings.js";
 import Icons from "../../../main/module/SvgIcons.js";
@@ -202,7 +203,7 @@ function getBranchHTML(branch, ctrr){
                             return a;
                         const span = simpleCreateHTML('span', 'skill_from_where_button');
                         span.appendChild(simpleCreateHTML('span', 'skill_name', a));
-                        span.setAttribute(strings().data_skillElementNo, ctrr.getSkillElementNoStr(skill));
+                        span.setAttribute(strings().data_skillElementNo, getSkillElementId(skill));
                         return span.outerHTML;
                     });
                 });
@@ -222,7 +223,7 @@ function getBranchHTML(branch, ctrr){
         return resultAry.join('');
     }
     function processValue(brh, attr_name, config={}){
-        console.log(arguments);
+        //console.log(arguments);
         let value = (brh ? brh.branchAttributes[attr_name] : attr_name) || (config.defaultValue || '0');
 
         const hisv = brh ? brh.historyBranchAttributes[attr_name] : void 0;

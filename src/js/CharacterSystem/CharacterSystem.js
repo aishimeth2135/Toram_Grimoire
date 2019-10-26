@@ -1,6 +1,6 @@
 import LoadStatData from "./module/LoadStatData.js";
 import StatBase from './module/StatBase.js';
-import DataPath from "../main/module/DataPath.js";
+import {DataPath, createLoadDataPromise} from "../main/module/DataPath.js";
 import {InitLanguageData} from "../main/module/LanguageSystem.js";
 
 import zh_tw from "./module/LanguageData/zh_tw.js"
@@ -15,23 +15,15 @@ class CharacterSystem {
 	init(){
 		//
 	}
-	init_statList(){
+	async* init_statList(){
 		InitLanguageData({zh_tw, en, ja});
-		const _this = this;
-		return new Promise((resolve, reject) => {
-			Papa.parse(DataPath().CharacterStatData, {
-				download: true,
-				complete(res){
-					LoadStatData(_this, res.data);
-					resolve();
-				},
-				error(err){
-					console.warn("讀取角色能力資料時發生錯誤。");
-					console.log(err);
-					reject();
-				}
-			});
-		});
+
+		const datas = [];
+
+		await createLoadDataPromise(DataPath('Character Stats'), datas, 0);
+		yield;
+
+		LoadStatData(this, datas[0]);
 	}
 	appendStatBase(base_name, text, has_multiplier){
 		const t = new StatBase(base_name, text, has_multiplier);

@@ -14,14 +14,33 @@ span.for-adjust-input-width {
     overflow: hidden;
 }
 
-.CalculationSystem-Damage .calculation-select {
-    padding: 0.3rem 0.4rem;
-    margin: 0;
+.CalculationSystem-Damage > .top {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--primary-light);
+    box-shadow: 0 0.2rem 0.3rem -0.1rem var(--primary-light);
 }
-.CalculationSystem-Damage .calculation-select > li {
-    max-width: 6rem;
-    text-overflow: ellipsis;
+
+.CalculationSystem-Damage > .top > .calculation-select {
+    padding: 0.2rem 0.3rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    overflow-x: auto;
+}
+.CalculationSystem-Damage > .top > .calculation-select > li {
     white-space: nowrap;
+}
+.CalculationSystem-Damage .calculation-select > li.cur > .text {
+    color: var(--primary-light-4)!important;
+}
+.CalculationSystem-Damage .calculation-select > li:not(.cur):not(.create-calclulation) > svg {
+    display: none;
 }
 
 
@@ -60,14 +79,18 @@ span.for-adjust-input-width {
     padding: 1rem 0.6rem;
     border-top: 1px solid var(--primary-light);
     background-color: #FFF;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 }
 .CalculationSystem-Damage .result-scope.frozen {
     position: sticky;
     bottom: 0;
 }
 .CalculationSystem-Damage .result-scope > .scope {
-    margin-right: 1.2rem;
-    display: inline-block;
+    margin-right: 1rem;
+    display: inline-flex;
+    align-items: center;
 }
 .CalculationSystem-Damage .damage.result-scope > .scope > .comparative-damage {
     color: var(--primary-purple);

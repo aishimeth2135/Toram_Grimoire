@@ -1,6 +1,6 @@
 import Tag from "./module/Tag.js";
 import TagController from "./module/TagController.js";
-import DataPath from "../main/module/DataPath.js";
+import {DataPath, createLoadDataPromise} from "../main/module/DataPath.js";
 import LoadTagData from "./module/LoadTagData.js";
 
 import {currentLanguage, secondLanguage} from "../main/module/LanguageSystem.js";
@@ -10,64 +10,27 @@ export default class TagSystem {
     constructor(){
         this.tagList = [];
     }
-    async init(options){
+    async* init(options){
         this.controller = new TagController(this, options.mainNode).init();
+
+        const datas = [];
+
+        const promise_ary = [];
+
+        promise_ary.push(createLoadDataPromise(DataPath('Tag'), datas, 0));
         
-        let TagData, lang_TagData = null, slang_TagData = null;
-        await new Promise((resolve, reject) => {
-            Papa.parse(DataPath().TagData, {
-                download: true,
-                complete(res){
-                    TagData = res.data;
-                    resolve();
-                },
-                error(err){
-                    console.warn("讀取技能資料時發生錯誤。");
-                    console.log(err);
-                    reject();
-                }
-            });
-        });
         // 語言資料。語言為繁體中文則無需載入。
         if ( currentLanguage() != 1 ){
-            await new Promise((resolve, reject) => {
-                const data = DataPath().lang_TagData[currentLanguage()];
-                if ( data ){
-                    Papa.parse(data, {
-                        download: true,
-                        complete(res){
-                            lang_TagData = res.data;
-                            resolve();
-                        },
-                        error(err){
-                            console.warn("讀取技能資料時發生錯誤。");
-                            console.log(err);
-                            reject();
-                        }
-                    });
-                }
-            });
-            if ( currentLanguage() != secondLanguage() ){
-                await new Promise((resolve, reject) => {
-                    const data = DataPath().lang_TagData[secondLanguage()];
-                    if ( data ){
-                        Papa.parse(data, {
-                            download: true,
-                            complete(res){
-                                slang_TagData = res.data;
-                                resolve();
-                            },
-                            error(err){
-                                console.warn("讀取技能資料時發生錯誤。");
-                                console.log(err);
-                                reject();
-                            }
-                        });
-                    }
-                });
-            }
+            const path = DataPath('Tag/language');
+            promise_ary.push(createLoadDataPromise(path[currentLanguage()], datas, 1));
+            if ( currentLanguage() != secondLanguage() )
+                promise_ary.push(createLoadDataPromise(path[secondLanguage()], datas, 2));
         };
-        LoadTagData(this, TagData, lang_TagData, slang_TagData);
+        
+        await Promise.all(promise_ary);
+        yield;
+
+        LoadTagData(this, ...datas);
     }
     appendTag(n){
         const t = new Tag(n);

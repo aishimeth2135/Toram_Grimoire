@@ -1,3 +1,6 @@
+#SkillQuery {
+	position: relative;
+}
 
 #SkillQuery div.SkillRoot_scope > div._menu {
 }
@@ -52,7 +55,10 @@
 	margin-bottom: 2rem;
 }
 #SkillQuery div.Skill_scope > div.skill-attributes {
-	padding: 0.6rem;
+	padding: 0 0.6rem;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
 }
 #SkillQuery div.Skill_scope > div.skill_branchs {
 	padding: 0.6rem 0.2rem;
@@ -63,8 +69,19 @@
 	padding: 1rem;
 }
 
+#SkillQuery .skill-query-result-options-scope {
+	z-index: 4;	
+	background-color: white;
+}
+#SkillQuery .skill-query-result-options-scope.frozen {
+	position: sticky;
+	top: 0;
+	box-shadow: 0 0.2rem 0.3rem -0.1rem var(--primary-light);
+}
+
 #SkillQuery div.SkillLevel_scope {
-	margin: 1rem 0;
+	padding-top: 0.8rem;
+	border-top: 1px var(--primary-light) solid;
 }
 #SkillQuery div.SkillLevel_scope > ul {
 	list-style: none;
@@ -73,9 +90,8 @@
 }
 
 #SkillQuery div.SkillEquipment_scope {
-	border-top: 1px var(--primary-light) solid;
 	border-bottom: 1px var(--primary-light) solid;
-	padding: 1rem 0.6rem;
+	padding: 0.8rem 0.6rem;
 }
 #SkillQuery div.SkillEquipment_scope > div,
 #SkillQuery div.SkillEquipment_scope > div > div,
@@ -124,9 +140,6 @@
 }
 #SkillQuery div.CharacterLevel_scope > div.title {
 	color: var(--primary-light-4);
-	font-size: 0.9rem;
-	margin-right: 0.6rem;
-	display: inline-block;
 }
 
 
@@ -139,6 +152,10 @@
 #SkillQuery div.SkillRecord_scope {
 	padding: 0.9rem 0.4rem;
 	border-top: 1px var(--primary-light-3) solid;
+	position: sticky;
+	top: 0;
+	background-color: white;
+	z-index: 2;
 }
 #SkillQuery div.SkillRecord_scope > div {
 	display: inline-block;
@@ -170,7 +187,8 @@
 	line-height: 1.3125rem;
 }
 #SkillQuery div.skill-attribute {
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
 }
 
 #SkillQuery div.skill-attribute > .scope-icon + .value {
@@ -178,7 +196,6 @@
 }
 #SkillQuery div.skill-attribute > .value {
 	color: var(--primary-light-4);
-	vertical-align: middle;
 }
 #SkillQuery div.skill-attribute > .tail {
 	margin-left: 0.4rem;

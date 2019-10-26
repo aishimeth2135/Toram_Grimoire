@@ -1,25 +1,8 @@
 import CY from "../../main/module/cyteria.js";
-import strings from "./strings.js";
 
-function DrawSkillTree(st, ctrr){
-    function listener(event){
-        const s = ctrr.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
-        if ( ctrr.status.currentSkill === s )
-            return;
-        const cur = this.parentNode.querySelector('.cur');
-        if ( cur )
-            cur.classList.remove('cur');
-        this.classList.add('cur');
+function DrawSkillTree(st, config){
 
-        ctrr.clearSkillRecord();
-
-        ctrr.initCurrentSkill(s);
-        ctrr.updateSkillHTML();
-    }
-    function setSkillButton(node, skill){
-        node.addEventListener('click', listener);
-        node.setAttribute(strings().data_skillElementNo, ctrr.getSkillElementNoStr(skill));
-    }
+    const setSkillButton = config.setSkillButton || ((el, skill) => {});
 
     const skillIconPathRoot = '../src/picture/skill_icons/stc_' + st.parent.no + '/st_' + st.no + '/';
 
@@ -128,6 +111,35 @@ function GetDrawData(){
     };
 }
 
+function createDrawSkillTreeDefs(){
+    const defs = CY.svg.createEmpty('defs');
+
+    const w = GetDrawData().gridWidth,
+        Circle = CY.svg.drawCircle;
+
+    // @lock
+    const lock_pettern = CY.svg.createEmpty('pattern', {width: 1, height: 1, id: 'skill-icon-lock'});
+    const lock = CY.svg.create(w, w, {x: (w-24)/2, y: (w-24)/2});
+    lock.innerHTML = '<path fill="var(--primary-light)" d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/>';
+    lock_pettern.appendChild(Circle(w/2, w/2, w/2, {fill: '#FFF', 'stroke-width': 0}));
+    lock_pettern.appendChild(lock);
+
+    defs.appendChild(lock_pettern);
+
+    // background
+    const skillIconBg = CY.svg.createLinearGradient('skill-icon-bg',
+        '.5', '0', '.5', '1', [
+            {offset: '0%', 'stop-color': '#FFF'},
+            {offset: '50%', 'stop-color': 'var(--primary-light)'},
+            {offset: '100%', 'stop-color': 'var(--primary-light-2)'}
+        ]
+    );
+
+    defs.appendChild(skillIconBg);
+
+    return defs;
+}
+
 // function simpleDrawSkillTree(s){
 //     const w = 50, pad = 20;
 
@@ -190,4 +202,4 @@ function GetDrawData(){
 //     return he;
 // }
 
-export {DrawSkillTree, GetDrawData};
+export {DrawSkillTree, GetDrawData, createDrawSkillTreeDefs};

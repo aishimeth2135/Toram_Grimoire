@@ -1,30 +1,26 @@
 import Grimoire from "../Grimoire.js";
-import {startLoadingMsg, loadingMsg, loadingFinished} from "../module/LoadingPage.js";
+import {startLoadingMsg, loadingMsg, loadingError, loadingFinished, loadingSucceeded, AllLoadingFinished} from "../module/LoadingPage.js";
 import {readyFirst, ready} from "./ready.js";
 import DamageCalculationSystem from "../../CalculationSystem/Damage/DamageCalculationSystem.js";
+import GetLang from "../module/LanguageSystem.js";
 
 
 async function start(){
-    let no_error = true;
-    
     readyFirst();
 
     // Init Grimoire
-    // Example:
-    // Grimoire.System1 = new System1();
     Grimoire.DamageCalculationSystem = new DamageCalculationSystem();
     
     // Init of all System
-    // Exapmle: 
-    // await startLoadingMsg('載入...');
-    // await Grimoire.System1.init().catch(() => loadingMsg('...載入失敗。', true));
-    await startLoadingMsg('初始化...');
-    await Grimoire.DamageCalculationSystem.init(document.getElementById('DamageCalculation'));
+    const scope = await startLoadingMsg(GetLang('Loading Message'));
+    await Grimoire.DamageCalculationSystem.init(document.getElementById('DamageCalculation'))
+        .then(() => loadingFinished(scope))
+        .catch(() => loadingError(scope));
     
     ready();
 
-    if ( no_error )
-        loadingFinished();
+    if ( loadingSucceeded() )
+        AllLoadingFinished();
 }
 try {
     start();

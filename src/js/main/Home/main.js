@@ -1,4 +1,4 @@
-import {startLoadingMsg, loadingMsg, loadingFinished} from "../module/LoadingPage.js";
+import {loadingSucceeded, AllLoadingFinished} from "../module/LoadingPage.js";
 import {readyFirst, ready} from "./ready.js";
 
 async function start(){
@@ -8,7 +8,8 @@ async function start(){
         top_menu: document.getElementById('top-menu')
     });
 
-    loadingFinished();
+    if ( loadingSucceeded() )
+        AllLoadingFinished();
 }
 try {
     start();

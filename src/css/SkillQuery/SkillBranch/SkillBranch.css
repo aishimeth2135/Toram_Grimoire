@@ -39,11 +39,17 @@ div.skill_branchs > div.branch > div.content > div.scope1 {
 	font-size: 0.9rem;
 }
 
+div.skill_branchs div.scope1,
+div.skill_branchs div.scope2 {
+	display: inline-flex;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
 div.skill_branchs div.scope1 > span._main_title {
 	margin: 0.2rem 0.3rem;
 	display: inline-block;
 	color: var(--primary-light-4);
-	vertical-align: middle;
 }
 div.skill_branchs div.scope1 > span._main_title .light,
 div.skill_branchs div.scope1 > span._main_title .skill_from_where_button {
@@ -58,7 +64,7 @@ div.skill_branchs > div.branch > .history-date > span {
    text scope
    ========================================================================== */
 div.skill_branchs > div.branch > div.content .text-scope {
-	padding: 0.4rem;
+	padding: 0.1rem 0.4rem;
     display: inline-block;
 }
 div.skill_branchs > div.branch > div.content .text-scope.has_icon > .text {
@@ -111,8 +117,13 @@ div.skill_branchs .text-scope.has_icon > .icon > svg > g {
 /* ==========================================================================
    content-line
    ========================================================================== */
+div.skill_branchs > div.branch > div.content-line {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+}
 div.skill_branchs > div.branch > div.content-line + .content-line {
-	margin-top: 0.4rem;
+	margin-top: 0.5rem;
 }
 
 div.skill_branchs > div.branch > div.content-line > div.scope2 {
@@ -121,13 +132,10 @@ div.skill_branchs > div.branch > div.content-line > div.scope2 {
 
 div.skill_branchs > div.branch > div.content-line > div.scope1,
 div.skill_branchs > div.branch > div.content-line > div.scope2 {
-	display: inline-block;
-	vertical-align: middle;
     margin-top: 0.1rem;
 }
 div.skill_branchs > div.branch > div.content-line > .scope-icon {
 	margin-right: 0.1rem;
-	vertical-align: middle;
 }
 
 
