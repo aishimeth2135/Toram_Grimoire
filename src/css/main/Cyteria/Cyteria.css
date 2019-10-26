@@ -215,8 +215,8 @@
     box-shadow: 0 0 0.2rem 0.1rem var(--primary-light);
 }
 .Cyteria.Button.frozen-floating > svg {
-    width: 2.1rem;
-    height: 2.1rem;
+    width: 2.0rem;
+    height: 2.0rem;
     fill: white;
     display: block;
 }
