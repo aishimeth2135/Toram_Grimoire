@@ -90,6 +90,8 @@ body > footer {
 body > footer > .author-information {
 	text-align: right;
 	padding: 0.8rem 0.4rem;
+	overflow-x: auto;
+	white-space: nowrap;
 }
 body > footer > .author-information > .Cyteria.scope-icon + .scope-icon {
 	margin-left: 1.2rem;
