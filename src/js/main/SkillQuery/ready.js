@@ -14,8 +14,7 @@ function readyFirst(){
 
     const btn = CY.element.simpleCreateHTML('span', ['switch_branch_development_mode', 'Cyteria', 'scope-icon'],
         `${Icons('cards')}<span class="text">技能資料對照</span>`);
-    const auth = document.querySelector('footer > .author-information');
-    auth.insertBefore(btn, auth.firstChild);
+    document.querySelector('footer > .author-information').appendChild(btn);
 }
 
 function ready(setting){

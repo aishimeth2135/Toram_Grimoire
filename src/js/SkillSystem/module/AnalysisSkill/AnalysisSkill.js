@@ -8,6 +8,7 @@ import {TempSkillEffect, TempSkillBranch} from "./TempSkillElement.js";
 import strings from "../strings.js";
 import {InitSkillBranch} from "./InitSkillData.js";
 import Icons from "../../../main/module/SvgIcons.js";
+import {selectSkillElement} from "../SkillElementMethods.js";
 
 import Grimoire from "../../../main/Grimoire.js";
 
@@ -196,7 +197,7 @@ function beforeExport(he, ctrr){
         else 
             scope.style.top = (vr.height/remv + 0.5) + "rem";
 
-        const skill = ctrr.selectSkillElement(this.getAttribute(strings().data_skillElementNo));
+        const skill = selectSkillElement(ctrr.skillRoot, this.getAttribute(strings().data_skillElementNo));
         scope.appendChild(createSkillAttributeScope(null, GetLang('Skill Query/Skill Element/skill tree: from'), skill.parent.name));
         const btns = simpleCreateHTML('div', 'button_scope');
         const cancel = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple'], GetLang('global/cancel'));
