@@ -45,7 +45,7 @@ function drawPath(d, attr={}){
 function drawSector(cx, cy, startR, endR, startAngle, endAngle, clockwise, attr={}){
     const path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
     attr = Object.assign({
-        d: svg.getSectorD(cx, cy, startR, endR, startAngle, endAngle, clockwise),
+        d: getSectorD(cx, cy, startR, endR, startAngle, endAngle, clockwise),
         fill: 'none'
     }, attr);
     element.setAttributes(path, attr);
@@ -92,7 +92,7 @@ function createSimpleImagePattern(id, path, width, height, attr={}, imgattr={}){
         width, height, id
     }, attr);
     element.setAttributes(pat, attr);
-    pat.appendChild(svg.drawImage(0, 0, path, width, height, imgattr));
+    pat.appendChild(drawImage(0, 0, path, width, height, imgattr));
     return pat;
 }
 function createLinearGradient(id, x1, y1, x2, y2, stops, attr={}){

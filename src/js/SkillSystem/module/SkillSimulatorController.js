@@ -34,15 +34,25 @@ export default class SkillSimulatorController {
         const main = simpleCreateHTML('div', 'main');
 
         // Buttons
-        const buttons = simpleCreateHTML('div', 'buttons-scope');
+        const main_menu = simpleCreateHTML('div', 'main-menu');
+        const createMenuScope = (title_id, icon_id, values, listener) => {
+            const col = simpleCreateHTML('div', 'column');
+            const btns = simpleCreateHTML('div', 'buttons-scope');
+            values.forEach((p, i) => {
+                const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'fill'], Icons(icon_id[i]));
+                btn.setAttribute('data-step', p);
+                btn.addEventListener('click', listener);
+                btns.appendChild(btn);
+            });
+            col.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'line'], Icons('multiple-blank-circle') + `<span class="text">${Lang('main menu/' + title_id)}</span>`));
+            col.appendChild(btns);
+            return cols;
+        };
 
-        const set_step_scope = simpleCreateHTML('span', 'scope');
-        [1, 5, 10].forEach(p => {
-            const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'select-fill'], Icons('numeric-' + p));
-            btn.setAttribute('data-step', p);
-            btn.addEventListener('click', this.listeners.setStep);
-            set_step_scope.appendChild(btn);
-        });
+        const set_operating = createMenuScope('operating', ['add', 'sub'], ['+', '-'], this.listeners.setOperating);
+        const set_step = createMenuScope('step value', ['numeric-1', 'numeric-5', 'numeric-10'], ['1', '5', '10'], this.listeners.setStep);
+        main_menu.appendChild(set_operating);
+        main_menu.appendChild(set_step);
 
         // svg reusable defs
         const svg = CY.svg.create();
