@@ -1,13 +1,12 @@
 /node_modules/
 
+# global
 *.txt
 
-BaseStatData_[0-9].csv
-SkillData_[0-9].csv
-
+# Build
 /src/_other/
 /src/_src/
-
 /src/js/main/_build/
 
-/yarn.lock
+# other
+yarn.lock
