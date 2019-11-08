@@ -51,6 +51,13 @@
     <footer>
         <div class='author-information'></div>
     </footer>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('../sw.js');
+            });
+        }
+    </script>
     <script type="text/javascript" src="../src/js/plugin/papaparse.min.js"></script>
     <!-- <script type="module" src="../src/js/main/DamageCalculation/main.js"></script> -->
     <script type="text/javascript" src="../dist/damage-calculation.min.js"></script>
