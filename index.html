@@ -174,10 +174,17 @@
 	<footer>
 		<p>托蘭異世錄為<a href="https://asobimo.com/" target="_blank">アソビモ株式会社（ASOBIMO,Inc.）</a>所營運之遊戲。本網站僅作分享用途。</p>
 		Toram Online｜托蘭異世錄｜トーラムオンライン
-		<br /><a href="https://tw.toram.jp/" target="_blank">中文官方網站</a>｜<a href="https://twitter.com/toram_pr" target="_blank">官方Twitter</a>
+		<p><a href="https://tw.toram.jp/" target="_blank">中文官方網站</a>｜<a href="https://twitter.com/toram_pr" target="_blank">官方Twitter</a></p>
 		<div class='author-information'></div>
 	</footer>
-	<!-- <script type="module" src="./src/js/main/Home/main.js"></script> -->
-	<script type="text/javascript" src="dist/home.min.js"></script>
+	<script>
+		if ('serviceWorker' in navigator) {
+	        window.addEventListener('load', () => {
+	            navigator.serviceWorker.register('./sw.js');
+	        });
+	    }
+	</script>
+	<script type="module" src="./src/js/main/Home/main.js"></script>
+	<!-- <script type="text/javascript" src="dist/home.min.js"></script> -->
 </body>
 </html>

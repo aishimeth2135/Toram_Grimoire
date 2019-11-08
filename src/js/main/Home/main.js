@@ -7,7 +7,7 @@ async function start(){
     readyFirst();
 
     window.addEventListener('beforeinstallprompt', function(e){
-        e.preventDefault()
+        e.preventDefault();
         const installEvent = e;
         if ( installEvent.prompt ) {
             const btn = document.createElement('span');

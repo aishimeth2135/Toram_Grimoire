@@ -3,15 +3,6 @@ import CY from "./cyteria.js";
 import Icons from "./SvgIcons.js";
 
 function PageInitFirst(){
-    // Check that service workers are supported
-    if ('serviceWorker' in navigator) {
-        // Use the window load event to keep the page load performant
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/Toram_Grimoire/sw.js');
-            console.log('...');
-        });
-    }
-
     InitLanguageSystem();
 
     document.querySelector('#loading-page > .content').innerHTML = GetLang('Loading Page/content');
