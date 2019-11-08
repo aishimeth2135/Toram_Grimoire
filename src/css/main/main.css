@@ -83,6 +83,10 @@ input:focus {
 	fill: var(--primary-light-3);
 }
 
+body > footer > p {
+	padding: 1rem 0.6rem;
+}
+
 body > footer {
 	border-top: 1px var(--primary-light) solid;
 	margin-top: 2rem;

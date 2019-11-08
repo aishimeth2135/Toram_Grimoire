@@ -464,9 +464,6 @@ class SkillElementsController {
 			}
 			case SkillTree.TYPE: switch (category){
 				case SkillTree.CATEGORY_DRAW_TREE: {
-					function setSkillButton(node, skill){
-					    
-					}
 					return DrawSkillTree(sEle, {
 						setSkillButton: (el, skill) => {
 							const ctrr = this;

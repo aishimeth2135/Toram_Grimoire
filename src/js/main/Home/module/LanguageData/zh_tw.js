@@ -32,6 +32,7 @@ export default function(){
             }
         },
         'Home': {
+            'download pwa': '下載APP',
             'link text': '點此進入',
             'Skill Query': {
                 'Title': '技能查詢',
