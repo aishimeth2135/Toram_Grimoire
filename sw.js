@@ -7,14 +7,6 @@ workbox.core.setCacheNameDetails({
     suffix: 'v1'
 });
 
-// // html
-// workbox.routing.registerRoute(
-//     new RegExp('.\/.*.html'),
-//     workbox.strategies.networkFirst({
-//         cacheName: 'page-html-cache'
-//     })
-// );
-
 // papaparse.min.js
 workbox.routing.registerRoute(
     /papaparse\.min\.js/,
@@ -24,25 +16,9 @@ workbox.routing.registerRoute(
             new workbox.expiration.Plugin({
                 maxAgeSeconds: 60 * 60 * 24 * 180, // 180 days
             })
-        ],
+        ]
     })
 );
-
-// // js
-// workbox.routing.registerRoute(
-//     /.*\.js/,
-//     workbox.strategies.networkFirst({
-//         cacheName: 'js-cache',
-//     })
-// );
-
-// // css
-// workbox.routing.registerRoute(
-//     /.*\.css/,
-//     workbox.strategies.staleWhileRevalidate({
-//         cacheName: 'css-cache',
-//     })
-// );
 
 // image
 workbox.routing.registerRoute(
@@ -53,7 +29,7 @@ workbox.routing.registerRoute(
             new workbox.expiration.Plugin({
                 maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
             })
-        ],
+        ]
     })
 );
 
@@ -66,51 +42,63 @@ workbox.routing.registerRoute(
             new workbox.expiration.Plugin({
                 maxAgeSeconds: 60 * 60 * 24 * 180, // 180 days
             })
-        ],
+        ]
     })
 );
 
 // google web font
 workbox.routing.registerRoute(
-    /^https:\/\/fonts\.gstatic\.com/,
+    /^https:\/\/fonts\.googleapis\.com/,
     workbox.strategies.cacheFirst({
         cacheName: 'google-fonts-webfonts',
         plugins: [
-            new workbox.cacheableResponse.Plugin({
-                statuses: [0, 200],
-            }),
             new workbox.expiration.Plugin({
                 maxAgeSeconds: 60 * 60 * 24 * 60, // 60 days
                 maxEntries: 10
-            }),
-        ],
+            })
+        ]
+    })
+);
+
+// google spreadsheets csv
+workbox.routing.registerRoute(
+    /^https:\/\/docs\.google\.com\/spreadsheets\/.+output\=csv.+/,
+    workbox.strategies.staleWhileRevalidate({
+        cacheName: 'google-spreadsheets-csv-files',
+        plugins: [
+            new workbox.cacheableResponse.Plugin({
+                headers: {
+                    'X-Is-Cacheable': 'true'
+                }
+            })
+        ]
     })
 );
 
 workbox.precaching.precacheAndRoute([
   {
     "url": "index.html",
-    "revision": "c0578e414682be2bd9c0dd3a7467ca50"
+    "revision": "78ea814a9cd8d44d0c3a4c9fe05bb528"
   },
   {
     "url": "dist/damage-calculation.min.js",
-    "revision": "9a57268c0e745c9dfab382577aaebfb8"
+    "revision": "99f07ffced6ba6088f432df18142166f"
   },
   {
     "url": "dist/enchant-simulator.min.js",
-    "revision": "7243f8c5468d6e1410cab88a47d86ebd"
+    "revision": "c52f2db3935877756ea44c7c9ffd8101"
   },
   {
     "url": "dist/home.min.js",
-    "revision": "71cd61eadff7bbc713cc2de80bfb4f5c"
+    "revision": "49eff9f4a1d00358a4f0a40601d973c4"
   },
   {
     "url": "dist/item-query.min.js",
-    "revision": "817c45ca1c2d9b7e9c77f02dcecfe049"
+    "revision": "3df128a3c976ebe43b70d61611565774"
   },
   {
     "url": "dist/skill-query.min.js",
-    "revision": "bd70ed8c0ecebdb282b493d1164c33c4"
+    "revision": "abe6d42eedf0c4483c6ebc2704501679"
   },
   {
     "url": "src/css/CalculationSystem/Damage/main.css",
@@ -150,7 +138,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/main/main.css",
-    "revision": "36f747855f6092b862e0fb57d31b03d2"
+    "revision": "23740ab70b94d5984861231527261442"
   },
   {
     "url": "src/css/main/Settings/main.css",
