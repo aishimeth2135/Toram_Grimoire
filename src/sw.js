@@ -7,14 +7,6 @@ workbox.core.setCacheNameDetails({
     suffix: 'v1'
 });
 
-// // html
-// workbox.routing.registerRoute(
-//     new RegExp('.\/.*.html'),
-//     workbox.strategies.networkFirst({
-//         cacheName: 'page-html-cache'
-//     })
-// );
-
 // papaparse.min.js
 workbox.routing.registerRoute(
     /papaparse\.min\.js/,
@@ -24,25 +16,9 @@ workbox.routing.registerRoute(
             new workbox.expiration.Plugin({
                 maxAgeSeconds: 60 * 60 * 24 * 180, // 180 days
             })
-        ],
+        ]
     })
 );
-
-// // js
-// workbox.routing.registerRoute(
-//     /.*\.js/,
-//     workbox.strategies.networkFirst({
-//         cacheName: 'js-cache',
-//     })
-// );
-
-// // css
-// workbox.routing.registerRoute(
-//     /.*\.css/,
-//     workbox.strategies.staleWhileRevalidate({
-//         cacheName: 'css-cache',
-//     })
-// );
 
 // image
 workbox.routing.registerRoute(
@@ -53,7 +29,7 @@ workbox.routing.registerRoute(
             new workbox.expiration.Plugin({
                 maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
             })
-        ],
+        ]
     })
 );
 
@@ -66,24 +42,36 @@ workbox.routing.registerRoute(
             new workbox.expiration.Plugin({
                 maxAgeSeconds: 60 * 60 * 24 * 180, // 180 days
             })
-        ],
+        ]
     })
 );
 
 // google web font
 workbox.routing.registerRoute(
-    /^https:\/\/fonts\.gstatic\.com/,
+    /^https:\/\/fonts\.googleapis\.com/,
     workbox.strategies.cacheFirst({
         cacheName: 'google-fonts-webfonts',
         plugins: [
-            new workbox.cacheableResponse.Plugin({
-                statuses: [0, 200],
-            }),
             new workbox.expiration.Plugin({
                 maxAgeSeconds: 60 * 60 * 24 * 60, // 60 days
                 maxEntries: 10
-            }),
-        ],
+            })
+        ]
+    })
+);
+
+// google spreadsheets csv
+workbox.routing.registerRoute(
+    /^https:\/\/docs\.google\.com\/spreadsheets\/.+output\=csv.+/,
+    workbox.strategies.staleWhileRevalidate({
+        cacheName: 'google-spreadsheets-csv-files',
+        plugins: [
+            new workbox.cacheableResponse.Plugin({
+                headers: {
+                    'X-Is-Cacheable': 'true'
+                }
+            })
+        ]
     })
 );
 

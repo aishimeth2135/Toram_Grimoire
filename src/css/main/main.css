@@ -85,6 +85,8 @@ input:focus {
 
 body > footer > p {
 	padding: 0.1rem 0.6rem;
+	margin-top: 1rem;
+	margin-bottom: 0;
 }
 
 body > footer {
