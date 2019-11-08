@@ -1,7 +1,6 @@
 /node_modules/
 
 *.txt
-*.config.js
 
 BaseStatData_[0-9].csv
 SkillData_[0-9].csv

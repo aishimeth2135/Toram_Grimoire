@@ -51,6 +51,7 @@
     width: 1.2rem;
     flex-shrink: 0;
 }
+.Cyteria.Button.simple > .icon + .text,
 .Cyteria.Button.simple > svg + .text,
 .Cyteria.Button.simple > .icon > svg + .text {
     margin-left: 0.4rem;
@@ -305,7 +306,8 @@
     display: inline-flex;
 }
 .Cyteria.scope-icon > svg,
-.Cyteria.scope-icon > img {
+.Cyteria.scope-icon > img,
+.Cyteria.scope-icon > .icon > svg {
     height: 1.2rem;
     width: 1.2rem;
     flex-shrink: 0;
@@ -314,6 +316,7 @@
 .Cyteria.scope-icon > svg > g {
     fill: var(--primary-light-3);
 }
+.Cyteria.scope-icon > .icon + span,
 .Cyteria.scope-icon > svg + span,
 .Cyteria.scope-icon > img + span {
     margin-left: 0.4rem;
@@ -409,6 +412,8 @@
 
 .Cyteria.window > .top {
     padding-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
 }
 
 .Cyteria.window.frozen-top {
@@ -421,22 +426,11 @@
     top: 0;
     padding-top: 1rem;
 }
-.Cyteria.window > .top > span.button {
-    display: inline-block;
-    cursor: pointer;
-    transition: 0.3s;
-    margin-left: 0.3rem;
+.Cyteria.window > .top > .button {
+    margin-left: auto;
 }
-.Cyteria.window > .top > span.button > svg {
-    fill: var(--primary-light-3);
-    vertical-align: middle;
-}
-.Cyteria.window > .top > span.button:hover svg {
-    fill: var(--primary-light-4);
-}
-.Cyteria.window > .top > span.name {
+.Cyteria.window > .top > .name {
     margin: 0.2rem;
-    vertical-align: middle;
     color: var(--primary-purple);
 }
 
@@ -488,6 +482,19 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   sticky header
+   ========================================================================== */
+.Cyteria.Layout.sticky-header {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+}
+.Cyteria.Layout.sticky-header::after {
+    position: sticky;
+    box-shadow: 0 0.2rem 0.3rem -0.1rem var(--primary-light);
 }
 
 /* ==========================================================================
@@ -563,4 +570,104 @@
         opacity: 1;
         transform: none;
     }
+}
+
+/* ==========================================================================
+   checkbox label
+   ========================================================================== */
+.Cyteria.checkbox-parent {
+    display: inline-flex;
+    align-items: center;
+}
+.Cyteria.checkbox-parent.line {
+    display: flex;
+}
+.Cyteria.checkbox {
+    display: none;
+}
+.Cyteria.checkbox.simple + label {
+    position: relative;
+    display: inline-block;
+    height: 1rem;
+    width: 1rem;
+    border: 2px solid var(--primary-light-2);
+    transition: border-color 0.4s ease, background-color 0.4s ease;
+    cursor: pointer;
+    margin: 0 0.1rem;
+    border-radius: 0.2rem;
+}
+.Cyteria.checkbox.simple:checked + label {
+    border-color: var(--primary-dark-light);
+    background-color: var(--primary-dark-light);
+}
+.Cyteria.checkbox.simple + label::before,
+.Cyteria.checkbox.simple + label::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 0;
+    background-color: white;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+.Cyteria.checkbox.simple + label::before {
+    transform: rotateZ(-45deg);
+    left: 25%;
+    top: 45%;
+    height: 35%;
+}
+.Cyteria.checkbox.simple + label::after {
+    transform: rotateZ(-135deg);
+    left: 55%;
+    top: 15%;
+    height: 70%;
+}
+.Cyteria.checkbox.simple:checked + label::before,
+.Cyteria.checkbox.simple:checked + label::after {
+    opacity: 1;
+}
+.Cyteria.checkbox.simple + label + .text {
+    margin-left: 0.4rem;
+}
+
+/* ==========================================================================
+   radio label
+   ========================================================================== */
+.Cyteria.radio-parent {
+    display: inline-flex;
+    align-items: center;
+}
+.Cyteria.radio-parent.line {
+    display: flex;
+}
+.Cyteria.radio {
+    display: none;
+}
+.Cyteria.radio.simple + label {
+    display: inline-block;
+    height: 1rem;
+    width: 1rem;
+    border: 2px solid var(--primary-light-2);
+    transition: border-color 0.4s ease;
+    cursor: pointer;
+    margin: 0 0.1rem;
+    border-radius: 50%;
+    padding: 0.1rem;
+}
+.Cyteria.radio.simple:checked + label {
+    border-color: var(--primary-dark-light);
+}
+.Cyteria.radio.simple + label::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-dark-light);
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+.Cyteria.radio.simple:checked + label::before {
+    opacity: 1;
+}
+.Cyteria.radio.simple + label + .text {
+    margin-left: 0.4rem;
 }

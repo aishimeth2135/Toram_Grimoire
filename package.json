@@ -10,8 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production --config webpack.v2.config.js",
-    "//build-v1": "webpack --mode production --config webpack.v1.config.js",
-    "//build": "concurrently \"npm run build-v1\" \"npm run build-v2\""
+    "workbox": "workbox injectManifest workbox-cli-config.js"
   },
   "author": "cyteria",
   "license": "ISC",
@@ -19,8 +18,7 @@
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/polyfill": "^7.4.4",
     "@babel/runtime": "^7.4.4",
-    "core-js": "^3.0.1",
-    "http-server": "^0.11.1"
+    "core-js": "^3.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
@@ -28,6 +26,6 @@
     "@babel/preset-env": "^7.4.4",
     "babel-loader": "^8.0.6",
     "webpack": "^4.31.0",
-    "webpack-cli": "^3.3.2"
+    "webpack-cli": "^3.3.10"
   }
 }

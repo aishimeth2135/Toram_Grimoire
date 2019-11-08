@@ -72,7 +72,7 @@ branchDevelopmentController.prototype = {
 			t.appendChild(v); 
 			if ( before_init.branchAttributes[k] === void 0 )
 				t.classList.add('by_default');
-			if ( branch.branchAttributes[k] !== void 0 && branch.branchAttributes[k] !== cmp.branchAttributes[k] )
+			if ( k in branch.branchAttributes && branch.branchAttributes[k] !== cmp.branchAttributes[k] )
 				t.classList.add('overwrite');
 			s1.appendChild(t);
 		});
@@ -394,11 +394,11 @@ export default function(ctrr){
 		const one = simpleCreateHTML('div', 'skill-attributes');
 		
 		order.forEach(item => {
-			if ( output.attributes[item] === void 0 )
-				return;
-			const he = getEffectHTML(output, item, ctrr);
-			if ( he )
-				one.appendChild(he);
+			if ( item in output.attributes ){
+                const he = getEffectHTML(output, item, ctrr);
+                if ( he )
+                    one.appendChild(he);
+            }
 		});
         one.appendChild(ctrr.nodes.openSkillAttributeIconTipsButton);
 		frg.appendChild(one);

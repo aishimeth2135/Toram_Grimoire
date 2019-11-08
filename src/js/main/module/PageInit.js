@@ -3,6 +3,15 @@ import CY from "./cyteria.js";
 import Icons from "./SvgIcons.js";
 
 function PageInitFirst(){
+    // Check that service workers are supported
+    if ('serviceWorker' in navigator) {
+        // Use the window load event to keep the page load performant
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/Toram_Grimoire/sw.js');
+            console.log('...');
+        });
+    }
+
     InitLanguageSystem();
 
     document.querySelector('#loading-page > .content').innerHTML = GetLang('Loading Page/content');
@@ -13,7 +22,7 @@ function PageInitFirst(){
     const simpleCreateHTML = CY.element.simpleCreateHTML;
     const create_scope = (icon_id, text) => `${Icons(icon_id)}<span class="text">${text}</span>`;
     const auth = document.querySelector('footer > .author-information');
-    auth.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], create_scope('ghost', 'Cyteria')));
+    auth.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'auth-name'], create_scope('ghost', 'Cyteria')));
     auth.appendChild(
         simpleCreateHTML('a', ['Cyteria', 'scope-icon'], create_scope('book', GetLang('footer/baha home')), {
             'href': 'https://home.gamer.com.tw/homeindex.php?owner=mushroom2135',
