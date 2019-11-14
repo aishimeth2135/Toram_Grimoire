@@ -124,22 +124,61 @@ SkillTree.CATEGORY_EQUIPMENT = Symbol();
 
 
 /**
- * @implements {SkillElementParent}
  * @implements {SkillElementChild}
  */
-class Skill {
-	constructor(st, no, name){
+class SkillBase {
+	constructor(st, no, name, cap=""){
 		this.parent = st;
 		this.no = no;
 		this.name = name;
-		this.effects = [];
-		this.defaultEffect = null;
-		this.caption = "";
-		this.TYPE = Skill.TYPE;
+		this.caption = cap;
 	}
 	init(pre, drawOrder){
 		this.previous = pre;
 		this.drawOrder = drawOrder;
+	}
+	findLocation(){
+		return this.parent.skills.indexOf(this);
+	}
+}
+
+
+class LevelSkill extends SkillBase {
+	constructor(st, no, name, cap=""){
+		super(st, no, name, cap);
+
+		this._level = 0;
+	}
+	level(v=-1){
+		if ( v >= 0 && v <= 10 )
+			this._level = v;
+		return this._level;
+	}
+	refreshTree(lv){
+		if ( lv )
+			this.level(lv);
+
+		let p = this;
+		// p is head of tree if (p == -1)
+		while ( p.previous != -1 ){
+			p = p.parent.skills.find(a => a.no == p.previous);
+			if ( p.level() < 5 )
+				p.level(5);
+		}
+	}
+}
+
+
+/**
+ * @implements {SkillElementParent}
+ */
+class Skill extends SkillBase {
+	constructor(st, no, name, cap=""){
+		super(st, no, name, cap);
+
+		this.effects = [];
+		this.defaultEffect = null;
+		this.TYPE = Skill.TYPE;
 	}
 	newElement(type, cArgs){
 		if ( type == SkillEffect.TYPE ){
@@ -150,9 +189,6 @@ class Skill {
 			return effect;
 		}
 		return null;
-	}
-	findLocation(){
-		return this.parent.skills.indexOf(this);
 	}
 	setDefaultEffect(sef){
 		this.defaultEffect = sef;

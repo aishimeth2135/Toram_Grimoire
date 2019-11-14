@@ -1,12 +1,16 @@
 :root {
 	--primary-dark: #85005F;
+	--primary-dark-light: #c62899;
 	--primary-light: #FFD1EA;
 	--primary-light-2: #f7a8d3;
 	--primary-light-3: #ff5fb7;
 	--primary-light-4: #ff008d;
 	--primary-purple: #9c27b0;
+	--primary-purple-light: #c873d7;
 	--primary-water-blue-light: #9acbf3;
 	--primary-water-blue: #2196f3;
+	--white: white;
+	--red: red;
 }
 
 * {
@@ -14,7 +18,8 @@
 }
 
 body {
-	background-color: #FFF;
+	background-color: var(--white);
+	margin: 6px;
 }
 body, input, textarea {
 	color: var(--primary-dark);
@@ -168,7 +173,7 @@ nav > ul > li > a::after {
 	position: fixed;
 	top: 0;
 	left: 0;
-	background-color: #FFF;
+	background-color: var(--white);
 	padding: 0 0.6rem;
 	padding-top: 2rem;
 	z-index: 5;
@@ -214,7 +219,7 @@ nav > ul > li > a::after {
 	animation: loading-circle 0.8s ease infinite;
 }
 #loading-page > .msg > .msg-scope > .status-icon.error > svg {
-	fill: red;
+	fill: var(--red);
 }
 
 @keyframes loading-circle {
@@ -242,7 +247,7 @@ nav > ul > li > a::after {
 #show-message > div {
 	margin: 0.2rem 0;
 	padding: 0.6rem;
-	background-color: #fff;
+	background-color: var(--white);
 	color: var(--primary-light-4);
 	border: 1px solid var(--primary-light-4);
 	animation: show-message 5s ease-out;

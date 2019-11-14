@@ -329,10 +329,15 @@ export default class DamageCalculationController {
                             v += Math.floor(a*b/100);
                         }
                     }
+                    // character level difference
+                    const lv = cal.findContainerById('level_difference');
+                    const lvDif = lv.getItem('character_level').value() - lv.getItem('target_level').value();
+                    v += lvDif;
+
+                    const tar_rst = cal.findContainerById('target_resistance').value();
+                    v *= (100 - tar_rst) / 100;
+
                     return v;
-                },
-                levelDifference: function(){
-                    return this.getItem('character_level').value() - this.getItem('target_level').value();
                 },
                 otherConstant: function(){
                     return this.item().reduce((a, b) => a + b.value(), 0);
@@ -394,18 +399,20 @@ export default class DamageCalculationController {
         const simpleCreateHTML = CY.element.simpleCreateHTML;
 
         //
-        const top = simpleCreateHTML('div', 'top');
+        const top = simpleCreateHTML('div', ['Cyteria', 'Layout', 'sticky-header', 'top']);
+        const top_content = simpleCreateHTML('div', 'content');
 
         const calculationSelect = simpleCreateHTML('ul', 'calculation-select');
         const create_cal_btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'no-border', 'create-calclulation'], Icons('add-circle-outline') + '<span class="text">' + Lang('create calculation') + '</span>');
         create_cal_btn.addEventListener('click', this.listeners.createCalculation);
         calculationSelect.appendChild(create_cal_btn);
-        top.appendChild(calculationSelect);
+        top_content.appendChild(calculationSelect);
 
         const menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'menu-button'], Icons('cube-outline'));
         menu_btn.addEventListener('click', this.listeners.openMainMenu);
-        top.appendChild(menu_btn);
+        top_content.appendChild(menu_btn);
 
+        top.appendChild(top_content);
         node.appendChild(top);
 
         //
@@ -759,7 +766,7 @@ export default class DamageCalculationController {
             .openItemToggle('sub_atk', 'two_handed_skill_level')
             .closeCalc();
         p(0, ['character_level', 'target_level'], 'level_difference')
-            .setBeforeCalculateFunction(this.functions.calculation.levelDifference);
+            .closeCalc();
         p(0, ['target_def', 'target_mdef'], 'target_def', 1)
             .link('atk/matk')
             .setBeforeCalculateFunction(this.functions.calculation.defenseCalc);
@@ -830,7 +837,7 @@ export default class DamageCalculationController {
 
         p(1, ['target_physical_resistance', 'target_magic_resistance'], 'target_resistance', 1)
             .link('damage_type')
-            .setBeforeCalculateFunction(this.functions.calculation.negativeValue);
+            .closeCalc();
 
         p(1, ['stability', 'probability_of_graze'], 'stability')
             .setBeforeCalculateFunction(this.functions.calculation.stabilityExpectedValue)

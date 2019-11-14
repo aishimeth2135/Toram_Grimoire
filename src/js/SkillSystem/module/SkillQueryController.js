@@ -55,7 +55,8 @@ class SkillElementsController {
 				ctrr.status.currentSkillHistoryDate = t;
 
 				const btn = ctrr.nodes.openSelectSkillHistoryDateButton;
-				btn.querySelector('.text').innerHTML = t || btn.getAttribute('data-last');
+				const text = `<span>${this.getAttribute('data-pre') || GetLang('Skill Query/Analysis Skill/unknow date')}</span>${Icons('arrow-right-triangle')}<span>${this.getAttribute('data-date')}</span>`;
+				btn.querySelector('.text').innerHTML = text || btn.getAttribute('data-last');
 				btn.classList[t ? 'add' : 'remove']('flip-icon');
 
 				ctrr.updateSkillHTML();
@@ -108,7 +109,7 @@ class SkillElementsController {
 					result_options_scope.appendChild(t);
 					break;
 				case TYPE_SKILL_RECORD:
-					t.classList.add('hidden');
+					t.classList.add('hidden', 'Cyteria', 'Layout', 'sticky-header');
 					t.appendChild(this.createSkillQueryScopeHTML(null, a));
 					frg.appendChild(t);
 					break;
@@ -187,7 +188,7 @@ class SkillElementsController {
 	    		frg.appendChild(t);
 		    	if ( Array.isArray(a) ){
 		    		const ct = simpleCreateHTML('div', 'content');
-		    		a.forEach((a, i) => ct.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'text-small', 'light'], Icons(a) + '<span class="text">' + TEXT_LIST[k][i] + '</span>')));
+		    		a.forEach((a, i) => ct.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'text-small', 'light', 'line'], Icons(a) + '<span class="text">' + TEXT_LIST[k][i] + '</span>')));
 		    		frg.appendChild(ct);
 		    	}
 		    	skill_attribute_icon_tips.appendChild(frg);
@@ -220,7 +221,7 @@ class SkillElementsController {
 
 		    this.nodes.openSelectSkillHistoryDateButton = open_btn;
 
-	    	this.getSkillElementScope(TYPE_SKILL_RECORD).appendChild(open_btn);
+	    	this.getSkillElementScope(TYPE_SKILL_RECORD).querySelector('.content').appendChild(open_btn);
 	    }
 	}
 	getSkillElementScope(type){
@@ -354,7 +355,7 @@ class SkillElementsController {
 			archs_scope.querySelector('.back-button').classList.remove('hidden');
 		else
 			archs_scope.querySelector('.back-button').classList.add('hidden');
-		archs_scope.querySelector('div.current_skill').innerHTML = s.name;
+		archs_scope.querySelector('.current_skill').innerHTML = s.name;
 
 		this.status.currentSkillHistoryDate = null;
 		this.nodes.openSelectSkillHistoryDateButton.classList.remove('flip-icon');
@@ -664,14 +665,13 @@ class SkillElementsController {
 			}
 			case TYPE_SKILL_RECORD: {
 				const ctrr = this;
-				const he = document.createDocumentFragment();
-				const back = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'single-line', 'back-button', 'no-border', 'no-padding'], Icons('arrow-left') + `<span class="text">${GetLang('Skill Query/button text/back')}</span>`);
+				const he = simpleCreateHTML('div', 'content');
+				const back = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'single-line', 'back-button'], Icons('arrow-left'));
 				back.addEventListener('click', function(event){
 					ctrr.popSkillRecord();
 				});
-				const title = simpleCreateHTML('div', 'current_skill');
+				const title = simpleCreateHTML('span', ['Cyteria', 'scope-icon'], Icons('script') + '<span class="text current_skill"></span>');
 				he.appendChild(back);
-				he.appendChild(simpleCreateHTML('div', 'tip', Lang('current skill')));
 				he.appendChild(title);
 				return he;
 			}
@@ -682,15 +682,16 @@ class SkillElementsController {
 		btn.classList[date_ary.length == 0 ? 'add': 'remove']('hidden');
 
 		const last = date_ary[0] || '';
-		btn.querySelector('.text').innerHTML = this.status.currentSkillHistoryDate || last;
+		btn.querySelector('.text').innerHTML = last;
 		btn.setAttribute('data-last', last);
 
 		const frg = document.createDocumentFragment();
-		date_ary.forEach(p => {
-			const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('clock-outline') + `<span class="text">${p}</span>`);
-			btn.setAttribute('data-date', p);
-			btn.addEventListener('click', this.listeners.setCurrentSkillHistoryDate);
-			frg.appendChild(btn);
+		date_ary.forEach((p, i, ary) => {
+			const _btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('clock-outline') + `<span class="text">${p}</span>`);
+			_btn.setAttribute('data-date', p);
+			_btn.setAttribute('data-pre', ary[i+1] || '');
+			_btn.addEventListener('click', this.listeners.setCurrentSkillHistoryDate);
+			frg.appendChild(_btn);
 		});
 		const clear = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('close') + `<span class="text">${GetLang('global/clear')}</span>`);
 		clear.addEventListener('click', this.listeners.setCurrentSkillHistoryDate);

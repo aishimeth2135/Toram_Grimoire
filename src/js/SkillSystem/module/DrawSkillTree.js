@@ -67,7 +67,12 @@ function DrawSkillTree(st, config){
                     if ( name !== '?' ){
                         if ( name !== '@lock' ){
                             t.appendChild(Text(tran(x), tran(y) - w/2 - textMargin, name, {class: 'skill-name'}));
-                            setSkillButton(btn, _skill);
+                            setSkillButton(btn, _skill, Object.assign({
+                                cx: x,
+                                cy: y,
+                                lengthTransformFunction: tran,
+                                documentFragment: t
+                            }, drawData));
                             const patid = 'si_' + _skill.no;
                             const pat = CY.svg.createEmpty('pattern', {id: patid, width: 1, height: 1});
                             pat.appendChild(Circle(w/2, w/2, w/2, {fill: 'url(#skill-icon-bg)', 'stroke-width': 0}));
@@ -96,7 +101,7 @@ function DrawSkillTree(st, config){
     });
 
     const he = CY.svg.create(tran(maxw) - w/2 + pad, tran(y) + w/2 + pad + textMargin, {'xmlns:xlink': 'http://www.w3.org/1999/xlink'});
-    he.classList.add('Cyteria', 'entrance', 'fade-in')
+    he.classList.add('Cyteria', 'entrance', 'fade-in');
     he.appendChild(frg);
 
     return he;
@@ -202,4 +207,4 @@ function createDrawSkillTreeDefs(){
 //     return he;
 // }
 
-export {DrawSkillTree, GetDrawData, createDrawSkillTreeDefs};
+export {DrawSkillTree, createDrawSkillTreeDefs};

@@ -532,7 +532,7 @@ export default class EnchantSimulatorController {
 
         const field_menu = simpleCreateHTML('ul', 'field-menu');
         const field_menu_text = Lang('Equipment Field List');
-        ['sword', 'six-star'].forEach((p, i) => {
+        ['sword', 'clothing'].forEach((p, i) => {
             const li = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple'], Icons(p) + `<span class="text">${field_menu_text[i]}</span>`, {'data-no': i});
             li.addEventListener('click', this.listeners.selectEquipmentField);
             field_menu.appendChild(li);

@@ -313,6 +313,11 @@ function beforeExport(he, ctrr){
                 CY.element.remove(pre);
         }
     });
+
+    // 醒目標示history value
+    he.querySelectorAll('.skill-attribute > .value > .value-history').forEach(p => {
+        p.parentNode.parentNode.classList.add('border-mark');
+    });
 }
 
 /*
@@ -345,8 +350,6 @@ export default function(ctrr){
 
         /*----------  歷史紀錄  ----------*/
         
-        /* 更新選擇介面 */
-        ctrr.updateSelectSkillHistoryDateScope(output.getHistoryDates());
         /* 處理 */
         if ( data.currentSkillHistoryDate != null ){
             const date = data.currentSkillHistoryDate;
@@ -381,6 +384,8 @@ export default function(ctrr){
                 }
             });
         }
+        else /* 更新選擇介面 */
+            ctrr.updateSelectSkillHistoryDateScope(output.getHistoryDates());
 
         /*----------  基本屬性  ----------*/
 		const order = [

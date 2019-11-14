@@ -82,27 +82,27 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/damage-calculation.min.js",
-    "revision": "99f07ffced6ba6088f432df18142166f"
+    "revision": "1f653c2113d668c37195fe22816318bd"
   },
   {
     "url": "dist/enchant-simulator.min.js",
-    "revision": "c52f2db3935877756ea44c7c9ffd8101"
+    "revision": "f040c9619d8648d2e2c10344e6f47e9c"
   },
   {
     "url": "dist/home.min.js",
-    "revision": "49eff9f4a1d00358a4f0a40601d973c4"
+    "revision": "c7bb29c6d193558acab72d231c1084bc"
   },
   {
     "url": "dist/item-query.min.js",
-    "revision": "3df128a3c976ebe43b70d61611565774"
+    "revision": "80a786f2359c13a1058b9b434b1f8ca6"
   },
   {
     "url": "dist/skill-query.min.js",
-    "revision": "abe6d42eedf0c4483c6ebc2704501679"
+    "revision": "9561f2405622828698ff9015c1c6dd1d"
   },
   {
     "url": "src/css/CalculationSystem/Damage/main.css",
-    "revision": "1bbe73d8026704db5deb0ec18a0d576b"
+    "revision": "785484374280e25c5761058855f89135"
   },
   {
     "url": "src/css/EnchantSimulator/main.css",
@@ -118,7 +118,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/main/Cyteria/Cyteria.css",
-    "revision": "bd09fa9e90ff23466133e4d2073b74b1"
+    "revision": "ea5b4712bd520173da1bc3a930e30c3d"
   },
   {
     "url": "src/css/main/font/font.css",
@@ -138,7 +138,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/main/main.css",
-    "revision": "23740ab70b94d5984861231527261442"
+    "revision": "1b7ad41c42524a35ebb068fc467aabf8"
   },
   {
     "url": "src/css/main/Settings/main.css",
@@ -154,11 +154,15 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/SkillQuery/SkillBranch/SkillBranch.css",
-    "revision": "0226337f566a16bf3f4b902c08b7a1da"
+    "revision": "080dcc90f6f5c0078d806ac06de0204f"
   },
   {
     "url": "src/css/SkillQuery/SkillQuery.css",
-    "revision": "93a540b01b63537215dc9e894f832e62"
+    "revision": "449aa6d3c15dcbd7775de00bd2cec3f4"
+  },
+  {
+    "url": "src/css/SkillSimulator/main.css",
+    "revision": "ecb054febaa998466e9df814f60c8aef"
   },
   {
     "url": "src/css/TagSystem/main.css",

@@ -114,6 +114,10 @@ div.skill_branchs .text-scope.has_icon > .icon > svg > g {
 	color: var(--primary-light-2);
 }
 
+#SkillQuery .skill-attribute.border-mark {
+	border: 1px solid var(--primary-light-3);
+}
+
 /* ==========================================================================
    content-line
    ========================================================================== */
@@ -163,7 +167,7 @@ div.branch_damage > div.content > div.scope2 > .separate.space-right {
    Skill Branch : tips
    ========================================================================== */
 div.skill_branchs > div.branch_tips {
-	color: #c62899;
+	color: var(--primary-dark-light);
 	font-size: 0.9rem;
 }
 
@@ -171,7 +175,7 @@ div.skill_branchs > div.branch_tips {
    Skill Branch : list
    ========================================================================== */
 div.skill_branchs > div.branch_list > div.content > ul._lists.is_tips {
-	color: #c62899;
+	color: var(--primary-dark-light);
 	font-size: 0.9rem;
 }
 div.skill_branchs > div.branch_list > div.content > ul._lists.is_tips > li {
@@ -371,7 +375,7 @@ div.skill_branchs .skill_from_where_button .show_skill_from_where {
 	padding: 0.6rem;
 	border: 1px var(--primary-light) solid;
 	box-shadow: 0.1rem 0.1rem 0.4rem var(--primary-light);
-	background: #FFF;
+	background-color: var(--white);
 	z-index: 5;
 	color: var(--primary-purple);
 }

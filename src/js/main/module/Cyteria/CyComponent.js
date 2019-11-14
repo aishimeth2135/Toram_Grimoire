@@ -1,5 +1,10 @@
+const config = {
+    'element-attribute-name': 'data-cy-component'
+};
+
 export default class CyComponent {
     constructor(set){
+        this._name = set.name || "";
         this._create = set.create || function(){};
         this._updata = set.update || function(){};
         this._childComponents = {};
@@ -8,11 +13,15 @@ export default class CyComponent {
         Object.assign(this._childComponents, set.components || {});
         Object.assign(this._links, set.links || {});
     }
-    $create(data){
-        return this._creation.apply(this, [data, this]);
+    $create(...args){
+        const t =  this._create.apply(this, [this, ...args]);
+        t.setAttribute(config['data-cy-component'], this.name);
+        return t;
     }
-    $update(el, from, data){
-        return this._update.apply(this, [el, from, data, this]);
+    $update(el, ...args){
+        if ( el.getAttribute(config['data-cy-component']) !== this.name )
+            throw new Error('[argument: element] is not create by this CyComponent');
+        return this._update.apply(this, [this, el, ...args]);
     }
     $component(name){
         if ( !this._childComponents[name] )
@@ -20,6 +29,8 @@ export default class CyComponent {
         return this._childComponents[name];
     }
     $link(name, el){
+        if ( this.links[name] === void 0 )
+            throw new Error("Unknow link name: " + name);
         return this.links[name](this, el);
     }
     appendComponent(name, c){

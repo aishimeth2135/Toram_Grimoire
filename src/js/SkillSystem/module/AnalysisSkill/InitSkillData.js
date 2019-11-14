@@ -4,7 +4,7 @@ function InitSkillBranch(branch){
 	const set_default = function(b, default_value){
 		Object.keys(default_value).forEach((key) => {
 			if ( b.branchAttributes[key] === void 0 )
-				b.appendBranchAttribute(key, default_value[key])
+				b.appendBranchAttribute(key, default_value[key]);
 		});
 	};
 
@@ -42,8 +42,12 @@ function InitSkillBranch(branch){
 				type: 'none'
 			});
 			break;
-		case 'poration':
-			set_default(branch, {poration: 'auto'});
+		case 'poration': case 'proration':
+			set_default(branch, {
+				poration: branch.branchAttributes['proration'],
+				proration: branch.branchAttributes['poration']
+			});
+			set_default(branch, {poration: 'auto', proration: 'auto'});
 			break;
 		case 'group':
 			set_default(branch, {
