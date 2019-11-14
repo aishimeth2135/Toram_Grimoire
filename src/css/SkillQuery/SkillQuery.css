@@ -78,7 +78,7 @@
 
 #SkillQuery .skill-query-result-options-scope {
 	z-index: 4;	
-	background-color: white;
+	background-color: var(--white);
 }
 #SkillQuery .skill-query-result-options-scope.frozen {
 	position: sticky;
@@ -145,34 +145,22 @@
    ========================================================================== */
 
 #SkillQuery div.SkillRecord_scope {
-	padding: 0.9rem 0.4rem;
 	border-top: 1px var(--primary-light-3) solid;
-	position: sticky;
-	top: 0;
-	background-color: white;
-	z-index: 2;
-	display: flex;
-	align-items: center;
-	white-space: nowrap;
-	overflow-x: auto;
-	box-shadow: 0 0.2rem 0.3rem -0.1rem var(--primary-light);
+	background-color: var(--white);
+	--container-height: 4rem;
 }
-#SkillQuery div.SkillRecord_scope > div {
+#SkillQuery div.SkillRecord_scope > .content {
+	padding: 0 0.7rem;
+}
+#SkillQuery div.SkillRecord_scope > .content > div {
 	display: inline-block;
 }
-#SkillQuery div.SkillRecord_scope > .back-button {
-	margin-right: 1.8rem;
-}
 
-#SkillQuery div.SkillRecord_scope > div.tip {
-	color: var(--primary-light);
-	margin-right: 0.6rem;
-	vertical-align: middle;
-	font-size: 0.9rem;
-}
-#SkillQuery div.SkillRecord_scope > div.current_skill {
-	vertical-align: middle;
+#SkillQuery div.SkillRecord_scope > .content > .Cyteria.scope-icon > .text {
 	color: var(--primary-purple);
+}
+#SkillQuery div.SkillRecord_scope > .content > .Cyteria.scope-icon > svg {
+	fill: var(--primary-purple-light);
 }
 
 /* ==========================================================================
@@ -206,14 +194,11 @@
 	padding-top: 0.1rem;
 	padding: 0.2rem 0.4rem;
 	border-bottom: 1px var(--primary-light-2) solid;
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
 }
 #SkillQuery div.skill-attribute > span {
 	line-height: 1.3125rem;
-}
-#SkillQuery div.skill-attribute {
-	display: inline-flex;
-	align-items: center;
 }
 
 #SkillQuery div.skill-attribute > .scope-icon + .value {
@@ -221,10 +206,12 @@
 }
 #SkillQuery div.skill-attribute > .value {
 	color: var(--primary-light-4);
+	display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
 }
 #SkillQuery div.skill-attribute > .tail {
 	margin-left: 0.4rem;
-	vertical-align: middle;
 }
 
 

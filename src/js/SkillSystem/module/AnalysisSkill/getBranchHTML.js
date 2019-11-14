@@ -7,7 +7,7 @@ import Icons from "../../../main/module/SvgIcons.js";
 
 
 const
-    SUFFIX_LIST = ['extra', 'poration', 'group', 'formula_extra'],
+    SUFFIX_LIST = ['extra', 'proration', 'group', 'formula_extra'],
     EXTRA_FIX_LIST = ['stack'];
 
 function getTargetText(s, _is_place){
@@ -37,15 +37,15 @@ function setTagButton(text){
     return '<span class="show_tag_button">' + text + '</span>';
 }
 
-function getPorationHTML(poration_branch){
-    const _attr = poration_branch.branchAttributes;
+function getProrationHTML(proration_branch){
+    const _attr = proration_branch.branchAttributes;
     const dict1 = {
         physical: Lang('physical'), magic: Lang('magic'),
-        normal_attack: Lang('normal attack'), none: Lang('damage poration type: none')
+        normal_attack: Lang('normal attack'), none: Lang('damage proration type: none')
     };
     const dict2 = Object.assign({}, dict1, {
         auto: dict1[_attr['damage']],
-        none: Lang('effective poration type: none')
+        none: Lang('effective proration type: none')
     });
     const icon_dict = {
         physical: 'sword', magic: 'meteor',
@@ -54,8 +54,8 @@ function getPorationHTML(poration_branch){
     Object.assign(icon_dict, {
         auto: icon_dict[_attr['damage']]
     });
-    let one = createSkillAttributeScope(Icons(icon_dict[_attr['damage']]), Lang('damage poration: title'), dict1[_attr['damage']]);
-    let two = createSkillAttributeScope(Icons(icon_dict[_attr['poration']]), Lang('effective poration: title'), dict2[_attr['poration']]);
+    let one = createSkillAttributeScope(Icons(icon_dict[_attr['damage']]), Lang('damage proration: title'), dict1[_attr['damage']]);
+    let two = createSkillAttributeScope(Icons(icon_dict[_attr['proration']]), Lang('effective proration: title'), dict2[_attr['proration']]);
 
     return {one, two};
 }
@@ -117,16 +117,16 @@ function getBranchHTML(branch, ctrr){
     function replaceExtraFormulaValue(str, texts){
         texts = formulaExtraTexts;
         const FORMULA_EXTRA_VALUE_LIST = {
-            'STR': Lang('skill formula: STR'),
-            'DEX': Lang('skill formula: DEX'),
-            'INT': Lang('skill formula: INT'),
-            'AGI': Lang('skill formula: AGI'),
-            'VIT': Lang('skill formula: VIT'),
             'BSTR': Lang('skill formula: BSTR'),
             'BDEX': Lang('skill formula: BDEX'),
             'BINT': Lang('skill formula: BINT'),
             'BAGI': Lang('skill formula: BAGI'),
             'BVIT': Lang('skill formula: BVIT'),
+            'STR': Lang('skill formula: STR'),
+            'DEX': Lang('skill formula: DEX'),
+            'INT': Lang('skill formula: INT'),
+            'AGI': Lang('skill formula: AGI'),
+            'VIT': Lang('skill formula: VIT'),
             'shield_refining': Lang('skill formula: shield_refining'),
             'dagger_atk': Lang('skill formula: dagger_atk'),
             'target_def': Lang('skill formula: target_def'),
@@ -623,10 +623,10 @@ function getBranchHTML(branch, ctrr){
             branch.finish();
             return he;
         }
-        case 'poration': {
+        case 'proration': {
             const content = simpleCreateHTML('div', 'content');
 
-            const {one, two} = getPorationHTML(branch);
+            const {one, two} = getProrationHTML(branch);
 
             content.appendChild(one);
             content.appendChild(two);
@@ -670,7 +670,7 @@ function getBranchHTML(branch, ctrr){
             );
 
             // 技能常數
-            const constant = attr['constant'] === '0'
+            const constant = attr['constant'] === '0' && data.currentSkillHistoryDate == null
             ? null
             : createSkillAttributeScope(
                 null, null,
@@ -742,14 +742,14 @@ function getBranchHTML(branch, ctrr){
             }
             
 
-            // @poration後綴
-            const poration_branch = suffix.find(b => b.name == 'poration');
-            let poration_damage = null, poration_poration = null;
-            if ( poration_branch !== void 0 ){
-                const {one, two} = getPorationHTML(poration_branch);
-                poration_damage = one;
-                poration_poration = two;
-                poration_branch.finish();
+            // @proration後綴
+            const proration_branch = suffix.find(b => b.name == 'proration');
+            let proration_damage = null, proration_proration = null;
+            if ( proration_branch !== void 0 ){
+                const {one, two} = getProrationHTML(proration_branch);
+                proration_damage = one;
+                proration_proration = two;
+                proration_branch.finish();
             }
 
             // @extra後綴
@@ -803,10 +803,10 @@ function getBranchHTML(branch, ctrr){
                 frg1.appendChild(damage_judgment);
             if ( damage_cycle !== null )
                 frg1.appendChild(damage_cycle);
-            if ( poration_damage !== null )
-                frg1.appendChild(poration_damage);
-            if ( poration_poration != null )
-                frg1.appendChild(poration_poration);
+            if ( proration_damage !== null )
+                frg1.appendChild(proration_damage);
+            if ( proration_proration != null )
+                frg1.appendChild(proration_proration);
 
             const frg2 = document.createDocumentFragment();
             

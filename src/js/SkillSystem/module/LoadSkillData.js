@@ -86,9 +86,10 @@ function LoadSkillData(sr, c, lang_c, slang_c){
 		try {
 			if ( index == 0 ) return;
 			//console.log(p);
-			const no = p[NO];
+			let no = p[NO];
 			if ( no != "" ){
 				const confirm_name = p[CONFIRM];
+				no = parseInt(p[NO], 10);
 				switch ( confirm_name ){
 					case CONFIRM_SKILL_TREE_CATEGORY: {
 						const name = p[SKILL_TREE_CATEGORY_NAME];
@@ -212,7 +213,7 @@ function LoadSkillMainData(sr, c, lang_c, slang_c){
 		if ( i == 0 || p[NO] === '' )
 			return;
 		try {
-			const cat = p[CATEGORY], no = p[NO];
+			const cat = p[CATEGORY], no = parseInt(p[NO], 10);
 			switch (cat){
 				case CONFIRM_SKILL_TREE_CATEGORY:
 					cur_stc = sr.skillTreeCategorys.find(a => a.no == no);
@@ -226,7 +227,7 @@ function LoadSkillMainData(sr, c, lang_c, slang_c){
 				case '': {
 					const skill = cur_st.skills.find(a => a.no == no);
 					skill.init(
-						p[PREVIOUS_SKILL],
+						p[PREVIOUS_SKILL] == '-' ? -1 : parseInt(p[PREVIOUS_SKILL], 10),
 						parseInt(p[DRAW_SKILL_TREE_ORDER])
 					);
 					loadLangData(cat, skill, i);

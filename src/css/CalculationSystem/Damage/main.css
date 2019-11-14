@@ -14,18 +14,11 @@ span.for-adjust-input-width {
     overflow: hidden;
 }
 
-.CalculationSystem-Damage > .top {
-    position: sticky;
-    top: 0;
-    background-color: white;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--primary-light);
-    box-shadow: 0 0.2rem 0.3rem -0.1rem var(--primary-light);
+.CalculationSystem-Damage > .top::after {
+    border-top: 1px solid var(--primary-light);
 }
 
-.CalculationSystem-Damage > .top > .calculation-select {
+.CalculationSystem-Damage .calculation-select {
     padding: 0.2rem 0.3rem;
     margin: 0;
     display: flex;
@@ -33,7 +26,7 @@ span.for-adjust-input-width {
     width: 100%;
     overflow-x: auto;
 }
-.CalculationSystem-Damage > .top > .calculation-select > li {
+.CalculationSystem-Damage .calculation-select > li {
     white-space: nowrap;
 }
 .CalculationSystem-Damage .calculation-select > li.cur > .text {
@@ -110,6 +103,7 @@ span.for-adjust-input-width {
 
 .CalculationSystem-Damage .calculation > .calculation-top-scope {
     padding: 0.6rem;
+    padding-top: 0;
 }
 
 .CalculationSystem-Damage .calculation-menu {

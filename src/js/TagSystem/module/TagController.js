@@ -27,7 +27,7 @@ export default class TagController {
 
         const top = simpleCreateHTML('div', 'top');
 
-        const pre_btn = simpleCreateHTML('span', 'button', Icons('arrow-left'));
+        const pre_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('arrow-left'));
         pre_btn.addEventListener('click', function(e){
             const rs = ctrr.status.readRecords;
             if ( rs.length === 0 )
@@ -39,7 +39,7 @@ export default class TagController {
 
         const name = simpleCreateHTML('span', 'name');
 
-        const close = simpleCreateHTML('span', ['button', 'right'], Icons('close'));
+        const close = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
         close.addEventListener('click', function(e){
             ctrr.nodes.main.classList.add('hidden');
         });

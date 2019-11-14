@@ -1,0 +1,6 @@
+.SkillSimulator-main > .main > .skill-root {
+    padding: 0.6rem;
+}
+.SkillSimulator-main > .main > .skill-root > .top {
+    position: sticky;
+}

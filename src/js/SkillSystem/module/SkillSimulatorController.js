@@ -20,6 +20,10 @@ export default class SkillSimulatorController {
             buttons: null
         };
 
+        this.components = {
+            'SkillTrees': null
+        }
+
         this.listeners = {
             setStep(e){
 
@@ -27,11 +31,11 @@ export default class SkillSimulatorController {
         };
     }
     init(el){
+        this.initComponent();
+
         const simpleCreateHTML = CY.element.simpleCreateHTML;
 
         el.classList.add('SkillSimulator-main')
-
-        const main = simpleCreateHTML('div', 'main');
 
         // Buttons
         const main_menu = simpleCreateHTML('div', 'main-menu');
@@ -58,33 +62,91 @@ export default class SkillSimulatorController {
         const svg = CY.svg.create();
         svg.appendChild(createDrawSkillTreeDefs);
         el.appendChild(svg);
+
+        const main = simpleCreateHTML('div', 'main');
+        const skillRoot_scope = this.components['SkillRoot'].$create(this.skillRoot);
+        main.appendChild(skillRoot_scope);
+
     }
     initComponent(){
         const CyComponent = CY.CyComponent;
         const simpleCreateHTML = CY.element.simpleCreateHTML;
 
-        //
-        function setSkillButton(){
+        const ctrr = this;
 
+        //
+        function setSkillButton(btn, skill, data){
+            const w = data.gridWidth;
+            const {cx, cy} = data;
+            const Circle = CY.svg.drawCircle,
+                Text = CY.svg.drawText;
         }
 
-        const SkillTree = new CyComponent({
-            create(st){
+        const Cy_SkillTree = new CyComponent({
+            name: "SkillSimulator/SkillTree",
+            create(self, st){
                 const main = simpleCreateHTML('div', 'skill-tree');
 
                 const skill_tree = DrawSkillTree(st, {setSkillButton});
-            }
-        });
+                main.appendChild(skill_tree);
 
-        const SkillTrees = new CyComponent({
-            create(){
-                const main = simpleCreateHTML('div', 'skill-trees');
                 return main;
             },
             update(){
 
             }
         });
+
+        const Cy_SkillTreeCategory = new CyComponent({
+            name: 'SkillSimulator/SkillTreeCategory',
+            create(self, stc){
+                const main = simpleCreateHTML('div', 'skill-tree-category');
+
+                const frg = 
+                stc.skillTrees.reduce((cur, st) => {
+                    const t = this.$component('SkillTree').$create(st);
+                    cur.appendChild(t);
+                    return cur;
+                },
+                document.createDocumentFragment());
+
+                main.appendChild(frg);
+                return main;
+            },
+            update(self, el, stc){
+
+            },
+            components: {
+                "SkillTree": Cy_SkillTree
+            }
+        });
+
+        const Cy_SkillRoot = new CyComponent({
+            name: 'SkillSimulator/SkillRoot',
+            create(self, sr){
+                const main = simpleCreateHTML('div', 'skill-root');
+
+                const top = simpleCreateHTML('div', 'top');
+
+                return main;
+            },
+            update(self, el, sr){
+                const frg =
+                sr.skillTreeCategorys.reduce((cur, stc) => {
+                    const t = this.$component('SkillTreeCategory').$create(stc);
+                    cur.appendChild(t);
+                    return cur;
+                },
+                document.createDocumentFragment());
+
+                main.appendChild(frg);
+            },
+            components: {
+                "SkillTreeCategory": Cy_SkillTreeCategory
+            }
+        });
+
+        this.components['SkillRoot'] = Cy_SkillRoot;
     }
     
 }
