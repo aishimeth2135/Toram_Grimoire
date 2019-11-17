@@ -39,4 +39,22 @@ function isTextNode(node){
     return node.nodeType == Node.TEXT_NODE;
 }
 
-export default {remove, removeAllChild, setAttributes, simpleCreateHTML, convertRemToPixels, createByCode, isTextNode};
+function calcInputWidthPx(input, el){
+    const t = el || simpleCreateHTML('span', ['Cyteria', 'to-calc-input-width']);
+
+    if ( !el )
+        document.body.appendChild(t);
+
+    t.innerHTML = input.value;
+    const res =  t.offsetWidth;
+
+    if ( !el )
+        document.body.removeChild(t);
+
+    return res;
+}
+
+export default {
+    remove, removeAllChild, setAttributes, simpleCreateHTML,
+    convertRemToPixels, createByCode, isTextNode, calcInputWidthPx
+};

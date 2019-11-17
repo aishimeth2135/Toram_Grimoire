@@ -293,7 +293,9 @@ function beforeExport(he, ctrr){
                 end += d;
             }
             else {
-                cur.classList.add('group_content', 'Cyteria', 'entrance', 'fade-in-down');
+                cur.classList.add('group_content');
+                if ( !cur.classList.contains('branch_stack') )
+                    cur.classList.add('Cyteria', 'entrance', 'fade-in-down');
                 if ( cur.getAttribute('data-grouptitle') === '1' ){
                     gtitle = cur;
                     break;
@@ -312,6 +314,16 @@ function beforeExport(he, ctrr){
             if ( pre.tagName.toUpperCase() == 'HR' )
                 CY.element.remove(pre);
         }
+    });
+
+    function adjustInputWidth(e){
+        this.style.width = (CY.element.calcInputWidthPx(this, ctrr.nodes.toCalcInputWidth) + 2) + 'px';
+    }
+
+    // 處理stack input width
+    he.querySelectorAll('.stack-input').forEach(p => {
+        adjustInputWidth.call(p);
+        p.addEventListener('input', adjustInputWidth);
     });
 
     // 醒目標示history value

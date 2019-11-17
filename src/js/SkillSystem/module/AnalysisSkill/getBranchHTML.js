@@ -134,7 +134,7 @@ function getBranchHTML(branch, ctrr){
             'guard_power': Lang('skill formula: guard_power')
         };
         Object.keys(FORMULA_EXTRA_VALUE_LIST).forEach(key => {
-            str = str.replace(new RegExp(key, 'g'), FORMULA_EXTRA_VALUE_LIST[key]);
+            str = str.replace(new RegExp('$' + key, 'g'), FORMULA_EXTRA_VALUE_LIST[key]);
         });
         str = str
             .replace(/SLv/g, SLv).replace(/CLv/g, CLv)
@@ -173,11 +173,15 @@ function getBranchHTML(branch, ctrr){
         const resultAry = [];
 
         strs.forEach((str, i) => {
+            const processedValues = [];
             str = str
-            .replace(/\$\{([^\}]+)\}([%m]?)/g, (...args) =>
-                processValue(null, args[1], {light: true, tail: args[2]})
-            )
+            .replace(/\$\{([^\}]+)\}([%m]?)/g, (...args) => {
+                const l = processedValues.length;
+                processedValues.push(processValue(null, args[1], {light: true, tail: args[2]}));
+                return `@{{$ProcessedValues[${l}]}}`;
+            })
             .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (...args) => separateText(args[1]))
+            .replace(/@\{\{\$ProcessedValues\[(\d+)\]\}\}/g, (m, m1) => processedValues[parseInt(m1, 10)])
             .replace(/#([^\s]+)\s(\w?)/g, (...args) => {
                 let res = setTagButton(args[1].replace(new RegExp('_', 'g'), ' '));
                 if ( args[2] !== '' )
@@ -269,7 +273,7 @@ function getBranchHTML(branch, ctrr){
                             .replace(/CLv/g, Lang('character level'))
                             .replace(/SLv/g, Lang('skill level'))
                             .replace(/\*/g, '×')
-                            .replace(/stack\[(\d+)\]/g, () => stack_name_list[parseInt(RegExp.$1, 10)])
+                            .replace(/stack\[(\d+)\]/g, (m, m1) => stack_name_list[parseInt(m1, 10)])
                             .replace(/stack[\[]{0}/g, () => stack_name_list[0]);
                         res = a;
                     }
@@ -555,17 +559,17 @@ function getBranchHTML(branch, ctrr){
             const stk = branch;
             const left = simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only', 'ctr_button'], Icons('sub')),
                 right = simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only', 'ctr_button'], Icons('add')),
-                mid = simpleCreateHTML('input', ['Cyteria', 'input', 'between-button', 'mid']),
+                mid = simpleCreateHTML('input', ['Cyteria', 'input', 'between-button', 'mid', 'stack-input']),
                 unit = stk.branchAttributes['unit'] !== void 0 ? simpleCreateHTML('span', 'unit', stk.branchAttributes['unit']) : null;
 
             const ov = data.stackValues[getStackBranchIdKey(branch)];
             mid.value = ov;
-            if ( unit === null ){
-                mid.style.width = "2rem";
-                mid.style.textAlign = "center";
-            }
-            else
-                mid.style.width = (0.7*String(ov).length + 0.4) + "rem";
+            // if ( unit === null ){
+            //     mid.style.width = "2rem";
+            //     mid.style.textAlign = "center";
+            // }
+            // else
+            //     mid.style.width = (0.7*String(ov).length + 0.4) + "rem";
 
             const maxv = parseInt(safeEval(stk.branchAttributes['max']), 10),
                 minv = parseInt(safeEval(stk.branchAttributes['min']), 10);
@@ -623,7 +627,7 @@ function getBranchHTML(branch, ctrr){
             branch.finish();
             return he;
         }
-        case 'proration': {
+        case 'proration': case 'poration': {
             const content = simpleCreateHTML('div', 'content');
 
             const {one, two} = getProrationHTML(branch);

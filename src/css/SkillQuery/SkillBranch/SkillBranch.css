@@ -219,6 +219,10 @@ div.skill_branchs > div.branch .effect-by-stack > .separate_text {
 	border-right: 1px var(--primary-water-blue-light) solid;
 }
 
+div.skill_branchs > div.branch_stack .stack-input {
+	box-sizing: content-box;
+}
+
 /* ==========================================================================
    Skill Branch : reference
    ========================================================================== */
