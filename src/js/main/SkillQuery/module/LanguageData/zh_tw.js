@@ -96,6 +96,11 @@ export default function(){
                 'effective area: end position': '終點位置',
                 'effective area: target front': '目標身前',
                 'effective area: target behind': '目標身後',
+                'formula text: replace': {
+                    'Math.floor': '向下取整',
+                    'Math.max': '取最大值',
+                    'Math.min': '取最小值'
+                },
                 'branch development controller': {
                     'title: default': '預設',
                     'title: not default': '非預設'

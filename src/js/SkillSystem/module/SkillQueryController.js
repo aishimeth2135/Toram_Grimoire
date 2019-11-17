@@ -223,6 +223,11 @@ class SkillElementsController {
 
 	    	this.getSkillElementScope(TYPE_SKILL_RECORD).querySelector('.content').appendChild(open_btn);
 	    }
+	    {
+	    	const toCalcInputWidth = simpleCreateHTML('span', ['Cyteria', 'to-calc-input-width']);
+	    	this.nodes.toCalcInputWidth = toCalcInputWidth;
+	    	this.MAIN_NODE.appendChild(toCalcInputWidth);
+	    }
 	}
 	getSkillElementScope(type){
 		const SCOPE_NAME = {

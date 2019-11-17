@@ -706,3 +706,13 @@
 .Cyteria.radio.simple + label + .text {
     margin-left: 0.4rem;
 }
+
+/* ==========================================================================
+   to calc input width
+   ========================================================================== */
+.Cyteria.to-calc-input-width {
+    position: absolute;
+    height: 0;
+    white-space: pre;
+    overflow: hidden;
+}
