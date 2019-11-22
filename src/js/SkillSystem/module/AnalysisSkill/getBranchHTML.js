@@ -134,7 +134,7 @@ function getBranchHTML(branch, ctrr){
             'guard_power': Lang('skill formula: guard_power')
         };
         Object.keys(FORMULA_EXTRA_VALUE_LIST).forEach(key => {
-            str = str.replace(new RegExp('$' + key, 'g'), FORMULA_EXTRA_VALUE_LIST[key]);
+            str = str.replace(new RegExp('\\$' + key, 'g'), FORMULA_EXTRA_VALUE_LIST[key]);
         });
         str = str
             .replace(/SLv/g, SLv).replace(/CLv/g, CLv)
@@ -145,7 +145,9 @@ function getBranchHTML(branch, ctrr){
         while ( str.match(pat) )
             str = str.replace(pat, s => safeEval(s));
 
-        str = str.replace(/\*/g, '×').replace(/(\d+\.\d+)/g, () => parseFloat(RegExp.$1)*100 + '%');
+        str = str
+            .replace(/\*/g, '×')
+            .replace(/(\d+\.\d+)/g, (m, m1) => parseFloat(m1)*100 + '%');
         return str;
     }
     function safeEval(str, dftv){
