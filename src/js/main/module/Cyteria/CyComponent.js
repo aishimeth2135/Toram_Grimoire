@@ -15,11 +15,11 @@ export default class CyComponent {
     }
     $create(...args){
         const t =  this._create.apply(this, [this, ...args]);
-        t.setAttribute(config['data-cy-component'], this.name);
+        t.setAttribute(config['element-attribute-name'], this._name);
         return t;
     }
     $update(el, ...args){
-        if ( el.getAttribute(config['data-cy-component']) !== this.name )
+        if ( el.getAttribute(config['data-cy-component']) !== this._name )
             throw new Error('[argument: element] is not create by this CyComponent');
         return this._update.apply(this, [this, el, ...args]);
     }
