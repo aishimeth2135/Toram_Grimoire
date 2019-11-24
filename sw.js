@@ -158,7 +158,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/SkillQuery/SkillQuery.css",
-    "revision": "ed2d0be33d8f8269762ec588923461a2"
+    "revision": "2ff76a5cad369fcd35a0b2581147dcf7"
   },
   {
     "url": "src/css/SkillSimulator/main.css",
