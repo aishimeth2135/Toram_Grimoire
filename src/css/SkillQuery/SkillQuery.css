@@ -77,11 +77,11 @@
    ========================================================================== */
 
 #SkillQuery .skill-query-result-options-scope {
-	z-index: 4;	
+	z-index: 4;
 	background-color: var(--white);
 	position: sticky;
-	top: -9rem;
-	transition: top 0.5s ease;
+	top: -20rem;
+	transition: top 0.7s;
 }
 #SkillQuery .skill-query-result-options-scope.frozen {
 	box-shadow: 0 0.2rem 0.3rem -0.1rem var(--primary-light);
