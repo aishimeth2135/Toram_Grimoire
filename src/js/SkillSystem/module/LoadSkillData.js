@@ -1,5 +1,6 @@
 import {SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
 import Grimoire from "../../main/Grimoire.js";
+import {ProcessLanguageData} from "../../main/module/LanguageSystem.js";
 
 function LoadSkillData(sr, c, lang_c, slang_c){
 	const 
@@ -74,18 +75,15 @@ function LoadSkillData(sr, c, lang_c, slang_c){
 		}
 	}
 
-	//
-	const loadEffectBranchAttributeValue = index => {
-		const d1 = c[index][EFFECT_BRANCH_ATTRIBUTE_VALUE],
-			d2 = lang_c && lang_c[index] ? lang_c[index][LANG_DATA.EFFECT_BRANCH_ATTRIBUTE_VALUE] : null,
-			d3 = slang_c && slang_c[index] ? slang_c[index][LANG_DATA.EFFECT_BRANCH_ATTRIBUTE_VALUE] : null;
-		return [d2, d3, d1].find(t => t !== '' && t !== null && t !== void 0) || '';
-	};
+	const datas = [c, lang_c, slang_c];
+	// language data
+	ProcessLanguageData(datas, EFFECT_BRANCH_ATTRIBUTE_VALUE, LANG_DATA.EFFECT_BRANCH_ATTRIBUTE_VALUE);
 
 	c.forEach(function(p, index){
 		try {
 			if ( index == 0 ) return;
 			//console.log(p);
+
 			let no = p[NO];
 			if ( no != "" ){
 				const confirm_name = p[CONFIRM];
@@ -140,7 +138,7 @@ function LoadSkillData(sr, c, lang_c, slang_c){
 				battrvalue = p[EFFECT_BRANCH_ATTRIBUTE_VALUE];
 			if ( battrname != '' ){
 				if ( !Grimoire.CharacterSystem.findStatBase(battrname) )
-					cur.appendBranchAttribute(battrname, loadEffectBranchAttributeValue(index));
+					cur.appendBranchAttribute(battrname, battrvalue);
 				else
 					cur.appendStat(battrname, battrvalue, p[EFFECT_BRANCH_ATTRIBUTE_EXTRA]);
 			}

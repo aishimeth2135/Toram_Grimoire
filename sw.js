@@ -78,35 +78,35 @@ workbox.routing.registerRoute(
 workbox.precaching.precacheAndRoute([
   {
     "url": "index.html",
-    "revision": "78ea814a9cd8d44d0c3a4c9fe05bb528"
+    "revision": "338fd9f6c4faab96dd86cea9ca22b86b"
   },
   {
     "url": "dist/damage-calculation.min.js",
-    "revision": "9e5854914126a3016cfe67eb0243cb12"
+    "revision": "002583f39a4bbe89261b58111939cf81"
   },
   {
     "url": "dist/enchant-simulator.min.js",
-    "revision": "ce2933da04136919894a8b3543db23cf"
+    "revision": "f86a66e092a2bffbc1c25f849c82509b"
   },
   {
     "url": "dist/home.min.js",
-    "revision": "c229e53e5347573c26cb3ffa083070e5"
+    "revision": "a5d951a78e0053031058c6f5bcc11818"
   },
   {
     "url": "dist/item-query.min.js",
-    "revision": "b50cc44176548fc4eb7de49b2dec15db"
+    "revision": "93b5359b200c890f06cc5a3d74fc8f1c"
   },
   {
     "url": "dist/skill-query.min.js",
-    "revision": "4a9f5238d8cf05b38c1cb509a48f40c1"
+    "revision": "66e2b8caa686e794683656a1ab8808a0"
   },
   {
     "url": "src/css/CalculationSystem/Damage/main.css",
-    "revision": "785484374280e25c5761058855f89135"
+    "revision": "f7176ae3c5a3fb9418517893ac6df03b"
   },
   {
     "url": "src/css/EnchantSimulator/main.css",
-    "revision": "62fcd95056621fc41b9510231d7c0209"
+    "revision": "3543c0fdea1aa2d96689c900a6297af8"
   },
   {
     "url": "src/css/ItemQuery/main.css",
@@ -118,7 +118,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/main/Cyteria/Cyteria.css",
-    "revision": "00d35f294d4310fc1dfcbcc046fe3a01"
+    "revision": "ac0d575489102305e16136eae32a7b3c"
   },
   {
     "url": "src/css/main/font/font.css",
@@ -126,11 +126,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/main/global.css",
-    "revision": "d68ecfa2b1120811f99877af9e39ad97"
+    "revision": "7ccd50c02c5a6b42f9f46cff1fd88acd"
   },
   {
     "url": "src/css/main/home.css",
-    "revision": "5397d2dd29c152c0120688d362bba01d"
+    "revision": "74f04ad389850a30b945ed2ab31d05c2"
   },
   {
     "url": "src/css/main/main_media.css",
@@ -138,7 +138,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/main/main.css",
-    "revision": "1b7ad41c42524a35ebb068fc467aabf8"
+    "revision": "94fc62d500c8de01c80582dcf8087d1f"
   },
   {
     "url": "src/css/main/Settings/main.css",
@@ -146,7 +146,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/SkillQuery/DrawSkillTree.css",
-    "revision": "78a24db3657c93d85c6c4c1f78e6a2d9"
+    "revision": "edef0e4b0f655a4c19a83e35330339ff"
   },
   {
     "url": "src/css/SkillQuery/SkillBranch/animation.css",
@@ -154,11 +154,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/SkillQuery/SkillBranch/SkillBranch.css",
-    "revision": "717aa72d9087ff1f1085812759096a3e"
+    "revision": "3b19fb2f34e04016dbaee6683858742f"
   },
   {
     "url": "src/css/SkillQuery/SkillQuery.css",
-    "revision": "449aa6d3c15dcbd7775de00bd2cec3f4"
+    "revision": "ed2d0be33d8f8269762ec588923461a2"
   },
   {
     "url": "src/css/SkillSimulator/main.css",
@@ -166,6 +166,6 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/TagSystem/main.css",
-    "revision": "0eee44a7e472b34930051d8d3677b6ac"
+    "revision": "39d13da833bbe96afe9047b8ad869edb"
   }
 ]);

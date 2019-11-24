@@ -126,7 +126,7 @@ function createDrawSkillTreeDefs(){
     const lock_pettern = CY.svg.createEmpty('pattern', {width: 1, height: 1, id: 'skill-icon-lock'});
     const lock = CY.svg.create(w, w, {x: (w-24)/2, y: (w-24)/2});
     lock.innerHTML = '<path fill="var(--primary-light)" d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/>';
-    lock_pettern.appendChild(Circle(w/2, w/2, w/2, {fill: '#FFF', 'stroke-width': 0}));
+    lock_pettern.appendChild(Circle(w/2, w/2, w/2, {fill: 'var(--white)', 'stroke-width': 0}));
     lock_pettern.appendChild(lock);
 
     defs.appendChild(lock_pettern);
@@ -134,9 +134,9 @@ function createDrawSkillTreeDefs(){
     // background
     const skillIconBg = CY.svg.createLinearGradient('skill-icon-bg',
         '.5', '0', '.5', '1', [
-            {offset: '0%', 'stop-color': '#FFF'},
-            {offset: '50%', 'stop-color': 'var(--primary-light)'},
-            {offset: '100%', 'stop-color': 'var(--primary-light-2)'}
+            {offset: '0%', 'stop-color': 'white'},
+            {offset: '50%', 'stop-color': '#FFD1EA'},
+            {offset: '100%', 'stop-color': '#f7a8d3'}
         ]
     );
 

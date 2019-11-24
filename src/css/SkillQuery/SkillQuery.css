@@ -79,11 +79,13 @@
 #SkillQuery .skill-query-result-options-scope {
 	z-index: 4;	
 	background-color: var(--white);
+	position: sticky;
+	top: -9rem;
+	transition: top 0.5s ease;
 }
 #SkillQuery .skill-query-result-options-scope.frozen {
-	position: sticky;
-	top: 0;
 	box-shadow: 0 0.2rem 0.3rem -0.1rem var(--primary-light);
+	top: 0;
 }
 
 #SkillQuery div.SkillLevel_scope {

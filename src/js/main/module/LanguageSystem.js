@@ -87,15 +87,6 @@ function Search(lang, id){
 }
 
 function InitLanguageData(data){
-    // if ( typeof data.zh_tw != 'undefined' )
-    //     Object.assign(zh_tw, data.zh_tw);
-    // if ( typeof data.en != 'undefined' )
-    //     Object.assign(en, data.en);
-    // if ( typeof data.ja != 'undefined' )
-    //     Object.assign(ja, data.ja);
-    // if ( typeof data.zh_cn != 'undefined' )
-    //     Object.assign(zh_cn, data.zh_cn);
-    
     // 傳入值是function，表示function回傳一個object。在此做前處理。
     Object.keys(data).forEach(k => {
         if ( typeof data[k] == 'function' )
@@ -123,24 +114,6 @@ function InitLanguageData(data){
 }
 
 function GetLang(id, values){
-    // const langs = [en, zh_tw, ja, zh_cn];
-    // const no = currentLanguage();
-    // let t = Search(langs[no], id);
-    
-    // if ( t === void 0 ){
-    //     langs.splice(no, 1);
-    //     langs.find(lang => {
-    //         t = Search(lang, id);
-    //         return t;
-    //     });
-    //     if ( t === void 0 ){
-    //         console.warn(`[Unknow Language data] id: ${id}`);
-    //         console.log(new Error().stack);
-    //         console.log({en, zh_tw, ja, zh_cn});
-    //         return '???';
-    //     }
-    // }
-    
     const t = Search(LanguageData, id);
     if ( t === void 0 ){
         console.warn(`[Unknow Language data] id: ${id}`);
@@ -162,6 +135,24 @@ function PageInitLanguage(){
     });
 }
 
+/**
+ * replace original data with language data
+ * @param {Array} datas           datas in the order of [[original], [current language], [second Language]]
+ * @param {int}   index           current column index in csv data
+ * @param {int}   data_index      row index of original data that be replace
+ * @param {int}   lang_data_index row index of language data
+ */
+function ProcessLanguageData(datas, data_index, lang_data_index){
+    const lang_datas = [datas[1], datas[2]];
+    datas[0].forEach((p, index) => {
+        const t = lang_datas
+            .map((a, i) => a && a[index] ? a[index][lang_data_index] : null)
+            .find(t => t !== '' && t !== null && t !== void 0);
+        if ( t !== void 0 )
+            p[data_index] = t;
+    })
+}
+
 export default GetLang;
 
-export {InitLanguageSystem, currentLanguage, secondLanguage, GetLang, InitLanguageData, PageInitLanguage};
+export {InitLanguageSystem, currentLanguage, secondLanguage, GetLang, InitLanguageData, PageInitLanguage, ProcessLanguageData};

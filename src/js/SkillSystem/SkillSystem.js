@@ -19,17 +19,17 @@ class SkillSystem {
 		const SkillData_ary = Array(3), SkillMainData_ary = Array(3);
 
 		promise_ary.push(createLoadDataPromise(DataPath('Skill'), SkillData_ary, 0));
-		if ( currentLanguage() != 1 ){
+		if ( current != 1 ){
 			const path = DataPath('Skill/language');
 			promise_ary.push(createLoadDataPromise(path[current], SkillData_ary, 1));
-			if ( currentLanguage() != secondLanguage() )
+			if ( current != second )
 				promise_ary.push(createLoadDataPromise(path[second], SkillData_ary, 2));
 		}
 		promise_ary.push(createLoadDataPromise(DataPath('Skill Main'), SkillMainData_ary, 0));
-		if ( currentLanguage() != 1 ){
+		if ( current != 1 ){
 			const path = DataPath('Skill Main/language');
 			promise_ary.push(createLoadDataPromise(path[current], SkillMainData_ary, 1));
-			if ( currentLanguage() != secondLanguage() )
+			if ( current != second )
 				promise_ary.push(createLoadDataPromise(path[second], SkillMainData_ary, 2));
 		}
 

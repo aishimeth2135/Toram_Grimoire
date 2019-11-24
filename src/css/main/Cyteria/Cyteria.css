@@ -61,9 +61,6 @@
     border: 0;
 }
 .Cyteria.Button.simple.no-border > .text {
-    color: var(--primary-light-2);
-}
-.Cyteria.Button.simple.no-border:hover > .text {
     color: var(--primary-light-4);
 }
 
@@ -140,7 +137,7 @@
 }
 .Cyteria.Button.icon-only.select-fill.select > svg,
 .Cyteria.Button.icon-only.select-fill:hover > svg {
-    fill: white;
+    fill: var(--white);
 }
 
 /* fill
@@ -178,7 +175,7 @@
     margin: 0.3rem;
     padding: 0.4rem 0.7rem;
     display: block;
-    background-color: #FFF;
+    background-color: var(--white);
     border-left: 3px solid var(--primary-light-2);
     text-align: left;
 }
@@ -346,7 +343,7 @@
     margin: 0;
     padding: 0.1rem 0;
 }
-.Cyteria.ul.simple > li::before {
+/* .Cyteria.ul.simple > li::before {
     background-image: url(icon/li-icon-1.svg);
     width: 0.75rem;
     height: 0.75rem;
@@ -357,6 +354,24 @@
     display: inline-block;
     background-size: contain;
     background-repeat: no-repeat;
+} */
+.Cyteria.ul.simple > li::before,
+.Cyteria.ul.simple > li::after {
+    width: 0.5rem;
+    height: 0.1rem;
+    position: absolute;
+    content: '';
+    display: inline-block;
+    background-color: var(--primary-light-3);
+    left: 0.2rem;
+}
+.Cyteria.ul.simple > li::before {
+    top: 0.5rem;
+    transform: rotateZ(45deg);
+}
+.Cyteria.ul.simple > li::after {
+    top: 0.8rem;
+    transform: rotateZ(-45deg);
 }
 .Cyteria.ul.simple > li {
     position: relative;
@@ -372,7 +387,7 @@
     width: 25rem;
     margin: 0.5rem;
     outline: 1px solid var(--primary-light);
-    background-color: #fff;
+    background-color: var(--white);
     padding: 1rem;
     overflow-y: auto;
     max-height: calc(100% - 1rem);
@@ -422,7 +437,7 @@
     padding-bottom: 1rem;
 }
 .Cyteria.window.frozen-top > .top {
-    background-color: #fff;
+    background-color: var(--white);
     position: sticky;
     top: 0;
     padding-top: 1rem;
@@ -443,7 +458,7 @@
     left: -5%;
     width: 110%;
     height: 110%;
-    background-color: #FFF;
+    background-color: var(--white);
     opacity: 0.5;
     z-index: -1;
 }
@@ -491,8 +506,8 @@
 .Cyteria.Layout.sticky-header {
     --shadow-height: 1rem;
     --container-height: 4rem;
-    --shadow-mask-color: white;
-    --primary-bgcolor: white;
+    --shadow-mask-color: var(--white);
+    --primary-bgcolor: var(--white);
     --base-z-index: 2;
     position: sticky;
     top: calc(-1*var(--shadow-height));
@@ -641,7 +656,7 @@
     position: absolute;
     width: 2px;
     height: 0;
-    background-color: white;
+    background-color: var(--white);
     transition: opacity 0.3s ease;
     opacity: 0;
 }

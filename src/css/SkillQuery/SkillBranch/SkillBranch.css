@@ -77,11 +77,11 @@ div.skill_branchs .text-scope.has_icon > .icon {
 div.skill_branchs .text-scope.has_icon > .icon > svg {
 	height: 1.1rem;
 	width: 1.1rem;
-	fill: var(--primary-light);
+	fill: var(--primary-light-2);
 	vertical-align: middle;
 }
 div.skill_branchs .text-scope.has_icon > .icon > svg > g {
-	fill: var(--primary-light);	
+	fill: var(--primary-light-2);	
 }
 
 /* ==========================================================================
@@ -201,17 +201,17 @@ div.skill_branchs > div.branch_stack > div.content > div.scope2 > .unit {
 }
 
 div.skill_branchs > div.branch .effect-by-stack.dark {
-	color: #009688;
+	color: var(--primary-blue-grean);
 }
 div.skill_branchs > div.branch .effect-by-stack.dark.value-history {
-	color: #67d1c7;
+	color: var(--primary-blue-grean-light);
 }
 
 div.skill_branchs > div.branch .effect-by-stack {
 	color: var(--primary-water-blue);
 }
 div.skill_branchs > div.branch .effect-by-stack.value-history {
-	color: #7fbef1;
+	color: var(--primary-water-blue-light);
 }
 
 div.skill_branchs > div.branch .effect-by-stack > .separate_text {
@@ -313,10 +313,10 @@ div.skill_branchs > div.branch div.effective-area {
 }
 
 div.skill_branchs div.effective-area .ball_character {
-	background-color: #ff5fb7;
+	background-color: var(--primary-light-3);
 }
 div.skill_branchs div.effective-area .ball_target {
-	background-color: #2196f3;
+	background-color: var(--primary-water-blue);
 }
 div.skill_branchs div.effective-area > div > svg {
 	min-width: 15rem;
