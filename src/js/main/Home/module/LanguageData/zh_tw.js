@@ -60,6 +60,7 @@ export default function(){
             },
             'About': {
                 'Donate Group': '贊助公會',
+                'Donor': '贊助者',
                 'Author': '作者',
                 'Skill Data Maintenance': '技能資料維護',
                 'Input Skill Tree Drawaing Code': '技能樹繪製資料填寫',
@@ -67,7 +68,11 @@ export default function(){
                 'Equipment Data Maintenance': '裝備資料維護',
                 'translation': {
                     'zh-cn': {
-                        'Skill Name and Tag List': '技能名稱及標籤清單（簡體中文）'
+                        'Skill Name and Tag List': '技能名稱及標籤清單（簡體中文）',
+                        'Skill Data': '技能資料（簡體中文）'
+                    },
+                    'en': {
+                        'Skill Data': '技能資料（英文）'
                     }
                 }
             }

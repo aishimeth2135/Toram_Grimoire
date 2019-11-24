@@ -4,6 +4,12 @@ export default function(){
             'item 1': '布偶的魔法书',
             'item 2': '技能查询'
         },
+        'Loading Message': {
+            'Character Stats': '载入角色能力清单',
+            'Skill Data': '载入技能资料',
+            'Init Skill Data': '初始化技能资料',
+            'Tag Data': '载入标签清单'
+        },
         'Skill Query': {
             'Skill Element': {
                 'skill tr​​ee: from': '所属技能树'
@@ -14,9 +20,12 @@ export default function(){
                 'body armor': '身体装备',
                 'equipment: unlimited': '无限制',
                 'switch display': '切换显示',
-                'current skill': '当前技能'
+                'current skill': '当前技能',
+                'skill attribute icon tips: title': '图示说明',
+                'select skill history date: title': '选择改版记录'
             },
             "Analysis Skill": {
+                'unknow date': '未知的日期',
                 'no data': '此技能资料尚未齐全。 ',
                 'equipment not confirm': '所选取的装备无法使用此技能。 ',
                 'Main Weapon List': ['单手剑', '双手剑', '弓', '弩', '法杖', '魔导具', '拳套', '旋风枪', '拔刀剑', '双剑', '空手'],
@@ -87,6 +96,11 @@ export default function(){
                 'effective area: end position': '终点位置',
                 'effective area: target front': '目标身前',
                 'effective area: target behind': '目标身后',
+                'formula text: replace': {
+                    'Math.floor': '向下取整',
+                    'Math.max': '取最大值',
+                    'Math.min': '取最小值'
+                },
                 'branch development controller': {
                     'title: default': '预设',
                     'title: not default': '非预设'
@@ -143,7 +157,7 @@ export default function(){
                 }
             },
             'button text': {
-                'back': '上一个技能'
+                'back': '上一个'
             }
         }
     };

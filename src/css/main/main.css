@@ -9,7 +9,28 @@
 	--primary-purple-light: #c873d7;
 	--primary-water-blue-light: #9acbf3;
 	--primary-water-blue: #2196f3;
+	--primary-gray: #666;
+	--primary-blue-grean: #009688;
+	--primary-blue-grean-light: #67d1c7;
 	--white: white;
+	--red: red;
+}
+
+body.theme--night-mode {
+	--primary-dark: white;
+	--primary-dark-light: #FFD1EA;
+	--primary-light: #503042;
+	--primary-light-2: #a25b82;
+	--primary-light-3: #f7a8d3;
+	--primary-light-4: #ffbde1;
+	--primary-purple: #e0bde6;
+	--primary-purple-light: #b357c3;
+	--primary-water-blue-light: #2196f2;
+	--primary-water-blue: #aed1ef;
+	--primary-gray: #AAA;
+	--primary-blue-grean: #81ded5;
+	--primary-blue-grean-light: #23b1a4;
+	--white: black;
 	--red: red;
 }
 
@@ -24,6 +45,7 @@ body {
 body, input, textarea {
 	color: var(--primary-dark);
 	font-family: 'Itim', Microsoft JhengHei, sans-serif;
+	background-color: var(--white);
 }
 
 input::-webkit-input-placeholder { color: var(--primary-light); }
@@ -82,7 +104,7 @@ input:focus {
 	transition: 0.3s;
 }
 #top-menu .settings > svg {
-	fill: var(--primary-light);
+	fill: var(--primary-light-2);
 }
 #top-menu .settings:hover svg {
 	fill: var(--primary-light-3);
@@ -104,7 +126,7 @@ body > footer > .author-information {
 	overflow-x: auto;
 	white-space: nowrap;
 }
-body > footer > .author-information > .Cyteria.scope-icon + .scope-icon {
+body > footer > .author-information > .Cyteria + .Cyteria {
 	margin-left: 1.2rem;
 }
 

@@ -42,7 +42,7 @@ function loadingFinished(msg_el){
         icon.classList.add('finished');
     }
 }
-function loadingError(msg_el){
+function loadingError(msg_el, e){
     status = -1;
     const icon = msg_el.querySelector('.status-icon');
     if ( icon ){
@@ -50,6 +50,8 @@ function loadingError(msg_el){
         icon.classList.remove('loading');
         icon.classList.add('error');
     }
+    if ( e )
+        console.log(e);
 }
 
 function loadingSucceeded(){

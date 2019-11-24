@@ -35,7 +35,7 @@ span.light-2 {
     color: var(--primary-light-2);
 }
 span.dark {
-    color: #666;
+    color: var(--primary-gray);
 }
 span.water-blue {
     color: var(--primary-water-blue);

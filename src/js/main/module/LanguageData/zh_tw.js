@@ -12,7 +12,8 @@ export default function(){
             'content': '載入資料中，請稍後...<br />若載入途中發生錯誤，請先試著重新整理網頁。'
         },
         'footer': {
-            'baha home': '巴哈小屋'
+            'baha home': '巴哈小屋',
+            'night mode': '夜間模式'
         }
     };
 }

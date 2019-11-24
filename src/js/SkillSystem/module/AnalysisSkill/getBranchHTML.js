@@ -413,7 +413,10 @@ function getBranchHTML(branch, ctrr){
         const unit = v => v !== void 0 ? 10*v : 10;
         const base_distance = 8, base_distance_long = 12;
         let h, w, ox, oy, endx, endy;
-        const pcolor = '#ff5fb7', pcolorl = '#FFD1EA', pcolorl2 = '#feeaf5';
+        const body_style = getComputedStyle(document.body);
+        const pcolor = body_style.getPropertyValue('--primary-light-3'),
+            pcolorl = body_style.getPropertyValue('--primary-light-2'),
+            pcolorl2 = body_style.getPropertyValue('--primary-light');
         
         const dis = _attr['move_distance'] === void 0 ? base_distance : base_distance_long;
         switch ( areaType ){
@@ -429,7 +432,7 @@ function getBranchHTML(branch, ctrr){
                     case 'circle': {
                         const area = CY.svg.drawCircle(endx, endy, unit(radius), {fill: pcolorl2});
                         frg.appendChild(area);
-                        const ocircle = CY.svg.drawCircle(endx, endy, unit(radius), {stroke: pcolorl, fill: 'none'});
+                        const ocircle = CY.svg.drawCircle(endx, endy, unit(radius), {stroke: pcolorl, fill: 'none', 'stroke-width': '2'});
                         ocircle.appendChild(CY.svg.createAnimate('stroke', {values: `${pcolorl};${pcolor};${pcolor}`, keyTimes: '0;0.2;1', dur: '2.5s'}));
                         frg.appendChild(ocircle);
                     } break;
@@ -437,7 +440,7 @@ function getBranchHTML(branch, ctrr){
                         const _end = ox + unit(dis) + unit(end_position_offsets);
                         const area = CY.svg.drawPath(`M${ox} ${oy-unit(radius)} A${unit(radius)} ${unit(radius)} 0 0 0 ${ox} ${oy+unit(radius)} L${_end} ${oy+unit(radius)} A${unit(radius)} ${unit(radius)} 0 0 0 ${_end} ${endy-unit(radius)} Z`, {fill: pcolorl2});
                         frg.appendChild(area);
-                        const ocircle = CY.svg.drawCircle(ox, oy, unit(radius), {stroke: pcolorl, fill: 'none'});
+                        const ocircle = CY.svg.drawCircle(ox, oy, unit(radius), {stroke: pcolorl, fill: 'none', 'stroke-width': '2'});
                         ocircle.appendChild(CY.svg.createAnimate('stroke', {id: 'a1', values: `${pcolorl};${pcolor};${pcolor}`, keyTimes: '0;0.2;1', dur: '1s',repeatCount: '1', begin: '0s;a2.end', fill: 'freeze'}));
                         ocircle.appendChild(CY.svg.createAnimate('cx', {id: 'a2', values: `${ox};${_end};${_end}`, keyTimes: '0;0.2;1', dur: '1.5s', repeatCount: '1', begin: 'a1.end'}));
                         frg.appendChild(ocircle);
@@ -457,7 +460,7 @@ function getBranchHTML(branch, ctrr){
 
                 const area = CY.svg.drawSector(ox, oy, unit(start_dis), unit(dis), angle/2, 360-angle/2, 1, {fill: pcolorl2});
                 frg.appendChild(area);
-                const osector = CY.svg.drawSector(ox, oy, unit(start_dis), unit(start_dis+1), angle/2, 360-angle/2, 1, {stroke: pcolor});
+                const osector = CY.svg.drawSector(ox, oy, unit(start_dis), unit(start_dis+1), angle/2, 360-angle/2, 1, {stroke: pcolor, 'stroke-width': '2'});
                 osector.appendChild(CY.svg.createAnimate('d', {id: 'a1', to: CY.svg.getSectorD(ox, oy, unit(dis - sector_width), unit(dis), angle/2, 360-angle/2, 1), dur: '0.4s', repeatCount: 1, begin: '0s;a2.end', fill: 'freeze'}));
                 osector.appendChild(CY.svg.createAnimate('stroke', {id: 'a2', to: pcolor, dur: '2s', repeatCount: 1, begin: 'a1.end'}));
                 frg.appendChild(osector);
@@ -471,7 +474,7 @@ function getBranchHTML(branch, ctrr){
         }
         frg.appendChild(chara);
         if ( !is_self ){
-            const targetPosition = CY.svg.drawCircle(endx, endy, unit(radius > point_radius ? point_radius : point_radius/2), {fill: '#2196f3'});   
+            const targetPosition = CY.svg.drawCircle(endx, endy, unit(radius > point_radius ? point_radius : point_radius/2), {fill: body_style.getPropertyValue('--primary-water-blue')});
             frg.appendChild(targetPosition);
         }
 

@@ -71,7 +71,7 @@ span.for-adjust-input-width {
 .CalculationSystem-Damage .result-scope {
     padding: 1rem 0.6rem;
     border-top: 1px solid var(--primary-light);
-    background-color: #FFF;
+    background-color: var(--white);
     display: flex;
     align-items: center;
     flex-wrap: wrap;

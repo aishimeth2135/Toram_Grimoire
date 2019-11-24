@@ -317,7 +317,7 @@ function beforeExport(he, ctrr){
     });
 
     function adjustInputWidth(e){
-        this.style.width = (CY.element.calcInputWidthPx(this, ctrr.nodes.toCalcInputWidth) + 2) + 'px';
+        this.style.width = Math.max((CY.element.calcInputWidthPx(this, ctrr.nodes.toCalcInputWidth) + 2), 16) + 'px';
     }
 
     // 處理stack input width
