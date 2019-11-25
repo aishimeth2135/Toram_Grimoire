@@ -195,9 +195,9 @@ export default class SearchController {
                         const res = [];
                         const ov = input.value.toLowerCase();
                         const search_values = ov.split(/\s*,\s*/);
-                        ctrr.parent.items.equipments.forEach(item => {
+                        ctrr.parent.items.equipments.find(item => {
                             if ( res.length == ctrr.status.resultMaximum )
-                                return;
+                                return true;
                             if ( !checkItemCategory(search_category_ul, item) || !checkItemObtainType(search_obtain_type_ul, item) )
                                 return;
                             if ( input.value !== '' ){
@@ -222,6 +222,7 @@ export default class SearchController {
                                 res.push(item);
                         });
                         ctrr.status.showDetailTargetDye = searchList.length == 1 && searchList[0] == 'dye' ? search_values.slice() : null;
+                        //console.log(ctrr.status.showDetailTargetDye);
                         ctrr.showResult(res);
                     }
 
@@ -478,7 +479,7 @@ export default class SearchController {
                     : Icons('unfold-more');
             });
 
-            const close = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
+            const close = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('close'));
             close.addEventListener('click', closeWindow_listener);
 
             top.appendChild(name);
@@ -655,7 +656,7 @@ export default class SearchController {
         }
         const obtains = simpleCreateHTML('div', ['scope', 'obtains']);
         item.obtains.forEach(a => {
-            if ( this.status.showDetailTargetDye !== null && ( !a['dye'] || !this.status.showDetailTargetDye.find(b => a['dye'].includes(b)) ) )
+            if ( this.status.showDetailTargetDye !== null && ( !a['dye'] || !this.status.showDetailTargetDye.find(b => a['dye'].toLowerCase().includes(b)) ) )
                 return;
             const scp = simpleCreateHTML('div', 'obtain-scope');
             const t = Lang('item detail/obtains/' + a.type);
