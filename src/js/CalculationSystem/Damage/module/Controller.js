@@ -68,6 +68,12 @@ export default class DamageCalculationController {
                         break;
                 }
             },
+            saveToUrl(e){
+                const str = ctrr.saveToCsv().replace(/\r\n/g, '|n|');
+                const url = new URL(document.location);
+                CY.copyToClipboard(url.origin + url.pathname + '?calculation_data=' + str);
+                ShowMessage(Lang('Save Load/Warn/Copy to clipboard successed'));
+            },
             openContainerTips(e){
                 const scope = ctrr.nodes.showContainerTips;
                 const ctner = ctrr.getItemContainerFromScope(ctrr.getScopeFromChildNode(this, 'container'));
@@ -254,7 +260,7 @@ export default class DamageCalculationController {
             setCalcItemValue(e){
                 const item_scope = ctrr.getScopeFromChildNode(this, 'calc-item');
                 const item = ctrr.getCalcItemFromScope(item_scope);
-                const v = item.value(parseInt(this.value), 10);
+                const v = item.value(parseInt(this.value, 10));
                 this.value = v;
 
                 ctrr.showResult();
@@ -464,7 +470,7 @@ export default class DamageCalculationController {
 
         //
         const createCloseWindowButton = () => {
-            const btn = simpleCreateHTML('span', ['button', 'right'], Icons('close'));
+            const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
             btn.addEventListener('click', this.listeners.closeWindow);
             return btn;
         };
@@ -483,11 +489,14 @@ export default class DamageCalculationController {
         save_to_csv_btn.addEventListener('click', this.listeners.saveloadCsvFile);
         const load_from_csv_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('file-import') + '<span class="text">' + Lang('load from csv') + '</span>', {'data-ctr': 'load_csv'});
         load_from_csv_btn.addEventListener('click', this.listeners.saveloadCsvFile);
+        const save_to_url = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('share') + '<span class="text">' + Lang('save to url') + '</span>', {'data-ctr': 'load_csv'});
+        save_to_url.addEventListener('click', this.listeners.saveToUrl);
 
         menu_scope_content.appendChild(save_btn);
         menu_scope_content.appendChild(load_btn);
         menu_scope_content.appendChild(save_to_csv_btn);
         menu_scope_content.appendChild(load_from_csv_btn);
+        menu_scope_content.appendChild(save_to_url);
 
         menu_scope.appendChild(menu_scope_top);
         menu_scope.appendChild(menu_scope_content);
@@ -523,6 +532,8 @@ export default class DamageCalculationController {
 
         this.nodes.spanForAdjustWidth = simpleCreateHTML('span', 'for-adjust-input-width');
         node.appendChild(this.nodes.spanForAdjustWidth);
+
+        this.checkLocationParam();
 
         return this;
     }
@@ -1054,7 +1065,7 @@ export default class DamageCalculationController {
                     ary = [];
                     ary[INDEX.type] = type_List['item'];
                     ary[INDEX.item.id] = item.itemId();
-                    ary[INDEX.item.value] = item.value;
+                    ary[INDEX.item.value] = item._value;
                     ary[INDEX.item.valid] = bool_to_int(item.valid);
                     data.push(ary);
                 });
@@ -1201,5 +1212,12 @@ export default class DamageCalculationController {
         this.nodes.calculationSelect.querySelector('.select-button').click();
 
         ShowMessage(Lang('Save Load/Warn/Loading success'));
+    }
+    checkLocationParam(){
+        const url = new URL(document.location);
+        const calculation_data = url.searchParams.get('calculation_data');
+        if ( calculation_data ){
+            this.loadFromCsv(calculation_data.replace(/\|n\|/g, '\r\n'));
+        }
     }
 }

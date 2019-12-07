@@ -12,10 +12,10 @@ async function start(){
     Grimoire.DamageCalculationSystem = new DamageCalculationSystem();
     
     // Init of all System
-    const scope = await startLoadingMsg(GetLang('Loading Message'));
+    const scope = await startLoadingMsg(GetLang('Loading Message/Init'));
     await Grimoire.DamageCalculationSystem.init(document.getElementById('DamageCalculation'))
         .then(() => loadingFinished(scope))
-        .catch(() => loadingError(scope));
+        .catch((err) => {loadingError(scope); console.log(err)});
     
     ready();
 

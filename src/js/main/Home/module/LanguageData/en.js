@@ -1,6 +1,6 @@
 export default function(){
     return {
-        'Page Title': "Cy's Grimoire",
+        'Page Title': "Cy's Grimoire｜Home",
         'Top Menu': ['Home', 'About'],
         'Home': {
             'link text': 'Enter',

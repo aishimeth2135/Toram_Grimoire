@@ -69,6 +69,9 @@ class Calculation {
                     break;
             }
         });
+
+        this.status.valueSet = {};
+
         return Math.max(cst*mul, 1);
     }
     findItem(id){

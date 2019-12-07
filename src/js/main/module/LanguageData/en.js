@@ -1,6 +1,5 @@
 export default function(){
     return {
-        'Page Title': "Cy's Grimoire",
         'global': {
             'second': ' sec',
             'cancel': 'cancel',

@@ -150,7 +150,8 @@ export default function(){
                     'Loading success': '讀取成功。',
                     'Wrong file type: csv': '檔案格式需為CSV檔。',
                     'File is empty': '讀取的檔案為空。',
-                    'Calculations is empty': '沒有可儲存的資料。'
+                    'Calculations is empty': '沒有可儲存的資料。',
+                    'Copy to clipboard successed': '分享網址已複製至剪貼簿。'
                 }
             },
             'Warn': {
@@ -166,6 +167,7 @@ export default function(){
             'load': '讀取',
             'save to csv': '儲存成檔案',
             'load from csv': '讀取檔案',
+            'save to url': '用網址分享',
             'Main Menu: title': '選單',
             'Save Load: title': '選取檔案',
             'delete': '刪除',

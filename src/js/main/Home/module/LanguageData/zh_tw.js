@@ -1,7 +1,7 @@
 export default function(){
     return {
-        'Page Title': '布偶的魔法書',
-        'Top Menu': ['主頁', '關於網頁'],
+        'Page Title': '布偶的魔法書｜首頁',
+        'Top Menu': ['首頁', '關於網頁'],
         'settings': {
             'switch font': {
                 'caption': '若字體顯示有問題（特定裝置會發生），或是不喜歡現在的預設字體。<br />可切換字體為基本字體。',

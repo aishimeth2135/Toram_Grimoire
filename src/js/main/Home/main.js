@@ -6,23 +6,26 @@ import GetLang from "../module/LanguageSystem.js";
 async function start(){
     readyFirst();
 
-    window.addEventListener('beforeinstallprompt', function(e){
-        e.preventDefault();
-        const installEvent = e;
-        if ( installEvent.prompt ) {
-            const btn = document.createElement('span');
-            btn.className = 'Cyteria scope-icon';
-            btn.innerHTML = Icons('cube-outline') + GetLang('Home/download pwa');
-            btn.addEventListener('click', function(e){
-                installEvent.prompt();
-                installEvent = null;
-                this.parentNode.removeChild(this);
-            });
+    // window.addEventListener('beforeinstallprompt', function(e){
+    //     e.preventDefault();
+    //     const installEvent = e;
+    //     if ( installEvent.prompt ) {
+    //         const btn = document.createElement('span');
+    //         btn.className = 'Cyteria Button simple no-border no-padding';
+    //         btn.innerHTML = Icons('cube-outline') + `<span class="text">${GetLang('Home/download pwa')}</span>`;
+    //         btn.addEventListener('click', function(e){
+    //             installEvent.prompt();
+    //             installEvent = null;
+    //             this.parentNode.removeChild(this);
+    //         });
 
-            const t = document.querySelector('footer > .author-information');
-            t.insertBefore(btn, t.querySelector('.auth-name'));
-        }
-    });
+    //         const t = document.querySelector('footer > .author-information');
+    //         t.insertBefore(btn, t.querySelector('.auth-name'));
+    //     }
+    // });
+    
+    // if ( (new URL(document.location)).searchParams.get('source') === 'pwa' )
+    //     document.querySelectorAll('#Home .redirect-button > a').forEach(a => a.href += '?source=pwa');
 
     ready({
         top_menu: document.getElementById('top-menu')

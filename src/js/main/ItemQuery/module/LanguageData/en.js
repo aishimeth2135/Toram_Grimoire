@@ -1,3 +1,5 @@
 export default function(){
-    return {};
+    return {
+        'Page Title': "Cy's Grimoire｜Item Query"
+    };
 }
