@@ -489,7 +489,7 @@ function getBranchHTML(branch, ctrr){
 
         return scope;
     }
-    function createAlimentFragment(brh, name_attr='aliment_name', chance_attr='aliment_chance'){
+    function createailmentFragment(brh, name_attr='ailment_name', chance_attr='ailment_chance'){
         const name = brh.branchAttributes[name_attr];
 
         const t = document.createDocumentFragment();
@@ -702,11 +702,11 @@ function getBranchHTML(branch, ctrr){
             ) : null;
 
             //異常狀態
-            let aliment = null;
-            if ( attr['aliment_name'] !== void 0 ) {
-                aliment = createContentLine(
-                    simpleCreateHTML('span', '_main_title', Lang('branch/damage/aliment')),
-                    createAlimentFragment(branch)
+            let ailment = null;
+            if ( attr['ailment_name'] !== void 0 ) {
+                ailment = createContentLine(
+                    simpleCreateHTML('span', '_main_title', Lang('branch/damage/ailment')),
+                    createailmentFragment(branch)
                 );
             }
             
@@ -768,8 +768,8 @@ function getBranchHTML(branch, ctrr){
                 const _attr = ex.branchAttributes;
                 const s2 = document.createDocumentFragment();
 
-                if ( _attr['aliment_name'] )
-                    s2.appendChild(createAlimentFragment(ex));
+                if ( _attr['ailment_name'] )
+                    s2.appendChild(createailmentFragment(ex));
 
                 // if ( _attr['constant'] ){
                 //     let t = safeEval(_attr['constant']);
@@ -863,8 +863,8 @@ function getBranchHTML(branch, ctrr){
                 he.appendChild(top);
             he.appendChild(content);
             he.appendChild(line);
-            if ( aliment !== null )
-                he.appendChild(aliment);
+            if ( ailment !== null )
+                he.appendChild(ailment);
             if ( damage_extras_frg.childElementCount > 0 )
                 he.appendChild(damage_extras_frg);
             if ( area_scope !== null )

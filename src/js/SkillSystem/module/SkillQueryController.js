@@ -29,7 +29,7 @@ class SkillElementsController {
 			subWeapon: -1,
 			bodyArmor: -1,
 			skillLevel: 10,
-			characterLevel: 195,
+			characterLevel: 200,
 			currentSkill: null,
 			stackValues: {},
 			stackNames: {},

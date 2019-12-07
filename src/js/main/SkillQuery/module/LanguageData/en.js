@@ -37,7 +37,7 @@ export default function(){
                         'skill multiplier': 'Skill Multiplier',
                         'skill extra constant': 'Extra Constant',
                         'chance': 'Chance',
-                        'aliment': 'Aliment',
+                        'ailment': 'Ailment',
                     }
                 }
             },
