@@ -387,10 +387,15 @@ export default class DamageCalculationController {
                     const graze = this.getItem('probability_of_graze');
                     const stab = this.getItem('stability');
 
-                    const a = graze.value();
-                    const b = stab.value();
+                    let g = graze.value(),
+                        s = stab.value();
 
-                    const v = graze.isValid() ? (a*b/2 + (100-a)*b) / 100 : b;
+                    if ( !this.belongCalculation().findItem('physical_damage').isValid() ){
+                        g = 0;
+                        s = Math.min(90, Math.floor(50 + s/2));
+                    }
+
+                    const v = graze.isValid() ? (g * s / 2 + (100 - g) * s) / 100 : s;
                     return (v + 100)/200;
                 }
             }
@@ -643,19 +648,29 @@ export default class DamageCalculationController {
                     {
                         container: cal.findContainer('stability'),
                         value: function(){
-                            const v = this.value('stability');
                             const g = this.getItem('probability_of_graze');
-                            return g.isValid() && g.value() != 0 ? v/200 : v/100;
+                            let gv = g.value(),
+                                s = this.value('stability');
+
+                            if ( !this.belongCalculation().findItem('physical_damage').isValid() ){
+                                gv = 0;
+                                s = Math.min(90, Math.floor(50 + s/2));
+                            }
+                            return g.isValid() && gv != 0 ? s/200 : s/100;
                         }
                     }
                 ]
             })) +'~' +
             Math.floor(cal.calcResult({
                 valueSet: {
-                    'probability_of_graze': 0,
-                    'stability': 100,
                     'critical_rate': 100
-                }
+                },
+                beforeCalculate: [
+                    {
+                        container: cal.findContainer('stability'),
+                        value: 1
+                    }
+                ]
             }));
         scope.querySelector('.result-scope .damage-floating-without-critical').innerHTML =
             Math.floor(cal.calcResult({
@@ -666,19 +681,29 @@ export default class DamageCalculationController {
                     {
                         container: cal.findContainer('stability'),
                         value: function(){
-                            const v = this.value('stability');
                             const g = this.getItem('probability_of_graze');
-                            return g.isValid() && g.value() != 0 ? v/200 : v/100;
+                            let gv = g.value(),
+                                s = this.value('stability');
+
+                            if ( !this.belongCalculation().findItem('physical_damage').isValid() ){
+                                gv = 0;
+                                s = Math.min(90, Math.floor(50 + s/2));
+                            }
+                            return g.isValid() && gv != 0 ? s/200 : s/100;
                         }
                     }
                 ]
             })) +'~' +
             Math.floor(cal.calcResult({
                 valueSet: {
-                    'probability_of_graze': 0,
-                    'stability': 100,
                     'critical_rate': 0
-                }
+                },
+                beforeCalculate: [
+                    {
+                        container: cal.findContainer('stability'),
+                        value: 1
+                    }
+                ]
             }));
     }
     currentCalculation(t){
