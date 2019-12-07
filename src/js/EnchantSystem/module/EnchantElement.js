@@ -8,7 +8,7 @@ const Status = {};
 function InitEnchantElementStatus(set){
     set = Object.assign({
         Character: {
-            level: 190,
+            level: 200,
             tec: 255    
         },
         ItemPotentialLimit: 70,
@@ -25,7 +25,7 @@ function EnchantElementStatus(name, value){
         l.forEach((p, i) => {
             if ( i == l.length - 1 ){
                 if ( cur[p] === void 0 )
-                    throw new new Error('invalid key');
+                    throw new Error('invalid key');
                 if ( value !== void 0 )
                     cur[p] = value;
                 res = cur[p];

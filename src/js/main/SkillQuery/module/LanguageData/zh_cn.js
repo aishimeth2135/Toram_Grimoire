@@ -122,7 +122,7 @@ export default function(){
                         'skill multiplier': '技能倍率',
                         'skill extra constant': '额外加成',
                         'chance': '机率',
-                        'aliment': '异常状态',
+                        'ailment': '异常状态',
                         'target type: single': '单体',
                         'target type: AOE': '范围',
                         'is place': '设置型',
