@@ -1,5 +1,6 @@
 export default function(){
     return {
+        'Page Title': '布偶的魔法書｜道具查詢',
         'Top List': {
             'item 1': '布偶的魔法書',
             'item 2': '道具查詢'

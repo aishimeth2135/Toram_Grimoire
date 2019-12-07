@@ -102,7 +102,7 @@ function InitLanguageData(data){
     if ( currentLanguageNo != secondLanguageNo ){
         const snd = data[lang_names[secondLanguage()]];
         if ( check(snd) )
-        SetLanguageData(LanguageData, snd);
+            SetLanguageData(LanguageData, snd);
     }
     lang_names.forEach((name, i) => {
         if ( i == currentLanguage() || i == secondLanguage() )

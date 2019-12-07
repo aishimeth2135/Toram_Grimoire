@@ -1,6 +1,5 @@
 export default function(){
     return {
-        'Page Title': '布偶的魔法書',
         'global': {
             'second': '秒',
             'cancel': '取消',
