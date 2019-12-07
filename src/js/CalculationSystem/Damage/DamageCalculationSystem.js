@@ -68,6 +68,9 @@ export default class DamageCalculationSystem {
         p1('critical_rate')
             .initRange(0, 400)
             .initDefaultValue(25);
+        p1('magic_critical_conversion_rate')
+            .initRange(0, 200)
+            .initDefaultValue(0);
         p1('short_range_damage');
         p1('long_range_damage');
         p1('unsheathe_attack_multiplier');
