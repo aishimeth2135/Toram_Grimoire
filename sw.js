@@ -82,7 +82,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/damage-calculation.min.js",
-    "revision": "2f621c4acedc32edf8cdb72c361a3d42"
+    "revision": "a07df3009b2e34a877bd42d200fcf2cb"
   },
   {
     "url": "dist/enchant-simulator.min.js",

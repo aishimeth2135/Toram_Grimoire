@@ -373,18 +373,15 @@ export default class DamageCalculationController {
                 criticalExpectedValue: function(){
                     const rate = this.getItem('critical_rate');
                     const dmg = this.getItem('critical_damage');
-                    const d = dmg.value();
-                    if ( rate.isValid() ){
-                        if ( this.belongCalculation().findItem('physical_damage').isValid() ){
-                            const r = rate.value();
-                            return ((100 * (100 - r)) + d * r) / 10000;
-                        }
-                        else {
-                            const r = rate.value()/4;
-                            return ((100 * (100 - r)) + ((d - 100) / 2 + 100) * r) / 10000;
-                        }
+
+                    let dr = dmg.value(), r = rate.value();
+                    if ( !this.belongCalculation().findItem('physical_damage').isValid() ){
+                        const cr = this.belongCalculation().findItem('magic_critical_conversion_rate').value();
+                        r = r * cr / 100;
+                        dr = 100 + (dr - 100) * cr / 100;
                     }
-                    return d / 100;
+
+                    return rate.isValid() ? ((100 * (100 - r)) + dr * r) / 10000 : dr/100;
                 },
                 stabilityExpectedValue: function(){
                     const graze = this.getItem('probability_of_graze');
@@ -816,7 +813,7 @@ export default class DamageCalculationController {
             .link('skill')
             .setBeforeCalculateFunction(this.functions.calculation.skillMultiplierValue);
 
-        p(1, ['critical_damage', 'critical_rate'], 'critical')
+        p(1, ['critical_damage', 'critical_rate', 'magic_critical_conversion_rate'], 'critical')
             .setBeforeCalculateFunction(this.functions.calculation.criticalExpectedValue)
             .openItemToggle('critical_rate');
 
