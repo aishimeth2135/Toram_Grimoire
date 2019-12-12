@@ -11,8 +11,8 @@ function InitEnchantElementStatus(set){
             level: 200,
             tec: 255    
         },
-        ItemPotentialLimit: 70,
-        EquipmentItemMaximumNumber: 6,
+        ItemPotentialLimit: 100,
+        EquipmentItemMaximumNumber: 8,
         EquipmentBasePotentialMiniMum: 15
     }, set);
     Object.assign(Status, set);
