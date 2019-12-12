@@ -86,7 +86,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/enchant-simulator.min.js",
-    "revision": "fe0c085eb115601f8194b26c02ae851b"
+    "revision": "33d720fd7e13e06749039827c3998c91"
   },
   {
     "url": "dist/home.min.js",
@@ -94,7 +94,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/item-query.min.js",
-    "revision": "3bcf4d879deb1d73217a00eac299d18e"
+    "revision": "d93585b4e61de7aea6e77825c80eabcd"
   },
   {
     "url": "dist/skill-query.min.js",
