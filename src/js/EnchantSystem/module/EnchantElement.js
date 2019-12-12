@@ -466,7 +466,7 @@ class EnchantStepStat extends EnchantStat {
     calcPotentialCost(v){
         const r = this.belongEquipment().getPotentialAdditionalRate(this.parent.index() + 1);
         const p = this.itemBase.getPotential(this.stat.type, this.belongEquipment().status);
-        return v > 0 ? v*p*r : v*Math.floor(5 + Status.Character.tec/10)*p*r/100;
+        return (v > 0 ? v * p : Math.ceil(v * (5 + Status.Character.tec / 10) * p / 100)) * r;
     }
     remove(){
         const index = this.parent.stepStats.indexOf(this);

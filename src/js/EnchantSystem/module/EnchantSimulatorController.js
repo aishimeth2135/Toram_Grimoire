@@ -297,7 +297,7 @@ export default class EnchantSimulatorController {
             const top = simpleCreateHTML('div', 'top');
             const name = simpleCreateHTML('span', 'name', Lang('select stat title'));
 
-            const close = simpleCreateHTML('span', ['button', 'right'], Icons('close'));
+            const close = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
             close.addEventListener('click', function(e){
                 ctrr.nodes.selectStat.classList.add('hidden');
             });
