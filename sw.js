@@ -82,11 +82,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/damage-calculation.min.js",
-    "revision": "9cb3f4a614154921c7490162e46161df"
+    "revision": "a9a13659b878a16d455bc1b8cae1366b"
   },
   {
     "url": "dist/enchant-simulator.min.js",
-    "revision": "56dd7461279484bfa5bc9881bd0dd323"
+    "revision": "fa39f1307326f395c9a844bc0a854dba"
   },
   {
     "url": "dist/home.min.js",
@@ -94,11 +94,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/item-query.min.js",
-    "revision": "d93585b4e61de7aea6e77825c80eabcd"
+    "revision": "962450c2e288c42550739cb23e5b36e5"
   },
   {
     "url": "dist/skill-query.min.js",
-    "revision": "1dac785f4d0eea9882cbb1a475b435c1"
+    "revision": "5d90ef17c11fc362ca07e3853b3cd198"
   },
   {
     "url": "src/css/CalculationSystem/Damage/main.css",
@@ -106,7 +106,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/EnchantSimulator/main.css",
-    "revision": "3543c0fdea1aa2d96689c900a6297af8"
+    "revision": "0cf55804545236184fe140335a3b38c3"
   },
   {
     "url": "src/css/ItemQuery/main.css",
@@ -118,7 +118,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/main/Cyteria/Cyteria.css",
-    "revision": "ac0d575489102305e16136eae32a7b3c"
+    "revision": "681dc830a92bd9b5fd1d1668878e80b6"
   },
   {
     "url": "src/css/main/font/font.css",

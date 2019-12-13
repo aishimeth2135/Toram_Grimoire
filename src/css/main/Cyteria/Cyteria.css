@@ -441,6 +441,7 @@
     position: sticky;
     top: 0;
     padding-top: 1rem;
+    z-index: 5;
 }
 .Cyteria.window > .top > .button {
     margin-left: auto;
@@ -730,4 +731,24 @@
     height: 0;
     white-space: pre;
     overflow: hidden;
+}
+
+/* ==========================================================================
+   mask
+   ========================================================================== */
+.Cyteria.mask {
+    position: relative;
+}
+.Cyteria.mask::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 50;
+    background-color: var(--white);
+    opacity: 0.4;
+    cursor: not-allowed;
+    left: 0;
+    top: 0;
 }

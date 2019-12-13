@@ -16,7 +16,8 @@ export default function LoadEnchantData(r, c){
         MATERIAL_POINT_CONSTANT_VALUE = 9,
         MATERIAL_POINT_MULTIPLIER_VALUE = 10,
         CHECK = 1,
-        CATEGORY_TITLE = 2;
+        CATEGORY_TITLE = 2,
+        CATEGORY_EXTRA = 3;
 
     function processLimit(s){
         if ( s === '' )
@@ -41,6 +42,8 @@ export default function LoadEnchantData(r, c){
                 return;
             if ( check == '0' ){
                 cur_cat = r.appendCategory(p[CATEGORY_TITLE]);
+                if ( p[CATEGORY_EXTRA] == 'weapon-only' )
+                    cur_cat.status['isWeaponOnly'] = true;
                 return;
             }
             const condition_no = CONDITION_LIST.indexOf(p[CONDITION]);

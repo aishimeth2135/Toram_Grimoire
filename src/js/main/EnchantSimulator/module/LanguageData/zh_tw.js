@@ -13,7 +13,7 @@ export default function(){
         'Enchant Simulator': {
             'create equipment': '新增裝備',
             'create enchant stat': '新增能力',
-            'Equipment Field List': ['主手武器', '身體裝備'],
+            'Equipment Field List': ['主手武器', '主手武器｜原有屬性', '身體裝備'],
             'Material Point Type List': ['金屬' ,'獸品', '木材', '布料','藥品', '魔素'],
             'select stat title': '選取能力',
             'equipment': '裝備',

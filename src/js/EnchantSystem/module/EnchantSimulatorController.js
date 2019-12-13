@@ -72,12 +72,23 @@ export default class EnchantSimulatorController {
                 ctrr.currentEquipment(ctrr.equipments[i]);
             },
             selectEquipmentField(e){
-                const t = ctrr.currentEquipment();
-                if ( !t )
+                const eq = ctrr.currentEquipment();
+                if ( !eq )
                     return;
                 this.parentNode.querySelector('.cur').classList.remove('cur');
                 this.classList.add('cur');
-                t.setStatus('fieldType', parseInt(this.getAttribute('data-no')));
+                switch ( this.getAttribute('data-set') ){
+                    case 'main-weapon|original-element':
+                        eq.setStatus('fieldType', 0);
+                        eq.setStatus('isOriginalElement', true);
+                        break;
+                    case 'main-weapon':
+                        eq.setStatus('fieldType', 0);
+                        eq.setStatus('isOriginalElement', false);
+                        break;
+                    case 'body-armor':
+                        eq.setStatus('fieldType', 1);
+                }
                 ctrr.updateCurrentEquipmentScope();
             },
             setEquipmentOriginalPotential(e){
@@ -135,11 +146,15 @@ export default class EnchantSimulatorController {
                 ctrr.updateEnchantStepScope(step_scope, step);
             },
             openCreateStatWindow(e){
-                const t = ctrr.currentEquipment();
-                if ( !t )
+                const eq = ctrr.currentEquipment();
+                if ( !eq )
                     return;
                 ctrr.currentStepScope = ctrr.getScopeFromChildNode(this, 'step');
-                ctrr.nodes.selectStat.classList.remove('hidden');
+                const scope = ctrr.nodes.selectStat;
+                scope.querySelectorAll('.category-items[data-field-only]')
+                    .forEach(p => p.classList.toggle('invalid',
+                        parseInt(p.getAttribute('data-field-only'), 10) != eq.status['fieldType']));
+                scope.classList.remove('hidden');
             },
             setStatValue(e){
                 const stat_scope = ctrr.getScopeFromChildNode(this, 'stat');
@@ -191,7 +206,7 @@ export default class EnchantSimulatorController {
                     .getScopeFromChildNode(step_scope, 'equipment')
                     .querySelectorAll('.' + ctrr.scopeClassName['step']);
 
-                const eq = step.parent, si = step.index();
+                const eq = step.belongEquipment(), si = step.index();
 
                 let fin;
                 switch ( this.getAttribute('data-ctr') ){
@@ -319,18 +334,21 @@ export default class EnchantSimulatorController {
         this.parent.categorys.forEach((cat, i) => {
             const cat_title = simpleCreateHTML('div', 'category-title', cat.title);
             const cat_items = simpleCreateHTML('ul', 'category-items');
+            if ( cat.status['isWeaponOnly'] ){
+                cat_items.setAttribute('data-field-only', '0');
+            }
             cat.items.forEach((item, j) => {
                 const sb = item.statBase;
-                [0, 1].forEach(b => {
-                    if ( b == 1 && !sb.hasMultiplier )
+                [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER].forEach((type, type_no) => {
+                    if ( type == StatBase.TYPE_MULTIPLIER && !sb.hasMultiplier )
                         return;
                     const li = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple'], null,
                         {
                             'data-iid': i + '-' + j,
-                            'data-type': b
+                            'data-type': type_no
                         }
                     );
-                    li.appendChild(simpleCreateHTML('span', 'text', b == 0 ? sb.text : sb.text + '%'));
+                    li.appendChild(simpleCreateHTML('span', 'text', sb.title(type)));
                     li.addEventListener('click', selectStatListener);
                     cat_items.appendChild(li);
                 });
@@ -493,7 +511,7 @@ export default class EnchantSimulatorController {
             this.updateEnchantStatScope(p, step.stepStats[i]);
         });
 
-        const eq = step.parent;
+        const eq = step.belongEquipment();
 
         const stepPt = eq.currentPotential(step.index() + 1);
         scope.querySelector('.step-potential').innerHTML = stepPt;
@@ -541,8 +559,9 @@ export default class EnchantSimulatorController {
 
         const field_menu = simpleCreateHTML('ul', 'field-menu');
         const field_menu_text = Lang('Equipment Field List');
-        ['sword', 'clothing'].forEach((p, i) => {
-            const li = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple'], Icons(p) + `<span class="text">${field_menu_text[i]}</span>`, {'data-no': i});
+        const field_menu_icon = ['sword', 'sword', 'clothing'];
+        ['main-weapon', 'main-weapon|original-element', 'body-armor'].forEach((p, i) => {
+            const li = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple'], Icons(field_menu_icon[i]) + `<span class="text">${field_menu_text[i]}</span>`, {'data-set': p});
             li.addEventListener('click', this.listeners.selectEquipmentField);
             field_menu.appendChild(li);
             if ( i == 0 )
