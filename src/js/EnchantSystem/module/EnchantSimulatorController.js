@@ -403,6 +403,8 @@ export default class EnchantSimulatorController {
             + '\n\n';
         
         eq.steps.forEach((p, i) => {
+            if ( p.stepStats.length == 0 )
+                return;
             res += (i != 0 ? '\n' : '') + (i + 1) + '. ';
             if ( p.type == EnchantStep.TYPE_NORMAL ){
                 res += '附';
@@ -433,6 +435,8 @@ export default class EnchantSimulatorController {
             + '<p>';
         
         eq.steps.forEach((p, i) => {
+            if ( p.stepStats.length == 0 )
+                return;
             res += (i != 0 ? '<br>' : '') + (i + 1) + '. ';
             if ( p.type == EnchantStep.TYPE_NORMAL ){
                 res += '附';
