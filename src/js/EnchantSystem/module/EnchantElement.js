@@ -271,7 +271,7 @@ class EnchantEquipment {
         const stats = this.currentStats(step_index);
         const t = [];
         stats.forEach(p => {
-            const cat = p.itemBase.category;
+            const cat = p.itemBase.belongCategory();
             const check = t.find(a => a.category == cat);
             if ( check )
                 ++check.cnt;
