@@ -46,6 +46,9 @@ class EnchantCategory {
     constructor(title){
         this.title = title;
         this.items = [];
+        this.status = {
+            isWeaponOnly: false
+        };
     }
     appendItem(){
         const t = new EnchantItemBase(this, ...arguments);
@@ -57,7 +60,7 @@ class EnchantCategory {
 
 class EnchantItemBase {
     constructor(cat, baseName, cl, ml, cuv, muv, mt, cm, mm){
-        this.category = cat;
+        this._category = cat;
         this.statBase = Grimoire.CharacterSystem.findStatBase(baseName);
         this.conditionalAttributes = [];
         this.limit = {
@@ -73,6 +76,9 @@ class EnchantItemBase {
             [StatBase.TYPE_CONSTANT]: cm,
             [StatBase.TYPE_MULTIPLIER]: mm
         };
+    }
+    belongCategory(){
+        return this._category;
     }
     initAttributes(){
         this.attributes = new EnchantItemBaseAttributes(...arguments);
@@ -326,14 +332,14 @@ class EnchantEquipment {
 
 class EnchantStep {
     constructor(parent){
-        this.parent = parent;
+        this._parent = parent;
         this.stepStats = [];
         this.type = EnchantStep.TYPE_NORMAL;
         this.step = 1;
     }
     appendStat(){
         const stat = new EnchantStepStat(this, ...arguments);
-        if ( !this.belongEquipment().containsStat(stat) && !this.parent.checkStats() )
+        if ( !this.belongEquipment().containsStat(stat) && !this._parent.checkStats() )
             return false;
         this.stepStats.push(stat);
         return stat;
@@ -366,7 +372,7 @@ class EnchantStep {
         return p > 0 ? Math.floor(p) : Math.ceil(p);
     }
     index(){
-        return this.parent.steps.indexOf(this);
+        return this._parent.steps.indexOf(this);
     }
     stat(itemBase, type){
         let t = typeof itemBase == 'string' // by statBase.baseName
@@ -376,11 +382,11 @@ class EnchantStep {
     }
     remove(){
         const i = this.index();
-        this.parent.steps.splice(i, 1);
+        this.belongEquipment().steps.splice(i, 1);
         this.stepStats.forEach(p => p.remove());
     }
     belongEquipment(){
-        return this.parent;
+        return this._parent;
     }
 }
 EnchantStep.TYPE_NORMAL = Symbol('normal');
@@ -415,7 +421,7 @@ class EnchantStat {
 class EnchantStepStat extends EnchantStat {
     constructor(parent, itemBase, type, v){
         super(itemBase, type, v);
-        this.parent = parent;
+        this._parent = parent;
         this.set(v);
     }
     set(v){
@@ -437,23 +443,23 @@ class EnchantStepStat extends EnchantStat {
      * @return {Float}
      */
     getPotentialCost(){
-        if ( this.parent.type == EnchantStep.TYPE_NORMAL )
+        if ( this._parent.type == EnchantStep.TYPE_NORMAL )
             return this.calcPotentialCost(this.stat.value);
         else {
-            let sv = this.parent.stepValue() || 1;
+            let sv = this._parent.stepValue() || 1;
             const v = this.stat.value;
             let res = 0, cur = 0;
             while ( cur != v ){
                 if ( (sv > 0 && cur + sv > v) || (sv < 0 && cur + sv < v) )
                     sv = v - cur;
                 cur += sv;
-                res += this.parent.potentialCostToInteger(this.calcPotentialCost(sv));
+                res += this._parent.potentialCostToInteger(this.calcPotentialCost(sv));
             }
             return res;
         }
     }
     belongEquipment(){
-        return this.parent.parent;
+        return this._parent._parent;
     }
     /**
      * Calculate potential cost of input value with a Formula.
@@ -462,27 +468,30 @@ class EnchantStepStat extends EnchantStat {
      * @return {Integet}                     
      */
     calcPotentialCost(v){
-        const r = this.belongEquipment().getPotentialAdditionalRate(this.parent.index() + 1);
+        const r = this.belongEquipment().getPotentialAdditionalRate(this._parent.index() + 1);
         const p = this.itemBase.getPotential(this.stat.type, this.belongEquipment().status);
         return (v > 0 ? v * p : Math.ceil(v * (5 + Status.Character.tec / 10) * p / 100)) * r;
     }
     remove(){
-        const index = this.parent.stepStats.indexOf(this);
-        this.parent.stepStats.splice(index, 1);
+        const index = this._parent.stepStats.indexOf(this);
+        this._parent.stepStats.splice(index, 1);
         this.belongEquipment().refreshStats();
     }
     index(){
-        return this.parent.stepStats.indexOf(this);
+        return this._parent.stepStats.indexOf(this);
     }
     valid(){
-        return !(this.parent.type == EnchantStep.TYPE_EACH && this.index() != 0);
+        return !(
+            (this._parent.type == EnchantStep.TYPE_EACH && this.index() != 0)
+            || (this.itemBase.belongCategory().status['isWeaponOnly'] && this.belongEquipment().status['fieldType'] != 0)
+        );
     }
     /**
      * 取得此項能力，之前所有步驟的加總。
      * @return {[type]} [description]
      */
     getPreviousStepStatValue(){
-        return this.belongEquipment().stat(this.itemBase, this.statType(), this.parent.index()).statValue();
+        return this.belongEquipment().stat(this.itemBase, this.statType(), this._parent.index()).statValue();
     }
     showCurrent(){
         return this.show(this.getPreviousStepStatValue() + this.statValue());

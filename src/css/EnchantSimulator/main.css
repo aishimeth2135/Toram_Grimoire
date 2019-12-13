@@ -150,4 +150,9 @@ ul.equipments-list {
     padding: 0 0.3rem;
     margin: 0;
     margin-bottom: 1rem;
+    position: relative;
+}
+.select-stat > ul.category-items.invalid {
+    opacity: 0.6;
+    background-color: var(--primary-light);
 }
