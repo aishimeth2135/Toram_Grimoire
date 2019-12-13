@@ -221,42 +221,29 @@ class EnchantEquipment {
         });
         return new EnchantStat(itemBase, type, v);
     }
+    /**
+     * get stats before this.steps[step_index]
+     * @param  {?int} step_index   default: length of this.steps (get all stats of steps)
+     * @return {Array<SimpleStat>}
+     */
     currentStats(step_index){
         step_index = this.checkStepIndex(step_index);
         const stats = [];
-        function find(t){
-            return stats.find(a => a.baseName() == t.baseName() && a.statType() == t.statType());
-        }
         this.steps.slice(0, step_index).forEach(p => {
             p.stepStats.forEach(a => {
                 if ( !a.valid() )
                     return;
-                const t = find(a);
+                const t = stats.find(b => b.equals(a));
                 if ( t )
                     t.statValue(t.statValue() + a.statValue());
-                else {
+                else
                     stats.push(new EnchantStat(a.itemBase, a.statType(), a.statValue()));
-                }
             });
         });
         return stats;
     }
     currentStatsNumber(step_index){
-        step_index = this.checkStepIndex(step_index);
-        const stats = [];
-        function find(t){
-            return stats.find(a => a.baseName() == t.baseName() && a.statType() == t.statType());
-        }
-        this.steps.slice(0, step_index).forEach(p => {
-            p.stepStats.forEach(a => {
-                if ( !a.valid() )
-                    return;
-                const t = find(a);
-                if ( !t )
-                    stats.push(new EnchantStat(a.itemBase, a.statType(), 0));
-            });
-        });
-        return stats.length;
+        return this.currentStats(step_index).length;
     }
     checkStats(){
         return this.checkStatsNumber();
@@ -329,6 +316,11 @@ class EnchantEquipment {
         }));
         return mats;
     }
+    containsStat(stat, step_index){
+        step_index = this.checkStepIndex(step_index);
+        const res = this.steps.slice(0, step_index).find(p => p.stepStats.find(q => q.equals(stat)));
+        return res ? true : false;
+    }
 }
 
 
@@ -340,9 +332,9 @@ class EnchantStep {
         this.step = 1;
     }
     appendStat(){
-        if ( !this.parent.checkStats() )
-            return false;
         const stat = new EnchantStepStat(this, ...arguments);
+        if ( !this.belongEquipment().containsStat(stat) && !this.parent.checkStats() )
+            return false;
         this.stepStats.push(stat);
         return stat;
     }
@@ -387,6 +379,9 @@ class EnchantStep {
         this.parent.steps.splice(i, 1);
         this.stepStats.forEach(p => p.remove());
     }
+    belongEquipment(){
+        return this.parent;
+    }
 }
 EnchantStep.TYPE_NORMAL = Symbol('normal');
 EnchantStep.TYPE_EACH = Symbol('each');
@@ -411,6 +406,9 @@ class EnchantStat {
     }
     addStatValue(v){
         return this.stat.addStatValue(v);
+    }
+    equals(estat){
+        return this.stat.equals(estat.stat);
     }
 }
 
