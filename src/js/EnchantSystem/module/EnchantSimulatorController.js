@@ -78,6 +78,7 @@ export default class EnchantSimulatorController {
                 this.parentNode.querySelector('.cur').classList.remove('cur');
                 this.classList.add('cur');
                 t.setStatus('fieldType', parseInt(this.getAttribute('data-no')));
+                ctrr.updateCurrentEquipmentScope();
             },
             setEquipmentOriginalPotential(e){
                 const eq = ctrr.currentEquipment();
@@ -119,14 +120,14 @@ export default class EnchantSimulatorController {
                 const t = ctrr.currentEquipment();
                 if ( !t )
                     return;
-                if ( !t.checkStatsNumber() ){
-                    ShowMessage(Lang('Warn/Number of Equipment Item exceeding the maximum'));
-                    return;
-                }
-                if ( !t.checkCurrentPotential() ){
-                    ShowMessage(Lang('Warn/Potential of Equipment has been less than 1'))
-                    return;
-                }
+                // if ( !t.checkStatsNumber() ){
+                //     ShowMessage(Lang('Warn/Number of Equipment Item exceeding the maximum'));
+                //     return;
+                // }
+                // if ( !t.checkCurrentPotential() ){
+                //     ShowMessage(Lang('Warn/Potential of Equipment has been less than 1'))
+                //     return;
+                // }
                 const step = t.appendStep();
                 const steps_scope = this.parentNode;
                 const step_scope = ctrr.createEnchantStepHTML(step);
@@ -186,15 +187,23 @@ export default class EnchantSimulatorController {
                 const step_scope = ctrr.getScopeFromChildNode(this, 'step');
                 const step = ctrr.getEnchantStepByScope(step_scope);
 
+                const step_scope_list = ctrr
+                    .getScopeFromChildNode(step_scope, 'equipment')
+                    .querySelectorAll('.' + ctrr.scopeClassName['step']);
+
                 const eq = step.parent, si = step.index();
 
                 let fin;
                 switch ( this.getAttribute('data-ctr') ){
                     case '<':
                         fin = eq.swapStep(si, si-1);
+                        if ( fin )
+                            step_scope.parentNode.insertBefore(step_scope, step_scope_list[si-1]);
                         break;
                     case '>':
                         fin = eq.swapStep(si, si+1);
+                        if ( fin )
+                            step_scope.parentNode.insertBefore(step_scope_list[si+1], step_scope);
                         break;
                 }
                 if ( fin )
@@ -480,7 +489,7 @@ export default class EnchantSimulatorController {
         scope.querySelector('.step-value').innerHTML = step.stepValue();
 
         scope.querySelector('.top .title').innerHTML = Lang('step title') + " " + (step_index + 1);
-        scope.querySelectorAll('.step-stats > .' + this.scopeClassName['stat']).forEach((p, i) => {
+        scope.querySelectorAll('.step-stats > .' + this.scopeClassName['stat']).forEach((p, i, ary) => {
             this.updateEnchantStatScope(p, step.stepStats[i]);
         });
 
