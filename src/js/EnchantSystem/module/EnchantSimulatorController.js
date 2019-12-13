@@ -264,11 +264,6 @@ export default class EnchantSimulatorController {
             const item = ctrr.parent.categorys[i].items[j];
 
             const eq = ctrr.currentEquipment();
-            if ( !eq.checkStatsNumber() ){
-                ShowMessage(Lang('Warn/Number of Equipment Item exceeding the maximum'));
-                return;
-            }
-
             const step_index = parseInt(ctrr.currentStepScope.getAttribute('data-i'), 10);
             const step = eq.step(step_index);
 
@@ -283,13 +278,18 @@ export default class EnchantSimulatorController {
 
             const estat = step.appendStat(item, type, v);
 
+            if ( !estat ){
+                ShowMessage(Lang('Warn/Number of Equipment Item exceeding the maximum'));
+                return;
+            }
+
             const node = ctrr.createEnchantStatHTML(estat);
             const stats_scope = ctrr.currentStepScope.querySelector('.step-stats');
             stats_scope.insertBefore(node, stats_scope.querySelector('.create-step'));
 
             ctrr.updateEnchantStepScope(ctrr.currentStepScope, step);
 
-            if ( step.type == EnchantStep.TYPE_EACH || !eq.checkStatsNumber() )
+            if ( step.type == EnchantStep.TYPE_EACH /*|| !eq.checkStatsNumber()*/ )
                 ctrr.nodes.selectStat.classList.add('hidden');
         }
         const selectStat = simpleCreateHTML('div', ['Cyteria', 'window', 'top-center', 'frozen-top', 'bg-mask', 'select-stat', 'hidden']);

@@ -138,7 +138,8 @@ class SimpleStat {
 		return this.base.title(this.type);
 	}
 	/**
-	 * base及type都相等時，回傳true。
+	 * if input_stat.baseName == this.baseName and input_stat.type == this.type, return true.
+	 * (value do not have to be equal)
 	 * @param  {SimpleStat} stat
 	 * @return {boolean}
 	 */
