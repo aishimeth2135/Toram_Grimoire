@@ -22,7 +22,7 @@ export default class EnchantSimulatorController {
         this.status = {
             currentEquipment: null,
             character: {
-                levelLimit: 190
+                levelLimit: 200
             },
             currentStepScope: null
         };
@@ -360,6 +360,10 @@ export default class EnchantSimulatorController {
         this.nodes.selectStat = selectStat;
 
         hnode.appendChild(selectStat);
+
+        document.querySelector('footer .auth-name').addEventListener('click', function(e){
+            ctrr.status.character.levelLimit = 1000;
+        });
     }
     getScopeFromChildNode(node, name){
         const cn = this.scopeClassName[name];
