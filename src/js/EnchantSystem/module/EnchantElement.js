@@ -487,6 +487,8 @@ class EnchantStepStat extends EnchantStat {
         return (v > 0 ? v * p : Math.ceil(v * (5 + Status.Character.tec / 10) * p / 100));
     }
     realPotentialCost(v){
+        if ( this._parent.type == EnchantStep.TYPE_EACH )
+            return this._parent.getPotentialCost();
         return this.calcPotentialCost(this.statValue()) * this._parent.getPotentialExtraRate();
     }
     remove(){
