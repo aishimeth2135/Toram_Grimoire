@@ -530,7 +530,7 @@ export default class EnchantSimulatorController {
         scope.querySelector('.show').innerHTML = estat.show();
 
         scope.querySelector('.sub .pre-stats-value').innerHTML = estat.getPreviousStepStatValue();
-        const pot = -1*estat.getPotentialCost();
+        const pot = -1 * estat.realPotentialCost();
         scope.querySelector('.sub .stat-potential').innerHTML = Number.isInteger(pot) ? pot : pot.toFixed(2);
 
         const mat = estat.getMaterialPointCost();
