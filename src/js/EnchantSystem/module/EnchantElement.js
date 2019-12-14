@@ -267,7 +267,7 @@ class EnchantEquipment {
             return res < 1;
         });
     }
-    getPotentialAdditionalRate(step_index){
+    calcPotentialExtraRate(step_index){
         const stats = this.currentStats(step_index);
         const t = [];
         stats.forEach(p => {
@@ -361,11 +361,23 @@ class EnchantStep {
     getPotentialCost(){
         if ( this.stepStats.length == 0 )
             return 0;
+        const er = this.getPotentialExtraRate();
         switch (this.type){
             case EnchantStep.TYPE_NORMAL:
-                return this.potentialCostToInteger(this.stepStats.reduce((a, b) => a + b.getPotentialCost(), 0));
-            case EnchantStep.TYPE_EACH:
-                return this.stepStats[0].getPotentialCost();
+                return this.potentialCostToInteger(this.stepStats.reduce((a, b) => a + b.calcPotentialCost(b.statValue()), 0) * er);
+            case EnchantStep.TYPE_EACH: {
+                const stat = this.stepStats[0];
+                let sv = this.stepValue() || 1;
+                const v = stat.statValue();
+                let res = 0, cur = 0;
+                while ( cur != v ){
+                    if ( (sv > 0 && cur + sv > v) || (sv < 0 && cur + sv < v) )
+                        sv = v - cur;
+                    cur += sv;
+                    res += this.potentialCostToInteger(stat.calcPotentialCost(sv) * er);
+                }
+                return res;
+            }
         }
     }
     potentialCostToInteger(p){
@@ -387,6 +399,9 @@ class EnchantStep {
     }
     belongEquipment(){
         return this._parent;
+    }
+    getPotentialExtraRate(){
+        return this.belongEquipment().calcPotentialExtraRate(this.index() + 1);
     }
 }
 EnchantStep.TYPE_NORMAL = Symbol('normal');
@@ -462,15 +477,17 @@ class EnchantStepStat extends EnchantStat {
         return this._parent._parent;
     }
     /**
-     * Calculate potential cost of input value with a Formula.
+     * Calculate potential cost before extra-rate of input value with a Formula.
      * @param  {Integer} v                   value
      * @param  {Integer} num                 numble of same category
      * @return {Integet}                     
      */
     calcPotentialCost(v){
-        const r = this.belongEquipment().getPotentialAdditionalRate(this._parent.index() + 1);
         const p = this.itemBase.getPotential(this.stat.type, this.belongEquipment().status);
-        return (v > 0 ? v * p : Math.ceil(v * (5 + Status.Character.tec / 10) * p / 100)) * r;
+        return (v > 0 ? v * p : Math.ceil(v * (5 + Status.Character.tec / 10) * p / 100));
+    }
+    realPotentialCost(v){
+        return this.calcPotentialCost(this.statValue()) * this._parent.getPotentialExtraRate();
     }
     remove(){
         const index = this._parent.stepStats.indexOf(this);
