@@ -558,7 +558,10 @@ export default class EnchantSimulatorController {
                 .replace(/<p>/g, '\n\n')
                 .replace(/<\/p>/g, '');
             const sr = eq.successRate();
-            res += '\n\n成功率：' + (sr != -1 ? Math.floor(sr) + '%' : Lang('unlimited')) + '\n\n｜布偶的魔法書｜';
+            res += '\n\n成功率：' + (sr != -1
+                ? Math.floor(sr) + '%｜實際' + (Math.floor(sr) + 30).toString() + '%'
+                : Lang('unlimited')
+            ) + '\n\n｜布偶的魔法書｜';
             return res;
         }
     }
@@ -594,7 +597,10 @@ export default class EnchantSimulatorController {
             const sr = eq.successRate();
             const sr_scope = scope.querySelector('.success-rate-scope');
             const res_scope = scope.querySelector('.show-result-scope');
-            sr_scope.querySelector('.success-rate').innerHTML = sr != -1 ? Math.floor(sr) + '%' : Lang('unlimited');
+            sr_scope.querySelector('.success-rate').innerHTML =
+                sr != -1
+                ? Math.floor(sr) + '%｜實際' + (Math.floor(sr) + 30).toString() + '%'
+                : Lang('unlimited');
             const res = res_scope.querySelector('.show-result-content');
             CY.element.removeAllChild(res);
             if ( eq.currentStats(eq.lastStepIndex()).length > 0 ){
