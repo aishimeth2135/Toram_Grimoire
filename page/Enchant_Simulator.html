@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="../src/css/main/global.css">
 
     <link rel="stylesheet" href="../src/css/EnchantSimulator/main.css">
+    <link rel="stylesheet" href="../src/css/SaveLoad/main.css">
 </head>
 <body>
     <nav>
@@ -54,7 +55,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('../sw.js');
+                navigator.serviceWorker.register('../sw.js', {'updateViaCache': 'imports'});
             });
         }
     </script>

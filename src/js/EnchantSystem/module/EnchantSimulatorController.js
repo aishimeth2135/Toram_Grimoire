@@ -4,10 +4,11 @@ import GetLang from "../../main/module/LanguageSystem.js";
 import Icons from "../../main/module/SvgIcons.js";
 import StatBase from "../../CharacterSystem/module/StatBase.js";
 import ShowMessage from "../../main/module/ShowMessage.js";
+import SaveLoadSystem from "../../SaveLoadSystem/SaveLoadSystem.js";
 
 
-function Lang(s){
-    return GetLang('Enchant Simulator/' + s);
+function Lang(s, vs){
+    return GetLang('Enchant Simulator/' + s, vs);
 }
 
 export default class EnchantSimulatorController {
@@ -15,6 +16,7 @@ export default class EnchantSimulatorController {
         this.parent = parent;
         this.equipments = [];
         this.nodes = {
+            main: null,
             selectStat: null,
             equipmentsList: null,
             equipments: null
@@ -22,7 +24,8 @@ export default class EnchantSimulatorController {
         this.status = {
             currentEquipment: null,
             character: {
-                levelLimit: 200
+                levelLimit: 200,
+                smithLevelLimit: 200
             },
             currentStepScope: null
         };
@@ -56,8 +59,26 @@ export default class EnchantSimulatorController {
 
                 ctrr.updateCurrentEquipmentScope();
             },
+            setCharacterSmithLevel(){
+                let v = EnchantElementStatus('Character/smithLevel');
+
+                switch ( this.getAttribute('data-ctr') ){
+                    case '+':
+                        v = v + 10;
+                        break;
+                    case '-':
+                        v = v - 10;
+                        break;
+                }
+                if ( v > ctrr.status.character.smithLevelLimit || v < 0 )
+                    return;
+                v = EnchantElementStatus('Character/smithLevel', v);
+                this.parentNode.querySelector('.character-smith-level').innerHTML = v;
+
+                ctrr.updateCurrentEquipmentScope();
+            },
             selectCurrentEquipment(e){
-                const i = Array.from(this.parentNode.querySelectorAll('.select')).indexOf(this);
+                const i = Array.from(this.parentNode.querySelectorAll('.select-equipment')).indexOf(this);
                 const scope = ctrr.nodes.equipments.querySelectorAll('.enchant-equipment')[i];
                 const cur_scope = ctrr.nodes.equipments.querySelector('.enchant-equipment:not(.hidden)');
                 if ( cur_scope )
@@ -75,8 +96,7 @@ export default class EnchantSimulatorController {
                 const eq = ctrr.currentEquipment();
                 if ( !eq )
                     return;
-                this.parentNode.querySelector('.cur').classList.remove('cur');
-                this.classList.add('cur');
+
                 switch ( this.getAttribute('data-set') ){
                     case 'main-weapon|original-element':
                         eq.setStatus('fieldType', 0);
@@ -88,6 +108,7 @@ export default class EnchantSimulatorController {
                         break;
                     case 'body-armor':
                         eq.setStatus('fieldType', 1);
+                        eq.setStatus('isOriginalElement', false);
                 }
                 ctrr.updateCurrentEquipmentScope();
             },
@@ -127,29 +148,37 @@ export default class EnchantSimulatorController {
                 eq.basePotential(parseInt(this.value));
                 ctrr.updateCurrentEquipmentScope();
             },
+            copyEquipment(){
+                ctrr.copyEquipment(ctrr.currentEquipment());
+            },
+            removeEquipment(){
+                const eq = ctrr.currentEquipment();
+                const index = ctrr.equipments.indexOf(eq);
+
+                const menu_btns = ctrr.nodes.equipmentsList.querySelectorAll('.select-equipment');
+                CY.element.remove(menu_btns[index]);
+                CY.element.remove(ctrr.nodes.equipments.querySelectorAll('.' + ctrr.scopeClassName['equipment'])[index]);
+
+                ctrr.equipments.splice(index, 1);
+
+                if ( menu_btns[index-1] )
+                    menu_btns[index-1].click();
+                else {
+                    menu_btns[index+1].click();
+                }
+            },
             createStep(e){
-                const t = ctrr.currentEquipment();
-                if ( !t )
+                const eq = ctrr.currentEquipment();
+                if ( !eq )
                     return;
-                // if ( !t.checkStatsNumber() ){
-                //     ShowMessage(Lang('Warn/Number of Equipment Item exceeding the maximum'));
-                //     return;
-                // }
-                // if ( !t.checkCurrentPotential() ){
-                //     ShowMessage(Lang('Warn/Potential of Equipment has been less than 1'))
-                //     return;
-                // }
-                const step = t.appendStep();
-                const steps_scope = this.parentNode;
-                const step_scope = ctrr.createEnchantStepHTML(step);
-                steps_scope.insertBefore(step_scope, this);
-                ctrr.updateEnchantStepScope(step_scope, step);
+                ctrr.createStep(eq);
+                ctrr.updateCurrentEquipmentScope();
             },
             openCreateStatWindow(e){
                 const eq = ctrr.currentEquipment();
                 if ( !eq )
                     return;
-                ctrr.currentStepScope = ctrr.getScopeFromChildNode(this, 'step');
+                ctrr.status.currentStepScope = ctrr.getScopeFromChildNode(this, 'step');
                 const scope = ctrr.nodes.selectStat;
                 scope.querySelectorAll('.category-items[data-field-only]')
                     .forEach(p => p.classList.toggle('invalid',
@@ -208,20 +237,20 @@ export default class EnchantSimulatorController {
 
                 const eq = step.belongEquipment(), si = step.index();
 
-                let fin;
+                let success;
                 switch ( this.getAttribute('data-ctr') ){
                     case '<':
-                        fin = eq.swapStep(si, si-1);
-                        if ( fin )
+                        success = eq.swapStep(si, si-1);
+                        if ( success )
                             step_scope.parentNode.insertBefore(step_scope, step_scope_list[si-1]);
                         break;
                     case '>':
-                        fin = eq.swapStep(si, si+1);
-                        if ( fin )
+                        success = eq.swapStep(si, si+1);
+                        if ( success )
                             step_scope.parentNode.insertBefore(step_scope_list[si+1], step_scope);
                         break;
                 }
-                if ( fin )
+                if ( success )
                     ctrr.updateCurrentEquipmentScope();
             },
             removeStep(e){
@@ -231,6 +260,35 @@ export default class EnchantSimulatorController {
                 CY.element.remove(step_scope);
                 ctrr.updateCurrentEquipmentScope();
             },
+            hiddenStep(e){
+                const step_scope = ctrr.getScopeFromChildNode(this, 'step');
+                const step = ctrr.getEnchantStepByScope(step_scope);
+                this.classList.toggle('selected', step.hidden(!step.hidden()));
+                ctrr.updateCurrentEquipmentScope();
+            },
+            insertStep(e){
+                const step_scope = ctrr.getScopeFromChildNode(this, 'step');
+                const step = ctrr.getEnchantStepByScope(step_scope);
+                const steps_scope = step_scope.parentNode;
+
+                const eq = step.belongEquipment();
+
+                const step_scope_list = ctrr
+                    .getScopeFromChildNode(step_scope, 'equipment')
+                    .querySelectorAll('.' + ctrr.scopeClassName['step']);
+
+                const new_step = eq.appendStepBefore(step);
+                const new_step_scope = ctrr.createEnchantStepHTML(new_step);
+
+                steps_scope.insertBefore(new_step_scope, step_scope);
+
+                ctrr.updateCurrentEquipmentScope();
+            },
+            toggleStepExtraMenu(e){
+                const step_scope = ctrr.getScopeFromChildNode(this, 'step');
+                step_scope.querySelector('.extra-menu').classList.toggle('hidden');
+                this.classList.toggle('selected');
+            },
             removeStat(e){
                 const stat_scope = ctrr.getScopeFromChildNode(this, 'stat');
                 const stat = ctrr.getEnchantStatByScope(stat_scope);
@@ -239,9 +297,15 @@ export default class EnchantSimulatorController {
                 ctrr.updateCurrentEquipmentScope();
             },
             copyEnchantResult(e){
-                const t = ctrr.getEnchantTextResult(ctrr.currentEquipment());
+                const t = ctrr.createEnchantResult(ctrr.currentEquipment(), 'copy-text');
                 if ( CY.copyToClipboard(t) )
                     ShowMessage(Lang('Warn/Success to copy'));
+            },
+            openMainMenu(e){
+                ctrr.nodes.menu.classList.remove('hidden');
+            },
+            closeWindow(e){
+                this.parentNode.parentNode.classList.add('hidden');
             }
         };
     }
@@ -250,6 +314,36 @@ export default class EnchantSimulatorController {
 
         const ctrr = this;
         const simpleCreateHTML = CY.element.simpleCreateHTML;
+
+        this.nodes.main = hnode;
+        //
+        const top = simpleCreateHTML('div', ['Cyteria', 'Layout', 'sticky-header', 'top']);
+        const top_content = simpleCreateHTML('div', 'content');
+
+        const menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'menu-button', 'button'], Icons('cube-outline'));
+        menu_btn.addEventListener('click', this.listeners.openMainMenu);
+        top_content.appendChild(menu_btn);
+
+        top.appendChild(top_content);
+        hnode.appendChild(top);
+        //
+        const createCloseWindowButton = () => {
+            const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
+            btn.addEventListener('click', this.listeners.closeWindow);
+            return btn;
+        };
+        const menu_scope = simpleCreateHTML('div', ['Cyteria', 'window', 'top-center', 'bg-mask', 'frozen-top', 'menu-scope', 'hidden', 'Cyteria', 'entrance', 'fade-in']);
+
+        const menu_scope_top = simpleCreateHTML('div', 'top');
+        menu_scope_top.appendChild(simpleCreateHTML('span', 'name', Lang('Main Menu: title')));
+        menu_scope_top.appendChild(createCloseWindowButton());
+        const menu_scope_content = simpleCreateHTML('div', 'content');
+
+        menu_scope.appendChild(menu_scope_top);
+        menu_scope.appendChild(menu_scope_content);
+
+        hnode.appendChild(menu_scope);
+        this.nodes.menu = menu_scope;
 
         const set_clv = simpleCreateHTML('div', ['Cyteria', 'set-button-line', 'set-character-level']);
         {
@@ -263,8 +357,26 @@ export default class EnchantSimulatorController {
             set_clv.appendChild(left);
             set_clv.appendChild(mid);
             set_clv.appendChild(right);
+            set_clv.appendChild(simpleCreateHTML('span', ['Cyteria', 'text', 'tips'], Lang('tips/Character Level')));
 
             hnode.appendChild(set_clv);
+        }
+
+        const set_smithlv = simpleCreateHTML('div', ['Cyteria', 'set-button-line', 'set-character-smith-level']);
+        {
+            const left =  CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'), {'data-ctr': '-'});
+            left.addEventListener('click', this.listeners.setCharacterSmithLevel);
+            const right = CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('add'), {'data-ctr': '+'});
+            right.addEventListener('click', this.listeners.setCharacterSmithLevel);
+            const mid = CY.element.simpleCreateHTML('span', ['Cyteria', 'text', 'between-button', 'character-smith-level'], EnchantElementStatus('Character/smithLevel'));
+
+            set_smithlv.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'title', 'text-small', 'light'], Icons('cards') + `<span class="text">${Lang('Character Smith Level')}</span>`));
+            set_smithlv.appendChild(left);
+            set_smithlv.appendChild(mid);
+            set_smithlv.appendChild(right);
+            set_smithlv.appendChild(simpleCreateHTML('span', ['Cyteria', 'text', 'tips'], Lang('tips/Smith Level')));
+
+            hnode.appendChild(set_smithlv);
         }
 
         const eq_list = simpleCreateHTML('ul', 'equipments-list');
@@ -288,30 +400,12 @@ export default class EnchantSimulatorController {
             const item = ctrr.parent.categorys[i].items[j];
 
             const eq = ctrr.currentEquipment();
-            const step_index = parseInt(ctrr.currentStepScope.getAttribute('data-i'), 10);
+            const step_index = parseInt(ctrr.status.currentStepScope.getAttribute('data-i'), 10);
             const step = eq.step(step_index);
 
-            if ( step.stat(item, type) ){
-                ShowMessage(Lang('Warn/Step Stat Repeat'));
-                return;
-            }
+            ctrr.createEnchantStat(step, item, type);
 
-            const [max, min] = item.getLimit(type);
-            const pot = item.getPotential(type, eq.status);
-            const v = pot > item.basePotential(type) ? min : 0;
-
-            const estat = step.appendStat(item, type, v);
-
-            if ( !estat ){
-                ShowMessage(Lang('Warn/Number of Equipment Item exceeding the maximum'));
-                return;
-            }
-
-            const node = ctrr.createEnchantStatHTML(estat);
-            const stats_scope = ctrr.currentStepScope.querySelector('.step-stats');
-            stats_scope.insertBefore(node, stats_scope.querySelector('.create-step'));
-
-            ctrr.updateEnchantStepScope(ctrr.currentStepScope, step);
+            ctrr.updateCurrentEquipmentScope();
 
             if ( step.type == EnchantStep.TYPE_EACH /*|| !eq.checkStatsNumber()*/ )
                 ctrr.nodes.selectStat.classList.add('hidden');
@@ -361,6 +455,36 @@ export default class EnchantSimulatorController {
 
         hnode.appendChild(selectStat);
 
+        this.SaveLoadSystem = new SaveLoadSystem().init({
+            name: 'Enchant-Simulator',
+            menuNode: menu_scope,
+            csvFileName(){
+                return 'state';
+            },
+            getSaveNameList(){
+                return ctrr.equipments
+                    .map(eq => eq.currentStats(eq.lastStepIndex())
+                        .map(p => p.show())
+                        .join('｜'));
+            },
+            getSaveCsvString(){
+                return ctrr.saveToCsv();
+            },
+            loadCsvString(csv){
+                return ctrr.loadFromCsv(csv);
+            },
+            afterActionFinish(){
+                ctrr.nodes.menu.classList.add('hidden');
+            },
+            beforeLoadConfirm(){
+                return ctrr.equipments.length != 0;
+            },
+            error(){
+                ShowMessage(GetLang('global/LocalStorage is inavailable'));
+            }
+        });
+        hnode.appendChild(this.SaveLoadSystem.controller.getSaveLoadWindow());
+
         document.querySelector('footer .auth-name').addEventListener('click', function(e){
             ctrr.status.character.levelLimit = 1000;
         });
@@ -373,93 +497,70 @@ export default class EnchantSimulatorController {
             console.error("Scope not found: " + name);
         return node;
     }
-    createEquipment(){
-        const simpleCreateHTML = CY.element.simpleCreateHTML;
-
-        const eq = new EnchantEquipment();
-        this.equipments.push(eq);
-
-        const el = this.nodes.equipmentsList;
-        const btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'select'], Lang('equipment') + " " + this.equipments.length);
-        btn.addEventListener('click', this.listeners.selectCurrentEquipment);
-        el.insertBefore(btn, el.querySelector('.create-equipment'));
-
-        const eq_scope = this.createEquipmentHTML();
-
-        this.nodes.equipments.appendChild(eq_scope);
-
-        this.updateEquipmentScope(eq_scope, eq);
-
-        btn.click();
-    }
     currentEquipment(t){
         if ( t !== void 0 )
             this.status.currentEquipment = t;
         return this.status.currentEquipment;
     }
-    getEnchantTextResult(eq){
-        let res = '';
-
-        const mats_text = Lang('Material Point Type List');
-        res += Lang('Original Potential') + " " + eq.originalPotential()
-            + (eq.basePotential() != EnchantElementStatus('EquipmentBasePotentialMiniMum') ? ('｜' + Lang('Base Potential') + " " + eq.basePotential()) : '')
-            + eq.getAllMaterialPointCost().reduce((a, b, i) => a + (b != 0 ? `｜${mats_text[i]} ${b}` : ''), '')
-            + '\n\n';
-        
-        eq.steps.forEach((p, i) => {
-            if ( p.stepStats.length == 0 )
-                return;
-            res += (i != 0 ? '\n' : '') + (i + 1) + '. ';
-            if ( p.type == EnchantStep.TYPE_NORMAL ){
-                res += '附';
-                p.stepStats.forEach((a, j) => {
-                    res += (j != 0 ? '｜' : '') + a.showCurrent();
-                });
-            }
-            else {
-                const a = p.stepStats[0];
-                res += '每次附' + a.show(p.stepValue()) + '，直到' + a.showCurrent();
-            }
-            res += '｜' + eq.currentPotential(p.index() + 1) + 'pt';
-        });
-
-        res += '\n\n成功率：' + Math.floor(eq.successRate()) + '%\n\n（布偶的魔法書）';
-
-        return res;
-    }
-    getEnchantResult(eq){
+    createEnchantResult(eq, type){
         const frg = document.createDocumentFragment();
 
+        const line_split = {
+            'normal': '<br />',
+            'copy-text':'\n'
+        }[type];
+
         let res = '';
 
-        const mats_text = Lang('Material Point Type List');
-        res += Lang('Original Potential') + " " + eq.originalPotential()
+        res += '｜' + Lang('Equipment Field List')[eq.status.fieldType]
+            + '｜' + Lang('Original Potential') + " " + eq.originalPotential()
             + (eq.basePotential() != EnchantElementStatus('EquipmentBasePotentialMiniMum') ? ('｜' + Lang('Base Potential') + " " + eq.basePotential()) : '')
-            + eq.getAllMaterialPointCost().reduce((a, b, i) => a + (b != 0 ? `｜${mats_text[i]} ${b}` : ''), '')
-            + '<p>';
+
+        res += line_split;
+
+        res += '｜' + Lang('Final Results') + '｜' + eq.currentStats(eq.lastStepIndex()).map(p => p.show()).join('｜');
+
+        res += '<p>';
+
+        const all_mcost = eq.getAllMaterialPointCost();
+        const mats_text = Lang('Material Point Type List').filter((a, i) => all_mcost[i] != 0);
+        res += '｜' + Lang('Material Point Cost') + '｜'
+            + all_mcost
+                .filter(a => a != 0)
+                .map((a, i) => `${mats_text[i]} ${a}`)
+                .join('｜');
+
+        res += '</p><p>';
+
+        const enchant_text = Lang('enchant line pretext');
+
+        res += eq.currentSteps(eq.lastStepIndex())
+            .filter(p => p.stepStats.length != 0)
+            .map((p, i) => {
+                return (i + 1).toString() + '. '
+                    + (p.type == EnchantStep.TYPE_NORMAL
+                        ? enchant_text + p.stepStats.map(a => a.showCurrentText()).join('｜')
+                        : Lang('enchant line: each', [p.stepStats[0].show(p.stepValue()), p.stepStats[0].showCurrentText()])
+                    )
+                    + '｜' + p.stepRemainingPotential() + 'pt';
+            })
+            .join(line_split);
         
-        eq.steps.forEach((p, i) => {
-            if ( p.stepStats.length == 0 )
-                return;
-            res += (i != 0 ? '<br>' : '') + (i + 1) + '. ';
-            if ( p.type == EnchantStep.TYPE_NORMAL ){
-                res += '附';
-                p.stepStats.forEach((a, j) => {
-                    res += (j != 0 ? '｜' : '') + a.showCurrent();
-                });
-            }
-            else {
-                const a = p.stepStats[0];
-                res += '每次附' + a.show(p.stepValue()) + '，直到' + a.showCurrent();
-            }
-            res += '｜' + eq.currentPotential(p.index() + 1) + 'pt';
-        });
         res += '</p>';
 
-        const div = CY.element.simpleCreateHTML('div', null, res);
-        frg.appendChild(div);
-
-        return frg;
+        if ( type == 'normal'){
+            const div = CY.element.simpleCreateHTML('div', null, res);
+            return div;
+        }
+        else if ( type == 'copy-text' ){
+            res = res
+                .replace(/<\/p><p>/g, '\n\n')
+                .replace(/<p>/g, '\n\n')
+                .replace(/<\/p>/g, '');
+            const sr = eq.successRate();
+            res += '\n\n成功率：' + (sr != -1 ? Math.floor(sr) + '%' : Lang('unlimited')) + '\n\n｜布偶的魔法書｜';
+            return res;
+        }
     }
     updateCurrentEquipmentScope(){
         const eq = this.currentEquipment();
@@ -473,31 +574,35 @@ export default class EnchantSimulatorController {
         if ( tmp_hid )
             scope.classList.add('hidden');
 
+        const fieldTypeStr = (eq.status.fieldType == 0 ? 'main-weapon' : 'body-armor')
+            + (eq.status.isOriginalElement ? '|original-element' : '');
+        const menu_scope = scope.querySelector('ul.field-menu');
+        menu_scope.querySelector('.cur').classList.remove('cur');
+        menu_scope.querySelector(`li[data-set="${fieldTypeStr}"]`).classList.add('cur');
+
         scope.querySelectorAll('.steps > .' + this.scopeClassName['step']).forEach((p, i) => {
-            this.updateEnchantStepScope(p, eq.steps[i]);
+            this.updateEnchantStepScope(p, eq.step(i));
         });
 
         scope.querySelector('.original-potential').value = eq.originalPotential();
         scope.querySelector('.base-potential').value = eq.basePotential();
 
-        const checkStepsPt = eq.checkStepsPotentialCost();
-        if ( !checkStepsPt )
-            ShowMessage(Lang('Warn/Potential of Step is less than 1'));
+        if ( !eq.checkStepsPotentialCost() )
+            ShowMessage(Lang('Warn/Potential of Step is less than 1'), null, 'pt of step less than 1');
 
-        const sr = eq.successRate();
-        const sr_scope = scope.querySelector('.success-rate-scope');
-        const res_scope = scope.querySelector('.show-result-scope');
-        if ( sr != -1 && checkStepsPt ){
-            sr_scope.querySelector('.success-rate').innerHTML = Math.floor(sr) + '%';
+        {
+            const sr = eq.successRate();
+            const sr_scope = scope.querySelector('.success-rate-scope');
+            const res_scope = scope.querySelector('.show-result-scope');
+            sr_scope.querySelector('.success-rate').innerHTML = sr != -1 ? Math.floor(sr) + '%' : Lang('unlimited');
             const res = res_scope.querySelector('.show-result-content');
             CY.element.removeAllChild(res);
-            res.appendChild(this.getEnchantResult(eq));
-            sr_scope.classList.remove('hidden');
-            res_scope.classList.remove('hidden');
-        }
-        else {
-            sr_scope.classList.add('hidden');
-            res_scope.classList.add('hidden');
+            if ( eq.currentStats(eq.lastStepIndex()).length > 0 ){
+                res.appendChild(this.createEnchantResult(eq, 'normal'));
+                res.classList.remove('hidden');
+            }
+            else
+                res.classList.add('hidden');
         }
 
         if ( tmp_hid )
@@ -509,21 +614,30 @@ export default class EnchantSimulatorController {
 
         const tn = step.type == EnchantStep.TYPE_NORMAL ? 0 : 1;
         scope.querySelector('.switch-step-type').setAttribute('data-step-type', tn);
-        scope.querySelector('.type-each-set-scope').classList[tn == 0 ? 'add' : 'remove']('hidden');
+        scope.querySelector('.type-each-set-scope').classList.toggle('hidden', tn == 0);
         scope.querySelector('.step-type-text').innerHTML = Lang('step type')[tn];
 
         scope.querySelector('.step-value').innerHTML = step.stepValue();
 
-        scope.querySelector('.top .title').innerHTML = Lang('step title') + " " + (step_index + 1);
+        const is_last = step.isLastStep(), after_last = step.afterLastStep();
+
+        let title = Lang('step title') + " " + (step_index + 1);
+        if ( is_last )
+            title = Lang('step title: finale');
+        else if ( after_last )
+            title = Lang('step title: invalid');
+        scope.querySelector('.top .title').innerHTML = title;
         scope.querySelectorAll('.step-stats > .' + this.scopeClassName['stat']).forEach((p, i, ary) => {
             this.updateEnchantStatScope(p, step.stepStats[i]);
         });
 
         const eq = step.belongEquipment();
 
-        const stepPt = eq.currentPotential(step.index() + 1);
-        scope.querySelector('.step-potential').innerHTML = stepPt;
-        scope.classList[(stepPt < 1 || !eq.checkStatsNumber(step.index())) ? 'add' : 'remove']('warn');
+        scope.querySelector('.step-potential').innerHTML = step.stepRemainingPotential();
+        scope.classList.toggle('last-step', is_last);
+        scope.classList.toggle('after-last-step', after_last);
+
+        scope.classList.toggle('is-hidden', step.hidden());
     }
     updateEnchantStatScope(scope, estat){
         if ( !estat.valid() )
@@ -560,10 +674,54 @@ export default class EnchantSimulatorController {
 
         return step.stat(bn, type);
     }
+    createEquipment(){
+        const simpleCreateHTML = CY.element.simpleCreateHTML;
+
+        const eq = new EnchantEquipment();
+        this.equipments.push(eq);
+
+        const el = this.nodes.equipmentsList;
+        const btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'select-equipment'], Lang('equipment') + " " + this.equipments.length);
+        btn.addEventListener('click', this.listeners.selectCurrentEquipment);
+        el.insertBefore(btn, el.querySelector('.create-equipment'));
+
+        const eq_scope = this.createEquipmentHTML();
+
+        this.nodes.equipments.appendChild(eq_scope);
+
+        this.updateEquipmentScope(eq_scope, eq);
+
+        btn.click();
+
+        return [eq, eq_scope];
+    }
+    copyEquipment(eq){
+        const [new_eq, new_eq_scope] = this.createEquipment();
+
+        new_eq.originalPotential(eq.originalPotential());
+        new_eq.basePotential(eq.basePotential());
+
+        eq._steps.forEach(step => {
+            const [new_step, new_step_scope] = this.createStep(new_eq);
+            new_step.setType(step.type);
+            new_step.hidden(step.hidden());
+            this.status.currentStepScope = new_step_scope;
+            step.stepStats.forEach(stat => {
+                this.createEnchantStat(new_step, stat.itemBase, stat.statType(), stat.statValue());
+            });
+        });
+
+        this.updateCurrentEquipmentScope();
+
+        const eq_name = t => Lang('equipment') + (this.equipments.indexOf(t) + 1).toString();
+        ShowMessage(Lang('copy equipment success', [eq_name(eq), eq_name(new_eq)]), 'done', 'copy equipment success');
+    }
     createEquipmentHTML(){
         const simpleCreateHTML = CY.element.simpleCreateHTML;
 
         const r = simpleCreateHTML('div', [this.scopeClassName['equipment'], 'hidden']);
+
+        const top_menu = simpleCreateHTML('div', 'top-menu');
 
         const field_menu = simpleCreateHTML('ul', 'field-menu');
         const field_menu_text = Lang('Equipment Field List');
@@ -575,6 +733,16 @@ export default class EnchantSimulatorController {
             if ( i == 0 )
                 li.classList.add('cur');
         });
+
+        top_menu.appendChild(field_menu);
+
+        const copy_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'no-border'], Icons('content-copy') + `<span class="text">${Lang('copy equipment')}</span>`);
+        copy_btn.addEventListener('click', this.listeners.copyEquipment);
+        top_menu.appendChild(copy_btn);
+
+        const remove_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'no-border'], Icons('delete') + `<span class="text">${Lang('remove equipment')}</span>`);
+        remove_btn.addEventListener('click', this.listeners.removeEquipment);
+        top_menu.appendChild(remove_btn);
 
         const set_orig_pot = simpleCreateHTML('div', ['Cyteria', 'set-button-line', 'set-original-potential']);
         {
@@ -619,7 +787,7 @@ export default class EnchantSimulatorController {
 
         steps.appendChild(create_step_btn);
 
-        const show_res_scope = simpleCreateHTML('div', ['show-result-scope', 'hidden']);
+        const show_res_scope = simpleCreateHTML('div', 'show-result-scope');
         const show_res = simpleCreateHTML('div', 'show-result');
         const show_res_top = simpleCreateHTML('div', 'top');
         const show_res_copy_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'right'], Icons('content-copy'));
@@ -629,10 +797,10 @@ export default class EnchantSimulatorController {
         show_res.appendChild(simpleCreateHTML('div', 'show-result-content'));
         show_res_scope.appendChild(show_res);
 
-        const successRate = simpleCreateHTML('div', ['success-rate-scope', 'hidden']);
+        const successRate = simpleCreateHTML('div', 'success-rate-scope');
         successRate.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], Icons('star-border') + `<span class="text">${Lang('Success Rate')}</span><span class="value success-rate"></span>`));
 
-        r.appendChild(field_menu);
+        r.appendChild(top_menu);
         r.appendChild(set_orig_pot);
         r.appendChild(set_base_pot);
         r.appendChild(steps);
@@ -640,6 +808,24 @@ export default class EnchantSimulatorController {
         r.appendChild(successRate);
 
         return r;
+    }
+    createStep(eq){
+        // if ( !t.checkStatsNumber() ){
+        //     ShowMessage(Lang('Warn/Number of Equipment Item exceeding the maximum'));
+        //     return;
+        // }
+        // if ( !t.checkCurrentPotential() ){
+        //     ShowMessage(Lang('Warn/Potential of Equipment has been less than 1'))
+        //     return;
+        // }
+        const eq_scope = this.nodes.equipments.querySelector('.enchant-equipment:not(.hidden)');
+        const step = eq.appendStep();
+        const steps_scope = eq_scope.querySelector('.steps');
+        const step_scope = this.createEnchantStepHTML(step);
+
+        steps_scope.insertBefore(step_scope, steps_scope.querySelector('.create-step'));
+
+        return [step, step_scope];
     }
     createEnchantStepHTML(){
         const simpleCreateHTML = CY.element.simpleCreateHTML;
@@ -652,16 +838,33 @@ export default class EnchantSimulatorController {
         const delete_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('delete'));
         delete_btn.addEventListener('click', this.listeners.removeStep);
 
-        const up_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('arrow-up'), {'data-ctr': '<'});
-        const down_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('arrow-down'), {'data-ctr': '>'});
-        up_btn.addEventListener('click', this.listeners.moveStep);
-        down_btn.addEventListener('click', this.listeners.moveStep);
+        const hidden_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('block'));
+        hidden_btn.addEventListener('click', this.listeners.hiddenStep);
 
-        top.appendChild(up_btn);
-        top.appendChild(down_btn);
+        const toggle_extra_menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('menu'));
+        toggle_extra_menu_btn.addEventListener('click', this.listeners.toggleStepExtraMenu);
+
+        top.appendChild(hidden_btn);
         top.appendChild(delete_btn);
+        top.appendChild(toggle_extra_menu_btn);
 
         scope.appendChild(top);
+
+        const extra_menu = simpleCreateHTML('div', ['extra-menu', 'hidden']);
+        
+        const up_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('arrow-up'), {'data-ctr': '<'});
+        up_btn.addEventListener('click', this.listeners.moveStep);
+        const down_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('arrow-down'), {'data-ctr': '>'});
+        down_btn.addEventListener('click', this.listeners.moveStep);
+
+        const insert_up_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('table-row-insert-before'));
+        insert_up_btn.addEventListener('click', this.listeners.insertStep);
+        
+        extra_menu.appendChild(up_btn);
+        extra_menu.appendChild(down_btn);
+        extra_menu.appendChild(insert_up_btn);
+
+        scope.appendChild(extra_menu);
 
         
         const step_type = simpleCreateHTML('div', 'step-type');
@@ -688,7 +891,7 @@ export default class EnchantSimulatorController {
 
         const stats = simpleCreateHTML('div', 'step-stats');
 
-        const create_stat_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'no-border', 'create-step'], Icons('add-circle-outline') + `<span class="text">${Lang('create enchant stat')}</span>`);
+        const create_stat_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'no-border', 'create-stat'], Icons('add-circle-outline') + `<span class="text">${Lang('create enchant stat')}</span>`);
         create_stat_btn.addEventListener('click', this.listeners.openCreateStatWindow);
         stats.appendChild(create_stat_btn);
 
@@ -697,6 +900,34 @@ export default class EnchantSimulatorController {
         scope.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'line', 'show-step-potential'], Icons('creation') + '<span class="text step-potential"></span>'));
 
         return scope;
+    }
+    createEnchantStat(step, item, type, value){
+        if ( step.stat(item, type) ){
+            ShowMessage(Lang('Warn/Step Stat Repeat'));
+            return;
+        }
+
+        const eq = step.belongEquipment();
+
+        const [max, min] = item.getLimit(type);
+        const pot = item.getPotential(type, eq.status);
+
+        let new_value = 0;
+        const estat = step.appendStat(item, type, new_value);
+
+        value = value !== void 0 ? value : (pot > item.basePotential(type) ? (min - Math.min(estat.getPreviousStepStatValue(), 0)) : 0);
+        estat.statValue(value);
+
+        if ( !estat ){
+            ShowMessage(Lang('Warn/Number of Equipment Item exceeding the maximum'));
+            return;
+        }
+
+        const node = this.createEnchantStatHTML(estat);
+        const stats_scope = this.status.currentStepScope.querySelector('.step-stats');
+        stats_scope.insertBefore(node, stats_scope.querySelector('.create-stat'));
+
+        return [estat, node];
     }
     createEnchantStatHTML(){
         const simpleCreateHTML = CY.element.simpleCreateHTML;
@@ -732,5 +963,152 @@ export default class EnchantSimulatorController {
         scope.appendChild(sub);
 
         return scope;
+    }
+    saveToCsv(){
+        const {type, index} = this.getSaveLoadSetting();
+        const data = [];
+
+        const createColumn = l => {
+            const t = l ? new Array(l) : [];
+            data.push(t);
+            return t;
+        };
+
+        const stepTypeToInt = t => t == EnchantStep.TYPE_NORMAL ? 0 : 1;
+        const statTypeToInt = t => t == StatBase.TYPE_CONSTANT ? 0 : 1;
+        const boolToInt = b => b ? 1 : 0;
+
+        const ctrdata = createColumn(2);
+        ctrdata[index['controller']['characterLevel']] = EnchantElementStatus('Character/level');
+        ctrdata[index['controller']['characterSmithLevel']] = EnchantElementStatus('Character/smithLevel');
+
+        this.equipments.forEach(eq => {
+            const p = createColumn(3);
+            p[index['type']] = type['equipment'];
+            p[index['equipment']['fieldType']] = eq.status.fieldType;
+            p[index['equipment']['isOriginalElement']] = boolToInt(eq.status.isOriginalElement);
+            p[index['equipment']['originalPotential']] = eq.originalPotential();
+            p[index['equipment']['basePotential']] = eq.basePotential();
+            eq._steps.forEach(step => {
+                const p1 = createColumn(2);
+                p1[index['type']] = type['step'];
+                p1[index['step']['type']] = stepTypeToInt(step.type);
+                p1[index['step']['hidden']] = boolToInt(step.hidden());
+                step.stepStats.forEach(stat => {
+                    const p2 = createColumn(2);
+                    p2[index['type']] = type['stat'];
+                    p2[index['stat']['baseName']] = stat.baseName();
+                    p2[index['stat']['type']] = statTypeToInt(stat.statType());
+                    p2[index['stat']['value']] = stat.statValue();
+                });
+            });
+        });
+
+        return Papa.unparse(data);
+    }
+    loadFromCsv(csv_string){
+        const {type, index} = this.getSaveLoadSetting();
+
+        const intStrToBool = t => t == '1' ? true : false;
+        const intStrToStepType = t => t == '0' ? EnchantStep.TYPE_NORMAL : EnchantStep.TYPE_EACH;
+        const intStrToStatType = t => t == '0' ? StatBase.TYPE_CONSTANT : StatBase.TYPE_MULTIPLIER;
+
+        const findItemBaseByBaseName = bn => {
+            let res;
+            this.parent.categorys.find(ct => {
+                res = ct.items.find(item => item.statBase.baseName == bn);
+                return res;
+            });
+            return res;
+        };
+
+        this.nodes.equipmentsList.querySelectorAll('.select-equipment')
+            .forEach(el => CY.element.remove(el));
+        CY.element.removeAllChild(this.nodes.equipments);
+        this.equipments = [];
+
+        try {
+            let cur_eq = null,
+                cur_step = null,
+                cur_step_scope = null;
+            Papa.parse(csv_string).data.forEach((p, i) => {
+                if ( i == 0 ){
+                    const t = index['controller'];
+                    const clv = parseInt(p[t['characterLevel']], 10),
+                        cslv = parseInt(p[t['characterSmithLevel']], 10);
+                    EnchantElementStatus('Character/level', clv);
+                    EnchantElementStatus('Character/smithLevel', cslv);
+
+                    this.nodes.main.querySelector('.character-level').innerHTML = clv;
+                    this.nodes.main.querySelector('.character-smith-level').innerHTML = cslv;
+                    return;
+                }
+                const line_type_no = parseInt(p[index['type']], 10);
+                const line_type = Object.keys(type).find(a => type[a] == line_type_no);
+                const ti = index[line_type];
+                if ( line_type == 'equipment' ){
+                    const [eq, eq_scope] = this.createEquipment();
+                    cur_eq = eq;
+                    eq.setStatus('fieldType', parseInt(p[ti['fieldType']], 10));
+                    eq.setStatus('isOriginalElement', intStrToBool(p[ti['isOriginalElement']]));
+                    eq.originalPotential(parseInt(p[ti['originalPotential']], 10));
+                    eq.basePotential(parseInt(p[ti['basePotential']], 10));
+                }
+                else if ( line_type == 'step' ){
+                    const [step, step_scope] = this.createStep(cur_eq);
+                    cur_step = step;
+                    cur_step_scope = step_scope;
+                    step.setType(intStrToStepType(p[ti['type']]));
+                    step.hidden(intStrToBool(p[ti['hidden']]));
+                }
+                else if ( line_type == 'stat' ){
+                    this.status.currentStepScope = cur_step_scope;
+                    this.createEnchantStat(
+                        cur_step,
+                        findItemBaseByBaseName(p[ti['baseName']]),
+                        intStrToStatType(p[ti['type']]),
+                        parseInt(p[ti['value']], 10)
+                    );
+                }
+            });
+        }
+        catch(e){
+            ShowMessage(GetLang('Save Load System/Warn/An error occurred while loading data'));
+            console.log(e);
+        }
+
+        const eq_scopes = this.nodes.equipments.querySelectorAll('.' + this.scopeClassName['equipment']);
+        eq_scopes.forEach((scope, i) => this.updateEquipmentScope(scope, this.equipments[i]));
+    }
+    getSaveLoadSetting(){
+        const type = {
+            'equipment': 0,
+            'step': 1,
+            'stat': 2
+        };
+        const index = {
+            'type': 0,
+            'controller': {
+                'characterLevel': 0,
+                'characterSmithLevel': 1
+            },
+            'equipment': {
+                'fieldType': 1,
+                'isOriginalElement': 2,
+                'originalPotential': 3,
+                'basePotential': 4
+            },
+            'step': {
+                'type': 1,
+                'hidden': 2
+            },
+            'stat': {
+                'baseName': 1,
+                'type': 2,
+                'value': 3
+            }
+        };
+
+        return {type, index};
     }
 }

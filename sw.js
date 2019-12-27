@@ -78,27 +78,27 @@ workbox.routing.registerRoute(
 workbox.precaching.precacheAndRoute([
   {
     "url": "index.html",
-    "revision": "daa9730295611d9b401f7dd6d8039367"
+    "revision": "a03d6d0196357edca0685779168b5ff3"
   },
   {
     "url": "dist/damage-calculation.min.js",
-    "revision": "a9a13659b878a16d455bc1b8cae1366b"
+    "revision": "55b2e388b5080c0c20ee4c04de0c6942"
   },
   {
     "url": "dist/enchant-simulator.min.js",
-    "revision": "b5ecf2b91cd075f3fa6a2c1b70cc15ff"
+    "revision": "00e6e467e108c01b66f3d9fe3c632040"
   },
   {
     "url": "dist/home.min.js",
-    "revision": "e897958dbf22cadc58cf9ce384db3e97"
+    "revision": "fc410574e200f756069c3f0a94a6d16b"
   },
   {
     "url": "dist/item-query.min.js",
-    "revision": "962450c2e288c42550739cb23e5b36e5"
+    "revision": "44f883394666f9edc45a0c2f6cb41bfb"
   },
   {
     "url": "dist/skill-query.min.js",
-    "revision": "5d90ef17c11fc362ca07e3853b3cd198"
+    "revision": "b2665d1ceb2482bac8d46cdcd48b39bc"
   },
   {
     "url": "src/css/CalculationSystem/Damage/main.css",
@@ -106,7 +106,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/EnchantSimulator/main.css",
-    "revision": "0cf55804545236184fe140335a3b38c3"
+    "revision": "f5eed621e358b79064d2011d87c09c0b"
   },
   {
     "url": "src/css/ItemQuery/main.css",
@@ -118,7 +118,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/main/Cyteria/Cyteria.css",
-    "revision": "681dc830a92bd9b5fd1d1668878e80b6"
+    "revision": "1a840edbba9dea93829eb6535beb624e"
   },
   {
     "url": "src/css/main/font/font.css",
@@ -138,11 +138,15 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/main/main.css",
-    "revision": "94fc62d500c8de01c80582dcf8087d1f"
+    "revision": "01f994ab9727511063d87cca51964e8e"
   },
   {
     "url": "src/css/main/Settings/main.css",
     "revision": "8f8aa5bb7735cbff9b2778e38d2a0c5b"
+  },
+  {
+    "url": "src/css/SaveLoad/main.css",
+    "revision": "593364263594864ca17ff9a02cdacfb3"
   },
   {
     "url": "src/css/SkillQuery/DrawSkillTree.css",

@@ -9,7 +9,8 @@ function InitEnchantElementStatus(set){
     set = Object.assign({
         Character: {
             level: 200,
-            tec: 255    
+            tec: 255   ,
+            smithLevel: 170 
         },
         ItemPotentialLimit: 100,
         EquipmentItemMaximumNumber: 8,
@@ -160,7 +161,7 @@ class EnchantItemBaseAttributes {
 
 class EnchantEquipment {
     constructor(){
-        this.steps = [];
+        this._steps = [];
         this.status = {
             basePotential: Status.EquipmentBasePotentialMiniMum,
             originalPotential: 1,
@@ -194,48 +195,38 @@ class EnchantEquipment {
         return this.basePotential(this.basePotential() + v);
     }
     currentPotential(step_index){
-        step_index = this.checkStepIndex(step_index);
-        let res = this.originalPotential();
-        this.steps.slice(0, step_index).forEach(p => res -= p.getPotentialCost());
-        return res;
-    }
-    checkStepIndex(i){
-        const l = this.steps.length;
-        if ( i === void 0 )
-            i = l;
-        if ( i < 0 )
-            i = l + i;
-        if ( i < 0 )
-            i = 0;
-        return i;
+        return this.currentSteps(step_index).reduce((c, p) => (c - p.getPotentialCost()), this.originalPotential());
     }
     appendStep(){
         const step = new EnchantStep(this);
-        this.steps.push(step);
+        this._steps.push(step);
+        return step;
+    }
+    appendStepBefore(before_step){
+        const step = new EnchantStep(this);
+        this._steps.splice(before_step.index(), 0, step);
         return step;
     }
     step(i){
-        return this.steps[i];
+        return this._steps[i];
     }
     stat(itemBase, type, step_index){
-        step_index = this.checkStepIndex(step_index);
-        let v = 0;
-        this.steps.slice(0, step_index).forEach(p => {
+        const v = this.currentSteps(step_index).reduce((c, p) => {
             const t = p.stat(itemBase, type);
             if ( t && t.valid() )
-                v += t.statValue();
-        });
+                c += t.statValue();
+            return c;
+        }, 0);
         return new EnchantStat(itemBase, type, v);
     }
     /**
-     * get stats before this.steps[step_index]
-     * @param  {?int} step_index   default: length of this.steps (get all stats of steps)
+     * get stats before this._steps[step_index]
+     * @param  {?int} step_index   default: length of this._steps (get all stats of steps)
      * @return {Array<SimpleStat>}
      */
     currentStats(step_index){
-        step_index = this.checkStepIndex(step_index);
         const stats = [];
-        this.steps.slice(0, step_index).forEach(p => {
+        this.currentSteps(step_index).forEach(p => {
             p.stepStats.forEach(a => {
                 if ( !a.valid() )
                     return;
@@ -260,9 +251,10 @@ class EnchantEquipment {
     checkCurrentPotential(){
         return this.currentPotential() > 0;
     }
+
     checkStepsPotentialCost(){
         let res = this.originalPotential();
-        return !this.steps.slice(0, -1).find(p => {
+        return !this.currentSteps(this.lastStepIndex() - 1).find(p => {
             res -= p.getPotentialCost();
             return res < 1;
         });
@@ -279,14 +271,15 @@ class EnchantEquipment {
                 t.push({category: cat, cnt: 1});
             }
         });
-        const res = t.reduce((a, b) => a + (b.cnt > 1 ? b.cnt*b.cnt : 0), 20);
-        return res/20;
+        const res = t.reduce((a, b) => a + (b.cnt > 1 ? b.cnt * b.cnt : 0), 20);
+        return res / 20;
     }
     successRate(){
-        const pot = this.currentPotential();
-        const d = Math.max(this.currentPotential(-1), this.basePotential());
+        const last_index = this.lastStepIndex();
+        const pot = this.currentPotential(last_index);
+        const d = Math.max(this.currentPotential(last_index-1), this.basePotential());
         if ( !this.checkStats() || !this.checkCurrentPotential() )
-            return Math.max(130 + pot*230/d, 0);
+            return Math.max(130 + pot * 230 / d, 0);
         return -1;
     }
     refreshStats(){
@@ -295,7 +288,7 @@ class EnchantEquipment {
             const v = p.statValue();
             if ( v > max || v < min ){
                 const dif = v > max ? v - max : v - min;
-                this.steps.slice().reverse().find(a => {
+                this.currentSteps().slice().reverse().find(a => {
                     const t = a.stat(p.itemBase, p.statType());
                     if ( t ){
                         t.addStatValue(-1*dif);
@@ -307,25 +300,43 @@ class EnchantEquipment {
         })
     }
     swapStep(i1, i2){
-        if ( i1 < 0 || i2 < 0 || i1 >= this.steps.length || i2 >= this.steps.length )
+        if ( i1 < 0 || i2 < 0 || i1 >= this._steps.length || i2 >= this._steps.length )
             return false;
-        const t = this.steps[i1];
-        this.steps[i1] = this.steps[i2];
-        this.steps[i2] = t;
+        const t = this._steps[i1];
+        this._steps[i1] = this._steps[i2];
+        this._steps[i2] = t;
         return true;
     }
     getAllMaterialPointCost(){
         const mats = Array(6).fill(0);
-        this.steps.forEach(p => p.stepStats.forEach(a => {
+        this.currentSteps().forEach(p => p.stepStats.forEach(a => {
             const t = a.getMaterialPointCost();
             mats[t.type] += t.value;
         }));
         return mats;
     }
     containsStat(stat, step_index){
-        step_index = this.checkStepIndex(step_index);
-        const res = this.steps.slice(0, step_index).find(p => p.stepStats.find(q => q.equals(stat)));
-        return res ? true : false;
+        return this.currentStats(step_index).find(q => q.equals(stat)) ? true : false;
+    }
+    currentSteps(step_index){
+        if ( step_index === void 0 )
+            step_index = this._steps.length - 1;
+        if ( step_index < 0 )
+            return [];
+
+        return this._steps.slice(0, step_index + 1).filter(step => !step.hidden());
+    }
+    lastStep(){
+        return this.currentSteps().find((p, i, ary) => {
+            return (i == ary.length - 1)
+                || (p.stepRemainingPotential() < 1
+                    || !p.belongEquipment().checkStatsNumber(p.index())
+                );
+        });
+    }
+    lastStepIndex(){
+        const last = this.lastStep();
+        return last ? last.index() : -1;
     }
 }
 
@@ -333,9 +344,12 @@ class EnchantEquipment {
 class EnchantStep {
     constructor(parent){
         this._parent = parent;
-        this.stepStats = [];
+        this.stepStats = []; /* @type {Array<EnchantStepStat>} */
         this.type = EnchantStep.TYPE_NORMAL;
         this.step = 1;
+        this.status = {
+            hidden: false
+        };
     }
     appendStat(){
         const stat = new EnchantStepStat(this, ...arguments);
@@ -384,7 +398,7 @@ class EnchantStep {
         return p > 0 ? Math.floor(p) : Math.ceil(p);
     }
     index(){
-        return this._parent.steps.indexOf(this);
+        return this._parent._steps.indexOf(this);
     }
     stat(itemBase, type){
         let t = typeof itemBase == 'string' // by statBase.baseName
@@ -394,14 +408,57 @@ class EnchantStep {
     }
     remove(){
         const i = this.index();
-        this.belongEquipment().steps.splice(i, 1);
+        this.belongEquipment()._steps.splice(i, 1);
         this.stepStats.forEach(p => p.remove());
     }
     belongEquipment(){
         return this._parent;
     }
     getPotentialExtraRate(){
-        return this.belongEquipment().calcPotentialExtraRate(this.index() + 1);
+        return this.belongEquipment().calcPotentialExtraRate(this.index());
+    }
+    stepRemainingPotential(){
+        return this.belongEquipment().currentPotential(this.index());
+    }
+    previousStep(){
+        const eq =  this.belongEquipment();
+        let index = this.index();
+
+        if ( index == 0 )
+            return void 0;
+
+        let cur = eq.step(index - 1);
+        while ( cur.hidden() ){
+            --index;
+            cur = eq.step(index - 1);
+            if ( !cur )
+                return void 0;
+        }
+        return cur;
+    }
+    isLastStep(){
+        // const step_list = this.belongEquipment().currentSteps();
+        // const pre = this.previousStep();
+        // const check = !this.afterLastStep() && (
+        //     step_list[step_list.length-1] == this
+        //     || (
+        //         (this.stepRemainingPotential() < 1
+        //             || !this.belongEquipment().checkStatsNumber(this.index())
+        //         )
+        //     )
+        // );
+        // return check ? true : false;
+        return this.belongEquipment().lastStep() == this;
+    }
+    afterLastStep(){
+        // const pre = this.previousStep();
+        // return (pre && (pre.isLastStep() || pre.afterLastStep())) ? true : false;
+        return this.belongEquipment().lastStepIndex() < this.index();
+    }
+    hidden(set){
+        if ( set !== void 0 )
+            this.status.hidden = set;
+        return this.status.hidden;
     }
 }
 EnchantStep.TYPE_NORMAL = Symbol('normal');
@@ -510,9 +567,9 @@ class EnchantStepStat extends EnchantStat {
      * @return {[type]} [description]
      */
     getPreviousStepStatValue(){
-        return this.belongEquipment().stat(this.itemBase, this.statType(), this._parent.index()).statValue();
+        return this.belongEquipment().stat(this.itemBase, this.statType(), this._parent.index()-1).statValue();
     }
-    showCurrent(){
+    showCurrentText(){
         return this.show(this.getPreviousStepStatValue() + this.statValue());
     }
     getMaterialPointCost(){
@@ -524,15 +581,35 @@ class EnchantStepStat extends EnchantStat {
         };
     }
     calcMaterialPointCost(from, to){
-        from = Math.abs(from);
-        to = Math.abs(to);
         if ( from > to ){
             const t = from;
             from = to;
             to = t;
         }
-        const t = this.itemBase.getMaterialPointValue(this.statType());
-        return Array(to - from).fill().map((p, i) => i + from + 1).reduce((a, b) => a + Math.floor(b*b*t), 0);
+
+        const smithlv = EnchantElementStatus('Character/smithLevel');
+        const r = (100 - Math.floor(smithlv/10) - Math.floor(smithlv/50));
+        const bv = this.itemBase.getMaterialPointValue(this.statType());
+
+        const calc = (_from, _to) => {
+            _to = Math.abs(_to);
+            _from = Math.abs(_from);
+            if ( _from > _to ){
+                const t = _from;
+                _from = _to;
+                _to = t;
+            }
+            return Array(_to - _from).fill()
+                .map((p, i) => i + _from + 1)
+                .reduce((a, b) => a + Math.floor(b * b * bv * r / 100), 0)
+        };
+
+        if ( from*to >= 0 ){
+            return calc(from, to);
+        }
+        else {
+            return calc(from, 0) + calc(0, to);
+        }
     }
 }
 

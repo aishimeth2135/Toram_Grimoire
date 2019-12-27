@@ -1,5 +1,6 @@
 .set-character-level {
-    padding-left: 0.6rem;
+    margin-bottom: 1rem;
+
 }
 
 ul.equipments-list {
@@ -11,18 +12,25 @@ ul.equipments-list {
     align-items: center;
     flex-wrap: wrap;
 }
-.equipments-list > .select {
+.equipments-list > .select-equipment {
     padding: 0.5rem 0.8rem;
     margin: 0;
     margin-bottom: -1px;
 }
 
-.enchant-equipment > .field-menu {
+.enchant-equipment > .top-menu > .field-menu {
     list-style: none;
-    padding: 0.5rem 0.3rem;
+    padding: 0 0.3rem;
     margin: 0;
+    display: inline-block;
+    margin-right: 1rem;
+}
+.enchant-equipment > .top-menu {
     margin-bottom: 1rem;
-    border-bottom: 1px solid var(--primary-light);
+    padding: 0 0.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 
@@ -85,21 +93,55 @@ ul.equipments-list {
     fill: var(--primary-light-2);
 }
 
+/* ==========================================================================
+   step scope
+   ========================================================================== */
 .step-scope {
     border: 1px solid var(--primary-light-3);
     padding: 0.8rem;
     width: 20rem;
     margin: 0.4rem;
 }
-.step-scope.warn {
-    border-color: var(--primary-water-blue);
+.step-scope.is-hidden {
+    border-color: var(--primary-gray);
+    background-color: var(--primary-light);
 }
 .step-scope > .top {
     margin-bottom: 0.3rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 }
-.step-scope > .top > .title {
+.step-scope > .top .title {
     color: var(--primary-purple);
 }
+
+.step-scope > .extra-menu {
+    text-align: center;
+}
+
+
+.step-scope.last-step {
+    border-color: var(--primary-water-blue);
+}
+.step-scope.last-step > .top .title {
+    color: var(--primary-water-blue);
+}
+.step-scope.last-step > .top svg,
+.step-scope.last-step > .extra-menu svg {
+    fill: var(--primary-water-blue-light);
+}
+.step-scope.after-last-step {
+    border-color: var(--primary-water-blue-light);
+}
+.step-scope.after-last-step > .top .title {
+    color: var(--primary-gray);
+}
+.step-scope.after-last-step > .top svg,
+.step-scope.after-last-step > .extra-menu svg {
+    fill: var(--primary-gray-light);
+}
+
 .step-scope > .step-type {
     padding: 0.6rem 0;
     border-top: 1px solid var(--primary-light);
@@ -122,6 +164,9 @@ ul.equipments-list {
     border-top: 1px solid var(--primary-light-2);
 }
 
+/* ==========================================================================
+   step stat
+   ========================================================================== */
 .step-scope > .step-stats > .stat-scope {
     padding: 0.6rem 0;
     padding-bottom: 0.4rem;
@@ -139,7 +184,9 @@ ul.equipments-list {
     margin-top: 0.4rem;
 }
 
-
+/* ==========================================================================
+   ...
+   ========================================================================== */
 .select-stat > .category-title {
     font-size: 0.9rem;
     padding: 0.3rem 0;

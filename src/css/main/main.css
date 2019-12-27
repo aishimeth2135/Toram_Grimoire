@@ -10,6 +10,7 @@
 	--primary-water-blue-light: #9acbf3;
 	--primary-water-blue: #2196f3;
 	--primary-gray: #666;
+	--primary-gray-light: #999;
 	--primary-blue-grean: #009688;
 	--primary-blue-grean-light: #67d1c7;
 	--white: white;
@@ -28,6 +29,7 @@ body.theme--night-mode {
 	--primary-water-blue-light: #2196f2;
 	--primary-water-blue: #aed1ef;
 	--primary-gray: #AAA;
+	--primary-gray-light: #555;
 	--primary-blue-grean: #81ded5;
 	--primary-blue-grean-light: #23b1a4;
 	--white: black;
@@ -256,33 +258,74 @@ nav > ul > li > a::after {
 	}
 }
 
-
+/* ==========================================================================
+   show message
+   ========================================================================== */
 #show-message {
-	position: fixed;
-	top: 3rem;
-	max-width: 20rem;
-	margin: 0 auto;
-	left: 0;
-	right: 0;
-	z-index: 30;
+    position: fixed;
+    width: 25rem;
+    margin: 0 auto;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 30;
 }
-#show-message > div {
-	margin: 0.2rem 0;
-	padding: 0.6rem;
-	background-color: var(--white);
-	color: var(--primary-light-4);
-	border: 1px solid var(--primary-light-4);
-	animation: show-message 5s ease-out;
+#show-message > .message-scope {
+    margin: 0.2rem 0;
+    padding: 1.2rem;
+    font-size: 1.2rem;
+    background-color: var(--primary-dark-light);
+    color: var(--white);
+    border: 1px solid var(--primary-light-4);
+    position: relative;
+}
+#show-message > .message-scope.out {
+	animation: show-message 0.5s ease-out;
 	opacity: 0;
 }
+#show-message > .message-scope svg {
+    width: 2rem;
+    height: 2rem;
+    fill: var(--primary-light-2);
+}
+#show-message > .message-scope > .notification-count {
+	position: absolute;
+	right: 0;
+	top: 0;
+	transform: translate(50%, -50%);
+	padding: 0.2rem 0;
+	text-align: center;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+	z-index: 32;
+	background-color: var(--primary-dark);
+	color: var(--white);
+	display: inline-block;
+}
 @keyframes show-message {
-	0% {
-		opacity: 1;
-	}
-	80% {
-		opacity: 1;
-	}
-	100% {
-		opacity: 0;
-	}
+    0% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@media screen and (max-width: 30rem) {
+    #show-message {
+		bottom: 1rem;
+		right: 1rem;
+		max-width: calc(100vw - 2rem);
+    }
+    #show-message > .message-scope {
+        padding: 0.8rem;
+        font-size: 1rem;
+    }
+    #show-message > .message-scope svg {
+        width: 1.6rem;
+        height: 1.6rem;
+    }
 }
