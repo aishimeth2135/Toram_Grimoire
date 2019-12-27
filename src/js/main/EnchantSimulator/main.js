@@ -37,7 +37,7 @@ async function start(){
         const scope = await startLoadingMsg(GetLang('Loading Message/Enchant System Init'));
         await Grimoire.EnchantSystem.init_EnchantSimulator(document.getElementById('EnchantSimulator'))
             .then(() => loadingFinished(scope))
-            .catch(() => loadingError(scope));
+            .catch((err) => {loadingError(scope); console.log(err)});
     }
     
     ready();

@@ -114,7 +114,7 @@ function InitLanguageData(data){
 }
 
 function GetLang(id, values){
-    const t = Search(LanguageData, id);
+    let t = Search(LanguageData, id);
     if ( t === void 0 ){
         console.warn(`[Unknow Language data] id: ${id}`);
         console.log(new Error().stack);
@@ -123,7 +123,7 @@ function GetLang(id, values){
     }
 
     if ( Array.isArray(values) )
-        t = t.replace(/\$(\d+)/, (v, i) => values[i] !== void 0 && values[i] !== null ? values[i] : '?');
+        t = t.replace(/\$(\d+)/g, (v, i) => values[i] !== void 0 && values[i] !== null ? values[i] : '?');
 
     return t || '???';
 }
