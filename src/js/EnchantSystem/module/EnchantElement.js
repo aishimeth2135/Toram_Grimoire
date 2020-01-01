@@ -10,7 +10,7 @@ function InitEnchantElementStatus(set){
         Character: {
             level: 200,
             tec: 255   ,
-            smithLevel: 170 
+            smithLevel: 0
         },
         ItemPotentialLimit: 100,
         EquipmentItemMaximumNumber: 8,
@@ -437,22 +437,9 @@ class EnchantStep {
         return cur;
     }
     isLastStep(){
-        // const step_list = this.belongEquipment().currentSteps();
-        // const pre = this.previousStep();
-        // const check = !this.afterLastStep() && (
-        //     step_list[step_list.length-1] == this
-        //     || (
-        //         (this.stepRemainingPotential() < 1
-        //             || !this.belongEquipment().checkStatsNumber(this.index())
-        //         )
-        //     )
-        // );
-        // return check ? true : false;
         return this.belongEquipment().lastStep() == this;
     }
     afterLastStep(){
-        // const pre = this.previousStep();
-        // return (pre && (pre.isLastStep() || pre.afterLastStep())) ? true : false;
         return this.belongEquipment().lastStepIndex() < this.index();
     }
     hidden(set){

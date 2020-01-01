@@ -14,28 +14,6 @@ span.for-adjust-input-width {
     overflow: hidden;
 }
 
-.CalculationSystem-Damage > .top::after {
-    border-top: 1px solid var(--primary-light);
-}
-
-.CalculationSystem-Damage .calculation-select {
-    padding: 0.2rem 0.3rem;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    overflow-x: auto;
-}
-.CalculationSystem-Damage .calculation-select > li {
-    white-space: nowrap;
-}
-.CalculationSystem-Damage .calculation-select > li.cur > .text {
-    color: var(--primary-light-4)!important;
-}
-.CalculationSystem-Damage .calculation-select > li:not(.cur):not(.create-calclulation) > svg {
-    display: none;
-}
-
 
 .CalculationSystem-Damage > .save-load-scope > .content > .scope {
     margin-bottom: 0.5rem;

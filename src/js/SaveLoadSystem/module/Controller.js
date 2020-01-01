@@ -130,7 +130,7 @@ export default class Controller {
 
         const simpleCreateHTML = CY.element.simpleCreateHTML;
 
-        this.dataPretext = name + '--';
+        this.dataPretext = set.name + '--';
         this.SAVE_SIZE = set.saveSize;
 
         const menu_node = set.menuNode;
@@ -163,6 +163,23 @@ export default class Controller {
         sl_scope.appendChild(simpleCreateHTML('div', 'content'));
 
         this.nodes.save_load = sl_scope;
+
+        //暫，幾個版本後拿掉
+        const stg = window.localStorage;
+        Array(this.SAVE_SIZE).fill().forEach((p, i) => {
+            const _pretext = '--' + i + '-',
+                pretext = this.dataPretext + i + '-';
+
+            const _stg_name_names = _pretext + 'names',
+                stg_name_names = pretext + 'names';
+            const _names = stg.getItem(_stg_name_names),
+                names = stg.getItem(stg_name_names);
+            if ( _names && !names ){
+                const _stg_name_data = _pretext + 'data';
+                stg.setItem(stg_name_names, stg.getItem(_stg_name_names));
+                stg.setItem(pretext + 'data', stg.getItem(_stg_name_data));
+            }
+        });
 
         return this;
     }

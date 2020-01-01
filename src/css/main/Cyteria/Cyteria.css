@@ -527,6 +527,7 @@
     /* padding-top and padding-botton must be 0
     padding-top: 0;
     padding-bottom: 0; */
+    margin-bottom: 1px;
 }
 .Cyteria.Layout.sticky-header::before,
 .Cyteria.Layout.sticky-header::after {
@@ -559,6 +560,32 @@
 .Cyteria.Layout.sticky-header > .content > .button {
     margin-left: auto;
     margin-right: 0.3rem;
+}
+.Cyteria.Layout.sticky-header > .content > ul.menu {
+    padding: 0.2rem 0.3rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    overflow-x: auto;
+}
+.Cyteria.Layout.sticky-header > .content > ul.menu > li {
+    white-space: nowrap;
+}
+.Cyteria.Layout.sticky-header > .content > ul.menu > li:not(.cur) > .text {
+    color: var(--primary-light-2);
+}
+.Cyteria.Layout.sticky-header > .content > ul.menu > li:hover > .text {
+    color: var(--primary-dark);
+}
+/* .Cyteria.Layout.sticky-header > .content > ul.menu > li.cur > .text {
+    color: var(--primary-light-4)!important;
+} */
+.Cyteria.Layout.sticky-header > .content > ul.menu > li:not(.cur):not(.after-button) > svg {
+    display: none;
+}
+.Cyteria.Layout.sticky-header.bottom-border::after {
+    border-top: 1px solid var(--primary-light);
 }
 
 /* ==========================================================================
