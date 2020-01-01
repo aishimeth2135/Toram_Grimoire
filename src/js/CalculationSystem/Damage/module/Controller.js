@@ -407,11 +407,11 @@ export default class DamageCalculationController {
         const simpleCreateHTML = CY.element.simpleCreateHTML;
 
         //
-        const top = simpleCreateHTML('div', ['Cyteria', 'Layout', 'sticky-header', 'top']);
+        const top = simpleCreateHTML('div', ['Cyteria', 'Layout', 'sticky-header', 'top', 'bottom-border']);
         const top_content = simpleCreateHTML('div', 'content');
 
-        const calculationSelect = simpleCreateHTML('ul', 'calculation-select');
-        const create_cal_btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'no-border', 'create-calclulation'], Icons('add-circle-outline') + '<span class="text">' + Lang('create calculation') + '</span>');
+        const calculationSelect = simpleCreateHTML('ul', ['calculation-select', 'menu']);
+        const create_cal_btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'no-border', 'create-calclulation', 'after-button'], Icons('add-circle-outline') + '<span class="text">' + Lang('create calculation') + '</span>');
         create_cal_btn.addEventListener('click', this.listeners.createCalculation);
         calculationSelect.appendChild(create_cal_btn);
         top_content.appendChild(calculationSelect);

@@ -82,11 +82,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/damage-calculation.min.js",
-    "revision": "55b2e388b5080c0c20ee4c04de0c6942"
+    "revision": "c1a0f20a51a23303b670ecd8f242e5cf"
   },
   {
     "url": "dist/enchant-simulator.min.js",
-    "revision": "5c96ebb0b25749179a07d2e702d16f95"
+    "revision": "0b06dff6b265fe15689f9e5bf8eadfa4"
   },
   {
     "url": "dist/home.min.js",
@@ -102,11 +102,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/CalculationSystem/Damage/main.css",
-    "revision": "f7176ae3c5a3fb9418517893ac6df03b"
+    "revision": "d00434f4c070abccca70d8dc6c61f07a"
   },
   {
     "url": "src/css/EnchantSimulator/main.css",
-    "revision": "f5eed621e358b79064d2011d87c09c0b"
+    "revision": "b9d64a60123296337acd852bad648ba2"
   },
   {
     "url": "src/css/ItemQuery/main.css",
@@ -118,7 +118,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/main/Cyteria/Cyteria.css",
-    "revision": "1a840edbba9dea93829eb6535beb624e"
+    "revision": "ae9be52a6410afce21966c2795ff8201"
   },
   {
     "url": "src/css/main/font/font.css",

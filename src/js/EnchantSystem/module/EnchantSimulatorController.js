@@ -55,6 +55,11 @@ export default class EnchantSimulatorController {
                 v = EnchantElementStatus('Character/level', v);
                 this.parentNode.querySelector('.character-level').innerHTML = v;
 
+                if ( CY.storageAvailable('localStorage') ){
+                    const stg = window.localStorage;
+                    stg.setItem('Enchant-Simulator--global-CharacterLevel', v);
+                }
+
                 ctrr.equipments.forEach(eq => eq.refreshStats());
 
                 ctrr.updateCurrentEquipmentScope();
@@ -74,6 +79,11 @@ export default class EnchantSimulatorController {
                     return;
                 v = EnchantElementStatus('Character/smithLevel', v);
                 this.parentNode.querySelector('.character-smith-level').innerHTML = v;
+
+                if ( CY.storageAvailable('localStorage') ){
+                    const stg = window.localStorage;
+                    stg.setItem('Enchant-Simulator--global-CharacterSmithLevel', v);
+                }
 
                 ctrr.updateCurrentEquipmentScope();
             },
@@ -282,6 +292,8 @@ export default class EnchantSimulatorController {
 
                 steps_scope.insertBefore(new_step_scope, step_scope);
 
+                this.parentNode.previousSibling.querySelector('.toggle-extra-menu').click();
+
                 ctrr.updateCurrentEquipmentScope();
             },
             toggleStepExtraMenu(e){
@@ -316,35 +328,16 @@ export default class EnchantSimulatorController {
         const simpleCreateHTML = CY.element.simpleCreateHTML;
 
         this.nodes.main = hnode;
-        //
-        const top = simpleCreateHTML('div', ['Cyteria', 'Layout', 'sticky-header', 'top']);
-        const top_content = simpleCreateHTML('div', 'content');
 
-        const menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'menu-button', 'button'], Icons('cube-outline'));
-        menu_btn.addEventListener('click', this.listeners.openMainMenu);
-        top_content.appendChild(menu_btn);
-
-        top.appendChild(top_content);
-        hnode.appendChild(top);
-        //
-        const createCloseWindowButton = () => {
-            const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
-            btn.addEventListener('click', this.listeners.closeWindow);
-            return btn;
-        };
-        const menu_scope = simpleCreateHTML('div', ['Cyteria', 'window', 'top-center', 'bg-mask', 'frozen-top', 'menu-scope', 'hidden', 'Cyteria', 'entrance', 'fade-in']);
-
-        const menu_scope_top = simpleCreateHTML('div', 'top');
-        menu_scope_top.appendChild(simpleCreateHTML('span', 'name', Lang('Main Menu: title')));
-        menu_scope_top.appendChild(createCloseWindowButton());
-        const menu_scope_content = simpleCreateHTML('div', 'content');
-
-        menu_scope.appendChild(menu_scope_top);
-        menu_scope.appendChild(menu_scope_content);
-
-        hnode.appendChild(menu_scope);
-        this.nodes.menu = menu_scope;
-
+        if ( CY.storageAvailable('localStorage') ){
+            const stg = window.localStorage;
+            const clv = stg.getItem('Enchant-Simulator--global-CharacterLevel'),
+                cslv = stg.getItem('Enchant-Simulator--global-CharacterSmithLevel');
+            if ( clv )
+                EnchantElementStatus('Character/level', parseInt(clv));
+            if ( cslv )
+                EnchantElementStatus('Character/smithLevel', parseInt(cslv));
+        }
         const set_clv = simpleCreateHTML('div', ['Cyteria', 'set-button-line', 'set-character-level']);
         {
             const left =  CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'), {'data-ctr': '-'});
@@ -379,18 +372,47 @@ export default class EnchantSimulatorController {
             hnode.appendChild(set_smithlv);
         }
 
-        const eq_list = simpleCreateHTML('ul', 'equipments-list');
-        const create_eq_btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'no-border', 'create-equipment'], Icons('add-circle-outline') + `<span class="text">${Lang('create equipment')}</span>`);
+        //
+        const top = simpleCreateHTML('div', ['Cyteria', 'Layout', 'sticky-header', 'top', 'bottom-border']);
+        const top_content = simpleCreateHTML('div', 'content');
+
+        const eq_list = simpleCreateHTML('ul', ['equipments-list', 'menu']);
+        const create_eq_btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'no-border', 'create-equipment', 'after-button'], Icons('add-circle-outline') + `<span class="text">${Lang('create equipment')}</span>`);
         create_eq_btn.addEventListener('click', function(e){
             ctrr.createEquipment();
         });
         eq_list.appendChild(create_eq_btn);
         this.nodes.equipmentsList = eq_list;
+        top_content.appendChild(eq_list);
+
+        const menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'menu-button', 'button'], Icons('cube-outline'));
+        menu_btn.addEventListener('click', this.listeners.openMainMenu);
+        top_content.appendChild(menu_btn);
+
+        top.appendChild(top_content);
+        hnode.appendChild(top);
+        //
+        const createCloseWindowButton = () => {
+            const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
+            btn.addEventListener('click', this.listeners.closeWindow);
+            return btn;
+        };
+        const menu_scope = simpleCreateHTML('div', ['Cyteria', 'window', 'top-center', 'bg-mask', 'frozen-top', 'menu-scope', 'hidden', 'Cyteria', 'entrance', 'fade-in']);
+
+        const menu_scope_top = simpleCreateHTML('div', 'top');
+        menu_scope_top.appendChild(simpleCreateHTML('span', 'name', Lang('Main Menu: title')));
+        menu_scope_top.appendChild(createCloseWindowButton());
+        const menu_scope_content = simpleCreateHTML('div', 'content');
+
+        menu_scope.appendChild(menu_scope_top);
+        menu_scope.appendChild(menu_scope_content);
+
+        hnode.appendChild(menu_scope);
+        this.nodes.menu = menu_scope;
 
         const eqs_scope = simpleCreateHTML('div', 'equipments');
         this.nodes.equipments = eqs_scope;
 
-        hnode.appendChild(eq_list);
         hnode.appendChild(eqs_scope);
 
         function selectStatListener(e){
@@ -462,8 +484,12 @@ export default class EnchantSimulatorController {
                 return 'state';
             },
             getSaveNameList(){
+                const field_menu_text = Lang('Equipment Field List');
+                
                 return ctrr.equipments
-                    .map(eq => eq.currentStats(eq.lastStepIndex())
+                    .map(eq => field_menu_text[eq.status.fieldType == 0 ? (eq.status.isOriginalElement ? 1 : 0) : 2]
+                        + '｜'
+                        + eq.currentStats(eq.lastStepIndex())
                         .map(p => p.show())
                         .join('｜'));
             },
@@ -687,7 +713,7 @@ export default class EnchantSimulatorController {
         this.equipments.push(eq);
 
         const el = this.nodes.equipmentsList;
-        const btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'select-equipment'], Lang('equipment') + " " + this.equipments.length);
+        const btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'select-equipment', 'no-border'], Icons('six-star') + `<span class="text">${Lang('equipment')} ${this.equipments.length}</span>`);
         btn.addEventListener('click', this.listeners.selectCurrentEquipment);
         el.insertBefore(btn, el.querySelector('.create-equipment'));
 
@@ -706,6 +732,8 @@ export default class EnchantSimulatorController {
 
         new_eq.originalPotential(eq.originalPotential());
         new_eq.basePotential(eq.basePotential());
+        new_eq.setStatus('fieldType', eq.status.fieldType);
+        new_eq.setStatus('isOriginalElement', eq.status.isOriginalElement);
 
         eq._steps.forEach(step => {
             const [new_step, new_step_scope] = this.createStep(new_eq);
@@ -720,7 +748,7 @@ export default class EnchantSimulatorController {
         this.updateCurrentEquipmentScope();
 
         const eq_name = t => Lang('equipment') + (this.equipments.indexOf(t) + 1).toString();
-        ShowMessage(Lang('copy equipment success', [eq_name(eq), eq_name(new_eq)]), 'done', 'copy equipment success');
+        ShowMessage(Lang('copy equipment success', [eq_name(eq), eq_name(new_eq)]), 'done');
     }
     createEquipmentHTML(){
         const simpleCreateHTML = CY.element.simpleCreateHTML;
@@ -847,7 +875,7 @@ export default class EnchantSimulatorController {
         const hidden_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('block'));
         hidden_btn.addEventListener('click', this.listeners.hiddenStep);
 
-        const toggle_extra_menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('menu'));
+        const toggle_extra_menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'toggle-extra-menu'], Icons('menu'));
         toggle_extra_menu_btn.addEventListener('click', this.listeners.toggleStepExtraMenu);
 
         top.appendChild(hidden_btn);

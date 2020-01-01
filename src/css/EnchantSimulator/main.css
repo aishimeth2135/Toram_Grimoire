@@ -3,7 +3,7 @@
 
 }
 
-ul.equipments-list {
+/* ul.equipments-list {
     list-style: none;
     padding: 0 0.6rem;
     margin: 1rem 0;
@@ -17,7 +17,7 @@ ul.equipments-list {
     margin: 0;
     margin-bottom: -1px;
 }
-
+ */
 .enchant-equipment > .top-menu > .field-menu {
     list-style: none;
     padding: 0 0.3rem;
