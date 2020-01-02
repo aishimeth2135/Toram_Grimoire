@@ -271,6 +271,9 @@ class EnchantEquipment {
             return Math.max(130 + pot * 230 / d, 0);
         return -1;
     }
+    checkCurrentPotential(){
+        return this.currentPotential(this.lastStepIndex()) > 0;
+    }
     refreshStats(){
         this.currentStats().forEach(p => {
             const [max, min] = p.itemBase.getLimit(p.statType());

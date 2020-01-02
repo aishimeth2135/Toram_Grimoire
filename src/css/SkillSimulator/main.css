@@ -4,3 +4,8 @@
 .SkillSimulator-main > .main > .skill-root > .top {
     position: sticky;
 }
+
+.SkillSimulator-main > .bottom-menu {
+    position: sticky;
+    bottom: 0;
+}

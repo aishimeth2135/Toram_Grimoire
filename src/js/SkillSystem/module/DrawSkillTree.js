@@ -1,8 +1,11 @@
 import CY from "../../main/module/cyteria.js";
 
 function DrawSkillTree(st, config){
+    config = Object.assign({
+        setSkillButton: (el, skill) => {}
+    }, config);
 
-    const setSkillButton = config.setSkillButton || ((el, skill) => {});
+    const setSkillButton = config.setSkillButton;
 
     const skillIconPathRoot = '../src/picture/skill_icons/stc_' + st.parent.no + '/st_' + st.no + '/';
 
@@ -73,10 +76,10 @@ function DrawSkillTree(st, config){
                                 lengthTransformFunction: tran,
                                 documentFragment: t
                             }, drawData));
-                            const patid = 'si_' + _skill.no;
+                            const patid = `s_${st.parent.no}-${st.no}-${_skill.no}`;
                             const pat = CY.svg.createEmpty('pattern', {id: patid, width: 1, height: 1});
                             pat.appendChild(Circle(w/2, w/2, w/2, {fill: 'url(#skill-icon-bg)', 'stroke-width': 0}));
-                            pat.appendChild(CY.svg.drawImage(skillIconPathRoot + patid + '.png', iconPad, iconPad, w-iconPad*2, w-iconPad*2));
+                            pat.appendChild(CY.svg.drawImage(`${skillIconPathRoot}si_${_skill.no}.png`, iconPad, iconPad, w-iconPad*2, w-iconPad*2));
                             defs.appendChild(pat);
                             btn.style.fill = 'url(#' + patid + ')';
                         }
@@ -103,6 +106,8 @@ function DrawSkillTree(st, config){
     const he = CY.svg.create(tran(maxw) - w/2 + pad, tran(y) + w/2 + pad + textMargin, {'xmlns:xlink': 'http://www.w3.org/1999/xlink'});
     he.classList.add('Cyteria', 'entrance', 'fade-in');
     he.appendChild(frg);
+
+    he.classList.add('DrawSkillTree--main');
 
     return he;
 }

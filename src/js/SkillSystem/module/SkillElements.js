@@ -180,7 +180,7 @@ class Skill extends SkillBase {
 		this.defaultEffect = null;
 		this.TYPE = Skill.TYPE;
 
-		this._skill = 0;
+		this._level = 0;
 	}
 	newElement(type, cArgs){
 		if ( type == SkillEffect.TYPE ){

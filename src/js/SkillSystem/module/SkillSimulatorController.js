@@ -7,6 +7,7 @@ import GetLang from "../../main/module/LanguageSystem.js";
 
 import CY from "../../main/module/cyteria.js";
 import CyComponent from "../../main/module/Cyteria/CyComponent.js";
+import WindowController from "../../main/module/Cyteria/WindowController.js";
 
 function Lang(s){
     return GetLang('Skill Simulator/Controller/' + s);
@@ -25,8 +26,16 @@ export default class SkillSimulatorController {
             'SkillRoot': null
         }
 
+        this.status = {
+            skillPointStep: 5,
+            skillPointOperating: '+'
+        }
+
         this.listeners = {
             setStep(e){
+
+            },
+            setOperating(e){
 
             }
         };
@@ -35,39 +44,85 @@ export default class SkillSimulatorController {
         this.initComponent();
 
         const simpleCreateHTML = CY.element.simpleCreateHTML;
+        const ctrr = this;
 
-        el.classList.add('SkillSimulator-main');
-
-        // Buttons
-        const main_menu = simpleCreateHTML('div', 'main-menu');
-        const createMenuScope = (title_id, icon_id, values, listener) => {
-            const col = simpleCreateHTML('div', 'column');
-            const btns = simpleCreateHTML('div', 'buttons-scope');
-            values.forEach((p, i) => {
-                const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'fill'], Icons(icon_id[i]));
-                btn.setAttribute('data-step', p);
-                btn.addEventListener('click', listener);
-                btns.appendChild(btn);
-            });
-            col.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'line'], Icons('multiple-blank-circle') + `<span class="text">${Lang('main menu/' + title_id)}</span>`));
-            col.appendChild(btns);
-            return col;
-        };
-
-        const set_operating = createMenuScope('operating', ['add', 'sub'], ['+', '-'], this.listeners.setOperating);
-        const set_step = createMenuScope('step value', ['numeric-1', 'numeric-5', 'numeric-10'], ['1', '5', '10'], this.listeners.setStep);
-        main_menu.appendChild(set_operating);
-        main_menu.appendChild(set_step);
+        el.classList.add('SkillSimulator-main')
 
         // svg reusable defs
         const svg = CY.svg.create();
         svg.appendChild(createDrawSkillTreeDefs());
         el.appendChild(svg);
 
+        //
         const main = simpleCreateHTML('div', 'main');
         const skillRoot_scope = this.components['SkillRoot'].$create(this.skillRoot);
         main.appendChild(skillRoot_scope);
 
+        this.WindowController = new WindowController();
+        const select_skill_tree_window = this.WindowController.appendWindow('select-skill-tree');
+
+        const main_top = simpleCreateHTML('div', ['Cyteria', 'Layout', 'sticky-header', 'top']);
+        const open_select_skilltree = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('six-star'));
+        open_select_skilltree.addEventListener('click', function(e){
+            ctrr.WindowController.openWindow('select-skill-tree');
+        });
+
+        el.appendChild(main);
+
+        // Buttommenu
+        const bottom_menu = simpleCreateHTML('div', 'bottom-menu');
+        const bottom_menu_select = simpleCreateHTML('div', ['select-menu', 'hidden']);
+        const bottom_menu_content = simpleCreateHTML('div', 'content');
+
+        function openBottomMenuSelect(e){
+            this.classList.add('selected');
+            const sel = this.parentNode.querySelector('.selected');
+            sel && sel.classList.remove('selected');
+
+            const sel_menu = bottom_menu_select.querySelector('.column:not(.hidden)');
+            sel_menu && sel_menu.classList.add('hidden');
+            bottom_menu_select.querySelector(`.column[data-id="${this.getAttribute('data-id')}"]`).classList.remove('hidden');
+
+            bottom_menu_select.classList.remove('hidden');
+        }
+        function updateBottomMenu(e){
+            const btn = bottom_menu_content.querySelector(`.set-button[data-id="${this.parentNode.parentNode.getAttribute('data-id')}"]`);
+            btn.innerHTML = this.innerHTML;
+            btn.classList.remove('selected');
+
+            bottom_menu_select.classList.add('hidden');
+        }
+
+        const createMenuScope = (id, title_id, icon_id, values, cur_value, listener) => {
+            const col = simpleCreateHTML('div', ['column', 'hidden'], null, {'data-id': id});
+            const btns = simpleCreateHTML('div', 'buttons-scope');
+            values.forEach((p, i) => {
+                const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons(icon_id[i]));
+                btn.setAttribute('data-step', p);
+                btn.addEventListener('click', updateBottomMenu);
+                btn.addEventListener('click', listener);
+                btns.appendChild(btn);
+            });
+            col.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'line'], Icons('multiple-blank-circle') + `<span class="text">${Lang('main menu/' + title_id)}</span>`));
+            col.appendChild(btns);
+
+            bottom_menu_select.appendChild(col);
+
+            const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'set-button'], Icons(icon_id[values.indexOf(cur_value)]), {'data-id': id});
+            btn.addEventListener('click', openBottomMenuSelect);
+            bottom_menu_content.appendChild(btn);
+
+            return col;
+        };
+
+        createMenuScope(0, 'operating', ['add', 'sub'], ['+', '-'], this.status.skillPointOperating, this.listeners.setOperating);
+        createMenuScope(1, 'step value', ['numeric-1', 'numeric-5', 'numeric-10'], [1, 5, 10], this.status.skillPointStep, this.listeners.setStep);
+        bottom_menu.appendChild(bottom_menu_select);
+        bottom_menu.appendChild(bottom_menu_content);
+
+        el.appendChild(bottom_menu);
+
+        el.appendChild(this.WindowController.getWindowContainer());
     }
     initComponent(){
         const simpleCreateHTML = CY.element.simpleCreateHTML;
@@ -78,8 +133,14 @@ export default class SkillSimulatorController {
         function setSkillButton(btn, skill, data){
             const w = data.gridWidth;
             const {cx, cy} = data;
+            const tran = data.lengthTransformFunction;
             const Circle = CY.svg.drawCircle,
                 Text = CY.svg.drawText;
+            const bg = Circle(tran(cx) + w/2, tran(cy) + w/2, w/4, {class: 'skill-level-circle'}),
+                text = Text(tran(cx) + w/2, tran(cy) + w/2, skill.level(), {class: 'skill-level-text', 'data-skill-no': skill.no});
+
+            btn.parentNode.insertBefore(text, btn.previousSibling);
+            btn.parentNode.insertBefore(bg, text);
         }
 
         const Cy_SkillTree = new CyComponent({
@@ -102,15 +163,13 @@ export default class SkillSimulatorController {
             create(self, stc){
                 const main = simpleCreateHTML('div', 'skill-tree-category');
 
-                const frg = 
-                stc.skillTrees.reduce((cur, st) => {
-                    const t = self.$component('SkillTree').$create(st);
-                    cur.appendChild(t);
-                    return cur;
-                },
-                document.createDocumentFragment());
+                // const frg = document.createDocumentFragment();
+                // stc.skillTrees.forEach(st => {
+                //     const t = self.$component('SkillTree').$create(st);
+                //     frg.appendChild(t);
+                // });
 
-                main.appendChild(frg);
+                // main.appendChild(frg);
                 return main;
             },
             update(self, el, stc){
@@ -129,13 +188,16 @@ export default class SkillSimulatorController {
                 const top = simpleCreateHTML('div', 'top');
 
                 const frg = document.createDocumentFragment();
-                sr.skillTreeCategorys.reduce((cur, stc) => {
+                sr.skillTreeCategorys.forEach(stc => {
                     const t = self.$component('SkillTreeCategory').$create(stc);
-                    cur.appendChild(t);
-                    return cur;
+                    frg.appendChild(t);
                 });
 
-                const skill_trees = simpleCreateHTML('div', 'skill-trees');
+                const stcs_scope = simpleCreateHTML('div', 'skill-tree-categorys');
+                stcs_scope.appendChild(frg);
+
+                main.appendChild(top);
+                main.appendChild(stcs_scope);
 
                 return main;
             },
