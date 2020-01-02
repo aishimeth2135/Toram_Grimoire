@@ -125,7 +125,7 @@ export default function(){
                 ],
                 'stronger_against_element': '對目標屬性的傷害加成。',
                 'target_element_resistance': '目標對屬性攻擊的抗性。',
-                'target_resistance': '目標的物理抗性或魔法抗性。例如物理抗性為30%時，受到的物理傷害會減少30%。',
+                'target_resistance': '目標的物理抗性或魔法抗性。例如：物理抗性為30%時，受到的物理傷害會減少30%。',
                 'poration': '慣性帶來的傷害加成。最低為-50%，最高為+150%。',
                 'stability': [
                     '穩定率會造成傷害浮動，因此傷害計算以期望值作計算。期望值部分亦包含Graze機率帶來的影響。',
@@ -143,21 +143,6 @@ export default function(){
             'User Set': {
                 'str': '角色STR', 'dex': '角色DEX', 'int': '角色INT',
                 'agi': '角色AGI', 'vit': '角色VIT'
-            },
-            'Save Load': {
-                'file': '檔案',
-                'no data': '尚無檔案。',
-                'Warn': {
-                    'Confirm to overwrite existing data': '確定要覆蓋現有的檔案嗎？再點擊一次以確定。',
-                    'An error occurred while loading data': '讀取失敗。資料可能受損，不清楚原因還請回報作者。',
-                    'Confirm to load data': '確定要讀取嗎？現有的配置將會遺失，再點擊一次以確定。',
-                    'Saving success': '存檔成功。',
-                    'Loading success': '讀取成功。',
-                    'Wrong file type: csv': '檔案格式需為CSV檔。',
-                    'File is empty': '讀取的檔案為空。',
-                    'Calculations is empty': '沒有可儲存的資料。',
-                    'Copy to clipboard successed': '分享網址已複製至剪貼簿。'
-                }
             },
             'Warn': {
                 'Calculation Name too long': '名稱不得超過16個字元。',

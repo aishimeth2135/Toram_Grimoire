@@ -1,11 +1,27 @@
-import {currentLanguage, InitLanguageSystem, PageInitLanguage, GetLang} from "./LanguageSystem.js";
+import {currentLanguage, InitLanguageSystem, InitLanguageData, PageInitLanguage, GetLang} from "./LanguageSystem.js";
 import CY from "./cyteria.js";
-import Icons from "./SvgIcons.js";
+import {Icons, PageInitIcons} from "./SvgIcons.js";
 
-function PageInitFirst(){
+function PageInitFirst(config){
+    config = Object.assign({
+        isHomePage: false,
+        languageData: null
+    }, config);
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register(config.isHomePage ? './sw.js' : '../sw.js', {'updateViaCache': 'imports'});
+        });
+    }
+
+    // Language
     InitLanguageSystem();
+    if ( config.languageData )
+        InitLanguageData(config.languageData);
+    PageInitLanguage();
+    document.title = GetLang('Page Title');
 
-    document.querySelector('#loading-page > .content').innerHTML = GetLang('Loading Page/content');
+    PageInitIcons();
 
     if ( CY.storageAvailable('localStorage') ){
         if ( localStorage['main-font-family'] !== '1' )
@@ -15,8 +31,21 @@ function PageInitFirst(){
     }
 
     const simpleCreateHTML = CY.element.simpleCreateHTML;
+
+    if ( !config.isHomePage ){
+        const nav = document.querySelector('nav');
+        nav.innerHTML = `<ul><li><a href="../">${GetLang('Top List/item 1')}</a></li><li><span>${GetLang('Top List/item 2')}</span></li></ul>` + nav.innerHTML;
+    }
+
+    const loadingPage = document.createElement('div');
+    loadingPage.id = 'global--Loading-Page';
+    loadingPage.appendChild(simpleCreateHTML('div', 'main', 'loading...'));
+    loadingPage.appendChild(simpleCreateHTML('div', 'content', GetLang('Loading Page/content')));
+    loadingPage.appendChild(simpleCreateHTML('div', 'msg'));
+    document.body.appendChild(loadingPage);
+
     const create_scope = (icon_id, text) => `${Icons(icon_id)}<span class="text">${text}</span>`;
-    const auth = document.querySelector('footer > .author-information');
+    const auth = simpleCreateHTML('div', 'author-information');
     const night_mode = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'no-border', 'no-padding'], create_scope('weather-night', GetLang('footer/night mode')));
     night_mode.addEventListener('click', function(){
         if ( CY.storageAvailable('localStorage') ){
@@ -41,10 +70,11 @@ function PageInitFirst(){
             'target': '_blank'
         })
     );
+    document.querySelector('footer').appendChild(auth);
 }
 
-function PageInit(){
+function PageInitReady(){
 
 }
 
-export {PageInitFirst, PageInit};
+export {PageInitFirst, PageInitReady};

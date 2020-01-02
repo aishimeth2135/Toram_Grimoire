@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="zh-Hant-TW">
 <head>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-140158974-1"></script>
@@ -36,12 +36,6 @@
 	<link rel="stylesheet" href="src/css/main/home.css">
 </head>
 <body>
-	<div id="loading-page">
-		<div class="main">Loading...</div>
-		<div class="content">
-		</div>
-		<div class="msg"></div>
-	</div>
 	<div id="top-menu"></div>
 	<article data-main-scope="1" id="Home" class="main-content">
 		<section>
@@ -207,16 +201,7 @@
 			</div>
 		</section>
 	</article>
-	<footer>
-		<div class='author-information'></div>
-	</footer>
-	<script>
-		if ('serviceWorker' in navigator) {
-	        window.addEventListener('load', () => {
-	            navigator.serviceWorker.register('./sw.js', {'updateViaCache': 'imports'});
-	        });
-	    }
-	</script>
+	<footer></footer>
 	<!-- <script type="module" src="./src/js/main/Home/main.js"></script> -->
 	<script type="text/javascript" src="dist/home.min.js"></script>
 </body>

@@ -190,7 +190,7 @@ nav > ul > li > a::after {
 }
 
 
-#loading-page {
+#global--Loading-Page {
 	text-align: center;
 	width: 100%;
 	height: 100%;
@@ -202,11 +202,11 @@ nav > ul > li > a::after {
 	padding-top: 2rem;
 	z-index: 5;
 }
-#loading-page > .main {
+#global--Loading-Page > .main {
 	margin-bottom: 2rem;
 	line-height: 2rem;
 }
-#loading-page > .content {
+#global--Loading-Page > .content {
 	padding: 1rem 0;
 	margin: 1rem auto;
 	border-top: 1px var(--primary-light) solid;
@@ -214,35 +214,35 @@ nav > ul > li > a::after {
 	max-width: 30rem;
 	line-height: 2rem;
 }
-#loading-page > .msg {
+#global--Loading-Page > .msg {
 	max-width: 30rem;
 	margin: 0 auto;
 	display: inline-block;
 }
-#loading-page > .msg > .msg-scope {
+#global--Loading-Page > .msg > .msg-scope {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-bottom: 0.5rem;
 }
 
-#loading-page > .msg > .msg-scope > .text {
+#global--Loading-Page > .msg > .msg-scope > .text {
 	margin-right: 0.8rem;
 	width: 100%;
 	color: var(--primary-light-4);
 }
-#loading-page > .msg > .msg-scope > .status-icon {
+#global--Loading-Page > .msg > .msg-scope > .status-icon {
 	display: flex;
 }
-#loading-page > .msg > .msg-scope > .status-icon > svg {
+#global--Loading-Page > .msg > .msg-scope > .status-icon > svg {
 	width: 1.2rem;
 	height: 1.2rem;
 	fill: var(--primary-water-blue);
 }
-#loading-page > .msg > .msg-scope > .status-icon.loading > svg {
+#global--Loading-Page > .msg > .msg-scope > .status-icon.loading > svg {
 	animation: loading-circle 0.8s ease infinite;
 }
-#loading-page > .msg > .msg-scope > .status-icon.error > svg {
+#global--Loading-Page > .msg > .msg-scope > .status-icon.error > svg {
 	fill: var(--red);
 }
 
@@ -261,7 +261,7 @@ nav > ul > li > a::after {
 /* ==========================================================================
    show message
    ========================================================================== */
-#show-message {
+#global--Show-Message {
     position: fixed;
     width: 25rem;
     margin: 0 auto;
@@ -269,7 +269,7 @@ nav > ul > li > a::after {
     right: 2rem;
     z-index: 30;
 }
-#show-message > .message-scope {
+#global--Show-Message > .message-scope {
     margin: 0.2rem 0;
     padding: 1.2rem;
     font-size: 1.2rem;
@@ -278,21 +278,21 @@ nav > ul > li > a::after {
     border: 1px solid var(--primary-light-4);
     position: relative;
 }
-#show-message > .message-scope.out {
+#global--Show-Message > .message-scope.out {
 	animation: show-message 0.5s ease-out;
 	opacity: 0;
 }
-#show-message > .message-scope svg {
+#global--Show-Message > .message-scope svg {
     width: 2rem;
     height: 2rem;
     fill: var(--primary-light-2);
 }
-#show-message > .message-scope > .notification-count {
+#global--Show-Message > .message-scope > .notification-count {
 	position: absolute;
 	right: 0;
 	top: 0;
 	transform: translate(50%, -50%);
-	padding: 0.2rem 0;
+	line-height: 100%;
 	text-align: center;
 	width: 2rem;
 	height: 2rem;
@@ -315,16 +315,16 @@ nav > ul > li > a::after {
 }
 
 @media screen and (max-width: 30rem) {
-    #show-message {
+    #global--Show-Message {
 		bottom: 1rem;
 		right: 1rem;
 		max-width: calc(100vw - 2rem);
     }
-    #show-message > .message-scope {
+    #global--Show-Message > .message-scope {
         padding: 0.8rem;
         font-size: 1rem;
     }
-    #show-message > .message-scope svg {
+    #global--Show-Message > .message-scope svg {
         width: 1.6rem;
         height: 1.6rem;
     }

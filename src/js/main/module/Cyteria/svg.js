@@ -53,14 +53,15 @@ function drawSector(cx, cy, startR, endR, startAngle, endAngle, clockwise, attr=
 }
 function getSectorD(cx, cy, startR, endR, startAngle , endAngle, clockwise){
     const deg = Math.PI/180;
-    const ssx = startR*Math.cos(endAngle*deg) + cx,
-        ssy = -startR*Math.sin(endAngle*deg) + cy,
-        sex = startR*Math.cos(startAngle*deg) + cx,
-        sey = -startR*Math.sin(startAngle*deg) + cy,
-        esx = endR*Math.cos(startAngle*deg) + cx,
-        esy = -endR*Math.sin(startAngle*deg) + cy,
-        eex = endR*Math.cos(endAngle*deg) + cx,
-        eey = -endR*Math.sin(endAngle*deg) + cy;
+    const 
+        ssx = startR * Math.cos(endAngle*deg) + cx,
+        ssy = -1 * startR * Math.sin(endAngle*deg) + cy,
+        sex = startR * Math.cos(startAngle*deg) + cx,
+        sey = -1 * startR * Math.sin(startAngle*deg) + cy,
+        esx = endR * Math.cos(startAngle*deg) + cx,
+        esy = -1 * endR * Math.sin(startAngle*deg) + cy,
+        eex = endR * Math.cos(endAngle*deg) + cx,
+        eey = -1 * endR * Math.sin(endAngle*deg) + cy;
     return `M${ssx} ${ssy}A${startR} ${startR} 0 0 ${clockwise == 1 ? 0 : 1} ${sex} ${sey}L${esx} ${esy}A${endR} ${endR} 0 0 ${clockwise} ${eex} ${eey}Z`;
 }
 function createAnimate(attributeName, attr={}){

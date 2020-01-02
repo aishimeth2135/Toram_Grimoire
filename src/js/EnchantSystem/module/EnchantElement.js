@@ -248,17 +248,6 @@ class EnchantEquipment {
     checkStatsNumber(step_index){
         return this.currentStatsNumber(step_index) < Status.EquipmentItemMaximumNumber;
     }
-    checkCurrentPotential(){
-        return this.currentPotential() > 0;
-    }
-
-    checkStepsPotentialCost(){
-        let res = this.originalPotential();
-        return !this.currentSteps(this.lastStepIndex() - 1).find(p => {
-            res -= p.getPotentialCost();
-            return res < 1;
-        });
-    }
     calcPotentialExtraRate(step_index){
         const stats = this.currentStats(step_index);
         const t = [];

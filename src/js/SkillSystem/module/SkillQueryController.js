@@ -64,9 +64,12 @@ class SkillElementsController {
 			}
 		};
 	}
-	initSkillQueryHTML(main_node){
+	init(node){
 		const sr = this.skillRoot;
+		const main_node = simpleCreateHTML('div', 'main');
+		node.appendChild(main_node);
 		this.MAIN_NODE = main_node;
+
 		const order = [
 			SkillRoot.TYPE, SkillTreeCategory.TYPE, SkillTree.TYPE,
 			TYPE_CHARACTER_LEVEL, TYPE_SWITCH_DISPLAY_MODE, TYPE_SKILL_LEVEL,
@@ -124,10 +127,17 @@ class SkillElementsController {
 		this.status.skill_from_where_scope = simpleCreateHTML('div', ['show_skill_from_where', 'hidden']);
 
 		const ctrr = this;
-		document.querySelector("footer .switch_branch_development_mode").addEventListener('click', function(event){
-			ctrr.status.branchDevelopmentMode = ctrr.status.branchDevelopmentMode ? false : true;
-			ctrr.updateSkillHTML();
-		});
+
+		//
+		{
+			const btn = CY.element.simpleCreateHTML('span', ['switch_branch_development_mode', 'Cyteria', 'scope-icon'],
+		        `${Icons('cards')}<span class="text">技能資料對照</span>`);
+		    document.querySelector('footer > .author-information').appendChild(btn);
+		    btn.addEventListener('click', function(event){
+				ctrr.status.branchDevelopmentMode = ctrr.status.branchDevelopmentMode ? false : true;
+				ctrr.updateSkillHTML();
+			});
+		}
 
 		// toggle display mode of result
 	    {

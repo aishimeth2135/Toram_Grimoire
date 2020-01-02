@@ -143,30 +143,30 @@ class SkillBase {
 }
 
 
-class LevelSkill extends SkillBase {
-	constructor(st, no, name, cap=""){
-		super(st, no, name, cap);
+// class LevelSkill extends SkillBase {
+// 	constructor(st, no, name, cap=""){
+// 		super(st, no, name, cap);
 
-		this._level = 0;
-	}
-	level(v=-1){
-		if ( v >= 0 && v <= 10 )
-			this._level = v;
-		return this._level;
-	}
-	refreshTree(lv){
-		if ( lv )
-			this.level(lv);
+// 		this._level = 0;
+// 	}
+// 	level(v=-1){
+// 		if ( v >= 0 && v <= 10 )
+// 			this._level = v;
+// 		return this._level;
+// 	}
+// 	refreshTree(lv){
+// 		if ( lv )
+// 			this.level(lv);
 
-		let p = this;
-		// p is head of tree if (p == -1)
-		while ( p.previous != -1 ){
-			p = p.parent.skills.find(a => a.no == p.previous);
-			if ( p.level() < 5 )
-				p.level(5);
-		}
-	}
-}
+// 		let p = this;
+// 		// p is head of tree if (p == -1)
+// 		while ( p.previous != -1 ){
+// 			p = p.parent.skills.find(a => a.no == p.previous);
+// 			if ( p.level() < 5 )
+// 				p.level(5);
+// 		}
+// 	}
+// }
 
 
 /**
@@ -179,6 +179,8 @@ class Skill extends SkillBase {
 		this.effects = [];
 		this.defaultEffect = null;
 		this.TYPE = Skill.TYPE;
+
+		this._skill = 0;
 	}
 	newElement(type, cArgs){
 		if ( type == SkillEffect.TYPE ){
@@ -196,6 +198,24 @@ class Skill extends SkillBase {
 	}
 	checkData(){
 		return this.defaultEffect !== void 0 && this.defaultEffect !== null;
+	}
+
+	level(v=-1){
+		if ( v >= 0 && v <= 10 )
+			this._level = v;
+		return this._level;
+	}
+	refreshTree(lv){
+		if ( lv )
+			this.level(lv);
+
+		let p = this;
+		// p is head of tree if (p == -1)
+		while ( p.previous != -1 ){
+			p = p.parent.skills.find(a => a.no == p.previous);
+			if ( p.level() < 5 )
+				p.level(5);
+		}
 	}
 }
 Skill.TYPE = Symbol("Skill");

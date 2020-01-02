@@ -10,21 +10,27 @@ function saveFile(csv_str, file_name){
     link.click();
     document.body.removeChild(link);
 }
-function loadFile(onload_fun, wrong_file_type_fun){
+function loadFile(config){
+    const emptyFun = () => {};
+    config = Object.assign({
+        loadFileSucceeded: emptyFun,
+        beforeLoadFile: emptyFun,
+        wrongFileType: emptyFun
+    }, config);
     const input = document.createElement('input');
     input.type = 'file';
     input.addEventListener('change', function(e){
         document.body.removeChild(input);
+        config.beforeLoadFile();
         const file = this.files[0];
         const type = file.name.split('.').slice(-1);
         if ( type != 'csv' ){
-            if ( typeof wrong_file_type_fun == 'function' )
-                wrong_file_type_fun();
+            config.wrongFileType();
             return;
         }
         const fr = new FileReader();
         fr.onload = function(e){
-            onload_fun(this.result);
+            config.loadFileSucceeded(this.result);
         };
         fr.readAsText(file);
     });

@@ -2,18 +2,23 @@ import Grimoire from "../Grimoire.js";
 import SkillSystem from "../../SkillSystem/SkillSystem.js";
 import CharacterSystem from "../../CharacterSystem/CharacterSystem.js";
 import TagSystem from "../../TagSystem/TagSystem.js";
-import {startLoadingMsg, loadingMsg, loadingError, loadingFinished, loadingSucceeded, AllLoadingFinished} from "../module/LoadingPage.js";
-import {readyFirst, ready} from "./ready.js";
+import {startLoadingMsg, loadingMsg, loadingError, loadingFinished, loadingSuccess, AllLoadingFinished} from "../module/LoadingPage.js";
+import {PageInitFirst, PageInitReady} from "../module/PageInit.js";
 import GetLang from "../module/LanguageSystem.js";
 
+import zh_tw from "./module/LanguageData/zh_tw.js";
+import en from "./module/LanguageData/en.js";
+import ja from "./module/LanguageData/ja.js";
+import zh_cn from "./module/LanguageData/zh_cn.js";
+
 async function start(){
-    readyFirst();
+    PageInitFirst({
+        languageData: {zh_tw, en, ja, zh_cn}
+    });
 
     Grimoire.SkillSystem = new SkillSystem();
     Grimoire.CharacterSystem = new CharacterSystem();
     Grimoire.TagSystem = new TagSystem();
-
-    const loading_error_msg = GetLang('Loading Message/error');
 
     const msg_scopes =  await startLoadingMsg(
         GetLang('Loading Message/Character Stats'),
@@ -38,7 +43,7 @@ async function start(){
     
     {
         const scope = await startLoadingMsg(GetLang('Loading Message/Init Skill Data'));
-        await Grimoire.SkillSystem.init_SkillQuery(document.querySelector('#SkillQuery > .main'))
+        await Grimoire.SkillSystem.init_SkillQuery(document.getElementById('SkillQuery'))
             .then(() => loadingFinished(scope))
             .catch((err) => {
                 console.log(err);
@@ -46,9 +51,9 @@ async function start(){
             });
     }
 
-    ready();
+    PageInitReady();
 
-    if ( loadingSucceeded() )
+    if ( loadingSuccess() )
         AllLoadingFinished();
 }
 
