@@ -1,11 +1,11 @@
-#SkillQuery div.SkillTree_scope svg {
+svg.DrawSkillTree--main {
     stroke: var(--primary-light);
     stroke-width: 2px;
 }
-#SkillQuery div.SkillTree_scope svg > circle.dot {
+svg.DrawSkillTree--main > circle.dot {
     fill: var(--primary-light);
 }
-#SkillQuery div.SkillTree_scope svg > circle.skill-circle {
+svg.DrawSkillTree--main > circle.skill-circle {
     fill: #FFF;
     z-index: 5;
     stroke: #ff5fb7;
@@ -13,26 +13,37 @@
     cursor: pointer;
     transition: 0.3s;
 }
-#SkillQuery div.SkillTree_scope svg > circle.skill-circle:hover,
-#SkillQuery div.SkillTree_scope svg > circle.skill-circle.cur {
+svg.DrawSkillTree--main > circle.skill-circle:hover,
+svg.DrawSkillTree--main > circle.skill-circle.cur {
     stroke: var(--primary-water-blue);
 }
-#SkillQuery div.SkillTree_scope svg > circle.skill-circle:not(.disable):hover + text.skill-name,
-#SkillQuery div.SkillTree_scope svg > circle.skill-circle.cur + text.skill-name {
+svg.DrawSkillTree--main > circle.skill-circle:not(.disable):hover + text.skill-name,
+svg.DrawSkillTree--main > circle.skill-circle.cur + text.skill-name {
     /* fill: var(--primary-water-blue); */
     display: block;
 }
-#SkillQuery div.SkillTree_scope svg > text.skill-name {
+svg.DrawSkillTree--main > text.skill-name {
     text-anchor: middle;
     stroke-width: 0;
     fill: var(--primary-purple);
     transition: 0.3s;
     display: none;
 }
-#SkillQuery div.SkillTree_scope svg > circle.skill-circle.lock {
+svg.DrawSkillTree--main > circle.skill-circle.lock {
     fill: url(#skill-icon-lock);
     stroke: var(--primary-light);
 }
-#SkillQuery div.SkillTree_scope svg > circle.skill-circle.disable {
+svg.DrawSkillTree--main > circle.skill-circle.disable {
     stroke: #BBB;
+}
+
+svg.DrawSkillTree--main > circle.skill-level-circle {
+    fill: #ff5fb7;
+    stroke: none;
+}
+svg.DrawSkillTree--main > text.skill-level-text {
+    fill: #FFF;
+    text-anchor: middle;
+    stroke-width: 0;
+    dominant-baseline: middle;
 }

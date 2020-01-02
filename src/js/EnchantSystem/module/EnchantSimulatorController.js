@@ -397,7 +397,7 @@ export default class EnchantSimulatorController {
             btn.addEventListener('click', this.listeners.closeWindow);
             return btn;
         };
-        const menu_scope = simpleCreateHTML('div', ['Cyteria', 'window', 'top-center', 'bg-mask', 'frozen-top', 'menu-scope', 'hidden', 'Cyteria', 'entrance', 'fade-in']);
+        const menu_scope = simpleCreateHTML('div', ['Cyteria', 'window', 'top-center', 'bg-mask', 'frozen-top', 'menu-scope', 'hidden', 'entrance', 'fade-in']);
 
         const menu_scope_top = simpleCreateHTML('div', 'top');
         menu_scope_top.appendChild(simpleCreateHTML('span', 'name', Lang('Main Menu: title')));
