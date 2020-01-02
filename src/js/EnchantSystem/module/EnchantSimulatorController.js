@@ -479,7 +479,7 @@ export default class EnchantSimulatorController {
 
         this.SaveLoadSystem = new SaveLoadSystem().init({
             name: 'Enchant-Simulator',
-            menuNode: menu_scope,
+            menuNode: menu_scope_content,
             csvFileName(){
                 return 'state';
             },
@@ -615,9 +615,6 @@ export default class EnchantSimulatorController {
 
         scope.querySelector('.original-potential').value = eq.originalPotential();
         scope.querySelector('.base-potential').value = eq.basePotential();
-
-        if ( !eq.checkStepsPotentialCost() )
-            ShowMessage(Lang('Warn/Potential of Step is less than 1'), null, 'pt of step less than 1');
 
         {
             const sr = eq.successRate();
@@ -844,14 +841,6 @@ export default class EnchantSimulatorController {
         return r;
     }
     createStep(eq){
-        // if ( !t.checkStatsNumber() ){
-        //     ShowMessage(Lang('Warn/Number of Equipment Item exceeding the maximum'));
-        //     return;
-        // }
-        // if ( !t.checkCurrentPotential() ){
-        //     ShowMessage(Lang('Warn/Potential of Equipment has been less than 1'))
-        //     return;
-        // }
         const eq_scope = this.nodes.equipments.querySelector('.enchant-equipment:not(.hidden)');
         const step = eq.appendStep();
         const steps_scope = eq_scope.querySelector('.steps');

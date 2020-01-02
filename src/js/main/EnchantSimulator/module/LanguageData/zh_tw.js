@@ -44,8 +44,6 @@ export default function(){
             'Warn': {
                 'Step Stat Repeat': '單一步驟不可存在重複的能力。',
                 'Number of Equipment Item exceeding the maximum': '可附魔的能力數量已達上限。',
-                'Potential of Equipment has been less than 1': '裝備潛力值已小於1，無法繼續附魔。',
-                'Potential of Step is less than 1': '提示：有部分前置步驟的結算潛力值小於1，此附魔無法實作。',
                 'Success to copy': '已複製完畢。'
             }
         }

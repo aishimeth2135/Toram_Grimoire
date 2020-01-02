@@ -78,31 +78,31 @@ workbox.routing.registerRoute(
 workbox.precaching.precacheAndRoute([
   {
     "url": "index.html",
-    "revision": "a03d6d0196357edca0685779168b5ff3"
+    "revision": "3815762423c621063fc93048babb79ef"
   },
   {
     "url": "dist/damage-calculation.min.js",
-    "revision": "c1a0f20a51a23303b670ecd8f242e5cf"
+    "revision": "175143431663121f76507cd63c6e3fc6"
   },
   {
     "url": "dist/enchant-simulator.min.js",
-    "revision": "0b06dff6b265fe15689f9e5bf8eadfa4"
+    "revision": "c54c6cc46d33e8d9db1fd9bed86529cb"
   },
   {
     "url": "dist/home.min.js",
-    "revision": "fc410574e200f756069c3f0a94a6d16b"
+    "revision": "1ab465cecef0efd4c2037df456ebeddc"
   },
   {
     "url": "dist/item-query.min.js",
-    "revision": "44f883394666f9edc45a0c2f6cb41bfb"
+    "revision": "ed17e2b59ec772abf3aca6ec4f8382cd"
   },
   {
     "url": "dist/skill-query.min.js",
-    "revision": "b2665d1ceb2482bac8d46cdcd48b39bc"
+    "revision": "1691e75a962f975b4362311dde74c889"
   },
   {
     "url": "src/css/CalculationSystem/Damage/main.css",
-    "revision": "d00434f4c070abccca70d8dc6c61f07a"
+    "revision": "007076c671535dd5cf5cf0613efe0356"
   },
   {
     "url": "src/css/EnchantSimulator/main.css",
@@ -138,7 +138,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/main/main.css",
-    "revision": "01f994ab9727511063d87cca51964e8e"
+    "revision": "c6a792b74c4d203fe0ffb07d21860a26"
   },
   {
     "url": "src/css/main/Settings/main.css",

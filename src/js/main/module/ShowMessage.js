@@ -11,7 +11,7 @@ function setShowMessageConfig(c){
 function ShowMessage(s, icon_id, msg_id){
     if ( !config.node ){
         const t = document.createElement('div');
-        t.id = 'show-message';
+        t.id = 'global--Loading-Page';
         document.body.appendChild(t);
         config.node = t;
     }

@@ -3,6 +3,7 @@ import CY from "../../../main/module/cyteria.js";
 import GetLang from "../../../main/module/LanguageSystem.js";
 import Icons from "../../../main/module/SvgIcons.js";
 import ShowMessage from "../../../main/module/ShowMessage.js";
+import SaveLoadSystem from "../../../SaveLoadSystem/SaveLoadSystem.js";
 
 function Lang(s){
     return GetLang('Damage Calculation/' + s);
@@ -20,7 +21,6 @@ export default class DamageCalculationController {
 
         this.nodes = {
             menu: null,
-            save_load: null,
             main: null,
             calculationSelect: null,
             calculations: null,
@@ -47,26 +47,6 @@ export default class DamageCalculationController {
             },
             closeWindow(e){
                 this.parentNode.parentNode.classList.add('hidden');
-            },
-            saveloadCsvFile(e){
-                const ctr = this.getAttribute('data-ctr');
-                switch (ctr){
-                    case 'save_csv': {
-                        const str = ctrr.saveToCsv();
-                        if ( !str )
-                            return;
-                        CY.csv.saveFile(str, ctrr.calculations[0].calculationName());
-                        ctrr.nodes.menu.classList.add('hidden');
-                        break;
-                    }
-                    case 'load_csv':
-                        CY.csv.loadFile(res => {
-                            ctrr.loadFromCsv(res);
-                            ctrr.nodes.menu.classList.add('hidden');
-                        },
-                        () => ShowMessage(Lang('Save Load/Warn/Wrong file type: csv')));
-                        break;
-                }
             },
             saveToUrl(e){
                 const str = ctrr.saveToCsv().replace(/\r\n/g, '|n|');
@@ -100,65 +80,6 @@ export default class DamageCalculationController {
                     c.appendChild(simpleCreateHTML('div', 'text-scope', p(text)));
 
                 scope.classList.remove('hidden');
-            },
-            openSaveLoadWindow(e){
-                if ( !CY.storageAvailable('localStorage') ){
-                    ShowMessage(GetLang('global/LocalStorage is inavailable'));
-                    return;
-                }
-                ctrr.updateSaveLoadScope();
-                const scope = ctrr.nodes.save_load;
-                scope.classList.remove('hidden');
-                scope.setAttribute('data-ctr', this.getAttribute('data-ctr'));
-            },
-            clickSaveLoadCalculations(e){
-                const scope = ctrr.nodes.save_load;
-                const ctr = scope.getAttribute('data-ctr');
-                const stg = window.localStorage;
-
-                const pretext = 'Damage-Calculation-' + this.getAttribute('data-i') + '-';
-
-                const stg_name_names = pretext + 'names';
-                const stg_name_data = pretext + 'data';
-
-                const no_data = this.getAttribute('data-status') == 'no-data';
-                switch (ctr){
-                    case 'save': {
-                        if ( !no_data && this.getAttribute('data-status') != 'confirm' ){
-                            const cur = this.parentNode.querySelector('.scope[data-status="confirm"]');
-                            if ( cur )
-                                cur.setAttribute('data-status', '');
-                            this.setAttribute('data-status', 'confirm');
-                            const cfm = this.parentNode.querySelector('.save-confirm-tips');
-                            cfm.classList.remove('hidden');
-                            this.parentNode.insertBefore(cfm, this.nextSibling);
-                            return;
-                        }
-                        const str = ctrr.saveToCsv();
-                        if ( !str )
-                            return;
-                        stg.setItem(stg_name_names, ctrr.calculations.map(a => a.calculationName()).join(',,'));
-                        stg.setItem(stg_name_data, str);
-                        break;
-                    }
-                    case 'load':
-                        if ( no_data )
-                            return;
-                        if ( this.getAttribute('data-status') != 'confirm' && ctrr.calculations.length != 0 ){
-                            const cur = this.parentNode.querySelector('.scope[data-status="confirm"]');
-                            if ( cur )
-                                cur.setAttribute('data-status', '');
-                            this.setAttribute('data-status', 'confirm');
-                            const cfm = this.parentNode.querySelector('.load-confirm-tips');
-                            cfm.classList.remove('hidden');
-                            this.parentNode.insertBefore(cfm, this.nextSibling);
-                            return;
-                        }
-                        ctrr.loadFromCsv(stg.getItem(stg_name_data));
-                        break;
-                }
-                ctrr.nodes.menu.classList.add('hidden');
-                scope.classList.add('hidden');
             },
             setComparativeDamage(e){
                 const t = ctrr.currentCalculation();
@@ -483,35 +404,43 @@ export default class DamageCalculationController {
         menu_scope_top.appendChild(createCloseWindowButton());
         const menu_scope_content = simpleCreateHTML('div', 'content');
 
-        const save_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('save') + '<span class="text">' + Lang('save') + '</span>', {'data-ctr': 'save'});
-        save_btn.addEventListener('click', this.listeners.openSaveLoadWindow);
-        const load_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('book-page') + '<span class="text">' + Lang('load') + '</span>', {'data-ctr': 'load'});
-        load_btn.addEventListener('click', this.listeners.openSaveLoadWindow);
-        const save_to_csv_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('csv-file') + '<span class="text">' + Lang('save to csv') + '</span>', {'data-ctr': 'save_csv'});
-        save_to_csv_btn.addEventListener('click', this.listeners.saveloadCsvFile);
-        const load_from_csv_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('file-import') + '<span class="text">' + Lang('load from csv') + '</span>', {'data-ctr': 'load_csv'});
-        load_from_csv_btn.addEventListener('click', this.listeners.saveloadCsvFile);
+        const ctrr = this;
+        this.SaveLoadSystem = new SaveLoadSystem().init({
+            name: 'Damage-Calculation',
+            menuNode: menu_scope_content,
+            csvFileName(){
+                return ctrr.calculations[0].calculationName();
+            },
+            getSaveNameList(){
+                return ctrr.calculations.map(a => a.calculationName());
+            },
+            getSaveCsvString(){
+                return ctrr.saveToCsv();
+            },
+            loadCsvString(csv){
+                return ctrr.loadFromCsv(csv);
+            },
+            afterActionFinish(){
+                ctrr.nodes.menu.classList.add('hidden');
+            },
+            beforeLoadConfirm(){
+                return ctrr.calculations.length != 0;
+            },
+            error(){
+                ShowMessage(GetLang('global/LocalStorage is inavailable'));
+            }
+        });
+
         const save_to_url = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('share') + '<span class="text">' + Lang('save to url') + '</span>', {'data-ctr': 'load_csv'});
         save_to_url.addEventListener('click', this.listeners.saveToUrl);
 
-        menu_scope_content.appendChild(save_btn);
-        menu_scope_content.appendChild(load_btn);
-        menu_scope_content.appendChild(save_to_csv_btn);
-        menu_scope_content.appendChild(load_from_csv_btn);
         menu_scope_content.appendChild(save_to_url);
 
         menu_scope.appendChild(menu_scope_top);
         menu_scope.appendChild(menu_scope_content);
 
-        const sl_scope = simpleCreateHTML('div', ['Cyteria', 'window', 'top-center', 'frozen-top', 'save-load-scope', 'hidden']);
-        const sl_scope_top = simpleCreateHTML('div', 'top');
-        sl_scope_top.appendChild(simpleCreateHTML('span', 'name', Lang('Save Load: title')));
-        sl_scope_top.appendChild(createCloseWindowButton());
-        sl_scope.appendChild(sl_scope_top);
-        sl_scope.appendChild(simpleCreateHTML('div', 'content'))
-
         node.appendChild(menu_scope);
-        node.appendChild(sl_scope);
+        node.appendChild(this.SaveLoadSystem.controller.getSaveLoadWindow());
 
         //
         const showContainerTips = simpleCreateHTML('div', ['Cyteria', 'window', 'frozen-top', 'top-center', 'pop-right', 'show-container-tips', 'hidden']);
@@ -528,7 +457,6 @@ export default class DamageCalculationController {
         this.nodes.calculations = calculations;
 
         this.nodes.menu = menu_scope;
-        this.nodes.save_load = sl_scope;
 
         this.nodes.showContainerTips = showContainerTips;
 
@@ -546,49 +474,6 @@ export default class DamageCalculationController {
         const t = this.nodes.spanForAdjustWidth;
         t.innerHTML = input.value;
         input.style.width = (t.offsetWidth + 2) + "px";
-    }
-    updateSaveLoadScope(){
-        const scope = this.nodes.save_load.querySelector('.content');
-        CY.element.removeAllChild(scope);
-
-        if ( !CY.storageAvailable('localStorage') )
-            return;
-
-        const frg = document.createDocumentFragment();
-
-        const simpleCreateHTML = CY.element.simpleCreateHTML;
-
-        const SAVE_SIZE = 5;
-
-        const stg = window.localStorage;
-
-        Array(SAVE_SIZE).fill().forEach((p, i) => {
-            const t = simpleCreateHTML('div', 'scope', null, {'data-i': i});
-            const title = simpleCreateHTML('div', ['Cyteria', 'scope-icon'], Icons('book') + '<span class="text">'+ Lang('Save Load/file') + ' ' + (i+1) + '</span>');
-            const detail = simpleCreateHTML('div', 'detail');
-
-            const names = stg.getItem('Damage-Calculation-' + i + '-names');
-            if ( names ){
-                const ul = simpleCreateHTML('ul', ['Cyteria', 'ul', 'simple']);
-                names.split(',,').forEach(a => ul.appendChild(simpleCreateHTML('li', null, a)));
-                detail.appendChild(ul);
-            }
-            else {
-                detail.appendChild(simpleCreateHTML('div', 'no-data', Lang('Save Load/no data')));
-                t.setAttribute('data-status', 'no-data');
-            }
-
-            t.appendChild(title);
-            t.appendChild(detail);
-
-            t.addEventListener('click', this.listeners.clickSaveLoadCalculations);
-            frg.appendChild(t);
-        });
-
-        frg.appendChild(simpleCreateHTML('div', ['Cyteria', 'text', 'tips', 'save-confirm-tips', 'hidden', 'entrance', 'fade-in-down'], Lang('Save Load/Warn/Confirm to overwrite existing data')));
-        frg.appendChild(simpleCreateHTML('div', ['Cyteria', 'text', 'tips', 'load-confirm-tips', 'hidden', 'entrance', 'fade-in-down'], Lang('Save Load/Warn/Confirm to load data')));
-
-        scope.appendChild(frg);
     }
     getScopeFromChildNode(node, name){
         const cn = this.scopeClassName[name];
@@ -1102,8 +987,6 @@ export default class DamageCalculationController {
             });
         });
 
-        ShowMessage(Lang('Save Load/Warn/Saving success'));
-
         return Papa.unparse(data);
     }
     loadFromCsv(csv){
@@ -1232,8 +1115,6 @@ export default class DamageCalculationController {
             this.updateCalculationScope(a, cal_scope);
         });
         this.nodes.calculationSelect.querySelector('.select-button').click();
-
-        ShowMessage(Lang('Save Load/Warn/Loading success'));
     }
     checkLocationParam(){
         const url = new URL(document.location);

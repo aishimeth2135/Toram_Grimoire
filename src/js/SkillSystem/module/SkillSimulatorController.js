@@ -6,6 +6,7 @@ import Icons from "../../main/module/SvgIcons.js";
 import GetLang from "../../main/module/LanguageSystem.js";
 
 import CY from "../../main/module/cyteria.js";
+import CyComponent from "../../main/module/Cyteria/CyComponent.js";
 
 function Lang(s){
     return GetLang('Skill Simulator/Controller/' + s);
@@ -21,7 +22,7 @@ export default class SkillSimulatorController {
         };
 
         this.components = {
-            'SkillTrees': null
+            'SkillRoot': null
         }
 
         this.listeners = {
@@ -35,7 +36,7 @@ export default class SkillSimulatorController {
 
         const simpleCreateHTML = CY.element.simpleCreateHTML;
 
-        el.classList.add('SkillSimulator-main')
+        el.classList.add('SkillSimulator-main');
 
         // Buttons
         const main_menu = simpleCreateHTML('div', 'main-menu');
@@ -50,7 +51,7 @@ export default class SkillSimulatorController {
             });
             col.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'line'], Icons('multiple-blank-circle') + `<span class="text">${Lang('main menu/' + title_id)}</span>`));
             col.appendChild(btns);
-            return cols;
+            return col;
         };
 
         const set_operating = createMenuScope('operating', ['add', 'sub'], ['+', '-'], this.listeners.setOperating);
@@ -60,7 +61,7 @@ export default class SkillSimulatorController {
 
         // svg reusable defs
         const svg = CY.svg.create();
-        svg.appendChild(createDrawSkillTreeDefs);
+        svg.appendChild(createDrawSkillTreeDefs());
         el.appendChild(svg);
 
         const main = simpleCreateHTML('div', 'main');
@@ -69,7 +70,6 @@ export default class SkillSimulatorController {
 
     }
     initComponent(){
-        const CyComponent = CY.CyComponent;
         const simpleCreateHTML = CY.element.simpleCreateHTML;
 
         const ctrr = this;
@@ -104,7 +104,7 @@ export default class SkillSimulatorController {
 
                 const frg = 
                 stc.skillTrees.reduce((cur, st) => {
-                    const t = this.$component('SkillTree').$create(st);
+                    const t = self.$component('SkillTree').$create(st);
                     cur.appendChild(t);
                     return cur;
                 },
@@ -128,18 +128,19 @@ export default class SkillSimulatorController {
 
                 const top = simpleCreateHTML('div', 'top');
 
+                const frg = document.createDocumentFragment();
+                sr.skillTreeCategorys.reduce((cur, stc) => {
+                    const t = self.$component('SkillTreeCategory').$create(stc);
+                    cur.appendChild(t);
+                    return cur;
+                });
+
+                const skill_trees = simpleCreateHTML('div', 'skill-trees');
+
                 return main;
             },
             update(self, el, sr){
-                const frg =
-                sr.skillTreeCategorys.reduce((cur, stc) => {
-                    const t = this.$component('SkillTreeCategory').$create(stc);
-                    cur.appendChild(t);
-                    return cur;
-                },
-                document.createDocumentFragment());
 
-                main.appendChild(frg);
             },
             components: {
                 "SkillTreeCategory": Cy_SkillTreeCategory

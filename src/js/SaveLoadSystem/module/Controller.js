@@ -29,11 +29,13 @@ export default class Controller {
                         break;
                     }
                     case 'load_csv':
-                        CY.csv.loadFile(res => {
-                            ctrr.loadCsvString(res);
-                            ctrr.afterActionFinish();
-                        },
-                        () => ShowMessage(Lang('Warn/Wrong file type: csv')));
+                        CY.csv.loadFile({
+                            loadFileSucceeded: res => {
+                                ctrr.loadCsvString(res);
+                                ctrr.afterActionFinish();
+                            },
+                            wrongFileType: () => ShowMessage(Lang('Warn/Wrong file type: csv'))
+                        });
                         break;
                 }
             },

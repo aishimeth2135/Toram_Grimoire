@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant-TW">
 <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140158974-1"></script>
@@ -35,30 +35,9 @@
     <link rel="stylesheet" href="../src/css/ItemQuery/result.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="../" data-langid="Top List/item 1"></a></li>
-            <li><span data-langid="Top List/item 2"></span></li>
-        </ul>
-    </nav>
-    <div id="loading-page">
-        <div class="main">Loading...</div>
-        <div class="content">
-        </div>
-        <div class="msg"></div>
-    </div>
-    <article id="ItemQuery">
-    </article>
-    <footer>
-        <div class='author-information'></div>
-    </footer>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('../sw.js', {'updateViaCache': 'imports'});
-            });
-        }
-    </script>
+    <nav></nav>
+    <article id="ItemQuery"></article>
+    <footer></footer>
     <script type="text/javascript" src="../src/js/plugin/papaparse.min.js"></script>
     <!-- <script type="module" src="../src/js/main/ItemQuery/main.js"></script> -->
     <script type="text/javascript" src="../dist/item-query.min.js"></script>

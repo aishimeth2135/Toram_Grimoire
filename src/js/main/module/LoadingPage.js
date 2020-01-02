@@ -1,7 +1,7 @@
 import Icons from "./SvgIcons.js";
 
 const options = {
-    node_id: 'loading-page'
+    node_id: 'global--Loading-Page'
 };
 
 /**
@@ -54,7 +54,7 @@ function loadingError(msg_el, e){
         console.log(e);
 }
 
-function loadingSucceeded(){
+function loadingSuccess(){
     return status != -1;
 }
 
@@ -65,9 +65,9 @@ function AllLoadingFinished(){
     LoadingPageInit = null;
     startLoadingMsg = null;
     loadingMsg = null;
-    loadingSucceeded = null;
+    loadingSuccess = null;
     loadingFinished = null;
     AllLoadingFinished = null;
 }
 
-export {LoadingPageInit, startLoadingMsg, loadingMsg, loadingError, loadingFinished, loadingSucceeded, AllLoadingFinished};
+export {LoadingPageInit, startLoadingMsg, loadingMsg, loadingError, loadingFinished, loadingSuccess, AllLoadingFinished};
