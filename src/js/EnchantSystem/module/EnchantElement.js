@@ -254,11 +254,7 @@ class EnchantEquipment {
         stats.forEach(p => {
             const cat = p.itemBase.belongCategory();
             const check = t.find(a => a.category == cat);
-            if ( check )
-                ++check.cnt;
-            else {
-                t.push({category: cat, cnt: 1});
-            }
+            check ? ++check.cnt : t.push({category: cat, cnt: 1});
         });
         const res = t.reduce((a, b) => a + (b.cnt > 1 ? b.cnt * b.cnt : 0), 20);
         return res / 20;
@@ -301,10 +297,12 @@ class EnchantEquipment {
     }
     getAllMaterialPointCost(){
         const mats = Array(6).fill(0);
-        this.currentSteps().forEach(p => p.stepStats.forEach(a => {
-            const t = a.getMaterialPointCost();
-            mats[t.type] += t.value;
-        }));
+        this.currentSteps().forEach(p =>
+            p.stepStats.forEach(a => {
+                const t = a.getMaterialPointCost();
+                mats[t.type] += t.value;
+            })
+        );
         return mats;
     }
     containsStat(stat, step_index){

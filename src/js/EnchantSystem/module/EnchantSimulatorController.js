@@ -497,7 +497,7 @@ export default class EnchantSimulatorController {
                 return ctrr.saveToCsv();
             },
             loadCsvString(csv){
-                return ctrr.loadFromCsv(csv);
+                ctrr.loadFromCsv(csv);
             },
             afterActionFinish(){
                 ctrr.nodes.menu.classList.add('hidden');
@@ -756,7 +756,7 @@ export default class EnchantSimulatorController {
 
         const field_menu = simpleCreateHTML('ul', 'field-menu');
         const field_menu_text = Lang('Equipment Field List');
-        const field_menu_icon = ['sword', 'sword', 'clothing'];
+        const field_menu_icon = ['sword', 'sword', 'iconify/mdi:tshirt-crew'];
         ['main-weapon', 'main-weapon|original-element', 'body-armor'].forEach((p, i) => {
             const li = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple'], Icons(field_menu_icon[i]) + `<span class="text">${field_menu_text[i]}</span>`, {'data-set': p});
             li.addEventListener('click', this.listeners.selectEquipmentField);
@@ -864,7 +864,7 @@ export default class EnchantSimulatorController {
         const hidden_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('block'));
         hidden_btn.addEventListener('click', this.listeners.hiddenStep);
 
-        const toggle_extra_menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'toggle-extra-menu'], Icons('menu'));
+        const toggle_extra_menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'toggle-extra-menu'], Icons('iconify/mdi:menu'));
         toggle_extra_menu_btn.addEventListener('click', this.listeners.toggleStepExtraMenu);
 
         top.appendChild(hidden_btn);
@@ -880,7 +880,7 @@ export default class EnchantSimulatorController {
         const down_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('arrow-down'), {'data-ctr': '>'});
         down_btn.addEventListener('click', this.listeners.moveStep);
 
-        const insert_up_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('table-row-insert-before'));
+        const insert_up_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('iconify/mdi:table-row-plus-before'));
         insert_up_btn.addEventListener('click', this.listeners.insertStep);
         
         extra_menu.appendChild(up_btn);

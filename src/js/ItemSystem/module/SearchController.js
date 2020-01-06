@@ -34,7 +34,7 @@ export default class SearchController {
         }
         function createSearchButtonScope(lis){
             const t = simpleCreateHTML('div', 'search-button-scope');
-            const search_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple'], Icons('search') + '<span class="text">' + Lang('search') + '</span>');
+            const search_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple'], Icons('iconify/ant-design:search-outlined') + '<span class="text">' + Lang('search') + '</span>');
             search_btn.addEventListener('click', lis);
             t.appendChild(search_btn);
             return t;
@@ -81,7 +81,7 @@ export default class SearchController {
         function createButtonScopeTitle(name){
             const t = simpleCreateHTML('div', ['Cyteria', 'flex-vertical-middle', 'title-scope']);
             t.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small', 'title'], Icons('multiple-blank-circle') + `<span class="text">${Lang('option scope title/' + name)}</span>`));
-            const sel_all = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'text-small'], Icons('select-all') + '<span class="text">' + Lang('option scope title/button/select all') + '</span>');
+            const sel_all = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'text-small'], Icons('iconify/mdi:select-all') + '<span class="text">' + Lang('option scope title/button/select all') + '</span>');
             sel_all.addEventListener('click', selectAllOption_listener);
             const cel_all = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'text-small'], Icons('close') + '<span class="text">' + Lang('option scope title/button/cancel all') + '</span>');
             cel_all.addEventListener('click', cancelAllOption_listener);
@@ -163,7 +163,7 @@ export default class SearchController {
                 case 'main': {
                     const search_scope = simpleCreateHTML('div', 'search-scope');
                     const input = simpleCreateHTML('input', 'search', null, {'placeholder': Lang('search placeholder')});
-                    search_scope.appendChild(simpleCreateHTML('span', 'icon', Icons('search')));
+                    search_scope.appendChild(simpleCreateHTML('span', 'icon', Icons('ant-design:search-outlined')));
                     search_scope.appendChild(input);
                     search_scope.appendChild(createShowSearchCaptionButton());
                     frg.appendChild(search_scope);
@@ -237,7 +237,7 @@ export default class SearchController {
 
                     const search_scope = simpleCreateHTML('div', 'search-scope');
                     const input = simpleCreateHTML('input', 'search', null, {'placeholder': Lang('search placeholder')});
-                    search_scope.appendChild(simpleCreateHTML('span', 'icon', Icons('search')));
+                    search_scope.appendChild(simpleCreateHTML('span', 'icon', Icons('ant-design:search-outlined')));
                     search_scope.appendChild(input);
                     search_scope.appendChild(createShowSearchCaptionButton());
                     frg.appendChild(search_scope);
@@ -385,7 +385,7 @@ export default class SearchController {
                     input1.addEventListener('click', input_click);
                     input2.addEventListener('click', input_click);
                     search_scope.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'text-small', 'line', 'title'], Icons('multiple-blank-circle') + '<span class="text">' + Lang('item detail/create/item level') + '</span>'));
-                    search_scope.appendChild(simpleCreateHTML('span', 'icon-before-short', Icons('search')));
+                    search_scope.appendChild(simpleCreateHTML('span', 'icon-before-short', Icons('ant-design:search-outlined')));
                     search_scope.appendChild(input1);
                     search_scope.appendChild(simpleCreateHTML('span', ['text', 'inner'], '~'));
                     search_scope.appendChild(input2);
@@ -470,13 +470,13 @@ export default class SearchController {
             const top = simpleCreateHTML('div', 'top');
             const name = simpleCreateHTML('span', 'name');
 
-            const unfold = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('unfold-more'));
+            const unfold = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('iconify/ic:round-unfold-more'));
             unfold.addEventListener('click', function(e){
                 detail.classList.toggle('unfold');
                 detail.classList.toggle('h60');
                 this.innerHTML = detail.classList.contains('unfold')
-                    ? Icons('unfold-less')
-                    : Icons('unfold-more');
+                    ? Icons('iconify/ic:round-unfold-less')
+                    : Icons('iconify/ic:round-unfold-more');
             });
 
             const close = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('close'));
@@ -666,9 +666,9 @@ export default class SearchController {
             scp.appendChild(s1);
             
             scp.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'info-line'],
-                Icons('map') + '<span class="text">' + (a.type != 'smith' ? (a['map'] || '?') : Lang('item detail/obtains/all smith')) + '</span>'));
+                Icons('iconify/mdi:map') + '<span class="text">' + (a.type != 'smith' ? (a['map'] || '?') : Lang('item detail/obtains/all smith')) + '</span>'));
             if ( a['dye'] )
-                scp.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'info-line'], Icons('color-lens') + '<span class="text">' + a['dye'] + '</span>'));
+                scp.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'info-line'], Icons('iconify/ic:round-color-lens') + '<span class="text">' + a['dye'] + '</span>'));
             obtains.appendChild(scp);
         });
         if ( item.obtains.length == 0 )

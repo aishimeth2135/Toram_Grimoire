@@ -46,20 +46,6 @@ workbox.routing.registerRoute(
     })
 );
 
-// google web font
-workbox.routing.registerRoute(
-    /^https:\/\/fonts\.googleapis\.com/,
-    workbox.strategies.cacheFirst({
-        cacheName: 'google-fonts-webfonts',
-        plugins: [
-            new workbox.expiration.Plugin({
-                maxAgeSeconds: 60 * 60 * 24 * 60, // 60 days
-                maxEntries: 10
-            })
-        ]
-    })
-);
-
 // google spreadsheets csv
 workbox.routing.registerRoute(
     /^https:\/\/docs\.google\.com\/spreadsheets\/.+output\=csv.+/,
@@ -67,9 +53,44 @@ workbox.routing.registerRoute(
         cacheName: 'google-spreadsheets-csv-files',
         plugins: [
             new workbox.cacheableResponse.Plugin({
+                statuses: [0, 200]
+            }),
+            new workbox.cacheableResponse.Plugin({
                 headers: {
                     'X-Is-Cacheable': 'true'
                 }
+            })
+        ]
+    })
+);
+
+// iconify icons
+workbox.routing.registerRoute(
+    /^https:\/\/api\.iconify\.design/,
+    workbox.strategies.staleWhileRevalidate({
+        cacheName: 'iconify-design-icons',
+        plugins: [
+            new workbox.cacheableResponse.Plugin({
+                statuses: [0, 200]
+            }),
+            new workbox.expiration.Plugin({
+                maxAgeSeconds: 60 * 60 * 24 * 60 // 60 days
+            })
+        ]
+    })
+);
+
+// cdn
+workbox.routing.registerRoute(
+    /^https:\/\/(?:fonts\.googleapis\.com|code\.iconify\.design)/,
+    workbox.strategies.cacheFirst({
+        cacheName: 'other-cdn',
+        plugins: [
+            new workbox.cacheableResponse.Plugin({
+                statuses: [0, 200]
+            }),
+            new workbox.expiration.Plugin({
+                maxAgeSeconds: 60 * 60 * 24 * 60 // 60 days
             })
         ]
     })

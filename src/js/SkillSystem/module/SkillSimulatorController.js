@@ -59,7 +59,11 @@ export default class SkillSimulatorController {
         main.appendChild(skillRoot_scope);
 
         this.WindowController = new WindowController();
-        const select_skill_tree_window = this.WindowController.appendWindow('select-skill-tree');
+        this.WindowController.appendWindow('select-skill-tree', {
+            extraClassList: ['frozen-top', 'top-center'],
+            title: '',
+            contentDocumentFragment: this.components['select-skill-tree'].$create(this.skillRoot)
+        });
 
         const main_top = simpleCreateHTML('div', ['Cyteria', 'Layout', 'sticky-header', 'top']);
         const open_select_skilltree = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('six-star'));
@@ -116,7 +120,7 @@ export default class SkillSimulatorController {
         };
 
         createMenuScope(0, 'operating', ['add', 'sub'], ['+', '-'], this.status.skillPointOperating, this.listeners.setOperating);
-        createMenuScope(1, 'step value', ['numeric-1', 'numeric-5', 'numeric-10'], [1, 5, 10], this.status.skillPointStep, this.listeners.setStep);
+        createMenuScope(1, 'step value', ['iconify/mdi:numeric-1', 'iconify/mdi:numeric-5', 'iconify/mdi:numeric-10'], [1, 5, 10], this.status.skillPointStep, this.listeners.setStep);
         bottom_menu.appendChild(bottom_menu_select);
         bottom_menu.appendChild(bottom_menu_content);
 
@@ -210,6 +214,22 @@ export default class SkillSimulatorController {
         });
 
         this.components['SkillRoot'] = Cy_SkillRoot;
+
+        this.components['select-skill-tree'] = new CyComponent({
+            name: 'select-skill-tree',
+            create(self, sr){
+                sr.skillTreeCategorys.forEach(stc => {
+                    stc.skillTrees.forEach(st => {
+                        const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('file-tree') + `<span class="text">${st.name}</span>`);
+
+                    });
+                });
+                return document.createElement('div');
+            },
+            eventListeners: {
+
+            }
+        });
     }
     
 }
