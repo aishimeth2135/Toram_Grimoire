@@ -690,7 +690,7 @@ class SkillElementsController {
 				back.addEventListener('click', function(event){
 					ctrr.popSkillRecord();
 				});
-				const title = simpleCreateHTML('span', ['Cyteria', 'scope-icon'], Icons('script') + '<span class="text current_skill"></span>');
+				const title = simpleCreateHTML('span', ['Cyteria', 'scope-icon'], Icons('iconify/mdi:script') + '<span class="text current_skill"></span>');
 				he.appendChild(back);
 				he.appendChild(title);
 				return he;

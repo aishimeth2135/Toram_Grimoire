@@ -46,20 +46,6 @@ workbox.routing.registerRoute(
     })
 );
 
-// google web font
-workbox.routing.registerRoute(
-    /^https:\/\/fonts\.googleapis\.com/,
-    workbox.strategies.cacheFirst({
-        cacheName: 'google-fonts-webfonts',
-        plugins: [
-            new workbox.expiration.Plugin({
-                maxAgeSeconds: 60 * 60 * 24 * 60, // 60 days
-                maxEntries: 10
-            })
-        ]
-    })
-);
-
 // google spreadsheets csv
 workbox.routing.registerRoute(
     /^https:\/\/docs\.google\.com\/spreadsheets\/.+output\=csv.+/,
@@ -67,9 +53,44 @@ workbox.routing.registerRoute(
         cacheName: 'google-spreadsheets-csv-files',
         plugins: [
             new workbox.cacheableResponse.Plugin({
+                statuses: [0, 200]
+            }),
+            new workbox.cacheableResponse.Plugin({
                 headers: {
                     'X-Is-Cacheable': 'true'
                 }
+            })
+        ]
+    })
+);
+
+// iconify icons
+workbox.routing.registerRoute(
+    /^https:\/\/api\.iconify\.design/,
+    workbox.strategies.staleWhileRevalidate({
+        cacheName: 'iconify-design-icons',
+        plugins: [
+            new workbox.cacheableResponse.Plugin({
+                statuses: [0, 200]
+            }),
+            new workbox.expiration.Plugin({
+                maxAgeSeconds: 60 * 60 * 24 * 60 // 60 days
+            })
+        ]
+    })
+);
+
+// cdn
+workbox.routing.registerRoute(
+    /^https:\/\/(?:fonts\.googleapis\.com|code\.iconify\.design)/,
+    workbox.strategies.cacheFirst({
+        cacheName: 'other-cdn',
+        plugins: [
+            new workbox.cacheableResponse.Plugin({
+                statuses: [0, 200]
+            }),
+            new workbox.expiration.Plugin({
+                maxAgeSeconds: 60 * 60 * 24 * 60 // 60 days
             })
         ]
     })
@@ -82,23 +103,23 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/damage-calculation.min.js",
-    "revision": "eb7f86bb2822f48003906db85cf48031"
+    "revision": "0515dcf81fe214a2f6c3b45efdc4c4a2"
   },
   {
     "url": "dist/enchant-simulator.min.js",
-    "revision": "c01b87640f916ff942f9c17cf7f74b10"
+    "revision": "eb0c481f95e337bb522a6eabda005120"
   },
   {
     "url": "dist/home.min.js",
-    "revision": "5361435a2b5a1d21a2d00822d7227ce5"
+    "revision": "9eeb49a79a844c47cad3b9266e684981"
   },
   {
     "url": "dist/item-query.min.js",
-    "revision": "4e8959c683ebba90322100509d6ed9e8"
+    "revision": "fbf6425fffe711013e3fff8ec6d05ffb"
   },
   {
     "url": "dist/skill-query.min.js",
-    "revision": "5e4fac69212ceb66dffadfe876b79c0c"
+    "revision": "1b41e0352925d866ca3ad560d466f7a8"
   },
   {
     "url": "src/css/CalculationSystem/Damage/main.css",
@@ -118,7 +139,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/main/Cyteria/Cyteria.css",
-    "revision": "ad7cde7eaaeb7a8c6ac9c7ee269f49a3"
+    "revision": "4b8134696bf2ac3d382efc63a8d89d4b"
   },
   {
     "url": "src/css/main/font/font.css",

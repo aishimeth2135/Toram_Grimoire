@@ -431,7 +431,7 @@ export default class DamageCalculationController {
             }
         });
 
-        const save_to_url = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('share') + '<span class="text">' + Lang('save to url') + '</span>', {'data-ctr': 'load_csv'});
+        const save_to_url = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('iconify/mdi:share') + '<span class="text">' + Lang('save to url') + '</span>', {'data-ctr': 'load_csv'});
         save_to_url.addEventListener('click', this.listeners.saveToUrl);
 
         menu_scope_content.appendChild(save_to_url);

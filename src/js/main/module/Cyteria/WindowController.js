@@ -1,21 +1,23 @@
 import element from "./element.js";
+import Icons from "../SvgIcons.js";
 
 export default class WindowController {
     constructor(){
         this.windows = {};
         this.currentWindows = [];
 
+        const ctrr = this;
         this.listeners = {
             closeWindow(e){
-                this.parentNode.parentNode.classList
+                ctrr.closeWindow(this.getAttribute('data-window-name'));
             }
         };
 
         this.init();
     }
     init(){
-        this.mainNode = simpleCreateHTML('div', ['Cyteria', 'window-container']);
-        this.backgroundMask = element.simpleCreateHTML('div', ['Cyteria', 'window-bg-mask']);
+        this.mainNode = element.simpleCreateHTML('div', ['Cyteria', 'window-container']);
+        this.backgroundMask = element.simpleCreateHTML('div', ['Cyteria', 'window-bg-mask', 'hidden']);
 
         const ctrr = this;
         this.backgroundMask.addEventListener('click', function(e){
@@ -25,7 +27,7 @@ export default class WindowController {
                 this.classList.add('hidden');
         });
 
-        this.mainNode.appendChild(backgroundMask);
+        this.mainNode.appendChild(this.backgroundMask);
     }
     getWindowContainer(){
         return this.mainNode;
@@ -36,15 +38,30 @@ export default class WindowController {
             throw new Error('Window name: ' + name + ' is not exist');
         return w;
     }
-    appendWindow(name, extra_class){
-        const el = element.simpleCreateHTML('div', ['Cyteria', 'window', 'hidden', ...extra_class]);
+    appendWindow(name, config){
+        config = Object.assign({
+            extraClassList: [],
+            title: '',
+            contentDocumentFragment: null
+        }, config);
+    
+        const simpleCreateHTML = element.simpleCreateHTML;
+
         if ( this.windows[name] !== void 0 )
             throw new Error('window name: ' + name + ' is already exist.');
 
-        el.appendChild(simpleCreateHTML('div', 'top', '<span class="name"></span>'));
-        const btn = element.simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
-        btn.addEventListener('click', this.listeners.closeWindow);
-        return btn;
+        const el = simpleCreateHTML('div', ['Cyteria', 'window', 'hidden', ...config.extraClassList]);
+
+        const top = simpleCreateHTML('div', 'top');
+        top.appendChild(simpleCreateHTML('span', 'title', config.title));
+        const close_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'), {'data-window-name': name});
+        close_btn.addEventListener('click', this.listeners.closeWindow);
+        top.appendChild(close_btn);
+        
+        el.appendChild(top);
+        const content = simpleCreateHTML('div', 'content');
+        config.contentDocumentFragment && content.appendChild(config.contentDocumentFragment);
+        el.appendChild(content);
 
         this.windows[name] = el;
         this.mainNode.appendChild(el);
