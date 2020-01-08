@@ -103,11 +103,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/damage-calculation.min.js",
-    "revision": "5630d4d763dabebfa198551d93de496d"
+    "revision": "876d27adf8dfb2c3785f6c124fff2ef6"
   },
   {
     "url": "dist/enchant-simulator.min.js",
-    "revision": "53c8cdd56d911defb6ce26192d593057"
+    "revision": "13261d455ebfae75c775e5f9df9f4928"
   },
   {
     "url": "dist/home.min.js",
@@ -139,7 +139,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/main/Cyteria/Cyteria.css",
-    "revision": "e437f01ff68987acce5c584f904d06a8"
+    "revision": "25b0b9f6b6e3d2c741dd8f98f0a5a5bd"
   },
   {
     "url": "src/css/main/font/font.css",
