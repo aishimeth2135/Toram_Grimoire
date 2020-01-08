@@ -176,6 +176,7 @@
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
+	padding-top: 0;
 }
 #SkillQuery div.Skill_scope > div.skill_branchs {
 	padding: 0.2rem;

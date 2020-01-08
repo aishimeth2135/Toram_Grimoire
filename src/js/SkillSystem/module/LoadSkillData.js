@@ -5,7 +5,7 @@ import {ProcessLanguageData} from "../../main/module/LanguageSystem.js";
 function LoadSkillData(sr, c, lang_c, slang_c){
 	const 
 	/* all */
-		NO = 0,
+		ID = 0,
 		CONFIRM = 1,
 	/* Skill */
 		NAME = 1,
@@ -84,25 +84,25 @@ function LoadSkillData(sr, c, lang_c, slang_c){
 			if ( index == 0 ) return;
 			//console.log(p);
 
-			let no = p[NO];
-			if ( no != "" ){
+			let id = p[ID];
+			if ( id != "" ){
 				const confirm_name = p[CONFIRM];
-				no = parseInt(p[NO], 10);
+				id = parseInt(p[ID], 10);
 				switch ( confirm_name ){
 					case CONFIRM_SKILL_TREE_CATEGORY: {
 						const name = p[SKILL_TREE_CATEGORY_NAME];
-						cur = sr.newElement(SkillTreeCategory.TYPE, {no, name});
+						cur = sr.newElement(SkillTreeCategory.TYPE, {id, name});
 					} break;
 					case CONFIRM_SKILL_TREE: {
 						cur = _TreeBack(cur, SkillTreeCategory.TYPE);
 						const name = p[SKILL_TREE_NAME];
-						cur = cur.newElement(SkillTree.TYPE, {no, name});
+						cur = cur.newElement(SkillTree.TYPE, {id, name});
 					} break;
 					default: {
 						if ( confirm_name != "" ){
 							cur = _TreeBack(cur, SkillTree.TYPE);
 							const name = p[NAME];
-							cur = cur.newElement(Skill.TYPE, {no, name});
+							cur = cur.newElement(Skill.TYPE, {id, name});
 						}
 					}
 					case '': {
@@ -132,7 +132,7 @@ function LoadSkillData(sr, c, lang_c, slang_c){
 			if ( bno != "" ){
 				cur = _TreeBack(cur, SkillEffect.TYPE);
 				const bname = p[EFFECT_BRANCH_NAME];
-				cur = cur.newElement(SkillBranch.TYPE, {no: bno, name: bname});
+				cur = cur.newElement(SkillBranch.TYPE, {id: bno, name: bname});
 			}
 			const battrname = p[EFFECT_BRANCH_ATTRIBUTE_NAME],
 				battrvalue = p[EFFECT_BRANCH_ATTRIBUTE_VALUE];
@@ -154,7 +154,7 @@ function LoadSkillData(sr, c, lang_c, slang_c){
 
 function LoadSkillMainData(sr, c, lang_c, slang_c){
 	const CATEGORY = 0,
-		NO = 1,
+		ID = 1,
 		PREVIOUS_SKILL = 2,
 		DRAW_SKILL_TREE_ORDER = 3,
 		CONFIRM_SKILL_TREE_CATEGORY = '0',
@@ -208,22 +208,22 @@ function LoadSkillMainData(sr, c, lang_c, slang_c){
 	};
 
 	c.forEach((p, i) => {
-		if ( i == 0 || p[NO] === '' )
+		if ( i == 0 || p[ID] === '' )
 			return;
 		try {
-			const cat = p[CATEGORY], no = parseInt(p[NO], 10);
+			const cat = p[CATEGORY], id = parseInt(p[ID], 10);
 			switch (cat){
 				case CONFIRM_SKILL_TREE_CATEGORY:
-					cur_stc = sr.skillTreeCategorys.find(a => a.no == no);
+					cur_stc = sr.skillTreeCategorys.find(a => a.id == id);
 					loadLangData(cat, cur_stc, i);
 					break;
 				case CONFIRM_SKILL_TREE:
-					cur_st = cur_stc.skillTrees.find(a => a.no == no);
+					cur_st = cur_stc.skillTrees.find(a => a.id == id);
 					cur_st.init(p[SKILL_TREE_DRAW_TREE_CODE]);
 					loadLangData(cat, cur_st, i);
 					break;
 				case '': {
-					const skill = cur_st.skills.find(a => a.no == no);
+					const skill = cur_st.skills.find(a => a.id == id);
 					skill.init(
 						p[PREVIOUS_SKILL] == '-' ? -1 : parseInt(p[PREVIOUS_SKILL], 10),
 						parseInt(p[DRAW_SKILL_TREE_ORDER])

@@ -54,7 +54,18 @@ function calcInputWidthPx(input, el){
     return res;
 }
 
+function selectElementFromChild(el_class, child_node){
+    el_class = Array.isArray(el_class) ? el_class : [el_class];
+    let node = child_node;
+    while ( !el_class.every(p => node.classList.contains(p)) && node != document.body )
+        node = node.parentNode;
+    if ( node == document.body )
+        console.error("element not found: [" + el_class.join('.') + ']');
+    return node;
+}
+
 export default {
     remove, removeAllChild, setAttributes, simpleCreateHTML,
-    convertRemToPixels, createByCode, isTextNode, calcInputWidthPx
+    convertRemToPixels, createByCode, isTextNode, calcInputWidthPx,
+    selectElementFromChild
 };

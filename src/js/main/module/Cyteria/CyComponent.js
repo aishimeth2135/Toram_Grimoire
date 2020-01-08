@@ -4,10 +4,12 @@ const config = {
 
 export default class CyComponent {
     constructor(set){
+        const empty_fun = function(){};
+        
         this._name = set.name || "";
-        this._create = set.create || function(){};
-        this._update = set.update || function(){};
-        this._getElement = set.getElement || function(){};
+        this._create = set.create || empty_fun;
+        this._update = set.update || empty_fun;
+        this._getElement = set.getElement || empty_fun;
         this._childComponents = set.components || {};
         
         this._callbacks = set.callbacks || {};
@@ -22,6 +24,9 @@ export default class CyComponent {
     $update(el, ...args){
         if ( el.getAttribute(config['element-attribute-name']) !== this._name )
             throw new Error('[argument: element] is not create by this CyComponent');
+        return this._update.apply(this, [this, el, ...args]);
+    }
+    $preUpdate(el, ...args){
         return this._update.apply(this, [this, el, ...args]);
     }
     $getElement(...args){

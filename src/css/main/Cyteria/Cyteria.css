@@ -2,6 +2,32 @@
     display: none!important;
 }
 
+
+.Cyteria.space-left {
+    margin-left: 0.4rem;
+}
+.Cyteria.space-right {
+    margin-right: 0.4rem;
+}
+.Cyteria.space-left-20 {
+    margin-left: 0.8rem;
+}
+.Cyteria.space-right-20 {
+    margin-left: 0.8rem;
+}
+
+.Cyteria.line-space-bottom {
+    margin-bottom: 0.6rem;
+}
+
+.Cyteria.display-block {
+    display: block;
+}
+
+.Cyteria.align-center {
+    text-align: center;
+}
+
 /* ==========================================================================
    Button
    ========================================================================== */
@@ -118,10 +144,11 @@
     padding: 0.3rem;
     margin: 0 0.2rem;
 }
-.Cyteria.Button.icon-only > svg {
+.Cyteria.Button.icon-only svg {
     width: 1.2rem;
     height: 1.2rem;
     flex-shrink: 0;
+    display: block;
 }
 
 /* Fix of iconify */
@@ -175,10 +202,6 @@
 .Cyteria.Button.border.icon-only:hover {
     border: 1px var(--primary-light-4) solid;
 }
-.Cyteria.Button.border.icon-only svg {
-    display: block;
-}
-
 /* line
    ========================================================================== */
 .Cyteria.Button.line {
@@ -244,19 +267,6 @@
 }
 
 /* ==========================================================================
-   set-button-line
-   ========================================================================== */
-.Cyteria.set-button-line {
-    display: flex;
-    align-items: center;
-    padding: 0 0.6rem;
-    flex-wrap: wrap;
-}
-.Cyteria.set-button-line > .title {
-    margin-right: 0.5rem;
-}
-
-/* ==========================================================================
    input
    ========================================================================== */
 .Cyteria.input {
@@ -271,33 +281,17 @@
     outline: none;
     border-bottom-color: var(--primary-light-4);
 }
-.Cyteria.input.between-button {
-    padding: 0.3rem 0.2rem;
-    width: 2.5rem;
-    text-align: center;
-    border-bottom: 1px transparent solid;
-}
 
 
 /* ==========================================================================
    text
    ========================================================================== */
-.Cyteria.text.between-button {
-    padding: 0.3rem 0.6rem;
-    color: var(--primary-light-4);
-    text-align: center;
-    display: inline-block;
-}
-.Cyteria.text.after-icon-button {
-    display: inline-block;
-    vertical-align: middle;
-}
-
 .Cyteria.text.tips {
     color: var(--primary-light-2);
     font-size: 0.9rem;
     margin: 0.3rem 0.6rem;
     display: inline-block;
+    text-align: left;
 }
 .Cyteria.text.tips.after {
     margin-left: 1rem;
@@ -613,6 +607,45 @@
 }
 .Cyteria.Layout.sticky-header.bottom-border::after {
     border-top: 1px solid var(--primary-light);
+}
+
+.Cyteria.Layout.set-buttons-line {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0 0.6rem;
+}
+.Cyteria.Layout.set-buttons-line > input.between-button {
+    border: 0;
+    color: var(--primary-light-4);
+    font-size: 1rem;
+    padding: 0.3rem 0.2rem;
+    width: 2.5rem;
+    text-align: center;
+    border-bottom: 1px transparent solid;
+}
+.Cyteria.Layout.set-buttons-line > input.between-button:focus {
+    outline: none;
+}
+.Cyteria.Layout.set-buttons-line > .text {
+    padding: 0.3rem 0.6rem;
+    color: var(--primary-light-4);
+    text-align: center;
+    display: inline-block;
+}
+.Cyteria.Layout.set-buttons-line > .title {
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--primary-light-4);
+}
+.Cyteria.Layout.set-buttons-line.no-padding {
+    padding: 0;
+}
+
+.Cyteria.Layout.flex-vertical-middle {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 /* ==========================================================================

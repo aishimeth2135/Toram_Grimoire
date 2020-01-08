@@ -99,7 +99,7 @@ class SkillElementsController {
 					frg.appendChild(t);
 					break;
 				case TYPE_CHARACTER_LEVEL:
-					t.classList.add('Cyteria', 'set-button-line');
+					t.classList.add('Cyteria', 'Layout', 'set-buttons-line');
 					frg.appendChild(options_scope);
 				case TYPE_SWITCH_DISPLAY_MODE:
 					t.appendChild(this.createSkillQueryScopeHTML(null, a));
@@ -228,7 +228,7 @@ class SkillElementsController {
 	    	select_skill_history_date.appendChild(simpleCreateHTML('div', 'content'));
 	    	this.MAIN_NODE.appendChild(select_skill_history_date);
 
-	    	const open_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'after', 'text-light', 'no-border', 'single-line'], Icons('clock-arrow') + '<span class="text"></span>');
+	    	const open_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'after', 'text-light', 'no-border', 'single-line'], Icons('iconify/mdi:update') + '<span class="text"></span>');
 		    open_btn.addEventListener('click', function(e){
 		    	select_skill_history_date.classList.remove('hidden');
 		    	e.stopPropagation();
@@ -610,7 +610,7 @@ class SkillElementsController {
 				const ctrr = this;
 				const left =  simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'));
 				const right = simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('add'));
-				const mid = simpleCreateHTML('input', ['Cyteria', 'input', 'between-button', 'mid']);
+				const mid = simpleCreateHTML('input', ['between-button', 'mid']);
 
 				mid.value = this.status.characterLevel;
 
@@ -643,7 +643,7 @@ class SkillElementsController {
 				});
 
 				const main = document.createDocumentFragment();
-				main.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'title', 'text-small'], Icons('cards') + `<span class="text">${GetLang('Skill Query/Analysis Skill/character level')}</span>`));
+				main.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'title'], Icons('cards') + `<span class="text">${GetLang('Skill Query/Analysis Skill/character level')}</span>`));
 				main.appendChild(left);
 				main.appendChild(mid);
 				main.appendChild(right);

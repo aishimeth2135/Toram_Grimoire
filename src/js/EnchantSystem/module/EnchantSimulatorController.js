@@ -338,15 +338,15 @@ export default class EnchantSimulatorController {
             if ( cslv )
                 EnchantElementStatus('Character/smithLevel', parseInt(cslv));
         }
-        const set_clv = simpleCreateHTML('div', ['Cyteria', 'set-button-line', 'set-character-level']);
+        const set_clv = simpleCreateHTML('div', ['Cyteria', 'Layout', 'set-buttons-line', 'set-character-level', 'line-space-bottom']);
         {
             const left =  CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'), {'data-ctr': '-'});
             left.addEventListener('click', this.listeners.setCharacterLevel);
             const right = CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('add'), {'data-ctr': '+'});
             right.addEventListener('click', this.listeners.setCharacterLevel);
-            const mid = CY.element.simpleCreateHTML('span', ['Cyteria', 'text', 'between-button', 'character-level'], EnchantElementStatus('Character/level'));
+            const mid = CY.element.simpleCreateHTML('span', ['text', 'character-level'], EnchantElementStatus('Character/level'));
 
-            set_clv.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'title', 'text-small', 'light'], Icons('cards') + `<span class="text">${Lang('Character Level')}</span>`));
+            set_clv.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'title'], Icons('cards') + `<span class="text">${Lang('Character Level')}</span>`));
             set_clv.appendChild(left);
             set_clv.appendChild(mid);
             set_clv.appendChild(right);
@@ -355,15 +355,15 @@ export default class EnchantSimulatorController {
             hnode.appendChild(set_clv);
         }
 
-        const set_smithlv = simpleCreateHTML('div', ['Cyteria', 'set-button-line', 'set-character-smith-level']);
+        const set_smithlv = simpleCreateHTML('div', ['Cyteria', 'Layout', 'set-buttons-line', 'set-character-smith-level']);
         {
             const left =  CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'), {'data-ctr': '-'});
             left.addEventListener('click', this.listeners.setCharacterSmithLevel);
             const right = CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('add'), {'data-ctr': '+'});
             right.addEventListener('click', this.listeners.setCharacterSmithLevel);
-            const mid = CY.element.simpleCreateHTML('span', ['Cyteria', 'text', 'between-button', 'character-smith-level'], EnchantElementStatus('Character/smithLevel'));
+            const mid = CY.element.simpleCreateHTML('span', ['text', 'character-smith-level'], EnchantElementStatus('Character/smithLevel'));
 
-            set_smithlv.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'title', 'text-small', 'light'], Icons('cards') + `<span class="text">${Lang('Character Smith Level')}</span>`));
+            set_smithlv.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'title'], Icons('cards') + `<span class="text">${Lang('Character Smith Level')}</span>`));
             set_smithlv.appendChild(left);
             set_smithlv.appendChild(mid);
             set_smithlv.appendChild(right);
@@ -517,11 +517,7 @@ export default class EnchantSimulatorController {
     }
     getScopeFromChildNode(node, name){
         const cn = this.scopeClassName[name];
-        while ( !node.classList.contains(cn) && node != document )
-            node = node.parentNode;
-        if ( node == document )
-            console.error("Scope not found: " + name);
-        return node;
+        return CY.element.selectElementFromChild(cn, node);
     }
     currentEquipment(t){
         if ( t !== void 0 )
@@ -644,7 +640,7 @@ export default class EnchantSimulatorController {
         const tn = step.type == EnchantStep.TYPE_NORMAL ? 0 : 1;
         scope.querySelector('.switch-step-type').setAttribute('data-step-type', tn);
         scope.querySelector('.type-each-set-scope').classList.toggle('hidden', tn == 0);
-        scope.querySelector('.step-type-text').innerHTML = Lang('step type')[tn];
+        scope.querySelector('.switch-step-type .text').innerHTML = Lang('step type')[tn];
 
         scope.querySelector('.step-value').innerHTML = step.stepValue();
 
@@ -775,13 +771,13 @@ export default class EnchantSimulatorController {
         remove_btn.addEventListener('click', this.listeners.removeEquipment);
         top_menu.appendChild(remove_btn);
 
-        const set_orig_pot = simpleCreateHTML('div', ['Cyteria', 'set-button-line', 'set-original-potential']);
+        const set_orig_pot = simpleCreateHTML('div', ['Cyteria', 'Layout', 'set-buttons-line', 'line-space-bottom', 'set-original-potential']);
         {
             const left =  CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'), {'data-ctr': '-'});
             left.addEventListener('click', this.listeners.setEquipmentOriginalPotential);
             const right = CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('add'), {'data-ctr': '+'});
             right.addEventListener('click', this.listeners.setEquipmentOriginalPotential);
-            const mid = CY.element.simpleCreateHTML('input', ['Cyteria', 'input', 'between-button', 'original-potential']);
+            const mid = CY.element.simpleCreateHTML('input', ['between-button', 'original-potential']);
             mid.addEventListener('change', this.listeners.inputEquipmentOriginalPotential);
             mid.addEventListener('click', this.listeners.inputClickSelect);
             mid.type = 'number';
@@ -792,13 +788,13 @@ export default class EnchantSimulatorController {
             set_orig_pot.appendChild(right);
         }
 
-        const set_base_pot = simpleCreateHTML('div', ['Cyteria', 'set-button-line', 'set-base-potential']);
+        const set_base_pot = simpleCreateHTML('div', ['Cyteria', 'Layout', 'set-buttons-line', 'line-space-bottom', 'set-base-potential']);
         {
             const left =  CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'), {'data-ctr': '-'});
             left.addEventListener('click', this.listeners.setEquipmentBasePotential);
             const right = CY.element.simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('add'), {'data-ctr': '+'});
             right.addEventListener('click', this.listeners.setEquipmentBasePotential);
-            const mid = CY.element.simpleCreateHTML('input', ['Cyteria', 'input', 'between-button', 'base-potential']);
+            const mid = CY.element.simpleCreateHTML('input', ['between-button', 'base-potential']);
             mid.addEventListener('change', this.listeners.inputEquipmentBasePotential);
             mid.addEventListener('click', this.listeners.inputClickSelect);
             mid.type = 'number';
@@ -856,12 +852,12 @@ export default class EnchantSimulatorController {
         const scope = simpleCreateHTML('div', this.scopeClassName['step']);
 
         const top = simpleCreateHTML('div', 'top');
-        top.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'vertical-middle', 'space-right'], Icons('book') + '<span class="text title"></span>'));
+        top.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'space-right'], Icons('book') + '<span class="text title"></span>'));
 
         const delete_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('delete'));
         delete_btn.addEventListener('click', this.listeners.removeStep);
 
-        const hidden_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('block'));
+        const hidden_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('cancel'));
         hidden_btn.addEventListener('click', this.listeners.hiddenStep);
 
         const toggle_extra_menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'toggle-extra-menu'], Icons('iconify/mdi:menu'));
@@ -873,7 +869,7 @@ export default class EnchantSimulatorController {
 
         scope.appendChild(top);
 
-        const extra_menu = simpleCreateHTML('div', ['extra-menu', 'hidden']);
+        const extra_menu = simpleCreateHTML('div', ['Cyteria', 'align-center', 'extra-menu', 'hidden']);
         
         const up_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('arrow-up'), {'data-ctr': '<'});
         up_btn.addEventListener('click', this.listeners.moveStep);
@@ -891,21 +887,20 @@ export default class EnchantSimulatorController {
 
         
         const step_type = simpleCreateHTML('div', 'step-type');
-        const switch_type_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'switch-step-type'], Icons('switch'));
+        const switch_type_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'no-border', 'no-padding', 'switch-step-type'], Icons('switch') + '<span class="text"></span>');
         switch_type_btn.addEventListener('click', this.listeners.switchStepType);
 
         step_type.appendChild(switch_type_btn);
-        step_type.appendChild(simpleCreateHTML('span', ['Cyteria', 'text', 'after-icon-button', 'step-type-text']));
 
-        const set_step_value = simpleCreateHTML('div', ['type-each-set-scope', 'hidden']);
-        set_step_value.appendChild(simpleCreateHTML('span', ['text-pretext', 'text-small'], Lang('enchant per time: title')));
+        const set_step_value = simpleCreateHTML('div', ['Cyteria', 'Layout', 'set-buttons-line', 'type-each-set-scope', 'space-left', 'hidden']);
+        set_step_value.appendChild(simpleCreateHTML('span', ['title'], Lang('enchant per time: title')));
         const set_step_left =  simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'), {'data-ctr': '-'});
         const set_step_right = simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('add'), {'data-ctr': '+'});
         set_step_left.addEventListener('click', this.listeners.setStepStepValue);
         set_step_right.addEventListener('click', this.listeners.setStepStepValue);
 
         set_step_value.appendChild(set_step_left);
-        set_step_value.appendChild(simpleCreateHTML('span', ['Cyteria', 'text', 'between-button', 'step-value']), 1);
+        set_step_value.appendChild(simpleCreateHTML('span', ['Cyteria', 'text', 'step-value']), 1);
         set_step_value.appendChild(set_step_right);
 
         step_type.appendChild(set_step_value);
@@ -920,7 +915,7 @@ export default class EnchantSimulatorController {
 
         scope.appendChild(stats);
 
-        scope.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'line', 'show-step-potential'], Icons('creation') + '<span class="text step-potential"></span>'));
+        scope.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'line', 'show-step-potential'], Icons('iconify/mdi:creation') + '<span class="text step-potential"></span>'));
 
         return scope;
     }
@@ -957,7 +952,7 @@ export default class EnchantSimulatorController {
 
         const scope = simpleCreateHTML('div', this.scopeClassName['stat']);
 
-        const main = simpleCreateHTML('div', 'main');
+        const main = simpleCreateHTML('div', ['Cyteria', 'Layout', 'set-buttons-line', 'main']);
 
         const left = simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub'), {'data-ctr': '-'});
         const right = simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('add'), {'data-ctr': '+'});
@@ -971,7 +966,7 @@ export default class EnchantSimulatorController {
         delete_btn.addEventListener('click', this.listeners.removeStat);
 
         main.appendChild(left);
-        main.appendChild(simpleCreateHTML('span', ['Cyteria', 'text', 'between-button', 'show']));
+        main.appendChild(simpleCreateHTML('span', ['text', 'show']));
         main.appendChild(right);
         main.appendChild(last);
         main.appendChild(delete_btn);
@@ -980,8 +975,8 @@ export default class EnchantSimulatorController {
 
         const sub = simpleCreateHTML('div', 'sub');
         sub.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small'], Icons('label') + '<span class="text pre-stats-value"></span>'));
-        sub.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small', 'space-left'], Icons('creation') + '<span class="text stat-potential"></span>'));
-        sub.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small', 'space-left'], Icons('cube-outline') + '<span class="text stat-material-point-cost"></span>'));
+        sub.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small', 'space-left-20'], Icons('iconify/mdi:creation') + '<span class="text stat-potential"></span>'));
+        sub.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small', 'space-left-20'], Icons('cube-outline') + '<span class="text stat-material-point-cost"></span>'));
 
         scope.appendChild(sub);
 

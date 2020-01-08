@@ -79,7 +79,7 @@ export default class SearchController {
             this.parentNode.nextSibling.querySelectorAll('li.cur').forEach(a => a.classList.remove('cur'));
         }
         function createButtonScopeTitle(name){
-            const t = simpleCreateHTML('div', ['Cyteria', 'flex-vertical-middle', 'title-scope']);
+            const t = simpleCreateHTML('div', ['Cyteria', 'Layout', 'flex-vertical-middle', 'title-scope']);
             t.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small', 'title'], Icons('multiple-blank-circle') + `<span class="text">${Lang('option scope title/' + name)}</span>`));
             const sel_all = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'text-small'], Icons('iconify/mdi:select-all') + '<span class="text">' + Lang('option scope title/button/select all') + '</span>');
             sel_all.addEventListener('click', selectAllOption_listener);

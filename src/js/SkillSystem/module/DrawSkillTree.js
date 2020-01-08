@@ -7,7 +7,7 @@ function DrawSkillTree(st, config){
 
     const setSkillButton = config.setSkillButton;
 
-    const skillIconPathRoot = '../src/picture/skill_icons/stc_' + st.parent.no + '/st_' + st.no + '/';
+    const skillIconPathRoot = '../src/picture/skill_icons/stc_' + st.parent.id + '/st_' + st.id + '/';
 
     const s = st.drawTreeCode || 'S E S E S E S L S E S E S E S L S E S E S E S L S E S E S E S';
     
@@ -76,10 +76,10 @@ function DrawSkillTree(st, config){
                                 lengthTransformFunction: tran,
                                 documentFragment: t
                             }, drawData));
-                            const patid = `s_${st.parent.no}-${st.no}-${_skill.no}`;
+                            const patid = `s_${st.parent.id}-${st.id}-${_skill.id}`;
                             const pat = CY.svg.createEmpty('pattern', {id: patid, width: 1, height: 1});
                             pat.appendChild(Circle(w/2, w/2, w/2, {fill: 'url(#skill-icon-bg)', 'stroke-width': 0}));
-                            pat.appendChild(CY.svg.drawImage(`${skillIconPathRoot}si_${_skill.no}.png`, iconPad, iconPad, w-iconPad*2, w-iconPad*2));
+                            pat.appendChild(CY.svg.drawImage(`${skillIconPathRoot}si_${_skill.id}.png`, iconPad, iconPad, w-iconPad*2, w-iconPad*2));
                             defs.appendChild(pat);
                             btn.style.fill = 'url(#' + patid + ')';
                         }
