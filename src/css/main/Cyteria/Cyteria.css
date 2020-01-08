@@ -286,15 +286,11 @@
 /* ==========================================================================
    text
    ========================================================================== */
-.Cyteria.text.tips {
+.Cyteria.Text.tips {
     color: var(--primary-light-2);
     font-size: 0.9rem;
     margin: 0.3rem 0.6rem;
     display: inline-block;
-    text-align: left;
-}
-.Cyteria.text.tips.after {
-    margin-left: 1rem;
 }
 
 /* ==========================================================================

@@ -350,7 +350,7 @@ export default class EnchantSimulatorController {
             set_clv.appendChild(left);
             set_clv.appendChild(mid);
             set_clv.appendChild(right);
-            set_clv.appendChild(simpleCreateHTML('span', ['Cyteria', 'text', 'tips'], Lang('tips/Character Level')));
+            set_clv.appendChild(simpleCreateHTML('span', ['Cyteria', 'Text', 'tips'], Lang('tips/Character Level')));
 
             hnode.appendChild(set_clv);
         }
@@ -367,7 +367,7 @@ export default class EnchantSimulatorController {
             set_smithlv.appendChild(left);
             set_smithlv.appendChild(mid);
             set_smithlv.appendChild(right);
-            set_smithlv.appendChild(simpleCreateHTML('span', ['Cyteria', 'text', 'tips'], Lang('tips/Smith Level')));
+            set_smithlv.appendChild(simpleCreateHTML('span', ['Cyteria', 'Text', 'tips'], Lang('tips/Smith Level')));
 
             hnode.appendChild(set_smithlv);
         }
@@ -803,7 +803,7 @@ export default class EnchantSimulatorController {
             set_base_pot.appendChild(left);
             set_base_pot.appendChild(mid);
             set_base_pot.appendChild(right);
-            set_base_pot.appendChild(simpleCreateHTML('span', ['Cyteria', 'text', 'tips'], Lang('tips/Base Potential')));
+            set_base_pot.appendChild(simpleCreateHTML('span', ['Cyteria', 'Text', 'tips'], Lang('tips/Base Potential')));
         }
 
         const steps = simpleCreateHTML('div', 'steps');
@@ -900,7 +900,7 @@ export default class EnchantSimulatorController {
         set_step_right.addEventListener('click', this.listeners.setStepStepValue);
 
         set_step_value.appendChild(set_step_left);
-        set_step_value.appendChild(simpleCreateHTML('span', ['Cyteria', 'text', 'step-value']), 1);
+        set_step_value.appendChild(simpleCreateHTML('span', ['Cyteria', 'Text', 'step-value']), 1);
         set_step_value.appendChild(set_step_right);
 
         step_type.appendChild(set_step_value);
