@@ -46,13 +46,13 @@ branchDevelopmentController.prototype = {
 			}
 		}
         const before_init = this.currentOutput.branchs[currentBranch.findLocation()];
-		const cmp = branch.no !== '-'
-            ? InitSkillBranch(this.baseEffect.branchs.find(b => b.no == branch.no))
+		const cmp = branch.id !== '-'
+            ? InitSkillBranch(this.baseEffect.branchs.find(b => b.id == branch.id))
             : branch;
 		const he = simpleCreateHTML('div', 'dev_branchDetail');
 
 		const top = simpleCreateHTML('div', 'top');
-		top.appendChild(simpleCreateHTML('span', '_no', branch.no));
+		top.appendChild(simpleCreateHTML('span', '_no', branch.id));
 		top.appendChild(simpleCreateHTML('span', '_name', cmp.name));
 		he.appendChild(top);
 
@@ -85,7 +85,7 @@ branchDevelopmentController.prototype = {
 				t.classList.add('overwrite');
 			s1.appendChild(t);
 		});
-		if ( !is_default && branch.no !== '-' && is_exist ){
+		if ( !is_default && branch.id !== '-' && is_exist ){
 			const s2 = document.createDocumentFragment();
             const title2_tr = document.createElement('tr');
 			const title2_td = simpleCreateHTML('td', null, null, {colspan: branch.stats.length !== 0 ? 3 : 2});
@@ -370,13 +370,13 @@ export default function(ctrr){
             const brhs = output.branchs;
 
             brhs.forEach(brh => {
-                const hry = brhs.find(b => b.name == 'history' && b.branchAttributes['target_branch'] == brh.no && b.branchAttributes['date'] == date);
+                const hry = brhs.find(b => b.name == 'history' && b.branchAttributes['target_branch'] == brh.id && b.branchAttributes['date'] == date);
                 if ( hry ){
                     // 將資料還原到date的下一個date
                     const index = date_list.indexOf(date);
                     date_list.slice(0, index).forEach(p => {
                         // 屬性
-                        const cur_hry = brhs.find(b => b.name == 'history' && b.branchAttributes['target_branch'] == brh.no && b.branchAttributes['date'] == p);
+                        const cur_hry = brhs.find(b => b.name == 'history' && b.branchAttributes['target_branch'] == brh.id && b.branchAttributes['date'] == p);
                         if ( cur_hry ){
                             Object.keys(cur_hry.branchAttributes).forEach(k => brh.branchAttributes[k] = cur_hry.branchAttributes[k]);
                             // 能力
@@ -460,7 +460,7 @@ export default function(ctrr){
 				}
 				if ( branchDevelopmentMode ){
 					const is_default = overwrite_eft === skill.defaultEffect;
-					let _t = overwrite_eft.branchs.find(b => branch.no == b.no);
+					let _t = overwrite_eft.branchs.find(b => branch.id == b.id);
 					two.appendChild(branchDevCtr.branchDetail(
 						( !is_default && _t ) ? _t : branch, branch,
                         is_default, _t !== void 0

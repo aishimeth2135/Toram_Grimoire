@@ -776,7 +776,7 @@ export default class DamageCalculationController {
             const t = simpleCreateHTML('div', 'title-scope');
             const icon = Icons({
                 [CalcItemContainer.CATEGORY_CONSTANT]: 'add',
-                [CalcItemContainer.CATEGORY_MULTIPLIER]: 'hexagon-multiple',
+                [CalcItemContainer.CATEGORY_MULTIPLIER]: 'iconify/mdi:hexagon-multiple',
                 [CalcItemContainer.CATEGORY_NONE]: 'multiple-blank-circle'
             }[ctner.category]);
             t.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'text-small', 'title'], icon + '<span class="text">' + ctner.containerTitle() + '</span>'))

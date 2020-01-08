@@ -74,7 +74,7 @@ workbox.routing.registerRoute(
                 statuses: [0, 200]
             }),
             new workbox.expiration.Plugin({
-                maxAgeSeconds: 60 * 60 * 24 * 60 // 60 days
+                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
             })
         ]
     })
@@ -99,27 +99,27 @@ workbox.routing.registerRoute(
 workbox.precaching.precacheAndRoute([
   {
     "url": "index.html",
-    "revision": "3815762423c621063fc93048babb79ef"
+    "revision": "004bc6b99cbfde6652c8c57fb585197c"
   },
   {
     "url": "dist/damage-calculation.min.js",
-    "revision": "0515dcf81fe214a2f6c3b45efdc4c4a2"
+    "revision": "5630d4d763dabebfa198551d93de496d"
   },
   {
     "url": "dist/enchant-simulator.min.js",
-    "revision": "eb0c481f95e337bb522a6eabda005120"
+    "revision": "53c8cdd56d911defb6ce26192d593057"
   },
   {
     "url": "dist/home.min.js",
-    "revision": "9eeb49a79a844c47cad3b9266e684981"
+    "revision": "7af74b676a2282869ffbbb4cd3b1fad1"
   },
   {
     "url": "dist/item-query.min.js",
-    "revision": "fbf6425fffe711013e3fff8ec6d05ffb"
+    "revision": "9a153a8991e4227985e1ccf87b81584b"
   },
   {
     "url": "dist/skill-query.min.js",
-    "revision": "1b41e0352925d866ca3ad560d466f7a8"
+    "revision": "96db9d62ef5df2424d16bd2338db6a5b"
   },
   {
     "url": "src/css/CalculationSystem/Damage/main.css",
@@ -127,7 +127,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/EnchantSimulator/main.css",
-    "revision": "b9d64a60123296337acd852bad648ba2"
+    "revision": "aadbf8bd6f75934f4bee8f6bab5af115"
   },
   {
     "url": "src/css/ItemQuery/main.css",
@@ -139,7 +139,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/main/Cyteria/Cyteria.css",
-    "revision": "4b8134696bf2ac3d382efc63a8d89d4b"
+    "revision": "e437f01ff68987acce5c584f904d06a8"
   },
   {
     "url": "src/css/main/font/font.css",
@@ -183,7 +183,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "src/css/SkillQuery/SkillQuery.css",
-    "revision": "2ff76a5cad369fcd35a0b2581147dcf7"
+    "revision": "d3dce98840298cb2f1916297730ee6af"
   },
   {
     "url": "src/css/SkillSimulator/main.css",

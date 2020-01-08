@@ -24,12 +24,12 @@ function createSkillAttributeScope(icon, t, v, tail){
 
 function getSkillAttributeData(){
     const ICON_DATA = {
-        [SkillEffect.MP_COST]: 'water',
+        [SkillEffect.MP_COST]: 'iconify/ion:water',
         [SkillEffect.RANGE]: 'target',
         [SkillEffect.SKILL_TYPE]: 'multiple-blank-circle',
-        [SkillEffect.IN_COMBO]: ['selection-ellipse-arrow-inside', 'forbid', 'numeric-1-circle-outline'],
-        [SkillEffect.ACTION_TIME]: 'time-sand-fill',
-        [SkillEffect.CASTING_TIME]: 'clock-arrow'
+        [SkillEffect.IN_COMBO]: ['iconify/mdi:selection-ellipse-arrow-inside', 'forbid', 'iconify/mdi:numeric-1-circle-outline'],
+        [SkillEffect.ACTION_TIME]: 'iconify/mdi:timer-sand-full',
+        [SkillEffect.CASTING_TIME]: 'iconify/mdi:update'
     };
     const TITLE_DATA = {
         [SkillEffect.MP_COST]: Lang('mp cost'),

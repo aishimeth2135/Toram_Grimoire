@@ -28,9 +28,9 @@ class TempSkillEffect {
             else
                 this.appendAttribute(key, v);
         });
-        // 如果 branch.no 一樣才執行覆蓋
+        // 如果 branch.id 一樣才執行覆蓋
         sef.branchs.forEach((branch, i) => {
-            const loc = this.branchs.findIndex(b => b.no !== '-' && b.no == branch.no);
+            const loc = this.branchs.findIndex(b => b.id !== '-' && b.id == branch.id);
             if ( loc != -1 )
                 this.branchs[loc].overWrite(branch);
         });
@@ -70,7 +70,7 @@ class TempSkillBranch {
         this.historyStats = [];
     }
     from(branch){
-        this.no = branch.no;
+        this.id = branch.id;
         this.name = branch.name;
         this.branchAttributes = {};
         Object.keys(branch.branchAttributes).forEach(key => {
@@ -94,13 +94,13 @@ class TempSkillBranch {
         return SkillBranch.prototype.appendStat.call(this, ...arguments);
     }
     overWrite(branch){
-        // 如果 branch.no 一樣但 branch.name 為空值且isEmpty。去除此 branch。
+        // 如果 branch.id 一樣但 branch.name 為空值且isEmpty。去除此 branch。
         if ( branch.name === '' && branch.isEmpty() ){
             const b = this.parent.branchs;
             b.splice(b.indexOf(this), 1);
             return;
         }
-        // 如果 branch.no 一樣但 branch.name 不一樣，先清空所有屬性。branch.name 為空值時，默認兩者同名。
+        // 如果 branch.id 一樣但 branch.name 不一樣，先清空所有屬性。branch.name 為空值時，默認兩者同名。
         if ( branch.name !== '' && this.name != branch.name ){
             this.name = branch.name;
             CY.object.empty(this.branchAttributes);

@@ -1,23 +1,34 @@
+/**
+ * get index id of SkillElement
+ * @param  {SkillElement} sk_el
+ * @return {String}
+ */
 function getSkillElementId(sk_el){
-    const nos = [];
+    const indexs = [];
     while (sk_el.parent){
-        nos.push(sk_el.findLocation());
+        indexs.push(sk_el.findLocation());
         sk_el = sk_el.parent;
     }
-    return nos.reverse().join('-');
+    return indexs.reverse().join('-');
 }
+/**
+ * select SkillElement by index id
+ * @param  {SkillRoot} sr
+ * @param  {String} id
+ * @return {SkillElement}
+ */
 function selectSkillElement(sr, id){
-    return id.split("-").reduce((cur, no, i, ary) => {
-        no = parseInt(no, 10);
+    return id.split("-").map(a => parseInt(a, 10))
+    .reduce((cur, id, i, ary) => {
         switch (i){
             case 0:
-                return sr.skillTreeCategorys[no];
+                return sr.skillTreeCategorys[id];
             case 1:
-                return cur.skillTrees[no];
+                return cur.skillTrees[id];
             case 2:
-                return cur.skills[no];
+                return cur.skills[id];
             case 3:
-                return cur.branchs[no];
+                return cur.branchs[id];
         }
     }, null);
 }

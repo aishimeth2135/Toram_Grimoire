@@ -48,8 +48,8 @@ function getProrationHTML(proration_branch){
         none: Lang('effective proration type: none')
     });
     const icon_dict = {
-        physical: 'sword', magic: 'meteor',
-        normal_attack: 'crosshair', none: 'selection-ellipse'
+        physical: 'sword', magic: 'iconify/mdi:meteor',
+        normal_attack: 'iconify/mdi:crosshairs', none: 'iconify/mdi:selection-ellipse'
     };
     Object.assign(icon_dict, {
         auto: icon_dict[_attr['damage']]
@@ -562,9 +562,9 @@ function getBranchHTML(branch, ctrr){
     switch (btype){
         case 'stack': {
             const stk = branch;
-            const left = simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only', 'ctr_button'], Icons('sub')),
-                right = simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only', 'ctr_button'], Icons('add')),
-                mid = simpleCreateHTML('input', ['Cyteria', 'input', 'between-button', 'mid', 'stack-input']),
+            const left = simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('sub')),
+                right = simpleCreateHTML('span', ['Cyteria', 'Button', 'border', 'icon-only'], Icons('add')),
+                mid = simpleCreateHTML('input', ['between-button', 'stack-input']),
                 unit = stk.branchAttributes['unit'] !== void 0 ? simpleCreateHTML('span', 'unit', stk.branchAttributes['unit']) : null;
 
             const ov = data.stackValues[getStackBranchIdKey(branch)];
@@ -618,7 +618,7 @@ function getBranchHTML(branch, ctrr){
             // if ( attr['max'] !== void 0 )
             //     scope1.appendChild(createSkillAttributeScope(null, Lang('branch/stack/max value'), processValue(attr['max'])));
 
-            const main = document.createDocumentFragment();
+            const main = simpleCreateHTML('div', ['Cyteria', 'Layout', 'set-buttons-line', 'no-padding']);
             main.appendChild(left);
             main.appendChild(mid);
             if ( unit !== null )
@@ -716,7 +716,7 @@ function getBranchHTML(branch, ctrr){
             if ( attr['type'] == 'single' )
                 target_type = createSkillAttributeScope(null, null, Lang('branch/damage/target type: single'));
             else {
-                target_type = createSkillAttributeScope(Icons('search'), Lang('branch/damage/target type: AOE'));
+                target_type = createSkillAttributeScope(Icons('iconify/ic:round-image-search'), Lang('branch/damage/target type: AOE'));
                 area_scope = getEffectiveAreaHTML(branch);
                 target_type.addEventListener('click', () => {
                     area_scope.classList.toggle('hidden');

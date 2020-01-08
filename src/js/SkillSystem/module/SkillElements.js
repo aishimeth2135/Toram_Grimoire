@@ -34,9 +34,9 @@ class SkillRoot {
 	}
 	newElement(type, cArgs){
 		if ( type == SkillTreeCategory.TYPE ){
-			const {name, no} = cArgs;
-			checkConstructorArgs(no, name);
-			let stc = new SkillTreeCategory(this, no, name);
+			const {name, id} = cArgs;
+			checkConstructorArgs(id, name);
+			let stc = new SkillTreeCategory(this, id, name);
 			this.skillTreeCategorys.push(stc);
 			return stc;
 		}
@@ -64,18 +64,18 @@ SkillRoot.TYPE = Symbol('SkillRoot');
  * @implements {SkillElementChild}
  */
 class SkillTreeCategory {
-	constructor(sr, no, name){
+	constructor(sr, id, name){
 		this.parent = sr;
-		this.no = no;
+		this.id = id;
 		this.name = name;
 		this.skillTrees = [];
 		this.TYPE = SkillTreeCategory.TYPE;
 	}
 	newElement(type, cArgs){
 		if ( type == SkillTree.TYPE ){
-			const {name, no} = cArgs;
-			checkConstructorArgs(no, name);
-			let st = new SkillTree(this, no, name);
+			const {name, id} = cArgs;
+			checkConstructorArgs(id, name);
+			let st = new SkillTree(this, id, name);
 			this.skillTrees.push(st);
 			return st;
 		}
@@ -93,9 +93,9 @@ SkillTreeCategory.TYPE = Symbol("SkillTreeCategory");
  * @implements {SkillElementChild}
  */
 class SkillTree {
-	constructor(stc, no, name){
+	constructor(stc, id, name){
 		this.parent = stc;
-		this.no = no;
+		this.id = id;
 		this.name = name;
 		this.skills = [];
 		this.TYPE = SkillTree.TYPE;
@@ -105,9 +105,9 @@ class SkillTree {
 	}
 	newElement(type, cArgs){
 		if ( type == Skill.TYPE ){
-			const {name, no} = cArgs;
-			checkConstructorArgs(no, name);
-			let skill = new Skill(this, no, name);
+			const {name, id} = cArgs;
+			checkConstructorArgs(id, name);
+			let skill = new Skill(this, id, name);
 			this.skills.push(skill);
 			return skill;
 		}
@@ -127,9 +127,9 @@ SkillTree.CATEGORY_EQUIPMENT = Symbol();
  * @implements {SkillElementChild}
  */
 class SkillBase {
-	constructor(st, no, name, cap=""){
+	constructor(st, id, name, cap=""){
 		this.parent = st;
-		this.no = no;
+		this.id = id;
 		this.name = name;
 		this.caption = cap;
 	}
@@ -144,8 +144,8 @@ class SkillBase {
 
 
 // class LevelSkill extends SkillBase {
-// 	constructor(st, no, name, cap=""){
-// 		super(st, no, name, cap);
+// 	constructor(st, id, name, cap=""){
+// 		super(st, id, name, cap);
 
 // 		this._level = 0;
 // 	}
@@ -161,7 +161,7 @@ class SkillBase {
 // 		let p = this;
 // 		// p is head of tree if (p == -1)
 // 		while ( p.previous != -1 ){
-// 			p = p.parent.skills.find(a => a.no == p.previous);
+// 			p = p.parent.skills.find(a => a.id == p.previous);
 // 			if ( p.level() < 5 )
 // 				p.level(5);
 // 		}
@@ -173,8 +173,8 @@ class SkillBase {
  * @implements {SkillElementParent}
  */
 class Skill extends SkillBase {
-	constructor(st, no, name, cap=""){
-		super(st, no, name, cap);
+	constructor(st, id, name, cap=""){
+		super(st, id, name, cap);
 
 		this.effects = [];
 		this.defaultEffect = null;
@@ -205,14 +205,15 @@ class Skill extends SkillBase {
 			this._level = v;
 		return this._level;
 	}
-	refreshTree(lv){
-		if ( lv )
-			this.level(lv);
-
+	addLevel(v){
+		this.level(this._level + v);
+		return this._level;
+	}
+	updateTree(){
 		let p = this;
 		// p is head of tree if (p == -1)
 		while ( p.previous != -1 ){
-			p = p.parent.skills.find(a => a.no == p.previous);
+			p = p.parent.skills.find(a => a.id == p.previous);
 			if ( p.level() < 5 )
 				p.level(5);
 		}
@@ -241,10 +242,10 @@ class SkillEffect {
 	}
 	newElement(type, cArgs){
 		if ( type == SkillBranch.TYPE ){
-			const no = cArgs.no;
+			const id = cArgs.id;
 			const name = cArgs.name;
-			checkConstructorArgs(no, name);
-			let branch = new SkillBranch(this, no, name);
+			checkConstructorArgs(id, name);
+			let branch = new SkillBranch(this, id, name);
 			this.branchs.push(branch);
 			return branch;
 		}
@@ -276,9 +277,9 @@ SkillEffect.CASTING_TIME = Symbol('casting_time');
  * @implements {SkillElementChild}
  */
 class SkillBranch {
-	constructor(sef, no, name){
+	constructor(sef, id, name){
 		this.parent = sef;
-		this.no = no;
+		this.id = id;
 		this.name = name;
 		this.branchAttributes = {};
 		this.stats = [];
