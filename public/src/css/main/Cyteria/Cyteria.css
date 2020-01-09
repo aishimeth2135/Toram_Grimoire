@@ -47,6 +47,11 @@
     color: var(--primary-light-4);
 }
 
+/* Fix of iconify */
+.Cyteria.Button svg.iconify {
+    vertical-align: baseline!important;
+}
+
 /* flip icon
    ========================================================================== */
 .Cyteria.Button.flip-icon > svg {
@@ -151,11 +156,6 @@
     display: block;
 }
 
-/* Fix of iconify */
-.Cyteria.Button.icon-only > svg.iconify {
-    vertical-align: baseline!important;
-}
-
 /* single-line
    ========================================================================== */
 .Cyteria.Button.single-line {
@@ -227,7 +227,7 @@
 .Cyteria.Button.line.selected,
 .Cyteria.Button.line:hover {
     color: var(--primary-light-4);
-    border-left: var(--primary-light-3);
+    border-left-color: var(--primary-light-3);
 }
 
 .Cyteria.Button.line > .content-right {

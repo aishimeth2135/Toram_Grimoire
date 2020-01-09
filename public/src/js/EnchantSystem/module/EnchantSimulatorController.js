@@ -537,6 +537,7 @@ export default class EnchantSimulatorController {
         res += '｜' + Lang('Equipment Field List')[eq.status.fieldType == 0 ? (eq.status.isOriginalElement ? 1 : 0) : 2]
             + '｜' + Lang('Original Potential') + " " + eq.originalPotential()
             + (eq.basePotential() != EnchantElementStatus('EquipmentBasePotentialMiniMum') ? ('｜' + Lang('Base Potential') + " " + eq.basePotential()) : '')
+            + '｜' + Lang('Character Smith Level') + " " + EnchantElementStatus('Character/smithLevel');
 
         res += line_split;
 
