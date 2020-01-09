@@ -4,13 +4,12 @@ import {Icons, PageInitIcons} from "./SvgIcons.js";
 
 function PageInitFirst(config){
     config = Object.assign({
-        isHomePage: false,
         languageData: null
     }, config);
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register(config.isHomePage ? './sw.js' : '../sw.js', {'updateViaCache': 'imports'});
+            navigator.serviceWorker.register('./sw.js', {'updateViaCache': 'imports'});
         });
     }
 
