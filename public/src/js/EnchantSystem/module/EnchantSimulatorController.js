@@ -385,7 +385,7 @@ export default class EnchantSimulatorController {
         this.nodes.equipmentsList = eq_list;
         top_content.appendChild(eq_list);
 
-        const menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'menu-button', 'button'], Icons('cube-outline'));
+        const menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'menu-button', 'button', 'start'], Icons('cube-outline'));
         menu_btn.addEventListener('click', this.listeners.openMainMenu);
         top_content.appendChild(menu_btn);
 
@@ -393,7 +393,7 @@ export default class EnchantSimulatorController {
         hnode.appendChild(top);
         //
         const createCloseWindowButton = () => {
-            const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
+            const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button', 'start'], Icons('close'));
             btn.addEventListener('click', this.listeners.closeWindow);
             return btn;
         };
@@ -437,7 +437,7 @@ export default class EnchantSimulatorController {
             const top = simpleCreateHTML('div', 'top');
             const name = simpleCreateHTML('span', 'name', Lang('select stat title'));
 
-            const close = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
+            const close = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button', 'start'], Icons('close'));
             close.addEventListener('click', function(e){
                 ctrr.nodes.selectStat.classList.add('hidden');
             });
@@ -900,7 +900,7 @@ export default class EnchantSimulatorController {
         set_step_right.addEventListener('click', this.listeners.setStepStepValue);
 
         set_step_value.appendChild(set_step_left);
-        set_step_value.appendChild(simpleCreateHTML('span', ['Cyteria', 'Text', 'step-value']), 1);
+        set_step_value.appendChild(simpleCreateHTML('span', ['Cyteria', 'Text', 'step-value', 'text']), 1);
         set_step_value.appendChild(set_step_right);
 
         step_type.appendChild(set_step_value);
@@ -933,7 +933,11 @@ export default class EnchantSimulatorController {
         let new_value = 0;
         const estat = step.appendStat(item, type, new_value);
 
-        value = value !== void 0 ? value : (pot > item.basePotential(type) ? (min - Math.min(estat.getPreviousStepStatValue(), 0)) : 0);
+        value = value !== void 0
+            ? value
+            : (pot > item.basePotential(type)
+                ? (min - Math.min(eq.stat(item, type, eq.lastStepIndex()).statValue(), 0))
+                : 0);
         estat.statValue(value);
 
         if ( !estat ){

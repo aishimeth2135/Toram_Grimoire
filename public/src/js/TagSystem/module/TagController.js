@@ -39,7 +39,7 @@ export default class TagController {
 
         const name = simpleCreateHTML('span', 'name');
 
-        const close = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
+        const close = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button', 'start'], Icons('close'));
         close.addEventListener('click', function(e){
             ctrr.nodes.main.classList.add('hidden');
         });

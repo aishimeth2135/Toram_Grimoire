@@ -184,7 +184,7 @@ class SkillElementsController {
 	    	const skill_attribute_icon_tips = simpleCreateHTML('div', ['Cyteria', 'window', 'top-center', 'pop-right', 'hidden', 'skill-attribute-icon-tips']);
 	    	const top = simpleCreateHTML('div', 'top');
 	    	top.appendChild(simpleCreateHTML('span', 'name', Lang('skill attribute icon tips: title')));
-	    	const close_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
+	    	const close_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button', 'start'], Icons('close'));
 	    	close_btn.addEventListener('click', this.listeners.closeWindow);
 	    	top.appendChild(close_btn);
 	    	skill_attribute_icon_tips.appendChild(top);
@@ -220,7 +220,7 @@ class SkillElementsController {
 	    	const select_skill_history_date = simpleCreateHTML('div', ['Cyteria', 'window', 'top-center', 'pop-right', 'hidden', 'bg-mask','select-skill-history-date']);
 	    	const top = simpleCreateHTML('div', 'top');
 	    	top.appendChild(simpleCreateHTML('span', 'name', Lang('select skill history date: title')));
-	    	const close_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
+	    	const close_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button', 'start'], Icons('close'));
 	    	close_btn.addEventListener('click', this.listeners.closeWindow);
 	    	top.appendChild(close_btn);
 	    	select_skill_history_date.appendChild(top);

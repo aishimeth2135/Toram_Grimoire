@@ -123,7 +123,7 @@ export default class SearchController {
             const top = simpleCreateHTML('div', 'top');
             const name = simpleCreateHTML('span', 'name', Lang('Show Search Caption/title'));
 
-            const close = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
+            const close = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button', 'start'], Icons('close'));
             close.addEventListener('click', closeWindow_listener);
 
             top.appendChild(name);
@@ -470,7 +470,7 @@ export default class SearchController {
             const top = simpleCreateHTML('div', 'top');
             const name = simpleCreateHTML('span', 'name');
 
-            const unfold = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('iconify/ic:round-unfold-more'));
+            const unfold = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button', 'start'], Icons('iconify/ic:round-unfold-more'));
             unfold.addEventListener('click', function(e){
                 detail.classList.toggle('unfold');
                 detail.classList.toggle('h60');
@@ -479,7 +479,7 @@ export default class SearchController {
                     : Icons('iconify/ic:round-unfold-more');
             });
 
-            const close = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('close'));
+            const close = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
             close.addEventListener('click', closeWindow_listener);
 
             top.appendChild(name);

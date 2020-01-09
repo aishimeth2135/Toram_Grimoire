@@ -54,7 +54,7 @@ export default class WindowController {
 
         const top = simpleCreateHTML('div', 'top');
         top.appendChild(simpleCreateHTML('span', 'title', config.title));
-        const close_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'), {'data-window-name': name});
+        const close_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button', 'start'], Icons('close'), {'data-window-name': name});
         close_btn.addEventListener('click', this.listeners.closeWindow);
         top.appendChild(close_btn);
         
