@@ -4,9 +4,9 @@
 *.txt
 
 # Build
-/src/_other/
-/src/_src/
-/src/js/main/_build/
+/public/src/_other/
+/public/src/_src/
+/public/src/js/main/_build/
 
 # other
 yarn.lock

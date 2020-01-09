@@ -96,4 +96,45 @@ workbox.routing.registerRoute(
     })
 );
 
-workbox.precaching.precacheAndRoute([]);
+// cloudfront bundle
+workbox.routing.registerRoute(
+    /^https:\/\/.+\.cloudfront\.net\/bundles\/.+\.css/,
+    workbox.strategies.cacheFirst({
+        cacheName: 'cloudfront',
+        plugins: [
+            new workbox.cacheableResponse.Plugin({
+                statuses: [0, 200]
+            }),
+            new workbox.expiration.Plugin({
+                maxAgeSeconds: 60 * 60 * 24 * 60 // 60 days
+            })
+        ]
+    })
+);
+
+workbox.precaching.precacheAndRoute([
+  {
+    "url": "index.html",
+    "revision": "46919eaa0c10d626135208a406a0f544"
+  },
+  {
+    "url": "dist/damage-calculation.min.js",
+    "revision": "2b7e895df729c83cd8811b9721fd597b"
+  },
+  {
+    "url": "dist/enchant-simulator.min.js",
+    "revision": "b2fa568dcbc2fd335becd6d09e2f0dc7"
+  },
+  {
+    "url": "dist/home.min.js",
+    "revision": "141053cfcd60953f6f0fa49afbdaf25e"
+  },
+  {
+    "url": "dist/item-query.min.js",
+    "revision": "1fefc52a53b90dbf8829efefa42dfed4"
+  },
+  {
+    "url": "dist/skill-query.min.js",
+    "revision": "a40e477eca702b0ebebe271cb9e1a9c7"
+  }
+]);
