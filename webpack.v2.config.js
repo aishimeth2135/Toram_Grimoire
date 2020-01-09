@@ -4,14 +4,14 @@ var webpack = require('webpack');
 
 module.exports = {
 	entry: {
-		'home': './src/js/main/Home/index.js',
-		'skill-query': './src/js/main/SkillQuery/index.js',
-		'item-query': './src/js/main/ItemQuery/index.js',
-		'enchant-simulator': './src/js/main/EnchantSimulator/index.js',
-		'damage-calculation': './src/js/main/DamageCalculation/index.js'
+		'home': './public/src/js/main/Home/index.js',
+		'skill-query': './public/src/js/main/SkillQuery/index.js',
+		'item-query': './public/src/js/main/ItemQuery/index.js',
+		'enchant-simulator': './public/src/js/main/EnchantSimulator/index.js',
+		'damage-calculation': './public/src/js/main/DamageCalculation/index.js'
 	},
 	output: {
-		path: path.join(__dirname, 'dist'),
+		path: path.join(__dirname, '/public/dist'),
 		filename: '[name].min.js'
 	},
 	module: {

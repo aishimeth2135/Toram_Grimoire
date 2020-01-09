@@ -1,10 +1,9 @@
 module.exports = {
-    "globDirectory": ".",
+    "globDirectory": "public/",
     "globPatterns": [
         "index.html",
-        "dist/*.js",
-        'src/css/**/*.css'
+        "dist/*.js"
     ],
-    "swSrc": "src/sw.js",
-    "swDest": "sw.js"
+    "swSrc": "public/src/sw.js",
+    "swDest": "public/sw.js"
 };
