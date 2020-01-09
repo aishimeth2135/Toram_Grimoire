@@ -931,8 +931,11 @@ export default class EnchantSimulatorController {
         const [max, min] = item.getLimit(type);
         const pot = item.getPotential(type, eq.status);
 
-        let new_value = 0;
-        const estat = step.appendStat(item, type, new_value);
+        const estat = step.appendStat(item, type, 0);
+        if ( !estat ){
+            ShowMessage(Lang('Warn/Number of Equipment Item exceeding the maximum'));
+            return;
+        }
 
         value = value !== void 0
             ? value
@@ -940,11 +943,6 @@ export default class EnchantSimulatorController {
                 ? (min - Math.min(eq.stat(item, type, eq.lastStepIndex()).statValue(), 0))
                 : 0);
         estat.statValue(value);
-
-        if ( !estat ){
-            ShowMessage(Lang('Warn/Number of Equipment Item exceeding the maximum'));
-            return;
-        }
 
         const node = this.createEnchantStatHTML(estat);
         const stats_scope = this.status.currentStepScope.querySelector('.step-stats');
