@@ -42,5 +42,23 @@
             color: #ffbde1;
         }
     </style>
+    <script>
+        var serviceWorker = navigator.serviceWorker;
+
+        serviceWorker.getRegistrations
+        ? serviceWorker.getRegistrations().then(function(sws){
+            sws.forEach(function(sw){
+                sw.unregister();
+            });
+        })
+        : serviceWorker.getRegistration && serviceWorker.getRegistration().then(function(sw){
+            sw && sw.unregister();
+        });
+        window.caches && caches.keys && caches.keys().then(function(keys){
+            keys.forEach(function(key){
+                caches.delete(key);
+            });
+        });
+    </script>
 </body>
 </html>
