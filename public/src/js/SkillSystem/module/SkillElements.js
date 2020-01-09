@@ -209,13 +209,27 @@ class Skill extends SkillBase {
 		this.level(this._level + v);
 		return this._level;
 	}
-	updateTree(){
-		let p = this;
-		// p is head of tree if (p == -1)
-		while ( p.previous != -1 ){
-			p = p.parent.skills.find(a => a.id == p.previous);
-			if ( p.level() < 5 )
-				p.level(5);
+	updateTree(forward=false){
+		if ( !forward ){
+			let p = this;
+			// if (p == -1), p is head of tree
+			while ( p.previous != -1 ){
+				p = p.parent.skills.find(a => a.id == p.previous);
+				p.level() < 5 && p.level(5);
+			}
+		}
+		else {
+			const skills = this.parent.skills;
+			let p = [this];
+			while ( p.length != 0 ){
+				const t = p.pop();
+				skills.forEach(a => {
+					if ( a.previous == t.id ){
+						p.push(a);
+						a.level() > 0 && a.level(0);
+					}
+				});
+			}
 		}
 	}
 }
