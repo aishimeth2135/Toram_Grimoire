@@ -224,11 +224,10 @@
     white-space: nowrap;
     margin-left: 0.6rem;
 }
+.Cyteria.Button.line.selected,
 .Cyteria.Button.line:hover {
-    border-left-color: var(--primary-light-4);
-}
-.Cyteria.Button.line:hover > svg {
-    fill: var(--primary-light-4);
+    color: var(--primary-light-4);
+    border-left: var(--primary-light-3);
 }
 
 .Cyteria.Button.line > .content-right {
@@ -448,8 +447,11 @@
     padding-top: 1rem;
     z-index: 5;
 }
-.Cyteria.window > .top > .button {
+.Cyteria.window > .top > .button.start {
     margin-left: auto;
+}
+.Cyteria.window > .top > .button {
+    margin-right: 0.3rem;
 }
 .Cyteria.window > .top > .name,
 .Cyteria.window > .top > .title {
@@ -574,7 +576,7 @@
     white-space: nowrap;
     overflow-x: auto;
 }
-.Cyteria.Layout.sticky-header > .content > .button {
+.Cyteria.Layout.sticky-header > .content > .button.start {
     margin-left: auto;
     margin-right: 0.3rem;
 }

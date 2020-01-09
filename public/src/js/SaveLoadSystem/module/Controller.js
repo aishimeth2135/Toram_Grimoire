@@ -152,7 +152,7 @@ export default class Controller {
         menu_node.appendChild(load_from_csv_btn);
 
         const createCloseWindowButton = () => {
-            const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button'], Icons('close'));
+            const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button', 'start'], Icons('close'));
             btn.addEventListener('click', this.listeners.closeWindow);
             return btn;
         };

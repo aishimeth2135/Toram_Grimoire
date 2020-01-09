@@ -19,7 +19,8 @@ export default class SkillSimulatorController {
 
         this.nodes = {
             main: null,
-            buttons: null
+            buttons: null,
+            skillRoot: null
         };
 
         this.components = {
@@ -59,6 +60,7 @@ export default class SkillSimulatorController {
         const main = simpleCreateHTML('div', 'main');
         const skillRoot_scope = this.components['SkillRoot'].$create(this.skillRoot);
         main.appendChild(skillRoot_scope);
+        this.nodes['skillRoot'] = skillRoot_scope;
 
         this.WindowController = new WindowController();
         // this.WindowController.appendWindow('select-skill-tree', {
@@ -68,11 +70,19 @@ export default class SkillSimulatorController {
         // });
 
         const main_top = simpleCreateHTML('div', ['Cyteria', 'Layout', 'sticky-header', 'top']);
-        // const open_select_skilltree = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons('six-star'));
-        // open_select_skilltree.addEventListener('click', function(e){
-        //     ctrr.WindowController.openWindow('select-skill-tree');
-        // });
+        const main_top_content = simpleCreateHTML('div', 'content');
+        const open_select_skilltree = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button', 'start'], Icons('six-star'));
+        open_select_skilltree.addEventListener('click', function(e){
+            ctrr.nodes['select-skill-tree'].classList.toggle('hidden');
+        });
+        this.nodes['select-skill-tree'] = this.components['select-skill-tree'].$create(this.skillRoot);
+        main_top_content.appendChild(open_select_skilltree);
 
+        main_top_content.appendChild(this.nodes['select-skill-tree']);
+
+        main_top.appendChild(main_top_content);
+
+        main.appendChild(main_top);
         el.appendChild(main);
 
         // Buttommenu
@@ -154,7 +164,7 @@ export default class SkillSimulatorController {
             },
             eventListeners: {
                 'click-skill-tree-button': function(e){
-                    const skill = selectSkillElement(this.getAttribute('data-iid'));
+                    const skill = selectSkillElement(ctrr.skillRoot, this.getAttribute('data-iid'));
                     const v = ctrr.status.skillPointStep * (ctrr.status.skillPointOperating == '-' ? -1 : 1);
                     skill.addLevel(v);
                     skill.updateTree();
@@ -234,22 +244,14 @@ export default class SkillSimulatorController {
 
                 const top = simpleCreateHTML('div', 'top');
 
-                const frg = document.createDocumentFragment();
-                sr.skillTreeCategorys.forEach(stc => {
-                    const t = self.$component('SkillTreeCategory').$create(stc);
-                    frg.appendChild(t);
-                });
-
                 const stcs_scope = simpleCreateHTML('div', 'skill-tree-categorys');
-                stcs_scope.appendChild(frg);
 
                 main.appendChild(top);
                 main.appendChild(stcs_scope);
 
                 return main;
             },
-            update(self, type, ...args){
-                const r = self.$getElement('main');
+            update(self, r, type, ...args){
                 if ( type == 'skill-tree' ){
                     const st = args[0];
                     const stc_el = r.querySelector(`.skill-tree-category[data-id="${st.parent.id}"]`)
@@ -277,10 +279,6 @@ export default class SkillSimulatorController {
             },
             components: {
                 "skill-tree-category": cy_SkillTreeCategory
-            },
-            getElement(self, type){
-                if ( type == 'main' )
-                    return ctrr.nodes.querySelector('.skill-root');
             }
         });
 
@@ -289,7 +287,7 @@ export default class SkillSimulatorController {
         this.components['select-skill-tree'] = new CyComponent({
             name: 'select-skill-tree',
             create(self, sr){
-                const r = simpleCreateHTML('div', 'select-skill-tree-menu');
+                const r = simpleCreateHTML('div', ['Cyteria', 'entrance', 'fade-in', 'inner-menu', 'select-skill-tree-menu', 'hidden']);
                 sr.skillTreeCategorys.forEach(stc => {
                     stc.skillTrees.forEach(st => {
                         const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('iconify/mdi:file-tree') + `<span class="text">${st.name}</span>`, {'data-iid': getSkillElementId(st)});
@@ -297,7 +295,7 @@ export default class SkillSimulatorController {
                         r.appendChild(btn);
                     });
                 });
-                return document.createElement('div');
+                return r;
             },
             eventListeners: {
                 'toggle-select-skill-tree': function(e){
@@ -305,6 +303,7 @@ export default class SkillSimulatorController {
                     this.classList.contains('selected')
                         ? this.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon', 'content-right', 'selected-icon'], Icons('done')))
                         : this.removeChild(this.querySelector('.selected-icon'));
+                    cy_SkillRoot.$update(ctrr.nodes['skillRoot'], 'skill-tree', selectSkillElement(ctrr.skillRoot, this.getAttribute('data-iid')));
                 }
             }
         });

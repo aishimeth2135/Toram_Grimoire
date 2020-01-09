@@ -1,9 +1,46 @@
+.SkillSimulator-main > .main > .top > .content {
+    position: relative;
+}
+.SkillSimulator-main > .main > .top > .content > .inner-menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 5;
+    padding: 0.6rem;
+    padding-top: 2rem;
+    border: 1px solid var(--primary-light-2);
+    background-color: var(--white);
+    width: 31.2rem;
+    max-width: 100%;
+}
+.SkillSimulator-main > .main > .top > .content > .inner-menu {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+.SkillSimulator-main > .main > .top > .content > .inner-menu > .Cyteria.Button.line {
+    width: 1.3rem;
+    height: 1.3rem;
+}
+@media screen and (max-width: 30rem) {
+    .SkillSimulator-main > .main > .top > .content > .inner-menu {
+        grid-template-columns: 100%;
+    }
+}
+
+.SkillSimulator-main > .main > .top > .content {
+    overflow: visible;
+}
+.SkillSimulator-main > .main > .top > .content > .button {
+    z-index: 6;
+}
+
 .SkillSimulator-main > .main > .skill-root {
     padding: 0.6rem;
 }
 .SkillSimulator-main > .main > .skill-root > .top {
     position: sticky;
 }
+
 
 .SkillSimulator-main > .bottom-menu {
     position: sticky;
