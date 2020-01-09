@@ -4,7 +4,8 @@ import {Icons, PageInitIcons} from "./SvgIcons.js";
 
 function PageInitFirst(config){
     config = Object.assign({
-        languageData: null
+        languageData: null,
+        isHomePage: false
     }, config);
 
     if ('serviceWorker' in navigator) {

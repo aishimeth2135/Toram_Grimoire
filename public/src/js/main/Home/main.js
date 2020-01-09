@@ -12,6 +12,7 @@ import CY from "../module/cyteria.js";
 
 async function start(){
     PageInitFirst({
+        isHomePage: true,
         languageData: {zh_tw, en, ja, zh_cn}
     });
 

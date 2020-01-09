@@ -119,22 +119,22 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/damage-calculation.min.js",
-    "revision": "74da281213f86f25e1306257692bbe03"
+    "revision": "6a622e3062818ae0d54e0d7d337a4cc9"
   },
   {
     "url": "dist/enchant-simulator.min.js",
-    "revision": "dc99be89ee247852293b4ecad10029b2"
+    "revision": "3895096b65e8a8947951f4016c165062"
   },
   {
     "url": "dist/home.min.js",
-    "revision": "1a979b84f69f3f0fe1bdb846b8ea2ce3"
+    "revision": "6029350d7379828e4e6ac1a8b5a9d1c7"
   },
   {
     "url": "dist/item-query.min.js",
-    "revision": "99015f2a2c082dc7455e0aaa09c95b16"
+    "revision": "430692dfd4970446e4c0f46af84ec0e1"
   },
   {
     "url": "dist/skill-query.min.js",
-    "revision": "f003bda3dff1fca6c57748d9260060bc"
+    "revision": "d4fbca70f0edf655120549dac227f378"
   }
 ]);
