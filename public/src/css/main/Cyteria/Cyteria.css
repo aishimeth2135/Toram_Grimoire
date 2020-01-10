@@ -4,28 +4,34 @@
 
 
 .Cyteria.space-left {
-    margin-left: 0.4rem;
+    margin-left: 0.4rem
 }
 .Cyteria.space-right {
-    margin-right: 0.4rem;
+    margin-right: 0.4rem
 }
 .Cyteria.space-left-20 {
-    margin-left: 0.8rem;
+    margin-left: 0.8rem
 }
 .Cyteria.space-right-20 {
-    margin-left: 0.8rem;
+    margin-left: 0.8rem
 }
 
 .Cyteria.line-space-bottom {
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.6rem
 }
 
 .Cyteria.display-block {
-    display: block;
+    display: block
 }
 
-.Cyteria.align-center {
-    text-align: center;
+.Cyteria.talign-center {
+    text-align: center
+}
+.Cyteria.talign-left {
+    text-align: left
+}
+.Cyteria.talign-right {
+    text-align: right
 }
 
 /* ==========================================================================
@@ -213,10 +219,13 @@
     align-items: center;
     justify-content: flex-start;
 }
-.Cyteria.Button.line > svg {
-    fill: var(--primary-light-2);
+.Cyteria.Button.line svg {
     width: 1.8rem;
     height: 1.8rem;
+}
+.Cyteria.Button.line.icon-small svg {
+    width: 1.3rem;
+    height: 1.3rem;
 }
 .Cyteria.Button.line > .text {
     transition: 0.3s;

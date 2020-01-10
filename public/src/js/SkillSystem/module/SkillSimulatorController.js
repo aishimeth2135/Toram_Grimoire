@@ -9,6 +9,10 @@ import CY from "../../main/module/cyteria.js";
 import CyComponent from "../../main/module/Cyteria/CyComponent.js";
 import WindowController from "../../main/module/Cyteria/WindowController.js";
 
+import UserGuideSystem from "../../UserGuideSystem/UserGuideSystem.js";
+import {UserGuideFrame, UserGuideText} from "../../UserGuideSystem/module/Element.js";
+
+
 function Lang(s){
     return GetLang('Skill Simulator/Controller/' + s);
 }
@@ -19,7 +23,6 @@ export default class SkillSimulatorController {
 
         this.nodes = {
             main: null,
-            buttons: null,
             skillRoot: null
         };
 
@@ -69,7 +72,7 @@ export default class SkillSimulatorController {
 
         const main_top = simpleCreateHTML('div', ['Cyteria', 'Layout', 'sticky-header', 'top']);
         const main_top_content = simpleCreateHTML('div', 'content');
-        const open_select_skilltree = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button', 'start'], Icons('six-star'));
+        const open_select_skilltree = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'button', 'start', 'open-select-skill-tree'], Icons('six-star'));
         open_select_skilltree.addEventListener('click', function(e){
             ctrr.nodes['select-skill-tree'].classList.toggle('hidden');
         });
@@ -86,62 +89,76 @@ export default class SkillSimulatorController {
         main.appendChild(skillRoot_scope);
         this.nodes['skillRoot'] = skillRoot_scope;
 
-        el.appendChild(main);
-
         // Buttommenu
         const bottom_menu = simpleCreateHTML('div', 'bottom-menu');
-        const bottom_menu_select = simpleCreateHTML('div', ['select-menu', 'hidden']);
         const bottom_menu_content = simpleCreateHTML('div', 'content');
 
         function openBottomMenuSelect(e){
-            this.classList.add('selected');
-            const sel = this.parentNode.querySelector('.selected');
-            sel && sel.classList.remove('selected');
+            if ( !this.classList.contains('selected') ){
+                const sel = this.parentNode.querySelector('.set-button.selected');
+                sel && sel.classList.remove('selected');
+            }
 
-            const sel_menu = bottom_menu_select.querySelector('.column:not(.hidden)');
-            sel_menu && sel_menu.classList.add('hidden');
-            bottom_menu_select.querySelector(`.column[data-id="${this.getAttribute('data-id')}"]`).classList.remove('hidden');
-
-            bottom_menu_select.classList.remove('hidden');
+            this.classList.toggle('selected');
         }
         function updateBottomMenu(e){
-            const btn = bottom_menu_content.querySelector(`.set-button[data-id="${this.parentNode.parentNode.getAttribute('data-id')}"]`);
-            btn.innerHTML = this.innerHTML;
+            const btn = this.parentNode.parentNode;
+            btn.querySelector('.inner-button').innerHTML = this.innerHTML;
             btn.classList.remove('selected');
-
-            bottom_menu_select.classList.add('hidden');
+            e.stopPropagation();
         }
 
-        const createMenuScope = (id, title_id, icon_id, values, cur_value, listener) => {
-            const col = simpleCreateHTML('div', ['column', 'hidden'], null, {'data-id': id});
-            const btns = simpleCreateHTML('div', 'buttons-scope');
+        const createMenuScope = (title_id, icon_id, values, cur_value, listener) => {
+            const m = simpleCreateHTML('div', ['select-menu', 'Cyteria', 'entrance', 'fade-in']);
+            let cur_innerhtml = '';
             values.forEach((p, i) => {
-                const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only'], Icons(icon_id[i]));
+                const ih = Icons(icon_id[i]) + `<span class="text">${Lang('main menu/' + title_id + ': ' + p)}</span>`;
+                const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'line', 'icon-small'], ih);
+                p == cur_value && (cur_innerhtml = ih);
                 btn.setAttribute('data-set', p);
                 btn.addEventListener('click', updateBottomMenu);
                 btn.addEventListener('click', listener);
-                btns.appendChild(btn);
+                m.appendChild(btn);
             });
-            col.appendChild(simpleCreateHTML('div', ['Cyteria', 'scope-icon', 'line'], Icons('multiple-blank-circle') + `<span class="text">${Lang('main menu/' + title_id)}</span>`));
-            col.appendChild(btns);
 
-            bottom_menu_select.appendChild(col);
-
-            const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'set-button'], Icons(icon_id[values.indexOf(cur_value)]), {'data-id': id});
+            const btn = simpleCreateHTML('span', 'set-button');
             btn.addEventListener('click', openBottomMenuSelect);
-            bottom_menu_content.appendChild(btn);
 
-            return col;
+            btn.appendChild(m);
+
+            const inner_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'simple', 'no-border', 'inner-button'], cur_innerhtml);
+            btn.appendChild(inner_btn);
+
+            bottom_menu_content.appendChild(btn);
         };
 
-        createMenuScope(0, 'operating', ['add', 'sub'], ['+', '-'], this.status.skillPointOperating, this.listeners.setOperating);
-        createMenuScope(1, 'step value', ['iconify/mdi:numeric-1', 'iconify/mdi:numeric-5', 'iconify/mdi:numeric-10'], [1, 5, 10], this.status.skillPointStep, this.listeners.setStep);
-        bottom_menu.appendChild(bottom_menu_select);
+        createMenuScope('operating', ['add', 'sub'], ['+', '-'], this.status.skillPointOperating, this.listeners.setOperating);
+        createMenuScope('step value', ['iconify/mdi:numeric-1', 'iconify/mdi:numeric-5', 'iconify/mdi:numeric-10'], [1, 5, 10], this.status.skillPointStep, this.listeners.setStep);
         bottom_menu.appendChild(bottom_menu_content);
 
-        el.appendChild(bottom_menu);
+        main.appendChild(bottom_menu);
 
-        el.appendChild(this.WindowController.getWindowContainer());
+        el.appendChild(main);
+        this.nodes['main'] = main;
+
+        //el.appendChild(this.WindowController.getWindowContainer());
+        
+        // user guide
+        this.initUserGuideSystem();
+        this.UserGuideSystem.controller.start();
+    }
+    initUserGuideSystem(){
+        this.UserGuideSystem = new UserGuideSystem();
+
+        this.UserGuideSystem.init();
+        this.UserGuideSystem.controller.setStartText(Lang('user guide text/start title'), Lang('user guide text/start caption'));
+
+        const f1 = this.UserGuideSystem.controller.appendFrame(UserGuideFrame.TYPE_NORMAL);
+        f1.appendElementGroup([this.nodes['main'].querySelector('.top > .content > .open-select-skill-tree')])
+            .setText(UserGuideText.POSITION_BOTTOM, Lang('user guide text/frame 1-1'));
+        const f2 = this.UserGuideSystem.controller.appendFrame(UserGuideFrame.TYPE_NORMAL);
+        f2.appendElementGroup(Array.from(this.nodes['main'].querySelectorAll('.bottom-menu > .content > .set-button')))
+            .setText(UserGuideText.POSITION_TOP, Lang('user guide text/frame 2-1'));
     }
     initComponent(){
         const simpleCreateHTML = CY.element.simpleCreateHTML;
@@ -158,12 +175,16 @@ export default class SkillSimulatorController {
                 const skill_tree = DrawSkillTree(st, {setSkillButton: self.$callback('set-skill-tree-button')});
                 main.appendChild(skill_tree);
 
+                self.$preUpdate(main, st);
+
                 return main;
             },
             update(self, el, st){
                 el.querySelectorAll('.skill-level-text').forEach(p => {
                     const id = parseInt(p.getAttribute('data-id'));
-                    p.innerHTML = st.skills.find(a => a.id == id).level();
+                    const lv = st.skills.find(a => a.id == id).level();
+                    p.innerHTML = lv;
+                    p.previousSibling.classList.toggle('is-zero', lv == 0);
                 });
             },
             eventListeners: {
@@ -190,8 +211,9 @@ export default class SkillSimulatorController {
                     const tran = data.lengthTransformFunction;
                     const Circle = CY.svg.drawCircle,
                         Text = CY.svg.drawText;
-                    const bg = Circle(tran(cx) + w/2, tran(cy) + w/2, w/4, {class: 'skill-level-circle'}),
-                        text = Text(tran(cx) + w/2, tran(cy) + w/2, skill.level(), {
+                    const offset = w/2 + 3;
+                    const bg = Circle(tran(cx) + offset, tran(cy) + offset, w/4, {class: 'skill-level-circle'}),
+                        text = Text(tran(cx) + offset, tran(cy) + offset, skill.level(), {
                             class: 'skill-level-text', 'data-id': skill.id
                         });
 
@@ -250,12 +272,8 @@ export default class SkillSimulatorController {
             name: 'SkillSimulator/SkillRoot',
             create(self, sr){
                 const main = simpleCreateHTML('div', 'skill-root');
-
-                const top = simpleCreateHTML('div', 'top');
-
                 const stcs_scope = simpleCreateHTML('div', 'skill-tree-categorys');
 
-                main.appendChild(top);
                 main.appendChild(stcs_scope);
 
                 return main;
@@ -300,7 +318,7 @@ export default class SkillSimulatorController {
                 sr.skillTreeCategorys.forEach(stc => {
                     const ct = simpleCreateHTML('div', 'content');
                     stc.skillTrees.forEach(st => {
-                        const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'line'], Icons('iconify/mdi:file-tree') + `<span class="text">${st.name}</span>`, {'data-iid': getSkillElementId(st)});
+                        const btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'line', 'icon-small'], Icons('iconify/mdi:file-tree') + `<span class="text">${st.name}</span>`, {'data-iid': getSkillElementId(st)});
                         btn.addEventListener('click', self.$eventListener('toggle-select-skill-tree'));
                         ct.appendChild(btn);
                     });
