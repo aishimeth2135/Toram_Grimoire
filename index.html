@@ -43,20 +43,22 @@
         }
     </style>
     <script>
-        var serviceWorker = navigator.serviceWorker;
+        window.addEventListener('load', function(){
+            var serviceWorker = navigator.serviceWorker;
 
-        serviceWorker.getRegistrations
-        ? serviceWorker.getRegistrations().then(function(sws){
-            sws.forEach(function(sw){
-                sw.unregister();
+            serviceWorker.getRegistrations
+            ? serviceWorker.getRegistrations().then(function(sws){
+                sws.forEach(function(sw){
+                    sw.unregister();
+                });
+            })
+            : serviceWorker.getRegistration && serviceWorker.getRegistration().then(function(sw){
+                sw && sw.unregister();
             });
-        })
-        : serviceWorker.getRegistration && serviceWorker.getRegistration().then(function(sw){
-            sw && sw.unregister();
-        });
-        window.caches && caches.keys && caches.keys().then(function(keys){
-            keys.forEach(function(key){
-                caches.delete(key);
+            window.caches && caches.keys && caches.keys().then(function(keys){
+                keys.forEach(function(key){
+                    caches.delete(key);
+                });
             });
         });
     </script>
