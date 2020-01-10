@@ -37,9 +37,15 @@ svg.DrawSkillTree--main > circle.skill-circle.disable {
     stroke: #BBB;
 }
 
+/* ==========================================================================
+   skill level
+   ========================================================================== */
 svg.DrawSkillTree--main > circle.skill-level-circle {
     fill: #ff5fb7;
     stroke: none;
+}
+svg.DrawSkillTree--main > circle.skill-level-circle.is-zero {
+    fill: #f7a8d3;
 }
 svg.DrawSkillTree--main > text.skill-level-text {
     fill: #FFF;

@@ -23,10 +23,6 @@
     grid-template-columns: 50% 50%;
     margin-bottom: 0.4rem;
 }
-.SkillSimulator-main > .main > .top .inner-menu > .content > .Cyteria.Button.line svg {
-    width: 1.3rem;
-    height: 1.3rem;
-}
 .SkillSimulator-main > .main > .top .inner-menu > .content > .Cyteria.Button.line:not(.selected) {
     color: var(--primary-light-2);
 }
@@ -45,13 +41,66 @@
 
 .SkillSimulator-main > .main > .skill-root {
     padding: 0.6rem;
+    min-height: 20rem;
 }
 .SkillSimulator-main > .main > .skill-root > .top {
     position: sticky;
 }
 
 
-.SkillSimulator-main > .bottom-menu {
+.SkillSimulator-main > .main > .bottom-menu {
     position: sticky;
     bottom: 0;
+    background-color: var(--white);
+    border-top: 1px solid var(--primary-light);
 }
+.SkillSimulator-main > .main > .bottom-menu > .content {
+    padding: 0.3rem 0;
+}
+/* .SkillSimulator-main > .bottom-menu > .content > .set-button > svg {
+    color: var(--primary-light-4);
+}
+.SkillSimulator-main > .bottom-menu > .content > .set-button.selected > svg {
+    color: var(--primary-light);
+}
+.SkillSimulator-main > .bottom-menu > .content > .set-button.selected {
+    background-color: var(--primary-light-4);
+    border-radius: 0 0 0.6rem 0.6rem;
+} */
+.SkillSimulator-main > .main > .bottom-menu > .content > .set-button {
+    position: relative;
+    z-index: 5;
+}
+.SkillSimulator-main > .main > .bottom-menu > .content > .set-button > .inner-button {
+    position: relative;
+}
+.SkillSimulator-main > .main > .bottom-menu > .content > .set-button > .select-menu {
+    position: absolute;
+    left: 0;
+    bottom: -0.2rem;
+    border: 1px solid var(--primary-light-2);
+    padding: 0.6rem;
+    background-color: var(--white);
+    padding-bottom: 2rem;
+    max-width: 20rem;
+    display: none;
+}
+.SkillSimulator-main > .main > .bottom-menu > .content > .set-button.selected {
+    z-index: 6;
+}
+.SkillSimulator-main > .main > .bottom-menu > .content > .set-button.selected > .select-menu {
+    display: block;
+}
+/* .SkillSimulator-main > .bottom-menu > .select-menu > .column {
+    display: inline-flex;
+    flex-wrap: wrap;
+    padding-top: 0.4rem;
+    margin: 0 0.2rem;
+}
+.SkillSimulator-main > .bottom-menu > .select-menu > .column > .buttons-scope {
+    background-color: var(--primary-light-4);
+    display: inline-flex;
+}
+.SkillSimulator-main > .bottom-menu > .select-menu > .column > .buttons-scope > .Cyteria.Button:hover > svg {
+    color: var(--primary-light);
+} */

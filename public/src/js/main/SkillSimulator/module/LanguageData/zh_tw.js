@@ -13,8 +13,17 @@ export default function(){
         'Skill Simulator': {
             'Controller': {
                 'main menu': {
-                    'operating': '操作',
-                    'step value': '數值'
+                    'operating: +': '提升',
+                    'operating: -': '降低',
+                    'step value: 1': '數值1',
+                    'step value: 5': '數值5',
+                    'step value: 10': '數值10'
+                },
+                'user guide text': {
+                    'start title': '技能配點模擬器',
+                    'start caption': '歡迎使用技能配點模擬器，這邊將進行簡單的操作指引。',
+                    'frame 1-1': '透過右上角的選單選取技能樹。',
+                    'frame 2-1': '透過左下角的選單進行操作設定。'
                 }
             }
         }

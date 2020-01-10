@@ -135,6 +135,6 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/skill-query.min.js",
-    "revision": "222fa7236f223291d6596d46577cf41a"
+    "revision": "efa4c0c4cdcc6bdc09e2e26319fa9917"
   }
 ]);

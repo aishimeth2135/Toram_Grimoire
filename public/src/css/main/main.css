@@ -14,6 +14,7 @@
 	--primary-blue-grean: #009688;
 	--primary-blue-grean-light: #67d1c7;
 	--white: white;
+	--black: black;
 	--red: red;
 }
 
@@ -33,6 +34,7 @@ body.theme--night-mode {
 	--primary-blue-grean: #81ded5;
 	--primary-blue-grean-light: #23b1a4;
 	--white: black;
+	--black: white;
 	--red: red;
 }
 
