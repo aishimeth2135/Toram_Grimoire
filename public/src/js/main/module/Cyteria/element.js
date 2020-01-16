@@ -28,12 +28,12 @@ function simpleCreateHTML(type, classList, html, attr){
     return t;
 }
 function convertRemToPixels(rem){    
-    return rem*parseFloat(getComputedStyle(document.documentElement).fontSize);
+    return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 }
 function createByCode(html){
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    return div.firstChild;
+    const template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
 }
 function isTextNode(node){
     return node.nodeType == Node.TEXT_NODE;

@@ -16,6 +16,9 @@
 	--white: white;
 	--black: black;
 	--red: red;
+
+    --rgb-white: 255, 255, 255;
+    --rgb-black: 0, 0, 0;
 }
 
 body.theme--night-mode {
@@ -36,6 +39,9 @@ body.theme--night-mode {
 	--white: black;
 	--black: white;
 	--red: red;
+
+    --rgb-white: 0, 0, 0;
+    --rgb-black: 255, 255, 255;
 }
 
 * {
@@ -96,7 +102,10 @@ input:focus {
 #top-menu li:hover {
 	border-bottom-color: var(--primary-light-3);
 }
-#top-menu, body > article, body > section, body > footer {
+#top-menu,
+body > article,
+body > section,
+body > footer {
 	max-width: 50rem;
 	margin: 0 auto;
 }
@@ -179,19 +188,6 @@ nav > ul > li > a:hover {
 	color: var(--primary-light-3);
 }
 
-nav > ul > li > a::after {
-	content: '';
-	background-image: url(../../picture/svg/li_icon.svg);
-	background-size: contain;
-	background-repeat: no-repeat;
-	width: 0.6rem;
-	height: 0.6rem;
-	display: inline-block;
-	margin-left: 1rem;
-	margin-right: -0.6rem;
-}
-
-
 #global--Loading-Page {
 	text-align: center;
 	width: 100%;
@@ -202,7 +198,7 @@ nav > ul > li > a::after {
 	background-color: var(--white);
 	padding: 0 0.6rem;
 	padding-top: 2rem;
-	z-index: 5;
+	z-index: 100;
 }
 #global--Loading-Page > .main {
 	margin-bottom: 2rem;

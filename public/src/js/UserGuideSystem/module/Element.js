@@ -1,7 +1,12 @@
 class ElementGroup {
-    constructor(els){
+    constructor(parent, id, els){
+        this.parent = parent;
+        this.id = id;
         this.elements = els;
         this.guideText = null;
+    }
+    appendElement(el){
+        this.elements.push(el);
     }
     setText(pos, text){
         this.guideText = new UserGuideText(pos, text);
@@ -21,14 +26,27 @@ UserGuideText.POSITION_LEFT = Symbol();
 UserGuideText.POSITION_RIGHT = Symbol();
 
 class UserGuideFrame {
-    constructor(type){
+    constructor(id, type){
+        this.id = id;
         this.type = type;
         this.elementGroups = [];
+        this.actions = {
+            before: null,
+            after: null
+        };
     }
-    appendElementGroup(els){
-        const g = new ElementGroup(els);
+    appendElementGroup(id, els=[]){
+        const g = new ElementGroup(this, id, els);
         this.elementGroups.push(g);
         return g;
+    }
+    setActionBefore(fun){
+        if (typeof fun != 'function') throw new Error('given param 1 must be a function');
+        this.actions.before = fun;
+    }
+    setActionAfter(fun){
+        if (typeof fun != 'function') throw new Error('given param 1 must be a function');
+        this.actions.before = fun;
     }
 }
 UserGuideFrame.TYPE_NORMAL = Symbol();

@@ -4,6 +4,7 @@ import GetLang from "../../../main/module/LanguageSystem.js";
 import Icons from "../../../main/module/SvgIcons.js";
 import ShowMessage from "../../../main/module/ShowMessage.js";
 import SaveLoadSystem from "../../../SaveLoadSystem/SaveLoadSystem.js";
+import Papa from "papaparse";
 
 function Lang(s){
     return GetLang('Damage Calculation/' + s);

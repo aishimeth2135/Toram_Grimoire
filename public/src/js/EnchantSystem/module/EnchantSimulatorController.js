@@ -5,7 +5,7 @@ import Icons from "../../main/module/SvgIcons.js";
 import StatBase from "../../CharacterSystem/module/StatBase.js";
 import ShowMessage from "../../main/module/ShowMessage.js";
 import SaveLoadSystem from "../../SaveLoadSystem/SaveLoadSystem.js";
-
+import Papa from "papaparse";
 
 function Lang(s, vs){
     return GetLang('Enchant Simulator/' + s, vs);

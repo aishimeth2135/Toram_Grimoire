@@ -142,33 +142,6 @@ class SkillBase {
 	}
 }
 
-
-// class LevelSkill extends SkillBase {
-// 	constructor(st, id, name, cap=""){
-// 		super(st, id, name, cap);
-
-// 		this._level = 0;
-// 	}
-// 	level(v=-1){
-// 		if ( v >= 0 && v <= 10 )
-// 			this._level = v;
-// 		return this._level;
-// 	}
-// 	refreshTree(lv){
-// 		if ( lv )
-// 			this.level(lv);
-
-// 		let p = this;
-// 		// p is head of tree if (p == -1)
-// 		while ( p.previous != -1 ){
-// 			p = p.parent.skills.find(a => a.id == p.previous);
-// 			if ( p.level() < 5 )
-// 				p.level(5);
-// 		}
-// 	}
-// }
-
-
 /**
  * @implements {SkillElementParent}
  */
@@ -179,8 +152,6 @@ class Skill extends SkillBase {
 		this.effects = [];
 		this.defaultEffect = null;
 		this.TYPE = Skill.TYPE;
-
-		this._level = 0;
 	}
 	newElement(type, cArgs){
 		if ( type == SkillEffect.TYPE ){
@@ -199,43 +170,9 @@ class Skill extends SkillBase {
 	checkData(){
 		return this.defaultEffect !== void 0 && this.defaultEffect !== null;
 	}
-
-	level(v=-1){
-		if ( v >= 0 && v <= 10 )
-			this._level = v;
-		return this._level;
-	}
-	addLevel(v){
-		this.level(this._level + v);
-		return this._level;
-	}
-	updateTree(forward=false){
-		if ( !forward ){
-			let p = this;
-			// if (p == -1), p is head of tree
-			while ( p.previous != -1 ){
-				p = p.parent.skills.find(a => a.id == p.previous);
-				p.level() < 5 && p.level(5);
-			}
-		}
-		else {
-			const skills = this.parent.skills;
-			let p = [this];
-			while ( p.length != 0 ){
-				const t = p.pop();
-				skills.forEach(a => {
-					if ( a.previous == t.id ){
-						p.push(a);
-						a.level() > 0 && a.level(0);
-					}
-				});
-			}
-		}
-	}
 }
 Skill.TYPE = Symbol("Skill");
 Skill.CATEGORY_MAIN = Symbol();
-
 
 /**
  * @implements {SkillElementParent}
@@ -330,4 +267,69 @@ class SkillBranch {
 SkillBranch.TYPE = Symbol("SkillBranch");
 
 
-export {SkillRoot, SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch};
+class LevelSkillTree {
+	constructor(st){
+		this.base = st;
+		this.levelSkills = [];
+	}
+	appendLevelSkill(skill){
+		const t = new LevelSkill(this, skill);
+		this.levelSkills.push(t);
+		return t;
+	}
+}
+
+class LevelSkill {
+	constructor(st, skill){
+		this.parent = st;
+		this.base = skill;
+
+		this._level = 0;
+		this._starGemLevel = 0;
+	}
+	level(v=-1){
+		if ( v >= 0 && v <= 10 )
+			this._level = v;
+		return this._level;
+	}
+	addLevel(v){
+		this.level(this._level + v);
+		return this._level;
+	}
+	updateTree(forward=false){
+		if ( !forward ){
+			let p = this;
+			// if (p == -1), p is head of tree
+			while ( p.base.previous != -1 ){
+				p = p.parent.levelSkills.find(a => a.base.id == p.base.previous);
+				if ( !p ) break;
+				p.level() < 5 && p.level(5);
+			}
+		}
+		else {
+			const skills = this.parent.levelSkills;
+			let p = [this];
+			while ( p.length != 0 ){
+				const t = p.pop();
+				skills.forEach(a => {
+					if ( a.base.previous == t.base.id ){
+						p.push(a);
+						a.level() > 0 && a.level(0);
+					}
+				});
+			}
+		}
+	}
+	starGemLevel(v=-1){
+		if ( v >= 0 && v <= 10 )
+			this._starGemLevel = v;
+		return this._starGemLevel;
+	}
+	addStarGemLevel(v){
+		this.starGemLevel(this._starGemLevel + v);
+		return this._starGemLevel;
+	}
+}
+
+
+export {SkillRoot, SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch, LevelSkillTree};

@@ -9,8 +9,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode production --config webpack.v2.config.js",
-    "workbox": "workbox injectManifest workbox-cli-config.js"
+    "build": "webpack --mode production --config webpack.config.js",
+    "start": "webpack --mode development --config webpack.config.js",
+    "workbox": "workbox injectManifest workbox-cli-config.js",
+    "dev": "webpack-dev-server --mode development --config webpack.dev.config.js"
   },
   "author": "cyteria",
   "license": "ISC",
@@ -18,7 +20,18 @@
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/polyfill": "^7.4.4",
     "@babel/runtime": "^7.4.4",
-    "core-js": "^3.0.1"
+    "@iconify/iconify": "^1.0.3",
+    "core-js": "^3.0.1",
+    "css-loader": "^3.4.2",
+    "iconify": "^1.2.0",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
+    "papaparse": "^5.1.1",
+    "style-loader": "^1.1.2",
+    "vue": "^2.6.11",
+    "vue-fragment": "^1.5.1",
+    "vue-loader": "^15.8.3",
+    "vue-template-compiler": "^2.6.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
