@@ -42,6 +42,9 @@
     .skill-tree + .skill-tree {
         border-top: 1px solid var(--primary-light);
     }
+    .top {
+        padding-left: 2rem;
+    }
     .top > .content {
         padding-left: 0.4rem;
     }

@@ -44,25 +44,15 @@
         left: 0;
         display: flex;
         justify-content: center;
+        align-items: center;
         z-index: 50;
-
-        &::before {
-            content: '';
-            height: 100%;
-            width: 100%;
-            top: 0;
-            left: 0;
-            position: absolute;
-            background-color: var(--black);
-            opacity: 0.1;
-            z-index: -1;
-        }
+        background-color: rgba(var(--rgb-black), 0.1);
 
         &.fade-enter {
             opacity: 0;
         }
         &.fade-enter-active, &.fade-leave-active {
-            transition: 0.4s;
+            transition: 0.3s ease;
         }
         &.fade-leave-to {
             opacity: 0;

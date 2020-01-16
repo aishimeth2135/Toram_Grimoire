@@ -122,9 +122,9 @@ export default class SkillSimulatorController {
             components: {
                 'main-scope': vue_main
             },
-            // updated: function(){
-            //     ctrr.updateUserGuideSystem(this.$el);
-            // },
+            updated: function(){
+                ctrr.updateUserGuideSystem(this.$el);
+            },
             mounted: function(){
                 ctrr.updateUserGuideSystem(this.$el);
             }

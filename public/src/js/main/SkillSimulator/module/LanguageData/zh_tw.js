@@ -25,8 +25,12 @@ export default function(){
                     'mode: star-gem': '星石等級',
                     'skill point cost sum': '技能點數'
                 },
+                'tips': {
+                    'copy build message': '已成功複製$0至$1。'
+                },
                 'build': '配置',
                 'create build': '新增配置',
+                'export image': '匯出成圖片',
                 'no skill tree selected': "還沒有選取任何技能樹喔～",
                 'skill tree: show details': '顯示詳細資訊',
                 'skill tree: show normal': '顯示簡易資訊',
