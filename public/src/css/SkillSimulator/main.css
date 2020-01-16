@@ -83,13 +83,12 @@
     background-color: var(--white);
     padding-bottom: 2rem;
     max-width: 20rem;
-    display: none;
 }
 .SkillSimulator-main > .main > .bottom-menu > .content > .set-button.selected {
     z-index: 6;
 }
-.SkillSimulator-main > .main > .bottom-menu > .content > .set-button.selected > .select-menu {
-    display: block;
+.SkillSimulator-main > .main > .bottom-menu > .content > .set-button.selected > .Cyteria.Button {
+    position: relative;
 }
 /* .SkillSimulator-main > .bottom-menu > .select-menu > .column {
     display: inline-flex;

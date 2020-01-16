@@ -46,17 +46,6 @@
     text-align: right
 }
 
-.main-content > section > .caption > .link::before {
-    content: '';
-    background-image: url(../../picture/svg/li_icon.svg);
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 0.75rem;
-    height: 0.75rem;
-    display: inline-block;
-    margin-right: 0.6rem;
-}
-
 #About > section {
     border-left: 2px solid var(--primary-light-4);
     margin: 0.7rem 0;

@@ -13,7 +13,7 @@
     margin-left: 0.8rem
 }
 .Cyteria.space-right-20 {
-    margin-left: 0.8rem
+    margin-right: 0.8rem
 }
 
 .Cyteria.line-space-bottom {
@@ -220,19 +220,23 @@
     justify-content: flex-start;
 }
 .Cyteria.Button.line svg {
-    width: 1.8rem;
-    height: 1.8rem;
+    width: 1.6rem;
+    height: 1.6rem;
 }
 .Cyteria.Button.line.icon-small svg {
     width: 1.3rem;
     height: 1.3rem;
 }
-.Cyteria.Button.line > .text {
-    transition: 0.3s;
+.Cyteria.Button.line .text {
     display: inline-block;
     white-space: nowrap;
     margin-left: 0.6rem;
 }
+
+.Cyteria.Button.line.selection {
+    color: var(--primary-light-2);
+}
+
 .Cyteria.Button.line.selected,
 .Cyteria.Button.line:hover {
     color: var(--primary-light-4);
@@ -241,6 +245,26 @@
 
 .Cyteria.Button.line > .content-right {
     margin-left: auto;
+}
+
+.Cyteria.Button.line.multiple-line {
+    flex-wrap: wrap;
+}
+.Cyteria.Button.line.multiple-line > .content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.Cyteria.Button.line.multiple-line > .extra-line {
+    width: 100%;
+    margin-top: 0.3rem;
+    font-size: 0.9rem;
+    text-align: left;
+    padding-left: 0.6rem;
+}
+.Cyteria.Button.line.multiple-line > .extra-line svg {
+    width: 0.9rem;
+    height: 0.9rem;
 }
 
 /* floating
@@ -290,6 +314,10 @@
     border-bottom-color: var(--primary-light-4);
 }
 
+.Cyteria.input.w8 {
+    width: 8rem;
+}
+
 
 /* ==========================================================================
    text
@@ -320,10 +348,6 @@
     height: 1.2rem;
     width: 1.2rem;
     flex-shrink: 0;
-    color: var(--primary-light-3);
-    fill: currentcolor;
-}
-.Cyteria.scope-icon > svg > g {
     color: var(--primary-light-3);
     fill: currentcolor;
 }
@@ -530,6 +554,11 @@
 }
 
 /* ==========================================================================
+   window (new version)
+   ========================================================================== */
+
+
+/* ==========================================================================
    flex
    ========================================================================== */
 .Cyteria.flex-vertical-middle {
@@ -546,7 +575,7 @@
     --container-height: 4rem;
     --shadow-mask-color: var(--white);
     --primary-bgcolor: var(--white);
-    --base-z-index: 2;
+    --base-z-index: 10;
     position: sticky;
     top: calc(-1*var(--shadow-height));
     height: var(--container-height);
@@ -557,25 +586,24 @@
     padding-bottom: 0; */
     margin-bottom: 1px;
 }
-.Cyteria.Layout.sticky-header::before,
-.Cyteria.Layout.sticky-header::after {
+.Cyteria.Layout.sticky-header:not(.transparent)::before,
+.Cyteria.Layout.sticky-header:not(.transparent)::after {
     content: '';
     display: block;
     height: var(--shadow-height);
     position: sticky;
 }
-.Cyteria.Layout.sticky-header::before {
+.Cyteria.Layout.sticky-header:not(.transparent)::before {
     box-shadow: 0 0.2rem 0.4rem -0.2rem var(--primary-light-2);
     top: calc(var(--container-height) - 2*var(--shadow-height));
 }
 
-.Cyteria.Layout.sticky-header::after {
+.Cyteria.Layout.sticky-header:not(.transparent)::after {
     background-color: var(--shadow-mask-color);
     z-index: calc(1 + var(--base-z-index));
 }
 .Cyteria.Layout.sticky-header > .content {
     position: sticky;
-    background-color: var(--primary-bgcolor);
     height: calc(var(--container-height) - var(--shadow-height));
     margin-top: calc(-1*var(--shadow-height));
     z-index: calc(var(--base-z-index) + 2);
@@ -585,6 +613,10 @@
     white-space: nowrap;
     overflow-x: auto;
 }
+.Cyteria.Layout.sticky-header:not(.transparent) > .content {
+    background-color: var(--primary-bgcolor);
+}
+
 .Cyteria.Layout.sticky-header > .content > .button.start {
     margin-left: auto;
     margin-right: 0.3rem;

@@ -4,7 +4,7 @@ import {DataPath, createLoadDataPromise} from "../main/module/DataPath.js";
 import {currentLanguage, secondLanguage} from "../main/module/LanguageSystem.js";
 
 import SkillQueryController from "./module/SkillQueryController.js";
-import SkillSimulatorController from "./module/SkillSimulatorController.js";
+import SkillSimulatorController from "./module/SkillSimulator/SkillSimulatorController.js";
 
 class SkillSystem {
 	constructor(){

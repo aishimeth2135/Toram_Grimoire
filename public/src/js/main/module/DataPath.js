@@ -1,3 +1,5 @@
+import Papa from "papaparse";
+
 function DataPath(id){
     /* 語言資料：
         依陣列排序，依序為[en, zh_tw, ja, zh_cn]

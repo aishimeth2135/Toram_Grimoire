@@ -77,16 +77,11 @@ export default class SkillSimulatorController {
             ctrr.nodes['select-skill-tree'].classList.toggle('hidden');
         });
         this.nodes['select-skill-tree'] = this.components['select-skill-tree'].$create(this.skillRoot);
-        main_top_content.appendChild(open_select_skilltree);
-
-        main_top_content.appendChild(this.nodes['select-skill-tree']);
+        main_top_content.append(open_select_skilltree, this.nodes['select-skill-tree']);
 
         main_top.appendChild(main_top_content);
 
-        main.appendChild(main_top);
-
         const skillRoot_scope = this.components['SkillRoot'].$create(this.skillRoot);
-        main.appendChild(skillRoot_scope);
         this.nodes['skillRoot'] = skillRoot_scope;
 
         // Buttommenu
@@ -136,7 +131,7 @@ export default class SkillSimulatorController {
         createMenuScope('step value', ['iconify/mdi:numeric-1', 'iconify/mdi:numeric-5', 'iconify/mdi:numeric-10'], [1, 5, 10], this.status.skillPointStep, this.listeners.setStep);
         bottom_menu.appendChild(bottom_menu_content);
 
-        main.appendChild(bottom_menu);
+        main.append(main_top, skillRoot_scope, bottom_menu);
 
         el.appendChild(main);
         this.nodes['main'] = main;
@@ -156,6 +151,9 @@ export default class SkillSimulatorController {
         const f1 = this.UserGuideSystem.controller.appendFrame(UserGuideFrame.TYPE_NORMAL);
         f1.appendElementGroup([this.nodes['main'].querySelector('.top > .content > .open-select-skill-tree')])
             .setText(UserGuideText.POSITION_BOTTOM, Lang('user guide text/frame 1-1'));
+        f1.setActionBefore(f => {
+            f.elementGroups[0].elements[0].click();
+        });
         const f2 = this.UserGuideSystem.controller.appendFrame(UserGuideFrame.TYPE_NORMAL);
         f2.appendElementGroup(Array.from(this.nodes['main'].querySelectorAll('.bottom-menu > .content > .set-button')))
             .setText(UserGuideText.POSITION_TOP, Lang('user guide text/frame 2-1'));
@@ -220,8 +218,7 @@ export default class SkillSimulatorController {
                     btn.setAttribute('data-iid', getSkillElementId(skill));
                     btn.addEventListener('click', cy_SkillTree.$eventListener('click-skill-tree-button'));
 
-                    btn.parentNode.insertBefore(text, btn.previousSibling);
-                    btn.parentNode.insertBefore(bg, text);
+                    btn.after(bg, text);
                 }
             }
         });
@@ -252,11 +249,11 @@ export default class SkillSimulatorController {
                             : Array.from(st_els).find((p, i, ary) => {
                                 const id = parseInt(p.getAttribute('data-id'));
                                 if ( id > st.id ){
-                                    el.insertBefore(new_st_el, p);
+                                    p.before(new_st_el);
                                     return true;
                                 }
                                 if ( i == ary.length - 1 )
-                                    el.appendChild(new_st_el);
+                                    p.after(new_st_el);
                             });
                     }
                     else
@@ -295,11 +292,11 @@ export default class SkillSimulatorController {
                         : Array.from(stc_els).find((p, i, ary) => {
                             const id = parseInt(p.getAttribute('data-id'), 10);
                             if ( id > stc.id ){
-                                r.insertBefore(new_el, p);
+                                p.before(new_el);
                                 return true;
                             }
                             if ( i == ary.length - 1 )
-                                r.appendChild(new_el);
+                                p.after(new_el);
                         });
                     return new_el;
                 }
@@ -322,8 +319,7 @@ export default class SkillSimulatorController {
                         btn.addEventListener('click', self.$eventListener('toggle-select-skill-tree'));
                         ct.appendChild(btn);
                     });
-                    r.appendChild(simpleCreateHTML('div', 'title', stc.name));
-                    r.appendChild(ct);
+                    r.append(simpleCreateHTML('div', 'title', stc.name), ct);
                 });
                 return r;
             },

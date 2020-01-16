@@ -1,19 +1,25 @@
-import Controller from "./module/Controller.js";
-
-import {InitLanguageData} from "../main/module/LanguageSystem.js";
-
-import zh_tw from "./module/LanguageData/zh_tw.js";
-import en from "./module/LanguageData/en.js";
-import ja from "./module/LanguageData/ja.js";
-import zh_cn from "./module/LanguageData/zh_cn.js";
+import Vue from 'vue';
+import vue_main from "./module/vue/main.vue";
 
 export default class SaveLoadSystem {
     constructor(){
     }
-    init(){
-        InitLanguageData({zh_tw, en, ja, zh_cn});
+    init(options){
+        const vm = new Vue({
+            template: '<main-scope v-bind="options"></main-scope>',
+            data(){
+                return {
+                    options: options
+                };
+            },
+            components: {
+                'main-scope': vue_main
+            }
+        });
 
-        this.controller = new Controller().init();
-        return this;
+        vm.$mount();
+
+        const f = document.querySelector('body > footer > .author-information');
+        f.insertBefore(vm.$el, f.firstChild);
     }
 }
