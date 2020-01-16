@@ -10,7 +10,7 @@
                                     <span class="Cyteria Button line selection"
                                         :class="{'selected': currentSkillRootStateIndex == i}"
                                         @click="selectCurrentSkillRootState(i)">
-                                        <iconify-icon name="si-glyph:book-3"></iconify-icon>
+                                        <iconify-icon name="ant-design:build-outlined"></iconify-icon>
                                         <span v-show="!state.editName" class="text build-name">{{ state.name }}</span>
                                         <input v-show="state.editName" type="text" class="Cyteria input text w8" v-model="state.name" @click.stop />
                                         <iconify-icon class="content-right" @click.native.stop="editBuildName(i)"
@@ -28,10 +28,7 @@
                             <save-load-data-system v-bind="SaveLoadDataSystemOptions"></save-load-data-system>
                         </div>
                     </cy-left-menu>
-                    <span class="Cyteria Button icon-only button start" @click="openMenuWindow()">
-                        <iconify-icon name="mdi:cube-outline"></iconify-icon>
-                    </span>
-                    <span class="Cyteria Button icon-only button" @click="openJumpSkillTree()"
+                    <span class="Cyteria Button icon-only button start" @click="openJumpSkillTree()"
                         :class="{selected: jumpSkillTreeVisible}"
                         data-user-guide-set="2-1">
                         <iconify-icon name="dashicons:flag"></iconify-icon>
@@ -145,14 +142,35 @@
                         </transition>
                         <span class="Cyteria Button simple no-border">
                             <iconify-icon :name="state.icons[state.currentIndex]"></iconify-icon>
-                            <span class="text">{{ state.texts[state.currentIndex] }}</span>
+                            <span class="text" v-show="state.selected">{{ state.texts[state.currentIndex] }}</span>
                         </span>
                     </span>
+                    <span class="Cyteria Button icon-only button-right"
+                        @click="buildInformationMenuVisible = !buildInformationMenuVisible">
+                        <iconify-icon :name="buildInformationMenuVisible ? 'ic-round-keyboard-arrow-down' : 'ic-round-keyboard-arrow-up'"></iconify-icon>
+                    </span>
+                    <div class="build-information-menu" v-show="buildInformationMenuVisible">
+                        <span class="Cyteria scope-icon line">
+                            <iconify-icon name="ant-design:build-outlined"></iconify-icon>
+                            <span class="text">{{ currentSkillRootState.name }}</span>
+                        </span>
+                        <div class="content">
+                            <span class="Cyteria Button line" @click="copyCurrentBuild()">
+                                <iconify-icon name="mdi:content-copy"></iconify-icon>
+                                <lang-text class="text" lang-id="global/copy"></lang-text>
+                            </span>
+                            <span class="Cyteria Button line" @click="exportCurrentBuildImage()">
+                                <iconify-icon name="gridicons:image"></iconify-icon>
+                                <lang-text class="text" lang-id="Skill Simulator/Controller/export image"></lang-text>
+                            </span>
+                            <span class="Cyteria Button line" @click="deleteCurrentBuild()">
+                                <iconify-icon name="ic:round-delete-outline"></iconify-icon>
+                                <lang-text class="text" lang-id="global/delete"></lang-text>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <cy-window title-lang-id="global/menu" :visible="mainMenuVisible" @close-window="closeMenuWindow">
-                
-            </cy-window>
         </div>
     </article>
 </template>
@@ -261,7 +279,7 @@
                 selectSkillTreeVisible: false,
                 jumpSkillTreeShowDetail: false,
                 jumpSkillTreeVisible: false,
-                mainMenuVisible: false,
+                buildInformationMenuVisible: false,
                 setButtonStates: [
                     createSetButtonState('operating', ['ic:round-add-circle-outline',
                         'ic:round-remove-circle-outline'], ['+', '-'], skillPointState.operating),
@@ -281,43 +299,48 @@
                             datas.push(t);
                             return t;
                         }
-                        this.skillTreeStates.forEach(sr => {
+                        this.skillRootStates.forEach(sr => {
                             const p1 = createColumn(), n1 = 'skillRoot';
-                            p1[index[type]] = type[n1];
+                            p1[index['type']] = type[n1];
                             p1[index[n1]['name']] = sr.name;
                             sr.skillTreeCategoryStates.forEach(stc => {
                                 if ( !stc.visible ) return;
                                 const p2 = createColumn(), n2 = 'skillTreeCategory';
-                                p2[index[type]] = type[n2];
+                                p2[index['type']] = type[n2];
                                 p2[index[n2]['id']] = stc.origin.id;
                                 stc.skillTreeStates.forEach(st => {
                                     if ( !st.visible ) return;
-                                    const p3 = createColumn(), n3 = 'levelSkillTree';
-                                    p3[index[type]] = type[n3];
+                                    const p3 = createColumn(), n3 = 'skillTree';
+                                    p3[index['type']] = type[n3];
                                     p3[index[n3]['id']] = st.origin.id;
                                     st.levelSkillTree.levelSkills.forEach(skill => {
+                                        const lv = skill.level(), sglv = skill.starGemLevel();
+                                        if ( lv == 0 && sglv == 0 ) return;
                                         const p4 = createColumn(), n4 = 'levelSkill';
-                                        p4[index[type]] = type[n4];
+                                        p4[index['type']] = type[n4];
                                         p4[index[n4]['id']] = skill.base.id;
-                                        p4[index[n4]['level']] = skill.level();
-                                        p4[index[n4]['starGemLevel']] = skill.starGemLevel();
+                                        p4[index[n4]['level']] = lv;
+                                        p4[index[n4]['starGemLevel']] = sglv;
                                     });
                                 });
                             });
                         });
+
+                        return Papa.unparse(datas);
                     },
                     loadData: str => {
                         const {type, index} = this.saveSetting();
                         let hasInit = false;
                         let cur, cur_stc, cur_st;
-                        Papa.parse(str).forEach(p => {
+                        Papa.parse(str).data.forEach(p => {
                             let _type;
                             Object.keys(type).find(k => {
-                                if ( type[k] == p[index[type]] ){
+                                if ( type[k] == p[index['type']] ){
                                     _type = k;
                                     return true;
                                 }
                             });
+
 
                             if ( _type == 'skillRoot' ){
                                 if ( !hasInit ){
@@ -331,8 +354,27 @@
                             else if ( _type == 'skillTreeCategory' ){
                                 const id = parseInt(p[index[_type]['id']], 10);
                                 cur_stc = cur.skillTreeCategoryStates.find(a => a.origin.id == id);
+                                cur_stc.visible = true;
+                            }
+                            else if ( _type == 'skillTree' ){
+                                const id = parseInt(p[index[_type]['id']], 10);
+                                cur_st = cur_stc.skillTreeStates.find(a => a.origin.id == id);
+                                cur_st.visible = true;
+                            }
+                            else if ( _type == 'levelSkill' ){
+                                const id = parseInt(p[index[_type]['id']], 10);
+                                const skill = cur_st.levelSkillTree.levelSkills.find(a => a.base.id == id);
+                                skill.level(parseInt(p[index[_type]['level']], 10));
+                                skill.starGemLevel(parseInt(p[index[_type]['starGemLevel']], 10));
+                                console.log(skill);
                             }
                         });
+                    },
+                    saveNameList: () => {
+                        return this.skillRootStates.map(a => a.name);
+                    },
+                    error(e){
+                        console.log(e);
                     }
                 }
             };
@@ -369,6 +411,26 @@
             }
         },
         methods: {
+            copyCurrentBuild(){
+                const cur_build = this.currentSkillRootState;
+                const new_build = this.createBuild();
+
+                cur_build.skillTreeCategorys.forEach((stc, i) => {
+                    if ( !stc.visible ) return;
+                    const t1 = new_build.skillTreeCategorys[i];
+                    t1.visible = true;
+                    stc.skillTreeStates.forEach((st, j) => {
+                        if ( !st.visible ) return;
+                        const t2 = t1.skillTreeStates[j];
+                        t2.visible = true;
+                        st.levelSkillTree.levelSkills.forEach((skill, k) => {
+                            const t3 = t2.levelSkillTree.levelSkills[k];
+                            t3.level(skill.level());
+                            t3.starGemLevel(skill.starGemLevel());
+                        });
+                    });
+                });
+            },
             resetSkillRootStates(){
                 this.skillRootStates = [];
                 this.currentSkillRootStateIndex = 0;
@@ -379,7 +441,7 @@
                     'skillRoot': 0,
                     'skillTreeCategory': 1,
                     'skillTree': 2,
-                    'skill': 3
+                    'levelSkill': 3
                 };
                 const index = {
                     type: 0,
@@ -389,7 +451,7 @@
                     'skillTreeCategory': {
                         id: 1
                     },
-                    'levelSkillTree': {
+                    'skillTree': {
                         id: 1
                     },
                     'levelSkill': {
@@ -441,12 +503,6 @@
 
                 return newState;
             },
-            openMenuWindow(){
-                this.mainMenuVisible = true;
-            },
-            closeMenuWindow(){
-                this.mainMenuVisible = false;
-            },
             skillTreeStarGemSkillPoint(st){
                 if ( !st.visible ) return 0;
                 return st.levelSkillTree.levelSkills
@@ -496,9 +552,8 @@
                     this.skillPointState.mode = s.values[index];
             },
             jumpToSkillTree(st){
-                console.log('skill-tree--' + getSkillElementId(st));
                 document.getElementById('skill-tree--' + getSkillElementId(st)).scrollIntoView();
-                this.selectSkillTreeVisible = false;
+                this.jumpSkillTreeVisible = false;
             }
         },
         components: {
@@ -603,11 +658,30 @@
                 padding: 0.3rem 0;
                 background-color: var(--white);
                 padding-bottom: 0.4rem;
+                display: flex;
+                align-items: center;
+                position: relative;;
+
+                & .build-information-menu {
+                    position: absolute;
+                    padding: 1rem;
+                    right: 0;
+                    bottom: 3.2rem;
+                    border: 1px solid var(--primary-light-2);
+                    background-color: var(--white);
+                }
+
+                & > .button-right {
+                    margin-left: auto;
+                }
                 
                 & > .set-button {
                     position: relative;
                     z-index: 5;
-
+    
+                    & > .Cyteria.Button {
+                        height: 2rem;
+                    }
                     &.selected {
                         z-index: 6;
 
@@ -637,13 +711,13 @@
             opacity: 0;
         }
         .inner-menu-enter-active, .inner-menu-leave-active {
-            transition: 0.4s ease;
+            transition: 0.3s ease;
         }
         .fade-enter, .fade-leave-to {
             opacity: 0;
         }
         .fade-enter-active, .fade-leave-active {
-            transition: 0.4s ease;
+            transition: 0.3s ease;
         }
     }
     .build-name  {

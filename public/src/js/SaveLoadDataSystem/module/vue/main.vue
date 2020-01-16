@@ -268,6 +268,8 @@
         & > .tips {
             margin-top: 0;
             margin-bottom: 1rem;
+            color: var(--primary-light-2);
+            font-size: 0.9rem;
         }
     }
 </style>

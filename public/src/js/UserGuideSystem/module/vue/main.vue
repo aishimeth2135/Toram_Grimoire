@@ -127,7 +127,7 @@
                 }
             };
         },
-        created(){
+        beforeUpdate(){
             const attr_name = 'data-user-guide-set';
             const frames = [];
 
@@ -310,18 +310,8 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            background-color: rgba(var(--rgb-black), 0.5);
     
-            &::before {
-                content: '';
-                width: 100%;
-                height: 100%;
-                top: 0;
-                left: 0;
-                position: absolute;
-                z-index: -1;
-                background-color: var(--black);
-                opacity: 0.5;
-            }
             & > .container {
                 background-color: var(--white);
                 padding: 1rem;
@@ -364,6 +354,9 @@
             position: absolute;
             background-color: var(--white);
             padding: 1rem;
+        }
+        & > .group-text {
+            text-align: left;
         }
     }
 
