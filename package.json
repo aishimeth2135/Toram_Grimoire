@@ -8,7 +8,6 @@
     "url": "https://github.com/aishimeth2135/Toram_Grimoire"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production --config webpack.config.js",
     "start": "webpack --mode development --config webpack.config.js",
     "workbox": "workbox injectManifest workbox-cli-config.js",
@@ -23,6 +22,7 @@
     "@iconify/iconify": "^1.0.3",
     "core-js": "^3.0.1",
     "css-loader": "^3.4.2",
+    "file-loader": "^5.0.2",
     "iconify": "^1.2.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
