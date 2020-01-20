@@ -112,7 +112,6 @@
                 defaultState = 'wait';
 
             return {
-                frames: [],
                 startPage: start,
                 endPage: end,
                 currentIndex: -1,
@@ -127,34 +126,6 @@
                 }
             };
         },
-        beforeUpdate(){
-            const attr_name = 'data-user-guide-set';
-            const frames = [];
-
-            this.targetElement.querySelectorAll(`*[${attr_name}]`).forEach(p => {
-                const t = p.getAttribute(attr_name);
-                const [ids, extra_set] = t.split('|');
-                const [fid, gid] = ids.split('-').map(a => parseInt(a, 10));
-
-                let f = frames.find(a => a.id == fid);
-                const fd = this.framesDatas.find(a => a.id == fid);
-                if ( !f ){
-                    f = new UserGuideFrame(fid, fd.type);
-                    const index = frames.findIndex(a => a.id >= fid);
-                    index != -1 ? frames.splice(index, 0, f) : frames.push(f);
-                }
-                
-                const gd = fd.elementGroupsDatas.find(a => a.id == gid);
-                let g = f.elementGroups.find(a => a.id == gid);
-                if ( !g ){
-                    g = f.appendElementGroup(gid);
-                    gd.text && g.setText(gd.position, gd.text.replace(/\(\((.+)\)\)/g, (m, m1) => `<span class="mark">${m1}</span>`));
-                }
-                g.appendElement(p);
-            });
-
-            this.frames = frames;
-        },
         mounted(){
             window.addEventListener('resize', this.listeners.windowResize);
             window.addEventListener('scroll', this.listeners.windowScroll);
@@ -164,6 +135,35 @@
            window.removeEventListener('scroll', this.listeners.windowScroll);
         },
         computed: {
+            frames(){
+                const attr_name = 'data-user-guide-set';
+                const frames = [];
+
+                this.targetElement.querySelectorAll(`*[${attr_name}]`).forEach(p => {
+                    const t = p.getAttribute(attr_name);
+                    const [ids, extra_set] = t.split('|');
+                    const [fid, gid] = ids.split('-').map(a => parseInt(a, 10));
+
+                    let f = frames.find(a => a.id == fid);
+                    const fd = this.framesDatas.find(a => a.id == fid);
+                    if ( !f ){
+                        f = new UserGuideFrame(fid, fd.type);
+                        const index = frames.findIndex(a => a.id >= fid);
+                        index != -1 ? frames.splice(index, 0, f) : frames.push(f);
+                    }
+                    
+                    const gd = fd.elementGroupsDatas.find(a => a.id == gid);
+                    let g = f.elementGroups.find(a => a.id == gid);
+                    if ( !g ){
+                        g = f.appendElementGroup(gid);
+                        gd.text && g.setText(gd.position, gd.text.replace(/\(\((.+)\)\)/g, (m, m1) => `<span class="mark">${m1}</span>`));
+                    }
+                    g.appendElement(p);
+                });
+
+                console.log("---------------------------", frames);
+                return frames;
+            },
             currentCaptionPage(){
                 if ( this.state == 'start' )
                     return this.startPage;

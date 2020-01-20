@@ -18,16 +18,14 @@ export default class SkillSimulatorController {
         this.skillRoot = sr;
     }
     init(el){
-        this.initComponent(el);
+        this.UserGuideSystem = null;
 
-        const ctrr = this;
+        this.initComponent(el);
 
         // svg reusable defs
         const svg = CY.svg.create();
         svg.appendChild(createDrawSkillTreeDefs());
         document.body.appendChild(svg);
-
-        this.UserGuideSystem = null;
     }
     updateUserGuideSystem(el){
         if ( this.UserGuideSystem == null )
@@ -37,7 +35,7 @@ export default class SkillSimulatorController {
     }
     initUserGuideSystem(el){
         const componentOptions = {
-            name: 'Skill-Simulator',
+            name: 'Skill-Simulator-v2',
             targetElement: el,
             start: {
                 title: Lang('user guide text/start title'),
