@@ -404,8 +404,9 @@
                                     hasInit = true;
                                 }
                                 else {
-                                    cur = createBuild();
+                                    cur = this.createBuild();
                                 }
+                                cur.name = p[index[_type]['name']];
                             }
                             else if ( _type == 'skillTreeCategory' ){
                                 const id = parseInt(p[index[_type]['id']], 10);
