@@ -37,12 +37,13 @@ module.exports = {
                 use: ['style-loader', 'css-loader', 'less-loader']
             },
             {
-                test: /\.(woff|woff2|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.(woff|woff2|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
                 use: [
                     {
                         loader: 'file-loader',
                         options: {
-                            name: '[name].[ext]'
+                            name: 'fonts/[name].[ext]',
+                            publicPath: 'dist'
                         }
                     }
                 ]
