@@ -1173,7 +1173,7 @@
         }
     }
 
-    @media screen and (max-width: 25rem) {
+    @media screen and (max-width: 30rem) {
         .main > .top > .content > .inner-menu > .content {
             grid-template-columns: 100%;
         }
