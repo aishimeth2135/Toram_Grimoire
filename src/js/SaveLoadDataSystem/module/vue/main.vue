@@ -121,8 +121,8 @@
                 buttonsStates: Array(this.saveSize).fill().map((p, i) => {
                     return {
                         title: Lang('file') + ' ' + i,
-                        names: (this.getLocalStorageData(i, 'name') || '').split(',,'),
-                        data: this.getLocalStorageData(i, 'data') || null
+                        names: '',
+                        data: null
                     };
                 }),
                 selectDataWindowVisible: false,
@@ -130,12 +130,21 @@
                 currentMode: ''
             };
         },
+        created(){
+            this.updateButtonsStates();
+        },
         computed: {
             localStorageAvailable(){
                 return CY.storageAvailable('localStorage');
             }
         },
         methods: {
+            updateButtonsStates(){
+                this.buttonsStates.forEach((p, i) => {
+                    p.names = (this.getLocalStorageData(i, 'name') || '').split(',,');
+                    p.data = this.getLocalStorageData(i, 'data') || null;
+                });
+            },
             closeSelectDataWindow(){
                 this.selectDataWindowVisible = false;
             },
@@ -212,6 +221,7 @@
 
                     ShowMessage(Lang('Warn/Saving success'));
                     this.actionFinished();
+                    this.updateButtonsStates();
                 }
                 catch (e){
                     this.error(e);
