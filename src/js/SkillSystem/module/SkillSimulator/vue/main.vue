@@ -1050,6 +1050,7 @@
                     max-width: 100%;
                     max-height: calc(100vh - 5rem);
                     overflow-y: auto;
+                    white-space: normal;
                     
                     & > .default-tips {
                         padding: 1rem 0.2rem;
