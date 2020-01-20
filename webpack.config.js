@@ -58,7 +58,7 @@ module.exports = {
     },
     resolve: {
         alias: {
-            'vue': path.join(__dirname, 'src', 'js', 'main', 'module', 'Plugin', 'vue.esm.browser.js'),
+            'vue': path.join(__dirname, 'src', 'js', 'main', 'module', 'Plugin', 'vue.esm.browser.min.js'),
             'global-vue-components': path.join(__dirname, 'src', 'js', 'main', 'module', 'vue'),
             'global-modules': path.join(__dirname, 'src', 'js', 'main', 'module'),
             '@css': path.join(__dirname, 'src', 'css')
