@@ -21,7 +21,7 @@
                             </span>
                         </div>
                         <lang-text tag-name="div" lang-id="Skill Simulator/Controller/left menu/save load" class="title-line"></lang-text>
-                        <div class="column">
+                        <div class="column" @click.stop>
                             <save-load-data-system v-bind="SaveLoadDataSystemOptions"></save-load-data-system>
                         </div>
                     </cy-left-menu>
