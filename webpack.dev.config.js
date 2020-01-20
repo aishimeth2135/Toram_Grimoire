@@ -1,17 +1,16 @@
 var path = require('path');
 var webpack = require('webpack');
-//var {InjectManifest} = require('workbox-webpack-plugin');
 
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
     entry: {
-        'home': './public/src/js/main/Home/index.js',
-        'skill-query': './public/src/js/main/SkillQuery/index.js',
-        'item-query': './public/src/js/main/ItemQuery/index.js',
-        'enchant-simulator': './public/src/js/main/EnchantSimulator/index.js',
-        'damage-calculation': './public/src/js/main/DamageCalculation/index.js',
-        'skill-simulator': './public/src/js/main/SkillSimulator/index.js'
+        'home': './src/js/main/Home/index.js',
+        'skill-query': './src/js/main/SkillQuery/index.js',
+        'item-query': './src/js/main/ItemQuery/index.js',
+        'enchant-simulator': './src/js/main/EnchantSimulator/index.js',
+        'damage-calculation': './src/js/main/DamageCalculation/index.js',
+        'skill-simulator': './src/js/main/SkillSimulator/index.js'
     },
     output: {
         path: path.join(__dirname, 'public', 'dist'),
@@ -22,6 +21,7 @@ module.exports = {
         hot: true,
         inline: true
     },
+    devtool: 'cheap-eval-source-map',
     module: {
         rules: [
             {
@@ -43,6 +43,17 @@ module.exports = {
                 use: ['style-loader', 'css-loader', 'less-loader']
             },
             {
+                test: /\.(woff|woff2|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]'
+                        }
+                    }
+                ]
+            },
+            {
                 test: /\.vue$/,
                 use: {
                     loader: 'vue-loader'
@@ -52,9 +63,10 @@ module.exports = {
     },
     resolve: {
         alias: {
-            'vue': path.join(__dirname, 'public', 'src', 'js', 'main', 'module', 'Plugin', 'vue.esm.browser.js'),
-            'global-vue-components': path.join(__dirname, 'public', 'src', 'js', 'main', 'module', 'vue'),
-            'global-modules': path.join(__dirname, 'public', 'src', 'js', 'main', 'module')
+            'vue': path.join(__dirname, 'src', 'js', 'main', 'module', 'Plugin', 'vue.esm.browser.js'),
+            'global-vue-components': path.join(__dirname, 'src', 'js', 'main', 'module', 'vue'),
+            'global-modules': path.join(__dirname, 'src', 'js', 'main', 'module'),
+            '@css': path.join(__dirname, 'src', 'css')
         }
     },
     plugins: [
