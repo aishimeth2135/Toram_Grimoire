@@ -1091,6 +1091,7 @@
 
                     &::-webkit-scrollbar {
                         width: 0.5rem;
+                        top: 0.5rem;
                     }
                     &::-webkit-scrollbar-thumb {
                         background-color: var(--primary-light-2);
@@ -1191,8 +1192,14 @@
     }
 
     @media screen and (max-width: 30rem) {
-        .main > .top > .content > .inner-menu > .content {
-            grid-template-columns: 100%;
+        .main > .top > .content > .inner-menu {
+            &::-webkit-scrollbar {
+                width: 0.2rem;
+                top: 0.2rem;
+            }
+            & > .content {
+                grid-template-columns: 100%;
+            }
         }
     }
 </style>
