@@ -59,7 +59,7 @@
             right: 2.5rem;
             max-height: calc(100vh - 5rem);
             opacity: 1;
-            background-color: rgba(var(--rgb-white), 0.5);
+            background-color: rgba(var(--rgb-black), 0.5);
 
             &.fade-enter, &.fade-leave-to {
                 opacity: 0;
