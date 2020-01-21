@@ -294,9 +294,12 @@ class LevelSkill {
 		this._level = 0;
 		this._starGemLevel = 0;
 	}
-	level(v=-1){
-		if ( v >= 0 && v <= 10 )
+	level(v){
+		if ( typeof v == 'number' ){
+			v < 0 && (v = 0);
+			v > 10 && (v = 10);
 			this._level = v;
+		}
 		return this._level;
 	}
 	addLevel(v){
@@ -313,7 +316,7 @@ class LevelSkill {
 				p.level() < 5 && p.level(5);
 			}
 		}
-		else {
+		else if ( forward && this.level() < 5 ){
 			const skills = this.parent.levelSkills;
 			let p = [this];
 			while ( p.length != 0 ){
@@ -327,9 +330,13 @@ class LevelSkill {
 			}
 		}
 	}
-	starGemLevel(v=-1){
-		if ( v >= 0 && v <= 10 )
+	starGemLevel(v){
+		if ( typeof v == 'number' ){
+			v < 0 && (v = 0);
+			v > 10 && (v = 10);
 			this._starGemLevel = v;
+		}
+			
 		return this._starGemLevel;
 	}
 	addStarGemLevel(v){
