@@ -81,11 +81,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/skill-query.min.js",
-    "revision": "d0bf53178cb46af8dbd3cfca1849a23c"
+    "revision": "b50627c7ad17b797ed74074377a7d912"
   },
   {
     "url": "dist/skill-simulator.min.js",
-    "revision": "5d83f524a4ed693b95c48dd2d88c0985"
+    "revision": "c5e0adc5b22595fcdb0370a91eb6da97"
   },
   {
     "url": "damage_calculation.html",
