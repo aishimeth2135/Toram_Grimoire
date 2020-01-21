@@ -62,4 +62,6 @@ workbox.routing.registerRoute(
     })
 );
 
-workbox.precaching.precacheAndRoute([]);
+workbox.precaching.precacheAndRoute([], {
+    ignoreURLParametersMatching: [/source/]
+});
