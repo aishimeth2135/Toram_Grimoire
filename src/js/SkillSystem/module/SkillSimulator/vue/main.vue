@@ -653,7 +653,7 @@
                         topInfo_icon_mr = 12,
                         topInfo_text_h = 25,
                         topInfo_h_sum = topInfo_topBottomPd * 2 + topInfo_text_h * 2,
-                        watermark_line_h = 50,
+                        watermark_line_h = 65,
                         starGemScope_topBottomPd = 16,
                         sgc_margin = 10, //sgc: star gem column
                         sgc_icon_mr = 10,
