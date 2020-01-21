@@ -81,34 +81,38 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/skill-query.min.js",
-    "revision": "17d7157a5c4bed6d0467754fb2b9304a"
+    "revision": "cc22c1eecdea11adb1129b6b39f5d7e4"
   },
   {
     "url": "dist/skill-simulator.min.js",
-    "revision": "1c8f04d0f9bf47f722bdfbe9528a4991"
+    "revision": "53b6dfd97c503efef899133827d74e40"
   },
   {
-    "url": "Damage_Calculation.html",
+    "url": "damage_calculation.html",
     "revision": "69850144278c6dbe046f259bf9a4b3fc"
   },
   {
-    "url": "Enchant_Simulator.html",
+    "url": "enchant_simulator.html",
     "revision": "f9caf56fcec85aaef07fdbf43e65a17f"
   },
   {
     "url": "index.html",
-    "revision": "0c39155d49b99f68bd06283031317403"
+    "revision": "6821059592f6594e769d491d6cf92634"
   },
   {
-    "url": "Items.html",
+    "url": "items.html",
     "revision": "ccd928e3948e135a3cabfeac5c110d2e"
   },
   {
-    "url": "Skill_Simulator.html",
+    "url": "skill_simulator.html",
     "revision": "6af5629bfd0480b9aeac2ac8398807e9"
   },
   {
-    "url": "Skills.html",
+    "url": "skills.html",
     "revision": "2635468fadf21e700a8774f64c6e2bbb"
+  },
+  {
+    "url": "manifest.json",
+    "revision": "b46b362285c754e8d08c068f544adb21"
   }
 ]);
