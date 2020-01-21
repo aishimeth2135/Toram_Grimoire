@@ -63,12 +63,11 @@
             margin: 1rem 0.5rem;
             border: 1px solid var(--primary-light);
             background-color: var(--white);
-            padding: 1rem;
             overflow-y: auto;
             max-height: calc(100% - 1rem);
 
             & > .top {
-                padding-bottom: 0.6rem;
+                padding: 0.6rem 1rem;
                 display: flex;
                 align-items: center;
                 & > .buttons {
@@ -83,6 +82,11 @@
                     margin: 0.2rem;
                     color: var(--primary-purple);
                 }
+            }
+
+            & > .content {
+                padding: 1rem;
+                padding-top: 0;
             }
 
             &::-webkit-scrollbar {
@@ -101,13 +105,11 @@
 
         &.frozen-top {
             & > .container {
-                padding-top: 0;
-                padding-bottom: 1rem;
                 & > .top {
                     background-color: var(--white);
                     position: sticky;
                     top: 0;
-                    padding-top: 1rem;
+                    left: 0;
                     z-index: 5;
                 }
             }
