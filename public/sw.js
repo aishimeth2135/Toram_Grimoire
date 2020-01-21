@@ -115,4 +115,6 @@ workbox.precaching.precacheAndRoute([
     "url": "manifest.json",
     "revision": "b46b362285c754e8d08c068f544adb21"
   }
-]);
+], {
+    ignoreURLParametersMatching: [/source/]
+});
