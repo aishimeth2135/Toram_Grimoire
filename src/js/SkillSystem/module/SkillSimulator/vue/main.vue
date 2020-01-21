@@ -559,13 +559,17 @@
 
                     // icon
                     const skillPointCostSvgIconString = `<svg xmlns="http://www.w3.org/2000/svg" width="16.64px" height="16px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1056 1024"><path d="M1037 429L934 276l51-179q5-18-8.5-31.5T945 57l-178 52L612 6q-15-11-32-2.5T562 31l-5 186l-147 115q-6 5-9.5 13t-1.5 17q0 3 1.5 6.5t3 6t4 5t5.5 4.5t6 3l138 49q-3 2-3 3L23 969q-6 6-8 14.5t0 16.5t8 15q10 9 23 9t23-9l530-531q3-3 5-7l54 148q7 17 25 20q3 1 5 1q16 0 26-13l113-147l184-7q9 0 16.5-4.5T1039 462q8-17-2-33zm-227-6q-15 0-24 12l-88 113l-49-134q-5-14-19-19l-134-49l112-88q4-3 6.5-6.5t4-8t1.5-9.5l5-143l118 80q13 8 27 4l137-40l-39 137q-1 3-1 6v5.5l.5 5.5l2 5.5l2.5 4.5l81 118z" fill="${pcolor3}"></path></svg>`;
-                    const svgIconData = {
+                    const otherIconData = {
                         skillPointCost: {
                             src: 'data:image/svg+xml;base64,' + window.btoa(skillPointCostSvgIconString),
                             loadedImage: null
                         },
                         potum: {
                             src: './src/picture/icon/favicon48.png',
+                            loadedImage: null
+                        },
+                        unknowSkillIcon: {
+                            src: './src/picture/skill_icons/unknow.svg',
                             loadedImage: null
                         }
                     };
@@ -588,14 +592,17 @@
                         });
                     });
 
+                    Object.values(otherIconData).forEach(imgData => {
+                        imgData.loadedImage = document.createElement('img');
+                    });
+
                     await Promise.all([
-                        ...Object.values(svgIconData).map(imgData => {
-                            const img = document.createElement('img');
+                        ...Object.values(otherIconData).map(imgData => {
+                            const img = imgData.loadedImage;
                             return new Promise((resolve, reject) => {
                                 img.src = imgData.src;
                                 img.addEventListener('load', function img_load(e){
                                     img.removeEventListener('load', img_load);
-                                    imgData.loadedImage = img;
                                     resolve();
                                 });
                             });
@@ -608,12 +615,21 @@
                                     return new Promise((resolve, reject) => {
                                         p.skill.starGemLevel() > 0 && starGemDatas.push(p);
 
-                                        img.src = p.path.slice(1);
-                                        img.addEventListener('load', function img_load(e){
+                                        function img_load(e){
                                             img.removeEventListener('load', img_load);
+                                            img.removeEventListener('error', img_error);
                                             p.loadedImage = img;
                                             resolve();
-                                        });
+                                        }
+                                        function img_error(){
+                                            img.removeEventListener('load', img_load);
+                                            img.removeEventListener('error', img_error);
+                                            p.loadedImage = otherIconData.unknowSkillIcon.loadedImage;
+                                            resolve();
+                                        }
+                                        img.addEventListener('load', img_load);
+                                        img.addEventListener('error', img_error);
+                                        img.src = p.path.slice(1);
                                     });
                                 })
                             );
@@ -724,7 +740,7 @@
 
                         ctx.textAlign = 'right';
                         ctx.fillText(spc, final_w - title_preRect_pdl, title_text_y);
-                        ctx.drawImage(svgIconData.skillPointCost.loadedImage,
+                        ctx.drawImage(otherIconData.skillPointCost.loadedImage,
                             final_w
                              - (left_icon_scope_mr
                                 + left_icon_scope_text_ml
@@ -766,7 +782,7 @@
                             topInfo_icon_top = (topInfo_h_sum - topInfo_icon_h) / 2,
                             topInfo_text_left = topInfo_icon_left + topInfo_icon_h + topInfo_icon_mr;
 
-                        fctx.drawImage(svgIconData.potum.loadedImage, topInfo_icon_left, topInfo_icon_top);
+                        fctx.drawImage(otherIconData.potum.loadedImage, topInfo_icon_left, topInfo_icon_top);
 
                         cur_y += topInfo_topBottomPd + topInfo_text_h / 2;
                         fctx.fillText(spcs, topInfo_text_left, cur_y);
