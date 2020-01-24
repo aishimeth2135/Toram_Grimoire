@@ -65,7 +65,7 @@ workbox.routing.registerRoute(
 workbox.precaching.precacheAndRoute([
   {
     "url": "dist/damage-calculation.min.js",
-    "revision": "d975cde7111aad917e4197630b1e4318"
+    "revision": "47e04b155ffa2124705bad9e8b3db1c2"
   },
   {
     "url": "dist/enchant-simulator.min.js",
@@ -81,11 +81,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/skill-query.min.js",
-    "revision": "ca46f86180b48224b7fc9dc85c58f185"
+    "revision": "aa7719e93131047d48a69bfa1c156d54"
   },
   {
     "url": "dist/skill-simulator.min.js",
-    "revision": "70546b810169849d051a36978f835b31"
+    "revision": "24ba6198de9717ec4385b0e3bb5b2ed3"
   },
   {
     "url": "damage_calculation.html",

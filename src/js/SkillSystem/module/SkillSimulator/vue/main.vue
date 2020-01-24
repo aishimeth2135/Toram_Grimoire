@@ -45,7 +45,7 @@
                             :name="buildInformationVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'">
                         </iconify-icon>
                     </span>
-                    <transition name="inner-menu">
+                    <transition name="fade">
                         <div class="inner-menu select-skill-tree" v-show="selectSkillTreeVisible">
                             <template v-for="(stc, index) in currentSkillRootState.skillTreeCategoryStates">
                                 <div class="title">{{ stc.origin.name }}</div>
@@ -62,7 +62,7 @@
                             </template>
                         </div>
                     </transition>
-                    <transition name="inner-menu">
+                    <transition name="fade">
                         <div class="inner-menu" v-show="jumpSkillTreeVisible">
                             <div v-if="noSkillTreeSelected" class="default-tips">
                                 <div class="container">
@@ -130,7 +130,7 @@
                             </template>
                         </div>
                     </transition>
-                    <transition name="inner-menu">
+                    <transition name="fade">
                         <div class="inner-menu build-information" v-show="buildInformationVisible">
                             <div class="Cyteria Layout title-input-scope">
                                 <span class="icon">
@@ -173,25 +173,34 @@
                     </span>
                 </div>
                 <div class="content">
-                    <span v-for="(state, index) in setButtonStates"
-                        @click="openSetButtonMenu(state.type)"
-                        :class="{selected: state.selected}"
-                        class="set-button" data-user-guide-set="5-1">
-                        <transition name="inner-menu">
-                            <div class="select-menu" v-show="state.selected">
-                                <span v-for="(value, index2) in state.values"
-                                    @click="setButtonSelected(state.type, index2)"
-                                    class="Cyteria Button line icon-small">
-                                    <iconify-icon :name="state.icons[index2]"></iconify-icon>
-                                    <span class="text">{{ state.texts[index2] }}</span>
+                    <div class="top">
+                        <div class="buttons" :class="{hide: bottomMenuExtraMenuVidsible}">
+                            <span v-for="(state, i) in setButtonStates"
+                                @click="setButtonClick(state.type)"
+                                class="Cyteria Button simple no-border no-padding" data-user-guide-set="5-1">
+                                <iconify-icon :name="state.icons[state.currentIndex]"></iconify-icon>
+                                    <span class="text">{{ state.texts[state.currentIndex] }}</span>
+                            </span>
+                        </div>
+                        <span class="Cyteria Button icon-scope tail-button" @click="bottomMenuExtraMenuVidsible = !bottomMenuExtraMenuVidsible">
+                            <iconify-icon :name="bottomMenuExtraMenuVidsible ? 'ic-round-keyboard-arrow-down' : 'ic-round-keyboard-arrow-up'">
+                            </iconify-icon>
+                        </span>
+                    </div>
+                    <transition name="fade">
+                        <div class="menus" v-show="bottomMenuExtraMenuVidsible">
+                            <div v-for="(state, i) in setButtonStates"
+                                class="select-menu">
+                                <span v-for="(value, j) in state.values"
+                                    @click="setButtonSelected(state.type, j)"
+                                    class="Cyteria Button line icon-small selection"
+                                    :class="{selected: state.currentIndex == j}">
+                                    <iconify-icon :name="state.icons[j]"></iconify-icon>
+                                    <span class="text">{{ state.texts[j] }}</span>
                                 </span>
                             </div>
-                        </transition>
-                        <span class="Cyteria Button simple no-border">
-                            <iconify-icon :name="state.icons[state.currentIndex]"></iconify-icon>
-                            <span class="text" v-show="state.selected">{{ state.texts[state.currentIndex] }}</span>
-                        </span>
-                    </span>
+                        </div>
+                    </transition>
                 </div>
             </div>
             <cy-window :visible="previewExportedImageWindowVisible"
@@ -255,8 +264,7 @@
                     texts: values.map(a => Lang('main menu/' + type + ': ' + a)),
                     icons: icon_ids,
                     values: values,
-                    currentIndex: values.indexOf(current_value),
-                    selected: false
+                    currentIndex: values.indexOf(current_value)
                 };
             }
 
@@ -336,6 +344,7 @@
                 buildInformationVisible: false,
                 previewExportedImageWindowVisible: false,
                 previewExportedTextWindowVisible: false,
+                bottomMenuExtraMenuVidsible: false,
                 setButtonStates: [
                     createSetButtonState('operating', ['ic:round-add-circle-outline',
                         'ic:round-remove-circle-outline'], ['+', '-'], skillPointState.operating),
@@ -1005,11 +1014,12 @@
                     st.visible = false;
                 }
             },
-            openSetButtonMenu(type){
-                const t = this.setButtonStates.forEach(p => {
-                    p.type == type
-                        ? (p.selected = !p.selected)
-                        : (p.selected && (p.selected = false));
+            setButtonClick(type){
+                const t = this.setButtonStates.find(p => {
+                    if ( p.type == type ){
+                        p.currentIndex =  p.currentIndex == p.values.length - 1 ? 0 : p.currentIndex + 1;
+                        return true;
+                    }
                 });
             },
             setButtonSelected(type, index){
@@ -1138,36 +1148,40 @@
                 padding-bottom: 0.4rem;
                 display: flex;
                 align-items: center;
-                position: relative;
-                
-                & > .set-button {
-                    position: relative;
-                    z-index: 5;
-    
-                    & > .Cyteria.Button {
-                        height: 2rem;
-                    }
-                    &.selected {
-                        z-index: 6;
+                flex-wrap: wrap;
+
+                & >　.top {
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+
+                    & > .buttons {
+                        display: inline-flex;
+                        align-items: center;
+                        white-space: nowrap;
+                        overflow-x: auto;
+                        opacity: 1;
+                        transition: 0.3s ease;
+
+                        &.hide {
+                            opacity: 0;
+                        }
 
                         & > .Cyteria.Button {
-                            position: relative;
+                            margin-right: 0.4rem;
+                            margin-left: 0.4rem;
                         }
                     }
+                    & > .tail-button {
+                        margin-left: auto;
+                        padding: 0 0.4rem;
+                    }
+                }
 
-                    & > .inner-button {
-                        position: relative;
-                    }
-                    & > .select-menu {
-                        position: absolute;
-                        left: 0;
-                        bottom: -0.4rem;
-                        border: 1px solid var(--primary-light-2);
-                        padding: 0.6rem;
-                        background-color: var(--white);
-                        padding-bottom: 2.4rem;
-                        max-width: 20rem;
-                    }
+                & > .menus {
+                    overflow-x: auto;
+                    display: flex;
+                    align-items: flex-start;
                 }
             }
         }
