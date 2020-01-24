@@ -1152,7 +1152,8 @@
                     display: flex;
                     align-items: center;
                     width: 100%;
-                    padding: 0.1rem 0;
+                    padding-top: 0.15rem;
+                    padding-bottom: 0.2rem;
 
                     & > .buttons {
                         display: inline-flex;
