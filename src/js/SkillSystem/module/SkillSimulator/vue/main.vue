@@ -1143,7 +1143,6 @@
 
             & > .content {
                 border-top: 1px solid var(--primary-light);
-                padding: 0.3rem 0;
                 background-color: var(--white);
                 padding-bottom: 0.4rem;
                 display: flex;
@@ -1154,6 +1153,7 @@
                     display: flex;
                     align-items: center;
                     width: 100%;
+                    padding: 0.3rem 0;
 
                     & > .buttons {
                         display: inline-flex;
@@ -1182,6 +1182,7 @@
                     overflow-x: auto;
                     display: flex;
                     align-items: flex-start;
+                    padding-bottom: 0.3rem;
                 }
             }
         }
