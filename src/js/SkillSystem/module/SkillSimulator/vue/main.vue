@@ -177,7 +177,7 @@
                         <div class="buttons" :class="{hide: bottomMenuExtraMenuVidsible}">
                             <span v-for="(state, i) in setButtonStates"
                                 @click="setButtonClick(state.type)"
-                                class="Cyteria Button simple no-border no-padding" data-user-guide-set="5-1">
+                                class="Cyteria Button simple no-border" data-user-guide-set="5-1">
                                 <iconify-icon :name="state.icons[state.currentIndex]"></iconify-icon>
                                     <span class="text">{{ state.texts[state.currentIndex] }}</span>
                             </span>
@@ -1144,7 +1144,6 @@
             & > .content {
                 border-top: 1px solid var(--primary-light);
                 background-color: var(--white);
-                padding-bottom: 0.4rem;
                 display: flex;
                 align-items: center;
                 flex-wrap: wrap;
@@ -1153,7 +1152,7 @@
                     display: flex;
                     align-items: center;
                     width: 100%;
-                    padding: 0.3rem 0;
+                    padding: 0.1rem 0;
 
                     & > .buttons {
                         display: inline-flex;
@@ -1166,11 +1165,6 @@
                         &.hide {
                             opacity: 0;
                         }
-
-                        & > .Cyteria.Button {
-                            margin-right: 0.4rem;
-                            margin-left: 0.4rem;
-                        }
                     }
                     & > .tail-button {
                         margin-left: auto;
@@ -1182,7 +1176,7 @@
                     overflow-x: auto;
                     display: flex;
                     align-items: flex-start;
-                    padding-bottom: 0.3rem;
+                    padding-bottom: 0.4rem;
                 }
             }
         }
