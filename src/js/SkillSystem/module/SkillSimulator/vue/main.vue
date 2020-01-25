@@ -1018,6 +1018,7 @@
                 const t = this.setButtonStates.find(p => {
                     if ( p.type == type ){
                         p.currentIndex =  p.currentIndex == p.values.length - 1 ? 0 : p.currentIndex + 1;
+                        this.setButtonSelected(p.type, p.currentIndex);
                         return true;
                     }
                 });
