@@ -4,9 +4,9 @@ export default function(character_system, c, lang_c, slang_c){
 	const
 		BASE_NAME = 0,
 		CAPTION = 1,
-		HAS_MULTIPLIER = 2,
-		CONSTANT_FORMULA = 3,
-		ORDER = 11,
+		CONSTANT_FORMULA = 2,
+		HAS_MULTIPLIER = 3,
+		ORDER = 4,
 		LANG_DATA = {
 			CAPTION: 0,
 			CONSTANT_FORMULA: 1
