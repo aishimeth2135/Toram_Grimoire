@@ -1,10 +1,9 @@
 import GetLang from "../../../main/module/LanguageSystem.js";
-import {createSkillAttributeScope, getStackBranchIdKey, simpleCreateHTML, Lang} from "./main.js";
+import {createSkillAttributeScope, getStackBranchIdKey, simpleCreateHTML, Lang, handleFormula} from "./main.js";
 import {getSkillElementId} from "../SkillElementMethods.js";
 import CY from "../../../main/module/cyteria.js";
 import strings from "../strings.js";
 import Icons from "../../../main/module/SvgIcons.js";
-
 
 const
     SUFFIX_LIST = ['extra', 'proration', 'group', 'formula_extra'],
@@ -133,19 +132,33 @@ function getBranchHTML(branch, ctrr){
             'target_level': Lang('skill formula: target_level'),
             'guard_power': Lang('skill formula: guard_power')
         };
-        Object.keys(FORMULA_EXTRA_VALUE_LIST).forEach(key => {
+        // Object.keys(FORMULA_EXTRA_VALUE_LIST).forEach(key => {
+        //     str = str.replace(new RegExp('\\$' + key, 'g'), FORMULA_EXTRA_VALUE_LIST[key]);
+        // });
+        str = str
+             .replace(/SLv/g, SLv).replace(/CLv/g, CLv)
+             .replace(/stack(?:\[\d+\])?/, m => safeEval(m));
+        //     .replace(/&(\d):/g, (m, no) => texts[parseInt(no)] || '(?)');
+
+        // const pat = /[a-zA-Z0-9_.]?\(?\d+(?:\.\d+)?[\*/\-\+]{1}\d+(?:\.\d+)?\)?/g;
+        // while ( str.match(pat) )
+        //     str = str.replace(pat, s => safeEval(s));
+        
+        const notText = n => /^\d+$/.test(n);
+        const list = Object.keys(FORMULA_EXTRA_VALUE_LIST);
+        str = handleFormula(str, (n1, o, n2) => {
+            return notText(n1) && notText(n2)
+                ? safeEval(n1 + o + n2)
+                : n1 + o + n2;
+        },
+        v => safeEval(v));
+
+        list.forEach(key => {
             str = str.replace(new RegExp('\\$' + key, 'g'), FORMULA_EXTRA_VALUE_LIST[key]);
         });
-        str = str
-            .replace(/SLv/g, SLv).replace(/CLv/g, CLv)
-            .replace(/stack(?:\[\d+\])?/, m => safeEval(m))
-            .replace(/&(\d):/g, (m, no) => texts[parseInt(no)] || '(?)');
-
-        const pat = /[a-zA-Z0-9_.]?\(?\d+(?:\.\d+)?[\*/\-\+]{1}\d+(?:\.\d+)?\)?/g;
-        while ( str.match(pat) )
-            str = str.replace(pat, s => safeEval(s));
 
         str = str
+            .replace(/&(\d):/g, (m, no) => texts[parseInt(no)] || '(?)')
             .replace(/\*/g, '×')
             .replace(/(\d+\.\d+)/g, (m, m1) => parseFloat(m1)*100 + '%');
         return str;
