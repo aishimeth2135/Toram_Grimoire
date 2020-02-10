@@ -173,8 +173,8 @@ function handleFormula(str, calc_fun, eval_fun){
         
         beforeLeaveEnvir();
 
-        console.log('envirs: ', envirs);
-        console.log('fun_stk: ', fun_stk);
+        // console.log('envirs: ', envirs);
+        // console.log('fun_stk: ', fun_stk);
         
         function handlePostFix(env){
             const _stk = [];

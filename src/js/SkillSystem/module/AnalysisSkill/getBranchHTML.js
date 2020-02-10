@@ -132,17 +132,10 @@ function getBranchHTML(branch, ctrr){
             'target_level': Lang('skill formula: target_level'),
             'guard_power': Lang('skill formula: guard_power')
         };
-        // Object.keys(FORMULA_EXTRA_VALUE_LIST).forEach(key => {
-        //     str = str.replace(new RegExp('\\$' + key, 'g'), FORMULA_EXTRA_VALUE_LIST[key]);
-        // });
+        
         str = str
              .replace(/SLv/g, SLv).replace(/CLv/g, CLv)
              .replace(/stack(?:\[\d+\])?/, m => safeEval(m));
-        //     .replace(/&(\d):/g, (m, no) => texts[parseInt(no)] || '(?)');
-
-        // const pat = /[a-zA-Z0-9_.]?\(?\d+(?:\.\d+)?[\*/\-\+]{1}\d+(?:\.\d+)?\)?/g;
-        // while ( str.match(pat) )
-        //     str = str.replace(pat, s => safeEval(s));
         
         const notText = n => /^\d+$/.test(n);
         const list = Object.keys(FORMULA_EXTRA_VALUE_LIST);
