@@ -946,7 +946,6 @@
             },
             selectCurrentSkillRootState(i){
                 this.currentSkillRootStateIndex = i;
-                this.skillRootStates.forEach(p => p.editName = false);
             },
             createBuild(){
                 const r = this.skillRoot;

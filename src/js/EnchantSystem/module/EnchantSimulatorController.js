@@ -586,7 +586,7 @@ export default class EnchantSimulatorController {
                 .replace(/<\/p>/g, '');
             const sr = eq.successRate();
             res += '\n\n成功率：' + (sr != -1
-                ? Math.floor(sr) + '%｜實際' + (Math.floor(sr) + 30).toString() + '%'
+                ? Math.floor(sr) + '%'
                 : Lang('unlimited')
             ) + '\n\n｜布偶的魔法書｜';
             return res;
