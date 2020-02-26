@@ -69,7 +69,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "dist/enchant-simulator.min.js",
-    "revision": "078cebfc47255c28c21f1bac9dfc220b"
+    "revision": "3d591b874ca995b1682da9c6dc17901c"
   },
   {
     "url": "dist/home.min.js",
