@@ -623,7 +623,7 @@ export default class EnchantSimulatorController {
             const res_scope = scope.querySelector('.show-result-scope');
             sr_scope.querySelector('.success-rate').innerHTML =
                 sr != -1
-                ? Math.floor(sr) + '%｜實際' + (Math.floor(sr) + 30).toString() + '%'
+                ? Math.floor(sr) + '%'
                 : Lang('unlimited');
             const res = res_scope.querySelector('.show-result-content');
             CY.element.removeAllChild(res);
