@@ -58,7 +58,7 @@ function Lang(s){
 
 function handleFormula(str, calc_fun, eval_fun){
     str = str.replace(/\s+/g, '');
-    console.log(str);
+    // console.log(str);
     function isOperator(c){
         return /^[\+\-\*/\(\),]$/.test(c);
     }
@@ -121,6 +121,8 @@ function handleFormula(str, calc_fun, eval_fun){
                 return;
             }
 
+            console.log(num);
+
             if ( num !== '' ){
                 if ( c == '(' && isFunName(num) ){
                     fun_stk.push({
@@ -173,8 +175,8 @@ function handleFormula(str, calc_fun, eval_fun){
         
         beforeLeaveEnvir();
 
-        // console.log('envirs: ', envirs);
-        // console.log('fun_stk: ', fun_stk);
+        // console.log('envirs: ', envirs.slice());
+        // console.log('fun_stk: ', fun_stk.slice());
         
         function handlePostFix(env){
             const _stk = [];
@@ -186,7 +188,7 @@ function handleFormula(str, calc_fun, eval_fun){
                     if ( p.type == 'function' ){
                         const params = p.params.map(a => handlePostFix(a));
                         const fun_str = p.name + '(' + params.join(', ') + ')';
-                        p = params.every(a => /^[0-9]+$/.test(a))
+                        p = params.every(a => /^[0-9.]+$/.test(a))
                             ? eval_fun(fun_str)
                             : fun_str;
                     }

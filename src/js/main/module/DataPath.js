@@ -1,4 +1,5 @@
 import Papa from "papaparse";
+import {currentLanguage, secondLanguage} from "./LanguageSystem.js";
 
 function DataPath(id){
     /* 語言資料：
@@ -79,4 +80,19 @@ function createLoadDataPromise(path, data_ary, index){
     });
 }
 
-export {DataPath, createLoadDataPromise};
+function loadLangDatas(path_id, promise_ary, default_lang_no=1){
+    const current = currentLanguage(), second = secondLanguage();
+    const datas = Array(3);
+
+    promise_ary.push(createLoadDataPromise(DataPath(path_id), datas, 0));
+    if ( current != default_lang_no ){
+        const path = DataPath(path_id + '/language');
+        promise_ary.push(createLoadDataPromise(path[current], datas, 1));
+        if ( current != second )
+            promise_ary.push(createLoadDataPromise(path[second], datas, 2));
+    }
+
+    return datas;
+}
+
+export {DataPath, createLoadDataPromise, loadLangDatas};

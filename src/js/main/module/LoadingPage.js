@@ -51,7 +51,7 @@ function loadingError(msg_el, e){
         icon.classList.add('error');
     }
     if ( e )
-        console.log(e);
+        console.warn('[Error when loading page...]', e);
 }
 
 function loadingSuccess(){
