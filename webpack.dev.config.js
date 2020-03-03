@@ -10,7 +10,8 @@ module.exports = {
         'item-query': './src/js/main/ItemQuery/index.js',
         'enchant-simulator': './src/js/main/EnchantSimulator/index.js',
         'damage-calculation': './src/js/main/DamageCalculation/index.js',
-        'skill-simulator': './src/js/main/SkillSimulator/index.js'
+        'skill-simulator': './src/js/main/SkillSimulator/index.js',
+        'character-simulator': './src/js/main/CharacterSimulator/index.js'
     },
     output: {
         path: path.join(__dirname, 'public', 'dist'),

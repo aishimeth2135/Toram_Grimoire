@@ -129,8 +129,6 @@ export default class SkillSimulatorController {
         this.UserGuideSystem.origin.init(componentOptions);
     }
     initComponent(el){
-        const ctrr = this;
-
         const vm = new Vue({
             el: el,
             template: '<main-scope :skill-root="skillRoot"></main-scope>',

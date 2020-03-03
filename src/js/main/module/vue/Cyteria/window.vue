@@ -5,7 +5,9 @@
                 <div class="top">
                     <div class="Cyteria scope-icon title">
                         <iconify-icon name="mdi:checkbox-multiple-blank-circle-outline"></iconify-icon>
-                        <lang-text :lang-id="titleLangId" class="text"></lang-text>
+                        <slot name="title">
+                            <lang-text :lang-id="titleLangId" class="text"></lang-text>
+                        </slot>
                     </div>
                     <span class="buttons">
                         <slot name="top-buttons"></slot>

@@ -15,12 +15,23 @@ class Character {
 
         this.equipmentFields = [];
     }
+    init(names){
+        this.equipmentFields.push(...[
+            EquipmentField.TYPE_MAIN_WEAPON,
+            EquipmentField.TYPE_SUB_WEAPON,
+            EquipmentField.TYPE_BODY_ARMOR,
+            EquipmentField.TYPE_ADDITIONAL,
+            EquipmentField.TYPE_SPECIAL,
+            EquipmentField.TYPE_OTHER,
+            EquipmentField.TYPE_OTHER
+        ].map((p, i) => new EquipmentField(p)));
+        return this;
+    }
 }
 
 class EquipmentField {
-    constructor(type, name){
+    constructor(type){
         this.type = type;
-        this.name = name;
 
         this.items = [];
 
@@ -29,57 +40,67 @@ class EquipmentField {
 
         this._init();
     }
-    _init(){
-        switch (this.type){
-            case EquipmentField.TYPE_MAIN:
-                this.appendItem(
-                    EquipmentFieldItem.TYPE_STATS,
-                    EquipmentFieldItem.TYPE_ATK,
-                    EquipmentFieldItem.TYPE_REFINING,
-                    EquipmentFieldItem.TYPE_STABILITY
-                );
-                break;
-            case EquipmentField.TYPE_SUB:
-                this.appendItem(
-                    EquipmentFieldItem.TYPE_STATS,
-                    EquipmentFieldItem.TYPE_ATK,
-                    EquipmentFieldItem.TYPE_DEF,
-                    EquipmentFieldItem.TYPE_REFINING,
-                    EquipmentFieldItem.TYPE_STABILITY
-                );
-                break;
-            case EquipmentField.TYPE_ARMOR:
-                this.appendItem(
-                    EquipmentFieldItem.TYPE_STATS,
-                    EquipmentFieldItem.TYPE_DEF,
-                    EquipmentFieldItem.TYPE_REFINING
-                );
-                break;
-            case EquipmentField.TYPE_ADDITIONAL:
-                this.appendItem(
-                    EquipmentFieldItem.TYPE_STATS,
-                    EquipmentFieldItem.TYPE_DEF,
-                    EquipmentFieldItem.TYPE_REFINING
-                );
-                break;
-            case EquipmentField.TYPE_SPECIAL:
-                this.appendItem(
-                    EquipmentFieldItem.TYPE_STATS,
-                    EquipmentFieldItem.TYPE_DEF
-                );
-                break;
-            case EquipmentField.TYPE_SPECIAL:
-                this.appendItem(
-                    EquipmentFieldItem.TYPE_STATS,
-                    EquipmentFieldItem.TYPE_DEF
-                );
-                break;
-        }
-    }
-    appendItem(...types){
-        this.items.push(...types.map(t => new EquipmentFieldItem(this, t)));
-    }
-    currentEquipment(){
+    // _init(){
+    //     switch (this.type){
+    //         case EquipmentField.TYPE_MAIN:
+    //             this.appendItem(
+    //                 EquipmentFieldItem.TYPE_STATS,
+    //                 EquipmentFieldItem.TYPE_ATK,
+    //                 EquipmentFieldItem.TYPE_REFINING,
+    //                 EquipmentFieldItem.TYPE_STABILITY
+    //             );
+    //             break;
+    //         case EquipmentField.TYPE_SUB:
+    //             this.appendItem(
+    //                 EquipmentFieldItem.TYPE_STATS,
+    //                 EquipmentFieldItem.TYPE_ATK,
+    //                 EquipmentFieldItem.TYPE_DEF,
+    //                 EquipmentFieldItem.TYPE_REFINING,
+    //                 EquipmentFieldItem.TYPE_STABILITY
+    //             );
+    //             break;
+    //         case EquipmentField.TYPE_ARMOR:
+    //             this.appendItem(
+    //                 EquipmentFieldItem.TYPE_STATS,
+    //                 EquipmentFieldItem.TYPE_DEF,
+    //                 EquipmentFieldItem.TYPE_REFINING
+    //             );
+    //             break;
+    //         case EquipmentField.TYPE_ADDITIONAL:
+    //             this.appendItem(
+    //                 EquipmentFieldItem.TYPE_STATS,
+    //                 EquipmentFieldItem.TYPE_DEF,
+    //                 EquipmentFieldItem.TYPE_REFINING
+    //             );
+    //             break;
+    //         case EquipmentField.TYPE_SPECIAL:
+    //             this.appendItem(
+    //                 EquipmentFieldItem.TYPE_STATS,
+    //                 EquipmentFieldItem.TYPE_DEF
+    //             );
+    //             break;
+    //         case EquipmentField.TYPE_SPECIAL:
+    //             this.appendItem(
+    //                 EquipmentFieldItem.TYPE_STATS,
+    //                 EquipmentFieldItem.TYPE_DEF
+    //             );
+    //             break;
+    //     }
+    // }
+    // appendItem(...types){
+    //     this.items.push(...types.map(t => new EquipmentFieldItem(this, t)));
+    // }
+    // getItem(name){
+    //     const s = EquipmentFieldItem['TYPE_' + name.toUpperCase()];
+
+    //     return this.items.find(a => a.type == s);
+    // }
+    // itemExisting(name){
+    //     return this.getItem(name) ? true : false;
+    // }
+    get currentEquipment(){
+        if ( this._currentEquipmentIndex == -1 )
+            return null;
         return this.equipments[this._currentEquipmentIndex];
     }
     selectCurrentEquipment(index){
@@ -90,12 +111,12 @@ class EquipmentField {
     }
 }
 
-EquipmentField.TYPE_MAIN = Symbol('main');
-EquipmentField.TYPE_SUB = Symbol('sub');
-EquipmentField.TYPE_ARMOR = Symbol('armor');
+EquipmentField.TYPE_MAIN_WEAPON = Symbol('main-weapon');
+EquipmentField.TYPE_SUB_WEAPON = Symbol('sub-seapon');
+EquipmentField.TYPE_BODY_ARMOR = Symbol('body-armor');
 EquipmentField.TYPE_ADDITIONAL = Symbol('additional');
 EquipmentField.TYPE_SPECIAL = Symbol('special');
-EquipmentField.TYPE_OTHER = Symbol('other');
+EquipmentField.TYPE_AVATAR = Symbol('avatar');
 
 class EquipmentFieldItem {
     constructor(parent, type){
@@ -202,3 +223,5 @@ class CharacterStatFormula {
         }
     }
 }
+
+export {Character, EquipmentField, EquipmentFieldItem};

@@ -1,7 +1,6 @@
 import {SkillRoot} from "./module/SkillElements.js";
 import {LoadSkillData, LoadSkillMainData} from "./module/LoadSkillData.js";
-import {DataPath, createLoadDataPromise} from "../main/module/DataPath.js";
-import {currentLanguage, secondLanguage} from "../main/module/LanguageSystem.js";
+import {DataPath, loadLangDatas} from "../main/module/DataPath.js";
 
 import SkillQueryController from "./module/SkillQueryController.js";
 import SkillSimulatorController from "./module/SkillSimulator/SkillSimulatorController.js";
@@ -13,26 +12,10 @@ class SkillSystem {
 	async* init(){
 		const _this = this;
 
-		const current = currentLanguage(), second = secondLanguage();
-
 		const promise_ary = [];
 
-		const SkillData_ary = Array(3), SkillMainData_ary = Array(3);
-
-		promise_ary.push(createLoadDataPromise(DataPath('Skill'), SkillData_ary, 0));
-		if ( current != 1 ){
-			const path = DataPath('Skill/language');
-			promise_ary.push(createLoadDataPromise(path[current], SkillData_ary, 1));
-			if ( current != second )
-				promise_ary.push(createLoadDataPromise(path[second], SkillData_ary, 2));
-		}
-		promise_ary.push(createLoadDataPromise(DataPath('Skill Main'), SkillMainData_ary, 0));
-		if ( current != 1 ){
-			const path = DataPath('Skill Main/language');
-			promise_ary.push(createLoadDataPromise(path[current], SkillMainData_ary, 1));
-			if ( current != second )
-				promise_ary.push(createLoadDataPromise(path[second], SkillMainData_ary, 2));
-		}
+		const SkillData_ary = loadLangDatas('Skill', promise_ary),
+			SkillMainData_ary = loadLangDatas('Skill Main', promise_ary);
 
 		await Promise.all(promise_ary);
 		yield;

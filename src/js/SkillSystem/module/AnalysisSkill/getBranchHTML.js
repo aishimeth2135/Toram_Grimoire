@@ -165,7 +165,7 @@ function getBranchHTML(branch, ctrr){
             return dftv === void 0 ? '?' : dftv;
         }
     }
-    function processText(brh, attr_name='text', config){
+    function handleText(brh, attr_name='text', config){
         config = Object.assign({
             pluralValuesType: 'history',
             isValue: false,
@@ -185,7 +185,7 @@ function getBranchHTML(branch, ctrr){
             str = str
             .replace(/\$\{([^\}]+)\}([%m]?)/g, (...args) => {
                 const l = processedValues.length;
-                processedValues.push(processValue(null, args[1], {light: true, tail: args[2]}));
+                processedValues.push(handleValue(null, args[1], {light: true, tail: args[2]}));
                 return `@{{$ProcessedValues[${l}]}}`;
             })
             .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (...args) => separateText(args[1]))
@@ -234,7 +234,7 @@ function getBranchHTML(branch, ctrr){
 
         return resultAry.join('');
     }
-    function processValue(brh, attr_name, config={}){
+    function handleValue(brh, attr_name, config={}){
         //console.log(arguments);
         let value = (brh ? brh.branchAttributes[attr_name] : attr_name) || (config.defaultValue || '0');
 
@@ -323,7 +323,7 @@ function getBranchHTML(branch, ctrr){
         });
         return resultAry.join(`<span class="Cyteria scope-icon plural-values-icon">${Icons('arrow-right-triangle')}</span>`);
     }
-    function processStat(brh, stat, config){
+    function handleStat(brh, stat, config){
         config = Object.assign({
             pluralValuesType: 'history'
         }, config);
@@ -334,7 +334,7 @@ function getBranchHTML(branch, ctrr){
             const showData = st.getShowData();
             const vs = showData.value.split(',,');
             const sign = ( vs.length === 1 && safeEval(vs[0]) < 0 ) ? '' : '+';
-            let v = processValue(null, showData.value, {tail: showData.tail, head: showData.title + sign});
+            let v = handleValue(null, showData.value, {tail: showData.tail, head: showData.title + sign});
 
             const clist = [];
             if ( sign === '' )
@@ -383,12 +383,12 @@ function getBranchHTML(branch, ctrr){
                     case 'radius':
                         t = Lang('radius');
                         radius = safeEval(v);
-                        v = processValue(brh, attr_name, {tail: 'm'});
+                        v = handleValue(brh, attr_name, {tail: 'm'});
                         break;
                     case 'angle':
                         t = Lang('sector: angle');
                         angle = safeEval(v);
-                        v = processValue(brh, attr_name, {tail: '°'});
+                        v = handleValue(brh, attr_name, {tail: '°'});
                         break;
                     case 'effective_area':
                         areaType = v;
@@ -401,7 +401,7 @@ function getBranchHTML(branch, ctrr){
                         break;
                     case 'move_distance':
                         t = Lang('move distanve: title');
-                        v = processValue(brh, attr_name, {tail: 'm'});
+                        v = handleValue(brh, attr_name, {tail: 'm'});
                         break;
                     case 'end_position_offsets':
                         if ( !v || !is_sprint )
@@ -500,7 +500,7 @@ function getBranchHTML(branch, ctrr){
 
         const t = document.createDocumentFragment();
         t.appendChild(createSkillAttributeScope(Icons('label'), null, setTagButton(name)));
-        t.appendChild(createSkillAttributeScope(null, Lang('branch/damage/chance'), processValue(brh, chance_attr, {tail: '%'})));
+        t.appendChild(createSkillAttributeScope(null, Lang('branch/damage/chance'), handleValue(brh, chance_attr, {tail: '%'})));
         return t;
     }
 
@@ -619,10 +619,10 @@ function getBranchHTML(branch, ctrr){
             if ( attr['name'] !== void 0 ){
                 scope1.appendChild(simpleCreateHTML('span', '_main_title', attr['name']));
             }
-            scope1.appendChild(simpleCreateHTML('span', '_main_title', processValue(branch, 'min') + '~' + ( attr['max'] !== void 0 ? processValue(branch, 'max') : '?') + (attr['unit'] !== void 0 ? attr['unit'] : '')));
-            // scope1.appendChild(createSkillAttributeScope(null, Lang('branch/stack/min value'), processValue(attr['min'])));
+            scope1.appendChild(simpleCreateHTML('span', '_main_title', handleValue(branch, 'min') + '~' + ( attr['max'] !== void 0 ? handleValue(branch, 'max') : '?') + (attr['unit'] !== void 0 ? attr['unit'] : '')));
+            // scope1.appendChild(createSkillAttributeScope(null, Lang('branch/stack/min value'), handleValue(attr['min'])));
             // if ( attr['max'] !== void 0 )
-            //     scope1.appendChild(createSkillAttributeScope(null, Lang('branch/stack/max value'), processValue(attr['max'])));
+            //     scope1.appendChild(createSkillAttributeScope(null, Lang('branch/stack/max value'), handleValue(attr['max'])));
 
             const main = simpleCreateHTML('div', ['Cyteria', 'Layout', 'set-buttons-line', 'no-padding']);
             main.appendChild(left);
@@ -690,21 +690,21 @@ function getBranchHTML(branch, ctrr){
             : createSkillAttributeScope(
                 null, null,
                 // Lang('branch/damage/skill constant'),
-                processValue(branch, 'constant')
+                handleValue(branch, 'constant')
             );
 
             // 技能倍率
             const multiplier = createSkillAttributeScope(
                 null, null,
                 // Lang('branch/damage/skill multiplier'),
-                processValue(branch, 'multiplier', {tail: '%'})
+                handleValue(branch, 'multiplier', {tail: '%'})
             );
 
             // 最終傷害常數提升
             const extra_constant = attr['extra_constant'] !== void 0 ? createSkillAttributeScope(
                 null, null,
                 // Lang('branch/damage/skill extra constant'),
-                processValue(branch, 'extra_constant')
+                handleValue(branch, 'extra_constant')
             ) : null;
 
             //異常狀態
@@ -745,14 +745,14 @@ function getBranchHTML(branch, ctrr){
             if ( attr['frequency'] !== '1' || attr['title'] == 'each' ) {
                 damage_frequency = simpleCreateHTML(
                     'span', '_main_title',
-                    processValue(branch, 'frequency', {tail: Lang('branch/damage/frequency: unit')})
+                    handleValue(branch, 'frequency', {tail: Lang('branch/damage/frequency: unit')})
                 );
                 text = attr['judgment'] == 'common' ? Lang('branch/damage/judgment: common') : Lang('branch/damage/judgment: separate')
                 damage_judgment = createSkillAttributeScope(
                     null, null, text
                 );
                 if ( attr['is_place'] == '1' && attr['cycle'] !== void 0 ) {
-                    damage_cycle = createSkillAttributeScope(null, null, Lang('branch/damage/cycle: pretext') + processValue(branch, 'cycle', {tail: GetLang('global/second')}));
+                    damage_cycle = createSkillAttributeScope(null, null, Lang('branch/damage/cycle: pretext') + handleValue(branch, 'cycle', {tail: GetLang('global/second')}));
                 }
             }
             
@@ -783,20 +783,20 @@ function getBranchHTML(branch, ctrr){
                 //     let res = Lang('branch/damage/skill constant') + sign + t;
                 //     if ( t < 0 )
                 //         res = darkText(res);
-                //     res = processValue(ex, res, {calc: false, checkHasStack: _attr['constant']});
+                //     res = handleValue(ex, res, {calc: false, checkHasStack: _attr['constant']});
                 //     s2.appendChild(createSkillAttributeScope(null, null, res));
                 // }
                 if ( _attr['element'] ){
                     s2.appendChild(getDamageElementHTML(_attr['element']));
                 }
                 if ( _attr['caption'] ){
-                    s2.appendChild(simpleCreateHTML('span', 'text-scope', processText(ex, 'caption')));
+                    s2.appendChild(simpleCreateHTML('span', 'text-scope', handleText(ex, 'caption')));
                 }
-                ex.stats.forEach(stat => s2.appendChild(processStat(ex, stat)));
+                ex.stats.forEach(stat => s2.appendChild(handleStat(ex, stat)));
                 
                 damage_extras_frg.appendChild(createContentLine(simpleCreateHTML(
                         'span', '_main_title',
-                        processText(ex, 'condition', {defaultValue: Lang('branch/damage/extra/base title')})
+                        handleText(ex, 'condition', {defaultValue: Lang('branch/damage/extra/base title')})
                     ),
                     s2
                 ));
@@ -894,11 +894,11 @@ function getBranchHTML(branch, ctrr){
             if ( btype == 'passive' )
                 c = Lang('branch/effect/condition: passive');
 
-            const condition = c != 'none' ? simpleCreateHTML('span', '_main_title', processText(branch, c, {isValue: true})) : null;
-            const end_condition = attr['end_condition'] ? simpleCreateHTML('span', '_main_title', attr['end_condition']) : null;
+            const condition = c != 'none' ? simpleCreateHTML('span', '_main_title', handleText(branch, c, {isValue: true})) : null;
+            const end_condition = attr['end_condition'] ? simpleCreateHTML('span', '_main_title', handleText(branch, attr['end_condition'], {isValue: true})) : null;
             let duration = null;
             if ( attr['duration'] ){
-                let v = processValue(branch, 'duration');
+                let v = handleValue(branch, 'duration');
                 if ( attr['is_place'] === '1' )
                     duration = createSkillAttributeScope(null, Lang('branch/effect/duration'), v, GetLang('global/second'));
                 else {
@@ -934,11 +934,11 @@ function getBranchHTML(branch, ctrr){
                 const s2 = document.createDocumentFragment();
 
                 if ( _attr['caption'] ){
-                    s2.appendChild(simpleCreateHTML('span', 'text-scope', processText(ex, 'caption')));
+                    s2.appendChild(simpleCreateHTML('span', 'text-scope', handleText(ex, 'caption')));
                 }
-                ex.stats.forEach(stat => s2.appendChild(processStat(ex, stat)));
+                ex.stats.forEach(stat => s2.appendChild(handleStat(ex, stat)));
                 const s1 = document.createDocumentFragment();
-                s1.appendChild(simpleCreateHTML('span', '_main_title', processText(ex, 'condition')));
+                s1.appendChild(simpleCreateHTML('span', '_main_title', handleText(ex, 'condition')));
                 if ( _attr['target'] !== void 0 ){
                     s1.appendChild(simpleCreateHTML('span', '_main_title', _attr['target']));
                 }
@@ -962,9 +962,9 @@ function getBranchHTML(branch, ctrr){
 
             const scope2 = document.createDocumentFragment();
             if ( attr['caption'] )
-                scope2.appendChild(simpleCreateHTML('span', 'text-scope', processText(branch, 'caption')));
+                scope2.appendChild(simpleCreateHTML('span', 'text-scope', handleText(branch, 'caption')));
             else
-                branch.stats.forEach(a => scope2.appendChild(processStat(branch, a)));
+                branch.stats.forEach(a => scope2.appendChild(handleStat(branch, a)));
 
             const top = simpleCreateHTML('div', 'top');
             if ( text_name !== null )
@@ -1002,30 +1002,30 @@ function getBranchHTML(branch, ctrr){
             const target = text != null ? createSkillAttributeScope(null, null, text) : null;
 
             const constant = attr['constant'] != '0' ? createSkillAttributeScope(
-                null, null, processValue(branch, 'constant')
+                null, null, handleValue(branch, 'constant')
             ) : null;
 
             let duration = null;
             if ( attr['duration'] !==  void 0 )
-                duration = createSkillAttributeScope(null, Lang('branch/effect/duration'), processValue(branch, 'duration'), GetLang('global/second'));
+                duration = createSkillAttributeScope(null, Lang('branch/effect/duration'), handleValue(branch, 'duration'), GetLang('global/second'));
 
             let frequency = null;
             if ( attr['frequency'] !==  void 0 ) {
                 frequency = simpleCreateHTML(
                     'span', '_main_title',
-                    processValue(branch, 'frequency', {tail: Lang('branch/heal/frequency: unit')})
+                    handleValue(branch, 'frequency', {tail: Lang('branch/heal/frequency: unit')})
                 );
             }
 
             let cycle = null;
             if ( attr['cycle'] !==  void 0 ) {
-                cycle = createSkillAttributeScope(null, null, Lang('branch/damage/cycle: pretext') + processValue(branch, 'cycle', {tail: GetLang('global/second')}));
+                cycle = createSkillAttributeScope(null, null, Lang('branch/damage/cycle: pretext') + handleValue(branch, 'cycle', {tail: GetLang('global/second')}));
             }
 
             const extra_frg = document.createDocumentFragment();
             if ( attr['extra_text'] !==  void 0 ){
                 const ta = attr['extra_text'].split(/\s*,\s*/),
-                    va = attr['extra_value'].split(/\s*,\s*/).map(a => processValue(null, a, {toPercentage: true}));
+                    va = attr['extra_value'].split(/\s*,\s*/).map(a => handleValue(null, a, {toPercentage: true}));
                 ta.forEach((a, i) => {
                     if ( constant !== null || i != 0 )
                         extra_frg.appendChild(simpleCreateHTML('span', ['between-skill-attribute', 'Cyteria', 'scope-icon'], Icons('add')))
@@ -1075,7 +1075,7 @@ function getBranchHTML(branch, ctrr){
         case 'text': case 'tips': {
             const text_name = attr['name'] !== void 0 ? createBranchTitleScope(attr['name']) : null;
 
-            const main_text = simpleCreateHTML('span', 'text-scope', processText(branch));
+            const main_text = simpleCreateHTML('span', 'text-scope', handleText(branch));
             if ( attr['icon'] !== void 0 ){
                 const iconStr = {
                     'potum': Icons('potum')
@@ -1111,7 +1111,7 @@ function getBranchHTML(branch, ctrr){
             }
             const ul = simpleCreateHTML('ul', ['Cyteria', 'ul', 'simple', '_list']);
             lists.forEach(b => {
-                ul.appendChild(simpleCreateHTML('li', null, processText(b)));
+                ul.appendChild(simpleCreateHTML('li', null, handleText(b)));
                 b.finish();
             });
 
@@ -1127,7 +1127,7 @@ function getBranchHTML(branch, ctrr){
             return he;
         }
         case 'reference': {
-            const main_text = attr['text'] ? simpleCreateHTML('span', 'text-scope', processText(branch)) : null;
+            const main_text = attr['text'] ? simpleCreateHTML('span', 'text-scope', handleText(branch)) : null;
 
             let url_scope = null;
             if ( attr['url'] ){
