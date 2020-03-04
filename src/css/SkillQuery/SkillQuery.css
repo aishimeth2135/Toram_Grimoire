@@ -82,6 +82,7 @@
 	position: sticky;
 	top: -20rem;
 	transition: top 0.7s;
+	z-index: 20;
 }
 #SkillQuery .skill-query-result-options-scope.frozen {
 	box-shadow: 0 0.2rem 0.3rem -0.1rem var(--primary-light);

@@ -60,7 +60,7 @@ export default function(){
             },
             'Skill Simluator': {
                 'Title': '技能配点模拟器',
-                'content-1': '进行技能配点或星石的配置。 ',
+                'content-1': '进行技能配点或星石的配置。',
                 'content-2': '存档及读档功能。',
                 'content-3': '将配置汇出成图片或文本。'
             },
