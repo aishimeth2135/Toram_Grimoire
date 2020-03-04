@@ -1,6 +1,6 @@
 import {SkillRoot} from "./module/SkillElements.js";
 import {LoadSkillData, LoadSkillMainData} from "./module/LoadSkillData.js";
-import {DataPath, loadLangDatas} from "../main/module/DataPath.js";
+import {loadLangDatas} from "../main/module/DataPath.js";
 
 import SkillQueryController from "./module/SkillQueryController.js";
 import SkillSimulatorController from "./module/SkillSimulator/SkillSimulatorController.js";
@@ -10,8 +10,6 @@ class SkillSystem {
 		this.skillRoot = new SkillRoot(this);
 	}
 	async* init(){
-		const _this = this;
-
 		const promise_ary = [];
 
 		const SkillData_ary = loadLangDatas('Skill', promise_ary),

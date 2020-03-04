@@ -22,8 +22,8 @@ class Character {
             EquipmentField.TYPE_BODY_ARMOR,
             EquipmentField.TYPE_ADDITIONAL,
             EquipmentField.TYPE_SPECIAL,
-            EquipmentField.TYPE_OTHER,
-            EquipmentField.TYPE_OTHER
+            EquipmentField.TYPE_AVATAR,
+            EquipmentField.TYPE_AVATAR
         ].map((p, i) => new EquipmentField(p)));
         return this;
     }

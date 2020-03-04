@@ -117,7 +117,7 @@
                     currentField: null,
                     filter: {
                         field: null,
-                        equipmentTypes: null
+                        equipmentTypes: []
                     }
                 },
                 appendEquipmentWindowState: {
@@ -149,6 +149,13 @@
                 state.visible = true;
                 state.action = 'select-field-equipment';
                 state.currentField = field;
+                
+                const a = state.filter.equipmentTypes;
+                a.splice(0, a.length);
+
+                switch (field.type){
+                    
+                }
             },
             createCharacter(){
                 const c = new Character(this.lang('character') + ' ' + (this.characters.length + 1).toString());
