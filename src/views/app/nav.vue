@@ -1,0 +1,74 @@
+<template>
+    <nav class="app--nav">
+      <app-left-menu />
+      <div class="content">
+        <template v-for="(item, i) in items">
+          <iconify-icon v-if="i != 0" name="ic-round-keyboard-arrow-right" />
+          <span>
+            <router-link v-if="i != items.length - 1" :to="item.path">
+              {{ item.title }}
+            </router-link>
+            <template v-else>
+              {{ item.title }}
+            </template>
+          </span>
+        </template>
+      </div>
+      <span class="setting-button">
+        <app-settings />
+      </span>
+    </nav>
+</template>
+
+<script>
+  import store from "@store/nav.js";
+
+  import Vuex from 'vuex';
+
+  import vue_leftMenu from "./left-menu.vue";
+  import vue_settings from "./settings.vue";
+
+  export default {
+    store,
+    computed: {
+      ...Vuex.mapState(['items'])
+    },
+    components: {
+      'app-left-menu': vue_leftMenu,
+      'app-settings': vue_settings
+    }
+  };
+</script>
+
+<style lang="less" scoped>
+  @deep-operator: ~'>>>';
+
+  .app--nav {
+    display: flex;
+    align-items: center;
+    padding: 0.2rem 0.4rem;
+    border-bottom: 1px solid var(--primary-light);
+    margin-bottom: 1rem;
+  }
+
+  .content {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    padding: 0 0.4rem;
+
+    @{deep-operator} svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      fill: currentcolor;
+      color: var(--primary-light-2);
+      margin: 0 0.6rem;
+    }
+  }
+
+  .setting-button {
+    margin-left: auto;
+  }
+</style>
