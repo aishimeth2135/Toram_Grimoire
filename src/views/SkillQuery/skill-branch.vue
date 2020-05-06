@@ -9,69 +9,91 @@
           {{ showData['constant'] }}
         </span>
         <span v-if="showData['constant'] != 0" class="divider"></span>
-        <cy-icon-text iconify-name="ic-round-clost" />
+        <cy-icon-text iconify-name="ic-round-close" />
         <span class="attr-scope">{{ showData['multiplier'] }}</span>
       </div>
     </template>
   </div>
 </template>
-
 <script>
-  import GetLang from "@global-modules/LanguageSystem.js";
+import GetLang from "@global-modules/LanguageSystem.js";
 
-  export default {
-    props: ['branch'],
-    computed: {
-      showData(){
-        const data = {};
-        console.log(this.branch);
-        const bch = this.branch;
+import handleFormula from "./module/handleFormula.js";
 
-        if ( bch.name == 'damage' ){
-          const attrs = bch.attrs;
-          
-          // base
-          if ( attrs['base'] != 'none' ){
-            const p = attrs['base'] == 'auto'
-              ? (attrs['damage_type'] == 'physical' ? 'atk' : 'matk')
-              : attrs['base'];
-            data['base'] = this.langText('damage/base/' + p);
-          }
+export default {
+  props: ['branch', 'skillState'],
+  computed: {
+    showData() {
+      const data = {};
+      console.log(this.branch);
+      const bch = this.branch;
 
-          //
-          data['constant'] = attrs['constant'];
-          data['multiplier'] = attrs['multiplier'];
-          data['extra_constant'] = attrs['extra_constant'];
+      if (bch.name == 'damage') {
+        const attrs = bch.attrs;
+
+        // base
+        if (attrs['base'] != 'none') {
+          const p = attrs['base'] == 'auto' ?
+            (attrs['damage_type'] == 'physical' ? 'atk' : 'matk') :
+            attrs['base'];
+          data['base'] = this.langText('damage/base/' + p);
         }
 
-        return data;
+        //
+        data['constant'] = attrs['constant'];
+        data['multiplier'] = attrs['multiplier'];
+        data['extra_constant'] = attrs['extra_constant'];
       }
+
+      return data;
+    }
+  },
+  methods: {
+    handleValueStr(str) {
+      const ss = this.skillState;
+      const SLv = ss.slv,
+        CLv = ss.clv,
+        stack = ss.stack;
+
+      function safeEval(str, dftv) {
+        try {
+          return eval(str);
+        } catch (e) {
+          console.warn('Unable to process: ' + str);
+          return dftv === void 0 ? '??' : dftv;
+        }
+      }
+
+      str = handleFormula(str, (n1, o, n2) => {
+        return notText(n1) && notText(n2)
+          ? safeEval(n1 + o + n2)
+          : n1 + o + n2;
+      },
+      v => safeEval(v));
     },
-    methods: {
-      langText(v, vs){
-        return GetLang('Skill Query/Branch/' + v, vs);
-      }
+    langText(v, vs) {
+      return GetLang('Skill Query/Branch/' + v, vs);
     }
-  };
+  }
+};
 </script>
-
 <style lang="less" scoped>
-  .inline-content {
-    display: inline-flex;
-    align-items: center;
-  }
+.inline-content {
+  display: inline-flex;
+  align-items: center;
+}
 
-  .attr-scope {
-    padding: 0.2rem 0.4rem;
+.attr-scope {
+  padding: 0.2rem 0.4rem;
 
-    > .value {
-      color: var(--primary-light-4);
-    }
+  >.value {
+    color: var(--primary-light-4);
   }
+}
 
-  .divider {
-    border-left: 1px solid var(--primary-light);
-    margin: 0 0.4rem;
-    height: 1.2rem;
-  }
+.divider {
+  border-left: 2px solid var(--primary-light-2);
+  margin: 0 0.4rem;
+  height: 1.5rem;
+}
 </style>
