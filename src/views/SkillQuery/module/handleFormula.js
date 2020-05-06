@@ -1,83 +1,17 @@
-import GetLang from "../../../main/module/LanguageSystem.js";
-import CY from "../../../main/module/cyteria.js";
-import { SkillEffect } from "../SkillElements.js";
-
-const simpleCreateHTML = CY.element.simpleCreateHTML;
-
-function createSkillAttributeScope(icon, t, v, tail) {
-  const a = simpleCreateHTML('div', 'skill-attribute');
-
-  let html = '';
-  if (icon !== null)
-    html += icon;
-  if (t !== null)
-    html += '<span class="text">' + t + '</span>';
-  if (html !== '')
-    a.appendChild(simpleCreateHTML('span', ['Cyteria', 'scope-icon'], html));
-
-  if (v !== null && v !== void 0)
-    a.appendChild(simpleCreateHTML('span', 'value', v));
-  if (tail !== null && tail !== void 0)
-    a.appendChild(simpleCreateHTML('span', 'tail', tail));
-  return a;
-}
-
-function getSkillAttributeData() {
-  const ICON_DATA = {
-    [SkillEffect.MP_COST]: 'iconify/ion:water',
-    [SkillEffect.RANGE]: 'target',
-    [SkillEffect.SKILL_TYPE]: 'multiple-blank-circle',
-    [SkillEffect.IN_COMBO]: ['iconify/mdi:selection-ellipse-arrow-inside', 'forbid', 'iconify/mdi:numeric-1-circle-outline'],
-    [SkillEffect.ACTION_TIME]: 'iconify/mdi:timer-sand-full',
-    [SkillEffect.CASTING_TIME]: 'iconify/mdi:update'
-  };
-  const TITLE_DATA = {
-    [SkillEffect.MP_COST]: Lang('mp cost'),
-    [SkillEffect.RANGE]: Lang('range'),
-    [SkillEffect.SKILL_TYPE]: Lang('skill type'),
-    [SkillEffect.IN_COMBO]: Lang('in combo'),
-    [SkillEffect.ACTION_TIME]: Lang('action time'),
-    [SkillEffect.CASTING_TIME]: ['', Lang('casting time'), Lang('charging time')]
-  };
-  const TEXT_LIST = {
-    [SkillEffect.SKILL_TYPE]: Lang('skill type: List'),
-    [SkillEffect.IN_COMBO]: Lang('in combo: List'),
-    [SkillEffect.ACTION_TIME]: Lang('action time: List')
-  };
-
-  return { ICON_DATA, TITLE_DATA, TEXT_LIST };
-}
-
-function getStackBranchIdKey(stk) {
-  return 'id' + stk.branchAttributes['id'];
-}
-
-function Lang(s) {
-  return GetLang("Skill Query/Analysis Skill/" + s);
-}
-
-function handleFormula(str, calc_fun, eval_fun) {
+export default function (str, calc_fun, eval_fun) {
   str = str.replace(/\s+/g, '');
   // console.log(str);
-  function isOperator(c) {
-    return /^[\+\-\*/\(\),]$/.test(c);
-  }
+  const isOperator = c => /^[\+\-\*/\(\),]$/.test(c);
+  const isFunName = v => /^[a-zA-Z_][a-zA-Z0-9\._]*$/.test(v);
 
-  function isFunName(v) {
-    return /^[a-zA-Z_][a-zA-Z0-9\._]*$/.test(v);
-  }
   // 用來取得push時的權重
   function w(c) {
     switch (c) {
-      case '+':
-      case '-':
+      case '+': case '-':
         return 5;
-      case '*':
-      case '/':
-        //case '%':
+      case '*': case '/': //case '%':
         return 6;
-      case '(':
-      case ')':
+      case '(': case ')':
         return 8;
     }
   }
@@ -97,8 +31,7 @@ function handleFormula(str, calc_fun, eval_fun) {
   }
 
   function beforeLeaveEnvir() {
-    if (num !== '')
-      postFix.push(num);
+    num !== '' && postFix.push(num);
     while (stk.length != 0)
       postFix.push(stk.pop());
   }
@@ -118,7 +51,7 @@ function handleFormula(str, calc_fun, eval_fun) {
 
   try {
     str.split('').forEach((c, i, ary) => {
-      if (!isOperator(c) || (c == '-' && (i == 0 || isOperator(ary(i-1))))) {
+      if (!isOperator(c) || (c == '-' && (i == 0 || isOperator(ary[i-1])))) {
         num += c;
         return;
       }
@@ -173,9 +106,6 @@ function handleFormula(str, calc_fun, eval_fun) {
 
     beforeLeaveEnvir();
 
-    // console.log('envirs: ', envirs.slice());
-    // console.log('fun_stk: ', fun_stk.slice());
-
     function handlePostFix(env) {
       const _stk = [];
       const _postFix = env.postFix.reverse();
@@ -186,7 +116,7 @@ function handleFormula(str, calc_fun, eval_fun) {
           if (p.type == 'function') {
             const params = p.params.map(a => handlePostFix(a));
             const fun_str = p.name + '(' + params.join(', ') + ')';
-            p = params.every(a => /^[0-9.]+$/.test(a)) ?
+            p = params.every(a => /^\-?[0-9.]+$/.test(a)) ?
               eval_fun(fun_str) :
               fun_str;
           } else
@@ -210,12 +140,3 @@ function handleFormula(str, calc_fun, eval_fun) {
     return '0';
   }
 }
-
-export {
-  createSkillAttributeScope,
-  getStackBranchIdKey,
-  simpleCreateHTML,
-  Lang,
-  getSkillAttributeData,
-  handleFormula
-};
