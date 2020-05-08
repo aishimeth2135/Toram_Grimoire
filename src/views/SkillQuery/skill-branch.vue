@@ -55,6 +55,8 @@ export default {
         CLv = ss.clv,
         stack = ss.stack;
 
+      const notText = n => /^\-?[\d\.]+$/.test(n);
+
       function safeEval(str, dftv) {
         try {
           return eval(str);
