@@ -31,7 +31,8 @@
     "vue": "^2.6.11",
     "vue-fragment": "^1.5.1",
     "vue-loader": "^15.8.3",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "webpack-dev-server": "^3.11.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
