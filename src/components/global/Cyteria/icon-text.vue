@@ -50,7 +50,7 @@
       display: inline-flex;
     }
 
-    @{deep-operator} svg, > img {
+    @{deep-operator} svg, img {
       height: 1.2rem;
       width: 1.2rem;
       flex-shrink: 0;
