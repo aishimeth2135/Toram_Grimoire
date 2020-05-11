@@ -25,26 +25,26 @@
         </template>
       </cy-sticky-header>
       <div>
-        <template v-if="currentSkillState != null">
-          <skill-branch v-for="(branch, i) in currentSkillState.branchs" :key="branch.iid"
+        <template v-if="currentSkillData">
+          <skill-branch v-for="(branch, i) in currentSkillData.branchs" :key="branch.iid"
             :branch="branch" :skill-state="currentSkillState" />
         </template>
       </div>
       <div>
         <div class="equipment-container">
-          <span v-if="equipmentState.mainWeaponList.length != 0" class="column">
+          <span v-if="equipmentState.mainList.length != 0" class="column">
             <cy-button iconify-name="mdi-sword" @click="toggleEquipmentType('main-weapon')">
-              {{ equipmentState.mainWeapon | getEquipmentText('main-weapon') }}
+              {{ equipmentState.main | getEquipmentText('main-weapon') }}
             </cy-button>
           </span>
-          <span v-if="equipmentState.subWeaponList.length != 0" class="column">
+          <span v-if="equipmentState.subList.length != 0" class="column">
             <cy-button iconify-name="mdi-shield" @click="toggleEquipmentType('sub-weapon')">
-              {{ equipmentState.subWeapon | getEquipmentText('sub-weapon') }}
+              {{ equipmentState.sub | getEquipmentText('sub-weapon') }}
             </cy-button>
           </span>
-          <span v-if="equipmentState.bodyArmorList.length != 0" class="column">
+          <span v-if="equipmentState.bodyList.length != 0" class="column">
             <cy-button iconify-name="mdi-tshirt-crew" @click="toggleEquipmentType('body-armor')">
-              {{ equipmentState.bodyArmor | getEquipmentText('body-armor') }}
+              {{ equipmentState.body | getEquipmentText('body-armor') }}
             </cy-button>
           </span>
         </div>
@@ -61,7 +61,7 @@ import GetLang from "@global-modules/LanguageSystem.js";
 import init from "./init.js";
 
 import vue_drawSkillTree from "@views/SkillSimulator/draw-skill-tree.vue";
-import vue_skillBranch from "./skill-branch.vue";
+import vue_skillBranch from "./skill-branch/skill-branch.vue";
 
 import handleSkillState from "./module/handleSkillState.js";
 
@@ -83,22 +83,22 @@ export default {
       drawSkillTreeOptions: {
         skillTreeType: 'normal',
         skillCircleClickListener(e, skill) {
-          self.appendSkillState(skill);
+          self.selectSkill(skill);
         }
       },
-      skillState: {
+      skillStates: {
         store: [],
         skillLevel: 10,
         characterLevel: 200,
         displayMode: 'normal'
       },
       equipmentState: {
-        mainWeapon: -1,
-        subWeapon: -1,
-        bodyArmor: -1,
-        mainWeaponList: [],
-        subWeaponList: [],
-        bodyArmorList: []
+        main: -1,
+        sub: -1,
+        body: -1,
+        mainList: [],
+        subList: [],
+        bodyList: []
       }
     };
   },
@@ -121,15 +121,53 @@ export default {
       return this.skillRoot.skillTreeCategorys[state.currentIndex_stc].skillTrees[state.currentIndex_st];
     },
     currentSkillState() {
-      return this.skillState.store.length != 0 ? this.skillState.store[this.skillState.store.length - 1] : null;
+      if (this.skillStates.store.length == 0)
+        return null;
+      return this.skillStates.store[this.skillStates.store.length - 1];
+    },
+    currentSkillData() {
+      const p = this.currentSkillState;
+      console.log(p);
+      return p ? p.states.find(p => this.checkEquipment(p.equipment)) : null;
     }
   },
   methods: {
+    checkEquipment(eq){
+      const eqs = this.equipmentState;
+      /* 通用 */
+      if ([eq.main, eq.sub, eq.body].every(p => p == -1))
+        return true;
+
+      /* 非通用 */
+      const for_dual_sword = eq.main === 0 && eqs.main === 9 && this.currentSkillState.states.find(a => a.equipment.main == 9) === void 0;
+
+      // or
+      if (eq.operator === 0) {
+        if (eqs.main != -1 && eqs.main == eq.main || for_dual_sword)
+          return true;
+        if (eqs.sub != -1 && eqs.sub == eq.sub)
+          return true;
+        if (eqs.body != -1 && eqs.body == eq.body)
+          return true;
+        return false;
+      }
+
+      // and
+      if (eq.operator === 1) {
+        if (eqs.main != eq.main || for_dual_sword)
+          return false;
+        if (eqs.sub != eq.sub)
+          return false;
+        if (eqs.body != eq.body)
+          return false;
+        return true;
+      }
+    },
     toggleEquipmentType(type) {
       const p = {
-        'main-weapon': 'mainWeapon',
-        'sub-weapon': 'subWeapon',
-        'body-armor': 'bodyArmor'
+        'main-weapon': 'main',
+        'sub-weapon': 'sub',
+        'body-armor': 'body'
       } [type];
 
       const state = this.equipmentState;
@@ -142,7 +180,7 @@ export default {
       this.updateSkillState();
     },
     updateSkillState(idx) {
-      const state = this.skillState;
+      const state = this.skillStates;
 
       if (state.store.length == 0)
         return;
@@ -179,13 +217,13 @@ export default {
       body.size != 0 && body.add(-1);
 
       const state = this.equipmentState;
-      state.mainWeaponList = [...main];
-      state.subWeaponList = [...sub];
-      state.bodyArmorList = [...body];
+      state.mainList = [...main];
+      state.subList = [...sub];
+      state.bodyList = [...body];
 
-      state.mainWeapon = state.mainWeaponList.length != 0 ? 0 : -1;
-      state.subWeapon = state.subWeaponList.length != 0 ? 0 : -1;
-      state.bodyArmor = state.bodyArmorList.length != 0 ? 0 : -1;
+      state.main = state.mainList.length != 0 ? 0 : -1;
+      state.sub = state.subList.length != 0 ? 0 : -1;
+      state.body = state.bodyList.length != 0 ? 0 : -1;
 
       this.updateSkillState();
     },
@@ -193,9 +231,14 @@ export default {
       this.selectSkillTreeWindowState.currentIndex_stc = idx;
       this.selectSkillTreeWindowState.currentIndex_st = -1;
     },
+    selectSkill(skill){
+      this.skillStates.store = [{
+        skill
+      }];
+      this.updateSkillState();
+    },
     appendSkillState(skill) {
-      const state = this.skillState;
-      state.store.push({
+      this.skillStates.store.push({
         skill
       });
       this.updateSkillState();
