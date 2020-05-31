@@ -781,14 +781,15 @@ export default {
       base = 'light-text',
       stack = 'light-text-1',
       extra = [],
-      finaleHandle = null,
       extraHandle = null
+      //   <span class="light-text">
+      //     extraHandle(v = "<span class="multiple-values"></span>")
+      //   </span>
     } = {}) {
       const clist = [(originalStr.includes('stack') ? stack : base), ...extra];
       let res = !this.isNumberStr(vstr) ? `<span class="multiple-values">${str}</span>` : str;
       res = extraHandle ? extraHandle(res) : res;
       res = `<span class="${clist.join(' ')}">${res}</span>`;
-      res = finaleHandle ? finaleHandle(res) : res;
       return res;
     },
     handleTextStr(str, data) {
