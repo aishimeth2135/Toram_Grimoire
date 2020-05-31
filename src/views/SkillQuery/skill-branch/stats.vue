@@ -32,9 +32,8 @@ export default {
         q.statValue(v);
 
         const sd = q.getShowData();
-        return this.highlightValueStr(q.statValue(v), ov, p.statValue(), {
-          extraHandle: v => sign + v + sd.tail,
-          finaleHandle: v => sd.title + v
+        return sd.title + this.highlightValueStr(q.statValue(v), ov, p.statValue(), {
+          extraHandle: v => sign + v + sd.tail
         });
         // let v = this.calcValueStr(q.statValue());
         // q.statValue(v);
