@@ -614,6 +614,7 @@ export default {
     }
 
     .effect-attrs {
+      padding-left: 0.8rem;
       tr {
         >td:nth-child(1) {
           padding-right: 0.6rem;
@@ -738,6 +739,7 @@ export default {
     max-width: 30rem;
     max-height: calc(50vh - 3rem);
     overflow-y: auto;
+    margin: 0 0.6rem;
 
     > .title {
       margin-bottom: 1rem;

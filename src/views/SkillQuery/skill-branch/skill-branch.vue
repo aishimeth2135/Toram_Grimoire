@@ -1,12 +1,19 @@
 <template>
   <div class="main--" :class="rootClassList">
-    <cy-icon-text v-if="otherEquipmentBranchVisible" iconify-name="bx-bxs-moon"
+    <cy-icon-text v-if="otherEquipmentBranchVisible || historyVisible" iconify-name="bx-bxs-moon"
       style="position: absolute; top: -0.3rem;
         left: -0.7rem; --icon-width: 1.8rem; z-index: 1;
         --icon-color: var(--primary-light-2)" />
     <fieldset v-if="type == 'other-equipment'" class="branch-type-title">
       <legend>
         <equipment-info :equipment="equipmentTitle" />
+      </legend>
+    </fieldset>
+    <fieldset v-if="type == 'history'" class="branch-type-title">
+      <legend>
+        <cy-icon-text iconify-name="ic-round-history" class="text-small">
+          {{ branch.attrs['@history-date'] }}
+        </cy-icon-text>
       </legend>
     </fieldset>
     <fieldset v-if="['damage', 'effect', 'next', 'passive', 'heal'].includes(branch.name)" :class="branchClass">
@@ -886,6 +893,10 @@ export default {
   border-top: 2px solid var(--primary-light-2);
   padding-left: 1rem;
   margin: 0 0.6rem;
+
+  > legend {
+    padding: 0 0.4rem;
+  }
 }
 
 .branch.extra-branch {

@@ -89,6 +89,7 @@ export default function(skill) {
   };
 
   const createHistoryData = (bch, hiddenFlag) => {
+    bch.attrs['@history-date'] = bch.attrs['date'];
     return {
       date: bch.attrs['date'],
       branch: bch,
@@ -267,7 +268,7 @@ export default function(skill) {
         });
 
         from.stats.forEach(stat => {
-          const idx = target.stats.find(a => a.equals(stat));
+          const idx = target.stats.findIndex(a => a.equals(stat));
           if (idx == -1)
             target.stats.push(stat.copy());
           else if (target.stats[idx].statValue() == '')
