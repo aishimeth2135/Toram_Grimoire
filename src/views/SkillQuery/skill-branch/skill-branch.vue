@@ -375,7 +375,7 @@ export default {
     },
     suffixBranchShowDatas() {
       return this.branch.suffix
-        .filter(p => p.name == 'extra')
+        .filter(p => !p.empty && p.name == 'extra')
         .map(p => this.handleShowData(p));
     },
     titleIconName() {
@@ -476,9 +476,6 @@ export default {
 
       const g = this.branch.group;
       g.expansion = force === void 0 ? !g.expansion : force;
-
-      console.log('toggle group...');
-      console.log(g);
 
       let cur = bchs.findIndex(p => p == this.branch);
       let cnt = g.size;
