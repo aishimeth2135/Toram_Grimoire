@@ -16,6 +16,7 @@ export default function(skill) {
       group: null,
       history: [],
       suffix: [],
+      empty: false,
       visible: true,
       '@parent-state': null,
       '@is-default-list': [],
@@ -40,7 +41,6 @@ export default function(skill) {
       stackStates: [],
       currentHistoryIdx: -1
     };
-    state.branchs.forEach(p => p['@parent-state'] = state);
 
     return state;
   };
@@ -134,6 +134,11 @@ export default function(skill) {
         branchOverwrite(p, branch);
       });
     }
+
+    state.branchs.forEach(p => {
+      p.empty = CY.object.isEmpty(p.attrs) && p.stats.length == 0;
+      p['@parent-state'] = state;
+    });
 
     // init of state attrs
     convertStateAttrs(state);
