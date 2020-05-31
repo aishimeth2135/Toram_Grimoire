@@ -259,6 +259,7 @@ function handle(str, eval_fun) {
     return handlePostFix(envirs[0]);
   } catch (e) {
     console.error(e);
+    console.log('str: ', str);
     console.log("postFix: ", postFix);
     console.log("stk: ", stk);
     console.log("obj_stk: ", obj_stk);

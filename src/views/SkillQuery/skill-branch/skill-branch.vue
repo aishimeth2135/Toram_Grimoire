@@ -301,7 +301,9 @@ export default {
     return {
       'langText': this.langText,
       'calcValueStr': this.calcValueStr,
-      'highlightValueStr': this.highlightValueStr
+      'highlightValueStr': this.highlightValueStr,
+      'handleReplacedText': this.handleReplacedText,
+      'handleValueStr': this.handleValueStr
     }
   },
   updated() {
@@ -775,20 +777,26 @@ export default {
 
       return data;
     },
-    highlightValueStr(vstr, originalStr, {
+    highlightValueStr(str, vstr, originalStr, {
       base = 'light-text',
       stack = 'light-text-1',
-      extra = []
+      extra = [],
+      finaleHandle = null,
+      extraHandle = null
     } = {}) {
       const clist = [(originalStr.includes('stack') ? stack : base), ...extra];
-      return `<span class="${clist.join(' ')}">${vstr}</span>`
+      let res = !this.isNumberStr(vstr) ? `<span class="multiple-values">${str}</span>` : str;
+      res = extraHandle ? extraHandle(res) : res;
+      res = `<span class="${clist.join(' ')}">${res}</span>`;
+      res = finaleHandle ? finaleHandle(res) : res;
+      return res;
     },
     handleTextStr(str, data) {
       if (!str)
         return str;
 
       str = str
-        .replace(/\$\{([^\}]+)\}(%?)/g, (m, m1, m2) => this.highlightValueStr(this.handleValueStr(m1) + m2, m1))
+        .replace(/\$\{([^\}]+)\}(%?)/g, (m, m1, m2) => this.handleValueStr(m1, v => v + m2))
         .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values">${m1}</span>`);
       str = this.createTagButtons(str);
 
@@ -798,6 +806,18 @@ export default {
         .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="light-text">${m}</span>`));
       data['skill'] && data['skill'].split(/\s*,\s*/)
         .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="light-text">${m}</span>`));
+      return str;
+    },
+    handleReplacedText(str, vstr) {
+      vstr = vstr !== void 0 ? vstr : str;
+      if (this.isNumberStr(vstr))
+        return str;
+      const list = [
+        'BSTR', 'BINT', 'BAGI', 'BVIT', 'BDEX', 'TEC',
+        'STR', 'INT', 'AGI', 'VIT', 'DEX', 'shield_refining',
+        'dagger_atk', 'target_def', 'target_level', 'guard_power'
+      ];
+      list.forEach(cs => str = str.replace(new RegExp('\\$' + cs, 'g'), this.langText('formula replaced text/' + cs)));
       return str;
     },
     handleValueStr(str, extraHandle, { toPercentage = false } = {}) {
@@ -816,22 +836,21 @@ export default {
         return s;
       };
 
-      str = str.split(/\s*,,\s*/)
-        .map(p => this.calcValueStr(p))
-        .map(p => p.charAt(0) == '-' ? `(${p})` : p)
-        .join('+')
+      str = this.calcValueStr(str)
         .replace(/([$_a-zA-Z][$_a-zA-Z0-9]*)(\*)(\d\.\d+)/g,
           (m, m1, m2, m3) => m1 + m2 + numStrToPercentage(m3))
         .replace('*', '×');
 
       const vstr = str;
       str = this.isNumberStr(vstr) && toPercentage ? numStrToPercentage(str) : str;
-      str = !this.isNumberStr(vstr) ? replaceVarStr(str) : str;
-      str = !this.isNumberStr(vstr) ? `<span class="multiple-values">${str}</span>` : str;
+      str = this.handleReplacedText(str, vstr);
+      //str = !this.isNumberStr(vstr) ? `<span class="multiple-values">${str}</span>` : str;
 
-      extraHandle && (str = extraHandle(str));
+      //extraHandle && (str = extraHandle(str));
 
-      str = this.highlightValueStr(str, originalStr);
+      str = this.highlightValueStr(str, vstr, originalStr, {
+        extraHandle: extraHandle
+      });
 
       return str;
     },
@@ -839,7 +858,11 @@ export default {
       const skillState = this.skillState;
       const effectState = this.branch['@parent-state'];
 
-      return handleFormula(str, { skillState, effectState });
+      return str.split(/\s*,,\s*/)
+        .map(p => handleFormula(p, { skillState, effectState }))
+        //.map(p => p.charAt(0) == '-' ? `(${p})` : p)
+        .join('+')
+        .replace(/\+-/g, '-');
     },
     langText(v, vs) {
       return GetLang('Skill Query/Branch/' + v, vs);
