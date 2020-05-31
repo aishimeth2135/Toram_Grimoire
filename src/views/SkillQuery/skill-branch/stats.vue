@@ -10,13 +10,40 @@
 <script>
 export default {
   props: ['stats'],
-  inject: ['langText', 'calcValueStr', 'highlightValueStr'],
+  inject: ['langText', 'calcValueStr', 'highlightValueStr', 'handleReplacedText', 'handleValueStr'],
   computed: {
     statTexts() {
       return this.stats.map(p => {
         const q = p.copy();
-        q.statValue(this.calcValueStr(q.statValue()));
-        return this.highlightValueStr(q.show(), p.statValue(), { base: '' });
+        let ov = this.calcValueStr(q.statValue());
+        let v = ov, sign = '+';
+
+        if (/^\(?[\d.-]+\)?$/.test(v)) {
+          v = v.replace(/\(?([\d.-]+)\)?/, (m, m1) => m1);
+          if (v.charAt(0) == '-') {
+            v = -1 * v;
+            sign = '-';
+          }
+          ov = v;
+        }
+        else
+          v = this.handleReplacedText(v);
+
+        q.statValue(v);
+
+        const sd = q.getShowData();
+        return this.highlightValueStr(q.statValue(v), ov, p.statValue(), {
+          extraHandle: v => sign + v + sd.tail,
+          finaleHandle: v => sd.title + v
+        });
+        // let v = this.calcValueStr(q.statValue());
+        // q.statValue(v);
+        // if (/\(?[\d.-]+\)?/.test(v)) {
+        //   v = v.replace(/\(?([\d.-]+)\)?/, (m, m1) => m1);
+        //   console.log(v);
+        //   return q.show();
+        // }
+        // return q.show({ calc: false });
       });
     }
   }
