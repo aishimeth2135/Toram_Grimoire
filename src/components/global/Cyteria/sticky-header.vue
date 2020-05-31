@@ -66,20 +66,20 @@
 			white-space: nowrap;
 			overflow-y: visible;
       padding: 0 0.4rem;
-      
+
       > .float-menu {
         position: absolute;
-        top: 0.4rem;
-        right: 0;
+        top: 0.2rem;
+        right: 0.1rem;
         z-index: 5;
-        
+
         > .menu-container {
           padding: 0.6rem 1rem;
           padding-top: 2rem;
           border: 1px solid var(--primary-light-2);
           background-color: var(--white);
           width: 31.2rem;
-          max-width: 100%;
+          max-width: calc(100vw - 1rem);
           max-height: calc(100vh - 5rem);
           overflow-y: auto;
           white-space: normal;

@@ -660,6 +660,11 @@ export default {
   }
 }
 
+.skill-tree-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 @{deep-operator} fieldset.unfold-fieldset {
   transition: 0.5s;
 
