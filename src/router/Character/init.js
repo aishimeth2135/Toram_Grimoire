@@ -7,7 +7,6 @@ import ItemSystem from "@lib/ItemSystem/ItemSystem.js";
 import SkillSystem from "@lib/SkillSystem/SkillSystem.js";
 
 async function start() {
-  console.warn('init...');
   Grimoire.CharacterSystem = new CharacterSystem();
   Grimoire.ItemSystem = new ItemSystem();
   Grimoire.SkillSystem = new SkillSystem();
