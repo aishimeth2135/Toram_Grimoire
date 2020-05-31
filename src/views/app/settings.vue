@@ -4,12 +4,12 @@
     <cy-window class="width-wide main--window" @close-window="toggleWindowVisible"
       :visible="windowVisible" iconify-name="ic-baseline-settings">
       <template v-slot:title>{{ langText('title') }}</template>
-      <div class="column">
-        <div class="title">
+      <fieldset class="column">
+        <legend>
           <cy-icon-text iconify-name="ic-round-text-fields">
             {{ langText('switch font/title') }}
           </cy-icon-text>
-        </div>
+        </legend>
         <div class="caption">{{ langText('switch font/caption') }}</div>
         <cy-icon-text class="text-small warn" iconify-name="bx-bx-error-circle">{{ langText('switch font/warn 1') }}</cy-icon-text>
         <div class="buttons">
@@ -22,13 +22,13 @@
             {{ langText('switch font/base font') }}
           </cy-button>
         </div>
-      </div>
-      <div class="column">
-        <div class="title">
+      </fieldset>
+      <fieldset class="column">
+        <legend>
           <cy-icon-text iconify-name="ion-language">
             {{ langText('language/title') }}
           </cy-icon-text>
-        </div>
+        </legend>
         <div class="caption">
           {{ langText('language/caption') }}
         </div>
@@ -37,17 +37,17 @@
         <div class="buttons">
           <cy-button v-for="(item, i) in languageState.list" iconify-name="ion-language"
             :class="{ 'selected': languageState.currentIndex == i }"
-            :key="item" @click="setLanguage('second-language', i)">
+            :key="item" @click="setLanguage('language', i)">
             {{ langText('language/button texts/lang ' + item) }}
           </cy-button>
         </div>
-      </div>
-      <div class="column">
-        <div class="title">
+      </fieldset>
+      <fieldset class="column">
+        <legend>
           <cy-icon-text iconify-name="ion-language">
             {{ langText('second language/title') }}
           </cy-icon-text>
-        </div>
+        </legend>
         <div class="caption">
           {{ langText('second language/caption') }}
         </div>
@@ -60,7 +60,7 @@
             {{ langText('language/button texts/lang ' + item) }}
           </cy-button>
         </div>
-      </div>
+      </fieldset>
     </cy-window>
   </span>
 </template>
@@ -90,8 +90,8 @@
     },
     methods: {
       setLanguage(target, index){
-        const state = target == 'language' ? languageState : secondLanguageState;
-        state.list.currentIndex = index;
+        const state = target == 'language' ? this.languageState : this.secondLanguageState;
+        state.currentIndex = index;
         localStorage['app--' + target] = state.list[index];
       },
       switchFont(id){
@@ -117,14 +117,8 @@
 
     > .main--window {
       @{deep-operator} .column {
-        padding: 0.4rem 1.2rem;
-        border-left: 2px var(--primary-light-3) solid;
-        margin: 0.8rem 0;
-
-        > .title {
-          margin-bottom: 0.3rem;
-          color: var(--primary-purple);
-        }
+        border: 1px solid var(--primary-light);
+        margin-bottom: 0.7rem;
 
         > .caption {
           margin-bottom: 0.4rem;
@@ -137,6 +131,10 @@
         > .buttons {
           padding: 0.2rem;
           padding-bottom: 0;
+        }
+        
+        > legend {
+          padding: 0 0.6rem;
         }
       }
     }

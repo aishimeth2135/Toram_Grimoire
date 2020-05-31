@@ -1,4 +1,26 @@
-export default function(str, eval_fun) {
+export default function(str, { skillState, effectState }) {
+  if (!str)
+    return '0';
+  const slv = skillState.slv,
+    clv = skillState.clv,
+    stack = effectState.stackStates.map(p => p.value);
+
+  str = str.replace(/SLv/g, slv)
+    .replace(/CLv/g, clv)
+    .replace(/stack(?!\[)/g, 'stack[0]');
+
+  function safeEval(str, dftv) {
+    try {
+      return eval(str);
+    } catch (e) {
+      console.warn('Unable to process: ' + str);
+      return dftv === void 0 ? '??' : dftv;
+    }
+  }
+  return handle(str, safeEval);
+}
+
+function handle(str, eval_fun) {
   str = str.replace(/\s+/g, '');
   // console.log(str);
 

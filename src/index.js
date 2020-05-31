@@ -1,3 +1,5 @@
+import "./assets/css/SaveLoad/main.css";
+
 import Vue from "vue";
 import Vuex from 'vuex'
 
@@ -11,6 +13,7 @@ import vuecy_iconText from "@global-vue-components/Cyteria/icon-text.vue";
 import vuecy_titleInput from "@global-vue-components/Cyteria/title-input.vue";
 import vuecy_stickyHeader from "@global-vue-components/Cyteria/sticky-header.vue";
 import vuecy_dragBar from "@global-vue-components/Cyteria/drag-bar.vue";
+import vuecy_inputCounter from "@global-vue-components/Cyteria/input-counter.vue";
 
 Vue.component('iconify-icon', vue_iconifyIcon);
 Vue.component('svg-icon', vue_svgIcon);
@@ -22,6 +25,7 @@ Vue.component('cy-icon-text', vuecy_iconText);
 Vue.component('cy-title-input', vuecy_titleInput);
 Vue.component('cy-sticky-header', vuecy_stickyHeader);
 Vue.component('cy-drag-bar', vuecy_dragBar);
+Vue.component('cy-input-counter', vuecy_inputCounter);
 
 import App from "./App.vue";
 import router from "./router/index.js";

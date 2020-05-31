@@ -5,7 +5,11 @@ import VueRouter from 'vue-router';
 import Character from "./Character/app.js";
 import Home from "./Home/app.js";
 import Skill from "./Skill/app.js";
+import Item from "./Item/app.js";
+import DamageCalc from "./Calculation/damage/app.js";
+import Enchant from "./Enchant/app.js";
 
+import Page404 from "./Page404/app.js";
 // init before create router
 import init from "./init.js";
 
@@ -21,32 +25,34 @@ init();
 Vue.use(VueRouter);
 
 const routes = [
-    Home,
-    Character,
-    Skill
+  Home,
+  Character,
+  Skill,
+  Item,
+  DamageCalc,
+  Enchant,
+  Page404
 ];
 
 const router = new VueRouter({
-    mode: 'history',
-    routes
+  mode: 'history',
+  routes
 });
 
 router.beforeEach((to, from, next) => {
-  if ( to ){
-    {
-      // set title and meta tags
+  if (to) {
+    { // set title and meta tags
       const data = to.matched.slice().reverse().find(p => p.meta && p.meta.title);
-      if ( data ){
+      if (data) {
         const title = data.meta.title;
         document.title = GetLang('Page Title/base') + '｜' + (typeof title == 'function' ? title() : title);
       }
-    }
-    {
+    } {
       document.head.querySelectorAll('*[data-vue-router-mata-tag-controlled]').forEach(el => el.remove());
       const data = to.matched.slice().reverse().find(p => p.meta && p.meta.metaTags);
-      if ( data ){
+      if (data) {
         const metaTags = data.meta.metaTags;
-        if ( metaTags ){
+        if (metaTags) {
           const els = metaTags.map(def => {
             const el = document.createElement('meta');
             Object.keys(def).forEach(key => el.setAttribute(key, def[key]));
@@ -73,7 +79,7 @@ router.beforeEach((to, from, next) => {
     // set left menu
     {
       const data = to.matched.slice().reverse().find(p => p.meta && p.meta.leftMenuViewButtons);
-      if ( data ){
+      if (data) {
         const res = data.meta.leftMenuViewButtons.map(p => {
           return {
             title: typeof p.title == 'function' ? p.title() : title,
@@ -81,8 +87,6 @@ router.beforeEach((to, from, next) => {
             path: data.path + p.path
           };
         });
-
-        console.log("res....", res);
 
         leftMenuStore.commit('setViewButtons', { viewButtons: res });
       }

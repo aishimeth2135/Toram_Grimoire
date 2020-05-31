@@ -11,10 +11,6 @@
 </template>
 
 <script>
-  import vue_iconifyIcon from "../iconify-icon.vue";
-  import vue_langText from "../lang-text.vue";
-  import vue_svgIcon from "../svg-icon.vue";
-
   export default {
     props: {
       iconifyName: {
@@ -26,11 +22,6 @@
       textLangId: {
         default: null
       }
-    },
-    components: {
-      'iconify-icon': vue_iconifyIcon,
-      'lang-text': vue_langText,
-      'svg-icon': vue_svgIcon
     }
   }
 </script>
@@ -41,6 +32,12 @@
   .-icon-text {
     display: inline-flex;
     align-items: center;
+    --icon-color: var(--primary-light-3);
+    --icon-width: 1.2rem;
+
+    &.mr-normal {
+      margin-right: 0.6rem;
+    }
 
     &.line {
       width: 100%;
@@ -51,10 +48,10 @@
     }
 
     @{deep-operator} svg, img {
-      height: 1.2rem;
-      width: 1.2rem;
+      height: var(--icon-width);
+      width: var(--icon-width);
       flex-shrink: 0;
-      color: var(--primary-light-3);
+      color: var(--icon-color);
       fill: currentcolor;
     }
 

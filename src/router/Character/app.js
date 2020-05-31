@@ -13,34 +13,34 @@ import GetLang from "@global-modules/LanguageSystem.js";
 import init from "./init.js";
 
 export default {
-    path: '/character',
-    component: app,
-    beforeEnter(to, from, next){
-        init();
-        next();
-    },
+  path: '/character',
+  component: app,
+  beforeEnter(to, from, next) {
+    init().then(p => next());
+  },
+  meta: {
+    leftMenuViewButtons: [/*{
+      title: () => GetLang('Page Title/character-simulator'),
+      icon: 'gridicons-user',
+      path: ''
+    },*/{
+      title: () => GetLang('Page Title/skill-simulator'),
+      icon: 'bx-bxs-star-half',
+      path: '/skill'
+    }],
+    pathInit: init
+  },
+  children: [{
+    path: '',
+    component: vue_characterSimulator,
     meta: {
-        leftMenuViewButtons: [{
-            title: () => GetLang('Page Title/character-simulator'),
-            icon: 'gridicons-user',
-            path: ''
-        }, {
-            title: () => GetLang('Page Title/skill-simulator'),
-            icon: 'bx-bxs-star-half',
-            path: '/skill-simulator'
-        }]
-    },
-    children: [{
-        path: '',
-        component: vue_characterSimulator,
-        meta: {
-            title: () => GetLang('Page Title/character-simulator')
-        }
-    }, {
-        path: 'skill-simulator',
-        component: vue_skillSimulator,
-        meta: {
-            title: () => GetLang('Page Title/skill-simulator')
-        }
-    }]
+      title: () => GetLang('Page Title/character-simulator')
+    }
+  }, {
+    path: 'skill',
+    component: vue_skillSimulator,
+    meta: {
+      title: () => GetLang('Page Title/skill-simulator')
+    }
+  }]
 };

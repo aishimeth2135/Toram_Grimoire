@@ -1,56 +1,164 @@
 <template>
-  <article>
-    <div class="main">
-      <cy-sticky-header>
-        <template v-slot:buttons-scope>
-          <cy-button :iconify-name="selectSkillTreeWindowState.visible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" type="icon-only" @click="selectSkillTreeWindowState.visible = !selectSkillTreeWindowState.visible" />
-        </template>
-        <template v-slot:float-menu>
-          <div v-show="selectSkillTreeWindowState.visible" class="menu-container width-wide">
-            <div>
-              <cy-button v-for="(stc, i) in skillRoot.skillTreeCategorys" :key="stc.id" iconify-name="bx-bxs-book-content" :class="{ 'selected': selectSkillTreeWindowState.currentIndex_stc == i }" @click="selectSkillTreeCategory(i)">
-                {{ stc.name }}
-              </cy-button>
-            </div>
-            <div v-if="currentSkillTreeCategory != null">
-              <cy-button v-for="(st, i) in currentSkillTreeCategory.skillTrees" :key="st.id" icon-id="rabbit-book" :class="{ 'selected': selectSkillTreeWindowState.currentIndex_st == i }" @click="selectSkillTree(i)">
-                {{ st.name }}
-              </cy-button>
-            </div>
-            <div class="skill-tree-container">
-              <draw-skill-tree v-if="currentSkillTree != null" v-bind="drawSkillTreeOptions"
-                :skill-tree="currentSkillTree" />
-            </div>
+  <article class="root--">
+    <cy-sticky-header>
+      <template v-slot:default>
+        <cy-icon-text v-if="currentSkillState" iconify-name="bx-bxs-book-alt">
+          {{ currentSkillState.skill.name }}
+        </cy-icon-text>
+      </template>
+      <template v-slot:buttons-scope>
+        <cy-button :iconify-name="selectSkillTreeWindowState.visible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" class="inline" @click="toggleSelectSkillTreeWindow">
+          {{ langText('select skill') }}
+        </cy-button>
+      </template>
+      <template v-slot:float-menu>
+        <div v-show="selectSkillTreeWindowState.visible" class="menu-container width-wide">
+          <div>
+            <cy-button v-for="(stc, i) in skillRoot.skillTreeCategorys" :key="stc.id" iconify-name="bx-bxs-book-content" :class="{ 'selected': selectSkillTreeWindowState.currentIndex_stc == i }" @click="selectSkillTreeCategory(i)">
+              {{ stc.name }}
+            </cy-button>
           </div>
-        </template>
-      </cy-sticky-header>
-      <div>
-        <template v-if="currentSkillData">
-          <skill-branch v-for="(branch, i) in currentSkillData.branchs" :key="branch.iid"
-            :branch="branch" :skill-state="currentSkillState" />
-        </template>
-      </div>
-      <div>
-        <div class="equipment-container">
-          <span v-if="equipmentState.mainList.length != 0" class="column">
-            <cy-button iconify-name="mdi-sword" @click="toggleEquipmentType('main-weapon')">
-              {{ equipmentState.main | getEquipmentText('main-weapon') }}
+          <div v-if="currentSkillTreeCategory != null"
+            style="border-top: 1px solid var(--primary-light-2); margin-top: 0.6rem;">
+            <cy-button v-for="(st, i) in currentSkillTreeCategory.skillTrees" :key="st.id" icon-id="rabbit-book" :class="{ 'selected': selectSkillTreeWindowState.currentIndex_st == i }" @click="selectSkillTree(i)">
+              {{ st.name }}
             </cy-button>
-          </span>
-          <span v-if="equipmentState.subList.length != 0" class="column">
-            <cy-button iconify-name="mdi-shield" @click="toggleEquipmentType('sub-weapon')">
-              {{ equipmentState.sub | getEquipmentText('sub-weapon') }}
-            </cy-button>
-          </span>
-          <span v-if="equipmentState.bodyList.length != 0" class="column">
-            <cy-button iconify-name="mdi-tshirt-crew" @click="toggleEquipmentType('body-armor')">
-              {{ equipmentState.body | getEquipmentText('body-armor') }}
-            </cy-button>
-          </span>
+          </div>
+          <div class="skill-tree-container">
+            <draw-skill-tree v-if="currentSkillTree != null" v-bind="drawSkillTreeOptions" :skill-tree="currentSkillTree" />
+          </div>
+        </div>
+      </template>
+    </cy-sticky-header>
+    <div class="main">
+      <template v-if="currentSkillData">
+        <div class="top-content">
+          <div class="effect-attrs">
+            <table>
+              <tr v-for="(data, i) in currentSkillAttrs" :key="data.id">
+                <td>
+                  <cy-icon-text :iconify-name="data.icon">{{ data.name }}</cy-icon-text>
+                </td>
+                <td>{{ data.value }}</td>
+              </tr>
+            </table>
+          </div>
+          <!-- <fieldset v-if="currentSkillData && currentSkillData.historyList.length != 0"
+            class="select-history unfold-fieldset" :class="{ unfold: selectHistoryVisble }">
+            <legend>
+              <cy-button iconify-name="ic-round-history" class="inline"
+                @click="toggleSelectHistoryVisble">
+                {{ langText('historical record') }}
+              </cy-button>
+            </legend>
+            <transition name="fade">
+              <div v-show="selectHistoryVisble" class="date-list">
+                <cy-button v-for="(his, i) in currentSkillData.historyList" type="line" iconify-name="ic-round-history" :key="his" @click="selectHistory(i)">
+                  {{ his }}
+                </cy-button>
+              </div>
+            </transition>
+          </fieldset> -->
+        </div>
+        <div class="skill-branchs">
+          <transition-group name="branch-fade" mode="out-in" appear>
+            <skill-branch v-for="(branch, i) in currentSkillData.branchs" v-if="branch.visible" :key="branch.iid" type="main" :branch="branch" :skill-state="currentSkillState" />
+          </transition-group>
+        </div>
+        <div class="bottom-menu">
+          <div class="top-content">
+            <transition name="fade">
+              <div class="equipment-container" v-show="!skillStates.optionsWindowVisible">
+                <span class="column" v-for="(data, i) in equipmentState.categoryList"
+                  v-if="equipmentState[data.shortName + 'List'].length != 0">
+                  <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.name)" class="inline"
+                    style="margin-right: 0.7rem;">
+                    {{ equipmentState[data.shortName] | getEquipmentText(data.name) }}
+                  </cy-button>
+                </span>
+              </div>
+            </transition>
+            <transition name="fade">
+              <div class="skill-level-container" v-show="!skillStates.optionsWindowVisible">
+                <cy-button iconify-name="mdi-order-numeric-descending" @click="toggleSkillLevel" class="inline">
+                  {{ 'Lv.' + skillStates.skillLevel }}
+                </cy-button>
+              </div>
+            </transition>
+            <cy-button :iconify-name="skillStates.optionsWindowVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" type="icon-only" style="margin-left: auto;"
+              @click="skillStates.optionsWindowVisible = !skillStates.optionsWindowVisible" />
+          </div>
+          <transition name="fade">
+            <div class="options-content" v-show="skillStates.optionsWindowVisible">
+              <div class="equipment-column" v-for="(data, i) in equipmentState.categoryList"
+                v-if="equipmentState[data.shortName + 'List'].length != 0">
+                <cy-icon-text :iconify-name="data.icon" class="text-small line column-title">
+                  {{ langText(`equipment/${data.name}: title`) }}
+                </cy-icon-text>
+                <div class="list">
+                  <cy-button v-for="(eq, j) in equipmentState[data.shortName + 'List']" :key="eq"
+                    :iconify-name="data.icon" @click="selectEquipment(data.shortName, eq)"
+                    :class="{ 'selected': equipmentState[data.shortName] == eq }">
+                    {{ eq | getEquipmentText(data.name) }}
+                  </cy-button>
+                </div>
+              </div>
+              <div>
+                <cy-drag-bar :value="skillStates.skillLevel" :range="[1, 10]"
+                  @set-value="setSkillLevel">
+                  <template v-slot:title>
+                    <cy-icon-text iconify-name="mdi-order-numeric-descending" class="text-small">
+                      {{ langText('skill level') }}
+                    </cy-icon-text>
+                  </template>
+                </cy-drag-bar>
+              </div>
+              <div>
+                <cy-input-counter :value="skillStates.characterLevel" @set-value="setCharacterLevel"
+                  :range="[1, 210]" :step="10">
+                  <template v-slot:title>
+                    <cy-icon-text iconify-name="ant-design:user-outlined">
+                      {{ langText('character level') }}
+                    </cy-icon-text>
+                  </template>
+                </cy-input-counter>
+              </div>
+            </div>
+          </transition>
+        </div>
+      </template>
+      <div v-else class="default-content">
+        <div class="container" @click="toggleSelectSkillTreeWindow">
+          <cy-icon-text icon-id="potum" class="icon" />
+          <div>{{ langText('default message') }}</div>
         </div>
       </div>
     </div>
     <div class="window-container">
+      <transition name="fade">
+        <div class="tag-window" ref="tag-window" v-if="currentTag || tagState.windowVisible" :style="tagState.windowPosition">
+          <div class="container" @click="closeTagWindow">
+            <div class="title">
+              <cy-button iconify-name="jam-arrow-left" type="icon-only" v-if="tagState.tags.length > 1"
+                class="inline" @click.stop="previousTag" />
+              <cy-icon-text iconify-name="ri-leaf-fill">{{ currentTag.name }}</cy-icon-text>
+              <span v-if="tagState.windowVisible" class="close-tip">{{ langText('click anywhere to close') }}</span>
+            </div>
+            <template v-for="(fr, i) in currentTag.frames">
+              <div v-if="fr.type == 'category'" class="category">
+                <cy-icon-text iconify-name="bx-bx-message-rounded-detail" class="text-small">{{ fr.value }}</cy-icon-text>
+              </div>
+              <div v-else-if="fr.type == 'caption'" class="caption" v-html="fr.value"></div>
+              <div v-else-if="fr.type == 'list'" class="list">
+                <div v-for="(v, j) in fr.value" class="leaf-list-item">
+                  <cy-icon-text iconify-name="mdi-leaf" class="prefix-icon" />
+                  <span v-html="v"></span>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </transition>
     </div>
   </article>
 </template>
@@ -64,6 +172,7 @@ import vue_drawSkillTree from "@views/SkillSimulator/draw-skill-tree.vue";
 import vue_skillBranch from "./skill-branch/skill-branch.vue";
 
 import handleSkillState from "./module/handleSkillState.js";
+import handleFormula from "./module/handleFormula.js";
 
 function Lang(v, vs) {
   return GetLang('Skill Query/' + v, vs);
@@ -90,7 +199,8 @@ export default {
         store: [],
         skillLevel: 10,
         characterLevel: 200,
-        displayMode: 'normal'
+        displayMode: 'normal',
+        optionsWindowVisible: false
       },
       equipmentState: {
         main: -1,
@@ -98,9 +208,53 @@ export default {
         body: -1,
         mainList: [],
         subList: [],
-        bodyList: []
-      }
+        bodyList: [],
+        categoryList: [{
+          name: 'main-weapon',
+          shortName: 'main',
+          icon: 'mdi-sword'
+        }, {
+          name: 'sub-weapon',
+          shortName: 'sub',
+          icon: 'mdi-shield'
+        }, {
+          name: 'body-armor',
+          shortName: 'body',
+          icon: 'mdi-tshirt-crew'
+        }]
+      },
+      tagState: {
+        tags: [],
+        buttonClassName: 'click-button--tag',
+        windowPosition: {},
+        windowVisible: false
+      },
+      selectHistoryVisble: false
     };
+  },
+  provide() {
+    return {
+      'handleTagButton': this.handleTagButton,
+      'tagButtonClassName': this.tagState.buttonClassName,
+      'createTagButtons': this.createTagButtons
+    };
+  },
+  updated() {
+    const tagWindow = this.$refs['tag-window'];
+    if (tagWindow) {
+      const self = this;
+      const click = function(e) {
+        e.stopPropagation();
+        self.appendTag(this.innerText);
+      };
+      tagWindow.querySelectorAll('.' + this.tagState.buttonClassName)
+        .forEach(p => {
+          if (p.getAttribute('data-listener-ctr') == '1')
+            return;
+          p.addEventListener('click', click);
+          p.setAttribute('data-listener-ctr', '1');
+        });
+    }
   },
   filters: {
     getEquipmentText(value, type) {
@@ -110,6 +264,98 @@ export default {
     }
   },
   computed: {
+    currentTag() {
+      const idx = this.tagState.tags.length - 1;
+      if (idx == -1)
+        return null;
+
+      const cur = this.tagState.tags[idx];
+      const frs = cur.frames.map(fr => {
+        const h = v => {
+          v = v.replace(/\(\(!((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="light-text">${m1}</span>`)
+          .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values light-text">${m1}</span>`);
+          return this.createTagButtons(v);
+        };
+
+        let value = fr.value;
+        if (fr.type == 'list') {
+          value = !Array.isArray(value) ? [value] : value;
+          value = value.map(v => h(v));
+        } else
+          value = h(value);
+
+        return {
+          type: fr.type,
+          value
+        };
+      });
+
+      return {
+        name: cur.name,
+        frames: frs
+      };
+    },
+    currentSkillAttrs() {
+      const datas = {
+        'mp_cost': {
+          type: 'value',
+          icon: 'mdi-flask-round-bottom'
+        },
+        'range': {
+          type: 'value',
+          icon: 'mdi-target-variant',
+          extraHandle: v => /[\d.]+/.test(v) ? v + 'm' : v,
+          validation: v => v != '-' && v != 'main',
+          defaultValue: v => v == '-' ? this.langText('range: no limit') : this.langText('range: main')
+        },
+        'skill_type': {
+          type: 'list',
+          icon: 'eva-question-mark-circle-outline'
+        },
+        'in_combo': {
+          type: 'list',
+          icon: ['mdi-selection-ellipse-arrow-inside', 'jam-stop-sign', 'mdi-numeric-1-circle-outline']
+        },
+        'action_time': {
+          type: 'list',
+          icon: 'bx-bx-timer'
+        },
+        'casting_time': {
+          type: 'value',
+          icon: 'zmdi-time-restore',
+          extraHandle: v => v + 's'
+        }
+      };
+      const p = this.currentSkillData;
+      const options = { skillState: this.currentSkillState, effectState: p };
+      return p ? Object.keys(p.attrs)
+        .filter(k => p.attrs[k] || p.attrs[k] === 0)
+        .filter(k => {
+          const { validation, defaultValue } = datas[k];
+          if (validation) {
+            const v = p.attrs[k];
+            const res = validation(v);
+            if (!res) {
+              if (defaultValue === void 0)
+                return false;
+              else
+                p.attrs[k] = typeof defaultValue == 'function' ? defaultValue(v) : defaultValue;
+            }
+          }
+          return true;
+        })
+        .map(k => {
+          const q = p.attrs[k];
+          let { type, icon, extraHandle } = datas[k];
+          const name = this.langText('effect attrs/' + k);
+          let value = type == 'value' ?
+            handleFormula(q, options) :
+            this.langText('effect attrs/' + k + ': list')[q];
+          value = extraHandle ? extraHandle(value) : value;
+          icon = Array.isArray(icon) ? icon[q] : icon;
+          return { name, value, icon };
+        }) : null;
+    },
     currentSkillTreeCategory() {
       const idx = this.selectSkillTreeWindowState.currentIndex_stc;
       return this.selectSkillTreeWindowState.currentIndex_stc != -1 ? this.skillRoot.skillTreeCategorys[idx] : null;
@@ -127,12 +373,83 @@ export default {
     },
     currentSkillData() {
       const p = this.currentSkillState;
-      console.log(p);
       return p ? p.states.find(p => this.checkEquipment(p.equipment)) : null;
     }
   },
   methods: {
-    checkEquipment(eq){
+    toggleSelectSkillTreeWindow() {
+      this.selectSkillTreeWindowState.visible = !this.selectSkillTreeWindowState.visible;
+    },
+    createTagButtons(str) {
+      return str.replace(/#([^\s]+)\s(\w?)/g, (m, m1, m2) => {
+        let res = `<span class="${this.tagState.buttonClassName}">${m1.replace(new RegExp('_', 'g'), ' ')}</span>`;
+        if (m2 !== '')
+          res += " " + m2;
+        return res;
+      });
+    },
+    previousTag() {
+      console.warn('pop...');
+      console.log(this.tagState.tags);
+      this.tagState.tags.pop();
+    },
+    handleTagButton(el) {
+      const self = this;
+      const enter = function(e) {
+        self.clearTag();
+        self.appendTag(this.innerText);
+
+        const rect = this.getBoundingClientRect();
+
+        const len2bottom = window.innerHeight - rect.bottom;
+        self.tagState.windowPosition = rect.top >= len2bottom ? {
+            bottom: (len2bottom + rect.height + 10) + 'px'
+          } : {
+            top: (rect.top + rect.height + 10) + 'px'
+          };
+      };
+      const leave = function(e) {
+        if (!self.tagState.windowVisible)
+          self.clearTag();
+      };
+      const click = function(e) {
+        self.tagState.windowVisible = true;
+      };
+      el.querySelectorAll('.' + this.tagState.buttonClassName)
+        .forEach(p => {
+          p.addEventListener('mouseenter', enter);
+          p.addEventListener('mouseleave', leave);
+          p.addEventListener('click', click);
+        });
+    },
+    appendTag(name) {
+      console.log('append...');
+      const list = Grimoire.TagSystem.tagList;
+      const p = list.find(p => p.name == name);
+      if (p) {
+        this.tagState.tags.push(p);
+      }
+    },
+    closeTagWindow() {
+      this.tagState.windowVisible = false;
+      this.clearTag();
+    },
+    clearTag() {
+      this.tagState.tags = [];
+    },
+    currentHistoryDate() {
+      const p = this.currentSkillData;
+      if (!p || p.currentHistoryIdx == -1)
+        return null;
+      return p.historyList[p.currentHistoryIdx];
+    },
+    selectHistory(idx) {
+      this.currentSkillData.currentHistoryIdx = idx;
+    },
+    toggleSelectHistoryVisble() {
+      this.selectHistoryVisble = !this.selectHistoryVisble;
+    },
+    checkEquipment(eq) {
       const eqs = this.equipmentState;
       /* 通用 */
       if ([eq.main, eq.sub, eq.body].every(p => p == -1))
@@ -163,6 +480,29 @@ export default {
         return true;
       }
     },
+    setCharacterLevel(v) {
+      this.skillStates.characterLevel = v;
+      if (this.currentSkillState){
+        this.currentSkillState.clv = v;
+      }
+    },
+    setSkillLevel(v) {
+      this.skillStates.skillLevel = v;
+      if (this.currentSkillState){
+        this.currentSkillState.slv = v;
+      }
+    },
+    toggleSkillLevel() {
+      let res = this.skillStates.skillLevel;
+      if (res == 1)
+        res = 10;
+      else {
+        const list = [1, 5, 10];
+        const idx = list.findIndex(p => res <= p);
+        res = list[idx-1];
+      }
+      this.setSkillLevel(res);
+    },
     toggleEquipmentType(type) {
       const p = {
         'main-weapon': 'main',
@@ -188,15 +528,16 @@ export default {
       idx = idx === void 0 ? state.store.length - 1 : idx;
 
       const skill = state.store[idx].skill;
-      state.store[idx] = {
+      this.$set(state.store, idx, {
         skill,
         slv: state.skillLevel,
         clv: state.characterLevel,
         ...handleSkillState(skill, this.equipmentState)
-      };
+      });
     },
     selectSkillTree(idx) {
       this.selectSkillTreeWindowState.currentIndex_st = idx;
+      this.skillStates.store = [];
 
       const main = new Set(),
         sub = new Set(),
@@ -221,9 +562,9 @@ export default {
       state.subList = [...sub];
       state.bodyList = [...body];
 
-      state.main = state.mainList.length != 0 ? 0 : -1;
-      state.sub = state.subList.length != 0 ? 0 : -1;
-      state.body = state.bodyList.length != 0 ? 0 : -1;
+      state.main = state.mainList.length != 0 ? state.mainList[0] : -1;
+      state.sub = state.subList.length != 0 ? state.subList[0] : -1;
+      state.body = state.bodyList.length != 0 ? state.bodyList[0] : -1;
 
       this.updateSkillState();
     },
@@ -231,11 +572,12 @@ export default {
       this.selectSkillTreeWindowState.currentIndex_stc = idx;
       this.selectSkillTreeWindowState.currentIndex_st = -1;
     },
-    selectSkill(skill){
+    selectSkill(skill) {
       this.skillStates.store = [{
         skill
       }];
       this.updateSkillState();
+      this.selectSkillTreeWindowState.visible = false;
     },
     appendSkillState(skill) {
       this.skillStates.store.push({
@@ -257,4 +599,230 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@deep-operator: ~'>>>';
+
+.root-- {
+  position: relative;
+}
+
+.main {
+  > .top-content {
+    @media screen and (min-width: 70rem) {
+      position: fixed;
+      top: 5rem;
+      left: calc(50% + 27rem);
+    }
+
+    .effect-attrs {
+      tr {
+        >td:nth-child(1) {
+          padding-right: 0.6rem;
+          border-right: 1px solid var(--primary-light);
+        }
+
+        >td:nth-child(2) {
+          padding-left: 0.6rem;
+          color: var(--primary-light-4);
+        }
+      }
+    }
+
+    .select-history {
+      border: 1px solid var(--primary-light-2);
+      margin-top: 1rem;
+      width: 100%;
+    }
+  }
+}
+
+.default-content {
+  width: 100%;
+  height: calc(100vh - 15rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > .container {
+    cursor: pointer;
+    padding: 1.3rem;
+    transition: border-color 0.3s;
+    border: 1px solid transparent;
+    text-align: center;
+
+    > .icon {
+      --icon-width: 7rem;
+      margin-bottom: 1.5rem;
+    }
+
+    &:hover {
+      border-color: var(--primary-light-3);
+    }
+  }
+}
+
+@{deep-operator} fieldset.unfold-fieldset {
+  transition: 0.5s;
+
+  &:not(.unfold) {
+    padding-left: 0;
+    border-color: transparent;
+
+    > legend {
+      padding-left: 0;
+    }
+  }
+}
+
+.skill-branchs {
+  padding: 1rem 0.5rem;
+}
+
+
+.bottom-menu {
+  position: sticky;
+  bottom: 0;
+  background-color: var(--white);
+  border-top: 1px solid var(--primary-light-3);
+  padding: 0.4rem 0.2rem;
+  z-index: 9;
+
+  > .top-content {
+    display: flex;
+    align-items: center;
+
+    > .equipment-container {
+      display: inline-block;
+    }
+
+    > .skill-level-container {
+      border-left: 1px solid var(--primary-light-2);
+      padding-left: 0.9rem;
+      margin-left: 0.4rem;
+      display: inline-block;
+    }
+  }
+
+  > .options-content {
+    padding-bottom: 0.8rem;
+
+    > .equipment-column {
+      > .column-title {
+        margin-top: 0.8rem;
+      }
+    }
+  }
+}
+
+@{deep-operator} .click-button--tag {
+  color: var(--primary-orange);
+  cursor: pointer;
+}
+.tag-window {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 15;
+
+  .container {
+    background-color: rgba(var(--rgb-white), 0.8);
+    padding: 1rem;
+    border: 1px solid var(--primary-light-2);
+    box-shadow: 0.1rem 0.1rem 0.6rem 0.1rem var(--primary-light);
+    max-width: 30rem;
+    max-height: calc(50vh - 3rem);
+    overflow-y: auto;
+
+    > .title {
+      margin-bottom: 1rem;
+      color: var(--primary-purple);
+      display: flex;
+      align-items: center;
+
+      > .close-tip {
+        margin-left: auto;
+        display: inline-block;
+        font-size: 0.9rem;
+      }
+    }
+
+    > .category {
+      border-left: 2px solid var(--primary-light-2);
+      padding: 0.2rem 0.6rem;
+      margin-bottom: 0.7rem;
+    }
+    > .caption {
+      padding: 0 0.3rem;
+    }
+    > .list {
+      margin-top: 0.6rem;
+    }
+  }
+}
+
+@{deep-operator} .leaf-list-item {
+  padding: 0.4rem;
+  padding-left: 1rem;
+  position: relative;
+
+  >.prefix-icon {
+    position: absolute;
+    top: 0;
+    left: -0.4rem;
+
+    @{deep-operator} svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      color: var(--primary-light-2);
+    }
+  }
+}
+
+@{deep-operator} .light-text {
+  color: var(--primary-light-4);
+}
+
+@{deep-operator} .light-text-1 {
+  color: var(--primary-water-blue);
+}
+
+@{deep-operator} .light-text-2 {
+  color: var(--primary-orange);
+}
+
+@{deep-operator} .multiple-values {
+  border-left: 1px solid var(--primary-light-3);
+  border-right: 1px solid var(--primary-light-3);
+  margin: 0 0.3rem;
+  display: inline-block;
+  padding: 0 0.3rem;
+}
+
+@{deep-operator} .fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+@{deep-operator} .fade-enter-active,
+.fade-leave-active {
+  transition: 0.3s ease;
+}
+
+.branch-fade-enter {
+  opacity: 0;
+}
+
+.branch-fade-enter {
+  transform: translateX(-20%);
+}
+
+.branch-fade-leave-to {
+  transform: translateX(20%);
+}
+
+.branch-fade-enter-active,
+.branch-fade-leave-active {
+  transition: 0.3s ease;
+}
 </style>

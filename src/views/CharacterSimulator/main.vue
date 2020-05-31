@@ -51,7 +51,7 @@
         <template v-slot:title>{{ langText('browse equipments/action: ' + browseEquipmentsWindowState.action) }}</template>
         <template v-slot:default>
           <div class="buttons">
-            <cy-button type="icon-only" iconify-name="ic-round-add-circle-outline" @click="appendEquipmentWindowState.visible = true">
+            <cy-button type="icon-only" iconify-name="ic-round-add-circle-outline" @click="appendEquipmentWindowVisible = true">
             </cy-button>
           </div>
           <div class="equipments-scope">
@@ -311,9 +311,6 @@ export default {
         };
       }).filter(a => a.stats.length != 0);
     },
-    appendEquipmentSelectedNumber() {
-      return this.appendEquipmentWindowState.;
-    },
     currentCharacterState() {
       return this.characterStates[this.currentCharacterStateIndex];
     },
@@ -477,6 +474,8 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@deep-operator: ~'>>>';
+
 .main {
   >section {
     display: flex;
@@ -563,7 +562,7 @@ export default {
   }
 }
 
-.bottom-menu {
+@{deep-operator} .bottom-menu {
   bottom: 0;
   padding-bottom: 1rem;
   position: sticky;

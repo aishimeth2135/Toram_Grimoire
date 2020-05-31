@@ -65,6 +65,7 @@
 			align-items: center;
 			white-space: nowrap;
 			overflow-y: visible;
+      padding: 0 0.4rem;
       
       > .float-menu {
         position: absolute;

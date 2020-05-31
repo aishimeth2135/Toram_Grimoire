@@ -1,6 +1,6 @@
+import Grimoire from "@Grimoire";
 import {SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch} from "./SkillElements.js";
-import Grimoire from "../../main/Grimoire.js";
-import {ProcessLanguageData} from "../../main/module/LanguageSystem.js";
+import {ProcessLanguageData} from "@global-modules/LanguageSystem.js";
 
 function LoadSkillData(sr, c, lang_c, slang_c){
 	const 
@@ -37,6 +37,7 @@ function LoadSkillData(sr, c, lang_c, slang_c){
 	/* Skill Tree */
 		CONFIRM_SKILL_TREE = '1',
 		SKILL_TREE_NAME = 2,
+		SKILL_TREE_SIMULATOR_FLAG = 3,
 	/* Language Data */
 		LANG_DATA = {
 			EFFECT_BRANCH_ATTRIBUTE_VALUE: 0
@@ -97,6 +98,8 @@ function LoadSkillData(sr, c, lang_c, slang_c){
 						cur = _TreeBack(cur, SkillTreeCategory.TYPE);
 						const name = p[SKILL_TREE_NAME];
 						cur = cur.newElement(SkillTree.TYPE, {id, name});
+						if (p[SKILL_TREE_SIMULATOR_FLAG])
+							cur.attrs.simulatorFlag = true;
 					} break;
 					default: {
 						if ( confirm_name != "" ){

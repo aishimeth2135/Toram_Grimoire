@@ -1,6 +1,6 @@
-import Grimoire from "../../main/Grimoire.js";
-import StatBase from "../../CharacterSystem/module/StatBase.js";
-import CY from "../../main/module/cyteria.js";
+import Grimoire from "@Grimoire";
+import StatBase from "@lib/CharacterSystem/module/StatBase.js";
+import CY from "@global-modules/cyteria.js";
 
 function checkConstructorArgs(){
 	Array.from(arguments).forEach((arg, i) => {
@@ -99,6 +99,10 @@ class SkillTree {
 		this.name = name;
 		this.skills = [];
 		this.TYPE = SkillTree.TYPE;
+
+		this.attrs = {
+			simulatorFlag: false
+		};
 	}
 	init(dtc){
 		this.drawTreeCode = dtc;

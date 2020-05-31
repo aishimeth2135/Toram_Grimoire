@@ -12,24 +12,23 @@ import GetLang from "@global-modules/LanguageSystem.js";
 import init from "./init.js";
 
 export default {
-    path: '/skill',
-    component: app,
-    beforeEnter(to, from, next){
-        init();
-        next();
-    },
-    meta: {
-        leftMenuViewButtons: [{
-            title: () => GetLang('Page Title/skill-query'),
-            icon: 'gridicons-user',
-            path: ''
-        }]
-    },
-    children: [{
-        path: '',
-        component: vue_skillQuery,
-        meta: {
-            title: () => GetLang('Page Title/skill-query')
-        }
+  path: '/skill',
+  component: app,
+  beforeEnter(to, from, next) {
+    init().then(p => next());
+  },
+  meta: {
+    leftMenuViewButtons: [{
+      title: () => GetLang('Page Title/skill-query'),
+      icon: 'gridicons-user',
+      path: ''
     }]
+  },
+  children: [{
+    path: '',
+    component: vue_skillQuery,
+    meta: {
+      title: () => GetLang('Page Title/skill-query')
+    }
+  }]
 };
