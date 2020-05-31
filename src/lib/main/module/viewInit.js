@@ -1,13 +1,13 @@
-import {InitLanguageData} from "./LanguageSystem.js";
+import { InitLanguageData } from "./LanguageSystem.js";
 
 import loadingStore from "@store/loading.js";
 
 function viewInit({
   languageDatas = null,
   initItems = null
-}={}){
-  if ( languageDatas )
-      InitLanguageData(languageDatas);
+} = {}) {
+  if (languageDatas)
+    InitLanguageData(languageDatas);
 
   /**
    * initItems: Array<Object>
@@ -16,26 +16,26 @@ function viewInit({
    *     promise: Promise,
    * }
    */
-  if ( initItems ){
+  if (initItems) {
     initItems.forEach(p => {
-      if ( typeof p.msg == 'function' )
-          p.msg = p.msg();
+      if (typeof p.msg == 'function')
+        p.msg = p.msg();
     });
     initItems.forEach(p => loadingStore.commit('appendInitItems', p));
   }
   return loadingStore.dispatch('startInit');
 }
 
-function viewInitReady(){
+function viewInitReady() {
   loadingStore.commit('initFinished');
 }
 
-function viewInitEnd(){
+function viewInitEnd() {
 
 }
 
-function handleInit(_startCallback){
-  _startCallback().catch(e => console.log(e));
+async function handleInit(_startCallback) {
+  await _startCallback();
 }
 
-export {viewInit, viewInitReady, viewInitEnd, handleInit};
+export { viewInit, viewInitReady, viewInitEnd, handleInit };

@@ -2,9 +2,6 @@ import {SkillRoot} from "./module/SkillElements.js";
 import {LoadSkillData, LoadSkillMainData} from "./module/LoadSkillData.js";
 import {loadLangDatas} from "../main/module/DataPath.js";
 
-import SkillQueryController from "./module/SkillQueryController.js";
-// import SkillSimulatorController from "./module/SkillSimulator/SkillSimulatorController.js";
-
 class SkillSystem {
 	constructor(){
 		this.skillRoot = new SkillRoot(this);
@@ -20,20 +17,6 @@ class SkillSystem {
 
 		LoadSkillData(this.skillRoot, ...SkillData_ary);
 		LoadSkillMainData(this.skillRoot, ...SkillMainData_ary);
-	}
-	init_SkillQuery(sr_node){
-		this.SkillQueryController = new SkillQueryController(this.skillRoot);
-		return new Promise((resolve, reject) => {
-			this.SkillQueryController.init(sr_node);
-			resolve();
-		});
-	}
-	init_SkillSimulator(main_node){
-		// this.SkillSimulatorController = new SkillSimulatorController(this.skillRoot);
-		// return new Promise((resolve, reject) => {
-		// 	this.SkillSimulatorController.init(main_node);
-		// 	resolve();
-		// });
 	}
 }
 

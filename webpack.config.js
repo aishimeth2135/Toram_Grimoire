@@ -5,13 +5,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
    entry: {
-    'home': './src/js/main/Home/index.js',
-    'skill-query': './src/js/main/SkillQuery/index.js',
-    'item-query': './src/js/main/ItemQuery/index.js',
-    'enchant-simulator': './src/js/main/EnchantSimulator/index.js',
-    'damage-calculation': './src/js/main/DamageCalculation/index.js',
-    'skill-simulator': './src/js/main/SkillSimulator/index.js',
-    'character-simulator': './src/js/main/CharacterSimulator/index.js'
+    'grimoire': './src/index.js'
   },
   output: {
     path: path.join(__dirname, 'public', 'dist'),
@@ -59,11 +53,15 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'vue': path.join(__dirname, 'src', 'js', 'main', 'module', 'Plugin', 'vue.esm.browser.min.js'),
-      '@global-vue-components': path.join(__dirname, 'src', 'js', 'main', 'module', 'vue'),
-      '@global-modules': path.join(__dirname, 'src', 'js', 'main', 'module'),
-      '@css': path.join(__dirname, 'src', 'css'),
-      '@Grimoire': path.join(__dirname, 'src', 'js', 'main', 'Grimoire.js')
+      'vue': path.join(__dirname, 'src', 'lib', 'plugin', 'vue.esm.browser.min.js'),
+      '@global-vue-components': path.join(__dirname, 'src', 'components', 'global'),
+      '@vue-components': path.join(__dirname, 'src', 'components'),
+      '@views': path.join(__dirname, 'src', 'views'),
+      '@store': path.join(__dirname, 'src', 'store'),
+      '@global-modules': path.join(__dirname, 'src', 'lib', 'main', 'module'),
+      '@css': path.join(__dirname, 'src', 'assets', 'css'),
+      '@Grimoire': path.join(__dirname, 'src', 'lib', 'main', 'Grimoire.js'),
+      '@lib': path.join(__dirname, 'src', 'lib')
     }
   },
   plugins: [

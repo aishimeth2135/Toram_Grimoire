@@ -1,4 +1,5 @@
 import CY from "@global-modules/cyteria.js";
+import {SkillEffect} from "@lib/SkillSystem/module/SkillElements.js";
 
 export default function(skill) {
   const defSef = skill.defaultEffect;
@@ -15,6 +16,8 @@ export default function(skill) {
       group: null,
       history: [],
       suffix: [],
+      visible: true,
+      '@parent-state': null,
       '@is-default-list': [],
       '@delete-list': [],
       '@overwrite-list': [],
@@ -32,13 +35,66 @@ export default function(skill) {
     const state = {
       branchs,
       attrs: Object.assign({}, defSef.attributes),
-      equipment: equip
+      equipment: equip,
+      historyList: [],
+      stackStates: [],
+      currentHistoryIdx: -1
     };
+    state.branchs.forEach(p => p['@parent-state'] = state);
 
     return state;
   };
 
+  const convertStateAttrs = st => {
+    st.attrs = {
+      'mp_cost': st.attrs[SkillEffect.MP_COST],
+      'range': st.attrs[SkillEffect.RANGE],
+      'skill_type': st.attrs[SkillEffect.SKILL_TYPE],
+      'in_combo': st.attrs[SkillEffect.IN_COMBO],
+      'action_time': st.attrs[SkillEffect.ACTION_TIME],
+      'casting_time': st.attrs[SkillEffect.CASTING_TIME]
+    };
+  };
+
   const branchEmpty = b => CY.object.isEmpty(b.branchAttributes) && b.stats.length == 0;
+
+  const branchOverwrite = (target, from) => {
+    Object.keys(from.branchAttributes).forEach(k => {
+      const value = from.branchAttributes[k];
+      if (value == '' && target.attrs[k]) {
+        delete target.attrs[k];
+        target['@delete-list'].push(k);
+      } else {
+        target.attrs[k] = value;
+        target['@overwrite-list'].push(k);
+      }
+    });
+
+    from.stats.forEach(stat => {
+      let idx = target.stats.findIndex(b => stat.equals(b));
+      let findStat = target.stats[idx];
+      if (idx == -1) {
+        target.stats.push(stat.copy());
+        target['@stat-overwrite-list'].push(stat.baseName());
+      } else {
+        if (stat.value === '') {
+          target.stats.splice(idx, 0);
+          target['@stat-delete-list'].push(stat.baseName());
+        } else {
+          findStat.statValue(stat.value);
+          target['@stat-overwrite-list'].push(stat.baseName());
+        }
+      }
+    });
+  };
+
+  const createHistoryData = (bch, hiddenFlag) => {
+    return {
+      date: bch.attrs['date'],
+      branch: bch,
+      hiddenFlag
+    };
+  };
 
   // 尋找符合裝備的 effect
   //const overwriteSef = skill.effects.find(p => checkEquipment(p, equipmentState));
@@ -51,7 +107,7 @@ export default function(skill) {
       Object.getOwnPropertySymbols(overwriteSef.attributes).forEach(k => {
         const value = overwriteSef.attributes[k];
         // 空值就移除
-        value == '' && state.attrs[k] ? delete state.attrs[k] : state.attrs[k] = value;
+        value == '' && state.attrs[k] ? delete state.attrs[k] : (state.attrs[k] = value);
       });
 
       overwriteSef.branchs.forEach(branch => {
@@ -75,66 +131,54 @@ export default function(skill) {
           CY.object.empty(p.attrs);
         }
 
-        Object.keys(branch.branchAttributes).forEach(_k => {
-          const _value = branch.branchAttributes[_k];
-          if (_value == '' && p.attrs[_k]) {
-            delete p.attrs[_k];
-            p['@delete-list'].push(_k);
-          } else {
-            p.attrs[_k] = _value;
-            p['@overwrite-list'].push(_k);
-          }
-        });
-
-        branch.stats.forEach(stat => {
-          let _idx = p.stats.findIndex(b => stat.equals(b));
-          let findStat = p.stats[_idx];
-          if (_idx == -1) {
-            p.stats.push(stat.copy());
-            p['@stat-overwrite-list'].push(stat.baseName());
-          } else {
-            if (stat.value === '') {
-              p.stats.splice(_idx, 0);
-              p['@stat-delete-list'].push(stat.baseName());
-            } else {
-              findStat.statValue(stat.value);
-              p['@stat-overwrite-list'].push(stat.baseName());
-            }
-          }
-        });
+        branchOverwrite(p, branch);
       });
     }
+
+    // init of state attrs
+    convertStateAttrs(state);
 
     // init of branch values
     setBranchAttributeDefault(state.branchs);
 
     // create list of history.date
-    // const historyList = [...new Set(
-    //   state.branchs
-    //   .filter(p => p.name == 'history')
-    //   .map(p => p.attrs['date'])
-    // )];
+    state.historyList = [...new Set(
+      state.branchs
+      .filter(p => p.name == 'history')
+      .map(p => p.attrs['date'])
+      .filter(p => /\d{4}\/\d{2}\/\d{2}/.test(p))
+    )]
+    .sort((a, b) => new Date(b) >= new Date(a) ? 1 : -1);
 
     // suffix
     const suffixBranchList = {
-      'damage': ['extra', 'poration'],
+      'damage': ['extra', 'proration'],
       'effect': ['extra'],
+      'next': ['extra'],
       'list': ['list'],
       '@global': ['formula_extra', 'group', {
         name: 'history',
-        validation: b => b.attrs['target_branch'] !== void 0
+        validation: b => b.attrs['target_branch'] === void 0
       }]
     };
-    const searchSuffixList = bch => {
-      return [bch.name, '@global'].find(name => {
+    const searchSuffixList = (cur_bch, bch) => {
+      return [cur_bch.name, '@global'].find(name => {
         const p = suffixBranchList[name];
 
-        return p && p.find(a => {
-          return typeof a != 'object' ? a == bch.name : a.name == bch.name && a.validation(bch);
-        });
+        return p && p.find(a => typeof a != 'object' ?
+          a == bch.name :
+          a.name == bch.name && a.validation(bch));
       });
     };
 
+    // 建立@parent-branch指標
+    state.branchs.forEach(b => b.attrs['@parent-branch'] = b);
+
+    /**
+     * [重置branchs]
+     * 將suffix branch串到main branch上，
+     * 將vitual branch移除並處理。
+     */
     const resBranchs = [];
     state.branchs.forEach(bch => {
       const curBranch = resBranchs.length != 0 ? resBranchs[resBranchs.length - 1] : null;
@@ -147,8 +191,7 @@ export default function(skill) {
         list.includes(bch.name) && resBranchs.push(bch);
         return;
       }
-
-      if (searchSuffixList(bch)) {
+      if (searchSuffixList(curBranch, bch)) {
         bch.mainBranch = curBranch;
         curBranch.suffix.push(bch);
       } else
@@ -156,13 +199,6 @@ export default function(skill) {
     });
 
     const vitualBranchList = ['history'];
-    const createHistoryData = (bch, hiddenCtr) => {
-      return {
-        date: bch.attrs['date'],
-        attrs: bch.attrs,
-        hiddenCtr
-      };
-    };
 
     state.branchs = resBranchs.filter(bch => {
       // handle group
@@ -194,13 +230,46 @@ export default function(skill) {
       return true;
     });
 
+    // console.log('state.branchs: ', state.branchs);
+
     // store stacks value
-    const stack = state.branchs.filter(b => b.name == 'stack')
+    const stackStates = state.branchs.filter(b => b.name == 'stack')
       .map(b => ({
         id: b.attrs['id'],
-        value: b.attrs['default'] || b.attrs['default'] == 0 ? b.attrs['default'] : b.attrs['min']
+        value: parseInt(b.attrs['default'] == 'auto' ? b.attrs['min'] : b.attrs['default'], 10)
       }));
-    state.stack = stack;
+    state.stackStates = stackStates;
+
+    // handle history
+    state.branchs.forEach(bch => {
+      bch.history.sort((a, b) => new Date(b.date) >= new Date(a.date) ? 1 : -1);
+      bch.history.forEach(a => {
+        a.branch.name = bch.name;
+        a.branch.suffix = bch.suffix;
+      });
+      [bch, ...bch.history.map(a => a.branch)].forEach((his, idx, ary) => {
+        if (idx == ary.length - 1)
+          return;
+        const target = ary[idx + 1],
+          from = his;
+
+        Object.keys(from.attrs).forEach(k => {
+          const value = target.attrs[k];
+          if (value === void 0)
+            target.attrs[k] = from.attrs[k];
+          else if (value == '')
+            delete target.attrs[k];
+        });
+
+        from.stats.forEach(stat => {
+          const idx = target.stats.find(a => a.equals(stat));
+          if (idx == -1)
+            target.stats.push(stat.copy());
+          else if (target.stats[idx].statValue() == '')
+            target.stats.splice(idx, 1);
+        });
+      });
+    });
 
     states.push(state);
   });
@@ -233,9 +302,15 @@ function setBranchAttributeDefault(branchs) {
       'end_position': 'target',
       'effective_area': 'circle',
       'title': 'normal',
-      'judgment': 'common',
       'element': 'none',
-      'is_place': '0'
+      'judgment': 'common',
+      'frequency_judgment': 'single',
+      'unsheathe_attack': '0',
+      'range_damage': '1',
+      'is_place': '0',
+      'radius': '1',
+      'start_position_offsets': '0',
+      'end_position_offsets': '0'
     },
     'proration': {
       'proration': 'auto'
@@ -243,7 +318,8 @@ function setBranchAttributeDefault(branchs) {
     'effect': {
       'condition': 'auto',
       'type': 'self',
-      'is_place': '0'
+      'is_place': '0',
+      'radius': '1'
     },
     'heal': {
       'target': 'self',
@@ -269,8 +345,7 @@ function setBranchAttributeDefault(branchs) {
 
   branchs.forEach(branch => {
     const p = def_list[branch.name];
-    if (p)
-      branch['@is-default-list'] = _sd(branch.attrs, p);
+    branch['@is-default-list'] = p ? _sd(branch.attrs, p) : [];
   });
 }
 

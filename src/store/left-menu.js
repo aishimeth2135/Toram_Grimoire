@@ -10,7 +10,6 @@ const store = new Vuex.Store({
   mutations: {
     setViewButtons(state, { viewButtons }){
       state.viewButtons = viewButtons;
-      console.log(state.viewButtons);
     }
   }
 });

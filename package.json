@@ -11,7 +11,8 @@
     "build": "webpack --mode production --config webpack.config.js",
     "start": "webpack --mode development --config webpack.config.js",
     "workbox": "workbox injectManifest workbox-cli-config.js",
-    "dev": "webpack-dev-server --mode development --config webpack.dev.config.js"
+    "dev": "webpack-dev-server --mode development --config webpack.dev.config.js",
+    "test": "webpack-dev-server --mode production --config webpack.dev.config.js"
   },
   "author": "cyteria",
   "license": "ISC",

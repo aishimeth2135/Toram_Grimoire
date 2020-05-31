@@ -64,60 +64,12 @@ workbox.routing.registerRoute(
 
 workbox.precaching.precacheAndRoute([
   {
-    "url": "dist/character-simulator.min.js",
-    "revision": "f6a58d83dc0e7e92aa509e2809898aa4"
-  },
-  {
-    "url": "dist/damage-calculation.min.js",
-    "revision": "310193482c514cd4dfbbe9be9f14096a"
-  },
-  {
-    "url": "dist/enchant-simulator.min.js",
-    "revision": "24c662f24e6c1ade00107db917f1e150"
-  },
-  {
-    "url": "dist/home.min.js",
-    "revision": "9d05095fe5764272c2fcc513aad3321a"
-  },
-  {
-    "url": "dist/item-query.min.js",
-    "revision": "afc7b2a7c5fc7671b2eaf02b3364f3b8"
-  },
-  {
-    "url": "dist/skill-query.min.js",
-    "revision": "058c8c3bf6644f325e30e26266668316"
-  },
-  {
-    "url": "dist/skill-simulator.min.js",
-    "revision": "61b16b5d1369fb4a878d2c2015c9045e"
-  },
-  {
-    "url": "character_simulator.html",
-    "revision": "9d92e3fab584c63e82a03b226f00d1d3"
-  },
-  {
-    "url": "damage_calculation.html",
-    "revision": "69850144278c6dbe046f259bf9a4b3fc"
-  },
-  {
-    "url": "enchant_simulator.html",
-    "revision": "f9caf56fcec85aaef07fdbf43e65a17f"
+    "url": "dist/grimoire.min.js",
+    "revision": "78cd849433f71f22f13235a0d7e8c250"
   },
   {
     "url": "index.html",
-    "revision": "6821059592f6594e769d491d6cf92634"
-  },
-  {
-    "url": "items.html",
-    "revision": "ccd928e3948e135a3cabfeac5c110d2e"
-  },
-  {
-    "url": "skill_simulator.html",
-    "revision": "6af5629bfd0480b9aeac2ac8398807e9"
-  },
-  {
-    "url": "skills.html",
-    "revision": "2635468fadf21e700a8774f64c6e2bbb"
+    "revision": "b91cd3ae6eb81aa4a524f1bd1a0f19c0"
   },
   {
     "url": "manifest.json",

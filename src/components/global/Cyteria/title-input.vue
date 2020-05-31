@@ -9,10 +9,6 @@
 </template>
 
 <script>
-    import vue_iconifyIcon from "../iconify-icon.vue";
-    import vue_langText from "../lang-text.vue";
-    import vue_svgIcon from "../svg-icon.vue";
-
     export default {
         props: {
             iconifyName: {
@@ -21,11 +17,6 @@
             iconId: {
                 default: null
             }
-        },
-        components: {
-            'iconify-icon': vue_iconifyIcon,
-            'lang-text': vue_langText,
-            'svg-icon': vue_svgIcon
         }
     }
 </script>

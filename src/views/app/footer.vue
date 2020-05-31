@@ -43,14 +43,14 @@
   footer {
     border-top: 1px var(--primary-light) solid;
     margin-top: 2rem;
-  }
-  footer {
+
     text-align: right;
-    padding: 0.3rem 0.4rem;
+    padding: 0.3rem 0.6rem;
     overflow-x: auto;
     white-space: nowrap;
-  }
-  footer @{deep-operator} span {
-    margin-left: 1rem;
+
+    @{deep-operator} span {
+      margin-left: 1rem;
+    }
   }
 </style>

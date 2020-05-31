@@ -3,29 +3,22 @@
     <span class="divider" v-if="showData['constant']"></span>
     <span class="attr-scope" v-if="showData['base']">{{ showData['base'] }}</span>
     <cy-icon-text iconify-name="ic-round-add" v-if="showData['base'] && showData['constant']" />
-    <span class="attr-scope" v-if="showData['constant']">
-      {{ showData['constant'] }}
+    <span class="attr-scope" v-if="showData['constant']"
+      v-html="showData['constant']">
     </span>
     <span class="divider" v-if="showData['constant']"></span>
     <cy-icon-text iconify-name="ic-round-close" />
-    <span class="attr-scope">{{ showData['multiplier'] + '%' }}</span>
+    <span class="attr-scope" v-html="showData['multiplier']"></span>
     <cy-icon-text iconify-name="ic-round-close" v-if="showData['frequency']" />
-    <span class="attr-scope" v-if="showData['frequency']">
-      {{ showData['frequency'] + langText('global/times') }}
+    <span class="attr-scope" v-if="showData['frequency']"
+      v-html="showData['frequency']">
     </span>
   </div>
 </template>
 <script>
-import GetLang from "@global-modules/LanguageSystem.js";
-
 export default {
-  props: ['showData'],
-  methods: {
-    langText(v, vs) {
-      return GetLang('Skill Query/Branch/' + v, vs);
-    }
-  }
-}
+  props: ['showData']
+};
 </script>
 <style lang="less" scoped>
 .divider {

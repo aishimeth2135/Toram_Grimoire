@@ -21,7 +21,7 @@
           <cy-title-input iconify-name="ic-outline-category">
             <input type="text" ref="searchText" :placeholder="langText('append equipment/search equipment placeholder')" @keyup.enter="updateSearchResult" />
             <cy-button iconify-name="bx-bx-search-alt-2" @click="updateSearchResult" class="no-border single-line">
-              {{ getLangText('global/search') }}
+              {{ $parent.getLangText('global/search') }}
             </cy-button>
           </cy-title-input>
           <transition-group v-if="searchResult.length != 0" name="flip-list" class="search-result" tag="div" mode="out-in">
@@ -38,15 +38,15 @@
           <div class="search-result-selected bottom-menu">
             <div class="title">
               <cy-button type="line" class="no-border" iconify-name="mdi-checkbox-multiple-blank-circle" @click="searchResultSelectedVisible = !searchResultSelectedVisible">
-                {{ langText('append equipment/search equipment result: selected title', [appendEquipmentSelectedNumber]) }}
+                {{ langText('append equipment/search equipment result: selected title', [searchResultSelected.length]) }}
                 <template v-slot:content-right>
-                  <cy-icon-text :iconify-name="appendEquipmentWindowState.searchResultSelectedVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" />
+                  <cy-icon-text :iconify-name="searchResultSelectedVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" />
                 </template>
               </cy-button>
             </div>
             <transition name="fade">
-              <transition-group v-show="appendEquipmentWindowState.searchResultSelectedVisible" name="flip-list" class="content" tag="div">
-                <cy-button v-for="(data, i) in appendEquipmentWindowState.searchResultSelected" type="line" class="inline" :iconify-name="data.categoryIcon" @click="searchResultSelectedCancel(i)" :key="data.origin.id">
+              <transition-group v-show="searchResultSelectedVisible" name="flip-list" class="content" tag="div">
+                <cy-button v-for="(data, i) in searchResultSelected" type="line" class="inline" :iconify-name="data.categoryIcon" @click="searchResultSelectedCancel(i)" :key="data.origin.id">
                   {{ data.origin.name }}
                   <template v-slot:content-right>
                     <cy-icon-text iconify-name="ic-round-close" />
@@ -56,10 +56,10 @@
             </transition>
             <div class="tail-buttons" v-show="searchResultSelected.length > 0">
               <cy-button class="no-border" iconify-name="ic-round-done" @click="handleSelectedEquipments('append')">
-                {{ getLangText('global/confirm') }}
+                {{ $parent.getLangText('global/confirm') }}
               </cy-button>
               <cy-button class="no-border" iconify-name="ic-round-clear" @click="handleSelectedEquipments('clear')">
-                {{ getLangText('global/clear') }}
+                {{ $parent.getLangText('global/clear') }}
               </cy-button>
             </div>
           </div>
@@ -71,22 +71,25 @@
   </cy-window>
 </template>
 <script>
+import Grimoire from "@Grimoire";
+import ShowMessage from "@global-modules/ShowMessage.js";
+
 export default {
   props: ['visible'],
   data() {
     return {
-      action: '',
+      action: 'select-mode',
       searchResult: [],
       searchResultSelected: [],
       searchResultSelectedVisible: false
     };
-  }
+  },
   methods: {
     handleSelectedEquipments(action) {
       const state = this.appendEquipmentWindowState;
 
       if (action == 'append') {
-        this.$parents.equipments.push(...this.searchResultSelected.map(p => p.origin));
+        this.$parent.equipments.push(...this.searchResultSelected.map(p => p.origin));
         ShowMessage(this.langText('Warn/append equipments successfully', [this.searchResultSelected.length]));
         this.searchResultSelected = [];
         this.closeWindow();
@@ -146,10 +149,12 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@deep-operator: ~'>>>';
+
 .append-equipment--search {
   position: relative;
 
-  >.search-result {
+  > .search-result {
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
@@ -157,8 +162,8 @@ export default {
     padding: 1rem 0;
   }
 
-  >.search-result-selected {
-    >.title {
+  > .search-result-selected {
+    > .title {
       position: sticky;
       top: 0;
       background-color: var(--white);

@@ -16,10 +16,11 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'public', 'dist'),
-    filename: '[name].min.js'
+    filename: '[name].min.js',
+    publicPath: 'dist/'
   },
   devServer: {
-    contentBase: './public',
+    contentBase: './public/',
     hot: true,
     inline: true,
     historyApiFallback: true

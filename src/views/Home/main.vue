@@ -3,15 +3,12 @@
     <section class="main">
       <div class="title">Cy's Grimoire</div>
     </section>
-    <section>
+    <section class="link-buttons">
       <div v-for="(data, i) in columns" class="column">
         <router-link tag="div" :to="data.path" class="title">
           <div class="text">{{ langText(data.name + '/title') }}</div>
           <iconify-icon :name="data.icon" class="icon" />
         </router-link>
-        <!-- <div class="content">
-          {{ langText(data.name + '/content') }}
-        </div> -->
       </div>
     </section>
   </article>
@@ -19,7 +16,6 @@
 
 <script>
   import GetLang from "@global-modules/LanguageSystem.js";
-  import vue_iconifyIcon from "@global-vue-components/iconify-icon.vue";
 
   import init from "./init.js";
 
@@ -27,13 +23,25 @@
     data(){
       return {
         columns: [{
-            name: 'character-simulator',
+            name: 'skill-simulator',
             icon: 'mdi-rabbit',
-            path: '/character'
+            path: '/character/skill'
           }, {
             name: 'skill-query',
             icon: 'mdi-rabbit',
             path: '/skill'
+          }, {
+            name: 'item-query',
+            icon: 'mdi-rabbit',
+            path: 'item'
+          }, {
+            name: 'damage-calc',
+            icon: 'mdi-rabbit',
+            path: 'damage'
+          }, {
+            name: 'enchant-simulator',
+            icon: 'mdi-rabbit',
+            path: 'enchant'
           }
         ]
       };
@@ -45,9 +53,6 @@
       langText(v, vs){
         return GetLang('Home/' + v, vs);
       }
-    },
-    components: {
-      'iconify-icon': vue_iconifyIcon
     }
   };
 </script>
@@ -62,19 +67,26 @@
   .main {
     display: flex;
     justify-content: center;
-    padding: 6rem 0;
-    margin-bottom: 4rem;
+    padding-top: 4rem;
+    padding-bottom: 5rem;
+    margin-bottom: 3rem;
     border-bottom: 1px solid var(--primary-light-2);
     width: 100%;
 
     > .title {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
     }
+  }
+
+  .link-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
   .column {
     display: inline-block;
-    margin: 0.8rem;
+    margin: 1.5rem;
 
     > .title {
       width: 10rem;

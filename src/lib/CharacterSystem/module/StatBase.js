@@ -36,7 +36,7 @@ class StatBase {
 			processNegativeValue: null,
 			set_sign: null,
 			calc: true
-        }, config);
+    }, config);
 
 		if ( typeof v != 'number' && config.calc )
 			v = parseFloat(v);
