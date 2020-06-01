@@ -8,7 +8,7 @@
         <div style="width: 100%;height: 100%;" @mouseenter.stop="toggleSelectSkillTreeWindow(true)" />
       </template>
       <template v-slot:buttons-scope>
-        <cy-button :iconify-name="selectSkillTreeWindowState.visible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" class="inline" @click="toggleSelectSkillTreeWindow(false)"
+        <cy-button :iconify-name="selectSkillTreeWindowState.visible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" class="inline" @click="toggleSelectSkillTreeWindow()"
           @mouseenter.native.stop="toggleSelectSkillTreeWindow(true)"
           style="background-color: var(--white)">
           {{ langText('select skill') }}
@@ -774,7 +774,7 @@ export default {
   z-index: 15;
 
   .container {
-    background-color: rgba(var(--rgb-white), 0.8);
+    background-color: rgba(var(--rgb-white), 0.95);
     padding: 1rem;
     border: 1px solid var(--primary-light-2);
     box-shadow: 0.1rem 0.1rem 0.6rem 0.1rem var(--primary-light);
