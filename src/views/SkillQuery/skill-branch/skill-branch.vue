@@ -31,15 +31,22 @@
       </legend>
       <!-- == [start] buttons scope -->
       <div class="top-buttons">
-        <cy-button v-if="branch.name == 'damage'"
+        <transition-group name="top-menu-slide" appear>
+          <cy-button v-if="topMenuVisible && branch.name == 'damage'" class="btn" key="damage-detail"
           type="icon-only" :iconify-name="detailVisible ? 'bx-bxs-book-open' : 'bx-bxs-book-add'"
           @click="toggleVisible('detail')" />
-        <cy-button v-if="type == 'main' && otherEquipmentBranchDatas" type="icon-only"
+        <cy-button v-if="topMenuVisible && type == 'main' && otherEquipmentBranchDatas"
+          type="icon-only" class="btn" key="other-equipment"
           :iconify-name="otherEquipmentBranchVisible ? 'bx-bxs-down-arrow-circle' : 'bx-bxs-right-arrow-circle'"
           @click="toggleVisible('otherEquipmentBranch')" />
-        <cy-button type="icon-only" v-if="branch.history.length != 0"
+        <cy-button type="icon-only" v-if="topMenuVisible && branch.history.length != 0" class="btn"
+          key="history"
           :iconify-name="historyVisible ? 'ic-round-history-toggle-off' : 'ic-round-history'"
           @click="toggleVisible('history')" />
+        </transition-group>
+        <cy-button v-if="branch.name == 'damage' || (type == 'main' && otherEquipmentBranchDatas) ||branch.history.length != 0"
+          type="icon-only" class="btn" :class="{ 'selected': topMenuVisible }"
+          :iconify-name="topMenuVisible ? 'ic-round-menu-open' : 'ic-round-menu'" @click="toggleVisible('topMenu')" />
       </div>
       <!-- == [end] buttons scope -->
       <!-- [end] title -->
@@ -184,11 +191,11 @@
             <span class="bg-scope" v-if="suffixShowData['target']">{{ suffixShowData['target'] }}</span>
           </legend>
           <div class="text-scope" v-if="suffixShowData['caption']" v-html="suffixShowData['caption']"></div>
-          <template v-else-if="branch.name == 'damage'">
-            <div v-if="suffixShowData['ailment_name']" class="text-scope"
-              v-html="ailmentText(suffixShowData)"></div>
-            <div v-if="suffixShowData['element']" class="text-scope"
-              v-html="extraElementCaption(suffixShowData['element'])"></div>
+          <template v-else-if="branch.name == 'damage' && suffixShowData['ailment_name']">
+            <div v-if="" class="text-scope" v-html="ailmentText(suffixShowData)"></div>
+          </template>
+          <template v-else-if="branch.name == 'damage' && suffixShowData['element']">
+            <div v-if="" class="text-scope" v-html="extraElementCaption(suffixShowData['element'])"></div>
           </template>
           <stats v-else :stats="suffixShowData['@parent-branch'].stats"></stats>
         </template>
@@ -294,7 +301,8 @@ export default {
       stackValue: null,
       detailVisible: false,
       skillAreaVisible: false,
-      historyVisible: false
+      historyVisible: false,
+      topMenuVisible: false
     }
   },
   provide() {
@@ -358,6 +366,8 @@ export default {
       const p = this.branch.name;
       if (p == 'damage')
         return this.showData['title'] || this.isScoped || this.showData['element'];
+      if (p == 'heal')
+        return false;
 
       return true;
     },
@@ -856,6 +866,8 @@ export default {
       return str;
     },
     calcValueStr(str) {
+      if (!str)
+        return str;
       const skillState = this.skillState;
       const effectState = this.branch['@parent-state'];
 
@@ -995,7 +1007,11 @@ fieldset.branch {
   >.top-buttons {
     position: absolute;
     right: 0.2rem;
-    top: 0;
+    top: -0.3rem;
+
+    .btn {
+      background-color: var(--white);
+    }
   }
 }
 
@@ -1055,12 +1071,12 @@ fieldset.branch {
 }
 
 .content-line {
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
   display: flex;
   align-items: center;
 
   &+.extra-column {
-    margin-top: 0.8rem;
+    margin-top: 0.4rem;
   }
 }
 
@@ -1095,6 +1111,7 @@ fieldset.branch {
 @{deep-operator} .inline-content {
   display: inline-flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .line-button {
@@ -1135,7 +1152,7 @@ fieldset.branch {
 
     > .bottom {
       text-align: center;
-    }    
+    }
   }
 
   > .info {
@@ -1184,6 +1201,7 @@ fieldset.extra-column {
   display: inline-flex;
   align-items: center;
   line-height: 1.3rem;
+  margin: 0.2rem 0;
 
   // &.normal {
   //   //border-left: 2px solid var(--primary-light-3);
@@ -1207,5 +1225,12 @@ fieldset.extra-column {
     margin-left: 0.4rem;
     color: var(--primary-light-4);
   }
+}
+
+.top-menu-slide-enter, .top-menu-slide-leave-to {
+  margin-right: -1.8rem!important;
+}
+.top-menu-slide-enter-active, .top-menu-slide-leave-active {
+  transition: margin-right 0.5s;
 }
 </style>

@@ -7,7 +7,7 @@
         </cy-icon-text>
       </template>
       <template v-slot:buttons-scope>
-        <cy-button :iconify-name="selectSkillTreeWindowState.visible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" class="inline" @click="toggleSelectSkillTreeWindow">
+        <cy-button :iconify-name="selectSkillTreeWindowState.visible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" class="inline" @click="toggleSelectSkillTreeWindow" style="background-color: var(--white)">
           {{ langText('select skill') }}
         </cy-button>
       </template>
@@ -19,7 +19,7 @@
             </cy-button>
           </div>
           <div v-if="currentSkillTreeCategory != null"
-            style="border-top: 1px solid var(--primary-light-2); margin-top: 0.6rem;">
+            style="border-top: 1px solid var(--primary-light-2); margin-top: 0.6rem; padding-top: 0.3rem;">
             <cy-button v-for="(st, i) in currentSkillTreeCategory.skillTrees" :key="st.id" icon-id="rabbit-book" :class="{ 'selected': selectSkillTreeWindowState.currentIndex_st == i }" @click="selectSkillTree(i)">
               {{ st.name }}
             </cy-button>
