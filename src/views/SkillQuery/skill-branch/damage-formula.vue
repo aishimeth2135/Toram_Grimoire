@@ -9,8 +9,8 @@
     <span class="divider" v-if="showData['constant']"></span>
     <cy-icon-text iconify-name="ic-round-close" />
     <span class="attr-scope" v-html="showData['multiplier']"></span>
-    <cy-icon-text iconify-name="ic-round-close" v-if="showData['frequency']" />
-    <span class="attr-scope" v-if="showData['frequency']"
+    <cy-icon-text iconify-name="ic-round-close" v-if="showData['@parent-branch'].attrs['title'] == 'each'" />
+    <span class="attr-scope" v-if="showData['@parent-branch'].attrs['title'] == 'each'"
       v-html="showData['frequency']">
     </span>
   </div>

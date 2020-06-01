@@ -1,5 +1,5 @@
 <template>
-  <div class="main--" :class="rootClassList">
+  <div class="main--" v-if="!confirmHistoryDate" :class="rootClassList">
     <cy-icon-text v-if="otherEquipmentBranchVisible || historyVisible" iconify-name="bx-bxs-moon"
       style="position: absolute; top: -0.3rem;
         left: -0.7rem; --icon-width: 1.8rem; z-index: 1;
@@ -30,7 +30,9 @@
         </div>
       </legend>
       <!-- == [start] buttons scope -->
-      <div class="top-buttons">
+      <div class="top-buttons"
+        @mouseenter.stop="toggleVisible('topMenu', true)"
+        @mouseleave.stop="toggleVisible('topMenu', false)">
         <transition-group name="top-menu-slide" appear>
           <cy-button v-if="topMenuVisible && branch.name == 'damage'" class="btn" key="damage-detail"
           type="icon-only" :iconify-name="detailVisible ? 'bx-bxs-book-open' : 'bx-bxs-book-add'"
@@ -46,7 +48,7 @@
         </transition-group>
         <cy-button v-if="branch.name == 'damage' || (type == 'main' && otherEquipmentBranchDatas) ||branch.history.length != 0"
           type="icon-only" class="btn" :class="{ 'selected': topMenuVisible }"
-          :iconify-name="topMenuVisible ? 'ic-round-menu-open' : 'ic-round-menu'" @click="toggleVisible('topMenu')" />
+          :iconify-name="topMenuVisible ? 'ic-round-menu-open' : 'ic-round-menu'" />
       </div>
       <!-- == [end] buttons scope -->
       <!-- [end] title -->
@@ -63,6 +65,10 @@
           <cy-icon-text v-if="showData['title']" class="condition-scope text-small light-text"
             iconify-name="bx-bx-game">
             {{ showData['title'] }}
+          </cy-icon-text>
+          <cy-icon-text v-if="showData['frequency']" class="condition-scope text-small light-text"
+            iconify-name="bi-circle-square">
+            <span v-html="showData['frequency']"></span>
           </cy-icon-text>
           <cy-icon-text v-if="showData['element']" :iconify-name="elementIconName"
             class="condition-scope text-small light-text">
@@ -251,7 +257,7 @@
                 {{ showData['name'] }}
               </cy-icon-text>
             </template>
-            <template v-if="showData['unit']">
+            <template v-if="showData['unit']" v-slot:unit>
               <span>{{ showData['unit'] }}</span>
             </template>
           </cy-input-counter>
@@ -321,6 +327,9 @@ export default {
     this.handleTagButton(this.$el);
   },
   computed: {
+    confirmHistoryDate() {
+      return this.branch.suffix.find(p => p.name == 'history');
+    },
     elementIconName(v) {
       return {
         'neutral': 'bx-bx-circle',
@@ -449,13 +458,20 @@ export default {
           name: ['range_damage', 'unsheathe_attack'],
           type: 'bool'
         });
-        this.calcValueStr(attrs['frequency']) > 1 && handleList.push('judgment', 'frequency_judgment');
+        this.calcValueStr(attrs['frequency']) > 1 && handleList.push('judgment', {
+          name: 'frequency_judgment',
+          convert: v => {
+            if (v == 'auto')
+              return bch.attrs['title'] == 'normal' ? 'single' : 'multiple';
+            return v;
+          }
+        });
       }
 
       handleList.forEach(item => {
         const default_icon = 'ic-outline-info';
         if (typeof item == 'object') {
-          let { name, type = 'normal', icon } = item;
+          let { name, type = 'normal', icon, convert } = item;
           name = Array.isArray(name) ? name : [name];
           if (!icon) {
             icon = {
@@ -467,7 +483,9 @@ export default {
             } [type] || { '@default': default_icon };
           }
           name.forEach(k => {
-            const v = this.branchAttrToLangText(bch, attrs, k, { prefix: '-detail' });
+            const tmp = { [k]: bch.attrs[k] };
+            tmp[k] = convert ? convert(tmp[k]) : tmp[k];
+            const v = this.branchAttrToLangText(bch, tmp, k, { prefix: '-detail' });
             let classList = null;
             if (type == 'bool') {
               classList = attrs[k] == '1' ? null : ['dark'];
@@ -591,7 +609,7 @@ export default {
             validation: v => v != '0'
           }, {
             name: 'frequency',
-            validation: v => parseInt(v) > 1 && data['title'] != 'normal' && data['title'] != 'normal_attack',
+            validation: v => parseInt(v) > 1,
             valueOnly: true
           }, {
             name: 'name',
@@ -608,6 +626,7 @@ export default {
             validation: v => v == 'normal_attack'
           });
           langTextList.push('base', 'damage_type', 'type', 'title', 'element');
+          data['title'] != 'each' && langTextList.push({ name: 'frequency', type: 'value' });
 
           // skill area
           handleValueList.push({

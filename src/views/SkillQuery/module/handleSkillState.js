@@ -217,10 +217,10 @@ export default function(skill) {
           };
           return false;
         }
-        if (p.name == 'history') {
-          bch.history.push(createHistoryData(p, true));
-          return false;
-        }
+        // if (p.name == 'history') {
+        //   bch.history.push(createHistoryData(p, true));
+        //   return false;
+        // }
         return true;
       });
 
@@ -310,7 +310,7 @@ function setBranchAttributeDefault(branchs) {
       'title': 'normal',
       'element': 'none',
       'judgment': 'common',
-      'frequency_judgment': 'single',
+      'frequency_judgment': 'auto',
       'unsheathe_attack': '0',
       'range_damage': 'none',
       'is_place': '0',
