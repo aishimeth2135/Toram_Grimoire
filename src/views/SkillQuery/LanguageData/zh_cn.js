@@ -87,8 +87,8 @@ export default function(){
             'negative': '自身后方$m处'
           },
           'end_position_offsets': {
-            'positive': '目标前方$0处',
-            'negative': '目标后方$0处'
+            'positive': '目标后方$0处',
+            'negative': '目标前方$0处'
           },
           'element': {
             'neutral': '无属性',
