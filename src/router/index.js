@@ -10,8 +10,6 @@ import DamageCalc from "./Calculation/damage/app.js";
 import Enchant from "./Enchant/app.js";
 
 import Page404 from "./Page404/app.js";
-// init before create router
-import init from "./init.js";
 
 // stores
 import navStore from "@store/nav.js";
@@ -19,8 +17,6 @@ import leftMenuStore from "@store/left-menu.js";
 
 // global modules
 import GetLang from "@global-modules/LanguageSystem.js";
-
-init();
 
 Vue.use(VueRouter);
 

@@ -1,5 +1,8 @@
 import "./assets/css/SaveLoad/main.css";
 
+import routerInit from "./router/init.js";
+routerInit();
+
 import Vue from "vue";
 import Vuex from 'vuex'
 
