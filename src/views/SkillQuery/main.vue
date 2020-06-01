@@ -31,39 +31,47 @@
       </template>
     </cy-sticky-header>
     <div class="main">
-      <template v-if="currentSkillData">
-        <div class="top-content">
-          <div class="effect-attrs">
-            <table>
-              <tr v-for="(data, i) in currentSkillAttrs" :key="data.id">
-                <td>
-                  <cy-icon-text :iconify-name="data.icon">{{ data.name }}</cy-icon-text>
-                </td>
-                <td>{{ data.value }}</td>
-              </tr>
-            </table>
-          </div>
-          <!-- <fieldset v-if="currentSkillData && currentSkillData.historyList.length != 0"
-            class="select-history unfold-fieldset" :class="{ unfold: selectHistoryVisble }">
-            <legend>
-              <cy-button iconify-name="ic-round-history" class="inline"
-                @click="toggleSelectHistoryVisble">
-                {{ langText('historical record') }}
-              </cy-button>
-            </legend>
-            <transition name="fade">
-              <div v-show="selectHistoryVisble" class="date-list">
-                <cy-button v-for="(his, i) in currentSkillData.historyList" type="line" iconify-name="ic-round-history" :key="his" @click="selectHistory(i)">
-                  {{ his }}
+      <template v-if="currentSkillState">
+        <template v-if="currentSkillData">
+          <div class="top-content">
+            <div class="effect-attrs">
+              <table>
+                <tr v-for="(data, i) in currentSkillAttrs" :key="data.id">
+                  <td>
+                    <cy-icon-text :iconify-name="data.icon">{{ data.name }}</cy-icon-text>
+                  </td>
+                  <td>{{ data.value }}</td>
+                </tr>
+              </table>
+            </div>
+            <!-- <fieldset v-if="currentSkillData && currentSkillData.historyList.length != 0"
+              class="select-history unfold-fieldset" :class="{ unfold: selectHistoryVisble }">
+              <legend>
+                <cy-button iconify-name="ic-round-history" class="inline"
+                  @click="toggleSelectHistoryVisble">
+                  {{ langText('historical record') }}
                 </cy-button>
-              </div>
-            </transition>
-          </fieldset> -->
-        </div>
-        <div class="skill-branchs">
-          <transition-group name="branch-fade" mode="out-in" appear>
-            <skill-branch v-for="(branch, i) in currentSkillData.branchs" v-if="branch.visible" :key="branch.iid" type="main" :branch="branch" :skill-state="currentSkillState" />
-          </transition-group>
+              </legend>
+              <transition name="fade">
+                <div v-show="selectHistoryVisble" class="date-list">
+                  <cy-button v-for="(his, i) in currentSkillData.historyList" type="line" iconify-name="ic-round-history" :key="his" @click="selectHistory(i)">
+                    {{ his }}
+                  </cy-button>
+                </div>
+              </transition>
+            </fieldset> -->
+          </div>
+          <div class="skill-branchs">
+            <transition-group name="branch-fade" mode="out-in" appear>
+              <skill-branch v-for="(branch, i) in currentSkillData.branchs" v-if="branch.visible" :key="branch.iid" type="main" :branch="branch" :skill-state="currentSkillState" />
+            </transition-group>
+          </div>
+        </template>
+        <div v-else class="default-content">
+          <div class="container" @click="toggleSelectSkillTreeWindow">
+            <cy-icon-text icon-id="potum" class="icon" />
+            <div v-html="langText('default message: equipment conditions')"></div>
+          </div>
         </div>
         <div class="bottom-menu">
           <div class="top-content">
@@ -71,7 +79,7 @@
               <div class="equipment-container" v-show="!skillStates.optionsWindowVisible">
                 <span class="column" v-for="(data, i) in equipmentState.categoryList"
                   v-if="equipmentState[data.shortName + 'List'].length != 0">
-                  <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.name)" class="inline"
+                  <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.shortName)" class="inline"
                     style="margin-right: 0.7rem;">
                     {{ equipmentState[data.shortName] | getEquipmentText(data.name) }}
                   </cy-button>
@@ -284,16 +292,10 @@ export default {
         } else
           value = h(value);
 
-        return {
-          type: fr.type,
-          value
-        };
+        return { type: fr.type, value };
       });
 
-      return {
-        name: cur.name,
-        frames: frs
-      };
+      return { name: cur.name, frames: frs };
     },
     currentSkillAttrs() {
       const datas = {
@@ -449,6 +451,34 @@ export default {
     toggleSelectHistoryVisble() {
       this.selectHistoryVisble = !this.selectHistoryVisble;
     },
+    /**
+     * confirm the type of main-weapon and sub-weapon.is correct and fix.
+     * (例如主手裝拳套，副手就不能裝拳套)
+     * @param  {String} target ['main' | 'sub'] 會以target為主，並更改另一個武器來讓主副手都符合條件
+     * @return {void}
+     */
+    confirmWeaponType(target) {
+      const check = () => {
+        const main = this.equipmentState.main,
+          sub = this.equipmentState.sub;
+        const t = [];
+        switch (main) {
+          case -1: case 0: case 3: case 4:
+            t.push(4);
+          case 6:
+            t.push(1, 3);
+          case 7: case 8:
+            t.push(0, 2);
+            break;
+          case 2:
+            t.push(0, 5);
+        }
+        t.push(6, -1);
+        return t.includes(sub);
+      };
+      while (!check())
+        this.toggleEquipmentType(target == 'main' ? 'sub' : 'main', false);
+    },
     checkEquipment(eq) {
       const eqs = this.equipmentState;
       /* 通用 */
@@ -503,21 +533,19 @@ export default {
       }
       this.setSkillLevel(res);
     },
-    toggleEquipmentType(type) {
-      const p = {
-        'main-weapon': 'main',
-        'sub-weapon': 'sub',
-        'body-armor': 'body'
-      } [type];
-
+    toggleEquipmentType(type, flag=true) {
+      const p = type;
       const state = this.equipmentState;
       const list = state[p + 'List'];
       const idx = list.indexOf(state[p]) + 1;
       state[p] = list[idx == list.length ? 0 : idx];
+
+      flag && this.confirmWeaponType(p);
     },
     selectEquipment(target, id) {
       this.equipmentState[target] = id;
       this.updateSkillState();
+      this.confirmWeaponType(target);
     },
     updateSkillState(idx) {
       const state = this.skillStates;
@@ -565,6 +593,8 @@ export default {
       state.main = state.mainList.length != 0 ? state.mainList[0] : -1;
       state.sub = state.subList.length != 0 ? state.subList[0] : -1;
       state.body = state.bodyList.length != 0 ? state.bodyList[0] : -1;
+
+      this.confirmWeaponType('main');
 
       this.updateSkillState();
     },

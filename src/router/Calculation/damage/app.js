@@ -20,7 +20,7 @@ export default {
   meta: {
     leftMenuViewButtons: [{
       title: () => GetLang('Page Title/calculation/damage'),
-      icon: 'bi-music-note-beamed',
+      icon: 'mdi-sword',
       path: ''
     }]
   },

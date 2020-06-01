@@ -312,7 +312,7 @@ function setBranchAttributeDefault(branchs) {
       'judgment': 'common',
       'frequency_judgment': 'single',
       'unsheathe_attack': '0',
-      'range_damage': '1',
+      'range_damage': 'none',
       'is_place': '0',
       'radius': '1',
       'start_position_offsets': '0',

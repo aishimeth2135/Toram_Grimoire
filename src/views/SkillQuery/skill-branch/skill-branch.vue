@@ -460,8 +460,9 @@ export default {
           if (!icon) {
             icon = {
               'bool': {
-                '1': 'eva-checkmark-circle-2-outline',
-                '0': 'eva-close-circle-outline'
+                '1': 'ic-round-check',
+                '0': 'ic-round-close',
+                'none': 'mdi-help'
               }
             } [type] || { '@default': default_icon };
           }
