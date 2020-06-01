@@ -1,10 +1,12 @@
 <template>
   <div class="branch-detail">
-    <cy-icon-text v-for="(data, i) in detailShowData['@data-list']" class="detail-item line"
-      :iconify-name="data.icon" :key="data.id"
-      :class="data.classList ? ['text-small', ...data.classList] : ['text-small']">
-      <span v-html="data.value"></span>
-    </cy-icon-text>
+    <transition-group name="slide-down" appear>
+      <cy-icon-text v-for="(data, i) in detailShowData['@data-list']" class="detail-item line"
+        :iconify-name="data.icon" :key="data.id"
+        :class="data.classList ? ['text-small', ...data.classList] : ['text-small']">
+        <span v-html="data.value"></span>
+      </cy-icon-text>
+    </transition-group>
   </div>
 </template>
 <script>
@@ -18,13 +20,20 @@ export default {
   padding-bottom: 0.4rem;
   margin-bottom: 0.5rem;
 
-  > .detail-item {
+  .detail-item {
     margin-right: 0.6rem;
     color: var(--primary-light-4);
+    display: flex;
 
     &.dark {
       color: var(--primary-gray);
     }
   }
+}
+.slide-down-enter, .slide-down-leave-to {
+  margin-top: -0.8rem!important;
+}
+.slide-down-enter-active, .slide-down-leave-active {
+  transition: margin-top 0.5s ease;
 }
 </style>

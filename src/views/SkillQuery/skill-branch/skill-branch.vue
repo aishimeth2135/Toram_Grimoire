@@ -53,9 +53,7 @@
       <!-- == [end] buttons scope -->
       <!-- [end] title -->
       <!-- [start] branch detail -->
-      <transition name="fade">
-        <branch-detail v-if="detailVisible" :detail-show-data="detailShowData" />
-      </transition>
+      <branch-detail v-if="detailVisible" :detail-show-data="detailShowData" />
       <cy-icon-text v-if="isMark" iconify-name="mdi-leaf" class="prefix-icon" />
       <cy-icon-text v-if="isMark" iconify-name="cib-overleaf" class="suffix-icon" />
       <!-- [end] branch detail -->
@@ -462,7 +460,7 @@ export default {
           name: 'frequency_judgment',
           convert: v => {
             if (v == 'auto')
-              return bch.attrs['title'] == 'normal' ? 'single' : 'multiple';
+              return bch.attrs['title'] != 'each' ? 'single' : 'multiple';
             return v;
           }
         });
@@ -1094,13 +1092,15 @@ fieldset.branch {
   margin-bottom: 0.3rem;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 
   &+.extra-column {
-    margin-top: 0.4rem;
+    margin-top: 0.3rem;
   }
 }
 
 .condition-scope {
+  margin: 0.1rem 0;
   margin-right: 0.5rem;
   display: inline-flex;
   align-items: center;
