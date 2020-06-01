@@ -9,6 +9,7 @@ export default function(){
       'skill level': '技能等級',
       'character level': '角色等級',
       'default message': '請點選這裡或右上角的按鈕來選擇一個技能。',
+      'default message: equipment conditions': '所選取的技能不符合當前的裝備。<br />請更改裝備類型，或是點選這裡或右上角的按鈕來選擇其他技能。',
       'equipment': {
         'main-weapon': ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍', '空手'],
         'sub-weapon': ['箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍', '無裝備'],
@@ -109,6 +110,22 @@ export default function(){
           'start_position_offsets: title': '終點位置',
           'end_position_offsets: title': '起點位置'
         },
+        'damage: proration': {
+          'damage: title': '傷害慣性',
+          'proration: title': '造成慣性',
+          'damage': {
+            'physical': '物理',
+            'magic': '魔法',
+            'normal_attack': '一般攻擊',
+            'none': '不受慣性影響'
+          },
+          'proration': {
+            'physical': '物理',
+            'magic': '魔法',
+            'normal_attack': '一般攻擊',
+            'none': '不造成慣性'
+          }
+        },
         'damage-detail': {
           'judgment': {
             'common': '每下傷害共用判定',
@@ -120,11 +137,13 @@ export default function(){
           },
           'unsheathe_attack': {
             'true': '受拔刀傷害影響',
-            'false': '不受拔刀傷害影響'
+            'false': '不受拔刀傷害影響',
+            'none': '未確認是否受拔刀傷害影響'
           },
           'range_damage': {
             'true': '受距離威力影響',
-            'false': '受距離威力影響'
+            'false': '受距離威力影響',
+            'none': '未確認是否受距離威力影響'
           },
           'is_place': {
             'true': '設置型技能'
