@@ -5,14 +5,18 @@
         <cy-icon-text v-if="currentSkillState" iconify-name="bx-bxs-book-alt">
           {{ currentSkillState.skill.name }}
         </cy-icon-text>
+        <div style="width: 100%;height: 100%;" @mouseenter.stop="toggleSelectSkillTreeWindow(true)" />
       </template>
       <template v-slot:buttons-scope>
-        <cy-button :iconify-name="selectSkillTreeWindowState.visible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" class="inline" @click="toggleSelectSkillTreeWindow" style="background-color: var(--white)">
+        <cy-button :iconify-name="selectSkillTreeWindowState.visible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" class="inline" @click="toggleSelectSkillTreeWindow(false)"
+          @mouseenter.native.stop="toggleSelectSkillTreeWindow(true)"
+          style="background-color: var(--white)">
           {{ langText('select skill') }}
         </cy-button>
       </template>
       <template v-slot:float-menu>
-        <div v-show="selectSkillTreeWindowState.visible" class="menu-container width-wide">
+        <div v-show="selectSkillTreeWindowState.visible" class="menu-container width-wide"
+          @mouseleave.stop="toggleSelectSkillTreeWindow(false)">
           <div>
             <cy-button v-for="(stc, i) in skillRoot.skillTreeCategorys" :key="stc.id" iconify-name="bx-bxs-book-content" :class="{ 'selected': selectSkillTreeWindowState.currentIndex_stc == i }" @click="selectSkillTreeCategory(i)">
               {{ stc.name }}
@@ -379,8 +383,9 @@ export default {
     }
   },
   methods: {
-    toggleSelectSkillTreeWindow() {
-      this.selectSkillTreeWindowState.visible = !this.selectSkillTreeWindowState.visible;
+    toggleSelectSkillTreeWindow(force) {
+      force = force === void 0 ? !this.selectSkillTreeWindowState.visible : force
+      this.selectSkillTreeWindowState.visible = force;
     },
     createTagButtons(str) {
       return str.replace(/#([^\s]+)\s(\w?)/g, (m, m1, m2) => {
@@ -396,6 +401,8 @@ export default {
       this.tagState.tags.pop();
     },
     handleTagButton(el) {
+      if (!el.querySelector)
+        return;
       const self = this;
       const enter = function(e) {
         self.clearTag();

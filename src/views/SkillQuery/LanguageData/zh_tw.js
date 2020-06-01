@@ -79,6 +79,9 @@ export default function(){
           'title': {
             'normal_attack': '一般攻擊的傷害提升'
           },
+          'frequency': {
+            'positive': '總傷害拆成$0'
+          },
           'ailment text': '有$0機率使敵人$1。',
           'effective_area': {
             'circle': '圓形', 'line': '直線', 'sector': '扇形'
