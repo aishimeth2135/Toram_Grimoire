@@ -615,13 +615,18 @@ export default {
 
     .effect-attrs {
       padding-left: 0.8rem;
+
+      table {
+        vertical-align: middle;
+      }
+
       tr {
-        >td:nth-child(1) {
+        > td:nth-child(1) {
           padding-right: 0.6rem;
           border-right: 1px solid var(--primary-light);
         }
 
-        >td:nth-child(2) {
+        > td:nth-child(2) {
           padding-left: 0.6rem;
           color: var(--primary-light-4);
         }
