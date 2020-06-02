@@ -35,14 +35,6 @@ export default {
         return sd.title + this.highlightValueStr(q.statValue(v), ov, p.statValue(), {
           extraHandle: v => sign + v + sd.tail
         });
-        // let v = this.calcValueStr(q.statValue());
-        // q.statValue(v);
-        // if (/\(?[\d.-]+\)?/.test(v)) {
-        //   v = v.replace(/\(?([\d.-]+)\)?/, (m, m1) => m1);
-        //   console.log(v);
-        //   return q.show();
-        // }
-        // return q.show({ calc: false });
       });
     }
   }

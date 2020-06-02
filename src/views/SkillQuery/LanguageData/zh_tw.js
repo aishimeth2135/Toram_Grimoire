@@ -138,7 +138,7 @@ export default function(){
             'single': '限傷時視為單次傷害',
             'multiple': '限傷時視為多段傷害'
           },
-          'unsheathe_attack': {
+          'unsheathe_damage': {
             'true': '受拔刀傷害影響',
             'false': '不受拔刀傷害影響',
             'none': '未確認是否受拔刀傷害影響'

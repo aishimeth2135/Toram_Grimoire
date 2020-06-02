@@ -1,5 +1,5 @@
 <template>
-  <div class="main--" v-if="!confirmHistoryDate" :class="rootClassList">
+  <div class="main--" v-show="!confirmHistoryDate" :class="rootClassList">
     <cy-icon-text v-if="otherEquipmentBranchVisible || historyVisible" iconify-name="bx-bxs-moon"
       style="position: absolute; top: -0.3rem;
         left: -0.7rem; --icon-width: 1.8rem; z-index: 1;
@@ -35,16 +35,16 @@
         @mouseleave.stop="toggleVisible('topMenu', false)">
         <transition-group name="top-menu-slide" appear>
           <cy-button v-if="topMenuVisible && branch.name == 'damage'" class="btn" key="damage-detail"
-          type="icon-only" :iconify-name="detailVisible ? 'bx-bxs-book-open' : 'bx-bxs-book-add'"
-          @click="toggleVisible('detail')" />
-        <cy-button v-if="topMenuVisible && type == 'main' && otherEquipmentBranchDatas"
-          type="icon-only" class="btn" key="other-equipment"
-          :iconify-name="otherEquipmentBranchVisible ? 'bx-bxs-down-arrow-circle' : 'bx-bxs-right-arrow-circle'"
-          @click="toggleVisible('otherEquipmentBranch')" />
-        <cy-button type="icon-only" v-if="topMenuVisible && branch.history.length != 0" class="btn"
-          key="history"
-          :iconify-name="historyVisible ? 'ic-round-history-toggle-off' : 'ic-round-history'"
-          @click="toggleVisible('history')" />
+            type="icon-only" :iconify-name="detailVisible ? 'bx-bxs-book-open' : 'bx-bxs-book-add'"
+            @click="toggleVisible('detail')" />
+          <cy-button v-if="topMenuVisible && type == 'main' && otherEquipmentBranchDatas"
+            type="icon-only" class="btn" key="other-equipment"
+            :iconify-name="otherEquipmentBranchVisible ? 'bx-bxs-down-arrow-circle' : 'bx-bxs-right-arrow-circle'"
+            @click="toggleVisible('otherEquipmentBranch')" />
+          <cy-button type="icon-only" v-if="topMenuVisible && branch.history.length != 0" class="btn"
+            key="history"
+            :iconify-name="historyVisible ? 'ic-round-history-toggle-off' : 'ic-round-history'"
+            @click="toggleVisible('history')" />
         </transition-group>
         <cy-button v-if="branch.name == 'damage' || (type == 'main' && otherEquipmentBranchDatas) ||branch.history.length != 0"
           type="icon-only" class="btn" :class="{ 'selected': topMenuVisible }"
@@ -453,7 +453,7 @@ export default {
       if (bch.name == 'damage') {
         attrs['is_place'] == '1' && handleList.push('is_place');
         handleList.push({
-          name: ['range_damage', 'unsheathe_attack'],
+          name: ['range_damage', 'unsheathe_damage'],
           type: 'bool'
         });
         this.calcValueStr(attrs['frequency']) > 1 && handleList.push('judgment', {
@@ -481,6 +481,8 @@ export default {
             } [type] || { '@default': default_icon };
           }
           name.forEach(k => {
+            if (k == 'unsheathe_damage')
+              console.log(bch);
             const tmp = { [k]: bch.attrs[k] };
             tmp[k] = convert ? convert(tmp[k]) : tmp[k];
             const v = this.branchAttrToLangText(bch, tmp, k, { prefix: '-detail' });

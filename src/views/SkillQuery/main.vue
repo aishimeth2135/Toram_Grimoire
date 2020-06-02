@@ -426,6 +426,8 @@ export default {
       };
       el.querySelectorAll('.' + this.tagState.buttonClassName)
         .forEach(p => {
+          if (!Grimoire.TagSystem.tagList.find(a => a.name == a.innerText))
+            return;
           p.addEventListener('mouseenter', enter);
           p.addEventListener('mouseleave', leave);
           p.addEventListener('click', click);
