@@ -145,7 +145,7 @@ export default function(){
           },
           'range_damage': {
             'true': '受距離威力影響',
-            'false': '受距離威力影響',
+            'false': '不受距離威力影響',
             'none': '未確認是否受距離威力影響'
           },
           'is_place': {

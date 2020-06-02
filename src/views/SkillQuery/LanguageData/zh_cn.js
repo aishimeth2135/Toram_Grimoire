@@ -9,6 +9,7 @@ export default function(){
       'skill level': '技能等级',
       'character level': '角色等级',
       'default message': '请点选这里或右上角的按钮来选择一个技能。',
+      'default message: equipment conditions': '所选取的技能不符合当前的装备。<br />请更改装备类型，或是点选这里或右上角的按钮来选择其他技能。',
       'equipment': {
         'main-weapon': ['单手剑', '双手剑', '弓', '弩', '法杖', '魔导具', '拳套', '旋风枪', '拔刀剑', '双剑', '空手'],
         'sub-weapon': ['箭矢', '盾牌', '小刀', '魔导具', '拳套', '拔刀剑', '无装备'],
@@ -78,6 +79,9 @@ export default function(){
           'title': {
             'normal_attack': '一般攻击的伤害提升'
           },
+          'frequency': {
+            'positive': '总伤害拆成$0'
+          },
           'ailment text': '有$0机率使敌人$1。',
           'effective_area': {
             'circle': '圆形', 'line': '直线', 'sector': '扇形'
@@ -109,6 +113,22 @@ export default function(){
           'start_position_offsets: title': '终点位置',
           'end_position_offsets: title': '起点位置'
         },
+        'damage: proration': {
+          'damage: title': '伤害惯性',
+          'proration: title': '造成惯性',
+          'damage': {
+            'physical': '物理',
+            'magic': '魔法',
+            'normal_attack': '一般攻击',
+            'none': '不受惯性影响'
+          },
+          'proration': {
+            'physical': '物理',
+            'magic': '魔法',
+            'normal_attack': '一般攻击',
+            'none': '不造成惯性'
+          }
+        },
         'damage-detail': {
           'judgment': {
             'common': '每下伤害共用判定',
@@ -120,11 +140,13 @@ export default function(){
           },
           'unsheathe_attack': {
             'true': '受拔刀伤害影响',
-            'false': '不受拔刀伤害影响'
+            'false': '不受拔刀伤害影响',
+            'none': '未确认是否受拔刀伤害影响'
           },
           'range_damage': {
             'true': '受距离威力影响',
-            'false': '受距离威力影响'
+            'false': '不受距离威力影响',
+            'none': '未确认是否受距离威力影响'
           },
           'is_place': {
             'true': '设置型技能'
