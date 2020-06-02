@@ -396,8 +396,6 @@ export default {
       });
     },
     previousTag() {
-      console.warn('pop...');
-      console.log(this.tagState.tags);
       this.tagState.tags.pop();
     },
     handleTagButton(el) {
@@ -426,7 +424,7 @@ export default {
       };
       el.querySelectorAll('.' + this.tagState.buttonClassName)
         .forEach(p => {
-          if (!Grimoire.TagSystem.tagList.find(a => a.name == a.innerText))
+          if (!Grimoire.TagSystem.tagList.find(a => a.name == p.innerText))
             return;
           p.addEventListener('mouseenter', enter);
           p.addEventListener('mouseleave', leave);
@@ -434,7 +432,6 @@ export default {
         });
     },
     appendTag(name) {
-      console.log('append...');
       const list = Grimoire.TagSystem.tagList;
       const p = list.find(p => p.name == name);
       if (p) {
@@ -467,12 +464,16 @@ export default {
      * @return {void}
      */
     confirmWeaponType(target) {
+      if (target != 'main' && target != 'sub')
+        return;
       const check = () => {
         const main = this.equipmentState.main,
           sub = this.equipmentState.sub;
+        if (main == -1 || sub == -1)
+          return true;
         const t = [];
         switch (main) {
-          case -1: case 0: case 3: case 4:
+          case 10: case 0: case 3: case 4:
             t.push(4);
           case 6:
             t.push(1, 3);
@@ -481,12 +482,16 @@ export default {
             break;
           case 2:
             t.push(0, 5);
+            break;
+          case 5:
+            t.push(2);
         }
-        t.push(6, -1);
+        t.push(6);
         return t.includes(sub);
       };
-      while (!check())
+      while (!check()) {
         this.toggleEquipmentType(target == 'main' ? 'sub' : 'main', false);
+      }
     },
     checkEquipment(eq) {
       const eqs = this.equipmentState;
@@ -604,7 +609,7 @@ export default {
       state.body = state.bodyList.length != 0 ? state.bodyList[0] : -1;
 
       this.confirmWeaponType('main');
-
+      console.log(this.equipmentState);
       this.updateSkillState();
     },
     selectSkillTreeCategory(idx) {

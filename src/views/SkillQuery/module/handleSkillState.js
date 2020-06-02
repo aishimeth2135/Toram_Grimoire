@@ -78,7 +78,7 @@ export default function(skill) {
         target['@stat-overwrite-list'].push(stat.baseName());
       } else {
         if (stat.value === '') {
-          target.stats.splice(idx, 0);
+          target.stats.splice(idx, 1);
           target['@stat-delete-list'].push(stat.baseName());
         } else {
           findStat.statValue(stat.value);
@@ -136,10 +136,8 @@ export default function(skill) {
       });
     }
 
-    state.branchs.forEach(p => {
-      p.empty = CY.object.isEmpty(p.attrs) && p.stats.length == 0;
-      p['@parent-state'] = state;
-    });
+    state.branchs = state.branchs.filter(p => !(CY.object.isEmpty(p.attrs) && p.stats.length == 0));
+    state.branchs.forEach(p => p['@parent-state'] = state);
 
     // init of state attrs
     convertStateAttrs(state);
@@ -301,12 +299,12 @@ function setBranchAttributeDefault(branchs) {
     'damage': {
       'constant': '0',
       'multiplier': '0',
+      'extra_constant': '0',
       'type': 'single',
       'damage_type': 'physical',
       'base': 'auto',
       'frequency': '1',
       'end_position': 'target',
-      'effective_area': 'circle',
       'title': 'normal',
       'element': 'none',
       'judgment': 'common',
@@ -314,6 +312,7 @@ function setBranchAttributeDefault(branchs) {
       'unsheathe_damage': '0',
       'range_damage': 'none',
       'is_place': '0',
+      'effective_area': 'circle',
       'radius': '1',
       'start_position_offsets': '0',
       'end_position_offsets': '0'
@@ -325,7 +324,12 @@ function setBranchAttributeDefault(branchs) {
       'condition': 'auto',
       'type': 'self',
       'is_place': '0',
-      'radius': '1'
+      'radius': '1',
+      'end_position': 'self',
+      'effective_area': 'circle',
+      'radius': '1',
+      'start_position_offsets': '0',
+      'end_position_offsets': '0'
     },
     'heal': {
       'target': 'self',

@@ -1,13 +1,29 @@
-export default function(str, { skillState, effectState }) {
+export default function(str, { skillState, effectState, branch }) {
   if (!str)
     return '0';
   const slv = skillState.slv,
-    clv = skillState.clv,
-    stack = effectState.stackStates.map(p => p.value);
+    clv = skillState.clv;
 
   str = str.replace(/SLv/g, slv)
-    .replace(/CLv/g, clv)
-    .replace(/stack(?!\[)/g, 'stack[0]');
+    .replace(/CLv/g, clv);
+
+  let stack = null;
+  if (branch && branch.attrs['stack_id']) {
+    const ss = effectState.stackStates;
+    stack = branch.attrs['stack_id'].split(/\s*,\s*/)
+      .map(p => parseInt(p, 10))
+      .map(p => {
+        const t = ss.find(a => a.id == p);
+        return t ? t.value : 0;
+      });
+    str = str.replace(/stack(?!\[)/g, 'stack[0]');
+  } else {
+    str = str.replace(/stack(\[\d+\])?/g, '0');
+  }
+
+  const formulaExtra = branch ? branch.suffix.find(suf => suf.name == 'formula_extra') : null;
+  if (formulaExtra)
+    str = str.replace(/&(\d+)\:/g, (m, m1) => '__FORMULA_EXTRA_' + m1 + '__');
 
   function safeEval(str, dftv) {
     try {
@@ -17,7 +33,14 @@ export default function(str, { skillState, effectState }) {
       return dftv === void 0 ? '??' : dftv;
     }
   }
-  return handle(str, safeEval);
+  str = handle(str, safeEval);
+
+  if (formulaExtra) {
+    const texts = formulaExtra.attrs['texts'].split(/\s*,\s*/);
+    str = str.replace(/__FORMULA_EXTRA_(\d+)__/g, (m, m1) => texts[parseInt(m1, 0)]);
+  }
+
+  return str;
 }
 
 function handle(str, eval_fun) {

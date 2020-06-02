@@ -92,6 +92,10 @@
           <cy-icon-text v-if="showData['duration']" class="condition-scope text-small light-text" iconify-name="zmdi-time-interval">
             <span v-html="showData['duration']"></span>
           </cy-icon-text>
+          <cy-icon-text v-if="showData['is_place']" class="condition-scope text-small light-text"
+            iconify-name="emojione-monotone:heavy-large-circle">
+            {{ showData['is_place'] }}
+          </cy-icon-text>
         </template>
       </div>
       <!-- [end] start -->
@@ -249,7 +253,7 @@
       <template v-else-if="branch.name == 'stack'">
         <div class="content-line">
           <cy-input-counter v-if="stackValue != null" :value="stackValue" @set-value="setStackValue"
-            :range="stackValueRange">
+            :range="stackValueRange" :style="showData['@stack-input-width-wide'] || {}">
             <template v-slot:title>
               <cy-icon-text iconify-name="ion-leaf">
                 {{ showData['name'] }}
@@ -259,6 +263,19 @@
               <span>{{ showData['unit'] }}</span>
             </template>
           </cy-input-counter>
+        </div>
+      </template>
+      <template v-else-if="branch.name == 'reference'">
+        <div class="content-line">
+          <cy-icon-text class="condition-scope text-small light-text" iconify-name="entypo-link">
+            {{ langText('reference/base title') }}
+          </cy-icon-text>
+          <div class="text-scope" v-if="showData['text']">
+            {{ showData['text'] }}
+          </div>
+          <div class="text-scope">
+            <a target="_blank" :href="showData['url']">{{ showData['url_text'] }}</a>
+          </div>
         </div>
       </template>
     </div>
@@ -313,6 +330,7 @@ export default {
     return {
       'langText': this.langText,
       'calcValueStr': this.calcValueStr,
+      'isNumberStr': this.isNumberStr,
       'highlightValueStr': this.highlightValueStr,
       'handleReplacedText': this.handleReplacedText,
       'handleValueStr': this.handleValueStr
@@ -394,6 +412,10 @@ export default {
         if (this.branch.attrs['type'] == 'AOE')
           return true;
       }
+      if (this.branch.name == 'effect') {
+        if (this.branch.attrs['type'] == 'aura')
+          return true;
+      }
       return false;
     },
     isMark() {
@@ -401,7 +423,7 @@ export default {
     },
     suffixBranchShowDatas() {
       return this.branch.suffix
-        .filter(p => !p.empty && p.name == 'extra')
+        .filter(p => p.name == 'extra')
         .map(p => this.handleShowData(p));
     },
     titleIconName() {
@@ -537,9 +559,6 @@ export default {
     ailmentText(showData) {
       return this.langText('damage/ailment text', [showData['ailment_chance'], `<span class="${this.tagButtonClassName}">${showData['ailment_name']}</span>`]);
     },
-    updateStackValue(e) {
-      this.setStackValue(parseInt(e.target.value, 10));
-    },
     setStackValue(v) {
       const p = this.findStackState();
       if (p) {
@@ -672,7 +691,10 @@ export default {
             defaultValue: this.langText('stack/base name')
           });
         } else if (bch.name == 'effect') {
-          handleValueList.push('radius', {
+          handleValueList.push({
+            name: 'radius',
+            extraHandle: v => v + 'm'
+          }, {
             name: 'duration',
             extraHandle: v => this.langText('display duration', [v])
           });
@@ -690,6 +712,15 @@ export default {
           });
           ['auto', 'hit'].includes(data['condition']) && langTextList.push('condition');
           langTextList.push('is_place', 'type');
+
+          // skill area
+          hiddenList.push({
+            name: ['start_position_offsets', 'end_position_offsets'],
+            validation: v => v != 0,
+            valueOnly: true
+          });
+          langTextList.push('effective_area');
+          titleList.push('effective_area', 'radius');
         } else if (bch.name == 'next') {
           handleTextList.push('caption');
           hiddenList.push({
@@ -803,6 +834,12 @@ export default {
         data[k + ': title'] = this.langText(`${bch.name}/${k}: title`);
       });
 
+      if (this.branch.name == 'stack') {
+        const tmpv = parseInt(data['max'] || data['default'], 10);
+        if (!Number.isNaN(tmpv) && tmpv > 999)
+          data['@stack-input-width-wide'] = { '--input-width': '3rem' };
+      }
+
       // console.log(this.branch.name, data);
 
       return data;
@@ -883,6 +920,8 @@ export default {
         extraHandle: extraHandle
       });
 
+      str = str.replace(/(\d+\.)(\d{2,})/g, (m, m1, m2) => m1 + m2.slice(0, 2));
+
       return str;
     },
     calcValueStr(str) {
@@ -892,7 +931,7 @@ export default {
       const effectState = this.branch['@parent-state'];
 
       return str.split(/\s*,,\s*/)
-        .map(p => handleFormula(p, { skillState, effectState }))
+        .map(p => handleFormula(p, { skillState, effectState, branch: this.branch }))
         //.map(p => p.charAt(0) == '-' ? `(${p})` : p)
         .join('+')
         .replace(/\+-/g, '-');
@@ -1080,6 +1119,11 @@ fieldset.branch {
   padding-left: 0.6rem;
   margin-bottom: 0.3rem;
   padding-top: 0.5rem;
+}
+
+.branch.reference {
+  border: 1px solid var(--primary-light);
+  padding: 0.3rem;
 }
 
 .branch.proration {
