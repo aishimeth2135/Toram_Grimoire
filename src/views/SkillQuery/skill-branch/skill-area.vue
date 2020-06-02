@@ -117,8 +117,8 @@
             attrs: {
               attributeName: 'fill',
               values: `${pcolorl};${pcolorl3};${pcolorl};${pcolorl}`,
-              keyTimes: '0;.1;.8;1',
-              dur: '2s', repeatCount: 'indefinite'
+              keyTimes: '0;.1;.6;1',
+              dur: '2.5s', repeatCount: 'indefinite'
             }
           });
 
@@ -175,19 +175,28 @@
             attrs: {
               attributeName: 'fill',
               values: `${pcolorl};${pcolorl3};${pcolorl3};${pcolorl}`,
-              keyTimes: '0;.3;.7;1',
-              dur: '1s', repeatCount: 'indefinite'
+              keyTimes: '0;.3;.4;1',
+              dur: '2s', repeatCount: 'indefinite'
             }
           }, {
             type: 'animate',
             attrs: {
               attributeName: 'cx',
               values: `${grid(ax)};${grid(ax)};${grid(endx)};${grid(endx)}`,
-              keyTimes: '0;.3;.7;1',
-              dur: '1s', repeatCount: 'indefinite'
+              keyTimes: '0;.3;.4;1',
+              dur: '2s', repeatCount: 'indefinite'
             }
           });
 
+          const area_bg = {
+            type: 'path',
+            attrs: {
+              d: `M${grid(ax)} ${grid(ay+radius)}A${grid(radius)} ${grid(radius)},0 0 1,${grid(ax)} ${grid(ay-radius)}L${grid(endx)} ${grid(endy-radius)}A${grid(radius)} ${grid(radius)},0 0 1,${grid(endx)} ${grid(endy+radius)}Z`,
+              fill: pcolorl
+            }
+          };
+
+          datas.push(area_bg);
           datas.push(area);
           datas.push(chara);
           datas.push(tar);
@@ -260,16 +269,16 @@
               attrs: {
                 attributeName: 'd',
                 values: `${startSectorD};${startSectorD};${endSectorD};${endSectorD}`,
-                keyTimes: '0;.3;.7;1',
-                dur: '1s', repeatCount: 'indefinite'
+                keyTimes: '0;.3;.4;1',
+                dur: '2s', repeatCount: 'indefinite'
               }
             }, {
               type: 'animate',
               attrs: {
                 attributeName: 'fill',
                 values: `${pcolorl};${pcolorl3};${pcolorl3};${pcolorl}`,
-                keyTimes: '0;.3;.7;1',
-                dur: '1s', repeatCount: 'indefinite'
+                keyTimes: '0;.3;.4;1',
+                dur: '2s', repeatCount: 'indefinite'
               }
             }]
           });
@@ -315,14 +324,14 @@
              arc1.start -> arc1.end -> arc2.start -> arc2.end
           -------------------------------------------------------
          */
-        
+
         const deg = Math.PI/180;
         const cosEnd = Math.cos(endAngle * deg),
           cosStart = Math.cos(startAngle * deg),
           sinEnd = -1 * Math.sin(endAngle * deg),
           sinStart = -1 * Math.sin(startAngle * deg);
 
-        // a: arc, s: start, e: end 
+        // a: arc, s: start, e: end
         const
           a1_sx = minRadius * cosEnd + cx,
           a1_sy = minRadius * sinEnd + cy,

@@ -191,7 +191,7 @@ export default function(skill) {
 
       if (!curBranch) {
         // 防呆
-        const list = ['damage', 'effect', 'poration', 'next', 'list',
+        const list = ['damage', 'effect', 'proration', 'next', 'list',
           'passive', 'heal', 'text', 'tips', 'stack', 'reference', 'history', 'import'
         ];
         list.includes(bch.name) && resBranchs.push(bch);
@@ -311,7 +311,7 @@ function setBranchAttributeDefault(branchs) {
       'element': 'none',
       'judgment': 'common',
       'frequency_judgment': 'auto',
-      'unsheathe_attack': '0',
+      'unsheathe_damage': '0',
       'range_damage': 'none',
       'is_place': '0',
       'radius': '1',
