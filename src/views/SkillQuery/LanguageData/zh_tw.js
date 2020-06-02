@@ -1,4 +1,4 @@
-export default function(){
+export default function() {
   return {
     'Skill Query': {
       'historical record': '查看歷史紀錄',
@@ -37,6 +37,7 @@ export default function(){
         'ailment title': '命中成功後',
         'other equipment info: title': '各裝備的效果',
         'apply element': '套用$0。',
+        'pretext: is constant': '固定值',
         'formula replaced text': {
           'BSTR': '基礎STR',
           'BINT': '基礎INT',
@@ -84,7 +85,9 @@ export default function(){
           },
           'ailment text': '有$0機率使敵人$1。',
           'effective_area': {
-            'circle': '圓形', 'line': '直線', 'sector': '扇形'
+            'circle': '圓形',
+            'line': '直線',
+            'sector': '扇形'
           },
           'start_position_offsets': {
             'positive': '自身前方$0m處',
@@ -107,7 +110,7 @@ export default function(){
           },
           'effective_area: title': '類型',
           'end_position_offsets: title': '起點位置',
-          'radius: title': '作用半徑',
+          'radius: title': '傷害半徑',
           'move_distance: title': '移動距離',
           'angle: title': '作用角度',
           'start_position_offsets: title': '終點位置',
@@ -172,17 +175,25 @@ export default function(){
           'base name': '技能層數'
         },
         'effect': {
-            'base name': '技能效果',
-            'condition': {
-                'auto': '施放成功後',
-                'hit': '命中成功後'
-            },
-            'type': {
-                'self': '自身增益',
-                'party': '全隊伍增益',
-                'aura': '光環',
-                'target': '單體增益'
-            }
+          'base name': '技能效果',
+          'condition': {
+            'auto': '施放成功後',
+            'hit': '命中成功後'
+          },
+          'type': {
+            'self': '自身增益',
+            'party': '全隊伍增益',
+            'aura': '光環',
+            'target': '單體增益'
+          },
+          'is_place': {
+            'true': '設置型技能'
+          },
+          'effective_area': {
+            'circle': '圓形'
+          },
+          'effective_area: title': '類型',
+          'radius: title': '作用半徑',
         },
         'next': {
           'condition default': '下一招技能'
@@ -199,6 +210,9 @@ export default function(){
             'hp': '恢復HP',
             'mp': '恢復MP'
           }
+        },
+        'reference': {
+          'base title': '參考連結'
         }
       },
       'warn': {

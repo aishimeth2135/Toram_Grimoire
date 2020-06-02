@@ -38,7 +38,7 @@
         this.$emit('set-value', v);
       },
       updateValue(e) {
-        this.updateValue(parseInt(e.target.value, 10));
+        this.setValue(parseInt(e.target.value, 10));
       }
     }
   };
@@ -50,9 +50,10 @@
   padding: 0.3rem 1rem;
   transition: border-color 0.3s;
   border: 1px solid var(--primary-light);
+  --input-width: 1.8rem;
 
   >input {
-    width: 1.8rem;
+    width: var(--input-width);
     border: 0;
     outline: 0;
     text-align: center;
