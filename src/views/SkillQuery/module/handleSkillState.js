@@ -354,7 +354,7 @@ function setBranchAttributeDefault(branchs) {
       'is_tips': '0'
     },
     'stack': {
-      'min': '0',
+      'min': '1',
       'default': 'auto',
       'name': 'auto'
     },
