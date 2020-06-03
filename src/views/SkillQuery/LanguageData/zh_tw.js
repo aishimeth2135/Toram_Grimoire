@@ -2,8 +2,6 @@ export default function() {
   return {
     'Skill Query': {
       'historical record': '查看歷史紀錄',
-      'range: no limit': '無限制',
-      'range: main': '同主手武器',
       'click anywhere to close': '點擊任意處關閉',
       'select skill': '選擇技能',
       'close select skill': '關閉',
@@ -31,7 +29,9 @@ export default function() {
         'skill_type: list': ['瞬發', '須詠唱', '須蓄力', '被動', 'EX技能'],
         'damage_type: list': ['物理', '魔法'],
         'in_combo: list': ['可以放入連擊', '無法放入連擊', '無法放在連擊的第一招'],
-        'action_time: list': ['極慢', '慢', '稍慢', '一般', '稍快', '快', '極快']
+        'action_time: list': ['極慢', '慢', '稍慢', '一般', '稍快', '快', '極快'],
+        'range: no limit': '無限制',
+        'range: main': '同#施放武器 '
       },
       'Branch': {
         'display duration': '$0秒內',

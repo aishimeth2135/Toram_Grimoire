@@ -136,7 +136,8 @@ export default function(skill) {
       });
     }
 
-    state.branchs = state.branchs.filter(p => !(CY.object.isEmpty(p.attrs) && p.stats.length == 0));
+    state.branchs = state.branchs
+      .filter(p => !(CY.object.isEmpty(p.attrs) && p.stats.length == 0));
     state.branchs.forEach(p => p['@parent-state'] = state);
 
     // init of state attrs
@@ -183,23 +184,32 @@ export default function(skill) {
      * 將suffix branch串到main branch上，
      * 將vitual branch移除並處理。
      */
+    
+    const mainBranchNameList = ['damage', 'effect', 'proration', 'next', 'list',
+      'passive', 'heal', 'text', 'tips', 'stack', 'reference', 'history', 'import'
+    ];
+    const isMainBranch = _bch => mainBranchNameList.includes(_bch.name);
     const resBranchs = [];
+    let space_flag = false;
     state.branchs.forEach(bch => {
-      const curBranch = resBranchs.length != 0 ? resBranchs[resBranchs.length - 1] : null;
-
-      if (!curBranch) {
-        // 防呆
-        const list = ['damage', 'effect', 'proration', 'next', 'list',
-          'passive', 'heal', 'text', 'tips', 'stack', 'reference', 'history', 'import'
-        ];
-        list.includes(bch.name) && resBranchs.push(bch);
+      if (bch.name == 'space') {
+        space_flag = true;
         return;
       }
-      if (searchSuffixList(curBranch, bch)) {
+
+      const curBranch = resBranchs.length != 0 ? resBranchs[resBranchs.length - 1] : null;
+
+      if (!curBranch && isMainBranch(bch)) {
+        resBranchs.push(bch);
+        return;
+      }
+      if (!space_flag && searchSuffixList(curBranch, bch)) {
         bch.mainBranch = curBranch;
         curBranch.suffix.push(bch);
-      } else
+      } else if (isMainBranch(bch)) {
         resBranchs.push(bch);
+        space_flag = false;
+      }
     });
 
     const vitualBranchList = ['history'];
@@ -353,6 +363,9 @@ function setBranchAttributeDefault(branchs) {
     },
     'import': {
       'default_level': '5'
+    },
+    'space': {
+      'disable': '0'
     }
   };
 

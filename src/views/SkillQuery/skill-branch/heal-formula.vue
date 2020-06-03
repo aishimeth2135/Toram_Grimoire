@@ -22,8 +22,11 @@ export default {
   inject: ['isNumberStr', 'langText'],
   computed: {
     isSingleValue() {
+      // remove html tag of str
+      const span = document.createElement('span');
+      span.innerHTML = this.showData['constant'];
       return this.showData['@extra-value-list'].length == 0 &&
-        this.isNumberStr(this.showData['@parent-branch'].attrs['constant']);
+        this.isNumberStr(span.innerText);
     }
   }
 };
