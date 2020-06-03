@@ -321,7 +321,7 @@ export default {
           icon: 'mdi-flask-round-bottom'
         },
         'range': {
-          type: () => v => v != '-' && v != 'main' ? 'value' : 'text',
+          type: v => v != '-' && v != 'main' ? 'value' : 'text',
           icon: 'mdi-target-variant',
           extraHandle: (v, type) => {
             if (type == 'value')
@@ -357,6 +357,7 @@ export default {
         .map(k => {
           const q = p.attrs[k];
           let { type, icon, extraHandle } = datas[k];
+          type = typeof type == 'function' ? type(q) : type;
           const name = this.langText('effect attrs/' + k);
           let value;
           if (type == 'value')
@@ -365,7 +366,7 @@ export default {
             value = this.langText('effect attrs/' + k + ': list')[q];
           else if (type == 'text')
             value = q;
-          value = extraHandle ? extraHandle(value) : value;
+          value = extraHandle ? extraHandle(value, type) : value;
           icon = Array.isArray(icon) ? icon[q] : icon;
           return { name, value, icon };
         }) : null;
