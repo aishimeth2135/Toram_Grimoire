@@ -51,7 +51,7 @@
                   <td>
                     <cy-icon-text :iconify-name="data.icon">{{ data.name }}</cy-icon-text>
                   </td>
-                  <td>{{ data.value }}</td>
+                  <td v-html="data.value"></td>
                 </tr>
               </table>
             </div>
@@ -156,24 +156,26 @@
       <transition name="fade">
         <div class="tag-window" ref="tag-window" v-if="currentTag || tagState.windowVisible" :style="tagState.windowPosition">
           <div class="container" @click="closeTagWindow">
-            <div class="title">
-              <cy-button iconify-name="jam-arrow-left" type="icon-only" v-if="tagState.tags.length > 1"
-                class="inline" @click.stop="previousTag" />
-              <cy-icon-text iconify-name="ri-leaf-fill">{{ currentTag.name }}</cy-icon-text>
-              <span v-if="tagState.windowVisible" class="close-tip">{{ langText('click anywhere to close') }}</span>
-            </div>
-            <template v-for="(fr, i) in currentTag.frames">
-              <div v-if="fr.type == 'category'" class="category">
-                <cy-icon-text iconify-name="bx-bx-message-rounded-detail" class="text-small">{{ fr.value }}</cy-icon-text>
+            <div class="content">
+              <div class="title">
+                <cy-button iconify-name="jam-arrow-left" type="icon-only" v-if="tagState.tags.length > 1"
+                  class="inline" @click.stop="previousTag" />
+                <cy-icon-text iconify-name="ri-leaf-fill">{{ currentTag.name }}</cy-icon-text>
+                <span v-if="tagState.windowVisible" class="close-tip">{{ langText('click anywhere to close') }}</span>
               </div>
-              <div v-else-if="fr.type == 'caption'" class="caption" v-html="fr.value"></div>
-              <div v-else-if="fr.type == 'list'" class="list">
-                <div v-for="(v, j) in fr.value" class="leaf-list-item">
-                  <cy-icon-text iconify-name="mdi-leaf" class="prefix-icon" />
-                  <span v-html="v"></span>
+              <template v-for="(fr, i) in currentTag.frames">
+                <div v-if="fr.type == 'category'" class="category">
+                  <cy-icon-text iconify-name="bx-bx-message-rounded-detail" class="text-small">{{ fr.value }}</cy-icon-text>
                 </div>
-              </div>
-            </template>
+                <div v-else-if="fr.type == 'caption'" class="caption" v-html="fr.value"></div>
+                <div v-else-if="fr.type == 'list'" class="list">
+                  <div v-for="(v, j) in fr.value" class="leaf-list-item">
+                    <cy-icon-text iconify-name="mdi-leaf" class="prefix-icon" />
+                    <span v-html="v"></span>
+                  </div>
+                </div>
+              </template>
+            </div>
           </div>
         </div>
       </transition>
@@ -319,11 +321,16 @@ export default {
           icon: 'mdi-flask-round-bottom'
         },
         'range': {
-          type: 'value',
+          type: () => v => v != '-' && v != 'main' ? 'value' : 'text',
           icon: 'mdi-target-variant',
-          extraHandle: v => /[\d.]+/.test(v) ? v + 'm' : v,
-          validation: v => v != '-' && v != 'main',
-          defaultValue: v => v == '-' ? this.langText('range: no limit') : this.langText('range: main')
+          extraHandle: (v, type) => {
+            if (type == 'value')
+              return v + 'm';
+            const f = v == 'main';
+            return v == '-' ?
+              this.langText('effect attrs/range: no limit') :
+              this.createTagButtons(this.langText('effect attrs/range: main'));
+          }
         },
         'skill_type': {
           type: 'list',
@@ -347,27 +354,17 @@ export default {
       const options = { skillState: this.currentSkillState, effectState: p };
       return p ? Object.keys(p.attrs)
         .filter(k => p.attrs[k] || p.attrs[k] === 0)
-        .filter(k => {
-          const { validation, defaultValue } = datas[k];
-          if (validation) {
-            const v = p.attrs[k];
-            const res = validation(v);
-            if (!res) {
-              if (defaultValue === void 0)
-                return false;
-              else
-                p.attrs[k] = typeof defaultValue == 'function' ? defaultValue(v) : defaultValue;
-            }
-          }
-          return true;
-        })
         .map(k => {
           const q = p.attrs[k];
           let { type, icon, extraHandle } = datas[k];
           const name = this.langText('effect attrs/' + k);
-          let value = type == 'value' ?
-            handleFormula(q, options) :
-            this.langText('effect attrs/' + k + ': list')[q];
+          let value;
+          if (type == 'value')
+            value = handleFormula(q, options);
+          else if (type == 'list')
+            value = this.langText('effect attrs/' + k + ': list')[q];
+          else if (type == 'text')
+            value = q;
           value = extraHandle ? extraHandle(value) : value;
           icon = Array.isArray(icon) ? icon[q] : icon;
           return { name, value, icon };
@@ -398,11 +395,8 @@ export default {
   },
   methods: {
     toggleSelectSkillTreeWindow(force) {
-      console.log('origin force...', force);
       force = force === void 0 ? !this.selectSkillTreeWindowState.visible : force
       this.selectSkillTreeWindowState.visible = force;
-      console.log('toggle...', force);
-      console.log(event.type);
     },
     createTagButtons(str) {
       return str.replace(/#([^\s]+)\s(\w?)/g, (m, m1, m2) => {
@@ -798,37 +792,53 @@ export default {
 
   .container {
     background-color: rgba(var(--rgb-white), 0.95);
-    padding: 1rem;
     border: 1px solid var(--primary-light-2);
+    border-bottom: 0;
     box-shadow: 0.1rem 0.1rem 0.6rem 0.1rem var(--primary-light);
     max-width: 30rem;
     max-height: calc(50vh - 3rem);
     overflow-y: auto;
     margin: 0 0.6rem;
 
-    > .title {
-      margin-bottom: 1rem;
-      color: var(--primary-purple);
-      display: flex;
-      align-items: center;
-
-      > .close-tip {
-        margin-left: auto;
-        display: inline-block;
-        font-size: 0.9rem;
+    .content {
+      border-bottom: 1px solid var(--primary-light-2);
+      padding: 1rem;
+      padding-bottom: 0;
+      
+      &::after {
+        content: '';
+        display: block;
+        position: sticky;
+        height: 1rem;
+        border-radius: 20% 20% 0 0;
+        bottom: 0;
+        background-color: rgba(var(--rgb-white), 0.5);
       }
-    }
 
-    > .category {
-      border-left: 2px solid var(--primary-light-2);
-      padding: 0.2rem 0.6rem;
-      margin-bottom: 0.7rem;
-    }
-    > .caption {
-      padding: 0 0.3rem;
-    }
-    > .list {
-      margin-top: 0.6rem;
+      > .title {
+        margin-bottom: 1rem;
+        color: var(--primary-purple);
+        display: flex;
+        align-items: center;
+
+        > .close-tip {
+          margin-left: auto;
+          display: inline-block;
+          font-size: 0.9rem;
+        }
+      }
+
+      > .category {
+        border-left: 2px solid var(--primary-light-2);
+        padding: 0.2rem 0.6rem;
+        margin-bottom: 0.7rem;
+      }
+      > .caption {
+        padding: 0 0.3rem;
+      }
+      > .list {
+        margin-top: 0.6rem;
+      }
     }
   }
 }

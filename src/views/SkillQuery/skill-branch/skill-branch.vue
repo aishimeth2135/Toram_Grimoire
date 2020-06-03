@@ -756,7 +756,7 @@ export default {
           handleTextList.push('caption');
           hiddenList.push({
             name: 'condition',
-            validation: v => v,
+            validation: v => v && v != 'none',
             defaultValue: this.langText('next/condition default')
           }, {
             name: 'name',
