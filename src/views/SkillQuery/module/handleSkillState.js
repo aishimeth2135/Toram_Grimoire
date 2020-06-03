@@ -307,11 +307,14 @@ function setBranchAttributeDefault(branchs) {
       'end_position': 'target',
       'title': 'normal',
       'element': 'none',
+
+      'detail_display': 'auto',
       'judgment': 'common',
       'frequency_judgment': 'auto',
       'unsheathe_damage': '0',
       'range_damage': 'none',
       'is_place': '0',
+      
       'effective_area': 'circle',
       'radius': '1',
       'start_position_offsets': '0',

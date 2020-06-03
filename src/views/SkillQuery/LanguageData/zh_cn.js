@@ -1,4 +1,4 @@
-export default function(){
+export default function() {
   return {
     'Skill Query': {
       'historical record': '查看历史纪录',
@@ -6,6 +6,7 @@ export default function(){
       'range: main': '同主手武器',
       'click anywhere to close': '点击任意处关闭',
       'select skill': '选择技能',
+      'close select skill': '关闭',
       'skill level': '技能等级',
       'character level': '角色等级',
       'default message': '请点选这里或右上角的按钮来选择一个技能。',
@@ -37,6 +38,7 @@ export default function(){
         'ailment title': '命中成功后',
         'other equipment info: title': '各装备的效果',
         'apply element': '套用$0。',
+        'pretext: is constant': '固定值',
         'formula replaced text': {
           'BSTR': '基础力量',
           'BINT': '基础智力',
@@ -82,9 +84,11 @@ export default function(){
           'frequency': {
             'positive': '总伤害拆成$0'
           },
-          'ailment text': '有$0机率使敌人$1。',
+          'ailment text': '有$0机率使目标陷入$1。',
           'effective_area': {
-            'circle': '圆形', 'line': '直线', 'sector': '扇形'
+            'circle': '圆形',
+            'line': '直线',
+            'sector': '扇形'
           },
           'start_position_offsets': {
             'positive': '自身前方$0m处',
@@ -106,11 +110,11 @@ export default function(){
             'arrow': '箭矢属性'
           },
           'effective_area: title': '类型',
-          'end_position_offsets: title': '起点位置',
-          'radius: title': '作用半径',
+          'end_position_offsets: title': '终点位置',
+          'radius: title': '伤害半径',
           'move_distance: title': '移动距离',
           'angle: title': '作用角度',
-          'start_position_offsets: title': '终点位置',
+          'start_position_offsets: title': '起点位置',
           'end_position_offsets: title': '起点位置'
         },
         'damage: proration': {
@@ -138,7 +142,7 @@ export default function(){
             'single': '限伤时视为单次伤害',
             'multiple': '限伤时视为多段伤害'
           },
-          'unsheathe_attack': {
+          'unsheathe_damage': {
             'true': '受拔刀伤害影响',
             'false': '不受拔刀伤害影响',
             'none': '未确认是否受拔刀伤害影响'
@@ -172,17 +176,25 @@ export default function(){
           'base name': '技能层数'
         },
         'effect': {
-            'base name': '技能效果',
-            'condition': {
-                'auto': '施放成功后',
-                'hit': '命中成功后'
-            },
-            'type': {
-                'self': '自身增益',
-                'party': '全队伍增益',
-                'aura': '光环',
-                'target': '单体增益'
-            }
+          'base name': '技能效果',
+          'condition': {
+            'auto': '施放成功后',
+            'hit': '命中成功后'
+          },
+          'type': {
+            'self': '自身增益',
+            'party': '全队伍增益',
+            'aura': '光环',
+            'target': '单体增益'
+          },
+          'is_place': {
+            'true': '设置型技能'
+          },
+          'effective_area': {
+            'circle': '圆形'
+          },
+          'effective_area: title': '类型',
+          'radius: title': '作用半径',
         },
         'next': {
           'condition default': '下一招技能'
@@ -199,6 +211,9 @@ export default function(){
             'hp': '恢复HP',
             'mp': '恢复MP'
           }
+        },
+        'reference': {
+          'base title': '参考连结'
         }
       },
       'warn': {

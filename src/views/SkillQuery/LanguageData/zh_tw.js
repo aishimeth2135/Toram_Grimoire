@@ -6,6 +6,7 @@ export default function() {
       'range: main': '同主手武器',
       'click anywhere to close': '點擊任意處關閉',
       'select skill': '選擇技能',
+      'close select skill': '關閉',
       'skill level': '技能等級',
       'character level': '角色等級',
       'default message': '請點選這裡或右上角的按鈕來選擇一個技能。',
@@ -83,7 +84,7 @@ export default function() {
           'frequency': {
             'positive': '總傷害拆成$0'
           },
-          'ailment text': '有$0機率使敵人$1。',
+          'ailment text': '有$0機率使目標陷入$1。',
           'effective_area': {
             'circle': '圓形',
             'line': '直線',
@@ -109,11 +110,11 @@ export default function() {
             'arrow': '箭矢屬性'
           },
           'effective_area: title': '類型',
-          'end_position_offsets: title': '起點位置',
+          'end_position_offsets: title': '終點位置',
           'radius: title': '傷害半徑',
           'move_distance: title': '移動距離',
           'angle: title': '作用角度',
-          'start_position_offsets: title': '終點位置',
+          'start_position_offsets: title': '起點位置',
           'end_position_offsets: title': '起點位置'
         },
         'damage: proration': {

@@ -51,14 +51,16 @@ function handle(str, eval_fun) {
 
   const isVarName = v => /^[a-zA-Z_$][$a-zA-Z0-9\._]*$/.test(v);
 
-  const notText = n => /^\-?[\d\.]+$/.test(n);
+  const isNumStr = v => /^\-?[0-9.]+$/.test(v);
 
   const calc_fun = (n1, o, n2, resAry) => {
-    if (notText(n1) && notText(n2)) {
+    if (isNumStr(n1) && isNumStr(n2)) {
       return eval_fun(n1 + o + n2);
     }
     if (o == '*' || o == '/') {
-      return n1 + o + n2;
+      let t = n1 + o + n2;
+      t = t.replace(/(\-?[\d.]+)([\*\/])(-?[\d.]+)/, (m, m1, m2, m3) => eval_fun(m1 + m2 + m3));
+      return t;
     }
     resAry.push(n1, o);
     return n2;
@@ -223,8 +225,6 @@ function handle(str, eval_fun) {
 
     // console.log('envirs: ', envirs.slice());
     // console.log('obj_stk: ', obj_stk.slice());
-
-    const isNumStr = v => /^\-?[0-9.]+$/.test(v);
 
     // console.log('[o] postfix :', envirs[0].postFix.slice());
 

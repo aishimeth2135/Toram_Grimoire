@@ -8,10 +8,17 @@
         <div style="width: 100%;height: 100%;" @mouseenter.stop="toggleSelectSkillTreeWindow(true)" />
       </template>
       <template v-slot:buttons-scope>
-        <cy-button :iconify-name="selectSkillTreeWindowState.visible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" class="inline" @click="toggleSelectSkillTreeWindow()"
+        <cy-button v-if="!selectSkillTreeWindowState.visible" key="invisible"
+          iconify-name="ic-round-keyboard-arrow-down" class="inline"
           @mouseenter.native.stop="toggleSelectSkillTreeWindow(true)"
-          style="background-color: var(--white)">
+          @click="toggleSelectSkillTreeWindow(true)">
           {{ langText('select skill') }}
+        </cy-button>
+        <cy-button v-else key="visible"
+          iconify-name="ic-round-keyboard-arrow-up" class="inline"
+          @click="toggleSelectSkillTreeWindow(false)"
+          style="background-color: var(--white)">
+          {{ langText('close select skill') }}
         </cy-button>
       </template>
       <template v-slot:float-menu>
@@ -67,7 +74,8 @@
           </div>
           <div class="skill-branchs">
             <transition-group name="branch-fade" mode="out-in" appear>
-              <skill-branch v-for="(branch, i) in currentSkillData.branchs" v-if="branch.visible" :key="branch.iid" type="main" :branch="branch" :skill-state="currentSkillState" />
+              <skill-branch v-for="(branch, i) in currentSkillBranchs" :key="branch.iid" type="main"
+                :branch="branch" :skill-state="currentSkillState" />
             </transition-group>
           </div>
         </template>
@@ -81,8 +89,7 @@
           <div class="top-content">
             <transition name="fade">
               <div class="equipment-container" v-show="!skillStates.optionsWindowVisible">
-                <span class="column" v-for="(data, i) in equipmentState.categoryList"
-                  v-if="equipmentState[data.shortName + 'List'].length != 0">
+                <span class="column" v-for="(data, i) in equipmentCategoryList" :key="data.showName">
                   <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.shortName)" class="inline"
                     style="margin-right: 0.7rem;">
                     {{ equipmentState[data.shortName] | getEquipmentText(data.name) }}
@@ -102,8 +109,7 @@
           </div>
           <transition name="fade">
             <div class="options-content" v-show="skillStates.optionsWindowVisible">
-              <div class="equipment-column" v-for="(data, i) in equipmentState.categoryList"
-                v-if="equipmentState[data.shortName + 'List'].length != 0">
+              <div class="equipment-column" v-for="(data, i) in equipmentCategoryList" :key="data.showName">
                 <cy-icon-text :iconify-name="data.icon" class="text-small line column-title">
                   {{ langText(`equipment/${data.name}: title`) }}
                 </cy-icon-text>
@@ -204,7 +210,8 @@ export default {
       drawSkillTreeOptions: {
         skillTreeType: 'normal',
         skillCircleClickListener(e, skill) {
-          self.selectSkill(skill);
+          if (skill.name != '@lock')
+            self.selectSkill(skill);
         }
       },
       skillStates: {
@@ -220,20 +227,7 @@ export default {
         body: -1,
         mainList: [],
         subList: [],
-        bodyList: [],
-        categoryList: [{
-          name: 'main-weapon',
-          shortName: 'main',
-          icon: 'mdi-sword'
-        }, {
-          name: 'sub-weapon',
-          shortName: 'sub',
-          icon: 'mdi-shield'
-        }, {
-          name: 'body-armor',
-          shortName: 'body',
-          icon: 'mdi-tshirt-crew'
-        }]
+        bodyList: []
       },
       tagState: {
         tags: [],
@@ -276,6 +270,23 @@ export default {
     }
   },
   computed: {
+    equipmentCategoryList() {
+      const list = [{
+        name: 'main-weapon',
+        shortName: 'main',
+        icon: 'mdi-sword'
+      }, {
+        name: 'sub-weapon',
+        shortName: 'sub',
+        icon: 'mdi-shield'
+      }, {
+        name: 'body-armor',
+        shortName: 'body',
+        icon: 'mdi-tshirt-crew'
+      }];
+
+      return list.filter(p => this.equipmentState[p.shortName + 'List'].length != 0);
+    },
     currentTag() {
       const idx = this.tagState.tags.length - 1;
       if (idx == -1)
@@ -380,12 +391,18 @@ export default {
     currentSkillData() {
       const p = this.currentSkillState;
       return p ? p.states.find(p => this.checkEquipment(p.equipment)) : null;
+    },
+    currentSkillBranchs() {
+      return this.currentSkillData ? this.currentSkillData.branchs.filter(p => p.visible) : [];
     }
   },
   methods: {
     toggleSelectSkillTreeWindow(force) {
+      console.log('origin force...', force);
       force = force === void 0 ? !this.selectSkillTreeWindowState.visible : force
       this.selectSkillTreeWindowState.visible = force;
+      console.log('toggle...', force);
+      console.log(event.type);
     },
     createTagButtons(str) {
       return str.replace(/#([^\s]+)\s(\w?)/g, (m, m1, m2) => {
@@ -609,7 +626,6 @@ export default {
       state.body = state.bodyList.length != 0 ? state.bodyList[0] : -1;
 
       this.confirmWeaponType('main');
-      console.log(this.equipmentState);
       this.updateSkillState();
     },
     selectSkillTreeCategory(idx) {
