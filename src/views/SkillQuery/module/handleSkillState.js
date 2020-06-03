@@ -160,6 +160,7 @@ export default function(skill) {
       'damage': ['extra', 'proration'],
       'effect': ['extra'],
       'next': ['extra'],
+      'passive': ['extra'],
       'list': ['list'],
       '@global': ['formula_extra', 'group', {
         name: 'history',
