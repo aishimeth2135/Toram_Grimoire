@@ -34,19 +34,11 @@
         @mouseenter.stop="toggleVisible('topMenu', true)"
         @mouseleave.stop="toggleVisible('topMenu', false)">
         <transition-group name="top-menu-slide" appear>
-          <cy-button v-if="topMenuVisible && branch.name == 'damage'" class="btn" key="damage-detail"
-            type="icon-only" :iconify-name="detailVisible ? 'bx-bxs-book-open' : 'bx-bxs-book-add'"
-            @click="toggleVisible('detail')" />
-          <cy-button v-if="topMenuVisible && type == 'main' && otherEquipmentBranchDatas"
-            type="icon-only" class="btn" key="other-equipment"
-            :iconify-name="otherEquipmentBranchVisible ? 'bx-bxs-down-arrow-circle' : 'bx-bxs-right-arrow-circle'"
-            @click="toggleVisible('otherEquipmentBranch')" />
-          <cy-button type="icon-only" v-if="topMenuVisible && branch.history.length != 0" class="btn"
-            key="history"
-            :iconify-name="historyVisible ? 'ic-round-history-toggle-off' : 'ic-round-history'"
-            @click="toggleVisible('history')" />
+          <cy-button v-for="(data, i) in topButtons" :key="data.name"
+            type="icon-only" class="top-menu-btn" :iconify-name="data.icon"
+            @click="toggleVisible(data.name)" />
         </transition-group>
-        <cy-button v-if="branch.name == 'damage' || (type == 'main' && otherEquipmentBranchDatas) ||branch.history.length != 0"
+        <cy-button v-if="topButtons"
           type="icon-only" class="btn" :class="{ 'selected': topMenuVisible }"
           :iconify-name="topMenuVisible ? 'ic-round-menu-open' : 'ic-round-menu'" />
       </div>
@@ -190,7 +182,8 @@
       </fieldset>
       <!-- [end] other -->
       <!-- [start] extra -->
-      <fieldset class="extra-column" v-for="(suffixShowData, i) in suffixBranchShowDatas">
+      <fieldset class="extra-column" v-for="(suffixShowData, i) in suffixBranchShowDatas"
+        :key="suffixShowData['@--key']">
         <template v-if="suffixShowData['@parent-branch'].name == 'extra'">
           <legend>
             <cy-icon-text class="condition-scope text-small light-text" iconify-name="eva-checkmark-circle-2-outline">
@@ -212,7 +205,7 @@
     </fieldset>
     <div v-else-if="branch.name == 'list'" :class="branchClass">
       <!-- <cy-icon-text iconify-name="mdi-leaf" class="prefix-icon" /> -->
-      <div v-for="(data, i) in showData['@list-datas']" class="leaf-list-item">
+      <div v-for="(data, i) in showData['@list-datas']" class="leaf-list-item" :key="data['text']">
         <cy-icon-text iconify-name="mdi-leaf" class="prefix-icon" />
         <span v-html="data['text']"></span>
       </div>
@@ -343,6 +336,35 @@ export default {
     this.handleTagButton(this.$el);
   },
   computed: {
+    topButtons() {
+      const list = [{
+        name: 'detail',
+        valid: this.branch.name == 'damage' && this.showData['detail_display'] == '1',
+        icon: {
+          'true': 'bx-bxs-book-open',
+          'false': 'bx-bxs-book-add'
+        }
+      }, {
+        name: 'otherEquipmentBranch',
+        valid: this.type == 'main' && this.otherEquipmentBranchDatas,
+        icon: {
+          'true': 'bx-bxs-down-arrow-circle',
+          'false': 'bx-bxs-right-arrow-circle'
+        }
+      }, {
+        name: 'history',
+        valid: this.branch.history.length != 0,
+        icon: {
+          'true': 'ic-round-history-toggle-off',
+          'false': 'ic-round-history'
+        }
+      }];
+
+      const res = list.filter(p => p.valid);
+      res.forEach(p => p.icon = p.icon[this[name + 'Visible'] ? 'true' : 'false']);
+
+      return res.length > 0 ? (this.topMenuVisible ? res : []) : null;
+    },
     confirmHistoryDate() {
       return this.branch.suffix.find(p => p.name == 'history');
     },
@@ -424,7 +446,11 @@ export default {
     suffixBranchShowDatas() {
       return this.branch.suffix
         .filter(p => p.name == 'extra')
-        .map(p => this.handleShowData(p));
+        .map((p, i) => {
+          const t = this.handleShowData(p);
+          t['@--key'] = p.name + i;
+          return t;
+        });
     },
     titleIconName() {
       if (this.branch.name == 'damage')
@@ -614,6 +640,8 @@ export default {
           // base
           if (data['base'] == 'auto')
             data['base'] = data['damage_type'] == 'physical' ? 'atk' : 'matk';
+          if (data['detail_display'] == 'auto')
+            data['detail_display'] = data['title'] == 'normal_attack' ? '0' : '1';
 
           handleValueList.push('constant', 'extra_constant', {
             name: ['multiplier', 'ailment_chance'],
@@ -685,10 +713,13 @@ export default {
             name: ['min', 'max', 'default'],
             calcOnly: true
           });
+          const stkIdx = bch['@parent-state'].branchs
+            .filter(p => p.name == 'stack')
+            .indexOf(bch);
           hiddenList.push({
             name: 'name',
             validation: v => v,
-            defaultValue: this.langText('stack/base name')
+            defaultValue: this.langText('stack/base name') + (stkIdx + 1)
           });
         } else if (bch.name == 'effect') {
           handleValueList.push({
@@ -1068,7 +1099,7 @@ fieldset.branch {
     right: 0.2rem;
     top: -0.3rem;
 
-    .btn {
+    .top-menu-btn {
       background-color: var(--white);
     }
   }
