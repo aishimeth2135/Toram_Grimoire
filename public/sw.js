@@ -65,7 +65,7 @@ workbox.routing.registerRoute(
 workbox.precaching.precacheAndRoute([
   {
     "url": "dist/grimoire.min.js",
-    "revision": "9b9a1e76d371299b7d0d9c1eb20f7bf5"
+    "revision": "ef47cf748de08f77961f03d999f773b7"
   },
   {
     "url": "manifest.json",

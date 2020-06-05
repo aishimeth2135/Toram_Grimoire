@@ -64,10 +64,12 @@
 
         const skill_range_default = 100;
         let skill_range = this.attrs['@parent-branch']['@parent-state'].attrs['range'];
+        if (skill_range == '-' || skill_range == 'main')
+          skill_range = null;
         skill_range = skill_range ?
           this.calcValueStr(skill_range).replace(/\.(\d{2,})/, (m, m1) => m1.slice(0, 2)) :
           skill_range_default;
-        skill_range = /$\-?[\d.]+^/.test(skill_range) ? parseFloat(skill_range) : skill_range_default;
+        skill_range = /$\-?[\d\.]+^/.test(skill_range) ? parseFloat(skill_range) : skill_range_default;
         const targetOffset = $sd['target_offsets'] == 'auto' ?
           (type == 'circle' && $sd['end_position'] == 'self' ? radius*0.5 : Math.min(7, skill_range)) :
           parseFloat(this.calcValueStr($sd['target_offsets']));
