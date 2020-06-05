@@ -19,14 +19,11 @@
 <script>
 export default {
   props: ['showData'],
-  inject: ['isNumberStr', 'langText'],
+  inject: ['langText'],
   computed: {
     isSingleValue() {
-      // remove html tag of str
-      const span = document.createElement('span');
-      span.innerHTML = this.showData['constant'];
       return this.showData['@extra-value-list'].length == 0 &&
-        this.isNumberStr(span.innerText);
+        this.showData['@--data-container-records'].find(p => p.key == 'constant').isNumberValue();
     }
   }
 };

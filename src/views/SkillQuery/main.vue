@@ -805,7 +805,7 @@ export default {
       border-bottom: 1px solid var(--primary-light-2);
       padding: 1rem;
       padding-bottom: 0;
-      
+
       &::after {
         content: '';
         display: block;
@@ -864,10 +864,17 @@ export default {
 
 @{deep-operator} .light-text {
   color: var(--primary-light-4);
+
+  &.text-dark {
+    color: var(--primary-gray);
+  }
 }
 
 @{deep-operator} .light-text-1 {
   color: var(--primary-water-blue);
+  &.text-dark {
+    color: var(--primary-blue-grean);
+  }
 }
 
 @{deep-operator} .light-text-2 {

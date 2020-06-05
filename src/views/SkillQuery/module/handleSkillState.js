@@ -325,11 +325,12 @@ function setBranchAttributeDefault(branchs) {
       'unsheathe_damage': '0',
       'range_damage': 'none',
       'is_place': '0',
-      
+
       'effective_area': 'circle',
       'radius': '1',
       'start_position_offsets': '0',
-      'end_position_offsets': '0'
+      'end_position_offsets': '0',
+      'target_offsets': 'auto'
     },
     'proration': {
       'proration': 'auto'

@@ -8,33 +8,31 @@
   </div>
 </template>
 <script>
+import DataContainer from "../module/DataContainer.js";
+
 export default {
   props: ['stats'],
-  inject: ['langText', 'calcValueStr', 'highlightValueStr', 'handleReplacedText', 'handleValueStr'],
+  inject: ['langText', 'calcValueStr', 'handleDataContainer'],
   computed: {
     statTexts() {
       return this.stats.map(p => {
-        const q = p.copy();
-        let ov = this.calcValueStr(q.statValue());
-        let v = ov, sign = '+';
+        const dc = new DataContainer(p.statValue());
 
+        let v = this.calcValueStr(dc.value());
+        let sign = '+';
         if (/^\(?[\d.-]+\)?$/.test(v)) {
           v = v.replace(/\(?([\d.-]+)\)?/, (m, m1) => m1);
           if (v.charAt(0) == '-') {
-            v = -1 * v;
             sign = '-';
           }
-          ov = v;
         }
-        else
-          v = this.handleReplacedText(v);
 
-        q.statValue(v);
+        const beforeColorText = v => sign + (sign == '-' ? v.replace('-', '') : v) + sd.tail;
 
-        const sd = q.getShowData();
-        return sd.title + this.highlightValueStr(q.statValue(v), ov, p.statValue(), {
-          extraHandle: v => sign + v + sd.tail
-        });
+        const sd = p.getShowData();
+        this.handleDataContainer(dc, { beforeColorText });
+
+        return sd.title + dc.result();
       });
     }
   }
