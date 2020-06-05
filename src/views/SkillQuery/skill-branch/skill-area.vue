@@ -26,7 +26,8 @@
           version: '1.1', baseProfile: 'full',
           width: this.width, height: this.height,
           viewBox: `0 0 ${this.width} ${this.height}`,
-          preserveAspectRatio: 'xMidYMid meet'
+          preserveAspectRatio: 'xMidYMid meet',
+          class: 'main--draw-skill-area'
         }
       }, childs)
     },
@@ -307,10 +308,6 @@
           this.width = grid(bx + moveDistance + padding);
         }
 
-        console.log('render skill area...');
-        console.log(this.attrs);
-        console.log(datas);
-
         return datas;
       }
     },
@@ -364,7 +361,7 @@
   };
 </script>
 <style lang="less" scoped>
-svg {
+.main--draw-skill-area {
   max-height: 20rem;
   max-width: 25rem;
 }

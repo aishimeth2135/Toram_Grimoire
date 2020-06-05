@@ -1,19 +1,19 @@
 <template>
-  <fragment>
-    <template v-for="(name, i) in ['main', 'sub', 'body']">
-      <cy-icon-text v-if="equipment[name] != -1" class="text-small item"
-        :iconify-name="name | equipmentIcon">
-        {{ equipment[name] }}
+  <span style="display: inline-block;">
+    <template v-for="(data, i) in equipmentData">
+      <cy-icon-text v-if="typeof data != 'string'" class="text-small equipment-item"
+        :iconify-name="data.icon">
+        {{ data.text }}
       </cy-icon-text>
+      <cy-icon-text v-else class="text-small equipment-operator"
+        :iconify-name="data == 'or' ? 'mdi-slash-forward' : 'ic-round-add'" />
     </template>
-    <cy-icon-text v-if="equipment.none" iconify-name="mdi-rhombus-outline" class="text-small item">
+    <cy-icon-text v-if="equipment.none" iconify-name="mdi-rhombus-outline" class="text-small equipment-item">
       {{ equipment.none }}
     </cy-icon-text>
-  </fragment>
+  </span>
 </template>
 <script>
-import { Fragment } from 'vue-fragment';
-
 export default {
   props: ['equipment'],
   inject: ['langText'],
@@ -26,13 +26,34 @@ export default {
       }[fieldType];
     }
   },
-  components: {
-    'fragment': Fragment
+  computed: {
+    equipmentData() {
+      const icons = {
+        'main': 'mdi-sword',
+        'sub': 'mdi-shield',
+        'body': 'mdi-tshirt-crew'
+      };
+      const t =  ['main', 'sub', 'body'].filter(name => this.equipment[name] != -1);
+      const o = this.equipment.operator == 0 ? 'or' : 'and';
+      const res = [];
+      t.forEach((name, i) => {
+        res.push({
+          text: this.equipment[name],
+          icon: icons[name]
+        });
+        i != t.length - 1 && res.push(o);
+      });
+      return res;
+    }
   }
 };
 </script>
 <style lang="less" scoped>
-.item {
+.equipment-item {
   margin-right: 0.4rem;
+}
+.equipment-operator {
+  --icon-color: var(--primary-green);
+  margin-right: 0.3rem;
 }
 </style>

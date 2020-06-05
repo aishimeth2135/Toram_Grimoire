@@ -411,7 +411,8 @@ export default {
         main: eq.main != -1 ? GetLang('Skill Query/equipment/main-weapon')[eq.main] : -1,
         sub: eq.sub != -1 ? GetLang('Skill Query/equipment/sub-weapon')[eq.sub] : -1,
         body: eq.body != -1 ? GetLang('Skill Query/equipment/body-armor')[eq.body] : -1,
-        none: eq.main == -1 && eq.sub == -1 && eq.body == -1 ? GetLang('Skill Query/equipment/none') : void 0
+        none: eq.main == -1 && eq.sub == -1 && eq.body == -1 ? GetLang('Skill Query/equipment/none') : void 0,
+        operator: eq.operator
       };
     },
     stackValueRange() {
@@ -1055,7 +1056,7 @@ export default {
   border: 0;
   padding: 0;
   margin: 0;
-  border-top: 2px solid var(--primary-light-2);
+  border-top: 2px solid var(--primary-green);
   padding-left: 1rem;
   margin: 0 0.6rem;
 
@@ -1217,7 +1218,7 @@ fieldset.branch {
 
 .condition-scope {
   margin: 0.1rem 0;
-  margin-right: 0.5rem;
+  margin-right: 0.7rem;
   display: inline-flex;
   align-items: center;
 

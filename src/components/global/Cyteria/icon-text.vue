@@ -60,12 +60,10 @@
     }
 
     &.text-small {
-      @{deep-operator} svg {
-        height: 0.9rem
-      }
+      --icon-width: 0.9rem;
 
       > svg + .text {
-        margin-left: 0.2rem;
+        margin-left: 0.3rem;
       }
 
       > .text + .value {
