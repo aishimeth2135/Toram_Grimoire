@@ -785,6 +785,10 @@ export default {
           }, {
             name: 'constant',
             validation: v => v != 0
+          },{
+            name: 'frequency',
+            validation: v => parseInt(v) > 1,
+            validationType: 'value'
           });
 
           data['@extra-value-list'] = [];
