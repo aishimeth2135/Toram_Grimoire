@@ -82,7 +82,7 @@ export default function() {
             'normal_attack': '一般攻擊的傷害提升'
           },
           'frequency': {
-            'positive': '總傷害拆成$0'
+            'positive': '總傷害拆成$0次'
           },
           'ailment text': '有$0機率使目標陷入$1。',
           'effective_area': {
@@ -110,12 +110,12 @@ export default function() {
             'arrow': '箭矢屬性'
           },
           'effective_area: title': '類型',
-          'end_position_offsets: title': '終點位置',
           'radius: title': '傷害半徑',
           'move_distance: title': '移動距離',
           'angle: title': '作用角度',
           'start_position_offsets: title': '起點位置',
-          'end_position_offsets: title': '起點位置'
+          'end_position_offsets: title': '終點位置',
+          'caption of duration and cycle': '持續$0秒，每$1秒一次傷害。'
         },
         'damage: proration': {
           'damage: title': '傷害慣性',
@@ -194,7 +194,7 @@ export default function() {
             'circle': '圓形'
           },
           'effective_area: title': '類型',
-          'radius: title': '作用半徑',
+          'radius: title': '作用半徑'
         },
         'next': {
           'condition default': '下一招技能'
@@ -210,7 +210,8 @@ export default function() {
           'type': {
             'hp': '恢復HP',
             'mp': '恢復MP'
-          }
+          },
+          'caption of duration and cycle': '持續$0秒，每$1秒作用一次。'
         },
         'reference': {
           'base title': '參考連結'

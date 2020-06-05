@@ -39,7 +39,7 @@
             @click="toggleVisible(data.name)" />
         </transition-group>
         <cy-button v-if="topButtons"
-          type="icon-only" class="btn" :class="{ 'selected': topMenuVisible }"
+          type="icon-only" class="top-menu-btn" :class="{ 'selected': topMenuVisible }"
           :iconify-name="topMenuVisible ? 'ic-round-menu-open' : 'ic-round-menu'" />
       </div>
       <!-- == [end] buttons scope -->
@@ -56,13 +56,18 @@
             iconify-name="bx-bx-game">
             {{ showData['title'] }}
           </cy-icon-text>
-          <cy-icon-text v-if="showData['frequency']" class="condition-scope text-small light-text"
-            iconify-name="bi-circle-square">
-            <span v-html="showData['frequency']"></span>
-          </cy-icon-text>
           <cy-icon-text v-if="showData['element']" :iconify-name="elementIconName"
             class="condition-scope text-small light-text">
             {{ showData['element'] }}
+          </cy-icon-text>
+          <cy-icon-text v-if="showData['frequency'] && showData['@parent-branch'].attrs['title'] != 'each'" class="condition-scope text-small light-text"
+            iconify-name="bi-circle-square">
+            <span v-html="showData['frequency']"></span>
+          </cy-icon-text>
+          <cy-icon-text v-if="showData['duration'] && showData['cycle']"
+            iconify-name="ic-round-timer" class="condition-scope text-small light-text">
+            <span v-html="langText('damage/caption of duration and cycle', [showData['duration'], showData['cycle']])">
+            </span>
           </cy-icon-text>
           <span class="condition-scope attr" v-if="showData['@proration: damage']">
             <cy-icon-text class="name text-small" iconify-name="ri-error-warning-line">
@@ -87,6 +92,17 @@
           <cy-icon-text v-if="showData['is_place']" class="condition-scope text-small light-text"
             iconify-name="emojione-monotone:heavy-large-circle">
             {{ showData['is_place'] }}
+          </cy-icon-text>
+        </template>
+        <template v-if="branch.name == 'heal'">
+          <cy-icon-text v-if="showData['frequency']" class="condition-scope text-small light-text"
+            iconify-name="bi-circle-square">
+            <span v-html="showData['frequency']"></span>
+          </cy-icon-text>
+          <cy-icon-text v-if="showData['duration'] && showData['cycle']"
+            iconify-name="ic-round-timer" class="condition-scope text-small light-text">
+            <span v-html="langText('heal/caption of duration and cycle', [showData['duration'], showData['cycle']])">
+            </span>
           </cy-icon-text>
         </template>
       </div>
@@ -302,7 +318,8 @@ import vue_branchDetail from "./branch-detail.vue";
 import vue_equipmentInfo from "./equipment-info.vue";
 import vue_skillArea from "./skill-area.vue";
 
-import { Fragment } from "vue-fragment";
+import DataContainer from "../module/DataContainer.js";
+
 
 export default {
   name: 'skill-branch',
@@ -323,10 +340,7 @@ export default {
     return {
       'langText': this.langText,
       'calcValueStr': this.calcValueStr,
-      'isNumberStr': this.isNumberStr,
-      'highlightValueStr': this.highlightValueStr,
-      'handleReplacedText': this.handleReplacedText,
-      'handleValueStr': this.handleValueStr
+      'handleDataContainer': this.handleDataContainer
     }
   },
   updated() {
@@ -412,9 +426,9 @@ export default {
     subContentValid() {
       const p = this.branch.name;
       if (p == 'damage')
-        return this.showData['title'] || this.isScoped || this.showData['element'];
+        return this.showData['title'] || this.isScoped || this.showData['element'] || this.showData['frequency'];
       if (p == 'heal')
-        return false;
+        return this.showData['frequency'];
 
       return true;
     },
@@ -529,11 +543,11 @@ export default {
             } [type] || { '@default': default_icon };
           }
           name.forEach(k => {
-            if (k == 'unsheathe_damage')
-              console.log(bch);
-            const tmp = { [k]: bch.attrs[k] };
-            tmp[k] = convert ? convert(tmp[k]) : tmp[k];
-            const v = this.branchAttrToLangText(bch, tmp, k, { prefix: '-detail' });
+            const tmp = new DataContainer(bch.attrs[k], bch, k);
+            convert && tmp.handle(v => convert(v));
+
+            this.handleDataContainerLangText(tmp, { prefix: '-detail' });
+            const v = tmp.result();
             let classList = null;
             if (type == 'bool') {
               classList = attrs[k] == '1' ? null : ['dark'];
@@ -546,7 +560,9 @@ export default {
             });
           });
         } else {
-          const v = this.branchAttrToLangText(bch, attrs, item, { prefix: '-detail' });
+          const tmp = new DataContainer(bch.attrs[item], bch, item);
+          this.handleDataContainerLangText(tmp, { prefix: '-detail' });
+          const v = tmp.result();
           data['@data-list'].push({
             id: item,
             icon: default_icon,
@@ -597,20 +613,6 @@ export default {
       const p = this.branch['@parent-state'].stackStates.find(a => a.id == stack_id);
       return p ? p : null;
     },
-    branchAttrToLangText(bch, data, key, { type='normal', prefix='' }={}) {
-      if (type == 'value') {
-        const v = this.calcValueStr(bch.attrs[key]);
-        const p = this.isNumberStr(v) && parseFloat(v) < 0 ? 'negative' : 'positive';
-        return this.langText(`${bch.name + prefix}/${key}/${p}`, [data[key]]);
-      } else {
-        let p = data[key];
-        if (p == '1' || p == '0') // 轉換布林值
-          p = p == '1' ? 'true' : 'false';
-        let preName = bch.name + prefix;
-        preName = bch.mainBranch ? bch.mainBranch.name + ': ' + preName : preName;
-        return this.langText(`${preName}/${key}/${p}`);
-      }
-    },
     handleShowData(bch) {
       const attrs = bch.attrs;
       const data = Object.assign({}, attrs);
@@ -643,12 +645,12 @@ export default {
           if (data['detail_display'] == 'auto')
             data['detail_display'] = data['title'] == 'normal_attack' ? '0' : '1';
 
-          handleValueList.push('constant', 'extra_constant', {
+          handleValueList.push('constant', 'extra_constant', 'duration', 'cycle', {
             name: ['multiplier', 'ailment_chance'],
-            extraHandle: v => v + '%'
+            beforeColorText: v => v + '%'
           }, {
             name: 'frequency',
-            extraHandle: v => v + this.langText('global/times')
+            beforeColorText: v => v + this.langText('global/times')
           });
 
           hiddenList.push({
@@ -657,7 +659,7 @@ export default {
           }, {
             name: 'frequency',
             validation: v => parseInt(v) > 1,
-            valueOnly: true
+            validationType: 'value'
           }, {
             name: 'name',
             validation: v => v,
@@ -678,10 +680,10 @@ export default {
           // skill area
           handleValueList.push({
             name: 'angle',
-            extraHandle: v => v + '°'
+            beforeColorText: v => v + '°'
           }, {
             name: ['radius', 'move_distance', 'start_position_offsets', 'end_position_offsets'],
-            extraHandle: v => v + 'm'
+            beforeColorText: v => v + 'm'
           });
           hiddenList.push({
             name: ['move_distance', 'angel'],
@@ -689,7 +691,7 @@ export default {
           }, {
             name: ['start_position_offsets', 'end_position_offsets'],
             validation: v => v != 0,
-            valueOnly: true
+            validationType: 'value'
           });
           langTextList.push('effective_area', {
             name: ['start_position_offsets', 'end_position_offsets'],
@@ -724,10 +726,10 @@ export default {
         } else if (bch.name == 'effect') {
           handleValueList.push({
             name: 'radius',
-            extraHandle: v => v + 'm'
+            beforeColorText: v => v + 'm'
           }, {
             name: 'duration',
-            extraHandle: v => this.langText('display duration', [v])
+            beforeColorText: v => this.langText('display duration', [v])
           });
           handleTextList.push('caption');
           hiddenList.push({
@@ -748,7 +750,7 @@ export default {
           hiddenList.push({
             name: ['start_position_offsets', 'end_position_offsets'],
             validation: v => v != 0,
-            valueOnly: true
+            validationType: 'value'
           });
           langTextList.push('effective_area');
           titleList.push('effective_area', 'radius');
@@ -771,7 +773,10 @@ export default {
             defaultValue: this.langText('passive/base name')
           });
         } else if (bch.name == 'heal') {
-          handleValueList.push('duration', 'frequency', 'cycle', 'constant');
+          handleValueList.push('duration', 'cycle', 'constant', {
+            name: 'frequency',
+            beforeColorText: v => v + this.langText('global/times')
+          });
           hiddenList.push({
             name: 'name',
             validation: v => v,
@@ -784,7 +789,11 @@ export default {
           data['@extra-value-list'] = [];
           if (data['extra_value'] && data['extra_text']) {
             const vs = data['extra_value'].split(/\s*,\s*/)
-              .map(p => this.handleValueStr(p, null, { toPercentage: true }));
+              .map(p => {
+                const dc = new DataContainer(p, 'extra_value', bch);
+                this.handleDataContainer(dc, { toPercentage: true });
+                return dc.result();
+              });
             const ts = data['extra_text'].split(/\s*,\s*/);
             data['@extra-value-list'].push(...vs.map((p, i) => ({
               text: ts[i] || 'None',
@@ -802,7 +811,7 @@ export default {
         if (mbch.name == 'damage' && bch.name == 'extra') {
           handleValueList.push({
             name: 'ailment_chance',
-            extraHandle: v => v + '%'
+            beforeColorText: v => v + '%'
           });
           hiddenList.push({
             name: 'condition',
@@ -820,48 +829,75 @@ export default {
         }
       }
 
-      hiddenList.forEach(({ name, validation, defaultValue, valueOnly }) => {
+      // convert data to DataContainer
+      Object.keys(data).forEach(k => data[k] = new DataContainer(data[k], bch, k));
+
+      hiddenList.forEach(({ name, validation, defaultValue, validationType='normal' }={}) => {
         name = Array.isArray(name) ? name : [name];
         name.forEach(p => {
-          const t = !valueOnly ? data[p] : this.calcValueStr(attrs[p]);
-          if (!validation(t))
-            data[p] = defaultValue ? defaultValue : void 0;
+          if (data[p] === void 0) {
+            if (defaultValue)
+              data[p] = new DataContainer(defaultValue, p, bch);
+            return;
+          }
+          const dc = data[p];
+          const t = validationType == 'value' ? this.calcValueStr(dc.origin) : dc.origin;
+          if (!validation(t)) {
+            if (defaultValue) {
+              data[p].set(defaultValue);
+            } else
+              delete data[p];
+          }
         });
       });
 
       handleValueList.forEach(k => {
         if (typeof k == 'object') {
-          let { name, extraHandle, calcOnly } = k;
+          let { name, beforeColorText, calcOnly } = k;
           name = Array.isArray(name) ? name : [name];
-          name.forEach(p => data[p] = !calcOnly ? this.handleValueStr(data[p], extraHandle) : this.calcValueStr(data[p]));
-        } else
-          data[k] = this.handleValueStr(data[k]);
-      });
-
-      handleTextList.forEach(k => data[k] = this.handleTextStr(data[k], data));
-
-      langTextList.forEach(k => {
-        if (typeof k == 'object') {
-          let {name, type='normal' } = k;
-          name = Array.isArray(name) ? name : [name];
-          name.forEach(a => {
-            let p = data[a];
-            if (!p)
+          name.forEach(p => {
+            const dc = data[p];
+            if (!dc)
               return;
-            data[a] = this.branchAttrToLangText(bch, data, a, { type });
+            !calcOnly ?
+              this.handleDataContainer(dc, { beforeColorText }) :
+              dc.handle(v => this.calcValueStr(v));
           });
-        } else {
-          let p = data[k];
-          if (!p)
-            return;
-          data[k] = this.branchAttrToLangText(bch, data, k);
+        } else if (data[k]) {
+          this.handleDataContainer(data[k]);
         }
       });
 
+      handleTextList.forEach(k => data[k] && data[k].handleResult(v => this.handleTextData(v, bch)));
+
+      langTextList.forEach(k => {
+        if (typeof k == 'object') {
+          let { name, type='normal' } = k;
+          name = Array.isArray(name) ? name : [name];
+          name.forEach(a => {
+            const dc = data[a];
+            if (!dc)
+              return;
+            this.handleDataContainerLangText(dc, { type });
+          });
+        } else {
+          const dc = data[k];
+          if (!dc)
+            return;
+          this.handleDataContainerLangText(dc);
+        }
+      });
+
+      const dataContainers = []
+      Object.keys(data).forEach(k => {
+        if (data[k] instanceof DataContainer) {
+          dataContainers.push(data[k]);
+          data[k] = data[k].result();
+        }
+      });
+      data['@--data-container-records'] = dataContainers;
+
       titleList.forEach(k => {
-        const p = data[k];
-        if (!p)
-          return;
         data[k + ': title'] = this.langText(`${bch.name}/${k}: title`);
       });
 
@@ -875,89 +911,11 @@ export default {
 
       return data;
     },
-    highlightValueStr(str, vstr, originalStr, {
-      base = 'light-text',
-      stack = 'light-text-1',
-      extra = [],
-      extraHandle = null
-      //   <span class="light-text">
-      //     extraHandle(v = "<span class="multiple-values"></span>")
-      //   </span>
-    } = {}) {
-      const clist = [(originalStr.includes('stack') ? stack : base), ...extra];
-      let res = !this.isNumberStr(vstr) ? `<span class="multiple-values">${str}</span>` : str;
-      res = extraHandle ? extraHandle(res) : res;
-      res = `<span class="${clist.join(' ')}">${res}</span>`;
-      return res;
-    },
-    handleTextStr(str, data) {
-      if (!str)
-        return str;
-
-      str = str
-        .replace(/\$\{([^\}]+)\}(%?)/g, (m, m1, m2) => this.handleValueStr(m1, v => v + m2))
-        .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values">${m1}</span>`);
-      str = this.createTagButtons(str);
-
-      data['mark'] && data['mark'].split(/\s*,\s*/)
-        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="light-text">${m}</span>`));
-      data['branch'] && data['branch'].split(/\s*,\s*/)
-        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="light-text">${m}</span>`));
-      data['skill'] && data['skill'].split(/\s*,\s*/)
-        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="light-text">${m}</span>`));
-      return str;
-    },
-    handleReplacedText(str, vstr) {
-      vstr = vstr !== void 0 ? vstr : str;
-      if (this.isNumberStr(vstr))
-        return str;
-      const list = [
-        'BSTR', 'BINT', 'BAGI', 'BVIT', 'BDEX', 'TEC',
-        'STR', 'INT', 'AGI', 'VIT', 'DEX', 'shield_refining',
-        'dagger_atk', 'target_def', 'target_level', 'guard_power'
-      ];
-      list.forEach(cs => str = str.replace(new RegExp('\\$' + cs, 'g'), this.langText('formula replaced text/' + cs)));
-      return str;
-    },
-    handleValueStr(str, extraHandle, { toPercentage = false } = {}) {
-      if (!str) // str == '' || str == '0'
-        return str;
-      const originalStr = str;
-
-      const numStrToPercentage = s => (100 * parseFloat(s)).toFixed(1).replace('.0', '') + '%';
-      const replaceVarStr = s => {
-        const list = [
-          'BSTR', 'BINT', 'BAGI', 'BVIT', 'BDEX', 'TEC',
-          'STR', 'INT', 'AGI', 'VIT', 'DEX', 'shield_refining',
-          'dagger_atk', 'target_def', 'target_level', 'guard_power'
-        ];
-        list.forEach(cs => s = s.replace(new RegExp('\\$' + cs, 'g'), this.langText('formula replaced text/' + cs)));
-        return s;
-      };
-
-      str = this.calcValueStr(str)
-        .replace(/([$_a-zA-Z][$_a-zA-Z0-9]*)(\*)(\d\.\d+)/g,
-          (m, m1, m2, m3) => m1 + m2 + numStrToPercentage(m3))
-        .replace('*', '×');
-
-      const vstr = str;
-      str = this.isNumberStr(vstr) && toPercentage ? numStrToPercentage(str) : str;
-      str = this.handleReplacedText(str, vstr);
-      //str = !this.isNumberStr(vstr) ? `<span class="multiple-values">${str}</span>` : str;
-
-      //extraHandle && (str = extraHandle(str));
-
-      str = this.highlightValueStr(str, vstr, originalStr, {
-        extraHandle: extraHandle
-      });
-
-      str = str.replace(/(\d+\.)(\d{2,})/g, (m, m1, m2) => m1 + m2.slice(0, 2));
-
-      return str;
-    },
     calcValueStr(str) {
       if (!str)
         return str;
+      if (typeof str != 'string')
+        debugger;
       const skillState = this.skillState;
       const effectState = this.branch['@parent-state'];
 
@@ -967,11 +925,93 @@ export default {
         .join('+')
         .replace(/\+-/g, '-');
     },
+    handleDataContainerLangText(dc, { type='normal', prefix='' }={}) {
+      const bch = dc.branch, key = dc.key;
+      if (type == 'value') {
+        dc.handle(v => this.calcValueStr(v));
+        const p = dc.isNumberValue() && parseFloat(dc.value()) < 0 ? 'negative' : 'positive';
+        p == 'negative' && dc.handle(v => (-1 * v).toString());
+        dc.handleResult(v => this.langText(`${bch.name + prefix}/${key}/${p}`, [v]))
+      } else {
+        let p = dc.value();
+        if (p == '1' || p == '0') // 轉換布林值
+          p = p == '1' ? 'true' : 'false';
+        let preName = bch.name + prefix;
+        preName = bch.mainBranch ? bch.mainBranch.name + ': ' + preName : preName;
+        dc.handleResult(v => this.langText(`${preName}/${key}/${p}`));
+      }
+    },
+    handleTextData(str, bch) {
+      if (!str)
+        return str;
+
+      str = str
+        .replace(/\$\{([^\}]+)\}(%?)/g, (m, m1, m2) => {
+          const dc = new DataContainer(m1);
+          this.handleDataContainer(dc, { beforeColorText: v => v + m2 });
+          return dc.result();
+        })
+        .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values">${m1}</span>`);
+      str = this.createTagButtons(str);
+
+      const data = bch.attrs;
+
+      data['mark'] && data['mark'].split(/\s*,\s*/)
+        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="light-text">${m}</span>`));
+      data['branch'] && data['branch'].split(/\s*,\s*/)
+        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="light-text">${m}</span>`));
+      data['skill'] && data['skill'].split(/\s*,\s*/)
+        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="light-text">${m}</span>`));
+      return str;
+    },
+    handleDataContainer(dc, { beforeColorText, toPercentage=false }={}) {
+      const numStrToPercentage = s => (100 * parseFloat(s)).toFixed(1).replace('.0', '') + '%';
+
+      dc.handle(v => this.calcValueStr(v));
+      dc.handleResult(v => v
+        .replace(/([$_a-zA-Z][$_a-zA-Z0-9]*)(\*)(\d\.\d+)/g,
+          (m, m1, m2, m3) => m1 + m2 + numStrToPercentage(m3))
+        .replace('*', '×')
+      );
+
+      dc.handleResult(v => v.replace(/(\d+\.)(\d{2,})/g, (m, m1, m2) => m1 + m2.slice(0, 2)));
+
+      dc.isNumberValue() && toPercentage && dc.handleResult(v => numStrToPercentage(v));
+      this.handleReplacedVariable(dc);
+
+      this.dataResultHighlight(dc, { beforeColorText });
+    },
+    dataResultHighlight(dc, {
+      base = 'light-text',
+      stack = 'light-text-1',
+      extra = [],
+      beforeColorText = null
+      //   <span class="light-text">
+      //     extraHandle(v = "<span class="multiple-values"></span>")
+      //   </span>
+    } = {}) {
+      const clist = [(dc.origin.includes('stack') ? stack : base), ...extra];
+      dc.isNumberValue() && parseFloat(dc.value()) < 0 && clist.push('text-dark');
+      !dc.isNumberValue() && dc.handleResult(v => `<span class="multiple-values">${v}</span>`);
+
+      beforeColorText && dc.handleResult(v => beforeColorText(v));
+      dc.handleResult(v => `<span class="${clist.join(' ')}">${v}</span>`);
+    },
+    handleReplacedVariable(dc) {
+      if (dc.isNumberValue())
+        return;
+      const list = [
+        'BSTR', 'BINT', 'BAGI', 'BVIT', 'BDEX', 'TEC',
+        'STR', 'INT', 'AGI', 'VIT', 'DEX', 'shield_refining',
+        'dagger_atk', 'target_def', 'target_level', 'guard_power'
+      ];
+      list.forEach(cs => dc.handleResult(v => v.replace(new RegExp('\\$' + cs, 'g'),
+          this.langText('formula replaced text/' + cs))
+        )
+      );
+    },
     langText(v, vs) {
       return GetLang('Skill Query/Branch/' + v, vs);
-    },
-    isNumberStr(str) {
-      return /^[\d.]+$/.test(str);
     }
   },
   watch: {
@@ -994,8 +1034,7 @@ export default {
     'heal-formula': vue_healFormula,
     'branch-detail': vue_branchDetail,
     'equipment-info': vue_equipmentInfo,
-    'skill-area': vue_skillArea,
-    'fragment': Fragment
+    'skill-area': vue_skillArea
   }
 };
 </script>
@@ -1068,7 +1107,7 @@ fieldset.branch {
   transition: border-width 0.3s ease;
 
   >legend {
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.2rem;
     display: flex;
     align-items: center;
     padding: 0 0.4rem;

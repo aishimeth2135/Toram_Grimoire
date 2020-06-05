@@ -61,11 +61,15 @@
           unitRadius = 0.3,
           moveDistanceFix = 3;
 
-        const skill_range = parseFloat(this.calcValueStr(
-          (this.attrs['@parent-branch']['@parent-state'].attrs['range'] || '100')
-            .replace(/\.(\d{2,})/, (m, m1) => m1.slice(0, 2))
-          ));
-        const targetOffset = $sd['end_position'] == 'self' ? 0 : Math.min(7, skill_range);
+        const skill_range_default = 100;
+        let skill_range = this.attrs['@parent-branch']['@parent-state'].attrs['range'];
+        skill_range = skill_range ?
+          this.calcValueStr(skill_range).replace(/\.(\d{2,})/, (m, m1) => m1.slice(0, 2)) :
+          skill_range_default;
+        skill_range = /$\-?[\d.]+^/.test(skill_range) ? parseFloat(skill_range) : skill_range_default;
+        const targetOffset = $sd['target_offsets'] == 'auto' ?
+          (type == 'circle' && $sd['end_position'] == 'self' ? radius*0.5 : Math.min(7, skill_range)) :
+          parseFloat(this.calcValueStr($sd['target_offsets']));
         const moveDistance = Math.min(Math.max(targetOffset + moveDistanceFix, originalMoveDistance), 9);
 
         if (type == 'circle') {
@@ -76,7 +80,7 @@
           bx += Math.max(0, -1 * startPositionOffsets);
 
           // target
-          let tx = $sd['end_position'] == 'self' ? bx + radius*0.5 : bx + targetOffset;
+          let tx = bx + targetOffset;
           const ty = by;
 
           if (radius > tx) {
@@ -144,7 +148,8 @@
             attrs: {
               cx: grid(bx), cy: grid(by),
               r: grid(unitRadius), fill: charaColor
-            }
+            },
+            animations: []
           };
           const tar = {
             type: 'circle',
@@ -175,7 +180,7 @@
             attrs: {
               attributeName: 'fill',
               values: `${pcolorl};${pcolorl3};${pcolorl3};${pcolorl}`,
-              keyTimes: '0;.3;.4;1',
+              keyTimes: '0;.3;.6;1',
               dur: '2s', repeatCount: 'indefinite'
             }
           }, {
@@ -187,6 +192,18 @@
               dur: '2s', repeatCount: 'indefinite'
             }
           });
+
+          if ($sd['end_position'] == 'self') {
+            chara.animations.push({
+              type: 'animate',
+              attrs: {
+                attributeName: 'cx',
+                values: `${grid(bx)};${grid(bx)};${grid(endx)};${grid(endx)}`,
+                keyTimes: '0;.3;.4;1',
+                dur: '2s', repeatCount: 'indefinite'
+              }
+            });
+          }
 
           const area_bg = {
             type: 'path',
@@ -277,7 +294,7 @@
               attrs: {
                 attributeName: 'fill',
                 values: `${pcolorl};${pcolorl3};${pcolorl3};${pcolorl}`,
-                keyTimes: '0;.3;.4;1',
+                keyTimes: '0;.3;.6;1',
                 dur: '2s', repeatCount: 'indefinite'
               }
             }]
@@ -293,7 +310,6 @@
         console.log('render skill area...');
         console.log(this.attrs);
         console.log(datas);
-        console.log(skill_range);
 
         return datas;
       }
