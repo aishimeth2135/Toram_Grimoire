@@ -912,7 +912,7 @@ export default {
           data['@stack-input-width-wide'] = { '--input-width': '3rem' };
       }
 
-      // console.log(this.branch.name, data);
+      console.log(this.branch.name, data);
 
       return data;
     },
@@ -1272,6 +1272,11 @@ fieldset.branch {
 
   &.tips {
     color: var(--primary-light-3);
+
+    @{deep-operator} svg {
+      align-self: flex-start;
+      margin-top: 0.2rem;
+    }
 
     @{deep-operator} .light-text {
       color: var(--primary-purple);
