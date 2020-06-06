@@ -1,8 +1,3 @@
-import "@css/main/font/font.css";
-import "@css/main/main.less";
-import "@css/main/Cyteria/Cyteria.css";
-import "@css/main/global.css";
-
 import app from "./app.vue";
 
 import vue_home from "@views/Home/Home/main.vue";

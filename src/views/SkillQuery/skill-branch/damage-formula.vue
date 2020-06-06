@@ -13,7 +13,7 @@
     <cy-icon-text iconify-name="ic-round-add" v-if="showData['extra_constant']" />
     <span class="attr-scope" v-if="showData['extra_constant']" v-html="showData['extra_constant']"></span>
     <span class="divider c2" v-if="showData['extra_constant'] && showFrequency"></span>
-    <cy-icon-text iconify-name="ic-round-close" v-if="showData['@parent-branch'].attrs['title'] == 'each'" />
+    <cy-icon-text iconify-name="ic-round-close" v-if="showData['@parent-branch'].attrs['title'] == 'each' && showData['frequency']" />
     <span class="attr-scope" v-if="showFrequency"
       v-html="showData['frequency']">
     </span>

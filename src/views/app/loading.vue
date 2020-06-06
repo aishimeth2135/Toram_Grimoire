@@ -48,7 +48,7 @@
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    
+
     > .bottom-tips {
       position: absolute;
       right: 1rem;

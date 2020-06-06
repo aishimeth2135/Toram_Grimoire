@@ -6,13 +6,6 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 module.exports = {
   entry: {
     'grimoire': './src/index.js'
-    // 'home': './src/js/main/Home/index.js',
-    // 'skill-query': './src/js/main/SkillQuery/index.js',
-    // 'item-query': './src/js/main/ItemQuery/index.js',
-    // 'enchant-simulator': './src/js/main/EnchantSimulator/index.js',
-    // 'damage-calculation': './src/js/main/DamageCalculation/index.js',
-    // 'skill-simulator': './src/js/main/SkillSimulator/index.js',
-    // 'character-simulator': './src/pages/CharacterSimulator/index.js'
   },
   output: {
     path: path.join(__dirname, 'public', 'dist'),

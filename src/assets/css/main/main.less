@@ -25,7 +25,7 @@
   --rgb-primary-light: 255, 209, 234;
 }
 
-.main-font-setting() {
+.main--font-1() {
   font-family: 'Itim', 'SetoFont', Microsoft JhengHei, sans-serif;
 }
 
@@ -56,6 +56,10 @@
   --rgb-primary-light: 80, 48, 66;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body.theme--night-mode {
   .night-mode();
 }
@@ -78,13 +82,17 @@ textarea {
 }
 
 body.font1.lang-1 {
+  .main--font-1();
+
   input, textarea {
-    .main-font-setting();
+    .main--font-1();
   }
 }
 body.font1.lang-2 {
+  .main--font-1();
+
   input, textarea {
-    .main-font-setting();
+    .main--font-1();
   }
 }
 

@@ -61,6 +61,7 @@
 
     &.text-small {
       --icon-width: 0.9rem;
+      font-size: 0.9rem;
 
       > svg + .text {
         margin-left: 0.3rem;
