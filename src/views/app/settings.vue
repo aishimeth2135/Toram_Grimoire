@@ -2,8 +2,12 @@
   <span class="app--settings">
     <cy-button type="icon-only" iconify-name="ic-baseline-settings" @click="toggleWindowVisible" />
     <cy-window class="width-wide main--window" @close-window="toggleWindowVisible"
-      :visible="windowVisible" iconify-name="ic-baseline-settings">
-      <template v-slot:title>{{ langText('title') }}</template>
+      :visible="windowVisible">
+      <template v-slot:title>
+        <cy-icon-text iconify-name="ic-baseline-settings">
+          {{ langText('title') }}
+        </cy-icon-text>
+      </template>
       <fieldset class="column">
         <legend>
           <cy-icon-text iconify-name="ic-round-text-fields">
@@ -11,7 +15,9 @@
           </cy-icon-text>
         </legend>
         <div class="caption">{{ langText('switch font/caption') }}</div>
-        <cy-icon-text class="text-small warn" iconify-name="bx-bx-error-circle">{{ langText('switch font/warn 1') }}</cy-icon-text>
+        <cy-icon-text class="text-small warn" iconify-name="bx-bx-error-circle">
+          {{ langText('switch font/warn 1') }}
+        </cy-icon-text>
         <div class="buttons">
           <cy-button iconify-name="ic-round-text-fields" :class="{ 'selected': currentFont == 0 }"
             @click="switchFont(0)">
