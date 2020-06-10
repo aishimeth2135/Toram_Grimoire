@@ -159,6 +159,10 @@
         color: var(--primary-light-3);
       }
     }
+
+    &.text-small {
+      font-size: 0.9rem;
+    }
   }
 
   .Button {

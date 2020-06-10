@@ -3,12 +3,8 @@
     <div class="window" v-if="visible" @click="closeWindow">
       <div class="container" @click.stop>
         <div class="top">
-          <div class="Cyteria scope-icon title">
-            <iconify-icon :name="iconifyName"></iconify-icon>
-            <lang-text v-if="titleLangId != null" :lang-id="titleLangId" class="text"></lang-text>
-            <span v-else class="text">
-              <slot name="title"></slot>
-            </span>
+          <div class="title">
+            <slot name="title"></slot>
           </div>
           <span class="buttons">
             <slot name="top-buttons"></slot>

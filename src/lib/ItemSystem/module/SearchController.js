@@ -610,17 +610,22 @@ export default class SearchController {
 
     if (item.stats.length != 0) {
       const stats = simpleCreateHTML('div', ['scope', 'stats']);
-      const sorted_stats = StatBase.sortStats(item.stats.slice());
-      sorted_stats.forEach((a, i) => {
+      const statDatas = item.stats.map((p, i) => ({
+        origin: p,
+        restriction: item.statRestrictions[i]
+      }));
+      statDatas.sort((a, b) => a.origin.base.order - b.origin.base.order);
+
+      statDatas.forEach(p => {
         const rst_frg = document.createDocumentFragment();
-        if (item.statRestrictions[i] !== '') {
-          item.statRestrictions[i].split(/\s*,\s*/).forEach(rst => {
+        if (p.restriction !== '') {
+          p.restriction.split(/\s*,\s*/).forEach(rst => {
             const t = Lang('item detail/restriction/' + rst);
             rst_frg.appendChild(simpleCreateHTML('span', 'restriction', t));
           });
         }
         const negativeFunction = v => '<span class="dark">' + v + '</span>';
-        const span = simpleCreateHTML('span', null, a.show({ processNegativeValue: negativeFunction }));
+        const span = simpleCreateHTML('span', null, p.origin.show({ processNegativeValue: negativeFunction }));
         if (rst_frg.childElementCount != 0)
           span.appendChild(rst_frg);
         stats.appendChild(span);
@@ -657,16 +662,16 @@ export default class SearchController {
         mats.forEach(a => {
           const v = a.quantity;
           html += `<tr>
-                        <td class="title">${a.name}</td>
-                        <td class="value">${v !== void 0 && v !== '' ? v : '?'}</td>
-                    </tr>`;
+                    <td class="title">${a.name}</td>
+                    <td class="value">${v !== void 0 && v !== '' ? v : '?'}</td>
+                   </tr>`;
         });
         if (rc['cost'] !== void 0) {
           const v = rc['cost'];
           html += `<tr>
-                        <td class="title">${Lang('item detail/spina')}</td>
-                        <td class="value">${v !== '' ? v : '?'}s</td>
-                    </tr>`;
+                     <td class="title">${Lang('item detail/spina')}</td>
+                     <td class="value">${v !== '' ? v : '?'}s</td>
+                   </tr>`;
         }
         tb.innerHTML = html;
         const table = document.createElement('table');

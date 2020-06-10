@@ -63,7 +63,7 @@ export default function() {
           'point: target': '目标'
         },
         'global suffix: extra': {
-          'condition default': '施放时额外效果'
+          'condition default': '额外效果'
         },
         'damage': {
           'base name': '伤害',
