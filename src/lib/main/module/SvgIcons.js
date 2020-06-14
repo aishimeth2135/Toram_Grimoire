@@ -119,3 +119,31 @@ function mdiIconPathD(name) {
       return '';
   }
 }
+
+let iconLoadListeners = [];
+
+document.addEventListener('IconifyAddedIcons', function() {
+  iconLoadListeners = iconLoadListeners.filter(p => {
+    if (Iconify.iconExists(p.iconName)) {
+      p.resolve(Iconify.getIcon(p.iconName));
+      return false;
+    }
+    return true;
+  });
+});
+
+function loadIconifyData(name) {
+  return new Promise((resolve, reject) => {
+    if (Iconify.iconExists(name)) {
+      resolve(Iconify.getIcon(name));
+      return;
+    }
+    iconLoadListeners.push({
+      iconName: name,
+      resolve
+    });
+    Iconify.preloadImages([name]);
+  });
+}
+
+export { loadIconifyData };
