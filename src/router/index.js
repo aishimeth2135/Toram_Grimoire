@@ -2,14 +2,16 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 // views
-import Character from "./Character/app.js";
-import Home from "./Home/app.js";
-import Skill from "./Skill/app.js";
-import Item from "./Item/app.js";
-import DamageCalc from "./Calculation/damage/app.js";
-import Enchant from "./Enchant/app.js";
+import Character from "./Character";
+import Home from "./Home";
+import Skill from "./Skill";
+import Item from "./Item";
+import DamageCalc from "./Calculation/damage";
+import Enchant from "./Enchant";
 
-import Page404 from "./Page404/app.js";
+import Page404 from "./Page404";
+
+import Bubble from "./Bubble";
 
 // stores
 import navStore from "@store/nav.js";
@@ -27,7 +29,8 @@ const routes = [
   Item,
   DamageCalc,
   Enchant,
-  Page404
+  Page404,
+  Bubble
 ];
 
 const router = new VueRouter({
