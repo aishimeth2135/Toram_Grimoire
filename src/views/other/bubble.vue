@@ -1,7 +1,7 @@
 <template>
   <div>
     <div ref="icon-defs" style="position: absolute;"></div>
-    <div class="main--bubble">
+    <div class="main--bubble" :class="{ 'display-bg': displayBg }">
       <svg v-for="data in icons" :key="data.id"
         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="up"
         preserveAspectRatio="xMidYMid meet"
@@ -11,6 +11,7 @@
         <use xlink:href="#bubble--icon-group" />
       </svg>
     </div>
+    <div class="toggle-bg-area" @click="toggleBackground"></div>
   </div>
 </template>
 <script>
@@ -41,13 +42,21 @@ export default {
       iconMaximum: 55,
       counter: 0,
       idCounter: 0,
-      viewBox: '0 0 24 24'
+      viewBox: '0 0 24 24',
+      displayBg: false
     }
   },
   mounted() {
     const colors = this.$route.params.color;
-    if (colors) {
+    if (colors && colors != 'random') {
       this.colors = colors.split('+');
+    }
+
+    const iconNumber = this.$route.params.number;
+    if (iconNumber) {
+      const [max, interval=this.generationInterval] = iconNumber.split('+');
+      this.iconMaximum = max;
+      this.generationInterval = interval;
     }
 
     const iconName = this.$route.params.iconName;
@@ -85,6 +94,9 @@ export default {
     }
   },
   methods: {
+    toggleBackground() {
+      this.displayBg = !this.displayBg;
+    },
     createRandowPathDefinition() {
       const vw = this.viewWidth,
         vh = this.viewHeight;
@@ -152,12 +164,16 @@ export default {
   z-index: -1;
   overflow-y: hidden;
   left: 0;
-  top: 1rem;
+  top: 0;
   // background-color: #fff;
 
   // @media (prefers-color-scheme: dark) {
   //   background-color: #fff;
   // }
+  &.display-bg {
+    background-color: var(--white);
+    z-index: 99;
+  }
 
   svg.up {
     animation: icon-up 20s;
@@ -171,6 +187,18 @@ export default {
 @keyframes icon-up {
   100% {
     offset-distance: 100%;
+  }
+}
+
+.toggle-bg-area {
+  z-index: 100;
+  height: 100%;
+  width: 3rem;
+  position: absolute;
+  right: 0;
+  top: 0;
+  &:hover {
+    background-color: rgba(var(--rgb-black), 0.3);
   }
 }
 </style>
