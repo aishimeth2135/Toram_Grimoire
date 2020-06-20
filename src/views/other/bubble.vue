@@ -34,6 +34,7 @@ export default {
   data() {
     return {
       icons: [],
+      colors: null,
       viewWidth: window.innerWidth,
       viewHeight: window.innerHeight,
       generationInterval: 250,
@@ -44,6 +45,11 @@ export default {
     }
   },
   mounted() {
+    const colors = this.$route.params.color;
+    if (colors) {
+      this.colors = colors.split('+');
+    }
+
     const iconName = this.$route.params.iconName;
 
     const setIcon = data => {
@@ -104,13 +110,22 @@ export default {
 
       return d;
     },
+    generateColor() {
+      if (this.colors) {
+        const l = this.colors.length;
+        if (this.colors.length == 1)
+          return this.colors[0];
+        return '#' + this.colors[getRandomInt(0, l-1)];
+      }
+      return this.randowHexColor();
+    },
     randowHexColor() {
       return Array(3).fill()
         .map(a => getRandomInt(0, 255).toString(16))
         .reduce((c, a) => c + (a.length == 1 ? '0' + a : a), '#');
     },
     createIcon() {
-      const color = this.randowHexColor();
+      const color = this.generateColor();
       const path = this.createRandowPathDefinition();
 
       this.$set(this.icons, this.counter, {

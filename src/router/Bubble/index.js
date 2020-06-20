@@ -4,7 +4,7 @@ import vue_bubble from "@views/other/bubble.vue";
 import init from "./init.js";
 
 export default {
-  path: '/bubble/:iconName',
+  path: '/bubble/:iconName/:color?',
   component: vue_bubble,
   beforeEnter(to, from, next) {
     init().then(p => next());
