@@ -31,7 +31,7 @@
         document.body.classList.toggle('theme--night-mode');
       },
       langText(v, vs){
-        return GetLang('Footer/' + v);
+        return GetLang('Footer/' + v, vs);
       }
     }
   };

@@ -1,6 +1,6 @@
-import Grimoire from "@Grimoire";
+// import Grimoire from "@Grimoire";
 import { viewInit, viewInitReady, viewInitEnd, handleInit } from "@global-modules/viewInit.js";
-import GetLang from "@global-modules/LanguageSystem.js";
+// import GetLang from "@global-modules/LanguageSystem.js";
 
 async function start() {
   await viewInit({});
@@ -12,4 +12,4 @@ async function start() {
 
 export default async function() {
   await handleInit(start);
-};
+}

@@ -1,4 +1,4 @@
-import Grimoire from "@Grimoire";
+// import Grimoire from "@Grimoire";
 import { viewInit, viewInitReady, viewInitEnd, handleInit } from "@global-modules/viewInit.js";
 
 async function start() {
@@ -11,4 +11,4 @@ async function start() {
 
 export default async function() {
   await handleInit(start);
-};
+}

@@ -1,31 +1,39 @@
 <template>
   <svg class="app--draw-skill-tree" xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
-    :width="width" :height="height">
+    :width="drawTreeData.width" :height="drawTreeData.height">
     <defs>
-      <template v-for="(p, index) in skillIconPatternData">
-        <pattern :id="p.id" :width="p.width" :height="p.height">
-          <template v-for="(q, index2) in p.elements">
-            <circle v-if="q.type == 'circle'" :cx="q.cx" :cy="q.cy" :r="q.r" :class="q.class" />
-            <image v-else-if="q.type == 'image'" @error="skillIconImageNotFound($event)"
-              :xlink:href="q.path" :x="q.x" :y="q.y" :width="q.width" :height="q.height" />
-          </template>
-        </pattern>
-      </template>
+      <pattern v-for="(p) in skillIconPatternData" :key="p.id"
+        :id="p.id" :width="p.width" :height="p.height">
+        <template v-for="(q) in p.elements">
+          <circle v-if="q.type == 'circle'" :cx="q.cx" :cy="q.cy" :r="q.r" :class="q.class"
+            :key="`${q.type}x${p.cx}y${q.cy}`" />
+          <image v-else-if="q.type == 'image'" @error="skillIconImageNotFound($event)"
+            :key="`${q.type}x${p.x}y${q.y}`"
+            :xlink:href="q.path" :x="q.x" :y="q.y" :width="q.width" :height="q.height" />
+        </template>
+      </pattern>
     </defs>
-    <template v-for="(p, index) in drawTreeData">
-      <circle v-if="p.type == 'skill-circle'" @click="skillCircleClick($event, p.skill)" :cx="p.cx" :cy="p.cy" :r="p.r" :class="p.class" :style="p.style" />
+    <template v-for="(p) in drawTreeData.data">
+      <circle v-if="p.type == 'skill-circle'" @click="skillCircleClick($event, p.skill)"
+        :key="p.skill.id"
+        :cx="p.cx" :cy="p.cy" :r="p.r" :class="p.class" :style="p.style" />
       <circle v-else-if="p.type == 'tree-dot'"
+        :key="`${p.type}x${p.cx}y${p.cy}`"
         :cx="p.cx" :cy="p.cy" :r="p.r" :class="p.class" />
       <text v-else-if="p.type == 'skill-name'"
+        :key="`${p.type}x${p.x}y${p.y}`"
         :x="p.x" :y="p.y" :class="p.class">
         {{ p.innerText }}
       </text>
       <line v-else-if="p.type == 'tree-line'"
+        :key="`${p.type}x1${p.x1}y1${p.y1}x2${p.x2}y2${p.y2}`"
         :x1="p.x1" :y1="p.y1" :x2="p.x2" :y2="p.y2" />
       <circle v-else-if="p.type == 'skill-level-circle' || p.type == 'star-gem-level-circle'"
+        :key="`${p.type}x${p.cx}y${p.cy}`"
         :cx="p.cx" :cy="p.cy" :r="p.r" :class="p.class" />
       <text v-else-if="p.type == 'skill-level-text' || p.type == 'star-gem-level-text'"
+        :key="`${p.type}x${p.x}y${p.y}`"
         :x="p.x" :y="p.y" :class="p.class">
         {{ p.innerText }}
       </text>
@@ -47,7 +55,7 @@
       skillTree: [SkillTree, LevelSkillTree],
       setSkillButtonExtraData: {
         type: Function,
-        default: (skill, data) => [],
+        default: (skill, data) => [], // eslint-disable-line
       },
       skillCircleClickListener: {
         type: Function,
@@ -65,21 +73,12 @@
         document.body.append(svg);
       }
     },
-    data(){
-      return {
-        width: 0,
-        height: 0
-      }
-    },
     computed: {
       drawTreeData(){
-        const t = computeDrawSkillTreeData(this.skillTree, {
+        return computeDrawSkillTreeData(this.skillTree, {
           setSkillButtonExtraData: this.setSkillButtonExtraData,
           skillTreeType: this.skillTreeType
         });
-        this.width = t.width;
-        this.height = t.height;
-        return t.data;
       },
       skillIconPatternData(){
         const st = this.skillTreeType == 'level-skill-tree' ? this.skillTree.base : this.skillTree;
@@ -91,7 +90,7 @@
         this.skillCircleClickListener(e, skill);
       },
       skillIconImageNotFound(e){
-        e.target.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '../src/picture/skill_icons/unknow.svg');
+        e.target.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '/imgs/skill_icons/unknow.svg');
       }
     }
   }

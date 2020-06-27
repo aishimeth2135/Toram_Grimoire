@@ -1,16 +1,16 @@
-@font-face {
+/* @font-face {
     font-family: 'Itim';
     src: local('Itim'),
-        url('/dist/fonts/Itim-Regular.woff2') format('woff2'),
-        url('/dist/fonts/Itim-Regular.woff') format('woff');
+        url('./Itim-Regular.woff2') format('woff2'),
+        url('./Itim-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-}
+} */
 
 @font-face {
     font-family: 'SetoFont';
     src: local('SetoFont'),
-        url('/dist/fonts/Setofont.woff2') format('woff2');
+        url('./Setofont.woff2') format('woff2');
 }
 
 @font-face {
@@ -23,7 +23,7 @@
 
 @font-face {
     font-family: 'SetoFont';
-    src: url('/dist/fonts/Fruit-icrecream.woff') format('woff'),
+    src: url('./Fruit-icrecream.woff') format('woff'),
         local(Microsoft JhengHei);
     font-weight: normal;
     font-style: normal;
@@ -32,7 +32,7 @@
 
 @font-face {
     font-family: 'SetoFont';
-    src: url('/dist/fonts/XiLiangShaoNv-2.woff') format('woff'),
+    src: url('./XiLiangShaoNv-2.woff') format('woff'),
         local(Microsoft JhengHei);
     font-weight: normal;
     font-style: normal;

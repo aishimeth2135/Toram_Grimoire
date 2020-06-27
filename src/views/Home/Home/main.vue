@@ -4,7 +4,7 @@
       <div class="title">Cy's Grimoire</div>
     </section>
     <section class="link-buttons">
-      <div v-for="(data, i) in columns" class="column">
+      <div v-for="(data) in columns" class="column" :key="data.name + '|' + data.path">
         <router-link tag="div" :to="data.path" class="title">
           <div class="text">{{ langText(data.name + '/title') }}</div>
           <iconify-icon :name="data.icon" class="icon" />

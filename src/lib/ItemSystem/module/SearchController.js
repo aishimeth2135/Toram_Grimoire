@@ -1,3 +1,4 @@
+/* eslint-disable */
 import CY from "../../main/module/cyteria.js";
 import GetLang from "../../main/module/LanguageSystem.js";
 import Grimoire from "../../main/Grimoire.js";

@@ -1,0 +1,71 @@
+:root {
+    --primary-dark: #85005F;
+    --primary-dark-light: #c62899;
+    --primary-light: #FFD1EA;
+    --primary-light-2: #f7a8d2;
+    --primary-light-3: #ff5fb7;
+    --primary-light-4: #ff008d;
+    --primary-purple: #9c27b0;
+    --primary-purple-light: #c873d7;
+    --primary-water-blue-light: #9acbf3;
+    --primary-water-blue: #2196f3;
+    --primary-gray: #666;
+    --primary-blue-grean: #009688;
+    --primary-blue-grean-light: #67d1c7;
+    --white: white;
+    --red: red;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--white);
+    margin: 6px;
+}
+body, input, textarea {
+    color: var(--primary-dark);
+    font-family: 'Itim', Microsoft JhengHei, sans-serif;
+    background-color: var(--white);
+}
+
+.main-- > .cars {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.main-- > .cars > .car-scope > .car-name {
+    text-align: center;
+}
+.main-- > .cars > .car-scope > .car-track {
+    /* = 必要 ===*/
+    position: relative;
+    display: inline-block;
+    /* ========= */
+    height: 90vh;
+    width: 5rem;
+}
+.main-- > .cars > .car-scope > .car-track > .car {
+    /* = 必要 ===*/
+    position: absolute; 
+    display: inline-block;
+    transform: translateY(-50%);
+    /* ========= */
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    top: 0;
+    left: calc(50% - 1.5rem);
+    background-color: var(--primary-light-3);
+    z-index: 2;
+}
+.main-- > .cars > .car-scope > .car-track > .track-line {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: calc(50% - 0.25rem);
+    width: 0.5rem;
+    background-color: var(--primary-light);
+    z-index: 1;
+}

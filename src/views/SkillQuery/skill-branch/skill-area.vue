@@ -10,7 +10,8 @@
       };
     },
     render(h) {
-      const childs = this.areaDatas.map(data => {
+      const areaDatas = this.areaDatas;
+      const childs = areaDatas.datas.map(data => {
         const anis = (data.animations || []).map(ani => h(ani.type, {
           attrs: ani.attrs
         }));
@@ -24,8 +25,8 @@
         attrs: {
           xmlns: 'http://www.w3.org/2000/svg',
           version: '1.1', baseProfile: 'full',
-          width: this.width, height: this.height,
-          viewBox: `0 0 ${this.width} ${this.height}`,
+          width: areaDatas.width, height: areaDatas.height,
+          viewBox: `0 0 ${areaDatas.width} ${areaDatas.height}`,
           preserveAspectRatio: 'xMidYMid meet',
           class: 'main--draw-skill-area'
         }
@@ -36,6 +37,7 @@
         return this.attrs['radius'] !== void 0;
       },
       areaDatas() {
+        let width, height;
         const $sd = this.attrs; // 別名
 
         const type = $sd['effective_area'];
@@ -49,14 +51,12 @@
 
         const body_style = getComputedStyle(document.body);
         const pcolorl = body_style.getPropertyValue('--primary-light').trim(),
-            pcolorl2 = body_style.getPropertyValue('--primary-light-2').trim(),
+            // pcolorl2 = body_style.getPropertyValue('--primary-light-2').trim(),
             pcolorl3 = body_style.getPropertyValue('--primary-light-3').trim(),
             pcolorWaterBlue = body_style.getPropertyValue('--primary-water-blue').trim(),
             pcolorRed = body_style.getPropertyValue('--primary-red').trim();
 
         const padding = 1,
-          bdColor = pcolorl3,
-          bgColor = pcolorl2,
           charaColor = pcolorWaterBlue,
           targetColor = pcolorRed,
           unitRadius = 0.3,
@@ -69,7 +69,7 @@
         skill_range = skill_range ?
           this.calcValueStr(skill_range).replace(/\.(\d{2,})/, (m, m1) => m1.slice(0, 2)) :
           skill_range_default;
-        skill_range = /$\-?[\d\.]+^/.test(skill_range) ? parseFloat(skill_range) : skill_range_default;
+        skill_range = /$-?[\d.]+^/.test(skill_range) ? parseFloat(skill_range) : skill_range_default;
         const targetOffset = $sd['target_offsets'] == 'auto' ?
           (type == 'circle' && $sd['end_position'] == 'self' ? radius*0.5 : Math.min(7, skill_range)) :
           parseFloat(this.calcValueStr($sd['target_offsets']));
@@ -133,8 +133,8 @@
           datas.push(chara);
           datas.push(tar);
 
-          this.height = grid(by + radius + padding);
-          this.width = grid(tx + padding + radius + Math.max(0, endPositionOffsets));
+          height = grid(by + radius + padding);
+          width = grid(tx + padding + radius + Math.max(0, endPositionOffsets));
         } else if (type == 'line') {
           // character
           let bx = padding + radius;
@@ -221,8 +221,8 @@
           datas.push(chara);
           datas.push(tar);
 
-          this.height = grid(endy + radius + padding);
-          this.width = grid(endx + radius + padding);
+          height = grid(endy + radius + padding);
+          width = grid(endx + radius + padding);
         } else if (type == 'sector') {
           const deg = Math.PI/180;
           const angle = parseFloat(this.calcValueStr($sd['angle']));
@@ -306,11 +306,15 @@
           datas.push(chara);
           datas.push(tar);
 
-          this.height = grid(by + padding + maxRadius * Math.sin(angle*deg/2));
-          this.width = grid(bx + moveDistance + padding);
+          height = grid(by + padding + maxRadius * Math.sin(angle*deg/2));
+          width = grid(bx + moveDistance + padding);
         }
 
-        return datas;
+        return {
+          datas,
+          height,
+          width
+        };
       }
     },
     methods: {

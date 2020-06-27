@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="100" version="1.1">
+	<defs>
+		<radialGradient id="rg1" cx=".5" cy=".5" r="10" fx=".5" fy=".1">
+			<stop offset="0%" stop-color="#FFF"></stop>
+			<stop offset="4.5%" stop-color="#FFD1EA"></stop>
+			<stop offset="8%" stop-color="#85005F"></stop>
+		</radialGradient>
+                <radialGradient id="rg3" cx=".5" cy=".5" r="1" fx=".5" fy=".1">
+			<stop offset="0%" stop-color="transparent"></stop>
+			<stop offset="56%" stop-color="transparent"></stop>
+			<stop offset="63.5%" stop-color="#FFF"></stop>
+			<stop offset="65%" stop-color="#FFF"></stop>
+		</radialGradient>
+                <radialGradient id="rg2" cx=".5" cy=".5" r="4" fx=".5" fy=".1">
+			<stop offset="0%" stop-color="#FFF"></stop>
+			<stop offset="11%" stop-color="#FFD1EA"></stop>
+			<stop offset="18.6%" stop-color="#85005F"></stop>
+			<stop offset="20%" stop-color="#FFF"></stop>
+		</radialGradient>
+		<LinearGradient id="stroke1" x1=".5" y1="0" x2=".5" y2="1">
+			<stop offset="0%" stop-color="#FFD1EA"></stop>
+			<stop offset="100%" stop-color="#85005F"></stop>
+		</LinearGradient>
+	</defs>
+	<circle cx="50" cy="50" r="25" fill="url(#rg1)" stroke="url(#stroke1)" stroke-width="3"></circle>
+	<circle cx="50" cy="50" r="25" fill="url(#rg3)" stroke="#000" stroke-width="0"></circle>
+	<circle cx="150" cy="50" r="25" fill="url(#rg2)" stroke="url(#stroke1)" stroke-width="3"></circle>
+</svg>

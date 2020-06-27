@@ -7,10 +7,9 @@ export default function(str, { skillState, effectState, branch }) {
   str = str.replace(/SLv/g, slv)
     .replace(/CLv/g, clv);
 
-  let stack = null;
   if (branch && branch.attrs['stack_id']) {
     const ss = effectState.stackStates;
-    stack = branch.attrs['stack_id'].split(/\s*,\s*/)
+    const stack = branch.attrs['stack_id'].split(/\s*,\s*/) // eslint-disable-line
       .map(p => parseInt(p, 10))
       .map(p => {
         const t = ss.find(a => a.id == p);
@@ -23,7 +22,7 @@ export default function(str, { skillState, effectState, branch }) {
 
   const formulaExtra = branch ? branch.suffix.find(suf => suf.name == 'formula_extra') : null;
   if (formulaExtra)
-    str = str.replace(/&(\d+)\:/g, (m, m1) => '__FORMULA_EXTRA_' + m1 + '__');
+    str = str.replace(/&(\d+):/g, (m, m1) => '__FORMULA_EXTRA_' + m1 + '__');
 
   function safeEval(str, dftv) {
     try {
@@ -47,11 +46,11 @@ function handle(str, eval_fun) {
   str = str.replace(/\s+/g, '');
   // console.log(str);
 
-  const isOperator = c => /^[\+\-\*/\(\),]$/.test(c);
+  const isOperator = c => /^[+\-*/(),]$/.test(c);
 
-  const isVarName = v => /^[a-zA-Z_$][$a-zA-Z0-9\._]*$/.test(v);
+  const isVarName = v => /^[a-zA-Z_$][$a-zA-Z0-9._]*$/.test(v);
 
-  const isNumStr = v => /^\-?[0-9.]+$/.test(v);
+  const isNumStr = v => /^-?[0-9.]+$/.test(v);
 
   const calc_fun = (n1, o, n2, resAry) => {
     if (isNumStr(n1) && isNumStr(n2)) {
@@ -59,7 +58,7 @@ function handle(str, eval_fun) {
     }
     if (o == '*' || o == '/') {
       let t = n1 + o + n2;
-      t = t.replace(/(\-?[\d.]+)([\*\/])(-?[\d.]+)/, (m, m1, m2, m3) => eval_fun(m1 + m2 + m3));
+      t = t.replace(/(-?[\d.]+)([*/])(-?[\d.]+)/, (m, m1, m2, m3) => eval_fun(m1 + m2 + m3));
       return t;
     }
     resAry.push(n1, o);
@@ -228,7 +227,7 @@ function handle(str, eval_fun) {
 
     // console.log('[o] postfix :', envirs[0].postFix.slice());
 
-    function handlePostFix(env) {
+    const handlePostFix = function(env) {
       const _stk = [];
       const _postFix = env.postFix.reverse();
       const resAry = [];
@@ -276,7 +275,7 @@ function handle(str, eval_fun) {
         }
         _stk.push(p.toString());
       }
-      return [...resAry, _stk.pop()].join('').replace(/\+\-/g, '-');
+      return [...resAry, _stk.pop()].join('').replace(/\+-/g, '-');
     }
 
     return handlePostFix(envirs[0]);

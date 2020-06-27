@@ -5,10 +5,10 @@
             </cy-sticky-header> -->
       <section v-if="currentContent == 0">
         <div class="character-stat-categorys">
-          <div v-for="(data, i) in showCharacterStatDatas" class="category">
+          <div v-for="(data) in showCharacterStatDatas" class="category" :key="data.name">
             <div class="title">{{ data.name }}</div>
             <div class="stats">
-              <span v-for="(stat, j) in data.stats">
+              <span v-for="(stat) in data.stats" :key="stat.name + stat.value">
                 <span class="name">{{ stat.name }}</span>
                 <span class="value">{{ stat.value }}</span>
               </span>
@@ -18,7 +18,9 @@
       </section>
       <section v-else-if="currentContent == 1">
         <div class="character-fields">
-          <div v-for="(field, i) in currentCharacterState.origin.equipmentFields" class="character-field">
+          <div v-for="(field) in currentCharacterState.origin.equipmentFields"
+            :key="field.type.description"
+            class="character-field">
             <div class="top">
               <div class="field-name">{{ langText('character field names/' + field.type.description) }}</div>
               <div class="buttons">
@@ -59,7 +61,7 @@
               {{ langText('Warn/no eligible equipments found') }}
             </div>
             <div v-else class="equipments">
-              <cy-button v-for="(data, i) in browsedEquipmentDatas" type="line" class="inline" :key="data.origin.id" :iconify-name="data.categoryIcon" @click="browsedEquipmentSelect(data)">
+              <cy-button v-for="(data) in browsedEquipmentDatas" type="line" class="inline" :key="data.origin.id" :iconify-name="data.categoryIcon" @click="browsedEquipmentSelect(data)">
                 {{ data.origin.name }}
               </cy-button>
             </div>
@@ -83,10 +85,10 @@
       <cy-window :visible="selectCrystalWindowState.visible" @close-window="selectCrystalWindowState.visible = false">
         <template v-slot:title>{{ langText('select crystal/title') }}</template>
         <template v-slot:default>
-          <cy-button v-for="(category, i) in crystalSearchResult" :key="category.id" iconify-name="bx-bx-cube-alt" type="drop-down">
+          <cy-button v-for="(category) in crystalSearchResult" :key="category.id" iconify-name="bx-bx-cube-alt" type="drop-down">
             {{ langText('select crystal/category title')[category.id] }}
             <template v-slot:menu>
-              <cy-button type="line" class="no-border" v-for="(c, i) in category.crystals" iconify-name="bx-bx-cube-alt" :key="c.id" @click="selectCrystal(c)">
+              <cy-button type="line" class="no-border" v-for="(c) in category.crystals" iconify-name="bx-bx-cube-alt" :key="c.id" @click="selectCrystal(c)">
                 {{ c.name }}
               </cy-button>
             </template>
@@ -114,13 +116,10 @@
 <script>
 import Grimoire from '@Grimoire';
 import GetLang from "@global-modules/LanguageSystem.js";
-import ShowMessage from "@global-modules/ShowMessage.js";
+// import ShowMessage from "@global-modules/ShowMessage.js";
 
 import { EquipmentField, Character } from "@lib/CharacterSystem/CharacterStat/class/main.js";
-import { Weapon, Armor, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
-
-import vue_equipmentField from "./equipment-field.vue";
-// import vue_langText from "@global-vue-components/lang-text.vue";
+import { /*Weapon, Armor,*/ MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
 
 import vue_equipmentInformation from "./equipment-information.vue";
 import vue_appendEquipmentWindow from "./append-equipment-window.vue";
@@ -261,7 +260,6 @@ export default {
             'knuckle': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_KNUCKLE),
             'dual_sword': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD) &&
               c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD),
-            'knuckle': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_KNUCKLE),
             'halberd': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_HALBERD),
             'katana': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_KATANA),
             'main': {
@@ -467,7 +465,6 @@ export default {
     }
   },
   components: {
-    'equipment-field': vue_equipmentField,
     'equipment-information': vue_equipmentInformation,
     'append-equipment-window': vue_appendEquipmentWindow
   }

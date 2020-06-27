@@ -5,7 +5,7 @@
 </template>
 <script>
 import Grimoire from "@Grimoire";
-import GetLang from "@global-modules/LanguageSystem.js";
+// import GetLang from "@global-modules/LanguageSystem.js";
 
 import init from "./init.js";
 

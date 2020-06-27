@@ -6,11 +6,10 @@
           <svg-icon icon-id="potum" />
         </div>
         <div class="msg">
-          <div v-for="(item, i) in initItems" class="column">
+          <div v-for="(item) in initItems" class="column" :key="item.msg">
             <span class="text">{{ item.msg }}</span>
-            <span class="status-icon">
-              <iconify-icon :name="['mdi-loading', 'ic-round-done', 'ic-round-close'][item.status]" :class="{'loading': item.status == 0, 'error': item.status == -1}" />
-            </span>
+            <cy-icon-text class="status-icon" :iconify-name="statusIcon(item.status)"
+              :class="{'loading': item.status == 0, 'error': item.status == -1}" />
           </div>
         </div>
       </div>
@@ -27,6 +26,13 @@
 
   export default {
     store,
+    methods: {
+      statusIcon(v) {
+        if (v >= 0)
+          return ['mdi-loading', 'ic-round-done'][v];
+        return 'ic-round-close';
+      }
+    },
     computed: {
       ...Vuex.mapState(['initItems', 'status', 'msgItems'])
     }
@@ -90,16 +96,14 @@
           > .status-icon {
             display: flex;
           }
-          > .status-icon @{deep-operator} svg {
-            width: 1.2rem;
-            height: 1.2rem;
-            fill: var(--primary-water-blue);
+          > .status-icon {
+            --icon-color: var(--primary-water-blue);
 
             &.loading {
               animation: loading-circle 0.8s ease infinite;
             }
             &.error {
-              fill: var(--red);
+              --icon-color: var(--red);
             }
           }
         }

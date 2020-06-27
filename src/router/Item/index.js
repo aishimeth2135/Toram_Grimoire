@@ -1,16 +1,15 @@
 import app from "./app.vue";
 
-import Grimoire from "@Grimoire";
-import vue_itemQuery from "@views/ItemQuery/main.vue";
-
 import GetLang from "@global-modules/LanguageSystem.js";
 import init from "./init.js";
+
+const vue_itemQuery = () => import("@views/ItemQuery/main.vue");
 
 export default {
   path: '/item',
   component: app,
   beforeEnter(to, from, next) {
-    init().then(p => next());
+    init().then(() => next());
   },
   meta: {
     leftMenuViewButtons: [{

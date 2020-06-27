@@ -34,4 +34,4 @@ async function start() {
 
 export default async function() {
   await handleInit(start);
-};
+}

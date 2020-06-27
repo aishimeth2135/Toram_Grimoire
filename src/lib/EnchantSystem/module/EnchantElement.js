@@ -8,7 +8,7 @@ const Status = {};
 function InitEnchantElementStatus(set){
     set = Object.assign({
         Character: {
-            level: 200,
+            level: 210,
             tec: 255   ,
             smithLevel: 0
         },
@@ -520,7 +520,7 @@ class EnchantStepStat extends EnchantStat {
         const p = this.itemBase.getPotential(this.stat.type, this.belongEquipment().status);
         return (v > 0 ? v * p : Math.ceil(v * (5 + Status.Character.tec / 10) * p / 100));
     }
-    realPotentialCost(v){
+    realPotentialCost(){
         if ( this._parent.type == EnchantStep.TYPE_EACH )
             return this._parent.getPotentialCost();
         return this.calcPotentialCost(this.statValue()) * this._parent.getPotentialExtraRate();

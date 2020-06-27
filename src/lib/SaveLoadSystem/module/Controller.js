@@ -1,3 +1,4 @@
+/* eslint-disable */
 import CY from "../../main/module/cyteria.js";
 import GetLang from "../../main/module/LanguageSystem.js";
 import Icons from "../../main/module/SvgIcons.js";
@@ -195,10 +196,10 @@ export default class Controller {
         this._methods['afterActionFinish']();
     }
     getSaveNameList(){
-        return this._methods['getSaveNameList']();;
+        return this._methods['getSaveNameList']();
     }
     getSaveCsvString(){
-        return this._methods['getSaveCsvString']();;
+        return this._methods['getSaveCsvString']();
     }
     loadCsvString(str){
         this._methods['loadCsvString'](str);

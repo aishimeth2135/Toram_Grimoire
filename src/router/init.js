@@ -7,12 +7,6 @@ import ja from "./LanguageData/ja.js";
 import zh_cn from "./LanguageData/zh_cn.js";
 
 export default function() {
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js', { 'updateViaCache': 'imports' });
-    });
-  }
-
   InitLanguageSystem();
 
   InitLanguageData({ zh_tw, en, ja, zh_cn });

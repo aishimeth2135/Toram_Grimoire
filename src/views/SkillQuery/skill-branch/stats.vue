@@ -1,8 +1,8 @@
 <template>
   <div class="main--">
-    <div class="stat" v-for="(statText, i) in statTexts">
+    <div class="stat" v-for="(statText) in statTexts" :key="statText.iid">
       <cy-icon-text iconify-name="mdi-leaf">
-        <span v-html="statText"></span>
+        <span v-html="statText.text"></span>
       </cy-icon-text>
     </div>
   </div>
@@ -15,7 +15,7 @@ export default {
   inject: ['langText', 'calcValueStr', 'handleDataContainer'],
   computed: {
     statTexts() {
-      return this.stats.map(p => {
+      return this.stats.map((p, i) => {
         const dc = new DataContainer(p.statValue());
 
         let v = this.calcValueStr(dc.value());
@@ -32,7 +32,10 @@ export default {
         const sd = p.getShowData();
         this.handleDataContainer(dc, { beforeColorText });
 
-        return sd.title + dc.result();
+        return {
+          text: sd.title + dc.result(),
+          iid: i
+        };
       });
     }
   }

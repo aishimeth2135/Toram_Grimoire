@@ -39,4 +39,4 @@ export default function (character_system, c, lang_c, slang_c){
             cur_formula = cur_stat.setFormula(p[FORMULA]);
         }
     });
-};
+}

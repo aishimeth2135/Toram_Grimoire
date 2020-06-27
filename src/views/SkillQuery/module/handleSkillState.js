@@ -339,7 +339,6 @@ function setBranchAttributeDefault(branchs) {
       'condition': 'auto',
       'type': 'self',
       'is_place': '0',
-      'radius': '1',
       'end_position': 'self',
       'effective_area': 'circle',
       'radius': '1',

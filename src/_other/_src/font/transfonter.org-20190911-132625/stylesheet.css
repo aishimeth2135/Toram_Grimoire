@@ -1,0 +1,8 @@
+@font-face {
+    font-family: '2';
+    src: url('JasonWriting2.woff2') format('woff2'),
+        url('JasonWriting2.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+

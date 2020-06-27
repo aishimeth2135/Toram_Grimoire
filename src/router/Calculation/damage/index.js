@@ -1,16 +1,15 @@
 import app from "./app.vue";
 
-import Grimoire from "@Grimoire";
-import vue_damageCalc from "@views/Calculation/damage/main.vue";
-
 import GetLang from "@global-modules/LanguageSystem.js";
 import init from "./init.js";
+
+const vue_damageCalc = () => import("@views/Calculation/damage/main.vue");
 
 export default {
   path: '/damage',
   component: app,
   beforeEnter(to, from, next) {
-    init().then(p => next());
+    init().then(() => next());
   },
   meta: {
     leftMenuViewButtons: [{

@@ -1,16 +1,15 @@
 import app from "./app.vue";
 
-import Grimoire from "@Grimoire";
-import vue_enchantSimulator from "@views/EnchantSimulator/main.vue";
-
 import GetLang from "@global-modules/LanguageSystem.js";
 import init from "./init.js";
+
+const vue_enchantSimulator = () => import("@views/EnchantSimulator/main.vue");
 
 export default {
   path: '/enchant',
   component: app,
   beforeEnter(to, from, next) {
-    init().then(p => next());
+    init().then(() => next());
   },
   meta: {
     leftMenuViewButtons: [{

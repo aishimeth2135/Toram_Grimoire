@@ -47,7 +47,7 @@
           <div class="top-content">
             <div class="effect-attrs">
               <table>
-                <tr v-for="(data, i) in currentSkillAttrs" :key="data.id">
+                <tr v-for="(data) in currentSkillAttrs" :key="data.id">
                   <td>
                     <cy-icon-text :iconify-name="data.icon">{{ data.name }}</cy-icon-text>
                   </td>
@@ -74,7 +74,7 @@
           </div>
           <div class="skill-branchs">
             <transition-group name="branch-fade" mode="out-in" appear>
-              <skill-branch v-for="(branch, i) in currentSkillBranchs" :key="branch.iid" type="main"
+              <skill-branch v-for="(branch) in currentSkillBranchs" :key="branch.iid" type="main"
                 :branch="branch" :skill-state="currentSkillState" />
             </transition-group>
           </div>
@@ -89,7 +89,7 @@
           <div class="top-content">
             <transition name="fade">
               <div class="equipment-container" v-show="!skillStates.optionsWindowVisible">
-                <span class="column" v-for="(data, i) in equipmentCategoryList" :key="data.showName">
+                <span class="column" v-for="(data) in equipmentCategoryList" :key="data.showName">
                   <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.shortName)" class="inline"
                     style="margin-right: 0.7rem;">
                     {{ equipmentState[data.shortName] | getEquipmentText(data.name) }}
@@ -109,12 +109,12 @@
           </div>
           <transition name="fade">
             <div class="options-content" v-show="skillStates.optionsWindowVisible">
-              <div class="equipment-column" v-for="(data, i) in equipmentCategoryList" :key="data.showName">
+              <div class="equipment-column" v-for="(data) in equipmentCategoryList" :key="data.showName">
                 <cy-icon-text :iconify-name="data.icon" class="text-small line column-title">
                   {{ langText(`equipment/${data.name}: title`) }}
                 </cy-icon-text>
                 <div class="list">
-                  <cy-button v-for="(eq, j) in equipmentState[data.shortName + 'List']" :key="eq"
+                  <cy-button v-for="(eq) in equipmentState[data.shortName + 'List']" :key="eq"
                     :iconify-name="data.icon" @click="selectEquipment(data.shortName, eq)"
                     :class="{ 'selected': equipmentState[data.shortName] == eq }">
                     {{ eq | getEquipmentText(data.name) }}
@@ -163,13 +163,17 @@
                 <cy-icon-text iconify-name="ri-leaf-fill">{{ currentTag.name }}</cy-icon-text>
                 <span v-if="tagState.windowVisible" class="close-tip">{{ langText('click anywhere to close') }}</span>
               </div>
-              <template v-for="(fr, i) in currentTag.frames">
-                <div v-if="fr.type == 'category'" class="category">
+              <template v-for="(fr) in currentTag.frames">
+                <div v-if="fr.type == 'category'" class="category"
+                  :key="fr.type + fr.value">
                   <cy-icon-text iconify-name="bx-bx-message-rounded-detail" class="text-small">{{ fr.value }}</cy-icon-text>
                 </div>
-                <div v-else-if="fr.type == 'caption'" class="caption" v-html="fr.value"></div>
-                <div v-else-if="fr.type == 'list'" class="list">
-                  <div v-for="(v, j) in fr.value" class="leaf-list-item">
+                <div v-else-if="fr.type == 'caption'"
+                  :key="fr.type + fr.value"
+                  class="caption" v-html="fr.value"></div>
+                <div v-else-if="fr.type == 'list'"
+                  :key="fr.type + fr.value.join('|')" class="list">
+                  <div v-for="(v) in fr.value" class="leaf-list-item" :key="v">
                     <cy-icon-text iconify-name="mdi-leaf" class="prefix-icon" />
                     <span v-html="v"></span>
                   </div>
@@ -326,7 +330,6 @@ export default {
           extraHandle: (v, type) => {
             if (type == 'value')
               return v + 'm';
-            const f = v == 'main';
             return v == '-' ?
               this.langText('effect attrs/range: no limit') :
               this.createTagButtons(this.langText('effect attrs/range: main'));
@@ -414,7 +417,7 @@ export default {
       if (!el.querySelector)
         return;
       const self = this;
-      const enter = function(e) {
+      const enter = function() {
         self.clearTag();
         self.appendTag(this.innerText);
 
@@ -427,11 +430,11 @@ export default {
             top: (rect.top + rect.height + 10) + 'px'
           };
       };
-      const leave = function(e) {
+      const leave = function() {
         if (!self.tagState.windowVisible)
           self.clearTag();
       };
-      const click = function(e) {
+      const click = function() {
         self.tagState.windowVisible = true;
       };
       el.querySelectorAll('.' + this.tagState.buttonClassName)
@@ -487,8 +490,10 @@ export default {
         switch (main) {
           case 10: case 0: case 3: case 4:
             t.push(4);
+            /* falls through */
           case 6:
             t.push(1, 3);
+            /* falls through */
           case 7: case 8:
             t.push(0, 2);
             break;
