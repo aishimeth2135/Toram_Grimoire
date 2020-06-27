@@ -1,4 +1,4 @@
-import { EquipmentField } from "./main.js";
+// import { EquipmentField } from "./main.js";
 
 
 class CharacterEquipment {
@@ -77,11 +77,14 @@ class MainWeapon extends Weapon {
     switch (this.type) {
       case MainWeapon.TYPE_ONE_HAND_SWORD:
         t.push(MainWeapon.TYPE_ONE_HAND_SWORD);
+        // fall through
       case MainWeapon.TYPE_BOWGUN:
       case MainWeapon.TYPE_STAFF:
         t.push(MainWeapon.TYPE_KNUCKLE);
+        // fall through
       case MainWeapon.TYPE_KNUCKLE:
         t.push(MainWeapon.TYPE_MAGIC_DEVICE, SubWeapon.TYPE_SHIELD);
+        // fall through
       case MainWeapon.TYPE_HALBERD:
       case MainWeapon.TYPE_KATANA:
         t.push(SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_ARROW);
@@ -200,7 +203,7 @@ class SpecialGear extends Armor {
 }
 
 class Avatar extends CharacterEquipment {
-  constructor(name, stats, atk, stability) {
+  constructor(name, stats) {
     super(null, name, stats);
   }
 }

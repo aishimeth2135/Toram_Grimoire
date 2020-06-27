@@ -150,7 +150,7 @@ function ProcessLanguageData(datas, data_index, lang_data_index) {
   const lang_datas = [datas[1], datas[2]];
   datas[0].forEach((p, index) => {
     const t = lang_datas
-      .map((a, i) => a && a[index] ? a[index][lang_data_index] : null)
+      .map(a => a && a[index] ? a[index][lang_data_index] : null)
       .find(t => t !== '' && t !== null && t !== void 0);
     if (t !== void 0)
       p[data_index] = t;

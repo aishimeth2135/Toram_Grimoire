@@ -26,8 +26,6 @@
   </transition>
 </template>
 <script>
-import GetLang from "@global-modules/LanguageSystem.js";
-
 export default {
   props: {
     'type': {

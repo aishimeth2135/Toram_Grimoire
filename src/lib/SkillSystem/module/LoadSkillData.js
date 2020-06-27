@@ -42,7 +42,7 @@ function LoadSkillData(sr, c, lang_c, slang_c){
 		LANG_DATA = {
 			EFFECT_BRANCH_ATTRIBUTE_VALUE: 0
 		};
-	
+
 	let cur = null;
 
 	const SKILL_ELEMENT_ORDER = [
@@ -71,6 +71,7 @@ function LoadSkillData(sr, c, lang_c, slang_c){
 			case 3:
 				sef.setConfig({equipmentConfirm: 1});
 				if ( v !== 2 ) break;
+				// fall through
 			case 0:
 				parent.setDefaultEffect(sef);
 		}
@@ -108,6 +109,7 @@ function LoadSkillData(sr, c, lang_c, slang_c){
 							cur = cur.newElement(Skill.TYPE, {id, name});
 						}
 					}
+					// fall through
 					case '': {
 						const mainWeapon = MAIN_WEAPON_LIST.indexOf(p[MAIN_WEAPON]),
 							subWeapon = SUB_WEAPON_LIST.indexOf(p[SUB_WEAPON]),

@@ -4,7 +4,6 @@ import svg from "./Cyteria/svg.js";
 import number from "./Cyteria/number.js";
 import math from "./Cyteria/math.js";
 import csv from "./Cyteria/csv.js";
-import CyComponent from "./Cyteria/CyComponent.js";
 
 function copyToClipboard(s) {
   const input = document.createElement('textarea');

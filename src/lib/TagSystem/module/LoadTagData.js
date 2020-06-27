@@ -1,8 +1,8 @@
 export default function LoadTagData(r, c, lang_c, slang_c) {
   const
-    TAG_NAME = 0,
+    // TAG_NAME = 0,
     FRAME_NAME = 1,
-    FRAME_VALUE = 2,
+    // FRAME_VALUE = 2,
     INDEX = {
       TAG_NAME: 0,
       FRAME_NAME: 1,

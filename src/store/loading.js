@@ -41,7 +41,7 @@ const store = new Vuex.Store({
               p.status = -1;
             });
         })
-      ).then(p => commit('initSucceed'));
+      ).then(() => commit('initSucceed'));
     },
   }
 });

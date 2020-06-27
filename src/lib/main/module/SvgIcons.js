@@ -101,8 +101,6 @@ function mdiIconPathD(name) {
 
     case 'rhombus-split':
       return '<path d="M7.36,5.94L10.8,2.5C11.5,1.8 12.5,1.8 13.2,2.5L16.64,5.94L12,10.59L7.36,5.94M18.06,7.36L13.41,12L18.06,16.64L21.5,13.2C22.1,12.5 22.1,11.5 21.5,10.8L18.06,7.36M5.94,16.64L10.59,12L5.94,7.36L2.5,10.8C1.8,11.5 1.8,12.5 2.5,13.2L5.94,16.64M12,13.41L7.36,18.06L10.8,21.5C11.5,22.2 12.5,22.2 13.2,21.5L16.64,18.06L12,13.41Z" />';
-    case 'label':
-      return '<path d="M17.63,5.84C17.27,5.33 16.67,5 16,5H5A2,2 0 0,0 3,7V17A2,2 0 0,0 5,19H16C16.67,19 17.27,18.66 17.63,18.15L22,12L17.63,5.84Z" />';
     case 'clock-outline':
       return '<path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z" />';
 
@@ -133,7 +131,7 @@ document.addEventListener('IconifyAddedIcons', function() {
 });
 
 function loadIconifyData(name) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     if (Iconify.iconExists(name)) {
       resolve(Iconify.getIcon(name));
       return;

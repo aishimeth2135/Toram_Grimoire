@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Calculation, CalcItemContainer, CalcItemBase } from "./CalcElements.js";
 import CY from "../../../main/module/cyteria.js";
 import GetLang from "../../../main/module/LanguageSystem.js";

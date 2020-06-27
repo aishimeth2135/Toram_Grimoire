@@ -4,8 +4,6 @@ import GetLang from "@global-modules/LanguageSystem.js";
 
 import CharacterSystem from "@lib/CharacterSystem/CharacterSystem.js";
 import ItemSystem from "@lib/ItemSystem/ItemSystem.js";
-import SkillSystem from "@lib/SkillSystem/SkillSystem.js";
-import TagSystem from "@lib/TagSystem/TagSystem.js";
 
 async function start() {
   Grimoire.CharacterSystem = new CharacterSystem();
