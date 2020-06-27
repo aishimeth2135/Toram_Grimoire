@@ -110,7 +110,6 @@ export default function() {
             'arrow': '箭矢属性'
           },
           'effective_area: title': '类型',
-          'end_position_offsets: title': '终点位置',
           'radius: title': '伤害半径',
           'move_distance: title': '移动距离',
           'angle: title': '作用角度',

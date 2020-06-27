@@ -1,0 +1,74 @@
+/* 定義變數，這邊都是顏色變數。 */
+:root {
+    --primary-dark: #85005F;
+    --primary-light: #FFD1EA;
+    --primary-light-2: #ff5fb7;
+    --primary-light-3: #ff008d;
+    --primary-light-4: #f7a8d3;
+    --primary-purple: #9c27b0;
+}
+
+body, input {
+    font-family: Microsoft JhengHei, sans-serif;
+    /* 讓整個網頁套用微軟正黑體。 */
+    color: var(--primary-dark); /* 字體顏色 */
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.calc-main {
+    width: 20rem;
+    margin: 0 auto;
+    /* 讓這個區塊水平置中。水平置中一定要給定寬度才會作用。 */
+}
+
+.calc-main > .input-scope {
+    padding: 0.6rem; /* 內距 */
+}
+.calc-main > .input-scope > input {
+    padding: 0.3rem;
+    border: 1px solid var(--primary-light-2); /* 邊框 */
+    border-radius: 0.2rem; /* 邊框圓角 */
+
+    font-size: 1rem;
+    color: var(--primary-purple);
+
+    width: 100%;
+}
+
+.calc-main > .button-scope {
+    padding: 0.6rem;
+    text-align: center;
+}
+
+.calc-main > .button-scope > .button {
+    display: inline-block; /* 行內塊級元素 */
+    margin: 0.2rem;
+    padding: 0.5rem;
+    border: 1px solid var(--primary-light-4);
+    width: 4rem; /* 確保每個按鈕一樣寬 */
+    text-align: center; /* 內容水平置中 */
+    cursor: pointer; /* 讓滑鼠移到上面時鼠標會變 */
+
+    transition: 0.3s;
+}
+.calc-main > .button-scope > .button:hover {
+    border-color: var(--primary-light-3);
+}
+/*
+ * 何謂inline-block元素？
+ * 這邊先說一下block元素和inline元素的某些差異點。
+ * 
+ * 1. 多個相鄰的inline元素，如果因為父層空間不足導致換行，
+ * 其之間Y軸的margin不會作用。
+ * 但inline元素和block元素之間的margin就會作用。
+ * 
+ * 2. inline元素無法定義padding和width、height等。
+ * 或者說，可以定義但無作用。
+ *
+ * 而inline-block就是為了解決上面兩點出現的。
+ * inline-block雖然是行內元素，但擁有上面兩點提到的block元素特性。
+ * 基本上inline元素被用到到的機率比inline-block元素少滿多的。
+ */

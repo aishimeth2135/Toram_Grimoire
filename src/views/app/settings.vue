@@ -72,7 +72,6 @@
 </template>
 
 <script>
-  import CY from "@global-modules/cyteria.js";
   import GetLang from "@global-modules/LanguageSystem.js";
 
   export default {

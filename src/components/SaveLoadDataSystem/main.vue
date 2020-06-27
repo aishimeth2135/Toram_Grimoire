@@ -1,50 +1,55 @@
 <template>
   <div v-if="localStorageAvailable">
-    <span :class="buttonClassList" @click="openSelectDataWindow('save')">
-      <iconify-icon name="mdi:content-save-outline"></iconify-icon>
-      <lang-text class="text" lang-id="Save Load System/save"></lang-text>
-    </span>
-    <span :class="buttonClassList" @click="openSelectDataWindow('load')">
-      <iconify-icon name="mdi:download"></iconify-icon>
-      <lang-text class="text" lang-id="Save Load System/load"></lang-text>
-    </span>
-    <span :class="buttonClassList" @click="handleFile('save')">
-      <iconify-icon name="ic:round-insert-drive-file"></iconify-icon>
-      <lang-text class="text" lang-id="Save Load System/save to csv"></lang-text>
-    </span>
-    <span :class="buttonClassList" @click="handleFile('load')">
-      <iconify-icon name="mdi:file-download-outline"></iconify-icon>
-      <lang-text class="text" lang-id="Save Load System/load from csv"></lang-text>
-    </span>
-    <cy-window :visible="selectDataWindowVisible" @close-window="closeSelectDataWindow" title-lang-id="Save Load System/Save Load: title" class="select-data-window">
+    <cy-button type="line" iconify-name="mdi:content-save-outline"
+      @click="openSelectDataWindow('save')">
+      {{ langText('save') }}
+    </cy-button>
+    <cy-button type="line" iconify-name="mdi:download"
+      @click="openSelectDataWindow('load')">
+      {{ langText('load') }}
+    </cy-button>
+    <cy-button type="line" iconify-name="ic:round-insert-drive-file"
+      @click="handleFile('save')">
+      {{ langText('save to csv') }}
+    </cy-button>
+    <cy-button type="line" iconify-name="mdi:file-download-outline"
+      @click="handleFile('load')">
+      {{ langText('load from csv') }}
+    </cy-button>
+    <cy-window :visible="selectDataWindowVisible" @close-window="closeSelectDataWindow"
+      class="select-data-window">
+      <template v-slot:title>
+        <cy-icon-text iconify-name="mdi:content-save-outline">
+          {{ langText('Save Load: title') }}
+        </cy-icon-text>
+      </template>
       <template v-for="(o, i) in buttonsStates">
-        <div class="column" @click="selectData(i)">
+        <div class="column" @click="selectData(i)" :key="o.title + 'c1'">
           <div class="Cyteria scope-icon line">
             <iconify-icon name="bx:bxs-book-bookmark"></iconify-icon>
             <span class="text">{{ o.title }}</span>
           </div>
           <div class="detail">
             <ul v-if="!noData(i)" class="Cyteria ul simple">
-              <li v-for="(_name, j) in o.names">{{ _name }}</li>
+              <li v-for="name in o.names" :key="name.iid">
+                {{ name.text }}
+              </li>
             </ul>
-            <lang-text v-if="noData(i)" tag-name="div" class="no-data" lang-id="Save Load System/no data">
-            </lang-text>
+            <div class="no-data">
+              {{ langText('no data') }}
+            </div>
           </div>
         </div>
-        <transition name="fade">
-          <lang-text v-if="i == currentButtonIndex" tag-name="div" class="tips" :lang-id="currentMode == 'save' ? 'Save Load System/Warn/Confirm to overwrite existing data' : 'Save Load System/Warn/Confirm to load data'">
-          </lang-text>
+        <transition name="fade" :key="o.title + 'c2'">
+          <div v-if="i == currentButtonIndex" class="tips">
+            {{ langText(currentMode == 'save' ? 'Warn/Confirm to overwrite existing data' : 'Warn/Confirm to load data') }}
+          </div>
         </transition>
       </template>
     </cy-window>
   </div>
 </template>
 <script>
-import vue_iconifyIcon from "@global-vue-components/iconify-icon.vue";
-import vue_svgIcon from "@global-vue-components/svg-icon.vue";
-import vue_langText from "@global-vue-components/lang-text.vue";
-import vuecy_window from "@global-vue-components/Cyteria/window.vue";
-
 import ShowMessage from "@global-modules/ShowMessage.js";
 import CY from "@global-modules/cyteria.js"
 import GetLang from "@global-modules/LanguageSystem.js";
@@ -97,10 +102,6 @@ export default {
       type: Number,
       default: 5,
       validator: v => Number.isInteger(v)
-    },
-    buttonClassList: {
-      type: Array,
-      default: () => ['Cyteria', 'Button', 'line']
     }
   },
   data() {
@@ -131,8 +132,14 @@ export default {
   methods: {
     updateButtonsStates() {
       this.buttonsStates.forEach((p, i) => {
-        p.names = (this.getLocalStorageData(i, 'name') || '').split(',,');
+        p.names = (this.getLocalStorageData(i, 'name') || '').split(',,').map((p, i) => {
+          return {
+            text: p,
+            iid: i
+          };
+        });
         p.data = this.getLocalStorageData(i, 'data') || null;
+        p.iid = i;
       });
     },
     closeSelectDataWindow() {
@@ -231,13 +238,10 @@ export default {
     },
     getLocalStorageData(index, type) {
       return window.localStorage.getItem(this.localStorageKey(index, type));
+    },
+    langText(v, vs) {
+      return Lang(v, vs);
     }
-  },
-  components: {
-    'iconify-icon': vue_iconifyIcon,
-    'lang-text': vue_langText,
-    'svg-icon': vue_svgIcon,
-    'cy-window': vuecy_window
   }
 };
 </script>

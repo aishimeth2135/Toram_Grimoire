@@ -812,7 +812,7 @@ export default class DamageCalculationController {
       .link('skill')
       .setBeforeCalculateFunction(this.functions.calculation.skillConstantValue)
       .getLink()
-      .openToggleContainer();;
+      .openToggleContainer();
 
     p(0, 'unsheathe_attack', 'unsheathe_attack_contant')
       .link('unsheathe attack')

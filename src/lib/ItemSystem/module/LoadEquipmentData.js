@@ -1,4 +1,3 @@
-import Grimoire from "../../main/Grimoire.js";
 import {Prop} from "./ItemElements.js";
 
 export default function(root, c){

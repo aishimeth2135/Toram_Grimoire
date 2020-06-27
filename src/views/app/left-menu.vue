@@ -5,7 +5,7 @@
       <div class="menu" v-show="!unfold" @click.stop="menuClick()"
         v-if="viewButtons && viewButtons.length != 0">
         <div class="container">
-          <cy-button v-for="(data, i) in viewButtons" :iconify-name="data.icon" :key="data.title" type="line" @click="setCurrentView(data)">
+          <cy-button v-for="(data) in viewButtons" :iconify-name="data.icon" :key="data.title" type="line" @click="setCurrentView(data)">
             {{ data.title }}
           </cy-button>
         </div>

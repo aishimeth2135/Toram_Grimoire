@@ -26,4 +26,4 @@ export default function(character_system, c, lang_c, slang_c){
 		// if ( p[MULTIPLIER_FORMULA] )
 		// 	stat.appendAttribute('multiplier_formula', p[MULTIPLIER_FORMULA]);
 	});
-};
+}

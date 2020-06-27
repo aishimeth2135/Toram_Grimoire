@@ -1,13 +1,12 @@
-import Grimoire from "@Grimoire";
-import vue_bubble from "@views/other/bubble.vue";
-
 import init from "./init.js";
+
+const vue_bubble = () => import("@views/other/bubble.vue");
 
 export default {
   path: '/bubble/:iconName/:color?/:number?',
   component: vue_bubble,
   beforeEnter(to, from, next) {
-    init().then(p => next());
+    init().then(() => next());
   },
   meta: {
     title: () => '0.0',

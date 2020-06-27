@@ -1,15 +1,5 @@
 export default function() {
   return {
-    'Page Title': '布偶的魔法书｜附魔模拟器',
-    'Top List': {
-      'item 1': '布偶的魔法书',
-      'item 2': '附魔模拟器'
-    },
-    'Loading Message': {
-      'Character Stats': '载入角色能力清单',
-      'Enchant Data': '载入附魔资料',
-      'Enchant System Init': '初始化附魔模拟器'
-    },
     'Enchant Simulator': {
       'create equipment': '新增装备',
       'create enchant stat': '新增能力',

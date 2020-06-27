@@ -34,7 +34,7 @@
         @mouseenter.stop="toggleVisible('topMenu', true)"
         @mouseleave.stop="toggleVisible('topMenu', false)">
         <transition-group name="top-menu-slide" appear>
-          <cy-button v-for="(data, i) in topButtons" :key="data.name"
+          <cy-button v-for="(data) in topButtons" :key="data.name"
             type="icon-only" class="top-menu-btn" :iconify-name="data.icon"
             @click="toggleVisible(data.name)" />
         </transition-group>
@@ -198,7 +198,7 @@
       </fieldset>
       <!-- [end] other -->
       <!-- [start] extra -->
-      <fieldset class="extra-column" v-for="(suffixShowData, i) in suffixBranchShowDatas"
+      <fieldset class="extra-column" v-for="(suffixShowData) in suffixBranchShowDatas"
         :key="suffixShowData['@--key']">
         <template v-if="suffixShowData['@parent-branch'].name == 'extra'">
           <legend>
@@ -209,10 +209,10 @@
           </legend>
           <div class="text-scope" v-if="suffixShowData['caption']" v-html="suffixShowData['caption']"></div>
           <template v-else-if="branch.name == 'damage' && suffixShowData['ailment_name']">
-            <div v-if="" class="text-scope" v-html="ailmentText(suffixShowData)"></div>
+            <div class="text-scope" v-html="ailmentText(suffixShowData)"></div>
           </template>
           <template v-else-if="branch.name == 'damage' && suffixShowData['element']">
-            <div v-if="" class="text-scope" v-html="extraElementCaption(suffixShowData['element'])"></div>
+            <div class="text-scope" v-html="extraElementCaption(suffixShowData['element'])"></div>
           </template>
           <stats v-else :stats="suffixShowData['@parent-branch'].stats"></stats>
         </template>
@@ -221,7 +221,7 @@
     </fieldset>
     <div v-else-if="branch.name == 'list'" :class="branchClass">
       <!-- <cy-icon-text iconify-name="mdi-leaf" class="prefix-icon" /> -->
-      <div v-for="(data, i) in showData['@list-datas']" class="leaf-list-item" :key="data['text']">
+      <div v-for="(data) in showData['@list-datas']" class="leaf-list-item" :key="data['text']">
         <cy-icon-text iconify-name="mdi-leaf" class="prefix-icon" />
         <span v-html="data['text']"></span>
       </div>
@@ -291,14 +291,14 @@
     <template v-if="type == 'main'">
       <template v-if="otherEquipmentBranchVisible && otherEquipmentBranchDatas">
         <transition-group name="fade" mode="out-in" appear>
-          <skill-branch v-for="(data, i) in otherEquipmentBranchDatas"
+          <skill-branch v-for="(data) in otherEquipmentBranchDatas"
             :branch="data.branch" :key="data.iid" type="other-equipment"
             :skill-state="skillState" class="extra-branch" />
         </transition-group>
       </template>
       <template v-if="historyVisible">
         <transition-group name="fade" mode="out-in" appear>
-          <skill-branch v-for="(data, i) in historyDatas"
+          <skill-branch v-for="(data) in historyDatas"
             :branch="data.branch" :key="data.iid" type="history"
             :skill-state="skillState" class="extra-branch" />
         </transition-group>
@@ -382,7 +382,7 @@ export default {
     confirmHistoryDate() {
       return this.branch.suffix.find(p => p.name == 'history');
     },
-    elementIconName(v) {
+    elementIconName() {
       return {
         'neutral': 'bx-bx-circle',
         'fire': 'fa-brands:gripfire',
@@ -919,8 +919,6 @@ export default {
     calcValueStr(str) {
       if (!str)
         return str;
-      if (typeof str != 'string')
-        debugger;
       const skillState = this.skillState;
       const effectState = this.branch['@parent-state'];
 
@@ -943,7 +941,7 @@ export default {
           p = p == '1' ? 'true' : 'false';
         let preName = bch.name + prefix;
         preName = bch.mainBranch ? bch.mainBranch.name + ': ' + preName : preName;
-        dc.handleResult(v => this.langText(`${preName}/${key}/${p}`));
+        dc.handleResult(() => this.langText(`${preName}/${key}/${p}`));
       }
     },
     handleTextData(str, bch) {
@@ -951,7 +949,7 @@ export default {
         return str;
 
       str = str
-        .replace(/\$\{([^\}]+)\}(%?)/g, (m, m1, m2) => {
+        .replace(/\$\{([^}]+)\}(%?)/g, (m, m1, m2) => {
           const dc = new DataContainer(m1);
           this.handleDataContainer(dc, { beforeColorText: v => v + m2 });
           return dc.result();
@@ -1022,7 +1020,7 @@ export default {
   watch: {
     branch: {
       immediate: true,
-      handler(v, oldv) {
+      handler() {
         if (this.branch.name == 'stack') {
           const p = this.findStackState();
           this.stackValue = p ? p.value : null;

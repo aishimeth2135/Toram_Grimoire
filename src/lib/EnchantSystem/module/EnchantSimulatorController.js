@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {EnchantEquipment, EnchantStep, InitEnchantElementStatus, EnchantElementStatus} from "./EnchantElement.js";
 import CY from "../../main/module/cyteria.js";
 import GetLang from "../../main/module/LanguageSystem.js";
@@ -511,9 +512,9 @@ export default class EnchantSimulatorController {
         });
         hnode.appendChild(this.SaveLoadSystem.controller.getSaveLoadWindow());
 
-        document.querySelector('footer .auth-name').addEventListener('click', function(e){
-            ctrr.status.character.levelLimit = 1000;
-        });
+        // document.querySelector('footer .auth-name').addEventListener('click', function(e){
+        //     ctrr.status.character.levelLimit = 1000;
+        // });
     }
     getScopeFromChildNode(node, name){
         const cn = this.scopeClassName[name];

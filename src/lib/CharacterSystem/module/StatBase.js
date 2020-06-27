@@ -66,7 +66,7 @@ class StatBase {
 			}
 			case StatBase.TYPE_TOTAL: {
 				const formula = Lang('type total: preText') + '$t$s$v$u';
-				return processFormula(formula, '%');;
+				return processFormula(formula, '%');
 			}
 		}
 	}

@@ -1,11 +1,13 @@
 <template>
   <span style="display: inline-block;">
-    <template v-for="(data, i) in equipmentData">
+    <template v-for="(data) in equipmentData">
       <cy-icon-text v-if="typeof data != 'string'" class="text-small equipment-item"
+        :key="data.icon + data.text + 'text'"
         :iconify-name="data.icon">
         {{ data.text }}
       </cy-icon-text>
-      <cy-icon-text v-else class="text-small equipment-operator"
+      <cy-icon-text v-else :key="data.icon + data.text + 'operator'"
+        class="text-small equipment-operator"
         :iconify-name="data == 'or' ? 'mdi-slash-forward' : 'ic-round-add'" />
     </template>
     <cy-icon-text v-if="equipment.none" iconify-name="mdi-rhombus-outline" class="text-small equipment-item">

@@ -1,17 +1,16 @@
 import app from "./app.vue";
 
-import Grimoire from "@Grimoire";
-import vue_characterSimulator from "@views/CharacterSimulator/main.vue";
-import vue_skillSimulator from "@views/SkillSimulator/main.vue";
-
 import GetLang from "@global-modules/LanguageSystem.js";
 import init from "./init.js";
+
+const vue_characterSimulator = () => import("@views/CharacterSimulator/main.vue");
+const vue_skillSimulator = () => import("@views/SkillSimulator/main.vue");
 
 export default {
   path: '/character',
   component: app,
   beforeEnter(to, from, next) {
-    init().then(p => next());
+    init().then(() => next());
   },
   meta: {
     leftMenuViewButtons: [/*{

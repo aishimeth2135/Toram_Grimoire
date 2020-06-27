@@ -133,7 +133,7 @@ export default {
     },
     randowHexColor() {
       return Array(3).fill()
-        .map(a => getRandomInt(0, 255).toString(16))
+        .map(() => getRandomInt(0, 255).toString(16))
         .reduce((c, a) => c + (a.length == 1 ? '0' + a : a), '#');
     },
     createIcon() {

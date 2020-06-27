@@ -6,12 +6,11 @@ import vue_about from "@views/Home/About/main.vue";
 import GetLang from "@global-modules/LanguageSystem.js";
 import init from "./init.js";
 
-
 export default {
   path: '/',
   component: app,
   beforeEnter(to, from, next) {
-    init().then(p => next());
+    init().then(() => next());
   },
   meta: {
     title: null,

@@ -8,7 +8,8 @@
       v-html="showData['constant']">
     </span>
     <cy-icon-text iconify-name="ic-round-add" v-if="showData['constant'] && showData['@extra-value-list'].length != 0" />
-    <span v-for="(data, i) in showData['@extra-value-list']" class="extra-value">
+    <span v-for="(data, i) in showData['@extra-value-list']" :key="data.text + data.value"
+      class="extra-value">
       <span class="attr-scope title">{{ data.text }}</span>
       <cy-icon-text iconify-name="ic-round-close" />
       <span class="attr-scope value" v-html="data.value"></span>

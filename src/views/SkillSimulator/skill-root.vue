@@ -1,9 +1,8 @@
 <template>
   <div class="skill-root">
     <div class="skill-tree-categorys">
-      <skill-tree-category v-for="(stc, index) in skillRootState.skillTreeCategoryStates"
-        v-if="stc.visible" :skill-tree-category-state="stc" :key="index">
-      </skill-tree-category>
+      <skill-tree-category v-for="stc in skillTreeCategoryStates"
+        :skill-tree-category-state="stc" :key="stc.origin.id" />
     </div>
   </div>
 </template>
@@ -12,6 +11,11 @@ import vue_skillTreeCategory from "./skill-tree-category.vue";
 
 export default {
   props: ['skillRootState'],
+  computed: {
+    skillTreeCategoryStates() {
+      return this.skillRootState.skillTreeCategoryStates.filter(p => p.visible);
+    }
+  },
   components: {
     'skill-tree-category': vue_skillTreeCategory
   }

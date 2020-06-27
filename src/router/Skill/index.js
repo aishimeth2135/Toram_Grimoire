@@ -1,16 +1,15 @@
 import app from "./app.vue";
 
-import Grimoire from "@Grimoire";
-import vue_skillQuery from "@views/SkillQuery/main.vue";
-
 import GetLang from "@global-modules/LanguageSystem.js";
 import init from "./init.js";
+
+const vue_skillQuery = () => import("@views/SkillQuery/main.vue");
 
 export default {
   path: '/skill',
   component: app,
   beforeEnter(to, from, next) {
-    init().then(p => next());
+    init().then(() => next());
   },
   meta: {
     leftMenuViewButtons: [{

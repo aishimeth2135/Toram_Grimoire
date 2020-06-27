@@ -3,8 +3,8 @@
       <app-left-menu />
       <div class="content">
         <template v-for="(item, i) in items">
-          <iconify-icon v-if="i != 0" name="ic-round-keyboard-arrow-right" />
-          <span>
+          <iconify-icon v-if="i != 0" name="ic-round-keyboard-arrow-right" :key="item.path + '-icon'" />
+          <span :key="item.path + '-text'">
             <router-link v-if="i != items.length - 1" :to="item.path">
               {{ item.title }}
             </router-link>

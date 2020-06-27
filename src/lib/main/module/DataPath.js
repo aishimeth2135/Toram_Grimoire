@@ -65,7 +65,7 @@ function DataPath(id) {
   }
   console.warn("Unknow DataPath Name.")
   return void 0;
-};
+}
 
 function createLoadDataPromise(path, data_ary, index) {
   return new Promise((resolve, reject) => {
