@@ -4,6 +4,7 @@
     <router-view class="main-section app-main" />
     <app-footer class="main-section" />
     <app-loading />
+    <app-show-message />
   </div>
 </template>
 
@@ -12,13 +13,15 @@
   import vue_nav from "@views/app/nav.vue";
   import vue_loading from "@views/app/loading.vue";
   import vue_footer from "@views/app/footer.vue";
+  import vue_showMessage from "@views/app/show-message.vue";
 
   export default {
     name: 'app',
     components: {
       'app-loading': vue_loading,
       'app-footer': vue_footer,
-      'app-nav': vue_nav
+      'app-nav': vue_nav,
+      'app-show-message': vue_showMessage
     }
   };
 </script>

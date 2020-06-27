@@ -15,7 +15,7 @@ function digitLength(v) {
   if (t.indexOf('e') == -1)
     return (t.split('.')[1] || '').length;
   const m = t.split('e')[1];
-  return n.charAt(0) == '-' ? parseInt(m.slice(1)) : 0;
+  return m.charAt(0) == '-' ? parseInt(m.slice(1)) : 0;
 }
 
 function checkBoundary(v) {

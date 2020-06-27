@@ -81,7 +81,7 @@ router.beforeEach((to, from, next) => {
       if (data) {
         const res = data.meta.leftMenuViewButtons.map(p => {
           return {
-            title: typeof p.title == 'function' ? p.title() : title,
+            title: typeof p.title == 'function' ? p.title() : p.title,
             icon: p.icon,
             path: data.path + p.path
           };
