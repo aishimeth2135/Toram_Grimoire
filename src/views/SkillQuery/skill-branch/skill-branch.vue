@@ -712,6 +712,8 @@ export default {
         } else if (bch.name == 'text' || bch.name == 'tips') {
           handleTextList.push('text');
         } else if (bch.name == 'stack') {
+          if (data['default'] == 'auto')
+            data['default'] = data['min'];
           handleValueList.push({
             name: ['min', 'max', 'default'],
             calcOnly: true
@@ -721,7 +723,7 @@ export default {
             .indexOf(bch);
           hiddenList.push({
             name: 'name',
-            validation: v => v,
+            validation: v => v && v != 'auto',
             defaultValue: this.langText('stack/base name') + (stkIdx + 1)
           });
         } else if (bch.name == 'effect') {

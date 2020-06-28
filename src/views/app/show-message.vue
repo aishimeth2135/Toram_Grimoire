@@ -26,6 +26,7 @@
   right: 1rem;
   max-width: calc(100vw - 2rem);
   width: 20rem;
+  z-index: 51;
 }
 .message-item {
   transition: 0.3s;
