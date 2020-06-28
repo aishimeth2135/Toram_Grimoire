@@ -172,26 +172,26 @@ export default {
         padding-left: 0.6rem;
         margin-top: 0.4rem;
     }
+  }
 
-    /* ==========================================================================
-       ...
-       ========================================================================== */
-    .select-stat > .category-title {
-        font-size: 0.9rem;
-        padding: 0.3rem 0;
-        color: var(--primary-light-4);
-    }
-    .select-stat > ul.category-items {
-        list-style: none;
-        padding: 0 0.3rem;
-        margin: 0;
-        margin-bottom: 1rem;
-        position: relative;
-    }
-    .select-stat > ul.category-items.invalid {
-        opacity: 0.6;
-        background-color: var(--primary-light);
-    }
+  /* ==========================================================================
+     ...
+     ========================================================================== */
+  .select-stat > .category-title {
+      font-size: 0.9rem;
+      padding: 0.3rem 0;
+      color: var(--primary-light-4);
+  }
+  .select-stat > ul.category-items {
+      list-style: none;
+      padding: 0 0.3rem;
+      margin: 0;
+      margin-bottom: 1rem;
+      position: relative;
+  }
+  .select-stat > ul.category-items.invalid {
+      opacity: 0.6;
+      background-color: var(--primary-light);
   }
 }
 /* ul.equipments-list {
