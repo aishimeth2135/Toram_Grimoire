@@ -19,7 +19,7 @@
       <section v-else-if="currentContent == 1">
         <div class="character-fields">
           <div v-for="(field) in currentCharacterState.origin.equipmentFields"
-            :key="field.type.description"
+            :key="field.id"
             class="character-field">
             <div class="top">
               <div class="field-name">{{ langText('character field names/' + field.type.description) }}</div>

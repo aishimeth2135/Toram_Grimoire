@@ -1,6 +1,6 @@
 import init from "./init.js";
 
-const vue_bubble = () => import("@views/other/bubble.vue");
+const vue_bubble = () => import(/* webpackChunkName: "bubble" */ "@views/other/bubble.vue");
 
 export default {
   path: '/bubble/:iconName/:color?/:number?',

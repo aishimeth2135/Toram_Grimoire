@@ -1,7 +1,7 @@
 <template>
   <div class="main--show-message">
     <transition-group name="fade-slide">
-      <div v-for="data in messages" :key="data.iid" class="message-item">
+      <div v-for="data in messages" :key="data.iid" class="message-item" @click="messageClick(data)">
         <cy-icon-text :iconify-name="data.icon" class="icon" />
         <span class="text">{{ data.message }}</span>
       </div>
@@ -16,6 +16,12 @@
     store,
     computed: {
       ...Vuex.mapState(['messages'])
+    },
+    methods: {
+      messageClick(msg) {
+        if (msg.options.messageClick)
+          msg.options.messageClick();
+      }
     }
   };
 </script>

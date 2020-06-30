@@ -165,16 +165,16 @@
       <cy-window :visible="previewExportedImageWindowVisible" @close-window="previewExportedImageWindowVisible = false" title-lang-id="Skill Simulator/Controller/main menu/preview exported image" class="frozen-top width-auto">
         <template v-slot:top-buttons>
           <cy-button iconify-name="uil:image-download" class="inline"
-            @click="downloadExportedImage()">
+            @click="downloadExportedImage">
             {{ getLangText('global/download') }}
           </cy-button>
         </template>
-        <img src="#" ref="previewExportedImageContent" />
+        <img :src="currentExportedImage || '#'" />
       </cy-window>
       <cy-window :visible="previewExportedTextWindowVisible" @close-window="previewExportedTextWindowVisible = false" title-lang-id="Skill Simulator/Controller/main menu/preview exported text" class="frozen-top width-auto">
         <template v-slot:top-buttons>
           <cy-button iconify-name="mdi:content-copy" class="inline"
-            @click="downloadExportedImage()">
+            @click="copyExportedText">
             {{ getLangText('global/copy') }}
           </cy-button>
         </template>
@@ -446,7 +446,7 @@ export default {
     beforeExportConfirm() {
       const t = this.currentSkillRootState.skillTreeCategoryStates.find(a => a.visible);
       if (!t)
-        ShowMessage(this.langText('tips/must have at least one skill tree to export'), 'ghost', 'must have at least one skill tree to export');
+        ShowMessage(this.langText('tips/must have at least one skill tree to export'), 'mdi-ghost', 'must have at least one skill tree to export');
       return t;
     },
     copyExportedText() {
@@ -461,6 +461,7 @@ export default {
       const a = document.createElement('a');
       a.setAttribute('href', this.currentExportedImage);
       a.setAttribute('download', this.currentSkillRootState.name + '.png');
+      a.setAttribute('target', '_blank');
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -526,11 +527,11 @@ export default {
             loadedImage: null
           },
           potum: {
-            src: './src/picture/icon/favicon48.png',
+            src: '/imgs/favicon/favicon48.png',
             loadedImage: null
           },
           unknowSkillIcon: {
-            src: './src/picture/skill_icons/unknow.svg',
+            src: '/imgs/skill_icons/unknow.svg',
             loadedImage: null
           }
         };
@@ -594,7 +595,7 @@ export default {
                   }
                   img.addEventListener('load', img_load);
                   img.addEventListener('error', img_error);
-                  img.src = p.path.slice(1);
+                  img.src = p.path;
                 });
               })
             );
@@ -808,9 +809,7 @@ export default {
         fctx.fillText(this.langText('export watermark'), final_w - 10, cur_y + 20);
 
         // finale
-        const imgc = this.$refs.previewExportedImageContent;
         this.currentExportedImage = final_canvas.toDataURL('image/png', 1);
-        imgc.src = this.currentExportedImage;
         this.previewExportedImageWindowVisible = true;
       } catch (e) {
         console.log(e);
@@ -823,7 +822,7 @@ export default {
     },
     deleteCurrentBuild() {
       if (this.skillRootStates.length == 1) {
-        ShowMessage(this.langText('tips/number of build cannot be less than 1'), 'iconify/ic:round-remove-circle-outline', 'number of build cannot be less than 1');
+        ShowMessage(this.langText('tips/number of build cannot be less than 1'), 'ic:round-remove-circle-outline', 'number of build cannot be less than 1');
         return;
       }
       const cur_index = this.currentSkillRootStateIndex;
@@ -831,11 +830,11 @@ export default {
       this.skillRootStates.splice(cur_index, 1);
       if (cur_index >= this.skillRootStates.length)
         this.currentSkillRootStateIndex = this.skillRootStates.length - 1;
-      ShowMessage(this.langText('tips/delete build message', [cur_build.name]), 'done', null, {
+      ShowMessage(this.langText('tips/delete build message', [cur_build.name]), 'ic-round-done', null, {
         messageClick: () => {
           this.skillRootStates.splice(cur_index, 0, cur_build);
           this.currentSkillRootStateIndex = cur_index;
-          ShowMessage(this.langText('tips/recovery delete build message', [cur_build.name]), 'done');
+          ShowMessage(this.langText('tips/recovery delete build message', [cur_build.name]), 'ic-round-done');
         },
         removeMessageAfterClick: true
       });
@@ -863,7 +862,7 @@ export default {
       });
 
       this.buildInformationVisible = false;
-      ShowMessage(this.langText('tips/copy build message', [cur_build.name, new_build.name], 'done'));
+      ShowMessage(this.langText('tips/copy build message', [cur_build.name, new_build.name], 'ic-round-done'));
     },
     resetSkillRootStates() {
       this.skillRootStates = [];
