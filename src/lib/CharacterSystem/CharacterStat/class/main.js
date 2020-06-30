@@ -22,7 +22,7 @@ class Character {
       EquipmentField.TYPE_SPECIAL,
       EquipmentField.TYPE_AVATAR,
       EquipmentField.TYPE_AVATAR
-    ].map(p => new EquipmentField(p)));
+    ].map((p, i) => new EquipmentField(i, p)));
 
     return this;
   }
@@ -64,7 +64,7 @@ class CharacterBaseStat {
 }
 
 class EquipmentField {
-  constructor(type) {
+  constructor(id, type) {
     this.type = type;
 
     this.equipment = null;

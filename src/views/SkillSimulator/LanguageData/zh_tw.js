@@ -30,7 +30,7 @@ export default function() {
         },
         'export image': '匯出圖片',
         'export text': '匯出文本',
-        'export watermark': '布偶的魔法書 cy-grimoire.netlify.com',
+        'export watermark': '布偶的魔法書 cy-grimoire.netlify.app',
         'exported image inner text': {
           'skill point cost sum': '總共使用了$0技能點數。',
           'star gem skill point sum': '星石總共提供了$0技能點數。'

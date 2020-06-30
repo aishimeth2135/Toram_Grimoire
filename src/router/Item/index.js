@@ -3,7 +3,7 @@ import app from "./app.vue";
 import GetLang from "@global-modules/LanguageSystem.js";
 import init from "./init.js";
 
-const vue_itemQuery = () => import("@views/ItemQuery/main.vue");
+const vue_itemQuery = () => import(/* webpackChunkName: "item-query" */ "@views/ItemQuery/main.vue");
 
 export default {
   path: '/item',

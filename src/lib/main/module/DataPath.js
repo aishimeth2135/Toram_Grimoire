@@ -58,7 +58,7 @@ function DataPath(id) {
         'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwaGM9CClGkSw-6iUFmdOyIeI-_9i5RvIuHdSCTCUgFCk7GV4v1evt5C79JSG5P66ZGopM2-ZJJaEA/pub?gid=0&single=true&output=csv&range=A12001:I18000'
       ];
     case 'Crystal':
-      return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwaGM9CClGkSw-6iUFmdOyIeI-_9i5RvIuHdSCTCUgFCk7GV4v1evt5C79JSG5P66ZGopM2-ZJJaEA/pub?gid=435170139&single=true&output=csv&range=A:D';
+      return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwaGM9CClGkSw-6iUFmdOyIeI-_9i5RvIuHdSCTCUgFCk7GV4v1evt5C79JSG5P66ZGopM2-ZJJaEA/pub?gid=1665548440&single=true&output=csv&range=A:D';
     case 'Enchant':
       return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4beI9I-sFoTgbTaKeMHRVo3xNm3gc5nQ-MWb9u7dlzRk0QmnMoJwcaR0815IqP0t-9-htpS8mUdQ1/pub?gid=0&single=true&output=csv&range=A:K';
 
@@ -70,6 +70,9 @@ function DataPath(id) {
 function createLoadDataPromise(path, data_ary, index) {
   return new Promise((resolve, reject) => {
     if (typeof path == 'string' && path) {
+      path = encodeURIComponent(path);
+      path = 'https://script.google.com/macros/s/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo/exec?url=' + path;
+
       Papa.parse(path, {
         download: true,
         complete(res) {
@@ -78,7 +81,7 @@ function createLoadDataPromise(path, data_ary, index) {
         },
         error(err) {
           data_ary[index] = null;
-          console.warn("Error when load data.");
+          console.warn('Error when load data: ' + path);
           console.log(err);
           reject();
         }

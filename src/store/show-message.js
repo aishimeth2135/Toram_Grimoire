@@ -22,13 +22,14 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    createMessage({ state, commit }, { icon, message, id }) {
+    createMessage({ state, commit }, { icon, message, id, options }) {
       const find = id !== null ? state.messages.find(p => p.id !== null && p.id == id) : null;
       if (!find) {
         const msg = {
           icon,
           message,
           id,
+          options,
           counter: 1,
           removeTime: 4,
           iid: state.idCounter

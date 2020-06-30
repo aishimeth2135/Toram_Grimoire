@@ -3,7 +3,7 @@ import app from "./app.vue";
 import GetLang from "@global-modules/LanguageSystem.js";
 import init from "./init.js";
 
-const vue_damageCalc = () => import("@views/Calculation/damage/main.vue");
+const vue_damageCalc = () => import(/* webpackChunkName: "calculation-damage" */ "@views/Calculation/damage/main.vue");
 
 export default {
   path: '/damage',
