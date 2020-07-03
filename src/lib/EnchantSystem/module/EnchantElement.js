@@ -69,8 +69,8 @@ class EnchantItemBase {
       [StatBase.TYPE_MULTIPLIER]: ml
     };
     this.unitValue = {
-      [StatBase.TYPE_CONSTANT]: cuv || 1,
-      [StatBase.TYPE_MULTIPLIER]: muv || 1
+      [StatBase.TYPE_CONSTANT]: cuv || '1',
+      [StatBase.TYPE_MULTIPLIER]: muv || '1'
     };
     this.materialPointType = mt;
     this.materialPointValue = {
@@ -453,8 +453,25 @@ class EnchantStat {
     return this.stat.baseName();
   }
   show(v) {
-    const sv = this.itemBase.getUnitValue(this.statType());
-    return sv == 1 ? (v == void 0 ? this.stat.show() : this.stat.show({}, v)) : this.stat.show({}, v == void 0 ? this.stat.statValue() * sv : v * sv);
+    let [sv, sv2] = this.itemBase.getUnitValue(this.statType()).split('|');
+    if (sv == 1)
+      return v == void 0 ? this.stat.show() : this.stat.show({}, v);
+    else {
+      sv2 = sv2 || sv;
+      v = v == void 0 ? this.stat.statValue() : v;
+      let v2 = 0, sign = 1;
+      if (v < 0) {
+        sign = -1;
+        v *= -1;
+      }
+      if (v > EnchantStepStat.DOUBLE_THRESHOLD) {
+        v2 = v - EnchantStepStat.DOUBLE_THRESHOLD;
+        v = EnchantStepStat.DOUBLE_THRESHOLD;
+      }
+      v *= sign;
+      v2 *= sign;
+      return this.stat.show({}, v * sv + v2 * sv2);
+    }
   }
   statType() {
     return this.stat.type;
@@ -505,8 +522,8 @@ class EnchantStepStat extends EnchantStat {
       while (cur != v) {
         if ((sv > 0 && cur + sv > v) || (sv < 0 && cur + sv < v))
           sv = v - cur;
+        res += this._parent.potentialCostToInteger(this.calcPotentialCost(sv, cur));
         cur += sv;
-        res += this._parent.potentialCostToInteger(this.calcPotentialCost(sv));
       }
       return res;
     }
@@ -520,9 +537,29 @@ class EnchantStepStat extends EnchantStat {
    * @param  {int} num                 numble of same category
    * @return {int}                     potential cost
    */
-  calcPotentialCost(v) {
+  calcPotentialCost(v, pre=0) {
     const p = this.itemBase.getPotential(this.stat.type, this.belongEquipment().status);
-    return (v > 0 ? v * p : Math.ceil(v * (5 + Status.Character.tec / 10) * p / 100));
+
+    v += pre;
+
+    let v2 = 0, sign = 1;
+    if (v < 0) {
+      sign = -1;
+      v *= -1;
+    }
+    if (v > EnchantStepStat.DOUBLE_THRESHOLD) {
+      v2 = v - EnchantStepStat.DOUBLE_THRESHOLD;
+      v = EnchantStepStat.DOUBLE_THRESHOLD;
+    }
+    v *= sign;
+    v2 *= sign;
+
+    v -= pre;
+
+    const r = (5 + Status.Character.tec / 10);
+    return v > 0 ?
+      v * p + v2 * p * 2 :
+      Math.ceil(v * r * p / 100) + Math.ceil(v2 * r * p / 100);
   }
   realPotentialCost() {
     if (this._parent.type == EnchantStep.TYPE_EACH)
@@ -591,5 +628,6 @@ class EnchantStepStat extends EnchantStat {
     }
   }
 }
+EnchantStepStat.DOUBLE_THRESHOLD = 20;
 
 export { EnchantCategory, EnchantStep, EnchantItemBase, EnchantEquipment };

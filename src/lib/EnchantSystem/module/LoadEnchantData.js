@@ -62,8 +62,8 @@ export default function LoadEnchantData(r, c) {
           p[STAT_ID],
           processLimit(p[CONSTANT_LIMIT]),
           processLimit(p[MULTIPLIER_LIMIT]),
-          parseInt(p[CONSTANT_UNIT_VALUE]),
-          parseInt(p[MULTIPLIER_UNIT_VALUE]),
+          p[CONSTANT_UNIT_VALUE],
+          p[MULTIPLIER_UNIT_VALUE],
           MATERIAL_POINT_TYPE_LIST.indexOf(p[MATERIAL_POINT_TYPE]),
           p[MATERIAL_POINT_CONSTANT_VALUE],
           p[MATERIAL_POINT_MULTIPLIER_VALUE]

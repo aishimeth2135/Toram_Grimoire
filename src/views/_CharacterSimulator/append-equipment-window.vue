@@ -28,7 +28,7 @@
             <cy-button v-for="(data, i) in searchResult" type="description" :iconify-name="data.categoryIcon" :key="data.origin.id" @click="selectSearchResult(data, i)">
               {{ data.origin.name }}
               <template v-slot:description>
-                <span class="text-small">{{ data.obtainText }}</span>
+                <span style="font-size: 0.9rem;">{{ data.obtainText }}</span>
               </template>
             </cy-button>
           </transition-group>
