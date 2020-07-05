@@ -143,7 +143,7 @@ export default {
     }
 
     .step-scope .type-each-set-scope {
-        display: inline-block;
+        display: inline-flex;
     }
 
     .step-scope > .show-step-potential {
@@ -171,6 +171,7 @@ export default {
     .step-scope > .step-stats > .stat-scope > .sub {
         padding-left: 0.6rem;
         margin-top: 0.4rem;
+        font-size: 0.9rem;
     }
   }
 

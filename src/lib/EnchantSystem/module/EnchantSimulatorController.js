@@ -377,7 +377,8 @@ export default class EnchantSimulatorController {
     const top_content = simpleCreateHTML('div', 'content');
 
     const eq_list = simpleCreateHTML('ul', ['equipments-list', 'menu']);
-    const create_eq_btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'no-border', 'create-equipment', 'after-button'], Icons('add-circle-outline') + `<span class="text">${Lang('create equipment')}</span>`);
+    const create_eq_btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'no-border', 'create-equipment', 'after-button', 'inline'], Icons('add-circle-outline') + `<span class="text">${Lang('create equipment')}</span>`);
+    create_eq_btn.style = "margin-left: 0.8rem;";
     create_eq_btn.addEventListener('click', function(e) {
       ctrr.createEquipment();
     });
@@ -385,7 +386,7 @@ export default class EnchantSimulatorController {
     this.nodes.equipmentsList = eq_list;
     top_content.appendChild(eq_list);
 
-    const menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'menu-button', 'button', 'start'], Icons('cube-outline'));
+    const menu_btn = simpleCreateHTML('span', ['Cyteria', 'Button', 'icon-only', 'menu-button', 'button', 'start', 'inline'], Icons('cube-outline'));
     menu_btn.addEventListener('click', this.listeners.openMainMenu);
     top_content.appendChild(menu_btn);
 
@@ -707,7 +708,7 @@ export default class EnchantSimulatorController {
     this.equipments.push(eq);
 
     const el = this.nodes.equipmentsList;
-    const btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'select-equipment', 'no-border'], Icons('six-star') + `<span class="text">${Lang('equipment')} ${this.equipments.length}</span>`);
+    const btn = simpleCreateHTML('li', ['Cyteria', 'Button', 'simple', 'select-equipment', 'no-border', 'inline'], Icons('six-star') + `<span class="text">${Lang('equipment')} ${this.equipments.length}</span>`);
     btn.addEventListener('click', this.listeners.selectCurrentEquipment);
     el.insertBefore(btn, el.querySelector('.create-equipment'));
 
