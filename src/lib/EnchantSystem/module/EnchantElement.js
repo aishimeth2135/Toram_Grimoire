@@ -368,22 +368,9 @@ class EnchantStep {
     const er = this.getPotentialExtraRate();
     switch (this.type) {
       case EnchantStep.TYPE_NORMAL:
-        return this.potentialCostToInteger(this.stepStats.reduce((a, b) => a + b.calcPotentialCost(b.statValue()), 0) * er);
+        return this.potentialCostToInteger(this.stepStats.reduce((a, b) => a + b.getPotentialCost(), 0) * er);
       case EnchantStep.TYPE_EACH:
-        {
-          const stat = this.stepStats[0];
-          let sv = this.stepValue() || 1;
-          const v = stat.statValue();
-          let res = 0,
-            cur = 0;
-          while (cur != v) {
-            if ((sv > 0 && cur + sv > v) || (sv < 0 && cur + sv < v))
-              sv = v - cur;
-            cur += sv;
-            res += this.potentialCostToInteger(stat.calcPotentialCost(sv) * er);
-          }
-          return res;
-        }
+          return this.stepStats[0] ? this.stepStats[0].getPotentialCost() : 0;
     }
   }
   potentialCostToInteger(p) {
@@ -512,8 +499,10 @@ class EnchantStepStat extends EnchantStat {
    * @return {float}
    */
   getPotentialCost() {
+    const prev = this.getPreviousStepStatValue();
+
     if (this._parent.type == EnchantStep.TYPE_NORMAL)
-      return this.calcPotentialCost(this.stat.value);
+      return this.calcPotentialCost(this.stat.value, prev);
     else {
       let sv = this._parent.stepValue() || 1;
       const v = this.stat.value;
@@ -522,7 +511,7 @@ class EnchantStepStat extends EnchantStat {
       while (cur != v) {
         if ((sv > 0 && cur + sv > v) || (sv < 0 && cur + sv < v))
           sv = v - cur;
-        res += this._parent.potentialCostToInteger(this.calcPotentialCost(sv, cur));
+        res += this._parent.potentialCostToInteger(this.calcPotentialCost(sv, cur + prev));
         cur += sv;
       }
       return res;
@@ -532,9 +521,8 @@ class EnchantStepStat extends EnchantStat {
     return this._parent._parent;
   }
   /**
-   * Calculate potential cost before extra-rate of input value with a Formula.
-   * @param  {int} v                   value
-   * @param  {int} num                 numble of same category
+   * Calculate potential cost before extra-rate of input value with the formula.
+   * @param  {int} v                   value of stat
    * @return {int}                     potential cost
    */
   calcPotentialCost(v, pre=0) {
@@ -557,14 +545,14 @@ class EnchantStepStat extends EnchantStat {
     v -= pre;
 
     const r = (5 + Status.Character.tec / 10);
-    return v > 0 ?
+    return (v + v2) > 0 ?
       v * p + v2 * p * 2 :
       Math.ceil(v * r * p / 100) + Math.ceil(v2 * r * p / 100);
   }
   realPotentialCost() {
     if (this._parent.type == EnchantStep.TYPE_EACH)
-      return this._parent.getPotentialCost();
-    return this.calcPotentialCost(this.statValue()) * this._parent.getPotentialExtraRate();
+       return this._parent.getPotentialCost();
+    return this.getPotentialCost() * this._parent.getPotentialExtraRate();
   }
   remove() {
     const index = this._parent.stepStats.indexOf(this);
