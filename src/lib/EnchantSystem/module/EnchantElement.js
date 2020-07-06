@@ -504,6 +504,8 @@ class EnchantStepStat extends EnchantStat {
     if (this._parent.type == EnchantStep.TYPE_NORMAL)
       return this.calcPotentialCost(this.stat.value, prev);
     else {
+      const er = this._parent.getPotentialExtraRate();
+
       let sv = this._parent.stepValue() || 1;
       const v = this.stat.value;
       let res = 0,
@@ -511,7 +513,7 @@ class EnchantStepStat extends EnchantStat {
       while (cur != v) {
         if ((sv > 0 && cur + sv > v) || (sv < 0 && cur + sv < v))
           sv = v - cur;
-        res += this._parent.potentialCostToInteger(this.calcPotentialCost(sv, cur + prev));
+        res += this._parent.potentialCostToInteger(this.calcPotentialCost(sv, cur + prev) * er);
         cur += sv;
       }
       return res;
