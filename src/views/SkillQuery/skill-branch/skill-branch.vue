@@ -795,7 +795,7 @@ export default {
 
           data['@extra-value-list'] = [];
           if (data['extra_value'] && data['extra_text']) {
-            const vs = data['extra_value'].split(/\s*,\s*/)
+            const vs = data['extra_value'].split(/\s*,,\s*/)
               .map(p => {
                 const dc = new DataContainer(p, 'extra_value', bch);
                 this.handleDataContainer(dc, { toPercentage: true });
