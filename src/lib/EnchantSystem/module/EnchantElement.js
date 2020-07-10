@@ -441,7 +441,7 @@ class EnchantStat {
   }
   show(v) {
     let [sv, sv2] = this.itemBase.getUnitValue(this.statType()).split('|');
-    if (sv == 1)
+    if (sv == 1 && sv2 == 1)
       return v == void 0 ? this.stat.show() : this.stat.show({}, v);
     else {
       sv2 = sv2 || sv;
