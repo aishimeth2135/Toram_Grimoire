@@ -116,11 +116,10 @@ class EnchantItemBase {
   }
   getLimit(type) {
     const t = this.limit[type];
-    const l = Math.min(
-      Math.floor(Status.ItemPotentialLimit / this.basePotential(type)),
-      Math.floor(Status.Character.level / 10)
-    );
-    return t === '' ? [l, -1 * l] : t;
+    const pt = Math.floor(Status.ItemPotentialLimit / this.basePotential(type));
+    const lv = Math.floor(Status.Character.level / 10);
+    const l = Math.min(pt, lv);
+    return t === '' ? [l, -1 * l] : [Math.min(t[0], lv), Math.max(t[1], -1 * lv)];
   }
   getUnitValue(type) {
     return this.unitValue[type];
