@@ -1,9 +1,17 @@
 <template>
   <div class="main--show-message">
     <transition-group name="fade-slide">
-      <div v-for="data in messages" :key="data.iid" class="message-item" @click="messageClick(data)">
-        <cy-icon-text :iconify-name="data.icon" class="icon" />
-        <span class="text">{{ data.message }}</span>
+      <div v-for="msg in messages" :key="msg.iid" class="message-item">
+        <div class="container">
+          <cy-icon-text :iconify-name="msg.icon" class="icon" />
+          <span class="text">{{ msg.message }}</span>
+        </div>
+        <div v-if="msg.options.buttons && msg.options.buttons.length != 0">
+          <span v-for="btn in msg.options.buttons" :key="btn.iid"
+            class="msg-btn" @click="messageButtonClick(msg, btn)">
+            {{ btn.text || '|' + btn.iid + '|' }}
+          </span>
+        </div>
       </div>
     </transition-group>
   </div>
@@ -18,9 +26,11 @@
       ...Vuex.mapState(['messages'])
     },
     methods: {
-      messageClick(msg) {
-        if (msg.options.messageClick)
-          msg.options.messageClick();
+      messageButtonClick(msg, btn) {
+        if (btn.click)
+          btn.click();
+        if (btn.removeMessageAfterClick)
+          this.$store.commit('removeMessage', msg);
       }
     }
   };
@@ -44,12 +54,30 @@
   margin-top: 1rem;
   border-radius: 0.2rem;
   width: 100%;
+  flex-wrap: wrap;
 
-  > .icon {
-    margin-right: 0.8rem;
-    --icon-color: var(--primary-light);
+  > .container {
+    display: inline-flex;
+    align-items: center;
+
+    > .icon {
+      margin-right: 0.8rem;
+      --icon-color: var(--primary-light);
+    }
   }
 }
+
+.msg-btn {
+  cursor: pointer;
+  margin-left: 0.7rem;
+  color: var(--primary-light-2);
+  text-align: right;
+
+  &:hover {
+    color: var(--primary-light);
+  }
+}
+
 .fade-slide-enter {
   opacity: 0;
   transform: translateX(-30%);

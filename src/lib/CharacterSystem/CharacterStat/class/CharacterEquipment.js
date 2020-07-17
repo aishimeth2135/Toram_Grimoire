@@ -4,7 +4,6 @@
 class CharacterEquipment {
   constructor(id, name, stats) {
     this.id = id;
-    this.type = null;
     this.name = name;
     this.stats = stats;
   }
@@ -22,14 +21,6 @@ class CharacterEquipment {
   }
   get hasCrystal() {
     return false;
-  }
-  get customTypeList() {
-    return null;
-  }
-  setCustomType(type) {
-    if (this.customTypeList != null) {
-      this.type = type;
-    }
   }
   appendCrystal(id, name, stats) {
     if (this.hasCrystal) {
@@ -56,6 +47,7 @@ class Weapon extends CharacterEquipment {
   constructor(id, name, stats, atk, stability) {
     super(id, name, stats);
 
+    this.bassAtk = atk;
     this.atk = atk;
     this.stability = stability;
   }
@@ -134,6 +126,7 @@ class Armor extends CharacterEquipment {
   constructor(id, name, stats, def) {
     super(id, name, stats);
 
+    this.baseDef = def;
     this.def = def;
   }
 }

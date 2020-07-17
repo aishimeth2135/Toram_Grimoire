@@ -39,10 +39,11 @@ export default function() {
         'body-armor-defense': '重化'
       },
       'browse equipments': {
-        'action: browse': '裝備清單',
-        'action: select-field-equipment': '裝備清單'
+        'action: normal': '裝備清單',
+        'action: select-field-equipment': '裝備清單',
+        'append equipment': '新增裝備'
       },
-      'append equipment': {
+      'append equipments': {
         'window title: select-mode': '選擇新增方式',
         'window title: search': '查詢裝備',
         'window title: custom': '自訂裝備',
@@ -51,7 +52,7 @@ export default function() {
         'action: search description': '可以從現存的裝備資料中選取多個想加入的裝備。',
         'action: custom description': '建立一件新裝備，可以自訂該裝備的各項能力值。',
         'search equipment placeholder': '搜尋裝備名稱...',
-        'search equipment result: selected title': '已選取$0件裝備',
+        'search equipment result: selected title': '件裝備已被選取',
         'search equipment result: obtain': {
           'mobs': '小怪掉落',
           'boss': '定點BOSS掉落',
@@ -71,8 +72,10 @@ export default function() {
       'Warn': {
         'no equipment selected': '這個欄位是空的0.0',
         'no eligible equipments found': '沒有符合條件的裝備～點擊上面的按鈕來新增裝備。',
-        'append equipment: no result found': '找不到任何符合的裝備。換一個搜尋的關鍵字試試～',
-        'append equipments successfully': '已成功新增$0件裝備。',
+        'append equipments: no result found': '找不到任何符合的裝備。換一個搜尋的關鍵字試試～',
+        'append equipments: search text is empty': '搜尋的關鍵字須至少一個字元。',
+        'append equipments: successfully': '已成功新增$0件裝備。',
+        'append equipments: clear': '已清除選取的裝備。',
         'clear equipments completed': '清除成功。',
       }
     }

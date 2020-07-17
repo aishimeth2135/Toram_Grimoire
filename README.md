@@ -1,24 +1,16 @@
 # toram-grimoire
+This is the web tool of mobile game "Toram Online".
+Please click [here](https://cy-grimoire.netlify.app/).
 
-## Project setup
+## Project
+This project is created using vue-cli.
+
+### setup
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### run
 ```
 yarn serve
 ```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

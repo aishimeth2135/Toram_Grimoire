@@ -831,12 +831,15 @@ export default {
       if (cur_index >= this.skillRootStates.length)
         this.currentSkillRootStateIndex = this.skillRootStates.length - 1;
       ShowMessage(this.langText('tips/delete build message', [cur_build.name]), 'ic-round-done', null, {
-        messageClick: () => {
-          this.skillRootStates.splice(cur_index, 0, cur_build);
-          this.currentSkillRootStateIndex = cur_index;
-          ShowMessage(this.langText('tips/recovery delete build message', [cur_build.name]), 'ic-round-done');
-        },
-        removeMessageAfterClick: true
+        buttons: [{
+          text: this.getLangText('global/recovery'),
+          click: () => {
+            this.skillRootStates.splice(cur_index, 0, cur_build);
+            this.currentSkillRootStateIndex = cur_index;
+            ShowMessage(this.langText('tips/recovery delete build message', [cur_build.name]), 'ic-round-done');
+          },
+          removeMessageAfterClick: true
+        }]
       });
 
       this.buildInformationVisible = false;
