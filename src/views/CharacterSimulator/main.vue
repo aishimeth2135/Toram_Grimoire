@@ -1,6 +1,6 @@
 <template>
   <div class="main--character-simulator">
-    <equipments v-if="currentContent == 0" :character="currentCharacterState.origin" />
+    <equipments v-if="currentContent == 0" :character-state="currentCharacterState" />
   </div>
 </template>
 <script>

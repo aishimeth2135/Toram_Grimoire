@@ -25,6 +25,9 @@ const store = new Vuex.Store({
     createMessage({ state, commit }, { icon, message, id, options }) {
       const find = id !== null ? state.messages.find(p => p.id !== null && p.id == id) : null;
       if (!find) {
+        if (options.buttons) {
+          options.buttons.forEach((p, i) => p.iid = i);
+        }
         const msg = {
           icon,
           message,

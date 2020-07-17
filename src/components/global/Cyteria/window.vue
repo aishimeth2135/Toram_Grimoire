@@ -8,7 +8,8 @@
           </div>
           <span class="buttons">
             <slot name="top-buttons"></slot>
-            <cy-button v-if="type == 'normal'" type="icon-only" @click="$emit('close-window')" iconify-name="ic:round-close">
+            <cy-button v-if="type == 'normal'" type="icon-only" @click="$emit('close-window')"
+              iconify-name="ic:round-close">
             </cy-button>
           </span>
         </div>

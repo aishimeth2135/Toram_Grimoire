@@ -27,9 +27,15 @@ export default {
   flex-wrap: wrap;
 
   &>.icon {
-    left: 0.4rem;
-    top: 0.4rem;
-    position: absolute;
+    margin-left: 0.4rem;
+    margin-right: -1.8rem;
+    margin-top: 0.2rem;
+
+    >svg {
+      color: var(--primary-light);
+      width: 1.3rem;
+      height: 1.3rem;
+    }
   }
 
   &>.icon-before-short {
@@ -37,14 +43,8 @@ export default {
     display: inline-block;
   }
 
-  &>.icon>svg {
-    color: var(--primary-light);
-    width: 1.4rem;
-    height: 1.4rem;
-  }
-
   &>input {
-    padding: 0.5rem;
+    padding: 0.4rem;
     border: 0;
     border-bottom: 1px solid var(--primary-light);
     transition: 0.3s;

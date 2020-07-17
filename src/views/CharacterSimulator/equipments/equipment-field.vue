@@ -3,7 +3,8 @@
     <div class="top">
       <span class="name">{{ langText('character field names/' + field.type.description) }}</span>
       <div class="buttons">
-        <cy-button iconify-name="ic-round-view-list" type="icon-only" class="inline" />
+        <cy-button iconify-name="ic-round-view-list" type="icon-only" class="inline"
+          @click="$emit('select-field-equipment', field)" />
       </div>
     </div>
   </div>

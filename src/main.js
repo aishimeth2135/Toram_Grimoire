@@ -22,6 +22,7 @@ import vuecy_stickyHeader from "@global-vue-components/Cyteria/sticky-header.vue
 import vuecy_dragBar from "@global-vue-components/Cyteria/drag-bar.vue";
 import vuecy_inputCounter from "@global-vue-components/Cyteria/input-counter.vue";
 import vuecy_defaultTips from "@global-vue-components/Cyteria/default-tips.vue";
+import vuecy_transition from "@global-vue-components/Cyteria/transition.vue";
 
 Vue.component('iconify-icon', vue_iconifyIcon);
 Vue.component('svg-icon', vue_svgIcon);
@@ -35,6 +36,7 @@ Vue.component('cy-sticky-header', vuecy_stickyHeader);
 Vue.component('cy-drag-bar', vuecy_dragBar);
 Vue.component('cy-input-counter', vuecy_inputCounter);
 Vue.component('cy-default-tips', vuecy_defaultTips);
+Vue.component('cy-transition', vuecy_transition);
 
 import App from "./App.vue";
 import router from "./router/index.js";

@@ -44,6 +44,19 @@ workbox.routing.registerRoute(
   })
 );
 
+// google app script
+workbox.routing.registerRoute(
+  /^https:\/\/script.google.com\/macros\/s\/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo\/exec?url=.+/,
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: 'app-script--get-csv',
+    plugins: [
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200]
+      })
+    ]
+  })
+);
+
 // iconify icons
 workbox.routing.registerRoute(
   /^https:\/\/api\.iconify\.design/,

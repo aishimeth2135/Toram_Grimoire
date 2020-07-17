@@ -1,9 +1,8 @@
 <template>
   <span :class="rootClass" @click="buttonClick">
     <template v-if="isNormalLayout">
-      <iconify-icon v-if="iconifyName != null" :name="iconifyName"></iconify-icon>
-      <svg-icon v-if="iconId != null" :icon-id="iconId"></svg-icon>
-      <lang-text v-if="textLangId != null" :lang-id="textLangId" class="text"></lang-text>
+      <iconify-icon v-if="iconifyName != null" :name="iconifyName" />
+      <svg-icon v-if="iconId != null" :icon-id="iconId" />
       <span v-else-if="$slots['default']" class="text">
         <slot></slot>
       </span>
@@ -17,9 +16,8 @@
         <slot name="title"></slot>
       </div>
       <div class="title">
-        <iconify-icon v-if="iconifyName != null" :name="iconifyName"></iconify-icon>
-        <svg-icon v-if="iconId != null" :icon-id="iconId"></svg-icon>
-        <lang-text v-if="textLangId != null" :lang-id="textLangId" class="text"></lang-text>
+        <iconify-icon v-if="iconifyName != null" :name="iconifyName" />
+        <svg-icon v-if="iconId != null" :icon-id="iconId" />
         <span v-else-if="$slots['default']" class="text">
           <slot></slot>
         </span>
@@ -76,7 +74,10 @@
         type: String,
         default: 'simple',
         validator(v){
-          return ['simple', 'icon-only', 'line', 'description', 'drop-down', 'with-title'].includes(v);
+          return [
+            'simple', 'icon-only', 'line', 'border',
+            'description', 'drop-down', 'with-title'
+          ].includes(v);
         }
       },
       iconifyName: {
@@ -127,12 +128,14 @@
     text-align: center;
     transition: 0.3s;
     --icon-width: 1.2rem;
+    font-size: 1rem;
 
     @{deep-operator} svg {
       fill: currentcolor;
       color: var(--primary-light-2);
       height: var(--icon-width);
       width: var(--icon-width);
+      flex-shrink: 0;
     }
 
     &:hover @{deep-operator} svg,
@@ -191,9 +194,6 @@
         align-items: center;
       }
 
-      @{deep-operator} svg {
-        flex-shrink: 0;
-      }
       .text {
         margin-left: 0.4rem;
       }
@@ -238,6 +238,10 @@
           content: '';
         }
       }
+
+      &.after-button {
+        margin-left: 0.7rem;
+      }
     }
 
     /* icon-only
@@ -268,12 +272,37 @@
 
     /* border
        ========================================================================== */
-    &.border.icon-only {
-      border-radius: 0.2rem;
-      border: 1px var(--primary-light-2) solid;
+    &.border {
+      border-radius: 1rem;
+      border: 0.1rem var(--primary-light) solid;
+      padding: 0.3rem 0.6rem;
+      padding-right: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0.2rem;
 
       &:hover {
-        border: 1px var(--primary-light-4) solid;
+        border-color: var(--primary-light-3);
+      }
+
+      &:hover > .text,
+      &.cur > .text,
+      &.selected > .text {
+        color: var(--primary-dark);
+      }
+
+      &.inline {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      &.after-button {
+        margin-left: 0.4rem;
+      }
+
+      .text {
+        margin-left: 0.4rem;
       }
     }
 
@@ -299,7 +328,7 @@
         border: 0;
       }
 
-      &.icon-small @{deep-operator} svg {
+      &.icon-small {
         --icon-width: 1.2rem;
       }
       .text {
