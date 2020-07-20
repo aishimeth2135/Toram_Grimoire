@@ -3,7 +3,7 @@
     <template v-if="isNormalLayout">
       <iconify-icon v-if="iconifyName != null" :name="iconifyName" />
       <svg-icon v-if="iconId != null" :icon-id="iconId" />
-      <span v-else-if="$slots['default']" class="text">
+      <span v-if="$slots['default']" class="text">
         <slot></slot>
       </span>
       <slot name="tail"></slot>
@@ -18,7 +18,7 @@
       <div class="title">
         <iconify-icon v-if="iconifyName != null" :name="iconifyName" />
         <svg-icon v-if="iconId != null" :icon-id="iconId" />
-        <span v-else-if="$slots['default']" class="text">
+        <span v-if="$slots['default']" class="text">
           <slot></slot>
         </span>
         <slot name="tail"></slot>

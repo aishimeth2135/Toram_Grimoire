@@ -25,13 +25,19 @@
         <div v-show="selectSkillTreeWindowState.visible" class="menu-container width-wide"
           @mouseleave.stop="toggleSelectSkillTreeWindow(false)">
           <div>
-            <cy-button v-for="(stc, i) in skillRoot.skillTreeCategorys" :key="stc.id" iconify-name="bx-bxs-book-content" :class="{ 'selected': selectSkillTreeWindowState.currentIndex_stc == i }" @click="selectSkillTreeCategory(i)">
+            <cy-button v-for="(stc, i) in skillRoot.skillTreeCategorys" :key="stc.id"
+              iconify-name="bx-bxs-book-content"
+              :class="{ 'selected': selectSkillTreeWindowState.currentIndex_stc == i }"
+              @click="selectSkillTreeCategory(i)">
               {{ stc.name }}
             </cy-button>
           </div>
           <div v-if="currentSkillTreeCategory != null"
             style="border-top: 1px solid var(--primary-light-2); margin-top: 0.6rem; padding-top: 0.3rem;">
-            <cy-button v-for="(st, i) in currentSkillTreeCategory.skillTrees" :key="st.id" icon-id="rabbit-book" :class="{ 'selected': selectSkillTreeWindowState.currentIndex_st == i }" @click="selectSkillTree(i)">
+            <cy-button v-for="(st, i) in currentSkillTreeCategory.skillTrees" :key="st.id"
+              icon-id="rabbit-book"
+              :class="{ 'selected': selectSkillTreeWindowState.currentIndex_st == i }"
+              @click="selectSkillTree(i)">
               {{ st.name }}
             </cy-button>
           </div>
@@ -376,6 +382,7 @@ export default {
     },
     currentSkillTreeCategory() {
       const idx = this.selectSkillTreeWindowState.currentIndex_stc;
+      console.log(this.selectSkillTreeWindowState.currentIndex_stc != -1 ? this.skillRoot.skillTreeCategorys[idx] : null);
       return this.selectSkillTreeWindowState.currentIndex_stc != -1 ? this.skillRoot.skillTreeCategorys[idx] : null;
     },
     currentSkillTree() {
