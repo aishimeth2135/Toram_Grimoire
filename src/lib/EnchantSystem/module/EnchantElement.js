@@ -262,7 +262,7 @@ class EnchantEquipment {
     const last_index = this.lastStepIndex();
     const pot = this.currentPotential(last_index);
     const d = Math.max(this.currentPotential(last_index - 1), this.basePotential());
-    if (!this.checkStats() || !this.checkCurrentPotential())
+    if (!this.checkCurrentPotential())
       return Math.max(160 + pot * 230 / d, 0);
     return -1;
   }

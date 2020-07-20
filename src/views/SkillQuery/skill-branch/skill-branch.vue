@@ -976,7 +976,7 @@ export default {
       dc.handleResult(v => v
         .replace(/([$_a-zA-Z][$_a-zA-Z0-9]*)(\*)(\d\.\d+)/g,
           (m, m1, m2, m3) => m1 + m2 + numStrToPercentage(m3))
-        .replace('*', '×')
+        .replace(/\*/g, '×')
       );
 
       dc.handleResult(v => v.replace(/(\d+\.)(\d{2,})/g, (m, m1, m2) => m1 + m2.slice(0, 2)));
