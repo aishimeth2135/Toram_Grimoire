@@ -69,8 +69,8 @@ function DataPath(id) {
 function createLoadDataPromise(path, data_ary, index) {
   return new Promise((resolve, reject) => {
     if (typeof path == 'string' && path) {
-      path = encodeURIComponent(path);
-      path = 'https://script.google.com/macros/s/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo/exec?url=' + path;
+      // path = encodeURIComponent(path);
+      // path = 'https://script.google.com/macros/s/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo/exec?url=' + path;
 
       Papa.parse(path, {
         download: true,
