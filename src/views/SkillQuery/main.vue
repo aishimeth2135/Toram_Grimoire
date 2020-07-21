@@ -382,7 +382,6 @@ export default {
     },
     currentSkillTreeCategory() {
       const idx = this.selectSkillTreeWindowState.currentIndex_stc;
-      console.log(this.selectSkillTreeWindowState.currentIndex_stc != -1 ? this.skillRoot.skillTreeCategorys[idx] : null);
       return this.selectSkillTreeWindowState.currentIndex_stc != -1 ? this.skillRoot.skillTreeCategorys[idx] : null;
     },
     currentSkillTree() {
