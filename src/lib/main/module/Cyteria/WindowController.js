@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import element from "./element.js";
 import Icons from "../SvgIcons.js";
 
