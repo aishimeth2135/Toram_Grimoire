@@ -91,14 +91,14 @@ module.exports = {
     // workbox
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
-      swSrc: 'src/sw.js'
+      swSrc: 'src/sw.js',
+      exclude: [/_redirects/]
     }
   },
 
   publicPath: '',
 
   pluginOptions: {
-    cordovaPath: 'src-cordova',
-    exclude: [/_redirects/]
+    cordovaPath: 'src-cordova'
   }
 }
