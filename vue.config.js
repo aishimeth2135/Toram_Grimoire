@@ -23,6 +23,7 @@ module.exports = {
       }
     }
   },
+
   pwa: {
     name: 'Toram Grimoire',
     themeColor: '#FFD1EA',
@@ -92,5 +93,12 @@ module.exports = {
     workboxOptions: {
       swSrc: 'src/sw.js'
     }
+  },
+
+  publicPath: '',
+
+  pluginOptions: {
+    cordovaPath: 'src-cordova',
+    exclude: [/_redirects/]
   }
 }
