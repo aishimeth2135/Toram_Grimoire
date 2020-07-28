@@ -83,11 +83,17 @@
           </span>
         </template>
         <template v-else-if="branch.name == 'effect' || branch.name == 'next'">
-          <cy-icon-text v-if="showData['condition']" class="condition-scope text-small light-text" iconify-name="eva-checkmark-circle-2-outline">
+          <cy-icon-text v-if="showData['condition']" class="condition-scope text-small light-text"
+            iconify-name="eva-checkmark-circle-2-outline">
             {{ showData['condition'] }}
           </cy-icon-text>
-          <cy-icon-text v-if="showData['duration']" class="condition-scope text-small light-text" iconify-name="zmdi-time-interval">
+          <cy-icon-text v-if="showData['duration']" class="condition-scope text-small light-text"
+            iconify-name="zmdi-time-interval">
             <span v-html="showData['duration']"></span>
+          </cy-icon-text>
+          <cy-icon-text v-else-if="showData['end_condition']" class="condition-scope text-small light-text"
+            iconify-name="zmdi-time-interval">
+            <span v-html="showData['end_condition']"></span>
           </cy-icon-text>
           <cy-icon-text v-if="showData['is_place']" class="condition-scope text-small light-text"
             iconify-name="emojione-monotone:heavy-large-circle">
