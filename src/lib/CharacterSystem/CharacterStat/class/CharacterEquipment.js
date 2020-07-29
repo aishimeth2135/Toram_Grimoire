@@ -47,7 +47,9 @@ class Weapon extends CharacterEquipment {
   constructor(id, name, stats, atk, stability) {
     super(id, name, stats);
 
-    this.bassAtk = atk;
+    atk = typeof atk == 'string' ? parseInt(atk, 10) : atk;
+
+    this.baseAtk = atk;
     this.atk = atk;
     this.stability = stability;
   }
@@ -125,6 +127,8 @@ SubWeapon.TYPE_DAGGER = Symbol('dagger');
 class Armor extends CharacterEquipment {
   constructor(id, name, stats, def) {
     super(id, name, stats);
+
+    def = typeof def == 'string' ? parseInt(def, 10) : def;
 
     this.baseDef = def;
     this.def = def;

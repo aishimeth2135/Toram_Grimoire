@@ -23,8 +23,12 @@
   cursor: pointer;
   transition: 0.3s;
 
-  &:hover {
+  &:hover, &.selected {
     background-color: rgba(var(--rgb-primary-light), 0.4);
+  }
+
+  &.selected {
+    color: var(--primary-purple);
   }
 
   > .obtain {

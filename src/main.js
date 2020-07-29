@@ -10,39 +10,27 @@ import Vue from "vue";
 import Vuex from 'vuex';
 Vue.use(Vuex);
 
-import vue_iconifyIcon from "@global-vue-components/iconify-icon.vue";
-import vue_svgIcon from "@global-vue-components/svg-icon.vue";
-import vue_langText from "@global-vue-components/lang-text.vue";
+function registComponents(requireComponent, prefix='') {
+  requireComponent.keys().forEach(fileName => {
+    const componentConfig = requireComponent(fileName);
+    const componentName = fileName.split('/').pop().replace(/\.\w+$/, '');
 
-import vuecy_window from "@global-vue-components/Cyteria/window.vue";
-import vuecy_button from "@global-vue-components/Cyteria/button.vue";
-import vuecy_iconText from "@global-vue-components/Cyteria/icon-text.vue";
-import vuecy_titleInput from "@global-vue-components/Cyteria/title-input.vue";
-import vuecy_stickyHeader from "@global-vue-components/Cyteria/sticky-header.vue";
-import vuecy_dragBar from "@global-vue-components/Cyteria/drag-bar.vue";
-import vuecy_inputCounter from "@global-vue-components/Cyteria/input-counter.vue";
-import vuecy_defaultTips from "@global-vue-components/Cyteria/default-tips.vue";
-import vuecy_transition from "@global-vue-components/Cyteria/transition.vue";
+    // console.log(`regist "${prefix + componentName}"...`);
+    Vue.component(prefix + componentName, componentConfig.default || componentConfig);
+  });
+}
 
-Vue.component('iconify-icon', vue_iconifyIcon);
-Vue.component('svg-icon', vue_svgIcon);
-Vue.component('lang-text', vue_langText);
+const requireComponent_global = require.context('./components/global', false, /[a-zA-Z-]+\.vue$/);
+const requireComponent_cy = require.context('./components/global/Cyteria', false, /[a-zA-Z-]+\.vue$/);
 
-Vue.component('cy-window', vuecy_window);
-Vue.component('cy-button', vuecy_button);
-Vue.component('cy-icon-text', vuecy_iconText);
-Vue.component('cy-title-input', vuecy_titleInput);
-Vue.component('cy-sticky-header', vuecy_stickyHeader);
-Vue.component('cy-drag-bar', vuecy_dragBar);
-Vue.component('cy-input-counter', vuecy_inputCounter);
-Vue.component('cy-default-tips', vuecy_defaultTips);
-Vue.component('cy-transition', vuecy_transition);
+registComponents(requireComponent_global);
+registComponents(requireComponent_cy, 'cy-');
 
 import App from "./App.vue";
 import router from "./router/index.js";
 
 import VueAnalytics from 'vue-analytics';
-import './registerServiceWorker'
+import './registerServiceWorker';
 
 Vue.use(VueAnalytics, {
   id: 'UA-140158974-1',

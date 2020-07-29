@@ -39,10 +39,26 @@
             {{ langText('field type text/' + equipment.type.description) }}
           </cy-button>
         </div>
-        <cy-input-counter v-if="equipment.hasRefining"
+        <cy-input-counter v-if="equipment.is == 'weapon'" class="counter"
+          :value="equipment.atk" :range="[equipment.baseAtk, Math.ceil(equipment.baseAtk * 1.1) + 10]"
+          @set-value="setAtk(equipment, $event)">
+          <template v-slot:title>
+            <cy-icon-text iconify-name="mdi-sword">ATK</cy-icon-text>
+          </template>
+        </cy-input-counter>
+        <cy-input-counter v-else-if="equipment.is == 'armor'" class="counter"
+          :value="equipment.def" :range="[equipment.baseDef, Math.ceil(equipment.baseDef * 1.1) + 10]"
+          @set-value="setDef(equipment, $event)">
+          <template v-slot:title>
+            <cy-icon-text iconify-name="mdi-shield">DEF</cy-icon-text>
+          </template>
+        </cy-input-counter>
+        <cy-input-counter v-if="equipment.hasRefining" class="counter"
           :value="equipment.refining" :range="[0, 15]"
-          @set-value="v => equipment.refining = v">
-          <template v-slot:title>{{ langText('refining') }}</template>
+          @set-value="setRefining(equipment, $event)">
+          <template v-slot:title>
+            <cy-icon-text iconify-name="mdi-cube-send">{{ langText('refining') }}</cy-icon-text>
+          </template>
         </cy-input-counter>
         <div class="crystals" v-if="equipment.hasCrystal">
           <cy-button v-for="(c, i) in equipment.crystals"
@@ -85,6 +101,15 @@
       }
     },
     methods: {
+      setAtk(eq, v) {
+        eq.atk = v;
+      },
+      setDef(eq, v) {
+        eq.def = v;
+      },
+      setRefining(eq, v) {
+        eq.refining = v;
+      },
       switchCustomType(){
         const eq = this.equipment;
         const len = eq.customTypeList.length;
@@ -111,7 +136,7 @@
   width: 100%;
 
   > .title {
-    padding-bottom: 0.1rem;
+    padding-bottom: 0.2rem;
     padding-left: 0.3rem;
     display: flex;
     align-items: flex-end;
@@ -179,6 +204,11 @@
   }
   > .edit {
     padding-top: 0.6rem;
+
+    .counter {
+      margin: 0 0.3rem;
+      margin-bottom: 0.6rem;
+    }
   }
 }
 </style>
