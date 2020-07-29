@@ -19,13 +19,17 @@
         <div class="items">
           <equipment-item v-for="eq in browsedEquipments"
             :key="eq.iid" :equipment="eq.origin"
-            @click.native="setCurrentEquipment(eq.origin)" />
+            @click.native="setCurrentEquipment(eq.origin)"
+            :class="{ 'selected': eq.origin == currentEquipment }" />
         </div>
         <div class="preview">
-          <div class="info">
-            <equipment-info v-if="currentEquipment" :equipment="currentEquipment" />
+          <div class="info" v-if="currentEquipment">
+            <equipment-info :equipment="currentEquipment" />
           </div>
         </div>
+      </div>
+      <div class="bottom" v-if="actionType == 'select-field-equipment' && currentEquipment">
+        
       </div>
     </template>
   </cy-window>
