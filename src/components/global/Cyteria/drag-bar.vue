@@ -4,13 +4,21 @@
       <slot name="title"></slot>
     </div>
     <div class="content">
-      <div class="drag-bar-container">
+      <div class="container">
+        <input type="range" class="drag-input"
+          :min="range[0]" :max="range[1]" :step="step" :value="value"
+          @input="setValue($event)">
+        <div class="drag-bg">
+          <div class="drag-pre" :style="{ width: offset }"></div>
+        </div>
+      </div>
+      <!-- <div class="drag-bar-container">
         <div class="drag-bar">
           <span :style="{left: offset}"></span>
         </div>
         <div class="mask" @mousedown.prevent="startMouseDown" @mousemove.prevent="updateValue($event)" @click.prevent="updateValue($event)" @mouseup.prevent="cancelMouseDown" @mouseleave.prevent="cancelMouseDown">
         </div>
-      </div>
+      </div> -->
       <div class="value">{{ value }}</div>
     </div>
   </div>
@@ -31,6 +39,10 @@ export default {
     value: {
       type: Number,
       required: true
+    },
+    step: {
+      type: Number,
+      default: 1
     }
   },
   datas() {
@@ -61,6 +73,10 @@ export default {
       v = Math.max(this.range[0], v);
 
       this.$emit('set-value', v);
+    },
+    setValue(e) {
+      const v = parseInt(e.target.value, 10);
+      this.$emit('set-value', v);
     }
   }
 };
@@ -74,51 +90,117 @@ export default {
     color: var(--primary-light-3);
   }
 
-  >.content {
+  > .content {
     display: flex;
     align-items: center;
     padding: 0 0.6rem;
 
-    >.drag-bar-container {
-      height: 2.5rem;
+    > .container {
       width: 85%;
-      display: flex;
-      align-items: center;
       position: relative;
-      padding: 0 0.2rem;
 
-      >.mask {
+      > .drag-input {
+        -webkit-appearance: none;
+        overflow: hidden;
         width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
-        cursor: pointer;
-      }
+        height: 2rem;
+        outline: none;
+        background: none;
 
-      >.drag-bar {
-        position: relative;
+        &::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 0.8rem;
+          height: 0.8rem;
+          background: var(--primary-light-4);
+          border-radius: 50%;
+          transition: 0.2s;
+        }
+        &::-moz-range-thumb {
+          width: 0.8rem;
+          height: 0.8rem;
+          background: var(--primary-light-4);
+          border: none;
+          border-radius: 50%;
+          transition: 0.2s;
+        }
+        &:active::-webkit-slider-thumb, &::-moz-range-thumb:hover {
+          width: 1.2rem;
+          height: 1.2rem;
+        }
+        &::-moz-focus-outer {
+          border: none;
+        }
+      }
+      .drag-bg {
+        position: absolute;
+        top: 1rem;
+        left: 0.4rem;
         border-radius: 0.1rem;
         height: 0.2rem;
         background-color: var(--primary-light);
-        width: 100%;
+        width: calc(100% - 0.8rem);
+        z-index: -1;
 
-        >span {
-          position: absolute;
-          transform: translate(-50%, calc(-50% + 0.1rem));
-          width: 0.8rem;
-          height: 0.8rem;
-          border-radius: 50%;
+        > .drag-pre {
+          border-radius: 0.1rem;
+          height: 0.2rem;
           top: 0;
-          background-color: var(--primary-light-4);
+          left: 0;
+          background: var(--primary-light-3);
         }
       }
     }
 
-    >.value {
+    > .value {
       margin-left: 1rem;
     }
   }
+
+  // >.content {
+  //   display: flex;
+  //   align-items: center;
+  //   padding: 0 0.6rem;
+
+  //   >.drag-bar-container {
+  //     height: 2.5rem;
+  //     width: 85%;
+  //     display: flex;
+  //     align-items: center;
+  //     position: relative;
+  //     padding: 0 0.2rem;
+
+  //     >.mask {
+  //       width: 100%;
+  //       height: 100%;
+  //       position: absolute;
+  //       top: 0;
+  //       left: 0;
+  //       z-index: 1;
+  //       cursor: pointer;
+  //     }
+
+  //     >.drag-bar {
+  //       position: relative;
+  //       border-radius: 0.1rem;
+  //       height: 0.2rem;
+  //       background-color: var(--primary-light);
+  //       width: 100%;
+
+  //       >span {
+  //         position: absolute;
+  //         transform: translate(-50%, calc(-50% + 0.1rem));
+  //         width: 0.8rem;
+  //         height: 0.8rem;
+  //         border-radius: 50%;
+  //         top: 0;
+  //         background-color: var(--primary-light-4);
+  //       }
+  //     }
+  //   }
+
+  //   >.value {
+  //     margin-left: 1rem;
+  //   }
+  // }
 }
 </style>
