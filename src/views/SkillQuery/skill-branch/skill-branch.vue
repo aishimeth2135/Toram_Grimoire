@@ -85,7 +85,7 @@
         <template v-else-if="branch.name == 'effect' || branch.name == 'next'">
           <cy-icon-text v-if="showData['condition']" class="condition-scope text-small light-text"
             iconify-name="eva-checkmark-circle-2-outline">
-            {{ showData['condition'] }}
+            <span v-html="showData['condition']"></span>
           </cy-icon-text>
           <cy-icon-text v-if="showData['duration']" class="condition-scope text-small light-text"
             iconify-name="zmdi-time-interval">
@@ -146,7 +146,7 @@
             {{ langText('skill area/button text') }}
           </cy-button>
         </legend>
-        <transition name="fade">
+        <cy-transition type="fade">
           <div v-if="skillAreaVisible" class="skill-area">
             <div class="graph">
               <skill-area :attrs="branch.attrs" />
@@ -190,7 +190,7 @@
               </table>
             </div>
           </div>
-        </transition>
+        </cy-transition>
       </fieldset>
       <fieldset class="extra-column" v-if="branch.name == 'damage' && showData['ailment_name']">
         <legend>
@@ -296,18 +296,18 @@
     </div>
     <template v-if="type == 'main'">
       <template v-if="otherEquipmentBranchVisible && otherEquipmentBranchDatas">
-        <transition-group name="fade" mode="out-in" appear>
+        <cy-transition-group type="fade" mode="out-in" appear>
           <skill-branch v-for="(data) in otherEquipmentBranchDatas"
             :branch="data.branch" :key="data.iid" type="other-equipment"
             :skill-state="skillState" class="extra-branch" />
-        </transition-group>
+        </cy-transition-group>
       </template>
       <template v-if="historyVisible">
-        <transition-group name="fade" mode="out-in" appear>
+        <cy-transition-group type="fade" mode="out-in" appear>
           <skill-branch v-for="(data) in historyDatas"
             :branch="data.branch" :key="data.iid" type="history"
             :skill-state="skillState" class="extra-branch" />
-        </transition-group>
+        </cy-transition-group>
       </template>
     </template>
   </div>
@@ -740,7 +740,7 @@ export default {
             name: 'duration',
             beforeColorText: v => this.langText('display duration', [v])
           });
-          handleTextList.push('caption');
+          handleTextList.push('caption', 'condition', 'end_condition');
           hiddenList.push({
             name: ['condition', 'type'],
             validation: v => v != 'none'
@@ -920,7 +920,7 @@ export default {
           data['@stack-input-width-wide'] = { '--input-width': '3rem' };
       }
 
-      console.log(this.branch.name, data);
+      // console.log(this.branch.name, data);
 
       return data;
     },
@@ -1241,6 +1241,10 @@ fieldset.branch {
     > .value {
       font-size: 0.9rem;
     }
+  }
+
+  @{deep-operator} .light-text {
+    color: var(--primary-purple);
   }
 }
 

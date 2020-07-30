@@ -20,7 +20,8 @@
   export default {
     props: {
       type: {
-        type: String
+        type: String,
+        required: true
       },
       mode: {
         type: String,
@@ -89,7 +90,7 @@
   opacity: 0;
 }
 .fade-enter-active, .fade-leave-active {
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 .fade-enter-to, .fade-leave {
   opacity: 1;

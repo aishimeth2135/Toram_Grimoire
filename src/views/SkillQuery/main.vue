@@ -93,7 +93,7 @@
         </div>
         <div class="bottom-menu">
           <div class="top-content">
-            <transition name="fade">
+            <cy-transition type="fade">
               <div class="equipment-container" v-show="!skillStates.optionsWindowVisible">
                 <span class="column" v-for="(data) in equipmentCategoryList" :key="data.showName">
                   <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.shortName)" class="inline"
@@ -102,18 +102,18 @@
                   </cy-button>
                 </span>
               </div>
-            </transition>
-            <transition name="fade">
+            </cy-transition>
+            <cy-transition type="fade">
               <div class="skill-level-container" v-show="!skillStates.optionsWindowVisible">
                 <cy-button iconify-name="mdi-order-numeric-descending" @click="toggleSkillLevel" class="inline">
                   {{ 'Lv.' + skillStates.skillLevel }}
                 </cy-button>
               </div>
-            </transition>
+            </cy-transition>
             <cy-button :iconify-name="skillStates.optionsWindowVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" type="icon-only" style="margin-left: auto;"
               @click="skillStates.optionsWindowVisible = !skillStates.optionsWindowVisible" />
           </div>
-          <transition name="fade">
+          <cy-transition type="fade">
             <div class="options-content" v-show="skillStates.optionsWindowVisible">
               <div class="equipment-column" v-for="(data) in equipmentCategoryList" :key="data.showName">
                 <cy-icon-text :iconify-name="data.icon" class="text-small line column-title">
@@ -139,7 +139,7 @@
               </div>
               <div>
                 <cy-input-counter :value="skillStates.characterLevel" @set-value="setCharacterLevel"
-                  :range="[1, 210]" :step="10">
+                  :range="[1, 210]" :step="10" style="--input-width: 2rem">
                   <template v-slot:title>
                     <cy-icon-text iconify-name="ant-design:user-outlined">
                       {{ langText('character level') }}
@@ -148,7 +148,7 @@
                 </cy-input-counter>
               </div>
             </div>
-          </transition>
+          </cy-transition>
         </div>
       </template>
       <div v-else class="default-content">
@@ -159,7 +159,7 @@
       </div>
     </div>
     <div class="window-container">
-      <transition name="fade">
+      <cy-transition type="fade">
         <div class="tag-window" ref="tag-window" v-if="currentTag || tagState.windowVisible" :style="tagState.windowPosition">
           <div class="container" @click="closeTagWindow">
             <div class="content">
@@ -188,7 +188,7 @@
             </div>
           </div>
         </div>
-      </transition>
+      </cy-transition>
     </div>
   </article>
 </template>
@@ -898,16 +898,6 @@ export default {
   margin: 0 0.3rem;
   display: inline-block;
   padding: 0 0.3rem;
-}
-
-@{deep-operator} .fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
-@{deep-operator} .fade-enter-active,
-.fade-leave-active {
-  transition: 0.3s ease;
 }
 
 .branch-fade-enter {

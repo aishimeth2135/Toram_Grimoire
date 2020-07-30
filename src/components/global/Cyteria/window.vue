@@ -1,5 +1,5 @@
 <template>
-  <transition name="fade">
+  <cy-transition type="fade">
     <div class="window" v-if="visible" @click="closeWindow">
       <div class="container" @click.stop>
         <div class="top">
@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-  </transition>
+  </cy-transition>
 </template>
 <script>
 export default {
@@ -66,19 +66,6 @@ export default {
   align-items: center;
   z-index: 50;
   background-color: rgba(var(--rgb-black), 0.1);
-
-  &.fade-enter {
-    opacity: 0;
-  }
-
-  &.fade-enter-active,
-  &.fade-leave-active {
-    transition: 0.3s ease;
-  }
-
-  &.fade-leave-to {
-    opacity: 0;
-  }
 
   &>.container {
     width: 25rem;
