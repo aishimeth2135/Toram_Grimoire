@@ -15,6 +15,9 @@ export default function() {
       'item-query': {
         'title': '道具查詢'
       },
+      'crystal-query': {
+        'title': '鍛晶查詢'
+      },
       'damage-calc': {
         'title': '傷害計算'
       },

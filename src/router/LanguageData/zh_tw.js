@@ -23,6 +23,7 @@ export default function() {
       'skill-simulator': '技能模擬器',
       'skill-query': '技能查詢',
       'item-query': '物品查詢',
+      'crystal-query': '鍛晶查詢',
       'calculation': {
         'damage': '簡易傷害計算'
       },
