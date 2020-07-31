@@ -116,14 +116,6 @@ class SubWeapon extends Weapon {
 SubWeapon.TYPE_ARROW = Symbol('arrow');
 SubWeapon.TYPE_DAGGER = Symbol('dagger');
 
-// class OneHandSword extends MainWeapon {
-//     constructor(...args){
-//         super(...args);
-
-//         this.equippableField = 
-//     }
-// }
-
 class Armor extends CharacterEquipment {
   constructor(id, name, stats, def) {
     super(id, name, stats);

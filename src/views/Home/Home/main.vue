@@ -35,6 +35,10 @@
             icon: 'jam-box',
             path: 'item'
           }, {
+            name: 'crystal-query',
+            icon: 'bx-bx-cube-alt',
+            path: '/item/crystal'
+          }, {
             name: 'damage-calc',
             icon: 'mdi-sword',
             path: 'damage'

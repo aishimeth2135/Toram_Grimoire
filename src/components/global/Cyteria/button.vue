@@ -88,12 +88,18 @@
       },
       textLangId: {
         default: null
+      },
+      menuDefaultVisible: {
+        default: false
       }
     },
     data(){
       return {
         menuVisible: false
       };
+    },
+    mounted() {
+      this.menuVisible = this.menuDefaultVisible;
     },
     computed: {
       isNormalLayout(){
@@ -105,7 +111,7 @@
     },
     methods: {
       buttonClick(e){
-        if ( this.type == 'drop-down' )
+        if (this.type == 'drop-down')
           this.menuVisible = !this.menuVisible;
         this.$emit('click', e);
       }
@@ -130,38 +136,48 @@
     --icon-width: 1.2rem;
     font-size: 1rem;
 
-    @{deep-operator} svg {
+    > svg, & > .title > svg {
       fill: currentcolor;
       color: var(--primary-light-2);
       height: var(--icon-width);
       width: var(--icon-width);
       flex-shrink: 0;
+      transition: 0.4s;
     }
 
-    &:hover @{deep-operator} svg,
-    &.cur @{deep-operator} svg,
-    &.selected @{deep-operator} svg{
-      color: var(--primary-light-4);
+    @{deep-operator} > .text {
+      transition: 0.4s;
     }
 
-    &:hover @{deep-operator} > .text,
-    &.cur @{deep-operator} > .text,
-    &.selected @{deep-operator} > .text {
-      color: var(--primary-light-4);
-    }
-
-    > .title {
-      @{deep-operator} svg {
-        fill: currentcolor;
-        color: var(--primary-light-2);
+    &:hover, &.cur, &.selected {
+      > svg {
+        color: var(--primary-light-4);
       }
 
-      &:hover @{deep-operator} svg ,
-      &.cur @{deep-operator} svg ,
-      &.selected @{deep-operator} svg {
-        color: var(--primary-light-3);
+      > .title > svg {
+        color: var(--primary-light-4);
+      }
+
+      > .text {
+        color: var(--primary-light-4);
+      }
+
+      > .title > .text {
+        color: var(--primary-light-4);
       }
     }
+    // > .title {
+    //   @{deep-operator} svg {
+    //     fill: currentcolor;
+    //     color: var(--primary-light-2);
+    //   }
+
+    //   &:hover @{deep-operator} svg ,
+    //   &.cur @{deep-operator} svg ,
+    //   &.selected @{deep-operator} svg {
+    //     color: var(--primary-light-3);
+    //   }
+    // }
 
     &.text-small {
       font-size: 0.9rem;
@@ -422,7 +438,7 @@
     }
 
     &.drop-down {
-      min-width: 12rem;
+      display: block;
       border-left: 3px solid var(--primary-light-2);
       padding: 0.4rem 0.7rem;
       margin: 0.3rem;
@@ -435,7 +451,7 @@
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        color: var(--primary-light-4);
+        color: var(--primary-purple);
 
         & > .text {
           display: inline-block;
@@ -446,7 +462,7 @@
 
       .menu {
         padding-top: 0.4rem;
-        padding-left: 0.4rem;
+        padding-left: 0;
       }
     }
 
