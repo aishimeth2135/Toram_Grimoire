@@ -30,17 +30,19 @@
         </div>
       </legend>
       <!-- == [start] buttons scope -->
-      <div class="top-buttons"
-        @mouseenter.stop="toggleVisible('topMenu', true)"
-        @mouseleave.stop="toggleVisible('topMenu', false)">
-        <transition-group name="top-menu-slide" appear>
-          <cy-button v-for="(data) in topButtons" :key="data.name"
-            type="icon-only" class="top-menu-btn" :iconify-name="data.icon"
-            @click="toggleVisible(data.name)" />
-        </transition-group>
-        <cy-button v-if="topButtons"
-          type="icon-only" class="top-menu-btn" :class="{ 'selected': topMenuVisible }"
-          :iconify-name="topMenuVisible ? 'ic-round-menu-open' : 'ic-round-menu'" />
+      <div class="top-buttons-container">
+        <div class="top-buttons"
+          @mouseenter.stop="toggleVisible('topMenu', true)"
+          @mouseleave.stop="toggleVisible('topMenu', false)">
+          <transition-group name="top-menu-slide" appear>
+            <cy-button v-for="(data) in topButtons" :key="data.name"
+              type="icon-only" class="top-menu-btn" :iconify-name="data.icon"
+              @click="toggleVisible(data.name)" />
+          </transition-group>
+          <cy-button v-if="topButtons"
+            type="icon-only" class="top-menu-btn" :class="{ 'selected': topMenuVisible }"
+            :iconify-name="topMenuVisible ? 'ic-round-menu-open' : 'ic-round-menu'" />
+        </div>
       </div>
       <!-- == [end] buttons scope -->
       <!-- [end] title -->
@@ -1114,7 +1116,6 @@ div.branch {
 fieldset.branch {
   border: 1px solid var(--primary-light);
   margin: 0.6rem 0;
-  position: relative;
   transition: border-width 0.3s ease;
 
   >legend {
@@ -1144,13 +1145,17 @@ fieldset.branch {
     }
   }
 
-  >.top-buttons {
-    position: absolute;
-    right: 0.2rem;
-    top: -0.3rem;
+  > .top-buttons-container {
+    position: relative;
 
-    .top-menu-btn {
-      background-color: var(--white);
+    >.top-buttons {
+      position: absolute;
+      right: -0.6rem;
+      top: -2.1rem;
+
+      .top-menu-btn {
+        background-color: var(--white);
+      }
     }
   }
 }

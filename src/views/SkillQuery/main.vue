@@ -93,8 +93,8 @@
         </div>
         <div class="bottom-menu">
           <div class="top-content">
-            <cy-transition type="fade">
-              <div class="equipment-container" v-show="!skillStates.optionsWindowVisible">
+            <cy-transition type="fade" mode="out-in">
+              <div class="equipment-container" v-if="!skillStates.optionsWindowVisible">
                 <span class="column" v-for="(data) in equipmentCategoryList" :key="data.showName">
                   <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.shortName)" class="inline"
                     style="margin-right: 0.7rem;">
@@ -102,9 +102,24 @@
                   </cy-button>
                 </span>
               </div>
+              <div class="switch-skill-container" v-else>
+                <cy-icon-text iconify-name="heroicons-solid:switch-vertical"
+                  class="text-small mr-normal">
+                  {{ langText('switch skill') }}
+                </cy-icon-text>
+                <cy-button iconify-name="eva-arrow-ios-back-outline"
+                  type="icon-only" class="inline"
+                  @click="switchSkill('previous')" />
+                <cy-button iconify-name="eva-arrow-ios-forward-outline"
+                  type="icon-only" class="inline"
+                  @click="switchSkill('next')" />
+                <cy-button iconify-name="ic-round-last-page"
+                  type="icon-only" class="inline"
+                  @click="switchSkill('last')" />
+              </div>
             </cy-transition>
             <cy-transition type="fade">
-              <div class="skill-level-container" v-show="!skillStates.optionsWindowVisible">
+              <div class="skill-level-container" v-if="!skillStates.optionsWindowVisible">
                 <cy-button iconify-name="mdi-order-numeric-descending" @click="toggleSkillLevel" class="inline">
                   {{ 'Lv.' + skillStates.skillLevel }}
                 </cy-button>
@@ -228,6 +243,7 @@ export default {
       },
       skillStates: {
         store: [],
+        currentStoreIndex: -1,
         skillLevel: 10,
         characterLevel: 200,
         displayMode: 'normal',
@@ -393,7 +409,7 @@ export default {
     currentSkillState() {
       if (this.skillStates.store.length == 0)
         return null;
-      return this.skillStates.store[this.skillStates.store.length - 1];
+      return this.skillStates.store[this.skillStates.currentStoreIndex];
     },
     currentSkillData() {
       const p = this.currentSkillState;
@@ -404,6 +420,15 @@ export default {
     }
   },
   methods: {
+    switchSkill(type) {
+      const state = this.skillStates;
+      if (type == 'previous' && state.currentStoreIndex != 0)
+        --state.currentStoreIndex;
+      else if (type == 'next' && state.currentStoreIndex != state.store.length - 1)
+        ++state.currentStoreIndex;
+      else if (type == 'last' && state.currentStoreIndex != state.store.length - 1)
+        state.currentStoreIndex = state.store.length - 1;
+    },
     toggleSelectSkillTreeWindow(force) {
       force = force === void 0 ? !this.selectSkillTreeWindowState.visible : force
       this.selectSkillTreeWindowState.visible = force;
@@ -639,9 +664,15 @@ export default {
       this.selectSkillTreeWindowState.currentIndex_st = -1;
     },
     selectSkill(skill) {
-      this.skillStates.store = [{
+      if (this.currentSkillState && this.currentSkillState.skill == skill)
+        return;
+      const state = this.skillStates;
+      if (state.currentStoreIndex != state.store.length - 1)
+        state.store = state.store.slice(0, state.currentStoreIndex + 1);
+      ++state.currentStoreIndex;
+      state.store.push({
         skill
-      }];
+      });
       this.updateSkillState();
       this.selectSkillTreeWindowState.visible = false;
     },
@@ -776,6 +807,11 @@ export default {
       padding-left: 0.9rem;
       margin-left: 0.4rem;
       display: inline-block;
+    }
+
+    > .switch-skill-container {
+      display: inline-flex;
+      align-items: center;
     }
   }
 

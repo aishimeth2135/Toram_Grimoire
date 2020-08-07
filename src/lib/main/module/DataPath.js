@@ -63,24 +63,46 @@ function DataPath(id) {
 
   }
   console.warn("Unknow DataPath Name.")
-  return void 0;
+  return;
 }
 
 function createLoadDataPromise(path, data_ary, index) {
   return new Promise((resolve, reject) => {
     if (typeof path == 'string' && path) {
-      // path = encodeURIComponent(path);
-      // path = 'https://script.google.com/macros/s/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo/exec?url=' + path;
+      let succ = false;
+      Papa.parse(path, {
+        download: true,
+        complete(res) {
+          data_ary[index] = res.data;
+          succ = true;
+          resolve();
+        },
+        error(err) {
+          data_ary[index] = null;
+          console.warn('[Error] load data: ' + path);
+          console.log(err);
+          console.warn('Try to use backup...');
+          // reject();
+        }
+      });
+
+      if (succ)
+        return;
+
+      const orignalPath = path;
+      path = encodeURIComponent(path);
+      path = 'https://script.google.com/macros/s/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo/exec?url=' + path;
 
       Papa.parse(path, {
         download: true,
         complete(res) {
           data_ary[index] = res.data;
+          succ = true;
           resolve();
         },
         error(err) {
           data_ary[index] = null;
-          console.warn('Error when load data: ' + path);
+          console.warn('[Error] load backup data: ' + orignalPath);
           console.log(err);
           reject();
         }
@@ -92,7 +114,7 @@ function createLoadDataPromise(path, data_ary, index) {
   });
 }
 
-function loadLangDatas(path_id, promise_ary, default_lang_no = 1) {
+function loadLangDatas(path_id, promise_ary, default_lang_no=1) {
   const current = currentLanguage(),
     second = secondLanguage();
   const datas = Array(3);
