@@ -669,7 +669,7 @@ export default {
       const state = this.skillStates;
       if (state.currentStoreIndex != state.store.length - 1)
         state.store = state.store.slice(0, state.currentStoreIndex + 1);
-      ++state.currentStoreIndex;
+      state.currentStoreIndex = state.store.length;
       state.store.push({
         skill
       });
