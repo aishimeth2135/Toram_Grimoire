@@ -93,7 +93,7 @@
         </div>
         <div class="bottom-menu">
           <div class="top-content">
-            <cy-transition type="fade" mode="out-in">
+            <cy-transition type="fade">
               <div class="equipment-container" v-if="!skillStates.optionsWindowVisible">
                 <span class="column" v-for="(data) in equipmentCategoryList" :key="data.showName">
                   <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.shortName)" class="inline"
@@ -102,7 +102,16 @@
                   </cy-button>
                 </span>
               </div>
-              <div class="switch-skill-container" v-else>
+            </cy-transition>
+            <cy-transition type="fade">
+              <div class="skill-level-container" v-if="!skillStates.optionsWindowVisible">
+                <cy-button iconify-name="mdi-order-numeric-descending" @click="toggleSkillLevel" class="inline">
+                  {{ 'Lv.' + skillStates.skillLevel }}
+                </cy-button>
+              </div>
+            </cy-transition>
+            <cy-transition type="fade">
+              <div class="switch-skill-container" v-if="!skillStates.optionsWindowVisible">
                 <cy-icon-text iconify-name="heroicons-solid:switch-vertical"
                   class="text-small mr-normal">
                   {{ langText('switch skill') }}
@@ -116,13 +125,6 @@
                 <cy-button iconify-name="ic-round-last-page"
                   type="icon-only" class="inline"
                   @click="switchSkill('last')" />
-              </div>
-            </cy-transition>
-            <cy-transition type="fade">
-              <div class="skill-level-container" v-if="!skillStates.optionsWindowVisible">
-                <cy-button iconify-name="mdi-order-numeric-descending" @click="toggleSkillLevel" class="inline">
-                  {{ 'Lv.' + skillStates.skillLevel }}
-                </cy-button>
               </div>
             </cy-transition>
             <cy-button :iconify-name="skillStates.optionsWindowVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" type="icon-only" style="margin-left: auto;"
@@ -792,11 +794,18 @@ export default {
   background-color: var(--white);
   border-top: 1px solid var(--primary-light-3);
   padding: 0.4rem 0.2rem;
+  padding-right: 0.8rem;
   z-index: 9;
 
   > .top-content {
     display: flex;
     align-items: center;
+    overflow-y: auto;
+    padding-bottom: 0.2rem;
+
+    > div {
+      flex-shrink: 0;
+    }
 
     > .equipment-container {
       display: inline-block;
@@ -804,14 +813,17 @@ export default {
 
     > .skill-level-container {
       border-left: 1px solid var(--primary-light-2);
-      padding-left: 0.9rem;
+      border-right: 1px solid var(--primary-light-2);
+      padding: 0 0.9rem;
       margin-left: 0.4rem;
       display: inline-block;
     }
 
     > .switch-skill-container {
+      padding-left: 0.9rem;
       display: inline-flex;
       align-items: center;
+      padding-right: 0.8rem;
     }
   }
 
