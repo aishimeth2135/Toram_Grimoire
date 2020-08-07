@@ -94,37 +94,35 @@
         <div class="bottom-menu">
           <div class="top-content">
             <cy-transition type="fade">
-              <div class="equipment-container" v-if="!skillStates.optionsWindowVisible">
-                <span class="column" v-for="(data) in equipmentCategoryList" :key="data.showName">
-                  <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.shortName)" class="inline"
-                    style="margin-right: 0.7rem;">
-                    {{ equipmentState[data.shortName] | getEquipmentText(data.name) }}
+              <div class="container" v-if="!skillStates.optionsWindowVisible">
+                <div class="equipment-container" >
+                  <span class="column" v-for="(data) in equipmentCategoryList" :key="data.showName">
+                    <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.shortName)" class="inline"
+                      style="margin-right: 0.7rem;">
+                      {{ equipmentState[data.shortName] | getEquipmentText(data.name) }}
+                    </cy-button>
+                  </span>
+                </div>
+                <div class="skill-level-container" v-if="!skillStates.optionsWindowVisible">
+                  <cy-button iconify-name="mdi-order-numeric-descending" @click="toggleSkillLevel" class="inline">
+                    {{ 'Lv.' + skillStates.skillLevel }}
                   </cy-button>
-                </span>
-              </div>
-            </cy-transition>
-            <cy-transition type="fade">
-              <div class="skill-level-container" v-if="!skillStates.optionsWindowVisible">
-                <cy-button iconify-name="mdi-order-numeric-descending" @click="toggleSkillLevel" class="inline">
-                  {{ 'Lv.' + skillStates.skillLevel }}
-                </cy-button>
-              </div>
-            </cy-transition>
-            <cy-transition type="fade">
-              <div class="switch-skill-container" v-if="!skillStates.optionsWindowVisible">
-                <cy-icon-text iconify-name="heroicons-solid:switch-vertical"
-                  class="text-small mr-normal">
-                  {{ langText('switch skill') }}
-                </cy-icon-text>
-                <cy-button iconify-name="eva-arrow-ios-back-outline"
-                  type="icon-only" class="inline"
-                  @click="switchSkill('previous')" />
-                <cy-button iconify-name="eva-arrow-ios-forward-outline"
-                  type="icon-only" class="inline"
-                  @click="switchSkill('next')" />
-                <cy-button iconify-name="ic-round-last-page"
-                  type="icon-only" class="inline"
-                  @click="switchSkill('last')" />
+                </div>
+                <div class="switch-skill-container" v-if="!skillStates.optionsWindowVisible">
+                  <cy-icon-text iconify-name="heroicons-solid:switch-vertical"
+                    class="text-small mr-normal">
+                    {{ langText('switch skill') }}
+                  </cy-icon-text>
+                  <cy-button iconify-name="eva-arrow-ios-back-outline"
+                    type="icon-only" class="inline"
+                    @click="switchSkill('previous')" />
+                  <cy-button iconify-name="eva-arrow-ios-forward-outline"
+                    type="icon-only" class="inline"
+                    @click="switchSkill('next')" />
+                  <cy-button iconify-name="ic-round-last-page"
+                    type="icon-only" class="inline"
+                    @click="switchSkill('last')" />
+                </div>
               </div>
             </cy-transition>
             <cy-button :iconify-name="skillStates.optionsWindowVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" type="icon-only" style="margin-left: auto;"
@@ -800,30 +798,35 @@ export default {
   > .top-content {
     display: flex;
     align-items: center;
-    overflow-y: auto;
-    padding-bottom: 0.2rem;
 
-    > div {
-      flex-shrink: 0;
-    }
-
-    > .equipment-container {
-      display: inline-block;
-    }
-
-    > .skill-level-container {
-      border-left: 1px solid var(--primary-light-2);
-      border-right: 1px solid var(--primary-light-2);
-      padding: 0 0.9rem;
-      margin-left: 0.4rem;
-      display: inline-block;
-    }
-
-    > .switch-skill-container {
-      padding-left: 0.9rem;
-      display: inline-flex;
+    > .container {
+      display: flex;
       align-items: center;
-      padding-right: 0.8rem;
+      overflow-y: auto;
+      padding: 0.2rem 0.4rem;
+
+      > div {
+        flex-shrink: 0;
+      }
+
+      > .equipment-container {
+        display: inline-block;
+      }
+
+      > .skill-level-container {
+        border-left: 1px solid var(--primary-light-2);
+        border-right: 1px solid var(--primary-light-2);
+        padding: 0 0.9rem;
+        margin-left: 0.4rem;
+        display: inline-block;
+      }
+
+      > .switch-skill-container {
+        padding-left: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        padding-right: 0.8rem;
+      }
     }
   }
 
