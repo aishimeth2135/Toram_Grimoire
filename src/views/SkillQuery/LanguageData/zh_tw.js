@@ -7,6 +7,7 @@ export default function() {
       'close select skill': '關閉',
       'skill level': '技能等級',
       'character level': '角色等級',
+      'switch skill': '技能切換',
       'default message': '請點選這裡或右上角的按鈕來選擇一個技能。',
       'default message: equipment conditions': '所選取的技能不符合當前的裝備。<br />請更改裝備類型，或是點選這裡或右上角的按鈕來選擇其他技能。',
       'equipment': {

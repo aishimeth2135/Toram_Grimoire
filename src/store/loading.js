@@ -22,7 +22,7 @@ const store = new Vuex.Store({
     },
     initFinished(state) {
       if (state.status != 1)
-        throw new Error('error...');
+        throw new Error('[ERROR] view init.');
       state.status = 2;
       state.initItems = [];
     }
@@ -41,7 +41,10 @@ const store = new Vuex.Store({
               p.status = -1;
             });
         })
-      ).then(() => commit('initSucceed'));
+      ).then(() => {
+        if (!state.initItems.find(p => p.status == -1))
+          commit('initSucceed');
+      });
     },
   }
 });

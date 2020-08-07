@@ -182,6 +182,10 @@
     &.text-small {
       font-size: 0.9rem;
     }
+
+    &.mr-normal {
+      margin-right: 0.6rem;
+    }
   }
 
   .Button {

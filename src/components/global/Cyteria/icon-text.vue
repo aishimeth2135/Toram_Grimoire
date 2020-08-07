@@ -34,6 +34,9 @@
     align-items: center;
     --icon-color: var(--primary-light-3);
     --icon-width: 1.2rem;
+    --text-color: var(--primary-dark);
+    --text-margin-left: 0.4rem;
+    --value-margin-left: 0.5rem;
 
     &.mr-normal {
       margin-right: 0.6rem;
@@ -47,7 +50,7 @@
       display: inline-flex;
     }
 
-    @{deep-operator} svg, img {
+    > svg, img {
       height: var(--icon-width);
       width: var(--icon-width);
       flex-shrink: 0;
@@ -56,36 +59,8 @@
     }
 
     > svg + .text {
-      margin-left: 0.4rem;
-    }
-
-    &.text-small {
-      --icon-width: 0.9rem;
-      font-size: 0.9rem;
-
-      > svg + .text {
-        margin-left: 0.3rem;
-      }
-
-      > .text + .value {
-        margin-left: 0.4rem;
-      }
-    }
-
-    &.title {
-      @{deep-operator} svg {
-        height: 1.2rem;
-      }
-
-      > svg + .text {
-        margin-left: 0.4rem;
-        font-size: 1.2rem;
-        color: var(--primary-purple);
-      }
-
-      > .text + .value {
-        margin-left: 0.5rem;
-      }
+      margin-left: var(--text-margin-left);
+      color: var(--text-color);
     }
 
     > .value {
@@ -93,7 +68,23 @@
     }
 
     > .text + .value {
-      margin-left: 0.6rem;
+      margin-left: var(--value-margin-left);
+    }
+
+    &.text-small {
+      --icon-width: 0.9rem;
+      --text-margin-left: 0.3rem;
+      --value-margin-left: 0.4rem;
+      font-size: 0.9rem;
+    }
+
+    &.title {
+      --text-color: var(--primary-purple);
+      font-size: 1.2rem;
+    }
+
+    &.text-color-light-3 {
+      --text-color: var(--primary-light-3);
     }
   }
 </style>

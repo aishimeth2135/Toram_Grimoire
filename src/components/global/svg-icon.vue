@@ -1,13 +1,22 @@
 <script>
-    import Icons from "@global-modules/SvgIcons.js";
+import Icons from "@global-modules/SvgIcons.js";
 
-    export default {
-        props: ['iconId'],
-        render(createElement){
-            return createElement('span');
-        },
-        mounted(){
-            this.$el.outerHTML = Icons(this.iconId);
-        }
-    }
+export default {
+  props: ['iconId'],
+  render(createElement) {
+    const tmp = document.createElement('template');
+    tmp.innerHTML = Icons(this.iconId);
+    const svgEl = tmp.content.firstChild;
+    const attrs = {};
+    Array.from(svgEl.attributes).forEach(item => {
+      attrs[item.name] = item.value;
+    });
+    return createElement('svg', {
+      attrs,
+      domProps: {
+        innerHTML: svgEl.innerHTML
+      }
+    });
+  }
+}
 </script>

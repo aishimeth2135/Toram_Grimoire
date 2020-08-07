@@ -122,6 +122,7 @@ export default {
   margin-right: 0.6rem;
   background-color: var(--white);
   border-top: 1px solid var(--primary-light-2);
+  margin-top: 1rem;
 
   > .detail {
     //margin-left: auto;
