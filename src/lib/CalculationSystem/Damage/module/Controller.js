@@ -295,15 +295,16 @@ export default class DamageCalculationController {
           const rate = this.getItem('critical_rate');
           const dmg = this.getItem('critical_damage');
 
-          let dr = dmg.value(),
-            r = rate.value();
+          let cd = dmg.value(),
+            cr = rate.value();
           if (!this.belongCalculation().findItem('physical_damage').isValid()) {
-            const cr = this.belongCalculation().findItem('magic_critical_conversion_rate').value();
-            r = r * cr / 100;
-            dr = 100 + (dr - 100) * cr / 100;
+            const mcrr = this.belongCalculation().findItem('magic_critical_rate_conversion_rate').value(),
+              mcdr = this.belongCalculation().findItem('magic_critical_damage_conversion_rate').value();
+            cr = cr * mcrr / 100;
+            cd = 100 + (cd - 100) * mcdr / 100;
           }
 
-          return rate.isValid() ? ((100 * (100 - r)) + dr * r) / 10000 : dr / 100;
+          return rate.isValid() ? ((100 * (100 - cr)) + cd * cr) / 10000 : cd / 100;
         },
         stabilityExpectedValue: function() {
           const graze = this.getItem('probability_of_graze');
@@ -522,7 +523,10 @@ export default class DamageCalculationController {
     p1('critical_rate')
       .initRange(0, 400)
       .initDefaultValue(25);
-    p1('magic_critical_conversion_rate')
+    p1('magic_critical_rate_conversion_rate')
+      .initRange(0, 200)
+      .initDefaultValue(0);
+    p1('magic_critical_damage_conversion_rate')
       .initRange(0, 200)
       .initDefaultValue(0);
     p1('short_range_damage');
@@ -834,7 +838,11 @@ export default class DamageCalculationController {
       .link('skill')
       .setBeforeCalculateFunction(this.functions.calculation.skillMultiplierValue);
 
-    p(1, ['critical_damage', 'critical_rate', 'magic_critical_conversion_rate'], 'critical')
+    p(1, [
+        'critical_damage', 'critical_rate',
+        'magic_critical_rate_conversion_rate',
+        'magic_critical_damage_conversion_rate'
+      ], 'critical')
       .setBeforeCalculateFunction(this.functions.calculation.criticalExpectedValue)
       .openItemToggle('critical_rate');
 
