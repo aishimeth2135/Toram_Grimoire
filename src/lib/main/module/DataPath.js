@@ -79,25 +79,24 @@ async function createLoadDataPromise(path, data_ary, index) {
     } catch (e) {
       console.warn(`[Error] load data: ${path}. Try to use backup...`);
       console.log(e);
-      throw e;
     }
 
-    // const orignalPath = path;
-    // try {
-    //   path = encodeURIComponent(path);
-    //   path = 'https://script.google.com/macros/s/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo/exec?url=' + path;
+    const orignalPath = path;
+    try {
+      path = encodeURIComponent(path);
+      path = 'https://script.google.com/macros/s/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo/exec?url=' + path;
 
-    //   const f = await fetch(path);
-    //   const csvstr = await f.text();
+      const f = await fetch(path);
+      const csvstr = await f.text();
 
-    //   const data = Papa.parse(csvstr).data;
-    //   data_ary[index] = data;
-    // } catch (e) {
-    //   console.warn('[Error] load backup data: ' + orignalPath);
-    //   console.log(e);
+      const data = Papa.parse(csvstr).data;
+      data_ary[index] = data;
+    } catch (e) {
+      console.warn('[Error] load backup data: ' + orignalPath);
+      console.log(e);
 
-    //   throw e;
-    // }
+      throw e;
+    }
   }
   else {
     data_ary[index] = null;
