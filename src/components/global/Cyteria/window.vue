@@ -1,6 +1,7 @@
 <template>
   <cy-transition type="fade">
-    <div class="window" v-if="visible" @click="closeWindow">
+    <div class="window" v-if="visible" @click="closeWindow"
+      :class="{ ['vertical-position-' + verticalPosition]: true }">
       <div class="container" @click.stop>
         <div class="top">
           <div class="title">
@@ -45,6 +46,10 @@ export default {
     },
     confirmCallback: {
       type: Function
+    },
+    verticalPosition: {
+      type: String,
+      default: 'center'
     }
   },
   methods: {
@@ -63,7 +68,6 @@ export default {
   left: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
   z-index: 50;
   background-color: rgba(var(--rgb-black), 0.1);
 
@@ -142,6 +146,13 @@ export default {
     &>.container {
       width: 42.5rem;
     }
+  }
+
+  &.vertical-position-top {
+    align-items: flex-start;
+  }
+  &.vertical-position-center {
+    align-items: center;
   }
 }
 

@@ -1,8 +1,8 @@
 <template>
   <span :class="rootClass" @click="buttonClick">
     <template v-if="isNormalLayout">
-      <iconify-icon v-if="iconifyName != null" :name="iconifyName" />
-      <svg-icon v-if="iconId != null" :icon-id="iconId" />
+      <iconify-icon v-if="iconifyName" :name="iconifyName" />
+      <svg-icon v-if="iconId" :icon-id="iconId" />
       <span v-if="$slots['default']" class="text">
         <slot></slot>
       </span>
@@ -16,8 +16,8 @@
         <slot name="title"></slot>
       </div>
       <div class="title">
-        <iconify-icon v-if="iconifyName != null" :name="iconifyName" />
-        <svg-icon v-if="iconId != null" :icon-id="iconId" />
+        <iconify-icon v-if="iconifyName" :name="iconifyName" />
+        <svg-icon v-if="iconId" :icon-id="iconId" />
         <span v-if="$slots['default']" class="text">
           <slot></slot>
         </span>
@@ -81,15 +81,19 @@
         }
       },
       iconifyName: {
-        default: null
+        type: String,
+        default: ''
       },
       iconId: {
-        default: null
-      },
-      textLangId: {
-        default: null
+        type: String,
+        default: ''
       },
       menuDefaultVisible: {
+        type: Boolean,
+        default: false
+      },
+      selected: {
+        type: Boolean,
         default: false
       }
     },
@@ -106,7 +110,9 @@
         return !['description', 'drop-down', 'with-title'].includes(this.type);
       },
       rootClass(){
-        return ['Button', this.type].join(' ');
+        const cs = ['Button', this.type];
+        this.selected && cs.push('selected');
+        return cs.join(' ');
       }
     },
     methods: {
@@ -302,14 +308,11 @@
       justify-content: center;
       margin: 0.2rem;
 
-      &:hover {
-        border-color: var(--primary-light-3);
-      }
-
-      &:hover > .text,
-      &.cur > .text,
-      &.selected > .text {
-        color: var(--primary-dark);
+      &:hover, &.cur, &.selected {
+        border-color: var(--primary-light-2);
+        & > .text {
+          color: var(--primary-dark);
+        }
       }
 
       &.inline {
@@ -448,6 +451,7 @@
       margin: 0.3rem;
       background-color: var(--white);
       text-align: left;
+      cursor: auto;
 
       --icon-width: 1.4rem;
 
@@ -456,6 +460,7 @@
         align-items: center;
         justify-content: flex-start;
         color: var(--primary-purple);
+        cursor: pointer;
 
         & > .text {
           display: inline-block;

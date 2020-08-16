@@ -10,6 +10,8 @@ export default function(root, c) {
   c.forEach((p, index) => {
     // if ( index == 0 )
     //     return;
+    if (!p[NAME] && !p[ATTRIBUTE_CATEGORY] && !p[ATTRIBUTE_NAME])
+        return;
     try {
       if (p[NAME] == '0') {
         cur_type = parseInt(p[TYPE_ID], 10);

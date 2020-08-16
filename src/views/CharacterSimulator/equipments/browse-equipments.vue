@@ -6,15 +6,16 @@
       </cy-icon-text>
     </template>
     <template v-slot:default>
-      <div class="top">
-        <div class="buttons">
+      <!-- top -->
+      <cy-flex-layout>
+        <template v-slot:right-content>
           <cy-button iconify-name="ic-round-add-circle-outline"
             type="border"
             @click="toggleWindowVisible('appendEquipments', true)">
             {{ langText('browse equipments/append equipment') }}
           </cy-button>
-        </div>
-      </div>
+        </template>
+      </cy-flex-layout>
       <div class="content">
         <div class="items">
           <equipment-item v-for="eq in browsedEquipments"
@@ -28,9 +29,15 @@
           </div>
         </div>
       </div>
-      <div class="bottom" v-if="actionType == 'select-field-equipment' && currentEquipment">
-        
-      </div>
+      <!-- bottom -->
+      <cy-flex-layout v-if="actionType == 'select-field-equipment' && currentEquipment">
+        <template v-slot:right-content>
+          <cy-button iconify-name="ic-round-done"
+          type="border">
+          {{ globalLangText('global/confirm') }}
+        </cy-button>
+        </template>
+      </cy-flex-layout>
     </template>
   </cy-window>
 </template>
@@ -43,7 +50,7 @@ import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib
 
 export default {
   props: ['visible', 'equipments', 'action', 'characterState'],
-  inject: ['langText', 'toggleWindowVisible', 'getShowEquipmentData'],
+  inject: ['langText', 'globalLangText', 'toggleWindowVisible', 'getShowEquipmentData'],
   data() {
     return {
       currentEquipment: null
@@ -96,12 +103,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.top {
-  > .buttons {
-    text-align: right;
-  }
-}
-
 .content {
   display: flex;
   align-items: flex-start;
