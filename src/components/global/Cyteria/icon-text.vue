@@ -32,7 +32,7 @@
   .-icon-text {
     display: inline-flex;
     align-items: center;
-    --icon-color: var(--primary-light-3);
+    --icon-color: var(--primary-light-2);
     --icon-width: 1.2rem;
     --text-color: var(--primary-dark);
     --text-margin-left: 0.4rem;

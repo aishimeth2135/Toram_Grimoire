@@ -935,7 +935,7 @@ export default {
 @{deep-operator} .light-text-1 {
   color: var(--primary-water-blue);
   &.text-dark {
-    color: var(--primary-blue-grean);
+    color: var(--primary-blue-green);
   }
 }
 
