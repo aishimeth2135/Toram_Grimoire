@@ -1,5 +1,5 @@
 <template>
-  <cy-window :visible="visible" @close-window="$emit('close')" class="width-wide">
+  <cy-window :visible="visible" @close-window="closeWindow" class="width-wide">
     <template v-slot:title>
       <cy-icon-text iconify-name="ic-outline-category">
         {{ langText('browse equipments/action: ' + actionType) }}
@@ -30,14 +30,18 @@
         </div>
       </div>
       <!-- bottom -->
-      <cy-flex-layout v-if="actionType == 'select-field-equipment' && currentEquipment">
-        <template v-slot:right-content>
-          <cy-button iconify-name="ic-round-done"
-          type="border">
-          {{ globalLangText('global/confirm') }}
-        </cy-button>
+      <cy-bottom-content v-if="actionType == 'select-field-equipment' && currentEquipment" class="mt-normal">
+        <template v-slot:normal-content>
+          <cy-flex-layout>
+            <template v-slot:right-content>
+              <cy-button iconify-name="ic-round-done" type="border"
+                @click="selectEquipment">
+              {{ globalLangText('global/confirm') }}
+            </cy-button>
+            </template>
+          </cy-flex-layout>
         </template>
-      </cy-flex-layout>
+      </cy-bottom-content>
     </template>
   </cy-window>
 </template>
@@ -73,6 +77,17 @@ export default {
     }
   },
   methods: {
+    selectEquipment() {
+      this.action.targetField.setEquipment(this.currentEquipment);
+      this.closeWindow();
+    },
+    closeWindow() {
+      this.clearCurrentEquipment();
+      this.$emit('close');
+    },
+    clearCurrentEquipment() {
+      this.currentEquipment = null;
+    },
     setCurrentEquipment(eq) {
       this.currentEquipment = eq;
     },

@@ -2,10 +2,11 @@
 
 
 class CharacterEquipment {
-  constructor(id, name, stats) {
+  constructor(id, name="", stats=[]) {
     this.id = id;
     this.name = name;
     this.stats = stats;
+    this.isCustom = false;
   }
   get is() {
     if (this instanceof Weapon)
@@ -41,10 +42,13 @@ class CharacterEquipment {
     }
     return all;
   }
+  setCustom(set) {
+    this.isCustom = set;
+  }
 }
 
 class Weapon extends CharacterEquipment {
-  constructor(id, name, stats, atk, stability) {
+  constructor(id, name, stats, atk = 1, stability = 0) {
     super(id, name, stats);
 
     atk = typeof atk == 'string' ? parseInt(atk, 10) : atk;
@@ -56,7 +60,7 @@ class Weapon extends CharacterEquipment {
 }
 
 class MainWeapon extends Weapon {
-  constructor(id, type, name, stats, atk = 1, stability = 0) {
+  constructor(id, type, name, stats, atk, stability) {
     super(id, name, stats, atk, stability);
 
     this.type = type;
@@ -117,7 +121,7 @@ SubWeapon.TYPE_ARROW = Symbol('arrow');
 SubWeapon.TYPE_DAGGER = Symbol('dagger');
 
 class Armor extends CharacterEquipment {
-  constructor(id, name, stats, def) {
+  constructor(id, name, stats, def = 0) {
     super(id, name, stats);
 
     def = typeof def == 'string' ? parseInt(def, 10) : def;

@@ -1,11 +1,9 @@
 export default function() {
   return {
     'Character Simulator': {
-      'main menu': {
-        'character-simulator': '角色配置',
-        'skill-simulator': '技能配點'
-      },
       'character': '角色',
+      'character stats': '角色面板',
+      'character level': '角色等級',
       'equipment': '裝備',
       'skill': '技能',
       'stability': '穩定度',
@@ -14,6 +12,8 @@ export default function() {
       'crystal': '鍛晶',
       'crystal empty': '空空的鍛晶',
       'equipment type': '裝備類型',
+      'select equipment type': '選擇裝備類型',
+      'custom equipment': '自訂裝備',
       'character field names': {
         'main-weapon': '主手武器',
         'sub-weapon': '副手裝備',
@@ -65,12 +65,16 @@ export default function() {
           'exchange': '交換所兌換'
         }
       },
+      'custom equipment editor': {
+        'select stat: window title': '選擇能力',
+        'select stat: search placeholder': '搜尋能力'
+      },
       'select crystal': {
         'title': '選擇鍛晶',
         'category title': ['武器', '身體裝備', '追加裝備', '特殊裝備', '通用']
       },
       'Warn': {
-        'no equipment selected': '這個欄位是空的0.0',
+        'no equipment selected': '這個欄位是空的w',
         'no eligible equipments found': '沒有符合條件的裝備～點擊上面的按鈕來新增裝備。',
         'append equipments: no result found': '找不到任何符合的裝備。換一個搜尋的關鍵字試試～',
         'append equipments: search text is empty': '搜尋的關鍵字須至少一個字元。',

@@ -1,8 +1,12 @@
 <template>
   <section>
-    <equipment-field v-for="field in characterState.origin.equipmentFields"
-      :key="field.id" :field="field"
-      @select-field-equipment="selectFieldEquipment" />
+    <div class="equipment-fields-container">
+      <div class="equipment-fields">
+        <equipment-field v-for="field in characterState.origin.equipmentFields"
+          :key="field.id" :field="field"
+          @select-field-equipment="selectFieldEquipment" />
+      </div>
+    </div>
     <div class="window-container">
       <browse-equipments :visible="windowVisible.browseEquipments"
         :action="browseEquipmentsState.action"
@@ -15,8 +19,6 @@
   </section>
 </template>
 <script>
-import GetLang from "@global-modules/LanguageSystem.js";
-
 import vue_equipmentField from "./equipment-field.vue";
 import vue_appendEquipments from "./append-equipments.vue";
 import vue_browseEquipments from "./browse-equipments.vue";
@@ -27,10 +29,9 @@ import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear
 
 export default {
   props: ['characterState'],
+  inject: ['langText', 'globalLangText'],
   provide() {
     return {
-      'langText': this.langText,
-      'globalLangText': this.globalLangText,
       'convertEquipmentData': this.convertEquipmentData,
       'getShowEquipmentData': this.getShowEquipmentData,
       'toggleWindowVisible': this.toggleWindowVisible
@@ -118,12 +119,6 @@ export default {
     toggleWindowVisible(target, force) {
       force = force === void 0 ? !this.windowVisible[target] : force;
       this.windowVisible[target] = force;
-    },
-    langText(s, vs) {
-      return GetLang('Character Simulator/' + s, vs);
-    },
-    globalLangText(s, vs) {
-      return GetLang(s, vs);
     }
   },
   components: {
@@ -146,6 +141,18 @@ export default {
       align-items: center;
       margin-left: auto;
     }
+  }
+}
+.equipment-fields-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  > .equipment-fields {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
 }
 </style>

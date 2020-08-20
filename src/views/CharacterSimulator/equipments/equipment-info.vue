@@ -21,7 +21,7 @@
           </template>
           <template v-else>
             <cy-icon-text iconify-name="mdi-shield" class="name">DEF</cy-icon-text>
-            <span>{{ equipment.def }}</span>
+            <span class="value">{{ equipment.def }}</span>
           </template>
         </div>
         <div class="stats">

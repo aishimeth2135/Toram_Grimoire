@@ -1,5 +1,6 @@
 <template>
-  <cy-window :visible="visible" @close-window="$emit('close')">
+  <cy-window :visible="visible" @close-window="$emit('close')"
+    vertical-position="top">
     <template v-slot:title>
       <cy-icon-text iconify-name="bx-bx-search-alt">
         {{ langText('append equipments/window title: search') }}
@@ -13,49 +14,55 @@
           @click="updateSearchResult" class="inline" />
       </cy-title-input>
       <div class="search-result">
-        <div class="equipment-item" v-for="item in searchResult" :key="item.iid"
+        <cy-list-item class="equipment-item" v-for="item in searchResult" :key="item.iid"
           @click="selectEquipment(item)">
           <cy-icon-text :iconify-name="item.categoryIcon">{{ item.origin.name }}</cy-icon-text>
           <span class="obtain">{{ item.obtainText }}</span>
-          <cy-icon-text iconify-name="ic-round-add" class="right-btn" />
-        </div>
+          <template v-slot:right-content>
+            <cy-icon-text iconify-name="ic-round-add" />
+          </template>
+        </cy-list-item>
       </div>
-      <div class="selected" v-if="selected.length != 0">
-        <div class="top" @click="selectedDetailVisible = !selectedDetailVisible">
-          <span class="number-container">
-            <span>{{ selected.length }}</span>
-          </span>
-          <span>{{ langText('append equipments/search equipment result: selected title') }}</span>
-          <cy-button v-show="!selectedDetailVisible"
-            iconify-name="ic-round-done" type="icon-only"
-            style="margin-left: auto"
-            @click.stop="submitSelected" />
-        </div>
-        <cy-transition type="slide-up">
-          <div class="detail" v-if="selectedDetailVisible">
-            <div>
-              <div class="equipment-item" v-for="item in selected" :key="item.iid"
-                @click="removeSelected(item)">
-                <cy-icon-text :iconify-name="item.categoryIcon">{{ item.origin.name }}</cy-icon-text>
-                <span class="obtain">{{ item.obtainText }}</span>
-                <cy-icon-text iconify-name="ic-round-close" class="right-btn" />
+      <cy-bottom-content class="selected" v-if="selected.length != 0">
+        <template v-slot:custom>
+          <div class="top" @click="selectedDetailVisible = !selectedDetailVisible">
+            <span class="number-container">
+              <span>{{ selected.length }}</span>
+            </span>
+            <span>{{ langText('append equipments/search equipment result: selected title') }}</span>
+            <cy-button v-show="!selectedDetailVisible"
+              iconify-name="ic-round-done" type="icon-only"
+              style="margin-left: auto"
+              @click.stop="submitSelected" />
+          </div>
+          <cy-transition type="slide-up">
+            <div class="detail" v-if="selectedDetailVisible">
+              <div>
+                <cy-item-list class="equipment-item" v-for="item in selected" :key="item.iid"
+                  @click="removeSelected(item)">
+                  <cy-icon-text :iconify-name="item.categoryIcon">{{ item.origin.name }}</cy-icon-text>
+                  <span class="obtain">{{ item.obtainText }}</span>
+                  <template v-slot:right-content>
+                    <cy-icon-text iconify-name="ic-round-close" />
+                  </template>
+                </cy-item-list>
+              </div>
+              <div class="buttons">
+                <cy-button iconify-name="ic-round-done" type="border"
+                  class="inline"
+                  @click="submitSelected">
+                  {{ globalLangText('global/confirm') }}
+                </cy-button>
+                <cy-button iconify-name="ic-round-close" type="border"
+                  class="inline after-button"
+                  @click="clearSelected">
+                  {{ globalLangText('global/clear') }}
+                </cy-button>
               </div>
             </div>
-            <div class="buttons">
-              <cy-button iconify-name="ic-round-done" type="border"
-                class="inline"
-                @click="submitSelected">
-                {{ globalLangText('global/confirm') }}
-              </cy-button>
-              <cy-button iconify-name="ic-round-close" type="border"
-                class="inline after-button"
-                @click="clearSelected">
-                {{ globalLangText('global/clear') }}
-              </cy-button>
-            </div>
-          </div>
-        </cy-transition>
-      </div>
+          </cy-transition>
+        </template>
+      </cy-bottom-content>
     </template>
   </cy-window>
 </template>
@@ -140,6 +147,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@deep: ~'>>>';
 .search-input {
   position: sticky;
   top: 0;
@@ -150,35 +158,15 @@ export default {
 }
 
 .equipment-item {
-  display: flex;
-  align-items: center;
-  padding: 0.6rem 0.8rem;
-  border-bottom: 1px solid var(--primary-light);
-  cursor: pointer;
-  transition: 0.3s;
-
-  &:hover {
-    background-color: rgba(var(--rgb-primary-light), 0.4);
-  }
-
-  > .obtain {
+  @{deep} .obtain {
     color: var(--primary-light-2);
     font-size: 0.9rem;
     margin-left: 1rem;
   }
-
-  > .right-btn {
-    margin-left: auto;
-  }
 }
 
 .selected {
-  position: sticky;
-  bottom: 0;
-  padding: 0.4rem 0;
-  background-color: var(--white);
-
-  > .top {
+  @{deep} .top {
     border-top: 1px solid var(--primary-light-3);
     display: flex;
     align-items: center;
@@ -196,13 +184,13 @@ export default {
       border-radius: 50%;
     }
   }
-}
 
-.detail {
-  padding-bottom: 0.4rem;
-  > .buttons {
-    margin-top: 0.6rem;
-    text-align: right;
+  @{deep} .detail {
+    padding-bottom: 0.4rem;
+    > .buttons {
+      margin-top: 0.6rem;
+      text-align: right;
+    }
   }
 }
 </style>
