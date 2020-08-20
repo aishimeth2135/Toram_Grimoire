@@ -151,8 +151,9 @@
       transition: 0.4s;
     }
 
-    @{deep-operator} > .text {
+    @{deep-operator} .text {
       transition: 0.4s;
+      color: var(--primary-dark);
     }
 
     &:hover, &.cur, &.selected {
@@ -267,6 +268,10 @@
 
       &.after-button {
         margin-left: 0.7rem;
+      }
+
+      &.mr-normal {
+        margin-right: 0.6rem;
       }
     }
 

@@ -1,7 +1,10 @@
 <template>
   <div class="cy--bottom-content">
     <div class="default-content" v-if="$slots['default']">
-      <slot name="default-content"></slot>
+      <slot></slot>
+    </div>
+    <div class="normal-content" v-else-if="$slots['normal-content']">
+      <slot name="normal-content"></slot>
     </div>
     <slot name="custom"></slot>
   </div>
@@ -21,6 +24,15 @@ export default {}
     display: flex;
     align-items: center;
     padding: 0.4rem 0.4rem;
+  }
+
+  > .normal-content {
+    border-top: 1px solid var(--primary-light-3);
+    padding: 0.4rem 0.4rem;
+  }
+
+  &.mt-normal {
+    margin-top: 1rem;
   }
 }
 </style>

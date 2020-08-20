@@ -10,6 +10,13 @@ class Character {
 
     this.equipmentFields = [];
   }
+
+  get baseStats() {
+    const res = this._baseStats.slice();
+    this._optinalBaseStat && res.push(this._optinalBaseStat);
+    return res;
+  }
+
   init() {
     this._baseStats.push(...['STR', 'DEX', 'INT', 'AGI', 'VIT']
       .map(p => new CharacterBaseStat(p)));
@@ -40,10 +47,14 @@ class Character {
 
     this._optinalBaseStat = new CharacterBaseStat(name);
   }
-  baseStatValue(name) {
+  baseStat(name) {
     if (Character.OPTIONAL_BASE_STAT_LIST.includes(name))
-      return this._optinalBaseStat == null || this._optinalBaseStat.name != name ? 0 : this._optinalBaseStat.value;
-    return this._baseStats.find(p => p.name == name).value;
+      return this._optinalBaseStat == null || this._optinalBaseStat.name != name ? null : this._optinalBaseStat;
+    return this._baseStats.find(p => p.name == name);
+  }
+  baseStatValue(name) {
+    const stat = this.baseStat(name);
+    return stat ? stat.value : 0;
   }
   checkFieldEquipmentType(field_type, eq_type) {
     const field = this.equipmentField(field_type);

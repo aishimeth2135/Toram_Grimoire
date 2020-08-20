@@ -1,5 +1,5 @@
 <template>
-  <span class="-icon-text">
+  <span class="cy--icon-text" :class="rootClass">
     <iconify-icon v-if="iconifyName != null" :name="iconifyName"></iconify-icon>
     <svg-icon v-if="iconId != null" :icon-id="iconId"></svg-icon>
     <lang-text v-if="textLangId != null" :lang-id="textLangId" class="text"></lang-text>
@@ -21,6 +21,28 @@
       },
       textLangId: {
         default: null
+      },
+      textColor: {
+        type: String,
+        default: 'dark',
+        validator(v) {
+          return ['dark', 'light', 'light-2', 'light-3', 'light-4', 'purple'].includes(v);
+        }
+      },
+      textSize: {
+        type: String,
+        default: 'normal',
+        validator(v) {
+          return ['normal', 'small'].includes(v);
+        }
+      }
+    },
+    computed: {
+      rootClass() {
+        return {
+          ['text-color-' + this.textColor]: true,
+          ['text-' + this.textSize]: true
+        };
       }
     }
   }
@@ -29,7 +51,7 @@
 <style lang="less" scoped>
   @deep-operator: ~'>>>';
 
-  .-icon-text {
+  .cy--icon-text {
     display: inline-flex;
     align-items: center;
     --icon-color: var(--primary-light-2);
@@ -71,6 +93,9 @@
       margin-left: var(--value-margin-left);
     }
 
+    &.text-normal {
+      font-size: 1rem;
+    }
     &.text-small {
       --icon-width: 0.9rem;
       --text-margin-left: 0.3rem;
@@ -83,8 +108,23 @@
       font-size: 1.2rem;
     }
 
+    &.text-color-dark {
+      --text-color: var(--primary-dark);
+    }
+    &.text-color-light-4 {
+      --text-color: var(--primary-light-4);
+    }
     &.text-color-light-3 {
       --text-color: var(--primary-light-3);
+    }
+    &.text-color-light-2 {
+      --text-color: var(--primary-light-2);
+    }
+    &.text-color-light {
+      --text-color: var(--primary-light);
+    }
+    &.text-color-purple {
+      --text-color: var(--primary-purple);
     }
   }
 </style>
