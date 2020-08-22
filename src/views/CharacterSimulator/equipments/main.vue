@@ -15,6 +15,8 @@
       <append-equipments :visible="windowVisible.appendEquipments"
         @close="toggleWindowVisible('appendEquipments', false)"
         @append-equipments="appendEquipments" />
+      <create-custom-equipment :visible="windowVisible.createCustomEquipment"
+        @close="toggleWindowVisible('createCustomEquipment', false)" />
     </div>
   </section>
 </template>
@@ -22,6 +24,7 @@
 import vue_equipmentField from "./equipment-field.vue";
 import vue_appendEquipments from "./append-equipments.vue";
 import vue_browseEquipments from "./browse-equipments.vue";
+import vue_createCustomEquipment from "./create-custom-equipment.vue";
 
 import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js";
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
@@ -42,7 +45,8 @@ export default {
       equipments: [],
       windowVisible: {
         browseEquipments: false,
-        appendEquipments: false
+        appendEquipments: false,
+        createCustomEquipment: false
       },
       browseEquipmentsState: {
         action: null
@@ -124,7 +128,8 @@ export default {
   components: {
     'equipment-field': vue_equipmentField,
     'append-equipments': vue_appendEquipments,
-    'browse-equipments': vue_browseEquipments
+    'browse-equipments': vue_browseEquipments,
+    'create-custom-equipment': vue_createCustomEquipment
   }
 }
 </script>

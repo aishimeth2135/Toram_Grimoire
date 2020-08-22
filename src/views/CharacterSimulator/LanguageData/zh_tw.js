@@ -22,6 +22,15 @@ export default function() {
         'special': '特殊裝備',
         'avatar': '時裝'
       },
+      'equipment type category': {
+        'main-weapon': '主手武器',
+        'sub-weapon': '副手武器',
+        'sub-armor': '副手防具',
+        'body-armor': '身體裝備',
+        'additional': '追加裝備',
+        'special': '特殊裝備',
+        'avatar': '時裝'
+      },
       'field type text': {
         'one-hand-sword': '單手劍',
         'two-hand-sword': '雙手劍',
@@ -31,6 +40,7 @@ export default function() {
         'magic-device': '魔導具',
         'knuckle': '拳套',
         'halberd': '旋風槍',
+        'katana': '拔刀劍',
         'arrow': '箭矢',
         'shield': '盾牌',
         'dagger': '小刀',
