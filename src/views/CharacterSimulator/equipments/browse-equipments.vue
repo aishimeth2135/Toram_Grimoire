@@ -14,6 +14,11 @@
             @click="toggleWindowVisible('appendEquipments', true)">
             {{ langText('browse equipments/append equipment') }}
           </cy-button>
+          <cy-button iconify-name="gridicons-create"
+            type="border"
+            @click="toggleWindowVisible('createCustomEquipment', true)">
+            {{ langText('custom equipment') }}
+          </cy-button>
         </template>
       </cy-flex-layout>
       <div class="content">

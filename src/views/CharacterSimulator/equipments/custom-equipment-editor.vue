@@ -1,15 +1,17 @@
 <template>
   <div>
     <div class="stats">
-      <cy-input-counter v-for="stat in equipment.stats"
-        :value="stat.statValue()"
-        @set-value="setStatValue(stat, $event)">
-        <template v-slot:title>
-          <cy-icon-text iconify-name="mdi-rhombus-outline">
-            {{ stat.show() }}
-          </cy-icon-text>
-        </template>
-      </cy-input-counter>
+      <div v-for="stat in equipment.stats"
+        :key="`${stat.baseName()}-${stat.type.description}`">
+        <cy-input-counter :value="stat.statValue()"
+          @set-value="setStatValue(stat, $event)">
+          <template v-slot:title>
+            <cy-icon-text iconify-name="mdi-rhombus-outline">
+              {{ stat.show() }}
+            </cy-icon-text>
+          </template>
+        </cy-input-counter>
+      </div>
       <cy-button iconify-name="ic-round-add" type="border"
         @click="toggleSelectStatWindowVisble()">
         {{ langText('custom equipment editor/select stat: window title') }}

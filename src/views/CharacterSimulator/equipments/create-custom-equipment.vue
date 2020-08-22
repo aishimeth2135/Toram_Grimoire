@@ -16,10 +16,13 @@
         <cy-button v-for="category in equipmentTypeCategorys"
           type="drop-down" :iconify-name="category.icon"
           :key="category.id" :menu-default-visible="true">
+          {{ langText('equipment type category/' + category.id) }}
           <template v-slot:menu>
             <cy-list-item v-for="item in category.list" :key="item"
               @click="selectEquipmentType(category, type)">
-              {{ langText('field type text/' + item.description) }}
+              <cy-icon-text iconify-name="gg-shape-square">
+                {{ langText('field type text/' + item.description) }}
+              </cy-icon-text>
             </cy-list-item>
           </template>
         </cy-button>
@@ -40,10 +43,10 @@
   </cy-window>
 </template>
 <script>
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
 
 export default {
-  prop: ['visible'],
+  props: ['visible'],
   inject: ['langText', 'globalLangText'],
   data() {
     return {
@@ -63,7 +66,7 @@ export default {
         icon: 'mdi-shield',
         class: SubWeapon,
         list: [SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER]
-      }, , {
+      }, {
         id: 'sub-armor',
         icon: 'mdi-shield',
         class: SubArmor,
@@ -74,14 +77,19 @@ export default {
         class: BodyArmor,
         list: null
       }, {
-        id: 'additional-gear',
+        id: 'additional',
         icon: 'cib-redhat',
         class: AdditionalGear,
         list: null
       }, {
-        id: 'special-gear',
+        id: 'special',
         icon: 'fa-solid:ring',
         class: SpecialGear,
+        list: null
+      }, {
+        id: 'avatar',
+        icon: 'fa-solid:ring',
+        class: Avatar,
         list: null
       }],
       selectedEquipmentType: null,
@@ -93,9 +101,12 @@ export default {
     equipmentTypeText() {
       const eq = this.currentEquipment;
       if (eq) {
-        return [BodyArmor, AdditionalGear, SpecialGear].find(p => eq instanceof p) ?
-          '' :
-          langText('field type text/' + currentEquipment.type.description);
+        const ids = ['body-armor', 'additiona', 'special', 'avatar'];
+        const idx = [BodyArmor, AdditionalGear, SpecialGear, Avatar]
+          .findIndex(p => eq instanceof p);
+        return idx != -1 ?
+          this.langText('character field names/' + ids[idx]) :
+          this.langText('field type text/' + eq.type.description);
       }
       return this.langText('select equipment type');
     }
