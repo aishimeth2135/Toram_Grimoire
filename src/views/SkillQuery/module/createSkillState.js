@@ -1,7 +1,16 @@
 import CY from "@global-modules/cyteria.js";
-import {SkillEffect} from "@lib/SkillSystem/module/SkillElements.js";
+import { SkillEffect } from "@lib/SkillSystem/module/SkillElements.js";
 
-export default function(skill) {
+export default function(skill, { defaultSkillLevel = 0, defaultCharacterLevel = 0 } = {}) {
+  return {
+    skill,
+    slv: defaultSkillLevel,
+    clv: defaultCharacterLevel,
+    ...handleSkillState(skill)
+  };
+}
+
+function handleSkillState(skill) {
   const defSef = skill.defaultEffect;
 
   const states = [];
@@ -97,13 +106,10 @@ export default function(skill) {
     };
   };
 
-  // 尋找符合裝備的 effect
-  //const overwriteSef = skill.effects.find(p => checkEquipment(p, equipmentState));
-
   skill.effects.forEach(overwriteSef => {
     const state = createState(overwriteSef);
 
-    if (overwriteSef != defSef){
+    if (overwriteSef != defSef) {
       // 執行覆蓋
       Object.getOwnPropertySymbols(overwriteSef.attributes).forEach(k => {
         const value = overwriteSef.attributes[k];
@@ -148,12 +154,12 @@ export default function(skill) {
 
     // create list of history.date
     state.historyList = [...new Set(
-      state.branchs
-      .filter(p => p.name == 'history')
-      .map(p => p.attrs['date'])
-      .filter(p => /\d{4}\/\d{2}\/\d{2}/.test(p))
-    )]
-    .sort((a, b) => new Date(b) >= new Date(a) ? 1 : -1);
+        state.branchs
+        .filter(p => p.name == 'history')
+        .map(p => p.attrs['date'])
+        .filter(p => /\d{4}\/\d{2}\/\d{2}/.test(p))
+      )]
+      .sort((a, b) => new Date(b) >= new Date(a) ? 1 : -1);
 
     // suffix
     const suffixBranchList = {
@@ -185,7 +191,7 @@ export default function(skill) {
      * 將suffix branch串到main branch上，
      * 將vitual branch移除並處理。
      */
-    
+
     const mainBranchNameList = ['damage', 'effect', 'proration', 'next', 'list',
       'passive', 'heal', 'text', 'tips', 'stack', 'reference', 'history', 'import'
     ];
@@ -251,6 +257,7 @@ export default function(skill) {
     const stackStates = state.branchs.filter(b => b.name == 'stack')
       .map(b => ({
         id: b.attrs['id'],
+        branch: b,
         value: parseInt(b.attrs['default'] == 'auto' ? b.attrs['min'] : b.attrs['default'], 10)
       }));
     state.stackStates = stackStates;

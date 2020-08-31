@@ -42,14 +42,14 @@
               :menu-default-visible="true">
               {{ langText('category title')[category.id] }}
               <template v-slot:menu>
-                <cy-list-item v-for="(c) in category.crystals" :key="c.id"
-                  @click="selectCrystal(c)">
-                  <cy-icon-text iconify-name="bx-bx-cube-alt">
-                    {{ c.name }}
+                <cy-list-item v-for="cs in category.crystalStates" :key="cs.origin.id"
+                  @click="selectCrystal(cs.origin)">
+                  <cy-icon-text :image-path="cs.imagePath">
+                    {{ cs.origin.name }}
                   </cy-icon-text>
                   <div v-if="currentMode == 'stats' && currentStat" class="crystal-stat-detail"
-                    :class="{ 'negative-value': findCrystalStat(currentStat, c).statValue() < 0 }">
-                    {{ findCrystalStat(currentStat, c).show() }}
+                    :class="{ 'negative-value': cs.stat.statValue() < 0 }">
+                    {{ cs.stat.show() }}
                   </div>
                 </cy-list-item>
               </template>
@@ -63,10 +63,18 @@
       <div class="detail-container" v-if="currentCrystal">
         <div class="detail">
           <div class="title">
-            <cy-icon-text iconify-name="bx-bx-cube-alt">
+            <cy-icon-text :image-path="getCrystalImagePath(currentCrystal)" text-color="purple">
               {{ currentCrystal.name }}
             </cy-icon-text>
           </div>
+          <cy-flex-layout class="enhancer" v-if="currentCrystal.enhancer">
+            <cy-icon-text iconify-name="bx-bx-cube-alt" text-size="small">
+              {{ langText('enhancer title') }}
+              <span class="enhancer-value">
+                {{ currentCrystal.enhancer }}
+              </span>
+            </cy-icon-text>
+          </cy-flex-layout>
           <div class="stats">
             <span v-for="stat in currentCrystal.stats"
               :key="stat.baseName()" class="stat-scope"
@@ -206,28 +214,27 @@ export default {
       this.updateSearchResult();
     },
     updateSearchResult() {
+      const res = [];
       if (this.currentMode == 'normal') {
         const v = this.$refs['normal-search-input'].value.toLowerCase();
         if (v == '') {
-          this.searchResult = this.crystalCategorys;
-          return;
+          res.push(...this.crystalCategorys);
         }
-        const res = [];
-        this.crystalCategorys.forEach(cat => {
-          const t = cat.crystals.filter(c => c.name.toLowerCase().includes(v));
-          t.length != 0 && res.push({
-            id: cat.id,
-            crystals: t
+        else {
+          this.crystalCategorys.forEach(cat => {
+            const t = cat.crystals.filter(c => c.name.toLowerCase().includes(v));
+            t.length != 0 && res.push({
+              id: cat.id,
+              crystals: t
+            });
           });
-        });
-        this.searchResult = res;
+        }
       } else if (this.currentMode == 'stats') {
         const searchStat = this.currentStat;
         if (!searchStat) {
           this.searchResult = [];
           return;
         }
-        const res = [];
         this.crystalCategorys.forEach(cat => {
           const t = cat.crystals
             .filter(c => this.findCrystalStat(searchStat, c))
@@ -237,8 +244,21 @@ export default {
             crystals: t
           });
         });
-        this.searchResult = res;
       }
+
+      res.forEach(cat => {
+        cat.crystalStates = cat.crystals.map(c => ({
+          origin: c,
+          imagePath: this.getCrystalImagePath(c),
+          stat: this.currentStat ? this.findCrystalStat(this.currentStat, c) : null
+        }));
+      });
+      this.searchResult = res;
+    },
+    getCrystalImagePath(c) {
+      const type = c.enhancer ? 'enhance' :
+        ['weapon', 'body', 'additional', 'special', 'normal'][c.category];
+      return '/imgs/crystals/' + type + '.png';
     },
     selectCrystal(crystal) {
       this.currentCrystal = crystal;
@@ -253,7 +273,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@deep-operator: ~'>>>';
+@deep: ~'>>>';
 
 .mode--normal {
   > .top-title {
@@ -300,17 +320,17 @@ export default {
   display: inline-block;
   margin-right: 0.6rem;
 
-  @{deep-operator} svg {
+  @{deep} svg {
     width: 0.8rem;
     height: 0.8rem;
     align-self: flex-end;
   }
-  @{deep-operator} .text {
+  @{deep} .text {
     margin-left: 0.2rem;
   }
 
   &.negative-value {
-    @{deep-operator} .text {
+    @{deep} .text {
       color: var(--primary-gray);
     }
   }
@@ -329,5 +349,14 @@ export default {
 }
 .search-stat-input {
   margin-bottom: 0.8rem;
+}
+.enhancer {
+  padding-left: 0.6rem;
+  margin-bottom: 0.4rem;
+
+  @{deep} .enhancer-value {
+    color: var(--primary-orange);
+    font-size: 0.9rem;
+  }
 }
 </style>

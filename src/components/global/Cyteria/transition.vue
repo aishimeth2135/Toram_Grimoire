@@ -1,5 +1,5 @@
 <template>
-  <transition v-if="isNormalType" :name="type" :mode="mode">
+  <transition v-if="isNormalType" :name="type" :mode="mode" :appear="appear">
     <slot></slot>
   </transition>
   <transition v-else
@@ -26,6 +26,10 @@
       mode: {
         type: String,
         default: ''
+      },
+      appear: {
+        type: Boolean,
+        default: false
       }
     },
     computed: {

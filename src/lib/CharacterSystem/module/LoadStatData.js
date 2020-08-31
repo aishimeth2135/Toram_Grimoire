@@ -7,6 +7,7 @@ export default function(character_system, c, lang_c, slang_c) {
     CONSTANT_FORMULA = 2,
     HAS_MULTIPLIER = 3,
     ORDER = 4,
+    HIDDEN = 5,
     LANG_DATA = {
       CAPTION: 0,
       CONSTANT_FORMULA: 1
@@ -23,6 +24,7 @@ export default function(character_system, c, lang_c, slang_c) {
     const stat = character_system.appendStatBase(p[BASE_NAME], p[CAPTION], p[HAS_MULTIPLIER] == '無' ? false : true, p[ORDER] || 999);
     if (p[CONSTANT_FORMULA])
       stat.appendAttribute('constant_formula', p[CONSTANT_FORMULA]);
+    stat.appendAttribute('hidden', p[HIDDEN] != '');
     // if ( p[MULTIPLIER_FORMULA] )
     // 	stat.appendAttribute('multiplier_formula', p[MULTIPLIER_FORMULA]);
   });

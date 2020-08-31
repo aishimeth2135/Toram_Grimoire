@@ -1,5 +1,5 @@
 <template>
-  <transition-group :name="type" :mode="mode" :appear="appear">
+  <transition-group :name="type" :mode="mode" :appear="appear" :tag="tag">
     <slot></slot>
   </transition-group>
 </template>
@@ -15,6 +15,10 @@
       mode: {
         type: String,
         default: ''
+      },
+      tag: {
+        type: String,
+        default: 'span'
       },
       appear: {
         type: Boolean

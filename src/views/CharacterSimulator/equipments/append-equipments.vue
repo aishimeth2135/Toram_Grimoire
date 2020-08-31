@@ -13,7 +13,7 @@
         <cy-button iconify-name="bx-bx-search-alt-2" type="icon-only"
           @click="updateSearchResult" class="inline" />
       </cy-title-input>
-      <div class="search-result">
+      <div class="search-result" v-if="searchResult.length != 0">
         <cy-list-item class="equipment-item" v-for="item in searchResult" :key="item.iid"
           @click="selectEquipment(item)">
           <cy-icon-text :iconify-name="item.categoryIcon">{{ item.origin.name }}</cy-icon-text>
@@ -23,44 +23,49 @@
           </template>
         </cy-list-item>
       </div>
+      <cy-default-tips v-else icon-id="potum">
+        {{ langText('Warn/no result found') }}
+      </cy-default-tips>
       <cy-bottom-content class="selected" v-if="selected.length != 0">
-        <template v-slot:custom>
-          <div class="top" @click="selectedDetailVisible = !selectedDetailVisible">
-            <span class="number-container">
-              <span>{{ selected.length }}</span>
-            </span>
-            <span>{{ langText('append equipments/search equipment result: selected title') }}</span>
-            <cy-button v-show="!selectedDetailVisible"
-              iconify-name="ic-round-done" type="icon-only"
-              style="margin-left: auto"
-              @click.stop="submitSelected" />
-          </div>
+        <template #normal-content>
           <cy-transition type="slide-up">
             <div class="detail" v-if="selectedDetailVisible">
               <div>
-                <cy-item-list class="equipment-item" v-for="item in selected" :key="item.iid"
+                <cy-list-item class="equipment-item" v-for="item in selected" :key="item.iid"
                   @click="removeSelected(item)">
                   <cy-icon-text :iconify-name="item.categoryIcon">{{ item.origin.name }}</cy-icon-text>
                   <span class="obtain">{{ item.obtainText }}</span>
                   <template v-slot:right-content>
                     <cy-icon-text iconify-name="ic-round-close" />
                   </template>
-                </cy-item-list>
-              </div>
-              <div class="buttons">
-                <cy-button iconify-name="ic-round-done" type="border"
-                  class="inline"
-                  @click="submitSelected">
-                  {{ globalLangText('global/confirm') }}
-                </cy-button>
-                <cy-button iconify-name="ic-round-close" type="border"
-                  class="inline after-button"
-                  @click="clearSelected">
-                  {{ globalLangText('global/clear') }}
-                </cy-button>
+                </cy-list-item>
               </div>
             </div>
           </cy-transition>
+          <cy-flex-layout class="top"
+            @click.native="selectedDetailVisible = !selectedDetailVisible">
+            <span class="number-container">
+              <span>{{ selected.length }}</span>
+            </span>
+            <span>{{ langText('append equipments/search equipment result: selected title') }}</span>
+            <template #right-content>
+              <cy-icon-text :iconify-name="'ic-round-keyboard-arrow-' + (selectedDetailVisible ? 'down' : 'up')" />
+            </template>
+          </cy-flex-layout>
+          <cy-flex-layout>
+            <template #right-content>
+              <cy-button iconify-name="ic-round-done" type="border"
+                class="inline"
+                @click.stop="submitSelected">
+                {{ globalLangText('global/confirm') }}
+              </cy-button>
+              <cy-button iconify-name="ic-round-close" type="border"
+                class="inline after-button"
+                @click.stop="clearSelected">
+                {{ globalLangText('global/clear') }}
+              </cy-button>
+            </template>
+          </cy-flex-layout>
         </template>
       </cy-bottom-content>
     </template>
@@ -167,11 +172,8 @@ export default {
 
 .selected {
   @{deep} .top {
-    border-top: 1px solid var(--primary-light-3);
-    display: flex;
-    align-items: center;
-    padding: 0.4rem 0.4rem;
     cursor: pointer;
+    margin-bottom: 0.5rem;
 
     > .number-container {
       display: inline-flex;
@@ -187,10 +189,6 @@ export default {
 
   @{deep} .detail {
     padding-bottom: 0.4rem;
-    > .buttons {
-      margin-top: 0.6rem;
-      text-align: right;
-    }
   }
 }
 </style>

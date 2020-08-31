@@ -1,7 +1,8 @@
 <template>
   <span class="cy--icon-text" :class="rootClass">
-    <iconify-icon v-if="iconifyName != null" :name="iconifyName"></iconify-icon>
-    <svg-icon v-if="iconId != null" :icon-id="iconId"></svg-icon>
+    <iconify-icon v-if="iconifyName != null" :name="iconifyName" />
+    <svg-icon v-if="iconId != null" :icon-id="iconId" />
+    <image-icon v-if="imagePath" :image-path="imagePath" />
     <lang-text v-if="textLangId != null" :lang-id="textLangId" class="text"></lang-text>
     <span v-else-if="$slots['default']" class="text">
       <slot></slot>
@@ -11,41 +12,58 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      iconifyName: {
-        default: null
-      },
-      iconId: {
-        default: null
-      },
-      textLangId: {
-        default: null
-      },
-      textColor: {
-        type: String,
-        default: 'dark',
-        validator(v) {
-          return ['dark', 'light', 'light-2', 'light-3', 'light-4', 'purple'].includes(v);
-        }
-      },
-      textSize: {
-        type: String,
-        default: 'normal',
-        validator(v) {
-          return ['normal', 'small'].includes(v);
-        }
+const colorList = [
+  'dark', 'light', 'light-2', 'light-3', 'light-4', 'purple',
+  'red', 'red-light', 'water-blue', 'water-blue-light',
+  'gray', 'gray-light', 'orange'
+];
+
+export default {
+  props: {
+    iconifyName: {
+      default: null
+    },
+    iconId: {
+      default: null
+    },
+    imagePath: {
+      default: null
+    },
+    textLangId: {
+      default: null
+    },
+    textColor: {
+      type: String,
+      default: 'dark',
+      validator(v) {
+        return colorList.includes(v);
       }
     },
-    computed: {
-      rootClass() {
-        return {
-          ['text-color-' + this.textColor]: true,
-          ['text-' + this.textSize]: true
-        };
+    textSize: {
+      type: String,
+      default: 'normal',
+      validator(v) {
+        return ['normal', 'small'].includes(v);
       }
+    },
+    iconColor: {
+      type: String,
+      default: 'light-2',
+      validator(v) {
+        return colorList.includes(v);
+      }
+    },
+  },
+  computed: {
+    rootClass() {
+      return {
+        ['text-color-' + this.textColor]: true,
+        ['text-' + this.textSize]: true,
+        ['icon-color-' + this.iconColor]: true
+      };
     }
   }
+}
 </script>
 
 <style lang="less" scoped>
@@ -78,11 +96,13 @@
       flex-shrink: 0;
       color: var(--icon-color);
       fill: currentcolor;
-    }
 
-    > svg + .text {
-      margin-left: var(--text-margin-left);
-      color: var(--text-color);
+      & + .text {
+        margin-left: var(--text-margin-left);
+        color: var(--text-color);
+        display: inline-flex;
+        align-items: center;
+      }
     }
 
     > .value {
@@ -103,28 +123,16 @@
       font-size: 0.9rem;
     }
 
-    &.title {
-      --text-color: var(--primary-purple);
-      font-size: 1.2rem;
-    }
-
-    &.text-color-dark {
-      --text-color: var(--primary-dark);
-    }
-    &.text-color-light-4 {
-      --text-color: var(--primary-light-4);
-    }
-    &.text-color-light-3 {
-      --text-color: var(--primary-light-3);
-    }
-    &.text-color-light-2 {
-      --text-color: var(--primary-light-2);
-    }
-    &.text-color-light {
-      --text-color: var(--primary-light);
-    }
-    &.text-color-purple {
-      --text-color: var(--primary-purple);
-    }
+    @colors: ~'dark', ~'light', ~'light-2', ~'light-3', ~'light-4', ~'purple',
+      ~'red', ~'red-light', ~'water-blue', ~'water-blue-light',
+      ~'gray', ~'gray-light', ~'orange';
+    each(@colors, {
+      &.text-color-@{value} {
+        --text-color: ~'var(--primary-@{value})';
+      }
+      &.icon-color-@{value} {
+        --icon-color: ~'var(--primary-@{value})';
+      }
+    });
   }
 </style>

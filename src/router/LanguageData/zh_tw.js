@@ -19,7 +19,7 @@ export default function() {
     },
     'Page Title': {
       'base': '布偶的魔法書',
-      'character-simulator': '角色模擬器',
+      'character-simulator': '角色模擬器（測試版）',
       'skill-simulator': '技能模擬器',
       'skill-query': '技能查詢',
       'item-query': '物品查詢',

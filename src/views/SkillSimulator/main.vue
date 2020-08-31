@@ -7,7 +7,7 @@
           <cy-button type="icon-only" @click="openSelectSkillTree" :class="{selected: selectSkillTreeVisible}" iconify-name="ic:round-library-add" data-user-guide-set="3-1" />
           <cy-button type="icon-only" @click="openBuildInformation" :class="{selected: buildInformationVisible}" :iconify-name="buildInformationVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" data-user-guide-set="2-1" />
         </template>
-        <transition name="fade">
+        <cy-transition type="fade">
           <div class="inner-menu select-skill-tree" v-show="selectSkillTreeVisible">
             <template v-for="(stc) in currentSkillRootState.skillTreeCategoryStates.filter(p => p.skillTreeStates.length != 0)">
               <div class="title" :key="stc.origin.id + '-title'">{{ stc.origin.name }}</div>
@@ -25,15 +25,12 @@
               </div>
             </template>
           </div>
-        </transition>
-        <transition name="fade">
+        </cy-transition>
+        <cy-transition type="fade">
           <div class="inner-menu" v-show="jumpSkillTreeVisible">
-            <div v-if="noSkillTreeSelected" class="default-tips">
-              <div class="container">
-                <iconify-icon name="mdi:ghost"></iconify-icon>
-                <span>{{ langText('no skill tree selected') }}</span>
-              </div>
-            </div>
+            <cy-default-tips v-if="noSkillTreeSelected" iconify-name="mdi:ghost">
+              {{ langText('no skill tree selected') }}
+            </cy-default-tips>
             <template v-else>
               <div class="top" style="margin-bottom: 0.8rem;">
                 <cy-button class="inline" iconify-name="ic:round-details"
@@ -69,7 +66,7 @@
                     class="icon-small">
                     {{ st.origin.name }}
                     <template v-slot:content-right>
-                      <cy-icon-text iconify-name="simple-line-icons:magic-wand" class="text-small">
+                      <cy-icon-text iconify-name="gg-shape-rhombus" class="text-small">
                         {{ skillTreeSkillPointCost(st) }}
                       </cy-icon-text>
                     </template>
@@ -78,8 +75,8 @@
               </template>
             </template>
           </div>
-        </transition>
-        <transition name="fade">
+        </cy-transition>
+        <cy-transition type="fade">
           <div class="inner-menu build-information" v-show="buildInformationVisible">
             <cy-title-input iconify-name="ant-design:build-outlined">
               <input type="text" v-model="currentSkillRootState.name" />
@@ -89,19 +86,22 @@
                   'ic-round-keyboard-arrow-down'"
                 @click="selectBuildVisible = !selectBuildVisible" />
             </cy-title-input>
-            <transition name="fade">
+            <cy-transition type="fade">
               <div class="select-build" v-if="selectBuildVisible">
-                <transition-group name="fade" tag="div">
-                  <cy-button v-for="(state, i) in skillRootStates" type="line" class="selection" iconify-name="ant-design:build-outlined" :key="state.stateId" :class="{'selected': currentSkillRootStateIndex == i}" @click="selectCurrentSkillRootState(i)">
+                <cy-transition-group type="fade" tag="div">
+                  <cy-button v-for="(state, i) in skillRootStates" type="line" class="selection"
+                    iconify-name="ant-design:build-outlined" :key="state.stateId"
+                    :class="{'selected': currentSkillRootStateIndex == i}"
+                    @click="selectCurrentSkillRootState(i)">
                     {{ state.name }}
                   </cy-button>
-                </transition-group>
+                </cy-transition-group>
                 <span @click.stop="createBuild()" class="Cyteria Button simple no-border">
                   <iconify-icon name="ic:round-add-circle-outline"></iconify-icon>
                   <lang-text lang-id="Skill Simulator/Controller/create build" class="text"></lang-text>
                 </span>
               </div>
-            </transition>
+            </cy-transition>
             <div class="buttons-content">
               <cy-button type="line" @click="copyCurrentBuild" iconify-name="mdi:content-copy">
                 {{ getLangText('global/copy') }}
@@ -121,47 +121,53 @@
               <save-load-data-system v-bind="SaveLoadDataSystemOptions" />
             </div>
           </div>
-        </transition>
+        </cy-transition>
       </cy-sticky-header>
       <skill-root :skill-root-state="currentSkillRootState"></skill-root>
-      <div class="bottom-menu">
-        <div class="skill-point-information">
-          <cy-icon-text iconify-name="simple-line-icons:magic-wand" style="margin-right: 0.6rem;">
-            {{ skillPointCostSum }}
-          </cy-icon-text>
-          <cy-icon-text iconify-name="mdi:judaism">
-            {{ starGemSkillPointSum }}
-          </cy-icon-text>
-        </div>
-        <div class="content">
-          <div class="top">
-            <div class="buttons" :class="{hide: bottomMenuExtraMenuVidsible}">
-              <cy-button v-for="(state) in setButtonStates" :key="state.type"
-                :iconify-name="state.icons[state.currentIndex]" class="inline"
-                style="margin-right: 0.6rem;"
-                @click="setButtonClick(state.type)">
-                {{ state.texts[state.currentIndex] }}
-              </cy-button>
-            </div>
-            <cy-button type="icon-only" class="tail-button"
-              :iconify-name="bottomMenuExtraMenuVidsible ? 'ic-round-keyboard-arrow-down' : 'ic-round-keyboard-arrow-up'"
-              @click="bottomMenuExtraMenuVidsible = !bottomMenuExtraMenuVidsible" />
-          </div>
-          <transition name="fade">
-            <div class="menus" v-show="bottomMenuExtraMenuVidsible">
-              <div v-for="(state) in setButtonStates" :key="state.type" class="select-menu">
-                <cy-button v-for="(value, j) in state.values" :key="value"
-                  type="line" :iconify-name="state.icons[j]"
-                  @click="setButtonSelected(state.type, j)"
-                  class="icon-small selection"
-                  :class="{selected: state.currentIndex == j}">
-                  {{ state.texts[j] }}
+      <cy-bottom-content class="bottom-menu">
+        <template #custom>
+          <cy-flex-layout class="skill-point-information">
+            <template #right-content>
+              <cy-icon-text iconify-name="gg-shape-rhombus" class="mr-normal">
+              {{ skillPointCostSum }}
+              </cy-icon-text>
+              <cy-icon-text iconify-name="mdi:judaism">
+                {{ starGemSkillPointSum }}
+              </cy-icon-text>
+            </template>
+          </cy-flex-layout>
+          <div class="content">
+            <cy-flex-layout class="top">
+              <cy-flex-layout type="inline" class="buttons" :class="{ hide: bottomMenuExtraMenuVidsible }">
+                <cy-button v-for="(state) in setButtonStates" :key="state.type"
+                  :iconify-name="state.icons[state.currentIndex]" class="inline"
+                  style="margin-right: 0.6rem;"
+                  @click="setButtonClick(state.type)">
+                  {{ state.texts[state.currentIndex] }}
                 </cy-button>
+              </cy-flex-layout>
+              <template #right-content>
+                <cy-button type="icon-only"
+                  :iconify-name="'ic-round-keyboard-arrow-' + (bottomMenuExtraMenuVidsible ? 'down' : 'up')"
+                  @click="bottomMenuExtraMenuVidsible = !bottomMenuExtraMenuVidsible" />
+              </template>
+            </cy-flex-layout>
+            <cy-transition type="fade">
+              <div class="menus" v-show="bottomMenuExtraMenuVidsible">
+                <div v-for="(state) in setButtonStates" :key="state.type" class="select-menu">
+                  <cy-button v-for="(value, j) in state.values" :key="value"
+                    type="line" :iconify-name="state.icons[j]"
+                    @click="setButtonSelected(state.type, j)"
+                    class="icon-small selection"
+                    :class="{selected: state.currentIndex == j}">
+                    {{ state.texts[j] }}
+                  </cy-button>
+                </div>
               </div>
-            </div>
-          </transition>
-        </div>
-      </div>
+            </cy-transition>
+          </div>
+        </template>
+      </cy-bottom-content>
       <cy-window :visible="previewExportedImageWindowVisible" @close-window="previewExportedImageWindowVisible = false" title-lang-id="Skill Simulator/Controller/main menu/preview exported image" class="frozen-top width-auto">
         <template v-slot:top-buttons>
           <cy-button iconify-name="uil:image-download" class="inline"
@@ -186,18 +192,19 @@
 <script>
 import Papa from "papaparse";
 
-import vue_skillRoot from "./skill-root.vue";
-
-import { getSkillElementId } from "./module/methods.js";
-
-import vue_SaveLoadDataSystem from "@vue-components/SaveLoadDataSystem/main.vue";
-
-import { LevelSkillTree } from "@lib/SkillSystem/module/SkillElements.js";
-
 import Grimoire from "@Grimoire";
 import CY from "@global-modules/cyteria.js";
 import GetLang from "@global-modules/LanguageSystem.js"
 import { ShowMessage, ShowLoadingMessage, loadingFinished } from '@global-modules/ShowMessage.js';
+
+import vue_skillRoot from "./skill-root.vue";
+import vue_SaveLoadDataSystem from "@vue-components/SaveLoadDataSystem/main.vue";
+
+import Vuex from 'vuex'
+import store from "@store/main";
+
+import { getSkillElementId } from "./module/methods.js";
+import { LevelSkillTree } from "@lib/SkillSystem/module/SkillElements.js";
 import { computeDrawSkillTreeData, GetDrawSetting } from "@lib/SkillSystem/module/DrawSkillTree.js";
 
 import init from "./init.js";
@@ -207,7 +214,8 @@ function Lang(s, vs) {
 }
 
 export default {
-  data: function() {
+  store,
+  data() {
     // const r = this.skillRoot;
 
     const createSetButtonState = (type, icon_ids, values, current_value) => {
@@ -277,7 +285,6 @@ export default {
           }
         }
       },
-      skillRootStates: [],
       currentExportedImage: null,
       currentExportedText: null,
       selectSkillTreeVisible: false,
@@ -296,7 +303,7 @@ export default {
             'mdi:numeric-5-circle-outline', 'mdi:numeric-10-circle-outline'
           ],
           [1, 5, 10], skillPointState.stepValue),
-        createSetButtonState('mode', ['simple-line-icons:magic-wand', 'mdi:judaism'],
+        createSetButtonState('mode', ['gg-shape-rhombus', 'mdi:judaism'],
           ['normal', 'star-gem'], skillPointState.mode)
       ],
       SaveLoadDataSystemOptions: {
@@ -399,6 +406,9 @@ export default {
     this.createBuild();
   },
   computed: {
+    ...Vuex.mapState('character', {
+      'skillRootStates': 'skillBuilds'
+    }),
     currentStarGemList() {
       const list = [];
       this.currentSkillRootState.skillTreeCategoryStates.forEach(stc => {
@@ -827,7 +837,8 @@ export default {
       }
       const cur_index = this.currentSkillRootStateIndex;
       const cur_build = this.skillRootStates[cur_index];
-      this.skillRootStates.splice(cur_index, 1);
+      this.$store.commit('character/deleteSkillBuild', { index: cur_index });
+      //this.skillRootStates.splice(cur_index, 1);
       if (cur_index >= this.skillRootStates.length)
         this.currentSkillRootStateIndex = this.skillRootStates.length - 1;
       ShowMessage(this.langText('tips/delete build message', [cur_build.name]), 'ic-round-done', null, {
@@ -928,7 +939,8 @@ export default {
           };
         })
       };
-      this.skillRootStates.push(newState);
+      this.$store.commit('character/createSkillBuild', newState);
+      // this.skillRootStates.push(newState);
       this.currentSkillRootStateIndex = this.skillRootStates.length - 1;
 
       return newState;
@@ -1007,20 +1019,20 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@deep-operator: ~'>>>';
+@deep: ~'>>>';
 
 .main {
-  &>.top {
+  >.top {
     z-index: 3;
 
-    @{deep-operator} .content {
+    @{deep} .content {
       padding-right: 0.6rem;
 
-      &>.buttons-scope {
+      > .buttons-scope {
         z-index: 6;
       }
 
-      >.inner-menu {
+      > .inner-menu {
         position: absolute;
         top: 0.4rem;
         right: 0;
@@ -1035,27 +1047,6 @@ export default {
         overflow-y: auto;
         white-space: normal;
 
-        >.default-tips {
-          padding: 1rem 0.2rem;
-          text-align: center;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        >.default-tips>.container {
-          display: flex;
-          align-items: center;
-          white-space: normal;
-
-          >svg {
-            color: var(--primary-light-2);
-            width: 3rem;
-            height: 3rem;
-            margin-right: 1rem;
-          }
-        }
-
         >.title {
           font-size: 0.9rem;
           margin-bottom: 0.2rem;
@@ -1066,6 +1057,12 @@ export default {
           display: grid;
           grid-template-columns: 50% 50%;
           margin-bottom: 0.4rem;
+        }
+
+        @media screen and (max-width: 30rem) {
+          > .content {
+            grid-template-columns: 100%;
+          }
         }
 
         >.content-title {
@@ -1090,36 +1087,20 @@ export default {
   }
 
   >.bottom-menu {
-    position: sticky;
-    bottom: 0;
     z-index: 2;
 
-    >.skill-point-information {
-      text-align: right;
-      padding: 0.2rem;
-
-      >.Cyteria.scope-icon {
-        margin-right: 1rem;
-      }
+    @{deep} .skill-point-information {
+      padding: 0.3rem 0.4rem;
     }
 
-    >.content {
+    @{deep} .content {
       border-top: 1px solid var(--primary-light);
       background-color: var(--white);
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
 
-      >.top {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        padding-top: 0.2rem;
-        padding-bottom: 0.3rem;
+      > .top {
+        padding: 0.3rem 0;
 
-        >.buttons {
-          display: inline-flex;
-          align-items: center;
+        > .buttons {
           white-space: nowrap;
           overflow-x: auto;
           opacity: 1;
@@ -1129,11 +1110,6 @@ export default {
           &.hide {
             opacity: 0;
           }
-        }
-
-        >.tail-button {
-          margin-left: auto;
-          padding: 0 0.4rem;
         }
       }
 
@@ -1156,32 +1132,17 @@ export default {
     transition: 0.3s ease;
   }
 
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: 0.3s ease;
-  }
-
   .exported-text-content {
     border: 1px solid var(--primary-light);
     padding: 1rem;
   }
 }
 
-@media screen and (max-width: 30rem) {
-  .main>.top>.content>.inner-menu {
-    &::-webkit-scrollbar {
-      width: 0.2rem;
-      top: 0.2rem;
-    }
-
-    &>.content {
-      grid-template-columns: 100%;
-    }
-  }
-}
+// @media screen and (max-width: 30rem) {
+//   .main > .top > .content > .inner-menu {
+//     &>.content {
+//       grid-template-columns: 100%;
+//     }
+//   }
+// }
 </style>

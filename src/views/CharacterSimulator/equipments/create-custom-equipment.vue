@@ -1,15 +1,38 @@
 <template>
   <cy-window :visible="visible" @close-window="closeWindow">
+    <template #title>
+      <cy-icon-text iconify-name="gg-shape-square">
+        {{ langText('create custom equipment/window title') }}
+      </cy-icon-text>
+    </template>
     <div class="select-type">
       <cy-button iconify-name="gg-shape-square" type="border"
         @click="toggleWindowVisible('selectType', true)">
         {{ equipmentTypeText }}
       </cy-button>
     </div>
+    <div class="editor" v-if="currentEquipment">
+      <custom-equipment-editor :equipment="currentEquipment" />
+    </div>
+    <cy-default-tips v-else icon-id="potum">
+      {{ langText('Warn/create custom equipment: no equipment type selected') }}
+    </cy-default-tips>
+    <cy-bottom-content v-if="currentEquipment">
+      <template #normal-content>
+        <cy-flex-layout>
+          <template #right-content>
+            <cy-button type="border" iconify-name="ic-round-done"
+              @click="createCustomEquipment">
+              {{ globalLangText('global/create') }}
+            </cy-button>
+          </template>
+        </cy-flex-layout>
+      </template>
+    </cy-bottom-content>
     <cy-window :visible="selectTypeWindowVisible" @close-window="toggleWindowVisible('selectType', false)">
       <template v-slot:title>
         <cy-icon-text iconify-name="gg-shape-square">
-          {{ langText('select equipment type') }}
+          {{ langText('create custom equipment/select equipment type') }}
         </cy-icon-text>
       </template>
       <div class="equipment-type">
@@ -18,22 +41,32 @@
           :key="category.id" :menu-default-visible="true">
           {{ langText('equipment type category/' + category.id) }}
           <template v-slot:menu>
-            <cy-list-item v-for="item in category.list" :key="item"
-              @click="selectEquipmentType(category, type)">
+            <template v-if="category.list != null">
+              <cy-list-item v-for="item in category.list" :key="item"
+                :selected="selectedEquipmentType && selectedEquipmentType.type == item"
+                @click="selectEquipmentType(category, item)">
+                <cy-icon-text iconify-name="gg-shape-square">
+                  {{ langText('field type text/' + item.description) }}
+                </cy-icon-text>
+              </cy-list-item>
+            </template>
+            <cy-list-item v-else
+              :selected="selectedEquipmentType && selectedEquipmentType.category == category"
+              @click="selectEquipmentType(category, null)">
               <cy-icon-text iconify-name="gg-shape-square">
-                {{ langText('field type text/' + item.description) }}
+                {{ langText('equipment type category/' + category.id) }}
               </cy-icon-text>
             </cy-list-item>
           </template>
         </cy-button>
       </div>
-      <cy-bottom-content>
+      <cy-bottom-content v-if="this.selectedEquipmentType">
         <template v-slot:normal-content>
           <cy-flex-layout>
             <template v-slot:right-content>
               <cy-button type="border" iconify-name="ic-round-done"
                 @click="confirmSelectedEquipmentType">
-                {{ globalLangText('confirm') }}
+                {{ globalLangText('global/confirm') }}
               </cy-button>
             </template>
           </cy-flex-layout>
@@ -43,11 +76,13 @@
   </cy-window>
 </template>
 <script>
+import vue_customEquipmentEditor from "./custom-equipment-editor.vue";
+
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
 
 export default {
   props: ['visible'],
-  inject: ['langText', 'globalLangText'],
+  inject: ['langText', 'globalLangText', 'toggleMainWindowVisible'],
   data() {
     return {
       equipmentTypeCategorys: [{
@@ -99,7 +134,11 @@ export default {
   },
   computed: {
     equipmentTypeText() {
-      const eq = this.currentEquipment;
+      return this.getEquipmentTypeText(this.currentEquipment);
+    }
+  },
+  methods: {
+    getEquipmentTypeText(eq) {
       if (eq) {
         const ids = ['body-armor', 'additiona', 'special', 'avatar'];
         const idx = [BodyArmor, AdditionalGear, SpecialGear, Avatar]
@@ -108,35 +147,62 @@ export default {
           this.langText('character field names/' + ids[idx]) :
           this.langText('field type text/' + eq.type.description);
       }
-      return this.langText('select equipment type');
-    }
-  },
-  methods: {
+      return this.langText('create custom equipment/select equipment type');
+    },
+    createCustomEquipment() {
+      this.$emit('append-equipments', [this.currentEquipment]);
+      this.currentEquipment = null;
+      this.selectedEquipmentType = null;
+      this.toggleMainWindowVisible('createCustomEquipment', false);
+    },
     selectEquipmentType(category, type) {
-      this.selecetdEquipmentType = {
+      this.selectedEquipmentType = {
         category,
         type
       };
     },
     confirmSelectedEquipmentType() {
-      const p = this.selecetdEquipmentType;
-      const eq = new p.category.class(-1, this.langText('custom equipment'));
-      eq.setCustom(true);
+      let name, stats;
+      const p = this.selectedEquipmentType;
 
       const from = this.currentEquipment;
       if (from) {
-        //
+        name = from.name;
+        stats = from.stats;
       }
+      else {
+        name = '';
+        stats = [];
+      }
+
+      const eq = p.category.list != null ?
+        new p.category.class(-1, name, stats, p.type) :
+        new p.category.class(-1, name, stats);
+      eq.setCustom(true);
+      if (!name) {
+        eq.name = this.langText('custom equipment: default name prefix') + this.getEquipmentTypeText(eq);
+      }
+
       this.currentEquipment = eq;
+      this.toggleWindowVisible('selectType', false);
     },
     toggleWindowVisible(target, force) {
       target = target + 'WindowVisible';
-      force = force !== void 0 ? !this[target] : force;
+      force = force === void 0 ? !this[target] : force;
       this[target] = force;
     },
     closeWindow() {
       this.$emit('close');
     }
+  },
+  components: {
+    'custom-equipment-editor': vue_customEquipmentEditor
   }
 };
 </script>
+<style lang="less" scoped>
+.editor {
+  border-top: 1px solid var(--primary-light-2);
+  margin-top: 0.8rem;
+}
+</style>

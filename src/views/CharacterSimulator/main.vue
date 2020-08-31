@@ -1,9 +1,18 @@
 <template>
   <div class="main--character-simulator">
-    <div class="main">
-      <character-stats v-if="currentContentIndex == 0" :character-state="currentCharacterState" />
+    <div class="main" v-if="currentCharacterState">
+      <character-stats v-if="currentContentIndex == 0"
+        :character-state="currentCharacterState"
+        :show-character-stat-datas="showCharacterStatDatas" />
       <character v-if="currentContentIndex == 1" :character-state="currentCharacterState" />
       <equipment-fields v-if="currentContentIndex == 2" :character-state="currentCharacterState" />
+      <keep-alive>
+        <skills v-if="currentContentIndex == 3"
+          :character-state="currentCharacterState"
+          :current-skill-build-index.sync="currentSkillBuildIndex"
+          :passive-skill-states="passiveSkillStates"
+          :active-skill-states="activeSkillStates" />
+      </keep-alive>
     </div>
     <cy-bottom-content>
       <cy-button v-for="(content, i) in contents"
@@ -22,19 +31,30 @@
 import GetLang from "@global-modules/LanguageSystem.js";
 // import ShowMessage from "@global-modules/ShowMessage.js";
 
-import { Character } from "@lib/CharacterSystem/CharacterStat/class/main.js";
-
 import init from "./init.js";
 
 import vue_equipmentFields from "./equipments/main.vue";
 import vue_characterStats from "./character-stats.vue";
 import vue_character from "./character.vue";
+import vue_skills from "./skill/main.vue";
+
+import Vuex from "vuex";
+import store from "@store/main";
+
+import Grimoire from "@Grimoire";
+import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js";
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
+import { Character } from "@lib/CharacterSystem/CharacterStat/class/main.js";
+
+import createSkillState from "@views/SkillQuery/module/createSkillState.js";
+import SkillBranchHandler from "./skill/module/SkillBranchHandler.js";
 
 export default {
+  store,
   data() {
     return {
-      characterStates: [],
       currentCharacterStateIndex: -1,
+      currentSkillBuildIndex: 0,
       contents: [{
         id: 'character-stats',
         icon: 'bx-bxs-user-detail',
@@ -47,14 +67,22 @@ export default {
         id: 'equipment-fields',
         icon: 'gg-shape-square',
         text: this.langText('equipment')
+      }, {
+        id: 'skills',
+        icon: 'ant-design:build-outlined',
+        text: this.langText('skill')
       }],
-      currentContentIndex: 2
+      currentContentIndex: 2,
+
+      // levelSkillStateRoot[]
+      allSkillStates: []
     };
   },
   provide() {
     return {
       'langText': this.langText,
-      'globalLangText': this.globalLangText
+      'globalLangText': this.globalLangText,
+      'getValidLevelSkillState': this.getValidLevelSkillState
     };
   },
   beforeCreate() {
@@ -64,21 +92,349 @@ export default {
     this.createCharacter();
   },
   computed: {
+    ...Vuex.mapState('character', {
+      'characterStates': 'characters',
+      'skillBuilds': 'skillBuilds'
+    }),
     currentCharacterState() {
       return this.characterStates[this.currentCharacterStateIndex];
+    },
+    baseCharacterStatDatas() {
+      return this.handleCharacterStateDatas();
+    },
+    passiveSkillsCharacterStatDatas() {
+      return this.handleCharacterStateDatas({
+        handlePassiveSkill: true
+      });
+    },
+    allCharacterStatDatas() {
+      return this.handleCharacterStateDatas({
+        handlePassiveSkill: true,
+        handleActiveSkill: true
+      });
+    },
+    showCharacterStatDatas() {
+      return this.allCharacterStatDatas.map(p => ({
+        name: p.name,
+        stats: p.stats.filter(p => !p.hidden)
+      }))
+    },
+    currentSkillBuild() {
+      return this.skillBuilds.length == 0 ? null : this.skillBuilds[this.currentSkillBuildIndex];
+    },
+    validSkillStates() {
+      return this.allSkillStates
+        .filter(state => state.levelSkillTreeState.originState.visible && state.levelSkill.level() > 0);
+    },
+    passiveSkillStates() {
+      return this.validSkillStates.filter(state => state.type == 'passive');
+    },
+    activeSkillStates() {
+      return this.validSkillStates.filter(state => state.type == 'active');
     }
   },
   methods: {
+    /* ==[ character - main ]==========================================*/
+    handleCharacterStateDatas({
+      handlePassiveSkill = false,
+      handleActiveSkill = false
+    } = {}) {
+      if (!this.currentCharacterState)
+        return [];
+
+      const categoryList = Grimoire.CharacterSystem.characterStatCategoryList;
+      const characterStatMap = {};
+      categoryList.map(p => p.stats).flat().forEach(p => characterStatMap[p.id] = p)
+
+      const c = this.currentCharacterState.origin;
+      const vars = {
+        value: {
+          '@': {
+            'clv': c.level,
+            'str': c.baseStatValue('STR'),
+            'dex': c.baseStatValue('DEX'),
+            'int': c.baseStatValue('INT'),
+            'agi': c.baseStatValue('AGI'),
+            'vit': c.baseStatValue('VIT'),
+            'tec': c.baseStatValue('TEC'),
+            'men': c.baseStatValue('MEN'),
+            'crt': c.baseStatValue('CRT'),
+            'luk': c.baseStatValue('LUK'),
+            'main': c.fieldEquipment(EquipmentField.TYPE_MAIN_WEAPON),
+            'sub': c.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON),
+            'armor': c.fieldEquipment(EquipmentField.TYPE_BODY_ARMOR),
+            'additional': c.fieldEquipment(EquipmentField.TYPE_ADDITIONAL),
+            'special': c.fieldEquipment(EquipmentField.TYPE_SPECIAL),
+            'shield': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_SHIELD) ?
+              c.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON) :
+              {
+                'refining': 0,
+                'def': 0
+              },
+            'arrow': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_ARROW) ?
+              c.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON) :
+              {
+                'stability': 0,
+                'atk': 0
+              },
+            'skill': {
+              'Conversion': 0
+            }
+          },
+          '#': {
+
+          },
+          '$': characterStatMap
+        },
+        conditional: {
+          '@': {
+            '1h_sword': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD),
+            '2h_sword': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_TWO_HAND_SWORD),
+            'bow': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_BOW),
+            'bowgun': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_BOWGUN),
+            'staff': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_STAFF),
+            'magic_device': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_MAGIC_DEVICE),
+            'knuckle': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_KNUCKLE),
+            'dual_sword': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD) &&
+              c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD),
+            'halberd': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_HALBERD),
+            'katana': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_KATANA),
+            'main': {
+              'none': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, EquipmentField.EMPTY)
+            },
+            'sub': {
+              'arrow': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_ARROW),
+              'shield': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubArmor.TYPE_SHIELD),
+              'dagger': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_DAGGER),
+              'knuckle': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_KNUCKLE),
+              'magic_device': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_MAGIC_DEVICE)
+            },
+            'armor': {
+              'normal': c.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, BodyArmor.TYPE_NORMAL),
+              'dodge': c.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, BodyArmor.TYPE_DODGE),
+              'defense': c.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, BodyArmor.TYPE_DEFENSE),
+              'none': c.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, EquipmentField.EMPTY)
+            }
+          },
+          '#': {}
+        }
+      };
+
+      const all_stats = [];
+
+      const appendStat = stat => {
+        const t = all_stats.find(a => a.equals(stat));
+        t ? t.addStatValue(stat.statValue()) : all_stats.push(stat.copy());
+      };
+      c.equipmentFields.forEach(field => {
+        if (!field.isEmpty() && !field.statsDisable()) {
+          field.equipment.allStats.forEach(appendStat);
+        }
+      });
+
+      const handleSkillStates = states => {
+        const branchStatDatasToSimpleStats = stats => {
+          return stats.map(stat => {
+            const p = stat.origin.copy();
+            p.statValue(stat.value);
+            return p;
+          });
+        };
+        states.forEach(levelSkillStateRoot => {
+          if (levelSkillStateRoot.disable)
+            return;
+          const state = this.getValidLevelSkillState(levelSkillStateRoot);
+          if (state) {
+            state.branchStates
+              .forEach(bs => {
+                const v = bs.handler.value;
+                if (v.stats.length != 0)
+                  branchStatDatasToSimpleStats(v.stats).forEach(appendStat);
+                v.conditionDatas
+                  .filter(cs => cs.stats.length != 0)
+                  .forEach(cs => branchStatDatasToSimpleStats(cs.stats).forEach(appendStat));
+              });
+          }
+        });
+      };
+
+      handlePassiveSkill && handleSkillStates(this.passiveSkillStates);
+      handleActiveSkill && handleSkillStates(this.activeSkillStates);
+
+      return categoryList.map(p => ({
+        name: p.name,
+        stats: p.stats.map(a => {
+          //console.log('%c' + a.id, 'color: white; background-color: red');
+          const res = a.result(all_stats, vars);
+          return {
+            id: a.id,
+            name: a.name,
+            value: res.value + a.unit,
+            hidden: res.hidden
+          };
+        })
+      })).filter(a => a.stats.length != 0);
+    },
+    /* ==[ skill item - skill branch ]================================ */
+    findCharacterStatResult(src, id) {
+      if (src == 'all')
+        src = this.allCharacterStatDatas;
+      else if (src == 'passive-skills')
+        src = this.passiveSkillsCharacterStatDatas;
+      else if (src == 'base')
+        src = this.baseCharacterStatDatas;
+      else
+        console.warn('Unknow source name: ' + src);
+
+      let res;
+      src.find(cat => {
+        const p = cat.stats.find(stat => stat.id == id);
+        if (p) {
+          res = p;
+          return true;
+        }
+      });
+      if (!res) {
+        console.warn(`Can not find CharacterStat data with id: ${id}.`);
+        return {
+          id: null,
+          value: 0
+        }
+      }
+      return res;
+    },
+    /* ==[ skill item ]=============================================== */
+    handleLevelSkillState({ levelSkillState, skillItemType }) {
+      // const validSkillState = levelSkillState.skillState.states
+      //   .find(a => this.checkEquipment(a.equipment, levelSkillState.skillState));
+
+      return levelSkillState.skillState.states.map(skillState => {
+        const branchStates = [];
+
+        if (skillItemType != 'none') {
+          let counter = 0;
+          const branchFilter = skillItemType == 'passive' ?
+            bch => bch.name == 'passive' :
+            bch => bch.name == 'effect';
+          const t = skillState.branchs
+            .filter(branchFilter)
+            .map(bch => {
+              const handler = new SkillBranchHandler({
+                branch: bch,
+                skillState,
+                levelSkill: levelSkillState.levelSkill,
+                langText: this.langText,
+                characterState: this.currentCharacterState,
+                findCharacterStatResult: this.findCharacterStatResult,
+                skillItemType: skillItemType
+              });
+              const res = {
+                iid: counter,
+                origin: bch,
+                handler
+              };
+              ++counter;
+
+              return res;
+            });
+          branchStates.push(...t);
+        }
+
+        return {
+          equipment: skillState.equipment,
+          skillState,
+          branchStates
+        };
+      });
+    },
+    getValidLevelSkillState(levelSkillStateRoot) {
+      return levelSkillStateRoot.states
+        .find(p => this.checkEquipment(p.equipment, levelSkillStateRoot));
+    },
+    checkEquipment(eq, skillState) {
+      const mains = [
+        MainWeapon.TYPE_ONE_HAND_SWORD,
+        MainWeapon.TYPE_TWO_HAND_SWORD,
+        MainWeapon.TYPE_BOW,
+        MainWeapon.TYPE_BOWGUN,
+        MainWeapon.TYPE_STAFF,
+        MainWeapon.TYPE_MAGIC_DEVICE,
+        MainWeapon.TYPE_KNUCKLE,
+        MainWeapon.TYPE_HALBERD,
+        MainWeapon.TYPE_KATANA
+      ];
+      const subs = [
+        SubWeapon.TYPE_ARROW = Symbol('arrow'),
+        SubArmor.TYPE_SHIELD = Symbol('shield'),
+        SubWeapon.TYPE_DAGGER = Symbol('dagger'),
+        MainWeapon.TYPE_MAGIC_DEVICE,
+        MainWeapon.TYPE_KNUCKLE,
+        MainWeapon.TYPE_HALBERD
+      ];
+      const bodys = [
+        BodyArmor.TYPE_DODGE,
+        BodyArmor.TYPE_DEFENSE,
+        BodyArmor.TYPE_NORMAL
+      ];
+      // 'main-weapon': ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍', '空手'],
+      // 'sub-weapon': ['箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍', '無裝備'],
+      // 'body-armor': ['輕量化', '重量化', '一般', '無裝備'],
+      let main = 10, sub = 6, body = 3;
+
+      const chara = this.currentCharacterState.origin;
+      const mainField = chara.equipmentField(EquipmentField.TYPE_MAIN_WEAPON),
+        subField = chara.equipmentField(EquipmentField.TYPE_SUB_WEAPON),
+        bodyField = chara.equipmentField(EquipmentField.TYPE_BODY_ARMOR);
+
+      if (!mainField.isEmpty()) {
+        main = mains.indexOf(mainField.equipment.type);
+      }
+      if (!subField.isEmpty()) {
+        sub = subs.indexOf(subField.equipment.type);
+      }
+      if (!bodyField.isEmpty()) {
+        body = bodys.indexOf(bodyField.equipment.type);
+      }
+
+      const eqs = { main, sub, body };
+      /* 通用 */
+      if ([eq.main, eq.sub, eq.body].every(p => p == -1))
+        return true;
+
+      /* 非通用 */
+      const for_dual_sword = eq.main === 0 && eqs.main === 9 && skillState.states.find(a => a.equipment.main == 9) === void 0;
+
+      // or
+      if (eq.operator === 0) {
+        if (eqs.main != -1 && eqs.main == eq.main || for_dual_sword)
+          return true;
+        if (eqs.sub != -1 && eqs.sub == eq.sub)
+          return true;
+        if (eqs.body != -1 && eqs.body == eq.body)
+          return true;
+        return false;
+      }
+
+      // and
+      if (eq.operator === 1) {
+        if (eqs.main != eq.main || for_dual_sword)
+          return false;
+        if (eqs.sub != eq.sub)
+          return false;
+        if (eqs.body != eq.body)
+          return false;
+        return true;
+      }
+    },
+
+    /* ==[ main ]=============================================== */
     setCurrentContent(idx) {
       this.currentContentIndex = idx;
     },
     createCharacter() {
       const c = new Character(this.langText('character') + ' ' + (this.characterStates.length + 1).toString()).init();
-
       this.currentCharacterStateIndex = this.characterStates.length;
-      this.characterStates.push({
-        origin: c
-      });
+      this.$store.commit('character/createCharacter', { origin: c });
     },
     langText(s, vs) {
       return GetLang('Character Simulator/' + s, vs);
@@ -87,10 +443,72 @@ export default {
       return GetLang(s, vs);
     }
   },
+  watch: {
+    currentSkillBuild(newv) {
+      if (!newv) {
+        this.allSkillStates = [];
+        return;
+      }
+      const leveSkillTreeStates = (() => {
+        const res = [];
+        newv.skillTreeCategoryStates.forEach(stc => {
+          res.push(...stc.skillTreeStates.map(st => ({
+            levelSkillTree: st.levelSkillTree,
+            originState: st
+          })));
+        });
+        return res.map(p => {
+          const levelSkillTree = p.levelSkillTree;
+          return {
+            originState: p.originState,
+            levelSkillTree,
+            skills: levelSkillTree.levelSkills.map(skill => ({
+              levelSkill: skill,
+              skillState: createSkillState(skill.base)
+            }))
+          }
+        });
+      })();
+
+      this.allSkillStates = (() => {
+        const res = [];
+
+        leveSkillTreeStates.forEach(st => {
+          const p = st.skills.map(state => {
+            let skillItemType = 'none';
+            if (state.skillState.states.find(a => a.attrs['skill_type'] == 3))
+              skillItemType = 'passive';
+            else {
+              const find = state.skillState.states.find(a => {
+                return a.attrs['skill_type'] != 3 && a.branchs.find(bch => bch.stats.length != 0);
+              });
+              if (find)
+                skillItemType = 'active';
+            }
+            return {
+              states: this.handleLevelSkillState({
+                levelSkillState: state,
+                skillItemType
+              }),
+              type: skillItemType,
+              levelSkill: state.levelSkill,
+              // originalLevelSkillState: state,
+              levelSkillTreeState: st,
+              disable: skillItemType != 'passive'
+            };
+          });
+          res.push(...p);
+        });
+
+        return res;
+      })();
+    }
+  },
   components: {
     'equipment-fields': vue_equipmentFields,
     'character-stats': vue_characterStats,
-    'character': vue_character
+    'character': vue_character,
+    'skills': vue_skills
   }
 };
 </script>

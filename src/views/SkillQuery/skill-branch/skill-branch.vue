@@ -261,7 +261,7 @@
           <cy-button v-if="branch.group" type="icon-only" @click="toggleGroup()" style="--icon-width: 1.3rem;"
             :iconify-name="branch.group.expansion ? 'mdi-flower-tulip' : 'eva-question-mark-circle-outline'" />
           <div class="text-scope tips">
-            <cy-icon-text iconify-name="bx-bx-message-rounded" class="text-small">
+            <cy-icon-text iconify-name="bx-bx-message-rounded" text-size="small" text-color="light-3">
               <span v-html="showData['text']"></span>
             </cy-icon-text>
           </div>

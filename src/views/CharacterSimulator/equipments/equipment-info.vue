@@ -2,7 +2,8 @@
   <div class="information">
     <div class="title">
       <cy-icon-text class="name" :iconify-name="equipmentData.categoryIcon">
-        {{ equipment.name }}<span class="refining" v-if="equipment.hasRefining && equipment.refining > 0">+{{ equipment.refining | equipmentRefining }}</span>
+        <span>{{ equipment.name }}</span>
+        <span class="refining" v-if="equipment.hasRefining && equipment.refining > 0">+{{ equipment.refining | equipmentRefining }}</span>
       </cy-icon-text>
       <span class="category">{{ equipmentData.categoryText }}</span>
       <cy-button type="icon-only" class="single-line" style="margin-left: auto"
@@ -24,11 +25,15 @@
             <span class="value">{{ equipment.def }}</span>
           </template>
         </div>
-        <div class="stats">
-          <span v-for="stat in equipment.stats"
-            :key="stat.baseName()" class="stat-scope">
-            <cy-icon-text iconify-name="mdi-leaf">{{ stat.show() }}</cy-icon-text>
-          </span>
+        <div class="stats" :class="{ 'stats-disable': statsDisable }">
+          <show-stat v-for="stat in equipment.stats" :stat="stat"
+            :key="`${stat.baseName()}-${stat.type.description}`" />
+        </div>
+        <div v-if="equipment.hasCrystal && equipment.crystals.length > 0" class="crystals">
+          <cy-icon-text v-for="c in equipment.crystals" class="crystal"
+            :key="c.id" :image-path="getCrystalImagePath(c)" type="line">
+            {{ c.name }}
+          </cy-icon-text>
         </div>
       </div>
       <div class="edit" v-else key="edit">
@@ -40,14 +45,14 @@
           </cy-button>
         </div>
         <cy-input-counter v-if="equipment.is == 'weapon'" class="counter"
-          :value="equipment.atk" :range="[equipment.baseAtk, Math.ceil(equipment.baseAtk * 1.1) + 10]"
+          :value="equipment.atk" :range="baseValueRange"
           @set-value="setAtk(equipment, $event)">
           <template v-slot:title>
             <cy-icon-text iconify-name="mdi-sword">ATK</cy-icon-text>
           </template>
         </cy-input-counter>
         <cy-input-counter v-else-if="equipment.is == 'armor'" class="counter"
-          :value="equipment.def" :range="[equipment.baseDef, Math.ceil(equipment.baseDef * 1.1) + 10]"
+          :value="equipment.def" :range="baseValueRange"
           @set-value="setDef(equipment, $event)">
           <template v-slot:title>
             <cy-icon-text iconify-name="mdi-shield">DEF</cy-icon-text>
@@ -61,18 +66,21 @@
           </template>
         </cy-input-counter>
         <div class="crystals" v-if="equipment.hasCrystal">
-          <cy-button v-for="(c, i) in equipment.crystals"
-            :key="c.id" iconify-name="bx-bx-cube-alt" type="line"
-            @click="removeCrystal(i)">
+          <cy-button v-for="c in equipment.crystals"
+            :key="c.id" :image-path="getCrystalImagePath(c)" type="line"
+            @click="editCrystal">
             {{ c.name }}
-            <template v-slot:content-right>
-              <cy-icon-text iconify-name="ic-round-close" />
-            </template>
           </cy-button>
           <cy-button v-if="equipment.crystals.length < 2"
             iconify-name="bx-bx-circle" type="line"
             @click="editCrystal">
             {{ langText('crystal empty') }}
+          </cy-button>
+        </div>
+        <div v-if="equipment.isCustom" class="custom-editor">
+          <cy-button iconify-name="ic-round-edit" type="border"
+            @click="openCustomEquipmentEditor(equipment)">
+            {{ langText('custom equipment editor/window title') }}
           </cy-button>
         </div>
       </div>
@@ -81,52 +89,78 @@
 </template>
 
 <script>
-  export default {
-    props: ['equipment'],
-    inject: ['langText', 'getShowEquipmentData'],
-    data(){
-      return {
-        mode: 0, // 0: normal, 1: edit
-        currentCustomTypeIndex: 0
-      };
-    },
-    filters: {
-      equipmentRefining(v){
-        return v;
-      }
-    },
-    computed: {
-      equipmentData() {
-        return this.getShowEquipmentData(this.equipment);
-      }
-    },
-    methods: {
-      setAtk(eq, v) {
-        eq.atk = v;
-      },
-      setDef(eq, v) {
-        eq.def = v;
-      },
-      setRefining(eq, v) {
-        eq.refining = v;
-      },
-      switchCustomType(){
-        const eq = this.equipment;
-        const len = eq.customTypeList.length;
+import vue_showStat from "./show-stat.vue";
 
-        ++this.currentCustomTypeIndex;
-        if ( this.currentCustomTypeIndex == len )
-          this.currentCustomTypeIndex = 0;
-        eq.setCustomType(eq.customTypeList[this.currentCustomTypeIndex]);
-      },
-      removeCrystal(index){
-        this.equipment.crystals.splice(index, 1);
-      },
-      editCrystal(){
-        this.$emit('open-select-crystal', this.equipment);
-      }
+export default {
+  props: {
+    'equipment': {},
+    'statsDisable': {
+      type: Boolean,
+      default: false
     }
+  },
+  inject: ['langText', 'getShowEquipmentData', 'openCustomEquipmentEditor', 'openSelectCrystals'],
+  data(){
+    return {
+      mode: 0, // 0: normal, 1: edit
+      currentCustomTypeIndex: 0
+    };
+  },
+  filters: {
+    equipmentRefining(v){
+      return v;
+    }
+  },
+  computed: {
+    equipmentData() {
+      return this.getShowEquipmentData(this.equipment);
+    },
+    baseValueRange() {
+      const eq = this.equipment;
+      if (!eq.isCustom) {
+        if (eq.is == 'weapon')
+          return [eq.baseAtk, Math.ceil(eq.baseAtk * 1.1) + 10];
+        else if (eq.is == 'armor')
+          return [eq.baseDef, Math.ceil(eq.baseDef * 1.1) + 10];
+      }
+      return [0, 999];
+    }
+  },
+  methods: {
+    getCrystalImagePath(c) {
+      const type = c.origin.enhancer ? 'enhance' :
+        ['weapon', 'body', 'additional', 'special', 'normal'][c.origin.category];
+      return '/imgs/crystals/' + type + '.png';
+    },
+    setAtk(eq, v) {
+      eq.atk = v;
+    },
+    setDef(eq, v) {
+      eq.def = v;
+    },
+    setRefining(eq, v) {
+      eq.refining = v;
+    },
+    switchCustomType(){
+      const eq = this.equipment;
+      const len = eq.customTypeList.length;
+
+      ++this.currentCustomTypeIndex;
+      if ( this.currentCustomTypeIndex == len )
+        this.currentCustomTypeIndex = 0;
+      eq.setCustomType(eq.customTypeList[this.currentCustomTypeIndex]);
+    },
+    removeCrystal(index){
+      this.equipment.crystals.splice(index, 1);
+    },
+    editCrystal(){
+      this.openSelectCrystals(this.equipment);
+    }
+  },
+  components: {
+    'show-stat': vue_showStat
   }
+}
 </script>
 
 <style lang="less" scoped>
@@ -172,6 +206,7 @@
 
       > .value {
         margin-left: 0.5rem;
+        color: var(--primary-purple);
 
         > .refining {
           color: var(--primary-water-blue);
@@ -186,19 +221,19 @@
 
     > .stats {
       padding-left: 0.3rem;
+
+      &.stats-disable {
+        opacity: 0.5;
+      }
     }
 
-    .stat-scope {
-      display: inline-block;
-      margin-right: 0.6rem;
-
-      @{deep-operator} svg {
-        width: 0.8rem;
-        height: 0.8rem;
-        align-self: flex-end;
-      }
-      @{deep-operator} .text {
-        margin-left: 0.2rem;
+    > .crystals {
+      border-top: 1px solid var(--primary-light);
+      margin-top: 0.4rem;
+      padding-top: 0.2rem;
+      > .crystal {
+        margin: 0.2rem 0;
+        margin-right: 0.6rem;
       }
     }
   }
@@ -208,6 +243,11 @@
     .counter {
       margin: 0 0.3rem;
       margin-bottom: 0.6rem;
+    }
+    > .custom-editor {
+      margin-top: 0.8rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--primary-light);
     }
   }
 }

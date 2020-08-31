@@ -13,11 +13,11 @@ export default {
     init().then(() => next());
   },
   meta: {
-    leftMenuViewButtons: [/*{
+    leftMenuViewButtons: [{
       title: () => GetLang('Page Title/character-simulator'),
       icon: 'gridicons-user',
       path: ''
-    },*/{
+    }, {
       title: () => GetLang('Page Title/skill-simulator'),
       icon: 'bx-bxs-star-half',
       path: '/skill'

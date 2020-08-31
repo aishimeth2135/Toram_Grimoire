@@ -18,7 +18,8 @@
   --white: white;
   --black: black;
   --red: red;
-  --primary-red: red;
+  --primary-red: #f54747;
+  --primary-red-light: #f09797;
 
   --rgb-white: 255, 255, 255;
   --rgb-black: 0, 0, 0;
@@ -49,7 +50,8 @@
   --white: black;
   --black: white;
   --red: red;
-  --primary-red: #f57171;
+  --primary-red: #f09797;
+  --primary-red-light: #f54747;
 
   --rgb-white: 0, 0, 0;
   --rgb-black: 255, 255, 255;
@@ -134,8 +136,8 @@ a {
 
 
 ::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.3rem;
+  height: 0.3rem;
 }
 
 @media screen and (max-width: 30rem) {
@@ -158,4 +160,19 @@ a {
 
 ::-webkit-scrollbar-corner {
   background-color: var(--white);
+}
+
+::-webkit-scrollbar-button {
+  background-color: var(--primary-light-2);
+  border-radius: 0.22rem;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: var(--primary-light-3);
+  }
+
+  @media screen and (max-width: 30rem) {
+    width: 0;
+    height: 0;
+  }
 }
