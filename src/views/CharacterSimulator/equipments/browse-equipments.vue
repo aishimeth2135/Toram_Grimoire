@@ -7,38 +7,45 @@
     </template>
     <template v-slot:default>
       <!-- top -->
-      <cy-flex-layout>
+      <cy-flex-layout class="top">
         <template v-slot:right-content>
           <cy-button iconify-name="ic-round-add-circle-outline"
             type="border"
-            @click="toggleWindowVisible('appendEquipments', true)">
+            @click="toggleMainWindowVisible('appendEquipments', true)">
             {{ langText('browse equipments/append equipment') }}
           </cy-button>
           <cy-button iconify-name="gridicons-create"
             type="border"
-            @click="toggleWindowVisible('createCustomEquipment', true)">
+            @click="toggleMainWindowVisible('createCustomEquipment', true)">
             {{ langText('custom equipment') }}
           </cy-button>
         </template>
       </cy-flex-layout>
       <div class="content">
         <div class="items">
-          <equipment-item v-for="eq in browsedEquipments"
-            :key="eq.iid" :equipment="eq.origin"
-            @click.native="setCurrentEquipment(eq.origin)"
-            :class="{ 'selected': eq.origin == currentEquipment }" />
+          <template v-for="eq in browsedEquipments">
+            <equipment-item v-if="!eq['@disable']" :key="eq.iid"
+              :equipment="eq.origin"
+              @click.native="setCurrentEquipment(eq.origin)"
+              :class="{ 'selected': eq.origin == currentEquipment }" />
+            <equipment-item v-else :key="eq.iid" :equipment="eq.origin"
+              :disable="true" />
+          </template>
         </div>
-        <div class="preview">
-          <div class="info" v-if="currentEquipment">
+        <div class="preview" :class="{ 'unfold': infoUnfold }">
+          <div class="info" v-if="currentEquipment" @click.stop>
             <equipment-info :equipment="currentEquipment" />
           </div>
+          <cy-button iconify-name="mdi-rhombus-outline" type="border"
+            v-if="currentEquipment"
+            class="toggle-unfold-btn" @click="toggleInfoUnfold" />
         </div>
       </div>
       <!-- bottom -->
-      <cy-bottom-content v-if="actionType == 'select-field-equipment' && currentEquipment" class="mt-normal">
-        <template v-slot:normal-content>
+      <cy-bottom-content v-if="actionType == 'select-field-equipment' && currentEquipment">
+        <template #normal-content>
           <cy-flex-layout>
-            <template v-slot:right-content>
+            <template #right-content>
               <cy-button iconify-name="ic-round-done" type="border"
                 @click="selectEquipment">
               {{ globalLangText('global/confirm') }}
@@ -59,10 +66,11 @@ import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib
 
 export default {
   props: ['visible', 'equipments', 'action', 'characterState'],
-  inject: ['langText', 'globalLangText', 'toggleWindowVisible', 'getShowEquipmentData'],
+  inject: ['langText', 'globalLangText', 'toggleMainWindowVisible', 'getShowEquipmentData'],
   data() {
     return {
-      currentEquipment: null
+      currentEquipment: null,
+      infoUnfold: false
     };
   },
   computed: {
@@ -73,15 +81,18 @@ export default {
     },
     browsedEquipments() {
       return this.equipments
-        .filter(p => this.fieldFilter(p))
         .map((p, i) => {
           const t = this.getShowEquipmentData(p);
           t.iid = i;
+          t['@disable'] = !this.fieldFilter(p);
           return t;
         });
     }
   },
   methods: {
+    toggleInfoUnfold() {
+      this.infoUnfold = !this.infoUnfold;
+    },
     selectEquipment() {
       this.action.targetField.setEquipment(this.currentEquipment);
       this.closeWindow();
@@ -123,21 +134,59 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.top {
+  border-bottom: 1px solid var(--primary-light-2);
+  padding-bottom: 0.6rem;
+}
 .content {
   display: flex;
   align-items: flex-start;
-  margin-top: 0.8rem;
+  margin-top: 1rem;
+  position: relative;
 
   > .items {
     width: 20rem;
     margin-right: 1rem;
+    min-height: 15rem;
   }
 
   > .preview {
     width: 20rem;
+
     > .info {
       border: 0.1rem solid var(--primary-light);
       padding: 0.6rem;
+    }
+
+    > .toggle-unfold-btn {
+      display: none;
+    }
+
+    @media screen and (max-width: 40rem) {
+      position: absolute;
+      top: 0;
+      right: -20rem;
+      z-index: 1;
+      background-color: var(--white);
+      transition: 0.4s;
+
+      > .toggle-unfold-btn {
+        display: inline-block;
+        position: absolute;
+        top: -1rem;
+        left: -1.5rem;
+        background-color: var(--white);
+        transition: 0.5s ease;
+      }
+
+      &.unfold {
+        right: 0rem;
+        transition: 0.4s ease;
+
+        > .toggle-unfold-btn {
+          left: 18.5rem;
+        }
+      }
     }
   }
 }

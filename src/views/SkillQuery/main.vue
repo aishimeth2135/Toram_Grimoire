@@ -216,7 +216,7 @@ import init from "./init.js";
 import vue_drawSkillTree from "@views/SkillSimulator/draw-skill-tree.vue";
 import vue_skillBranch from "./skill-branch/skill-branch.vue";
 
-import handleSkillState from "./module/handleSkillState.js";
+import createSkillState from "./module/createSkillState.js";
 import handleFormula from "./module/handleFormula.js";
 
 function Lang(v, vs) {
@@ -618,12 +618,10 @@ export default {
       idx = idx === void 0 ? state.store.length - 1 : idx;
 
       const skill = state.store[idx].skill;
-      this.$set(state.store, idx, {
-        skill,
-        slv: state.skillLevel,
-        clv: state.characterLevel,
-        ...handleSkillState(skill, this.equipmentState)
-      });
+      this.$set(state.store, idx, createSkillState(skill, {
+        defaultSkillLevel: state.skillLevel,
+        defaultCharacterLevel: state.characterLevel
+      }));
     },
     selectSkillTree(idx) {
       this.selectSkillTreeWindowState.currentIndex_st = idx;

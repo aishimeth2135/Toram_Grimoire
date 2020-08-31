@@ -18,21 +18,19 @@ export default {}
   bottom: 0;
   padding: 0.4rem 0;
   background-color: var(--white);
+  margin-top: 1rem;
 
   > .default-content {
     border-top: 1px solid var(--primary-light-3);
     display: flex;
     align-items: center;
     padding: 0.4rem 0.4rem;
+    overflow-y: auto;
   }
 
   > .normal-content {
     border-top: 1px solid var(--primary-light-3);
     padding: 0.4rem 0.4rem;
-  }
-
-  &.mt-normal {
-    margin-top: 1rem;
   }
 }
 </style>

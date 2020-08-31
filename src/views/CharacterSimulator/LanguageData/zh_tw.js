@@ -12,8 +12,8 @@ export default function() {
       'crystal': '鍛晶',
       'crystal empty': '空空的鍛晶',
       'equipment type': '裝備類型',
-      'select equipment type': '選擇裝備類型',
       'custom equipment': '自訂裝備',
+      'custom equipment: default name prefix': '自訂',
       'character field names': {
         'main-weapon': '主手武器',
         'sub-weapon': '副手裝備',
@@ -75,22 +75,53 @@ export default function() {
           'exchange': '交換所兌換'
         }
       },
-      'custom equipment editor': {
-        'select stat: window title': '選擇能力',
-        'select stat: search placeholder': '搜尋能力'
+      'create custom equipment': {
+        'window title': '建立自訂裝備',
+        'select equipment type': '選擇裝備類型',
       },
-      'select crystal': {
-        'title': '選擇鍛晶',
+      'custom equipment editor': {
+        'select stat: window title': '管理裝備能力',
+        'select stat: search placeholder': '搜尋能力',
+        'select stat: current stats': '現存的能力',
+        'select stat: appended stats': '新增的能力',
+        'select stat: deleted stats': '刪除的能力',
+        'equipment name': '裝備名稱',
+        'equipment stats': '裝備能力',
+        'equipment other': '其他',
+        'window title': '編輯自訂裝備'
+      },
+      'select crystals': {
+        'window title': '選擇鍛晶',
+        'search placeholder': '搜尋緞晶',
+        'selected crystals': '已選擇的鍛晶',
         'category title': ['武器', '身體裝備', '追加裝備', '特殊裝備', '通用']
+      },
+      'skill management': {
+        'passive skills': '被動技能',
+        'active skills': '主動技能',
+        'user sets: window title': '參數數值設定',
+        'default name of stack': '技能層數',
+        'default name of skill branch': '技能效果',
+        'formula text': {
+          'target_def': '目標防禦',
+          'target_level': '目標等級'
+        },
+        'suffix branch': {
+          'condition: default': '額外效果'
+        },
+        'no build has been created': '還沒有建立任何配置喔～請先透過左上方的選單進入「技能模擬器」，建立新的技能配置。',
+        'there are no skills yet': '這裡還沒有任何技能喔～'
       },
       'Warn': {
         'no equipment selected': '這個欄位是空的w',
         'no eligible equipments found': '沒有符合條件的裝備～點擊上面的按鈕來新增裝備。',
-        'append equipments: no result found': '找不到任何符合的裝備。換一個搜尋的關鍵字試試～',
+        'no result found': '找不到任何結果0.0',
         'append equipments: search text is empty': '搜尋的關鍵字須至少一個字元。',
         'append equipments: successfully': '已成功新增$0件裝備。',
         'append equipments: clear': '已清除選取的裝備。',
         'clear equipments completed': '清除成功。',
+        'create custom equipment: no equipment type selected': '請先選擇一個裝備類別',
+        'create custom equipment editor: selected stats clear': '已取消更動'
       }
     }
   };

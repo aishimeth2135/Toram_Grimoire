@@ -6,7 +6,7 @@ class CharacterEquipment {
     this.id = id;
     this.name = name;
     this.stats = stats;
-    this.isCustom = false;
+    this._isCustom = false;
   }
   get is() {
     if (this instanceof Weapon)
@@ -23,27 +23,40 @@ class CharacterEquipment {
   get hasCrystal() {
     return false;
   }
-  appendCrystal(id, name, stats) {
-    if (this.hasCrystal) {
-      this.crystals.push(new EquipmentCrystal(id, name, stats));
-    }
-  }
-  removeCrystal(index) {
-    if (this.hasCrystal)
-      this.crystals.splice(index, 1);
+  get hasStability() {
+    return false;
   }
   get allStats() {
     const all = this.stats.map(p => p.copy());
     if (this.hasCrystal) {
-      this.crystals.forEach(p => {
-        const t = all.find(a => a.equals(p));
-        t ? t.addStatValue(p.statValue()) : all.push(p.copy());
+      this.crystals.forEach(c => {
+        c.stats.forEach(stat => {
+          const t = all.find(a => a.equals(stat));
+          t ? t.addStatValue(stat.statValue()) : all.push(stat.copy());
+        });
       });
     }
     return all;
   }
+  get isCustom() {
+    return this._isCustom;
+  }
   setCustom(set) {
-    this.isCustom = set;
+    this._isCustom = set;
+  }
+  findStat(baseName, type) {
+    return this.stats.find(stat => stat.baseName() == baseName && stat.type == type);
+  }
+  appendCrystal(origin, id, name, stats) {
+    if (this.hasCrystal && this.crystals.length < 2) {
+      this.crystals.push(new EquipmentCrystal(origin, id, name, stats));
+    }
+  }
+  removeCrystal(crystal) {
+    if (this.hasCrystal) {
+      const idx = this.crystals.indexOf(crystal);
+      this.crystals.splice(idx, 1);
+    }
   }
 }
 
@@ -57,10 +70,13 @@ class Weapon extends CharacterEquipment {
     this.atk = atk;
     this.stability = stability;
   }
+  get hasStability() {
+    return true;
+  }
 }
 
 class MainWeapon extends Weapon {
-  constructor(id, type, name, stats, atk, stability) {
+  constructor(id, name, stats, type, atk, stability) {
     super(id, name, stats, atk, stability);
 
     this.type = type;
@@ -111,7 +127,7 @@ MainWeapon.TYPE_KATANA = Symbol('katana');
 
 
 class SubWeapon extends Weapon {
-  constructor(id, type, name, stats, atk, stability) {
+  constructor(id, name, stats, type, atk, stability) {
     super(id, name, stats, atk, stability);
 
     this.type = type;
@@ -132,10 +148,10 @@ class Armor extends CharacterEquipment {
 }
 
 class SubArmor extends Armor {
-  constructor(id, name, stats, def) {
+  constructor(id, name, stats, type, def) {
     super(id, name, stats, def);
 
-    this.type = SubArmor.TYPE_SHIELD;
+    this.type = type;
     this.refining = 0;
   }
   get hasRefining() {
@@ -202,7 +218,8 @@ class Avatar extends CharacterEquipment {
 }
 
 class EquipmentCrystal {
-  constructor(id, name, stats) {
+  constructor(origin, id, name, stats) {
+    this.origin = origin;
     this.id = id;
     this.name = name;
     this.stats = stats;

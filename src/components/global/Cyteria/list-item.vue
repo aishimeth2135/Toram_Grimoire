@@ -7,6 +7,7 @@
     <span v-if="$slots['right-content']" class="right-content">
       <slot name="right-content"></slot>
     </span>
+    <slot name="extra"></slot>
   </div>
 </template>
 <script>

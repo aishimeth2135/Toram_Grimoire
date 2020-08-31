@@ -3,25 +3,27 @@
     <div class="window" v-if="visible" @click="closeWindow"
       :class="{ ['vertical-position-' + verticalPosition]: true }">
       <div class="container" @click.stop>
-        <div class="top">
-          <div class="title">
-            <slot name="title"></slot>
+        <cy-button type="icon-only" @click="$emit('close-window')"
+          iconify-name="jam-close-circle-f"
+          class="close-btn" />
+        <div class="container-inner">
+          <div class="top">
+            <div class="title">
+              <slot name="title"></slot>
+            </div>
+            <span class="buttons">
+              <slot name="top-buttons"></slot>
+            </span>
           </div>
-          <span class="buttons">
-            <slot name="top-buttons"></slot>
-            <cy-button v-if="type == 'normal'" type="icon-only" @click="$emit('close-window')"
-              iconify-name="ic:round-close">
+          <div class="content">
+            <slot></slot>
+          </div>
+          <div class="tail" v-if="type == 'confirm'">
+            <cy-button @click="confirmCallback" iconify-name="ic-round-check" text-lang-id="global/confirm">
             </cy-button>
-          </span>
-        </div>
-        <div class="content">
-          <slot></slot>
-        </div>
-        <div class="tail" v-if="type == 'confirm'">
-          <cy-button @click="confirmCallback" iconify-name="ic-round-check" text-lang-id="global/confirm">
-          </cy-button>
-          <cy-button @click="closeWindow" iconify-name="ic-round-close" text-lang-id="global/confirm">
-          </cy-button>
+            <cy-button @click="closeWindow" iconify-name="ic-round-close" text-lang-id="global/confirm">
+            </cy-button>
+          </div>
         </div>
       </div>
     </div>
@@ -73,52 +75,54 @@ export default {
 
   >.container {
     width: 25rem;
+    position: relative;
+    display: inline-block;
     margin: 1rem 0.5rem;
-    border: 1px solid var(--primary-light);
+    padding-top: 0.75rem;
+    border: 0.1rem solid var(--primary-light);
     background-color: var(--white);
-    overflow-y: auto;
-    max-height: calc(100% - 2rem);
-    min-height: 10rem;
 
-    >.top {
-      padding: 0.6rem 1rem;
-      display: flex;
-      align-items: center;
+    > .close-btn {
+      position: absolute;
+      top: -0.75rem;
+      right: -0.75rem;
+      z-index: 1;
+      --icon-width: 1.5rem;
+      padding: 0;
+    }
 
-      >.buttons {
-        margin-left: auto;
-        display: inline-flex;
+    > .container-inner {
+      width: 100%;
+      max-height: calc(100vh - 2.75rem);
+      min-height: 10rem;
+      overflow-y: auto;
+
+      >.top {
+        padding: 0.6rem 1rem;
+        padding-top: 0;
+        display: flex;
         align-items: center;
 
-        >.button {
-          margin-right: 0.3rem;
+        >.buttons {
+          margin-left: auto;
+          display: inline-flex;
+          align-items: center;
+
+          >.button {
+            margin-right: 0.3rem;
+          }
+        }
+
+        >.title {
+          margin: 0.2rem;
+          color: var(--primary-purple);
         }
       }
 
-      >.title {
-        margin: 0.2rem;
-        color: var(--primary-purple);
+      >.content {
+        padding: 1rem;
+        padding-top: 0;
       }
-    }
-
-    >.content {
-      padding: 1rem;
-      padding-top: 0;
-    }
-
-    &::-webkit-scrollbar {
-      width: 0.5rem;
-      height: 0.5rem;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: var(--primary-light-2);
-      border-radius: 0.22rem;
-      transition: 0.3s;
-    }
-
-    &::-webkit-scrollbar-corner {
-      background-color: var(--white);
     }
   }
 
@@ -157,14 +161,8 @@ export default {
 }
 
 @media screen and (max-width: 26rem) {
-  .window>.container {
-    width: 100%;
-
-    &::-webkit-scrollbar {
-      width: 0.2rem;
-      height: 0.2rem;
-      border-radius: 0.1rem;
-    }
+  .window > .container {
+    width: calc(100% - 1rem)!important;
   }
 }
 </style>

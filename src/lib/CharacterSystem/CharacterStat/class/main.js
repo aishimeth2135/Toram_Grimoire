@@ -1,4 +1,5 @@
 import StatBase from "../../module/StatBase.js";
+import { SubWeapon, SubArmor } from "./CharacterEquipment.js";
 
 class Character {
   constructor(name) {
@@ -49,7 +50,9 @@ class Character {
   }
   baseStat(name) {
     if (Character.OPTIONAL_BASE_STAT_LIST.includes(name))
-      return this._optinalBaseStat == null || this._optinalBaseStat.name != name ? null : this._optinalBaseStat;
+      return this._optinalBaseStat == null || this._optinalBaseStat.name != name ?
+        null :
+        this._optinalBaseStat;
     return this._baseStats.find(p => p.name == name);
   }
   baseStatValue(name) {
@@ -58,7 +61,7 @@ class Character {
   }
   checkFieldEquipmentType(field_type, eq_type) {
     const field = this.equipmentField(field_type);
-    if (field.empty())
+    if (field.isEmpty())
       return eq_type == EquipmentField.EMPTY;
 
     const eq = field.equipment;
@@ -68,9 +71,9 @@ class Character {
 Character.OPTIONAL_BASE_STAT_LIST = ['TEC', 'MEN', 'LUK', 'CRT'];
 
 class CharacterBaseStat {
-  constructor(name) {
+  constructor(name, value = 1) {
     this.name = name;
-    this.value = 1;
+    this.value = value;
   }
 }
 
@@ -83,8 +86,18 @@ class EquipmentField {
   setEquipment(eq) {
     this.equipment = eq;
   }
-  empty() {
+  removeEquipment() {
+    this.equipment = null;
+  }
+  isEmpty() {
     return this.equipment == null;
+  }
+  statsDisable() {
+    if (!this.isEmpty() && this.type == EquipmentField.TYPE_SUB_WEAPON) {
+      const eq = this.equipment;
+      return !(eq instanceof SubWeapon) && !(eq instanceof SubArmor);
+    }
+    return false;
   }
 }
 
@@ -179,8 +192,8 @@ class CharacterStat {
 
       return {
         value: Math.floor(value),
-        statValues: res.statValues,
-        hidden: ho == 0 || (ho == 1 && Object.values(res.statValues).every(a => a == 0))
+        statValueParts: res.statValueParts,
+        hidden: ho == 0 || (ho == 1 && Object.values(res.statValueParts).every(a => a == 0))
       };
     } catch (e) {
       console.warn(e);
@@ -338,7 +351,7 @@ class CharacterStatFormula {
 
     return {
       value: defaultFormula ? (res * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : res,
-      statValues: {
+      statValueParts: {
         constant: cvalue,
         multiplier: mvalue,
         total: tvalue

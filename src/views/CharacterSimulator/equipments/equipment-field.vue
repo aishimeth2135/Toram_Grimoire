@@ -5,11 +5,15 @@
         {{ langText('character field names/' + field.type.description) }}
       </cy-icon-text>
       <template v-slot:right-content>
+        <cy-button v-if="!field.isEmpty()"
+          iconify-name="ic-round-close" type="icon-only" class="inline"
+          @click="$emit('remove-field-equipment', field)" />
         <cy-button iconify-name="ic-round-view-list" type="icon-only" class="inline"
           @click="$emit('select-field-equipment', field)" />
       </template>
     </cy-flex-layout>
-    <equipment-info v-if="!field.empty()" :equipment="field.equipment" />
+    <equipment-info v-if="!field.isEmpty()" :equipment="field.equipment"
+      :stats-disable="field.statsDisable()" />
     <cy-default-tips v-else icon-id="potum">
       {{ langText('Warn/no equipment selected') }}
     </cy-default-tips>

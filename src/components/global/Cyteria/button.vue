@@ -3,6 +3,7 @@
     <template v-if="isNormalLayout">
       <iconify-icon v-if="iconifyName" :name="iconifyName" />
       <svg-icon v-if="iconId" :icon-id="iconId" />
+      <image-icon v-if="imagePath" :image-path="imagePath" />
       <span v-if="$slots['default']" class="text">
         <slot></slot>
       </span>
@@ -24,7 +25,7 @@
         <slot name="tail"></slot>
         <span class="content-right" v-if="$slots['content-right']">
           <slot name="content-right"></slot>
-          <cy-icon-text :iconify-name="menuVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" />
+          <!-- <cy-icon-text :iconify-name="'ic-round-keyboard-arrow-' + (menuVisible ? 'up' : 'down')" /> -->
         </span>
       </div>
       <div v-if="type == 'description'" class="description">
@@ -88,6 +89,9 @@
         type: String,
         default: ''
       },
+      imagePath: {
+        default: null
+      },
       menuDefaultVisible: {
         type: Boolean,
         default: false
@@ -141,14 +145,17 @@
     transition: 0.3s;
     --icon-width: 1.2rem;
     font-size: 1rem;
+    flex-shrink: 0;
 
-    > svg, & > .title > svg {
+    > svg, & > .title > svg,
+    > img, & > .title > img {
       fill: currentcolor;
       color: var(--primary-light-2);
       height: var(--icon-width);
       width: var(--icon-width);
       flex-shrink: 0;
       transition: 0.4s;
+      display: block;
     }
 
     @{deep-operator} .text {
@@ -307,7 +314,6 @@
       border-radius: 1rem;
       border: 0.1rem var(--primary-light) solid;
       padding: 0.3rem 0.6rem;
-      padding-right: 0.8rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -331,6 +337,7 @@
 
       .text {
         margin-left: 0.4rem;
+        margin-right: 0.2rem;
       }
     }
 

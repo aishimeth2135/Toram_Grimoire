@@ -1,15 +1,32 @@
-export default function(str, { skillState, effectState, branch }) {
-  if (!str)
+/**
+ *  skillState: Object {
+ *    slv: [Responsive] skill level,
+ *    clv: [Responsive] character level
+ *  }
+ *  effectState: Object {
+ *    stackStates[] {
+ *      id: id from attrs,
+ *      value: [Responsive] value of stack
+ *    }
+ *  }
+ *  branch: SkillBranch
+ */
+export default function (str, { skillState, effectState, branch }) {
+  if (!str) {
+    console.log('input str is empty.');
     return '0';
+  }
   const slv = skillState.slv,
     clv = skillState.clv;
 
   str = str.replace(/SLv/g, slv)
     .replace(/CLv/g, clv);
 
+  let stack = []; // eslint-disable-line
+
   if (branch && branch.attrs['stack_id']) {
     const ss = effectState.stackStates;
-    const stack = branch.attrs['stack_id'].split(/\s*,\s*/) // eslint-disable-line
+    stack = branch.attrs['stack_id'].split(/\s*,\s*/)
       .map(p => parseInt(p, 10))
       .map(p => {
         const t = ss.find(a => a.id == p);

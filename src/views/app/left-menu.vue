@@ -5,7 +5,8 @@
       <div class="menu" v-show="!unfold" @click.stop="menuClick()"
         v-if="viewButtons && viewButtons.length != 0">
         <div class="container">
-          <cy-button v-for="(data) in viewButtons" :iconify-name="data.icon" :key="data.title" type="line" @click="setCurrentView(data)">
+          <cy-button v-for="(data) in viewButtons" :iconify-name="data.icon"
+            :key="data.title" type="line" @click="setCurrentView(data)">
             {{ data.title }}
           </cy-button>
         </div>
@@ -32,7 +33,8 @@ export default {
   },
   methods: {
     setCurrentView(data) {
-      this.$router.replace(data.path);
+      if (this.$router.currentRoute.path != data.path)
+        this.$router.replace(data.path);
     },
     menuClick() {
       this.unfold = !this.screenWidthCheck();

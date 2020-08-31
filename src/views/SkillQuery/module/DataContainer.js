@@ -17,7 +17,7 @@ class DataContainer {
     this._result = _handle(this._result);
   }
   isNumberValue() {
-    return /^-?[\d.]+$/.test(this._value);
+    return /^-?\d+(?:\.\d+)?$/.test(this._value);
   }
   value() {
     return this._value;

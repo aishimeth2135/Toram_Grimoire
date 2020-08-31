@@ -1,12 +1,17 @@
 <template>
-  <div class="cy--input-counter">
-    <slot name="title"></slot>
-    <cy-button class="button" type="icon-only" iconify-name="ic-round-remove-circle-outline"
-      @click="setValue(value - step)" />
-    <input type="number" :value="value" @input="updateValue" />
-    <cy-button class="button" type="icon-only" iconify-name="ic-round-add-circle-outline"
-      @click="setValue(value + step)" />
-    <slot name="unit"></slot>
+  <div class="cy--input-counter" :class="{ 'line': type == 'line' }">
+    <div class="title" v-if="$slots['title']">
+      <slot name="title"></slot>
+    </div>
+    <div class="counter-content">
+      <cy-button class="button" type="icon-only" iconify-name="ic-round-remove-circle-outline"
+        @click="setValue(value - step)" />
+      <input type="number" :value="value" @input="updateValue"
+        @click="selectInput($event)" />
+      <cy-button class="button" type="icon-only" iconify-name="ic-round-add-circle-outline"
+        @click="setValue(value + step)" />
+      <slot name="unit"></slot>
+    </div>
   </div>
 </template>
 <script>
@@ -24,9 +29,17 @@
       'step': {
         type: Number,
         default: 1
+      },
+      type: {
+        type: String,
+        default: 'normal',
+        validation: v => ['normal', 'line'].includes(v)
       }
     },
     methods: {
+      selectInput(e) {
+        e.target.select();
+      },
       setValue(v) {
         v = v || 0;
 
@@ -52,12 +65,27 @@
   border: 1px solid var(--primary-light);
   --input-width: 2rem;
 
-  > input {
-    width: var(--input-width);
-    border: 0;
-    outline: 0;
-    text-align: center;
-    font-size: 1rem;
+  > .title {
+    display: inline-flex;
+    margin-right: 0.8rem;
+  }
+
+  > .counter-content {
+    display: inline-flex;
+    > input {
+      width: var(--input-width);
+      border: 0;
+      outline: 0;
+      text-align: center;
+      font-size: 1rem;
+    }
+  }
+
+  &.line {
+    display: flex;
+    > .counter-content {
+      margin-left: auto;
+    }
   }
 }
 </style>

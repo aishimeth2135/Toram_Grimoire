@@ -16,8 +16,7 @@
       @click="handleFile('load')">
       {{ langText('load from csv') }}
     </cy-button>
-    <cy-window :visible="selectDataWindowVisible" @close-window="closeSelectDataWindow"
-      class="select-data-window">
+    <cy-window :visible="selectDataWindowVisible" @close-window="closeSelectDataWindow">
       <template v-slot:title>
         <cy-icon-text iconify-name="mdi:content-save-outline">
           {{ langText('Save Load: title') }}
@@ -35,16 +34,16 @@
                 {{ name.text }}
               </li>
             </ul>
-            <div class="no-data">
+            <div v-else class="no-data">
               {{ langText('no data') }}
             </div>
           </div>
         </div>
-        <transition name="fade" :key="o.title + 'c2'">
+        <cy-transition type="fade" :key="o.title + 'c2'">
           <div v-if="i == currentButtonIndex" class="tips">
             {{ langText(currentMode == 'save' ? 'Warn/Confirm to overwrite existing data' : 'Warn/Confirm to load data') }}
           </div>
-        </transition>
+        </cy-transition>
       </template>
     </cy-window>
   </div>
@@ -245,43 +244,30 @@ export default {
   }
 };
 </script>
-<style lang="less" scope>
-.select-data-window>.container>.content {
-  &>.column {
-    margin-bottom: 0.5rem;
-    border-left: 3px solid var(--primary-light-2);
-    transition: 0.3s;
-    cursor: pointer;
-    padding: 0.4rem 0.8rem;
+<style lang="less" scoped>
+.column {
+  margin-bottom: 0.5rem;
+  border-left: 3px solid var(--primary-light-2);
+  transition: 0.3s;
+  cursor: pointer;
+  padding: 0.4rem 0.8rem;
 
-    &:hover {
-      border-left-color: var(--primary-light-4);
-    }
-
-    &>.detail>.no-data {
-      text-align: center;
-      padding: 0.6rem;
-      color: var(--primary-light-2);
-    }
+  &:hover {
+    border-left-color: var(--primary-light-4);
   }
 
-  &>.tips {
-    margin-top: 0;
-    margin-bottom: 1rem;
+  > .detail > .no-data {
+    text-align: center;
+    padding: 0.6rem;
     color: var(--primary-light-2);
-    font-size: 0.9rem;
-    padding: 0 0.6rem;
-    opacity: 1;
   }
-
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: 0.3s ease;
-  }
+}
+.tips {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--primary-light-2);
+  font-size: 0.9rem;
+  padding: 0 0.6rem;
+  opacity: 1;
 }
 </style>

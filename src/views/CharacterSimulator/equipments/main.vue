@@ -4,7 +4,8 @@
       <div class="equipment-fields">
         <equipment-field v-for="field in characterState.origin.equipmentFields"
           :key="field.id" :field="field"
-          @select-field-equipment="selectFieldEquipment" />
+          @select-field-equipment="selectFieldEquipment"
+          @remove-field-equipment="removeFieldEquipment" />
       </div>
     </div>
     <div class="window-container">
@@ -16,7 +17,22 @@
         @close="toggleWindowVisible('appendEquipments', false)"
         @append-equipments="appendEquipments" />
       <create-custom-equipment :visible="windowVisible.createCustomEquipment"
-        @close="toggleWindowVisible('createCustomEquipment', false)" />
+        @close="toggleWindowVisible('createCustomEquipment', false)"
+        @append-equipments="appendEquipments" />
+      <cy-window :visible="windowVisible.customEquipmentEditor"
+        @close-window="toggleWindowVisible('customEquipmentEditor', false)">
+        <template #title>
+          <cy-icon-text iconify-name="ic-round-edit">
+            {{ langText('custom equipment editor/window title') }}
+          </cy-icon-text>
+        </template>
+        <custom-equipment-editor v-if="currentCustomEquipment"
+          :equipment="currentCustomEquipment" />
+      </cy-window>
+      <select-crystals v-if="currentSelectCrystalsEquipment"
+        :visible="windowVisible.selectCrystals"
+        :equipment="currentSelectCrystalsEquipment"
+        @close="toggleWindowVisible('selectCrystals', false)" />
     </div>
   </section>
 </template>
@@ -25,6 +41,8 @@ import vue_equipmentField from "./equipment-field.vue";
 import vue_appendEquipments from "./append-equipments.vue";
 import vue_browseEquipments from "./browse-equipments.vue";
 import vue_createCustomEquipment from "./create-custom-equipment.vue";
+import vue_customEquipmentEditor from "./custom-equipment-editor.vue";
+import vue_selectCrystals from "./select-crystals.vue";
 
 import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js";
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
@@ -37,7 +55,9 @@ export default {
     return {
       'convertEquipmentData': this.convertEquipmentData,
       'getShowEquipmentData': this.getShowEquipmentData,
-      'toggleWindowVisible': this.toggleWindowVisible
+      'toggleMainWindowVisible': this.toggleWindowVisible,
+      'openCustomEquipmentEditor': this.openCustomEquipmentEditor,
+      'openSelectCrystals': this.openSelectCrystals
     };
   },
   data() {
@@ -46,14 +66,26 @@ export default {
       windowVisible: {
         browseEquipments: false,
         appendEquipments: false,
-        createCustomEquipment: false
+        createCustomEquipment: false,
+        customEquipmentEditor: false,
+        selectCrystals: false
       },
       browseEquipmentsState: {
         action: null
-      }
+      },
+      currentCustomEquipment: null,
+      currentSelectCrystalsEquipment: null
     };
   },
   methods: {
+    openSelectCrystals(eq) {
+      this.currentSelectCrystalsEquipment = eq;
+      this.toggleWindowVisible('selectCrystals', true);
+    },
+    openCustomEquipmentEditor(eq) {
+      this.currentCustomEquipment = eq;
+      this.toggleWindowVisible('customEquipmentEditor', true);
+    },
     appendEquipments(eqs) {
       this.equipments.push(...eqs);
     },
@@ -63,6 +95,14 @@ export default {
         targetField: field
       };
       this.toggleWindowVisible('browseEquipments', true);
+    },
+    removeFieldEquipment(field) {
+      field.removeEquipment();
+      if (field.type == EquipmentField.TYPE_MAIN_WEAPON) {
+        this.characterState.origin
+          .equipmentField(EquipmentField.TYPE_SUB_WEAPON)
+          .removeEquipment();
+      }
     },
     getShowEquipmentData(o) {
       let category, icon;
@@ -94,6 +134,7 @@ export default {
       //     '拔刀劍', '箭矢', '盾牌', '小刀',
       //     '身體裝備', '追加裝備', '特殊裝備'
       // ]
+      const pre_args = [item.id, item.name, item.stats];
       if (item.category < 9) {
         const t = [
           MainWeapon.TYPE_ONE_HAND_SWORD, MainWeapon.TYPE_TWO_HAND_SWORD,
@@ -103,22 +144,22 @@ export default {
           MainWeapon.TYPE_KATANA
         ][item.category];
 
-        return new MainWeapon(item.id, t, item.name, item.stats, item.baseValue, item.baseStability);
+        return new MainWeapon(...pre_args, t, item.baseValue, item.baseStability);
       }
       if (item.category < 12) {
         const t = [
           SubWeapon.TYPE_ARROW, SubArmor.TYPE_SHIELD, SubWeapon.TYPE_DAGGER
         ][item.category - 9];
         if (item.category == 10)
-          return new SubArmor(item.id, t, item.name, item.stats, item.baseValue);
-        return new SubWeapon(item.id, t, item.name, item.stats, item.baseValue, item.baseStability);
+          return new SubArmor(...pre_args, t, item.baseValue);
+        return new SubWeapon(...pre_args, t, item.baseValue, item.baseStability);
       }
       if (item.category == 12)
-        return new BodyArmor(item.id, item.name, item.stats, item.baseValue);
+        return new BodyArmor(...pre_args, item.baseValue);
       if (item.category == 13)
-        return new AdditionalGear(item.id, item.name, item.stats, item.baseValue);
+        return new AdditionalGear(...pre_args, item.baseValue);
       if (item.category == 14)
-        return new SpecialGear(item.id, item.name, item.stats, item.baseValue);
+        return new SpecialGear(...pre_args, item.baseValue);
     },
     toggleWindowVisible(target, force) {
       force = force === void 0 ? !this.windowVisible[target] : force;
@@ -129,7 +170,9 @@ export default {
     'equipment-field': vue_equipmentField,
     'append-equipments': vue_appendEquipments,
     'browse-equipments': vue_browseEquipments,
-    'create-custom-equipment': vue_createCustomEquipment
+    'create-custom-equipment': vue_createCustomEquipment,
+    'custom-equipment-editor': vue_customEquipmentEditor,
+    'select-crystals': vue_selectCrystals
   }
 }
 </script>

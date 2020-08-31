@@ -20,8 +20,8 @@ export default {
 
         let v = this.calcValueStr(dc.value());
         let sign = '+';
-        if (/^\(?[\d.-]+\)?$/.test(v)) {
-          v = v.replace(/\(?([\d.-]+)\)?/, (m, m1) => m1);
+        if (/^\(?-?[\d.]+\)?$/.test(v)) {
+          v = v.replace(/\(?(-?[\d.]+)\)?/, (m, m1) => m1);
           if (v.charAt(0) == '-') {
             sign = '-';
           }
