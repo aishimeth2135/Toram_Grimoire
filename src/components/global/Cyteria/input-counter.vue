@@ -63,7 +63,7 @@
   padding: 0.3rem 1rem;
   transition: border-color 0.3s;
   border: 1px solid var(--primary-light);
-  --input-width: 2rem;
+  --input-width: 2.1rem;
 
   > .title {
     display: inline-flex;

@@ -44,6 +44,9 @@ class CharacterEquipment {
   setCustom(set) {
     this._isCustom = set;
   }
+  setCustomType(type) {
+    this.type = type;
+  }
   findStat(baseName, type) {
     return this.stats.find(stat => stat.baseName() == baseName && stat.type == type);
   }
@@ -212,8 +215,8 @@ class SpecialGear extends Armor {
 }
 
 class Avatar extends CharacterEquipment {
-  constructor(name, stats) {
-    super(null, name, stats);
+  constructor(id, name, stats) {
+    super(id, name, stats);
   }
 }
 

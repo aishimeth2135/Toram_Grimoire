@@ -29,7 +29,8 @@
           <show-stat v-for="stat in equipment.stats" :stat="stat"
             :key="`${stat.baseName()}-${stat.type.description}`" />
         </div>
-        <div v-if="equipment.hasCrystal && equipment.crystals.length > 0" class="crystals">
+        <div v-if="equipment.hasCrystal && equipment.crystals.length > 0" class="crystals"
+          :class="{ 'stats-disable': statsDisable }">
           <cy-icon-text v-for="c in equipment.crystals" class="crystal"
             :key="c.id" :image-path="getCrystalImagePath(c)" type="line">
             {{ c.name }}
@@ -37,13 +38,15 @@
         </div>
       </div>
       <div class="edit" v-else key="edit">
-        <div v-if="equipment.customTypeList != null">
-          <cy-button iconify-name="mdi-checkbox-multiple-blank-circle" type="with-title"
+        <cy-flex-layout v-if="equipment.customTypeList != null" class="switch-custom-type">
+          <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle" class="mr-normal">
+            {{ langText('equipment type') }}
+          </cy-icon-text>
+          <cy-button type="border" iconify-name="heroicons-solid:switch-vertical"
             @click="switchCustomType">
-            <template v-slot:title>{{ langText('equipment type') }}</template>
             {{ langText('field type text/' + equipment.type.description) }}
           </cy-button>
-        </div>
+        </cy-flex-layout>
         <cy-input-counter v-if="equipment.is == 'weapon'" class="counter"
           :value="equipment.atk" :range="baseValueRange"
           @set-value="setAtk(equipment, $event)">
@@ -220,6 +223,7 @@ export default {
     }
 
     > .stats {
+      margin-top: 0.3rem;
       padding-left: 0.3rem;
 
       &.stats-disable {
@@ -235,10 +239,18 @@ export default {
         margin: 0.2rem 0;
         margin-right: 0.6rem;
       }
+      &.stats-disable {
+        opacity: 0.5;
+      }
     }
   }
   > .edit {
     padding-top: 0.6rem;
+
+    > .switch-custom-type {
+      margin-bottom: 0.5rem;
+      padding-left: 0.3rem;
+    }
 
     .counter {
       margin: 0 0.3rem;
