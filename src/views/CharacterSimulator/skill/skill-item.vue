@@ -45,16 +45,18 @@
     </template>
   </cy-list-item>
   <cy-list-item v-else class="skill-item" :class="{ 'state-disable': levelSkillStateRoot.disable }">
-    <cy-icon-text text-color="purple" class="skill-name"
-      :iconify-name="'ic-round-check-box' + (levelSkillStateRoot.disable ? '-outline-blank' : '')"
-      @click.native.stop="toggleStateRootDisable">
-      {{ levelSkill.base.name }}
-    </cy-icon-text>
-    <template #right-content>
-      <cy-button class="inline" type="icon-only"
-        :iconify-name="'ic-round-keyboard-arrow-' + (extraContentVisible ? 'up' : 'down')"
-        @click="toggleExtraContentVisible" />
-    </template>
+    <cy-flex-layout class="line-content">
+      <cy-icon-text text-color="purple" class="skill-name"
+        :iconify-name="'ic-round-check-box' + (levelSkillStateRoot.disable ? '-outline-blank' : '')"
+        @click.native.stop="toggleStateRootDisable">
+        {{ levelSkill.base.name }}
+      </cy-icon-text>
+      <template #right-content>
+        <cy-button class="inline" type="icon-only"
+          :iconify-name="'ic-round-keyboard-arrow-' + (extraContentVisible ? 'up' : 'down')"
+          @click="toggleExtraContentVisible" />
+      </template>
+    </cy-flex-layout>
     <template #extra v-if="extraContentVisible">
       <cy-transition type="fade" appear>
         <div class="extra-content">

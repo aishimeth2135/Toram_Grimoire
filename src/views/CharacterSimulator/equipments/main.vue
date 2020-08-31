@@ -45,7 +45,7 @@ import vue_customEquipmentEditor from "./custom-equipment-editor.vue";
 import vue_selectCrystals from "./select-crystals.vue";
 
 import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js";
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
 
 
 export default {
@@ -116,6 +116,9 @@ export default {
       } else if (o instanceof SpecialGear) {
         category = this.langText('character field names/' + EquipmentField.TYPE_SPECIAL.description);
         icon = 'fa-solid:ring';
+      } else if (o instanceof Avatar) {
+        category = this.langText('character field names/' + EquipmentField.TYPE_AVATAR.description);
+        icon = 'eva-star-outline';
       } else {
         category = this.langText('field type text/' + o.type.description);
         icon = o instanceof MainWeapon ? 'mdi-sword' : 'mdi-shield';

@@ -123,7 +123,7 @@ export default {
         list: null
       }, {
         id: 'avatar',
-        icon: 'fa-solid:ring',
+        icon: 'eva-star-outline',
         class: Avatar,
         list: null
       }],
@@ -140,7 +140,7 @@ export default {
   methods: {
     getEquipmentTypeText(eq) {
       if (eq) {
-        const ids = ['body-armor', 'additiona', 'special', 'avatar'];
+        const ids = ['body-armor', 'additional', 'special', 'avatar'];
         const idx = [BodyArmor, AdditionalGear, SpecialGear, Avatar]
           .findIndex(p => eq instanceof p);
         return idx != -1 ?

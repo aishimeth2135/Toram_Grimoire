@@ -54,7 +54,7 @@ export default {
   data() {
     return {
       currentCharacterStateIndex: -1,
-      currentSkillBuildIndex: 0,
+      currentSkillBuildIndex: -1,
       contents: [{
         id: 'character-stats',
         icon: 'bx-bxs-user-detail',
@@ -90,6 +90,8 @@ export default {
   },
   created() {
     this.createCharacter();
+    if (this.skillBuilds.length != 0)
+      this.currentSkillBuildIndex = 0;
   },
   computed: {
     ...Vuex.mapState('character', {
@@ -135,6 +137,20 @@ export default {
   },
   methods: {
     /* ==[ character - main ]==========================================*/
+    findSkillById(stc, st, s) {
+      return this.allSkillStates.find(state => {
+        const skill = state.levelSkill.base;
+        if (skill.name == '轉化')
+          console.log(skill);
+        if (skill.id != s)
+          return false;
+        if (skill.parent.id != st)
+          return false;
+        if (skill.parent.parent.id != stc)
+          return false;
+        return true;
+      });
+    },
     handleCharacterStateDatas({
       handlePassiveSkill = false,
       handleActiveSkill = false
@@ -172,13 +188,17 @@ export default {
                 'def': 0
               },
             'arrow': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_ARROW) ?
-              c.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON) :
-              {
+              c.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON) : {
                 'stability': 0,
                 'atk': 0
               },
             'skill': {
-              'Conversion': 0
+              'Conversion': (() => {
+                const skill = this.findSkillById(4, 1, 1);
+                if (!skill)
+                  return 0;
+                return skill.disable ? 0 : skill.levelSkill.level();
+              })()
             }
           },
           '#': {
@@ -502,7 +522,7 @@ export default {
 
         return res;
       })();
-    }
+    },
   },
   components: {
     'equipment-fields': vue_equipmentFields,

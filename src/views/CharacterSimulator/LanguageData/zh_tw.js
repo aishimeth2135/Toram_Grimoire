@@ -110,7 +110,7 @@ export default function() {
           'condition: default': '額外效果'
         },
         'no build has been created': '還沒有建立任何配置喔～請先透過左上方的選單進入「技能模擬器」，建立新的技能配置。',
-        'there are no skills yet': '這裡還沒有任何技能喔～'
+        'there are no skills yet': '這裡還沒有任何技能喔～請注意，要對角色能力有提升的技能才會顯示在這裡。'
       },
       'Warn': {
         'no equipment selected': '這個欄位是空的w',
