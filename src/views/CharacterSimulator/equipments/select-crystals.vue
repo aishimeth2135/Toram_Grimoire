@@ -133,7 +133,7 @@ export default {
   methods: {
     checkEnchaner(category, crystal) {
       const find = name => category.crystals.find(c => c.name == name);
-      return !this.equipment.crystals.find(c => {
+      const check1 = !this.equipment.crystals.find(c => {
         let cur = c.origin;
         while (cur.enhancer) {
           cur = find(cur.enhancer);
@@ -143,6 +143,19 @@ export default {
             return true;
         }
       });
+      const findByEnhancer = name => category.crystals.find(c => c.enhancer == name);
+      const check2 = !this.equipment.crystals.map(c => c.origin).find(c => {
+        let cur = c;
+        while (true) { // eslint-disable-line
+          cur = findByEnhancer(cur.name);
+          if (!cur)
+            break;
+          if (cur.name == crystal.name)
+            return true;
+        }
+      });
+
+      return check1 && check2;
     },
     getCrystalImagePath(c) {
       const type = c.enhancer ? 'enhance' :

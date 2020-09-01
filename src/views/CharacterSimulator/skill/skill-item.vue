@@ -1,9 +1,16 @@
 <template>
   <cy-list-item v-if="disable" class="skill-item">
-    <cy-icon-text iconify-name="gg-shape-rhombus"
-      icon-color="gray-light" text-color="gray">
-      {{ levelSkill.base.name }}
-    </cy-icon-text>
+    <cy-flex-layout class="line-content">
+      <cy-icon-text iconify-name="gg-shape-rhombus"
+        icon-color="gray-light" text-color="gray">
+        <span class="skill-icon-container">
+          <img :src="skillIconPath" class="skill-icon">
+        </span>
+      </cy-icon-text>
+      <div class="skill-disable-tips">
+        {{ langText('skill management/skill disable') }}
+      </div>
+    </cy-flex-layout>
   </cy-list-item>
   <cy-list-item v-else-if="branchStates.length == 1"
     class="skill-item" :class="{ 'state-disable': levelSkillStateRoot.disable }">
@@ -11,7 +18,9 @@
       <cy-icon-text text-color="purple" class="name skill-name"
         :iconify-name="'ic-round-check-box' + (levelSkillStateRoot.disable ? '-outline-blank' : '')"
         @click.native.stop="toggleStateRootDisable">
-        {{ levelSkill.base.name }}
+        <span class="skill-icon-container">
+          <img :src="skillIconPath" class="skill-icon">
+        </span>
       </cy-icon-text>
       <div class="branch-content">
         <div v-if="firstBranchState.handler.infoType == 'caption'"
@@ -49,8 +58,15 @@
       <cy-icon-text text-color="purple" class="skill-name"
         :iconify-name="'ic-round-check-box' + (levelSkillStateRoot.disable ? '-outline-blank' : '')"
         @click.native.stop="toggleStateRootDisable">
-        {{ levelSkill.base.name }}
+        <span class="skill-icon-container">
+          <img :src="skillIconPath" class="skill-icon">
+        </span>
       </cy-icon-text>
+      <div class="branch-content">
+        <div class="caption">
+          {{ langText('skill management/skill multiple effects') }}
+        </div>
+      </div>
       <template #right-content>
         <cy-button class="inline" type="icon-only"
           :iconify-name="'ic-round-keyboard-arrow-' + (extraContentVisible ? 'up' : 'down')"
@@ -60,9 +76,12 @@
     <template #extra v-if="extraContentVisible">
       <cy-transition type="fade" appear>
         <div class="extra-content">
-          <div v-for="branchState in branchStates" :key="branchState.iid" class="branch">
+          <div v-for="branchState in branchStates" :key="branchState.iid" class="branch"
+            :class="{ 'state-disable': !levelSkillStateRoot.disable && branchState.disable }">
             <cy-flex-layout class="line-content">
-              <cy-icon-text text-color="purple" iconify-name="gg-shape-rhombus" class="name">
+              <cy-icon-text text-color="purple" class="name skill-name"
+                :iconify-name="'ic-round-check-box' + (branchState.disable ? '-outline-blank' : '')"
+                @click.native="toggleBranchStateDisable(branchState)">
                 {{ branchState.origin.attrs['name'] || langText('skill management/default name of skill branch') }}
               </cy-icon-text>
               <div class="branch-content">
@@ -92,6 +111,7 @@
 </template>
 <script>
 import vue_showStatDatas from "./show-stat-datas.vue";
+import { getSkillIconPath } from "@lib/SkillSystem/module/DrawSkillTree.js";
 
 export default {
   props: ['levelSkillStateRoot'],
@@ -102,6 +122,9 @@ export default {
     }
   },
   computed: {
+    skillIconPath() {
+      return getSkillIconPath(this.levelSkill.base);
+    },
     hasExtraContent() { // only for if (branchStates.length == 1)
       return this.firstBranchState.handler.value.conditionDatas.length != 0;
     },
@@ -125,6 +148,9 @@ export default {
     toggleExtraContentVisible() {
       this.extraContentVisible = !this.extraContentVisible;
     },
+    toggleBranchStateDisable(state) {
+      state.disable = !state.disable;
+    },
     toggleStateRootDisable() {
       this.levelSkillStateRoot.disable = !this.levelSkillStateRoot.disable;
     }
@@ -139,10 +165,10 @@ export default {
 
 .skill-item {
   cursor: auto;
+}
 
-  &.state-disable {
-    opacity: 0.7;
-  }
+.state-disable {
+  opacity: 0.7;
 }
 
 .line-content {
@@ -215,5 +241,19 @@ export default {
 .condition-container {
   padding: 0.2rem 0;
   padding-left: 0.4rem;
+}
+
+.skill-icon-container {
+  margin-left: 0.3rem;
+  .skill-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    display: block;
+  }
+}
+
+.skill-disable-tips {
+  padding-left: 0.8rem;
+  color: var(--primary-gray);
 }
 </style>

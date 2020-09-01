@@ -5,7 +5,9 @@
         :character-state="currentCharacterState"
         :show-character-stat-datas="showCharacterStatDatas" />
       <character v-if="currentContentIndex == 1" :character-state="currentCharacterState" />
-      <equipment-fields v-if="currentContentIndex == 2" :character-state="currentCharacterState" />
+      <keep-alive>
+        <equipment-fields v-if="currentContentIndex == 2" :character-state="currentCharacterState" />
+      </keep-alive>
       <keep-alive>
         <skills v-if="currentContentIndex == 3"
           :character-state="currentCharacterState"
@@ -140,8 +142,6 @@ export default {
     findSkillById(stc, st, s) {
       return this.allSkillStates.find(state => {
         const skill = state.levelSkill.base;
-        if (skill.name == '轉化')
-          console.log(skill);
         if (skill.id != s)
           return false;
         if (skill.parent.id != st)
@@ -163,6 +163,9 @@ export default {
       categoryList.map(p => p.stats).flat().forEach(p => characterStatMap[p.id] = p)
 
       const c = this.currentCharacterState.origin;
+
+      const is_dual_sword = c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD) && c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD);
+
       const vars = {
         value: {
           '@': {
@@ -208,15 +211,14 @@ export default {
         },
         conditional: {
           '@': {
-            '1h_sword': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD),
+            '1h_sword': !is_dual_sword && c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD),
             '2h_sword': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_TWO_HAND_SWORD),
             'bow': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_BOW),
             'bowgun': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_BOWGUN),
             'staff': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_STAFF),
             'magic_device': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_MAGIC_DEVICE),
             'knuckle': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_KNUCKLE),
-            'dual_sword': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD) &&
-              c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD),
+            'dual_sword': is_dual_sword,
             'halberd': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_HALBERD),
             'katana': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_KATANA),
             'main': {
@@ -266,6 +268,7 @@ export default {
           const state = this.getValidLevelSkillState(levelSkillStateRoot);
           if (state) {
             state.branchStates
+              .filter(bs => !bs.disable)
               .forEach(bs => {
                 const v = bs.handler.value;
                 if (v.stats.length != 0)
@@ -351,7 +354,8 @@ export default {
               const res = {
                 iid: counter,
                 origin: bch,
-                handler
+                handler,
+                disable: false
               };
               ++counter;
 
@@ -407,9 +411,14 @@ export default {
         bodyField = chara.equipmentField(EquipmentField.TYPE_BODY_ARMOR);
 
       if (!mainField.isEmpty()) {
-        main = mains.indexOf(mainField.equipment.type);
+        if (mainField.equipment.type == MainWeapon.TYPE_ONE_HAND_SWORD &&
+            !subField.isEmpty() &&
+            subField.equipment.type == MainWeapon.TYPE_ONE_HAND_SWORD)
+          main = 9;
+        else
+          main = mains.indexOf(mainField.equipment.type);
       }
-      if (!subField.isEmpty()) {
+      if (!subField.isEmpty() && main != 9) {
         sub = subs.indexOf(subField.equipment.type);
       }
       if (!bodyField.isEmpty()) {
