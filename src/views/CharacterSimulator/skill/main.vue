@@ -103,6 +103,14 @@ export default {
       'openUserSetsWindow': this.openUserSetsWindow
     };
   },
+  created() {
+    if (this.skillBuilds.length != 0)
+      this.selectCurrentBuild(0);
+  },
+  updated() {
+    if (this.skillBuilds.length != 0 && this.currentSkillBuildIndex < 0)
+      this.selectCurrentBuild(0);
+  },
   computed: {
     ...Vuex.mapState('character', {
       'skillBuilds': 'skillBuilds'

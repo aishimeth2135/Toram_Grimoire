@@ -197,7 +197,7 @@ class SkillBranchHandler {
 
       return {
         text: sd.title + dc.result(),
-        value: sign == '+' ? v * 1 : v * -1,
+        value: parseFloat(v),
         origin: p,
         iid: i
       };

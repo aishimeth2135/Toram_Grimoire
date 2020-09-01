@@ -244,4 +244,4 @@ function getSkillIconPatternId(skill) {
   return `skill-icon-pattern--${skill.parent.parent.id}-${skill.parent.id}-${skill.id}`;
 }
 
-export { createDrawSkillTreeDefs, computeDrawSkillTreeData, getSkillIconPatternData, GetDrawSetting };
+export { createDrawSkillTreeDefs, computeDrawSkillTreeData, getSkillIconPatternData, GetDrawSetting, getSkillIconPath };

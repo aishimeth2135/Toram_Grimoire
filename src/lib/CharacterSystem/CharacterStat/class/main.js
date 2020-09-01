@@ -220,20 +220,19 @@ class CharacterStatFormula {
   }
   calc(simple_stats, vars) {
     const reduceValue = v => { // eslint-disable-line
-      let p = 1,
-        res = 0;
-
       const neg = v < 0;
       v = Math.abs(v);
 
+      let p = 1, res = neg ? 100 : 0;
+
       while (v != 0) {
         const t = Math.min(v, 50);
-        res += neg ? t / p : t * p;
+        res = neg ? res * (100 + t) / 100 : res + t / p;
         v -= t;
-        ++p;
+        p *= 2;
       }
 
-      return neg ? -1 * res : res;
+      return neg ? -1 * (res - 100) : res;
     };
 
     const safeEval = (v, dv) => {

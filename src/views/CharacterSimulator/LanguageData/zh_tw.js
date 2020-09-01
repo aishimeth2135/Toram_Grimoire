@@ -102,6 +102,8 @@ export default function() {
         'user sets: window title': '參數數值設定',
         'default name of stack': '技能層數',
         'default name of skill branch': '技能效果',
+        'skill disable': '裝備不符。',
+        'skill multiple effects': '包含多個效果。',
         'formula text': {
           'target_def': '目標防禦',
           'target_level': '目標等級'
