@@ -29,6 +29,7 @@ class Character {
       EquipmentField.TYPE_ADDITIONAL,
       EquipmentField.TYPE_SPECIAL,
       EquipmentField.TYPE_AVATAR,
+      EquipmentField.TYPE_AVATAR,
       EquipmentField.TYPE_AVATAR
     ].map((p, i) => new EquipmentField(i, p)));
 
@@ -41,6 +42,9 @@ class Character {
     const t = this.equipmentField(type);
     return t ? (t.equipment || void 0) : void 0;
   }
+  hasOptinalBaseStat() {
+    return this._optinalBaseStat ? true : false;
+  }
   setOptinalBaseStat(name) {
     const list = Character.OPTIONAL_BASE_STAT_LIST;
     if (!list.includes(name))
@@ -48,11 +52,13 @@ class Character {
 
     this._optinalBaseStat = new CharacterBaseStat(name);
   }
+  clearOptinalBaseStat() {
+    this._optinalBaseStat = null;
+  }
   baseStat(name) {
     if (Character.OPTIONAL_BASE_STAT_LIST.includes(name))
       return this._optinalBaseStat == null || this._optinalBaseStat.name != name ?
-        null :
-        this._optinalBaseStat;
+        null : this._optinalBaseStat;
     return this._baseStats.find(p => p.name == name);
   }
   baseStatValue(name) {
@@ -159,12 +165,12 @@ class CharacterStatCategory {
 
 
 class CharacterStat {
-  constructor(cat, id, name, unit, link, max, min, caption, hidden_option) {
+  constructor(cat, id, name, displayFormula, link, max, min, caption, hidden_option) {
     this.category = cat;
 
     this.id = id;
     this.name = name;
-    this.unit = unit;
+    this.displayFormula = displayFormula;
     this.link = link;
     this.max = max;
     this.min = min;
@@ -183,17 +189,33 @@ class CharacterStat {
     try {
       const res = this._formula.calc(character_simple_stats, vars);
       let value = res.value;
+      if (typeof value != 'number')
+        value = parseFloat(value);
       if (this.max != null && value > this.max)
         value = this.max;
       if (this.min != null && value < this.min)
         value = this.min;
 
       const ho = this.options.hidden;
+      let displayFormula = this.displayFormula;
+      if (!displayFormula.match(/\$(?:\.\d)?v/)) {
+        displayFormula = '$v' + displayFormula;
+      }
+      const displayValue = displayFormula.replace(/\$(?:\.(\d))?v/, (m, m1) => {
+        return m1 !== void 0 ?
+          value.toFixed(parseInt(m1, 10)) :
+          Math.floor(value);
+      });
 
       return {
-        value: Math.floor(value),
+        origin: this,
+        value,
+        displayValue,
         statValueParts: res.statValueParts,
-        hidden: ho == 0 || (ho == 1 && Object.values(res.statValueParts).every(a => a == 0))
+        statPartsDetail: res.statPartsDetail,
+        hidden: ho == 0 ||
+          (ho == 1 && Object.values(res.statValueParts).every(a => a == 0)) ||
+          (ho == 2 && value == 0)
       };
     } catch (e) {
       console.warn(e);
@@ -268,6 +290,21 @@ class CharacterStatFormula {
 
     let defaultFormula = true;
 
+    const statPartsDetail = {
+      additionalValues: {
+        constant: [],
+        multiplier: [],
+        total: [],
+        base: []
+      },
+      initValue: {
+        constant: cvalue,
+        multiplier: mvalue,
+        total: tvalue,
+        base: 0
+      }
+    }
+
     const handleFormula = f => {
       // console.group('formula: before: ', f);
       f = f
@@ -313,6 +350,7 @@ class CharacterStatFormula {
             return t ? 'true' : 'false';
           });
         return {
+          conditional: p.conditional,
           result: safeEval(c, true),
           formula: p.formula,
           statBasePart
@@ -324,37 +362,53 @@ class CharacterStatFormula {
       const t = p.statBasePart,
         f = p.formula.replace(/#([a-zA-Z0-9_.]+)/g, '0'); // 不應該有#變數
       const v = handleFormula(f);
+      const data = {
+        conditional: p.conditional,
+        value: v
+      };
       switch (t) {
         case 'cvalue':
           cvalue += v;
+          statPartsDetail.additionalValues.constant.push(data);
           break;
         case 'mvalue':
           mvalue += v;
+          statPartsDetail.additionalValues.multiplier.push(data);
           break;
         case 'tvalue':
           tvalue += v;
+          statPartsDetail.additionalValues.total.push(data);
           break;
       }
     });
 
     const additonal_values = conditions
       .filter(p => p.statBasePart == null)
-      .map(p => p.formula);
+      .map(p => {
+        const v = handleFormula(p.formula);
+        statPartsDetail.additionalValues.base.push({
+          conditional: p.conditional,
+          value: v
+        });
+        return v;
+      });
 
-    const res = [this.formula || '0', ...additonal_values]
-      .reduce((cur, f) => {
-        const v = handleFormula(f);
-        // console.log('%c' + v, 'color: white; background-color: blue');
-        return cur + v;
-      }, 0);
+    const basev = this.formula ? handleFormula(this.formula) : 0;
+    const res = [basev, ...additonal_values]
+      .reduce((cur, v) => cur + v, 0);
+
+    if (defaultFormula)
+      statPartsDetail.initValue['base'] = basev;
 
     return {
       value: defaultFormula ? (res * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : res,
       statValueParts: {
+        base: res,
         constant: cvalue,
         multiplier: mvalue,
         total: tvalue
-      }
+      },
+      statPartsDetail
     };
   }
 }

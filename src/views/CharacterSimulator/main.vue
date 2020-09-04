@@ -292,8 +292,7 @@ export default {
           return {
             id: a.id,
             name: a.name,
-            value: res.value + a.unit,
-            hidden: res.hidden
+            ...res
           };
         })
       })).filter(a => a.stats.length != 0);
@@ -425,6 +424,9 @@ export default {
         body = bodys.indexOf(bodyField.equipment.type);
       }
 
+      console.log(eq, skillState);
+      console.log({ main, sub, body });
+
       const eqs = { main, sub, body };
       /* 通用 */
       if ([eq.main, eq.sub, eq.body].every(p => p == -1))
@@ -446,11 +448,11 @@ export default {
 
       // and
       if (eq.operator === 1) {
-        if (eqs.main != eq.main || for_dual_sword)
+        if (eq.main != -1 && eqs.main != eq.main || for_dual_sword)
           return false;
-        if (eqs.sub != eq.sub)
+        if (eq.sub != -1 && eqs.sub != eq.sub)
           return false;
-        if (eqs.body != eq.body)
+        if (eq.body != -1 && eqs.body != eq.body)
           return false;
         return true;
       }
