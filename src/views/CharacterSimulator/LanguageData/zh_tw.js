@@ -13,6 +13,7 @@ export default function() {
       'crystal empty': '空空的鍛晶',
       'equipment type': '裝備類型',
       'custom equipment': '自訂裝備',
+      'character optional base stat': '角色個人能力',
       'custom equipment: default name prefix': '自訂',
       'character field names': {
         'main-weapon': '主手武器',
@@ -113,6 +114,38 @@ export default function() {
         },
         'no build has been created': '還沒有建立任何配置喔～請先透過左上方的選單進入「技能模擬器」，建立新的技能配置。',
         'there are no skills yet': '這裡還沒有任何技能喔～請注意，要對角色能力有提升的技能才會顯示在這裡。'
+      },
+      'show character stats': {
+        'base value': '基礎值',
+        'init value': '初始值',
+        'text of conditional values': {
+          '1h_sword': '主手單手劍',
+          '2h_sword': '雙手劍',
+          'bow': '弓',
+          'bowgun': '弩',
+          'staff': '法杖',
+          'magic_device': '主手魔導具',
+          'knuckle': '主手拳套',
+          'dual_sword': '雙劍',
+          'halberd': '旋風槍',
+          'katana': '拔刀劍',
+          'main': {
+            'none': '主手空手'
+          },
+          'sub': {
+            'magic_device': '副手魔導具',
+            'knuckle': '副手拳套',
+            'arrow': '箭矢',
+            'dagger': '小刀',
+            'shield': '盾牌'
+          },
+          'armor': {
+            'normal': '身體防具一般',
+            'dodge': '身體防具輕量化',
+            'defense': '身體防具重量化',
+            'none': '無裝備身體防具'
+          }
+        }
       },
       'Warn': {
         'no equipment selected': '這個欄位是空的w',

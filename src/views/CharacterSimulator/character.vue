@@ -23,18 +23,48 @@
       </cy-input-counter>
       <br :key="baseStat.name + '-br'" />
     </template>
+    <div class="select-optional-base-stat-title">
+      <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
+        text-size="small" text-color="purple">
+        {{ langText('character optional base stat') }}
+      </cy-icon-text>
+    </div>
+    <cy-flex-layout>
+      <cy-button type="border" iconify-name="ic-round-close"
+        :selected="!character.hasOptinalBaseStat()"
+        @click="clearOptionalBaseStat">
+        {{ globalLangText('global/none') }}
+      </cy-button>
+      <cy-button v-for="p in characterOptionalBaseStatList"
+        iconify-name="mdi-checkbox-multiple-blank-circle-outline"
+        :selected="character.baseStat(p) ? true : false"
+        type="border" :key="p" @click="setOptionalBaseStat(p)">
+        {{ p }}
+      </cy-button>
+    </cy-flex-layout>
   </section>
 </template>
 <script>
+import { Character } from "@lib/CharacterSystem/CharacterStat/class/main.js";
+
 export default {
   props: ['characterState'],
-  inject: ['langText'],
+  inject: ['globalLangText', 'langText'],
   computed: {
     character() {
       return this.characterState.origin;
+    },
+    characterOptionalBaseStatList() {
+      return Character.OPTIONAL_BASE_STAT_LIST;
     }
   },
   methods: {
+    setOptionalBaseStat(name) {
+      this.character.setOptinalBaseStat(name);
+    },
+    clearOptionalBaseStat() {
+      this.character.clearOptinalBaseStat();
+    },
     setLevel(v) {
       this.character.level = v;
     },
@@ -47,5 +77,13 @@ export default {
 <style lang="less" scoped>
 .counter {
   margin: 0.4rem;
+}
+
+.select-optional-base-stat-title {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--primary-light);
+  margin-bottom: 0.3rem;
+  padding-left: 0.2rem;
 }
 </style>
