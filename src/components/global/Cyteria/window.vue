@@ -78,14 +78,12 @@ export default {
     position: relative;
     display: inline-block;
     margin: 1rem 0.5rem;
-    padding-top: 0.75rem;
-    border: 0.1rem solid var(--primary-light);
-    background-color: var(--white);
+    height: calc(100% - 2rem);
 
     > .close-btn {
       position: absolute;
       top: -0.75rem;
-      right: -0.75rem;
+      right: -0.8rem;
       z-index: 1;
       --icon-width: 1.5rem;
       padding: 0;
@@ -93,9 +91,12 @@ export default {
 
     > .container-inner {
       width: 100%;
-      max-height: calc(100vh - 2.75rem);
       min-height: 10rem;
       overflow-y: auto;
+      max-height: 100%;
+      padding-top: 0.75rem;
+      border: 0.1rem solid var(--primary-light);
+      background-color: var(--white);
 
       >.top {
         padding: 0.6rem 1rem;

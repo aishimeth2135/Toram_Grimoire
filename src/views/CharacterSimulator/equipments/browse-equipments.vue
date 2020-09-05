@@ -24,12 +24,10 @@
       <div class="content">
         <div class="items">
           <template v-for="eq in browsedEquipments">
-            <equipment-item v-if="!eq['@disable']" :key="eq.iid"
-              :equipment="eq.origin"
-              @click.native="setCurrentEquipment(eq.origin)"
-              :class="{ 'selected': eq.origin == currentEquipment }" />
-            <equipment-item v-else :key="eq.iid" :equipment="eq.origin"
-              :disable="true" />
+            <equipment-item :key="eq.iid" :equipment="eq.origin"
+              @click.native="setCurrentEquipment(eq.origin, eq['@disable'])"
+              :selected="eq.origin == currentEquipment"
+              :disable="eq['@disable']" />
           </template>
         </div>
         <div class="preview" :class="{ 'unfold': infoUnfold }">
@@ -42,7 +40,8 @@
         </div>
       </div>
       <!-- bottom -->
-      <cy-bottom-content v-if="actionType == 'select-field-equipment' && currentEquipment">
+      <cy-bottom-content v-if="actionType == 'select-field-equipment' && currentEquipment &&
+        !currentEquipmentDisable">
         <template #normal-content>
           <cy-flex-layout>
             <template #right-content>
@@ -70,6 +69,7 @@ export default {
   data() {
     return {
       currentEquipment: null,
+      currentEquipmentDisable: false,
       infoUnfold: false
     };
   },
@@ -104,8 +104,9 @@ export default {
     clearCurrentEquipment() {
       this.currentEquipment = null;
     },
-    setCurrentEquipment(eq) {
+    setCurrentEquipment(eq, disable=false) {
       this.currentEquipment = eq;
+      this.currentEquipmentDisable = disable;
     },
     fieldFilter(eq) {
       switch (this.action.targetField.type) {

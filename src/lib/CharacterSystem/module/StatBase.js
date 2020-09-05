@@ -112,6 +112,10 @@ class StatBase {
   createSimpleStat(type, v) {
     return new SimpleStat(this, type, v);
   }
+  checkBoolStat(type) {
+    type = type || StatBase.TYPE_CONSTANT;
+    return type == StatBase.TYPE_CONSTANT && this.attributes['constant_formula'] == '$t';
+  }
 }
 
 StatBase.TYPE_CONSTANT = Symbol('constant');
@@ -132,6 +136,11 @@ class SimpleStat {
     this.type = type;
     this.value = v;
   }
+
+  get isBoolStat() {
+    return this.base.checkBoolStat(this.type);
+  }
+
   show(config, v) {
     if (v === void 0)
       v = this.value;

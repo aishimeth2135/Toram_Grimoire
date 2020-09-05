@@ -131,7 +131,7 @@ export default {
         .replace(/\s+/g, '')
         .replace(/(?:&&|\|\|)#[cmt]value/g, '')
         .replace(/#[cmt]value(?:&&|\|\|)/g, '')
-        .replace(/@([a-zA-Z.]+)/g, (m, m1) => {
+        .replace(/@([a-zA-Z._]+)/g, (m, m1) => {
           m1 = m1.replace(/\./g, '/');
           return this.localLangText('text of conditional values/' + m1) + ',';
         })
@@ -226,7 +226,8 @@ export default {
 
   > .additinal-values {
     padding-left: 0.6rem;
-    margin-top: 0.2rem;
+    margin-top: 0.1rem;
+    padding-bottom: 0.2rem;
 
     > .line {
       display: flex;

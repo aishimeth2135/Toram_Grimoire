@@ -1,5 +1,5 @@
 <template>
-  <cy-list-item class="main--equipment-item">
+  <cy-list-item class="main--equipment-item" :selected="selected">
     <cy-icon-text v-if="!disable" :iconify-name="equipmentData.categoryIcon">
       {{ equipment.name }}
     </cy-icon-text>
@@ -16,7 +16,8 @@
       'disable': {
         type: Boolean,
         default: false
-      }
+      },
+      'selected': {}
     },
     inject: ['getShowEquipmentData'],
     computed: {

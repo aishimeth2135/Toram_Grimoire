@@ -89,7 +89,8 @@ export default function() {
         'equipment name': '裝備名稱',
         'equipment stats': '裝備能力',
         'equipment other': '其他',
-        'window title': '編輯自訂裝備'
+        'window title': '編輯自訂裝備',
+        'equipment can only have one element stat': '一件裝備只能擁有一個屬性'
       },
       'select crystals': {
         'window title': '選擇鍛晶',

@@ -18,6 +18,7 @@
         :key="`${stat.baseName()}-${stat.type.description}`">
         <cy-input-counter :value="stat.statValue()"
           type="line" class="set-stat-value"
+          :range="stat.isBoolStat ? [1, 1] : [null, null]"
           @set-value="setStatValue(stat, $event)">
           <template v-slot:title>
             <cy-icon-text iconify-name="mdi-rhombus-outline">
@@ -55,10 +56,8 @@
         </cy-icon-text>
       </template>
       <cy-title-input iconify-name="ic-outline-category" class="search-stat-input">
-        <input type="text"
-          ref="stat-search-input"
-          :placeholder="langText('custom equipment editor/select stat: search placeholder')"
-          @input="updateStatSearchResult" />
+        <input type="text" v-model="searchText"
+          :placeholder="langText('custom equipment editor/select stat: search placeholder')" />
       </cy-title-input>
       <template v-if="statsSearchResult.length != 0">
         <cy-list-item v-for="stat in statsSearchResult"
@@ -203,7 +202,7 @@ import ShowMessage from "@global-modules/ShowMessage.js";
 
 export default {
   props: ['equipment'],
-  inject: ['langText', 'globalLangText'],
+  inject: ['langText', 'globalLangText', 'isElementStat'],
   data() {
     const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
     Grimoire.CharacterSystem.statList.forEach(stat => {
@@ -219,7 +218,7 @@ export default {
     });
 
     return {
-      statsSearchResult: stats,
+      searchText: '',
       selectStatWindowVisible: false,
       selectStatDetailVisible: false,
       stats,
@@ -228,12 +227,23 @@ export default {
     }
   },
   computed: {
+    statsSearchResult() {
+      if (this.searchText == '') {
+        return this.elementFilterStats;
+      }
+      return this.elementFilterStats.filter(stat => stat.origin.title().includes(this.searchText));
+    },
     hasOther() {
       return this.equipment.hasStability;
     },
     equipmentStatsDatas() {
       return this.stats.filter(stat => this.equipment.findStat(stat.origin.baseName, stat.type));
-    }
+    },
+    elementFilterStats() {
+      return !this.equipment.hasElement ?
+        this.stats.filter(p => !this.isElementStat(p.origin.baseName)) :
+        this.stats;
+    },
   },
   methods: {
     setStability(v) {
@@ -264,7 +274,8 @@ export default {
         stats.splice(idx, 1);
       });
       this.appendedStats.forEach(p => {
-        const stat = p.origin.createSimpleStat(p.type, 0);
+        const v = p.origin.checkBoolStat() ? 1 : 0;
+        const stat = p.origin.createSimpleStat(p.type, v);
         stats.push(stat);
       });
       this.deletedStats = [];
@@ -279,9 +290,20 @@ export default {
       } else if (deletedIdx != -1) {
         this.deletedStats.splice(deletedIdx, 1);
       } else {
-        this.equipment.findStat(stat.origin.baseName, stat.type) ?
-          this.deletedStats.push(stat) :
-          this.appendedStats.push(stat);
+        if (this.equipment.findStat(stat.origin.baseName, stat.type))
+          this.deletedStats.push(stat);
+        else {
+          const find = ss => ss.find(a => this.isElementStat(a.origin.baseName));
+
+          if ( this.isElementStat(stat.origin.baseName) && (
+            (this.equipment.elementStat && !find(this.deletedStats)) ||
+            find(this.appendedStats) ) ) {
+            ShowMessage(this.langText('custom equipment editor/equipment can only have one element stat'),
+              null, 'equipment can only have one element stat');
+          } else {
+            this.appendedStats.push(stat);
+          }
+        }
       }
     },
     setStatValue(stat, v) {
@@ -295,15 +317,6 @@ export default {
       target = target + 'Visible';
       force = force === void 0 ? !this[target] : force;
       this[target] = force;
-    },
-    updateStatSearchResult() {
-      const searchText = this.$refs['stat-search-input'];
-      if (searchText == '') {
-        this.statsSearchResult = this.stats;
-        return;
-      }
-      const res = this.stats.filter(stat => stat.origin.title().includes(searchText));
-      this.statsSearchResult = res;
     }
   }
 }

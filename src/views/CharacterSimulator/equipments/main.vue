@@ -45,7 +45,7 @@ import vue_customEquipmentEditor from "./custom-equipment-editor.vue";
 import vue_selectCrystals from "./select-crystals.vue";
 
 import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js";
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
+import { CharacterEquipment, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
 
 
 export default {
@@ -57,7 +57,8 @@ export default {
       'getShowEquipmentData': this.getShowEquipmentData,
       'toggleMainWindowVisible': this.toggleWindowVisible,
       'openCustomEquipmentEditor': this.openCustomEquipmentEditor,
-      'openSelectCrystals': this.openSelectCrystals
+      'openSelectCrystals': this.openSelectCrystals,
+      'isElementStat': this.isElementStat
     };
   },
   data() {
@@ -74,10 +75,14 @@ export default {
         action: null
       },
       currentCustomEquipment: null,
-      currentSelectCrystalsEquipment: null
+      currentSelectCrystalsEquipment: null,
+      elementStatIds: CharacterEquipment.elementStatIds
     };
   },
   methods: {
+    isElementStat(baseName) {
+      return this.elementStatIds.includes(baseName);
+    },
     openSelectCrystals(eq) {
       this.currentSelectCrystalsEquipment = eq;
       this.toggleWindowVisible('selectCrystals', true);
