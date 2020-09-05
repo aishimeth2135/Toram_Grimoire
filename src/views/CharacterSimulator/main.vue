@@ -100,6 +100,42 @@ export default {
       'characterStates': 'characters',
       'skillBuilds': 'skillBuilds'
     }),
+    equipmentElement() {
+      const element = {
+        'fire': 0,
+        'water': 0,
+        'earth': 0,
+        'wind': 0,
+        'light': 0,
+        'dark': 0
+      };
+      const chara = this.currentCharacterState.origin;
+      const setElement = stat => element[stat.baseName().replace('element_', '')] = 1;
+
+      const sub = chara.equipmentField(EquipmentField.TYPE_SUB_WEAPON);
+      // 主手弓副手矢時，矢優先於弓
+      if (chara.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_BOW) &&
+         chara.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_ARROW) &&
+        sub.equipment.elementStat) {
+        setElement(sub.equipment.elementStat);
+        return element;
+      }
+
+      // 主手
+      const main = chara.equipmentField(EquipmentField.TYPE_MAIN_WEAPON);
+      if (!main.isEmpty() && main.equipment.elementStat)
+        setElement(main.equipment.elementStat);
+
+      // 雙劍副手：雙重屬性
+      if (chara.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD) &&
+          sub.equipment.elementStat) {
+        setElement(sub.equipment.elementStat);
+      }
+
+      console.log(element);
+
+      return element;
+    },
     currentCharacterState() {
       return this.characterStates[this.currentCharacterStateIndex];
     },
@@ -195,6 +231,7 @@ export default {
                 'stability': 0,
                 'atk': 0
               },
+            'element': this.equipmentElement,
             'skill': {
               'Conversion': (() => {
                 const skill = this.findSkillById(4, 1, 1);

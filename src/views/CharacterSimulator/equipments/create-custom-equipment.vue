@@ -82,7 +82,7 @@ import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear
 
 export default {
   props: ['visible'],
-  inject: ['langText', 'globalLangText', 'toggleMainWindowVisible'],
+  inject: ['langText', 'globalLangText', 'toggleMainWindowVisible', 'isElementStat'],
   data() {
     return {
       equipmentTypeCategorys: [{
@@ -162,25 +162,23 @@ export default {
       };
     },
     confirmSelectedEquipmentType() {
-      let name, stats;
       const p = this.selectedEquipmentType;
 
       const from = this.currentEquipment;
-      if (from) {
-        name = from.name;
-        stats = from.stats;
-      }
-      else {
-        name = '';
-        stats = [];
-      }
+      const name = from ? from.name : '';
 
       const eq = p.category.list != null ?
-        new p.category.class(-1, name, stats, p.type) :
-        new p.category.class(-1, name, stats);
+        new p.category.class(-1, name, [], p.type) :
+        new p.category.class(-1, name, []);
       eq.setCustom(true);
+
       if (!name) {
         eq.name = this.langText('custom equipment: default name prefix') + this.getEquipmentTypeText(eq);
+      }
+      if (from) {
+        eq.stats = !eq.hasElement ?
+          from.stats.filter(p => !this.isElementStat(p.baseName())) :
+          from.stats;
       }
 
       this.currentEquipment = eq;

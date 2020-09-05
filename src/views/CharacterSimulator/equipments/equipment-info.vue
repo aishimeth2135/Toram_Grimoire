@@ -176,7 +176,7 @@ export default {
     padding-bottom: 0.2rem;
     padding-left: 0.3rem;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
 
     > .name {
       margin-right: 0.6rem;
@@ -188,8 +188,10 @@ export default {
       }
     }
     > .category {
+      flex-shrink: 0;
       color: var(--primary-light-3);
       font-size: 0.9rem;
+      margin-right: 0.4rem;
     }
   }
   > .info {

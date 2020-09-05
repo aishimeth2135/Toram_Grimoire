@@ -25,7 +25,7 @@
     border-bottom: 0;
     box-shadow: 0.1rem 0.1rem 0.6rem 0.1rem var(--primary-light);
     max-width: 30rem;
-    max-height: calc(50vh - 3rem);
+    max-height: calc(47vh - 3rem);
     overflow-y: auto;
     margin: 0 0.6rem;
 

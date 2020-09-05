@@ -23,25 +23,27 @@
       </cy-input-counter>
       <br :key="baseStat.name + '-br'" />
     </template>
-    <div class="select-optional-base-stat-title">
-      <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
-        text-size="small" text-color="purple">
-        {{ langText('character optional base stat') }}
-      </cy-icon-text>
+    <div class="select-optional-base-stat">
+      <div class="title">
+        <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
+          text-size="small" text-color="purple">
+          {{ langText('character optional base stat') }}
+        </cy-icon-text>
+      </div>
+      <cy-flex-layout>
+        <cy-button type="border" iconify-name="ic-round-close"
+          :selected="!character.hasOptinalBaseStat()"
+          @click="clearOptionalBaseStat">
+          {{ globalLangText('global/none') }}
+        </cy-button>
+        <cy-button v-for="p in characterOptionalBaseStatList"
+          iconify-name="mdi-checkbox-multiple-blank-circle-outline"
+          :selected="character.baseStat(p) ? true : false"
+          type="border" :key="p" @click="setOptionalBaseStat(p)">
+          {{ p }}
+        </cy-button>
+      </cy-flex-layout>
     </div>
-    <cy-flex-layout>
-      <cy-button type="border" iconify-name="ic-round-close"
-        :selected="!character.hasOptinalBaseStat()"
-        @click="clearOptionalBaseStat">
-        {{ globalLangText('global/none') }}
-      </cy-button>
-      <cy-button v-for="p in characterOptionalBaseStatList"
-        iconify-name="mdi-checkbox-multiple-blank-circle-outline"
-        :selected="character.baseStat(p) ? true : false"
-        type="border" :key="p" @click="setOptionalBaseStat(p)">
-        {{ p }}
-      </cy-button>
-    </cy-flex-layout>
   </section>
 </template>
 <script>
@@ -79,11 +81,14 @@ export default {
   margin: 0.4rem;
 }
 
-.select-optional-base-stat-title {
-  margin-top: 0.6rem;
+.select-optional-base-stat {
   padding-top: 0.6rem;
-  border-top: 1px solid var(--primary-light);
-  margin-bottom: 0.3rem;
-  padding-left: 0.2rem;
+  margin-top: 0.6rem;
+  padding-left: 0.4rem;
+  border-top: 0.1rem solid var(--primary-light);
+
+  > .title {
+    margin-bottom: 0.3rem;
+  }
 }
 </style>

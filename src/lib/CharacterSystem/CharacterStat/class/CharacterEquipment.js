@@ -26,6 +26,9 @@ class CharacterEquipment {
   get hasStability() {
     return false;
   }
+  get hasElement() {
+    return false;
+  }
   get allStats() {
     const all = this.stats.map(p => p.copy());
     if (this.hasCrystal) {
@@ -40,6 +43,9 @@ class CharacterEquipment {
   }
   get isCustom() {
     return this._isCustom;
+  }
+  get elementStat() {
+    return this.stats.find(stat => CharacterEquipment.elementStatIds.includes(stat.baseName()));
   }
   setCustom(set) {
     this._isCustom = set;
@@ -62,6 +68,14 @@ class CharacterEquipment {
     }
   }
 }
+CharacterEquipment.elementStatIds = [
+  'element_fire',
+  'element_water',
+  'element_earth',
+  'element_wind',
+  'element_light',
+  'element_dark'
+];
 
 class Weapon extends CharacterEquipment {
   constructor(id, name, stats, atk = 1, stability = 0) {
@@ -117,6 +131,9 @@ class MainWeapon extends Weapon {
   get hasCrystal() {
     return true;
   }
+  get hasElement() {
+    return true;
+  }
 }
 MainWeapon.TYPE_ONE_HAND_SWORD = Symbol('one-hand-sword');
 MainWeapon.TYPE_TWO_HAND_SWORD = Symbol('two-hand-sword');
@@ -134,6 +151,9 @@ class SubWeapon extends Weapon {
     super(id, name, stats, atk, stability);
 
     this.type = type;
+  }
+  get hasElement() {
+    return this.type == SubWeapon.TYPE_ARROW;
   }
 }
 SubWeapon.TYPE_ARROW = Symbol('arrow');
@@ -229,4 +249,4 @@ class EquipmentCrystal {
   }
 }
 
-export { Weapon, Armor, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar };
+export { CharacterEquipment, Weapon, Armor, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar };

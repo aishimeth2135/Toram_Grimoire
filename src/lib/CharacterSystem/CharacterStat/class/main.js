@@ -196,6 +196,9 @@ class CharacterStat {
       if (this.min != null && value < this.min)
         value = this.min;
 
+      // resultValue: after min-max
+      const resultValue = value;
+
       const ho = this.options.hidden;
       let displayFormula = this.displayFormula;
       if (!displayFormula.match(/\$(?:\.\d)?v/)) {
@@ -210,6 +213,7 @@ class CharacterStat {
       return {
         origin: this,
         value,
+        resultValue,
         displayValue,
         statValueParts: res.statValueParts,
         statPartsDetail: res.statPartsDetail,
@@ -311,7 +315,7 @@ class CharacterStatFormula {
         .replace(/\$([a-zA-Z0-9_.]+)/g, (m, m1) => {
           const a = handleVar(vars.value['$'], m1, null, true);
 
-          return a ? a.result(simple_stats, vars).value.toString() : '0';
+          return a ? a.result(simple_stats, vars).resultValue.toString() : '0';
         })
         .replace(/@([a-zA-Z0-9_.]+)/g, (m, m1) => {
           return handleVar(vars.value['@'], m1, '0');

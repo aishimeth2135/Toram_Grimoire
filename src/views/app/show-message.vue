@@ -2,6 +2,9 @@
   <div class="main--show-message">
     <transition-group name="fade-slide">
       <div v-for="msg in messages" :key="msg.iid" class="message-item">
+        <span class="counter-container" v-if="msg.counter > 1">
+          <span>{{ msg.counter }}</span>
+        </span>
         <div class="container">
           <cy-icon-text :iconify-name="msg.icon" class="icon" />
           <span class="text">{{ msg.message }}</span>
@@ -39,7 +42,7 @@
 .main--show-message {
   position: fixed;
   bottom: 1rem;
-  right: 1rem;
+  right: 1.2rem;
   max-width: calc(100vw - 2rem);
   width: 20rem;
   z-index: 51;
@@ -55,6 +58,22 @@
   border-radius: 0.2rem;
   width: 100%;
   flex-wrap: wrap;
+  position: relative;
+
+  > .counter-container {
+    width: 2rem;
+    height: 2rem;
+    background-color: var(--primary-dark);
+    border-radius: 50%;
+    border: 0.1rem solid var(--primary-light-2);
+    color: var(--primary-light-2);
+    position: absolute;
+    right: -1rem;
+    top: -1rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   > .container {
     display: inline-flex;
