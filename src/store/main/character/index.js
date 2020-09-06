@@ -2,7 +2,8 @@ const store = {
   namespaced: true,
   state: {
     characters: [],
-    skillBuilds: []
+    skillBuilds: [],
+    equipments: []
   },
   mutations: {
     createSkillBuild(state, build){
@@ -16,6 +17,12 @@ const store = {
     },
     deleteCharacter(state, { index }) {
       state.characters.splice(index, 1);
+    },
+    appendEquipments(state, eqs) {
+      state.equipments.push(...eqs);
+    },
+    removeEquipment(state, { index }) {
+      state.equipments.splice(index, 1);
     }
   }
 };

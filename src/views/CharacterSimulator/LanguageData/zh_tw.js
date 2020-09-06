@@ -52,7 +52,10 @@ export default function() {
       'browse equipments': {
         'action: normal': '裝備清單',
         'action: select-field-equipment': '裝備清單',
-        'append equipment': '新增裝備'
+        'append equipments': '新增裝備',
+        'message: remove equipment': '已移除裝備：$0。',
+        'message: removed equipment recovery': '已復原裝備：$0。',
+        'message: copy equipment': '成功複製裝備。'
       },
       'append equipments': {
         'window title: select-mode': '選擇新增方式',
@@ -74,7 +77,12 @@ export default function() {
           'other': '其它',
           'box': '箱子道具內容物',
           'exchange': '交換所兌換'
-        }
+        },
+
+        'search equipment result: limit reached': '可顯示的搜尋結果數量已達上限。如果沒有找到想找的裝備，請試著更改關鍵字。',
+        'search text is empty': '搜尋的關鍵字須至少一個字元。',
+        'append equipments successfully': '已成功新增$0件裝備。',
+        'selected equipments cleared': '已清除選取的裝備。'
       },
       'create custom equipment': {
         'window title': '建立自訂裝備',
@@ -89,7 +97,7 @@ export default function() {
         'equipment name': '裝備名稱',
         'equipment stats': '裝備能力',
         'equipment other': '其他',
-        'window title': '編輯自訂裝備',
+        'window title': '自訂裝備設定',
         'equipment can only have one element stat': '一件裝備只能擁有一個屬性'
       },
       'select crystals': {
@@ -152,12 +160,10 @@ export default function() {
         'no equipment selected': '這個欄位是空的w',
         'no eligible equipments found': '沒有符合條件的裝備～點擊上面的按鈕來新增裝備。',
         'no result found': '找不到任何結果0.0',
-        'append equipments: search text is empty': '搜尋的關鍵字須至少一個字元。',
-        'append equipments: successfully': '已成功新增$0件裝備。',
-        'append equipments: clear': '已清除選取的裝備。',
         'clear equipments completed': '清除成功。',
         'create custom equipment: no equipment type selected': '請先選擇一個裝備類別',
-        'create custom equipment editor: selected stats clear': '已取消更動'
+        'create custom equipment editor: selected stats clear': '已取消更動',
+        'character stats compare: no result': '沒有任何能力值變化。'
       }
     }
   };

@@ -1,5 +1,6 @@
 import StatBase from "../../module/StatBase.js";
-import { SubWeapon, SubArmor } from "./CharacterEquipment.js";
+import { MainWeapon, SubWeapon, SubArmor } from "./CharacterEquipment.js";
+import Grimoire from "@Grimoire";
 
 class Character {
   constructor(name) {
@@ -31,7 +32,7 @@ class Character {
       EquipmentField.TYPE_AVATAR,
       EquipmentField.TYPE_AVATAR,
       EquipmentField.TYPE_AVATAR
-    ].map((p, i) => new EquipmentField(i, p)));
+    ].map((p, i) => new EquipmentField(this, i, p)));
 
     return this;
   }
@@ -73,6 +74,32 @@ class Character {
     const eq = field.equipment;
     return eq.type == eq_type;
   }
+  testSubWeapon(sub_type, main_type) {
+    const t = [];
+    main_type = main_type || this.equipmentField(EquipmentField.TYPE_MAIN_WEAPON).equipmentType;
+    switch (main_type) {
+      case MainWeapon.TYPE_ONE_HAND_SWORD:
+        t.push(MainWeapon.TYPE_ONE_HAND_SWORD);
+        // fall through
+      case EquipmentField.EMPTY:
+      case MainWeapon.TYPE_BOWGUN:
+      case MainWeapon.TYPE_STAFF:
+        t.push(MainWeapon.TYPE_KNUCKLE);
+        // fall through
+      case MainWeapon.TYPE_KNUCKLE:
+        t.push(MainWeapon.TYPE_MAGIC_DEVICE, SubWeapon.TYPE_SHIELD);
+        // fall through
+      case MainWeapon.TYPE_HALBERD:
+        t.push(SubWeapon.TYPE_ARROW);
+        // fall through
+      case MainWeapon.TYPE_KATANA:
+        t.push(SubWeapon.TYPE_DAGGER);
+        break;
+      case MainWeapon.TYPE_BOW:
+        t.push(SubWeapon.TYPE_ARROW, MainWeapon.TYPE_KATANA);
+    }
+    return t.includes(sub_type);
+  }
 }
 Character.OPTIONAL_BASE_STAT_LIST = ['TEC', 'MEN', 'LUK', 'CRT'];
 
@@ -84,13 +111,30 @@ class CharacterBaseStat {
 }
 
 class EquipmentField {
-  constructor(id, type) {
+  constructor(parent, id, type) {
+    this._parent = parent;
     this.type = type;
 
     this.equipment = null;
   }
+
+  get belongCharacter() {
+    return this._parent;
+  }
+  get equipmentType() {
+    if (!this.equipment)
+      return EquipmentField.EMPTY;
+    return this.equipment.type;
+  }
+
   setEquipment(eq) {
     this.equipment = eq;
+    if (this.type == EquipmentField.TYPE_MAIN_WEAPON) {
+      const c = this.belongCharacter;
+      const sub = c.equipmentField(EquipmentField.TYPE_SUB_WEAPON);
+      if (!c.testSubWeapon(sub.equipmentType, this.equipmentType))
+        sub.removeEquipment();
+    }
   }
   removeEquipment() {
     this.equipment = null;
@@ -171,7 +215,7 @@ class CharacterStat {
     this.id = id;
     this.name = name;
     this.displayFormula = displayFormula;
-    this.link = link;
+    this.link = link; // const
     this.max = max;
     this.min = min;
     this.caption = caption;
@@ -180,10 +224,36 @@ class CharacterStat {
     };
 
     this._formula = null;
+    this.isBoolStat = false;
+    this.linkedStatBase = null;
+
+    if (this.link) {
+      const base = Grimoire.CharacterSystem.findStatBase(this.link);
+      if (!base)
+        console.warn('Link of CharacterStat is not found.');
+      else {
+        this.isBoolStat = base.checkBoolStat();
+        this.linkedStatBase = base;
+      }
+    }
   }
+
   setFormula(str) {
     this._formula = new CharacterStatFormula(this, str);
     return this._formula;
+  }
+  getDisplayValue(v, ignoreDecimal = false) {
+    let displayFormula = this.displayFormula;
+    if (!displayFormula.match(/\$(?:\.\d)?v/)) {
+      displayFormula = '$v' + displayFormula;
+    }
+    return displayFormula.replace(/\$(?:\.(\d))?v/, (m, m1) => {
+      if (ignoreDecimal)
+        return v;
+      return m1 !== void 0 ?
+        v.toFixed(parseInt(m1, 10)) :
+        Math.floor(v);
+    });
   }
   result(character_simple_stats, vars) {
     try {
@@ -196,19 +266,11 @@ class CharacterStat {
       if (this.min != null && value < this.min)
         value = this.min;
 
-      // resultValue: after min-max
-      const resultValue = value;
-
       const ho = this.options.hidden;
-      let displayFormula = this.displayFormula;
-      if (!displayFormula.match(/\$(?:\.\d)?v/)) {
-        displayFormula = '$v' + displayFormula;
-      }
-      const displayValue = displayFormula.replace(/\$(?:\.(\d))?v/, (m, m1) => {
-        return m1 !== void 0 ?
-          value.toFixed(parseInt(m1, 10)) :
-          Math.floor(value);
-      });
+      const displayValue = this.getDisplayValue(value);
+
+      // resultValue: after min-max and to integer
+      const resultValue = parseFloat(displayValue.replace(/[^\-\d.]/g, ''));
 
       return {
         origin: this,
@@ -218,7 +280,7 @@ class CharacterStat {
         statValueParts: res.statValueParts,
         statPartsDetail: res.statPartsDetail,
         hidden: ho == 0 ||
-          (ho == 1 && Object.values(res.statValueParts).every(a => a == 0)) ||
+          (ho == 1 && ['constant', 'multiplier', 'total'].every(a => res.statValueParts[a] == 0)) ||
           (ho == 2 && value == 0)
       };
     } catch (e) {

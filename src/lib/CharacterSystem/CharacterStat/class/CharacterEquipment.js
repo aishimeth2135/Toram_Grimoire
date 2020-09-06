@@ -8,6 +8,7 @@ class CharacterEquipment {
     this.stats = stats;
     this._isCustom = false;
   }
+
   get is() {
     if (this instanceof Weapon)
       return 'weapon';
@@ -47,6 +48,7 @@ class CharacterEquipment {
   get elementStat() {
     return this.stats.find(stat => CharacterEquipment.elementStatIds.includes(stat.baseName()));
   }
+
   setCustom(set) {
     this._isCustom = set;
   }
@@ -56,9 +58,9 @@ class CharacterEquipment {
   findStat(baseName, type) {
     return this.stats.find(stat => stat.baseName() == baseName && stat.type == type);
   }
-  appendCrystal(origin, id, name, stats) {
+  appendCrystal(origin) {
     if (this.hasCrystal && this.crystals.length < 2) {
-      this.crystals.push(new EquipmentCrystal(origin, id, name, stats));
+      this.crystals.push(new EquipmentCrystal(origin));
     }
   }
   removeCrystal(crystal) {
@@ -66,6 +68,37 @@ class CharacterEquipment {
       const idx = this.crystals.indexOf(crystal);
       this.crystals.splice(idx, 1);
     }
+  }
+
+  copy() {
+    const stats = this.stats.map(p => p.copy());
+    const name = this.name;
+
+    let eq;
+    if (this instanceof Weapon) {
+      eq = new this.constructor(this.id, name, stats, this.type, this.baseAtk);
+      eq.atk = this.atk;
+    }
+    if (this instanceof Armor) {
+      eq = this instanceof SubArmor ?
+        new this.constructor(this.id, name, stats, this.type, this.baseDef) :
+        new this.constructor(this.id, name, stats, this.baseDef);
+      eq.def = this.def;
+    }
+    if (this instanceof Avatar) {
+      eq = new this.constructor(this.id, name, stats);
+    }
+
+    if (this.hasRefining)
+      eq.refining = this.refining;
+    if (this.hasStability)
+      eq.stability = this.stability;
+    if (this.hasCrystal)
+      eq.crystals = this.crystals.map(p => p.copy());
+    if (this.isCustom)
+      eq.setCustom(true);
+
+    return eq;
   }
 }
 CharacterEquipment.elementStatIds = [
@@ -100,30 +133,9 @@ class MainWeapon extends Weapon {
     this.crystals = [];
     this.refining = 0;
   }
+
   get refiningAdditionAmount() {
     return Math.floor(this.atk * this.refining * this.refining / 100) + this.refining;
-  }
-  testSubWeapon(eq) {
-    const t = [];
-    switch (this.type) {
-      case MainWeapon.TYPE_ONE_HAND_SWORD:
-        t.push(MainWeapon.TYPE_ONE_HAND_SWORD);
-        // fall through
-      case MainWeapon.TYPE_BOWGUN:
-      case MainWeapon.TYPE_STAFF:
-        t.push(MainWeapon.TYPE_KNUCKLE);
-        // fall through
-      case MainWeapon.TYPE_KNUCKLE:
-        t.push(MainWeapon.TYPE_MAGIC_DEVICE, SubWeapon.TYPE_SHIELD);
-        // fall through
-      case MainWeapon.TYPE_HALBERD:
-      case MainWeapon.TYPE_KATANA:
-        t.push(SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_ARROW);
-        break;
-      case MainWeapon.TYPE_BOW:
-        t.push(SubWeapon.TYPE_ARROW, MainWeapon.TYPE_KATANA);
-    }
-    return t.includes(eq.type);
   }
   get hasRefining() {
     return true;
@@ -152,6 +164,7 @@ class SubWeapon extends Weapon {
 
     this.type = type;
   }
+
   get hasElement() {
     return this.type == SubWeapon.TYPE_ARROW;
   }
@@ -241,11 +254,25 @@ class Avatar extends CharacterEquipment {
 }
 
 class EquipmentCrystal {
-  constructor(origin, id, name, stats) {
+  constructor(origin) {
     this.origin = origin;
-    this.id = id;
-    this.name = name;
-    this.stats = stats;
+    // this.id = id;
+    // this.name = name;
+    // this.stats = stats;
+  }
+
+  get id() {
+    return this.origin.id;
+  }
+  get name() {
+    return this.origin.name;
+  }
+  get stats() {
+    return this.origin.stats;
+  }
+
+  copy() {
+    return new EquipmentCrystal(this.origin);
   }
 }
 

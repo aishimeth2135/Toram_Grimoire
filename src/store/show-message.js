@@ -14,7 +14,9 @@ const store = new Vuex.Store({
     },
     removeMessage(state, msg) {
       const msgs = state.messages;
-      msgs.splice(msgs.indexOf(msg), 1);
+      const idx = msgs.indexOf(msg);
+      if (idx != -1)
+        msgs.splice(idx, 1);
     },
     increaseMessageCounter(state, msg) {
       ++msg.counter;

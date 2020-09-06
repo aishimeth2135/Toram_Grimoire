@@ -187,7 +187,7 @@ export default {
       const find = this.findEquipmentCrystal(c);
       find ?
         this.equipment.removeCrystal(find) :
-        this.equipment.appendCrystal(c, c.id, c.name, c.stats.slice());
+        this.equipment.appendCrystal(c);
     }
   },
   components: {

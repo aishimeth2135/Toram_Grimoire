@@ -84,7 +84,8 @@ export default {
     return {
       'langText': this.langText,
       'globalLangText': this.globalLangText,
-      'getValidLevelSkillState': this.getValidLevelSkillState
+      'getValidLevelSkillState': this.getValidLevelSkillState,
+      'handleCharacterStateDatas': this.handleCharacterStateDatas
     };
   },
   beforeCreate() {
@@ -131,8 +132,6 @@ export default {
           sub.equipment.elementStat) {
         setElement(sub.equipment.elementStat);
       }
-
-      console.log(element);
 
       return element;
     },
@@ -189,7 +188,8 @@ export default {
     },
     handleCharacterStateDatas({
       handlePassiveSkill = false,
-      handleActiveSkill = false
+      handleActiveSkill = false,
+      calcField = null
     } = {}) {
       if (!this.currentCharacterState)
         return [];
@@ -199,6 +199,32 @@ export default {
       categoryList.map(p => p.stats).flat().forEach(p => characterStatMap[p.id] = p)
 
       const c = this.currentCharacterState.origin;
+
+      let calcFieldNextFunc;
+      if (calcField) {
+        const f = c.equipmentField(calcField.type);
+        const tmpEq = f.equipment;
+
+        const sub = c.equipmentField(EquipmentField.TYPE_SUB_WEAPON);
+        const subEmpty = sub.isEmpty();
+        const tmpSubEq = sub.equipment;
+
+        f.setEquipment(calcField.equipment);
+
+        // 主手武器的話，serEquipment完，副手武器有可能被移除
+        // if 不是主手武器 or 副手原本就是空的 or 更換主手後副手不是空的
+        if (calcField.type != EquipmentField.TYPE_MAIN_WEAPON || subEmpty || !sub.isEmpty()) {
+          calcFieldNextFunc = () => {
+            tmpEq ? f.setEquipment(tmpEq) : f.removeEquipment();
+          };
+        }
+        else { // 否則必須復原副手武器
+          calcFieldNextFunc = () => {
+            tmpEq ? f.setEquipment(tmpEq) : f.removeEquipment();
+            sub.setEquipment(tmpSubEq);
+          };
+        }
+      }
 
       const is_dual_sword = c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD) && c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD);
 
@@ -320,6 +346,9 @@ export default {
 
       handlePassiveSkill && handleSkillStates(this.passiveSkillStates);
       handleActiveSkill && handleSkillStates(this.activeSkillStates);
+
+      // 還原因為calcField造成的暫時變動
+      calcFieldNextFunc && calcFieldNextFunc();
 
       return categoryList.map(p => ({
         name: p.name,

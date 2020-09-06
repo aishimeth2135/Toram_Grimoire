@@ -7,13 +7,16 @@
           <span v-for="stat in data.stats" :key="stat.id" class="stat-scope"
             @mouseenter="showStatDetail($event, stat)"
             @mouseleave="clearStatDetail">
-            <span class="name">{{ stat.name }}</span>
-            <span class="value">{{ stat.displayValue }}</span>
+            <template v-if="!stat.origin.isBoolStat">
+              <span class="name">{{ stat.name }}</span>
+              <span class="value">{{ stat.displayValue }}</span>
+            </template>
+            <span v-else class="value">{{ stat.name }}</span>
           </span>
         </div>
       </div>
     </div>
-    <cy-detail-window v-if="detail.currentStat" :style="detail.position">
+    <cy-detail-window v-if="detail.currentStat" :position-element="detail.positionElement">
       <template #title>
         <cy-icon-text iconify-name="mdi-ghost" text-color="purple">
           {{ detail.currentStat.name }}
@@ -54,7 +57,6 @@
   </section>
 </template>
 <script>
-import Grimoire from "@Grimoire";
 import StatBase from "@lib/CharacterSystem/module/StatBase.js";
 export default {
   props: ['characterState', 'showCharacterStatDatas'],
@@ -62,7 +64,7 @@ export default {
   data() {
     return {
       detail: {
-        position: {},
+        positionElement: null,
         currentStat: null
       }
     };
@@ -78,10 +80,10 @@ export default {
       if (!this.detail.currentStat)
         return [];
       const vFix = v => v.toString()
-        .replace(/^(\d+\.)(\d{3,})$/, (m, m1, m2) => m1 + m2.slice(0, 3));
+         .replace(/^(-?\d+\.)(\d{3,})$/, (m, m1, m2) => m1 + m2.slice(0, 3));
 
       const stat = this.detail.currentStat;
-      const base = Grimoire.CharacterSystem.findStatBase(stat.origin.link);
+      const base = stat.origin.linkedStatBase;
       const types = [null, StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER, StatBase.TYPE_TOTAL];
 
       const list = (base ? ['base', 'constant', 'multiplier', 'total'] : ['base'])
@@ -97,7 +99,7 @@ export default {
         const v = stat.statValueParts[p];
         let title = p != 'base' ? base.show(type, v) : {
           text: this.localLangText('base value'),
-          value: vFix(v)
+          value: stat.resultValue
         };
         if (p == 'multiplier')
           title += '｜' + Math.floor(v * stat.statValueParts['base'] / 100).toString();
@@ -148,12 +150,7 @@ export default {
         }));
     },
     showStatDetail(e, stat) {
-      const rect = e.target.getBoundingClientRect();
-
-      const len2bottom = window.innerHeight - rect.bottom;
-      this.detail.position = rect.top >= len2bottom ?
-        { bottom: (len2bottom + rect.height + 10) + 'px' } :
-        { top: (rect.top + rect.height + 10) + 'px' };
+      this.detail.positionElement = e.target;
       this.detail.currentStat = stat;
     },
     clearStatDetail() {

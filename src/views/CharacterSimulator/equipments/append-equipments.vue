@@ -3,15 +3,15 @@
     vertical-position="top">
     <template v-slot:title>
       <cy-icon-text iconify-name="bx-bx-search-alt">
-        {{ langText('append equipments/window title: search') }}
+        {{ localLangText('window title: search') }}
       </cy-icon-text>
     </template>
     <template v-slot:default>
       <cy-title-input iconify-name="ic-outline-category" class="search-input">
-        <input type="text" ref="searchText" :placeholder="langText('append equipments/search equipment placeholder')"
+        <input type="text" ref="searchText" :placeholder="localLangText('search equipment placeholder')"
           @keyup.enter="updateSearchResult" />
-        <cy-button iconify-name="bx-bx-search-alt-2" type="icon-only"
-          @click="updateSearchResult" class="inline" />
+        <cy-button iconify-name="bx-bx-search-alt-2" type="border"
+          @click="updateSearchResult" />
       </cy-title-input>
       <div class="search-result" v-if="searchResult.length != 0">
         <cy-list-item class="equipment-item" v-for="item in searchResult" :key="item.iid"
@@ -22,13 +22,16 @@
             <cy-icon-text iconify-name="ic-round-add" />
           </template>
         </cy-list-item>
+        <div v-if="searchResult.length >= searchResultMaximum" class="limit-reached-limit">
+          {{ localLangText('search equipment result: limit reached') }}
+        </div>
       </div>
       <cy-default-tips v-else icon-id="potum">
         {{ langText('Warn/no result found') }}
       </cy-default-tips>
       <cy-bottom-content class="selected" v-if="selected.length != 0">
         <template #normal-content>
-          <cy-transition type="slide-up">
+          <cy-transition type="fade">
             <div class="detail" v-if="selectedDetailVisible">
               <div>
                 <cy-list-item class="equipment-item" v-for="item in selected" :key="item.iid"
@@ -47,7 +50,7 @@
             <span class="number-container">
               <span>{{ selected.length }}</span>
             </span>
-            <span>{{ langText('append equipments/search equipment result: selected title') }}</span>
+            <span>{{ localLangText('search equipment result: selected title') }}</span>
             <template #right-content>
               <cy-icon-text :iconify-name="'ic-round-keyboard-arrow-' + (selectedDetailVisible ? 'down' : 'up')" />
             </template>
@@ -77,25 +80,26 @@ import ShowMessage from "@global-modules/ShowMessage.js";
 
 export default {
   props: ['visible'],
-  inject: ['langText', 'globalLangText', 'convertEquipmentData', 'getShowEquipmentData'],
+  inject: ['langText', 'globalLangText', 'convertEquipmentData', 'getShowEquipmentData', 'appendEquipments'],
   data() {
     return {
       searchResult: [],
       selected: [],
-      selectedDetailVisible: false
+      selectedDetailVisible: false,
+      searchResultMaximum: 30
     };
   },
   methods: {
     submitSelected() {
-      this.$emit('append-equipments', this.selected.map(p => p.origin));
-      ShowMessage(this.langText('Warn/append equipments: successfully', [this.selected.length]), 'ic-round-done');
+      this.appendEquipments(this.selected.map(p => p.origin));
+      ShowMessage(this.localLangText('append equipments successfully', [this.selected.length]), 'ic-round-done');
       this.selected = [];
       this.$emit('close');
     },
     clearSelected() {
       const store = this.selected;
       this.selected = [];
-      ShowMessage(this.langText('Warn/append equipments: clear'), 'ic-round-done', null, {
+      ShowMessage(this.localLangText('selected equipments cleared'), 'ic-round-done', null, {
         buttons: [{
           text: this.globalLangText('global/recovery'),
           click: () => {
@@ -123,12 +127,12 @@ export default {
       const text = this.$refs.searchText.value;
 
       if (text == '') {
-        ShowMessage(this.langText('Warn/append equipments: search text is empty'));
+        ShowMessage(this.localLangText('search text is empty'));
         return;
       }
 
       const t = [],
-        limit = 21;
+        limit = this.searchResultMaximum + 1;
       Grimoire.ItemSystem.items.equipments.find(item => {
         if (item.name.includes(text))
           t.push(item);
@@ -138,7 +142,7 @@ export default {
       this.searchResult = t.map((item, i) => {
         const o = this.convertEquipmentData(item);
 
-        const obtain = this.langText('append equipments/search equipment result: obtain/' +
+        const obtain = this.localLangText('search equipment result: obtain/' +
           (item.obtains.length > 0 ? item.obtains[0].type : 'unknow'));
 
         return {
@@ -147,12 +151,17 @@ export default {
           iid: i
         };
       });
+    },
+    localLangText(v, vs) {
+      return this.langText('append equipments/' + v, vs);
     }
   }
 }
 </script>
 <style lang="less" scoped>
 @deep: ~'>>>';
+@css-min: ~'min';
+
 .search-input {
   position: sticky;
   top: 0;
@@ -174,6 +183,7 @@ export default {
   @{deep} .top {
     cursor: pointer;
     margin-bottom: 0.5rem;
+    padding-top: 0.4rem;
 
     > .number-container {
       display: inline-flex;
@@ -188,7 +198,8 @@ export default {
   }
 
   @{deep} .detail {
-    padding-bottom: 0.4rem;
+    max-height: ~'@{css-min}(20rem, 50vh)';
+    overflow-y: auto;
   }
 }
 </style>
