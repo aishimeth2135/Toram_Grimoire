@@ -99,6 +99,10 @@
       selected: {
         type: Boolean,
         default: false
+      },
+      disabled: {
+        type: Boolean,
+        default: false
       }
     },
     data(){
@@ -116,6 +120,7 @@
       rootClass(){
         const cs = ['Button', this.type];
         this.selected && cs.push('selected');
+        this.disabled && cs.push('disabled');
         return cs.join(' ');
       }
     },
@@ -136,16 +141,14 @@
      Button
      ========================================================================== */
   .Button {
-    cursor: pointer;
-    display: inline-block;
-  }
-
-  .Button {
     text-align: center;
     transition: 0.3s;
     --icon-width: 1.2rem;
     font-size: 1rem;
     flex-shrink: 0;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
 
     > svg, & > .title > svg,
     > img, & > .title > img {
@@ -199,6 +202,22 @@
 
     &.mr-normal {
       margin-right: 0.6rem;
+    }
+
+    &.disabled {
+      opacity: 0.7;
+
+      &::before {
+        width: 100%;
+        height: 100%;
+        cursor: not-allowed;
+        z-index: 10;
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        content: '';
+      }
     }
   }
 
@@ -254,23 +273,6 @@
         margin-bottom: 0;
         padding: 0;
         border: 0;
-      }
-
-      &.disabled {
-        color: var(--primary-light);
-        position: relative!important;
-
-        &::before {
-          width: 100%;
-          height: 100%;
-          cursor: not-allowed;
-          z-index: 10;
-          display: inline-block;
-          position: absolute;
-          left: 0;
-          top: 0;
-          content: '';
-        }
       }
 
       &.after-button {

@@ -2,7 +2,7 @@
   <cy-window :visible="visible" @close-window="closeWindow" class="width-wide">
     <template v-slot:title>
       <cy-icon-text iconify-name="ic-outline-category">
-        {{ langText('browse equipments/action: ' + actionType) }}
+        {{ localLangText('action: ' + actionType) }}
       </cy-icon-text>
     </template>
     <template v-slot:default>
@@ -12,7 +12,7 @@
           <cy-button iconify-name="ic-round-add-circle-outline"
             type="border"
             @click="toggleMainWindowVisible('appendEquipments', true)">
-            {{ langText('browse equipments/append equipment') }}
+            {{ localLangText('append equipments') }}
           </cy-button>
           <cy-button iconify-name="gridicons-create"
             type="border"
@@ -23,32 +23,46 @@
       </cy-flex-layout>
       <div class="content">
         <div class="items">
-          <template v-for="eq in browsedEquipments">
-            <equipment-item :key="eq.iid" :equipment="eq.origin"
-              @click.native="setCurrentEquipment(eq.origin, eq['@disable'])"
-              :selected="eq.origin == currentEquipment"
-              :disable="eq['@disable']" />
-          </template>
+          <equipment-item v-for="eq in browsedEquipments"
+            :key="eq.iid" :equipment="eq.origin"
+            @click.native="setCurrentEquipment(eq.origin, eq['@disable'])"
+            :selected="eq.origin == currentEquipment"
+            :disable="eq['@disable']" />
         </div>
         <div class="preview" :class="{ 'unfold': infoUnfold }">
           <div class="info" v-if="currentEquipment" @click.stop>
             <equipment-info :equipment="currentEquipment" />
           </div>
-          <cy-button iconify-name="mdi-rhombus-outline" type="border"
-            v-if="currentEquipment"
-            class="toggle-unfold-btn" @click="toggleInfoUnfold" />
+          <div class="compare" v-if="actionType == 'select-field-equipment' && currentEquipment
+            && currentEquipment != action.targetField.equipment && !currentEquipmentDisable">
+            <character-stats-compare :before="compareData.before" :after="compareData.after" />
+          </div>
         </div>
+        <cy-button iconify-name="mdi-rhombus-outline" type="border"
+          v-if="currentEquipment"
+          class="toggle-info-unfold-btn" @click="toggleInfoUnfold" />
       </div>
       <!-- bottom -->
-      <cy-bottom-content v-if="actionType == 'select-field-equipment' && currentEquipment &&
-        !currentEquipmentDisable">
+      <cy-bottom-content v-if="currentEquipment">
         <template #normal-content>
           <cy-flex-layout>
-            <template #right-content>
-              <cy-button iconify-name="ic-round-done" type="border"
-                @click="selectEquipment">
-              {{ globalLangText('global/confirm') }}
+            <cy-button iconify-name="ic-baseline-delete-outline" type="border"
+              @click="removeSelectedEquipment">
+              {{ globalLangText('global/remove') }}
             </cy-button>
+            <cy-button iconify-name="mdi-content-copy" type="border"
+              @click="copySelectedEquipment">
+              {{ globalLangText('global/copy') }}
+            </cy-button>
+            <template #right-content v-if="actionType == 'select-field-equipment'">
+              <cy-button v-if="!currentEquipmentDisable"
+                iconify-name="ic-round-done" type="border"
+                @click="selectEquipment">
+                {{ globalLangText('global/confirm') }}
+              </cy-button>
+              <cy-button v-else iconify-name="ic-round-done" type="border" :disabled="true">
+                {{ globalLangText('global/confirm') }}
+              </cy-button>
             </template>
           </cy-flex-layout>
         </template>
@@ -59,13 +73,24 @@
 <script>
 import vue_equipmentItem from "./equipment-item.vue";
 import vue_equipmentInfo from "./equipment-info.vue";
+import vue_characterStatsCompare from "../main/character-stats-compare.vue";
 
 import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js";
-import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
+
+import ShowMessage from "@global-modules/ShowMessage.js";
+
+import Vuex from "vuex";
+import store from "@store/main";
 
 export default {
-  props: ['visible', 'equipments', 'action', 'characterState'],
-  inject: ['langText', 'globalLangText', 'toggleMainWindowVisible', 'getShowEquipmentData'],
+  store,
+  props: ['visible', 'action', 'characterState'],
+  inject: [
+    'langText', 'globalLangText', 'toggleMainWindowVisible',
+    'getShowEquipmentData', 'handleCharacterStateDatas',
+    'appendEquipments'
+  ],
   data() {
     return {
       currentEquipment: null,
@@ -74,6 +99,30 @@ export default {
     };
   },
   computed: {
+    ...Vuex.mapState('character', {
+      'equipments': 'equipments'
+    }),
+    currentCharacterStateDatas() {
+      return this.handleCharacterStateDatas({
+        handlePassiveSkill: true,
+        handleActiveSkill: true
+      });
+    },
+    compareData() {
+      if (!this.currentEquipment)
+        return null;
+      return {
+        before: this.currentCharacterStateDatas,
+        after: this.handleCharacterStateDatas({
+          handlePassiveSkill: true,
+          handleActiveSkill: true,
+          calcField: {
+            type: this.action.targetField.type,
+            equipment: this.currentEquipment
+          }
+        })
+      };
+    },
     actionType() {
       if (!this.action)
         return 'normal';
@@ -86,12 +135,38 @@ export default {
           t.iid = i;
           t['@disable'] = !this.fieldFilter(p);
           return t;
-        });
+        })
+        .sort((a, b) => a.origin.name.localeCompare(b.origin.name));
     }
   },
   methods: {
     toggleInfoUnfold() {
       this.infoUnfold = !this.infoUnfold;
+    },
+    copySelectedEquipment() {
+      const eq = this.currentEquipment.copy();
+      eq.name = eq.name + '*';
+      this.appendEquipments([eq]);
+      ShowMessage(this.localLangText('message: copy equipment'), 'mdi-content-copy',
+        'browse equipment/copy equipment');
+    },
+    removeSelectedEquipment() {
+      const eq = this.currentEquipment;
+      const index = this.equipments.indexOf(eq);
+      index != -1 && this.$store.commit('character/removeEquipment', {
+        index
+      });
+      ShowMessage(this.localLangText('message: remove equipment', [eq.name]),
+        'ic-baseline-delete-outline', null, {
+        buttons: [{
+          text: this.globalLangText('global/recovery'),
+          click: () => {
+            this.appendEquipments([eq]);
+            ShowMessage(this.localLangText('message: removed equipment recovery', [eq.name]));
+          },
+          removeMessageAfterClick: true
+        }]
+      });
     },
     selectEquipment() {
       this.action.targetField.setEquipment(this.currentEquipment);
@@ -113,10 +188,9 @@ export default {
         case EquipmentField.TYPE_MAIN_WEAPON:
           return eq instanceof MainWeapon;
         case EquipmentField.TYPE_SUB_WEAPON:
-          {
-            const t = this.characterState.origin.fieldEquipment(EquipmentField.TYPE_MAIN_WEAPON);
-            return t ? t.testSubWeapon(eq) : true;
-          }
+          if (eq instanceof MainWeapon || eq instanceof SubWeapon || eq instanceof SubArmor)
+            return this.characterState.origin.testSubWeapon(eq.type);
+          return false;
         case EquipmentField.TYPE_BODY_ARMOR:
           return eq instanceof BodyArmor;
         case EquipmentField.TYPE_ADDITIONAL:
@@ -126,11 +200,15 @@ export default {
         case EquipmentField.TYPE_AVATAR:
           return eq instanceof Avatar;
       }
+    },
+    localLangText(s, vs) {
+      return this.langText('browse equipments/' + s, vs);
     }
   },
   components: {
     'equipment-item': vue_equipmentItem,
-    'equipment-info': vue_equipmentInfo
+    'equipment-info': vue_equipmentInfo,
+    'character-stats-compare': vue_characterStatsCompare
   }
 }
 </script>
@@ -146,48 +224,56 @@ export default {
   position: relative;
 
   > .items {
-    width: 20rem;
+    width: 18rem;
     margin-right: 1rem;
     min-height: 15rem;
   }
 
   > .preview {
-    width: 20rem;
+    width: 22rem;
+    padding-bottom: 0.6rem;
+    overflow-y: auto;
+    max-height: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 
     > .info {
       border: 0.1rem solid var(--primary-light);
       padding: 0.6rem;
     }
 
-    > .toggle-unfold-btn {
-      display: none;
+    > .compare {
+      padding: 0.6rem;
+      border: 0.1rem solid var(--primary-light);
+      margin-top: 0.6rem;
     }
 
     @media screen and (max-width: 40rem) {
       position: absolute;
       top: 0;
-      right: -20rem;
+      right: -22.5rem;
       z-index: 1;
       background-color: var(--white);
       transition: 0.4s;
 
-      > .toggle-unfold-btn {
-        display: inline-block;
-        position: absolute;
-        top: -1rem;
-        left: -1.5rem;
-        background-color: var(--white);
-        transition: 0.5s ease;
-      }
-
       &.unfold {
         right: 0rem;
         transition: 0.4s ease;
-
-        > .toggle-unfold-btn {
-          left: 18.5rem;
-        }
       }
+    }
+  }
+
+  > .toggle-info-unfold-btn {
+    display: none;
+
+    @media screen and (max-width: 40rem) {
+      display: inline-block;
+      position: absolute;
+      right: -1.6rem;
+      top: -1.2rem;
+      background-color: var(--white);
+      z-index: 2;
     }
   }
 }

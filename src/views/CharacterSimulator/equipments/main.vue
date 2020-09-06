@@ -11,11 +11,10 @@
     <div class="window-container">
       <browse-equipments :visible="windowVisible.browseEquipments"
         :action="browseEquipmentsState.action"
-        :equipments="equipments" :character-state="characterState"
+        :character-state="characterState"
         @close="toggleWindowVisible('browseEquipments', false)" />
       <append-equipments :visible="windowVisible.appendEquipments"
-        @close="toggleWindowVisible('appendEquipments', false)"
-        @append-equipments="appendEquipments" />
+        @close="toggleWindowVisible('appendEquipments', false)" />
       <create-custom-equipment :visible="windowVisible.createCustomEquipment"
         @close="toggleWindowVisible('createCustomEquipment', false)"
         @append-equipments="appendEquipments" />
@@ -28,6 +27,18 @@
         </template>
         <custom-equipment-editor v-if="currentCustomEquipment"
           :equipment="currentCustomEquipment" />
+        <cy-bottom-content>
+          <template #normal-content>
+            <cy-flex-layout>
+              <template #right-content>
+                <cy-button type="border" iconify-name="ic-round-done"
+                  @click="toggleWindowVisible('customEquipmentEditor', false)">
+                  {{ globalLangText('global/close') }}
+                </cy-button>
+              </template>
+            </cy-flex-layout>
+          </template>
+        </cy-bottom-content>
       </cy-window>
       <select-crystals v-if="currentSelectCrystalsEquipment"
         :visible="windowVisible.selectCrystals"
@@ -47,8 +58,11 @@ import vue_selectCrystals from "./select-crystals.vue";
 import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js";
 import { CharacterEquipment, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
 
+import Vuex from "vuex";
+import store from "@store/main";
 
 export default {
+  store,
   props: ['characterState'],
   inject: ['langText', 'globalLangText'],
   provide() {
@@ -58,12 +72,12 @@ export default {
       'toggleMainWindowVisible': this.toggleWindowVisible,
       'openCustomEquipmentEditor': this.openCustomEquipmentEditor,
       'openSelectCrystals': this.openSelectCrystals,
+      'appendEquipments': this.appendEquipments,
       'isElementStat': this.isElementStat
     };
   },
   data() {
     return {
-      equipments: [],
       windowVisible: {
         browseEquipments: false,
         appendEquipments: false,
@@ -79,6 +93,11 @@ export default {
       elementStatIds: CharacterEquipment.elementStatIds
     };
   },
+  computed: {
+    ...Vuex.mapState('character', {
+      'equipments': 'equipments'
+    })
+  },
   methods: {
     isElementStat(baseName) {
       return this.elementStatIds.includes(baseName);
@@ -92,7 +111,7 @@ export default {
       this.toggleWindowVisible('customEquipmentEditor', true);
     },
     appendEquipments(eqs) {
-      this.equipments.push(...eqs);
+      this.$store.commit('character/appendEquipments', eqs.map(eq => eq.copy()));
     },
     selectFieldEquipment(field) {
       this.browseEquipmentsState.action = {
@@ -143,6 +162,7 @@ export default {
       //     '身體裝備', '追加裝備', '特殊裝備'
       // ]
       const pre_args = [item.id, item.name, item.stats];
+      const stability = parseInt(item.baseStability, 10);
       if (item.category < 9) {
         const t = [
           MainWeapon.TYPE_ONE_HAND_SWORD, MainWeapon.TYPE_TWO_HAND_SWORD,
@@ -152,7 +172,7 @@ export default {
           MainWeapon.TYPE_KATANA
         ][item.category];
 
-        return new MainWeapon(...pre_args, t, item.baseValue, item.baseStability);
+        return new MainWeapon(...pre_args, t, item.baseValue, stability);
       }
       if (item.category < 12) {
         const t = [
@@ -160,7 +180,7 @@ export default {
         ][item.category - 9];
         if (item.category == 10)
           return new SubArmor(...pre_args, t, item.baseValue);
-        return new SubWeapon(...pre_args, t, item.baseValue, item.baseStability);
+        return new SubWeapon(...pre_args, t, item.baseValue, stability);
       }
       if (item.category == 12)
         return new BodyArmor(...pre_args, item.baseValue);

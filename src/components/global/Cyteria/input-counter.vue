@@ -1,16 +1,18 @@
 <template>
-  <div class="cy--input-counter" :class="{ 'line': type == 'line' }">
-    <div class="title" v-if="$slots['title']">
-      <slot name="title"></slot>
-    </div>
-    <div class="counter-content">
-      <cy-button class="button" type="icon-only" iconify-name="ic-round-remove-circle-outline"
-        @click="setValue(value - step)" />
-      <input type="number" :value="value" @input="updateValue"
-        @click="selectInput($event)" />
-      <cy-button class="button" type="icon-only" iconify-name="ic-round-add-circle-outline"
-        @click="setValue(value + step)" />
-      <slot name="unit"></slot>
+  <div class="cy--input-counter-container">
+    <div class="cy--input-counter" :class="{ 'line': type == 'line' }">
+      <div class="title" v-if="$slots['title']">
+        <slot name="title"></slot>
+      </div>
+      <div class="counter-content">
+        <cy-button class="button" type="icon-only" iconify-name="ic-round-remove-circle-outline"
+          @click="setValue(value - step)" />
+        <input type="number" :value="value" @input="updateValue"
+          @click="selectInput($event)" />
+        <cy-button class="button" type="icon-only" iconify-name="ic-round-add-circle-outline"
+          @click="setValue(value + step)" />
+        <slot name="unit"></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -57,13 +59,16 @@
   };
 </script>
 <style lang="less" scoped>
+.cy--input-counter-container {
+  display: block;
+  --input-width: 2.1rem;
+}
 .cy--input-counter {
   display: inline-flex;
   align-items: center;
   padding: 0.3rem 1rem;
   transition: border-color 0.3s;
   border: 1px solid var(--primary-light);
-  --input-width: 2.1rem;
 
   > .title {
     display: inline-flex;

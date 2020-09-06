@@ -8,6 +8,7 @@ export default function() {
       'split string': '、',
       'menu': '選單',
       'delete': '刪除',
+      'remove': '移除',
       'copy': '複製',
       'download': '下載',
       'search': '查詢',

@@ -1,5 +1,5 @@
 <template>
-  <div class="cy--detail-window">
+  <div class="cy--detail-window" :style="position">
     <div class="container">
       <div class="content">
         <div class="title" v-if="$slots['title']">
@@ -10,6 +10,23 @@
     </div>
   </div>
 </template>
+<script>
+export default {
+  props: ['positionElement'],
+  computed: {
+    position() {
+      if (!this.positionElement)
+        return { };
+      const rect = this.positionElement.getBoundingClientRect();
+
+      const len2bottom = window.innerHeight - rect.bottom;
+      return rect.top >= len2bottom ?
+        { bottom: (len2bottom + rect.height + 10) + 'px' } :
+        { top: (rect.top + rect.height + 10) + 'px' };
+    }
+  }
+};
+</script>
 <style lang="less" scoped>
 .cy--detail-window {
   position: fixed;
@@ -25,6 +42,7 @@
     border-bottom: 0;
     box-shadow: 0.1rem 0.1rem 0.6rem 0.1rem var(--primary-light);
     max-width: 30rem;
+    min-width: 13rem;
     max-height: calc(47vh - 3rem);
     overflow-y: auto;
     margin: 0 0.6rem;

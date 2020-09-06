@@ -2,11 +2,12 @@
   <cy-transition type="fade">
     <div class="window" v-if="visible" @click="closeWindow"
       :class="{ ['vertical-position-' + verticalPosition]: true }">
-      <div class="container" @click.stop>
-        <cy-button type="icon-only" @click="$emit('close-window')"
+      <div class="container">
+        <div class="top-mask" />
+        <cy-button type="icon-only" @click.stop="$emit('close-window')"
           iconify-name="jam-close-circle-f"
           class="close-btn" />
-        <div class="container-inner">
+        <div class="container-inner" @click.stop>
           <div class="top">
             <div class="title">
               <slot name="title"></slot>
@@ -80,11 +81,21 @@ export default {
     margin: 1rem 0.5rem;
     height: calc(100% - 2rem);
 
+    > .top-mask {
+      position: absolute;
+      background-color: var(--white);
+      height: 0.9rem;
+      width: calc(100% - 2rem);
+      top: 0.1rem;
+      left: 1rem;
+      z-index: 1;
+    }
+
     > .close-btn {
       position: absolute;
       top: -0.75rem;
       right: -0.8rem;
-      z-index: 1;
+      z-index: 2;
       --icon-width: 1.5rem;
       padding: 0;
     }

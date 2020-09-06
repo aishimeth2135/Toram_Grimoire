@@ -1,5 +1,5 @@
 <template>
-  <span class="title-input">
+  <span class="cy--title-input">
     <span class="icon">
       <iconify-icon v-if="iconifyName != null" :name="iconifyName"></iconify-icon>
       <svg-icon v-if="iconId != null" :icon-id="iconId"></svg-icon>
@@ -20,56 +20,57 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.title-input {
+.cy--title-input {
   position: relative;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
 
-  &>.icon {
+  > .icon {
     margin-left: 0.4rem;
     margin-right: -1.8rem;
     margin-top: 0.2rem;
 
-    >svg {
+    > svg {
       color: var(--primary-light);
       width: 1.3rem;
       height: 1.3rem;
     }
   }
 
-  &>.icon-before-short {
+  > .icon-before-short {
     margin-right: 0.3rem;
     display: inline-block;
   }
 
-  &>input {
+  > input {
     padding: 0.4rem;
     border: 0;
     border-bottom: 1px solid var(--primary-light);
     transition: 0.3s;
     font-size: 1rem;
-    width: 20rem;
+    width: 18.5rem;
+    margin-right: 0.5rem;
     padding-left: 2.6rem;
   }
 
-  &>input:focus {
+  > input:focus {
     border-bottom-color: var(--primary-light-3);
   }
 
-  & input.short {
+  input.short {
     width: 3rem;
     text-align: center;
     vertical-align: middle;
     padding: 0.3rem 0.6rem;
   }
 
-  &>.title {
+  > .title {
     color: var(--primary-light-4);
     padding: 0.4rem 0.2rem;
   }
 
-  &>.text.inner {
+  > .text.inner {
     margin: 0 0.3rem;
     display: inline-block;
   }

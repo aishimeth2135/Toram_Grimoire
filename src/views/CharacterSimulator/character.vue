@@ -9,20 +9,16 @@
         </cy-icon-text>
       </template>
     </cy-input-counter>
-    <br />
-    <template v-for="baseStat in character.baseStats">
-      <cy-input-counter class="counter"
-        :key="baseStat.name"
-        :value="baseStat.value" :range="[0, 500]"
-        @set-value="setBaseStat(baseStat, $event)">
-        <template v-slot:title>
-          <cy-icon-text iconify-name="mdi-rhombus-outline">
-            {{ baseStat.name }}
-          </cy-icon-text>
-        </template>
-      </cy-input-counter>
-      <br :key="baseStat.name + '-br'" />
-    </template>
+    <cy-input-counter v-for="baseStat in character.baseStats"
+      class="counter" :key="baseStat.name"
+      :value="baseStat.value" :range="[0, 500]"
+      @set-value="setBaseStat(baseStat, $event)">
+      <template v-slot:title>
+        <cy-icon-text iconify-name="mdi-rhombus-outline">
+          {{ baseStat.name }}
+        </cy-icon-text>
+      </template>
+    </cy-input-counter>
     <div class="select-optional-base-stat">
       <div class="title">
         <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
@@ -78,12 +74,12 @@ export default {
 </script>
 <style lang="less" scoped>
 .counter {
-  margin: 0.4rem;
+  margin-bottom: 0.8rem;
 }
 
 .select-optional-base-stat {
   padding-top: 0.6rem;
-  margin-top: 0.6rem;
+  margin-top: 1rem;
   padding-left: 0.4rem;
   border-top: 0.1rem solid var(--primary-light);
 

@@ -1,16 +1,18 @@
 <template>
   <div class="stat-scope">
-    <cy-icon-text v-if="type != 'custom'" iconify-name="mdi-leaf">
+    <cy-icon-text v-if="type != 'custom'" iconify-name="mdi-leaf"
+      :text-color="negativeValue ? 'gray' : 'dark'">
       {{ stat.show() }}
     </cy-icon-text>
-    <cy-icon-text v-else iconify-name="mdi-leaf">
+    <cy-icon-text v-else iconify-name="mdi-leaf"
+      :text-color="negativeValue ? 'red' : 'dark'">
       <slot></slot>
     </cy-icon-text>
   </div>
 </template>
 <script>
 export default {
-  props: ['stat', 'type'],
+  props: ['stat', 'type', 'negativeValue'],
 };
 </script>
 <style lang="less" scoped>

@@ -1,0 +1,370 @@
+<template>
+  <div class="information">
+    <div class="main" @click.capture="openEditWindow($event, 'main')">
+      <div class="title">
+        <cy-icon-text class="name" :iconify-name="equipmentData.categoryIcon">
+          <span>{{ equipment.name }}</span>
+          <span class="refining" v-if="equipment.hasRefining && equipment.refining > 0">+{{ equipment.refining | equipmentRefining }}</span>
+        </cy-icon-text>
+        <span class="category">{{ equipmentData.categoryText }}</span>
+        <cy-button type="icon-only" class="single-line" style="margin-left: auto"
+          :iconify-name="mode == 0 ? 'ic-round-edit' : 'ic-round-view-list'"
+          @click="mode = mode == 0 ? 1 : 0" />
+      </div>
+      <div class="base" v-if="['weapon', 'armor'].includes(equipment.is)">
+        <template v-if="equipment.is == 'weapon'">
+          <cy-icon-text iconify-name="mdi-sword" class="name">ATK</cy-icon-text>
+          <span class="value">
+            {{ equipment.atk }}<span class="refining" v-if="equipment.hasRefining && equipment.refining > 0">+{{ equipment.refiningAdditionAmount }}</span>
+          </span>
+          <span class="stability">{{ equipment.stability }}%</span>
+        </template>
+        <template v-else>
+          <cy-icon-text iconify-name="mdi-shield" class="name">DEF</cy-icon-text>
+          <span class="value">{{ equipment.def }}</span>
+        </template>
+      </div>
+    </div>
+    <div class="stats" :class="{ 'stats-disable': statsDisable }">
+      <show-stat v-for="stat in equipment.stats" :stat="stat"
+        :key="`${stat.baseName()}-${stat.type.description}`" />
+    </div>
+    <div v-if="equipment.hasCrystal && equipment.crystals.length > 0" class="crystals"
+      :class="{ 'stats-disable': statsDisable }">
+      <cy-icon-text v-for="c in equipment.crystals" class="crystal"
+        :key="c.id" :image-path="getCrystalImagePath(c)" type="line">
+        {{ c.name }}
+      </cy-icon-text>
+    </div>
+    <cy-detail-window v-if="editWindow.visible" :position-element="editWindow.positionElement"
+      class="edit-window">
+      <div class="edit-content">
+        <template v-if="editWindow.mode == 'main'">
+          <cy-flex-layout v-if="equipment.customTypeList != null" class="switch-custom-type">
+            <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle" class="mr-normal">
+              {{ langText('equipment type') }}
+            </cy-icon-text>
+            <cy-button type="border" iconify-name="heroicons-solid:switch-vertical"
+              @click="switchCustomType">
+              {{ langText('field type text/' + equipment.type.description) }}
+            </cy-button>
+          </cy-flex-layout>
+          <cy-icon-text class="title" iconify-name="mdi-clipboard-edit-outline"
+            text-size="small" text-color="purple">
+            {{ langText('custom equipment editor/equipment name') }}
+          </cy-icon-text>
+          <div class="name">
+            <cy-title-input iconify-name="mdi-clipboard-edit-outline">
+              <input type="text" v-model="equipment.name" />
+            </cy-title-input>
+          </div>
+          <cy-icon-text class="title" iconify-name="mdi-rhombus-outline"
+            text-size="small" text-color="purple">
+            {{ langText('custom equipment editor/equipment other') }}
+          </cy-icon-text>
+          <div class="other">
+            <cy-input-counter v-if="equipment.is == 'weapon'" class="counter"
+              :value="equipment.atk" :range="baseValueRange"
+              @set-value="setAtk(equipment, $event)">
+              <template v-slot:title>
+                <cy-icon-text iconify-name="mdi-sword">ATK</cy-icon-text>
+              </template>
+            </cy-input-counter>
+            <cy-input-counter v-else-if="equipment.is == 'armor'" class="counter"
+              :value="equipment.def" :range="baseValueRange"
+              @set-value="setDef(equipment, $event)">
+              <template v-slot:title>
+                <cy-icon-text iconify-name="mdi-shield">DEF</cy-icon-text>
+              </template>
+            </cy-input-counter>
+            <cy-input-counter v-if="equipment.hasRefining" class="counter"
+              :value="equipment.refining" :range="[0, 15]"
+              @set-value="setRefining(equipment, $event)">
+              <template v-slot:title>
+                <cy-icon-text iconify-name="mdi-cube-send">{{ langText('refining') }}</cy-icon-text>
+              </template>
+            </cy-input-counter>
+            <cy-input-counter v-if="equipment.hasStability" class="counter"
+              :value="equipment.stability" :range="[0, 100]"
+              @set-value="setStability($event)">
+              <template v-slot:title>
+                <cy-icon-text iconify-name="mdi-rhombus-outline">
+                  {{ langText('stability') }}
+                </cy-icon-text>
+              </template>
+            </cy-input-counter>
+          </div>
+        </template>
+      </div>
+      <cy-flex-layout>
+        <template #right-content>
+          <cy-button iconify-name="ic-round-done" type="border"
+            class="inline" @click.stop="closeEditWindow">
+            {{ globalLangText('global/confirm') }}
+          </cy-button>
+        </template>
+      </cy-flex-layout>
+    </cy-detail-window>
+    <cy-transition type="fade" mode="out-in">
+      <div class="edit" v-if="mode == 'edit'">
+        <div class="name">
+          <cy-title-input iconify-name="mdi-clipboard-edit-outline">
+            <input type="text" v-model="equipment.name" />
+          </cy-title-input>
+        </div>
+        <cy-flex-layout v-if="equipment.customTypeList != null" class="switch-custom-type">
+          <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle" class="mr-normal">
+            {{ langText('equipment type') }}
+          </cy-icon-text>
+          <cy-button type="border" iconify-name="heroicons-solid:switch-vertical"
+            @click="switchCustomType">
+            {{ langText('field type text/' + equipment.type.description) }}
+          </cy-button>
+        </cy-flex-layout>
+        <cy-input-counter v-if="equipment.is == 'weapon'" class="counter"
+          :value="equipment.atk" :range="baseValueRange"
+          @set-value="setAtk(equipment, $event)">
+          <template v-slot:title>
+            <cy-icon-text iconify-name="mdi-sword">ATK</cy-icon-text>
+          </template>
+        </cy-input-counter>
+        <cy-input-counter v-else-if="equipment.is == 'armor'" class="counter"
+          :value="equipment.def" :range="baseValueRange"
+          @set-value="setDef(equipment, $event)">
+          <template v-slot:title>
+            <cy-icon-text iconify-name="mdi-shield">DEF</cy-icon-text>
+          </template>
+        </cy-input-counter>
+        <cy-input-counter v-if="equipment.hasRefining" class="counter"
+          :value="equipment.refining" :range="[0, 15]"
+          @set-value="setRefining(equipment, $event)">
+          <template v-slot:title>
+            <cy-icon-text iconify-name="mdi-cube-send">{{ langText('refining') }}</cy-icon-text>
+          </template>
+        </cy-input-counter>
+        <div class="crystals" v-if="equipment.hasCrystal">
+          <cy-button v-for="c in equipment.crystals"
+            :key="c.id" :image-path="getCrystalImagePath(c)" type="line"
+            @click="editCrystal">
+            {{ c.name }}
+          </cy-button>
+          <cy-button v-if="equipment.crystals.length < 2"
+            iconify-name="bx-bx-circle" type="line"
+            @click="editCrystal">
+            {{ langText('crystal empty') }}
+          </cy-button>
+        </div>
+        <div v-if="equipment.isCustom" class="custom-editor">
+          <cy-button iconify-name="ic-round-edit" type="border"
+            @click="openCustomEquipmentEditor(equipment)">
+            {{ langText('custom equipment editor/window title') }}
+          </cy-button>
+        </div>
+      </div>
+    </cy-transition>
+  </div>
+</template>
+
+<script>
+import vue_showStat from "./show-stat.vue";
+
+export default {
+  props: {
+    'equipment': {},
+    'statsDisable': {
+      type: Boolean,
+      default: false
+    }
+  },
+  inject: [
+    'langText', 'globalLangText',
+    'getShowEquipmentData', 'openCustomEquipmentEditor', 'openSelectCrystals'
+  ],
+  data(){
+    return {
+      mode: 0, // 0: normal, 1: edit
+      currentCustomTypeIndex: 0,
+      editWindow: {
+        visible: false,
+        positionElement: null,
+        mode: 'main'
+      }
+    };
+  },
+  filters: {
+    equipmentRefining(v){
+      return v;
+    }
+  },
+  computed: {
+    equipmentData() {
+      return this.getShowEquipmentData(this.equipment);
+    },
+    baseValueRange() {
+      const eq = this.equipment;
+      console.log(eq);
+      if (!eq.isCustom) {
+        if (eq.is == 'weapon')
+          return [eq.baseAtk, Math.ceil(eq.baseAtk * 1.1) + 10];
+        else if (eq.is == 'armor')
+          return [eq.baseDef, Math.ceil(eq.baseDef * 1.1) + 10];
+      }
+      return [0, 999];
+    }
+  },
+  methods: {
+    setStability(v) {
+      this.equipment.stability = v;
+    },
+    openEditWindow(e, mode) {
+      this.editWindow.visible = true;
+      this.editWindow.positionElement = e.target;
+      this.editWindow.mode = mode;
+    },
+    closeEditWindow() {
+      this.editWindow.visible = false;
+    },
+    getCrystalImagePath(c) {
+      const type = c.origin.enhancer ? 'enhance' :
+        ['weapon', 'body', 'additional', 'special', 'normal'][c.origin.category];
+      return '/imgs/crystals/' + type + '.png';
+    },
+    setAtk(eq, v) {
+      eq.atk = v;
+    },
+    setDef(eq, v) {
+      eq.def = v;
+    },
+    setRefining(eq, v) {
+      eq.refining = v;
+    },
+    switchCustomType(){
+      const eq = this.equipment;
+      const len = eq.customTypeList.length;
+
+      ++this.currentCustomTypeIndex;
+      if ( this.currentCustomTypeIndex == len )
+        this.currentCustomTypeIndex = 0;
+      eq.setCustomType(eq.customTypeList[this.currentCustomTypeIndex]);
+    },
+    removeCrystal(index){
+      this.equipment.crystals.splice(index, 1);
+    },
+    editCrystal(){
+      this.openSelectCrystals(this.equipment);
+    }
+  },
+  components: {
+    'show-stat': vue_showStat
+  }
+}
+</script>
+
+<style lang="less" scoped>
+@deep-operator: ~'>>>';
+
+.information {
+  width: 100%;
+  > .edit {
+    padding: 0 0.3rem;
+    padding-top: 0.6rem;
+
+    > .custom-editor {
+      margin-top: 0.8rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--primary-light);
+    }
+  }
+}
+
+.counter {
+  margin-bottom: 0.6rem;
+}
+
+.edit-content {
+  > .title {
+    margin-bottom: 0.4rem;
+  }
+  > .name {
+    margin-bottom: 0.8rem;
+  }
+
+  > .switch-custom-type {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.main {
+  > .title {
+    padding-bottom: 0.2rem;
+    padding-left: 0.3rem;
+    display: flex;
+    align-items: center;
+
+    > .name {
+      margin-right: 0.6rem;
+      color: var(--primary-purple);
+
+      @{deep-operator} .refining {
+        color: var(--primary-water-blue);
+        margin-left: 0.3rem;
+      }
+    }
+    > .category {
+      flex-shrink: 0;
+      color: var(--primary-light-3);
+      font-size: 0.9rem;
+      margin-right: 0.4rem;
+    }
+  }
+}
+
+.base {
+  padding: 0.4rem 0.7rem;
+  border: 0.1rem solid var(--primary-light);
+  border-radius: 1rem;
+  margin: 0.6rem 0;
+  display: flex;
+  align-items: center;
+
+  > .name {
+    color: var(--primary-purple);
+  }
+
+  > .value {
+    margin-left: 0.5rem;
+    color: var(--primary-purple);
+
+    > .refining {
+      color: var(--primary-water-blue);
+      margin-left: 0.2rem;
+    }
+  }
+
+  > .stability {
+    margin-left: auto;
+  }
+}
+
+.stats {
+  margin-top: 0.3rem;
+  padding-left: 0.3rem;
+
+  &.stats-disable {
+    opacity: 0.5;
+  }
+}
+
+.crystals {
+  border-top: 1px solid var(--primary-light);
+  margin-top: 0.4rem;
+  padding-top: 0.2rem;
+  > .crystal {
+    margin: 0.2rem 0;
+    margin-right: 0.6rem;
+  }
+  &.stats-disable {
+    opacity: 0.5;
+  }
+}
+</style>

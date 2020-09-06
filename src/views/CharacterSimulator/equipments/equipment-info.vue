@@ -27,7 +27,8 @@
         </div>
         <div class="stats" :class="{ 'stats-disable': statsDisable }">
           <show-stat v-for="stat in equipment.stats" :stat="stat"
-            :key="`${stat.baseName()}-${stat.type.description}`" />
+            :key="`${stat.baseName()}-${stat.type.description}`"
+            :negative-value="stat.statValue() < 0" />
         </div>
         <div v-if="equipment.hasCrystal && equipment.crystals.length > 0" class="crystals"
           :class="{ 'stats-disable': statsDisable }">
@@ -80,7 +81,7 @@
             {{ langText('crystal empty') }}
           </cy-button>
         </div>
-        <div v-if="equipment.isCustom" class="custom-editor">
+        <div class="custom-editor">
           <cy-button iconify-name="ic-round-edit" type="border"
             @click="openCustomEquipmentEditor(equipment)">
             {{ langText('custom equipment editor/window title') }}
@@ -247,15 +248,14 @@ export default {
     }
   }
   > .edit {
+    padding: 0 0.3rem;
     padding-top: 0.6rem;
 
     > .switch-custom-type {
       margin-bottom: 0.5rem;
-      padding-left: 0.3rem;
     }
 
     .counter {
-      margin: 0 0.3rem;
       margin-bottom: 0.6rem;
     }
     > .custom-editor {

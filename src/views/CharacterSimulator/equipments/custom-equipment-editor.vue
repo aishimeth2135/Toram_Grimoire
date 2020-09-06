@@ -1,19 +1,19 @@
 <template>
   <div class="main--custom-equipment-editor">
-    <cy-icon-text class="title" iconify-name="mdi-clipboard-edit-outline"
+    <cy-icon-text iconify-name="mdi-clipboard-edit-outline"
       text-size="small" text-color="purple">
       {{ langText('custom equipment editor/equipment name') }}
     </cy-icon-text>
-    <div class="name">
+    <div class="name content">
       <cy-title-input iconify-name="mdi-clipboard-edit-outline">
         <input type="text" v-model="equipment.name" />
       </cy-title-input>
     </div>
-    <cy-icon-text class="title" iconify-name="mdi-rhombus-outline"
+    <cy-icon-text iconify-name="mdi-rhombus-outline"
       text-size="small" text-color="purple">
       {{ langText('custom equipment editor/equipment stats') }}
     </cy-icon-text>
-    <div class="stats">
+    <div class="stats content">
       <div v-for="stat in equipment.stats"
         :key="`${stat.baseName()}-${stat.type.description}`">
         <cy-input-counter :value="stat.statValue()"
@@ -33,11 +33,11 @@
       </cy-button>
     </div>
     <template v-if="hasOther">
-      <cy-icon-text class="title" iconify-name="mdi-rhombus-outline"
+      <cy-icon-text iconify-name="mdi-rhombus-outline"
         text-size="small" text-color="purple">
         {{ langText('custom equipment editor/equipment other') }}
       </cy-icon-text>
-      <div class="other">
+      <div class="other content">
         <cy-input-counter v-if="equipment.hasStability"
           :value="equipment.stability" :range="[0, 100]"
           @set-value="setStability($event)">
@@ -340,9 +340,9 @@ export default {
 
 .main--custom-equipment-editor {
   padding: 0.2rem 0;
-  > .title {
-    margin-top: 0.8rem;
-    margin-bottom: 0.2rem;
+  > .content {
+    margin-bottom: 0.8rem;
+    margin-top: 0.3rem;
   }
 }
 
