@@ -99,7 +99,7 @@ export default {
         const v = stat.statValueParts[p];
         let title = p != 'base' ? base.show(type, v) : {
           text: this.localLangText('base value'),
-          value: stat.resultValue
+          value: stat.statValueParts['base']
         };
         if (p == 'multiplier')
           title += '｜' + Math.floor(v * stat.statValueParts['base'] / 100).toString();

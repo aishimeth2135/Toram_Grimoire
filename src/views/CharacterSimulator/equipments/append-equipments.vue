@@ -202,4 +202,10 @@ export default {
     overflow-y: auto;
   }
 }
+
+.limit-reached-limit {
+  font-size: 0.9rem;
+  color: var(--primary-red);
+  padding: 0.7rem 0.5rem;
+}
 </style>
