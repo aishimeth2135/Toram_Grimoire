@@ -453,9 +453,9 @@ export default {
         MainWeapon.TYPE_KATANA
       ];
       const subs = [
-        SubWeapon.TYPE_ARROW = Symbol('arrow'),
-        SubArmor.TYPE_SHIELD = Symbol('shield'),
-        SubWeapon.TYPE_DAGGER = Symbol('dagger'),
+        SubWeapon.TYPE_ARROW,
+        SubArmor.TYPE_SHIELD,
+        SubWeapon.TYPE_DAGGER,
         MainWeapon.TYPE_MAGIC_DEVICE,
         MainWeapon.TYPE_KNUCKLE,
         MainWeapon.TYPE_HALBERD
@@ -476,9 +476,9 @@ export default {
         bodyField = chara.equipmentField(EquipmentField.TYPE_BODY_ARMOR);
 
       if (!mainField.isEmpty()) {
-        if (mainField.equipment.type == MainWeapon.TYPE_ONE_HAND_SWORD &&
+        if (mainField.equipmentType == MainWeapon.TYPE_ONE_HAND_SWORD &&
             !subField.isEmpty() &&
-            subField.equipment.type == MainWeapon.TYPE_ONE_HAND_SWORD)
+            subField.equipmentType == MainWeapon.TYPE_ONE_HAND_SWORD)
           main = 9;
         else
           main = mains.indexOf(mainField.equipment.type);
@@ -489,9 +489,6 @@ export default {
       if (!bodyField.isEmpty()) {
         body = bodys.indexOf(bodyField.equipment.type);
       }
-
-      console.log(eq, skillState);
-      console.log({ main, sub, body });
 
       const eqs = { main, sub, body };
       /* 通用 */

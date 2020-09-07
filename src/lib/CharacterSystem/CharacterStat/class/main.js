@@ -67,12 +67,7 @@ class Character {
     return stat ? stat.value : 0;
   }
   checkFieldEquipmentType(field_type, eq_type) {
-    const field = this.equipmentField(field_type);
-    if (field.isEmpty())
-      return eq_type == EquipmentField.EMPTY;
-
-    const eq = field.equipment;
-    return eq.type == eq_type;
+    return this.equipmentField(field_type).equipmentType == eq_type;
   }
   testSubWeapon(sub_type, main_type) {
     const t = [];
@@ -87,7 +82,7 @@ class Character {
         t.push(MainWeapon.TYPE_KNUCKLE);
         // fall through
       case MainWeapon.TYPE_KNUCKLE:
-        t.push(MainWeapon.TYPE_MAGIC_DEVICE, SubWeapon.TYPE_SHIELD);
+        t.push(MainWeapon.TYPE_MAGIC_DEVICE, SubArmor.TYPE_SHIELD);
         // fall through
       case MainWeapon.TYPE_HALBERD:
         t.push(SubWeapon.TYPE_ARROW);
@@ -122,7 +117,7 @@ class EquipmentField {
     return this._parent;
   }
   get equipmentType() {
-    if (!this.equipment)
+    if (this.isEmpty())
       return EquipmentField.EMPTY;
     return this.equipment.type;
   }
@@ -158,42 +153,7 @@ EquipmentField.TYPE_ADDITIONAL = Symbol('additional');
 EquipmentField.TYPE_SPECIAL = Symbol('special');
 EquipmentField.TYPE_AVATAR = Symbol('avatar');
 
-EquipmentField.EMPTY = Symbol();
-
-class EquipmentFieldItem {
-  constructor(parent, type) {
-    this._parent = parent;
-    this.type = type;
-  }
-  value() {
-    // const eq = this.belongField.currentEquipment();
-    switch (this.type) {
-      case EquipmentFieldItem.TYPE_STATS:
-        this.value = [];
-        break;
-      case EquipmentFieldItem.TYPE_ATK:
-        this.value = 0;
-        break;
-      case EquipmentFieldItem.TYPE_DEF:
-        this.value = 0;
-        break;
-      case EquipmentFieldItem.TYPE_STABILITY:
-        this.value = 60;
-        break;
-      case EquipmentFieldItem.TYPE_REFINING:
-        this.value = 0;
-    }
-  }
-  get belongField() {
-    return this._parent;
-  }
-}
-
-EquipmentFieldItem.TYPE_STATS = Symbol('stats');
-EquipmentFieldItem.TYPE_ATK = Symbol('atk');
-EquipmentFieldItem.TYPE_DEF = Symbol('def');
-EquipmentFieldItem.TYPE_STABILITY = Symbol('stability');
-EquipmentFieldItem.TYPE_REFINING = Symbol('refining');
+EquipmentField.EMPTY = Symbol('empty');
 
 class CharacterStatCategory {
   constructor(name) {
@@ -230,7 +190,7 @@ class CharacterStat {
     if (this.link) {
       const base = Grimoire.CharacterSystem.findStatBase(this.link);
       if (!base)
-        console.warn('Link of CharacterStat is not found.');
+        console.warn(`Link of CharacterStat: ${this.link} is not found.`);
       else {
         this.isBoolStat = base.checkBoolStat();
         this.linkedStatBase = base;
@@ -354,6 +314,8 @@ class CharacterStatFormula {
       mvalue = m_stat ? m_stat.statValue() : 0,
       tvalue = t_stat ? t_stat.statValue() : 0;
 
+    const hexVarlist = ['cvalue', 'mvalue', 'tvalue']; // 一般的#變數
+
     let defaultFormula = true;
 
     const statPartsDetail = {
@@ -383,7 +345,7 @@ class CharacterStatFormula {
           return handleVar(vars.value['@'], m1, '0');
         })
         .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
-          if (['cvalue', 'mvalue', 'tvalue'].includes(m1)) {
+          if (hexVarlist.includes(m1)) {
             defaultFormula = false;
             switch (m1) {
               case 'cvalue':
@@ -394,6 +356,7 @@ class CharacterStatFormula {
                 return tvalue;
             }
           }
+          // 不是上面四個
           return handleVar(vars.value['#'], m1, '0');
         });
       // console.log('formula: after: ', f);
@@ -404,20 +367,29 @@ class CharacterStatFormula {
     const conditions = this.conditionValues
       .map(p => {
         let statBasePart = null;
-        const c = p.conditional
-          .replace(/@([a-zA-Z0-9_.]+)/g, (m, m1) => {
-            const t = handleVar(vars.conditional['@'], m1, true);
-            return t ? 'true' : 'false';
-          })
-          .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
-            if (statBasePart == null && ['cvalue', 'mvalue', 'tvalue'].includes(m1))
-              statBasePart = m1;
-            const t = handleVar(vars.conditional['#'], m1, true);
-            return t ? 'true' : 'false';
-          });
+
+        let result = true;
+        if (p.conditional != '#') {
+          const c = p.conditional
+            .replace(/@([a-zA-Z0-9_.]+)/g, (m, m1) => {
+              const t = handleVar(vars.conditional['@'], m1, true);
+              return t ? 'true' : 'false';
+            })
+            .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
+              let t;
+              if (statBasePart == null && ['cvalue', 'mvalue', 'tvalue'].includes(m1)) {
+                statBasePart = m1;
+                t = true;
+              } else {
+                t = handleVar(vars.conditional['#'], m1, true);
+              }
+              return t ? 'true' : 'false';
+            });
+          result = safeEval(c, true);
+        }
         return {
           conditional: p.conditional,
-          result: safeEval(c, true),
+          result,
           formula: p.formula,
           statBasePart
         };
@@ -459,17 +431,24 @@ class CharacterStatFormula {
         return v;
       });
 
-    const basev = this.formula ? handleFormula(this.formula) : 0;
-    const res = [basev, ...additonal_values]
-      .reduce((cur, v) => cur + v, 0);
+    const sum = ary => ary.reduce((cur, v) => cur + v, 0);
+    let res = 0, basev = 0, initBasev = 0;
 
-    if (defaultFormula)
-      statPartsDetail.initValue['base'] = basev;
+    if (this.formula && this.formula.includes('#base')) {
+      basev = sum(additonal_values);
+      res = handleFormula(this.formula.replace('#base', basev));
+    } else {
+      basev = sum([this.formula ? handleFormula(this.formula) : 0, ...additonal_values]);
+      initBasev = basev;
+      res = defaultFormula ? (basev * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : basev;
+    }
+
+    statPartsDetail.initValue['base'] = initBasev;
 
     return {
-      value: defaultFormula ? (res * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : res,
+      value: res,
       statValueParts: {
-        base: res,
+        base: basev,
         constant: cvalue,
         multiplier: mvalue,
         total: tvalue
@@ -479,4 +458,4 @@ class CharacterStatFormula {
   }
 }
 
-export { CharacterStatCategory, CharacterStat, Character, EquipmentField, EquipmentFieldItem };
+export { CharacterStatCategory, CharacterStat, Character, EquipmentField };
