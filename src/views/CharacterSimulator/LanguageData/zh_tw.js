@@ -127,6 +127,7 @@ export default function() {
       'show character stats': {
         'base value': '基礎值',
         'init value': '初始值',
+        'additional value': '額外加成',
         'text of conditional values': {
           '1h_sword': '主手單手劍',
           '2h_sword': '雙手劍',
