@@ -80,7 +80,8 @@ export default {
       if (!this.detail.currentStat)
         return [];
       const vFix = v => v.toString()
-         .replace(/^(-?\d+\.)(\d{3,})$/, (m, m1, m2) => m1 + m2.slice(0, 3));
+         .replace(/^(-?\d+\.)(\d{3,})$/, (m, m1, m2) => m1 + m2.slice(0, 3))
+         .replace(/^(-?\d+)(\.0+)$/, (m, m1) => m1);
 
       const stat = this.detail.currentStat;
       const base = stat.origin.linkedStatBase;
@@ -99,7 +100,7 @@ export default {
         const v = stat.statValueParts[p];
         let title = p != 'base' ? base.show(type, v) : {
           text: this.localLangText('base value'),
-          value: stat.statValueParts['base']
+          value: vFix(stat.statValueParts['base'])
         };
         if (p == 'multiplier')
           title += '｜' + Math.floor(v * stat.statValueParts['base'] / 100).toString();
@@ -112,10 +113,12 @@ export default {
             value: vFix(stat.statPartsDetail.initValue[p]),
             iid: 0
           });
-          lines.push(...adds.map((p, i) => ({
+          lines.push(...adds.slice().sort(p => p.isMul ? 1 : -1).map((p, i) => ({
             iid: i + 1,
             texts: this.handleConditional(p.conditional),
-            value: (p.value > 0 ? '+' : '') + vFix(p.value)
+            value: p.isMul ?
+              p.value > 0 ? `×${vFix(p.value)}` : `×(${vFix(p.value)})` :
+              (p.value > 0 ? '+' : '') + vFix(p.value)
           })));
         }
 
@@ -130,10 +133,13 @@ export default {
   methods: {
     handleConditional(str) {
       str = str
+        .replace(/"([^"]+)"/g, (m, m1) => m1 + ',')
         .replace(/\s+/g, '')
-        .replace(/(?:&&|\|\|)#[cmt]value/g, '')
-        .replace(/#[cmt]value(?:&&|\|\|)/g, '')
-        .replace(/@([a-zA-Z._]+)/g, (m, m1) => {
+        .replace(/(?:&&|\|\|)#[a-zA-Z0-9._]+/g, '')
+        .replace(/#[a-zA-Z0-9._]+(?:&&|\|\|)/g, '')
+        .replace(/^#[a-zA-Z0-9._]*$/g,
+          this.localLangText('additional value') + ',')
+        .replace(/@([a-zA-Z0-9._]+)/g, (m, m1) => {
           m1 = m1.replace(/\./g, '/');
           return this.localLangText('text of conditional values/' + m1) + ',';
         })
@@ -141,13 +147,13 @@ export default {
         .replace(/\(|\)/g, m => m + ',')
         .replace(/^\((.+)\)$/, (m, m1) => m1);
 
-      // slice(0, -1)去掉尾端的","
-      return str.slice(0, -1)
-        .split(',')
-        .map((p, i) => ({
-          iid: i,
-          text: p
-        }));
+      str = str.split(',');
+      if (str[str.length - 1] == '')
+        str = str.slice(0, -1);
+      return str.map((p, i) => ({
+        iid: i,
+        text: p
+      }));
     },
     showStatDetail(e, stat) {
       this.detail.positionElement = e.target;

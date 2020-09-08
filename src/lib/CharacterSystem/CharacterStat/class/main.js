@@ -219,6 +219,8 @@ class CharacterStat {
     try {
       const res = this._formula.calc(character_simple_stats, vars);
       let value = res.value;
+      const originalValue = value;
+
       if (typeof value != 'number')
         value = parseFloat(value);
       if (this.max != null && value > this.max)
@@ -241,7 +243,7 @@ class CharacterStat {
         statPartsDetail: res.statPartsDetail,
         hidden: ho == 0 ||
           (ho == 1 && ['constant', 'multiplier', 'total'].every(a => res.statValueParts[a] == 0)) ||
-          (ho == 2 && value == 0)
+          (ho == 2 && originalValue == 0)
       };
     } catch (e) {
       console.warn(e);
@@ -314,7 +316,7 @@ class CharacterStatFormula {
       mvalue = m_stat ? m_stat.statValue() : 0,
       tvalue = t_stat ? t_stat.statValue() : 0;
 
-    const hexVarlist = ['cvalue', 'mvalue', 'tvalue']; // 一般的#變數
+    // const hexVarlist = ['cvalue', 'mvalue', 'tvalue']; // 一般的#變數
 
     let defaultFormula = true;
 
@@ -338,25 +340,23 @@ class CharacterStatFormula {
       f = f
         .replace(/\$([a-zA-Z0-9_.]+)/g, (m, m1) => {
           const a = handleVar(vars.value['$'], m1, null, true);
-
           return a ? a.result(simple_stats, vars).resultValue.toString() : '0';
         })
         .replace(/@([a-zA-Z0-9_.]+)/g, (m, m1) => {
           return handleVar(vars.value['@'], m1, '0');
         })
-        .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
-          if (hexVarlist.includes(m1)) {
-            defaultFormula = false;
-            switch (m1) {
-              case 'cvalue':
-                return cvalue;
-              case 'mvalue':
-                return mvalue;
-              case 'tvalue':
-                return tvalue;
-            }
+        .replace(/#([cmt]value)/g, (m, m1) => {
+          defaultFormula = false;
+          switch (m1) {
+            case 'cvalue':
+              return cvalue;
+            case 'mvalue':
+              return mvalue;
+            case 'tvalue':
+              return tvalue;
           }
-          // 不是上面四個
+        })
+        .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
           return handleVar(vars.value['#'], m1, '0');
         });
       // console.log('formula: after: ', f);
@@ -368,30 +368,35 @@ class CharacterStatFormula {
       .map(p => {
         let statBasePart = null;
 
-        let result = true;
+        let result = true, isMul = false;
         if (p.conditional != '#') {
           const c = p.conditional
             .replace(/@([a-zA-Z0-9_.]+)/g, (m, m1) => {
               const t = handleVar(vars.conditional['@'], m1, true);
               return t ? 'true' : 'false';
             })
-            .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
-              let t;
-              if (statBasePart == null && ['cvalue', 'mvalue', 'tvalue'].includes(m1)) {
+            .replace(/#([cmt]value)/g, (m, m1) => {
+              if (statBasePart == null)
                 statBasePart = m1;
-                t = true;
-              } else {
-                t = handleVar(vars.conditional['#'], m1, true);
-              }
+              return 'true';
+            })
+            .replace('#mul', () => {
+              isMul = true;
+              return 'true';
+            })
+            .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
+              const t = handleVar(vars.conditional['#'], m1, true);
               return t ? 'true' : 'false';
-            });
+            })
+            .replace(/"[^"]+"/g, 'true');
           result = safeEval(c, true);
         }
         return {
           conditional: p.conditional,
           result,
           formula: p.formula,
-          statBasePart
+          statBasePart,
+          isMul
         };
       })
       .filter(p => p.result)
@@ -420,26 +425,36 @@ class CharacterStatFormula {
       }
     });
 
-    const additonal_values = conditions
+    const extra_values = conditions
       .filter(p => p.statBasePart == null)
       .map(p => {
         const v = handleFormula(p.formula);
         statPartsDetail.additionalValues.base.push({
           conditional: p.conditional,
-          value: v
+          value: v,
+          isMul: p.isMul
         });
-        return v;
+        return {
+          value: v,
+          isMul: p.isMul
+        };
       });
 
+    const add_values = extra_values
+      .filter(p => !p.isMul).map(p => p.value);
+    const mul_values = extra_values
+      .filter(p => p.isMul).map(p => p.value);
+
     const sum = ary => ary.reduce((cur, v) => cur + v, 0);
+    const mul = ary => ary.reduce((cur, v) => cur * v, 1);
     let res = 0, basev = 0, initBasev = 0;
 
     if (this.formula && this.formula.includes('#base')) {
-      basev = sum(additonal_values);
+      basev = sum(add_values) * mul(mul_values);
       res = handleFormula(this.formula.replace('#base', basev));
     } else {
-      basev = sum([this.formula ? handleFormula(this.formula) : 0, ...additonal_values]);
-      initBasev = basev;
+      initBasev = this.formula ? handleFormula(this.formula) : 0;
+      basev = sum([initBasev, ...add_values]) * mul(mul_values);
       res = defaultFormula ? (basev * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : basev;
     }
 
