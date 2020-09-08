@@ -1,12 +1,14 @@
 <template>
   <section>
-    <div class="character-stat-categorys">
+    <div class="character-stat-categorys" @touchstart.prevent="clearStatDetail">
       <div v-for="data in showCharacterStatDatas" class="category" :key="data.name">
         <div class="title">{{ data.name }}</div>
         <div class="stats">
           <span v-for="stat in data.stats" :key="stat.id" class="stat-scope"
             @mouseenter="showStatDetail($event, stat)"
-            @mouseleave="clearStatDetail">
+            @mouseleave="clearStatDetail"
+            @touchstart.prevent.stop="toggleShowStatDetail($event, stat)"
+            @touchend.prevent.stop>
             <template v-if="!stat.origin.isBoolStat">
               <span class="name">{{ stat.name }}</span>
               <span class="value">{{ stat.displayValue }}</span>
@@ -154,6 +156,16 @@ export default {
         iid: i,
         text: p
       }));
+    },
+    toggleShowStatDetail(e, stat) {
+      if (this.detail.currentStat) {
+        this.detail.currentStat != stat ?
+          this.showStatDetail(e, stat) :
+          this.clearStatDetail();
+      }
+      else {
+        this.showStatDetail(e, stat);
+      }
     },
     showStatDetail(e, stat) {
       this.detail.positionElement = e.target;

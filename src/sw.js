@@ -82,6 +82,7 @@ registerRoute(
       const cacheRes = res.clone();
 
       caches.open(CACHE_NAME).then(cache => cache.put(req, cacheRes));
+      console.log(`[sw] Fetch backup url of "${params.url.href}" successfully.`);
 
       return res;
     }

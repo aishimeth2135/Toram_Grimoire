@@ -371,6 +371,7 @@ class CharacterStatFormula {
         let result = true, isMul = false;
         if (p.conditional != '#') {
           const c = p.conditional
+            .replace(/"[^"]+"/g, 'true')
             .replace(/@([a-zA-Z0-9_.]+)/g, (m, m1) => {
               const t = handleVar(vars.conditional['@'], m1, true);
               return t ? 'true' : 'false';
@@ -387,8 +388,7 @@ class CharacterStatFormula {
             .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
               const t = handleVar(vars.conditional['#'], m1, true);
               return t ? 'true' : 'false';
-            })
-            .replace(/"[^"]+"/g, 'true');
+            });
           result = safeEval(c, true);
         }
         return {
