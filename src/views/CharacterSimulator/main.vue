@@ -36,7 +36,7 @@ import GetLang from "@global-modules/LanguageSystem.js";
 import init from "./init.js";
 
 import vue_equipmentFields from "./equipments/main.vue";
-import vue_characterStats from "./character-stats.vue";
+import vue_characterStats from "./character-stats/main.vue";
 import vue_character from "./character.vue";
 import vue_skills from "./skill/main.vue";
 

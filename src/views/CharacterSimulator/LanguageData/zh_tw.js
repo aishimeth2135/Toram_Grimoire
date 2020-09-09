@@ -128,32 +128,34 @@ export default function() {
         'base value': '基礎值',
         'init value': '初始值',
         'additional value': '額外加成',
+        'equipped with: prefix text': '裝備為',
+        'equipped with: suffix text': '時',
         'text of conditional values': {
-          '1h_sword': '主手單手劍',
+          '1h_sword': '主手｜單手劍',
           '2h_sword': '雙手劍',
           'bow': '弓',
           'bowgun': '弩',
           'staff': '法杖',
           'magic_device': '主手魔導具',
-          'knuckle': '主手拳套',
+          'knuckle': '主手｜拳套',
           'dual_sword': '雙劍',
           'halberd': '旋風槍',
           'katana': '拔刀劍',
           'main': {
-            'none': '主手空手'
+            'none': '主手｜空手'
           },
           'sub': {
-            'magic_device': '副手魔導具',
-            'knuckle': '副手拳套',
+            'magic_device': '副手｜魔導具',
+            'knuckle': '副手｜拳套',
             'arrow': '箭矢',
             'dagger': '小刀',
             'shield': '盾牌'
           },
           'armor': {
-            'normal': '身體防具一般',
-            'dodge': '身體防具輕量化',
-            'defense': '身體防具重量化',
-            'none': '無裝備身體防具'
+            'normal': '身體防具｜一般',
+            'dodge': '身體防具｜輕量化',
+            'defense': '身體防具｜重量化',
+            'none': '身體防具｜無裝備'
           }
         }
       },

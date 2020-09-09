@@ -5,13 +5,13 @@ export default function(character_system, c/*, lang_c, slang_c*/) {
     NAME = 1,
     DISPLAY_FORMULA = 2,
     LINK = 3,
-    FORMULA = 4,
-    MAX = 5,
-    MIN = 6,
+    FORMULA = 5,
+    LIMIT = 6,
     HIDDEN_OPTION = 7,
     CAPTION = 8,
     CONDITIONAL = 3,
-    CONDITION_VALUE = 4,
+    CONDITIONAL_OPTIONS = 4,
+    CONDITION_VALUE = 5,
     CONFIRM_CATEGORY = '0',
     CATEGORY_NAME = 1;
 
@@ -29,10 +29,11 @@ export default function(character_system, c/*, lang_c, slang_c*/) {
       cur_category = new CharacterStatCategory(p[CATEGORY_NAME]);
       character_system.characterStatCategoryList.push(cur_category);
     } else if (id == '') {
-      cur_formula.appendConditionValue(p[CONDITIONAL], p[CONDITION_VALUE]);
+      cur_formula.appendConditionValue(p[CONDITIONAL], p[CONDITION_VALUE], p[CONDITIONAL_OPTIONS]);
     } else {
-      const max = p[MAX] === '' ? null : parseFloat(p[MAX]),
-        min = p[MIN] === '' ? null : parseFloat(p[MIN]);
+      let [min = null, max = null] = p[LIMIT].split('~');
+      min = min !== null ? parseFloat(min) : min;
+      max = max !== null ? parseFloat(max) : max;
       cur_stat = cur_category.appendStat(id, p[NAME], p[DISPLAY_FORMULA], p[LINK], max, min, p[CAPTION], handleHiddenOption(p[HIDDEN_OPTION]));
       cur_formula = cur_stat.setFormula(p[FORMULA]);
     }

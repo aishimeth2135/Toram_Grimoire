@@ -241,6 +241,7 @@ class CharacterStat {
         displayValue,
         statValueParts: res.statValueParts,
         statPartsDetail: res.statPartsDetail,
+        conditionalBase: res.conditionalBase,
         hidden: ho == 0 ||
           (ho == 1 && ['constant', 'multiplier', 'total'].every(a => res.statValueParts[a] == 0)) ||
           (ho == 2 && originalValue == 0)
@@ -262,10 +263,12 @@ class CharacterStatFormula {
   get belongCharacterStat() {
     return this._parent;
   }
-  appendConditionValue(conditional, formula) {
+  appendConditionValue(conditional, formula, options) {
+    options = options.split(/\s*,\s*/);
     this.conditionValues.push({
       conditional,
-      formula
+      formula,
+      options
     });
   }
   calc(simple_stats, vars) {
@@ -366,9 +369,11 @@ class CharacterStatFormula {
 
     const conditions = this.conditionValues
       .map(p => {
-        let statBasePart = null;
+        let statBasePart = null,
+          result = true,
+          isMul = false,
+          isBase = false;
 
-        let result = true, isMul = false;
         if (p.conditional != '#') {
           const c = p.conditional
             .replace(/"[^"]+"/g, 'true')
@@ -376,67 +381,78 @@ class CharacterStatFormula {
               const t = handleVar(vars.conditional['@'], m1, true);
               return t ? 'true' : 'false';
             })
-            .replace(/#([cmt]value)/g, (m, m1) => {
-              if (statBasePart == null)
-                statBasePart = m1;
-              return 'true';
-            })
-            .replace('#mul', () => {
-              isMul = true;
-              return 'true';
-            })
             .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
               const t = handleVar(vars.conditional['#'], m1, true);
               return t ? 'true' : 'false';
             });
           result = safeEval(c, true);
         }
+        p.options.forEach(option => {
+          const m = option.match(/#([cmt]value)/);
+          if (m) {
+            if (statBasePart == null)
+              statBasePart = m[1];
+          } else if (option == '#base') {
+            isBase = true;
+          } else if (option == '#mul') {
+            isMul = true;
+          }
+        })
         return {
           conditional: p.conditional,
-          result,
           formula: p.formula,
+          options: p.options,
+          result,
           statBasePart,
-          isMul
+          isMul,
+          isBase
         };
       })
       .filter(p => p.result)
 
-    conditions.filter(p => p.statBasePart != null).forEach(p => {
-      const t = p.statBasePart,
-        f = p.formula.replace(/#([a-zA-Z0-9_.]+)/g, '0'); // 不應該有#變數
-      const v = handleFormula(f);
-      const data = {
-        conditional: p.conditional,
-        value: v
-      };
-      switch (t) {
-        case 'cvalue':
-          cvalue += v;
-          statPartsDetail.additionalValues.constant.push(data);
-          break;
-        case 'mvalue':
-          mvalue += v;
-          statPartsDetail.additionalValues.multiplier.push(data);
-          break;
-        case 'tvalue':
-          tvalue += v;
-          statPartsDetail.additionalValues.total.push(data);
-          break;
-      }
+    // #base不能和#[cmt]value共存，同時存在時，#base優先級高於#[cmt]value
+    conditions
+      .filter(p => p.statBasePart != null && !p.isBase)
+      .forEach(p => {
+        const t = p.statBasePart;
+        const v = handleFormula(p.formula);
+        const data = {
+          conditional: p.conditional,
+          options: p.options,
+          value: v
+        };
+        switch (t) {
+          case 'cvalue':
+            cvalue += v;
+            statPartsDetail.additionalValues.constant.push(data);
+            break;
+          case 'mvalue':
+            mvalue += v;
+            statPartsDetail.additionalValues.multiplier.push(data);
+            break;
+          case 'tvalue':
+            tvalue += v;
+            statPartsDetail.additionalValues.total.push(data);
+            break;
+        }
     });
 
+    const conditionalBase = conditions.find(p => p.isBase);
+
     const extra_values = conditions
+      .filter(p => !p.isBase)
       .filter(p => p.statBasePart == null)
       .map(p => {
         const v = handleFormula(p.formula);
         statPartsDetail.additionalValues.base.push({
           conditional: p.conditional,
-          value: v,
-          isMul: p.isMul
+          options: p.options,
+          isMul: p.isMul,
+          value: v
         });
         return {
-          value: v,
-          isMul: p.isMul
+          isMul: p.isMul,
+          value: v
         };
       });
 
@@ -445,17 +461,23 @@ class CharacterStatFormula {
     const mul_values = extra_values
       .filter(p => p.isMul).map(p => p.value);
 
-    const sum = ary => ary.reduce((cur, v) => cur + v, 0);
-    const mul = ary => ary.reduce((cur, v) => cur * v, 1);
     let res = 0, basev = 0, initBasev = 0;
 
-    if (this.formula && this.formula.includes('#base')) {
-      basev = sum(add_values) * mul(mul_values);
-      res = handleFormula(this.formula.replace('#base', basev));
-    } else {
-      initBasev = this.formula ? handleFormula(this.formula) : 0;
-      basev = sum([initBasev, ...add_values]) * mul(mul_values);
-      res = defaultFormula ? (basev * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : basev;
+    const formula = conditionalBase ? conditionalBase.formula : this.formula;
+
+    // formula是"0"的話，計算結果無條件為0。
+    if (formula !== '0') {
+      const sum = ary => ary.reduce((cur, v) => cur + v, 0);
+      const mul = ary => ary.reduce((cur, v) => cur * v, 1);
+
+      if (formula && formula.includes('#base')) {
+        basev = sum(add_values) * mul(mul_values);
+        res = handleFormula(this.formula.replace('#base', basev));
+      } else {
+        initBasev = formula ? handleFormula(formula) : 0;
+        basev = sum([initBasev, ...add_values]) * mul(mul_values);
+        res = defaultFormula ? (basev * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : basev;
+      }
     }
 
     statPartsDetail.initValue['base'] = initBasev;
@@ -468,7 +490,8 @@ class CharacterStatFormula {
         multiplier: mvalue,
         total: tvalue
       },
-      statPartsDetail
+      statPartsDetail,
+      conditionalBase
     };
   }
 }

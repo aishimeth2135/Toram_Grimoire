@@ -27,7 +27,11 @@
       <div v-if="showStatDetailCaption" class="stat-detail-caption"
         v-html="showStatDetailCaption">
       </div>
-      <div v-for="data in showStatDetailDatas" :key="data.iid" class="stat-detail-scope">
+      <cy-icon-text v-if="showStatDetailDatas.conditionalBase"
+        iconify-name="mdi-sword">
+        <stat-detail-equipments :equipment-texts="showStatDetailDatas.conditionalBase.title.equipments" />
+      </cy-icon-text>
+      <div v-for="data in showStatDetailDatas.datas" :key="data.iid" class="stat-detail-scope">
         <cy-icon-text v-if="typeof data.title != 'object'"
           iconify-name="gg-shape-rhombus" class="title">
           {{ data.title }}
@@ -38,18 +42,18 @@
         </cy-icon-text>
         <div v-if="data.lines.length != 0" class="additinal-values">
           <div v-for="line in data.lines" :key="'line' + line.iid" class="line">
-            <cy-icon-text iconify-name="ic-round-add" text-size="small">
-              <template v-for="t in line.texts">
-                <cy-icon-text v-if="t.text == '+'" :key="'text-i-' + t.iid"
-                  iconify-name="ic-round-add" />
-                <cy-icon-text v-else-if="t.text == '/'" :key="'text-i-' + t.iid"
-                  iconify-name="mdi-slash-forward" />
-                <span v-else-if="t.text == '(' || t.text == ')'" :key="'separate-' + t.iid"
-                  class="separate" />
-                <span class="part" v-else :key="'text-' + t.iid">
-                  {{ t.text }}
+            <cy-icon-text v-if="typeof line.title == 'string'"
+              iconify-name="ic-round-add" text-size="small">
+              {{ line.title }}
+            </cy-icon-text>
+            <cy-icon-text v-else iconify-name="ic-round-add" text-size="small">
+              <stat-detail-equipments v-if="line.title.equipments.length != 0"
+                :equipment-texts="line.title.equipments" />
+              <span class="detail-line-captions">
+                <span v-for="caption in line.title.captions" :key="caption.iid" class="caption">
+                  {{ caption.text }}
                 </span>
-              </template>
+              </span>
             </cy-icon-text>
             <span class="value">{{ line.value }}</span>
           </div>
@@ -60,6 +64,9 @@
 </template>
 <script>
 import StatBase from "@lib/CharacterSystem/module/StatBase.js";
+
+import vue_statDetailEquipments from "./stat-detail-equipments.vue";
+
 export default {
   props: ['characterState', 'showCharacterStatDatas'],
   inject: ['langText'],
@@ -95,67 +102,111 @@ export default {
           id: p
         }));
 
-      return list.filter(item => item.id == 'base' || stat.statValueParts[item.id] != 0)
-      .map((item, i) => {
-        const p = item.id,
-          type = item.type;
-        const v = stat.statValueParts[p];
-        let title = p != 'base' ? base.show(type, v) : {
-          text: this.localLangText('base value'),
-          value: vFix(stat.statValueParts['base'])
-        };
-        if (p == 'multiplier')
-          title += '｜' + Math.floor(v * stat.statValueParts['base'] / 100).toString();
+      const conditionalBase = stat.conditionalBase ? {
+          title: this.handleConditional(stat.conditionalBase)
+        } : null;
+      const datas = list
+        .filter(item => item.id == 'base' || stat.statValueParts[item.id] != 0)
+        .map((item, i) => {
+          const p = item.id,
+            type = item.type;
+          const v = stat.statValueParts[p];
+          let title = p != 'base' ? base.show(type, v) : {
+            text: this.localLangText('base value'),
+            value: vFix(stat.statValueParts['base'])
+          };
+          if (p == 'multiplier')
+            title += '｜' + Math.floor(v * stat.statValueParts['base'] / 100).toString();
 
-        const lines = [];
-        const adds = stat.statPartsDetail.additionalValues[p];
-        if (adds.length != 0) {
-          lines.push({
-            texts: [{ iid: -1, text: this.localLangText('init value') }],
-            value: vFix(stat.statPartsDetail.initValue[p]),
-            iid: 0
-          });
-          lines.push(...adds.slice().sort(p => p.isMul ? 1 : -1).map((p, i) => ({
-            iid: i + 1,
-            texts: this.handleConditional(p.conditional),
-            value: p.isMul ?
-              p.value > 0 ? `×${vFix(p.value)}` : `×(${vFix(p.value)})` :
-              (p.value > 0 ? '+' : '') + vFix(p.value)
-          })));
-        }
+          const lines = [];
+          const adds = stat.statPartsDetail.additionalValues[p];
+          if (adds.length != 0) {
+            lines.push({
+              title: this.localLangText('init value'),
+              value: vFix(stat.statPartsDetail.initValue[p]),
+              iid: 0
+            });
+            const t = adds.slice()
+              .sort(p => p.isMul ? 1 : -1)
+              .filter(p => p.value != 0)
+              .map((p, i) => ({
+                iid: i + 1,
+                title: this.handleConditional(p),
+                value: p.isMul ?
+                  p.value > 0 ? `×${vFix(p.value)}` : `×(${vFix(p.value)})` :
+                  (p.value > 0 ? '+' : '') + vFix(p.value)
+              }));
+            lines.push(...t);
+          }
 
-        return {
-          iid: i,
-          title,
-          lines
-        };
-      });
+          if (conditionalBase) {
+            const ceqs = conditionalBase.title.equipments;
+            lines.forEach(p => {
+              if (typeof p.title == 'string')
+                return;
+              const eqs = p.title.equipments;
+              eqs.forEach((text, i) => {
+                if (eqs.length - i < ceqs.length)
+                  return;
+                if (ceqs.every((p, j) => p == eqs[i+j]))
+                  eqs.splice(i, ceqs.length);
+              });
+            });
+          }
+
+          return {
+            iid: i,
+            title,
+            lines
+          };
+        });
+
+      return {
+        datas,
+        conditionalBase
+      };
     }
   },
   methods: {
-    handleConditional(str) {
-      str = str
-        .replace(/"([^"]+)"/g, (m, m1) => m1 + ',')
-        .replace(/\s+/g, '')
-        .replace(/(?:&&|\|\|)#[a-zA-Z0-9._]+/g, '')
-        .replace(/#[a-zA-Z0-9._]+(?:&&|\|\|)/g, '')
-        .replace(/^#[a-zA-Z0-9._]*$/g,
-          this.localLangText('additional value') + ',')
-        .replace(/@([a-zA-Z0-9._]+)/g, (m, m1) => {
-          m1 = m1.replace(/\./g, '/');
-          return this.localLangText('text of conditional values/' + m1) + ',';
-        })
-        .replace(/&&|\|\|/g, m => m == '&&' ? '+,' : '/,')
-        .replace(/\(|\)/g, m => m + ',')
-        .replace(/^\((.+)\)$/, (m, m1) => m1);
+    handleConditional(conditionObj) {
+      const captions = [];
+      conditionObj.options.forEach(p => {
+        const m = p.match(/^"([^"]+)"$/);
+        m && captions.push({
+          iid: captions.length,
+          text: m[1]
+        });
+      });
 
-      str = str.split(',');
-      if (str[str.length - 1] == '')
-        str = str.slice(0, -1);
-      return str.map((p, i) => ({
+      let str = conditionObj.conditional;
+      if (str == '#') {
+        str = captions.length == 0 ? [this.localLangText('additional value')] : [];
+      } else {
+        str = str.replace(/\s+/g, '')
+          .replace(/(?:&&|\|\|)#[a-zA-Z0-9._]+/g, '')
+          .replace(/#[a-zA-Z0-9._]+(?:&&|\|\|)/g, '')
+          .replace(/@([a-zA-Z0-9._]+)/g, (m, m1) => {
+            m1 = m1.replace(/\./g, '/');
+            return this.localLangText('text of conditional values/' + m1) + ',';
+          })
+          .replace(/&&|\|\|/g, m => m == '&&' ? '+,' : '/,')
+          .replace(/\(|\)/g, m => m + ',')
+          .replace(/^\(([^)]+)\)$/, (m, m1) => m1);
+
+        str = str.split(',');
+        if (str[str.length - 1] == '')
+          str = str.slice(0, -1);
+      }
+
+      const equipments = str.map((p, i) => ({
         iid: i,
         text: p
       }));
+
+      return {
+        equipments,
+        captions
+      };
     },
     toggleShowStatDetail(e, stat) {
       if (this.detail.currentStat) {
@@ -177,6 +228,9 @@ export default {
     localLangText(v, vs) {
       return this.langText('show character stats/' + v, vs);
     }
+  },
+  components: {
+    'stat-detail-equipments': vue_statDetailEquipments
   }
 }
 </script>
@@ -251,6 +305,14 @@ export default {
       > .value {
         font-size: 0.9rem;
         color: var(--primary-light-3);
+        margin-left: 0.3rem;
+      }
+    }
+  }
+
+  .detail-line-captions {
+    > .caption {
+      & + & {
         margin-left: 0.3rem;
       }
     }
