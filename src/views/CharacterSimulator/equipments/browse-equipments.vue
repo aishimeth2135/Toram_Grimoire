@@ -190,8 +190,6 @@ export default {
         case EquipmentField.TYPE_SUB_WEAPON:
           if (eq instanceof MainWeapon || eq instanceof SubWeapon || eq instanceof SubArmor) {
             const t = this.characterState.origin.testSubWeapon(eq.type);
-            console.log(t);
-            console.log(this.equipments);
             return t;
           }
           return false;
