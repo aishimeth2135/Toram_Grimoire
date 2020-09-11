@@ -15,7 +15,7 @@
 const colorList = [
   'dark', 'light', 'light-2', 'light-3', 'light-4', 'purple',
   'red', 'red-light', 'water-blue', 'water-blue-light',
-  'gray', 'gray-light', 'orange'
+  'gray', 'gray-light', 'orange', 'green'
 ];
 
 export default {
@@ -125,7 +125,7 @@ export default {
 
     @colors: ~'dark', ~'light', ~'light-2', ~'light-3', ~'light-4', ~'purple',
       ~'red', ~'red-light', ~'water-blue', ~'water-blue-light',
-      ~'gray', ~'gray-light', ~'orange';
+      ~'gray', ~'gray-light', ~'orange', ~'green';
     each(@colors, {
       &.text-color-@{value} {
         --text-color: ~'var(--primary-@{value})';

@@ -177,12 +177,13 @@ class CharacterEquipment {
     return data;
   }
   load(data) {
-    const { id, name, stability, refining, baseAtk, atk, baseDef, def } = data;
+    const { id, name, stability, refining, baseAtk, atk, baseDef, def, crystals } = data;
     const getType = (inst, str) => inst['TYPE_' + str.toUpperCase()];
     const stats = data.stats.map(p => {
       const base = Grimoire.CharacterSystem.findStatBase(p.id);
       if (base)
         return base.createSimpleStat(StatBase['TYPE_' + p.type.toUpperCase()], p.value);
+      console.warn('[Error: CharacterEquipment.load] can not find stat which id: ' + p.id);
       return null;
     }).filter(p => p);
 
@@ -212,8 +213,20 @@ class CharacterEquipment {
         eq = new instance(id, name, stats);
     }
 
-    if (eq.hasRefining)
+    if (eq.hasRefining) {
       eq.refining = refining;
+    }
+    if (eq.hasCrystals) {
+      eq.crystals = crystals.map(name => {
+        const c = Grimoire.ItemSystem.items.crystals.find(p => p.name == name);
+        if (c)
+          return c;
+        console.warn('[Error: CharacterEquipment.load] can not find crystal which name: ' + name);
+        return null;
+      }).filter(c => c);
+    }
+
+    return eq;
   }
 }
 CharacterEquipment.elementStatIds = [

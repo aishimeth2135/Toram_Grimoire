@@ -2,8 +2,11 @@ export default function() {
   return {
     'Character Simulator': {
       'character': '角色',
+      'append character': '新建角色',
       'character stats': '角色面板',
       'character level': '角色等級',
+      'character name': '角色名稱',
+      'character stat points': '角色能力點數',
       'equipment': '裝備',
       'skill': '技能',
       'stability': '穩定度',
@@ -130,6 +133,7 @@ export default function() {
         'additional value': '額外加成',
         'equipped with: prefix text': '裝備為',
         'equipped with: suffix text': '時',
+        'Click anywhere to close': '點擊任意處以關閉',
         'text of conditional values': {
           '1h_sword': '主手｜單手劍',
           '2h_sword': '雙手劍',

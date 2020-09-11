@@ -1,13 +1,16 @@
 <template>
   <section>
-    <div class="character-stat-categorys" @touchstart.prevent="clearStatDetail">
+    <div class="character-stat-categorys"
+      @touchstart="toggleShowStatDetailDisplay('visible', false, true)"
+      @click="toggleShowStatDetailDisplay('visible', false)">
       <div v-for="data in showCharacterStatDatas" class="category" :key="data.name">
         <div class="title">{{ data.name }}</div>
         <div class="stats">
           <span v-for="stat in data.stats" :key="stat.id" class="stat-scope"
-            @mouseenter="showStatDetail($event, stat)"
-            @mouseleave="clearStatDetail"
-            @touchstart.prevent.stop="toggleShowStatDetail($event, stat)"
+            @mouseenter="toggleShowStatDetailDisplay('hovering', true) && setStatDetail($event, stat)"
+            @mouseleave="toggleShowStatDetailDisplay('hovering', false)"
+            @click.stop="toggleShowStatDetailDisplay('visible') && setStatDetail($event, stat)"
+            @touchstart.prevent.stop="toggleShowStatDetailDisplay('visible', detail.currentStat != stat) && setStatDetail($event, stat)"
             @touchend.prevent.stop>
             <template v-if="!stat.origin.isBoolStat">
               <span class="name">{{ stat.name }}</span>
@@ -18,11 +21,20 @@
         </div>
       </div>
     </div>
-    <cy-detail-window v-if="detail.currentStat" :position-element="detail.positionElement">
+    <cy-detail-window v-if="detail.visible || detail.hovering"
+      :position-element="detail.positionElement"
+      @click.native.stop="toggleShowStatDetailDisplay('visible', false)">
       <template #title>
-        <cy-icon-text iconify-name="mdi-ghost" text-color="purple">
-          {{ detail.currentStat.name }}
-        </cy-icon-text>
+        <cy-flex-layout style="margin-bottom: 0.7rem;">
+          <cy-icon-text iconify-name="mdi-ghost" text-color="purple">
+            {{ detail.currentStat.name }}
+          </cy-icon-text>
+          <template #right-content v-if="detail.visible">
+            <cy-icon-text iconify-name="ic-round-close" text-color="light-3" text-size="small">
+              {{ localLangText('Click anywhere to close') }}
+            </cy-icon-text>
+          </template>
+        </cy-flex-layout>
       </template>
       <div v-if="showStatDetailCaption" class="stat-detail-caption"
         v-html="showStatDetailCaption">
@@ -75,7 +87,9 @@ export default {
     return {
       detail: {
         positionElement: null,
-        currentStat: null
+        currentStat: null,
+        visible: false,
+        hovering: false
       }
     };
   },
@@ -87,7 +101,7 @@ export default {
         .replace(/\(\(([^)]+)\)\)/g, (m, m1) => `<span class="separate-scope">${m1}</span>`);
     },
     showStatDetailDatas() {
-      if (!this.detail.currentStat)
+      if (!this.detail.currentStat || this.detail.currentStat.origin.isBoolStat)
         return [];
       const vFix = v => v.toString()
          .replace(/^(-?\d+\.)(\d{3,})$/, (m, m1, m2) => m1 + m2.slice(0, 3))
@@ -119,17 +133,19 @@ export default {
           if (p == 'multiplier')
             title += '｜' + Math.floor(v * stat.statValueParts['base'] / 100).toString();
 
+          const isBase = p == 'base';
+
           const lines = [];
           const adds = stat.statPartsDetail.additionalValues[p].filter(p => p.value != 0);
           if (adds.length != 0) {
-            const initValue = {
-              title: this.localLangText('init value'),
-              value: vFix(stat.statPartsDetail.initValue[p]),
-              iid: 0
-            };
+            const initValue = stat.statPartsDetail.initValue[p];
             let hasInit = false;
-            if (initValue.value != 0) {
-              lines.push(initValue);
+            if (initValue != 0) {
+              lines.push({
+                title: this.localLangText('init value'),
+                value: (p.value > 0 && !isBase ? '+' : '') +vFix(initValue),
+                iid: 0
+              });
               hasInit = true;
             }
             const t = adds
@@ -139,7 +155,7 @@ export default {
                 if (p.isMul) {
                   value = p.value > 0 ? `×${vFix(p.value)}` : `×(${vFix(p.value)})`;
                 } else {
-                  value = (p.value > 0 && hasInit ? '+' : '') + vFix(p.value);
+                  value = (p.value > 0 && (hasInit || !isBase) ? '+' : '') + vFix(p.value);
                   if (!hasInit)
                     hasInit = true;
                 }
@@ -221,22 +237,17 @@ export default {
         captions
       };
     },
-    toggleShowStatDetail(e, stat) {
-      if (this.detail.currentStat) {
-        this.detail.currentStat != stat ?
-          this.showStatDetail(e, stat) :
-          this.clearStatDetail();
-      }
-      else {
-        this.showStatDetail(e, stat);
-      }
+    toggleShowStatDetailDisplay(target, force, clear = false) {
+      force = force === void 0 ? !this.detail[target] : force;
+      this.detail[target] = force;
+
+      if (clear && !force)
+        this.detail.currentStat = null;
+      return force;
     },
-    showStatDetail(e, stat) {
-      this.detail.positionElement = e.target;
+    setStatDetail(e, stat) {
+      this.detail.positionElement = e.target.closest('.stat-scope');
       this.detail.currentStat = stat;
-    },
-    clearStatDetail() {
-      this.detail.currentStat = null;
     },
     localLangText(v, vs) {
       return this.langText('show character stats/' + v, vs);
@@ -269,6 +280,7 @@ export default {
         border-bottom: 1px solid var(--primary-light-2);
         margin: 0.3rem;
         display: inline-block;
+        cursor: pointer;
 
         > .name {
           margin-right: 0.4rem;

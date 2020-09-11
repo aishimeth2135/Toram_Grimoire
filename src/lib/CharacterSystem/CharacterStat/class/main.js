@@ -18,6 +18,12 @@ class Character {
     this._optinalBaseStat && res.push(this._optinalBaseStat);
     return res;
   }
+  get normalBaseStats() {
+    return this._baseStats.slice();
+  }
+  get optionalBaseStat() {
+    return this._optinalBaseStat;
+  }
 
   init() {
     this._baseStats.push(...['STR', 'DEX', 'INT', 'AGI', 'VIT']
@@ -94,6 +100,11 @@ class Character {
         t.push(SubWeapon.TYPE_ARROW, MainWeapon.TYPE_KATANA);
     }
     return t.includes(sub_type);
+  }
+
+  save() {
+    const data = {};
+    return data;
   }
 }
 Character.OPTIONAL_BASE_STAT_LIST = ['TEC', 'MEN', 'LUK', 'CRT'];

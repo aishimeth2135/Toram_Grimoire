@@ -27,6 +27,7 @@
             :key="eq.iid" :equipment="eq.origin"
             @click.native="setCurrentEquipment(eq.origin, eq['@disable'])"
             :selected="eq.origin == currentEquipment"
+            :is-current="actionType == 'select-field-equipment' && action.targetField.equipment == eq.origin"
             :disable="eq['@disable']" />
         </div>
         <div class="preview" :class="{ 'unfold': infoUnfold }">

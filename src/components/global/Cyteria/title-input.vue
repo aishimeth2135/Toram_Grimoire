@@ -25,6 +25,8 @@ export default {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  margin-top: 0.4rem;
+  margin-bottom: 0.8rem;
 
   > .icon {
     margin-left: 0.4rem;
