@@ -48,6 +48,7 @@
             </cy-icon-text>
             <cy-icon-text v-else iconify-name="ic-round-add" text-size="small">
               <stat-detail-equipments v-if="line.title.equipments.length != 0"
+                class="detail-line-captions-pre"
                 :equipment-texts="line.title.equipments" />
               <span class="detail-line-captions">
                 <span v-for="caption in line.title.captions" :key="caption.iid" class="caption">
@@ -119,23 +120,35 @@ export default {
             title += '｜' + Math.floor(v * stat.statValueParts['base'] / 100).toString();
 
           const lines = [];
-          const adds = stat.statPartsDetail.additionalValues[p];
+          const adds = stat.statPartsDetail.additionalValues[p].filter(p => p.value != 0);
           if (adds.length != 0) {
-            lines.push({
+            const initValue = {
               title: this.localLangText('init value'),
               value: vFix(stat.statPartsDetail.initValue[p]),
               iid: 0
-            });
-            const t = adds.slice()
+            };
+            let hasInit = false;
+            if (initValue.value != 0) {
+              lines.push(initValue);
+              hasInit = true;
+            }
+            const t = adds
               .sort(p => p.isMul ? 1 : -1)
-              .filter(p => p.value != 0)
-              .map((p, i) => ({
-                iid: i + 1,
-                title: this.handleConditional(p),
-                value: p.isMul ?
-                  p.value > 0 ? `×${vFix(p.value)}` : `×(${vFix(p.value)})` :
-                  (p.value > 0 ? '+' : '') + vFix(p.value)
-              }));
+              .map((p, i) => {
+                let value = 0;
+                if (p.isMul) {
+                  value = p.value > 0 ? `×${vFix(p.value)}` : `×(${vFix(p.value)})`;
+                } else {
+                  value = (p.value > 0 && hasInit ? '+' : '') + vFix(p.value);
+                  if (!hasInit)
+                    hasInit = true;
+                }
+                return {
+                  iid: i + 1,
+                  title: this.handleConditional(p),
+                  value
+                };
+              });
             lines.push(...t);
           }
 
@@ -148,7 +161,7 @@ export default {
               eqs.forEach((text, i) => {
                 if (eqs.length - i < ceqs.length)
                   return;
-                if (ceqs.every((p, j) => p == eqs[i+j]))
+                if (ceqs.every((p, j) => p.text == eqs[i+j].text))
                   eqs.splice(i, ceqs.length);
               });
             });
@@ -310,19 +323,22 @@ export default {
     }
   }
 
-  .detail-line-captions {
-    > .caption {
-      & + & {
-        margin-left: 0.3rem;
-      }
-    }
-  }
-
   .separate {
     border-left: 1px solid var(--primary-light-2);
     display: inline-block;
     height: 1.2rem;
     margin: 0 0.4rem;
   }
+}
+
+.detail-line-captions {
+  > .caption {
+    & + & {
+      margin-left: 0.3rem;
+    }
+  }
+}
+.detail-line-captions-pre + .detail-line-captions {
+  margin-left: 0.3rem;
 }
 </style>

@@ -63,6 +63,9 @@
             list: [{
               main: '曼珠沙華',
               sub: '眾神幣'
+            }, {
+              main: '被世人遺忘的角落',
+              sub: '眾神幣'
             }]
           }, {
             title: 'donor',
