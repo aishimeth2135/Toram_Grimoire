@@ -1,5 +1,6 @@
 // import { EquipmentField } from "./main.js";
-
+import StatBase from "../../module/StatBase.js";
+import Grimoire from "@Grimoire";
 
 class CharacterEquipment {
   constructor(id, name="", stats=[]) {
@@ -99,6 +100,120 @@ class CharacterEquipment {
       eq.setCustom(true);
 
     return eq;
+  }
+
+  // save and load of json-data
+  save() {
+    const data = {};
+
+    // == [ instance ] [ type ] =====================================
+    const findType = (inst, list) => list.find(p => this.type == inst['TYPE_' + p.toUpperCase()]);
+    let instance, type;
+    if (this instanceof MainWeapon) {
+      instance = 0;
+      const list = [
+        'one_hand_sword', 'two_hand_sword', 'bow', 'bowgun',
+        'staff', 'magic_device', 'knuckle', 'halberd', 'katana'
+      ];
+      type = findType(MainWeapon, list);
+    }
+    else if (this instanceof SubWeapon) {
+      instance = 1;
+      const list = ['arrow', 'dagger'];
+      type = findType(SubWeapon, list);
+    }
+    else if (this instanceof SubArmor) {
+      instance = 2;
+      const list = ['shield'];
+      type = findType(MainWeapon, list);
+    }
+    else if (this instanceof BodyArmor) {
+      instance = 3;
+      const list = ['normal', 'dodge', 'defense'];
+      type = findType(BodyArmor, list);
+    }
+    else if (this instanceof AdditionalGear)
+      instance = 4;
+    else if (this instanceof SpecialGear)
+      instance = 5;
+    else if (this instanceof Avatar)
+      instance = 6;
+
+    data.instance = instance;
+    if (type)
+      data.type = type;
+
+    // == [ stats ] ==================================================
+    data.stats = this.stats.map(stat => {
+      const types = ['constant', 'multiplier', 'total'];
+      return {
+        id: stat.baseName(),
+        value: stat.value,
+        type: types.find(p => StatBase['TYPE_' + p.toUpperCase()] == stat.type)
+      };
+    });
+
+    // == [ atk ] [ def ] ============================================
+    if (this instanceof Weapon) {
+      data.baseAtk = this.baseAtk;
+      data.atk = this.atk;
+    } else if (this instanceof Armor) {
+      data.baseDef = this.baseDef;
+      data.def = this.def;
+    }
+
+    // == [ other ] ===================================================
+    data.name = this.name;
+    if (this.hasStability)
+      data.stability = this.stability;
+    if (this.hasRefining)
+      data.refining = this.refining;
+    if (this.hasCrystal)
+      data.crystals = this.crystals.map(p => p.name);
+
+    // == [ id ] ======================================================
+    data.id = this.id;
+
+    return data;
+  }
+  load(data) {
+    const { id, name, stability, refining, baseAtk, atk, baseDef, def } = data;
+    const getType = (inst, str) => inst['TYPE_' + str.toUpperCase()];
+    const stats = data.stats.map(p => {
+      const base = Grimoire.CharacterSystem.findStatBase(p.id);
+      if (base)
+        return base.createSimpleStat(StatBase['TYPE_' + p.type.toUpperCase()], p.value);
+      return null;
+    }).filter(p => p);
+
+    const instance = [
+      MainWeapon, SubWeapon, SubArmor, BodyArmor,
+      AdditionalGear, SpecialGear, Avatar
+    ][data.instance];
+
+    let eq;
+    switch (data.instance) {
+      case 0:
+      case 1:
+        eq = new instance(id, name, stats, getType(instance, data.type), baseAtk, stability);
+        eq.atk = atk;
+        break;
+      case 2:
+        eq = new instance(id, name, stats, getType(SubArmor, data.type), baseDef);
+        eq.def = def;
+        break;
+      case 3:
+      case 4:
+      case 5:
+        eq = new instance(id, name, stats, baseDef);
+        eq.def = def;
+        break;
+      case 6:
+        eq = new instance(id, name, stats);
+    }
+
+    if (eq.hasRefining)
+      eq.refining = refining;
   }
 }
 CharacterEquipment.elementStatIds = [
