@@ -1,11 +1,14 @@
 <template>
   <div class="information">
     <div class="title">
-      <cy-icon-text class="name" :iconify-name="equipmentData.categoryIcon">
+      <cy-icon-text class="name" :iconify-name="equipmentData.categoryIcon"
+        :icon-color="equipment.isCustom ? 'green' : 'light-2'">
         <span>{{ equipment.name }}</span>
         <span class="refining" v-if="equipment.hasRefining && equipment.refining > 0">+{{ equipment.refining | equipmentRefining }}</span>
       </cy-icon-text>
-      <span class="category">{{ equipmentData.categoryText }}</span>
+      <span class="category"
+        :style="{ 'color': `var(--primary-${equipment.isCustom ? 'green' : 'light-2'})` }"
+        >{{ equipmentData.categoryText }}</span>
       <cy-button type="icon-only" class="single-line" style="margin-left: auto"
         :iconify-name="mode == 0 ? 'ic-round-edit' : 'ic-round-view-list'"
         @click="mode = mode == 0 ? 1 : 0" />

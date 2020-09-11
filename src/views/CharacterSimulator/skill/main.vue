@@ -1,12 +1,15 @@
 <template>
   <section v-if="skillBuilds.length != 0">
     <div class="top">
-      <cy-button iconify-name="ant-design:build-outlined" class="inline"
-        @click="toggleSelectBuildVisible">
-        {{ currentSkillBuild ? currentSkillBuild.name : 'NONE' }}
-      </cy-button>
-      <cy-transition type="fade">
-        <div v-if="selectBuildVisible" class="select-build">
+      <cy-options>
+        <template #title>
+          <cy-list-item>
+            <cy-icon-text iconify-name="ant-design:build-outlined">
+              {{ currentSkillBuild ? currentSkillBuild.name : 'NONE' }}
+            </cy-icon-text>
+          </cy-list-item>
+        </template>
+        <template #options>
           <cy-list-item v-for="(build, i) in skillBuilds" :key="build.stateId"
             :selected="i == currentSkillBuildIndex"
             @click="selectCurrentBuild(i)">
@@ -14,8 +17,8 @@
               {{ build.name }}
             </cy-icon-text>
           </cy-list-item>
-        </div>
-      </cy-transition>
+        </template>
+      </cy-options>
     </div>
     <div class="top-sub">
       <cy-button type="border" iconify-name="mdi-rhombus-outline"
@@ -91,7 +94,6 @@ export default {
   data() {
     return {
       mode: 'passive',
-      selectBuildVisible: false,
       userSetsWindow: {
         visible: false,
         handler: null
@@ -120,15 +122,11 @@ export default {
     }
   },
   methods: {
-    toggleSelectBuildVisible() {
-      this.selectBuildVisible = !this.selectBuildVisible;
-    },
     setMode(mode) {
       this.mode = mode;
     },
     selectCurrentBuild(idx) {
       this.$emit('update:current-skill-build-index', idx);
-      this.toggleSelectBuildVisible();
     },
     toggleUserSetsWindowVisible() {
       this.userSetsWindow.visible = !this.userSetsWindow.visible;

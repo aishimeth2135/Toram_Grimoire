@@ -1,10 +1,13 @@
 <template>
   <div class="main--character-simulator">
     <div class="main" v-if="currentCharacterState">
-      <character-stats v-if="currentContentIndex == 0"
+      <character v-if="currentContentIndex == 0"
+        :character-state="currentCharacterState"
+        :current-character-state-index.sync="currentCharacterStateIndex"
+        @create-character="createCharacter" />
+      <character-stats v-if="currentContentIndex == 1"
         :character-state="currentCharacterState"
         :show-character-stat-datas="showCharacterStatDatas" />
-      <character v-if="currentContentIndex == 1" :character-state="currentCharacterState" />
       <keep-alive>
         <equipment-fields v-if="currentContentIndex == 2" :character-state="currentCharacterState" />
       </keep-alive>
@@ -58,13 +61,13 @@ export default {
       currentCharacterStateIndex: -1,
       currentSkillBuildIndex: -1,
       contents: [{
+        id: 'character',
+        icon: 'bx-bxs-face',
+        text: this.langText('character')
+      }, {
         id: 'character-stats',
         icon: 'bx-bxs-user-detail',
         text: this.langText('character stats')
-      }, {
-        id: 'character',
-        icon: 'bx-bxs-user',
-        text: this.langText('character')
       }, {
         id: 'equipment-fields',
         icon: 'gg-shape-square',
@@ -528,7 +531,10 @@ export default {
     createCharacter() {
       const c = new Character(this.langText('character') + ' ' + (this.characterStates.length + 1).toString()).init();
       this.currentCharacterStateIndex = this.characterStates.length;
-      this.$store.commit('character/createCharacter', { origin: c });
+      this.$store.commit('character/createCharacter', {
+        iid: this.characterStates.length,
+        origin: c
+      });
     },
     langText(s, vs) {
       return GetLang('Character Simulator/' + s, vs);

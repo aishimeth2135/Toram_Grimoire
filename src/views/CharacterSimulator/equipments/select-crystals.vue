@@ -95,7 +95,7 @@ export default {
       return {
         id: i,
         crystals: crystals.filter(a => a.category == i)
-      }
+      };
     });
 
     return {

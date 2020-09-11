@@ -34,7 +34,7 @@
     },
     computed: {
       isNormalType() {
-        return this.type == 'fade';
+        return this.type == 'fade' || this.type == 'fade-slide-right';
       }
     },
     methods: {
@@ -98,6 +98,22 @@
 }
 .fade-enter-to, .fade-leave {
   opacity: 1;
+}
+
+.fade-slide-right-enter {
+  transform: translateX(-20%);
+  opacity: 0;
+}
+.fade-slide-right-enter-to {
+  transform: 0;
+  opacity: 1;
+}
+.fade-slide-right-leave-to {
+  transform: translateX(20%);
+  opacity: 0;
+}
+.fade-slide-right-enter-active, .fade-slide-right-leave-active {
+  transition: 0.3s ease;
 }
 
 .slide-up-enter, .slide-up-leave-to {
