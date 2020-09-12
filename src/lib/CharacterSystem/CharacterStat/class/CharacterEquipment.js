@@ -125,7 +125,7 @@ class CharacterEquipment {
     else if (this instanceof SubArmor) {
       instance = 2;
       const list = ['shield'];
-      type = findType(MainWeapon, list);
+      type = findType(SubArmor, list);
     }
     else if (this instanceof BodyArmor) {
       instance = 3;
@@ -176,14 +176,28 @@ class CharacterEquipment {
 
     return data;
   }
-  load(data) {
+}
+CharacterEquipment.elementStatIds = [
+  'element_fire',
+  'element_water',
+  'element_earth',
+  'element_wind',
+  'element_light',
+  'element_dark'
+];
+CharacterEquipment.loadEquipment = function (data) {
+  try {
+    let success = true;
+
     const { id, name, stability, refining, baseAtk, atk, baseDef, def, crystals } = data;
     const getType = (inst, str) => inst['TYPE_' + str.toUpperCase()];
     const stats = data.stats.map(p => {
       const base = Grimoire.CharacterSystem.findStatBase(p.id);
       if (base)
         return base.createSimpleStat(StatBase['TYPE_' + p.type.toUpperCase()], p.value);
+
       console.warn('[Error: CharacterEquipment.load] can not find stat which id: ' + p.id);
+      success = false;
       return null;
     }).filter(p => p);
 
@@ -200,7 +214,7 @@ class CharacterEquipment {
         eq.atk = atk;
         break;
       case 2:
-        eq = new instance(id, name, stats, getType(SubArmor, data.type), baseDef);
+        eq = new instance(id, name, stats, getType(instance, data.type), baseDef);
         eq.def = def;
         break;
       case 3:
@@ -221,22 +235,24 @@ class CharacterEquipment {
         const c = Grimoire.ItemSystem.items.crystals.find(p => p.name == name);
         if (c)
           return c;
+
+        success = false;
         console.warn('[Error: CharacterEquipment.load] can not find crystal which name: ' + name);
         return null;
       }).filter(c => c);
     }
 
-    return eq;
+    return {
+      success,
+      equipment: eq
+    };
+  } catch (e) {
+    console.warn(e);
+    return {
+      error: true
+    };
   }
-}
-CharacterEquipment.elementStatIds = [
-  'element_fire',
-  'element_water',
-  'element_earth',
-  'element_wind',
-  'element_light',
-  'element_dark'
-];
+};
 
 class Weapon extends CharacterEquipment {
   constructor(id, name, stats, atk = 1, stability = 0) {

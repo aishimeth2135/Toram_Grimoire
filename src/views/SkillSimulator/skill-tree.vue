@@ -6,7 +6,7 @@
       </cy-icon-text>
     </cy-sticky-header>
     <div class="tree-content">
-      <draw-skill-tree v-bind="skillTreeState.drawOptions"></draw-skill-tree>
+      <draw-skill-tree v-bind="drawSkillTreeDatas" />
     </div>
   </div>
 </template>
@@ -17,7 +17,14 @@ import { getSkillElementId } from "./module/methods.js";
 
 export default {
   props: ['skillTreeState'],
+  inject: ['drawSkillTreeOptions'],
   computed: {
+    drawSkillTreeDatas() {
+      return {
+        skillTree: this.skillTreeState.levelSkillTree,
+        ...this.drawSkillTreeOptions
+      };
+    },
     skillTreeId() {
       return 'skill-tree--' + getSkillElementId(this.skillTreeState.origin);
     }
@@ -28,13 +35,13 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@deep-operator: ~'>>>';
+@deep: ~'>>>';
 
 .skill-tree {
   border-top: 1px solid var(--primary-light);
 }
 
-.top @{deep-operator} .content {
+.top @{deep} .content {
   padding-left: 0.4rem;
 }
 

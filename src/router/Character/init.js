@@ -6,6 +6,8 @@ import CharacterSystem from "@lib/CharacterSystem/CharacterSystem.js";
 import ItemSystem from "@lib/ItemSystem/ItemSystem.js";
 import SkillSystem from "@lib/SkillSystem/SkillSystem.js";
 
+import store from "@store/main";
+
 async function start() {
   Grimoire.CharacterSystem = new CharacterSystem();
   Grimoire.ItemSystem = new ItemSystem();
@@ -38,6 +40,8 @@ async function start() {
   await inits[1].next();
   await inits[2].next();
   await inits[3].next();
+
+  store.commit('character/setSkillRoot', Grimoire.SkillSystem.skillRoot);
 
   viewInitReady();
 

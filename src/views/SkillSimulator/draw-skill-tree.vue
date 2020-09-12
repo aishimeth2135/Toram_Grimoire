@@ -42,58 +42,58 @@
 </template>
 
 <script>
-  import CY from "@global-modules/cyteria.js";
-  import {computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs} from "@lib/SkillSystem/module/DrawSkillTree.js";
-  import {SkillTree, LevelSkillTree} from "@lib/SkillSystem/module/SkillElements.js";
+import CY from "@global-modules/cyteria.js";
+import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs } from "@lib/SkillSystem/module/DrawSkillTree.js";
+import { SkillTree, LevelSkillTree } from "@lib/SkillSystem/module/SkillElements.js";
 
-  function DoNothing(){
-    // do nothing
-  }
+function DoNothing() {
+  // do nothing
+}
 
-  export default {
-    props: {
-      skillTree: [SkillTree, LevelSkillTree],
-      setSkillButtonExtraData: {
-        type: Function,
-        default: (skill, data) => [], // eslint-disable-line
-      },
-      skillCircleClickListener: {
-        type: Function,
-        default: DoNothing
-      },
-      skillTreeType: {
-        type: String,
-        validator: v => ['normal', 'level-skill-tree'].indexOf(v) != -1
-      }
+export default {
+  props: {
+    skillTree: [SkillTree, LevelSkillTree],
+    setSkillButtonExtraData: {
+      type: Function,
+      default: (skill, data) => [], // eslint-disable-line
     },
-    beforeCreate(){
-      if ( !document.getElementById('app--draw-skill-tree-defs') ){
-        const svg = CY.svg.create();
-        svg.append(createDrawSkillTreeDefs());
-        document.body.append(svg);
-      }
+    skillCircleClickListener: {
+      type: Function,
+      default: DoNothing
     },
-    computed: {
-      drawTreeData(){
-        return computeDrawSkillTreeData(this.skillTree, {
-          setSkillButtonExtraData: this.setSkillButtonExtraData,
-          skillTreeType: this.skillTreeType
-        });
-      },
-      skillIconPatternData(){
-        const st = this.skillTreeType == 'level-skill-tree' ? this.skillTree.base : this.skillTree;
-        return getSkillIconPatternData(st);
-      }
+    skillTreeType: {
+      type: String,
+      validator: v => ['normal', 'level-skill-tree'].indexOf(v) != -1
+    }
+  },
+  beforeCreate() {
+    if (!document.getElementById('app--draw-skill-tree-defs')) {
+      const svg = CY.svg.create();
+      svg.append(createDrawSkillTreeDefs());
+      document.body.append(svg);
+    }
+  },
+  computed: {
+    drawTreeData() {
+      return computeDrawSkillTreeData(this.skillTree, {
+        setSkillButtonExtraData: this.setSkillButtonExtraData,
+        skillTreeType: this.skillTreeType
+      });
     },
-    methods: {
-      skillCircleClick(e, skill){
-        this.skillCircleClickListener(e, skill);
-      },
-      skillIconImageNotFound(e){
-        e.target.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '/imgs/skill_icons/unknow.svg');
-      }
+    skillIconPatternData() {
+      const st = this.skillTreeType == 'level-skill-tree' ? this.skillTree.base : this.skillTree;
+      return getSkillIconPatternData(st);
+    }
+  },
+  methods: {
+    skillCircleClick(e, skill) {
+      this.skillCircleClickListener(e, skill);
+    },
+    skillIconImageNotFound(e) {
+      e.target.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '/imgs/skill_icons/unknow.svg');
     }
   }
+};
 </script>
 
 <style lang="less" scoped>

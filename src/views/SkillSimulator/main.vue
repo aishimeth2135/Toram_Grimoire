@@ -96,7 +96,7 @@
                     {{ state.name }}
                   </cy-button>
                 </cy-transition-group>
-                <span @click.stop="createBuild()" class="Cyteria Button simple no-border">
+                <span @click.stop="createBuild" class="Cyteria Button simple no-border">
                   <iconify-icon name="ic:round-add-circle-outline"></iconify-icon>
                   <lang-text lang-id="Skill Simulator/Controller/create build" class="text"></lang-text>
                 </span>
@@ -168,21 +168,38 @@
           </div>
         </template>
       </cy-bottom-content>
-      <cy-window :visible="previewExportedImageWindowVisible" @close-window="previewExportedImageWindowVisible = false" title-lang-id="Skill Simulator/Controller/main menu/preview exported image" class="frozen-top width-auto">
-        <template v-slot:top-buttons>
-          <cy-button iconify-name="uil:image-download" class="inline"
-            @click="downloadExportedImage">
-            {{ getLangText('global/download') }}
-          </cy-button>
+      <cy-window :visible="previewExportedImageWindowVisible"
+        @close-window="previewExportedImageWindowVisible = false" class="frozen-top width-auto">
+        <template #title>
+          <cy-flex-layout>
+            <cy-icon-text iconify-name="uil:image-download">
+              {{ langText('main menu/preview exported image') }}
+            </cy-icon-text>
+            <template #right-content>
+              <cy-button iconify-name="uil:image-download" type="border"
+                class="single-line" @click="downloadExportedImage">
+                {{ getLangText('global/download') }}
+              </cy-button>
+            </template>
+          </cy-flex-layout>
         </template>
         <img :src="currentExportedImage || '#'" />
       </cy-window>
-      <cy-window :visible="previewExportedTextWindowVisible" @close-window="previewExportedTextWindowVisible = false" title-lang-id="Skill Simulator/Controller/main menu/preview exported text" class="frozen-top width-auto">
-        <template v-slot:top-buttons>
-          <cy-button iconify-name="mdi:content-copy" class="inline"
-            @click="copyExportedText">
-            {{ getLangText('global/copy') }}
-          </cy-button>
+      <cy-window :visible="previewExportedTextWindowVisible"
+        @close-window="previewExportedTextWindowVisible = false"
+        class="frozen-top width-auto">
+        <template #title>
+          <cy-flex-layout>
+            <cy-icon-text iconify-name="mdi:content-copy">
+              {{ langText('main menu/preview exported text') }}
+            </cy-icon-text>
+            <template #right-content>
+              <cy-button iconify-name="mdi:content-copy" type="border"
+                class="single-line" @click="copyExportedText">
+                {{ getLangText('global/copy') }}
+              </cy-button>
+            </template>
+          </cy-flex-layout>
         </template>
         <div class="exported-text-content" ref="previewExportedTextContent" v-html="currentExportedText"></div>
       </cy-window>
@@ -190,9 +207,6 @@
   </article>
 </template>
 <script>
-import Papa from "papaparse";
-
-import Grimoire from "@Grimoire";
 import CY from "@global-modules/cyteria.js";
 import GetLang from "@global-modules/LanguageSystem.js"
 import { ShowMessage, ShowLoadingMessage, loadingFinished } from '@global-modules/ShowMessage.js';
@@ -204,7 +218,6 @@ import Vuex from 'vuex'
 import store from "@store/main";
 
 import { getSkillElementId } from "./module/methods.js";
-import { LevelSkillTree } from "@lib/SkillSystem/module/SkillElements.js";
 import { computeDrawSkillTreeData, GetDrawSetting } from "@lib/SkillSystem/module/DrawSkillTree.js";
 
 import init from "./init.js";
@@ -237,7 +250,6 @@ export default {
     const self = this;
 
     return {
-      skillRoot: Grimoire.SkillSystem.skillRoot,
       skillPointState,
       currentSkillRootStateIndex: 0,
       drawSkillTreeOptions: {
@@ -308,88 +320,8 @@ export default {
       ],
       SaveLoadDataSystemOptions: {
         name: 'Skill Simulator',
-        saveData: () => {
-          const { type, index } = this.saveSetting();
-          const datas = [];
-
-          function createColumn() {
-            const t = [];
-            datas.push(t);
-            return t;
-          }
-          this.skillRootStates.forEach(sr => {
-            const p1 = createColumn(),
-              n1 = 'skillRoot';
-            p1[index['type']] = type[n1];
-            p1[index[n1]['name']] = sr.name;
-            sr.skillTreeCategoryStates.forEach(stc => {
-              if (!stc.visible) return;
-              const p2 = createColumn(),
-                n2 = 'skillTreeCategory';
-              p2[index['type']] = type[n2];
-              p2[index[n2]['id']] = stc.origin.id;
-              stc.skillTreeStates.forEach(st => {
-                if (!st.visible) return;
-                const p3 = createColumn(),
-                  n3 = 'skillTree';
-                p3[index['type']] = type[n3];
-                p3[index[n3]['id']] = st.origin.id;
-                st.levelSkillTree.levelSkills.forEach(skill => {
-                  const lv = skill.level(),
-                    sglv = skill.starGemLevel();
-                  if (lv == 0 && sglv == 0) return;
-                  const p4 = createColumn(),
-                    n4 = 'levelSkill';
-                  p4[index['type']] = type[n4];
-                  p4[index[n4]['id']] = skill.base.id;
-                  p4[index[n4]['level']] = lv;
-                  p4[index[n4]['starGemLevel']] = sglv;
-                });
-              });
-            });
-          });
-
-          return Papa.unparse(datas);
-        },
-        loadData: str => {
-          const { type, index } = this.saveSetting();
-          let hasInit = false;
-          let cur, cur_stc, cur_st;
-          Papa.parse(str).data.forEach(p => {
-            let _type;
-            Object.keys(type).find(k => {
-              if (type[k] == p[index['type']]) {
-                _type = k;
-                return true;
-              }
-            });
-
-
-            if (_type == 'skillRoot') {
-              if (!hasInit) {
-                cur = this.resetSkillRootStates();
-                hasInit = true;
-              } else {
-                cur = this.createBuild();
-              }
-              cur.name = p[index[_type]['name']];
-            } else if (_type == 'skillTreeCategory') {
-              const id = parseInt(p[index[_type]['id']], 10);
-              cur_stc = cur.skillTreeCategoryStates.find(a => a.origin.id == id);
-              cur_stc.visible = true;
-            } else if (_type == 'skillTree') {
-              const id = parseInt(p[index[_type]['id']], 10);
-              cur_st = cur_stc.skillTreeStates.find(a => a.origin.id == id);
-              cur_st.visible = true;
-            } else if (_type == 'levelSkill') {
-              const id = parseInt(p[index[_type]['id']], 10);
-              const skill = cur_st.levelSkillTree.levelSkills.find(a => a.base.id == id);
-              skill.level(parseInt(p[index[_type]['level']], 10));
-              skill.starGemLevel(parseInt(p[index[_type]['starGemLevel']], 10));
-              console.log(skill);
-            }
-          });
-        },
+        saveData: () => this.saveSkillBuildsCsv(),
+        loadData: str => this.$store.dispatch('character/loadSkillBuildsCsv', { csvString: str }),
         saveNameList: () => {
           return this.skillRootStates.map(a => a.name);
         },
@@ -399,16 +331,28 @@ export default {
       }
     };
   },
+  provide() {
+    return {
+      'drawSkillTreeOptions': this.drawSkillTreeOptions
+    }
+  },
   beforeCreate() {
     init();
   },
   created() {
-    this.createBuild();
+    if (this.skillRootStates.length == 0)
+      this.createBuild();
+    else
+      this.currentSkillRootStateIndex = 0;
   },
   computed: {
     ...Vuex.mapState('character', {
-      'skillRootStates': 'skillBuilds'
+      'skillRootStates': 'skillBuilds',
+      'skillRoot': 'skillRoot'
     }),
+    ...Vuex.mapGetters([
+      'saveSkillBuildsCsv'
+    ]),
     currentStarGemList() {
       const list = [];
       this.currentSkillRootState.skillTreeCategoryStates.forEach(stc => {
@@ -883,67 +827,16 @@ export default {
       this.currentSkillRootStateIndex = 0;
       return this.createBuild();
     },
-    saveSetting() {
-      const type = {
-        'skillRoot': 0,
-        'skillTreeCategory': 1,
-        'skillTree': 2,
-        'levelSkill': 3
-      };
-      const index = {
-        type: 0,
-        'skillRoot': {
-          name: 1
-        },
-        'skillTreeCategory': {
-          id: 1
-        },
-        'skillTree': {
-          id: 1
-        },
-        'levelSkill': {
-          id: 1,
-          level: 2,
-          starGemLevel: 3
-        }
-      };
-      return { type, index };
-    },
     selectCurrentSkillRootState(i) {
       this.currentSkillRootStateIndex = i;
     },
     createBuild() {
-      const r = this.skillRoot;
-      const newState = {
-        stateId: this.skillRootStates.length,
-        name: this.langText('build') + ' ' + (this.skillRootStates.length + 1),
-        origin: r,
-        skillTreeCategoryStates: r.skillTreeCategorys.map(stc => {
-          return {
-            origin: stc,
-            visible: false,
-            skillTreeStates: stc.skillTrees.filter(st => !st.attrs.simulatorFlag)
-            .map(st => {
-              const lst = new LevelSkillTree(st);
-              st.skills.forEach(skill => lst.appendLevelSkill(skill));
-              return {
-                origin: st,
-                levelSkillTree: lst,
-                visible: false,
-                drawOptions: {
-                  skillTree: lst,
-                  ...this.drawSkillTreeOptions
-                }
-              };
-            })
-          };
-        })
-      };
-      this.$store.commit('character/createSkillBuild', newState);
-      // this.skillRootStates.push(newState);
+      this.$store.commit('character/createSkillBuild', {
+        name: this.langText('build') + ' ' + (this.skillRootStates.length + 1)
+      });
       this.currentSkillRootStateIndex = this.skillRootStates.length - 1;
 
-      return newState;
+      return this.currentSkillRootState;
     },
     skillTreeStarGemSkillPoint(st) {
       if (!st.visible) return 0;

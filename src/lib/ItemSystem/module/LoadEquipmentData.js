@@ -29,6 +29,7 @@ export default function(root, c) {
 
   let cur, cur_equip, cur_attrcat;
   c.forEach((p, index) => {
+    if (!p) return;
     //if ( index == 0 ) return;
     try {
       if (p[NAME] !== '' && p[CATEGORY] !== '') {

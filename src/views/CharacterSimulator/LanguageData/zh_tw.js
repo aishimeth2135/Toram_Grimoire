@@ -9,6 +9,7 @@ export default function() {
       'character stat points': '角色能力點數',
       'equipment': '裝備',
       'skill': '技能',
+      'save-load': '存檔',
       'stability': '穩定度',
       'confirm selection': '確定選取',
       'refining': '精鍊值',
@@ -163,7 +164,15 @@ export default function() {
           }
         }
       },
+      'save-load control': {
+        'Auto save Successfully': '存檔成功。',
+        'Auto load Successfully': '讀取成功。',
+        'save button: title': '手動存檔',
+        'load button: title': '手動讀取',
+        'top caption': '正常情況下，系統會在使用者離開頁面或進入頁面時自動進行存檔或讀檔。但如果有需要的話，下面的按鈕提供手動存檔或讀檔的功能。'
+      },
       'Warn': {
+        'Current character is not exist': '發生了ㄧ些小錯誤，導致無法獲取當前的角色資訊，介面也無法正常顯示......<br />請點選下面的按鈕來建立一個新的角色，以復原介面(_ _)',
         'no equipment selected': '這個欄位是空的w',
         'no eligible equipments found': '沒有符合條件的裝備～點擊上面的按鈕來新增裝備。',
         'no result found': '找不到任何結果0.0',

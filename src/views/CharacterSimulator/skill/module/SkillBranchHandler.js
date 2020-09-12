@@ -80,42 +80,9 @@ class SkillBranchHandler {
   get validUserSets() {
     return this.userSets.filter(p => !p.disable);
   }
-
-  // output method
-  // captionData() {
-  //   if (this.infoType != 'caption')
-  //     return '';
-  //   const caption = this.branch.attrs['caption']
-  //     .replace(/\$\{([^}]+)\}(%?)/g, (m, m1, m2) => {
-  //       const dc = new DataContainer(m1);
-  //       this.handleDataContainer(dc, { beforeColorText: v => v + m2 });
-  //       return dc.result();
-  //     })
-  //     .replace(/#([^\s]+)\s(\w?)/g, (m, m1, m2) => {
-  //       let res = `<span class="light-text-2">${m1.replace(new RegExp('_', 'g'), ' ')}</span>`;
-  //       if (m2 !== '')
-  //         res += " " + m2;
-  //       return res;
-  //     })
-  //     .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values">${m1}</span>`);
-  // }
-  // statDatas() {
-  //   // if (this.branch.name == 'passive') {
-  //   //   return this.statTexts(this.branch.stats);
-  //   // }
-  //   const conditionStats = this.branch.suffix
-  //     .filter(suf => suf.name == 'extra' && suf.stats.length != 0)
-  //     .map((suf, i) => ({
-  //       iid: i,
-  //       stats: this.statTexts(suf.stats),
-  //       condition: suf.attrs['condition'] || this.langText('skill management/suffix branch/condition: default')
-  //     }));
-
-  //   return {
-  //     stats: this.statTexts(this.branch.stats),
-  //     conditionStats
-  //   };
-  // }
+  get value() {
+    return this.handleDatas();
+  }
 
   handleTextData(str) {
     return str
@@ -166,12 +133,60 @@ class SkillBranchHandler {
     };
   }
 
-  get value() {
-    // return this.infoType == 'stats' ?
-    //   this.statDatas() :
-    //   this.captionData();
-    return this.handleDatas();
-  }
+  // save and load with json-data
+  // save() {
+  //   const data = {};
+
+  //   const sk = this.levelSkill;
+  //   data.skillId = `${sk.base.parent.parent.id}-${sk.base.parent.id}-${sk.base.id}`;
+
+  //   data.skillLevel = sk.level();
+  //   data.userSets = this.userSets.map(p => ({
+  //     variableName: p.variableName,
+  //     value: p.value
+  //   }));
+  //   data.stacks = this.stackStates.map(p => ({
+  //     id: p.id,
+  //     value: p.value
+  //   }));
+
+  //   return data;
+  // }
+  // load(data) {
+  //   let success = true;
+
+  //   const { skillLevel, userSets, stacks } = data;
+  //   this.levelSkill.level(skillLevel);
+  //   userSets.forEach(p => {
+  //     const find = this.userSets.find(a => p.variableName == a.variableName);
+  //     if (find)
+  //       find.value = p.value;
+  //     else {
+  //       console.warn(`Can not find UserSet of skill: ${this.levelSkill.origin.name} which variable-name: ${p.variableName}`);
+  //       success = false;
+  //     }
+  //   });
+  //   stacks.forEach(p => {
+  //     const find = this.stackStates.find(a => p.id == a.id);
+  //     if (find) {
+  //       let v = p.value;
+  //       const [min, max] = find.range;
+  //       if (v < min)
+  //         v = min;
+  //       if (max && v > max)
+  //         v = max;
+  //       find.value = v;
+  //     }
+  //     else {
+  //       console.warn(`Can not find stack-state of skill: ${this.levelSkill.origin.name} which stack-id: ${p.id}`);
+  //       success = false;
+  //     }
+  //   });
+
+  //   return {
+  //     success
+  //   };
+  // }
 
   // methods
   formulaExtraVariableName(idx) {

@@ -161,7 +161,7 @@ export default {
       //     '拔刀劍', '箭矢', '盾牌', '小刀',
       //     '身體裝備', '追加裝備', '特殊裝備'
       // ]
-      const pre_args = [item.id, item.name, item.stats];
+      const pre_args = [item.id, item.name, item.stats.map(p => p.copy())];
       const stability = parseInt(item.baseStability, 10);
       if (item.category < 9) {
         const t = [
@@ -227,7 +227,7 @@ export default {
   > .equipment-fields {
     display: flex;
     align-items: flex-start;
-    justify-content: flex-start;
+    justify-content: center;
     flex-wrap: wrap;
   }
 }

@@ -57,50 +57,30 @@ class StatBase {
     }
     switch (type) {
       case StatBase.TYPE_CONSTANT:
-        {
-          const formula = this.attributes['constant_formula'] || '$t$s$v$u';
-          return processFormula(formula, this.hasMultiplier ? '' : '%');
-        }
+        return processFormula(this.attributes['constant_formula'] || '$t$s$v$u', this.hasMultiplier ? '' : '%');
       case StatBase.TYPE_MULTIPLIER:
-        {
-          const formula = this.attributes['multiplier_formula'] || '$t$s$v$u';
-          return processFormula(formula, '%');
-        }
+        return processFormula(this.attributes['multiplier_formula'] || '$t$s$v$u', '%');
       case StatBase.TYPE_TOTAL:
-        {
-          const formula = Lang('type total: preText') + '$t$s$v$u';
-          return processFormula(formula, '%');
-        }
+        return processFormula(Lang('type total: preText') + '$t$s$v$u', '%');
     }
   }
   getShowData(type, v) {
     let title = '',
       tail = '';
-    switch (type) {
-      case StatBase.TYPE_CONSTANT:
-        {
-          title = this.text;
-
-          if (!this.hasMultiplier)
-            tail = '%';
-          if (this.attributes['constant_formula'] && !this.attributes['constant_formula'].includes('$u'))
-            tail = '';
-        }
-        break;
-      case StatBase.TYPE_MULTIPLIER:
-        {
-          title = this.text;
-          tail = '%';
-          if (this.attributes['multiplier_formula'] && !this.attributes['multiplier_formula'].includes('$u'))
-            tail = '';
-        }
-        break;
-      case StatBase.TYPE_TOTAL:
-        {
-          title = Lang('type total: preText') + this.text;
-          tail = '%';
-        }
-        break;
+    if (type == StatBase.TYPE_CONSTANT) {
+      title = this.text;
+      if (!this.hasMultiplier)
+        tail = '%';
+      if (this.attributes['constant_formula'] && !this.attributes['constant_formula'].includes('$u'))
+        tail = '';
+    } else if (type == StatBase.TYPE_MULTIPLIER) {
+      title = this.text;
+      tail = '%';
+      if (this.attributes['multiplier_formula'] && !this.attributes['multiplier_formula'].includes('$u'))
+        tail = '';
+    } else if (type == StatBase.TYPE_TOTAL) {
+      title = Lang('type total: preText') + this.text;
+      tail = '%';
     }
     return {
       result: this.show(type, v),
@@ -110,6 +90,9 @@ class StatBase {
     };
   }
   createSimpleStat(type, v) {
+    if (!this.hasMultiplier && type == StatBase.TYPE_MULTIPLIER) {
+      type = StatBase.TYPE_CONSTANT;
+    }
     return new SimpleStat(this, type, v);
   }
   checkBoolStat(type) {
