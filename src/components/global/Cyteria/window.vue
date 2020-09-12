@@ -5,16 +5,10 @@
       <div class="container">
         <div class="top-mask" />
         <cy-button type="icon-only" @click.stop="$emit('close-window')"
-          iconify-name="jam-close-circle-f"
-          class="close-btn" />
+          iconify-name="jam-close-circle-f" class="close-btn" />
         <div class="container-inner" @click.stop>
           <div class="top">
-            <div class="title">
-              <slot name="title"></slot>
-            </div>
-            <span class="buttons">
-              <slot name="top-buttons"></slot>
-            </span>
+            <slot name="title"></slot>
           </div>
           <div class="content">
             <slot></slot>
@@ -74,7 +68,7 @@ export default {
   z-index: 50;
   background-color: rgba(var(--rgb-black), 0.1);
 
-  >.container {
+  > .container {
     width: 25rem;
     position: relative;
     display: inline-block;
@@ -95,9 +89,19 @@ export default {
       position: absolute;
       top: -0.75rem;
       right: -0.8rem;
-      z-index: 2;
+      z-index: 51;
       --icon-width: 1.5rem;
       padding: 0;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0.3rem;
+        left: 0.3rem;
+        width: 0.8rem;
+        height: 0.8rem;
+        background-color: rgba(var(--rgb-white), 0.6);
+      }
     }
 
     > .container-inner {
@@ -109,29 +113,12 @@ export default {
       border: 0.1rem solid var(--primary-light);
       background-color: var(--white);
 
-      >.top {
+      > .top {
         padding: 0.6rem 1rem;
         padding-top: 0;
-        display: flex;
-        align-items: center;
-
-        >.buttons {
-          margin-left: auto;
-          display: inline-flex;
-          align-items: center;
-
-          >.button {
-            margin-right: 0.3rem;
-          }
-        }
-
-        >.title {
-          margin: 0.2rem;
-          color: var(--primary-purple);
-        }
       }
 
-      >.content {
+      > .content {
         padding: 1rem;
         padding-top: 0;
       }
@@ -139,13 +126,15 @@ export default {
   }
 
   &.frozen-top {
-    >.container {
-      >.top {
-        background-color: var(--white);
-        position: sticky;
-        top: 0;
-        left: 0;
-        z-index: 5;
+    > .container {
+      > .container-inner {
+        >.top {
+          background-color: var(--white);
+          position: sticky;
+          top: 0;
+          left: 0;
+          z-index: 5;
+        }
       }
     }
   }
@@ -154,7 +143,10 @@ export default {
     >.container {
       width: auto;
       max-width: calc(100% - 1rem);
-      overflow: auto;
+
+      > .container-inner {
+        overflow: auto;
+      }
     }
   }
 

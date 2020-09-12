@@ -1,40 +1,56 @@
 <template>
   <div class="main--character-simulator">
-    <div class="main" v-if="currentCharacterState">
-      <character v-if="currentContentIndex == 0"
-        :character-state="currentCharacterState"
-        :current-character-state-index.sync="currentCharacterStateIndex"
-        @create-character="createCharacter" />
-      <character-stats v-if="currentContentIndex == 1"
-        :character-state="currentCharacterState"
-        :show-character-stat-datas="showCharacterStatDatas" />
-      <keep-alive>
-        <equipment-fields v-if="currentContentIndex == 2" :character-state="currentCharacterState" />
-      </keep-alive>
-      <keep-alive>
-        <skills v-if="currentContentIndex == 3"
+    <template v-if="currentCharacterState">
+      <div class="main">
+        <character v-if="currentContentIndex == 0"
           :character-state="currentCharacterState"
-          :current-skill-build-index.sync="currentSkillBuildIndex"
-          :passive-skill-states="passiveSkillStates"
-          :active-skill-states="activeSkillStates" />
-      </keep-alive>
+          :current-character-state-index.sync="currentCharacterStateIndex"
+          @create-character="createCharacter" />
+        <character-stats v-if="currentContentIndex == 1"
+          :character-state="currentCharacterState"
+          :show-character-stat-datas="showCharacterStatDatas" />
+        <keep-alive>
+          <equipment-fields v-if="currentContentIndex == 2" :character-state="currentCharacterState" />
+        </keep-alive>
+        <keep-alive>
+          <skills v-if="currentContentIndex == 3"
+            :character-state="currentCharacterState"
+            :current-skill-build-index.sync="currentSkillBuildIndex"
+            :passive-skill-states="passiveSkillStates"
+            :active-skill-states="activeSkillStates" />
+        </keep-alive>
+        <save-load v-if="currentContentIndex == 4"
+          @manual-auto-save="autoSave"
+          @manual-auto-load="autoLoad" />
+      </div>
+      <cy-bottom-content>
+        <cy-button v-for="(content, i) in contents"
+          :key="content.id"
+          :iconify-name="content.icon"
+          :selected="i == currentContentIndex"
+          @click="setCurrentContent(i)"
+          class="inline mr-normal">
+          {{ content.text }}
+        </cy-button>
+      </cy-bottom-content>
+    </template>
+    <div v-else>
+      <cy-default-tips iconify-name="mdi-ghost">
+        <span v-html="langText('Warn/Current character is not exist')"></span>
+      </cy-default-tips>
+      <div style="text-align: center;">
+        <cy-button iconify-name="ic-round-add" type="border"
+          @click="createCharacter">
+          {{ langText('append character') }}
+        </cy-button>
+      </div>
     </div>
-    <cy-bottom-content>
-      <cy-button v-for="(content, i) in contents"
-        :key="content.id"
-        :iconify-name="content.icon"
-        :selected="i == currentContentIndex"
-        @click="setCurrentContent(i)"
-        class="inline mr-normal">
-        {{ content.text }}
-      </cy-button>
-    </cy-bottom-content>
   </div>
 </template>
 <script>
 //import Grimoire from '@Grimoire';
 import GetLang from "@global-modules/LanguageSystem.js";
-// import ShowMessage from "@global-modules/ShowMessage.js";
+import ShowMessage from "@global-modules/ShowMessage.js";
 
 import init from "./init.js";
 
@@ -42,6 +58,7 @@ import vue_equipmentFields from "./equipments/main.vue";
 import vue_characterStats from "./character-stats/main.vue";
 import vue_character from "./character.vue";
 import vue_skills from "./skill/main.vue";
+import vue_saveLoad from "./save-load.vue";
 
 import Vuex from "vuex";
 import store from "@store/main";
@@ -76,6 +93,10 @@ export default {
         id: 'skills',
         icon: 'ant-design:build-outlined',
         text: this.langText('skill')
+      }, {
+        id: 'save-load',
+        icon: 'mdi-ghost',
+        text: this.langText('save-load')
       }],
       currentContentIndex: 2,
 
@@ -95,9 +116,28 @@ export default {
     init();
   },
   created() {
-    this.createCharacter();
+    this.autoLoad();
+
+    if (this.characterStates.length != 0)
+      this.currentCharacterStateIndex = 0;
+    else
+      this.createCharacter();
     if (this.skillBuilds.length != 0)
       this.currentSkillBuildIndex = 0;
+
+    const evt_autoSave = () => this.autoSave();
+    const evt_autoSave_2 = () => document.visibilityState == 'hidden' && this.autoSave();
+    window.addEventListener('beforeunload', evt_autoSave);
+    document.addEventListener('visibilitychange', evt_autoSave_2);
+    this.$once('hook:beforeDestroy', () => {
+      window.removeEventListener('beforeunload', evt_autoSave);
+      document.removeEventListener('visibilitychange', evt_autoSave_2);
+    });
+  },
+  updated() {
+    if (this.currentCharacterStateIndex >= this.characterStates.length) {
+      this.currentCharacterStateIndex = 0;
+    }
   },
   computed: {
     ...Vuex.mapState('character', {
@@ -177,6 +217,14 @@ export default {
   },
   methods: {
     /* ==[ character - main ]==========================================*/
+    autoSave() {
+      this.$store.dispatch('character/saveCharacterSimulator', { index: 0 });
+      ShowMessage(this.langText('save-load control/Auto save Successfully'), 'mdi-ghost', 'auto save successfully');
+    },
+    autoLoad() {
+      this.$store.dispatch('character/loadCharacterSimulator', { index: 0 });
+      ShowMessage(this.langText('save-load control/Auto load Successfully'), 'mdi-ghost', 'auto load successfully');
+    },
     findSkillById(stc, st, s) {
       return this.allSkillStates.find(state => {
         const skill = state.levelSkill.base;
@@ -529,12 +577,9 @@ export default {
       this.currentContentIndex = idx;
     },
     createCharacter() {
-      const c = new Character(this.langText('character') + ' ' + (this.characterStates.length + 1).toString()).init();
+      const c = new Character(this.langText('character') + ' ' + (this.characterStates.length + 1).toString());
       this.currentCharacterStateIndex = this.characterStates.length;
-      this.$store.commit('character/createCharacter', {
-        iid: this.characterStates.length,
-        origin: c
-      });
+      this.$store.commit('character/createCharacter', c);
     },
     langText(s, vs) {
       return GetLang('Character Simulator/' + s, vs);
@@ -545,7 +590,7 @@ export default {
   },
   watch: {
     currentSkillBuild(newv) {
-      if (!newv) {
+      if (!newv || !this.currentCharacterState) {
         this.allSkillStates = [];
         return;
       }
@@ -608,7 +653,8 @@ export default {
     'equipment-fields': vue_equipmentFields,
     'character-stats': vue_characterStats,
     'character': vue_character,
-    'skills': vue_skills
+    'skills': vue_skills,
+    'save-load': vue_saveLoad
   }
 };
 </script>

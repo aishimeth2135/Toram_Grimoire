@@ -3,20 +3,26 @@
     <div class="container">
       <iconify-icon v-if="iconifyName" :name="iconifyName" />
       <svg-icon v-else-if="iconId" :icon-id="iconId" />
-      <span><slot></slot></span>
+      <span :style="{ 'text-align': textAlign }"><slot></slot></span>
     </div>
   </div>
 </template>
 <script>
   export default {
-    props: ['iconifyName', 'icon-id']
+    props: {
+      'iconifyName': String,
+      'icon-id': String,
+      'textAlign': {
+        type: String,
+        default: 'center'
+      }
+    }
   }
 </script>
 <style lang="less" scoped>
   .cy--default-tips {
     padding: 1rem 0.2rem;
     display: flex;
-    text-align: center;
     align-items: center;
     justify-content: center;
 

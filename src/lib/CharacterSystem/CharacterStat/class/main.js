@@ -3,7 +3,7 @@ import { MainWeapon, SubWeapon, SubArmor } from "./CharacterEquipment.js";
 import Grimoire from "@Grimoire";
 
 class Character {
-  constructor(name) {
+  constructor(name = 'Potum') {
     this.name = name;
 
     this.level = 1;
@@ -11,6 +11,29 @@ class Character {
     this._optinalBaseStat = null;
 
     this.equipmentFields = [];
+
+    // init
+    this._baseStats.push(...['STR', 'DEX', 'INT', 'AGI', 'VIT']
+      .map(p => new CharacterBaseStat(p)));
+
+    [
+      EquipmentField.TYPE_MAIN_WEAPON,
+      EquipmentField.TYPE_SUB_WEAPON,
+      EquipmentField.TYPE_BODY_ARMOR,
+      EquipmentField.TYPE_ADDITIONAL,
+      EquipmentField.TYPE_SPECIAL, {
+        type: EquipmentField.TYPE_AVATAR,
+        numbers: 3
+      }
+    ].map(p => {
+      if (typeof p == 'object') {
+        Array(p.numbers).fill().forEach((_, i) => {
+          this.equipmentFields.push(new EquipmentField(this, p.type, i));
+        });
+        return;
+      }
+      this.equipmentFields.push(new EquipmentField(this, p));
+    })
   }
 
   get baseStats() {
@@ -19,29 +42,12 @@ class Character {
     return res;
   }
   get normalBaseStats() {
-    return this._baseStats.slice();
+    return this._baseStats;
   }
   get optionalBaseStat() {
     return this._optinalBaseStat;
   }
 
-  init() {
-    this._baseStats.push(...['STR', 'DEX', 'INT', 'AGI', 'VIT']
-      .map(p => new CharacterBaseStat(p)));
-
-    this.equipmentFields.push(...[
-      EquipmentField.TYPE_MAIN_WEAPON,
-      EquipmentField.TYPE_SUB_WEAPON,
-      EquipmentField.TYPE_BODY_ARMOR,
-      EquipmentField.TYPE_ADDITIONAL,
-      EquipmentField.TYPE_SPECIAL,
-      EquipmentField.TYPE_AVATAR,
-      EquipmentField.TYPE_AVATAR,
-      EquipmentField.TYPE_AVATAR
-    ].map((p, i) => new EquipmentField(this, i, p)));
-
-    return this;
-  }
   equipmentField(type) {
     return this.equipmentFields.find(p => p.type == type);
   }
@@ -102,9 +108,110 @@ class Character {
     return t.includes(sub_type);
   }
 
-  save() {
+  // save and load with json-data
+  save(equipments) {
     const data = {};
+
+    // == [ name ] =====
+    data.name = this.name;
+    data.level = this.level;
+    data.normalBaseStats = this.normalBaseStats.map(p => ({
+      name: p.name,
+      value: p.value
+    }));
+    if (this.optionalBaseStat) {
+      data.optionalBaseStat = {
+        name: this.optionalBaseStat.name,
+        value: this.optionalBaseStat.value
+      };
+    }
+
+    const fieldTypes = {
+      [EquipmentField.TYPE_MAIN_WEAPON]: 'main_weapon',
+      [EquipmentField.TYPE_SUB_WEAPON]: 'sub_weapon',
+      [EquipmentField.TYPE_BODY_ARMOR]: 'body_armor',
+      [EquipmentField.TYPE_ADDITIONAL]: 'additional',
+      [EquipmentField.TYPE_SPECIAL]: 'special',
+      [EquipmentField.TYPE_AVATAR]: 'avatar'
+    };
+    data.fields = this.equipmentFields.map(p => {
+      let idx = -1;
+      if (p.equipment != null) {
+        idx = equipments.indexOf(p.equipment);
+        if (idx == -1) {
+          console.warn('Can not find equipment of Field in List of equipments');
+          return null;
+        }
+      }
+      return {
+        type: fieldTypes[p.type],
+        index: p.index,
+        equipmentIndex: idx
+      };
+    }).filter(p => p);
+
     return data;
+  }
+  load(data, equipments) {
+    try {
+      let success = true;
+
+      const { name, level, normalBaseStats, optionalBaseStat, fields } = data;
+      this.name = name;
+      this.level = level;
+      normalBaseStats.forEach(p => {
+        const find = this.normalBaseStats.find(a => a.name == p.name);
+        if (find)
+          find.value = p.value;
+        else {
+          console.warn('Can not find CharacterBaseStat which name: ' + p.name);
+          success = false;
+        }
+      });
+      if (optionalBaseStat) {
+        this.setOptinalBaseStat(optionalBaseStat.name);
+        if (this.optionalBaseStat)
+          this.optionalBaseStat.value = optionalBaseStat.value;
+        else {
+          console.warn('Can not find Optional-CharacterBaseStat which name: ' + optionalBaseStat.name);
+          success = false;
+        }
+      }
+      const fieldTypes = {
+        'main_weapon': EquipmentField.TYPE_MAIN_WEAPON,
+        'sub_weapon': EquipmentField.TYPE_SUB_WEAPON,
+        'body_armor': EquipmentField.TYPE_BODY_ARMOR,
+        'additional': EquipmentField.TYPE_ADDITIONAL,
+        'special': EquipmentField.TYPE_SPECIAL,
+        'avatar': EquipmentField.TYPE_AVATAR
+      };
+      fields.forEach(p => {
+        if (p.equipmentIndex != -1) {
+          const fs = this.equipmentFields.filter(f => f.type == fieldTypes[p.type]);
+          const find = fs[p.index];
+          if (find) {
+            const eq = equipments[p.equipmentIndex];
+            if (eq)
+              find.equipment = eq;
+            else
+              console.warn(`Index: ${p.index} of equipments is null.`);
+          }
+          else {
+            console.warn(`Can not find Equipment Field of Character which type: ${p.type} , index: ${p.index}`);
+            success = false;
+          }
+        }
+      });
+
+      return {
+        success
+      };
+    } catch (e) {
+      console.warn(e);
+      return {
+        error: true
+      };
+    }
   }
 }
 Character.OPTIONAL_BASE_STAT_LIST = ['TEC', 'MEN', 'LUK', 'CRT'];
@@ -117,9 +224,15 @@ class CharacterBaseStat {
 }
 
 class EquipmentField {
-  constructor(parent, id, type) {
+  /**
+   * @param  {Character} parent 屬於的Character
+   * @param  {symbol}    type   Equipment.TYPE_XXX
+   * @param  {Number}    index  同樣的type有多個時才需要指定，表示是第幾個。
+   */
+  constructor(parent, type, index = 0) {
     this._parent = parent;
     this.type = type;
+    this.index = index;
 
     this.equipment = null;
   }

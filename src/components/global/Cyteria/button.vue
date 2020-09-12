@@ -341,6 +341,10 @@
         margin-left: 0.4rem;
         margin-right: 0.2rem;
       }
+
+      &.single-line {
+        margin: 0 0rem;
+      }
     }
 
     /* line
