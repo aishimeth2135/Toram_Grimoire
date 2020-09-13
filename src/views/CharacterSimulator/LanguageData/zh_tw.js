@@ -127,7 +127,7 @@ export default function() {
           'condition: default': '額外效果'
         },
         'no build has been created': '還沒有建立任何配置喔～請先透過左上方的選單進入「技能模擬器」，建立新的技能配置。',
-        'there are no skills yet': '這裡還沒有任何技能喔～請注意，要對角色能力有提升的技能才會顯示在這裡。'
+        'there are no skills yet': '這裡還沒有任何技能喔～請先透過左上方的選單進入「技能模擬器」，來進行技能的配點。請注意，要對角色能力有提升的技能才會顯示在這裡。'
       },
       'show character stats': {
         'base value': '基礎值',
@@ -168,6 +168,8 @@ export default function() {
       'Food Builds Control': {
         'food build': '料理配置',
         'append food build': '新增料理配置',
+        'food build name': '料理配置名稱',
+        'food list': '料理清單',
         'Copy food build successfully': '複製料理配置成功。',
         'Remove food build successfully': '移除料理配置成功。',
         'Recovery food build successfully': '復原料理配置成功。',

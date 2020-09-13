@@ -115,7 +115,8 @@ export default {
   },
   computed: {
     ...Vuex.mapState('character', {
-      'skillBuilds': 'skillBuilds'
+      'skillBuilds': 'skillBuilds',
+      'currentSkillBuildIndex': 'currentSkillBuildIndex'
     }),
     ...Vuex.mapGetters('character', {
       'currentSkillBuild': 'currentSkillBuild'
