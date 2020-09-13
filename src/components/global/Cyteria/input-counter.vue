@@ -76,8 +76,7 @@
 
   &.inline {
     border: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0 0.5rem;
   }
 
   > .title {

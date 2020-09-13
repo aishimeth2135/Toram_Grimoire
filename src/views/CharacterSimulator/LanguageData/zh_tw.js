@@ -167,6 +167,11 @@ export default function() {
       },
       'Food Builds Control': {
         'food build': '料理配置',
+        'append food build': '新增料理配置',
+        'Copy food build successfully': '複製料理配置成功。',
+        'Remove food build successfully': '移除料理配置成功。',
+        'Recovery food build successfully': '復原料理配置成功。',
+        'Must have at least one food build': '必須至少留下一個配置。',
         'Current food-build is not exist': '無法獲取當前的料理配置，請點選下方的按鈕嘗試復原介面。',
         'Number of selected food has reached the maximum': '可選取的料理數量已達上限。'
       },
@@ -189,6 +194,7 @@ export default function() {
         'Copy character successfully': '已成功複製：$0',
         'Remove character successfully': '已成功移除：$0',
         'Recovery character successfully': '已復原被刪除的：$0',
+        'Must have at least one character': '必須至少留下一個角色。'
       }
     }
   };
