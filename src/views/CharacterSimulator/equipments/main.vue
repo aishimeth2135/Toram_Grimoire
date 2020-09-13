@@ -111,7 +111,7 @@ export default {
       this.toggleWindowVisible('customEquipmentEditor', true);
     },
     appendEquipments(eqs) {
-      this.$store.commit('character/appendEquipments', eqs.map(eq => eq.copy()));
+      this.$store.commit('character/appendEquipments', eqs);
     },
     selectFieldEquipment(field) {
       this.browseEquipmentsState.action = {

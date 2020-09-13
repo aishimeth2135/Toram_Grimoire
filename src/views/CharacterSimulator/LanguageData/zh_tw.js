@@ -165,8 +165,8 @@ export default function() {
         }
       },
       'save-load control': {
-        'Auto save Successfully': '存檔成功。',
-        'Auto load Successfully': '讀取成功。',
+        'Auto save Successfully': '自動存檔成功。',
+        'Auto load Successfully': '自動讀取成功。',
         'save button: title': '手動存檔',
         'load button: title': '手動讀取',
         'top caption': '正常情況下，系統會在使用者離開頁面或進入頁面時自動進行存檔或讀檔。但如果有需要的話，下面的按鈕提供手動存檔或讀檔的功能。'
@@ -179,7 +179,10 @@ export default function() {
         'clear equipments completed': '清除成功。',
         'create custom equipment: no equipment type selected': '請先選擇一個裝備類別',
         'create custom equipment editor: selected stats clear': '已取消更動',
-        'character stats compare: no result': '沒有任何能力值變化。'
+        'character stats compare: no result': '沒有任何能力值變化。',
+        'Copy character successfully': '已成功複製：$0',
+        'Remove character successfully': '已成功移除：$0',
+        'Recovery character successfully': '已復原被刪除的：$0',
       }
     }
   };

@@ -319,7 +319,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      margin: 0.2rem;
+      margin: 0.3rem;
 
       &:hover, &.cur, &.selected {
         border-color: var(--primary-light-2);
@@ -344,6 +344,10 @@
 
       &.single-line {
         margin: 0 0rem;
+      }
+
+      & + & {
+        margin-left: 0.4rem;
       }
     }
 

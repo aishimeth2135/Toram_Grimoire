@@ -89,7 +89,7 @@ import vue_skillItem from "./skill-item.vue";
 
 export default {
   store,
-  props: ['characterState', 'currentSkillBuildIndex', 'passiveSkillStates', 'activeSkillStates'],
+  props: ['characterState', 'passiveSkillStates', 'activeSkillStates'],
   inject: ['langText'],
   data() {
     return {
@@ -117,16 +117,16 @@ export default {
     ...Vuex.mapState('character', {
       'skillBuilds': 'skillBuilds'
     }),
-    currentSkillBuild() {
-      return this.skillBuilds.length == 0 ? null : this.skillBuilds[this.currentSkillBuildIndex];
-    }
+    ...Vuex.mapGetters('character', {
+      'currentSkillBuild': 'currentSkillBuild'
+    })
   },
   methods: {
     setMode(mode) {
       this.mode = mode;
     },
     selectCurrentBuild(idx) {
-      this.$emit('update:current-skill-build-index', idx);
+      this.$store.commit('character/setCurrentSkillBuild', { index: idx })
     },
     toggleUserSetsWindowVisible() {
       this.userSetsWindow.visible = !this.userSetsWindow.visible;

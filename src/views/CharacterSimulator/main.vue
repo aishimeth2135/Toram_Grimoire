@@ -4,7 +4,6 @@
       <div class="main">
         <character v-if="currentContentIndex == 0"
           :character-state="currentCharacterState"
-          :current-character-state-index.sync="currentCharacterStateIndex"
           @create-character="createCharacter" />
         <character-stats v-if="currentContentIndex == 1"
           :character-state="currentCharacterState"
@@ -15,7 +14,6 @@
         <keep-alive>
           <skills v-if="currentContentIndex == 3"
             :character-state="currentCharacterState"
-            :current-skill-build-index.sync="currentSkillBuildIndex"
             :passive-skill-states="passiveSkillStates"
             :active-skill-states="activeSkillStates" />
         </keep-alive>
@@ -75,8 +73,6 @@ export default {
   store,
   data() {
     return {
-      currentCharacterStateIndex: -1,
-      currentSkillBuildIndex: -1,
       contents: [{
         id: 'character',
         icon: 'bx-bxs-face',
@@ -118,12 +114,12 @@ export default {
   created() {
     this.autoLoad();
 
-    if (this.characterStates.length != 0)
-      this.currentCharacterStateIndex = 0;
+    if (this.characterStates.length != 0 && this.currentCharacterIndex == -1)
+      this.$store.commit('character/setCurrentCharacter', { index: 0 });
     else
       this.createCharacter();
-    if (this.skillBuilds.length != 0)
-      this.currentSkillBuildIndex = 0;
+    if (this.skillBuilds.length != 0 && this.currentSkillBuildIndex == -1)
+      this.$store.commit('character/setCurrentSkillBuild', { index: 0 });
 
     const evt_autoSave = () => this.autoSave();
     const evt_autoSave_2 = () => document.visibilityState == 'hidden' && this.autoSave();
@@ -136,13 +132,19 @@ export default {
   },
   updated() {
     if (this.currentCharacterStateIndex >= this.characterStates.length) {
-      this.currentCharacterStateIndex = 0;
+      this.$store.commit('character/setCurrentCharacter', { index: 0 });
     }
   },
   computed: {
     ...Vuex.mapState('character', {
       'characterStates': 'characters',
-      'skillBuilds': 'skillBuilds'
+      'skillBuilds': 'skillBuilds',
+      'currentCharacterStateIndex': 'currentCharacterIndex',
+      'currentSkillBuildIndex': 'currentSkillBuildIndex'
+    }),
+    ...Vuex.mapGetters('character', {
+      'currentCharacterState': 'currentCharacter',
+      'currentSkillBuild': 'currentSkillBuild'
     }),
     equipmentElement() {
       const element = {
@@ -178,9 +180,6 @@ export default {
 
       return element;
     },
-    currentCharacterState() {
-      return this.characterStates[this.currentCharacterStateIndex];
-    },
     baseCharacterStatDatas() {
       return this.handleCharacterStateDatas();
     },
@@ -200,9 +199,6 @@ export default {
         name: p.name,
         stats: p.stats.filter(p => !p.hidden)
       }))
-    },
-    currentSkillBuild() {
-      return this.skillBuilds.length == 0 ? null : this.skillBuilds[this.currentSkillBuildIndex];
     },
     validSkillStates() {
       return this.allSkillStates
@@ -463,7 +459,7 @@ export default {
                 skillState,
                 levelSkill: levelSkillState.levelSkill,
                 langText: this.langText,
-                characterState: this.currentCharacterState,
+                view: this,
                 findCharacterStatResult: this.findCharacterStatResult,
                 skillItemType: skillItemType
               });
@@ -578,7 +574,7 @@ export default {
     },
     createCharacter() {
       const c = new Character(this.langText('character') + ' ' + (this.characterStates.length + 1).toString());
-      this.currentCharacterStateIndex = this.characterStates.length;
+      // this.currentCharacterStateIndex = this.characterStates.length;
       this.$store.commit('character/createCharacter', c);
     },
     langText(s, vs) {

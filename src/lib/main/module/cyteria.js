@@ -4,6 +4,7 @@ import svg from "./Cyteria/svg.js";
 import number from "./Cyteria/number.js";
 import math from "./Cyteria/math.js";
 import csv from "./Cyteria/csv.js";
+import file from "./Cyteria/file.js";
 
 function copyToClipboard(s) {
   const input = document.createElement('textarea');
@@ -39,5 +40,5 @@ function storageAvailable(type) {
   }
 }
 
-export { element, object, svg, number, math, csv, copyToClipboard, storageAvailable };
-export default { element, object, svg, number, math, csv, copyToClipboard, storageAvailable };
+export { element, object, svg, number, math, csv, file, copyToClipboard, storageAvailable };
+export default { element, object, svg, number, math, csv, file, copyToClipboard, storageAvailable };

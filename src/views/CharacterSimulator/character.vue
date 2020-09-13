@@ -11,7 +11,8 @@
         </template>
         <template #options>
           <cy-list-item v-for="(chara, i) in characterStates" :key="chara.iid"
-            @click="$emit('update:current-character-state-index', i)">
+            :selected="i == currentCharacterStateIndex"
+            @click="$store.commit('character/setCurrentCharacter', { index: i })">
             <cy-icon-text iconify-name="bx-bx-face">
               {{ chara.origin.name }}
             </cy-icon-text>
@@ -23,6 +24,16 @@
           </cy-list-item>
         </template>
       </cy-options>
+      <div class="buttons">
+        <cy-button iconify-name="mdi-content-copy" type="border"
+          @click="copyCurrentCharacter">
+          {{ globalLangText('global/copy') }}
+        </cy-button>
+        <cy-button iconify-name="ic-baseline-delete-outline" type="border"
+          @click="removeCurrentCharacter">
+          {{ globalLangText('global/remove') }}
+        </cy-button>
+      </div>
     </div>
     <div class="content-title">
       <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
@@ -109,6 +120,8 @@
 import Vuex from "vuex";
 import store from "@store/main";
 
+import ShowMessage from "@global-modules/ShowMessage.js";
+
 import { Character } from "@lib/CharacterSystem/CharacterStat/class/main.js";
 
 export default {
@@ -117,7 +130,8 @@ export default {
   inject: ['globalLangText', 'langText'],
   computed: {
     ...Vuex.mapState('character', {
-      'characterStates': 'characters'
+      'characterStates': 'characters',
+      'currentCharacterStateIndex': 'currentCharacterIndex'
     }),
     character() {
       return this.characterState.origin;
@@ -127,6 +141,26 @@ export default {
     }
   },
   methods: {
+    removeCurrentCharacter() {
+      const from = this.characterState.origin;
+      this.$store.commit('character/removeCharacter', { index: this.currentCharacterStateIndex });
+      ShowMessage(this.langText('Warn/Remove character successfully', [from.name]),
+        'ic-round-delete', null, {
+          buttons: [{
+            text: this.globalLangText('global/recovery'),
+            click: () => {
+              this.$store.commit('character/createCharacter', from);
+              ShowMessage(this.langText('Warn/Recovery character successfully', [from.name]));
+            },
+            removeMessageAfterClick: true
+          }]
+        });
+    },
+    copyCurrentCharacter() {
+      const from = this.characterState.origin;
+      this.$store.commit('character/createCharacter', from.copy());
+      ShowMessage(this.langText('Warn/Copy character successfully', [from.name]));
+    },
     setOptionalBaseStat(name) {
       this.character.setOptinalBaseStat(name);
     },
@@ -143,6 +177,13 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.top {
+  > .buttons {
+    display: inline-block;
+    margin: 0 0.7rem;
+    margin-top: 0.5rem;
+  }
+}
 .counter {
   margin-bottom: 0.6rem;
 }

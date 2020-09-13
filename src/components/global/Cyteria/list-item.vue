@@ -35,7 +35,7 @@ export default {
   position: relative;
   flex-wrap: wrap;
 
-  &:hover {
+  &:hover, &.selected {
     background-color: rgba(var(--rgb-primary-light), 0.4);
   }
 

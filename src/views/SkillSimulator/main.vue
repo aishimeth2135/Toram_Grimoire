@@ -781,7 +781,7 @@ export default {
       }
       const cur_index = this.currentSkillRootStateIndex;
       const cur_build = this.skillRootStates[cur_index];
-      this.$store.commit('character/deleteSkillBuild', { index: cur_index });
+      this.$store.commit('character/removeSkillBuild', { index: cur_index });
       //this.skillRootStates.splice(cur_index, 1);
       if (cur_index >= this.skillRootStates.length)
         this.currentSkillRootStateIndex = this.skillRootStates.length - 1;
