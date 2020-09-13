@@ -4,15 +4,19 @@ import { LevelSkillTree } from "@lib/SkillSystem/module/SkillElements.js";
 import { CharacterEquipment } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
 import { Character } from "@lib/CharacterSystem/CharacterStat/class/main.js";
 
+import createFoodBuild from "./food-build.js";
+
 const store = {
   namespaced: true,
   state: {
     skillRoot: null,
     currentCharacterIndex: -1,
     currentSkillBuildIndex: -1,
+    currentFoodBuildIndex: -1,
     characters: [],
     skillBuilds: [],
-    equipments: []
+    equipments: [],
+    foodBuilds: []
   },
   getters: {
     saveSkillBuildsCsv: (state, getters) => () => {
@@ -89,6 +93,9 @@ const store = {
     },
     currentCharacter(state) {
       return state.characters[state.currentCharacterIndex];
+    },
+    currentFoodBuild(state) {
+      return state.foodBuilds[state.currentSkillBuildIndex];
     }
   },
   mutations: {
@@ -159,6 +166,18 @@ const store = {
     },
     removeEquipment(state, { index }) {
       state.equipments.splice(index, 1);
+    },
+    setCurrentFoodBuild(state, { index }) {
+      state.currentFoodBuildIndex = index;
+    },
+    createFoodBuild(state, { name, foodBuild }) {
+      state.foodBuilds.push(foodBuild ? foodBuild : createFoodBuild(name));
+      state.currentFoodBuildIndex = state.foodBuilds.length - 1;
+    },
+    removeFoodBuild(state, { index }) {
+      state.foodBuilds.splice(index, 1);
+      if (state.currentFoodBuildIndex >= state.foodBuilds.length)
+        state.currentFoodBuildIndex = state.foodBuilds.length - 1;
     }
   },
   actions: {
@@ -174,6 +193,10 @@ const store = {
         const characters = JSON.parse(window.localStorage.getItem(prefix + '--characters'));
         const equipments = JSON.parse(window.localStorage.getItem(prefix + '--equipments'));
         const skillBuildsCsv = window.localStorage.getItem(prefix + '--skillBuilds');
+
+        let foodBuilds = window.localStorage.getItem(prefix + '--foodBuilds');
+        if (foodBuilds)
+          foodBuilds = JSON.parse(foodBuilds);
 
         const allEquipments = equipments.map(p => {
           const load = CharacterEquipment.loadEquipment(p);
@@ -194,9 +217,19 @@ const store = {
 
         dispatch('loadSkillBuildsCsv', { csvString: skillBuildsCsv });
 
+        if (foodBuilds){
+          foodBuilds.forEach(p => {
+            const foods = createFoodBuild('potum');
+            const load = foods.load(p);
+            if (!load.error)
+              commit('createFoodBuild', { foodBuild: foods });
+          });
+        }
+
         // 讀檔過程會改寫index，因此最後設定index
         commit('setCurrentCharacter', { index: summary.characterIndex });
         commit('setCurrentSkillBuild', { index: summary.skillBuildIndex });
+        commit('setCurrentFoodBuild', { index: summary.foodBuildIndex !== void 0 ? summary.foodBuildIndex : -1 });
       } catch (e) {
         commit('reset');
         commit('createCharacter', new Character());
@@ -207,6 +240,7 @@ const store = {
       const characters = state.characters.map(p => p.origin.save(state.equipments));
       const equipments = state.equipments.map(p => p.save());
       const skillBuildsCsv = getters.saveSkillBuildsCsv();
+      const foodBuilds = state.foodBuilds.map(p => p.save());
 
       let prefix = 'app--character-simulator--data-';
       if (index == -1) {
@@ -226,7 +260,8 @@ const store = {
         },
         skillBuilds: state.skillBuilds.map(p => p.name),
         characterIndex: state.currentCharacterIndex,
-        skillBuildIndex: state.currentSkillBuildIndex
+        skillBuildIndex: state.currentSkillBuildIndex,
+        foodBuildIndex: state.currentFoodBuildIndex
       };
 
       try {
@@ -234,12 +269,14 @@ const store = {
         window.localStorage.setItem(prefix + '--characters', JSON.stringify(characters));
         window.localStorage.setItem(prefix + '--equipments', JSON.stringify(equipments));
         window.localStorage.setItem(prefix + '--skillBuilds', skillBuildsCsv);
+        window.localStorage.setItem(prefix + '--foodBuilds', JSON.stringify(foodBuilds));
       } catch (e) {
         console.warn('Error when save Character-Simulator datas');
         console.warn(e);
         window.localStorage.removeItem(prefix + '--characters');
         window.localStorage.removeItem(prefix + '--equipments');
         window.localStorage.removeItem(prefix + '--skillBuilds');
+        window.localStorage.removeItem(prefix + '--foodBuilds');
       }
     },
     loadSkillBuildsCsv({ state, commit, getters }, { csvString }) {
