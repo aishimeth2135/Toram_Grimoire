@@ -35,9 +35,26 @@
         </cy-button>
       </div>
     </div>
-    <div class="foods">
+    <div class="content-title">
+      <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
+        text-size="small" text-color="purple">
+        {{ localLangText('food build name') }}
+      </cy-icon-text>
+    </div>
+    <div class="content">
+      <cy-title-input iconify-name="mdi-clipboard-text-outline">
+        <input type="text" v-model="currentFoodBuild.name">
+      </cy-title-input>
+    </div>
+    <div class="content-title">
+      <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
+        text-size="small" text-color="purple">
+        {{ localLangText('food list') }}
+      </cy-icon-text>
+    </div>
+    <div class="foods content">
       <cy-list-item v-for="(food, i) in currentFoodBuild.foods"
-        :selected="foodSelected(i)"
+        :selected="foodSelected(i)" class="item"
         :key="food.base.baseName + '-' + (food.negative ? 'n' : 'p')">
         <cy-input-counter :range="[0, 10]" :value="food.level" :inline="true" type="line"
           class="counter" @set-value="setFoodLevel(food, $event)">
@@ -151,7 +168,21 @@ export default {
     padding-top: 0.3rem;
   }
 }
+
+.item {
+  padding: 0.4rem 0.8rem;
+}
 .counter {
   width: 25rem;
+}
+
+.content-title {
+  margin-top: 1rem;
+  margin-bottom: 0.6rem;
+  padding-left: 0.3rem;
+}
+
+.content {
+  padding-left: 1rem;
 }
 </style>

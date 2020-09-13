@@ -42,13 +42,12 @@ class Foods {
     const data = {};
     data.name = this.name;
 
-    data.foods = this.foods.map(p => ({
+    data.foods = this.foods.map((p, i) => ({
       statId: p.base.baseName,
       level: p.level,
-      negative: p.negative
+      negative: p.negative,
+      selected: this.foodSelected(i)
     }));
-
-    data.selectedFoods = this.selectedFoodIndexes;
 
     return data;
   }
@@ -56,19 +55,20 @@ class Foods {
     try {
       let success = true;
 
-      const { name, foods, selectedFoods } = data;
+      const { name, foods } = data;
       this.name = name;
       foods.forEach(p => {
-        const find = this.foods.find(a => a.base.baseName == p.statId && a.negative == p.negative);
-        if (find) {
+        const findIdx = this.foods.findIndex(a => a.base.baseName == p.statId && a.negative == p.negative);
+        if (findIdx != -1) {
+          const find = this.foods[findIdx];
           find.level = p.level;
+          if (p.selected)
+            this.appendSelectedFood(findIdx);
         } else {
           success = false;
           console.warn(`Can not find Food which stat-base-name: ${p.statId}, negative: ${p.negative}` );
         }
       });
-
-      this.selectedFoodIndexes = selectedFoods;
 
       return {
         success

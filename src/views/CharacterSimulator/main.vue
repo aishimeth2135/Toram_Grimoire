@@ -360,7 +360,13 @@ export default {
 
       const appendStat = stat => {
         const t = all_stats.find(a => a.equals(stat));
-        t ? t.addStatValue(stat.statValue()) : all_stats.push(stat.copy());
+        let v = stat.statValue();
+        if (typeof v != 'number')
+          v = parseFloat(v);
+        if (Number.isNaN(v))
+          v = 0;
+        stat.statValue(v);
+        t ? t.addStatValue(v) : all_stats.push(stat.copy());
       };
       c.equipmentFields.forEach(field => {
         if (!field.isEmpty() && !field.statsDisable()) {
