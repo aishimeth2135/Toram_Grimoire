@@ -1,6 +1,6 @@
 <template>
   <div class="cy--input-counter-container">
-    <div class="cy--input-counter" :class="{ 'line': type == 'line' }">
+    <div class="cy--input-counter" :class="{ 'line': type == 'line', 'inline': inline }">
       <div class="title" v-if="$slots['title']">
         <slot name="title"></slot>
       </div>
@@ -32,10 +32,14 @@
         type: Number,
         default: 1
       },
-      type: {
+      'type': {
         type: String,
         default: 'normal',
         validation: v => ['normal', 'line'].includes(v)
+      },
+      'inline': {
+        type: Boolean,
+        default: false
       }
     },
     methods: {
@@ -69,6 +73,12 @@
   padding: 0.3rem 1rem;
   transition: border-color 0.3s;
   border: 1px solid var(--primary-light);
+
+  &.inline {
+    border: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 
   > .title {
     display: inline-flex;

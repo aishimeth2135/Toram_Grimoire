@@ -9,6 +9,7 @@ export default function() {
       'character stat points': '角色能力點數',
       'equipment': '裝備',
       'skill': '技能',
+      'food build': '料理',
       'save-load': '存檔',
       'stability': '穩定度',
       'confirm selection': '確定選取',
@@ -163,6 +164,11 @@ export default function() {
             'none': '身體防具｜無裝備'
           }
         }
+      },
+      'Food Builds Control': {
+        'food build': '料理配置',
+        'Current food-build is not exist': '無法獲取當前的料理配置，請點選下方的按鈕嘗試復原介面。',
+        'Number of selected food has reached the maximum': '可選取的料理數量已達上限。'
       },
       'save-load control': {
         'Auto save Successfully': '自動存檔成功。',

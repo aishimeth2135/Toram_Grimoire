@@ -17,7 +17,8 @@
             :passive-skill-states="passiveSkillStates"
             :active-skill-states="activeSkillStates" />
         </keep-alive>
-        <save-load v-if="currentContentIndex == 4"
+        <food-build v-if="currentContentIndex == 4" />
+        <save-load v-if="currentContentIndex == 5"
           @manual-auto-save="autoSave"
           @manual-auto-load="autoLoad" />
       </div>
@@ -57,6 +58,7 @@ import vue_characterStats from "./character-stats/main.vue";
 import vue_character from "./character.vue";
 import vue_skills from "./skill/main.vue";
 import vue_saveLoad from "./save-load.vue";
+import vue_foodBuild from "./food/main.vue";
 
 import Vuex from "vuex";
 import store from "@store/main";
@@ -89,6 +91,10 @@ export default {
         id: 'skills',
         icon: 'ant-design:build-outlined',
         text: this.langText('skill')
+      }, {
+        id: 'food-build',
+        icon: 'mdi-food-apple',
+        text: this.langText('food build')
       }, {
         id: 'save-load',
         icon: 'mdi-ghost',
@@ -145,7 +151,8 @@ export default {
     }),
     ...Vuex.mapGetters('character', {
       'currentCharacterState': 'currentCharacter',
-      'currentSkillBuild': 'currentSkillBuild'
+      'currentSkillBuild': 'currentSkillBuild',
+      'currentFoodBuild': 'currentFoodBuild'
     }),
     equipmentElement() {
       const element = {
@@ -235,6 +242,7 @@ export default {
       });
     },
     handleCharacterStateDatas({
+      handleFood = true,
       handlePassiveSkill = false,
       handleActiveSkill = false,
       calcField = null
@@ -359,6 +367,11 @@ export default {
           field.equipment.allStats.forEach(appendStat);
         }
       });
+
+      if (handleFood && this.currentFoodBuild) {
+        this.currentFoodBuild.selectedFoods
+          .map(p => p.stat()).forEach(appendStat);
+      }
 
       const handleSkillStates = states => {
         const branchStatDatasToSimpleStats = stats => {
@@ -646,7 +659,8 @@ export default {
     'character-stats': vue_characterStats,
     'character': vue_character,
     'skills': vue_skills,
-    'save-load': vue_saveLoad
+    'save-load': vue_saveLoad,
+    'food-build': vue_foodBuild
   }
 };
 </script>
