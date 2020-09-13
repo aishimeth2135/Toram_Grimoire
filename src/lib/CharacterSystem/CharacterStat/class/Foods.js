@@ -30,6 +30,13 @@ class Foods {
     this.selectedFoodIndexes.splice(i, 1);
   }
 
+  copy() {
+    const p = new Foods(this.name + '*');
+    p.foods = this.foods.map(p => p.copy());
+    p.selectedFoodIndexes = this.selectedFoodIndexes.slice();
+    return p;
+  }
+
   // save and load with json-data
   save() {
     const data = {};
@@ -88,6 +95,11 @@ class Food {
   }
   statTitle() {
     return this.base.title(StatBase.TYPE_CONSTANT);
+  }
+  copy() {
+    const t = new Food(this.base, this.amount, this.negative);
+    t.level = this.level;
+    return t;
   }
 }
 

@@ -95,7 +95,7 @@ const store = {
       return state.characters[state.currentCharacterIndex];
     },
     currentFoodBuild(state) {
-      return state.foodBuilds[state.currentSkillBuildIndex];
+      return state.foodBuilds[state.currentFoodBuildIndex];
     }
   },
   mutations: {
@@ -103,6 +103,7 @@ const store = {
       state.skillBuilds = [];
       state.characters = [];
       state.equipments = [];
+      state.foodBuilds = [];
     },
     setSkillRoot(state, skillRoot) {
       state.skillRoot = skillRoot;

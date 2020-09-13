@@ -142,6 +142,10 @@ export default {
   },
   methods: {
     removeCurrentCharacter() {
+      if (this.characterStates.length <= 1) {
+        ShowMessage(this.langText('Warn/Must have at least one character'));
+        return;
+      }
       const from = this.characterState.origin;
       this.$store.commit('character/removeCharacter', { index: this.currentCharacterStateIndex });
       ShowMessage(this.langText('Warn/Remove character successfully', [from.name]),
