@@ -206,6 +206,8 @@ export default {
   data() {
     const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
     Grimoire.CharacterSystem.statList.forEach(stat => {
+      if (stat.attributes.hidden)
+        return;
       statTypes.forEach(type => {
         if (type == StatBase.TYPE_MULTIPLIER && !stat.hasMultiplier)
           return;
@@ -231,7 +233,8 @@ export default {
       if (this.searchText == '') {
         return this.elementFilterStats;
       }
-      return this.elementFilterStats.filter(stat => stat.origin.title().includes(this.searchText));
+      return this.elementFilterStats
+        .filter(stat => stat.origin.title(stat.type).toLowerCase().includes(this.searchText.toLowerCase()));
     },
     hasOther() {
       return this.equipment.hasStability;

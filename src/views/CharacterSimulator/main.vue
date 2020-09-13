@@ -116,8 +116,9 @@ export default {
 
     if (this.characterStates.length != 0 && this.currentCharacterIndex == -1)
       this.$store.commit('character/setCurrentCharacter', { index: 0 });
-    else
+    if (this.characterStates.length == 0) {
       this.createCharacter();
+    }
     if (this.skillBuilds.length != 0 && this.currentSkillBuildIndex == -1)
       this.$store.commit('character/setCurrentSkillBuild', { index: 0 });
 
@@ -293,17 +294,12 @@ export default {
             'armor': c.fieldEquipment(EquipmentField.TYPE_BODY_ARMOR),
             'additional': c.fieldEquipment(EquipmentField.TYPE_ADDITIONAL),
             'special': c.fieldEquipment(EquipmentField.TYPE_SPECIAL),
-            'shield': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_SHIELD) ?
+            'shield': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubArmor.TYPE_SHIELD) ?
               c.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON) :
-              {
-                'refining': 0,
-                'def': 0
-              },
+              { 'refining': 0, 'def': 0 },
             'arrow': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_ARROW) ?
-              c.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON) : {
-                'stability': 0,
-                'atk': 0
-              },
+              c.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON) :
+              { 'stability': 0, 'atk': 0 },
             'element': this.equipmentElement,
             'skill': {
               'Conversion': (() => {
