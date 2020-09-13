@@ -51,7 +51,8 @@ class CharacterEquipment {
   }
 
   setCustom(set) {
-    this._isCustom = set;
+    if (this._isCustom != set)
+      this._isCustom = set;
   }
   setCustomType(type) {
     this.type = type;
@@ -171,6 +172,8 @@ class CharacterEquipment {
     if (this.hasCrystal)
       data.crystals = this.crystals.map(p => p.name);
 
+    data.isCustom = this.isCustom;
+
     // == [ id ] ======================================================
     data.id = this.id;
 
@@ -189,7 +192,7 @@ CharacterEquipment.loadEquipment = function (data) {
   try {
     let success = true;
 
-    const { id, name, stability, refining, baseAtk, atk, baseDef, def, crystals } = data;
+    const { id, name, stability, refining, baseAtk, atk, baseDef, def, crystals, isCustom } = data;
     const getType = (inst, str) => inst['TYPE_' + str.toUpperCase()];
     const stats = data.stats.map(p => {
       const base = Grimoire.CharacterSystem.findStatBase(p.id);
@@ -230,17 +233,19 @@ CharacterEquipment.loadEquipment = function (data) {
     if (eq.hasRefining) {
       eq.refining = refining;
     }
-    if (eq.hasCrystals) {
+    if (eq.hasCrystal) {
       eq.crystals = crystals.map(name => {
         const c = Grimoire.ItemSystem.items.crystals.find(p => p.name == name);
         if (c)
-          return c;
+          return new EquipmentCrystal(c);
 
         success = false;
         console.warn('[Error: CharacterEquipment.load] can not find crystal which name: ' + name);
         return null;
       }).filter(c => c);
     }
+
+    eq.setCustom(isCustom);
 
     return {
       success,

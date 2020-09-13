@@ -202,5 +202,6 @@ export default {
 .editor {
   border-top: 1px solid var(--primary-light-2);
   margin-top: 0.8rem;
+  padding-top: 0.8rem;
 }
 </style>

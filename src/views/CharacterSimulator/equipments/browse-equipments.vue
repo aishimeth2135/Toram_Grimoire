@@ -44,7 +44,7 @@
           class="toggle-info-unfold-btn" @click="toggleInfoUnfold" />
       </div>
       <!-- bottom -->
-      <cy-bottom-content v-if="currentEquipment">
+      <cy-bottom-content v-if="currentEquipment" style="z-index: 2">
         <template #normal-content>
           <cy-flex-layout>
             <cy-button iconify-name="ic-baseline-delete-outline" type="border"
@@ -157,17 +157,28 @@ export default {
       index != -1 && this.$store.commit('character/removeEquipment', {
         index
       });
+
+      const modifiedFields = this.characterState.origin.equipmentFields.filter(field => {
+        if (field.equipment == eq) {
+          field.removeEquipment();
+          return true;
+        }
+        return false;
+      });
       ShowMessage(this.localLangText('message: remove equipment', [eq.name]),
         'ic-baseline-delete-outline', null, {
         buttons: [{
           text: this.globalLangText('global/recovery'),
           click: () => {
             this.appendEquipments([eq]);
+            modifiedFields.forEach(field => field.setEquipment(eq));
             ShowMessage(this.localLangText('message: removed equipment recovery', [eq.name]));
           },
           removeMessageAfterClick: true
         }]
       });
+
+      this.currentEquipment = null;
     },
     selectEquipment() {
       this.action.targetField.setEquipment(this.currentEquipment);

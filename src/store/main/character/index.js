@@ -8,6 +8,8 @@ const store = {
   namespaced: true,
   state: {
     skillRoot: null,
+    currentCharacterIndex: -1,
+    currentSkillBuildIndex: -1,
     characters: [],
     skillBuilds: [],
     equipments: []
@@ -81,6 +83,12 @@ const store = {
         }
       };
       return { type, index };
+    },
+    currentSkillBuild(state) {
+      return state.skillBuilds[state.currentSkillBuildIndex];
+    },
+    currentCharacter(state) {
+      return state.characters[state.currentCharacterIndex];
     }
   },
   mutations: {
@@ -91,6 +99,9 @@ const store = {
     },
     setSkillRoot(state, skillRoot) {
       state.skillRoot = skillRoot;
+    },
+    setCurrentSkillBuild(state, { index }) {
+      state.currentSkillBuildIndex = index;
     },
     createSkillBuild(state, { name }) {
       const r = state.skillRoot;
@@ -117,21 +128,31 @@ const store = {
         })
       };
       state.skillBuilds.push(newBuild);
+      state.currentSkillBuildIndex = state.skillBuilds.length - 1;
     },
-    deleteSkillBuild(state, { index }) {
+    removeSkillBuild(state, { index }) {
       state.skillBuilds.splice(index, 1);
     },
     resetSkillBuilds(state) {
       state.skillBuilds = [];
+    },
+    setCurrentCharacter(state, { index }) {
+      state.currentCharacterIndex = index;
     },
     createCharacter(state, chara) {
       state.characters.push({
         iid: state.characters.length,
         origin: chara
       });
+      state.currentCharacterIndex = state.characters.length - 1;
     },
-    deleteCharacter(state, { index }) {
+    removeCharacter(state, { index }) {
       state.characters.splice(index, 1);
+      state.characters.forEach((_, i) => {
+        state.iid = i;
+      });
+      if (state.currentCharacterIndex >= state.characters.length)
+        state.currentCharacterIndex = state.characters.length - 1;
     },
     appendEquipments(state, eqs) {
       state.equipments.push(...eqs);
@@ -149,6 +170,7 @@ const store = {
       try {
         commit('reset');
 
+        const summary = JSON.parse(window.localStorage.getItem(prefix));
         const characters = JSON.parse(window.localStorage.getItem(prefix + '--characters'));
         const equipments = JSON.parse(window.localStorage.getItem(prefix + '--equipments'));
         const skillBuildsCsv = window.localStorage.getItem(prefix + '--skillBuilds');
@@ -171,6 +193,10 @@ const store = {
         commit('appendEquipments', validEquipments);
 
         dispatch('loadSkillBuildsCsv', { csvString: skillBuildsCsv });
+
+        // 讀檔過程會改寫index，因此最後設定index
+        commit('setCurrentCharacter', { index: summary.characterIndex });
+        commit('setCurrentSkillBuild', { index: summary.skillBuildIndex });
       } catch (e) {
         commit('reset');
         commit('createCharacter', new Character());
@@ -194,11 +220,13 @@ const store = {
       }
 
       const summary = {
-        characters: state.characters.map(p => p.name),
+        characters: state.characters.map(p => p.origin.name),
         equipments: {
           numbers: state.equipments.length
         },
-        skillBuilds: state.skillBuilds.map(p => p.name)
+        skillBuilds: state.skillBuilds.map(p => p.name),
+        characterIndex: state.currentCharacterIndex,
+        skillBuildIndex: state.currentSkillBuildIndex
       };
 
       try {

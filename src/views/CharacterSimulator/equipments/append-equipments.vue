@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     submitSelected() {
-      this.appendEquipments(this.selected.map(p => p.origin));
+      this.appendEquipments(this.selected.map(p => p.origin.copy()));
       ShowMessage(this.localLangText('append equipments successfully', [this.selected.length]), 'ic-round-done');
       this.selected = [];
       this.$emit('close');

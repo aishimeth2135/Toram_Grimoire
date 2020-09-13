@@ -108,6 +108,26 @@ class Character {
     return t.includes(sub_type);
   }
 
+  copy() {
+    const chara = new Character(this.name + '*');
+    chara.level = this.level;
+    this.normalBaseStats.forEach(p => {
+      const find = chara.normalBaseStats.find(a => a.name == p.name);
+      find.value = p.value;
+    });
+    chara.setOptinalBaseStat(this.optionalBaseStat.name);
+    chara.optionalBaseStat.value = this.optionalBaseStat.value;
+
+    this.equipmentFields.forEach(p => {
+      if (p.isEmpty())
+        return;
+      const find = chara.equipmentFields.find(a => a.type == p.type && a.index == p.index);
+      find.setEquipment(p.equipment);
+    });
+
+    return chara;
+  }
+
   // save and load with json-data
   save(equipments) {
     const data = {};
@@ -187,8 +207,7 @@ class Character {
       };
       fields.forEach(p => {
         if (p.equipmentIndex != -1) {
-          const fs = this.equipmentFields.filter(f => f.type == fieldTypes[p.type]);
-          const find = fs[p.index];
+          const find = this.equipmentFields.find(f => f.type == fieldTypes[p.type] && f.index == p.index);
           if (find) {
             const eq = equipments[p.equipmentIndex];
             if (eq)
@@ -256,7 +275,7 @@ class EquipmentField {
     }
   }
   removeEquipment() {
-    this.equipment = null;
+    this.setEquipment(null);
   }
   isEmpty() {
     return this.equipment == null;

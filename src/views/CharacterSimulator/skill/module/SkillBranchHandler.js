@@ -5,14 +5,12 @@ import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js
 import { SubWeapon, SubArmor } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
 
 class SkillBranchHandler {
-  constructor({ branch, skillState, levelSkill, langText, characterState, findCharacterStatResult, skillItemType }) {
+  constructor({ branch, skillState, levelSkill, view, skillItemType }) {
     this.branch = branch;
     this.skillState = skillState;
     this.levelSkill = levelSkill;
-    this.langText = langText;
-    this.characterState = characterState;
-    this.findCharacterStatResult = findCharacterStatResult;
     this.skillItemType = skillItemType;
+    this.view = view;
 
     this.userSets = (() => {
       const res = [];
@@ -133,6 +131,16 @@ class SkillBranchHandler {
     };
   }
 
+  get findCharacterStatResult() {
+    return this.view.findCharacterStatResult;
+  }
+  get langText() {
+    return this.view.langText;
+  }
+  get characterState() {
+    return this.view.currentCharacterState;
+  }
+
   // save and load with json-data
   // save() {
   //   const data = {};
@@ -223,7 +231,7 @@ class SkillBranchHandler {
       return str;
     const skillState = {
       clv: this.characterState.origin.level,
-      slv: this.levelSkill.level()
+      slv: Math.max(this.levelSkill.level(), this.levelSkill.starGemLevel())
     };
     const effectState = {
       stackStates: this.stackStates

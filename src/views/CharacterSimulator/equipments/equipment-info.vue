@@ -7,7 +7,7 @@
         <span class="refining" v-if="equipment.hasRefining && equipment.refining > 0">+{{ equipment.refining | equipmentRefining }}</span>
       </cy-icon-text>
       <span class="category"
-        :style="{ 'color': `var(--primary-${equipment.isCustom ? 'green' : 'light-2'})` }"
+        :style="{ 'color': `var(--primary-${equipment.isCustom ? 'green' : 'light-3'})` }"
         >{{ equipmentData.categoryText }}</span>
       <cy-button type="icon-only" class="single-line" style="margin-left: auto"
         :iconify-name="mode == 0 ? 'ic-round-edit' : 'ic-round-view-list'"
