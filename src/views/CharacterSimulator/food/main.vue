@@ -53,13 +53,19 @@
       </cy-icon-text>
     </div>
     <div class="foods content">
+      <cy-icon-text iconify-name="ic-outline-info" text-color="light-3" text-size="small" class="mr-normal">
+        {{ localLangText('tips: select food') }}
+      </cy-icon-text>
+      <cy-icon-text iconify-name="ic-outline-info" text-color="light-3" text-size="small">
+        {{ localLangText('tips: auto select food') }}
+      </cy-icon-text>
       <cy-list-item v-for="(food, i) in currentFoodBuild.foods"
         :selected="foodSelected(i)" class="item"
         :key="food.base.baseName + '-' + (food.negative ? 'n' : 'p')">
         <cy-input-counter :range="[0, 10]" :value="food.level" :inline="true" type="line"
-          class="counter" @set-value="setFoodLevel(food, $event)">
+          class="counter" @set-value="setFoodLevel(food, $event, i)">
           <template #title>
-            <cy-icon-text :iconify-name="foodSelected(i) ? 'mdi-food-apple' : 'bx-bx-circle'"
+            <cy-icon-text :iconify-name="foodSelected(i) ? 'mdi-food-apple' : 'bx-bx-radio-circle'"
               :text-color="food.negative ? 'orange' : 'purple'"
               @click.native="selectFood(i)">
               {{ food.stat().show() }}
@@ -138,8 +144,11 @@ export default {
         name: this.localLangText('food build') + ' ' + (this.foodBuilds.length + 1)
       });
     },
-    setFoodLevel(food, v) {
+    setFoodLevel(food, v, idx) {
+      const oldv = food.level;
       food.level = v;
+      if (oldv == 0 && this.currentFoodBuild.checkSelectedFoodsMaximum() && !this.foodSelected(idx))
+        this.currentFoodBuild.appendSelectedFood(idx);
     },
     foodSelected(idx) {
       return this.currentFoodBuild.foodSelected(idx);

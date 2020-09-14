@@ -175,7 +175,9 @@ export default function() {
         'Recovery food build successfully': '復原料理配置成功。',
         'Must have at least one food build': '必須至少留下一個配置。',
         'Current food-build is not exist': '無法獲取當前的料理配置，請點選下方的按鈕嘗試復原介面。',
-        'Number of selected food has reached the maximum': '可選取的料理數量已達上限。'
+        'Number of selected food has reached the maximum': '可選取的料理數量已達上限。',
+        'tips: select food': '透過點擊前方的圓點來選取最多五個料理。',
+        'tips: auto select food': '原本是0級的料理在提升等級時會自動選取。'
       },
       'save-load control': {
         'Auto save Successfully': '自動存檔成功。',

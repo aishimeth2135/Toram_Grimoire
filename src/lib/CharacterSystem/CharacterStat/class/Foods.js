@@ -22,7 +22,7 @@ class Foods {
     return this.selectedFoodIndexes.includes(idx);
   }
   appendSelectedFood(idx) {
-    if (this.checkSelectedFoodsMaximum())
+    if (this.checkSelectedFoodsMaximum() && !this.foodSelected(idx))
       this.selectedFoodIndexes.push(idx);
   }
   removeSelectedFood(idx) {
