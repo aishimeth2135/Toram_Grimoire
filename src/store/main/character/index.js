@@ -185,7 +185,8 @@ const store = {
     loadCharacterSimulator({ commit, dispatch }, { index }) {
       const prefix = 'app--character-simulator--data-' + index;
       if (!window.localStorage.getItem(prefix)) {
-        throw new Error(`Index: ${index} of Character-Simulator Data is not exist.`);
+        console.warn(`Index: ${index} of Character-Simulator Data is not exist.`);
+        return;
       }
       try {
         commit('reset');
