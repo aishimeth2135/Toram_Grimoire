@@ -3,14 +3,14 @@
     <cy-button type="icon-only" iconify-name="ic-baseline-settings" @click="toggleWindowVisible" />
     <cy-window class="width-wide main--window" @close-window="toggleWindowVisible"
       :visible="windowVisible">
-      <template v-slot:title>
+      <template #title>
         <cy-icon-text iconify-name="ic-baseline-settings">
           {{ langText('title') }}
         </cy-icon-text>
       </template>
       <fieldset class="column">
         <legend>
-          <cy-icon-text iconify-name="ic-round-text-fields">
+          <cy-icon-text iconify-name="ic-round-text-fields" text-color="purple">
             {{ langText('switch font/title') }}
           </cy-icon-text>
         </legend>
@@ -31,7 +31,7 @@
       </fieldset>
       <fieldset class="column">
         <legend>
-          <cy-icon-text iconify-name="ion-language">
+          <cy-icon-text iconify-name="ion-language" text-color="purple">
             {{ langText('language/title') }}
           </cy-icon-text>
         </legend>
@@ -55,7 +55,7 @@
       </fieldset>
       <fieldset class="column">
         <legend>
-          <cy-icon-text iconify-name="ion-language">
+          <cy-icon-text iconify-name="ion-language" text-color="purple">
             {{ langText('second language/title') }}
           </cy-icon-text>
         </legend>
@@ -74,6 +74,27 @@
             :selected="secondLanguageState.currentIndex == i"
             :key="item" @click="setLanguage('second-language', i)">
             {{ langText('language/button texts/lang ' + item) }}
+          </cy-button>
+        </div>
+      </fieldset>
+      <fieldset class="column">
+        <legend>
+          <cy-icon-text iconify-name="carbon-cloud-data-ops" text-color="purple">
+            {{ langText('clear caches of spreadsheets/title') }}
+          </cy-icon-text>
+        </legend>
+        <div class="caption">
+          {{ langText('clear caches of spreadsheets/caption') }}
+        </div>
+        <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
+          {{ langText('clear caches of spreadsheets/warn 1') }}
+        </cy-icon-text>
+        <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
+          {{ langText('clear caches of spreadsheets/warn 2') }}
+        </cy-icon-text>
+        <div class="buttons">
+          <cy-button iconify-name="ic-round-delete" type="border" @click="clearSpreadsheetsCaches">
+            {{ langText('clear caches of spreadsheets/button texts/clear caches of spreadsheets') }}
           </cy-button>
         </div>
       </fieldset>
@@ -134,6 +155,10 @@ export default {
     }
   },
   methods: {
+    clearSpreadsheetsCaches() {
+      caches.delete('google-spreadsheets-csv-files')
+        .then(p => p && ShowMessage(this.langText('clear caches of spreadsheets/Clear caches of spreadsheet successfully')));
+    },
     saveLocalStorage() {
       const data = {};
       const storage = window.localStorage;
@@ -150,7 +175,7 @@ export default {
         fileName: 'Cy-Grimoire_storage.txt'
       });
 
-      ShowMessage(this.langText('storage backup/Save succeefully'));
+      ShowMessage(this.langText('storage backup/Save successfully'));
     },
     loadLocalStorage() {
       const storage = window.localStorage;
@@ -159,7 +184,7 @@ export default {
         succee: data => {
           data = JSON.parse(data);
           Object.keys(data).forEach(k => storage.setItem(k, data[k]));
-          ShowMessage(this.langText('storage backup/Load succeefully'));
+          ShowMessage(this.langText('storage backup/Load successfully'));
         },
         error: () => {
           ShowMessage(this.langText('storage backup/Load failed'));
