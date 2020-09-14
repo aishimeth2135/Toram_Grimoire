@@ -4,7 +4,7 @@
       <cy-default-tips iconify-name="bx-bx-message-square-dots" text-align="left">
         {{ localLangText('top caption') }}
       </cy-default-tips>
-      <div>
+      <div class="buttons">
         <cy-button type="border" iconify-name="ic-round-save"
           @click="$emit('manual-auto-save')">
           {{ localLangText('save button: title') }}
@@ -25,7 +25,7 @@
           {{ localLangText('delete all data: caption')[2] }}
         </cy-icon-text>
       </cy-default-tips>
-      <div>
+      <div class="buttons">
         <cy-input-counter :value="deleteCounter" @set-value="v => deleteCounter = v">
           <template #title>
             <cy-icon-text iconify-name="ic-round-delete">
@@ -34,7 +34,7 @@
           </template>
         </cy-input-counter>
         <cy-button v-if="deleteCounter == 10" type="border" iconify-name="ic-round-delete"
-          @click="deleteAllSavedData">
+          style="margin-top: 0.6rem;" @click="deleteAllSavedData">
           {{ localLangText('button: deleta all data') }}
         </cy-button>
       </div>
@@ -83,6 +83,10 @@ export default {
   & + & {
     border-top: 1px solid var(--primary-light);
     margin-top: 0.8rem;
+  }
+
+  > .buttons {
+    padding-left: 0.8rem;
   }
 
   .tip {

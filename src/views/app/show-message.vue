@@ -41,7 +41,7 @@
 <style lang="less" scoped>
 .main--show-message {
   position: fixed;
-  bottom: 1rem;
+  bottom: 3.3rem;
   right: 1.2rem;
   max-width: calc(100vw - 2rem);
   width: 20rem;
