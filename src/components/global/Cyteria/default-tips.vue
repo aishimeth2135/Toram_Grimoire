@@ -36,6 +36,7 @@
         width: 2.7rem;
         height: 2.7rem;
         margin-right: 1rem;
+        flex-shrink: 0;
       }
     }
   }
