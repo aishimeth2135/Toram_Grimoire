@@ -89,6 +89,9 @@
         <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
           {{ langText('storage backup/warn 1') }}
         </cy-icon-text>
+        <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
+          {{ langText('storage backup/warn 2') }}
+        </cy-icon-text>
         <div class="buttons">
           <cy-button iconify-name="ic-round-save" type="border" @click="saveLocalStorage">
             {{ langText('storage backup/button texts/save') }}

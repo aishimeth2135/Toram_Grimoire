@@ -225,6 +225,8 @@ CharacterEquipment.loadEquipment = function (data) {
       case 5:
         eq = new instance(id, name, stats, baseDef);
         eq.def = def;
+        if (data.instance == 3)
+          eq.setType(getType(instance, data.type));
         break;
       case 6:
         eq = new instance(id, name, stats);

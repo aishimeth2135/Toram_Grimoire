@@ -24,7 +24,7 @@ export default {}
     border-top: 1px solid var(--primary-light-3);
     display: flex;
     align-items: center;
-    padding: 0.4rem 0.4rem;
+    padding: 0.5rem 0.4rem;
     overflow-y: auto;
   }
 

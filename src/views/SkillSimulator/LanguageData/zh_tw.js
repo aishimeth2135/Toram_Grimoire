@@ -26,7 +26,8 @@ export default function() {
           'export build image: loading message': '圖片正在產生中，請稍後。',
           'export build image: error': '產生圖片時發生錯誤。',
           'download exported image: error': '下載圖片時發生錯誤。',
-          'must have at least one skill tree to export': '必須至少有一個技能樹才能匯出。'
+          'must have at least one skill tree to export': '必須至少有一個技能樹才能匯出。',
+          'The Number of Skill Builds is 0 due to an unknown cause detected': '偵測到不明原因導致沒有技能配置，系統將自動產生一個新的技能配置。'
         },
         'export image': '匯出圖片',
         'export text': '匯出文本',

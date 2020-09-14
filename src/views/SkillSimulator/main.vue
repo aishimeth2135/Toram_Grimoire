@@ -1,6 +1,6 @@
 <template>
   <article>
-    <div class="main">
+    <div class="main" v-if="currentSkillRootState">
       <cy-sticky-header class="top transparent">
         <template v-slot:buttons-scope>
           <cy-button type="icon-only" @click="openJumpSkillTree" :class="{selected: jumpSkillTreeVisible}" iconify-name="dashicons:flag" data-user-guide-set="4-1" />
@@ -8,7 +8,7 @@
           <cy-button type="icon-only" @click="openBuildInformation" :class="{selected: buildInformationVisible}" :iconify-name="buildInformationVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" data-user-guide-set="2-1" />
         </template>
         <cy-transition type="fade">
-          <div class="inner-menu select-skill-tree" v-show="selectSkillTreeVisible">
+          <div class="inner-menu select-skill-tree" v-if="selectSkillTreeVisible">
             <template v-for="(stc) in currentSkillRootState.skillTreeCategoryStates.filter(p => p.skillTreeStates.length != 0)">
               <div class="title" :key="stc.origin.id + '-title'">{{ stc.origin.name }}</div>
               <div class="content" :key="stc.origin.id + '-content'">
@@ -91,7 +91,7 @@
                 <cy-transition-group type="fade" tag="div">
                   <cy-button v-for="(state, i) in skillRootStates" type="line" class="selection"
                     iconify-name="ant-design:build-outlined" :key="state.stateId"
-                    :class="{'selected': currentSkillRootStateIndex == i}"
+                    :selected="currentSkillRootStateIndex == i"
                     @click="selectCurrentSkillRootState(i)">
                     {{ state.name }}
                   </cy-button>
@@ -251,7 +251,6 @@ export default {
 
     return {
       skillPointState,
-      currentSkillRootStateIndex: 0,
       drawSkillTreeOptions: {
         skillTreeType: 'level-skill-tree',
         setSkillButtonExtraData(skill, data) {
@@ -343,16 +342,24 @@ export default {
     if (this.skillRootStates.length == 0)
       this.createBuild();
     else
-      this.currentSkillRootStateIndex = 0;
+      this.selectCurrentSkillRootState(0);
+  },
+  updated() {
+    if (this.skillRootStates.length == 0) {
+      ShowMessage(this.langText('tips/The Number of Skill Builds is 0 due to an unknown cause detected'));
+      this.createBuild();
+    }
   },
   computed: {
     ...Vuex.mapState('character', {
       'skillRootStates': 'skillBuilds',
-      'skillRoot': 'skillRoot'
+      'skillRoot': 'skillRoot',
+      'currentSkillRootStateIndex': 'currentSkillBuildIndex'
     }),
-    ...Vuex.mapGetters([
-      'saveSkillBuildsCsv'
-    ]),
+    ...Vuex.mapGetters('character', {
+      'saveSkillBuildsCsv': 'saveSkillBuildsCsv',
+      'currentSkillRootState': 'currentSkillBuild'
+    }),
     currentStarGemList() {
       const list = [];
       this.currentSkillRootState.skillTreeCategoryStates.forEach(stc => {
@@ -368,9 +375,6 @@ export default {
         });
       });
       return list;
-    },
-    currentSkillRootState() {
-      return this.skillRootStates[this.currentSkillRootStateIndex];
     },
     noSkillTreeSelected() {
       return this.currentSkillRootState.skillTreeCategoryStates.every(a => !a.visible);
@@ -780,17 +784,14 @@ export default {
         return;
       }
       const cur_index = this.currentSkillRootStateIndex;
-      const cur_build = this.skillRootStates[cur_index];
+      const cur_build = this.currentSkillRootState;
       this.$store.commit('character/removeSkillBuild', { index: cur_index });
-      //this.skillRootStates.splice(cur_index, 1);
-      if (cur_index >= this.skillRootStates.length)
-        this.currentSkillRootStateIndex = this.skillRootStates.length - 1;
+
       ShowMessage(this.langText('tips/delete build message', [cur_build.name]), 'ic-round-done', null, {
         buttons: [{
           text: this.getLangText('global/recovery'),
           click: () => {
-            this.skillRootStates.splice(cur_index, 0, cur_build);
-            this.currentSkillRootStateIndex = cur_index;
+            this.$store.commit('character/createSkillBuild', { skillBuild: cur_build });
             ShowMessage(this.langText('tips/recovery delete build message', [cur_build.name]), 'ic-round-done');
           },
           removeMessageAfterClick: true
@@ -822,19 +823,13 @@ export default {
       this.buildInformationVisible = false;
       ShowMessage(this.langText('tips/copy build message', [cur_build.name, new_build.name], 'ic-round-done'));
     },
-    resetSkillRootStates() {
-      this.skillRootStates = [];
-      this.currentSkillRootStateIndex = 0;
-      return this.createBuild();
-    },
     selectCurrentSkillRootState(i) {
-      this.currentSkillRootStateIndex = i;
+      this.$store.commit('character/setCurrentSkillBuild', { index: i });
     },
     createBuild() {
       this.$store.commit('character/createSkillBuild', {
         name: this.langText('build') + ' ' + (this.skillRootStates.length + 1)
       });
-      this.currentSkillRootStateIndex = this.skillRootStates.length - 1;
 
       return this.currentSkillRootState;
     },
