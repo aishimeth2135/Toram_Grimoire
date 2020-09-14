@@ -16,7 +16,8 @@ const store = {
     characters: [],
     skillBuilds: [],
     equipments: [],
-    foodBuilds: []
+    foodBuilds: [],
+    // deleteAllSavedDataBackup: null
   },
   getters: {
     saveSkillBuildsCsv: (state, getters) => () => {
@@ -111,9 +112,9 @@ const store = {
     setCurrentSkillBuild(state, { index }) {
       state.currentSkillBuildIndex = index;
     },
-    createSkillBuild(state, { name }) {
+    createSkillBuild(state, { name, skillBuild }) {
       const r = state.skillRoot;
-      const newBuild = {
+      const newBuild = skillBuild ? skillBuild : {
         stateId: state.skillBuilds.length,
         name: name,
         origin: r,
@@ -140,6 +141,8 @@ const store = {
     },
     removeSkillBuild(state, { index }) {
       state.skillBuilds.splice(index, 1);
+      if (state.currentSkillBuildIndex >= state.skillBuilds.length)
+        state.currentSkillBuildIndex = state.skillBuilds.length - 1;
     },
     resetSkillBuilds(state) {
       state.skillBuilds = [];
@@ -179,14 +182,39 @@ const store = {
       state.foodBuilds.splice(index, 1);
       if (state.currentFoodBuildIndex >= state.foodBuilds.length)
         state.currentFoodBuildIndex = state.foodBuilds.length - 1;
+    },
+    deleteAllSavedData() {
+      // const backup = {};
+
+      const prefix = 'app--character-simulator--data-';
+      const storage = window.localStorage;
+
+      let find = true,
+        cnt = 0,
+        list = ['', '--characters', '--equipments', '--skillBuilds', '--foodBuilds'];
+      while (find) {
+        const cur_prefix = prefix + cnt;
+        const finds = list.filter(p => {
+          const item = cur_prefix + p;
+          if (storage.getItem(item) !== null) {
+            // backup[item] = storage.getItem(item);
+            storage.removeItem(item);
+            return true;
+          }
+          return false;
+        });
+        find = finds.length > 0;
+        ++cnt;
+      }
+
+      // state.deleteAllSavedDataBackup = backup;
     }
   },
   actions: {
     loadCharacterSimulator({ commit, dispatch }, { index }) {
       const prefix = 'app--character-simulator--data-' + index;
       if (!window.localStorage.getItem(prefix)) {
-        console.warn(`Index: ${index} of Character-Simulator Data is not exist.`);
-        return;
+        throw new Error(`Index: ${index} of Character-Simulator Data is not exist.`);
       }
       try {
         commit('reset');
@@ -235,6 +263,7 @@ const store = {
       } catch (e) {
         commit('reset');
         commit('createCharacter', new Character());
+        console.warn('Error when load Character-Simulator data.');
         throw e;
       }
     },

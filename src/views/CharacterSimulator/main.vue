@@ -20,9 +20,10 @@
         <food-build v-if="currentContentIndex == 4" />
         <save-load v-if="currentContentIndex == 5"
           @manual-auto-save="autoSave"
-          @manual-auto-load="autoLoad" />
+          @manual-auto-load="autoLoad"
+          @close-auto-save="closeAutoSave" />
       </div>
-      <cy-bottom-content>
+      <cy-bottom-content class="bottom-menu">
         <cy-button v-for="(content, i) in contents"
           :key="content.id"
           :iconify-name="content.icon"
@@ -103,7 +104,9 @@ export default {
       currentContentIndex: 2,
 
       // levelSkillStateRoot[]
-      allSkillStates: []
+      allSkillStates: [],
+
+      autoSaveDisable: false
     };
   },
   provide() {
@@ -221,13 +224,23 @@ export default {
   },
   methods: {
     /* ==[ character - main ]==========================================*/
+    closeAutoSave() {
+      this.autoSaveDisable = true;
+    },
     autoSave() {
-      this.$store.dispatch('character/saveCharacterSimulator', { index: 0 });
-      ShowMessage(this.langText('save-load control/Auto save Successfully'), 'mdi-ghost', 'auto save successfully');
+      if (!this.autoSaveDisable) {
+        this.$store.dispatch('character/saveCharacterSimulator', { index: 0 });
+        ShowMessage(this.langText('save-load control/Auto save Successfully'), 'mdi-ghost', 'auto save successfully');
+      }
     },
     autoLoad() {
-      this.$store.dispatch('character/loadCharacterSimulator', { index: 0 });
-      ShowMessage(this.langText('save-load control/Auto load Successfully'), 'mdi-ghost', 'auto load successfully');
+      try {
+        this.$store.dispatch('character/loadCharacterSimulator', { index: 0 });
+        ShowMessage(this.langText('save-load control/Auto load Successfully'), 'mdi-ghost', 'auto load successfully');
+      } catch (e) {
+        console.warn(e);
+        console.warn('[Grimoire: character-simulator] Auto load faild. If you are entering this page for the first time, you can ignore this message.');
+      }
     },
     findSkillById(stc, st, s) {
       return this.allSkillStates.find(state => {
@@ -671,5 +684,4 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-
 </style>
