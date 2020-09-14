@@ -213,7 +213,8 @@ export default {
     },
     validSkillStates() {
       return this.allSkillStates
-        .filter(state => state.levelSkillTreeState.originState.visible && state.levelSkill.level() > 0);
+        .filter(state => state.levelSkillTreeState.originState.visible &&
+          (state.levelSkill.level() > 0 || state.levelSkill.starGemLevel() > 0));
     },
     passiveSkillStates() {
       return this.validSkillStates.filter(state => state.type == 'passive');
