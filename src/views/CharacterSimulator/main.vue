@@ -121,7 +121,13 @@ export default {
     init();
   },
   created() {
-    this.autoLoad();
+    if (this.skillBuilds.length == 0 || this.characterSimulatorHasInit)
+      this.autoLoad();
+    else {
+      this.autoLoad({ resetOption: { skillBuildsReplaced: false } });
+      ShowMessage(this.langText('skill management/tips: skill-builds data not be replaced'));
+    }
+    this.$store.commit('character/characterSimulatorInitFinished');
 
     if (this.characterStates.length != 0 && this.currentCharacterIndex == -1)
       this.$store.commit('character/setCurrentCharacter', { index: 0 });
@@ -138,6 +144,7 @@ export default {
     this.$once('hook:beforeDestroy', () => {
       window.removeEventListener('beforeunload', evt_autoSave);
       document.removeEventListener('visibilitychange', evt_autoSave_2);
+      this.autoSave();
     });
   },
   updated() {
@@ -150,7 +157,8 @@ export default {
       'characterStates': 'characters',
       'skillBuilds': 'skillBuilds',
       'currentCharacterStateIndex': 'currentCharacterIndex',
-      'currentSkillBuildIndex': 'currentSkillBuildIndex'
+      'currentSkillBuildIndex': 'currentSkillBuildIndex',
+      'characterSimulatorHasInit': 'characterSimulatorHasInit'
     }),
     ...Vuex.mapGetters('character', {
       'currentCharacterState': 'currentCharacter',
@@ -234,9 +242,9 @@ export default {
         ShowMessage(this.langText('save-load control/Auto save Successfully'), 'mdi-ghost', 'auto save successfully');
       }
     },
-    autoLoad() {
+    autoLoad({ resetOption } = {}) {
       try {
-        this.$store.dispatch('character/loadCharacterSimulator', { index: 0 });
+        this.$store.dispatch('character/loadCharacterSimulator', { index: 0, resetOption });
         ShowMessage(this.langText('save-load control/Auto load Successfully'), 'mdi-ghost', 'auto load successfully');
       } catch (e) {
         console.warn(e);

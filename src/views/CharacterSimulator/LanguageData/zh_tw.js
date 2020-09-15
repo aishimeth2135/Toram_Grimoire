@@ -119,6 +119,7 @@ export default function() {
         'default name of skill branch': '技能效果',
         'skill disable': '裝備不符。',
         'skill multiple effects': '包含多個效果。',
+        'tips: skill-builds data not be replaced': '自動讀檔時偵測到技能模擬器有現存的資料，讀檔這些資料將不會被刪除。',
         'formula text': {
           'target_def': '目標防禦',
           'target_level': '目標等級'

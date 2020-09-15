@@ -92,6 +92,9 @@
         <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
           {{ langText('clear caches of spreadsheets/warn 2') }}
         </cy-icon-text>
+        <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
+          {{ langText('clear caches of spreadsheets/warn 3') }}
+        </cy-icon-text>
         <div class="buttons">
           <cy-button iconify-name="ic-round-delete" type="border" @click="clearSpreadsheetsCaches">
             {{ langText('clear caches of spreadsheets/button texts/clear caches of spreadsheets') }}

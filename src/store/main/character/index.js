@@ -13,6 +13,7 @@ const store = {
     currentCharacterIndex: -1,
     currentSkillBuildIndex: -1,
     currentFoodBuildIndex: -1,
+    characterSimulatorHasInit: false,
     characters: [],
     skillBuilds: [],
     equipments: [],
@@ -100,8 +101,12 @@ const store = {
     }
   },
   mutations: {
-    reset(state) {
-      state.skillBuilds = [];
+    characterSimulatorInitFinished(state) {
+      state.characterSimulatorHasInit = true;
+    },
+    reset(state, { skillBuildsReplaced = true } = {}) {
+      if (skillBuildsReplaced)
+        state.skillBuilds = [];
       state.characters = [];
       state.equipments = [];
       state.foodBuilds = [];
@@ -211,13 +216,13 @@ const store = {
     }
   },
   actions: {
-    loadCharacterSimulator({ commit, dispatch }, { index }) {
+    loadCharacterSimulator({ commit, dispatch }, { index, resetOption = {} }) {
       const prefix = 'app--character-simulator--data-' + index;
       if (!window.localStorage.getItem(prefix)) {
         throw new Error(`Index: ${index} of Character-Simulator Data is not exist.`);
       }
       try {
-        commit('reset');
+        commit('reset', resetOption);
 
         const summary = JSON.parse(window.localStorage.getItem(prefix));
         const characters = JSON.parse(window.localStorage.getItem(prefix + '--characters'));
@@ -245,7 +250,8 @@ const store = {
         const validEquipments = allEquipments.filter(p => p);
         commit('appendEquipments', validEquipments);
 
-        dispatch('loadSkillBuildsCsv', { csvString: skillBuildsCsv });
+        const resetSkillBuilds = resetOption.skillBuildsReplaced === void 0 ? true : resetOption.skillBuildsReplaced;
+        dispatch('loadSkillBuildsCsv', { csvString: skillBuildsCsv, reset: resetSkillBuilds });
 
         if (foodBuilds){
           foodBuilds.forEach(p => {
@@ -310,7 +316,7 @@ const store = {
         window.localStorage.removeItem(prefix + '--foodBuilds');
       }
     },
-    loadSkillBuildsCsv({ state, commit, getters }, { csvString }) {
+    loadSkillBuildsCsv({ state, commit, getters }, { csvString, reset = true }) {
       const { type, index } = getters.saveSkillBuildsCsvSetting();
 
       const createBuild = () => {
@@ -331,7 +337,7 @@ const store = {
 
         if (_type == 'skillRoot') {
           if (!hasInit) {
-            commit('resetSkillBuilds');
+            reset && commit('resetSkillBuilds');
             cur = createBuild();
             hasInit = true;
           } else {
