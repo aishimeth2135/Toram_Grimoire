@@ -45,6 +45,8 @@ router.beforeEach((to, from, next) => {
       if (data) {
         const title = data.meta.title;
         document.title = GetLang('Page Title/base') + '｜' + (typeof title == 'function' ? title() : title);
+      } else {
+        document.title = GetLang('Page Title/base');
       }
     } {
       document.head.querySelectorAll('*[data-vue-router-mata-tag-controlled]').forEach(el => el.remove());

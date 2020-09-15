@@ -30,7 +30,8 @@
             {{ detail.currentStat.name }}
           </cy-icon-text>
           <template #right-content v-if="detail.visible">
-            <cy-icon-text iconify-name="ic-round-close" text-color="light-3" text-size="small">
+            <cy-icon-text iconify-name="ic-round-close" text-color="light-3" text-size="small"
+              style="margin-left: 1rem;">
               {{ localLangText('Click anywhere to close') }}
             </cy-icon-text>
           </template>

@@ -23,13 +23,21 @@
     data(){
       return {
         columns: [{
+            name: 'skill-query',
+            icon: 'ic-outline-menu-book',
+            path: '/skill'
+          }, {
+            name: 'character-simulator',
+            icon: 'mdi-ghost',
+            path: '/character'
+          }, {
             name: 'skill-simulator',
             icon: 'ant-design:build-outlined',
             path: '/character/skill'
           }, {
-            name: 'skill-query',
-            icon: 'ic-outline-menu-book',
-            path: '/skill'
+            name: 'enchant-simulator',
+            icon: 'mdi-cube-scan',
+            path: 'enchant'
           }, {
             name: 'item-query',
             icon: 'jam-box',
@@ -42,10 +50,6 @@
             name: 'damage-calc',
             icon: 'mdi-sword',
             path: 'damage'
-          }, {
-            name: 'enchant-simulator',
-            icon: 'mdi-cube-scan',
-            path: 'enchant'
           }
         ]
       };
