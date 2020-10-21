@@ -621,7 +621,7 @@ export default class SearchController {
         const rst_frg = document.createDocumentFragment();
         if (p.restriction !== '') {
           p.restriction.split(/\s*,\s*/).forEach(rst => {
-            const t = Lang('item detail/restriction/' + rst);
+            const t = Lang('item detail/restriction/' + rst.replace(/\./g, '/'));
             rst_frg.appendChild(simpleCreateHTML('span', 'restriction', t));
           });
         }

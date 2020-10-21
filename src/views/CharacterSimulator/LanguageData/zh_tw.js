@@ -47,12 +47,37 @@ export default function() {
         'knuckle': '拳套',
         'halberd': '旋風槍',
         'katana': '拔刀劍',
-        'arrow': '箭矢',
-        'shield': '盾牌',
-        'dagger': '小刀',
-        'body-armor-normal': '一般',
-        'body-armor-dodge': '輕化',
-        'body-armor-defense': '重化'
+        'sub-weapon|arrow': '箭矢',
+        'sub-weapon|dagger': '小刀',
+        'sub-armor|shield': '盾牌',
+        'body-armor|normal': '一般防具',
+        'body-armor|dodge': '輕化防具',
+        'body-armor|defense': '重化防具'
+      },
+      'stat restriction text': {
+        'event': '活動',
+        'one-hand-sword': '單手劍',
+        'two-hand-sword': '雙手劍',
+        'bow': '弓',
+        'bowgun': '弩',
+        'staff': '法杖',
+        'magic-device': '魔導具',
+        'knuckle': '拳套',
+        'halberd': '旋風槍',
+        'katana': '拔刀劍',
+        'sub': {
+          'arrow': '箭矢',
+          'shield': '盾牌',
+          'dagger': '小刀',
+          'katana': '副手拔刀劍',
+          'magic-device': '副手魔導具',
+          'knuckle': '副手拳套'
+        },
+        'body': {
+          'dodge': '輕化防具',
+          'defense': '重化防具',
+          'normal': '一般防具'
+        }
       },
       'browse equipments': {
         'action: normal': '裝備清單',

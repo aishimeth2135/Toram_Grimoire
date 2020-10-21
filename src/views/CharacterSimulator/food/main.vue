@@ -53,12 +53,14 @@
       </cy-icon-text>
     </div>
     <div class="foods content">
-      <cy-icon-text iconify-name="ic-outline-info" text-color="light-3" text-size="small" class="mr-normal">
-        {{ localLangText('tips: select food') }}
-      </cy-icon-text>
-      <cy-icon-text iconify-name="ic-outline-info" text-color="light-3" text-size="small">
-        {{ localLangText('tips: auto select food') }}
-      </cy-icon-text>
+      <div class="content-tips">
+        <cy-icon-text iconify-name="ic-outline-info" text-color="light-3" text-size="small" class="mr-normal">
+          {{ localLangText('tips: select food') }}
+        </cy-icon-text>
+        <cy-icon-text iconify-name="ic-outline-info" text-color="light-3" text-size="small">
+          {{ localLangText('tips: auto select food') }}
+        </cy-icon-text>
+      </div>
       <cy-list-item v-for="(food, i) in currentFoodBuild.foods"
         :selected="foodSelected(i)" class="item"
         :key="food.base.baseName + '-' + (food.negative ? 'n' : 'p')">
@@ -189,6 +191,10 @@ export default {
   margin-top: 1rem;
   margin-bottom: 0.6rem;
   padding-left: 0.3rem;
+}
+
+.content-tips {
+  margin-bottom: 0.6rem;
 }
 
 .content {

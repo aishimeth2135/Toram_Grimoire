@@ -55,7 +55,7 @@ import vue_createCustomEquipment from "./create-custom-equipment.vue";
 import vue_customEquipmentEditor from "./custom-equipment-editor.vue";
 import vue_selectCrystals from "./select-crystals.vue";
 
-import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js";
+import { EquipmentField, RestrictionStat } from "@lib/CharacterSystem/CharacterStat/class/main.js";
 import { CharacterEquipment, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
 
 import Vuex from "vuex";
@@ -131,8 +131,7 @@ export default {
     getShowEquipmentData(o) {
       let category, icon;
       if (o instanceof BodyArmor) {
-        category = this.langText('character field names/' + EquipmentField.TYPE_BODY_ARMOR.description) +
-          '｜' + this.langText('field type text/' + o.type.description);
+        category = this.langText('field type text/' + o.type.description);
         icon = 'mdi-tshirt-crew';
       } else if (o instanceof AdditionalGear) {
         category = this.langText('character field names/' + EquipmentField.TYPE_ADDITIONAL.description);
@@ -161,7 +160,10 @@ export default {
       //     '拔刀劍', '箭矢', '盾牌', '小刀',
       //     '身體裝備', '追加裝備', '特殊裝備'
       // ]
-      const pre_args = [item.id, item.name, item.stats.map(p => p.copy())];
+      const pre_args = [
+        item.id, item.name,
+        item.stats.map((p, i) => RestrictionStat.fromOrigin(p, item.statRestrictions[i]))
+      ];
       const stability = parseInt(item.baseStability, 10);
       if (item.category < 9) {
         const t = [
