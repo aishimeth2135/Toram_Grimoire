@@ -1,5 +1,6 @@
 // import { EquipmentField } from "./main.js";
-import StatBase from "../../module/StatBase.js";
+// import StatBase from "../../module/StatBase.js";
+import { RestrictionStat } from "./main.js";
 import Grimoire from "@Grimoire";
 
 class CharacterEquipment {
@@ -48,6 +49,32 @@ class CharacterEquipment {
   }
   get elementStat() {
     return this.stats.find(stat => CharacterEquipment.elementStatIds.includes(stat.baseName()));
+  }
+
+  getAllStats(checkRestriction = () => true) {
+    const all = this.stats
+      .map(p => {
+        const stat = p.copy();
+        if (!checkRestriction(stat))
+          stat.statValue(0);
+        return stat;
+      });
+    if (this.hasCrystal) {
+      this.crystals.forEach(c => {
+        c.stats.forEach(stat => {
+          const t = all.find(a => a.equals(stat));
+          if (t)
+            t.addStatValue(checkRestriction(stat) ? stat.statValue() : 0);
+          else {
+            const a = stat.copy();
+            if (!checkRestriction(a))
+              a.statValue(0);
+            all.push(a);
+          }
+        });
+      });
+    }
+    return all;
   }
 
   setCustom(set) {
@@ -145,14 +172,7 @@ class CharacterEquipment {
       data.type = type;
 
     // == [ stats ] ==================================================
-    data.stats = this.stats.map(stat => {
-      const types = ['constant', 'multiplier', 'total'];
-      return {
-        id: stat.baseName(),
-        value: stat.value,
-        type: types.find(p => StatBase['TYPE_' + p.toUpperCase()] == stat.type)
-      };
-    });
+    data.stats = this.stats.map(stat => stat.save());
 
     // == [ atk ] [ def ] ============================================
     if (this instanceof Weapon) {
@@ -194,15 +214,7 @@ CharacterEquipment.loadEquipment = function (data) {
 
     const { id, name, stability, refining, baseAtk, atk, baseDef, def, crystals, isCustom } = data;
     const getType = (inst, str) => inst['TYPE_' + str.toUpperCase()];
-    const stats = data.stats.map(p => {
-      const base = Grimoire.CharacterSystem.findStatBase(p.id);
-      if (base)
-        return base.createSimpleStat(StatBase['TYPE_' + p.type.toUpperCase()], p.value);
-
-      console.warn('[Error: CharacterEquipment.load] can not find stat which id: ' + p.id);
-      success = false;
-      return null;
-    }).filter(p => p);
+    const stats = data.stats.map(p => RestrictionStat.load(p)).filter(p => p);
 
     const instance = [
       MainWeapon, SubWeapon, SubArmor, BodyArmor,
@@ -320,8 +332,8 @@ class SubWeapon extends Weapon {
     return this.type == SubWeapon.TYPE_ARROW;
   }
 }
-SubWeapon.TYPE_ARROW = Symbol('arrow');
-SubWeapon.TYPE_DAGGER = Symbol('dagger');
+SubWeapon.TYPE_ARROW = Symbol('sub-weapon|arrow');
+SubWeapon.TYPE_DAGGER = Symbol('sub-weapon|dagger');
 
 class Armor extends CharacterEquipment {
   constructor(id, name, stats, def = 0) {
@@ -345,7 +357,7 @@ class SubArmor extends Armor {
     return true;
   }
 }
-SubArmor.TYPE_SHIELD = Symbol('shield');
+SubArmor.TYPE_SHIELD = Symbol('sub-armor|shield');
 
 class BodyArmor extends Armor {
   constructor(id, name, stats, def) {
@@ -368,9 +380,9 @@ class BodyArmor extends Armor {
     return true;
   }
 }
-BodyArmor.TYPE_NORMAL = Symbol('body-armor-normal');
-BodyArmor.TYPE_DODGE = Symbol('body-armor-dodge');
-BodyArmor.TYPE_DEFENSE = Symbol('body-armor-defense');
+BodyArmor.TYPE_NORMAL = Symbol('body-armor|normal');
+BodyArmor.TYPE_DODGE = Symbol('body-armor|dodge');
+BodyArmor.TYPE_DEFENSE = Symbol('body-armor|defense');
 
 class AdditionalGear extends Armor {
   constructor(id, name, stats, def) {
@@ -409,7 +421,7 @@ class EquipmentCrystal {
     this.origin = origin;
     // this.id = id;
     // this.name = name;
-    // this.stats = stats;
+    this.stats = this.origin.stats.map((p, i) => RestrictionStat.fromOrigin(p, this.origin.statRestrictions[i]));
   }
 
   get id() {
@@ -417,9 +429,6 @@ class EquipmentCrystal {
   }
   get name() {
     return this.origin.name;
-  }
-  get stats() {
-    return this.origin.stats;
   }
 
   copy() {

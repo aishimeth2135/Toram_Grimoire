@@ -114,7 +114,8 @@ export default {
       'langText': this.langText,
       'globalLangText': this.globalLangText,
       'getValidLevelSkillState': this.getValidLevelSkillState,
-      'handleCharacterStateDatas': this.handleCharacterStateDatas
+      'handleCharacterStateDatas': this.handleCharacterStateDatas,
+      'checkStatRestriction': this.checkStatRestriction
     };
   },
   beforeCreate() {
@@ -304,7 +305,7 @@ export default {
         }
       }
 
-      const is_dual_sword = c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD) && c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD);
+      const isDualSword = c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD) && c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD);
 
       const vars = {
         value: {
@@ -347,14 +348,14 @@ export default {
         },
         conditional: {
           '@': {
-            '1h_sword': !is_dual_sword && c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD),
+            '1h_sword': !isDualSword && c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD),
             '2h_sword': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_TWO_HAND_SWORD),
             'bow': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_BOW),
             'bowgun': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_BOWGUN),
             'staff': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_STAFF),
             'magic_device': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_MAGIC_DEVICE),
             'knuckle': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_KNUCKLE),
-            'dual_sword': is_dual_sword,
+            'dual_sword': isDualSword,
             'halberd': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_HALBERD),
             'katana': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_KATANA),
             'main': {
@@ -390,9 +391,10 @@ export default {
         stat.statValue(v);
         t ? t.addStatValue(v) : all_stats.push(stat.copy());
       };
+
       c.equipmentFields.forEach(field => {
         if (!field.isEmpty() && !field.statsDisable()) {
-          field.equipment.allStats.forEach(appendStat);
+          field.equipment.getAllStats(this.checkStatRestriction).forEach(appendStat);
         }
       });
 
@@ -447,6 +449,18 @@ export default {
         })
       })).filter(a => a.stats.length != 0);
     },
+    checkStatRestriction(stat) {
+      const c = this.currentCharacterState.origin;
+      const types = stat.restriction;
+
+      if (['main', 'sub', 'body', 'other'].every(k => types[k] === null))
+        return true;
+
+      return types.other ||
+        c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, types.main) ||
+        c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, types.sub) ||
+        c.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, types.body);
+    },
     /* ==[ skill item - skill branch ]================================ */
     findCharacterStatResult(src, id) {
       if (src == 'all')
@@ -477,9 +491,6 @@ export default {
     },
     /* ==[ skill item ]=============================================== */
     handleLevelSkillState({ levelSkillState, skillItemType }) {
-      // const validSkillState = levelSkillState.skillState.states
-      //   .find(a => this.checkEquipment(a.equipment, levelSkillState.skillState));
-
       return levelSkillState.skillState.states.map(skillState => {
         const branchStates = [];
 
@@ -522,86 +533,94 @@ export default {
     },
     getValidLevelSkillState(levelSkillStateRoot) {
       return levelSkillStateRoot.states
-        .find(p => this.checkEquipment(p.equipment, levelSkillStateRoot));
+        .find(p => this.checkSkillEquipmentType(p.equipment, levelSkillStateRoot));
     },
-    checkEquipment(eq, skillState) {
-      const mains = [
-        MainWeapon.TYPE_ONE_HAND_SWORD,
-        MainWeapon.TYPE_TWO_HAND_SWORD,
-        MainWeapon.TYPE_BOW,
-        MainWeapon.TYPE_BOWGUN,
-        MainWeapon.TYPE_STAFF,
-        MainWeapon.TYPE_MAGIC_DEVICE,
-        MainWeapon.TYPE_KNUCKLE,
-        MainWeapon.TYPE_HALBERD,
-        MainWeapon.TYPE_KATANA
-      ];
-      const subs = [
-        SubWeapon.TYPE_ARROW,
-        SubArmor.TYPE_SHIELD,
-        SubWeapon.TYPE_DAGGER,
-        MainWeapon.TYPE_MAGIC_DEVICE,
-        MainWeapon.TYPE_KNUCKLE,
-        MainWeapon.TYPE_HALBERD
-      ];
-      const bodys = [
-        BodyArmor.TYPE_DODGE,
-        BodyArmor.TYPE_DEFENSE,
-        BodyArmor.TYPE_NORMAL
-      ];
-      // 'main-weapon': ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍', '空手'],
-      // 'sub-weapon': ['箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍', '無裝備'],
-      // 'body-armor': ['輕量化', '重量化', '一般', '無裝備'],
-      let main = 10, sub = 6, body = 3;
+    checkSkillEquipmentType(eq, skillState) {
+      const fieldEq = (() => {
+        const chara = this.currentCharacterState.origin;
+        let mainField = chara.equipmentField(EquipmentField.TYPE_MAIN_WEAPON),
+          subField = chara.equipmentField(EquipmentField.TYPE_SUB_WEAPON),
+          bodyField = chara.equipmentField(EquipmentField.TYPE_BODY_ARMOR);
+        const types = {
+          main: mainField.equipmentType,
+          sub: subField.equipmentType,
+          body: bodyField.equipmentType
+        };
+        const mains = [
+          MainWeapon.TYPE_ONE_HAND_SWORD,
+          MainWeapon.TYPE_TWO_HAND_SWORD,
+          MainWeapon.TYPE_BOW,
+          MainWeapon.TYPE_BOWGUN,
+          MainWeapon.TYPE_STAFF,
+          MainWeapon.TYPE_MAGIC_DEVICE,
+          MainWeapon.TYPE_KNUCKLE,
+          MainWeapon.TYPE_HALBERD,
+          MainWeapon.TYPE_KATANA,
+          null,
+          EquipmentField.EMPTY
+        ];
+        const subs = [
+          SubWeapon.TYPE_ARROW,
+          SubArmor.TYPE_SHIELD,
+          SubWeapon.TYPE_DAGGER,
+          MainWeapon.TYPE_MAGIC_DEVICE,
+          MainWeapon.TYPE_KNUCKLE,
+          MainWeapon.TYPE_HALBERD,
+          EquipmentField.EMPTY
+        ];
+        const bodys = [
+          BodyArmor.TYPE_DODGE,
+          BodyArmor.TYPE_DEFENSE,
+          BodyArmor.TYPE_NORMAL,
+          EquipmentField.EMPTY
+        ];
+        // 'main-weapon': ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍', '空手'],
+        // 'sub-weapon': ['箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍', '無裝備'],
+        // 'body-armor': ['輕量化', '重量化', '一般', '無裝備'],
+        let main = -1, sub = -1, body = -1;
 
-      const chara = this.currentCharacterState.origin;
-      const mainField = chara.equipmentField(EquipmentField.TYPE_MAIN_WEAPON),
-        subField = chara.equipmentField(EquipmentField.TYPE_SUB_WEAPON),
-        bodyField = chara.equipmentField(EquipmentField.TYPE_BODY_ARMOR);
+        mainField = types.main;
+        subField = types.sub;
+        bodyField = types.body;
 
-      if (!mainField.isEmpty()) {
-        if (mainField.equipmentType == MainWeapon.TYPE_ONE_HAND_SWORD &&
-            !subField.isEmpty() &&
-            subField.equipmentType == MainWeapon.TYPE_ONE_HAND_SWORD)
-          main = 9;
-        else
-          main = mains.indexOf(mainField.equipment.type);
-      }
-      if (!subField.isEmpty() && main != 9) {
-        sub = subs.indexOf(subField.equipment.type);
-      }
-      if (!bodyField.isEmpty()) {
-        body = bodys.indexOf(bodyField.equipment.type);
-      }
+        if (mainField) {
+          main = mainField == MainWeapon.TYPE_ONE_HAND_SWORD &&
+            subField && subField == MainWeapon.TYPE_ONE_HAND_SWORD ?
+            9 :
+            mains.indexOf(mainField);
+        }
+        if (subField && main != 9) {
+          sub = subs.indexOf(subField);
+        }
+        if (bodyField) {
+          body = bodys.indexOf(bodyField);
+        }
 
-      const eqs = { main, sub, body };
+        return { main, sub, body };
+      })();
+
+      const forDualSword = eq.main === 0 && fieldEq.main === 9 && !skillState.states.find(a => a.equipment.main == 9);
+
+      const { main, sub, body } = eq;
+      const _eq = { main, sub, body };
+
+      /* ==== [ start compare ] ==================  */
+      const a = _eq, b = fieldEq, operator = eq.operator;
+
       /* 通用 */
-      if ([eq.main, eq.sub, eq.body].every(p => p == -1))
+      const _check = t => [t.main, t.sub, t.body].every(p => p == -1);
+      if (_check(a) || _check(b))
         return true;
-
-      /* 非通用 */
-      const for_dual_sword = eq.main === 0 && eqs.main === 9 && skillState.states.find(a => a.equipment.main == 9) === void 0;
 
       // or
-      if (eq.operator === 0) {
-        if (eqs.main != -1 && eqs.main == eq.main || for_dual_sword)
-          return true;
-        if (eqs.sub != -1 && eqs.sub == eq.sub)
-          return true;
-        if (eqs.body != -1 && eqs.body == eq.body)
-          return true;
-        return false;
+      if (operator === 0) {
+        const check = key => a[key] != -1 && b[key] != -1 && a[key] == b[key];
+        return check('main') || forDualSword || check('sub') || check('body');
       }
-
       // and
-      if (eq.operator === 1) {
-        if (eq.main != -1 && eqs.main != eq.main || for_dual_sword)
-          return false;
-        if (eq.sub != -1 && eqs.sub != eq.sub)
-          return false;
-        if (eq.body != -1 && eqs.body != eq.body)
-          return false;
-        return true;
+      if (operator === 1) {
+        const check = key => a[key] != -1 && b[key] != -1 && a[key] != b[key];
+        return !(check('main') || forDualSword) && !check('sub') && !check('body');
       }
     },
 

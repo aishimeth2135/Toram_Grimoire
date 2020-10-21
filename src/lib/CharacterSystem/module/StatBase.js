@@ -162,3 +162,5 @@ class SimpleStat {
 }
 
 export default StatBase;
+
+export { SimpleStat };

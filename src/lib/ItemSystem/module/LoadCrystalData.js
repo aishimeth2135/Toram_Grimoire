@@ -2,7 +2,7 @@ export default function(root, c) {
   const NAME = 0,
     ATTRIBUTE_CATEGORY = 1,
     ATTRIBUTE_NAME = 2,
-    ATTRIBUTE_VALUES = [3],
+    ATTRIBUTE_VALUES = [3, 4],
     TYPE_ID = 1,
     BOSS_TYPE_ID = 1;
 
@@ -46,7 +46,7 @@ export default function(root, c) {
               tail = '';
             else
               v = t.slice(0, -1);
-            cur_crystal.appendStat(p[ATTRIBUTE_NAME], parseFloat(v), tail, '');
+            cur_crystal.appendStat(p[ATTRIBUTE_NAME], parseFloat(v), tail, p[ATTRIBUTE_VALUES[1]]);
           }
           break;
         case 'obtain':
