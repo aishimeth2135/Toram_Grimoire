@@ -32,7 +32,8 @@ export default {
       return res;
     },
     statValid() {
-      return this.checkStatRestriction(this.stat);
+      // this.stat may be undefined when this.type is "custom"
+      return  !this.stat || this.checkStatRestriction(this.stat);
     }
   }
 };
