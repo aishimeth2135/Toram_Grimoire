@@ -452,6 +452,8 @@ export default {
     checkStatRestriction(stat) {
       const c = this.currentCharacterState.origin;
       const types = stat.restriction;
+      if (!types)
+        return true;
 
       if (['main', 'sub', 'body', 'other'].every(k => types[k] === null))
         return true;
