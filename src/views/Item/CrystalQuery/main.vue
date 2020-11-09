@@ -154,7 +154,7 @@ export default {
 
     return {
       crystalCategorys,
-      searchResult: crystalCategorys,
+      searchResult: [],
       currentCrystal: null,
       modeState: {
         modes: [{
@@ -173,6 +173,9 @@ export default {
         }
       }
     };
+  },
+  mounted() {
+    this.updateSearchResult();
   },
   computed: {
     currentMode() {
