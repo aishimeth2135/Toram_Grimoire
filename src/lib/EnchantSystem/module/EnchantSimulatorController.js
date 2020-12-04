@@ -25,7 +25,7 @@ export default class EnchantSimulatorController {
     this.status = {
       currentEquipment: null,
       character: {
-        levelLimit: 210,
+        levelLimit: 220,
         smithLevelLimit: 200
       },
       currentStepScope: null
