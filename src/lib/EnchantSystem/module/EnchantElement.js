@@ -8,7 +8,7 @@ const Status = {};
 function InitEnchantElementStatus(set) {
   set = Object.assign({
     Character: {
-      level: 210,
+      level: 220,
       tec: 255,
       smithLevel: 0
     },
@@ -51,8 +51,8 @@ class EnchantCategory {
       isWeaponOnly: false
     };
   }
-  appendItem() {
-    const t = new EnchantItemBase(this, ...arguments);
+  appendItem(sets) {
+    const t = new EnchantItemBase(this, sets);
     this.items.push(t);
     return t;
   }
@@ -60,22 +60,32 @@ class EnchantCategory {
 
 
 class EnchantItemBase {
-  constructor(cat, baseName, cl, ml, cuv, muv, mt, cm, mm) {
-    this._category = cat;
+  constructor(category, {
+      baseName,
+      limit, unitValue,
+      materialPointType, materialPointValue,
+      potentialConvertThreshold
+    }) {
+
+    this._category = category;
     this.statBase = Grimoire.CharacterSystem.findStatBase(baseName);
     this.conditionalAttributes = [];
     this.limit = {
-      [StatBase.TYPE_CONSTANT]: cl,
-      [StatBase.TYPE_MULTIPLIER]: ml
+      [StatBase.TYPE_CONSTANT]: limit[0],
+      [StatBase.TYPE_MULTIPLIER]: limit[1]
     };
     this.unitValue = {
-      [StatBase.TYPE_CONSTANT]: cuv || '1',
-      [StatBase.TYPE_MULTIPLIER]: muv || '1'
+      [StatBase.TYPE_CONSTANT]: unitValue[0] || '1',
+      [StatBase.TYPE_MULTIPLIER]: unitValue[1] || '1'
     };
-    this.materialPointType = mt;
+    this.materialPointType = materialPointType;
     this.materialPointValue = {
-      [StatBase.TYPE_CONSTANT]: cm,
-      [StatBase.TYPE_MULTIPLIER]: mm
+      [StatBase.TYPE_CONSTANT]: materialPointValue[0],
+      [StatBase.TYPE_MULTIPLIER]: materialPointValue[1]
+    };
+    this.potentialConvertThreshold = {
+      [StatBase.TYPE_CONSTANT]: potentialConvertThreshold[0],
+      [StatBase.TYPE_MULTIPLIER]: potentialConvertThreshold[1]
     };
   }
   belongCategory() {
@@ -116,10 +126,13 @@ class EnchantItemBase {
   }
   getLimit(type) {
     const t = this.limit[type];
-    const pt = Math.floor(Status.ItemPotentialLimit / this.basePotential(type));
+    const pt = this.getLimitFromPotentialLimit(type);
     const lv = Math.floor(Status.Character.level / 10);
     const l = Math.min(pt, lv);
     return t === '' ? [l, -1 * l] : [Math.min(t[0], lv), Math.max(t[1], -1 * lv)];
+  }
+  getLimitFromPotentialLimit(type) {
+    return Math.floor(Status.ItemPotentialLimit / this.basePotential(type));
   }
   getUnitValue(type) {
     return this.unitValue[type];
@@ -140,6 +153,12 @@ class EnchantItemBase {
       } [this.basePotential(type).toString()];
     }
     return parseFloat(t);
+  }
+  getPotentialConvertThreshold(type) {
+    const p = this.potentialConvertThreshold[type];
+    return p ? parseFloat(p) :
+      Math.min(EnchantStepStat.POTENTIAL_CONVERT_DEFAULT_THRESHOLD,
+        this.getLimitFromPotentialLimit(type));
   }
 }
 
@@ -440,6 +459,8 @@ class EnchantStat {
   }
   show(v) {
     let [sv, sv2] = this.itemBase.getUnitValue(this.statType()).split('|');
+    const convertThreshold = this.itemBase.getPotentialConvertThreshold(this.statType());
+
     if (sv == 1 && sv2 == 1)
       return v == void 0 ? this.stat.show() : this.stat.show({}, v);
     else {
@@ -450,9 +471,9 @@ class EnchantStat {
         sign = -1;
         v *= -1;
       }
-      if (v > EnchantStepStat.DOUBLE_THRESHOLD) {
-        v2 = v - EnchantStepStat.DOUBLE_THRESHOLD;
-        v = EnchantStepStat.DOUBLE_THRESHOLD;
+      if (v > convertThreshold) {
+        v2 = v - convertThreshold;
+        v = convertThreshold;
       }
       v *= sign;
       v2 *= sign;
@@ -528,6 +549,7 @@ class EnchantStepStat extends EnchantStat {
    */
   calcPotentialCost(v, pre=0) {
     const p = this.itemBase.getPotential(this.stat.type, this.belongEquipment().status);
+    const convertThreshold = this.itemBase.getPotentialConvertThreshold(this.statType());
 
     v += pre;
 
@@ -536,9 +558,9 @@ class EnchantStepStat extends EnchantStat {
       sign = -1;
       v *= -1;
     }
-    if (v > EnchantStepStat.DOUBLE_THRESHOLD) {
-      v2 = v - EnchantStepStat.DOUBLE_THRESHOLD;
-      v = EnchantStepStat.DOUBLE_THRESHOLD;
+    if (v > convertThreshold) {
+      v2 = v - convertThreshold;
+      v = convertThreshold;
     }
     v *= sign;
     v2 *= sign;
@@ -601,9 +623,7 @@ class EnchantStepStat extends EnchantStat {
       _to = Math.abs(_to);
       _from = Math.abs(_from);
       if (_from > _to) {
-        const t = _from;
-        _from = _to;
-        _to = t;
+        [_from, _to] = [_to, _from];
       }
       return Array(_to - _from).fill()
         .map((p, i) => i + _from + 1)
@@ -617,6 +637,6 @@ class EnchantStepStat extends EnchantStat {
     }
   }
 }
-EnchantStepStat.DOUBLE_THRESHOLD = 20;
+EnchantStepStat.POTENTIAL_CONVERT_DEFAULT_THRESHOLD = 20;
 
 export { EnchantCategory, EnchantStep, EnchantItemBase, EnchantEquipment };

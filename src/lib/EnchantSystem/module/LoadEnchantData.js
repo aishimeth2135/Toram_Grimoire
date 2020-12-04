@@ -5,16 +5,18 @@ export default function LoadEnchantData(r, c) {
   const STAT_ID = 0,
     CONDITION = 1,
     CONDITION_LIST = ['主手武器', '身體裝備', '原有屬性'],
-    CONSTANT_POTENTIAL = 2,
-    CONSTANT_LIMIT = 3,
-    MULTIPLIER_POTENTIAL = 4,
-    MULTIPLIER_LIMIT = 5,
-    CONSTANT_UNIT_VALUE = 6,
-    MULTIPLIER_UNIT_VALUE = 7,
+    POTENTIAL_CONSTANT = 2,
+    LIMIT_CONSTANT = 3,
+    POTENTIAL_MULTIPLIER = 4,
+    LIMIT_MULTIPLIER = 5,
+    UNIT_VALUE_CONSTANT = 6,
+    UNIT_VALUE_MULTIPLIER = 7,
     MATERIAL_POINT_TYPE = 8,
     MATERIAL_POINT_TYPE_LIST = ['金屬', '獸品', '木材', '布料', '藥品', '魔素'],
-    MATERIAL_POINT_CONSTANT_VALUE = 9,
-    MATERIAL_POINT_MULTIPLIER_VALUE = 10,
+    MATERIAL_POINT_VALUE_CONSTANT = 9,
+    MATERIAL_POINT_VALUE_MULTIPLIER = 10,
+    POTENTIAL_CONVERT_THRESHOLD_CONSTANT = 11,
+    POTENTIAL_CONVERT_THRESHOLD_MULTIPLIER = 12,
     CHECK = 1,
     CATEGORY_TITLE = 2,
     CATEGORY_EXTRA = 3;
@@ -28,8 +30,8 @@ export default function LoadEnchantData(r, c) {
 
   function processItemAttribute(p) {
     return [
-      parseInt(p[CONSTANT_POTENTIAL]),
-      parseInt(p[MULTIPLIER_POTENTIAL])
+      parseInt(p[POTENTIAL_CONSTANT]),
+      parseInt(p[POTENTIAL_MULTIPLIER])
     ];
   }
 
@@ -58,16 +60,14 @@ export default function LoadEnchantData(r, c) {
       }
     } else {
       cur_item = cur_cat
-        .appendItem(
-          p[STAT_ID],
-          processLimit(p[CONSTANT_LIMIT]),
-          processLimit(p[MULTIPLIER_LIMIT]),
-          p[CONSTANT_UNIT_VALUE],
-          p[MULTIPLIER_UNIT_VALUE],
-          MATERIAL_POINT_TYPE_LIST.indexOf(p[MATERIAL_POINT_TYPE]),
-          p[MATERIAL_POINT_CONSTANT_VALUE],
-          p[MATERIAL_POINT_MULTIPLIER_VALUE]
-        )
+        .appendItem({
+          baseName: p[STAT_ID],
+          limit: [processLimit(p[LIMIT_CONSTANT]), processLimit(p[LIMIT_MULTIPLIER])],
+          unitValue: [p[UNIT_VALUE_CONSTANT], p[UNIT_VALUE_MULTIPLIER]],
+          materialPointType: MATERIAL_POINT_TYPE_LIST.indexOf(p[MATERIAL_POINT_TYPE]),
+          materialPointValue: [p[MATERIAL_POINT_VALUE_CONSTANT], p[MATERIAL_POINT_VALUE_MULTIPLIER]],
+          potentialConvertThreshold: [p[POTENTIAL_CONVERT_THRESHOLD_CONSTANT], p[POTENTIAL_CONVERT_THRESHOLD_MULTIPLIER]]
+        })
         .initAttributes(...processItemAttribute(p));
     }
   });
