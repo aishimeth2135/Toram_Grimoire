@@ -126,13 +126,24 @@ class EnchantItemBase {
   }
   getLimit(type) {
     const t = this.limit[type];
-    const pt = this.getLimitFromPotentialLimit(type);
+
+    const add = Math.max(Math.floor((Status.Character.level - 200) / 10) * 5, 0);
+    const pt = this.getLimitFromPotentialLimit(type, add);
+
     const lv = Math.floor(Status.Character.level / 10);
+
     const l = Math.min(pt, lv);
-    return t === '' ? [l, -1 * l] : [Math.min(t[0], lv), Math.max(t[1], -1 * lv)];
+    return [
+      t[0] === '' ? l : Math.min(t[0], lv),
+      t[1] === '' ? -1 * l : Math.max(t[1], -1 * lv)
+    ];
   }
-  getLimitFromPotentialLimit(type) {
-    return Math.floor(Status.ItemPotentialLimit / this.basePotential(type));
+  getLimitFromPotentialLimit(type, add = 0) {
+    let potentialLimit = Status.ItemPotentialLimit + add;
+    const bp = this.basePotential(type);
+    if (bp == 6)
+      potentialLimit -= 10;
+    return Math.floor(potentialLimit / bp);
   }
   getUnitValue(type) {
     return this.unitValue[type];
@@ -156,9 +167,9 @@ class EnchantItemBase {
   }
   getPotentialConvertThreshold(type) {
     const p = this.potentialConvertThreshold[type];
-    return p ? parseFloat(p) :
-      Math.min(EnchantStepStat.POTENTIAL_CONVERT_DEFAULT_THRESHOLD,
-        this.getLimitFromPotentialLimit(type));
+    return p ?
+      parseFloat(p) :
+      Math.min(EnchantStepStat.POTENTIAL_CONVERT_DEFAULT_THRESHOLD, this.getLimitFromPotentialLimit(type));
   }
 }
 

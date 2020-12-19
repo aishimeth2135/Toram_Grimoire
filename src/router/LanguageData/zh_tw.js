@@ -13,7 +13,7 @@ export default function() {
         'tag': '載入標籤清單'
       },
       'Enchant System': {
-        'simulator': '附魔模擬'
+        'simulator': '載入附魔資料'
       },
       'init': '初始化'
     },
