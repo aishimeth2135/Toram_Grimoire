@@ -23,9 +23,11 @@ export default function LoadEnchantData(r, c) {
 
   function processLimit(s) {
     if (s === '')
-      return s;
-    s = s.split('::').map(a => parseInt(a, 10));
-    return [s[0], s[1] === void 0 ? -1 * s[0] : s[1]];
+      return ['', ''];
+    s = s.split('::');
+    const l1 = s[0] ? parseInt(s[0], 10) : s[0];
+    const l2 = s[1] === void 0 ? (typeof s[0] == 'number' ? -1 * s[0]: s[0]) : s[1];
+    return [l1, l2];
   }
 
   function processItemAttribute(p) {
