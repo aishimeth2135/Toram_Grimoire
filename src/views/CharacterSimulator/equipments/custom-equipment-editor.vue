@@ -198,6 +198,7 @@
 import Grimoire from "@Grimoire";
 import StatBase from "@lib/CharacterSystem/module/StatBase.js";
 
+import { RestrictionStat } from "@lib/CharacterSystem/CharacterStat/class/main.js";
 import ShowMessage from "@global-modules/ShowMessage.js";
 
 export default {
@@ -278,7 +279,7 @@ export default {
       });
       this.appendedStats.forEach(p => {
         const v = p.origin.checkBoolStat() ? 1 : 0;
-        const stat = p.origin.createSimpleStat(p.type, v);
+        const stat = RestrictionStat.from(p.origin.createSimpleStat(p.type, v));
         stats.push(stat);
       });
       this.deletedStats = [];

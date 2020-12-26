@@ -651,12 +651,12 @@ class RestrictionStat extends SimpleStat {
   save() {
     const types = ['constant', 'multiplier', 'total'];
     const r = this.restriction;
-    const restriction = {
+    const restriction = r && (r.main || r.sub || r.body || r.other) ? {
       main: r.main ? r.main.description : null,
       sub: r.sub ? r.sub.description : null,
       body: r.body ? r.body.description : null,
       other: r.other ? r.other : null
-    };
+    } : null;
     return {
       id: this.baseName(),
       value: this.value,
