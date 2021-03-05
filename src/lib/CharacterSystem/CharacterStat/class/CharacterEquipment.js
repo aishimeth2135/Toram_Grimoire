@@ -436,4 +436,4 @@ class EquipmentCrystal {
   }
 }
 
-export { CharacterEquipment, Weapon, Armor, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar };
+export { CharacterEquipment, Weapon, Armor, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar, EquipmentCrystal };

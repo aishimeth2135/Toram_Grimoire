@@ -1,27 +1,22 @@
 <template>
-  <div class="stat-scope" :class="{ 'stat-invalid': !statValid }">
-    <cy-icon-text v-if="type != 'custom'" iconify-name="mdi-leaf"
-      :text-color="negativeValue ? 'red' : 'dark'">
+  <div class="stat-scope" v-if="type != 'preview'">
+    <cy-icon-text iconify-name="mdi-leaf" :text-color="negativeValue ? 'red' : 'dark'">
       <span v-for="text in restrictionTexts"
         class="restriction" :key="text">{{ text }}</span><span>{{ stat.show() }}</span>
     </cy-icon-text>
-    <cy-icon-text v-else iconify-name="mdi-leaf"
-      :text-color="negativeValue ? 'red' : 'dark'">
-      <slot></slot>
-    </cy-icon-text>
+  </div>
+  <div v-else class="crystal-stat-preview">
+    <span v-for="text in restrictionTexts"
+      class="restriction" :key="text">{{ text }}</span><span>{{ stat.show() }}</span>
   </div>
 </template>
 <script>
 export default {
-  props: ['stat', 'type', 'negativeValue'],
-  inject: ['langText', 'checkStatRestriction'],
+  props: ['stat', 'negativeValue', 'type'],
+  inject: ['langText'],
   computed: {
     restrictionTexts() {
       return this.stat.showData().map(p => this.langText('stat restriction text/' + p));
-    },
-    statValid() {
-      // this.stat may be undefined when this.type is "custom"
-      return  !this.stat || this.checkStatRestriction(this.stat);
     }
   }
 };
@@ -44,8 +39,16 @@ export default {
   }
 }
 
-.stat-invalid {
-  opacity: 0.6;
+.crystal-stat-preview {
+  width: 100%;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+  color: var(--primary-purple);
+  padding-left: 1.7rem;
+
+  &.negative-value {
+    color: var(--primary-red);
+  }
 }
 
 .restriction {

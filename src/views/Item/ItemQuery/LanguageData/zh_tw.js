@@ -47,7 +47,8 @@ export default function() {
               'dagger': '小刀',
               'katana': '副手拔刀劍',
               'magic_device': '副手魔導具',
-              'knuckle': '副手拳套'
+              'knuckle': '副手拳套',
+              '1h_sword': '雙劍'
             },
             'body': {
               'dodge': '輕化防具',

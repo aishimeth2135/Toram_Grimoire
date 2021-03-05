@@ -47,10 +47,8 @@
                   <cy-icon-text :image-path="cs.imagePath">
                     {{ cs.origin.name }}
                   </cy-icon-text>
-                  <div v-if="currentMode == 'stats' && currentStat" class="crystal-stat-detail"
-                    :class="{ 'negative-value': cs.stat.statValue() < 0 }">
-                    {{ cs.stat.show() }}
-                  </div>
+                  <show-stat v-if="currentMode == 'stats' && currentStat" class="crystal-stat-detail"
+                    :stat="cs.stat" :negative-value="cs.stat.statValue() < 0" type="preview" />
                 </cy-list-item>
               </template>
             </cy-button>
@@ -76,13 +74,9 @@
             </cy-icon-text>
           </cy-flex-layout>
           <div class="stats">
-            <span v-for="stat in currentCrystal.stats"
-              :key="stat.baseName()" class="stat-scope"
-              :class="{ 'negative-value': stat.statValue() < 0 }">
-              <cy-icon-text iconify-name="mdi-leaf">
-                {{ stat.show() }}
-              </cy-icon-text>
-            </span>
+            <show-stat v-for="stat in currentCrystal.stats"
+              :stat="stat" :key="stat.baseName()"
+              :negative-value="stat.statValue() < 0" />
           </div>
         </div>
       </div>
@@ -128,6 +122,9 @@ import Grimoire from "@Grimoire";
 import init from "./init.js";
 
 import StatBase from "@lib/CharacterSystem/module/StatBase.js";
+import { EquipmentCrystal } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
+
+import vue_showStat from "./show-stat.vue";
 
 export default {
   data() {
@@ -135,7 +132,7 @@ export default {
     const crystalCategorys = new Array(5).fill().map((p, i) => {
       return {
         id: i,
-        crystals: crystals.filter(a => a.category == i)
+        crystals: crystals.filter(a => a.category == i).map(p => new EquipmentCrystal(p))
       }
     });
 
@@ -174,6 +171,11 @@ export default {
       }
     };
   },
+  provide() {
+    return {
+      'langText': this.langText
+    }
+  },
   mounted() {
     this.updateSearchResult();
   },
@@ -194,6 +196,7 @@ export default {
         return;
       }
       s.statsSearchResult = s.stats.filter(stat => stat.text.toLowerCase().includes(v));
+      console.log(s.statsSearchResult);
     },
     findCrystalStat(from, crystal) {
       return crystal.stats
@@ -260,7 +263,7 @@ export default {
     },
     getCrystalImagePath(c) {
       const type = c.enhancer ? 'enhance' :
-        ['weapon', 'body', 'additional', 'special', 'normal'][c.category];
+        ['weapon', 'body', 'additional', 'special', 'normal'][c.origin.category];
       return '/imgs/crystals/' + type + '.png';
     },
     selectCrystal(crystal) {
@@ -272,6 +275,9 @@ export default {
   },
   beforeCreate() {
     init();
+  },
+  components: {
+    'show-stat': vue_showStat
   }
 };
 </script>
@@ -319,37 +325,7 @@ export default {
     }
   }
 }
-.stat-scope {
-  display: inline-block;
-  margin-right: 0.6rem;
 
-  @{deep} svg {
-    width: 0.8rem;
-    height: 0.8rem;
-    align-self: flex-end;
-  }
-  @{deep} .text {
-    margin-left: 0.2rem;
-  }
-
-  &.negative-value {
-    @{deep} .text {
-      color: var(--primary-gray);
-    }
-  }
-}
-
-.crystal-stat-detail {
-  width: 100%;
-  font-size: 0.9rem;
-  margin-top: 0.3rem;
-  color: var(--primary-water-blue);
-  padding-left: 1rem;
-
-  &.negative-value {
-    color: var(--primary-blue-green);
-  }
-}
 .search-stat-input {
   margin-bottom: 0.8rem;
 }

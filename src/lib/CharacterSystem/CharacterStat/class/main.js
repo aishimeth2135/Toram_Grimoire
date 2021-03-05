@@ -505,7 +505,8 @@ class CharacterStatFormula {
         })
         .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
           return handleVar(vars.value['#'], m1, '0');
-        });
+        })
+        .replace(/-{2,}/g, m => Number.isInteger(m.length/2) ? '+' : '-'); 
       // console.log('formula: after: ', f);
       // console.groupEnd();
       return safeEval(f);
@@ -664,6 +665,22 @@ class RestrictionStat extends SimpleStat {
       restriction
     };
   }
+  showData() {
+    const res = [];
+    const r = this.restriction;
+    if (r) {
+      
+      ['main', 'sub', 'body'].forEach(p => {
+        if (!r[p])
+          return;
+        let [instance, type] = r[p].description.split('|');
+        if (!type)
+          type = instance;
+        res.push((p == 'main' ? '' : p + '/') + type);
+      });
+    }
+    return res;
+  }
 }
 
 /**
@@ -678,28 +695,26 @@ RestrictionStat.from = function(stat, restriction) {
 
 RestrictionStat.fromOrigin = function(stat, originRestriction) {
   const itemStatRestrictionList = [
-    // 0
     'event',
-    // 1~9
+
     '1h_sword', '2h_sword', 'bow', 'bowgun', 'staff',
     'magic_device', 'knuckle', 'halberd', 'katana',
-    // 10~12
+
     'arrow', 'shield', 'dagger',
-    // 13~15
+
     'dodge', 'defense', 'normal'
   ];
   const itemStatRestrictionMappingList = [
-    // 0
     'event',
-    // 1~9
+
     MainWeapon.TYPE_ONE_HAND_SWORD, MainWeapon.TYPE_TWO_HAND_SWORD,
     MainWeapon.TYPE_BOW, MainWeapon.TYPE_BOWGUN,
     MainWeapon.TYPE_STAFF, MainWeapon.TYPE_MAGIC_DEVICE,
     MainWeapon.TYPE_KNUCKLE, MainWeapon.TYPE_HALBERD,
     MainWeapon.TYPE_KATANA,
-    // 10~12
+
     SubWeapon.TYPE_ARROW, SubArmor.TYPE_SHIELD, SubWeapon.TYPE_DAGGER,
-    // 13~15
+
     BodyArmor.TYPE_DODGE, BodyArmor.TYPE_DEFENSE, BodyArmor.TYPE_NORMAL
   ];
 

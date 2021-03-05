@@ -58,6 +58,7 @@ export default function() {
         'event': '活動',
         'one-hand-sword': '單手劍',
         'two-hand-sword': '雙手劍',
+        'dual-sword': '雙劍',
         'bow': '弓',
         'bowgun': '弩',
         'staff': '法杖',
@@ -71,7 +72,8 @@ export default function() {
           'dagger': '小刀',
           'katana': '副手拔刀劍',
           'magic-device': '副手魔導具',
-          'knuckle': '副手拳套'
+          'knuckle': '副手拳套',
+          'one-hand-sword': '雙劍'
         },
         'body': {
           'dodge': '輕化防具',

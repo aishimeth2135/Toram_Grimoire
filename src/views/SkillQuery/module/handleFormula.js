@@ -59,8 +59,9 @@ export default function (str, { skillState, effectState, branch }) {
   return str;
 }
 
-function handle(str, eval_fun) {
+function handle(str, handleEval) {
   str = str.replace(/\s+/g, '');
+
   // console.log(str);
 
   const isOperator = c => /^[+\-*/(),]$/.test(c);
@@ -68,6 +69,11 @@ function handle(str, eval_fun) {
   const isVarName = v => /^[a-zA-Z_$][$a-zA-Z0-9._]*$/.test(v);
 
   const isNumStr = v => /^-?[0-9.]+$/.test(v);
+
+  const eval_fun = str => {
+    str = str.replace(/-{2,}/g, m => Number.isInteger(m.length/2) ? '+' : '-');
+    return handleEval(str);
+  }
 
   const calc_fun = (n1, o, n2, resAry) => {
     if (isNumStr(n1) && isNumStr(n2)) {
