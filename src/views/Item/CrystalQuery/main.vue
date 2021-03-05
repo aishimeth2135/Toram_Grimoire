@@ -65,11 +65,11 @@
               {{ currentCrystal.name }}
             </cy-icon-text>
           </div>
-          <cy-flex-layout class="enhancer" v-if="currentCrystal.enhancer">
+          <cy-flex-layout class="enhancer" v-if="currentCrystal.origin.enhancer">
             <cy-icon-text iconify-name="bx-bx-cube-alt" text-size="small">
               {{ langText('enhancer title') }}
               <span class="enhancer-value">
-                {{ currentCrystal.enhancer }}
+                {{ currentCrystal.origin.enhancer }}
               </span>
             </cy-icon-text>
           </cy-flex-layout>
@@ -262,7 +262,7 @@ export default {
       this.searchResult = res;
     },
     getCrystalImagePath(c) {
-      const type = c.enhancer ? 'enhance' :
+      const type = c.origin.enhancer ? 'enhance' :
         ['weapon', 'body', 'additional', 'special', 'normal'][c.origin.category];
       return '/imgs/crystals/' + type + '.png';
     },
