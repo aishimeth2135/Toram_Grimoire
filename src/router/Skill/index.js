@@ -14,7 +14,7 @@ export default {
   meta: {
     leftMenuViewButtons: [{
       title: () => GetLang('Page Title/skill-query'),
-      icon: 'gridicons-user',
+      icon: 'ic-outline-menu-book',
       path: ''
     }]
   },

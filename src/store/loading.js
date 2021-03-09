@@ -35,7 +35,7 @@ const store = new Vuex.Store({
       return Promise.all(
         state.initItems.map(p => {
           return p.promise
-            .then(p => p.status = 1)
+            .then(() => p.status = 1)
             .catch(err => {
               console.error(err);
               p.status = -1;

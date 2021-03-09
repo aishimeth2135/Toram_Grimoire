@@ -1,14 +1,16 @@
 <template>
-  <div class="cy--detail-window" :style="position">
-    <div class="container">
-      <div class="content">
-        <div class="title" v-if="$slots['title']">
-          <slot name="title"></slot>
+  <cy-transition type="fade">
+    <div class="cy--detail-window" :style="position">
+      <div class="container">
+        <div class="content">
+          <div class="title" v-if="$slots['title']">
+            <slot name="title"></slot>
+          </div>
+          <slot></slot>
         </div>
-        <slot></slot>
       </div>
     </div>
-  </div>
+  </cy-transition>
 </template>
 <script>
 export default {

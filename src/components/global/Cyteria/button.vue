@@ -69,69 +69,109 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      type: {
-        type: String,
-        default: 'simple',
-        validator(v){
-          return [
-            'simple', 'icon-only', 'line', 'border',
-            'description', 'drop-down', 'with-title'
-          ].includes(v);
-        }
-      },
-      iconifyName: {
-        type: String,
-        default: ''
-      },
-      iconId: {
-        type: String,
-        default: ''
-      },
-      imagePath: {
-        default: null
-      },
-      menuDefaultVisible: {
-        type: Boolean,
-        default: false
-      },
-      selected: {
-        type: Boolean,
-        default: false
-      },
-      disabled: {
-        type: Boolean,
-        default: false
+const colorList = [
+  'dark', 'light', 'light-2', 'light-3', 'light-4', 'purple',
+  'red', 'red-light', 'water-blue', 'water-blue-light',
+  'gray', 'gray-light', 'orange', 'green'
+];
+
+export default {
+  props: {
+    type: {
+      type: String,
+      default: 'simple',
+      validator(v){
+        return [
+          'simple', 'icon-only', 'line', 'border',
+          'description', 'drop-down', 'with-title'
+        ].includes(v);
       }
     },
-    data(){
+    iconifyName: {
+      type: String,
+      default: ''
+    },
+    iconId: {
+      type: String,
+      default: ''
+    },
+    imagePath: {
+      default: null
+    },
+    menuDefaultVisible: {
+      type: Boolean,
+      default: false
+    },
+    selected: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    textColor: {
+      type: String,
+      default: 'dark',
+      validator(v) {
+        return colorList.includes(v);
+      }
+    },
+    textColorHover: {
+      type: String,
+      default: 'light-4',
+      validator(v) {
+        return colorList.includes(v);
+      }
+    },
+    iconColor: {
+      type: String,
+      default: 'light-2',
+      validator(v) {
+        return colorList.includes(v);
+      }
+    },
+    iconColorHover: {
+      type: String,
+      default: 'light-4',
+      validator(v) {
+        return colorList.includes(v);
+      }
+    },
+  },
+  data(){
+    return {
+      menuVisible: false
+    };
+  },
+  mounted() {
+    this.menuVisible = this.menuDefaultVisible;
+  },
+  computed: {
+    isNormalLayout(){
+      return !['description', 'drop-down', 'with-title'].includes(this.type);
+    },
+    rootClass(){
       return {
-        menuVisible: false
+        'Button': true,
+        [this.type]: true,
+        'selected': this.selected,
+        'disable': this.disable,
+        ['text-color-' + this.textColor]: true,
+        ['icon-color-' + this.iconColor]: true,
+        ['text-color-hover-' + this.textColorHover]: true,
+        ['icon-color-hover-' + this.iconColorHover]: true
       };
-    },
-    mounted() {
-      this.menuVisible = this.menuDefaultVisible;
-    },
-    computed: {
-      isNormalLayout(){
-        return !['description', 'drop-down', 'with-title'].includes(this.type);
-      },
-      rootClass(){
-        const cs = ['Button', this.type];
-        this.selected && cs.push('selected');
-        this.disabled && cs.push('disabled');
-        return cs.join(' ');
-      }
-    },
-    methods: {
-      buttonClick(e){
-        if (this.type == 'drop-down')
-          this.menuVisible = !this.menuVisible;
-        this.$emit('click', e);
-      }
     }
-  };
+  },
+  methods: {
+    buttonClick(e){
+      if (this.type == 'drop-down')
+        this.menuVisible = !this.menuVisible;
+      this.$emit('click', e);
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>
@@ -153,7 +193,7 @@
     > svg, & > .title > svg,
     > img, & > .title > img {
       fill: currentcolor;
-      color: var(--primary-light-2);
+      color: var(--icon-color);
       height: var(--icon-width);
       width: var(--icon-width);
       flex-shrink: 0;
@@ -163,24 +203,24 @@
 
     @{deep-operator} .text {
       transition: 0.4s;
-      color: var(--primary-dark);
+      color: var(--text-color);
     }
 
     &:hover, &.cur, &.selected {
       > svg {
-        color: var(--primary-light-4);
+        color: var(--icon-color-hover);
       }
 
       > .title > svg {
-        color: var(--primary-light-4);
+        color: var(--icon-color-hover);
       }
 
       > .text {
-        color: var(--primary-light-4);
+        color: var(--text-color-hover);
       }
 
       > .title > .text {
-        color: var(--primary-light-4);
+        color: var(--text-color-hover);
       }
     }
     // > .title {
@@ -201,7 +241,10 @@
     }
 
     &.mr-normal {
-      margin-right: 0.6rem;
+      margin-right: 0.6rem!important;
+    }
+    &.mr-normal-2 {
+      margin-right: 0.9rem!important;
     }
 
     &.disabled {
@@ -219,6 +262,24 @@
         content: '';
       }
     }
+
+    @colors: ~'dark', ~'light', ~'light-2', ~'light-3', ~'light-4', ~'purple',
+      ~'red', ~'red-light', ~'water-blue', ~'water-blue-light',
+      ~'gray', ~'gray-light', ~'orange', ~'green';
+    each(@colors, {
+      &.text-color-@{value} {
+        --text-color: ~'var(--primary-@{value})';
+      }
+      &.icon-color-@{value} {
+        --icon-color: ~'var(--primary-@{value})';
+      }
+      &.text-color-hover-@{value} {
+        --text-color-hover: ~'var(--primary-@{value})';
+      }
+      &.icon-color-hover-@{value} {
+        --icon-color-hover: ~'var(--primary-@{value})';
+      }
+    });
   }
 
   .Button {
@@ -277,10 +338,6 @@
 
       &.after-button {
         margin-left: 0.7rem;
-      }
-
-      &.mr-normal {
-        margin-right: 0.6rem;
       }
     }
 
