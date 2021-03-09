@@ -250,9 +250,12 @@
         </div>
       </template>
       <template v-else-if="branch.name == 'text'">
-        <div class="content-line" :class="{ 'group-title': branch.group }">
-          <cy-button v-if="branch.group" type="icon-only" @click="toggleGroup()" style="--icon-width: 1.6rem;"
+        <div class="content-line group-title" v-if="branch.group" @click="toggleGroup()">
+          <cy-icon-text class="title-btn"
             :iconify-name="branch.group.expansion ? 'mdi-flower-tulip' : 'eva-question-mark-circle-outline'" />
+          <div class="text-scope" v-html="showData['text']"></div>
+        </div>
+        <div class="content-line" v-else>
           <div class="text-scope" v-html="showData['text']"></div>
         </div>
       </template>
@@ -341,7 +344,8 @@ export default {
       detailVisible: false,
       skillAreaVisible: false,
       historyVisible: false,
-      topMenuVisible: false
+      topMenuVisible: false,
+      formulaDisplayMode: 1
     }
   },
   provide() {
@@ -618,7 +622,7 @@ export default {
       }
     },
     findStackState(stack_id) {
-      stack_id = stack_id === void 0 ? parseInt(this.branch.attrs['id'], 0) : stack_id;
+      stack_id = stack_id === void 0 ? parseInt(this.branch.attrs['id'], 10) : stack_id;
       const p = this.branch['@parent-state'].stackStates.find(a => a.id == stack_id);
       return p ? p : null;
     },
@@ -939,6 +943,8 @@ export default {
         .replace(/\+-/g, '-');
     },
     handleDataContainerLangText(dc, { type='normal', prefix='' }={}) {
+      dc.handle(v => this.formulaPretreatment(v));
+
       const bch = dc.branch, key = dc.key;
       if (type == 'value') {
         dc.handle(v => this.calcValueStr(v));
@@ -978,6 +984,8 @@ export default {
       return str;
     },
     handleDataContainer(dc, { beforeColorText, toPercentage=false }={}) {
+      dc.handle(v => this.formulaPretreatment(v));
+
       const numStrToPercentage = s => (100 * parseFloat(s)).toFixed(1).replace('.0', '') + '%';
 
       dc.handle(v => this.calcValueStr(v));
@@ -1018,13 +1026,45 @@ export default {
         'STR', 'INT', 'AGI', 'VIT', 'DEX', 'shield_refining',
         'dagger_atk', 'target_def', 'target_level', 'guard_power'
       ];
-      list.forEach(cs => dc.handleResult(v => v.replace(new RegExp('\\$' + cs, 'g'),
-          this.langText('formula replaced text/' + cs))
+      list.forEach(cs => dc.handleResult(v => v
+          .replace(new RegExp('\\$' + cs, 'g'), this.langText('formula replaced text/' + cs))
         )
       );
+      if (this.formulaDisplayMode == 1) {
+        const stack = [];
+        if (this.branch.attrs['stack_id']) {
+          const ss = this.branch['@parent-state'].stackStates;
+          const tstack = this.branch.attrs['stack_id'].split(/\s*,\s*/)
+            .map(p => parseInt(p, 10))
+            .map(p => {
+              const t = ss.find(a => a.id == p);
+              return t ?
+                (t.branch.attrs['name'] != 'auto' ? t.branch.attrs['name'] : this.langText('stack/base name')) :
+                this.langText('unknow variable');
+            });
+          stack.push(...tstack);
+        }
+        dc.handleResult(v => v
+          .replace(/\$__TEXT_CLV__/g, this.globalLangText('Skill Query/skill level'))
+          .replace(/\$__TEXT_SLV__/g, this.globalLangText('Skill Query/character level'))
+          .replace(/\$__TEXT_STACK_(\d+)__/g, (m, m1) => stack[parseInt(m1, 10)])
+        )
+      }
+    },
+    formulaPretreatment(str) {
+      if (this.formulaDisplayMode == 1)
+        return str
+          .replace(/CLv/g, '$__TEXT_CLV__')
+          .replace(/SLv/g, '$__TEXT_SLV__')
+          .replace(/stack\[(\d+)\]/g, (m, m1) => '$__TEXT_STACK_' + m1 + '__')
+          .replace(/stack/g, '$__TEXT_STACK_0__');
+      return str;
     },
     langText(v, vs) {
       return GetLang('Skill Query/Branch/' + v, vs);
+    },
+    globalLangText(...args) {
+      return GetLang(...args);
     }
   },
   watch: {
@@ -1102,6 +1142,23 @@ div.branch {
 
   >.content-line {
     padding: 0 0.3rem;
+
+    &.group-title {
+      border: 0.1rem var(--primary-light) solid;
+      border-radius: 1rem;
+      padding: 0.6rem;
+      cursor: pointer;
+      transition: 0.3s;
+
+      &:hover {
+        border-color: var(--primary-light-3);
+      }
+
+      > .title-btn {
+        --icon-width: 1.6rem;
+        margin: 0 0.3rem;
+      }
+    }
   }
 
   &.branch-mark {
@@ -1170,7 +1227,7 @@ fieldset.branch {
     position: absolute;
     z-index: 1;
     left: -1rem;
-    top: -0.4rem;
+    top: -2rem;
     --icon-width: 2rem;
     --icon-color: var(--primary-light-2);
   }
@@ -1226,7 +1283,7 @@ fieldset.branch {
   align-items: center;
   flex-wrap: wrap;
 
-  &+.extra-column {
+  & + .extra-column {
     margin-top: 0.3rem;
   }
 }

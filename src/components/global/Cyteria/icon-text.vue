@@ -53,13 +53,21 @@ export default {
         return colorList.includes(v);
       }
     },
+    display: {
+      type: String,
+      default: 'inline',
+      validator(v) {
+        return ['inline', 'block'].includes(v);
+      }
+    }
   },
   computed: {
     rootClass() {
       return {
         ['text-color-' + this.textColor]: true,
         ['text-' + this.textSize]: true,
-        ['icon-color-' + this.iconColor]: true
+        ['icon-color-' + this.iconColor]: true,
+        ['display-' + this.display]: true
       };
     }
   }
@@ -81,9 +89,15 @@ export default {
     &.mr-normal {
       margin-right: 0.6rem;
     }
+    &.mr-normal-2 {
+      margin-right: 0.9rem;
+    }
 
     &.line {
       width: 100%;
+    }
+    &.display-block {
+      display: flex;
     }
 
     > span {

@@ -24,6 +24,7 @@
   --rgb-white: 255, 255, 255;
   --rgb-black: 0, 0, 0;
   --rgb-primary-light: 255, 209, 234;
+  --rgb-primary-light-2: 247, 168, 211;
   --rgb-primary-dark: 133, 0, 95;
 }
 
@@ -57,6 +58,7 @@
   --rgb-white: 0, 0, 0;
   --rgb-black: 255, 255, 255;
   --rgb-primary-light: 80, 48, 66;
+  --rgb-primary-light-2: 162, 91, 130;
   --rgb-primary-dark: 255, 255, 255;
 }
 
@@ -138,8 +140,8 @@ a {
 
 
 ::-webkit-scrollbar {
-  width: 0.3rem;
-  height: 0.3rem;
+  width: 0.4rem;
+  height: 0.4rem;
 }
 
 @media screen and (max-width: 30rem) {
@@ -155,9 +157,13 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--primary-light-2);
+  background-color: rgba(var(--rgb-primary-light-2), 0.5);
   border-radius: 0.22rem;
   transition: 0.3s;
+
+  &:hover {
+    background-color: var(--primary-light-2);
+  }
 }
 
 ::-webkit-scrollbar-corner {
@@ -165,16 +171,20 @@ a {
 }
 
 ::-webkit-scrollbar-button {
-  background-color: var(--primary-light-2);
+  background-color: rgba(var(--rgb-primary-light-2), 0.5);
   border-radius: 0.22rem;
   transition: 0.3s;
 
   &:hover {
-    background-color: var(--primary-light-3);
+    background-color: var(--primary-light-2);
   }
 
   @media screen and (max-width: 30rem) {
     width: 0;
     height: 0;
   }
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(var(--rgb-primary-light-2), 0.2);
 }

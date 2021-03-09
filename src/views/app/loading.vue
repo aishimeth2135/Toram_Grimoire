@@ -29,7 +29,7 @@
     methods: {
       statusIcon(v) {
         if (v >= 0)
-          return ['mdi-loading', 'ic-round-done'][v];
+          return ['mdi-loading', 'ic-round-check-circle-outline'][v];
         return 'ic-round-close';
       }
     },

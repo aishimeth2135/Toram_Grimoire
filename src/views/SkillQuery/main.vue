@@ -51,7 +51,7 @@
       <template v-if="currentSkillState">
         <template v-if="currentSkillData">
           <div class="top-content">
-            <div class="effect-attrs">
+            <div class="effect-attrs" ref="effect-attrs">
               <table>
                 <tr v-for="(data) in currentSkillAttrs" :key="data.id">
                   <td>
@@ -79,7 +79,7 @@
             </fieldset> -->
           </div>
           <div class="skill-branchs">
-            <transition-group name="branch-fade" mode="out-in" appear>
+            <transition-group name="branch-fade" appear>
               <skill-branch v-for="(branch) in currentSkillBranchs" :key="branch.iid" type="main"
                 :branch="branch" :skill-state="currentSkillState" />
             </transition-group>
@@ -95,37 +95,52 @@
           <div class="top-content">
             <cy-transition type="fade">
               <div class="container" v-if="!skillStates.optionsWindowVisible">
-                <div class="equipment-container" >
-                  <span class="column" v-for="(data) in equipmentCategoryList" :key="data.showName">
-                    <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.shortName)" class="inline"
-                      style="margin-right: 0.7rem;">
-                      {{ equipmentState[data.shortName] | getEquipmentText(data.name) }}
-                    </cy-button>
-                  </span>
-                </div>
-                <div class="skill-level-container" v-if="!skillStates.optionsWindowVisible">
-                  <cy-button iconify-name="mdi-order-numeric-descending" @click="toggleSkillLevel" class="inline">
-                    {{ 'Lv.' + skillStates.skillLevel }}
-                  </cy-button>
-                </div>
-                <div class="switch-skill-container" v-if="!skillStates.optionsWindowVisible">
-                  <cy-icon-text iconify-name="heroicons-solid:switch-vertical"
-                    class="text-small mr-normal">
-                    {{ langText('switch skill') }}
-                  </cy-icon-text>
-                  <cy-button iconify-name="eva-arrow-ios-back-outline"
-                    type="icon-only" class="inline"
-                    @click="switchSkill('previous')" />
-                  <cy-button iconify-name="eva-arrow-ios-forward-outline"
-                    type="icon-only" class="inline"
-                    @click="switchSkill('next')" />
-                  <cy-button iconify-name="ic-round-last-page"
-                    type="icon-only" class="inline"
-                    @click="switchSkill('last')" />
-                </div>
+                <cy-button type="icon-only" iconify-name="heroicons-solid:switch-vertical"
+                  key="switch-btn" icon-color="water-blue-light" icon-color-hover="water-blue"
+                  class="inline mr-normal-2"
+                  @click="skillStates.optionsMode = skillStates.optionsMode == 0 ? 1 : 0" />
+                <cy-transition type="fade" mode="out-in">
+                  <div v-if="skillStates.optionsMode == 0" class="container-content" key="mode-1">
+                    <div class="equipment-container" v-if="skillStates.optionsMode == 0">
+                      <span class="column" v-for="(data) in equipmentCategoryList" :key="data.showName">
+                        <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.shortName)" class="inline"
+                          style="margin-right: 0.7rem;">
+                          {{ equipmentState[data.shortName] | getEquipmentText(data.name) }}
+                        </cy-button>
+                      </span>
+                    </div>
+                    <div class="skill-level-container" v-if="skillStates.optionsMode == 0">
+                      <cy-button iconify-name="mdi-order-numeric-descending" @click="toggleSkillLevel" class="inline">
+                        {{ 'Lv.' + skillStates.skillLevel }}
+                      </cy-button>
+                    </div>
+                  </div>
+                  <div class="container-content" v-else key="mode-2">
+                    <div class="switch-skill-container">
+                      <cy-icon-text iconify-name="heroicons-solid:switch-vertical"
+                        text-size="small" text-color="purple" display="block" style="margin-bottom: 0.3rem">
+                        {{ langText('switch skill') }}
+                      </cy-icon-text>
+                      <div>
+                        <cy-button iconify-name="eva-arrow-circle-left-outline"
+                          class="inline mr-normal" @click="switchSkill('previous')">
+                          {{ langText('previous skill') }}
+                        </cy-button>
+                        <cy-button iconify-name="eva-arrow-circle-right-outline"
+                          class="inline mr-normal" @click="switchSkill('next')">
+                          {{ langText('next skill') }}
+                        </cy-button>
+                        <cy-button iconify-name="bx-bx-fast-forward-circle"
+                          class="inline mr-normal" @click="switchSkill('last')">
+                          {{ langText('last skill') }}
+                        </cy-button>
+                      </div>
+                    </div>
+                  </div>
+                </cy-transition>
               </div>
             </cy-transition>
-            <cy-button :iconify-name="skillStates.optionsWindowVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" type="icon-only" style="margin-left: auto;"
+            <cy-button :iconify-name="skillStates.optionsWindowVisible ? 'ic-round-unfold-less' : 'ic-round-unfold-more'" type="icon-only" style="margin-left: auto;"
               @click="skillStates.optionsWindowVisible = !skillStates.optionsWindowVisible" />
           </div>
           <cy-transition type="fade">
@@ -173,11 +188,39 @@
         </div>
       </div>
     </div>
-    <div class="window-container">
+    <cy-detail-window v-if="currentTag || tagState.windowVisible"
+      :position-element="tagState.positionElement">
+      <div class="tag-window-content" ref="tag-window-content" @click="closeTagWindow">
+        <div class="title">
+          <cy-button iconify-name="jam-arrow-left" type="icon-only" v-if="tagState.tags.length > 1"
+            class="inline" @click.stop="previousTag" />
+          <cy-icon-text iconify-name="ri-leaf-fill" text-color="purple">{{ currentTag.name }}</cy-icon-text>
+          <span v-if="tagState.windowVisible" class="close-tip">{{ langText('click anywhere to close') }}</span>
+        </div>
+        <template v-for="(fr) in currentTag.frames">
+          <div v-if="fr.type == 'category'" class="category"
+            :key="fr.type + fr.value">
+            <cy-icon-text iconify-name="bx-bx-message-rounded-detail" class="text-small">{{ fr.value }}</cy-icon-text>
+          </div>
+          <div v-else-if="fr.type == 'caption'"
+            :key="fr.type + fr.value"
+            class="caption" v-html="fr.value"></div>
+          <div v-else-if="fr.type == 'list'"
+            :key="fr.type + fr.value.join('|')" class="list">
+            <div v-for="(v) in fr.value" class="leaf-list-item" :key="v">
+              <cy-icon-text iconify-name="mdi-leaf" class="prefix-icon" />
+              <span v-html="v"></span>
+            </div>
+          </div>
+        </template>
+      </div>
+    </cy-detail-window>
+    <!-- <div class="window-container">
+
       <cy-transition type="fade">
         <div class="tag-window" ref="tag-window" v-if="currentTag || tagState.windowVisible" :style="tagState.windowPosition">
           <div class="container" @click="closeTagWindow">
-            <div class="content">
+            <div class="tag-window-content">
               <div class="title">
                 <cy-button iconify-name="jam-arrow-left" type="icon-only" v-if="tagState.tags.length > 1"
                   class="inline" @click.stop="previousTag" />
@@ -204,7 +247,7 @@
           </div>
         </div>
       </cy-transition>
-    </div>
+    </div> -->
   </article>
 </template>
 <script>
@@ -247,7 +290,8 @@ export default {
         skillLevel: 10,
         characterLevel: 200,
         displayMode: 'normal',
-        optionsWindowVisible: false
+        optionsWindowVisible: false,
+        optionsMode: 0
       },
       equipmentState: {
         main: -1,
@@ -274,7 +318,7 @@ export default {
     };
   },
   updated() {
-    const tagWindow = this.$refs['tag-window'];
+    const tagWindow = this.$refs['tag-window-content'];
     if (tagWindow) {
       const self = this;
       const click = function(e) {
@@ -289,6 +333,8 @@ export default {
           p.setAttribute('data-listener-ctr', '1');
         });
     }
+    if (this.$refs['effect-attrs'])
+      this.handleTagButton(this.$refs['effect-attrs']);
   },
   filters: {
     getEquipmentText(value, type) {
@@ -451,15 +497,7 @@ export default {
       const enter = function() {
         self.clearTag();
         self.appendTag(this.innerText);
-
-        const rect = this.getBoundingClientRect();
-
-        const len2bottom = window.innerHeight - rect.bottom;
-        self.tagState.windowPosition = rect.top >= len2bottom ? {
-            bottom: (len2bottom + rect.height + 10) + 'px'
-          } : {
-            top: (rect.top + rect.height + 10) + 'px'
-          };
+        self.tagState.positionElement = this;
       };
       const leave = function() {
         if (!self.tagState.windowVisible)
@@ -786,12 +824,14 @@ export default {
 
 .bottom-menu {
   position: sticky;
-  bottom: 0;
+  bottom: 0.6rem;
   background-color: var(--white);
-  border-top: 1px solid var(--primary-light-3);
-  padding: 0.4rem 0.2rem;
+  border: 1px solid var(--primary-light-2);
+  border-radius: 1.5rem;
+  padding: 0.5rem 0.3rem;
   padding-right: 0.8rem;
   z-index: 9;
+  margin: 0 0.6rem;
 
   > .top-content {
     display: flex;
@@ -803,33 +843,39 @@ export default {
       overflow-y: auto;
       padding: 0.2rem 0.4rem;
 
-      > div {
-        flex-shrink: 0;
-      }
-
-      > .equipment-container {
-        display: inline-block;
-      }
-
-      > .skill-level-container {
-        border-left: 1px solid var(--primary-light-2);
-        border-right: 1px solid var(--primary-light-2);
-        padding: 0 0.9rem;
-        margin-left: 0.4rem;
-        display: inline-block;
-      }
-
-      > .switch-skill-container {
-        padding-left: 0.9rem;
-        display: inline-flex;
+      > .container-content {
+        display: flex;
         align-items: center;
-        padding-right: 0.8rem;
+        overflow-y: auto;
+
+        > div {
+          flex-shrink: 0;
+        }
+
+        > .equipment-container {
+          display: inline-block;
+        }
+
+        > .skill-level-container {
+          border-left: 1px solid var(--primary-light-2);
+          padding: 0 0.9rem;
+          margin-left: 0.4rem;
+          display: inline-block;
+        }
+
+        > .switch-skill-container {
+          > div {
+            display: inline-flex;
+            align-items: center;
+          }
+        }
       }
     }
   }
 
   > .options-content {
-    padding-bottom: 0.8rem;
+    padding: 0.8rem;
+    padding-top: 0;
 
     > .equipment-column {
       > .column-title {
@@ -843,64 +889,31 @@ export default {
   color: var(--primary-orange);
   cursor: pointer;
 }
-.tag-window {
-  position: fixed;
-  width: 100%;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  z-index: 15;
 
-  .container {
-    background-color: rgba(var(--rgb-white), 0.95);
-    border: 1px solid var(--primary-light-2);
-    border-bottom: 0;
-    box-shadow: 0.1rem 0.1rem 0.6rem 0.1rem var(--primary-light);
-    max-width: 30rem;
-    max-height: calc(50vh - 3rem);
-    overflow-y: auto;
-    margin: 0 0.6rem;
+.tag-window-content {
+  > .title {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
 
-    .content {
-      border-bottom: 1px solid var(--primary-light-2);
-      padding: 1rem;
-      padding-bottom: 0;
-
-      &::after {
-        content: '';
-        display: block;
-        position: sticky;
-        height: 1rem;
-        border-radius: 20% 20% 0 0;
-        bottom: 0;
-        background-color: rgba(var(--rgb-white), 0.5);
-      }
-
-      > .title {
-        margin-bottom: 1rem;
-        color: var(--primary-purple);
-        display: flex;
-        align-items: center;
-
-        > .close-tip {
-          margin-left: auto;
-          display: inline-block;
-          font-size: 0.9rem;
-        }
-      }
-
-      > .category {
-        border-left: 2px solid var(--primary-light-2);
-        padding: 0.2rem 0.6rem;
-        margin-bottom: 0.7rem;
-      }
-      > .caption {
-        padding: 0 0.3rem;
-      }
-      > .list {
-        margin-top: 0.6rem;
-      }
+    > .close-tip {
+      margin-left: auto;
+      display: inline-block;
+      font-size: 0.9rem;
+      color: var(--primary-water-blue);
     }
+  }
+
+  > .category {
+    border-left: 2px solid var(--primary-light-2);
+    padding: 0.2rem 0.6rem;
+    margin-bottom: 0.7rem;
+  }
+  > .caption {
+    padding: 0 0.3rem;
+  }
+  > .list {
+    margin-top: 0.6rem;
   }
 }
 
@@ -950,15 +963,13 @@ export default {
 }
 
 .branch-fade-enter {
-  opacity: 0;
-}
-
-.branch-fade-enter {
   transform: translateX(-20%);
+  opacity: 0;
 }
 
 .branch-fade-leave-to {
   transform: translateX(20%);
+  opacity: 0;
 }
 
 .branch-fade-enter-active,

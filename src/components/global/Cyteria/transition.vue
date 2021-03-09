@@ -94,7 +94,7 @@
   opacity: 0;
 }
 .fade-enter-active, .fade-leave-active {
-  transition: 0.3s ease;
+  transition: 0.2s ease;
 }
 .fade-enter-to, .fade-leave {
   opacity: 1;
