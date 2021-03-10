@@ -1,3 +1,5 @@
+import * as recast from "recast";
+
 /**
  *  skillState: Object {
  *    slv: [Responsive] skill level,
@@ -37,6 +39,8 @@ export default function (str, { skillState, effectState, branch }) {
     str = str.replace(/stack(\[\d+\])?/g, '0');
   }
 
+  str = str = str.replace(/stack\[(\d+)\]/g, (m, m1) => stack[parseInt(m1, 10)]);
+
   const formulaExtra = branch ? branch.suffix.find(suf => suf.name == 'formula_extra') : null;
   if (formulaExtra)
     str = str.replace(/&(\d+):/g, (m, m1) => '__FORMULA_EXTRA_' + m1 + '__');
@@ -49,7 +53,7 @@ export default function (str, { skillState, effectState, branch }) {
       return dftv === void 0 ? '??' : dftv;
     }
   }
-  str = handle(str, safeEval);
+  str = handle2(str, safeEval);
 
   if (formulaExtra) {
     const texts = formulaExtra.attrs['texts'].split(/\s*,\s*/);
@@ -312,3 +316,11 @@ function handle(str, handleEval) {
     return '0';
   }
 }
+
+function handle2(str) {
+  console.log(str);
+  console.log(recast.parse(str));
+  return str;
+}
+
+export { handle };

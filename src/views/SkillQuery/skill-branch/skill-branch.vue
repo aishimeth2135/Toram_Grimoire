@@ -250,9 +250,10 @@
         </div>
       </template>
       <template v-else-if="branch.name == 'text'">
-        <div class="content-line group-title" v-if="branch.group" @click="toggleGroup()">
+        <div class="content-line group-title" :class="{ 'gropu-unfold': branch.group.expansion }"
+          v-if="branch.group" @click="toggleGroup()">
           <cy-icon-text class="title-btn"
-            :iconify-name="branch.group.expansion ? 'mdi-flower-tulip' : 'eva-question-mark-circle-outline'" />
+            :iconify-name="branch.group.expansion ? 'mdi-leaf-maple' : 'mdi-leaf-maple-off'" />
           <div class="text-scope" v-html="showData['text']"></div>
         </div>
         <div class="content-line" v-else>
@@ -315,6 +316,9 @@
         </cy-transition-group>
       </template>
     </template>
+    <div v-if="branch.isGroupTail" class="group-tail">
+      <cy-icon-text iconify-name="bx-bxs-square" class="prefix-icon" />
+    </div>
   </div>
 </template>
 <script>
@@ -335,7 +339,7 @@ import DataContainer from "../module/DataContainer.js";
 export default {
   name: 'skill-branch',
   props: ['branch', 'skillState', 'type'],
-  inject: ['handleTagButton', 'createTagButtons', 'tagButtonClassName'],
+  inject: ['handleTagButton', 'createTagButtons', 'tagButtonClassName', 'getFormulaDisplayMode'],
   data() {
     return {
       otherEquipmentBranchVisible: false,
@@ -344,8 +348,7 @@ export default {
       detailVisible: false,
       skillAreaVisible: false,
       historyVisible: false,
-      topMenuVisible: false,
-      formulaDisplayMode: 1
+      topMenuVisible: false
     }
   },
   provide() {
@@ -500,6 +503,9 @@ export default {
         }));
 
       return res.length == 0 ? null : res;
+    },
+    formulaDisplayMode() {
+      return this.getFormulaDisplayMode();
     }
   },
   methods: {
@@ -592,9 +598,10 @@ export default {
       const g = this.branch.group;
       g.expansion = force === void 0 ? !g.expansion : force;
 
-      let cur = bchs.findIndex(p => p == this.branch);
-      let cnt = g.size;
-      let cur_g = g;
+      let cur = bchs.findIndex(p => p == this.branch),
+        cnt = g.size,
+        cur_g = g,
+        last = null;
 
       const len = bchs.length - 1;
       while (cnt != 0 && cur != len) {
@@ -602,13 +609,19 @@ export default {
         cur += 1;
 
         const p = bchs[cur];
-        if (cur_g.expandable)
+        if (cur_g.expandable) {
           p.visible = !g.expansion ? false : cur_g.expansion;
+          last = p;
+        }
 
         if (p.group) {
           cnt += p.group.size;
           cur_g = p.group;
         }
+      }
+
+      if (last) {
+        last.isGroupTail = last.visible;
       }
     },
     ailmentText(showData) {
@@ -1044,11 +1057,27 @@ export default {
             });
           stack.push(...tstack);
         }
-        dc.handleResult(v => v
-          .replace(/\$__TEXT_CLV__/g, this.globalLangText('Skill Query/skill level'))
-          .replace(/\$__TEXT_SLV__/g, this.globalLangText('Skill Query/character level'))
-          .replace(/\$__TEXT_STACK_(\d+)__/g, (m, m1) => stack[parseInt(m1, 10)])
-        )
+        
+        let v = dc.result();
+        v = v
+          .replace(/\$__TEXT_SLV__/g, this.globalLangText('Skill Query/skill level'))
+          .replace(/\$__TEXT_CLV__/g, this.globalLangText('Skill Query/character level'))
+          .replace(/\$__TEXT_STACK_(\d+)__/g, (m, m1) => stack[parseInt(m1, 10)]);
+
+        // const createFormulaText = (n, v) => `<span class="formula--fix key--${n}"><span class="name">${n.toUpperCase()}</span><span class="value">${v}</span></span>`;
+
+        // const funList = [
+        //   { name: 'floor', reg: /Math\.floor\(([^()]+)\)/g },
+        //   { name: 'min', reg: /Math\.min\(([^()]+)\)/g },
+        //   { name: 'max', reg: /Math\.max\(([^()]+)\)/g }
+        // ];
+        // funList.forEach(p => {
+        //   const reg = p.reg;
+        //   while (v.match(reg))
+        //     v = v.replace(reg, (m, m1) => createFormulaText(p.name, m1));
+        // });
+
+        dc.handleResult(() => v);
       }
     },
     formulaPretreatment(str) {
@@ -1092,7 +1121,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@deep-operator: ~'>>>';
+@deep: ~'>>>';
 
 .main-- {
   position: relative;
@@ -1149,6 +1178,10 @@ div.branch {
       padding: 0.6rem;
       cursor: pointer;
       transition: 0.3s;
+
+      &.gropu-unfold {
+        border-color: var(--primary-light-2);
+      }
 
       &:hover {
         border-color: var(--primary-light-3);
@@ -1249,7 +1282,7 @@ fieldset.branch {
 .branch.stack {
   margin-top: 0.6rem;
 
-  @{deep-operator} .name {
+  @{deep} .name {
     margin-right: 0.5rem;
   }
 
@@ -1305,12 +1338,12 @@ fieldset.branch {
     }
   }
 
-  @{deep-operator} .light-text {
+  @{deep} .light-text {
     color: var(--primary-purple);
   }
 }
 
-@{deep-operator} .bg-scope {
+@{deep} .bg-scope {
   background-color: var(--primary-dark);
   color: var(--white);
   display: inline-block;
@@ -1321,7 +1354,7 @@ fieldset.branch {
 }
 
 
-@{deep-operator} .inline-content {
+@{deep} .inline-content {
   display: inline-flex;
   align-items: center;
   flex-wrap: wrap;
@@ -1345,12 +1378,12 @@ fieldset.branch {
   &.tips {
     color: var(--primary-light-3);
 
-    @{deep-operator} svg {
+    @{deep} svg {
       align-self: flex-start;
       margin-top: 0.2rem;
     }
 
-    @{deep-operator} .light-text {
+    @{deep} .light-text {
       color: var(--primary-purple);
     }
   }
@@ -1414,7 +1447,7 @@ fieldset.extra-column {
   }
 }
 
-@{deep-operator} .attr-scope {
+@{deep} .attr-scope {
   padding: 0.1rem 0.4rem;
   display: inline-flex;
   align-items: center;
@@ -1442,6 +1475,49 @@ fieldset.extra-column {
   >.value {
     margin-left: 0.4rem;
     color: var(--primary-light-4);
+  }
+}
+
+.group-tail {
+  border-top: 0.1rem var(--primary-light-2) solid;
+  position: relative;
+  margin: 0 0.2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+
+  > .prefix-icon {
+    position: absolute;
+    right: -0.2rem;
+    top: -0.7rem;
+  }
+}
+@{deep} .formula--fix {
+  
+  &.key--floor {
+    background-color: var(--primary-light);
+    > .name {
+      color: var(--primary-light-4);
+    }
+  }
+  &.key--min {
+    background-color: var(--primary-water-blue-light);
+    > .name {
+      color: var(--primary-water-blue);
+    }
+  }
+  &.key--max {
+    background-color: var(--primary-blue-green-light);
+    > .name {
+      color: var(--primary-blue-green);
+    }
+  }
+
+  padding: 0.1rem 0.3rem;
+  > .value {
+    background-color: var(--white);
+    border-radius: 0.2rem;
+    margin: 0 0.2rem;
+    padding: 0 0.2rem;
   }
 }
 

@@ -11,6 +11,7 @@ export default function() {
       'previous skill': '上一個',
       'next skill': '下一個',
       'last skill': '最近',
+      'switch formula display mode': '切換公式顯示方式',
       'default message': '請點選這裡或右上角的按鈕來選擇一個技能。',
       'default message: equipment conditions': '所選取的技能不符合當前的裝備。<br />請更改裝備類型，或是點選這裡或右上角的按鈕來選擇其他技能。',
       'equipment': {
