@@ -177,6 +177,12 @@
                   </template>
                 </cy-input-counter>
               </div>
+              <div class="switch-formula-display-mode">
+                <cy-button type="border" iconify-name="heroicons-solid:switch-vertical"
+                  @click="skillStates.formulaDisplayMode = skillStates.formulaDisplayMode == 0 ? 1 : 0">
+                  {{ langText('switch formula display mode') }}
+                </cy-button> 
+              </div>
             </div>
           </cy-transition>
         </div>
@@ -291,7 +297,8 @@ export default {
         characterLevel: 200,
         displayMode: 'normal',
         optionsWindowVisible: false,
-        optionsMode: 0
+        optionsMode: 0,
+        formulaDisplayMode: 0
       },
       equipmentState: {
         main: -1,
@@ -314,7 +321,8 @@ export default {
     return {
       'handleTagButton': this.handleTagButton,
       'tagButtonClassName': this.tagState.buttonClassName,
-      'createTagButtons': this.createTagButtons
+      'createTagButtons': this.createTagButtons,
+      'getFormulaDisplayMode': () => this.skillStates.formulaDisplayMode
     };
   },
   updated() {
@@ -881,6 +889,10 @@ export default {
       > .column-title {
         margin-top: 0.8rem;
       }
+    }
+
+    > .switch-formula-display-mode {
+      margin-top: 1rem;
     }
   }
 }

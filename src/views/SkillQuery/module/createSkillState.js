@@ -27,6 +27,7 @@ function handleSkillState(skill) {
       suffix: [],
       empty: false,
       visible: true,
+      isGroupTail: false,
       '@parent-state': null,
       '@is-default-list': [],
       '@delete-list': [],
