@@ -740,7 +740,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@deep-operator: ~'>>>';
+@deep: ~'>>>';
 
 .root-- {
   position: relative;
@@ -812,7 +812,7 @@ export default {
   overflow-x: auto;
 }
 
-@{deep-operator} fieldset.unfold-fieldset {
+@{deep} fieldset.unfold-fieldset {
   transition: 0.5s;
 
   &:not(.unfold) {
@@ -897,7 +897,7 @@ export default {
   }
 }
 
-@{deep-operator} .click-button--tag {
+@{deep} .click-button--tag {
   color: var(--primary-orange);
   cursor: pointer;
 }
@@ -929,7 +929,7 @@ export default {
   }
 }
 
-@{deep-operator} .leaf-list-item {
+@{deep} .leaf-list-item {
   padding: 0.4rem;
   padding-left: 1rem;
   position: relative;
@@ -939,7 +939,7 @@ export default {
     top: 0;
     left: -0.4rem;
 
-    @{deep-operator} svg {
+    @{deep} svg {
       width: 1.2rem;
       height: 1.2rem;
       color: var(--primary-light-2);
@@ -947,7 +947,7 @@ export default {
   }
 }
 
-@{deep-operator} .light-text {
+@{deep} .light-text {
   color: var(--primary-light-4);
 
   &.text-dark {
@@ -955,18 +955,18 @@ export default {
   }
 }
 
-@{deep-operator} .light-text-1 {
+@{deep} .light-text-1 {
   color: var(--primary-water-blue);
   &.text-dark {
     color: var(--primary-blue-green);
   }
 }
 
-@{deep-operator} .light-text-2 {
+@{deep} .light-text-2 {
   color: var(--primary-orange);
 }
 
-@{deep-operator} .multiple-values {
+@{deep} .multiple-values {
   border-left: 1px solid var(--primary-light-3);
   border-right: 1px solid var(--primary-light-3);
   margin: 0 0.3rem;
