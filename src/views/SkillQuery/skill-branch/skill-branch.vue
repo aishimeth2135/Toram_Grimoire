@@ -1016,7 +1016,7 @@ export default {
         .replace(/\*/g, '×')
       );
 
-      dc.handleResult(v => v.replace(/(\d+\.)(\d{2,})/g, (m, m1, m2) => m1 + m2.slice(0, 2)));
+      dc.handleResult(v => v.replace(/(\d+\.)(\d{3,})/g, (m, m1, m2) => m1 + m2.slice(0, 3)));
 
       dc.isNumberValue() && toPercentage && dc.handleResult(v => numStrToPercentage(v));
       this.handleReplacedVariable(dc);
