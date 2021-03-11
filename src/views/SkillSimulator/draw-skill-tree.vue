@@ -14,11 +14,8 @@
         </template>
       </pattern>
     </defs>
-    <template v-for="(p) in drawTreeData.data">
-      <circle v-if="p.type == 'skill-circle'" @click="skillCircleClick($event, p.skill)"
-        :key="p.skill.id"
-        :cx="p.cx" :cy="p.cy" :r="p.r" :class="p.class" :style="p.style" />
-      <circle v-else-if="p.type == 'tree-dot'"
+    <template v-for="p in drawOtherData">
+      <circle v-if="p.type == 'tree-dot'"
         :key="`${p.type}x${p.cx}y${p.cy}`"
         :cx="p.cx" :cy="p.cy" :r="p.r" :class="p.class" />
       <text v-else-if="p.type == 'skill-name'"
@@ -38,6 +35,8 @@
         {{ p.innerText }}
       </text>
     </template>
+    <circle v-for="p in drawCirclesData" @click="skillCircleClick($event, p.skill)"
+      :key="p.skill.id" :cx="p.cx" :cy="p.cy" :r="p.r" :class="p.class" :style="p.style" />
   </svg>
 </template>
 
@@ -83,6 +82,14 @@ export default {
     skillIconPatternData() {
       const st = this.skillTreeType == 'level-skill-tree' ? this.skillTree.base : this.skillTree;
       return getSkillIconPatternData(st);
+    },
+    drawCirclesData() {
+      return this.drawTreeData.data
+        .filter(p => p.type == 'skill-circle')
+        .sort((a, b) => a.skill.id - b.skill.id);
+    },
+    drawOtherData() {
+      return this.drawTreeData.data.filter(p => p.type != 'skill-circle');
     }
   },
   methods: {

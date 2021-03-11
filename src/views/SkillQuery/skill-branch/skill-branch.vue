@@ -252,7 +252,7 @@
       <template v-else-if="branch.name == 'text'">
         <div class="content-line group-title" :class="{ 'gropu-unfold': branch.group.expansion }"
           v-if="branch.group" @click="toggleGroup()">
-          <cy-icon-text class="title-btn"
+          <cy-icon-text class="title-btn" style="--icon-width: 1.6rem;"
             :iconify-name="branch.group.expansion ? 'mdi-leaf-maple' : 'mdi-leaf-maple-off'" />
           <div class="text-scope" v-html="showData['text']"></div>
         </div>
@@ -261,9 +261,17 @@
         </div>
       </template>
       <template v-else-if="branch.name == 'tips'">
-        <div class="content-line">
-          <cy-button v-if="branch.group" type="icon-only" @click="toggleGroup()" style="--icon-width: 1.3rem;"
-            :iconify-name="branch.group.expansion ? 'mdi-flower-tulip' : 'eva-question-mark-circle-outline'" />
+        <div class="content-line group-title" :class="{ 'gropu-unfold': branch.group.expansion }"
+          v-if="branch.group" @click="toggleGroup()">
+          <cy-icon-text class="title-btn" style="--icon-width: 1.3rem;"
+            :iconify-name="branch.group.expansion ? 'mdi-leaf-maple' : 'mdi-leaf-maple-off'" />
+          <div class="text-scope tips">
+            <cy-icon-text iconify-name="bx-bx-message-rounded" text-size="small" text-color="light-3">
+              <span v-html="showData['text']"></span>
+            </cy-icon-text>
+          </div>
+        </div>
+        <div class="content-line" v-else>
           <div class="text-scope tips">
             <cy-icon-text iconify-name="bx-bx-message-rounded" text-size="small" text-color="light-3">
               <span v-html="showData['text']"></span>
@@ -1064,18 +1072,46 @@ export default {
           .replace(/\$__TEXT_CLV__/g, this.globalLangText('Skill Query/character level'))
           .replace(/\$__TEXT_STACK_(\d+)__/g, (m, m1) => stack[parseInt(m1, 10)]);
 
-        // const createFormulaText = (n, v) => `<span class="formula--fix key--${n}"><span class="name">${n.toUpperCase()}</span><span class="value">${v}</span></span>`;
+        let list = [], offset = 0;
+        v.split('').forEach((c, i) => {
+          if (c == '(') {
+            if (i == 0 || !/[_a-zA-Z0-9]/.test(v[i - 1 + offset])) {
+              v = v.slice(0, i + offset) + '#left~' + v.slice(i + offset +1);
+              offset += 5;
+              list.push('normal');
+            }
+            else
+              list.push('function');
+          }
+          if (c == ')') {
+            if (list[list.length - 1] == 'normal') {
+              v = v.slice(0, i + offset) + '~right#' + v.slice(i + offset +1);
+              offset += 6;
+            }
+            list.pop();
+          }
+        });
 
-        // const funList = [
-        //   { name: 'floor', reg: /Math\.floor\(([^()]+)\)/g },
-        //   { name: 'min', reg: /Math\.min\(([^()]+)\)/g },
-        //   { name: 'max', reg: /Math\.max\(([^()]+)\)/g }
-        // ];
-        // funList.forEach(p => {
-        //   const reg = p.reg;
-        //   while (v.match(reg))
-        //     v = v.replace(reg, (m, m1) => createFormulaText(p.name, m1));
-        // });
+        console.log(v);
+
+        const createFormulaText = (n, v) => `<span class="formula--fix key--${n}"><span class="name">${n.toUpperCase()}</span><span class="value">${v}</span></span>`;
+
+        const funList = [
+          {
+            name: 'floor', reg: /Math\.floor\(([^()]+)\)/g,
+            target: (m, m1) => '[' + m1 + ']'
+          },
+          { name: 'min', reg: /Math\.min\(([^()]+)\)/g },
+          { name: 'max', reg: /Math\.max\(([^()]+)\)/g }
+        ];
+        while (funList.find(p => v.match(p.reg)))
+          funList.forEach(p => v = v.replace(p.reg, p.target || ((m, m1) => createFormulaText(p.name, m1))));
+
+        v = v
+          .replace(/#left~/g, '(')
+          .replace(/~right#/g, ')');
+
+        v = v.replace(/,/g, '<span class="arg-separate"></span>');
 
         dc.handleResult(() => v);
       }
@@ -1188,7 +1224,6 @@ div.branch {
       }
 
       > .title-btn {
-        --icon-width: 1.6rem;
         margin: 0 0.3rem;
       }
     }
@@ -1491,8 +1526,12 @@ fieldset.extra-column {
     top: -0.7rem;
   }
 }
+
 @{deep} .formula--fix {
-  
+  border-radius: 0.4rem;
+  padding: 0.1rem 0.3rem;
+  padding-left: 0.4rem;
+
   &.key--floor {
     background-color: var(--primary-light);
     > .name {
@@ -1511,13 +1550,20 @@ fieldset.extra-column {
       color: var(--primary-blue-green);
     }
   }
-
-  padding: 0.1rem 0.3rem;
   > .value {
     background-color: var(--white);
-    border-radius: 0.2rem;
-    margin: 0 0.2rem;
-    padding: 0 0.2rem;
+    border-radius: 0.3rem;
+    margin-left: 0.3rem;
+    margin-right: 0.2rem;
+    padding: 0 0.4rem;
+
+    > .arg-separate {
+      display: inline-block;
+      height: 0.7em;
+      border-left: 1px solid var(--primary-light-4);
+      margin: 0 0.4rem;
+      margin-top: 0.15rem;
+    }
   }
 }
 
