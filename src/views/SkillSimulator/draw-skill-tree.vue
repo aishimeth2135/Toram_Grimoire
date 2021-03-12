@@ -18,11 +18,6 @@
       <circle v-if="p.type == 'tree-dot'"
         :key="`${p.type}x${p.cx}y${p.cy}`"
         :cx="p.cx" :cy="p.cy" :r="p.r" :class="p.class" />
-      <text v-else-if="p.type == 'skill-name'"
-        :key="`${p.type}x${p.x}y${p.y}`"
-        :x="p.x" :y="p.y" :class="p.class">
-        {{ p.innerText }}
-      </text>
       <line v-else-if="p.type == 'tree-line'"
         :key="`${p.type}x1${p.x1}y1${p.y1}x2${p.x2}y2${p.y2}`"
         :x1="p.x1" :y1="p.y1" :x2="p.x2" :y2="p.y2" />
@@ -35,15 +30,24 @@
         {{ p.innerText }}
       </text>
     </template>
-    <circle v-for="p in drawCirclesData" @click="skillCircleClick($event, p.skill)"
-      :key="p.skill.id" :cx="p.cx" :cy="p.cy" :r="p.r" :class="p.class" :style="p.style" />
+    <template v-for="(p, i) in drawCircleData">
+      <circle @click="skillCircleClick($event, p.skill)"
+        :key="p.skill.id"
+        :cx="p.cx" :cy="p.cy" :r="p.r"
+        :class="handleSkillCircleClass(p)"
+        :style="p.style" />
+      <text :key="p.skill.id + '--name'"
+        :x="drawNameData[i].x" :y="drawNameData[i].y" :class="drawNameData[i].class">
+        {{ drawNameData[i].innerText }}
+      </text>
+    </template>
   </svg>
 </template>
 
 <script>
 import CY from "@global-modules/cyteria.js";
 import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs } from "@lib/SkillSystem/module/DrawSkillTree.js";
-import { SkillTree, LevelSkillTree } from "@lib/SkillSystem/module/SkillElements.js";
+import { Skill, SkillTree, LevelSkill, LevelSkillTree } from "@lib/SkillSystem/module/SkillElements.js";
 
 function DoNothing() {
   // do nothing
@@ -63,6 +67,10 @@ export default {
     skillTreeType: {
       type: String,
       validator: v => ['normal', 'level-skill-tree'].indexOf(v) != -1
+    },
+    currentSkill: {
+      type: [Skill, LevelSkill],
+      default: null
     }
   },
   beforeCreate() {
@@ -83,16 +91,25 @@ export default {
       const st = this.skillTreeType == 'level-skill-tree' ? this.skillTree.base : this.skillTree;
       return getSkillIconPatternData(st);
     },
-    drawCirclesData() {
+    drawCircleData() {
       return this.drawTreeData.data
-        .filter(p => p.type == 'skill-circle')
-        .sort((a, b) => a.skill.id - b.skill.id);
+        .filter(p => p.type == 'skill-circle');
+    },
+    drawNameData() {
+      return this.drawTreeData.data
+        .filter(p => p.type == 'skill-name');
     },
     drawOtherData() {
-      return this.drawTreeData.data.filter(p => p.type != 'skill-circle');
+      return this.drawTreeData.data.filter(p => p.type != 'skill-circle' && p.type != 'skill-name');
     }
   },
   methods: {
+    handleSkillCircleClass(data) {
+      const ary = data.class.slice();
+      if (this.currentSkill == data.skill)
+        ary.push('selected');
+      return ary;
+    },
     skillCircleClick(e, skill) {
       this.skillCircleClickListener(e, skill);
     },
@@ -120,7 +137,7 @@ export default {
       cursor: pointer;
       transition: 0.3s;
 
-      &:hover, &.cur {
+      &:hover, &.cur, &.selected {
         stroke: var(--primary-water-blue);
       }
 
@@ -128,7 +145,7 @@ export default {
         stroke: #BBB;
       }
 
-      &:not(.disable):hover + text.skill-name {
+      &:not(.disable):hover + text.skill-name, &.selected + text.skill-name {
         display: block;
       }
 

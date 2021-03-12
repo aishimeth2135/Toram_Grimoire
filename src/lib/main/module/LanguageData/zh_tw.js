@@ -79,7 +79,8 @@ export default function() {
         'Save successfully': '存檔成功。',
         'Load successfully': '讀取成功。',
         'Load failed': '讀取失敗。',
-        'Wrong type of file': '讀取的檔案必須為文字（.txt）檔。'
+        'Wrong type of file': '讀取的檔案必須為文字（.txt）檔。',
+        'Must be operated on the homepage': '為避免發生無法預期的錯誤，此功能限制只能在首頁使用。'
       }
     },
   };

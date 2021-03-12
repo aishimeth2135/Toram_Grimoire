@@ -116,7 +116,10 @@
         <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
           {{ langText('storage backup/warn 2') }}
         </cy-icon-text>
-        <div class="buttons">
+        <cy-default-tips iconify-name="mdi-ghost" v-if="$route.path != '/'">
+          {{ langText('storage backup/Must be operated on the homepage') }}
+        </cy-default-tips>
+        <div class="buttons" v-else>
           <cy-button iconify-name="ic-round-save" type="border" @click="saveLocalStorage">
             {{ langText('storage backup/button texts/save') }}
           </cy-button>

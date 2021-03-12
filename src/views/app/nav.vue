@@ -5,8 +5,8 @@
         <template v-for="(item, i) in items">
           <iconify-icon v-if="i != 0" name="ic-round-keyboard-arrow-right" :key="item.path + '-icon'" />
           <span :key="item.path + '-text'">
-            <router-link v-if="i != items.length - 1" :to="item.path">
-              {{ item.title }}
+            <router-link v-if="i != items.length - 1" :to="item.path" v-slot="{ navigate }" custom>
+              <span class="link-btn" @click="navigate" @keypress.enter="navigate" role="link">{{ item.title }}</span>
             </router-link>
             <template v-else>
               {{ item.title }}
@@ -66,6 +66,12 @@
       color: var(--primary-light-2);
       margin: 0 0.6rem;
     }
+  }
+
+  .link-btn {
+    color: var(--primary-light-3);
+    text-decoration: underline;
+    cursor: pointer;
   }
 
   .setting-button {

@@ -42,7 +42,8 @@
             </cy-button>
           </div>
           <div class="skill-tree-container">
-            <draw-skill-tree v-if="currentSkillTree != null" v-bind="drawSkillTreeOptions" :skill-tree="currentSkillTree" />
+            <draw-skill-tree v-if="currentSkillTree != null"
+              v-bind="drawSkillTreeOptions" :skill-tree="currentSkillTree" />
           </div>
         </div>
       </template>
@@ -283,7 +284,7 @@ export default {
         currentIndex_st: -1, // Skill Tree
         visible: false
       },
-      drawSkillTreeOptions: {
+      drawSkillTreeBaseOptions: {
         skillTreeType: 'normal',
         skillCircleClickListener(e, skill) {
           if (skill.name != '@lock')
@@ -352,6 +353,12 @@ export default {
     }
   },
   computed: {
+    drawSkillTreeOptions() {
+      return {
+        currentSkill: this.currentSkillState ? this.currentSkillState.skill : null,
+        ...this.drawSkillTreeBaseOptions
+      };
+    },
     equipmentCategoryList() {
       const list = [{
         name: 'main-weapon',
