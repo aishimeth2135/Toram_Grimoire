@@ -2,11 +2,11 @@ export default function() {
   return {
     'Home': {
       'character-simulator': {
-        'title': '角色模擬器',
+        'title': '角色模擬',
         'content': '待補'
       },
       'skill-simulator': {
-        'title': '技能模擬器',
+        'title': '技能模擬',
         'content': '待補'
       },
       'skill-query': {

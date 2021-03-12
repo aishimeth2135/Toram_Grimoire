@@ -1,13 +1,17 @@
 <template>
   <article class="home">
     <section class="main">
-      <div class="title">Cy's Grimoire</div>
+      <router-link to="/bubble/potum" v-slot="{ navigate }" custom>
+        <div class="title" @click="navigate">Cy's Grimoire</div>
+      </router-link>
     </section>
     <section class="link-buttons">
       <div v-for="(data) in columns" class="column" :key="data.name + '|' + data.path">
-        <router-link tag="div" :to="data.path" class="title">
-          <div class="text">{{ langText(data.name + '/title') }}</div>
-          <iconify-icon :name="data.icon" class="icon" />
+        <router-link :to="data.path" v-slot="{ navigate }" custom>
+          <div class="title" @click="navigate" role="link">
+            <div class="text">{{ langText(data.name + '/title') }}</div>
+            <iconify-icon :name="data.icon" class="icon" />
+          </div>
         </router-link>
       </div>
     </section>
@@ -66,69 +70,83 @@
 </script>
 
 <style lang="less" scoped>
-  .home {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+.home {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  padding-top: 4rem;
+  padding-bottom: 5rem;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--primary-light-2);
+  width: 100%;
+
+  > .title {
+    font-size: 2.8rem;
   }
+}
 
-  .main {
+.link-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.column {
+  display: inline-block;
+  margin: 1.3rem;
+
+  > .title {
+    width: 9rem;
+    height: 9rem;
+    border-radius: 50%;
+    border: 2px solid var(--primary-light-2);
     display: flex;
+    align-items: center;
     justify-content: center;
-    padding-top: 4rem;
-    padding-bottom: 5rem;
-    margin-bottom: 3rem;
-    border-bottom: 1px solid var(--primary-light-2);
-    width: 100%;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
 
-    > .title {
-      font-size: 2.8rem;
+    > .text {
+      font-size: 1.1rem;
     }
-  }
 
-  .link-buttons {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .column {
-    display: inline-block;
-    margin: 1.5rem;
-
-    > .title {
-      width: 10rem;
-      height: 10rem;
+    > .icon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2.7rem;
+      height: 2.7rem;
+      fill: currentcolor;
+      color: var(--primary-light-2);
+      background-color: var(--white);
       border-radius: 50%;
-      border: 2px solid var(--primary-light-2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      cursor: pointer;
-      transition: 0.3s;
+    }
 
-      > .text {
-        font-size: 1.1rem;
-      }
-
+    &:hover {
+      border-color: var(--primary-light-3);
       > .icon {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 3rem;
-        height: 3rem;
-        fill: currentcolor;
-        color: var(--primary-light-2);
-        background-color: var(--white);
-      }
-
-      &:hover {
-        border-color: var(--primary-light-3);
-        > .icon {
-          color: var(--primary-light-3);
-        }
+        color: var(--primary-light-3);
+        animation: move-rotate 1.3s ease;
       }
     }
   }
+}
+@keyframes move-rotate {
+  0%{
+    top: 3.1rem;
+    left: 3.1rem;
+    transform: rotate(-135deg) translateX(4.5rem) rotate(135deg);
+  }
+  100%{
+    top: 3.1rem;
+    left: 3.1rem;
+    transform: rotate(225deg) translateX(4.5rem) rotate(-225deg);
+  }
+}
 </style>

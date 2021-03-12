@@ -346,7 +346,11 @@ class LevelSkill {
     this.starGemLevel(this._starGemLevel + v);
     return this._starGemLevel;
   }
+
+  get id() {
+    return this.base.id;
+  }
 }
 
 
-export { SkillRoot, SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch, LevelSkillTree };
+export { SkillRoot, SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch, LevelSkillTree, LevelSkill };

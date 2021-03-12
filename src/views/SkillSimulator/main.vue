@@ -3,9 +3,13 @@
     <div class="main" v-if="currentSkillRootState">
       <cy-sticky-header class="top transparent">
         <template v-slot:buttons-scope>
-          <cy-button type="icon-only" @click="openJumpSkillTree" :class="{selected: jumpSkillTreeVisible}" iconify-name="dashicons:flag" data-user-guide-set="4-1" />
+          <cy-button type="icon-only" @click="openJumpSkillTree" :class="{selected: jumpSkillTreeVisible}"
+          iconify-name="dashicons:flag" data-user-guide-set="4-1" />
           <cy-button type="icon-only" @click="openSelectSkillTree" :class="{selected: selectSkillTreeVisible}" iconify-name="ic:round-library-add" data-user-guide-set="3-1" />
-          <cy-button type="icon-only" @click="openBuildInformation" :class="{selected: buildInformationVisible}" :iconify-name="buildInformationVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" data-user-guide-set="2-1" />
+          <cy-button type="icon-only" @click="openBuildInformation"
+            :class="{selected: buildInformationVisible}"
+            :iconify-name="buildInformationVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" 
+            data-user-guide-set="2-1" />
         </template>
         <cy-transition type="fade">
           <div class="inner-menu select-skill-tree" v-if="selectSkillTreeVisible">
@@ -40,8 +44,8 @@
               </div>
               <span v-if="jumpSkillTreeShowDetail" class="title">{{ langText('main menu/star gem list') }}</span>
               <div v-show="jumpSkillTreeShowDetail && currentStarGemList.length != 0" class="content">
-                <cy-button v-for="(o) in currentStarGemList" type="line" class="icon-small"
-                  :key="o.skillTreeState.origin.id"
+                <cy-button v-for="o in currentStarGemList" type="line" class="icon-small"
+                  :key="'star-gem--' + o.skillTreeState.origin.id + '-' + o.skill.id"
                   @click="jumpToSkillTree(o.skillTreeState.origin)" iconify-name="mdi:judaism">
                   {{ o.skill.base.name }} Lv.{{ o.skill.starGemLevel() }}
                   <template v-slot:content-right>
@@ -57,11 +61,11 @@
                   <span>{{ langText('no star gem set') }}</span>
                 </div>
               </div>
-              <template v-for="(stc) in currentSkillRootState.skillTreeCategoryStates.filter(p => p.visible)">
-                <div class="title" :key="stc.origin.id + 'title'">{{ stc.origin.name }}</div>
-                <div class="content" :key="stc.origin.id + 'content'">
-                  <cy-button v-for="(st) in stc.skillTreeStates.filter(p => p.visible)"
-                    type="line" icon-id="rabbit-book" :key="st.origin.id"
+              <template v-for="stc in currentSkillRootState.skillTreeCategoryStates.filter(p => p.visible)">
+                <div class="title" :key="stc.origin.id + '--title'">{{ stc.origin.name }}</div>
+                <div class="content" :key="stc.origin.id + '--content'">
+                  <cy-button v-for="st in stc.skillTreeStates.filter(p => p.visible)"
+                    type="line" icon-id="rabbit-book" :key="'skill-tree--' + st.origin.id"
                     @click="jumpToSkillTree(st.origin)"
                     class="icon-small">
                     {{ st.origin.name }}
@@ -339,6 +343,7 @@ export default {
     init();
   },
   created() {
+    // this.$store.dispatch('character/loadCharacterSimulator', { index: 0, resetOption: {} });
     if (this.skillRootStates.length == 0)
       this.createBuild();
     else

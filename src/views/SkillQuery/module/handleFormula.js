@@ -317,31 +317,58 @@ export default function (str, { skillState, effectState, branch }) {
 //   }
 // }
 
+//console.log(recast.types.namedTypes);
+
 function handle2(str) {
   try {
     const ast = recast.parse(str);
+    // console.log('-----------------');
+    // console.log(str);
+    // console.log(ast.program.body[0]);
 
     const builders = recast.types.builders;
+    const TNT = recast.types.namedTypes;
+
+    const back = (self, path) => path.parentPath.parentPath.parentPath ?
+      self.traverse(path.parentPath.parentPath.parentPath) :
+      self.traverse(path);
+
+
+    const calc = (a, operator, b) => {
+      let v = 0;
+      if (operator == '+')
+        v = a + b;
+      else if (operator == '-')
+        v = a - b;
+      else if (operator == '*')
+        v = a * b;
+      else if (operator == '/')
+        v = a / b;
+      return v;
+    }
 
     recast.visit(ast, {
       visitBinaryExpression(path) {
         const node = path.node;
 
-        if (node.left.type == 'Literal' && node.right.type == 'Literal') {
-          let v;
-          if (node.operator == '+')
-            v = node.left.value + node.right.value;
-          else if (node.operator == '-')
-            v = node.left.value - node.right.value;
-          else if (node.operator == '*')
-            v = node.left.value * node.right.value;
-          else if (node.operator == '/')
-            v = node.left.value / node.right.value;
+        if (TNT.Literal.check(node.right)) {
+          if (TNT.Literal.check(node.left) || (TNT.UnaryExpression.check(node.left) && node.left.operator == '-')) {
+            const v = calc(!TNT.UnaryExpression.check(node.left) ? node.left.value : -1 * node.left.argument.value,
+              node.operator, node.right.value);
+            path.parentPath.get(path.name).replace(builders.literal(v));
 
-          path.parentPath.get(path.name).replace(builders.literal(v));
-          if (path.parentPath.parentPath.parentPath)
-            this.traverse(path.parentPath.parentPath.parentPath);
-          return;
+            back(this, path);
+            return;
+          }
+          if (TNT.BinaryExpression.check(node.left) && (node.operator == '*' || node.operator == '/') &&
+            TNT.Literal.check(node.left.right) && node.left.operator == '*') {
+            const v = calc(node.right.value, node.operator, node.left.right.value);
+            path.get('right').replace(builders.literal(v));
+            path.get('left').replace(node.left.left);
+
+            back(this, path);
+            return;
+          }
         }
 
         this.traverse(path);
@@ -349,12 +376,12 @@ function handle2(str) {
       visitCallExpression(path) {
         const node = path.node;
 
-        if (node.arguments.every(p => p.type == 'Literal')) {
+        if (node.arguments.every(p => TNT.Literal.check(p))) {
           const args = node.arguments.map(p => p.value);
           
           const pros = [];
           let cur = node.callee;
-          while (cur.object.type == 'MemberExpression') {
+          while (TNT.MemberExpression.check(cur.object)) {
             pros.push(cur.property.name);
             cur = cur.object;
           }
@@ -364,8 +391,8 @@ function handle2(str) {
 
           const res = cur(...args);
           path.parentPath.get(path.name).replace(builders.literal(res));
-          if (path.parentPath.parentPath.parentPath)
-            this.traverse(path.parentPath.parentPath.parentPath);
+
+          back(this, path);
           return;
         }
         this.traverse(path);
@@ -373,13 +400,13 @@ function handle2(str) {
       visitMemberExpression(path) {
         const node = path.node;
 
-        if (node.computed && node.object.type == 'ArrayExpression') {
+        if (node.computed && TNT.ArrayExpression.check(node.object)) {
           const ary = node.object.elements;
-          if (ary.every(p => p.type == 'Literal') && node.property.type == 'Literal') {
+          if (ary.every(p => TNT.Literal.check(p)) && TNT.Literal.check(node.property)) {
             const v = ary[node.property.value].value;
             path.parentPath.get(path.name).replace(builders.literal(v));
-            if (path.parentPath.parentPath.parentPath)
-              this.traverse(path.parentPath.parentPath.parentPath);
+            
+            back(this, path);
             return;
           }
         }
@@ -390,6 +417,7 @@ function handle2(str) {
 
     const res = recast.print(ast).code
       .replace(/\((\d+)\)/g, (m, m1) => m1);
+    // console.log(res);
     return res;
   } catch (e) {
     console.error(e);
