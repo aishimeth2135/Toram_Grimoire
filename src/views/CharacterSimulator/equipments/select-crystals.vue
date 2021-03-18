@@ -213,6 +213,7 @@ export default {
   @{deep} .stats {
     padding-left: 0.5rem;
     padding-top: 0.2rem;
+    width: 100%;
   }
 }
 </style>

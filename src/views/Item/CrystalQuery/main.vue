@@ -75,7 +75,7 @@
           </cy-flex-layout>
           <div class="stats">
             <show-stat v-for="stat in currentCrystal.stats"
-              :stat="stat" :key="stat.baseName()"
+              :stat="stat" :key="stat.title()"
               :negative-value="stat.statValue() < 0" />
           </div>
         </div>
