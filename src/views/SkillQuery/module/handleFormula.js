@@ -24,16 +24,17 @@ export default function (str, { skillState, effectState, branch }) {
   str = str.replace(/SLv/g, slv)
     .replace(/CLv/g, clv);
 
-  let stack = []; // eslint-disable-line
+  const stack = [];
 
   if (branch && branch.attrs['stack_id']) {
     const ss = effectState.stackStates;
-    stack = branch.attrs['stack_id'].split(/\s*,\s*/)
+    const t = branch.attrs['stack_id'].split(/\s*,\s*/)
       .map(p => parseInt(p, 10))
       .map(p => {
         const t = ss.find(a => a.id == p);
         return t ? t.value : 0;
       });
+    stack.push(...t);
     str = str.replace(/stack(?!\[)/g, 'stack[0]');
   } else {
     str = str.replace(/stack(\[\d+\])?/g, '0');

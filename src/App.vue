@@ -26,14 +26,14 @@
   };
 </script>
 <style lang="less" scoped>
-  @deep-operator: ~'>>>';
+  @deep: ~'>>>';
 
   #app {
     .app-main {
       min-height: calc(100vh - 10rem);
     }
 
-    @{deep-operator} .main-section {
+    @{deep} .main-section {
       max-width: 50rem;
       margin-left: auto;
       margin-right: auto;
