@@ -567,7 +567,7 @@ export default {
           SubWeapon.TYPE_DAGGER,
           MainWeapon.TYPE_MAGIC_DEVICE,
           MainWeapon.TYPE_KNUCKLE,
-          MainWeapon.TYPE_HALBERD,
+          MainWeapon.TYPE_KATANA,
           EquipmentField.EMPTY
         ];
         const bodys = [
@@ -588,8 +588,8 @@ export default {
         if (mainField) {
           main = mainField == MainWeapon.TYPE_ONE_HAND_SWORD &&
             subField && subField == MainWeapon.TYPE_ONE_HAND_SWORD ?
-            9 :
-            mains.indexOf(mainField);
+              9 :
+              mains.indexOf(mainField);
         }
         if (subField && main != 9) {
           sub = subs.indexOf(subField);
