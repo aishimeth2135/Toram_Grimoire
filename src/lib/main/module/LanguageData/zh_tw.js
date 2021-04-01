@@ -21,7 +21,7 @@ export default function() {
       'LocalStorage is inavailable': '此瀏覽器版本無法使用內建儲存功能。',
     },
     'Loading Page': {
-      'bottom tips': '載入資料中，請稍後...<br />若載入途中發生錯誤，請先試著重新整理網頁。'
+      'bottom tips': '初次載入需要較長的時間，請稍後...<br />若載入途中發生錯誤，請先試著重新整理網頁。'
     },
     'Footer': {
       'baha home': '巴哈小屋',

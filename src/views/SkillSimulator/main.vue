@@ -3,20 +3,22 @@
     <div class="main" v-if="currentSkillRootState">
       <cy-sticky-header class="top transparent">
         <template v-slot:buttons-scope>
-          <cy-button type="icon-only" @click="openJumpSkillTree" :class="{selected: jumpSkillTreeVisible}"
-          iconify-name="dashicons:flag" data-user-guide-set="4-1" />
-          <cy-button type="icon-only" @click="openSelectSkillTree" :class="{selected: selectSkillTreeVisible}" iconify-name="ic:round-library-add" data-user-guide-set="3-1" />
+          <cy-button type="icon-only" @click="openJumpSkillTree"
+            :selected="jumpSkillTreeVisible"
+            iconify-name="dashicons:flag" />
+          <cy-button type="icon-only" @click="openSelectSkillTree"
+            :selected="selectSkillTreeVisible"
+            iconify-name="ic:round-library-add" />
           <cy-button type="icon-only" @click="openBuildInformation"
-            :class="{selected: buildInformationVisible}"
-            :iconify-name="buildInformationVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" 
-            data-user-guide-set="2-1" />
+            :selected="buildInformationVisible"
+            :iconify-name="buildInformationVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" />
         </template>
         <cy-transition type="fade">
           <div class="inner-menu select-skill-tree" v-if="selectSkillTreeVisible">
-            <template v-for="(stc) in currentSkillRootState.skillTreeCategoryStates.filter(p => p.skillTreeStates.length != 0)">
+            <template v-for="stc in currentSkillRootState.skillTreeCategoryStates.filter(p => p.skillTreeStates.length != 0)">
               <div class="title" :key="stc.origin.id + '-title'">{{ stc.origin.name }}</div>
               <div class="content" :key="stc.origin.id + '-content'">
-                <cy-button v-for="(st) in stc.skillTreeStates" type="line"
+                <cy-button v-for="st in stc.skillTreeStates" type="line"
                   class="icon-small selection" icon-id="rabbit-book"
                   :key="stc.origin.id + '-' + st.origin.id"
                   @click="toggleSkillTreeVisible(stc, st)"
@@ -37,9 +39,10 @@
             </cy-default-tips>
             <template v-else>
               <div class="top" style="margin-bottom: 0.8rem;">
-                <cy-button class="inline" iconify-name="ic:round-details"
+                <cy-button iconify-name="ic:round-details" type="border"
                   @click="toggleJumpSkillTreeShowDetail">
-                  {{ langText(jumpSkillTreeShowDetail ? 'skill tree: show normal' : 'skill tree: show details') }}
+                  {{ langText(jumpSkillTreeShowDetail ?
+                      'skill tree: show normal' : 'skill tree: show details') }}
                 </cy-button>
               </div>
               <span v-if="jumpSkillTreeShowDetail" class="title">{{ langText('main menu/star gem list') }}</span>
@@ -55,13 +58,11 @@
                   </template>
                 </cy-button>
               </div>
-              <div v-if="jumpSkillTreeShowDetail && currentStarGemList.length == 0" class="default-tips">
-                <div class="container">
-                  <iconify-icon name="mdi:ghost"></iconify-icon>
-                  <span>{{ langText('no star gem set') }}</span>
-                </div>
-              </div>
-              <template v-for="stc in currentSkillRootState.skillTreeCategoryStates.filter(p => p.visible)">
+              <cy-default-tips v-if="jumpSkillTreeShowDetail && currentStarGemList.length == 0"
+                iconify-name="mdi:ghost">
+                {{ langText('no star gem set') }}
+              </cy-default-tips>
+              <template v-for="stc in visibleSkillTreeCategoryStates">
                 <div class="title" :key="stc.origin.id + '--title'">{{ stc.origin.name }}</div>
                 <div class="content" :key="stc.origin.id + '--content'">
                   <cy-button v-for="st in stc.skillTreeStates.filter(p => p.visible)"
@@ -82,30 +83,33 @@
         </cy-transition>
         <cy-transition type="fade">
           <div class="inner-menu build-information" v-show="buildInformationVisible">
-            <cy-title-input iconify-name="ant-design:build-outlined">
-              <input type="text" v-model="currentSkillRootState.name" />
-              <cy-button type="icon-only"
-                :iconify-name="selectBuildVisible ?
-                  'ic-round-keyboard-arrow-up' :
-                  'ic-round-keyboard-arrow-down'"
-                @click="selectBuildVisible = !selectBuildVisible" />
-            </cy-title-input>
-            <cy-transition type="fade">
-              <div class="select-build" v-if="selectBuildVisible">
-                <cy-transition-group type="fade" tag="div">
-                  <cy-button v-for="(state, i) in skillRootStates" type="line" class="selection"
-                    iconify-name="ant-design:build-outlined" :key="state.stateId"
-                    :selected="currentSkillRootStateIndex == i"
-                    @click="selectCurrentSkillRootState(i)">
+            <cy-options>
+              <template #title>
+                <cy-list-item>
+                  <cy-icon-text iconify-name="ant-design:build-outlined">
+                    {{ currentSkillRootState ?
+                      currentSkillRootState.name : langText('main menu/build name') }}
+                  </cy-icon-text>
+                </cy-list-item>
+              </template>
+              <template #options>
+                <cy-list-item v-for="(state, i) in skillRootStates"
+                  :key="state.stateId" :selected="currentSkillRootStateIndex == i"
+                  @click="selectCurrentSkillRootState(i)">
+                  <cy-icon-text iconify-name="ant-design:build-outlined">
                     {{ state.name }}
-                  </cy-button>
-                </cy-transition-group>
-                <span @click.stop="createBuild" class="Cyteria Button simple no-border">
-                  <iconify-icon name="ic:round-add-circle-outline"></iconify-icon>
-                  <lang-text lang-id="Skill Simulator/Controller/create build" class="text"></lang-text>
-                </span>
-              </div>
-            </cy-transition>
+                  </cy-icon-text>
+                </cy-list-item>
+                <cy-list-item @click="createBuild">
+                  <cy-icon-text iconify-name="ic:round-add-circle-outline" text-color="light-3">
+                    {{ langText('create build') }}
+                  </cy-icon-text>
+                </cy-list-item>
+              </template>
+            </cy-options>
+            <cy-title-input iconify-name="ant-design:build-outlined" class="input-build-name">
+              <input type="text" v-model="currentSkillRootState.name" />
+            </cy-title-input>
             <div class="buttons-content">
               <cy-button type="line" @click="copyCurrentBuild" iconify-name="mdi:content-copy">
                 {{ getLangText('global/copy') }}
@@ -128,50 +132,56 @@
         </cy-transition>
       </cy-sticky-header>
       <skill-root :skill-root-state="currentSkillRootState"></skill-root>
-      <cy-bottom-content class="bottom-menu">
-        <template #custom>
-          <cy-flex-layout class="skill-point-information">
-            <template #right-content>
-              <cy-icon-text iconify-name="gg-shape-rhombus" class="mr-normal">
-              {{ skillPointCostSum }}
-              </cy-icon-text>
-              <cy-icon-text iconify-name="mdi:judaism">
+      <div class="bottom-menu">
+        <div class="skill-point-information">
+          <div class="column">
+            <cy-icon-text iconify-name="gg-shape-rhombus" text-size="small">
+              {{ langText('skill level') }}
+              <template v-slot:value>
+                {{ skillPointCostSum }}
+              </template>
+            </cy-icon-text>
+          </div>
+          <div class="column">
+            <cy-icon-text iconify-name="mdi:judaism" text-size="small" display="block">
+              {{ langText('star gem level') }}
+              <template v-slot:value>
                 {{ starGemSkillPointSum }}
-              </cy-icon-text>
+              </template>
+            </cy-icon-text>
+          </div>
+        </div>
+        <div class="content">
+          <cy-flex-layout class="top">
+            <cy-flex-layout type="inline" class="buttons" :class="{ hide: bottomMenuExtraMenuVidsible }">
+              <cy-button v-for="(state) in setButtonStates" :key="state.type"
+                :iconify-name="state.icons[state.currentIndex]" class="inline"
+                style="margin-right: 0.6rem;"
+                @click="setButtonClick(state.type)">
+                {{ state.texts[state.currentIndex] }}
+              </cy-button>
+            </cy-flex-layout>
+            <template #right-content>
+              <cy-button type="icon-only"
+                :iconify-name="bottomMenuExtraMenuVidsible ? 'heroicons-solid:menu-alt-4' : 'heroicons-solid:menu'"
+                @click="bottomMenuExtraMenuVidsible = !bottomMenuExtraMenuVidsible" />
             </template>
           </cy-flex-layout>
-          <div class="content">
-            <cy-flex-layout class="top">
-              <cy-flex-layout type="inline" class="buttons" :class="{ hide: bottomMenuExtraMenuVidsible }">
-                <cy-button v-for="(state) in setButtonStates" :key="state.type"
-                  :iconify-name="state.icons[state.currentIndex]" class="inline"
-                  style="margin-right: 0.6rem;"
-                  @click="setButtonClick(state.type)">
-                  {{ state.texts[state.currentIndex] }}
+          <cy-transition type="fade">
+            <div class="menus" v-show="bottomMenuExtraMenuVidsible">
+              <div v-for="(state) in setButtonStates" :key="state.type" class="select-menu">
+                <cy-button v-for="(value, j) in state.values" :key="value"
+                  type="line" :iconify-name="state.icons[j]"
+                  @click="setButtonSelected(state.type, j)"
+                  class="icon-small selection"
+                  :class="{selected: state.currentIndex == j}">
+                  {{ state.texts[j] }}
                 </cy-button>
-              </cy-flex-layout>
-              <template #right-content>
-                <cy-button type="icon-only"
-                  :iconify-name="'ic-round-keyboard-arrow-' + (bottomMenuExtraMenuVidsible ? 'down' : 'up')"
-                  @click="bottomMenuExtraMenuVidsible = !bottomMenuExtraMenuVidsible" />
-              </template>
-            </cy-flex-layout>
-            <cy-transition type="fade">
-              <div class="menus" v-show="bottomMenuExtraMenuVidsible">
-                <div v-for="(state) in setButtonStates" :key="state.type" class="select-menu">
-                  <cy-button v-for="(value, j) in state.values" :key="value"
-                    type="line" :iconify-name="state.icons[j]"
-                    @click="setButtonSelected(state.type, j)"
-                    class="icon-small selection"
-                    :class="{selected: state.currentIndex == j}">
-                    {{ state.texts[j] }}
-                  </cy-button>
-                </div>
               </div>
-            </cy-transition>
-          </div>
-        </template>
-      </cy-bottom-content>
+            </div>
+          </cy-transition>
+        </div>
+      </div>
       <cy-window :visible="previewExportedImageWindowVisible"
         @close-window="previewExportedImageWindowVisible = false" class="frozen-top width-auto">
         <template #title>
@@ -187,7 +197,14 @@
             </template>
           </cy-flex-layout>
         </template>
-        <img :src="currentExportedImage || '#'" />
+        <div style="max-width: 28rem; border: 1px solid var(--primary-light); padding: 0.8rem; border-radius: 0.3rem; margin-bottom: 1rem">
+          <cy-icon-text iconify-name="ic-outline-info" text-size="small" text-color="light-3">
+            {{ langText('main menu/preview exported image: tips 1') }}
+          </cy-icon-text>
+        </div>
+        <div>
+          <img :src="currentExportedImage || '#'" />
+        </div>
       </cy-window>
       <cy-window :visible="previewExportedTextWindowVisible"
         @close-window="previewExportedTextWindowVisible = false"
@@ -225,10 +242,6 @@ import { getSkillElementId } from "./module/methods.js";
 import { computeDrawSkillTreeData, GetDrawSetting } from "@lib/SkillSystem/module/DrawSkillTree.js";
 
 import init from "./init.js";
-
-function Lang(s, vs) {
-  return GetLang('Skill Simulator/Controller/' + s, vs);
-}
 
 export default {
   store,
@@ -309,7 +322,6 @@ export default {
       previewExportedImageWindowVisible: false,
       previewExportedTextWindowVisible: false,
       bottomMenuExtraMenuVidsible: false,
-      selectBuildVisible: false,
       setButtonStates: [
         createSetButtonState('operating', ['ic:round-add-circle-outline',
           'ic:round-remove-circle-outline'
@@ -403,11 +415,14 @@ export default {
         });
       });
       return sum;
+    },
+    visibleSkillTreeCategoryStates() {
+      return this.currentSkillRootState.skillTreeCategoryStates.filter(p => p.visible);
     }
   },
   methods: {
     beforeExportConfirm() {
-      const t = this.currentSkillRootState.skillTreeCategoryStates.find(a => a.visible);
+      const t = this.visibleSkillTreeCategoryStates.length === 0;
       if (!t)
         ShowMessage(this.langText('tips/must have at least one skill tree to export'), 'mdi-ghost', 'must have at least one skill tree to export');
       return t;
@@ -417,7 +432,7 @@ export default {
         ShowMessage(GetLang('global/copy to clipboard finished'));
     },
     downloadExportedImage() {
-      if (this.currentExportedImage == null) {
+      if (this.currentExportedImage === null) {
         ShowMessage(this.langText('tips/download exported image: error'));
         return;
       }
@@ -449,7 +464,7 @@ export default {
           res += '<br />';
         });
       });
-      if (starGems.length != 0) {
+      if (starGems.length !== 0) {
         res = this.langText('main menu/star gem list') + '<br />' +
           starGems.reduce((c, p) => c + '｜' + p.base.name + ' Lv.' + p.starGemLevel() + '<br />', '') +
           '<br />' + res;
@@ -577,10 +592,10 @@ export default {
           left_icon_scope_text_ml = 8,
           st_extra_top_pd = 12,
           skill_icon_width = (drawSetting.gridWidth - drawSetting.iconPadding * 2),
-          topInfo_topBottomPd = 16,
+          topInfo_topBottomPd = 20,
           topInfo_icon_h = 48,
           topInfo_icon_mr = 12,
-          topInfo_text_h = 25,
+          topInfo_text_h = 27,
           topInfo_h_sum = topInfo_topBottomPd * 2 + topInfo_text_h * 2,
           watermark_line_h = 65,
           starGemScope_topBottomPd = 16,
@@ -640,7 +655,7 @@ export default {
               ctx.arc(p.cx, p.cy, p.r, 0, Math.PI * 2);
               ctx.stroke();
             } else if (p.type == 'skill-level-text' || p.type == 'star-gem-level-text') {
-              ctx.font = "1rem 'Itim'";
+              ctx.font = `${CY.element.convertRemToPixels(1)}px 'Itim'`;
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
               ctx.fillStyle = body_cs.getPropertyValue(
@@ -650,7 +665,7 @@ export default {
             }
           });
 
-          ctx.font = '1.1rem ' + fontFamily;
+          ctx.font = `${CY.element.convertRemToPixels(1.1)}px ${fontFamily}`;
           ctx.textAlign = 'left';
           ctx.textBaseline = 'middle';
           ctx.fillStyle = pcolor4;
@@ -694,7 +709,7 @@ export default {
 
         // init
         let cur_y = 0;
-        fctx.font = '1rem ' + fontFamily;
+        fctx.font = `${CY.element.convertRemToPixels(1)}px ${fontFamily}`;
         fctx.textBaseline = 'middle';
         fctx.fillStyle = pcolor4;
 
@@ -899,7 +914,7 @@ export default {
       this.jumpSkillTreeVisible = false;
     },
     langText(s, vs) {
-      return Lang(s, vs);
+      return GetLang('Skill Simulator/' + s, vs);
     },
     getLangText(s, vs) {
       return GetLang(s, vs);
@@ -971,9 +986,8 @@ export default {
           }
         }
 
-        >.select-build {
-          padding: 0.6rem 0;
-          border-bottom: 1px solid var(--primary-light-2);
+        > .input-build-name {
+          margin-top: 1rem;
         }
       }
     }
@@ -981,17 +995,33 @@ export default {
 
   >.bottom-menu {
     z-index: 2;
+    position: sticky;
+    bottom: 0.6rem;
+    margin: 0 0.6rem;
 
-    @{deep} .skill-point-information {
-      padding: 0.3rem 0.4rem;
+    > .skill-point-information {
+      padding: 0.5rem 0.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      > .column {
+        border: 1px solid var(--primary-light);
+        padding: 0.3rem 0.6rem;
+        display: inline-block;
+        & + .column {
+          margin-left: 0.6rem;
+        }
+      }
     }
 
-    @{deep} .content {
-      border-top: 1px solid var(--primary-light);
+    > .content {
       background-color: var(--white);
+      border: 1px solid var(--primary-light-2);
+      border-radius: 1.5rem;
+      padding: 0.5rem 0.8rem;
 
       > .top {
-        padding: 0.3rem 0;
 
         > .buttons {
           white-space: nowrap;

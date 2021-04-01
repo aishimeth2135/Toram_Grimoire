@@ -7,6 +7,9 @@
     <span v-else-if="$slots['default']" class="text">
       <slot></slot>
     </span>
+    <span v-if="$slots['value']" class="value">
+      <slot name="value"></slot>
+    </span>
     <slot name="extra"></slot>
   </span>
 </template>

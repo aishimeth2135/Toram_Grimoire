@@ -20,12 +20,17 @@ const store = new Vuex.Store({
     initSucceed(state) {
       state.status = 1;
     },
-    initFinished(state) {
+    initBeforeFinished(state) {
       if (state.status != 1)
         throw new Error('[ERROR] view init.');
       state.status = 2;
+    },
+    initFinished(state) {
+      if (state.status != 2)
+        throw new Error('[ERROR] view init.');
+      state.status = 3;
       state.initItems = [];
-    }
+    },
   },
   actions: {
     startInit({ state, commit }) {
