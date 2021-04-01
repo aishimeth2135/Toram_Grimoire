@@ -170,7 +170,7 @@
               </div>
               <div>
                 <cy-input-counter :value="skillStates.characterLevel" @set-value="setCharacterLevel"
-                  :range="[1, 210]" :step="10" style="--input-width: 2rem">
+                  :range="[1, 220]" :step="10" style="--input-width: 2rem">
                   <template v-slot:title>
                     <cy-icon-text iconify-name="ant-design:user-outlined">
                       {{ langText('character level') }}
@@ -222,39 +222,6 @@
         </template>
       </div>
     </cy-detail-window>
-    <!-- <div class="window-container">
-
-      <cy-transition type="fade">
-        <div class="tag-window" ref="tag-window" v-if="currentTag || tagState.windowVisible" :style="tagState.windowPosition">
-          <div class="container" @click="closeTagWindow">
-            <div class="tag-window-content">
-              <div class="title">
-                <cy-button iconify-name="jam-arrow-left" type="icon-only" v-if="tagState.tags.length > 1"
-                  class="inline" @click.stop="previousTag" />
-                <cy-icon-text iconify-name="ri-leaf-fill">{{ currentTag.name }}</cy-icon-text>
-                <span v-if="tagState.windowVisible" class="close-tip">{{ langText('click anywhere to close') }}</span>
-              </div>
-              <template v-for="(fr) in currentTag.frames">
-                <div v-if="fr.type == 'category'" class="category"
-                  :key="fr.type + fr.value">
-                  <cy-icon-text iconify-name="bx-bx-message-rounded-detail" class="text-small">{{ fr.value }}</cy-icon-text>
-                </div>
-                <div v-else-if="fr.type == 'caption'"
-                  :key="fr.type + fr.value"
-                  class="caption" v-html="fr.value"></div>
-                <div v-else-if="fr.type == 'list'"
-                  :key="fr.type + fr.value.join('|')" class="list">
-                  <div v-for="(v) in fr.value" class="leaf-list-item" :key="v">
-                    <cy-icon-text iconify-name="mdi-leaf" class="prefix-icon" />
-                    <span v-html="v"></span>
-                  </div>
-                </div>
-              </template>
-            </div>
-          </div>
-        </div>
-      </cy-transition>
-    </div> -->
   </article>
 </template>
 <script>
@@ -295,7 +262,7 @@ export default {
         store: [],
         currentStoreIndex: -1,
         skillLevel: 10,
-        characterLevel: 200,
+        characterLevel: 220,
         displayMode: 'normal',
         optionsWindowVisible: false,
         optionsMode: 0,

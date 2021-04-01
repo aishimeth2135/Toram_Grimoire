@@ -153,6 +153,12 @@ export default {
       this.$store.commit('character/setCurrentCharacter', { index: 0 });
     }
   },
+  mounted() {
+    if (this.$store.state.main.redirectPath === '/character/skill') {
+      this.$router.replace('/character/skill');
+      this.$store.commit('main/clearRedirectPath');
+    }
+  },
   computed: {
     ...Vuex.mapState('character', {
       'characterStates': 'characters',

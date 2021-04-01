@@ -15,8 +15,8 @@
   --primary-blue-green-light: #67d1c7;
   --primary-orange: #de761b;
   --primary-green: #29d940;
-  --white: white;
-  --black: black;
+  --white: #fff;
+  --black: #000;
   --red: red;
   --primary-red: #f54747;
   --primary-red-light: #f09797;
@@ -28,8 +28,15 @@
   --rgb-primary-dark: 133, 0, 95;
 }
 
+.main--font-base() {
+  font-family: 'Itim', Microsoft JhengHei, sans-serif;
+}
+
 .main--font-1() {
   font-family: 'Itim', 'SetoFont', Microsoft JhengHei, sans-serif;
+}
+.main--font-2() {
+  font-family: 'Itim', 'Noto Sans TC', Microsoft JhengHei, sans-serif;
 }
 
 .night-mode() {
@@ -49,8 +56,8 @@
   --primary-blue-green-light: #23b1a4;
   --primary-orange: #edcbad;
   --primary-green: #bff5c6;
-  --white: black;
-  --black: white;
+  --white: #000;
+  --black: #fff;
   --red: red;
   --primary-red: #f09797;
   --primary-red-light: #f54747;
@@ -79,28 +86,27 @@ body {
   // }
 }
 
-body,
+body {
+  font-size: 1rem;
+  color: var(--primary-dark);
+  background-color: var(--white);
+
+  .main--font-base()
+}
 input,
 textarea {
   font-size: 1rem;
   color: var(--primary-dark);
-  font-family: 'Itim', Microsoft JhengHei, sans-serif;
   background-color: var(--white);
+
+  .main--font-base()
 }
 
-body.font1.lang-1 {
+body.font-1 {
   .main--font-1();
-
-  input, textarea {
-    .main--font-1();
-  }
 }
-body.font1.lang-2 {
-  .main--font-1();
-
-  input, textarea {
-    .main--font-1();
-  }
+body.font-2 {
+  .main--font-2();
 }
 
 input::-webkit-input-placeholder {

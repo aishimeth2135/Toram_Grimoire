@@ -27,7 +27,7 @@ function viewInit({
 }
 
 function viewInitReady() {
-  loadingStore.commit('initFinished');
+  loadingStore.commit('initBeforeFinished');
 }
 
 function viewInitEnd() {

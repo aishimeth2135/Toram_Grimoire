@@ -8,7 +8,8 @@
     <section class="link-buttons">
       <div v-for="(data) in columns" class="column" :key="data.name + '|' + data.path">
         <router-link :to="data.path" v-slot="{ navigate }" custom>
-          <div class="title" @click="navigate" role="link">
+          <div class="title" @click="data.navigate ? data.navigate($event, navigate) : navigate($event)"
+            role="link">
             <div class="text">{{ langText(data.name + '/title') }}</div>
             <iconify-icon :name="data.icon" class="icon" />
           </div>
@@ -19,54 +20,60 @@
 </template>
 
 <script>
-  import GetLang from "@global-modules/LanguageSystem.js";
+import GetLang from "@global-modules/LanguageSystem.js";
 
-  import init from "./init.js";
+import init from "./init.js";
+import store from "@store/main";
 
-  export default {
-    data(){
-      return {
-        columns: [{
-            name: 'skill-query',
-            icon: 'ic-outline-menu-book',
-            path: '/skill'
-          }, {
-            name: 'character-simulator',
-            icon: 'mdi-ghost',
-            path: '/character'
-          }, {
-            name: 'skill-simulator',
-            icon: 'ant-design:build-outlined',
-            path: '/character/skill'
-          }, {
-            name: 'enchant-simulator',
-            icon: 'mdi-cube-scan',
-            path: 'enchant'
-          }, {
-            name: 'item-query',
-            icon: 'jam-box',
-            path: 'item'
-          }, {
-            name: 'crystal-query',
-            icon: 'bx-bx-cube-alt',
-            path: '/item/crystal'
-          }, {
-            name: 'damage-calc',
-            icon: 'mdi-sword',
-            path: 'damage'
+export default {
+  store,
+  data(){
+    return {
+      columns: [{
+          name: 'skill-query',
+          icon: 'ic-outline-menu-book',
+          path: '/skill'
+        }, {
+          name: 'character-simulator',
+          icon: 'mdi-ghost',
+          path: '/character'
+        }, {
+          name: 'skill-simulator',
+          icon: 'ant-design:build-outlined',
+          path: '/character',
+          navigate: (e, navigate) => {
+            this.$store.commit('main/setRedirectPath', '/character/skill');
+            navigate(e);
           }
-        ]
-      };
-    },
-    beforeCreate(){
-      init();
-    },
-    methods: {
-      langText(v, vs){
-        return GetLang('Home/' + v, vs);
-      }
+        }, {
+          name: 'enchant-simulator',
+          icon: 'mdi-cube-scan',
+          path: 'enchant'
+        }, {
+          name: 'item-query',
+          icon: 'jam-box',
+          path: 'item'
+        }, {
+          name: 'crystal-query',
+          icon: 'bx-bx-cube-alt',
+          path: '/item/crystal'
+        }, {
+          name: 'damage-calc',
+          icon: 'mdi-sword',
+          path: 'damage'
+        }
+      ]
+    };
+  },
+  beforeCreate(){
+    init();
+  },
+  methods: {
+    langText(v, vs){
+      return GetLang('Home/' + v, vs);
     }
-  };
+  }
+};
 </script>
 
 <style lang="less" scoped>

@@ -20,12 +20,16 @@
         </cy-icon-text>
         <div class="buttons">
           <cy-button iconify-name="ic-round-text-fields" type="border"
-            :selected="currentFont == 0" @click="switchFont(0)">
+            :selected="currentFont == 1" @click="switchFont(1)">
             {{ langText('switch font/default font') }}
           </cy-button>
           <cy-button iconify-name="ic-round-text-fields" type="border"
-            :selected="currentFont == 1" @click="switchFont(1)">
+            :selected="currentFont == 0" @click="switchFont(0)">
             {{ langText('switch font/base font') }}
+          </cy-button>
+          <cy-button iconify-name="ic-round-text-fields" type="border"
+            :selected="currentFont == 2" @click="switchFont(2)">
+            {{ langText('switch font/base font') + '-2' }}
           </cy-button>
         </div>
       </fieldset>
@@ -210,8 +214,10 @@ export default {
       localStorage['app--' + target] = state.list[index];
     },
     switchFont(id) {
-      localStorage['app--font-family'] = id.toString();
-      document.body.classList.toggle('font1', id == 0);
+      const origin = localStorage.getItem('app--font-family');
+      origin !== '0' && document.body.classList.remove('font-' + origin);
+      localStorage.setItem('app--font-family', id.toString());
+      id !== 0 && document.body.classList.add('font-' + id);
       this.currentFont = id;
     },
     toggleWindowVisible() {
