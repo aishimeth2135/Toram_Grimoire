@@ -49,7 +49,7 @@ export default {
     },
     enter(el, done) {
       const pwhite = getComputedStyle(document.body).getPropertyValue('--white').trim();
-      const opts = window.innerHeight > window.innerHeight ? {
+      const opts = window.innerHeight > window.innerWidth ? {
         width: '120vh',
         height: '120vh',
         left: '-=60vh',
