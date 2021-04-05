@@ -73,10 +73,12 @@
   padding: 0.3rem 1rem;
   transition: border-color 0.3s;
   border: 1px solid var(--primary-light);
+  background-color: var(--white);
 
   &.inline {
     border: 0;
     padding: 0 0.5rem;
+    background-color: transparent;
   }
 
   > .title {

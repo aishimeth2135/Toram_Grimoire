@@ -1,13 +1,12 @@
-import { InitLanguageData } from "./LanguageSystem.js";
+// import { InitLanguageData } from "./LanguageSystem.js";
+import GetLang from "@global-modules/LanguageSystem.js";
 
 import loadingStore from "@store/loading.js";
+import mainStore from "@store/main";
 
-function viewInit({
-  languageDatas = null,
-  initItems = null
-} = {}) {
-  if (languageDatas)
-    InitLanguageData(languageDatas);
+export default async function viewInit(...inits) {
+  // if (languageDatas)
+  //   InitLanguageData(languageDatas);
 
   /**
    * initItems: Array<Object>
@@ -16,26 +15,17 @@ function viewInit({
    *     promise: Promise,
    * }
    */
-  if (initItems) {
-    initItems.forEach(p => {
-      if (typeof p.msg == 'function')
-        p.msg = p.msg();
-    });
-    initItems.forEach(p => loadingStore.commit('appendInitItems', p));
-  }
-  return loadingStore.dispatch('startInit');
-}
+  const initItems = inits.map(async p => {
+    const origin = await mainStore.dispatch('datas/load' + p);
+    const promise = origin.next();
+    const msg = GetLang('Loading Message/' + p);
+    return { origin, promise, msg };
+  })
+  for (let i=0; i<initItems.length; ++i)
+    initItems[i] = await initItems[i];
+  initItems.forEach(p => loadingStore.commit('appendInitItems', p));
 
-function viewInitReady() {
+  await loadingStore.dispatch('startInit');
+  initItems.forEach(async p => await p.origin.next());
   loadingStore.commit('initBeforeFinished');
 }
-
-function viewInitEnd() {
-
-}
-
-async function handleInit(_startCallback) {
-  await _startCallback();
-}
-
-export { viewInit, viewInitReady, viewInitEnd, handleInit };

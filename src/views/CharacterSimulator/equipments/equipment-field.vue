@@ -38,6 +38,7 @@ export default {
   border: 1px solid var(--primary-light);
   margin: 0.4rem;
   width: 23rem;
+  background-color: var(--white);
 
   > .top {
     border-bottom: 1px solid var(--primary-light);

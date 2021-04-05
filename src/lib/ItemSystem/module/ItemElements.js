@@ -1,24 +1,6 @@
 import Grimoire from "../../main/Grimoire.js";
 import StatBase from "../../CharacterSystem/module/StatBase.js";
 
-
-class Items {
-  constructor() {
-    this.equipments = [];
-    this.crystals = [];
-  }
-  appendEquipment() {
-    const t = new Equipment(this.equipments.length, ...arguments);
-    this.equipments.push(t);
-    return t;
-  }
-  appendCrystal() {
-    const t = new Crystal(this.crystals.length, ...arguments);
-    this.crystals.push(t);
-    return t;
-  }
-}
-
 class Item {
   constructor(id, name) {
     this.id = id;
@@ -61,8 +43,8 @@ class Equipment extends Item {
     this.category = cat;
 
     this.baseValue = bv;
-    if (bstab !== '')
-      this.baseStability = bstab;
+    this.baseStability = bstab || 0;
+      
     this.caption = cap;
   }
   setRecipe() {
@@ -94,4 +76,4 @@ class Prop {
 Prop.CATEGORY_MATERIAL = Symbol('Material');
 Prop.CATEGORY_MATERIAL_POINT = Symbol('Material Point');
 
-export { Items, Prop };
+export { Equipment, Crystal, Prop };

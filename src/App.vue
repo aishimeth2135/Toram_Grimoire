@@ -1,10 +1,12 @@
 <template>
   <div id="app">
-    <app-nav />
-    <router-view class="main-section app-main" />
-    <app-footer class="main-section" />
-    <app-loading />
-    <app-show-message />
+    <div class="root--container">
+      <app-nav />
+      <router-view class="main-section app-main" />
+      <app-footer />
+      <app-loading />
+      <app-show-message />
+    </div>
   </div>
 </template>
 
@@ -28,9 +30,16 @@
 <style lang="less" scoped>
   @deep: ~'>>>';
 
+  .root--container {
+    background-color: rgba(var(--rgb-primary-light), 0.1);
+    height: auto;
+    width: 100%;
+    padding: 0 0.6px;
+  }
+
   #app {
     .app-main {
-      min-height: calc(100vh - 10rem);
+      min-height: calc(100vh - 8rem);
     }
 
     @{deep} .main-section {

@@ -117,7 +117,6 @@
 </template>
 <script>
 import GetLang from "@global-modules/LanguageSystem.js";
-import Grimoire from "@Grimoire";
 
 import init from "./init.js";
 
@@ -126,10 +125,13 @@ import { EquipmentCrystal } from "@lib/CharacterSystem/CharacterStat/class/Chara
 
 import vue_showStat from "./show-stat.vue";
 
+import store from "@store/main";
+
 export default {
+  store,
   data() {
-    const crystals = Grimoire.ItemSystem.items.crystals;
-    const crystalCategorys = new Array(5).fill().map((p, i) => {
+    const crystals = this.$store.state.datas.items.crystals;
+    const crystalCategorys = new Array(5).fill().map((_, i) => {
       return {
         id: i,
         crystals: crystals.filter(a => a.category == i).map(p => new EquipmentCrystal(p))
@@ -137,7 +139,7 @@ export default {
     });
 
     const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
-    Grimoire.CharacterSystem.statList.forEach(stat => {
+    this.$store.state.datas.character.statList.forEach(stat => {
       statTypes.forEach(type => {
         if (type == StatBase.TYPE_MULTIPLIER && !stat.hasMultiplier)
           return;
@@ -196,7 +198,6 @@ export default {
         return;
       }
       s.statsSearchResult = s.stats.filter(stat => stat.text.toLowerCase().includes(v));
-      console.log(s.statsSearchResult);
     },
     findCrystalStat(from, crystal) {
       return crystal.stats

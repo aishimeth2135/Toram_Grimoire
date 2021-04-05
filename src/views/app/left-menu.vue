@@ -46,28 +46,28 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@deep-operator: ~'>>>';
+@deep: ~'>>>';
 
 .app--left-menu {
   z-index: 12;
   position: relative;
 
-  @{deep-operator} .top-button {
+  @{deep} .top-button {
     z-index: 2;
     position: relative;
     display: block;
   }
 
-  >.menu {
+  > .menu {
     z-index: 1;
     min-height: 100%;
     position: absolute;
-    width: 16rem;
-    top: 3rem;
+    width: 15.5rem;
+    top: 3.2rem;
     left: 0.4rem;
     max-height: calc(100vh - 5rem);
     opacity: 1;
-    background-color: rgba(var(--rgb-black), 0.5);
+    
 
     &.fade-enter,
     &.fade-leave-to {
@@ -85,9 +85,8 @@ export default {
       width: 100%;
       height: 100%;
       // border: 1px solid var(--primary-light-2);
-      background-color: var(--white);
 
-      @{deep-operator} .title-line {
+      @{deep} .title-line {
         // border-top: 1px solid var(--primary-light-2);
         padding-bottom: 0.4rem;
         padding-top: 1rem;
@@ -112,6 +111,7 @@ export default {
       right: auto;
       height: 100%;
       width: calc(100% + 30rem);
+      background-color: rgba(var(--rgb-black), 0.5);
 
       &.fade-enter,
       &.fade-leave-to {
@@ -121,6 +121,7 @@ export default {
 
       >.container {
         width: 16rem;
+        background-color: var(--white);
       }
     }
   }

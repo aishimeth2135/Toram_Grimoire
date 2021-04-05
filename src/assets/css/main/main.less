@@ -78,18 +78,27 @@ body.theme--night-mode {
 }
 
 body {
-  margin: 6px;
+  margin: 0;
   scroll-behavior: smooth;
+  background-color: var(--white);
+  font-size: 1rem;
+  color: var(--primary-dark);
+  position: relative;
+
+  // &::before {
+  //   content: '';
+  //   display: block;
+    
+  //   width: 100vw;
+  //   height: 100vh;
+  //   position: absolute;
+  //   left: 0;
+  //   top: 0;
+  // }
 
   // @media (prefers-color-scheme: dark) {
   //   .night-mode();
   // }
-}
-
-body {
-  font-size: 1rem;
-  color: var(--primary-dark);
-  background-color: var(--white);
 
   .main--font-base()
 }

@@ -4,13 +4,13 @@ import vue_home from "@views/Home/Home/main.vue";
 import vue_about from "@views/Home/About/main.vue";
 
 import GetLang from "@global-modules/LanguageSystem.js";
-import init from "./init.js";
+import ViewInit from "@global-modules/ViewInit.js";
 
 export default {
   path: '/',
   component: app,
   beforeEnter(to, from, next) {
-    init().then(() => next());
+    ViewInit().then(next);
   },
   meta: {
     title: null,
