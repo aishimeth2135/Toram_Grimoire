@@ -1,4 +1,5 @@
-import { EnchantItemBase } from "./EnchantElement.js";
+import EnchantSystem from "@lib/SkillSystem";
+const { EnchantItemBase } = EnchantSystem;
 
 
 export default function LoadEnchantData(r, c) {

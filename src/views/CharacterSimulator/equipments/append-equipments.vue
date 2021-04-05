@@ -75,10 +75,11 @@
   </cy-window>
 </template>
 <script>
-import Grimoire from "@Grimoire";
 import ShowMessage from "@global-modules/ShowMessage.js";
+import store from "@store/main";
 
 export default {
+  store,
   props: ['visible'],
   inject: ['langText', 'globalLangText', 'convertEquipmentData', 'getShowEquipmentData', 'appendEquipments'],
   data() {
@@ -133,7 +134,7 @@ export default {
 
       const t = [],
         limit = this.searchResultMaximum + 1;
-      Grimoire.ItemSystem.items.equipments.find(item => {
+      this.$store.state.datas.items.equipments.find(item => {
         if (item.name.includes(text))
           t.push(item);
         return t.length > limit - 1;

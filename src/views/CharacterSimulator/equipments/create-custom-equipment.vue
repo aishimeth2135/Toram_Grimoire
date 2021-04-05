@@ -168,8 +168,8 @@ export default {
       const name = from ? from.name : '';
 
       const eq = p.category.list != null ?
-        new p.category.class(-1, name, [], p.type) :
-        new p.category.class(-1, name, []);
+        new p.category.class(null, name, [], p.type) :
+        new p.category.class(null, name, []);
       eq.setCustom(true);
 
       if (!name) {

@@ -756,31 +756,6 @@ export default {
   }
 }
 
-.default-content {
-  width: 100%;
-  height: calc(100vh - 15rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  > .container {
-    cursor: pointer;
-    padding: 1.3rem;
-    transition: border-color 0.3s;
-    border: 1px solid transparent;
-    text-align: center;
-
-    > .icon {
-      --icon-width: 7rem;
-      margin-bottom: 1.5rem;
-    }
-
-    &:hover {
-      border-color: var(--primary-light-3);
-    }
-  }
-}
-
 .skill-tree-container {
   max-width: 100%;
   overflow-x: auto;

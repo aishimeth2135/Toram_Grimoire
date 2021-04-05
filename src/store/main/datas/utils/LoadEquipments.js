@@ -1,4 +1,5 @@
-import { Prop } from "./ItemElements.js";
+import ItemSystem from "@lib/ItemSystem";
+const { Prop } = ItemSystem;
 
 export default function(root, c) {
   const NAME = 0,
@@ -29,7 +30,7 @@ export default function(root, c) {
 
   let cur, cur_equip, cur_attrcat;
   c.forEach((p, index) => {
-    if (!p) return;
+    if (!p || index == 0) return;
     //if ( index == 0 ) return;
     try {
       if (p[NAME] !== '' && p[CATEGORY] !== '') {

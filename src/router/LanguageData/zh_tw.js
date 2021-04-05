@@ -1,20 +1,12 @@
 export default function() {
   return {
     'Loading Message': {
-      'Character System': {
-        'stats': '載入角色能力清單',
-        'simulator': '載入角色模擬器資料'
-      },
-      'Item System': {
-        'equipment': '載入裝備資料'
-      },
-      'Skill System': {
-        'skill': '載入技能資料',
-        'tag': '載入標籤清單'
-      },
-      'Enchant System': {
-        'simulator': '載入附魔資料'
-      },
+      'Stats': '載入角色能力清單',
+      'CharacterStats': '載入角色模擬器資料',
+      'Items': '載入裝備資料',
+      'Skill': '載入技能資料',
+      'Tag': '載入標籤清單',
+      'Enchant': '載入附魔資料',
       'init': '初始化'
     },
     'Page Title': {

@@ -146,7 +146,7 @@ function PageInitLanguage() {
  * @param {int}   data_index      row index of original data that be replace
  * @param {int}   lang_data_index row index of language data
  */
-function ProcessLanguageData(datas, data_index, lang_data_index) {
+function HandleLanguageData(datas, data_index, lang_data_index) {
   const lang_datas = [datas[1], datas[2]];
   datas[0].forEach((p, index) => {
     const t = lang_datas
@@ -159,4 +159,4 @@ function ProcessLanguageData(datas, data_index, lang_data_index) {
 
 export default GetLang;
 
-export { InitLanguageSystem, currentLanguage, secondLanguage, GetLang, InitLanguageData, PageInitLanguage, ProcessLanguageData };
+export { InitLanguageSystem, currentLanguage, secondLanguage, GetLang, InitLanguageData, PageInitLanguage, HandleLanguageData };

@@ -1,4 +1,4 @@
-export default function LoadTagData(r, c, lang_c, slang_c) {
+export default function LoadTagData(r, datas) {
   const
     // TAG_NAME = 0,
     FRAME_NAME = 1,
@@ -12,14 +12,13 @@ export default function LoadTagData(r, c, lang_c, slang_c) {
       TAG_NAME: 0,
       FRAME_VALUE: 1
     };
-
+  const [c, lang_c, slang_c] = datas;
   const loadData = (index, set_name) => {
     const d1 = c[index][INDEX[set_name]],
       d2 = lang_c && lang_c[index] ? lang_c[index][LANG_DATA[set_name]] : null,
       d3 = slang_c && slang_c[index] ? slang_c[index][LANG_DATA[set_name]] : null;
     return [d2, d3, d1].find(t => t !== '' && t !== null && t !== void 0) || '';
   };
-
   let cur, curFrame;
   c.forEach((p, i) => {
     if (i == 0)

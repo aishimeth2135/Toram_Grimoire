@@ -4,11 +4,21 @@ import { RestrictionStat } from "./main.js";
 import Grimoire from "@Grimoire";
 
 class CharacterEquipment {
-  constructor(id, name="", stats=[]) {
-    this.id = id;
-    this.name = name;
+  constructor(origin=null, name=null, stats=[]) {
+    this.origin = origin;
+    this._name = name;
     this.stats = stats;
     this._isCustom = false;
+  }
+
+  get id() {
+    return this.origin ? this.origin.id : 0;
+  }
+  get name() {
+    return this._name ? this._name : (this.origin ? this.origin.name : '');
+  }
+  set name(v) {
+    this._name = v;
   }
 
   get is() {
@@ -273,6 +283,45 @@ CharacterEquipment.loadEquipment = function (data) {
   }
 };
 
+CharacterEquipment.fromOriginEquipment = function(item) {
+  // 'Equipmemt Category list': [
+  //     '單手劍', '雙手劍', '弓', '弩',
+  //     '法杖', '魔導具', '拳套', '旋風槍',
+  //     '拔刀劍', '箭矢', '盾牌', '小刀',
+  //     '身體裝備', '追加裝備', '特殊裝備'
+  // ]
+  const pre_args = [
+    item, item.name,
+    item.stats.map((p, i) => RestrictionStat.fromOrigin(p, item.statRestrictions[i]))
+  ];
+  const stability = parseInt(item.baseStability, 10);
+  if (item.category < 9) {
+    const t = [
+      MainWeapon.TYPE_ONE_HAND_SWORD, MainWeapon.TYPE_TWO_HAND_SWORD,
+      MainWeapon.TYPE_BOW, MainWeapon.TYPE_BOWGUN,
+      MainWeapon.TYPE_STAFF, MainWeapon.TYPE_MAGIC_DEVICE,
+      MainWeapon.TYPE_KNUCKLE, MainWeapon.TYPE_HALBERD,
+      MainWeapon.TYPE_KATANA
+    ][item.category];
+
+    return new MainWeapon(...pre_args, t, item.baseValue, stability);
+  }
+  if (item.category < 12) {
+    const t = [
+      SubWeapon.TYPE_ARROW, SubArmor.TYPE_SHIELD, SubWeapon.TYPE_DAGGER
+    ][item.category - 9];
+    if (item.category == 10)
+      return new SubArmor(...pre_args, t, item.baseValue);
+    return new SubWeapon(...pre_args, t, item.baseValue, stability);
+  }
+  if (item.category == 12)
+    return new BodyArmor(...pre_args, item.baseValue);
+  if (item.category == 13)
+    return new AdditionalGear(...pre_args, item.baseValue);
+  if (item.category == 14)
+    return new SpecialGear(...pre_args, item.baseValue);
+}
+
 class Weapon extends CharacterEquipment {
   constructor(id, name, stats, atk = 1, stability = 0) {
     super(id, name, stats);
@@ -289,8 +338,8 @@ class Weapon extends CharacterEquipment {
 }
 
 class MainWeapon extends Weapon {
-  constructor(id, name, stats, type, atk, stability) {
-    super(id, name, stats, atk, stability);
+  constructor(origin, name, stats, type, atk, stability) {
+    super(origin, name, stats, atk, stability);
 
     this.type = type;
     this.crystals = [];
@@ -322,8 +371,8 @@ MainWeapon.TYPE_KATANA = Symbol('katana');
 
 
 class SubWeapon extends Weapon {
-  constructor(id, name, stats, type, atk, stability) {
-    super(id, name, stats, atk, stability);
+  constructor(origin, name, stats, type, atk, stability) {
+    super(origin, name, stats, atk, stability);
 
     this.type = type;
   }
@@ -336,8 +385,8 @@ SubWeapon.TYPE_ARROW = Symbol('sub-weapon|arrow');
 SubWeapon.TYPE_DAGGER = Symbol('sub-weapon|dagger');
 
 class Armor extends CharacterEquipment {
-  constructor(id, name, stats, def = 0) {
-    super(id, name, stats);
+  constructor(origin, name, stats, def = 0) {
+    super(origin, name, stats);
 
     def = typeof def == 'string' ? parseInt(def, 10) : def;
 
@@ -347,8 +396,8 @@ class Armor extends CharacterEquipment {
 }
 
 class SubArmor extends Armor {
-  constructor(id, name, stats, type, def) {
-    super(id, name, stats, def);
+  constructor(origin, name, stats, type, def) {
+    super(origin, name, stats, def);
 
     this.type = type;
     this.refining = 0;
@@ -360,8 +409,8 @@ class SubArmor extends Armor {
 SubArmor.TYPE_SHIELD = Symbol('sub-armor|shield');
 
 class BodyArmor extends Armor {
-  constructor(id, name, stats, def) {
-    super(id, name, stats, def);
+  constructor(origin, name, stats, def) {
+    super(origin, name, stats, def);
 
     this.type = BodyArmor.TYPE_NORMAL;
     this.refining = 0;
@@ -385,8 +434,8 @@ BodyArmor.TYPE_DODGE = Symbol('body-armor|dodge');
 BodyArmor.TYPE_DEFENSE = Symbol('body-armor|defense');
 
 class AdditionalGear extends Armor {
-  constructor(id, name, stats, def) {
-    super(id, name, stats, def);
+  constructor(origin, name, stats, def) {
+    super(origin, name, stats, def);
 
     this.refining = 0;
     this.crystals = [];
@@ -400,8 +449,8 @@ class AdditionalGear extends Armor {
 }
 
 class SpecialGear extends Armor {
-  constructor(id, name, stats, def) {
-    super(id, name, stats, def);
+  constructor(origin, name, stats, def) {
+    super(origin, name, stats, def);
 
     this.crystals = [];
   }
@@ -411,8 +460,8 @@ class SpecialGear extends Armor {
 }
 
 class Avatar extends CharacterEquipment {
-  constructor(id, name, stats) {
-    super(id, name, stats);
+  constructor(origin, name, stats) {
+    super(origin, name, stats);
   }
 }
 

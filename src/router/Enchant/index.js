@@ -1,7 +1,7 @@
 import app from "./app.vue";
 
 import GetLang from "@global-modules/LanguageSystem.js";
-import init from "./init.js";
+import ViewInit from "@global-modules/ViewInit.js";
 
 const vue_enchantSimulator = () => import(/* webpackChunkName: "enchant-simulator" */ "@views/EnchantSimulator/main.vue");
 
@@ -9,7 +9,7 @@ export default {
   path: '/enchant',
   component: app,
   beforeEnter(to, from, next) {
-    init().then(() => next());
+    ViewInit('Stats', 'Enchant').then(next);
   },
   meta: {
     leftMenuViewButtons: [{

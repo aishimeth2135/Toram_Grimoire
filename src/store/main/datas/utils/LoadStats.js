@@ -1,6 +1,6 @@
-import { ProcessLanguageData } from "../../main/module/LanguageSystem.js";
+import { HandleLanguageData } from "@global-modules/LanguageSystem.js";
 
-export default function(character_system, c, lang_c, slang_c) {
+export default function(character_system, datas) {
   const
     BASE_NAME = 0,
     CAPTION = 1,
@@ -13,10 +13,10 @@ export default function(character_system, c, lang_c, slang_c) {
       CONSTANT_FORMULA: 1
     };
 
-  const datas = [c, lang_c, slang_c];
+  const c = datas[0];
   // language data
-  ProcessLanguageData(datas, CAPTION, LANG_DATA.CAPTION);
-  ProcessLanguageData(datas, CONSTANT_FORMULA, LANG_DATA.CONSTANT_FORMULA);
+  HandleLanguageData(datas, CAPTION, LANG_DATA.CAPTION);
+  HandleLanguageData(datas, CONSTANT_FORMULA, LANG_DATA.CONSTANT_FORMULA);
 
   c.forEach((p, index) => {
     if (index == 0 || character_system.findStatBase(p[BASE_NAME]))
@@ -26,6 +26,6 @@ export default function(character_system, c, lang_c, slang_c) {
       stat.appendAttribute('constant_formula', p[CONSTANT_FORMULA]);
     stat.appendAttribute('hidden', p[HIDDEN] != '');
     // if ( p[MULTIPLIER_FORMULA] )
-    // 	stat.appendAttribute('multiplier_formula', p[MULTIPLIER_FORMULA]);
+    //  stat.appendAttribute('multiplier_formula', p[MULTIPLIER_FORMULA]);
   });
 }

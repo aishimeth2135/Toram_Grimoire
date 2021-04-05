@@ -148,7 +148,7 @@ export default {
       list2 = ['0', '1', '2', '3'];
     return {
       windowVisible: false,
-      currentFont: localStorage['app--font-family'] !== '1' ? 0 : 1,
+      currentFont: parseInt(localStorage['app--font-family'], 10),
       languageState: {
         list: list1,
         currentIndex: list1.indexOf(localStorage['app--language'])

@@ -50,15 +50,15 @@ export default {
     enter(el, done) {
       const pwhite = getComputedStyle(document.body).getPropertyValue('--white').trim();
       const opts = window.innerHeight > window.innerWidth ? {
-        width: '120vh',
-        height: '120vh',
-        left: '-=60vh',
-        top: '-=60vh'
+        width: '150vh',
+        height: '150vh',
+        left: '-=75vh',
+        top: '-=75vh'
       } : {
-        width: '120vw',
-        height: '120vw',
-        left: '-=60vw',
-        top: '-=60vw'
+        width: '150vw',
+        height: '150vw',
+        left: '-=75vw',
+        top: '-=75vw'
       };
       Velocity(el, {
         backgroundColor: pwhite,

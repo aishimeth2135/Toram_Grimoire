@@ -55,8 +55,8 @@ import vue_createCustomEquipment from "./create-custom-equipment.vue";
 import vue_customEquipmentEditor from "./custom-equipment-editor.vue";
 import vue_selectCrystals from "./select-crystals.vue";
 
-import { EquipmentField, RestrictionStat } from "@lib/CharacterSystem/CharacterStat/class/main.js";
-import { CharacterEquipment, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
+import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js";
+import { CharacterEquipment, MainWeapon, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
 
 import Vuex from "vuex";
 import store from "@store/main";
@@ -154,42 +154,7 @@ export default {
       };
     },
     convertEquipmentData(item) {
-      // 'Equipmemt Category list': [
-      //     '單手劍', '雙手劍', '弓', '弩',
-      //     '法杖', '魔導具', '拳套', '旋風槍',
-      //     '拔刀劍', '箭矢', '盾牌', '小刀',
-      //     '身體裝備', '追加裝備', '特殊裝備'
-      // ]
-      const pre_args = [
-        item.id, item.name,
-        item.stats.map((p, i) => RestrictionStat.fromOrigin(p, item.statRestrictions[i]))
-      ];
-      const stability = parseInt(item.baseStability, 10);
-      if (item.category < 9) {
-        const t = [
-          MainWeapon.TYPE_ONE_HAND_SWORD, MainWeapon.TYPE_TWO_HAND_SWORD,
-          MainWeapon.TYPE_BOW, MainWeapon.TYPE_BOWGUN,
-          MainWeapon.TYPE_STAFF, MainWeapon.TYPE_MAGIC_DEVICE,
-          MainWeapon.TYPE_KNUCKLE, MainWeapon.TYPE_HALBERD,
-          MainWeapon.TYPE_KATANA
-        ][item.category];
-
-        return new MainWeapon(...pre_args, t, item.baseValue, stability);
-      }
-      if (item.category < 12) {
-        const t = [
-          SubWeapon.TYPE_ARROW, SubArmor.TYPE_SHIELD, SubWeapon.TYPE_DAGGER
-        ][item.category - 9];
-        if (item.category == 10)
-          return new SubArmor(...pre_args, t, item.baseValue);
-        return new SubWeapon(...pre_args, t, item.baseValue, stability);
-      }
-      if (item.category == 12)
-        return new BodyArmor(...pre_args, item.baseValue);
-      if (item.category == 13)
-        return new AdditionalGear(...pre_args, item.baseValue);
-      if (item.category == 14)
-        return new SpecialGear(...pre_args, item.baseValue);
+      return CharacterEquipment.fromOriginEquipment(item);
     },
     toggleWindowVisible(target, force) {
       force = force === void 0 ? !this.windowVisible[target] : force;

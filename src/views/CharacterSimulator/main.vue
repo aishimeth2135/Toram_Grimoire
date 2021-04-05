@@ -23,16 +23,16 @@
           @manual-auto-load="autoLoad"
           @close-auto-save="closeAutoSave" />
       </div>
-      <cy-bottom-content class="bottom-menu">
+      <div class="bottom-menu">
         <cy-button v-for="(content, i) in contents"
           :key="content.id"
           :iconify-name="content.icon"
           :selected="i == currentContentIndex"
           @click="setCurrentContent(i)"
-          class="inline mr-normal">
+          class="inline menu-btn">
           {{ content.text }}
         </cy-button>
-      </cy-bottom-content>
+      </div>
     </template>
     <div v-else>
       <cy-default-tips iconify-name="mdi-ghost">
@@ -720,4 +720,20 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.bottom-menu {
+  position: sticky;
+  bottom: 0.6rem;
+  background-color: var(--white);
+  border: 1px solid var(--primary-light-2);
+  border-radius: 1.2rem;
+  padding: 0.5rem 1rem;
+  padding-right: 0.8rem;
+  z-index: 9;
+  margin: 0 0.6rem;
+  margin-top: 1rem;
+
+  > .menu-btn + .menu-btn {
+    margin-left: 0.8rem;
+  }
+}
 </style>

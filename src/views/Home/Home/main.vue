@@ -118,6 +118,7 @@ export default {
     position: relative;
     cursor: pointer;
     transition: 0.3s;
+    background-color: var(--white);
 
     > .text {
       font-size: 1.1rem;

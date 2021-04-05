@@ -83,5 +83,8 @@ export default function() {
         'Must be operated on the homepage': '為避免發生無法預期的錯誤，此功能限制只能在首頁使用。'
       }
     },
+    'stat base': {
+      'type total: preText': '總'
+    }
   };
 }

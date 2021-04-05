@@ -138,6 +138,10 @@ export default {
         return colorList.includes(v);
       }
     },
+    border: {
+      type: Boolean,
+      default: true
+    }
   },
   data(){
     return {
@@ -160,7 +164,8 @@ export default {
         ['text-color-' + this.textColor]: true,
         ['icon-color-' + this.iconColor]: true,
         ['text-color-hover-' + this.textColorHover]: true,
-        ['icon-color-hover-' + this.iconColorHover]: true
+        ['icon-color-hover-' + this.iconColorHover]: true,
+        ['no-border']: !this.border
       };
     }
   },
@@ -313,10 +318,6 @@ export default {
       }
       &.no-border {
         border: 0;
-
-        & > .text {
-          color: var(--primary-light-4);
-        }
       }
 
       &.icon-big @{deep-operator} svg {
@@ -370,13 +371,14 @@ export default {
     /* border
        ========================================================================== */
     &.border {
-      border-radius: 1rem;
+      border-radius: 0.9rem;
       border: 0.1rem var(--primary-light) solid;
-      padding: 0.3rem 0.6rem;
+      padding: 0.3rem 0.7rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       margin: 0.3rem;
+      background-color: var(--white);
 
       &:hover, &.cur, &.selected {
         border-color: var(--primary-light-2);
@@ -413,7 +415,6 @@ export default {
     &.line {
       margin: 0.4rem;
       padding: 0.3rem 0.7rem;
-      background-color: var(--white);
       border-left: 3px solid var(--primary-light-2);
       display: flex;
       align-items: center;

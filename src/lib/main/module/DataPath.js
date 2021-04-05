@@ -51,22 +51,19 @@ function DataPath(id) {
         'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=1107380961&single=true&output=csv&range=F:G',
         'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=1107380961&single=true&output=csv&range=H:I'
       ];
-    case 'Equipment/divided':
-      return [
-        'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwaGM9CClGkSw-6iUFmdOyIeI-_9i5RvIuHdSCTCUgFCk7GV4v1evt5C79JSG5P66ZGopM2-ZJJaEA/pub?gid=0&single=true&output=csv&range=A2:I12000',
-        'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwaGM9CClGkSw-6iUFmdOyIeI-_9i5RvIuHdSCTCUgFCk7GV4v1evt5C79JSG5P66ZGopM2-ZJJaEA/pub?gid=0&single=true&output=csv&range=A12001:I24000'
-      ];
+    case 'Equipment':
+      return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwaGM9CClGkSw-6iUFmdOyIeI-_9i5RvIuHdSCTCUgFCk7GV4v1evt5C79JSG5P66ZGopM2-ZJJaEA/pub?gid=0&single=true&output=csv&range=A:I';
     case 'Crystal':
       return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwaGM9CClGkSw-6iUFmdOyIeI-_9i5RvIuHdSCTCUgFCk7GV4v1evt5C79JSG5P66ZGopM2-ZJJaEA/pub?gid=1665548440&single=true&output=csv&range=A:E';
     case 'Enchant':
       return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4beI9I-sFoTgbTaKeMHRVo3xNm3gc5nQ-MWb9u7dlzRk0QmnMoJwcaR0815IqP0t-9-htpS8mUdQ1/pub?gid=0&single=true&output=csv&range=A:M';
 
   }
-  console.warn("Unknow DataPath Name.")
+  console.warn('Unknow DataPath Name: ' + id);
   return;
 }
 
-async function createLoadDataPromise(path, data_ary, index) {
+async function createLoadDataPromise(path, data_ary, index=0) {
   if (typeof path == 'string' && path) {
     try {
       const f = await fetch(path);
@@ -142,17 +139,17 @@ async function createLoadDataPromise(path, data_ary, index) {
   // });
 }
 
-function loadLangDatas(path_id, promise_ary, default_lang_no=1) {
+function loadLangDatas(pathId, promises, defaultLang=1) {
   const current = currentLanguage(),
     second = secondLanguage();
   const datas = Array(3);
 
-  promise_ary.push(createLoadDataPromise(DataPath(path_id), datas, 0));
-  if (current != default_lang_no) {
-    const path = DataPath(path_id + '/language');
-    promise_ary.push(createLoadDataPromise(path[current], datas, 1));
+  promises.push(createLoadDataPromise(DataPath(pathId), datas, 0));
+  if (current != defaultLang) {
+    const path = DataPath(pathId + '/language');
+    promises.push(createLoadDataPromise(path[current], datas, 1));
     if (current != second)
-      promise_ary.push(createLoadDataPromise(path[second], datas, 2));
+      promises.push(createLoadDataPromise(path[second], datas, 2));
   }
 
   return datas;

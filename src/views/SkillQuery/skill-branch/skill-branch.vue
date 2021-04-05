@@ -1205,7 +1205,7 @@ div.branch {
     }
   }
 
-  >.content-line {
+  > .content-line {
     padding: 0 0.3rem;
 
     &.group-title {
@@ -1214,6 +1214,7 @@ div.branch {
       padding: 0.6rem;
       cursor: pointer;
       transition: 0.3s;
+      background-color: var(--white);
 
       &.gropu-unfold {
         border-color: var(--primary-light-2);
@@ -1242,24 +1243,25 @@ fieldset.branch {
   border: 1px solid var(--primary-light);
   margin: 0.6rem 0;
   transition: border-width 0.3s ease;
+  background-color: var(--white);
 
-  >legend {
+  > legend {
     margin-bottom: 0.2rem;
     display: flex;
     align-items: center;
     padding: 0 0.4rem;
 
-    >.name {
+    > .name {
       margin-right: 0.8rem;
       color: var(--primary-purple);
     }
 
-    >.detail {
+    > .detail {
       display: inline-block;
       font-size: 0.9rem;
       align-self: flex-end;
 
-      >.prop {
+      > .prop {
         display: inline-block;
         color: var(--primary-green);
         margin-right: 0.4rem;
@@ -1290,6 +1292,7 @@ fieldset.branch {
   position: relative;
   margin-top: 0.9rem;
   margin-bottom: 0.9rem;
+  background-color: var(--white);
 
   >.prefix-icon {
     position: absolute;

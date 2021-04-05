@@ -1,7 +1,7 @@
 import app from "./app.vue";
 
 import GetLang from "@global-modules/LanguageSystem.js";
-import init from "./init.js";
+import ViewInit from "@global-modules/ViewInit.js";
 
 const vue_characterSimulator = () => import(/* webpackChunkName: "character-simulator" */ "@views/CharacterSimulator/main.vue");
 const vue_skillSimulator = () => import(/* webpackChunkName: "skill-simulator" */ "@views/SkillSimulator/main.vue");
@@ -10,7 +10,7 @@ export default {
   path: '/character',
   component: app,
   beforeEnter(to, from, next) {
-    init().then(() => next());
+    ViewInit('Stats', 'Items', 'CharacterStats', 'Skill').then(next);
   },
   meta: {
     leftMenuViewButtons: [{
@@ -21,8 +21,7 @@ export default {
       title: () => GetLang('Page Title/skill-simulator'),
       icon: 'bx-bxs-star-half',
       path: '/skill'
-    }],
-    pathInit: init
+    }]
   },
   children: [{
     path: '',

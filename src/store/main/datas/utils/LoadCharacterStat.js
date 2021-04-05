@@ -1,6 +1,7 @@
-import { CharacterStatCategory } from "./class/main.js";
+import CharacterSystem from "@lib/CharacterSystem";
+const { CharacterStatCategory } = CharacterSystem;
 
-export default function(character_system, c/*, lang_c, slang_c*/) {
+export default function(character_system, datas) {
   const ID = 0,
     NAME = 1,
     DISPLAY_FORMULA = 2,
@@ -15,9 +16,9 @@ export default function(character_system, c/*, lang_c, slang_c*/) {
     CONFIRM_CATEGORY = '0',
     CATEGORY_NAME = 1;
 
-  function handleHiddenOption(v) {
-    return ['永久', '變數值為0時', '計算結果為0時'].indexOf(v);
-  }
+  const handleHiddenOption = v => ['永久', '變數值為0時', '計算結果為0時'].indexOf(v);
+
+  const c = datas[0];
 
   let cur_category, cur_stat, cur_formula;
   c.forEach((p, index) => {

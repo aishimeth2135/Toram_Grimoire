@@ -46,9 +46,10 @@
   .app--nav {
     display: flex;
     align-items: center;
-    padding: 0.2rem 0.4rem;
+    padding: 0.3rem 0.5rem;
     border-bottom: 1px solid var(--primary-light);
     margin-bottom: 1rem;
+    background-color: var(--white);
   }
 
   .content {
