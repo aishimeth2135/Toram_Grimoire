@@ -131,7 +131,7 @@
           </div>
         </cy-transition>
       </cy-sticky-header>
-      <skill-root :skill-root-state="currentSkillRootState"></skill-root>
+      <skill-root :skill-root-state="currentSkillRootState" />
       <div class="bottom-menu">
         <div class="skill-point-information">
           <div class="column">
@@ -356,10 +356,7 @@ export default {
   },
   created() {
     // this.$store.dispatch('character/loadCharacterSimulator', { index: 0, resetOption: {} });
-    if (this.skillRootStates.length == 0)
-      this.createBuild();
-    else
-      this.selectCurrentSkillRootState(0);
+    this.skillRootStates.length == 0 ? this.createBuild() : this.selectCurrentSkillRootState(0);
   },
   updated() {
     if (this.skillRootStates.length == 0) {
@@ -422,7 +419,7 @@ export default {
   },
   methods: {
     beforeExportConfirm() {
-      const t = this.visibleSkillTreeCategoryStates.length === 0;
+      const t = this.visibleSkillTreeCategoryStates.length > 0;
       if (!t)
         ShowMessage(this.langText('tips/must have at least one skill tree to export'), 'mdi-ghost', 'must have at least one skill tree to export');
       return t;
@@ -1009,6 +1006,7 @@ export default {
         border: 1px solid var(--primary-light);
         padding: 0.3rem 0.6rem;
         display: inline-block;
+        background-color: var(--white);
         & + .column {
           margin-left: 0.6rem;
         }

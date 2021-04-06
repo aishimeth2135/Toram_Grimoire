@@ -5,7 +5,7 @@ const Grimoire = {
     return store.state.datas.character;
   },
   get ItemSystem() {
-    return store.state.datas.item;
+    return store.state.datas.items;
   },
   get SkillSystem() {
     return store.state.datas.skill;
@@ -14,7 +14,6 @@ const Grimoire = {
     return store.state.datas.tag;
   },
   get EnchantSystem() {
-    console.log(store.state);
     return store.state.datas.enchant;
   }
 };
