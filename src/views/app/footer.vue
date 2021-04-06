@@ -30,7 +30,7 @@
     methods: {
       toggleNightMode(){
         localStorage['Theme--Night-Mode'] = localStorage['Theme--Night-Mode'] !== '1' ? '1' : '0';
-        document.body.classList.toggle('theme--night-mode');
+        document.documentElement.classList.toggle('theme--night-mode');
       },
       langText(v, vs){
         return GetLang('Footer/' + v, vs);

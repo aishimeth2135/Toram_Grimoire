@@ -18,6 +18,8 @@ export default function() {
       localStorage.setItem('app--font-family', '1');
       document.body.classList.add('font-1');
     }
+    else
+      document.body.classList.add('font-' + localStorage['app--font-family']);
     if (localStorage['Theme--Night-Mode'] === '1')
       document.documentElement.classList.add('theme--night-mode');
   }
