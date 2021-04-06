@@ -5,9 +5,6 @@ import loadingStore from "@store/loading.js";
 import mainStore from "@store/main";
 
 export default async function viewInit(...inits) {
-  // if (languageDatas)
-  //   InitLanguageData(languageDatas);
-
   /**
    * initItems: Array<Object>
    * <Object> {
