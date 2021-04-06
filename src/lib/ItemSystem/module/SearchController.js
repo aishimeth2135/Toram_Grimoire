@@ -222,7 +222,7 @@ export default class SearchController {
               const res = [];
               const ov = input.value.toLowerCase();
               const search_values = ov.split(/\s*,\s*/);
-              ctrr.parent.items.equipments.find(item => {
+              ctrr.parent.equipments.find(item => {
                 if (res.length == ctrr.status.resultMaximum)
                   return true;
                 if (!checkItemCategory(search_category_ul, item) || !checkItemObtainType(search_obtain_type_ul, item))
@@ -352,7 +352,7 @@ export default class SearchController {
 
               const res = [];
 
-              ctrr.parent.items.equipments.forEach(item => {
+              ctrr.parent.equipments.forEach(item => {
                 if (res.length == ctrr.status.resultMaximum)
                   return;
                 if (!checkItemCategory(search_category_ul, item) || !checkItemObtainType(search_obtain_type_ul, item))
@@ -455,7 +455,7 @@ export default class SearchController {
               input1.value = min;
               input2.value = max;
 
-              ctrr.parent.items.equipments.forEach(item => {
+              ctrr.parent.equipments.forEach(item => {
                 if (res.length == ctrr.status.resultMaximum)
                   return;
                 if (!item.recipe)

@@ -19,7 +19,7 @@ export default function() {
       document.body.classList.add('font-1');
     }
     if (localStorage['Theme--Night-Mode'] === '1')
-      document.body.classList.add('theme--night-mode');
+      document.documentElement.classList.add('theme--night-mode');
   }
   document.title = GetLang('Page Title/base');
 }
