@@ -1,6 +1,5 @@
-import EnchantSystem from "@lib/SkillSystem";
+import EnchantSystem from "@lib/EnchantSystem";
 const { EnchantItemBase } = EnchantSystem;
-
 
 export default function LoadEnchantData(r, c) {
   const STAT_ID = 0,
@@ -40,7 +39,7 @@ export default function LoadEnchantData(r, c) {
 
   let cur_cat, cur_item;
   c.forEach((p, i) => {
-    if (i == 0)
+    if (i === 0)
       return;
     if (p[STAT_ID] === '') {
       const check = p[CHECK];
