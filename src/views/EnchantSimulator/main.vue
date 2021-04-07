@@ -4,17 +4,18 @@
   </article>
 </template>
 <script>
-import Grimoire from "@Grimoire";
 // import GetLang from "@global-modules/LanguageSystem.js";
 
 import init from "./init.js";
+import store from "@store/main";
 
 export default {
+  store,
   beforeCreate() {
-  init();
+    init();
   },
   mounted() {
-  Grimoire.EnchantSystem.init_EnchantSimulator(this.$refs['temp-main']);
+    this.$store.state.datas.enchant.init_EnchantSimulator(this.$refs['temp-main']);
   }
 };
 </script>

@@ -49,7 +49,7 @@ const store = {
       commit('initItems');
       const datas = await DownloadDatas('Equipment', 'Crystal');
       yield;
-      loadEquipments(state.items, datas[0].flat());
+      loadEquipments(state.items, datas[0][0]);
       loadCrystals(state.items, datas[1][0]);
     },
     async* loadStats({ state, commit }) {
@@ -82,7 +82,7 @@ const store = {
       commit('initEnchant');
       const datas = await DownloadDatas('Enchant');
       yield;
-      loadEnchant(state.enchant, datas[0]);
+      loadEnchant(state.enchant, datas[0][0]);
     }
   }
 };
