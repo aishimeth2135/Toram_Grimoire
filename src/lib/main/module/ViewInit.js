@@ -12,17 +12,22 @@ export default async function viewInit(...inits) {
    *     promise: Promise,
    * }
    */
-  const initItems = inits.map(async p => {
-    const origin = await mainStore.dispatch('datas/load' + p);
-    const promise = origin.next();
-    const msg = GetLang('Loading Message/' + p);
-    return { origin, promise, msg };
-  })
+  const initItems = inits
+    .map(async id => {
+      const loaded = mainStore.getters['datas/checkLoad'](id);
+      const origin = loaded ? null : await mainStore.dispatch('datas/load' + id);
+      const promise = loaded ? Promise.resolve() : origin.next();
+      const msg = GetLang('Loading Message/' + id);
+      return { id, origin, promise, msg, loaded };
+    });
   for (let i=0; i<initItems.length; ++i)
     initItems[i] = await initItems[i];
   initItems.forEach(p => loadingStore.commit('appendInitItems', p));
 
   await loadingStore.dispatch('startInit');
-  initItems.forEach(async p => await p.origin.next());
+  initItems.forEach(async p => {
+    !p.loaded && await p.origin.next();
+    mainStore.commit('datas/loadFinished', p.id);
+  });
   loadingStore.commit('initBeforeFinished');
 }
