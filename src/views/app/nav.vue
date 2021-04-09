@@ -21,17 +21,14 @@
 </template>
 
 <script>
-  import store from "@store/nav.js";
-
   import Vuex from 'vuex';
 
   import vue_leftMenu from "./left-menu.vue";
   import vue_settings from "./settings.vue";
 
   export default {
-    store,
     computed: {
-      ...Vuex.mapState(['items'])
+      ...Vuex.mapState('nav', ['items'])
     },
     components: {
       'app-left-menu': vue_leftMenu,

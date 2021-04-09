@@ -1,11 +1,11 @@
 /* eslint-disable */
 import { EnchantEquipment, EnchantStep, InitEnchantElementStatus, EnchantElementStatus } from "./EnchantElement.js";
-import CY from "../../main/module/cyteria.js";
-import GetLang from "../../main/module/LanguageSystem.js";
-import Icons from "../../main/module/SvgIcons.js";
-import StatBase from "../../CharacterSystem/module/StatBase.js";
-import ShowMessage from "../../main/module/ShowMessage.js";
-import SaveLoadSystem from "../../SaveLoadSystem/SaveLoadSystem.js";
+import CY from "@Util/Cyteria";
+import GetLang from "@Service/Language";
+import Icons from "@Service/SvgIcons.js";
+import StatBase from "@lib/CharacterSystem/module/StatBase.js";
+import MessageNotify from "@Service/Notify";
+import SaveLoadSystem from "@lib/SaveLoadSystem/SaveLoadSystem.js";
 import Papa from "papaparse";
 
 function Lang(s, vs) {
@@ -313,7 +313,7 @@ export default class EnchantSimulatorController {
       copyEnchantResult(e) {
         const t = ctrr.createEnchantResult(ctrr.currentEquipment(), 'copy-text');
         if (CY.copyToClipboard(t))
-          ShowMessage(Lang('Warn/Success to copy'));
+          MessageNotify(Lang('Warn/Success to copy'));
       },
       openMainMenu(e) {
         ctrr.nodes.menu.classList.remove('hidden');
@@ -504,7 +504,7 @@ export default class EnchantSimulatorController {
         return ctrr.equipments.length != 0;
       },
       error() {
-        ShowMessage(GetLang('global/LocalStorage is inavailable'));
+        MessageNotify(GetLang('global/LocalStorage is inavailable'));
       }
     });
     hnode.appendChild(this.SaveLoadSystem.controller.getSaveLoadWindow());
@@ -743,7 +743,7 @@ export default class EnchantSimulatorController {
     this.updateCurrentEquipmentScope();
 
     const eq_name = t => Lang('equipment') + (this.equipments.indexOf(t) + 1).toString();
-    ShowMessage(Lang('copy equipment success', [eq_name(eq), eq_name(new_eq)]), 'ic-round-done');
+    MessageNotify(Lang('copy equipment success', [eq_name(eq), eq_name(new_eq)]), 'ic-round-done');
   }
   createEquipmentHTML() {
     const simpleCreateHTML = CY.element.simpleCreateHTML;
@@ -921,7 +921,7 @@ export default class EnchantSimulatorController {
   }
   createEnchantStat(step, item, type, value) {
     if (step.stat(item, type)) {
-      ShowMessage(Lang('Warn/Step Stat Repeat'));
+      MessageNotify(Lang('Warn/Step Stat Repeat'));
       return;
     }
 
@@ -932,7 +932,7 @@ export default class EnchantSimulatorController {
 
     const estat = step.appendStat(item, type, 0);
     if (!estat) {
-      ShowMessage(Lang('Warn/Number of Equipment Item exceeding the maximum'));
+      MessageNotify(Lang('Warn/Number of Equipment Item exceeding the maximum'));
       return;
     }
 
@@ -1090,7 +1090,7 @@ export default class EnchantSimulatorController {
         }
       });
     } catch (e) {
-      ShowMessage(GetLang('Save Load System/Warn/An error occurred while loading data'));
+      MessageNotify(GetLang('Save Load System/Warn/An error occurred while loading data'));
       console.log(e);
     }
 

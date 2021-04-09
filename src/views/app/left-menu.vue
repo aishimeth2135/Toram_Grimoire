@@ -15,18 +15,16 @@
   </span>
 </template>
 <script>
-import store from "@store/left-menu.js";
 import Vuex from 'vuex';
 
 export default {
-  store,
   data() {
     return {
       unfold: !this.screenWidthCheck()
     };
   },
   computed: {
-    ...Vuex.mapState(['viewButtons']),
+    ...Vuex.mapState('leftMenu', ['viewButtons']),
     currentIconName() {
       return 'ic:round-menu';
     }

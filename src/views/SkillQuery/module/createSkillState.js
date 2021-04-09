@@ -1,4 +1,4 @@
-import CY from "@global-modules/cyteria.js";
+import CY from "@Util/Cyteria";
 import { SkillEffect } from "@lib/SkillSystem/module/SkillElements.js";
 
 export default function(skill, { defaultSkillLevel = 0, defaultCharacterLevel = 0 } = {}) {

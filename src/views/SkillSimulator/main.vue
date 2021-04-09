@@ -228,15 +228,14 @@
   </article>
 </template>
 <script>
-import CY from "@global-modules/cyteria.js";
-import GetLang from "@global-modules/LanguageSystem.js"
-import { ShowMessage, ShowLoadingMessage, loadingFinished } from '@global-modules/ShowMessage.js';
+import CY from "@Util/Cyteria";
+import GetLang from "@Service/Language"
+import { MessageNotify, LoadingNotify } from '@Service/Notify';
 
 import vue_skillRoot from "./skill-root.vue";
 import vue_SaveLoadDataSystem from "@vue-components/SaveLoadDataSystem/main.vue";
 
 import Vuex from 'vuex'
-import store from "@store/main";
 
 import { getSkillElementId } from "./module/methods.js";
 import { computeDrawSkillTreeData, GetDrawSetting } from "@lib/SkillSystem/module/DrawSkillTree.js";
@@ -244,7 +243,6 @@ import { computeDrawSkillTreeData, GetDrawSetting } from "@lib/SkillSystem/modul
 import init from "./init.js";
 
 export default {
-  store,
   data() {
     // const r = this.skillRoot;
 
@@ -360,7 +358,7 @@ export default {
   },
   updated() {
     if (this.skillRootStates.length == 0) {
-      ShowMessage(this.langText('tips/The Number of Skill Builds is 0 due to an unknown cause detected'));
+      MessageNotify(this.langText('tips/The Number of Skill Builds is 0 due to an unknown cause detected'));
       this.createBuild();
     }
   },
@@ -421,16 +419,16 @@ export default {
     beforeExportConfirm() {
       const t = this.visibleSkillTreeCategoryStates.length > 0;
       if (!t)
-        ShowMessage(this.langText('tips/must have at least one skill tree to export'), 'mdi-ghost', 'must have at least one skill tree to export');
+        MessageNotify(this.langText('tips/must have at least one skill tree to export'), 'mdi-ghost', 'must have at least one skill tree to export');
       return t;
     },
     copyExportedText() {
       if (CY.copyToClipboard(this.$refs.previewExportedTextContent.innerText))
-        ShowMessage(GetLang('global/copy to clipboard finished'));
+        MessageNotify(GetLang('global/copy to clipboard finished'));
     },
     downloadExportedImage() {
       if (this.currentExportedImage === null) {
-        ShowMessage(this.langText('tips/download exported image: error'));
+        MessageNotify(this.langText('tips/download exported image: error'));
         return;
       }
       const a = document.createElement('a');
@@ -483,8 +481,8 @@ export default {
     },
     async exportCurrentBuildImage() {
       if (!this.beforeExportConfirm()) return;
+      const loadingNotifyItem = await LoadingNotify(this.langText('tips/export build image: loading message'));
       try {
-        await ShowLoadingMessage(this.langText('tips/export build image: loading message'));
         const drawSetting = GetDrawSetting();
 
         const cur_build = this.currentSkillRootState;
@@ -789,27 +787,27 @@ export default {
       } catch (e) {
         console.log(e);
         this.currentExportedImage = null;
-        ShowMessage(this.langText('tips/export build image: error'));
+        MessageNotify(this.langText('tips/export build image: error'));
       } finally {
         this.buildInformationVisible = false;
-        loadingFinished();
+        loadingNotifyItem.finished();
       }
     },
     deleteCurrentBuild() {
       if (this.skillRootStates.length == 1) {
-        ShowMessage(this.langText('tips/number of build cannot be less than 1'), 'ic:round-remove-circle-outline', 'number of build cannot be less than 1');
+        MessageNotify(this.langText('tips/number of build cannot be less than 1'), 'ic:round-remove-circle-outline', 'number of build cannot be less than 1');
         return;
       }
       const cur_index = this.currentSkillRootStateIndex;
       const cur_build = this.currentSkillRootState;
       this.$store.commit('character/removeSkillBuild', { index: cur_index });
 
-      ShowMessage(this.langText('tips/delete build message', [cur_build.name]), 'ic-round-done', null, {
+      MessageNotify(this.langText('tips/delete build message', [cur_build.name]), 'ic-round-done', null, {
         buttons: [{
           text: this.getLangText('global/recovery'),
           click: () => {
             this.$store.commit('character/createSkillBuild', { skillBuild: cur_build });
-            ShowMessage(this.langText('tips/recovery delete build message', [cur_build.name]), 'ic-round-done');
+            MessageNotify(this.langText('tips/recovery delete build message', [cur_build.name]), 'ic-round-done');
           },
           removeMessageAfterClick: true
         }]
@@ -838,7 +836,7 @@ export default {
       });
 
       this.buildInformationVisible = false;
-      ShowMessage(this.langText('tips/copy build message', [cur_build.name, new_build.name], 'ic-round-done'));
+      MessageNotify(this.langText('tips/copy build message', [cur_build.name, new_build.name], 'ic-round-done'));
     },
     selectCurrentSkillRootState(i) {
       this.$store.commit('character/setCurrentSkillBuild', { index: i });

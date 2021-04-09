@@ -195,18 +195,17 @@
   </div>
 </template>
 <script>
-import Grimoire from "@Grimoire";
 import StatBase from "@lib/CharacterSystem/module/StatBase.js";
 
 import { RestrictionStat } from "@lib/CharacterSystem/CharacterStat/class/main.js";
-import ShowMessage from "@global-modules/ShowMessage.js";
+import MessageNotify from "@Service/Notify";
 
 export default {
   props: ['equipment'],
   inject: ['langText', 'globalLangText', 'isElementStat'],
   data() {
     const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
-    Grimoire.CharacterSystem.statList.forEach(stat => {
+    this.$store.state.datas.character.statList.forEach(stat => {
       if (stat.attributes.hidden)
         return;
       statTypes.forEach(type => {
@@ -257,7 +256,7 @@ export default {
       const { deletedStats, appendedStats } = this;
       this.deletedStats = [];
       this.appendedStats = [];
-      ShowMessage(this.langText('Warn/create custom equipment editor: selected stats clear'),
+      MessageNotify(this.langText('Warn/create custom equipment editor: selected stats clear'),
         'ic-round-done', null, {
           buttons: [{
             text: this.globalLangText('global/recovery'),
@@ -302,7 +301,7 @@ export default {
           if ( this.isElementStat(stat.origin.baseName) && (
             (this.equipment.elementStat && !find(this.deletedStats)) ||
             find(this.appendedStats) ) ) {
-            ShowMessage(this.langText('custom equipment editor/equipment can only have one element stat'),
+            MessageNotify(this.langText('custom equipment editor/equipment can only have one element stat'),
               null, 'equipment can only have one element stat');
           } else {
             this.appendedStats.push(stat);

@@ -45,15 +45,10 @@
   </cy-default-tips>
 </template>
 <script>
-import CY from "@lib/main/module/cyteria.js";
-
-// import Vuex from "vuex";
-import store from "@store/main";
-
-import ShowMessage from "@global-modules/ShowMessage.js";
+import CY from "@Util/Cyteria";
+import MessageNotify from "@Service/Notify";
 
 export default {
-  store,
   data() {
     return {
       deleteCounter: 0
@@ -70,7 +65,7 @@ export default {
     deleteAllSavedData() {
       this.$store.commit('character/deleteAllSavedData');
       this.$emit('close-auto-save');
-      ShowMessage(this.localLangText('Message: deleta all data'));
+      MessageNotify(this.localLangText('Message: deleta all data'));
     },
     localLangText(v, vs) {
       return this.langText('save-load control/' + v, vs);

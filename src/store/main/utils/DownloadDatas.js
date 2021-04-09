@@ -1,4 +1,4 @@
-import { DataPath, createLoadDataPromise, loadLangDatas } from "@global-modules/DataPath.js";
+import { DataPath, createLoadDataPromise, loadLangDatas } from "@Service/DataPath.js";
 export default async function(...paths) {
   const datas = paths.map(() => []);
   const promises = [];

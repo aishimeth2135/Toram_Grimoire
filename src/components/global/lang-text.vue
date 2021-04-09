@@ -1,5 +1,5 @@
 <script>
-    import GetLang from "@global-modules/LanguageSystem.js";
+    import GetLang from "@Service/Language";
 
     export default {
         props: {

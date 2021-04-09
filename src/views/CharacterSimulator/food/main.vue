@@ -92,12 +92,10 @@
 </template>
 <script>
 import Vuex from "vuex";
-import store from "@store/main";
 
-import ShowMessage from "@global-modules/ShowMessage.js";
+import MessageNotify from "@Service/Notify";
 
 export default {
-  store,
   inject: ['langText', 'globalLangText'],
   created() {
     if (this.foodBuilds.length == 0)
@@ -118,24 +116,24 @@ export default {
       this.$store.commit('character/createFoodBuild', {
         foodBuild: this.currentFoodBuild.copy()
       });
-      ShowMessage(this.localLangText('Copy food build successfully'));
+      MessageNotify(this.localLangText('Copy food build successfully'));
     },
     removeCurrentFoodBuild() {
       if (this.foodBuilds.length <= 1) {
-        ShowMessage(this.localLangText('Must have at least one food build'));
+        MessageNotify(this.localLangText('Must have at least one food build'));
         return;
       }
       const from = this.currentFoodBuild;
       this.$store.commit('character/removeFoodBuild', {
         index: this.currentFoodBuildIndex
       });
-      ShowMessage(this.localLangText('Remove food build successfully'),
+      MessageNotify(this.localLangText('Remove food build successfully'),
         'ic-round-delete', null, {
           buttons: [{
             text: this.globalLangText('global/recovery'),
             click: () => {
               this.$store.commit('character/createFoodBuild', { foodBuild: from });
-              ShowMessage(this.localLangText('Recovery food build successfully'));
+              MessageNotify(this.localLangText('Recovery food build successfully'));
             },
             removeMessageAfterClick: true
           }]
@@ -162,7 +160,7 @@ export default {
         if (this.currentFoodBuild.checkSelectedFoodsMaximum())
           this.currentFoodBuild.appendSelectedFood(idx);
         else
-          ShowMessage(this.localLangText('Number of selected food has reached the maximum'));
+          MessageNotify(this.localLangText('Number of selected food has reached the maximum'));
       }
     },
     localLangText(v, vs) {

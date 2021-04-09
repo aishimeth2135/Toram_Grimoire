@@ -3,13 +3,13 @@
     <template v-if="status < 3">
       <div class="container">
         <div class="main">
-          <loading-animation :status="status" @done="$store.commit('initFinished')" />
+          <loading-animation :status="status" @done="$store.commit('initialize/initFinished')" />
         </div>
         <div class="msg">
-          <div v-for="(item) in initItems" class="column" :key="item.msg">
+          <div v-for="item in initItems" class="column" :key="item.msg">
             <span class="text">{{ item.msg }}</span>
             <cy-icon-text class="status-icon" :iconify-name="statusIcon(item.status)"
-              :class="{'loading': item.status == 0, 'error': item.status == -1}" />
+              :class="{ 'loading': item.status == 0, 'error': item.status == -1 }" />
           </div>
         </div>
       </div>
@@ -21,13 +21,11 @@
 </template>
 
 <script>
-  import store from "@store/loading.js";
   import Vuex from 'vuex';
 
-  import vue_loadingAnimation from "./loading/loading-animation.vue";
+  import vue_loadingAnimation from "./initialization/loading-animation.vue";
 
   export default {
-    store,
     methods: {
       statusIcon(v) {
         if (v >= 0)
@@ -36,7 +34,7 @@
       }
     },
     computed: {
-      ...Vuex.mapState(['initItems', 'status', 'msgItems'])
+      ...Vuex.mapState('initialize', ['initItems', 'status', 'msgItems'])
     },
     components: {
       'loading-animation': vue_loadingAnimation

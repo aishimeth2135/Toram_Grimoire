@@ -1,4 +1,4 @@
-import { HandleLanguageData } from "@global-modules/LanguageSystem.js";
+import { HandleLanguageData } from "@Service/Language";
 
 export default function(character_system, datas) {
   const

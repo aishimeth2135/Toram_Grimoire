@@ -49,9 +49,9 @@
   </div>
 </template>
 <script>
-import ShowMessage from "@global-modules/ShowMessage.js";
-import CY from "@global-modules/cyteria.js"
-import GetLang from "@global-modules/LanguageSystem.js";
+import MessageNotify from "@Service/Notify";
+import CY from "@Util/Cyteria"
+import GetLang from "@Service/Language";
 
 import init from "./init.js";
 
@@ -148,7 +148,7 @@ export default {
       if (mode == 'save') {
         const str = this.saveData();
         if (!str) {
-          ShowMessage(Lang('Warn/File is empty'));
+          MessageNotify(Lang('Warn/File is empty'));
           return;
         }
         try {
@@ -164,12 +164,12 @@ export default {
               this.loadData(res);
               this.actionFinished();
             } catch (e) {
-              ShowMessage(Lang('Warn/An error occurred while loading data'));
+              MessageNotify(Lang('Warn/An error occurred while loading data'));
               this.error(e);
             }
           },
           wrongFileType() {
-            ShowMessage(Lang('Warn/Wrong file type: csv'));
+            MessageNotify(Lang('Warn/Wrong file type: csv'));
           }
         });
       }
@@ -211,7 +211,7 @@ export default {
         this.saveLocalStorageData(index, 'name', name);
         this.saveLocalStorageData(index, 'data', str);
 
-        ShowMessage(Lang('Warn/Saving success'));
+        MessageNotify(Lang('Warn/Saving success'));
         this.actionFinished();
         this.updateButtonsStates();
       } catch (e) {
@@ -222,10 +222,10 @@ export default {
       const d = this.getLocalStorageData(index, 'data');
       try {
         this.loadData(d);
-        ShowMessage(Lang('Warn/Loading success'));
+        MessageNotify(Lang('Warn/Loading success'));
         this.actionFinished();
       } catch (e) {
-        ShowMessage(Lang('Warn/An error occurred while loading data'));
+        MessageNotify(Lang('Warn/An error occurred while loading data'));
         this.error(e);
       }
     },

@@ -1,7 +1,6 @@
 import SearchController from "./module/SearchController.js";
 import { Equipment, Crystal, Prop } from "./module/ItemElements.js"
-
-export default class ItemSystem {
+class ItemSystem {
   constructor() {
     this.equipments = [];
     this.crystals = [];
@@ -20,3 +19,6 @@ export default class ItemSystem {
 }
 
 ItemSystem.Prop = Prop;
+
+export default ItemSystem;
+export { Prop, Equipment, Crystal };

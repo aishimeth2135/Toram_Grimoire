@@ -4,13 +4,11 @@
   </article>
 </template>
 <script>
-// import GetLang from "@global-modules/LanguageSystem.js";
+// import GetLang from "@Service/Language";
 
 import init from "./init.js";
-import store from "@store/main";
 
 export default {
-  store,
   beforeCreate() {
     init();
   },

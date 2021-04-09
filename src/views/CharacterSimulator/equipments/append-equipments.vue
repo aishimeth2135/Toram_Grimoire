@@ -75,11 +75,9 @@
   </cy-window>
 </template>
 <script>
-import ShowMessage from "@global-modules/ShowMessage.js";
-import store from "@store/main";
+import MessageNotify from "@Service/Notify";
 
 export default {
-  store,
   props: ['visible'],
   inject: ['langText', 'globalLangText', 'convertEquipmentData', 'getShowEquipmentData', 'appendEquipments'],
   data() {
@@ -93,14 +91,14 @@ export default {
   methods: {
     submitSelected() {
       this.appendEquipments(this.selected.map(p => p.origin.copy()));
-      ShowMessage(this.localLangText('append equipments successfully', [this.selected.length]), 'ic-round-done');
+      MessageNotify(this.localLangText('append equipments successfully', [this.selected.length]), 'ic-round-done');
       this.selected = [];
       this.$emit('close');
     },
     clearSelected() {
       const store = this.selected;
       this.selected = [];
-      ShowMessage(this.localLangText('selected equipments cleared'), 'ic-round-done', null, {
+      MessageNotify(this.localLangText('selected equipments cleared'), 'ic-round-done', null, {
         buttons: [{
           text: this.globalLangText('global/recovery'),
           click: () => {
@@ -128,7 +126,7 @@ export default {
       const text = this.$refs.searchText.value;
 
       if (text == '') {
-        ShowMessage(this.localLangText('search text is empty'));
+        MessageNotify(this.localLangText('search text is empty'));
         return;
       }
 

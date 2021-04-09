@@ -1,9 +1,5 @@
-import Vuex from "vuex";
-import Vue from "vue";
-
-Vue.use(Vuex);
-
-const store = new Vuex.Store({
+const store = {
+  namespaced: true,
   state: {
     initItems: [],
     status: 0, // 0: loading, 1: success, 2: finished
@@ -52,6 +48,6 @@ const store = new Vuex.Store({
       });
     },
   }
-});
+};
 
 export default store;

@@ -20,20 +20,18 @@
   </div>
 </template>
 <script>
-  import store from "@store/show-message.js";
   import Vuex from "vuex";
 
   export default {
-    store,
     computed: {
-      ...Vuex.mapState(['messages'])
+      ...Vuex.mapState('notify', ['messages'])
     },
     methods: {
       messageButtonClick(msg, btn) {
         if (btn.click)
           btn.click();
         if (btn.removeMessageAfterClick)
-          this.$store.commit('removeMessage', msg);
+          this.$store.commit('notify/removeMessage', msg);
       }
     }
   };

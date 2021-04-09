@@ -1,5 +1,5 @@
 import CharacterSystem from "../js/CharacterSystem/CharacterSystem.js";
-import CY from "../js/main/module/cyteria.js";
+import CY from "../js/main/module/Cyteria";
 
 const CharaSystem = new CharacterSystem();
 

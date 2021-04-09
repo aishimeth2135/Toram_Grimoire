@@ -25,5 +25,7 @@ class CharacterSystem {
 }
 
 CharacterSystem.CharacterStatCategory = CharacterStatCategory;
+CharacterSystem.StatBase = StatBase;
 
 export default CharacterSystem;
+export { StatBase, CharacterStatCategory };

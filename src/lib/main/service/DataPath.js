@@ -1,5 +1,5 @@
 import Papa from "papaparse";
-import { currentLanguage, secondLanguage } from "./LanguageSystem.js";
+import { currentLanguage, secondLanguage } from "./Language";
 
 function DataPath(id) {
   /* 語言資料：

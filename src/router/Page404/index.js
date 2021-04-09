@@ -1,8 +1,7 @@
-// import Grimoire from "@Grimoire";
 import vue_page404 from "@views/app/page404.vue";
-import ViewInit from "@global-modules/ViewInit.js";
+import ViewInit from "@Service/ViewInit.js";
 
-// import GetLang from "@global-modules/LanguageSystem.js";
+// import GetLang from "@Service/Language";
 
 export default {
   path: '*',

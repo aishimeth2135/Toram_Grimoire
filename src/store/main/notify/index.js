@@ -1,9 +1,5 @@
-import Vuex from "vuex";
-import Vue from "vue";
-
-Vue.use(Vuex);
-
-const store = new Vuex.Store({
+const store = {
+  namespaced: true,
   state: {
     messages: [],
     idCounter: 0
@@ -55,6 +51,6 @@ const store = new Vuex.Store({
       }
     }
   }
-});
+};
 
 export default store;

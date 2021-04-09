@@ -1,4 +1,4 @@
-import CY from "../js/main/module/cyteria.js";
+import CY from "../js/main/module/Cyteria";
 
 /**
  * @param  {HTMLElement} el

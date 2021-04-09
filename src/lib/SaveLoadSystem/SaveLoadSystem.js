@@ -1,6 +1,6 @@
 import Controller from "./module/Controller.js";
 
-import {InitLanguageData} from "../main/module/LanguageSystem.js";
+import {InitLanguageData} from "@Service/Language";
 
 import zh_tw from "./module/LanguageData/zh_tw.js";
 import en from "./module/LanguageData/en.js";

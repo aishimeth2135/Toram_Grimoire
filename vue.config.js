@@ -8,18 +8,20 @@ module.exports = {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
         "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
-      }
+      },
+      port: 9039
     },
     resolve: {
       alias: {
-        '@global-vue-components': path.join(__dirname, 'src', 'components', 'global'),
-        '@vue-components': path.join(__dirname, 'src', 'components'),
         '@views': path.join(__dirname, 'src', 'views'),
         '@store': path.join(__dirname, 'src', 'store'),
-        '@global-modules': path.join(__dirname, 'src', 'lib', 'main', 'module'),
         '@css': path.join(__dirname, 'src', 'assets', 'css'),
+        '@lib': path.join(__dirname, 'src', 'lib'),
+        '@global-vue-components': path.join(__dirname, 'src', 'components', 'global'),
+        '@vue-components': path.join(__dirname, 'src', 'components'),
+        '@Service': path.join(__dirname, 'src', 'lib', 'main', 'service'),
+        '@Util': path.join(__dirname, 'src', 'lib', 'main', 'util'),
         '@Grimoire': path.join(__dirname, 'src', 'lib', 'main', 'Grimoire.js'),
-        '@lib': path.join(__dirname, 'src', 'lib')
       }
     }
   },
