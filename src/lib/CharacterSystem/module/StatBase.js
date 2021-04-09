@@ -1,9 +1,8 @@
-import GetLang from "../../main/module/LanguageSystem.js";
+import GetLang from "@Service/Language";
 
 function Lang(s) {
   return GetLang('stat base/' + s);
 }
-
 
 class StatBase {
   constructor(bn, t, hm, order) {

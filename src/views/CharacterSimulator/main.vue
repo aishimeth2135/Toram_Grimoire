@@ -48,9 +48,10 @@
   </div>
 </template>
 <script>
-//import Grimoire from '@Grimoire';
-import GetLang from "@global-modules/LanguageSystem.js";
-import ShowMessage from "@global-modules/ShowMessage.js";
+import Vuex from "vuex";
+
+import GetLang from "@Service/Language";
+import MessageNotify from "@Service/Notify";
 
 import init from "./init.js";
 
@@ -61,10 +62,6 @@ import vue_skills from "./skill/main.vue";
 import vue_saveLoad from "./save-load.vue";
 import vue_foodBuild from "./food/main.vue";
 
-import Vuex from "vuex";
-import store from "@store/main";
-
-import Grimoire from "@Grimoire";
 import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js";
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
 import { Character } from "@lib/CharacterSystem/CharacterStat/class/main.js";
@@ -73,7 +70,6 @@ import createSkillState from "@views/SkillQuery/module/createSkillState.js";
 import SkillBranchHandler from "./skill/module/SkillBranchHandler.js";
 
 export default {
-  store,
   data() {
     return {
       contents: [{
@@ -126,7 +122,7 @@ export default {
       this.autoLoad();
     else {
       this.autoLoad({ resetOption: { skillBuildsReplaced: false } });
-      ShowMessage(this.langText('skill management/tips: skill-builds data not be replaced'));
+      MessageNotify(this.langText('skill management/tips: skill-builds data not be replaced'));
     }
     this.$store.commit('character/characterSimulatorInitFinished');
 
@@ -246,13 +242,13 @@ export default {
     autoSave() {
       if (!this.autoSaveDisable) {
         this.$store.dispatch('character/saveCharacterSimulator', { index: 0 });
-        ShowMessage(this.langText('save-load control/Auto save Successfully'), 'mdi-ghost', 'auto save successfully');
+        MessageNotify(this.langText('save-load control/Auto save Successfully'), 'mdi-ghost', 'auto save successfully');
       }
     },
     autoLoad({ resetOption } = {}) {
       try {
         this.$store.dispatch('character/loadCharacterSimulator', { index: 0, resetOption });
-        ShowMessage(this.langText('save-load control/Auto load Successfully'), 'mdi-ghost', 'auto load successfully');
+        MessageNotify(this.langText('save-load control/Auto load Successfully'), 'mdi-ghost', 'auto load successfully');
       } catch (e) {
         console.warn(e);
         console.warn('[Grimoire: character-simulator] Auto load faild. If you are entering this page for the first time, you can ignore this message.');
@@ -279,7 +275,7 @@ export default {
       if (!this.currentCharacterState)
         return [];
 
-      const categoryList = Grimoire.CharacterSystem.characterStatCategoryList;
+      const categoryList = this.$store.state.datas.character.characterStatCategoryList;
       const characterStatMap = {};
       categoryList.map(p => p.stats).flat().forEach(p => characterStatMap[p.id] = p)
 

@@ -1,9 +1,5 @@
-import Vuex from "vuex";
-import Vue from "vue";
-
-Vue.use(Vuex);
-
-const store = new Vuex.Store({
+const store = {
+  namespaced: true,
   state: {
     viewButtons: []
   },
@@ -12,6 +8,5 @@ const store = new Vuex.Store({
       state.viewButtons = viewButtons;
     }
   }
-});
-
+};
 export default store;

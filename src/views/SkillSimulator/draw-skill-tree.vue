@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import CY from "@global-modules/cyteria.js";
+import CY from "@Util/Cyteria";
 import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs } from "@lib/SkillSystem/module/DrawSkillTree.js";
 import { Skill, SkillTree, LevelSkill, LevelSkillTree } from "@lib/SkillSystem/module/SkillElements.js";
 

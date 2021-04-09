@@ -83,12 +83,10 @@
 </template>
 <script>
 import Vuex from "vuex";
-import store from "@store/main";
 
 import vue_skillItem from "./skill-item.vue";
 
 export default {
-  store,
   props: ['characterState', 'passiveSkillStates', 'activeSkillStates'],
   inject: ['langText'],
   data() {

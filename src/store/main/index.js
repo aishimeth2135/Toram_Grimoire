@@ -3,15 +3,25 @@ import Vue from "vue";
 
 Vue.use(Vuex);
 
-import character from "./character";
-import datas from "./datas";
 import main from "./main.js";
+
+import initialize from "./initialize";
+import notify from "./notify";
+import leftMenu from "./left-menu";
+import nav from "./nav";
+
+import datas from "./datas";
+import character from "./character";
 
 const store = new Vuex.Store({
   modules: {
     main,
-    character,
-    datas
+    initialize,
+    notify,
+    leftMenu,
+    nav,
+    datas,
+    character
   }
 });
 

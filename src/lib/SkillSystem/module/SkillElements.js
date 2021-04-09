@@ -1,6 +1,6 @@
 import Grimoire from "@Grimoire";
 import StatBase from "@lib/CharacterSystem/module/StatBase.js";
-import CY from "@global-modules/cyteria.js";
+import CY from "@Util/Cyteria";
 
 function checkConstructorArgs() {
   Array.from(arguments).forEach((arg, i) => {

@@ -59,10 +59,8 @@ import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js
 import { CharacterEquipment, MainWeapon, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
 
 import Vuex from "vuex";
-import store from "@store/main";
 
 export default {
-  store,
   props: ['characterState'],
   inject: ['langText', 'globalLangText'],
   provide() {

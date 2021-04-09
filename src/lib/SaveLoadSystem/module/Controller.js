@@ -1,8 +1,8 @@
 /* eslint-disable */
-import CY from "../../main/module/cyteria.js";
-import GetLang from "../../main/module/LanguageSystem.js";
-import Icons from "../../main/module/SvgIcons.js";
-import ShowMessage from "../../main/module/ShowMessage.js";
+import CY from "@Util/Cyteria";
+import GetLang from "@Service/Language";
+import Icons from "@Service/SvgIcons.js";
+import MessageNotify from "@Service/Notify";
 
 function Lang(s, vs){
     return GetLang('Save Load System/' + s, vs);
@@ -22,7 +22,7 @@ export default class Controller {
                     case 'save_csv': {
                         const str = ctrr.getSaveCsvString();
                         if ( !str ){
-                            ShowMessage(Lang('Warn/File is empty'))
+                            MessageNotify(Lang('Warn/File is empty'))
                             return;
                         }
                         CY.csv.saveFile(str, ctrr.csvFileName());
@@ -35,7 +35,7 @@ export default class Controller {
                                 ctrr.loadCsvString(res);
                                 ctrr.afterActionFinish();
                             },
-                            wrongFileType: () => ShowMessage(Lang('Warn/Wrong file type: csv'))
+                            wrongFileType: () => MessageNotify(Lang('Warn/Wrong file type: csv'))
                         });
                         break;
                 }
@@ -74,7 +74,7 @@ export default class Controller {
                             return;
                         stg.setItem(stg_name_names, ctrr.getSaveNameList().join(',,'));
                         stg.setItem(stg_name_data, str);
-                        ShowMessage(Lang('Warn/Saving success'), 'done', 'save success');
+                        MessageNotify(Lang('Warn/Saving success'), 'done', 'save success');
                         break;
                     }
                     case 'load':
@@ -91,7 +91,7 @@ export default class Controller {
                             return;
                         }
                         ctrr.loadCsvString(stg.getItem(stg_name_data));
-                        ShowMessage(Lang('Warn/Loading success'), 'done', 'load success');
+                        MessageNotify(Lang('Warn/Loading success'), 'done', 'load success');
                         break;
                 }
                 scope.classList.add('hidden');

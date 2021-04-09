@@ -79,13 +79,11 @@ import vue_characterStatsCompare from "../main/character-stats-compare.vue";
 import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js";
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
 
-import ShowMessage from "@global-modules/ShowMessage.js";
+import MessageNotify from "@Service/Notify";
 
 import Vuex from "vuex";
-import store from "@store/main";
 
 export default {
-  store,
   props: ['visible', 'action', 'characterState'],
   inject: [
     'langText', 'globalLangText', 'toggleMainWindowVisible',
@@ -148,7 +146,7 @@ export default {
       const eq = this.currentEquipment.copy();
       eq.name = eq.name + '*';
       this.appendEquipments([eq]);
-      ShowMessage(this.localLangText('message: copy equipment'), 'mdi-content-copy',
+      MessageNotify(this.localLangText('message: copy equipment'), 'mdi-content-copy',
         'browse equipment/copy equipment');
     },
     removeSelectedEquipment() {
@@ -165,14 +163,14 @@ export default {
         }
         return false;
       });
-      ShowMessage(this.localLangText('message: remove equipment', [eq.name]),
+      MessageNotify(this.localLangText('message: remove equipment', [eq.name]),
         'ic-baseline-delete-outline', null, {
         buttons: [{
           text: this.globalLangText('global/recovery'),
           click: () => {
             this.appendEquipments([eq]);
             modifiedFields.forEach(field => field.setEquipment(eq));
-            ShowMessage(this.localLangText('message: removed equipment recovery', [eq.name]));
+            MessageNotify(this.localLangText('message: removed equipment recovery', [eq.name]));
           },
           removeMessageAfterClick: true
         }]

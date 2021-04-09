@@ -1,9 +1,9 @@
 /* eslint-disable */
 import { Calculation, CalcItemContainer, CalcItemBase } from "./CalcElements.js";
-import CY from "../../../main/module/cyteria.js";
-import GetLang from "../../../main/module/LanguageSystem.js";
-import Icons from "../../../main/module/SvgIcons.js";
-import ShowMessage from "../../../main/module/ShowMessage.js";
+import CY from "@Util/Cyteria";
+import GetLang from "@Service/Language";
+import Icons from "@Service/SvgIcons.js";
+import MessageNotify from "@Service/Notify";
 import SaveLoadSystem from "../../../SaveLoadSystem/SaveLoadSystem.js";
 import Papa from "papaparse";
 
@@ -55,7 +55,7 @@ export default class DamageCalculationController {
         const str = ctrr.saveToCsv().replace(/\r\n/g, '|n|');
         const url = new URL(document.location);
         CY.copyToClipboard(url.origin + url.pathname + '?calculation_data=' + str);
-        ShowMessage(Lang('Save Load/Warn/Copy to clipboard successed'));
+        MessageNotify(Lang('Save Load/Warn/Copy to clipboard successed'));
       },
       openContainerTips(e) {
         const scope = ctrr.nodes.showContainerTips;
@@ -141,11 +141,11 @@ export default class DamageCalculationController {
         let v = this.value;
         const MAX_LENGTH = 16;
         if (v.includes(',,')) {
-          ShowMessage(Lang('Warn/Disable char'));
+          MessageNotify(Lang('Warn/Disable char'));
           v = v.replace(new RegExp(',,', 'g'), '');
         }
         if (v.length > MAX_LENGTH) {
-          ShowMessage(Lang('Warn/Calculation Name too long'))
+          MessageNotify(Lang('Warn/Calculation Name too long'))
           v = v.slice(0, MAX_LENGTH);
         }
         const n = cal.calculationName(v);
@@ -430,7 +430,7 @@ export default class DamageCalculationController {
         return ctrr.calculations.length != 0;
       },
       error() {
-        ShowMessage(GetLang('global/LocalStorage is inavailable'));
+        MessageNotify(GetLang('global/LocalStorage is inavailable'));
       }
     });
 
@@ -1037,7 +1037,7 @@ export default class DamageCalculationController {
   }
   saveToCsv() {
     if (this.calculations.length == 0) {
-      ShowMessage(Lang('Save Load/Warn/Calculations is empty'));
+      MessageNotify(Lang('Save Load/Warn/Calculations is empty'));
       return null;
     }
     const type_List = {
@@ -1109,7 +1109,7 @@ export default class DamageCalculationController {
   }
   loadFromCsv(csv) {
     if (csv === '') {
-      ShowMessage(Lang('Save Load/Warn/File is empty'));
+      MessageNotify(Lang('Save Load/Warn/File is empty'));
       return;
     }
 
@@ -1211,7 +1211,7 @@ export default class DamageCalculationController {
       });
     } catch (e) {
       console.log(e);
-      ShowMessage(Lang('Save Load/Warn/An error occurred while loading data'));
+      MessageNotify(Lang('Save Load/Warn/An error occurred while loading data'));
 
       // 發生錯誤，還原Controller至載入前
       this.calculations = old_cals;

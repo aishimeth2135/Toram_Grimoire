@@ -1,7 +1,7 @@
 import app from "./app.vue";
 
-import GetLang from "@global-modules/LanguageSystem.js";
-import ViewInit from "@global-modules/ViewInit.js";
+import GetLang from "@Service/Language";
+import ViewInit from "@Service/ViewInit.js";
 
 const vue_skillQuery = () => import(/* webpackChunkName: "skill-query" */ "@views/SkillQuery/main.vue");
 

@@ -1,5 +1,5 @@
-import { GetLang, InitLanguageSystem, InitLanguageData, currentLanguage } from "@global-modules/LanguageSystem.js";
-import CY from "@global-modules/cyteria.js";
+import { GetLang, InitLanguageSystem, InitLanguageData, currentLanguage } from "@Service/Language";
+import CY from "@Util/Cyteria";
 
 import zh_tw from "./LanguageData/zh_tw.js";
 import en from "./LanguageData/en.js";

@@ -82,7 +82,6 @@
   </cy-window>
 </template>
 <script>
-import Grimoire from "@Grimoire";
 import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
 import vue_showStat from "./show-stat.vue";
 
@@ -90,7 +89,7 @@ export default {
   props: ['visible', 'equipment'],
   inject: ['langText', 'globalLangText'],
   data() {
-    const crystals = Grimoire.ItemSystem.items.crystals;
+    const crystals = this.$store.state.datas.items.crystals;
     const crystalCategorys = new Array(5).fill().map((p, i) => {
       return {
         id: i,

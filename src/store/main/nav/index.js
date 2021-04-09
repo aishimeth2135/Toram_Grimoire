@@ -1,11 +1,7 @@
-import Vuex from "vuex";
-import Vue from "vue";
+import GetLang from "@Service/Language";
 
-import GetLang from "@global-modules/LanguageSystem.js";
-
-Vue.use(Vuex);
-
-const store = new Vuex.Store({
+const store = {
+  namespaced: true,
   state: {
     items: []
   },
@@ -17,6 +13,5 @@ const store = new Vuex.Store({
       }, ...items];
     }
   }
-});
-
+};
 export default store;

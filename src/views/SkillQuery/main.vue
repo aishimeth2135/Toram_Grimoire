@@ -106,7 +106,7 @@
                       <span class="column" v-for="(data) in equipmentCategoryList" :key="data.showName">
                         <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.shortName)" class="inline"
                           style="margin-right: 0.7rem;">
-                          {{ equipmentState[data.shortName] | getEquipmentText(data.name) }}
+                          {{ getEquipmentText(equipmentState[data.shortName], data.name) }}
                         </cy-button>
                       </span>
                     </div>
@@ -154,7 +154,7 @@
                   <cy-button v-for="(eq) in equipmentState[data.shortName + 'List']" :key="eq"
                     :iconify-name="data.icon" @click="selectEquipment(data.shortName, eq)"
                     :class="{ 'selected': equipmentState[data.shortName] == eq }">
-                    {{ eq | getEquipmentText(data.name) }}
+                    {{ getEquipmentText(eq, data.name) }}
                   </cy-button>
                 </div>
               </div>
@@ -225,8 +225,9 @@
   </article>
 </template>
 <script>
-import Grimoire from "@Grimoire";
-import GetLang from "@global-modules/LanguageSystem.js";
+import { mapState } from "vuex";
+
+import GetLang from "@Service/Language";
 
 import init from "./init.js";
 
@@ -236,16 +237,11 @@ import vue_skillBranch from "./skill-branch/skill-branch.vue";
 import createSkillState from "./module/createSkillState.js";
 import handleFormula from "./module/handleFormula.js";
 
-function Lang(v, vs) {
-  return GetLang('Skill Query/' + v, vs);
-}
-
 export default {
   data() {
     const self = this;
 
     return {
-      skillRoot: Grimoire.SkillSystem.skillRoot,
       selectSkillTreeWindowState: {
         currentIndex_stc: -1, // Skill Tree Category
         currentIndex_st: -1, // Skill Tree
@@ -312,14 +308,11 @@ export default {
     if (this.$refs['effect-attrs'])
       this.handleTagButton(this.$refs['effect-attrs']);
   },
-  filters: {
-    getEquipmentText(value, type) {
-      if (value == -1)
-        return Lang('equipment/no select');
-      return Lang('equipment/' + type)[value];
-    }
-  },
   computed: {
+    ...mapState({
+      'skillRoot': state => state.datas.skill.skillRoot,
+      'tagList': state => state.datas.tag.tagList
+    }),
     drawSkillTreeOptions() {
       return {
         currentSkill: this.currentSkillState ? this.currentSkillState.skill : null,
@@ -490,7 +483,7 @@ export default {
       };
       el.querySelectorAll('.' + this.tagState.buttonClassName)
         .forEach(p => {
-          if (!Grimoire.TagSystem.tagList.find(a => a.name == p.innerText))
+          if (!this.tagList.find(a => a.name == p.innerText))
             return;
           p.addEventListener('mouseenter', enter);
           p.addEventListener('mouseleave', leave);
@@ -498,8 +491,7 @@ export default {
         });
     },
     appendTag(name) {
-      const list = Grimoire.TagSystem.tagList;
-      const p = list.find(p => p.name == name);
+      const p = this.tagList.find(p => p.name == name);
       if (p) {
         this.tagState.tags.push(p);
       }
@@ -694,14 +686,17 @@ export default {
       this.updateSkillState();
       this.selectSkillTreeWindowState.visible = false;
     },
+    getEquipmentText(value, type) {
+      return value === -1 ? this.langText('equipment/no select') : this.langText('equipment/' + type)[value];
+    },
     appendSkillState(skill) {
       this.skillStates.store.push({
         skill
       });
       this.updateSkillState();
     },
-    langText() {
-      return Lang(...arguments);
+    langText(v, vs) {
+      return GetLang('Skill Query/' + v, vs);
     }
   },
   beforeCreate() {

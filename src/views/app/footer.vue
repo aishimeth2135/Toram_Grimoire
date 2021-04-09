@@ -18,8 +18,8 @@
 </template>
 
 <script>
-  import CY from "@global-modules/cyteria.js";
-  import GetLang from "@global-modules/LanguageSystem.js";
+  import CY from "@Util/Cyteria";
+  import GetLang from "@Service/Language";
 
   export default {
     computed: {

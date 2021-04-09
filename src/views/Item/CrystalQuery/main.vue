@@ -116,7 +116,7 @@
   </article>
 </template>
 <script>
-import GetLang from "@global-modules/LanguageSystem.js";
+import GetLang from "@Service/Language";
 
 import init from "./init.js";
 
@@ -125,10 +125,7 @@ import { EquipmentCrystal } from "@lib/CharacterSystem/CharacterStat/class/Chara
 
 import vue_showStat from "./show-stat.vue";
 
-import store from "@store/main";
-
 export default {
-  store,
   data() {
     const crystals = this.$store.state.datas.items.crystals;
     const crystalCategorys = new Array(5).fill().map((_, i) => {

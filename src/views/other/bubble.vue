@@ -15,7 +15,7 @@
   </div>
 </template>
 <script>
-import { loadIconifyData } from "@global-modules/SvgIcons.js";
+import { loadIconifyData } from "@Service/SvgIcons.js";
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);

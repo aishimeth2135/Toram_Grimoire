@@ -1,9 +1,9 @@
 /* eslint-disable */
-import CY from "../../main/module/cyteria.js";
-import GetLang from "../../main/module/LanguageSystem.js";
-import Grimoire from "../../main/Grimoire.js";
-import StatBase from "../../CharacterSystem/module/StatBase.js";
-import Icons from "../../main/module/SvgIcons.js";
+import CY from "@Util/Cyteria";
+import GetLang from "@Service/Language";
+import Grimoire from "@Grimoire";
+import { StatBase } from "@lib/CharacterSystem";
+import Icons from "@Service/SvgIcons.js";
 
 
 function Lang(s, vs) {

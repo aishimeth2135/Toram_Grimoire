@@ -1,5 +1,4 @@
-import ItemSystem from "@lib/ItemSystem";
-const { Prop } = ItemSystem;
+import { Prop } from "@lib/ItemSystem";
 
 export default function(root, c) {
   const NAME = 0,

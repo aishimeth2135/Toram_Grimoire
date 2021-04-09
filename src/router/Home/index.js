@@ -3,8 +3,8 @@ import app from "./app.vue";
 import vue_home from "@views/Home/Home/main.vue";
 import vue_about from "@views/Home/About/main.vue";
 
-import GetLang from "@global-modules/LanguageSystem.js";
-import ViewInit from "@global-modules/ViewInit.js";
+import GetLang from "@Service/Language";
+import ViewInit from "@Service/ViewInit.js";
 
 export default {
   path: '/',

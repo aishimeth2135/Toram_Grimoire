@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-// views
 import Character from "./Character";
 import Home from "./Home";
 import Skill from "./Skill";
@@ -10,15 +9,11 @@ import DamageCalc from "./Calculation/damage";
 import Enchant from "./Enchant";
 
 import Page404 from "./Page404";
-
 import Bubble from "./Bubble";
 
-// stores
-import navStore from "@store/nav.js";
-import leftMenuStore from "@store/left-menu.js";
+import store from "@store/main";
 
-// global modules
-import GetLang from "@global-modules/LanguageSystem.js";
+import GetLang from "@Service/Language";
 
 Vue.use(VueRouter);
 
@@ -65,7 +60,7 @@ router.beforeEach((to, from, next) => {
     }
 
     // set nav
-    navStore.commit('setItems', {
+    store.commit('nav/setItems', {
       items: to.matched
         .filter(p => p.meta && p.meta.title)
         .map(p => {
@@ -89,7 +84,7 @@ router.beforeEach((to, from, next) => {
           };
         });
 
-        leftMenuStore.commit('setViewButtons', { viewButtons: res });
+        store.commit('leftMenu/setViewButtons', { viewButtons: res });
       }
     }
   }

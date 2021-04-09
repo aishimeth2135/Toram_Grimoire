@@ -128,10 +128,9 @@
   </article>
 </template>
 <script>
-import GetLang from "@global-modules/LanguageSystem.js";
+import GetLang from "@Service/Language";
 
 import init from "./init.js";
-import store from "@store/main";
 
 import vue_searchResult from "./search-result.vue";
 
@@ -140,7 +139,6 @@ import { CharacterEquipment, MainWeapon, SubWeapon, SubArmor, BodyArmor, Additio
 import StatBase from "@lib/CharacterSystem/module/StatBase.js";
 
 export default {
-  store,
   data() {
     const equipments = this.$store.state.datas.items.equipments
       .map(p => CharacterEquipment.fromOriginEquipment(p));

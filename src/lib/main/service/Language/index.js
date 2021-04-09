@@ -1,9 +1,9 @@
-import zh_tw from "./LanguageData/zh_tw.js";
-import en from "./LanguageData/en.js";
-import ja from "./LanguageData/ja.js";
-import zh_cn from "./LanguageData/zh_cn.js";
+import zh_tw from "./globalData/zh_tw.js";
+import en from "./globalData/en.js";
+import ja from "./globalData/ja.js";
+import zh_cn from "./globalData/zh_cn.js";
 
-import CY from "./cyteria.js";
+import CY from "@Util/Cyteria";
 
 let currentLanguageNo = 0,
   secondLanguageNo = 1;

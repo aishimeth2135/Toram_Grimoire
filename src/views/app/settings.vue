@@ -137,10 +137,9 @@
 </template>
 
 <script>
-import CY from "@lib/main/module/cyteria.js";
-import GetLang from "@global-modules/LanguageSystem.js";
-
-import ShowMessage from "@global-modules/ShowMessage.js";
+import CY from "@Util/Cyteria";
+import GetLang from "@Service/Language";
+import MessageNotify from "@Service/Notify";
 
 export default {
   data() {
@@ -167,7 +166,7 @@ export default {
   methods: {
     clearSpreadsheetsCaches() {
       caches.delete('google-spreadsheets-csv-files')
-        .then(p => p && ShowMessage(this.langText('clear caches of spreadsheets/Clear caches of spreadsheet successfully')));
+        .then(p => p && MessageNotify(this.langText('clear caches of spreadsheets/Clear caches of spreadsheet successfully')));
     },
     saveLocalStorage() {
       const data = {};
@@ -185,7 +184,7 @@ export default {
         fileName: 'Cy-Grimoire_storage.txt'
       });
 
-      ShowMessage(this.langText('storage backup/Save successfully'));
+      MessageNotify(this.langText('storage backup/Save successfully'));
     },
     loadLocalStorage() {
       const storage = window.localStorage;
@@ -194,14 +193,14 @@ export default {
         succee: data => {
           data = JSON.parse(data);
           Object.keys(data).forEach(k => storage.setItem(k, data[k]));
-          ShowMessage(this.langText('storage backup/Load successfully'));
+          MessageNotify(this.langText('storage backup/Load successfully'));
         },
         error: () => {
-          ShowMessage(this.langText('storage backup/Load failed'));
+          MessageNotify(this.langText('storage backup/Load failed'));
         },
         checkFileType: type => {
           if (type != 'txt') {
-            ShowMessage(this.langText('storage backup/Wrong type of file'));
+            MessageNotify(this.langText('storage backup/Wrong type of file'));
             return false;
           }
           return true;

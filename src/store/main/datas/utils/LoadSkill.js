@@ -1,5 +1,5 @@
 import Grimoire from "@Grimoire";
-import { HandleLanguageData } from "@global-modules/LanguageSystem.js";
+import { HandleLanguageData } from "@Service/Language";
 import SkillSystem from "@lib/SkillSystem";
 
 const { SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch } = SkillSystem;

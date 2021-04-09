@@ -1,10 +1,10 @@
-import element from "./Cyteria/element.js";
-import object from "./Cyteria/object.js";
-import svg from "./Cyteria/svg.js";
-import number from "./Cyteria/number.js";
-import math from "./Cyteria/math.js";
-import csv from "./Cyteria/csv.js";
-import file from "./Cyteria/file.js";
+import element from "./element.js";
+import object from "./object.js";
+import svg from "./svg.js";
+import number from "./number.js";
+import math from "./math.js";
+import csv from "./csv.js";
+import file from "./file.js";
 
 function copyToClipboard(s) {
   const input = document.createElement('textarea');

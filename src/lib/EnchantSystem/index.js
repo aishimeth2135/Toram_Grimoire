@@ -3,7 +3,7 @@ import EnchantSimulatorController from "./module/EnchantSimulatorController.js";
 
 import { EnchantItemBase } from "./module/EnchantElement.js";
 
-export default class EnchantSystem {
+class EnchantSystem {
   constructor() {
     this.categorys = [];
   }
@@ -19,3 +19,6 @@ export default class EnchantSystem {
 }
 
 EnchantSystem.EnchantItemBase = EnchantItemBase;
+
+export default EnchantSystem;
+export { EnchantItemBase };

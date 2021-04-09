@@ -118,14 +118,11 @@
 </template>
 <script>
 import Vuex from "vuex";
-import store from "@store/main";
 
-import ShowMessage from "@global-modules/ShowMessage.js";
-
+import MessageNotify from "@Service/Notify";
 import { Character } from "@lib/CharacterSystem/CharacterStat/class/main.js";
 
 export default {
-  store,
   props: ['characterState'],
   inject: ['globalLangText', 'langText'],
   computed: {
@@ -143,18 +140,18 @@ export default {
   methods: {
     removeCurrentCharacter() {
       if (this.characterStates.length <= 1) {
-        ShowMessage(this.langText('Warn/Must have at least one character'));
+        MessageNotify(this.langText('Warn/Must have at least one character'));
         return;
       }
       const from = this.characterState.origin;
       this.$store.commit('character/removeCharacter', { index: this.currentCharacterStateIndex });
-      ShowMessage(this.langText('Warn/Remove character successfully', [from.name]),
+      MessageNotify(this.langText('Warn/Remove character successfully', [from.name]),
         'ic-round-delete', null, {
           buttons: [{
             text: this.globalLangText('global/recovery'),
             click: () => {
               this.$store.commit('character/createCharacter', from);
-              ShowMessage(this.langText('Warn/Recovery character successfully', [from.name]));
+              MessageNotify(this.langText('Warn/Recovery character successfully', [from.name]));
             },
             removeMessageAfterClick: true
           }]
@@ -163,7 +160,7 @@ export default {
     copyCurrentCharacter() {
       const from = this.characterState.origin;
       this.$store.commit('character/createCharacter', from.copy());
-      ShowMessage(this.langText('Warn/Copy character successfully', [from.name]));
+      MessageNotify(this.langText('Warn/Copy character successfully', [from.name]));
     },
     setOptionalBaseStat(name) {
       this.character.setOptinalBaseStat(name);
