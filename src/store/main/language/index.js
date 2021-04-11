@@ -31,7 +31,7 @@ const store = {
       })();
 
       if (data === void 0) {
-        console.warn(`[Unknow Language ID] ${id}`);
+        console.warn(`[Unknow Language ID] ${id.join('/')}`);
         console.log(new Error().stack);
         return '???';
       }

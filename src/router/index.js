@@ -4,7 +4,7 @@ import VueRouter from 'vue-router';
 import Character from "./Character";
 import Home from "./Home";
 import Skill from "./Skill";
-import Item from "./Item";
+import Items from "./Items";
 import DamageCalc from "./Calculation/damage";
 import Enchant from "./Enchant";
 
@@ -21,7 +21,7 @@ const routes = [
   Home,
   Character,
   Skill,
-  Item,
+  Items,
   DamageCalc,
   Enchant,
   Page404,

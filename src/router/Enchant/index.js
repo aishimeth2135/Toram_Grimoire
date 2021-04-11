@@ -3,7 +3,7 @@ import app from "./app.vue";
 import GetLang from "@Services/Language";
 import ViewInit from "@Services/ViewInit.js";
 
-const vue_enchantSimulator = () => import(/* webpackChunkName: "enchant-simulator" */ "@views/EnchantSimulator/main.vue");
+const vue_enchantSimulator = () => import(/* webpackChunkName: "enchant-simulator" */ "@views/EnchantSimulator");
 
 export default {
   path: '/enchant',
