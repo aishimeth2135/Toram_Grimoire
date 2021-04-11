@@ -128,15 +128,15 @@
   </article>
 </template>
 <script>
-import GetLang from "@Service/Language";
+import GetLang from "@Services/Language";
 
 import init from "./init.js";
 
 import vue_searchResult from "./search-result.vue";
 
-import { CharacterEquipment, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
+import { CharacterEquipment, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear } from "@lib/Character/CharacterStat/class/CharacterEquipment.js";
 
-import StatBase from "@lib/CharacterSystem/module/StatBase.js";
+import StatBase from "@lib/Character/module/StatBase.js";
 
 export default {
   data() {

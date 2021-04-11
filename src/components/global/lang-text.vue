@@ -1,5 +1,5 @@
 <script>
-    import GetLang from "@Service/Language";
+    import GetLang from "@Services/Language";
 
     export default {
         props: {

@@ -1,4 +1,4 @@
-import { EnchantItemBase } from "@lib/EnchantSystem";
+import { EnchantItemBase } from "@lib/Enchant/Enchant";
 
 export default function LoadEnchantData(r, c) {
   const STAT_ID = 0,

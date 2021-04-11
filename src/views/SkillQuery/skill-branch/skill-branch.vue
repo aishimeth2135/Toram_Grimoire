@@ -19,7 +19,8 @@
     <fieldset v-if="['damage', 'effect', 'next', 'passive', 'heal'].includes(branch.name)" :class="branchClass">
       <!-- [start] title -->
       <legend>
-        <cy-icon-text v-if="showData['name']" class="name" :iconify-name="titleIconName">
+        <cy-icon-text v-if="showData['name']" class="name" :iconify-name="titleIconName"
+          text-color="purple">
           {{ showData['name'] }}
         </cy-icon-text>
         <div class="detail">
@@ -330,9 +331,7 @@
   </div>
 </template>
 <script>
-import GetLang from "@Service/Language";
-
-import handleFormula from "../module/handleFormula.js";
+import GetLang from "@Services/Language";
 
 import vue_damageFormula from "./damage-formula.vue";
 import vue_healFormula from "./heal-formula.vue";
@@ -341,8 +340,8 @@ import vue_branchDetail from "./branch-detail.vue";
 import vue_equipmentInfo from "./equipment-info.vue";
 import vue_skillArea from "./skill-area.vue";
 
-import DataContainer from "../module/DataContainer.js";
-
+import handleFormula from "../utils/handleFormula.js";
+import DataContainer from "../utils/DataContainer.js";
 
 export default {
   name: 'skill-branch',
@@ -1253,7 +1252,6 @@ fieldset.branch {
 
     > .name {
       margin-right: 0.8rem;
-      color: var(--primary-purple);
     }
 
     > .detail {

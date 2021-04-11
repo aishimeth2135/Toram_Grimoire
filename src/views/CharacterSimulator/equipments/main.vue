@@ -48,6 +48,8 @@
   </section>
 </template>
 <script>
+import Vuex from "vuex";
+
 import vue_equipmentField from "./equipment-field.vue";
 import vue_appendEquipments from "./append-equipments.vue";
 import vue_browseEquipments from "./browse-equipments.vue";
@@ -55,10 +57,8 @@ import vue_createCustomEquipment from "./create-custom-equipment.vue";
 import vue_customEquipmentEditor from "./custom-equipment-editor.vue";
 import vue_selectCrystals from "./select-crystals.vue";
 
-import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js";
-import { CharacterEquipment, MainWeapon, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
-
-import Vuex from "vuex";
+import { EquipmentField } from "@lib/Character/Character";
+import { CharacterEquipment, MainWeapon, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/Character/CharacterEquipment";
 
 export default {
   props: ['characterState'],

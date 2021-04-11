@@ -227,15 +227,15 @@
 <script>
 import { mapState } from "vuex";
 
-import GetLang from "@Service/Language";
+import GetLang from "@Services/Language";
 
 import init from "./init.js";
 
 import vue_drawSkillTree from "@views/SkillSimulator/draw-skill-tree.vue";
 import vue_skillBranch from "./skill-branch/skill-branch.vue";
 
-import createSkillState from "./module/createSkillState.js";
-import handleFormula from "./module/handleFormula.js";
+import createSkillState from "./utils/createSkillState.js";
+import handleFormula from "./utils/handleFormula.js";
 
 export default {
   data() {

@@ -1,4 +1,4 @@
-import { HandleLanguageData } from "@Service/Language";
+import { HandleLanguageData } from "@Services/Language";
 
 export default function(character_system, datas) {
   const
@@ -15,8 +15,10 @@ export default function(character_system, datas) {
 
   const c = datas[0];
   // language data
-  HandleLanguageData(datas, CAPTION, LANG_DATA.CAPTION);
-  HandleLanguageData(datas, CONSTANT_FORMULA, LANG_DATA.CONSTANT_FORMULA);
+  HandleLanguageData(datas, {
+    [CAPTION]: LANG_DATA.CAPTION,
+    [CONSTANT_FORMULA]: LANG_DATA.CONSTANT_FORMULA
+  });
 
   c.forEach((p, index) => {
     if (index == 0 || character_system.findStatBase(p[BASE_NAME]))

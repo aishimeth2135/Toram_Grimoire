@@ -228,17 +228,17 @@
   </article>
 </template>
 <script>
-import CY from "@Util/Cyteria";
-import GetLang from "@Service/Language"
-import { MessageNotify, LoadingNotify } from '@Service/Notify';
+import CY from "@Utils/Cyteria";
+import GetLang from "@Services/Language"
+import { MessageNotify, LoadingNotify } from '@Services/Notify';
 
 import vue_skillRoot from "./skill-root.vue";
 import vue_SaveLoadDataSystem from "@vue-components/SaveLoadDataSystem/main.vue";
 
 import Vuex from 'vuex'
 
-import { getSkillElementId } from "./module/methods.js";
-import { computeDrawSkillTreeData, GetDrawSetting } from "@lib/SkillSystem/module/DrawSkillTree.js";
+import { getSkillElementId } from "./utils";
+import { computeDrawSkillTreeData, GetDrawSetting } from "@lib/Skill/utils/DrawSkillTree";
 
 import init from "./init.js";
 

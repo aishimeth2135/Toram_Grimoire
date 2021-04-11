@@ -3,13 +3,31 @@ import "@css/main/main.less";
 import "@css/SaveLoad/main.css";
 import "@css/main/Cyteria/Cyteria.css";
 
-import routerInit from "./router/init.js";
-routerInit();
-
 import Vue from "vue";
 import Vuex from 'vuex';
+
+import CY from "@Utils/Cyteria";
+import { InitLanguageSystem } from "@Services/Language";
+
+// == [ pre Init ] =====================================
 Vue.use(Vuex);
 
+// == [ init ] =========================================
+InitLanguageSystem();
+
+if (CY.storageAvailable('localStorage')) {
+  if (localStorage['app--font-family'] === undefined){
+    localStorage.setItem('app--font-family', '1');
+    document.body.classList.add('font-1');
+  }
+  else
+    document.body.classList.add('font-' + localStorage['app--font-family']);
+  if (localStorage['Theme--Night-Mode'] === '1')
+    document.documentElement.classList.add('theme--night-mode');
+}
+// ======================================================
+
+// == [ auto regist global components ] =================
 function registComponents(requireComponent, prefix='') {
   requireComponent.keys().forEach(fileName => {
     const componentConfig = requireComponent(fileName);
@@ -25,6 +43,7 @@ const requireComponent_cy = require.context('./components/global/Cyteria', false
 
 registComponents(requireComponent_global);
 registComponents(requireComponent_cy, 'cy-');
+// ======================================================
 
 import App from "./App.vue";
 import router from "./router/index.js";

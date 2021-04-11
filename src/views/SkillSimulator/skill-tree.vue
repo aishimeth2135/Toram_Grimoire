@@ -13,7 +13,7 @@
 <script>
 import vue_drawSkillTree from "./draw-skill-tree.vue";
 
-import { getSkillElementId } from "./module/methods.js";
+import { getSkillElementId } from "./utils";
 
 export default {
   props: ['skillTreeState'],

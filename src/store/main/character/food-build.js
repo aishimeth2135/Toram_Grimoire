@@ -1,5 +1,5 @@
 import Grimoire from "@Grimoire";
-import Foods from "@lib/CharacterSystem/CharacterStat/class/Foods.js";
+import { Foods } from "@lib/Character/Food";
 
 export default function createFoodBuild(name) {
   const foodList = {
@@ -48,7 +48,7 @@ export default function createFoodBuild(name) {
   const foods = new Foods(name);
   Object.keys(foodList).forEach(key => {
     const value = foodList[key];
-    const base = Grimoire.CharacterSystem.findStatBase(key);
+    const base = Grimoire.Character.findStatBase(key);
     if (!base) {
       console.warn('Can not find Statbase which base-name: ' + key);
       return;

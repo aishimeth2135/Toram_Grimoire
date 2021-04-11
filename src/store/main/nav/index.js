@@ -1,4 +1,4 @@
-import GetLang from "@Service/Language";
+import GetLang from "@Services/Language";
 
 const store = {
   namespaced: true,

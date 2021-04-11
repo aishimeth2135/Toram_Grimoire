@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 import main from "./main.js";
 
+import language from "./language";
 import initialize from "./initialize";
 import notify from "./notify";
 import leftMenu from "./left-menu";
@@ -16,6 +17,7 @@ import character from "./character";
 const store = new Vuex.Store({
   modules: {
     main,
+    language,
     initialize,
     notify,
     leftMenu,

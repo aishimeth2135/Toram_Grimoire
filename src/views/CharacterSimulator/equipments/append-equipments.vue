@@ -75,7 +75,7 @@
   </cy-window>
 </template>
 <script>
-import MessageNotify from "@Service/Notify";
+import MessageNotify from "@Services/Notify";
 
 export default {
   props: ['visible'],

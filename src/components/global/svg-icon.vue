@@ -1,5 +1,5 @@
 <script>
-import Icons from "@Service/SvgIcons.js";
+import Icons from "@Services/SvgIcons.js";
 
 export default {
   props: ['iconId'],

@@ -1,7 +1,7 @@
 import vue_page404 from "@views/app/page404.vue";
-import ViewInit from "@Service/ViewInit.js";
+import ViewInit from "@Services/ViewInit.js";
 
-// import GetLang from "@Service/Language";
+// import GetLang from "@Services/Language";
 
 export default {
   path: '*',

@@ -1,8 +1,8 @@
-import ItemSystem from "@lib/ItemSystem";
-import CharacterSystem from "@lib/CharacterSystem";
-import TagSystem from "@lib/TagSystem";
-import SkillSystem from "@lib/SkillSystem";
-import EnchantSystem from "@lib/EnchantSystem";
+import ItemsSystem from "@lib/Items";
+import CharacterSystem from "@lib/Character";
+import TagSystem from "@lib/Tag";
+import SkillSystem from "@lib/Skill";
+import EnchantSystem from "@lib/Enchant";
 
 import DownloadDatas from "../utils/DownloadDatas.js";
 import loadEquipments from "./utils/LoadEquipments.js";
@@ -37,7 +37,7 @@ const store = {
     },
     initItems(state, { checkInit }) {
       if (!checkInit('items'))
-        state.items = new ItemSystem();
+        state.items = new ItemsSystem();
     },
     initCharacter(state, { checkInit }) {
       if (!checkInit('character'))

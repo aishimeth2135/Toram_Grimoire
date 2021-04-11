@@ -195,10 +195,9 @@
   </div>
 </template>
 <script>
-import StatBase from "@lib/CharacterSystem/module/StatBase.js";
+import { StatBase, RestrictionStat } from "@lib/Character/Stat";
 
-import { RestrictionStat } from "@lib/CharacterSystem/CharacterStat/class/main.js";
-import MessageNotify from "@Service/Notify";
+import MessageNotify from "@Services/Notify";
 
 export default {
   props: ['equipment'],
@@ -278,7 +277,7 @@ export default {
       });
       this.appendedStats.forEach(p => {
         const v = p.origin.checkBoolStat() ? 1 : 0;
-        const stat = RestrictionStat.from(p.origin.createSimpleStat(p.type, v));
+        const stat = RestrictionStat.from(p.origin.createStat(p.type, v));
         stats.push(stat);
       });
       this.deletedStats = [];

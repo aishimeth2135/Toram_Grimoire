@@ -8,7 +8,7 @@
   </div>
 </template>
 <script>
-import DataContainer from "../module/DataContainer.js";
+import DataContainer from "../utils/DataContainer.js";
 
 export default {
   props: ['stats'],
