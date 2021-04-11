@@ -32,7 +32,7 @@
               <div v-else-if="menuVisible.sortOptions" class="content">
                 <div class="column">
                   <div class="normal-title">
-                    <cy-icon-text iconify-name="gg-shape-rhombus"
+                    <cy-icon-text iconify-name="mdi-sort-variant"
                       text-color="purple" text-size="small">
                       {{ langText('sort options/title') }}
                     </cy-icon-text>
@@ -54,18 +54,18 @@
                 </div>
                 <div class="column">
                   <div class="normal-title">
-                    <cy-icon-text iconify-name="gg-shape-rhombus"
+                    <cy-icon-text iconify-name="fluent-arrow-sort-24-filled"
                       text-color="purple" text-size="small">
                       {{ langText('sort options/order/title') }}
                     </cy-icon-text>
                   </div>
                   <div class="options">
-                    <cy-button type="border" iconify-name="gg-shape-rhombus"
+                    <cy-button type="border" iconify-name="akar-icons:arrow-down"
                       @click="selecetSortOrder('down')"
                       :selected="sortOptions.currentOrder === 'down'">
                       {{ langText('sort options/order/down') }}
                     </cy-button>
-                    <cy-button type="border" iconify-name="gg-shape-rhombus"
+                    <cy-button type="border" iconify-name="akar-icons:arrow-up"
                       @click="selecetSortOrder('up')"
                       :selected="sortOptions.currentOrder === 'up'">
                       {{ langText('sort options/order/up') }}
@@ -157,7 +157,7 @@
             <cy-icon-text iconify-name="heroicons-solid:switch-vertical" />
           </div>
           <div class="menu-btn select-sort" @click="toggleMenuVisible('sortOptions')">
-            <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle" />
+            <cy-icon-text iconify-name="mdi-sort-variant" />
           </div>
           <div class="menu-btn" @click="toggleMenuVisible('conditionOptions')">
             <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle" />
@@ -238,7 +238,7 @@ export default {
         conditionOptions: false,
         sortOptions: false,
       },
-      searchResultMaximum: 30,
+      searchResultMaximum: 50,
       modes: {
         'normal': {
           icon: 'ic-round-menu-book',
@@ -408,7 +408,8 @@ export default {
     allSearchResult() {
       if (this.currentMode === 'normal') {
         const searchText = this.modes.normal.searchText;
-        if (searchText === '') return [];
+        if (searchText === '')
+          return this.validEquipments;
         const targets = this.modes.normal.targets
           .filter(p => p.selected)
           .map(p => p.value);

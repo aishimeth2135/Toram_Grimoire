@@ -1,6 +1,7 @@
 <template>
   <div class="result-item">
-    <cy-list-item class="title-container" @click="detailVisible = !detailVisible">
+    <cy-list-item class="title-container" :class="{ 'detail-visible': detailVisible }"
+      @click="detailVisible = !detailVisible">
       <div class="title">
         <cy-icon-text :iconify-name="equipmentIcon">
           {{ equipment.name }}
@@ -242,8 +243,11 @@ export default {
 .title-container {
   position: sticky;
   top: 0;
-  background-color: var(--white);
   z-index: 1;
+
+  &.detail-visible {
+    background-color: var(--white);
+  }
 }
 .title {
   display: grid;
