@@ -84,8 +84,7 @@
 <script>
 import vue_showStat from "./show-stat.vue";
 
-import { EquipmentField } from "@lib/Character";
-import { CharacterEquipment, MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from "@lib/Character/CharacterEquipment";
+import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from "@lib/Character/CharacterEquipment";
 
 export default {
   props: ['visible', 'equipment'],

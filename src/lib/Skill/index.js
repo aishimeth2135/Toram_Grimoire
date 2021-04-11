@@ -4,4 +4,4 @@ export default class {
   constructor() {
     this.skillRoot = new SkillRoot(this);
   }
-};
+}
