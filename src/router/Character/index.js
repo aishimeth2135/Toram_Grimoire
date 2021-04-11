@@ -3,8 +3,8 @@ import app from "./app.vue";
 import GetLang from "@Services/Language";
 import ViewInit from "@Services/ViewInit.js";
 
-const vue_characterSimulator = () => import(/* webpackChunkName: "character-simulator" */ "@views/CharacterSimulator/main.vue");
-const vue_skillSimulator = () => import(/* webpackChunkName: "skill-simulator" */ "@views/SkillSimulator/main.vue");
+const vue_characterSimulator = () => import(/* webpackChunkName: "character-simulator" */ "@views/CharacterSimulator");
+const vue_skillSimulator = () => import(/* webpackChunkName: "skill-simulator" */ "@views/SkillSimulator");
 
 export default {
   path: '/character',

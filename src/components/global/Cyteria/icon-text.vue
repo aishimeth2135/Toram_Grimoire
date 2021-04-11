@@ -86,8 +86,8 @@ export default {
     --icon-color: var(--primary-light-2);
     --icon-width: 1.2rem;
     --text-color: var(--primary-dark);
-    --text-margin-left: 0.4rem;
-    --value-margin-left: 0.5rem;
+    --text-margin-left: 0.6rem;
+    --value-margin-left: 0.6rem;
 
     &.mr-normal {
       margin-right: 0.6rem;

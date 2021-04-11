@@ -18,7 +18,6 @@ function GetLang(id, values) {
 }
 
 function HandleLanguageData(datas, mapping) {
-  console.log(datas);
   const langDatas = [datas[1], datas[2]];
   Object.entries(mapping).forEach(([key, value]) => {
     const dataIdx = key, langDataIdx = value;

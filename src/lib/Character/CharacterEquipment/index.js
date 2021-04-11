@@ -292,6 +292,7 @@ CharacterEquipment.fromOriginEquipment = function(item) {
     item, item.name,
     item.stats.map((p, i) => RestrictionStat.fromOrigin(p, item.statRestrictions[i]))
   ];
+
   const stability = parseInt(item.baseStability, 10);
   if (item.category < 9) {
     const t = [
