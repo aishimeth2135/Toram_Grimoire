@@ -1,8 +1,8 @@
 /* eslint-disable */
-import CY from "@Util/Cyteria";
-import GetLang from "@Service/Language";
-import Icons from "@Service/SvgIcons.js";
-import MessageNotify from "@Service/Notify";
+import CY from "@Utils/Cyteria";
+import GetLang from "@Services/Language";
+import Icons from "@Services/SvgIcons.js";
+import MessageNotify from "@Services/Notify";
 
 function Lang(s, vs){
     return GetLang('Save Load System/' + s, vs);

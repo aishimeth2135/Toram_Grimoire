@@ -49,9 +49,9 @@
   </div>
 </template>
 <script>
-import MessageNotify from "@Service/Notify";
-import CY from "@Util/Cyteria"
-import GetLang from "@Service/Language";
+import MessageNotify from "@Services/Notify";
+import CY from "@Utils/Cyteria"
+import GetLang from "@Services/Language";
 
 import init from "./init.js";
 

@@ -10,7 +10,7 @@
         <router-link :to="data.path" v-slot="{ navigate }" custom>
           <div class="title" @click="data.navigate ? data.navigate($event, navigate) : navigate($event)"
             role="link">
-            <div class="text">{{ langText(data.name + '/title') }}</div>
+            <div class="text">{{ $store.getters['language/get']('Page Title/' + data.name) }}</div>
             <iconify-icon :name="data.icon" class="icon" />
           </div>
         </router-link>
@@ -20,8 +20,6 @@
 </template>
 
 <script>
-import GetLang from "@Service/Language";
-
 import init from "./init.js";
 
 export default {
@@ -56,7 +54,7 @@ export default {
           icon: 'bx-bx-cube-alt',
           path: '/item/crystal'
         }, {
-          name: 'damage-calc',
+          name: 'calculation/damage',
           icon: 'mdi-sword',
           path: 'damage'
         }
@@ -65,11 +63,6 @@ export default {
   },
   beforeCreate(){
     init();
-  },
-  methods: {
-    langText(v, vs){
-      return GetLang('Home/' + v, vs);
-    }
   }
 };
 </script>
@@ -117,9 +110,11 @@ export default {
     cursor: pointer;
     transition: 0.3s;
     background-color: var(--white);
+    padding: 1rem;
 
     > .text {
       font-size: 1.1rem;
+      text-align: center;
     }
 
     > .icon {

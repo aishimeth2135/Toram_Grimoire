@@ -13,7 +13,7 @@ import Bubble from "./Bubble";
 
 import store from "@store/main";
 
-import GetLang from "@Service/Language";
+import GetLang from "@Services/Language";
 
 Vue.use(VueRouter);
 

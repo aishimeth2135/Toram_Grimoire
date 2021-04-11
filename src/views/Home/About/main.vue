@@ -31,7 +31,7 @@
 </template>
 
 <script>
-  import GetLang from "@Service/Language";
+  import GetLang from "@Services/Language";
 
   import init from "./init.js";
 

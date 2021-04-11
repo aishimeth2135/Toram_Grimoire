@@ -93,7 +93,7 @@
 <script>
 import Vuex from "vuex";
 
-import MessageNotify from "@Service/Notify";
+import MessageNotify from "@Services/Notify";
 
 export default {
   inject: ['langText', 'globalLangText'],

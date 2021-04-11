@@ -1,7 +1,7 @@
 import app from "./app.vue";
 
-import GetLang from "@Service/Language";
-import ViewInit from "@Service/ViewInit.js";
+import GetLang from "@Services/Language";
+import ViewInit from "@Services/ViewInit.js";
 
 const vue_damageCalc = () => import(/* webpackChunkName: "calculation-damage" */ "@views/Calculation/damage/main.vue");
 

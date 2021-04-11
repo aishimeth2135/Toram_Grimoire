@@ -76,10 +76,10 @@ import vue_equipmentItem from "./equipment-item.vue";
 import vue_equipmentInfo from "./equipment-info.vue";
 import vue_characterStatsCompare from "../main/character-stats-compare.vue";
 
-import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js";
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
+import { EquipmentField } from "@lib/Character/Character";
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/Character/CharacterEquipment";
 
-import MessageNotify from "@Service/Notify";
+import MessageNotify from "@Services/Notify";
 
 import Vuex from "vuex";
 

@@ -137,9 +137,9 @@
 </template>
 
 <script>
-import CY from "@Util/Cyteria";
-import GetLang from "@Service/Language";
-import MessageNotify from "@Service/Notify";
+import CY from "@Utils/Cyteria";
+import GetLang from "@Services/Language";
+import MessageNotify from "@Services/Notify";
 
 export default {
   data() {

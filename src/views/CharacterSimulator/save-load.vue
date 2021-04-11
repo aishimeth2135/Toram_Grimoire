@@ -45,8 +45,8 @@
   </cy-default-tips>
 </template>
 <script>
-import CY from "@Util/Cyteria";
-import MessageNotify from "@Service/Notify";
+import CY from "@Utils/Cyteria";
+import MessageNotify from "@Services/Notify";
 
 export default {
   data() {

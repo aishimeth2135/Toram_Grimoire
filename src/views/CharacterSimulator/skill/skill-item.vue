@@ -111,7 +111,7 @@
 </template>
 <script>
 import vue_showStatDatas from "./show-stat-datas.vue";
-import { getSkillIconPath } from "@lib/SkillSystem/module/DrawSkillTree.js";
+import { getSkillIconPath } from "@lib/Skill/utils/DrawSkillTree";
 
 export default {
   props: ['levelSkillStateRoot'],

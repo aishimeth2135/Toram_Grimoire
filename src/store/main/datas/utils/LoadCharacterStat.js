@@ -1,4 +1,4 @@
-import { CharacterStatCategory } from "@lib/CharacterSystem";
+import { CharacterStatCategory } from "@lib/Character/Character";
 
 export default function(character_system, datas) {
   const ID = 0,

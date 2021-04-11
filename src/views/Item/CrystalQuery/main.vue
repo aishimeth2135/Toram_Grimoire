@@ -116,12 +116,12 @@
   </article>
 </template>
 <script>
-import GetLang from "@Service/Language";
+import GetLang from "@Services/Language";
 
 import init from "./init.js";
 
-import StatBase from "@lib/CharacterSystem/module/StatBase.js";
-import { EquipmentCrystal } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
+import { StatBase } from "@lib/Character/Stat";
+import { EquipmentCrystal } from "@lib/Character/CharacterEquipment";
 
 import vue_showStat from "./show-stat.vue";
 

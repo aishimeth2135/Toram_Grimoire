@@ -77,7 +77,7 @@
   </section>
 </template>
 <script>
-import StatBase from "@lib/CharacterSystem/module/StatBase.js";
+import { StatBase } from "@lib/Character/Stat";
 
 import vue_statDetailEquipments from "./stat-detail-equipments.vue";
 

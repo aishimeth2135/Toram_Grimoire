@@ -1,8 +1,7 @@
 import Grimoire from "@Grimoire";
-import { HandleLanguageData } from "@Service/Language";
-import SkillSystem from "@lib/SkillSystem";
+import { HandleLanguageData } from "@Services/Language";
 
-const { SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch } = SkillSystem;
+import { SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch } from "@lib/Skill/Skill";
 
 function loadSkill(skillSystem, datas){
   const sr = skillSystem.skillRoot;
@@ -82,7 +81,9 @@ function loadSkill(skillSystem, datas){
   }
 
   // language data
-  HandleLanguageData(datas, EFFECT_BRANCH_ATTRIBUTE_VALUE, LANG_DATA.EFFECT_BRANCH_ATTRIBUTE_VALUE);
+  HandleLanguageData(datas, {
+    [EFFECT_BRANCH_ATTRIBUTE_VALUE]: LANG_DATA.EFFECT_BRANCH_ATTRIBUTE_VALUE
+  });
   const c = datas[0];
 
   c.forEach(function(p, index){
@@ -146,7 +147,7 @@ function loadSkill(skillSystem, datas){
       const battrname = p[EFFECT_BRANCH_ATTRIBUTE_NAME],
         battrvalue = p[EFFECT_BRANCH_ATTRIBUTE_VALUE];
       if ( battrname != '' ){
-        if ( !Grimoire.CharacterSystem.findStatBase(battrname) )
+        if ( !Grimoire.Character.findStatBase(battrname) )
           cur.appendBranchAttribute(battrname, battrvalue);
         else
           cur.appendStat(battrname, battrvalue, p[EFFECT_BRANCH_ATTRIBUTE_EXTRA]);

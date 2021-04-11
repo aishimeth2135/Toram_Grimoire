@@ -110,7 +110,7 @@
   </div>
 </template>
 <script>
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear } from "@lib/Character/CharacterEquipment";
 
 import vue_showStat from "./show-stat.vue";
 

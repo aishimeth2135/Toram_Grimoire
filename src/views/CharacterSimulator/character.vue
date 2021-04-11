@@ -119,8 +119,8 @@
 <script>
 import Vuex from "vuex";
 
-import MessageNotify from "@Service/Notify";
-import { Character } from "@lib/CharacterSystem/CharacterStat/class/main.js";
+import MessageNotify from "@Services/Notify";
+import { Character } from "@lib/Character/Character";
 
 export default {
   props: ['characterState'],

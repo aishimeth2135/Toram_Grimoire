@@ -50,8 +50,8 @@
 <script>
 import Vuex from "vuex";
 
-import GetLang from "@Service/Language";
-import MessageNotify from "@Service/Notify";
+import GetLang from "@Services/Language";
+import MessageNotify from "@Services/Notify";
 
 import init from "./init.js";
 
@@ -62,12 +62,11 @@ import vue_skills from "./skill/main.vue";
 import vue_saveLoad from "./save-load.vue";
 import vue_foodBuild from "./food/main.vue";
 
-import { EquipmentField } from "@lib/CharacterSystem/CharacterStat/class/main.js";
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from "@lib/CharacterSystem/CharacterStat/class/CharacterEquipment.js";
-import { Character } from "@lib/CharacterSystem/CharacterStat/class/main.js";
+import { Character, EquipmentField } from "@lib/Character/Character";
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from "@lib/Character/CharacterEquipment";
 
-import createSkillState from "@views/SkillQuery/module/createSkillState.js";
-import SkillBranchHandler from "./skill/module/SkillBranchHandler.js";
+import createSkillState from "@views/SkillQuery/utils/createSkillState.js";
+import SkillBranchHandler from "./skill/utils/SkillBranchHandler.js";
 
 export default {
   data() {
@@ -406,7 +405,7 @@ export default {
       }
 
       const handleSkillStates = states => {
-        const branchStatDatasToSimpleStats = stats => {
+        const branchStatDatasToStats = stats => {
           return stats.map(stat => {
             const p = stat.origin.copy();
             p.statValue(stat.value);
@@ -423,10 +422,10 @@ export default {
               .forEach(bs => {
                 const v = bs.handler.value;
                 if (v.stats.length != 0)
-                  branchStatDatasToSimpleStats(v.stats).forEach(appendStat);
+                  branchStatDatasToStats(v.stats).forEach(appendStat);
                 v.conditionDatas
                   .filter(cs => cs.stats.length != 0)
-                  .forEach(cs => branchStatDatasToSimpleStats(cs.stats).forEach(appendStat));
+                  .forEach(cs => branchStatDatasToStats(cs.stats).forEach(appendStat));
               });
           }
         });

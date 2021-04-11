@@ -1,19 +1,19 @@
 import store from "@store/main";
 
 const Grimoire = {
-  get CharacterSystem() {
+  get Character() {
     return store.state.datas.character;
   },
-  get ItemSystem() {
+  get Items() {
     return store.state.datas.items;
   },
-  get SkillSystem() {
+  get Skill() {
     return store.state.datas.skill;
   },
-  get TagSystem() {
+  get Tag() {
     return store.state.datas.tag;
   },
-  get EnchantSystem() {
+  get Enchant() {
     return store.state.datas.enchant;
   }
 };

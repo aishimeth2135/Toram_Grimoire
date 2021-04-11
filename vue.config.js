@@ -19,8 +19,8 @@ module.exports = {
         '@lib': path.join(__dirname, 'src', 'lib'),
         '@global-vue-components': path.join(__dirname, 'src', 'components', 'global'),
         '@vue-components': path.join(__dirname, 'src', 'components'),
-        '@Service': path.join(__dirname, 'src', 'lib', 'main', 'service'),
-        '@Util': path.join(__dirname, 'src', 'lib', 'main', 'util'),
+        '@Services': path.join(__dirname, 'src', 'lib', 'main', 'services'),
+        '@Utils': path.join(__dirname, 'src', 'lib', 'main', 'utils'),
         '@Grimoire': path.join(__dirname, 'src', 'lib', 'main', 'Grimoire.js'),
       }
     }
