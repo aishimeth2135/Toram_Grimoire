@@ -6,11 +6,14 @@ import "@css/main/Cyteria/Cyteria.css";
 import Vue from "vue";
 import Vuex from 'vuex';
 
+import RegisterLang from "@plugin/RegisterLang.js";
+
 import CY from "@Utils/Cyteria";
 import { InitLanguageSystem } from "@Services/Language";
 
 // == [ pre Init ] =====================================
 Vue.use(Vuex);
+Vue.use(RegisterLang);
 
 // == [ init ] =========================================
 InitLanguageSystem();

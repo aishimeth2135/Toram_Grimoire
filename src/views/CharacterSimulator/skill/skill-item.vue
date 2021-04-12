@@ -8,7 +8,7 @@
         </span>
       </cy-icon-text>
       <div class="skill-disable-tips">
-        {{ langText('skill management/skill disable') }}
+        {{ $lang('skill management/skill disable') }}
       </div>
     </cy-flex-layout>
   </cy-list-item>
@@ -64,7 +64,7 @@
       </cy-icon-text>
       <div class="branch-content">
         <div class="caption">
-          {{ langText('skill management/skill multiple effects') }}
+          {{ $lang('skill management/skill multiple effects') }}
         </div>
       </div>
       <template #right-content>
@@ -82,7 +82,7 @@
               <cy-icon-text text-color="purple" class="name skill-name"
                 :iconify-name="'ic-round-check-box' + (branchState.disable ? '-outline-blank' : '')"
                 @click.native="toggleBranchStateDisable(branchState)">
-                {{ branchState.origin.attrs['name'] || langText('skill management/default name of skill branch') }}
+                {{ branchState.origin.attrs['name'] || $lang('skill management/default name of skill branch') }}
               </cy-icon-text>
               <div class="branch-content">
                 <div v-if="branchState.handler.infoType == 'caption'"
@@ -115,7 +115,7 @@ import { getSkillIconPath } from "@lib/Skill/utils/DrawSkillTree";
 
 export default {
   props: ['levelSkillStateRoot'],
-  inject: ['langText', 'openUserSetsWindow', 'getValidLevelSkillState'],
+  inject: ['openUserSetsWindow', 'getValidLevelSkillState'],
   data() {
     return {
       extraContentVisible: false

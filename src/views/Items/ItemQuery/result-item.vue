@@ -32,7 +32,7 @@
         <template v-else-if="state.currentMode === 'item-level'">
           <div class="item-level">
             <cy-icon-text iconify-name="jam-hammer">
-              {{ langText('equipment detail/recipe/item level') }}
+              {{ $lang('equipment detail/recipe/item level') }}
             </cy-icon-text>
             <span class="value">{{ originEquipment.recipe['item_level'] }}</span>
           </div>
@@ -45,7 +45,7 @@
           <legend>
             <cy-icon-text iconify-name="ic-baseline-format-list-bulleted"
               text-size="small" text-color="purple">
-              {{ langText('equipment detail/scope title/stats') }}
+              {{ $lang('equipment detail/scope title/stats') }}
             </cy-icon-text>
           </legend>
           <template v-if="equipment.stats.length !== 0">
@@ -54,19 +54,19 @@
               :negative-value="stat.statValue() < 0" />
           </template>
           <cy-default-tips v-else iconify-name="mdi-ghost">
-            {{ langText('equipment detail/tips: without any stat') }}
+            {{ $lang('equipment detail/tips: without any stat') }}
           </cy-default-tips>
         </fieldset>
         <fieldset v-if="originEquipment.recipe" class="recipe column">
           <legend>
             <cy-icon-text iconify-name="ion-hammer" text-size="small" text-color="purple">
-              {{ langText('equipment detail/scope title/recipe') }}
+              {{ $lang('equipment detail/scope title/recipe') }}
             </cy-icon-text>
           </legend>
           <div class="recipe-info">
             <div class="recipe-attr">
               <cy-icon-text iconify-name="ion-hammer" text-size="small">
-                {{ langText('equipment detail/recipe/item level')  }}
+                {{ $lang('equipment detail/recipe/item level')  }}
                 <template #value>
                   {{ originEquipment.recipe['item_level'] || '?' }}
                 </template>
@@ -74,7 +74,7 @@
             </div>
             <div class="recipe-attr">
               <cy-icon-text iconify-name="ion-hammer" text-size="small">
-                {{ langText('equipment detail/recipe/item difficulty')  }}
+                {{ $lang('equipment detail/recipe/item difficulty')  }}
                 <template #value>
                   {{ originEquipment.recipe['item_difficulty'] || '?' }}
                 </template>
@@ -84,7 +84,7 @@
           <div class="recipe-materials">
             <template v-if="originEquipment.recipe['cost']">
               <cy-icon-text iconify-name="la-coins">
-                {{ langText('equipment detail/recipe/spina') }}
+                {{ $lang('equipment detail/recipe/spina') }}
               </cy-icon-text>
               <span class="value">{{ originEquipment.recipe['cost'] + 's' }}</span>
             </template>
@@ -99,7 +99,7 @@
         <fieldset class="obtains column">
           <legend>
             <cy-icon-text iconify-name="bx-bx-search-alt" text-size="small" text-color="purple">
-              {{ langText('equipment detail/scope title/obtains') }}
+              {{ $lang('equipment detail/scope title/obtains') }}
             </cy-icon-text>
           </legend>
           <div v-if="obtainsData.length !== 0" class="obtains-list">
@@ -124,7 +124,7 @@
             </div>
           </div>
           <cy-default-tips v-else iconify-name="mdi-ghost">
-            {{ langText('equipment detail/tips: without any obtain') }}
+            {{ $lang('equipment detail/tips: without any obtain') }}
           </cy-default-tips>
         </fieldset>
       </div>
@@ -161,7 +161,7 @@ import vue_showStat from "./show-stat.vue";
 
 export default {
   props: ['equipment'],
-  inject: ['langText', 'state', 'findStat', 'modesState', 'findObtainByDye'],
+  inject: ['state', 'findStat', 'modesState', 'findObtainByDye'],
   data() {
     return {
       detailVisible: false,
@@ -225,9 +225,9 @@ export default {
         'exchange': 'bx-bx-shopping-bag'
       };
       return obtains.map((p, i) => {
-        const type = this.langText('equipment detail/obtains/' + p.type);
+        const type = this.$lang('equipment detail/obtains/' + p.type);
         const icon = icons[p.type];
-        const name = p.type !== 'smith' ? p.name : this.langText('equipment detail/production equipment');
+        const name = p.type !== 'smith' ? p.name : this.$lang('equipment detail/production equipment');
         const { map=null, dye=null } = p;
         return {
           iid: i,

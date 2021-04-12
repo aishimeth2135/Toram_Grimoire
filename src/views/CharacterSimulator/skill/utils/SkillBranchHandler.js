@@ -28,13 +28,13 @@ class SkillBranchHandler {
       }
 
       res.push({
-        text: this.langText('skill management/formula text/target_def'),
+        text: this.$lang('skill management/formula text/target_def'),
         value: 0,
         variableName: 'target_def',
         disable: true,
         ignore: true
       }, {
-        text: this.langText('skill management/formula text/target_level'),
+        text: this.$lang('skill management/formula text/target_level'),
         value: 0,
         variableName: 'target_level',
         disable: true,
@@ -52,7 +52,7 @@ class SkillBranchHandler {
         const attrs = p.branch.attrs;
         let name = attrs['name'];
         if (name == 'auto')
-          name = this.langText('skill management/default name of stack') + i;
+          name = this.$lang('skill management/default name of stack') + i;
         return {
           id: p.id,
           name,
@@ -119,7 +119,7 @@ class SkillBranchHandler {
           iid: i,
           stats: _stats,
           caption: _caption,
-          condition: suf.attrs['condition'] || this.langText('skill management/suffix branch/condition: default')
+          condition: suf.attrs['condition'] || this.$lang('skill management/suffix branch/condition: default')
         };
       })
       .filter(p => p.stats.length != 0 || p.caption);
@@ -134,8 +134,8 @@ class SkillBranchHandler {
   get findCharacterStatResult() {
     return this.view.findCharacterStatResult;
   }
-  get langText() {
-    return this.view.langText;
+  get $lang() {
+    return this.view.$lang;
   }
   get characterState() {
     return this.view.currentCharacterState;

@@ -44,11 +44,11 @@
       <div class="edit" v-else key="edit">
         <cy-flex-layout v-if="equipment.customTypeList != null" class="switch-custom-type">
           <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle" class="mr-normal">
-            {{ langText('equipment type') }}
+            {{ $lang('equipment type') }}
           </cy-icon-text>
           <cy-button type="border" iconify-name="heroicons-solid:switch-vertical"
             @click="switchCustomType">
-            {{ langText('field type text/' + equipment.type.description) }}
+            {{ $lang('field type text/' + equipment.type.description) }}
           </cy-button>
         </cy-flex-layout>
         <cy-input-counter v-if="equipment.is == 'weapon'" class="counter"
@@ -69,7 +69,7 @@
           :value="equipment.refining" :range="[0, 15]"
           @set-value="setRefining(equipment, $event)">
           <template v-slot:title>
-            <cy-icon-text iconify-name="mdi-cube-send">{{ langText('refining') }}</cy-icon-text>
+            <cy-icon-text iconify-name="mdi-cube-send">{{ $lang('refining') }}</cy-icon-text>
           </template>
         </cy-input-counter>
         <div class="crystals" v-if="equipment.hasCrystal">
@@ -81,13 +81,13 @@
           <cy-button v-if="equipment.crystals.length < 2"
             iconify-name="bx-bx-circle" type="line"
             @click="editCrystal">
-            {{ langText('crystal empty') }}
+            {{ $lang('crystal empty') }}
           </cy-button>
         </div>
         <div class="custom-editor">
           <cy-button iconify-name="ic-round-edit" type="border"
             @click="openCustomEquipmentEditor(equipment)">
-            {{ langText('custom equipment editor/window title') }}
+            {{ $lang('custom equipment editor/window title') }}
           </cy-button>
         </div>
       </div>
@@ -106,7 +106,7 @@ export default {
       default: false
     }
   },
-  inject: ['langText', 'getShowEquipmentData', 'openCustomEquipmentEditor', 'openSelectCrystals'],
+  inject: ['getShowEquipmentData', 'openCustomEquipmentEditor', 'openSelectCrystals'],
   data(){
     return {
       mode: 0, // 0: normal, 1: edit

@@ -24,12 +24,12 @@
       <cy-button type="border" iconify-name="mdi-rhombus-outline"
         :selected="mode == 'passive'"
         @click="setMode('passive')">
-        {{ langText('skill management/passive skills') }}
+        {{ $lang('skill management/passive skills') }}
       </cy-button>
       <cy-button type="border" iconify-name="mdi-rhombus-outline"
         :selected="mode == 'active'"
         @click="setMode('active')">
-        {{ langText('skill management/active skills') }}
+        {{ $lang('skill management/active skills') }}
       </cy-button>
     </div>
     <div class="content">
@@ -44,7 +44,7 @@
           :key="state.levelSkill.base.id + '#' + state.levelSkill.base.name" />
       </template>
       <cy-default-tips v-else iconify-name="mdi-ghost">
-        {{ langText('skill management/there are no skills yet') }}
+        {{ $lang('skill management/there are no skills yet') }}
       </cy-default-tips>
     </div>
     <cy-window v-if="userSetsWindow.handler && userSetsWindow.handler.hasUserSets"
@@ -52,7 +52,7 @@
       @close-window="toggleUserSetsWindowVisible">
       <template #title>
         <cy-icon-text iconify-name="mdi-numeric">
-          {{ langText('skill management/user sets: window title') }}
+          {{ $lang('skill management/user sets: window title') }}
         </cy-icon-text>
       </template>
       <cy-input-counter v-for="p in userSetsWindow.handler.validUserSets"
@@ -77,7 +77,7 @@
   </section>
   <section v-else>
     <cy-default-tips iconify-name="mdi-ghost">
-      {{ langText('skill management/no build has been created') }}
+      {{ $lang('skill management/no build has been created') }}
     </cy-default-tips>
   </section>
 </template>
@@ -88,7 +88,6 @@ import vue_skillItem from "./skill-item.vue";
 
 export default {
   props: ['characterState', 'passiveSkillStates', 'activeSkillStates'],
-  inject: ['langText'],
   data() {
     return {
       mode: 'passive',

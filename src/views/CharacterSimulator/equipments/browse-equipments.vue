@@ -2,7 +2,7 @@
   <cy-window :visible="visible" @close-window="closeWindow" class="width-wide">
     <template v-slot:title>
       <cy-icon-text iconify-name="ic-outline-category">
-        {{ localLangText('action: ' + actionType) }}
+        {{ local$lang('action: ' + actionType) }}
       </cy-icon-text>
     </template>
     <template v-slot:default>
@@ -12,12 +12,12 @@
           <cy-button iconify-name="ic-round-add-circle-outline"
             type="border"
             @click="toggleMainWindowVisible('appendEquipments', true)">
-            {{ localLangText('append equipments') }}
+            {{ local$lang('append equipments') }}
           </cy-button>
           <cy-button iconify-name="gridicons-create"
             type="border"
             @click="toggleMainWindowVisible('createCustomEquipment', true)">
-            {{ langText('custom equipment') }}
+            {{ $lang('custom equipment') }}
           </cy-button>
         </template>
       </cy-flex-layout>
@@ -49,20 +49,20 @@
           <cy-flex-layout>
             <cy-button iconify-name="ic-baseline-delete-outline" type="border"
               @click="removeSelectedEquipment">
-              {{ globalLangText('global/remove') }}
+              {{ $globalLang('global/remove') }}
             </cy-button>
             <cy-button iconify-name="mdi-content-copy" type="border"
               @click="copySelectedEquipment">
-              {{ globalLangText('global/copy') }}
+              {{ $globalLang('global/copy') }}
             </cy-button>
             <template #right-content v-if="actionType == 'select-field-equipment'">
               <cy-button v-if="!currentEquipmentDisable"
                 iconify-name="ic-round-done" type="border"
                 @click="selectEquipment">
-                {{ globalLangText('global/confirm') }}
+                {{ $globalLang('global/confirm') }}
               </cy-button>
               <cy-button v-else iconify-name="ic-round-done" type="border" :disabled="true">
-                {{ globalLangText('global/confirm') }}
+                {{ $globalLang('global/confirm') }}
               </cy-button>
             </template>
           </cy-flex-layout>
@@ -86,9 +86,8 @@ import Vuex from "vuex";
 export default {
   props: ['visible', 'action', 'characterState'],
   inject: [
-    'langText', 'globalLangText', 'toggleMainWindowVisible',
-    'getShowEquipmentData', 'handleCharacterStateDatas',
-    'appendEquipments'
+    'toggleMainWindowVisible', 'getShowEquipmentData',
+    'handleCharacterStateDatas', 'appendEquipments'
   ],
   data() {
     return {
@@ -146,7 +145,7 @@ export default {
       const eq = this.currentEquipment.copy();
       eq.name = eq.name + '*';
       this.appendEquipments([eq]);
-      MessageNotify(this.localLangText('message: copy equipment'), 'mdi-content-copy',
+      MessageNotify(this.local$lang('message: copy equipment'), 'mdi-content-copy',
         'browse equipment/copy equipment');
     },
     removeSelectedEquipment() {
@@ -163,14 +162,14 @@ export default {
         }
         return false;
       });
-      MessageNotify(this.localLangText('message: remove equipment', [eq.name]),
+      MessageNotify(this.local$lang('message: remove equipment', [eq.name]),
         'ic-baseline-delete-outline', null, {
         buttons: [{
-          text: this.globalLangText('global/recovery'),
+          text: this.$globalLang('global/recovery'),
           click: () => {
             this.appendEquipments([eq]);
             modifiedFields.forEach(field => field.setEquipment(eq));
-            MessageNotify(this.localLangText('message: removed equipment recovery', [eq.name]));
+            MessageNotify(this.local$lang('message: removed equipment recovery', [eq.name]));
           },
           removeMessageAfterClick: true
         }]
@@ -213,8 +212,8 @@ export default {
           return eq instanceof Avatar;
       }
     },
-    localLangText(s, vs) {
-      return this.langText('browse equipments/' + s, vs);
+    local$lang(s, vs) {
+      return this.$lang('browse equipments/' + s, vs);
     }
   },
   components: {

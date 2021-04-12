@@ -10,7 +10,7 @@
         <router-link :to="data.path" v-slot="{ navigate }" custom>
           <div class="title" @click="data.navigate ? data.navigate($event, navigate) : navigate($event)"
             role="link">
-            <div class="text">{{ $store.getters['language/get']('Page Title/' + data.name) }}</div>
+            <div class="text">{{ $globalLang('Page Title/' + data.name) }}</div>
             <iconify-icon :name="data.icon" class="icon" />
           </div>
         </router-link>

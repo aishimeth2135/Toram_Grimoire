@@ -2,7 +2,7 @@
   <div class="inline-content">
     <span v-if="isSingleValue"
       style="font-size: 0.9rem; margin-right: 0.2rem; color: var(--primary-light-2);">
-      {{ langText('pretext: is constant') }}
+      {{ $lang('pretext: is constant') }}
     </span>
     <span class="attr-scope" v-if="showData['constant']"
       v-html="showData['constant']">
@@ -23,7 +23,6 @@
 <script>
 export default {
   props: ['showData'],
-  inject: ['langText'],
   computed: {
     isSingleValue() {
       return this.showData['@extra-value-list'].length == 0 &&

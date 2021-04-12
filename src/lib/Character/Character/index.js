@@ -366,9 +366,9 @@ class CharacterStat {
 
       if (typeof value != 'number')
         value = parseFloat(value);
-      if (this.max != null && value > this.max)
+      if (this.max !== null && value > this.max)
         value = this.max;
-      if (this.min != null && value < this.min)
+      if (this.min !== null && value < this.min)
         value = this.min;
 
       const ho = this.options.hidden;
@@ -385,9 +385,9 @@ class CharacterStat {
         statValueParts: res.statValueParts,
         statPartsDetail: res.statPartsDetail,
         conditionalBase: res.conditionalBase,
-        hidden: ho == 0 ||
-          (ho == 1 && ['constant', 'multiplier', 'total'].every(a => res.statValueParts[a] == 0)) ||
-          (ho == 2 && originalValue == 0)
+        hidden: ho === 0 ||
+          (ho === 1 && ['constant', 'multiplier', 'total'].every(a => res.statValueParts[a] == 0)) ||
+          (ho === 2 && originalValue == 0)
       };
     } catch (e) {
       console.warn(e);
@@ -421,7 +421,7 @@ class CharacterStatFormula {
 
       let p = 1, res = neg ? 100 : 0;
 
-      while (v != 0) {
+      while (v !== 0) {
         const t = Math.min(v, 50);
         res = neg ? res * (100 + t) / 100 : res + t / p;
         v -= t;
@@ -518,7 +518,7 @@ class CharacterStatFormula {
           isMul = false,
           isBase = false;
 
-        if (p.conditional != '#') {
+        if (p.conditional !== '#') {
           const c = p.conditional
             .replace(/"[^"]+"/g, 'true')
             .replace(/@([a-zA-Z0-9_.]+)/g, (m, m1) => {

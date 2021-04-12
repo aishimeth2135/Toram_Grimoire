@@ -18,7 +18,6 @@
 <script>
 export default {
   props: ['equipment'],
-  inject: ['langText'],
   filters: {
     equipmentIcon(fieldType) {
       return {

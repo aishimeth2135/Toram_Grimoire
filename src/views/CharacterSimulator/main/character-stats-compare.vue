@@ -16,7 +16,7 @@
       </div>
     </template>
     <cy-default-tips v-else iconify-name="mdi-ghost">
-      {{ langText('Warn/character stats compare: no result') }}
+      {{ $lang('Warn/character stats compare: no result') }}
     </cy-default-tips>
   </div>
 </template>
@@ -24,8 +24,6 @@
 export default {
   // data create by [main.vue].methods.handleCharacterStateDatas()
   props: ['before', 'after'],
-
-  inject: ['langText'],
   computed: {
     comparedStatsDatas() {
       const before = this.before.map(p => p.stats).flat(),

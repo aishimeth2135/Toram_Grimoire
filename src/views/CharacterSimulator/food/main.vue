@@ -19,7 +19,7 @@
           </cy-list-item>
           <cy-list-item @click="createFoodBuild">
             <cy-icon-text iconify-name="ic-round-add-circle-outline">
-              {{ localLangText('append food build') }}
+              {{ local$lang('append food build') }}
             </cy-icon-text>
           </cy-list-item>
         </template>
@@ -27,18 +27,18 @@
       <div class="buttons">
         <cy-button iconify-name="mdi-content-copy" type="border"
           @click="copyCurrentFoodBuild">
-          {{ globalLangText('global/copy') }}
+          {{ $globalLang('global/copy') }}
         </cy-button>
         <cy-button iconify-name="ic-baseline-delete-outline" type="border"
           @click="removeCurrentFoodBuild">
-          {{ globalLangText('global/remove') }}
+          {{ $globalLang('global/remove') }}
         </cy-button>
       </div>
     </div>
     <div class="content-title">
       <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
         text-size="small" text-color="purple">
-        {{ localLangText('food build name') }}
+        {{ local$lang('food build name') }}
       </cy-icon-text>
     </div>
     <div class="content">
@@ -49,16 +49,16 @@
     <div class="content-title">
       <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
         text-size="small" text-color="purple">
-        {{ localLangText('food list') }}
+        {{ local$lang('food list') }}
       </cy-icon-text>
     </div>
     <div class="foods content">
       <div class="content-tips">
         <cy-icon-text iconify-name="ic-outline-info" text-color="light-3" text-size="small" class="mr-normal">
-          {{ localLangText('tips: select food') }}
+          {{ local$lang('tips: select food') }}
         </cy-icon-text>
         <cy-icon-text iconify-name="ic-outline-info" text-color="light-3" text-size="small">
-          {{ localLangText('tips: auto select food') }}
+          {{ local$lang('tips: auto select food') }}
         </cy-icon-text>
       </div>
       <cy-list-item v-for="(food, i) in currentFoodBuild.foods"
@@ -80,12 +80,12 @@
   </div>
   <div v-else>
     <cy-default-tips iconify-name="mdi-ghost">
-      {{ localLangText('Current food-build is not exist') }}
+      {{ local$lang('Current food-build is not exist') }}
     </cy-default-tips>
     <div style="text-align: center;">
       <cy-button iconify-name="ic-round-add" type="border"
         @click="createFoodBuild">
-        {{ langText('append food build') }}
+        {{ $lang('append food build') }}
       </cy-button>
     </div>
   </div>
@@ -96,7 +96,6 @@ import Vuex from "vuex";
 import MessageNotify from "@Services/Notify";
 
 export default {
-  inject: ['langText', 'globalLangText'],
   created() {
     if (this.foodBuilds.length == 0)
       this.createFoodBuild();
@@ -116,24 +115,24 @@ export default {
       this.$store.commit('character/createFoodBuild', {
         foodBuild: this.currentFoodBuild.copy()
       });
-      MessageNotify(this.localLangText('Copy food build successfully'));
+      MessageNotify(this.local$lang('Copy food build successfully'));
     },
     removeCurrentFoodBuild() {
       if (this.foodBuilds.length <= 1) {
-        MessageNotify(this.localLangText('Must have at least one food build'));
+        MessageNotify(this.local$lang('Must have at least one food build'));
         return;
       }
       const from = this.currentFoodBuild;
       this.$store.commit('character/removeFoodBuild', {
         index: this.currentFoodBuildIndex
       });
-      MessageNotify(this.localLangText('Remove food build successfully'),
+      MessageNotify(this.local$lang('Remove food build successfully'),
         'ic-round-delete', null, {
           buttons: [{
-            text: this.globalLangText('global/recovery'),
+            text: this.$globalLang('global/recovery'),
             click: () => {
               this.$store.commit('character/createFoodBuild', { foodBuild: from });
-              MessageNotify(this.localLangText('Recovery food build successfully'));
+              MessageNotify(this.local$lang('Recovery food build successfully'));
             },
             removeMessageAfterClick: true
           }]
@@ -141,7 +140,7 @@ export default {
     },
     createFoodBuild() {
       this.$store.commit('character/createFoodBuild', {
-        name: this.localLangText('food build') + ' ' + (this.foodBuilds.length + 1)
+        name: this.local$lang('food build') + ' ' + (this.foodBuilds.length + 1)
       });
     },
     setFoodLevel(food, v, idx) {
@@ -160,11 +159,11 @@ export default {
         if (this.currentFoodBuild.checkSelectedFoodsMaximum())
           this.currentFoodBuild.appendSelectedFood(idx);
         else
-          MessageNotify(this.localLangText('Number of selected food has reached the maximum'));
+          MessageNotify(this.local$lang('Number of selected food has reached the maximum'));
       }
     },
-    localLangText(v, vs) {
-      return this.langText('Food Builds Control/' + v, vs);
+    local$lang(v, vs) {
+      return this.$lang('Food Builds Control/' + v, vs);
     }
   }
 };

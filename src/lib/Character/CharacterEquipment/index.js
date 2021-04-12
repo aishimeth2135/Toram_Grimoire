@@ -332,7 +332,7 @@ class Weapon extends CharacterEquipment {
   constructor(id, name, stats, atk = 1, stability = 0) {
     super(id, name, stats);
 
-    atk = typeof atk == 'string' ? parseInt(atk, 10) : atk;
+    atk = typeof atk === 'string' ? parseInt(atk, 10) : atk;
 
     this.baseAtk = atk;
     this.atk = atk;
@@ -384,7 +384,7 @@ class SubWeapon extends Weapon {
   }
 
   get hasElement() {
-    return this.type == SubWeapon.TYPE_ARROW;
+    return this.type === SubWeapon.TYPE_ARROW;
   }
 }
 SubWeapon.TYPE_ARROW = Symbol('sub-weapon|arrow');

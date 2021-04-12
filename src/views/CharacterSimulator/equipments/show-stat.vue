@@ -14,10 +14,10 @@
 <script>
 export default {
   props: ['stat', 'type', 'negativeValue'],
-  inject: ['langText', 'checkStatRestriction'],
+  inject: ['checkStatRestriction'],
   computed: {
     restrictionTexts() {
-      return this.stat.showData().map(p => this.langText('stat restriction text/' + p));
+      return this.stat.showData().map(p => this.$lang('stat restriction text/' + p));
     },
     statValid() {
       // this.stat may be undefined when this.type is "custom"

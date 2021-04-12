@@ -69,7 +69,7 @@
           </cy-icon-text>
           <cy-icon-text v-if="showData['duration'] && showData['cycle']"
             iconify-name="ic-round-timer" class="condition-scope text-small light-text">
-            <span v-html="langText('damage/caption of duration and cycle', [showData['duration'], showData['cycle']])">
+            <span v-html="$lang('damage/caption of duration and cycle', [showData['duration'], showData['cycle']])">
             </span>
           </cy-icon-text>
           <span class="condition-scope attr" v-if="showData['@proration: damage']">
@@ -110,7 +110,7 @@
           </cy-icon-text>
           <cy-icon-text v-if="showData['duration'] && showData['cycle']"
             iconify-name="ic-round-timer" class="condition-scope text-small light-text">
-            <span v-html="langText('heal/caption of duration and cycle', [showData['duration'], showData['cycle']])">
+            <span v-html="$lang('heal/caption of duration and cycle', [showData['duration'], showData['cycle']])">
             </span>
           </cy-icon-text>
         </template>
@@ -146,7 +146,7 @@
       <fieldset class="extra-column unfold-fieldset" v-if="isScoped" :class="{ unfold: skillAreaVisible }">
         <legend>
             <cy-button v-if="isScoped" class="condition-scope text-small light-text no-border no-padding" iconify-name="bx-bx-target-lock" @click="toggleVisible('skillArea')">
-            {{ langText('skill area/button text') }}
+            {{ $lang('skill area/button text') }}
           </cy-button>
         </legend>
         <cy-transition type="fade">
@@ -155,10 +155,10 @@
               <skill-area :attrs="branch.attrs" />
               <div class="bottom">
                 <cy-icon-text iconify-name="bx-bxs-circle" class="text-small mr-normal" style="--icon-color: var(--primary-water-blue)">
-                  {{ langText('skill area/point: character') }}
+                  {{ $lang('skill area/point: character') }}
                 </cy-icon-text>
                 <cy-icon-text iconify-name="bx-bxs-circle" class="text-small" style="--icon-color: var(--primary-red)">
-                  {{ langText('skill area/point: target') }}
+                  {{ $lang('skill area/point: target') }}
                 </cy-icon-text>
               </div>
             </div>
@@ -198,7 +198,7 @@
       <fieldset class="extra-column" v-if="branch.name == 'damage' && showData['ailment_name']">
         <legend>
           <cy-icon-text iconify-name="ri-plant-line" class="text-small">
-            {{ langText('ailment title') }}
+            {{ $lang('ailment title') }}
           </cy-icon-text>
         </legend>
         <div class="content-line">
@@ -298,7 +298,7 @@
       <template v-else-if="branch.name == 'reference'">
         <div class="content-line">
           <cy-icon-text class="condition-scope text-small light-text" iconify-name="entypo-link">
-            {{ langText('reference/base title') }}
+            {{ $lang('reference/base title') }}
           </cy-icon-text>
           <div class="text-scope" v-if="showData['text']">
             {{ showData['text'] }}
@@ -345,6 +345,10 @@ import DataContainer from "../utils/DataContainer.js";
 
 export default {
   name: 'skill-branch',
+  RegisterLang: {
+    root: 'Branch',
+    inherit: true
+  },
   props: ['branch', 'skillState', 'type'],
   inject: ['handleTagButton', 'createTagButtons', 'tagButtonClassName', 'getFormulaDisplayMode'],
   data() {
@@ -360,7 +364,6 @@ export default {
   },
   provide() {
     return {
-      'langText': this.langText,
       'calcValueStr': this.calcValueStr,
       'handleDataContainer': this.handleDataContainer
     }
@@ -495,7 +498,6 @@ export default {
       return 'mdi-checkbox-multiple-blank-circle';
     },
     showData() {
-      // console.log('[update show data] Branch Name: ' + this.branch.name);
       return this.handleShowData(this.branch);
     },
     otherEquipmentBranchDatas() {
@@ -517,8 +519,8 @@ export default {
   },
   methods: {
     extraElementCaption(v) {
-      const s = `<span class="light-text">${this.langText('damage/element/' + v)}</span>`;
-      return this.langText('apply element', [s]);
+      const s = `<span class="light-text">${this.$lang('damage/element/' + v)}</span>`;
+      return this.$lang('apply element', [s]);
     },
     toggleVisible(name, force) {
       force = force === void 0 ? !this[name + 'Visible'] : force;
@@ -632,7 +634,7 @@ export default {
       }
     },
     ailmentText(showData) {
-      return this.langText('damage/ailment text', [showData['ailment_chance'], `<span class="${this.tagButtonClassName}">${showData['ailment_name']}</span>`]);
+      return this.$lang('damage/ailment text', [showData['ailment_chance'], `<span class="${this.tagButtonClassName}">${showData['ailment_name']}</span>`]);
     },
     setStackValue(v) {
       const p = this.findStackState();
@@ -683,7 +685,7 @@ export default {
             beforeColorText: v => v + '%'
           }, {
             name: 'frequency',
-            beforeColorText: v => v + this.langText('global/times')
+            beforeColorText: v => v + this.$lang('global/times')
           });
 
           hiddenList.push({
@@ -696,7 +698,7 @@ export default {
           }, {
             name: 'name',
             validation: v => v,
-            defaultValue: this.langText('damage/base name')
+            defaultValue: this.$lang('damage/base name')
           }, {
             name: ['base', 'element'],
             validation: v => v != 'none'
@@ -756,7 +758,7 @@ export default {
           hiddenList.push({
             name: 'name',
             validation: v => v && v != 'auto',
-            defaultValue: this.langText('stack/base name') + (stkIdx + 1)
+            defaultValue: this.$lang('stack/base name') + (stkIdx + 1)
           });
         } else if (bch.name == 'effect') {
           handleValueList.push({
@@ -764,7 +766,7 @@ export default {
             beforeColorText: v => v + 'm'
           }, {
             name: 'duration',
-            beforeColorText: v => this.langText('display duration', [v])
+            beforeColorText: v => this.$lang('display duration', [v])
           });
           handleTextList.push('caption', 'condition', 'end_condition');
           hiddenList.push({
@@ -776,7 +778,7 @@ export default {
           }, {
             name: 'name',
             validation: v => v,
-            defaultValue: this.langText('effect/base name')
+            defaultValue: this.$lang('effect/base name')
           });
           ['auto', 'hit'].includes(data['condition']) && langTextList.push('condition');
           langTextList.push('is_place', 'type');
@@ -794,28 +796,28 @@ export default {
           hiddenList.push({
             name: 'condition',
             validation: v => v && v != 'none',
-            defaultValue: this.langText('next/condition default')
+            defaultValue: this.$lang('next/condition default')
           }, {
             name: 'name',
             validation: v => v,
-            defaultValue: this.langText('effect/base name')
+            defaultValue: this.$lang('effect/base name')
           });
         } else if (bch.name == 'passive') {
           handleTextList.push('caption');
           hiddenList.push({
             name: 'name',
             validation: v => v,
-            defaultValue: this.langText('passive/base name')
+            defaultValue: this.$lang('passive/base name')
           });
         } else if (bch.name == 'heal') {
           handleValueList.push('duration', 'cycle', 'constant', {
             name: 'frequency',
-            beforeColorText: v => v + this.langText('global/times')
+            beforeColorText: v => v + this.$lang('global/times')
           });
           hiddenList.push({
             name: 'name',
             validation: v => v,
-            defaultValue: this.langText('heal/base name')
+            defaultValue: this.$lang('heal/base name')
           }, {
             name: 'constant',
             validation: v => v != 0
@@ -855,14 +857,14 @@ export default {
           hiddenList.push({
             name: 'condition',
             validation: v => v,
-            defaultValue: this.langText('global suffix: extra/condition default')
+            defaultValue: this.$lang('global suffix: extra/condition default')
           });
           handleTextList.push('caption', 'condition');
         } else if ((mbch.name == 'effect' || mbch.name == 'next' || mbch.name == 'passive') && bch.name == 'extra') {
           hiddenList.push({
             name: 'condition',
             validation: v => v,
-            defaultValue: this.langText('global suffix: extra/condition default')
+            defaultValue: this.$lang('global suffix: extra/condition default')
           });
           handleTextList.push('caption', 'condition');
         }
@@ -937,7 +939,7 @@ export default {
       data['@--data-container-records'] = dataContainers;
 
       titleList.forEach(k => {
-        data[k + ': title'] = this.langText(`${bch.name}/${k}: title`);
+        data[k + ': title'] = this.$lang(`${bch.name}/${k}: title`);
       });
 
       if (this.branch.name == 'stack') {
@@ -945,8 +947,6 @@ export default {
         if (!Number.isNaN(tmpv) && tmpv > 999)
           data['@stack-input-width-wide'] = { '--input-width': '3rem' };
       }
-
-      // console.log(this.branch.name, data);
 
       return data;
     },
@@ -970,14 +970,14 @@ export default {
         dc.handle(v => this.calcValueStr(v));
         const p = dc.isNumberValue() && parseFloat(dc.value()) < 0 ? 'negative' : 'positive';
         p == 'negative' && dc.handle(v => (-1 * v).toString());
-        dc.handleResult(v => this.langText(`${bch.name + prefix}/${key}/${p}`, [v]))
+        dc.handleResult(v => this.$lang(`${bch.name + prefix}/${key}/${p}`, [v]))
       } else {
         let p = dc.value();
         if (p == '1' || p == '0') // 轉換布林值
           p = p == '1' ? 'true' : 'false';
         let preName = bch.name + prefix;
         preName = bch.mainBranch ? bch.mainBranch.name + ': ' + preName : preName;
-        dc.handleResult(() => this.langText(`${preName}/${key}/${p}`));
+        dc.handleResult(() => this.$lang(`${preName}/${key}/${p}`));
       }
     },
     handleTextData(str, bch) {
@@ -1047,7 +1047,7 @@ export default {
         'dagger_atk', 'target_def', 'target_level', 'guard_power'
       ];
       list.forEach(cs => dc.handleResult(v => v
-          .replace(new RegExp('\\$' + cs, 'g'), this.langText('formula replaced text/' + cs))
+          .replace(new RegExp('\\$' + cs, 'g'), this.$lang('formula replaced text/' + cs))
         )
       );
       if (this.formulaDisplayMode == 1) {
@@ -1059,16 +1059,16 @@ export default {
             .map(p => {
               const t = ss.find(a => a.id == p);
               return t ?
-                (t.branch.attrs['name'] != 'auto' ? t.branch.attrs['name'] : this.langText('stack/base name')) :
-                this.langText('unknow variable');
+                (t.branch.attrs['name'] != 'auto' ? t.branch.attrs['name'] : this.$lang('stack/base name')) :
+                this.$lang('unknow variable');
             });
           stack.push(...tstack);
         }
         
         let v = dc.result();
         v = v
-          .replace(/\$__TEXT_SLV__/g, this.globalLangText('Skill Query/skill level'))
-          .replace(/\$__TEXT_CLV__/g, this.globalLangText('Skill Query/character level'))
+          .replace(/\$__TEXT_SLV__/g, this.$lang.parent('skill level'))
+          .replace(/\$__TEXT_CLV__/g, this.$lang.parent('character level'))
           .replace(/\$__TEXT_STACK_(\d+)__/g, (m, m1) => stack[parseInt(m1, 10)]);
 
         let list = [], offset = 0;
@@ -1090,8 +1090,6 @@ export default {
             list.pop();
           }
         });
-
-        console.log(v);
 
         const createFormulaText = (n, v) => `<span class="formula--fix key--${n}"><span class="name">${n.toUpperCase()}</span><span class="value">${v}</span></span>`;
 
@@ -1123,12 +1121,6 @@ export default {
           .replace(/stack\[(\d+)\]/g, (m, m1) => '$__TEXT_STACK_' + m1 + '__')
           .replace(/stack/g, '$__TEXT_STACK_0__');
       return str;
-    },
-    langText(v, vs) {
-      return GetLang('Skill Query/Branch/' + v, vs);
-    },
-    globalLangText(...args) {
-      return GetLang(...args);
     }
   },
   watch: {

@@ -12,7 +12,7 @@ import DataContainer from "../utils/DataContainer.js";
 
 export default {
   props: ['stats'],
-  inject: ['langText', 'calcValueStr', 'handleDataContainer'],
+  inject: ['calcValueStr', 'handleDataContainer'],
   computed: {
     statTexts() {
       return this.stats.map((p, i) => {

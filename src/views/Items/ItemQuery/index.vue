@@ -11,7 +11,7 @@
                   <cy-flex-layout>
                     <cy-icon-text class="options-title" @click="toggleSelected(type)"
                       :iconify-name="'ic-round-check-box' + (type.selected ? '' : '-outline-blank')">
-                      {{ langText('equipment type category/' + type.id) }}
+                      {{ $lang('equipment type category/' + type.id) }}
                     </cy-icon-text>
                     <template v-if="type.types !== null">
                       <cy-button iconify-name="ic-round-border-all" type="border"
@@ -24,7 +24,7 @@
                     <cy-button v-for="item in type.types" :key="item.value" type="border"
                       iconify-name="gg-shape-rhombus" :selected="type.selected && item.selected"
                       @click="toggleSelected(item)">
-                      {{ langText('field type text/' + item.value.description) }}
+                      {{ $lang('field type text/' + item.value.description) }}
                     </cy-button>
                   </div>
                 </div>
@@ -34,21 +34,21 @@
                   <div class="normal-title">
                     <cy-icon-text iconify-name="mdi-sort-variant"
                       text-color="purple" text-size="small">
-                      {{ langText('sort options/title') }}
+                      {{ $lang('sort options/title') }}
                     </cy-icon-text>
                   </div>
                   <div class="options">
                     <cy-button type="border" iconify-name="gg-shape-rhombus"
                       @click="selectSortOption('default')"
                       :selected="sortOptions.currentSelected === 'default'">
-                      {{ langText('sort options/options/default') }}
+                      {{ $lang('sort options/options/default') }}
                     </cy-button>
                     <cy-button v-for="(_, id) in sortOptions.global"
                       type="border" :key="id"
                       iconify-name="gg-shape-rhombus"
                       @click="selectSortOption(id)"
                       :selected="sortOptions.currentSelected === id">
-                      {{ langText('sort options/options/' + id) }}
+                      {{ $lang('sort options/options/' + id) }}
                     </cy-button>
                   </div>
                 </div>
@@ -56,19 +56,19 @@
                   <div class="normal-title">
                     <cy-icon-text iconify-name="fluent-arrow-sort-24-filled"
                       text-color="purple" text-size="small">
-                      {{ langText('sort options/order/title') }}
+                      {{ $lang('sort options/order/title') }}
                     </cy-icon-text>
                   </div>
                   <div class="options">
                     <cy-button type="border" iconify-name="akar-icons:arrow-down"
                       @click="selecetSortOrder('down')"
                       :selected="sortOptions.currentOrder === 'down'">
-                      {{ langText('sort options/order/down') }}
+                      {{ $lang('sort options/order/down') }}
                     </cy-button>
                     <cy-button type="border" iconify-name="akar-icons:arrow-up"
                       @click="selecetSortOrder('up')"
                       :selected="sortOptions.currentOrder === 'up'">
-                      {{ langText('sort options/order/up') }}
+                      {{ $lang('sort options/order/up') }}
                     </cy-button>
                   </div>
                 </div>
@@ -79,13 +79,13 @@
             <div class="mode-normal-content" v-if="modes.normal.optionsVisible">
               <cy-icon-text iconify-name="bx-bx-target-lock"
                 text-size="small" text-color="purple">
-                {{ langText('options: normal/title') }}
+                {{ $lang('options: normal/title') }}
               </cy-icon-text>
               <div style="padding: 0.2rem 0.4rem;">
                 <cy-button v-for="item in modes.normal.targets" :key="item.value" type="border"
                   iconify-name="gg-shape-rhombus" :selected="item.selected"
                   @click="toggleSelected(item)">
-                  {{ langText('options: normal/' + item.value) }}
+                  {{ $lang('options: normal/' + item.value) }}
                 </cy-button>
               </div>
             </div>
@@ -103,7 +103,7 @@
                 <cy-list-item v-for="(p, id) in modes" :key="id"
                   @click="selectMode(id)">
                   <cy-icon-text :iconify-name="p.icon">
-                    {{ langText('modes/' + id) }}
+                    {{ $lang('modes/' + id) }}
                   </cy-icon-text>
                 </cy-list-item>
               </template>
@@ -113,7 +113,7 @@
                 <div class="mode-normal-title">
                   <div class="input-container">
                     <cy-icon-text iconify-name="ic-outline-search" class="icon" />
-                    <input type="text" :placeholder="langText('search placeholder')"
+                    <input type="text" :placeholder="$lang('search placeholder')"
                       v-model="modes.normal.searchText">
                   </div>
                   <cy-button type="icon-only" iconify-name="heroicons-solid:menu"
@@ -125,7 +125,7 @@
                   @click="toggleSelectStatVisible(true)">
                   {{ modes.stat.currentStat ?
                       modes.stat.currentStat.text :
-                      langText('options: stat/select stat: title') }}
+                      $lang('options: stat/select stat: title') }}
                 </cy-button>
               </template>
               <template v-else-if="currentMode == 'item-level'">
@@ -142,7 +142,7 @@
                 <div class="mode-dye-title">
                   <div class="input-container">
                     <cy-icon-text iconify-name="ic-outline-palette" class="icon" />
-                    <input type="text" :placeholder="langText('search placeholder')"
+                    <input type="text" :placeholder="$lang('search placeholder')"
                       v-model="modes.dye.searchText">
                   </div>
                 </div>
@@ -170,13 +170,13 @@
         @close-window="toggleSelectStatVisible(false)">
         <template v-slot:title>
           <cy-icon-text iconify-name="mdi-rhombus-outline">
-            {{ langText('options: stat/select stat: window title') }}
+            {{ $lang('options: stat/select stat: window title') }}
           </cy-icon-text>
         </template>
         <template v-slot:default>
           <cy-title-input iconify-name="ic-outline-category" class="search-stat-input">
             <input type="text" v-model="modes.stat.statSearchText"
-              :placeholder="langText('options: stat/select stat: search placeholder')" />
+              :placeholder="$lang('options: stat/select stat: search placeholder')" />
           </cy-title-input>
           <template v-if="statsSearchResult.length != 0">
             <cy-list-item v-for="stat in statsSearchResult"
@@ -189,15 +189,13 @@
             </cy-list-item>
           </template>
           <cy-default-tips v-else iconify-name="bx-bx-message-rounded-x">
-            {{ langText('no result tips') }}
+            {{ $lang('no result tips') }}
           </cy-default-tips>
         </template>
       </cy-window>
   </article>
 </template>
 <script>
-import GetLang from "@Services/Language";
-
 import init from "./init.js";
 
 import vue_searchResult from "./search-result.vue";
@@ -206,6 +204,7 @@ import { CharacterEquipment, MainWeapon, SubWeapon, SubArmor, BodyArmor, Additio
 import { StatBase } from "@lib/Character/Stat";
 
 export default {
+  RegisterLang: 'Item Query',
   data() {
     const equipments = this.$store.state.datas.items.equipments
       .map(p => CharacterEquipment.fromOriginEquipment(p, { statValueToNumber: false }));
@@ -349,7 +348,6 @@ export default {
   },
   provide() {
     return {
-      'langText': this.langText,
       'findStat': this.findStat,
       'modesState': this.modes,
       'state': this.state,
@@ -519,9 +517,6 @@ export default {
     },
     cancelAll(list) {
       list.forEach(p => p.selected = false);
-    },
-    langText(v, vs) {
-      return GetLang('Item Query/' + v, vs);
     }
   },
   beforeCreate() {
