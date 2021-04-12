@@ -57,14 +57,14 @@ function loadSkill(skillSystem, datas){
   ];
 
   function _TreeBack(se, se_type){
-    if ( SKILL_ELEMENT_ORDER.indexOf(se.TYPE) <= SKILL_ELEMENT_ORDER.indexOf(se_type) )
+    if (SKILL_ELEMENT_ORDER.indexOf(se.TYPE) <= SKILL_ELEMENT_ORDER.indexOf(se_type))
       return se;
-    while ( se.TYPE != se_type )
+    while (se.TYPE !== se_type)
       se = se.parent;
     return se;
   }
   function _nullConfirm(v, null_v){
-    if ( v === null_v )
+    if (v === null_v)
       return null;
     return v;
   }
@@ -73,7 +73,7 @@ function loadSkill(skillSystem, datas){
       case 2:
       case 3:
         sef.setConfig({equipmentConfirm: 1});
-        if ( v !== 2 ) break;
+        if (v !== 2) break;
         // fall through
       case 0:
         parent.setDefaultEffect(sef);
@@ -88,14 +88,14 @@ function loadSkill(skillSystem, datas){
 
   c.forEach(function(p, index){
     try {
-      if ( index == 0 ) return;
+      if (index === 0) return;
       //console.log(p);
 
       let id = p[ID];
-      if ( id != "" ){
+      if (id !== ""){
         const confirm_name = p[CONFIRM];
         id = parseInt(p[ID], 10);
-        switch ( confirm_name ){
+        switch (confirm_name){
           case CONFIRM_SKILL_TREE_CATEGORY: {
             const name = p[SKILL_TREE_CATEGORY_NAME];
             cur = sr.newElement(SkillTreeCategory.TYPE, {id, name});
@@ -108,7 +108,7 @@ function loadSkill(skillSystem, datas){
               cur.attrs.simulatorFlag = true;
           } break;
           default: {
-            if ( confirm_name != "" ){
+            if (confirm_name != ""){
               cur = _TreeBack(cur, SkillTree.TYPE);
               const name = p[NAME];
               cur = cur.newElement(Skill.TYPE, {id, name});
@@ -136,18 +136,18 @@ function loadSkill(skillSystem, datas){
           }
         }
       }
-      if ( SKILL_ELEMENT_ORDER.indexOf(cur.TYPE) < SKILL_ELEMENT_ORDER.indexOf(SkillEffect.TYPE) )
+      if (SKILL_ELEMENT_ORDER.indexOf(cur.TYPE) < SKILL_ELEMENT_ORDER.indexOf(SkillEffect.TYPE))
         return;
       const bno = p[EFFECT_BRANCH_NO];
-      if ( bno != "" ){
+      if (bno !== ""){
         cur = _TreeBack(cur, SkillEffect.TYPE);
         const bname = p[EFFECT_BRANCH_NAME];
         cur = cur.newElement(SkillBranch.TYPE, {id: bno, name: bname});
       }
       const battrname = p[EFFECT_BRANCH_ATTRIBUTE_NAME],
         battrvalue = p[EFFECT_BRANCH_ATTRIBUTE_VALUE];
-      if ( battrname != '' ){
-        if ( !Grimoire.Character.findStatBase(battrname) )
+      if (battrname != ''){
+        if (!Grimoire.Character.findStatBase(battrname))
           cur.appendBranchAttribute(battrname, battrvalue);
         else
           cur.appendStat(battrname, battrvalue, p[EFFECT_BRANCH_ATTRIBUTE_EXTRA]);
@@ -221,7 +221,7 @@ function loadSkillMain(skillSystem, datas){
   };
 
   c.forEach((p, i) => {
-    if ( i == 0 || p[ID] === '' )
+    if (i === 0 || p[ID] === '')
       return;
     try {
       const cat = p[CATEGORY], id = parseInt(p[ID], 10);
