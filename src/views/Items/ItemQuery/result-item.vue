@@ -3,7 +3,9 @@
     <cy-list-item class="title-container" :class="{ 'detail-visible': detailVisible }"
       @click="detailVisible = !detailVisible">
       <div class="title">
-        <cy-icon-text :iconify-name="equipmentIcon">
+        <cy-icon-text :iconify-name="equipmentIcon"
+          :text-color="detailVisible ? 'orange' : 'dark'"
+          :icon-color="detailVisible ? 'orange' : 'light-2'">
           {{ equipment.name }}
         </cy-icon-text>
         <div class="base-value" v-if="state.currentMode === 'normal' ||
@@ -32,7 +34,7 @@
             <cy-icon-text iconify-name="jam-hammer">
               {{ langText('equipment detail/recipe/item level') }}
             </cy-icon-text>
-            <span class="value">{{ equipment.origin.recipe['item_level'] }}</span>
+            <span class="value">{{ originEquipment.recipe['item_level'] }}</span>
           </div>
         </template>
       </div>
@@ -46,11 +48,16 @@
               {{ langText('equipment detail/scope title/stats') }}
             </cy-icon-text>
           </legend>
-          <show-stat v-for="stat in equipment.stats" :stat="stat"
-            :key="`${stat.baseName()}-${stat.type.description}`"
-            :negative-value="stat.statValue() < 0" />
+          <template v-if="equipment.stats.length !== 0">
+            <show-stat v-for="stat in equipment.stats" :stat="stat"
+              :key="`${stat.baseName()}-${stat.type.description}`"
+              :negative-value="stat.statValue() < 0" />
+          </template>
+          <cy-default-tips v-else iconify-name="mdi-ghost">
+            {{ langText('equipment detail/tips: without any stat') }}
+          </cy-default-tips>
         </fieldset>
-        <fieldset v-if="equipment.recipe" class="recipe column">
+        <fieldset v-if="originEquipment.recipe" class="recipe column">
           <legend>
             <cy-icon-text iconify-name="ion-hammer" text-size="small" text-color="purple">
               {{ langText('equipment detail/scope title/recipe') }}
@@ -95,7 +102,7 @@
               {{ langText('equipment detail/scope title/obtains') }}
             </cy-icon-text>
           </legend>
-          <div class="obtains-list">
+          <div v-if="obtainsData.length !== 0" class="obtains-list">
             <div v-for="p in obtainsData" class="item" :key="p.iid">
               <div class="type-name">
                 <cy-icon-text :iconify-name="p.icon" class="type"
@@ -116,6 +123,9 @@
               </div>
             </div>
           </div>
+          <cy-default-tips v-else iconify-name="mdi-ghost">
+            {{ langText('equipment detail/tips: without any obtain') }}
+          </cy-default-tips>
         </fieldset>
       </div>
       <div v-else-if="state.currentMode === 'dye'" class="dye-preview">
@@ -289,7 +299,7 @@ export default {
 fieldset.column {
   padding: 1rem 0.8rem;
   border: 0;
-  border-top: 0.1rem solid var(--primary-light);
+  border-top: 0.1rem solid var(--primary-orange);
   padding-top: 0.4rem;
 
   > legend {
@@ -304,9 +314,6 @@ fieldset.recipe {
     display: inline-block;
     margin-right: 0.4rem;
     margin-bottom: 0.4rem;
-  }
-
-  > .recipe-info {
   }
 
   > .recipe-materials {

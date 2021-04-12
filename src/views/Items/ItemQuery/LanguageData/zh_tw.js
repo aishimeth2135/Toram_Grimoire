@@ -84,7 +84,9 @@ export default function() {
           'other': '其它',
           'box': '箱子道具',
           'exchange': '交換所'
-        }
+        },
+        'tips: without any obtain': '取得方式未知',
+        'tips: without any stat': '這個裝備沒有任何能力0.0',
       },
       'equipment type category': {
         'main': '主手武器',
