@@ -82,11 +82,11 @@
             </div>
           </div>
           <div class="recipe-materials">
-            <template v-if="originEquipment.recipe['materials']['cost']">
+            <template v-if="originEquipment.recipe['cost']">
               <cy-icon-text iconify-name="la-coins">
                 {{ langText('equipment detail/recipe/spina') }}
               </cy-icon-text>
-              <span class="value">{{ originEquipment.recipe['materials']['cost'] + 's' }}</span>
+              <span class="value">{{ originEquipment.recipe['cost'] + 's' }}</span>
             </template>
             <template v-for="m in originEquipment.recipe['materials']">
               <cy-icon-text iconify-name="mdi-cube-outline" :key="m.name + '--name'">

@@ -281,7 +281,9 @@ CharacterEquipment.loadEquipment = function (data) {
   }
 };
 
-CharacterEquipment.fromOriginEquipment = function(item) {
+CharacterEquipment.fromOriginEquipment = function(item, {
+  statValueToNumber = true
+} = {}) {
   // 'Equipmemt Category list': [
   //     '單手劍', '雙手劍', '弓', '弩',
   //     '法杖', '魔導具', '拳套', '旋風槍',
@@ -290,7 +292,12 @@ CharacterEquipment.fromOriginEquipment = function(item) {
   // ]
   const pre_args = [
     item, item.name,
-    item.stats.map((p, i) => RestrictionStat.fromOrigin(p, item.statRestrictions[i]))
+    item.stats.map((p, i) => {
+      const t = RestrictionStat.fromOrigin(p, item.statRestrictions[i]);
+      if (statValueToNumber)
+        t.value = /^\d+$/.test(t.value) ? parseFloat(t.value) : 0;
+      return t;
+    })
   ];
 
   const stability = parseInt(item.baseStability, 10);

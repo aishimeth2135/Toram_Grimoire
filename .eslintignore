@@ -1,9 +1,5 @@
 src/_other
 src/views/_tmp
-src/lib/UserGuideSystem
 
 # service worker
 src/sw.js
-
-# tmp
-src/views/_CharacterSimulator

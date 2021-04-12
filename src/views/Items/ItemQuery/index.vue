@@ -208,7 +208,7 @@ import { StatBase } from "@lib/Character/Stat";
 export default {
   data() {
     const equipments = this.$store.state.datas.items.equipments
-      .map(p => CharacterEquipment.fromOriginEquipment(p));
+      .map(p => CharacterEquipment.fromOriginEquipment(p, { statValueToNumber: false }));
 
     const handleOptions = opts => opts.map(p => {
       return {
@@ -228,6 +228,8 @@ export default {
         });
       })
     });
+
+    const handleCompareValue = v => /^\d+$/.test(v) ? parseFloat(v) : -99999;
 
     return {
       state: {
@@ -292,15 +294,15 @@ export default {
         'stat': {
           default: (a, b) => {
             const cs = this.modes.stat.currentStat;
-            const av = this.findStat(cs, a.stats).statValue(),
-              bv = this.findStat(cs, b.stats).statValue();
+            const av = handleCompareValue(this.findStat(cs, a.stats).statValue()),
+              bv = handleCompareValue(this.findStat(cs, b.stats).statValue());
             return av - bv;
           }
         },
         'item-level': {
           default: (a, b) => {
-            const av = parseInt(a.origin.recipe['item_level'], 10),
-              bv = parseInt(b.origin.recipe['item_level'], 10);
+            const av = handleCompareValue(a.origin.recipe['item_level']),
+              bv = handleCompareValue(b.origin.recipe['item_level']);
             return av - bv;
           }
         },

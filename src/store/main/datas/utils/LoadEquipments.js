@@ -56,7 +56,7 @@ export default function(root, c) {
               tail = '';
             else
               v = t.slice(0, -1);
-            cur_equip.appendStat(p[ATTRIBUTE_NAME], parseFloat(v), tail, p[ATTRIBUTE_VALUES[1]]);
+            cur_equip.appendStat(p[ATTRIBUTE_NAME], v, tail, p[ATTRIBUTE_VALUES[1]]);
           }
           break;
         case 'obtain':
