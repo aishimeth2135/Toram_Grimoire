@@ -2,12 +2,12 @@
   <cy-window :visible="visible" @close-window="closeWindow">
     <template #title>
       <cy-icon-text iconify-name="bx-bx-cube-alt">
-        {{ langText('select crystals/window title') }}
+        {{ $lang('select crystals/window title') }}
       </cy-icon-text>
     </template>
     <cy-title-input iconify-name="ic-outline-category" class="search-input">
       <input type="text" v-model="searchText"
-        :placeholder="langText('select crystals/search placeholder')" />
+        :placeholder="$lang('select crystals/search placeholder')" />
     </cy-title-input>
     <div class="crystals">
       <template v-if="crystalCategorys.length != 0">
@@ -16,7 +16,7 @@
           <cy-button :key="category.id + '-btn'"
             iconify-name="bx-bx-cube-alt" type="drop-down"
             :menu-default-visible="true">
-            {{ langText('select crystals/category title')[category.id] }}
+            {{ $lang('select crystals/category title')[category.id] }}
             <template v-slot:menu>
               <template v-for="cs in category.crystalStates">
                 <cy-list-item v-if="!cs.disable" :key="cs.origin.id"
@@ -37,7 +37,7 @@
         </template>
       </template>
       <cy-default-tips v-else icon-id="potum">
-        {{ langText('Warn/no result found') }}
+        {{ $lang('Warn/no result found') }}
       </cy-default-tips>
     </div>
     <cy-bottom-content>
@@ -46,7 +46,7 @@
           <div v-if="detailVisible" class="detail">
             <cy-icon-text iconify-name="bx-bx-cube-alt"
               text-color="purple" text-size="small">
-              {{ langText('select crystals/selected crystals') }}
+              {{ $lang('select crystals/selected crystals') }}
             </cy-icon-text>
             <div class="equipment-crystals">
               <cy-list-item v-for="c in equipment.crystals"
@@ -73,7 +73,7 @@
           <template #right-content>
             <cy-button type="border" iconify-name="ic-round-done"
               @click.stop="closeWindow">
-              {{ globalLangText('global/close') }}
+              {{ $globalLang('global/close') }}
             </cy-button>
           </template>
         </cy-flex-layout>
@@ -88,7 +88,6 @@ import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from "@lib/Charact
 
 export default {
   props: ['visible', 'equipment'],
-  inject: ['langText', 'globalLangText'],
   data() {
     const crystals = this.$store.state.datas.items.crystals;
     const crystalCategorys = new Array(5).fill().map((p, i) => {

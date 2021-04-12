@@ -12,13 +12,13 @@
           iconify-name="ic-round-keyboard-arrow-down" class="inline"
           @mouseenter.native.stop="toggleSelectSkillTreeWindow(true)"
           @click="toggleSelectSkillTreeWindow(true)">
-          {{ langText('select skill') }}
+          {{ $lang('select skill') }}
         </cy-button>
         <cy-button v-else key="visible"
           iconify-name="ic-round-keyboard-arrow-up" class="inline"
           @click="toggleSelectSkillTreeWindow(false)"
           style="background-color: var(--white)">
-          {{ langText('close select skill') }}
+          {{ $lang('close select skill') }}
         </cy-button>
       </template>
       <template v-slot:float-menu>
@@ -67,7 +67,7 @@
               <legend>
                 <cy-button iconify-name="ic-round-history" class="inline"
                   @click="toggleSelectHistoryVisble">
-                  {{ langText('historical record') }}
+                  {{ $lang('historical record') }}
                 </cy-button>
               </legend>
               <transition name="fade">
@@ -89,7 +89,7 @@
         <div v-else class="default-content">
           <div class="container" @click="toggleSelectSkillTreeWindow">
             <cy-icon-text icon-id="potum" class="icon" />
-            <div v-html="langText('default message: equipment conditions')"></div>
+            <div v-html="$lang('default message: equipment conditions')"></div>
           </div>
         </div>
         <div class="bottom-menu">
@@ -120,20 +120,20 @@
                     <div class="switch-skill-container">
                       <cy-icon-text iconify-name="heroicons-solid:switch-vertical"
                         text-size="small" text-color="purple" display="block" style="margin-bottom: 0.3rem">
-                        {{ langText('switch skill') }}
+                        {{ $lang('switch skill') }}
                       </cy-icon-text>
                       <div>
                         <cy-button iconify-name="eva-arrow-circle-left-outline"
                           class="inline mr-normal" @click="switchSkill('previous')">
-                          {{ langText('previous skill') }}
+                          {{ $lang('previous skill') }}
                         </cy-button>
                         <cy-button iconify-name="eva-arrow-circle-right-outline"
                           class="inline mr-normal" @click="switchSkill('next')">
-                          {{ langText('next skill') }}
+                          {{ $lang('next skill') }}
                         </cy-button>
                         <cy-button iconify-name="bx-bx-fast-forward-circle"
                           class="inline mr-normal" @click="switchSkill('last')">
-                          {{ langText('last skill') }}
+                          {{ $lang('last skill') }}
                         </cy-button>
                       </div>
                     </div>
@@ -148,7 +148,7 @@
             <div class="options-content" v-show="skillStates.optionsWindowVisible">
               <div class="equipment-column" v-for="(data) in equipmentCategoryList" :key="data.showName">
                 <cy-icon-text :iconify-name="data.icon" class="text-small line column-title">
-                  {{ langText(`equipment/${data.name}: title`) }}
+                  {{ $lang(`equipment/${data.name}: title`) }}
                 </cy-icon-text>
                 <div class="list">
                   <cy-button v-for="(eq) in equipmentState[data.shortName + 'List']" :key="eq"
@@ -163,7 +163,7 @@
                   @set-value="setSkillLevel">
                   <template v-slot:title>
                     <cy-icon-text iconify-name="mdi-order-numeric-descending" class="text-small">
-                      {{ langText('skill level') }}
+                      {{ $lang('skill level') }}
                     </cy-icon-text>
                   </template>
                 </cy-drag-bar>
@@ -173,7 +173,7 @@
                   :range="[1, 220]" :step="10" style="--input-width: 2rem">
                   <template v-slot:title>
                     <cy-icon-text iconify-name="ant-design:user-outlined">
-                      {{ langText('character level') }}
+                      {{ $lang('character level') }}
                     </cy-icon-text>
                   </template>
                 </cy-input-counter>
@@ -181,7 +181,7 @@
               <div class="switch-formula-display-mode">
                 <cy-button type="border" iconify-name="heroicons-solid:switch-vertical"
                   @click="skillStates.formulaDisplayMode = skillStates.formulaDisplayMode == 0 ? 1 : 0">
-                  {{ langText('switch formula display mode') }}
+                  {{ $lang('switch formula display mode') }}
                 </cy-button> 
               </div>
             </div>
@@ -191,7 +191,7 @@
       <div v-else class="default-content">
         <div class="container" @click="toggleSelectSkillTreeWindow">
           <cy-icon-text icon-id="potum" class="icon" />
-          <div>{{ langText('default message') }}</div>
+          <div>{{ $lang('default message') }}</div>
         </div>
       </div>
     </div>
@@ -202,7 +202,7 @@
           <cy-button iconify-name="jam-arrow-left" type="icon-only" v-if="tagState.tags.length > 1"
             class="inline" @click.stop="previousTag" />
           <cy-icon-text iconify-name="ri-leaf-fill" text-color="purple">{{ currentTag.name }}</cy-icon-text>
-          <span v-if="tagState.windowVisible" class="close-tip">{{ langText('click anywhere to close') }}</span>
+          <span v-if="tagState.windowVisible" class="close-tip">{{ $lang('click anywhere to close') }}</span>
         </div>
         <template v-for="(fr) in currentTag.frames">
           <div v-if="fr.type == 'category'" class="category"
@@ -227,8 +227,6 @@
 <script>
 import { mapState } from "vuex";
 
-import GetLang from "@Services/Language";
-
 import init from "./init.js";
 
 import vue_drawSkillTree from "@views/SkillSimulator/draw-skill-tree.vue";
@@ -238,6 +236,7 @@ import createSkillState from "./utils/createSkillState.js";
 import handleFormula from "./utils/handleFormula.js";
 
 export default {
+  RegisterLang: 'Skill Query',
   data() {
     const self = this;
 
@@ -374,8 +373,8 @@ export default {
             if (type == 'value')
               return v + 'm';
             return v == '-' ?
-              this.langText('effect attrs/range: no limit') :
-              this.createTagButtons(this.langText('effect attrs/range: main'));
+              this.$lang('effect attrs/range: no limit') :
+              this.createTagButtons(this.$lang('effect attrs/range: main'));
           }
         },
         'skill_type': {
@@ -404,12 +403,12 @@ export default {
           const q = p.attrs[k];
           let { type, icon, extraHandle } = datas[k];
           type = typeof type == 'function' ? type(q) : type;
-          const name = this.langText('effect attrs/' + k);
+          const name = this.$lang('effect attrs/' + k);
           let value;
           if (type == 'value')
             value = handleFormula(q, options);
           else if (type == 'list')
-            value = this.langText('effect attrs/' + k + ': list')[q];
+            value = this.$lang('effect attrs/' + k + ': list')[q];
           else if (type == 'text')
             value = q;
           value = extraHandle ? extraHandle(value, type) : value;
@@ -687,16 +686,13 @@ export default {
       this.selectSkillTreeWindowState.visible = false;
     },
     getEquipmentText(value, type) {
-      return value === -1 ? this.langText('equipment/no select') : this.langText('equipment/' + type)[value];
+      return value === -1 ? this.$lang('equipment/no select') : this.$lang('equipment/' + type)[value];
     },
     appendSkillState(skill) {
       this.skillStates.store.push({
         skill
       });
       this.updateSkillState();
-    },
-    langText(v, vs) {
-      return GetLang('Skill Query/' + v, vs);
     }
   },
   beforeCreate() {
@@ -717,7 +713,7 @@ export default {
 
 .main {
   > .top-content {
-    @media screen and (min-width: 70rem) {
+    @media screen and (min-width: 85rem) {
       position: fixed;
       top: 5rem;
       left: calc(50% + 27rem);

@@ -3,13 +3,13 @@
     <section>
       <div v-for="(c) in columns" class="column" :key="c.title">
         <div class="title">
-          <div>{{ langText(c.title + '/title') }}</div>
+          <div>{{ $lang(c.title + '/title') }}</div>
           <cy-icon-text iconify-name="mdi-leaf" class="fix-icon" />
         </div>
         <div class="content">
-          <div class="sub-title">{{ langText(c.title + '/sub title') }}</div>
+          <div class="sub-title">{{ $lang(c.title + '/sub title') }}</div>
           <div class="list-item" v-for="(item) in c.list" :key="item.title">
-            <div class="title" v-if="item.title">{{ langText(c.title + '/' + item.title) }}</div>
+            <div class="title" v-if="item.title">{{ $lang(c.title + '/' + item.title) }}</div>
             <div class="content">
               <span v-for="(v) in item.list" :key="v">
                 <cy-icon-text iconify-name="mdi-leaf" class="icon" />
@@ -31,11 +31,10 @@
 </template>
 
 <script>
-  import GetLang from "@Services/Language";
-
   import init from "./init.js";
 
   export default {
+    RegisterLang: 'About',
     data(){
       return {
         columns: [{
@@ -100,11 +99,6 @@
     },
     beforeCreate(){
       init();
-    },
-    methods: {
-      langText(v, vs){
-        return GetLang('About/' + v, vs);
-      }
     }
   };
 </script>

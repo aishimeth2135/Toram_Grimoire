@@ -19,7 +19,7 @@
           </cy-list-item>
           <cy-list-item @click="$emit('create-character')">
             <cy-icon-text iconify-name="ic-round-add-circle-outline">
-              {{ langText('append character') }}
+              {{ $lang('append character') }}
             </cy-icon-text>
           </cy-list-item>
         </template>
@@ -27,18 +27,18 @@
       <div class="buttons">
         <cy-button iconify-name="mdi-content-copy" type="border"
           @click="copyCurrentCharacter">
-          {{ globalLangText('global/copy') }}
+          {{ $globalLang('global/copy') }}
         </cy-button>
         <cy-button iconify-name="ic-baseline-delete-outline" type="border"
           @click="removeCurrentCharacter">
-          {{ globalLangText('global/remove') }}
+          {{ $globalLang('global/remove') }}
         </cy-button>
       </div>
     </div>
     <div class="content-title">
       <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
         text-size="small" text-color="purple">
-        {{ langText('character name') }}
+        {{ $lang('character name') }}
       </cy-icon-text>
     </div>
     <div class="content">
@@ -49,7 +49,7 @@
     <div class="content-title">
       <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
         text-size="small" text-color="purple">
-        {{ langText('character level') }}
+        {{ $lang('character level') }}
       </cy-icon-text>
     </div>
     <div class="content">
@@ -58,7 +58,7 @@
         @set-value="setLevel($event)">
         <template v-slot:title>
           <cy-icon-text iconify-name="bx-bxs-user">
-            {{ langText('character level') }}
+            {{ $lang('character level') }}
           </cy-icon-text>
         </template>
       </cy-input-counter>
@@ -66,7 +66,7 @@
     <div class="content-title">
       <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
         text-size="small" text-color="purple">
-        {{ langText('character stat points') }}
+        {{ $lang('character stat points') }}
       </cy-icon-text>
     </div>
     <div class="content">
@@ -96,7 +96,7 @@
     <div class="content-title">
       <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
         text-size="small" text-color="purple">
-        {{ langText('character optional base stat') }}
+        {{ $lang('character optional base stat') }}
       </cy-icon-text>
     </div>
     <div class="content">
@@ -104,7 +104,7 @@
         <cy-button type="border" iconify-name="ic-round-close"
           :selected="!character.hasOptinalBaseStat()"
           @click="clearOptionalBaseStat">
-          {{ globalLangText('global/none') }}
+          {{ $globalLang('global/none') }}
         </cy-button>
         <cy-button v-for="p in characterOptionalBaseStatList"
           iconify-name="mdi-checkbox-multiple-blank-circle-outline"
@@ -124,7 +124,6 @@ import { Character } from "@lib/Character/Character";
 
 export default {
   props: ['characterState'],
-  inject: ['globalLangText', 'langText'],
   computed: {
     ...Vuex.mapState('character', {
       'characterStates': 'characters',
@@ -140,18 +139,18 @@ export default {
   methods: {
     removeCurrentCharacter() {
       if (this.characterStates.length <= 1) {
-        MessageNotify(this.langText('Warn/Must have at least one character'));
+        MessageNotify(this.$lang('Warn/Must have at least one character'));
         return;
       }
       const from = this.characterState.origin;
       this.$store.commit('character/removeCharacter', { index: this.currentCharacterStateIndex });
-      MessageNotify(this.langText('Warn/Remove character successfully', [from.name]),
+      MessageNotify(this.$lang('Warn/Remove character successfully', [from.name]),
         'ic-round-delete', null, {
           buttons: [{
-            text: this.globalLangText('global/recovery'),
+            text: this.$globalLang('global/recovery'),
             click: () => {
               this.$store.commit('character/createCharacter', from);
-              MessageNotify(this.langText('Warn/Recovery character successfully', [from.name]));
+              MessageNotify(this.$lang('Warn/Recovery character successfully', [from.name]));
             },
             removeMessageAfterClick: true
           }]
@@ -160,7 +159,7 @@ export default {
     copyCurrentCharacter() {
       const from = this.characterState.origin;
       this.$store.commit('character/createCharacter', from.copy());
-      MessageNotify(this.langText('Warn/Copy character successfully', [from.name]));
+      MessageNotify(this.$lang('Warn/Copy character successfully', [from.name]));
     },
     setOptionalBaseStat(name) {
       this.character.setOptinalBaseStat(name);

@@ -36,12 +36,12 @@
     </template>
     <div v-else>
       <cy-default-tips iconify-name="mdi-ghost">
-        <span v-html="langText('Warn/Current character is not exist')"></span>
+        <span v-html="$lang('Warn/Current character is not exist')"></span>
       </cy-default-tips>
       <div style="text-align: center;">
         <cy-button iconify-name="ic-round-add" type="border"
           @click="createCharacter">
-          {{ langText('append character') }}
+          {{ $lang('append character') }}
         </cy-button>
       </div>
     </div>
@@ -50,7 +50,6 @@
 <script>
 import Vuex from "vuex";
 
-import GetLang from "@Services/Language";
 import MessageNotify from "@Services/Notify";
 
 import init from "./init.js";
@@ -69,32 +68,33 @@ import createSkillState from "@views/SkillQuery/utils/createSkillState.js";
 import SkillBranchHandler from "./skill/utils/SkillBranchHandler.js";
 
 export default {
+  RegisterLang: 'Character Simulator',
   data() {
     return {
       contents: [{
         id: 'character',
         icon: 'bx-bxs-face',
-        text: this.langText('character')
+        text: this.$lang('character')
       }, {
         id: 'character-stats',
         icon: 'bx-bxs-user-detail',
-        text: this.langText('character stats')
+        text: this.$lang('character stats')
       }, {
         id: 'equipment-fields',
         icon: 'gg-shape-square',
-        text: this.langText('equipment')
+        text: this.$lang('equipment')
       }, {
         id: 'skills',
         icon: 'ant-design:build-outlined',
-        text: this.langText('skill')
+        text: this.$lang('skill')
       }, {
         id: 'food-build',
         icon: 'mdi-food-apple',
-        text: this.langText('food build')
+        text: this.$lang('food build')
       }, {
         id: 'save-load',
         icon: 'mdi-ghost',
-        text: this.langText('save-load')
+        text: this.$lang('save-load')
       }],
       currentContentIndex: 2,
 
@@ -106,8 +106,7 @@ export default {
   },
   provide() {
     return {
-      'langText': this.langText,
-      'globalLangText': this.globalLangText,
+      '$globalLang': this.$globalLang,
       'getValidLevelSkillState': this.getValidLevelSkillState,
       'handleCharacterStateDatas': this.handleCharacterStateDatas,
       'checkStatRestriction': this.checkStatRestriction
@@ -121,7 +120,7 @@ export default {
       this.autoLoad();
     else {
       this.autoLoad({ resetOption: { skillBuildsReplaced: false } });
-      MessageNotify(this.langText('skill management/tips: skill-builds data not be replaced'));
+      MessageNotify(this.$lang('skill management/tips: skill-builds data not be replaced'));
     }
     this.$store.commit('character/characterSimulatorInitFinished');
 
@@ -241,13 +240,13 @@ export default {
     autoSave() {
       if (!this.autoSaveDisable) {
         this.$store.dispatch('character/saveCharacterSimulator', { index: 0 });
-        MessageNotify(this.langText('save-load control/Auto save Successfully'), 'mdi-ghost', 'auto save successfully');
+        MessageNotify(this.$lang('save-load control/Auto save Successfully'), 'mdi-ghost', 'auto save successfully');
       }
     },
     autoLoad({ resetOption } = {}) {
       try {
         this.$store.dispatch('character/loadCharacterSimulator', { index: 0, resetOption });
-        MessageNotify(this.langText('save-load control/Auto load Successfully'), 'mdi-ghost', 'auto load successfully');
+        MessageNotify(this.$lang('save-load control/Auto load Successfully'), 'mdi-ghost', 'auto load successfully');
       } catch (e) {
         console.warn(e);
         console.warn('[Grimoire: character-simulator] Auto load faild. If you are entering this page for the first time, you can ignore this message.');
@@ -509,7 +508,7 @@ export default {
                 branch: bch,
                 skillState,
                 levelSkill: levelSkillState.levelSkill,
-                langText: this.langText,
+                $lang: this.$lang,
                 view: this,
                 findCharacterStatResult: this.findCharacterStatResult,
                 skillItemType: skillItemType
@@ -632,15 +631,9 @@ export default {
       this.currentContentIndex = idx;
     },
     createCharacter() {
-      const c = new Character(this.langText('character') + ' ' + (this.characterStates.length + 1).toString());
+      const c = new Character(this.$lang('character') + ' ' + (this.characterStates.length + 1).toString());
       // this.currentCharacterStateIndex = this.characterStates.length;
       this.$store.commit('character/createCharacter', c);
-    },
-    langText(s, vs) {
-      return GetLang('Character Simulator/' + s, vs);
-    },
-    globalLangText(s, vs) {
-      return GetLang(s, vs);
     }
   },
   watch: {

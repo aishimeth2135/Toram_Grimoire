@@ -1,6 +1,6 @@
 <template>
   <span class="detail-line-equipments">
-    <span class="prefix">{{ langText('show character stats/equipped with: prefix text') }}</span>
+    <span class="prefix">{{ $lang('equipped with: prefix text') }}</span>
     <span class="content">
       <template v-for="t in equipmentTexts">
         <cy-icon-text v-if="t.text == '+'" :key="'text-i-' + t.iid"
@@ -14,13 +14,12 @@
         </span>
       </template>
     </span>
-    <span class="suffix">{{ langText('show character stats/equipped with: suffix text') }}</span>
+    <span class="suffix">{{ $lang('equipped with: suffix text') }}</span>
   </span>
 </template>
 <script>
 export default {
-  props: ['equipmentTexts'],
-  inject: ['langText']
+  props: ['equipmentTexts']
 }
 </script>
 <style lang="less" scoped>

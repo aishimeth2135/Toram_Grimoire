@@ -2,7 +2,7 @@
   <div class="main--custom-equipment-editor">
     <cy-icon-text iconify-name="mdi-clipboard-edit-outline"
       text-size="small" text-color="purple">
-      {{ langText('custom equipment editor/equipment name') }}
+      {{ $lang('custom equipment editor/equipment name') }}
     </cy-icon-text>
     <div class="name content">
       <cy-title-input iconify-name="mdi-clipboard-edit-outline">
@@ -11,7 +11,7 @@
     </div>
     <cy-icon-text iconify-name="mdi-rhombus-outline"
       text-size="small" text-color="purple">
-      {{ langText('custom equipment editor/equipment stats') }}
+      {{ $lang('custom equipment editor/equipment stats') }}
     </cy-icon-text>
     <div class="stats content">
       <div v-for="stat in equipment.stats"
@@ -29,13 +29,13 @@
       </div>
       <cy-button iconify-name="ic-round-add" type="border"
         @click="toggleWindowVisible('selectStat', true)">
-        {{ langText('custom equipment editor/select stat: window title') }}
+        {{ $lang('custom equipment editor/select stat: window title') }}
       </cy-button>
     </div>
     <template v-if="hasOther">
       <cy-icon-text iconify-name="mdi-rhombus-outline"
         text-size="small" text-color="purple">
-        {{ langText('custom equipment editor/equipment other') }}
+        {{ $lang('custom equipment editor/equipment other') }}
       </cy-icon-text>
       <div class="other content">
         <cy-input-counter v-if="equipment.hasStability"
@@ -43,7 +43,7 @@
           @set-value="setStability($event)">
           <template v-slot:title>
             <cy-icon-text iconify-name="mdi-rhombus-outline">
-              {{ langText('stability') }}
+              {{ $lang('stability') }}
             </cy-icon-text>
           </template>
         </cy-input-counter>
@@ -52,12 +52,12 @@
     <cy-window :visible="selectStatWindowVisible" @close-window="toggleWindowVisible('selectStat', false)">
       <template v-slot:title>
         <cy-icon-text iconify-name="mdi-rhombus-outline">
-          {{ langText('custom equipment editor/select stat: window title') }}
+          {{ $lang('custom equipment editor/select stat: window title') }}
         </cy-icon-text>
       </template>
       <cy-title-input iconify-name="ic-outline-category" class="search-stat-input">
         <input type="text" v-model="searchText"
-          :placeholder="langText('custom equipment editor/select stat: search placeholder')" />
+          :placeholder="$lang('custom equipment editor/select stat: search placeholder')" />
       </cy-title-input>
       <template v-if="statsSearchResult.length != 0">
         <cy-list-item v-for="stat in statsSearchResult"
@@ -95,7 +95,7 @@
         </cy-list-item>
       </template>
       <cy-default-tips v-else icon-id="potum">
-        {{ langText('Warn/no result found') }}
+        {{ $lang('Warn/no result found') }}
       </cy-default-tips>
       <cy-bottom-content v-if="appendedStats.length != 0 || deletedStats.length != 0" class="bottom-content">
         <template #normal-content>
@@ -105,7 +105,7 @@
                 <div class="title">
                   <cy-icon-text iconify-name="mdi-rhombus-outline"
                     text-size="small" text-color="purple">
-                    {{ langText('custom equipment editor/select stat: current stats') }}
+                    {{ $lang('custom equipment editor/select stat: current stats') }}
                   </cy-icon-text>
                 </div>
                 <template v-if="equipmentStatsDatas.length != 0">
@@ -122,13 +122,13 @@
                 </template>
                 <cy-list-item v-else>
                   <cy-icon-text iconify-name="mdi-rhombus-outline">
-                    {{ globalLangText('global/none') }}
+                    {{ $globalLang('global/none') }}
                   </cy-icon-text>
                 </cy-list-item>
                 <div class="title">
                   <cy-icon-text iconify-name="mdi-rhombus-outline"
                     text-size="small" text-color="purple">
-                    {{ langText('custom equipment editor/select stat: appended stats') }}
+                    {{ $lang('custom equipment editor/select stat: appended stats') }}
                   </cy-icon-text>
                 </div>
                 <template v-if="appendedStats.length != 0">
@@ -146,13 +146,13 @@
                 </template>
                 <cy-list-item v-else>
                   <cy-icon-text iconify-name="mdi-rhombus-outline">
-                    {{ globalLangText('global/none') }}
+                    {{ $globalLang('global/none') }}
                   </cy-icon-text>
                 </cy-list-item>
                 <div class="title">
                   <cy-icon-text iconify-name="mdi-rhombus-outline"
                     text-size="small" text-color="purple">
-                    {{ langText('custom equipment editor/select stat: deleted stats') }}
+                    {{ $lang('custom equipment editor/select stat: deleted stats') }}
                   </cy-icon-text>
                 </div>
                 <template v-if="deletedStats.length != 0">
@@ -170,7 +170,7 @@
                 </template>
                 <cy-list-item v-else>
                   <cy-icon-text iconify-name="mdi-rhombus-outline">
-                    {{ globalLangText('global/none') }}
+                    {{ $globalLang('global/none') }}
                   </cy-icon-text>
                 </cy-list-item>
               </div>
@@ -181,11 +181,11 @@
             <template #right-content>
               <cy-button iconify-name="ic-round-done" type="border"
                 @click.stop="confirmEquipmentSelection">
-                {{ globalLangText('global/confirm') }}
+                {{ $globalLang('global/confirm') }}
               </cy-button>
               <cy-button iconify-name="ic-round-close" type="border"
                 @click.stop="cancelEquipmentSelection">
-                {{ globalLangText('global/cancel') }}
+                {{ $globalLang('global/cancel') }}
               </cy-button>
             </template>
           </cy-flex-layout>
@@ -201,7 +201,7 @@ import MessageNotify from "@Services/Notify";
 
 export default {
   props: ['equipment'],
-  inject: ['langText', 'globalLangText', 'isElementStat'],
+  inject: ['isElementStat'],
   data() {
     const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
     this.$store.state.datas.character.statList.forEach(stat => {
@@ -255,10 +255,10 @@ export default {
       const { deletedStats, appendedStats } = this;
       this.deletedStats = [];
       this.appendedStats = [];
-      MessageNotify(this.langText('Warn/create custom equipment editor: selected stats clear'),
+      MessageNotify(this.$lang('Warn/create custom equipment editor: selected stats clear'),
         'ic-round-done', null, {
           buttons: [{
-            text: this.globalLangText('global/recovery'),
+            text: this.$globalLang('global/recovery'),
             click: () => {
               this.deletedStats = deletedStats;
               this.appendedStats = appendedStats;
@@ -300,7 +300,7 @@ export default {
           if ( this.isElementStat(stat.origin.baseName) && (
             (this.equipment.elementStat && !find(this.deletedStats)) ||
             find(this.appendedStats) ) ) {
-            MessageNotify(this.langText('custom equipment editor/equipment can only have one element stat'),
+            MessageNotify(this.$lang('custom equipment editor/equipment can only have one element stat'),
               null, 'equipment can only have one element stat');
           } else {
             this.appendedStats.push(stat);

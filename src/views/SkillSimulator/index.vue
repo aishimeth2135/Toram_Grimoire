@@ -35,17 +35,17 @@
         <cy-transition type="fade">
           <div class="inner-menu" v-show="jumpSkillTreeVisible">
             <cy-default-tips v-if="noSkillTreeSelected" iconify-name="mdi:ghost">
-              {{ langText('no skill tree selected') }}
+              {{ $lang('no skill tree selected') }}
             </cy-default-tips>
             <template v-else>
               <div class="top" style="margin-bottom: 0.8rem;">
                 <cy-button iconify-name="ic:round-details" type="border"
                   @click="toggleJumpSkillTreeShowDetail">
-                  {{ langText(jumpSkillTreeShowDetail ?
+                  {{ $lang(jumpSkillTreeShowDetail ?
                       'skill tree: show normal' : 'skill tree: show details') }}
                 </cy-button>
               </div>
-              <span v-if="jumpSkillTreeShowDetail" class="title">{{ langText('main menu/star gem list') }}</span>
+              <span v-if="jumpSkillTreeShowDetail" class="title">{{ $lang('main menu/star gem list') }}</span>
               <div v-show="jumpSkillTreeShowDetail && currentStarGemList.length != 0" class="content">
                 <cy-button v-for="o in currentStarGemList" type="line" class="icon-small"
                   :key="'star-gem--' + o.skillTreeState.origin.id + '-' + o.skill.id"
@@ -60,7 +60,7 @@
               </div>
               <cy-default-tips v-if="jumpSkillTreeShowDetail && currentStarGemList.length == 0"
                 iconify-name="mdi:ghost">
-                {{ langText('no star gem set') }}
+                {{ $lang('no star gem set') }}
               </cy-default-tips>
               <template v-for="stc in visibleSkillTreeCategoryStates">
                 <div class="title" :key="stc.origin.id + '--title'">{{ stc.origin.name }}</div>
@@ -88,7 +88,7 @@
                 <cy-list-item>
                   <cy-icon-text iconify-name="ant-design:build-outlined">
                     {{ currentSkillRootState ?
-                      currentSkillRootState.name : langText('main menu/build name') }}
+                      currentSkillRootState.name : $lang('main menu/build name') }}
                   </cy-icon-text>
                 </cy-list-item>
               </template>
@@ -102,7 +102,7 @@
                 </cy-list-item>
                 <cy-list-item @click="createBuild">
                   <cy-icon-text iconify-name="ic:round-add-circle-outline" text-color="light-3">
-                    {{ langText('create build') }}
+                    {{ $lang('create build') }}
                   </cy-icon-text>
                 </cy-list-item>
               </template>
@@ -112,19 +112,19 @@
             </cy-title-input>
             <div class="buttons-content">
               <cy-button type="line" @click="copyCurrentBuild" iconify-name="mdi:content-copy">
-                {{ getLangText('global/copy') }}
+                {{ $globalLang('global/copy') }}
               </cy-button>
               <cy-button type="line" @click="deleteCurrentBuild" iconify-name="ic:round-delete-outline">
-                {{ getLangText('global/delete') }}
+                {{ $globalLang('global/delete') }}
               </cy-button>
               <cy-button type="line" @click="exportCurrentBuildText" iconify-name="ic-round-text-fields">
-                {{ langText('export text') }}
+                {{ $lang('export text') }}
               </cy-button>
               <cy-button type="line" @click="exportCurrentBuildImage" iconify-name="mdi:content-copy">
-                {{ langText('export image') }}
+                {{ $lang('export image') }}
               </cy-button>
             </div>
-            <div class="content-title">{{ langText('left menu/save load') }}</div>
+            <div class="content-title">{{ $lang('left menu/save load') }}</div>
             <div class="buttons-content">
               <save-load-data-system v-bind="SaveLoadDataSystemOptions" />
             </div>
@@ -136,7 +136,7 @@
         <div class="skill-point-information">
           <div class="column">
             <cy-icon-text iconify-name="gg-shape-rhombus" text-size="small">
-              {{ langText('skill level') }}
+              {{ $lang('skill level') }}
               <template v-slot:value>
                 {{ skillPointCostSum }}
               </template>
@@ -144,7 +144,7 @@
           </div>
           <div class="column">
             <cy-icon-text iconify-name="mdi:judaism" text-size="small" display="block">
-              {{ langText('star gem level') }}
+              {{ $lang('star gem level') }}
               <template v-slot:value>
                 {{ starGemSkillPointSum }}
               </template>
@@ -187,19 +187,19 @@
         <template #title>
           <cy-flex-layout>
             <cy-icon-text iconify-name="uil:image-download">
-              {{ langText('main menu/preview exported image') }}
+              {{ $lang('main menu/preview exported image') }}
             </cy-icon-text>
             <template #right-content>
               <cy-button iconify-name="uil:image-download" type="border"
                 class="single-line" @click="downloadExportedImage">
-                {{ getLangText('global/download') }}
+                {{ $globalLang('global/download') }}
               </cy-button>
             </template>
           </cy-flex-layout>
         </template>
         <div style="max-width: 28rem; border: 1px solid var(--primary-light); padding: 0.8rem; border-radius: 0.3rem; margin-bottom: 1rem">
           <cy-icon-text iconify-name="ic-outline-info" text-size="small" text-color="light-3">
-            {{ langText('main menu/preview exported image: tips 1') }}
+            {{ $lang('main menu/preview exported image: tips 1') }}
           </cy-icon-text>
         </div>
         <div>
@@ -212,12 +212,12 @@
         <template #title>
           <cy-flex-layout>
             <cy-icon-text iconify-name="mdi:content-copy">
-              {{ langText('main menu/preview exported text') }}
+              {{ $lang('main menu/preview exported text') }}
             </cy-icon-text>
             <template #right-content>
               <cy-button iconify-name="mdi:content-copy" type="border"
                 class="single-line" @click="copyExportedText">
-                {{ getLangText('global/copy') }}
+                {{ $globalLang('global/copy') }}
               </cy-button>
             </template>
           </cy-flex-layout>
@@ -229,13 +229,12 @@
 </template>
 <script>
 import CY from "@Utils/Cyteria";
-import GetLang from "@Services/Language"
 import { MessageNotify, LoadingNotify } from '@Services/Notify';
 
 import vue_skillRoot from "./skill-root.vue";
 import vue_SaveLoadDataSystem from "@vue-components/SaveLoadDataSystem/main.vue";
 
-import Vuex from 'vuex'
+import Vuex from 'vuex';
 
 import { getSkillElementId } from "./utils";
 import { computeDrawSkillTreeData, GetDrawSetting } from "@lib/Skill/utils/DrawSkillTree";
@@ -243,13 +242,14 @@ import { computeDrawSkillTreeData, GetDrawSetting } from "@lib/Skill/utils/DrawS
 import init from "./init.js";
 
 export default {
+  RegisterLang: 'Skill Simulator',
   data() {
     // const r = this.skillRoot;
 
     const createSetButtonState = (type, icon_ids, values, current_value) => {
       return {
         type: type,
-        texts: values.map(a => this.langText('main menu/' + type + ': ' + a)),
+        texts: values.map(a => this.$lang('main menu/' + type + ': ' + a)),
         icons: icon_ids,
         values: values,
         currentIndex: values.indexOf(current_value)
@@ -358,7 +358,7 @@ export default {
   },
   updated() {
     if (this.skillRootStates.length == 0) {
-      MessageNotify(this.langText('tips/The Number of Skill Builds is 0 due to an unknown cause detected'));
+      MessageNotify(this.$lang('tips/The Number of Skill Builds is 0 due to an unknown cause detected'));
       this.createBuild();
     }
   },
@@ -419,16 +419,16 @@ export default {
     beforeExportConfirm() {
       const t = this.visibleSkillTreeCategoryStates.length > 0;
       if (!t)
-        MessageNotify(this.langText('tips/must have at least one skill tree to export'), 'mdi-ghost', 'must have at least one skill tree to export');
+        MessageNotify(this.$lang('tips/must have at least one skill tree to export'), 'mdi-ghost', 'must have at least one skill tree to export');
       return t;
     },
     copyExportedText() {
       if (CY.copyToClipboard(this.$refs.previewExportedTextContent.innerText))
-        MessageNotify(GetLang('global/copy to clipboard finished'));
+        MessageNotify(this.$globalLang('global/copy to clipboard finished'));
     },
     downloadExportedImage() {
       if (this.currentExportedImage === null) {
-        MessageNotify(this.langText('tips/download exported image: error'));
+        MessageNotify(this.$lang('tips/download exported image: error'));
         return;
       }
       const a = document.createElement('a');
@@ -460,20 +460,20 @@ export default {
         });
       });
       if (starGems.length !== 0) {
-        res = this.langText('main menu/star gem list') + '<br />' +
+        res = this.$lang('main menu/star gem list') + '<br />' +
           starGems.reduce((c, p) => c + '｜' + p.base.name + ' Lv.' + p.starGemLevel() + '<br />', '') +
           '<br />' + res;
       }
 
-      let top = '｜' + this.langText('exported image inner text/skill point cost sum', [this.
+      let top = '｜' + this.$lang('exported image inner text/skill point cost sum', [this.
         skillPointCostSum
       ]) + '<br />';
-      top += '｜' + this.langText('exported image inner text/star gem skill point sum', [this.starGemSkillPointSum]) + '<br />';
+      top += '｜' + this.$lang('exported image inner text/star gem skill point sum', [this.starGemSkillPointSum]) + '<br />';
       top += '<br />';
 
       res = top + res;
 
-      res += this.langText('export watermark');
+      res += this.$lang('export watermark');
 
       this.currentExportedText = res;
       this.previewExportedTextWindowVisible = true;
@@ -481,7 +481,7 @@ export default {
     },
     async exportCurrentBuildImage() {
       if (!this.beforeExportConfirm()) return;
-      const loadingNotifyItem = await LoadingNotify(this.langText('tips/export build image: loading message'));
+      const loadingNotifyItem = await LoadingNotify(this.$lang('tips/export build image: loading message'));
       try {
         const drawSetting = GetDrawSetting();
 
@@ -712,8 +712,8 @@ export default {
 
         // top info
         {
-          const spcs = this.langText('exported image inner text/skill point cost sum', [this.skillPointCostSum]),
-            sgsps = this.langText('exported image inner text/star gem skill point sum', [this.starGemSkillPointSum]);
+          const spcs = this.$lang('exported image inner text/skill point cost sum', [this.skillPointCostSum]),
+            sgsps = this.$lang('exported image inner text/star gem skill point sum', [this.starGemSkillPointSum]);
           const topInfo_contanier_w = Math.max(fctx.measureText(spcs).width, fctx.measureText(sgsps).width) + topInfo_icon_h + topInfo_icon_mr;
           const topInfo_icon_left = (final_w - topInfo_contanier_w) / 2,
             topInfo_icon_top = (topInfo_h_sum - topInfo_icon_h) / 2,
@@ -731,7 +731,7 @@ export default {
         // star gem list
         if (starGemDatas.length > 0) {
           fctx.fillRect(title_preRect_pdl, cur_y + title_preRect_pdt, title_preRect_w, title_preRect_h);
-          fctx.fillText(this.langText('main menu/star gem list'),
+          fctx.fillText(this.$lang('main menu/star gem list'),
             title_preRect_pdl + title_preRect_w + title_preRect_pdr, cur_y + title_text_middle_y);
           cur_y += title_preRect_pdt + title_preRect_h + starGemScope_topBottomPd;
 
@@ -779,7 +779,7 @@ export default {
         fctx.lineTo(final_w, cur_y);
         fctx.stroke();
         fctx.textAlign = 'right';
-        fctx.fillText(this.langText('export watermark'), final_w - 10, cur_y + 20);
+        fctx.fillText(this.$lang('export watermark'), final_w - 10, cur_y + 20);
 
         // finale
         this.currentExportedImage = final_canvas.toDataURL('image/png', 1);
@@ -787,7 +787,7 @@ export default {
       } catch (e) {
         console.log(e);
         this.currentExportedImage = null;
-        MessageNotify(this.langText('tips/export build image: error'));
+        MessageNotify(this.$lang('tips/export build image: error'));
       } finally {
         this.buildInformationVisible = false;
         loadingNotifyItem.finished();
@@ -795,19 +795,19 @@ export default {
     },
     deleteCurrentBuild() {
       if (this.skillRootStates.length == 1) {
-        MessageNotify(this.langText('tips/number of build cannot be less than 1'), 'ic:round-remove-circle-outline', 'number of build cannot be less than 1');
+        MessageNotify(this.$lang('tips/number of build cannot be less than 1'), 'ic:round-remove-circle-outline', 'number of build cannot be less than 1');
         return;
       }
       const cur_index = this.currentSkillRootStateIndex;
       const cur_build = this.currentSkillRootState;
       this.$store.commit('character/removeSkillBuild', { index: cur_index });
 
-      MessageNotify(this.langText('tips/delete build message', [cur_build.name]), 'ic-round-done', null, {
+      MessageNotify(this.$lang('tips/delete build message', [cur_build.name]), 'ic-round-done', null, {
         buttons: [{
-          text: this.getLangText('global/recovery'),
+          text: this.$globalLang('global/recovery'),
           click: () => {
             this.$store.commit('character/createSkillBuild', { skillBuild: cur_build });
-            MessageNotify(this.langText('tips/recovery delete build message', [cur_build.name]), 'ic-round-done');
+            MessageNotify(this.$lang('tips/recovery delete build message', [cur_build.name]), 'ic-round-done');
           },
           removeMessageAfterClick: true
         }]
@@ -836,14 +836,14 @@ export default {
       });
 
       this.buildInformationVisible = false;
-      MessageNotify(this.langText('tips/copy build message', [cur_build.name, new_build.name], 'ic-round-done'));
+      MessageNotify(this.$lang('tips/copy build message', [cur_build.name, new_build.name], 'ic-round-done'));
     },
     selectCurrentSkillRootState(i) {
       this.$store.commit('character/setCurrentSkillBuild', { index: i });
     },
     createBuild() {
       this.$store.commit('character/createSkillBuild', {
-        name: this.langText('build') + ' ' + (this.skillRootStates.length + 1)
+        name: this.$lang('build') + ' ' + (this.skillRootStates.length + 1)
       });
 
       return this.currentSkillRootState;
@@ -907,12 +907,6 @@ export default {
         behavior: "smooth"
       });
       this.jumpSkillTreeVisible = false;
-    },
-    langText(s, vs) {
-      return GetLang('Skill Simulator/' + s, vs);
-    },
-    getLangText(s, vs) {
-      return GetLang(s, vs);
     }
   },
   components: {

@@ -2,7 +2,7 @@
   <div class="equipment-field">
     <cy-flex-layout class="top">
       <cy-icon-text iconify-name="gg-shape-square" text-size="small" text-color="purple">
-        {{ langText('character field names/' + field.type.description) }}
+        {{ $lang('character field names/' + field.type.description) }}
       </cy-icon-text>
       <template v-slot:right-content>
         <cy-button v-if="!field.isEmpty()"
@@ -15,7 +15,7 @@
     <equipment-info v-if="!field.isEmpty()" :equipment="field.equipment"
       :stats-disable="field.statsDisable()" />
     <cy-default-tips v-else icon-id="potum">
-      {{ langText('Warn/no equipment selected') }}
+      {{ $lang('Warn/no equipment selected') }}
     </cy-default-tips>
   </div>
 </template>
@@ -24,7 +24,6 @@ import vue_equipmentInfo from "./equipment-info.vue";
 
 export default {
   props: ['field'],
-  inject: ['langText'],
   components: {
     'equipment-info': vue_equipmentInfo
   }

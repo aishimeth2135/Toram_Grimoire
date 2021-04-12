@@ -3,12 +3,12 @@
     vertical-position="top">
     <template v-slot:title>
       <cy-icon-text iconify-name="bx-bx-search-alt">
-        {{ localLangText('window title: search') }}
+        {{ local$lang('window title: search') }}
       </cy-icon-text>
     </template>
     <template v-slot:default>
       <cy-title-input iconify-name="ic-outline-category" class="search-input">
-        <input type="text" ref="searchText" :placeholder="localLangText('search equipment placeholder')"
+        <input type="text" ref="searchText" :placeholder="local$lang('search equipment placeholder')"
           @keyup.enter="updateSearchResult" />
         <cy-button iconify-name="bx-bx-search-alt-2" type="border"
           @click="updateSearchResult" />
@@ -23,11 +23,11 @@
           </template>
         </cy-list-item>
         <div v-if="searchResult.length >= searchResultMaximum" class="limit-reached-limit">
-          {{ localLangText('search equipment result: limit reached') }}
+          {{ local$lang('search equipment result: limit reached') }}
         </div>
       </div>
       <cy-default-tips v-else icon-id="potum">
-        {{ langText('Warn/no result found') }}
+        {{ $lang('Warn/no result found') }}
       </cy-default-tips>
       <cy-bottom-content class="selected" v-if="selected.length != 0">
         <template #normal-content>
@@ -50,7 +50,7 @@
             <span class="number-container">
               <span>{{ selected.length }}</span>
             </span>
-            <span>{{ localLangText('search equipment result: selected title') }}</span>
+            <span>{{ local$lang('search equipment result: selected title') }}</span>
             <template #right-content>
               <cy-icon-text :iconify-name="'ic-round-keyboard-arrow-' + (selectedDetailVisible ? 'down' : 'up')" />
             </template>
@@ -60,12 +60,12 @@
               <cy-button iconify-name="ic-round-done" type="border"
                 class="inline"
                 @click.stop="submitSelected">
-                {{ globalLangText('global/confirm') }}
+                {{ $globalLang('global/confirm') }}
               </cy-button>
               <cy-button iconify-name="ic-round-close" type="border"
                 class="inline after-button"
                 @click.stop="clearSelected">
-                {{ globalLangText('global/clear') }}
+                {{ $globalLang('global/clear') }}
               </cy-button>
             </template>
           </cy-flex-layout>
@@ -79,7 +79,7 @@ import MessageNotify from "@Services/Notify";
 
 export default {
   props: ['visible'],
-  inject: ['langText', 'globalLangText', 'convertEquipmentData', 'getShowEquipmentData', 'appendEquipments'],
+  inject: ['convertEquipmentData', 'getShowEquipmentData', 'appendEquipments'],
   data() {
     return {
       searchResult: [],
@@ -91,16 +91,16 @@ export default {
   methods: {
     submitSelected() {
       this.appendEquipments(this.selected.map(p => p.origin.copy()));
-      MessageNotify(this.localLangText('append equipments successfully', [this.selected.length]), 'ic-round-done');
+      MessageNotify(this.local$lang('append equipments successfully', [this.selected.length]), 'ic-round-done');
       this.selected = [];
       this.$emit('close');
     },
     clearSelected() {
       const store = this.selected;
       this.selected = [];
-      MessageNotify(this.localLangText('selected equipments cleared'), 'ic-round-done', null, {
+      MessageNotify(this.local$lang('selected equipments cleared'), 'ic-round-done', null, {
         buttons: [{
-          text: this.globalLangText('global/recovery'),
+          text: this.$globalLang('global/recovery'),
           click: () => {
             this.selected = store;
           },
@@ -126,7 +126,7 @@ export default {
       const text = this.$refs.searchText.value;
 
       if (text == '') {
-        MessageNotify(this.localLangText('search text is empty'));
+        MessageNotify(this.local$lang('search text is empty'));
         return;
       }
 
@@ -141,7 +141,7 @@ export default {
       this.searchResult = t.map((item, i) => {
         const o = this.convertEquipmentData(item);
 
-        const obtain = this.localLangText('search equipment result: obtain/' +
+        const obtain = this.local$lang('search equipment result: obtain/' +
           (item.obtains.length > 0 ? item.obtains[0].type : 'unknow'));
 
         return {
@@ -151,8 +151,8 @@ export default {
         };
       });
     },
-    localLangText(v, vs) {
-      return this.langText('append equipments/' + v, vs);
+    local$lang(v, vs) {
+      return this.$lang('append equipments/' + v, vs);
     }
   }
 }

@@ -9,19 +9,19 @@
             :selected="i == modeState.currentModeIndex"
             @click="selectMode(i)"
             type="border">
-            {{ langText('search mode/' + mode.id) }}
+            {{ $lang('search mode/' + mode.id) }}
           </cy-button>
         </legend>
         <div class="mode--normal" v-show="currentMode == 'normal'">
           <div class="top-title">
             <cy-icon-text iconify-name="ic-outline-search" class="text-small">
-              {{ langText('search title') }}
+              {{ $lang('search title') }}
             </cy-icon-text>
           </div>
           <cy-title-input iconify-name="ic-outline-category" class="search-input">
             <input type="text"
               ref="normal-search-input"
-              :placeholder="langText('search placeholder')"
+              :placeholder="$lang('search placeholder')"
               @input="updateSearchResult()" />
           </cy-title-input>
         </div>
@@ -29,7 +29,7 @@
           <cy-button iconify-name="mdi-rhombus-outline" type="border"
             class="select-stat"
             @click="toggleSelectStatWindowVisible(true)">
-            {{ currentStat ? currentStat.text : langText('select stat: title') }}
+            {{ currentStat ? currentStat.text : $lang('select stat: title') }}
           </cy-button>
         </div>
       </fieldset>
@@ -40,7 +40,7 @@
             <cy-button :key="category.id + '-btn'"
               iconify-name="bx-bx-cube-alt" type="drop-down"
               :menu-default-visible="true">
-              {{ langText('category title')[category.id] }}
+              {{ $lang('category title')[category.id] }}
               <template v-slot:menu>
                 <cy-list-item v-for="cs in category.crystalStates" :key="cs.origin.id"
                   @click="selectCrystal(cs.origin)">
@@ -55,7 +55,7 @@
           </template>
         </template>
         <cy-default-tips v-else iconify-name="bx-bx-message-rounded-x">
-          {{ langText('no result tips') }}
+          {{ $lang('no result tips') }}
         </cy-default-tips>
       </div>
       <div class="detail-container" v-if="currentCrystal">
@@ -67,7 +67,7 @@
           </div>
           <cy-flex-layout class="enhancer" v-if="currentCrystal.origin.enhancer">
             <cy-icon-text iconify-name="bx-bx-cube-alt" text-size="small">
-              {{ langText('enhancer title') }}
+              {{ $lang('enhancer title') }}
               <span class="enhancer-value">
                 {{ currentCrystal.origin.enhancer }}
               </span>
@@ -87,14 +87,14 @@
         @close-window="toggleSelectStatWindowVisible(false)">
         <template v-slot:title>
           <cy-icon-text iconify-name="mdi-rhombus-outline">
-            {{ langText('select stat: window title') }}
+            {{ $lang('select stat: window title') }}
           </cy-icon-text>
         </template>
         <template v-slot:default>
           <cy-title-input iconify-name="ic-outline-category" class="search-stat-input">
             <input type="text"
               ref="stat-search-input"
-              :placeholder="langText('select stat: search placeholder')"
+              :placeholder="$lang('select stat: search placeholder')"
               @input="updateStatSearchResult()" />
           </cy-title-input>
           <template v-if="modeState['mode-stats'].statsSearchResult.length != 0">
@@ -108,7 +108,7 @@
             </cy-list-item>
           </template>
           <cy-default-tips v-else iconify-name="bx-bx-message-rounded-x">
-            {{ langText('no result tips') }}
+            {{ $lang('no result tips') }}
           </cy-default-tips>
         </template>
       </cy-window>
@@ -116,8 +116,6 @@
   </article>
 </template>
 <script>
-import GetLang from "@Services/Language";
-
 import init from "./init.js";
 
 import { StatBase } from "@lib/Character/Stat";
@@ -126,6 +124,7 @@ import { EquipmentCrystal } from "@lib/Character/CharacterEquipment";
 import vue_showStat from "./show-stat.vue";
 
 export default {
+  RegisterLang: 'Crystal Query',
   data() {
     const crystals = this.$store.state.datas.items.crystals;
     const crystalCategorys = new Array(5).fill().map((_, i) => {
@@ -169,11 +168,6 @@ export default {
         }
       }
     };
-  },
-  provide() {
-    return {
-      'langText': this.langText
-    }
   },
   mounted() {
     this.updateSearchResult();
@@ -266,9 +260,6 @@ export default {
     },
     selectCrystal(crystal) {
       this.currentCrystal = crystal;
-    },
-    langText(v, vs) {
-      return GetLang('Crystal Query/' + v, vs);
     }
   },
   beforeCreate() {

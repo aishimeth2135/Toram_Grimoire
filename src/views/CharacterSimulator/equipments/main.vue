@@ -22,7 +22,7 @@
         @close-window="toggleWindowVisible('customEquipmentEditor', false)">
         <template #title>
           <cy-icon-text iconify-name="ic-round-edit">
-            {{ langText('custom equipment editor/window title') }}
+            {{ $lang('custom equipment editor/window title') }}
           </cy-icon-text>
         </template>
         <custom-equipment-editor v-if="currentCustomEquipment"
@@ -33,7 +33,7 @@
               <template #right-content>
                 <cy-button type="border" iconify-name="ic-round-done"
                   @click="toggleWindowVisible('customEquipmentEditor', false)">
-                  {{ globalLangText('global/close') }}
+                  {{ $globalLang('global/close') }}
                 </cy-button>
               </template>
             </cy-flex-layout>
@@ -62,7 +62,6 @@ import { CharacterEquipment, MainWeapon, BodyArmor, AdditionalGear, SpecialGear,
 
 export default {
   props: ['characterState'],
-  inject: ['langText', 'globalLangText'],
   provide() {
     return {
       'convertEquipmentData': this.convertEquipmentData,
@@ -129,19 +128,19 @@ export default {
     getShowEquipmentData(o) {
       let category, icon;
       if (o instanceof BodyArmor) {
-        category = this.langText('field type text/' + o.type.description);
+        category = this.$lang('field type text/' + o.type.description);
         icon = 'mdi-tshirt-crew';
       } else if (o instanceof AdditionalGear) {
-        category = this.langText('character field names/' + EquipmentField.TYPE_ADDITIONAL.description);
+        category = this.$lang('character field names/' + EquipmentField.TYPE_ADDITIONAL.description);
         icon = 'cib-redhat';
       } else if (o instanceof SpecialGear) {
-        category = this.langText('character field names/' + EquipmentField.TYPE_SPECIAL.description);
+        category = this.$lang('character field names/' + EquipmentField.TYPE_SPECIAL.description);
         icon = 'fa-solid:ring';
       } else if (o instanceof Avatar) {
-        category = this.langText('character field names/' + EquipmentField.TYPE_AVATAR.description);
+        category = this.$lang('character field names/' + EquipmentField.TYPE_AVATAR.description);
         icon = 'eva-star-outline';
       } else {
-        category = this.langText('field type text/' + o.type.description);
+        category = this.$lang('field type text/' + o.type.description);
         icon = o instanceof MainWeapon ? 'mdi-sword' : 'mdi-shield';
       }
 

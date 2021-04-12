@@ -1,4 +1,2 @@
-import { StatBase, Stat } from "./StatBase.js";
-import RestrictionStat from "./RestrictionStat.js";
-
-export { StatBase, Stat, RestrictionStat };
+export { StatBase, Stat } from "./StatBase.js";
+export { default as RestrictionStat } from "./RestrictionStat.js";

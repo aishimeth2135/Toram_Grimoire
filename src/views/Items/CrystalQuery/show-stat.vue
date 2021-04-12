@@ -13,10 +13,9 @@
 <script>
 export default {
   props: ['stat', 'negativeValue', 'type'],
-  inject: ['langText'],
   computed: {
     restrictionTexts() {
-      return this.stat.showData().map(p => this.langText('stat restriction text/' + p));
+      return this.stat.showData().map(p => this.$lang('stat restriction text/' + p));
     }
   }
 };

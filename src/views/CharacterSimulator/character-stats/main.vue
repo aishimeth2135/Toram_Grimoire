@@ -32,7 +32,7 @@
           <template #right-content v-if="detail.visible">
             <cy-icon-text iconify-name="ic-round-close" text-color="light-3" text-size="small"
               style="margin-left: 1rem;">
-              {{ localLangText('Click anywhere to close') }}
+              {{ $lang('Click anywhere to close') }}
             </cy-icon-text>
           </template>
         </cy-flex-layout>
@@ -45,7 +45,7 @@
         <stat-detail-equipments :equipment-texts="showStatDetailDatas.conditionalBase.title.equipments" />
       </cy-icon-text>
       <div v-for="data in showStatDetailDatas.datas" :key="data.iid" class="stat-detail-scope">
-        <cy-icon-text v-if="typeof data.title != 'object'"
+        <cy-icon-text v-if="typeof data.title !== 'object'"
           iconify-name="gg-shape-rhombus" class="title">
           {{ data.title }}
         </cy-icon-text>
@@ -82,8 +82,11 @@ import { StatBase } from "@lib/Character/Stat";
 import vue_statDetailEquipments from "./stat-detail-equipments.vue";
 
 export default {
+  RegisterLang: {
+    root: 'show character stats',
+    inherit: true
+  },
   props: ['characterState', 'showCharacterStatDatas'],
-  inject: ['langText'],
   data() {
     return {
       detail: {
@@ -128,7 +131,7 @@ export default {
             type = item.type;
           const v = stat.statValueParts[p];
           let title = p != 'base' ? base.show(type, v) : {
-            text: this.localLangText('base value'),
+            text: this.$lang('base value'),
             value: vFix(stat.statValueParts['base'])
           };
           if (p == 'multiplier')
@@ -143,7 +146,7 @@ export default {
             let hasInit = false;
             if (initValue != 0) {
               lines.push({
-                title: this.localLangText('init value'),
+                title: this.$lang('init value'),
                 value: (p.value > 0 && !isBase ? '+' : '') +vFix(initValue),
                 iid: 0
               });
@@ -210,14 +213,14 @@ export default {
 
       let str = conditionObj.conditional;
       if (str == '#') {
-        str = captions.length == 0 ? [this.localLangText('additional value')] : [];
+        str = captions.length == 0 ? [this.$lang('additional value')] : [];
       } else {
         str = str.replace(/\s+/g, '')
           .replace(/(?:&&|\|\|)#[a-zA-Z0-9._]+/g, '')
           .replace(/#[a-zA-Z0-9._]+(?:&&|\|\|)/g, '')
           .replace(/@([a-zA-Z0-9._]+)/g, (m, m1) => {
             m1 = m1.replace(/\./g, '/');
-            return this.localLangText('text of conditional values/' + m1) + ',';
+            return this.$lang('text of conditional values/' + m1) + ',';
           })
           .replace(/&&|\|\|/g, m => m == '&&' ? '+,' : '/,')
           .replace(/\(|\)/g, m => m + ',')
@@ -249,9 +252,6 @@ export default {
     setStatDetail(e, stat) {
       this.detail.positionElement = e.target.closest('.stat-scope');
       this.detail.currentStat = stat;
-    },
-    localLangText(v, vs) {
-      return this.langText('show character stats/' + v, vs);
     }
   },
   components: {

@@ -2,7 +2,7 @@
   <cy-window :visible="visible" @close-window="closeWindow">
     <template #title>
       <cy-icon-text iconify-name="gg-shape-square">
-        {{ langText('create custom equipment/window title') }}
+        {{ $lang('create custom equipment/window title') }}
       </cy-icon-text>
     </template>
     <div class="select-type">
@@ -15,7 +15,7 @@
       <custom-equipment-editor :equipment="currentEquipment" />
     </div>
     <cy-default-tips v-else icon-id="potum">
-      {{ langText('Warn/create custom equipment: no equipment type selected') }}
+      {{ $lang('Warn/create custom equipment: no equipment type selected') }}
     </cy-default-tips>
     <cy-bottom-content v-if="currentEquipment">
       <template #normal-content>
@@ -23,7 +23,7 @@
           <template #right-content>
             <cy-button type="border" iconify-name="ic-round-done"
               @click="createCustomEquipment">
-              {{ globalLangText('global/create') }}
+              {{ $globalLang('global/create') }}
             </cy-button>
           </template>
         </cy-flex-layout>
@@ -32,21 +32,21 @@
     <cy-window :visible="selectTypeWindowVisible" @close-window="toggleWindowVisible('selectType', false)">
       <template v-slot:title>
         <cy-icon-text iconify-name="gg-shape-square">
-          {{ langText('create custom equipment/select equipment type') }}
+          {{ $lang('create custom equipment/select equipment type') }}
         </cy-icon-text>
       </template>
       <div class="equipment-type">
         <cy-button v-for="category in equipmentTypeCategorys"
           type="drop-down" :iconify-name="category.icon"
           :key="category.id" :menu-default-visible="true">
-          {{ langText('equipment type category/' + category.id) }}
+          {{ $lang('equipment type category/' + category.id) }}
           <template v-slot:menu>
             <template v-if="category.list != null">
               <cy-list-item v-for="item in category.list" :key="item"
                 :selected="selectedEquipmentType && selectedEquipmentType.type == item"
                 @click="selectEquipmentType(category, item)">
                 <cy-icon-text iconify-name="gg-shape-square">
-                  {{ langText('field type text/' + item.description) }}
+                  {{ $lang('field type text/' + item.description) }}
                 </cy-icon-text>
               </cy-list-item>
             </template>
@@ -54,7 +54,7 @@
               :selected="selectedEquipmentType && selectedEquipmentType.category == category"
               @click="selectEquipmentType(category, null)">
               <cy-icon-text iconify-name="gg-shape-square">
-                {{ langText('equipment type category/' + category.id) }}
+                {{ $lang('equipment type category/' + category.id) }}
               </cy-icon-text>
             </cy-list-item>
           </template>
@@ -66,7 +66,7 @@
             <template v-slot:right-content>
               <cy-button type="border" iconify-name="ic-round-done"
                 @click="confirmSelectedEquipmentType">
-                {{ globalLangText('global/confirm') }}
+                {{ $globalLang('global/confirm') }}
               </cy-button>
             </template>
           </cy-flex-layout>
@@ -82,7 +82,7 @@ import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear
 
 export default {
   props: ['visible'],
-  inject: ['langText', 'globalLangText', 'toggleMainWindowVisible', 'isElementStat'],
+  inject: ['toggleMainWindowVisible', 'isElementStat'],
   data() {
     return {
       equipmentTypeCategorys: [{
@@ -144,10 +144,10 @@ export default {
         const idx = [BodyArmor, AdditionalGear, SpecialGear, Avatar]
           .findIndex(p => eq instanceof p);
         return idx != -1 ?
-          this.langText('character field names/' + ids[idx]) :
-          this.langText('field type text/' + eq.type.description);
+          this.$lang('character field names/' + ids[idx]) :
+          this.$lang('field type text/' + eq.type.description);
       }
-      return this.langText('create custom equipment/select equipment type');
+      return this.$lang('create custom equipment/select equipment type');
     },
     createCustomEquipment() {
       this.$emit('append-equipments', [this.currentEquipment]);
@@ -173,7 +173,7 @@ export default {
       eq.setCustom(true);
 
       if (!name) {
-        eq.name = this.langText('custom equipment: default name prefix') + this.getEquipmentTypeText(eq);
+        eq.name = this.$lang('custom equipment: default name prefix') + this.getEquipmentTypeText(eq);
       }
       if (from) {
         eq.stats = !eq.hasElement ?
