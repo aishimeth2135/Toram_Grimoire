@@ -1,3 +1,5 @@
+import { isNumberString } from "@Utils/string";
+
 class DataContainer {
   constructor(o, branch, key) {
     this.branch = branch;
@@ -17,7 +19,7 @@ class DataContainer {
     this._result = _handle(this._result);
   }
   isNumberValue() {
-    return /^-?\d+(?:\.\d+)?$/.test(this._value);
+    return isNumberString(this._value);
   }
   value() {
     return this._value;

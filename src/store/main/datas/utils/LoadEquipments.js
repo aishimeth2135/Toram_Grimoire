@@ -45,6 +45,8 @@ export default function(root, c) {
         case 'recipe':
           cur = cur_equip.setRecipe();
           break;
+        case 'extra':
+          cur = cur_equip.setExtra();
       }
       switch (cur_attrcat) {
         case 'stats':
@@ -60,6 +62,7 @@ export default function(root, c) {
           }
           break;
         case 'obtain':
+        case 'extra':
           cur[p[ATTRIBUTE_NAME]] = p[ATTRIBUTE_VALUES[0]];
           break;
         case 'recipe':

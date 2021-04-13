@@ -10,6 +10,9 @@ class Item {
     this.statRestrictions = [];
 
     this.obtains = [];
+
+    this.recipe = null;
+    this.extra = null;
   }
   appendObtain() {
     const t = {};
@@ -33,6 +36,10 @@ class Item {
     this.stats.push(stat);
     this.statRestrictions.push(restriction);
     return stat;
+  }
+  setExtra() {
+    this.extra = {};
+    return this.extra;
   }
 }
 

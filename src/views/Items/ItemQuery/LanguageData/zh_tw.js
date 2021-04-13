@@ -47,12 +47,13 @@ export default function() {
         },
         'restriction': {
           'event': '活動',
-          '1h_sword': '單手劍',
-          '2h_sword': '雙手劍',
+          'one-hand-sword': '單手劍',
+          'two-hand-sword': '雙手劍',
+          'dual-sword': '雙劍',
           'bow': '弓',
           'bowgun': '弩',
           'staff': '法杖',
-          'magic_device': '魔導具',
+          'magic-device': '魔導具',
           'knuckle': '拳套',
           'halberd': '旋風槍',
           'katana': '拔刀劍',
@@ -61,9 +62,9 @@ export default function() {
             'shield': '盾牌',
             'dagger': '小刀',
             'katana': '副手拔刀劍',
-            'magic_device': '副手魔導具',
+            'magic-device': '副手魔導具',
             'knuckle': '副手拳套',
-            '1h_sword': '雙劍'
+            'one-hand-sword': '雙劍'
           },
           'body': {
             'dodge': '輕化防具',

@@ -76,7 +76,8 @@
             </div>
           </cy-transition>
           <cy-transition type="fade">
-            <div class="mode-normal-content" v-if="modes.normal.optionsVisible">
+            <div v-if="currentMode === 'normal' && modes.normal.optionsVisible"
+              class="mode-normal-content">
               <cy-icon-text iconify-name="bx-bx-target-lock"
                 text-size="small" text-color="purple">
                 {{ $lang('options: normal/title') }}
@@ -217,6 +218,7 @@ export default {
 
     const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
     this.$store.state.datas.character.statList.forEach(stat => {
+      if (stat.attributes.hidden) return;
       statTypes.forEach(type => {
         if (type == StatBase.TYPE_MULTIPLIER && !stat.hasMultiplier)
           return;
@@ -402,7 +404,10 @@ export default {
       const mode = this.currentMode,
         target = this.sortOptions.currentSelected;
       sr.sort(target === 'default' ? this.sortOptions[mode].default : this.sortOptions.global[target]);
-      sr = this.sortOptions.currentOrder === 'down' ? sr.reverse() : sr;
+      
+      // because array.sort is in-place, give a new array to ensure data reactive
+      sr = this.sortOptions.currentOrder === 'down' ? sr.reverse() : sr.slice();
+      
       return sr.length > this.searchResultMaximum ? sr.slice(0, this.searchResultMaximum) : sr;
     },
     allSearchResult() {
@@ -552,7 +557,7 @@ export default {
   // right: 0;
   // bottom: 0;
   border: 0.1rem solid var(--primary-light);
-  border-radius: 0.4rem;
+  border-radius: 0.6rem;
   padding: 1rem 1.4rem;
   padding-bottom: 2rem;
   background-color: var(--white);
@@ -646,10 +651,11 @@ export default {
 }
 
 .mode-normal-content {
-  border-radius: 1rem;
+  border-radius: 0.8rem;
   border: 0.1rem solid var(--primary-light);
   padding: 0.6rem 1rem;
   background-color: var(--white);
+  margin-top: 0.8rem;
 }
 
 .mode-item-level-input-container {

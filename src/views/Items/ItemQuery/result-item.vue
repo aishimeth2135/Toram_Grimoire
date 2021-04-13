@@ -41,6 +41,12 @@
     </cy-list-item>
     <cy-transition type="fade">
       <div class="detail" v-if="detailVisible">
+        <div class="extra" v-if="originEquipment.extra">
+          <cy-icon-text v-if="originEquipment.extra['caption']"
+            iconify-name="ic-outline-info" text-size="small" text-color="light-3">
+            {{ originEquipment.extra['caption'] }}
+          </cy-icon-text>
+        </div>
         <fieldset class="stats column">
           <legend>
             <cy-icon-text iconify-name="ic-baseline-format-list-bulleted"
@@ -63,7 +69,7 @@
               {{ $lang('equipment detail/scope title/recipe') }}
             </cy-icon-text>
           </legend>
-          <div class="recipe-info">
+          <div v-if="recipeInfoValid" class="recipe-info">
             <div class="recipe-attr">
               <cy-icon-text iconify-name="ion-hammer" text-size="small">
                 {{ $lang('equipment detail/recipe/item level')  }}
@@ -168,6 +174,10 @@ export default {
     }
   },
   computed: {
+    recipeInfoValid() {
+      const r = this.originEquipment.recipe;
+      return this.equipment.creatable && (r['item_level'] || r['item_difficulty']);
+    },
     dyeObtains() {
       const t = this.findObtainByDye(this.modesState.dye.searchText, this.equipment);
       return this.obtainsDataConvert(t);
@@ -294,6 +304,11 @@ export default {
   padding: 0.4rem 1rem;
   padding-bottom: 0.8rem;
   padding-left: 1.5rem;
+
+  > .extra {
+    margin-bottom: 0.5rem;
+    padding-left: 0.6rem;
+  }
 }
 
 fieldset.column {
@@ -326,6 +341,10 @@ fieldset.recipe {
       color: var(--primary-light-4);
     }
   }
+}
+
+fieldset.obtains {
+  padding-top: 0;
 }
 
 .obtains-list {

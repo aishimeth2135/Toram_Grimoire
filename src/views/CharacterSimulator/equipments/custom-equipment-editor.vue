@@ -205,8 +205,7 @@ export default {
   data() {
     const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
     this.$store.state.datas.character.statList.forEach(stat => {
-      if (stat.attributes.hidden)
-        return;
+      if (stat.attributes.hidden) return;
       statTypes.forEach(type => {
         if (type == StatBase.TYPE_MULTIPLIER && !stat.hasMultiplier)
           return;

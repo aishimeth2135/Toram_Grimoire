@@ -1,4 +1,5 @@
 import GetLang from "@Services/Language";
+import { isNumberString } from "@Utils/string";
 
 function Lang(s) {
   return GetLang('stat base/' + s);
@@ -30,7 +31,7 @@ class StatBase {
       return this.text + '%';
   }
   show(type, v) {
-    const calc = /^\d+$/.test(v);
+    const calc = isNumberString(v);
     if (typeof v !== 'number' && calc)
       v = parseFloat(v);
     const handleFormula = (formula, unit) => {
