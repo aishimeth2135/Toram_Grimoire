@@ -1,5 +1,6 @@
 import { RestrictionStat } from "../Stat";
 import Grimoire from "@Grimoire";
+import { isNumberString } from "@Utils/string";
 
 class CharacterEquipment {
   constructor(origin=null, name=null, stats=[]) {
@@ -38,6 +39,9 @@ class CharacterEquipment {
     return false;
   }
   get hasElement() {
+    return false;
+  }
+  get creatable() {
     return false;
   }
   get allStats() {
@@ -295,7 +299,7 @@ CharacterEquipment.fromOriginEquipment = function(item, {
     item.stats.map((p, i) => {
       const t = RestrictionStat.fromOrigin(p, item.statRestrictions[i]);
       if (statValueToNumber)
-        t.value = /^\d+$/.test(t.value) ? parseFloat(t.value) : 0;
+        t.value = isNumberString(t.value) ? parseFloat(t.value) : 0;
       return t;
     })
   ];
@@ -362,6 +366,9 @@ class MainWeapon extends Weapon {
     return true;
   }
   get hasElement() {
+    return true;
+  }
+  get creatable() {
     return true;
   }
 }
@@ -432,6 +439,9 @@ class BodyArmor extends Armor {
     return true;
   }
   get hasCrystal() {
+    return true;
+  }
+  get creatable() {
     return true;
   }
 }
