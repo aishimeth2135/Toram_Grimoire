@@ -12,18 +12,20 @@ function install(Vue) {
             root: options
           };
         }
-        const { root, inherit=false } = options;
+        const { root, extra } = options;
         if (typeof root !== 'string') {
           console.warn('[Register Lang] option: root must be string.');
           return;
         }
-        const realInherit = parent && parent.$lang && inherit;
         this.$lang = function(id, values) {
-          const fromParent = realInherit ? parent.$lang.root + '/' : '';
-          return GetLang(fromParent + root + '/' + id, values);
+          return GetLang(root + '/' + id, values);
         };
         this.$lang.root = root;
-        this.$lang.parent = realInherit ? parent.$lang : null; 
+        if (extra) {
+          this.$lang.extra = function(name, id, values) {
+            return GetLang(extra[name] + '/' + id, values);
+          }
+        }
       } else if (parent && parent.$lang) {
         this.$lang = this.$options.parent.$lang;
       }

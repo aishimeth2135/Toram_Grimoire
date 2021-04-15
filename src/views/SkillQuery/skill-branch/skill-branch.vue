@@ -346,8 +346,10 @@ import DataContainer from "../utils/DataContainer.js";
 export default {
   name: 'skill-branch',
   RegisterLang: {
-    root: 'Branch',
-    inherit: true
+    root: 'Skill Query/Branch',
+    extra: {
+      parent: 'Skill Query'
+    }
   },
   props: ['branch', 'skillState', 'type'],
   inject: ['handleTagButton', 'createTagButtons', 'tagButtonClassName', 'getFormulaDisplayMode'],
@@ -1067,8 +1069,8 @@ export default {
         
         let v = dc.result();
         v = v
-          .replace(/\$__TEXT_SLV__/g, this.$lang.parent('skill level'))
-          .replace(/\$__TEXT_CLV__/g, this.$lang.parent('character level'))
+          .replace(/\$__TEXT_SLV__/g, this.$lang.extra('parent', 'skill level'))
+          .replace(/\$__TEXT_CLV__/g, this.$lang.extra('parent', 'character level'))
           .replace(/\$__TEXT_STACK_(\d+)__/g, (m, m1) => stack[parseInt(m1, 10)]);
 
         let list = [], offset = 0;
