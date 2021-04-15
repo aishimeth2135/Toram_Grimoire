@@ -83,8 +83,7 @@ import vue_statDetailEquipments from "./stat-detail-equipments.vue";
 
 export default {
   RegisterLang: {
-    root: 'show character stats',
-    inherit: true
+    root: 'Character Simulator/show character stats'
   },
   props: ['characterState', 'showCharacterStatDatas'],
   data() {
