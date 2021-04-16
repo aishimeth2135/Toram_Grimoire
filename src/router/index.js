@@ -8,6 +8,8 @@ import Items from "./Items";
 import DamageCalc from "./Calculation/damage";
 import Enchant from "./Enchant";
 
+// import EnchantBeta from "./EnchantBeta";
+
 import Page404 from "./Page404";
 import Bubble from "./Bubble";
 
@@ -24,6 +26,7 @@ const routes = [
   Items,
   DamageCalc,
   Enchant,
+  // EnchantBeta,
   Page404,
   Bubble
 ];

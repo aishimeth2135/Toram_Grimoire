@@ -287,10 +287,11 @@ export default {
             if (av === -1 && bv === -1)
               return this.sortOptions[this.currentMode].default(a, b);
             return av - bv;
-          }
+          },
+          'name':  (a, b) => a.name.localeCompare(b.name)
         },
         'normal': {
-          default: (a, b) => a.name.localeCompare(b.name)
+          default: (a, b) => a.origin.id - b.origin.id
         },
         'stat': {
           default: (a, b) => {
@@ -308,7 +309,7 @@ export default {
           }
         },
         'dye': {
-          default: (a, b) => a.name.localeCompare(b.name)
+          default: (a, b) => a.origin.id - b.origin.id
         }
       },
       conditions: {

@@ -18,7 +18,7 @@
             </cy-icon-text>
           </cy-list-item>
           <cy-list-item @click="$emit('create-character')">
-            <cy-icon-text iconify-name="ic-round-add-circle-outline">
+            <cy-icon-text iconify-name="ic-round-add-circle-outline" text-color="light-3">
               {{ $lang('append character') }}
             </cy-icon-text>
           </cy-list-item>

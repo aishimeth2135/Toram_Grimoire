@@ -2,13 +2,16 @@ export default function() {
   return {
     'Skill Query': {
       'historical record': '查看历史纪录',
-      'range: no limit': '无限制',
-      'range: main': '同主手武器',
       'click anywhere to close': '点击任意处关闭',
       'select skill': '选择技能',
       'close select skill': '关闭',
       'skill level': '技能等级',
       'character level': '角色等级',
+      'switch skill': '技能切换',
+      'previous skill': '上一个',
+      'next skill': '下一个',
+      'last skill': '最近',
+      'switch formula display mode': '切换公式显示方式',
       'default message': '请点选这里或右上角的按钮来选择一个技能。',
       'default message: equipment conditions': '所选取的技能不符合当前的装备。<br />请更改装备类型，或是点选这里或右上角的按钮来选择其他技能。',
       'equipment': {
@@ -31,7 +34,9 @@ export default function() {
         'skill_type: list': ['瞬发', '须咏唱', '须蓄力', '被动', 'EX技能'],
         'damage_type: list': ['物理', '魔法'],
         'in_combo: list': ['可以放入连击', '无法放入连击', '无法放在连击的第一招'],
-        'action_time: list': ['极慢', '慢', '稍慢', '一般', '稍快', '快', '极快']
+        'action_time: list': ['极慢', '慢', '稍慢', '一般', '稍快', '快', '极快'],
+        'range: no limit': '无限制',
+        'range: main': '同#施放武器 '
       },
       'Branch': {
         'display duration': '$0秒内',
@@ -39,18 +44,19 @@ export default function() {
         'other equipment info: title': '各装备的效果',
         'apply element': '套用$0。',
         'pretext: is constant': '固定值',
+        'unknow variable': '未知参数',
         'formula replaced text': {
-          'BSTR': '基础力量',
-          'BINT': '基础智力',
-          'BAGI': '基础敏捷',
-          'BVIT': '基础耐力',
-          'BDEX': '基础灵巧',
-          'TEC': '基础技巧',
-          'STR': '总力量',
-          'INT': '总智力',
-          'AGI': '总敏捷',
-          'VIT': '总耐力',
-          'DEX': '总灵巧',
+          'BSTR': '基础STR',
+          'BINT': '基础INT',
+          'BAGI': '基础AGI',
+          'BVIT': '基础VIT',
+          'BDEX': '基础DEX',
+          'TEC': '基础TEC',
+          'STR': '总STR',
+          'INT': '总INT',
+          'AGI': '总AGI',
+          'VIT': '总VIT',
+          'DEX': '总DEX',
           'shield_refining': '盾精鍊值',
           'dagger_atk': '小刀ATK',
           'target_def': '目标DEF',
@@ -82,7 +88,7 @@ export default function() {
             'normal_attack': '一般攻击的伤害提升'
           },
           'frequency': {
-            'positive': '总伤害拆成$0'
+            'positive': '总伤害拆成$0次'
           },
           'ailment text': '有$0机率使目标陷入$1。',
           'effective_area': {
@@ -114,7 +120,8 @@ export default function() {
           'move_distance: title': '移动距离',
           'angle: title': '作用角度',
           'start_position_offsets: title': '起点位置',
-          'end_position_offsets: title': '起点位置'
+          'end_position_offsets: title': '终点位置',
+          'caption of duration and cycle': '持续$0秒，每$1秒一次伤害。'
         },
         'damage: proration': {
           'damage: title': '伤害惯性',
@@ -193,7 +200,7 @@ export default function() {
             'circle': '圆形'
           },
           'effective_area: title': '类型',
-          'radius: title': '作用半径',
+          'radius: title': '作用半径'
         },
         'next': {
           'condition default': '下一招技能'
@@ -209,7 +216,8 @@ export default function() {
           'type': {
             'hp': '恢复HP',
             'mp': '恢复MP'
-          }
+          },
+          'caption of duration and cycle': '持续$0秒，每$1秒作用一次。'
         },
         'reference': {
           'base title': '参考连结'
