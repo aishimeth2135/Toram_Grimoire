@@ -24,6 +24,9 @@ module.exports = {
         '@Utils': path.join(__dirname, 'src', 'lib', 'main', 'utils'),
         '@Grimoire': path.join(__dirname, 'src', 'lib', 'main', 'Grimoire.js'),
       }
+    },
+    performance: {
+      hints: false
     }
   },
 
@@ -97,9 +100,5 @@ module.exports = {
       swSrc: 'src/sw.js',
       exclude: [/_redirects/]
     }
-  },
-
-  pluginOptions: {
-    cordovaPath: 'src-cordova'
   }
 }

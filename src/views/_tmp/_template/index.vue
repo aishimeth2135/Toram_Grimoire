@@ -7,8 +7,6 @@
   </article>
 </template>
 <script>
-import GetLang from "@Services/Language";
-
 import init from "./init.js";
 
 export default {

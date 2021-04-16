@@ -26,6 +26,7 @@ export default function() {
           'atk': 'ATK',
           'def': 'DEF',
           'stability': '穩定度',
+          'name': '名稱'
         },
         'order': {
           'title': '排序順序',

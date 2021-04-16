@@ -1,11 +1,9 @@
-import SearchController from "./render/SearchController.js";
 import { Equipment, Crystal } from "./Item";
 
 export default class {
   constructor() {
     this.equipments = [];
     this.crystals = [];
-    this.searchController = new SearchController(this);
   }
   appendEquipment() {
     const t = new Equipment(this.equipments.length, ...arguments);
