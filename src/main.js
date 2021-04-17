@@ -7,6 +7,7 @@ import Vue from "vue";
 import Vuex from 'vuex';
 
 import RegisterLang from "@plugin/RegisterLang.js";
+import ToggleService from "@plugin/ToggleService.js";
 
 import CY from "@Utils/Cyteria";
 import { InitLanguageSystem } from "@Services/Language";
@@ -14,6 +15,7 @@ import { InitLanguageSystem } from "@Services/Language";
 // == [ pre Init ] =====================================
 Vue.use(Vuex);
 Vue.use(RegisterLang);
+Vue.use(ToggleService);
 
 // == [ init ] =========================================
 InitLanguageSystem();

@@ -9,17 +9,17 @@
       </div>
     </div>
     <div class="window-container">
-      <browse-equipments :visible="windowVisible.browseEquipments"
+      <browse-equipments :visible="window.browseEquipments"
         :action="browseEquipmentsState.action"
         :character-state="characterState"
-        @close="toggleWindowVisible('browseEquipments', false)" />
-      <append-equipments :visible="windowVisible.appendEquipments"
-        @close="toggleWindowVisible('appendEquipments', false)" />
-      <create-custom-equipment :visible="windowVisible.createCustomEquipment"
-        @close="toggleWindowVisible('createCustomEquipment', false)"
+        @close="$toggle('window/browseEquipments', false)" />
+      <append-equipments :visible="window.appendEquipments"
+        @close="$toggle('window/appendEquipments', false)" />
+      <create-custom-equipment :visible="window.createCustomEquipment"
+        @close="$toggle('window/createCustomEquipment', false)"
         @append-equipments="appendEquipments" />
-      <cy-window :visible="windowVisible.customEquipmentEditor"
-        @close-window="toggleWindowVisible('customEquipmentEditor', false)">
+      <cy-window :visible="window.customEquipmentEditor"
+        @close-window="$toggle('window/customEquipmentEditor', false)">
         <template #title>
           <cy-icon-text iconify-name="ic-round-edit">
             {{ $lang('custom equipment editor/window title') }}
@@ -32,7 +32,7 @@
             <cy-flex-layout>
               <template #right-content>
                 <cy-button type="border" iconify-name="ic-round-done"
-                  @click="toggleWindowVisible('customEquipmentEditor', false)">
+                  @click="$toggle('window/customEquipmentEditor', false)">
                   {{ $globalLang('global/close') }}
                 </cy-button>
               </template>
@@ -41,9 +41,9 @@
         </cy-bottom-content>
       </cy-window>
       <select-crystals v-if="currentSelectCrystalsEquipment"
-        :visible="windowVisible.selectCrystals"
+        :visible="window.selectCrystals"
         :equipment="currentSelectCrystalsEquipment"
-        @close="toggleWindowVisible('selectCrystals', false)" />
+        @close="$toggle('window/selectCrystals', false)" />
     </div>
   </section>
 </template>
@@ -61,12 +61,21 @@ import { EquipmentField } from "@lib/Character/Character";
 import { CharacterEquipment, MainWeapon, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/Character/CharacterEquipment";
 
 export default {
+  ToggleService: {
+    window: [
+      'browseEquipments',
+      'appendEquipments',
+      'createCustomEquipment',
+      'customEquipmentEditor',
+      'selectCrystals'
+    ]
+  },
   props: ['characterState'],
   provide() {
     return {
       'convertEquipmentData': this.convertEquipmentData,
       'getShowEquipmentData': this.getShowEquipmentData,
-      'toggleMainWindowVisible': this.toggleWindowVisible,
+      'toggleMainWindowVisible': id => this.$toggle('window/' + id),
       'openCustomEquipmentEditor': this.openCustomEquipmentEditor,
       'openSelectCrystals': this.openSelectCrystals,
       'appendEquipments': this.appendEquipments,
@@ -75,13 +84,6 @@ export default {
   },
   data() {
     return {
-      windowVisible: {
-        browseEquipments: false,
-        appendEquipments: false,
-        createCustomEquipment: false,
-        customEquipmentEditor: false,
-        selectCrystals: false
-      },
       browseEquipmentsState: {
         action: null
       },
@@ -101,11 +103,11 @@ export default {
     },
     openSelectCrystals(eq) {
       this.currentSelectCrystalsEquipment = eq;
-      this.toggleWindowVisible('selectCrystals', true);
+      this.$toggle('window/selectCrystals', true);
     },
     openCustomEquipmentEditor(eq) {
       this.currentCustomEquipment = eq;
-      this.toggleWindowVisible('customEquipmentEditor', true);
+      this.$toggle('window/customEquipmentEditor', true);
     },
     appendEquipments(eqs) {
       this.$store.commit('character/appendEquipments', eqs);
@@ -115,7 +117,7 @@ export default {
         type: 'select-field-equipment',
         targetField: field
       };
-      this.toggleWindowVisible('browseEquipments', true);
+      this.$toggle('window/browseEquipments', true);
     },
     removeFieldEquipment(field) {
       field.removeEquipment();
@@ -152,10 +154,6 @@ export default {
     },
     convertEquipmentData(item) {
       return CharacterEquipment.fromOriginEquipment(item);
-    },
-    toggleWindowVisible(target, force) {
-      force = force === void 0 ? !this.windowVisible[target] : force;
-      this.windowVisible[target] = force;
     }
   },
   components: {

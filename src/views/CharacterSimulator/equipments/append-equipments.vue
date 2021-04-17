@@ -3,15 +3,13 @@
     vertical-position="top">
     <template v-slot:title>
       <cy-icon-text iconify-name="bx-bx-search-alt">
-        {{ local$lang('window title: search') }}
+        {{ $lang('window title: search') }}
       </cy-icon-text>
     </template>
     <template v-slot:default>
       <cy-title-input iconify-name="ic-outline-category" class="search-input">
-        <input type="text" ref="searchText" :placeholder="local$lang('search equipment placeholder')"
-          @keyup.enter="updateSearchResult" />
-        <cy-button iconify-name="bx-bx-search-alt-2" type="border"
-          @click="updateSearchResult" />
+        <input type="text" v-model="searchText"
+          :placeholder="$lang('search equipment placeholder')" />
       </cy-title-input>
       <div class="search-result" v-if="searchResult.length != 0">
         <cy-list-item class="equipment-item" v-for="item in searchResult" :key="item.iid"
@@ -23,11 +21,11 @@
           </template>
         </cy-list-item>
         <div v-if="searchResult.length >= searchResultMaximum" class="limit-reached-limit">
-          {{ local$lang('search equipment result: limit reached') }}
+          {{ $lang('search equipment result: limit reached') }}
         </div>
       </div>
       <cy-default-tips v-else icon-id="potum">
-        {{ $lang('Warn/no result found') }}
+        {{ $lang.extra('parent', 'Warn/no result found') }}
       </cy-default-tips>
       <cy-bottom-content class="selected" v-if="selected.length != 0">
         <template #normal-content>
@@ -50,7 +48,7 @@
             <span class="number-container">
               <span>{{ selected.length }}</span>
             </span>
-            <span>{{ local$lang('search equipment result: selected title') }}</span>
+            <span>{{ $lang('search equipment result: selected title') }}</span>
             <template #right-content>
               <cy-icon-text :iconify-name="'ic-round-keyboard-arrow-' + (selectedDetailVisible ? 'down' : 'up')" />
             </template>
@@ -78,27 +76,56 @@
 import MessageNotify from "@Services/Notify";
 
 export default {
+  RegisterLang: {
+    root: 'Character Simulator/append equipments',
+    extra: {
+      parent: 'Character Simulator'
+    }
+  },
   props: ['visible'],
   inject: ['convertEquipmentData', 'getShowEquipmentData', 'appendEquipments'],
   data() {
     return {
-      searchResult: [],
+      searchText: '',
       selected: [],
       selectedDetailVisible: false,
       searchResultMaximum: 30
     };
   },
+  computed: {
+    searchResult() {
+      const text = this.searchText;
+      let res = this.$store.state.datas.items.equipments;
+      if (text !== '') {
+        res = res.filter(item => item.name.includes(text));
+      }
+      res.sort((a, b) => b.id - a.id);
+
+      return res.slice(0, this.searchResultMaximum).map((item, i) => {
+        const o = this.convertEquipmentData(item);
+
+        const obtain = this.$lang('search equipment result: obtain/' +
+          (item.obtains.length > 0 ? item.obtains[0].type : 'unknow'));
+
+        return {
+          ...this.getShowEquipmentData(o),
+          obtainText: obtain,
+          iid: i
+        };
+      });
+    }
+  },
   methods: {
     submitSelected() {
       this.appendEquipments(this.selected.map(p => p.origin.copy()));
-      MessageNotify(this.local$lang('append equipments successfully', [this.selected.length]), 'ic-round-done');
+      MessageNotify(this.$lang('append equipments successfully', [this.selected.length]), 'ic-round-done');
       this.selected = [];
       this.$emit('close');
     },
     clearSelected() {
       const store = this.selected;
       this.selected = [];
-      MessageNotify(this.local$lang('selected equipments cleared'), 'ic-round-done', null, {
+      MessageNotify(this.$lang('selected equipments cleared'), 'ic-round-done', null, {
         buttons: [{
           text: this.$globalLang('global/recovery'),
           click: () => {
@@ -121,38 +148,6 @@ export default {
         iid: this.selected.length
       };
       this.selected.push(item);
-    },
-    updateSearchResult() {
-      const text = this.$refs.searchText.value;
-
-      if (text == '') {
-        MessageNotify(this.local$lang('search text is empty'));
-        return;
-      }
-
-      const t = [],
-        limit = this.searchResultMaximum + 1;
-      this.$store.state.datas.items.equipments.find(item => {
-        if (item.name.includes(text))
-          t.push(item);
-        return t.length > limit - 1;
-      });
-
-      this.searchResult = t.map((item, i) => {
-        const o = this.convertEquipmentData(item);
-
-        const obtain = this.local$lang('search equipment result: obtain/' +
-          (item.obtains.length > 0 ? item.obtains[0].type : 'unknow'));
-
-        return {
-          ...this.getShowEquipmentData(o),
-          obtainText: obtain,
-          iid: i
-        };
-      });
-    },
-    local$lang(v, vs) {
-      return this.$lang('append equipments/' + v, vs);
     }
   }
 }

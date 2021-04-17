@@ -13,7 +13,7 @@ export default function(root, c) {
 
   function processMaterails(s) {
     const ms = [];
-    const mat_pt_list = ['金屬', '布料', '藥品', '獸品', '木材', '魔素']
+    const mat_pt_list = ['金屬', '布料', '藥品', '獸品', '木材', '魔素'];
     const list = s.split(/\s*,\s*/);
     list.forEach(a => {
       const t = a.split('#');
@@ -29,8 +29,9 @@ export default function(root, c) {
 
   let cur, cur_equip, cur_attrcat;
   c.forEach((p, index) => {
-    if (!p || index == 0) return;
-    //if ( index == 0 ) return;
+    if (!p || index == 0 || p.every(a => a === '')) {
+      return;
+    }
     try {
       if (p[NAME] !== '' && p[CATEGORY] !== '') {
         cur = root.appendEquipment(p[NAME], CATEGORY_LIST.indexOf(p[CATEGORY]), p[BASE_VALUE], p[BASE_STABILITY], p[CAPTION]);
@@ -48,25 +49,19 @@ export default function(root, c) {
         case 'extra':
           cur = cur_equip.setExtra();
       }
-      switch (cur_attrcat) {
-        case 'stats':
-          {
-            const t = p[ATTRIBUTE_VALUES[0]];
-            let tail = t.slice(-1),
-              v = t;
-            if (tail !== '%' && tail !== '~')
-              tail = '';
-            else
-              v = t.slice(0, -1);
-            cur_equip.appendStat(p[ATTRIBUTE_NAME], v, tail, p[ATTRIBUTE_VALUES[1]]);
-          }
-          break;
-        case 'obtain':
-        case 'extra':
-          cur[p[ATTRIBUTE_NAME]] = p[ATTRIBUTE_VALUES[0]];
-          break;
-        case 'recipe':
-          cur[p[ATTRIBUTE_NAME]] = p[ATTRIBUTE_NAME] != 'materials' ? p[ATTRIBUTE_VALUES[0]] : processMaterails(p[ATTRIBUTE_VALUES[0]]);
+      if (cur_attrcat === 'stats') {
+        const t = p[ATTRIBUTE_VALUES[0]];
+        let tail = t.slice(-1),
+          v = t;
+        if (tail !== '%' && tail !== '~')
+          tail = '';
+        else
+          v = t.slice(0, -1);
+        cur_equip.appendStat(p[ATTRIBUTE_NAME], v, tail, p[ATTRIBUTE_VALUES[1]]);
+      } else if (cur_attrcat === 'obtain' || cur_attrcat === 'extra') {
+        cur[p[ATTRIBUTE_NAME]] = p[ATTRIBUTE_VALUES[0]];
+      } else if (cur_attrcat === 'recipe') {
+        cur[p[ATTRIBUTE_NAME]] = p[ATTRIBUTE_NAME] != 'materials' ? p[ATTRIBUTE_VALUES[0]] : processMaterails(p[ATTRIBUTE_VALUES[0]]);
       }
     } catch (e) {
       console.log(p, index);
