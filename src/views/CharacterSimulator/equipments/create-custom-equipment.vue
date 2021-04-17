@@ -1,5 +1,5 @@
 <template>
-  <cy-window :visible="visible" @close-window="closeWindow">
+  <cy-window :visible="visible" @close-window="close">
     <template #title>
       <cy-icon-text iconify-name="gg-shape-square">
         {{ $lang('create custom equipment/window title') }}
@@ -7,7 +7,7 @@
     </template>
     <div class="select-type">
       <cy-button iconify-name="gg-shape-square" type="border"
-        @click="toggleWindowVisible('selectType', true)">
+        @click="$toggle('window/selectType', true)">
         {{ equipmentTypeText }}
       </cy-button>
     </div>
@@ -29,7 +29,8 @@
         </cy-flex-layout>
       </template>
     </cy-bottom-content>
-    <cy-window :visible="selectTypeWindowVisible" @close-window="toggleWindowVisible('selectType', false)">
+    <cy-window :visible="window.selectType"
+      @close-window="$toggle('window/selectType', false)">
       <template v-slot:title>
         <cy-icon-text iconify-name="gg-shape-square">
           {{ $lang('create custom equipment/select equipment type') }}
@@ -43,7 +44,7 @@
           <template v-slot:menu>
             <template v-if="category.list != null">
               <cy-list-item v-for="item in category.list" :key="item"
-                :selected="selectedEquipmentType && selectedEquipmentType.type == item"
+                :selected="currentEquipment && currentEquipment.type === item"
                 @click="selectEquipmentType(category, item)">
                 <cy-icon-text iconify-name="gg-shape-square">
                   {{ $lang('field type text/' + item.description) }}
@@ -51,7 +52,7 @@
               </cy-list-item>
             </template>
             <cy-list-item v-else
-              :selected="selectedEquipmentType && selectedEquipmentType.category == category"
+              :selected="currentEquipment && currentEquipment instanceof category.instance"
               @click="selectEquipmentType(category, null)">
               <cy-icon-text iconify-name="gg-shape-square">
                 {{ $lang('equipment type category/' + category.id) }}
@@ -60,18 +61,6 @@
           </template>
         </cy-button>
       </div>
-      <cy-bottom-content v-if="this.selectedEquipmentType">
-        <template v-slot:normal-content>
-          <cy-flex-layout>
-            <template v-slot:right-content>
-              <cy-button type="border" iconify-name="ic-round-done"
-                @click="confirmSelectedEquipmentType">
-                {{ $globalLang('global/confirm') }}
-              </cy-button>
-            </template>
-          </cy-flex-layout>
-        </template>
-      </cy-bottom-content>
     </cy-window>
   </cy-window>
 </template>
@@ -81,14 +70,17 @@ import vue_customEquipmentEditor from "./custom-equipment-editor.vue";
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/Character/CharacterEquipment";
 
 export default {
+  ToggleService: {
+    window: ['selectType']
+  },
   props: ['visible'],
-  inject: ['toggleMainWindowVisible', 'isElementStat'],
+  inject: ['isElementStat'],
   data() {
     return {
       equipmentTypeCategorys: [{
         id: 'main-weapon',
         icon: 'mdi-sword',
-        class: MainWeapon,
+        instance: MainWeapon,
         list: [
           MainWeapon.TYPE_ONE_HAND_SWORD, MainWeapon.TYPE_TWO_HAND_SWORD,
           MainWeapon.TYPE_BOW, MainWeapon.TYPE_BOWGUN,
@@ -99,37 +91,35 @@ export default {
       }, {
         id: 'sub-weapon',
         icon: 'mdi-shield',
-        class: SubWeapon,
+        instance: SubWeapon,
         list: [SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER]
       }, {
         id: 'sub-armor',
         icon: 'mdi-shield',
-        class: SubArmor,
+        instance: SubArmor,
         list: [SubArmor.TYPE_SHIELD]
       }, {
         id: 'body-armor',
         icon: 'mdi-tshirt-crew',
-        class: BodyArmor,
+        instance: BodyArmor,
         list: null
       }, {
         id: 'additional',
         icon: 'cib-redhat',
-        class: AdditionalGear,
+        instance: AdditionalGear,
         list: null
       }, {
         id: 'special',
         icon: 'fa-solid:ring',
-        class: SpecialGear,
+        instance: SpecialGear,
         list: null
       }, {
         id: 'avatar',
         icon: 'eva-star-outline',
-        class: Avatar,
+        instance: Avatar,
         list: null
       }],
-      selectedEquipmentType: null,
-      currentEquipment: null,
-      selectTypeWindowVisible: false
+      currentEquipment: null
     };
   },
   computed: {
@@ -152,24 +142,15 @@ export default {
     createCustomEquipment() {
       this.$emit('append-equipments', [this.currentEquipment]);
       this.currentEquipment = null;
-      this.selectedEquipmentType = null;
-      this.toggleMainWindowVisible('createCustomEquipment', false);
+      this.close();
     },
     selectEquipmentType(category, type) {
-      this.selectedEquipmentType = {
-        category,
-        type
-      };
-    },
-    confirmSelectedEquipmentType() {
-      const p = this.selectedEquipmentType;
-
       const from = this.currentEquipment;
       const name = from ? from.name : '';
 
-      const eq = p.category.list != null ?
-        new p.category.class(null, name, [], p.type) :
-        new p.category.class(null, name, []);
+      const eq = category.list !== null ?
+        new category.instance(null, name, [], type) :
+        new category.instance(null, name, []);
       eq.setCustom(true);
 
       if (!name) {
@@ -182,14 +163,9 @@ export default {
       }
 
       this.currentEquipment = eq;
-      this.toggleWindowVisible('selectType', false);
+      this.$toggle('window/selectType', false);
     },
-    toggleWindowVisible(target, force) {
-      target = target + 'WindowVisible';
-      force = force === void 0 ? !this[target] : force;
-      this[target] = force;
-    },
-    closeWindow() {
+    close() {
       this.$emit('close');
     }
   },

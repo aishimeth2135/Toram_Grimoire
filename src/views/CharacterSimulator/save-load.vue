@@ -2,40 +2,40 @@
   <div v-if="storageAvailable">
     <div class="content">
       <cy-default-tips iconify-name="bx-bx-message-square-dots" text-align="left">
-        {{ local$lang('top caption') }}
+        {{ $lang('top caption') }}
       </cy-default-tips>
       <div class="buttons">
         <cy-button type="border" iconify-name="ic-round-save"
           @click="$emit('manual-auto-save')">
-          {{ local$lang('save button: title') }}
+          {{ $lang('save button: title') }}
         </cy-button>
         <cy-button type="border" iconify-name="bx-bx-loader-circle"
           @click="$emit('manual-auto-load')">
-          {{ local$lang('load button: title') }}
+          {{ $lang('load button: title') }}
         </cy-button>
       </div>
     </div>
     <div class="content">
       <cy-default-tips iconify-name="mdi-food-apple-outline" text-align="left">
-        <div>{{ local$lang('delete all data: caption')[0] }}</div>
+        <div>{{ $lang('delete all data: caption')[0] }}</div>
         <cy-icon-text iconify-name="ic-outline-info" text-color="light-3" text-size="small" class="tip">
-          {{ local$lang('delete all data: caption')[1] }}
+          {{ $lang('delete all data: caption')[1] }}
         </cy-icon-text>
         <cy-icon-text iconify-name="ic-outline-info" text-color="light-3" text-size="small" class="tip">
-          {{ local$lang('delete all data: caption')[2] }}
+          {{ $lang('delete all data: caption')[2] }}
         </cy-icon-text>
       </cy-default-tips>
       <div class="buttons">
         <cy-input-counter :value="deleteCounter" @set-value="v => deleteCounter = v">
           <template #title>
             <cy-icon-text iconify-name="ic-round-delete">
-              {{ local$lang('delete counter: title') }}
+              {{ $lang('delete counter: title') }}
             </cy-icon-text>
           </template>
         </cy-input-counter>
         <cy-button v-if="deleteCounter == 10" type="border" iconify-name="ic-round-delete"
           style="margin-top: 0.6rem;" @click="deleteAllSavedData">
-          {{ local$lang('button: deleta all data') }}
+          {{ $lang('button: deleta all data') }}
         </cy-button>
       </div>
     </div>
@@ -49,6 +49,7 @@ import CY from "@Utils/Cyteria";
 import MessageNotify from "@Services/Notify";
 
 export default {
+  RegisterLang: 'Character Simulator/save-load control',
   data() {
     return {
       deleteCounter: 0
@@ -64,10 +65,7 @@ export default {
     deleteAllSavedData() {
       this.$store.commit('character/deleteAllSavedData');
       this.$emit('close-auto-save');
-      MessageNotify(this.local$lang('Message: deleta all data'));
-    },
-    local$lang(v, vs) {
-      return this.$lang('save-load control/' + v, vs);
+      MessageNotify(this.$lang('Message: deleta all data'));
     }
   }
 };

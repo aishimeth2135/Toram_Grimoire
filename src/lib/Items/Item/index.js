@@ -32,10 +32,14 @@ class Item {
         type = StatBase.TYPE_TOTAL;
         break;
     }
-    const stat = Grimoire.Character.findStatBase(baseName).createStat(type, v);
+    const statBase = Grimoire.Character.findStatBase(baseName);
+    if (!statBase) {
+      console.warn("[Character] Can't find stat-base with id: " + baseName);
+      return;
+    }
+    const stat = statBase.createStat(type, v);
     this.stats.push(stat);
     this.statRestrictions.push(restriction);
-    return stat;
   }
   setExtra() {
     this.extra = {};

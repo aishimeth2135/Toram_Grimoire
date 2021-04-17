@@ -2,7 +2,7 @@
   <cy-window :visible="visible" @close-window="closeWindow" class="width-wide">
     <template v-slot:title>
       <cy-icon-text iconify-name="ic-outline-category">
-        {{ local$lang('action: ' + actionType) }}
+        {{ $lang('action: ' + actionType) }}
       </cy-icon-text>
     </template>
     <template v-slot:default>
@@ -12,12 +12,12 @@
           <cy-button iconify-name="ic-round-add-circle-outline"
             type="border"
             @click="toggleMainWindowVisible('appendEquipments', true)">
-            {{ local$lang('append equipments') }}
+            {{ $lang('append equipments') }}
           </cy-button>
           <cy-button iconify-name="gridicons-create"
             type="border"
             @click="toggleMainWindowVisible('createCustomEquipment', true)">
-            {{ $lang('custom equipment') }}
+            {{ $lang.extra('parent', 'custom equipment') }}
           </cy-button>
         </template>
       </cy-flex-layout>
@@ -84,6 +84,12 @@ import MessageNotify from "@Services/Notify";
 import Vuex from "vuex";
 
 export default {
+  RegisterLang: {
+    root: 'Character Simulator/browse equipments',
+    extra: {
+      parent: 'Character Simulator'
+    }
+  },
   props: ['visible', 'action', 'characterState'],
   inject: [
     'toggleMainWindowVisible', 'getShowEquipmentData',
@@ -145,7 +151,7 @@ export default {
       const eq = this.currentEquipment.copy();
       eq.name = eq.name + '*';
       this.appendEquipments([eq]);
-      MessageNotify(this.local$lang('message: copy equipment'), 'mdi-content-copy',
+      MessageNotify(this.$lang('message: copy equipment'), 'mdi-content-copy',
         'browse equipment/copy equipment');
     },
     removeSelectedEquipment() {
@@ -162,14 +168,14 @@ export default {
         }
         return false;
       });
-      MessageNotify(this.local$lang('message: remove equipment', [eq.name]),
+      MessageNotify(this.$lang('message: remove equipment', [eq.name]),
         'ic-baseline-delete-outline', null, {
         buttons: [{
           text: this.$globalLang('global/recovery'),
           click: () => {
             this.appendEquipments([eq]);
             modifiedFields.forEach(field => field.setEquipment(eq));
-            MessageNotify(this.local$lang('message: removed equipment recovery', [eq.name]));
+            MessageNotify(this.$lang('message: removed equipment recovery', [eq.name]));
           },
           removeMessageAfterClick: true
         }]
@@ -211,9 +217,6 @@ export default {
         case EquipmentField.TYPE_AVATAR:
           return eq instanceof Avatar;
       }
-    },
-    local$lang(s, vs) {
-      return this.$lang('browse equipments/' + s, vs);
     }
   },
   components: {
