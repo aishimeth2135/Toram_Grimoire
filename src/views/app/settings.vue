@@ -216,9 +216,9 @@ export default {
     },
     switchFont(id) {
       const origin = localStorage.getItem('app--font-family');
-      origin !== '0' && document.body.classList.remove('font-' + origin);
+      origin != '0' && document.documentElement.classList.remove('font-' + origin);
       localStorage.setItem('app--font-family', id.toString());
-      id !== 0 && document.body.classList.add('font-' + id);
+      id != 0 && document.documentElement.classList.add('font-' + id);
       this.currentFont = id;
     },
     toggleWindowVisible() {
