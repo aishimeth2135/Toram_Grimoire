@@ -1,6 +1,9 @@
 module.exports = {
   plugins: {
     tailwindcss: {
+      purge: [
+        './src/**/*.vue'
+      ],
       theme: {
         colors: {
           light: {
