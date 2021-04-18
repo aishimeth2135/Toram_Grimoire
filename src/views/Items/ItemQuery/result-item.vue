@@ -25,7 +25,8 @@
           </template>
         </div>
         <template v-else-if="state.currentMode === 'stat'">
-          <show-stat v-if="state.currentMode === 'stat'" :stat="previewStat"
+          <show-stat v-if="state.currentMode === 'stat'"
+            :stat="previewStat"
             :negative-value="previewStat.statValue() < 0"
             type="preview" />
         </template>
@@ -56,7 +57,7 @@
           </legend>
           <template v-if="equipment.stats.length !== 0">
             <show-stat v-for="stat in equipment.stats" :stat="stat"
-              :key="`${stat.baseName()}-${stat.type.description}`"
+              :key="stat.statId"
               :negative-value="stat.statValue() < 0" />
           </template>
           <cy-default-tips v-else iconify-name="mdi-ghost">

@@ -1,5 +1,5 @@
 <template>
-  <div class="main--" v-show="!confirmHistoryDate" :class="rootClassList">
+  <div class="main-- relative" v-show="!confirmHistoryDate" :class="rootClassList">
     <cy-icon-text v-if="otherEquipmentBranchVisible || historyVisible" iconify-name="bx-bxs-moon"
       style="position: absolute; top: -0.3rem;
         left: -0.7rem; --icon-width: 1.8rem; z-index: 1;
@@ -11,7 +11,7 @@
     </fieldset>
     <fieldset v-if="type == 'history'" class="branch-type-title">
       <legend>
-        <cy-icon-text iconify-name="ic-round-history" class="text-small">
+        <cy-icon-text iconify-name="ic-round-history" text-size="small">
           {{ branch.attrs['@history-date'] }}
         </cy-icon-text>
       </legend>
@@ -37,11 +37,11 @@
           @mouseleave.stop="toggleVisible('topMenu', false)">
           <transition-group name="top-menu-slide" appear>
             <cy-button v-for="(data) in topButtons" :key="data.name"
-              type="icon-only" class="top-menu-btn" :iconify-name="data.icon"
+              type="icon" class="top-menu-btn" :iconify-name="data.icon"
               @click="toggleVisible(data.name)" />
           </transition-group>
           <cy-button v-if="topButtons"
-            type="icon-only" class="top-menu-btn" :class="{ 'selected': topMenuVisible }"
+            type="icon" class="top-menu-btn" :class="{ 'selected': topMenuVisible }"
             :iconify-name="topMenuVisible ? 'ic-round-menu-open' : 'ic-round-menu'" />
         </div>
       </div>
@@ -145,7 +145,10 @@
       <!-- [start] other -->
       <fieldset class="extra-column unfold-fieldset" v-if="isScoped" :class="{ unfold: skillAreaVisible }">
         <legend>
-            <cy-button v-if="isScoped" class="condition-scope text-small light-text no-border no-padding" iconify-name="bx-bx-target-lock" @click="toggleVisible('skillArea')">
+            <cy-button v-if="isScoped"
+              text-size="small"
+              class="condition-scope light-text border-0 p-0"
+              iconify-name="bx-bx-target-lock" @click="toggleVisible('skillArea')">
             {{ $lang('skill area/button text') }}
           </cy-button>
         </legend>
@@ -154,10 +157,13 @@
             <div class="graph">
               <skill-area :attrs="branch.attrs" />
               <div class="bottom">
-                <cy-icon-text iconify-name="bx-bxs-circle" class="text-small mr-normal" style="--icon-color: var(--primary-water-blue)">
+                <cy-icon-text iconify-name="bx-bxs-circle"
+                  class="mr-2" icon-color="water-blue"
+                  text-size="small">
                   {{ $lang('skill area/point: character') }}
                 </cy-icon-text>
-                <cy-icon-text iconify-name="bx-bxs-circle" class="text-small" style="--icon-color: var(--primary-red)">
+                <cy-icon-text iconify-name="bx-bxs-circle"
+                  icon-color="red" text-size="small">
                   {{ $lang('skill area/point: target') }}
                 </cy-icon-text>
               </div>
@@ -230,7 +236,8 @@
     </fieldset>
     <div v-else-if="branch.name == 'list'" :class="branchClass">
       <!-- <cy-icon-text iconify-name="mdi-leaf" class="prefix-icon" /> -->
-      <div v-for="(data) in showData['@list-datas']" class="leaf-list-item" :key="data['text']">
+      <div v-for="data in showData['@list-datas']"
+        class="leaf-list-item" :key="data['text']">
         <cy-icon-text iconify-name="mdi-leaf" class="prefix-icon" />
         <span v-html="data['text']"></span>
       </div>
@@ -290,7 +297,7 @@
               </cy-icon-text>
             </template>
             <template v-if="showData['unit']" v-slot:unit>
-              <span>{{ showData['unit'] }}</span>
+              <span class="text-light-4">{{ showData['unit'] }}</span>
             </template>
           </cy-input-counter>
         </div>
@@ -1226,7 +1233,7 @@ div.branch {
   &.branch-mark {
     padding: 0.4rem 0.6rem;
 
-    >.prefix-icon {
+    > .prefix-icon {
       top: -0.8rem;
     }
   }
@@ -1244,22 +1251,19 @@ fieldset.branch {
     align-items: center;
     padding: 0 0.4rem;
 
-    > .name {
+    & > .name {
       margin-right: 0.8rem;
     }
 
-    > .detail {
+    & > .detail {
       display: inline-block;
       font-size: 0.9rem;
       align-self: flex-end;
 
-      > .prop {
+      & > .prop {
         display: inline-block;
         color: var(--primary-green);
         margin-right: 0.4rem;
-        // border: 1px solid var(--primary-green);
-        // padding: 0.1rem 0.2rem;
-        // border-radius: 0.2rem;
       }
     }
   }
@@ -1286,7 +1290,7 @@ fieldset.branch {
   margin-bottom: 0.9rem;
   background-color: var(--white);
 
-  >.prefix-icon {
+  & > .prefix-icon {
     position: absolute;
     z-index: 1;
     left: -1rem;
@@ -1295,7 +1299,7 @@ fieldset.branch {
     --icon-color: var(--primary-light-2);
   }
 
-  >.suffix-icon {
+  & > .suffix-icon {
     position: absolute;
     z-index: 1;
     right: -0.8rem;
@@ -1315,10 +1319,6 @@ fieldset.branch {
   @{deep} .name {
     margin-right: 0.5rem;
   }
-
-  .unit {
-    color: var(--primary-light-4);
-  }
 }
 
 .branch.list {
@@ -1334,10 +1334,6 @@ fieldset.branch {
 
 .branch.proration {
   margin-top: 0.6rem;
-}
-
-.mr-normal {
-  margin-right: 0.4rem;
 }
 
 .content-line {
@@ -1420,8 +1416,6 @@ fieldset.branch {
 }
 
 .skill-area {
-  /* border: 1px solid var(--primary-light);
-  box-shadow: 0.1rem 0.1rem 0.6rem var(--primary-light); */
   margin: 0.6rem;
   display: flex;
   flex-wrap: wrap;
@@ -1465,7 +1459,7 @@ fieldset.extra-column {
   margin-top: 0.3rem;
   padding-left: 0.4rem;
 
-  >legend {
+  & > legend {
     display: flex;
     align-items: center;
     padding: 0 0.4rem;
@@ -1484,25 +1478,18 @@ fieldset.extra-column {
   line-height: 1.3rem;
   margin: 0.2rem 0;
 
-  // &.normal {
-  //   //border-left: 2px solid var(--primary-light-3);
-  //   padding: 0 0.5rem;
-  //   margin-right: 0.4rem;
-  //   border-bottom: 1px solid var(--primary-light-2);
-  // }
-
   &.normal {
     border-left: 2px solid var(--primary-light-3);
     padding: 0.1rem 0.7rem;
     margin-right: 0.3rem;
   }
 
-  >.title {
+  & > .title {
     font-size: 0.9rem;
     align-self: flex-end;
   }
 
-  >.value {
+  & > .value {
     margin-left: 0.4rem;
     color: var(--primary-light-4);
   }

@@ -1,7 +1,9 @@
 <template>
-  <div class="main--">
-    <div class="stat" v-for="(statText) in statTexts" :key="statText.iid">
-      <cy-icon-text iconify-name="mdi-leaf">
+  <div class="mr-2">
+    <div v-for="statText in statTexts"
+      :key="statText.iid"
+      class="inline-block mr-3">
+      <cy-icon-text iconify-name="mdi-leaf" type="item">
         <span v-html="statText.text"></span>
       </cy-icon-text>
     </div>
@@ -41,25 +43,3 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
-@deep-operator: ~'>>>';
-
-.main-- {
-  margin-left: 0.4rem;
-}
-
-div.stat {
-  display: inline-block;
-  margin-right: 0.6rem;
-
-  @{deep-operator} svg {
-    width: 0.8rem;
-    height: 0.8rem;
-    align-self: flex-end;
-  }
-  @{deep-operator} .text {
-    margin-left: 0.2rem;
-  }
-}
-
-</style>

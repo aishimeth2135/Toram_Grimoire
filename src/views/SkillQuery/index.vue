@@ -22,7 +22,8 @@
         </cy-button>
       </template>
       <template v-slot:float-menu>
-        <div v-show="selectSkillTreeWindowState.visible" class="menu-container width-wide"
+        <div v-show="selectSkillTreeWindowState.visible"
+          class="menu-container width-wide"
           @mouseleave.stop="toggleSelectSkillTreeWindow(false)">
           <div>
             <cy-button v-for="(stc, i) in skillRoot.skillTreeCategorys" :key="stc.id"
@@ -87,7 +88,7 @@
           </div>
         </template>
         <div v-else class="default-content">
-          <div class="container" @click="toggleSelectSkillTreeWindow">
+          <div class="conent-container" @click="toggleSelectSkillTreeWindow">
             <cy-icon-text icon-id="potum" class="icon" />
             <div v-html="$lang('default message: equipment conditions')"></div>
           </div>
@@ -95,10 +96,12 @@
         <div class="bottom-menu">
           <div class="top-content">
             <cy-transition type="fade">
-              <div class="container" v-if="!skillStates.optionsWindowVisible">
-                <cy-button type="icon-only" iconify-name="heroicons-solid:switch-vertical"
-                  key="switch-btn" icon-color="water-blue-light" icon-color-hover="water-blue"
-                  class="inline mr-normal-2"
+              <div class="content-container" v-if="!skillStates.optionsWindowVisible">
+                <cy-button type="icon" key="switch-btn"
+                  iconify-name="heroicons-solid:switch-vertical"
+                  icon-color="water-blue-light"
+                  icon-color-hover="water-blue"
+                  class="p-0 mr-2"
                   @click="skillStates.optionsMode = skillStates.optionsMode == 0 ? 1 : 0" />
                 <cy-transition type="fade" mode="out-in">
                   <div v-if="skillStates.optionsMode == 0" class="container-content" key="mode-1">
@@ -124,15 +127,15 @@
                       </cy-icon-text>
                       <div>
                         <cy-button iconify-name="eva-arrow-circle-left-outline"
-                          class="inline mr-normal" @click="switchSkill('previous')">
+                          class="my-0 p-0 border-0 mr-3" @click="switchSkill('previous')">
                           {{ $lang('previous skill') }}
                         </cy-button>
                         <cy-button iconify-name="eva-arrow-circle-right-outline"
-                          class="inline mr-normal" @click="switchSkill('next')">
+                          class="my-0 p-0 border-0 mr-3" @click="switchSkill('next')">
                           {{ $lang('next skill') }}
                         </cy-button>
                         <cy-button iconify-name="bx-bx-fast-forward-circle"
-                          class="inline mr-normal" @click="switchSkill('last')">
+                          class="my-0 p-0 border-0 mr-3" @click="switchSkill('last')">
                           {{ $lang('last skill') }}
                         </cy-button>
                       </div>
@@ -141,7 +144,7 @@
                 </cy-transition>
               </div>
             </cy-transition>
-            <cy-button :iconify-name="skillStates.optionsWindowVisible ? 'ic-round-unfold-less' : 'ic-round-unfold-more'" type="icon-only" style="margin-left: auto;"
+            <cy-button :iconify-name="skillStates.optionsWindowVisible ? 'ic-round-unfold-less' : 'ic-round-unfold-more'" type="icon" style="margin-left: auto;"
               @click="skillStates.optionsWindowVisible = !skillStates.optionsWindowVisible" />
           </div>
           <cy-transition type="fade">
@@ -199,7 +202,7 @@
       :position-element="tagState.positionElement">
       <div class="tag-window-content" ref="tag-window-content" @click="closeTagWindow">
         <div class="title">
-          <cy-button iconify-name="jam-arrow-left" type="icon-only" v-if="tagState.tags.length > 1"
+          <cy-button iconify-name="jam-arrow-left" type="icon" v-if="tagState.tags.length > 1"
             class="inline" @click.stop="previousTag" />
           <cy-icon-text iconify-name="ri-leaf-fill" text-color="purple">{{ currentTag.name }}</cy-icon-text>
           <span v-if="tagState.windowVisible" class="close-tip">{{ $lang('click anywhere to close') }}</span>
@@ -758,7 +761,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  > .container {
+  > .conent-container {
     cursor: pointer;
     padding: 1.3rem;
     transition: border-color 0.3s;
@@ -807,7 +810,7 @@ export default {
     display: flex;
     align-items: center;
 
-    > .container {
+    > .conent-container {
       display: flex;
       align-items: center;
       overflow-y: auto;

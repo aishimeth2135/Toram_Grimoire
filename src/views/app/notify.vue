@@ -1,17 +1,22 @@
 <template>
   <div class="main--show-message">
     <transition-group name="fade-slide">
-      <div v-for="msg in messages" :key="msg.iid" class="message-item">
-        <span class="counter-container" v-if="msg.counter > 1">
+      <div v-for="msg in messages" :key="msg.iid"
+        class="duration-300 bg-dark text-white p-3 flex items-center mt-4 rounded w-full flex-wrap relative">
+        <span v-if="msg.counter > 1"
+          class="inline-flex justify-center items-center w-8 h-8 bg-dark rounded-full border border-solid border-light-2 text-light-2 absolute -right-4 -top-4">
           <span>{{ msg.counter }}</span>
         </span>
-        <div class="container">
-          <cy-icon-text :iconify-name="msg.icon" class="icon" />
+        <div class="inline-flex items-center">
+          <cy-icon-text :iconify-name="msg.icon"
+            icon-color="light"
+            class="mr-3" />
           <span class="text">{{ msg.message }}</span>
         </div>
         <div v-if="msg.options.buttons && msg.options.buttons.length != 0">
           <span v-for="btn in msg.options.buttons" :key="btn.iid"
-            class="msg-btn" @click="messageButtonClick(msg, btn)">
+            class="cursor-pointer ml-3 text-light-2 text-right hover:text-light"
+            @click="messageButtonClick(msg, btn)">
             {{ btn.text || '|' + btn.iid + '|' }}
           </span>
         </div>
@@ -43,56 +48,7 @@
   right: 1.2rem;
   max-width: calc(100vw - 2rem);
   width: 20rem;
-  z-index: 51;
-}
-.message-item {
-  transition: 0.3s;
-  background-color: var(--primary-dark);
-  color: var(--white);
-  padding: 0.8rem;
-  display: flex;
-  align-items: center;
-  margin-top: 1rem;
-  border-radius: 0.2rem;
-  width: 100%;
-  flex-wrap: wrap;
-  position: relative;
-
-  > .counter-container {
-    width: 2rem;
-    height: 2rem;
-    background-color: var(--primary-dark);
-    border-radius: 50%;
-    border: 0.1rem solid var(--primary-light-2);
-    color: var(--primary-light-2);
-    position: absolute;
-    right: -1rem;
-    top: -1rem;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  > .container {
-    display: inline-flex;
-    align-items: center;
-
-    > .icon {
-      margin-right: 0.8rem;
-      --icon-color: var(--primary-light);
-    }
-  }
-}
-
-.msg-btn {
-  cursor: pointer;
-  margin-left: 0.7rem;
-  color: var(--primary-light-2);
-  text-align: right;
-
-  &:hover {
-    color: var(--primary-light);
-  }
+  z-index: 60;
 }
 
 .fade-slide-enter {

@@ -1,6 +1,6 @@
 <template>
-  <div class="cy--default-tips">
-    <div class="container">
+  <div class="cy--default-tips flex items-center justify-center px-1 py-4">
+    <div class="content-container flex items-center whitespace-normal">
       <iconify-icon v-if="iconifyName" :name="iconifyName" />
       <svg-icon v-else-if="iconId" :icon-id="iconId" />
       <span :style="{ 'text-align': textAlign }"><slot></slot></span>
@@ -19,25 +19,13 @@
     }
   }
 </script>
-<style lang="less" scoped>
-  .cy--default-tips {
-    padding: 1rem 0.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+<style lang="postcss" scoped>
+.content-container {
+  & > svg {
+    width: 2.7rem;
+    height: 2.7rem;
 
-    > .container {
-      display: flex;
-      align-items: center;
-      white-space: normal;
-
-      > svg {
-        color: var(--primary-light-2);
-        width: 2.7rem;
-        height: 2.7rem;
-        margin-right: 1rem;
-        flex-shrink: 0;
-      }
-    }
+    @apply mr-4 text-light-2 flex-shrink-0;
   }
+}
 </style>

@@ -95,9 +95,11 @@
             <cy-options display="inline">
               <template #title>
                 <span class="switch-mode-btn">
-                  <cy-button type="icon-only" iconify-name="heroicons-solid:switch-vertical"
-                    key="switch-btn" icon-color="water-blue-light" icon-color-hover="water-blue"
-                    class="inline" />
+                  <cy-button type="icon" key="switch-btn"
+                    iconify-name="heroicons-solid:switch-vertical"
+                    icon-color="water-blue-light"
+                    icon-color-hover="water-blue"
+                    class="p-0" />
                 </span>
               </template>
               <template #options>
@@ -117,7 +119,7 @@
                     <input type="text" :placeholder="$lang('search placeholder')"
                       v-model="modes.normal.searchText">
                   </div>
-                  <cy-button type="icon-only" iconify-name="heroicons-solid:menu"
+                  <cy-button type="icon" iconify-name="heroicons-solid:menu"
                     @click="modes.normal.optionsVisible = !modes.normal.optionsVisible" />
                 </div>
               </template>
@@ -175,10 +177,9 @@
           </cy-icon-text>
         </template>
         <template v-slot:default>
-          <cy-title-input iconify-name="ic-outline-category" class="search-stat-input">
-            <input type="text" v-model="modes.stat.statSearchText"
-              :placeholder="$lang('options: stat/select stat: search placeholder')" />
-          </cy-title-input>
+          <cy-title-input iconify-name="ic-outline-category"
+            :value.sync="modes.stat.statSearchText"
+            :placeholder="$lang('options: stat/select stat: search placeholder')" />
           <template v-if="statsSearchResult.length != 0">
             <cy-list-item v-for="stat in statsSearchResult"
               :key="`${stat.origin.baseName}-${stat.type.description}`"

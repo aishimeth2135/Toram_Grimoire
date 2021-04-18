@@ -5,9 +5,8 @@
       {{ $lang('custom equipment editor/equipment name') }}
     </cy-icon-text>
     <div class="name content">
-      <cy-title-input iconify-name="mdi-clipboard-edit-outline">
-        <input type="text" v-model="equipment.name" />
-      </cy-title-input>
+      <cy-title-input iconify-name="mdi-clipboard-edit-outline"
+       :value.sync="equipment.name" />
     </div>
     <cy-icon-text iconify-name="mdi-rhombus-outline"
       text-size="small" text-color="purple">
@@ -55,10 +54,10 @@
           {{ $lang('custom equipment editor/select stat: window title') }}
         </cy-icon-text>
       </template>
-      <cy-title-input iconify-name="ic-outline-category" class="search-stat-input">
-        <input type="text" v-model="searchText"
-          :placeholder="$lang('custom equipment editor/select stat: search placeholder')" />
-      </cy-title-input>
+      <cy-title-input iconify-name="ic-outline-category"
+        class="search-stat-input"
+        :value.sync="searchText"
+        :placeholder="$lang('custom equipment editor/select stat: search placeholder')" />
       <template v-if="statsSearchResult.length != 0">
         <cy-list-item v-for="stat in statsSearchResult"
           :key="`${stat.origin.baseName}-${stat.type.description}`"
@@ -176,9 +175,10 @@
               </div>
             </div>
           </cy-transition>
-          <cy-flex-layout @click.native="toggleVisible('selectStatDetail')" class="top">
+          <div @click="toggleVisible('selectStatDetail')"
+            class="top flex items-center flex-wrap">
             <cy-icon-text :iconify-name="'ic-round-keyboard-arrow-' + (selectStatDetailVisible ? 'down' : 'up')" />
-            <template #right-content>
+            <div class="ml-auto">
               <cy-button iconify-name="ic-round-done" type="border"
                 @click.stop="confirmEquipmentSelection">
                 {{ $globalLang('global/confirm') }}
@@ -187,8 +187,8 @@
                 @click.stop="cancelEquipmentSelection">
                 {{ $globalLang('global/cancel') }}
               </cy-button>
-            </template>
-          </cy-flex-layout>
+            </div>
+          </div>
         </template>
       </cy-bottom-content>
     </cy-window>

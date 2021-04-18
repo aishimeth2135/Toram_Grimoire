@@ -1,49 +1,56 @@
 <template>
-  <div class="information">
-    <div class="title">
-      <cy-icon-text class="name" :iconify-name="equipmentData.categoryIcon"
+  <div class="w-full">
+    <div class="flex items-center pb-1 pl-1">
+      <cy-icon-text class="mr-2 text-purple"
+        :iconify-name="equipmentData.categoryIcon"
         :icon-color="equipment.isCustom ? 'green' : 'light-2'">
         <span>{{ equipment.name }}</span>
-        <span class="refining" v-if="equipment.hasRefining && equipment.refining > 0">+{{ equipment.refining | equipmentRefining }}</span>
+        <span class="ml-1 text-water-blue" v-if="equipment.hasRefining && equipment.refining > 0">+{{ equipment.refining | equipmentRefining }}</span>
       </cy-icon-text>
-      <span class="category"
+      <span class="flex-shrink-0 text-light-3 text-sm mr-2"
         :style="{ 'color': `var(--primary-${equipment.isCustom ? 'green' : 'light-3'})` }"
         >{{ equipmentData.categoryText }}</span>
-      <cy-button type="icon-only" class="single-line" style="margin-left: auto"
+      <cy-button type="icon" class="ml-auto"
         :iconify-name="mode == 0 ? 'ic-round-edit' : 'ic-round-view-list'"
         @click="mode = mode == 0 ? 1 : 0" />
     </div>
     <cy-transition type="fade" mode="out-in">
-      <div class="info" v-if="mode == 0" key="base">
-        <div class="base" v-if="['weapon', 'armor'].includes(equipment.is)">
+      <div class="px-2" v-if="mode == 0" key="base">
+        <div v-if="['weapon', 'armor'].includes(equipment.is)"
+          class="flex items-center my-2 rounded-2xl border-1 border-solid border-light py-1 px-3">
           <template v-if="equipment.is == 'weapon'">
-            <cy-icon-text iconify-name="mdi-sword" class="name">ATK</cy-icon-text>
-            <span class="value">
-              {{ equipment.atk }}<span class="refining" v-if="equipment.hasRefining && equipment.refining > 0">+{{ equipment.refiningAdditionAmount }}</span>
+            <cy-icon-text iconify-name="mdi-sword">ATK</cy-icon-text>
+            <span class="ml-2 text-purple">
+              {{ equipment.atk }}<span v-if="equipment.hasRefining && equipment.refining > 0"
+                class="ml-1 text-water-blue">+{{ equipment.refiningAdditionAmount }}</span>
             </span>
-            <span class="stability">{{ equipment.stability }}%</span>
+            <span class="ml-auto">{{ equipment.stability }}%</span>
           </template>
           <template v-else>
-            <cy-icon-text iconify-name="mdi-shield" class="name">DEF</cy-icon-text>
-            <span class="value">{{ equipment.def }}</span>
+            <cy-icon-text iconify-name="mdi-shield">DEF</cy-icon-text>
+            <span class="ml-2 text-purple">{{ equipment.def }}</span>
           </template>
         </div>
-        <div class="stats" :class="{ 'stats-disable': statsDisable }">
+        <div class="mt-1 pl-1" :class="{ 'opacity-50': statsDisable }">
           <show-stat v-for="stat in equipment.stats" :stat="stat"
-            :key="`${stat.baseName()}-${stat.type.description}`"
+            :key="stat.statId"
             :negative-value="stat.statValue() < 0" />
         </div>
-        <div v-if="equipment.hasCrystal && equipment.crystals.length > 0" class="crystals"
-          :class="{ 'stats-disable': statsDisable }">
-          <cy-icon-text v-for="c in equipment.crystals" class="crystal"
-            :key="c.id" :image-path="getCrystalImagePath(c)" type="line">
+        <div v-if="equipment.hasCrystal && equipment.crystals.length > 0"
+          class="border-t border-solid border-light mt-2 pt-1"
+          :class="{ 'opacity-50': statsDisable }">
+          <cy-icon-text v-for="c in equipment.crystals"
+            class="mr-3 my-1"
+            :key="c.id" :image-path="getCrystalImagePath(c)">
             {{ c.name }}
           </cy-icon-text>
         </div>
       </div>
-      <div class="edit" v-else key="edit">
-        <cy-flex-layout v-if="equipment.customTypeList != null" class="switch-custom-type">
-          <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle" class="mr-normal">
+      <div v-else key="edit" class="px-1 pt-2">
+        <cy-flex-layout v-if="equipment.customTypeList != null"
+          class="mb-2">
+          <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle"
+            class="mr-2" text-color="purple" text-size="small">
             {{ $lang('equipment type') }}
           </cy-icon-text>
           <cy-button type="border" iconify-name="heroicons-solid:switch-vertical"
@@ -51,21 +58,21 @@
             {{ $lang('field type text/' + equipment.type.description) }}
           </cy-button>
         </cy-flex-layout>
-        <cy-input-counter v-if="equipment.is == 'weapon'" class="counter"
+        <cy-input-counter v-if="equipment.is == 'weapon'" class="mb-3"
           :value="equipment.atk" :range="baseValueRange"
           @set-value="setAtk(equipment, $event)">
           <template v-slot:title>
             <cy-icon-text iconify-name="mdi-sword">ATK</cy-icon-text>
           </template>
         </cy-input-counter>
-        <cy-input-counter v-else-if="equipment.is == 'armor'" class="counter"
+        <cy-input-counter v-else-if="equipment.is == 'armor'" class="mb-3"
           :value="equipment.def" :range="baseValueRange"
           @set-value="setDef(equipment, $event)">
           <template v-slot:title>
             <cy-icon-text iconify-name="mdi-shield">DEF</cy-icon-text>
           </template>
         </cy-input-counter>
-        <cy-input-counter v-if="equipment.hasRefining" class="counter"
+        <cy-input-counter v-if="equipment.hasRefining" class="mb-3"
           :value="equipment.refining" :range="[0, 15]"
           @set-value="setRefining(equipment, $event)">
           <template v-slot:title>
@@ -84,7 +91,7 @@
             {{ $lang('crystal empty') }}
           </cy-button>
         </div>
-        <div class="custom-editor">
+        <div class="mt-3 pt-2 border-t border-solid border-light">
           <cy-button iconify-name="ic-round-edit" type="border"
             @click="openCustomEquipmentEditor(equipment)">
             {{ $lang('custom equipment editor/window title') }}
@@ -99,6 +106,7 @@
 import vue_showStat from "./show-stat.vue";
 
 export default {
+  RegisterLang: 'Character Simulator',
   props: {
     'equipment': {},
     'statsDisable': {
@@ -169,103 +177,3 @@ export default {
   }
 }
 </script>
-
-<style lang="less" scoped>
-@deep-operator: ~'>>>';
-
-.information {
-  width: 100%;
-
-  > .title {
-    padding-bottom: 0.2rem;
-    padding-left: 0.3rem;
-    display: flex;
-    align-items: center;
-
-    > .name {
-      margin-right: 0.6rem;
-      color: var(--primary-purple);
-
-      @{deep-operator} .refining {
-        color: var(--primary-water-blue);
-        margin-left: 0.3rem;
-      }
-    }
-    > .category {
-      flex-shrink: 0;
-      color: var(--primary-light-3);
-      font-size: 0.9rem;
-      margin-right: 0.4rem;
-    }
-  }
-  > .info {
-    padding: 0 0.4rem;
-
-    > .base {
-      padding: 0.4rem 0.7rem;
-      border: 0.1rem solid var(--primary-light);
-      border-radius: 1rem;
-      margin: 0.6rem 0;
-      display: flex;
-      align-items: center;
-
-      > .name {
-        color: var(--primary-purple);
-      }
-
-      > .value {
-        margin-left: 0.5rem;
-        color: var(--primary-purple);
-
-        > .refining {
-          color: var(--primary-water-blue);
-          margin-left: 0.2rem;
-        }
-      }
-
-      > .stability {
-        margin-left: auto;
-      }
-    }
-
-    > .stats {
-      margin-top: 0.3rem;
-      padding-left: 0.3rem;
-
-      &.stats-disable {
-        opacity: 0.5;
-      }
-    }
-
-    > .crystals {
-      border-top: 1px solid var(--primary-light);
-      margin-top: 0.4rem;
-      padding-top: 0.2rem;
-      > .crystal {
-        margin: 0.2rem 0;
-        margin-right: 0.6rem;
-      }
-      &.stats-disable {
-        opacity: 0.5;
-      }
-    }
-  }
-  > .edit {
-    padding: 0 0.3rem;
-    padding-top: 0.6rem;
-
-    > .switch-custom-type {
-      margin-bottom: 0.5rem;
-    }
-
-    .counter {
-      margin-bottom: 0.6rem;
-    }
-    > .custom-editor {
-      margin-top: 0.8rem;
-      padding-top: 0.6rem;
-      border-top: 1px solid var(--primary-light);
-    }
-  }
-}
-</style>

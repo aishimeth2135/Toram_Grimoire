@@ -5,11 +5,10 @@
         {{ $lang('select crystals/window title') }}
       </cy-icon-text>
     </template>
-    <cy-title-input iconify-name="ic-outline-category" class="search-input">
-      <input type="text" v-model="searchText"
-        :placeholder="$lang('select crystals/search placeholder')" />
-    </cy-title-input>
-    <div class="crystals">
+    <cy-title-input iconify-name="ic-outline-category" class="mb-4"
+      :value.sync="searchText"
+      :placeholder="$lang('select crystals/search placeholder')" />
+    <div>
       <template v-if="crystalCategorys.length != 0">
         <template v-for="(category, i) in crystalCategorys">
           <cy-hr v-if="i != 0" :key="category.id + '-hr'" />
@@ -43,12 +42,12 @@
     <cy-bottom-content>
       <template #normal-content>
         <cy-transition type="slide-up">
-          <div v-if="detailVisible" class="detail">
+          <div v-if="detailVisible" class="pt-1">
             <cy-icon-text iconify-name="bx-bx-cube-alt"
               text-color="purple" text-size="small">
               {{ $lang('select crystals/selected crystals') }}
             </cy-icon-text>
-            <div class="equipment-crystals">
+            <div>
               <cy-list-item v-for="c in equipment.crystals"
                 :key="c.id"
                 @click="selectCrystal(convertToOriginal(c))">
@@ -59,16 +58,17 @@
                   <cy-icon-text iconify-name="ic-round-close" />
                 </template>
                 <template #extra>
-                  <div class="stats">
+                  <div class="pl-2 pt-1 w-full">
                     <show-stat v-for="stat in c.stats" :stat="stat"
-                      :key="`${stat.baseName()}-${stat.type.description}`" />
+                      :key="stat.statId" />
                   </div>
                 </template>
               </cy-list-item>
             </div>
           </div>
         </cy-transition>
-        <cy-flex-layout @click.native="toggleDetailVisible" class="bottom-content-top">
+        <cy-flex-layout @click.native="toggleDetailVisible"
+          class="cursor-pointer">
           <cy-icon-text :iconify-name="'ic-round-keyboard-arrow-' + (detailVisible ? 'down' : 'up')" />
           <template #right-content>
             <cy-button type="border" iconify-name="ic-round-done"
@@ -194,25 +194,3 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-@deep: ~'>>>';
-
-.search-input {
-  margin-bottom: 1rem;
-}
-.bottom-content-top {
-  cursor: pointer;
-}
-
-.detail {
-  padding-top: 0.3rem;
-}
-
-.equipment-crystals {
-  @{deep} .stats {
-    padding-left: 0.5rem;
-    padding-top: 0.2rem;
-    width: 100%;
-  }
-}
-</style>

@@ -43,8 +43,9 @@ const store = {
             });
         })
       ).then(() => {
-        if (!state.initItems.find(p => p.status == -1))
+        if (!state.initItems.find(p => p.status == -1)) {
           commit('initSucceed');
+        }
       });
     },
   }

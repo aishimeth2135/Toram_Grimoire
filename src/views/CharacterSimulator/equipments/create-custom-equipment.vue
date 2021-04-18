@@ -19,14 +19,13 @@
     </cy-default-tips>
     <cy-bottom-content v-if="currentEquipment">
       <template #normal-content>
-        <cy-flex-layout>
-          <template #right-content>
-            <cy-button type="border" iconify-name="ic-round-done"
-              @click="createCustomEquipment">
-              {{ $globalLang('global/create') }}
-            </cy-button>
-          </template>
-        </cy-flex-layout>
+        <div class="flex items-center">
+          <cy-button type="border" class="ml-auto"
+            iconify-name="ic-round-done"
+            @click="createCustomEquipment">
+            {{ $globalLang('global/create') }}
+          </cy-button>
+        </div>
       </template>
     </cy-bottom-content>
     <cy-window :visible="window.selectType"

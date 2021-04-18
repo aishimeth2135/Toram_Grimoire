@@ -1,17 +1,21 @@
 <template>
-  <article class="home">
-    <section class="main">
+  <article class="flex justify-center flex-wrap">
+    <section class="flex justify-center w-full pt-16 pb-20 mb-12 border-b border-solid border-light-2">
       <router-link to="/bubble/potum" v-slot="{ navigate }" custom>
-        <div class="title" @click="navigate">Cy's Grimoire</div>
+        <div class="text-5xl" @click="navigate">Cy's Grimoire</div>
       </router-link>
     </section>
-    <section class="link-buttons">
-      <div v-for="(data) in columns" class="column" :key="data.name + '|' + data.path">
+    <section class="flex justify-center flex-wrap">
+      <div v-for="data in columns"
+        class="inline-block m-5"
+        :key="data.name + '|' + data.path">
         <router-link :to="data.path" v-slot="{ navigate }" custom>
-          <div class="title" @click="data.navigate ? data.navigate($event, navigate) : navigate($event)"
+          <div @click="data.navigate ? data.navigate($event, navigate) : navigate($event)"
+            class="content-title flex items-center justify-center relative cursor-pointer duration-300 bg-white p-4 w-36 h-36 rounded-full border-2 border-solid border-light-2"
             role="link">
-            <div class="text">{{ $globalLang('Page Title/' + data.name) }}</div>
-            <iconify-icon :name="data.icon" class="icon" />
+            <div class="text-lg text-center">{{ $globalLang('Page Title/' + data.name) }}</div>
+            <iconify-icon :name="data.icon"
+              class="icon absolute top-0 left-0 w-11 h-11 fill-current text-light-2 bg-white rounded-full" />
           </div>
         </router-link>
       </div>
@@ -68,74 +72,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.home {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.main {
-  display: flex;
-  justify-content: center;
-  padding-top: 4rem;
-  padding-bottom: 5rem;
-  margin-bottom: 3rem;
-  border-bottom: 1px solid var(--primary-light-2);
-  width: 100%;
-
-  > .title {
-    font-size: 2.8rem;
-  }
-}
-
-.link-buttons {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.column {
-  display: inline-block;
-  margin: 1.3rem;
-
-  > .title {
-    width: 9rem;
-    height: 9rem;
-    border-radius: 50%;
-    border: 2px solid var(--primary-light-2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    cursor: pointer;
-    transition: 0.3s;
-    background-color: var(--white);
-    padding: 1rem;
-
-    > .text {
-      font-size: 1.1rem;
-      text-align: center;
-    }
-
-    > .icon {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 2.7rem;
-      height: 2.7rem;
-      fill: currentcolor;
-      color: var(--primary-light-2);
-      background-color: var(--white);
-      border-radius: 50%;
-    }
-
-    &:hover {
-      border-color: var(--primary-light-3);
-      > .icon {
-        color: var(--primary-light-3);
-        animation: move-rotate 1.3s ease;
-      }
-    }
+.content-title:hover {
+  @apply border-light-3;
+  & > .icon {
+    @apply text-light-3;
+    animation: move-rotate 1.3s ease;
   }
 }
 @keyframes move-rotate {

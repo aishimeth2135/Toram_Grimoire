@@ -1,12 +1,18 @@
 <template>
-    <nav class="app--nav">
+    <nav class="border-b border-solid border-light flex items-center py-1 px-4 mb-4 bg-white">
       <app-left-menu />
-      <div class="content">
+      <div class="inline-flex items-center whitespace-nowrap overflow-y-auto px-2 text-sm">
         <template v-for="(item, i) in items">
-          <iconify-icon v-if="i != 0" name="ic-round-keyboard-arrow-right" :key="item.path + '-icon'" />
+          <iconify-icon v-if="i != 0"
+            class="w-5 h-5 fill-current text-light-2 mx-2"
+            name="ic-round-keyboard-arrow-right"
+            :key="item.path + '-icon'" />
           <span :key="item.path + '-text'">
-            <router-link v-if="i != items.length - 1" :to="item.path" v-slot="{ navigate }" custom>
-              <span class="link-btn" @click="navigate" @keypress.enter="navigate" role="link">{{ item.title }}</span>
+            <router-link v-if="i != items.length - 1" :to="item.path"
+              v-slot="{ navigate }" custom>
+              <span class="cursor-pointer text-light-3 underline" @click="navigate"
+                @keypress.enter="navigate"
+                role="link">{{ item.title }}</span>
             </router-link>
             <template v-else>
               {{ item.title }}
@@ -14,7 +20,7 @@
           </span>
         </template>
       </div>
-      <span class="setting-button">
+      <span class="ml-auto">
         <app-settings />
       </span>
     </nav>
@@ -36,43 +42,3 @@
     }
   };
 </script>
-
-<style lang="less" scoped>
-  @deep-operator: ~'>>>';
-
-  .app--nav {
-    display: flex;
-    align-items: center;
-    padding: 0.3rem 0.5rem;
-    border-bottom: 1px solid var(--primary-light);
-    margin-bottom: 1rem;
-    background-color: var(--white);
-  }
-
-  .content {
-    display: inline-flex;
-    align-items: center;
-    white-space: nowrap;
-    overflow-y: auto;
-    font-size: 0.9rem;
-    padding: 0 0.4rem;
-
-    @{deep-operator} svg {
-      width: 1.2rem;
-      height: 1.2rem;
-      fill: currentcolor;
-      color: var(--primary-light-2);
-      margin: 0 0.6rem;
-    }
-  }
-
-  .link-btn {
-    color: var(--primary-light-3);
-    text-decoration: underline;
-    cursor: pointer;
-  }
-
-  .setting-button {
-    margin-left: auto;
-  }
-</style>

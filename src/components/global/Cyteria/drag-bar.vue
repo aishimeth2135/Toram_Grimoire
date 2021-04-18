@@ -4,7 +4,7 @@
       <slot name="title"></slot>
     </div>
     <div class="content">
-      <div class="container">
+      <div class="content-container">
         <input type="range" class="drag-input"
           :min="range[0]" :max="range[1]" :step="step" :value="value"
           @input="setValue($event)">
@@ -95,7 +95,7 @@ export default {
     align-items: center;
     padding: 0 0.6rem;
 
-    > .container {
+    > .content-container {
       width: 85%;
       position: relative;
 

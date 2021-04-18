@@ -23,13 +23,13 @@
           @manual-auto-load="autoLoad"
           @close-auto-save="closeAutoSave" />
       </div>
-      <div class="bottom-menu">
+      <div class="sticky bottom-2 bg-white border-1 border-solid border-light-2 rounded-2xl px-4 py-1 z-10 mx-2 mt-4">
         <cy-button v-for="(content, i) in contents"
           :key="content.id"
           :iconify-name="content.icon"
           :selected="i == currentContentIndex"
           @click="setCurrentContent(i)"
-          class="inline menu-btn">
+          class="border-0 p-0 mr-3">
           {{ content.text }}
         </cy-button>
       </div>
@@ -116,7 +116,7 @@ export default {
     init();
   },
   created() {
-    if (this.skillBuilds.length == 0 || this.characterSimulatorHasInit)
+    if (this.skillBuilds.length === 0 || this.characterSimulatorHasInit)
       this.autoLoad();
     else {
       this.autoLoad({ resetOption: { skillBuildsReplaced: false } });
@@ -124,16 +124,16 @@ export default {
     }
     this.$store.commit('character/characterSimulatorInitFinished');
 
-    if (this.characterStates.length != 0 && this.currentCharacterIndex == -1)
+    if (this.characterStates.length !== 0 && this.currentCharacterIndex === -1)
       this.$store.commit('character/setCurrentCharacter', { index: 0 });
-    if (this.characterStates.length == 0) {
+    if (this.characterStates.length === 0) {
       this.createCharacter();
     }
-    if (this.skillBuilds.length != 0 && this.currentSkillBuildIndex == -1)
+    if (this.skillBuilds.length !== 0 && this.currentSkillBuildIndex === -1)
       this.$store.commit('character/setCurrentSkillBuild', { index: 0 });
 
     const evt_autoSave = () => this.autoSave();
-    const evt_autoSave_2 = () => document.visibilityState == 'hidden' && this.autoSave();
+    const evt_autoSave_2 = () => document.visibilityState === 'hidden' && this.autoSave();
     window.addEventListener('beforeunload', evt_autoSave);
     document.addEventListener('visibilitychange', evt_autoSave_2);
     this.$once('hook:beforeDestroy', () => {
@@ -290,9 +290,9 @@ export default {
 
         f.setEquipment(calcField.equipment);
 
-        // 主手武器的話，serEquipment完，副手武器有可能被移除
+        // 主手武器的話，setEquipment完，副手武器有可能被移除
         // if 不是主手武器 or 副手原本就是空的 or 更換主手後副手不是空的
-        if (calcField.type != EquipmentField.TYPE_MAIN_WEAPON || subEmpty || !sub.isEmpty()) {
+        if (calcField.type !== EquipmentField.TYPE_MAIN_WEAPON || subEmpty || !sub.isEmpty()) {
           calcFieldNextFunc = () => {
             tmpEq ? f.setEquipment(tmpEq) : f.removeEquipment();
           };
@@ -465,11 +465,11 @@ export default {
     },
     /* ==[ skill item - skill branch ]================================ */
     findCharacterStatResult(src, id) {
-      if (src == 'all')
+      if (src === 'all')
         src = this.allCharacterStatDatas;
-      else if (src == 'passive-skills')
+      else if (src === 'passive-skills')
         src = this.passiveSkillsCharacterStatDatas;
-      else if (src == 'base')
+      else if (src === 'base')
         src = this.baseCharacterStatDatas;
       else
         console.warn('Unknow source name: ' + src);
@@ -496,11 +496,11 @@ export default {
       return levelSkillState.skillState.states.map(skillState => {
         const branchStates = [];
 
-        if (skillItemType != 'none') {
+        if (skillItemType !== 'none') {
           let counter = 0;
-          const branchFilter = skillItemType == 'passive' ?
-            bch => bch.name == 'passive' :
-            bch => bch.name == 'effect';
+          const branchFilter = skillItemType === 'passive' ?
+            bch => bch.name === 'passive' :
+            bch => bch.name === 'effect';
           const t = skillState.branchs
             .filter(branchFilter)
             .map(bch => {
@@ -508,7 +508,6 @@ export default {
                 branch: bch,
                 skillState,
                 levelSkill: levelSkillState.levelSkill,
-                $lang: this.$lang,
                 view: this,
                 findCharacterStatResult: this.findCharacterStatResult,
                 skillItemType: skillItemType
@@ -707,21 +706,3 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
-.bottom-menu {
-  position: sticky;
-  bottom: 0.6rem;
-  background-color: var(--white);
-  border: 1px solid var(--primary-light-2);
-  border-radius: 1.2rem;
-  padding: 0.5rem 1rem;
-  padding-right: 0.8rem;
-  z-index: 9;
-  margin: 0 0.6rem;
-  margin-top: 1rem;
-
-  > .menu-btn + .menu-btn {
-    margin-left: 0.8rem;
-  }
-}
-</style>

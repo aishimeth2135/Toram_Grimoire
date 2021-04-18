@@ -42,9 +42,8 @@
       </cy-icon-text>
     </div>
     <div class="content">
-      <cy-title-input iconify-name="mdi-clipboard-text-outline">
-        <input type="text" v-model="currentFoodBuild.name">
-      </cy-title-input>
+      <cy-title-input iconify-name="mdi-clipboard-text-outline"
+        :value.sync="currentFoodBuild.name" />
     </div>
     <div class="content-title">
       <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
@@ -54,7 +53,9 @@
     </div>
     <div class="foods content">
       <div class="content-tips">
-        <cy-icon-text iconify-name="ic-outline-info" text-color="light-3" text-size="small" class="mr-normal">
+        <cy-icon-text iconify-name="ic-outline-info"
+          text-color="light-3" text-size="small"
+          class="mr-2">
           {{ $lang('tips: select food') }}
         </cy-icon-text>
         <cy-icon-text iconify-name="ic-outline-info" text-color="light-3" text-size="small">

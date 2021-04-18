@@ -7,20 +7,21 @@
       </cy-icon-text>
     </template>
     <template v-slot:default>
-      <cy-title-input iconify-name="ic-outline-category" class="search-input">
-        <input type="text" v-model="searchText"
-          :placeholder="$lang('search equipment placeholder')" />
-      </cy-title-input>
+      <cy-title-input iconify-name="ic-outline-category"
+        class="sticky top-0 bg-white z-1 pt-1 pb-2"
+        :value.sync="searchText"
+        :placeholder="$lang('search equipment placeholder')" />
       <div class="search-result" v-if="searchResult.length != 0">
-        <cy-list-item class="equipment-item" v-for="item in searchResult" :key="item.iid"
+        <cy-list-item v-for="item in searchResult" :key="item.iid"
           @click="selectEquipment(item)">
           <cy-icon-text :iconify-name="item.categoryIcon">{{ item.origin.name }}</cy-icon-text>
-          <span class="obtain">{{ item.obtainText }}</span>
+          <span class="equipment-item-obtain">{{ item.obtainText }}</span>
           <template v-slot:right-content>
             <cy-icon-text iconify-name="ic-round-add" />
           </template>
         </cy-list-item>
-        <div v-if="searchResult.length >= searchResultMaximum" class="limit-reached-limit">
+        <div v-if="searchResult.length >= searchResultMaximum"
+          class="text-sm text-red py-3 px-2">
           {{ $lang('search equipment result: limit reached') }}
         </div>
       </div>
@@ -30,12 +31,12 @@
       <cy-bottom-content class="selected" v-if="selected.length != 0">
         <template #normal-content>
           <cy-transition type="fade">
-            <div class="detail" v-if="selectedDetailVisible">
+            <div v-if="selectedDetailVisible" class="selected-detail">
               <div>
-                <cy-list-item class="equipment-item" v-for="item in selected" :key="item.iid"
+                <cy-list-item v-for="item in selected" :key="item.iid"
                   @click="removeSelected(item)">
                   <cy-icon-text :iconify-name="item.categoryIcon">{{ item.origin.name }}</cy-icon-text>
-                  <span class="obtain">{{ item.obtainText }}</span>
+                  <span class="equipment-item-obtain">{{ item.obtainText }}</span>
                   <template v-slot:right-content>
                     <cy-icon-text iconify-name="ic-round-close" />
                   </template>
@@ -43,30 +44,28 @@
               </div>
             </div>
           </cy-transition>
-          <cy-flex-layout class="top"
-            @click.native="selectedDetailVisible = !selectedDetailVisible">
-            <span class="number-container">
+          <div class="cursor-pointer mb-2 pt-2 flex items-center"
+            @click="selectedDetailVisible = !selectedDetailVisible">
+            <span class="inline-flex items-center justify-center h-7 w-7 border-1 border-solid border-light-3 mr-3 rounded-full">
               <span>{{ selected.length }}</span>
             </span>
             <span>{{ $lang('search equipment result: selected title') }}</span>
-            <template #right-content>
-              <cy-icon-text :iconify-name="'ic-round-keyboard-arrow-' + (selectedDetailVisible ? 'down' : 'up')" />
-            </template>
-          </cy-flex-layout>
-          <cy-flex-layout>
-            <template #right-content>
+            <cy-icon-text class="ml-auto flex-shrink-0"
+              :iconify-name="'ic-round-keyboard-arrow-' + (selectedDetailVisible ? 'down' : 'up')" />
+          </div>
+          <div class="flex items-center">
+            <div class="ml-auto">
               <cy-button iconify-name="ic-round-done" type="border"
-                class="inline"
                 @click.stop="submitSelected">
                 {{ $globalLang('global/confirm') }}
               </cy-button>
               <cy-button iconify-name="ic-round-close" type="border"
-                class="inline after-button"
+                class="ml-2"
                 @click.stop="clearSelected">
                 {{ $globalLang('global/clear') }}
               </cy-button>
-            </template>
-          </cy-flex-layout>
+            </div>
+          </div>
         </template>
       </cy-bottom-content>
     </template>
@@ -152,54 +151,12 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-@deep: ~'>>>';
-@css-min: ~'min';
-
-.search-input {
-  position: sticky;
-  top: 0;
-  background-color: var(--white);
-  z-index: 1;
-  padding-top: 0.3rem;
-  padding-bottom: 0.5rem;
+<style lang="postcss" scoped>
+.equipment-item-obtain {
+  @apply text-sm text-light-2 ml-4;
 }
-
-.equipment-item {
-  @{deep} .obtain {
-    color: var(--primary-light-2);
-    font-size: 0.9rem;
-    margin-left: 1rem;
-  }
-}
-
-.selected {
-  @{deep} .top {
-    cursor: pointer;
-    margin-bottom: 0.5rem;
-    padding-top: 0.4rem;
-
-    > .number-container {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      height: 1.8rem;
-      width: 1.8rem;
-      border: 0.1rem solid var(--primary-light-3);
-      margin-right: 0.6rem;
-      border-radius: 50%;
-    }
-  }
-
-  @{deep} .detail {
-    max-height: ~'@{css-min}(20rem, 50vh)';
-    overflow-y: auto;
-  }
-}
-
-.limit-reached-limit {
-  font-size: 0.9rem;
-  color: var(--primary-red);
-  padding: 0.7rem 0.5rem;
+.selected-detail {
+  max-height: min(20rem, 50vh);
+  overflow-y: auto;
 }
 </style>

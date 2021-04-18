@@ -30,13 +30,6 @@
       align-items: center;
     }
 
-    &.mt-normal {
-      margin-top: 0.8rem;
-    }
-    &.mb-normal {
-      margin-bottom: 0.8rem;
-    }
-
     &._inline {
       display: inline-flex;
     }

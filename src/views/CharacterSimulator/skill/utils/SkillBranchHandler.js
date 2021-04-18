@@ -15,7 +15,7 @@ class SkillBranchHandler {
     this.userSets = (() => {
       const res = [];
 
-      const formulaExtra = this.branch.suffix.find(suf => suf.name == 'formula_extra');
+      const formulaExtra = this.branch.suffix.find(suf => suf.name === 'formula_extra');
       if (formulaExtra) {
         const texts = formulaExtra.attrs['texts'].split(/\s*,\s*/);
         res.push(...texts.map((text, i) => ({

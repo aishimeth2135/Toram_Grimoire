@@ -4,7 +4,7 @@
       <cy-button iconify-name="mdi-weather-night"
         v-if="checkLocalStorage"
         @click="toggleNightMode"
-        class="no-border no-padding">
+        class="border-0 p-0">
         {{ langText('night mode') }}
       </cy-button>
       <cy-icon-text iconify-name="ant-design:home-outlined">

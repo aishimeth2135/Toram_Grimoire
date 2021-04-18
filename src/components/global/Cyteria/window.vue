@@ -1,10 +1,10 @@
 <template>
   <cy-transition type="fade">
     <div class="window" v-if="visible" @click="closeWindow"
-      :class="{ ['vertical-position-' + verticalPosition]: true }">
-      <div class="container">
+      :class="rootClass">
+      <div class="content-container">
         <div class="top-mask" />
-        <cy-button type="icon-only" @click.stop="$emit('close-window')"
+        <cy-button type="icon" @click.stop="$emit('close-window')"
           iconify-name="jam-close-circle-f" class="close-btn" />
         <div class="container-inner" @click.stop>
           <div class="top">
@@ -13,10 +13,14 @@
           <div class="content">
             <slot></slot>
           </div>
-          <div class="tail" v-if="type == 'confirm'">
-            <cy-button @click="confirmCallback" iconify-name="ic-round-check" text-lang-id="global/confirm">
+          <div class="tail" v-if="type === 'confirm'">
+            <cy-button @click="confirmCallback"
+              iconify-name="ic-round-check">
+              {{ $globalLang('global/confirm') }}
             </cy-button>
-            <cy-button @click="closeWindow" iconify-name="ic-round-close" text-lang-id="global/confirm">
+            <cy-button @click="closeWindow"
+              iconify-name="ic-round-close">
+              {{ $globalLang('global/cancel') }}
             </cy-button>
           </div>
         </div>
@@ -27,19 +31,12 @@
 <script>
 export default {
   props: {
-    'type': {
+    type: {
       type: String,
       default: 'normal'
     },
-    'titleLangId': {
-      default: null
-    },
-    'visible': {
+    visible: {
       required: true
-    },
-    'iconifyName': {
-      type: String,
-      default: 'mdi:checkbox-multiple-blank-circle-outline'
     },
     confirmCallback: {
       type: Function
@@ -47,6 +44,24 @@ export default {
     verticalPosition: {
       type: String,
       default: 'center'
+    },
+    width: {
+      type: String,
+      default: 'normal',
+      validation: v => ['normal', 'auto', 'wide'].includes(v)
+    },
+    forzenTop: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    rootClass() {
+      return {
+        ['vertical-position-' + this.verticalPosition]: true,
+        ['width-' + this.width]: true,
+        'frozen-top': this.forzenTop
+      };
     }
   },
   methods: {
@@ -68,12 +83,15 @@ export default {
   z-index: 50;
   background-color: rgba(var(--rgb-black), 0.1);
 
-  > .container {
-    width: 25rem;
+  > .content-container {
     position: relative;
     display: inline-block;
     margin: 1rem 0.5rem;
     height: calc(100% - 2rem);
+
+    @media screen and (max-width: 26rem) {
+      width: calc(100% - 1rem)!important;
+    }
 
     > .top-mask {
       position: absolute;
@@ -126,7 +144,7 @@ export default {
   }
 
   &.frozen-top {
-    > .container {
+    > .content-container {
       > .container-inner {
         >.top {
           background-color: var(--white);
@@ -139,8 +157,14 @@ export default {
     }
   }
 
+  &.width-normal {
+    > .content-container {
+      width: 25rem;
+    }
+  }
+
   &.width-auto {
-    >.container {
+    > .content-container {
       width: auto;
       max-width: calc(100% - 1rem);
 
@@ -151,7 +175,7 @@ export default {
   }
 
   &.width-wide {
-    >.container {
+    > .content-container {
       width: 42.5rem;
     }
   }
@@ -161,12 +185,6 @@ export default {
   }
   &.vertical-position-center {
     align-items: center;
-  }
-}
-
-@media screen and (max-width: 26rem) {
-  .window > .container {
-    width: calc(100% - 1rem)!important;
   }
 }
 </style>
