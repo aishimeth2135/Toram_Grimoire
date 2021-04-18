@@ -1,22 +1,29 @@
 <template>
   <article>
     <section>
-      <div v-for="(c) in columns" class="column" :key="c.title">
-        <div class="title">
+      <div v-for="c in columns" :key="c.title"
+        class="column flex p-4 border-b border-solid border-light">
+        <div class="flex items-center justify-center w-24 h-24 relative flex-shrink-0 rounded-full mr-3 mb-4 border-1 border-solid border-light-3">
           <div>{{ $lang(c.title + '/title') }}</div>
-          <cy-icon-text iconify-name="mdi-leaf" class="fix-icon" />
+          <cy-icon-text iconify-name="mdi-leaf"
+            style="--icon-width: 2rem;"
+            class="absolute -top-1.5 -left-1.5" />
         </div>
-        <div class="content">
-          <div class="sub-title">{{ $lang(c.title + '/sub title') }}</div>
-          <div class="list-item" v-for="(item) in c.list" :key="item.title">
-            <div class="title" v-if="item.title">{{ $lang(c.title + '/' + item.title) }}</div>
-            <div class="content">
-              <span v-for="(v) in item.list" :key="v">
-                <cy-icon-text iconify-name="mdi-leaf" class="icon" />
+        <div class="pl-3">
+          <div class="text-sm text-purple mb-3">{{ $lang(c.title + '/sub title') }}</div>
+          <div class="mx-3" v-for="item in c.list" :key="item.title">
+            <div class="text-sm text-light-3" v-if="item.title">{{ $lang(c.title + '/' + item.title) }}</div>
+            <div class="py-2 pl-4">
+              <span v-for="v in item.list"
+                :key="typeof v === 'object' ? `${v.main}|${v.sub}` : v"
+                class="inline-flex pr-3">
+                <cy-icon-text iconify-name="mdi-leaf"
+                  style="--icon-width: 0.8rem;"
+                 class="mr-1 self-start" />
                 <span v-if="typeof v == 'string'">{{ v }}</span>
                 <template v-else>
-                  <span class="main">{{ v.main }}</span>
-                  <span class="sub">{{ v.sub }}</span>
+                  <span>{{ v.main }}</span>
+                  <span class="px-2 ml-2 text-water-blue border-l border-r border-solid border-water-blue">{{ v.sub }}</span>
                 </template>
               </span>
             </div>
@@ -24,8 +31,10 @@
         </div>
       </div>
     </section>
-    <section class="bottom">
-      <div class="content">托蘭異世錄為<a href="https://asobimo.com/" target="_blank">アソビモ株式会社（ASOBIMO,Inc.）</a>所營運之遊戲。本網站只是一個分享資料的小地方。</div>
+    <section class="py-4 px-3">
+      <div class="content">
+        托蘭異世錄為<a class="text-light-3 underline" href="https://asobimo.com/" target="_blank">アソビモ株式会社（ASOBIMO,Inc.）</a>所營運之遊戲。本網站只是一個分享資料的小地方。
+      </div>
     </section>
   </article>
 </template>
@@ -104,77 +113,9 @@
 </script>
 
 <style lang="less" scoped>
-.bottom {
-  padding: 1.2rem 0.4rem;
-}
 .column {
-  display: flex;
-  border-bottom: 1px solid var(--primary-light);
-  padding: 1rem;
-
   @media screen and (max-width: 50rem) {
     flex-wrap: wrap;
-  }
-
-  > .title {
-    flex-shrink: 0;
-    border: 2px solid var(--primary-light-3);
-    position: relative;
-    width: 6rem;
-    height: 6rem;
-    border-radius: 50%;
-    margin-right: 0.7rem;
-    margin-bottom: 1rem;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    > .fix-icon {
-      position: absolute;
-      --icon-width: 2rem;
-      top: -0.3rem;
-      left: -0.3rem;
-    }
-  }
-
-  > .content {
-    padding-left: 0.7rem;
-    > .sub-title {
-      font-size: 0.9rem;
-      color: var(--primary-purple);
-    }
-    > .list-item {
-      margin: 0.8rem 0;
-      > .title {
-        font-size: 0.9rem;
-        color: var(--primary-light-3);
-      }
-
-      > .content {
-        padding: 0.4rem 0;
-        padding-left: 1rem;
-
-        > span {
-          display: inline-flex;
-          margin-right: 0.8rem;
-
-          > .icon {
-            --icon-width: 0.8rem;
-            margin-right: 0.2rem;
-            align-self: flex-start;
-          }
-
-          > .sub {
-            border-left: 1px solid var(--primary-water-blue);
-            border-right: 1px solid var(--primary-water-blue);
-            color: var(--primary-water-blue);
-            padding: 0 0.4rem;
-            margin-left: 0.4rem;
-          }
-        }
-      }
-    }
   }
 }
 </style>

@@ -1,11 +1,11 @@
 <template>
   <cy-list-item class="main--equipment-item" :selected="selected">
     <cy-icon-text :iconify-name="equipmentData.categoryIcon"
-      :class="{ 'disable': disable }"
+      :class="{ 'opacity-50': disable }"
       :icon-color="equipment.isCustom ? 'green' : 'light-2'"
       :text-color="isCurrent ? 'light-4' : 'dark'">
       <span>{{ equipment.name }}</span><span v-if="equipment.hasRefining && equipment.refining != 0"
-        class="refining">+{{ equipment.refining }}</span>
+        class="ml-1 text-water-blue">+{{ equipment.refining }}</span>
     </cy-icon-text>
   </cy-list-item>
 </template>
@@ -31,12 +31,3 @@
     }
   }
 </script>
-<style lang="less" scoped>
-.disable {
-  opacity: 0.5;
-}
-.refining {
-  color: var(--primary-water-blue);
-  margin-left: 0.3rem;
-}
-</style>

@@ -1,7 +1,7 @@
 <template>
   <div class="app--loading" v-show="status != 3">
     <template v-if="status < 3">
-      <div class="container">
+      <div class="content-container">
         <div class="main">
           <loading-animation :status="status" @done="$store.commit('initialize/initFinished')" />
         </div>
@@ -65,7 +65,7 @@
     font-size: 0.9rem;
   }
 
-  > .container {
+  > .content-container {
     width: 30rem;
     max-width: 100%;
     text-align: center;

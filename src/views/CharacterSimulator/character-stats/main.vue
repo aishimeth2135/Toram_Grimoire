@@ -1,22 +1,32 @@
 <template>
   <section>
-    <div class="character-stat-categorys"
+    <div
       @touchstart="toggleShowStatDetailDisplay('visible', false, true)"
       @click="toggleShowStatDetailDisplay('visible', false)">
-      <div v-for="data in showCharacterStatDatas" class="category" :key="data.name">
-        <div class="title">{{ data.name }}</div>
-        <div class="stats">
-          <span v-for="stat in data.stats" :key="stat.id" class="stat-scope"
+      <div v-for="data in showCharacterStatDatas"
+        class="px-2 mb-4"
+        :key="data.name">
+        <fieldset class="border-t border-solid border-light">
+          <legend class="py-0 px-2 ml-3">
+            <cy-icon-text iconify-name="mdi-creation"
+              text-color="purple" text-size="small">
+              {{ data.name }}
+            </cy-icon-text>
+          </legend>
+        </fieldset>
+        <div class="pl-4">
+          <span v-for="stat in data.stats" :key="stat.id"
+            class="stat-scope px-2 mx-2 my-1 inline-flex cursor-pointer relative border-b border-solid border-light"
             @mouseenter="toggleShowStatDetailDisplay('hovering', true) && setStatDetail($event, stat)"
             @mouseleave="toggleShowStatDetailDisplay('hovering', false)"
             @click.stop="toggleShowStatDetailDisplay('visible') && setStatDetail($event, stat)"
             @touchstart.prevent.stop="toggleShowStatDetailDisplay('visible', detail.currentStat != stat) && setStatDetail($event, stat)"
             @touchend.prevent.stop>
             <template v-if="!stat.origin.isBoolStat">
-              <span class="name">{{ stat.name }}</span>
-              <span class="value">{{ stat.displayValue }}</span>
+              <span class="mr-3">{{ stat.name }}</span>
+              <span class="text-light-4">{{ stat.displayValue }}</span>
             </template>
-            <span v-else class="value">{{ stat.name }}</span>
+            <span v-else class="text-light-4">{{ stat.name }}</span>
           </span>
         </div>
       </div>
@@ -25,51 +35,63 @@
       :position-element="detail.positionElement"
       @click.native.stop="toggleShowStatDetailDisplay('visible', false)">
       <template #title>
-        <cy-flex-layout style="margin-bottom: 0.7rem;">
+        <div class="flex items-center mb-3">
           <cy-icon-text iconify-name="mdi-ghost" text-color="purple">
             {{ detail.currentStat.name }}
           </cy-icon-text>
-          <template #right-content v-if="detail.visible">
-            <cy-icon-text iconify-name="ic-round-close" text-color="light-3" text-size="small"
-              style="margin-left: 1rem;">
+          <div v-if="detail.visible" class="ml-auto">
+            <cy-icon-text iconify-name="ic-round-close"
+              text-color="light-3" text-size="small"
+              class="ml-4">
               {{ $lang('Click anywhere to close') }}
             </cy-icon-text>
-          </template>
-        </cy-flex-layout>
+          </div>
+        </div>
       </template>
-      <div v-if="showStatDetailCaption" class="stat-detail-caption"
-        v-html="showStatDetailCaption">
+      <div v-if="showStatDetailCaption"
+        class="text-sm mb-3 pl-2">
+        <span v-for="item in showStatDetailCaption"
+          :key="item.iid"
+          :class="{ 'separate-scope': item.separate }">
+          {{ item.text }}
+        </span>
       </div>
       <cy-icon-text v-if="showStatDetailDatas.conditionalBase"
         iconify-name="mdi-sword">
         <stat-detail-equipments :equipment-texts="showStatDetailDatas.conditionalBase.title.equipments" />
       </cy-icon-text>
-      <div v-for="data in showStatDetailDatas.datas" :key="data.iid" class="stat-detail-scope">
-        <cy-icon-text v-if="typeof data.title !== 'object'"
-          iconify-name="gg-shape-rhombus" class="title">
+      <div v-for="data in showStatDetailDatas.datas"
+        :key="data.iid" class="mt-1">
+        <cy-icon-text v-if="(typeof data.title !== 'object')"
+          iconify-name="gg-shape-rhombus">
           {{ data.title }}
         </cy-icon-text>
-        <cy-icon-text v-else iconify-name="gg-shape-rhombus" class="title">
-          <span class="text">{{ data.title.text }}</span>
-          <span class="value">{{ data.title.value }}</span>
+        <cy-icon-text v-else iconify-name="gg-shape-rhombus">
+          <span>{{ data.title.text }}</span>
+          <span class="ml-1 text-light-3">{{ data.title.value }}</span>
         </cy-icon-text>
-        <div v-if="data.lines.length != 0" class="additinal-values">
-          <div v-for="line in data.lines" :key="'line' + line.iid" class="line">
+        <div v-if="data.lines.length !== 0"
+          class="pl-2 mt-0.5 pb-1">
+          <div v-for="line in data.lines" :key="'line' + line.iid"
+            class="flex items-center">
             <cy-icon-text v-if="typeof line.title == 'string'"
               iconify-name="ic-round-add" text-size="small">
               {{ line.title }}
             </cy-icon-text>
             <cy-icon-text v-else iconify-name="ic-round-add" text-size="small">
-              <stat-detail-equipments v-if="line.title.equipments.length != 0"
-                class="detail-line-captions-pre"
-                :equipment-texts="line.title.equipments" />
-              <span class="detail-line-captions">
-                <span v-for="caption in line.title.captions" :key="caption.iid" class="caption">
+              <stat-detail-equipments
+                v-if="line.title.equipments.length != 0"
+                :equipment-texts="line.title.equipments"
+                class="mr-2" />
+              <span>
+                <span v-for="(caption, i) in line.title.captions"
+                  :key="caption.iid"
+                  :class="{ 'mr-1': i !== line.title.captions.length - 1 }">
                   {{ caption.text }}
                 </span>
               </span>
             </cy-icon-text>
-            <span class="value">{{ line.value }}</span>
+            <span class="text-sm text-light-3 ml-2">{{ line.value }}</span>
           </div>
         </div>
       </div>
@@ -78,6 +100,7 @@
 </template>
 <script>
 import { StatBase } from "@lib/Character/Stat";
+import { separateText } from "@Utils/data";
 
 import vue_statDetailEquipments from "./stat-detail-equipments.vue";
 
@@ -98,10 +121,9 @@ export default {
   },
   computed: {
     showStatDetailCaption() {
-      if (!this.detail.currentStat)
-        return '';
-      return this.detail.currentStat.origin.caption
-        .replace(/\(\(([^)]+)\)\)/g, (m, m1) => `<span class="separate-scope">${m1}</span>`);
+      return this.detail.currentStat ?
+        separateText(this.detail.currentStat.origin.caption, /\(\(([^)]+)\)\)/g) :
+        '';
     },
     showStatDetailDatas() {
       if (!this.detail.currentStat || this.detail.currentStat.origin.isBoolStat)
@@ -124,7 +146,7 @@ export default {
           title: this.handleConditional(stat.conditionalBase)
         } : null;
       const datas = list
-        .filter(item => item.id == 'base' || stat.statValueParts[item.id] != 0)
+        .filter(item => item.id === 'base' || stat.statValueParts[item.id] !== 0)
         .map((item, i) => {
           const p = item.id,
             type = item.type;
@@ -136,7 +158,7 @@ export default {
           if (p == 'multiplier')
             title += '｜' + Math.floor(v * stat.statValueParts['base'] / 100).toString();
 
-          const isBase = p == 'base';
+          const isBase = p === 'base';
 
           const lines = [];
           const adds = stat.statPartsDetail.additionalValues[p].filter(p => p.value != 0);
@@ -211,7 +233,7 @@ export default {
       });
 
       let str = conditionObj.conditional;
-      if (str == '#') {
+      if (str === '#') {
         str = captions.length == 0 ? [this.$lang('additional value')] : [];
       } else {
         str = str.replace(/\s+/g, '')
@@ -221,7 +243,7 @@ export default {
             m1 = m1.replace(/\./g, '/');
             return this.$lang('text of conditional values/' + m1) + ',';
           })
-          .replace(/&&|\|\|/g, m => m == '&&' ? '+,' : '/,')
+          .replace(/&&|\|\|/g, m => m === '&&' ? '+,' : '/,')
           .replace(/\(|\)/g, m => m + ',')
           .replace(/^\(([^)]+)\)$/, (m, m1) => m1);
 
@@ -258,99 +280,19 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-@deep: ~'>>>';
-
-.character-stat-categorys {
-  > .category {
-    padding: 0 0.6rem;
-    margin-bottom: 1.2rem;
-
-    > .title {
-      border-bottom: 1px solid var(--primary-light);
-      padding-bottom: 0.1rem;
-      padding-left: 0.3rem;
-      font-size: 0.9rem;
-      color: var(--primary-purple);
-    }
-
-    > .stats {
-      > .stat-scope {
-        padding: 0.2rem 0.6rem;
-        border-bottom: 1px solid var(--primary-light-2);
-        margin: 0.3rem;
-        display: inline-block;
-        cursor: pointer;
-
-        > .name {
-          margin-right: 0.4rem;
-        }
-
-        > .value {
-          color: var(--primary-light-4);
-        }
-      }
-    }
+<style lang="postcss" scoped>
+.stat-scope {
+  &::before {
+    content: '';
+    @apply bg-light rounded-full w-2 h-2 absolute -bottom-1 -right-1 block;
   }
 }
 
-.stat-detail-caption {
-  font-size: 0.9rem;
-  margin-bottom: 0.6rem;
-  padding-left: 0.4rem;
-
-  @{deep} .separate-scope {
-    border-left: 1px solid var(--primary-light-2);
-    border-right: 1px solid var(--primary-light-2);
-    padding: 0 0.4rem;
-    margin: 0 0.4rem;
-    color: var(--primary-light-3);
-  }
-}
-
-.stat-detail-scope {
-  margin-top: 0.3rem;
-
-  > .title {
-    @{deep} .value {
-      margin-left: 0.3rem;
-      color: var(--primary-light-3);
-    }
-  }
-
-  > .additinal-values {
-    padding-left: 0.6rem;
-    margin-top: 0.1rem;
-    padding-bottom: 0.2rem;
-
-    > .line {
-      display: flex;
-      align-items: center;
-
-      > .value {
-        font-size: 0.9rem;
-        color: var(--primary-light-3);
-        margin-left: 0.3rem;
-      }
-    }
-  }
-
-  .separate {
-    border-left: 1px solid var(--primary-light-2);
-    display: inline-block;
-    height: 1.2rem;
-    margin: 0 0.4rem;
-  }
-}
-
-.detail-line-captions {
-  > .caption {
-    & + & {
-      margin-left: 0.3rem;
-    }
-  }
-}
-.detail-line-captions-pre + .detail-line-captions {
-  margin-left: 0.3rem;
+.separate-scope {
+  border-left: 1px solid var(--primary-light-2);
+  border-right: 1px solid var(--primary-light-2);
+  padding: 0 0.4rem;
+  margin: 0 0.4rem;
+  color: var(--primary-light-3);
 }
 </style>

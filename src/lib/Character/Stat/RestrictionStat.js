@@ -7,6 +7,20 @@ class RestrictionStat extends Stat {
     super(base, type, v);
     this.restriction = restriction;
   }
+
+  get statId() {
+    const r = this.restriction;
+    const rs = [r.main, r.sub, r.body, r.other];
+    const rtext = rs.map(p => {
+      if (typeof p === 'symbol')
+        return p.description;
+      if (typeof p === 'string')
+        return p;
+      return 'none';
+    }).join('+');
+    return `${this.baseName()}|${this.type.description}|${rtext}`;
+  }
+
   copy() {
     return new RestrictionStat(this.base, this.type, this.statValue(), this.restriction);
   }

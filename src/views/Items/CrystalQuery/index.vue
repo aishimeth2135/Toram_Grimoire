@@ -1,40 +1,36 @@
 <template>
   <article>
-    <div class="main">
-      <fieldset class="top">
-        <legend>
+    <div>
+      <fieldset class="mb-4 p-4 border-1 border-solid border-light-2">
+        <legend class="px-2">
           <cy-button v-for="(mode, i) in modeState.modes"
             :key="mode.id"
             :iconify-name="mode.icon"
-            :selected="i == modeState.currentModeIndex"
+            :selected="i === modeState.currentModeIndex"
             @click="selectMode(i)"
             type="border">
             {{ $lang('search mode/' + mode.id) }}
           </cy-button>
         </legend>
-        <div class="mode--normal" v-show="currentMode == 'normal'">
-          <div class="top-title">
+        <div v-show="currentMode === 'normal'">
+          <div class="mb-1 text-purple">
             <cy-icon-text iconify-name="ic-outline-search" class="text-small">
               {{ $lang('search title') }}
             </cy-icon-text>
           </div>
-          <cy-title-input iconify-name="ic-outline-category" class="search-input">
-            <input type="text"
-              ref="normal-search-input"
-              :placeholder="$lang('search placeholder')"
-              @input="updateSearchResult()" />
-          </cy-title-input>
+          <cy-title-input iconify-name="ic-outline-category"
+            :value.sync="modeState['mode-normal'].searchText"
+            :placeholder="$lang('search placeholder')" />
         </div>
-        <div class="mode--stats" v-show="currentMode == 'stats'">
+        <div v-show="currentMode == 'stats'">
           <cy-button iconify-name="mdi-rhombus-outline" type="border"
-            class="select-stat"
             @click="toggleSelectStatWindowVisible(true)">
             {{ currentStat ? currentStat.text : $lang('select stat: title') }}
           </cy-button>
         </div>
       </fieldset>
-      <div class="crystals">
-        <template v-if="searchResult.length != 0">
+      <div>
+        <template v-if="searchResult.length !== 0">
           <template v-for="(category, i) in searchResult">
             <cy-hr v-if="i != 0" :key="category.id + '-hr'" />
             <cy-button :key="category.id + '-btn'"
@@ -58,22 +54,23 @@
           {{ $lang('no result tips') }}
         </cy-default-tips>
       </div>
-      <div class="detail-container" v-if="currentCrystal">
-        <div class="detail">
-          <div class="title">
+      <div v-if="currentCrystal"
+        class="flex sticky bottom-2 mr-2 bg-white border-1 border-solid border-light-2 rounded-2xl mt-4">
+        <div class="p-4">
+          <div class="mb-2 text-purple">
             <cy-icon-text :image-path="getCrystalImagePath(currentCrystal)" text-color="purple">
               {{ currentCrystal.name }}
             </cy-icon-text>
           </div>
-          <cy-flex-layout class="enhancer" v-if="currentCrystal.origin.enhancer">
+          <cy-flex-layout class="pl-3 mb-2" v-if="currentCrystal.origin.enhancer">
             <cy-icon-text iconify-name="bx-bx-cube-alt" text-size="small">
               {{ $lang('enhancer title') }}
-              <span class="enhancer-value">
+              <span class="text-orange text-sm">
                 {{ currentCrystal.origin.enhancer }}
               </span>
             </cy-icon-text>
           </cy-flex-layout>
-          <div class="stats">
+          <div class="pl-1">
             <show-stat v-for="stat in currentCrystal.stats"
               :stat="stat" :key="stat.title()"
               :negative-value="stat.statValue() < 0" />
@@ -91,14 +88,12 @@
           </cy-icon-text>
         </template>
         <template v-slot:default>
-          <cy-title-input iconify-name="ic-outline-category" class="search-stat-input">
-            <input type="text"
-              ref="stat-search-input"
-              :placeholder="$lang('select stat: search placeholder')"
-              @input="updateStatSearchResult()" />
-          </cy-title-input>
-          <template v-if="modeState['mode-stats'].statsSearchResult.length != 0">
-            <cy-list-item v-for="stat in modeState['mode-stats'].statsSearchResult"
+          <cy-title-input iconify-name="ic-outline-category"
+            class="mb-3"
+            :value.sync="modeState['mode-stats'].searchText"
+            :placeholder="$lang('select stat: search placeholder')" />
+          <template v-if="statSearchResult.length != 0">
+            <cy-list-item v-for="stat in statSearchResult"
               :key="`${stat.origin.baseName}-${stat.type.description}`"
               :selected="stat == currentStat"
               @click="selectStat(stat)">
@@ -150,7 +145,6 @@ export default {
 
     return {
       crystalCategorys,
-      searchResult: [],
       currentCrystal: null,
       modeState: {
         modes: [{
@@ -161,17 +155,17 @@ export default {
           icon: 'mdi-rhombus-outline'
         }],
         currentModeIndex: 0,
+        'mode-normal': {
+          searchText: ''
+        },
         'mode-stats': {
           stats,
-          statsSearchResult: stats,
+          searchText: '',
           currentStat: null,
           selectStatWindowVisible: false
         }
       }
     };
-  },
-  mounted() {
-    this.updateSearchResult();
   },
   computed: {
     currentMode() {
@@ -179,44 +173,20 @@ export default {
     },
     currentStat() {
       return this.modeState['mode-stats'].currentStat;
-    }
-  },
-  methods: {
-    updateStatSearchResult() {
+    },
+    statSearchResult() {
       const s = this.modeState['mode-stats'];
-      const v = this.$refs['stat-search-input'].value.toLowerCase();
-      if (v == '') {
-        s.statsSearchResult = s.stats;
-        return;
+      const v = s.searchText.toLowerCase();
+      if (v === '') {
+        return s.stats;
       }
-      s.statsSearchResult = s.stats.filter(stat => stat.text.toLowerCase().includes(v));
+      return s.stats.filter(stat => stat.text.toLowerCase().includes(v));
     },
-    findCrystalStat(from, crystal) {
-      return crystal.stats
-        .find(stat => stat.baseName() == from.origin.baseName &&
-            stat.type == from.type);
-    },
-    selectStat(stat) {
-      this.modeState['mode-stats'].currentStat = stat;
-      this.toggleSelectStatWindowVisible(false);
-      this.updateSearchResult();
-
-      const s = this.modeState['mode-stats'];
-      s.statsSearchResult = s.stats;
-    },
-    toggleSelectStatWindowVisible(force) {
-      force = force !== void 0 ? !this.modeState['mode-stats'].selectStatWindowVisible : force;
-      this.modeState['mode-stats'].selectStatWindowVisible = force;
-    },
-    selectMode(idx) {
-      this.modeState.currentModeIndex = idx;
-      this.updateSearchResult();
-    },
-    updateSearchResult() {
+    searchResult() {
       const res = [];
-      if (this.currentMode == 'normal') {
-        const v = this.$refs['normal-search-input'].value.toLowerCase();
-        if (v == '') {
+      if (this.currentMode === 'normal') {
+        const v = this.modeState['mode-normal'].searchText.toLowerCase();
+        if (v === '') {
           res.push(...this.crystalCategorys);
         }
         else {
@@ -228,11 +198,10 @@ export default {
             });
           });
         }
-      } else if (this.currentMode == 'stats') {
+      } else if (this.currentMode === 'stats') {
         const searchStat = this.currentStat;
         if (!searchStat) {
-          this.searchResult = [];
-          return;
+          return [];
         }
         this.crystalCategorys.forEach(cat => {
           const t = cat.crystals
@@ -252,7 +221,26 @@ export default {
           stat: this.currentStat ? this.findCrystalStat(this.currentStat, c) : null
         }));
       });
-      this.searchResult = res;
+
+      return res;
+    }
+  },
+  methods: {
+    findCrystalStat(from, crystal) {
+      return crystal.stats
+        .find(stat => stat.baseName() == from.origin.baseName &&
+            stat.type == from.type);
+    },
+    selectStat(stat) {
+      this.modeState['mode-stats'].currentStat = stat;
+      this.toggleSelectStatWindowVisible(false);
+    },
+    toggleSelectStatWindowVisible(force) {
+      force = force !== void 0 ? !this.modeState['mode-stats'].selectStatWindowVisible : force;
+      this.modeState['mode-stats'].selectStatWindowVisible = force;
+    },
+    selectMode(idx) {
+      this.modeState.currentModeIndex = idx;
     },
     getCrystalImagePath(c) {
       const type = c.origin.enhancer ? 'enhance' :
@@ -271,61 +259,3 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
-@deep: ~'>>>';
-
-.mode--normal {
-  > .top-title {
-    color: var(--primary-purple);
-    margin-bottom: 0.3rem;
-  }
-}
-
-.top {
-  margin-bottom: 1rem;
-  padding: 1rem;
-  border: 0.1rem solid var(--primary-light-2);
-
-  > legend {
-    padding: 0 0.6rem;
-  }
-}
-
-.detail-container {
-  display: flex;
-  position: sticky;
-  bottom: 0;
-  margin-right: 0.6rem;
-  background-color: var(--white);
-  border-top: 1px solid var(--primary-light-2);
-  margin-top: 1rem;
-
-  > .detail {
-    //margin-left: auto;
-    padding: 1rem;
-    // border: 0.1rem solid var(--primary-light-2);
-    // background-color: var(--white);
-
-    > .title {
-      margin-bottom: 0.4rem;
-      color: var(--primary-purple);
-    }
-    > .stats {
-      padding-left: 0.3rem;
-    }
-  }
-}
-
-.search-stat-input {
-  margin-bottom: 0.8rem;
-}
-.enhancer {
-  padding-left: 0.6rem;
-  margin-bottom: 0.4rem;
-
-  @{deep} .enhancer-value {
-    color: var(--primary-orange);
-    font-size: 0.9rem;
-  }
-}
-</style>

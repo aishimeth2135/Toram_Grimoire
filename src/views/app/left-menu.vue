@@ -1,10 +1,12 @@
 <template>
-  <span class="app--left-menu" @click="unfold=!unfold">
-    <cy-button :iconify-name="currentIconName" type="icon-only" class="top-button" />
+  <span class="app--left-menu relative z-50" @click="unfold=!unfold">
+    <cy-button :iconify-name="currentIconName"
+      type="icon" class="top-button" />
     <transition name="fade">
-      <div class="menu" v-show="!unfold" @click.stop="menuClick()"
+      <div v-show="!unfold" @click.stop="menuClick()"
+        class="menu z-1 min-h-full absolute"
         v-if="viewButtons && viewButtons.length != 0">
-        <div class="container">
+        <div class="conent-container w-full h-full">
           <cy-button v-for="(data) in viewButtons" :iconify-name="data.icon"
             :key="data.title" type="line" @click="setCurrentView(data)">
             {{ data.title }}
@@ -47,25 +49,18 @@ export default {
 @deep: ~'>>>';
 
 .app--left-menu {
-  z-index: 12;
-  position: relative;
-
   @{deep} .top-button {
     z-index: 2;
     position: relative;
     display: block;
   }
 
-  > .menu {
-    z-index: 1;
-    min-height: 100%;
-    position: absolute;
+  & > .menu {
     width: 15.5rem;
     top: 3.2rem;
     left: 0.4rem;
     max-height: calc(100vh - 5rem);
     opacity: 1;
-    
 
     &.fade-enter,
     &.fade-leave-to {
@@ -77,28 +72,16 @@ export default {
       transition: all 0.4s ease;
     }
 
-    >.container {
+    > .conent-container {
       padding: 0.6rem;
       padding-top: 1rem;
-      width: 100%;
-      height: 100%;
-      // border: 1px solid var(--primary-light-2);
-
-      @{deep} .title-line {
-        // border-top: 1px solid var(--primary-light-2);
-        padding-bottom: 0.4rem;
-        padding-top: 1rem;
-        padding-left: 0.4rem;
-        font-size: 0.9rem;
-        color: var(--primary-light-3);
-      }
     }
   }
 }
 
 @media screen and (max-width: 82rem) {
   .app--left-menu {
-    >.top-button {
+    > .top-button {
       z-index: 0;
     }
 
@@ -117,7 +100,7 @@ export default {
         opacity: 1;
       }
 
-      >.container {
+      > .conent-container {
         width: 16rem;
         background-color: var(--white);
       }

@@ -1,13 +1,19 @@
 <template>
-  <div class="stat-scope" v-if="type != 'preview'">
-    <cy-icon-text iconify-name="mdi-leaf" :text-color="negativeValue ? 'red' : 'dark'">
+  <div v-if="type !== 'preview'" class="inline-block mr-3">
+    <cy-icon-text iconify-name="mdi-leaf"
+      type="item"
+      :text-color="negativeValue ? 'red' : 'dark'">
       <span v-for="text in restrictionTexts"
-        class="restriction" :key="text">{{ text }}</span><span>{{ stat.show() }}</span>
+        class="text-water-blue text-sm mr-1"
+        :key="text">{{ text }}</span><span>{{ stat.show() }}</span>
     </cy-icon-text>
   </div>
-  <div v-else class="crystal-stat-preview">
+  <div v-else
+    class="w-full text-sm mt-1 text-purple pl-7 text-left"
+    :class="{ 'text-red': negativeValue }">
     <span v-for="text in restrictionTexts"
-      class="restriction" :key="text">{{ text }}</span><span>{{ stat.show() }}</span>
+      class="text-water-blue text-sm mr-1"
+      :key="text">{{ text }}</span><span>{{ stat.show() }}</span>
   </div>
 </template>
 <script>
@@ -20,39 +26,3 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
-@deep: ~'>>>';
-
-.stat-scope {
-  display: inline-block;
-  margin-right: 0.6rem;
-
-  @{deep} svg {
-    width: 0.8rem;
-    height: 0.8rem;
-    align-self: flex-end;
-  }
-  @{deep} .text {
-    margin-left: 0.2rem!important;
-    align-items: flex-end!important;
-  }
-}
-
-.crystal-stat-preview {
-  width: 100%;
-  font-size: 0.9rem;
-  margin-top: 0.3rem;
-  color: var(--primary-purple);
-  padding-left: 1.7rem;
-
-  &.negative-value {
-    color: var(--primary-red);
-  }
-}
-
-.restriction {
-  color: var(--primary-water-blue);
-  font-size: 0.9rem;
-  margin-right: 0.3rem;
-}
-</style>

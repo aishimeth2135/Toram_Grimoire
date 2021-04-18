@@ -1,6 +1,6 @@
 <template>
   <section class="main--">
-    <div class="container">
+    <div class="conent-container">
       <cy-icon-text icon-id="potum" class="icon" />
       <cy-icon-text iconify-name="bx-bx-message-rounded-x" class="fix-icon" />
       <div class="text">404 Not Found</div>
@@ -18,7 +18,7 @@
   align-items: center;
   justify-content: center;
 
-  > .container {
+  > .conent-container {
     text-align: center;
     position: relative;
 

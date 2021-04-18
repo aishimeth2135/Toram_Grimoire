@@ -1,5 +1,6 @@
 <template>
-  <span class="cy--icon-text" :class="rootClass" @click="$emit('click', $event)">
+  <span class="cy--icon-text" :class="rootClass"
+    @click="$emit('click', $event)">
     <iconify-icon v-if="iconifyName != null" :name="iconifyName" />
     <svg-icon v-if="iconId != null" :icon-id="iconId" />
     <image-icon v-if="imagePath" :image-path="imagePath" />
@@ -23,6 +24,11 @@ const colorList = [
 
 export default {
   props: {
+    type: {
+      type: String,
+      default: 'normal',
+      validator: v => ['normal', 'item'].includes(v)      
+    },
     iconifyName: {
       default: null
     },
@@ -67,6 +73,7 @@ export default {
   computed: {
     rootClass() {
       return {
+        'is-item': this.type === 'item',
         ['text-color-' + this.textColor]: true,
         ['text-' + this.textSize]: true,
         ['icon-color-' + this.iconColor]: true,
@@ -89,13 +96,6 @@ export default {
     --text-margin-left: 0.6rem;
     --value-margin-left: 0.6rem;
 
-    &.mr-normal {
-      margin-right: 0.6rem;
-    }
-    &.mr-normal-2 {
-      margin-right: 0.9rem;
-    }
-
     &.line {
       width: 100%;
     }
@@ -107,7 +107,7 @@ export default {
       display: inline-flex;
     }
 
-    > svg, img {
+    & > svg, & > img {
       height: var(--icon-width);
       width: var(--icon-width);
       flex-shrink: 0;
@@ -128,6 +128,19 @@ export default {
 
     > .text + .value {
       margin-left: var(--value-margin-left);
+    }
+
+    &.is-item {
+      & > svg {
+        width: 0.8rem;
+        height: 0.8rem;
+        align-self: flex-end;
+        margin-bottom: 0.2rem;
+      }
+      & > .text {
+        margin-left: 0.2rem;
+        align-items: flex-end;
+      }
     }
 
     &.text-normal {

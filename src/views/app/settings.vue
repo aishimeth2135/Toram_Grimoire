@@ -1,134 +1,136 @@
 <template>
-  <span class="app--settings">
-    <cy-button type="icon-only" iconify-name="ic-baseline-settings" @click="toggleWindowVisible" />
-    <cy-window class="width-wide main--window" @close-window="toggleWindowVisible"
+  <span class="app--settings py-4">
+    <cy-button type="icon" iconify-name="ic-baseline-settings" @click="toggleWindowVisible" />
+    <cy-window class="main--window"
+      width="wide"
+      @close-window="toggleWindowVisible"
       :visible="windowVisible">
       <template #title>
         <cy-icon-text iconify-name="ic-baseline-settings">
-          {{ langText('title') }}
+          {{ $lang('title') }}
         </cy-icon-text>
       </template>
       <fieldset class="column">
         <legend>
           <cy-icon-text iconify-name="ic-round-text-fields" text-color="purple">
-            {{ langText('switch font/title') }}
+            {{ $lang('switch font/title') }}
           </cy-icon-text>
         </legend>
-        <div class="caption">{{ langText('switch font/caption') }}</div>
+        <div class="caption">{{ $lang('switch font/caption') }}</div>
         <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ langText('switch font/warn 1') }}
+          {{ $lang('switch font/warn 1') }}
         </cy-icon-text>
         <div class="buttons">
           <cy-button iconify-name="ic-round-text-fields" type="border"
             :selected="currentFont == 1" @click="switchFont(1)">
-            {{ langText('switch font/default font') }}
+            {{ $lang('switch font/default font') }}
           </cy-button>
           <cy-button iconify-name="ic-round-text-fields" type="border"
             :selected="currentFont == 0" @click="switchFont(0)">
-            {{ langText('switch font/base font') }}
+            {{ $lang('switch font/base font') }}
           </cy-button>
           <cy-button iconify-name="ic-round-text-fields" type="border"
             :selected="currentFont == 2" @click="switchFont(2)">
-            {{ langText('switch font/base font') + '-2' }}
+            {{ $lang('switch font/base font') + '-2' }}
           </cy-button>
         </div>
       </fieldset>
       <fieldset class="column">
         <legend>
           <cy-icon-text iconify-name="ion-language" text-color="purple">
-            {{ langText('language/title') }}
+            {{ $lang('language/title') }}
           </cy-icon-text>
         </legend>
         <div class="caption">
-          {{ langText('language/caption') }}
+          {{ $lang('language/caption') }}
         </div>
         <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ langText('language/warn 1') }}
+          {{ $lang('language/warn 1') }}
         </cy-icon-text>
         <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ langText('language/warn 2') }}
+          {{ $lang('language/warn 2') }}
         </cy-icon-text>
         <div class="buttons">
           <cy-button v-for="(item, i) in languageState.list"
             iconify-name="ion-language" type="border"
             :selected="languageState.currentIndex == i"
             :key="item" @click="setLanguage('language', i)">
-            {{ langText('language/button texts/lang ' + item) }}
+            {{ $lang('language/button texts/lang ' + item) }}
           </cy-button>
         </div>
       </fieldset>
       <fieldset class="column">
         <legend>
           <cy-icon-text iconify-name="ion-language" text-color="purple">
-            {{ langText('second language/title') }}
+            {{ $lang('second language/title') }}
           </cy-icon-text>
         </legend>
         <div class="caption">
-          {{ langText('second language/caption') }}
+          {{ $lang('second language/caption') }}
         </div>
         <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ langText('second language/warn 1') }}
+          {{ $lang('second language/warn 1') }}
         </cy-icon-text>
         <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ langText('second language/warn 2') }}
+          {{ $lang('second language/warn 2') }}
         </cy-icon-text>
         <div class="buttons">
           <cy-button v-for="(item, i) in secondLanguageState.list"
             iconify-name="ion-language" type="border"
             :selected="secondLanguageState.currentIndex == i"
             :key="item" @click="setLanguage('second-language', i)">
-            {{ langText('language/button texts/lang ' + item) }}
+            {{ $lang('language/button texts/lang ' + item) }}
           </cy-button>
         </div>
       </fieldset>
       <fieldset class="column">
         <legend>
           <cy-icon-text iconify-name="carbon-cloud-data-ops" text-color="purple">
-            {{ langText('clear caches of spreadsheets/title') }}
+            {{ $lang('clear caches of spreadsheets/title') }}
           </cy-icon-text>
         </legend>
         <div class="caption">
-          {{ langText('clear caches of spreadsheets/caption') }}
+          {{ $lang('clear caches of spreadsheets/caption') }}
         </div>
         <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ langText('clear caches of spreadsheets/warn 1') }}
+          {{ $lang('clear caches of spreadsheets/warn 1') }}
         </cy-icon-text>
         <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ langText('clear caches of spreadsheets/warn 2') }}
+          {{ $lang('clear caches of spreadsheets/warn 2') }}
         </cy-icon-text>
         <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ langText('clear caches of spreadsheets/warn 3') }}
+          {{ $lang('clear caches of spreadsheets/warn 3') }}
         </cy-icon-text>
         <div class="buttons">
           <cy-button iconify-name="ic-round-delete" type="border" @click="clearSpreadsheetsCaches">
-            {{ langText('clear caches of spreadsheets/button texts/clear caches of spreadsheets') }}
+            {{ $lang('clear caches of spreadsheets/button texts/clear caches of spreadsheets') }}
           </cy-button>
         </div>
       </fieldset>
       <fieldset class="column" v-if="storageAvailable">
         <legend>
           <cy-icon-text iconify-name="ic-round-save">
-            {{ langText('storage backup/title') }}
+            {{ $lang('storage backup/title') }}
           </cy-icon-text>
         </legend>
         <div class="caption">
-          {{ langText('storage backup/caption') }}
+          {{ $lang('storage backup/caption') }}
         </div>
         <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ langText('storage backup/warn 1') }}
+          {{ $lang('storage backup/warn 1') }}
         </cy-icon-text>
         <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ langText('storage backup/warn 2') }}
+          {{ $lang('storage backup/warn 2') }}
         </cy-icon-text>
         <cy-default-tips iconify-name="mdi-ghost" v-if="$route.path != '/'">
-          {{ langText('storage backup/Must be operated on the homepage') }}
+          {{ $lang('storage backup/Must be operated on the homepage') }}
         </cy-default-tips>
         <div class="buttons" v-else>
           <cy-button iconify-name="ic-round-save" type="border" @click="saveLocalStorage">
-            {{ langText('storage backup/button texts/save') }}
+            {{ $lang('storage backup/button texts/save') }}
           </cy-button>
           <cy-button iconify-name="bx-bx-loader-circle" type="border" @click="loadLocalStorage">
-            {{ langText('storage backup/button texts/load') }}
+            {{ $lang('storage backup/button texts/load') }}
           </cy-button>
         </div>
       </fieldset>
@@ -138,10 +140,10 @@
 
 <script>
 import CY from "@Utils/Cyteria";
-import GetLang from "@Services/Language";
 import MessageNotify from "@Services/Notify";
 
 export default {
+  RegisterLang: 'Settings',
   data() {
     const list1 = ['auto', '0', '1', '2', '3'],
       list2 = ['0', '1', '2', '3'];
@@ -166,7 +168,7 @@ export default {
   methods: {
     clearSpreadsheetsCaches() {
       caches.delete('google-spreadsheets-csv-files')
-        .then(p => p && MessageNotify(this.langText('clear caches of spreadsheets/Clear caches of spreadsheet successfully')));
+        .then(p => p && MessageNotify(this.$lang('clear caches of spreadsheets/Clear caches of spreadsheet successfully')));
     },
     saveLocalStorage() {
       const data = {};
@@ -184,7 +186,7 @@ export default {
         fileName: 'Cy-Grimoire_storage.txt'
       });
 
-      MessageNotify(this.langText('storage backup/Save successfully'));
+      MessageNotify(this.$lang('storage backup/Save successfully'));
     },
     loadLocalStorage() {
       const storage = window.localStorage;
@@ -193,14 +195,14 @@ export default {
         succee: data => {
           data = JSON.parse(data);
           Object.keys(data).forEach(k => storage.setItem(k, data[k]));
-          MessageNotify(this.langText('storage backup/Load successfully'));
+          MessageNotify(this.$lang('storage backup/Load successfully'));
         },
         error: () => {
-          MessageNotify(this.langText('storage backup/Load failed'));
+          MessageNotify(this.$lang('storage backup/Load failed'));
         },
         checkFileType: type => {
           if (type != 'txt') {
-            MessageNotify(this.langText('storage backup/Wrong type of file'));
+            MessageNotify(this.$lang('storage backup/Wrong type of file'));
             return false;
           }
           return true;
@@ -221,39 +223,23 @@ export default {
     },
     toggleWindowVisible() {
       this.windowVisible = !this.windowVisible;
-    },
-    langText(v, vs) {
-      return GetLang('Settings/' + v, vs);
     }
   }
 }
 </script>
 
-<style lang="less" scoped>
-  @deep-operator: ~'>>>';
+<style lang="postcss" scoped>
+.column {
+  @apply py-2 px-5 mb-3 border-1 border-solid border-light;
 
-  .app--settings {
-    padding: 1rem 0;
-
-    > .main--window {
-      @{deep-operator} .column {
-        border: 1px solid var(--primary-light);
-        margin-bottom: 0.7rem;
-        padding: 0.5rem 1rem;
-
-        > .caption {
-          margin-bottom: 0.4rem;
-        }
-
-        > .buttons {
-          padding: 0.2rem;
-          margin-top: 0.2rem;
-        }
-
-        > legend {
-          padding: 0 0.6rem;
-        }
-      }
-    }
+  & > .caption {
+    @apply mb-2;
   }
+  & > .buttons {
+    @apply p-1 mt-1;
+  }
+  & > legend {
+    @apply px-2;
+  }
+}
 </style>

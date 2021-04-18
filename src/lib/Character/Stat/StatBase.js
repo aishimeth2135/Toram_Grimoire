@@ -13,6 +13,7 @@ class StatBase {
     this.order = order;
     this.attributes = {};
   }
+
   appendAttribute(n, v) {
     if (n && v !== null && v !== void 0)
       this.attributes[n] = v;
@@ -109,6 +110,10 @@ class Stat {
     this.base = base;
     this.type = type;
     this.value = v;
+  }
+
+  get statId() {
+    return `${this.baseName()}|${this.type.description}`;
   }
 
   get isBoolStat() {

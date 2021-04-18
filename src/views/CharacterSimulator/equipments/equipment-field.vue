@@ -1,17 +1,21 @@
 <template>
-  <div class="equipment-field">
-    <cy-flex-layout class="top">
+  <div class="equipment-field p-3 border border-solid border-light m-2 bg-white">
+    <div class="flex items-center border-b border-solid border-light pb-1 mb-3">
       <cy-icon-text iconify-name="gg-shape-square" text-size="small" text-color="purple">
         {{ $lang('character field names/' + field.type.description) }}
       </cy-icon-text>
-      <template v-slot:right-content>
+      <div class="ml-auto leading-none">
         <cy-button v-if="!field.isEmpty()"
-          iconify-name="ic-round-close" type="icon-only" class="inline"
+          iconify-name="ic-round-close"
+          type="icon" class="p-0"
+          icon-color="red"
           @click="$emit('remove-field-equipment', field)" />
-        <cy-button iconify-name="ic-round-view-list" type="icon-only" class="inline"
+        <cy-button iconify-name="ic-round-view-list"
+          type="icon" class="p-0"
+          icon-color="orange"
           @click="$emit('select-field-equipment', field)" />
-      </template>
-    </cy-flex-layout>
+      </div>
+    </div>
     <equipment-info v-if="!field.isEmpty()" :equipment="field.equipment"
       :stats-disable="field.statsDisable()" />
     <cy-default-tips v-else icon-id="potum">
@@ -30,19 +34,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@deep: ~'>>>';
-
 .equipment-field {
-  padding: 0.6rem;
-  border: 1px solid var(--primary-light);
-  margin: 0.4rem;
   width: 23rem;
-  background-color: var(--white);
-
-  > .top {
-    border-bottom: 1px solid var(--primary-light);
-    padding-bottom: 0.3rem;
-    margin-bottom: 0.7rem;
-  }
 }
 </style>

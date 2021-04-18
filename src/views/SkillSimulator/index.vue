@@ -3,23 +3,23 @@
     <div class="main" v-if="currentSkillRootState">
       <cy-sticky-header class="top transparent">
         <template v-slot:buttons-scope>
-          <cy-button type="icon-only" @click="openJumpSkillTree"
+          <cy-button type="icon" @click="openJumpSkillTree"
             :selected="jumpSkillTreeVisible"
             iconify-name="dashicons:flag" />
-          <cy-button type="icon-only" @click="openSelectSkillTree"
+          <cy-button type="icon" @click="openSelectSkillTree"
             :selected="selectSkillTreeVisible"
             iconify-name="ic:round-library-add" />
-          <cy-button type="icon-only" @click="openBuildInformation"
+          <cy-button type="icon" @click="openBuildInformation"
             :selected="buildInformationVisible"
             :iconify-name="buildInformationVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" />
         </template>
         <cy-transition type="fade">
           <div class="inner-menu select-skill-tree" v-if="selectSkillTreeVisible">
-            <template v-for="stc in currentSkillRootState.skillTreeCategoryStates.filter(p => p.skillTreeStates.length != 0)">
+            <template v-for="stc in currentSkillRootState.skillTreeCategoryStates.filter(p => p.skillTreeStates.length !== 0)">
               <div class="title" :key="stc.origin.id + '-title'">{{ stc.origin.name }}</div>
               <div class="content" :key="stc.origin.id + '-content'">
                 <cy-button v-for="st in stc.skillTreeStates" type="line"
-                  class="icon-small selection" icon-id="rabbit-book"
+                  icon-id="rabbit-book"
                   :key="stc.origin.id + '-' + st.origin.id"
                   @click="toggleSkillTreeVisible(stc, st)"
                   :class="{ selected: st.visible }">
@@ -107,10 +107,10 @@
                 </cy-list-item>
               </template>
             </cy-options>
-            <cy-title-input iconify-name="ant-design:build-outlined" class="input-build-name">
-              <input type="text" v-model="currentSkillRootState.name" />
-            </cy-title-input>
-            <div class="buttons-content">
+            <cy-title-input iconify-name="ant-design:build-outlined"
+              class="mt-4"
+              :value.sync="currentSkillRootState.name" />
+            <div class="p-2 mb-1">
               <cy-button type="line" @click="copyCurrentBuild" iconify-name="mdi:content-copy">
                 {{ $globalLang('global/copy') }}
               </cy-button>
@@ -124,8 +124,8 @@
                 {{ $lang('export image') }}
               </cy-button>
             </div>
-            <div class="content-title">{{ $lang('left menu/save load') }}</div>
-            <div class="buttons-content">
+            <div class="text-purple text-sm">{{ $lang('left menu/save load') }}</div>
+            <div class="py-2 px-2">
               <save-load-data-system v-bind="SaveLoadDataSystemOptions" />
             </div>
           </div>
@@ -143,7 +143,8 @@
             </cy-icon-text>
           </div>
           <div class="column">
-            <cy-icon-text iconify-name="mdi:judaism" text-size="small" display="block">
+            <cy-icon-text iconify-name="mdi:judaism"
+              text-size="small" display="block">
               {{ $lang('star gem level') }}
               <template v-slot:value>
                 {{ starGemSkillPointSum }}
@@ -152,29 +153,30 @@
           </div>
         </div>
         <div class="content">
-          <cy-flex-layout class="top">
-            <cy-flex-layout type="inline" class="buttons" :class="{ hide: bottomMenuExtraMenuVidsible }">
+          <div class="flex items-center">
+            <div class="inline-flex items-center whitespace-nowrap overflow-y-auto duration-300 p-1"
+              :class="{ 'opacity-0': bottomMenuExtraMenuVidsible }">
               <cy-button v-for="(state) in setButtonStates" :key="state.type"
-                :iconify-name="state.icons[state.currentIndex]" class="inline"
-                style="margin-right: 0.6rem;"
+                :iconify-name="state.icons[state.currentIndex]"
+                class="my-0 p-0 border-0 mr-2"
                 @click="setButtonClick(state.type)">
                 {{ state.texts[state.currentIndex] }}
               </cy-button>
-            </cy-flex-layout>
-            <template #right-content>
-              <cy-button type="icon-only"
+            </div>
+            <div class="ml-auto">
+              <cy-button type="icon"
                 :iconify-name="bottomMenuExtraMenuVidsible ? 'heroicons-solid:menu-alt-4' : 'heroicons-solid:menu'"
                 @click="bottomMenuExtraMenuVidsible = !bottomMenuExtraMenuVidsible" />
-            </template>
-          </cy-flex-layout>
+            </div>
+          </div>
           <cy-transition type="fade">
             <div class="menus" v-show="bottomMenuExtraMenuVidsible">
-              <div v-for="(state) in setButtonStates" :key="state.type" class="select-menu">
+              <div v-for="(state) in setButtonStates" :key="state.type"
+                class="select-menu">
                 <cy-button v-for="(value, j) in state.values" :key="value"
                   type="line" :iconify-name="state.icons[j]"
                   @click="setButtonSelected(state.type, j)"
-                  class="icon-small selection"
-                  :class="{selected: state.currentIndex == j}">
+                  :class="{ selected: state.currentIndex == j }">
                   {{ state.texts[j] }}
                 </cy-button>
               </div>
@@ -183,7 +185,8 @@
         </div>
       </div>
       <cy-window :visible="previewExportedImageWindowVisible"
-        @close-window="previewExportedImageWindowVisible = false" class="frozen-top width-auto">
+        @close-window="previewExportedImageWindowVisible = false"
+        :frozen-top="true" width="auto">
         <template #title>
           <cy-flex-layout>
             <cy-icon-text iconify-name="uil:image-download">
@@ -208,7 +211,7 @@
       </cy-window>
       <cy-window :visible="previewExportedTextWindowVisible"
         @close-window="previewExportedTextWindowVisible = false"
-        class="frozen-top width-auto">
+        :frozen-top="true" width="auto">
         <template #title>
           <cy-flex-layout>
             <cy-icon-text iconify-name="mdi:content-copy">
@@ -493,7 +496,7 @@ export default {
           fontFamily = body_cs.getPropertyValue('font-family');
 
         // icon
-        const skillPointCostSvgIconString = `<svg crossOrigin="anonymous" xmlns="http://www.w3.org/2000/svg" width="16.64px" height="16px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1056 1024"><path d="M1037 429L934 276l51-179q5-18-8.5-31.5T945 57l-178 52L612 6q-15-11-32-2.5T562 31l-5 186l-147 115q-6 5-9.5 13t-1.5 17q0 3 1.5 6.5t3 6t4 5t5.5 4.5t6 3l138 49q-3 2-3 3L23 969q-6 6-8 14.5t0 16.5t8 15q10 9 23 9t23-9l530-531q3-3 5-7l54 148q7 17 25 20q3 1 5 1q16 0 26-13l113-147l184-7q9 0 16.5-4.5T1039 462q8-17-2-33zm-227-6q-15 0-24 12l-88 113l-49-134q-5-14-19-19l-134-49l112-88q4-3 6.5-6.5t4-8t1.5-9.5l5-143l118 80q13 8 27 4l137-40l-39 137q-1 3-1 6v5.5l.5 5.5l2 5.5l2.5 4.5l81 118z" fill="${pcolor3}"></path></svg>`;
+        const skillPointCostSvgIconString = `<svg crossOrigin="anonymous" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.343L6.343 12L12 17.657L17.657 12L12 6.343zM2.1 12l9.9 9.9l9.9-9.9L12 2.1L2.1 12z" fill="${pcolor3}"/></g></svg>`;
         const otherIconData = {
           skillPointCost: {
             src: 'data:image/svg+xml;base64,' + window.btoa(skillPointCostSvgIconString),
@@ -585,7 +588,7 @@ export default {
           left_icon_scope_icon_w = 16,
           // left_icon_scope_icon_pl = 12,
           left_icon_scope_text_ml = 8,
-          st_extra_top_pd = 12,
+          st_extra_top_pd = 20,
           skill_icon_width = (drawSetting.gridWidth - drawSetting.iconPadding * 2),
           topInfo_topBottomPd = 20,
           topInfo_icon_h = 48,
@@ -660,7 +663,7 @@ export default {
             }
           });
 
-          ctx.font = `${CY.element.convertRemToPixels(1.1)}px ${fontFamily}`;
+          ctx.font = `${CY.element.convertRemToPixels(1)}px ${fontFamily}`;
           ctx.textAlign = 'left';
           ctx.textBaseline = 'middle';
           ctx.fillStyle = pcolor4;
@@ -676,7 +679,7 @@ export default {
           const spc_w = ctx.measureText(spc).width;
 
           ctx.textAlign = 'right';
-          ctx.fillText(spc, final_w - title_preRect_pdl, title_text_y);
+          ctx.fillText(spc, final_w - title_preRect_pdl, title_text_y + 1);
           ctx.drawImage(otherIconData.skillPointCost.loadedImage,
             final_w -
             (left_icon_scope_mr +
@@ -919,17 +922,17 @@ export default {
 @deep: ~'>>>';
 
 .main {
-  >.top {
+  & > .top {
     z-index: 3;
 
     @{deep} .content {
       padding-right: 0.6rem;
 
-      > .buttons-scope {
+      & > .buttons-scope {
         z-index: 6;
       }
 
-      > .inner-menu {
+      & > .inner-menu {
         position: absolute;
         top: 0.4rem;
         right: 0;
@@ -944,57 +947,38 @@ export default {
         overflow-y: auto;
         white-space: normal;
 
-        >.title {
+        & >.title {
           font-size: 0.9rem;
           margin-bottom: 0.2rem;
           color: var(--primary-light-3);
         }
 
-        >.content {
+        & > .content {
           display: grid;
           grid-template-columns: 50% 50%;
           margin-bottom: 0.4rem;
-        }
 
-        @media screen and (max-width: 30rem) {
-          > .content {
+          @media screen and (max-width: 30rem) {
             grid-template-columns: 100%;
           }
-        }
-
-        >.content-title {
-          color: var(--primary-light-3);
-          font-size: 0.9rem;
-        }
-
-        >.buttons-content {
-          padding: 0.6rem 0.4rem;
-
-          &+& {
-            margin-top: 1rem;
-          }
-        }
-
-        > .input-build-name {
-          margin-top: 1rem;
         }
       }
     }
   }
 
-  >.bottom-menu {
+  & > .bottom-menu {
     z-index: 2;
     position: sticky;
     bottom: 0.6rem;
     margin: 0 0.6rem;
 
-    > .skill-point-information {
+    & > .skill-point-information {
       padding: 0.5rem 0.3rem;
       display: flex;
       align-items: center;
       justify-content: flex-end;
 
-      > .column {
+      & > .column {
         border: 1px solid var(--primary-light);
         padding: 0.3rem 0.6rem;
         display: inline-block;
@@ -1005,28 +989,13 @@ export default {
       }
     }
 
-    > .content {
+    & > .content {
       background-color: var(--white);
       border: 1px solid var(--primary-light-2);
       border-radius: 1.5rem;
       padding: 0.5rem 0.8rem;
 
-      > .top {
-
-        > .buttons {
-          white-space: nowrap;
-          overflow-x: auto;
-          opacity: 1;
-          transition: 0.3s ease;
-          padding: 0.2rem 0.3rem;
-
-          &.hide {
-            opacity: 0;
-          }
-        }
-      }
-
-      >.menus {
+      & > .menus {
         overflow-x: auto;
         display: flex;
         align-items: flex-start;

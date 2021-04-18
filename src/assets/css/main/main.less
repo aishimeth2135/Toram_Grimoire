@@ -69,10 +69,6 @@
   --rgb-primary-dark: 255, 255, 255;
 }
 
-* {
-  box-sizing: border-box;
-}
-
 html {
   background-color: var(--white);
 }
@@ -81,10 +77,24 @@ html.theme--night-mode {
   .night-mode();
 }
 
+html {
+  @apply text-base;
+  
+  &.font-0 {
+    .main--font-base();
+  }
+
+  &.font-1 {
+    .main--font-1();
+  }
+  &.font-2 {
+    .main--font-2();
+  }
+}
+
 body {
   margin: 0;
   scroll-behavior: smooth;
-  font-size: 1rem;
   color: var(--primary-dark);
   position: relative;
   background-color: rgba(var(--rgb-primary-light), 0.1);
@@ -103,23 +113,14 @@ body {
   // @media (prefers-color-scheme: dark) {
   //   .night-mode();
   // }
-
-  .main--font-base()
 }
-input,
-textarea {
-  font-size: 1rem;
+input, textarea {
   color: var(--primary-dark);
   background-color: var(--white);
 
-  .main--font-base()
-}
+  @apply text-base;
 
-body.font-1 {
-  .main--font-1();
-}
-body.font-2 {
-  .main--font-2();
+  .main--font-base();
 }
 
 input::-webkit-input-placeholder {
@@ -152,11 +153,6 @@ input[type="number"] {
 input:focus {
   outline: none;
 }
-
-a {
-  color: var(--primary-light-4);
-}
-
 
 ::-webkit-scrollbar {
   width: 0.4rem;

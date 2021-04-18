@@ -42,7 +42,8 @@
       </cy-icon-text>
     </div>
     <div class="content">
-      <cy-title-input iconify-name="mdi-clipboard-text-outline">
+      <cy-title-input iconify-name="mdi-clipboard-text-outline"
+        :value.sync="character.name">
         <input type="text" v-model="character.name">
       </cy-title-input>
     </div>
@@ -100,7 +101,7 @@
       </cy-icon-text>
     </div>
     <div class="content">
-      <cy-flex-layout>
+      <div class="flex items-center flex-wrap">
         <cy-button type="border" iconify-name="ic-round-close"
           :selected="!character.hasOptinalBaseStat()"
           @click="clearOptionalBaseStat">
@@ -112,7 +113,7 @@
           type="border" :key="p" @click="setOptionalBaseStat(p)">
           {{ p }}
         </cy-button>
-      </cy-flex-layout>
+      </div>
     </div>
   </section>
 </template>

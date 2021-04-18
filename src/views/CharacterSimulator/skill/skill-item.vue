@@ -31,9 +31,11 @@
       </div>
       <template #right-content>
         <cy-button v-if="firstBranchState.handler.hasUserSets"
-          iconify-name="ic-baseline-settings" type="icon-only"
-          class="inline" @click="openUserSetsWindow(firstBranchState.handler)" />
-        <cy-button v-if="hasExtraContent" class="inline" type="icon-only"
+          iconify-name="ic-baseline-settings"
+          type="icon" class="p-0"
+          @click="openUserSetsWindow(firstBranchState.handler)" />
+        <cy-button v-if="hasExtraContent"
+          type="icon" class="p-0"
           :iconify-name="'ic-round-keyboard-arrow-' + (extraContentVisible ? 'up' : 'down')"
           @click="toggleExtraContentVisible" />
       </template>
@@ -68,7 +70,7 @@
         </div>
       </div>
       <template #right-content>
-        <cy-button class="inline" type="icon-only"
+        <cy-button class="p-0" type="icon"
           :iconify-name="'ic-round-keyboard-arrow-' + (extraContentVisible ? 'up' : 'down')"
           @click="toggleExtraContentVisible" />
       </template>
@@ -91,8 +93,8 @@
                   :statDatas="branchState.handler.value.stats" />
               </div>
               <template #right-content v-if="branchState.handler.hasUserSets">
-                <cy-button iconify-name="ic-baseline-settings" type="icon-only"
-                  class="inline" @click="openUserSetsWindow(branchState.handler)" />
+                <cy-button iconify-name="ic-baseline-settings" type="icon"
+                  class="p-0" @click="openUserSetsWindow(branchState.handler)" />
               </template>
             </cy-flex-layout>
             <div v-for="state in branchState.handler.value.conditionDatas"

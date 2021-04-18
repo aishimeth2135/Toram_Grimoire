@@ -1,7 +1,7 @@
 <template>
   <cy-transition type="fade">
     <div class="cy--detail-window" :style="position">
-      <div class="container">
+      <div class="content-container">
         <div class="content">
           <div class="title" v-if="$slots['title']">
             <slot name="title"></slot>
@@ -38,7 +38,7 @@ export default {
   justify-content: center;
   z-index: 15;
 
-  .container {
+  .content-container {
     background-color: rgba(var(--rgb-white), 0.95);
     border: 1px solid var(--primary-light-2);
     border-bottom: 0;

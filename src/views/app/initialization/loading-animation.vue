@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="inline-block">
     <transition mode="out-in"
       @before-leave="beforeLeave"
       @leave="leave"

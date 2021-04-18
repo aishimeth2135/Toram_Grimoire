@@ -1,20 +1,23 @@
 <template>
-  <span class="detail-line-equipments">
-    <span class="prefix">{{ $lang('equipped with: prefix text') }}</span>
-    <span class="content">
+  <span class="inline-flex items-center">
+    <span class="text-orange">{{ $lang('equipped with: prefix text') }}</span>
+    <span class="mx-1 text-green inline-flex items-center">
       <template v-for="t in equipmentTexts">
-        <cy-icon-text v-if="t.text == '+'" :key="'text-i-' + t.iid"
+        <cy-icon-text v-if="t.text === '+'"
+          :key="'text-i-' + t.iid"
           iconify-name="ic-round-add" />
-        <cy-icon-text v-else-if="t.text == '/'" :key="'text-i-' + t.iid"
+        <cy-icon-text v-else-if="t.text === '/'"
+          :key="'text-i-' + t.iid"
           iconify-name="mdi-slash-forward" />
-        <span v-else-if="t.text == '(' || t.text == ')'" :key="'separate-' + t.iid"
-          class="separate" />
-        <span class="part" v-else :key="'text-' + t.iid">
+        <span v-else-if="t.text === '(' || t.text === ')'"
+          :key="'separate-' + t.iid"
+          class="border-l border-solid border-light-2 inline-block h-4 mx-2" />
+        <span v-else :key="'text-' + t.iid">
           {{ t.text }}
         </span>
       </template>
     </span>
-    <span class="suffix">{{ $lang('equipped with: suffix text') }}</span>
+    <span class="text-orange">{{ $lang('equipped with: suffix text') }}</span>
   </span>
 </template>
 <script>
@@ -22,18 +25,3 @@ export default {
   props: ['equipmentTexts']
 }
 </script>
-<style lang="less" scoped>
-.detail-line-equipments {
-  display: inline-flex;
-  align-items: center;
-  > .prefix, & > .suffix {
-    color: var(--primary-orange)
-  }
-  > .content {
-    margin: 0 0.3rem;
-    color: var(--primary-green);
-    display: inline-flex;
-    align-items: center;
-  }
-}
-</style>

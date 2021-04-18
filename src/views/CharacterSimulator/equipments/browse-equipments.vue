@@ -1,5 +1,7 @@
 <template>
-  <cy-window :visible="visible" @close-window="closeWindow" class="width-wide">
+  <cy-window :visible="visible"
+    @close-window="closeWindow"
+    width="wide">
     <template v-slot:title>
       <cy-icon-text iconify-name="ic-outline-category">
         {{ $lang('action: ' + actionType) }}
@@ -7,8 +9,8 @@
     </template>
     <template v-slot:default>
       <!-- top -->
-      <cy-flex-layout class="top">
-        <template v-slot:right-content>
+      <div class="flex items-center border-b border-solid border-light-2 pb-2">
+        <div class="ml-auto">
           <cy-button iconify-name="ic-round-add-circle-outline"
             type="border"
             @click="toggleMainWindowVisible('appendEquipments', true)">
@@ -19,14 +21,14 @@
             @click="toggleMainWindowVisible('createCustomEquipment', true)">
             {{ $lang.extra('parent', 'custom equipment') }}
           </cy-button>
-        </template>
-      </cy-flex-layout>
+        </div>
+      </div>
       <div class="content">
         <div class="items">
           <equipment-item v-for="eq in browsedEquipments"
             :key="eq.iid" :equipment="eq.origin"
             @click.native="setCurrentEquipment(eq.origin, eq['@disable'])"
-            :selected="eq.origin == currentEquipment"
+            :selected="eq.origin === currentEquipment"
             :is-current="actionType == 'select-field-equipment' && action.targetField.equipment == eq.origin"
             :disable="eq['@disable']" />
         </div>
@@ -44,9 +46,9 @@
           class="toggle-info-unfold-btn" @click="toggleInfoUnfold" />
       </div>
       <!-- bottom -->
-      <cy-bottom-content v-if="currentEquipment" style="z-index: 2">
+      <cy-bottom-content v-if="currentEquipment" class="z-1">
         <template #normal-content>
-          <cy-flex-layout>
+          <div class="flex items-center flex-wrap">
             <cy-button iconify-name="ic-baseline-delete-outline" type="border"
               @click="removeSelectedEquipment">
               {{ $globalLang('global/remove') }}
@@ -55,7 +57,8 @@
               @click="copySelectedEquipment">
               {{ $globalLang('global/copy') }}
             </cy-button>
-            <template #right-content v-if="actionType == 'select-field-equipment'">
+            <div v-if="actionType === 'select-field-equipment'"
+              class="ml-auto">
               <cy-button v-if="!currentEquipmentDisable"
                 iconify-name="ic-round-done" type="border"
                 @click="selectEquipment">
@@ -64,8 +67,8 @@
               <cy-button v-else iconify-name="ic-round-done" type="border" :disabled="true">
                 {{ $globalLang('global/confirm') }}
               </cy-button>
-            </template>
-          </cy-flex-layout>
+            </div>
+          </div>
         </template>
       </cy-bottom-content>
     </template>
@@ -162,7 +165,7 @@ export default {
       });
 
       const modifiedFields = this.characterState.origin.equipmentFields.filter(field => {
-        if (field.equipment == eq) {
+        if (field.equipment === eq) {
           field.removeEquipment();
           return true;
         }
@@ -195,6 +198,10 @@ export default {
       this.currentEquipment = null;
     },
     setCurrentEquipment(eq, disable=false) {
+      if (this.currentEquipment === eq && !disable) {
+        this.selectEquipment();
+        return;
+      }
       this.currentEquipment = eq;
       this.currentEquipmentDisable = disable;
     },
@@ -227,10 +234,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.top {
-  border-bottom: 1px solid var(--primary-light-2);
-  padding-bottom: 0.6rem;
-}
 .content {
   display: flex;
   align-items: flex-start;

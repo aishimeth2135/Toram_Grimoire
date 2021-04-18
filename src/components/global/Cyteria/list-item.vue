@@ -4,7 +4,7 @@
     <!-- <iconify-icon v-if="selected" class="selected-icon"
       name="mdi-rhombus-medium-outline" /> -->
     <slot></slot>
-    <span v-if="$slots['right-content']" class="right-content">
+    <span v-if="$slots['right-content']" class="inline-block ml-auto leading-none">
       <slot name="right-content"></slot>
     </span>
     <slot name="extra"></slot>
@@ -46,11 +46,6 @@ export default {
 
   &:not(.selected) + &:not(.selected) {
     border-top: 1px solid var(--primary-light);
-  }
-
-  > .right-content {
-    display: inline-block;
-    margin-left: auto;
   }
 
   // > .selected-icon {
