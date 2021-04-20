@@ -95,11 +95,12 @@
               </cy-icon-text>
               <span class="value">{{ originEquipment.recipe['cost'] + 's' }}</span>
             </template>
-            <template v-for="m in originEquipment.recipe['materials']">
-              <cy-icon-text iconify-name="mdi-cube-outline" :key="m.name + '--name'">
+            <template v-for="m in originEquipment.recipe['materials']"
+              :key="m.name">
+              <cy-icon-text iconify-name="mdi-cube-outline">
                 {{ m.name }}
               </cy-icon-text>
-              <span class="value" :key="m.name + '--quantity'">{{ '×' + m.quantity }}</span>
+              <span class="value">{{ '×' + m.quantity }}</span>
             </template>
           </div>
         </fieldset>
@@ -135,7 +136,8 @@
           </cy-default-tips>
         </fieldset>
       </div>
-      <div v-else-if="state.currentMode === 'dye'" class="dye-preview">
+      <div v-else-if="state.currentMode === 'dye'"
+        class="pl-2 ml-4 border-l-2 border-solid border-light-2 mb-3">
         <div class="obtains-list">
           <div v-for="p in dyeObtains" class="item" :key="p.iid">
             <div class="type-name">
@@ -384,12 +386,5 @@ fieldset.obtains {
       }
     }
   }
-}
-
-.dye-preview {
-  padding-left: 0.6rem;
-  margin-left: 1rem;
-  border-left: 0.2rem solid var(--primary-light-2);
-  margin-bottom: 0.7rem;
 }
 </style>

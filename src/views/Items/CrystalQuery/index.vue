@@ -19,10 +19,10 @@
             </cy-icon-text>
           </div>
           <cy-title-input iconify-name="ic-outline-category"
-            :value.sync="modeState['mode-normal'].searchText"
+            v-model:value="modeState['mode-normal'].searchText"
             :placeholder="$lang('search placeholder')" />
         </div>
-        <div v-show="currentMode == 'stats'">
+        <div v-show="currentMode === 'stats'">
           <cy-button iconify-name="mdi-rhombus-outline" type="border"
             @click="toggleSelectStatWindowVisible(true)">
             {{ currentStat ? currentStat.text : $lang('select stat: title') }}
@@ -31,10 +31,11 @@
       </fieldset>
       <div>
         <template v-if="searchResult.length !== 0">
-          <template v-for="(category, i) in searchResult">
-            <cy-hr v-if="i != 0" :key="category.id + '-hr'" />
-            <cy-button :key="category.id + '-btn'"
-              iconify-name="bx-bx-cube-alt" type="drop-down"
+          <template v-for="(category, i) in searchResult"
+            :key="category.id">
+            <cy-hr v-if="i != 0" />
+            <cy-button iconify-name="bx-bx-cube-alt"
+              type="drop-down"
               :menu-default-visible="true">
               {{ $lang('category title')[category.id] }}
               <template v-slot:menu>
@@ -90,7 +91,7 @@
         <template v-slot:default>
           <cy-title-input iconify-name="ic-outline-category"
             class="mb-3"
-            :value.sync="modeState['mode-stats'].searchText"
+            v-model:value="modeState['mode-stats'].searchText"
             :placeholder="$lang('select stat: search placeholder')" />
           <template v-if="statSearchResult.length != 0">
             <cy-list-item v-for="stat in statSearchResult"

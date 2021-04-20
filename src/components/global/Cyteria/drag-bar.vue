@@ -25,6 +25,7 @@
 </template>
 <script>
 export default {
+  emits: ['update:value'],
   props: {
     type: {
       type: String,
@@ -72,11 +73,11 @@ export default {
       v = Math.min(this.range[1], v);
       v = Math.max(this.range[0], v);
 
-      this.$emit('set-value', v);
+      this.$emit('update:value', v);
     },
     setValue(e) {
       const v = parseInt(e.target.value, 10);
-      this.$emit('set-value', v);
+      this.$emit('update:value', v);
     }
   }
 };

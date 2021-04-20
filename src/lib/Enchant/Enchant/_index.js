@@ -1,3 +1,5 @@
+
+/* eslint-disable */
 import { StatBase } from "@lib/Character/Stat";
 import Grimoire from "@Grimoire";
 

@@ -30,6 +30,7 @@
 </template>
 <script>
 export default {
+  emits: ['close-window'],
   props: {
     type: {
       type: String,

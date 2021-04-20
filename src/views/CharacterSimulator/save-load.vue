@@ -26,7 +26,7 @@
         </cy-icon-text>
       </cy-default-tips>
       <div class="buttons">
-        <cy-input-counter :value="deleteCounter" @set-value="v => deleteCounter = v">
+        <cy-input-counter v-model:value="deleteCounter">
           <template #title>
             <cy-icon-text iconify-name="ic-round-delete">
               {{ $lang('delete counter: title') }}
@@ -50,6 +50,7 @@ import MessageNotify from "@Services/Notify";
 
 export default {
   RegisterLang: 'Character Simulator/save-load control',
+  emits: ['manual-auto-save', 'manual-auto-load', 'close-auto-save'],
   data() {
     return {
       deleteCounter: 0

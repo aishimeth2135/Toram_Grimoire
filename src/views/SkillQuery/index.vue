@@ -2,15 +2,18 @@
   <article class="root--">
     <cy-sticky-header>
       <template v-slot:default>
-        <cy-icon-text v-if="currentSkillState" iconify-name="bx-bxs-book-alt">
+        <cy-icon-text v-if="currentSkillState"
+          iconify-name="bx-bxs-book-alt">
           {{ currentSkillState.skill.name }}
         </cy-icon-text>
-        <div style="width: 100%;height: 100%;" @mouseenter.stop="toggleSelectSkillTreeWindow(true)" />
+        <div class="w-full h-full"
+          @mouseenter.stop="toggleSelectSkillTreeWindow(true)" />
       </template>
       <template v-slot:buttons-scope>
-        <cy-button v-if="!selectSkillTreeWindowState.visible" key="invisible"
-          iconify-name="ic-round-keyboard-arrow-down" class="inline"
-          @mouseenter.native.stop="toggleSelectSkillTreeWindow(true)"
+        <cy-button v-if="!selectSkillTreeWindowState.visible"
+          key="invisible" class="inline"
+          iconify-name="ic-round-keyboard-arrow-down"
+          @mouseenter.stop="toggleSelectSkillTreeWindow(true)"
           @click="toggleSelectSkillTreeWindow(true)">
           {{ $lang('select skill') }}
         </cy-button>
@@ -162,8 +165,9 @@
                 </div>
               </div>
               <div>
-                <cy-drag-bar :value="skillStates.skillLevel" :range="[1, 10]"
-                  @set-value="setSkillLevel">
+                <cy-drag-bar :range="ranges.skillLevel"
+                  :value="skillStates.skillLevel"
+                  @update:value="setSkillLevel">
                   <template v-slot:title>
                     <cy-icon-text iconify-name="mdi-order-numeric-descending" class="text-small">
                       {{ $lang('skill level') }}
@@ -172,8 +176,10 @@
                 </cy-drag-bar>
               </div>
               <div>
-                <cy-input-counter :value="skillStates.characterLevel" @set-value="setCharacterLevel"
-                  :range="[1, 220]" :step="10" style="--input-width: 2rem">
+                <cy-input-counter style="--input-width: 2rem"
+                  :value="skillStates.characterLevel"
+                  @update:value="setCharacterLevel"
+                  :range="ranges.characterLevel" :step="10">
                   <template v-slot:title>
                     <cy-icon-text iconify-name="ant-design:user-outlined">
                       {{ $lang('character level') }}
@@ -280,7 +286,11 @@ export default {
         windowPosition: {},
         windowVisible: false
       },
-      selectHistoryVisble: false
+      selectHistoryVisble: false,
+      ranges: {
+        characterLevel: [1, 220],
+        skillLevel: [1, 10]
+      }
     };
   },
   provide() {

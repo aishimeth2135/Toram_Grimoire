@@ -26,6 +26,7 @@ export default {
     }
   },
   methods: {
+    emits: ['done'],
     beforeLeave(el) {
       el.classList.remove('start-icon');
     },

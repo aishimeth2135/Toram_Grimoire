@@ -14,11 +14,9 @@
   import vue_initialize from "@views/app/initialize.vue";
   import vue_footer from "@views/app/footer.vue";
   import vue_notify from "@views/app/notify.vue";
-  import store from "@store/main";
 
   export default {
     name: 'app',
-    store,
     components: {
       'app-initialize': vue_initialize,
       'app-footer': vue_footer,

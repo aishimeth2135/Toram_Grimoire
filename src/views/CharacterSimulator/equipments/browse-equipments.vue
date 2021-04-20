@@ -27,7 +27,7 @@
         <div class="items">
           <equipment-item v-for="eq in browsedEquipments"
             :key="eq.iid" :equipment="eq.origin"
-            @click.native="setCurrentEquipment(eq.origin, eq['@disable'])"
+            @click="setCurrentEquipment(eq.origin, eq['@disable'])"
             :selected="eq.origin === currentEquipment"
             :is-current="actionType == 'select-field-equipment' && action.targetField.equipment == eq.origin"
             :disable="eq['@disable']" />
@@ -93,6 +93,7 @@ export default {
       parent: 'Character Simulator'
     }
   },
+  emits: ['close'],
   props: ['visible', 'action', 'characterState'],
   inject: [
     'toggleMainWindowVisible', 'getShowEquipmentData',

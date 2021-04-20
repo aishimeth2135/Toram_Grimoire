@@ -178,7 +178,7 @@
         </template>
         <template v-slot:default>
           <cy-title-input iconify-name="ic-outline-category"
-            :value.sync="modes.stat.statSearchText"
+            v-model:value="modes.stat.statSearchText"
             :placeholder="$lang('options: stat/select stat: search placeholder')" />
           <template v-if="statsSearchResult.length != 0">
             <cy-list-item v-for="stat in statsSearchResult"

@@ -72,6 +72,7 @@ export default {
   ToggleService: {
     window: ['selectType']
   },
+  emits: ['append-equipments', 'close'],
   props: ['visible'],
   inject: ['isElementStat'],
   data() {

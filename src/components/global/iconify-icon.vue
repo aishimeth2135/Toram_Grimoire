@@ -1,6 +1,8 @@
 <script>
 import Iconify from '@iconify/iconify';
 
+import { h } from "vue";
+
 /**
  * List of component properties to map to data- attributes
  *
@@ -33,10 +35,10 @@ document.addEventListener('IconifyAddedIcons', function() {
  */
 export default {
   name: 'iconify-icon',
-  render: function(createElement) {
+  render() {
     // Check if icon exists, render span if not
     if (!Iconify.iconExists(this.name)) {
-      return createElement('span', {
+      return h('span', {
         attrs: {
           style: 'display: inline-block; width: 1em;'
         }
@@ -58,7 +60,7 @@ export default {
 
     // Get SVG attributes and body
     let icon = Iconify.getSVGObject(this.name, props);
-    return createElement('svg', {
+    return h('svg', {
       attrs: icon.attributes,
       domProps: {
         innerHTML: icon.body
@@ -97,20 +99,25 @@ export default {
     // Crop: slice, meet
     align: String
   },
-  beforeMount: function() {
+  beforeMount() {
     // Status of icon loading. false = not loading, string = icon name
     this._loadingIcon = false;
     this.loadIcon();
   },
-  beforeUpdate: function() {
+  beforeUpdate() {
     // Try to load different icon if name property was changed
     this.loadIcon();
+  },
+  beforeUnmount() {
+    if (this._loadingIcon !== false) {
+      this.removeListener();
+    }
   },
   methods: {
     /**
      * Load icon from API
      */
-    loadIcon: function() {
+    loadIcon() {
       if (this._loadingIcon !== this.name && !Iconify.iconExists(this.name)) {
         if (this._loadingIcon !== false) {
           // Already loading with different icon name - remove component with old icon name from listeners list
@@ -133,21 +140,16 @@ export default {
     /**
      * Remove component from Iconify event listener
      */
-    removeListener: function() {
+    removeListener() {
       listeners = listeners.filter(item => item.instance !== this);
     },
 
     /**
      * Icon has loaded. Force component update
      */
-    iconLoaded: function() {
+    iconLoaded() {
       this._loadingIcon = false;
       this.$forceUpdate();
-    }
-  },
-  beforeDestroy: function() {
-    if (this._loadingIcon !== false) {
-      this.removeListener();
     }
   }
 }

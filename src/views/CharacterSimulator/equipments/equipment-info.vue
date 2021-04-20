@@ -5,14 +5,15 @@
         :iconify-name="equipmentData.categoryIcon"
         :icon-color="equipment.isCustom ? 'green' : 'light-2'">
         <span>{{ equipment.name }}</span>
-        <span class="ml-1 text-water-blue" v-if="equipment.hasRefining && equipment.refining > 0">+{{ equipment.refining | equipmentRefining }}</span>
+        <span v-if="equipment.hasRefining && equipment.refining > 0"
+          class="ml-1 text-water-blue">+{{ equipmentRefiningText(equipment.refining) }}</span>
       </cy-icon-text>
       <span class="flex-shrink-0 text-light-3 text-sm mr-2"
-        :style="{ 'color': `var(--primary-${equipment.isCustom ? 'green' : 'light-3'})` }"
+        :class="[equipment.isCustom ? 'text-green' : 'text-light-3']"
         >{{ equipmentData.categoryText }}</span>
       <cy-button type="icon" class="ml-auto"
-        :iconify-name="mode == 0 ? 'ic-round-edit' : 'ic-round-view-list'"
-        @click="mode = mode == 0 ? 1 : 0" />
+        :iconify-name="mode === 0 ? 'ic-round-edit' : 'ic-round-view-list'"
+        @click="mode = mode === 0 ? 1 : 0" />
     </div>
     <cy-transition type="fade" mode="out-in">
       <div class="px-2" v-if="mode == 0" key="base">
@@ -60,28 +61,29 @@
         </cy-flex-layout>
         <cy-input-counter v-if="equipment.is == 'weapon'" class="mb-3"
           :value="equipment.atk" :range="baseValueRange"
-          @set-value="setAtk(equipment, $event)">
+          @update:value="setEquipmentProperty(equipment, 'atk', $event)">
           <template v-slot:title>
             <cy-icon-text iconify-name="mdi-sword">ATK</cy-icon-text>
           </template>
         </cy-input-counter>
         <cy-input-counter v-else-if="equipment.is == 'armor'" class="mb-3"
           :value="equipment.def" :range="baseValueRange"
-          @set-value="setDef(equipment, $event)">
+          @update:value="setEquipmentProperty(equipment, 'def', $event)">
           <template v-slot:title>
             <cy-icon-text iconify-name="mdi-shield">DEF</cy-icon-text>
           </template>
         </cy-input-counter>
         <cy-input-counter v-if="equipment.hasRefining" class="mb-3"
           :value="equipment.refining" :range="[0, 15]"
-          @set-value="setRefining(equipment, $event)">
+          @update:value="setEquipmentProperty(equipment, 'refining', $event)">
           <template v-slot:title>
             <cy-icon-text iconify-name="mdi-cube-send">{{ $lang('refining') }}</cy-icon-text>
           </template>
         </cy-input-counter>
         <div class="crystals" v-if="equipment.hasCrystal">
           <cy-button v-for="c in equipment.crystals"
-            :key="c.id" :image-path="getCrystalImagePath(c)" type="line"
+            type="line" :key="c.id"
+            :image-path="getCrystalImagePath(c)"
             @click="editCrystal">
             {{ c.name }}
           </cy-button>
@@ -104,57 +106,45 @@
 
 <script>
 import vue_showStat from "./show-stat.vue";
+import { CharacterEquipment } from "@lib/Character/CharacterEquipment";
 
 export default {
   RegisterLang: 'Character Simulator',
   props: {
-    'equipment': {},
+    'equipment': {
+      type: CharacterEquipment
+    },
     'statsDisable': {
       type: Boolean,
       default: false
     }
   },
-  inject: ['getShowEquipmentData', 'openCustomEquipmentEditor', 'openSelectCrystals'],
+  inject: [
+    'getShowEquipmentData',
+    'openCustomEquipmentEditor',
+    'openSelectCrystals',
+    'setEquipmentProperty'
+  ],
   data(){
     return {
       mode: 0, // 0: normal, 1: edit
-      currentCustomTypeIndex: 0
+      currentCustomTypeIndex: 0,
+      baseValueRange: [0, 999]
     };
-  },
-  filters: {
-    equipmentRefining(v){
-      return v;
-    }
   },
   computed: {
     equipmentData() {
       return this.getShowEquipmentData(this.equipment);
-    },
-    baseValueRange() {
-      const eq = this.equipment;
-      if (!eq.isCustom) {
-        if (eq.is == 'weapon')
-          return [eq.baseAtk, Math.ceil(eq.baseAtk * 1.1) + 10];
-        else if (eq.is == 'armor')
-          return [eq.baseDef, Math.ceil(eq.baseDef * 1.1) + 10];
-      }
-      return [0, 999];
     }
   },
   methods: {
+    equipmentRefiningText(v){
+      return v;
+    },
     getCrystalImagePath(c) {
       const type = c.origin.enhancer ? 'enhance' :
         ['weapon', 'body', 'additional', 'special', 'normal'][c.origin.category];
       return '/imgs/crystals/' + type + '.png';
-    },
-    setAtk(eq, v) {
-      eq.atk = v;
-    },
-    setDef(eq, v) {
-      eq.def = v;
-    },
-    setRefining(eq, v) {
-      eq.refining = v;
     },
     switchCustomType(){
       const eq = this.equipment;
@@ -164,9 +154,6 @@ export default {
       if ( this.currentCustomTypeIndex == len )
         this.currentCustomTypeIndex = 0;
       eq.setCustomType(eq.customTypeList[this.currentCustomTypeIndex]);
-    },
-    removeCrystal(index){
-      this.equipment.crystals.splice(index, 1);
     },
     editCrystal(){
       this.openSelectCrystals(this.equipment);

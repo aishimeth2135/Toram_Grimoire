@@ -9,7 +9,7 @@
     <template v-slot:default>
       <cy-title-input iconify-name="ic-outline-category"
         class="sticky top-0 bg-white z-1 pt-1 pb-2"
-        :value.sync="searchText"
+        v-model:value="searchText"
         :placeholder="$lang('search equipment placeholder')" />
       <div class="search-result" v-if="searchResult.length != 0">
         <cy-list-item v-for="item in searchResult" :key="item.iid"
@@ -81,6 +81,7 @@ export default {
       parent: 'Character Simulator'
     }
   },
+  emits: ['close'],
   props: ['visible'],
   inject: ['convertEquipmentData', 'getShowEquipmentData', 'appendEquipments'],
   data() {

@@ -289,8 +289,11 @@
       </template>
       <template v-else-if="branch.name == 'stack'">
         <div class="content-line">
-          <cy-input-counter v-if="stackValue != null" :value="stackValue" @set-value="setStackValue"
-            :range="stackValueRange" :style="showData['@stack-input-width-wide'] || {}">
+          <cy-input-counter v-if="stackValue != null"
+            :value="stackValue"
+            @update:value="setStackValue"
+            :range="stackValueRange"
+            :style="showData['@stack-input-width-wide'] || {}">
             <template v-slot:title>
               <cy-icon-text iconify-name="ion-leaf">
                 {{ showData['name'] }}

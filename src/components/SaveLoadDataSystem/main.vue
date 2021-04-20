@@ -22,8 +22,9 @@
           {{ langText('Save Load: title') }}
         </cy-icon-text>
       </template>
-      <template v-for="(o, i) in buttonsStates">
-        <div class="column" @click="selectData(i)" :key="o.title + 'c1'">
+      <template v-for="(o, i) in buttonsStates"
+        :key="o.title">
+        <div class="column" @click="selectData(i)">
           <div class="Cyteria scope-icon line">
             <iconify-icon name="bx:bxs-book-bookmark"></iconify-icon>
             <span class="text">{{ o.title }}</span>
@@ -39,7 +40,7 @@
             </div>
           </div>
         </div>
-        <cy-transition type="fade" :key="o.title + 'c2'">
+        <cy-transition type="fade">
           <div v-if="i == currentButtonIndex" class="tips">
             {{ langText(currentMode == 'save' ? 'Warn/Confirm to overwrite existing data' : 'Warn/Confirm to load data') }}
           </div>

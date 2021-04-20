@@ -3,8 +3,7 @@ import "@css/main/main.less";
 import "@css/SaveLoad/main.css";
 import "@css/main/Cyteria/Cyteria.css";
 
-import Vue from "vue";
-import Vuex from 'vuex';
+import { createApp } from "vue";
 
 import '@css/tailwind.css';
 
@@ -13,11 +12,6 @@ import ToggleService from "@plugin/ToggleService.js";
 
 import CY from "@Utils/Cyteria";
 import { InitLanguageSystem } from "@Services/Language";
-
-// == [ pre Init ] =====================================
-Vue.use(Vuex);
-Vue.use(RegisterLang);
-Vue.use(ToggleService);
 
 // == [ init ] =========================================
 InitLanguageSystem();
@@ -36,14 +30,33 @@ if (CY.storageAvailable('localStorage')) {
 }
 // ======================================================
 
-// == [ auto regist global components ] =================
+import App from "./App.vue";
+import router from "./router/index.js";
+import store from "@store/main";
+
+import VueAnalytics from 'vue-analytics';
+import './registerServiceWorker';
+
+const APP = createApp(App);
+APP
+  .use(router)
+  .use(store)
+  .use(RegisterLang)
+  .use(ToggleService)
+  .use(VueAnalytics, {
+    id: 'UA-140158974-1',
+    router,
+    autoTracking: {
+      pageviewOnLoad: false
+    }
+  });
+
+/* == [ auto regist global components ] ================= */
 function registComponents(requireComponent, prefix='') {
   requireComponent.keys().forEach(fileName => {
     const componentConfig = requireComponent(fileName);
     const componentName = fileName.split('/').pop().replace(/\.\w+$/, '');
-
-    // console.log(`regist "${prefix + componentName}"...`);
-    Vue.component(prefix + componentName, componentConfig.default || componentConfig);
+    APP.component(prefix + componentName, componentConfig.default || componentConfig);
   });
 }
 
@@ -54,21 +67,4 @@ registComponents(requireComponent_global);
 registComponents(requireComponent_cy, 'cy-');
 // ======================================================
 
-import App from "./App.vue";
-import router from "./router/index.js";
-
-import VueAnalytics from 'vue-analytics';
-import './registerServiceWorker';
-
-Vue.use(VueAnalytics, {
-  id: 'UA-140158974-1',
-  router,
-  autoTracking: {
-    pageviewOnLoad: false
-  }
-});
-
-new Vue({
-  render: h => h(App),
-  router
-}).$mount('#app')
+APP.mount('#app');

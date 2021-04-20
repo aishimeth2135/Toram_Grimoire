@@ -30,14 +30,14 @@
         {{ p.innerText }}
       </text>
     </template>
-    <template v-for="(p, i) in drawCircleData">
+    <template v-for="(p, i) in drawCircleData"
+      :key="p.skill.id">
       <circle @click="skillCircleClick($event, p.skill)"
-        :key="p.skill.id"
         :cx="p.cx" :cy="p.cy" :r="p.r"
         :class="handleSkillCircleClass(p)"
         :style="p.style" />
-      <text :key="p.skill.id + '--name'"
-        :x="drawNameData[i].x" :y="drawNameData[i].y" :class="drawNameData[i].class">
+      <text :x="drawNameData[i].x" :y="drawNameData[i].y"
+        :class="drawNameData[i].class">
         {{ drawNameData[i].innerText }}
       </text>
     </template>
