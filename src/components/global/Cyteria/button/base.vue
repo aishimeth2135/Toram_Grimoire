@@ -1,5 +1,6 @@
 <script>
 export default {
+  emits: ['click'],
   props: {
     iconifyName: {
       type: String,

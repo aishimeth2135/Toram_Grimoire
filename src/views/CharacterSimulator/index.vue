@@ -101,7 +101,11 @@ export default {
       // levelSkillStateRoot[]
       allSkillStates: [],
 
-      autoSaveDisable: false
+      autoSaveDisable: false,
+      listeners: {
+        windowBeforeUnload: null,
+        documentVisibilityChange: null
+      }
     };
   },
   provide() {
@@ -124,23 +128,22 @@ export default {
     }
     this.$store.commit('character/characterSimulatorInitFinished');
 
-    if (this.characterStates.length !== 0 && this.currentCharacterIndex === -1)
+    if (this.characterStates.length !== 0 && this.currentCharacterIndex === -1) {
       this.$store.commit('character/setCurrentCharacter', { index: 0 });
+    }
     if (this.characterStates.length === 0) {
       this.createCharacter();
     }
-    if (this.skillBuilds.length !== 0 && this.currentSkillBuildIndex === -1)
+    if (this.skillBuilds.length !== 0 && this.currentSkillBuildIndex === -1) {
       this.$store.commit('character/setCurrentSkillBuild', { index: 0 });
+    }
 
     const evt_autoSave = () => this.autoSave();
     const evt_autoSave_2 = () => document.visibilityState === 'hidden' && this.autoSave();
     window.addEventListener('beforeunload', evt_autoSave);
     document.addEventListener('visibilitychange', evt_autoSave_2);
-    this.$once('hook:beforeDestroy', () => {
-      window.removeEventListener('beforeunload', evt_autoSave);
-      document.removeEventListener('visibilitychange', evt_autoSave_2);
-      this.autoSave();
-    });
+    this.listeners.windowBeforeUnload = evt_autoSave;
+    this.listeners.documentVisibilityChange = evt_autoSave_2;
   },
   updated() {
     if (this.currentCharacterStateIndex >= this.characterStates.length) {
@@ -152,6 +155,11 @@ export default {
       this.$router.replace('/character/skill');
       this.$store.commit('main/clearRedirectPath');
     }
+  },
+  unmounted() {
+    window.removeEventListener('beforeunload', this.listeners.windowBeforeUnload);
+    document.removeEventListener('visibilitychange', this.listeners.documentVisibilityChange);
+    this.autoSave();
   },
   computed: {
     ...Vuex.mapState('character', {

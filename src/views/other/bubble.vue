@@ -43,7 +43,8 @@ export default {
       counter: 0,
       idCounter: 0,
       viewBox: '0 0 24 24',
-      displayBg: false
+      displayBg: false,
+      resizeListener: null
     }
   },
   mounted() {
@@ -84,9 +85,10 @@ export default {
     };
 
     window.addEventListener('resize', lis);
-    this.$once('hook:beforeDestroy', function () {
-      window.removeEventListener('resize', lis);
-    });
+    this.resizeListener = lis;
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.resizeListener);
   },
   computed: {
     iconWidth() {

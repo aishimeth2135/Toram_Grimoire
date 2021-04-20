@@ -17,7 +17,7 @@
     <cy-flex-layout class="line-content">
       <cy-icon-text text-color="purple" class="name skill-name"
         :iconify-name="'ic-round-check-box' + (levelSkillStateRoot.disable ? '-outline-blank' : '')"
-        @click.native.stop="toggleStateRootDisable">
+        @click.stop="toggleStateRootDisable">
         <span class="skill-icon-container">
           <img :src="skillIconPath" class="skill-icon">
         </span>
@@ -59,7 +59,7 @@
     <cy-flex-layout class="line-content">
       <cy-icon-text text-color="purple" class="skill-name"
         :iconify-name="'ic-round-check-box' + (levelSkillStateRoot.disable ? '-outline-blank' : '')"
-        @click.native.stop="toggleStateRootDisable">
+        @click.stop="toggleStateRootDisable">
         <span class="skill-icon-container">
           <img :src="skillIconPath" class="skill-icon">
         </span>
@@ -83,7 +83,7 @@
             <cy-flex-layout class="line-content">
               <cy-icon-text text-color="purple" class="name skill-name"
                 :iconify-name="'ic-round-check-box' + (branchState.disable ? '-outline-blank' : '')"
-                @click.native="toggleBranchStateDisable(branchState)">
+                @click="toggleBranchStateDisable(branchState)">
                 {{ branchState.origin.attrs['name'] || $lang('skill management/default name of skill branch') }}
               </cy-icon-text>
               <div class="branch-content">
@@ -116,7 +116,7 @@ import vue_showStatDatas from "./show-stat-datas.vue";
 import { getSkillIconPath } from "@lib/Skill/utils/DrawSkillTree";
 
 export default {
-  props: ['levelSkillStateRoot'],
+  props: ['levelSkillStateRoot', 'levelSkillStateRootDisable'],
   inject: ['openUserSetsWindow', 'getValidLevelSkillState'],
   data() {
     return {
@@ -128,7 +128,7 @@ export default {
       return getSkillIconPath(this.levelSkill.base);
     },
     hasExtraContent() { // only for if (branchStates.length == 1)
-      return this.firstBranchState.handler.value.conditionDatas.length != 0;
+      return this.firstBranchState.handler.value.conditionDatas.length !== 0;
     },
     levelSkillState() {
       return this.getValidLevelSkillState(this.levelSkillStateRoot);
@@ -154,7 +154,7 @@ export default {
       state.disable = !state.disable;
     },
     toggleStateRootDisable() {
-      this.levelSkillStateRoot.disable = !this.levelSkillStateRoot.disable;
+      this.$emit('update:level-skill-state-root-disable', !this.levelSkillStateRoot.disable);
     }
   },
   components: {

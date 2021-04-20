@@ -1,6 +1,5 @@
 <template>
-  <span class="cy--icon-text" :class="rootClass"
-    @click="$emit('click', $event)">
+  <span class="cy--icon-text" :class="rootClass">
     <iconify-icon v-if="iconifyName != null" :name="iconifyName" />
     <svg-icon v-if="iconId != null" :icon-id="iconId" />
     <image-icon v-if="imagePath" :image-path="imagePath" />

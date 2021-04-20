@@ -18,6 +18,7 @@
 </template>
 <script>
   export default {
+    emits: ['update:value'],
     props: {
       'value': {
         type: Number,
@@ -26,7 +27,7 @@
       'range': { // [min, max]
         type: Array,
         default: () => [null, null],
-        validation: v => v.length != 2 || !v.every(p => typeof p == 'number' || p === null)
+        validation: v => v.length != 2 || !v.every(p => typeof p === 'number' || p === null)
       },
       'step': {
         type: Number,
@@ -54,7 +55,7 @@
         max !== null && (v = Math.min(max, v));
         min !== null && (v = Math.max(min, v));
 
-        this.$emit('set-value', v);
+        this.$emit('update:value', v);
       },
       updateValue(e) {
         this.setValue(parseInt(e.target.value, 10));

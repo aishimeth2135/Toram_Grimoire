@@ -1,4 +1,6 @@
 <script>
+import { h } from "vue";
+
 import SimpleButton from "./button/simple";
 import BorderButton from "./button/border";
 import LineButton from "./button/line";
@@ -11,97 +13,82 @@ const colorList = [
   'gray', 'gray-light', 'orange', 'green'
 ];
 
-export default {
-  functional: true,
-  props: {
-    type: {
-      type: String,
-      default: 'simple',
-      validator(v){
-        return [
-          'simple', 'icon', 'line', 'border', 'drop-down',
-        ].includes(v);
-      }
-    },
-    textColor: {
-      type: String,
-      default: 'dark',
-      validator(v) {
-        return colorList.includes(v);
-      }
-    },
-    textColorHover: {
-      type: String,
-      default: 'light-4',
-      validator(v) {
-        return colorList.includes(v);
-      }
-    },
-    iconColor: {
-      type: String,
-      default: 'light-2',
-      validator(v) {
-        return colorList.includes(v);
-      }
-    },
-    iconColorHover: {
-      type: String,
-      default: 'light-4',
-      validator(v) {
-        return colorList.includes(v);
-      }
+function C(props, context) {
+  const getComponent = () => {
+    const type = props.type;
+    if (type === 'border') {
+      return BorderButton;
+    } else if (type === 'line') {
+      return LineButton;
+    } else if (type === 'icon') {
+      return IconButton;
+    } else if (type === 'drop-down') {
+      return DropDownButton;
+    }
+    return SimpleButton;
+  }
+
+  console.log(context);
+  if (!context.attrs.class) {
+    context.attrs.class = {};
+  }
+  context.attrs.class = {
+    ...context.attrs.class,
+    'Button': true,
+    ['text-color-' + props.textColor]: true,
+    ['icon-color-' + props.iconColor]: true,
+    ['text-color-hover-' + props.textColorHover]: true,
+    ['icon-color-hover-' + props.iconColorHover]: true
+  };
+
+  return h(
+    getComponent(),
+    context.attrs,
+    context.slots
+  )
+}
+
+C.props = {
+  type: {
+    type: String,
+    default: 'simple',
+    validator(v){
+      return [
+        'simple', 'icon', 'line', 'border', 'drop-down',
+      ].includes(v);
     }
   },
-  render(createElement, context) {
-    const props = context.props;
-    const getComponent = () => {
-      const type = props.type;
-      if (type === 'border') {
-        return BorderButton;
-      } else if (type === 'line') {
-        return LineButton;
-      } else if (type === 'icon') {
-        return IconButton;
-      } else if (type === 'drop-down') {
-        return DropDownButton;
-      }
-      return SimpleButton;
+  textColor: {
+    type: String,
+    default: 'dark',
+    validator(v) {
+      return colorList.includes(v);
     }
-
-    // console.log(context.data);
-    if (!context.data.class) {
-      context.data.class = {};
+  },
+  textColorHover: {
+    type: String,
+    default: 'light-4',
+    validator(v) {
+      return colorList.includes(v);
     }
-    context.data.class = {
-      ...context.data.class,
-      'Button': true,
-      ['text-color-' + props.textColor]: true,
-      ['icon-color-' + props.iconColor]: true,
-      ['text-color-hover-' + props.textColorHover]: true,
-      ['icon-color-hover-' + props.iconColorHover]: true
-    };
-
-    return createElement(
-      getComponent(),
-      context.data,
-      context.children
-    )
+  },
+  iconColor: {
+    type: String,
+    default: 'light-2',
+    validator(v) {
+      return colorList.includes(v);
+    }
+  },
+  iconColorHover: {
+    type: String,
+    default: 'light-4',
+    validator(v) {
+      return colorList.includes(v);
+    }
   }
-  // computed: {
-  //   buttonComponent() {
-      
-  //   },
-  //   rootClass(){
-  //     return {
-  //       'Button': true,
-  //       ['text-color-' + this.textColor]: true,
-  //       ['icon-color-' + this.iconColor]: true,
-  //       ['text-color-hover-' + this.textColorHover]: true,
-  //       ['icon-color-hover-' + this.iconColorHover]: true
-  //     };
-  //   }
-  // }
 };
+
+export default C;
 </script>
 <style lang="less" scoped>
 .Button {

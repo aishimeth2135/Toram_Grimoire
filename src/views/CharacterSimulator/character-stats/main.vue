@@ -33,7 +33,7 @@
     </div>
     <cy-detail-window v-if="detail.visible || detail.hovering"
       :position-element="detail.positionElement"
-      @click.native.stop="toggleShowStatDetailDisplay('visible', false)">
+      @click.stop="toggleShowStatDetailDisplay('visible', false)">
       <template #title>
         <div class="flex items-center mb-3">
           <cy-icon-text iconify-name="mdi-ghost" text-color="purple">

@@ -12,6 +12,7 @@
 </template>
 <script>
 export default {
+  emits: ['click'],
   props: {
     selected: {
       type: Boolean,

@@ -6,19 +6,21 @@
       </cy-icon-text>
     </template>
     <cy-title-input iconify-name="ic-outline-category" class="mb-4"
-      :value.sync="searchText"
+      v-model:value="searchText"
       :placeholder="$lang('select crystals/search placeholder')" />
     <div>
       <template v-if="crystalCategorys.length != 0">
-        <template v-for="(category, i) in crystalCategorys">
-          <cy-hr v-if="i != 0" :key="category.id + '-hr'" />
-          <cy-button :key="category.id + '-btn'"
-            iconify-name="bx-bx-cube-alt" type="drop-down"
+        <template v-for="(category, i) in crystalCategorys"
+          :key="category.id">
+          <cy-hr v-if="i != 0" />
+          <cy-button type="drop-down"
+            iconify-name="bx-bx-cube-alt"
             :menu-default-visible="true">
             {{ $lang('select crystals/category title')[category.id] }}
             <template v-slot:menu>
               <template v-for="cs in category.crystalStates">
-                <cy-list-item v-if="!cs.disable" :key="cs.origin.id"
+                <cy-list-item v-if="!cs.disable"
+                  :key="cs.origin.id"
                   :selected="cs.selected"
                   @click="selectCrystal(cs.origin)">
                   <cy-icon-text :image-path="cs.imagePath">
@@ -67,16 +69,16 @@
             </div>
           </div>
         </cy-transition>
-        <cy-flex-layout @click.native="toggleDetailVisible"
-          class="cursor-pointer">
+        <div @click="toggleDetailVisible"
+          class="flex items-center cursor-pointer">
           <cy-icon-text :iconify-name="'ic-round-keyboard-arrow-' + (detailVisible ? 'down' : 'up')" />
-          <template #right-content>
+          <div class="ml-auto leading-none">
             <cy-button type="border" iconify-name="ic-round-done"
               @click.stop="closeWindow">
               {{ $globalLang('global/close') }}
             </cy-button>
-          </template>
-        </cy-flex-layout>
+          </div>
+        </div>
       </template>
     </cy-bottom-content>
   </cy-window>
@@ -87,6 +89,7 @@ import vue_showStat from "./show-stat.vue";
 import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from "@lib/Character/CharacterEquipment";
 
 export default {
+  emits: ['close'],
   props: ['visible', 'equipment'],
   data() {
     const crystals = this.$store.state.datas.items.crystals;

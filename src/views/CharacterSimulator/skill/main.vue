@@ -40,7 +40,8 @@
       </template>
       <template v-else-if="mode == 'active' && activeSkillStates.length != 0">
         <skill-item v-for="state in activeSkillStates"
-          :level-skill-state-root="state"
+          level-skill-state-root="state"
+          v-model:level-skill-state-root-disable="state.disable"
           :key="state.levelSkill.base.id + '#' + state.levelSkill.base.name" />
       </template>
       <cy-default-tips v-else iconify-name="mdi-ghost">
@@ -56,8 +57,9 @@
         </cy-icon-text>
       </template>
       <cy-input-counter v-for="p in userSetsWindow.handler.validUserSets"
-        :key="p.variableName" :value="p.value" class="counter"
-        @set-value="userSetValue(p, $event)">
+        :key="p.variableName" class="counter"
+        :value="p.value"
+        @update:value="userSetValue(p, $event)">
         <template #title>
           <cy-icon-text iconify-name="gg-shape-rhombus">
             {{ p.text }}
@@ -65,8 +67,9 @@
         </template>
       </cy-input-counter>
       <cy-input-counter v-for="p in userSetsWindow.handler.stackStates"
-        :key="p.id" :value="p.value" :range="p.range" class="counter"
-        @set-value="userSetValue(p, $event)">
+        :key="p.id" :range="p.range" class="counter"
+        :value="p.value"
+        @update:value="userSetValue(p, $event)">
         <template #title>
           <cy-icon-text iconify-name="gg-shape-rhombus">
             {{ p.name }}

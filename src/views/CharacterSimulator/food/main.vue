@@ -43,7 +43,7 @@
     </div>
     <div class="content">
       <cy-title-input iconify-name="mdi-clipboard-text-outline"
-        :value.sync="currentFoodBuild.name" />
+        v-model:value="currentFoodBuild.name" />
     </div>
     <div class="content-title">
       <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
@@ -65,12 +65,14 @@
       <cy-list-item v-for="(food, i) in currentFoodBuild.foods"
         :selected="foodSelected(i)" class="item"
         :key="food.base.baseName + '-' + (food.negative ? 'n' : 'p')">
-        <cy-input-counter :range="[0, 10]" :value="food.level" :inline="true" type="line"
-          class="counter" @set-value="setFoodLevel(food, $event, i)">
+        <cy-input-counter class="counter" type="line"
+          :range="ranges.foodLevel" :inline="true"
+          :value="food.level" 
+          @update:value="setFoodLevel(food, $event, i)">
           <template #title>
             <cy-icon-text :iconify-name="foodSelected(i) ? 'mdi-food-apple' : 'bx-bx-radio-circle'"
               :text-color="food.negative ? 'orange' : 'purple'"
-              @click.native="selectFood(i)">
+              @click="selectFood(i)">
               {{ food.stat().show() }}
             </cy-icon-text>
           </template>
@@ -106,6 +108,13 @@ export default {
   created() {
     if (this.foodBuilds.length == 0)
       this.createFoodBuild();
+  },
+  data() {
+    return {
+      ranges: {
+        foodLevel: [0, 10]
+      }
+    }
   },
   computed: {
     ...Vuex.mapState('character', ['foodBuilds', 'currentFoodBuildIndex']),

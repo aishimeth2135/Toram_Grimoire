@@ -43,7 +43,7 @@
     </div>
     <div class="content">
       <cy-title-input iconify-name="mdi-clipboard-text-outline"
-        :value.sync="character.name">
+        v-model:value="character.name">
         <input type="text" v-model="character.name">
       </cy-title-input>
     </div>
@@ -55,8 +55,8 @@
     </div>
     <div class="content">
       <cy-input-counter class="counter"
-        :value="character.level" :range="[0, 250]"
-        @set-value="setLevel($event)">
+        :value="character.level" :range="ranges.characterLevel"
+        @update:value="setLevel($event)">
         <template v-slot:title>
           <cy-icon-text iconify-name="bx-bxs-user">
             {{ $lang('character level') }}
@@ -73,8 +73,8 @@
     <div class="content">
       <cy-input-counter v-for="baseStat in character.normalBaseStats"
         class="counter" :key="baseStat.name"
-        :value="baseStat.value" :range="[0, 500]"
-        @set-value="setBaseStat(baseStat, $event)">
+        :value="baseStat.value" :range="ranges.baseStat"
+        @update:value="setBaseStat(baseStat, $event)">
         <template v-slot:title>
           <cy-icon-text iconify-name="mdi-rhombus-outline">
             {{ baseStat.name }}
@@ -84,8 +84,9 @@
       <cy-transition type="fade-slide-right" mode="out-in">
         <cy-input-counter v-if="character.hasOptinalBaseStat()"
           :key="character.optionalBaseStat.name" class="counter"
-          :value="character.optionalBaseStat.value" :range="[0, 255]"
-          @set-value="setBaseStat(character.optionalBaseStat, $event)">
+          :value="character.optionalBaseStat.value"
+          :range="ranges.optionalBaseStat"
+          @update:value="setBaseStat(character.optionalBaseStat, $event)">
           <template v-slot:title>
             <cy-icon-text iconify-name="mdi-rhombus-outline">
               {{ character.optionalBaseStat.name }}
@@ -125,6 +126,16 @@ import { Character } from "@lib/Character/Character";
 
 export default {
   props: ['characterState'],
+  emits: ['create-character'],
+  data() {
+    return {
+      ranges: {
+        characterLevel: [1, 250],
+        baseStat: [1, 500],
+        optionalBaseStat: [1, 255]
+      }
+    };
+  },
   computed: {
     ...Vuex.mapState('character', {
       'characterStates': 'characters',

@@ -2,15 +2,16 @@
     <nav class="border-b border-solid border-light flex items-center py-1 px-4 mb-4 bg-white">
       <app-left-menu />
       <div class="inline-flex items-center whitespace-nowrap overflow-y-auto px-2 text-sm">
-        <template v-for="(item, i) in items">
+        <template v-for="(item, i) in items"
+          :key="item.path">
           <iconify-icon v-if="i != 0"
             class="w-5 h-5 fill-current text-light-2 mx-2"
-            name="ic-round-keyboard-arrow-right"
-            :key="item.path + '-icon'" />
-          <span :key="item.path + '-text'">
+            name="ic-round-keyboard-arrow-right" />
+          <span>
             <router-link v-if="i != items.length - 1" :to="item.path"
               v-slot="{ navigate }" custom>
-              <span class="cursor-pointer text-light-3 underline" @click="navigate"
+              <span class="cursor-pointer text-light-3 underline"
+                @click="navigate"
                 @keypress.enter="navigate"
                 role="link">{{ item.title }}</span>
             </router-link>

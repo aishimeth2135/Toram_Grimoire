@@ -6,7 +6,8 @@
     </cy-icon-text>
     <div class="name content">
       <cy-title-input iconify-name="mdi-clipboard-edit-outline"
-       :value.sync="equipment.name" />
+       :value="equipment.name"
+       @update:value="setEquipmentProperty(equipment, 'name', $event)" />
     </div>
     <cy-icon-text iconify-name="mdi-rhombus-outline"
       text-size="small" text-color="purple">
@@ -14,11 +15,11 @@
     </cy-icon-text>
     <div class="stats content">
       <div v-for="stat in equipment.stats"
-        :key="`${stat.baseName()}-${stat.type.description}`">
+        :key="stat.statId">
         <cy-input-counter :value="stat.statValue()"
           type="line" class="set-stat-value"
-          :range="stat.isBoolStat ? [1, 1] : [null, null]"
-          @set-value="setStatValue(stat, $event)">
+          :range="stat.isBoolStat ? ranges.boolStat : ranges.stat"
+          @update:value="setStatValue(stat, $event)">
           <template v-slot:title>
             <cy-icon-text iconify-name="mdi-rhombus-outline">
               {{ stat.show() }}
@@ -38,8 +39,8 @@
       </cy-icon-text>
       <div class="other content">
         <cy-input-counter v-if="equipment.hasStability"
-          :value="equipment.stability" :range="[0, 100]"
-          @set-value="setStability($event)">
+          :value="equipment.stability" :range="ranges.stability"
+          @update:value="setEquipmentProperty(equipment, 'stability', $event)">
           <template v-slot:title>
             <cy-icon-text iconify-name="mdi-rhombus-outline">
               {{ $lang('stability') }}
@@ -56,9 +57,9 @@
       </template>
       <cy-title-input iconify-name="ic-outline-category"
         class="search-stat-input"
-        :value.sync="searchText"
+        v-model:value="searchText"
         :placeholder="$lang('custom equipment editor/select stat: search placeholder')" />
-      <template v-if="statsSearchResult.length != 0">
+      <template v-if="statsSearchResult.length !== 0">
         <cy-list-item v-for="stat in statsSearchResult"
           :key="`${stat.origin.baseName}-${stat.type.description}`"
           :selected="(equipment.findStat(stat.origin.baseName, stat.type) ? true : false) || appendedStats.includes(stat) || deletedStats.includes(stat)"
@@ -96,12 +97,13 @@
       <cy-default-tips v-else icon-id="potum">
         {{ $lang('Warn/no result found') }}
       </cy-default-tips>
-      <cy-bottom-content v-if="appendedStats.length != 0 || deletedStats.length != 0" class="bottom-content">
+      <cy-bottom-content v-if="appendedStats.length !== 0 || deletedStats.length !== 0"
+        class="bottom-content">
         <template #normal-content>
           <cy-transition type="slide-up">
             <div v-if="selectStatDetailVisible" class="select-stats-detail">
               <div class="content">
-                <div class="title">
+                <div class="w-full">
                   <cy-icon-text iconify-name="mdi-rhombus-outline"
                     text-size="small" text-color="purple">
                     {{ $lang('custom equipment editor/select stat: current stats') }}
@@ -124,7 +126,7 @@
                     {{ $globalLang('global/none') }}
                   </cy-icon-text>
                 </cy-list-item>
-                <div class="title">
+                <div class="w-full">
                   <cy-icon-text iconify-name="mdi-rhombus-outline"
                     text-size="small" text-color="purple">
                     {{ $lang('custom equipment editor/select stat: appended stats') }}
@@ -148,7 +150,7 @@
                     {{ $globalLang('global/none') }}
                   </cy-icon-text>
                 </cy-list-item>
-                <div class="title">
+                <div class="w-full">
                   <cy-icon-text iconify-name="mdi-rhombus-outline"
                     text-size="small" text-color="purple">
                     {{ $lang('custom equipment editor/select stat: deleted stats') }}
@@ -196,12 +198,17 @@
 </template>
 <script>
 import { StatBase, RestrictionStat } from "@lib/Character/Stat";
+import { CharacterEquipment } from "@lib/Character/CharacterEquipment";
 
 import MessageNotify from "@Services/Notify";
 
 export default {
-  props: ['equipment'],
-  inject: ['isElementStat'],
+  props: {
+    'equipment': {
+      type: CharacterEquipment
+    }
+  },
+  inject: ['isElementStat', 'setEquipmentProperty'],
   data() {
     const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
     this.$store.state.datas.character.statList.forEach(stat => {
@@ -223,12 +230,17 @@ export default {
       selectStatDetailVisible: false,
       stats,
       appendedStats: [],
-      deletedStats: []
+      deletedStats: [],
+      ranges: {
+        stability: [0, 100],
+        stat: [null, null],
+        boolStat: [1, 1]
+      }
     }
   },
   computed: {
     statsSearchResult() {
-      if (this.searchText == '') {
+      if (this.searchText === '') {
         return this.elementFilterStats;
       }
       return this.elementFilterStats
@@ -247,9 +259,6 @@ export default {
     },
   },
   methods: {
-    setStability(v) {
-      this.equipment.stability = v;
-    },
     cancelEquipmentSelection() {
       const { deletedStats, appendedStats } = this;
       this.deletedStats = [];
@@ -358,9 +367,5 @@ export default {
 .set-stat-value {
   --input-width: 2.6rem;
   margin-bottom: 0.6rem;
-}
-
-.title {
-  width: 100%;
 }
 </style>

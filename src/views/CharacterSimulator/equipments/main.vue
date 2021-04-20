@@ -79,7 +79,8 @@ export default {
       'openCustomEquipmentEditor': this.openCustomEquipmentEditor,
       'openSelectCrystals': this.openSelectCrystals,
       'appendEquipments': this.appendEquipments,
-      'isElementStat': this.isElementStat
+      'isElementStat': this.isElementStat,
+      'setEquipmentProperty': this.setEquipmentProperty
     };
   },
   data() {
@@ -154,6 +155,9 @@ export default {
     },
     convertEquipmentData(item) {
       return CharacterEquipment.fromOriginEquipment(item);
+    },
+    setEquipmentProperty(eq, propName, v) {
+      eq[propName] = v;
     }
   },
   components: {

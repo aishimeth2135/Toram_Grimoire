@@ -15,11 +15,12 @@
         </template>
         <cy-transition type="fade">
           <div class="inner-menu select-skill-tree" v-if="selectSkillTreeVisible">
-            <template v-for="stc in currentSkillRootState.skillTreeCategoryStates.filter(p => p.skillTreeStates.length !== 0)">
-              <div class="title" :key="stc.origin.id + '-title'">{{ stc.origin.name }}</div>
-              <div class="content" :key="stc.origin.id + '-content'">
-                <cy-button v-for="st in stc.skillTreeStates" type="line"
-                  icon-id="rabbit-book"
+            <template v-for="stc in unemptySkillTreeCategoryStates"
+              :key="stc.origin.id">
+              <div class="title">{{ stc.origin.name }}</div>
+              <div class="content">
+                <cy-button v-for="st in stc.skillTreeStates"
+                  type="line" icon-id="rabbit-book"
                   :key="stc.origin.id + '-' + st.origin.id"
                   @click="toggleSkillTreeVisible(stc, st)"
                   :class="{ selected: st.visible }">
@@ -62,9 +63,10 @@
                 iconify-name="mdi:ghost">
                 {{ $lang('no star gem set') }}
               </cy-default-tips>
-              <template v-for="stc in visibleSkillTreeCategoryStates">
-                <div class="title" :key="stc.origin.id + '--title'">{{ stc.origin.name }}</div>
-                <div class="content" :key="stc.origin.id + '--content'">
+              <template v-for="stc in visibleSkillTreeCategoryStates"
+                :key="stc.origin.id">
+                <div class="title">{{ stc.origin.name }}</div>
+                <div class="content">
                   <cy-button v-for="st in stc.skillTreeStates.filter(p => p.visible)"
                     type="line" icon-id="rabbit-book" :key="'skill-tree--' + st.origin.id"
                     @click="jumpToSkillTree(st.origin)"
@@ -109,7 +111,7 @@
             </cy-options>
             <cy-title-input iconify-name="ant-design:build-outlined"
               class="mt-4"
-              :value.sync="currentSkillRootState.name" />
+              v-model:value="currentSkillRootState.name" />
             <div class="p-2 mb-1">
               <cy-button type="line" @click="copyCurrentBuild" iconify-name="mdi:content-copy">
                 {{ $globalLang('global/copy') }}
@@ -414,8 +416,11 @@ export default {
       });
       return sum;
     },
+    unemptySkillTreeCategoryStates() {
+      return this.currentSkillRootState.skillTreeCategoryStates.filter(p => p.skillTreeStates.length !== 0);
+    },
     visibleSkillTreeCategoryStates() {
-      return this.currentSkillRootState.skillTreeCategoryStates.filter(p => p.visible);
+      return this.unemptySkillTreeCategoryStates.filter(p => p.visible);
     }
   },
   methods: {
