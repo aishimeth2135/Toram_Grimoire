@@ -2,18 +2,20 @@ import { StatBase } from "@lib/Character/Stat";
 import Grimoire from "@Grimoire";
 
 class EnchantCategory {
+  #weaponOnly;
+
   constructor(title) {
     this.title = title;
     this.items = [];
-    this._weaponOnly = false;
+    this.#weaponOnly = false;
   }
 
   get weaponOnly() {
-    return this._weaponOnly;
+    return this.#weaponOnly;
   }
 
-  setWeaponOnly(v) {
-    this._weaponOnly = true;    
+  setWeaponOnly() {
+    this.#weaponOnly = true;    
   }
   appendItem(sets) {
     const t = new EnchantItem(this, sets);
@@ -23,6 +25,12 @@ class EnchantCategory {
 }
 
 class EnchantItem {
+  static CONDITION_MAIN_WEAPON = Symbol('Main Weapon');
+  static CONDITION_BODY_ARMOR = Symbol('Body Armor');
+  static CONDITION_ORIGINAL_ELEMENT = Symbol('Original Element');
+
+  #category;
+
   constructor(category, {
       baseName, potential,
       limit, unitValue,
@@ -30,9 +38,9 @@ class EnchantItem {
       potentialConvertThreshold
     }) {
 
-    this._category = category;
+    this.#category = category;
     this.statBase = Grimoire.Character.findStatBase(baseName);
-    this.conditionalAttrs = [];
+    this.conditionalProps = [];
     this.potential = {
       [StatBase.TYPE_CONSTANT]: potential[0],
       [StatBase.TYPE_MULTIPLIER]: potential[1]
@@ -54,28 +62,16 @@ class EnchantItem {
       [StatBase.TYPE_CONSTANT]: potentialConvertThreshold[0],
       [StatBase.TYPE_MULTIPLIER]: potentialConvertThreshold[1]
     };
-
-    this._state = null;
-    // {
-    //   fieldType: number(int),
-    //   isOriginalElement: boolean,
-    //   characterLevel: number(int)
-    // }
-  }
-
-  get state() {
-    return this._state || {};
   }
 
   belongCategory() {
-    return this._category;
+    return this.#category;
   }
-  appendConditionalAttrs(set) {
-    this.conditionalAttrs.push(set);
+  appendConditionalProps(set) {
+    this.conditionalProps.push(set);
   }
-  checkConditionalAttrs() {
-    const state = this.state;
-    return this.conditionalAttrs.find(p => {
+  checkConditionalProps(state) {
+    return this.conditionalProps.find(p => {
       switch (p.condition) {
         case EnchantItem.CONDITION_MAIN_WEAPON:
           return state.fieldType === 0;
@@ -86,12 +82,12 @@ class EnchantItem {
       }
     });
   }
-  getPotential(type, status) {
-    const attr = this.realAttributes(status);
-    return attr.potential[type];
+  getPotential(type, state) {
+    const cp = this.checkConditionalProps(state);
+    return cp ? cp.potential[type] : this.potential[type];
   }
   basePotential(type) {
-    return this.attributes.potential[type];
+    return this.potential[type];
   }
   getLimit(type) {
     const t = this.limit[type];
@@ -110,7 +106,7 @@ class EnchantItem {
   getLimitFromPotentialLimit(type, add = 0) {
     let potentialLimit = Status.ItemPotentialLimit + add;
     const bp = this.basePotential(type);
-    if (bp == 6)
+    if (bp === 6)
       potentialLimit -= 10;
     return Math.floor(potentialLimit / bp);
   }
@@ -142,8 +138,10 @@ class EnchantItem {
   }
 }
 
-EnchantItem.CONDITION_MAIN_WEAPON = Symbol('Main Weapon');
-EnchantItem.CONDITION_BODY_ARMOR = Symbol('Body Armor');
-EnchantItem.CONDITION_ORIGINAL_ELEMENT = Symbol('Original Element');
+class EnchantItemConditionalProperties {
+  constructor({ potential = null }) {
+    this.potential = potential;
+  }
+}
 
 export { EnchantCategory };
