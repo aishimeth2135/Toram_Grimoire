@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router'
 
 import Character from "./Character";
 import Home from "./Home";
@@ -17,8 +16,6 @@ import store from "@store/main";
 
 import GetLang from "@Services/Language";
 
-Vue.use(VueRouter);
-
 const routes = [
   Home,
   Character,
@@ -31,8 +28,8 @@ const routes = [
   Bubble
 ];
 
-const router = new VueRouter({
-  mode: 'history',
+const router = createRouter({
+  mode: createWebHistory(),
   routes
 });
 
@@ -42,11 +39,12 @@ router.beforeEach((to, from, next) => {
       const data = to.matched.slice().reverse().find(p => p.meta && p.meta.title);
       if (data) {
         const title = data.meta.title;
-        document.title = GetLang('Page Title/base') + '｜' + (typeof title == 'function' ? title() : title);
+        document.title = GetLang('Page Title/base') + '｜' + (typeof title === 'function' ? title() : title);
       } else {
         document.title = GetLang('Page Title/base');
       }
-    } {
+    }
+    {
       document.head.querySelectorAll('*[data-vue-router-mata-tag-controlled]').forEach(el => el.remove());
       const data = to.matched.slice().reverse().find(p => p.meta && p.meta.metaTags);
       if (data) {

@@ -4,7 +4,7 @@ import ViewInit from "@Services/ViewInit.js";
 // import GetLang from "@Services/Language";
 
 export default {
-  path: '*',
+  path: '/:pathMatch(.*)*',
   component: vue_page404,
   beforeEnter(to, from, next) {
     ViewInit().then(next);
