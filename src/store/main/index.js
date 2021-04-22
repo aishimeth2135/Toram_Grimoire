@@ -1,7 +1,4 @@
-import Vuex from "vuex";
-import Vue from "vue";
-
-Vue.use(Vuex);
+import { createStore } from 'vuex';
 
 import main from "./main.js";
 
@@ -14,7 +11,7 @@ import nav from "./nav";
 import datas from "./datas";
 import character from "./character";
 
-const store = new Vuex.Store({
+const store = createStore({
   modules: {
     main,
     language,
