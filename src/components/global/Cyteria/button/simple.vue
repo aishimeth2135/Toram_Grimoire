@@ -1,6 +1,6 @@
 <template>
   <span @click="click"
-    class="cy-button--simple inline-flex items-center border-b border-solid border-light py-1.5 px-2 m-1"
+    class="cy-button--simple inline-flex items-center border-b border-solid border-light py-1 px-2 m-1"
     :class="baseClass">
     <iconify-icon v-if="iconifyName" :name="iconifyName" />
     <svg-icon v-if="iconId" :icon-id="iconId" />

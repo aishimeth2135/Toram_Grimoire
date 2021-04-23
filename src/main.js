@@ -3,12 +3,7 @@ import "@css/main/main.less";
 import "@css/SaveLoad/main.css";
 import "@css/main/Cyteria/Cyteria.css";
 
-import { createApp } from "vue";
-
 import '@css/tailwind.css';
-
-import RegisterLang from "@plugin/RegisterLang.js";
-import ToggleService from "@plugin/ToggleService.js";
 
 import CY from "@Utils/Cyteria";
 import { InitLanguageSystem } from "@Services/Language";
@@ -29,12 +24,16 @@ if (CY.storageAvailable('localStorage')) {
   }
 }
 // ======================================================
+import { createApp } from "vue";
 
 import App from "./App.vue";
 import router from "./router/index.js";
 import store from "@store/main";
 
 import VueGtag from "vue-gtag-next";
+
+import RegisterLang from "@plugin/RegisterLang.js";
+
 import './registerServiceWorker';
 
 const APP = createApp(App);
@@ -42,7 +41,6 @@ APP
   .use(router)
   .use(store)
   .use(RegisterLang)
-  .use(ToggleService)
   .use(VueGtag, {
     property: {
       id: 'UA-140158974-1'

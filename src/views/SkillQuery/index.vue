@@ -11,27 +11,26 @@
       </template>
       <template v-slot:buttons-scope>
         <cy-button v-if="!selectSkillTreeWindowState.visible"
-          key="invisible" class="inline"
+          key="invisible" class="p-0 border-0"
           iconify-name="ic-round-keyboard-arrow-down"
           @mouseenter.stop="toggleSelectSkillTreeWindow(true)"
           @click="toggleSelectSkillTreeWindow(true)">
           {{ $lang('select skill') }}
         </cy-button>
         <cy-button v-else key="visible"
-          iconify-name="ic-round-keyboard-arrow-up" class="inline"
-          @click="toggleSelectSkillTreeWindow(false)"
-          style="background-color: var(--white)">
+          iconify-name="ic-round-keyboard-arrow-up"
+          class="p-0 border-0 bg-white"
+          @click="toggleSelectSkillTreeWindow(false)">
           {{ $lang('close select skill') }}
         </cy-button>
       </template>
-      <template v-slot:float-menu>
-        <div v-show="selectSkillTreeWindowState.visible"
-          class="menu-container width-wide"
-          @mouseleave.stop="toggleSelectSkillTreeWindow(false)">
+      <template v-slot:float-menu
+        v-if="selectSkillTreeWindowState.visible">
+        <div @mouseleave.stop="toggleSelectSkillTreeWindow(false)">
           <div>
-            <cy-button v-for="(stc, i) in skillRoot.skillTreeCategorys" :key="stc.id"
-              iconify-name="bx-bxs-book-content"
-              :class="{ 'selected': selectSkillTreeWindowState.currentIndex_stc == i }"
+            <cy-button v-for="(stc, i) in skillRoot.skillTreeCategorys"
+              :key="stc.id" iconify-name="bx-bxs-book-content"
+              :selected="selectSkillTreeWindowState.currentIndex_stc == i"
               @click="selectSkillTreeCategory(i)">
               {{ stc.name }}
             </cy-button>
@@ -40,7 +39,7 @@
             style="border-top: 1px solid var(--primary-light-2); margin-top: 0.6rem; padding-top: 0.3rem;">
             <cy-button v-for="(st, i) in currentSkillTreeCategory.skillTrees" :key="st.id"
               icon-id="rabbit-book"
-              :class="{ 'selected': selectSkillTreeWindowState.currentIndex_st == i }"
+              :selected="selectSkillTreeWindowState.currentIndex_st == i"
               @click="selectSkillTree(i)">
               {{ st.name }}
             </cy-button>
@@ -85,17 +84,17 @@
           </div>
           <div class="skill-branchs">
             <transition-group name="branch-fade" appear>
-              <skill-branch v-for="(branch) in currentSkillBranchs" :key="branch.iid" type="main"
-                :branch="branch" :skill-state="currentSkillState" />
+              <skill-branch v-for="(branch) in currentSkillBranchs"
+                :key="branch.iid" type="main"
+                :branch="branch"
+                :skill-state="currentSkillState" />
             </transition-group>
           </div>
         </template>
-        <div v-else class="default-content">
-          <div class="conent-container" @click="toggleSelectSkillTreeWindow">
-            <cy-icon-text icon-id="potum" class="icon" />
-            <div v-html="$lang('default message: equipment conditions')"></div>
-          </div>
-        </div>
+        <cy-default-tips v-else icon-id="potum"
+          @click="toggleSelectSkillTreeWindow">
+          <div v-html="$lang('default message: equipment conditions')"></div>
+        </cy-default-tips>
         <div class="bottom-menu">
           <div class="top-content">
             <cy-transition type="fade">
@@ -108,58 +107,64 @@
                   @click="skillStates.optionsMode = skillStates.optionsMode == 0 ? 1 : 0" />
                 <cy-transition type="fade" mode="out-in">
                   <div v-if="skillStates.optionsMode == 0" class="container-content" key="mode-1">
-                    <div class="equipment-container" v-if="skillStates.optionsMode == 0">
+                    <div class="inline-flex items-center" v-if="skillStates.optionsMode == 0">
                       <span class="column" v-for="(data) in equipmentCategoryList" :key="data.showName">
-                        <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.shortName)" class="inline"
-                          style="margin-right: 0.7rem;">
+                        <cy-button :iconify-name="data.icon" @click="toggleEquipmentType(data.shortName)"
+                          class="p-0 mr-3 border-0">
                           {{ getEquipmentText(equipmentState[data.shortName], data.name) }}
                         </cy-button>
                       </span>
                     </div>
-                    <div class="skill-level-container" v-if="skillStates.optionsMode == 0">
-                      <cy-button iconify-name="mdi-order-numeric-descending" @click="toggleSkillLevel" class="inline">
+                    <div v-if="skillStates.optionsMode === 0"
+                      class="border-l border-solid border-light-2 px-4 ml-1 inline-block">
+                      <cy-button iconify-name="mdi-order-numeric-descending"
+                        class="p-0 border-0"
+                        @click="toggleSkillLevel">
                         {{ 'Lv.' + skillStates.skillLevel }}
                       </cy-button>
                     </div>
                   </div>
                   <div class="container-content" v-else key="mode-2">
-                    <div class="switch-skill-container">
-                      <cy-icon-text iconify-name="heroicons-solid:switch-vertical"
-                        text-size="small" text-color="purple" display="block" style="margin-bottom: 0.3rem">
-                        {{ $lang('switch skill') }}
-                      </cy-icon-text>
-                      <div>
-                        <cy-button iconify-name="eva-arrow-circle-left-outline"
-                          class="my-0 p-0 border-0 mr-3" @click="switchSkill('previous')">
-                          {{ $lang('previous skill') }}
-                        </cy-button>
-                        <cy-button iconify-name="eva-arrow-circle-right-outline"
-                          class="my-0 p-0 border-0 mr-3" @click="switchSkill('next')">
-                          {{ $lang('next skill') }}
-                        </cy-button>
-                        <cy-button iconify-name="bx-bx-fast-forward-circle"
-                          class="my-0 p-0 border-0 mr-3" @click="switchSkill('last')">
-                          {{ $lang('last skill') }}
-                        </cy-button>
-                      </div>
+                    <cy-icon-text iconify-name="heroicons-solid:switch-vertical"
+                      text-size="small" text-color="purple" display="block" style="margin-bottom: 0.3rem">
+                      {{ $lang('switch skill') }}
+                    </cy-icon-text>
+                    <div class="inline-flex items-center">
+                      <cy-button iconify-name="eva-arrow-circle-left-outline"
+                        class="my-0 p-0 border-0 mr-3" @click="switchSkill('previous')">
+                        {{ $lang('previous skill') }}
+                      </cy-button>
+                      <cy-button iconify-name="eva-arrow-circle-right-outline"
+                        class="my-0 p-0 border-0 mr-3" @click="switchSkill('next')">
+                        {{ $lang('next skill') }}
+                      </cy-button>
+                      <cy-button iconify-name="bx-bx-fast-forward-circle"
+                        class="my-0 p-0 border-0 mr-3" @click="switchSkill('last')">
+                        {{ $lang('last skill') }}
+                      </cy-button>
                     </div>
                   </div>
                 </cy-transition>
               </div>
             </cy-transition>
-            <cy-button :iconify-name="skillStates.optionsWindowVisible ? 'ic-round-unfold-less' : 'ic-round-unfold-more'" type="icon" style="margin-left: auto;"
+            <cy-button :iconify-name="skillStates.optionsWindowVisible ? 'ic-round-unfold-less' : 'ic-round-unfold-more'"
+              type="icon" class="ml-auto p-0"
               @click="skillStates.optionsWindowVisible = !skillStates.optionsWindowVisible" />
           </div>
           <cy-transition type="fade">
             <div class="options-content" v-show="skillStates.optionsWindowVisible">
               <div class="equipment-column" v-for="(data) in equipmentCategoryList" :key="data.showName">
-                <cy-icon-text :iconify-name="data.icon" class="text-small line column-title">
+                <cy-icon-text :iconify-name="data.icon"
+                  text-size="small"
+                  class="w-full column-title">
                   {{ $lang(`equipment/${data.name}: title`) }}
                 </cy-icon-text>
-                <div class="list">
-                  <cy-button v-for="(eq) in equipmentState[data.shortName + 'List']" :key="eq"
-                    :iconify-name="data.icon" @click="selectEquipment(data.shortName, eq)"
-                    :class="{ 'selected': equipmentState[data.shortName] == eq }">
+                <div class="px-2">
+                  <cy-button v-for="(eq) in equipmentState[data.shortName + 'List']"
+                    type="border" :key="eq"
+                    :iconify-name="data.icon"
+                    @click="selectEquipment(data.shortName, eq)"
+                    :selected="equipmentState[data.shortName] == eq">
                     {{ getEquipmentText(eq, data.name) }}
                   </cy-button>
                 </div>
@@ -187,7 +192,7 @@
                   </template>
                 </cy-input-counter>
               </div>
-              <div class="switch-formula-display-mode">
+              <div class="mt-4">
                 <cy-button type="border" iconify-name="heroicons-solid:switch-vertical"
                   @click="skillStates.formulaDisplayMode = skillStates.formulaDisplayMode == 0 ? 1 : 0">
                   {{ $lang('switch formula display mode') }}
@@ -198,8 +203,10 @@
         </div>
       </template>
       <div v-else class="default-content">
-        <div class="container" @click="toggleSelectSkillTreeWindow">
-          <cy-icon-text icon-id="potum" class="icon" />
+        <div class="content-container" @click="toggleSelectSkillTreeWindow">
+          <cy-icon-text icon-id="potum"
+            style="--icon-width: 7rem;"
+            class="mb-6" />
           <div>{{ $lang('default message') }}</div>
         </div>
       </div>
@@ -440,7 +447,7 @@ export default {
       return this.skillRoot.skillTreeCategorys[state.currentIndex_stc].skillTrees[state.currentIndex_st];
     },
     currentSkillState() {
-      if (this.skillStates.store.length == 0)
+      if (this.skillStates.store.length === 0)
         return null;
       return this.skillStates.store[this.skillStates.currentStoreIndex];
     },
@@ -642,10 +649,10 @@ export default {
       idx = idx === void 0 ? state.store.length - 1 : idx;
 
       const skill = state.store[idx].skill;
-      this.$set(state.store, idx, createSkillState(skill, {
+      state.store[idx] = createSkillState(skill, {
         defaultSkillLevel: state.skillLevel,
         defaultCharacterLevel: state.characterLevel
-      }));
+      });
     },
     selectSkillTree(idx) {
       this.selectSkillTreeWindowState.currentIndex_st = idx;
@@ -770,16 +777,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  > .conent-container {
+  > .content-container {
     cursor: pointer;
     padding: 1.3rem;
     transition: border-color 0.3s;
     border: 1px solid transparent;
     text-align: center;
-    > .icon {
-      --icon-width: 7rem;
-      margin-bottom: 1.5rem;
-    }
+
     &:hover {
       border-color: var(--primary-light-3);
     }
@@ -819,11 +823,11 @@ export default {
     display: flex;
     align-items: center;
 
-    > .conent-container {
+    > .content-container {
       display: flex;
       align-items: center;
       overflow-y: auto;
-      padding: 0.2rem 0.4rem;
+      padding: 0 0.4rem;
 
       > .container-content {
         display: flex;
@@ -832,24 +836,6 @@ export default {
 
         > div {
           flex-shrink: 0;
-        }
-
-        > .equipment-container {
-          display: inline-block;
-        }
-
-        > .skill-level-container {
-          border-left: 1px solid var(--primary-light-2);
-          padding: 0 0.9rem;
-          margin-left: 0.4rem;
-          display: inline-block;
-        }
-
-        > .switch-skill-container {
-          > div {
-            display: inline-flex;
-            align-items: center;
-          }
         }
       }
     }
@@ -863,10 +849,6 @@ export default {
       > .column-title {
         margin-top: 0.8rem;
       }
-    }
-
-    > .switch-formula-display-mode {
-      margin-top: 1rem;
     }
   }
 }

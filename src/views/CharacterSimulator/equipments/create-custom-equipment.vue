@@ -7,7 +7,7 @@
     </template>
     <div class="select-type">
       <cy-button iconify-name="gg-shape-square" type="border"
-        @click="$toggle('window/selectType', true)">
+        @click="toggle('window/selectType', true)">
         {{ equipmentTypeText }}
       </cy-button>
     </div>
@@ -29,7 +29,7 @@
       </template>
     </cy-bottom-content>
     <cy-window :visible="window.selectType"
-      @close-window="$toggle('window/selectType', false)">
+      @close-window="toggle('window/selectType', false)">
       <template v-slot:title>
         <cy-icon-text iconify-name="gg-shape-square">
           {{ $lang('create custom equipment/select equipment type') }}
@@ -64,17 +64,27 @@
   </cy-window>
 </template>
 <script>
+import ToggleService from "@setup/ToggleService";
+
 import vue_customEquipmentEditor from "./custom-equipment-editor.vue";
 
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/Character/CharacterEquipment";
 
 export default {
-  ToggleService: {
-    window: ['selectType']
-  },
+  RegisterLang: 'Character Simulator',
   emits: ['append-equipments', 'close'],
   props: ['visible'],
   inject: ['isElementStat'],
+  setup() {
+    const { window, toggle } = ToggleService({
+      window: ['selectType']
+    });
+
+    return {
+      window,
+      toggle
+    };
+  },
   data() {
     return {
       equipmentTypeCategorys: [{
@@ -163,7 +173,7 @@ export default {
       }
 
       this.currentEquipment = eq;
-      this.$toggle('window/selectType', false);
+      this.toggle('window/selectType', false);
     },
     close() {
       this.$emit('close');

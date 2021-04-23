@@ -1,8 +1,6 @@
 <template>
   <article>
-    <keep-alive>
-      <router-view />
-    </keep-alive>
+    <router-view />
   </article>
 </template>
 <script>

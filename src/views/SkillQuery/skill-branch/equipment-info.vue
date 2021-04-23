@@ -1,7 +1,7 @@
 <template>
   <span style="display: inline-block;">
     <template v-for="(data) in equipmentData">
-      <cy-icon-text v-if="typeof data != 'string'" class="text-small equipment-item"
+      <cy-icon-text v-if="(typeof data !== 'string')" class="text-small equipment-item"
         :key="data.icon + data.text + 'text'"
         :iconify-name="data.icon">
         {{ data.text }}

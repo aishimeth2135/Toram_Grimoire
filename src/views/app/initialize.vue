@@ -13,8 +13,7 @@
           </div>
         </div>
       </div>
-      <div class="bottom-tips">
-        {{ $globalLang('Loading Page/bottom tips') }}
+      <div class="bottom-tips" v-html="$globalLang('Loading Page/bottom tips')">
       </div>
     </template>
   </div>

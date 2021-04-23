@@ -27,6 +27,7 @@
 import vue_equipmentInfo from "./equipment-info.vue";
 
 export default {
+  RegisterLang: 'Character Simulator',
   emits: ['remove-field-equipment', 'select-field-equipment'],
   props: ['field'],
   components: {

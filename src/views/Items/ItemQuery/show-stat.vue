@@ -15,6 +15,7 @@
 </template>
 <script>
 export default {
+  RegisterLang: 'Item Query',
   props: ['stat', 'negativeValue', 'type'],
   computed: {
     restrictionTexts() {

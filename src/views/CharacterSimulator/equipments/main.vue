@@ -12,14 +12,14 @@
       <browse-equipments :visible="window.browseEquipments"
         :action="browseEquipmentsState.action"
         :character-state="characterState"
-        @close="$toggle('window/browseEquipments', false)" />
+        @close="toggle('window/browseEquipments', false)" />
       <append-equipments :visible="window.appendEquipments"
-        @close="$toggle('window/appendEquipments', false)" />
+        @close="toggle('window/appendEquipments', false)" />
       <create-custom-equipment :visible="window.createCustomEquipment"
-        @close="$toggle('window/createCustomEquipment', false)"
+        @close="toggle('window/createCustomEquipment', false)"
         @append-equipments="appendEquipments" />
       <cy-window :visible="window.customEquipmentEditor"
-        @close-window="$toggle('window/customEquipmentEditor', false)">
+        @close-window="toggle('window/customEquipmentEditor', false)">
         <template #title>
           <cy-icon-text iconify-name="ic-round-edit">
             {{ $lang('custom equipment editor/window title') }}
@@ -32,7 +32,7 @@
             <cy-flex-layout>
               <template #right-content>
                 <cy-button type="border" iconify-name="ic-round-done"
-                  @click="$toggle('window/customEquipmentEditor', false)">
+                  @click="toggle('window/customEquipmentEditor', false)">
                   {{ $globalLang('global/close') }}
                 </cy-button>
               </template>
@@ -43,7 +43,7 @@
       <select-crystals v-if="currentSelectCrystalsEquipment"
         :visible="window.selectCrystals"
         :equipment="currentSelectCrystalsEquipment"
-        @close="$toggle('window/selectCrystals', false)" />
+        @close="toggle('window/selectCrystals', false)" />
     </div>
   </section>
 </template>
@@ -57,30 +57,40 @@ import vue_createCustomEquipment from "./create-custom-equipment.vue";
 import vue_customEquipmentEditor from "./custom-equipment-editor.vue";
 import vue_selectCrystals from "./select-crystals.vue";
 
+import ToggleService from "@setup/ToggleService";
+
 import { EquipmentField } from "@lib/Character/Character";
 import { CharacterEquipment, MainWeapon, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/Character/CharacterEquipment";
 
 export default {
-  ToggleService: {
-    window: [
-      'browseEquipments',
-      'appendEquipments',
-      'createCustomEquipment',
-      'customEquipmentEditor',
-      'selectCrystals'
-    ]
-  },
+  RegisterLang: 'Character Simulator',
   props: ['characterState'],
   provide() {
     return {
       'convertEquipmentData': this.convertEquipmentData,
       'getShowEquipmentData': this.getShowEquipmentData,
-      'toggleMainWindowVisible': id => this.$toggle('window/' + id),
+      'toggleMainWindowVisible': id => this.toggle('window/' + id),
       'openCustomEquipmentEditor': this.openCustomEquipmentEditor,
       'openSelectCrystals': this.openSelectCrystals,
       'appendEquipments': this.appendEquipments,
       'isElementStat': this.isElementStat,
       'setEquipmentProperty': this.setEquipmentProperty
+    };
+  },
+  setup() {
+    const { window, toggle } = ToggleService({
+      window: [
+        'browseEquipments',
+        'appendEquipments',
+        'createCustomEquipment',
+        'customEquipmentEditor',
+        'selectCrystals'
+      ]
+    });
+
+    return {
+      window,
+      toggle
     };
   },
   data() {
@@ -104,11 +114,11 @@ export default {
     },
     openSelectCrystals(eq) {
       this.currentSelectCrystalsEquipment = eq;
-      this.$toggle('window/selectCrystals', true);
+      this.toggle('window/selectCrystals', true);
     },
     openCustomEquipmentEditor(eq) {
       this.currentCustomEquipment = eq;
-      this.$toggle('window/customEquipmentEditor', true);
+      this.toggle('window/customEquipmentEditor', true);
     },
     appendEquipments(eqs) {
       this.$store.commit('character/appendEquipments', eqs);
@@ -118,7 +128,7 @@ export default {
         type: 'select-field-equipment',
         targetField: field
       };
-      this.$toggle('window/browseEquipments', true);
+      this.toggle('window/browseEquipments', true);
     },
     removeFieldEquipment(field) {
       field.removeEquipment();

@@ -18,6 +18,7 @@ module.exports = {
         '@css': path.join(__dirname, 'src', 'assets', 'css'),
         '@lib': path.join(__dirname, 'src', 'lib'),
         '@plugin': path.join(__dirname, 'src', 'plugin'),
+        '@setup': path.join(__dirname, 'src', 'setup'),
         '@global-vue-components': path.join(__dirname, 'src', 'components', 'global'),
         '@vue-components': path.join(__dirname, 'src', 'components'),
         '@Services': path.join(__dirname, 'src', 'lib', 'main', 'services'),

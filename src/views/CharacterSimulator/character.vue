@@ -125,6 +125,7 @@ import MessageNotify from "@Services/Notify";
 import { Character } from "@lib/Character/Character";
 
 export default {
+  RegisterLang: 'Character Simulator',
   props: ['characterState'],
   emits: ['create-character'],
   data() {

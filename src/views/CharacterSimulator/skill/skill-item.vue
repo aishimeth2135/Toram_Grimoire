@@ -116,6 +116,7 @@ import vue_showStatDatas from "./show-stat-datas.vue";
 import { getSkillIconPath } from "@lib/Skill/utils/DrawSkillTree";
 
 export default {
+  RegisterLang: 'Character Simulator',
   props: ['levelSkillStateRoot', 'levelSkillStateRootDisable'],
   inject: ['openUserSetsWindow', 'getValidLevelSkillState'],
   data() {
@@ -209,13 +210,13 @@ export default {
       color: var(--primary-gray);
     }
   }
-  ::v-deep(.light-text-)1 {
+  ::v-deep(.light-text-1) {
     color: var(--primary-water-blue);
     &.text-dark {
       color: var(--primary-blue-green);
     }
   }
-  ::v-deep(.light-text-)2 {
+  ::v-deep(.light-text-2) {
     color: var(--primary-orange);
   }
   ::v-deep(.multiple-values) {

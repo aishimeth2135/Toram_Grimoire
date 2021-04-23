@@ -142,11 +142,11 @@ export default {
       const color = this.generateColor();
       const path = this.createRandowPathDefinition();
 
-      this.$set(this.icons, this.counter, {
+      this.icons[this.counter] = {
         id: this.idCounter,
         color,
         path: `path('${path}')`
-      });
+      };
 
       ++this.idCounter;
       ++this.counter;
