@@ -1,8 +1,8 @@
-function install(Vue) {
-  Vue.mixin({
+function install(app) {
+  app.mixin({
     beforeCreate() {
       if (this.$options.ToggleService) {
-        const strategies = Vue.config.optionMergeStrategies;
+        const strategies = app.config.optionMergeStrategies;
         const dataMap = {};
         Object.entries(this.$options.ToggleService).forEach(([key, value]) => {
           const group = {};

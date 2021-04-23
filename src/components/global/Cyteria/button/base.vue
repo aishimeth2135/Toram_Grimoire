@@ -26,7 +26,7 @@ export default {
     baseClass(){
       return {
         'selected': this.selected,
-        'disable': this.disable
+        'disable': this.disabled
       };
     }
   },

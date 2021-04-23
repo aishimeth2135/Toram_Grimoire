@@ -35,13 +35,12 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@deep: ~'>>>';
 
 .skill-tree {
   border-top: 1px solid var(--primary-light);
 }
 
-.top @{deep} .content {
+.top ::v-deep(.content) {
   padding-left: 0.4rem;
 }
 

@@ -26,14 +26,13 @@
   };
 </script>
 <style lang="less" scoped>
-  @deep: ~'>>>';
-
+  
   #app {
     .app-main {
       min-height: calc(100vh - 8rem);
     }
 
-    @{deep} .main-section {
+    ::v-deep(.main-section) {
       max-width: 50rem;
       margin-left: auto;
       margin-right: auto;

@@ -1,5 +1,3 @@
-import Vue from "vue";
-
 import CY from "@Utils/Cyteria";
 
 const store = {
@@ -119,10 +117,12 @@ function setLangData(target, obj) {
     const p = target[k];
     const q = obj[k];
     if (typeof q === 'object' && !Array.isArray(q)) {
-      p === void 0 && Vue.set(target, k, {});
+      if (p === void 0) {
+        target[k] = {};
+      }
       setLangData(target[k], q);
     } else if (typeof p !== 'string' && !Array.isArray(p)) {
-      Vue.set(target, k, q);
+      target[k] = q;
     }
   });
 }

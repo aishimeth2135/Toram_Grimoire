@@ -51,7 +51,7 @@
   z-index: 60;
 }
 
-.fade-slide-enter {
+.fade-slide-enter-from {
   opacity: 0;
   transform: translateX(-30%);
 }

@@ -55,7 +55,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@deep: ~'>>>';
 
 .input-container {
   &.input-focus {

@@ -163,7 +163,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@deep: ~'>>>';
 
 .skill-item {
   cursor: auto;
@@ -182,7 +181,7 @@ export default {
     flex-shrink: 0;
   }
 
-  @{deep} .right-content {
+  ::v-deep(.right-content) {
     margin-top: 0.15rem;
   }
 
@@ -204,22 +203,22 @@ export default {
     margin-left: 1rem;
   }
 
-  @{deep} .light-text {
+  ::v-deep(.light-text) {
    color: var(--primary-light-4);
     &.text-dark {
       color: var(--primary-gray);
     }
   }
-  @{deep} .light-text-1 {
+  ::v-deep(.light-text-)1 {
     color: var(--primary-water-blue);
     &.text-dark {
       color: var(--primary-blue-green);
     }
   }
-  @{deep} .light-text-2 {
+  ::v-deep(.light-text-)2 {
     color: var(--primary-orange);
   }
-  @{deep} .multiple-values {
+  ::v-deep(.multiple-values) {
     border-left: 1px solid var(--primary-light-3);
     border-right: 1px solid var(--primary-light-3);
     margin: 0 0.3rem;

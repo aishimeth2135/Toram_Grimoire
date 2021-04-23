@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
+import { trackRouter } from "vue-gtag-next";
 
 import Character from "./Character";
 import Home from "./Home";
@@ -29,7 +30,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  mode: createWebHistory(),
+  history: createWebHistory(),
   routes
 });
 
@@ -92,5 +93,7 @@ router.beforeEach((to, from, next) => {
 
   next();
 });
+
+trackRouter(router);
 
 export default router;

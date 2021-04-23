@@ -1,10 +1,9 @@
 <template>
   <span class="cy--icon-text" :class="rootClass">
-    <iconify-icon v-if="iconifyName != null" :name="iconifyName" />
-    <svg-icon v-if="iconId != null" :icon-id="iconId" />
+    <iconify-icon v-if="iconifyName !== null" :name="iconifyName" />
+    <svg-icon v-if="iconId !== null" :icon-id="iconId" />
     <image-icon v-if="imagePath" :image-path="imagePath" />
-    <lang-text v-if="textLangId != null" :lang-id="textLangId" class="text"></lang-text>
-    <span v-else-if="$slots['default']" class="text">
+    <span v-if="$slots['default']" class="text">
       <slot></slot>
     </span>
     <span v-if="$slots['value']" class="value">
@@ -35,9 +34,6 @@ export default {
       default: null
     },
     imagePath: {
-      default: null
-    },
-    textLangId: {
       default: null
     },
     textColor: {
@@ -84,8 +80,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  @deep-operator: ~'>>>';
-
   .cy--icon-text {
     display: inline-flex;
     align-items: center;

@@ -535,7 +535,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@deep: ~'>>>';
 
 .search-result {
   min-height: 70vh;
@@ -603,7 +602,7 @@ export default {
 
   &.select-sort {
     border-color: var(--primary-water-blue);
-    @{deep} svg {
+    ::v-deep(svg) {
       --icon-color: var(--primary-water-blue);
     }
   }

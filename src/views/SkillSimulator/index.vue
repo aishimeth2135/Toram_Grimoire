@@ -924,13 +924,12 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@deep: ~'>>>';
 
 .main {
   & > .top {
     z-index: 3;
 
-    @{deep} .content {
+    ::v-deep(.content) {
       padding-right: 0.6rem;
 
       & > .buttons-scope {
@@ -1009,7 +1008,7 @@ export default {
     }
   }
 
-  .inner-menu-enter,
+  .inner-menu-enter-from,
   .inner-menu-leave-to {
     opacity: 0;
   }

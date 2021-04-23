@@ -30,7 +30,7 @@ export default {
     }
   }
 }
-.slide-down-enter, .slide-down-leave-to {
+.slide-down-enter-from, .slide-down-leave-to {
   margin-top: -0.8rem!important;
 }
 .slide-down-enter-active, .slide-down-leave-active {

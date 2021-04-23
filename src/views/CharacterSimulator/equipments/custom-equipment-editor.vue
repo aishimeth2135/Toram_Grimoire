@@ -332,10 +332,9 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@deep: ~'>>>';
 
 .bottom-content {
-  @{deep} .top {
+  ::v-deep(.top) {
     cursor: pointer;
   }
 }

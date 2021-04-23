@@ -1,9 +1,10 @@
 <script>
+import { h } from "vue";
 import Icons from "@Services/SvgIcons.js";
 
 export default {
   props: ['iconId'],
-  render(createElement) {
+  render() {
     const tmp = document.createElement('template');
     tmp.innerHTML = Icons(this.iconId);
     const svgEl = tmp.content.firstChild;
@@ -11,11 +12,9 @@ export default {
     Array.from(svgEl.attributes).forEach(item => {
       attrs[item.name] = item.value;
     });
-    return createElement('svg', {
-      attrs,
-      domProps: {
-        innerHTML: svgEl.innerHTML
-      }
+    return h('svg', {
+      ...attrs,
+      innerHTML: svgEl.innerHTML
     });
   }
 }

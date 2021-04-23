@@ -19,6 +19,7 @@
 import Velocity from "velocity-animate";
 
 export default {
+  emits: ['done'],
   props: ['status'],
   data() {
     return {
@@ -26,7 +27,6 @@ export default {
     }
   },
   methods: {
-    emits: ['done'],
     beforeLeave(el) {
       el.classList.remove('start-icon');
     },
