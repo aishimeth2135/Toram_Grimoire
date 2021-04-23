@@ -17,11 +17,11 @@ export default {
     leftMenuViewButtons: [{
       title: () => GetLang('Left Menu/Home/base'),
       icon: 'gridicons-user',
-      path: '/'
+      path: ''
     }, {
       title: () => GetLang('Left Menu/Home/about'),
       icon: 'bx-bxs-star-half',
-      path: '/about'
+      path: 'about'
     }]
   },
   children: [{

@@ -40,7 +40,7 @@
       </template>
       <template v-else-if="mode == 'active' && activeSkillStates.length != 0">
         <skill-item v-for="state in activeSkillStates"
-          level-skill-state-root="state"
+          :level-skill-state-root="state"
           v-model:level-skill-state-root-disable="state.disable"
           :key="state.levelSkill.base.id + '#' + state.levelSkill.base.name" />
       </template>
@@ -90,6 +90,7 @@ import Vuex from "vuex";
 import vue_skillItem from "./skill-item.vue";
 
 export default {
+  RegisterLang: 'Character Simulator',
   props: ['characterState', 'passiveSkillStates', 'activeSkillStates'],
   data() {
     return {

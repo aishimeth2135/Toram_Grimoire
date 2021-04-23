@@ -50,7 +50,7 @@
               <span>{{ selected.length }}</span>
             </span>
             <span>{{ $lang('search equipment result: selected title') }}</span>
-            <cy-icon-text class="ml-auto flex-shrink-0"
+            <cy-icon-text class="ml-auto flex-shrink-0 leading-none"
               :iconify-name="'ic-round-keyboard-arrow-' + (selectedDetailVisible ? 'down' : 'up')" />
           </div>
           <div class="flex items-center">

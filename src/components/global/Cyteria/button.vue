@@ -1,5 +1,5 @@
 <script>
-import { h } from "vue";
+import { h, mergeProps } from "vue";
 
 import SimpleButton from "./button/simple";
 import BorderButton from "./button/border";
@@ -28,21 +28,19 @@ function CyButton(props, context) {
     return SimpleButton;
   }
 
-  if (!context.attrs.class) {
-    context.attrs.class = {};
-  }
-  context.attrs.class = {
-    ...context.attrs.class,
-    'Button': true,
-    ['text-color-' + props.textColor]: true,
-    ['icon-color-' + props.iconColor]: true,
-    ['text-color-hover-' + props.textColorHover]: true,
-    ['icon-color-hover-' + props.iconColorHover]: true
-  };
+  const attrs = mergeProps({
+    class: {
+      'Button': true,
+      ['text-color-' + props.textColor]: true,
+      ['icon-color-' + props.iconColor]: true,
+      ['text-color-hover-' + props.textColorHover]: true,
+      ['icon-color-hover-' + props.iconColorHover]: true
+    }
+  }, context.attrs);
 
   return h(
     getComponent(),
-    context.attrs,
+    attrs,
     context.slots
   )
 }

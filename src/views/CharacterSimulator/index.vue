@@ -234,10 +234,10 @@ export default {
           (state.levelSkill.level() > 0 || state.levelSkill.starGemLevel() > 0));
     },
     passiveSkillStates() {
-      return this.validSkillStates.filter(state => state.type == 'passive');
+      return this.validSkillStates.filter(state => state.type === 'passive');
     },
     activeSkillStates() {
-      return this.validSkillStates.filter(state => state.type == 'active');
+      return this.validSkillStates.filter(state => state.type === 'active');
     }
   },
   methods: {

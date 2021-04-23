@@ -3,7 +3,9 @@
 		<div class="content">
 			<slot></slot>
       <div v-if="$slots['float-menu']" class="float-menu">
-        <slot name="float-menu"></slot>
+				<div class="menu-container">
+					<slot name="float-menu"></slot>
+				</div>
       </div>
 			<div class="buttons-scope">
 				<slot name="buttons-scope"></slot>
@@ -25,13 +27,9 @@
 		--primary-bgcolor: var(--white);
 		--base-z-index: 10;
 		position: sticky;
-		top: calc(-1*var(--shadow-height));
+		top: calc(-1 * var(--shadow-height));
 		height: var(--container-height);
 		z-index: var(--base-z-index);
-		-webkit-backface-visibility: hidden;
-		/* padding-top and padding-botton must be 0
-		padding-top: 0;
-		padding-bottom: 0; */
 		margin-bottom: 1px;
 
 		&:not(.transparent) {
@@ -48,10 +46,12 @@
 			&::after {
 				background-color: var(--shadow-mask-color);
 				z-index: calc(1 + var(--base-z-index));
+				border-radius: 0 0 0.6rem 0.6rem;
 			}
 
 			> .content {
 				background-color: var(--primary-bgcolor);
+				border-radius: 0.6rem 0.6rem 0 0;
 			}
 		}
 
@@ -78,15 +78,11 @@
           padding-top: 2rem;
           border: 1px solid var(--primary-light-2);
           background-color: var(--white);
-          width: 31.2rem;
+          width: 40rem;
           max-width: calc(100vw - 1rem);
           max-height: calc(100vh - 5rem);
           overflow-y: auto;
           white-space: normal;
-
-          &.width-wide {
-            width: 40rem;
-          }
         }
       }
 

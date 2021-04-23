@@ -2,9 +2,9 @@ import GetLang from "@Services/Language";
 
 function install(app) {
   app.config.globalProperties.$globalLang = GetLang;
+
   app.mixin({
     beforeCreate() {
-      const parent = this.$options.parent;
       if (this.$options.RegisterLang) {
         let options = this.$options.RegisterLang;
         if (typeof options === 'string') {
@@ -26,8 +26,6 @@ function install(app) {
             return GetLang(extra[name] + '/' + id, values);
           }
         }
-      } else if (parent && parent.$lang) {
-        this.$lang = this.$options.parent.$lang;
       }
     }
   });

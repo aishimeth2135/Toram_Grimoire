@@ -89,6 +89,7 @@ import vue_showStat from "./show-stat.vue";
 import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from "@lib/Character/CharacterEquipment";
 
 export default {
+  RegisterLang: 'Character Simulator',
   emits: ['close'],
   props: ['visible', 'equipment'],
   data() {

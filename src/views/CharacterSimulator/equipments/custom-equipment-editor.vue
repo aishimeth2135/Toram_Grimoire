@@ -203,6 +203,7 @@ import { CharacterEquipment } from "@lib/Character/CharacterEquipment";
 import MessageNotify from "@Services/Notify";
 
 export default {
+  RegisterLang: 'Character Simulator',
   props: {
     'equipment': {
       type: CharacterEquipment

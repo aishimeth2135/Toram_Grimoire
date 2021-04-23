@@ -84,7 +84,7 @@ export default {
   z-index: 50;
   background-color: rgba(var(--rgb-black), 0.1);
 
-  > .content-container {
+  & > .content-container {
     position: relative;
     display: inline-block;
     margin: 1rem 0.5rem;
@@ -94,7 +94,7 @@ export default {
       width: calc(100% - 1rem)!important;
     }
 
-    > .top-mask {
+    & > .top-mask {
       position: absolute;
       background-color: var(--white);
       height: 0.9rem;
@@ -104,7 +104,7 @@ export default {
       z-index: 1;
     }
 
-    > .close-btn {
+    .close-btn {
       position: absolute;
       top: -0.75rem;
       right: -0.8rem;

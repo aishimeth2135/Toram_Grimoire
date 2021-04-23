@@ -169,6 +169,7 @@ import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear
 import vue_showStat from "./show-stat.vue";
 
 export default {
+  RegisterLang: 'Item Query',
   props: ['equipment'],
   inject: ['state', 'findStat', 'modesState', 'findObtainByDye'],
   data() {
@@ -307,6 +308,7 @@ export default {
   padding: 0.4rem 1rem;
   padding-bottom: 0.8rem;
   padding-left: 1.5rem;
+  @apply bg-white;
 
   > .extra {
     margin-bottom: 0.5rem;

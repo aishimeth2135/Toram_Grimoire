@@ -412,7 +412,7 @@ export default {
       }];
 
       const res = list.filter(p => p.valid);
-      res.forEach(p => p.icon = p.icon[this[name + 'Visible'] ? 'true' : 'false']);
+      res.forEach(p => p.icon = p.icon[this[p.name + 'Visible'] ? 'true' : 'false']);
 
       return res.length > 0 ? (this.topMenuVisible ? res : []) : null;
     },
@@ -1246,6 +1246,7 @@ fieldset.branch {
   margin: 0.6rem 0;
   transition: border-width 0.3s ease;
   background-color: var(--white);
+  padding: 0.4rem 1rem;
 
   > legend {
     margin-bottom: 0.2rem;
@@ -1273,13 +1274,14 @@ fieldset.branch {
   > .top-buttons-container {
     position: relative;
 
-    >.top-buttons {
+    > .top-buttons {
       position: absolute;
       right: -0.6rem;
       top: -2.1rem;
 
       .top-menu-btn {
         background-color: var(--white);
+        border-radius: 50%;
       }
     }
   }

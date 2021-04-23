@@ -231,7 +231,7 @@ export default {
       })
     });
 
-    const handleCompareValue = v => /^\d+$/.test(v) ? parseFloat(v) : -99999;
+    const handleCompareValue = v => /^-?\d+$/.test(v) ? parseFloat(v) : -99999;
 
     return {
       state: {
