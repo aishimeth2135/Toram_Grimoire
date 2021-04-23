@@ -23,46 +23,45 @@
   }
 </script>
 <style lang="less" scoped>
-@deep: ~'>>>';
-@{deep} .fade-enter, @{deep} .fade-leave-to {
+::v-deep(.fade-enter-from), ::v-deep(.fade-leave-to) {
   opacity: 0;
 }
-@{deep} .fade-enter-active, @{deep} .fade-leave-active {
+::v-deep(.fade-enter-active), ::v-deep(.fade-leave-active) {
   transition: 0.3s ease;
 }
-@{deep} .fade-enter-to, @{deep} .fade-leave {
+::v-deep(.fade-enter-to), ::v-deep(.fade-leave-from) {
   opacity: 1;
 }
 
-@{deep} .fade-slide-right-enter {
+::v-deep(.fade-slide-right-enter-from) {
   transform: translateX(-20%);
   opacity: 0;
 }
-@{deep} .fade-slide-right-enter-to {
+::v-deep(.fade-slide-right-enter-to) {
   transform: 0;
   opacity: 1;
 }
-@{deep} .fade-slide-right-leave-to {
+::v-deep(.fade-slide-right-leave-to) {
   transform: translateX(20%);
   opacity: 0;
 }
-@{deep} .fade-slide-right-enter-active, @{deep} .fade-slide-right-leave-active {
+::v-deep(.fade-slide-right-enter-active), ::v-deep(.fade-slide-right-leave-active) {
   transition: 0.3s ease;
 }
 
-@{deep} .fade-slide-up-enter {
+::v-deep(.fade-slide-up-enter-from) {
   transform: translateY(-20%);
   opacity: 0;
 }
-@{deep} .fade-slide-up-enter-to {
+::v-deep(.fade-slide-up-enter-to) {
   transform: 0;
   opacity: 1;
 }
-@{deep} .fade-slide-up-leave-to {
+::v-deep(.fade-slide-up-leave-to) {
   transform: translateY(20%);
   opacity: 0;
 }
-@{deep} .fade-slide-up-enter-active, @{deep} .fade-slide-up-leave-active {
+::v-deep(.fade-slide-up-enter-active), ::v-deep(.fade-slide-up-leave-active) {
   transition: 0.3s ease;
 }
 </style>

@@ -1,8 +1,8 @@
 import GetLang from "@Services/Language";
 
-function install(Vue) {
-  Vue.prototype.$globalLang = GetLang;
-  Vue.mixin({
+function install(app) {
+  app.config.globalProperties.$globalLang = GetLang;
+  app.mixin({
     beforeCreate() {
       const parent = this.$options.parent;
       if (this.$options.RegisterLang) {

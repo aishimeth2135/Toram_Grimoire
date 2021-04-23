@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="bottom-tips">
-        <lang-text lang-id="Loading Page/bottom tips" />
+        {{ $globalLang('Loading Page/bottom tips') }}
       </div>
     </template>
   </div>
@@ -43,8 +43,6 @@
 </script>
 
 <style lang="less" scoped>
-@deep-operator: ~'>>>';
-
 .app--loading {
   width: 100%;
   height: 100%;

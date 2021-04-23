@@ -90,17 +90,17 @@
   }
 </script>
 <style lang="less" scoped>
-.fade-enter, .fade-leave-to {
+.fade-enter-from, .fade-leave-to {
   opacity: 0;
 }
 .fade-enter-active, .fade-leave-active {
   transition: 0.2s ease;
 }
-.fade-enter-to, .fade-leave {
+.fade-enter-to, .fade-leave-from {
   opacity: 1;
 }
 
-.fade-slide-right-enter {
+.fade-slide-right-enter-from {
   transform: translateX(-20%);
   opacity: 0;
 }
@@ -116,7 +116,7 @@
   transition: 0.3s ease;
 }
 
-.slide-up-enter, .slide-up-leave-to {
+.slide-up-enter-from, .slide-up-leave-to {
   transform: translateY(100%);
   opacity: 0;
 }

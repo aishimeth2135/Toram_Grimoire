@@ -171,8 +171,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@deep-operator: ~'>>>';
-
 .browse-equipments {
   >.top {
     display: flex;

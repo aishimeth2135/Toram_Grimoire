@@ -1160,7 +1160,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@deep: ~'>>>';
 
 .main-- {
   position: relative;
@@ -1319,7 +1318,7 @@ fieldset.branch {
 .branch.stack {
   margin-top: 0.6rem;
 
-  @{deep} .name {
+  ::v-deep(.name) {
     margin-right: 0.5rem;
   }
 }
@@ -1367,12 +1366,12 @@ fieldset.branch {
     }
   }
 
-  @{deep} .light-text {
+  ::v-deep(.light-text) {
     color: var(--primary-purple);
   }
 }
 
-@{deep} .bg-scope {
+::v-deep(.bg-scope) {
   background-color: var(--primary-dark);
   color: var(--white);
   display: inline-block;
@@ -1383,7 +1382,7 @@ fieldset.branch {
 }
 
 
-@{deep} .inline-content {
+::v-deep(.inline-content) {
   display: inline-flex;
   align-items: center;
   flex-wrap: wrap;
@@ -1407,12 +1406,12 @@ fieldset.branch {
   &.tips {
     color: var(--primary-light-3);
 
-    @{deep} svg {
+    ::v-deep(svg) {
       align-self: flex-start;
       margin-top: 0.2rem;
     }
 
-    @{deep} .light-text {
+    ::v-deep(.light-text) {
       color: var(--primary-purple);
     }
   }
@@ -1474,7 +1473,7 @@ fieldset.extra-column {
   }
 }
 
-@{deep} .attr-scope {
+::v-deep(.attr-scope) {
   padding: 0.1rem 0.4rem;
   display: inline-flex;
   align-items: center;
@@ -1512,7 +1511,7 @@ fieldset.extra-column {
   }
 }
 
-@{deep} .formula--fix {
+::v-deep(.formula--fix) {
   border-radius: 0.4rem;
   padding: 0.1rem 0.3rem;
   padding-left: 0.4rem;
@@ -1552,7 +1551,7 @@ fieldset.extra-column {
   }
 }
 
-.top-menu-slide-enter, .top-menu-slide-leave-to {
+.top-menu-slide-enter-from, .top-menu-slide-leave-to {
   margin-right: -1.8rem!important;
 }
 .top-menu-slide-enter-active, .top-menu-slide-leave-active {

@@ -13,7 +13,7 @@ const colorList = [
   'gray', 'gray-light', 'orange', 'green'
 ];
 
-function C(props, context) {
+function CyButton(props, context) {
   const getComponent = () => {
     const type = props.type;
     if (type === 'border') {
@@ -28,7 +28,6 @@ function C(props, context) {
     return SimpleButton;
   }
 
-  console.log(context);
   if (!context.attrs.class) {
     context.attrs.class = {};
   }
@@ -48,7 +47,7 @@ function C(props, context) {
   )
 }
 
-C.props = {
+CyButton.props = {
   type: {
     type: String,
     default: 'simple',
@@ -88,7 +87,7 @@ C.props = {
   }
 };
 
-export default C;
+export default CyButton;
 </script>
 <style lang="less" scoped>
 .Button {

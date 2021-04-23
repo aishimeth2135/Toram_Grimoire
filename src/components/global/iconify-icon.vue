@@ -39,9 +39,7 @@ export default {
     // Check if icon exists, render span if not
     if (!Iconify.iconExists(this.name)) {
       return h('span', {
-        attrs: {
-          style: 'display: inline-block; width: 1em;'
-        }
+        style: 'display: inline-block; width: 1em;'
       });
     }
 
@@ -61,10 +59,8 @@ export default {
     // Get SVG attributes and body
     let icon = Iconify.getSVGObject(this.name, props);
     return h('svg', {
-      attrs: icon.attributes,
-      domProps: {
-        innerHTML: icon.body
-      }
+      ...icon.attributes,
+      innerHTML: icon.body
     });
   },
   props: {

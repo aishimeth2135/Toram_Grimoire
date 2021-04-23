@@ -46,10 +46,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@deep: ~'>>>';
 
 .app--left-menu {
-  @{deep} .top-button {
+  ::v-deep(.top-button) {
     z-index: 2;
     position: relative;
     display: block;
@@ -62,7 +61,7 @@ export default {
     max-height: calc(100vh - 5rem);
     opacity: 1;
 
-    &.fade-enter,
+    &.fade-enter-from,
     &.fade-leave-to {
       opacity: 0;
     }
@@ -94,7 +93,7 @@ export default {
       width: calc(100% + 30rem);
       background-color: rgba(var(--rgb-black), 0.5);
 
-      &.fade-enter,
+      &.fade-enter-from,
       &.fade-leave-to {
         left: -20rem;
         opacity: 1;

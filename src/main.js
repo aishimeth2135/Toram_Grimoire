@@ -34,7 +34,7 @@ import App from "./App.vue";
 import router from "./router/index.js";
 import store from "@store/main";
 
-import VueAnalytics from 'vue-analytics';
+import VueGtag from "vue-gtag-next";
 import './registerServiceWorker';
 
 const APP = createApp(App);
@@ -43,11 +43,9 @@ APP
   .use(store)
   .use(RegisterLang)
   .use(ToggleService)
-  .use(VueAnalytics, {
-    id: 'UA-140158974-1',
-    router,
-    autoTracking: {
-      pageviewOnLoad: false
+  .use(VueGtag, {
+    property: {
+      id: 'UA-140158974-1'
     }
   });
 

@@ -40,8 +40,7 @@
 </script>
 
 <style lang="less" scoped>
-  @deep: ~'>>>';
-
+  
   footer {
     border-top: 1px var(--primary-light) solid;
     margin-top: 2rem;
@@ -57,7 +56,7 @@
       overflow-x: auto;
       white-space: nowrap;
 
-      @{deep} span {
+      ::v-deep(span) {
         margin-left: 1rem;
       }
     }
