@@ -3,7 +3,7 @@
     @close-window="closeWindow"
     width="wide">
     <template v-slot:title>
-      <cy-icon-text iconify-name="ic-outline-category">
+      <cy-icon-text icon="ic-outline-category">
         {{ $lang('action: ' + actionType) }}
       </cy-icon-text>
     </template>
@@ -11,12 +11,12 @@
       <!-- top -->
       <div class="flex items-center border-b border-solid border-light-2 pb-2">
         <div class="ml-auto">
-          <cy-button iconify-name="ic-round-add-circle-outline"
+          <cy-button icon="ic-round-add-circle-outline"
             type="border"
             @click="toggleMainWindowVisible('appendEquipments', true)">
             {{ $lang('append equipments') }}
           </cy-button>
-          <cy-button iconify-name="gridicons-create"
+          <cy-button icon="gridicons-create"
             type="border"
             @click="toggleMainWindowVisible('createCustomEquipment', true)">
             {{ $lang.extra('parent', 'custom equipment') }}
@@ -41,7 +41,7 @@
             <character-stats-compare :before="compareData.before" :after="compareData.after" />
           </div>
         </div>
-        <cy-button iconify-name="mdi-rhombus-outline" type="border"
+        <cy-button icon="mdi-rhombus-outline" type="border"
           v-if="currentEquipment"
           class="toggle-info-unfold-btn" @click="toggleInfoUnfold" />
       </div>
@@ -49,22 +49,22 @@
       <cy-bottom-content v-if="currentEquipment" class="z-1">
         <template #normal-content>
           <div class="flex items-center flex-wrap">
-            <cy-button iconify-name="ic-baseline-delete-outline" type="border"
+            <cy-button icon="ic-baseline-delete-outline" type="border"
               @click="removeSelectedEquipment">
               {{ $globalLang('global/remove') }}
             </cy-button>
-            <cy-button iconify-name="mdi-content-copy" type="border"
+            <cy-button icon="mdi-content-copy" type="border"
               @click="copySelectedEquipment">
               {{ $globalLang('global/copy') }}
             </cy-button>
             <div v-if="actionType === 'select-field-equipment'"
               class="ml-auto">
               <cy-button v-if="!currentEquipmentDisable"
-                iconify-name="ic-round-done" type="border"
+                icon="ic-round-done" type="border"
                 @click="selectEquipment">
                 {{ $globalLang('global/confirm') }}
               </cy-button>
-              <cy-button v-else iconify-name="ic-round-done" type="border" :disabled="true">
+              <cy-button v-else icon="ic-round-done" type="border" :disabled="true">
                 {{ $globalLang('global/confirm') }}
               </cy-button>
             </div>
@@ -82,9 +82,7 @@ import vue_characterStatsCompare from "../main/character-stats-compare.vue";
 import { EquipmentField } from "@lib/Character/Character";
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/Character/CharacterEquipment";
 
-import MessageNotify from "@Services/Notify";
-
-import Vuex from "vuex";
+import { mapState } from "vuex";
 
 export default {
   RegisterLang: {
@@ -107,7 +105,7 @@ export default {
     };
   },
   computed: {
-    ...Vuex.mapState('character', {
+    ...mapState('character', {
       'equipments': 'equipments'
     }),
     currentCharacterStateDatas() {
@@ -155,7 +153,7 @@ export default {
       const eq = this.currentEquipment.copy();
       eq.name = eq.name + '*';
       this.appendEquipments([eq]);
-      MessageNotify(this.$lang('message: copy equipment'), 'mdi-content-copy',
+      this.$notify(this.$lang('message: copy equipment'), 'mdi-content-copy',
         'browse equipment/copy equipment');
     },
     removeSelectedEquipment() {
@@ -172,14 +170,14 @@ export default {
         }
         return false;
       });
-      MessageNotify(this.$lang('message: remove equipment', [eq.name]),
+      this.$notify(this.$lang('message: remove equipment', [eq.name]),
         'ic-baseline-delete-outline', null, {
         buttons: [{
           text: this.$globalLang('global/recovery'),
           click: () => {
             this.appendEquipments([eq]);
             modifiedFields.forEach(field => field.setEquipment(eq));
-            MessageNotify(this.$lang('message: removed equipment recovery', [eq.name]));
+            this.$notify(this.$lang('message: removed equipment recovery', [eq.name]));
           },
           removeMessageAfterClick: true
         }]

@@ -1,6 +1,6 @@
 import Controller from "./module/Controller.js";
 
-import {InitLanguageData} from "@Services/Language";
+import { InitLanguageData } from "@Services/Language";
 
 import zh_tw from "./module/LanguageData/zh_tw.js";
 import en from "./module/LanguageData/en.js";
@@ -11,7 +11,7 @@ export default class SaveLoadSystem {
     constructor(){
     }
     init(set){
-        InitLanguageData({zh_tw, en, ja, zh_cn});
+        InitLanguageData({ zh_tw, en, ja, zh_cn });
 
         this.controller = new Controller().init(set);
         return this;

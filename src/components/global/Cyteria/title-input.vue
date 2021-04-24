@@ -2,7 +2,7 @@
   <span class="flex items-center flex-wrap my-2 mx-1">
     <div class="input-container flex items-center py-1 px-3 border-1 border-solid border-light rounded-3xl w-full duration-300"
       :class="{ 'input-focus': inputFocus }">
-      <cy-icon-text :iconify-name="iconifyName" :icon-id="iconId" class="mr-2" />
+      <cy-icon-text :icon="icon" :icon-scr="iconSrc" class="mr-2" />
       <div class="input-content w-full" ref="input-content">
         <slot></slot>
         <input v-if="!$slots.default"
@@ -23,14 +23,8 @@ export default {
       type: String,
       require: true
     },
-    iconifyName: {
-      type: String,
-      default: null
-    },
-    iconId: {
-      type: String,
-      default: null
-    },
+    icon: {},
+    iconSrc: {},
     placeholder: {
       type: String,
       default: ''

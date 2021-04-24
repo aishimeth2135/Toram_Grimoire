@@ -3,7 +3,7 @@
     <cy-list-item class="title-container" :class="{ 'detail-visible': detailVisible }"
       @click="detailVisible = !detailVisible">
       <div class="title">
-        <cy-icon-text :iconify-name="equipmentIcon"
+        <cy-icon-text :icon="equipmentIcon"
           :text-color="detailVisible ? 'orange' : 'dark'"
           :icon-color="detailVisible ? 'orange' : 'light-2'">
           {{ equipment.name }}
@@ -11,14 +11,14 @@
         <div class="base-value" v-if="state.currentMode === 'normal' ||
           state.currentMode === 'dye' || state.displayMode === 1">
           <template v-if="equipment.is == 'weapon'">
-            <cy-icon-text iconify-name="mdi-sword" class="base-value--name" text-color="purple">
+            <cy-icon-text icon="mdi-sword" class="base-value--name" text-color="purple">
               ATK
             </cy-icon-text>
             <span class="base-value--value">{{ equipment.atk }}</span>
             <span class="stability">{{ equipment.stability }}%</span>
           </template>
           <template v-else>
-            <cy-icon-text iconify-name="mdi-shield" class="base-value--name" text-color="purple">
+            <cy-icon-text icon="mdi-shield" class="base-value--name" text-color="purple">
               DEF
             </cy-icon-text>
             <span class="base-value--value">{{ equipment.def }}</span>
@@ -32,7 +32,7 @@
         </template>
         <template v-else-if="state.currentMode === 'item-level'">
           <div class="item-level">
-            <cy-icon-text iconify-name="jam-hammer">
+            <cy-icon-text icon="jam-hammer">
               {{ $lang('equipment detail/recipe/item level') }}
             </cy-icon-text>
             <span class="value">{{ originEquipment.recipe['item_level'] }}</span>
@@ -44,13 +44,13 @@
       <div class="detail" v-if="detailVisible">
         <div class="extra" v-if="originEquipment.extra">
           <cy-icon-text v-if="originEquipment.extra['caption']"
-            iconify-name="ic-outline-info" text-size="small" text-color="light-3">
+            icon="ic-outline-info" text-size="small" text-color="light-3">
             {{ originEquipment.extra['caption'] }}
           </cy-icon-text>
         </div>
         <fieldset class="stats column">
           <legend>
-            <cy-icon-text iconify-name="ic-baseline-format-list-bulleted"
+            <cy-icon-text icon="ic-baseline-format-list-bulleted"
               text-size="small" text-color="purple">
               {{ $lang('equipment detail/scope title/stats') }}
             </cy-icon-text>
@@ -60,19 +60,19 @@
               :key="stat.statId"
               :negative-value="stat.statValue() < 0" />
           </template>
-          <cy-default-tips v-else iconify-name="mdi-ghost">
+          <cy-default-tips v-else icon="mdi-ghost">
             {{ $lang('equipment detail/tips: without any stat') }}
           </cy-default-tips>
         </fieldset>
         <fieldset v-if="originEquipment.recipe" class="recipe column">
           <legend>
-            <cy-icon-text iconify-name="ion-hammer" text-size="small" text-color="purple">
+            <cy-icon-text icon="ion-hammer" text-size="small" text-color="purple">
               {{ $lang('equipment detail/scope title/recipe') }}
             </cy-icon-text>
           </legend>
           <div v-if="recipeInfoValid" class="recipe-info">
             <div class="recipe-attr">
-              <cy-icon-text iconify-name="ion-hammer" text-size="small">
+              <cy-icon-text icon="ion-hammer" text-size="small">
                 {{ $lang('equipment detail/recipe/item level')  }}
                 <template #value>
                   {{ originEquipment.recipe['item_level'] || '?' }}
@@ -80,7 +80,7 @@
               </cy-icon-text>
             </div>
             <div class="recipe-attr">
-              <cy-icon-text iconify-name="ion-hammer" text-size="small">
+              <cy-icon-text icon="ion-hammer" text-size="small">
                 {{ $lang('equipment detail/recipe/item difficulty')  }}
                 <template #value>
                   {{ originEquipment.recipe['item_difficulty'] || '?' }}
@@ -90,14 +90,14 @@
           </div>
           <div class="recipe-materials">
             <template v-if="originEquipment.recipe['cost']">
-              <cy-icon-text iconify-name="la-coins">
+              <cy-icon-text icon="la-coins">
                 {{ $lang('equipment detail/recipe/spina') }}
               </cy-icon-text>
               <span class="value">{{ originEquipment.recipe['cost'] + 's' }}</span>
             </template>
             <template v-for="m in originEquipment.recipe['materials']"
               :key="m.name">
-              <cy-icon-text iconify-name="mdi-cube-outline">
+              <cy-icon-text icon="mdi-cube-outline">
                 {{ m.name }}
               </cy-icon-text>
               <span class="value">{{ '×' + m.quantity }}</span>
@@ -106,32 +106,32 @@
         </fieldset>
         <fieldset class="obtains column">
           <legend>
-            <cy-icon-text iconify-name="bx-bx-search-alt" text-size="small" text-color="purple">
+            <cy-icon-text icon="bx-bx-search-alt" text-size="small" text-color="purple">
               {{ $lang('equipment detail/scope title/obtains') }}
             </cy-icon-text>
           </legend>
           <div v-if="obtainsData.length !== 0" class="obtains-list">
             <div v-for="p in obtainsData" class="item" :key="p.iid">
               <div class="type-name">
-                <cy-icon-text :iconify-name="p.icon" class="type"
+                <cy-icon-text :icon="p.icon" class="type"
                   text-size="small" text-color="water-blue">
                   {{ p.type }}
                 </cy-icon-text>
                 <span class="name">{{ p.name }}</span>
               </div>
               <div class="info" v-if="p.dye || p.map">
-                <cy-icon-text v-if="p.dye" iconify-name="ic-outline-palette"
+                <cy-icon-text v-if="p.dye" icon="ic-outline-palette"
                   class="dye" text-size="small">
                   {{ p.dye }}
                 </cy-icon-text>
-                <cy-icon-text v-if="p.map" iconify-name="ic-outline-map"
+                <cy-icon-text v-if="p.map" icon="ic-outline-map"
                   class="map" text-size="small">
                   {{ p.map }}
                 </cy-icon-text>
               </div>
             </div>
           </div>
-          <cy-default-tips v-else iconify-name="mdi-ghost">
+          <cy-default-tips v-else icon="mdi-ghost">
             {{ $lang('equipment detail/tips: without any obtain') }}
           </cy-default-tips>
         </fieldset>
@@ -141,18 +141,18 @@
         <div class="obtains-list">
           <div v-for="p in dyeObtains" class="item" :key="p.iid">
             <div class="type-name">
-              <cy-icon-text :iconify-name="p.icon" class="type"
+              <cy-icon-text :icon="p.icon" class="type"
                 text-size="small" text-color="water-blue">
                 {{ p.type }}
               </cy-icon-text>
               <span class="name">{{ p.name }}</span>
             </div>
             <div class="info">
-              <cy-icon-text v-if="p.dye" iconify-name="ic-outline-palette"
+              <cy-icon-text v-if="p.dye" icon="ic-outline-palette"
                 class="dye" text-size="small">
                 {{ p.dye }}
               </cy-icon-text>
-              <cy-icon-text v-if="p.map" iconify-name="ic-outline-map"
+              <cy-icon-text v-if="p.map" icon="ic-outline-map"
                 class="map" text-size="small">
                 {{ p.map }}
               </cy-icon-text>

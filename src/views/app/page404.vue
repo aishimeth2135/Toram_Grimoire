@@ -1,8 +1,8 @@
 <template>
   <section class="main--">
     <div class="conent-container">
-      <cy-icon-text icon-id="potum" class="icon" />
-      <cy-icon-text iconify-name="bx-bx-message-rounded-x" class="fix-icon" />
+      <cy-icon-text icon="potum" class="icon" icon-src="custom" />
+      <cy-icon-text icon="bx-bx-message-rounded-x" class="fix-icon" />
       <div class="text">404 Not Found</div>
     </div>
   </section>

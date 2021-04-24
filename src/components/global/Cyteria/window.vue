@@ -5,7 +5,7 @@
       <div class="content-container">
         <div class="top-mask" />
         <cy-button type="icon" @click.stop="$emit('close-window')"
-          iconify-name="jam-close-circle-f" class="close-btn" />
+          icon="jam-close-circle-f" class="close-btn" />
         <div class="container-inner" @click.stop>
           <div class="top">
             <slot name="title"></slot>
@@ -15,11 +15,11 @@
           </div>
           <div class="tail" v-if="type === 'confirm'">
             <cy-button @click="confirmCallback"
-              iconify-name="ic-round-check">
+              icon="ic-round-check">
               {{ $globalLang('global/confirm') }}
             </cy-button>
             <cy-button @click="closeWindow"
-              iconify-name="ic-round-close">
+              icon="ic-round-close">
               {{ $globalLang('global/cancel') }}
             </cy-button>
           </div>

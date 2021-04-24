@@ -1,6 +1,6 @@
 import GetLang from "@Services/Language";
 
-function install(app) {
+export default function install(app) {
   app.config.globalProperties.$globalLang = GetLang;
 
   app.mixin({
@@ -30,7 +30,3 @@ function install(app) {
     }
   });
 }
-
-export default {
-  install
-};

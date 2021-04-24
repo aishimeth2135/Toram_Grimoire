@@ -44,7 +44,7 @@ class RestrictionStat extends Stat {
     const res = [];
     const r = this.restriction;
     if (r) {
-      
+
       ['main', 'sub', 'body'].forEach(p => {
         if (!r[p])
           return;

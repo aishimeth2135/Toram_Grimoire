@@ -1,6 +1,7 @@
 
 <script>
 import { h } from "vue";
+import { isNumberString } from "@Utils/string";
 
 export default {
   props: ['attrs'],
@@ -60,18 +61,18 @@ export default {
 
       const skill_range_default = 100;
       let skill_range = this.attrs['@parent-branch']['@parent-state'].attrs['range'];
-      if (skill_range == '-' || skill_range == 'main')
+      if (skill_range === '-' || skill_range === 'main')
         skill_range = null;
       skill_range = skill_range ?
         this.calcValueStr(skill_range).replace(/\.(\d{2,})/, (m, m1) => m1.slice(0, 2)) :
         skill_range_default;
-      skill_range = /$-?[\d.]+^/.test(skill_range) ? parseFloat(skill_range) : skill_range_default;
-      const targetOffset = $sd['target_offsets'] == 'auto' ?
-        (type == 'circle' && $sd['end_position'] == 'self' ? radius*0.5 : Math.min(7, skill_range)) :
+      skill_range = isNumberString(skill_range) ? parseFloat(skill_range) : skill_range_default;
+      const targetOffset = $sd['target_offsets'] === 'auto' ?
+        (type == 'circle' && $sd['end_position'] === 'self' ? radius*0.5 : Math.min(7, skill_range)) :
         parseFloat(this.calcValueStr($sd['target_offsets']));
       const moveDistance = Math.min(Math.max(targetOffset + moveDistanceFix, originalMoveDistance), 9);
 
-      if (type == 'circle') {
+      if (type === 'circle') {
         // character
         let bx = $sd['end_position'] == 'self' ? padding + radius : padding;
         const by = padding + radius;
@@ -131,7 +132,7 @@ export default {
 
         height = grid(by + radius + padding);
         width = grid(tx + padding + radius + Math.max(0, endPositionOffsets));
-      } else if (type == 'line') {
+      } else if (type === 'line') {
         // character
         let bx = padding + radius;
         const by = padding + radius;
@@ -192,7 +193,7 @@ export default {
           }
         });
 
-        if ($sd['end_position'] == 'self') {
+        if ($sd['end_position'] === 'self') {
           chara.animations.push({
             type: 'animate',
             attrs: {
@@ -219,7 +220,7 @@ export default {
 
         height = grid(endy + radius + padding);
         width = grid(endx + radius + padding);
-      } else if (type == 'sector') {
+      } else if (type === 'sector') {
         const deg = Math.PI/180;
         const angle = parseFloat(this.calcValueStr($sd['angle']));
         const sectorWidth = 2,
@@ -314,7 +315,7 @@ export default {
     }
   },
   methods: {
-    createSectorPathD({cx, cy, minRadius=0, radius, startAngle , endAngle, clockwise=0}={}){
+    createSectorPathD({ cx, cy, minRadius=0, radius, startAngle, endAngle, clockwise=0 }={}){
       /**
        -- Draw Sector --
         * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -335,9 +336,9 @@ export default {
         *             |--------------|  -- max radius --        *
         *                                                       *
         * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        -------------------------------------------------------
-            arc1.start -> arc1.end -> arc2.start -> arc2.end
-        -------------------------------------------------------
+        ---------------------------------------------------------
+         path: arc1.start -> arc1.end -> arc2.start -> arc2.end
+        ---------------------------------------------------------
         */
 
       const deg = Math.PI/180;

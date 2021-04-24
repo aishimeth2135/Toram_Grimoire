@@ -1,12 +1,10 @@
 <template>
   <span @click="click"
-    class="cy-button--simple inline-flex items-center border-b border-solid border-light py-1 px-2 m-1"
+    class="button--main-content inline-flex items-center border-b border-solid py-1 px-2 m-1"
     :class="baseClass">
-    <iconify-icon v-if="iconifyName" :name="iconifyName" />
-    <svg-icon v-if="iconId" :icon-id="iconId" />
-    <image-icon v-if="imagePath" :image-path="imagePath" />
+    <cy-icon :icon="icon" :src="iconSrc" />
     <span v-if="$slots['default']"
-      class="text inline-flex items-center ml-2 duration-300">
+      class="button--text inline-flex items-center ml-2 duration-300">
       <slot></slot>
     </span>
     <slot name="tail"></slot>
@@ -24,35 +22,3 @@ export default {
   mixins: [BaseButton]
 };
 </script>
-
-<style lang="postcss" scoped>
-.cy-button--simple {
-  --icon-width: 1.2rem;
-
-  & > svg, & > img {
-    display: block;
-    flex-shrink: 0;
-    fill: currentcolor;
-    color: var(--icon-color);
-    height: var(--icon-width);
-    width: var(--icon-width);
-
-    @apply duration-300;
-  }
-
-  & > .text {
-    color: var(--text-color);
-  }
-
-  &:hover, &.selected {
-    @apply border-light-3;
-
-    & > svg {
-      color: var(--icon-color-hover);
-    }
-    & > .text {
-      color: var(--text-color-hover);
-    }
-  }
-}
-</style>

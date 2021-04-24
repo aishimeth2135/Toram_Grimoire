@@ -2,22 +2,22 @@
   <cy-window :visible="visible" @close-window="$emit('close')"
     vertical-position="top">
     <template v-slot:title>
-      <cy-icon-text iconify-name="bx-bx-search-alt">
+      <cy-icon-text icon="bx-bx-search-alt">
         {{ $lang('window title: search') }}
       </cy-icon-text>
     </template>
     <template v-slot:default>
-      <cy-title-input iconify-name="ic-outline-category"
+      <cy-title-input icon="ic-outline-category"
         class="sticky top-0 bg-white z-1 pt-1 pb-2"
         v-model:value="searchText"
         :placeholder="$lang('search equipment placeholder')" />
       <div class="search-result" v-if="searchResult.length != 0">
         <cy-list-item v-for="item in searchResult" :key="item.iid"
           @click="selectEquipment(item)">
-          <cy-icon-text :iconify-name="item.categoryIcon">{{ item.origin.name }}</cy-icon-text>
+          <cy-icon-text :icon="item.categoryIcon">{{ item.origin.name }}</cy-icon-text>
           <span class="equipment-item-obtain">{{ item.obtainText }}</span>
           <template v-slot:right-content>
-            <cy-icon-text iconify-name="ic-round-add" />
+            <cy-icon-text icon="ic-round-add" />
           </template>
         </cy-list-item>
         <div v-if="searchResult.length >= searchResultMaximum"
@@ -25,7 +25,7 @@
           {{ $lang('search equipment result: limit reached') }}
         </div>
       </div>
-      <cy-default-tips v-else icon-id="potum">
+      <cy-default-tips v-else icon="potum" icon-src="custom">
         {{ $lang.extra('parent', 'Warn/no result found') }}
       </cy-default-tips>
       <cy-bottom-content class="selected" v-if="selected.length != 0">
@@ -35,10 +35,10 @@
               <div>
                 <cy-list-item v-for="item in selected" :key="item.iid"
                   @click="removeSelected(item)">
-                  <cy-icon-text :iconify-name="item.categoryIcon">{{ item.origin.name }}</cy-icon-text>
+                  <cy-icon-text :icon="item.categoryIcon">{{ item.origin.name }}</cy-icon-text>
                   <span class="equipment-item-obtain">{{ item.obtainText }}</span>
                   <template v-slot:right-content>
-                    <cy-icon-text iconify-name="ic-round-close" />
+                    <cy-icon-text icon="ic-round-close" />
                   </template>
                 </cy-list-item>
               </div>
@@ -51,15 +51,15 @@
             </span>
             <span>{{ $lang('search equipment result: selected title') }}</span>
             <cy-icon-text class="ml-auto flex-shrink-0 leading-none"
-              :iconify-name="'ic-round-keyboard-arrow-' + (selectedDetailVisible ? 'down' : 'up')" />
+              :icon="'ic-round-keyboard-arrow-' + (selectedDetailVisible ? 'down' : 'up')" />
           </div>
           <div class="flex items-center">
             <div class="ml-auto">
-              <cy-button iconify-name="ic-round-done" type="border"
+              <cy-button icon="ic-round-done" type="border"
                 @click.stop="submitSelected">
                 {{ $globalLang('global/confirm') }}
               </cy-button>
-              <cy-button iconify-name="ic-round-close" type="border"
+              <cy-button icon="ic-round-close" type="border"
                 class="ml-2"
                 @click.stop="clearSelected">
                 {{ $globalLang('global/clear') }}
@@ -72,8 +72,6 @@
   </cy-window>
 </template>
 <script>
-import MessageNotify from "@Services/Notify";
-
 export default {
   RegisterLang: {
     root: 'Character Simulator/append equipments',
@@ -118,14 +116,14 @@ export default {
   methods: {
     submitSelected() {
       this.appendEquipments(this.selected.map(p => p.origin.copy()));
-      MessageNotify(this.$lang('append equipments successfully', [this.selected.length]), 'ic-round-done');
+      this.$notify(this.$lang('append equipments successfully', [this.selected.length]), 'ic-round-done');
       this.selected = [];
       this.$emit('close');
     },
     clearSelected() {
       const store = this.selected;
       this.selected = [];
-      MessageNotify(this.$lang('selected equipments cleared'), 'ic-round-done', null, {
+      this.$notify(this.$lang('selected equipments cleared'), 'ic-round-done', null, {
         buttons: [{
           text: this.$globalLang('global/recovery'),
           click: () => {

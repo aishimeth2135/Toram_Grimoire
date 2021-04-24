@@ -2,16 +2,11 @@
 export default {
   emits: ['click'],
   props: {
-    iconifyName: {
-      type: String,
-      default: ''
+    icon: {
+      type: String
     },
-    iconId: {
-      type: String,
-      default: ''
-    },
-    imagePath: {
-      default: null
+    iconSrc: {
+      type: String
     },
     selected: {
       type: Boolean,
@@ -26,7 +21,7 @@ export default {
     baseClass(){
       return {
         'selected': this.selected,
-        'disable': this.disabled
+        'disabled': this.disabled
       };
     }
   },

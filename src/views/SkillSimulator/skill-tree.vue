@@ -1,7 +1,7 @@
 <template>
   <div class="skill-tree" :id="skillTreeId">
     <cy-sticky-header class="top">
-      <cy-icon-text icon-id="rabbit-book">
+      <cy-icon-text icon="rabbit-book" icon-src="custom">
         {{ skillTreeState.origin.name }}
       </cy-icon-text>
     </cy-sticky-header>

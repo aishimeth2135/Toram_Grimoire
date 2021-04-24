@@ -1,4 +1,5 @@
 module.exports = {
+  parser: require('postcss-comment'),
   plugins: {
     tailwindcss: {
       purge: [

@@ -5,13 +5,13 @@
         <template v-slot:buttons-scope>
           <cy-button type="icon" @click="openJumpSkillTree"
             :selected="jumpSkillTreeVisible"
-            iconify-name="dashicons:flag" />
+            icon="dashicons:flag" />
           <cy-button type="icon" @click="openSelectSkillTree"
             :selected="selectSkillTreeVisible"
-            iconify-name="ic:round-library-add" />
+            icon="ic:round-library-add" />
           <cy-button type="icon" @click="openBuildInformation"
             :selected="buildInformationVisible"
-            :iconify-name="buildInformationVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" />
+            :icon="buildInformationVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" />
         </template>
         <cy-transition type="fade">
           <div class="inner-menu select-skill-tree" v-if="selectSkillTreeVisible">
@@ -20,13 +20,13 @@
               <div class="title">{{ stc.origin.name }}</div>
               <div class="content">
                 <cy-button v-for="st in stc.skillTreeStates"
-                  type="line" icon-id="rabbit-book"
+                  type="line" icon="rabbit-book" icon-src="custom"
                   :key="stc.origin.id + '-' + st.origin.id"
                   @click="toggleSkillTreeVisible(stc, st)"
                   :class="{ selected: st.visible }">
                   {{ st.origin.name }}
                   <template v-slot:content-right>
-                    <cy-icon-text iconify-name="mdi:done" v-show="st.visible" />
+                    <cy-icon-text icon="mdi:done" v-show="st.visible" />
                   </template>
                 </cy-button>
               </div>
@@ -35,12 +35,12 @@
         </cy-transition>
         <cy-transition type="fade">
           <div class="inner-menu" v-show="jumpSkillTreeVisible">
-            <cy-default-tips v-if="noSkillTreeSelected" iconify-name="mdi:ghost">
+            <cy-default-tips v-if="noSkillTreeSelected" icon="mdi:ghost">
               {{ $lang('no skill tree selected') }}
             </cy-default-tips>
             <template v-else>
               <div class="top" style="margin-bottom: 0.8rem;">
-                <cy-button iconify-name="ic:round-details" type="border"
+                <cy-button icon="ic:round-details" type="border"
                   @click="toggleJumpSkillTreeShowDetail">
                   {{ $lang(jumpSkillTreeShowDetail ?
                       'skill tree: show normal' : 'skill tree: show details') }}
@@ -50,17 +50,17 @@
               <div v-show="jumpSkillTreeShowDetail && currentStarGemList.length != 0" class="content">
                 <cy-button v-for="o in currentStarGemList" type="line" class="icon-small"
                   :key="'star-gem--' + o.skillTreeState.origin.id + '-' + o.skill.id"
-                  @click="jumpToSkillTree(o.skillTreeState.origin)" iconify-name="mdi:judaism">
+                  @click="jumpToSkillTree(o.skillTreeState.origin)" icon="mdi:judaism">
                   {{ o.skill.base.name }} Lv.{{ o.skill.starGemLevel() }}
                   <template v-slot:content-right>
-                    <cy-icon-text iconify-name="mdi:judaism" class="text-small">
+                    <cy-icon-text icon="mdi:judaism" class="text-small">
                       {{ o.skill.starGemLevel() - o.skill.level() }}
                     </cy-icon-text>
                   </template>
                 </cy-button>
               </div>
               <cy-default-tips v-if="jumpSkillTreeShowDetail && currentStarGemList.length == 0"
-                iconify-name="mdi:ghost">
+                icon="mdi:ghost">
                 {{ $lang('no star gem set') }}
               </cy-default-tips>
               <template v-for="stc in visibleSkillTreeCategoryStates"
@@ -68,12 +68,12 @@
                 <div class="title">{{ stc.origin.name }}</div>
                 <div class="content">
                   <cy-button v-for="st in stc.skillTreeStates.filter(p => p.visible)"
-                    type="line" icon-id="rabbit-book" :key="'skill-tree--' + st.origin.id"
+                    type="line" icon="rabbit-book" :key="'skill-tree--' + st.origin.id" icon-src="custom"
                     @click="jumpToSkillTree(st.origin)"
                     class="icon-small">
                     {{ st.origin.name }}
                     <template v-slot:content-right>
-                      <cy-icon-text iconify-name="gg-shape-rhombus" class="text-small">
+                      <cy-icon-text icon="gg-shape-rhombus" class="text-small">
                         {{ skillTreeSkillPointCost(st) }}
                       </cy-icon-text>
                     </template>
@@ -88,7 +88,7 @@
             <cy-options>
               <template #title>
                 <cy-list-item>
-                  <cy-icon-text iconify-name="ant-design:build-outlined">
+                  <cy-icon-text icon="ant-design:build-outlined">
                     {{ currentSkillRootState ?
                       currentSkillRootState.name : $lang('main menu/build name') }}
                   </cy-icon-text>
@@ -98,31 +98,31 @@
                 <cy-list-item v-for="(state, i) in skillRootStates"
                   :key="state.stateId" :selected="currentSkillRootStateIndex == i"
                   @click="selectCurrentSkillRootState(i)">
-                  <cy-icon-text iconify-name="ant-design:build-outlined">
+                  <cy-icon-text icon="ant-design:build-outlined">
                     {{ state.name }}
                   </cy-icon-text>
                 </cy-list-item>
                 <cy-list-item @click="createBuild">
-                  <cy-icon-text iconify-name="ic:round-add-circle-outline" text-color="light-3">
+                  <cy-icon-text icon="ic:round-add-circle-outline" text-color="light-3">
                     {{ $lang('create build') }}
                   </cy-icon-text>
                 </cy-list-item>
               </template>
             </cy-options>
-            <cy-title-input iconify-name="ant-design:build-outlined"
+            <cy-title-input icon="ant-design:build-outlined"
               class="mt-4"
               v-model:value="currentSkillRootState.name" />
             <div class="p-2 mb-1">
-              <cy-button type="line" @click="copyCurrentBuild" iconify-name="mdi:content-copy">
+              <cy-button type="line" @click="copyCurrentBuild" icon="mdi:content-copy">
                 {{ $globalLang('global/copy') }}
               </cy-button>
-              <cy-button type="line" @click="deleteCurrentBuild" iconify-name="ic:round-delete-outline">
+              <cy-button type="line" @click="deleteCurrentBuild" icon="ic:round-delete-outline">
                 {{ $globalLang('global/delete') }}
               </cy-button>
-              <cy-button type="line" @click="exportCurrentBuildText" iconify-name="ic-round-text-fields">
+              <cy-button type="line" @click="exportCurrentBuildText" icon="ic-round-text-fields">
                 {{ $lang('export text') }}
               </cy-button>
-              <cy-button type="line" @click="exportCurrentBuildImage" iconify-name="mdi:content-copy">
+              <cy-button type="line" @click="exportCurrentBuildImage" icon="mdi:content-copy">
                 {{ $lang('export image') }}
               </cy-button>
             </div>
@@ -137,7 +137,7 @@
       <div class="bottom-menu">
         <div class="skill-point-information">
           <div class="column">
-            <cy-icon-text iconify-name="gg-shape-rhombus" text-size="small">
+            <cy-icon-text icon="gg-shape-rhombus" text-size="small">
               {{ $lang('skill level') }}
               <template v-slot:value>
                 {{ skillPointCostSum }}
@@ -145,7 +145,7 @@
             </cy-icon-text>
           </div>
           <div class="column">
-            <cy-icon-text iconify-name="mdi:judaism"
+            <cy-icon-text icon="mdi:judaism"
               text-size="small" display="block">
               {{ $lang('star gem level') }}
               <template v-slot:value>
@@ -159,7 +159,7 @@
             <div class="inline-flex items-center whitespace-nowrap overflow-y-auto duration-300 p-1"
               :class="{ 'opacity-0': bottomMenuExtraMenuVidsible }">
               <cy-button v-for="(state) in setButtonStates" :key="state.type"
-                :iconify-name="state.icons[state.currentIndex]"
+                :icon="state.icons[state.currentIndex]"
                 class="my-0 p-0 border-0 mr-2"
                 @click="setButtonClick(state.type)">
                 {{ state.texts[state.currentIndex] }}
@@ -167,7 +167,7 @@
             </div>
             <div class="ml-auto">
               <cy-button type="icon"
-                :iconify-name="bottomMenuExtraMenuVidsible ? 'heroicons-solid:menu-alt-4' : 'heroicons-solid:menu'"
+                :icon="bottomMenuExtraMenuVidsible ? 'heroicons-solid:menu-alt-4' : 'heroicons-solid:menu'"
                 @click="bottomMenuExtraMenuVidsible = !bottomMenuExtraMenuVidsible" />
             </div>
           </div>
@@ -176,7 +176,7 @@
               <div v-for="(state) in setButtonStates" :key="state.type"
                 class="select-menu">
                 <cy-button v-for="(value, j) in state.values" :key="value"
-                  type="line" :iconify-name="state.icons[j]"
+                  type="line" :icon="state.icons[j]"
                   @click="setButtonSelected(state.type, j)"
                   :class="{ selected: state.currentIndex == j }">
                   {{ state.texts[j] }}
@@ -191,11 +191,11 @@
         :frozen-top="true" width="auto">
         <template #title>
           <cy-flex-layout>
-            <cy-icon-text iconify-name="uil:image-download">
+            <cy-icon-text icon="uil:image-download">
               {{ $lang('main menu/preview exported image') }}
             </cy-icon-text>
             <template #right-content>
-              <cy-button iconify-name="uil:image-download" type="border"
+              <cy-button icon="uil:image-download" type="border"
                 class="single-line" @click="downloadExportedImage">
                 {{ $globalLang('global/download') }}
               </cy-button>
@@ -203,7 +203,7 @@
           </cy-flex-layout>
         </template>
         <div style="max-width: 28rem; border: 1px solid var(--primary-light); padding: 0.8rem; border-radius: 0.3rem; margin-bottom: 1rem">
-          <cy-icon-text iconify-name="ic-outline-info" text-size="small" text-color="light-3">
+          <cy-icon-text icon="ic-outline-info" text-size="small" text-color="light-3">
             {{ $lang('main menu/preview exported image: tips 1') }}
           </cy-icon-text>
         </div>
@@ -216,11 +216,11 @@
         :frozen-top="true" width="auto">
         <template #title>
           <cy-flex-layout>
-            <cy-icon-text iconify-name="mdi:content-copy">
+            <cy-icon-text icon="mdi:content-copy">
               {{ $lang('main menu/preview exported text') }}
             </cy-icon-text>
             <template #right-content>
-              <cy-button iconify-name="mdi:content-copy" type="border"
+              <cy-button icon="mdi:content-copy" type="border"
                 class="single-line" @click="copyExportedText">
                 {{ $globalLang('global/copy') }}
               </cy-button>
@@ -233,13 +233,12 @@
   </article>
 </template>
 <script>
+import { mapState, mapGetters } from 'vuex';
 import CY from "@Utils/Cyteria";
-import { MessageNotify, LoadingNotify } from '@Services/Notify';
+import { LoadingNotify } from '@Services/Notify';
 
 import vue_skillRoot from "./skill-root.vue";
 import vue_SaveLoadDataSystem from "@vue-components/SaveLoadDataSystem/main.vue";
-
-import Vuex from 'vuex';
 
 import { getSkillElementId } from "./utils";
 import { computeDrawSkillTreeData, GetDrawSetting } from "@lib/Skill/utils/DrawSkillTree";
@@ -363,17 +362,17 @@ export default {
   },
   updated() {
     if (this.skillRootStates.length == 0) {
-      MessageNotify(this.$lang('tips/The Number of Skill Builds is 0 due to an unknown cause detected'));
+      this.$notify(this.$lang('tips/The Number of Skill Builds is 0 due to an unknown cause detected'));
       this.createBuild();
     }
   },
   computed: {
-    ...Vuex.mapState('character', {
+    ...mapState('character', {
       'skillRootStates': 'skillBuilds',
       'skillRoot': 'skillRoot',
       'currentSkillRootStateIndex': 'currentSkillBuildIndex'
     }),
-    ...Vuex.mapGetters('character', {
+    ...mapGetters('character', {
       'saveSkillBuildsCsv': 'saveSkillBuildsCsv',
       'currentSkillRootState': 'currentSkillBuild'
     }),
@@ -427,16 +426,16 @@ export default {
     beforeExportConfirm() {
       const t = this.visibleSkillTreeCategoryStates.length > 0;
       if (!t)
-        MessageNotify(this.$lang('tips/must have at least one skill tree to export'), 'mdi-ghost', 'must have at least one skill tree to export');
+        this.$notify(this.$lang('tips/must have at least one skill tree to export'), 'mdi-ghost', 'must have at least one skill tree to export');
       return t;
     },
     copyExportedText() {
       if (CY.copyToClipboard(this.$refs.previewExportedTextContent.innerText))
-        MessageNotify(this.$globalLang('global/copy to clipboard finished'));
+        this.$notify(this.$globalLang('global/copy to clipboard finished'));
     },
     downloadExportedImage() {
       if (this.currentExportedImage === null) {
-        MessageNotify(this.$lang('tips/download exported image: error'));
+        this.$notify(this.$lang('tips/download exported image: error'));
         return;
       }
       const a = document.createElement('a');
@@ -795,7 +794,7 @@ export default {
       } catch (e) {
         console.log(e);
         this.currentExportedImage = null;
-        MessageNotify(this.$lang('tips/export build image: error'));
+        this.$notify(this.$lang('tips/export build image: error'));
       } finally {
         this.buildInformationVisible = false;
         loadingNotifyItem.finished();
@@ -803,19 +802,19 @@ export default {
     },
     deleteCurrentBuild() {
       if (this.skillRootStates.length == 1) {
-        MessageNotify(this.$lang('tips/number of build cannot be less than 1'), 'ic:round-remove-circle-outline', 'number of build cannot be less than 1');
+        this.$notify(this.$lang('tips/number of build cannot be less than 1'), 'ic:round-remove-circle-outline', 'number of build cannot be less than 1');
         return;
       }
       const cur_index = this.currentSkillRootStateIndex;
       const cur_build = this.currentSkillRootState;
       this.$store.commit('character/removeSkillBuild', { index: cur_index });
 
-      MessageNotify(this.$lang('tips/delete build message', [cur_build.name]), 'ic-round-done', null, {
+      this.$notify(this.$lang('tips/delete build message', [cur_build.name]), 'ic-round-done', null, {
         buttons: [{
           text: this.$globalLang('global/recovery'),
           click: () => {
             this.$store.commit('character/createSkillBuild', { skillBuild: cur_build });
-            MessageNotify(this.$lang('tips/recovery delete build message', [cur_build.name]), 'ic-round-done');
+            this.$notify(this.$lang('tips/recovery delete build message', [cur_build.name]), 'ic-round-done');
           },
           removeMessageAfterClick: true
         }]
@@ -844,7 +843,7 @@ export default {
       });
 
       this.buildInformationVisible = false;
-      MessageNotify(this.$lang('tips/copy build message', [cur_build.name, new_build.name], 'ic-round-done'));
+      this.$notify(this.$lang('tips/copy build message', [cur_build.name, new_build.name], 'ic-round-done'));
     },
     selectCurrentSkillRootState(i) {
       this.$store.commit('character/setCurrentSkillBuild', { index: i });

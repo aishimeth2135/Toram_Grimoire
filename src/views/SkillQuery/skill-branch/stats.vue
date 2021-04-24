@@ -3,7 +3,7 @@
     <div v-for="statText in statTexts"
       :key="statText.iid"
       class="inline-block mr-3">
-      <cy-icon-text iconify-name="mdi-leaf" type="item">
+      <cy-icon-text icon="mdi-leaf" type="item">
         <span v-html="statText.text"></span>
       </cy-icon-text>
     </div>

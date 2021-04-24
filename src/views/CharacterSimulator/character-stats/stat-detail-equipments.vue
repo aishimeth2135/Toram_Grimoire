@@ -5,10 +5,10 @@
       <template v-for="t in equipmentTexts">
         <cy-icon-text v-if="t.text === '+'"
           :key="'text-i-' + t.iid"
-          iconify-name="ic-round-add" />
+          icon="ic-round-add" />
         <cy-icon-text v-else-if="t.text === '/'"
           :key="'text-i-' + t.iid"
-          iconify-name="mdi-slash-forward" />
+          icon="mdi-slash-forward" />
         <span v-else-if="t.text === '(' || t.text === ')'"
           :key="'separate-' + t.iid"
           class="border-l border-solid border-light-2 inline-block h-4 mx-2" />

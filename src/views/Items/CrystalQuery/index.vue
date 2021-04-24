@@ -5,7 +5,7 @@
         <legend class="px-2">
           <cy-button v-for="(mode, i) in modeState.modes"
             :key="mode.id"
-            :iconify-name="mode.icon"
+            :icon="mode.icon"
             :selected="i === modeState.currentModeIndex"
             @click="selectMode(i)"
             type="border">
@@ -14,16 +14,16 @@
         </legend>
         <div v-show="currentMode === 'normal'">
           <div class="mb-1 text-purple">
-            <cy-icon-text iconify-name="ic-outline-search" class="text-small">
+            <cy-icon-text icon="ic-outline-search" class="text-small">
               {{ $lang('search title') }}
             </cy-icon-text>
           </div>
-          <cy-title-input iconify-name="ic-outline-category"
+          <cy-title-input icon="ic-outline-category"
             v-model:value="modeState['mode-normal'].searchText"
             :placeholder="$lang('search placeholder')" />
         </div>
         <div v-show="currentMode === 'stats'">
-          <cy-button iconify-name="mdi-rhombus-outline" type="border"
+          <cy-button icon="mdi-rhombus-outline" type="border"
             @click="toggleSelectStatWindowVisible(true)">
             {{ currentStat ? currentStat.text : $lang('select stat: title') }}
           </cy-button>
@@ -34,14 +34,14 @@
           <template v-for="(category, i) in searchResult"
             :key="category.id">
             <cy-hr v-if="i != 0" />
-            <cy-button iconify-name="bx-bx-cube-alt"
+            <cy-button icon="bx-bx-cube-alt"
               type="drop-down"
               :menu-default-visible="true">
               {{ $lang('category title')[category.id] }}
               <template v-slot:menu>
                 <cy-list-item v-for="cs in category.crystalStates" :key="cs.origin.id"
                   @click="selectCrystal(cs.origin)">
-                  <cy-icon-text :image-path="cs.imagePath">
+                  <cy-icon-text :icon="cs.imagePath" icon-src="image">
                     {{ cs.origin.name }}
                   </cy-icon-text>
                   <show-stat v-if="currentMode == 'stats' && currentStat" class="crystal-stat-detail"
@@ -51,7 +51,7 @@
             </cy-button>
           </template>
         </template>
-        <cy-default-tips v-else iconify-name="bx-bx-message-rounded-x">
+        <cy-default-tips v-else icon="bx-bx-message-rounded-x">
           {{ $lang('no result tips') }}
         </cy-default-tips>
       </div>
@@ -59,12 +59,12 @@
         class="flex sticky bottom-2 mr-2 bg-white border-1 border-solid border-light-2 rounded-2xl mt-4">
         <div class="p-4">
           <div class="mb-2 text-purple">
-            <cy-icon-text :image-path="getCrystalImagePath(currentCrystal)" text-color="purple">
+            <cy-icon-text :icon="getCrystalImagePath(currentCrystal)" text-color="purple" icon-src="image">
               {{ currentCrystal.name }}
             </cy-icon-text>
           </div>
           <cy-flex-layout class="pl-3 mb-2" v-if="currentCrystal.origin.enhancer">
-            <cy-icon-text iconify-name="bx-bx-cube-alt" text-size="small">
+            <cy-icon-text icon="bx-bx-cube-alt" text-size="small">
               {{ $lang('enhancer title') }}
               <span class="text-orange text-sm">
                 {{ currentCrystal.origin.enhancer }}
@@ -84,12 +84,12 @@
         vertical-position="top"
         @close-window="toggleSelectStatWindowVisible(false)">
         <template v-slot:title>
-          <cy-icon-text iconify-name="mdi-rhombus-outline">
+          <cy-icon-text icon="mdi-rhombus-outline">
             {{ $lang('select stat: window title') }}
           </cy-icon-text>
         </template>
         <template v-slot:default>
-          <cy-title-input iconify-name="ic-outline-category"
+          <cy-title-input icon="ic-outline-category"
             class="mb-3"
             v-model:value="modeState['mode-stats'].searchText"
             :placeholder="$lang('select stat: search placeholder')" />
@@ -98,12 +98,12 @@
               :key="`${stat.origin.baseName}-${stat.type.description}`"
               :selected="stat == currentStat"
               @click="selectStat(stat)">
-              <cy-icon-text iconify-name="mdi-rhombus-outline">
+              <cy-icon-text icon="mdi-rhombus-outline">
                 {{ stat.text }}
               </cy-icon-text>
             </cy-list-item>
           </template>
-          <cy-default-tips v-else iconify-name="bx-bx-message-rounded-x">
+          <cy-default-tips v-else icon="bx-bx-message-rounded-x">
             {{ $lang('no result tips') }}
           </cy-default-tips>
         </template>

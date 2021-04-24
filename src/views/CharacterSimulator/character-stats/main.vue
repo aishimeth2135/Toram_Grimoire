@@ -8,7 +8,7 @@
         :key="data.name">
         <fieldset class="border-t border-solid border-light">
           <legend class="py-0 px-2 ml-3">
-            <cy-icon-text iconify-name="mdi-creation"
+            <cy-icon-text icon="mdi-creation"
               text-color="purple" text-size="small">
               {{ data.name }}
             </cy-icon-text>
@@ -36,11 +36,11 @@
       @click.stop="toggleShowStatDetailDisplay('visible', false)">
       <template #title>
         <div class="flex items-center mb-3">
-          <cy-icon-text iconify-name="mdi-ghost" text-color="purple">
+          <cy-icon-text icon="mdi-ghost" text-color="purple">
             {{ detail.currentStat.name }}
           </cy-icon-text>
           <div v-if="detail.visible" class="ml-auto">
-            <cy-icon-text iconify-name="ic-round-close"
+            <cy-icon-text icon="ic-round-close"
               text-color="light-3" text-size="small"
               class="ml-4">
               {{ $lang('Click anywhere to close') }}
@@ -57,16 +57,16 @@
         </span>
       </div>
       <cy-icon-text v-if="showStatDetailDatas.conditionalBase"
-        iconify-name="mdi-sword">
+        icon="mdi-sword">
         <stat-detail-equipments :equipment-texts="showStatDetailDatas.conditionalBase.title.equipments" />
       </cy-icon-text>
       <div v-for="data in showStatDetailDatas.datas"
         :key="data.iid" class="mt-1">
         <cy-icon-text v-if="(typeof data.title !== 'object')"
-          iconify-name="gg-shape-rhombus">
+          icon="gg-shape-rhombus">
           {{ data.title }}
         </cy-icon-text>
-        <cy-icon-text v-else iconify-name="gg-shape-rhombus">
+        <cy-icon-text v-else icon="gg-shape-rhombus">
           <span>{{ data.title.text }}</span>
           <span class="ml-1 text-light-3">{{ data.title.value }}</span>
         </cy-icon-text>
@@ -75,10 +75,10 @@
           <div v-for="line in data.lines" :key="'line' + line.iid"
             class="flex items-center">
             <cy-icon-text v-if="typeof line.title == 'string'"
-              iconify-name="ic-round-add" text-size="small">
+              icon="ic-round-add" text-size="small">
               {{ line.title }}
             </cy-icon-text>
-            <cy-icon-text v-else iconify-name="ic-round-add" text-size="small">
+            <cy-icon-text v-else icon="ic-round-add" text-size="small">
               <stat-detail-equipments
                 v-if="line.title.equipments.length != 0"
                 :equipment-texts="line.title.equipments"

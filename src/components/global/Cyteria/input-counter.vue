@@ -5,11 +5,11 @@
         <slot name="title"></slot>
       </div>
       <div class="counter-content">
-        <cy-button class="button" type="icon" iconify-name="ic-round-remove-circle-outline"
+        <cy-button class="button" type="icon" icon="ic-round-remove-circle-outline"
           @click="setValue(value - step)" />
         <input type="number" :value="value" @input="updateValue"
           @click="selectInput($event)" />
-        <cy-button class="button" type="icon" iconify-name="ic-round-add-circle-outline"
+        <cy-button class="button" type="icon" icon="ic-round-add-circle-outline"
           @click="setValue(value + step)" />
         <slot name="unit"></slot>
       </div>

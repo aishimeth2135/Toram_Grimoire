@@ -55,7 +55,7 @@ class Equipment extends Item {
 
     this.baseValue = bv;
     this.baseStability = bstab || 0;
-      
+
     this.caption = cap;
   }
   setRecipe() {

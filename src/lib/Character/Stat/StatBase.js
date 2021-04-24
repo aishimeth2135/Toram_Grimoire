@@ -36,7 +36,7 @@ class StatBase {
     if (typeof v !== 'number' && calc)
       v = parseFloat(v);
     const handleFormula = (formula, unit) => {
-      const isPos = v >= 0 || !calc; 
+      const isPos = v >= 0 || !calc;
       const sign = isPos ? '+' : '';
       formula = formula.split('::')[isPos ? 0 : 1] || formula;
       let res = formula

@@ -1,8 +1,12 @@
-import store from "@store/main";
+import store from "@store";
 import LoadingNotifyItem from "./LoadingNotifyItem";
 
-function MessageNotify(message, icon, id=null, options={}) {
-  icon = icon || 'bx-bx-message-rounded-dots';
+function MessageNotify(
+  message,
+  icon = 'bx-bx-message-rounded-dots',
+  id = null,
+  options = {}
+) {
   store.dispatch('notify/createMessage', { message, icon, id, options });
 }
 

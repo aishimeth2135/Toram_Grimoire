@@ -4,7 +4,7 @@ import TagSystem from "@lib/Tag";
 import SkillSystem from "@lib/Skill";
 import EnchantSystem from "@lib/Enchant";
 
-import DownloadDatas from "../utils/DownloadDatas.js";
+import DownloadDatas from "./utils/DownloadDatas.js";
 import loadEquipments from "./utils/LoadEquipments.js";
 import loadCrystals from "./utils/LoadCrystals.js";
 import loadStats from "./utils/LoadStats.js";

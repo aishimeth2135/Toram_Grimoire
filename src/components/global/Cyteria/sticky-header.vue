@@ -74,8 +74,6 @@
         z-index: 5;
 
         > .menu-container {
-          padding: 0.6rem 1rem;
-          padding-top: 2rem;
           border: 1px solid var(--primary-light-2);
           background-color: var(--white);
           width: 40rem;

@@ -26,7 +26,7 @@
       <div class="sticky bottom-2 bg-white border-1 border-solid border-light-2 rounded-2xl px-4 py-1 z-10 mx-2 mt-4">
         <cy-button v-for="(content, i) in contents"
           :key="content.id"
-          :iconify-name="content.icon"
+          :icon="content.icon"
           :selected="i == currentContentIndex"
           @click="setCurrentContent(i)"
           class="border-0 p-0 mr-3">
@@ -35,11 +35,11 @@
       </div>
     </template>
     <div v-else>
-      <cy-default-tips iconify-name="mdi-ghost">
+      <cy-default-tips icon="mdi-ghost">
         <span v-html="$lang('Warn/Current character is not exist')"></span>
       </cy-default-tips>
       <div style="text-align: center;">
-        <cy-button iconify-name="ic-round-add" type="border"
+        <cy-button icon="ic-round-add" type="border"
           @click="createCharacter">
           {{ $lang('append character') }}
         </cy-button>
@@ -48,9 +48,7 @@
   </div>
 </template>
 <script>
-import Vuex from "vuex";
-
-import MessageNotify from "@Services/Notify";
+import { mapState, mapGetters } from "vuex";
 
 import init from "./init.js";
 
@@ -124,7 +122,7 @@ export default {
       this.autoLoad();
     else {
       this.autoLoad({ resetOption: { skillBuildsReplaced: false } });
-      MessageNotify(this.$lang('skill management/tips: skill-builds data not be replaced'));
+      this.$notify(this.$lang('skill management/tips: skill-builds data not be replaced'));
     }
     this.$store.commit('character/characterSimulatorInitFinished');
 
@@ -162,14 +160,14 @@ export default {
     this.autoSave();
   },
   computed: {
-    ...Vuex.mapState('character', {
+    ...mapState('character', {
       'characterStates': 'characters',
       'skillBuilds': 'skillBuilds',
       'currentCharacterStateIndex': 'currentCharacterIndex',
       'currentSkillBuildIndex': 'currentSkillBuildIndex',
       'characterSimulatorHasInit': 'characterSimulatorHasInit'
     }),
-    ...Vuex.mapGetters('character', {
+    ...mapGetters('character', {
       'currentCharacterState': 'currentCharacter',
       'currentSkillBuild': 'currentSkillBuild',
       'currentFoodBuild': 'currentFoodBuild'
@@ -248,13 +246,13 @@ export default {
     autoSave() {
       if (!this.autoSaveDisable) {
         this.$store.dispatch('character/saveCharacterSimulator', { index: 0 });
-        MessageNotify(this.$lang('save-load control/Auto save Successfully'), 'mdi-ghost', 'auto save successfully');
+        this.$notify(this.$lang('save-load control/Auto save Successfully'), 'mdi-ghost', 'auto save successfully');
       }
     },
     autoLoad({ resetOption } = {}) {
       try {
         this.$store.dispatch('character/loadCharacterSimulator', { index: 0, resetOption });
-        MessageNotify(this.$lang('save-load control/Auto load Successfully'), 'mdi-ghost', 'auto load successfully');
+        this.$notify(this.$lang('save-load control/Auto load Successfully'), 'mdi-ghost', 'auto load successfully');
       } catch (e) {
         console.warn(e);
         console.warn('[Grimoire: character-simulator] Auto load faild. If you are entering this page for the first time, you can ignore this message.');

@@ -11,7 +11,7 @@ export default function(options) {
     });
     dataMap[key] = group;
   });
-  
+
   const toggle = (id, force) => {
     const [group, sub] = id.split('/');
     if (sub) {
@@ -28,7 +28,7 @@ export default function(options) {
 
   const data = {};
   Object.keys(dataMap).forEach(k => data[k] = readonly(dataMap[k]));
-  
+
   data.toggle = toggle;
 
   return data;

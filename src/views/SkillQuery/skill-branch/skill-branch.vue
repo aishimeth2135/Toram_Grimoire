@@ -1,25 +1,26 @@
 <template>
-  <div class="main-- relative" v-show="!confirmHistoryDate" :class="rootClassList">
-    <cy-icon-text v-if="otherEquipmentBranchVisible || historyVisible" iconify-name="bx-bxs-moon"
-      style="position: absolute; top: -0.3rem;
-        left: -0.7rem; --icon-width: 1.8rem; z-index: 1;
-        --icon-color: var(--primary-light-2)" />
-    <fieldset v-if="type == 'other-equipment'" class="branch-type-title">
+  <div class="main-- relative" :class="rootClassList">
+    <cy-icon-text v-if="otherEquipmentBranchVisible || historyVisible"
+      icon="bx-bxs-moon"
+      class="absolute -top-1 -left-3 z-1"
+      text-color="light-2" />
+    <fieldset v-if="type === 'other-equipment'" class="branch-type-title">
       <legend>
         <equipment-info :equipment="equipmentTitle" />
       </legend>
     </fieldset>
-    <fieldset v-if="type == 'history'" class="branch-type-title">
+    <fieldset v-if="type === 'history'" class="branch-type-title">
       <legend>
-        <cy-icon-text iconify-name="ic-round-history" text-size="small">
+        <cy-icon-text icon="ic-round-history" text-size="small">
           {{ branch.attrs['@history-date'] }}
         </cy-icon-text>
       </legend>
     </fieldset>
-    <fieldset v-if="['damage', 'effect', 'next', 'passive', 'heal'].includes(branch.name)" :class="branchClass">
+    <fieldset v-if="['damage', 'effect', 'next', 'passive', 'heal'].includes(branch.name)"
+      :class="branchClass">
       <!-- [start] title -->
       <legend>
-        <cy-icon-text v-if="showData['name']" class="name" :iconify-name="titleIconName"
+        <cy-icon-text v-if="showData['name']" class="mr-3" :icon="titleIconName"
           text-color="purple">
           {{ showData['name'] }}
         </cy-icon-text>
@@ -31,86 +32,106 @@
         </div>
       </legend>
       <!-- == [start] buttons scope -->
-      <div class="top-buttons-container">
-        <div class="top-buttons"
+      <div class="relative">
+        <div class="absolute" style="right: -0.6rem; top: -2.1rem;"
           @mouseenter.stop="toggleVisible('topMenu', true)"
           @mouseleave.stop="toggleVisible('topMenu', false)">
           <transition-group name="top-menu-slide" appear>
             <cy-button v-for="(data) in topButtons" :key="data.name"
-              type="icon" class="top-menu-btn" :iconify-name="data.icon"
+              type="icon" class="bg-white rounded-full"
+              :icon="data.icon"
               @click="toggleVisible(data.name)" />
           </transition-group>
           <cy-button v-if="topButtons"
-            type="icon" class="top-menu-btn" :class="{ 'selected': topMenuVisible }"
-            :iconify-name="topMenuVisible ? 'ic-round-menu-open' : 'ic-round-menu'" />
+            type="icon" class="bg-white rounded-full"
+            :selected="topMenuVisible"
+            :icon="topMenuVisible ? 'ic-round-menu-open' : 'ic-round-menu'" />
         </div>
       </div>
       <!-- == [end] buttons scope -->
       <!-- [end] title -->
       <!-- [start] branch detail -->
       <branch-detail v-if="detailVisible" :detail-show-data="detailShowData" />
-      <cy-icon-text v-if="isMark" iconify-name="mdi-leaf" class="prefix-icon" />
-      <cy-icon-text v-if="isMark" iconify-name="cib-overleaf" class="suffix-icon" />
+      <cy-icon-text v-if="isMark" icon="mdi-leaf" class="prefix-icon" />
+      <cy-icon-text v-if="isMark" icon="cib-overleaf" class="suffix-icon" />
       <!-- [end] branch detail -->
       <!-- [start] sub content -->
       <div class="content-line" v-if="subContentValid">
         <template v-if="branch.name == 'damage'">
-          <cy-icon-text v-if="showData['title']" class="condition-scope text-small light-text"
-            iconify-name="bx-bx-game">
+          <cy-icon-text v-if="showData['title']"
+            class="condition-scope"
+            text-size="small" text-color="light-3"
+            icon="bx-bx-game">
             {{ showData['title'] }}
           </cy-icon-text>
-          <cy-icon-text v-if="showData['element']" :iconify-name="elementIconName"
-            class="condition-scope text-small light-text">
+          <cy-icon-text v-if="showData['element']" :icon="elementIconName"
+            class="condition-scope"
+            text-size="small" text-color="purple">
             {{ showData['element'] }}
           </cy-icon-text>
-          <cy-icon-text v-if="showData['frequency'] && showData['@parent-branch'].attrs['title'] != 'each'" class="condition-scope text-small light-text"
-            iconify-name="bi-circle-square">
+          <cy-icon-text v-if="showData['frequency'] && showData['@parent-branch'].attrs['title'] != 'each'"
+            class="condition-scope"
+            text-size="small" text-color="light-3"
+            icon="bi-circle-square">
             <span v-html="showData['frequency']"></span>
           </cy-icon-text>
           <cy-icon-text v-if="showData['duration'] && showData['cycle']"
-            iconify-name="ic-round-timer" class="condition-scope text-small light-text">
+            icon="ic-round-timer" class="condition-scope"
+            text-size="small" text-color="purple">
             <span v-html="$lang('damage/caption of duration and cycle', [showData['duration'], showData['cycle']])">
             </span>
           </cy-icon-text>
           <span class="condition-scope attr" v-if="showData['@proration: damage']">
-            <cy-icon-text class="name text-small" iconify-name="ri-error-warning-line">
+            <cy-icon-text class="name text-small" icon="ri-error-warning-line">
               {{ showData['@proration: damage: title'] }}
             </cy-icon-text>
-            <span class="value light-text">{{ showData['@proration: damage'] }}</span>
+            <span class="value text-light-3">{{ showData['@proration: damage'] }}</span>
           </span>
           <span class="condition-scope attr" v-if="showData['@proration: proration']">
-            <cy-icon-text class="name text-small" iconify-name="ri-error-warning-line">
+            <cy-icon-text class="name text-small" icon="ri-error-warning-line">
               {{ showData['@proration: proration: title'] }}
             </cy-icon-text>
-            <span class="value light-text">{{ showData['@proration: proration'] }}</span>
+            <span class="value text-light-3">{{ showData['@proration: proration'] }}</span>
           </span>
         </template>
-        <template v-else-if="branch.name == 'effect' || branch.name == 'next'">
-          <cy-icon-text v-if="showData['condition']" class="condition-scope text-small light-text"
-            iconify-name="eva-checkmark-circle-2-outline">
+        <template v-else-if="branch.name === 'effect' || branch.name === 'next'">
+          <cy-icon-text v-if="showData['condition']"
+            class="condition-scope"
+            text-size="small" text-color="purple"
+            icon="eva-checkmark-circle-2-outline">
             <span v-html="showData['condition']"></span>
           </cy-icon-text>
-          <cy-icon-text v-if="showData['duration']" class="condition-scope text-small light-text"
-            iconify-name="zmdi-time-interval">
+          <cy-icon-text v-if="showData['duration']"
+            class="condition-scope"
+            text-size="small" text-color="purple"
+            icon="zmdi-time-interval">
             <span v-html="showData['duration']"></span>
           </cy-icon-text>
-          <cy-icon-text v-else-if="showData['end_condition']" class="condition-scope text-small light-text"
-            iconify-name="zmdi-time-interval">
+          <cy-icon-text v-else-if="showData['end_condition']"
+            class="condition-scope"
+            text-size="small" text-color="purple"
+            icon="zmdi-time-interval">
             <span v-html="showData['end_condition']"></span>
           </cy-icon-text>
-          <cy-icon-text v-if="showData['is_place']" class="condition-scope text-small light-text"
-            iconify-name="emojione-monotone:heavy-large-circle">
+          <cy-icon-text v-if="showData['is_place']"
+            class="condition-scope"
+            text-size="small" text-color="purple"
+            icon="emojione-monotone:heavy-large-circle">
             {{ showData['is_place'] }}
           </cy-icon-text>
         </template>
         <template v-if="branch.name == 'heal'">
-          <cy-icon-text v-if="showData['frequency']" class="condition-scope text-small light-text"
-            iconify-name="bi-circle-square">
+          <cy-icon-text v-if="showData['frequency']"
+            class="condition-scope"
+            text-size="small" text-color="purple"
+            icon="bi-circle-square">
             <span v-html="showData['frequency']"></span>
           </cy-icon-text>
           <cy-icon-text v-if="showData['duration'] && showData['cycle']"
-            iconify-name="ic-round-timer" class="condition-scope text-small light-text">
-            <span v-html="$lang('heal/caption of duration and cycle', [showData['duration'], showData['cycle']])">
+            icon="ic-round-timer" class="condition-scope"
+            text-size="small" text-color="purple">
+            <span v-html="$lang('heal/caption of duration and cycle',
+              [showData['duration'], showData['cycle']])">
             </span>
           </cy-icon-text>
         </template>
@@ -145,65 +166,18 @@
       <!-- [start] other -->
       <fieldset class="extra-column unfold-fieldset" v-if="isScoped" :class="{ unfold: skillAreaVisible }">
         <legend>
-            <cy-button v-if="isScoped"
-              text-size="small"
-              class="condition-scope light-text border-0 p-0"
-              iconify-name="bx-bx-target-lock" @click="toggleVisible('skillArea')">
+            <cy-button class="condition-scope border-0 p-0"
+              text-size="small" text-color="purple"
+              icon="bx-bx-target-lock" @click="toggleVisible('skillArea')">
             {{ $lang('skill area/button text') }}
           </cy-button>
         </legend>
-        <cy-transition type="fade">
-          <div v-if="skillAreaVisible" class="skill-area">
-            <div class="graph">
-              <skill-area :attrs="branch.attrs" />
-              <div class="bottom">
-                <cy-icon-text iconify-name="bx-bxs-circle"
-                  class="mr-2" icon-color="water-blue"
-                  text-size="small">
-                  {{ $lang('skill area/point: character') }}
-                </cy-icon-text>
-                <cy-icon-text iconify-name="bx-bxs-circle"
-                  icon-color="red" text-size="small">
-                  {{ $lang('skill area/point: target') }}
-                </cy-icon-text>
-              </div>
-            </div>
-            <div class="info">
-              <table class="attrs-table">
-                <tbody>
-                  <tr>
-                    <td>{{ showData['effective_area: title'] }}</td>
-                    <td v-html="showData['effective_area']"></td>
-                  </tr>
-                  <tr v-if="branch.attrs['effective_area'] != 'sector'">
-                    <td>{{ showData['radius: title'] }}</td>
-                    <td v-html="showData['radius']"></td>
-                  </tr>
-                  <tr v-if="showData['move_distance']">
-                    <td>{{ showData['move_distance: title'] }}</td>
-                    <td v-html="showData['move_distance']"></td>
-                  </tr>
-                  <tr v-if="showData['angle']">
-                    <td>{{ showData['angle: title'] }}</td>
-                    <td v-html="showData['angle']"></td>
-                  </tr>
-                  <tr v-if="showData['start_position_offsets']">
-                    <td>{{ showData['start_position_offsets: title'] }}</td>
-                    <td v-html="showData['start_position_offsets']"></td>
-                  </tr>
-                  <tr v-if="showData['end_position_offsets']">
-                    <td>{{ showData['end_position_offsets: title'] }}</td>
-                    <td v-html="showData['end_position_offsets']"></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </cy-transition>
+        <skill-area-info v-if="skillAreaVisible"
+          :branch="branch" :show-data="showData" />
       </fieldset>
       <fieldset class="extra-column" v-if="branch.name == 'damage' && showData['ailment_name']">
         <legend>
-          <cy-icon-text iconify-name="ri-plant-line" class="text-small">
+          <cy-icon-text icon="ri-plant-line" text-size="small">
             {{ $lang('ailment title') }}
           </cy-icon-text>
         </legend>
@@ -213,20 +187,23 @@
       </fieldset>
       <!-- [end] other -->
       <!-- [start] extra -->
-      <fieldset class="extra-column" v-for="(suffixShowData) in suffixBranchShowDatas"
+      <fieldset v-for="(suffixShowData) in suffixBranchShowDatas"
+        class="extra-column"
         :key="suffixShowData['@--key']">
-        <template v-if="suffixShowData['@parent-branch'].name == 'extra'">
+        <template v-if="suffixShowData['@parent-branch'].name === 'extra'">
           <legend>
-            <cy-icon-text class="condition-scope text-small light-text" iconify-name="eva-checkmark-circle-2-outline">
+            <cy-icon-text class="condition-scope"
+              text-size="small" text-color="light-3"
+              icon="eva-checkmark-circle-2-outline">
               <span v-html="suffixShowData['condition']"></span>
             </cy-icon-text>
             <span class="bg-scope" v-if="suffixShowData['target']">{{ suffixShowData['target'] }}</span>
           </legend>
           <div class="text-scope" v-if="suffixShowData['caption']" v-html="suffixShowData['caption']"></div>
-          <template v-else-if="branch.name == 'damage' && suffixShowData['ailment_name']">
+          <template v-else-if="branch.name === 'damage' && suffixShowData['ailment_name']">
             <div class="text-scope" v-html="ailmentText(suffixShowData)"></div>
           </template>
-          <template v-else-if="branch.name == 'damage' && suffixShowData['element']">
+          <template v-else-if="branch.name === 'damage' && suffixShowData['element']">
             <div class="text-scope" v-html="extraElementCaption(suffixShowData['element'])"></div>
           </template>
           <stats v-else :stats="suffixShowData['@parent-branch'].stats"></stats>
@@ -234,80 +211,85 @@
       </fieldset>
       <!-- [end] extra -->
     </fieldset>
-    <div v-else-if="branch.name == 'list'" :class="branchClass">
-      <!-- <cy-icon-text iconify-name="mdi-leaf" class="prefix-icon" /> -->
+    <div v-else-if="branch.name === 'list'" :class="branchClass">
+      <!-- <cy-icon-text icon="mdi-leaf" class="prefix-icon" /> -->
       <div v-for="data in showData['@list-datas']"
         class="leaf-list-item" :key="data['text']">
-        <cy-icon-text iconify-name="mdi-leaf" class="prefix-icon" />
+        <cy-icon-text icon="mdi-leaf" class="prefix-icon" />
         <span v-html="data['text']"></span>
       </div>
     </div>
     <div v-else :class="branchClass">
-      <cy-icon-text v-if="isMark" iconify-name="mdi-leaf" class="prefix-icon" />
-      <cy-icon-text v-if="isMark" iconify-name="cib-overleaf" class="suffix-icon" />
-      <template v-if="branch.name == 'proration'">
+      <cy-icon-text v-if="isMark" icon="mdi-leaf" class="prefix-icon" />
+      <cy-icon-text v-if="isMark" icon="cib-overleaf" class="suffix-icon" />
+      <template v-if="branch.name === 'proration'">
         <div class="content-line">
-          <span class="attr-scope normal">
+          <span class="proration-column">
             <span class="title">{{ showData['damage: title'] }}</span>
             <span class="value">{{ showData['damage'] }}</span>
           </span>
-          <span class="attr-scope normal">
+          <span class="proration-column">
             <span class="title">{{ showData['proration: title'] }}</span>
             <span class="value">{{ showData['proration'] }}</span>
           </span>
         </div>
       </template>
-      <template v-else-if="branch.name == 'text'">
+      <template v-else-if="branch.name === 'text'">
         <div class="content-line group-title" :class="{ 'gropu-unfold': branch.group.expansion }"
           v-if="branch.group" @click="toggleGroup()">
           <cy-icon-text class="title-btn" style="--icon-width: 1.6rem;"
-            :iconify-name="branch.group.expansion ? 'mdi-leaf-maple' : 'mdi-leaf-maple-off'" />
+            :icon="branch.group.expansion ? 'mdi-leaf-maple' : 'mdi-leaf-maple-off'" />
           <div class="text-scope" v-html="showData['text']"></div>
         </div>
         <div class="content-line" v-else>
           <div class="text-scope" v-html="showData['text']"></div>
         </div>
       </template>
-      <template v-else-if="branch.name == 'tips'">
+      <template v-else-if="branch.name === 'tips'">
         <div class="content-line group-title" :class="{ 'gropu-unfold': branch.group.expansion }"
           v-if="branch.group" @click="toggleGroup()">
           <cy-icon-text class="title-btn" style="--icon-width: 1.3rem;"
-            :iconify-name="branch.group.expansion ? 'mdi-leaf-maple' : 'mdi-leaf-maple-off'" />
+            :icon="branch.group.expansion ? 'mdi-leaf-maple' : 'mdi-leaf-maple-off'" />
           <div class="text-scope tips">
-            <cy-icon-text iconify-name="bx-bx-message-rounded" text-size="small" text-color="light-3">
+            <cy-icon-text icon="bx-bx-message-rounded" text-size="small" text-color="light-3">
               <span v-html="showData['text']"></span>
             </cy-icon-text>
           </div>
         </div>
         <div class="content-line" v-else>
           <div class="text-scope tips">
-            <cy-icon-text iconify-name="bx-bx-message-rounded" text-size="small" text-color="light-3">
+            <cy-icon-text icon="bx-bx-message-rounded"
+              text-size="small" text-color="light-3">
               <span v-html="showData['text']"></span>
             </cy-icon-text>
           </div>
         </div>
       </template>
-      <template v-else-if="branch.name == 'stack'">
-        <div class="content-line">
-          <cy-input-counter v-if="stackValue != null"
-            :value="stackValue"
-            @update:value="setStackValue"
+      <template v-else-if="branch.name === 'stack'">
+        <div class="content-line" v-if="stackValue !== null">
+          <cy-input-counter
+            v-model:value="stackValue"
             :range="stackValueRange"
             :style="showData['@stack-input-width-wide'] || {}">
             <template v-slot:title>
-              <cy-icon-text iconify-name="ion-leaf">
+              <cy-icon-text icon="ion-leaf">
                 {{ showData['name'] }}
               </cy-icon-text>
             </template>
             <template v-if="showData['unit']" v-slot:unit>
-              <span class="text-light-4">{{ showData['unit'] }}</span>
+              <span class="text-light-3">{{ showData['unit'] }}</span>
             </template>
           </cy-input-counter>
         </div>
+        <cy-default-tips v-else icon="mdi-ghost">
+          Doll Not Found
+        </cy-default-tips>
       </template>
-      <template v-else-if="branch.name == 'reference'">
+      <template v-else-if="branch.name === 'reference'">
         <div class="content-line">
-          <cy-icon-text class="condition-scope text-small light-text" iconify-name="entypo-link">
+          <cy-icon-text class="condition-scope"
+            icon="entypo-link"
+            text-size="small" text-color="purple">
             {{ $lang('reference/base title') }}
           </cy-icon-text>
           <div class="text-scope" v-if="showData['text']">
@@ -319,7 +301,7 @@
         </div>
       </template>
     </div>
-    <template v-if="type == 'main'">
+    <template v-if="type === 'main'">
       <template v-if="otherEquipmentBranchVisible && otherEquipmentBranchDatas">
         <cy-transition-group type="fade" mode="out-in" appear>
           <skill-branch v-for="(data) in otherEquipmentBranchDatas"
@@ -336,19 +318,18 @@
       </template>
     </template>
     <div v-if="branch.isGroupTail" class="group-tail">
-      <cy-icon-text iconify-name="bx-bxs-square" class="prefix-icon" />
+      <cy-icon-text icon="bx-bxs-square" class="prefix-icon" />
     </div>
   </div>
 </template>
 <script>
-import GetLang from "@Services/Language";
-
 import vue_damageFormula from "./damage-formula.vue";
 import vue_healFormula from "./heal-formula.vue";
 import vue_stats from "./stats.vue";
 import vue_branchDetail from "./branch-detail.vue";
 import vue_equipmentInfo from "./equipment-info.vue";
-import vue_skillArea from "./skill-area.vue";
+import vue_skillAreaInfo from "./skill-area-info";
+
 
 import handleFormula from "../utils/handleFormula.js";
 import DataContainer from "../utils/DataContainer.js";
@@ -367,7 +348,6 @@ export default {
     return {
       otherEquipmentBranchVisible: false,
       historyBranchVisible: false,
-      stackValue: null,
       detailVisible: false,
       skillAreaVisible: false,
       historyVisible: false,
@@ -390,21 +370,21 @@ export default {
     topButtons() {
       const list = [{
         name: 'detail',
-        valid: this.branch.name == 'damage' && this.showData['detail_display'] == '1',
+        valid: this.branch.name === 'damage' && this.showData['detail_display'] === '1',
         icon: {
           'true': 'bx-bxs-book-open',
           'false': 'bx-bxs-book-add'
         }
       }, {
         name: 'otherEquipmentBranch',
-        valid: this.type == 'main' && this.otherEquipmentBranchDatas,
+        valid: this.type === 'main' && this.otherEquipmentBranchDatas,
         icon: {
           'true': 'bx-bxs-down-arrow-circle',
           'false': 'bx-bxs-right-arrow-circle'
         }
       }, {
         name: 'history',
-        valid: this.branch.history.length != 0,
+        valid: this.branch.history.length !== 0,
         icon: {
           'true': 'ic-round-history-toggle-off',
           'false': 'ic-round-history'
@@ -416,9 +396,9 @@ export default {
 
       return res.length > 0 ? (this.topMenuVisible ? res : []) : null;
     },
-    confirmHistoryDate() {
-      return this.branch.suffix.find(p => p.name == 'history');
-    },
+    // confirmHistoryDate() {
+    //   return this.branch.suffix.find(p => p.name === 'history');
+    // },
     elementIconName() {
       return {
         'neutral': 'bx-bx-circle',
@@ -445,10 +425,10 @@ export default {
       const eq = this.branch['@parent-state'].equipment;
 
       return {
-        main: eq.main != -1 ? GetLang('Skill Query/equipment/main-weapon')[eq.main] : -1,
-        sub: eq.sub != -1 ? GetLang('Skill Query/equipment/sub-weapon')[eq.sub] : -1,
-        body: eq.body != -1 ? GetLang('Skill Query/equipment/body-armor')[eq.body] : -1,
-        none: eq.main == -1 && eq.sub == -1 && eq.body == -1 ? GetLang('Skill Query/equipment/none') : void 0,
+        main: eq.main != -1 ? this.$lang.extra('parent', 'equipment/main-weapon')[eq.main] : -1,
+        sub: eq.sub != -1 ? this.$lang.extra('parent', 'equipment/sub-weapon')[eq.sub] : -1,
+        body: eq.body != -1 ? this.$lang.extra('parent', 'equipment/body-armor')[eq.body] : -1,
+        none: eq.main == -1 && eq.sub == -1 && eq.body == -1 ? this.$lang.extra('parent', '/equipment/none') : void 0,
         operator: eq.operator
       };
     },
@@ -463,9 +443,9 @@ export default {
     },
     subContentValid() {
       const p = this.branch.name;
-      if (p == 'damage')
+      if (p === 'damage')
         return this.showData['title'] || this.isScoped || this.showData['element'] || this.showData['frequency'];
-      if (p == 'heal')
+      if (p === 'heal')
         return this.showData['frequency'];
 
       return true;
@@ -478,22 +458,22 @@ export default {
         'branch': true,
         [this.branch.name]: true,
         'branch-mark': this.isMark,
-        'other-equipment': this.type == 'other-equipment'
+        'other-equipment': this.type === 'other-equipment'
       };
     },
     isScoped() {
-      if (this.branch.name == 'damage') {
-        if (this.branch.attrs['type'] == 'AOE')
+      if (this.branch.name === 'damage') {
+        if (this.branch.attrs['type'] === 'AOE')
           return true;
       }
-      if (this.branch.name == 'effect') {
-        if (this.branch.attrs['type'] == 'aura')
+      if (this.branch.name === 'effect') {
+        if (this.branch.attrs['type'] === 'aura')
           return true;
       }
       return false;
     },
     isMark() {
-      return this.branch.attrs['is_mark'] == '1';
+      return this.branch.attrs['is_mark'] === '1';
     },
     suffixBranchShowDatas() {
       return this.branch.suffix
@@ -513,7 +493,7 @@ export default {
       return this.handleShowData(this.branch);
     },
     otherEquipmentBranchDatas() {
-      if (this.branch.id == '-')
+      if (this.branch.id === '-')
         return null;
 
       const res = this.skillState.states
@@ -527,11 +507,29 @@ export default {
     },
     formulaDisplayMode() {
       return this.getFormulaDisplayMode();
+    },
+    stackValue: {
+      get() {
+        return this.stackState ? this.stackState.value : null;
+      },
+      set(v) {
+        if (this.stackState) {
+          this.stackState.value = v;
+        }
+      }
+    },
+    stackState() {
+      if (this.branch.name !== 'stack') {
+        return null;
+      }
+      const stack_id = parseInt(this.branch.attrs['id'], 10);
+      const p = this.branch['@parent-state'].stackStates.find(a => a.id === stack_id);
+      return p ? p : null;
     }
   },
   methods: {
     extraElementCaption(v) {
-      const s = `<span class="light-text">${this.$lang('damage/element/' + v)}</span>`;
+      const s = `<span class="text-light-3">${this.$lang('damage/element/' + v)}</span>`;
       return this.$lang('apply element', [s]);
     },
     toggleVisible(name, force) {
@@ -647,18 +645,6 @@ export default {
     },
     ailmentText(showData) {
       return this.$lang('damage/ailment text', [showData['ailment_chance'], `<span class="${this.tagButtonClassName}">${showData['ailment_name']}</span>`]);
-    },
-    setStackValue(v) {
-      const p = this.findStackState();
-      if (p) {
-        this.stackValue = v;
-        p.value = v;
-      }
-    },
-    findStackState(stack_id) {
-      stack_id = stack_id === void 0 ? parseInt(this.branch.attrs['id'], 10) : stack_id;
-      const p = this.branch['@parent-state'].stackStates.find(a => a.id == stack_id);
-      return p ? p : null;
     },
     handleShowData(bch) {
       const attrs = bch.attrs;
@@ -833,7 +819,7 @@ export default {
           }, {
             name: 'constant',
             validation: v => v != 0
-          },{
+          }, {
             name: 'frequency',
             validation: v => parseInt(v) > 1,
             validationType: 'value'
@@ -905,13 +891,12 @@ export default {
       });
 
       handleValueList.forEach(k => {
-        if (typeof k == 'object') {
+        if (typeof k === 'object') {
           let { name, beforeColorText, calcOnly } = k;
           name = Array.isArray(name) ? name : [name];
           name.forEach(p => {
             const dc = data[p];
-            if (!dc)
-              return;
+            if (!dc) return;
             !calcOnly ?
               this.handleDataContainer(dc, { beforeColorText }) :
               dc.handle(v => this.calcValueStr(v));
@@ -963,8 +948,9 @@ export default {
       return data;
     },
     calcValueStr(str) {
-      if (!str)
-        return str;
+      if (!str) {
+        return '0';
+      }
       const skillState = this.skillState;
       const effectState = this.branch['@parent-state'];
 
@@ -1008,11 +994,11 @@ export default {
       const data = bch.attrs;
 
       data['mark'] && data['mark'].split(/\s*,\s*/)
-        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="light-text">${m}</span>`));
+        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="text-light-3">${m}</span>`));
       data['branch'] && data['branch'].split(/\s*,\s*/)
-        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="light-text">${m}</span>`));
+        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="text-light-3">${m}</span>`));
       data['skill'] && data['skill'].split(/\s*,\s*/)
-        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="light-text">${m}</span>`));
+        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="text-light-3">${m}</span>`));
       return str;
     },
     handleDataContainer(dc, { beforeColorText, toPercentage=false }={}) {
@@ -1035,11 +1021,11 @@ export default {
       this.dataResultHighlight(dc, { beforeColorText });
     },
     dataResultHighlight(dc, {
-      base = 'light-text',
-      stack = 'light-text-1',
+      base = 'text-light-3',
+      stack = 'text-water-blue',
       extra = [],
       beforeColorText = null
-      //   <span class="light-text">
+      //   <span class="...">
       //     extraHandle(v = "<span class="multiple-values"></span>")
       //   </span>
     } = {}) {
@@ -1076,7 +1062,7 @@ export default {
             });
           stack.push(...tstack);
         }
-        
+
         let v = dc.result();
         v = v
           .replace(/\$__TEXT_SLV__/g, this.$lang.extra('parent', 'skill level'))
@@ -1139,12 +1125,8 @@ export default {
     branch: {
       immediate: true,
       handler() {
-        if (this.branch.name == 'stack') {
-          const p = this.findStackState();
-          this.stackValue = p ? p.value : null;
-        }
         if (this.branch.group) {
-          this.toggleGroup(this.branch.group.expansion);
+          this.$nextTick(() => this.toggleGroup(this.branch.group.expansion));
         }
       }
     }
@@ -1155,11 +1137,11 @@ export default {
     'heal-formula': vue_healFormula,
     'branch-detail': vue_branchDetail,
     'equipment-info': vue_equipmentInfo,
-    'skill-area': vue_skillArea
+    'skill-area-info': vue_skillAreaInfo
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="postcss" scoped>
 
 .main-- {
   position: relative;
@@ -1179,7 +1161,7 @@ export default {
   padding-left: 1rem;
   margin: 0 0.6rem;
 
-  > legend {
+  & > legend {
     padding: 0 0.4rem;
   }
 }
@@ -1192,22 +1174,7 @@ export default {
 div.branch {
   padding: 0.2rem 0.2rem;
 
-  >.top {
-    margin-bottom: 0.4rem;
-    display: flex;
-    align-items: center;
-
-    >.name {
-      margin-right: 0.8rem;
-      color: var(--primary-purple);
-    }
-
-    >.detail {
-      display: inline-block;
-    }
-  }
-
-  > .content-line {
+  & > .content-line {
     padding: 0 0.3rem;
 
     &.group-title {
@@ -1226,7 +1193,7 @@ div.branch {
         border-color: var(--primary-light-3);
       }
 
-      > .title-btn {
+      & > .title-btn {
         margin: 0 0.3rem;
       }
     }
@@ -1235,7 +1202,7 @@ div.branch {
   &.branch-mark {
     padding: 0.4rem 0.6rem;
 
-    > .prefix-icon {
+    & > .prefix-icon {
       top: -0.8rem;
     }
   }
@@ -1248,15 +1215,11 @@ fieldset.branch {
   background-color: var(--white);
   padding: 0.4rem 1rem;
 
-  > legend {
+  & > legend {
     margin-bottom: 0.2rem;
     display: flex;
     align-items: center;
     padding: 0 0.4rem;
-
-    & > .name {
-      margin-right: 0.8rem;
-    }
 
     & > .detail {
       display: inline-block;
@@ -1267,21 +1230,6 @@ fieldset.branch {
         display: inline-block;
         color: var(--primary-green);
         margin-right: 0.4rem;
-      }
-    }
-  }
-
-  > .top-buttons-container {
-    position: relative;
-
-    > .top-buttons {
-      position: absolute;
-      right: -0.6rem;
-      top: -2.1rem;
-
-      .top-menu-btn {
-        background-color: var(--white);
-        border-radius: 50%;
       }
     }
   }
@@ -1320,7 +1268,7 @@ fieldset.branch {
 .branch.stack {
   margin-top: 0.6rem;
 
-  ::v-deep(.name) {
+  &::v-deep(.name) {
     margin-right: 0.5rem;
   }
 }
@@ -1358,18 +1306,14 @@ fieldset.branch {
   align-items: center;
 
   &.attr {
-    > .name {
+    & > .name {
       margin-right: 0.4rem;
       color: var(--primary-dark);
     }
 
-    > .value {
+    & > .value {
       font-size: 0.9rem;
     }
-  }
-
-  ::v-deep(.light-text) {
-    color: var(--primary-purple);
   }
 }
 
@@ -1408,49 +1352,12 @@ fieldset.branch {
   &.tips {
     color: var(--primary-light-3);
 
-    ::v-deep(svg) {
+    &::v-deep(svg) {
       align-self: flex-start;
       margin-top: 0.2rem;
     }
-
-    ::v-deep(.light-text) {
+    &::v-deep(.text-light-3) {
       color: var(--primary-purple);
-    }
-  }
-}
-
-.skill-area {
-  margin: 0.6rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  padding: 0.6rem;
-
-  > .graph {
-    display: inline-block;
-
-    > .bottom {
-      text-align: center;
-    }
-  }
-
-  > .info {
-    display: inline-block;
-    padding-top: 1rem;
-    padding-left: 1rem;
-
-    .attrs-table {
-      tr {
-        td:nth-child(1) {
-          text-align: right;
-          padding-right: 0.6rem;
-          border-right: 1px solid var(--primary-light);
-        }
-        td:nth-child(2) {
-          padding-left: 0.6rem;
-          color: var(--primary-light-4);
-        }
-      }
     }
   }
 }
@@ -1475,18 +1382,19 @@ fieldset.extra-column {
   }
 }
 
+.proration-column {
+  &::before {
+    content: '';
+    @apply bg-light rounded-full w-2 h-2 absolute -bottom-1 -right-1 block;
+  }
+}
+
 ::v-deep(.attr-scope) {
   padding: 0.1rem 0.4rem;
   display: inline-flex;
   align-items: center;
   line-height: 1.3rem;
   margin: 0.2rem 0;
-
-  &.normal {
-    border-left: 2px solid var(--primary-light-3);
-    padding: 0.1rem 0.7rem;
-    margin-right: 0.3rem;
-  }
 
   & > .title {
     font-size: 0.9rem;
@@ -1506,7 +1414,7 @@ fieldset.extra-column {
   margin-top: 1.5rem;
   margin-bottom: 0.8rem;
 
-  > .prefix-icon {
+  & > .prefix-icon {
     position: absolute;
     right: -0.2rem;
     top: -0.7rem;
@@ -1536,14 +1444,14 @@ fieldset.extra-column {
       color: var(--primary-blue-green);
     }
   }
-  > .value {
+  & > .value {
     background-color: var(--white);
     border-radius: 0.3rem;
     margin-left: 0.3rem;
     margin-right: 0.2rem;
     padding: 0 0.4rem;
 
-    > .arg-separate {
+    & > .arg-separate {
       display: inline-block;
       height: 0.7em;
       border-left: 1px solid var(--primary-light-4);
@@ -1552,6 +1460,16 @@ fieldset.extra-column {
     }
   }
 }
+
+::v-deep(.text-dark) {
+  &.text-light-3 {
+    color: var(--primary-red);
+  }
+  &.text-water-blue {
+    color: var(--primary-blue-green);
+  }
+}
+
 
 .top-menu-slide-enter-from, .top-menu-slide-leave-to {
   margin-right: -1.8rem!important;

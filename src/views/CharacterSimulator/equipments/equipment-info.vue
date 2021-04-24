@@ -2,7 +2,7 @@
   <div class="w-full">
     <div class="flex items-center pb-1 pl-1">
       <cy-icon-text class="mr-2 text-purple"
-        :iconify-name="equipmentData.categoryIcon"
+        :icon="equipmentData.categoryIcon"
         :icon-color="equipment.isCustom ? 'green' : 'light-2'">
         <span>{{ equipment.name }}</span>
         <span v-if="equipment.hasRefining && equipment.refining > 0"
@@ -12,7 +12,7 @@
         :class="[equipment.isCustom ? 'text-green' : 'text-light-3']"
         >{{ equipmentData.categoryText }}</span>
       <cy-button type="icon" class="ml-auto"
-        :iconify-name="mode === 0 ? 'ic-round-edit' : 'ic-round-view-list'"
+        :icon="mode === 0 ? 'ic-round-edit' : 'ic-round-view-list'"
         @click="mode = mode === 0 ? 1 : 0" />
     </div>
     <cy-transition type="fade" mode="out-in">
@@ -20,7 +20,7 @@
         <div v-if="['weapon', 'armor'].includes(equipment.is)"
           class="flex items-center my-2 rounded-2xl border-1 border-solid border-light py-1 px-3">
           <template v-if="equipment.is == 'weapon'">
-            <cy-icon-text iconify-name="mdi-sword">ATK</cy-icon-text>
+            <cy-icon-text icon="mdi-sword">ATK</cy-icon-text>
             <span class="ml-2 text-purple">
               {{ equipment.atk }}<span v-if="equipment.hasRefining && equipment.refining > 0"
                 class="ml-1 text-water-blue">+{{ equipment.refiningAdditionAmount }}</span>
@@ -28,7 +28,7 @@
             <span class="ml-auto">{{ equipment.stability }}%</span>
           </template>
           <template v-else>
-            <cy-icon-text iconify-name="mdi-shield">DEF</cy-icon-text>
+            <cy-icon-text icon="mdi-shield">DEF</cy-icon-text>
             <span class="ml-2 text-purple">{{ equipment.def }}</span>
           </template>
         </div>
@@ -42,7 +42,7 @@
           :class="{ 'opacity-50': statsDisable }">
           <cy-icon-text v-for="c in equipment.crystals"
             class="mr-3 my-1"
-            :key="c.id" :image-path="getCrystalImagePath(c)">
+            :key="c.id" :icon="getCrystalImagePath(c)" icon-src="image">
             {{ c.name }}
           </cy-icon-text>
         </div>
@@ -50,11 +50,11 @@
       <div v-else key="edit" class="px-1 pt-2">
         <cy-flex-layout v-if="equipment.customTypeList != null"
           class="mb-2">
-          <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle"
+          <cy-icon-text icon="mdi-checkbox-multiple-blank-circle"
             class="mr-2" text-color="purple" text-size="small">
             {{ $lang('equipment type') }}
           </cy-icon-text>
-          <cy-button type="border" iconify-name="heroicons-solid:switch-vertical"
+          <cy-button type="border" icon="heroicons-solid:switch-vertical"
             @click="switchCustomType">
             {{ $lang('field type text/' + equipment.type.description) }}
           </cy-button>
@@ -63,38 +63,38 @@
           :value="equipment.atk" :range="baseValueRange"
           @update:value="setEquipmentProperty(equipment, 'atk', $event)">
           <template v-slot:title>
-            <cy-icon-text iconify-name="mdi-sword">ATK</cy-icon-text>
+            <cy-icon-text icon="mdi-sword">ATK</cy-icon-text>
           </template>
         </cy-input-counter>
         <cy-input-counter v-else-if="equipment.is == 'armor'" class="mb-3"
           :value="equipment.def" :range="baseValueRange"
           @update:value="setEquipmentProperty(equipment, 'def', $event)">
           <template v-slot:title>
-            <cy-icon-text iconify-name="mdi-shield">DEF</cy-icon-text>
+            <cy-icon-text icon="mdi-shield">DEF</cy-icon-text>
           </template>
         </cy-input-counter>
         <cy-input-counter v-if="equipment.hasRefining" class="mb-3"
           :value="equipment.refining" :range="[0, 15]"
           @update:value="setEquipmentProperty(equipment, 'refining', $event)">
           <template v-slot:title>
-            <cy-icon-text iconify-name="mdi-cube-send">{{ $lang('refining') }}</cy-icon-text>
+            <cy-icon-text icon="mdi-cube-send">{{ $lang('refining') }}</cy-icon-text>
           </template>
         </cy-input-counter>
         <div class="crystals" v-if="equipment.hasCrystal">
           <cy-button v-for="c in equipment.crystals"
             type="line" :key="c.id"
-            :image-path="getCrystalImagePath(c)"
+            :icon="getCrystalImagePath(c)" icon-src="image"
             @click="editCrystal">
             {{ c.name }}
           </cy-button>
           <cy-button v-if="equipment.crystals.length < 2"
-            iconify-name="bx-bx-circle" type="line"
+            icon="bx-bx-circle" type="line"
             @click="editCrystal">
             {{ $lang('crystal empty') }}
           </cy-button>
         </div>
         <div class="mt-3 pt-2 border-t border-solid border-light">
-          <cy-button iconify-name="ic-round-edit" type="border"
+          <cy-button icon="ic-round-edit" type="border"
             @click="openCustomEquipmentEditor(equipment)">
             {{ $lang('custom equipment editor/window title') }}
           </cy-button>

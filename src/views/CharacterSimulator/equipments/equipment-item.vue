@@ -1,6 +1,6 @@
 <template>
   <cy-list-item class="main--equipment-item" :selected="selected">
-    <cy-icon-text :iconify-name="equipmentData.categoryIcon"
+    <cy-icon-text :icon="equipmentData.categoryIcon"
       :class="{ 'opacity-50': disable }"
       :icon-color="equipment.isCustom ? 'green' : 'light-2'"
       :text-color="isCurrent ? 'light-4' : 'dark'">

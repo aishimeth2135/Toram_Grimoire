@@ -8,24 +8,24 @@
       class="attr-scope"
       v-html="showData['constant']">
     </span>
-    <cy-icon-text v-if="showData['constant'] && showData['@extra-value-list'].length != 0"
-      iconify-name="ic-round-add" />
+    <cy-icon-text v-if="showData['constant'] && showData['@extra-value-list'].length !== 0"
+      icon="ic-round-add" />
 
     <template v-for="(data, i) in showData['@extra-value-list']"
       :key="data.text + data.value">
       <span class="extra-value">
         <span class="attr-scope title">{{ data.text }}</span>
-        <cy-icon-text iconify-name="ic-round-close" />
+        <cy-icon-text icon="ic-round-close" />
         <span class="attr-scope value" v-html="data.value"></span>
       </span>
       <cy-icon-text v-if="i != showData['@extra-value-list'].length - 1"
-        iconify-name="ic-round-add"
-        :key="data.text + data.value + '-icon'" />
+        icon="ic-round-add" />
     </template>
   </div>
 </template>
 <script>
 export default {
+  RegisterLang: 'Skill Query/Branch',
   props: ['showData'],
   computed: {
     isSingleValue() {

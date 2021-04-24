@@ -1,11 +1,11 @@
 <template>
   <cy-window :visible="visible" @close-window="closeWindow">
     <template #title>
-      <cy-icon-text iconify-name="bx-bx-cube-alt">
+      <cy-icon-text icon="bx-bx-cube-alt">
         {{ $lang('select crystals/window title') }}
       </cy-icon-text>
     </template>
-    <cy-title-input iconify-name="ic-outline-category" class="mb-4"
+    <cy-title-input icon="ic-outline-category" class="mb-4"
       v-model:value="searchText"
       :placeholder="$lang('select crystals/search placeholder')" />
     <div>
@@ -14,7 +14,7 @@
           :key="category.id">
           <cy-hr v-if="i != 0" />
           <cy-button type="drop-down"
-            iconify-name="bx-bx-cube-alt"
+            icon="bx-bx-cube-alt"
             :menu-default-visible="true">
             {{ $lang('select crystals/category title')[category.id] }}
             <template v-slot:menu>
@@ -23,12 +23,12 @@
                   :key="cs.origin.id"
                   :selected="cs.selected"
                   @click="selectCrystal(cs.origin)">
-                  <cy-icon-text :image-path="cs.imagePath">
+                  <cy-icon-text :icon="cs.imagePath" icon-src="image">
                     {{ cs.origin.name }}
                   </cy-icon-text>
                 </cy-list-item>
                 <cy-list-item v-else :key="cs.origin.id">
-                  <cy-icon-text :image-path="cs.imagePath" text-color="gray">
+                  <cy-icon-text :icon="cs.imagePath" text-color="gray" icon-src="image">
                     {{ cs.origin.name }}
                   </cy-icon-text>
                 </cy-list-item>
@@ -37,7 +37,7 @@
           </cy-button>
         </template>
       </template>
-      <cy-default-tips v-else icon-id="potum">
+      <cy-default-tips v-else icon="potum" icon-src="custom">
         {{ $lang('Warn/no result found') }}
       </cy-default-tips>
     </div>
@@ -45,7 +45,7 @@
       <template #normal-content>
         <cy-transition type="slide-up">
           <div v-if="detailVisible" class="pt-1">
-            <cy-icon-text iconify-name="bx-bx-cube-alt"
+            <cy-icon-text icon="bx-bx-cube-alt"
               text-color="purple" text-size="small">
               {{ $lang('select crystals/selected crystals') }}
             </cy-icon-text>
@@ -53,11 +53,11 @@
               <cy-list-item v-for="c in equipment.crystals"
                 :key="c.id"
                 @click="selectCrystal(convertToOriginal(c))">
-                <cy-icon-text iconify-name="bx-bx-cube-alt">
+                <cy-icon-text icon="bx-bx-cube-alt">
                   {{ c.name }}
                 </cy-icon-text>
                 <template #right-content>
-                  <cy-icon-text iconify-name="ic-round-close" />
+                  <cy-icon-text icon="ic-round-close" />
                 </template>
                 <template #extra>
                   <div class="pl-2 pt-1 w-full">
@@ -71,9 +71,9 @@
         </cy-transition>
         <div @click="toggleDetailVisible"
           class="flex items-center cursor-pointer">
-          <cy-icon-text :iconify-name="'ic-round-keyboard-arrow-' + (detailVisible ? 'down' : 'up')" />
+          <cy-icon-text :icon="'ic-round-keyboard-arrow-' + (detailVisible ? 'down' : 'up')" />
           <div class="ml-auto leading-none">
-            <cy-button type="border" iconify-name="ic-round-done"
+            <cy-button type="border" icon="ic-round-done"
               @click.stop="closeWindow">
               {{ $globalLang('global/close') }}
             </cy-button>

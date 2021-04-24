@@ -1,13 +1,13 @@
 <template>
   <span class="app--left-menu relative z-50" @click="unfold=!unfold">
-    <cy-button :iconify-name="currentIconName"
+    <cy-button :icon="currentIconName"
       type="icon" class="top-button" />
     <transition name="fade">
       <div v-show="!unfold" @click.stop="menuClick()"
         class="menu z-1 min-h-full absolute"
         v-if="viewButtons && viewButtons.length != 0">
         <div class="conent-container w-full h-full">
-          <cy-button v-for="(data) in viewButtons" :iconify-name="data.icon"
+          <cy-button v-for="(data) in viewButtons" :icon="data.icon"
             :key="data.title" type="line" @click="setCurrentView(data)">
             {{ data.title }}
           </cy-button>
@@ -17,7 +17,7 @@
   </span>
 </template>
 <script>
-import Vuex from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   data() {
@@ -26,7 +26,7 @@ export default {
     };
   },
   computed: {
-    ...Vuex.mapState('leftMenu', ['viewButtons']),
+    ...mapState('left-menu', ['viewButtons']),
     currentIconName() {
       return 'ic:round-menu';
     }

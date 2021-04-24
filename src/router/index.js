@@ -13,7 +13,7 @@ import Enchant from "./Enchant";
 import Page404 from "./Page404";
 import Bubble from "./Bubble";
 
-import store from "@store/main";
+import store from "@store";
 
 import GetLang from "@Services/Language";
 
@@ -68,7 +68,7 @@ router.beforeEach((to, from, next) => {
         .map(p => {
           const title = p.meta.title;
           return {
-            title: typeof title == 'function' ? title() : title,
+            title: typeof title === 'function' ? title() : title,
             path: p.path
           };
         })
@@ -80,13 +80,13 @@ router.beforeEach((to, from, next) => {
       if (data) {
         const res = data.meta.leftMenuViewButtons.map(p => {
           return {
-            title: typeof p.title == 'function' ? p.title() : p.title,
+            title: typeof p.title === 'function' ? p.title() : p.title,
             icon: p.icon,
             path: data.path + p.path
           };
         });
 
-        store.commit('leftMenu/setViewButtons', { viewButtons: res });
+        store.commit('left-menu/setViewButtons', { viewButtons: res });
       }
     }
   }
