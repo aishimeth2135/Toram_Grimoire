@@ -522,8 +522,8 @@ export default {
       if (this.branch.name !== 'stack') {
         return null;
       }
-      const stack_id = parseInt(this.branch.attrs['id'], 10);
-      const p = this.branch['@parent-state'].stackStates.find(a => a.id === stack_id);
+      const stack_id = this.branch.attrs['id'];
+      const p = this.branch['@parent-state'].stackStates.find(a => a.id == stack_id);
       return p ? p : null;
     }
   },
@@ -1383,6 +1383,11 @@ fieldset.extra-column {
 }
 
 .proration-column {
+  @apply inline-flex items-center relative border-b border-light border-solid px-2 mr-3;
+
+  & > .value {
+    @apply text-light-3 ml-3;
+  }
   &::before {
     content: '';
     @apply bg-light rounded-full w-2 h-2 absolute -bottom-1 -right-1 block;
