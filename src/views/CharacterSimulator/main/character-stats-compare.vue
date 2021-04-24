@@ -3,19 +3,19 @@
     <template v-if="comparedStatsDatas.length != 0">
       <div v-for="p in comparedStatsDatas" :key="p.id" class="line">
         <template v-if="!p.isBoolStat">
-          <cy-icon-text iconify-name="gg-shape-rhombus" text-size="small">
+          <cy-icon-text icon="gg-shape-rhombus" text-size="small">
             {{ p.text }}
           </cy-icon-text>
           <span class="value" :class="{ 'negative': p.negative }"
             >{{ p.displayValue }}</span>
         </template>
-        <cy-icon-text v-else iconify-name="gg-shape-rhombus" text-size="small"
+        <cy-icon-text v-else icon="gg-shape-rhombus" text-size="small"
           :text-color="p.negative ? 'gray' : 'light-3'">
           {{ p.text }}
         </cy-icon-text>
       </div>
     </template>
-    <cy-default-tips v-else iconify-name="mdi-ghost">
+    <cy-default-tips v-else icon="mdi-ghost">
       {{ $lang('Warn/character stats compare: no result') }}
     </cy-default-tips>
   </div>

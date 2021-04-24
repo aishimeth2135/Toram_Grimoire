@@ -1,7 +1,7 @@
 <template>
   <cy-list-item v-if="disable" class="skill-item">
     <cy-flex-layout class="line-content">
-      <cy-icon-text iconify-name="gg-shape-rhombus"
+      <cy-icon-text icon="gg-shape-rhombus"
         icon-color="gray-light" text-color="gray">
         <span class="skill-icon-container">
           <img :src="skillIconPath" class="skill-icon">
@@ -16,7 +16,7 @@
     class="skill-item" :class="{ 'state-disable': levelSkillStateRoot.disable }">
     <cy-flex-layout class="line-content">
       <cy-icon-text text-color="purple" class="name skill-name"
-        :iconify-name="'ic-round-check-box' + (levelSkillStateRoot.disable ? '-outline-blank' : '')"
+        :icon="'ic-round-check-box' + (levelSkillStateRoot.disable ? '-outline-blank' : '')"
         @click.stop="toggleStateRootDisable">
         <span class="skill-icon-container">
           <img :src="skillIconPath" class="skill-icon">
@@ -31,12 +31,12 @@
       </div>
       <template #right-content>
         <cy-button v-if="firstBranchState.handler.hasUserSets"
-          iconify-name="ic-baseline-settings"
+          icon="ic-baseline-settings"
           type="icon" class="p-0"
           @click="openUserSetsWindow(firstBranchState.handler)" />
         <cy-button v-if="hasExtraContent"
           type="icon" class="p-0"
-          :iconify-name="'ic-round-keyboard-arrow-' + (extraContentVisible ? 'up' : 'down')"
+          :icon="'ic-round-keyboard-arrow-' + (extraContentVisible ? 'up' : 'down')"
           @click="toggleExtraContentVisible" />
       </template>
     </cy-flex-layout>
@@ -45,7 +45,7 @@
         <div class="extra-content">
           <div v-for="state in firstBranchState.handler.value.conditionDatas"
             :key="state.iid" class="branch-content condition-container">
-            <cy-icon-text iconify-name="ic-round-add" text-color="light-3" class="condition">
+            <cy-icon-text icon="ic-round-add" text-color="light-3" class="condition">
               {{ state.condition }}
             </cy-icon-text>
             <div v-if="state.caption" class="caption" v-html="state.caption"></div>
@@ -58,7 +58,7 @@
   <cy-list-item v-else class="skill-item" :class="{ 'state-disable': levelSkillStateRoot.disable }">
     <cy-flex-layout class="line-content">
       <cy-icon-text text-color="purple" class="skill-name"
-        :iconify-name="'ic-round-check-box' + (levelSkillStateRoot.disable ? '-outline-blank' : '')"
+        :icon="'ic-round-check-box' + (levelSkillStateRoot.disable ? '-outline-blank' : '')"
         @click.stop="toggleStateRootDisable">
         <span class="skill-icon-container">
           <img :src="skillIconPath" class="skill-icon">
@@ -71,7 +71,7 @@
       </div>
       <template #right-content>
         <cy-button class="p-0" type="icon"
-          :iconify-name="'ic-round-keyboard-arrow-' + (extraContentVisible ? 'up' : 'down')"
+          :icon="'ic-round-keyboard-arrow-' + (extraContentVisible ? 'up' : 'down')"
           @click="toggleExtraContentVisible" />
       </template>
     </cy-flex-layout>
@@ -82,7 +82,7 @@
             :class="{ 'state-disable': !levelSkillStateRoot.disable && branchState.disable }">
             <cy-flex-layout class="line-content">
               <cy-icon-text text-color="purple" class="name skill-name"
-                :iconify-name="'ic-round-check-box' + (branchState.disable ? '-outline-blank' : '')"
+                :icon="'ic-round-check-box' + (branchState.disable ? '-outline-blank' : '')"
                 @click="toggleBranchStateDisable(branchState)">
                 {{ branchState.origin.attrs['name'] || $lang('skill management/default name of skill branch') }}
               </cy-icon-text>
@@ -93,13 +93,13 @@
                   :statDatas="branchState.handler.value.stats" />
               </div>
               <template #right-content v-if="branchState.handler.hasUserSets">
-                <cy-button iconify-name="ic-baseline-settings" type="icon"
+                <cy-button icon="ic-baseline-settings" type="icon"
                   class="p-0" @click="openUserSetsWindow(branchState.handler)" />
               </template>
             </cy-flex-layout>
             <div v-for="state in branchState.handler.value.conditionDatas"
               class="branch-content condition-container" :key="state.iid">
-              <cy-icon-text iconify-name="ic-round-add" text-color="light-3" class="condition">
+              <cy-icon-text icon="ic-round-add" text-color="light-3" class="condition">
                 {{ state.condition }}
               </cy-icon-text>
               <div v-if="state.caption" class="caption" v-html="state.caption"></div>

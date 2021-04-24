@@ -16,7 +16,7 @@
     "less-loader": "^6.1.2",
     "papaparse": "^5.2.0",
     "postcss": "^7",
-    "postcss-each": "^1.0.0",
+    "postcss-comment": "^2.0.0",
     "postcss-nesting": "^7.0.1",
     "postcss-variables": "^1.1.1",
     "recast": "^0.20.4",
@@ -52,7 +52,10 @@
       "parser": "babel-eslint"
     },
     "rules": {
-      "no-unused-vars": "warn"
+      "no-unused-vars": "warn",
+      "no-trailing-spaces": "warn",
+      "object-curly-spacing": ["warn", "always"],
+      "comma-spacing": ["warn", { "before": false, "after": true }]
     }
   },
   "browserslist": [

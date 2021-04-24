@@ -5,7 +5,7 @@
         class="column flex p-4 border-b border-solid border-light">
         <div class="flex items-center justify-center w-24 h-24 relative flex-shrink-0 rounded-full mr-3 mb-4 border-1 border-solid border-light-3">
           <div>{{ $lang(c.title + '/title') }}</div>
-          <cy-icon-text iconify-name="mdi-leaf"
+          <cy-icon-text icon="mdi-leaf"
             style="--icon-width: 2rem;"
             class="absolute -top-1.5 -left-1.5" />
         </div>
@@ -17,7 +17,7 @@
               <span v-for="v in item.list"
                 :key="typeof v === 'object' ? `${v.main}|${v.sub}` : v"
                 class="inline-flex pr-3">
-                <cy-icon-text iconify-name="mdi-leaf"
+                <cy-icon-text icon="mdi-leaf"
                   style="--icon-width: 0.8rem;"
                  class="mr-1 self-start" />
                 <span v-if="typeof v == 'string'">{{ v }}</span>

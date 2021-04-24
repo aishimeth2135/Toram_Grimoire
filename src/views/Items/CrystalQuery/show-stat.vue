@@ -1,6 +1,6 @@
 <template>
   <div v-if="type !== 'preview'" class="inline-block mr-3">
-    <cy-icon-text iconify-name="mdi-leaf"
+    <cy-icon-text icon="mdi-leaf"
       type="item"
       :text-color="negativeValue ? 'red' : 'dark'">
       <span v-for="text in restrictionTexts"

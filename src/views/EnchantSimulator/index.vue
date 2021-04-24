@@ -87,7 +87,7 @@ export default {
         border-color: var(--primary-light-4);
 
         > span > svg {
-          color: var(--primary-light-4);      
+          color: var(--primary-light-4);
         }
       }
     }

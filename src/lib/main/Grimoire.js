@@ -1,4 +1,4 @@
-import store from "@store/main";
+import store from "@store";
 
 const Grimoire = {
   get Character() {

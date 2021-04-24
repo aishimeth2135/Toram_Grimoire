@@ -6,7 +6,7 @@ import { SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch } from "@
 function loadSkill(skillSystem, datas){
   const sr = skillSystem.skillRoot;
 
-  const 
+  const
   /* all */
     ID = 0,
     CONFIRM = 1,
@@ -17,9 +17,9 @@ function loadSkill(skillSystem, datas){
     MAIN_WEAPON = 3,
     SUB_WEAPON = 4,
     BODY_ARMOR = 5,
-    MAIN_WEAPON_LIST = ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍', '空手'],
-    SUB_WEAPON_LIST = ['箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍', '無裝備'],
-    BODY_ARMOR_LIST = ['輕量化', '重量化', '一般', '無裝備'],
+    MAIN_WEAPON_LIST = ['空手', '單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍'],
+    SUB_WEAPON_LIST = ['無裝備', '箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍', '忍術卷軸'],
+    BODY_ARMOR_LIST = ['無裝備', '輕量化', '重量化', '一般'],
     EFFECT_BRANCH_NO = 6,
     EFFECT_BRANCH_NAME = 7,
     EFFECT_BRANCH_ATTRIBUTE_NAME = 8,
@@ -72,7 +72,7 @@ function loadSkill(skillSystem, datas){
     switch (v){
       case 2:
       case 3:
-        sef.setConfig({equipmentConfirm: 1});
+        sef.setConfig({ equipmentConfirm: 1 });
         if (v !== 2) break;
         // fall through
       case 0:
@@ -98,12 +98,12 @@ function loadSkill(skillSystem, datas){
         switch (confirm_name){
           case CONFIRM_SKILL_TREE_CATEGORY: {
             const name = p[SKILL_TREE_CATEGORY_NAME];
-            cur = sr.newElement(SkillTreeCategory.TYPE, {id, name});
+            cur = sr.newElement(SkillTreeCategory.TYPE, { id, name });
           } break;
           case CONFIRM_SKILL_TREE: {
             cur = _TreeBack(cur, SkillTreeCategory.TYPE);
             const name = p[SKILL_TREE_NAME];
-            cur = cur.newElement(SkillTree.TYPE, {id, name});
+            cur = cur.newElement(SkillTree.TYPE, { id, name });
             if (p[SKILL_TREE_SIMULATOR_FLAG])
               cur.attrs.simulatorFlag = true;
           } break;
@@ -111,7 +111,7 @@ function loadSkill(skillSystem, datas){
             if (confirm_name != ""){
               cur = _TreeBack(cur, SkillTree.TYPE);
               const name = p[NAME];
-              cur = cur.newElement(Skill.TYPE, {id, name});
+              cur = cur.newElement(Skill.TYPE, { id, name });
             }
           }
           // fall through
@@ -123,7 +123,7 @@ function loadSkill(skillSystem, datas){
             if ( default_set === -1 )
               return;
             cur = _TreeBack(cur, Skill.TYPE);
-            const sef = cur.newElement(SkillEffect.TYPE, {mainWeapon, subWeapon, bodyArmor});
+            const sef = cur.newElement(SkillEffect.TYPE, { mainWeapon, subWeapon, bodyArmor });
             SetEffectDefault(sef, default_set, cur);
 
             cur = sef
@@ -142,7 +142,7 @@ function loadSkill(skillSystem, datas){
       if (bno !== ""){
         cur = _TreeBack(cur, SkillEffect.TYPE);
         const bname = p[EFFECT_BRANCH_NAME];
-        cur = cur.newElement(SkillBranch.TYPE, {id: bno, name: bname});
+        cur = cur.newElement(SkillBranch.TYPE, { id: bno, name: bname });
       }
       const battrname = p[EFFECT_BRANCH_ATTRIBUTE_NAME],
         battrvalue = p[EFFECT_BRANCH_ATTRIBUTE_VALUE];
@@ -158,7 +158,7 @@ function loadSkill(skillSystem, datas){
       //console.log(e);
       // console.log(p);
     }
-  });   
+  });
 }
 
 

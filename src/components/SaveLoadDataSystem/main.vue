@@ -1,24 +1,24 @@
 <template>
   <div v-if="localStorageAvailable">
-    <cy-button type="line" iconify-name="mdi:content-save-outline"
+    <cy-button type="line" icon="mdi:content-save-outline"
       @click="openSelectDataWindow('save')">
       {{ langText('save') }}
     </cy-button>
-    <cy-button type="line" iconify-name="mdi:download"
+    <cy-button type="line" icon="mdi:download"
       @click="openSelectDataWindow('load')">
       {{ langText('load') }}
     </cy-button>
-    <cy-button type="line" iconify-name="ic:round-insert-drive-file"
+    <cy-button type="line" icon="ic:round-insert-drive-file"
       @click="handleFile('save')">
       {{ langText('save to csv') }}
     </cy-button>
-    <cy-button type="line" iconify-name="mdi:file-download-outline"
+    <cy-button type="line" icon="mdi:file-download-outline"
       @click="handleFile('load')">
       {{ langText('load from csv') }}
     </cy-button>
     <cy-window :visible="selectDataWindowVisible" @close-window="closeSelectDataWindow">
       <template v-slot:title>
-        <cy-icon-text iconify-name="mdi:content-save-outline">
+        <cy-icon-text icon="mdi:content-save-outline">
           {{ langText('Save Load: title') }}
         </cy-icon-text>
       </template>
@@ -50,7 +50,6 @@
   </div>
 </template>
 <script>
-import MessageNotify from "@Services/Notify";
 import CY from "@Utils/Cyteria"
 import GetLang from "@Services/Language";
 
@@ -149,7 +148,7 @@ export default {
       if (mode == 'save') {
         const str = this.saveData();
         if (!str) {
-          MessageNotify(Lang('Warn/File is empty'));
+          this.$notify(Lang('Warn/File is empty'));
           return;
         }
         try {
@@ -165,12 +164,12 @@ export default {
               this.loadData(res);
               this.actionFinished();
             } catch (e) {
-              MessageNotify(Lang('Warn/An error occurred while loading data'));
+              this.$notify(Lang('Warn/An error occurred while loading data'));
               this.error(e);
             }
           },
           wrongFileType() {
-            MessageNotify(Lang('Warn/Wrong file type: csv'));
+            this.$notify(Lang('Warn/Wrong file type: csv'));
           }
         });
       }
@@ -212,7 +211,7 @@ export default {
         this.saveLocalStorageData(index, 'name', name);
         this.saveLocalStorageData(index, 'data', str);
 
-        MessageNotify(Lang('Warn/Saving success'));
+        this.$notify(Lang('Warn/Saving success'));
         this.actionFinished();
         this.updateButtonsStates();
       } catch (e) {
@@ -223,10 +222,10 @@ export default {
       const d = this.getLocalStorageData(index, 'data');
       try {
         this.loadData(d);
-        MessageNotify(Lang('Warn/Loading success'));
+        this.$notify(Lang('Warn/Loading success'));
         this.actionFinished();
       } catch (e) {
-        MessageNotify(Lang('Warn/An error occurred while loading data'));
+        this.$notify(Lang('Warn/An error occurred while loading data'));
         this.error(e);
       }
     },

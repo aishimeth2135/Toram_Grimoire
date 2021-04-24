@@ -1,13 +1,13 @@
 <template>
   <div class="inline-block mr-3" :class="{ 'opacity-60': !statValid }">
     <cy-icon-text v-if="type !== 'custom'"
-      type="item" iconify-name="mdi-leaf"
+      type="item" icon="mdi-leaf"
       :text-color="negativeValue ? 'red' : 'dark'">
       <span v-for="text in restrictionTexts"
         class="text-water-blue text-sm mr-1"
         :key="text">{{ text }}</span><span>{{ stat.show() }}</span>
     </cy-icon-text>
-    <cy-icon-text v-else iconify-name="mdi-leaf"
+    <cy-icon-text v-else icon="mdi-leaf"
       :text-color="negativeValue ? 'red' : 'dark'">
       <slot></slot>
     </cy-icon-text>

@@ -10,19 +10,19 @@
                 <div v-for="type in conditions.type" :key="type.id" class="column">
                   <cy-flex-layout>
                     <cy-icon-text class="options-title" @click="toggleSelected(type)"
-                      :iconify-name="'ic-round-check-box' + (type.selected ? '' : '-outline-blank')">
+                      :icon="'ic-round-check-box' + (type.selected ? '' : '-outline-blank')">
                       {{ $lang('equipment type category/' + type.id) }}
                     </cy-icon-text>
                     <template v-if="type.types !== null">
-                      <cy-button iconify-name="ic-round-border-all" type="border"
+                      <cy-button icon="ic-round-border-all" type="border"
                         @click="selectAll(type.types)" />
-                      <cy-button iconify-name="eva-close-outline" type="border"
+                      <cy-button icon="eva-close-outline" type="border"
                         @click="cancelAll(type.types)" />
                     </template>
                   </cy-flex-layout>
                   <div v-if="type.types !== null" class="options">
                     <cy-button v-for="item in type.types" :key="item.value" type="border"
-                      iconify-name="gg-shape-rhombus" :selected="type.selected && item.selected"
+                      icon="gg-shape-rhombus" :selected="type.selected && item.selected"
                       @click="toggleSelected(item)">
                       {{ $lang('field type text/' + item.value.description) }}
                     </cy-button>
@@ -32,20 +32,20 @@
               <div v-else-if="menuVisible.sortOptions" class="content">
                 <div class="column">
                   <div class="normal-title">
-                    <cy-icon-text iconify-name="mdi-sort-variant"
+                    <cy-icon-text icon="mdi-sort-variant"
                       text-color="purple" text-size="small">
                       {{ $lang('sort options/title') }}
                     </cy-icon-text>
                   </div>
                   <div class="options">
-                    <cy-button type="border" iconify-name="gg-shape-rhombus"
+                    <cy-button type="border" icon="gg-shape-rhombus"
                       @click="selectSortOption('default')"
                       :selected="sortOptions.currentSelected === 'default'">
                       {{ $lang('sort options/options/default') }}
                     </cy-button>
                     <cy-button v-for="(_, id) in sortOptions.global"
                       type="border" :key="id"
-                      iconify-name="gg-shape-rhombus"
+                      icon="gg-shape-rhombus"
                       @click="selectSortOption(id)"
                       :selected="sortOptions.currentSelected === id">
                       {{ $lang('sort options/options/' + id) }}
@@ -54,18 +54,18 @@
                 </div>
                 <div class="column">
                   <div class="normal-title">
-                    <cy-icon-text iconify-name="fluent-arrow-sort-24-filled"
+                    <cy-icon-text icon="fluent-arrow-sort-24-filled"
                       text-color="purple" text-size="small">
                       {{ $lang('sort options/order/title') }}
                     </cy-icon-text>
                   </div>
                   <div class="options">
-                    <cy-button type="border" iconify-name="akar-icons:arrow-down"
+                    <cy-button type="border" icon="akar-icons:arrow-down"
                       @click="selecetSortOrder('down')"
                       :selected="sortOptions.currentOrder === 'down'">
                       {{ $lang('sort options/order/down') }}
                     </cy-button>
-                    <cy-button type="border" iconify-name="akar-icons:arrow-up"
+                    <cy-button type="border" icon="akar-icons:arrow-up"
                       @click="selecetSortOrder('up')"
                       :selected="sortOptions.currentOrder === 'up'">
                       {{ $lang('sort options/order/up') }}
@@ -78,13 +78,13 @@
           <cy-transition type="fade">
             <div v-if="currentMode === 'normal' && modes.normal.optionsVisible"
               class="mode-normal-content">
-              <cy-icon-text iconify-name="bx-bx-target-lock"
+              <cy-icon-text icon="bx-bx-target-lock"
                 text-size="small" text-color="purple">
                 {{ $lang('options: normal/title') }}
               </cy-icon-text>
               <div style="padding: 0.2rem 0.4rem;">
                 <cy-button v-for="item in modes.normal.targets" :key="item.value" type="border"
-                  iconify-name="gg-shape-rhombus" :selected="item.selected"
+                  icon="gg-shape-rhombus" :selected="item.selected"
                   @click="toggleSelected(item)">
                   {{ $lang('options: normal/' + item.value) }}
                 </cy-button>
@@ -96,7 +96,7 @@
               <template #title>
                 <span class="switch-mode-btn">
                   <cy-button type="icon" key="switch-btn"
-                    iconify-name="heroicons-solid:switch-vertical"
+                    icon="heroicons-solid:switch-vertical"
                     icon-color="water-blue-light"
                     icon-color-hover="water-blue"
                     class="p-0" />
@@ -105,7 +105,7 @@
               <template #options>
                 <cy-list-item v-for="(p, id) in modes" :key="id"
                   @click="selectMode(id)">
-                  <cy-icon-text :iconify-name="p.icon">
+                  <cy-icon-text :icon="p.icon">
                     {{ $lang('modes/' + id) }}
                   </cy-icon-text>
                 </cy-list-item>
@@ -115,16 +115,16 @@
               <template v-if="currentMode == 'normal'">
                 <div class="mode-normal-title">
                   <div class="input-container">
-                    <cy-icon-text iconify-name="ic-outline-search" class="icon" />
+                    <cy-icon-text icon="ic-outline-search" class="icon" />
                     <input type="text" :placeholder="$lang('search placeholder')"
                       v-model="modes.normal.searchText">
                   </div>
-                  <cy-button type="icon" iconify-name="heroicons-solid:menu"
+                  <cy-button type="icon" icon="heroicons-solid:menu"
                     @click="modes.normal.optionsVisible = !modes.normal.optionsVisible" />
                 </div>
               </template>
               <template v-else-if="currentMode == 'stat'">
-                <cy-button type="border" iconify-name="gg-shape-rhombus"
+                <cy-button type="border" icon="gg-shape-rhombus"
                   @click="toggleSelectStatVisible(true)">
                   {{ modes.stat.currentStat ?
                       modes.stat.currentStat.text :
@@ -133,10 +133,10 @@
               </template>
               <template v-else-if="currentMode == 'item-level'">
                 <div class="mode-item-level-input-container">
-                  <cy-icon-text iconify-name="jam-hammer" class="icon" />
+                  <cy-icon-text icon="jam-hammer" class="icon" />
                   <input type="text" placeholder="0"
                     v-model="itemLevelMinimum">
-                  <cy-icon-text iconify-name="mdi-tilde" />
+                  <cy-icon-text icon="mdi-tilde" />
                   <input type="text" placeholder="300"
                     v-model="itemLevelMaximum">
                 </div>
@@ -144,7 +144,7 @@
               <template v-else-if="currentMode == 'dye'">
                 <div class="mode-dye-title">
                   <div class="input-container">
-                    <cy-icon-text iconify-name="ic-outline-palette" class="icon" />
+                    <cy-icon-text icon="ic-outline-palette" class="icon" />
                     <input type="text" :placeholder="$lang('search placeholder')"
                       v-model="modes.dye.searchText">
                   </div>
@@ -157,13 +157,13 @@
           <div class="menu-btn switch-display"
             v-if="currentMode !== 'normal' && currentMode !== 'dye'"
             @click="switchDisplay">
-            <cy-icon-text iconify-name="heroicons-solid:switch-vertical" />
+            <cy-icon-text icon="heroicons-solid:switch-vertical" />
           </div>
           <div class="menu-btn select-sort" @click="toggleMenuVisible('sortOptions')">
-            <cy-icon-text iconify-name="mdi-sort-variant" />
+            <cy-icon-text icon="mdi-sort-variant" />
           </div>
           <div class="menu-btn" @click="toggleMenuVisible('conditionOptions')">
-            <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle" />
+            <cy-icon-text icon="mdi-checkbox-multiple-blank-circle" />
           </div>
         </div>
       </div>
@@ -172,12 +172,12 @@
         vertical-position="top"
         @close-window="toggleSelectStatVisible(false)">
         <template v-slot:title>
-          <cy-icon-text iconify-name="mdi-rhombus-outline">
+          <cy-icon-text icon="mdi-rhombus-outline">
             {{ $lang('options: stat/select stat: window title') }}
           </cy-icon-text>
         </template>
         <template v-slot:default>
-          <cy-title-input iconify-name="ic-outline-category"
+          <cy-title-input icon="ic-outline-category"
             v-model:value="modes.stat.statSearchText"
             :placeholder="$lang('options: stat/select stat: search placeholder')" />
           <template v-if="statsSearchResult.length != 0">
@@ -185,12 +185,12 @@
               :key="`${stat.origin.baseName}-${stat.type.description}`"
               :selected="stat == modes.stat.currentStat"
               @click="selectStat(stat)">
-              <cy-icon-text iconify-name="mdi-rhombus-outline">
+              <cy-icon-text icon="mdi-rhombus-outline">
                 {{ stat.text }}
               </cy-icon-text>
             </cy-list-item>
           </template>
-          <cy-default-tips v-else iconify-name="bx-bx-message-rounded-x">
+          <cy-default-tips v-else icon="bx-bx-message-rounded-x">
             {{ $lang('no result tips') }}
           </cy-default-tips>
         </template>
@@ -406,10 +406,10 @@ export default {
       const mode = this.currentMode,
         target = this.sortOptions.currentSelected;
       sr.sort(target === 'default' ? this.sortOptions[mode].default : this.sortOptions.global[target]);
-      
+
       // because array.sort is in-place, give a new array to ensure data reactive
       sr = this.sortOptions.currentOrder === 'down' ? sr.reverse() : sr.slice();
-      
+
       return sr.length > this.searchResultMaximum ? sr.slice(0, this.searchResultMaximum) : sr;
     },
     allSearchResult() {

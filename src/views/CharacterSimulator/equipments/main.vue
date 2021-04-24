@@ -21,7 +21,7 @@
       <cy-window :visible="window.customEquipmentEditor"
         @close-window="toggle('window/customEquipmentEditor', false)">
         <template #title>
-          <cy-icon-text iconify-name="ic-round-edit">
+          <cy-icon-text icon="ic-round-edit">
             {{ $lang('custom equipment editor/window title') }}
           </cy-icon-text>
         </template>
@@ -31,7 +31,7 @@
           <template #normal-content>
             <cy-flex-layout>
               <template #right-content>
-                <cy-button type="border" iconify-name="ic-round-done"
+                <cy-button type="border" icon="ic-round-done"
                   @click="toggle('window/customEquipmentEditor', false)">
                   {{ $globalLang('global/close') }}
                 </cy-button>
@@ -48,7 +48,7 @@
   </section>
 </template>
 <script>
-import Vuex from "vuex";
+import { mapState } from "vuex";
 
 import vue_equipmentField from "./equipment-field.vue";
 import vue_appendEquipments from "./append-equipments.vue";
@@ -104,7 +104,7 @@ export default {
     };
   },
   computed: {
-    ...Vuex.mapState('character', {
+    ...mapState('character', {
       'equipments': 'equipments'
     })
   },

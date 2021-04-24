@@ -4,7 +4,7 @@
       <cy-options>
         <template #title>
           <cy-list-item>
-            <cy-icon-text iconify-name="bx-bxs-face">
+            <cy-icon-text icon="bx-bxs-face">
               {{ character.name }}
             </cy-icon-text>
           </cy-list-item>
@@ -13,42 +13,42 @@
           <cy-list-item v-for="(chara, i) in characterStates" :key="chara.iid"
             :selected="i == currentCharacterStateIndex"
             @click="$store.commit('character/setCurrentCharacter', { index: i })">
-            <cy-icon-text iconify-name="bx-bx-face">
+            <cy-icon-text icon="bx-bx-face">
               {{ chara.origin.name }}
             </cy-icon-text>
           </cy-list-item>
           <cy-list-item @click="$emit('create-character')">
-            <cy-icon-text iconify-name="ic-round-add-circle-outline" text-color="light-3">
+            <cy-icon-text icon="ic-round-add-circle-outline" text-color="light-3">
               {{ $lang('append character') }}
             </cy-icon-text>
           </cy-list-item>
         </template>
       </cy-options>
       <div class="buttons">
-        <cy-button iconify-name="mdi-content-copy" type="border"
+        <cy-button icon="mdi-content-copy" type="border"
           @click="copyCurrentCharacter">
           {{ $globalLang('global/copy') }}
         </cy-button>
-        <cy-button iconify-name="ic-baseline-delete-outline" type="border"
+        <cy-button icon="ic-baseline-delete-outline" type="border"
           @click="removeCurrentCharacter">
           {{ $globalLang('global/remove') }}
         </cy-button>
       </div>
     </div>
     <div class="content-title">
-      <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
+      <cy-icon-text icon="mdi-checkbox-multiple-blank-circle-outline"
         text-size="small" text-color="purple">
         {{ $lang('character name') }}
       </cy-icon-text>
     </div>
     <div class="content">
-      <cy-title-input iconify-name="mdi-clipboard-text-outline"
+      <cy-title-input icon="mdi-clipboard-text-outline"
         v-model:value="character.name">
         <input type="text" v-model="character.name">
       </cy-title-input>
     </div>
     <div class="content-title">
-      <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
+      <cy-icon-text icon="mdi-checkbox-multiple-blank-circle-outline"
         text-size="small" text-color="purple">
         {{ $lang('character level') }}
       </cy-icon-text>
@@ -58,14 +58,14 @@
         :value="character.level" :range="ranges.characterLevel"
         @update:value="setLevel($event)">
         <template v-slot:title>
-          <cy-icon-text iconify-name="bx-bxs-user">
+          <cy-icon-text icon="bx-bxs-user">
             {{ $lang('character level') }}
           </cy-icon-text>
         </template>
       </cy-input-counter>
     </div>
     <div class="content-title">
-      <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
+      <cy-icon-text icon="mdi-checkbox-multiple-blank-circle-outline"
         text-size="small" text-color="purple">
         {{ $lang('character stat points') }}
       </cy-icon-text>
@@ -76,7 +76,7 @@
         :value="baseStat.value" :range="ranges.baseStat"
         @update:value="setBaseStat(baseStat, $event)">
         <template v-slot:title>
-          <cy-icon-text iconify-name="mdi-rhombus-outline">
+          <cy-icon-text icon="mdi-rhombus-outline">
             {{ baseStat.name }}
           </cy-icon-text>
         </template>
@@ -88,7 +88,7 @@
           :range="ranges.optionalBaseStat"
           @update:value="setBaseStat(character.optionalBaseStat, $event)">
           <template v-slot:title>
-            <cy-icon-text iconify-name="mdi-rhombus-outline">
+            <cy-icon-text icon="mdi-rhombus-outline">
               {{ character.optionalBaseStat.name }}
             </cy-icon-text>
           </template>
@@ -96,20 +96,20 @@
       </cy-transition>
     </div>
     <div class="content-title">
-      <cy-icon-text iconify-name="mdi-checkbox-multiple-blank-circle-outline"
+      <cy-icon-text icon="mdi-checkbox-multiple-blank-circle-outline"
         text-size="small" text-color="purple">
         {{ $lang('character optional base stat') }}
       </cy-icon-text>
     </div>
     <div class="content">
       <div class="flex items-center flex-wrap">
-        <cy-button type="border" iconify-name="ic-round-close"
+        <cy-button type="border" icon="ic-round-close"
           :selected="!character.hasOptinalBaseStat()"
           @click="clearOptionalBaseStat">
           {{ $globalLang('global/none') }}
         </cy-button>
         <cy-button v-for="p in characterOptionalBaseStatList"
-          iconify-name="mdi-checkbox-multiple-blank-circle-outline"
+          icon="mdi-checkbox-multiple-blank-circle-outline"
           :selected="character.baseStat(p) ? true : false"
           type="border" :key="p" @click="setOptionalBaseStat(p)">
           {{ p }}
@@ -119,9 +119,8 @@
   </section>
 </template>
 <script>
-import Vuex from "vuex";
+import { mapState } from "vuex";
 
-import MessageNotify from "@Services/Notify";
 import { Character } from "@lib/Character/Character";
 
 export default {
@@ -138,7 +137,7 @@ export default {
     };
   },
   computed: {
-    ...Vuex.mapState('character', {
+    ...mapState('character', {
       'characterStates': 'characters',
       'currentCharacterStateIndex': 'currentCharacterIndex'
     }),
@@ -152,18 +151,18 @@ export default {
   methods: {
     removeCurrentCharacter() {
       if (this.characterStates.length <= 1) {
-        MessageNotify(this.$lang('Warn/Must have at least one character'));
+        this.$notify(this.$lang('Warn/Must have at least one character'));
         return;
       }
       const from = this.characterState.origin;
       this.$store.commit('character/removeCharacter', { index: this.currentCharacterStateIndex });
-      MessageNotify(this.$lang('Warn/Remove character successfully', [from.name]),
+      this.$notify(this.$lang('Warn/Remove character successfully', [from.name]),
         'ic-round-delete', null, {
           buttons: [{
             text: this.$globalLang('global/recovery'),
             click: () => {
               this.$store.commit('character/createCharacter', from);
-              MessageNotify(this.$lang('Warn/Recovery character successfully', [from.name]));
+              this.$notify(this.$lang('Warn/Recovery character successfully', [from.name]));
             },
             removeMessageAfterClick: true
           }]
@@ -172,7 +171,7 @@ export default {
     copyCurrentCharacter() {
       const from = this.characterState.origin;
       this.$store.commit('character/createCharacter', from.copy());
-      MessageNotify(this.$lang('Warn/Copy character successfully', [from.name]));
+      this.$notify(this.$lang('Warn/Copy character successfully', [from.name]));
     },
     setOptionalBaseStat(name) {
       this.character.setOptinalBaseStat(name);

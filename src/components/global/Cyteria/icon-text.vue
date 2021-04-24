@@ -1,8 +1,6 @@
 <template>
   <span class="cy--icon-text" :class="rootClass">
-    <iconify-icon v-if="iconifyName !== null" :name="iconifyName" />
-    <svg-icon v-if="iconId !== null" :icon-id="iconId" />
-    <image-icon v-if="imagePath" :image-path="imagePath" />
+    <cy-icon :icon="icon" :src="iconSrc" />
     <span v-if="$slots['default']" class="text">
       <slot></slot>
     </span>
@@ -25,17 +23,10 @@ export default {
     type: {
       type: String,
       default: 'normal',
-      validator: v => ['normal', 'item'].includes(v)      
+      validator: v => ['normal', 'item'].includes(v)
     },
-    iconifyName: {
-      default: null
-    },
-    iconId: {
-      default: null
-    },
-    imagePath: {
-      default: null
-    },
+    icon: {},
+    iconSrc: {},
     textColor: {
       type: String,
       default: 'dark',

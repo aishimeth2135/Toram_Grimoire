@@ -1,12 +1,12 @@
 <template>
   <cy-window :visible="visible" @close-window="close">
     <template #title>
-      <cy-icon-text iconify-name="gg-shape-square">
+      <cy-icon-text icon="gg-shape-square">
         {{ $lang('create custom equipment/window title') }}
       </cy-icon-text>
     </template>
     <div class="select-type">
-      <cy-button iconify-name="gg-shape-square" type="border"
+      <cy-button icon="gg-shape-square" type="border"
         @click="toggle('window/selectType', true)">
         {{ equipmentTypeText }}
       </cy-button>
@@ -14,14 +14,14 @@
     <div class="editor" v-if="currentEquipment">
       <custom-equipment-editor :equipment="currentEquipment" />
     </div>
-    <cy-default-tips v-else icon-id="potum">
+    <cy-default-tips v-else icon="potum" icon-src="custom">
       {{ $lang('Warn/create custom equipment: no equipment type selected') }}
     </cy-default-tips>
     <cy-bottom-content v-if="currentEquipment">
       <template #normal-content>
         <div class="flex items-center">
           <cy-button type="border" class="ml-auto"
-            iconify-name="ic-round-done"
+            icon="ic-round-done"
             @click="createCustomEquipment">
             {{ $globalLang('global/create') }}
           </cy-button>
@@ -31,13 +31,13 @@
     <cy-window :visible="window.selectType"
       @close-window="toggle('window/selectType', false)">
       <template v-slot:title>
-        <cy-icon-text iconify-name="gg-shape-square">
+        <cy-icon-text icon="gg-shape-square">
           {{ $lang('create custom equipment/select equipment type') }}
         </cy-icon-text>
       </template>
       <div class="equipment-type">
         <cy-button v-for="category in equipmentTypeCategorys"
-          type="drop-down" :iconify-name="category.icon"
+          type="drop-down" :icon="category.icon"
           :key="category.id" :menu-default-visible="true">
           {{ $lang('equipment type category/' + category.id) }}
           <template v-slot:menu>
@@ -45,7 +45,7 @@
               <cy-list-item v-for="item in category.list" :key="item"
                 :selected="currentEquipment && currentEquipment.type === item"
                 @click="selectEquipmentType(category, item)">
-                <cy-icon-text iconify-name="gg-shape-square">
+                <cy-icon-text icon="gg-shape-square">
                   {{ $lang('field type text/' + item.description) }}
                 </cy-icon-text>
               </cy-list-item>
@@ -53,7 +53,7 @@
             <cy-list-item v-else
               :selected="currentEquipment && currentEquipment instanceof category.instance"
               @click="selectEquipmentType(category, null)">
-              <cy-icon-text iconify-name="gg-shape-square">
+              <cy-icon-text icon="gg-shape-square">
                 {{ $lang('equipment type category/' + category.id) }}
               </cy-icon-text>
             </cy-list-item>

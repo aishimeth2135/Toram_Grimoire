@@ -8,7 +8,7 @@
         <div class="msg">
           <div v-for="item in initItems" class="column" :key="item.msg">
             <span class="text">{{ item.msg }}</span>
-            <cy-icon-text class="status-icon" :iconify-name="statusIcon(item.status)"
+            <cy-icon-text class="status-icon" :icon="statusIcon(item.status)"
               :class="{ 'loading': item.status == 0, 'error': item.status == -1 }" />
           </div>
         </div>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-  import Vuex from 'vuex';
+  import { mapState } from 'vuex';
 
   import vue_loadingAnimation from "./initialization/loading-animation.vue";
 
@@ -33,7 +33,7 @@
       }
     },
     computed: {
-      ...Vuex.mapState('initialize', ['initItems', 'status', 'msgItems'])
+      ...mapState('initialize', ['initItems', 'status', 'msgItems'])
     },
     components: {
       'loading-animation': vue_loadingAnimation

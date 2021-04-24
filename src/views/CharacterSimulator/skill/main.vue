@@ -4,7 +4,7 @@
       <cy-options>
         <template #title>
           <cy-list-item>
-            <cy-icon-text iconify-name="ant-design:build-outlined">
+            <cy-icon-text icon="ant-design:build-outlined">
               {{ currentSkillBuild ? currentSkillBuild.name : 'NONE' }}
             </cy-icon-text>
           </cy-list-item>
@@ -13,7 +13,7 @@
           <cy-list-item v-for="(build, i) in skillBuilds" :key="build.stateId"
             :selected="i == currentSkillBuildIndex"
             @click="selectCurrentBuild(i)">
-            <cy-icon-text iconify-name="gg-shape-rhombus">
+            <cy-icon-text icon="gg-shape-rhombus">
               {{ build.name }}
             </cy-icon-text>
           </cy-list-item>
@@ -21,12 +21,12 @@
       </cy-options>
     </div>
     <div class="top-sub">
-      <cy-button type="border" iconify-name="mdi-rhombus-outline"
+      <cy-button type="border" icon="mdi-rhombus-outline"
         :selected="mode == 'passive'"
         @click="setMode('passive')">
         {{ $lang('skill management/passive skills') }}
       </cy-button>
-      <cy-button type="border" iconify-name="mdi-rhombus-outline"
+      <cy-button type="border" icon="mdi-rhombus-outline"
         :selected="mode == 'active'"
         @click="setMode('active')">
         {{ $lang('skill management/active skills') }}
@@ -44,7 +44,7 @@
           v-model:level-skill-state-root-disable="state.disable"
           :key="state.levelSkill.base.id + '#' + state.levelSkill.base.name" />
       </template>
-      <cy-default-tips v-else iconify-name="mdi-ghost">
+      <cy-default-tips v-else icon="mdi-ghost">
         {{ $lang('skill management/there are no skills yet') }}
       </cy-default-tips>
     </div>
@@ -52,7 +52,7 @@
       :visible="userSetsWindow.visible"
       @close-window="toggleUserSetsWindowVisible">
       <template #title>
-        <cy-icon-text iconify-name="mdi-numeric">
+        <cy-icon-text icon="mdi-numeric">
           {{ $lang('skill management/user sets: window title') }}
         </cy-icon-text>
       </template>
@@ -61,7 +61,7 @@
         :value="p.value"
         @update:value="userSetValue(p, $event)">
         <template #title>
-          <cy-icon-text iconify-name="gg-shape-rhombus">
+          <cy-icon-text icon="gg-shape-rhombus">
             {{ p.text }}
           </cy-icon-text>
         </template>
@@ -71,7 +71,7 @@
         :value="p.value"
         @update:value="userSetValue(p, $event)">
         <template #title>
-          <cy-icon-text iconify-name="gg-shape-rhombus">
+          <cy-icon-text icon="gg-shape-rhombus">
             {{ p.name }}
           </cy-icon-text>
         </template>
@@ -79,13 +79,13 @@
     </cy-window>
   </section>
   <section v-else>
-    <cy-default-tips iconify-name="mdi-ghost">
+    <cy-default-tips icon="mdi-ghost">
       {{ $lang('skill management/no build has been created') }}
     </cy-default-tips>
   </section>
 </template>
 <script>
-import Vuex from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 import vue_skillItem from "./skill-item.vue";
 
@@ -115,11 +115,11 @@ export default {
       this.selectCurrentBuild(0);
   },
   computed: {
-    ...Vuex.mapState('character', {
+    ...mapState('character', {
       'skillBuilds': 'skillBuilds',
       'currentSkillBuildIndex': 'currentSkillBuildIndex'
     }),
-    ...Vuex.mapGetters('character', {
+    ...mapGetters('character', {
       'currentSkillBuild': 'currentSkillBuild'
     })
   },

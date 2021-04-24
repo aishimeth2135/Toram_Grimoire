@@ -3,7 +3,12 @@ import { h } from "vue";
 import Icons from "@Services/SvgIcons.js";
 
 export default {
-  props: ['iconId'],
+  props: {
+    'iconId': {
+      type: String,
+      default: ''
+    }
+  },
   render() {
     const tmp = document.createElement('template');
     tmp.innerHTML = Icons(this.iconId);

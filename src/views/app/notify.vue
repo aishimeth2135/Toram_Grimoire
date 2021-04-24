@@ -8,7 +8,7 @@
           <span>{{ msg.counter }}</span>
         </span>
         <div class="inline-flex items-center">
-          <cy-icon-text :iconify-name="msg.icon"
+          <cy-icon-text :icon="msg.icon"
             icon-color="light"
             class="mr-3" />
           <span class="text">{{ msg.message }}</span>
@@ -25,11 +25,11 @@
   </div>
 </template>
 <script>
-  import Vuex from "vuex";
+  import { mapState } from "vuex";
 
   export default {
     computed: {
-      ...Vuex.mapState('notify', ['messages'])
+      ...mapState('notify', ['messages'])
     },
     methods: {
       messageButtonClick(msg, btn) {

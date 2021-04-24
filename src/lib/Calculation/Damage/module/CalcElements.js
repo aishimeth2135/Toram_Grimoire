@@ -108,7 +108,7 @@ class Calculation {
     return this.status.sets[name];
   }
   copyFrom(cal) {
-    // 
+    //
     this.calculationName(cal.calculationName() + '*');
 
     // sets

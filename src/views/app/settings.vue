@@ -1,35 +1,35 @@
 <template>
   <span class="app--settings py-4">
-    <cy-button type="icon" iconify-name="ic-baseline-settings" @click="toggleWindowVisible" />
+    <cy-button type="icon" icon="ic-baseline-settings" @click="toggleWindowVisible" />
     <cy-window class="main--window"
       width="wide"
       @close-window="toggleWindowVisible"
       :visible="windowVisible">
       <template #title>
-        <cy-icon-text iconify-name="ic-baseline-settings">
+        <cy-icon-text icon="ic-baseline-settings">
           {{ $lang('title') }}
         </cy-icon-text>
       </template>
       <fieldset class="column">
         <legend>
-          <cy-icon-text iconify-name="ic-round-text-fields" text-color="purple">
+          <cy-icon-text icon="ic-round-text-fields" text-color="purple">
             {{ $lang('switch font/title') }}
           </cy-icon-text>
         </legend>
         <div class="caption">{{ $lang('switch font/caption') }}</div>
-        <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
           {{ $lang('switch font/warn 1') }}
         </cy-icon-text>
         <div class="buttons">
-          <cy-button iconify-name="ic-round-text-fields" type="border"
+          <cy-button icon="ic-round-text-fields" type="border"
             :selected="currentFont == 1" @click="switchFont(1)">
             {{ $lang('switch font/default font') }}
           </cy-button>
-          <cy-button iconify-name="ic-round-text-fields" type="border"
+          <cy-button icon="ic-round-text-fields" type="border"
             :selected="currentFont == 0" @click="switchFont(0)">
             {{ $lang('switch font/base font') }}
           </cy-button>
-          <cy-button iconify-name="ic-round-text-fields" type="border"
+          <cy-button icon="ic-round-text-fields" type="border"
             :selected="currentFont == 2" @click="switchFont(2)">
             {{ $lang('switch font/base font') + '-2' }}
           </cy-button>
@@ -37,22 +37,22 @@
       </fieldset>
       <fieldset class="column">
         <legend>
-          <cy-icon-text iconify-name="ion-language" text-color="purple">
+          <cy-icon-text icon="ion-language" text-color="purple">
             {{ $lang('language/title') }}
           </cy-icon-text>
         </legend>
         <div class="caption">
           {{ $lang('language/caption') }}
         </div>
-        <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
           {{ $lang('language/warn 1') }}
         </cy-icon-text>
-        <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
           {{ $lang('language/warn 2') }}
         </cy-icon-text>
         <div class="buttons">
           <cy-button v-for="(item, i) in languageState.list"
-            iconify-name="ion-language" type="border"
+            icon="ion-language" type="border"
             :selected="languageState.currentIndex == i"
             :key="item" @click="setLanguage('language', i)">
             {{ $lang('language/button texts/lang ' + item) }}
@@ -61,22 +61,22 @@
       </fieldset>
       <fieldset class="column">
         <legend>
-          <cy-icon-text iconify-name="ion-language" text-color="purple">
+          <cy-icon-text icon="ion-language" text-color="purple">
             {{ $lang('second language/title') }}
           </cy-icon-text>
         </legend>
         <div class="caption">
           {{ $lang('second language/caption') }}
         </div>
-        <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
           {{ $lang('second language/warn 1') }}
         </cy-icon-text>
-        <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
           {{ $lang('second language/warn 2') }}
         </cy-icon-text>
         <div class="buttons">
           <cy-button v-for="(item, i) in secondLanguageState.list"
-            iconify-name="ion-language" type="border"
+            icon="ion-language" type="border"
             :selected="secondLanguageState.currentIndex == i"
             :key="item" @click="setLanguage('second-language', i)">
             {{ $lang('language/button texts/lang ' + item) }}
@@ -85,51 +85,51 @@
       </fieldset>
       <fieldset class="column">
         <legend>
-          <cy-icon-text iconify-name="carbon-cloud-data-ops" text-color="purple">
+          <cy-icon-text icon="carbon-cloud-data-ops" text-color="purple">
             {{ $lang('clear caches of spreadsheets/title') }}
           </cy-icon-text>
         </legend>
         <div class="caption">
           {{ $lang('clear caches of spreadsheets/caption') }}
         </div>
-        <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
           {{ $lang('clear caches of spreadsheets/warn 1') }}
         </cy-icon-text>
-        <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
           {{ $lang('clear caches of spreadsheets/warn 2') }}
         </cy-icon-text>
-        <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
           {{ $lang('clear caches of spreadsheets/warn 3') }}
         </cy-icon-text>
         <div class="buttons">
-          <cy-button iconify-name="ic-round-delete" type="border" @click="clearSpreadsheetsCaches">
+          <cy-button icon="ic-round-delete" type="border" @click="clearSpreadsheetsCaches">
             {{ $lang('clear caches of spreadsheets/button texts/clear caches of spreadsheets') }}
           </cy-button>
         </div>
       </fieldset>
       <fieldset class="column" v-if="storageAvailable">
         <legend>
-          <cy-icon-text iconify-name="ic-round-save">
+          <cy-icon-text icon="ic-round-save">
             {{ $lang('storage backup/title') }}
           </cy-icon-text>
         </legend>
         <div class="caption">
           {{ $lang('storage backup/caption') }}
         </div>
-        <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
           {{ $lang('storage backup/warn 1') }}
         </cy-icon-text>
-        <cy-icon-text iconify-name="bx-bx-error-circle" text-size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
           {{ $lang('storage backup/warn 2') }}
         </cy-icon-text>
-        <cy-default-tips iconify-name="mdi-ghost" v-if="$route.path != '/'">
+        <cy-default-tips icon="mdi-ghost" v-if="$route.path != '/'">
           {{ $lang('storage backup/Must be operated on the homepage') }}
         </cy-default-tips>
         <div class="buttons" v-else>
-          <cy-button iconify-name="ic-round-save" type="border" @click="saveLocalStorage">
+          <cy-button icon="ic-round-save" type="border" @click="saveLocalStorage">
             {{ $lang('storage backup/button texts/save') }}
           </cy-button>
-          <cy-button iconify-name="bx-bx-loader-circle" type="border" @click="loadLocalStorage">
+          <cy-button icon="bx-bx-loader-circle" type="border" @click="loadLocalStorage">
             {{ $lang('storage backup/button texts/load') }}
           </cy-button>
         </div>
@@ -140,7 +140,6 @@
 
 <script>
 import CY from "@Utils/Cyteria";
-import MessageNotify from "@Services/Notify";
 
 export default {
   RegisterLang: 'Settings',
@@ -168,7 +167,7 @@ export default {
   methods: {
     clearSpreadsheetsCaches() {
       caches.delete('google-spreadsheets-csv-files')
-        .then(p => p && MessageNotify(this.$lang('clear caches of spreadsheets/Clear caches of spreadsheet successfully')));
+        .then(p => p && this.$notify(this.$lang('clear caches of spreadsheets/Clear caches of spreadsheet successfully')));
     },
     saveLocalStorage() {
       const data = {};
@@ -186,7 +185,7 @@ export default {
         fileName: 'Cy-Grimoire_storage.txt'
       });
 
-      MessageNotify(this.$lang('storage backup/Save successfully'));
+      this.$notify(this.$lang('storage backup/Save successfully'));
     },
     loadLocalStorage() {
       const storage = window.localStorage;
@@ -195,14 +194,14 @@ export default {
         succee: data => {
           data = JSON.parse(data);
           Object.keys(data).forEach(k => storage.setItem(k, data[k]));
-          MessageNotify(this.$lang('storage backup/Load successfully'));
+          this.$notify(this.$lang('storage backup/Load successfully'));
         },
         error: () => {
-          MessageNotify(this.$lang('storage backup/Load failed'));
+          this.$notify(this.$lang('storage backup/Load failed'));
         },
         checkFileType: type => {
           if (type != 'txt') {
-            MessageNotify(this.$lang('storage backup/Wrong type of file'));
+            this.$notify(this.$lang('storage backup/Wrong type of file'));
             return false;
           }
           return true;

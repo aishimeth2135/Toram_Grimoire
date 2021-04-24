@@ -28,11 +28,12 @@ import { createApp } from "vue";
 
 import App from "./App.vue";
 import router from "./router/index.js";
-import store from "@store/main";
+import store from "@store";
 
 import VueGtag from "vue-gtag-next";
 
 import RegisterLang from "@plugin/RegisterLang.js";
+import Notify from "@plugin/Notify";
 
 import './registerServiceWorker';
 
@@ -41,6 +42,7 @@ APP
   .use(router)
   .use(store)
   .use(RegisterLang)
+  .use(Notify)
   .use(VueGtag, {
     property: {
       id: 'UA-140158974-1'

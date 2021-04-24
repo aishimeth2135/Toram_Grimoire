@@ -1,16 +1,16 @@
 <template>
   <footer>
     <div class="content">
-      <cy-button iconify-name="mdi-weather-night"
+      <cy-button icon="mdi-weather-night"
         v-if="checkLocalStorage"
         @click="toggleNightMode"
         class="border-0 p-0">
         {{ langText('night mode') }}
       </cy-button>
-      <cy-icon-text iconify-name="ant-design:home-outlined">
+      <cy-icon-text icon="ant-design:home-outlined">
         <a href="https://home.gamer.com.tw/homeindex.php?owner=mushroom2135">{{ langText('baha home') }}</a>
       </cy-icon-text>
-      <cy-icon-text iconify-name="ant-design:twitter-outlined">
+      <cy-icon-text icon="ant-design:twitter-outlined">
         <a href="https://twitter.com/Cyteria_w">Cyteria</a>
       </cy-icon-text>
     </div>
@@ -40,7 +40,7 @@
 </script>
 
 <style lang="less" scoped>
-  
+
   footer {
     border-top: 1px var(--primary-light) solid;
     margin-top: 2rem;

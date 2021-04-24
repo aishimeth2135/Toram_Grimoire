@@ -28,14 +28,14 @@
 </template>
 
 <script>
-  import Vuex from 'vuex';
+  import { mapState } from 'vuex';
 
   import vue_leftMenu from "./left-menu.vue";
   import vue_settings from "./settings.vue";
 
   export default {
     computed: {
-      ...Vuex.mapState('nav', ['items'])
+      ...mapState('nav', ['items'])
     },
     components: {
       'app-left-menu': vue_leftMenu,

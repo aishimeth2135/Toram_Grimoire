@@ -1,12 +1,10 @@
 <template>
   <span @click="click"
-    class="cy-button--border inline-flex items-center py-1 px-3 m-1 rounded-2xl border-1 border-light border-solid bg-white"
+    class="cy-button--border button--main-content inline-flex items-center py-1 px-3 m-1 rounded-2xl border-1 border-solid bg-white"
     :class="baseClass">
-    <iconify-icon v-if="iconifyName" :name="iconifyName" />
-    <svg-icon v-if="iconId" :icon-id="iconId" />
-    <image-icon v-if="imagePath" :image-path="imagePath" />
+    <cy-icon :icon="icon" :src="iconSrc" />
     <span v-if="$slots['default']"
-      class="text inline-flex items-center ml-2 mr-1 duration-300">
+      class="button--text inline-flex items-center ml-2 mr-1 duration-300">
       <slot></slot>
     </span>
     <slot name="tail"></slot>

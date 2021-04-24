@@ -505,7 +505,7 @@ class CharacterStatFormula {
         .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
           return handleVar(vars.value['#'], m1, '0');
         })
-        .replace(/-{2,}/g, m => Number.isInteger(m.length/2) ? '+' : '-'); 
+        .replace(/-{2,}/g, m => Number.isInteger(m.length/2) ? '+' : '-');
       // console.log('formula: after: ', f);
       // console.groupEnd();
       return safeEval(f);

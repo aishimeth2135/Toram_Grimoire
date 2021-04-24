@@ -42,7 +42,7 @@ export default function (str, { skillState, effectState, branch }) {
 
   str = str = str.replace(/stack\[(\d+)\]/g, (m, m1) => stack[parseInt(m1, 10)]);
 
-  const formulaExtra = branch ? branch.suffix.find(suf => suf.name == 'formula_extra') : null;
+  const formulaExtra = branch ? branch.suffix.find(suf => suf.name === 'formula_extra') : null;
   if (formulaExtra)
     str = str.replace(/&(\d+):/g, (m, m1) => '__FORMULA_EXTRA_' + m1 + '__');
 
@@ -123,7 +123,7 @@ function handle(str) {
 
         if (node.arguments.every(p => TNT.Literal.check(p))) {
           const args = node.arguments.map(p => p.value);
-          
+
           const pros = [];
           let cur = node.callee;
           while (TNT.MemberExpression.check(cur.object)) {
@@ -150,7 +150,7 @@ function handle(str) {
           if (ary.every(p => TNT.Literal.check(p)) && TNT.Literal.check(node.property)) {
             const v = ary[node.property.value].value;
             path.parentPath.get(path.name).replace(builders.literal(v));
-            
+
             back(this, path);
             return;
           }

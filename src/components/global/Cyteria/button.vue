@@ -13,6 +13,10 @@ const colorList = [
   'gray', 'gray-light', 'orange', 'green'
 ];
 
+function colorValidator(v) {
+  return colorList.includes(v);
+}
+
 function CyButton(props, context) {
   const getComponent = () => {
     const type = props.type;
@@ -33,8 +37,10 @@ function CyButton(props, context) {
       'Button': true,
       ['text-color-' + props.textColor]: true,
       ['icon-color-' + props.iconColor]: true,
+      ['border-color-' + props.borderColor]: true,
       ['text-color-hover-' + props.textColorHover]: true,
-      ['icon-color-hover-' + props.iconColorHover]: true
+      ['icon-color-hover-' + props.iconColorHover]: true,
+      ['border-color-hover-' + props.borderColorHover]: true,
     }
   }, context.attrs);
 
@@ -58,30 +64,32 @@ CyButton.props = {
   textColor: {
     type: String,
     default: 'dark',
-    validator(v) {
-      return colorList.includes(v);
-    }
+    validator: colorValidator
   },
   textColorHover: {
     type: String,
     default: 'light-4',
-    validator(v) {
-      return colorList.includes(v);
-    }
+    validator: colorValidator
   },
   iconColor: {
     type: String,
     default: 'light-2',
-    validator(v) {
-      return colorList.includes(v);
-    }
+    validator: colorValidator
   },
   iconColorHover: {
     type: String,
     default: 'light-4',
-    validator(v) {
-      return colorList.includes(v);
-    }
+    validator: colorValidator
+  },
+  borderColor: {
+    type: String,
+    default: 'light',
+    validator: colorValidator
+  },
+  borderColorHover: {
+    type: String,
+    default: 'light-3',
+    validator: colorValidator
   }
 };
 
@@ -90,8 +98,6 @@ export default CyButton;
 <style lang="less" scoped>
 .Button {
   --icon-width: 1.2rem;
-  text-align: center;
-  cursor: pointer;
   position: relative;
   flex-shrink: 0;
 
@@ -103,6 +109,22 @@ export default CyButton;
   }
   &.border-0 {
     border: 0;
+  }
+
+  ::v-deep(.button--text) {
+    color: var(--text-color, var(--primary-dark));
+    text-align: center;
+  }
+
+  &.button--main-content, ::v-deep(.button--main-content) {
+    cursor: pointer;
+    border-color: var(--border-color, var(--primary-light));
+
+    &:hover, &.selected {
+      --icon-color: var(--icon-color-hover);
+      --text-color: var(--text-color-hover);
+      --border-color: var(--border-color-hover);
+    }
   }
 
   &.disabled {
@@ -123,37 +145,16 @@ export default CyButton;
   @colors: ~'dark', ~'light', ~'light-2', ~'light-3', ~'light-4', ~'purple',
     ~'red', ~'red-light', ~'water-blue', ~'water-blue-light',
     ~'gray', ~'gray-light', ~'orange', ~'green';
-  each(@colors, {
-    &.text-color-@{value} {
-      --text-color: ~'var(--primary-@{value})';
-    }
-    &.icon-color-@{value} {
-      --icon-color: ~'var(--primary-@{value})';
-    }
-    &.text-color-hover-@{value} {
-      --text-color-hover: ~'var(--primary-@{value})';
-    }
-    &.icon-color-hover-@{value} {
-      --icon-color-hover: ~'var(--primary-@{value})';
-    }
+  @color-texts: ~'text', ~'icon', ~'border';
+  each(@colors, .(@color) {
+    each(@color-texts, .(@name) {
+      &.@{name}-color-@{color} {
+        --@{name}-color: ~'var(--primary-@{color})';
+      }
+      &.@{name}-color-hover-@{color} {
+        --@{name}-color-hover: ~'var(--primary-@{color})';
+      }
+    })
   });
-
-  // $colors: 'dark', 'light', 'light-2', 'light-3', 'light-4', 'purple',
-  //   'red', 'red-light', 'water-blue', 'water-blue-light',
-  //   'gray', 'gray-light', 'orange', 'green';
-  // @each $value in $colors {
-  //   &.text-color-#{$value} {
-  //     --text-color: 'var(--primary-#{$value})';
-  //   }
-  //   &.icon-color-#{$value} {
-  //     --icon-color: 'var(--primary-#{$value})';
-  //   }
-  //   &.text-color-hover-#{$value} {
-  //     --text-color-hover: 'var(--primary-#{$value})';
-  //   }
-  //   &.icon-color-hover-#{$value} {
-  //     --icon-color-hover: 'var(--primary-#{$value})';
-  //   }
-  // };
 }
 </style>

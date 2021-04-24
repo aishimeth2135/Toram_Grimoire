@@ -26,7 +26,7 @@
   };
 </script>
 <style lang="less" scoped>
-  
+
   #app {
     .app-main {
       min-height: calc(100vh - 8rem);

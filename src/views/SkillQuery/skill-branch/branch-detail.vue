@@ -2,7 +2,7 @@
   <div class="branch-detail">
     <transition-group name="slide-down" appear>
       <cy-icon-text v-for="(data) in detailShowData['@data-list']" class="detail-item line"
-        :iconify-name="data.icon" :key="data.id"
+        :icon="data.icon" :key="data.id"
         :class="data.classList ? ['text-small', ...data.classList] : ['text-small']">
         <span v-html="data.value"></span>
       </cy-icon-text>

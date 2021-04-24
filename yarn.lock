@@ -6736,6 +6736,13 @@ postcss-colormin@^4.0.3:
     postcss "^7.0.0"
     postcss-value-parser "^3.0.0"
 
+postcss-comment@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-comment/-/postcss-comment-2.0.0.tgz#6c8808e64cee25c33146518a8a82944b05f11e6f"
+  integrity sha512-5zT5iKU7c0tK9KJFNrVf+g1MGTkzf/4V3e0Zzm2g1uoFQC5jeTHmB9O1iAqh97+jnKpc6al204e0pwFUiCwseg==
+  dependencies:
+    postcss "^6.0.0"
+
 postcss-convert-values@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/postcss-convert-values/-/postcss-convert-values-4.0.1.tgz#ca3813ed4da0f812f9d43703584e449ebe189a7f"
@@ -6771,13 +6778,6 @@ postcss-discard-overridden@^4.0.1:
   integrity sha512-IYY2bEDD7g1XM1IDEsUT4//iEYCxAmP5oDSFMVU/JVvT7gh+l4fmjciLqGgwjdWpQIdb0Che2VX00QObS5+cTg==
   dependencies:
     postcss "^7.0.0"
-
-postcss-each@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/postcss-each/-/postcss-each-1.0.0.tgz#6cdbd63ad31fee3868fd1eb4ab01345ba3a5ba38"
-  integrity sha512-BiEZqzp6fFUG7oO9n4wzDDJKoG7SrgSidJox+bXtL+kGSaBVEY2rlaaZGktCgEkGHQMwbCdOgUCbydUJnBtSmg==
-  dependencies:
-    postcss-simple-vars "^5.0.0"
 
 postcss-functions@^3:
   version "3.0.0"
@@ -7096,13 +7096,6 @@ postcss-selector-parser@^6.0.0, postcss-selector-parser@^6.0.2, postcss-selector
     uniq "^1.0.1"
     util-deprecate "^1.0.2"
 
-postcss-simple-vars@^5.0.0:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/postcss-simple-vars/-/postcss-simple-vars-5.0.2.tgz#e2f81b3d0847ddd4169816b6d141b91d51e6e22e"
-  integrity sha512-xWIufxBoINJv6JiLb7jl5oElgp+6puJwvT5zZHliUSydoLz4DADRB3NDDsYgfKVwojn4TDLiseoC65MuS8oGGg==
-  dependencies:
-    postcss "^7.0.14"
-
 postcss-svgo@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/postcss-svgo/-/postcss-svgo-4.0.3.tgz#343a2cdbac9505d416243d496f724f38894c941e"
@@ -7138,7 +7131,7 @@ postcss-variables@^1.1.1:
   dependencies:
     postcss "^6.0.9"
 
-postcss@^6.0.9:
+postcss@^6.0.0, postcss@^6.0.9:
   version "6.0.23"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-6.0.23.tgz#61c82cc328ac60e677645f979054eb98bc0e3324"
   integrity sha512-soOk1h6J3VMTZtVeVpv15/Hpdl2cBLX3CAw4TAbkpTJiNPk9YP/zWcD1ND+xEtvyuuvKzbxliTOIyvkSeSJ6ag==
