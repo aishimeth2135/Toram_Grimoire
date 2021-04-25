@@ -39,14 +39,14 @@
         <cy-button v-for="category in equipmentTypeCategorys"
           type="drop-down" :icon="category.icon"
           :key="category.id" :menu-default-visible="true">
-          {{ $lang('equipment type category/' + category.id) }}
+          {{ $globalLang('common/Equipment/field/' + category.id) }}
           <template v-slot:menu>
             <template v-if="category.list != null">
               <cy-list-item v-for="item in category.list" :key="item"
                 :selected="currentEquipment && currentEquipment.type === item"
                 @click="selectEquipmentType(category, item)">
                 <cy-icon-text icon="gg-shape-square">
-                  {{ $lang('field type text/' + item.description) }}
+                  {{ $globalLang('common/Equipment/category/' + item.description) }}
                 </cy-icon-text>
               </cy-list-item>
             </template>
@@ -54,7 +54,7 @@
               :selected="currentEquipment && currentEquipment instanceof category.instance"
               @click="selectEquipmentType(category, null)">
               <cy-icon-text icon="gg-shape-square">
-                {{ $lang('equipment type category/' + category.id) }}
+                {{ $globalLang('common/Equipment/field/' + category.id) }}
               </cy-icon-text>
             </cy-list-item>
           </template>
@@ -102,7 +102,7 @@ export default {
         id: 'sub-weapon',
         icon: 'mdi-shield',
         instance: SubWeapon,
-        list: [SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER]
+        list: [SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_NINJUTSU_SCROLL]
       }, {
         id: 'sub-armor',
         icon: 'mdi-shield',
@@ -145,7 +145,7 @@ export default {
           .findIndex(p => eq instanceof p);
         return idx != -1 ?
           this.$globalLang('common/Equipment/field/' + ids[idx]) :
-          this.$globalLang('common/Equipment/field/' + eq.type.description);
+          this.$globalLang('common/Equipment/category/' + eq.type.description);
       }
       return this.$lang('create custom equipment/select equipment type');
     },
