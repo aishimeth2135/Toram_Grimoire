@@ -11,7 +11,7 @@
                   <cy-flex-layout>
                     <cy-icon-text class="options-title" @click="toggleSelected(type)"
                       :icon="'ic-round-check-box' + (type.selected ? '' : '-outline-blank')">
-                      {{ $lang('equipment type category/' + type.id) }}
+                      {{ $globalLang('common/Equipment/field/' + type.id) }}
                     </cy-icon-text>
                     <template v-if="type.types !== null">
                       <cy-button icon="ic-round-border-all" type="border"
@@ -24,7 +24,7 @@
                     <cy-button v-for="item in type.types" :key="item.value" type="border"
                       icon="gg-shape-rhombus" :selected="type.selected && item.selected"
                       @click="toggleSelected(item)">
-                      {{ $lang('field type text/' + item.value.description) }}
+                      {{ $globalLang('common/Equipment/category/' + item.value.description) }}
                     </cy-button>
                   </div>
                 </div>
@@ -315,7 +315,7 @@ export default {
       },
       conditions: {
         type: [{
-          id: 'main',
+          id: 'main-weapon',
           instance: MainWeapon,
           types: handleOptions([
             MainWeapon.TYPE_ONE_HAND_SWORD, MainWeapon.TYPE_TWO_HAND_SWORD,
@@ -326,12 +326,17 @@ export default {
           ]),
           selected: true
         }, {
-          id: 'sub',
+          id: 'sub-weapon',
           instance: [SubWeapon, SubArmor],
-          types: handleOptions([SubWeapon.TYPE_ARROW, SubArmor.TYPE_SHIELD, SubWeapon.TYPE_DAGGER]),
+          types: handleOptions([
+            SubWeapon.TYPE_ARROW,
+            SubWeapon.TYPE_DAGGER,
+            SubWeapon.TYPE_NINJUTSU_SCROLL,
+            SubArmor.TYPE_SHIELD
+          ]),
           selected: true
         }, {
-          id: 'body',
+          id: 'body-armor',
           instance: BodyArmor,
           types: null,
           selected: true
