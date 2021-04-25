@@ -35,7 +35,7 @@
         <div class="mt-1 pl-1" :class="{ 'opacity-50': statsDisable }">
           <show-stat v-for="stat in equipment.stats" :stat="stat"
             :key="stat.statId"
-            :negative-value="stat.statValue() < 0" />
+            :negative-value="stat.value < 0" />
         </div>
         <div v-if="equipment.hasCrystal && equipment.crystals.length > 0"
           class="border-t border-solid border-light mt-2 pt-1"
@@ -123,7 +123,8 @@ export default {
     'getShowEquipmentData',
     'openCustomEquipmentEditor',
     'openSelectCrystals',
-    'setEquipmentProperty'
+    'setEquipmentProperty',
+    'checkStatRestriction'
   ],
   data(){
     return {

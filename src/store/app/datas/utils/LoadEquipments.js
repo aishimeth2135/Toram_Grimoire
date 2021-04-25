@@ -9,7 +9,15 @@ export default function(root, c) {
     ATTRIBUTE_NAME = 5,
     ATTRIBUTE_VALUES = [6, 7],
     CAPTION = 8,
-    CATEGORY_LIST = ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '箭矢', '盾牌', '小刀', '身體裝備', '追加裝備', '特殊裝備'];
+    CATEGORY_LIST = {
+      '單手劍': 0, '雙手劍': 1, '弓': 2, '弩': 3, '法杖': 4,
+      '魔導具': 5, '拳套': 6, '旋風槍': 7, '拔刀劍': 8,
+      '箭矢': 100, '小刀': 101, '忍術卷軸': 102,
+      '盾牌': 200,
+      '身體裝備': 300,
+      '追加裝備': 400,
+      '特殊裝備': 500
+    };
 
   function processMaterails(s) {
     const ms = [];
@@ -29,12 +37,14 @@ export default function(root, c) {
 
   let cur, cur_equip, cur_attrcat;
   c.forEach((p, index) => {
-    if (!p || index == 0 || p.every(a => a === '')) {
+    if (!p || index === 0 || p.every(a => a === '')) {
       return;
     }
     try {
       if (p[NAME] !== '' && p[CATEGORY] !== '') {
-        cur = root.appendEquipment(p[NAME], CATEGORY_LIST.indexOf(p[CATEGORY]), p[BASE_VALUE], p[BASE_STABILITY], p[CAPTION]);
+        const type = CATEGORY_LIST[p[CATEGORY]];
+        cur = root.appendEquipment(p[NAME], type === void 0 ? -1 : type,
+          p[BASE_VALUE], p[BASE_STABILITY], p[CAPTION]);
         cur_equip = cur;
       }
       if (p[ATTRIBUTE_CATEGORY] !== '')

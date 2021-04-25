@@ -1,5 +1,8 @@
-import { RestrictionStat } from "../Stat";
 import Grimoire from "@Grimoire";
+import GetLang from "@Services/Language";
+
+import { EquipmentField } from "../Character";
+import { RestrictionStat } from "../Stat";
 import { isNumberString } from "@Utils/string";
 
 class CharacterEquipment {
@@ -50,7 +53,7 @@ class CharacterEquipment {
       this.crystals.forEach(c => {
         c.stats.forEach(stat => {
           const t = all.find(a => a.equals(stat));
-          t ? t.addStatValue(stat.statValue()) : all.push(stat.copy());
+          t ? t.add(stat.value) : all.push(stat.copy());
         });
       });
     }
@@ -60,7 +63,38 @@ class CharacterEquipment {
     return this._isCustom;
   }
   get elementStat() {
-    return this.stats.find(stat => CharacterEquipment.elementStatIds.includes(stat.baseName()));
+    return this.stats.find(stat => CharacterEquipment.elementStatIds.includes(stat.baseName));
+  }
+
+  get categoryText() {
+    if (this.type) {
+      return GetLang('common/Equipment/category/' + this.type.description);
+    }
+    if (this instanceof AdditionalGear) {
+      return GetLang('common/Equipment/field/' + EquipmentField.TYPE_ADDITIONAL.description);
+    }
+    if (this instanceof SpecialGear) {
+      return GetLang('common/Equipment/field/' + EquipmentField.TYPE_SPECIAL.description);
+    }
+    if (this instanceof Avatar) {
+      return GetLang('common/Equipment/field/' + EquipmentField.TYPE_AVATAR.description);
+    }
+    return '';
+  }
+  get categoryIcon() {
+    if (this instanceof BodyArmor) {
+      return 'mdi-tshirt-crew';
+    }
+    if (this instanceof AdditionalGear) {
+      return 'cib-redhat';
+    }
+    if (this instanceof SpecialGear) {
+      return 'fa-solid:ring';
+    }
+    if (this instanceof Avatar) {
+      return 'eva-star-outline';
+    }
+    return this instanceof MainWeapon ? 'mdi-sword' : 'mdi-shield';
   }
 
   getAllStats(checkRestriction = () => true) {
@@ -68,7 +102,7 @@ class CharacterEquipment {
       .map(p => {
         const stat = p.copy();
         if (!checkRestriction(stat))
-          stat.statValue(0);
+          stat.value = 0;
         return stat;
       });
     if (this.hasCrystal) {
@@ -76,11 +110,11 @@ class CharacterEquipment {
         c.stats.forEach(stat => {
           const t = all.find(a => a.equals(stat));
           if (t)
-            t.addStatValue(checkRestriction(stat) ? stat.statValue() : 0);
+            t.add(checkRestriction(stat) ? stat.value : 0);
           else {
             const a = stat.copy();
             if (!checkRestriction(a))
-              a.statValue(0);
+              a.value = 0;
             all.push(a);
           }
         });
@@ -97,7 +131,7 @@ class CharacterEquipment {
     this.type = type;
   }
   findStat(baseName, type) {
-    return this.stats.find(stat => stat.baseName() == baseName && stat.type == type);
+    return this.stats.find(stat => stat.baseName == baseName && stat.type == type);
   }
   appendCrystal(origin) {
     if (this.hasCrystal && this.crystals.length < 2) {
@@ -159,7 +193,7 @@ class CharacterEquipment {
     }
     else if (this instanceof SubWeapon) {
       instance = 1;
-      const list = ['arrow', 'dagger'];
+      const list = ['arrow', 'dagger', 'ninjutsu_scroll'];
       type = findType(SubWeapon, list);
     }
     else if (this instanceof SubArmor) {
@@ -235,8 +269,7 @@ CharacterEquipment.loadEquipment = function (data) {
 
     let eq;
     switch (data.instance) {
-      case 0:
-      case 1:
+      case 0: case 1:
         eq = new instance(id, name, stats, getType(instance, data.type), baseAtk, stability);
         eq.atk = atk;
         break;
@@ -244,9 +277,7 @@ CharacterEquipment.loadEquipment = function (data) {
         eq = new instance(id, name, stats, getType(instance, data.type), baseDef);
         eq.def = def;
         break;
-      case 3:
-      case 4:
-      case 5:
+      case 3: case 4: case 5:
         eq = new instance(id, name, stats, baseDef);
         eq.def = def;
         if (data.instance == 3)
@@ -288,12 +319,13 @@ CharacterEquipment.loadEquipment = function (data) {
 CharacterEquipment.fromOriginEquipment = function(item, {
   statValueToNumber = true
 } = {}) {
-  // 'Equipmemt Category list': [
-  //     '單手劍', '雙手劍', '弓', '弩',
-  //     '法杖', '魔導具', '拳套', '旋風槍',
-  //     '拔刀劍', '箭矢', '盾牌', '小刀',
-  //     '身體裝備', '追加裝備', '特殊裝備'
-  // ]
+  /* [
+    0'單手劍', 1'雙手劍', 2'弓', 3'弩', 4'法杖',
+    5'魔導具', 6'拳套', 7'旋風槍', 8'拔刀劍',
+    100'箭矢', 101'小刀', 102'忍術卷軸',
+    200'盾牌',
+    300'身體裝備', 400'追加裝備', 500'特殊裝備',
+  ] */
   const pre_args = [
     item, item.name,
     item.stats.map((p, i) => {
@@ -304,8 +336,18 @@ CharacterEquipment.fromOriginEquipment = function(item, {
     })
   ];
 
+  if (item.category === -1) {
+    return new Avatar(...pre_args);
+  }
+
   const stability = parseInt(item.baseStability, 10);
-  if (item.category < 9) {
+  if (item.category === 300)
+    return new BodyArmor(...pre_args, item.baseValue);
+  if (item.category === 400)
+    return new AdditionalGear(...pre_args, item.baseValue);
+  if (item.category === 500)
+    return new SpecialGear(...pre_args, item.baseValue);
+  if (item.category < 100) {
     const t = [
       MainWeapon.TYPE_ONE_HAND_SWORD, MainWeapon.TYPE_TWO_HAND_SWORD,
       MainWeapon.TYPE_BOW, MainWeapon.TYPE_BOWGUN,
@@ -316,20 +358,15 @@ CharacterEquipment.fromOriginEquipment = function(item, {
 
     return new MainWeapon(...pre_args, t, item.baseValue, stability);
   }
-  if (item.category < 12) {
+  if (item.category < 200) {
     const t = [
-      SubWeapon.TYPE_ARROW, SubArmor.TYPE_SHIELD, SubWeapon.TYPE_DAGGER
-    ][item.category - 9];
-    if (item.category == 10)
-      return new SubArmor(...pre_args, t, item.baseValue);
+      SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_NINJUTSU_SCROLL
+    ][item.category - 100];
     return new SubWeapon(...pre_args, t, item.baseValue, stability);
   }
-  if (item.category == 12)
-    return new BodyArmor(...pre_args, item.baseValue);
-  if (item.category == 13)
-    return new AdditionalGear(...pre_args, item.baseValue);
-  if (item.category == 14)
-    return new SpecialGear(...pre_args, item.baseValue);
+  if (item.category < 300) {
+    return new SubArmor(...pre_args, SubArmor.TYPE_SHIELD, item.baseValue);
+  }
 }
 
 class Weapon extends CharacterEquipment {
@@ -348,6 +385,16 @@ class Weapon extends CharacterEquipment {
 }
 
 class MainWeapon extends Weapon {
+  static TYPE_ONE_HAND_SWORD = Symbol('one-hand-sword');
+  static TYPE_TWO_HAND_SWORD = Symbol('two-hand-sword');
+  static TYPE_BOW = Symbol('bow');
+  static TYPE_BOWGUN = Symbol('bowgun');
+  static TYPE_STAFF = Symbol('staff');
+  static TYPE_MAGIC_DEVICE = Symbol('magic-device');
+  static TYPE_KNUCKLE = Symbol('knuckle');
+  static TYPE_HALBERD = Symbol('halberd');
+  static TYPE_KATANA = Symbol('katana');
+
   constructor(origin, name, stats, type, atk, stability) {
     super(origin, name, stats, atk, stability);
 
@@ -372,18 +419,13 @@ class MainWeapon extends Weapon {
     return true;
   }
 }
-MainWeapon.TYPE_ONE_HAND_SWORD = Symbol('one-hand-sword');
-MainWeapon.TYPE_TWO_HAND_SWORD = Symbol('two-hand-sword');
-MainWeapon.TYPE_BOW = Symbol('bow');
-MainWeapon.TYPE_BOWGUN = Symbol('bowgun');
-MainWeapon.TYPE_STAFF = Symbol('staff');
-MainWeapon.TYPE_MAGIC_DEVICE = Symbol('magic-device');
-MainWeapon.TYPE_KNUCKLE = Symbol('knuckle');
-MainWeapon.TYPE_HALBERD = Symbol('halberd');
-MainWeapon.TYPE_KATANA = Symbol('katana');
 
 
 class SubWeapon extends Weapon {
+  static TYPE_ARROW = Symbol('sub-weapon|arrow');
+  static TYPE_DAGGER = Symbol('sub-weapon|dagger');
+  static TYPE_NINJUTSU_SCROLL = Symbol('sub-weapon|ninjutsu-scroll');
+
   constructor(origin, name, stats, type, atk, stability) {
     super(origin, name, stats, atk, stability);
 
@@ -394,8 +436,6 @@ class SubWeapon extends Weapon {
     return this.type === SubWeapon.TYPE_ARROW;
   }
 }
-SubWeapon.TYPE_ARROW = Symbol('sub-weapon|arrow');
-SubWeapon.TYPE_DAGGER = Symbol('sub-weapon|dagger');
 
 class Armor extends CharacterEquipment {
   constructor(origin, name, stats, def = 0) {
@@ -409,6 +449,8 @@ class Armor extends CharacterEquipment {
 }
 
 class SubArmor extends Armor {
+  static TYPE_SHIELD = Symbol('sub-armor|shield');
+
   constructor(origin, name, stats, type, def) {
     super(origin, name, stats, def);
 
@@ -419,9 +461,12 @@ class SubArmor extends Armor {
     return true;
   }
 }
-SubArmor.TYPE_SHIELD = Symbol('sub-armor|shield');
 
 class BodyArmor extends Armor {
+  static TYPE_NORMAL = Symbol('body-armor|normal');
+  static TYPE_DODGE = Symbol('body-armor|dodge');
+  static TYPE_DEFENSE = Symbol('body-armor|defense');
+
   constructor(origin, name, stats, def) {
     super(origin, name, stats, def);
 
@@ -445,9 +490,6 @@ class BodyArmor extends Armor {
     return true;
   }
 }
-BodyArmor.TYPE_NORMAL = Symbol('body-armor|normal');
-BodyArmor.TYPE_DODGE = Symbol('body-armor|dodge');
-BodyArmor.TYPE_DEFENSE = Symbol('body-armor|defense');
 
 class AdditionalGear extends Armor {
   constructor(origin, name, stats, def) {
@@ -484,8 +526,6 @@ class Avatar extends CharacterEquipment {
 class EquipmentCrystal {
   constructor(origin) {
     this.origin = origin;
-    // this.id = id;
-    // this.name = name;
     this.stats = this.origin.stats.map((p, i) => RestrictionStat.fromOrigin(p, this.origin.statRestrictions[i]));
   }
 

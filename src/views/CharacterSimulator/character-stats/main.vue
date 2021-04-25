@@ -49,12 +49,8 @@
         </div>
       </template>
       <div v-if="showStatDetailCaption"
-        class="text-sm mb-3 pl-2">
-        <span v-for="item in showStatDetailCaption"
-          :key="item.iid"
-          :class="{ 'separate-scope': item.separate }">
-          {{ item.text }}
-        </span>
+        class="stat-detail-caption text-sm mb-3 pl-2"
+        v-html="showStatDetailCaption">
       </div>
       <cy-icon-text v-if="showStatDetailDatas.conditionalBase"
         icon="mdi-sword">
@@ -100,7 +96,6 @@
 </template>
 <script>
 import { StatBase } from "@lib/Character/Stat";
-import { separateText } from "@Utils/data";
 
 import vue_statDetailEquipments from "./stat-detail-equipments.vue";
 
@@ -121,9 +116,11 @@ export default {
   },
   computed: {
     showStatDetailCaption() {
-      return this.detail.currentStat ?
-        separateText(this.detail.currentStat.origin.caption, /\(\(([^)]+)\)\)/g) :
-        '';
+      if (this.detail.currentStat) {
+        return this.detail.currentStat.origin.caption
+          .replace(/\(\(([^)]+)\)\)/g, (_, m1) => `<span class="separate-scope">${m1}</span>`)
+      }
+      return '';
     },
     showStatDetailDatas() {
       if (!this.detail.currentStat || this.detail.currentStat.origin.isBoolStat)

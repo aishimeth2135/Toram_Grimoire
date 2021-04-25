@@ -1,4 +1,5 @@
 import Grimoire from "@Grimoire";
+import GetLang from "@Services/Language";
 import { StatBase, Stat } from "./StatBase.js";
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from "../CharacterEquipment";
 
@@ -18,11 +19,11 @@ class RestrictionStat extends Stat {
         return p;
       return 'none';
     }).join('+');
-    return `${this.baseName()}|${this.type.description}|${rtext}`;
+    return `${this.baseName}|${this.type.description}|${rtext}`;
   }
 
   copy() {
-    return new RestrictionStat(this.base, this.type, this.statValue(), this.restriction);
+    return new RestrictionStat(this.base, this.type, this.value, this.restriction);
   }
   save() {
     const types = ['constant', 'multiplier', 'total'];
@@ -34,7 +35,7 @@ class RestrictionStat extends Stat {
       other: r.other ? r.other : null
     } : null;
     return {
-      id: this.baseName(),
+      id: this.baseName,
       value: this.value,
       type: types.find(p => StatBase['TYPE_' + p.toUpperCase()] == this.type),
       restriction
@@ -51,10 +52,13 @@ class RestrictionStat extends Stat {
         let [instance, type] = r[p].description.split('|');
         if (!type)
           type = instance;
-        res.push((p == 'main' ? '' : p + '/') + type);
+        res.push((p === 'main' ? '' : p + '/') + type);
       });
     }
     return res;
+  }
+  restrictionTexts() {
+    return this.showData().map(p => GetLang('common/Equipment/stat restriction/' + p));
   }
 }
 
@@ -65,7 +69,7 @@ class RestrictionStat extends Stat {
  * @return RestrictionStat
  */
 RestrictionStat.from = function(stat, restriction) {
-  return new RestrictionStat(stat.base, stat.type, stat.statValue(), restriction);
+  return new RestrictionStat(stat.base, stat.type, stat.value, restriction);
 };
 
 RestrictionStat.fromOrigin = function(stat, originRestriction) {
@@ -75,7 +79,9 @@ RestrictionStat.fromOrigin = function(stat, originRestriction) {
     '1h_sword', '2h_sword', 'bow', 'bowgun', 'staff',
     'magic_device', 'knuckle', 'halberd', 'katana',
 
-    'arrow', 'shield', 'dagger',
+    'arrow', 'dagger', 'ninjutsu-scroll',
+
+    'shield',
 
     'dodge', 'defense', 'normal'
   ];
@@ -88,7 +94,9 @@ RestrictionStat.fromOrigin = function(stat, originRestriction) {
     MainWeapon.TYPE_KNUCKLE, MainWeapon.TYPE_HALBERD,
     MainWeapon.TYPE_KATANA,
 
-    SubWeapon.TYPE_ARROW, SubArmor.TYPE_SHIELD, SubWeapon.TYPE_DAGGER,
+    SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_NINJUTSU_SCROLL,
+
+    SubArmor.TYPE_SHIELD,
 
     BodyArmor.TYPE_DODGE, BodyArmor.TYPE_DEFENSE, BodyArmor.TYPE_NORMAL
   ];

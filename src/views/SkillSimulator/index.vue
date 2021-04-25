@@ -238,7 +238,7 @@ import CY from "@Utils/Cyteria";
 import { LoadingNotify } from '@Services/Notify';
 
 import vue_skillRoot from "./skill-root.vue";
-import vue_SaveLoadDataSystem from "@vue-components/SaveLoadDataSystem/main.vue";
+import vue_SaveLoadDataSystem from "@components/SaveLoadDataSystem/main.vue";
 
 import { getSkillElementId } from "./utils";
 import { computeDrawSkillTreeData, GetDrawSetting } from "@lib/Skill/utils/DrawSkillTree";

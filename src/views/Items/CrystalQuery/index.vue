@@ -45,7 +45,7 @@
                     {{ cs.origin.name }}
                   </cy-icon-text>
                   <show-stat v-if="currentMode == 'stats' && currentStat" class="crystal-stat-detail"
-                    :stat="cs.stat" :negative-value="cs.stat.statValue() < 0" type="preview" />
+                    :stat="cs.stat" :negative-value="cs.stat.value < 0" type="preview" />
                 </cy-list-item>
               </template>
             </cy-button>
@@ -66,15 +66,15 @@
           <cy-flex-layout class="pl-3 mb-2" v-if="currentCrystal.origin.enhancer">
             <cy-icon-text icon="bx-bx-cube-alt" text-size="small">
               {{ $lang('enhancer title') }}
-              <span class="text-orange text-sm">
+              <span class="text-orange">
                 {{ currentCrystal.origin.enhancer }}
               </span>
             </cy-icon-text>
           </cy-flex-layout>
           <div class="pl-1">
             <show-stat v-for="stat in currentCrystal.stats"
-              :stat="stat" :key="stat.title()"
-              :negative-value="stat.statValue() < 0" />
+              :stat="stat" :key="stat.title"
+              :negative-value="stat.value < 0" />
           </div>
         </div>
       </div>
@@ -117,7 +117,7 @@ import init from "./init.js";
 import { StatBase } from "@lib/Character/Stat";
 import { EquipmentCrystal } from "@lib/Character/CharacterEquipment";
 
-import vue_showStat from "./show-stat.vue";
+import vue_showStat from "@components/common/show-stat.vue";
 
 export default {
   RegisterLang: 'Crystal Query',
@@ -207,7 +207,7 @@ export default {
         this.crystalCategorys.forEach(cat => {
           const t = cat.crystals
             .filter(c => this.findCrystalStat(searchStat, c))
-            .sort((a, b) => this.findCrystalStat(searchStat, b).statValue() - this.findCrystalStat(searchStat, a).statValue());
+            .sort((a, b) => this.findCrystalStat(searchStat, b).value - this.findCrystalStat(searchStat, a).value);
           t.length != 0 && res.push({
             id: cat.id,
             crystals: t
@@ -229,7 +229,7 @@ export default {
   methods: {
     findCrystalStat(from, crystal) {
       return crystal.stats
-        .find(stat => stat.baseName() == from.origin.baseName &&
+        .find(stat => stat.baseName == from.origin.baseName &&
             stat.type == from.type);
     },
     selectStat(stat) {

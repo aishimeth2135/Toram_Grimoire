@@ -91,19 +91,11 @@ export default {
       display: inline-flex;
     }
 
-    & > svg, & > img {
-      height: var(--icon-width);
-      width: var(--icon-width);
-      flex-shrink: 0;
-      color: var(--icon-color);
-      fill: currentcolor;
-
-      & + .text {
-        margin-left: var(--text-margin-left);
-        color: var(--text-color);
-        display: inline-flex;
-        align-items: center;
-      }
+    .text {
+      margin-left: var(--text-margin-left);
+      color: var(--text-color);
+      display: inline-flex;
+      align-items: center;
     }
 
     > .value {

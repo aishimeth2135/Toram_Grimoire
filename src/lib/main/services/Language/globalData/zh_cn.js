@@ -20,6 +20,79 @@ export default function() {
       'copy to clipboard finished': '已复制文本至剪贴簿。',
       'LocalStorage is inavailable': '此浏览器版本无法使用内建储存功能。',
     },
+    'common': {
+      'Equipment': {
+        'field': {
+          'main-weapon': '主手武器',
+          'sub-weapon': '副手武器',
+          'sub-armor': '副手防具',
+          'body-armor': '身体装备',
+          'additional': '追加装备',
+          'special': '特殊装备',
+          'avatar': '时装'
+        },
+        'category': {
+          'one-hand-sword': '单手剑',
+          'two-hand-sword': '双手剑',
+          'bow': '弓',
+          'bowgun': '弩',
+          'staff': '杖',
+          'magic-device': '魔导具',
+          'knuckle': '拳套',
+          'halberd': '旋风枪',
+          'katana': '拔刀剑',
+          'sub-weapon|arrow': '箭矢',
+          'sub-weapon|dagger': '小刀',
+          'sub-weapon|ninjutsu-scroll': '忍术卷轴',
+          'sub-armor|shield': '盾牌',
+          'body-armor|normal': '一般防具',
+          'body-armor|dodge': '轻化防具',
+          'body-armor|defense': '重化防具'
+        },
+        'stat restriction': {
+          'event': '活动',
+          'one-hand-sword': '单手剑',
+          'two-hand-sword': '双手剑',
+          'dual-sword': '双剑',
+          'bow': '弓',
+          'bowgun': '弩',
+          'staff': '法杖',
+          'magic-device': '魔导具',
+          'knuckle': '拳套',
+          'halberd': '旋风枪',
+          'katana': '拔刀剑',
+          'sub': {
+            'arrow': '箭矢',
+            'shield': '盾牌',
+            'dagger': '小刀',
+            'katana': '副手拔刀剑',
+            'magic-device': '副手魔导具',
+            'knuckle': '副手拳套',
+            'one-hand-sword': '双剑',
+            'ninjutsu-scroll': '忍术卷轴'
+          },
+          'body': {
+            'dodge': '轻化防具',
+            'defense': '重化防具',
+            'normal': '一般防具'
+          }
+        },
+        'obtain': {
+          'mobs': '小怪',
+          'boss': '定点BOSS',
+          'mini_boss': '地图BOSS',
+          'quest': '任务',
+          'smith': '铁匠铺',
+          'create equipment': '制作装备',
+          'all smith': '各个城镇的铁匠铺',
+          'no data': '尚无资料',
+          'unknow': '未知',
+          'other': '其它',
+          'box': '箱子道具',
+          'exchange': '交换所'
+        },
+      }
+    },
     'Loading Page': {
       'bottom tips': '初次载入需要较长的时间，请稍后...<br />若载入途中发生错误，请先试着重新整理网页。'
     },
@@ -52,8 +125,7 @@ export default function() {
     },
     'Footer': {
       'baha home': '巴哈小屋',
-      'night mode': '夜间模式',
-      'user guide': '操作指引'
+      'night mode': '夜间模式'
     },
     'Settings': {
       'title': '设定',

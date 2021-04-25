@@ -548,31 +548,44 @@ export default {
       if (target !== 'main' && target !== 'sub') {
         return;
       }
+      /**
+       * 0'空手', 1'單手劍', 2'雙手劍', 3'弓', 4'弩', 5'法杖',
+       * 6'魔導具', 7'拳套', 8'旋風槍', 9'拔刀劍', 10'雙劍',
+       *
+       * 0'無裝備', 1'箭矢', 2'盾牌', 3'小刀', 4'魔導具',
+       * 5'拳套', 6'拔刀劍', 7'忍術卷軸',
+      */
       const check = () => {
         const main = this.equipmentState.main,
           sub = this.equipmentState.sub;
         if (main === -1 || sub === -1) {
           return true;
         }
-        const t = [];
+        const t = new Set();
         switch (main) {
-          case 0: case 1: case 4: case 5:
-            t.push(5);
+          case 0: case 1: case 5:
+            t.add(7);
+            /* falls through */
+          case 4:
+            t.add(5);
             /* falls through */
           case 7:
-            t.push(2, 4);
-            /* falls through */
-          case 8: case 9:
-            t.push(1, 3);
+            t.add(2).t.add(3).add(4);
+            break;
+          case 9:
+            t.add(3).add(7);
+            break;
+          case 8:
+            t.add(1).add(3);
             break;
           case 3:
-            t.push(1, 6);
+            t.add(1).add(6);
             break;
           case 6:
-            t.push(3);
+            t.add(7);
         }
-        t.push(0);
-        return t.includes(sub);
+        t.add(0);
+        return t.has(sub);
       };
       while (!check()) {
         this.toggleEquipmentType(target === 'main' ? 'sub' : 'main', false);

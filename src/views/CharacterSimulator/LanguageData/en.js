@@ -20,67 +20,6 @@ export default function() {
       'custom equipment': 'Customize Equipment',
       'character optional base stat': 'Personal Stats',
       'custom equipment: default name prefix': 'Customize',
-      'character field names': {
-        'main-weapon': 'Main Weapon',
-        'sub-weapon': 'Sub Weapon',
-        'body-armor': 'Body Armor',
-        'additional': 'Additional Equipment',
-        'special': 'Special Equipment',
-        'avatar': 'Avatar'
-      },
-      'equipment type category': {
-        'main-weapon': 'Main Weapon',
-        'sub-weapon': 'Sub Weapon',
-        'sub-armor': 'Sub Armor(Shield)',
-        'body-armor': 'Body Armor',
-        'additional': 'Additional Equipment',
-        'special': 'Special Equipment',
-        'avatar': 'Avatar'
-      },
-      'field type text': {
-        'one-hand-sword': 'One-Handed Sword',
-        'two-hand-sword': 'Two-Handed Sword',
-        'bow': 'Bow',
-        'bowgun': 'Bowgun',
-        'staff': 'Staff',
-        'magic-device': 'Magic Device',
-        'knuckle': 'Knuckle',
-        'halberd': 'Halberd',
-        'katana': 'Katana',
-        'sub-weapon|arrow': 'Arrow',
-        'sub-weapon|dagger': 'Dagger',
-        'sub-armor|shield': 'Shield',
-        'body-armor|normal': 'Normal Armor',
-        'body-armor|dodge': 'Light Armor',
-        'body-armor|defense': 'Heavy Armor'
-      },
-      'stat restriction text': {
-        'event': 'Event',
-        'one-hand-sword': 'One-Handed Sword',
-        'two-hand-sword': 'Two-Handed Sword',
-        'dual-sword': 'Dual Sword',
-        'bow': 'Bow',
-        'bowgun': 'Bowgun',
-        'staff': 'Staff',
-        'magic-device': 'Magic Device',
-        'knuckle': 'Knuckle',
-        'halberd': 'Halberd',
-        'katana': 'Katana',
-        'sub': {
-          'arrow': 'Arrow',
-          'shield': 'Shield',
-          'dagger': 'Dagger',
-          'katana': 'Katana(Sub)',
-          'magic-device': 'Magic Device(Sub)',
-          'knuckle': 'Knuckle(Sub)',
-          'one-hand-sword': 'One-Hand Sword(Dual Sword Sub)'
-        },
-        'body': {
-          'dodge': 'Light Armor',
-          'defense': 'Heavy Armor',
-          'normal': 'Normal Armor'
-        }
-      },
       'browse equipments': {
         'action: normal': 'Equipment List',
         'action: select-field-equipment': 'Equipment List',
@@ -99,18 +38,6 @@ export default function() {
         'action: custom description': 'Make new equipment, you are able to customize the status of this equipment.',
         'search equipment placeholder': 'Search Equipment by name...',
         'search equipment result: selected title': 'Equipment(s) have been selected',
-        'search equipment result: obtain': {
-          'mobs': 'Mobs Drop',
-          'boss': 'Boss Drop',
-          'mini_boss': 'Mini Boss Drop',
-          'quest': 'Quest Reward',
-          'smith': 'Smith craft',
-          'unknow': 'Unknown',
-          'other': 'Other',
-          'box': 'Loot Box content',
-          'exchange': 'Exchange'
-        },
-
         'search equipment result: limit reached': 'Search Limit has being reached. If you cannot find the equipment, Try to search with more details.',
         'search text is empty': 'The search bar is empty',
         'append equipments successfully': 'Successfully added $0 Equipment(s).',

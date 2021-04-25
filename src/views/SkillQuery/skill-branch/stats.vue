@@ -18,7 +18,7 @@ export default {
   computed: {
     statTexts() {
       return this.stats.map((p, i) => {
-        const dc = new DataContainer(p.statValue());
+        const dc = new DataContainer(p.value);
 
         let v = this.calcValueStr(dc.value());
         let sign = '+';
