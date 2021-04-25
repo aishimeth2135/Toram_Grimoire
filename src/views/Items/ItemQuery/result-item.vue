@@ -10,14 +10,14 @@
         </cy-icon-text>
         <div class="base-value" v-if="state.currentMode === 'normal' ||
           state.currentMode === 'dye' || state.displayMode === 1">
-          <template v-if="equipment.is == 'weapon'">
+          <template v-if="equipment.is === 'weapon'">
             <cy-icon-text icon="mdi-sword" class="base-value--name" text-color="purple">
               ATK
             </cy-icon-text>
             <span class="base-value--value">{{ equipment.atk }}</span>
             <span class="stability">{{ equipment.stability }}%</span>
           </template>
-          <template v-else>
+          <template v-else-if="equipment.is === 'armor'">
             <cy-icon-text icon="mdi-shield" class="base-value--name" text-color="purple">
               DEF
             </cy-icon-text>

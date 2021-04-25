@@ -202,7 +202,7 @@ import init from "./init.js";
 
 import vue_searchResult from "./search-result.vue";
 
-import { CharacterEquipment, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear } from "@lib/Character/CharacterEquipment";
+import { CharacterEquipment, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/Character/CharacterEquipment";
 import { StatBase } from "@lib/Character/Stat";
 
 export default {
@@ -465,10 +465,17 @@ export default {
       return [];
     },
     validEquipments() {
+      const validTypes = this.conditions.type.filter(type => type.selected);
+      if (validTypes.length === 0) {
+        validTypes.push({
+          id: 'avatar',
+          instance: Avatar,
+          types: null,
+          selected: true
+        });
+      }
       return this.equipments.filter(p => {
-        const checkType = this.conditions.type
-          .filter(type => type.selected)
-          .find(type => {
+        const checkType = validTypes.find(type => {
             const checkInstance = !Array.isArray(type.instance) ?
               p instanceof type.instance :
               type.instance.find(a => p instanceof a);
