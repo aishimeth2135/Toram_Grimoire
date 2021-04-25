@@ -241,7 +241,7 @@ class EnchantEquipment {
     const v = this.currentSteps(step_index).reduce((c, p) => {
       const t = p.stat(itemBase, type);
       if (t && t.valid())
-        c += t.statValue();
+        c += t.value;
       return c;
     }, 0);
     return new EnchantStat(itemBase, type, v);
@@ -259,9 +259,9 @@ class EnchantEquipment {
           return;
         const t = stats.find(b => b.equals(a));
         if (t)
-          t.statValue(t.statValue() + a.statValue());
+          t.value = t.value + a.value;
         else
-          stats.push(new EnchantStat(a.itemBase, a.statType(), a.statValue()));
+          stats.push(new EnchantStat(a.itemBase, a.statType(), a.value));
       });
     });
     return stats;
@@ -300,7 +300,7 @@ class EnchantEquipment {
   refreshStats() {
     this.currentStats().forEach(p => {
       const [max, min] = p.itemBase.getLimit(p.statType());
-      const v = p.statValue();
+      const v = p.value;
       if (v > max || v < min) {
         const dif = v > max ? v - max : v - min;
         this.currentSteps().slice().reverse().find(a => {
@@ -409,7 +409,7 @@ class EnchantStep {
   stat(itemBase, type) {
     let t = typeof itemBase == 'string' // by statBase.baseName
       ?
-      this.stepStats.find(p => p.baseName() == itemBase && p.stat.type == type) :
+      this.stepStats.find(p => p.baseName == itemBase && p.stat.type == type) :
       this.stepStats.find(p => p.itemBase == itemBase && p.stat.type == type);
     return t;
   }
@@ -463,9 +463,17 @@ class EnchantStat {
     this.itemBase = itemBase;
     this.stat = itemBase.statBase.createStat(type, v);
   }
-  baseName() {
-    return this.stat.baseName();
+
+  get value() {
+    return this.stat.value;
   }
+  set value(v) {
+    this.stat.value = v;
+  }
+  get baseName() {
+    return this.stat.baseName;
+  }
+
   show(v) {
     let [sv, sv2] = this.itemBase.getUnitValue(this.statType()).split('|');
     const convertThreshold = this.itemBase.getPotentialConvertThreshold(this.statType());
@@ -474,7 +482,7 @@ class EnchantStat {
       return v == void 0 ? this.stat.show() : this.stat.show({}, v);
     else {
       sv2 = sv2 || sv;
-      v = v == void 0 ? this.stat.statValue() : v;
+      v = v == void 0 ? this.stat.value : v;
       let v2 = 0, sign = 1;
       if (v < 0) {
         sign = -1;
@@ -491,9 +499,6 @@ class EnchantStat {
   }
   statType() {
     return this.stat.type;
-  }
-  statValue(v) {
-    return this.stat.statValue(v);
   }
   addStatValue(v) {
     return this.stat.addStatValue(v);
@@ -512,16 +517,16 @@ class EnchantStepStat extends EnchantStat {
   set(v) {
     const eqstat = this.belongEquipment().stat(this.itemBase, this.stat.type);
     const [max, min] = this.itemBase.getLimit(this.stat.type);
-    const ov = eqstat.stat.addStatValue(-1 * this.stat.statValue());
+    const ov = eqstat.stat.add(-1 * this.stat.value);
     if (ov + v > max)
       v = max - ov;
     if (ov + v < min)
       v = min - ov;
 
-    this.statValue(v);
+    this.value = v;
   }
   add(v) {
-    this.set(this.stat.statValue() + v);
+    this.set(this.stat.value + v);
   }
   /**
    * Get the sum of potential cost of this EnchantStat
@@ -604,14 +609,14 @@ class EnchantStepStat extends EnchantStat {
    * 取得此項能力，之前所有步驟的加總。
    */
   getPreviousStepStatValue() {
-    return this.belongEquipment().stat(this.itemBase, this.statType(), this._parent.index() - 1).statValue();
+    return this.belongEquipment().stat(this.itemBase, this.statType(), this._parent.index() - 1).value;
   }
   showCurrentText() {
-    return this.show(this.getPreviousStepStatValue() + this.statValue());
+    return this.show(this.getPreviousStepStatValue() + this.value);
   }
   getMaterialPointCost() {
     const from = this.getPreviousStepStatValue(),
-      to = from + this.statValue();
+      to = from + this.value;
     return {
       type: this.itemBase.getMaterialPointType(),
       value: this.calcMaterialPointCost(from, to)

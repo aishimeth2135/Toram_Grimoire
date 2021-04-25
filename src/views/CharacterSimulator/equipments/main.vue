@@ -60,7 +60,7 @@ import vue_selectCrystals from "./select-crystals.vue";
 import ToggleService from "@setup/ToggleService";
 
 import { EquipmentField } from "@lib/Character/Character";
-import { CharacterEquipment, MainWeapon, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/Character/CharacterEquipment";
+import { CharacterEquipment } from "@lib/Character/CharacterEquipment";
 
 export default {
   RegisterLang: 'Character Simulator',
@@ -139,28 +139,10 @@ export default {
       }
     },
     getShowEquipmentData(o) {
-      let category, icon;
-      if (o instanceof BodyArmor) {
-        category = this.$lang('field type text/' + o.type.description);
-        icon = 'mdi-tshirt-crew';
-      } else if (o instanceof AdditionalGear) {
-        category = this.$lang('character field names/' + EquipmentField.TYPE_ADDITIONAL.description);
-        icon = 'cib-redhat';
-      } else if (o instanceof SpecialGear) {
-        category = this.$lang('character field names/' + EquipmentField.TYPE_SPECIAL.description);
-        icon = 'fa-solid:ring';
-      } else if (o instanceof Avatar) {
-        category = this.$lang('character field names/' + EquipmentField.TYPE_AVATAR.description);
-        icon = 'eva-star-outline';
-      } else {
-        category = this.$lang('field type text/' + o.type.description);
-        icon = o instanceof MainWeapon ? 'mdi-sword' : 'mdi-shield';
-      }
-
       return {
         origin: o,
-        categoryIcon: icon,
-        categoryText: category
+        categoryIcon: o.categoryIcon,
+        categoryText: o.categoryText
       };
     },
     convertEquipmentData(item) {

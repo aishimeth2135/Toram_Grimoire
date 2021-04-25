@@ -35,8 +35,10 @@
     "@vue/cli-service": "~4.5.12",
     "@vue/compiler-sfc": "^3.0.0-beta.1",
     "babel-eslint": "^10.1.0",
+    "chinese-conv": "^1.0.1",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-alpha.0",
+    "findit2": "^2.2.3",
     "vue-cli-plugin-tailwind": "~2.0.6"
   },
   "eslintConfig": {
@@ -54,8 +56,17 @@
     "rules": {
       "no-unused-vars": "warn",
       "no-trailing-spaces": "warn",
-      "object-curly-spacing": ["warn", "always"],
-      "comma-spacing": ["warn", { "before": false, "after": true }]
+      "object-curly-spacing": [
+        "warn",
+        "always"
+      ],
+      "comma-spacing": [
+        "warn",
+        {
+          "before": false,
+          "after": true
+        }
+      ]
     }
   },
   "browserslist": [

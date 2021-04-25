@@ -297,8 +297,8 @@ export default {
         'stat': {
           default: (a, b) => {
             const cs = this.modes.stat.currentStat;
-            const av = handleCompareValue(this.findStat(cs, a.stats).statValue()),
-              bv = handleCompareValue(this.findStat(cs, b.stats).statValue());
+            const av = handleCompareValue(this.findStat(cs, a.stats).value),
+              bv = handleCompareValue(this.findStat(cs, b.stats).value);
             return av - bv;
           }
         },
@@ -498,7 +498,7 @@ export default {
       Object.entries(o).forEach(([key]) => o[key] = key === id ? !o[key] : false);
     },
     findStat(target, stats) {
-      return stats.find(stat => stat.baseName() === target.origin.baseName &&
+      return stats.find(stat => stat.baseName === target.origin.baseName &&
         stat.type === target.type);
     },
     switchDisplay() {

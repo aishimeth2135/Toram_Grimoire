@@ -102,7 +102,7 @@ export default {
       return res.slice(0, this.searchResultMaximum).map((item, i) => {
         const o = this.convertEquipmentData(item);
 
-        const obtain = this.$lang('search equipment result: obtain/' +
+        const obtain = this.$globalLang('common/Equipment/obtain/' +
           (item.obtains.length > 0 ? item.obtains[0].type : 'unknow'));
 
         return {

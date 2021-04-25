@@ -144,8 +144,8 @@ export default {
         const idx = [BodyArmor, AdditionalGear, SpecialGear, Avatar]
           .findIndex(p => eq instanceof p);
         return idx != -1 ?
-          this.$lang('character field names/' + ids[idx]) :
-          this.$lang('field type text/' + eq.type.description);
+          this.$globalLang('common/Equipment/field/' + ids[idx]) :
+          this.$globalLang('common/Equipment/field/' + eq.type.description);
       }
       return this.$lang('create custom equipment/select equipment type');
     },
@@ -168,7 +168,7 @@ export default {
       }
       if (from) {
         eq.stats = !eq.hasElement ?
-          from.stats.filter(p => !this.isElementStat(p.baseName())) :
+          from.stats.filter(p => !this.isElementStat(p.baseName)) :
           from.stats;
       }
 

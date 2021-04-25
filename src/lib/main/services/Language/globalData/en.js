@@ -1,24 +1,94 @@
 export default function() {
   return {
     'global': {
-      'second': '秒',
-      'confirm': '確定',
-      'cancel': '取消',
-      'clear': '清除',
-      'split string': '、',
+      'second': 'secs',
+      'confirm': 'Apply',
+      'cancel': 'Cancel',
+      'clear': 'Clear',
+      'split string': ', ',
       'menu': '選單',
-      'delete': '刪除',
-      'remove': '移除',
+      'delete': 'Delete',
+      'remove': 'Remove',
       'copy': '複製',
-      'download': '下載',
+      'download': 'Download',
       'search': '查詢',
       'recovery': '復原',
-      'button': '按鈕',
+      'button': 'Button',
       'none': '無',
       'create': '建立',
-      'close': '關閉',
+      'close': 'Close',
       'copy to clipboard finished': '已複製文本至剪貼簿。',
       'LocalStorage is inavailable': '此瀏覽器版本無法使用內建儲存功能。',
+    },
+    'common': {
+      'Equipment': {
+        'field': {
+          'main-weapon': 'Main Weapon',
+          'sub-weapon': 'Sub Weapon',
+          'sub-armor': 'Sub Armor(Shield)',
+          'body-armor': 'Body Armor',
+          'additional': 'Additional Equipment',
+          'special': 'Special Equipment',
+          'avatar': 'Avatar'
+        },
+        'category': {
+          'one-hand-sword': 'One-Handed Sword',
+          'two-hand-sword': 'Two-Handed Sword',
+          'bow': 'Bow',
+          'bowgun': 'Bowgun',
+          'staff': 'Staff',
+          'magic-device': 'Magic Device',
+          'knuckle': 'Knuckle',
+          'halberd': 'Halberd',
+          'katana': 'Katana',
+          'sub-weapon|arrow': 'Arrow',
+          'sub-weapon|dagger': 'Dagger',
+          'sub-weapon|ninjutsu-scroll': 'Ninjutsu Scroll',
+          'sub-armor|shield': 'Shield',
+          'body-armor|normal': 'Normal Armor',
+          'body-armor|dodge': 'Light Armor',
+          'body-armor|defense': 'Heavy Armor'
+        },
+        'stat restriction': {
+          'event': 'Event',
+          'one-hand-sword': 'One-Handed Sword',
+          'two-hand-sword': 'Two-Handed Sword',
+          'dual-sword': 'Dual Sword',
+          'bow': 'Bow',
+          'bowgun': 'Bowgun',
+          'staff': 'Staff',
+          'magic-device': 'Magic Device',
+          'knuckle': 'Knuckle',
+          'halberd': 'Halberd',
+          'katana': 'Katana',
+          'sub': {
+            'arrow': 'Arrow',
+            'shield': 'Shield',
+            'dagger': 'Dagger',
+            'katana': 'Katana(Sub)',
+            'magic-device': 'Magic Device(Sub)',
+            'knuckle': 'Knuckle(Sub)',
+            'one-hand-sword': 'One-Hand Sword(Dual Sword Sub)',
+            'ninjutsu-scroll': 'Ninjutsu Scroll'
+          },
+          'body': {
+            'dodge': 'Light Armor',
+            'defense': 'Heavy Armor',
+            'normal': 'Normal Armor'
+          }
+        },
+        'obtain': {
+          'mobs': 'Mobs Drop',
+          'boss': 'Boss Drop',
+          'mini_boss': 'Mini Boss Drop',
+          'quest': 'Quest Reward',
+          'smith': 'Smith craft',
+          'unknow': 'Unknown',
+          'other': 'Other',
+          'box': 'Loot Box content',
+          'exchange': 'Exchange'
+        },
+      }
     },
     'Loading Page': {
       'bottom tips': '初次載入需要較長的時間，請稍後...<br />若載入途中發生錯誤，請先試著重新整理網頁。'
@@ -46,17 +116,16 @@ export default function() {
     },
     'Left Menu': {
       'Home': {
-        'base': '主頁',
-        'about': '關於'
+        'base': 'Home',
+        'about': 'About'
       }
     },
     'Footer': {
-      'baha home': '巴哈小屋',
-      'night mode': '夜間模式',
-      'user guide': '操作指引'
+      'baha home': 'Baha Home',
+      'night mode': 'Night Mode'
     },
     'Settings': {
-      'title': '設定',
+      'title': 'Settings',
       'switch font': {
         'title': '更改字體',
         'caption': '若字體顯示有問題（特定裝置會發生），或是不喜歡現在的預設字體，可以切換字體為基本字體。',

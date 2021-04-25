@@ -182,7 +182,7 @@ export default {
         'dark': 0
       };
       const chara = this.currentCharacterState.origin;
-      const setElement = stat => element[stat.baseName().replace('element_', '')] = 1;
+      const setElement = stat => element[stat.baseName.replace('element_', '')] = 1;
 
       const sub = chara.equipmentField(EquipmentField.TYPE_SUB_WEAPON);
       // 主手弓副手矢時，矢優先於弓
@@ -389,13 +389,13 @@ export default {
 
       const appendStat = stat => {
         const t = all_stats.find(a => a.equals(stat));
-        let v = stat.statValue();
+        let v = stat.value;
         if (typeof v != 'number')
           v = parseFloat(v);
         if (Number.isNaN(v))
           v = 0;
-        stat.statValue(v);
-        t ? t.addStatValue(v) : all_stats.push(stat.copy());
+        stat.value = v;
+        t ? t.add(v) : all_stats.push(stat.copy());
       };
 
       c.equipmentFields.forEach(field => {
@@ -413,7 +413,7 @@ export default {
         const branchStatDatasToStats = stats => {
           return stats.map(stat => {
             const p = stat.origin.copy();
-            p.statValue(stat.value);
+            p.value = stat.value;
             return p;
           });
         };
@@ -554,6 +554,7 @@ export default {
           body: bodyField.equipmentType
         };
         const mains = [
+          EquipmentField.EMPTY,
           MainWeapon.TYPE_ONE_HAND_SWORD,
           MainWeapon.TYPE_TWO_HAND_SWORD,
           MainWeapon.TYPE_BOW,
@@ -564,26 +565,32 @@ export default {
           MainWeapon.TYPE_HALBERD,
           MainWeapon.TYPE_KATANA,
           null,
-          EquipmentField.EMPTY
         ];
         const subs = [
+          EquipmentField.EMPTY,
           SubWeapon.TYPE_ARROW,
           SubArmor.TYPE_SHIELD,
           SubWeapon.TYPE_DAGGER,
           MainWeapon.TYPE_MAGIC_DEVICE,
           MainWeapon.TYPE_KNUCKLE,
           MainWeapon.TYPE_KATANA,
-          EquipmentField.EMPTY
+          SubWeapon.TYPE_NINJUTSU_SCROLL,
         ];
         const bodys = [
+          EquipmentField.EMPTY,
           BodyArmor.TYPE_DODGE,
           BodyArmor.TYPE_DEFENSE,
           BodyArmor.TYPE_NORMAL,
-          EquipmentField.EMPTY
         ];
-        // 'main-weapon': ['單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍', '空手'],
-        // 'sub-weapon': ['箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍', '無裝備'],
-        // 'body-armor': ['輕量化', '重量化', '一般', '無裝備'],
+        /**
+         * 0'空手', 1'單手劍', 2'雙手劍', 3'弓', 4'弩', 5'法杖',
+         * 6'魔導具', 7'拳套', 8'旋風槍', 9'拔刀劍', 10'雙劍',
+         *
+         * 0'無裝備', 1'箭矢', 2'盾牌', 3'小刀', 4'魔導具',
+         * 5'拳套', 6'拔刀劍', 7'忍術卷軸',
+         *
+         * 0'無裝備', 1'輕量化', 2'重量化', 3'一般',
+        */
         let main = -1, sub = -1, body = -1;
 
         mainField = types.main;
@@ -593,10 +600,10 @@ export default {
         if (mainField) {
           main = mainField == MainWeapon.TYPE_ONE_HAND_SWORD &&
             subField && subField == MainWeapon.TYPE_ONE_HAND_SWORD ?
-              9 :
+              10 :
               mains.indexOf(mainField);
         }
-        if (subField && main != 9) {
+        if (subField && main != 10) {
           sub = subs.indexOf(subField);
         }
         if (bodyField) {
@@ -606,7 +613,7 @@ export default {
         return { main, sub, body };
       })();
 
-      const forDualSword = eq.main === 0 && fieldEq.main === 9 && !skillState.states.find(a => a.equipment.main == 9);
+      const forDualSword = eq.main === 0 && fieldEq.main === 10 && !skillState.states.find(a => a.equipment.main == 10);
 
       const { main, sub, body } = eq;
       const _eq = { main, sub, body };

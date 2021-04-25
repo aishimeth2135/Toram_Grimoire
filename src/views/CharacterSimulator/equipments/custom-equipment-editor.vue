@@ -16,7 +16,7 @@
     <div class="stats content">
       <div v-for="stat in equipment.stats"
         :key="stat.statId">
-        <cy-input-counter :value="stat.statValue()"
+        <cy-input-counter :value="stat.value"
           type="line" class="set-stat-value"
           :range="stat.isBoolStat ? ranges.boolStat : ranges.stat"
           @update:value="setStatValue(stat, $event)">
@@ -316,7 +316,7 @@ export default {
       }
     },
     setStatValue(stat, v) {
-      stat.statValue(v);
+      stat.value = v;
     },
     toggleWindowVisible(target, force) {
       target = target + 'Window';

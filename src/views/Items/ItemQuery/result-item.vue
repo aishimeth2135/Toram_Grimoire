@@ -3,7 +3,7 @@
     <cy-list-item class="title-container" :class="{ 'detail-visible': detailVisible }"
       @click="detailVisible = !detailVisible">
       <div class="title">
-        <cy-icon-text :icon="equipmentIcon"
+        <cy-icon-text :icon="equipment.categoryIcon"
           :text-color="detailVisible ? 'orange' : 'dark'"
           :icon-color="detailVisible ? 'orange' : 'light-2'">
           {{ equipment.name }}
@@ -27,7 +27,7 @@
         <template v-else-if="state.currentMode === 'stat'">
           <show-stat v-if="state.currentMode === 'stat'"
             :stat="previewStat"
-            :negative-value="previewStat.statValue() < 0"
+            :negative-value="previewStat.value < 0"
             type="preview" />
         </template>
         <template v-else-if="state.currentMode === 'item-level'">
@@ -42,7 +42,31 @@
     </cy-list-item>
     <cy-transition type="fade">
       <div class="detail" v-if="detailVisible">
-        <div class="extra" v-if="originEquipment.extra">
+        <div class="mb-2 pl-2 flex items-center">
+          <cy-icon-text :icon="equipment.categoryIcon"
+            text-color="orange" text-size="small"
+            class="mr-4">
+            {{ equipment.categoryText }}
+          </cy-icon-text>
+          <template v-if="equipment.is == 'weapon'">
+            <cy-icon-text icon="mdi-sword"
+              text-size="small" class="mr-2">
+              ATK
+            </cy-icon-text>
+            <span class="text-light-3 text-sm mr-2">{{ equipment.atk }}</span>
+            <span class="text-water-blue text-sm border-l border-solid border-water-blue-light pl-2">
+              {{ equipment.stability }}%
+            </span>
+          </template>
+          <template v-else>
+            <cy-icon-text icon="mdi-shield"
+              text-size="small" class="mr-2">
+              DEF
+            </cy-icon-text>
+            <span class="text-light-3 text-sm mr-2">{{ equipment.def }}</span>
+          </template>
+        </div>
+        <div class="mb-2 pl-2" v-if="originEquipment.extra">
           <cy-icon-text v-if="originEquipment.extra['caption']"
             icon="ic-outline-info" text-size="small" text-color="light-3">
             {{ originEquipment.extra['caption'] }}
@@ -58,7 +82,7 @@
           <template v-if="equipment.stats.length !== 0">
             <show-stat v-for="stat in equipment.stats" :stat="stat"
               :key="stat.statId"
-              :negative-value="stat.statValue() < 0" />
+              :negative-value="stat.value < 0" />
           </template>
           <cy-default-tips v-else icon="mdi-ghost">
             {{ $lang('equipment detail/tips: without any stat') }}
@@ -164,9 +188,7 @@
   </div>
 </template>
 <script>
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear } from "@lib/Character/CharacterEquipment";
-
-import vue_showStat from "./show-stat.vue";
+import vue_showStat from "@components/common/show-stat.vue";
 
 export default {
   RegisterLang: 'Item Query',
@@ -197,30 +219,6 @@ export default {
     originEquipment() {
       return this.equipment.origin;
     },
-    equipmentIcon() {
-      const list = [{
-        instance: MainWeapon,
-        icon: 'mdi-sword'
-      }, {
-        instance: SubWeapon,
-        icon: 'mdi-shield'
-      }, {
-        instance: SubArmor,
-        icon: 'mdi-shield'
-      }, {
-        instance: BodyArmor,
-        icon: 'mdi-tshirt-crew'
-      }, {
-        instance: AdditionalGear,
-        icon: 'cib-redhat'
-      }, {
-        instance: SpecialGear,
-        icon: 'fa-solid:ring'
-      }];
-
-      const t = list.find(p => this.equipment instanceof p.instance);
-      return t ? t.icon : '';
-    },
     obtainsData() {
       return this.obtainsDataConvert(this.originEquipment.obtains);
     }
@@ -239,7 +237,7 @@ export default {
         'exchange': 'bx-bx-shopping-bag'
       };
       return obtains.map((p, i) => {
-        const type = this.$lang('equipment detail/obtains/' + p.type);
+        const type = this.$globalLang('common/Equipment/obtain/' + p.type);
         const icon = icons[p.type];
         const name = p.type !== 'smith' ? p.name : this.$lang('equipment detail/production equipment');
         const { map=null, dye=null } = p;
@@ -309,11 +307,6 @@ export default {
   padding-bottom: 0.8rem;
   padding-left: 1.5rem;
   @apply bg-white;
-
-  > .extra {
-    margin-bottom: 0.5rem;
-    padding-left: 0.6rem;
-  }
 }
 
 fieldset.column {

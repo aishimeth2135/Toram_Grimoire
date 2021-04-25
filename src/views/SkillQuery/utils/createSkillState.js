@@ -85,14 +85,14 @@ function handleSkillState(skill) {
       let findStat = target.stats[idx];
       if (idx == -1) {
         target.stats.push(stat.copy());
-        target['@stat-overwrite-list'].push(stat.baseName());
+        target['@stat-overwrite-list'].push(stat.baseName);
       } else {
         if (stat.value === '') {
           target.stats.splice(idx, 1);
-          target['@stat-delete-list'].push(stat.baseName());
+          target['@stat-delete-list'].push(stat.baseName);
         } else {
-          findStat.statValue(stat.value);
-          target['@stat-overwrite-list'].push(stat.baseName());
+          findStat.value = stat.value;
+          target['@stat-overwrite-list'].push(stat.baseName);
         }
       }
     });
@@ -288,7 +288,7 @@ function handleSkillState(skill) {
           const idx = target.stats.findIndex(a => a.equals(stat));
           if (idx == -1)
             target.stats.push(stat.copy());
-          else if (target.stats[idx].statValue() == '')
+          else if (target.stats[idx].value == '')
             target.stats.splice(idx, 1);
         });
       });

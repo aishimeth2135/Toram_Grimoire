@@ -6,6 +6,16 @@ function Lang(s) {
 }
 
 class StatBase {
+  static TYPE_CONSTANT = Symbol('constant');
+  static TYPE_MULTIPLIER = Symbol('multiplier');
+  static TYPE_TOTAL = Symbol('total');
+
+  static sortStats = function(stats, type='simple') {
+    if (type === 'simple')
+      stats.sort((a, b) => a.base.order - b.base.order);
+    return stats;
+  }
+
   constructor(bn, t, hm, order) {
     this.baseName = bn;
     this.text = t;
@@ -93,18 +103,6 @@ class StatBase {
   }
 }
 
-StatBase.TYPE_CONSTANT = Symbol('constant');
-StatBase.TYPE_MULTIPLIER = Symbol('multiplier');
-StatBase.TYPE_TOTAL = Symbol('total');
-
-
-StatBase.sortStats = function(stats, type='simple') {
-  if (type === 'simple')
-    stats.sort((a, b) => a.base.order - b.base.order);
-  return stats;
-};
-
-
 class Stat {
   constructor(base, type, v = 0) {
     this.base = base;
@@ -113,11 +111,16 @@ class Stat {
   }
 
   get statId() {
-    return `${this.baseName()}|${this.type.description}`;
+    return `${this.baseName}|${this.type.description}`;
   }
-
   get isBoolStat() {
     return this.base.checkBoolStat(this.type);
+  }
+  get title() {
+    return this.base.title(this.type);
+  }
+  get baseName() {
+    return this.base.baseName;
   }
 
   show(config, v) {
@@ -128,20 +131,9 @@ class Stat {
   getShowData() {
     return this.base.getShowData(this.type, this.value);
   }
-  statValue(v) {
-    if (v !== void 0)
-      this.value = v;
-    return this.value;
-  }
-  addStatValue(v) {
+  add(v) {
     this.value += v;
     return this.value;
-  }
-  baseName() {
-    return this.base.baseName;
-  }
-  title() {
-    return this.base.title(this.type);
   }
   /**
    * if input_stat.baseName == this.baseName and input_stat.type == this.type, return true.
@@ -150,7 +142,7 @@ class Stat {
    * @return {Boolean}
    */
   equals(stat) {
-    return stat.base == this.base && stat.type == this.type;
+    return stat.base === this.base && stat.type === this.type;
   }
   copy() {
     return this.base.createStat(this.type, this.value);

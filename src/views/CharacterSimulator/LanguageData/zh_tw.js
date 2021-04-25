@@ -20,67 +20,6 @@ export default function() {
       'custom equipment': '自訂裝備',
       'character optional base stat': '角色個人能力',
       'custom equipment: default name prefix': '自訂',
-      'character field names': {
-        'main-weapon': '主手武器',
-        'sub-weapon': '副手裝備',
-        'body-armor': '身體裝備',
-        'additional': '追加裝備',
-        'special': '特殊裝備',
-        'avatar': '時裝'
-      },
-      'equipment type category': {
-        'main-weapon': '主手武器',
-        'sub-weapon': '副手武器',
-        'sub-armor': '副手防具',
-        'body-armor': '身體裝備',
-        'additional': '追加裝備',
-        'special': '特殊裝備',
-        'avatar': '時裝'
-      },
-      'field type text': {
-        'one-hand-sword': '單手劍',
-        'two-hand-sword': '雙手劍',
-        'bow': '弓',
-        'bowgun': '弩',
-        'staff': '杖',
-        'magic-device': '魔導具',
-        'knuckle': '拳套',
-        'halberd': '旋風槍',
-        'katana': '拔刀劍',
-        'sub-weapon|arrow': '箭矢',
-        'sub-weapon|dagger': '小刀',
-        'sub-armor|shield': '盾牌',
-        'body-armor|normal': '一般防具',
-        'body-armor|dodge': '輕化防具',
-        'body-armor|defense': '重化防具'
-      },
-      'stat restriction text': {
-        'event': '活動',
-        'one-hand-sword': '單手劍',
-        'two-hand-sword': '雙手劍',
-        'dual-sword': '雙劍',
-        'bow': '弓',
-        'bowgun': '弩',
-        'staff': '法杖',
-        'magic-device': '魔導具',
-        'knuckle': '拳套',
-        'halberd': '旋風槍',
-        'katana': '拔刀劍',
-        'sub': {
-          'arrow': '箭矢',
-          'shield': '盾牌',
-          'dagger': '小刀',
-          'katana': '副手拔刀劍',
-          'magic-device': '副手魔導具',
-          'knuckle': '副手拳套',
-          'one-hand-sword': '雙劍'
-        },
-        'body': {
-          'dodge': '輕化防具',
-          'defense': '重化防具',
-          'normal': '一般防具'
-        }
-      },
       'browse equipments': {
         'action: normal': '裝備清單',
         'action: select-field-equipment': '裝備清單',
@@ -99,18 +38,6 @@ export default function() {
         'action: custom description': '建立一件新裝備，可以自訂該裝備的各項能力值。',
         'search equipment placeholder': '搜尋裝備名稱...',
         'search equipment result: selected title': '件裝備已被選取',
-        'search equipment result: obtain': {
-          'mobs': '小怪掉落',
-          'boss': '定點BOSS掉落',
-          'mini_boss': '地圖BOSS掉落',
-          'quest': '任務獎勵',
-          'smith': '鐵匠鋪製作',
-          'unknow': '未知的取得方式',
-          'other': '其它',
-          'box': '箱子道具內容物',
-          'exchange': '交換所兌換'
-        },
-
         'search equipment result: limit reached': '可顯示的搜尋結果數量已達上限。如果沒有找到想找的裝備，請試著更改關鍵字。',
         'search text is empty': '搜尋的關鍵字須至少一個字元。',
         'append equipments successfully': '已成功新增$0件裝備。',

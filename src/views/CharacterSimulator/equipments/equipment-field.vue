@@ -2,7 +2,7 @@
   <div class="equipment-field p-3 border border-solid border-light m-2 bg-white">
     <div class="flex items-center border-b border-solid border-light pb-1 mb-3">
       <cy-icon-text icon="gg-shape-square" text-size="small" text-color="purple">
-        {{ $lang('character field names/' + field.type.description) }}
+        {{ $globalLang('common/Equipment/field/' + field.type.description) }}
       </cy-icon-text>
       <div class="ml-auto leading-none">
         <cy-button v-if="!field.isEmpty()"

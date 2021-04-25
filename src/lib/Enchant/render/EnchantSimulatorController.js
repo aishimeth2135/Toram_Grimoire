@@ -684,7 +684,7 @@ export default class EnchantSimulatorController {
     scope.querySelector('.sub .stat-material-point-cost').innerHTML = mat.value + " " + Lang('Material Point Type List')[mat.type];
 
     CY.element.setAttributes(scope, {
-      'data-bn': estat.baseName(),
+      'data-bn': estat.baseName,
       'data-type': estat.statType() == StatBase.TYPE_CONSTANT ? 0 : 1
     });
   }
@@ -738,7 +738,7 @@ export default class EnchantSimulatorController {
       new_step.hidden(step.hidden());
       this.status.currentStepScope = new_step_scope;
       step.stepStats.forEach(stat => {
-        this.createEnchantStat(new_step, stat.itemBase, stat.statType(), stat.statValue());
+        this.createEnchantStat(new_step, stat.itemBase, stat.statType(), stat.value);
       });
     });
 
@@ -941,9 +941,9 @@ export default class EnchantSimulatorController {
     value = value !== void 0 ?
       value :
       (pot > item.basePotential(type) ?
-        (min - Math.min(eq.stat(item, type, eq.lastStepIndex()).statValue(), 0)) :
+        (min - Math.min(eq.stat(item, type, eq.lastStepIndex()).value, 0)) :
         0);
-    estat.statValue(value);
+    estat.value = value;
 
     const node = this.createEnchantStatHTML(estat);
     const stats_scope = this.status.currentStepScope.querySelector('.step-stats');
@@ -1019,9 +1019,9 @@ export default class EnchantSimulatorController {
         step.stepStats.forEach(stat => {
           const p2 = createColumn(2);
           p2[index['type']] = type['stat'];
-          p2[index['stat']['baseName']] = stat.baseName();
+          p2[index['stat']['baseName']] = stat.baseName;
           p2[index['stat']['type']] = statTypeToInt(stat.statType());
-          p2[index['stat']['value']] = stat.statValue();
+          p2[index['stat']['value']] = stat.value;
         });
       });
     });

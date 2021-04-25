@@ -12,34 +12,7 @@ export default function(){
       },
       'select stat: title': '請選擇一個能力',
       'select stat: window title': '選擇能力',
-      'select stat: search placeholder': '搜尋能力',
-      'stat restriction text': {
-        'event': '活動',
-        'one-hand-sword': '單手劍',
-        'two-hand-sword': '雙手劍',
-        'dual-sword': '雙劍',
-        'bow': '弓',
-        'bowgun': '弩',
-        'staff': '法杖',
-        'magic-device': '魔導具',
-        'knuckle': '拳套',
-        'halberd': '旋風槍',
-        'katana': '拔刀劍',
-        'sub': {
-          'arrow': '箭矢',
-          'shield': '盾牌',
-          'dagger': '小刀',
-          'katana': '副手拔刀劍',
-          'magic-device': '副手魔導具',
-          'knuckle': '副手拳套',
-          'one-hand-sword': '雙劍'
-        },
-        'body': {
-          'dodge': '輕化防具',
-          'defense': '重化防具',
-          'normal': '一般防具'
-        }
-      },
+      'select stat: search placeholder': '搜尋能力'
     }
   };
 }

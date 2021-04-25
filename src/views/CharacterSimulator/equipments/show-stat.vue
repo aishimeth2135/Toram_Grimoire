@@ -1,31 +1,27 @@
 <template>
-  <div class="inline-block mr-3" :class="{ 'opacity-60': !statValid }">
-    <cy-icon-text v-if="type !== 'custom'"
-      type="item" icon="mdi-leaf"
-      :text-color="negativeValue ? 'red' : 'dark'">
-      <span v-for="text in restrictionTexts"
-        class="text-water-blue text-sm mr-1"
-        :key="text">{{ text }}</span><span>{{ stat.show() }}</span>
-    </cy-icon-text>
-    <cy-icon-text v-else icon="mdi-leaf"
-      :text-color="negativeValue ? 'red' : 'dark'">
-      <slot></slot>
-    </cy-icon-text>
-  </div>
+  <show-stat v-if="type !== 'custom'"
+    :stat="stat" :negative-value="negativeValue"
+    :type="type"
+    :invlaid="!statValid" />
+  <cy-icon-text v-else icon="mdi-leaf"
+    :text-color="negativeValue ? 'red' : 'dark'">
+    <slot></slot>
+  </cy-icon-text>
 </template>
 <script>
+import vue_showStat from "@components/common/show-stat.vue";
+
 export default {
-  RegisterLang: 'Character Simulator',
   props: ['stat', 'type', 'negativeValue'],
   inject: ['checkStatRestriction'],
   computed: {
-    restrictionTexts() {
-      return this.stat.showData().map(p => this.$lang('stat restriction text/' + p));
-    },
     statValid() {
       // this.stat may be undefined when this.type is "custom"
       return  !this.stat || this.checkStatRestriction(this.stat);
     }
+  },
+  components: {
+    'show-stat': vue_showStat
   }
 };
 </script>

@@ -89,18 +89,20 @@ class Character {
         t.push(MainWeapon.TYPE_ONE_HAND_SWORD);
         // fall through
       case EquipmentField.EMPTY:
-      case MainWeapon.TYPE_BOWGUN:
       case MainWeapon.TYPE_STAFF:
+        t.push(SubWeapon.TYPE_NINJUTSU_SCROLL);
+        // fall through
+      case MainWeapon.TYPE_BOWGUN:
         t.push(MainWeapon.TYPE_KNUCKLE);
         // fall through
       case MainWeapon.TYPE_KNUCKLE:
         t.push(MainWeapon.TYPE_MAGIC_DEVICE, SubArmor.TYPE_SHIELD);
         // fall through
       case MainWeapon.TYPE_HALBERD:
-        t.push(SubWeapon.TYPE_ARROW);
-        // fall through
+        t.push(SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER);
+        break;
       case MainWeapon.TYPE_KATANA:
-        t.push(SubWeapon.TYPE_DAGGER);
+        t.push(SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_NINJUTSU_SCROLL);
         break;
       case MainWeapon.TYPE_BOW:
         t.push(SubWeapon.TYPE_ARROW, MainWeapon.TYPE_KATANA);
@@ -454,13 +456,13 @@ class CharacterStatFormula {
       return from[v1];
     }
 
-    const checkBaseName = stat => stat.baseName() == this.belongCharacterStat.link;
+    const checkBaseName = stat => stat.baseName == this.belongCharacterStat.link;
     const c_stat = simple_stats.find(stat => checkBaseName(stat) && stat.type == StatBase.TYPE_CONSTANT),
       m_stat = simple_stats.find(stat => checkBaseName(stat) && stat.type == StatBase.TYPE_MULTIPLIER),
       t_stat = simple_stats.find(stat => checkBaseName(stat) && stat.type == StatBase.TYPE_TOTAL);
-    let cvalue = c_stat ? c_stat.statValue() : 0,
-      mvalue = m_stat ? m_stat.statValue() : 0,
-      tvalue = t_stat ? t_stat.statValue() : 0;
+    let cvalue = c_stat ? c_stat.value : 0,
+      mvalue = m_stat ? m_stat.value : 0,
+      tvalue = t_stat ? t_stat.value : 0;
 
     // const hexVarlist = ['cvalue', 'mvalue', 'tvalue']; // 一般的#變數
 
