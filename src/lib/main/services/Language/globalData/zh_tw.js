@@ -89,7 +89,8 @@ export default function() {
           'unknow': '未知',
           'other': '其它',
           'box': '箱子道具',
-          'exchange': '交換所'
+          'exchange': '交換所',
+          'ex_skill': 'EX技能'
         },
       }
     },
