@@ -570,7 +570,7 @@ export default {
             t.add(5);
             /* falls through */
           case 7:
-            t.add(2).t.add(3).add(4);
+            t.add(2).add(3).add(4);
             break;
           case 9:
             t.add(3).add(7);

@@ -1,26 +1,25 @@
 <script>
-import { h } from "vue";
+import { h, mergeProps } from "vue";
 import Icons from "@Services/SvgIcons.js";
 
-export default {
-  props: {
-    'iconId': {
-      type: String,
-      default: ''
-    }
-  },
-  render() {
-    const tmp = document.createElement('template');
-    tmp.innerHTML = Icons(this.iconId);
-    const svgEl = tmp.content.firstChild;
-    const attrs = {};
-    Array.from(svgEl.attributes).forEach(item => {
-      attrs[item.name] = item.value;
-    });
-    return h('svg', {
-      ...attrs,
-      innerHTML: svgEl.innerHTML
-    });
-  }
+export default function SvgIcon(props, context) {
+  const tmp = document.createElement('template');
+  tmp.innerHTML = Icons(props.iconId);
+  const svgEl = tmp.content.firstChild;
+  const tmpAttrs = {};
+  Array.from(svgEl.attributes).forEach(item => {
+    tmpAttrs[item.name] = item.value;
+  });
+  const attrs = mergeProps(tmpAttrs, context.attrs);
+  return h('svg', {
+    ...attrs,
+    innerHTML: svgEl.innerHTML
+  });
 }
+SvgIcon.props = {
+  'iconId': {
+    type: String,
+    default: ''
+  }
+};
 </script>

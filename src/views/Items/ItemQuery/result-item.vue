@@ -23,6 +23,11 @@
             </cy-icon-text>
             <span class="base-value--value">{{ equipment.def }}</span>
           </template>
+          <template v-else-if="equipment.origin.unknowCategory">
+            <cy-icon-text icon="mdi-ghost" class="base-value--name" text-color="purple">
+              {{ equipment.origin.unknowCategory }}
+            </cy-icon-text>
+          </template>
         </div>
         <template v-else-if="state.currentMode === 'stat'">
           <show-stat v-if="state.currentMode === 'stat'"
@@ -43,12 +48,16 @@
     <cy-transition type="fade">
       <div class="detail" v-if="detailVisible">
         <div class="mb-2 pl-2 flex items-center">
-          <cy-icon-text :icon="equipment.categoryIcon"
+          <cy-icon-text v-if="equipment.origin.unknowCategory"
+            icon="mdi-ghost" text-size="small" text-color="orange">
+            {{ equipment.origin.unknowCategory }}
+          </cy-icon-text>
+          <cy-icon-text v-else :icon="equipment.categoryIcon"
             text-color="orange" text-size="small"
             class="mr-4">
             {{ equipment.categoryText }}
           </cy-icon-text>
-          <template v-if="equipment.is == 'weapon'">
+          <template v-if="equipment.is === 'weapon'">
             <cy-icon-text icon="mdi-sword"
               text-size="small" class="mr-2">
               ATK
@@ -58,7 +67,7 @@
               {{ equipment.stability }}%
             </span>
           </template>
-          <template v-else>
+          <template v-else-if="equipment.is === 'armor'">
             <cy-icon-text icon="mdi-shield"
               text-size="small" class="mr-2">
               DEF
