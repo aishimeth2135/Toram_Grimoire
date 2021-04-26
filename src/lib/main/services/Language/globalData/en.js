@@ -86,7 +86,8 @@ export default function() {
           'unknow': 'Unknown',
           'other': 'Other',
           'box': 'Loot Box content',
-          'exchange': 'Exchange'
+          'exchange': 'Exchange',
+          'ex_skill': 'EX Skill'
         },
       }
     },

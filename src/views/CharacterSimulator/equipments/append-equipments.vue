@@ -94,9 +94,8 @@ export default {
     searchResult() {
       const text = this.searchText;
       let res = this.$store.state.datas.items.equipments;
-      if (text !== '') {
-        res = res.filter(item => item.name.includes(text));
-      }
+      res = res.filter(item => (item.name.includes(text) && item.category !== -1)
+        || (item.category === -1 && item.name === text));
       res.sort((a, b) => b.id - a.id);
 
       return res.slice(0, this.searchResultMaximum).map((item, i) => {
