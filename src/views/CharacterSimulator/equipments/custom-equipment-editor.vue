@@ -6,8 +6,8 @@
     </cy-icon-text>
     <div class="name content">
       <cy-title-input icon="mdi-clipboard-edit-outline"
-       :value="equipment.name"
-       @update:value="setEquipmentProperty(equipment, 'name', $event)" />
+        :value="equipment.name"
+         @update:value="setEquipmentProperty(equipment, 'name', $event)" />
     </div>
     <cy-icon-text icon="mdi-rhombus-outline"
       text-size="small" text-color="purple">
@@ -243,7 +243,8 @@ export default {
         return this.elementFilterStats;
       }
       return this.elementFilterStats
-        .filter(stat => stat.origin.title(stat.type).toLowerCase().includes(this.searchText.toLowerCase()));
+        .filter(stat => stat.origin.title(stat.type).toLowerCase()
+        .includes(this.searchText.toLowerCase()));
     },
     hasOther() {
       return this.equipment.hasStability;

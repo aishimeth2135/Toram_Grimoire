@@ -4,21 +4,26 @@ import { StatBase, Stat } from "./StatBase.js";
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from "../CharacterEquipment";
 
 class RestrictionStat extends Stat {
-  constructor(base, type, v, restriction=null) {
+  constructor(base, type, v, restriction = null) {
     super(base, type, v);
+
+    // {Object|null}
     this.restriction = restriction;
   }
 
   get statId() {
-    const r = this.restriction;
-    const rs = [r.main, r.sub, r.body, r.other];
-    const rtext = rs.map(p => {
-      if (typeof p === 'symbol')
-        return p.description;
-      if (typeof p === 'string')
-        return p;
-      return 'none';
-    }).join('+');
+    let rtext = 'none++';
+    if (this.restriction) {
+      const r = this.restriction;
+      const rs = [r.main, r.sub, r.body, r.other];
+      rtext = rs.map(p => {
+        if (typeof p === 'symbol')
+          return p.description;
+        if (typeof p === 'string')
+          return p;
+        return 'none';
+      }).join('+');
+    }
     return `${this.baseName}|${this.type.description}|${rtext}`;
   }
 
