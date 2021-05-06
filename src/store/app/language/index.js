@@ -1,4 +1,4 @@
-import CY from "@Utils/Cyteria";
+import CY from "@utils/Cyteria";
 
 const store = {
   namespaced: true,

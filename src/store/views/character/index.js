@@ -1,8 +1,8 @@
 import Papa from "papaparse";
 
-import { LevelSkillTree } from "@lib/Skill/Skill";
-import { Character } from "@lib/Character/Character";
-import { CharacterEquipment } from "@lib/Character/CharacterEquipment";
+import { LevelSkillTree } from "@/lib/Skill/Skill";
+import { Character } from "@/lib/Character/Character";
+import { CharacterEquipment } from "@/lib/Character/CharacterEquipment";
 
 import createFoodBuild from "./food-build.js";
 

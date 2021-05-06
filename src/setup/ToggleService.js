@@ -12,6 +12,10 @@ export default function(options) {
     dataMap[key] = group;
   });
 
+  /**
+   * @param {string} id
+   * @param {boolean} force
+   */
   const toggle = (id, force) => {
     const [group, sub] = id.split('/');
     if (sub) {

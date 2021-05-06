@@ -186,8 +186,7 @@
           </cy-transition>
         </div>
       </div>
-      <cy-window :visible="previewExportedImageWindowVisible"
-        @close-window="previewExportedImageWindowVisible = false"
+      <cy-window v-model:visible="previewExportedImageWindowVisible"
         :frozen-top="true" width="auto">
         <template #title>
           <cy-flex-layout>
@@ -211,8 +210,7 @@
           <img :src="currentExportedImage || '#'" />
         </div>
       </cy-window>
-      <cy-window :visible="previewExportedTextWindowVisible"
-        @close-window="previewExportedTextWindowVisible = false"
+      <cy-window v-model:visible="previewExportedTextWindowVisible"
         :frozen-top="true" width="auto">
         <template #title>
           <cy-flex-layout>
@@ -234,14 +232,14 @@
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex';
-import CY from "@Utils/Cyteria";
-import { LoadingNotify } from '@Services/Notify';
+import CY from "@utils/Cyteria";
+import { LoadingNotify } from '@services/Notify';
 
 import vue_skillRoot from "./skill-root.vue";
-import vue_SaveLoadDataSystem from "@components/SaveLoadDataSystem/main.vue";
+import vue_SaveLoadDataSystem from "@/components/SaveLoadDataSystem/main.vue";
 
 import { getSkillElementId } from "./utils";
-import { computeDrawSkillTreeData, GetDrawSetting } from "@lib/Skill/utils/DrawSkillTree";
+import { computeDrawSkillTreeData, GetDrawSetting } from "@/lib/Skill/utils/DrawSkillTree";
 
 import init from "./init.js";
 

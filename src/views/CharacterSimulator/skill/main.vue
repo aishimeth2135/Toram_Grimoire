@@ -11,7 +11,7 @@
         </template>
         <template #options>
           <cy-list-item v-for="(build, i) in skillBuilds" :key="build.stateId"
-            :selected="i == currentSkillBuildIndex"
+            :selected="i === currentSkillBuildIndex"
             @click="selectCurrentBuild(i)">
             <cy-icon-text icon="gg-shape-rhombus">
               {{ build.name }}
@@ -20,28 +20,27 @@
         </template>
       </cy-options>
     </div>
-    <div class="top-sub">
+    <div class="my-3">
       <cy-button type="border" icon="mdi-rhombus-outline"
-        :selected="mode == 'passive'"
+        :selected="mode === 'passive'"
         @click="setMode('passive')">
         {{ $lang('skill management/passive skills') }}
       </cy-button>
       <cy-button type="border" icon="mdi-rhombus-outline"
-        :selected="mode == 'active'"
+        :selected="mode === 'active'"
         @click="setMode('active')">
         {{ $lang('skill management/active skills') }}
       </cy-button>
     </div>
     <div class="content">
-      <template v-if="mode == 'passive' && passiveSkillStates.length != 0">
+      <template v-if="mode === 'passive' && passiveSkillStates.length !== 0">
         <skill-item v-for="state in passiveSkillStates"
           :level-skill-state-root="state"
           :key="state.levelSkill.base.id + '#' + state.levelSkill.base.name" />
       </template>
-      <template v-else-if="mode == 'active' && activeSkillStates.length != 0">
+      <template v-else-if="mode === 'active' && activeSkillStates.length !== 0">
         <skill-item v-for="state in activeSkillStates"
           :level-skill-state-root="state"
-          v-model:level-skill-state-root-disable="state.disable"
           :key="state.levelSkill.base.id + '#' + state.levelSkill.base.name" />
       </template>
       <cy-default-tips v-else icon="mdi-ghost">
@@ -49,8 +48,7 @@
       </cy-default-tips>
     </div>
     <cy-window v-if="userSetsWindow.handler && userSetsWindow.handler.hasUserSets"
-      :visible="userSetsWindow.visible"
-      @close-window="toggleUserSetsWindowVisible">
+      v-model:visible="userSetsWindow.visible">
       <template #title>
         <cy-icon-text icon="mdi-numeric">
           {{ $lang('skill management/user sets: window title') }}
@@ -107,11 +105,11 @@ export default {
     };
   },
   created() {
-    if (this.skillBuilds.length != 0)
+    if (this.skillBuilds.length !== 0)
       this.selectCurrentBuild(0);
   },
   updated() {
-    if (this.skillBuilds.length != 0 && this.currentSkillBuildIndex < 0)
+    if (this.skillBuilds.length !== 0 && this.currentSkillBuildIndex < 0)
       this.selectCurrentBuild(0);
   },
   computed: {
@@ -130,12 +128,9 @@ export default {
     selectCurrentBuild(idx) {
       this.$store.commit('character/setCurrentSkillBuild', { index: idx })
     },
-    toggleUserSetsWindowVisible() {
-      this.userSetsWindow.visible = !this.userSetsWindow.visible;
-    },
     openUserSetsWindow(handler) {
       this.userSetsWindow.handler = handler;
-      this.toggleUserSetsWindowVisible();
+      this.userSetsWindow.visible = true;
     },
     userSetValue(state, value) {
       state.value = value;
@@ -148,9 +143,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.top-sub {
-  margin: 0.8rem 0;
-}
 .top {
   border-bottom: 0.1rem solid var(--primary-light);
   padding: 0.5rem 0.6rem;

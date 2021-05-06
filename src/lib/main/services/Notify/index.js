@@ -1,4 +1,4 @@
-import store from "@store";
+import store from "@/store";
 import LoadingNotifyItem from "./LoadingNotifyItem";
 
 function MessageNotify(

@@ -59,10 +59,10 @@ import vue_skills from "./skill/main.vue";
 import vue_saveLoad from "./save-load.vue";
 import vue_foodBuild from "./food/main.vue";
 
-import { Character, EquipmentField } from "@lib/Character/Character";
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from "@lib/Character/CharacterEquipment";
+import { Character, EquipmentField } from "@/lib/Character/Character";
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from "@/lib/Character/CharacterEquipment";
 
-import createSkillState from "@views/SkillQuery/utils/createSkillState.js";
+import createSkillState from "@/views/SkillQuery/utils/createSkillState.js";
 import SkillBranchHandler from "./skill/utils/SkillBranchHandler.js";
 
 export default {

@@ -1,5 +1,5 @@
-import Grimoire from "@Grimoire";
-import GetLang from "@Services/Language";
+import Grimoire from "@grimoire";
+import GetLang from "@services/Language";
 import { StatBase, Stat } from "./StatBase.js";
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from "../CharacterEquipment";
 
@@ -24,7 +24,7 @@ class RestrictionStat extends Stat {
         return 'none';
       }).join('+');
     }
-    return `${this.baseName}|${this.type.description}|${rtext}`;
+    return `${this.base.statId(this.type)}|${rtext}`;
   }
 
   copy() {
@@ -48,15 +48,13 @@ class RestrictionStat extends Stat {
   }
   showData() {
     const res = [];
-    const r = this.restriction;
-    if (r) {
-
-      ['main', 'sub', 'body'].forEach(p => {
-        if (!r[p])
-          return;
+    if (this.restriction) {
+      const r = this.restriction;
+      ['main', 'sub', 'body'].filter(p => r[p]).forEach(p => {
         let [instance, type] = r[p].description.split('|');
-        if (!type)
+        if (!type) {
           type = instance;
+        }
         res.push((p === 'main' ? '' : p + '/') + type);
       });
     }
@@ -65,116 +63,113 @@ class RestrictionStat extends Stat {
   restrictionTexts() {
     return this.showData().map(p => GetLang('common/Equipment/stat restriction/' + p));
   }
-}
 
-/**
- * create RestrictionStat from Stat
- * @param  {Stat} stat
- * @param  {String?}    restriction
- * @return RestrictionStat
- */
-RestrictionStat.from = function(stat, restriction) {
-  return new RestrictionStat(stat.base, stat.type, stat.value, restriction);
-};
-
-RestrictionStat.fromOrigin = function(stat, originRestriction) {
-  const itemStatRestrictionList = [
-    'event',
-
-    '1h_sword', '2h_sword', 'bow', 'bowgun', 'staff',
-    'magic_device', 'knuckle', 'halberd', 'katana',
-
-    'arrow', 'dagger', 'ninjutsu-scroll',
-
-    'shield',
-
-    'dodge', 'defense', 'normal'
-  ];
-  const itemStatRestrictionMappingList = [
-    'event',
-
-    MainWeapon.TYPE_ONE_HAND_SWORD, MainWeapon.TYPE_TWO_HAND_SWORD,
-    MainWeapon.TYPE_BOW, MainWeapon.TYPE_BOWGUN,
-    MainWeapon.TYPE_STAFF, MainWeapon.TYPE_MAGIC_DEVICE,
-    MainWeapon.TYPE_KNUCKLE, MainWeapon.TYPE_HALBERD,
-    MainWeapon.TYPE_KATANA,
-
-    SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_NINJUTSU_SCROLL,
-
-    SubArmor.TYPE_SHIELD,
-
-    BodyArmor.TYPE_DODGE, BodyArmor.TYPE_DEFENSE, BodyArmor.TYPE_NORMAL
-  ];
-
-  const r = {
-    main: null, sub: null, body: null, other: null
-  };
-
-  originRestriction.split(/\s*,\s*/).forEach(q => {
-    let [eqType, restriction] = q.split('.');
-    if (!restriction) {
-      restriction = eqType;
-      eqType = 'main';
-    }
-    const restrictionIndex = itemStatRestrictionList.indexOf(restriction);
-
-    if (!['main', 'sub', 'body'].includes(eqType) || restrictionIndex == -1) {
-      restriction !== '' && console.warn('[warn] unknow restriction of stat: ' + q);
-      return RestrictionStat.from(stat, r);
-    }
-
-    restriction = itemStatRestrictionMappingList[restrictionIndex];
-    if (typeof restriction == 'string')
-      r.other = restriction;
-    else
-      r[eqType] = restriction;
-  });
-
-  return RestrictionStat.from(stat, r);
-};
-
-RestrictionStat.load = function(data) {
-  const base = Grimoire.Character.findStatBase(data.id);
-  if (base) {
-    const stat = base.createStat(StatBase['TYPE_' + data.type.toUpperCase()], data.value);
-
-    const restriction = {};
-    if (!data.restriction) {
-      restriction.main = null;
-      restriction.sub = null;
-      restriction.body = null;
-      restriction.other = null;
-    } else {
-      ['main', 'sub', 'body'].forEach(key => {
-        const t = data.restriction[key];
-        let res;
-        if (t === null)
-          res = null;
-        else {
-          const handleType = a => 'TYPE_' + a.replace(/-/g, '_').toUpperCase();
-          let [instance, type] = t.split('|');
-          if (!type) {
-            type = instance;
-            res = MainWeapon[handleType(type)];
-          } else {
-            res = {
-              'sub-weapon': SubWeapon,
-              'sub-armor': SubArmor,
-              'body-armor': BodyArmor
-            }[instance][handleType(type)]
-          }
-        }
-
-        restriction[key] = res;
-      });
-      restriction.other = data.restriction.other;
-    }
-
-    return RestrictionStat.from(stat, restriction);
+  /**
+   * create RestrictionStat from Stat
+   * @param {Stat} stat - Base Stat
+   * @param {object} restriction
+   * @returns {RestrictionStat}
+   */
+  static from(stat, restriction) {
+    return new RestrictionStat(stat.base, stat.type, stat.value, restriction);
   }
 
-  console.warn('[Error: CharacterEquipment.load] can not find stat which id: ' + data.id);
-  return null;
-};
+  static fromOrigin(stat, originRestriction) {
+    const itemStatRestrictionList = [
+      'event',
+
+      '1h_sword', '2h_sword', 'bow', 'bowgun', 'staff',
+      'magic_device', 'knuckle', 'halberd', 'katana',
+
+      'arrow', 'dagger', 'ninjutsu-scroll',
+
+      'shield',
+
+      'dodge', 'defense', 'normal'
+    ];
+    const itemStatRestrictionMappingList = [
+      'event',
+
+      MainWeapon.TYPE_ONE_HAND_SWORD, MainWeapon.TYPE_TWO_HAND_SWORD,
+      MainWeapon.TYPE_BOW, MainWeapon.TYPE_BOWGUN,
+      MainWeapon.TYPE_STAFF, MainWeapon.TYPE_MAGIC_DEVICE,
+      MainWeapon.TYPE_KNUCKLE, MainWeapon.TYPE_HALBERD,
+      MainWeapon.TYPE_KATANA,
+
+      SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_NINJUTSU_SCROLL,
+
+      SubArmor.TYPE_SHIELD,
+
+      BodyArmor.TYPE_DODGE, BodyArmor.TYPE_DEFENSE, BodyArmor.TYPE_NORMAL
+    ];
+
+    const r = {
+      main: null, sub: null, body: null, other: null
+    };
+
+    originRestriction.split(/\s*,\s*/).forEach(q => {
+      let [eqType, restriction] = q.split('.');
+      if (!restriction) {
+        restriction = eqType;
+        eqType = 'main';
+      }
+      const restrictionIndex = itemStatRestrictionList.indexOf(restriction);
+      if (!['main', 'sub', 'body'].includes(eqType) || restrictionIndex === -1) {
+        restriction !== '' && console.warn('[warn] unknow restriction of stat: ' + q);
+        return RestrictionStat.from(stat, r);
+      }
+
+      restriction = itemStatRestrictionMappingList[restrictionIndex];
+      if (typeof restriction === 'string')
+        r.other = restriction;
+      else
+        r[eqType] = restriction;
+    });
+
+    return RestrictionStat.from(stat, r);
+  }
+
+  static load(data) {
+    const base = Grimoire.Character.findStatBase(data.id);
+    if (base) {
+      const stat = base.createStat(StatBase['TYPE_' + data.type.toUpperCase()], data.value);
+
+      const restriction = {};
+      if (!data.restriction) {
+        restriction.main = null;
+        restriction.sub = null;
+        restriction.body = null;
+        restriction.other = null;
+      } else {
+        ['main', 'sub', 'body'].forEach(key => {
+          const t = data.restriction[key];
+          let res = null;
+          if (t !== null) {
+            const handleType = a => 'TYPE_' + a.replace(/-/g, '_').toUpperCase();
+            let [instance, type] = t.split('|');
+            if (!type) {
+              type = instance;
+              res = MainWeapon[handleType(type)];
+            } else {
+              res = {
+                'sub-weapon': SubWeapon,
+                'sub-armor': SubArmor,
+                'body-armor': BodyArmor
+              }[instance][handleType(type)]
+            }
+          }
+
+          restriction[key] = res;
+        });
+        restriction.other = data.restriction.other;
+      }
+
+      return RestrictionStat.from(stat, restriction);
+    }
+
+    console.warn('[Error: CharacterEquipment.load] can not find stat which id: ' + data.id);
+    return null;
+  }
+}
 
 export default RestrictionStat;

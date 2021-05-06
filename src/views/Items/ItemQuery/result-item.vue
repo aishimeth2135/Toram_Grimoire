@@ -197,7 +197,7 @@
   </div>
 </template>
 <script>
-import vue_showStat from "@components/common/show-stat.vue";
+import vue_showStat from "@/components/common/show-stat.vue";
 
 export default {
   RegisterLang: 'Item Query',

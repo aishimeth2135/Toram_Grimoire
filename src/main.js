@@ -1,12 +1,12 @@
-import "@css/main/font/font.css";
-import "@css/main/main.less";
-import "@css/SaveLoad/main.css";
-import "@css/main/Cyteria/Cyteria.css";
+import "@/assets/css/main/font/font.css";
+import "@/assets/css/main/main.less";
+import "@/assets/css/SaveLoad/main.css";
+import "@/assets/css/main/Cyteria/Cyteria.css";
 
-import '@css/tailwind.css';
+import '@/assets/css/tailwind.css';
 
-import CY from "@Utils/Cyteria";
-import { InitLanguageSystem } from "@Services/Language";
+import CY from "@utils/Cyteria";
+import { InitLanguageSystem } from "@services/Language";
 
 // == [ init ] =========================================
 InitLanguageSystem();
@@ -28,12 +28,13 @@ import { createApp } from "vue";
 
 import App from "./App.vue";
 import router from "./router/index.js";
-import store from "@store";
+import store from "@/store";
 
 import VueGtag from "vue-gtag-next";
 
-import RegisterLang from "@plugin/RegisterLang.js";
-import Notify from "@plugin/Notify";
+import RegisterLang from "@/plugin/RegisterLang.js";
+import Notify from "@/plugin/Notify";
+import Confirm from "@/plugin/Confirm";
 
 import './registerServiceWorker';
 
@@ -43,6 +44,7 @@ APP
   .use(store)
   .use(RegisterLang)
   .use(Notify)
+  .use(Confirm)
   .use(VueGtag, {
     property: {
       id: 'UA-140158974-1'

@@ -1,7 +1,7 @@
 <template>
   <div class="cy--options" :class="rootClassList">
     <div class="title-container" @click="toggleUnfold">
-      <slot name="title"></slot>
+      <slot name="title" :unfold="unfold"></slot>
     </div>
     <cy-transition type="fade">
       <div class="options-container" v-if="unfold" :style="optionsPosition" @click="toggleUnfold">
@@ -15,10 +15,9 @@
 <script>
 export default {
   props: {
-    display: {
-      type: String,
-      default: 'block',
-      validation: v => ['block', 'inline'].includes(v)
+    inline: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -32,7 +31,7 @@ export default {
   computed: {
     rootClassList() {
       return {
-        'inline': this.display == 'inline'
+        'inline': this.inline
       };
     }
   },
@@ -43,8 +42,21 @@ export default {
       if (this.unfold) {
         const rect = this.$el.getBoundingClientRect();
 
+        const position = {};
+
         const len2bottom = window.innerHeight - rect.bottom;
-        this.optionsPosition = rect.top >= len2bottom ? { bottom: '100%' } : { top: '100%' };
+        if (rect.top >= len2bottom) {
+          position.bottom = '100%';
+        } else {
+          position.top = '100%';
+        }
+        const len2right = window.innerWidth - rect.right;
+        if (rect.left >= len2right) {
+          position.right = '0';
+        } else {
+          position.left = '0';
+        }
+        this.optionsPosition = position;
       }
     }
   }
@@ -58,10 +70,12 @@ export default {
   background-color: var(--white);
 
   &.inline {
+    margin: 0;
     display: inline-block;
 
     > .title-container {
       border: 0;
+      display: flex;
     }
   }
 
@@ -72,7 +86,6 @@ export default {
   > .options-container {
     position: absolute;
     z-index: 20;
-    left: 0;
     width: 100%;
     min-width: 15rem;
 

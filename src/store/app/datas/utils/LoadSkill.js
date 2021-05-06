@@ -1,7 +1,7 @@
-import Grimoire from "@Grimoire";
-import { HandleLanguageData } from "@Services/Language";
+import Grimoire from "@grimoire";
+import { HandleLanguageData } from "@services/Language";
 
-import { SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch } from "@lib/Skill/Skill";
+import { SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch } from "@/lib/Skill/Skill";
 
 function loadSkill(skillSystem, datas){
   const sr = skillSystem.skillRoot;

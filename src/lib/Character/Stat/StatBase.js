@@ -1,5 +1,5 @@
-import GetLang from "@Services/Language";
-import { isNumberString } from "@Utils/string";
+import GetLang from "@services/Language";
+import { isNumberString } from "@utils/string";
 
 function Lang(s) {
   return GetLang('stat base/' + s);
@@ -17,10 +17,19 @@ class StatBase {
   }
 
   constructor(bn, t, hm, order) {
+    /** @type {string} */
     this.baseName = bn;
+
+    /** @type {string} */
     this.text = t;
+
+    /** @type {boolean} */
     this.hasMultiplier = hm;
+
+    /** @type {number} */
     this.order = order;
+
+    /** @type {object} */
     this.attributes = {};
   }
 
@@ -29,18 +38,29 @@ class StatBase {
       this.attributes[n] = v;
     return this;
   }
+
+  /**
+   * @param {symbol} type
+   * @returns {string}
+   */
   title(type) {
-    if (type == StatBase.TYPE_CONSTANT)
-      return this.hasMultiplier || this.text[this.text.length-1] == '%' ?
+    if (type === StatBase.TYPE_CONSTANT)
+      return this.hasMultiplier || this.text[this.text.length-1] === '%' ?
         this.text :
         this.text + (
           (this.attributes['constant_formula'] && this.attributes['constant_formula'].includes('$u')) || !this.attributes['constant_formula'] ?
           '%' :
           ''
         );
-    if (type == StatBase.TYPE_MULTIPLIER)
+    if (type === StatBase.TYPE_MULTIPLIER)
       return this.text + '%';
   }
+
+  /**
+   * @param {symbol} type
+   * @param {StatValue} v
+   * @returns {string}
+   */
   show(type, v) {
     const calc = isNumberString(v);
     if (typeof v !== 'number' && calc)
@@ -66,21 +86,25 @@ class StatBase {
         return handleFormula(Lang('type total: preText') + '$t$s$v$u', '%');
     }
   }
+
+  /**
+   * @param {symbol} type
+   * @param {StatValue} v
+   */
   getShowData(type, v) {
-    let title = '',
-      tail = '';
-    if (type == StatBase.TYPE_CONSTANT) {
+    let title = '', tail = '';
+    if (type === StatBase.TYPE_CONSTANT) {
       title = this.text;
       if (!this.hasMultiplier)
         tail = '%';
       if (this.attributes['constant_formula'] && !this.attributes['constant_formula'].includes('$u'))
         tail = '';
-    } else if (type == StatBase.TYPE_MULTIPLIER) {
+    } else if (type === StatBase.TYPE_MULTIPLIER) {
       title = this.text;
       tail = '%';
       if (this.attributes['multiplier_formula'] && !this.attributes['multiplier_formula'].includes('$u'))
         tail = '';
-    } else if (type == StatBase.TYPE_TOTAL) {
+    } else if (type === StatBase.TYPE_TOTAL) {
       title = Lang('type total: preText') + this.text;
       tail = '%';
     }
@@ -91,27 +115,45 @@ class StatBase {
       tail
     };
   }
+
+  /**
+   * @param {symbol} type
+   * @param {StatValue} [v]
+   * @returns {Stat}
+   */
   createStat(type, v) {
-    if (!this.hasMultiplier && type == StatBase.TYPE_MULTIPLIER) {
+    if (!this.hasMultiplier && type === StatBase.TYPE_MULTIPLIER) {
       type = StatBase.TYPE_CONSTANT;
     }
     return new Stat(this, type, v);
   }
+
+  /** @param {symbol} type */
   checkBoolStat(type) {
     type = type || StatBase.TYPE_CONSTANT;
-    return type == StatBase.TYPE_CONSTANT && this.attributes['constant_formula'] == '$t';
+    return type === StatBase.TYPE_CONSTANT && this.attributes['constant_formula'] === '$t';
+  }
+
+  /** @param {symbol} type */
+  statId(type) {
+    return `${this.baseName}|${type.description}`;
   }
 }
 
 class Stat {
   constructor(base, type, v = 0) {
+    /** @type {StatBase} */
     this.base = base;
+
+    /** @type {symbol} */
     this.type = type;
+
+    /** @type {StatValue} */
     this.value = v;
   }
 
   get statId() {
-    return `${this.baseName}|${this.type.description}`;
+    return this.base.statId(this.type);
   }
   get isBoolStat() {
     return this.base.checkBoolStat(this.type);
@@ -123,30 +165,42 @@ class Stat {
     return this.base.baseName;
   }
 
-  show(config, v) {
-    if (v === void 0)
+  /** @param {StatValue} [v] */
+  show(v) {
+    if (v === void 0) {
       v = this.value;
-    return this.base.show(this.type, v, config);
+    }
+    return this.base.show(this.type, v);
   }
+
   getShowData() {
     return this.base.getShowData(this.type, this.value);
   }
+
+  /** @param {StatValue} v */
   add(v) {
     this.value += v;
     return this.value;
   }
+
   /**
    * if input_stat.baseName == this.baseName and input_stat.type == this.type, return true.
    * (value do not have to be equal)
    * @param  {Stat} stat
-   * @return {Boolean}
+   * @return {boolean}
    */
   equals(stat) {
     return stat.base === this.base && stat.type === this.type;
   }
+
+  /** @return {Stat} */
   copy() {
     return this.base.createStat(this.type, this.value);
   }
 }
 
 export { Stat, StatBase };
+
+/**
+ * @typedef {string|number} StatValue
+ */

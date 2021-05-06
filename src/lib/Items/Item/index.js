@@ -1,5 +1,5 @@
-import Grimoire from "@Grimoire";
-import { StatBase } from "@lib/Character/Stat";
+import Grimoire from "@grimoire";
+import { StatBase } from "@/lib/Character/Stat";
 
 class Item {
   constructor(id, name) {

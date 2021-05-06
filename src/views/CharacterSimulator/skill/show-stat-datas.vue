@@ -1,6 +1,6 @@
 <template>
   <div class="stats">
-    <show-stat class="item" v-for="stat in statDatas" type="custom" :key="stat.iid">
+    <show-stat class="item mr-4" v-for="stat in statDatas" type="custom" :key="stat.iid">
       <span v-html="stat.text"></span>
     </show-stat>
   </div>

@@ -106,7 +106,7 @@
 
 <script>
 import vue_showStat from "./show-stat.vue";
-import { CharacterEquipment } from "@lib/Character/CharacterEquipment";
+import { CharacterEquipment } from "@/lib/Character/CharacterEquipment";
 
 export default {
   RegisterLang: 'Character Simulator',

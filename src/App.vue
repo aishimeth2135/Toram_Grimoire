@@ -5,15 +5,17 @@
     <app-footer />
     <app-initialize />
     <app-notify />
+    <app-confirm />
   </div>
 </template>
 
 <script>
   // app components
-  import vue_nav from "@views/app/nav.vue";
-  import vue_initialize from "@views/app/initialize.vue";
-  import vue_footer from "@views/app/footer.vue";
-  import vue_notify from "@views/app/notify.vue";
+  import vue_nav from "@/views/app/nav.vue";
+  import vue_initialize from "@/views/app/initialize.vue";
+  import vue_footer from "@/views/app/footer.vue";
+  import vue_notify from "@/views/app/notify.vue";
+  import vue_confirm from "@/views/app/confirm.vue";
 
   export default {
     name: 'app',
@@ -21,7 +23,8 @@
       'app-initialize': vue_initialize,
       'app-footer': vue_footer,
       'app-nav': vue_nav,
-      'app-notify': vue_notify
+      'app-notify': vue_notify,
+      'app-confirm': vue_confirm
     }
   };
 </script>

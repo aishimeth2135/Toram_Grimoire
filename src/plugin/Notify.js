@@ -1,4 +1,4 @@
-import MessageNotify from "@Services/Notify";
+import MessageNotify from "@services/Notify";
 
 export default function(app) {
   app.config.globalProperties.$notify = MessageNotify;

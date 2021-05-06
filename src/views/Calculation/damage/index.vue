@@ -5,11 +5,11 @@
   </article>
 </template>
 <script>
-// import GetLang from "@Services/Language";
+// import GetLang from "@services/Language";
 
 import init from "./init.js";
 
-import DamageCalculationController from "@lib/Calculation/Damage/module/Controller.js";
+import DamageCalculationController from "@/lib/Calculation/Damage/module/Controller.js";
 
 export default {
   beforeCreate() {

@@ -1,4 +1,4 @@
-import { Prop } from "@lib/Items/Item";
+import { Prop } from "@/lib/Items/Item";
 
 export default function(root, c) {
   const NAME = 0,

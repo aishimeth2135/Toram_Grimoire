@@ -1,4 +1,4 @@
-import { InitLanguageData } from "@Services/Language";
+import { InitLanguageData } from "@services/Language";
 
 import zh_tw from "./LanguageData/zh_tw.js";
 import en from "./LanguageData/en.js";

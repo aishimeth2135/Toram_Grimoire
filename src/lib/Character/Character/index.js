@@ -1,8 +1,10 @@
-import { StatBase } from "@lib/Character/Stat";
-import { MainWeapon, SubWeapon, SubArmor } from "@lib/Character/CharacterEquipment";
-import Grimoire from "@Grimoire";
+import { StatBase } from "@/lib/Character/Stat";
+import { MainWeapon, SubWeapon, SubArmor } from "@/lib/Character/CharacterEquipment";
+import Grimoire from "@grimoire";
 
 class Character {
+  static OPTIONAL_BASE_STAT_LIST = ['TEC', 'MEN', 'LUK', 'CRT'];
+
   constructor(name = 'Potum') {
     this.name = name;
 
@@ -235,7 +237,6 @@ class Character {
     }
   }
 }
-Character.OPTIONAL_BASE_STAT_LIST = ['TEC', 'MEN', 'LUK', 'CRT'];
 
 class CharacterBaseStat {
   constructor(name, value = 1) {
@@ -245,10 +246,19 @@ class CharacterBaseStat {
 }
 
 class EquipmentField {
+  static TYPE_MAIN_WEAPON = Symbol('main-weapon');
+  static TYPE_SUB_WEAPON = Symbol('sub-weapon');
+  static TYPE_BODY_ARMOR = Symbol('body-armor');
+  static TYPE_ADDITIONAL = Symbol('additional');
+  static TYPE_SPECIAL = Symbol('special');
+  static TYPE_AVATAR = Symbol('avatar');
+
+  static EMPTY = Symbol('empty');
+
   /**
-   * @param  {Character} parent 屬於的Character
-   * @param  {symbol}    type   Equipment.TYPE_XXX
-   * @param  {Number}    index  同樣的type有多個時才需要指定，表示是第幾個。
+   * @param  {Character} parent
+   * @param  {symbol} type   Equipment.TYPE_XXX
+   * @param  {number} [index]  同樣的type有多個時才需要指定，表示是第幾個。
    */
   constructor(parent, type, index = 0) {
     this._parent = parent;
@@ -269,7 +279,7 @@ class EquipmentField {
 
   setEquipment(eq) {
     this.equipment = eq;
-    if (this.type == EquipmentField.TYPE_MAIN_WEAPON) {
+    if (this.type === EquipmentField.TYPE_MAIN_WEAPON) {
       const c = this.belongCharacter;
       const sub = c.equipmentField(EquipmentField.TYPE_SUB_WEAPON);
       if (!c.testSubWeapon(sub.equipmentType, this.equipmentType))
@@ -283,22 +293,13 @@ class EquipmentField {
     return this.equipment == null;
   }
   statsDisable() {
-    if (!this.isEmpty() && this.type == EquipmentField.TYPE_SUB_WEAPON) {
+    if (!this.isEmpty() && this.type === EquipmentField.TYPE_SUB_WEAPON) {
       const eq = this.equipment;
       return !(eq instanceof SubWeapon) && !(eq instanceof SubArmor);
     }
     return false;
   }
 }
-
-EquipmentField.TYPE_MAIN_WEAPON = Symbol('main-weapon');
-EquipmentField.TYPE_SUB_WEAPON = Symbol('sub-weapon');
-EquipmentField.TYPE_BODY_ARMOR = Symbol('body-armor');
-EquipmentField.TYPE_ADDITIONAL = Symbol('additional');
-EquipmentField.TYPE_SPECIAL = Symbol('special');
-EquipmentField.TYPE_AVATAR = Symbol('avatar');
-
-EquipmentField.EMPTY = Symbol('empty');
 
 class CharacterStatCategory {
   constructor(name) {
@@ -538,9 +539,9 @@ class CharacterStatFormula {
           if (m) {
             if (statBasePart == null)
               statBasePart = m[1];
-          } else if (option == '#base') {
+          } else if (option === '#base') {
             isBase = true;
-          } else if (option == '#mul') {
+          } else if (option === '#mul') {
             isMul = true;
           }
         })

@@ -1,4 +1,4 @@
-import { isNumberString } from "@Utils/string";
+import { isNumberString } from "@utils/string";
 
 class DataContainer {
   constructor(o, branch, key) {

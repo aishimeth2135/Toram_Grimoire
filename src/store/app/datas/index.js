@@ -1,8 +1,8 @@
-import ItemsSystem from "@lib/Items";
-import CharacterSystem from "@lib/Character";
-import TagSystem from "@lib/Tag";
-import SkillSystem from "@lib/Skill";
-import EnchantSystem from "@lib/Enchant";
+import ItemsSystem from "@/lib/Items";
+import CharacterSystem from "@/lib/Character";
+import TagSystem from "@/lib/Tag";
+import SkillSystem from "@/lib/Skill";
+import EnchantSystem from "@/lib/Enchant";
 
 import DownloadDatas from "./utils/DownloadDatas.js";
 import loadEquipments from "./utils/LoadEquipments.js";

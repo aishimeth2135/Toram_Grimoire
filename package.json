@@ -10,18 +10,17 @@
   },
   "dependencies": {
     "@iconify/iconify": "^1.0.7",
-    "@tailwindcss/postcss7-compat": "^2.0.2",
-    "autoprefixer": "^9",
+    "autoprefixer": "9",
     "core-js": "^3.6.5",
     "less-loader": "^6.1.2",
     "papaparse": "^5.2.0",
-    "postcss": "^7",
+    "postcss": "7",
     "postcss-comment": "^2.0.0",
     "postcss-nesting": "^7.0.1",
     "postcss-variables": "^1.1.1",
     "recast": "^0.20.4",
     "register-service-worker": "^1.7.1",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "velocity-animate": "^1.5.2",
     "vue": "^3.0.0-beta.1",
     "vue-gtag-next": "^1.14.0",
@@ -37,9 +36,11 @@
     "babel-eslint": "^10.1.0",
     "chinese-conv": "^1.0.1",
     "eslint": "^6.7.2",
+    "eslint-plugin-jsdoc": "^33.0.0",
     "eslint-plugin-vue": "^7.0.0-alpha.0",
     "findit2": "^2.2.3",
-    "vue-cli-plugin-tailwind": "~2.0.6"
+    "vue-cli-plugin-tailwind": "~2.0.6",
+    "webpack-bundle-analyzer": "^4.4.1"
   },
   "eslintConfig": {
     "root": true,
@@ -53,7 +54,11 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
+    "plugins": [
+      "jsdoc"
+    ],
     "rules": {
+      "jsdoc/no-undefined-types": "warn",
       "no-unused-vars": "warn",
       "no-trailing-spaces": "warn",
       "object-curly-spacing": [
@@ -67,7 +72,15 @@
           "after": true
         }
       ]
-    }
+    },
+    "overrides": [
+      {
+        "files": ["*.vue"],
+        "rules": {
+          "jsdoc/no-undefined-types": 0
+        }
+      }
+    ]
   },
   "browserslist": [
     "> 1%",

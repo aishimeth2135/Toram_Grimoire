@@ -17,6 +17,8 @@ export default function() {
       'none': '無',
       'create': '建立',
       'close': '關閉',
+      'export': '匯出',
+      'import': '匯入',
       'copy to clipboard finished': '已複製文本至剪貼簿。',
       'LocalStorage is inavailable': '此瀏覽器版本無法使用內建儲存功能。',
     },

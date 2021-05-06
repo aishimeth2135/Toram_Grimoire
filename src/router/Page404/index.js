@@ -1,7 +1,7 @@
-import vue_page404 from "@views/app/page404.vue";
-import ViewInit from "@Services/ViewInit.js";
+import vue_page404 from "@/views/app/page404.vue";
+import ViewInit from "@services/ViewInit.js";
 
-// import GetLang from "@Services/Language";
+// import GetLang from "@services/Language";
 
 export default {
   path: '/:pathMatch(.*)*',

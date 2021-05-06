@@ -1,13 +1,10 @@
 <script>
+import IconSet from "@/components/mixin/icon-set";
+
 export default {
+  mixins: [IconSet],
   emits: ['click'],
   props: {
-    icon: {
-      type: String
-    },
-    iconSrc: {
-      type: String
-    },
     selected: {
       type: Boolean,
       default: false

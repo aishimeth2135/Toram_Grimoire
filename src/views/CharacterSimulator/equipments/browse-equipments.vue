@@ -1,6 +1,6 @@
 <template>
   <cy-window :visible="visible"
-    @close-window="closeWindow"
+    @close="closeWindow"
     width="wide">
     <template v-slot:title>
       <cy-icon-text icon="ic-outline-category">
@@ -79,8 +79,8 @@ import vue_equipmentItem from "./equipment-item.vue";
 import vue_equipmentInfo from "./equipment-info.vue";
 import vue_characterStatsCompare from "../main/character-stats-compare.vue";
 
-import { EquipmentField } from "@lib/Character/Character";
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/Character/CharacterEquipment";
+import { EquipmentField } from "@/lib/Character/Character";
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@/lib/Character/CharacterEquipment";
 
 import { mapState } from "vuex";
 

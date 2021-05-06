@@ -1,5 +1,5 @@
 <template>
-  <cy-window :visible="visible" @close-window="$emit('close')"
+  <cy-window :visible="visible" @close="$emit('close')"
     vertical-position="top">
     <template v-slot:title>
       <cy-icon-text icon="bx-bx-search-alt">

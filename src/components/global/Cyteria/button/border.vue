@@ -7,11 +7,6 @@
       class="button--text inline-flex items-center ml-2 mr-1 duration-300">
       <slot></slot>
     </span>
-    <slot name="tail"></slot>
-    <span v-if="$slots['content-right']"
-      class="inline-flex items-center ml-auto">
-      <slot name="content-right"></slot>
-    </span>
   </span>
 </template>
 

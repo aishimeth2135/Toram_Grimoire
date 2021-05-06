@@ -1,10 +1,10 @@
 import app from "./app.vue";
 
-import GetLang from "@Services/Language";
-import ViewInit from "@Services/ViewInit.js";
+import GetLang from "@services/Language";
+import ViewInit from "@services/ViewInit.js";
 
-const vue_itemQuery = () => import(/* webpackChunkName: "item-query" */ "@views/Items/ItemQuery");
-const vue_crystalQuery = () => import(/* webpackChunkName: "crystal-query" */ "@views/Items/CrystalQuery");
+const vue_itemQuery = () => import(/* webpackChunkName: "item-query" */ "@/views/Items/ItemQuery");
+const vue_crystalQuery = () => import(/* webpackChunkName: "crystal-query" */ "@/views/Items/CrystalQuery");
 
 export default {
   path: '/items',
