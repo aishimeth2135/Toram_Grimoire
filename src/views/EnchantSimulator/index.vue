@@ -553,7 +553,14 @@ export default {
       const stepsText = this.enchantResult
         .map((p, i) => `${i+1}. ${p.text}`)
         .join('\n');
+      const basePotential = this.currentEquipment.basePotential === ENCHANT_STATE.EquipmentBasePotentialMinimum ?
+        '' :
+        `${this.$lang('equipment base potential')}｜${this.currentEquipment.basePotential}\n`;
       CY.copyToClipboard(
+        `✩ ${this.$lang('result/info')}\n` +
+        `${this.$lang('equipment original potential')}｜${this.characterLevel}\n` +
+        `${this.$lang('smith level')}｜${this.smithLevel}\n` +
+        basePotential +
         `✩ ${this.$lang('result/stats')}\n` +
         `${resultStatsText}\n` +
         `✩ ${this.$lang('result/materials')}\n` +
