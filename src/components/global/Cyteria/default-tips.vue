@@ -9,14 +9,15 @@
   </div>
 </template>
 <script>
-  export default {
-    props: {
-      icon: {},
-      iconSrc: {},
-      'textAlign': {
-        type: String,
-        default: 'center'
-      }
+import IconSet from "@/components/mixin/icon-set";
+
+export default {
+  mixins: [IconSet],
+  props: {
+    'textAlign': {
+      type: String,
+      default: 'center'
     }
   }
+}
 </script>

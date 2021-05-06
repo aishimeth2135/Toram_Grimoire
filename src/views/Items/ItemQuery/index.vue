@@ -92,7 +92,7 @@
             </div>
           </cy-transition>
           <div class="mode-options-container">
-            <cy-options display="inline">
+            <cy-options inline>
               <template #title>
                 <span class="switch-mode-btn">
                   <cy-button type="icon" key="switch-btn"
@@ -168,9 +168,8 @@
         </div>
       </div>
     </div>
-    <cy-window :visible="modes.stat.selectStatVisible"
-        vertical-position="top"
-        @close-window="toggleSelectStatVisible(false)">
+    <cy-window v-model:visible="modes.stat.selectStatVisible"
+        vertical-position="top">
         <template v-slot:title>
           <cy-icon-text icon="mdi-rhombus-outline">
             {{ $lang('options: stat/select stat: window title') }}
@@ -202,8 +201,8 @@ import init from "./init.js";
 
 import vue_searchResult from "./search-result.vue";
 
-import { CharacterEquipment, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/Character/CharacterEquipment";
-import { StatBase } from "@lib/Character/Stat";
+import { CharacterEquipment, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@/lib/Character/CharacterEquipment";
+import { StatBase } from "@/lib/Character/Stat";
 
 export default {
   RegisterLang: 'Item Query',

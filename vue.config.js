@@ -1,4 +1,5 @@
 const path = require('path');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   configureWebpack: {
@@ -13,22 +14,19 @@ module.exports = {
     },
     resolve: {
       alias: {
-        '@views': path.join(__dirname, 'src', 'views'),
-        '@store': path.join(__dirname, 'src', 'store'),
-        '@css': path.join(__dirname, 'src', 'assets', 'css'),
-        '@lib': path.join(__dirname, 'src', 'lib'),
-        '@plugin': path.join(__dirname, 'src', 'plugin'),
-        '@setup': path.join(__dirname, 'src', 'setup'),
-        '@global-vue-components': path.join(__dirname, 'src', 'components', 'global'),
-        '@components': path.join(__dirname, 'src', 'components'),
-        '@Services': path.join(__dirname, 'src', 'lib', 'main', 'services'),
-        '@Utils': path.join(__dirname, 'src', 'lib', 'main', 'utils'),
-        '@Grimoire': path.join(__dirname, 'src', 'lib', 'main', 'Grimoire.js'),
+        "@": path.join(__dirname, 'src'),
+        '@global-components': path.join(__dirname, 'src', 'components', 'global'),
+        '@services': path.join(__dirname, 'src', 'lib', 'main', 'services'),
+        '@utils': path.join(__dirname, 'src', 'lib', 'main', 'utils'),
+        '@grimoire': path.join(__dirname, 'src', 'lib', 'main', 'Grimoire.js'),
       }
     },
     performance: {
       hints: false
-    }
+    },
+    plugins: [
+      // new BundleAnalyzerPlugin(),
+    ]
   },
 
   pwa: {

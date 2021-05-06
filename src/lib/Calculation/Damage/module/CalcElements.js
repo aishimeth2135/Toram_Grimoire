@@ -1,3 +1,4 @@
+// @ts-nocheck
 class CalcItemBase {
   constructor(id, text, unit) {
     this.id = id;
@@ -183,7 +184,7 @@ class CalcItemContainer {
   }
   /**
    * parent中的其它container，若擁有同樣的Link ID，彼此之間會具有連動性。Link預設值為null。
-   * @param {String} t Link ID
+   * @param {string} v - Link ID
    */
   link(v) {
     const find = this.belongCalculation().container().find(c => c.beLinked() && c.getLink().linkId() == v);
@@ -221,8 +222,8 @@ class CalcItemContainer {
   }
   /**
    * 取得指定index的item。如果無指定index，則回傳一個包含所有item的陣列。
-   * @param  {integer} index
-   * @return {CalcItem|Array<CalcItem>}
+   * @param  {number} index
+   * @return {CalcItem|CalcItem[]}
    */
   item(index) {
     if (index === void 0)

@@ -18,8 +18,7 @@
       <create-custom-equipment :visible="window.createCustomEquipment"
         @close="toggle('window/createCustomEquipment', false)"
         @append-equipments="appendEquipments" />
-      <cy-window :visible="window.customEquipmentEditor"
-        @close-window="toggle('window/customEquipmentEditor', false)">
+      <cy-window v-model:visible="window.customEquipmentEditor">
         <template #title>
           <cy-icon-text icon="ic-round-edit">
             {{ $lang('custom equipment editor/window title') }}
@@ -57,10 +56,10 @@ import vue_createCustomEquipment from "./create-custom-equipment.vue";
 import vue_customEquipmentEditor from "./custom-equipment-editor.vue";
 import vue_selectCrystals from "./select-crystals.vue";
 
-import ToggleService from "@setup/ToggleService";
+import ToggleService from "@/setup/ToggleService";
 
-import { EquipmentField } from "@lib/Character/Character";
-import { CharacterEquipment } from "@lib/Character/CharacterEquipment";
+import { EquipmentField } from "@/lib/Character/Character";
+import { CharacterEquipment } from "@/lib/Character/CharacterEquipment";
 
 export default {
   RegisterLang: 'Character Simulator',

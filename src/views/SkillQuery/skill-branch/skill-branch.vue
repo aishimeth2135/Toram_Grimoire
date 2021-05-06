@@ -330,9 +330,10 @@ import vue_branchDetail from "./branch-detail.vue";
 import vue_equipmentInfo from "./equipment-info.vue";
 import vue_skillAreaInfo from "./skill-area-info";
 
-
 import handleFormula from "../utils/handleFormula.js";
 import DataContainer from "../utils/DataContainer.js";
+
+import { trimZero } from "@utils/string";
 
 export default {
   name: 'skill-branch',
@@ -1014,7 +1015,7 @@ export default {
       );
 
       dc.handleResult(v => v.replace(/(\d+\.)(\d{4,})/g, (m, m1, m2) => m1 + m2.slice(0, 4)));
-      dc.handleResult(v => v.replace(/(\d+)(\.[^0]*)(0+)$/g, (m, m1, m2) => m1 + (m2 === '.' ? '' : m2)));
+      dc.handleResult(trimZero);
 
       dc.isNumberValue() && toPercentage && dc.handleResult(v => numStrToPercentage(v));
       this.handleReplacedVariable(dc);

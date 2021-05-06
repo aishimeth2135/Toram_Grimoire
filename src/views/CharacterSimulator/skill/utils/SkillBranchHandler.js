@@ -1,8 +1,8 @@
-import handleFormula from "@views/SkillQuery/utils/handleFormula.js";
-import DataContainer from "@views/SkillQuery/utils/DataContainer.js";
+import handleFormula from "@/views/SkillQuery/utils/handleFormula.js";
+import DataContainer from "@/views/SkillQuery/utils/DataContainer.js";
 
-import { EquipmentField } from "@lib/Character/Character";
-import { SubWeapon, SubArmor } from "@lib/Character/CharacterEquipment";
+import { EquipmentField } from "@/lib/Character/Character";
+import { SubWeapon, SubArmor } from "@/lib/Character/CharacterEquipment";
 
 class SkillBranchHandler {
   constructor({ branch, skillState, levelSkill, view, skillItemType }) {

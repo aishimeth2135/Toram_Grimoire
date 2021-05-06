@@ -1,7 +1,7 @@
 
 <script>
 import { h } from "vue";
-import { isNumberString } from "@Utils/string";
+import { isNumberString } from "@utils/string";
 
 export default {
   props: ['attrs'],

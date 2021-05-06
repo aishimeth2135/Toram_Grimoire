@@ -1,10 +1,10 @@
 import app from "./app.vue";
 
-import vue_home from "@views/Home/Home";
-import vue_about from "@views/Home/About";
+import vue_home from "@/views/Home/Home";
+import vue_about from "@/views/Home/About";
 
-import GetLang from "@Services/Language";
-import ViewInit from "@Services/ViewInit.js";
+import GetLang from "@services/Language";
+import ViewInit from "@services/ViewInit.js";
 
 export default {
   path: '/',

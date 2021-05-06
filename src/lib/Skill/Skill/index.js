@@ -1,6 +1,6 @@
-import Grimoire from "@Grimoire";
-import { StatBase } from "@lib/Character/Stat";
-import CY from "@Utils/Cyteria";
+import Grimoire from "@grimoire";
+import { StatBase } from "@/lib/Character/Stat";
+import CY from "@utils/Cyteria";
 
 function checkConstructorArgs() {
   Array.from(arguments).forEach((arg, i) => {
@@ -11,22 +11,7 @@ function checkConstructorArgs() {
   });
 }
 
-/*
-Interface SkillElementParent {
-	SkillElement newElement(const string type, Object constructorArgs);
-}
-Interface SkillElementChild {
-	int findLocation(void);
-}
-*/
 
-// class SkillElement {}
-
-
-
-/**
- * @implements {SkillElementParent}
- */
 class SkillRoot {
   constructor() {
     this.skillTreeCategorys = [];
@@ -59,10 +44,6 @@ class SkillRoot {
 SkillRoot.TYPE = Symbol('SkillRoot');
 
 
-/**
- * @implements {SkillElementParent}
- * @implements {SkillElementChild}
- */
 class SkillTreeCategory {
   constructor(sr, id, name) {
     this.parent = sr;
@@ -88,10 +69,6 @@ class SkillTreeCategory {
 SkillTreeCategory.TYPE = Symbol("SkillTreeCategory");
 
 
-/**
- * @implements {SkillElementParent}
- * @implements {SkillElementChild}
- */
 class SkillTree {
   constructor(stc, id, name) {
     this.parent = stc;
@@ -127,9 +104,6 @@ SkillTree.CATEGORY_DRAW_TREE = Symbol();
 SkillTree.CATEGORY_EQUIPMENT = Symbol();
 
 
-/**
- * @implements {SkillElementChild}
- */
 class SkillBase {
   constructor(st, id, name, cap = "") {
     this.parent = st;
@@ -146,9 +120,7 @@ class SkillBase {
   }
 }
 
-/**
- * @implements {SkillElementParent}
- */
+
 class Skill extends SkillBase {
   constructor(st, id, name, cap = "") {
     super(st, id, name, cap);
@@ -178,10 +150,6 @@ class Skill extends SkillBase {
 Skill.TYPE = Symbol("Skill");
 Skill.CATEGORY_MAIN = Symbol();
 
-/**
- * @implements {SkillElementParent}
- * @implements {SkillElementChild}
- */
 class SkillEffect {
   constructor(sk, m, s, b) {
     this.parent = sk;
@@ -227,10 +195,6 @@ SkillEffect.IN_COMBO = Symbol('in_combo');
 SkillEffect.ACTION_TIME = Symbol('action_type');
 SkillEffect.CASTING_TIME = Symbol('casting_time');
 
-
-/**
- * @implements {SkillElementChild}
- */
 class SkillBranch {
   constructor(sef, id, name) {
     this.parent = sef;

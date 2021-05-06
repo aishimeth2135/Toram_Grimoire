@@ -1,4 +1,4 @@
-import { HandleLanguageData } from "@Services/Language";
+import { HandleLanguageData } from "@services/Language";
 
 export default function(character_system, datas) {
   const
@@ -23,7 +23,7 @@ export default function(character_system, datas) {
   c.forEach((p, index) => {
     if (index == 0 || character_system.findStatBase(p[BASE_NAME]))
       return;
-    const stat = character_system.appendStatBase(p[BASE_NAME], p[CAPTION], p[HAS_MULTIPLIER] == '無' ? false : true, p[ORDER] || 999);
+    const stat = character_system.appendStatBase(p[BASE_NAME], p[CAPTION], p[HAS_MULTIPLIER] == '無' ? false : true, parseInt(p[ORDER], 10) || 999);
     if (p[CONSTANT_FORMULA])
       stat.appendAttribute('constant_formula', p[CONSTANT_FORMULA]);
     stat.appendAttribute('hidden', p[HIDDEN] != '');

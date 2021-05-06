@@ -1,4 +1,4 @@
-import GetLang from "@Services/Language";
+import GetLang from "@services/Language";
 
 export default function install(app) {
   app.config.globalProperties.$globalLang = GetLang;
@@ -17,6 +17,11 @@ export default function install(app) {
           console.warn('[Register Lang] option: root must be string.');
           return;
         }
+        /**
+         * @param {string} id
+         * @param {Array<number|string>} [values]
+         * @returns {string}
+         */
         this.$lang = function(id, values) {
           return GetLang(root + '/' + id, values);
         };

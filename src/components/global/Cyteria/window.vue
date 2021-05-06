@@ -4,7 +4,7 @@
       :class="rootClass">
       <div class="content-container">
         <div class="top-mask" />
-        <cy-button type="icon" @click.stop="$emit('close-window')"
+        <cy-button type="icon" @click.stop="closeWindow"
           icon="jam-close-circle-f" class="close-btn" />
         <div class="container-inner" @click.stop>
           <div class="top">
@@ -30,7 +30,7 @@
 </template>
 <script>
 export default {
-  emits: ['close-window'],
+  emits: ['update:visible', 'close'],
   props: {
     type: {
       type: String,
@@ -67,7 +67,8 @@ export default {
   },
   methods: {
     closeWindow() {
-      this.$emit('close-window');
+      this.$emit('update:visible', false);
+      this.$emit('close');
     }
   }
 };

@@ -1,7 +1,7 @@
 // import { InitLanguageData } from "./Language";
-import GetLang from "@Services/Language";
+import GetLang from "@services/Language";
 
-import store from "@store";
+import store from "@/store";
 
 /**
  * @param  {...String} inits

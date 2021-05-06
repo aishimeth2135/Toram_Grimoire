@@ -249,7 +249,7 @@ import { mapState } from "vuex";
 
 import init from "./init.js";
 
-import vue_drawSkillTree from "@views/SkillSimulator/draw-skill-tree.vue";
+import vue_drawSkillTree from "@/views/SkillSimulator/draw-skill-tree.vue";
 import vue_skillBranch from "./skill-branch/skill-branch.vue";
 
 import createSkillState from "./utils/createSkillState.js";
@@ -365,20 +365,23 @@ export default {
         return null;
 
       const cur = this.tagState.tags[idx];
+      console.log(cur.frames);
       const frs = cur.frames.map(fr => {
-        const h = v => {
+        const handle = v => {
           v = v.replace(/\(\(!((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="text-light-3">${m1}</span>`)
           .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values text-light-3">${m1}</span>`);
           return this.createTagButtons(v);
         };
 
         let value = fr.value;
-        if (fr.type == 'list') {
+        if (fr.type === 'list') {
           value = !Array.isArray(value) ? [value] : value;
-          value = value.map(v => h(v));
-        } else
-          value = h(value);
-
+          value = value.map(v => handle(v));
+        } else {
+          if (Array.isArray(value))
+            value = value[0];
+          value = handle(value);
+        }
         return { type: fr.type, value };
       });
 

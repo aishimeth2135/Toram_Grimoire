@@ -1,14 +1,14 @@
 /* eslint-disable */
 import Papa from "papaparse";
 
-import CY from "@Utils/Cyteria";
-import GetLang from "@Services/Language";
-import Icons from "@Services/SvgIcons.js";
-import MessageNotify from "@Services/Notify";
-import SaveLoadSystem from "@lib/SaveLoadSystem/SaveLoadSystem.js";
+import CY from "@utils/Cyteria";
+import GetLang from "@services/Language";
+import Icons from "@services/SvgIcons.js";
+import MessageNotify from "@services/Notify";
+import SaveLoadSystem from "@/lib/SaveLoadSystem/SaveLoadSystem.js";
 
-import { StatBase } from "@lib/Character/Stat";
-import { EnchantEquipment, EnchantStep, InitEnchantElementStatus, EnchantElementStatus } from "../Enchant";
+import { StatBase } from "@/lib/Character/Stat";
+import { EnchantEquipment, EnchantStep, InitEnchantElementStatus, EnchantElementStatus } from "../Enchant/old.js";
 
 function Lang(s, vs) {
   return GetLang('Enchant Simulator/' + s, vs);

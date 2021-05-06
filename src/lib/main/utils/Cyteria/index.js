@@ -16,6 +16,10 @@ function copyToClipboard(s) {
   return t;
 }
 
+/**
+ * @param {"localStorage"|"sessionStorage"} type
+ * @returns {boolean}
+ */
 function storageAvailable(type) {
   //copy from: https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
   const storage = window[type];

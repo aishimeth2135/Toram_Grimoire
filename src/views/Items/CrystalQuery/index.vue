@@ -80,9 +80,8 @@
       </div>
     </div>
     <div>
-      <cy-window :visible="modeState['mode-stats'].selectStatWindowVisible"
-        vertical-position="top"
-        @close-window="toggleSelectStatWindowVisible(false)">
+      <cy-window v-model:visible="modeState['mode-stats'].selectStatWindowVisible"
+        vertical-position="top">
         <template v-slot:title>
           <cy-icon-text icon="mdi-rhombus-outline">
             {{ $lang('select stat: window title') }}
@@ -114,10 +113,10 @@
 <script>
 import init from "./init.js";
 
-import { StatBase } from "@lib/Character/Stat";
-import { EquipmentCrystal } from "@lib/Character/CharacterEquipment";
+import { StatBase } from "@/lib/Character/Stat";
+import { EquipmentCrystal } from "@/lib/Character/CharacterEquipment";
 
-import vue_showStat from "@components/common/show-stat.vue";
+import vue_showStat from "@/components/common/show-stat.vue";
 
 export default {
   RegisterLang: 'Crystal Query',

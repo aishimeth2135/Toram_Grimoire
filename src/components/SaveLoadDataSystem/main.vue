@@ -16,7 +16,7 @@
       @click="handleFile('load')">
       {{ langText('load from csv') }}
     </cy-button>
-    <cy-window :visible="selectDataWindowVisible" @close-window="closeSelectDataWindow">
+    <cy-window v-model:visible="selectDataWindowVisible">
       <template v-slot:title>
         <cy-icon-text icon="mdi:content-save-outline">
           {{ langText('Save Load: title') }}
@@ -50,8 +50,8 @@
   </div>
 </template>
 <script>
-import CY from "@Utils/Cyteria"
-import GetLang from "@Services/Language";
+import CY from "@utils/Cyteria"
+import GetLang from "@services/Language";
 
 import init from "./init.js";
 

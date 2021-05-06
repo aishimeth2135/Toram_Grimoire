@@ -1,4 +1,4 @@
-import { StatBase } from "@lib/Character/Stat";
+import { StatBase } from "@/lib/Character/Stat";
 
 class Foods {
   constructor(name) {

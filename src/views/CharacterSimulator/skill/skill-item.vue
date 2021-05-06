@@ -17,7 +17,7 @@
     <cy-flex-layout class="line-content">
       <cy-icon-text text-color="purple" class="name skill-name"
         :icon="'ic-round-check-box' + (levelSkillStateRoot.disable ? '-outline-blank' : '')"
-        @click.stop="toggleStateRootDisable">
+        @click.stop="toggleStateRootDisable(levelSkillStateRoot)">
         <span class="skill-icon-container">
           <img :src="skillIconPath" class="skill-icon">
         </span>
@@ -59,7 +59,7 @@
     <cy-flex-layout class="line-content">
       <cy-icon-text text-color="purple" class="skill-name"
         :icon="'ic-round-check-box' + (levelSkillStateRoot.disable ? '-outline-blank' : '')"
-        @click.stop="toggleStateRootDisable">
+        @click.stop="toggleStateRootDisable(levelSkillStateRoot)">
         <span class="skill-icon-container">
           <img :src="skillIconPath" class="skill-icon">
         </span>
@@ -113,11 +113,11 @@
 </template>
 <script>
 import vue_showStatDatas from "./show-stat-datas.vue";
-import { getSkillIconPath } from "@lib/Skill/utils/DrawSkillTree";
+import { getSkillIconPath } from "@/lib/Skill/utils/DrawSkillTree";
 
 export default {
   RegisterLang: 'Character Simulator',
-  props: ['levelSkillStateRoot', 'levelSkillStateRootDisable'],
+  props: ['levelSkillStateRoot'],
   inject: ['openUserSetsWindow', 'getValidLevelSkillState'],
   data() {
     return {
@@ -154,8 +154,8 @@ export default {
     toggleBranchStateDisable(state) {
       state.disable = !state.disable;
     },
-    toggleStateRootDisable() {
-      this.$emit('update:level-skill-state-root-disable', !this.levelSkillStateRoot.disable);
+    toggleStateRootDisable(state) {
+      state.disable = !state.disable;
     }
   },
   components: {

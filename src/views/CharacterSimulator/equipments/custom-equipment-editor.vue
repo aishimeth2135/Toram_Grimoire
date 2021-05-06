@@ -4,7 +4,7 @@
       text-size="small" text-color="purple">
       {{ $lang('custom equipment editor/equipment name') }}
     </cy-icon-text>
-    <div class="name content">
+    <div class="content">
       <cy-title-input icon="mdi-clipboard-edit-outline"
         :value="equipment.name"
          @update:value="setEquipmentProperty(equipment, 'name', $event)" />
@@ -13,7 +13,7 @@
       text-size="small" text-color="purple">
       {{ $lang('custom equipment editor/equipment stats') }}
     </cy-icon-text>
-    <div class="stats content">
+    <div class="mt-2 content">
       <div v-for="stat in equipment.stats"
         :key="stat.statId">
         <cy-input-counter :value="stat.value"
@@ -37,7 +37,7 @@
         text-size="small" text-color="purple">
         {{ $lang('custom equipment editor/equipment other') }}
       </cy-icon-text>
-      <div class="other content">
+      <div class="mt-2 content">
         <cy-input-counter v-if="equipment.hasStability"
           :value="equipment.stability" :range="ranges.stability"
           @update:value="setEquipmentProperty(equipment, 'stability', $event)">
@@ -49,7 +49,7 @@
         </cy-input-counter>
       </div>
     </template>
-    <cy-window :visible="selectStatWindowVisible" @close-window="toggleWindowVisible('selectStat', false)">
+    <cy-window v-model:visible="selectStatWindowVisible">
       <template v-slot:title>
         <cy-icon-text icon="mdi-rhombus-outline">
           {{ $lang('custom equipment editor/select stat: window title') }}
@@ -101,7 +101,7 @@
         class="bottom-content">
         <template #normal-content>
           <cy-transition type="slide-up">
-            <div v-if="selectStatDetailVisible" class="select-stats-detail">
+            <div v-if="selectStatDetailVisible">
               <div class="content">
                 <div class="w-full">
                   <cy-icon-text icon="mdi-rhombus-outline"
@@ -197,8 +197,8 @@
   </div>
 </template>
 <script>
-import { StatBase, RestrictionStat } from "@lib/Character/Stat";
-import { CharacterEquipment } from "@lib/Character/CharacterEquipment";
+import { StatBase, RestrictionStat } from "@/lib/Character/Stat";
+import { CharacterEquipment } from "@/lib/Character/CharacterEquipment";
 
 export default {
   RegisterLang: 'Character Simulator',
@@ -210,18 +210,19 @@ export default {
   inject: ['isElementStat', 'setEquipmentProperty'],
   data() {
     const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
-    this.$store.state.datas.character.statList.forEach(stat => {
-      if (stat.attributes.hidden) return;
-      statTypes.forEach(type => {
-        if (type == StatBase.TYPE_MULTIPLIER && !stat.hasMultiplier)
-          return;
-        stats.push({
-          origin: stat,
-          text: stat.title(type),
-          type
-        });
-      })
-    });
+    this.$store.state.datas.character.statList
+      .filter(stat => !stat.attributes.hidden)
+      .forEach(stat => {
+        statTypes
+          .filter(type => !(type === StatBase.TYPE_MULTIPLIER && !stat.hasMultiplier))
+          .forEach(type => {
+            stats.push({
+              origin: stat,
+              text: stat.title(type),
+              type
+            });
+          });
+      });
 
     return {
       searchText: '',
@@ -339,28 +340,12 @@ export default {
   }
 }
 
-.select-stats-detail {
-  > .content {
-    > .title {
-      margin-top: 0.8rem;
-    }
-  }
-}
-
 .main--custom-equipment-editor {
   padding: 0.2rem 0;
   > .content {
     margin-bottom: 0.8rem;
     margin-top: 0.3rem;
   }
-}
-
-.stats {
-  margin-top: 0.4rem;
-}
-
-.other {
-  margin-top: 0.4rem;
 }
 
 .set-stat-value {

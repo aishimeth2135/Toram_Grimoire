@@ -1,5 +1,5 @@
-import CY from "@Utils/Cyteria";
-import { SkillEffect } from "@lib/Skill/Skill";
+import CY from "@utils/Cyteria";
+import { SkillEffect } from "@/lib/Skill/Skill";
 
 export default function(skill, { defaultSkillLevel = 0, defaultCharacterLevel = 0 } = {}) {
   return {

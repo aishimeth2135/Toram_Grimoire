@@ -1,9 +1,9 @@
 /* eslint-disable */
 import { Calculation, CalcItemContainer, CalcItemBase } from "./CalcElements.js";
-import CY from "@Utils/Cyteria";
-import GetLang from "@Services/Language";
-import Icons from "@Services/SvgIcons.js";
-import MessageNotify from "@Services/Notify";
+import CY from "@utils/Cyteria";
+import GetLang from "@services/Language";
+import Icons from "@services/SvgIcons.js";
+import MessageNotify from "@services/Notify";
 import SaveLoadSystem from "../../../SaveLoadSystem/SaveLoadSystem.js";
 import Papa from "papaparse";
 

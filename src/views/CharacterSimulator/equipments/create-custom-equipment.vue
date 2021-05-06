@@ -1,5 +1,5 @@
 <template>
-  <cy-window :visible="visible" @close-window="close">
+  <cy-window :visible="visible" @close="close">
     <template #title>
       <cy-icon-text icon="gg-shape-square">
         {{ $lang('create custom equipment/window title') }}
@@ -28,8 +28,7 @@
         </div>
       </template>
     </cy-bottom-content>
-    <cy-window :visible="window.selectType"
-      @close-window="toggle('window/selectType', false)">
+    <cy-window v-model:visible="window.selectType">
       <template v-slot:title>
         <cy-icon-text icon="gg-shape-square">
           {{ $lang('create custom equipment/select equipment type') }}
@@ -64,11 +63,11 @@
   </cy-window>
 </template>
 <script>
-import ToggleService from "@setup/ToggleService";
+import ToggleService from "@/setup/ToggleService";
 
 import vue_customEquipmentEditor from "./custom-equipment-editor.vue";
 
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@lib/Character/CharacterEquipment";
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@/lib/Character/CharacterEquipment";
 
 export default {
   RegisterLang: 'Character Simulator',

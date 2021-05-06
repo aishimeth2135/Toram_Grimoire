@@ -12,26 +12,25 @@
 </template>
 
 <script>
-const colorList = [
-  'dark', 'light', 'light-2', 'light-3', 'light-4', 'purple',
-  'red', 'red-light', 'water-blue', 'water-blue-light',
-  'gray', 'gray-light', 'orange', 'green'
-];
+import Color from "@services/Color";
+
+import IconSet from "@/components/mixin/icon-set";
+
+const ColorList = Color.List;
 
 export default {
+  mixins: [IconSet],
   props: {
     type: {
       type: String,
       default: 'normal',
       validator: v => ['normal', 'item'].includes(v)
     },
-    icon: {},
-    iconSrc: {},
     textColor: {
       type: String,
       default: 'dark',
       validator(v) {
-        return colorList.includes(v);
+        return ColorList.includes(v);
       }
     },
     textSize: {
@@ -45,7 +44,7 @@ export default {
       type: String,
       default: 'light-2',
       validator(v) {
-        return colorList.includes(v);
+        return ColorList.includes(v);
       }
     },
     display: {
@@ -71,74 +70,78 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .cy--icon-text {
+.cy--icon-text {
+  display: inline-flex;
+  align-items: center;
+  --icon-color: var(--primary-light-2);
+  --icon-width: 1.2rem;
+  --text-color: var(--primary-dark);
+  --text-margin-left: 0.6rem;
+  --value-margin-left: 0.6rem;
+
+  &.line {
+    width: 100%;
+  }
+  &.display-block {
+    display: flex;
+  }
+
+  > span {
+    display: inline-flex;
+  }
+
+  .text {
+    margin-left: var(--text-margin-left);
+    color: var(--text-color);
     display: inline-flex;
     align-items: center;
-    --icon-color: var(--primary-light-2);
-    --icon-width: 1.2rem;
-    --text-color: var(--primary-dark);
-    --text-margin-left: 0.6rem;
-    --value-margin-left: 0.6rem;
-
-    &.line {
-      width: 100%;
-    }
-    &.display-block {
-      display: flex;
-    }
-
-    > span {
-      display: inline-flex;
-    }
-
-    .text {
-      margin-left: var(--text-margin-left);
-      color: var(--text-color);
-      display: inline-flex;
-      align-items: center;
-    }
-
-    > .value {
-      color: var(--primary-light-4);
-    }
-
-    > .text + .value {
-      margin-left: var(--value-margin-left);
-    }
-
-    &.is-item {
-      & > svg {
-        width: 0.8rem;
-        height: 0.8rem;
-        align-self: flex-end;
-        margin-bottom: 0.2rem;
-      }
-      & > .text {
-        margin-left: 0.2rem;
-        align-items: flex-end;
-      }
-    }
-
-    &.text-normal {
-      font-size: 1rem;
-    }
-    &.text-small {
-      --icon-width: 0.9rem;
-      --text-margin-left: 0.3rem;
-      --value-margin-left: 0.4rem;
-      font-size: 0.9rem;
-    }
-
-    @colors: ~'dark', ~'light', ~'light-2', ~'light-3', ~'light-4', ~'purple',
-      ~'red', ~'red-light', ~'water-blue', ~'water-blue-light',
-      ~'gray', ~'gray-light', ~'orange', ~'green';
-    each(@colors, {
-      &.text-color-@{value} {
-        --text-color: ~'var(--primary-@{value})';
-      }
-      &.icon-color-@{value} {
-        --icon-color: ~'var(--primary-@{value})';
-      }
-    });
   }
+
+  > .value {
+    color: var(--primary-light-4);
+  }
+
+  > .text + .value {
+    margin-left: var(--value-margin-left);
+  }
+
+  &.is-item {
+    & > svg {
+      width: 0.8rem;
+      height: 0.8rem;
+      align-self: flex-end;
+      margin-bottom: 0.2rem;
+    }
+    & > .text {
+      margin-left: 0.2rem;
+      align-items: flex-end;
+    }
+  }
+
+  &.text-normal {
+    font-size: 1rem;
+  }
+  &.text-small {
+    --icon-width: 0.9rem;
+    --text-margin-left: 0.5rem;
+    --value-margin-left: 0.4rem;
+    font-size: 0.9rem;
+  }
+
+  @colors: ~'dark', ~'light', ~'light-2', ~'light-3', ~'light-4', ~'purple',
+  ~'red', ~'red-light', ~'water-blue', ~'water-blue-light',
+  ~'gray', ~'gray-light', ~'orange', ~'green',
+  ~'blue-green', ~'blue-green-light';
+  @color-texts: ~'text', ~'icon';
+  each(@colors, .(@color) {
+    each(@color-texts, .(@name) {
+      &.@{name}-color-@{color} {
+        --@{name}-color: ~'var(--primary-@{color})';
+      }
+      &.@{name}-color-hover-@{color} {
+        --@{name}-color-hover: ~'var(--primary-@{color})';
+      }
+    })
+  });
+}
 </style>

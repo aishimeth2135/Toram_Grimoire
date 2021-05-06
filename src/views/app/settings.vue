@@ -1,14 +1,18 @@
 <template>
-  <span class="app--settings py-4">
+  <span class="app--settings">
     <cy-button type="icon" icon="ic-baseline-settings" @click="toggleWindowVisible" />
     <cy-window class="main--window"
       width="wide"
-      @close-window="toggleWindowVisible"
-      :visible="windowVisible">
+      v-model:visible="windowVisible">
       <template #title>
-        <cy-icon-text icon="ic-baseline-settings">
-          {{ $lang('title') }}
-        </cy-icon-text>
+        <div class="flex items-center">
+          <cy-icon-text icon="ic-baseline-settings">
+            {{ $lang('title') }}
+          </cy-icon-text>
+          <span class="ml-auto text-purple">
+            v{{ $store.state.main.version }}
+          </span>
+        </div>
       </template>
       <fieldset class="column">
         <legend>
@@ -139,7 +143,7 @@
 </template>
 
 <script>
-import CY from "@Utils/Cyteria";
+import CY from "@utils/Cyteria";
 
 export default {
   RegisterLang: 'Settings',
@@ -191,7 +195,7 @@ export default {
       const storage = window.localStorage;
 
       CY.file.load({
-        succee: data => {
+        succeed: data => {
           data = JSON.parse(data);
           Object.keys(data).forEach(k => storage.setItem(k, data[k]));
           this.$notify(this.$lang('storage backup/Load successfully'));

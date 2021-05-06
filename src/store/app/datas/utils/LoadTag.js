@@ -1,4 +1,4 @@
-import { HandleLanguageData } from "@Services/Language";
+import { HandleLanguageData } from "@services/Language";
 
 export default function LoadTagData(r, datas) {
   const

@@ -1,5 +1,5 @@
 <template>
-  <cy-window :visible="visible" @close-window="closeWindow">
+  <cy-window :visible="visible" @close="closeWindow">
     <template #title>
       <cy-icon-text icon="bx-bx-cube-alt">
         {{ $lang('select crystals/window title') }}
@@ -86,7 +86,7 @@
 <script>
 import vue_showStat from "./show-stat.vue";
 
-import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from "@lib/Character/CharacterEquipment";
+import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from "@/lib/Character/CharacterEquipment";
 
 export default {
   RegisterLang: 'Character Simulator',

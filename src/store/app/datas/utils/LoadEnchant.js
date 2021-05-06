@@ -1,4 +1,4 @@
-import { EnchantItemBase } from "@lib/Enchant/Enchant";
+import { EnchantItem } from "@/lib/Enchant/Enchant";
 
 export default function LoadEnchantData(r, c) {
   const STAT_ID = 0,
@@ -29,7 +29,7 @@ export default function LoadEnchantData(r, c) {
     return [l1, l2];
   }
 
-  function processItemAttribute(p) {
+  function processItemProps(p) {
     return [
       parseInt(p[POTENTIAL_CONSTANT]),
       parseInt(p[POTENTIAL_MULTIPLIER])
@@ -47,17 +47,17 @@ export default function LoadEnchantData(r, c) {
       if (check == '0') {
         cur_cat = r.appendCategory(p[CATEGORY_TITLE]);
         if (p[CATEGORY_EXTRA] == 'weapon-only')
-          cur_cat.status['isWeaponOnly'] = true;
+          cur_cat.setWeaponOnly();
         return;
       }
       const condition_no = CONDITION_LIST.indexOf(p[CONDITION]);
       if (condition_no != -1) {
         const cond = [
-          EnchantItemBase.CONDITION_MAIN_WEAPON,
-          EnchantItemBase.CONDITION_BODY_ARMOR,
-          EnchantItemBase.CONDITION_ORIGINAL_ELEMENT
+          EnchantItem.CONDITION_MAIN_WEAPON,
+          EnchantItem.CONDITION_BODY_ARMOR,
+          EnchantItem.CONDITION_ORIGINAL_ELEMENT
         ][condition_no];
-        cur_item.appendConditionalAttributes(cond, ...processItemAttribute(p));
+        cur_item.appendConditionalProps(cond, { potential: processItemProps(p) });
       }
     } else {
       cur_item = cur_cat
@@ -67,9 +67,9 @@ export default function LoadEnchantData(r, c) {
           unitValue: [p[UNIT_VALUE_CONSTANT], p[UNIT_VALUE_MULTIPLIER]],
           materialPointType: MATERIAL_POINT_TYPE_LIST.indexOf(p[MATERIAL_POINT_TYPE]),
           materialPointValue: [p[MATERIAL_POINT_VALUE_CONSTANT], p[MATERIAL_POINT_VALUE_MULTIPLIER]],
-          potentialConvertThreshold: [p[POTENTIAL_CONVERT_THRESHOLD_CONSTANT], p[POTENTIAL_CONVERT_THRESHOLD_MULTIPLIER]]
-        })
-        .initAttributes(...processItemAttribute(p));
+          potentialConvertThreshold: [p[POTENTIAL_CONVERT_THRESHOLD_CONSTANT], p[POTENTIAL_CONVERT_THRESHOLD_MULTIPLIER]],
+          potential: processItemProps(p)
+        });
     }
   });
 }
