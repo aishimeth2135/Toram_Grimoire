@@ -540,7 +540,7 @@ export default {
           return;
         }
         const eq = stat.belongEquipment;
-        const min = stat.limit;
+        const min = stat.limit[0];
         const pot = stat.itemBase.getPotential(stat.type, eq);
         stat.value = pot > stat.itemBase.basePotential(stat.type) ?
           (min - Math.min(eq.stat(stat.itemBase, stat.type, eq.lastStep.index).value, 0)) : 0;
