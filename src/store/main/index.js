@@ -2,7 +2,7 @@ const store = {
   namespaced: true,
   state: {
     redirectPath: null,
-    version: '3.9.2'
+    version: '3.9.3'
   },
   mutations: {
     setRedirectPath(state, path) {

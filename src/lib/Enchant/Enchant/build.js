@@ -440,7 +440,7 @@ class EnchantStep {
    * @returns {number}
    */
   realPotentialCost(p) {
-    return p > 0 ? Math.floor(p) : Math.ceil(p);
+    return p >= 0 ? Math.floor(p) : Math.ceil(p);
   }
 
   /**
@@ -456,12 +456,20 @@ class EnchantStep {
     if (this.index === 0) {
       return;
     }
-    const stats = this.belongEquipment.stats(this.index - 1);
-    const newStats = stats.filter(stat => stat.value > 0).map(stat => {
+    const stats = this.belongEquipment.stats(this.belongEquipment.lastStep.index);
+    const newStats = [];
+    stats.filter(stat => stat.value > 0).forEach(stat => {
       const max = stat.limit[1];
+      const find = this.stat(stat.itemBase, stat.type);
+      if (find && find.value === stat.value) {
+        return;
+      }
       const value = max - stat.value;
+      if (value === 0) {
+        return;
+      }
       const newStat = new EnchantStepStat(this, stat.itemBase, stat.type, value);
-      return newStat;
+      newStats.push(newStat);
     });
     newStats.forEach(stat => {
       const t = this.stat(stat.itemBase, stat.type);
@@ -744,21 +752,27 @@ class EnchantStepStat extends EnchantStat {
     const p = this.itemBase.getPotential(this.type, this.belongEquipment);
     const convertThreshold = this.itemBase.getPotentialConvertThreshold(this.type);
 
-    v += pre;
+    let v2 = 0;
+    if (pre <= convertThreshold) {
+      v += pre;
 
-    let v2 = 0, sign = 1;
-    if (v < 0) {
-      sign = -1;
-      v *= -1;
-    }
-    if (v > convertThreshold) {
-      v2 = v - convertThreshold;
-      v = convertThreshold;
-    }
-    v *= sign;
-    v2 *= sign;
+      let sign = 1;
+      if (v < 0) {
+        sign = -1;
+        v *= -1;
+      }
+      if (v > convertThreshold) {
+        v2 = v - convertThreshold;
+        v = convertThreshold;
+      }
+      v *= sign;
+      v2 *= sign;
 
-    v -= pre;
+      v -= pre;
+    } else {
+      v2 = v;
+      v = 0;
+    }
 
     const r = (5 + STATE.Character.tec / 10);
     return (v + v2) > 0 ?

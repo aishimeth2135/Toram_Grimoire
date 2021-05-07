@@ -410,9 +410,9 @@ export default {
       const eq = this.currentEquipment;
       return eq.stats(eq.lastStep.index)
         .sort((a, b) => {
-          const av = a.stat.base.order + (a.value < 0 ? -99999 : 0);
-          const bv = b.stat.base.order + (b.value < 0 ? -99999 : 0);
-          return bv - av;
+          const av = a.stat.base.order + (a.value < 0 ? 99999 : 0);
+          const bv = b.stat.base.order + (b.value < 0 ? 99999 : 0);
+          return av - bv;
         })
         .map(stat => ({
           text: stat.show(),
