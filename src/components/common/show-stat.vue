@@ -4,9 +4,11 @@
     :class="{ 'opacity-60': invalid }">
     <cy-icon-text icon="mdi-leaf" type="item"
       :text-color="negativeValue ? 'red' : 'dark'">
-      <span v-for="text in restrictionTexts"
-        class="text-water-blue text-sm mr-1"
-        :key="text">{{ text }}</span><span>{{ stat.show() }}</span>
+      <span v-for="text in restrictionTexts" :key="text"
+        class="text-water-blue text-sm mr-1">
+        {{ text }}
+      </span>
+      <span>{{ stat.show() }}</span>
     </cy-icon-text>
   </div>
   <div v-else class="w-full text-sm text-purple m-0">

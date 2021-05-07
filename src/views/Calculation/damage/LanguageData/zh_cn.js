@@ -150,7 +150,7 @@ export default function() {
       },
       'Warn': {
         'Calculation Name too long': '名称不得超过16个字元。',
-        'Disable char': '已自动清除被禁用的字元。'
+        'disabled char': '已自动清除被禁用的字元。'
       },
       'build': '配置',
       'Damage': '伤害期望值',

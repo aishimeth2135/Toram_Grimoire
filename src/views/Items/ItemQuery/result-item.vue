@@ -3,10 +3,15 @@
     <cy-list-item class="title-container" :class="{ 'detail-visible': detailVisible }"
       @click="detailVisible = !detailVisible">
       <div class="title">
-        <cy-icon-text :icon="equipment.categoryIcon"
+        <cy-icon-text :icon="equipment.is !== 'avatar' ? equipment.getCategoryImagePath() : equipment.categoryIcon"
+          :icon-src="equipment.is !== 'avatar' ? 'image' : 'iconify'"
           :text-color="detailVisible ? 'orange' : 'dark'"
           :icon-color="detailVisible ? 'orange' : 'light-2'">
-          {{ equipment.name }}
+          <span>{{ equipment.name }}</span>
+          <span v-if="equipment.hasRefining && equipment.refining != 0"
+            class="ml-1 text-water-blue">
+            +{{ equipment.refining }}
+          </span>
         </cy-icon-text>
         <div class="base-value" v-if="state.currentMode === 'normal' ||
           state.currentMode === 'dye' || state.displayMode === 1">
@@ -52,9 +57,9 @@
             icon="mdi-ghost" text-size="small" text-color="orange">
             {{ equipment.origin.unknowCategory }}
           </cy-icon-text>
-          <cy-icon-text v-else :icon="equipment.categoryIcon"
-            text-color="orange" text-size="small"
-            class="mr-4">
+          <cy-icon-text v-else
+            :icon="equipment.getCategoryImagePath()" icon-src="image"
+            text-color="orange" text-size="small" class="mr-4">
             {{ equipment.categoryText }}
           </cy-icon-text>
           <template v-if="equipment.is === 'weapon'">

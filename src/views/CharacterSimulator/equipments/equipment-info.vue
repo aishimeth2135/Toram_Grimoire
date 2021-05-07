@@ -56,7 +56,7 @@
           </cy-icon-text>
           <cy-button type="border" icon="heroicons-solid:switch-vertical"
             @click="switchCustomType">
-            {{ $lang('field type text/' + equipment.type.description) }}
+            {{ $globalLang('common/Equipment/category/' + equipment.type.description) }}
           </cy-button>
         </cy-flex-layout>
         <cy-input-counter v-if="equipment.is == 'weapon'" class="mb-3"
@@ -140,6 +140,9 @@ export default {
   },
   methods: {
     equipmentRefiningText(v){
+      // if (v >= 10) {
+      //   return ['E', 'B', 'C', 'D', 'A', 'S'][v - 10];
+      // }
       return v;
     },
     getCrystalImagePath(c) {

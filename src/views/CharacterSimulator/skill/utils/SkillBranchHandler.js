@@ -22,7 +22,7 @@ class SkillBranchHandler {
           text,
           value: 0,
           variableName: this.formulaExtraVariableName(i),
-          disable: false,
+          disabled: false,
           ignore: false
         })));
       }
@@ -31,13 +31,13 @@ class SkillBranchHandler {
         text: this.$lang('skill management/formula text/target_def'),
         value: 0,
         variableName: 'target_def',
-        disable: true,
+        disabled: true,
         ignore: true
       }, {
         text: this.$lang('skill management/formula text/target_level'),
         value: 0,
         variableName: 'target_level',
-        disable: true,
+        disabled: true,
         ignore: true
       });
 
@@ -76,7 +76,7 @@ class SkillBranchHandler {
     return this.stackStates.length != 0 || this.validUserSets.length != 0;
   }
   get validUserSets() {
-    return this.userSets.filter(p => !p.disable);
+    return this.userSets.filter(p => !p.disabled);
   }
   get value() {
     return this.handleDatas();
@@ -299,12 +299,12 @@ class SkillBranchHandler {
         chara.equipmentField(EquipmentField.TYPE_SUB_WEAPON).equipment.atk : 0,
       'target_def': () => {
         const find = this.userSets.find(p => p.variableName == 'target_def');
-        find.disable = false;
+        find.disabled = false;
         return find.value;
       },
       'target_level': () => {
         const find = this.userSets.find(p => p.variableName == 'target_level');
-        find.disable = false;
+        find.disabled = false;
         return find.value;
       },
       'guard_power': this.findCharacterStatResult(findSrc, 'guard_power').value

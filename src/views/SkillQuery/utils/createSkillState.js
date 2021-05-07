@@ -374,7 +374,7 @@ function setBranchAttributeDefault(branchs) {
       'default_level': '5'
     },
     'space': {
-      'disable': '0'
+      'disabled': '0'
     }
   };
 

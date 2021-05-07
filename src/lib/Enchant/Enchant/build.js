@@ -449,7 +449,7 @@ class EnchantStep {
    * @returns {boolean}
    */
   hasStat(itemBase, type) {
-    return this.stats.find(stat => stat.itemBase === itemBase && stat.type === type) ? true : false;
+    return this.stat(itemBase, type) ? true : false;
   }
 
   autoFill() {
@@ -463,7 +463,14 @@ class EnchantStep {
       const newStat = new EnchantStepStat(this, stat.itemBase, stat.type, value);
       return newStat;
     });
-    this.stats = newStats;
+    newStats.forEach(stat => {
+      const t = this.stat(stat.itemBase, stat.type);
+      if (t) {
+        t.value = stat.value
+      } else {
+        this.stats.push(stat);
+      }
+    });
   }
 }
 

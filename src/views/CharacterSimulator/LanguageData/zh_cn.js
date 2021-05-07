@@ -71,7 +71,7 @@ export default function() {
         'user sets: window title': '参数数值设定',
         'default name of stack': '技能层数',
         'default name of skill branch': '技能效果',
-        'skill disable': '装备不符。',
+        'skill disabled': '装备不符。',
         'skill multiple effects': '包含多个效果。',
         'tips: skill-builds data not be replaced': '自动读档时侦测到技能模拟器有现存的资料，读档这些资料将不会被删除。',
         'formula text': {

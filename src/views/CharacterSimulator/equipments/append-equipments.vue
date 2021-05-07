@@ -11,15 +11,17 @@
         class="sticky top-0 bg-white z-1 pt-1 pb-2"
         v-model:value="searchText"
         :placeholder="$lang('search equipment placeholder')" />
-      <div class="search-result" v-if="searchResult.length != 0">
-        <cy-list-item v-for="item in searchResult" :key="item.iid"
-          @click="selectEquipment(item)">
-          <cy-icon-text :icon="item.categoryIcon">{{ item.origin.name }}</cy-icon-text>
-          <span class="equipment-item-obtain">{{ item.obtainText }}</span>
-          <template v-slot:right-content>
-            <cy-icon-text icon="ic-round-add" />
+      <div class="search-result" v-if="searchResult.length !== 0">
+        <equipment-item v-for="item in searchResult" :key="item.iid"
+          @click="selectEquipment(item)"
+          :equipment="item.origin">
+          <template #extra>
+            <span class="text-sm text-light-2 ml-4">
+              {{ item.origin.obtainText }}
+            </span>
+            <cy-icon-text icon="ic-round-add" class="ml-auto" />
           </template>
-        </cy-list-item>
+        </equipment-item>
         <div v-if="searchResult.length >= searchResultMaximum"
           class="text-sm text-red py-3 px-2">
           {{ $lang('search equipment result: limit reached') }}
@@ -32,16 +34,16 @@
         <template #normal-content>
           <cy-transition type="fade">
             <div v-if="selectedDetailVisible" class="selected-detail">
-              <div>
-                <cy-list-item v-for="item in selected" :key="item.iid"
-                  @click="removeSelected(item)">
-                  <cy-icon-text :icon="item.categoryIcon">{{ item.origin.name }}</cy-icon-text>
-                  <span class="equipment-item-obtain">{{ item.obtainText }}</span>
-                  <template v-slot:right-content>
-                    <cy-icon-text icon="ic-round-close" />
-                  </template>
-                </cy-list-item>
-              </div>
+              <equipment-item v-for="item in selected" :key="item.iid"
+                @click="removeSelected(item)"
+                :equipment="item.origin">
+                <template #extra>
+                  <span class="text-sm text-light-2 ml-4">
+                    {{ item.origin.obtainText }}
+                  </span>
+                  <cy-icon-text icon="ic-round-close" class="ml-auto" />
+                </template>
+              </equipment-item>
             </div>
           </cy-transition>
           <div class="cursor-pointer mb-2 pt-2 flex items-center"
@@ -72,6 +74,8 @@
   </cy-window>
 </template>
 <script>
+import vue_equipmentItem from "@/components/common/equipment-item.vue";
+
 export default {
   RegisterLang: {
     root: 'Character Simulator/append equipments',
@@ -81,7 +85,7 @@ export default {
   },
   emits: ['close'],
   props: ['visible'],
-  inject: ['convertEquipmentData', 'getShowEquipmentData', 'appendEquipments'],
+  inject: ['convertEquipmentData', 'appendEquipments'],
   data() {
     return {
       searchText: '',
@@ -105,7 +109,7 @@ export default {
           (item.obtains.length > 0 ? item.obtains[0].type : 'unknow'));
 
         return {
-          ...this.getShowEquipmentData(o),
+          origin: o,
           obtainText: obtain,
           iid: i
         };
@@ -140,19 +144,17 @@ export default {
     selectEquipment(item) {
       item = {
         origin: item.origin,
-        categoryIcon: item.categoryIcon,
-        obtainText: item.obtainText,
         iid: this.selected.length
       };
       this.selected.push(item);
     }
+  },
+  components: {
+    'equipment-item': vue_equipmentItem
   }
 }
 </script>
 <style lang="postcss" scoped>
-.equipment-item-obtain {
-  @apply text-sm text-light-2 ml-4;
-}
 .selected-detail {
   max-height: min(20rem, 50vh);
   overflow-y: auto;

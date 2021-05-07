@@ -1,5 +1,5 @@
 <template>
-  <cy-list-item v-if="disable" class="skill-item">
+  <cy-list-item v-if="disabled" class="skill-item">
     <cy-flex-layout class="line-content">
       <cy-icon-text icon="gg-shape-rhombus"
         icon-color="gray-light" text-color="gray">
@@ -7,16 +7,16 @@
           <img :src="skillIconPath" class="skill-icon">
         </span>
       </cy-icon-text>
-      <div class="skill-disable-tips">
-        {{ $lang('skill management/skill disable') }}
+      <div class="skill-disabled-tips">
+        {{ $lang('skill management/skill disabled') }}
       </div>
     </cy-flex-layout>
   </cy-list-item>
   <cy-list-item v-else-if="branchStates.length == 1"
-    class="skill-item" :class="{ 'state-disable': levelSkillStateRoot.disable }">
+    class="skill-item" :class="{ 'state-disabled': levelSkillStateRoot.disabled }">
     <cy-flex-layout class="line-content">
       <cy-icon-text text-color="purple" class="name skill-name"
-        :icon="'ic-round-check-box' + (levelSkillStateRoot.disable ? '-outline-blank' : '')"
+        :icon="'ic-round-check-box' + (levelSkillStateRoot.disabled ? '-outline-blank' : '')"
         @click.stop="toggleStateRootDisable(levelSkillStateRoot)">
         <span class="skill-icon-container">
           <img :src="skillIconPath" class="skill-icon">
@@ -55,10 +55,10 @@
       </cy-transition>
     </template>
   </cy-list-item>
-  <cy-list-item v-else class="skill-item" :class="{ 'state-disable': levelSkillStateRoot.disable }">
+  <cy-list-item v-else class="skill-item" :class="{ 'state-disabled': levelSkillStateRoot.disabled }">
     <cy-flex-layout class="line-content">
       <cy-icon-text text-color="purple" class="skill-name"
-        :icon="'ic-round-check-box' + (levelSkillStateRoot.disable ? '-outline-blank' : '')"
+        :icon="'ic-round-check-box' + (levelSkillStateRoot.disabled ? '-outline-blank' : '')"
         @click.stop="toggleStateRootDisable(levelSkillStateRoot)">
         <span class="skill-icon-container">
           <img :src="skillIconPath" class="skill-icon">
@@ -79,10 +79,10 @@
       <cy-transition type="fade" appear>
         <div class="extra-content">
           <div v-for="branchState in branchStates" :key="branchState.iid" class="branch"
-            :class="{ 'state-disable': !levelSkillStateRoot.disable && branchState.disable }">
+            :class="{ 'state-disabled': !levelSkillStateRoot.disabled && branchState.disabled }">
             <cy-flex-layout class="line-content">
               <cy-icon-text text-color="purple" class="name skill-name"
-                :icon="'ic-round-check-box' + (branchState.disable ? '-outline-blank' : '')"
+                :icon="'ic-round-check-box' + (branchState.disabled ? '-outline-blank' : '')"
                 @click="toggleBranchStateDisable(branchState)">
                 {{ branchState.origin.attrs['name'] || $lang('skill management/default name of skill branch') }}
               </cy-icon-text>
@@ -134,7 +134,7 @@ export default {
     levelSkillState() {
       return this.getValidLevelSkillState(this.levelSkillStateRoot);
     },
-    disable() {
+    disabled() {
       return this.levelSkillState && this.firstBranchState ? false : true;
     },
     levelSkill() {
@@ -152,10 +152,10 @@ export default {
       this.extraContentVisible = !this.extraContentVisible;
     },
     toggleBranchStateDisable(state) {
-      state.disable = !state.disable;
+      state.disabled = !state.disabled;
     },
     toggleStateRootDisable(state) {
-      state.disable = !state.disable;
+      state.disabled = !state.disabled;
     }
   },
   components: {
@@ -169,7 +169,7 @@ export default {
   cursor: auto;
 }
 
-.state-disable {
+.state-disabled {
   opacity: 0.7;
 }
 
@@ -254,7 +254,7 @@ export default {
   }
 }
 
-.skill-disable-tips {
+.skill-disabled-tips {
   padding-left: 0.8rem;
   color: var(--primary-gray);
 }

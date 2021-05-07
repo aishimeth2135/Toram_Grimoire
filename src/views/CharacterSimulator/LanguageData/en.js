@@ -71,7 +71,7 @@ export default function() {
         'user sets: window title': 'Stacks Setting',
         'default name of stack': 'Stacks',
         'default name of skill branch': 'Skill Effects',
-        'skill disable': 'Skill not available',
+        'skill disabled': 'Skill not available',
         'skill multiple effects': 'This skill has multiple effects',
         'tips: skill-builds data not be replaced': 'Skill-builds data will not be replaced. ',
         'formula text': {

@@ -63,13 +63,13 @@
       <cy-icon-text text-size="small" text-color="purple" class="mt-4">
         {{ $lang('base options') }}
       </cy-icon-text>
-      <div class="flex items-center p-2">
+      <div class="flex items-center flex-wrap p-2 mr-2">
         <cy-input-counter v-model:value="currentEquipment.originalPotential">
           <template #title>
             <cy-icon-text>{{ $lang('equipment original potential') }}</cy-icon-text>
           </template>
         </cy-input-counter>
-        <cy-button type="icon" icon="jam-hammer" class="ml-4"
+        <cy-button type="icon" icon="jam-hammer" class="ml-2 my-2"
           icon-color="water-blue-light" icon-color-hover="water-blue"
           :selected="contents.setEquipmentBasePotential"
           @click="toggle('contents/setEquipmentBasePotential')" />
@@ -215,11 +215,16 @@
         </cy-default-tips>
       </div>
     </div>
-    <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center bg-white sticky bottom-4">
-      <cy-button icon="potum" icon-src="custom" type="inline"
-        @click="toggle('contents/result')">
-        {{ $lang('result/show result') }}
-      </cy-button>
+    <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center flex-wrap bg-white sticky bottom-4">
+      <cy-button type="icon"
+        :icon="contents.result ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
+        :selected="contents.result"
+        @click="toggle('contents/result')" />
+      <cy-button type="icon" class="ml-2"
+        :icon="state.statDisplayMode === 1 ? 'mdi-cube-outline' : 'mdi-cube-off-outline'"
+        main-color="water-blue"
+        :selected="state.statDisplayMode === 1"
+        @click="state.statDisplayMode = state.statDisplayMode === 1 ? 0 : 1" />
       <cy-icon-text icon="bx-bx-star" class="ml-auto mr-3">
         {{ $lang('success rate') }}
       </cy-icon-text>
@@ -257,6 +262,10 @@ export default {
   },
   data() {
     return {
+      state: {
+        statDisplayMode: 0
+      },
+
       /** @type {SelectItemTarget} */
       selectItemTarget: {},
 
@@ -286,7 +295,8 @@ export default {
   },
   provide() {
     return {
-      openSelectItem: this.openSelectItem
+      openSelectItem: this.openSelectItem,
+      rootState: this.state
     };
   },
   beforeCreate() {
@@ -425,7 +435,7 @@ export default {
       const rate = this.currentEquipment.successRate;
       return rate === -1 ?
         this.$lang('success rate: unlimited') :
-        (rate.toFixed(1).replace('.0', '') + '%');
+        Math.floor(rate);
     },
 
     currentEquipmentType: {
@@ -606,9 +616,13 @@ div.steps-content-container {
     flex-wrap: wrap;
     width: calc(46rem + 5px);
 
+    @media screen and (max-width: 50rem) {
+      @apply w-full;
+    }
+
     & > .step-container {
       width: 22rem;
-      @apply m-2;
+      @apply m-2 max-w-full;
     }
   }
 }

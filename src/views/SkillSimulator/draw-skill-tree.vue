@@ -141,11 +141,11 @@ export default {
         stroke: var(--primary-water-blue);
       }
 
-      &.disable {
+      &.disabled {
         stroke: #BBB;
       }
 
-      &:not(.disable):hover + text.skill-name, &.selected + text.skill-name {
+      &:not(.disabled):hover + text.skill-name, &.selected + text.skill-name {
         display: block;
       }
 

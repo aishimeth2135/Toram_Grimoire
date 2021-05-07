@@ -94,13 +94,11 @@
           <div class="mode-options-container">
             <cy-options inline>
               <template #title>
-                <span class="switch-mode-btn">
-                  <cy-button type="icon" key="switch-btn"
-                    icon="heroicons-solid:switch-vertical"
-                    icon-color="water-blue-light"
-                    icon-color-hover="water-blue"
-                    class="p-0" />
-                </span>
+                <cy-button type="icon" key="switch-btn"
+                  icon="heroicons-solid:switch-vertical"
+                  icon-color="water-blue-light"
+                  icon-color-hover="water-blue"
+                  class="p-0" />
               </template>
               <template #options>
                 <cy-list-item v-for="(p, id) in modes" :key="id"
@@ -113,7 +111,7 @@
             </cy-options>
             <div class="mode-options">
               <template v-if="currentMode == 'normal'">
-                <div class="mode-normal-title">
+                <div class="mode-normal-title ml-2">
                   <div class="input-container">
                     <cy-icon-text icon="ic-outline-search" class="icon" />
                     <input type="text" :placeholder="$lang('search placeholder')"
@@ -132,19 +130,21 @@
                 </cy-button>
               </template>
               <template v-else-if="currentMode == 'item-level'">
-                <div class="mode-item-level-input-container">
-                  <cy-icon-text icon="jam-hammer" class="icon" />
+                <div class="flex items-center">
+                  <cy-icon-text icon="jam-hammer" class="ml-2" />
                   <input type="text" placeholder="0"
+                    class="border-0 p-1 inline-block w-14 text-center"
                     v-model="itemLevelMinimum">
                   <cy-icon-text icon="mdi-tilde" />
                   <input type="text" placeholder="300"
+                    class="border-0 p-1 inline-block w-14 text-center"
                     v-model="itemLevelMaximum">
                 </div>
               </template>
               <template v-else-if="currentMode == 'dye'">
                 <div class="mode-dye-title">
                   <div class="input-container">
-                    <cy-icon-text icon="ic-outline-palette" class="icon" />
+                    <cy-icon-text icon="ic-outline-palette" class="ml-2" />
                     <input type="text" :placeholder="$lang('search placeholder')"
                       v-model="modes.dye.searchText">
                   </div>
@@ -636,21 +636,22 @@ export default {
     margin-bottom: 0.8rem;
     margin-top: 0.8rem;
     border-radius: 1.4rem;
+    padding: 0.25rem 0.75rem;
     border: 0.1rem solid var(--primary-light);
-    display: grid;
-    grid-template-columns: 3rem auto;
+    display: flex;
     align-items: center;
     background-color: var(--white);
   }
 }
 
 .mode-normal-title, .mode-dye-title {
-  display: grid;
-  grid-template-columns: auto 3rem;
+  display: flex;
+  align-items: center;
 
   .input-container {
     display: flex;
     align-items: center;
+    width: 100%;
 
     > input {
       border: 0;
@@ -668,25 +669,5 @@ export default {
   padding: 0.6rem 1rem;
   background-color: var(--white);
   margin-top: 0.8rem;
-}
-
-.mode-item-level-input-container {
-  display: flex;
-  align-items: center;
-  > .icon {
-    margin-right: 0.4rem;
-  }
-  > input {
-    border: 0;
-    padding: 0.2rem;
-    display: inline-block;
-    width: 3.5rem;
-    text-align: center;
-  }
-}
-
-.switch-mode-btn {
-  padding: 0.3rem;
-  display: inline-block;
 }
 </style>

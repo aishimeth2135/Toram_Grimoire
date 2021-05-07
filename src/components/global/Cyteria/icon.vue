@@ -20,7 +20,8 @@ export default {
     },
     src: {
       type: String,
-      default: 'iconify'
+      default: 'iconify',
+      validation: v => ['iconify', 'custom', 'image'].includes(v)
     }
   }
 }
