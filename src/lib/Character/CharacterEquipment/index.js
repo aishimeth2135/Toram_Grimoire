@@ -97,6 +97,26 @@ class CharacterEquipment {
     return this instanceof MainWeapon ? 'mdi-sword' : 'mdi-shield';
   }
 
+  getCategoryImagePath(fieldId = 0) {
+    const pre = '/imgs/character/equipment';
+    if (this instanceof BodyArmor || this instanceof SubWeapon || this instanceof SubArmor) {
+      return `${pre}/${this.type.description.replace('|', '/')}.png`;
+    }
+    if (this instanceof AdditionalGear) {
+      return `${pre}/additional.png`;
+    }
+    if (this instanceof SpecialGear) {
+      return `${pre}/special.png`;
+    }
+    if (this instanceof Avatar) {
+      return `${pre}/avatar/i${fieldId}.png`;
+    }
+    if (this instanceof MainWeapon) {
+      return `${pre}/main-weapon/${this.type.description}.png`;
+    }
+    return '#';
+  }
+
   getAllStats(checkRestriction = () => true) {
     const all = this.stats
       .map(p => {

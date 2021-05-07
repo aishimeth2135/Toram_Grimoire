@@ -19,7 +19,7 @@
             {{ $lang('select crystals/category title')[category.id] }}
             <template v-slot:menu>
               <template v-for="cs in category.crystalStates">
-                <cy-list-item v-if="!cs.disable"
+                <cy-list-item v-if="!cs.disabled"
                   :key="cs.origin.id"
                   :selected="cs.selected"
                   @click="selectCrystal(cs.origin)">
@@ -126,7 +126,7 @@ export default {
           crystalStates: cs.map(c => ({
             origin: c,
             imagePath: this.getCrystalImagePath(c),
-            disable: !this.checkEnchaner(cat, c),
+            disabled: !this.checkEnchaner(cat, c),
             selected: this.findEquipmentCrystal(c) ? true : false
           }))
         };

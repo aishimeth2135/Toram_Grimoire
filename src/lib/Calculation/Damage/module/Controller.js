@@ -141,7 +141,7 @@ export default class DamageCalculationController {
         let v = this.value;
         const MAX_LENGTH = 16;
         if (v.includes(',,')) {
-          MessageNotify(Lang('Warn/Disable char'));
+          MessageNotify(Lang('Warn/disabled char'));
           v = v.replace(new RegExp(',,', 'g'), '');
         }
         if (v.length > MAX_LENGTH) {

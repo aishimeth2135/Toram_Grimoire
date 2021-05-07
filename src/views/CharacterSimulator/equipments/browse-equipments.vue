@@ -27,10 +27,10 @@
         <div class="items">
           <equipment-item v-for="eq in browsedEquipments"
             :key="eq.iid" :equipment="eq.origin"
-            @click="setCurrentEquipment(eq.origin, eq['@disable'])"
+            @click="setCurrentEquipment(eq.origin, eq['@disabled'])"
             :selected="eq.origin === currentEquipment"
-            :is-current="actionType == 'select-field-equipment' && action.targetField.equipment == eq.origin"
-            :disable="eq['@disable']" />
+            :current="actionType === 'select-field-equipment' && action.targetField.equipment == eq.origin"
+            :disabled="eq['@disabled']" />
         </div>
         <div class="preview" :class="{ 'unfold': infoUnfold }">
           <div class="info" v-if="currentEquipment" @click.stop>
@@ -75,7 +75,8 @@
   </cy-window>
 </template>
 <script>
-import vue_equipmentItem from "./equipment-item.vue";
+import vue_equipmentItem from "@/components/common/equipment-item.vue";
+
 import vue_equipmentInfo from "./equipment-info.vue";
 import vue_characterStatsCompare from "../main/character-stats-compare.vue";
 
@@ -139,7 +140,7 @@ export default {
         .map((p, i) => {
           const t = this.getShowEquipmentData(p);
           t.iid = i;
-          t['@disable'] = !this.fieldFilter(p);
+          t['@disabled'] = !this.fieldFilter(p);
           return t;
         })
         .sort((a, b) => a.origin.name.localeCompare(b.origin.name));
@@ -196,13 +197,13 @@ export default {
     clearCurrentEquipment() {
       this.currentEquipment = null;
     },
-    setCurrentEquipment(eq, disable=false) {
-      if (this.currentEquipment === eq && !disable) {
+    setCurrentEquipment(eq, disabled=false) {
+      if (this.currentEquipment === eq && !disabled) {
         this.selectEquipment();
         return;
       }
       this.currentEquipment = eq;
-      this.currentEquipmentDisable = disable;
+      this.currentEquipmentDisable = disabled;
     },
     fieldFilter(eq) {
       switch (this.action.targetField.type) {

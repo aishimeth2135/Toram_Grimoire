@@ -35,7 +35,6 @@ export default function(){
       'result': {
         'enchant: normal': '附',
         'enchant: each': '分次附、每次附$0直到$1',
-        'show result': '結果',
         'stats': '最終結果',
         'materials': '素材耗量',
         'info': '基本配置'

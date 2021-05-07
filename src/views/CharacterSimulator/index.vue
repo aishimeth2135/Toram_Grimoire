@@ -343,7 +343,7 @@ export default {
                 const skill = this.findSkillById(4, 1, 1);
                 if (!skill)
                   return 0;
-                return skill.disable ? 0 : skill.levelSkill.level();
+                return skill.disabled ? 0 : skill.levelSkill.level();
               })()
             }
           },
@@ -418,12 +418,12 @@ export default {
           });
         };
         states.forEach(levelSkillStateRoot => {
-          if (levelSkillStateRoot.disable)
+          if (levelSkillStateRoot.disabled)
             return;
           const state = this.getValidLevelSkillState(levelSkillStateRoot);
           if (state) {
             state.branchStates
-              .filter(bs => !bs.disable)
+              .filter(bs => !bs.disabled)
               .forEach(bs => {
                 const v = bs.handler.value;
                 if (v.stats.length != 0)
@@ -522,7 +522,7 @@ export default {
                 iid: counter,
                 origin: bch,
                 handler,
-                disable: false
+                disabled: false
               };
               ++counter;
 
@@ -699,7 +699,7 @@ export default {
               levelSkill: state.levelSkill,
               // originalLevelSkillState: state,
               levelSkillTreeState: st,
-              disable: skillItemType != 'passive'
+              disabled: skillItemType != 'passive'
             };
           });
           res.push(...p);

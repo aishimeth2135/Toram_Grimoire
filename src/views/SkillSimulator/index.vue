@@ -486,16 +486,17 @@ export default {
     },
     async exportCurrentBuildImage() {
       if (!this.beforeExportConfirm()) return;
-      const loadingNotifyItem = await LoadingNotify(this.$lang('tips/export build image: loading message'));
+      const loadingNotifyItem = LoadingNotify(this.$lang('tips/export build image: loading message'));
       try {
         const drawSetting = GetDrawSetting();
 
         const cur_build = this.currentSkillRootState;
         const body_cs = getComputedStyle(document.body);
-        const pcolorl = body_cs.getPropertyValue('--primary-light'),
-          pcolor3 = body_cs.getPropertyValue('--primary-light-3'),
-          pcolor4 = body_cs.getPropertyValue('--primary-light-4'),
-          fontFamily = body_cs.getPropertyValue('font-family');
+        const whiteColor = body_cs.getPropertyValue('--white').trim(),
+          pcolorl = body_cs.getPropertyValue('--primary-light').trim(),
+          pcolor3 = body_cs.getPropertyValue('--primary-light-3').trim(),
+          pcolor4 = body_cs.getPropertyValue('--primary-light-4').trim(),
+          fontFamily = body_cs.getPropertyValue('font-family').trim();
 
         // icon
         const skillPointCostSvgIconString = `<svg crossOrigin="anonymous" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.343L6.343 12L12 17.657L17.657 12L12 6.343zM2.1 12l9.9 9.9l9.9-9.9L12 2.1L2.1 12z" fill="${pcolor3}"/></g></svg>`;
@@ -631,6 +632,7 @@ export default {
           canvas.width = final_w;
           canvas.height = st_h;
           const ctx = canvas.getContext('2d');
+          ctx.lineWidth = 2;
 
           drawData.data.forEach(p => {
             ctx.beginPath();
@@ -648,7 +650,6 @@ export default {
               ctx.moveTo(p.x1, p.y1);
               ctx.lineTo(p.x2, p.y2);
               ctx.strokeStyle = pcolorl;
-              ctx.lineWidth = 2;
               ctx.stroke();
             } else if (p.type == 'tree-dot') {
               ctx.strokeStyle = pcolorl;
@@ -704,7 +705,7 @@ export default {
         const fctx = final_canvas.getContext('2d');
 
         // background
-        fctx.fillStyle = body_cs.getPropertyValue('background-color');
+        fctx.fillStyle = whiteColor;
         fctx.fillRect(0, 0, final_w, final_h);
 
         // init
@@ -712,6 +713,7 @@ export default {
         fctx.font = `${CY.element.convertRemToPixels(1)}px ${fontFamily}`;
         fctx.textBaseline = 'middle';
         fctx.fillStyle = pcolor4;
+        fctx.lineWidth = 2;
 
         fctx.textAlign = 'left';
 
@@ -749,11 +751,15 @@ export default {
               icon_r = icon_width_sum / 2;
             const grd = fctx.createLinearGradient(icon_mid, cur_y, icon_mid, cur_y + icon_width_sum);
             skillIconGrdAddColors(grd);
+            fctx.fillStyle = grd;
             const icon_cy = cur_y + icon_r;
             fctx.beginPath();
+            fctx.strokeStyle = '#ff5fb7';
             fctx.arc(icon_mid, icon_cy, icon_r, 0, Math.PI * 2);
             fctx.fill();
+            fctx.stroke();
             fctx.drawImage(p.loadedImage, left + sgc_icon_pd, cur_y + sgc_icon_pd, skill_icon_width, skill_icon_width);
+            fctx.fillStyle = pcolor4;
             fctx.fillText(p.skill.base.name + ' Lv.' + p.skill.starGemLevel(), left + icon_width_sum + sgc_icon_mr, icon_cy);
             if (i % 2 == 1 && i != ary.length - 1)
               cur_y += skill_icon_width + sgc_margin + sgc_icon_pd * 2;

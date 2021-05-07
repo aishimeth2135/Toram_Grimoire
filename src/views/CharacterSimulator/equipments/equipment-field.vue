@@ -17,7 +17,7 @@
       </div>
     </div>
     <equipment-info v-if="!field.isEmpty()" :equipment="field.equipment"
-      :stats-disable="field.statsDisable()" />
+      :stats-disabled="field.statsDisable()" />
     <cy-default-tips v-else icon="potum" icon-src="custom">
       {{ $lang('Warn/no equipment selected') }}
     </cy-default-tips>

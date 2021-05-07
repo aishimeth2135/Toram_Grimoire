@@ -1,7 +1,7 @@
 <template>
   <cy-list-item class="main--equipment-item" :selected="selected">
     <cy-icon-text :icon="equipmentData.categoryIcon"
-      :class="{ 'opacity-50': disable }"
+      :class="{ 'opacity-50': disabled }"
       :icon-color="equipment.isCustom ? 'green' : 'light-2'"
       :text-color="isCurrent ? 'light-4' : 'dark'">
       <span>{{ equipment.name }}</span><span v-if="equipment.hasRefining && equipment.refining != 0"
@@ -13,7 +13,7 @@
   export default {
     props: {
       'equipment': {},
-      'disable': {
+      'disabled': {
         type: Boolean,
         default: false
       },

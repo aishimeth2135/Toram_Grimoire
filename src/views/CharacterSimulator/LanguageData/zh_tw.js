@@ -71,7 +71,7 @@ export default function() {
         'user sets: window title': '參數數值設定',
         'default name of stack': '技能層數',
         'default name of skill branch': '技能效果',
-        'skill disable': '裝備不符。',
+        'skill disabled': '裝備不符。',
         'skill multiple effects': '包含多個效果。',
         'tips: skill-builds data not be replaced': '自動讀檔時偵測到技能模擬器有現存的資料，讀檔這些資料將不會被刪除。',
         'formula text': {
