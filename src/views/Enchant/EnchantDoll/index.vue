@@ -522,6 +522,7 @@ export default {
         this.doll = new EnchantDoll();
         this.stepCounter = 0;
         this.selectNegativeStatState.manually = [];
+        this.exportState.hasExport = false;
       };
       this.$confirm({
         message: this.$lang('tips/reset confirm'),
@@ -542,6 +543,7 @@ export default {
     },
     backToStep(id) {
       this.stepCounter = id;
+      this.exportState.hasExport = false;
     },
     nextStep() {
       if (this.stepCounter === this.stepContents.selectPositiveStat) {
