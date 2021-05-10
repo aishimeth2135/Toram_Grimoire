@@ -1,2 +1,2 @@
 export { EnchantCategory, EnchantItem } from "./base";
-export { EnchantStep, EnchantStepStat, EnchantEquipment, EnchantBuild } from "./build";
+export { EnchantStep, EnchantStat, EnchantStepStat, EnchantEquipment, EnchantBuild } from "./build";

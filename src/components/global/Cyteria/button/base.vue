@@ -24,6 +24,9 @@ export default {
   },
   methods: {
     click(e) {
+      if (this.disabled) {
+        return;
+      }
       this.$emit('click', e);
     }
   }

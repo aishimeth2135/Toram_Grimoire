@@ -1,8 +1,12 @@
 export default class Color {
   static List = [
-    'dark', 'light', 'light-2', 'light-3', 'light-4', 'purple',
-    'red', 'red-light', 'water-blue', 'water-blue-light',
-    'gray', 'gray-light', 'orange', 'green',
+    'dark', 'light', 'light-2', 'light-3', 'light-4',
+    'purple',
+    'red', 'red-light',
+    'water-blue', 'water-blue-light',
+    'gray', 'gray-light',
+    'orange', 'orange-light',
+    'green',
     'blue-green', 'blue-green-light'
   ];
   static MappingList = {
@@ -13,7 +17,8 @@ export default class Color {
     'red-light': 'red',
     'water-blue-light': 'water-blue',
     'gray-light': 'gray',
-    'blue-green-light': 'blue-green'
+    'blue-green-light': 'blue-green',
+    'orange-light': 'orange'
   };
 
   /**

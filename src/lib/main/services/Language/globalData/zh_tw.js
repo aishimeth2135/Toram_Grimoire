@@ -19,6 +19,7 @@ export default function() {
       'close': '關閉',
       'export': '匯出',
       'import': '匯入',
+      'reset': '重置',
       'copy to clipboard finished': '已複製文本至剪貼簿。',
       'LocalStorage is inavailable': '此瀏覽器版本無法使用內建儲存功能。',
     },
@@ -118,7 +119,10 @@ export default function() {
       'calculation': {
         'damage': '傷害計算'
       },
-      'enchant-simulator': '附魔模擬'
+      'enchant': {
+        'enchant-simulator': '附魔模擬',
+        'enchant-doll': '附魔計算'
+      }
     },
     'Left Menu': {
       'Home': {
