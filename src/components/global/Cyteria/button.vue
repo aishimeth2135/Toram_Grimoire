@@ -7,6 +7,7 @@ import InlineButton from "./button/inline";
 import LineButton from "./button/line";
 import IconButton from "./button/icon";
 import DropDownButton from "./button/drop-down";
+import CheckButton from "./button/check";
 
 import Color from "@services/Color";
 
@@ -29,6 +30,8 @@ function CyButton(props, context) {
       return DropDownButton;
     } else if (type === 'inline') {
       return InlineButton;
+    } else if (type === 'check') {
+      return CheckButton;
     }
     return SimpleButton;
   }
@@ -86,7 +89,7 @@ CyButton.props = {
     default: 'simple',
     validator(v){
       return [
-        'simple', 'icon', 'line', 'border', 'drop-down', 'inline'
+        'simple', 'icon', 'line', 'border', 'drop-down', 'inline', 'check'
       ].includes(v);
     }
   },
@@ -178,7 +181,7 @@ export default CyButton;
   }
   @colors: ~'dark', ~'light', ~'light-2', ~'light-3', ~'light-4', ~'purple',
     ~'red', ~'red-light', ~'water-blue', ~'water-blue-light',
-    ~'gray', ~'gray-light', ~'orange', ~'green',
+    ~'gray', ~'gray-light', ~'orange', ~'orange-light', ~'green',
     ~'blue-green', ~'blue-green-light';
   @color-texts: ~'text', ~'icon', ~'border';
   each(@colors, .(@color) {

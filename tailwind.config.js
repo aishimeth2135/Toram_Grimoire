@@ -22,7 +22,10 @@ module.exports = {
         DEFAULT: 'var(--primary-water-blue)',
         light: 'var(--primary-water-blue-light)'
       },
-      orange: 'var(--primary-orange)',
+      orange: {
+        DEFAULT: 'var(--primary-orange)',
+        light: 'var(--primary-orange-light)'
+      },
       green: 'var(--primary-green)',
       gray: 'var(--primary-gray)',
     },

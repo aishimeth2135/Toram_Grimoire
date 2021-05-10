@@ -46,7 +46,7 @@ export default {
             navigate(e);
           }
         }, {
-          name: 'enchant-simulator',
+          name: 'enchant/enchant-simulator',
           icon: 'mdi-cube-scan',
           path: '/enchant'
         }, {

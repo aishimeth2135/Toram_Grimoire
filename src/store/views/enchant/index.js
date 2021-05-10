@@ -7,6 +7,7 @@ const state = {
   /** @type {EnchantBuild[]} */
   builds: [],
   currentBuildIndex: -1,
+  hasInit: false,
   config: {
     characterLevel: 220,
     smithLevel: 0
@@ -44,6 +45,9 @@ const mutations = {
   setCurrentBuild(state, { index = 0 } = {}) {
     state.currentBuildIndex = index;
   },
+  initFinished(state) {
+    state.hasInit = true;
+  },
   save(state, { target = 'auto' } = {}) {
     if (!CY.storageAvailable('localStorage')) {
       return;
@@ -77,6 +81,7 @@ const mutations = {
       state.config = data.config;
     } catch (e) {
       console.warn('Load enchant-simulator data fail: ' + target);
+      console.log(e);
       state.builds = origin.builds;
       state.currentBuildIndex = origin.index;
       state.config = origin.config;
@@ -84,8 +89,23 @@ const mutations = {
   }
 };
 
+const actions = {
+  init({ commit }) {
+    if (state.hasInit) {
+      return;
+    }
+    commit('load');
+    commit('initFinished');
+  },
+  exportDollBuild({ commit }, build) {
+    commit('appendBuild', build);
+    commit('save');
+  },
+}
+
 export default {
   namespaced: true,
   state,
-  mutations
+  mutations,
+  actions
 };

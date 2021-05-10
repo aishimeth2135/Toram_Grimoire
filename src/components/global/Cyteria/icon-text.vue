@@ -129,9 +129,9 @@ export default {
   }
 
   @colors: ~'dark', ~'light', ~'light-2', ~'light-3', ~'light-4', ~'purple',
-  ~'red', ~'red-light', ~'water-blue', ~'water-blue-light',
-  ~'gray', ~'gray-light', ~'orange', ~'green',
-  ~'blue-green', ~'blue-green-light';
+    ~'red', ~'red-light', ~'water-blue', ~'water-blue-light',
+    ~'gray', ~'gray-light', ~'orange', ~'orange-light', ~'green',
+    ~'blue-green', ~'blue-green-light';
   @color-texts: ~'text', ~'icon';
   each(@colors, .(@color) {
     each(@color-texts, .(@name) {

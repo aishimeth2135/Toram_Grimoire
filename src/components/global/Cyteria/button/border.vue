@@ -17,35 +17,3 @@ export default {
   mixins: [BaseButton]
 };
 </script>
-
-<style lang="postcss" scoped>
-.cy-button--border {
-  --icon-width: 1.2rem;
-
-  & > svg, & > img {
-    display: block;
-    flex-shrink: 0;
-    fill: currentcolor;
-    color: var(--icon-color);
-    height: var(--icon-width);
-    width: var(--icon-width);
-
-    @apply duration-300;
-  }
-
-  & > .text {
-    color: var(--text-color);
-  }
-
-  &:hover, &.selected {
-    @apply border-light-3;
-
-    & > svg {
-      color: var(--icon-color-hover);
-    }
-    & > .text {
-      color: var(--text-color-hover);
-    }
-  }
-}
-</style>

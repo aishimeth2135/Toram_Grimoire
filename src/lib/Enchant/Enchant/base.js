@@ -133,7 +133,7 @@ class EnchantItem {
    * @param {symbol} type
    * @returns {number}
    */
-  basePotential(type) {
+  getOriginalPotential(type) {
     return this.potential[type];
   }
 
@@ -156,7 +156,7 @@ class EnchantItem {
   }
   getLimitFromPotentialCapacity(type, add = 0) {
     let potentialLimit = STATE.PotentialCapacity + add;
-    const bp = this.basePotential(type);
+    const bp = this.getOriginalPotential(type);
     if (bp === 6)
       potentialLimit -= 10;
     return Math.floor(potentialLimit / bp);
@@ -164,6 +164,11 @@ class EnchantItem {
   getUnitValue(type) {
     return this.unitValue[type];
   }
+
+  /**
+   * @param {symbol} type
+   * @returns {number}
+   */
   getMaterialPointValue(type) {
     const t = this.materialPointValue[type];
     if (t === '') {
@@ -174,7 +179,7 @@ class EnchantItem {
         '6': 33.5,
         '10': 50,
         '20': 100
-      } [this.basePotential(type).toString()];
+      } [this.getOriginalPotential(type).toString()];
     }
     return parseFloat(t);
   }
@@ -188,6 +193,7 @@ class EnchantItem {
 
 class EnchantItemConditionalProperties {
   constructor(condition, { potential = null }) {
+    /** @type {symbol} */
     this.condition = condition;
     this.potential = {
       [StatBase.TYPE_CONSTANT]: potential[0],

@@ -56,6 +56,10 @@ export default {
       type: Boolean,
       default: false
     },
+    'disabled': {
+      type: Boolean,
+      default: false
+    },
     'maxButton': {
       type: Boolean,
       default: false
@@ -75,7 +79,8 @@ export default {
       return {
         'line': this.type === 'line',
         'inline': this.inline,
-        ['border-' + this.mainColor]: true
+        ['border-' + this.mainColor]: true,
+        'disabled': this.disabled
       };
     },
     mainColorInstance() {
@@ -112,6 +117,7 @@ export default {
   align-items: center;
   padding: 0.3rem 1rem;
   transition: border-color 0.3s;
+  position: relative;
 
   &.inline {
     border: 0;
@@ -139,6 +145,22 @@ export default {
     display: flex;
     > .counter-content {
       margin-left: auto;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.7;
+
+    &::before {
+      content: '';
+      width: 100%;
+      height: 100%;
+      cursor: not-allowed;
+      z-index: 10;
+      display: inline-block;
+      position: absolute;
+      left: 0;
+      top: 0;
     }
   }
 }

@@ -2,6 +2,8 @@ import { EnchantCategory, EnchantItem } from "./base";
 import { Stat, StatBase } from "@/lib/Character/Stat";
 import STATE from "./state";
 
+import { calcPotentialExtraRate } from "./utils";
+
 import Grimoire from "@grimoire";
 
 class EnchantBuild {
@@ -11,7 +13,14 @@ class EnchantBuild {
    */
   constructor(name, equipment = null) {
     this.name = name;
-    this.equipment = equipment || new EnchantEquipment();
+    if (equipment) {
+      this.equipment = equipment;
+    }
+    else {
+      this.equipment = new EnchantEquipment();
+      this.equipment.originalPotential = 90;
+    }
+    this.categorys = Grimoire.Enchant.categorys; // link
   }
 
   /**
@@ -101,6 +110,11 @@ class EnchantEquipment {
     return equipment;
   }
 
+  copy(categorys) {
+    const data = this.save();
+    return EnchantEquipment.load(categorys, data);
+  }
+
   /** @param {EnchantStep[]} steps */
   loadSteps(steps) {
     this._steps = steps;
@@ -149,12 +163,21 @@ class EnchantEquipment {
     if (!this.lastStep) {
       return -1;
     }
+    const rate = this.realSuccessRate;
+    return rate >= 160 ? -1 : rate;
+  }
+
+  /**
+   * @returns {number} - Percentage of success rate
+   */
+   get realSuccessRate() {
+    if (!this.lastStep) {
+      return 160;
+    }
     const last_index = this.lastStep.index;
     const pot = this.stepRemainingPotential(last_index);
     const d = Math.max(this.stepRemainingPotential(last_index - 1), this.basePotential);
-    if (!this.checkStepRemainingPotential())
-      return Math.max(160 + pot * 230 / d, 0);
-    return -1;
+    return Math.max(160 + pot * 230 / d, 0);
   }
 
   /**
@@ -198,8 +221,7 @@ class EnchantEquipment {
       const check = t.find(a => a.category == cat);
       check ? ++check.cnt : t.push({ category: cat, cnt: 1 });
     });
-    const res = t.reduce((a, b) => a + (b.cnt > 1 ? b.cnt * b.cnt : 0), 20);
-    return res / 20;
+    return calcPotentialExtraRate(t.map(t => t.cnt));
   }
 
   /**
@@ -480,6 +502,47 @@ class EnchantStep {
       }
     });
   }
+
+  /**
+   * check whether the cost of potential will reduce after modify type
+   * @param {number} autoFix - if return value greater than autoFix, it will auto modify type to optimize
+   * @returns {number} number between -2 and 2
+   *                    - 2: cost will reduce
+   *                    - 1: TYPE_EACH is unnecessary
+   *                    - 0: potential cost will not reduce, but cost may reduce if stat.value increased
+   *                    - -1: cost will not reduce
+   *                    - -2: stats.length != 1
+   */
+  optimizeType(autoFix = 2) {
+    if (this.stats.length !== 1) {
+      return -2;
+    }
+    const oldType = this.type;
+    const check = (() => {
+      const old = this.potentialCost;
+      this.type = this.type === EnchantStep.TYPE_NORMAL ? EnchantStep.TYPE_EACH : EnchantStep.TYPE_NORMAL;
+      if (this.potentialCost > old) {
+        return -1;
+      }
+      if (this.potentialCost === old) {
+        if (oldType === EnchantStep.TYPE_EACH) {
+          return 1;
+        } else if (this.potentialExtraRate > 1) {
+          return 0;
+        }
+        return -1;
+      }
+      return 2;
+    })();
+    if (check <= autoFix) {
+      this.type = oldType;
+    }
+    return check;
+  }
+
+  toString() {
+    return `@${this.type.description}|${this.stats.map(stat => stat.show('base')).join(', ')}|${this.remainingPotential}pt`;
+  }
 }
 
 class EnchantStat {
@@ -524,6 +587,10 @@ class EnchantStat {
     return this.itemBase.getLimit(this.type);
   }
 
+  get originalPotential() {
+    return this.itemBase.getOriginalPotential(this.type);
+  }
+
   /**
    * @param {number} [v]
    * @returns {string}
@@ -545,6 +612,36 @@ class EnchantStat {
 
   copy() {
     return new EnchantStat(this.itemBase, this.type, this.value);
+  }
+
+  /**
+   * @param {number} from
+   * @param {number} to
+   * @returns {number}
+   */
+   calcMaterialPointCost(from, to) {
+    if (from > to) {
+      const t = from;
+      from = to;
+      to = t;
+    }
+
+    const smithlv = STATE.Character.smithLevel;
+    const r = 100 - Math.floor(smithlv / 10) - Math.floor(smithlv / 50);
+    const bv = this.itemBase.getMaterialPointValue(this.type);
+
+    const calc = (_from, _to) => {
+      _to = Math.abs(_to);
+      _from = Math.abs(_from);
+      if (_from > _to) {
+        [_from, _to] = [_to, _from];
+      }
+      return Array(_to - _from).fill()
+        .map((p, i) => i + _from + 1)
+        .reduce((a, b) => a + Math.floor(b * b * bv * r / 100), 0)
+    };
+
+    return from * to >= 0 ? calc(from, to) : calc(from, 0) + calc(0, to);
   }
 }
 
@@ -781,36 +878,6 @@ class EnchantStepStat extends EnchantStat {
   }
 
   /**
-   * @param {number} from
-   * @param {number} to
-   * @returns {number}
-   */
-  calcMaterialPointCost(from, to) {
-    if (from > to) {
-      const t = from;
-      from = to;
-      to = t;
-    }
-
-    const smithlv = STATE.Character.smithLevel;
-    const r = 100 - Math.floor(smithlv / 10) - Math.floor(smithlv / 50);
-    const bv = this.itemBase.getMaterialPointValue(this.type);
-
-    const calc = (_from, _to) => {
-      _to = Math.abs(_to);
-      _from = Math.abs(_from);
-      if (_from > _to) {
-        [_from, _to] = [_to, _from];
-      }
-      return Array(_to - _from).fill()
-        .map((p, i) => i + _from + 1)
-        .reduce((a, b) => a + Math.floor(b * b * bv * r / 100), 0)
-    };
-
-    return from * to >= 0 ? calc(from, to) : calc(from, 0) + calc(0, to);
-  }
-
-  /**
    * remove this stat from step
    * @return {void}
    */
@@ -824,4 +891,4 @@ class EnchantStepStat extends EnchantStat {
   }
 }
 
-export { EnchantStep, EnchantStepStat, EnchantEquipment, EnchantBuild };
+export { EnchantStat, EnchantStepStat, EnchantStep, EnchantEquipment, EnchantBuild };

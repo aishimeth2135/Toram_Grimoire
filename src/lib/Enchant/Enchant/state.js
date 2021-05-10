@@ -1,3 +1,4 @@
+import store from "@/store";
 
 const STATE = {
   PotentialCapacity: 100,
@@ -5,8 +6,12 @@ const STATE = {
   EquipmentItemMaximumNumber: 8,
   PotentialConvertDefaultThreshold: 20,
   Character: {
-    level: 220,
-    smithLevel: 0,
+    get level() {
+      return store.state.enchant.config.characterLevel;
+    },
+    get smithLevel() {
+      return store.state.enchant.config.smithLevel;
+    },
     tec: 255
   }
 };
