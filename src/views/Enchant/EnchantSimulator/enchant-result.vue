@@ -189,8 +189,8 @@ export default {
         '' :
         `${this.$lang('equipment base potential')}｜${this.equipment.basePotential}\n`;
       CY.copyToClipboard(
-        `✩ ${this.$lang('result/info')}\n` +
-        `${this.$lang('equipment original potential')}｜${this.config.characterLevel}\n` +
+        `✩ ${this.$lang('equipment types/' + this.equipment.fieldType.description)}\n` +
+        `${this.$lang('equipment original potential')}｜${this.equipment.originalPotential}\n` +
         `${this.$lang('smith level')}｜${this.config.smithLevel}\n` +
         basePotential +
         `✩ ${this.$lang('result/stats')}\n` +

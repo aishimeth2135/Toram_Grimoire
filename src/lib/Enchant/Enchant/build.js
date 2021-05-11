@@ -321,7 +321,11 @@ class EnchantEquipment {
     return true;
   }
 
-  hasStat(stepIdx, stat) {
+  /**
+   * @param {EnchantStat|EnchantStepStat} stat
+   * @param {number} [stepIdx]
+  */
+  hasStat(stat, stepIdx) {
     return this.stats(stepIdx).find(q => q.equals(stat)) ? true : false;
   }
 }
@@ -429,7 +433,7 @@ class EnchantStep {
    */
   appendStat(itemBase, type, v) {
     const stat = new EnchantStepStat(this, itemBase, type, v);
-    if (!this.belongEquipment.checkStats() && !this.belongEquipment.hasStat(this.index-1, stat)) {
+    if (!this.belongEquipment.checkStats() && !this.belongEquipment.hasStat(stat, this.index - 1)) {
       return null;
     }
     this.stats.push(stat);
