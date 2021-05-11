@@ -451,7 +451,7 @@ class EnchantStep {
   /**
    * @param {EnchantItem} itemBase
    * @param {symbol} type
-   * @returns {EnchantStepStat}
+   * @returns {EnchantStepStat} undefined if not found
    */
   stat(itemBase, type) {
     return this.stats.find(stat => stat.itemBase === itemBase && stat.type === type);
