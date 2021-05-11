@@ -37,7 +37,6 @@ export default function(){
         'enchant: each': '分次附、每次附$0直到$1',
         'stats': '最終結果',
         'materials': '素材耗量',
-        'info': '基本配置'
       },
       'tips': {
         'step stat repeated': '這個步驟已經有這個能力了0.0',

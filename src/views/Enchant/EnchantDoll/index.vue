@@ -502,10 +502,21 @@ export default {
       //   return eq;
       // }
 
-      let p = 1;
+      const oincrease = 10;
+      let p = 1, increase = oincrease;
       let cur = this.doll.calc(this.negativeStats, p);
-      while (p < 99 && cur.successRate < 100) {
-        ++p;
+      while (p < 99 && cur.realSuccessRate < 100) {
+        p += increase;
+        cur = this.doll.calc(this.negativeStats, p);
+        if (increase === oincrease && cur.realSuccessRate >= 100) {
+          p -= increase;
+          p += 1;
+          increase = 1;
+          cur = this.doll.calc(this.negativeStats, p);
+        }
+      }
+      if (p > 99) {
+        p = 99;
         cur = this.doll.calc(this.negativeStats, p);
       }
       this.currentEquipment.originalPotential = cur.originalPotential;
