@@ -1,7 +1,7 @@
 import { StatBase } from "@/lib/Character/Stat";
 import Grimoire from "@grimoire";
 import { EnchantCategory, EnchantItem } from "./base";
-import { EnchantBuild, EnchantStat, EnchantEquipment, EnchantStep } from "./build";
+import { EnchantBuild, EnchantStat, EnchantStepStat, EnchantEquipment, EnchantStep } from "./build";
 import STATE from "./state";
 
 export default class EnchantDoll {
@@ -123,25 +123,31 @@ export default class EnchantDoll {
     const resultEqs = firstResultEqs.filter(eq => eq.errorFlag === null);
     const errorEqs = firstResultEqs.filter(eq => eq.errorFlag !== null);
 
-    // const logResultEqs = (id, reqs) => {
-    //   console.log('==== [', id, '] ===================')
-    //   console.log(reqs.map(req => req.copy().positiveStats.map(stat => stat.show())));
-    // };
+    const logResultEqs = (id, reqs) => {
+      // console.log('==== [', id, '] ===================')
+      // console.log(reqs.map(req => req.copy().positiveStats.map(stat => stat.show())));
+      console.log(reqs.map(req => req.copy().equipment.steps().map(step => step.toString())));
+    };
 
     if (resultEqs.length !== 0) {
+      console.log('====== 0 ==============');
       resultEqs.forEach(cdollEq => resultEqs.push(...cdollEq.mostUseRemainingPotential()));
-      //logResultEqs('1', resultEqs);
+      console.log('====== 1 ==============');
+      logResultEqs('1', resultEqs);
 
       // 負屬全上。這邊假設前面已確保格子夠用。
       resultEqs.forEach(cdollEq => cdollEq.fillNegative());
-      //logResultEqs('2', resultEqs);
+      console.log('====== 2 ==============');
+      logResultEqs('2', resultEqs);
 
       resultEqs.forEach(cdollEq => resultEqs.push(...cdollEq.checkStepTypeEach()));
-      //logResultEqs('3', resultEqs);
+      console.log('====== 3 ==============');
+      logResultEqs('3', resultEqs);
 
       // 正屬和剩下來的負屬全上
       resultEqs.forEach(cdollEq => cdollEq.finalFill());
-      //logResultEqs('4', resultEqs);
+      console.log('====== 4 ==============');
+      logResultEqs('4', resultEqs);
 
       // 回傳成功率最高的裝備
       const eqs = resultEqs.map(cdollEq => cdollEq.equipment);
@@ -588,19 +594,20 @@ class EnchantDollEquipmentContainer {
           const currentExtraRate = step.potentialExtraRate;
 
           // console.log(step.index);
-          // if (step.index === 0) {
-          //   const maxv = Math.min(Math.floor(eq.originalPotential / pstat.originalPotential), pstat.value + 1);
-          //   let newDollEq = this, curv = 1;
-          //   while (curv < maxv) {
-          //     newDollEq = newDollEq.copy();
-          //     const cstat = newDollEq.equipment.steps()[0].stats[0];
-          //     cstat.value += 1;
-          //     curv = cstat.value;
-          //     newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= 1;
-          //     // newDollEq.checkMakeUpPotential();
-          //     resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
-          //   }
-          // }
+          if (step.index === 0 && pstat.originalPotential >= 10) {
+            const maxv = Math.min(Math.floor((eq.originalPotential - 1) / pstat.originalPotential), pstat.value + 1);
+            let newDollEq = this, curv = 1;
+            while (curv < maxv) {
+              newDollEq = newDollEq.copy();
+              const cstep = newDollEq.equipment.steps()[0];
+              const cstat = cstep.stats[0];
+              cstat.value += 1;
+              curv = cstat.value;
+              newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= 1;
+              // newDollEq.checkMakeUpPotential();
+              resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
+            }
+          }
 
           if (pstat.originalPotential === 3 && currentExtraRate === 1.2 && step.remainingPotential > 0)  {
             /**
@@ -608,21 +615,21 @@ class EnchantDollEquipmentContainer {
              *  - 嘗試在這裡就把耗潛3的能力先分次附完的附法。
              *  - 建立一個副本去做正常的附法。
              */
-            // const newDollEq = this.copy();
-            // newDollEq.checkMakeUpPotential();
-            // resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
-
-            // const newStep = eq.appendStep();
-            // newStep.type = EnchantStep.TYPE_EACH;
-            // newStep.appendStat(pstat.itemBase, pstat.type, pstat.value);
-            // pstat.value = 0;
             const newDollEq = this.copy();
             newDollEq.checkMakeUpPotential();
             resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
 
-            step.type = EnchantStep.TYPE_EACH;
-            step.stats[0].value += pstat.value;
+            const newStep = eq.appendStep();
+            newStep.type = EnchantStep.TYPE_EACH;
+            newStep.appendStat(pstat.itemBase, pstat.type, pstat.value);
             pstat.value = 0;
+            // const newDollEq = this.copy();
+            // newDollEq.checkMakeUpPotential();
+            // resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
+
+            // step.type = EnchantStep.TYPE_EACH;
+            // step.stats[0].value += pstat.value;
+            // pstat.value = 0;
           }
 
           this.checkMakeUpPotential();
@@ -671,6 +678,8 @@ class EnchantDollEquipmentContainer {
       step.remove();
     };
 
+    // console.log(step.toString());
+
     // 如果中途潛力不夠，從退潛中拿能力去補。
     if (step.remainingPotential <= 0) {
       const errorFlag = (() => {
@@ -679,23 +688,26 @@ class EnchantDollEquipmentContainer {
           restore();
           return 'base-potential-not-enough';
         }
-        const currentStat = negatives[negatives.length - 1].stats[0];
-        if (!eq.hasStat(currentStat) && !this.checkFillNegativeStats()) {
-          restore();
-          return 'base-potential-not-enough';
-        }
+        // const currentStat = negatives[negatives.length - 1].stats[0];
+        // if (!eq.hasStat(currentStat) && !this.checkFillNegativeStats()) {
+        //   restore();
+        //   return 'base-potential-not-enough';
+        // }
 
         // 建一個新的step，來放補潛力用的能力
         const bstep = eq.insertStepBefore(step);
 
         // 留著還原
         const originalNegativeStats = this.negativeStats.map(stat => stat.copy());
+        const restoreNegative = () => {
+          this.negativeStats = originalNegativeStats;
+          bstep.remove();
+        };
 
         // 補到夠為止
         while (step.remainingPotential <= 0) {
           if (negatives.length === 0) {
-            this.negativeStats = originalNegativeStats;
-            bstep.remove();
+            restoreNegative();
             restore();
             return 'base-potential-not-enough';
           }
@@ -706,12 +718,18 @@ class EnchantDollEquipmentContainer {
           if (find) {
             find.value -= 1;
           } else {
-            bstep.appendStat(nstat.itemBase, nstat.type, -1);
+            const append = bstep.appendStat(nstat.itemBase, nstat.type, -1);
+            if (!append) {
+              restoreNegative();
+              restore();
+              return 'base-potential-not-enough';
+            }
           }
           nstat.value += 1;
 
           this.refreshCategorys(negatives);
         }
+
         return null;
       })();
       if (errorFlag) {
@@ -745,23 +763,35 @@ class EnchantDollEquipmentContainer {
     eq.steps().forEach(step => step.optimizeType(-1));
 
     /**
-     * @param {EnchantEquipment} targetEq
+     * @param {EnchantDollEquipmentContainer} targetDollEq
      */
     const getOriginalPotentialList = targetDollEq => {
       const targetEq = targetDollEq.equipment;
+      const positiveStats = targetDollEq.positiveStats;
       /**
        * 1. 先處理有倍率的能力。
        *  - 前面已經確保耗潛高的正屬一定在前面
        *  - 因為前面已經optimizeType過，這邊的potentialCost就可以不用管小數
        */
+      /** @type {{ type: "step"|"unused", stat: EnchantStepStat|EnchantStat, value: number }[]} */
       const list = targetEq.steps()
-        .filter((step, i) => i !== 0 && step.stats[0].value > 0 && step.type === EnchantStep.TYPE_EACH)
+        .filter(step=> {
+          if (step.type !== EnchantStep.TYPE_EACH) {
+            return false;
+          }
+          const stat = step.stats[0];
+          if (stat.value !== 1) {
+            return false;
+          }
+          const pstat = positiveStats.find(_pstat => _pstat.equals(stat));
+          return pstat.value !== 0;
+        })
         .map(step => {
-          const pstat = step.stats[0];
+          const stat = step.stats[0];
           return {
             type: 'step',
-            stat: pstat,
-            value: pstat.potentialCost
+            stat,
+            value: stat.potentialCost
           };
         });
       if (list.length === 0) {
@@ -771,19 +801,16 @@ class EnchantDollEquipmentContainer {
       /**
        * 2. 再處理沒倍率的能力。
        */
-      const positiveStats = targetDollEq.positiveStats;
-      const tstats = positiveStats.filter(stat => !list.find(p => p.stat.equals(stat)));
+      const tstats = positiveStats.filter(stat => stat.value !== 0 && !list.find(p => p.stat.equals(stat)));
       if (tstats.length !== 0) {
         tstats.sort((a, b) => b.originalPotential - a.originalPotential);
-        if (list.length === 0 || list[0].value < tstats[0].originalPotential) {
+        if (list[0].value < tstats[0].originalPotential) {
           const tstat = tstats[0];
-          if (tstat) {
-            list.push({
-              type: 'unused',
-              stat: tstat,
-              value: tstat.originalPotential
-            })
-          }
+          list.push({
+            type: 'unused',
+            stat: tstat,
+            value: tstat.itemBase.getPotential(tstat.type, targetEq)
+          })
         }
       }
       return list.sort((a, b) => a.value - b.value); // 小的擺前面
@@ -801,42 +828,43 @@ class EnchantDollEquipmentContainer {
       const originalPotentialList = getOriginalPotentialList(newDollEq);
 
       const positiveStats = newDollEq.positiveStats;
-      // 從最大的開始拿
-      let cur = originalPotentialList[originalPotentialList.length - 1];
 
       // 特殊組合，為了最大化利用潛力。
       const special = originalPotentialList
         .find(p => p.stat.originalPotential === 3 || p.stat.originalPotential === 6);
 
-      while (originalPotentialList.length !== 0) {
-        while (cur.value < ceq.stepRemainingPotential()) {
-          const pstat = positiveStats.find(stat => stat.equals(cur.stat));
-          if (cur.type === 'step') {
-            cur.stat.value += 1;
-            pstat.value -= 1;
-          } else {
-            const tsteps = ceq.steps();
-            tsteps[0].appendStat(cur.stat.itemBase, cur.stat.type, 1);
-            cur.type = 'step';
-            pstat.value -= 1;
-          }
-          if (pstat.value === 0) {
-            break;
-          }
-          if (special && cur.value > special.value) {
-            if ((ceq.stepRemainingPotential() - 1) % special.value === 0) {
-              const tv = (ceq.stepRemainingPotential() - 1) / special.value;
-              if (tv <= (special.stat.limit - special.stat.value)) {
-                special.stat.value += tv;
-                /* ==== 到這裡潛力應該剛好剩1。 ==== */
-                break;
-              }
-            }
+      // console.log(originalPotentialList);
+
+      // 從最大的開始拿
+      originalPotentialList.reverse().forEach(cur => {
+        const pstat = positiveStats.find(stat => stat.equals(cur.stat));
+        const addValue = Math.min(pstat.value, Math.floor((ceq.stepRemainingPotential() - 1) / cur.value));
+        if (addValue === 0) {
+          return;
+        }
+        if (cur.type === 'step') {
+          cur.stat.value += addValue;
+          pstat.value -= addValue;
+        }
+        else {
+          const append = ceq.steps()[0].appendStat(cur.stat.itemBase, cur.stat.type, addValue);
+          if (append) {
+            pstat.value -= addValue;
           }
         }
-        originalPotentialList.pop();
-        cur = originalPotentialList[originalPotentialList.length - 1];
-      }
+          // if (special && cur.value > special.value) {
+          //   const pstat = positiveStats.find(stat => stat.equals(special.stat));
+          //   if ((ceq.stepRemainingPotential() - 1) % special.value === 0) {
+          //     const tv = (ceq.stepRemainingPotential() - 1) / special.value;
+          //     if (tv <= pstat.value) {
+          //       special.stat.value += tv;
+          //       pstat.value -= tv;
+          //       /* ==== 到這裡潛力應該剛好剩1。 ==== */
+          //       break;
+          //     }
+          //   }
+          // }
+      });
 
       resultEqs.push(newDollEq);
     }
