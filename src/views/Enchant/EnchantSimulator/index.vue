@@ -404,12 +404,12 @@ export default {
       }
     },
 
-    optimizeSteps() {
-      /** @type {EnchantEquipment} */
-      const eq = this.currentEquipment;
-      console.log('=====================================');
-      eq.steps(eq.lastStep.index).forEach(step => console.log(step, step.optimizeType()));
-    }
+    // optimizeSteps() {
+    //   /** @type {EnchantEquipment} */
+    //   const eq = this.currentEquipment;
+    //   console.log('=====================================');
+    //   eq.steps(eq.lastStep.index).forEach(step => console.log(step, step.optimizeType()));
+    // }
   },
   components: {
     'enchant-step': vue_EnchantStep,

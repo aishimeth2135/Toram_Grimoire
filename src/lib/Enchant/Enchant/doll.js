@@ -5,13 +5,6 @@ import { EnchantBuild, EnchantStat, EnchantStepStat, EnchantEquipment, EnchantSt
 import STATE from "./state";
 
 export default class EnchantDoll {
-  // static NEGATIVES_LIST = {
-  //   [EnchantEquipment.TYPE_MAIN_WEAPON]: [
-
-  //   ],
-  //   [EnchantEquipment.TYPE_BODY_ARMOR]: []
-  // };
-
   constructor() {
     this.build = new EnchantBuild('Potum');
 
@@ -30,9 +23,6 @@ export default class EnchantDoll {
       baseType: 'none',
       autoFindNegaitveStatsType: 'success-rate'
     };
-
-    // /** @type {EnchantDollCategory[]} */
-    // this.negatives = [];
   }
 
   get numPositiveStats() {
@@ -90,11 +80,6 @@ export default class EnchantDoll {
       return;
     }
 
-    // /** @type {EnchantDollCategory[]} */
-    // const negatives = [];
-    // /** @type {EnchantDollCategory[]} */
-    // const positives = [];
-
     // /**
     //  * 把同category的進行分類。
     //  * - positiveStats和negativeStats為基底倉庫。
@@ -102,8 +87,8 @@ export default class EnchantDoll {
     //  * - stat不會進行複製，因此兩倉庫的stat.value將會同步。
     //  * - stat.value為0的能力表示被拿完了。
     //  */
-    // this.classifyStats(negatives, negativeStats);
-    // this.classifyStats(positives, positiveStats);
+    // const negatives = this.classifyStats(negativeStats);
+    // const positives = this.classifyStats(positiveStats);
 
     const dollEq = new EnchantDollEquipmentContainer({
       parent: this,
@@ -123,31 +108,27 @@ export default class EnchantDoll {
     const resultEqs = firstResultEqs.filter(eq => eq.errorFlag === null);
     const errorEqs = firstResultEqs.filter(eq => eq.errorFlag !== null);
 
-    const logResultEqs = (id, reqs) => {
-      // console.log('==== [', id, '] ===================')
-      // console.log(reqs.map(req => req.copy().positiveStats.map(stat => stat.show())));
-      console.log(reqs.map(req => req.copy().equipment.steps().map(step => step.toString())));
-    };
+    // const logResultEqs = (id, reqs) => {
+    //   // console.log('==== [', id, '] ===================');
+    //   // console.log(reqs.map(req => req.copy().positiveStats.map(stat => stat.show())));
+    //   // console.log(reqs.map(req => req.copy().equipment.steps().map(step => step.toString())));
+    // };
 
     if (resultEqs.length !== 0) {
-      console.log('====== 0 ==============');
+      // logResultEqs('0', resultEqs);
       resultEqs.forEach(cdollEq => resultEqs.push(...cdollEq.mostUseRemainingPotential()));
-      console.log('====== 1 ==============');
-      logResultEqs('1', resultEqs);
+      // logResultEqs('1', resultEqs);
 
       // 負屬全上。這邊假設前面已確保格子夠用。
       resultEqs.forEach(cdollEq => cdollEq.fillNegative());
-      console.log('====== 2 ==============');
-      logResultEqs('2', resultEqs);
+      // logResultEqs('2', resultEqs);
 
       resultEqs.forEach(cdollEq => resultEqs.push(...cdollEq.checkStepTypeEach()));
-      console.log('====== 3 ==============');
-      logResultEqs('3', resultEqs);
+      // logResultEqs('3', resultEqs);
 
       // 正屬和剩下來的負屬全上
       resultEqs.forEach(cdollEq => cdollEq.finalFill());
-      console.log('====== 4 ==============');
-      logResultEqs('4', resultEqs);
+      // logResultEqs('4', resultEqs);
 
       // 回傳成功率最高的裝備
       const eqs = resultEqs.map(cdollEq => cdollEq.equipment);
@@ -257,39 +238,6 @@ export default class EnchantDoll {
         }
       });
     });
-    // else {
-    //   categorys.forEach(category => {
-    //     category.items.forEach(item => {
-    //       const check = item.conditionalProps.find(p => {
-    //         if (p.condition === EnchantItem.CONDITION_MAIN_WEAPON || p.condition === EnchantItem.CONDITION_ORIGINAL_ELEMENT) {
-    //           return eq.fieldType === EnchantEquipment.TYPE_MAIN_WEAPON;
-    //         }
-    //         return eq.fieldType === EnchantEquipment.TYPE_BODY_ARMOR;
-    //       });
-    //       if (check) {
-    //         types.forEach(type => {
-    //           if (type === StatBase.TYPE_MULTIPLIER && !item.statBase.hasMultiplier) {
-    //             return;
-    //           }
-    //           if (item.materialPointType === 5) {
-    //             // 是耗魔素，直接丟掉
-    //             return;
-    //           }
-    //           if (this.config.baseType !== 'none') {
-    //             const excludes = this.config.baseType === 'physical' ?
-    //               ['atk', 'physical_pierce'] :
-    //               ['matk', 'magic_pierce'];
-    //             if (excludes.includes(item.statBase.baseName)) {
-    //               return;
-    //             }
-    //           }
-    //           const stat = new EnchantStat(item, type, item.getLimit(type)[0]);
-    //           shortlist.push(stat);
-    //         })
-    //       }
-    //     });
-    //   });
-    // }
 
     /** @type {EnchantDollCategory[]} */
     const negatives = this.classifyStats(shortlist);
@@ -310,7 +258,47 @@ export default class EnchantDoll {
 
     if (tshortlist.length >= numNegativeStats) {
       manuallyStats = manuallyStats.slice(0, this.numNegativeStats - numNegativeStats);
-      const finaleList = this.getNegativeStatsList(tshortlist, numNegativeStats).map(stats => {
+      const originalNegativeStatsList = this.getNegativeStatsList(tshortlist, numNegativeStats);
+      /** @param {EnchantDollCategory[]} categorys */
+      const parseStats = stats => {
+        const categorys = this.classifyStats(stats).slice().sort((a, b) => b.stats.length - a.stats.length);
+        categorys.forEach(_category => _category.sortStats('max-effect'));
+        const categoryEffectSum = categorys
+          .map(_category => _category.originalPotentialEffectMaximumSum())
+          .reduce((cur, effect) => cur + effect, 0);
+        const materialPointSum = categorys
+          .map(_category => _category.materialPointMaximumSum('min'))
+          .reduce((cur, mpt) => cur + mpt, 0);
+        const categorysId = categorys.map(_category => _category.stats.length).join('|');
+        return {
+          categorysId,
+          potentialEffect: categoryEffectSum,
+          materialPoint: materialPointSum
+        };
+      };
+      const statsMap = new Map();
+      originalNegativeStatsList.forEach(stats => {
+        const { categorysId, potentialEffect, materialPoint } = parseStats(stats);
+        if (statsMap.has(categorysId)) {
+          const data = statsMap.get(categorysId);
+          if (data.potentialEffect === potentialEffect && data.materialPoint <= materialPoint) {
+            // 退潛量一樣時，保留素材耗量較低的，否則覆蓋
+            return;
+          }
+          if (data.potentialEffect > potentialEffect) {
+            // 保留退潛比較高的，否則覆蓋
+            return;
+          }
+        }
+        statsMap.set(categorysId, {
+          potentialEffect,
+          materialPoint,
+          stats
+        });
+      });
+      const negativeStatsList = Array.from(statsMap, el => el[1].stats);
+      // console.log('optimize:', originalNegativeStatsList.length, negativeStatsList.length);
+      const finaleList = negativeStatsList.map(stats => {
         const _stats = [...stats, ...manuallyStats];
         const eq = this.calc(_stats, originalPotential);
         return {
@@ -319,10 +307,6 @@ export default class EnchantDoll {
           equipment: eq
         };
       });
-      // console.log(finaleList.map(p => ({
-      //   stats: p.stats.map(stat => stat.show()),
-      //   successRate: p.successRate
-      // })))
       return finaleList.sort((a, b) => b.successRate - a.successRate)[0];
     }
 
@@ -339,21 +323,19 @@ export default class EnchantDoll {
     /**
      * 計算指定的能力數量下，最多能退多少潛
      * @param {EnchantDollCategory} category
-     * @param {number} nums - 指定的能力數量
+     * @param {number} num - 指定的能力數量
      */
-    const calcPotentialPriority = (category, nums) => {
-      return -1 * category.stats.slice(nums)
-        .reduce((cur, stat) => cur + stat.originalPotential * stat.limit[0], 0);
+    const calcPotentialPriority = (category, num) => {
+      return category.originalPotentialEffectMaximumSum(num);
     };
 
     /**
      * 計算指定的能力數量下，最多會花多少素材
      * @param {EnchantDollCategory} category
-     * @param {number} nums - 指定的能力數量
+     * @param {number} num - 指定的能力數量
      */
-     const calcMaterialPriority = (category, nums) => {
-      return -1 * category.stats.slice(nums)
-        .reduce((cur, stat) => cur + stat.calcMaterialPointCost(stat.limit[0], 0), 0);
+     const calcMaterialPriority = (category, num) => {
+      return category.materialPointMaximumSum('min', num);
     };
 
     const calcPriority =  (category, nums) => {
@@ -497,6 +479,30 @@ class EnchantDollCategory {
       });
     }
   }
+
+  /**
+   * get sum of potential effect maximum of stats
+   * @param {number} [num]
+   * @returns {number} sum of potential effect of stats
+   */
+   originalPotentialEffectMaximumSum(num) {
+    num = num === void 0 ? this.stats.length : num;
+    return -1 * this.stats.slice(num)
+      .reduce((cur, stat) => cur + stat.calcMaterialPointCost(stat.limit[0], 0), 0)
+  }
+
+  /**
+   * get sum of material point maximum of stats by limit.min of stat
+   * @param {"min"|"max"} type - which limit to calc
+   * @param {number} [num]
+   * @returns {number} sum of material point of stats
+   */
+  materialPointMaximumSum(type, num) {
+    type = { 'min': 0, 'max': 1 }[type];
+    num = num === void 0 ? this.stats.length : num;
+    return this.stats.slice(num)
+      .reduce((cur, stat) => cur + stat.calcMaterialPointCost(stat.limit[type], 0), 0);
+  }
 }
 
 class EnchantDollEquipmentContainer {
@@ -597,6 +603,7 @@ class EnchantDollEquipmentContainer {
           if (step.index === 0 && pstat.originalPotential >= 10) {
             const maxv = Math.min(Math.floor((eq.originalPotential - 1) / pstat.originalPotential), pstat.value + 1);
             let newDollEq = this, curv = 1;
+            const newDollEqs = [];
             while (curv < maxv) {
               newDollEq = newDollEq.copy();
               const cstep = newDollEq.equipment.steps()[0];
@@ -604,9 +611,9 @@ class EnchantDollEquipmentContainer {
               cstat.value += 1;
               curv = cstat.value;
               newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= 1;
-              // newDollEq.checkMakeUpPotential();
-              resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
+              newDollEqs.push(newDollEq);
             }
+            newDollEqs.forEach(dollEq => resultEqs.push(dollEq, ...dollEq.beforeFillNegative()));
           }
 
           if (pstat.originalPotential === 3 && currentExtraRate === 1.2 && step.remainingPotential > 0)  {
@@ -678,8 +685,6 @@ class EnchantDollEquipmentContainer {
       step.remove();
     };
 
-    // console.log(step.toString());
-
     // 如果中途潛力不夠，從退潛中拿能力去補。
     if (step.remainingPotential <= 0) {
       const errorFlag = (() => {
@@ -688,11 +693,6 @@ class EnchantDollEquipmentContainer {
           restore();
           return 'base-potential-not-enough';
         }
-        // const currentStat = negatives[negatives.length - 1].stats[0];
-        // if (!eq.hasStat(currentStat) && !this.checkFillNegativeStats()) {
-        //   restore();
-        //   return 'base-potential-not-enough';
-        // }
 
         // 建一個新的step，來放補潛力用的能力
         const bstep = eq.insertStepBefore(step);
@@ -801,11 +801,13 @@ class EnchantDollEquipmentContainer {
       /**
        * 2. 再處理沒倍率的能力。
        */
-      const tstats = positiveStats.filter(stat => stat.value !== 0 && !list.find(p => p.stat.equals(stat)));
-      if (tstats.length !== 0) {
-        tstats.sort((a, b) => b.originalPotential - a.originalPotential);
-        if (list[0].value < tstats[0].originalPotential) {
-          const tstat = tstats[0];
+      const positives = this.parent.classifyStats(positiveStats);
+      const noRatePositiveStats = positives
+        .filter(category => category.stats.length === 1).map(category => category.stats[0]);
+      if (noRatePositiveStats.length !== 0) {
+        noRatePositiveStats.sort((a, b) => b.originalPotential - a.originalPotential); // 大的擺前面
+        if (list[0].value < noRatePositiveStats[0].originalPotential) {
+          const tstat = noRatePositiveStats[0];
           list.push({
             type: 'unused',
             stat: tstat,
@@ -830,10 +832,9 @@ class EnchantDollEquipmentContainer {
       const positiveStats = newDollEq.positiveStats;
 
       // 特殊組合，為了最大化利用潛力。
-      const special = originalPotentialList
-        .find(p => p.stat.originalPotential === 3 || p.stat.originalPotential === 6);
-
-      // console.log(originalPotentialList);
+      // 目前先捨棄，等遇到需要這東西的狀況再說
+      // const special = originalPotentialList
+      //   .find(p => p.stat.originalPotential === 3 || p.stat.originalPotential === 6);
 
       // 從最大的開始拿
       originalPotentialList.reverse().forEach(cur => {
@@ -852,18 +853,18 @@ class EnchantDollEquipmentContainer {
             pstat.value -= addValue;
           }
         }
-          // if (special && cur.value > special.value) {
-          //   const pstat = positiveStats.find(stat => stat.equals(special.stat));
-          //   if ((ceq.stepRemainingPotential() - 1) % special.value === 0) {
-          //     const tv = (ceq.stepRemainingPotential() - 1) / special.value;
-          //     if (tv <= pstat.value) {
-          //       special.stat.value += tv;
-          //       pstat.value -= tv;
-          //       /* ==== 到這裡潛力應該剛好剩1。 ==== */
-          //       break;
-          //     }
-          //   }
-          // }
+        // if (special && cur.value > special.value) {
+        //   const pstat = positiveStats.find(stat => stat.equals(special.stat));
+        //   if ((ceq.stepRemainingPotential() - 1) % special.value === 0) {
+        //     const tv = (ceq.stepRemainingPotential() - 1) / special.value;
+        //     if (tv <= pstat.value) {
+        //       special.stat.value += tv;
+        //       pstat.value -= tv;
+        //       /* ==== 到這裡潛力應該剛好剩1。 ==== */
+        //       break;
+        //     }
+        //   }
+        // }
       });
 
       resultEqs.push(newDollEq);
@@ -875,10 +876,10 @@ class EnchantDollEquipmentContainer {
    * 退潛之後，確認有沒有耗潛為1的正屬可以嘗試分次附
    */
   checkStepTypeEach() {
-    if (this.equipment.stats().length === 7) {
+    const find = this.positiveStats.find(stat => stat.value !== 0 && stat.originalPotential === 1);
+    if (this.equipment.stats().length === 7 && !this.equipment.hasStat(find)) {
       return [];
     }
-    const find = this.positiveStats.find(stat => stat.value !== 0 && stat.originalPotential === 1);
     if (find) {
       const newDollEq = this.copy();
       const ceq = newDollEq.equipment;
