@@ -62,8 +62,8 @@ export default function(){
         'at least one positive stat': '要保留至少一個正屬。',
         'reset confirm': '確定要重置嗎？目前的設定都將被清空。',
         'export successfully': '匯出成功。',
-        'performance of auto find negative stats': '系統在自動選取退潛時需要一些計算量，可能會讓頁面卡住數秒鐘，此為正常的現象',
-        'performance of auto find minimum of original potential': '尋找最低需求潛力會產生龐大的計算量，可能會讓頁面卡住數秒鐘，此為正常的現象。',
+        'performance of auto find negative stats': '根據選擇的能力，系統在自動選取退潛時可能需要一些計算量，而導致頁面卡住數秒鐘，為正常的現象。',
+        'performance of auto find minimum of original potential': '根據選擇的能力，尋找最低需求潛力可能需要龐大的計算量，而導致頁面卡住數秒鐘，為正常的現象。',
         'performance of auto find minimum of original potential and auto find negative stats': '在進行「尋找最低需求潛力」時，基於效能問題，系統將簡化尋找最高成功率之退潛項目的計算過程，因此精確度可能會降低。',
         'can not auto find minimum of original potential': '即使潛力超過99這個裝備的成功率還是無法100%，因此無法找到最低需求潛。可以換個能力試試0.0',
         'cannot directly modify the settings of the previous step': '不行直接對前面的步驟進行修改唷0.0'

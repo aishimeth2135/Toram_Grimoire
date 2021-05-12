@@ -433,7 +433,7 @@ class EnchantStep {
    */
   appendStat(itemBase, type, v) {
     const stat = new EnchantStepStat(this, itemBase, type, v);
-    if (!this.belongEquipment.checkStats() && !this.belongEquipment.hasStat(stat, this.index - 1)) {
+    if (!this.belongEquipment.checkStats() && !this.belongEquipment.hasStat(stat, this.belongEquipment.lastStep.index)) {
       return null;
     }
     this.stats.push(stat);
@@ -651,6 +651,36 @@ class EnchantStat {
 
     return from * to >= 0 ? calc(from, to) : calc(from, 0) + calc(0, to);
   }
+
+  /**
+   * @param {"current"|"base"} [type]
+   * @param {number} [previousValue]
+   * @returns {string}
+   */
+  showAmount(type = 'current', previousValue = 0) {
+    let [sv, sv2] = this.itemBase.getUnitValue(this.type).split('|');
+      const convertThreshold = this.itemBase.getPotentialConvertThreshold(this.type);
+      let v = this.value + previousValue;
+
+      sv2 = sv2 || sv;
+
+      let v2 = 0, sign = 1;
+      if (v < 0) {
+        sign = -1;
+        v *= -1;
+      }
+      if (v > convertThreshold) {
+        v2 = v - convertThreshold;
+        v = convertThreshold;
+      }
+      v *= sign;
+      v2 *= sign;
+
+      if (type === 'base') {
+        v -= previousValue;
+      }
+      return this.stat.show(v * sv + v2 * sv2);
+  }
 }
 
 /** */
@@ -816,31 +846,8 @@ class EnchantStepStat extends EnchantStat {
    */
    show(type) {
     if (type === 'current' || type === 'base') {
-      let [sv, sv2] = this.itemBase.getUnitValue(this.type).split('|');
-      const convertThreshold = this.itemBase.getPotentialConvertThreshold(this.type);
-
       const prev = this.previousStepStatValue;
-
-      let v = this.value + prev;
-
-      sv2 = sv2 || sv;
-
-      let v2 = 0, sign = 1;
-      if (v < 0) {
-        sign = -1;
-        v *= -1;
-      }
-      if (v > convertThreshold) {
-        v2 = v - convertThreshold;
-        v = convertThreshold;
-      }
-      v *= sign;
-      v2 *= sign;
-
-      if (type === 'base') {
-        v -= prev;
-      }
-      return this.stat.show(v * sv + v2 * sv2);
+      return this.showAmount(type, prev);
     } else if (type === 'each') {
       return this.stat.show(this.belongStep.step);
     }
