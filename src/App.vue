@@ -4,8 +4,9 @@
     <router-view class="main-section app-main" />
     <app-footer />
     <app-initialize />
-    <app-notify />
     <app-confirm />
+    <app-notify />
+    <app-loading />
   </div>
 </template>
 
@@ -15,6 +16,7 @@
   import vue_initialize from "@/views/app/initialize.vue";
   import vue_footer from "@/views/app/footer.vue";
   import vue_notify from "@/views/app/notify.vue";
+  import vue_loading from "@/views/app/loading.vue";
   import vue_confirm from "@/views/app/confirm.vue";
 
   export default {
@@ -24,6 +26,7 @@
       'app-footer': vue_footer,
       'app-nav': vue_nav,
       'app-notify': vue_notify,
+      'app-loading': vue_loading,
       'app-confirm': vue_confirm
     }
   };

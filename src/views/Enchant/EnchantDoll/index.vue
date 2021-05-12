@@ -40,7 +40,8 @@
           </template>
         </cy-input-counter>
       </div>
-      <div class="disabled-mask" v-if="stepCounter > stepContents.equipment" />
+      <div class="disabled-mask" v-if="stepCounter > stepContents.equipment"
+        @click="maskClick" />
     </div>
     <div v-if="stepCounter > stepContents.equipment" class="flex justify-center mb-4">
       <cy-button type="border" icon="mdi-leaf"
@@ -91,7 +92,8 @@
           {{ $lang('select item') }}
         </cy-button>
       </div>
-      <div class="disabled-mask" v-if="stepCounter > stepContents.selectPositiveStat" />
+      <div class="disabled-mask" v-if="stepCounter > stepContents.selectPositiveStat"
+        @click="maskClick" />
     </div>
     <div v-if="stepCounter > stepContents.selectPositiveStat" class="flex justify-center mb-4">
       <cy-button type="border" icon="mdi-leaf"
@@ -126,7 +128,8 @@
       </div>
       <div class="mt-4 mb-6 flex justify-center flex-wrap">
         <cy-button type="check"
-          v-model:selected="selectNegativeStatState.auto">
+          :selected="selectNegativeStatState.auto"
+          @update:selected="setAutoFindNegaitveStats($event)">
           {{ $lang('select negative stats/auto select') }}
         </cy-button>
       </div>
@@ -223,7 +226,8 @@
           </div>
         </div>
       </div>
-      <div class="disabled-mask" v-if="stepCounter > stepContents.selectNegativeStat" />
+      <div class="disabled-mask" v-if="stepCounter > stepContents.selectNegativeStat"
+        @click="maskClick" />
     </div>
     <div v-if="stepCounter > stepContents.selectNegativeStat" class="flex justify-center mb-4">
       <cy-button type="border" icon="mdi-leaf"
@@ -232,7 +236,7 @@
         {{ $lang('back to step') }}
       </cy-button>
     </div>
-    <div v-if="stepCounter >= stepContents.result"
+    <div v-if="stepCounter >= stepContents.result && resultEquipment"
       :ref="'step-content-' + stepContents.result"
       class="step-content">
       <div>
@@ -360,6 +364,9 @@ export default {
       stepCounter: 0,
       selectItemMode: '',
 
+      autoNegativeStatsData: null,
+      resultEquipment: null,
+
       equipmentState: {
         autoFindPotentialMinimum: false
       },
@@ -421,41 +428,24 @@ export default {
       }
       return false;
     },
-    autoNegativeStatsData() {
-      if (!this.selectNegativeStatState.auto) {
-        return null;
-      }
-      const manuallyStats = this.selectNegativeStatState.manually;
-      if (this.equipmentState.autoFindPotentialMinimum) {
-        // let p = 1;
-        let negativeStatsData = this.doll.autoFindNegaitveStats(manuallyStats, 99);
-        if (negativeStatsData.equipment !== null) {
-          // let cur = negativeStatsData.equipment;
-          // while (p < 99 && cur.successRate < 100) {
-          //   ++p;
-          //   negativeStatsData = this.doll.autoFindNegaitveStats(manuallyStats, p);
-          //   cur = negativeStatsData.equipment;
-          // }
-          return negativeStatsData;
-        }
-      }
-      return this.doll.autoFindNegaitveStats(manuallyStats);
-    },
+    // autoNegativeStatsData() {
+    //   if (!this.selectNegativeStatState.auto) {
+    //     return null;
+    //   }
+    //   const manuallyStats = this.selectNegativeStatState.manually;
+    //   if (this.equipmentState.autoFindPotentialMinimum) {
+    //     let negativeStatsData = this.autoFindNegaitveStats(manuallyStats, 99);
+    //     if (negativeStatsData.equipment !== null) {
+    //       return negativeStatsData;
+    //     }
+    //   }
+    //   return this.autoFindNegaitveStats(manuallyStats);
+    // },
     autoNegativeStats() {
       return this.autoNegativeStatsData ? this.autoNegativeStatsData.stats : [];
     },
     negativeStats() {
       if (this.selectNegativeStatState.auto) {
-        // const stats = this.autoNegativeStats.slice();
-        // if (stats.length < this.doll.numNegativeStats) {
-        //   this.selectNegativeStatState.manually.find(stat => {
-        //     if (!stats.find(p => p.equals(stat))) {
-        //       stats.push(stat.copy());
-        //     }
-        //     return stats.length === this.doll.numNegativeStats;
-        //   });
-        // }
-        // return stats;
         return this.autoNegativeStats;
       }
       return this.selectNegativeStatState.manually;
@@ -478,12 +468,12 @@ export default {
       }
     },
 
-    resultEquipment() {
-      if (this.equipmentState.autoFindPotentialMinimum) {
-        return this.autoFindPotentialMinimumEquipment();
-      }
-      return this.doll.calc(this.negativeStats);
-    },
+    // resultEquipment() {
+    //   if (this.equipmentState.autoFindPotentialMinimum) {
+    //     return this.autoFindPotentialMinimumEquipment();
+    //   }
+    //   return this.doll.calc(this.negativeStats);
+    // },
     successRate() {
       if (!this.resultEquipment) {
         return 0;
@@ -495,13 +485,28 @@ export default {
     },
   },
   methods: {
+    setAutoFindNegaitveStats(value) {
+      this.selectNegativeStatState.auto = value;
+      if (value === true) {
+        const manuallyStats = this.selectNegativeStatState.manually;
+        if (this.equipmentState.autoFindPotentialMinimum) {
+          this.autoFindNegaitveStats(manuallyStats, 99);
+        }
+        this.autoFindNegaitveStats(manuallyStats);
+      }
+    },
+    autoFindNegaitveStats(...args) {
+      this.autoNegativeStatsData = null;
+      this.$notify.loading.show();
+      setTimeout(() => {
+        this.autoNegativeStatsData = this.doll.autoFindNegaitveStats(...args);
+        this.$nextTick(() => this.$notify.loading.hide());
+      }, 10);
+    },
+    maskClick() {
+      this.$notify(this.$lang('tips/cannot directly modify the settings of the previous step'));
+    },
     autoFindPotentialMinimumEquipment() {
-      // const eq = this.autoNegativeStatsData.equipment;
-      // if (eq) {
-      //   this.currentEquipment.originalPotential = eq.originalPotential;
-      //   return eq;
-      // }
-
       const oincrease = 10;
       let p = 1, increase = oincrease;
       let cur = this.doll.calc(this.negativeStats, p);
@@ -534,6 +539,7 @@ export default {
         this.stepCounter = 0;
         this.selectNegativeStatState.manually = [];
         this.exportState.hasExport = false;
+        this.selectNegativeStatState.auto = false;
       };
       this.$confirm({
         message: this.$lang('tips/reset confirm'),
@@ -555,6 +561,13 @@ export default {
     backToStep(id) {
       this.stepCounter = id;
       this.exportState.hasExport = false;
+      this.resultEquipment = null;
+      if (this.stepCounter < this.stepContents.selectNegativeStat) {
+        this.selectNegativeStatState.auto = false;
+      }
+      if (id < this.stepContents.selectNegativeStat) {
+        this.selectNegativeStatState.manually = [];
+      }
     },
     nextStep() {
       if (this.stepCounter === this.stepContents.selectPositiveStat) {
@@ -568,6 +581,23 @@ export default {
           current = current === 'physical' ? 'none' : 'magic';
         }
         this.doll.config.baseType = current;
+      }
+      if (this.stepCounter === this.stepContents.selectNegativeStat) {
+        this.$notify.loading.show();
+        setTimeout(async () => {
+          if (this.equipmentState.autoFindPotentialMinimum) {
+            this.resultEquipment = this.autoFindPotentialMinimumEquipment();
+          }
+          this.resultEquipment = this.doll.calc(this.negativeStats);
+          await this.$nextTick();
+          ++this.stepCounter;
+          this.$notify.loading.hide();
+          await this.$nextTick();
+          this.$refs['step-content-' + this.stepCounter].scrollIntoView({
+            behavior: "smooth"
+          });
+        }, 10);
+        return;
       }
       ++this.stepCounter;
       this.$nextTick(() => {

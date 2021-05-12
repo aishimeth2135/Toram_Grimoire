@@ -1,5 +1,5 @@
 <template>
-  <div class="app--loading" v-show="status != 3">
+  <div class="app--initialize" v-show="status != 3">
     <template v-if="status < 3">
       <div class="content-container">
         <div class="main">
@@ -42,7 +42,7 @@
 </script>
 
 <style lang="less" scoped>
-.app--loading {
+.app--initialize {
   width: 100%;
   height: 100%;
   position: fixed;

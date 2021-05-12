@@ -515,7 +515,7 @@ class EnchantStep {
    *                    - 1: TYPE_EACH is unnecessary
    *                    - 0: potential cost will not reduce, but cost may reduce if stat.value increased
    *                    - -1: cost will not reduce
-   *                    - -2: stats.length != 1
+   *                    - -2: stats.length != 1 or cost <= 0
    */
   optimizeType(autoFix = 2) {
     if (this.stats.length !== 1) {
@@ -524,6 +524,9 @@ class EnchantStep {
     const oldType = this.type;
     const check = (() => {
       const old = this.potentialCost;
+      if (old <= 0) {
+        return -2;
+      }
       this.type = this.type === EnchantStep.TYPE_NORMAL ? EnchantStep.TYPE_EACH : EnchantStep.TYPE_NORMAL;
       if (this.potentialCost > old) {
         return -1;
@@ -545,7 +548,7 @@ class EnchantStep {
   }
 
   toString() {
-    return `@${this.type.description}|${this.stats.map(stat => stat.show('base')).join(', ')}|${this.remainingPotential}pt`;
+    return `${this.type === EnchantStep.TYPE_EACH ? '@' : '#'}|${this.stats.map(stat => stat.show('base')).join(', ')}|${this.remainingPotential}pt`;
   }
 }
 
@@ -619,6 +622,7 @@ class EnchantStat {
   }
 
   /**
+   * calc material point cost of from -> old. order of params has no effect.
    * @param {number} from
    * @param {number} to
    * @returns {number}
