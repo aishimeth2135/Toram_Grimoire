@@ -199,7 +199,7 @@ export default {
         `${materialsText}\n\n` +
         `${stepsText}\n\n` +
         `✩ ${this.$lang('success rate')}｜${this.successRate}\n` +
-        '｜cy-grimore.netlify.app｜'
+        '｜cy-grimoire.netlify.app｜'
       );
       this.$notify(this.$lang('tips/copy result text successfully'));
     }
