@@ -159,7 +159,7 @@ export default {
           return av - bv;
         })
         .map(stat => ({
-          text: stat.show(),
+          text: stat.showAmount(),
           stat,
           negative: stat.value < 0
         }));

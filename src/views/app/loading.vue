@@ -20,7 +20,7 @@ export default {
 
 <style lang="postcss" scoped>
 .app--loading {
-  background-color: rgba(var(--rgb-white), 0.4);
+  background-color: rgba(var(--rgb-white), 0.6);
 }
 .custom-icon {
   width: 6rem;

@@ -62,22 +62,24 @@
         {{ $lang('select positive stats/caption') }}
       </div>
       <div class="flex justify-center my-4">
-        <div class="mt-2 border border-purple">
+        <div class="mt-2 border border-purple max-w-xs">
           <template v-if="doll.positiveStats.length !== 0">
             <cy-list-item v-for="stat in doll.positiveStats" :key="stat.statId">
               <cy-icon-text :text-color="stat.value >= 0 ? 'dark' : 'orange'"
-                class="ml-2">
-                {{ stat.show('base') }}
+                class="w-full">
+                {{ stat.showAmount() }}
               </cy-icon-text>
-              <cy-input-counter
-                inline max-button min-button
-                :value="stat.value"
-                @update:value="setStatValue(stat, $event)"
-                :range="[1, stat.limit[1]]"
-                class="ml-auto" />
-              <cy-button type="icon" icon="jam-close-circle"
-                icon-color="gray"
-                @click="removePositiveStat(stat)" />
+              <div class="flex items-center w-full mt-1">
+                <cy-input-counter
+                  inline max-button min-button
+                  :value="stat.value"
+                  @update:value="setStatValue(stat, $event)"
+                  :range="[1, stat.limit[1]]" />
+                <cy-button type="icon" icon="jam-close-circle"
+                  icon-color="gray"
+                  @click="removePositiveStat(stat)"
+                  class="ml-auto" />
+              </div>
             </cy-list-item>
           </template>
           <cy-default-tips v-else icon="fluent-leaf-two-16-regular"
@@ -181,25 +183,27 @@
         </div>
       </div>
       <div class="flex justify-center mb-4">
-        <div class="mt-2 border border-purple">
+        <div class="mt-2 border border-purple max-w-xs">
           <template v-if="negativeStats.length !== 0">
             <cy-list-item v-for="stat in negativeStats" :key="stat.statId">
               <cy-icon-text :text-color="stat.value >= 0 ? 'dark' : 'orange'"
                 :icon-color="autoNegativeStats.includes(stat) ? 'water-blue' : 'light-2'"
-                class="ml-2">
-                {{ stat.show('base') }}
+                class="w-full">
+                {{ stat.showAmount() }}
               </cy-icon-text>
-              <cy-input-counter
-                :disabled="autoNegativeStats.includes(stat)"
-                inline max-button min-button
-                :value="stat.value"
-                @update:value="setStatValue(stat, $event)"
-                :range="[stat.limit[0], -1]"
-                class="ml-auto" />
-              <cy-button :disabled="autoNegativeStats.includes(stat)"
-                type="icon" icon="jam-close-circle"
-                icon-color="gray"
-                @click="removeNegativeStat(stat)" />
+              <div class="flex items-center flex-wrap w-full mt-1">
+                <cy-input-counter
+                  :disabled="autoNegativeStats.includes(stat)"
+                  inline max-button min-button
+                  :value="stat.value"
+                  @update:value="setStatValue(stat, $event)"
+                  :range="[stat.limit[0], -1]" />
+                <cy-button :disabled="autoNegativeStats.includes(stat)"
+                  type="icon" icon="jam-close-circle"
+                  icon-color="gray"
+                  @click="removeNegativeStat(stat)"
+                  class="ml-auto" />
+              </div>
             </cy-list-item>
           </template>
           <cy-default-tips v-else icon="fluent-leaf-two-16-regular"
@@ -501,7 +505,7 @@ export default {
       setTimeout(() => {
         this.autoNegativeStatsData = this.doll.autoFindNegaitveStats(...args);
         this.$nextTick(() => this.$notify.loading.hide());
-      }, 10);
+      }, 20);
     },
     maskClick() {
       this.$notify(this.$lang('tips/cannot directly modify the settings of the previous step'));
@@ -596,7 +600,7 @@ export default {
           this.$refs['step-content-' + this.stepCounter].scrollIntoView({
             behavior: "smooth"
           });
-        }, 10);
+        }, 20);
         return;
       }
       ++this.stepCounter;
