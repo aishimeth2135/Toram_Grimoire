@@ -14,7 +14,7 @@
     "core-js": "^3.6.5",
     "less-loader": "^6.1.2",
     "papaparse": "^5.2.0",
-    "postcss": "7",
+    "postcss": "8",
     "postcss-comment": "^2.0.0",
     "postcss-nesting": "^7.0.1",
     "postcss-variables": "^1.1.1",
