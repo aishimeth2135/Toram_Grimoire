@@ -1,5 +1,5 @@
 <template>
-  <div v-if="active"
+  <div v-show="active"
     class="app--loading fixed w-full h-full top-0 left-0 flex justify-center z-100 p-4">
     <div class="main-container">
       <svg-icon icon-id="potum" class="custom-icon" />
