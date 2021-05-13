@@ -134,11 +134,7 @@ export default class EnchantDoll {
 
       // 回傳成功率最高的裝備
       const eqs = resultEqs.map(cdollEq => cdollEq.equipment);
-      eqs.sort((a, b) => {
-       const bv = b.successRate !== -1 ? b.successRate : 9999;
-       const av = a.successRate !== -1 ? a.successRate : 9999;
-       return bv - av;
-      });
+      eqs.sort((a, b) => b.realSuccessRate - a.realSuccessRate);
       // console.log('[normal] ==========================');
       // resultEqs.forEach(deq => {
       //   console.log('--------------------------');
@@ -153,11 +149,7 @@ export default class EnchantDoll {
     else {
       errorEqs.forEach(dollEq => dollEq.finalFill());
       const eqs = errorEqs.map(cdollEq => cdollEq.equipment);
-      eqs.sort((a, b) => {
-        const bv = b.successRate !== -1 ? b.successRate : 9999;
-        const av = a.successRate !== -1 ? a.successRate : 9999;
-        return bv - av;
-       });
+      eqs.sort((a, b) => b.realSuccessRate - a.realSuccessRate);
       // console.log('[err] ==========================');
       // errorEqs.forEach(deq => {
       //   console.log('--------------------------');
@@ -304,12 +296,12 @@ export default class EnchantDoll {
         const _stats = [...stats, ...manuallyStats];
         const eq = this.calc(_stats, originalPotential);
         return {
-          successRate: eq.realSuccessRate,
+          realSuccessRate: eq.realSuccessRate,
           stats: _stats,
           equipment: eq
         };
       });
-      return finaleList.sort((a, b) => b.successRate - a.successRate)[0];
+      return finaleList.sort((a, b) => b.realSuccessRate - a.realSuccessRate)[0];
     }
 
     return {
