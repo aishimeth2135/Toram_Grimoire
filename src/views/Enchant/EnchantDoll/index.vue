@@ -508,10 +508,19 @@ export default {
     autoFindNegaitveStats(...args) {
       this.autoNegativeStatsData = null;
       this.$notify.loading.show();
-      setTimeout(() => {
-        this.autoNegativeStatsData = this.doll.autoFindNegaitveStats(...args);
-        this.$nextTick(() => this.$notify.loading.hide());
-      }, 50);
+      this.$nextTick(() => {
+        setTimeout(() => {
+          try {
+            this.autoNegativeStatsData = this.doll.autoFindNegaitveStats(...args);
+          } catch (e) {
+            console.warn('[enchant-doll] some error when auto find negative stats');
+            console.log(e);
+            this.$notify(this.$lang('tips/unknow error when calc'));
+          } finally {
+            this.$nextTick(() => this.$notify.loading.hide());
+          }
+        }, 50);
+      });
     },
     maskClick() {
       this.$notify(this.$lang('tips/cannot directly modify the settings of the previous step'));
@@ -619,19 +628,28 @@ export default {
       }
       if (this.stepCounter === this.stepContents.selectNegativeStat) {
         this.$notify.loading.show();
-        setTimeout(async () => {
-          if (this.equipmentState.autoFindPotentialMinimum) {
-            this.resultEquipment = this.autoFindPotentialMinimumEquipment();
-          }
-          this.resultEquipment = this.doll.calc(this.negativeStats);
-          await this.$nextTick();
-          ++this.stepCounter;
-          this.$notify.loading.hide();
-          await this.$nextTick();
-          this.$refs['step-content-' + this.stepCounter].scrollIntoView({
-            behavior: "smooth"
-          });
-        }, 50);
+        this.$nextTick(() => {
+          setTimeout(async () => {
+            try {
+              if (this.equipmentState.autoFindPotentialMinimum) {
+                this.resultEquipment = this.autoFindPotentialMinimumEquipment();
+              }
+              this.resultEquipment = this.doll.calc(this.negativeStats);
+              await this.$nextTick();
+              ++this.stepCounter;
+            } catch(e) {
+              console.warn('[enchant-doll] some error when auto find potential minimum');
+              console.log(e);
+              this.$notify(this.$lang('tips/unknow error when calc'));
+            } finally {
+              this.$notify.loading.hide();
+            }
+            await this.$nextTick();
+            this.$refs['step-content-' + this.stepCounter].scrollIntoView({
+              behavior: "smooth"
+            });
+          }, 50);
+        });
         return;
       }
       ++this.stepCounter;

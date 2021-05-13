@@ -28,7 +28,6 @@
 </template>
 <script>
 import { StatBase } from "@/lib/Character/Stat";
-// import { EnchantCategory } from "@/lib/Enchant/Enchant";
 
 export default {
   RegisterLang: "Enchant Simulator",
@@ -36,7 +35,6 @@ export default {
   emits: ['close', 'selectItem'],
   data() {
     const types = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
-    /** @type {EnchantCategory[]} */
     const originalCategorys = this.$store.state.datas.enchant.categorys;
     const categorys = originalCategorys.map(category => {
       const items = [];
