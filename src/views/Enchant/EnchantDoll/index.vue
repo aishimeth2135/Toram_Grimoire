@@ -501,6 +501,8 @@ export default {
           this.autoFindNegaitveStats(manuallyStats, this.consts.autoFindPotentialMinimumLimit);
         }
         this.autoFindNegaitveStats(manuallyStats);
+      } else {
+        this.autoNegativeStatsData = null;
       }
     },
     autoFindNegaitveStats(...args) {

@@ -306,30 +306,32 @@ export default class EnchantDollEquipmentContainer {
    * 退潛之後，確認有沒有耗潛為1的正屬可以嘗試分次附
    */
   checkStepTypeEach() {
-    const find = this.positiveStats.find(stat => stat.value !== 0 && stat.originalPotential === 1);
-    if (this.equipment.stats().length === 7 && !this.equipment.hasStat(find)) {
-      return [];
-    }
-    if (find) {
+    const finds = this.positiveStats.filter(stat => stat.value !== 0 && stat.originalPotential === 1);
+    if (finds.length !== 0) {
       const newDollEq = this.copy();
       const ceq = newDollEq.equipment;
-      const pstat = newDollEq.positiveStats.find(stat => stat.equals(find));
-      if (pstat.value > 0) {
-        const tstep = ceq.appendStep();
-        tstep.type = EnchantStep.TYPE_EACH;
-        const tstat = tstep.appendStat(pstat.itemBase, pstat.type, 0);
-        while (ceq.stepRemainingPotential() > 0 && pstat.value > 0) {
-          tstat.value += 1;
-          pstat.value -= 1;
+      finds.forEach(find => {
+        if (this.equipment.stats().length === 7 && !this.equipment.hasStat(find)) {
+          return [];
         }
-        if (ceq.stepRemainingPotential() <= 0) {
-          tstat.value -= 1;
-          pstat.value += 1;
+        const pstat = newDollEq.positiveStats.find(stat => stat.equals(find));
+        if (pstat.value > 0) {
+          const tstep = ceq.appendStep();
+          tstep.type = EnchantStep.TYPE_EACH;
+          const tstat = tstep.appendStat(pstat.itemBase, pstat.type, 0);
+          while (ceq.stepRemainingPotential() > 0 && pstat.value > 0) {
+            tstat.value += 1;
+            pstat.value -= 1;
+          }
+          if (ceq.stepRemainingPotential() <= 0) {
+            tstat.value -= 1;
+            pstat.value += 1;
+          }
+          if (tstat.value === 0) {
+            tstep.remove();
+          }
         }
-        if (tstat.value === 0) {
-          tstep.remove();
-        }
-      }
+      });
       return [newDollEq];
     }
     return [];
