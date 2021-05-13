@@ -405,7 +405,7 @@ class EnchantStep {
       case EnchantStep.TYPE_NORMAL:
         return this.realPotentialCost(this.stats.reduce((a, b) => a + b.potentialCost, 0) * er);
       case EnchantStep.TYPE_EACH:
-          return this.stats[0] ? this.stats[0].potentialCost : 0;
+        return this.stats[0] ? this.stats[0].potentialCost : 0;
     }
     return 0;
   }
@@ -414,7 +414,7 @@ class EnchantStep {
   }
   get previousStep() {
     if (this.index === 0)
-      return void 0;
+      return null;
     const steps = this.belongEquipment.steps(this.index);
     return steps[steps.length - 1];
   }
