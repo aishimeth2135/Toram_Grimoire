@@ -9,9 +9,9 @@ export default class EnchantDollEquipmentContainer {
    * @param {EnchantStat[]} param.positiveStats
    * @param {EnchantStat[]} param.negativeStats
    */
-  constructor({ parent, equipment, positiveStats, negativeStats }) {
-    this.parent = parent;
-    this.equipment = equipment.copy(parent.build.categorys);
+  constructor({ itemCategorys, equipment, positiveStats, negativeStats }) {
+    this.itemCategorys = itemCategorys;
+    this.equipment = equipment.copy(itemCategorys);
     this.positiveStats = positiveStats.map(stat => stat.copy());
     this.negativeStats = negativeStats.map(stat => stat.copy());
 
@@ -44,8 +44,8 @@ export default class EnchantDollEquipmentContainer {
    * @returns {EnchantDollEquipmentContainer[]}
    */
   handleBeforeFillNegative({ positivesFilter = 'positive' } = {}) {
-    const positives = this.parent.classifyStats(this.positiveStats);
-    let negatives = this.parent.classifyStats(this.negativeStats);
+    const positives = EnchantDollCategory.classifyStats(this.positiveStats);
+    let negatives = EnchantDollCategory.classifyStats(this.negativeStats);
 
     // console.log(this.positiveStats.map(stat => stat.copy()));
 
@@ -167,7 +167,7 @@ export default class EnchantDollEquipmentContainer {
     const eq = this.equipment;
     const steps = this.equipment.steps();
     const step = steps[steps.length - 1];
-    const negatives = this.parent.classifyStats(this.negativeStats);
+    const negatives = EnchantDollCategory.classifyStats(this.negativeStats);
     this.refreshCategorys(negatives);
 
     const restore = () => {
@@ -372,7 +372,7 @@ export default class EnchantDollEquipmentContainer {
      * 2. 再處理沒倍率的能力。
      */
     if (targetEq.stats().length !== 7) {
-      const positives = this.parent.classifyStats(positiveStats);
+      const positives = EnchantDollCategory.classifyStats(positiveStats);
       const noRatePositiveStats = positives
         .filter(category => category.stats.length === 1 && category.stats[0].value !== 0)
         .map(category => category.stats[0]);
@@ -418,10 +418,10 @@ export default class EnchantDollEquipmentContainer {
   }
 
   copy() {
-    const parent = this.parent;
+    const itemCategorys = this.itemCategorys;
     const equipment = this.equipment;
     const positiveStats = this.positiveStats;
     const negativeStats = this.negativeStats;
-    return new EnchantDollEquipmentContainer({ parent, equipment, positiveStats, negativeStats });
+    return new EnchantDollEquipmentContainer({ itemCategorys, equipment, positiveStats, negativeStats });
   }
 }

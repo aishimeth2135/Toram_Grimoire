@@ -89,11 +89,11 @@ export default class EnchantDoll {
     //  * - stat不會進行複製，因此兩倉庫的stat.value將會同步。
     //  * - stat.value為0的能力表示被拿完了。
     //  */
-    // const negatives = this.classifyStats(negativeStats);
-    // const positives = this.classifyStats(positiveStats);
+    // const negatives = EnchantDollCategory.classifyStats(negativeStats);
+    // const positives = EnchantDollCategory.classifyStats(positiveStats);
 
     const dollEq = new EnchantDollEquipmentContainer({
-      parent: this,
+      itemCategorys: this.build.categorys,
       equipment: this.build.equipment,
       positiveStats,
       negativeStats
@@ -242,7 +242,7 @@ export default class EnchantDoll {
     });
 
     /** @type {EnchantDollCategory[]} */
-    const negatives = this.classifyStats(shortlist);
+    const negatives = EnchantDollCategory.classifyStats(shortlist);
 
     // 先排好能力
     negatives.forEach(category => {
@@ -263,7 +263,7 @@ export default class EnchantDoll {
       const originalNegativeStatsList = this.getNegativeStatsList(tshortlist, numNegativeStats);
       /** @param {EnchantDollCategory[]} categorys */
       const parseStats = stats => {
-        const categorys = this.classifyStats(stats).slice().sort((a, b) => b.stats.length - a.stats.length);
+        const categorys = EnchantDollCategory.classifyStats(stats).slice().sort((a, b) => b.stats.length - a.stats.length);
         categorys.forEach(_category => _category.sortStats('max-effect'));
         const categoryEffectSum = categorys
           .map(_category => _category.originalPotentialEffectMaximumSum())
@@ -452,6 +452,27 @@ class EnchantDollCategory {
     /** @type {EnchantStat[]} */
     this.stats = [];
   }
+
+ /**
+  * @param {EnchantStat[]} stats
+  * @returns {EnchantDollCategory[]}
+  */
+  static classifyStats(stats) {
+   const target = [];
+   // stats = stats.map(stat => stat.copy());
+   stats.forEach(stat => {
+     const statCategory = stat.itemBase.belongCategory;
+     const find = target.find(category => category.category === statCategory);
+     if (find) {
+       find.stats.push(stat);
+     } else {
+       const category = new EnchantDollCategory(statCategory);
+       category.stats.push(stat);
+       target.push(category);
+     }
+   });
+   return target;
+ }
 
   /**
    * @param {"max-effect"|"cost"} type

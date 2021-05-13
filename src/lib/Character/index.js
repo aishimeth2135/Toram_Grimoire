@@ -1,13 +1,13 @@
+import { markRaw } from "vue";
 import { StatBase } from './Stat';
-
 
 export default class {
   constructor() {
-    this.statList = [];
-    this.characterStatCategoryList = [];
+    this.statList = markRaw([]);
+    this.characterStatCategoryList = markRaw([]);
   }
   appendStatBase(...args) {
-    const t = new StatBase(...args);
+    const t = markRaw(new StatBase(...args));
     this.statList.push(t);
     return t;
   }

@@ -3,6 +3,8 @@ import Grimoire from "@grimoire";
 import STATE from "./state";
 import { EnchantEquipment } from "./build";
 
+import { markRaw } from "vue";
+
 class EnchantCategory {
   constructor(title) {
     /** @type {string} */
@@ -24,7 +26,7 @@ class EnchantCategory {
    * @returns {EnchantItem}
    */
   appendItem(sets) {
-    const t = new EnchantItem(this, sets);
+    const t = markRaw(new EnchantItem(this, sets));
     this.items.push(t);
     return t;
   }
