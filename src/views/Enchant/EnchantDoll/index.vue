@@ -130,8 +130,7 @@
       </div>
       <div class="mt-4 mb-6 flex justify-center flex-wrap">
         <cy-button type="check"
-          :selected="selectNegativeStatState.auto"
-          @update:selected="setAutoFindNegaitveStats($event)">
+          v-model:selected="selectNegativeStatState.auto">
           {{ $lang('select negative stats/auto select') }}
         </cy-button>
       </div>
@@ -272,7 +271,7 @@
         </cy-icon-text>
       </div>
       <div class="mt-6 mb-4 flex justify-center">
-        <div class="border-1 border-purple rounded-lg py-6 pl-4 pr-6">
+        <div class="border-1 border-purple rounded-lg py-6 pl-4 pr-6 bg-white">
           <enchant-result :equipment="resultEquipment" />
         </div>
       </div>
@@ -424,6 +423,19 @@ export default {
     init2(); // load lang data
   },
   created() {
+    this.$watch(() => this.selectNegativeStatState.auto, newv => {
+      if (newv === true) {
+        const manuallyStats = this.selectNegativeStatState.manually;
+        if (this.equipmentState.autoFindPotentialMinimum) {
+          this.autoFindNegaitveStats(manuallyStats, this.consts.autoFindPotentialMinimumLimit);
+          return;
+        }
+        this.autoFindNegaitveStats(manuallyStats);
+      } else {
+        this.autoNegativeStatsData = null;
+      }
+    });
+
     this.$store.dispatch('enchant/init');
   },
   computed: {
@@ -436,19 +448,6 @@ export default {
       }
       return false;
     },
-    // autoNegativeStatsData() {
-    //   if (!this.selectNegativeStatState.auto) {
-    //     return null;
-    //   }
-    //   const manuallyStats = this.selectNegativeStatState.manually;
-    //   if (this.equipmentState.autoFindPotentialMinimum) {
-    //     let negativeStatsData = this.autoFindNegaitveStats(manuallyStats, 99);
-    //     if (negativeStatsData.equipment !== null) {
-    //       return negativeStatsData;
-    //     }
-    //   }
-    //   return this.autoFindNegaitveStats(manuallyStats);
-    // },
     autoNegativeStats() {
       return this.autoNegativeStatsData ? this.autoNegativeStatsData.stats : [];
     },
@@ -476,12 +475,6 @@ export default {
       }
     },
 
-    // resultEquipment() {
-    //   if (this.equipmentState.autoFindPotentialMinimum) {
-    //     return this.autoFindPotentialMinimumEquipment();
-    //   }
-    //   return this.doll.calc(this.negativeStats);
-    // },
     successRate() {
       if (!this.resultEquipment) {
         return 0;
@@ -493,18 +486,6 @@ export default {
     },
   },
   methods: {
-    setAutoFindNegaitveStats(value) {
-      this.selectNegativeStatState.auto = value;
-      if (value === true) {
-        const manuallyStats = this.selectNegativeStatState.manually;
-        if (this.equipmentState.autoFindPotentialMinimum) {
-          this.autoFindNegaitveStats(manuallyStats, this.consts.autoFindPotentialMinimumLimit);
-        }
-        this.autoFindNegaitveStats(manuallyStats);
-      } else {
-        this.autoNegativeStatsData = null;
-      }
-    },
     autoFindNegaitveStats(...args) {
       this.autoNegativeStatsData = null;
       this.$notify.loading.show();
@@ -551,25 +532,6 @@ export default {
       }
       this.currentEquipment.originalPotential = cur.originalPotential;
       return cur;
-      // const oincrease = 10;
-      // let p = 1, increase = oincrease;
-      // let cur = this.doll.calc(this.negativeStats, p);
-      // while (p < 99 && cur.realSuccessRate < 100) {
-      //   p += increase;
-      //   cur = this.doll.calc(this.negativeStats, p);
-      //   if (increase === oincrease && cur.realSuccessRate >= 100) {
-      //     p -= increase;
-      //     p += 1;
-      //     increase = 1;
-      //     cur = this.doll.calc(this.negativeStats, p);
-      //   }
-      // }
-      // if (p > 99) {
-      //   p = 99;
-      //   cur = this.doll.calc(this.negativeStats, p);
-      // }
-      // this.currentEquipment.originalPotential = cur.originalPotential;
-      // return cur;
     },
     exportResult() {
       const build = new EnchantBuild(this.exportState.name, this.resultEquipment.copy(this.$store.state.datas.enchant.categorys));
