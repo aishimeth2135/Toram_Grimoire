@@ -371,6 +371,10 @@ export default {
       autoNegativeStatsData: null,
       resultEquipment: null,
 
+      consts: {
+        autoFindPotentialMinimumLimit: 99
+      },
+
       equipmentState: {
         autoFindPotentialMinimum: false
       },
@@ -494,7 +498,7 @@ export default {
       if (value === true) {
         const manuallyStats = this.selectNegativeStatState.manually;
         if (this.equipmentState.autoFindPotentialMinimum) {
-          this.autoFindNegaitveStats(manuallyStats, 99);
+          this.autoFindNegaitveStats(manuallyStats, this.consts.autoFindPotentialMinimumLimit);
         }
         this.autoFindNegaitveStats(manuallyStats);
       }
@@ -505,31 +509,56 @@ export default {
       setTimeout(() => {
         this.autoNegativeStatsData = this.doll.autoFindNegaitveStats(...args);
         this.$nextTick(() => this.$notify.loading.hide());
-      }, 20);
+      }, 50);
     },
     maskClick() {
       this.$notify(this.$lang('tips/cannot directly modify the settings of the previous step'));
     },
     autoFindPotentialMinimumEquipment() {
-      const oincrease = 10;
-      let p = 1, increase = oincrease;
-      let cur = this.doll.calc(this.negativeStats, p);
-      while (p < 99 && cur.realSuccessRate < 100) {
-        p += increase;
-        cur = this.doll.calc(this.negativeStats, p);
-        if (increase === oincrease && cur.realSuccessRate >= 100) {
-          p -= increase;
-          p += 1;
-          increase = 1;
-          cur = this.doll.calc(this.negativeStats, p);
+      if (this.autoNegativeStatsData && this.autoNegativeStatsData.equipment) {
+        const eq = this.autoNegativeStatsData.equipment;
+        if (eq.successRate < 100) {
+          this.currentEquipment.originalPotential = this.consts.autoFindPotentialMinimumLimit;
+          return eq.equipment;
         }
       }
-      if (p > 99) {
-        p = 99;
-        cur = this.doll.calc(this.negativeStats, p);
+      let left = 1,
+        right = this.consts.autoFindPotentialMinimumLimit,
+        mid = Math.floor((left + right) / 2);
+      let cur = this.doll.calc(this.negativeStats, mid);
+      while (right - left > 1) {
+        if (cur.successRate <= 100) {
+          left = mid;
+        } else {
+          right = mid;
+        }
+        mid = Math.floor((left + right) / 2);
+        cur = this.doll.calc(this.negativeStats, mid);
+      }
+      if (cur.successRate < 100) {
+        cur = this.doll.calc(this.negativeStats, right);
       }
       this.currentEquipment.originalPotential = cur.originalPotential;
       return cur;
+      // const oincrease = 10;
+      // let p = 1, increase = oincrease;
+      // let cur = this.doll.calc(this.negativeStats, p);
+      // while (p < 99 && cur.realSuccessRate < 100) {
+      //   p += increase;
+      //   cur = this.doll.calc(this.negativeStats, p);
+      //   if (increase === oincrease && cur.realSuccessRate >= 100) {
+      //     p -= increase;
+      //     p += 1;
+      //     increase = 1;
+      //     cur = this.doll.calc(this.negativeStats, p);
+      //   }
+      // }
+      // if (p > 99) {
+      //   p = 99;
+      //   cur = this.doll.calc(this.negativeStats, p);
+      // }
+      // this.currentEquipment.originalPotential = cur.originalPotential;
+      // return cur;
     },
     exportResult() {
       const build = new EnchantBuild(this.exportState.name, this.resultEquipment.copy(this.$store.state.datas.enchant.categorys));
@@ -600,7 +629,7 @@ export default {
           this.$refs['step-content-' + this.stepCounter].scrollIntoView({
             behavior: "smooth"
           });
-        }, 20);
+        }, 50);
         return;
       }
       ++this.stepCounter;
@@ -660,7 +689,7 @@ export default {
   position: relative;
 
   & > .disabled-mask {
-    @apply absolute w-full h-full z-5 cursor-not-allowed top-0 left-0 bg-white opacity-30;
+    @apply absolute w-full h-full z-5 cursor-not-allowed top-0 left-0 bg-white opacity-60;
   }
 }
 </style>
