@@ -10,7 +10,7 @@ class EnchantCategory {
     /** @type {string} */
     this.title = title;
     /** @type {EnchantItem[]} */
-    this.items = [];
+    this.items = markRaw([]);
     this._weaponOnly = false;
   }
 

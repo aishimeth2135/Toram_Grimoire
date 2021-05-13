@@ -1,6 +1,6 @@
 <template>
   <span class="flex items-center flex-wrap my-2 mx-1">
-    <div class="input-container flex items-center py-1 px-3 border-1 border-solid border-light rounded-3xl w-full duration-300"
+    <div class="input-container flex items-center py-1 px-3 border-1 border-solid border-light rounded-3xl w-full duration-300 bg-white"
       :class="{ 'input-focus': inputFocus }">
       <cy-icon-text :icon="icon" :icon-src="iconSrc" class="mr-2" />
       <div class="input-content w-full" ref="input-content">

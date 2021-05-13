@@ -27,7 +27,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="postcss" scoped>
 .cy--icon {
   // --icon-color: var(--primary-light-2);
   // --icon-width: 1.2rem;
@@ -35,6 +35,6 @@ export default {
   width: var(--icon-width, 1.2rem);
   color: var(--icon-color, 1.2rem);
 
-  @apply duration-300;
+  @apply duration-300 flex-shrink-0;
 }
 </style>
