@@ -24,6 +24,7 @@ export default function(){
       'select positive stats': {
         'title': '選擇要附的能力',
         'caption': '請選擇想要附的正屬。至少要選擇一個，最多可以選擇八個0.0',
+        'auto fill': '選取時自動補到最大值'
       },
       'select negative stats': {
         'title': '選擇退潛的能力',

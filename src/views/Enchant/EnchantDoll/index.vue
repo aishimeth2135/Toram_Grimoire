@@ -94,6 +94,12 @@
           {{ $lang('select item') }}
         </cy-button>
       </div>
+      <div class="flex justify-center mt-4">
+        <cy-button type="check"
+          v-model:selected="selectPositiveStatState.autoFill">
+          {{ $lang('select positive stats/auto fill') }}
+        </cy-button>
+      </div>
       <div class="disabled-mask" v-if="stepCounter > stepContents.selectPositiveStat"
         @click="maskClick" />
     </div>
@@ -263,8 +269,7 @@
       <div class="mt-2 flex justify-center"
         v-if="equipmentState.autoFindPotentialMinimum
         && resultEquipment.originalPotential === 99
-        && resultEquipment.successRate !== -1
-        && resultEquipment.successRate < 100">
+        && resultEquipment.realSuccessRate < 100">
         <cy-icon-text icon="ic-outline-info" text-size="small"
           text-color="water-blue" icon-color="water-blue-light">
           {{ $lang('tips/can not auto find minimum of original potential') }}
@@ -383,6 +388,10 @@ export default {
         name: this.$lang('export result/build default name')
       },
 
+      selectPositiveStatState: {
+        autoFill: true
+      },
+
       selectNegativeStatState: {
         auto: false,
         manually: []
@@ -424,16 +433,10 @@ export default {
   },
   created() {
     this.$watch(() => this.selectNegativeStatState.auto, newv => {
-      if (newv === true) {
-        const manuallyStats = this.selectNegativeStatState.manually;
-        if (this.equipmentState.autoFindPotentialMinimum) {
-          this.autoFindNegaitveStats(manuallyStats, this.consts.autoFindPotentialMinimumLimit);
-          return;
-        }
-        this.autoFindNegaitveStats(manuallyStats);
-      } else {
-        this.autoNegativeStatsData = null;
-      }
+      this.updateAutoFindNegativeStats(newv);
+    });
+    this.$watch(() => this.doll.config.baseType, () => {
+      this.updateAutoFindNegativeStats(this.selectNegativeStatState.auto);
     });
 
     this.$store.dispatch('enchant/init');
@@ -486,6 +489,18 @@ export default {
     },
   },
   methods: {
+    updateAutoFindNegativeStats(value) {
+      if (value === true) {
+        const manuallyStats = this.selectNegativeStatState.manually;
+        if (this.equipmentState.autoFindPotentialMinimum) {
+          this.autoFindNegaitveStats(manuallyStats, this.consts.autoFindPotentialMinimumLimit);
+          return;
+        }
+        this.autoFindNegaitveStats(manuallyStats);
+      } else {
+        this.autoNegativeStatsData = null;
+      }
+    },
     autoFindNegaitveStats(...args) {
       this.autoNegativeStatsData = null;
       this.$notify.loading.show();
@@ -509,7 +524,7 @@ export default {
     autoFindPotentialMinimumEquipment() {
       if (this.autoNegativeStatsData && this.autoNegativeStatsData.equipment) {
         const eq = this.autoNegativeStatsData.equipment;
-        if (eq.successRate < 100) {
+        if (eq.realSuccessRate < 100) {
           this.currentEquipment.originalPotential = this.consts.autoFindPotentialMinimumLimit;
           return eq.equipment;
         }
@@ -519,7 +534,7 @@ export default {
         mid = Math.floor((left + right) / 2);
       let cur = this.doll.calc(this.negativeStats, mid);
       while (right - left > 1) {
-        if (cur.successRate <= 100) {
+        if (cur.realSuccessRate <= 100) {
           left = mid;
         } else {
           right = mid;
@@ -527,7 +542,7 @@ export default {
         mid = Math.floor((left + right) / 2);
         cur = this.doll.calc(this.negativeStats, mid);
       }
-      if (cur.successRate < 100) {
+      if (cur.realSuccessRate < 100) {
         cur = this.doll.calc(this.negativeStats, right);
       }
       this.currentEquipment.originalPotential = cur.originalPotential;
@@ -635,7 +650,8 @@ export default {
           this.$notify(this.$lang('tips/stat repeated'));
           return;
         }
-        if (!this.doll.appendPositiveStat(item.origin, item.type, 1)) {
+        const value = this.selectPositiveStatState.autoFill ? item.origin.getLimit(item.type)[1] : 1;
+        if (!this.doll.appendPositiveStat(item.origin, item.type, value)) {
           this.$notify(this.$lang('tips/number of stats has reached the upper limit'));
         }
       } else {
