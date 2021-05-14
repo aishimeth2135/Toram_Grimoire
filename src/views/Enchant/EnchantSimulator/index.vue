@@ -172,9 +172,9 @@
 import { mapState } from "vuex";
 import init from "./init.js";
 
-import vue_EnchantStep from "./enchant-step";
-import vue_selectItem from "./select-item";
-import vue_enchantResult from "./enchant-result";
+import vue_EnchantStep from "./enchant-step/index.vue";
+import vue_selectItem from "./select-item.vue";
+import vue_enchantResult from "./enchant-result.vue";
 
 import ToggleService from "@/setup/ToggleService";
 

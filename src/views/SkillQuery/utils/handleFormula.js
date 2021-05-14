@@ -1,4 +1,4 @@
-import * as recast from "recast";
+import recast from "recast";
 
 /**
  *  skillState: Object {

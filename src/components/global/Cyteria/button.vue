@@ -1,13 +1,13 @@
 <script>
 import { h, mergeProps } from "vue";
 
-import SimpleButton from "./button/simple";
-import BorderButton from "./button/border";
-import InlineButton from "./button/inline";
-import LineButton from "./button/line";
-import IconButton from "./button/icon";
-import DropDownButton from "./button/drop-down";
-import CheckButton from "./button/check";
+import SimpleButton from "./button/simple.vue";
+import BorderButton from "./button/border.vue";
+import InlineButton from "./button/inline.vue";
+import LineButton from "./button/line.vue";
+import IconButton from "./button/icon.vue";
+import DropDownButton from "./button/drop-down.vue";
+import CheckButton from "./button/check.vue";
 
 import Color from "@services/Color";
 
@@ -41,12 +41,12 @@ function CyButton(props, context) {
    * @param {string} defaultValue
    */
   const defaultProp = (id, defaultValue) => {
+    const [name, type = ''] = id.split('/');
+    const key = name + 'Color' + (type ? (type[0].toUpperCase() + type.slice(1)) : '');
     if (props[key] === '!default') {
       props[key] = defaultValue;
       return;
     }
-    const [name, type = ''] = id.split('/');
-    const key = name + 'Color' + (type ? (type[0].toUpperCase() + type.slice(1)) : '');
     if (props[key] === 'default') {
       if (props.mainColor !== 'default') {
         const mc = props.mainColor;

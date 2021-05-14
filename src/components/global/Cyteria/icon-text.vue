@@ -14,7 +14,7 @@
 <script>
 import Color from "@services/Color";
 
-import IconSet from "@/components/mixin/icon-set";
+import IconSet from "@/components/mixin/icon-set.vue";
 
 const ColorList = Color.List;
 

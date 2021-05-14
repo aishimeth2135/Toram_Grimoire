@@ -36,8 +36,6 @@ import RegisterLang from "@/plugin/RegisterLang.js";
 import Notify from "@/plugin/Notify";
 import Confirm from "@/plugin/Confirm";
 
-import './registerServiceWorker';
-
 const APP = createApp(App);
 APP
   .use(router)
@@ -52,19 +50,14 @@ APP
   });
 
 /* == [ auto regist global components ] ================= */
-function registComponents(requireComponent, prefix='') {
-  requireComponent.keys().forEach(fileName => {
-    const componentConfig = requireComponent(fileName);
+function registComponents(requireComponents, prefix='') {
+  Object.entries(requireComponents).forEach(([fileName, componentConfig]) => {
     const componentName = fileName.split('/').pop().replace(/\.\w+$/, '');
     APP.component(prefix + componentName, componentConfig.default || componentConfig);
   });
 }
-
-const requireComponent_global = require.context('./components/global', false, /[a-zA-Z-]+\.vue$/);
-const requireComponent_cy = require.context('./components/global/Cyteria', false, /[a-zA-Z-]+\.vue$/);
-
-registComponents(requireComponent_global);
-registComponents(requireComponent_cy, 'cy-');
+registComponents(import.meta.globEager('./components/global/*.vue'));
+registComponents(import.meta.globEager('./components/global/Cyteria/*.vue'), 'cy-');
 // ======================================================
 
 APP.mount('#app');

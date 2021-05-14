@@ -16,7 +16,7 @@
   </span>
 </template>
 <script>
-import IconSet from "@/components/mixin/icon-set";
+import IconSet from "@/components/mixin/icon-set.vue";
 
 export default {
   mixins: [IconSet],

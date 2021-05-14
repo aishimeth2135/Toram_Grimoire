@@ -1,25 +1,19 @@
-workbox.googleAnalytics.initialize();
+import * as googleAnalytics from 'workbox-google-analytics';
 
-workbox.core.setCacheNameDetails({
+googleAnalytics.initialize();
+
+import { setCacheNameDetails } from 'workbox-core';
+import { CacheableResponsePlugin } from 'workbox-cacheable-response';
+import { registerRoute } from 'workbox-routing';
+import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
+import { ExpirationPlugin } from 'workbox-expiration';
+import { precacheAndRoute } from 'workbox-precaching';
+
+setCacheNameDetails({
   prefix: 'toram-grimoire',
-  suffix: 'v2'
+  suffix: 'v2',
+  googleAnalytics: 'ga',
 });
-
-// // image
-// workbox.routing.registerRoute(
-//   /.*\.(?:png|jpg|jpeg|svg|gif)/,
-//   new workbox.strategies.CacheFirst({
-//     cacheName: 'image-cache',
-//     plugins: [
-//       new workbox.expiration.Plugin({
-//         maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
-//       })
-//     ]
-//   })
-// );
-
-const { registerRoute, NavigationRoute } = workbox.routing;
-const { StaleWhileRevalidate, CacheFirst } = workbox.strategies;
 
 const handleCacheName = name => name;
 
@@ -29,32 +23,42 @@ registerRoute(
   new CacheFirst({
     cacheName: handleCacheName('font-cache'),
     plugins: [
-      new workbox.expiration.Plugin({
+      new ExpirationPlugin({
         maxAgeSeconds: 60 * 60 * 24 * 180, // 180 days
       })
     ]
   })
 );
 
-// google spreadsheets csv
-// registerRoute(
-//   /^https:\/\/docs\.google\.com\/spreadsheets\/.+output\=csv.+/,
-//   new StaleWhileRevalidate({
-//     cacheName: 'google-spreadsheets-csv-files',
-//     plugins: [
-//       new workbox.cacheableResponse.Plugin({
-//         statuses: [0, 200]
-//       })
-//     ]
-//   })
-// );
+registerRoute(
+  ({ url }) => url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com',
+  new StaleWhileRevalidate({
+    cacheName: handleCacheName('google-fonts'),
+    plugins: [
+      new ExpirationPlugin({ maxEntries: 20 }),
+    ],
+  }),
+);
+
+// image
+registerRoute(
+  /.*\.(?:png|jpg|jpeg|svg|gif)/,
+  new CacheFirst({
+    cacheName: handleCacheName('image-cache'),
+    plugins: [
+      new ExpirationPlugin({
+        maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+      })
+    ]
+  })
+);
 
 {
   const CACHE_NAME = handleCacheName('google-spreadsheets-csv-files');
   const strategy = new StaleWhileRevalidate({
     cacheName: CACHE_NAME,
     plugins: [
-      new workbox.cacheableResponse.Plugin({
+      new CacheableResponsePlugin.Plugin({
         statuses: [0, 200]
       })
     ]
@@ -90,51 +94,10 @@ registerRoute(
 
   // Register this strategy to handle all navigations.
   registerRoute(
-    /^https:\/\/docs\.google\.com\/spreadsheets\/.+output\=csv.+/,
+    /^https:\/\/docs\.google\.com\/spreadsheets\/.+output=csv.+/,
     handler
   );
 }
-
-// // google app script - redirects
-// workbox.routing.registerRoute(
-//   /^https:\/\/script\.googleusercontent\.com\/macros\/echo\?.+/,
-//   new workbox.strategies.StaleWhileRevalidate({
-//     cacheName: 'app-script--get-csv',
-//     plugins: [
-//       new workbox.cacheableResponse.Plugin({
-//         statuses: [0, 200]
-//       })
-//     ]
-//   })
-// );
-
-// workbox.routing.registerRoute(
-//   /^https:\/\/script\.google\.com\/macros\/s\/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo\/exec\?.+/,
-//   new workbox.strategies.StaleWhileRevalidate({
-//     cacheName: 'app-script',
-//     plugins: [
-//       new workbox.cacheableResponse.Plugin({
-//         statuses: [0, 302]
-//       })
-//     ]
-//   })
-// );
-
-// iconify icons
-// workbox.routing.registerRoute(
-//   /^https:\/\/api\.iconify\.design/,
-//   new workbox.strategies.StaleWhileRevalidate({
-//     cacheName: 'iconify-design-icons',
-//     plugins: [
-//       new workbox.cacheableResponse.Plugin({
-//         statuses: [0, 200]
-//       }),
-//       new workbox.expiration.Plugin({
-//         maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
-//       })
-//     ]
-//   })
-// );
 
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
@@ -147,7 +110,7 @@ self.addEventListener('message', (event) => {
  * requests for URLs in the manifest.
  * See https://goo.gl/S9QRab
  */
-self.__precacheManifest = [].concat(self.__precacheManifest || []);
-workbox.precaching.precacheAndRoute(self.__precacheManifest, {
+// self.__precacheManifest = [].concat(self.__precacheManifest || []);
+precacheAndRoute(self.__WB_MANIFEST, {
   ignoreURLParametersMatching: [/source/, /calculation_data/]
 });

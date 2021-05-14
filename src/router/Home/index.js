@@ -1,7 +1,7 @@
 import app from "./app.vue";
 
-import vue_home from "@/views/Home/Home";
-import vue_about from "@/views/Home/About";
+import vue_home from "@/views/Home/Home/index.vue";
+import vue_about from "@/views/Home/About/index.vue";
 
 import GetLang from "@services/Language";
 import ViewInit from "@services/ViewInit.js";

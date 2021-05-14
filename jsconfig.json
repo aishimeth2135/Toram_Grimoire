@@ -11,8 +11,5 @@
       "@grimoire": ["./src/lib/main/Grimoire.js"],
     }
   },
-  "include": ["src/**/*"],
-  "typeAcquisition": {
-    "exclude": ["dotenv"]
-  }
+  "include": ["src/**/*"]
 }

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import BaseButton from "./base";
+import BaseButton from "./base.vue";
 
 export default {
   mixins: [BaseButton],

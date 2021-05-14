@@ -102,7 +102,7 @@
   </div>
 </template>
 <script>
-import vue_stepStat from "./step-stat";
+import vue_stepStat from "./step-stat.vue";
 import { EnchantStep } from '@/lib/Enchant/Enchant';
 
 export default {
