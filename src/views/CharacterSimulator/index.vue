@@ -311,7 +311,8 @@ export default {
         }
       }
 
-      const isDualSword = c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD) && c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD);
+      const isDualSword = c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD)
+        && c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD);
 
       const vars = {
         value: {
@@ -598,8 +599,8 @@ export default {
         bodyField = types.body;
 
         if (mainField) {
-          main = mainField == MainWeapon.TYPE_ONE_HAND_SWORD &&
-            subField && subField == MainWeapon.TYPE_ONE_HAND_SWORD ?
+          main = mainField === MainWeapon.TYPE_ONE_HAND_SWORD &&
+            subField && subField === MainWeapon.TYPE_ONE_HAND_SWORD ?
               10 :
               mains.indexOf(mainField);
         }
@@ -613,7 +614,7 @@ export default {
         return { main, sub, body };
       })();
 
-      const forDualSword = eq.main === 0 && fieldEq.main === 10 && !skillState.states.find(a => a.equipment.main == 10);
+      const forDualSword = eq.main === 1 && fieldEq.main === 10 && !skillState.states.find(a => a.equipment.main == 10);
 
       const { main, sub, body } = eq;
       const _eq = { main, sub, body };

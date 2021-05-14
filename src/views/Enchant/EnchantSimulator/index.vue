@@ -154,7 +154,29 @@
         :icon="state.statDisplayMode === 1 ? 'mdi-cube-outline' : 'mdi-cube-off-outline'"
         main-color="water-blue"
         :selected="state.statDisplayMode === 1"
-        @click="state.statDisplayMode = state.statDisplayMode === 1 ? 0 : 1" />
+        @click="state.statDisplayMode = state.statDisplayMode === 1 ? 0 : 1">
+        <template #caption>
+          <div>
+            <div>
+              <cy-icon-text text-size="small" text-color="purple">
+                {{ $lang('stat display mode/title') }}
+              </cy-icon-text>
+            </div>
+            <div class="pl-4">
+              <cy-icon-text icon="mdi-cube-off-outline"
+                icon-color="water-blue-light" text-size="small"
+                class="w-full">
+                {{ $lang('stat display mode/potential cost') }}
+              </cy-icon-text>
+              <cy-icon-text icon="mdi-cube-outline"
+              icon-color="water-blue" text-size="small"
+              class="w-full">
+                {{ $lang('stat display mode/material point') }}
+              </cy-icon-text>
+            </div>
+          </div>
+        </template>
+      </cy-button>
       <!-- <cy-button type="icon" @click="optimizeSteps" /> -->
       <cy-icon-text icon="bx-bx-star" class="ml-auto mr-3">
         {{ $lang('success rate') }}

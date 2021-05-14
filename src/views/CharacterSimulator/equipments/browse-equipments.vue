@@ -95,8 +95,9 @@ export default {
   emits: ['close'],
   props: ['visible', 'action', 'characterState'],
   inject: [
-    'toggleMainWindowVisible', 'getShowEquipmentData',
-    'handleCharacterStateDatas', 'appendEquipments'
+    'toggleMainWindowVisible',
+    'handleCharacterStateDatas',
+    'appendEquipments'
   ],
   data() {
     return {
@@ -138,10 +139,11 @@ export default {
     browsedEquipments() {
       return this.equipments
         .map((p, i) => {
-          const t = this.getShowEquipmentData(p);
-          t.iid = i;
-          t['@disabled'] = !this.fieldFilter(p);
-          return t;
+          return {
+            origin: p,
+            iid: i,
+            '@disabled': !this.fieldFilter(p)
+          };
         })
         .sort((a, b) => a.origin.name.localeCompare(b.origin.name));
     }

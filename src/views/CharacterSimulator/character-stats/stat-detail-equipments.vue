@@ -22,6 +22,9 @@
 </template>
 <script>
 export default {
+  RegisterLang: {
+    root: 'Character Simulator/show character stats'
+  },
   props: ['equipmentTexts']
 }
 </script>

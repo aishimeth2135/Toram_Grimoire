@@ -2,15 +2,17 @@
   <div class="w-full">
     <div class="flex items-center pb-1 pl-1">
       <cy-icon-text class="mr-2 text-purple"
-        :icon="equipmentData.categoryIcon"
+        :icon="equipment.is !== 'avatar' ? equipment.getCategoryImagePath() : equipment.categoryIcon"
+        :icon-src="equipment.is !== 'avatar' ? 'image' : 'iconify'"
         :icon-color="equipment.isCustom ? 'green' : 'light-2'">
         <span>{{ equipment.name }}</span>
         <span v-if="equipment.hasRefining && equipment.refining > 0"
           class="ml-1 text-water-blue">+{{ equipmentRefiningText(equipment.refining) }}</span>
       </cy-icon-text>
       <span class="flex-shrink-0 text-light-3 text-sm mr-2"
-        :class="[equipment.isCustom ? 'text-green' : 'text-light-3']"
-        >{{ equipmentData.categoryText }}</span>
+        :class="[equipment.isCustom ? 'text-green' : 'text-light-3']">
+        {{ equipment.categoryText }}
+      </span>
       <cy-button type="icon" class="ml-auto"
         :icon="mode === 0 ? 'ic-round-edit' : 'ic-round-view-list'"
         @click="mode = mode === 0 ? 1 : 0" />
@@ -120,7 +122,6 @@ export default {
     }
   },
   inject: [
-    'getShowEquipmentData',
     'openCustomEquipmentEditor',
     'openSelectCrystals',
     'setEquipmentProperty',
@@ -132,11 +133,6 @@ export default {
       currentCustomTypeIndex: 0,
       baseValueRange: [0, 999]
     };
-  },
-  computed: {
-    equipmentData() {
-      return this.getShowEquipmentData(this.equipment);
-    }
   },
   methods: {
     equipmentRefiningText(v){

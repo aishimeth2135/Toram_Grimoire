@@ -5,18 +5,18 @@ workbox.core.setCacheNameDetails({
   suffix: 'v2'
 });
 
-// // image
-// workbox.routing.registerRoute(
-//   /.*\.(?:png|jpg|jpeg|svg|gif)/,
-//   new workbox.strategies.CacheFirst({
-//     cacheName: 'image-cache',
-//     plugins: [
-//       new workbox.expiration.Plugin({
-//         maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
-//       })
-//     ]
-//   })
-// );
+// image
+workbox.routing.registerRoute(
+  /.*\.(?:png|jpg|jpeg|svg|gif)/,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'image-cache',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+      })
+    ]
+  })
+);
 
 const { registerRoute, NavigationRoute } = workbox.routing;
 const { StaleWhileRevalidate, CacheFirst } = workbox.strategies;
@@ -94,47 +94,6 @@ registerRoute(
     handler
   );
 }
-
-// // google app script - redirects
-// workbox.routing.registerRoute(
-//   /^https:\/\/script\.googleusercontent\.com\/macros\/echo\?.+/,
-//   new workbox.strategies.StaleWhileRevalidate({
-//     cacheName: 'app-script--get-csv',
-//     plugins: [
-//       new workbox.cacheableResponse.Plugin({
-//         statuses: [0, 200]
-//       })
-//     ]
-//   })
-// );
-
-// workbox.routing.registerRoute(
-//   /^https:\/\/script\.google\.com\/macros\/s\/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo\/exec\?.+/,
-//   new workbox.strategies.StaleWhileRevalidate({
-//     cacheName: 'app-script',
-//     plugins: [
-//       new workbox.cacheableResponse.Plugin({
-//         statuses: [0, 302]
-//       })
-//     ]
-//   })
-// );
-
-// iconify icons
-// workbox.routing.registerRoute(
-//   /^https:\/\/api\.iconify\.design/,
-//   new workbox.strategies.StaleWhileRevalidate({
-//     cacheName: 'iconify-design-icons',
-//     plugins: [
-//       new workbox.cacheableResponse.Plugin({
-//         statuses: [0, 200]
-//       }),
-//       new workbox.expiration.Plugin({
-//         maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
-//       })
-//     ]
-//   })
-// );
 
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
