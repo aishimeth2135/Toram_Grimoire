@@ -24,8 +24,6 @@
 </template>
 
 <script>
-import init from "./init.js";
-
 export default {
   data(){
     return {
@@ -50,6 +48,10 @@ export default {
           icon: 'mdi-cube-scan',
           path: '/enchant'
         }, {
+          name: 'enchant/enchant-doll',
+          icon: 'ant-design:calculator-outlined',
+          path: '/enchant/doll'
+        }, {
           name: 'item-query',
           icon: 'jam-box',
           path: '/items'
@@ -64,9 +66,6 @@ export default {
         }
       ]
     };
-  },
-  beforeCreate(){
-    init();
   }
 };
 </script>

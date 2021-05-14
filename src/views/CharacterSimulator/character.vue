@@ -43,9 +43,7 @@
     </div>
     <div class="content">
       <cy-title-input icon="mdi-clipboard-text-outline"
-        v-model:value="character.name">
-        <input type="text" v-model="character.name">
-      </cy-title-input>
+        v-model:value="character.name" />
     </div>
     <div class="content-title">
       <cy-icon-text icon="mdi-checkbox-multiple-blank-circle-outline"

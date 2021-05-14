@@ -121,7 +121,7 @@ export default function() {
       },
       'enchant': {
         'enchant-simulator': '附魔模擬',
-        'enchant-doll': '附魔計算'
+        'enchant-doll': '附魔布偶'
       }
     },
     'Left Menu': {

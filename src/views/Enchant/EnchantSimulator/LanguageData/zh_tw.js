@@ -26,7 +26,11 @@ export default function(){
       'step': {
         'insert step before': '向前插入步驟',
         'up swap': '上移一格',
-        'down swap': '下移一格'
+        'down swap': '下移一格',
+        'auto fill positive stat': '正屬全上',
+        'select one stat item': '選擇單項能力',
+        'select multiple stat items': '選擇多項能力',
+        'type: each': '分次附模式'
       },
       'select item': {
         'title: normal': '選擇多項能力',
@@ -37,6 +41,12 @@ export default function(){
         'enchant: each': '分次附、每次附$0、直到$1',
         'stats': '最終結果',
         'materials': '素材耗量',
+        'show detail': '顯示詳細資訊',
+      },
+      'stat display mode': {
+        'title': '切換能力項目的資訊',
+        'potential cost': '潛力消耗',
+        'material point': '素材消耗'
       },
       'tips': {
         'step stat repeated': '這個步驟已經有這個能力了0.0',

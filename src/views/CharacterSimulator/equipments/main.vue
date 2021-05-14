@@ -67,7 +67,6 @@ export default {
   provide() {
     return {
       'convertEquipmentData': this.convertEquipmentData,
-      'getShowEquipmentData': this.getShowEquipmentData,
       'toggleMainWindowVisible': id => this.toggle('window/' + id),
       'openCustomEquipmentEditor': this.openCustomEquipmentEditor,
       'openSelectCrystals': this.openSelectCrystals,
@@ -136,13 +135,6 @@ export default {
           .equipmentField(EquipmentField.TYPE_SUB_WEAPON)
           .removeEquipment();
       }
-    },
-    getShowEquipmentData(o) {
-      return {
-        origin: o,
-        categoryIcon: o.categoryIcon,
-        categoryText: o.categoryText
-      };
     },
     convertEquipmentData(item) {
       return CharacterEquipment.fromOriginEquipment(item);

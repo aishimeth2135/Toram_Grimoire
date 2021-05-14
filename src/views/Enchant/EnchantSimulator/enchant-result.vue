@@ -1,10 +1,18 @@
 <template>
   <div v-if="enchantResult.length !== 0">
     <div class="flex items-start">
-      <cy-button type="icon" icon="ant-design:star-outlined"
+      <cy-button type="icon" :icon="contents.resultStats ? 'ant-design:star-filled' : 'ant-design:star-outlined'"
         class="flex-shrink-0"
+        icon-color="orange"
         @click="toggle('contents/resultStats')"
-        :selected="contents.resultStats" />
+        :selected="contents.resultStats">
+        <template #caption>
+          <cy-icon-text icon="ant-design:star-outlined"
+            icon-color="orange">
+            {{ $lang('result/show detail') }}
+          </cy-icon-text>
+        </template>
+      </cy-button>
       <cy-transition type="fade">
         <div v-if="contents.resultStats" class="mb-2">
           <div>

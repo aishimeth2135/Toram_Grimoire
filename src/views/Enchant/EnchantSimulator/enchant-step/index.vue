@@ -78,21 +78,49 @@
         <cy-button type="icon"
           icon="ic-round-add-circle-outline"
           @click="openSelectItem('step', step, true)"
-          icon-color="water-blue" />
+          icon-color="water-blue">
+          <template #caption>
+            <cy-icon-text icon="ic-round-add-circle-outline"
+              icon-color="water-blue">
+              {{ $lang('step/select one stat item') }}
+            </cy-icon-text>
+          </template>
+        </cy-button>
         <cy-button type="icon"
           icon="ic-round-add-circle-outline"
           @click="openSelectItem('step', step)"
-          icon-color="red" />
+          icon-color="red">
+          <template #caption>
+            <cy-icon-text icon="ic-round-add-circle-outline"
+              icon-color="red">
+              {{ $lang('step/select multiple stat items') }}
+            </cy-icon-text>
+          </template>
+        </cy-button>
         <cy-button type="icon"
           :icon="typeIcon"
           @click="toggleStepType(step)"
           :icon-color="typeEach ? 'blue-green' : 'blue-green-light'"
-          icon-color-hover="blue-green" />
+          icon-color-hover="blue-green">
+          <template #caption>
+            <cy-icon-text icon="ic-outline-near-me"
+              icon-color="blue-green">
+              {{ $lang('step/type: each') }}
+            </cy-icon-text>
+          </template>
+        </cy-button>
         <cy-button v-if="step.belongEquipment.stats(step.index - 1).length >= 6"
           type="icon"
           icon="ant-design:star-outlined"
           @click="step.autoFill()"
-          icon-color="orange" />
+          icon-color="orange">
+          <template #caption>
+            <cy-icon-text icon="ant-design:star-outlined"
+              icon-color="orange">
+              {{ $lang('step/auto fill positive stat') }}
+            </cy-icon-text>
+          </template>
+        </cy-button>
         <cy-icon-text icon="mdi-creation" class="ml-auto mr-2"
           text-color="purple">
           {{ step.remainingPotential }}
