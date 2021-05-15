@@ -494,15 +494,15 @@ export default class EnchantDollEquipmentContainer {
         merged: false
       };
     });
-    console.log
     ids.forEach((cur, i) => {
       const next = ids[i + 1];
       if (cur.merged || next.merged || i === ids.length - 1) {
         return;
       }
       if (cur.id === next.id) {
-        cur.step.stats[0].value += next.step.stats[0].value;
-        next.step.remove();
+        const value = next.step.stats[0].value;
+        next.step.remove(); // 要先移除才加得進去
+        cur.step.stats[0].value += value;
         next.merged = true;
       }
     });
