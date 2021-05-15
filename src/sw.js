@@ -5,11 +5,16 @@ workbox.core.setCacheNameDetails({
   suffix: 'v2'
 });
 
+const { registerRoute, NavigationRoute } = workbox.routing;
+const { StaleWhileRevalidate, CacheFirst } = workbox.strategies;
+
+const handleCacheName = name => name;
+
 // image
 workbox.routing.registerRoute(
   /.*\.(?:png|jpg|jpeg|svg|gif)/,
   new workbox.strategies.CacheFirst({
-    cacheName: 'image-cache',
+    cacheName: handleCacheName('image-cache'),
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
@@ -17,11 +22,6 @@ workbox.routing.registerRoute(
     ]
   })
 );
-
-const { registerRoute, NavigationRoute } = workbox.routing;
-const { StaleWhileRevalidate, CacheFirst } = workbox.strategies;
-
-const handleCacheName = name => name;
 
 // font
 registerRoute(

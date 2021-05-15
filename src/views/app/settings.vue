@@ -14,6 +14,16 @@
           </span>
         </div>
       </template>
+      <div v-if="serviceWorker.hasUpdate"
+        class="p-4 flex items-center justify-center">
+        <cy-icon-text icon="mdi-creation" text-color="purple">
+          {{ $lang('update/new version detected') }}
+        </cy-icon-text>
+        <cy-button type="border" icon="mdi-coffee-outline"
+          @click="swUpdate" class="ml-4">
+          {{ $lang('update/force update') }}
+        </cy-button>
+      </div>
       <fieldset class="column">
         <legend>
           <cy-icon-text icon="ic-round-text-fields" text-color="purple">
@@ -25,16 +35,16 @@
           {{ $lang('switch font/warn 1') }}
         </cy-icon-text>
         <div class="buttons">
-          <cy-button icon="ic-round-text-fields" type="border"
-            :selected="currentFont == 1" @click="switchFont(1)">
+          <cy-button type="check"
+            :selected="currentFont === 1" @click="switchFont(1)">
             {{ $lang('switch font/default font') }}
           </cy-button>
-          <cy-button icon="ic-round-text-fields" type="border"
-            :selected="currentFont == 0" @click="switchFont(0)">
+          <cy-button type="check"
+            :selected="currentFont === 0" @click="switchFont(0)">
             {{ $lang('switch font/base font') }}
           </cy-button>
-          <cy-button icon="ic-round-text-fields" type="border"
-            :selected="currentFont == 2" @click="switchFont(2)">
+          <cy-button type="check"
+            :selected="currentFont === 2" @click="switchFont(2)">
             {{ $lang('switch font/base font') + '-2' }}
           </cy-button>
         </div>
@@ -48,16 +58,18 @@
         <div class="caption">
           {{ $lang('language/caption') }}
         </div>
-        <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ $lang('language/warn 1') }}
-        </cy-icon-text>
-        <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ $lang('language/warn 2') }}
-        </cy-icon-text>
+        <div class="flex items-center flex-wrap">
+          <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3" class="mr-2">
+            {{ $lang('language/warn 1') }}
+          </cy-icon-text>
+          <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
+            {{ $lang('language/warn 2') }}
+          </cy-icon-text>
+        </div>
         <div class="buttons">
           <cy-button v-for="(item, i) in languageState.list"
-            icon="ion-language" type="border"
-            :selected="languageState.currentIndex == i"
+            type="check"
+            :selected="languageState.currentIndex === i"
             :key="item" @click="setLanguage('language', i)">
             {{ $lang('language/button texts/lang ' + item) }}
           </cy-button>
@@ -80,7 +92,7 @@
         </cy-icon-text>
         <div class="buttons">
           <cy-button v-for="(item, i) in secondLanguageState.list"
-            icon="ion-language" type="border"
+            type="check"
             :selected="secondLanguageState.currentIndex == i"
             :key="item" @click="setLanguage('second-language', i)">
             {{ $lang('language/button texts/lang ' + item) }}
@@ -144,6 +156,7 @@
 
 <script>
 import CY from "@utils/Cyteria";
+import { mapState } from "vuex";
 
 export default {
   RegisterLang: 'Settings',
@@ -160,15 +173,23 @@ export default {
       secondLanguageState: {
         list: list2,
         currentIndex: list2.indexOf(localStorage['app--second-language'])
+      },
+      update: {
+        newVersionDetected: false,
+        sw: null
       }
     };
   },
   computed: {
+    ...mapState('main', ['serviceWorker']),
     storageAvailable() {
       return CY.storageAvailable('localStorage');
     }
   },
   methods: {
+    swUpdate() {
+      this.serviceWorker.instance.waiting.postMessage({ type: 'SKIP_WAITING' });
+    },
     clearSpreadsheetsCaches() {
       caches.delete('google-spreadsheets-csv-files')
         .then(p => p && this.$notify(this.$lang('clear caches of spreadsheets/Clear caches of spreadsheet successfully')));

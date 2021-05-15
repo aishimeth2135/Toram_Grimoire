@@ -17,6 +17,9 @@ export default function() {
       'none': '无',
       'create': '建立',
       'close': '关闭',
+      'export': '汇出',
+      'import': '汇入',
+      'reset': '重置',
       'copy to clipboard finished': '已复制文本至剪贴簿。',
       'LocalStorage is inavailable': '此浏览器版本无法使用内建储存功能。',
     },
@@ -89,7 +92,8 @@ export default function() {
           'unknow': '未知',
           'other': '其它',
           'box': '箱子道具',
-          'exchange': '交换所'
+          'exchange': '交换所',
+          'ex_skill': 'EX技能'
         },
       }
     },
@@ -115,7 +119,10 @@ export default function() {
       'calculation': {
         'damage': '伤害计算'
       },
-      'enchant-simulator': '附魔模拟'
+      'enchant': {
+        'enchant-simulator': '附魔模拟',
+        'enchant-doll': '附魔布偶'
+      }
     },
     'Left Menu': {
       'Home': {
@@ -124,11 +131,15 @@ export default function() {
       }
     },
     'Footer': {
-      'baha home': '巴哈小屋',
       'night mode': '夜间模式'
     },
     'Settings': {
       'title': '设定',
+      'update': {
+        'new version detected': '侦测到新版本',
+        'force update': '立即更新',
+        'tips: new version detected': '侦测到新版本，可到设定里进行手动更新。',
+      },
       'switch font': {
         'title': '更改字体',
         'caption': '若字体显示有问题（特定装置会发生），或是不喜欢现在的预设字体，可以切换字体为基本字体。',

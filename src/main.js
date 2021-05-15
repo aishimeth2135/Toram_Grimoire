@@ -36,7 +36,7 @@ import RegisterLang from "@/plugin/RegisterLang.js";
 import Notify from "@/plugin/Notify";
 import Confirm from "@/plugin/Confirm";
 
-import './registerServiceWorker';
+import registerServiceWorker from './registerServiceWorker';
 
 const APP = createApp(App);
 APP
@@ -66,5 +66,7 @@ const requireComponent_cy = require.context('./components/global/Cyteria', false
 registComponents(requireComponent_global);
 registComponents(requireComponent_cy, 'cy-');
 // ======================================================
+
+registerServiceWorker();
 
 APP.mount('#app');
