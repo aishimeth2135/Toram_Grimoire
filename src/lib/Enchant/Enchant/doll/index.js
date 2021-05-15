@@ -106,9 +106,28 @@ export default class EnchantDoll {
     const firstResultEqs = [dollEq];
     firstResultEqs.push(...dollEq.beforeFillNegative());
 
-
-    const resultEqs = firstResultEqs.filter(eq => eq.errorFlag === null);
+    let resultEqs = firstResultEqs.filter(eq => eq.errorFlag === null);
     const errorEqs = firstResultEqs.filter(eq => eq.errorFlag !== null);
+
+    /** @param {EnchantDollEquipmentContainer[]} results */
+    const clearRepeatEquipment = () => {
+      const results = resultEqs;
+      const map = new Map();
+      results.forEach(res => {
+        const eq = res.equipment;
+        const steps = eq.steps();
+        const stepsId = steps
+          .filter((step, i) => i === steps.length - 1 || step.stats[0].value < 0)
+          .map(step => step.stats.map(stat => stat.statId + stat.value).join(','))
+          .join('->');
+        const id = `${eq.lastStep.remainingPotential}/${eq.lastStep.potentialExtraRate}/${steps.length}::${stepsId}`;
+        if (!map.has(id)) {
+          map.set(id, res);
+        }
+      });
+      resultEqs = Array.from(map.values());
+      // console.log(`%c[clear repeat] from ${results.length} to ${resultEqs.length}`, 'color: #e8caed');
+    };
 
     // const logResultEqs = (id, reqs) => {
     //   // console.log('==== [', id, '] ===================');
@@ -118,7 +137,11 @@ export default class EnchantDoll {
 
     if (resultEqs.length !== 0) {
       // logResultEqs('0', resultEqs);
+      resultEqs.forEach(cdollEq => cdollEq.clearVirtualStats());
+      clearRepeatEquipment();
+
       resultEqs.forEach(cdollEq => resultEqs.push(...cdollEq.mostUseRemainingPotential()));
+      clearRepeatEquipment();
       // logResultEqs('1', resultEqs);
 
       // 負屬全上。這邊假設前面已確保格子夠用。
@@ -133,16 +156,21 @@ export default class EnchantDoll {
       // logResultEqs('4', resultEqs);
 
       // 回傳成功率最高的裝備
-      const eqs = resultEqs.map(cdollEq => cdollEq.equipment);
-      eqs.sort((a, b) => b.realSuccessRate - a.realSuccessRate);
-      // console.log('[normal] ==========================');
-      // resultEqs.forEach(deq => {
-      //   console.log('--------------------------');
-      //   console.log(deq);
-      //   console.log(deq.equipment.steps().map(step => step.toString()));
-      //   console.log(deq.equipment.successRate);
-      // });
-      const resultEq = eqs[0];
+      resultEqs.sort((a, b) => b.equipment.realSuccessRate - a.equipment.realSuccessRate)
+
+      console.group(`%c  %c${resultEqs.length} kinds of results`,
+        'background-color: #e8caed; border-radius: 50%; margin-right: 12px',
+        'color: #e8caed');
+      resultEqs.forEach(deq => {
+        console.group(`[ ${deq.equipment.successRate} ]`);
+        deq.equipment.steps().forEach(step => console.log(step.toString()));
+        console.groupEnd();
+      });
+      console.groupEnd();
+
+      const result = resultEqs[0];
+      result.checkMergeSteps();
+      const resultEq = result.equipment;
       resultEq.steps().forEach(step => step.optimizeType(0));
       return resultEq;
     }
@@ -483,6 +511,9 @@ class EnchantDollCategory {
       this.stats.sort((a, b) => {
         const av = a.itemBase.getPotential(a.type, equipment);
         const bv = b.itemBase.getPotential(b.type, equipment);
+        if (av === bv) {
+          return b.value - a.value;
+        }
         return bv - av;
       });
     }

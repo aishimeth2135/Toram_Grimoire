@@ -136,7 +136,12 @@ class StatBase {
 
   /** @param {symbol} type */
   statId(type) {
-    return `${this.baseName}|${type.description}`;
+    const typeShorthand = {
+      [StatBase.TYPE_CONSTANT]: '$',
+      [StatBase.TYPE_MULTIPLIER]: '%',
+      [StatBase.TYPE_TOTAL]: '~',
+    }[type];
+    return `${this.baseName}${typeShorthand}`;
   }
 }
 
