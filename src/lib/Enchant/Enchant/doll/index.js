@@ -156,17 +156,17 @@ export default class EnchantDoll {
       // logResultEqs('4', resultEqs);
 
       // 回傳成功率最高的裝備
-      resultEqs.sort((a, b) => b.equipment.realSuccessRate - a.equipment.realSuccessRate)
+      resultEqs.sort((a, b) => b.equipment.realSuccessRate - a.equipment.realSuccessRate);
 
-      console.group(`%c  %c${resultEqs.length} kinds of results`,
-        'background-color: #e8caed; border-radius: 50%; margin-right: 12px',
-        'color: #e8caed');
-      resultEqs.forEach(deq => {
-        console.group(`[ ${deq.equipment.successRate} ]`);
-        deq.equipment.steps().forEach(step => console.log(step.toString()));
-        console.groupEnd();
-      });
-      console.groupEnd();
+      // console.group(`%c  %c${resultEqs.length} kinds of results`,
+      //   'background-color: #e8caed; border-radius: 50%; margin-right: 12px',
+      //   'color: #e8caed');
+      // resultEqs.forEach(deq => {
+      //   console.group(`[ ${deq.equipment.successRate} ]`);
+      //   deq.equipment.steps().forEach(step => console.log(step.toString()));
+      //   console.groupEnd();
+      // });
+      // console.groupEnd();
 
       const result = resultEqs[0];
       result.checkMergeSteps();
@@ -176,16 +176,22 @@ export default class EnchantDoll {
     }
     else {
       errorEqs.forEach(dollEq => dollEq.finalFill());
-      const eqs = errorEqs.map(cdollEq => cdollEq.equipment);
-      eqs.sort((a, b) => b.realSuccessRate - a.realSuccessRate);
-      // console.log('[err] ==========================');
+      errorEqs.sort((a, b) => b.equipment.realSuccessRate - a.equipment.realSuccessRate);
+
+      // console.group(`%c  %c${errorEqs.length} kinds of results`,
+      //   'background-color: red; border-radius: 50%; margin-right: 12px',
+      //   'color: #e8caed');
       // errorEqs.forEach(deq => {
-      //   console.log('--------------------------');
-      //   console.log(deq);
-      //   console.log(deq.equipment.steps().map(step => step.toString()));
-      //   console.log(deq.equipment.successRate);
+      //   console.group(`[ ${deq.equipment.successRate} ]`);
+      //   deq.equipment.steps().forEach(step => console.log(step.toString()));
+      //   console.groupEnd();
       // });
-      const resultEq = eqs[0];
+      // console.groupEnd();
+
+      const result = resultEqs[0];
+      result.checkMergeSteps();
+      const resultEq = result.equipment;
+      resultEq.steps().forEach(step => step.optimizeType(0));
       return resultEq;
     }
   }
