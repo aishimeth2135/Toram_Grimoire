@@ -131,11 +131,15 @@ export default function() {
       }
     },
     'Footer': {
-      'baha home': '巴哈小屋',
       'night mode': '夜間模式'
     },
     'Settings': {
       'title': '設定',
+      'update': {
+        'new version detected': '偵測到新版本',
+        'force update': '立即更新',
+        'tips: new version detected': '偵測到新版本，可到設定裡進行手動更新。',
+      },
       'switch font': {
         'title': '更改字體',
         'caption': '若字體顯示有問題（特定裝置會發生），或是不喜歡現在的預設字體，可以切換字體為基本字體。',

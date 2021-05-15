@@ -1,64 +1,56 @@
 <template>
-  <footer>
-    <div class="content">
-      <cy-button icon="mdi-weather-night"
-        v-if="checkLocalStorage"
+  <footer class="app--footer">
+    <div class="main-content">
+      <cy-button v-if="checkLocalStorage"
+        type="inline"
+        icon="mdi-weather-night"
         @click="toggleNightMode"
-        class="border-0 p-0">
-        {{ langText('night mode') }}
+        class="ml-auto mr-4">
+        {{ $lang('night mode') }}
       </cy-button>
-      <cy-icon-text icon="ant-design:home-outlined">
-        <a href="https://home.gamer.com.tw/homeindex.php?owner=mushroom2135">{{ langText('baha home') }}</a>
-      </cy-icon-text>
-      <cy-icon-text icon="ant-design:twitter-outlined">
-        <a href="https://twitter.com/Cyteria_w">Cyteria</a>
+      <cy-icon-text icon="uil-twitter-alt">
+        <a href="https://twitter.com/Cyteria_w" target="_blank" class="text-purple">Cyteria</a>
       </cy-icon-text>
     </div>
   </footer>
 </template>
 
 <script>
-  import CY from "@utils/Cyteria";
-  import GetLang from "@services/Language";
+import CY from "@utils/Cyteria";
 
-  export default {
-    computed: {
-      checkLocalStorage(){
-        return CY.storageAvailable('localStorage');
-      }
-    },
-    methods: {
-      toggleNightMode(){
-        localStorage['Theme--Night-Mode'] = localStorage['Theme--Night-Mode'] !== '1' ? '1' : '0';
-        document.documentElement.classList.toggle('theme--night-mode');
-      },
-      langText(v, vs){
-        return GetLang('Footer/' + v, vs);
-      }
+export default {
+  RegisterLang: 'Footer',
+  computed: {
+    checkLocalStorage(){
+      return CY.storageAvailable('localStorage');
     }
-  };
+  },
+  methods: {
+    toggleNightMode(){
+      localStorage['Theme--Night-Mode'] = localStorage['Theme--Night-Mode'] !== '1' ? '1' : '0';
+      document.documentElement.classList.toggle('theme--night-mode');
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>
+footer.app--footer {
+  border-top: 1px var(--primary-light) solid;
+  margin-top: 2rem;
+  background-color: var(--white);
+  height: 3rem;
 
-  footer {
-    border-top: 1px var(--primary-light) solid;
-    margin-top: 2rem;
-    background-color: var(--white);
-    height: 3rem;
-
-    > .content {
-      max-width: 50rem;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: right;
-      padding: 0.3rem 0.6rem;
-      overflow-x: auto;
-      white-space: nowrap;
-
-      ::v-deep(span) {
-        margin-left: 1rem;
-      }
-    }
+  > .main-content {
+    max-width: 50rem;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: right;
+    padding: 0.3rem 0.6rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
   }
+}
 </style>

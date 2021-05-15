@@ -122,7 +122,6 @@ export default function() {
       }
     },
     'Footer': {
-      'baha home': 'Baha Home',
       'night mode': 'Night Mode'
     },
     'Settings': {

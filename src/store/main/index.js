@@ -2,7 +2,11 @@ const store = {
   namespaced: true,
   state: {
     redirectPath: null,
-    version: '4.0.2'
+    version: '4.0.5',
+    serviceWorker: {
+      instance: null,
+      hasUpdate: false
+    }
   },
   mutations: {
     setRedirectPath(state, path) {
@@ -10,8 +14,12 @@ const store = {
     },
     clearRedirectPath(state) {
       state.redirectPath = null;
-    }
-  }
+    },
+    serviceWorkerHasUpdate(state, payload) {
+      state.serviceWorker.instance = payload;
+      state.serviceWorker.hasUpdate = true;
+    },
+  },
 };
 
 export default store;
