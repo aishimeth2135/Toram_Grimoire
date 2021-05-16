@@ -103,12 +103,6 @@ export default class EnchantDoll {
       dollEq.equipment.originalPotential = originalPotential;
     }
 
-    const firstResultEqs = [dollEq];
-    firstResultEqs.push(...dollEq.beforeFillNegative());
-
-    let resultEqs = firstResultEqs.filter(eq => eq.errorFlag === null);
-    const errorEqs = firstResultEqs.filter(eq => eq.errorFlag !== null);
-
     /** @param {EnchantDollEquipmentContainer[]} results */
     const clearRepeatEquipment = () => {
       const results = resultEqs;
@@ -120,7 +114,8 @@ export default class EnchantDoll {
           .filter((step, i) => i === steps.length - 1 || step.stats[0].value < 0)
           .map(step => step.stats.map(stat => stat.statId + stat.value).join(','))
           .join('->');
-        const id = `${eq.lastStep.remainingPotential}/${eq.lastStep.potentialExtraRate}/${steps.length}::${stepsId}`;
+        const pre = eq.lastStep ? `${eq.lastStep.remainingPotential}/${eq.lastStep.potentialExtraRate}` : 'none';
+        const id = `${pre}/${steps.length}::${stepsId}`;
         if (!map.has(id)) {
           map.set(id, res);
         }
@@ -130,10 +125,16 @@ export default class EnchantDoll {
     };
 
     // const logResultEqs = (id, reqs) => {
-    //   // console.log('==== [', id, '] ===================');
-    //   // console.log(reqs.map(req => req.positiveStats.map(stat => stat.show())));
-    //   // console.log(reqs.map(req => req.copy().equipment.steps().map(step => step.toString())));
+    //   console.log('==== [', id, '] ===================');
+    //   console.log(reqs.map(req => req.positiveStats.map(stat => stat.show())));
+    //   console.log(reqs.map(req => req.copy().equipment.steps().map(step => step.toString())));
     // };
+
+    const firstResultEqs = [dollEq];
+    firstResultEqs.push(...dollEq.beforeFillNegative());
+
+    let resultEqs = firstResultEqs.filter(eq => eq.errorFlag === null);
+    const errorEqs = firstResultEqs.filter(eq => eq.errorFlag !== null);
 
     if (resultEqs.length !== 0) {
       // logResultEqs('0', resultEqs);
@@ -158,8 +159,10 @@ export default class EnchantDoll {
       // 回傳成功率最高的裝備
       resultEqs.sort((a, b) => b.equipment.realSuccessRate - a.equipment.realSuccessRate);
 
-      // console.group(`%c  %c${resultEqs.length} kinds of results`,
+      // console.group(`%c  %c${resultEqs.length} kinds of results\n%c  %c${errorEqs.length} kinds of error-results`,
       //   'background-color: #e8caed; border-radius: 50%; margin-right: 12px',
+      //   'color: #e8caed',
+      //   'background-color: red; border-radius: 50%; margin-right: 12px',
       //   'color: #e8caed');
       // resultEqs.forEach(deq => {
       //   console.group(`[ ${deq.equipment.successRate} ]`);
