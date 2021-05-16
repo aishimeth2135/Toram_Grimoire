@@ -5,11 +5,11 @@
         type="inline"
         icon="mdi-weather-night"
         @click="toggleNightMode"
-        class="ml-auto mr-4">
+        class="ml-auto mr-2">
         {{ $lang('night mode') }}
       </cy-button>
       <cy-icon-text icon="uil-twitter-alt">
-        <a href="https://twitter.com/Cyteria_w" target="_blank" class="text-purple">Cyteria</a>
+        <a href="https://twitter.com/Cyteria_w" target="_blank" class="text-purple mr-2">Cyteria</a>
       </cy-icon-text>
     </div>
   </footer>
