@@ -325,7 +325,6 @@ export default class EnchantDoll {
         });
       });
       const negativeStatsList = Array.from(statsMap, el => el[1].stats);
-      // console.log('optimize:', originalNegativeStatsList.length, negativeStatsList.length);
       const finaleList = negativeStatsList.map(stats => {
         const _stats = [...stats, ...manuallyStats];
         const eq = this.calc(_stats, originalPotential);
@@ -485,7 +484,6 @@ class EnchantDollCategory {
   */
   static classifyStats(stats) {
    const target = [];
-   // stats = stats.map(stat => stat.copy());
    stats.forEach(stat => {
      const statCategory = stat.itemBase.belongCategory;
      const find = target.find(category => category.category === statCategory);
