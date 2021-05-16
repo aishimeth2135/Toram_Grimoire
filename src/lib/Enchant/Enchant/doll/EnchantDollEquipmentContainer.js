@@ -36,7 +36,7 @@ export default class EnchantDollEquipmentContainer {
       const newDollEq = this.copy();
       const res1 = this.handleBeforeFillNegative({ positivesFilter: 'positive' });
       const res2 = newDollEq.handleBeforeFillNegative({ positivesFilter: 'both' });
-      return [...res1, ...res2];
+      return [...res1, newDollEq, ...res2];
     }
     return this.handleBeforeFillNegative({ positivesFilter: 'positive' });
   }
@@ -72,6 +72,10 @@ export default class EnchantDollEquipmentContainer {
       positives.filter(category => category.stats.length > 1) :
       positives.filter(category => category.stats.length > 1 || negatives.find(ncategory => ncategory.category === category.category));
 
+    if (positivesHasRate.length === 0) {
+      return [];
+    }
+
     // 所有能力都有倍率，正常附法可能行不通
     const allPositivesHasRate = positivesHasRate.length === positives.length || rateBetweenBoth;
 
@@ -100,25 +104,29 @@ export default class EnchantDollEquipmentContainer {
       {
         const pstatPotentialCost = pstat.itemBase.getPotential(pstat.type, eq);
         const maxv = Math.min(Math.floor((eq.originalPotential - 1) / pstatPotentialCost), pstat.value + 1);
-        // let newDollEq = this, curv = 1;
-        // const newDollEqs = [];
-        // while (curv < maxv) {
-        //   newDollEq = newDollEq.copy();
-        //   const cstep = newDollEq.equipment.steps()[0];
-        //   const cstat = cstep.stats[0];
-        //   cstat.value += 1;
-        //   curv = cstat.value;
-        //   newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= 1;
-        //   newDollEqs.push(newDollEq);
-        // }
-        // newDollEqs.forEach(dollEq => resultEqs.push(dollEq, ...dollEq.beforeFillNegative()));
-        const newDollEq = this.copy();
-        const cstep = newDollEq.equipment.steps()[0];
-        const cstat = cstep.stats[0];
-        cstat.value = maxv;
-        newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= (cstat.value - 1);
-        resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
+        if (maxv > 1) {
+          // let newDollEq = this, curv = 1;
+          // const newDollEqs = [];
+          // while (curv < maxv) {
+          //   newDollEq = newDollEq.copy();
+          //   const cstep = newDollEq.equipment.steps()[0];
+          //   const cstat = cstep.stats[0];
+          //   cstat.value += 1;
+          //   curv = cstat.value;
+          //   newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= 1;
+          //   newDollEqs.push(newDollEq);
+          // }
+          // newDollEqs.forEach(dollEq => resultEqs.push(dollEq, ...dollEq.beforeFillNegative()));
+          const newDollEq = this.copy();
+          const cstep = newDollEq.equipment.steps()[0];
+          const cstat = cstep.stats[0];
+          cstat.value = maxv;
+          newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= (cstat.value - 1);
+          resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
+        }
       }
+
+      this.checkMakeUpPotential();
 
       if (positivesFilter === 'both' && currentCategory.stats.length > 1) {
           // 把一個正屬移到退潛後再附的附法
@@ -129,25 +137,37 @@ export default class EnchantDollEquipmentContainer {
       }
       // 倍率為1.2且耗潛為3且在第二順位
       const special = positivesHasRate
-        .find(category => category.stats.length > 2 && category.stats[1].originalPotential === 3);
-      // 優先把耗潛3的能力先附完的附法
+        .find((category, i) => i !== 0 && category.stats.length > 2 && category.stats[1].originalPotential === 3);
+      // 優先把耗潛3的能力先附在前面的附法
       if (special) {
         // 建立副本，去做正常的附法
         const newDollEq = this.copy();
-        resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
+
+        const originalPositiveStats = this.positiveStats.map(stat => stat.copy());
 
         special.stats.slice(0, 2).forEach(_pstat => {
           const step = eq.appendStep();
           step.appendStat(_pstat.itemBase, _pstat.type, 1);
           _pstat.value -= 1;
+          this.checkMakeUpPotential();
         });
+        if (eq.lastStep.potentialExtraRate > 1.2) {
+          // 例外狀況，補潛力導致倍率不正確。還原至原本的狀態
+          while (eq.allSteps.length !== 1) {
+            eq.allSteps[eq.allSteps.length - 1].remove();
+          }
+          this.positiveStats = originalPositiveStats;
+        } else {
+          resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
+        }
       }
     }
+
 
     let errorFlag = null, appendFlag = false;
     positivesHasRate
       .find(category => {
-        category.stats.find(pstat => {
+        category.stats.forEach(pstat => {
           if (!this.checkFillNegativeStats() && !appendFlag) {
             /**
              * 表示正屬再上，下次步驟負屬會沒辦法全上。
@@ -159,7 +179,7 @@ export default class EnchantDollEquipmentContainer {
           }
           if (eq.hasStat(pstat) || this.virtualStats.find(_stat => _stat.equals(pstat))) {
             // 表示這件裝備這能力已經做過了
-            return false;
+            return;
           }
 
           const step = eq.appendStep();
@@ -184,7 +204,7 @@ export default class EnchantDollEquipmentContainer {
           }
 
           this.checkMakeUpPotential();
-          return false;
+          return;
         });
         if (errorFlag !== null) {
           return true;
@@ -194,7 +214,6 @@ export default class EnchantDollEquipmentContainer {
     if (errorFlag) {
       this.equipment.errorFlag = errorFlag;
     }
-    // this.refreshCategorys(positives);
     return resultEqs;
   }
 
@@ -500,7 +519,7 @@ export default class EnchantDollEquipmentContainer {
     const eq = this.equipment;
     const lastStep = eq.lastStep;
     let step;
-    if (lastStep.remainingPotential === 0) {
+    if (lastStep && lastStep.remainingPotential === 0) {
       lastStep.type = EnchantStep.TYPE_NORMAL;
       step = lastStep;
     } else {
