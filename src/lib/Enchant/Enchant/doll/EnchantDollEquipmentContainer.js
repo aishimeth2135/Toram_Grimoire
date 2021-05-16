@@ -313,17 +313,18 @@ export default class EnchantDollEquipmentContainer {
   handleMostUseRemainingPotential({ checkSpecial = false } = {}) {
     const resultEqs = [];
 
-    const baseOriginalPotentialList = this.getOriginalPotentialList();
+    const baseOriginalPotentialList = this.getMostUsePotentialStatlList();
 
     if (baseOriginalPotentialList.length > 0) {
       /* ==== 嘗試最大利用剩下的潛。 */
       const newDollEq = this.copy();
       const ceq = newDollEq.equipment;
-      const originalPotentialList = newDollEq.getOriginalPotentialList();
-
-      // console.log(originalPotentialList.slice());
+      const originalPotentialList = newDollEq.getMostUsePotentialStatlList();
 
       const positiveStats = newDollEq.positiveStats;
+
+      // console.log(positiveStats.map(stat => stat.show()));
+      // console.log(originalPotentialList.map(p => p.stat.show()).join(','));
 
       if (checkSpecial) {
         // 特殊組合
@@ -428,7 +429,7 @@ export default class EnchantDollEquipmentContainer {
     }
     return [];
   }
-  getOriginalPotentialList() {
+  getMostUsePotentialStatlList() {
     const targetEq = this.equipment;
     const positiveStats = this.positiveStats;
     /**
@@ -437,8 +438,11 @@ export default class EnchantDollEquipmentContainer {
      */
     /** @type {{ type: "step"|"unused", stat: EnchantStepStat|EnchantStat, value: number }[]} */
     const list = targetEq.steps()
-      .filter(step=> {
-        if (step.type !== EnchantStep.TYPE_EACH) {
+      .filter((step, i)=> {
+        if (i === 0) {
+          return false;
+        }
+        if (step.type !== EnchantStep.TYPE_EACH && !(step.potentialExtraRate === 1 && step.stats.length === 1)) {
           return false;
         }
         const stat = step.stats[0];
