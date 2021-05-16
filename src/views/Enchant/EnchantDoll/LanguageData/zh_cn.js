@@ -65,7 +65,7 @@ export default function(){
         'export successfully': '汇出成功。',
         'performance of auto find negative stats': '根据选择的能力，系统在自动选取退潜时可能需要一些计算量，而导致页面卡住数秒钟，为正常的现象。',
         'performance of auto find minimum of original potential': '根据选择的能力，寻找最低需求潜力可能需要庞大的计算量，而导致页面卡住数秒钟，为正常的现象。',
-        'performance of auto find minimum of original potential and auto find negative stats': '在进行「寻找最低需求潜力」时，基于效能问题，系统将简化寻找最高成功率之退潜项目的计算过程，因此精确度可能会降低。',
+        'performance of auto find minimum of original potential and auto find negative stats': '在进行「寻找最低需求潜力」时，基于效能问题，系统将简化寻找最高成功率之退潜项目的计算过程，因此精确度可能会降低0.0',
         'can not auto find minimum of original potential': '即使潜力超过99这个装备的成功率还是无法100%，因此无法找到最低需求潜。可以换个能力试试0.0',
         'cannot directly modify the settings of the previous step': '不行直接对前面的步骤进行修改唷0.0',
         'unknow error when calc': '系统在计算时发生未知的错误，请联络作者。'
