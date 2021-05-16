@@ -10,15 +10,12 @@ export default function() {
     register(`${process.env.BASE_URL}sw.js`, {
       ready (registration) {
         if (registration.waiting) {
-          store.commit('main/serviceWorkerUpdateFound', registration);
-          MessageNotify(GetLang('Setting/update/tips/new version detected'));
+          store.commit('main/serviceWorkerHasUpdate', registration);
+          MessageNotify(GetLang('Setting/update/tips: new version detected'));
         }
       },
-      registered () {
-        console.log('Service worker has been registered.');
-      },
-      cached () {
-      },
+      registered () {},
+      cached () {},
       updatefound (registration) {
         if (registration.installing) {
           registration.installing.addEventListener('statechange', () => {
@@ -29,8 +26,7 @@ export default function() {
           });
         }
       },
-      updated () {
-      },
+      updated () {},
       offline () {
         console.log('No internet connection found. App is running in offline mode.');
       },
@@ -44,7 +40,7 @@ export default function() {
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (!refreshing) {
           window.location.reload()
-          refreshing = true
+          refreshing = true;
         }
       });
     });

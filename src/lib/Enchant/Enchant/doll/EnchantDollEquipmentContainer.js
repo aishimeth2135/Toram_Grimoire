@@ -147,7 +147,6 @@ export default class EnchantDollEquipmentContainer {
     let errorFlag = null, appendFlag = false;
     positivesHasRate
       .find(category => {
-        // category.sortStats('max-cost', { equipment: this.equipment });
         category.stats.find(pstat => {
           if (!this.checkFillNegativeStats() && !appendFlag) {
             /**
@@ -234,7 +233,7 @@ export default class EnchantDollEquipmentContainer {
     // 如果中途潛力不夠，從退潛中拿能力去補。
     if (step.remainingPotential <= 0) {
       const errorFlag = (() => {
-          // 如果給予的退潛連補潛力都不夠用，或是已經補到能力格不夠用了
+        // 如果給予的退潛連補潛力都不夠用，或是已經補到能力格不夠用了
         if (negatives.length === 0) {
           restore();
           return 'base-potential-not-enough';
@@ -316,15 +315,11 @@ export default class EnchantDollEquipmentContainer {
     const baseOriginalPotentialList = this.getMostUsePotentialStatlList();
 
     if (baseOriginalPotentialList.length > 0) {
-      /* ==== 嘗試最大利用剩下的潛。 */
       const newDollEq = this.copy();
       const ceq = newDollEq.equipment;
       const originalPotentialList = newDollEq.getMostUsePotentialStatlList();
 
       const positiveStats = newDollEq.positiveStats;
-
-      // console.log(positiveStats.map(stat => stat.show()));
-      // console.log(originalPotentialList.map(p => p.stat.show()).join(','));
 
       if (checkSpecial) {
         // 特殊組合
@@ -332,10 +327,6 @@ export default class EnchantDollEquipmentContainer {
         const special = originalPotentialList
         .find(p => p.type === 'step' && p.stat.originalPotential === 3 && p.stat.belongStep.potentialExtraRate === 1.2);
         if (special) {
-          // 建一個副本保存當前狀態。目前的拿來做特殊附法。
-          // const newDollEq = this.copy();
-          // resultEqs.push(newDollEq, ...newDollEq.mostUseRemainingPotential());
-
           // 把special移到最後面
           originalPotentialList.splice(originalPotentialList.indexOf(special), 1);
           originalPotentialList.push(special);
