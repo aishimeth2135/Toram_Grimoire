@@ -18,7 +18,8 @@
       <create-custom-equipment :visible="window.createCustomEquipment"
         @close="toggle('window/createCustomEquipment', false)"
         @append-equipments="appendEquipments" />
-      <cy-window v-model:visible="window.customEquipmentEditor">
+      <cy-window :visible="window.customEquipmentEditor"
+        @close="toggle('window/customEquipmentEditor', false)">
         <template #title>
           <cy-icon-text icon="ic-round-edit">
             {{ $lang('custom equipment editor/window title') }}

@@ -65,7 +65,7 @@ export default function(){
         'export successfully': '匯出成功。',
         'performance of auto find negative stats': '根據選擇的能力，系統在自動選取退潛時可能需要一些計算量，而導致頁面卡住數秒鐘，為正常的現象。',
         'performance of auto find minimum of original potential': '根據選擇的能力，尋找最低需求潛力可能需要龐大的計算量，而導致頁面卡住數秒鐘，為正常的現象。',
-        'performance of auto find minimum of original potential and auto find negative stats': '在進行「尋找最低需求潛力」時，基於效能問題，系統將簡化尋找最高成功率之退潛項目的計算過程，因此精確度可能會降低。',
+        'performance of auto find minimum of original potential and auto find negative stats': '在進行「尋找最低需求潛力」時，基於效能問題，系統將簡化尋找最高成功率之退潛項目的計算過程，因此精確度可能會降低0.0',
         'can not auto find minimum of original potential': '即使潛力超過99這個裝備的成功率還是無法100%，因此無法找到最低需求潛。可以換個能力試試0.0',
         'cannot directly modify the settings of the previous step': '不行直接對前面的步驟進行修改唷0.0',
         'unknow error when calc': '系統在計算時發生未知的錯誤，請聯絡作者。'

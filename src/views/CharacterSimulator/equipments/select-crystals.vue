@@ -43,32 +43,30 @@
     </div>
     <cy-bottom-content>
       <template #normal-content>
-        <cy-transition type="slide-up">
-          <div v-if="detailVisible" class="pt-1">
-            <cy-icon-text icon="bx-bx-cube-alt"
-              text-color="purple" text-size="small">
-              {{ $lang('select crystals/selected crystals') }}
-            </cy-icon-text>
-            <div>
-              <cy-list-item v-for="c in equipment.crystals"
-                :key="c.id"
-                @click="selectCrystal(convertToOriginal(c))">
-                <cy-icon-text icon="bx-bx-cube-alt">
-                  {{ c.name }}
-                </cy-icon-text>
-                <template #right-content>
-                  <cy-icon-text icon="ic-round-close" />
-                </template>
-                <template #extra>
-                  <div class="pl-2 pt-1 w-full">
-                    <show-stat v-for="stat in c.stats" :stat="stat"
-                      :key="stat.statId" />
-                  </div>
-                </template>
-              </cy-list-item>
-            </div>
+        <div v-if="detailVisible" class="pt-1 animate-slide-up">
+          <cy-icon-text icon="bx-bx-cube-alt"
+            text-color="purple" text-size="small">
+            {{ $lang('select crystals/selected crystals') }}
+          </cy-icon-text>
+          <div>
+            <cy-list-item v-for="c in equipment.crystals"
+              :key="c.id"
+              @click="selectCrystal(convertToOriginal(c))">
+              <cy-icon-text icon="bx-bx-cube-alt">
+                {{ c.name }}
+              </cy-icon-text>
+              <template #right-content>
+                <cy-icon-text icon="ic-round-close" />
+              </template>
+              <template #extra>
+                <div class="pl-2 pt-1 w-full">
+                  <show-stat v-for="stat in c.stats" :stat="stat"
+                    :key="stat.statId" />
+                </div>
+              </template>
+            </cy-list-item>
           </div>
-        </cy-transition>
+        </div>
         <div @click="toggleDetailVisible"
           class="flex items-center cursor-pointer">
           <cy-icon-text :icon="'ic-round-keyboard-arrow-' + (detailVisible ? 'down' : 'up')" />

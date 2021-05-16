@@ -100,83 +100,81 @@
       <cy-bottom-content v-if="appendedStats.length !== 0 || deletedStats.length !== 0"
         class="bottom-content">
         <template #normal-content>
-          <cy-transition type="slide-up">
-            <div v-if="selectStatDetailVisible">
-              <div class="content">
-                <div class="w-full">
-                  <cy-icon-text icon="mdi-rhombus-outline"
-                    text-size="small" text-color="purple">
-                    {{ $lang('custom equipment editor/select stat: current stats') }}
-                  </cy-icon-text>
-                </div>
-                <template v-if="equipmentStatsDatas.length != 0">
-                  <cy-list-item v-for="stat in equipmentStatsDatas"
-                    :key="`current-${stat.origin.baseName}-${stat.type.description}`"
-                    @click="selectStat(stat)">
-                    <cy-icon-text icon="mdi-rhombus-outline">
-                      {{ stat.text }}
-                    </cy-icon-text>
-                    <template #right-content>
-                      <cy-icon-text icon="ic-round-close" />
-                    </template>
-                  </cy-list-item>
-                </template>
-                <cy-list-item v-else>
-                  <cy-icon-text icon="mdi-rhombus-outline">
-                    {{ $globalLang('global/none') }}
-                  </cy-icon-text>
-                </cy-list-item>
-                <div class="w-full">
-                  <cy-icon-text icon="mdi-rhombus-outline"
-                    text-size="small" text-color="purple">
-                    {{ $lang('custom equipment editor/select stat: appended stats') }}
-                  </cy-icon-text>
-                </div>
-                <template v-if="appendedStats.length != 0">
-                  <cy-list-item v-for="stat in appendedStats"
-                    :key="`append-${stat.origin.baseName}-${stat.type.description}`"
-                    @click="selectStat(stat)">
-                    <cy-icon-text icon="mdi-rhombus-outline"
-                      text-color="water-blue" icon-color="water-blue-light">
-                      {{ stat.text }}
-                    </cy-icon-text>
-                    <template #right-content>
-                      <cy-icon-text icon="ic-round-close" />
-                    </template>
-                  </cy-list-item>
-                </template>
-                <cy-list-item v-else>
-                  <cy-icon-text icon="mdi-rhombus-outline">
-                    {{ $globalLang('global/none') }}
-                  </cy-icon-text>
-                </cy-list-item>
-                <div class="w-full">
-                  <cy-icon-text icon="mdi-rhombus-outline"
-                    text-size="small" text-color="purple">
-                    {{ $lang('custom equipment editor/select stat: deleted stats') }}
-                  </cy-icon-text>
-                </div>
-                <template v-if="deletedStats.length != 0">
-                  <cy-list-item v-for="stat in deletedStats"
-                    :key="`delete-${stat.origin.baseName}-${stat.type.description}`"
-                    @click="selectStat(stat)">
-                    <cy-icon-text icon="mdi-rhombus-outline"
-                      text-color="red" icon-color="red-light">
-                      {{ stat.text }}
-                    </cy-icon-text>
-                    <template #right-content>
-                      <cy-icon-text icon="ic-round-close" />
-                    </template>
-                  </cy-list-item>
-                </template>
-                <cy-list-item v-else>
-                  <cy-icon-text icon="mdi-rhombus-outline">
-                    {{ $globalLang('global/none') }}
-                  </cy-icon-text>
-                </cy-list-item>
+          <div v-if="selectStatDetailVisible" class="animate-slide-up">
+            <div class="content">
+              <div class="w-full">
+                <cy-icon-text icon="mdi-rhombus-outline"
+                  text-size="small" text-color="purple">
+                  {{ $lang('custom equipment editor/select stat: current stats') }}
+                </cy-icon-text>
               </div>
+              <template v-if="equipmentStatsDatas.length != 0">
+                <cy-list-item v-for="stat in equipmentStatsDatas"
+                  :key="`current-${stat.origin.baseName}-${stat.type.description}`"
+                  @click="selectStat(stat)">
+                  <cy-icon-text icon="mdi-rhombus-outline">
+                    {{ stat.text }}
+                  </cy-icon-text>
+                  <template #right-content>
+                    <cy-icon-text icon="ic-round-close" />
+                  </template>
+                </cy-list-item>
+              </template>
+              <cy-list-item v-else>
+                <cy-icon-text icon="mdi-rhombus-outline">
+                  {{ $globalLang('global/none') }}
+                </cy-icon-text>
+              </cy-list-item>
+              <div class="w-full">
+                <cy-icon-text icon="mdi-rhombus-outline"
+                  text-size="small" text-color="purple">
+                  {{ $lang('custom equipment editor/select stat: appended stats') }}
+                </cy-icon-text>
+              </div>
+              <template v-if="appendedStats.length != 0">
+                <cy-list-item v-for="stat in appendedStats"
+                  :key="`append-${stat.origin.baseName}-${stat.type.description}`"
+                  @click="selectStat(stat)">
+                  <cy-icon-text icon="mdi-rhombus-outline"
+                    text-color="water-blue" icon-color="water-blue-light">
+                    {{ stat.text }}
+                  </cy-icon-text>
+                  <template #right-content>
+                    <cy-icon-text icon="ic-round-close" />
+                  </template>
+                </cy-list-item>
+              </template>
+              <cy-list-item v-else>
+                <cy-icon-text icon="mdi-rhombus-outline">
+                  {{ $globalLang('global/none') }}
+                </cy-icon-text>
+              </cy-list-item>
+              <div class="w-full">
+                <cy-icon-text icon="mdi-rhombus-outline"
+                  text-size="small" text-color="purple">
+                  {{ $lang('custom equipment editor/select stat: deleted stats') }}
+                </cy-icon-text>
+              </div>
+              <template v-if="deletedStats.length != 0">
+                <cy-list-item v-for="stat in deletedStats"
+                  :key="`delete-${stat.origin.baseName}-${stat.type.description}`"
+                  @click="selectStat(stat)">
+                  <cy-icon-text icon="mdi-rhombus-outline"
+                    text-color="red" icon-color="red-light">
+                    {{ stat.text }}
+                  </cy-icon-text>
+                  <template #right-content>
+                    <cy-icon-text icon="ic-round-close" />
+                  </template>
+                </cy-list-item>
+              </template>
+              <cy-list-item v-else>
+                <cy-icon-text icon="mdi-rhombus-outline">
+                  {{ $globalLang('global/none') }}
+                </cy-icon-text>
+              </cy-list-item>
             </div>
-          </cy-transition>
+          </div>
           <div @click="toggleVisible('selectStatDetail')"
             class="top flex items-center flex-wrap">
             <cy-icon-text :icon="'ic-round-keyboard-arrow-' + (selectStatDetailVisible ? 'down' : 'up')" />
