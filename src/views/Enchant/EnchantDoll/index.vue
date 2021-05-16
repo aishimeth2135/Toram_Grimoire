@@ -1,6 +1,6 @@
 <template>
   <section class="main--enchant-doll">
-    <div class="step-content">
+    <div class="step-content" ref="first-step">
       <div>
         <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
           {{ $lang('equipment/select type/title') }}
@@ -450,6 +450,9 @@ export default {
 
     this.$store.dispatch('enchant/init');
   },
+  mounted() {
+    this.$nextTick(() => this.$refs['first-step'].scrollIntoView({ behavior: "smooth" }));
+  },
   computed: {
     nextStepDisabled() {
       if (this.stepCounter === this.stepContents.selectNegativeStat) {
@@ -646,9 +649,7 @@ export default {
       ++this.stepCounter;
     },
     stepAfterEnter(el) {
-      el.scrollIntoView({
-        behavior: "smooth"
-      });
+      el.scrollIntoView({ behavior: "smooth" });
     },
     setStatValue(stat, v) {
       stat.value = v;
