@@ -21,13 +21,13 @@ export default class EnchantDollEquipmentContainer {
   }
 
   /**
-   * ==== 退潛之前，把有倍率的能力先至少都附1，確保退最多的潛力值。
+   * 退潛之前，把有倍率的能力先至少都附1，確保退最多的潛力值。
    * 1. 能力格優先保留給負屬，中途隨時確認剩下的格子夠不夠負屬全上，不夠的話就直接中止。
    * 2. 過程中裝備原本的潛力不夠用時，就從負屬裡拿能力去補。
    *   - 如果負屬被拿完了還是不夠用，就直接中止。
    * 3. 過程中確保附正屬的步驟都只有附一個正屬，不附任何其他能力。
-   *  - 先確保步驟單純，在「判定step.type要不要轉成TYPE_EACH」和「退潛前最大化利用剩餘潛力」時不會出錯。
-   *  - 全部事情做完後才開始將可以合併的step合併、可以把type轉回TYPE_NORMAL的step轉回去。
+   *   - 先確保步驟單純，在「判定step.type要不要轉成TYPE_EACH」和「退潛前最大化利用剩餘潛力」時不會出錯。
+   *   - 全部事情做完後才開始將可以合併的step合併、可以把type轉回TYPE_NORMAL的step轉回去。
    * @param {object} param
    * @returns {EnchantDollEquipmentContainer[]}
    */
@@ -300,6 +300,7 @@ export default class EnchantDollEquipmentContainer {
 
   /**
    * 退潛之前，嘗試最大化利用剩餘的潛。
+   * @returns {EnchantDollEquipmentContainer[]}
    */
   mostUseRemainingPotential() {
     this.equipment.steps().forEach(step => step.optimizeType(-1));
@@ -309,6 +310,11 @@ export default class EnchantDollEquipmentContainer {
     return [...res1, ...res2]
   }
 
+  /**
+   * @param {object} [param]
+   * @param {boolean} [param.checkSpecial]
+   * @returns {EnchantDollEquipmentContainer[]}
+   */
   handleMostUseRemainingPotential({ checkSpecial = false } = {}) {
     const resultEqs = [];
 
@@ -387,6 +393,7 @@ export default class EnchantDollEquipmentContainer {
 
   /**
    * 退潛之後，確認有沒有耗潛為1的正屬可以嘗試分次附
+   * @returns {EnchantDollEquipmentContainer[]}
    */
   checkStepTypeEach() {
     const finds = this.positiveStats.filter(stat => stat.value !== 0 && stat.originalPotential === 1);
@@ -420,6 +427,7 @@ export default class EnchantDollEquipmentContainer {
     }
     return [];
   }
+
   getMostUsePotentialStatlList() {
     const targetEq = this.equipment;
     const positiveStats = this.positiveStats;
