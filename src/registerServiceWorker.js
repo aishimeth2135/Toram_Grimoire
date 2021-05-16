@@ -11,7 +11,7 @@ export default function() {
       ready (registration) {
         if (registration.waiting) {
           store.commit('main/serviceWorkerHasUpdate', registration);
-          MessageNotify(GetLang('Setting/update/tips: new version detected'));
+          MessageNotify(GetLang('Settings/update/tips: new version detected'));
         }
       },
       registered () {},
