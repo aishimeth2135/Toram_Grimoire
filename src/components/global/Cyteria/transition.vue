@@ -1,126 +1,37 @@
-<template>
-  <transition v-if="isNormalType" :name="type" :mode="mode" :appear="appear">
-    <slot></slot>
-  </transition>
-  <transition v-else
-    :css="false"
-    @before-enter="beforeEnter"
-    @enter="enter"
-    @after-enter="afterEnter"
-
-    @before-leave="beforeLeave"
-    @leave="leave"
-    @after-leave="afterLeave">
-    <slot></slot>
-  </transition>
-</template>
 <script>
-  import Velocity from "velocity-animate";
+import { Transition } from "vue";
+import { h, mergeProps } from "vue";
+import Fade from "./transition/fade.vue";
 
-  export default {
-    props: {
-      type: {
-        type: String,
-        required: true
-      },
-      mode: {
-        type: String,
-        default: ''
-      },
-      appear: {
-        type: Boolean,
-        default: false
-      }
-    },
-    computed: {
-      isNormalType() {
-        return this.type == 'fade' || this.type == 'fade-slide-right';
-      }
-    },
-    methods: {
-      getBox(el) {
-        el = el.cloneNode(true);
-
-        el.style.position = 'absolute';
-        el.style.visibility = 'hidden';
-        el.style.display = 'block';
-
-        document.body.append(el);
-        const box = el.getBoundingClientRect();
-        el.remove();
-
-        return box;
-      },
-      handleHook(hook, el, done) {
-        if (this.type == 'slide-up') {
-          const h = this.getBox(el).height;
-          const mb = (-1 * Math.floor(h)) + 'px';
-          const ops = {
-            easing: 'ease',
-            duration: 400,
-            complete: done
-          };
-
-          if (hook == 'enter') {
-            Velocity(el, { marginBottom: ['', mb] }, ops);
-          } else if (hook == 'leave') {
-            Velocity(el, { marginBottom: mb }, ops);
-          }
-        }
-      },
-      beforeEnter(el) {
-        this.handleHook('beforeEnter', el);
-      },
-      enter(el, done) {
-        this.handleHook('enter', el, done);
-      },
-      afterEnter(el) {
-        this.handleHook('afterEnter', el);
-      },
-      beforeLeave(el) {
-        this.handleHook('beforeLeave', el);
-      },
-      leave(el, done) {
-        this.handleHook('leave', el, done);
-      },
-      afterLeave(el) {
-        this.handleHook('afterLeave', el);
-      }
+function CyTransition(props, context) {
+  const getComponent = () => {
+    const type = props.type;
+    const main = type.split('-')[0];
+    if (main === 'fade') {
+      return Fade;
+    } else {
+      console.warn('[cy-transition] unknow type');
+      return Transition;
     }
   }
+
+  const attrs = mergeProps({
+    name: props.type,
+  }, context.attrs);
+
+  return h(
+    getComponent(),
+    attrs,
+    context.slots
+  )
+}
+
+CyTransition.props = {
+  type: {
+    type: String,
+    required: true
+  }
+};
+
+export default CyTransition;
 </script>
-<style lang="less" scoped>
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-}
-.fade-enter-active, .fade-leave-active {
-  transition: 0.2s ease;
-}
-.fade-enter-to, .fade-leave-from {
-  opacity: 1;
-}
-
-.fade-slide-right-enter-from {
-  transform: translateX(-20%);
-  opacity: 0;
-}
-.fade-slide-right-enter-to {
-  transform: 0;
-  opacity: 1;
-}
-.fade-slide-right-leave-to {
-  transform: translateX(20%);
-  opacity: 0;
-}
-.fade-slide-right-enter-active, .fade-slide-right-leave-active {
-  transition: 0.3s ease;
-}
-
-.slide-up-enter-from, .slide-up-leave-to {
-  transform: translateY(100%);
-  opacity: 0;
-}
-.slide-up-enter-active, .slide-up-leave-active {
-  transition: 0.4s ease;
-}
-</style>

@@ -50,7 +50,7 @@
               </cy-list-item>
             </template>
             <cy-list-item v-else
-              :selected="currentEquipment && currentEquipment instanceof category.instance"
+              :selected="currentEquipment && (currentEquipment instanceof category.instance)"
               @click="selectEquipmentType(category, null)">
               <cy-icon-text icon="gg-shape-square">
                 {{ $globalLang('common/Equipment/field/' + category.id) }}

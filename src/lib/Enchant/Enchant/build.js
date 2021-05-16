@@ -218,7 +218,7 @@ class EnchantEquipment {
     const t = [];
     this.stats(stepIdx).forEach(stat => {
       const cat = stat.itemBase.belongCategory;
-      const check = t.find(a => a.category == cat);
+      const check = t.find(a => a.category === cat);
       check ? ++check.cnt : t.push({ category: cat, cnt: 1 });
     });
     return calcPotentialExtraRate(t.map(t => t.cnt));
@@ -786,6 +786,10 @@ class EnchantStepStat extends EnchantStat {
     return this._parent;
   }
 
+  get potential() {
+    return this.itemBase.getPotential(this.type, this.belongEquipment);
+  }
+
   /** @return {number} */
   get potentialCost() {
     const prev = this.previousStepStatValue;
@@ -861,7 +865,7 @@ class EnchantStepStat extends EnchantStat {
    * @returns {number}
    */
   calcPotentialCost(v, pre = 0) {
-    const p = this.itemBase.getPotential(this.type, this.belongEquipment);
+    const p = this.potential;
     const convertThreshold = this.itemBase.getPotentialConvertThreshold(this.type);
 
     let v2 = 0;

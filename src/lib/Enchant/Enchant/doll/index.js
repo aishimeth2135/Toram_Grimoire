@@ -222,7 +222,7 @@ export default class EnchantDoll {
    * @param {number} [originalPotential]
    * @returns {{
    *  stats: EnchantStat[],
-   *  successRate: number|null,
+   *  realSuccessRate: number|null,
    *  equipment: EnchantEquipment|null
    * }}
    */
@@ -289,7 +289,7 @@ export default class EnchantDoll {
       const originalNegativeStatsList = this.getNegativeStatsList(tshortlist, numNegativeStats);
       /** @param {EnchantDollCategory[]} categorys */
       const parseStats = stats => {
-        const categorys = EnchantDollCategory.classifyStats(stats).slice().sort((a, b) => b.stats.length - a.stats.length);
+        const categorys = EnchantDollCategory.classifyStats(stats).sort((a, b) => b.stats.length - a.stats.length);
         categorys.forEach(_category => _category.sortStats('max-effect'));
         const categoryEffectSum = categorys
           .map(_category => _category.originalPotentialEffectMaximumSum())
@@ -339,7 +339,7 @@ export default class EnchantDoll {
     }
 
     return {
-      successRate: null,
+      realSuccessRate: null,
       equipment: null,
       stats: this.parseNegativeCategorys(negatives, limit)
     };
@@ -539,8 +539,8 @@ class EnchantDollCategory {
    */
    originalPotentialEffectMaximumSum(num) {
     num = num === void 0 ? this.stats.length : num;
-    return -1 * this.stats.slice(num)
-      .reduce((cur, stat) => cur + stat.calcMaterialPointCost(stat.limit[0], 0), 0)
+    return -1 * this.stats.slice(0, num)
+      .reduce((cur, stat) => cur + stat.originalPotential * stat.limit[0], 0)
   }
 
   /**
@@ -552,7 +552,7 @@ class EnchantDollCategory {
   materialPointMaximumSum(type, num) {
     type = { 'min': 0, 'max': 1 }[type];
     num = num === void 0 ? this.stats.length : num;
-    return this.stats.slice(num)
+    return this.stats.slice(0, num)
       .reduce((cur, stat) => cur + stat.calcMaterialPointCost(stat.limit[type], 0), 0);
   }
 }

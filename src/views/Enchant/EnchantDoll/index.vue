@@ -40,8 +40,10 @@
           </template>
         </cy-input-counter>
       </div>
-      <div class="disabled-mask" v-if="stepCounter > stepContents.equipment"
-        @click="maskClick" />
+      <cy-transition type="fade">
+        <div class="disabled-mask" v-if="stepCounter > stepContents.equipment"
+          @click="maskClick" />
+      </cy-transition>
     </div>
     <div v-if="stepCounter > stepContents.equipment" class="flex justify-center mb-4">
       <cy-button type="border" icon="mdi-leaf"
@@ -50,59 +52,62 @@
         {{ $lang('back to step') }}
       </cy-button>
     </div>
-    <div v-if="stepCounter >= stepContents.selectPositiveStat"
-      :ref="'step-content-' + stepContents.selectPositiveStat"
-      class="step-content">
-      <div>
-        <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
-          {{ $lang('select positive stats/title') }}
-        </cy-icon-text>
-      </div>
-      <div class="mt-1 text-sm pl-4">
-        {{ $lang('select positive stats/caption') }}
-      </div>
-      <div class="flex justify-center my-4">
-        <div class="mt-2 border border-purple max-w-xs">
-          <template v-if="doll.positiveStats.length !== 0">
-            <cy-list-item v-for="stat in doll.positiveStats" :key="stat.statId">
-              <cy-icon-text :text-color="stat.value >= 0 ? 'dark' : 'orange'"
-                class="w-full">
-                {{ stat.showAmount() }}
-              </cy-icon-text>
-              <div class="flex items-center w-full mt-1">
-                <cy-input-counter
-                  inline max-button min-button
-                  :value="stat.value"
-                  @update:value="setStatValue(stat, $event)"
-                  :range="[1, stat.limit[1]]" />
-                <cy-button type="icon" icon="jam-close-circle"
-                  icon-color="gray"
-                  @click="removePositiveStat(stat)"
-                  class="ml-auto" />
-              </div>
-            </cy-list-item>
-          </template>
-          <cy-default-tips v-else icon="fluent-leaf-two-16-regular"
-            class="my-4 mx-6">
-            {{ $lang('tips/no stat selected') }}
-          </cy-default-tips>
+    <cy-transition type="fade" @after-enter="stepAfterEnter">
+      <div v-if="stepCounter >= stepContents.selectPositiveStat"
+        class="step-content">
+        <div>
+          <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
+            {{ $lang('select positive stats/title') }}
+          </cy-icon-text>
         </div>
+        <div class="mt-1 text-sm pl-4">
+          {{ $lang('select positive stats/caption') }}
+        </div>
+        <div class="flex justify-center my-4">
+          <div class="mt-2 border border-purple max-w-xs">
+            <template v-if="doll.positiveStats.length !== 0">
+              <cy-list-item v-for="stat in doll.positiveStats" :key="stat.statId">
+                <cy-icon-text :text-color="stat.value >= 0 ? 'dark' : 'orange'"
+                  class="w-full">
+                  {{ stat.showAmount() }}
+                </cy-icon-text>
+                <div class="flex items-center w-full mt-1">
+                  <cy-input-counter
+                    inline max-button min-button
+                    :value="stat.value"
+                    @update:value="setStatValue(stat, $event)"
+                    :range="[1, stat.limit[1]]" />
+                  <cy-button type="icon" icon="jam-close-circle"
+                    icon-color="gray"
+                    @click="removePositiveStat(stat)"
+                    class="ml-auto" />
+                </div>
+              </cy-list-item>
+            </template>
+            <cy-default-tips v-else icon="fluent-leaf-two-16-regular"
+              class="my-4 mx-6">
+              {{ $lang('tips/no stat selected') }}
+            </cy-default-tips>
+          </div>
+        </div>
+        <div class="text-center">
+          <cy-button type="border" icon="ic-round-add-circle-outline"
+            @click="openSelectItem('positiveStats')">
+            {{ $lang('select item') }}
+          </cy-button>
+        </div>
+        <div class="flex justify-center mt-4">
+          <cy-button type="check"
+            v-model:selected="selectPositiveStatState.autoFill">
+            {{ $lang('select positive stats/auto fill') }}
+          </cy-button>
+        </div>
+        <cy-transition type="fade">
+          <div class="disabled-mask" v-if="stepCounter > stepContents.selectPositiveStat"
+            @click="maskClick" />
+        </cy-transition>
       </div>
-      <div class="text-center">
-        <cy-button type="border" icon="ic-round-add-circle-outline"
-          @click="openSelectItem('positiveStats')">
-          {{ $lang('select item') }}
-        </cy-button>
-      </div>
-      <div class="flex justify-center mt-4">
-        <cy-button type="check"
-          v-model:selected="selectPositiveStatState.autoFill">
-          {{ $lang('select positive stats/auto fill') }}
-        </cy-button>
-      </div>
-      <div class="disabled-mask" v-if="stepCounter > stepContents.selectPositiveStat"
-        @click="maskClick" />
-    </div>
+    </cy-transition>
     <div v-if="stepCounter > stepContents.selectPositiveStat" class="flex justify-center mb-4">
       <cy-button type="border" icon="mdi-leaf"
         @click="backToStep(stepContents.selectPositiveStat)"
@@ -110,134 +115,137 @@
         {{ $lang('back to step') }}
       </cy-button>
     </div>
-    <div v-if="stepCounter >= stepContents.selectNegativeStat"
-      :ref="'step-content-' + stepContents.selectNegativeStat"
-      class="step-content">
-      <div>
-        <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
-          {{ $lang('select negative stats/title') }}
-        </cy-icon-text>
-      </div>
-      <div class="mt-1 text-sm pl-4">
-        {{ $lang('select negative stats/caption') }}
-      </div>
-      <div class="mt-2 ml-4 mr-2">
-        <cy-icon-text icon="ic-outline-info" text-size="small"
-          text-color="water-blue" icon-color="water-blue-light">
-          {{ $lang('tips/performance of auto find negative stats') }}
-        </cy-icon-text>
-      </div>
-      <div v-if="equipmentState.autoFindPotentialMinimum"
-        class="mt-2 ml-4 mr-2">
-        <cy-icon-text icon="ic-outline-info" text-size="small"
-          text-color="water-blue" icon-color="water-blue-light">
-          {{ $lang('tips/performance of auto find minimum of original potential and auto find negative stats') }}
-        </cy-icon-text>
-      </div>
-      <div class="mt-4 mb-6 flex justify-center flex-wrap">
-        <cy-button type="check"
-          v-model:selected="selectNegativeStatState.auto">
-          {{ $lang('select negative stats/auto select') }}
-        </cy-button>
-      </div>
-      <template v-if="selectNegativeStatState.auto">
-        <template v-if="currentEquipmentType === 1">
-          <div>
-            <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
-              {{ $lang('select negative stats/select config: base type/title') }}
-            </cy-icon-text>
-          </div>
-          <div class="mt-1 text-sm pl-4">
-            {{ $lang('select negative stats/select config: base type/caption') }}
-          </div>
-          <div class="py-4 pl-2 flex justify-center flex-wrap">
-            <cy-button v-for="option in dollConfigOptions.baseType" :key="option"
-              type="check"
-              @click="doll.config.baseType = option"
-              :selected="doll.config.baseType === option">
-              {{ $lang('select negative stats/select config: base type/option texts/' + option) }}
-            </cy-button>
-          </div>
-        </template>
+    <cy-transition type="fade" @after-enter="stepAfterEnter">
+      <div v-if="stepCounter >= stepContents.selectNegativeStat"
+        class="step-content">
         <div>
           <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
-            {{ $lang('select negative stats/select config: auto find negative stats type/title') }}
+            {{ $lang('select negative stats/title') }}
           </cy-icon-text>
         </div>
         <div class="mt-1 text-sm pl-4">
-          {{ $lang('select negative stats/select config: auto find negative stats type/caption') }}
+          {{ $lang('select negative stats/caption') }}
         </div>
-        <div class="py-4 pl-2 flex justify-center flex-wrap">
-          <cy-button v-for="option in dollConfigOptions.autoFindNegaitveStatsType" :key="option"
-            type="check"
-            @click="doll.config.autoFindNegaitveStatsType = option"
-            :selected="doll.config.autoFindNegaitveStatsType === option">
-            {{ $lang('select negative stats/select config: auto find negative stats type/option texts/' + option) }}
+        <div class="mt-2 ml-4 mr-2">
+          <cy-icon-text icon="ic-outline-info" text-size="small"
+            text-color="water-blue" icon-color="water-blue-light">
+            {{ $lang('tips/performance of auto find negative stats') }}
+          </cy-icon-text>
+        </div>
+        <div v-if="equipmentState.autoFindPotentialMinimum"
+          class="mt-2 ml-4 mr-2">
+          <cy-icon-text icon="ic-outline-info" text-size="small"
+            text-color="water-blue" icon-color="water-blue-light">
+            {{ $lang('tips/performance of auto find minimum of original potential and auto find negative stats') }}
+          </cy-icon-text>
+        </div>
+        <div class="mt-4 mb-6 flex justify-center flex-wrap">
+          <cy-button type="check"
+            v-model:selected="selectNegativeStatState.auto">
+            {{ $lang('select negative stats/auto select') }}
           </cy-button>
         </div>
-      </template>
-      <div v-if="selectNegativeStatState.auto && autoNegativeStats.length < doll.numNegativeStats"
-        class="flex justify-center mt-4">
-        <div>
-          <cy-icon-text text-size="small" icon-color="water-blue" class="mr-4">
-            {{ $lang('select negative stats/auto selected') }}
-          </cy-icon-text>
-          <cy-icon-text text-size="small">
-            {{ $lang('select negative stats/manually selected') }}
-          </cy-icon-text>
-        </div>
-      </div>
-      <div class="flex justify-center mb-4">
-        <div class="mt-2 border border-purple max-w-xs">
-          <template v-if="negativeStats.length !== 0">
-            <cy-list-item v-for="stat in negativeStats" :key="stat.statId">
-              <cy-icon-text :text-color="stat.value >= 0 ? 'dark' : 'orange'"
-                :icon-color="autoNegativeStats.includes(stat) ? 'water-blue' : 'light-2'"
-                class="w-full">
-                {{ stat.showAmount() }}
+        <template v-if="selectNegativeStatState.auto">
+          <template v-if="currentEquipmentType === 1">
+            <div>
+              <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
+                {{ $lang('select negative stats/select config: base type/title') }}
               </cy-icon-text>
-              <div class="flex items-center flex-wrap w-full mt-1">
-                <cy-input-counter
-                  :disabled="autoNegativeStats.includes(stat)"
-                  inline max-button min-button
-                  :value="stat.value"
-                  @update:value="setStatValue(stat, $event)"
-                  :range="[stat.limit[0], -1]" />
-                <cy-button :disabled="autoNegativeStats.includes(stat)"
-                  type="icon" icon="jam-close-circle"
-                  icon-color="gray"
-                  @click="removeNegativeStat(stat)"
-                  class="ml-auto" />
-              </div>
-            </cy-list-item>
+            </div>
+            <div class="mt-1 text-sm pl-4">
+              {{ $lang('select negative stats/select config: base type/caption') }}
+            </div>
+            <div class="py-4 pl-2 flex justify-center flex-wrap">
+              <cy-button v-for="option in dollConfigOptions.baseType" :key="option"
+                type="check"
+                @click="doll.config.baseType = option"
+                :selected="doll.config.baseType === option">
+                {{ $lang('select negative stats/select config: base type/option texts/' + option) }}
+              </cy-button>
+            </div>
           </template>
-          <cy-default-tips v-else icon="fluent-leaf-two-16-regular"
-            class="my-4 mx-6">
-            {{ $lang('tips/no stat selected') }}
-          </cy-default-tips>
-        </div>
-      </div>
-      <div v-if="!selectNegativeStatState.auto || negativeStats.length < doll.numNegativeStats"
-        class="text-center">
-        <cy-button type="border" icon="ic-round-add-circle-outline"
-          @click="openSelectItem('negativeStats')">
-          {{ $lang('select item') }}
-        </cy-button>
-        <div v-if="selectNegativeStatState.auto && autoNegativeStats.length < doll.numNegativeStats" class="mt-2">
           <div>
-            <cy-icon-text icon="ic-outline-info" text-size="small"
-              text-color="water-blue" icon-color="water-blue-light">
-              {{ $lang('select negative stats/stats from auto not enough')[0] }}
+            <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
+              {{ $lang('select negative stats/select config: auto find negative stats type/title') }}
             </cy-icon-text>
           </div>
-          <div class="text-water-blue text-sm">
-            {{ $lang('select negative stats/stats from auto not enough')[1] }}
+          <div class="mt-1 text-sm pl-4">
+            {{ $lang('select negative stats/select config: auto find negative stats type/caption') }}
+          </div>
+          <div class="py-4 pl-2 flex justify-center flex-wrap">
+            <cy-button v-for="option in dollConfigOptions.autoFindNegaitveStatsType" :key="option"
+              type="check"
+              @click="doll.config.autoFindNegaitveStatsType = option"
+              :selected="doll.config.autoFindNegaitveStatsType === option">
+              {{ $lang('select negative stats/select config: auto find negative stats type/option texts/' + option) }}
+            </cy-button>
+          </div>
+        </template>
+        <div v-if="selectNegativeStatState.auto && autoNegativeStats.length < doll.numNegativeStats"
+          class="flex justify-center mt-4">
+          <div>
+            <cy-icon-text text-size="small" icon-color="water-blue" class="mr-4">
+              {{ $lang('select negative stats/auto selected') }}
+            </cy-icon-text>
+            <cy-icon-text text-size="small">
+              {{ $lang('select negative stats/manually selected') }}
+            </cy-icon-text>
           </div>
         </div>
+        <div class="flex justify-center mb-4">
+          <div class="mt-2 border border-purple max-w-xs">
+            <template v-if="negativeStats.length !== 0">
+              <cy-list-item v-for="stat in negativeStats" :key="stat.statId">
+                <cy-icon-text :text-color="stat.value >= 0 ? 'dark' : 'orange'"
+                  :icon-color="autoNegativeStats.includes(stat) ? 'water-blue' : 'light-2'"
+                  class="w-full">
+                  {{ stat.showAmount() }}
+                </cy-icon-text>
+                <div class="flex items-center flex-wrap w-full mt-1">
+                  <cy-input-counter
+                    :disabled="autoNegativeStats.includes(stat)"
+                    inline max-button min-button
+                    :value="stat.value"
+                    @update:value="setStatValue(stat, $event)"
+                    :range="[stat.limit[0], -1]" />
+                  <cy-button :disabled="autoNegativeStats.includes(stat)"
+                    type="icon" icon="jam-close-circle"
+                    icon-color="gray"
+                    @click="removeNegativeStat(stat)"
+                    class="ml-auto" />
+                </div>
+              </cy-list-item>
+            </template>
+            <cy-default-tips v-else icon="fluent-leaf-two-16-regular"
+              class="my-4 mx-6">
+              {{ $lang('tips/no stat selected') }}
+            </cy-default-tips>
+          </div>
+        </div>
+        <div v-if="!selectNegativeStatState.auto || negativeStats.length < doll.numNegativeStats"
+          class="text-center">
+          <cy-button type="border" icon="ic-round-add-circle-outline"
+            @click="openSelectItem('negativeStats')">
+            {{ $lang('select item') }}
+          </cy-button>
+          <div v-if="selectNegativeStatState.auto && autoNegativeStats.length < doll.numNegativeStats" class="mt-2">
+            <div>
+              <cy-icon-text icon="ic-outline-info" text-size="small"
+                text-color="water-blue" icon-color="water-blue-light">
+                {{ $lang('select negative stats/stats from auto not enough')[0] }}
+              </cy-icon-text>
+            </div>
+            <div class="text-water-blue text-sm">
+              {{ $lang('select negative stats/stats from auto not enough')[1] }}
+            </div>
+          </div>
+        </div>
+        <cy-transition type="fade">
+          <div class="disabled-mask" v-if="stepCounter > stepContents.selectNegativeStat"
+            @click="maskClick" />
+        </cy-transition>
       </div>
-      <div class="disabled-mask" v-if="stepCounter > stepContents.selectNegativeStat"
-        @click="maskClick" />
-    </div>
+    </cy-transition>
     <div v-if="stepCounter > stepContents.selectNegativeStat" class="flex justify-center mb-4">
       <cy-button type="border" icon="mdi-leaf"
         @click="backToStep(stepContents.selectNegativeStat)"
@@ -245,75 +253,76 @@
         {{ $lang('back to step') }}
       </cy-button>
     </div>
-    <div v-if="stepCounter >= stepContents.result && resultEquipment"
-      :ref="'step-content-' + stepContents.result"
-      class="step-content">
-      <div>
-        <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
-          {{ $lang('result/title') }}
-        </cy-icon-text>
-      </div>
-      <div class="mt-1 text-sm pl-4">
-        {{ $lang('result/caption')[0] }}
-        <br />{{ $lang('result/caption')[1] }}
-      </div>
-      <div v-if="equipmentState.autoFindPotentialMinimum"
-        class="mt-6 flex justify-center items-center">
-        <cy-icon-text icon="bx-bx-star" class="mr-3">
-          {{ $lang('result/current potential is') }}
-        </cy-icon-text>
-        <span class="text-purple">
-          {{ currentEquipment.originalPotential }}
-        </span>
-      </div>
-      <div class="mt-2 flex justify-center"
-        v-if="equipmentState.autoFindPotentialMinimum
-        && resultEquipment.originalPotential === 99
-        && resultEquipment.realSuccessRate < 100">
-        <cy-icon-text icon="ic-outline-info" text-size="small"
-          text-color="water-blue" icon-color="water-blue-light">
-          {{ $lang('tips/can not auto find minimum of original potential') }}
-        </cy-icon-text>
-      </div>
-      <div class="mt-6 mb-4 flex justify-center">
-        <div class="border-1 border-purple rounded-lg py-6 pl-4 pr-6 bg-white">
-          <enchant-result :equipment="resultEquipment" />
+    <cy-transition type="fade" @after-enter="stepAfterEnter">
+      <div v-if="stepCounter >= stepContents.result && resultEquipment"
+        class="step-content">
+        <div>
+          <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
+            {{ $lang('result/title') }}
+          </cy-icon-text>
+        </div>
+        <div class="mt-1 text-sm pl-4">
+          {{ $lang('result/caption')[0] }}
+          <br />{{ $lang('result/caption')[1] }}
+        </div>
+        <div v-if="equipmentState.autoFindPotentialMinimum"
+          class="mt-6 flex justify-center items-center">
+          <cy-icon-text icon="bx-bx-star" class="mr-3">
+            {{ $lang('result/current potential is') }}
+          </cy-icon-text>
+          <span class="text-purple">
+            {{ currentEquipment.originalPotential }}
+          </span>
+        </div>
+        <div class="mt-2 flex justify-center"
+          v-if="equipmentState.autoFindPotentialMinimum
+          && resultEquipment.originalPotential === 99
+          && resultEquipment.realSuccessRate < 100">
+          <cy-icon-text icon="ic-outline-info" text-size="small"
+            text-color="water-blue" icon-color="water-blue-light">
+            {{ $lang('tips/can not auto find minimum of original potential') }}
+          </cy-icon-text>
+        </div>
+        <div class="mt-6 mb-4 flex justify-center">
+          <div class="border-1 border-purple rounded-lg py-6 pl-4 pr-6 bg-white">
+            <enchant-result :equipment="resultEquipment" />
+          </div>
+        </div>
+        <div class="flex items-center justify-center mt-2">
+          <cy-icon-text icon="bx-bx-star" class="mr-3">
+            {{ $lang.extra('simulator', 'success rate') }}
+          </cy-icon-text>
+          <span class="text-light-3">{{ successRate }}</span>
+        </div>
+        <div class="mt-6">
+          <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
+            {{ $lang('export result/title') }}
+          </cy-icon-text>
+        </div>
+        <div class="mt-1 text-sm pl-4">
+          {{ $lang('export result/caption') }}
+        </div>
+        <div class="mt-4 flex justify-center">
+          <cy-title-input v-if="!exportState.hasExport"
+            v-model:value="exportState.name"
+            class="max-w-sm" />
+        </div>
+        <div class="my-2 flex justify-center">
+          <cy-button v-if="!exportState.hasExport"
+            type="border" icon="ic-outline-save"
+            @click="exportResult"
+            main-color="blue-green">
+            {{ $globalLang('global/export') }}
+          </cy-button>
+          <cy-button v-else
+            type="border" icon="ic-round-open-in-new"
+            @click="$router.replace('/enchant')"
+            main-color="blue-green">
+            {{ $lang('export result/redirect to enchant-simulator') }}
+          </cy-button>
         </div>
       </div>
-      <div class="flex items-center justify-center mt-2">
-        <cy-icon-text icon="bx-bx-star" class="mr-3">
-          {{ $lang.extra('simulator', 'success rate') }}
-        </cy-icon-text>
-        <span class="text-light-3">{{ successRate }}</span>
-      </div>
-      <div class="mt-6">
-        <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
-          {{ $lang('export result/title') }}
-        </cy-icon-text>
-      </div>
-      <div class="mt-1 text-sm pl-4">
-        {{ $lang('export result/caption') }}
-      </div>
-      <div class="mt-4 flex justify-center">
-        <cy-title-input v-if="!exportState.hasExport"
-          v-model:value="exportState.name"
-          class="max-w-sm" />
-      </div>
-      <div class="my-2 flex justify-center">
-        <cy-button v-if="!exportState.hasExport"
-          type="border" icon="ic-outline-save"
-          @click="exportResult"
-          main-color="blue-green">
-          {{ $globalLang('global/export') }}
-        </cy-button>
-        <cy-button v-else
-          type="border" icon="ic-round-open-in-new"
-          @click="$router.replace('/enchant')"
-          main-color="blue-green">
-          {{ $lang('export result/redirect to enchant-simulator') }}
-        </cy-button>
-      </div>
-    </div>
+    </cy-transition>
     <div class="flex items-center justify-center border-t border-purple mt-12 pt-4 relative">
       <cy-button v-if="stepCounter !== 3"
         type="border" icon="mdi-leaf"
@@ -493,7 +502,7 @@ export default {
       if (value === true) {
         const manuallyStats = this.selectNegativeStatState.manually;
         if (this.equipmentState.autoFindPotentialMinimum) {
-          this.autoFindNegaitveStats(manuallyStats, this.consts.autoFindPotentialMinimumLimit);
+          this.autoFindNegaitveStats(manuallyStats, true);
           return;
         }
         this.autoFindNegaitveStats(manuallyStats);
@@ -501,13 +510,21 @@ export default {
         this.autoNegativeStatsData = null;
       }
     },
-    autoFindNegaitveStats(...args) {
+    autoFindNegaitveStats(manuallyStats, originalPotentialUnknow = false) {
       this.autoNegativeStatsData = null;
       this.$notify.loading.show();
       this.$nextTick(() => {
         setTimeout(() => {
           try {
-            this.autoNegativeStatsData = this.doll.autoFindNegaitveStats(...args);
+            if (originalPotentialUnknow) {
+              this.autoNegativeStatsData = this.doll.autoFindNegaitveStats(manuallyStats, 99);
+              // if (this.autoNegativeStatsData.realSuccessRate >= 100) {
+              //   this.autoFindPotentialMinimumEquipment();
+              //   this.autoNegativeStatsData = this.doll.autoFindNegaitveStats(manuallyStats);
+              // }
+            } else {
+              this.autoNegativeStatsData = this.doll.autoFindNegaitveStats(manuallyStats);
+            }
           } catch (e) {
             console.warn('[enchant-doll] some error when auto find negative stats');
             console.log(e);
@@ -523,10 +540,10 @@ export default {
     },
     autoFindPotentialMinimumEquipment() {
       if (this.autoNegativeStatsData && this.autoNegativeStatsData.equipment) {
-        const eq = this.autoNegativeStatsData.equipment;
-        if (eq.realSuccessRate < 100) {
+        const data = this.autoNegativeStatsData;
+        if (data.realSuccessRate < 100) {
           this.currentEquipment.originalPotential = this.consts.autoFindPotentialMinimumLimit;
-          return eq.equipment;
+          return data.equipment;
         }
       }
       let left = 1,
@@ -610,8 +627,9 @@ export default {
             try {
               if (this.equipmentState.autoFindPotentialMinimum) {
                 this.resultEquipment = this.autoFindPotentialMinimumEquipment();
+              } else {
+                this.resultEquipment = this.doll.calc(this.negativeStats);
               }
-              this.resultEquipment = this.doll.calc(this.negativeStats);
               await this.$nextTick();
               ++this.stepCounter;
             } catch(e) {
@@ -621,19 +639,15 @@ export default {
             } finally {
               this.$notify.loading.hide();
             }
-            await this.$nextTick();
-            this.$refs['step-content-' + this.stepCounter].scrollIntoView({
-              behavior: "smooth"
-            });
           }, 50);
         });
         return;
       }
       ++this.stepCounter;
-      this.$nextTick(() => {
-        this.$refs['step-content-' + this.stepCounter].scrollIntoView({
-          behavior: "smooth"
-        });
+    },
+    stepAfterEnter(el) {
+      el.scrollIntoView({
+        behavior: "smooth"
       });
     },
     setStatValue(stat, v) {
@@ -687,7 +701,9 @@ export default {
   position: relative;
 
   & > .disabled-mask {
-    @apply absolute w-full h-full z-5 cursor-not-allowed top-0 left-0 bg-white opacity-60;
+    @apply absolute w-full h-full z-5 cursor-not-allowed top-0 left-0;
+
+    background-color: rgba(var(--rgb-white), 0.6);
   }
 }
 </style>
