@@ -1,50 +1,38 @@
 <template>
-  <span class="cy--icon-text" :class="rootClass">
-    <cy-icon :icon="icon" :src="iconSrc" />
+  <span ref="cy--icon-text"
+    @mouseenter="updateCaptionPosition"
+    class="cy--icon-text inline-flex relative"
+    :class="rootClass"
+    :style="colorSetStyle">
+    <cy-icon :icon="icon" :src="iconSrc" class="icon" />
     <span v-if="$slots['default']" class="text">
       <slot></slot>
     </span>
-    <span v-if="$slots['value']" class="value">
-      <slot name="value"></slot>
-    </span>
-    <slot name="extra"></slot>
+    <div v-if="$slots['caption']"
+      class="caption-container absolute py-2 px-3 border-1 rounded-lg border-purple z-5 bg-white"
+      :style="captionPosition">
+      <slot name="caption"></slot>
+    </div>
   </span>
 </template>
 
 <script>
-import Color from "@services/Color";
-
-import IconSet from "@/components/mixin/icon-set";
-
-const ColorList = Color.List;
+import IconSet from "./base/icon-set.vue";
+import ColorSet from "./base/color-set.vue";
 
 export default {
-  mixins: [IconSet],
+  mixins: [IconSet, ColorSet],
   props: {
     type: {
       type: String,
       default: 'normal',
       validator: v => ['normal', 'item'].includes(v)
     },
-    textColor: {
-      type: String,
-      default: 'dark',
-      validator(v) {
-        return ColorList.includes(v);
-      }
-    },
     textSize: {
       type: String,
       default: 'normal',
       validator(v) {
         return ['normal', 'small'].includes(v);
-      }
-    },
-    iconColor: {
-      type: String,
-      default: 'light-2',
-      validator(v) {
-        return ColorList.includes(v);
       }
     },
     display: {
@@ -55,60 +43,70 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      captionPosition: null
+    }
+  },
   computed: {
     rootClass() {
       return {
         'is-item': this.type === 'item',
-        ['text-color-' + this.textColor]: true,
         ['text-' + this.textSize]: true,
-        ['icon-color-' + this.iconColor]: true,
         ['display-' + this.display]: true
       };
     }
-  }
-}
-</script>
+  },
+  methods: {
+    updateCaptionPosition() {
+      const el = this.$refs['cy--icon-text'];
+      if (!el) {
+        return null;
+      }
+      const rect = el.getBoundingClientRect();
 
+      const position = {};
+
+      const len2bottom = window.innerHeight - rect.bottom;
+      if (rect.top >= len2bottom) {
+        position.bottom = '100%';
+      } else {
+        position.top = '100%';
+      }
+      const len2right = window.innerWidth - rect.right;
+      if (rect.left >= len2right) {
+        position.right = '0';
+      } else {
+        position.left = '0';
+      }
+      this.captionPosition = position;
+    }
+  }
+};
+</script>
 <style lang="less" scoped>
 .cy--icon-text {
   display: inline-flex;
   align-items: center;
-  --icon-color: var(--primary-light-2);
+  --icon-color: var(--color-set--icon-color);
   --icon-width: 1.2rem;
-  --text-color: var(--primary-dark);
+  --text-color: var(--color-set--text-color);
   --text-margin-left: 0.6rem;
-  --value-margin-left: 0.6rem;
 
-  &.line {
-    width: 100%;
-  }
   &.display-block {
     display: flex;
   }
 
-  > span {
-    display: inline-flex;
-  }
-
-  .text {
+  & > .text {
     margin-left: var(--text-margin-left);
     color: var(--text-color);
     display: inline-flex;
     align-items: center;
   }
 
-  > .value {
-    color: var(--primary-light-4);
-  }
-
-  > .text + .value {
-    margin-left: var(--value-margin-left);
-  }
-
   &.is-item {
-    & > svg {
-      width: 0.8rem;
-      height: 0.8rem;
+    & > .icon {
+      --icon-width: 0.8rem;
       align-self: flex-end;
       margin-bottom: 0.2rem;
     }
@@ -124,9 +122,9 @@ export default {
   &.text-small {
     --icon-width: 0.9rem;
     --text-margin-left: 0.5rem;
-    --value-margin-left: 0.4rem;
-    font-size: 0.9rem;
+    @apply text-sm;
   }
+<<<<<<< Updated upstream
 
   @colors: ~'dark', ~'light', ~'light-2', ~'light-3', ~'light-4', ~'purple',
     ~'red', ~'red-light', ~'water-blue', ~'water-blue-light',
@@ -143,5 +141,7 @@ export default {
       }
     })
   });
+=======
+>>>>>>> Stashed changes
 }
 </style>

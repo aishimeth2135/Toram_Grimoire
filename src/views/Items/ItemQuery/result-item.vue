@@ -19,14 +19,14 @@
             <cy-icon-text icon="mdi-sword" class="base-value--name" text-color="purple">
               ATK
             </cy-icon-text>
-            <span class="base-value--value">{{ equipment.atk }}</span>
+            <span>{{ equipment.atk }}</span>
             <span class="stability">{{ equipment.stability }}%</span>
           </template>
           <template v-else-if="equipment.is === 'armor'">
             <cy-icon-text icon="mdi-shield" class="base-value--name" text-color="purple">
               DEF
             </cy-icon-text>
-            <span class="base-value--value">{{ equipment.def }}</span>
+            <span>{{ equipment.def }}</span>
           </template>
           <template v-else-if="equipment.origin.unknowCategory">
             <cy-icon-text icon="mdi-ghost" class="base-value--name" text-color="purple">
@@ -111,18 +111,22 @@
           <div v-if="recipeInfoValid" class="recipe-info">
             <div class="recipe-attr">
               <cy-icon-text icon="ion-hammer" text-size="small">
-                {{ $lang('equipment detail/recipe/item level')  }}
-                <template #value>
+                <span>
+                  {{ $lang('equipment detail/recipe/item level')  }}
+                </span>
+                <span class="ml-2 text-light-3">
                   {{ originEquipment.recipe['item_level'] || '?' }}
-                </template>
+                </span>
               </cy-icon-text>
             </div>
             <div class="recipe-attr">
               <cy-icon-text icon="ion-hammer" text-size="small">
-                {{ $lang('equipment detail/recipe/item difficulty')  }}
-                <template #value>
+                <span>
+                  {{ $lang('equipment detail/recipe/item difficulty')  }}
+                </span>
+                <span class="ml-2 text-light-3">
                   {{ originEquipment.recipe['item_difficulty'] || '?' }}
-                </template>
+                </span>
               </cy-icon-text>
             </div>
           </div>

@@ -1,6 +1,8 @@
 <template>
   <article>
-    <search-result class="search-result" :equipments="searchResult" />
+    <div class="overflow-x-auto max-w-full">
+      <search-result class="search-result" :equipments="searchResult" />
+    </div>
     <div class="bottom-menu">
       <div class="top-content">
         <div class="mode-options">
@@ -418,7 +420,7 @@ export default {
     },
     allSearchResult() {
       if (this.currentMode === 'normal') {
-        const searchText = this.modes.normal.searchText;
+        const searchText = this.modes.normal.searchText.toLowerCase();
         if (searchText === '')
           return this.validEquipments;
         const targets = this.modes.normal.targets
@@ -549,6 +551,7 @@ export default {
 
 .search-result {
   min-height: 70vh;
+  width: max-content;
 }
 
 .bottom-menu {
