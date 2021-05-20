@@ -1,10 +1,11 @@
 import app from "./app.vue";
 
 import vue_home from "@/views/Home/Home";
-import vue_about from "@/views/Home/About";
 
 import GetLang from "@services/Language";
 import ViewInit from "@services/ViewInit.js";
+
+const vue_about = () => import(/* webpackChunkName: "home-about" */ "@/views/Home/About");
 
 export default {
   path: '/',

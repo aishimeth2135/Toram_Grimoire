@@ -6,8 +6,8 @@
         <div class="flex items-center justify-center w-24 h-24 relative flex-shrink-0 rounded-full mr-3 mb-4 border-1 border-solid border-light-3">
           <div>{{ $lang(c.title + '/title') }}</div>
           <cy-icon-text icon="mdi-leaf"
-            style="--icon-width: 2rem;"
-            class="absolute -top-1.5 -left-1.5" />
+            style="--icon-width: 2rem; position: absolute;"
+            class="-top-1 -left-1" />
         </div>
         <div class="pl-3">
           <div class="text-sm text-purple mb-3">{{ $lang(c.title + '/sub title') }}</div>
@@ -61,7 +61,7 @@
             title: 'equipment data',
             list: ['緋月音', '真白', '萌月']
           }, {
-            title: 'ohter',
+            title: 'other',
             list: ['萌月', '太極魚']
           }]
         }, {
@@ -73,6 +73,9 @@
               sub: '眾神幣'
             }, {
               main: '被世人遺忘的角落',
+              sub: '眾神幣'
+            }, {
+              main: '奇鴉譜月',
               sub: '眾神幣'
             }]
           }, {
@@ -91,6 +94,9 @@
               sub: '單手劍穿孔0~2'
             }, {
               main: '律',
+              sub: '眾神幣'
+            }, {
+              main: '曄痕/櫻雨痕',
               sub: '眾神幣'
             }]
           }]

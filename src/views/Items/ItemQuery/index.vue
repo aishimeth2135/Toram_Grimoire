@@ -123,7 +123,7 @@
                     @click="modes.normal.optionsVisible = !modes.normal.optionsVisible" />
                 </div>
               </template>
-              <template v-else-if="currentMode == 'stat'">
+              <template v-else-if="currentMode === 'stat'">
                 <cy-button type="border" icon="gg-shape-rhombus"
                   @click="toggleSelectStatVisible(true)">
                   {{ modes.stat.currentStat ?
@@ -131,7 +131,7 @@
                       $lang('options: stat/select stat: title') }}
                 </cy-button>
               </template>
-              <template v-else-if="currentMode == 'item-level'">
+              <template v-else-if="currentMode === 'item-level'">
                 <div class="flex items-center">
                   <cy-icon-text icon="jam-hammer" class="ml-2" />
                   <input type="text" placeholder="0"
@@ -143,7 +143,7 @@
                     v-model="itemLevelMaximum">
                 </div>
               </template>
-              <template v-else-if="currentMode == 'dye'">
+              <template v-else-if="currentMode === 'dye'">
                 <div class="mode-dye-title">
                   <div class="input-container">
                     <cy-icon-text icon="ic-outline-palette" class="ml-2" />
@@ -161,41 +161,43 @@
             @click="switchDisplay">
             <cy-icon-text icon="heroicons-solid:switch-vertical" />
           </div>
-          <div class="menu-btn select-sort" @click="toggleMenuVisible('sortOptions')">
-            <cy-icon-text icon="mdi-sort-variant" />
+          <div class="menu-btn bg-water-blue-light border-water-blue"
+            @click="toggleMenuVisible('sortOptions')">
+            <cy-icon-text icon="mdi-sort-variant" icon-color="white" />
           </div>
-          <div class="menu-btn" @click="toggleMenuVisible('conditionOptions')">
-            <cy-icon-text icon="mdi-checkbox-multiple-blank-circle" />
+          <div class="menu-btn bg-light-2 border-light-4"
+            @click="toggleMenuVisible('conditionOptions')">
+            <cy-icon-text icon="mdi-checkbox-multiple-blank-circle" icon-color="white" />
           </div>
         </div>
       </div>
     </div>
     <cy-window v-model:visible="modes.stat.selectStatVisible"
-        vertical-position="top">
-        <template v-slot:title>
-          <cy-icon-text icon="mdi-rhombus-outline">
-            {{ $lang('options: stat/select stat: window title') }}
-          </cy-icon-text>
+      vertical-position="top">
+      <template v-slot:title>
+        <cy-icon-text icon="mdi-rhombus-outline">
+          {{ $lang('options: stat/select stat: window title') }}
+        </cy-icon-text>
+      </template>
+      <template v-slot:default>
+        <cy-title-input icon="ic-outline-category"
+          v-model:value="modes.stat.statSearchText"
+          :placeholder="$lang('options: stat/select stat: search placeholder')" />
+        <template v-if="statsSearchResult.length != 0">
+          <cy-list-item v-for="stat in statsSearchResult"
+            :key="`${stat.origin.baseName}-${stat.type.description}`"
+            :selected="stat == modes.stat.currentStat"
+            @click="selectStat(stat)">
+            <cy-icon-text icon="mdi-rhombus-outline">
+              {{ stat.text }}
+            </cy-icon-text>
+          </cy-list-item>
         </template>
-        <template v-slot:default>
-          <cy-title-input icon="ic-outline-category"
-            v-model:value="modes.stat.statSearchText"
-            :placeholder="$lang('options: stat/select stat: search placeholder')" />
-          <template v-if="statsSearchResult.length != 0">
-            <cy-list-item v-for="stat in statsSearchResult"
-              :key="`${stat.origin.baseName}-${stat.type.description}`"
-              :selected="stat == modes.stat.currentStat"
-              @click="selectStat(stat)">
-              <cy-icon-text icon="mdi-rhombus-outline">
-                {{ stat.text }}
-              </cy-icon-text>
-            </cy-list-item>
-          </template>
-          <cy-default-tips v-else icon="bx-bx-message-rounded-x">
-            {{ $lang('no result tips') }}
-          </cy-default-tips>
-        </template>
-      </cy-window>
+        <cy-default-tips v-else icon="bx-bx-message-rounded-x">
+          {{ $lang('no result tips') }}
+        </cy-default-tips>
+      </template>
+    </cy-window>
   </article>
 </template>
 <script>
@@ -547,11 +549,12 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="postcss" scoped>
 
 .search-result {
   min-height: 70vh;
-  width: max-content;
+  width: 100%;
+  min-width: max-content;
 }
 
 .bottom-menu {
@@ -560,7 +563,7 @@ export default {
   padding: 0 0.6rem;
   z-index: 10;
 
-  > .top-content {
+  & > .top-content {
     display: flex;
     align-items: flex-end;
     width: 100%;
@@ -579,19 +582,19 @@ export default {
   max-height: 70vh;
   overflow-y: auto;
 
-  > .content {
-    > .column {
-      .options-title {
+  & > .content {
+    & > .column {
+      & .options-title {
         margin-right: 1rem;
         cursor: pointer;
       }
-      > .normal-title {
+      & > .normal-title {
         margin-bottom: 0.3rem;
       }
       & + .column {
         margin-top: 0.8rem;
       }
-      > .options {
+      & > .options {
         padding: 0 0.6rem;
       }
     }
@@ -601,25 +604,18 @@ export default {
 .menu-btn {
   width: 3rem;
   height: 3rem;
-  background-color: rgba(var(--rgb-primary-light), 0.3);
+  // background-color: rgba(var(--rgb-primary-light), 0.3);
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: 0.3s;
-  border: 0.1rem solid var(--primary-light-2);
   margin: 0.8rem;
   margin-top: 0;
   flex-shrink: 0;
   z-index: 11;
 
-  &.select-sort {
-    border-color: var(--primary-water-blue);
-    ::v-deep(svg) {
-      --icon-color: var(--primary-water-blue);
-    }
-  }
+  @apply border-1 opacity-70 duration-300;
 
   &.switch-display {
     background-color: var(--white);
@@ -627,15 +623,14 @@ export default {
   }
 
   &:hover {
-    background-color: rgba(var(--rgb-primary-light), 0.6);
-    border-color: var(--primary-light-3);
+    opacity: 1;
   }
 }
 
 .mode-options {
   width: 100%;
 
-  > .mode-options-container {
+  & > .mode-options-container {
     margin-bottom: 0.8rem;
     margin-top: 0.8rem;
     border-radius: 1.4rem;
@@ -651,12 +646,12 @@ export default {
   display: flex;
   align-items: center;
 
-  .input-container {
+  & .input-container {
     display: flex;
     align-items: center;
     width: 100%;
 
-    > input {
+    & > input {
       border: 0;
       padding: 0.2rem;
       margin-left: 0.4rem;

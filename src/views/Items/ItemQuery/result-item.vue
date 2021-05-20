@@ -7,7 +7,16 @@
           :icon-src="equipment.is !== 'avatar' ? 'image' : 'iconify'"
           :text-color="detailVisible ? 'orange' : 'dark'"
           :icon-color="detailVisible ? 'orange' : 'light-2'">
-          <span>{{ equipment.name }}</span>
+          <span class="inline-flex items-center flex-wrap">
+            <span>{{ equipment.name }}</span>
+            <cy-icon-text v-if="firstObtain && firstObtain.isDrop"
+              icon="bx-bx-game" icon-color="red"
+              class="ml-2">
+              <template #caption>
+                {{ firstObtain.type }}
+              </template>
+            </cy-icon-text>
+          </span>
           <span v-if="equipment.hasRefining && equipment.refining != 0"
             class="ml-1 text-water-blue">
             +{{ equipment.refining }}
@@ -239,6 +248,9 @@ export default {
     },
     obtainsData() {
       return this.obtainsDataConvert(this.originEquipment.obtains);
+    },
+    firstObtain() {
+      return this.obtainsData.length !== 0 ? this.obtainsData[0] : null;
     }
   },
   methods: {
@@ -261,6 +273,7 @@ export default {
         const { map=null, dye=null } = p;
         return {
           iid: i,
+          isDrop: ['mobs', 'boss', 'mini_boss'].includes(p.type),
           type, name, map, dye, icon
         };
       });

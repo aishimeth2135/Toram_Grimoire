@@ -4,10 +4,16 @@ import { StatBase, Stat } from "./StatBase.js";
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from "../CharacterEquipment";
 
 class RestrictionStat extends Stat {
+  /**
+   * @param {StatBase} base
+   * @param {symbol} type
+   * @param {StatValue} v
+   * @param {StatRestriction|null} [restriction]
+   */
   constructor(base, type, v, restriction = null) {
     super(base, type, v);
 
-    // {Object|null}
+    /** @type {StatRestriction|null} */
     this.restriction = restriction;
   }
 
@@ -30,22 +36,6 @@ class RestrictionStat extends Stat {
   copy() {
     return new RestrictionStat(this.base, this.type, this.value, this.restriction);
   }
-  save() {
-    const types = ['constant', 'multiplier', 'total'];
-    const r = this.restriction;
-    const restriction = r && (r.main || r.sub || r.body || r.other) ? {
-      main: r.main ? r.main.description : null,
-      sub: r.sub ? r.sub.description : null,
-      body: r.body ? r.body.description : null,
-      other: r.other ? r.other : null
-    } : null;
-    return {
-      id: this.baseName,
-      value: this.value,
-      type: types.find(p => StatBase['TYPE_' + p.toUpperCase()] == this.type),
-      restriction
-    };
-  }
   showData() {
     const res = [];
     if (this.restriction) {
@@ -67,13 +57,18 @@ class RestrictionStat extends Stat {
   /**
    * create RestrictionStat from Stat
    * @param {Stat} stat - Base Stat
-   * @param {object} restriction
+   * @param {StatRestriction} restriction
    * @returns {RestrictionStat}
    */
   static from(stat, restriction) {
     return new RestrictionStat(stat.base, stat.type, stat.value, restriction);
   }
 
+  /**
+   * @param {Stat} stat
+   * @param {string} originRestriction
+   * @returns {RestrictionStat}
+   */
   static fromOrigin(stat, originRestriction) {
     const itemStatRestrictionList = [
       'event',
@@ -129,6 +124,22 @@ class RestrictionStat extends Stat {
     return RestrictionStat.from(stat, r);
   }
 
+  save() {
+    const types = ['constant', 'multiplier', 'total'];
+    const r = this.restriction;
+    const restriction = r && (r.main || r.sub || r.body || r.other) ? {
+      main: r.main ? r.main.description : null,
+      sub: r.sub ? r.sub.description : null,
+      body: r.body ? r.body.description : null,
+      other: r.other ? r.other : null
+    } : null;
+    return {
+      id: this.baseName,
+      value: this.value,
+      type: types.find(p => StatBase['TYPE_' + p.toUpperCase()] == this.type),
+      restriction
+    };
+  }
   static load(data) {
     const base = Grimoire.Character.findStatBase(data.id);
     if (base) {
@@ -173,3 +184,15 @@ class RestrictionStat extends Stat {
 }
 
 export default RestrictionStat;
+
+/**
+ * @typedef StatRestriction
+ * @type {object}
+ * @property {symbol|null} main
+ * @property {symbol|null} sub
+ * @property {symbol|null} body
+ * @property {symbol|null} other
+ */
+/**
+ * @typedef {string|number} StatValue
+ */
