@@ -1,5 +1,6 @@
 export default class Color {
   static List = [
+    'white',
     'dark', 'light', 'light-2', 'light-3', 'light-4',
     'purple',
     'red', 'red-light',
@@ -10,6 +11,7 @@ export default class Color {
     'blue-green', 'blue-green-light'
   ];
   static MappingList = {
+    'white': 'white',
     'dark': 'light-4',
     'light': 'light-2',
     'light-2': 'light-3',

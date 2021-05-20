@@ -1,24 +1,23 @@
 <template>
   <span ref="cy--icon-text"
-    @mouseenter="updateCaptionPosition"
-    class="cy--icon-text inline-flex relative"
+    class="cy--icon-text inline-flex"
     :class="rootClass"
     :style="colorSetStyle">
     <cy-icon :icon="icon" :src="iconSrc" class="icon" />
     <span v-if="$slots['default']" class="text">
       <slot></slot>
     </span>
-    <div v-if="$slots['caption']"
-      class="caption-container absolute py-2 px-3 border-1 rounded-lg border-purple z-5 bg-white"
-      :style="captionPosition">
+    <sub-caption v-if="$slots['caption']"
+      :root="rootEl">
       <slot name="caption"></slot>
-    </div>
+    </sub-caption>
   </span>
 </template>
 
 <script>
 import IconSet from "./base/icon-set.vue";
 import ColorSet from "./base/color-set.vue";
+import vue_subCaption from "./components/sub-caption.vue";
 
 export default {
   mixins: [IconSet, ColorSet],
@@ -43,10 +42,13 @@ export default {
       }
     }
   },
+  mounted() {
+    this.rootEl = this.$refs['cy--icon-text'];
+  },
   data() {
     return {
-      captionPosition: null
-    }
+      rootEl: null
+    };
   },
   computed: {
     rootClass() {
@@ -57,30 +59,8 @@ export default {
       };
     }
   },
-  methods: {
-    updateCaptionPosition() {
-      const el = this.$refs['cy--icon-text'];
-      if (!el) {
-        return null;
-      }
-      const rect = el.getBoundingClientRect();
-
-      const position = {};
-
-      const len2bottom = window.innerHeight - rect.bottom;
-      if (rect.top >= len2bottom) {
-        position.bottom = '100%';
-      } else {
-        position.top = '100%';
-      }
-      const len2right = window.innerWidth - rect.right;
-      if (rect.left >= len2right) {
-        position.right = '0';
-      } else {
-        position.left = '0';
-      }
-      this.captionPosition = position;
-    }
+  components: {
+    'sub-caption': vue_subCaption
   }
 };
 </script>
@@ -124,24 +104,5 @@ export default {
     --text-margin-left: 0.5rem;
     @apply text-sm;
   }
-<<<<<<< Updated upstream
-
-  @colors: ~'dark', ~'light', ~'light-2', ~'light-3', ~'light-4', ~'purple',
-    ~'red', ~'red-light', ~'water-blue', ~'water-blue-light',
-    ~'gray', ~'gray-light', ~'orange', ~'orange-light', ~'green',
-    ~'blue-green', ~'blue-green-light';
-  @color-texts: ~'text', ~'icon';
-  each(@colors, .(@color) {
-    each(@color-texts, .(@name) {
-      &.@{name}-color-@{color} {
-        --@{name}-color: ~'var(--primary-@{color})';
-      }
-      &.@{name}-color-hover-@{color} {
-        --@{name}-color-hover: ~'var(--primary-@{color})';
-      }
-    })
-  });
-=======
->>>>>>> Stashed changes
 }
 </style>

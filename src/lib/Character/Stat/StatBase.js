@@ -16,15 +16,21 @@ class StatBase {
     return stats;
   }
 
-  constructor(bn, t, hm, order) {
+  /**
+   * @param {string} baseName
+   * @param {symbol} type
+   * @param {boolean} hasMultiplier
+   * @param {number} order
+   */
+  constructor(baseName, type, hasMultiplier, order) {
     /** @type {string} */
-    this.baseName = bn;
+    this.baseName = baseName;
 
     /** @type {string} */
-    this.text = t;
+    this.text = type;
 
     /** @type {boolean} */
-    this.hasMultiplier = hm;
+    this.hasMultiplier = hasMultiplier;
 
     /** @type {number} */
     this.order = order;

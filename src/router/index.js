@@ -31,7 +31,7 @@ const router = createRouter({
   routes
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
   if (to) {
     { // set title and meta tags
       const data = to.matched.slice().reverse().find(p => p.meta && p.meta.title);
@@ -88,7 +88,12 @@ router.beforeEach((to, from, next) => {
     }
   }
 
-  next();
+  if (to.path === '/character/skill') {
+    if (from.path !== '/character') {
+      store.commit('main/setRedirectPath', '/character/skill');
+      return '/character';
+    }
+  }
 });
 
 trackRouter(router);

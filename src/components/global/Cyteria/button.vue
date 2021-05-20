@@ -104,23 +104,5 @@ export default CyButton;
       top: 0;
     }
   }
-<<<<<<< Updated upstream
-  @colors: ~'dark', ~'light', ~'light-2', ~'light-3', ~'light-4', ~'purple',
-    ~'red', ~'red-light', ~'water-blue', ~'water-blue-light',
-    ~'gray', ~'gray-light', ~'orange', ~'orange-light', ~'green',
-    ~'blue-green', ~'blue-green-light';
-  @color-texts: ~'text', ~'icon', ~'border';
-  each(@colors, .(@color) {
-    each(@color-texts, .(@name) {
-      &.@{name}-color-@{color} {
-        --@{name}-color: ~'var(--primary-@{color})';
-      }
-      &.@{name}-color-hover-@{color} {
-        --@{name}-color-hover: ~'var(--primary-@{color})';
-      }
-    })
-  });
-=======
->>>>>>> Stashed changes
 }
 </style>

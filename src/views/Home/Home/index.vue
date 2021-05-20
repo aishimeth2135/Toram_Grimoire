@@ -10,7 +10,7 @@
         class="inline-block m-5"
         :key="data.name + '|' + data.path">
         <router-link :to="data.path" v-slot="{ navigate }" custom>
-          <div @click="data.navigate ? data.navigate($event, navigate) : navigate($event)"
+          <div @click="navigate"
             class="content-title flex items-center justify-center relative cursor-pointer duration-300 bg-white p-4 w-36 h-36 rounded-full border-2 border-solid border-light-2"
             role="link">
             <div class="text-lg text-center">{{ $globalLang('Page Title/' + data.name) }}</div>
@@ -38,11 +38,7 @@ export default {
         }, {
           name: 'skill-simulator',
           icon: 'ant-design:build-outlined',
-          path: '/character',
-          navigate: (e, navigate) => {
-            this.$store.commit('main/setRedirectPath', '/character/skill');
-            navigate(e);
-          }
+          path: '/character/skill'
         }, {
           name: 'enchant/enchant-simulator',
           icon: 'mdi-cube-scan',
