@@ -1,5 +1,5 @@
 <template>
-  <span ref="cy--icon-text"
+  <span ref="rootElement"
     class="cy--icon-text inline-flex"
     :class="rootClass"
     :style="colorSetStyle">
@@ -8,13 +8,14 @@
       <slot></slot>
     </span>
     <sub-caption v-if="$slots['caption']"
-      :root="rootEl">
+      :root="rootElement">
       <slot name="caption"></slot>
     </sub-caption>
   </span>
 </template>
 
 <script>
+import { ref } from 'vue';
 import IconSet from "./base/icon-set.vue";
 import ColorSet from "./base/color-set.vue";
 import vue_subCaption from "./components/sub-caption.vue";
@@ -42,12 +43,10 @@ export default {
       }
     }
   },
-  mounted() {
-    this.rootEl = this.$refs['cy--icon-text'];
-  },
-  data() {
+  setup() {
+    const rootElement = ref(null);
     return {
-      rootEl: null
+      rootElement
     };
   },
   computed: {

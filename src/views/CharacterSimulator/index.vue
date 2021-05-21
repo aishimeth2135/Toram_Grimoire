@@ -108,7 +108,6 @@ export default {
   },
   provide() {
     return {
-      '$globalLang': this.$globalLang,
       'getValidLevelSkillState': this.getValidLevelSkillState,
       'handleCharacterStateDatas': this.handleCharacterStateDatas,
       'checkStatRestriction': this.checkStatRestriction

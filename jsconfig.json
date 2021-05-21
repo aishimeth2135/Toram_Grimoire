@@ -11,7 +11,11 @@
       "@grimoire": ["./src/lib/main/Grimoire.js"],
     }
   },
-  "include": ["src/**/*"],
+  "include": [
+		"src/**/*.js",
+		"src/**/*.vue"
+	],
+  "exclude": ["node_modules", "dist"],
   "typeAcquisition": {
     "exclude": ["dotenv"]
   }
