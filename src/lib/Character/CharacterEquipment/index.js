@@ -133,7 +133,7 @@ class CharacterEquipment {
       }
       return category;
     })();
-    const typeStr = typeof type === 'symbol' ? '/' + type.description.replace('|', '/') : '';
+    const typeStr = typeof type === 'symbol' ? (categoryStr ? '/' : '') + type.description.replace('|', '/') : '';
     const fieldIdStr = fieldId !== -1 ? '/i' + fieldId.toString() : '';
     return `${pre}/${categoryStr}${typeStr}${fieldIdStr}.png`;
   }

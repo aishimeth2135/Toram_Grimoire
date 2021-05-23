@@ -337,6 +337,7 @@ export default {
   padding: 0.4rem 1rem;
   padding-bottom: 0.8rem;
   padding-left: 1.5rem;
+  max-width: 100vw;
   @apply bg-white;
 }
 
