@@ -129,7 +129,7 @@
                   <div class="container-content" v-else key="mode-2">
                     <cy-icon-text icon="heroicons-solid:switch-vertical"
                       text-size="small" text-color="purple"
-                      display="block" class="mb-1">
+                      class="mb-1 w-full">
                       {{ $lang('switch skill') }}
                     </cy-icon-text>
                     <div class="inline-flex items-center">
@@ -160,7 +160,8 @@
                 class="equipment-column" :key="data.showName">
                 <cy-icon-text :icon="data.icon"
                   text-size="small"
-                  class="w-full mt-3">
+                  class="w-full mt-3"
+                  text-color="purple">
                   {{ $lang(`equipment/${data.name}: title`) }}
                 </cy-icon-text>
                 <div class="px-2">
@@ -365,7 +366,6 @@ export default {
         return null;
 
       const cur = this.tagState.tags[idx];
-      console.log(cur.frames);
       const frs = cur.frames.map(fr => {
         const handle = v => {
           v = v.replace(/\(\(!((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="text-light-3">${m1}</span>`)
@@ -869,6 +869,7 @@ export default {
         display: flex;
         align-items: center;
         overflow-y: auto;
+        flex-wrap: wrap;
 
         > div {
           flex-shrink: 0;

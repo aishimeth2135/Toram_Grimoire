@@ -36,7 +36,9 @@
         <cy-input-counter v-model:value="currentEquipment.originalPotential"
           class="mt-2" :range="[1, 200]">
           <template #title>
-            <cy-icon-text>{{ $lang.extra('simulator', 'equipment original potential') }}</cy-icon-text>
+            <cy-icon-text icon="mdi-creation">
+              {{ $lang.extra('simulator', 'equipment original potential') }}
+            </cy-icon-text>
           </template>
         </cy-input-counter>
       </div>
@@ -284,7 +286,7 @@
           </cy-icon-text>
         </div>
         <div class="mt-6 mb-4 flex justify-center">
-          <div class="border-1 border-purple rounded-lg py-6 pl-4 pr-6 bg-white">
+          <div class="border-1 border-purple rounded-lg pt-3 pb-6 pl-4 pr-6 bg-white">
             <enchant-result :equipment="resultEquipment" />
           </div>
         </div>

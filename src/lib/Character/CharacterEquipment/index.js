@@ -97,24 +97,45 @@ class CharacterEquipment {
     return this instanceof MainWeapon ? 'mdi-sword' : 'mdi-shield';
   }
 
-  getCategoryImagePath(fieldId = 0) {
-    const pre = '/imgs/character/equipment';
-    if (this instanceof BodyArmor || this instanceof SubWeapon || this instanceof SubArmor) {
-      return `${pre}/${this.type.description.replace('|', '/')}.png`;
-    }
-    if (this instanceof AdditionalGear) {
-      return `${pre}/additional.png`;
-    }
-    if (this instanceof SpecialGear) {
-      return `${pre}/special.png`;
-    }
-    if (this instanceof Avatar) {
-      return `${pre}/avatar/i${fieldId}.png`;
-    }
+  getCategoryImagePath(fieldId = -1) {
+    let category = '';
     if (this instanceof MainWeapon) {
-      return `${pre}/main-weapon/${this.type.description}.png`;
+      category = 'main-weapon';
+    } else if (this instanceof BodyArmor) {
+      category = 'body-armor';
+    } else if (this instanceof SubWeapon) {
+      category = 'sub-weapon';
+    } else if (this instanceof SubArmor) {
+      category = 'sub-armor';
+    } else if (this instanceof AdditionalGear) {
+      category = 'additional';
+    } else if (this instanceof SpecialGear) {
+      category = 'special';
+    } else if (this instanceof Avatar) {
+      category = 'avatar';
+      fieldId = 0;
+    } else {
+      return '#';
     }
-    return '#';
+    return CharacterEquipment.getImagePath(category, this.type || null, fieldId);
+  }
+  /**
+   * @param {string} category
+   * @param {symbol} [type]
+   * @param {number} [fieldId]
+   * @returns {string}
+   */
+  static getImagePath(category, type = null, fieldId = -1) {
+    const pre = '/imgs/character/equipment';
+    const categoryStr = (() => {
+      if (category === 'body-armor' || category === 'sub-weapon' || category === 'sub-armor') {
+        return '';
+      }
+      return category;
+    })();
+    const typeStr = typeof type === 'symbol' ? '/' + type.description.replace('|', '/') : '';
+    const fieldIdStr = fieldId !== -1 ? '/i' + fieldId.toString() : '';
+    return `${pre}/${categoryStr}${typeStr}${fieldIdStr}.png`;
   }
 
   getAllStats(checkRestriction = () => true) {
