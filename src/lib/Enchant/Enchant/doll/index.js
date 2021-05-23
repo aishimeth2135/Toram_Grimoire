@@ -133,8 +133,8 @@ export default class EnchantDoll {
     const firstResultEqs = [dollEq];
     firstResultEqs.push(...dollEq.beforeFillNegative());
 
-    let resultEqs = firstResultEqs.filter(eq => eq.errorFlag === null);
-    const errorEqs = firstResultEqs.filter(eq => eq.errorFlag !== null);
+    let resultEqs = firstResultEqs.filter(eq => eq.flags.error === null);
+    const errorEqs = firstResultEqs.filter(eq => eq.flags.error !== null);
 
     if (resultEqs.length !== 0) {
       // logResultEqs('0', resultEqs);
@@ -145,7 +145,7 @@ export default class EnchantDoll {
       clearRepeatEquipment();
       // logResultEqs('1', resultEqs);
 
-      // 負屬全上。這邊假設前面已確保格子夠用。
+      // 負屬全上
       resultEqs.forEach(cdollEq => cdollEq.fillNegative());
       // logResultEqs('2', resultEqs);
 
@@ -205,7 +205,6 @@ export default class EnchantDoll {
    */
   classifyStats(stats) {
     const target = [];
-    // stats = stats.map(stat => stat.copy());
     stats.forEach(stat => {
       const statCategory = stat.itemBase.belongCategory;
       const find = target.find(category => category.category === statCategory);
@@ -374,7 +373,6 @@ export default class EnchantDoll {
         calcMaterialPriority(category, nums);
     }
 
-    // 退潛CP值最高的擺前面
     negatives.sort((a, b) => {
       for (let i=1; i<=numNegatives; ++i) {
         if (i >= a.stats.length && i >= b.stats.length) {
@@ -393,17 +391,11 @@ export default class EnchantDoll {
     });
 
     const negativeStats = []
-
     negatives.find(category => {
-      let p = 0;
-      while (p !== category.stats.length) {
-        const stat = category.stats[p];
+      return category.stats.find(stat => {
         negativeStats.push(stat.copy());
-        if (negativeStats.length === numNegatives) {
-          return true;
-        }
-        ++p;
-      }
+        return negativeStats.length === numNegatives;
+      });
     });
 
     return negativeStats;

@@ -11,10 +11,12 @@
               <div v-if="menuVisible.conditionOptions" class="content">
                 <div v-for="type in conditions.type" :key="type.id" class="column">
                   <cy-flex-layout>
-                    <cy-icon-text class="options-title" @click="toggleSelected(type)"
-                      :icon="'ic-round-check-box' + (type.selected ? '' : '-outline-blank')">
+                    <cy-button @click="toggleSelected(type)"
+                     type="check" class="options-title"
+                     main-color="orange"
+                     :selected="type.selected">
                       {{ $globalLang('common/Equipment/field/' + type.id) }}
-                    </cy-icon-text>
+                    </cy-button>
                     <template v-if="type.types !== null">
                       <cy-button icon="ic-round-border-all" type="border"
                         @click="selectAll(type.types)" />
@@ -23,8 +25,11 @@
                     </template>
                   </cy-flex-layout>
                   <div v-if="type.types !== null" class="options">
-                    <cy-button v-for="item in type.types" :key="item.value" type="border"
-                      icon="gg-shape-rhombus" :selected="type.selected && item.selected"
+                    <cy-button v-for="item in type.types"
+                      :key="item.value" type="check"
+                      :selected="type.selected && item.selected"
+                      :selected-icon="item.imagePath"
+                      selected-icon-src="image"
                       @click="toggleSelected(item)">
                       {{ $globalLang('common/Equipment/category/' + item.value.description) }}
                     </cy-button>
@@ -161,13 +166,13 @@
             @click="switchDisplay">
             <cy-icon-text icon="heroicons-solid:switch-vertical" />
           </div>
-          <div class="menu-btn bg-water-blue-light border-water-blue"
+          <div class="menu-btn bg-white border-water-blue"
             @click="toggleMenuVisible('sortOptions')">
-            <cy-icon-text icon="mdi-sort-variant" icon-color="white" />
+            <cy-icon-text icon="mdi-sort-variant" icon-color="water-blue" />
           </div>
-          <div class="menu-btn bg-light-2 border-light-4"
+          <div class="menu-btn bg-white border-light-4"
             @click="toggleMenuVisible('conditionOptions')">
-            <cy-icon-text icon="mdi-checkbox-multiple-blank-circle" icon-color="white" />
+            <cy-icon-text icon="mdi-checkbox-multiple-blank-circle" icon-color="light-4" />
           </div>
         </div>
       </div>
@@ -205,7 +210,11 @@ import init from "./init.js";
 
 import vue_searchResult from "./search-result.vue";
 
-import { CharacterEquipment, MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@/lib/Character/CharacterEquipment";
+import {
+  CharacterEquipment,
+  MainWeapon, SubWeapon,
+  SubArmor, BodyArmor,
+  AdditionalGear, SpecialGear, Avatar } from "@/lib/Character/CharacterEquipment";
 import { StatBase } from "@/lib/Character/Stat";
 
 export default {
@@ -219,12 +228,19 @@ export default {
         value: p, selected: true
       };
     });
+    const handleEquipmentTypes = (category, opts) => {
+      opts = handleOptions(opts);
+      opts.forEach(opt => {
+        opt.imagePath = CharacterEquipment.getImagePath(category, opt.value);
+      });
+      return opts;
+    };
 
     const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
     this.$store.state.datas.character.statList.forEach(stat => {
       if (stat.attributes.hidden) return;
       statTypes.forEach(type => {
-        if (type == StatBase.TYPE_MULTIPLIER && !stat.hasMultiplier)
+        if (type === StatBase.TYPE_MULTIPLIER && !stat.hasMultiplier)
           return;
         stats.push({
           origin: stat,
@@ -320,7 +336,7 @@ export default {
         type: [{
           id: 'main-weapon',
           instance: MainWeapon,
-          types: handleOptions([
+          types: handleEquipmentTypes('main-weapon', [
             MainWeapon.TYPE_ONE_HAND_SWORD, MainWeapon.TYPE_TWO_HAND_SWORD,
             MainWeapon.TYPE_BOW, MainWeapon.TYPE_BOWGUN,
             MainWeapon.TYPE_STAFF, MainWeapon.TYPE_MAGIC_DEVICE,
@@ -331,12 +347,16 @@ export default {
         }, {
           id: 'sub-weapon',
           instance: [SubWeapon, SubArmor],
-          types: handleOptions([
-            SubWeapon.TYPE_ARROW,
-            SubWeapon.TYPE_DAGGER,
-            SubWeapon.TYPE_NINJUTSU_SCROLL,
-            SubArmor.TYPE_SHIELD
-          ]),
+          types: [
+            ...handleEquipmentTypes('sub-weapon', [
+              SubWeapon.TYPE_ARROW,
+              SubWeapon.TYPE_DAGGER,
+              SubWeapon.TYPE_NINJUTSU_SCROLL
+            ]),
+            ...handleEquipmentTypes('sub-armor', [
+              SubArmor.TYPE_SHIELD
+            ])
+          ],
           selected: true
         }, {
           id: 'body-armor',

@@ -17,7 +17,9 @@ export default class EnchantDollEquipmentContainer {
 
     this.virtualStats = [];
 
-    this.errorFlag = null;
+    this.flags = {
+      error: null
+    };
   }
 
   /**
@@ -212,7 +214,7 @@ export default class EnchantDollEquipmentContainer {
         return false;
       });
     if (errorFlag) {
-      this.equipment.errorFlag = errorFlag;
+      this.equipment.flags.error = errorFlag;
     }
     return resultEqs;
   }
@@ -295,7 +297,7 @@ export default class EnchantDollEquipmentContainer {
         return null;
       })();
       if (errorFlag) {
-        this.errorFlag = errorFlag;
+        this.flags.error = errorFlag;
       }
     }
   }
@@ -323,42 +325,38 @@ export default class EnchantDollEquipmentContainer {
    */
   mostUseRemainingPotential() {
     this.equipment.steps().forEach(step => step.optimizeType(-1));
-    const newDollEq = this.copy();
-    const res1 = this.handleMostUseRemainingPotential();
-    const res2 = newDollEq.handleMostUseRemainingPotential({ checkSpecial: true });
-    return [...res1, ...res2]
+    return this.handleMostUseRemainingPotential();
   }
 
   /**
-   * @param {object} [param]
-   * @param {boolean} [param.checkSpecial]
    * @returns {EnchantDollEquipmentContainer[]}
    */
-  handleMostUseRemainingPotential({ checkSpecial = false } = {}) {
+  handleMostUseRemainingPotential() {
     const resultEqs = [];
 
-    const baseOriginalPotentialList = this.getMostUsePotentialStatlList();
+    const newDollEq = this.copy();
+    const originalPotentialList = newDollEq.getMostUsePotentialStatlList();
 
-    if (baseOriginalPotentialList.length > 0) {
-      const newDollEq = this.copy();
+    if (originalPotentialList.length > 0) {
       const ceq = newDollEq.equipment;
-      const originalPotentialList = newDollEq.getMostUsePotentialStatlList();
-
       const positiveStats = newDollEq.positiveStats;
 
-      if (checkSpecial) {
-        // 特殊組合
-        // 試著把耗潛3且倍率1.2的能力優先附完
-        const special = originalPotentialList
-        .find(p => p.type === 'step' && p.stat.originalPotential === 3 && p.stat.belongStep.potentialExtraRate === 1.2);
-        if (special) {
-          // 把special移到最後面
-          originalPotentialList.splice(originalPotentialList.indexOf(special), 1);
-          originalPotentialList.push(special);
-        } else {
-          return [];
-        }
-      }
+      // if (checkSpecial) {
+      //   // 特殊組合
+      //   // 試著把耗潛3且倍率1.2的能力優先附完
+      //   const special = originalPotentialList
+      //   .find(p => p.type === 'step' && p.stat.originalPotential === 3 && p.stat.belongStep.potentialExtraRate === 1.2);
+      //   if (special) {
+      //     // 把special移到最後面
+      //     originalPotentialList.splice(originalPotentialList.indexOf(special), 1);
+      //     originalPotentialList.push(special);
+      //   } else {
+      //     return [];
+      //   }
+      // }
+
+      let special = originalPotentialList
+        .find(p => p.type === 'step' && p.stat.potential === 3 && p.stat.belongStep.potentialExtraRate <= 1.2);
 
       // 從最大的開始拿
       let cur = originalPotentialList[originalPotentialList.length - 1];
@@ -367,8 +365,20 @@ export default class EnchantDollEquipmentContainer {
       const checkStepsRemainingPotential = () => allSteps.every(step => step.remainingPotential > 0);
 
       while (originalPotentialList.length !== 0) {
-        const pstat = positiveStats.find(stat => stat.equals(cur.stat));
+        let pstat = positiveStats.find(stat => stat.equals(cur.stat));
         while (checkStepsRemainingPotential() && pstat.value !== 0) {
+          if (special) {
+            /** potential必定是3 */
+            const lastRemainingPotential = ceq.lastStep.remainingPotential;
+            if ((lastRemainingPotential - 1) % 3 === 0 || lastRemainingPotential % 3 === 0) {
+              // 把special移到最後面，並重新指定cur和pstat
+              originalPotentialList.splice(originalPotentialList.indexOf(special), 1);
+              originalPotentialList.push(special);
+              cur = originalPotentialList[originalPotentialList.length - 1];
+              pstat = positiveStats.find(stat => stat.equals(cur.stat));
+              special = null;
+            }
+          }
           if (cur.type === 'step') {
             cur.stat.value += 1;
             pstat.value -= 1;
@@ -385,7 +395,7 @@ export default class EnchantDollEquipmentContainer {
             /**
              * 看看耗潛1的步驟能不能合併到退潛
              * 能合併的話，下個步驟剩潛剛好是0。
-             * 退潛那邊要判定剩潛為0就把退潛合到該步驟裡，而非新建步驟。
+             * 退潛那邊會判定剩潛為0就把退潛合到該步驟裡，而非新建步驟。
              */
             /** @type {EnchantStep} */
             const nextStep = next.stat.belongStep;
@@ -456,10 +466,7 @@ export default class EnchantDollEquipmentContainer {
      */
     /** @type {{ type: "step"|"unused", stat: EnchantStepStat|EnchantStat, value: number }[]} */
     const list = targetEq.steps()
-      .filter((step, i)=> {
-        if (i === 0) {
-          return false;
-        }
+      .filter(step => {
         if (step.type !== EnchantStep.TYPE_EACH && !(step.potentialExtraRate === 1 && step.stats.length === 1)) {
           return false;
         }
@@ -485,7 +492,7 @@ export default class EnchantDollEquipmentContainer {
     /**
      * 2. 再處理沒倍率的能力。
      */
-    if (targetEq.stats().length !== 7) {
+    if (this.checkFillNegativeStats()) {
       const positives = EnchantDollCategory.classifyStats(positiveStats);
       const noRatePositiveStats = positives
         .filter(category => category.stats.length === 1 && category.stats[0].value !== 0)
