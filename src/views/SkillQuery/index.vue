@@ -92,8 +92,10 @@
             </transition-group>
           </div>
         </template>
-        <cy-default-tips v-else icon="potum" icon-src="custom"
-          @click="toggleSelectSkillTreeWindow">
+        <cy-default-tips v-else
+          icon="potum" icon-src="custom"
+          @click="toggleSelectSkillTreeWindow"
+          class="my-12 mx-6">
           <div v-html="$lang('default message: equipment conditions')"></div>
         </cy-default-tips>
         <div class="bottom-menu">
@@ -218,29 +220,43 @@
     </div>
     <cy-detail-window v-if="currentTag || tagState.windowVisible"
       :position-element="tagState.positionElement">
-      <div class="tag-window-content" ref="tag-window-content" @click="closeTagWindow">
-        <div class="title">
-          <cy-button icon="jam-arrow-left" type="icon" v-if="tagState.tags.length > 1"
-            class="inline" @click.stop="previousTag" />
-          <cy-icon-text icon="ri-leaf-fill" text-color="purple">{{ currentTag.name }}</cy-icon-text>
-          <span v-if="tagState.windowVisible" class="close-tip">{{ $lang('click anywhere to close') }}</span>
+      <div ref="tag-window-content" @click="closeTagWindow">
+        <div class="mb-1 flex items-center">
+          <cy-button v-if="tagState.tags.length > 1"
+            icon="jam-arrow-left"
+            type="inline"
+            @click.stop="previousTag" />
+          <cy-icon-text icon="ri-leaf-fill" text-color="purple">
+            {{ currentTag.name }}
+          </cy-icon-text>
+          <span v-if="tagState.windowVisible" class="ml-auto text-sm text-water-blue">
+            {{ $lang('click anywhere to close') }}
+          </span>
         </div>
-        <template v-for="(fr) in currentTag.frames">
-          <div v-if="fr.type == 'category'" class="category"
-            :key="fr.type + fr.value">
-            <cy-icon-text icon="bx-bx-message-rounded-detail" class="text-small">{{ fr.value }}</cy-icon-text>
-          </div>
-          <div v-else-if="fr.type === 'caption'"
-            :key="fr.type + fr.value"
-            class="caption" v-html="fr.value"></div>
-          <div v-else-if="fr.type == 'list'"
-            :key="fr.type + fr.value.join('|')" class="list">
-            <div v-for="(v) in fr.value" class="leaf-list-item" :key="v">
-              <cy-icon-text icon="mdi-leaf" class="prefix-icon" />
-              <span v-html="v"></span>
+        <div class="px-2">
+          <template v-for="(fr) in currentTag.frames">
+            <div v-if="fr.type === 'category'"
+              class="my-2"
+              :key="fr.type + fr.value">
+              <cy-icon-text icon="ic-baseline-label" text-size="small">
+                {{ fr.value }}
+              </cy-icon-text>
             </div>
-          </div>
-        </template>
+            <div v-else-if="fr.type === 'caption'"
+              :key="fr.type + fr.value"
+              class="py-1"
+              v-html="fr.value">
+            </div>
+            <div v-else-if="fr.type === 'list'"
+              :key="fr.type + fr.value.join('|')"
+              class="mt-2">
+              <div v-for="(v) in fr.value" class="leaf-list-item" :key="v">
+                <cy-icon-text icon="mdi-leaf" class="prefix-icon" />
+                <span v-html="v"></span>
+              </div>
+            </div>
+          </template>
+        </div>
       </div>
     </cy-detail-window>
   </article>
@@ -332,6 +348,9 @@ export default {
     if (this.$refs['effect-attrs'])
       this.handleTagButton(this.$refs['effect-attrs']);
   },
+  beforeCreate() {
+    init();
+  },
   computed: {
     ...mapState({
       'skillRoot': state => state.datas.skill.skillRoot,
@@ -394,12 +413,12 @@ export default {
           icon: 'mdi-flask-round-bottom'
         },
         'range': {
-          type: v => v != '-' && v != 'main' ? 'value' : 'text',
+          type: v => v !== '-' && v !== 'main' ? 'value' : 'text',
           icon: 'mdi-target-variant',
           extraHandle: (v, type) => {
-            if (type == 'value')
+            if (type === 'value')
               return v + 'm';
-            return v == '-' ?
+            return v === '-' ?
               this.$lang('effect attrs/range: no limit') :
               this.createTagButtons(this.$lang('effect attrs/range: main'));
           }
@@ -429,14 +448,14 @@ export default {
         .map(k => {
           const q = p.attrs[k];
           let { type, icon, extraHandle } = datas[k];
-          type = typeof type == 'function' ? type(q) : type;
+          type = typeof type === 'function' ? type(q) : type;
           const name = this.$lang('effect attrs/' + k);
           let value;
-          if (type == 'value')
+          if (type === 'value')
             value = handleFormula(q, options);
-          else if (type == 'list')
+          else if (type === 'list')
             value = this.$lang('effect attrs/' + k + ': list')[q];
-          else if (type == 'text')
+          else if (type === 'text')
             value = q;
           value = extraHandle ? extraHandle(value, type) : value;
           icon = Array.isArray(icon) ? icon[q] : icon;
@@ -469,11 +488,11 @@ export default {
   methods: {
     switchSkill(type) {
       const state = this.skillStates;
-      if (type == 'previous' && state.currentStoreIndex != 0)
+      if (type === 'previous' && state.currentStoreIndex !== 0)
         --state.currentStoreIndex;
-      else if (type == 'next' && state.currentStoreIndex != state.store.length - 1)
+      else if (type === 'next' && state.currentStoreIndex !== state.store.length - 1)
         ++state.currentStoreIndex;
-      else if (type == 'last' && state.currentStoreIndex != state.store.length - 1)
+      else if (type === 'last' && state.currentStoreIndex !== state.store.length - 1)
         state.currentStoreIndex = state.store.length - 1;
     },
     toggleSelectSkillTreeWindow(force) {
@@ -509,7 +528,7 @@ export default {
       };
       el.querySelectorAll('.' + this.tagState.buttonClassName)
         .forEach(p => {
-          if (!this.tagList.find(a => a.name == p.innerText))
+          if (!this.tagList.find(a => a.name === p.innerText))
             return;
           p.addEventListener('mouseenter', enter);
           p.addEventListener('mouseleave', leave);
@@ -573,7 +592,7 @@ export default {
             t.add(5);
             /* falls through */
           case 7:
-            t.add(2).add(3).add(4);
+            t.add(1).add(2).add(3).add(4);
             break;
           case 9:
             t.add(3).add(7);
@@ -602,7 +621,7 @@ export default {
       }
 
       /* 非通用 */
-      const checkDualSword = eq.main === 0 && eqs.main === 10
+      const checkDualSword = eqs.main === 10
         && !this.currentSkillState.states.find(a => a.equipment.main === 10);
 
       // or
@@ -641,7 +660,7 @@ export default {
     },
     toggleSkillLevel() {
       let res = this.skillStates.skillLevel;
-      if (res == 1)
+      if (res === 1)
         res = 10;
       else {
         const list = [1, 5, 10];
@@ -661,22 +680,17 @@ export default {
     },
     selectEquipment(target, id) {
       this.equipmentState[target] = id;
-      this.updateSkillState();
       this.confirmWeaponType(target);
     },
-    updateSkillState(idx) {
-      const state = this.skillStates;
-
-      if (state.store.length == 0)
+    appendSkillState(skill) {
+      if (!skill)
         return;
-
-      idx = idx === void 0 ? state.store.length - 1 : idx;
-
-      const skill = state.store[idx].skill;
-      state.store[idx] = createSkillState(skill, {
+      const state = this.skillStates;
+      const newState = createSkillState(skill, {
         defaultSkillLevel: state.skillLevel,
         defaultCharacterLevel: state.characterLevel
       });
+      state.store.push(newState);
     },
     selectSkillTree(idx) {
       this.selectSkillTreeWindowState.currentIndex_st = idx;
@@ -696,7 +710,7 @@ export default {
       /**
        * 1. 把0(無裝備)排到最後面。
        * 2. Set裡只有-1(無選取)時，把-1清除使Set為空。否則把-1加到尾端。
-       *    * 空的Set就不會出現在裝備選項。
+       *   - 空的Set就不會出現在裝備選項。
       */
       const after = target => {
         target.delete(-1);
@@ -722,37 +736,24 @@ export default {
       state.body = state.bodyList.length !== 0 ? state.bodyList[0] : -1;
 
       this.confirmWeaponType('main');
-      this.updateSkillState();
     },
     selectSkillTreeCategory(idx) {
       this.selectSkillTreeWindowState.currentIndex_stc = idx;
       this.selectSkillTreeWindowState.currentIndex_st = -1;
     },
     selectSkill(skill) {
-      if (this.currentSkillState && this.currentSkillState.skill == skill)
+      if (this.currentSkillState && this.currentSkillState.skill === skill)
         return;
       const state = this.skillStates;
-      if (state.currentStoreIndex != state.store.length - 1)
+      if (state.currentStoreIndex !== state.store.length - 1)
         state.store = state.store.slice(0, state.currentStoreIndex + 1);
-      state.currentStoreIndex = state.store.length;
-      state.store.push({
-        skill
-      });
-      this.updateSkillState();
+      this.appendSkillState(skill);
+      state.currentStoreIndex = state.store.length - 1;
       this.selectSkillTreeWindowState.visible = false;
     },
     getEquipmentText(value, type) {
       return value === -1 ? this.$lang('equipment/no select') : this.$lang('equipment/' + type)[value];
-    },
-    appendSkillState(skill) {
-      this.skillStates.store.push({
-        skill
-      });
-      this.updateSkillState();
     }
-  },
-  beforeCreate() {
-    init();
   },
   components: {
     'draw-skill-tree': vue_drawSkillTree,
@@ -882,33 +883,6 @@ export default {
 ::v-deep(.click-button--tag) {
   color: var(--primary-orange);
   cursor: pointer;
-}
-
-.tag-window-content {
-  > .title {
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-
-    > .close-tip {
-      margin-left: auto;
-      display: inline-block;
-      font-size: 0.9rem;
-      color: var(--primary-water-blue);
-    }
-  }
-
-  > .category {
-    border-left: 2px solid var(--primary-light-2);
-    padding: 0.2rem 0.6rem;
-    margin-bottom: 0.7rem;
-  }
-  > .caption {
-    padding: 0 0.3rem;
-  }
-  > .list {
-    margin-top: 0.6rem;
-  }
 }
 
 ::v-deep(.leaf-list-item) {

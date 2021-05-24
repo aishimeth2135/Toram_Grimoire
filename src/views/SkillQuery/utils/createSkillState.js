@@ -36,7 +36,7 @@ function handleSkillState(skill) {
       '@stat-overwrite-list': []
     }));
 
-    const equip = {
+    const equipment = {
       main: sef.mainWeapon,
       sub: sef.subWeapon,
       body: sef.bodyArmor,
@@ -46,7 +46,7 @@ function handleSkillState(skill) {
     const state = {
       branchs,
       attrs: Object.assign({}, defSef.attributes),
-      equipment: equip,
+      equipment,
       historyList: [],
       stackStates: [],
       currentHistoryIdx: -1
