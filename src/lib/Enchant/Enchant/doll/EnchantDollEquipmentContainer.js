@@ -367,6 +367,9 @@ export default class EnchantDollEquipmentContainer {
       while (originalPotentialList.length !== 0) {
         let pstat = positiveStats.find(stat => stat.equals(cur.stat));
         while (checkStepsRemainingPotential() && pstat.value !== 0) {
+          if (special === cur) {
+            special = null;
+          }
           if (special) {
             /** potential必定是3 */
             const lastRemainingPotential = ceq.lastStep.remainingPotential;
@@ -376,7 +379,6 @@ export default class EnchantDollEquipmentContainer {
               originalPotentialList.push(special);
               cur = originalPotentialList[originalPotentialList.length - 1];
               pstat = positiveStats.find(stat => stat.equals(cur.stat));
-              special = null;
             }
           }
           if (cur.type === 'step') {
