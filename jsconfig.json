@@ -9,6 +9,7 @@
       "@services/*": ["./src/lib/main/services/*"],
       "@utils/*": ["./src/lib/main/utils/*"],
       "@grimoire": ["./src/lib/main/Grimoire.js"],
+      "@consts": ["./src/lib/main/consts/*"]
     }
   },
   "include": [

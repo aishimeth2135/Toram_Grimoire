@@ -10,7 +10,7 @@
             <div class="main-menu" v-if="checkMenuVisible">
               <div v-if="menuVisible.conditionOptions" class="content">
                 <div v-for="type in conditions.type" :key="type.id" class="column">
-                  <cy-flex-layout>
+                  <div class="flex items-center">
                     <cy-button @click="toggleSelected(type)"
                      type="check" class="options-title"
                      main-color="orange"
@@ -23,7 +23,7 @@
                       <cy-button icon="eva-close-outline" type="border"
                         @click="cancelAll(type.types)" />
                     </template>
-                  </cy-flex-layout>
+                  </div>
                   <div v-if="type.types !== null" class="options">
                     <cy-button v-for="item in type.types"
                       :key="item.value" type="check"

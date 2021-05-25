@@ -36,9 +36,9 @@ export default {
     },
   },
   methods: {
-    checkButtonClick() {
+    checkButtonClick(e) {
       this.$emit('update:selected', !this.selected);
-      this.click();
+      this.click(e);
     }
   }
 };

@@ -3,14 +3,14 @@ import { HandleLanguageData } from "@services/Language";
 
 import { SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch } from "@/lib/Skill/Skill";
 
-function loadSkill(skillSystem, datas){
+function loadSkill(skillSystem, datas) {
   const sr = skillSystem.skillRoot;
 
   const
-  /* all */
+    /* all */
     ID = 0,
     CONFIRM = 1,
-  /* Skill */
+    /* Skill */
     NAME = 1,
     DEFAULT_SET = 2,
     DEFAULT_SET_LIST = ['預設', '非預設', '預設/and', '非預設/and'],
@@ -34,14 +34,14 @@ function loadSkill(skillSystem, datas){
     SKILL_TYPE_LIST = ['瞬發', '須詠唱', '須蓄力', '被動', 'EX技能'],
     IN_COMBO_LIST = ['可以放入連擊', '無法放入連擊', '不可放入連擊的第一招'],
     ACTION_TIME_LIST = ['極慢', '慢', '稍慢', '一般', '稍快', '快', '極快'],
-  /* Skill Tree Category */
+    /* Skill Tree Category */
     CONFIRM_SKILL_TREE_CATEGORY = '0',
     SKILL_TREE_CATEGORY_NAME = 2,
-  /* Skill Tree */
+    /* Skill Tree */
     CONFIRM_SKILL_TREE = '1',
     SKILL_TREE_NAME = 2,
     SKILL_TREE_SIMULATOR_FLAG = 3,
-  /* Language Data */
+    /* Language Data */
     LANG_DATA = {
       EFFECT_BRANCH_ATTRIBUTE_VALUE: 0
     };
@@ -56,25 +56,25 @@ function loadSkill(skillSystem, datas){
     SkillBranch.TYPE
   ];
 
-  function _TreeBack(se, se_type){
+  function _TreeBack(se, se_type) {
     if (SKILL_ELEMENT_ORDER.indexOf(se.TYPE) <= SKILL_ELEMENT_ORDER.indexOf(se_type))
       return se;
     while (se.TYPE !== se_type)
       se = se.parent;
     return se;
   }
-  function _nullConfirm(v, null_v){
+  function _nullConfirm(v, null_v) {
     if (v === null_v)
       return null;
     return v;
   }
-  function SetEffectDefault(sef, v, parent){
-    switch (v){
+  function SetEffectDefault(sef, v, parent) {
+    switch (v) {
       case 2:
       case 3:
         sef.setConfig({ equipmentConfirm: 1 });
         if (v !== 2) break;
-        // fall through
+      // fall through
       case 0:
         parent.setDefaultEffect(sef);
     }
@@ -86,16 +86,16 @@ function loadSkill(skillSystem, datas){
   });
   const c = datas[0];
 
-  c.forEach(function(p, index){
+  c.forEach(function (p, index) {
     try {
       if (index === 0) return;
       //console.log(p);
 
       let id = p[ID];
-      if (id !== ""){
+      if (id !== "") {
         const confirm_name = p[CONFIRM];
         id = parseInt(p[ID], 10);
-        switch (confirm_name){
+        switch (confirm_name) {
           case CONFIRM_SKILL_TREE_CATEGORY: {
             const name = p[SKILL_TREE_CATEGORY_NAME];
             cur = sr.newElement(SkillTreeCategory.TYPE, { id, name });
@@ -108,7 +108,7 @@ function loadSkill(skillSystem, datas){
               cur.attrs.simulatorFlag = true;
           } break;
           default: {
-            if (confirm_name != ""){
+            if (confirm_name != "") {
               cur = _TreeBack(cur, SkillTree.TYPE);
               const name = p[NAME];
               cur = cur.newElement(Skill.TYPE, { id, name });
@@ -120,40 +120,40 @@ function loadSkill(skillSystem, datas){
               subWeapon = SUB_WEAPON_LIST.indexOf(p[SUB_WEAPON]),
               bodyArmor = BODY_ARMOR_LIST.indexOf(p[BODY_ARMOR]),
               default_set = DEFAULT_SET_LIST.indexOf(p[DEFAULT_SET]);
-            if ( default_set === -1 )
+            if (default_set === -1)
               return;
             cur = _TreeBack(cur, Skill.TYPE);
             const sef = cur.newElement(SkillEffect.TYPE, { mainWeapon, subWeapon, bodyArmor });
             SetEffectDefault(sef, default_set, cur);
 
             cur = sef
-              .appendAttribute(SkillEffect.MP_COST,   _nullConfirm(p[MP_COST], ''))
-              .appendAttribute(SkillEffect.RANGE,     _nullConfirm(p[RANGE], ''))
-              .appendAttribute(SkillEffect.SKILL_TYPE,  _nullConfirm(SKILL_TYPE_LIST.indexOf(p[SKILL_TYPE]), -1))
-              .appendAttribute(SkillEffect.IN_COMBO,    _nullConfirm(IN_COMBO_LIST.indexOf(p[IN_COMBO]), -1))
+              .appendAttribute(SkillEffect.MP_COST, _nullConfirm(p[MP_COST], ''))
+              .appendAttribute(SkillEffect.RANGE, _nullConfirm(p[RANGE], ''))
+              .appendAttribute(SkillEffect.SKILL_TYPE, _nullConfirm(SKILL_TYPE_LIST.indexOf(p[SKILL_TYPE]), -1))
+              .appendAttribute(SkillEffect.IN_COMBO, _nullConfirm(IN_COMBO_LIST.indexOf(p[IN_COMBO]), -1))
               .appendAttribute(SkillEffect.ACTION_TIME, _nullConfirm(ACTION_TIME_LIST.indexOf(p[ACTION_TIME]), -1))
-              .appendAttribute(SkillEffect.CASTING_TIME,  _nullConfirm(p[CASTING_TIME], ''));
+              .appendAttribute(SkillEffect.CASTING_TIME, _nullConfirm(p[CASTING_TIME], ''));
           }
         }
       }
       if (SKILL_ELEMENT_ORDER.indexOf(cur.TYPE) < SKILL_ELEMENT_ORDER.indexOf(SkillEffect.TYPE))
         return;
       const bno = p[EFFECT_BRANCH_NO];
-      if (bno !== ""){
+      if (bno !== "") {
         cur = _TreeBack(cur, SkillEffect.TYPE);
         const bname = p[EFFECT_BRANCH_NAME];
         cur = cur.newElement(SkillBranch.TYPE, { id: bno, name: bname });
       }
       const battrname = p[EFFECT_BRANCH_ATTRIBUTE_NAME],
         battrvalue = p[EFFECT_BRANCH_ATTRIBUTE_VALUE];
-      if (battrname != ''){
+      if (battrname != '') {
         if (!Grimoire.Character.findStatBase(battrname))
           cur.appendBranchAttribute(battrname, battrvalue);
         else
           cur.appendStat(battrname, battrvalue, p[EFFECT_BRANCH_ATTRIBUTE_EXTRA]);
       }
     }
-    catch(e){
+    catch (e) {
       // console.warn('[Error] When Load Skill Data');
       //console.log(e);
       // console.log(p);
@@ -162,7 +162,7 @@ function loadSkill(skillSystem, datas){
 }
 
 
-function loadSkillMain(skillSystem, datas){
+function loadSkillMain(skillSystem, datas) {
   const sr = skillSystem.skillRoot;
 
   const CATEGORY = 0,
@@ -184,13 +184,13 @@ function loadSkillMain(skillSystem, datas){
   const loadLangData = (cat, target, index) => {
     const data = lang_c ? lang_c[index] : null,
       sdata = slang_c ? slang_c[index] : null;
-    switch (cat){
+    switch (cat) {
       case CONFIRM_SKILL_TREE_CATEGORY:
         [data, sdata].find(t => {
-          if ( !t )
+          if (!t)
             return;
           const name = t[LANG_DATA.CATEGORY_NAME];
-          if ( name ){
+          if (name) {
             target.name = name;
             return true;
           }
@@ -198,10 +198,10 @@ function loadSkillMain(skillSystem, datas){
         break;
       case CONFIRM_SKILL_TREE:
         [data, sdata].find(t => {
-          if ( !t )
+          if (!t)
             return;
           const name = t[LANG_DATA.SKILL_TREE_NAME];
-          if ( name ){
+          if (name) {
             target.name = name;
             return true;
           }
@@ -209,10 +209,10 @@ function loadSkillMain(skillSystem, datas){
         break;
       case '':
         [data, sdata].find(t => {
-          if ( !t )
+          if (!t)
             return;
           const name = t[LANG_DATA.SKILL_NAME];
-          if ( name ){
+          if (name) {
             target.name = name;
             return true;
           }
@@ -225,7 +225,7 @@ function loadSkillMain(skillSystem, datas){
       return;
     try {
       const cat = p[CATEGORY], id = parseInt(p[ID], 10);
-      switch (cat){
+      switch (cat) {
         case CONFIRM_SKILL_TREE_CATEGORY:
           cur_stc = sr.skillTreeCategorys.find(a => a.id == id);
           loadLangData(cat, cur_stc, i);
@@ -238,14 +238,14 @@ function loadSkillMain(skillSystem, datas){
         case '': {
           const skill = cur_st.skills.find(a => a.id == id);
           skill.init(
-            p[PREVIOUS_SKILL] == '-' ? -1 : parseInt(p[PREVIOUS_SKILL], 10),
+            p[PREVIOUS_SKILL] === '-' ? -1 : parseInt(p[PREVIOUS_SKILL], 10),
             parseInt(p[DRAW_SKILL_TREE_ORDER])
           );
           loadLangData(cat, skill, i);
         }
       }
     }
-    catch(e){
+    catch (e) {
       console.warn('[Error] When Load Skill Main Data');
       console.log(e);
       console.log(p);

@@ -17,7 +17,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .stats {
-  margin: 0 1rem;
+  margin: 0 0.5rem;
   display: flex;
   align-items: center;
   flex-wrap: wrap;

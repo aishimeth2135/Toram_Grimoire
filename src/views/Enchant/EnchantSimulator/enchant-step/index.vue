@@ -14,24 +14,23 @@
               :selected="unfold" />
           </template>
           <template #options>
-            <cy-list-item>
+            <cy-list-item @click="insertStepBefore">
               <cy-button type="inline" class="w-full"
-                icon="mdi-table-row-plus-before"
-                @click="insertStepBefore">
+                icon="mdi-table-row-plus-before">
                 {{ $lang('step/insert step before') }}
               </cy-button>
             </cy-list-item>
-            <cy-list-item v-if="step.index !== 0">
+            <cy-list-item v-if="step.index !== 0"
+              @click="swapStep(-1)">
               <cy-button type="inline" class="w-full"
-                icon="eva-arrow-ios-upward-fill"
-                @click="swapStep(-1)">
+                icon="eva-arrow-ios-upward-fill">
                 {{ $lang('step/up swap') }}
               </cy-button>
             </cy-list-item>
-            <cy-list-item v-if="!step.isLastStep">
+            <cy-list-item v-if="!step.isLastStep"
+              @click="swapStep(1)">
               <cy-button type="inline" class="w-full"
-                icon="eva-arrow-ios-downward-outline"
-                @click="swapStep(1)">
+                icon="eva-arrow-ios-downward-outline">
                 {{ $lang('step/down swap') }}
               </cy-button>
             </cy-list-item>

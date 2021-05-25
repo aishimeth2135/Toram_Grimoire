@@ -1,38 +1,12 @@
 <template>
   <footer class="app--footer">
     <div class="main-content">
-      <cy-button v-if="checkLocalStorage"
-        type="inline"
-        icon="mdi-weather-night"
-        @click="toggleNightMode"
-        class="ml-auto mr-2">
-        {{ $lang('night mode') }}
-      </cy-button>
-      <cy-icon-text icon="uil-twitter-alt">
+      <cy-icon-text icon="uil-twitter-alt" class="ml-auto">
         <a href="https://twitter.com/Cyteria_w" target="_blank" class="text-purple mr-2">Cyteria</a>
       </cy-icon-text>
     </div>
   </footer>
 </template>
-
-<script>
-import CY from "@utils/Cyteria";
-
-export default {
-  RegisterLang: 'Footer',
-  computed: {
-    checkLocalStorage(){
-      return CY.storageAvailable('localStorage');
-    }
-  },
-  methods: {
-    toggleNightMode(){
-      localStorage['Theme--Night-Mode'] = localStorage['Theme--Night-Mode'] !== '1' ? '1' : '0';
-      document.documentElement.classList.toggle('theme--night-mode');
-    }
-  }
-};
-</script>
 
 <style lang="less" scoped>
 footer.app--footer {

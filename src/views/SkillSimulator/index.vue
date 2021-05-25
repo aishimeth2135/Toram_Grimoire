@@ -189,17 +189,16 @@
       <cy-window v-model:visible="previewExportedImageWindowVisible"
         :frozen-top="true" width="auto">
         <template #title>
-          <cy-flex-layout>
+          <div class="flex items-center">
             <cy-icon-text icon="uil:image-download">
               {{ $lang('main menu/preview exported image') }}
             </cy-icon-text>
-            <template #right-content>
-              <cy-button icon="uil:image-download" type="border"
-                class="single-line" @click="downloadExportedImage">
-                {{ $globalLang('global/download') }}
-              </cy-button>
-            </template>
-          </cy-flex-layout>
+            <cy-button icon="uil:image-download" type="border"
+              class="single-line ml-auto"
+              @click="downloadExportedImage">
+              {{ $globalLang('global/download') }}
+            </cy-button>
+          </div>
         </template>
         <div style="max-width: 28rem; border: 1px solid var(--primary-light); padding: 0.8rem; border-radius: 0.3rem; margin-bottom: 1rem">
           <cy-icon-text icon="ic-outline-info" text-size="small" text-color="light-3">
@@ -213,17 +212,16 @@
       <cy-window v-model:visible="previewExportedTextWindowVisible"
         :frozen-top="true" width="auto">
         <template #title>
-          <cy-flex-layout>
+          <div class="flex items-center">
             <cy-icon-text icon="mdi:content-copy">
               {{ $lang('main menu/preview exported text') }}
             </cy-icon-text>
-            <template #right-content>
-              <cy-button icon="mdi:content-copy" type="border"
-                class="single-line" @click="copyExportedText">
-                {{ $globalLang('global/copy') }}
-              </cy-button>
-            </template>
-          </cy-flex-layout>
+            <cy-button icon="mdi:content-copy" type="border"
+              class="single-line ml-auto"
+              @click="copyExportedText">
+              {{ $globalLang('global/copy') }}
+            </cy-button>
+          </div>
         </template>
         <div class="exported-text-content" ref="previewExportedTextContent" v-html="currentExportedText"></div>
       </cy-window>

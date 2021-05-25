@@ -66,7 +66,7 @@ function handleSkillState(skill) {
     };
   };
 
-  const branchEmpty = b => CY.object.isEmpty(b.branchAttributes) && b.stats.length == 0;
+  const branchEmpty = b => CY.object.isEmpty(b.branchAttributes) && b.stats.length === 0;
 
   const branchOverwrite = (target, from) => {
     Object.keys(from.branchAttributes).forEach(k => {
@@ -83,7 +83,7 @@ function handleSkillState(skill) {
     from.stats.forEach(stat => {
       let idx = target.stats.findIndex(b => stat.equals(b));
       let findStat = target.stats[idx];
-      if (idx == -1) {
+      if (idx === -1) {
         target.stats.push(stat.copy());
         target['@stat-overwrite-list'].push(stat.baseName);
       } else {
@@ -144,7 +144,7 @@ function handleSkillState(skill) {
     }
 
     state.branchs = state.branchs
-      .filter(p => !(CY.object.isEmpty(p.attrs) && p.stats.length == 0));
+      .filter(p => !(CY.object.isEmpty(p.attrs) && p.stats.length === 0));
     state.branchs.forEach(p => p['@parent-state'] = state);
 
     // init of state attrs
@@ -383,33 +383,3 @@ function setBranchAttributeDefault(branchs) {
     branch['@is-default-list'] = p ? _sd(branch.attrs, p) : [];
   });
 }
-
-// function checkEquipment(eft, equip) {
-//   /* 通用 */
-//   if ([eft.mainWeapon, eft.subWeapon, eft.bodyArmor].every(p => p == -1))
-//     return true;
-
-//   /* 非通用 */
-
-//   // or
-//   if (eft.config.equipmentConfirm === 0) {
-//     if (equip.mainWeapon != -1 && equip.mainWeapon == eft.mainWeapon || (eft.mainWeapon === 0 && equip.mainWeapon === 9 && eft.parent.effects.find(a => a.mainWeapon == 9) === void 0))
-//       return true;
-//     if (equip.subWeapon != -1 && equip.subWeapon == eft.subWeapon)
-//       return true;
-//     if (equip.bodyArmor != -1 && equip.bodyArmor == eft.bodyArmor)
-//       return true;
-//     return false;
-//   }
-
-//   // and
-//   if (eft.config.equipmentConfirm === 1) {
-//     if (equip.mainWeapon != eft.mainWeapon || (eft.mainWeapon === 0 && equip.mainWeapon === 9 && eft.parent.effects.find(a => a.mainWeapon == 9) !== void 0))
-//       return false;
-//     if (equip.subWeapon != eft.subWeapon)
-//       return false;
-//     if (equip.bodyArmor != eft.bodyArmor)
-//       return false;
-//     return true;
-//   }
-// }
