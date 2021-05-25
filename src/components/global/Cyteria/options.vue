@@ -97,6 +97,7 @@ export default {
       background-color: rgba(var(--rgb-white), 0.5);
       top: 0;
       left: 0;
+      z-index: -1;
     }
 
     > .options {
@@ -105,6 +106,7 @@ export default {
       // box-shadow: 0.1rem 0.1rem 0.2rem rgba(var(--rgb-primary-dark), 0.4);
       border: 1px solid var(--primary-light-2);
       background-color: var(--white);
+      z-index: 1;
     }
   }
 }

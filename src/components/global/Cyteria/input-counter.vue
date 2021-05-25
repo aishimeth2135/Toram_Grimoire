@@ -1,6 +1,7 @@
 <template>
   <div class="cy--input-counter-container">
-    <div class="cy--input-counter border border-light bg-white" :class="conunterClassList">
+    <div class="cy--input-counter border bg-white duration-300 outline-none"
+      :class="conunterClassList">
       <div class="title" v-if="$slots['title']">
         <slot name="title"></slot>
       </div>
@@ -12,8 +13,11 @@
         <cy-button type="icon" icon="ic-round-remove-circle-outline"
           :icon-color="mainColor" :icon-color-hover="mainColorInstance.darken"
           @click="setValue(value - step)" />
-        <input type="number" :value="value" @input="updateValue"
-          @click="selectInput($event)" />
+        <input type="number"
+          v-model.lazy="inputValue"
+          @click="selectInput($event)"
+          @focus="setInputFocus(true)"
+          @blur="setInputFocus(false)" />
         <cy-button type="icon" icon="ic-round-add-circle-outline"
           :icon-color="mainColor" :icon-color-hover="mainColorInstance.darken"
           @click="setValue(value + step)" />
@@ -41,7 +45,7 @@ export default {
     'range': { // [min, max]
       type: Array,
       default: () => [null, null],
-      validation: v => v.length != 2 || !v.every(p => typeof p === 'number' || p === null)
+      validation: v => v.length !== 2 || !v.every(p => typeof p === 'number' || p === null)
     },
     'step': {
       type: Number,
@@ -74,36 +78,52 @@ export default {
       validation: v => ColorList.includes(v)
     }
   },
+  data() {
+    return {
+      focus: false
+    };
+  },
   computed: {
     conunterClassList() {
       return {
         'line': this.type === 'line',
         'inline': this.inline,
-        ['border-' + this.mainColor]: true,
-        'disabled': this.disabled
+        ['border-' + this.mainColor]: !this.focus,
+        'disabled': this.disabled,
+        ['border-' + this.mainColorInstance.darken]: this.focus,
+        ['ring-' + this.mainColorInstance.darken]: this.focus,
+        'ring-1': this.focus
       };
     },
     mainColorInstance() {
       return new Color(this.mainColor);
+    },
+    inputValue: {
+      get() {
+        return this.value;
+      },
+      set(v) {
+        v = v || 0;
+
+        const min = this.range[0],
+          max = this.range[1];
+        max !== null && (v = Math.min(max, v));
+        min !== null && (v = Math.max(min, v));
+
+        this.$emit('update:value', v);
+      },
     }
   },
   methods: {
+    setInputFocus(v) {
+      this.focus = v;
+    },
     selectInput(e) {
       e.target.select();
     },
     setValue(v) {
-      v = v || 0;
-
-      const min = this.range[0],
-        max = this.range[1];
-      max !== null && (v = Math.min(max, v));
-      min !== null && (v = Math.max(min, v));
-
-      this.$emit('update:value', v);
+      this.inputValue = v;
     },
-    updateValue(e) {
-      this.setValue(parseInt(e.target.value, 10));
-    }
   }
 };
 </script>
