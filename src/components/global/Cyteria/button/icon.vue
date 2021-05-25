@@ -30,7 +30,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .cy-button--icon {
   --icon-width: 1.3rem;
 }

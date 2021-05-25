@@ -121,9 +121,6 @@ export default function() {
         'about': 'About'
       }
     },
-    'Footer': {
-      'night mode': 'Night Mode'
-    },
     'Settings': {
       'title': 'Settings',
       'switch font': {

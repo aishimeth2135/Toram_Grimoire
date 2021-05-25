@@ -52,18 +52,16 @@
             <cy-list-item v-for="c in equipment.crystals"
               :key="c.id"
               @click="selectCrystal(convertToOriginal(c))">
-              <cy-icon-text icon="bx-bx-cube-alt">
-                {{ c.name }}
-              </cy-icon-text>
-              <template #right-content>
-                <cy-icon-text icon="ic-round-close" />
-              </template>
-              <template #extra>
-                <div class="pl-2 pt-1 w-full">
-                  <show-stat v-for="stat in c.stats" :stat="stat"
-                    :key="stat.statId" />
-                </div>
-              </template>
+              <div class="flex items-center">
+                <cy-icon-text icon="bx-bx-cube-alt">
+                  {{ c.name }}
+                </cy-icon-text>
+                <cy-icon-text icon="ic-round-close" class="ml-auto" />
+              </div>
+              <div class="pl-2 pt-1 w-full">
+                <show-stat v-for="stat in c.stats" :stat="stat"
+                  :key="stat.statId" />
+              </div>
             </cy-list-item>
           </div>
         </div>

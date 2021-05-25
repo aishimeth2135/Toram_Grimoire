@@ -17,7 +17,7 @@ export default {
     title: null,
     leftMenuViewButtons: [{
       title: () => GetLang('Left Menu/Home/base'),
-      icon: 'gridicons-user',
+      icon: 'ant-design:home-outlined',
       path: ''
     }, {
       title: () => GetLang('Left Menu/Home/about'),

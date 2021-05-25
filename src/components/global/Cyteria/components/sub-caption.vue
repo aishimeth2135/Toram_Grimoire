@@ -19,8 +19,9 @@ export default {
   data() {
     return {
       captionPosition: null,
-      captionEl: null
-    }
+      captionEl: null,
+      key: 'cy--sub-caption--component-clone-node', // class name
+    };
   },
   created() {
     this.$watch(() => this.root, el => {
@@ -30,24 +31,20 @@ export default {
       }
     });
   },
-  // mounted() {
-  //   if (this.root) {
-  //     this.root.addEventListener('mouseenter', () => this.showCaption());
-  //     this.root.addEventListener('mouseleave', () => this.hideCaption());
-  //   }
-  // },
+  unmounted() {
+    this.removeCaptionEl();
+  },
   methods: {
     showCaption() {
       if (!this.$refs['caption']) {
         return;
       }
-      if (this.captionEl) {
-        document.body.removeChild(this.captionEl);
-      }
+      this.removeCaptionEl();
       this.updateCaptionPosition();
       this.$nextTick(() => {
+        /** @type {HTMLElement} */
         const el = this.$refs['caption'].cloneNode(true);
-        el.classList.add('flex');
+        el.classList.add(this.key, 'flex');
         el.classList.remove('hidden');
         this.captionEl = el;
         document.body.append(this.captionEl);
@@ -55,6 +52,9 @@ export default {
       });
     },
     hideCaption() {
+      this.removeCaptionEl();
+    },
+    removeCaptionEl() {
       if (this.captionEl) {
         document.body.removeChild(this.captionEl);
         this.captionEl = null;
@@ -66,18 +66,19 @@ export default {
 
       const position = {};
 
-      const wh = window.innerHeight;
+      const margin = CY.element.convertRemToPixels(0.1);
+      const wh = window.innerHeight, ww = window.innerWidth;
       const len2bottom = wh - rect.bottom;
       if (rect.top >= len2bottom) {
-        position.bottom = (wh - rect.bottom + rect.height + 2) + 'px';
+        position.bottom = (wh - rect.bottom + rect.height + margin) + 'px';
       } else {
-        position.top = (rect.top + rect.height) + 'px';
+        position.top = (rect.top + rect.height + margin) + 'px';
       }
       const len2right = window.innerWidth - rect.right;
       if (rect.left >= len2right) {
-        position.right = (rect.right + 2) + 'px';
+        position.right = (ww - rect.right + margin) + 'px';
       } else {
-        position.left = (rect.left + 2) + 'px';
+        position.left = (rect.left + margin) + 'px';
       }
       this.captionPosition = position;
     },

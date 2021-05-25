@@ -1,40 +1,21 @@
 <template>
-  <div class="cy--list-item" :class="{ 'selected': selected }"
-    @click="itemClick">
-    <!-- <iconify-icon v-if="selected" class="selected-icon"
-      name="mdi-rhombus-medium-outline" /> -->
+  <div class="cy--list-item" :class="{ 'selected': selected }">
     <slot></slot>
-    <span v-if="$slots['right-content']" class="inline-block ml-auto leading-none">
-      <slot name="right-content"></slot>
-    </span>
-    <slot name="extra"></slot>
   </div>
 </template>
 <script>
 export default {
-  emits: ['click'],
   props: {
     selected: {
       type: Boolean,
       default: false
     }
-  },
-  methods: {
-    itemClick() {
-      this.$emit('click');
-    }
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="postcss" scoped>
 .cy--list-item {
-  display: flex;
-  align-items: center;
-  padding: 0.6rem 0.8rem;
-  cursor: pointer;
-  transition: 0.3s;
-  position: relative;
-  flex-wrap: wrap;
+  @apply flex items-center flex-wrap cursor-pointer py-1.5 px-3 duration-300;
 
   &:hover, &.selected {
     background-color: rgba(var(--rgb-primary-light), 0.4);
@@ -48,41 +29,5 @@ export default {
   &:not(.selected) + &:not(.selected) {
     border-top: 1px solid var(--primary-light);
   }
-
-  // > .selected-icon {
-  //   width: 1rem;
-  //   height: 1rem;
-  //   color: var(--primary-light-3);
-  //   fill: currentcolor;
-  //   position: absolute;
-
-  //   top: 0;
-  //   left: 0;
-  //   transform: translate(-0.5rem, -0.5rem)!important;
-  //   // animation: selected-icon 4s infinite;
-  // }
 }
-
-// @keyframes selected-icon {
-//   0% {
-//     top: 0;
-//     left: 0;
-//   }
-//   40% {
-//     top: 0;
-//     left: 100%;
-//   }
-//   50% {
-//     top: 100%;
-//     left: 100%;
-//   }
-//   90% {
-//     top: 100%;
-//     left: 0;
-//   }
-//   100% {
-//     top: 0;
-//     left: 0;
-//   }
-// }
 </style>

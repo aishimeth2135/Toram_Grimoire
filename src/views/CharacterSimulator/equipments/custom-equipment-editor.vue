@@ -83,15 +83,14 @@
           <cy-icon-text v-else icon="mdi-rhombus-outline">
             {{ stat.text }}
           </cy-icon-text>
-          <!-- right-content -->
-          <template #right-content>
-            <cy-icon-text v-if="appendedStats.includes(stat)"
-              icon="ic-round-add"
-              icon-color="water-blue-light" />
-            <cy-icon-text v-else-if="deletedStats.includes(stat)"
-              icon="ic-round-delete"
-              icon-color="red-light" />
-          </template>
+          <cy-icon-text v-if="appendedStats.includes(stat)"
+            icon="ic-round-add"
+            icon-color="water-blue-light"
+            class="ml-auto" />
+          <cy-icon-text v-else-if="deletedStats.includes(stat)"
+            icon="ic-round-delete"
+            icon-color="red-light"
+            class="ml-auto" />
         </cy-list-item>
       </template>
       <cy-default-tips v-else icon="potum" icon-src="custom">
@@ -115,9 +114,7 @@
                   <cy-icon-text icon="mdi-rhombus-outline">
                     {{ stat.text }}
                   </cy-icon-text>
-                  <template #right-content>
-                    <cy-icon-text icon="ic-round-close" />
-                  </template>
+                  <cy-icon-text icon="ic-round-close" class="ml-auto" />
                 </cy-list-item>
               </template>
               <cy-list-item v-else>
@@ -139,9 +136,7 @@
                     text-color="water-blue" icon-color="water-blue-light">
                     {{ stat.text }}
                   </cy-icon-text>
-                  <template #right-content>
-                    <cy-icon-text icon="ic-round-close" />
-                  </template>
+                  <cy-icon-text icon="ic-round-close" class="ml-auto" />
                 </cy-list-item>
               </template>
               <cy-list-item v-else>
@@ -163,9 +158,7 @@
                     text-color="red" icon-color="red-light">
                     {{ stat.text }}
                   </cy-icon-text>
-                  <template #right-content>
-                    <cy-icon-text icon="ic-round-close" />
-                  </template>
+                  <cy-icon-text icon="ic-round-close" class="ml-auto" />
                 </cy-list-item>
               </template>
               <cy-list-item v-else>

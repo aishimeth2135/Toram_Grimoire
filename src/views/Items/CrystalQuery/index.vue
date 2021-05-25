@@ -63,14 +63,15 @@
               {{ currentCrystal.name }}
             </cy-icon-text>
           </div>
-          <cy-flex-layout class="pl-3 mb-2" v-if="currentCrystal.origin.enhancer">
+          <div v-if="currentCrystal.origin.enhancer"
+            class="flex items-center pl-3 mb-2">
             <cy-icon-text icon="bx-bx-cube-alt" text-size="small">
               {{ $lang('enhancer title') }}
               <span class="text-orange">
                 {{ currentCrystal.origin.enhancer }}
               </span>
             </cy-icon-text>
-          </cy-flex-layout>
+          </div>
           <div class="pl-1">
             <show-stat v-for="stat in currentCrystal.stats"
               :stat="stat" :key="stat.title"

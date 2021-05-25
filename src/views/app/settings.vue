@@ -1,5 +1,5 @@
 <template>
-  <span class="app--settings">
+  <span v-if="storageAvailable" class="app--settings">
     <cy-button type="icon" icon="ic-baseline-settings" @click="toggleWindowVisible" />
     <cy-window class="main--window"
       width="wide"
@@ -32,7 +32,7 @@
         </legend>
         <div class="caption">{{ $lang('switch font/caption') }}</div>
         <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ $lang('switch font/warn 1') }}
+          {{ $lang('switch font/tips 1') }}
         </cy-icon-text>
         <div class="buttons">
           <cy-button type="check"
@@ -51,6 +51,43 @@
       </fieldset>
       <fieldset class="column">
         <legend>
+          <cy-icon-text icon="mdi-weather-night" text-color="purple">
+            {{ $lang('night mode/title') }}
+          </cy-icon-text>
+        </legend>
+        <div class="caption">{{ $lang('night mode/caption') }}</div>
+        <div class="mt-4 mb-2">
+          <cy-button type="check"
+            :selected="nightMode === '1'"
+            @click="nightMode = nightMode !== '1' ? '1' : '0'">
+             {{ $lang('night mode/title') }}
+          </cy-button>
+        </div>
+      </fieldset>
+      <fieldset class="column">
+        <legend>
+          <cy-icon-text icon="bx-bx-ruler" text-color="purple">
+            {{ $lang('set rem/title') }}
+          </cy-icon-text>
+        </legend>
+        <div class="caption">{{ $lang('set rem/caption') }}</div>
+        <div class="flex items-center flex-wrap">
+          <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3" class="mr-2">
+            {{ $lang('set rem/tips 1') }}
+          </cy-icon-text>
+        </div>
+        <div class="mt-4 mb-2">
+          <cy-input-counter v-model:value="remValue" :range="[120, 200]">
+            <template #title>
+              <cy-icon-text icon="bx-bx-ruler">
+                {{ $lang('set rem/rem title') }}
+              </cy-icon-text>
+            </template>
+          </cy-input-counter>
+        </div>
+      </fieldset>
+      <fieldset class="column">
+        <legend>
           <cy-icon-text icon="ion-language" text-color="purple">
             {{ $lang('language/title') }}
           </cy-icon-text>
@@ -60,17 +97,17 @@
         </div>
         <div class="flex items-center flex-wrap">
           <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3" class="mr-2">
-            {{ $lang('language/warn 1') }}
+            {{ $lang('language/tips 1') }}
           </cy-icon-text>
           <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
-            {{ $lang('language/warn 2') }}
+            {{ $lang('language/tips 2') }}
           </cy-icon-text>
         </div>
         <div class="buttons">
           <cy-button v-for="(item, i) in languageState.list"
             type="check"
             :selected="languageState.currentIndex === i"
-            :key="item" @click="setLanguage('language', i)">
+            :key="item" @click="setLanguage(0, i)">
             {{ $lang('language/button texts/lang ' + item) }}
           </cy-button>
         </div>
@@ -85,16 +122,16 @@
           {{ $lang('second language/caption') }}
         </div>
         <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ $lang('second language/warn 1') }}
+          {{ $lang('second language/tips 1') }}
         </cy-icon-text>
         <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ $lang('second language/warn 2') }}
+          {{ $lang('second language/tips 2') }}
         </cy-icon-text>
         <div class="buttons">
           <cy-button v-for="(item, i) in secondLanguageState.list"
             type="check"
             :selected="secondLanguageState.currentIndex == i"
-            :key="item" @click="setLanguage('second-language', i)">
+            :key="item" @click="setLanguage(1, i)">
             {{ $lang('language/button texts/lang ' + item) }}
           </cy-button>
         </div>
@@ -109,13 +146,13 @@
           {{ $lang('clear caches of spreadsheets/caption') }}
         </div>
         <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ $lang('clear caches of spreadsheets/warn 1') }}
+          {{ $lang('clear caches of spreadsheets/tips 1') }}
         </cy-icon-text>
         <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ $lang('clear caches of spreadsheets/warn 2') }}
+          {{ $lang('clear caches of spreadsheets/tips 2') }}
         </cy-icon-text>
         <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ $lang('clear caches of spreadsheets/warn 3') }}
+          {{ $lang('clear caches of spreadsheets/tips 3') }}
         </cy-icon-text>
         <div class="buttons">
           <cy-button icon="ic-round-delete" type="border" @click="clearSpreadsheetsCaches">
@@ -123,7 +160,7 @@
           </cy-button>
         </div>
       </fieldset>
-      <fieldset class="column" v-if="storageAvailable">
+      <fieldset class="column">
         <legend>
           <cy-icon-text icon="ic-round-save">
             {{ $lang('storage backup/title') }}
@@ -133,10 +170,10 @@
           {{ $lang('storage backup/caption') }}
         </div>
         <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ $lang('storage backup/warn 1') }}
+          {{ $lang('storage backup/tips 1') }}
         </cy-icon-text>
         <cy-icon-text icon="bx-bx-error-circle" text-size="small" text-color="light-3">
-          {{ $lang('storage backup/warn 2') }}
+          {{ $lang('storage backup/tips 2') }}
         </cy-icon-text>
         <cy-default-tips icon="mdi-ghost" v-if="$route.path != '/'">
           {{ $lang('storage backup/Must be operated on the homepage') }}
@@ -156,6 +193,7 @@
 
 <script>
 import CY from "@utils/Cyteria";
+import { APP_STORAGE_KEYS } from "@consts";
 import { mapState } from "vuex";
 
 export default {
@@ -165,14 +203,22 @@ export default {
       list2 = ['0', '1', '2', '3'];
     return {
       windowVisible: false,
-      currentFont: parseInt(localStorage['app--font-family'], 10),
+      currentFont: localStorage[APP_STORAGE_KEYS.FONT_FAMILY] !== undefined ?
+        parseInt(localStorage[APP_STORAGE_KEYS.FONT_FAMILY], 10) : 1,
+      setRem: {
+        value: localStorage[APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE] ?
+          parseInt(localStorage[APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE], 10) : 160
+      },
+      setNightMode: {
+        value: localStorage[APP_STORAGE_KEYS.NIGHT_MODE] || '0'
+      },
       languageState: {
         list: list1,
-        currentIndex: list1.indexOf(localStorage['app--language'])
+        currentIndex: list1.indexOf(localStorage[APP_STORAGE_KEYS.LANGUAGE])
       },
       secondLanguageState: {
         list: list2,
-        currentIndex: list2.indexOf(localStorage['app--second-language'])
+        currentIndex: list2.indexOf(localStorage[APP_STORAGE_KEYS.SECOND_LANGUAGE])
       },
       update: {
         newVersionDetected: false,
@@ -184,7 +230,33 @@ export default {
     ...mapState('main', ['serviceWorker']),
     storageAvailable() {
       return CY.storageAvailable('localStorage');
+    },
+    nightMode: {
+      get() {
+        return this.setNightMode.value;
+      },
+      set(v) {
+        this.setNightMode.value = v;
+        localStorage[APP_STORAGE_KEYS.NIGHT_MODE] = v;
+        document.documentElement.classList[v === '0' ? 'remove': 'add']('theme--night-mode');
+      }
+    },
+    remValue: {
+      get() {
+        return this.setRem.value;
+      },
+      set(v) {
+        localStorage.setItem(APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE, v.toString());
+        this.setRem.value = v;
+        document.documentElement.style.fontSize = (this.setRem.value / 10).toString() + 'px';
+      }
     }
+  },
+  mounted() {
+    const rel = document.documentElement;
+    rel.classList.add('font-' + this.currentFont.toString());
+    rel.style.fontSize = (this.setRem.value / 10).toString() + 'px';
+    rel.classList[this.nightMode === '0' ? 'remove': 'add']('theme--night-mode');
   },
   methods: {
     swUpdate() {
@@ -207,7 +279,7 @@ export default {
       CY.file.save({
         data: JSON.stringify(data),
         fileType: 'text/txt',
-        fileName: 'Cy-Grimoire_storage.txt'
+        fileName: 'cy-grimoire-storage.txt'
       });
 
       this.$notify(this.$lang('storage backup/Save successfully'));
@@ -234,14 +306,15 @@ export default {
       });
     },
     setLanguage(target, index) {
-      const state = target == 'language' ? this.languageState : this.secondLanguageState;
+      const state = target === 0 ? this.languageState : this.secondLanguageState;
+      const key = target === 0 ? APP_STORAGE_KEYS.LANGUAGE : APP_STORAGE_KEYS.SECOND_LANGUAGE;
       state.currentIndex = index;
-      localStorage['app--' + target] = state.list[index];
+      localStorage[key] = state.list[index];
     },
     switchFont(id) {
-      const origin = localStorage.getItem('app--font-family');
+      const origin = localStorage.getItem(APP_STORAGE_KEYS.FONT_FAMILY);
       origin != '0' && document.documentElement.classList.remove('font-' + origin);
-      localStorage.setItem('app--font-family', id.toString());
+      localStorage.setItem(APP_STORAGE_KEYS.FONT_FAMILY, id.toString());
       id != 0 && document.documentElement.classList.add('font-' + id);
       this.currentFont = id;
     },

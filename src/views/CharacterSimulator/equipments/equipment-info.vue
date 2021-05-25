@@ -50,8 +50,8 @@
         </div>
       </div>
       <div v-else key="edit" class="px-1 pt-2">
-        <cy-flex-layout v-if="equipment.customTypeList != null"
-          class="mb-2">
+        <div v-if="equipment.customTypeList != null"
+          class="mb-2 flex items-center">
           <cy-icon-text icon="mdi-checkbox-multiple-blank-circle"
             class="mr-2" text-color="purple" text-size="small">
             {{ $lang('equipment type') }}
@@ -60,7 +60,7 @@
             @click="switchCustomType">
             {{ $globalLang('common/Equipment/category/' + equipment.type.description) }}
           </cy-button>
-        </cy-flex-layout>
+        </div>
         <cy-input-counter v-if="equipment.is == 'weapon'" class="mb-3"
           :value="equipment.atk" :range="baseValueRange"
           @update:value="setEquipmentProperty(equipment, 'atk', $event)">

@@ -29,14 +29,13 @@
           :equipment="currentCustomEquipment" />
         <cy-bottom-content>
           <template #normal-content>
-            <cy-flex-layout>
-              <template #right-content>
-                <cy-button type="border" icon="ic-round-done"
-                  @click="toggle('window/customEquipmentEditor', false)">
-                  {{ $globalLang('global/close') }}
-                </cy-button>
-              </template>
-            </cy-flex-layout>
+            <div class="flex items-center">
+              <cy-button type="border" icon="ic-round-done"
+                @click="toggle('window/customEquipmentEditor', false)"
+                class="ml-auto">
+                {{ $globalLang('global/close') }}
+              </cy-button>
+            </div>
           </template>
         </cy-bottom-content>
       </cy-window>
