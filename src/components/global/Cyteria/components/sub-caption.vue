@@ -1,11 +1,13 @@
 <template>
-  <div v-if="root" ref="caption"
-    class="cy--sub-caption-container fixed border-1 rounded-lg border-purple p-1 bg-white hidden z-10"
-    :style="captionPosition">
-    <div class="py-1 px-2 flex flex-wrap w-max">
-      <slot></slot>
+  <teleport v-if="root" to="body">
+    <div v-if="captionVisible"
+      class="cy--sub-caption-container fixed border-1 rounded-lg border-purple p-1 bg-white flex z-10"
+      :style="captionPosition">
+      <div class="py-1 px-2 flex flex-wrap w-max">
+        <slot></slot>
+      </div>
     </div>
-  </div>
+  </teleport>
 </template>
 <script>
 import CY from "@utils/Cyteria";
@@ -18,9 +20,8 @@ export default {
   },
   data() {
     return {
+      captionVisible: false,
       captionPosition: null,
-      captionEl: null,
-      key: 'cy--sub-caption--component-clone-node', // class name
     };
   },
   created() {
@@ -31,34 +32,13 @@ export default {
       }
     });
   },
-  unmounted() {
-    this.removeCaptionEl();
-  },
   methods: {
     showCaption() {
-      if (!this.$refs['caption']) {
-        return;
-      }
-      this.removeCaptionEl();
       this.updateCaptionPosition();
-      this.$nextTick(() => {
-        /** @type {HTMLElement} */
-        const el = this.$refs['caption'].cloneNode(true);
-        el.classList.add(this.key, 'flex');
-        el.classList.remove('hidden');
-        this.captionEl = el;
-        document.body.append(this.captionEl);
-        this.$nextTick(() => this.fixPosition(this.captionEl));
-      });
+      this.captionVisible = true;
     },
     hideCaption() {
-      this.removeCaptionEl();
-    },
-    removeCaptionEl() {
-      if (this.captionEl) {
-        document.body.removeChild(this.captionEl);
-        this.captionEl = null;
-      }
+      this.captionVisible = false;
     },
     updateCaptionPosition() {
       const el = this.root;

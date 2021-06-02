@@ -23,6 +23,7 @@
           </cy-button>
           <cy-button icon="ic-round-cancel"
             type="border"
+            main-color="gray"
             @click="cancel">
             {{ $globalLang('global/cancel') }}
           </cy-button>
