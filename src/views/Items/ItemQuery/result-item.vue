@@ -3,14 +3,15 @@
     <cy-list-item class="title-container" :class="{ 'detail-visible': detailVisible }"
       @click="detailVisible = !detailVisible">
       <div class="title">
-        <cy-icon-text :icon="equipment.is !== 'avatar' ? equipment.getCategoryImagePath() : equipment.categoryIcon"
+        <cy-icon-text class="py-1"
+          :icon="equipment.is !== 'avatar' ? equipment.getCategoryImagePath() : equipment.categoryIcon"
           :icon-src="equipment.is !== 'avatar' ? 'image' : 'iconify'"
           :text-color="detailVisible ? 'orange' : 'dark'"
           :icon-color="detailVisible ? 'orange' : 'light-2'">
           <span class="inline-flex items-center flex-wrap">
             <span>{{ equipment.name }}</span>
             <cy-icon-text v-if="firstObtain && firstObtain.isDrop"
-              icon="bx-bx-game" icon-color="red"
+              icon="jam-box" icon-color="red"
               class="ml-2">
               <template #caption>
                 {{ firstObtain.type }}

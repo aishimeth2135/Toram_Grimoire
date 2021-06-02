@@ -191,6 +191,7 @@ export default function() {
             'self': '自身增益',
             'party': '全队伍增益',
             'aura': '光环',
+            'circle': '领域',
             'target': '单体增益'
           },
           'is_place': {

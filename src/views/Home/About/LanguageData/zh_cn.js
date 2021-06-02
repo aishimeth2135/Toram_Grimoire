@@ -11,7 +11,7 @@ export default function() {
         'sub title': '感谢整个魔法书制作团队0.0',
         'skill data': '技能资料',
         'equipment data': '装备资料',
-        'ohter': '其他'
+        'other': '其他'
       },
       'donate': {
         'title': '赞助',
