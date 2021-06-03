@@ -77,7 +77,7 @@ export default {
         let bx = $sd['end_position'] == 'self' ? padding + radius : padding;
         const by = padding + radius;
 
-        bx += Math.max(0, -1 * startPositionOffsets);
+        // bx += Math.max(0, -1 * startPositionOffsets);
 
         // target
         let tx = bx + targetOffset;

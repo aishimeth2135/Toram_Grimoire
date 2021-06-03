@@ -155,7 +155,7 @@
         <div class="content-line">
           <div v-if="showData['caption']" class="text-scope" v-html="showData['caption']"></div>
           <template v-else-if="showData['@parent-branch'].stats">
-            <stats :stats="showData['@parent-branch'].stats"></stats>
+            <stats :stats="showData['@parent-branch'].stats" />
           </template>
         </div>
       </template>

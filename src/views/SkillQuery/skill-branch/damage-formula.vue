@@ -1,20 +1,28 @@
 <template>
   <div class="inline-content">
-    <span class="divider c2" v-if="showData['extra_constant'] && showFrequency"></span>
+    <span class="divider border-orange" v-if="showData['extra_constant'] && showFrequency"></span>
     <span class="divider" v-if="showData['constant']"></span>
     <span class="attr-scope" v-if="showData['base']">{{ showData['base'] }}</span>
-    <cy-icon-text icon="ic-round-add" v-if="showData['base'] && showData['constant']" />
+    <cy-icon-text v-if="showData['base'] && showData['constant']"
+      icon="ic-round-add" />
     <span class="attr-scope" v-if="showData['constant']"
       v-html="showData['constant']">
     </span>
     <span class="divider" v-if="showData['constant']"></span>
     <cy-icon-text icon="ic-round-close" />
     <span class="attr-scope" v-html="showData['multiplier']"></span>
-    <cy-icon-text icon="ic-round-add" v-if="showData['extra_constant']" />
-    <span class="attr-scope" v-if="showData['extra_constant']" v-html="showData['extra_constant']"></span>
-    <span class="divider c2" v-if="showData['extra_constant'] && showFrequency"></span>
-    <cy-icon-text icon="ic-round-close" v-if="showData['@parent-branch'].attrs['title'] == 'each' && showData['frequency']" />
-    <span class="attr-scope" v-if="showFrequency"
+    <cy-icon-text v-if="showData['extra_constant']"
+      icon="ic-round-add" />
+    <span v-if="showData['extra_constant']"
+      class="attr-scope"
+      v-html="showData['extra_constant']">
+    </span>
+    <span v-if="showData['extra_constant'] && showFrequency"
+      class="divider border-orange" />
+    <cy-icon-text v-if="showFrequency && showData['frequency']"
+      icon="ic-round-close" />
+    <span v-if="showFrequency"
+      class="attr-scope"
       v-html="showData['frequency']">
     </span>
   </div>
@@ -24,19 +32,13 @@ export default {
   props: ['showData'],
   computed: {
     showFrequency() {
-      return this.showData['@parent-branch'].attrs['title'] == 'each';
+      return this.showData['@parent-branch'].attrs['title'] === 'each';
     }
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="postcss" scoped>
 .divider {
-  border-left: 2px solid var(--primary-light-2);
-  margin: 0 0.4rem;
-  height: 1.5rem;
-
-  &.c2 {
-    border-color: var(--primary-orange);
-  }
+  @apply border-l-1 border-light-2 mx-2 h-6;
 }
 </style>
