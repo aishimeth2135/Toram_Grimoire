@@ -14,7 +14,7 @@
           :icon-color="mainColor" :icon-color-hover="mainColorInstance.darken"
           @click="setValue(value - step)" />
         <input type="number"
-          v-model.lazy="inputValue"
+          v-model.number.lazy="inputValue"
           @click="selectInput($event)"
           @focus="setInputFocus(true)"
           @blur="setInputFocus(false)" />
