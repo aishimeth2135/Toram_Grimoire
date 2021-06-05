@@ -598,6 +598,10 @@ class EnchantStat {
     return this.itemBase.getOriginalPotential(this.type);
   }
 
+  get potentialConvertThreshold() {
+    return this.itemBase.getPotentialConvertThreshold(this.type);
+  }
+
   /**
    * @param {number} [v]
    * @returns {string}
@@ -659,7 +663,7 @@ class EnchantStat {
    */
   showAmount(type = 'current', previousValue = 0) {
     let [sv, sv2] = this.itemBase.getUnitValue(this.type).split('|');
-      const convertThreshold = this.itemBase.getPotentialConvertThreshold(this.type);
+      const convertThreshold = this.potentialConvertThreshold;
       let v = this.value + previousValue;
 
       sv2 = sv2 || sv;

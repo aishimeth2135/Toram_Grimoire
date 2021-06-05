@@ -303,6 +303,12 @@ CharacterEquipment.loadEquipment = function (data) {
     const getType = (inst, str) => inst['TYPE_' + str.toUpperCase()];
     const stats = data.stats.map(p => RestrictionStat.load(p)).filter(p => p);
 
+    stats.forEach(stat => {
+      if (typeof stat.value === 'string') {
+        stat.value = isNumberString(stat.value) ? parseFloat(stat.value) : 0;
+      }
+    });
+
     const instance = [
       MainWeapon, SubWeapon, SubArmor, BodyArmor,
       AdditionalGear, SpecialGear, Avatar

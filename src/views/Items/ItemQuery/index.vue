@@ -1,6 +1,6 @@
 <template>
   <article>
-    <div class="overflow-x-auto max-w-full">
+    <div>
       <search-result class="search-result" :equipments="searchResult" />
     </div>
     <div class="bottom-menu">
@@ -573,8 +573,6 @@ export default {
 
 .search-result {
   min-height: 70vh;
-  width: 100%;
-  min-width: max-content;
 }
 
 .bottom-menu {

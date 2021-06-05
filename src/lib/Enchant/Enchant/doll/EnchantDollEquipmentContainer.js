@@ -1,3 +1,4 @@
+import { getGcd } from "@utils/math";
 import { EnchantStat, EnchantStepStat, EnchantEquipment, EnchantStep } from "../build";
 import { EnchantDoll, EnchantDollCategory } from "./index.js";
 
@@ -371,14 +372,20 @@ export default class EnchantDollEquipmentContainer {
             special = null;
           }
           if (special) {
-            /** potential必定是3 */
+            // potential必定是3
+            const gcd = getGcd(cur.stat.potential, 3);
             const lastRemainingPotential = ceq.lastStep.remainingPotential;
-            if ((lastRemainingPotential - 1) % 3 === 0 || lastRemainingPotential % 3 === 0) {
-              // 把special移到最後面，並重新指定cur和pstat
-              originalPotentialList.splice(originalPotentialList.indexOf(special), 1);
-              originalPotentialList.push(special);
-              cur = originalPotentialList[originalPotentialList.length - 1];
-              pstat = positiveStats.find(stat => stat.equals(cur.stat));
+            if (lastRemainingPotential < gcd + 1) {
+              if ((lastRemainingPotential - 1) % 3 === 0 || lastRemainingPotential % 3 === 0) {
+                const _pstat = positiveStats.find(stat => stat.equals(special.stat));
+                if (Math.floor(lastRemainingPotential / 3) <= _pstat.value) {
+                  // 把special移到最後面，並重新指定cur和pstat
+                  originalPotentialList.splice(originalPotentialList.indexOf(special), 1);
+                  originalPotentialList.push(special);
+                  cur = special;
+                  pstat = _pstat;
+                }
+              }
             }
           }
           if (cur.type === 'step') {
@@ -440,7 +447,10 @@ export default class EnchantDollEquipmentContainer {
           const tstep = ceq.appendStep();
           tstep.type = EnchantStep.TYPE_EACH;
           const tstat = tstep.appendStat(pstat.itemBase, pstat.type, 0);
-          while (ceq.stepRemainingPotential() > 0 && pstat.value > 0) {
+          const potentialConvertThreshold = tstat.potentialConvertThreshold;
+          const preStat = ceq.stat(tstat.itemBase, tstat.type);
+          const prev = preStat ? preStat.value : 0;
+          while (prev + tstat.value < potentialConvertThreshold && ceq.stepRemainingPotential() > 0 && pstat.value > 0) {
             tstat.value += 1;
             pstat.value -= 1;
           }
