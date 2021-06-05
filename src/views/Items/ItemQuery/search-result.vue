@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <result-item v-for="eq in equipments"
-      :key="eq.origin.id" :equipment="eq" />
+  <div class="overflow-x-auto">
+    <div class="min-w-min">
+      <result-item v-for="eq in equipments"
+        :key="eq.origin.id" :equipment="eq" />
+    </div>
   </div>
 </template>
 <script>

@@ -1,5 +1,6 @@
 import Grimoire from "@grimoire";
 import { StatBase } from "@/lib/Character/Stat";
+import { isNumberString } from "@utils/string";
 
 class Item {
   constructor(id, name) {
@@ -20,6 +21,9 @@ class Item {
     return t;
   }
   appendStat(baseName, v, tail, restriction) {
+    if (typeof v === 'string') {
+      v = isNumberString(v) ? parseFloat(v) : 0;
+    }
     let type;
     switch (tail) {
       case '':

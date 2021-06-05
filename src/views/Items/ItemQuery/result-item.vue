@@ -1,6 +1,7 @@
 <template>
   <div class="result-item">
-    <cy-list-item class="title-container" :class="{ 'detail-visible': detailVisible }"
+    <cy-list-item class="title-container min-w-max"
+      :class="{ 'detail-visible': detailVisible }"
       @click="detailVisible = !detailVisible">
       <div class="title">
         <cy-icon-text class="py-1"
@@ -338,7 +339,8 @@ export default {
   padding: 0.4rem 1rem;
   padding-bottom: 0.8rem;
   padding-left: 1.5rem;
-  max-width: 100vw;
+  max-width: 100%;
+
   @apply bg-white;
 }
 
