@@ -1,9 +1,9 @@
+import '@/assets/css/tailwind.css';
+
 import "@/assets/css/main/font/font.css";
 import "@/assets/css/main/main.less";
 import "@/assets/css/SaveLoad/main.css";
 import "@/assets/css/main/Cyteria/Cyteria.css";
-
-import '@/assets/css/tailwind.css';
 
 import { InitLanguageSystem } from "@services/Language";
 
