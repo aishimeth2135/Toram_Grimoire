@@ -7,7 +7,7 @@
     font-style: normal;
 } */
 
-@font-face {
+/* @font-face {
     font-family: 'SetoFont';
     src: local('SetoFont'),
         url('./Setofont.woff2') format('woff2');
@@ -37,7 +37,7 @@
     font-weight: normal;
     font-style: normal;
     unicode-range: U+95b1, U+9631;
-}
+} */
 /* 
 @font-face {
     font-family: 'HandwrittenGirl';
@@ -58,3 +58,9 @@
     font-weight: normal;
     font-style: normal;
 } */
+
+@font-face {
+    font-family: naikaifont;
+    src: url(https://cdn.jsdelivr.net/gh/max32002/naikaifont@1.0/webfont/NaikaiFont-Regular-Lite.woff2) format("woff2"),
+        url(https://cdn.jsdelivr.net/gh/max32002/naikaifont@1.0/webfont/NaikaiFont-Regular-Lite.woff) format("woff");
+  }
