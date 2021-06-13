@@ -164,7 +164,7 @@ function handleSkillState(skill) {
 
     // suffix
     const suffixBranchList = {
-      'damage': ['extra', 'proration'],
+      'damage': ['extra', 'proration', 'base'],
       'effect': ['extra'],
       'next': ['extra'],
       'passive': ['extra'],
@@ -339,6 +339,9 @@ function setBranchAttributeDefault(branchs) {
       'start_position_offsets': '0',
       'end_position_offsets': '0',
       'target_offsets': 'auto'
+    },
+    'base': {
+      'title': 'auto'
     },
     'proration': {
       'proration': 'auto'

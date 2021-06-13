@@ -75,7 +75,12 @@ export default function() {
           'base name': '傷害',
           'base': {
             'atk': '有效ATK',
-            'matk': '有效MATK'
+            'matk': '有效MATK',
+            '@custom': {
+              'default': '有效攻擊力',
+              'both': '有效ATK/有效MATK',
+              'dual_sword': '雙劍有效ATK'
+            },
           },
           'damage_type': {
             'physical': '物理傷害',
@@ -114,6 +119,10 @@ export default function() {
             'dark': '暗屬性',
             'one_hand_sword': '單手劍屬性',
             'arrow': '箭矢屬性'
+          },
+          '@custom-base-caption': {
+            'both': '根據<!角色的ATK及MATK的高低->。ATK比MATK高時，取<!有效ATK->；MATK比ATK高時，取<!有效MATK->。',
+            'dual_sword': '雙劍有自己特殊的有效ATK公式，細節請查看#雙劍特性說明 。'
           },
           'effective_area: title': '類型',
           'radius: title': '傷害半徑',
