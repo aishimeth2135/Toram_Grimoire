@@ -468,7 +468,7 @@ export default {
           return true;
       }
       if (this.branch.name === 'effect') {
-        if (this.branch.attrs['type'] === 'aura')
+        if (this.branch.attrs['type'] === 'aura' || this.branch.attrs['type'] === 'circle')
           return true;
       }
       return false;
@@ -504,7 +504,7 @@ export default {
           branch: p.branchs.find(b => b.id == this.branch.id)
         }));
 
-      return res.length == 0 ? null : res;
+      return res.length === 0 ? null : res;
     },
     formulaDisplayMode() {
       return this.getFormulaDisplayMode();
@@ -536,9 +536,9 @@ export default {
     toggleVisible(name, force) {
       force = force === void 0 ? !this[name + 'Visible'] : force;
 
-      if (name == 'history' && force)
+      if (name === 'history' && force)
         this.otherEquipmentBranchVisible = false;
-      else if (name == 'otherEquipmentBranch' && force)
+      else if (name === 'otherEquipmentBranch' && force)
         this.historyVisible = false;
 
       this[name + 'Visible'] = force;
@@ -658,26 +658,51 @@ export default {
       const langTextList = []; // 3. 需轉換語言的
       const titleList = []; // 4. 需從語言清單獲取標題的
 
-      if (bch.name == 'proration') {
-        if (data['proration'] == 'auto')
+      if (bch.name === 'proration') {
+        if (data['proration'] === 'auto')
           data['proration'] = data['damage'];
         langTextList.push('damage', 'proration');
         titleList.push('damage', 'proration');
-      } else if (bch.name == 'list') {
+      } else if (bch.name === 'list') {
         if (!bch.mainBranch) {
           const suffixList = bch.suffix
-            .filter(p => p.name == 'list')
+            .filter(p => p.name === 'list')
             .map(p => this.handleShowData(p));
           data['@list-datas'] = [data, ...suffixList];
         }
         handleTextList.push('text');
       } else if (!bch.mainBranch) {
-        if (bch.name == 'damage') {
+        if (bch.name === 'damage') {
           // base
-          if (data['base'] == 'auto')
-            data['base'] = data['damage_type'] == 'physical' ? 'atk' : 'matk';
-          if (data['detail_display'] == 'auto')
-            data['detail_display'] = data['title'] == 'normal_attack' ? '0' : '1';
+          if (data['base'] === 'auto') {
+            const baseSuffix = bch.suffix.find(p => p.name === 'base');
+            if (baseSuffix) {
+              const baseSuffixAttrs = baseSuffix.attrs;
+              if (baseSuffixAttrs['type'] !== 'custom') {
+                data['@custom-base-caption'] = baseSuffixAttrs['type'];
+                data['base'] = `@custom/${baseSuffixAttrs['type']}`;
+                langTextList.push('base', {
+                  name: '@custom-base-caption',
+                  afterHandle: v => this.createTagButtons(this.handleMarkText(v, 'text-purple'))
+                });
+              } else {
+                if (baseSuffixAttrs['title'] === 'auto') {
+                  data['base'] = '@custom/default';
+                  langTextList.push('base');
+                } else {
+                  data['base'] = baseSuffixAttrs['title'];
+                }
+                if (data['caption']) {
+                  data['@custom-base-caption'] = data['caption'];
+                }
+              }
+            } else {
+              data['base'] = data['damage_type'] === 'physical' ? 'atk' : 'matk';
+              langTextList.push('base');
+            }
+          }
+          if (data['detail_display'] === 'auto')
+            data['detail_display'] = data['title'] === 'normal_attack' ? '0' : '1';
 
           handleValueList.push('constant', 'extra_constant', 'duration', 'cycle', {
             name: ['multiplier', 'ailment_chance'],
@@ -700,16 +725,16 @@ export default {
             defaultValue: this.$lang('damage/base name')
           }, {
             name: ['base', 'element'],
-            validation: v => v != 'none'
+            validation: v => v !== 'none'
           }, {
             name: 'type',
-            validation: v => v != 'single'
+            validation: v => v !== 'single'
           }, {
             name: 'title',
-            validation: v => v == 'normal_attack'
+            validation: v => v === 'normal_attack'
           });
-          langTextList.push('base', 'damage_type', 'type', 'title', 'element');
-          data['title'] != 'each' && langTextList.push({ name: 'frequency', type: 'value' });
+          langTextList.push('damage_type', 'type', 'title', 'element');
+          data['title'] !== 'each' && langTextList.push({ name: 'frequency', type: 'value' });
 
           // skill area
           handleValueList.push({
@@ -734,7 +759,7 @@ export default {
           titleList.push('effective_area', 'radius', 'move_distance', 'angle',
             'start_position_offsets', 'end_position_offsets');
           {
-            const prorationBch = bch.suffix.find(suf => suf.name == 'proration');
+            const prorationBch = bch.suffix.find(suf => suf.name === 'proration');
             if (prorationBch) {
               const _data = this.handleShowData(prorationBch);
               ['damage', 'proration', 'damage: title', 'proration: title'].forEach(k => {
@@ -742,21 +767,21 @@ export default {
               });
             }
           }
-        } else if (bch.name == 'text' || bch.name == 'tips') {
+        } else if (bch.name === 'text' || bch.name === 'tips') {
           handleTextList.push('text');
-        } else if (bch.name == 'stack') {
-          if (data['default'] == 'auto')
+        } else if (bch.name === 'stack') {
+          if (data['default'] === 'auto')
             data['default'] = data['min'];
           handleValueList.push({
             name: ['min', 'max', 'default'],
             calcOnly: true
           });
           const stkIdx = bch['@parent-state'].branchs
-            .filter(p => p.name == 'stack')
+            .filter(p => p.name === 'stack')
             .indexOf(bch);
           hiddenList.push({
             name: 'name',
-            validation: v => v && v != 'auto',
+            validation: v => v && v !== 'auto',
             defaultValue: this.$lang('stack/base name') + (stkIdx + 1)
           });
         } else if (bch.name == 'effect') {
@@ -770,7 +795,7 @@ export default {
           handleTextList.push('caption', 'condition', 'end_condition');
           hiddenList.push({
             name: ['condition', 'type'],
-            validation: v => v != 'none'
+            validation: v => v !== 'none'
           }, {
             name: 'is_place',
             validation: v => v != '0'
@@ -790,25 +815,25 @@ export default {
           });
           langTextList.push('effective_area');
           titleList.push('effective_area', 'radius');
-        } else if (bch.name == 'next') {
+        } else if (bch.name === 'next') {
           handleTextList.push('caption');
           hiddenList.push({
             name: 'condition',
-            validation: v => v && v != 'none',
+            validation: v => v && v !== 'none',
             defaultValue: this.$lang('next/condition default')
           }, {
             name: 'name',
             validation: v => v,
             defaultValue: this.$lang('effect/base name')
           });
-        } else if (bch.name == 'passive') {
+        } else if (bch.name === 'passive') {
           handleTextList.push('caption');
           hiddenList.push({
             name: 'name',
             validation: v => v,
             defaultValue: this.$lang('passive/base name')
           });
-        } else if (bch.name == 'heal') {
+        } else if (bch.name === 'heal') {
           handleValueList.push('duration', 'cycle', 'constant', {
             name: 'frequency',
             beforeColorText: v => v + this.$lang('global/times')
@@ -859,7 +884,7 @@ export default {
             defaultValue: this.$lang('global suffix: extra/condition default')
           });
           handleTextList.push('caption', 'condition');
-        } else if ((mbch.name == 'effect' || mbch.name == 'next' || mbch.name == 'passive') && bch.name == 'extra') {
+        } else if ((mbch.name === 'effect' || mbch.name === 'next' || mbch.name === 'passive') && bch.name === 'extra') {
           hiddenList.push({
             name: 'condition',
             validation: v => v,
@@ -872,7 +897,7 @@ export default {
       // convert data to DataContainer
       Object.keys(data).forEach(k => data[k] = new DataContainer(data[k], bch, k));
 
-      hiddenList.forEach(({ name, validation, defaultValue, validationType='normal' }={}) => {
+      hiddenList.forEach(({ name, validation, defaultValue, validationType = 'normal' } = {}) => {
         name = Array.isArray(name) ? name : [name];
         name.forEach(p => {
           if (data[p] === void 0) {
@@ -881,7 +906,7 @@ export default {
             return;
           }
           const dc = data[p];
-          const t = validationType == 'value' ? this.calcValueStr(dc.origin) : dc.origin;
+          const t = validationType === 'value' ? this.calcValueStr(dc.origin) : dc.origin;
           if (!validation(t)) {
             if (defaultValue) {
               data[p].set(defaultValue);
@@ -910,14 +935,14 @@ export default {
       handleTextList.forEach(k => data[k] && data[k].handleResult(v => this.handleTextData(v, bch)));
 
       langTextList.forEach(k => {
-        if (typeof k == 'object') {
-          let { name, type='normal' } = k;
+        if (typeof k === 'object') {
+          let { name, type = 'normal', afterHandle } = k;
           name = Array.isArray(name) ? name : [name];
           name.forEach(a => {
             const dc = data[a];
             if (!dc)
               return;
-            this.handleDataContainerLangText(dc, { type });
+            this.handleDataContainerLangText(dc, { type, afterHandle });
           });
         } else {
           const dc = data[k];
@@ -961,14 +986,14 @@ export default {
         .join('+')
         .replace(/\+-/g, '-');
     },
-    handleDataContainerLangText(dc, { type='normal', prefix='' }={}) {
+    handleDataContainerLangText(dc, { type = 'normal', prefix = '', afterHandle }={}) {
       dc.handle(v => this.formulaPretreatment(v));
 
       const bch = dc.branch, key = dc.key;
-      if (type == 'value') {
+      if (type === 'value') {
         dc.handle(v => this.calcValueStr(v));
         const p = dc.isNumberValue() && parseFloat(dc.value()) < 0 ? 'negative' : 'positive';
-        p == 'negative' && dc.handle(v => (-1 * v).toString());
+        p === 'negative' && dc.handle(v => (-1 * v).toString());
         dc.handleResult(v => this.$lang(`${bch.name + prefix}/${key}/${p}`, [v]))
       } else {
         let p = dc.value();
@@ -977,6 +1002,9 @@ export default {
         let preName = bch.name + prefix;
         preName = bch.mainBranch ? bch.mainBranch.name + ': ' + preName : preName;
         dc.handleResult(() => this.$lang(`${preName}/${key}/${p}`));
+        if (afterHandle) {
+          dc.handleResult(afterHandle);
+        }
       }
     },
     handleTextData(str, bch) {
@@ -1001,6 +1029,9 @@ export default {
       data['skill'] && data['skill'].split(/\s*,\s*/)
         .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="text-light-3">${m}</span>`));
       return str;
+    },
+    handleMarkText(str, className = 'text-light-3') {
+      return str.replace(/<!([^>]+)->/g, (m, m1) => `<span class="${className}">${m1}</span>`);
     },
     handleDataContainer(dc, { beforeColorText, toPercentage=false }={}) {
       dc.handle(v => this.formulaPretreatment(v));
@@ -1476,7 +1507,6 @@ fieldset.extra-column {
     color: var(--primary-blue-green);
   }
 }
-
 
 .top-menu-slide-enter-from, .top-menu-slide-leave-to {
   margin-right: -1.8rem!important;
