@@ -139,19 +139,18 @@
           <div class="column">
             <cy-icon-text icon="gg-shape-rhombus" text-size="small">
               {{ $lang('skill level') }}
-              <template v-slot:value>
-                {{ skillPointCostSum }}
-              </template>
             </cy-icon-text>
+            <span class="ml-2 text-light-3 text-sm">
+              {{ skillPointCostSum }}
+            </span>
           </div>
-          <div class="column">
-            <cy-icon-text icon="mdi:judaism"
-              text-size="small" display="block">
+          <div class="column ml-3">
+            <cy-icon-text icon="mdi:judaism" text-size="small">
               {{ $lang('star gem level') }}
-              <template v-slot:value>
-                {{ starGemSkillPointSum }}
-              </template>
             </cy-icon-text>
+            <span class="ml-2 text-light-3 text-sm">
+              {{ starGemSkillPointSum }}
+            </span>
           </div>
         </div>
         <div class="content">
@@ -242,6 +241,7 @@ import { computeDrawSkillTreeData, GetDrawSetting } from "@/lib/Skill/utils/Draw
 import init from "./init.js";
 
 export default {
+  name: 'skill-query',
   RegisterLang: 'Skill Simulator',
   data() {
     // const r = this.skillRoot;
@@ -986,11 +986,9 @@ export default {
       & > .column {
         border: 1px solid var(--primary-light);
         padding: 0.3rem 0.6rem;
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
         background-color: var(--white);
-        & + .column {
-          margin-left: 0.6rem;
-        }
       }
     }
 
