@@ -692,14 +692,16 @@ export default {
                 } else {
                   data['base'] = baseSuffixAttrs['title'];
                 }
-                if (data['caption']) {
-                  data['@custom-base-caption'] = data['caption'];
+                if (baseSuffixAttrs['caption']) {
+                  data['@custom-base-caption'] = baseSuffixAttrs['caption'];
                 }
               }
             } else {
               data['base'] = data['damage_type'] === 'physical' ? 'atk' : 'matk';
               langTextList.push('base');
             }
+          } else {
+            langTextList.push('base');
           }
           if (data['detail_display'] === 'auto')
             data['detail_display'] = data['title'] === 'normal_attack' ? '0' : '1';
