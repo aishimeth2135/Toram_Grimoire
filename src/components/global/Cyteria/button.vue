@@ -64,6 +64,8 @@ export default CyButton;
   --text-color: var(--color-set--text-color);
   --border-color: var(--color-set--border-color);
 
+  user-select: none;
+
   @apply relative text-base flex-shrink-0 duration-300;
 
   &.p-0 {
