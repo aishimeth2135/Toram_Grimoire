@@ -1,4 +1,4 @@
-import { getGcd } from "@utils/math";
+import { getLcm } from "@utils/math";
 import { EnchantStat, EnchantStepStat, EnchantEquipment, EnchantStep } from "../build";
 import { EnchantDoll, EnchantDollCategory } from "./index.js";
 
@@ -366,28 +366,27 @@ export default class EnchantDollEquipmentContainer {
       const checkStepsRemainingPotential = () => allSteps.every(step => step.remainingPotential > 0);
 
       while (originalPotentialList.length !== 0) {
-        let pstat = positiveStats.find(stat => stat.equals(cur.stat));
+        const pstat = positiveStats.find(stat => stat.equals(cur.stat));
         while (checkStepsRemainingPotential() && pstat.value !== 0) {
-          if (special === cur) {
-            special = null;
-          }
-          if (special) {
-            // potential必定是3
-            const gcd = getGcd(cur.stat.potential, 3);
-            const lastRemainingPotential = ceq.lastStep.remainingPotential;
-            if (lastRemainingPotential < gcd + 1) {
-              if ((lastRemainingPotential - 1) % 3 === 0 || lastRemainingPotential % 3 === 0) {
-                const _pstat = positiveStats.find(stat => stat.equals(special.stat));
-                if (Math.floor(lastRemainingPotential / 3) <= _pstat.value) {
-                  // 把special移到最後面，並重新指定cur和pstat
-                  originalPotentialList.splice(originalPotentialList.indexOf(special), 1);
-                  originalPotentialList.push(special);
-                  cur = special;
-                  pstat = _pstat;
-                }
-              }
-            }
-          }
+          // if (special && cur.type === 'step') {
+          //   // potential必定是3
+          //   const POTENTIAL = 3;
+          //   const lcm = getLcm(cur.stat.potential, POTENTIAL);
+          //   const lastRemainingPotential = ceq.lastStep.remainingPotential;
+          //   if (lastRemainingPotential < lcm + 1) {
+          //     if ((lastRemainingPotential - 1) % POTENTIAL === 0 || lastRemainingPotential % POTENTIAL === 0) {
+          //       const _pstat = positiveStats.find(stat => stat.equals(special.stat));
+          //       if (Math.floor(lastRemainingPotential / POTENTIAL) <= _pstat.value) {
+          //         // 把目前的拿掉，special移到最後面，並重新指定cur和pstat
+          //         originalPotentialList.pop();
+          //         originalPotentialList.splice(originalPotentialList.indexOf(special), 1);
+          //         originalPotentialList.push(special);
+          //         cur = special;
+          //         pstat = _pstat;
+          //       }
+          //     }
+          //   }
+          // }
           if (cur.type === 'step') {
             cur.stat.value += 1;
             pstat.value -= 1;
@@ -395,6 +394,30 @@ export default class EnchantDollEquipmentContainer {
             cur.stat = firstStep.appendStat(cur.stat.itemBase, cur.stat.type, 1);
             cur.type = 'step';
             pstat.value -= 1;
+          }
+        }
+        if (special && cur.type === 'step') {
+          // potential必定是3
+          const POTENTIAL = 3;
+          const statOriginalValue = cur.stat.value;
+          while (cur.stat.value !== 1) {
+            const lastRemainingPotential = ceq.lastStep.remainingPotential;
+            if ((lastRemainingPotential - 1) % POTENTIAL === 0 || lastRemainingPotential % POTENTIAL === 0) {
+              const _pstat = positiveStats.find(stat => stat.equals(special.stat));
+              const maxv = Math.floor(lastRemainingPotential / POTENTIAL);
+              if (maxv <= _pstat.value) {
+                originalPotentialList.splice(originalPotentialList.indexOf(special), 1);
+                pstat.value += (statOriginalValue - cur.stat.value);
+                _pstat.value -= maxv;
+                special.stat.value += maxv;
+                special = null;
+                break;
+              }
+            }
+            cur.stat.value -= 1;
+          }
+          if (special) {
+            cur.stat.value = statOriginalValue;
           }
         }
         originalPotentialList.pop();
@@ -423,6 +446,9 @@ export default class EnchantDollEquipmentContainer {
           cur.stat.remove();
         }
         cur = next;
+        if (special === cur) {
+          special = null;
+        }
       }
       resultEqs.push(newDollEq);
     }
