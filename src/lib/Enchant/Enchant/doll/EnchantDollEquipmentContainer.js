@@ -1,4 +1,3 @@
-import { getLcm } from "@utils/math";
 import { EnchantStat, EnchantStepStat, EnchantEquipment, EnchantStep } from "../build";
 import { EnchantDoll, EnchantDollCategory } from "./index.js";
 
@@ -104,30 +103,30 @@ export default class EnchantDollEquipmentContainer {
       step.appendStat(pstat.itemBase, pstat.type, 1);
       pstat.value -= 1;
 
-      {
-        const pstatPotentialCost = pstat.itemBase.getPotential(pstat.type, eq);
-        const maxv = Math.min(Math.floor((eq.originalPotential - 1) / pstatPotentialCost), pstat.value + 1);
-        if (maxv > 1) {
-          // let newDollEq = this, curv = 1;
-          // const newDollEqs = [];
-          // while (curv < maxv) {
-          //   newDollEq = newDollEq.copy();
-          //   const cstep = newDollEq.equipment.steps()[0];
-          //   const cstat = cstep.stats[0];
-          //   cstat.value += 1;
-          //   curv = cstat.value;
-          //   newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= 1;
-          //   newDollEqs.push(newDollEq);
-          // }
-          // newDollEqs.forEach(dollEq => resultEqs.push(dollEq, ...dollEq.beforeFillNegative()));
-          const newDollEq = this.copy();
-          const cstep = newDollEq.equipment.steps()[0];
-          const cstat = cstep.stats[0];
-          cstat.value = maxv;
-          newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= (cstat.value - 1);
-          resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
-        }
-      }
+      // {
+      //   const pstatPotentialCost = pstat.itemBase.getPotential(pstat.type, eq);
+      //   const maxv = Math.min(Math.floor((eq.originalPotential - 1) / pstatPotentialCost), pstat.value + 1);
+      //   if (maxv > 1) {
+      //     // let newDollEq = this, curv = 1;
+      //     // const newDollEqs = [];
+      //     // while (curv < maxv) {
+      //     //   newDollEq = newDollEq.copy();
+      //     //   const cstep = newDollEq.equipment.steps()[0];
+      //     //   const cstat = cstep.stats[0];
+      //     //   cstat.value += 1;
+      //     //   curv = cstat.value;
+      //     //   newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= 1;
+      //     //   newDollEqs.push(newDollEq);
+      //     // }
+      //     // newDollEqs.forEach(dollEq => resultEqs.push(dollEq, ...dollEq.beforeFillNegative()));
+      //     const newDollEq = this.copy();
+      //     const cstep = newDollEq.equipment.steps()[0];
+      //     const cstat = cstep.stats[0];
+      //     cstat.value = maxv;
+      //     newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= (cstat.value - 1);
+      //     resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
+      //   }
+      // }
 
       this.checkMakeUpPotential();
 
@@ -141,7 +140,9 @@ export default class EnchantDollEquipmentContainer {
       // 倍率為1.2且耗潛為3且在第二順位
       const special = positivesHasRate
         .find((category, i) => i !== 0 && category.stats.length > 2 && category.stats[1].originalPotential === 3);
-      // 優先把耗潛3的能力先附在前面的附法
+      /**
+       * 忽略其他能力，優先把耗潛3的能力往前附在第二個的附法
+       */
       if (special) {
         // 建立副本，去做正常的附法
         const newDollEq = this.copy();
@@ -341,21 +342,6 @@ export default class EnchantDollEquipmentContainer {
     if (originalPotentialList.length > 0) {
       const ceq = newDollEq.equipment;
       const positiveStats = newDollEq.positiveStats;
-
-      // if (checkSpecial) {
-      //   // 特殊組合
-      //   // 試著把耗潛3且倍率1.2的能力優先附完
-      //   const special = originalPotentialList
-      //   .find(p => p.type === 'step' && p.stat.originalPotential === 3 && p.stat.belongStep.potentialExtraRate === 1.2);
-      //   if (special) {
-      //     // 把special移到最後面
-      //     originalPotentialList.splice(originalPotentialList.indexOf(special), 1);
-      //     originalPotentialList.push(special);
-      //   } else {
-      //     return [];
-      //   }
-      // }
-
       let special = originalPotentialList
         .find(p => p.type === 'step' && p.stat.potential === 3 && p.stat.belongStep.potentialExtraRate <= 1.2);
 
@@ -396,30 +382,6 @@ export default class EnchantDollEquipmentContainer {
             pstat.value -= 1;
           }
         }
-        if (special && cur.type === 'step') {
-          // potential必定是3
-          const POTENTIAL = 3;
-          const statOriginalValue = cur.stat.value;
-          while (cur.stat.value !== 1) {
-            const lastRemainingPotential = ceq.lastStep.remainingPotential;
-            if ((lastRemainingPotential - 1) % POTENTIAL === 0 || lastRemainingPotential % POTENTIAL === 0) {
-              const _pstat = positiveStats.find(stat => stat.equals(special.stat));
-              const maxv = Math.floor(lastRemainingPotential / POTENTIAL);
-              if (maxv <= _pstat.value) {
-                originalPotentialList.splice(originalPotentialList.indexOf(special), 1);
-                pstat.value += (statOriginalValue - cur.stat.value);
-                _pstat.value -= maxv;
-                special.stat.value += maxv;
-                special = null;
-                break;
-              }
-            }
-            cur.stat.value -= 1;
-          }
-          if (special) {
-            cur.stat.value = statOriginalValue;
-          }
-        }
         originalPotentialList.pop();
         const next = originalPotentialList[originalPotentialList.length - 1];
         if (!checkStepsRemainingPotential()) {
@@ -444,6 +406,34 @@ export default class EnchantDollEquipmentContainer {
         }
         if (cur.stat.value === 0) {
           cur.stat.remove();
+        } else if (special && cur.type === 'step') {
+          // potential必定是3
+          const POTENTIAL = 3;
+          const statOriginalValue = cur.stat.value;
+          let specialFlag = false;
+          while (cur.stat.value !== 1) {
+            const lastRemainingPotential = ceq.lastStep.remainingPotential;
+            if ((lastRemainingPotential - 1) % POTENTIAL === 0 || lastRemainingPotential % POTENTIAL === 0) {
+              const _pstat = positiveStats.find(stat => stat.equals(special.stat));
+              const maxv = Math.floor(lastRemainingPotential / POTENTIAL);
+              if (maxv <= _pstat.value) {
+                originalPotentialList.splice(originalPotentialList.indexOf(special), 1);
+                pstat.value += (statOriginalValue - cur.stat.value);
+                _pstat.value -= maxv;
+                special.stat.value += maxv;
+                specialFlag = true;
+                break;
+              }
+            }
+            cur.stat.value -= 1;
+          }
+          if (!specialFlag) {
+            // 復原cur.stat.value
+            cur.stat.value = statOriginalValue;
+          } else {
+            // 潛力已經用完，不用繼續做了
+            break;
+          }
         }
         cur = next;
         if (special === cur) {
@@ -542,12 +532,11 @@ export default class EnchantDollEquipmentContainer {
           if (av === bv) {
             return b.value - a.value;
           }
-          return bv - av;
-        }); // 大的擺前面
+          return bv - av; // 大的擺前面
+        });
         if (list[0].value < noRatePositiveStats[0].originalPotential) {
           const tstat = noRatePositiveStats[0];
           const value = tstat.itemBase.getPotential(tstat.type, targetEq);
-          // if (value)
           list.push({
             type: 'unused',
             stat: tstat,
