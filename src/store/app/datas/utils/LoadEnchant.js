@@ -46,7 +46,7 @@ export default function LoadEnchantData(r, c) {
         return;
       if (check == '0') {
         cur_cat = r.appendCategory(p[CATEGORY_TITLE]);
-        if (p[CATEGORY_EXTRA] == 'weapon-only')
+        if (p[CATEGORY_EXTRA] === 'weapon-only')
           cur_cat.setWeaponOnly();
         return;
       }

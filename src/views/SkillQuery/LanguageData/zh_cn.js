@@ -75,7 +75,12 @@ export default function() {
           'base name': '伤害',
           'base': {
             'atk': '有效ATK',
-            'matk': '有效MATK'
+            'matk': '有效MATK',
+            '@custom': {
+              'default': '有效攻击力',
+              'both': '有效ATK/有效MATK',
+              'dual_sword': '双剑有效ATK'
+            },
           },
           'damage_type': {
             'physical': '物理伤害',
@@ -114,6 +119,10 @@ export default function() {
             'dark': '暗属性',
             'one_hand_sword': '单手剑属性',
             'arrow': '箭矢属性'
+          },
+          '@custom-base-caption': {
+            'both': '根据<!角色的ATK及MATK的高低->。ATK比MATK高时，取<!有效ATK->；MATK比ATK高时，取<!有效MATK->。',
+            'dual_sword': '双剑有自己特殊的有效ATK公式，细节请查看#双剑特性说明 。'
           },
           'effective_area: title': '类型',
           'radius: title': '伤害半径',

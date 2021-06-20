@@ -1,5 +1,5 @@
 <template>
-  <article class="root--">
+  <article class="relative">
     <cy-sticky-header>
       <template v-slot:default>
         <cy-icon-text v-if="currentSkillState"
@@ -167,12 +167,12 @@
                   {{ $lang(`equipment/${data.name}: title`) }}
                 </cy-icon-text>
                 <div class="px-2">
-                  <cy-button v-for="(eq) in equipmentState[data.shortName + 'List']"
-                    type="border" :key="eq"
+                  <cy-button v-for="(skillEqs) in equipmentState[data.shortName + 'List']"
+                    type="border" :key="skillEqs"
                     :icon="data.icon"
-                    @click="selectEquipment(data.shortName, eq)"
-                    :selected="equipmentState[data.shortName] == eq">
-                    {{ getEquipmentText(eq, data.name) }}
+                    @click="selectEquipment(data.shortName, skillEqs)"
+                    :selected="equipmentState[data.shortName] == skillEqs">
+                    {{ getEquipmentText(skillEqs, data.name) }}
                   </cy-button>
                 </div>
               </div>
@@ -613,35 +613,37 @@ export default {
         this.toggleEquipmentType(target === 'main' ? 'sub' : 'main', false);
       }
     },
-    checkEquipment(eq) {
-      const eqs = this.equipmentState;
+    checkEquipment(skillEqs) {
+      const selectedEqs = this.equipmentState;
       /* 通用 */
-      if ([eq.main, eq.sub, eq.body].every(p => p === -1)) {
+      if ([skillEqs.main, skillEqs.sub, skillEqs.body].every(p => p === -1)) {
         return true;
       }
 
       /* 非通用 */
-      const checkDualSword = eqs.main === 10
+
+      /* 雙劍用 */
+      const checkDualSword = selectedEqs.main === 1 && skillEqs === 10
         && !this.currentSkillState.states.find(a => a.equipment.main === 10);
 
       // or
-      if (eq.operator === 0) {
-        if (eqs.main !== -1 && eqs.main === eq.main || checkDualSword)
+      if (skillEqs.operator === 0) {
+        if (selectedEqs.main !== -1 && selectedEqs.main === skillEqs.main || checkDualSword)
           return true;
-        if (eqs.sub !== -1 && eqs.sub === eq.sub)
+        if (selectedEqs.sub !== -1 && selectedEqs.sub === skillEqs.sub)
           return true;
-        if (eqs.body !== -1 && eqs.body === eq.body)
+        if (selectedEqs.body !== -1 && selectedEqs.body === skillEqs.body)
           return true;
         return false;
       }
 
       // and
-      if (eq.operator === 1) {
-        if (eqs.main !== eq.main || checkDualSword)
+      if (skillEqs.operator === 1) {
+        if (selectedEqs.main !== skillEqs.main && !checkDualSword)
           return false;
-        if (eqs.sub !== eq.sub)
+        if (selectedEqs.sub !== skillEqs.sub)
           return false;
-        if (eqs.body !== eq.body)
+        if (selectedEqs.body !== skillEqs.body)
           return false;
         return true;
       }
@@ -762,11 +764,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-
-.root-- {
-  position: relative;
-}
-
 .main {
   > .top-content {
     @media screen and (min-width: 85rem) {
@@ -849,9 +846,9 @@ export default {
   position: sticky;
   bottom: 0.6rem;
   background-color: var(--white);
-  border: 1px solid var(--primary-light-2);
+  border: 0.1rem solid var(--primary-light-2);
   border-radius: 1.5rem;
-  padding: 0.5rem 0.3rem;
+  padding: 0.25rem 0.5rem;
   padding-right: 0.8rem;
   z-index: 9;
   margin: 0 0.6rem;

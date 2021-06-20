@@ -20,7 +20,7 @@ export default function() {
         'donor': '个人赞助'
       },
       'words': {
-        'title': '作者的话',
+        'title': '杂谈',
         'sub title': '就是一些无关紧要的话w'
       }
     }
