@@ -20,7 +20,7 @@ export default function() {
         'donor': '個人贊助'
       },
       'words': {
-        'title': '作者的話',
+        'title': '雜談',
         'sub title': '就是一些無關緊要的話w'
       }
     }

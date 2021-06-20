@@ -349,6 +349,7 @@
       </cy-icon-text>
     </div>
     <select-item :visible="windows.selectItem"
+      :is-weapon="equipmentIsWeapon"
       @select-item="selectItem"
       @close="toggle('windows/selectItem', false)" />
   </section>
@@ -456,6 +457,9 @@ export default {
     this.$nextTick(() => this.$refs['first-step'].scrollIntoView({ behavior: "smooth" }));
   },
   computed: {
+    equipmentIsWeapon() {
+      return this.currentEquipment.type === EnchantEquipment.TYPE_MAIN_WEAPON;
+    },
     nextStepDisabled() {
       if (this.stepCounter === this.stepContents.selectNegativeStat) {
         return this.negativeStats.length === 0;

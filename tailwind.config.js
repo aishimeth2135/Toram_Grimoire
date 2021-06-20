@@ -28,6 +28,7 @@ module.exports = {
       },
       green: 'var(--primary-green)',
       gray: 'var(--primary-gray)',
+      transparent: 'transparent'
     },
     borderWidth: {
       DEFAULT: '1px',

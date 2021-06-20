@@ -11,7 +11,11 @@
       </cy-icon-text>
     </template>
     <div v-for="category in categorys"
-      :key="category.origin.title" class="p-1 mt-2">
+      :key="category.origin.title"
+      class="p-1 mt-2 relative">
+      <div v-if="category.origin.weaponOnly && !isWeapon"
+        class="absolute w-full h-full top-0 left-0 z-1 bg-white opacity-50 cursor-not-allowed">
+      </div>
       <cy-icon-text class="w-full"
         text-size="small" text-color="purple">
         {{ category.origin.title }}
@@ -31,7 +35,19 @@ import { StatBase } from "@/lib/Character/Stat";
 
 export default {
   RegisterLang: "Enchant Simulator",
-  props: ['visible', 'once'],
+  props: {
+    visible: {
+      type: Boolean
+    },
+    once: {
+      type: Boolean,
+      default: false
+    },
+    isWeapon: {
+      type: Boolean,
+      default: true,
+    }
+  },
   emits: ['close', 'selectItem'],
   data() {
     const types = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
