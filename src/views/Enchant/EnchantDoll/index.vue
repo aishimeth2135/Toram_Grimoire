@@ -458,7 +458,8 @@ export default {
   },
   computed: {
     equipmentIsWeapon() {
-      return this.currentEquipment.type === EnchantEquipment.TYPE_MAIN_WEAPON;
+      console.log(this.currentEquipment.type);
+      return this.currentEquipment.fieldType === EnchantEquipment.TYPE_MAIN_WEAPON;
     },
     nextStepDisabled() {
       if (this.stepCounter === this.stepContents.selectNegativeStat) {
