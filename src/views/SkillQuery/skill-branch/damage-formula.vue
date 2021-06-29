@@ -29,7 +29,7 @@
     </div>
     <div v-if="showData['@custom-base-caption']"
       class="pl-4 mb-1 flex items-center flex-wrap">
-      <cy-icon-text text-color="purple" text-size="small" class="mt-1">
+      <cy-icon-text text-color="purple" size="small" class="mt-1">
         {{ showData['base'] }}
       </cy-icon-text>
       <div class="pl-3 text-light-3 text-sm mt-1" v-html="showData['@custom-base-caption']"></div>

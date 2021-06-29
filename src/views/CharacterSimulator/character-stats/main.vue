@@ -9,7 +9,7 @@
         <fieldset class="border-t border-solid border-light">
           <legend class="py-0 px-2 ml-3">
             <cy-icon-text icon="mdi-creation"
-              text-color="purple" text-size="small">
+              text-color="purple" size="small">
               {{ data.name }}
             </cy-icon-text>
           </legend>
@@ -41,7 +41,7 @@
           </cy-icon-text>
           <div v-if="detail.visible" class="ml-auto">
             <cy-icon-text icon="ic-round-close"
-              text-color="light-3" text-size="small"
+              text-color="light-3" size="small"
               class="ml-4">
               {{ $lang('Click anywhere to close') }}
             </cy-icon-text>
@@ -71,10 +71,10 @@
           <div v-for="line in data.lines" :key="'line' + line.iid"
             class="flex items-center">
             <cy-icon-text v-if="typeof line.title == 'string'"
-              icon="ic-round-add" text-size="small">
+              icon="ic-round-add" size="small">
               {{ line.title }}
             </cy-icon-text>
-            <cy-icon-text v-else icon="ic-round-add" text-size="small">
+            <cy-icon-text v-else icon="ic-round-add" size="small">
               <stat-detail-equipments
                 v-if="line.title.equipments.length != 0"
                 :equipment-texts="line.title.equipments"

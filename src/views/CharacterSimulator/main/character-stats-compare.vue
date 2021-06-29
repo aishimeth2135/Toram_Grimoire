@@ -3,13 +3,13 @@
     <template v-if="comparedStatsDatas.length != 0">
       <div v-for="p in comparedStatsDatas" :key="p.id" class="line">
         <template v-if="!p.isBoolStat">
-          <cy-icon-text icon="gg-shape-rhombus" text-size="small">
+          <cy-icon-text icon="gg-shape-rhombus" size="small">
             {{ p.text }}
           </cy-icon-text>
           <span class="value" :class="{ 'negative': p.negative }"
             >{{ p.displayValue }}</span>
         </template>
-        <cy-icon-text v-else icon="gg-shape-rhombus" text-size="small"
+        <cy-icon-text v-else icon="gg-shape-rhombus" size="small"
           :text-color="p.negative ? 'gray' : 'light-3'">
           {{ p.text }}
         </cy-icon-text>

@@ -18,10 +18,10 @@
     <div class="content">
       <cy-default-tips icon="mdi-food-apple-outline" text-align="left">
         <div>{{ $lang('delete all data: caption')[0] }}</div>
-        <cy-icon-text icon="ic-outline-info" text-color="light-3" text-size="small" class="tip">
+        <cy-icon-text icon="ic-outline-info" text-color="light-3" size="small" class="tip">
           {{ $lang('delete all data: caption')[1] }}
         </cy-icon-text>
-        <cy-icon-text icon="ic-outline-info" text-color="light-3" text-size="small" class="tip">
+        <cy-icon-text icon="ic-outline-info" text-color="light-3" size="small" class="tip">
           {{ $lang('delete all data: caption')[2] }}
         </cy-icon-text>
       </cy-default-tips>

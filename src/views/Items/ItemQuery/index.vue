@@ -40,7 +40,7 @@
                 <div class="column">
                   <div class="normal-title">
                     <cy-icon-text icon="mdi-sort-variant"
-                      text-color="purple" text-size="small">
+                      text-color="purple" size="small">
                       {{ $lang('sort options/title') }}
                     </cy-icon-text>
                   </div>
@@ -62,7 +62,7 @@
                 <div class="column">
                   <div class="normal-title">
                     <cy-icon-text icon="fluent-arrow-sort-24-filled"
-                      text-color="purple" text-size="small">
+                      text-color="purple" size="small">
                       {{ $lang('sort options/order/title') }}
                     </cy-icon-text>
                   </div>
@@ -86,7 +86,7 @@
             <div v-if="currentMode === 'normal' && modes.normal.optionsVisible"
               class="mode-normal-content">
               <cy-icon-text icon="bx-bx-target-lock"
-                text-size="small" text-color="purple">
+                size="small" text-color="purple">
                 {{ $lang('options: normal/title') }}
               </cy-icon-text>
               <div style="padding: 0.2rem 0.4rem;">

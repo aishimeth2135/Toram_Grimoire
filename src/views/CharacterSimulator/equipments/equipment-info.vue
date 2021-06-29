@@ -53,7 +53,7 @@
         <div v-if="equipment.customTypeList != null"
           class="mb-2 flex items-center">
           <cy-icon-text icon="mdi-checkbox-multiple-blank-circle"
-            class="mr-2" text-color="purple" text-size="small">
+            class="mr-2" text-color="purple" size="small">
             {{ $lang('equipment type') }}
           </cy-icon-text>
           <cy-button type="border" icon="heroicons-solid:switch-vertical"

@@ -65,7 +65,7 @@
           </div>
           <div v-if="currentCrystal.origin.enhancer"
             class="flex items-center pl-3 mb-2">
-            <cy-icon-text icon="bx-bx-cube-alt" text-size="small">
+            <cy-icon-text icon="bx-bx-cube-alt" size="small">
               {{ $lang('enhancer title') }}
               <span class="text-orange">
                 {{ currentCrystal.origin.enhancer }}

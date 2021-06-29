@@ -37,7 +37,7 @@
     </div>
     <div class="content-title">
       <cy-icon-text icon="mdi-checkbox-multiple-blank-circle-outline"
-        text-size="small" text-color="purple">
+        size="small" text-color="purple">
         {{ $lang('character name') }}
       </cy-icon-text>
     </div>
@@ -47,7 +47,7 @@
     </div>
     <div class="content-title">
       <cy-icon-text icon="mdi-checkbox-multiple-blank-circle-outline"
-        text-size="small" text-color="purple">
+        size="small" text-color="purple">
         {{ $lang('character level') }}
       </cy-icon-text>
     </div>
@@ -64,7 +64,7 @@
     </div>
     <div class="content-title">
       <cy-icon-text icon="mdi-checkbox-multiple-blank-circle-outline"
-        text-size="small" text-color="purple">
+        size="small" text-color="purple">
         {{ $lang('character stat points') }}
       </cy-icon-text>
     </div>
@@ -95,7 +95,7 @@
     </div>
     <div class="content-title">
       <cy-icon-text icon="mdi-checkbox-multiple-blank-circle-outline"
-        text-size="small" text-color="purple">
+        size="small" text-color="purple">
         {{ $lang('character optional base stat') }}
       </cy-icon-text>
     </div>

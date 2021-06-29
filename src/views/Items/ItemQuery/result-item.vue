@@ -13,11 +13,7 @@
             <span>{{ equipment.name }}</span>
             <cy-icon-text v-if="firstObtain && firstObtain.isDrop"
               icon="jam-box" icon-color="red"
-              class="ml-2">
-              <template #caption>
-                {{ firstObtain.type }}
-              </template>
-            </cy-icon-text>
+              class="ml-2" />
           </span>
           <span v-if="equipment.hasRefining && equipment.refining != 0"
             class="ml-1 text-water-blue">
@@ -65,17 +61,17 @@
       <div class="detail" v-if="detailVisible">
         <div class="mb-2 pl-2 flex items-center">
           <cy-icon-text v-if="equipment.origin.unknowCategory"
-            icon="mdi-ghost" text-size="small" text-color="orange">
+            icon="mdi-ghost" size="small" text-color="orange">
             {{ equipment.origin.unknowCategory }}
           </cy-icon-text>
           <cy-icon-text v-else
             :icon="equipment.getCategoryImagePath()" icon-src="image"
-            text-color="orange" text-size="small" class="mr-4">
+            text-color="orange" size="small" class="mr-4">
             {{ equipment.categoryText }}
           </cy-icon-text>
           <template v-if="equipment.is === 'weapon'">
             <cy-icon-text icon="mdi-sword"
-              text-size="small" class="mr-2">
+              size="small" class="mr-2">
               ATK
             </cy-icon-text>
             <span class="text-light-3 text-sm mr-2">{{ equipment.atk }}</span>
@@ -85,7 +81,7 @@
           </template>
           <template v-else-if="equipment.is === 'armor'">
             <cy-icon-text icon="mdi-shield"
-              text-size="small" class="mr-2">
+              size="small" class="mr-2">
               DEF
             </cy-icon-text>
             <span class="text-light-3 text-sm mr-2">{{ equipment.def }}</span>
@@ -93,14 +89,14 @@
         </div>
         <div class="mb-2 pl-2" v-if="originEquipment.extra">
           <cy-icon-text v-if="originEquipment.extra['caption']"
-            icon="ic-outline-info" text-size="small" text-color="light-3">
+            icon="ic-outline-info" size="small" text-color="light-3">
             {{ originEquipment.extra['caption'] }}
           </cy-icon-text>
         </div>
         <fieldset class="stats column">
           <legend>
             <cy-icon-text icon="ic-baseline-format-list-bulleted"
-              text-size="small" text-color="purple">
+              size="small" text-color="purple">
               {{ $lang('equipment detail/scope title/stats') }}
             </cy-icon-text>
           </legend>
@@ -115,13 +111,13 @@
         </fieldset>
         <fieldset v-if="originEquipment.recipe" class="recipe column">
           <legend>
-            <cy-icon-text icon="ion-hammer" text-size="small" text-color="purple">
+            <cy-icon-text icon="ion-hammer" size="small" text-color="purple">
               {{ $lang('equipment detail/scope title/recipe') }}
             </cy-icon-text>
           </legend>
           <div v-if="recipeInfoValid" class="recipe-info">
             <div class="recipe-attr">
-              <cy-icon-text icon="ion-hammer" text-size="small">
+              <cy-icon-text icon="ion-hammer" size="small">
                 <span>
                   {{ $lang('equipment detail/recipe/item level')  }}
                 </span>
@@ -131,7 +127,7 @@
               </cy-icon-text>
             </div>
             <div class="recipe-attr">
-              <cy-icon-text icon="ion-hammer" text-size="small">
+              <cy-icon-text icon="ion-hammer" size="small">
                 <span>
                   {{ $lang('equipment detail/recipe/item difficulty')  }}
                 </span>
@@ -159,7 +155,7 @@
         </fieldset>
         <fieldset class="obtains column">
           <legend>
-            <cy-icon-text icon="bx-bx-search-alt" text-size="small" text-color="purple">
+            <cy-icon-text icon="bx-bx-search-alt" size="small" text-color="purple">
               {{ $lang('equipment detail/scope title/obtains') }}
             </cy-icon-text>
           </legend>
@@ -167,18 +163,18 @@
             <div v-for="p in obtainsData" class="item" :key="p.iid">
               <div class="type-name">
                 <cy-icon-text :icon="p.icon" class="type"
-                  text-size="small" text-color="water-blue">
+                  size="small" text-color="water-blue">
                   {{ p.type }}
                 </cy-icon-text>
                 <span class="name">{{ p.name }}</span>
               </div>
               <div class="info" v-if="p.dye || p.map">
                 <cy-icon-text v-if="p.dye" icon="ic-outline-palette"
-                  class="dye" text-size="small">
+                  class="dye" size="small">
                   {{ p.dye }}
                 </cy-icon-text>
                 <cy-icon-text v-if="p.map" icon="ic-outline-map"
-                  class="map" text-size="small">
+                  class="map" size="small">
                   {{ p.map }}
                 </cy-icon-text>
               </div>
@@ -195,18 +191,18 @@
           <div v-for="p in dyeObtains" class="item" :key="p.iid">
             <div class="type-name">
               <cy-icon-text :icon="p.icon" class="type"
-                text-size="small" text-color="water-blue">
+                size="small" text-color="water-blue">
                 {{ p.type }}
               </cy-icon-text>
               <span class="name">{{ p.name }}</span>
             </div>
             <div class="info">
               <cy-icon-text v-if="p.dye" icon="ic-outline-palette"
-                class="dye" text-size="small">
+                class="dye" size="small">
                 {{ p.dye }}
               </cy-icon-text>
               <cy-icon-text v-if="p.map" icon="ic-outline-map"
-                class="map" text-size="small">
+                class="map" size="small">
                 {{ p.map }}
               </cy-icon-text>
             </div>
@@ -258,14 +254,14 @@ export default {
   methods: {
     obtainsDataConvert(obtains) {
       const icons = {
-        'mobs': 'bx-bx-game',
-        'boss': 'bx-bx-game',
-        'mini_boss': 'bx-bx-game',
+        'mobs': 'jam-box',
+        'boss': 'jam-box',
+        'mini_boss': 'jam-box',
         'quest': 'mdi-script-outline',
         'smith': 'ion-hammer',
         'unknow': 'ri-file-unknow-line',
         'other': 'gg-shape-rhombus',
-        'box': 'jam-box',
+        'box': 'mdi-treasure-chest',
         'exchange': 'bx-bx-shopping-bag'
       };
       return obtains.map((p, i) => {

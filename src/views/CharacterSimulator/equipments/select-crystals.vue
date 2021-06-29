@@ -45,7 +45,7 @@
       <template #normal-content>
         <div v-if="detailVisible" class="pt-1 animate-slide-up">
           <cy-icon-text icon="bx-bx-cube-alt"
-            text-color="purple" text-size="small">
+            text-color="purple" size="small">
             {{ $lang('select crystals/selected crystals') }}
           </cy-icon-text>
           <div>

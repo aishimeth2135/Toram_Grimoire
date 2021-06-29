@@ -5,14 +5,7 @@
         class="flex-shrink-0"
         icon-color="orange"
         @click="toggle('contents/resultStats')"
-        :selected="contents.resultStats">
-        <template #caption>
-          <cy-icon-text icon="ant-design:star-outlined"
-            icon-color="orange">
-            {{ $lang('result/show detail') }}
-          </cy-icon-text>
-        </template>
-      </cy-button>
+        :selected="contents.resultStats" />
       <cy-transition type="fade">
         <div v-if="contents.resultStats" class="mb-2">
           <div>
@@ -46,7 +39,7 @@
             :class="part.negative ? ['text-orange', 'border-orange'] : ['text-light-4', 'border-light-4']">
             {{ part.text }}
           </span>
-          <cy-icon-text icon="mdi-creation" text-size="small"
+          <cy-icon-text icon="mdi-creation" size="small"
             icon-color="water-blue" text-color="water-blue"
             class="ml-2">
             {{ item.remainingPotential }}
@@ -64,7 +57,7 @@
             {{ part }}
           </span>
         </template>
-        <cy-icon-text icon="mdi-creation" text-size="small"
+        <cy-icon-text icon="mdi-creation" size="small"
           icon-color="water-blue" text-color="water-blue"
           class="ml-2 my-1">
           {{ item.remainingPotential }}

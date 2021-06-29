@@ -6,11 +6,11 @@
         <div class="text-center">
           <cy-icon-text icon="bx-bxs-circle"
             class="mr-2" icon-color="water-blue"
-            text-size="small">
+            size="small">
             {{ $lang('skill area/point: character') }}
           </cy-icon-text>
           <cy-icon-text icon="bx-bxs-circle"
-            icon-color="red" text-size="small">
+            icon-color="red" size="small">
             {{ $lang('skill area/point: target') }}
           </cy-icon-text>
         </div>

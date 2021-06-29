@@ -7,7 +7,7 @@
           {{ currentBuild.name }}
         </cy-icon-text>
         <cy-button type="icon" class="ml-auto"
-          :icon="contents.top ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
+          :icon="contents.top ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
           :selected="contents.top" />
       </div>
     </div>
@@ -60,7 +60,7 @@
           </cy-button>
         </div>
       </div>
-      <cy-icon-text text-size="small" text-color="purple" class="mt-4">
+      <cy-icon-text size="small" text-color="purple" class="mt-4">
         {{ $lang('base options') }}
       </cy-icon-text>
       <div class="flex items-center flex-wrap p-2 mr-2">
@@ -76,7 +76,7 @@
       </div>
       <cy-transition type="fade">
         <div v-if="contents.extraOptions">
-          <cy-icon-text text-size="small" text-color="water-blue" icon-color="water-blue" class="mt-4">
+          <cy-icon-text size="small" text-color="water-blue" icon-color="water-blue" class="mt-4">
             {{ $lang('advanced options') }}
           </cy-icon-text>
           <div class="p-2">
@@ -87,7 +87,7 @@
               </template>
             </cy-input-counter>
           </div>
-          <cy-icon-text text-size="small" text-color="water-blue" icon-color="water-blue" class="mt-4">
+          <cy-icon-text size="small" text-color="water-blue" icon-color="water-blue" class="mt-4">
             {{ $lang('common options') }}
           </cy-icon-text>
           <div class="p-2">
@@ -106,7 +106,7 @@
           </div>
         </div>
       </cy-transition>
-      <cy-icon-text text-size="small" text-color="purple" class="mt-3">
+      <cy-icon-text size="small" text-color="purple" class="mt-3">
         {{ $lang('equipment type') }}
       </cy-icon-text>
       <div class="py-0.5 px-2">
@@ -145,45 +145,69 @@
       }">
       <enchant-result :equipment="currentEquipment" />
     </div>
-    <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center flex-wrap bg-white sticky bottom-4">
-      <cy-button type="icon"
-        :icon="contents.result ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
-        :selected="contents.result"
-        @click="toggle('contents/result')" />
-      <cy-button type="icon" class="ml-2"
-        :icon="state.statDisplayMode === 1 ? 'mdi-cube-outline' : 'mdi-cube-off-outline'"
-        main-color="water-blue"
-        :selected="state.statDisplayMode === 1"
-        @click="state.statDisplayMode = state.statDisplayMode === 1 ? 0 : 1">
-        <template #caption>
-          <div>
-            <div>
-              <cy-icon-text text-size="small" text-color="purple">
-                {{ $lang('stat display mode/title') }}
-              </cy-icon-text>
-            </div>
-            <div class="pl-4">
-              <cy-icon-text icon="mdi-cube-off-outline"
-                icon-color="water-blue-light" text-size="small"
-                class="w-full">
-                {{ $lang('stat display mode/potential cost') }}
-              </cy-icon-text>
-              <cy-icon-text icon="mdi-cube-outline"
-              icon-color="water-blue" text-size="small"
-              class="w-full">
-                {{ $lang('stat display mode/material point') }}
-              </cy-icon-text>
-            </div>
-          </div>
-        </template>
-      </cy-button>
-      <!-- <cy-button type="icon" @click="optimizeSteps" /> -->
-      <cy-icon-text icon="bx-bx-star" class="ml-auto mr-3">
-        {{ $lang('success rate') }}
-      </cy-icon-text>
-      <span class="text-light-4">
-        {{ successRate }}
-      </span>
+    <div class="sticky bottom-4">
+      <div v-if="currentEquipment.allSteps.length === 0 && !contents.result"
+        class="border-1 border-light-2 py-4 px-5 mx-3 mt-3 rounded-2xl bg-white">
+        <div class="text-center">
+          <cy-button icon="ic-round-add-circle-outline" type="border"
+            @click="appendStep">
+            {{ $lang('append enchant step') }}
+          </cy-button>
+        </div>
+        <div class="text-sm text-water-blue pt-1 text-center">
+          {{ $lang('footer guide/title: close') }}
+        </div>
+        <div class="pt-3">
+          <cy-icon-text size="small" text-color="purple">
+            {{ $lang('footer guide/title') }}
+          </cy-icon-text>
+        </div>
+        <div class="pt-1">
+          <cy-icon-text icon="akar-icons:circle-chevron-down"
+            text-color="purple" size="small" class="mr-3">
+            {{ $lang('footer guide/toggle result/titles')[0] }}
+          </cy-icon-text>
+          <cy-icon-text icon="akar-icons:circle-chevron-up"
+            text-color="purple" size="small">
+            {{ $lang('footer guide/toggle result/titles')[1] }}
+          </cy-icon-text>
+        </div>
+        <div class="pl-3 text-sm">
+          {{ $lang('footer guide/toggle result/caption') }}
+        </div>
+        <div class="mt-3">
+          <cy-icon-text icon="mdi-cube-outline"
+            text-color="purple" icon-color="water-blue"
+            size="small" class="mr-3">
+            {{ $lang('footer guide/toggle display mode/titles')[0] }}
+          </cy-icon-text>
+          <cy-icon-text icon="mdi-cube-off-outline"
+            text-color="purple" icon-color="water-blue" size="small">
+            {{ $lang('footer guide/toggle display mode/titles')[1] }}
+          </cy-icon-text>
+        </div>
+        <div class="pl-3 text-sm">
+          {{ $lang('footer guide/toggle display mode/caption') }}
+        </div>
+      </div>
+      <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center flex-wrap bg-white">
+        <cy-button type="icon"
+          :icon="contents.result ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
+          :selected="contents.result"
+          @click="toggle('contents/result')" />
+        <cy-button type="icon" class="ml-2"
+          :icon="state.statDisplayMode === 1 ? 'mdi-cube-outline' : 'mdi-cube-off-outline'"
+          main-color="water-blue"
+          :selected="state.statDisplayMode === 1"
+          @click="state.statDisplayMode = state.statDisplayMode === 1 ? 0 : 1" />
+        <!-- <cy-button type="icon" @click="optimizeSteps" /> -->
+        <cy-icon-text icon="bx-bx-star" class="ml-auto mr-3">
+          {{ $lang('success rate') }}
+        </cy-icon-text>
+        <span class="text-light-4">
+          {{ successRate }}
+        </span>
+      </div>
     </div>
   </section>
   <div v-else>
@@ -271,7 +295,7 @@ export default {
       this.createBuild();
     }
   },
-  unmounted() {
+  beforeUnmount() {
     window.removeEventListener('beforeunload', this.listeners.windowBeforeUnload);
     document.removeEventListener('visibilitychange', this.listeners.documentVisibilityChange);
     this.autoSave();
