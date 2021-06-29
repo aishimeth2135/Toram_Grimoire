@@ -8,12 +8,12 @@
       </cy-icon-text>
       <cy-icon-text v-if="rootState.statDisplayMode === 0"
         icon="mdi-creation" class="ml-auto mr-2"
-        text-size="small" text-color="purple">
+        size="small" text-color="purple">
         {{ potentialEffect }}
       </cy-icon-text>
       <div class="inline-flex items-center ml-auto" v-else>
          <cy-icon-text icon="mdi-cube-outline"
-          text-size="small" icon-color="water-blue-light">
+          size="small" icon-color="water-blue-light">
           {{ materialPoint.title }}
         </cy-icon-text>
         <span class="text-sm ml-2 text-water-blue">{{ materialPoint.value }}</span>

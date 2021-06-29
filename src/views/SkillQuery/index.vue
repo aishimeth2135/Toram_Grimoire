@@ -130,7 +130,7 @@
                   </div>
                   <div class="container-content" v-else key="mode-2">
                     <cy-icon-text icon="heroicons-solid:switch-vertical"
-                      text-size="small" text-color="purple"
+                      size="small" text-color="purple"
                       class="mb-1 w-full">
                       {{ $lang('switch skill') }}
                     </cy-icon-text>
@@ -161,7 +161,7 @@
               <div v-for="(data) in equipmentCategoryList"
                 class="equipment-column" :key="data.showName">
                 <cy-icon-text :icon="data.icon"
-                  text-size="small"
+                  size="small"
                   class="w-full mt-3"
                   text-color="purple">
                   {{ $lang(`equipment/${data.name}: title`) }}
@@ -181,7 +181,7 @@
                   :value="skillStates.skillLevel"
                   @update:value="setSkillLevel">
                   <template v-slot:title>
-                    <cy-icon-text icon="mdi-order-numeric-descending" text-size="small">
+                    <cy-icon-text icon="mdi-order-numeric-descending" size="small">
                       {{ $lang('skill level') }}
                     </cy-icon-text>
                   </template>
@@ -238,7 +238,7 @@
             <div v-if="fr.type === 'category'"
               class="my-2"
               :key="fr.type + fr.value">
-              <cy-icon-text icon="ic-baseline-label" text-size="small">
+              <cy-icon-text icon="ic-baseline-label" size="small">
                 {{ fr.value }}
               </cy-icon-text>
             </div>

@@ -11,7 +11,7 @@
     </fieldset>
     <fieldset v-if="type === 'history'" class="branch-type-title">
       <legend>
-        <cy-icon-text icon="ic-round-history" text-size="small">
+        <cy-icon-text icon="ic-round-history" size="small">
           {{ branch.attrs['@history-date'] }}
         </cy-icon-text>
       </legend>
@@ -60,24 +60,24 @@
         <template v-if="branch.name == 'damage'">
           <cy-icon-text v-if="showData['title']"
             class="condition-scope"
-            text-size="small" text-color="light-3"
+            size="small" text-color="light-3"
             icon="bx-bx-game">
             {{ showData['title'] }}
           </cy-icon-text>
           <cy-icon-text v-if="showData['element']" :icon="elementIconName"
             class="condition-scope"
-            text-size="small" text-color="purple">
+            size="small" text-color="purple">
             {{ showData['element'] }}
           </cy-icon-text>
           <cy-icon-text v-if="showData['frequency'] && showData['@parent-branch'].attrs['title'] != 'each'"
             class="condition-scope"
-            text-size="small" text-color="light-3"
+            size="small" text-color="light-3"
             icon="bi-circle-square">
             <span v-html="showData['frequency']"></span>
           </cy-icon-text>
           <cy-icon-text v-if="showData['duration'] && showData['cycle']"
             icon="ic-round-timer" class="condition-scope"
-            text-size="small" text-color="purple">
+            size="small" text-color="purple">
             <span v-html="$lang('damage/caption of duration and cycle', [showData['duration'], showData['cycle']])">
             </span>
           </cy-icon-text>
@@ -97,25 +97,25 @@
         <template v-else-if="branch.name === 'effect' || branch.name === 'next'">
           <cy-icon-text v-if="showData['condition']"
             class="condition-scope"
-            text-size="small" text-color="purple"
+            size="small" text-color="purple"
             icon="eva-checkmark-circle-2-outline">
             <span v-html="showData['condition']"></span>
           </cy-icon-text>
           <cy-icon-text v-if="showData['duration']"
             class="condition-scope"
-            text-size="small" text-color="purple"
+            size="small" text-color="purple"
             icon="zmdi-time-interval">
             <span v-html="showData['duration']"></span>
           </cy-icon-text>
           <cy-icon-text v-else-if="showData['end_condition']"
             class="condition-scope"
-            text-size="small" text-color="purple"
+            size="small" text-color="purple"
             icon="zmdi-time-interval">
             <span v-html="showData['end_condition']"></span>
           </cy-icon-text>
           <cy-icon-text v-if="showData['is_place']"
             class="condition-scope"
-            text-size="small" text-color="purple"
+            size="small" text-color="purple"
             icon="emojione-monotone:heavy-large-circle">
             {{ showData['is_place'] }}
           </cy-icon-text>
@@ -123,13 +123,13 @@
         <template v-if="branch.name == 'heal'">
           <cy-icon-text v-if="showData['frequency']"
             class="condition-scope"
-            text-size="small" text-color="purple"
+            size="small" text-color="purple"
             icon="bi-circle-square">
             <span v-html="showData['frequency']"></span>
           </cy-icon-text>
           <cy-icon-text v-if="showData['duration'] && showData['cycle']"
             icon="ic-round-timer" class="condition-scope"
-            text-size="small" text-color="purple">
+            size="small" text-color="purple">
             <span v-html="$lang('heal/caption of duration and cycle',
               [showData['duration'], showData['cycle']])">
             </span>
@@ -167,7 +167,7 @@
       <fieldset class="extra-column unfold-fieldset" v-if="isScoped" :class="{ unfold: skillAreaVisible }">
         <legend>
             <cy-button class="condition-scope border-0 p-0"
-              text-size="small" text-color="purple"
+              size="small" text-color="purple"
               icon="bx-bx-target-lock" @click="toggleVisible('skillArea')">
             {{ $lang('skill area/button text') }}
           </cy-button>
@@ -177,7 +177,7 @@
       </fieldset>
       <fieldset class="extra-column" v-if="branch.name == 'damage' && showData['ailment_name']">
         <legend>
-          <cy-icon-text icon="ri-plant-line" text-size="small">
+          <cy-icon-text icon="ri-plant-line" size="small">
             {{ $lang('ailment title') }}
           </cy-icon-text>
         </legend>
@@ -193,7 +193,7 @@
         <template v-if="suffixShowData['@parent-branch'].name === 'extra'">
           <legend>
             <cy-icon-text class="condition-scope"
-              text-size="small" text-color="light-3"
+              size="small" text-color="light-3"
               icon="eva-checkmark-circle-2-outline">
               <span v-html="suffixShowData['condition']"></span>
             </cy-icon-text>
@@ -251,7 +251,7 @@
           <cy-icon-text class="title-btn" style="--icon-width: 1.3rem;"
             :icon="branch.group.expansion ? 'mdi-leaf-maple' : 'mdi-leaf-maple-off'" />
           <div class="text-scope tips">
-            <cy-icon-text icon="bx-bx-message-rounded" text-size="small" text-color="light-3">
+            <cy-icon-text icon="bx-bx-message-rounded" size="small" text-color="light-3">
               <span v-html="showData['text']"></span>
             </cy-icon-text>
           </div>
@@ -259,7 +259,7 @@
         <div class="content-line" v-else>
           <div class="text-scope tips">
             <cy-icon-text icon="bx-bx-message-rounded"
-              text-size="small" text-color="light-3">
+              size="small" text-color="light-3">
               <span v-html="showData['text']"></span>
             </cy-icon-text>
           </div>
@@ -289,7 +289,7 @@
         <div class="content-line">
           <cy-icon-text class="condition-scope"
             icon="entypo-link"
-            text-size="small" text-color="purple">
+            size="small" text-color="purple">
             {{ $lang('reference/base title') }}
           </cy-icon-text>
           <div class="text-scope" v-if="showData['text']">

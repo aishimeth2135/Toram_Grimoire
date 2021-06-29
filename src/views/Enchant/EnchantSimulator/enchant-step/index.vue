@@ -3,7 +3,7 @@
     :class="{ [mainBorderColor]: true, 'opacity-50': step.hidden }">
     <div class="border-b pl-2 flex items-center py-0.5"
       :class="[mainBorderColor]">
-      <cy-icon-text icon="bx-bxs-book-content" text-size="small"
+      <cy-icon-text icon="bx-bxs-book-content" size="small"
         :text-color="mainTextColor" :icon-color="mainTextColor">
         {{ stepTitle }}
       </cy-icon-text>
@@ -53,6 +53,44 @@
           :stat="stat" class="step-stat"
           :key="stat.statId" />
       </template>
+      <div v-else-if="step.index === 0"
+        class="pt-3 pb-2 px-2">
+        <div>
+          <cy-icon-text size="small" text-color="purple">
+            {{ $lang('step/button caption: title') }}
+          </cy-icon-text>
+        </div>
+        <div class="pl-2">
+          <div>
+            <cy-icon-text size="small"
+              icon="ic-round-add-circle-outline"
+              icon-color="water-blue">
+              {{ $lang('step/select one stat item') }}
+            </cy-icon-text>
+          </div>
+          <div>
+            <cy-icon-text size="small"
+              icon="ic-round-add-circle-outline"
+              icon-color="red">
+              {{ $lang('step/select multiple stat items') }}
+            </cy-icon-text>
+          </div>
+          <div>
+            <cy-icon-text size="small"
+              icon="ic-outline-near-me"
+              icon-color="blue-green">
+              {{ $lang('step/type: each') }}
+            </cy-icon-text>
+          </div>
+          <div>
+            <cy-icon-text size="small"
+              icon="ant-design:star-outlined"
+              icon-color="orange">
+              {{ $lang('step/auto fill positive stat') }}
+            </cy-icon-text>
+          </div>
+        </div>
+      </div>
       <cy-default-tips v-else icon="fluent-leaf-two-16-filled">
         {{ $lang('tips/step is empty') }}
       </cy-default-tips>
@@ -77,49 +115,21 @@
         <cy-button type="icon"
           icon="ic-round-add-circle-outline"
           @click="openSelectItem('step', step, true)"
-          icon-color="water-blue">
-          <template #caption>
-            <cy-icon-text icon="ic-round-add-circle-outline"
-              icon-color="water-blue">
-              {{ $lang('step/select one stat item') }}
-            </cy-icon-text>
-          </template>
-        </cy-button>
+          icon-color="water-blue" />
         <cy-button type="icon"
           icon="ic-round-add-circle-outline"
           @click="openSelectItem('step', step)"
-          icon-color="red">
-          <template #caption>
-            <cy-icon-text icon="ic-round-add-circle-outline"
-              icon-color="red">
-              {{ $lang('step/select multiple stat items') }}
-            </cy-icon-text>
-          </template>
-        </cy-button>
+          icon-color="red" />
         <cy-button type="icon"
           :icon="typeIcon"
           @click="toggleStepType(step)"
           :icon-color="typeEach ? 'blue-green' : 'blue-green-light'"
-          icon-color-hover="blue-green">
-          <template #caption>
-            <cy-icon-text icon="ic-outline-near-me"
-              icon-color="blue-green">
-              {{ $lang('step/type: each') }}
-            </cy-icon-text>
-          </template>
-        </cy-button>
+          icon-color-hover="blue-green" />
         <cy-button v-if="step.belongEquipment.stats(step.index - 1).length >= 6"
           type="icon"
           icon="ant-design:star-outlined"
           @click="step.autoFill()"
-          icon-color="orange">
-          <template #caption>
-            <cy-icon-text icon="ant-design:star-outlined"
-              icon-color="orange">
-              {{ $lang('step/auto fill positive stat') }}
-            </cy-icon-text>
-          </template>
-        </cy-button>
+          icon-color="orange" />
         <cy-icon-text icon="mdi-creation" class="ml-auto mr-2"
           text-color="purple">
           {{ step.remainingPotential }}

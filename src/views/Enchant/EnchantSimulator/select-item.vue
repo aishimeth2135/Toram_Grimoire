@@ -17,7 +17,7 @@
         class="absolute w-full h-full top-0 left-0 z-1 bg-white opacity-50 cursor-not-allowed">
       </div>
       <cy-icon-text class="w-full"
-        text-size="small" text-color="purple">
+        size="small" text-color="purple">
         {{ category.origin.title }}
       </cy-icon-text>
       <div>

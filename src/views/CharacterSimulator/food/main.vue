@@ -37,7 +37,7 @@
     </div>
     <div class="content-title">
       <cy-icon-text icon="mdi-checkbox-multiple-blank-circle-outline"
-        text-size="small" text-color="purple">
+        size="small" text-color="purple">
         {{ $lang('food build name') }}
       </cy-icon-text>
     </div>
@@ -47,18 +47,18 @@
     </div>
     <div class="content-title">
       <cy-icon-text icon="mdi-checkbox-multiple-blank-circle-outline"
-        text-size="small" text-color="purple">
+        size="small" text-color="purple">
         {{ $lang('food list') }}
       </cy-icon-text>
     </div>
     <div class="foods content">
       <div class="content-tips">
         <cy-icon-text icon="ic-outline-info"
-          text-color="light-3" text-size="small"
+          text-color="light-3" size="small"
           class="mr-2">
           {{ $lang('tips: select food') }}
         </cy-icon-text>
-        <cy-icon-text icon="ic-outline-info" text-color="light-3" text-size="small">
+        <cy-icon-text icon="ic-outline-info" text-color="light-3" size="small">
           {{ $lang('tips: auto select food') }}
         </cy-icon-text>
       </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="main--custom-equipment-editor">
     <cy-icon-text icon="mdi-clipboard-edit-outline"
-      text-size="small" text-color="purple">
+      size="small" text-color="purple">
       {{ $lang('custom equipment editor/equipment name') }}
     </cy-icon-text>
     <div class="content">
@@ -10,7 +10,7 @@
          @update:value="setEquipmentProperty(equipment, 'name', $event)" />
     </div>
     <cy-icon-text icon="mdi-rhombus-outline"
-      text-size="small" text-color="purple">
+      size="small" text-color="purple">
       {{ $lang('custom equipment editor/equipment stats') }}
     </cy-icon-text>
     <div class="mt-2 content">
@@ -34,7 +34,7 @@
     </div>
     <template v-if="hasOther">
       <cy-icon-text icon="mdi-rhombus-outline"
-        text-size="small" text-color="purple">
+        size="small" text-color="purple">
         {{ $lang('custom equipment editor/equipment other') }}
       </cy-icon-text>
       <div class="mt-2 content">
@@ -103,7 +103,7 @@
             <div class="content">
               <div class="w-full">
                 <cy-icon-text icon="mdi-rhombus-outline"
-                  text-size="small" text-color="purple">
+                  size="small" text-color="purple">
                   {{ $lang('custom equipment editor/select stat: current stats') }}
                 </cy-icon-text>
               </div>
@@ -124,7 +124,7 @@
               </cy-list-item>
               <div class="w-full">
                 <cy-icon-text icon="mdi-rhombus-outline"
-                  text-size="small" text-color="purple">
+                  size="small" text-color="purple">
                   {{ $lang('custom equipment editor/select stat: appended stats') }}
                 </cy-icon-text>
               </div>
@@ -146,7 +146,7 @@
               </cy-list-item>
               <div class="w-full">
                 <cy-icon-text icon="mdi-rhombus-outline"
-                  text-size="small" text-color="purple">
+                  size="small" text-color="purple">
                   {{ $lang('custom equipment editor/select stat: deleted stats') }}
                 </cy-icon-text>
               </div>

@@ -129,14 +129,14 @@
           {{ $lang('select negative stats/caption') }}
         </div>
         <div class="mt-2 ml-4 mr-2">
-          <cy-icon-text icon="ic-outline-info" text-size="small"
+          <cy-icon-text icon="ic-outline-info" size="small"
             text-color="water-blue" icon-color="water-blue-light">
             {{ $lang('tips/performance of auto find negative stats') }}
           </cy-icon-text>
         </div>
         <div v-if="equipmentState.autoFindPotentialMinimum"
           class="mt-2 ml-4 mr-2">
-          <cy-icon-text icon="ic-outline-info" text-size="small"
+          <cy-icon-text icon="ic-outline-info" size="small"
             text-color="water-blue" icon-color="water-blue-light">
             {{ $lang('tips/performance of auto find minimum of original potential and auto find negative stats') }}
           </cy-icon-text>
@@ -186,10 +186,10 @@
         <div v-if="selectNegativeStatState.auto && autoNegativeStats.length < doll.numNegativeStats"
           class="flex justify-center mt-4">
           <div>
-            <cy-icon-text text-size="small" icon-color="water-blue" class="mr-4">
+            <cy-icon-text size="small" icon-color="water-blue" class="mr-4">
               {{ $lang('select negative stats/auto selected') }}
             </cy-icon-text>
-            <cy-icon-text text-size="small">
+            <cy-icon-text size="small">
               {{ $lang('select negative stats/manually selected') }}
             </cy-icon-text>
           </div>
@@ -232,7 +232,7 @@
           </cy-button>
           <div v-if="selectNegativeStatState.auto && autoNegativeStats.length < doll.numNegativeStats" class="mt-2">
             <div>
-              <cy-icon-text icon="ic-outline-info" text-size="small"
+              <cy-icon-text icon="ic-outline-info" size="small"
                 text-color="water-blue" icon-color="water-blue-light">
                 {{ $lang('select negative stats/stats from auto not enough')[0] }}
               </cy-icon-text>
@@ -280,7 +280,7 @@
           v-if="equipmentState.autoFindPotentialMinimum
           && resultEquipment.originalPotential === 99
           && resultEquipment.realSuccessRate < 100">
-          <cy-icon-text icon="ic-outline-info" text-size="small"
+          <cy-icon-text icon="ic-outline-info" size="small"
             text-color="water-blue" icon-color="water-blue-light">
             {{ $lang('tips/can not auto find minimum of original potential') }}
           </cy-icon-text>
@@ -343,7 +343,7 @@
     </div>
     <div v-if="equipmentState.autoFindPotentialMinimum && stepCounter === stepContents.selectNegativeStat"
       class="my-2 flex justify-center">
-      <cy-icon-text icon="ic-outline-info" text-size="small"
+      <cy-icon-text icon="ic-outline-info" size="small"
         text-color="water-blue" icon-color="water-blue-light">
         {{ $lang('tips/performance of auto find minimum of original potential') }}
       </cy-icon-text>

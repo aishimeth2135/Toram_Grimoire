@@ -28,7 +28,7 @@ export default {
       default: 'normal',
       validator: v => ['normal', 'item'].includes(v)
     },
-    textSize: {
+    size: {
       type: String,
       default: 'normal',
       validator(v) {
@@ -53,7 +53,7 @@ export default {
     rootClass() {
       return {
         'is-item': this.type === 'item',
-        ['text-' + this.textSize]: true,
+        ['text-' + this.size]: true,
         ['display-' + this.display]: true
       };
     }

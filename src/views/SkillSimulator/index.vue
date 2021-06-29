@@ -137,7 +137,7 @@
       <div class="bottom-menu">
         <div class="skill-point-information">
           <div class="column">
-            <cy-icon-text icon="gg-shape-rhombus" text-size="small">
+            <cy-icon-text icon="gg-shape-rhombus" size="small">
               {{ $lang('skill level') }}
             </cy-icon-text>
             <span class="ml-2 text-light-3 text-sm">
@@ -145,7 +145,7 @@
             </span>
           </div>
           <div class="column ml-3">
-            <cy-icon-text icon="mdi:judaism" text-size="small">
+            <cy-icon-text icon="mdi:judaism" size="small">
               {{ $lang('star gem level') }}
             </cy-icon-text>
             <span class="ml-2 text-light-3 text-sm">
@@ -200,7 +200,7 @@
           </div>
         </template>
         <div style="max-width: 28rem; border: 1px solid var(--primary-light); padding: 0.8rem; border-radius: 0.3rem; margin-bottom: 1rem">
-          <cy-icon-text icon="ic-outline-info" text-size="small" text-color="light-3">
+          <cy-icon-text icon="ic-outline-info" size="small" text-color="light-3">
             {{ $lang('main menu/preview exported image: tips 1') }}
           </cy-icon-text>
         </div>
