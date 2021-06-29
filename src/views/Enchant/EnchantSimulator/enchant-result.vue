@@ -97,7 +97,7 @@ export default {
   RegisterLang: "Enchant Simulator",
   setup() {
     const { contents, toggle } = ToggleService({
-      contents: ['resultStats']
+      contents: [{ name: 'resultStats', default: true }]
     });
     return { contents, toggle };
   },

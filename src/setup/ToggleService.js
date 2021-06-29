@@ -7,6 +7,9 @@ export default function(options) {
     value.forEach(p => {
       if (typeof p === 'string') {
         group[p] = ref(false);
+      } else if (typeof p === 'object') {
+        const { name, default: defaultValue } = p;
+        group[name] = ref(defaultValue);
       }
     });
     dataMap[key] = group;
