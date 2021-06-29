@@ -29,6 +29,8 @@ export default {
       if (el) {
         el.addEventListener('mouseenter', () => this.showCaption());
         el.addEventListener('mouseleave', () => this.hideCaption());
+        el.addEventListener('touchstart', () => this.showCaption());
+        el.addEventListener('touchend', () => this.hideCaption());
       }
     });
   },

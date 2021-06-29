@@ -1,7 +1,9 @@
 <template>
   <div class="pt-1">
-    <div class="flex items-center flex-wrap py-0.5">
-      <cy-icon-text :text-color="stat.value >= 0 ? 'dark' : 'orange'">
+    <div class="flex items-center flex-wrap py-0.5"
+      :class="{ 'opacity-50': !stat.valid }">
+      <cy-icon-text :text-color="stat.value >= 0 ? 'dark' : 'orange'"
+        :icon="stat.valid ? 'gg-shape-rhombus' : 'ic-round-close'">
         {{ stat.show('base') }}
       </cy-icon-text>
       <cy-icon-text v-if="rootState.statDisplayMode === 0"
@@ -22,7 +24,8 @@
         inline max-button min-button
         :value="stat.value"
         @update:value="setStatValue(stat, $event)"
-        :range="stat.limit" />
+        :range="stat.limit"
+        :disabled="!stat.valid" />
       <cy-button type="icon" icon="jam-close-circle"
         class="ml-auto"
         @click="stat.remove()"

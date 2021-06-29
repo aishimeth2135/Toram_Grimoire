@@ -90,9 +90,9 @@ export default {
         'inline': this.inline,
         ['border-' + this.mainColor]: !this.focus,
         'disabled': this.disabled,
-        ['border-' + this.mainColorInstance.darken]: this.focus,
-        ['ring-' + this.mainColorInstance.darken]: this.focus,
-        'ring-1': this.focus
+        ['border-' + this.mainColorInstance.darken]: !this.inline && this.focus,
+        ['ring-' + this.mainColorInstance.darken]: !this.inline && this.focus,
+        'ring-1': !this.inline && this.focus
       };
     },
     mainColorInstance() {
