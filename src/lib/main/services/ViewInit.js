@@ -7,6 +7,10 @@ import store from "@/store";
  * @param  {...String} inits
  */
 export default async function viewInit(...inits) {
+  if (inits.length === 0) {
+    store.commit('initialize/skipInit');
+    return;
+  }
   const initItems = inits
     .map(async id => {
       const loaded = store.getters['datas/checkLoad'](id);

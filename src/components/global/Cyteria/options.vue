@@ -72,6 +72,7 @@ export default {
   &.inline {
     margin: 0;
     display: inline-block;
+    background-color: transparent;
 
     > .title-container {
       border: 0;

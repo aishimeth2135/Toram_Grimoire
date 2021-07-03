@@ -19,7 +19,10 @@ export default function(){
           'title': '設定裝備的初始潛力值',
           'caption': '請設定乾淨的裝備最一開始的潛力值是多少。或者可以讓系統自動計算成功率100%的最低需求潛力。',
           'auto find minimum': '自動尋找最低需求'
-        }
+        },
+        'set config': {
+          'title': '其他設定點這裡'
+        },
       },
       'select positive stats': {
         'title': '選擇要附的能力',

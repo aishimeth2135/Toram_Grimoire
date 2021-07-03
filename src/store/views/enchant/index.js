@@ -9,7 +9,7 @@ const state = {
   currentBuildIndex: -1,
   hasInit: false,
   config: {
-    characterLevel: 220,
+    characterLevel: 230,
     smithLevel: 0
   },
 };

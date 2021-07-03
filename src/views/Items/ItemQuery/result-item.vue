@@ -4,7 +4,7 @@
       :class="{ 'detail-visible': detailVisible }"
       @click="detailVisible = !detailVisible">
       <div class="title">
-        <cy-icon-text class="py-1"
+        <cy-icon-text class="py-1 w-48 flex-shrink-0"
           :icon="equipment.is !== 'avatar' ? equipment.getCategoryImagePath() : equipment.categoryIcon"
           :icon-src="equipment.is !== 'avatar' ? 'image' : 'iconify'"
           :text-color="detailVisible ? 'orange' : 'dark'"
@@ -301,8 +301,8 @@ export default {
   }
 }
 .title {
-  display: grid;
-  grid-template-columns: 12rem auto;
+  display: flex;
+  align-items: center;
   width: 100%;
 
   > .base-value {
