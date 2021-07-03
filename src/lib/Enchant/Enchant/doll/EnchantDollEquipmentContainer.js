@@ -20,6 +20,19 @@ export default class EnchantDollEquipmentContainer {
     this.flags = {
       error: null
     };
+
+    /** @type {EnchantDollEquipmentContainer[]} */
+    this.clones = [];
+
+    /** @type {EnchantDollEquipmentContainer} */
+    this.copyFrom = null;
+  }
+
+  get cloneId() {
+    if (!this.copyFrom) {
+      return '@';
+    }
+    return this.copyFrom.cloneId + '-' + this.copyFrom.clones.indexOf(this).toString();
   }
 
   /**
@@ -103,30 +116,30 @@ export default class EnchantDollEquipmentContainer {
       step.appendStat(pstat.itemBase, pstat.type, 1);
       pstat.value -= 1;
 
-      // {
-      //   const pstatPotentialCost = pstat.itemBase.getPotential(pstat.type, eq);
-      //   const maxv = Math.min(Math.floor((eq.originalPotential - 1) / pstatPotentialCost), pstat.value + 1);
-      //   if (maxv > 1) {
-      //     // let newDollEq = this, curv = 1;
-      //     // const newDollEqs = [];
-      //     // while (curv < maxv) {
-      //     //   newDollEq = newDollEq.copy();
-      //     //   const cstep = newDollEq.equipment.steps()[0];
-      //     //   const cstat = cstep.stats[0];
-      //     //   cstat.value += 1;
-      //     //   curv = cstat.value;
-      //     //   newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= 1;
-      //     //   newDollEqs.push(newDollEq);
-      //     // }
-      //     // newDollEqs.forEach(dollEq => resultEqs.push(dollEq, ...dollEq.beforeFillNegative()));
-      //     const newDollEq = this.copy();
-      //     const cstep = newDollEq.equipment.steps()[0];
-      //     const cstat = cstep.stats[0];
-      //     cstat.value = maxv;
-      //     newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= (cstat.value - 1);
-      //     resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
-      //   }
-      // }
+      {
+        const pstatPotentialCost = pstat.itemBase.getPotential(pstat.type, eq);
+        const maxv = Math.min(Math.floor((eq.originalPotential - 1) / pstatPotentialCost), pstat.value + 1);
+        if (maxv > 1) {
+          let newDollEq = this, curv = 1;
+          const newDollEqs = [];
+          while (curv < maxv) {
+            newDollEq = newDollEq.copy();
+            const cstep = newDollEq.equipment.steps()[0];
+            const cstat = cstep.firstStat;
+            cstat.value += 1;
+            curv = cstat.value;
+            newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= 1;
+            newDollEqs.push(newDollEq);
+          }
+          newDollEqs.forEach(dollEq => resultEqs.push(dollEq, ...dollEq.beforeFillNegative()));
+          // const newDollEq = this.copy();
+          // const cstep = newDollEq.equipment.steps()[0];
+          // const cstat = cstep.stats[0];
+          // cstat.value = maxv;
+          // newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= (cstat.value - 1);
+          // resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
+        }
+      }
 
       this.checkMakeUpPotential();
 
@@ -247,7 +260,7 @@ export default class EnchantDollEquipmentContainer {
     this.refreshCategorys(negatives);
 
     const restore = () => {
-      const cstat = step.stats[0];
+      const cstat = step.firstStat;
       const pstat = this.positiveStats.find(stat => stat.equals(cstat));
       pstat.value += cstat.value;
       step.remove();
@@ -385,22 +398,22 @@ export default class EnchantDollEquipmentContainer {
         originalPotentialList.pop();
         const next = originalPotentialList[originalPotentialList.length - 1];
         if (!checkStepsRemainingPotential()) {
-          if (next) {
-            /**
-             * 看看耗潛1的步驟能不能合併到退潛
-             * 能合併的話，下個步驟剩潛剛好是0。
-             * 退潛那邊會判定剩潛為0就把退潛合到該步驟裡，而非新建步驟。
-             */
-            /** @type {EnchantStep} */
-            const nextStep = next.stat.belongStep;
-            const checkStepMergeToFillNegative = next.stat.potential === 1
-              && allSteps.every((step, i) => step.remainingPotential > 0
-                || (i === allSteps.length - 1 && nextStep === step && step.remainingPotential === 0));
-            if (checkStepMergeToFillNegative) {
-              // 保存剩潛為0的狀態
-              resultEqs.push(newDollEq.copy());
-            }
-          }
+          // if (next) {
+          //   /**
+          //    * 看看耗潛1的步驟能不能合併到退潛
+          //    * 能合併的話，下個步驟剩潛剛好是0。
+          //    * 退潛那邊會判定剩潛為0就把退潛合到該步驟裡，而非新建步驟。
+          //    */
+          //   /** @type {EnchantStep} */
+          //   const nextStep = next.stat.belongStep;
+          //   const checkStepMergeToFillNegative = next.stat.potential === 1
+          //     && allSteps.every((step, i) => step.remainingPotential > 0
+          //       || (i === allSteps.length - 1 && nextStep === step && step.remainingPotential === 0));
+          //   if (checkStepMergeToFillNegative) {
+          //     // 保存剩潛為0的狀態
+          //     resultEqs.push(newDollEq.copy());
+          //   }
+          // }
           cur.stat.value -= 1;
           pstat.value += 1;
         }
@@ -413,7 +426,7 @@ export default class EnchantDollEquipmentContainer {
           let specialFlag = false;
           while (cur.stat.value !== 1) {
             const lastRemainingPotential = ceq.lastStep.remainingPotential;
-            if ((lastRemainingPotential - 1) % POTENTIAL === 0 || lastRemainingPotential % POTENTIAL === 0) {
+            if ((lastRemainingPotential - 1) % POTENTIAL === 0) {
               const _pstat = positiveStats.find(stat => stat.equals(special.stat));
               const maxv = Math.floor(lastRemainingPotential / POTENTIAL);
               if (maxv <= _pstat.value) {
@@ -441,6 +454,87 @@ export default class EnchantDollEquipmentContainer {
         }
       }
       resultEqs.push(newDollEq);
+    }
+    return resultEqs;
+  }
+
+  /**
+   * 如果前面步驟就有退潛，測試最後步驟是否剩太多潛。
+   * FOR: A%CD%CDC的衣服
+   * @returns {void}
+   */
+  checkRemainingPotentialBeforeFillNegative() {
+    const eq = this.equipment;
+    const steps = eq.steps();
+    const minPotential = steps
+      .map(step => step.firstStat)
+      .filter(stat => stat.value > 0)
+      .map(stat => stat.potential)
+      .filter(potential => potential > 1)
+      .sort((a, b) => a - b)[0];
+    if (minPotential && eq.lastStep.remainingPotential > minPotential) {
+      const firstNegativeStep = steps.find(step => step.firstStat.value < -1);
+      const lastStep = eq.lastStep;
+      if (firstNegativeStep && firstNegativeStep !== lastStep) {
+        const nextStep = firstNegativeStep.nextStep;
+        const nstat = firstNegativeStep.firstStat;
+        const pstat = nextStep.firstStat;
+        if (pstat.value > 1 && nextStep !== lastStep) {
+          const lastStepStatValueOffset = lastStep.firstStat.value - 1;
+          nstat.value += 1;
+          lastStep.firstStat.value = 1;
+          let pv = 0;
+          while (nextStep.remainingPotential < 1 || lastStep.remainingPotential < 1) {
+            if (pstat.value === 1) {
+              pstat.value += pv;
+              nstat.value -= 1;
+              lastStep.firstStat.value += lastStepStatValueOffset;
+              return;
+            }
+            pstat.value -= 1;
+            pv += 1;
+          }
+          this.positiveStats.find(stat => stat.equals(pstat)).value += pv;
+          this.positiveStats.find(stat => stat.equals(lastStep.firstStat)).value += lastStepStatValueOffset;
+          this.negativeStats.find(stat => stat.equals(nstat)).value -= 1;
+        }
+      }
+    }
+  }
+
+  /**
+   * 確認耗潛1的步驟是否能合併到退潛
+   */
+  checkMergeStepToFillNegative() {
+    const resultEqs = [];
+    const lastStep = this.equipment.lastStep;
+    const lastStat = lastStep.firstStat;
+    if (lastStat.potential === 1) {
+      const previousStep = lastStep.previousStep;
+      if (previousStep) {
+        const preStat = previousStep.firstStat;
+        const prePstat = this.positiveStats.find(stat => stat.equals(preStat));
+        const lastPstat = this.positiveStats.find(stat => stat.equals(lastStat));
+        if (prePstat && prePstat.value > 0) {
+          const lastStatValueOffset = lastStat.value - 1;
+          lastStat.value = 1;
+          preStat.value += 1;
+
+          lastPstat.value += lastStatValueOffset;
+          prePstat.value -= 1;
+
+          if (previousStep.remainingPotential > 0 && lastStep.remainingPotential === 0) {
+            // 複製一份
+            resultEqs.push(this.copy());
+          }
+
+          // 還原
+          lastStat.value += lastStatValueOffset;
+          lastPstat.value -= lastStatValueOffset;
+          preStat.value -= 1;
+          prePstat.value += 1;
+        }
+      }
     }
     return resultEqs;
   }
@@ -498,7 +592,7 @@ export default class EnchantDollEquipmentContainer {
         if (step.type !== EnchantStep.TYPE_EACH && !(step.potentialExtraRate === 1 && step.stats.length === 1)) {
           return false;
         }
-        const stat = step.stats[0];
+        const stat = step.firstStat;
         if (stat.value !== 1) {
           return false;
         }
@@ -506,7 +600,7 @@ export default class EnchantDollEquipmentContainer {
         return pstat.value !== 0;
       })
       .map(step => {
-        const stat = step.stats[0];
+        const stat = step.firstStat;
         return {
           type: 'step',
           stat,
@@ -590,7 +684,7 @@ export default class EnchantDollEquipmentContainer {
       }
       return {
         step,
-        id: step.stats[0].statId,
+        id: step.firstStat.statId,
         merged: false
       };
     });
@@ -600,9 +694,9 @@ export default class EnchantDollEquipmentContainer {
         return;
       }
       if (cur.id === next.id) {
-        const value = next.step.stats[0].value;
+        const value = next.step.firstStat.value;
         next.step.remove(); // 要先移除才加得進去
-        cur.step.stats[0].value += value;
+        cur.step.firstStat.value += value;
         next.merged = true;
       }
     });
@@ -615,6 +709,26 @@ export default class EnchantDollEquipmentContainer {
     const negativeStats = this.negativeStats;
     const t = new EnchantDollEquipmentContainer({ itemCategorys, equipment, positiveStats, negativeStats });
     t.virtualStats = this.virtualStats.map(_stat => _stat.copy());
+
+    this.clones.push(t);
+    t.copyFrom = this;
+
     return t;
+  }
+
+  log(errorOnly = false) {
+    const steps = this.equipment.steps();
+    if (!errorOnly) {
+      console.group(`[ ${this.cloneId} ]`);
+    }
+    else {
+      if (steps.some(step => step.remainingPotential < 1)) {
+        console.group(`[ ${this.cloneId} ]`);
+      } else {
+        console.groupCollapsed(`[ ${this.cloneId} ]`);
+      }
+    }
+    steps.forEach(step => console.log(step.toString()));
+    console.groupEnd();
   }
 }

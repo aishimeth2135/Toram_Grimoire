@@ -405,24 +405,41 @@ class EnchantStep {
       case EnchantStep.TYPE_NORMAL:
         return this.realPotentialCost(this.stats.reduce((a, b) => a + b.potentialCost, 0) * er);
       case EnchantStep.TYPE_EACH:
-        return this.stats[0] ? this.stats[0].potentialCost : 0;
+        return this.firstStat ? this.firstStat.potentialCost : 0;
     }
     return 0;
   }
   get remainingPotential() {
     return this.belongEquipment.stepRemainingPotential(this.index);
   }
+  /**
+   * @returns {EnchantStep}
+   */
   get previousStep() {
-    if (this.index === 0)
+    const idx = this.index;
+    if (idx === 0)
       return null;
-    const steps = this.belongEquipment.steps(this.index);
-    return steps[steps.length - 1];
+    const steps = this.belongEquipment.steps();
+    return steps[idx - 1];
+  }
+  /**
+   * @returns {EnchantStep}
+   */
+   get nextStep() {
+    const steps = this.belongEquipment.steps();
+    return steps[this.index + 1] || null;
   }
   get isLastStep() {
     return this.belongEquipment.lastStep === this;
   }
   get afterLastStep() {
     return this.belongEquipment.lastStep.index < this.index;
+  }
+  /**
+   * @returns {EnchantStepStat}
+   */
+  get firstStat() {
+    return this.stats[0] || null;
   }
 
   /**

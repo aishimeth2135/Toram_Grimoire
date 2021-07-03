@@ -35,16 +35,15 @@ export function parseFormula(str) {
 
 
     const calc = (a, operator, b) => {
-      let v = 0;
       if (operator === '+')
-        v = a + b;
-      else if (operator === '-')
-        v = a - b;
-      else if (operator === '*')
-        v = a * b;
-      else if (operator === '/')
-        v = a / b;
-      return v;
+        return a + b;
+      if (operator === '-')
+        return a - b;
+      if (operator === '*')
+        return a * b;
+      if (operator === '/')
+        return a / b;
+      return 0;
     }
 
     recast.visit(ast, {
@@ -60,8 +59,8 @@ export function parseFormula(str) {
             back(this, path);
             return;
           }
-          if (TNT.BinaryExpression.check(node.left) && (node.operator == '*' || node.operator == '/') &&
-            TNT.Literal.check(node.left.right) && node.left.operator == '*') {
+          if (TNT.BinaryExpression.check(node.left) && (node.operator === '*' || node.operator === '/') &&
+            TNT.Literal.check(node.left.right) && node.left.operator === '*') {
             const v = calc(node.right.value, node.operator, node.left.right.value);
             path.get('right').replace(builders.literal(v));
             path.get('left').replace(node.left.left);
@@ -116,12 +115,12 @@ export function parseFormula(str) {
     });
 
     const res = recast.print(ast).code
-      .replace(/\((\d+)\)/g, (m, m1) => m1);
+      .replace(/\((\d+(?:\.\d+)?)\)/g, (m, m1) => m1);
     // console.log(res);
     return res;
   } catch (e) {
     console.error(e);
-    console.log('str: ', str);
+    console.log('unable to parse formula: ', str);
     return '0';
   }
 }

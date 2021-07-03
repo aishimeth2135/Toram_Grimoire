@@ -3,7 +3,8 @@ const store = {
   state: {
     initItems: [],
     status: 0, // 0: loading, 1: success, 2: finished
-    msgItems: []
+    msgItems: [],
+    skipInit: false,
   },
   mutations: {
     appendInitItems(state, { msg, promise }) {
@@ -12,6 +13,10 @@ const store = {
         promise,
         status: 0 // 0: loading, 1: success,  -1: error
       });
+    },
+    initState(state) {
+      state.status = 0;
+      state.skipInit = false;
     },
     initSucceed(state) {
       state.status = 1;
@@ -27,13 +32,16 @@ const store = {
       state.status = 3;
       state.initItems = [];
     },
+    skipInit(state) {
+      state.skipInit = true;
+    },
   },
   actions: {
-    startInit({ state, commit }) {
-      state.status = 0;
+    async startInit({ state, commit }) {
+      commit('initState');
       // if ( state.initItems.length != 0 )
       //       throw new Error('Something is initializing......');
-      return Promise.all(
+      await Promise.all(
         state.initItems.map(p => {
           return p.promise
             .then(() => p.status = 1)
@@ -42,11 +50,10 @@ const store = {
               p.status = -1;
             });
         })
-      ).then(() => {
-        if (!state.initItems.find(p => p.status == -1)) {
-          commit('initSucceed');
-        }
-      });
+      );
+      if (!state.initItems.find(p => p.status == -1)) {
+        commit('initSucceed');
+      }
     },
   }
 };

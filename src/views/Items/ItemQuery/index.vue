@@ -1,87 +1,123 @@
 <template>
-  <article>
+  <article class="flex flex-col">
     <div>
       <search-result class="search-result" :equipments="searchResult" />
     </div>
-    <div class="bottom-menu">
-      <div class="top-content">
-        <div class="mode-options">
-          <cy-transition type="fade">
-            <div class="main-menu" v-if="checkMenuVisible">
-              <div v-if="menuVisible.conditionOptions" class="content">
-                <div v-for="type in conditions.type" :key="type.id" class="column">
-                  <div class="flex items-center">
-                    <cy-button @click="toggleSelected(type)"
-                     type="check" class="options-title"
-                     main-color="orange"
-                     :selected="type.selected">
-                      {{ $globalLang('common/Equipment/field/' + type.id) }}
-                    </cy-button>
-                    <template v-if="type.types !== null">
-                      <cy-button icon="ic-round-border-all" type="border"
-                        @click="selectAll(type.types)" />
-                      <cy-button icon="eva-close-outline" type="border"
-                        @click="cancelAll(type.types)" />
-                    </template>
-                  </div>
-                  <div v-if="type.types !== null" class="options">
-                    <cy-button v-for="item in type.types"
-                      :key="item.value" type="check"
-                      :selected="type.selected && item.selected"
-                      :selected-icon="item.imagePath"
-                      selected-icon-src="image"
-                      @click="toggleSelected(item)">
-                      {{ $globalLang('common/Equipment/category/' + item.value.description) }}
-                    </cy-button>
-                  </div>
-                </div>
+    <div class="flex items-end ml-auto sticky z-10 px-2"
+      style="bottom: 4.5rem">
+      <cy-transition type="fade">
+        <div class="main-menu" v-if="checkMenuVisible">
+          <div v-if="menuVisible.conditionOptions" class="content">
+            <div v-for="type in conditions.type" :key="type.id" class="column">
+              <div class="flex items-center">
+                <cy-button @click="toggleSelected(type)"
+                  type="check" class="options-title"
+                  main-color="orange"
+                  :selected="type.selected">
+                  {{ $globalLang('common/Equipment/field/' + type.id) }}
+                </cy-button>
+                <template v-if="type.types !== null">
+                  <cy-button icon="ic-round-border-all" type="border"
+                    @click="selectAll(type.types)" />
+                  <cy-button icon="eva-close-outline" type="border"
+                    @click="cancelAll(type.types)" />
+                </template>
               </div>
-              <div v-else-if="menuVisible.sortOptions" class="content">
-                <div class="column">
-                  <div class="normal-title">
-                    <cy-icon-text icon="mdi-sort-variant"
-                      text-color="purple" size="small">
-                      {{ $lang('sort options/title') }}
-                    </cy-icon-text>
-                  </div>
-                  <div class="options">
-                    <cy-button type="border" icon="gg-shape-rhombus"
-                      @click="selectSortOption('default')"
-                      :selected="sortOptions.currentSelected === 'default'">
-                      {{ $lang('sort options/options/default') }}
-                    </cy-button>
-                    <cy-button v-for="(_, id) in sortOptions.global"
-                      type="border" :key="id"
-                      icon="gg-shape-rhombus"
-                      @click="selectSortOption(id)"
-                      :selected="sortOptions.currentSelected === id">
-                      {{ $lang('sort options/options/' + id) }}
-                    </cy-button>
-                  </div>
-                </div>
-                <div class="column">
-                  <div class="normal-title">
-                    <cy-icon-text icon="fluent-arrow-sort-24-filled"
-                      text-color="purple" size="small">
-                      {{ $lang('sort options/order/title') }}
-                    </cy-icon-text>
-                  </div>
-                  <div class="options">
-                    <cy-button type="border" icon="akar-icons:arrow-down"
-                      @click="selecetSortOrder('down')"
-                      :selected="sortOptions.currentOrder === 'down'">
-                      {{ $lang('sort options/order/down') }}
-                    </cy-button>
-                    <cy-button type="border" icon="akar-icons:arrow-up"
-                      @click="selecetSortOrder('up')"
-                      :selected="sortOptions.currentOrder === 'up'">
-                      {{ $lang('sort options/order/up') }}
-                    </cy-button>
-                  </div>
-                </div>
+              <div v-if="type.types !== null" class="options">
+                <cy-button v-for="item in type.types"
+                  :key="item.value" type="check"
+                  :selected="type.selected && item.selected"
+                  :selected-icon="item.imagePath"
+                  selected-icon-src="image"
+                  @click="toggleSelected(item)">
+                  {{ $globalLang('common/Equipment/category/' + item.value.description) }}
+                </cy-button>
               </div>
             </div>
-          </cy-transition>
+          </div>
+          <div v-else-if="menuVisible.sortOptions" class="content">
+            <div class="column">
+              <div class="normal-title">
+                <cy-icon-text icon="mdi-sort-variant"
+                  text-color="purple" size="small">
+                  {{ $lang('sort options/title') }}
+                </cy-icon-text>
+              </div>
+              <div class="options">
+                <cy-button type="border" icon="gg-shape-rhombus"
+                  @click="selectSortOption('default')"
+                  :selected="sortOptions.currentSelected === 'default'">
+                  {{ $lang('sort options/options/default') }}
+                </cy-button>
+                <cy-button v-for="(_, id) in sortOptions.global"
+                  type="border" :key="id"
+                  icon="gg-shape-rhombus"
+                  @click="selectSortOption(id)"
+                  :selected="sortOptions.currentSelected === id">
+                  {{ $lang('sort options/options/' + id) }}
+                </cy-button>
+              </div>
+            </div>
+            <div class="column">
+              <div class="normal-title">
+                <cy-icon-text icon="fluent-arrow-sort-24-filled"
+                  text-color="purple" size="small">
+                  {{ $lang('sort options/order/title') }}
+                </cy-icon-text>
+              </div>
+              <div class="options">
+                <cy-button type="border" icon="akar-icons:arrow-down"
+                  @click="selecetSortOrder('down')"
+                  :selected="sortOptions.currentOrder === 'down'">
+                  {{ $lang('sort options/order/down') }}
+                </cy-button>
+                <cy-button type="border" icon="akar-icons:arrow-up"
+                  @click="selecetSortOrder('up')"
+                  :selected="sortOptions.currentOrder === 'up'">
+                  {{ $lang('sort options/order/up') }}
+                </cy-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </cy-transition>
+      <div class="flex-shrink-0 ml-2">
+        <div class="menu-btn switch-display"
+          v-if="currentMode !== 'normal' && currentMode !== 'dye'"
+          @click="switchDisplay">
+          <cy-icon-text icon="heroicons-solid:switch-vertical" />
+        </div>
+        <div class="menu-btn bg-white border-water-blue"
+          @click="toggleMenuVisible('sortOptions')">
+          <cy-icon-text icon="mdi-sort-variant" icon-color="water-blue" />
+        </div>
+        <div class="menu-btn bg-white border-light-4"
+          @click="toggleMenuVisible('conditionOptions')">
+          <cy-icon-text icon="mdi-checkbox-multiple-blank-circle" icon-color="light-4" />
+        </div>
+      </div>
+    </div>
+    <div class="bottom-menu">
+      <div class="top-content">
+        <cy-options inline>
+          <template #title>
+            <div class="bg-white flex-shrink-0 rounded-full border-1 border-water-blue-light hover:border-water-blue inline-flex items-center justify-center mr-2 mb-2 cursor-pointer"
+              style="width: 2.8rem; height: 2.8rem;">
+              <cy-icon-text icon="heroicons-solid:switch-vertical"
+                icon-color="water-blue-light"
+                icon-color-hover="water-blue" />
+            </div>
+          </template>
+          <template #options>
+            <cy-list-item v-for="(p, id) in modes" :key="id"
+              @click="selectMode(id)">
+              <cy-icon-text :icon="p.icon">
+                {{ $lang('modes/' + id) }}
+              </cy-icon-text>
+            </cy-list-item>
+          </template>
+        </cy-options>
+        <div class="w-full">
           <cy-transition type="fade">
             <div v-if="currentMode === 'normal' && modes.normal.optionsVisible"
               class="mode-normal-content">
@@ -98,26 +134,9 @@
               </div>
             </div>
           </cy-transition>
-          <div class="mode-options-container">
-            <cy-options inline>
-              <template #title>
-                <cy-button type="icon" key="switch-btn"
-                  icon="heroicons-solid:switch-vertical"
-                  icon-color="water-blue-light"
-                  icon-color-hover="water-blue"
-                  class="p-0" />
-              </template>
-              <template #options>
-                <cy-list-item v-for="(p, id) in modes" :key="id"
-                  @click="selectMode(id)">
-                  <cy-icon-text :icon="p.icon">
-                    {{ $lang('modes/' + id) }}
-                  </cy-icon-text>
-                </cy-list-item>
-              </template>
-            </cy-options>
-            <div class="mode-options">
-              <template v-if="currentMode == 'normal'">
+          <div class="flex items-center">
+            <div class="mode-options-container w-full">
+              <template v-if="currentMode === 'normal'">
                 <div class="mode-normal-title ml-2">
                   <div class="input-container">
                     <cy-icon-text icon="ic-outline-search" class="icon" />
@@ -129,8 +148,9 @@
                 </div>
               </template>
               <template v-else-if="currentMode === 'stat'">
-                <cy-button type="border" icon="gg-shape-rhombus"
-                  @click="toggleSelectStatVisible(true)">
+                <cy-button type="inline" icon="gg-shape-rhombus"
+                  @click="toggleSelectStatVisible(true)"
+                  class="w-full">
                   {{ modes.stat.currentStat ?
                       modes.stat.currentStat.text :
                       $lang('options: stat/select stat: title') }}
@@ -158,21 +178,6 @@
                 </div>
               </template>
             </div>
-          </div>
-        </div>
-        <div>
-          <div class="menu-btn switch-display"
-            v-if="currentMode !== 'normal' && currentMode !== 'dye'"
-            @click="switchDisplay">
-            <cy-icon-text icon="heroicons-solid:switch-vertical" />
-          </div>
-          <div class="menu-btn bg-white border-water-blue"
-            @click="toggleMenuVisible('sortOptions')">
-            <cy-icon-text icon="mdi-sort-variant" icon-color="water-blue" />
-          </div>
-          <div class="menu-btn bg-white border-light-4"
-            @click="toggleMenuVisible('conditionOptions')">
-            <cy-icon-text icon="mdi-checkbox-multiple-blank-circle" icon-color="light-4" />
           </div>
         </div>
       </div>
@@ -593,7 +598,7 @@ export default {
   // right: 0;
   // bottom: 0;
   border: 0.1rem solid var(--primary-light);
-  border-radius: 0.6rem;
+  border-radius: 0.5rem;
   padding: 1rem 1.4rem;
   padding-bottom: 2rem;
   background-color: var(--white);
@@ -628,8 +633,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0.8rem;
-  margin-top: 0;
+  margin-top: 0.5rem;
   flex-shrink: 0;
   z-index: 11;
 
@@ -645,24 +649,22 @@ export default {
   }
 }
 
-.mode-options {
-  width: 100%;
-
-  & > .mode-options-container {
-    margin-bottom: 0.8rem;
-    margin-top: 0.8rem;
-    border-radius: 1.4rem;
-    padding: 0.25rem 0.75rem;
-    border: 0.1rem solid var(--primary-light);
-    display: flex;
-    align-items: center;
-    background-color: var(--white);
-  }
+.mode-options-container {
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 1.4rem;
+  padding: 0.25rem 0.5rem;
+  border: 0.1rem solid var(--primary-light);
+  display: flex;
+  align-items: center;
+  background-color: var(--white);
+  height: 2.7rem;
 }
 
 .mode-normal-title, .mode-dye-title {
   display: flex;
   align-items: center;
+  width: 100%;
 
   & .input-container {
     display: flex;

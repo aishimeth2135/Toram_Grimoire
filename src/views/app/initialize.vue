@@ -1,5 +1,5 @@
 <template>
-  <div class="app--initialize" v-show="status != 3">
+  <div class="app--initialize" v-show="status !== 3 && !skipInit">
     <template v-if="status < 3">
       <div class="content-container">
         <div class="main">
@@ -9,7 +9,7 @@
           <div v-for="item in initItems" class="column" :key="item.msg">
             <span class="text">{{ item.msg }}</span>
             <cy-icon-text class="status-icon" :icon="statusIcon(item.status)"
-              :class="{ 'loading': item.status == 0, 'error': item.status == -1 }" />
+              :class="{ 'loading': item.status === 0, 'error': item.status === -1 }" />
           </div>
         </div>
       </div>
@@ -33,7 +33,7 @@
       }
     },
     computed: {
-      ...mapState('initialize', ['initItems', 'status', 'msgItems'])
+      ...mapState('initialize', ['initItems', 'status', 'msgItems', 'skipInit'])
     },
     components: {
       'loading-animation': vue_loadingAnimation

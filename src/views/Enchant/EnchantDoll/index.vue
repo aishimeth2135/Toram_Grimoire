@@ -42,6 +42,33 @@
           </template>
         </cy-input-counter>
       </div>
+      <div class="flex justify-center pt-2">
+        <cy-button type="inline"
+          :icon="contents.setConfig ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
+          :selected="contents.setConfig"
+          text-color="light-2"
+          @click="toggle('contents/setConfig')">
+          {{ $lang('equipment/set config/title') }}
+        </cy-button>
+      </div>
+      <template v-if="contents.setConfig">
+        <div class="flex justify-center pt-2">
+          <cy-input-counter v-model:value="characterLevel" :step="10"
+            main-color="water-blue-light">
+            <template #title>
+              <cy-icon-text>{{ $lang.extra('simulator', 'character level') }}</cy-icon-text>
+            </template>
+          </cy-input-counter>
+        </div>
+        <div class="pt-2 flex justify-center">
+          <cy-input-counter v-model:value="smithLevel" :step="10"
+            main-color="water-blue-light">
+            <template #title>
+              <cy-icon-text>{{ $lang.extra('simulator', 'smith level') }}</cy-icon-text>
+            </template>
+          </cy-input-counter>
+        </div>
+      </template>
       <cy-transition type="fade">
         <div class="disabled-mask" v-if="stepCounter > stepContents.equipment"
           @click="maskClick" />
@@ -355,6 +382,7 @@
   </section>
 </template>
 <script>
+import { mapState } from "vuex";
 import vue_selectItem from "../EnchantSimulator/select-item.vue";
 import vue_enchantResult from "../EnchantSimulator/enchant-result.vue";
 
@@ -373,10 +401,11 @@ export default {
     }
   },
   setup() {
-    const { windows, toggle } = ToggleService({
-      windows: ['selectItem']
+    const { windows, contents, toggle } = ToggleService({
+      windows: ['selectItem'],
+      contents: ['setConfig']
     });
-    return { windows, toggle };
+    return { windows, contents, toggle };
   },
   data() {
     return {
@@ -457,8 +486,8 @@ export default {
     this.$nextTick(() => this.$refs['first-step'].scrollIntoView({ behavior: "smooth" }));
   },
   computed: {
+    ...mapState('enchant', ['config']),
     equipmentIsWeapon() {
-      console.log(this.currentEquipment.type);
       return this.currentEquipment.fieldType === EnchantEquipment.TYPE_MAIN_WEAPON;
     },
     nextStepDisabled() {
@@ -506,6 +535,23 @@ export default {
         this.$lang.extra('simulator', 'success rate: unlimited') :
         Math.floor(rate) + '%';
     },
+
+    characterLevel: {
+      set(v) {
+        this.$store.commit('enchant/setConfig', { characterLevel: v });
+      },
+      get() {
+        return this.config.characterLevel;
+      }
+    },
+    smithLevel: {
+      set(v) {
+        this.$store.commit('enchant/setConfig', { smithLevel: v });
+      },
+      get() {
+        return this.config.smithLevel;
+      }
+    }
   },
   methods: {
     updateAutoFindNegativeStats(value) {

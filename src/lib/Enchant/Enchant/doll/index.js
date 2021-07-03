@@ -103,7 +103,6 @@ export default class EnchantDoll {
       dollEq.equipment.originalPotential = originalPotential;
     }
 
-    /** @param {EnchantDollEquipmentContainer[]} results */
     const clearRepeatEquipment = () => {
       const results = resultEqs;
       const map = new Map();
@@ -125,9 +124,14 @@ export default class EnchantDoll {
     };
 
     // const logResultEqs = (id, reqs) => {
-    //   console.log('==== [', id, '] ===================');
-    //   console.log(reqs.map(req => req.positiveStats.map(stat => stat.show())));
-    //   console.log(reqs.map(req => req.copy().equipment.steps().map(step => step.toString())));
+    //   // console.log('==== [', id, '] ===================');
+    //   // console.log(reqs.map(req => req.positiveStats.map(stat => stat.show())));
+    //   // console.log(reqs.map(req => req.copy().equipment.steps().map(step => step.toString())));
+    //   console.group(`%c  %c [${id}] number of current equipments: ${resultEqs.length}`,
+    //     'background-color: #e8caed; border-radius: 50%; margin-right: 12px',
+    //     'color: #e8caed');
+    //   reqs.forEach(eq => eq.log(true));
+    //   console.groupEnd();
     // };
 
     const firstResultEqs = [dollEq];
@@ -146,6 +150,8 @@ export default class EnchantDoll {
       // logResultEqs('1', resultEqs);
 
       // 負屬全上
+      resultEqs.forEach(cdollEq => cdollEq.checkRemainingPotentialBeforeFillNegative());
+      resultEqs.forEach(cdollEq => resultEqs.push(...cdollEq.checkMergeStepToFillNegative()));
       resultEqs.forEach(cdollEq => cdollEq.fillNegative());
       // logResultEqs('2', resultEqs);
 
