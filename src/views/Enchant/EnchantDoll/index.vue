@@ -375,6 +375,11 @@
         {{ $lang('tips/performance of auto find minimum of original potential') }}
       </cy-icon-text>
     </div>
+    <div v-if="stepCounter === stepContents.equipment"
+      class="text-light-3 text-sm text-center px-8 py-8" ref="top">
+      <div>{{ $lang('top caption')[0] }}</div>
+      <div class="mt-2">{{ $lang('top caption')[1] }}</div>
+    </div>
     <select-item :visible="windows.selectItem"
       :is-weapon="equipmentIsWeapon"
       @select-item="selectItem"
