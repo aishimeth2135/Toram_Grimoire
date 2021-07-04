@@ -450,7 +450,7 @@ class EnchantStep {
    */
   appendStat(itemBase, type, v) {
     const stat = new EnchantStepStat(this, itemBase, type, v);
-    if (!this.belongEquipment.checkStats() && !this.belongEquipment.hasStat(stat, this.belongEquipment.lastStep.index)) {
+    if (!this.belongEquipment.checkStats() && !this.belongEquipment.hasStat(stat)) {
       return null;
     }
     this.stats.push(stat);
