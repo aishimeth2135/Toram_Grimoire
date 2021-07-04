@@ -474,8 +474,12 @@ export default class EnchantDollEquipmentContainer {
    * 確認耗潛1的步驟是否能合併到退潛
    */
   checkMergeStepToFillNegative() {
-    const resultEqs = [];
     const lastStep = this.equipment.lastStep;
+    if (!lastStep) {
+      return [];
+    }
+    const resultEqs = [];
+
     const lastStat = lastStep.firstStat;
     if (lastStat.potential === 1) {
       const previousStep = lastStep.previousStep;
