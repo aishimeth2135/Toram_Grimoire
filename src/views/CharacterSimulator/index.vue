@@ -24,14 +24,16 @@
           @close-auto-save="closeAutoSave" />
       </div>
       <div class="sticky bottom-2 bg-white border-1 border-solid border-light-2 rounded-2xl px-4 py-1 z-10 mx-2 mt-4">
-        <cy-button v-for="(content, i) in contents"
+        <cy-button-inline
+          v-for="(content, i) in contents"
           :key="content.id"
           :icon="content.icon"
-          :selected="i == currentContentIndex"
+          :selected="i === currentContentIndex"
           @click="setCurrentContent(i)"
-          class="border-0 p-0 mr-3">
+          class="mr-2 my-1"
+        >
           {{ content.text }}
-        </cy-button>
+        </cy-button-inline>
       </div>
     </template>
     <div v-else>
@@ -39,10 +41,9 @@
         <span v-html="$lang('Warn/Current character is not exist')"></span>
       </cy-default-tips>
       <div style="text-align: center;">
-        <cy-button icon="ic-round-add" type="border"
-          @click="createCharacter">
+        <cy-button-border icon="ic-round-add" @click="createCharacter">
           {{ $lang('append character') }}
-        </cy-button>
+        </cy-button-border>
       </div>
     </div>
   </div>

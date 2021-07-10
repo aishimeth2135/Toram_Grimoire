@@ -13,7 +13,7 @@
           <cy-list-item v-for="(build, i) in skillBuilds" :key="build.stateId"
             :selected="i === currentSkillBuildIndex"
             @click="selectCurrentBuild(i)">
-            <cy-icon-text icon="gg-shape-rhombus">
+            <cy-icon-text>
               {{ build.name }}
             </cy-icon-text>
           </cy-list-item>
@@ -21,16 +21,16 @@
       </cy-options>
     </div>
     <div class="my-3">
-      <cy-button type="border" icon="mdi-rhombus-outline"
+      <cy-button-border icon="mdi-rhombus-outline"
         :selected="mode === 'passive'"
         @click="setMode('passive')">
         {{ $lang('skill management/passive skills') }}
-      </cy-button>
-      <cy-button type="border" icon="mdi-rhombus-outline"
+      </cy-button-border>
+      <cy-button-border icon="mdi-rhombus-outline"
         :selected="mode === 'active'"
         @click="setMode('active')">
         {{ $lang('skill management/active skills') }}
-      </cy-button>
+      </cy-button-border>
     </div>
     <div class="content">
       <template v-if="mode === 'passive' && passiveSkillStates.length !== 0">
@@ -59,7 +59,7 @@
         :value="p.value"
         @update:value="userSetValue(p, $event)">
         <template #title>
-          <cy-icon-text icon="gg-shape-rhombus">
+          <cy-icon-text>
             {{ p.text }}
           </cy-icon-text>
         </template>
@@ -69,7 +69,7 @@
         :value="p.value"
         @update:value="userSetValue(p, $event)">
         <template #title>
-          <cy-icon-text icon="gg-shape-rhombus">
+          <cy-icon-text>
             {{ p.name }}
           </cy-icon-text>
         </template>

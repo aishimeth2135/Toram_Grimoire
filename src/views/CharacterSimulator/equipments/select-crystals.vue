@@ -13,9 +13,10 @@
         <template v-for="(category, i) in crystalCategorys"
           :key="category.id">
           <cy-hr v-if="i != 0" />
-          <cy-button type="drop-down"
+          <cy-button-drop-down
             icon="bx-bx-cube-alt"
-            :menu-default-visible="true">
+            :menu-default-visible="true"
+          >
             {{ $lang('select crystals/category title')[category.id] }}
             <template v-slot:menu>
               <template v-for="cs in category.crystalStates">
@@ -34,7 +35,7 @@
                 </cy-list-item>
               </template>
             </template>
-          </cy-button>
+          </cy-button-drop-down>
         </template>
       </template>
       <cy-default-tips v-else icon="potum" icon-src="custom">
@@ -69,10 +70,9 @@
           class="flex items-center cursor-pointer">
           <cy-icon-text :icon="'ic-round-keyboard-arrow-' + (detailVisible ? 'down' : 'up')" />
           <div class="ml-auto leading-none">
-            <cy-button type="border" icon="ic-round-done"
-              @click.stop="closeWindow">
+            <cy-button-border icon="ic-round-done" @click.stop="closeWindow">
               {{ $globalLang('global/close') }}
-            </cy-button>
+            </cy-button-border>
           </div>
         </div>
       </template>

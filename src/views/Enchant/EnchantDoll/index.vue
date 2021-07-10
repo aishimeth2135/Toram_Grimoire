@@ -26,10 +26,9 @@
         {{ $lang('equipment/original potential/caption') }}
       </div>
       <div class="mt-4 flex justify-center flex-wrap">
-        <cy-button type="check"
-          v-model:selected="equipmentState.autoFindPotentialMinimum">
+        <cy-button-check v-model:selected="equipmentState.autoFindPotentialMinimum">
           {{ $lang('equipment/original potential/auto find minimum') }}
-        </cy-button>
+        </cy-button-check>
       </div>
       <div v-if="!equipmentState.autoFindPotentialMinimum"
         class="py-4 pl-4 flex justify-center">
@@ -43,13 +42,13 @@
         </cy-input-counter>
       </div>
       <div class="flex justify-center pt-2">
-        <cy-button type="inline"
+        <cy-button-inline
           :icon="contents.setConfig ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
           :selected="contents.setConfig"
           text-color="light-2"
           @click="toggle('contents/setConfig')">
           {{ $lang('equipment/set config/title') }}
-        </cy-button>
+        </cy-button-inline>
       </div>
       <template v-if="contents.setConfig">
         <div class="flex justify-center pt-2">
@@ -75,11 +74,11 @@
       </cy-transition>
     </div>
     <div v-if="stepCounter > stepContents.equipment" class="flex justify-center mb-4">
-      <cy-button type="border" icon="mdi-leaf"
+      <cy-button-border icon="mdi-leaf"
         @click="backToStep(stepContents.equipment)"
         main-color="orange">
         {{ $lang('back to step') }}
-      </cy-button>
+      </cy-button-border>
     </div>
     <cy-transition type="fade" @after-enter="stepAfterEnter">
       <div v-if="stepCounter >= stepContents.selectPositiveStat"
@@ -106,7 +105,7 @@
                     :value="stat.value"
                     @update:value="setStatValue(stat, $event)"
                     :range="[1, stat.limit[1]]" />
-                  <cy-button type="icon" icon="jam-close-circle"
+                  <cy-button-icon icon="jam-close-circle"
                     icon-color="gray"
                     @click="removePositiveStat(stat)"
                     class="ml-auto" />
@@ -120,16 +119,15 @@
           </div>
         </div>
         <div class="text-center">
-          <cy-button type="border" icon="ic-round-add-circle-outline"
+          <cy-button-border icon="ic-round-add-circle-outline"
             @click="openSelectItem('positiveStats')">
             {{ $lang('select item') }}
-          </cy-button>
+          </cy-button-border>
         </div>
         <div class="flex justify-center mt-4">
-          <cy-button type="check"
-            v-model:selected="selectPositiveStatState.autoFill">
+          <cy-button-check v-model:selected="selectPositiveStatState.autoFill">
             {{ $lang('select positive stats/auto fill') }}
-          </cy-button>
+          </cy-button-check>
         </div>
         <cy-transition type="fade">
           <div class="disabled-mask" v-if="stepCounter > stepContents.selectPositiveStat"
@@ -138,11 +136,11 @@
       </div>
     </cy-transition>
     <div v-if="stepCounter > stepContents.selectPositiveStat" class="flex justify-center mb-4">
-      <cy-button type="border" icon="mdi-leaf"
+      <cy-button-border icon="mdi-leaf"
         @click="backToStep(stepContents.selectPositiveStat)"
         main-color="orange">
         {{ $lang('back to step') }}
-      </cy-button>
+      </cy-button-border>
     </div>
     <cy-transition type="fade" @after-enter="stepAfterEnter">
       <div v-if="stepCounter >= stepContents.selectNegativeStat"
@@ -169,10 +167,9 @@
           </cy-icon-text>
         </div>
         <div class="mt-4 mb-6 flex justify-center flex-wrap">
-          <cy-button type="check"
-            v-model:selected="selectNegativeStatState.auto">
+          <cy-button-check v-model:selected="selectNegativeStatState.auto">
             {{ $lang('select negative stats/auto select') }}
-          </cy-button>
+          </cy-button-check>
         </div>
         <template v-if="selectNegativeStatState.auto">
           <template v-if="currentEquipmentType === 1">
@@ -253,10 +250,10 @@
         </div>
         <div v-if="!selectNegativeStatState.auto || negativeStats.length < doll.numNegativeStats"
           class="text-center">
-          <cy-button type="border" icon="ic-round-add-circle-outline"
+          <cy-button-border icon="ic-round-add-circle-outline"
             @click="openSelectItem('negativeStats')">
             {{ $lang('select item') }}
-          </cy-button>
+          </cy-button-border>
           <div v-if="selectNegativeStatState.auto && autoNegativeStats.length < doll.numNegativeStats" class="mt-2">
             <div>
               <cy-icon-text icon="ic-outline-info" size="small"
@@ -276,11 +273,11 @@
       </div>
     </cy-transition>
     <div v-if="stepCounter > stepContents.selectNegativeStat" class="flex justify-center mb-4">
-      <cy-button type="border" icon="mdi-leaf"
+      <cy-button-border icon="mdi-leaf"
         @click="backToStep(stepContents.selectNegativeStat)"
         main-color="orange">
         {{ $lang('back to step') }}
-      </cy-button>
+      </cy-button-border>
     </div>
     <cy-transition type="fade" @after-enter="stepAfterEnter">
       <div v-if="stepCounter >= stepContents.result && resultEquipment"
@@ -361,11 +358,11 @@
         {{ $lang('next step') }}
       </cy-button>
       <span :class="{ 'absolute': stepCounter !== 3, 'right-0': stepCounter !== 3 }">
-        <cy-button type="border" icon="bx-bx-reset"
+        <cy-button-border icon="bx-bx-reset"
           @click="reset"
           main-color="gray">
           {{ $globalLang('global/reset') }}
-        </cy-button>
+        </cy-button-border>
       </span>
     </div>
     <div v-if="equipmentState.autoFindPotentialMinimum && stepCounter === stepContents.selectNegativeStat"

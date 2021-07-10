@@ -6,7 +6,7 @@
         <cy-icon-text icon="ant-design:build-outlined">
           {{ currentBuild.name }}
         </cy-icon-text>
-        <cy-button type="icon" class="ml-auto"
+        <cy-button-icon class="ml-auto"
           :icon="contents.top ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
           :selected="contents.top" />
       </div>
@@ -19,7 +19,7 @@
           class="w-full" />
         <cy-options inline>
           <template #title>
-            <cy-button type="border" icon="ant-design:build-outlined" />
+            <cy-button-border icon="ant-design:build-outlined" />
           </template>
           <template #options>
             <cy-list-item v-for="buildData in buildDatas"
@@ -39,25 +39,25 @@
       </div>
       <div class="flex items-center flex-wrap">
         <div class="mx-2">
-          <cy-button type="border" icon="bx-bx-copy"
+          <cy-button-border icon="bx-bx-copy"
             @click="copyBuild">
             {{ $globalLang('global/copy') }}
-          </cy-button>
-          <cy-button type="border" icon="mdi-export"
+          </cy-button-border>
+          <cy-button-border icon="mdi-export"
             main-color="blue-green"
             @click="exportBuild">
             {{ $globalLang('global/export') }}
-          </cy-button>
-          <cy-button type="border" icon="mdi-import"
+          </cy-button-border>
+          <cy-button-border icon="mdi-import"
             main-color="blue-green"
             @click="importBuild">
             {{ $globalLang('global/import') }}
-          </cy-button>
-          <cy-button type="border" icon="ic-baseline-delete-outline"
+          </cy-button-border>
+          <cy-button-border icon="ic-baseline-delete-outline"
             main-color="gray"
             @click="removeBuild">
             {{ $globalLang('global/delete') }}
-          </cy-button>
+          </cy-button-border>
         </div>
       </div>
       <cy-icon-text size="small" text-color="purple" class="mt-4">
@@ -69,7 +69,7 @@
             <cy-icon-text>{{ $lang('equipment original potential') }}</cy-icon-text>
           </template>
         </cy-input-counter>
-        <cy-button type="icon" icon="jam-hammer" class="ml-2 my-2"
+        <cy-button-icon icon="jam-hammer" class="ml-2 my-2"
           icon-color="water-blue-light" icon-color-hover="water-blue"
           :selected="contents.extraOptions"
           @click="toggle('contents/extraOptions')" />
@@ -110,24 +110,30 @@
         {{ $lang('equipment type') }}
       </cy-icon-text>
       <div class="py-0.5 px-2">
-        <cy-button v-for="option in equipmentTypeOptions" :key="option.id"
-          type="border" @click="currentEquipmentType = option"
-          :selected="currentEquipmentType === option.id">
+        <cy-button-check
+          v-for="option in equipmentTypeOptions"
+          :key="option.id"
+          @click="currentEquipmentType = option"
+          :selected="currentEquipmentType === option.id"
+        >
           {{ option.text }}
-        </cy-button>
+        </cy-button-check>
       </div>
     </div>
     <div class="steps-content-container">
       <div class="steps-content">
         <div v-for="step in currentEquipment.allSteps"
           :key="step.index"
-          class="step-container">
+          class="step-container"
+        >
           <enchant-step :step="step" />
         </div>
-        <cy-button icon="ic-round-add-circle-outline"
+        <cy-button
+          icon="ic-round-add-circle-outline"
           class="step-container border flex items-center justify-center"
           style="--icon-width: 3.5rem; height: 12rem"
-          @click="appendStep" />
+          @click="appendStep"
+        />
       </div>
     </div>
     <div>
@@ -191,16 +197,16 @@
         </div>
       </div>
       <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center flex-wrap bg-white">
-        <cy-button type="icon"
+        <cy-button-icon
           :icon="contents.result ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
           :selected="contents.result"
           @click="toggle('contents/result')" />
-        <cy-button type="icon" class="ml-2"
+        <cy-button-icon class="ml-2"
           :icon="state.statDisplayMode === 1 ? 'mdi-cube-outline' : 'mdi-cube-off-outline'"
           main-color="water-blue"
           :selected="state.statDisplayMode === 1"
           @click="state.statDisplayMode = state.statDisplayMode === 1 ? 0 : 1" />
-        <!-- <cy-button type="icon" @click="optimizeSteps" /> -->
+        <!-- <cy-button-icon @click="optimizeSteps" /> -->
         <cy-icon-text icon="bx-bx-star" class="ml-auto mr-3">
           {{ $lang('success rate') }}
         </cy-icon-text>

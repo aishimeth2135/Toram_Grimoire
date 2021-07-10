@@ -1,7 +1,7 @@
 <template>
   <article>
     <div>
-      <fieldset class="mb-4 p-4 border-1 border-solid border-light-2">
+      <fieldset class="mb-4 mx-2 p-4 border-1 border-solid border-light-2">
         <legend class="px-2">
           <cy-button v-for="(mode, i) in modeState.modes"
             :key="mode.id"
@@ -14,7 +14,7 @@
         </legend>
         <div v-show="currentMode === 'normal'">
           <div class="mb-1 text-purple">
-            <cy-icon-text icon="ic-outline-search" class="text-small">
+            <cy-icon-text icon="ic-outline-search" size="small">
               {{ $lang('search title') }}
             </cy-icon-text>
           </div>
@@ -56,7 +56,7 @@
         </cy-default-tips>
       </div>
       <div v-if="currentCrystal"
-        class="flex sticky bottom-2 mr-2 bg-white border-1 border-solid border-light-2 rounded-2xl mt-4">
+        class="flex sticky bottom-2 mx-2 bg-white border-1 border-solid border-light-2 rounded-2xl mt-4">
         <div class="p-4">
           <div class="mb-2 text-purple">
             <cy-icon-text :icon="getCrystalImagePath(currentCrystal)" text-color="purple" icon-src="image">
@@ -120,6 +120,7 @@ import { EquipmentCrystal } from "@/lib/Character/CharacterEquipment";
 import vue_showStat from "@/components/common/show-stat.vue";
 
 export default {
+  name: 'crystal-query',
   RegisterLang: 'Crystal Query',
   data() {
     const crystals = this.$store.state.datas.items.crystals;

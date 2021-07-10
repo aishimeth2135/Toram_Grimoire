@@ -58,11 +58,10 @@
       </cy-icon-text>
       <div v-for="data in showStatDetailDatas.datas"
         :key="data.iid" class="mt-1">
-        <cy-icon-text v-if="(typeof data.title !== 'object')"
-          icon="gg-shape-rhombus">
+        <cy-icon-text v-if="(typeof data.title !== 'object')">
           {{ data.title }}
         </cy-icon-text>
-        <cy-icon-text v-else icon="gg-shape-rhombus">
+        <cy-icon-text v-else>
           <span>{{ data.title.text }}</span>
           <span class="ml-1 text-light-3">{{ data.title.value }}</span>
         </cy-icon-text>

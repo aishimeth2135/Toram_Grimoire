@@ -1,60 +1,69 @@
 <template>
   <div class="enchant-step px-2 pt-1 flex flex-col h-full bg-white"
-    :class="{ [mainBorderColor]: true, 'opacity-50': step.hidden }">
-    <div class="border-b pl-2 flex items-center py-0.5"
-      :class="[mainBorderColor]">
-      <cy-icon-text icon="bx-bxs-book-content" size="small"
-        :text-color="mainTextColor" :icon-color="mainTextColor">
+    :class="{ [mainBorderColor]: true, 'opacity-50': step.hidden }"
+  >
+    <div class="border-b pl-2 flex items-center py-0.5" :class="[mainBorderColor]">
+      <cy-icon-text
+        icon="bx-bxs-book-content"
+        size="small"
+        :text-color="mainTextColor"
+        :icon-color="mainTextColor"
+      >
         {{ stepTitle }}
       </cy-icon-text>
       <div class="ml-auto inline-flex items-center mr-1">
         <cy-options inline>
           <template #title="{ unfold }">
-            <cy-button type="icon" icon="gg-menu-left-alt" class="p-0"
+            <cy-button-icon icon="gg-menu-left-alt" class="p-0"
               :selected="unfold" />
           </template>
           <template #options>
-            <cy-list-item @click="insertStepBefore">
-              <cy-button type="inline" class="w-full"
+            <cy-list-item @click="insertStepBefore(step)">
+              <cy-button-inline class="w-full"
                 icon="mdi-table-row-plus-before">
                 {{ $lang('step/insert step before') }}
-              </cy-button>
+              </cy-button-inline>
             </cy-list-item>
             <cy-list-item v-if="step.index !== 0"
-              @click="swapStep(-1)">
-              <cy-button type="inline" class="w-full"
+              @click="swapStep({ step, offset: -1 })">
+              <cy-button-inline class="w-full"
                 icon="eva-arrow-ios-upward-fill">
                 {{ $lang('step/up swap') }}
-              </cy-button>
+              </cy-button-inline>
             </cy-list-item>
             <cy-list-item v-if="!step.isLastStep"
-              @click="swapStep(1)">
-              <cy-button type="inline" class="w-full"
+              @click="swapStep({ step, offset: 1 })">
+              <cy-button-inline class="w-full"
                 icon="eva-arrow-ios-downward-outline">
                 {{ $lang('step/down swap') }}
-              </cy-button>
+              </cy-button-inline>
             </cy-list-item>
           </template>
         </cy-options>
-        <cy-button type="icon"
+        <cy-button-icon
           :icon="step.hidden ? 'mdi-checkbox-blank-off-outline' : 'mdi-checkbox-blank-outline'"
           class="p-0"
           :icon-color="step.hidden ? 'red' : 'red-light'"
-          @click="toggleStepHidden(step)" />
-        <cy-button type="icon" icon="jam-close-circle"
+          @click="toggleStepHidden(step)"
+        />
+        <cy-button-icon
+          icon="jam-close-circle"
           class="p-0"
-          @click="removeStep"
-          icon-color="gray" />
+          @click="removeStep(step)"
+          icon-color="gray"
+        />
       </div>
     </div>
     <div class="p-1">
       <template v-if="step.stats.length !== 0">
-        <step-stat v-for="stat in step.stats"
-          :stat="stat" class="step-stat"
-          :key="stat.statId" />
+        <step-stat
+          v-for="stat in step.stats"
+          :stat="stat"
+          :key="stat.statId"
+          class="step-stat"
+        />
       </template>
-      <div v-else-if="step.index === 0"
-        class="pt-3 pb-2 px-2">
+      <div v-else-if="step.index === 0" class="pt-3 pb-2 px-2">
         <div>
           <cy-icon-text size="small" text-color="purple">
             {{ $lang('step/button caption: title') }}
@@ -62,30 +71,38 @@
         </div>
         <div class="pl-2">
           <div>
-            <cy-icon-text size="small"
+            <cy-icon-text
+              size="small"
               icon="ic-round-add-circle-outline"
-              icon-color="water-blue">
+              icon-color="water-blue"
+            >
               {{ $lang('step/select one stat item') }}
             </cy-icon-text>
           </div>
           <div>
-            <cy-icon-text size="small"
+            <cy-icon-text
+              size="small"
               icon="ic-round-add-circle-outline"
-              icon-color="red">
+              icon-color="red"
+            >
               {{ $lang('step/select multiple stat items') }}
             </cy-icon-text>
           </div>
           <div>
-            <cy-icon-text size="small"
+            <cy-icon-text
+              size="small"
               icon="ic-outline-near-me"
-              icon-color="blue-green">
+              icon-color="blue-green"
+            >
               {{ $lang('step/type: each') }}
             </cy-icon-text>
           </div>
           <div>
-            <cy-icon-text size="small"
+            <cy-icon-text
+              size="small"
               icon="ant-design:star-outlined"
-              icon-color="orange">
+              icon-color="orange"
+            >
               {{ $lang('step/auto fill positive stat') }}
             </cy-icon-text>
           </div>
@@ -97,14 +114,15 @@
     </div>
     <div class="border-t border-purple mt-auto pt-0.5">
       <cy-transition type="fade">
-        <div v-if="typeEach"
-          class="border-b border-light-2 py-0.5">
-          <cy-input-counter :value="step.step" inline
+        <div v-if="typeEach" class="border-b border-light-2 py-0.5">
+          <cy-input-counter
+            :value="step.step"
+            inline
             main-color="blue-green"
-            @update:value="setStepValue(step, $event)">
+            @update:value="setStepStepValue({ step, value: $event })"
+          >
             <template #title>
-              <cy-icon-text icon="ic-outline-near-me"
-                icon-color="blue-green">
+              <cy-icon-text icon="ic-outline-near-me" icon-color="blue-green">
                 {{ $lang('step type - each: title') }}
               </cy-icon-text>
             </template>
@@ -112,26 +130,29 @@
         </div>
       </cy-transition>
       <div class="flex items-center py-0.5">
-        <cy-button type="icon"
+        <cy-button-icon
           icon="ic-round-add-circle-outline"
           @click="openSelectItem('step', step, true)"
-          icon-color="water-blue" />
-        <cy-button type="icon"
+          icon-color="water-blue"
+        />
+        <cy-button-icon
           icon="ic-round-add-circle-outline"
           @click="openSelectItem('step', step)"
-          icon-color="red" />
-        <cy-button type="icon"
+          icon-color="red"
+        />
+        <cy-button-icon
           :icon="typeIcon"
           @click="toggleStepType(step)"
           :icon-color="typeEach ? 'blue-green' : 'blue-green-light'"
-          icon-color-hover="blue-green" />
-        <cy-button v-if="step.belongEquipment.stats(step.index - 1).length >= 6"
-          type="icon"
+          icon-color-hover="blue-green"
+        />
+        <cy-button-icon
+          v-if="step.belongEquipment.stats(step.index - 1).length >= 6"
           icon="ant-design:star-outlined"
-          @click="step.autoFill()"
-          icon-color="orange" />
-        <cy-icon-text icon="mdi-creation" class="ml-auto mr-2"
-          text-color="purple">
+          @click="stepAutoFill(step)"
+          icon-color="orange"
+        />
+        <cy-icon-text icon="mdi-creation" class="ml-auto mr-2" text-color="purple">
           {{ step.remainingPotential }}
         </cy-icon-text>
       </div>
@@ -139,6 +160,7 @@
   </div>
 </template>
 <script>
+import { mapMutations } from "vuex";
 import vue_stepStat from "./step-stat";
 import { EnchantStep } from '@/lib/Enchant/Enchant';
 
@@ -189,24 +211,37 @@ export default {
     }
   },
   methods: {
-    toggleStepType(step) {
-      step.type = step.type === EnchantStep.TYPE_NORMAL ? EnchantStep.TYPE_EACH : EnchantStep.TYPE_NORMAL;
-    },
-    toggleStepHidden(step) {
-      step.hidden = !step.hidden;
-    },
-    setStepValue(step, v) {
-      step.step = v;
-    },
-    swapStep(offset) {
-      this.step.belongEquipment.swapStep(this.step.index, this.step.index + offset);
-    },
-    insertStepBefore() {
-      this.step.belongEquipment.insertStepBefore(this.step);
-    },
-    removeStep() {
-      this.step.remove();
-    }
+    ...mapMutations('enchant/step', [
+      'toggleStepType',
+      'toggleStepHidden',
+      'swapStep',
+      'insertStepBefore',
+      'removeStep',
+      'setStepStepValue',
+      'stepAutoFill',
+    ]),
+    // stepSet(key, value) {
+    //   this.$store.commit('enchant/set', {
+    //     target: this.step, key, value,
+    //   });
+    // },
+    // toggleStepType() {
+    //   const step = this.step;
+    //   const type = step.type === EnchantStep.TYPE_NORMAL ? EnchantStep.TYPE_EACH : EnchantStep.TYPE_NORMAL;
+    //   this.stepSet('type', type);
+    // },
+    // toggleStepHidden() {
+    //   this.stepSet('hidden', !this.step.hidden);
+    // },
+    // swapStep(offset) {
+    //   this.step.belongEquipment.swapStep(this.step.index, this.step.index + offset);
+    // },
+    // insertStepBefore() {
+    //   this.step.belongEquipment.insertStepBefore(this.step);
+    // },
+    // removeStep() {
+    //   this.step.remove();
+    // }
   },
   components: {
     'step-stat': vue_stepStat

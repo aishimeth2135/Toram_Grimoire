@@ -39,7 +39,7 @@ function CyButton(props, context) {
     getComponent(),
     attrs,
     context.slots
-  )
+  );
 }
 
 CyButton.props = {

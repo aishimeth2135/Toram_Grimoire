@@ -10,53 +10,44 @@
           <div v-if="menuVisible.conditionOptions" class="content">
             <div v-for="type in conditions.type" :key="type.id" class="column">
               <div class="flex items-center">
-                <cy-button @click="toggleSelected(type)"
-                  type="check" class="options-title"
+                <cy-button-check
+                  class="options-title"
                   main-color="orange"
-                  :selected="type.selected">
+                  v-model:selected="type.selected"
+                >
                   {{ $globalLang('common/Equipment/field/' + type.id) }}
-                </cy-button>
+                </cy-button-check>
                 <template v-if="type.types !== null">
-                  <cy-button icon="ic-round-border-all" type="border"
-                    @click="selectAll(type.types)" />
-                  <cy-button icon="eva-close-outline" type="border"
-                    @click="cancelAll(type.types)" />
+                  <cy-button-border icon="ic-round-border-all" @click="selectAll(type.types)" />
+                  <cy-button-border icon="eva-close-outline" @click="cancelAll(type.types)" />
                 </template>
               </div>
               <div v-if="type.types !== null" class="options">
-                <cy-button v-for="item in type.types"
-                  :key="item.value" type="check"
+                <cy-button-check
+                  v-for="item in type.types"
+                  :key="item.value"
                   :selected="type.selected && item.selected"
                   :selected-icon="item.imagePath"
                   selected-icon-src="image"
-                  @click="toggleSelected(item)">
+                  @click="toggleSelected(item)"
+                >
                   {{ $globalLang('common/Equipment/category/' + item.value.description) }}
-                </cy-button>
+                </cy-button-check>
               </div>
             </div>
           </div>
           <div v-else-if="menuVisible.sortOptions" class="content">
             <div class="column">
               <div class="normal-title">
-                <cy-icon-text icon="mdi-sort-variant"
-                  text-color="purple" size="small">
+                <cy-icon-text icon="mdi-sort-variant" text-color="purple" size="small">
                   {{ $lang('sort options/title') }}
                 </cy-icon-text>
               </div>
-              <div class="options">
-                <cy-button type="border" icon="gg-shape-rhombus"
-                  @click="selectSortOption('default')"
-                  :selected="sortOptions.currentSelected === 'default'">
-                  {{ $lang('sort options/options/default') }}
-                </cy-button>
-                <cy-button v-for="(_, id) in sortOptions.global"
-                  type="border" :key="id"
-                  icon="gg-shape-rhombus"
-                  @click="selectSortOption(id)"
-                  :selected="sortOptions.currentSelected === id">
-                  {{ $lang('sort options/options/' + id) }}
-                </cy-button>
-              </div>
+              <cy-button-check-group
+                class="options"
+                v-model:value="sortOptions.currentSelected"
+                :options="consts.sortOptions"
+              />
             </div>
             <div class="column">
               <div class="normal-title">
@@ -65,18 +56,11 @@
                   {{ $lang('sort options/order/title') }}
                 </cy-icon-text>
               </div>
-              <div class="options">
-                <cy-button type="border" icon="akar-icons:arrow-down"
-                  @click="selecetSortOrder('down')"
-                  :selected="sortOptions.currentOrder === 'down'">
-                  {{ $lang('sort options/order/down') }}
-                </cy-button>
-                <cy-button type="border" icon="akar-icons:arrow-up"
-                  @click="selecetSortOrder('up')"
-                  :selected="sortOptions.currentOrder === 'up'">
-                  {{ $lang('sort options/order/up') }}
-                </cy-button>
-              </div>
+              <cy-button-check-group
+                class="options"
+                v-model:value="sortOptions.currentOrder"
+                :options="consts.sortOrderOptions"
+              />
             </div>
           </div>
         </div>
@@ -126,11 +110,13 @@
                 {{ $lang('options: normal/title') }}
               </cy-icon-text>
               <div style="padding: 0.2rem 0.4rem;">
-                <cy-button v-for="item in modes.normal.targets" :key="item.value" type="border"
-                  icon="gg-shape-rhombus" :selected="item.selected"
-                  @click="toggleSelected(item)">
+                <cy-button-check
+                  v-for="item in modes.normal.targets"
+                  :key="item.value"
+                  v-model:selected="item.selected"
+                >
                   {{ $lang('options: normal/' + item.value) }}
-                </cy-button>
+                </cy-button-check>
               </div>
             </div>
           </cy-transition>
@@ -143,18 +129,17 @@
                     <input type="text" :placeholder="$lang('search placeholder')"
                       v-model="modes.normal.searchText">
                   </div>
-                  <cy-button type="icon" icon="heroicons-solid:menu"
+                  <cy-button-icon icon="heroicons-solid:menu"
                     @click="modes.normal.optionsVisible = !modes.normal.optionsVisible" />
                 </div>
               </template>
               <template v-else-if="currentMode === 'stat'">
-                <cy-button type="inline" icon="gg-shape-rhombus"
+                <cy-button-inline
                   @click="toggleSelectStatVisible(true)"
-                  class="w-full">
-                  {{ modes.stat.currentStat ?
-                      modes.stat.currentStat.text :
-                      $lang('options: stat/select stat: title') }}
-                </cy-button>
+                  class="w-full"
+                >
+                  {{ modes.stat.currentStat ? modes.stat.currentStat.text : $lang('options: stat/select stat: title') }}
+                </cy-button-inline>
               </template>
               <template v-else-if="currentMode === 'item-level'">
                 <div class="flex items-center">
@@ -182,8 +167,7 @@
         </div>
       </div>
     </div>
-    <cy-window v-model:visible="modes.stat.selectStatVisible"
-      vertical-position="top">
+    <cy-window v-model:visible="modes.stat.selectStatVisible" vertical-position="top">
       <template v-slot:title>
         <cy-icon-text icon="mdi-rhombus-outline">
           {{ $lang('options: stat/select stat: window title') }}
@@ -223,6 +207,7 @@ import {
 import { StatBase } from "@/lib/Character/Stat";
 
 export default {
+  name: 'item-query',
   RegisterLang: 'Item Query',
   data() {
     const equipments = this.$store.state.datas.items.equipments
@@ -380,7 +365,17 @@ export default {
           selected: true
         }],
         obtain: ['smith', 'boss', 'mini_boss', 'mobs', 'quest', 'box', 'exchange', 'other']
-      }
+      },
+      consts: {
+        sortOrderOptions: ['down', 'up'].map(id => ({
+          value: id,
+          text: this.$lang('sort options/order/' + id),
+        })),
+        sortOptions: ['default', 'atk', 'def', 'stability', 'name'].map(id => ({
+          value: id,
+          text: this.$lang('sort options/options/' + id),
+        })),
+      },
     };
   },
   provide() {
@@ -526,9 +521,6 @@ export default {
     findObtainByDye(text, eq) {
       text = text.toLowerCase();
       return eq.origin.obtains.filter(b => b['dye'] && b['dye'].toLowerCase().includes(text));
-    },
-    selecetSortOrder(id) {
-      this.sortOptions.currentOrder = id;
     },
     selectSortOption(id) {
       this.sortOptions.currentSelected = id;

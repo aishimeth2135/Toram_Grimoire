@@ -6,25 +6,38 @@
         <slot name="title"></slot>
       </div>
       <div class="counter-content">
-        <cy-button v-if="minButton && range[0] !== null"
-          type="icon" icon="akar-icons:circle-chevron-left"
-          :icon-color="mainColor" :icon-color-hover="mainColorInstance.darken"
-          @click="setValue(range[0])" />
-        <cy-button type="icon" icon="ic-round-remove-circle-outline"
-          :icon-color="mainColor" :icon-color-hover="mainColorInstance.darken"
-          @click="setValue(value - step)" />
+        <cy-button-icon
+          v-if="minButton && range[0] !== null"
+          icon="akar-icons:circle-chevron-left"
+          :icon-color="mainColor"
+          :icon-color-hover="mainColorInstance.darken"
+          @click="setValue(range[0])"
+        />
+        <cy-button-icon
+          icon="ic-round-remove-circle-outline"
+          :icon-color="mainColor"
+          :icon-color-hover="mainColorInstance.darken"
+          @click="setValue(value - step)"
+        />
         <input type="number"
           v-model.number.lazy="inputValue"
           @click="selectInput($event)"
           @focus="setInputFocus(true)"
-          @blur="setInputFocus(false)" />
-        <cy-button type="icon" icon="ic-round-add-circle-outline"
-          :icon-color="mainColor" :icon-color-hover="mainColorInstance.darken"
-          @click="setValue(value + step)" />
-        <cy-button v-if="maxButton && range[1] !== null"
-          type="icon" icon="akar-icons:circle-chevron-right"
-          :icon-color="mainColor" :icon-color-hover="mainColorInstance.darken"
-          @click="setValue(range[1])" />
+          @blur="setInputFocus(false)"
+        />
+        <cy-button-icon
+          icon="ic-round-add-circle-outline"
+          :icon-color="mainColor"
+          :icon-color-hover="mainColorInstance.darken"
+          @click="setValue(value + step)"
+        />
+        <cy-button-icon
+          v-if="maxButton && range[1] !== null"
+          icon="akar-icons:circle-chevron-right"
+          :icon-color="mainColor"
+          :icon-color-hover="mainColorInstance.darken"
+          @click="setValue(range[1])"
+        />
         <slot name="unit"></slot>
       </div>
     </div>

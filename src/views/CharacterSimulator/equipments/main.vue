@@ -30,11 +30,11 @@
         <cy-bottom-content>
           <template #normal-content>
             <div class="flex items-center">
-              <cy-button type="border" icon="ic-round-done"
+              <cy-button-border icon="ic-round-done"
                 @click="toggle('window/customEquipmentEditor', false)"
                 class="ml-auto">
                 {{ $globalLang('global/close') }}
-              </cy-button>
+              </cy-button-border>
             </div>
           </template>
         </cy-bottom-content>

@@ -1,16 +1,22 @@
 <template>
   <span class="app--left-menu relative z-50" @click="unfold=!unfold">
-    <cy-button :icon="currentIconName"
-      type="icon" class="top-button" />
+    <cy-button-icon :icon="currentIconName" class="top-button" />
     <transition name="fade">
-      <div v-show="!unfold" @click.stop="menuClick()"
+      <div
+        v-if="viewButtons && viewButtons.length != 0"
+        v-show="!unfold"
         class="menu z-1 min-h-full absolute"
-        v-if="viewButtons && viewButtons.length != 0">
+        @click.stop="menuClick()"
+      >
         <div class="conent-container w-full h-full">
-          <cy-button v-for="(data) in viewButtons" :icon="data.icon"
-            :key="data.title" type="line" @click="setCurrentView(data)">
+          <cy-button-line
+            v-for="(data) in viewButtons"
+            :icon="data.icon"
+            :key="data.title"
+            @click="setCurrentView(data)"
+          >
             {{ data.title }}
-          </cy-button>
+          </cy-button-line>
         </div>
       </div>
     </transition>

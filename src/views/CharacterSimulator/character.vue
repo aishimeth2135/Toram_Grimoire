@@ -25,14 +25,12 @@
         </template>
       </cy-options>
       <div class="buttons">
-        <cy-button icon="mdi-content-copy" type="border"
-          @click="copyCurrentCharacter">
+        <cy-button-border icon="mdi-content-copy" @click="copyCurrentCharacter">
           {{ $globalLang('global/copy') }}
-        </cy-button>
-        <cy-button icon="ic-baseline-delete-outline" type="border"
-          @click="removeCurrentCharacter">
+        </cy-button-border>
+        <cy-button-border icon="ic-baseline-delete-outline" @click="removeCurrentCharacter">
           {{ $globalLang('global/remove') }}
-        </cy-button>
+        </cy-button-border>
       </div>
     </div>
     <div class="content-title">
@@ -101,17 +99,22 @@
     </div>
     <div class="content">
       <div class="flex items-center flex-wrap">
-        <cy-button type="border" icon="ic-round-close"
+        <cy-button-border
+          icon="ic-round-close"
           :selected="!character.hasOptinalBaseStat()"
-          @click="clearOptionalBaseStat">
+          @click="clearOptionalBaseStat"
+        >
           {{ $globalLang('global/none') }}
-        </cy-button>
-        <cy-button v-for="p in characterOptionalBaseStatList"
+        </cy-button-border>
+        <cy-button-border
+          v-for="p in characterOptionalBaseStatList"
+          :key="p"
           icon="mdi-checkbox-multiple-blank-circle-outline"
           :selected="character.baseStat(p) ? true : false"
-          type="border" :key="p" @click="setOptionalBaseStat(p)">
+          @click="setOptionalBaseStat(p)"
+        >
           {{ p }}
-        </cy-button>
+        </cy-button-border>
       </div>
     </div>
   </section>

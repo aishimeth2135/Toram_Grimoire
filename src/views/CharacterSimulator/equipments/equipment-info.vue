@@ -13,7 +13,7 @@
         :class="[equipment.isCustom ? 'text-green' : 'text-light-3']">
         {{ equipment.categoryText }}
       </span>
-      <cy-button type="icon" class="ml-auto"
+      <cy-button-icon class="ml-auto"
         :icon="mode === 0 ? 'ic-round-edit' : 'ic-round-view-list'"
         @click="mode = mode === 0 ? 1 : 0" />
     </div>
@@ -56,10 +56,10 @@
             class="mr-2" text-color="purple" size="small">
             {{ $lang('equipment type') }}
           </cy-icon-text>
-          <cy-button type="border" icon="heroicons-solid:switch-vertical"
+          <cy-button-border icon="heroicons-solid:switch-vertical"
             @click="switchCustomType">
             {{ $globalLang('common/Equipment/category/' + equipment.type.description) }}
-          </cy-button>
+          </cy-button-border>
         </div>
         <cy-input-counter v-if="equipment.is == 'weapon'" class="mb-3"
           :value="equipment.atk" :range="baseValueRange"

@@ -1,9 +1,7 @@
 <template>
   <cy-list-item v-if="disabled" class="skill-item">
     <div class="line-content">
-      <cy-icon-text icon="gg-shape-rhombus"
-        icon-color="gray-light" text-color="gray"
-        class="ml-3 my-1">
+      <cy-icon-text icon-color="gray-light" text-color="gray" class="ml-3 my-1">
         <cy-icon :icon="skillIconPath" src="image" class="skill-icon" />
       </cy-icon-text>
       <div class="text-gray ml-4">

@@ -4,7 +4,7 @@
       :class="rootClass">
       <div class="content-container">
         <div class="top-mask" />
-        <cy-button type="icon" @click.stop="closeWindow"
+        <cy-button-icon @click.stop="closeWindow"
           icon="jam-close-circle-f" class="close-btn" />
         <div class="container-inner" @click.stop>
           <div class="top">
@@ -12,16 +12,6 @@
           </div>
           <div class="content">
             <slot></slot>
-          </div>
-          <div class="tail" v-if="type === 'confirm'">
-            <cy-button @click="confirmCallback"
-              icon="ic-round-check">
-              {{ $globalLang('global/confirm') }}
-            </cy-button>
-            <cy-button @click="closeWindow"
-              icon="ic-round-close">
-              {{ $globalLang('global/cancel') }}
-            </cy-button>
           </div>
         </div>
       </div>

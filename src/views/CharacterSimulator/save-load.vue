@@ -5,14 +5,14 @@
         {{ $lang('top caption') }}
       </cy-default-tips>
       <div class="buttons">
-        <cy-button type="border" icon="ic-round-save"
+        <cy-button-border icon="ic-round-save"
           @click="$emit('manual-auto-save')">
           {{ $lang('save button: title') }}
-        </cy-button>
-        <cy-button type="border" icon="bx-bx-loader-circle"
+        </cy-button-border>
+        <cy-button-border icon="bx-bx-loader-circle"
           @click="$emit('manual-auto-load')">
           {{ $lang('load button: title') }}
-        </cy-button>
+        </cy-button-border>
       </div>
     </div>
     <div class="content">
@@ -33,10 +33,14 @@
             </cy-icon-text>
           </template>
         </cy-input-counter>
-        <cy-button v-if="deleteCounter == 10" type="border" icon="ic-round-delete"
-          style="margin-top: 0.6rem;" @click="deleteAllSavedData">
+        <cy-button-border
+          v-if="deleteCounter === 10"
+          icon="ic-round-delete"
+          style="margin-top: 0.6rem;"
+          @click="deleteAllSavedData"
+        >
           {{ $lang('button: deleta all data') }}
-        </cy-button>
+        </cy-button-border>
       </div>
     </div>
   </div>

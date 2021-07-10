@@ -3,15 +3,21 @@
     <div class="main" v-if="currentSkillRootState">
       <cy-sticky-header class="top transparent">
         <template v-slot:buttons-scope>
-          <cy-button type="icon" @click="openJumpSkillTree"
+          <cy-button-icon
+            @click="openJumpSkillTree"
             :selected="jumpSkillTreeVisible"
-            icon="dashicons:flag" />
-          <cy-button type="icon" @click="openSelectSkillTree"
+            icon="dashicons:flag"
+          />
+          <cy-button-icon
+            @click="openSelectSkillTree"
             :selected="selectSkillTreeVisible"
-            icon="ic:round-library-add" />
-          <cy-button type="icon" @click="openBuildInformation"
+            icon="ic:round-library-add"
+          />
+          <cy-button-icon
+            @click="openBuildInformation"
             :selected="buildInformationVisible"
-            :icon="buildInformationVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'" />
+            :icon="buildInformationVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'"
+          />
         </template>
         <cy-transition type="fade">
           <div class="inner-menu select-skill-tree" v-if="selectSkillTreeVisible">
@@ -53,14 +59,16 @@
                   @click="jumpToSkillTree(o.skillTreeState.origin)" icon="mdi:judaism">
                   {{ o.skill.base.name }} Lv.{{ o.skill.starGemLevel() }}
                   <template v-slot:content-right>
-                    <cy-icon-text icon="mdi:judaism" class="text-small">
+                    <cy-icon-text icon="mdi:judaism" size="small">
                       {{ o.skill.starGemLevel() - o.skill.level() }}
                     </cy-icon-text>
                   </template>
                 </cy-button>
               </div>
-              <cy-default-tips v-if="jumpSkillTreeShowDetail && currentStarGemList.length == 0"
-                icon="mdi:ghost">
+              <cy-default-tips
+                v-if="jumpSkillTreeShowDetail && currentStarGemList.length === 0"
+                icon="mdi:ghost"
+              >
                 {{ $lang('no star gem set') }}
               </cy-default-tips>
               <template v-for="stc in visibleSkillTreeCategoryStates"
@@ -73,7 +81,7 @@
                     class="icon-small">
                     {{ st.origin.name }}
                     <template v-slot:content-right>
-                      <cy-icon-text icon="gg-shape-rhombus" class="text-small">
+                      <cy-icon-text>
                         {{ skillTreeSkillPointCost(st) }}
                       </cy-icon-text>
                     </template>
@@ -113,18 +121,18 @@
               class="mt-4"
               v-model:value="currentSkillRootState.name" />
             <div class="p-2 mb-1">
-              <cy-button type="line" @click="copyCurrentBuild" icon="mdi:content-copy">
+              <cy-button-line @click="copyCurrentBuild" icon="mdi:content-copy">
                 {{ $globalLang('global/copy') }}
-              </cy-button>
-              <cy-button type="line" @click="deleteCurrentBuild" icon="ic:round-delete-outline">
+              </cy-button-line>
+              <cy-button-line @click="deleteCurrentBuild" icon="ic:round-delete-outline">
                 {{ $globalLang('global/delete') }}
-              </cy-button>
-              <cy-button type="line" @click="exportCurrentBuildText" icon="ic-round-text-fields">
+              </cy-button-line>
+              <cy-button-line @click="exportCurrentBuildText" icon="ic-round-text-fields">
                 {{ $lang('export text') }}
-              </cy-button>
-              <cy-button type="line" @click="exportCurrentBuildImage" icon="mdi:content-copy">
+              </cy-button-line>
+              <cy-button-line @click="exportCurrentBuildImage" icon="mdi:content-copy">
                 {{ $lang('export image') }}
-              </cy-button>
+              </cy-button-line>
             </div>
             <div class="text-purple text-sm">{{ $lang('left menu/save load') }}</div>
             <div class="py-2 px-2">
@@ -137,7 +145,7 @@
       <div class="bottom-menu">
         <div class="skill-point-information">
           <div class="column">
-            <cy-icon-text icon="gg-shape-rhombus" size="small">
+            <cy-icon-text size="small">
               {{ $lang('skill level') }}
             </cy-icon-text>
             <span class="ml-2 text-light-3 text-sm">
@@ -165,7 +173,7 @@
               </cy-button>
             </div>
             <div class="ml-auto">
-              <cy-button type="icon"
+              <cy-button-icon
                 :icon="bottomMenuExtraMenuVidsible ? 'heroicons-solid:menu-alt-4' : 'heroicons-solid:menu'"
                 @click="bottomMenuExtraMenuVidsible = !bottomMenuExtraMenuVidsible" />
             </div>

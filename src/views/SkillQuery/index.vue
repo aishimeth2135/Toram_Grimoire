@@ -59,10 +59,16 @@
             <div class="effect-attrs" ref="effect-attrs">
               <table>
                 <tr v-for="(data) in currentSkillAttrs" :key="data.id">
-                  <td>
-                    <cy-icon-text :icon="data.icon">{{ data.name }}</cy-icon-text>
+                  <td class="pt-1">
+                    <div class="flex">
+                      <cy-icon-text :icon="data.icon">
+                        {{ data.name }}
+                      </cy-icon-text>
+                    </div>
                   </td>
-                  <td v-html="data.value"></td>
+                  <td>
+                    <div v-html="data.value"></div>
+                  </td>
                 </tr>
               </table>
             </div>
@@ -102,7 +108,7 @@
           <div class="top-content">
             <cy-transition type="fade">
               <div class="content-container" v-if="!skillStates.optionsWindowVisible">
-                <cy-button type="icon" key="switch-btn"
+                <cy-button-icon key="switch-btn"
                   icon="heroicons-solid:switch-vertical"
                   icon-color="water-blue-light"
                   icon-color-hover="water-blue"
@@ -200,10 +206,10 @@
                 </cy-input-counter>
               </div>
               <div class="mt-4">
-                <cy-button type="border" icon="heroicons-solid:switch-vertical"
+                <cy-button-border icon="heroicons-solid:switch-vertical"
                   @click="skillStates.formulaDisplayMode = skillStates.formulaDisplayMode == 0 ? 1 : 0">
                   {{ $lang('switch formula display mode') }}
-                </cy-button>
+                </cy-button-border>
               </div>
             </div>
           </cy-transition>

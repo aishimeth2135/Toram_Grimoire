@@ -11,16 +11,18 @@
       <!-- top -->
       <div class="flex items-center border-b border-solid border-light-2 pb-2">
         <div class="ml-auto">
-          <cy-button icon="ic-round-add-circle-outline"
-            type="border"
-            @click="toggleMainWindowVisible('appendEquipments', true)">
+          <cy-button-border
+            icon="ic-round-add-circle-outline"
+            @click="toggleMainWindowVisible('appendEquipments', true)"
+          >
             {{ $lang('append equipments') }}
-          </cy-button>
-          <cy-button icon="gridicons-create"
-            type="border"
-            @click="toggleMainWindowVisible('createCustomEquipment', true)">
+          </cy-button-border>
+          <cy-button-border
+            icon="gridicons-create"
+            @click="toggleMainWindowVisible('createCustomEquipment', true)"
+          >
             {{ $lang.extra('parent', 'custom equipment') }}
-          </cy-button>
+          </cy-button-border>
         </div>
       </div>
       <div class="content">
@@ -41,32 +43,35 @@
             <character-stats-compare :before="compareData.before" :after="compareData.after" />
           </div>
         </div>
-        <cy-button icon="mdi-rhombus-outline" type="border"
+        <cy-button-border
           v-if="currentEquipment"
-          class="toggle-info-unfold-btn" @click="toggleInfoUnfold" />
+          icon="mdi-rhombus-outline"
+          class="toggle-info-unfold-btn"
+          @click="toggleInfoUnfold"
+        />
       </div>
       <!-- bottom -->
       <cy-bottom-content v-if="currentEquipment" class="z-1">
         <template #normal-content>
           <div class="flex items-center flex-wrap">
-            <cy-button icon="ic-baseline-delete-outline" type="border"
-              @click="removeSelectedEquipment">
+            <cy-button-border icon="ic-baseline-delete-outline" @click="removeSelectedEquipment">
               {{ $globalLang('global/remove') }}
-            </cy-button>
-            <cy-button icon="mdi-content-copy" type="border"
-              @click="copySelectedEquipment">
+            </cy-button-border>
+            <cy-button-border icon="mdi-content-copy" @click="copySelectedEquipment">
               {{ $globalLang('global/copy') }}
-            </cy-button>
+            </cy-button-border>
             <div v-if="actionType === 'select-field-equipment'"
               class="ml-auto">
-              <cy-button v-if="!currentEquipmentDisable"
-                icon="ic-round-done" type="border"
-                @click="selectEquipment">
+              <cy-button-border
+                v-if="!currentEquipmentDisable"
+                icon="ic-round-done"
+                @click="selectEquipment"
+              >
                 {{ $globalLang('global/confirm') }}
-              </cy-button>
-              <cy-button v-else icon="ic-round-done" type="border" :disabled="true">
+              </cy-button-border>
+              <cy-button-border v-else icon="ic-round-done" type="border" :disabled="true">
                 {{ $globalLang('global/confirm') }}
-              </cy-button>
+              </cy-button-border>
             </div>
           </div>
         </template>

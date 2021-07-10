@@ -5,12 +5,6 @@ import "@/assets/css/main/main.less";
 import "@/assets/css/SaveLoad/main.css";
 import "@/assets/css/main/Cyteria/Cyteria.css";
 
-import { InitLanguageSystem } from "@services/Language";
-
-// == [ init ] =========================================
-InitLanguageSystem();
-
-// ======================================================
 import { createApp } from "vue";
 
 import App from "./App.vue";
@@ -23,7 +17,8 @@ import RegisterLang from "@/plugin/RegisterLang.js";
 import Notify from "@/plugin/Notify";
 import Confirm from "@/plugin/Confirm";
 
-import registerServiceWorker from './registerServiceWorker';
+import registerServiceWorker from './app/registerServiceWorker';
+import registGlobalComponents from './app/registGlobalComponents';
 
 const APP = createApp(App);
 APP
@@ -38,22 +33,7 @@ APP
     }
   });
 
-/* == [ auto regist global components ] ================= */
-function registComponents(requireComponent, prefix='') {
-  requireComponent.keys().forEach(fileName => {
-    const componentConfig = requireComponent(fileName);
-    const componentName = fileName.split('/').pop().replace(/\.\w+$/, '');
-    APP.component(prefix + componentName, componentConfig.default || componentConfig);
-  });
-}
-
-const requireComponent_global = require.context('./components/global', false, /[a-zA-Z-]+\.vue$/);
-const requireComponent_cy = require.context('./components/global/Cyteria', false, /[a-zA-Z-]+\.vue$/);
-
-registComponents(requireComponent_global);
-registComponents(requireComponent_cy, 'cy-');
-// ======================================================
-
+registGlobalComponents(APP);
 registerServiceWorker();
 
 APP.mount('#app');

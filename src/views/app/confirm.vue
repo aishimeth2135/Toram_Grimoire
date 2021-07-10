@@ -16,17 +16,21 @@
           </div>
         </div>
         <div class="flex items-center">
-          <cy-button icon="line-md:confirm-circle"
-            class="ml-auto" type="border"
-            @click="confirm">
+          <cy-button-border
+            icon="line-md:confirm-circle"
+            class="ml-auto"
+            @click="confirm"
+          >
             {{ $globalLang('global/confirm') }}
-          </cy-button>
-          <cy-button icon="ic-round-cancel"
+          </cy-button-border>
+          <cy-button-border
+            icon="ic-round-cancel"
             type="border"
             main-color="gray"
-            @click="cancel">
+            @click="cancel"
+          >
             {{ $globalLang('global/cancel') }}
-          </cy-button>
+          </cy-button-border>
         </div>
       </div>
     </div>

@@ -5,15 +5,18 @@
         {{ $globalLang('common/Equipment/field/' + field.type.description) }}
       </cy-icon-text>
       <div class="ml-auto leading-none">
-        <cy-button v-if="!field.isEmpty()"
+        <cy-button-icon v-if="!field.isEmpty()"
           icon="ic-round-close"
-          type="icon" class="p-0"
+          class="p-0"
           icon-color="red"
-          @click="$emit('remove-field-equipment', field)" />
-        <cy-button icon="ic-round-view-list"
-          type="icon" class="p-0"
+          @click="$emit('remove-field-equipment', field)"
+        />
+        <cy-button-icon
+          icon="ic-round-view-list"
+          class="p-0"
           icon-color="orange"
-          @click="$emit('select-field-equipment', field)" />
+          @click="$emit('select-field-equipment', field)"
+        />
       </div>
     </div>
     <equipment-info v-if="!field.isEmpty()" :equipment="field.equipment"
