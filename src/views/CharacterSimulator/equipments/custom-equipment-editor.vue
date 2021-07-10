@@ -27,10 +27,9 @@
           </template>
         </cy-input-counter>
       </div>
-      <cy-button icon="ic-round-add" type="border"
-        @click="toggleWindowVisible('selectStat', true)">
+      <cy-button-border icon="ic-round-add" @click="toggleWindowVisible('selectStat', true)">
         {{ $lang('custom equipment editor/select stat: window title') }}
-      </cy-button>
+      </cy-button-border>
     </div>
     <template v-if="hasOther">
       <cy-icon-text icon="mdi-rhombus-outline"
@@ -172,14 +171,12 @@
             class="top flex items-center flex-wrap">
             <cy-icon-text :icon="'ic-round-keyboard-arrow-' + (selectStatDetailVisible ? 'down' : 'up')" />
             <div class="ml-auto">
-              <cy-button icon="ic-round-done" type="border"
-                @click.stop="confirmEquipmentSelection">
+              <cy-button-border icon="ic-round-done" @click.stop="confirmEquipmentSelection">
                 {{ $globalLang('global/confirm') }}
-              </cy-button>
-              <cy-button icon="ic-round-close" type="border"
-                @click.stop="cancelEquipmentSelection">
+              </cy-button-border>
+              <cy-button-border icon="ic-round-close" @click.stop="cancelEquipmentSelection">
                 {{ $globalLang('global/cancel') }}
-              </cy-button>
+              </cy-button-border>
             </div>
           </div>
         </template>

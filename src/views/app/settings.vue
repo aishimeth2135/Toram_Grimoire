@@ -1,6 +1,6 @@
 <template>
   <span v-if="storageAvailable" class="app--settings">
-    <cy-button type="icon" icon="ic-baseline-settings" @click="toggleWindowVisible" />
+    <cy-button-icon icon="ic-baseline-settings" @click="toggleWindowVisible" />
     <cy-window class="main--window"
       width="wide"
       v-model:visible="windowVisible">
@@ -19,10 +19,10 @@
         <cy-icon-text icon="mdi-creation" text-color="purple">
           {{ $lang('update/new version detected') }}
         </cy-icon-text>
-        <cy-button type="border" icon="mdi-coffee-outline"
+        <cy-button-border icon="mdi-coffee-outline"
           @click="swUpdate" class="ml-4">
           {{ $lang('update/force update') }}
-        </cy-button>
+        </cy-button-border>
       </div>
       <fieldset class="column">
         <legend>
@@ -35,18 +35,15 @@
           {{ $lang('switch font/tips 1') }}
         </cy-icon-text>
         <div class="buttons">
-          <cy-button type="check"
-            :selected="currentFont === 1" @click="switchFont(1)">
+          <cy-button-check :selected="currentFont === 1" @click="switchFont(1)">
             {{ $lang('switch font/default font') }}
-          </cy-button>
-          <cy-button type="check"
-            :selected="currentFont === 0" @click="switchFont(0)">
+          </cy-button-check>
+          <cy-button-check :selected="currentFont === 0" @click="switchFont(0)">
             {{ $lang('switch font/base font') }}
-          </cy-button>
-          <cy-button type="check"
-            :selected="currentFont === 2" @click="switchFont(2)">
+          </cy-button-check>
+          <cy-button-check :selected="currentFont === 2" @click="switchFont(2)">
             {{ $lang('switch font/base font') + '-2' }}
-          </cy-button>
+          </cy-button-check>
         </div>
       </fieldset>
       <fieldset class="column">
@@ -57,11 +54,12 @@
         </legend>
         <div class="caption">{{ $lang('night mode/caption') }}</div>
         <div class="mt-4 mb-2">
-          <cy-button type="check"
+          <cy-button-check
             :selected="nightMode === '1'"
-            @click="nightMode = nightMode !== '1' ? '1' : '0'">
+            @click="nightMode = nightMode !== '1' ? '1' : '0'"
+          >
              {{ $lang('night mode/title') }}
-          </cy-button>
+          </cy-button-check>
         </div>
       </fieldset>
       <fieldset class="column">
@@ -104,12 +102,14 @@
           </cy-icon-text>
         </div>
         <div class="buttons">
-          <cy-button v-for="(item, i) in languageState.list"
-            type="check"
+          <cy-button-check
+            v-for="(item, i) in languageState.list"
+            :key="item"
             :selected="languageState.currentIndex === i"
-            :key="item" @click="setLanguage(0, i)">
+            @click="setLanguage(0, i)"
+          >
             {{ $lang('language/button texts/lang ' + item) }}
-          </cy-button>
+          </cy-button-check>
         </div>
       </fieldset>
       <fieldset class="column">
@@ -128,12 +128,14 @@
           {{ $lang('second language/tips 2') }}
         </cy-icon-text>
         <div class="buttons">
-          <cy-button v-for="(item, i) in secondLanguageState.list"
-            type="check"
-            :selected="secondLanguageState.currentIndex == i"
-            :key="item" @click="setLanguage(1, i)">
+          <cy-button-check
+            v-for="(item, i) in secondLanguageState.list"
+            :key="item"
+            :selected="secondLanguageState.currentIndex === i"
+            @click="setLanguage(1, i)"
+          >
             {{ $lang('language/button texts/lang ' + item) }}
-          </cy-button>
+          </cy-button-check>
         </div>
       </fieldset>
       <fieldset class="column">
@@ -155,9 +157,9 @@
           {{ $lang('clear caches of spreadsheets/tips 3') }}
         </cy-icon-text>
         <div class="buttons">
-          <cy-button icon="ic-round-delete" type="border" @click="clearSpreadsheetsCaches">
+          <cy-button-border icon="ic-round-delete" @click="clearSpreadsheetsCaches">
             {{ $lang('clear caches of spreadsheets/button texts/clear caches of spreadsheets') }}
-          </cy-button>
+          </cy-button-border>
         </div>
       </fieldset>
       <fieldset class="column">
@@ -175,16 +177,16 @@
         <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3">
           {{ $lang('storage backup/tips 2') }}
         </cy-icon-text>
-        <cy-default-tips icon="mdi-ghost" v-if="$route.path != '/'">
+        <cy-default-tips v-if="$route.path != '/'" icon="mdi-ghost">
           {{ $lang('storage backup/Must be operated on the homepage') }}
         </cy-default-tips>
         <div class="buttons" v-else>
-          <cy-button icon="ic-round-save" type="border" @click="saveLocalStorage">
+          <cy-button-border icon="ic-round-save" @click="saveLocalStorage">
             {{ $lang('storage backup/button texts/save') }}
-          </cy-button>
-          <cy-button icon="bx-bx-loader-circle" type="border" @click="loadLocalStorage">
+          </cy-button-border>
+          <cy-button-border icon="bx-bx-loader-circle" @click="loadLocalStorage">
             {{ $lang('storage backup/button texts/load') }}
-          </cy-button>
+          </cy-button-border>
         </div>
       </fieldset>
     </cy-window>

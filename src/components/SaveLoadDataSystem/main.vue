@@ -1,21 +1,21 @@
 <template>
   <div v-if="localStorageAvailable">
-    <cy-button type="line" icon="mdi:content-save-outline"
+    <cy-button-line icon="mdi:content-save-outline"
       @click="openSelectDataWindow('save')">
       {{ langText('save') }}
-    </cy-button>
-    <cy-button type="line" icon="mdi:download"
+    </cy-button-line>
+    <cy-button-line icon="mdi:download"
       @click="openSelectDataWindow('load')">
       {{ langText('load') }}
-    </cy-button>
-    <cy-button type="line" icon="ic:round-insert-drive-file"
+    </cy-button-line>
+    <cy-button-line icon="ic:round-insert-drive-file"
       @click="handleFile('save')">
       {{ langText('save to csv') }}
-    </cy-button>
-    <cy-button type="line" icon="mdi:file-download-outline"
+    </cy-button-line>
+    <cy-button-line icon="mdi:file-download-outline"
       @click="handleFile('load')">
       {{ langText('load from csv') }}
-    </cy-button>
+    </cy-button-line>
     <cy-window v-model:visible="selectDataWindowVisible">
       <template v-slot:title>
         <cy-icon-text icon="mdi:content-save-outline">

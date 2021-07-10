@@ -57,15 +57,12 @@
           </div>
           <div class="flex items-center">
             <div class="ml-auto">
-              <cy-button icon="ic-round-done" type="border"
-                @click.stop="submitSelected">
+              <cy-button-border icon="ic-round-done" @click.stop="submitSelected">
                 {{ $globalLang('global/confirm') }}
-              </cy-button>
-              <cy-button icon="ic-round-close" type="border"
-                class="ml-2"
-                @click.stop="clearSelected">
+              </cy-button-border>
+              <cy-button-border icon="ic-round-close" @click.stop="clearSelected" class="ml-2">
                 {{ $globalLang('global/clear') }}
-              </cy-button>
+              </cy-button-border>
             </div>
           </div>
         </template>

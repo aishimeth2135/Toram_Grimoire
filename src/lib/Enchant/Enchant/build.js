@@ -458,14 +458,6 @@ class EnchantStep {
   }
 
   /**
-   *
-   * @param {symbol} type
-   */
-  setType(type) {
-    this.type = type;
-  }
-
-  /**
    * @param {EnchantItem} itemBase
    * @param {symbol} type
    * @returns {EnchantStepStat} undefined if not found

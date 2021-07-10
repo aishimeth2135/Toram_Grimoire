@@ -1,11 +1,17 @@
 <template>
-  <span @click="checkButtonClick"
+  <span
+    @click="handleButtonClick"
     class="button--main-content inline-flex items-center py-0.5 px-2 m-1"
-    :class="baseClass">
-    <cy-icon :icon="selected ? selectedIcon : icon"
-      :src="selected ? selectedIconSrc : iconSrc" />
-    <span v-if="$slots['default']"
-      class="button--text inline-flex items-center ml-2 duration-300">
+    :class="baseClass"
+  >
+    <cy-icon
+      :icon="selected ? selectedIcon : icon"
+      :src="selected ? selectedIconSrc : iconSrc"
+    />
+    <span
+      v-if="$slots['default']"
+      class="button--text inline-flex items-center ml-2 duration-300"
+    >
       <slot></slot>
     </span>
   </span>
@@ -36,7 +42,7 @@ export default {
     },
   },
   methods: {
-    checkButtonClick(e) {
+    handleButtonClick(e) {
       this.$emit('update:selected', !this.selected);
       this.click(e);
     }

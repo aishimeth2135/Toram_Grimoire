@@ -35,13 +35,6 @@ export default {
         return ['normal', 'small'].includes(v);
       }
     },
-    display: {
-      type: String,
-      default: 'inline',
-      validator(v) {
-        return ['inline', 'block'].includes(v);
-      }
-    }
   },
   setup() {
     const rootElement = ref(null);
@@ -54,7 +47,6 @@ export default {
       return {
         'is-item': this.type === 'item',
         ['text-' + this.size]: true,
-        ['display-' + this.display]: true
       };
     }
   },
@@ -63,7 +55,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="postcss" scoped>
 .cy--icon-text {
   display: inline-flex;
   align-items: center;
@@ -71,10 +63,6 @@ export default {
   --icon-width: 1.2rem;
   --text-color: var(--color-set--text-color);
   --text-margin-left: 0.6rem;
-
-  &.display-block {
-    display: flex;
-  }
 
   & > .text {
     margin-left: var(--text-margin-left);

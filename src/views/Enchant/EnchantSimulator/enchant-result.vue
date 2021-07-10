@@ -1,7 +1,7 @@
 <template>
   <div v-if="enchantResult.length !== 0">
     <div class="flex items-start">
-      <cy-button type="icon" :icon="contents.resultStats ? 'ant-design:star-filled' : 'ant-design:star-outlined'"
+      <cy-button-icon :icon="contents.resultStats ? 'ant-design:star-filled' : 'ant-design:star-outlined'"
         class="flex-shrink-0"
         icon-color="orange"
         @click="toggle('contents/resultStats')"
@@ -24,7 +24,7 @@
           </div>
         </div>
       </cy-transition>
-      <cy-button type="icon" icon="bx-bx-copy-alt"
+      <cy-button-icon icon="bx-bx-copy-alt"
         class="ml-auto flex-shrink-0"
         @click="copyEnchantResultText" />
     </div>

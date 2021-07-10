@@ -6,10 +6,12 @@
       </cy-icon-text>
     </template>
     <div class="select-type">
-      <cy-button icon="gg-shape-square" type="border"
-        @click="toggle('window/selectType', true)">
+      <cy-button-border
+        icon="gg-shape-square"
+        @click="toggle('window/selectType', true)"
+      >
         {{ equipmentTypeText }}
-      </cy-button>
+      </cy-button-border>
     </div>
     <div class="editor" v-if="currentEquipment">
       <custom-equipment-editor :equipment="currentEquipment" />
@@ -20,11 +22,11 @@
     <cy-bottom-content v-if="currentEquipment">
       <template #normal-content>
         <div class="flex items-center">
-          <cy-button type="border" class="ml-auto"
+          <cy-button-border class="ml-auto"
             icon="ic-round-done"
             @click="createCustomEquipment">
             {{ $globalLang('global/create') }}
-          </cy-button>
+          </cy-button-border>
         </div>
       </template>
     </cy-bottom-content>
@@ -35,9 +37,12 @@
         </cy-icon-text>
       </template>
       <div class="equipment-type">
-        <cy-button v-for="category in equipmentTypeCategorys"
-          type="drop-down" :icon="category.icon"
-          :key="category.id" :menu-default-visible="true">
+        <cy-button-drop-down
+          v-for="category in equipmentTypeCategorys"
+          :icon="category.icon"
+          :key="category.id"
+          :menu-default-visible="true"
+        >
           {{ $globalLang('common/Equipment/field/' + category.id) }}
           <template v-slot:menu>
             <template v-if="category.list != null">
@@ -57,7 +62,7 @@
               </cy-icon-text>
             </cy-list-item>
           </template>
-        </cy-button>
+        </cy-button-drop-down>
       </div>
     </cy-window>
   </cy-window>

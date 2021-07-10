@@ -136,6 +136,16 @@
                 </span>
               </cy-icon-text>
             </div>
+            <div class="recipe-attr">
+              <cy-icon-text icon="ion-hammer" size="small">
+                <span>
+                  {{ $lang('equipment detail/recipe/base potential')  }}
+                </span>
+                <span class="ml-2 text-light-3">
+                  {{ originEquipment.recipe['potential'] || '?' }}
+                </span>
+              </cy-icon-text>
+            </div>
           </div>
           <div class="recipe-materials">
             <template v-if="originEquipment.recipe['cost']">
@@ -353,11 +363,11 @@ fieldset.column {
 
 fieldset.recipe {
   .recipe-attr {
-    padding: 0.4rem 0.8rem;
+    padding: 0.25rem 0.75rem;
     border: 1px solid var(--primary-light);
-    display: inline-block;
-    margin-right: 0.4rem;
-    margin-bottom: 0.4rem;
+    display: inline-flex;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
   }
 
   > .recipe-materials {

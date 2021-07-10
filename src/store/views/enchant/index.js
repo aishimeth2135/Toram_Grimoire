@@ -14,6 +14,10 @@ const state = {
   },
 };
 const mutations = {
+  set(state, { target, key, value }) {
+    target[key] = value;
+  },
+
   setConfig(state, sets) {
     Object.entries(sets).forEach(([key, value]) => {
       state.config[key] = value;
@@ -103,9 +107,18 @@ const actions = {
   },
 }
 
+import step from "./step";
+import stat from "./stat";
+
+const modules = {
+  step,
+  stat,
+};
+
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
+  modules
 };
