@@ -685,12 +685,13 @@ export default class EnchantDollEquipmentContainer {
       if (step.potentialExtraRate > 1) {
         return true;
       }
-      const previousStep = step.previousStep;
-      if (previousStep.firstStat.value * step.firstStat.value > 0) {
-        const stats = step.stats.map(stat => stat.copy());
-        step.remove();
-        stats.forEach(stat => previousStep.appendStat(stat.itemBase, stat.type, stat.value));
+      if (step.isLastStep) {
+        return true;
       }
+      const previousStep = step.previousStep;
+      const stats = step.stats.map(stat => stat.copy());
+      step.remove();
+      stats.forEach(stat => previousStep.appendStat(stat.itemBase, stat.type, stat.value));
     });
   }
 
