@@ -678,7 +678,6 @@ export default class EnchantDollEquipmentContainer {
       }
     });
 
-    const firstStep = steps[0];
     steps.some((step, i) => {
       if (i === 0) {
         return false;
@@ -686,9 +685,12 @@ export default class EnchantDollEquipmentContainer {
       if (step.potentialExtraRate > 1) {
         return true;
       }
-      const stats = step.stats.map(stat => stat.copy());
-      step.remove();
-      stats.forEach(stat => firstStep.appendStat(stat.itemBase, stat.type, stat.value));
+      const previousStep = step.previousStep;
+      if (previousStep.firstStat.value * step.firstStat.value > 0) {
+        const stats = step.stats.map(stat => stat.copy());
+        step.remove();
+        stats.forEach(stat => previousStep.appendStat(stat.itemBase, stat.type, stat.value));
+      }
     });
   }
 
