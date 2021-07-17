@@ -201,13 +201,20 @@
             text-color="water-blue"
             icon-color="water-blue-light"
           >
+            {{ $lang('select negative stats/tips 1') }}
+          </cy-icon-text>
+        </div>
+        <div class="mt-1 ml-4 mr-2">
+          <cy-icon-text
+            icon="ic-outline-info"
+            size="small"
+            text-color="water-blue"
+            icon-color="water-blue-light"
+          >
             {{ $lang('tips/performance of auto find negative stats') }}
           </cy-icon-text>
         </div>
-        <div
-          v-if="equipmentState.autoFindPotentialMinimum"
-          class="mt-2 ml-4 mr-2"
-        >
+        <div v-if="equipmentState.autoFindPotentialMinimum" class="mt-1 ml-4 mr-2">
           <cy-icon-text
             icon="ic-outline-info"
             size="small"
@@ -661,6 +668,11 @@ export default {
     characterLevel: {
       set(v) {
         this.$store.commit('enchant/setConfig', { characterLevel: v });
+        this.doll.positiveStats.forEach(stat => {
+          if (stat.value > stat.limit[1]) {
+            stat.value = stat.limit[1];
+          }
+        });
       },
       get() {
         return this.config.characterLevel;
