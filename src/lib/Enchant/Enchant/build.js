@@ -677,21 +677,28 @@ class EnchantStat {
 
     sv2 = sv2 || sv;
 
-    let v2 = 0, sign = 1;
-    if (v < 0) {
-      sign = -1;
-      v *= -1;
-    }
+    const sign = v < 0 ? -1 : 1;
+    v *= sign;
+
+    let v2 = 0;
     if (v > convertThreshold) {
       v2 = v - convertThreshold;
       v = convertThreshold;
     }
+
+    if (type === 'base') {
+      let pv = previousValue * sign, pv2 = 0;
+      if (pv > convertThreshold) {
+        pv2 = pv - convertThreshold;
+        pv = convertThreshold;
+      }
+      v -= pv;
+      v2 -= pv2;
+    }
+
     v *= sign;
     v2 *= sign;
 
-    if (type === 'base') {
-      v -= previousValue;
-    }
     return this.stat.show(v * sv + v2 * sv2);
   }
 }
@@ -881,15 +888,13 @@ class EnchantStepStat extends EnchantStat {
     const p = this.potential;
     const convertThreshold = this.itemBase.getPotentialConvertThreshold(this.type);
 
-    let v2 = 0;
-    if (pre <= convertThreshold) {
-      v += pre;
+    const sign = v < 0 ? -1 : 1;
 
-      let sign = 1;
-      if (v < 0) {
-        sign = -1;
-        v *= -1;
-      }
+    let v2 = 0;
+    if (pre * sign <= convertThreshold) {
+      v += pre;
+      v *= sign;
+
       if (v > convertThreshold) {
         v2 = v - convertThreshold;
         v = convertThreshold;
