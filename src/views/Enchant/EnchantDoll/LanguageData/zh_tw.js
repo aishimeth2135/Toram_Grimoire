@@ -36,6 +36,7 @@ export default function(){
       'select negative stats': {
         'title': '請選擇退潛的能力。',
         'caption': '請選擇用來退潛的負屬，也可以讓布偶自動選取0.0。布偶將在設定的條件下嘗試找出成功率最高的退潛項目。',
+        'tips 1': '將不會自動選取「MP自然回復」。',
         'auto select': '布偶自動選取',
         'select config: base type': {
           'title': '設定這件裝備的用途',

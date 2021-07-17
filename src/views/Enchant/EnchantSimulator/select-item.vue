@@ -48,7 +48,7 @@
       <cy-button-check v-if="!forPositive" v-model:selected="showNegativeSuggestedList">
         {{ $lang('select item/show negative suggested list') }}
       </cy-button-check>
-      <cy-button-border class="ml-auto">
+      <cy-button-border class="ml-auto" @click="$emit('close')">
         {{ $rootLang('global/close') }}
       </cy-button-border>
     </div>

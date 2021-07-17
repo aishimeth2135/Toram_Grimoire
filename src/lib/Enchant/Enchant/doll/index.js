@@ -237,13 +237,15 @@ export default class EnchantDoll {
   autoFindNegaitveStats(manuallyStats = [], originalPotential = 0) {
     const limit = this.numNegativeStats;
     const categorys = Grimoire.Enchant.categorys;
-    const types = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
     const shortlist = [];
 
     const eq = this.build.equipment;
 
     const prioritizedShortList = {
-      [EnchantEquipment.TYPE_MAIN_WEAPON]: ['def', 'mdef', 'dodge', 'natural_hp_regen'],
+      [EnchantEquipment.TYPE_MAIN_WEAPON]: ['def', 'mdef', 'dodge', 'natural_hp_regen', {
+        baseName: 'natural_mp_regen',
+        types: [StatBase.TYPE_MULTIPLIER],
+      }],
       [EnchantEquipment.TYPE_BODY_ARMOR]: ['accuracy'],
     }[eq.fieldType];
 
@@ -260,7 +262,14 @@ export default class EnchantDoll {
 
     categorys.forEach(category => {
       category.items.forEach(item => {
-        if (prioritizedShortList.includes(item.statBase.baseName)) {
+        const find = prioritizedShortList.find(statBaseItem => {
+          if (typeof statBaseItem === 'object') {
+            return statBaseItem.baseName === item.statBase.baseName;
+          }
+          return statBaseItem === item.statBase.baseName;
+        });
+        if (find) {
+          const types = typeof find === 'object' ? find.types : [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
           types.forEach(type => {
             if (type === StatBase.TYPE_MULTIPLIER && !item.statBase.hasMultiplier) {
               return;
