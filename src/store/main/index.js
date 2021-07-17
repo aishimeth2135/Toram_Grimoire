@@ -2,7 +2,7 @@ const store = {
   namespaced: true,
   state: {
     redirectPath: null,
-    version: '4.1.24',
+    version: '4.1.25',
     serviceWorker: {
       instance: null,
       hasUpdate: false,
