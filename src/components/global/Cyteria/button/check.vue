@@ -1,8 +1,8 @@
 <template>
   <span
-    @click="handleButtonClick"
     class="button--main-content inline-flex items-center py-0.5 px-2 m-1"
     :class="baseClass"
+    @click="handleButtonClick"
   >
     <cy-icon
       :icon="selected ? selectedIcon : icon"
@@ -12,7 +12,7 @@
       v-if="$slots['default']"
       class="button--text inline-flex items-center ml-2 duration-300"
     >
-      <slot></slot>
+      <slot />
     </span>
   </span>
 </template>
@@ -22,30 +22,30 @@ import BaseButton from "./base";
 
 export default {
   mixins: [BaseButton],
-  emits: ['update:selected'],
   props: {
     selectedIcon: {
       type: String,
-      default: 'ic-round-check-box'
+      default: 'ic-round-check-box',
     },
     selectedIconSrc: {
       type: String,
-      default: 'iconify'
+      default: 'iconify',
     },
     icon: {
       type: String,
-      default: 'ic-round-check-box-outline-blank'
+      default: 'ic-round-check-box-outline-blank',
     },
     iconSrc: {
       type: String,
-      default: 'iconify'
+      default: 'iconify',
     },
   },
+  emits: ['update:selected'],
   methods: {
     handleButtonClick(e) {
       this.$emit('update:selected', !this.selected);
       this.click(e);
-    }
-  }
+    },
+  },
 };
 </script>

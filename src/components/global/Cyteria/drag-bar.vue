@@ -1,15 +1,21 @@
 <template>
   <div v-if="type == 'normal'" class="drag-bar-layout">
     <div class="title">
-      <slot name="title"></slot>
+      <slot name="title" />
     </div>
     <div class="content">
       <div class="content-container">
-        <input type="range" class="drag-input"
-          :min="range[0]" :max="range[1]" :step="step" :value="value"
-          @input="setValue($event)">
+        <input
+          type="range"
+          class="drag-input"
+          :min="range[0]"
+          :max="range[1]"
+          :step="step"
+          :value="value"
+          @input="setValue($event)"
+        >
         <div class="drag-bg">
-          <div class="drag-pre" :style="{ width: offset }"></div>
+          <div class="drag-pre" :style="{ width: offset }" />
         </div>
       </div>
       <!-- <div class="drag-bar-container">
@@ -19,42 +25,44 @@
         <div class="mask" @mousedown.prevent="startMouseDown" @mousemove.prevent="updateValue($event)" @click.prevent="updateValue($event)" @mouseup.prevent="cancelMouseDown" @mouseleave.prevent="cancelMouseDown">
         </div>
       </div> -->
-      <div class="value">{{ value }}</div>
+      <div class="value">
+        {{ value }}
+      </div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  emits: ['update:value'],
   props: {
     type: {
       type: String,
-      default: 'normal'
+      default: 'normal',
     },
     range: {
       type: Array,
       default () {
         return [0, 100];
-      }
+      },
     },
     value: {
       type: Number,
-      required: true
+      required: true,
     },
     step: {
       type: Number,
-      default: 1
-    }
+      default: 1,
+    },
   },
-  datas() {
+  emits: ['update:value'],
+  data() {
     return {
-      isMouseDown: false
+      isMouseDown: false,
     };
   },
   computed: {
     offset() {
       return Math.floor(100 * (this.value - this.range[0]) / (this.range[1] - this.range[0])) + '%';
-    }
+    },
   },
   methods: {
     cancelMouseDown() {
@@ -78,8 +86,8 @@ export default {
     setValue(e) {
       const v = parseInt(e.target.value, 10);
       this.$emit('update:value', v);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

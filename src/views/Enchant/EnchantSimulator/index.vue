@@ -1,30 +1,40 @@
 <template>
   <section v-if="currentBuild">
     <div class="sticky top-0 border-b border-purple mb-4 z-10 bg-white">
-      <div class="cursor-pointer px-4 py-1.5 flex items-center border-purple"
-        @click="toggle('contents/top')">
+      <div
+        class="cursor-pointer px-4 py-1.5 flex items-center border-purple"
+        @click="toggle('contents/top')"
+      >
         <cy-icon-text icon="ant-design:build-outlined">
           {{ currentBuild.name }}
         </cy-icon-text>
-        <cy-button-icon class="ml-auto"
+        <cy-button-icon
+          class="ml-auto"
           :icon="contents.top ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
-          :selected="contents.top" />
+          :selected="contents.top"
+        />
       </div>
     </div>
-    <div class="p-4 top-12 border-1 border-light-2 rounded-xl mx-4 mb-4 z-10 bg-white duration-300"
-      :class="{ sticky: contents.top, 'border-purple': contents.top }">
+    <div
+      class="p-4 top-12 border-1 border-light-2 rounded-xl mx-4 mb-4 z-10 bg-white duration-300"
+      :class="{ sticky: contents.top, 'border-purple': contents.top }"
+    >
       <div class="flex items-center">
-        <cy-title-input icon="ant-design:build-outlined"
+        <cy-title-input
           v-model:value="currentBuild.name"
-          class="w-full" />
+          icon="ant-design:build-outlined"
+          class="w-full"
+        />
         <cy-options inline>
           <template #title>
             <cy-button-border icon="ant-design:build-outlined" />
           </template>
           <template #options>
-            <cy-list-item v-for="buildData in buildDatas"
+            <cy-list-item
+              v-for="buildData in buildDatas"
               :key="buildData.iid"
-              @click="setCurrentBuild(buildData)">
+              @click="setCurrentBuild(buildData)"
+            >
               <cy-icon-text icon="ant-design:build-outlined">
                 {{ buildData.origin.name }}
               </cy-icon-text>
@@ -39,24 +49,32 @@
       </div>
       <div class="flex items-center flex-wrap">
         <div class="mx-2">
-          <cy-button-border icon="bx-bx-copy"
-            @click="copyBuild">
-            {{ $globalLang('global/copy') }}
+          <cy-button-border
+            icon="bx-bx-copy"
+            @click="copyBuild"
+          >
+            {{ $rootLang('global/copy') }}
           </cy-button-border>
-          <cy-button-border icon="mdi-export"
+          <cy-button-border
+            icon="mdi-export"
             main-color="blue-green"
-            @click="exportBuild">
-            {{ $globalLang('global/export') }}
+            @click="exportBuild"
+          >
+            {{ $rootLang('global/export') }}
           </cy-button-border>
-          <cy-button-border icon="mdi-import"
+          <cy-button-border
+            icon="mdi-import"
             main-color="blue-green"
-            @click="importBuild">
-            {{ $globalLang('global/import') }}
+            @click="importBuild"
+          >
+            {{ $rootLang('global/import') }}
           </cy-button-border>
-          <cy-button-border icon="ic-baseline-delete-outline"
+          <cy-button-border
+            icon="ic-baseline-delete-outline"
             main-color="gray"
-            @click="removeBuild">
-            {{ $globalLang('global/delete') }}
+            @click="removeBuild"
+          >
+            {{ $rootLang('global/delete') }}
           </cy-button-border>
         </div>
       </div>
@@ -69,10 +87,14 @@
             <cy-icon-text>{{ $lang('equipment original potential') }}</cy-icon-text>
           </template>
         </cy-input-counter>
-        <cy-button-icon icon="jam-hammer" class="ml-2 my-2"
-          icon-color="water-blue-light" icon-color-hover="water-blue"
+        <cy-button-icon
+          icon="jam-hammer"
+          class="ml-2 my-2"
+          icon-color="water-blue-light"
+          icon-color-hover="water-blue"
           :selected="contents.extraOptions"
-          @click="toggle('contents/extraOptions')" />
+          @click="toggle('contents/extraOptions')"
+        />
       </div>
       <cy-transition type="fade">
         <div v-if="contents.extraOptions">
@@ -80,8 +102,10 @@
             {{ $lang('advanced options') }}
           </cy-icon-text>
           <div class="p-2">
-            <cy-input-counter v-model:value="currentEquipment.basePotential"
-              main-color="water-blue-light">
+            <cy-input-counter
+              v-model:value="currentEquipment.basePotential"
+              main-color="water-blue-light"
+            >
               <template #title>
                 <cy-icon-text>{{ $lang('equipment base potential') }}</cy-icon-text>
               </template>
@@ -91,14 +115,21 @@
             {{ $lang('common options') }}
           </cy-icon-text>
           <div class="p-2">
-            <cy-input-counter v-model:value="characterLevel" :step="10"
-              main-color="water-blue-light">
+            <cy-input-counter
+              v-model:value="characterLevel"
+              :step="10"
+              main-color="water-blue-light"
+            >
               <template #title>
                 <cy-icon-text>{{ $lang('character level') }}</cy-icon-text>
               </template>
             </cy-input-counter>
-            <cy-input-counter v-model:value="smithLevel" :step="10"
-              class="mt-3" main-color="water-blue-light">
+            <cy-input-counter
+              v-model:value="smithLevel"
+              :step="10"
+              class="mt-3"
+              main-color="water-blue-light"
+            >
               <template #title>
                 <cy-icon-text>{{ $lang('smith level') }}</cy-icon-text>
               </template>
@@ -113,8 +144,8 @@
         <cy-button-check
           v-for="option in equipmentTypeOptions"
           :key="option.id"
-          @click="currentEquipmentType = option"
           :selected="currentEquipmentType === option.id"
+          @click="currentEquipmentType = option"
         >
           {{ option.text }}
         </cy-button-check>
@@ -122,7 +153,8 @@
     </div>
     <div class="steps-content-container">
       <div class="steps-content">
-        <div v-for="step in currentEquipment.allSteps"
+        <div
+          v-for="step in currentEquipment.allSteps"
           :key="step.index"
           class="step-container"
         >
@@ -137,26 +169,36 @@
       </div>
     </div>
     <div>
-      <select-item :visible="windows.selectItem"
+      <select-item
+        :visible="windows.selectItem"
         :once="selectItemTarget.once"
+        :is-weapon="isWeapon"
         @close="toggle('windows/selectItem', false)"
-        @select-item="selectItem" />
+        @select-item="selectItem"
+      />
     </div>
-    <div class="border-1 border-light-2 pt-2 pb-4 pl-2 pr-4 mx-3 mt-4 rounded-2xl bg-white duration-300"
+    <div
+      class="border-1 border-light-2 pt-2 pb-4 pl-2 pr-4 mx-3 mt-4 rounded-2xl bg-white duration-300"
       style="bottom: 4.75rem"
       :class="{
         sticky: contents.result,
         'animate-slide-up': contents.result,
-        'border-purple': contents.result
-      }">
+        'border-purple': contents.result,
+      }"
+    >
       <enchant-result :equipment="currentEquipment" />
     </div>
     <div class="sticky bottom-4">
-      <div v-if="currentEquipment.allSteps.length === 0 && !contents.result"
-        class="border-1 border-light-2 py-4 px-5 mx-3 mt-3 rounded-2xl bg-white">
+      <div
+        v-if="currentEquipment.allSteps.length === 0 && !contents.result"
+        class="border-1 border-light-2 py-4 px-5 mx-3 mt-3 rounded-2xl bg-white"
+      >
         <div class="text-center">
-          <cy-button icon="ic-round-add-circle-outline" type="border"
-            @click="appendStep">
+          <cy-button
+            icon="ic-round-add-circle-outline"
+            type="border"
+            @click="appendStep"
+          >
             {{ $lang('append enchant step') }}
           </cy-button>
         </div>
@@ -169,12 +211,19 @@
           </cy-icon-text>
         </div>
         <div class="pt-1">
-          <cy-icon-text icon="akar-icons:circle-chevron-down"
-            text-color="purple" size="small" class="mr-3">
+          <cy-icon-text
+            icon="akar-icons:circle-chevron-down"
+            text-color="purple"
+            size="small"
+            class="mr-3"
+          >
             {{ $lang('footer guide/toggle result/titles')[0] }}
           </cy-icon-text>
-          <cy-icon-text icon="akar-icons:circle-chevron-up"
-            text-color="purple" size="small">
+          <cy-icon-text
+            icon="akar-icons:circle-chevron-up"
+            text-color="purple"
+            size="small"
+          >
             {{ $lang('footer guide/toggle result/titles')[1] }}
           </cy-icon-text>
         </div>
@@ -182,13 +231,21 @@
           {{ $lang('footer guide/toggle result/caption') }}
         </div>
         <div class="mt-3">
-          <cy-icon-text icon="mdi-cube-outline"
-            text-color="purple" icon-color="water-blue"
-            size="small" class="mr-3">
+          <cy-icon-text
+            icon="mdi-cube-outline"
+            text-color="purple"
+            icon-color="water-blue"
+            size="small"
+            class="mr-3"
+          >
             {{ $lang('footer guide/toggle display mode/titles')[0] }}
           </cy-icon-text>
-          <cy-icon-text icon="mdi-cube-off-outline"
-            text-color="purple" icon-color="water-blue" size="small">
+          <cy-icon-text
+            icon="mdi-cube-off-outline"
+            text-color="purple"
+            icon-color="water-blue"
+            size="small"
+          >
             {{ $lang('footer guide/toggle display mode/titles')[1] }}
           </cy-icon-text>
         </div>
@@ -200,12 +257,15 @@
         <cy-button-icon
           :icon="contents.result ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
           :selected="contents.result"
-          @click="toggle('contents/result')" />
-        <cy-button-icon class="ml-2"
+          @click="toggle('contents/result')"
+        />
+        <cy-button-icon
+          class="ml-2"
           :icon="state.statDisplayMode === 1 ? 'mdi-cube-outline' : 'mdi-cube-off-outline'"
           main-color="water-blue"
           :selected="state.statDisplayMode === 1"
-          @click="state.statDisplayMode = state.statDisplayMode === 1 ? 0 : 1" />
+          @click="state.statDisplayMode = state.statDisplayMode === 1 ? 0 : 1"
+        />
         <!-- <cy-button-icon @click="optimizeSteps" /> -->
         <cy-icon-text icon="bx-bx-star" class="ml-auto mr-3">
           {{ $lang('success rate') }}
@@ -230,23 +290,29 @@ import vue_enchantResult from "./enchant-result";
 
 import ToggleService from "@/setup/ToggleService";
 
-import { EnchantBuild, EnchantStep, EnchantEquipment, /* EnchantItem */ } from "@/lib/Enchant/Enchant";
+import { EnchantBuild, EnchantStep, EnchantEquipment /* EnchantItem */ } from "@/lib/Enchant/Enchant";
 import CY from "@utils/Cyteria";
 
 /** */
 export default {
   RegisterLang: "Enchant Simulator",
+  provide() {
+    return {
+      openSelectItem: this.openSelectItem,
+      rootState: this.state,
+    };
+  },
   setup() {
     const { windows, contents, toggle } = ToggleService({
       windows: ['selectItem'],
-      contents: ['top', 'extraOptions', 'result']
+      contents: ['top', 'extraOptions', 'result'],
     });
     return { windows, contents, toggle };
   },
   data() {
     return {
       state: {
-        statDisplayMode: 0
+        statDisplayMode: 0,
       },
 
       /** @type {SelectItemTarget} */
@@ -257,30 +323,24 @@ export default {
         id: 0,
         text: this.$lang('equipment types/main-weapon'),
         type: EnchantEquipment.TYPE_MAIN_WEAPON,
-        isOriginalElement: false
+        isOriginalElement: false,
       }, {
         id: 1,
         text: this.$lang('equipment types/body-armor'),
         type: EnchantEquipment.TYPE_BODY_ARMOR,
-        isOriginalElement: false
+        isOriginalElement: false,
       }, {
         id: 2,
         text: this.$lang('equipment types/main-weapon|original-element'),
         type: EnchantEquipment.TYPE_MAIN_WEAPON,
-        isOriginalElement: true
+        isOriginalElement: true,
       }],
 
       listeners: {
         windowBeforeUnload: null,
-        documentVisibilityChange: null
-      }
+        documentVisibilityChange: null,
+      },
     }
-  },
-  provide() {
-    return {
-      openSelectItem: this.openSelectItem,
-      rootState: this.state
-    };
   },
   beforeCreate() {
     init();
@@ -312,7 +372,7 @@ export default {
     buildDatas() {
       return this.builds.map((build, i) => ({
         origin: build,
-        iid: i
+        iid: i,
       }));
     },
 
@@ -328,7 +388,6 @@ export default {
       }
       return this.currentBuild.equipment;
     },
-
     successRate() {
       if (!this.currentEquipment) {
         return 0;
@@ -337,6 +396,9 @@ export default {
       return rate === -1 ?
         this.$lang('success rate: unlimited') :
         Math.floor(rate) + '%';
+    },
+    isWeapon() {
+      return this.currentEquipmentType !== 1;
     },
 
     currentEquipmentType: {
@@ -350,7 +412,7 @@ export default {
       set(v) {
         this.currentEquipment.fieldType = v.type;
         this.currentEquipment.isOriginalElement = v.isOriginalElement;
-      }
+      },
     },
 
     characterLevel: {
@@ -359,7 +421,7 @@ export default {
       },
       get() {
         return this.config.characterLevel;
-      }
+      },
     },
     smithLevel: {
       set(v) {
@@ -367,8 +429,8 @@ export default {
       },
       get() {
         return this.config.smithLevel;
-      }
-    }
+      },
+    },
   },
   methods: {
     autoSave() {
@@ -384,15 +446,14 @@ export default {
       this.$store.commit('enchant/appendBuild', build);
       ++this.buildCount;
     },
-    removeBuild() {
+    async removeBuild() {
       if (this.builds.length === 1) {
         this.$notify(this.$lang('tips/keep at least one build'));
         return;
       }
-      this.$confirm({
-        message: this.$lang('tips/confirm: remove build'),
-        confirm: () => this.$store.commit('enchant/removeBuild', this.currentBuild)
-      });
+      if (await this.$confirm(this.$lang('tips/confirm: remove build'))) {
+        this.$store.commit('enchant/removeBuild', this.currentBuild);
+      }
     },
     copyBuild() {
       this.$store.commit('enchant/copyBuild', this.currentBuild);
@@ -405,7 +466,7 @@ export default {
       const data = JSON.stringify(odata);
       CY.file.save({
         data,
-        fileName: build.name.replace(/\s/g, '_') + '.txt'
+        fileName: build.name.replace(/\s/g, '_') + '.txt',
       });
     },
     importBuild() {
@@ -422,7 +483,7 @@ export default {
             return false;
           }
           return true;
-        }
+        },
       });
     },
 
@@ -466,8 +527,8 @@ export default {
   components: {
     'enchant-step': vue_EnchantStep,
     'select-item': vue_selectItem,
-    'enchant-result': vue_enchantResult
-  }
+    'enchant-result': vue_enchantResult,
+  },
 };
 
 /**

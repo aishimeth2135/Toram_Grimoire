@@ -1,14 +1,14 @@
 <template>
   <div class="cy--bottom-content">
-    <div class="default-content-container" v-if="$slots['default']">
+    <div v-if="$slots['default']" class="default-content-container">
       <div class="default-content">
-        <slot></slot>
+        <slot />
       </div>
     </div>
-    <div class="normal-content" v-else-if="$slots['normal-content']">
-      <slot name="normal-content"></slot>
+    <div v-else-if="$slots['normal-content']" class="normal-content">
+      <slot name="normal-content" />
     </div>
-    <slot name="custom"></slot>
+    <slot name="custom" />
   </div>
 </template>
 <script>

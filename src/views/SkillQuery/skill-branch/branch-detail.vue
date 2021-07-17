@@ -1,17 +1,21 @@
 <template>
   <div class="branch-detail">
     <transition-group name="slide-down" appear>
-      <cy-icon-text v-for="(data) in detailShowData['@data-list']" class="detail-item line"
-        :icon="data.icon" :key="data.id"
-        :class="data.classList ? ['text-small', ...data.classList] : ['text-small']">
-        <span v-html="data.value"></span>
+      <cy-icon-text
+        v-for="(data) in detailShowData['@data-list']"
+        :key="data.id"
+        class="detail-item line"
+        :icon="data.icon"
+        :class="data.classList ? ['text-small', ...data.classList] : ['text-small']"
+      >
+        <span v-html="data.value" />
       </cy-icon-text>
     </transition-group>
   </div>
 </template>
 <script>
 export default {
-  props: ['detailShowData']
+  props: ['detailShowData'],
 };
 </script>
 <style lang="less" scoped>

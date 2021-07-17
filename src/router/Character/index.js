@@ -16,24 +16,24 @@ export default {
     leftMenuViewButtons: [{
       title: () => GetLang('Page Title/character-simulator'),
       icon: 'gridicons-user',
-      path: ''
+      path: '',
     }, {
       title: () => GetLang('Page Title/skill-simulator'),
       icon: 'bx-bxs-star-half',
-      path: '/skill'
-    }]
+      path: '/skill',
+    }],
   },
   children: [{
     path: '',
     component: vue_characterSimulator,
     meta: {
-      title: () => GetLang('Page Title/character-simulator')
-    }
+      title: () => GetLang('Page Title/character-simulator'),
+    },
   }, {
     path: 'skill',
     component: vue_skillSimulator,
     meta: {
-      title: () => GetLang('Page Title/skill-simulator')
-    }
-  }]
+      title: () => GetLang('Page Title/skill-simulator'),
+    },
+  }],
 };

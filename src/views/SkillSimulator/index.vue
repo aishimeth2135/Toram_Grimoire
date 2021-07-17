@@ -1,38 +1,46 @@
 <template>
   <article>
-    <div class="main" v-if="currentSkillRootState">
+    <div v-if="currentSkillRootState" class="main">
       <cy-sticky-header class="top transparent">
-        <template v-slot:buttons-scope>
+        <template #buttons-scope>
           <cy-button-icon
-            @click="openJumpSkillTree"
             :selected="jumpSkillTreeVisible"
             icon="dashicons:flag"
+            @click="openJumpSkillTree"
           />
           <cy-button-icon
-            @click="openSelectSkillTree"
             :selected="selectSkillTreeVisible"
             icon="ic:round-library-add"
+            @click="openSelectSkillTree"
           />
           <cy-button-icon
-            @click="openBuildInformation"
             :selected="buildInformationVisible"
             :icon="buildInformationVisible ? 'ic-round-keyboard-arrow-up' : 'ic-round-keyboard-arrow-down'"
+            @click="openBuildInformation"
           />
         </template>
         <cy-transition type="fade">
-          <div class="inner-menu select-skill-tree" v-if="selectSkillTreeVisible">
-            <template v-for="stc in unemptySkillTreeCategoryStates"
-              :key="stc.origin.id">
-              <div class="title">{{ stc.origin.name }}</div>
+          <div v-if="selectSkillTreeVisible" class="inner-menu select-skill-tree">
+            <template
+              v-for="stc in unemptySkillTreeCategoryStates"
+              :key="stc.origin.id"
+            >
+              <div class="title">
+                {{ stc.origin.name }}
+              </div>
               <div class="content">
-                <cy-button v-for="st in stc.skillTreeStates"
-                  type="line" icon="rabbit-book" icon-src="custom"
+                <cy-button
+                  v-for="st in stc.skillTreeStates"
                   :key="stc.origin.id + '-' + st.origin.id"
+                  type="line"
+                  icon="rabbit-book"
+                  icon-src="custom"
+                  :class="{ selected: st.visible }"
                   @click="toggleSkillTreeVisible(stc, st)"
-                  :class="{ selected: st.visible }">
+                >
                   {{ st.origin.name }}
-                  <template v-slot:content-right>
-                    <cy-icon-text icon="mdi:done" v-show="st.visible" />
+                  <template #content-right>
+                    <cy-icon-text v-show="st.visible" icon="mdi:done" />
                   </template>
                 </cy-button>
               </div>
@@ -40,25 +48,33 @@
           </div>
         </cy-transition>
         <cy-transition type="fade">
-          <div class="inner-menu" v-show="jumpSkillTreeVisible">
+          <div v-show="jumpSkillTreeVisible" class="inner-menu">
             <cy-default-tips v-if="noSkillTreeSelected" icon="mdi:ghost">
               {{ $lang('no skill tree selected') }}
             </cy-default-tips>
             <template v-else>
               <div class="top" style="margin-bottom: 0.8rem;">
-                <cy-button icon="ic:round-details" type="border"
-                  @click="toggleJumpSkillTreeShowDetail">
+                <cy-button
+                  icon="ic:round-details"
+                  type="border"
+                  @click="toggleJumpSkillTreeShowDetail"
+                >
                   {{ $lang(jumpSkillTreeShowDetail ?
-                      'skill tree: show normal' : 'skill tree: show details') }}
+                    'skill tree: show normal' : 'skill tree: show details') }}
                 </cy-button>
               </div>
               <span v-if="jumpSkillTreeShowDetail" class="title">{{ $lang('main menu/star gem list') }}</span>
               <div v-show="jumpSkillTreeShowDetail && currentStarGemList.length != 0" class="content">
-                <cy-button v-for="o in currentStarGemList" type="line" class="icon-small"
+                <cy-button
+                  v-for="o in currentStarGemList"
                   :key="'star-gem--' + o.skillTreeState.origin.id + '-' + o.skill.id"
-                  @click="jumpToSkillTree(o.skillTreeState.origin)" icon="mdi:judaism">
+                  type="line"
+                  class="icon-small"
+                  icon="mdi:judaism"
+                  @click="jumpToSkillTree(o.skillTreeState.origin)"
+                >
                   {{ o.skill.base.name }} Lv.{{ o.skill.starGemLevel() }}
-                  <template v-slot:content-right>
+                  <template #content-right>
                     <cy-icon-text icon="mdi:judaism" size="small">
                       {{ o.skill.starGemLevel() - o.skill.level() }}
                     </cy-icon-text>
@@ -71,16 +87,25 @@
               >
                 {{ $lang('no star gem set') }}
               </cy-default-tips>
-              <template v-for="stc in visibleSkillTreeCategoryStates"
-                :key="stc.origin.id">
-                <div class="title">{{ stc.origin.name }}</div>
+              <template
+                v-for="stc in visibleSkillTreeCategoryStates"
+                :key="stc.origin.id"
+              >
+                <div class="title">
+                  {{ stc.origin.name }}
+                </div>
                 <div class="content">
-                  <cy-button v-for="st in stc.skillTreeStates.filter(p => p.visible)"
-                    type="line" icon="rabbit-book" :key="'skill-tree--' + st.origin.id" icon-src="custom"
+                  <cy-button
+                    v-for="st in stc.skillTreeStates.filter(p => p.visible)"
+                    :key="'skill-tree--' + st.origin.id"
+                    type="line"
+                    icon="rabbit-book"
+                    icon-src="custom"
+                    class="icon-small"
                     @click="jumpToSkillTree(st.origin)"
-                    class="icon-small">
+                  >
                     {{ st.origin.name }}
-                    <template v-slot:content-right>
+                    <template #content-right>
                       <cy-icon-text>
                         {{ skillTreeSkillPointCost(st) }}
                       </cy-icon-text>
@@ -92,7 +117,7 @@
           </div>
         </cy-transition>
         <cy-transition type="fade">
-          <div class="inner-menu build-information" v-show="buildInformationVisible">
+          <div v-show="buildInformationVisible" class="inner-menu build-information">
             <cy-options>
               <template #title>
                 <cy-list-item>
@@ -103,9 +128,12 @@
                 </cy-list-item>
               </template>
               <template #options>
-                <cy-list-item v-for="(state, i) in skillRootStates"
-                  :key="state.stateId" :selected="currentSkillRootStateIndex == i"
-                  @click="selectCurrentSkillRootState(i)">
+                <cy-list-item
+                  v-for="(state, i) in skillRootStates"
+                  :key="state.stateId"
+                  :selected="currentSkillRootStateIndex == i"
+                  @click="selectCurrentSkillRootState(i)"
+                >
                   <cy-icon-text icon="ant-design:build-outlined">
                     {{ state.name }}
                   </cy-icon-text>
@@ -117,24 +145,28 @@
                 </cy-list-item>
               </template>
             </cy-options>
-            <cy-title-input icon="ant-design:build-outlined"
+            <cy-title-input
+              v-model:value="currentSkillRootState.name"
+              icon="ant-design:build-outlined"
               class="mt-4"
-              v-model:value="currentSkillRootState.name" />
+            />
             <div class="p-2 mb-1">
-              <cy-button-line @click="copyCurrentBuild" icon="mdi:content-copy">
-                {{ $globalLang('global/copy') }}
+              <cy-button-line icon="mdi:content-copy" @click="copyCurrentBuild">
+                {{ $rootLang('global/copy') }}
               </cy-button-line>
-              <cy-button-line @click="deleteCurrentBuild" icon="ic:round-delete-outline">
-                {{ $globalLang('global/delete') }}
+              <cy-button-line icon="ic:round-delete-outline" @click="deleteCurrentBuild">
+                {{ $rootLang('global/delete') }}
               </cy-button-line>
-              <cy-button-line @click="exportCurrentBuildText" icon="ic-round-text-fields">
+              <cy-button-line icon="ic-round-text-fields" @click="exportCurrentBuildText">
                 {{ $lang('export text') }}
               </cy-button-line>
-              <cy-button-line @click="exportCurrentBuildImage" icon="mdi:content-copy">
+              <cy-button-line icon="mdi:content-copy" @click="exportCurrentBuildImage">
                 {{ $lang('export image') }}
               </cy-button-line>
             </div>
-            <div class="text-purple text-sm">{{ $lang('left menu/save load') }}</div>
+            <div class="text-purple text-sm">
+              {{ $lang('left menu/save load') }}
+            </div>
             <div class="py-2 px-2">
               <save-load-data-system v-bind="SaveLoadDataSystemOptions" />
             </div>
@@ -163,29 +195,42 @@
         </div>
         <div class="content">
           <div class="flex items-center">
-            <div class="inline-flex items-center whitespace-nowrap overflow-y-auto duration-300 p-1"
-              :class="{ 'opacity-0': bottomMenuExtraMenuVidsible }">
-              <cy-button v-for="(state) in setButtonStates" :key="state.type"
+            <div
+              class="inline-flex items-center whitespace-nowrap overflow-y-auto duration-300 p-1"
+              :class="{ 'opacity-0': bottomMenuExtraMenuVidsible }"
+            >
+              <cy-button
+                v-for="(state) in setButtonStates"
+                :key="state.type"
                 :icon="state.icons[state.currentIndex]"
                 class="my-0 p-0 border-0 mr-2"
-                @click="setButtonClick(state.type)">
+                @click="setButtonClick(state.type)"
+              >
                 {{ state.texts[state.currentIndex] }}
               </cy-button>
             </div>
             <div class="ml-auto">
               <cy-button-icon
                 :icon="bottomMenuExtraMenuVidsible ? 'heroicons-solid:menu-alt-4' : 'heroicons-solid:menu'"
-                @click="bottomMenuExtraMenuVidsible = !bottomMenuExtraMenuVidsible" />
+                @click="bottomMenuExtraMenuVidsible = !bottomMenuExtraMenuVidsible"
+              />
             </div>
           </div>
           <cy-transition type="fade">
-            <div class="menus" v-show="bottomMenuExtraMenuVidsible">
-              <div v-for="(state) in setButtonStates" :key="state.type"
-                class="select-menu">
-                <cy-button v-for="(value, j) in state.values" :key="value"
-                  type="line" :icon="state.icons[j]"
+            <div v-show="bottomMenuExtraMenuVidsible" class="menus">
+              <div
+                v-for="(state) in setButtonStates"
+                :key="state.type"
+                class="select-menu"
+              >
+                <cy-button
+                  v-for="(value, j) in state.values"
+                  :key="value"
+                  type="line"
+                  :icon="state.icons[j]"
+                  :class="{ selected: state.currentIndex == j }"
                   @click="setButtonSelected(state.type, j)"
-                  :class="{ selected: state.currentIndex == j }">
+                >
                   {{ state.texts[j] }}
                 </cy-button>
               </div>
@@ -193,17 +238,23 @@
           </cy-transition>
         </div>
       </div>
-      <cy-window v-model:visible="previewExportedImageWindowVisible"
-        :frozen-top="true" width="auto">
+      <cy-window
+        v-model:visible="previewExportedImageWindowVisible"
+        frozen-top
+        width="auto"
+      >
         <template #title>
           <div class="flex items-center">
             <cy-icon-text icon="uil:image-download">
               {{ $lang('main menu/preview exported image') }}
             </cy-icon-text>
-            <cy-button icon="uil:image-download" type="border"
+            <cy-button
+              icon="uil:image-download"
+              type="border"
               class="single-line ml-auto"
-              @click="downloadExportedImage">
-              {{ $globalLang('global/download') }}
+              @click="downloadExportedImage"
+            >
+              {{ $rootLang('global/download') }}
             </cy-button>
           </div>
         </template>
@@ -213,24 +264,30 @@
           </cy-icon-text>
         </div>
         <div>
-          <img :src="currentExportedImage || '#'" />
+          <img :src="currentExportedImage || '#'">
         </div>
       </cy-window>
-      <cy-window v-model:visible="previewExportedTextWindowVisible"
-        :frozen-top="true" width="auto">
+      <cy-window
+        v-model:visible="previewExportedTextWindowVisible"
+        frozen-top
+        width="auto"
+      >
         <template #title>
           <div class="flex items-center">
             <cy-icon-text icon="mdi:content-copy">
               {{ $lang('main menu/preview exported text') }}
             </cy-icon-text>
-            <cy-button icon="mdi:content-copy" type="border"
+            <cy-button
+              icon="mdi:content-copy"
+              type="border"
               class="single-line ml-auto"
-              @click="copyExportedText">
-              {{ $globalLang('global/copy') }}
+              @click="copyExportedText"
+            >
+              {{ $rootLang('global/copy') }}
             </cy-button>
           </div>
         </template>
-        <div class="exported-text-content" ref="previewExportedTextContent" v-html="currentExportedText"></div>
+        <div ref="previewExportedTextContent" class="exported-text-content" v-html="currentExportedText" />
       </cy-window>
     </div>
   </article>
@@ -249,8 +306,13 @@ import { computeDrawSkillTreeData, GetDrawSetting } from "@/lib/Skill/utils/Draw
 import init from "./init.js";
 
 export default {
-  name: 'skill-query',
+  name: 'SkillQuery',
   RegisterLang: 'Skill Simulator',
+  provide() {
+    return {
+      'drawSkillTreeOptions': this.drawSkillTreeOptions,
+    }
+  },
   data() {
     // const r = this.skillRoot;
 
@@ -260,14 +322,14 @@ export default {
         texts: values.map(a => this.$lang('main menu/' + type + ': ' + a)),
         icons: icon_ids,
         values: values,
-        currentIndex: values.indexOf(current_value)
+        currentIndex: values.indexOf(current_value),
       };
     }
 
     const skillPointState = {
       mode: 'normal',
       operating: '+',
-      stepValue: 5
+      stepValue: 5,
     };
 
     const self = this;
@@ -292,7 +354,7 @@ export default {
               x: tran(cx) + offset,
               y: tran(cy) + offset + text_yFix,
               innerText: skill.level(),
-              class: ['skill-level-text']
+              class: ['skill-level-text'],
             });
           }
 
@@ -302,7 +364,7 @@ export default {
               x: tran(cx) - offset,
               y: tran(cy) + offset + text_yFix,
               innerText: skill.starGemLevel(),
-              class: ['star-gem-level-text']
+              class: ['star-gem-level-text'],
             });
           }
 
@@ -317,7 +379,7 @@ export default {
           } else {
             skill.addStarGemLevel(v);
           }
-        }
+        },
       },
       currentExportedImage: null,
       currentExportedText: null,
@@ -330,14 +392,14 @@ export default {
       bottomMenuExtraMenuVidsible: false,
       setButtonStates: [
         createSetButtonState('operating', ['ic:round-add-circle-outline',
-          'ic:round-remove-circle-outline'
+          'ic:round-remove-circle-outline',
         ], ['+', '-'], skillPointState.operating),
         createSetButtonState('step value', ['mdi:numeric-1-circle-outline',
-            'mdi:numeric-5-circle-outline', 'mdi:numeric-10-circle-outline'
-          ],
-          [1, 5, 10], skillPointState.stepValue),
+          'mdi:numeric-5-circle-outline', 'mdi:numeric-10-circle-outline',
+        ],
+        [1, 5, 10], skillPointState.stepValue),
         createSetButtonState('mode', ['gg-shape-rhombus', 'mdi:judaism'],
-          ['normal', 'star-gem'], skillPointState.mode)
+          ['normal', 'star-gem'], skillPointState.mode),
       ],
       SaveLoadDataSystemOptions: {
         name: 'Skill Simulator',
@@ -348,14 +410,9 @@ export default {
         },
         error(e) {
           console.log(e);
-        }
-      }
+        },
+      },
     };
-  },
-  provide() {
-    return {
-      'drawSkillTreeOptions': this.drawSkillTreeOptions
-    }
   },
   beforeCreate() {
     init();
@@ -374,11 +431,11 @@ export default {
     ...mapState('character', {
       'skillRootStates': 'skillBuilds',
       'skillRoot': 'skillRoot',
-      'currentSkillRootStateIndex': 'currentSkillBuildIndex'
+      'currentSkillRootStateIndex': 'currentSkillBuildIndex',
     }),
     ...mapGetters('character', {
       'saveSkillBuildsCsv': 'saveSkillBuildsCsv',
-      'currentSkillRootState': 'currentSkillBuild'
+      'currentSkillRootState': 'currentSkillBuild',
     }),
     currentStarGemList() {
       const list = [];
@@ -388,7 +445,7 @@ export default {
             if (skill.starGemLevel() > 0) {
               list.push({
                 skill,
-                skillTreeState: st
+                skillTreeState: st,
               });
             }
           });
@@ -424,7 +481,7 @@ export default {
     },
     visibleSkillTreeCategoryStates() {
       return this.unemptySkillTreeCategoryStates.filter(p => p.visible);
-    }
+    },
   },
   methods: {
     beforeExportConfirm() {
@@ -435,7 +492,7 @@ export default {
     },
     copyExportedText() {
       if (CY.copyToClipboard(this.$refs.previewExportedTextContent.innerText))
-        this.$notify(this.$globalLang('global/copy to clipboard finished'));
+        this.$notify(this.$rootLang('global/copy to clipboard finished'));
     },
     downloadExportedImage() {
       if (this.currentExportedImage === null) {
@@ -477,7 +534,7 @@ export default {
       }
 
       let top = '｜' + this.$lang('exported image inner text/skill point cost sum', [this.
-        skillPointCostSum
+        skillPointCostSum,
       ]) + '<br />';
       top += '｜' + this.$lang('exported image inner text/star gem skill point sum', [this.starGemSkillPointSum]) + '<br />';
       top += '<br />';
@@ -509,16 +566,16 @@ export default {
         const otherIconData = {
           skillPointCost: {
             src: 'data:image/svg+xml;base64,' + window.btoa(skillPointCostSvgIconString),
-            loadedImage: null
+            loadedImage: null,
           },
           potum: {
             src: '/imgs/favicon/favicon48.png',
-            loadedImage: null
+            loadedImage: null,
           },
           unknowSkillIcon: {
             src: '/imgs/skill_icons/unknow.svg',
-            loadedImage: null
-          }
+            loadedImage: null,
+          },
         };
         //
         const drawDatas = [],
@@ -531,7 +588,7 @@ export default {
             if (!st.visible) return;
             const drawData = computeDrawSkillTreeData(st.levelSkillTree, {
               setSkillButtonExtraData: this.drawSkillTreeOptions.setSkillButtonExtraData,
-              skillTreeType: 'level-skill-tree'
+              skillTreeType: 'level-skill-tree',
             });
             drawData.skillTree = st.origin;
             drawData.levelSkillTree = st.levelSkillTree;
@@ -582,9 +639,9 @@ export default {
                   img.addEventListener('error', img_error);
                   img.src = p.path;
                 });
-              })
+              }),
             );
-          })
+          }),
         ]);
 
         const title_text_middle_y = 31,
@@ -628,7 +685,7 @@ export default {
             (c, p) => c + p.height + st_extra_top_pd,
             watermark_line_h +
             topInfo_h_sum +
-            (starGemDatas.length != 0 ? starGemScope_h_sum : 0)
+            (starGemDatas.length != 0 ? starGemScope_h_sum : 0),
           );
 
         drawDatas.forEach(drawData => {
@@ -667,7 +724,7 @@ export default {
               ctx.textBaseline = 'middle';
               ctx.fillStyle = body_cs.getPropertyValue(
                 p.type == 'skill-level-text' ?
-                '--primary-light-4' : '--primary-water-blue');
+                  '--primary-light-4' : '--primary-water-blue');
               ctx.fillText(p.innerText, p.x, p.y);
             }
           });
@@ -700,7 +757,7 @@ export default {
           main_canvases.push({
             canvas: canvas,
             width: st_w,
-            height: st_h
+            height: st_h,
           });
         });
 
@@ -821,13 +878,13 @@ export default {
 
       this.$notify(this.$lang('tips/delete build message', [cur_build.name]), 'ic-round-done', null, {
         buttons: [{
-          text: this.$globalLang('global/recovery'),
+          text: this.$rootLang('global/recovery'),
           click: () => {
             this.$store.commit('character/createSkillBuild', { skillBuild: cur_build });
             this.$notify(this.$lang('tips/recovery delete build message', [cur_build.name]), 'ic-round-done');
           },
-          removeMessageAfterClick: true
-        }]
+          removeMessageAfterClick: true,
+        }],
       });
 
       this.buildInformationVisible = false;
@@ -860,7 +917,7 @@ export default {
     },
     createBuild() {
       this.$store.commit('character/createSkillBuild', {
-        name: this.$lang('build') + ' ' + (this.skillRootStates.length + 1)
+        name: this.$lang('build') + ' ' + (this.skillRootStates.length + 1),
       });
 
       return this.currentSkillRootState;
@@ -912,33 +969,32 @@ export default {
     setButtonSelected(type, index) {
       const s = this.setButtonStates.find(p => p.type == type);
       s.currentIndex = index;
-      if (type == 'operating')
+      if (type === 'operating')
         this.skillPointState.operating = s.values[index];
-      if (type == 'step value')
+      if (type === 'step value')
         this.skillPointState.stepValue = s.values[index];
-      if (type == 'mode')
+      if (type === 'mode')
         this.skillPointState.mode = s.values[index];
     },
     jumpToSkillTree(st) {
       document.getElementById('skill-tree--' + getSkillElementId(st)).scrollIntoView({
-        behavior: "smooth"
+        behavior: "smooth",
       });
       this.jumpSkillTreeVisible = false;
-    }
+    },
   },
   components: {
     'skill-root': vue_skillRoot,
-    'save-load-data-system': vue_SaveLoadDataSystem
-  }
+    'save-load-data-system': vue_SaveLoadDataSystem,
+  },
 };
 </script>
-<style lang="less" scoped>
-
+<style lang="postcss" scoped>
 .main {
   & > .top {
     z-index: 3;
 
-    ::v-deep(.content) {
+    &::v-deep(.content) {
       padding-right: 0.6rem;
 
       & > .buttons-scope {
@@ -981,15 +1037,10 @@ export default {
 
   & > .bottom-menu {
     z-index: 2;
-    position: sticky;
-    bottom: 0.6rem;
-    margin: 0 0.6rem;
+    @apply sticky mx-2 bottom-2;
 
     & > .skill-point-information {
-      padding: 0.5rem 0.3rem;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
+      @apply py-2 px-1 flex items-center justify-end;
 
       & > .column {
         border: 1px solid var(--primary-light);
@@ -1001,10 +1052,7 @@ export default {
     }
 
     & > .content {
-      background-color: var(--white);
-      border: 1px solid var(--primary-light-2);
-      border-radius: 1.5rem;
-      padding: 0.5rem 0.8rem;
+      @apply py-1 px-3 rounded-3xl border border-light-2 bg-white;
 
       & > .menus {
         overflow-x: auto;
@@ -1030,12 +1078,4 @@ export default {
     padding: 1rem;
   }
 }
-
-// @media screen and (max-width: 30rem) {
-//   .main > .top > .content > .inner-menu {
-//     &>.content {
-//       grid-template-columns: 100%;
-//     }
-//   }
-// }
 </style>

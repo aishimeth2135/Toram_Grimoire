@@ -1,12 +1,12 @@
 import loading from "./loading.js";
 
 const modules = {
-  loading
+  loading,
 };
 
 const state = {
   messages: [],
-  idCounter: 0
+  idCounter: 0,
 };
 const mutations = {
   appendMessage(state, msg) {
@@ -21,7 +21,7 @@ const mutations = {
   increaseMessageCounter(state, msg) {
     ++msg.counter;
     msg.removeTime += 2;
-  }
+  },
 };
 const actions = {
   createMessage({ state, commit }, { icon, message, id, options }) {
@@ -37,7 +37,7 @@ const actions = {
         options,
         counter: 1,
         removeTime: 4,
-        iid: state.idCounter
+        iid: state.idCounter,
       };
       ++state.idCounter;
       const timer = setInterval(() => {
@@ -53,7 +53,7 @@ const actions = {
     else {
       commit('increaseMessageCounter', find);
     }
-  }
+  },
 }
 
 export default {
@@ -61,5 +61,5 @@ export default {
   state,
   mutations,
   actions,
-  modules
+  modules,
 };

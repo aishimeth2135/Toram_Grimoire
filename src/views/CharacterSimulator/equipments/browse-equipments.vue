@@ -1,13 +1,15 @@
 <template>
-  <cy-window :visible="visible"
+  <cy-window
+    :visible="visible"
+    width="wide"
     @close="closeWindow"
-    width="wide">
-    <template v-slot:title>
+  >
+    <template #title>
       <cy-icon-text icon="ic-outline-category">
         {{ $lang('action: ' + actionType) }}
       </cy-icon-text>
     </template>
-    <template v-slot:default>
+    <template #default>
       <!-- top -->
       <div class="flex items-center border-b border-solid border-light-2 pb-2">
         <div class="ml-auto">
@@ -27,19 +29,25 @@
       </div>
       <div class="content">
         <div class="items">
-          <equipment-item v-for="eq in browsedEquipments"
-            :key="eq.iid" :equipment="eq.origin"
-            @click="setCurrentEquipment(eq.origin, eq['@disabled'])"
+          <equipment-item
+            v-for="eq in browsedEquipments"
+            :key="eq.iid"
+            :equipment="eq.origin"
             :selected="eq.origin === currentEquipment"
             :current="actionType === 'select-field-equipment' && action.targetField.equipment == eq.origin"
-            :disabled="eq['@disabled']" />
+            :disabled="eq['@disabled']"
+            @click="setCurrentEquipment(eq.origin, eq['@disabled'])"
+          />
         </div>
         <div class="preview" :class="{ 'unfold': infoUnfold }">
-          <div class="info" v-if="currentEquipment" @click.stop>
+          <div v-if="currentEquipment" class="info" @click.stop>
             <equipment-info :equipment="currentEquipment" />
           </div>
-          <div class="compare" v-if="actionType == 'select-field-equipment' && currentEquipment
-            && currentEquipment != action.targetField.equipment && !currentEquipmentDisable">
+          <div
+            v-if="actionType == 'select-field-equipment' && currentEquipment
+              && currentEquipment != action.targetField.equipment && !currentEquipmentDisable"
+            class="compare"
+          >
             <character-stats-compare :before="compareData.before" :after="compareData.after" />
           </div>
         </div>
@@ -55,22 +63,24 @@
         <template #normal-content>
           <div class="flex items-center flex-wrap">
             <cy-button-border icon="ic-baseline-delete-outline" @click="removeSelectedEquipment">
-              {{ $globalLang('global/remove') }}
+              {{ $rootLang('global/remove') }}
             </cy-button-border>
             <cy-button-border icon="mdi-content-copy" @click="copySelectedEquipment">
-              {{ $globalLang('global/copy') }}
+              {{ $rootLang('global/copy') }}
             </cy-button-border>
-            <div v-if="actionType === 'select-field-equipment'"
-              class="ml-auto">
+            <div
+              v-if="actionType === 'select-field-equipment'"
+              class="ml-auto"
+            >
               <cy-button-border
                 v-if="!currentEquipmentDisable"
                 icon="ic-round-done"
                 @click="selectEquipment"
               >
-                {{ $globalLang('global/confirm') }}
+                {{ $rootLang('global/confirm') }}
               </cy-button-border>
               <cy-button-border v-else icon="ic-round-done" type="border" :disabled="true">
-                {{ $globalLang('global/confirm') }}
+                {{ $rootLang('global/confirm') }}
               </cy-button-border>
             </div>
           </div>
@@ -94,31 +104,31 @@ export default {
   RegisterLang: {
     root: 'Character Simulator/browse equipments',
     extra: {
-      parent: 'Character Simulator'
-    }
+      parent: 'Character Simulator',
+    },
   },
-  emits: ['close'],
-  props: ['visible', 'action', 'characterState'],
   inject: [
     'toggleMainWindowVisible',
     'handleCharacterStateDatas',
-    'appendEquipments'
+    'appendEquipments',
   ],
+  props: ['visible', 'action', 'characterState'],
+  emits: ['close'],
   data() {
     return {
       currentEquipment: null,
       currentEquipmentDisable: false,
-      infoUnfold: false
+      infoUnfold: false,
     };
   },
   computed: {
     ...mapState('character', {
-      'equipments': 'equipments'
+      'equipments': 'equipments',
     }),
     currentCharacterStateDatas() {
       return this.handleCharacterStateDatas({
         handlePassiveSkill: true,
-        handleActiveSkill: true
+        handleActiveSkill: true,
       });
     },
     compareData() {
@@ -131,9 +141,9 @@ export default {
           handleActiveSkill: true,
           calcField: {
             type: this.action.targetField.type,
-            equipment: this.currentEquipment
-          }
-        })
+            equipment: this.currentEquipment,
+          },
+        }),
       };
     },
     actionType() {
@@ -147,11 +157,11 @@ export default {
           return {
             origin: p,
             iid: i,
-            '@disabled': !this.fieldFilter(p)
+            '@disabled': !this.fieldFilter(p),
           };
         })
         .sort((a, b) => a.origin.name.localeCompare(b.origin.name));
-    }
+    },
   },
   methods: {
     toggleInfoUnfold() {
@@ -168,7 +178,7 @@ export default {
       const eq = this.currentEquipment;
       const index = this.equipments.indexOf(eq);
       index != -1 && this.$store.commit('character/removeEquipment', {
-        index
+        index,
       });
 
       const modifiedFields = this.characterState.origin.equipmentFields.filter(field => {
@@ -180,16 +190,16 @@ export default {
       });
       this.$notify(this.$lang('message: remove equipment', [eq.name]),
         'ic-baseline-delete-outline', null, {
-        buttons: [{
-          text: this.$globalLang('global/recovery'),
-          click: () => {
-            this.appendEquipments([eq]);
-            modifiedFields.forEach(field => field.setEquipment(eq));
-            this.$notify(this.$lang('message: removed equipment recovery', [eq.name]));
-          },
-          removeMessageAfterClick: true
-        }]
-      });
+          buttons: [{
+            text: this.$rootLang('global/recovery'),
+            click: () => {
+              this.appendEquipments([eq]);
+              modifiedFields.forEach(field => field.setEquipment(eq));
+              this.$notify(this.$lang('message: removed equipment recovery', [eq.name]));
+            },
+            removeMessageAfterClick: true,
+          }],
+        });
 
       this.currentEquipment = null;
     },
@@ -214,30 +224,30 @@ export default {
     },
     fieldFilter(eq) {
       switch (this.action.targetField.type) {
-        case EquipmentField.TYPE_MAIN_WEAPON:
-          return eq instanceof MainWeapon;
-        case EquipmentField.TYPE_SUB_WEAPON:
-          if (eq instanceof MainWeapon || eq instanceof SubWeapon || eq instanceof SubArmor) {
-            const t = this.characterState.origin.testSubWeapon(eq.type);
-            return t;
-          }
-          return false;
-        case EquipmentField.TYPE_BODY_ARMOR:
-          return eq instanceof BodyArmor;
-        case EquipmentField.TYPE_ADDITIONAL:
-          return eq instanceof AdditionalGear;
-        case EquipmentField.TYPE_SPECIAL:
-          return eq instanceof SpecialGear;
-        case EquipmentField.TYPE_AVATAR:
-          return eq instanceof Avatar;
+      case EquipmentField.TYPE_MAIN_WEAPON:
+        return eq instanceof MainWeapon;
+      case EquipmentField.TYPE_SUB_WEAPON:
+        if (eq instanceof MainWeapon || eq instanceof SubWeapon || eq instanceof SubArmor) {
+          const t = this.characterState.origin.testSubWeapon(eq.type);
+          return t;
+        }
+        return false;
+      case EquipmentField.TYPE_BODY_ARMOR:
+        return eq instanceof BodyArmor;
+      case EquipmentField.TYPE_ADDITIONAL:
+        return eq instanceof AdditionalGear;
+      case EquipmentField.TYPE_SPECIAL:
+        return eq instanceof SpecialGear;
+      case EquipmentField.TYPE_AVATAR:
+        return eq instanceof Avatar;
       }
-    }
+    },
   },
   components: {
     'equipment-item': vue_equipmentItem,
     'equipment-info': vue_equipmentInfo,
-    'character-stats-compare': vue_characterStatsCompare
-  }
+    'character-stats-compare': vue_characterStatsCompare,
+  },
 }
 </script>
 <style lang="less" scoped>

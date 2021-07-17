@@ -8,16 +8,16 @@ export default function LoadTagData(r, datas) {
     INDEX = {
       TAG_NAME: 0,
       FRAME_NAME: 1,
-      FRAME_VALUE: 2
+      FRAME_VALUE: 2,
     },
     LANG_DATA = {
       TAG_NAME: 0,
-      FRAME_VALUE: 1
+      FRAME_VALUE: 1,
     };
 
   HandleLanguageData(datas, {
     [INDEX.TAG_NAME]: LANG_DATA.TAG_NAME,
-    [INDEX.FRAME_VALUE]: LANG_DATA.FRAME_VALUE
+    [INDEX.FRAME_VALUE]: LANG_DATA.FRAME_VALUE,
   })
   const c = datas[0];
   let cur, curFrame;

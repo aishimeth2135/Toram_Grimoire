@@ -7,7 +7,7 @@ function create(width = 0, height = 0, attr = {}) {
     version: '1.1',
     width,
     height,
-    viewBox: `0 0 ${width} ${height}`
+    viewBox: `0 0 ${width} ${height}`,
   }, attr);
   element.setAttributes(svg, attr);
   return svg;
@@ -17,7 +17,7 @@ function drawText(x, y, content, attr = {}) {
   const text = document.createElementNS("http://www.w3.org/2000/svg", 'text');
   attr = Object.assign({
     x,
-    y
+    y,
   }, attr);
   element.setAttributes(text, attr);
   text.innerHTML = content;
@@ -29,7 +29,7 @@ function drawCircle(cx, cy, r, attr = {}) {
   attr = Object.assign({
     cx,
     cy,
-    r
+    r,
   }, attr);
   element.setAttributes(circle, attr);
   return circle;
@@ -41,7 +41,7 @@ function drawLine(x1, y1, x2, y2, attr = {}) {
     x1,
     y1,
     x2,
-    y2
+    y2,
   }, attr);
   element.setAttributes(line, attr);
   return line;
@@ -58,7 +58,7 @@ function drawSector(cx, cy, startR, endR, startAngle, endAngle, clockwise, attr 
   const path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
   attr = Object.assign({
     d: getSectorD(cx, cy, startR, endR, startAngle, endAngle, clockwise),
-    fill: 'none'
+    fill: 'none',
   }, attr);
   element.setAttributes(path, attr);
   return path;
@@ -81,7 +81,7 @@ function getSectorD(cx, cy, startR, endR, startAngle, endAngle, clockwise) {
 function createAnimate(attributeName, attr = {}) {
   attr = Object.assign({
     attributeName,
-    repeatCount: 'indefinite'
+    repeatCount: 'indefinite',
   }, attr);
   const ani = document.createElementNS("http://www.w3.org/2000/svg", 'animate');
   element.setAttributes(ani, attr);
@@ -94,7 +94,7 @@ function drawImage(path, x, y, width, height, attr = {}) {
     x,
     y,
     width,
-    height
+    height,
   }, attr);
   img.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', path);
   element.setAttributes(img, attr);
@@ -112,7 +112,7 @@ function createSimpleImagePattern(id, path, width, height, attr = {}, imgattr = 
   attr = Object.assign({
     width,
     height,
-    id
+    id,
   }, attr);
   element.setAttributes(pat, attr);
   pat.appendChild(drawImage(0, 0, path, width, height, imgattr));
@@ -126,7 +126,7 @@ function createLinearGradient(id, x1, y1, x2, y2, stops, attr = {}) {
     x1,
     y1,
     x2,
-    y2
+    y2,
   }, attr);
   element.setAttributes(lg, attr);
   stops.forEach(a => lg.appendChild(createEmpty('stop', a)));
@@ -139,7 +139,7 @@ function createRadialGradient(id, cx, cy, r, stops, attr = {}) {
     id,
     cx,
     cy,
-    r
+    r,
   }, attr);
   element.setAttributes(rg, attr);
   stops.forEach(a => rg.appendChild(createEmpty('stop', a)));
@@ -159,5 +159,5 @@ export default {
   createAnimate,
   createSimpleImagePattern,
   createLinearGradient,
-  createRadialGradient
+  createRadialGradient,
 };

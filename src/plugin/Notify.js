@@ -10,6 +10,6 @@ export default function(app) {
     },
     hide() {
       store.commit('notify/loading/hide');
-    }
+    },
   };
 }

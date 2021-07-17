@@ -29,7 +29,7 @@ export default function() {
           'body-armor': 'Body Armor',
           'additional': 'Additional Equipment',
           'special': 'Special Equipment',
-          'avatar': 'Avatar'
+          'avatar': 'Avatar',
         },
         'category': {
           'one-hand-sword': 'One-Handed Sword',
@@ -47,7 +47,7 @@ export default function() {
           'sub-armor|shield': 'Shield',
           'body-armor|normal': 'Normal Armor',
           'body-armor|dodge': 'Light Armor',
-          'body-armor|defense': 'Heavy Armor'
+          'body-armor|defense': 'Heavy Armor',
         },
         'stat restriction': {
           'event': 'Event',
@@ -69,13 +69,13 @@ export default function() {
             'magic-device': 'Magic Device(Sub)',
             'knuckle': 'Knuckle(Sub)',
             'one-hand-sword': 'One-Hand Sword(Dual Sword Sub)',
-            'ninjutsu-scroll': 'Ninjutsu Scroll'
+            'ninjutsu-scroll': 'Ninjutsu Scroll',
           },
           'body': {
             'dodge': 'Light Armor',
             'defense': 'Heavy Armor',
-            'normal': 'Normal Armor'
-          }
+            'normal': 'Normal Armor',
+          },
         },
         'obtain': {
           'mobs': 'Mobs Drop',
@@ -87,12 +87,12 @@ export default function() {
           'other': 'Other',
           'box': 'Loot Box content',
           'exchange': 'Exchange',
-          'ex_skill': 'EX Skill'
+          'ex_skill': 'EX Skill',
         },
-      }
+      },
     },
     'Loading Page': {
-      'bottom tips': '初次載入需要較長的時間，請稍後...<br />若載入途中發生錯誤，請先試著重新整理網頁。'
+      'bottom tips': '初次載入需要較長的時間，請稍後...<br />若載入途中發生錯誤，請先試著重新整理網頁。',
     },
     'Loading Message': {
       'Stats': '載入角色能力清單',
@@ -101,7 +101,7 @@ export default function() {
       'Skill': '載入技能資料',
       'Tag': '載入標籤清單',
       'Enchant': '載入附魔資料',
-      'init': '初始化'
+      'init': '初始化',
     },
     'Page Title': {
       'base': "Cy's Grimoire",
@@ -111,15 +111,15 @@ export default function() {
       'item-query': 'Item Search',
       'crystal-query': 'Xtal Search',
       'calculation': {
-        'damage': 'Damage Calculator'
+        'damage': 'Damage Calculator',
       },
-      'enchant-simulator': 'Stats-Filling Simulator'
+      'enchant-simulator': 'Stats-Filling Simulator',
     },
     'Left Menu': {
       'Home': {
         'base': 'Home',
-        'about': 'About'
-      }
+        'about': 'About',
+      },
     },
     'Settings': {
       'title': 'Settings',
@@ -128,7 +128,7 @@ export default function() {
         'caption': '若字體顯示有問題（特定裝置會發生），或是不喜歡現在的預設字體，可以切換字體為基本字體。',
         'warn 1': '切換後可能要花費數秒的時間下載字體，才能完成替換。',
         'default font': '預設字體',
-        'base font': '基本字體'
+        'base font': '基本字體',
       },
       'language': {
         'title': '語言設定',
@@ -140,8 +140,8 @@ export default function() {
           'lang 0': 'English',
           'lang 1': '繁體中文',
           'lang 2': '日本語',
-          'lang 3': '简体中文'
-        }
+          'lang 3': '简体中文',
+        },
       },
       'second language': {
         'title': '次要語言設定',
@@ -156,9 +156,9 @@ export default function() {
         'warn 2': '快取被清除後，下次進入頁面時資料庫需要重新下載。這可能需要數十秒的時間，請耐心等待。',
         'warn 3': '清除快取完畢後，可以使用重新整理，讓頁面立即重新載入。',
         'button texts': {
-          'clear caches of spreadsheets': '清除資料庫快取'
+          'clear caches of spreadsheets': '清除資料庫快取',
         },
-        'Clear caches of spreadsheet successfully': '已清除資料庫快取。下次進入頁面時將會重新下載資料庫。'
+        'Clear caches of spreadsheet successfully': '已清除資料庫快取。下次進入頁面時將會重新下載資料庫。',
       },
       'storage backup': {
         'title': '存檔備份',
@@ -167,17 +167,17 @@ export default function() {
         'warn 2': '讀取成功後，請直接重新整理網頁，可以確保系統正確初始化。',
         'button texts': {
           'save': '存檔資料備份',
-          'load': '讀取存檔資料'
+          'load': '讀取存檔資料',
         },
         'Save successfully': '存檔成功。',
         'Load successfully': '讀取成功。',
         'Load failed': '讀取失敗。',
         'Wrong type of file': '讀取的檔案必須為文字（.txt）檔。',
-        'Must be operated on the homepage': '為避免發生無法預期的錯誤，此功能限制只能在首頁使用。'
-      }
+        'Must be operated on the homepage': '為避免發生無法預期的錯誤，此功能限制只能在首頁使用。',
+      },
     },
     'stat base': {
-      'type total: preText': 'Total '
-    }
+      'type total: preText': 'Total ',
+    },
   };
 }

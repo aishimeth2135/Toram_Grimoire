@@ -22,14 +22,14 @@ import vue_loading from "@/views/app/loading.vue";
 import vue_confirm from "@/views/app/confirm.vue";
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
     'app-initialize': vue_initialize,
     'app-footer': vue_footer,
     'app-nav': vue_nav,
     'app-notify': vue_notify,
     'app-loading': vue_loading,
-    'app-confirm': vue_confirm
+    'app-confirm': vue_confirm,
   },
   beforeCreate() {
     InitLanguageSystem();

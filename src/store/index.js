@@ -24,8 +24,8 @@ const store = createStore({
     datas,
     character,
     enchant,
-    confirm
-  }
+    confirm,
+  },
 });
 
 export default store;

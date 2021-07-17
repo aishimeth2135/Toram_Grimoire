@@ -23,7 +23,7 @@ class SkillBranchHandler {
           value: 0,
           variableName: this.formulaExtraVariableName(i),
           disabled: false,
-          ignore: false
+          ignore: false,
         })));
       }
 
@@ -32,13 +32,13 @@ class SkillBranchHandler {
         value: 0,
         variableName: 'target_def',
         disabled: true,
-        ignore: true
+        ignore: true,
       }, {
         text: this.$lang('skill management/formula text/target_level'),
         value: 0,
         variableName: 'target_level',
         disabled: true,
-        ignore: true
+        ignore: true,
       });
 
       return res;
@@ -57,7 +57,7 @@ class SkillBranchHandler {
           id: p.id,
           name,
           value: p.value,
-          branch: p.branch
+          branch: p.branch,
         };
       });
 
@@ -65,7 +65,7 @@ class SkillBranchHandler {
       const attrs = p.branch.attrs;
       p.range =  [
         parseInt(this.calcValueStr(attrs['min'])),
-        attrs['max'] ? parseInt(this.calcValueStr(attrs['max'])) : null
+        attrs['max'] ? parseInt(this.calcValueStr(attrs['max'])) : null,
       ];
     });
 
@@ -119,7 +119,7 @@ class SkillBranchHandler {
           iid: i,
           stats: _stats,
           caption: _caption,
-          condition: suf.attrs['condition'] || this.$lang('skill management/suffix branch/condition: default')
+          condition: suf.attrs['condition'] || this.$lang('skill management/suffix branch/condition: default'),
         };
       })
       .filter(p => p.stats.length != 0 || p.caption);
@@ -127,7 +127,7 @@ class SkillBranchHandler {
     return {
       stats,
       caption,
-      conditionDatas
+      conditionDatas,
     };
   }
 
@@ -222,7 +222,7 @@ class SkillBranchHandler {
         text: sd.title + dc.result(),
         value: parseFloat(v),
         origin: p,
-        iid: i
+        iid: i,
       };
     });
   }
@@ -231,10 +231,10 @@ class SkillBranchHandler {
       return str;
     const skillState = {
       clv: this.characterState.origin.level,
-      slv: Math.max(this.levelSkill.level(), this.levelSkill.starGemLevel())
+      slv: Math.max(this.levelSkill.level(), this.levelSkill.starGemLevel()),
     };
     const effectState = {
-      stackStates: this.stackStates
+      stackStates: this.stackStates,
     };
 
     str = str.split(/\s*,,\s*/)
@@ -266,7 +266,7 @@ class SkillBranchHandler {
     base = 'light-text',
     stack = 'light-text-1',
     extra = [],
-    beforeColorText = null
+    beforeColorText = null,
     //   <span class="light-text">
     //     extraHandle(v = "<span class="multiple-values"></span>")
     //   </span>
@@ -307,7 +307,7 @@ class SkillBranchHandler {
         find.disabled = false;
         return find.value;
       },
-      'guard_power': this.findCharacterStatResult(findSrc, 'guard_power').value
+      'guard_power': this.findCharacterStatResult(findSrc, 'guard_power').value,
     };
 
     dc.handle(v => {

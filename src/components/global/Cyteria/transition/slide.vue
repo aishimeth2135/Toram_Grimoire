@@ -1,5 +1,6 @@
 <template>
-  <transition v-bind="$attrs"
+  <transition
+    v-bind="$attrs"
     :css="false"
     @before-enter="beforeEnter"
     @enter="enter"
@@ -7,8 +8,9 @@
 
     @before-leave="beforeLeave"
     @leave="leave"
-    @after-leave="afterLeave">
-    <slot></slot>
+    @after-leave="afterLeave"
+  >
+    <slot />
   </transition>
 </template>
 <script>
@@ -37,7 +39,7 @@ export default {
         const ops = {
           easing: 'ease',
           duration: 400,
-          complete: done
+          complete: done,
         };
 
         if (hook === 'enter') {
@@ -64,8 +66,8 @@ export default {
     },
     afterLeave(el) {
       this.handleHook('afterLeave', el);
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="less" scoped>

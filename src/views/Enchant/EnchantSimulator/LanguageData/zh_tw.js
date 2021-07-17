@@ -10,7 +10,7 @@ export default function(){
       'equipment types': {
         'main-weapon': '主手武器',
         'body-armor': '身體防具',
-        'main-weapon|original-element': '主手武器｜原有屬性'
+        'main-weapon|original-element': '主手武器｜原有屬性',
       },
       'enchant step': '步驟',
       'append enchant step': '新增步驟',
@@ -32,11 +32,12 @@ export default function(){
         'select one stat item': '選擇單項能力',
         'select multiple stat items': '選擇多項能力',
         'type: each': '分次附模式',
-        'button caption: title': '關於按鈕'
+        'button caption: title': '關於按鈕',
       },
       'select item': {
         'title: normal': '選擇多項能力',
-        'title: once': '選擇單項能力'
+        'title: once': '選擇單項能力',
+        'show negative suggested list': '顯示建議退潛',
       },
       'result': {
         'enchant: normal': '附',
@@ -48,7 +49,7 @@ export default function(){
       'stat display mode': {
         'title': '切換能力項目的資訊',
         'potential cost': '潛力消耗',
-        'material point': '素材消耗'
+        'material point': '素材消耗',
       },
       'tips': {
         'step stat repeated': '這個步驟已經有這個能力了0.0',
@@ -58,7 +59,7 @@ export default function(){
         'invalid enchant result': '目前的配置還沒辦法產生結果唷0.0',
         'confirm: remove build': '確定要移除這個配置嗎0.0？',
         'copy build successfully': '複製配置成功。',
-        'copy result text successfully': '複製結果成功。'
+        'copy result text successfully': '複製結果成功。',
       },
       'save': {
         'tips': {
@@ -67,21 +68,21 @@ export default function(){
           'export successfully': '匯出成功。',
           'import successfully': '匯入$0成功。',
           'import: error': '匯入時發生錯誤。',
-          'import: wrong file type': '匯入的檔案必須為.txt檔。'
-        }
+          'import: wrong file type': '匯入的檔案必須為.txt檔。',
+        },
       },
       'footer guide': {
         'title': '關於下方選單',
         'title: close': '新增一個步驟來關閉這個說明視窗0.0',
         'toggle result': {
           'titles': ['正常模式', '懸浮模式'],
-          'caption': '點擊按鈕來切換步驟結果的顯示模式，可以在不用滑動到最下面的情況下快速查看步驟結果。'
+          'caption': '點擊按鈕來切換步驟結果的顯示模式，可以在不用滑動到最下面的情況下快速查看步驟結果。',
         },
         'toggle display mode': {
           'titles': ['潛力消耗', '素材消耗'],
-          'caption': '對於每個步驟的能力項目後方會顯示什麼資訊，可以在兩者之間作切換。預設為「潛力消耗」'
-        }
-      }
-    }
+          'caption': '對於每個步驟的能力項目後方會顯示什麼資訊，可以在兩者之間作切換。預設為「潛力消耗」',
+        },
+      },
+    },
   };
 }

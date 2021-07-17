@@ -61,17 +61,44 @@
       "jsdoc/no-undefined-types": "warn",
       "no-unused-vars": "warn",
       "no-trailing-spaces": "warn",
-      "object-curly-spacing": [
-        "warn",
-        "always"
-      ],
-      "comma-spacing": [
-        "warn",
-        {
-          "before": false,
-          "after": true
+      "object-curly-spacing": ["warn","always"],
+      "eol-last": ["error", "always"],
+      "comma-spacing": ["warn", {
+        "before": false,
+        "after": true
+      }],
+      "comma-dangle": ["warn", "always-multiline"],
+      "vue/html-indent": ["warn", 2],
+      "vue/max-attributes-per-line": ["warn", {
+        "singleline": {
+          "max": 4,
+          "allowFirstLine": true
+        },      
+        "multiline": {
+          "max": 1,
+          "allowFirstLine": false
         }
-      ]
+      }],
+      "vue/html-closing-bracket-newline": ["warn", {
+        "singleline": "never",
+        "multiline": "always"
+      }],
+      "vue/comma-dangle": ["warn", "always-multiline"],
+      "vue/custom-event-name-casing": ["error", "kebab-case"],
+      "vue/prop-name-casing": ["error", "camelCase"],
+      "vue/attribute-hyphenation": ["error", "always"],
+      "vue/v-on-event-hyphenation": ["error", "always"],
+      "vue/component-tags-order": ["error", {
+        "order": ["template", "script", "style"]
+      }],
+      "vue/component-name-in-template-casing": ["warn", "PascalCase"],
+      "vue/attributes-order": ["error"],
+      "vue/require-explicit-emits": ["error"],
+      "vue/block-tag-newline": ["error"],
+      "vue/no-potential-component-option-typo": ["error", {
+        "presets": ["all"],
+        "custom": ["RegisterLang"]
+      }]
     },
     "overrides": [
       {

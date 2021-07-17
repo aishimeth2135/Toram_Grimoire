@@ -16,24 +16,24 @@ export default {
     leftMenuViewButtons: [{
       title: () => GetLang('Page Title/item-query'),
       icon: 'jam-box-f',
-      path: ''
+      path: '',
     }, {
       title: () => GetLang('Page Title/crystal-query'),
       icon: 'bx-bx-cube-alt',
-      path: '/crystal'
-    }]
+      path: '/crystal',
+    }],
   },
   children: [{
     path: '',
     component: vue_itemQuery,
     meta: {
-      title: () => GetLang('Page Title/item-query')
-    }
+      title: () => GetLang('Page Title/item-query'),
+    },
   }, {
     path: 'crystal',
     component: vue_crystalQuery,
     meta: {
-      title: () => GetLang('Page Title/crystal-query')
-    }
-  }]
+      title: () => GetLang('Page Title/crystal-query'),
+    },
+  }],
 };

@@ -1,17 +1,24 @@
 <template>
   <cy-transition type="fade">
-    <div class="window" v-if="visible" @click="closeWindow"
-      :class="rootClass">
+    <div
+      v-if="visible"
+      class="window"
+      :class="rootClass"
+      @click="closeWindow"
+    >
       <div class="content-container">
         <div class="top-mask" />
-        <cy-button-icon @click.stop="closeWindow"
-          icon="jam-close-circle-f" class="close-btn" />
+        <cy-button-icon
+          icon="jam-close-circle-f"
+          class="close-btn"
+          @click.stop="closeWindow"
+        />
         <div class="container-inner" @click.stop>
           <div class="top">
-            <slot name="title"></slot>
+            <slot name="title" />
           </div>
           <div class="content">
-            <slot></slot>
+            <slot />
           </div>
         </div>
       </div>
@@ -20,47 +27,47 @@
 </template>
 <script>
 export default {
-  emits: ['update:visible', 'close'],
   props: {
     type: {
       type: String,
-      default: 'normal'
+      default: 'normal',
     },
     visible: {
-      required: true
+      required: true,
     },
     confirmCallback: {
-      type: Function
+      type: Function,
     },
     verticalPosition: {
       type: String,
-      default: 'center'
+      default: 'center',
     },
     width: {
       type: String,
       default: 'normal',
-      validation: v => ['normal', 'auto', 'wide'].includes(v)
+      validation: v => ['normal', 'auto', 'wide'].includes(v),
     },
     forzenTop: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
+  emits: ['update:visible', 'close'],
   computed: {
     rootClass() {
       return {
         ['vertical-position-' + this.verticalPosition]: true,
         ['width-' + this.width]: true,
-        'frozen-top': this.forzenTop
+        'frozen-top': this.forzenTop,
       };
-    }
+    },
   },
   methods: {
     closeWindow() {
       this.$emit('update:visible', false);
       this.$emit('close');
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

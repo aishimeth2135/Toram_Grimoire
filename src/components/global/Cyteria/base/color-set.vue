@@ -11,38 +11,38 @@ const ColorSetProps = {
   textColor: {
     type: String,
     default: 'default',
-    validator: colorValidator
+    validator: colorValidator,
   },
   textColorHover: {
     type: String,
     default: 'default',
-    validator: colorValidator
+    validator: colorValidator,
   },
   iconColor: {
     type: String,
     default: 'default',
-    validator: colorValidator
+    validator: colorValidator,
   },
   iconColorHover: {
     type: String,
     default: 'default',
-    validator: colorValidator
+    validator: colorValidator,
   },
   borderColor: {
     type: String,
     default: 'default',
-    validator: colorValidator
+    validator: colorValidator,
   },
   borderColorHover: {
     type: String,
     default: 'default',
-    validator: colorValidator
+    validator: colorValidator,
   },
   mainColor: {
     type: String,
     default: 'default',
-    validator: colorValidator
-  }
+    validator: colorValidator,
+  },
 };
 
 function getColorSetStyle(src) {
@@ -50,7 +50,7 @@ function getColorSetStyle(src) {
     'textColor', 'textColorHover',
     'iconColor', 'iconColorHover',
     'borderColor', 'borderColorHover',
-    'mainColor'
+    'mainColor',
   ];
 
   const props = {};
@@ -104,8 +104,8 @@ export default {
   computed: {
     colorSetStyle() {
       return getColorSetStyle(this);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

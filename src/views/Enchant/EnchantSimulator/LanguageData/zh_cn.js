@@ -10,7 +10,7 @@ export default function(){
       'equipment types': {
         'main-weapon': '主手武器',
         'body-armor': '身体防具',
-        'main-weapon|original-element': '主手武器｜原有属性'
+        'main-weapon|original-element': '主手武器｜原有属性',
       },
       'enchant step': '步骤',
       'step type - each: title': '分次附、每次附',
@@ -30,11 +30,11 @@ export default function(){
         'auto fill positive stat': '正属全上',
         'select one stat item': '选择单项能力',
         'select multiple stat items': '选择多项能力',
-        'type: each': '分次附模式'
+        'type: each': '分次附模式',
       },
       'select item': {
         'title: normal': '选择多项能力',
-        'title: once': '选择单项能力'
+        'title: once': '选择单项能力',
       },
       'result': {
         'enchant: normal': '附',
@@ -46,7 +46,7 @@ export default function(){
       'stat display mode': {
         'title': '切换能力项目的资讯',
         'potential cost': '潜力消耗',
-        'material point': '素材消耗'
+        'material point': '素材消耗',
       },
       'tips': {
         'step stat repeated': '这个步骤已经有这个能力了0.0',
@@ -56,7 +56,7 @@ export default function(){
         'invalid enchant result': '目前的配置还没办法产生结果唷0.0',
         'confirm: remove build': '确定要移除这个配置吗0.0？',
         'copy build successfully': '复制配置成功。',
-        'copy result text successfully': '复制结果成功。'
+        'copy result text successfully': '复制结果成功。',
       },
       'save': {
         'tips': {
@@ -65,9 +65,9 @@ export default function(){
           'export successfully': '汇出成功。',
           'import successfully': '汇入$0成功。',
           'import: error': '汇入时发生错误。',
-          'import: wrong file type': '汇入的档案必须为.txt档。'
-        }
-      }
-    }
+          'import: wrong file type': '汇入的档案必须为.txt档。',
+        },
+      },
+    },
   };
 }

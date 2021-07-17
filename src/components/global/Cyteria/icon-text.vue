@@ -1,15 +1,19 @@
 <template>
-  <span ref="rootElement"
+  <span
+    ref="rootElement"
     class="cy--icon-text inline-flex"
     :class="rootClass"
-    :style="colorSetStyle">
+    :style="colorSetStyle"
+  >
     <cy-icon :icon="icon" :src="iconSrc" class="icon" />
     <span v-if="$slots['default']" class="text">
-      <slot></slot>
+      <slot />
     </span>
-    <sub-caption v-if="$slots['caption']"
-      :root="rootElement">
-      <slot name="caption"></slot>
+    <sub-caption
+      v-if="$slots['caption']"
+      :root="rootElement"
+    >
+      <slot name="caption" />
     </sub-caption>
   </span>
 </template>
@@ -21,25 +25,28 @@ import ColorSet from "./base/color-set.vue";
 import vue_subCaption from "./components/sub-caption.vue";
 
 export default {
+  components: {
+    'sub-caption': vue_subCaption,
+  },
   mixins: [IconSet, ColorSet],
   props: {
     type: {
       type: String,
       default: 'normal',
-      validator: v => ['normal', 'item'].includes(v)
+      validator: v => ['normal', 'item'].includes(v),
     },
     size: {
       type: String,
       default: 'normal',
       validator(v) {
         return ['normal', 'small'].includes(v);
-      }
+      },
     },
   },
   setup() {
     const rootElement = ref(null);
     return {
-      rootElement
+      rootElement,
     };
   },
   computed: {
@@ -48,11 +55,8 @@ export default {
         'is-item': this.type === 'item',
         ['text-' + this.size]: true,
       };
-    }
+    },
   },
-  components: {
-    'sub-caption': vue_subCaption
-  }
 };
 </script>
 <style lang="postcss" scoped>

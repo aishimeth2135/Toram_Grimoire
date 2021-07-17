@@ -1,6 +1,7 @@
 <template>
   <div class="pt-1">
-    <div class="flex items-center flex-wrap py-0.5"
+    <div
+      class="flex items-center flex-wrap py-0.5"
       :class="{ 'opacity-50': !stat.valid }"
     >
       <cy-icon-text
@@ -18,8 +19,8 @@
       >
         {{ potentialEffect }}
       </cy-icon-text>
-      <div class="inline-flex items-center ml-auto" v-else>
-         <cy-icon-text icon="mdi-cube-outline" size="small" icon-color="water-blue-light">
+      <div v-else class="inline-flex items-center ml-auto">
+        <cy-icon-text icon="mdi-cube-outline" size="small" icon-color="water-blue-light">
           {{ materialPoint.title }}
         </cy-icon-text>
         <span class="text-sm ml-2 text-water-blue">
@@ -33,15 +34,15 @@
         max-button
         min-button
         :value="stat.value"
-        @update:value="setStatValue({ stat, value: $event })"
         :range="stat.limit"
         :disabled="!stat.valid"
+        @update:value="setStatValue({ stat, value: $event })"
       />
       <cy-button-icon
         icon="jam-close-circle"
         class="ml-auto"
-        @click="removeStat(stat)"
         icon-color="gray"
+        @click="removeStat(stat)"
       />
     </div>
   </div>
@@ -53,13 +54,13 @@ import { trimZero } from '@utils/string';
 
 export default {
   RegisterLang: "Enchant Simulator",
+  inject: ['rootState'],
   props: {
     stat: {
       type: EnchantStepStat,
-      required: true
-    }
+      required: true,
+    },
   },
-  inject: ['rootState'],
   methods: {
     ...mapMutations('enchant/stat', ['setStatValue', 'removeStat']),
   },
@@ -71,9 +72,9 @@ export default {
       const mp = this.stat.materialPointCost;
       return {
         title: this.$lang('material point type list')[mp.type],
-        value: mp.value
+        value: mp.value,
       };
-    }
-  }
+    },
+  },
 }
 </script>

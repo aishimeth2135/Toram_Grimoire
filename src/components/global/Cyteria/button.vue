@@ -32,13 +32,13 @@ function CyButton(props, context) {
 
   const attrs = mergeProps({
     class: ['Button'],
-    style: getColorSetStyle(props)
+    style: getColorSetStyle(props),
   }, context.attrs);
 
   return h(
     getComponent(),
     attrs,
-    context.slots
+    context.slots,
   );
 }
 
@@ -48,11 +48,11 @@ CyButton.props = {
     default: 'simple',
     validator(v){
       return [
-        'simple', 'icon', 'line', 'border', 'drop-down', 'inline', 'check'
+        'simple', 'icon', 'line', 'border', 'drop-down', 'inline', 'check',
       ].includes(v);
-    }
+    },
   },
-  ...ColorSetProps
+  ...ColorSetProps,
 };
 
 export default CyButton;

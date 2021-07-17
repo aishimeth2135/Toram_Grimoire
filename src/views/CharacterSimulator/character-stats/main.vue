@@ -2,26 +2,35 @@
   <section>
     <div
       @touchstart="toggleShowStatDetailDisplay('visible', false, true)"
-      @click="toggleShowStatDetailDisplay('visible', false)">
-      <div v-for="data in showCharacterStatDatas"
+      @click="toggleShowStatDetailDisplay('visible', false)"
+    >
+      <div
+        v-for="data in showCharacterStatDatas"
+        :key="data.name"
         class="px-2 mb-4"
-        :key="data.name">
+      >
         <fieldset class="border-t border-solid border-light">
           <legend class="py-0 px-2 ml-3">
-            <cy-icon-text icon="mdi-creation"
-              text-color="purple" size="small">
+            <cy-icon-text
+              icon="mdi-creation"
+              text-color="purple"
+              size="small"
+            >
               {{ data.name }}
             </cy-icon-text>
           </legend>
         </fieldset>
         <div class="pl-4">
-          <span v-for="stat in data.stats" :key="stat.id"
+          <span
+            v-for="stat in data.stats"
+            :key="stat.id"
             class="stat-scope px-2 mx-2 my-1 inline-flex cursor-pointer relative border-b border-solid border-light"
             @mouseenter="toggleShowStatDetailDisplay('hovering', true) && setStatDetail($event, stat)"
             @mouseleave="toggleShowStatDetailDisplay('hovering', false)"
             @click.stop="toggleShowStatDetailDisplay('visible') && setStatDetail($event, stat)"
             @touchstart.prevent.stop="toggleShowStatDetailDisplay('visible', detail.currentStat != stat) && setStatDetail($event, stat)"
-            @touchend.prevent.stop>
+            @touchend.prevent.stop
+          >
             <template v-if="!stat.origin.isBoolStat">
               <span class="mr-3">{{ stat.name }}</span>
               <span class="text-light-4">{{ stat.displayValue }}</span>
@@ -31,33 +40,44 @@
         </div>
       </div>
     </div>
-    <cy-detail-window v-if="detail.visible || detail.hovering"
+    <cy-detail-window
+      v-if="detail.visible || detail.hovering"
       :position-element="detail.positionElement"
-      @click.stop="toggleShowStatDetailDisplay('visible', false)">
+      @click.stop="toggleShowStatDetailDisplay('visible', false)"
+    >
       <template #title>
         <div class="flex items-center mb-3">
           <cy-icon-text icon="mdi-ghost" text-color="purple">
             {{ detail.currentStat.name }}
           </cy-icon-text>
           <div v-if="detail.visible" class="ml-auto">
-            <cy-icon-text icon="ic-round-close"
-              text-color="light-3" size="small"
-              class="ml-4">
+            <cy-icon-text
+              icon="ic-round-close"
+              text-color="light-3"
+              size="small"
+              class="ml-4"
+            >
               {{ $lang('Click anywhere to close') }}
             </cy-icon-text>
           </div>
         </div>
       </template>
-      <div v-if="showStatDetailCaption"
+      <div
+        v-if="showStatDetailCaption"
         class="stat-detail-caption text-sm mb-3 pl-2"
-        v-html="showStatDetailCaption">
-      </div>
-      <cy-icon-text v-if="showStatDetailDatas.conditionalBase"
-        icon="mdi-sword">
+        v-html="showStatDetailCaption"
+      />
+      <cy-icon-text
+        v-if="showStatDetailDatas.conditionalBase"
+        icon="mdi-sword"
+      >
         <stat-detail-equipments :equipment-texts="showStatDetailDatas.conditionalBase.title.equipments" />
       </cy-icon-text>
-      <div v-for="data in showStatDetailDatas.datas"
-        :key="data.iid" class="mt-1">
+      <div
+        v-for="data in showStatDetailDatas.datas"
+        :key="data.iid"
+        class="mt-1"
+      >
         <cy-icon-text v-if="(typeof data.title !== 'object')">
           {{ data.title }}
         </cy-icon-text>
@@ -65,23 +85,34 @@
           <span>{{ data.title.text }}</span>
           <span class="ml-1 text-light-3">{{ data.title.value }}</span>
         </cy-icon-text>
-        <div v-if="data.lines.length !== 0"
-          class="pl-2 mt-0.5 pb-1">
-          <div v-for="line in data.lines" :key="'line' + line.iid"
-            class="flex items-center">
-            <cy-icon-text v-if="typeof line.title == 'string'"
-              icon="ic-round-add" size="small">
+        <div
+          v-if="data.lines.length !== 0"
+          class="pl-2 mt-0.5 pb-1"
+        >
+          <div
+            v-for="line in data.lines"
+            :key="'line' + line.iid"
+            class="flex items-center"
+          >
+            <cy-icon-text
+              v-if="typeof line.title == 'string'"
+              icon="ic-round-add"
+              size="small"
+            >
               {{ line.title }}
             </cy-icon-text>
             <cy-icon-text v-else icon="ic-round-add" size="small">
               <stat-detail-equipments
                 v-if="line.title.equipments.length != 0"
                 :equipment-texts="line.title.equipments"
-                class="mr-2" />
+                class="mr-2"
+              />
               <span>
-                <span v-for="(caption, i) in line.title.captions"
+                <span
+                  v-for="(caption, i) in line.title.captions"
                   :key="caption.iid"
-                  :class="{ 'mr-1': i !== line.title.captions.length - 1 }">
+                  :class="{ 'mr-1': i !== line.title.captions.length - 1 }"
+                >
                   {{ caption.text }}
                 </span>
               </span>
@@ -100,7 +131,10 @@ import vue_statDetailEquipments from "./stat-detail-equipments.vue";
 
 export default {
   RegisterLang: {
-    root: 'Character Simulator/show character stats'
+    root: 'Character Simulator/show character stats',
+  },
+  components: {
+    'stat-detail-equipments': vue_statDetailEquipments,
   },
   props: ['characterState', 'showCharacterStatDatas'],
   data() {
@@ -109,8 +143,8 @@ export default {
         positionElement: null,
         currentStat: null,
         visible: false,
-        hovering: false
-      }
+        hovering: false,
+      },
     };
   },
   computed: {
@@ -125,8 +159,8 @@ export default {
       if (!this.detail.currentStat || this.detail.currentStat.origin.isBoolStat)
         return [];
       const vFix = v => v.toString()
-         .replace(/^(-?\d+\.)(\d{3,})$/, (m, m1, m2) => m1 + m2.slice(0, 3))
-         .replace(/^(-?\d+)(\.0+)$/, (m, m1) => m1);
+        .replace(/^(-?\d+\.)(\d{3,})$/, (m, m1, m2) => m1 + m2.slice(0, 3))
+        .replace(/^(-?\d+)(\.0+)$/, (m, m1) => m1);
 
       const stat = this.detail.currentStat;
       const base = stat.origin.linkedStatBase;
@@ -135,12 +169,12 @@ export default {
       const list = (base ? ['base', 'constant', 'multiplier', 'total'] : ['base'])
         .map((p, i) => ({
           type: types[i],
-          id: p
+          id: p,
         }));
 
       const conditionalBase = stat.conditionalBase ? {
-          title: this.handleConditional(stat.conditionalBase)
-        } : null;
+        title: this.handleConditional(stat.conditionalBase),
+      } : null;
       const datas = list
         .filter(item => item.id === 'base' || stat.statValueParts[item.id] !== 0)
         .map((item, i) => {
@@ -149,7 +183,7 @@ export default {
           const v = stat.statValueParts[p];
           let title = p != 'base' ? base.show(type, v) : {
             text: this.$lang('base value'),
-            value: vFix(stat.statValueParts['base'])
+            value: vFix(stat.statValueParts['base']),
           };
           if (p == 'multiplier')
             title += '｜' + Math.floor(v * stat.statValueParts['base'] / 100).toString();
@@ -165,7 +199,7 @@ export default {
               lines.push({
                 title: this.$lang('init value'),
                 value: (p.value > 0 && !isBase ? '+' : '') +vFix(initValue),
-                iid: 0
+                iid: 0,
               });
               hasInit = true;
             }
@@ -183,7 +217,7 @@ export default {
                 return {
                   iid: i + 1,
                   title: this.handleConditional(p),
-                  value
+                  value,
                 };
               });
             lines.push(...t);
@@ -207,15 +241,15 @@ export default {
           return {
             iid: i,
             title,
-            lines
+            lines,
           };
         });
 
       return {
         datas,
-        conditionalBase
+        conditionalBase,
       };
-    }
+    },
   },
   methods: {
     handleConditional(conditionObj) {
@@ -224,7 +258,7 @@ export default {
         const m = p.match(/^"([^"]+)"$/);
         m && captions.push({
           iid: captions.length,
-          text: m[1]
+          text: m[1],
         });
       });
 
@@ -250,12 +284,12 @@ export default {
 
       const equipments = str.map((p, i) => ({
         iid: i,
-        text: p
+        text: p,
       }));
 
       return {
         equipments,
-        captions
+        captions,
       };
     },
     toggleShowStatDetailDisplay(target, force, clear = false) {
@@ -269,11 +303,8 @@ export default {
     setStatDetail(e, stat) {
       this.detail.positionElement = e.target.closest('.stat-scope');
       this.detail.currentStat = stat;
-    }
+    },
   },
-  components: {
-    'stat-detail-equipments': vue_statDetailEquipments
-  }
 }
 </script>
 <style lang="postcss" scoped>

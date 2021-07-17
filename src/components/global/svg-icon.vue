@@ -13,13 +13,13 @@ export default function SvgIcon(props, context) {
   const attrs = mergeProps(tmpAttrs, context.attrs);
   return h('svg', {
     ...attrs,
-    innerHTML: svgEl.innerHTML
+    innerHTML: svgEl.innerHTML,
   });
 }
 SvgIcon.props = {
   'iconId': {
     type: String,
-    default: ''
-  }
+    default: '',
+  },
 };
 </script>

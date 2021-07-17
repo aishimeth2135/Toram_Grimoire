@@ -15,14 +15,14 @@ export default {
     leftMenuViewButtons: [{
       title: () => GetLang('Page Title/calculation/damage'),
       icon: 'mdi-sword',
-      path: ''
-    }]
+      path: '',
+    }],
   },
   children: [{
     path: '',
     component: vue_damageCalc,
     meta: {
-      title: () => GetLang('Page Title/calculation/damage')
-    }
-  }]
+      title: () => GetLang('Page Title/calculation/damage'),
+    },
+  }],
 };

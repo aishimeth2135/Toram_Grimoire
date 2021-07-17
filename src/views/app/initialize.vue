@@ -1,44 +1,46 @@
 <template>
-  <div class="app--initialize" v-show="status !== 3 && !skipInit">
+  <div v-show="status !== 3 && !skipInit" class="app--initialize">
     <template v-if="status < 3">
       <div class="content-container">
         <div class="main">
           <loading-animation :status="status" @done="$store.commit('initialize/initFinished')" />
         </div>
         <div class="msg">
-          <div v-for="item in initItems" class="column" :key="item.msg">
+          <div v-for="item in initItems" :key="item.msg" class="column">
             <span class="text">{{ item.msg }}</span>
-            <cy-icon-text class="status-icon" :icon="statusIcon(item.status)"
-              :class="{ 'loading': item.status === 0, 'error': item.status === -1 }" />
+            <cy-icon-text
+              class="status-icon"
+              :icon="statusIcon(item.status)"
+              :class="{ 'loading': item.status === 0, 'error': item.status === -1 }"
+            />
           </div>
         </div>
       </div>
-      <div class="bottom-tips" v-html="$globalLang('Loading Page/bottom tips')">
-      </div>
+      <div class="bottom-tips" v-html="$rootLang('Loading Page/bottom tips')" />
     </template>
   </div>
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+import { mapState } from 'vuex';
 
-  import vue_loadingAnimation from "./initialization/loading-animation.vue";
+import vue_loadingAnimation from "./initialization/loading-animation.vue";
 
-  export default {
-    methods: {
-      statusIcon(v) {
-        if (v >= 0)
-          return ['mdi-loading', 'ic-round-check-circle-outline'][v];
-        return 'ic-round-close';
-      }
+export default {
+  methods: {
+    statusIcon(v) {
+      if (v >= 0)
+        return ['mdi-loading', 'ic-round-check-circle-outline'][v];
+      return 'ic-round-close';
     },
-    computed: {
-      ...mapState('initialize', ['initItems', 'status', 'msgItems', 'skipInit'])
-    },
-    components: {
-      'loading-animation': vue_loadingAnimation
-    }
-  };
+  },
+  computed: {
+    ...mapState('initialize', ['initItems', 'status', 'msgItems', 'skipInit']),
+  },
+  components: {
+    'loading-animation': vue_loadingAnimation,
+  },
+};
 </script>
 
 <style lang="less" scoped>

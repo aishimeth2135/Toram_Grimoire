@@ -21,7 +21,7 @@ const mutations = {
   },
   stepAutoFill(state, step) {
     step.autoFill();
-  }
+  },
 };
 
 export default {

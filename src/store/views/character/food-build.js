@@ -17,7 +17,7 @@ export default function createFoodBuild(name) {
     'magic_resistance': [4, 6],
     'aggro': {
       positive: [6, 14],
-      negative: [6, 14]
+      negative: [6, 14],
     },
     'attack_mp_recovery': [2, 4],
     'critical_rate': [2, 4],
@@ -42,7 +42,7 @@ export default function createFoodBuild(name) {
     'earth_resistance': [2, 4],
     'wind_resistance': [2, 4],
     'light_resistance': [2, 4],
-    'dark_resistance': [2, 4]
+    'dark_resistance': [2, 4],
   };
 
   const foods = new Foods(name);

@@ -2,26 +2,34 @@
   <div class="main--character-simulator">
     <template v-if="currentCharacterState">
       <div class="main">
-        <character v-if="currentContentIndex == 0"
+        <character
+          v-if="currentContentIndex == 0"
           :character-state="currentCharacterState"
-          @create-character="createCharacter" />
-        <character-stats v-if="currentContentIndex == 1"
+          @create-character="createCharacter"
+        />
+        <character-stats
+          v-if="currentContentIndex == 1"
           :character-state="currentCharacterState"
-          :show-character-stat-datas="showCharacterStatDatas" />
+          :show-character-stat-datas="showCharacterStatDatas"
+        />
         <keep-alive>
           <equipment-fields v-if="currentContentIndex == 2" :character-state="currentCharacterState" />
         </keep-alive>
         <keep-alive>
-          <skills v-if="currentContentIndex == 3"
+          <skills
+            v-if="currentContentIndex == 3"
             :character-state="currentCharacterState"
             :passive-skill-states="passiveSkillStates"
-            :active-skill-states="activeSkillStates" />
+            :active-skill-states="activeSkillStates"
+          />
         </keep-alive>
         <food-build v-if="currentContentIndex == 4" />
-        <save-load v-if="currentContentIndex == 5"
+        <save-load
+          v-if="currentContentIndex == 5"
           @manual-auto-save="autoSave"
           @manual-auto-load="autoLoad"
-          @close-auto-save="closeAutoSave" />
+          @close-auto-save="closeAutoSave"
+        />
       </div>
       <div class="sticky bottom-2 bg-white border-1 border-solid border-light-2 rounded-2xl px-4 py-1 z-10 mx-2 mt-4">
         <cy-button-inline
@@ -29,8 +37,8 @@
           :key="content.id"
           :icon="content.icon"
           :selected="i === currentContentIndex"
-          @click="setCurrentContent(i)"
           class="mr-2 my-1"
+          @click="setCurrentContent(i)"
         >
           {{ content.text }}
         </cy-button-inline>
@@ -38,7 +46,7 @@
     </template>
     <div v-else>
       <cy-default-tips icon="mdi-ghost">
-        <span v-html="$lang('Warn/Current character is not exist')"></span>
+        <span v-html="$lang('Warn/Current character is not exist')" />
       </cy-default-tips>
       <div style="text-align: center;">
         <cy-button-border icon="ic-round-add" @click="createCharacter">
@@ -68,32 +76,39 @@ import SkillBranchHandler from "./skill/utils/SkillBranchHandler.js";
 
 export default {
   RegisterLang: 'Character Simulator',
+  provide() {
+    return {
+      'getValidLevelSkillState': this.getValidLevelSkillState,
+      'handleCharacterStateDatas': this.handleCharacterStateDatas,
+      'checkStatRestriction': this.checkStatRestriction,
+    };
+  },
   data() {
     return {
       contents: [{
         id: 'character',
         icon: 'bx-bxs-face',
-        text: this.$lang('character')
+        text: this.$lang('character'),
       }, {
         id: 'character-stats',
         icon: 'bx-bxs-user-detail',
-        text: this.$lang('character stats')
+        text: this.$lang('character stats'),
       }, {
         id: 'equipment-fields',
         icon: 'gg-shape-square',
-        text: this.$lang('equipment')
+        text: this.$lang('equipment'),
       }, {
         id: 'skills',
         icon: 'ant-design:build-outlined',
-        text: this.$lang('skill')
+        text: this.$lang('skill'),
       }, {
         id: 'food-build',
         icon: 'mdi-food-apple',
-        text: this.$lang('food build')
+        text: this.$lang('food build'),
       }, {
         id: 'save-load',
         icon: 'mdi-ghost',
-        text: this.$lang('save-load')
+        text: this.$lang('save-load'),
       }],
       currentContentIndex: 2,
 
@@ -103,15 +118,8 @@ export default {
       autoSaveDisable: false,
       listeners: {
         windowBeforeUnload: null,
-        documentVisibilityChange: null
-      }
-    };
-  },
-  provide() {
-    return {
-      'getValidLevelSkillState': this.getValidLevelSkillState,
-      'handleCharacterStateDatas': this.handleCharacterStateDatas,
-      'checkStatRestriction': this.checkStatRestriction
+        documentVisibilityChange: null,
+      },
     };
   },
   beforeCreate() {
@@ -165,12 +173,12 @@ export default {
       'skillBuilds': 'skillBuilds',
       'currentCharacterStateIndex': 'currentCharacterIndex',
       'currentSkillBuildIndex': 'currentSkillBuildIndex',
-      'characterSimulatorHasInit': 'characterSimulatorHasInit'
+      'characterSimulatorHasInit': 'characterSimulatorHasInit',
     }),
     ...mapGetters('character', {
       'currentCharacterState': 'currentCharacter',
       'currentSkillBuild': 'currentSkillBuild',
-      'currentFoodBuild': 'currentFoodBuild'
+      'currentFoodBuild': 'currentFoodBuild',
     }),
     equipmentElement() {
       const element = {
@@ -179,7 +187,7 @@ export default {
         'earth': 0,
         'wind': 0,
         'light': 0,
-        'dark': 0
+        'dark': 0,
       };
       const chara = this.currentCharacterState.origin;
       const setElement = stat => element[stat.baseName.replace('element_', '')] = 1;
@@ -211,19 +219,19 @@ export default {
     },
     passiveSkillsCharacterStatDatas() {
       return this.handleCharacterStateDatas({
-        handlePassiveSkill: true
+        handlePassiveSkill: true,
       });
     },
     allCharacterStatDatas() {
       return this.handleCharacterStateDatas({
         handlePassiveSkill: true,
-        handleActiveSkill: true
+        handleActiveSkill: true,
       });
     },
     showCharacterStatDatas() {
       return this.allCharacterStatDatas.map(p => ({
         name: p.name,
-        stats: p.stats.filter(p => !p.hidden)
+        stats: p.stats.filter(p => !p.hidden),
       }))
     },
     validSkillStates() {
@@ -236,7 +244,7 @@ export default {
     },
     activeSkillStates() {
       return this.validSkillStates.filter(state => state.type === 'active');
-    }
+    },
   },
   methods: {
     /* ==[ character - main ]==========================================*/
@@ -274,7 +282,7 @@ export default {
       handleFood = true,
       handlePassiveSkill = false,
       handleActiveSkill = false,
-      calcField = null
+      calcField = null,
     } = {}) {
       if (!this.currentCharacterState)
         return [];
@@ -345,13 +353,13 @@ export default {
                 if (!skill)
                   return 0;
                 return skill.disabled ? 0 : skill.levelSkill.level();
-              })()
-            }
+              })(),
+            },
           },
           '#': {
 
           },
-          '$': characterStatMap
+          '$': characterStatMap,
         },
         conditional: {
           '@': {
@@ -366,24 +374,24 @@ export default {
             'halberd': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_HALBERD),
             'katana': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_KATANA),
             'main': {
-              'none': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, EquipmentField.EMPTY)
+              'none': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, EquipmentField.EMPTY),
             },
             'sub': {
               'arrow': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_ARROW),
               'shield': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubArmor.TYPE_SHIELD),
               'dagger': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_DAGGER),
               'knuckle': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_KNUCKLE),
-              'magic_device': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_MAGIC_DEVICE)
+              'magic_device': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_MAGIC_DEVICE),
             },
             'armor': {
               'normal': c.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, BodyArmor.TYPE_NORMAL),
               'dodge': c.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, BodyArmor.TYPE_DODGE),
               'defense': c.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, BodyArmor.TYPE_DEFENSE),
-              'none': c.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, EquipmentField.EMPTY)
-            }
+              'none': c.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, EquipmentField.EMPTY),
+            },
           },
-          '#': {}
-        }
+          '#': {},
+        },
       };
 
       const all_stats = [];
@@ -451,9 +459,9 @@ export default {
           return {
             id: a.id,
             name: a.name,
-            ...res
+            ...res,
           };
-        })
+        }),
       })).filter(a => a.stats.length != 0);
     },
     checkStatRestriction(stat) {
@@ -493,7 +501,7 @@ export default {
         console.warn(`Can not find CharacterStat data with id: ${id}.`);
         return {
           id: null,
-          value: 0
+          value: 0,
         }
       }
       return res;
@@ -517,13 +525,13 @@ export default {
                 levelSkill: levelSkillState.levelSkill,
                 view: this,
                 findCharacterStatResult: this.findCharacterStatResult,
-                skillItemType: skillItemType
+                skillItemType: skillItemType,
               });
               const res = {
                 iid: counter,
                 origin: bch,
                 handler,
-                disabled: false
+                disabled: false,
               };
               ++counter;
 
@@ -535,7 +543,7 @@ export default {
         return {
           equipment: skillState.equipment,
           skillState,
-          branchStates
+          branchStates,
         };
       });
     },
@@ -552,7 +560,7 @@ export default {
         const types = {
           main: mainField.equipmentType,
           sub: subField.equipmentType,
-          body: bodyField.equipmentType
+          body: bodyField.equipmentType,
         };
         const mains = [
           EquipmentField.EMPTY,
@@ -601,8 +609,8 @@ export default {
         if (mainField) {
           main = mainField === MainWeapon.TYPE_ONE_HAND_SWORD &&
             subField && subField === MainWeapon.TYPE_ONE_HAND_SWORD ?
-              10 :
-              mains.indexOf(mainField);
+            10 :
+            mains.indexOf(mainField);
         }
         if (subField && main != 10) {
           sub = subs.indexOf(subField);
@@ -647,7 +655,7 @@ export default {
       const c = new Character(this.$lang('character') + ' ' + (this.characterStates.length + 1).toString());
       // this.currentCharacterStateIndex = this.characterStates.length;
       this.$store.commit('character/createCharacter', c);
-    }
+    },
   },
   watch: {
     currentSkillBuild(newv) {
@@ -660,7 +668,7 @@ export default {
         newv.skillTreeCategoryStates.forEach(stc => {
           res.push(...stc.skillTreeStates.map(st => ({
             levelSkillTree: st.levelSkillTree,
-            originState: st
+            originState: st,
           })));
         });
         return res.map(p => {
@@ -670,8 +678,8 @@ export default {
             levelSkillTree,
             skills: levelSkillTree.levelSkills.map(skill => ({
               levelSkill: skill,
-              skillState: createSkillState(skill.base)
-            }))
+              skillState: createSkillState(skill.base),
+            })),
           }
         });
       })();
@@ -694,13 +702,13 @@ export default {
             return {
               states: this.handleLevelSkillState({
                 levelSkillState: state,
-                skillItemType
+                skillItemType,
               }),
               type: skillItemType,
               levelSkill: state.levelSkill,
               // originalLevelSkillState: state,
               levelSkillTreeState: st,
-              disabled: skillItemType != 'passive'
+              disabled: skillItemType != 'passive',
             };
           });
           res.push(...p);
@@ -716,7 +724,7 @@ export default {
     'character': vue_character,
     'skills': vue_skills,
     'save-load': vue_saveLoad,
-    'food-build': vue_foodBuild
-  }
+    'food-build': vue_foodBuild,
+  },
 };
 </script>

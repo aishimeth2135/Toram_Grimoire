@@ -1,9 +1,11 @@
 <template>
   <div class="main-- relative" :class="rootClassList">
-    <cy-icon-text v-if="otherEquipmentBranchVisible || historyVisible"
+    <cy-icon-text
+      v-if="otherEquipmentBranchVisible || historyVisible"
       icon="bx-bxs-moon"
       class="absolute -top-1 -left-3 z-1"
-      text-color="light-2" />
+      text-color="light-2"
+    />
     <fieldset v-if="type === 'other-equipment'" class="branch-type-title">
       <legend>
         <equipment-info :equipment="equipmentTitle" />
@@ -16,12 +18,18 @@
         </cy-icon-text>
       </legend>
     </fieldset>
-    <fieldset v-if="['damage', 'effect', 'next', 'passive', 'heal'].includes(branch.name)"
-      :class="branchClass">
+    <fieldset
+      v-if="['damage', 'effect', 'next', 'passive', 'heal'].includes(branch.name)"
+      :class="branchClass"
+    >
       <!-- [start] title -->
       <legend>
-        <cy-icon-text v-if="showData['name']" class="mr-3" :icon="titleIconName"
-          text-color="purple">
+        <cy-icon-text
+          v-if="showData['name']"
+          class="mr-3"
+          :icon="titleIconName"
+          text-color="purple"
+        >
           {{ showData['name'] }}
         </cy-icon-text>
         <div class="detail">
@@ -33,19 +41,29 @@
       </legend>
       <!-- == [start] buttons scope -->
       <div class="relative">
-        <div class="absolute" style="right: -0.6rem; top: -2.1rem;"
+        <div
+          class="absolute"
+          style="right: -0.6rem; top: -2.1rem;"
           @mouseenter.stop="toggleVisible('topMenu', true)"
-          @mouseleave.stop="toggleVisible('topMenu', false)">
+          @mouseleave.stop="toggleVisible('topMenu', false)"
+        >
           <transition-group name="top-menu-slide" appear>
-            <cy-button v-for="(data) in topButtons" :key="data.name"
-              type="icon" class="bg-white rounded-full"
+            <cy-button
+              v-for="(data) in topButtons"
+              :key="data.name"
+              type="icon"
+              class="bg-white rounded-full"
               :icon="data.icon"
-              @click="toggleVisible(data.name)" />
+              @click="toggleVisible(data.name)"
+            />
           </transition-group>
-          <cy-button v-if="topButtons"
-            type="icon" class="bg-white rounded-full"
+          <cy-button
+            v-if="topButtons"
+            type="icon"
+            class="bg-white rounded-full"
             :selected="topMenuVisible"
-            :icon="topMenuVisible ? 'ic-round-menu-open' : 'ic-round-menu'" />
+            :icon="topMenuVisible ? 'ic-round-menu-open' : 'ic-round-menu'"
+          />
         </div>
       </div>
       <!-- == [end] buttons scope -->
@@ -56,38 +74,51 @@
       <cy-icon-text v-if="isMark" icon="cib-overleaf" class="suffix-icon" />
       <!-- [end] branch detail -->
       <!-- [start] sub content -->
-      <div class="content-line" v-if="subContentValid">
+      <div v-if="subContentValid" class="content-line">
         <template v-if="branch.name == 'damage'">
-          <cy-icon-text v-if="showData['title']"
+          <cy-icon-text
+            v-if="showData['title']"
             class="condition-scope"
-            size="small" text-color="light-3"
-            icon="bx-bx-game">
+            size="small"
+            text-color="light-3"
+            icon="bx-bx-game"
+          >
             {{ showData['title'] }}
           </cy-icon-text>
-          <cy-icon-text v-if="showData['element']" :icon="elementIconName"
+          <cy-icon-text
+            v-if="showData['element']"
+            :icon="elementIconName"
             class="condition-scope"
-            size="small" text-color="purple">
+            size="small"
+            text-color="purple"
+          >
             {{ showData['element'] }}
           </cy-icon-text>
-          <cy-icon-text v-if="showData['frequency'] && showData['@parent-branch'].attrs['title'] != 'each'"
+          <cy-icon-text
+            v-if="showData['frequency'] && showData['@parent-branch'].attrs['title'] != 'each'"
             class="condition-scope"
-            size="small" text-color="light-3"
-            icon="bi-circle-square">
-            <span v-html="showData['frequency']"></span>
+            size="small"
+            text-color="light-3"
+            icon="bi-circle-square"
+          >
+            <span v-html="showData['frequency']" />
           </cy-icon-text>
-          <cy-icon-text v-if="showData['duration'] && showData['cycle']"
-            icon="ic-round-timer" class="condition-scope"
-            size="small" text-color="purple">
-            <span v-html="$lang('damage/caption of duration and cycle', [showData['duration'], showData['cycle']])">
-            </span>
+          <cy-icon-text
+            v-if="showData['duration'] && showData['cycle']"
+            icon="ic-round-timer"
+            class="condition-scope"
+            size="small"
+            text-color="purple"
+          >
+            <span v-html="$lang('damage/caption of duration and cycle', [showData['duration'], showData['cycle']])" />
           </cy-icon-text>
-          <span class="condition-scope attr" v-if="showData['@proration: damage']">
+          <span v-if="showData['@proration: damage']" class="condition-scope attr">
             <cy-icon-text class="name text-small" icon="ri-error-warning-line">
               {{ showData['@proration: damage: title'] }}
             </cy-icon-text>
             <span class="value text-light-3">{{ showData['@proration: damage'] }}</span>
           </span>
-          <span class="condition-scope attr" v-if="showData['@proration: proration']">
+          <span v-if="showData['@proration: proration']" class="condition-scope attr">
             <cy-icon-text class="name text-small" icon="ri-error-warning-line">
               {{ showData['@proration: proration: title'] }}
             </cy-icon-text>
@@ -95,44 +126,64 @@
           </span>
         </template>
         <template v-else-if="branch.name === 'effect' || branch.name === 'next'">
-          <cy-icon-text v-if="showData['condition']"
+          <cy-icon-text
+            v-if="showData['condition']"
             class="condition-scope"
-            size="small" text-color="purple"
-            icon="eva-checkmark-circle-2-outline">
-            <span v-html="showData['condition']"></span>
+            size="small"
+            text-color="purple"
+            icon="eva-checkmark-circle-2-outline"
+          >
+            <span v-html="showData['condition']" />
           </cy-icon-text>
-          <cy-icon-text v-if="showData['duration']"
+          <cy-icon-text
+            v-if="showData['duration']"
             class="condition-scope"
-            size="small" text-color="purple"
-            icon="zmdi-time-interval">
-            <span v-html="showData['duration']"></span>
+            size="small"
+            text-color="purple"
+            icon="zmdi-time-interval"
+          >
+            <span v-html="showData['duration']" />
           </cy-icon-text>
-          <cy-icon-text v-else-if="showData['end_condition']"
+          <cy-icon-text
+            v-else-if="showData['end_condition']"
             class="condition-scope"
-            size="small" text-color="purple"
-            icon="zmdi-time-interval">
-            <span v-html="showData['end_condition']"></span>
+            size="small"
+            text-color="purple"
+            icon="zmdi-time-interval"
+          >
+            <span v-html="showData['end_condition']" />
           </cy-icon-text>
-          <cy-icon-text v-if="showData['is_place']"
+          <cy-icon-text
+            v-if="showData['is_place']"
             class="condition-scope"
-            size="small" text-color="purple"
-            icon="emojione-monotone:heavy-large-circle">
+            size="small"
+            text-color="purple"
+            icon="emojione-monotone:heavy-large-circle"
+          >
             {{ showData['is_place'] }}
           </cy-icon-text>
         </template>
         <template v-if="branch.name == 'heal'">
-          <cy-icon-text v-if="showData['frequency']"
+          <cy-icon-text
+            v-if="showData['frequency']"
             class="condition-scope"
-            size="small" text-color="purple"
-            icon="bi-circle-square">
-            <span v-html="showData['frequency']"></span>
+            size="small"
+            text-color="purple"
+            icon="bi-circle-square"
+          >
+            <span v-html="showData['frequency']" />
           </cy-icon-text>
-          <cy-icon-text v-if="showData['duration'] && showData['cycle']"
-            icon="ic-round-timer" class="condition-scope"
-            size="small" text-color="purple">
-            <span v-html="$lang('heal/caption of duration and cycle',
-              [showData['duration'], showData['cycle']])">
-            </span>
+          <cy-icon-text
+            v-if="showData['duration'] && showData['cycle']"
+            icon="ic-round-timer"
+            class="condition-scope"
+            size="small"
+            text-color="purple"
+          >
+            <span
+              v-html="$lang('heal/caption of duration and cycle',
+                            [showData['duration'], showData['cycle']])"
+            />
           </cy-icon-text>
         </template>
       </div>
@@ -145,7 +196,7 @@
       </template>
       <template v-else-if="branch.name == 'effect' || branch.name == 'next'">
         <div class="content-line">
-          <div v-if="showData['caption']" class="text-scope" v-html="showData['caption']"></div>
+          <div v-if="showData['caption']" class="text-scope" v-html="showData['caption']" />
           <template v-else-if="showData['@parent-branch'].stats">
             <stats :stats="showData['@parent-branch'].stats" />
           </template>
@@ -153,7 +204,7 @@
       </template>
       <template v-else-if="branch.name == 'passive'">
         <div class="content-line">
-          <div v-if="showData['caption']" class="text-scope" v-html="showData['caption']"></div>
+          <div v-if="showData['caption']" class="text-scope" v-html="showData['caption']" />
           <template v-else-if="showData['@parent-branch'].stats">
             <stats :stats="showData['@parent-branch'].stats" />
           </template>
@@ -164,59 +215,74 @@
       </template>
       <!-- [end] main -->
       <!-- [start] other -->
-      <fieldset class="extra-column unfold-fieldset" v-if="isScoped" :class="{ unfold: skillAreaVisible }">
+      <fieldset v-if="isScoped" class="extra-column unfold-fieldset" :class="{ unfold: skillAreaVisible }">
         <legend>
-            <cy-button class="condition-scope border-0 p-0"
-              size="small" text-color="purple"
-              icon="bx-bx-target-lock" @click="toggleVisible('skillArea')">
+          <cy-button
+            class="condition-scope border-0 p-0"
+            size="small"
+            text-color="purple"
+            icon="bx-bx-target-lock"
+            @click="toggleVisible('skillArea')"
+          >
             {{ $lang('skill area/button text') }}
           </cy-button>
         </legend>
-        <skill-area-info v-if="skillAreaVisible"
-          :branch="branch" :show-data="showData" />
+        <skill-area-info
+          v-if="skillAreaVisible"
+          :branch="branch"
+          :show-data="showData"
+        />
       </fieldset>
-      <fieldset class="extra-column" v-if="branch.name == 'damage' && showData['ailment_name']">
+      <fieldset v-if="branch.name == 'damage' && showData['ailment_name']" class="extra-column">
         <legend>
           <cy-icon-text icon="ri-plant-line" size="small">
             {{ $lang('ailment title') }}
           </cy-icon-text>
         </legend>
         <div class="content-line">
-          <div class="text-scope" v-html="ailmentText(showData)"></div>
+          <div class="text-scope" v-html="ailmentText(showData)" />
         </div>
       </fieldset>
       <!-- [end] other -->
       <!-- [start] extra -->
-      <fieldset v-for="(suffixShowData) in suffixBranchShowDatas"
+      <fieldset
+        v-for="(suffixShowData) in suffixBranchShowDatas"
+        :key="suffixShowData['@--key']"
         class="extra-column"
-        :key="suffixShowData['@--key']">
+      >
         <template v-if="suffixShowData['@parent-branch'].name === 'extra'">
           <legend>
-            <cy-icon-text class="condition-scope"
-              size="small" text-color="light-3"
-              icon="eva-checkmark-circle-2-outline">
-              <span v-html="suffixShowData['condition']"></span>
+            <cy-icon-text
+              class="condition-scope"
+              size="small"
+              text-color="light-3"
+              icon="eva-checkmark-circle-2-outline"
+            >
+              <span v-html="suffixShowData['condition']" />
             </cy-icon-text>
-            <span class="bg-scope" v-if="suffixShowData['target']">{{ suffixShowData['target'] }}</span>
+            <span v-if="suffixShowData['target']" class="bg-scope">{{ suffixShowData['target'] }}</span>
           </legend>
-          <div class="text-scope" v-if="suffixShowData['caption']" v-html="suffixShowData['caption']"></div>
+          <div v-if="suffixShowData['caption']" class="text-scope" v-html="suffixShowData['caption']" />
           <template v-else-if="branch.name === 'damage' && suffixShowData['ailment_name']">
-            <div class="text-scope" v-html="ailmentText(suffixShowData)"></div>
+            <div class="text-scope" v-html="ailmentText(suffixShowData)" />
           </template>
           <template v-else-if="branch.name === 'damage' && suffixShowData['element']">
-            <div class="text-scope" v-html="extraElementCaption(suffixShowData['element'])"></div>
+            <div class="text-scope" v-html="extraElementCaption(suffixShowData['element'])" />
           </template>
-          <stats v-else :stats="suffixShowData['@parent-branch'].stats"></stats>
+          <stats v-else :stats="suffixShowData['@parent-branch'].stats" />
         </template>
       </fieldset>
       <!-- [end] extra -->
     </fieldset>
     <div v-else-if="branch.name === 'list'" :class="branchClass">
       <!-- <cy-icon-text icon="mdi-leaf" class="prefix-icon" /> -->
-      <div v-for="data in showData['@list-datas']"
-        class="leaf-list-item" :key="data['text']">
+      <div
+        v-for="data in showData['@list-datas']"
+        :key="data['text']"
+        class="leaf-list-item"
+      >
         <cy-icon-text icon="mdi-leaf" class="prefix-icon" />
-        <span v-html="data['text']"></span>
+        <span v-html="data['text']" />
       </div>
     </div>
     <div v-else :class="branchClass">
@@ -235,48 +301,66 @@
         </div>
       </template>
       <template v-else-if="branch.name === 'text'">
-        <div class="content-line group-title" :class="{ 'gropu-unfold': branch.group.expansion }"
-          v-if="branch.group" @click="toggleGroup()">
-          <cy-icon-text class="title-btn" style="--icon-width: 1.6rem;"
-            :icon="branch.group.expansion ? 'mdi-leaf-maple' : 'mdi-leaf-maple-off'" />
-          <div class="text-scope" v-html="showData['text']"></div>
+        <div
+          v-if="branch.group"
+          class="content-line group-title"
+          :class="{ 'gropu-unfold': branch.group.expansion }"
+          @click="toggleGroup()"
+        >
+          <cy-icon-text
+            class="title-btn"
+            style="--icon-width: 1.6rem;"
+            :icon="branch.group.expansion ? 'mdi-leaf-maple' : 'mdi-leaf-maple-off'"
+          />
+          <div class="text-scope" v-html="showData['text']" />
         </div>
-        <div class="content-line" v-else>
-          <div class="text-scope" v-html="showData['text']"></div>
+        <div v-else class="content-line">
+          <div class="text-scope" v-html="showData['text']" />
         </div>
       </template>
       <template v-else-if="branch.name === 'tips'">
-        <div class="content-line group-title" :class="{ 'gropu-unfold': branch.group.expansion }"
-          v-if="branch.group" @click="toggleGroup()">
-          <cy-icon-text class="title-btn" style="--icon-width: 1.3rem;"
-            :icon="branch.group.expansion ? 'mdi-leaf-maple' : 'mdi-leaf-maple-off'" />
+        <div
+          v-if="branch.group"
+          class="content-line group-title"
+          :class="{ 'gropu-unfold': branch.group.expansion }"
+          @click="toggleGroup()"
+        >
+          <cy-icon-text
+            class="title-btn"
+            style="--icon-width: 1.3rem;"
+            :icon="branch.group.expansion ? 'mdi-leaf-maple' : 'mdi-leaf-maple-off'"
+          />
           <div class="text-scope tips">
             <cy-icon-text icon="bx-bx-message-rounded" size="small" text-color="light-3">
-              <span v-html="showData['text']"></span>
+              <span v-html="showData['text']" />
             </cy-icon-text>
           </div>
         </div>
-        <div class="content-line" v-else>
+        <div v-else class="content-line">
           <div class="text-scope tips">
-            <cy-icon-text icon="bx-bx-message-rounded"
-              size="small" text-color="light-3">
-              <span v-html="showData['text']"></span>
+            <cy-icon-text
+              icon="bx-bx-message-rounded"
+              size="small"
+              text-color="light-3"
+            >
+              <span v-html="showData['text']" />
             </cy-icon-text>
           </div>
         </div>
       </template>
       <template v-else-if="branch.name === 'stack'">
-        <div class="content-line" v-if="stackValue !== null">
+        <div v-if="stackValue !== null" class="content-line">
           <cy-input-counter
             v-model:value="stackValue"
             :range="stackValueRange"
-            :style="showData['@stack-input-width-wide'] || {}">
-            <template v-slot:title>
+            :style="showData['@stack-input-width-wide'] || {}"
+          >
+            <template #title>
               <cy-icon-text icon="ion-leaf">
                 {{ showData['name'] }}
               </cy-icon-text>
             </template>
-            <template v-if="showData['unit']" v-slot:unit>
+            <template v-if="showData['unit']" #unit>
               <span class="text-light-3">{{ showData['unit'] }}</span>
             </template>
           </cy-input-counter>
@@ -287,12 +371,15 @@
       </template>
       <template v-else-if="branch.name === 'reference'">
         <div class="content-line">
-          <cy-icon-text class="condition-scope"
+          <cy-icon-text
+            class="condition-scope"
             icon="entypo-link"
-            size="small" text-color="purple">
+            size="small"
+            text-color="purple"
+          >
             {{ $lang('reference/base title') }}
           </cy-icon-text>
-          <div class="text-scope" v-if="showData['text']">
+          <div v-if="showData['text']" class="text-scope">
             {{ showData['text'] }}
           </div>
           <div class="text-scope">
@@ -304,16 +391,26 @@
     <template v-if="type === 'main'">
       <template v-if="otherEquipmentBranchVisible && otherEquipmentBranchDatas">
         <cy-transition-group type="fade" mode="out-in" appear>
-          <skill-branch v-for="(data) in otherEquipmentBranchDatas"
-            :branch="data.branch" :key="data.iid" type="other-equipment"
-            :skill-state="skillState" class="extra-branch" />
+          <skill-branch
+            v-for="(data) in otherEquipmentBranchDatas"
+            :key="data.iid"
+            :branch="data.branch"
+            type="other-equipment"
+            :skill-state="skillState"
+            class="extra-branch"
+          />
         </cy-transition-group>
       </template>
       <template v-if="historyVisible">
         <cy-transition-group type="fade" mode="out-in" appear>
-          <skill-branch v-for="(data) in historyDatas"
-            :branch="data.branch" :key="data.iid" type="history"
-            :skill-state="skillState" class="extra-branch" />
+          <skill-branch
+            v-for="(data) in historyDatas"
+            :key="data.iid"
+            :branch="data.branch"
+            type="history"
+            :skill-state="skillState"
+            class="extra-branch"
+          />
         </cy-transition-group>
       </template>
     </template>
@@ -336,15 +433,29 @@ import DataContainer from "../utils/DataContainer.js";
 import { trimZero } from "@utils/string";
 
 export default {
-  name: 'skill-branch',
+  name: 'SkillBranch',
   RegisterLang: {
     root: 'Skill Query/Branch',
     extra: {
-      parent: 'Skill Query'
+      parent: 'Skill Query',
+    },
+  },
+  components: {
+    'damage-formula': vue_damageFormula,
+    'stats': vue_stats,
+    'heal-formula': vue_healFormula,
+    'branch-detail': vue_branchDetail,
+    'equipment-info': vue_equipmentInfo,
+    'skill-area-info': vue_skillAreaInfo,
+  },
+  inject: ['handleTagButton', 'createTagButtons', 'tagButtonClassName', 'getFormulaDisplayMode'],
+  provide() {
+    return {
+      'calcValueStr': this.calcValueStr,
+      'handleDataContainer': this.handleDataContainer,
     }
   },
   props: ['branch', 'skillState', 'type'],
-  inject: ['handleTagButton', 'createTagButtons', 'tagButtonClassName', 'getFormulaDisplayMode'],
   data() {
     return {
       otherEquipmentBranchVisible: false,
@@ -352,20 +463,8 @@ export default {
       detailVisible: false,
       skillAreaVisible: false,
       historyVisible: false,
-      topMenuVisible: false
+      topMenuVisible: false,
     }
-  },
-  provide() {
-    return {
-      'calcValueStr': this.calcValueStr,
-      'handleDataContainer': this.handleDataContainer
-    }
-  },
-  updated() {
-    this.handleTagButton(this.$el);
-  },
-  mounted() {
-    this.handleTagButton(this.$el);
   },
   computed: {
     topButtons() {
@@ -374,22 +473,22 @@ export default {
         valid: this.branch.name === 'damage' && this.showData['detail_display'] === '1',
         icon: {
           'true': 'bx-bxs-book-open',
-          'false': 'bx-bxs-book-add'
-        }
+          'false': 'bx-bxs-book-add',
+        },
       }, {
         name: 'otherEquipmentBranch',
         valid: this.type === 'main' && this.otherEquipmentBranchDatas,
         icon: {
           'true': 'bx-bxs-down-arrow-circle',
-          'false': 'bx-bxs-right-arrow-circle'
-        }
+          'false': 'bx-bxs-right-arrow-circle',
+        },
       }, {
         name: 'history',
         valid: this.branch.history.length !== 0,
         icon: {
           'true': 'ic-round-history-toggle-off',
-          'false': 'ic-round-history'
-        }
+          'false': 'ic-round-history',
+        },
       }];
 
       const res = list.filter(p => p.valid);
@@ -408,18 +507,18 @@ export default {
         'earth': 'bx-bx-cube-alt',
         'wind': 'simple-icons:tailwindcss',
         'light': 'carbon-light',
-        'dark': 'bx-bx-moon'
+        'dark': 'bx-bx-moon',
       }[this.branch.attrs['element']] || 'bx-bx-circle';
     },
     rootClassList() {
       return {
-        'left-line': this.otherEquipmentBranchVisible || this.historyVisible
+        'left-line': this.otherEquipmentBranchVisible || this.historyVisible,
       };
     },
     historyDatas() {
       return this.branch.history.map((p, i) => ({
         iid: i,
-        branch: p.branch
+        branch: p.branch,
       }));
     },
     equipmentTitle() {
@@ -430,7 +529,7 @@ export default {
         sub: eq.sub != -1 ? this.$lang.extra('parent', 'equipment/sub-weapon')[eq.sub] : -1,
         body: eq.body != -1 ? this.$lang.extra('parent', 'equipment/body-armor')[eq.body] : -1,
         none: eq.main == -1 && eq.sub == -1 && eq.body == -1 ? this.$lang.extra('parent', '/equipment/none') : void 0,
-        operator: eq.operator
+        operator: eq.operator,
       };
     },
     stackValueRange() {
@@ -459,7 +558,7 @@ export default {
         'branch': true,
         [this.branch.name]: true,
         'branch-mark': this.isMark,
-        'other-equipment': this.type === 'other-equipment'
+        'other-equipment': this.type === 'other-equipment',
       };
     },
     isScoped() {
@@ -501,7 +600,7 @@ export default {
         .filter(p => p.branchs.find(b => b.id == this.branch.id))
         .map((p, i) => ({
           iid: i,
-          branch: p.branchs.find(b => b.id == this.branch.id)
+          branch: p.branchs.find(b => b.id == this.branch.id),
         }));
 
       return res.length === 0 ? null : res;
@@ -517,7 +616,7 @@ export default {
         if (this.stackState) {
           this.stackState.value = v;
         }
-      }
+      },
     },
     stackState() {
       if (this.branch.name !== 'stack') {
@@ -526,7 +625,23 @@ export default {
       const stack_id = this.branch.attrs['id'];
       const p = this.branch['@parent-state'].stackStates.find(a => a.id == stack_id);
       return p ? p : null;
-    }
+    },
+  },
+  watch: {
+    branch: {
+      immediate: true,
+      handler() {
+        if (this.branch.group) {
+          this.$nextTick(() => this.toggleGroup(this.branch.group.expansion));
+        }
+      },
+    },
+  },
+  updated() {
+    this.handleTagButton(this.$el);
+  },
+  mounted() {
+    this.handleTagButton(this.$el);
   },
   methods: {
     extraElementCaption(v) {
@@ -547,7 +662,7 @@ export default {
       const attrs = bch.attrs;
       // const data = Object.assign({}, attrs);
       const data = {
-        '@data-list': []
+        '@data-list': [],
       };
       const handleList = [];
 
@@ -555,7 +670,7 @@ export default {
         attrs['is_place'] == '1' && handleList.push('is_place');
         handleList.push({
           name: ['range_damage', 'unsheathe_damage'],
-          type: 'bool'
+          type: 'bool',
         });
         this.calcValueStr(attrs['frequency']) > 1 && handleList.push('judgment', {
           name: 'frequency_judgment',
@@ -563,7 +678,7 @@ export default {
             if (v == 'auto')
               return bch.attrs['title'] != 'each' ? 'single' : 'multiple';
             return v;
-          }
+          },
         });
       }
 
@@ -577,8 +692,8 @@ export default {
               'bool': {
                 '1': 'ic-round-check',
                 '0': 'ic-round-close',
-                'none': 'mdi-help'
-              }
+                'none': 'mdi-help',
+              },
             } [type] || { '@default': default_icon };
           }
           name.forEach(k => {
@@ -595,7 +710,7 @@ export default {
               id: k,
               icon: icon[attrs[k]] || icon['@default'],
               value: v,
-              classList
+              classList,
             });
           });
         } else {
@@ -605,7 +720,7 @@ export default {
           data['@data-list'].push({
             id: item,
             icon: default_icon,
-            value: v
+            value: v,
           });
         }
       });
@@ -683,7 +798,7 @@ export default {
                 data['base'] = `@custom/${baseSuffixAttrs['type']}`;
                 langTextList.push('base', {
                   name: '@custom-base-caption',
-                  afterHandle: v => this.createTagButtons(this.handleMarkText(v, 'text-purple'))
+                  afterHandle: v => this.createTagButtons(this.handleMarkText(v, 'text-purple')),
                 });
               } else {
                 if (baseSuffixAttrs['title'] === 'auto') {
@@ -708,32 +823,32 @@ export default {
 
           handleValueList.push('constant', 'extra_constant', 'duration', 'cycle', {
             name: ['multiplier', 'ailment_chance'],
-            beforeColorText: v => v + '%'
+            beforeColorText: v => v + '%',
           }, {
             name: 'frequency',
-            beforeColorText: v => v + this.$lang('global/times')
+            beforeColorText: v => v + this.$lang('global/times'),
           });
 
           hiddenList.push({
             name: ['constant', 'multiplier', 'extra_constant', 'is_place'],
-            validation: v => v != '0'
+            validation: v => v != '0',
           }, {
             name: 'frequency',
             validation: v => parseInt(v, 10) != 1,
-            validationType: 'value'
+            validationType: 'value',
           }, {
             name: 'name',
             validation: v => v,
-            defaultValue: this.$lang('damage/base name')
+            defaultValue: this.$lang('damage/base name'),
           }, {
             name: ['base', 'element'],
-            validation: v => v !== 'none'
+            validation: v => v !== 'none',
           }, {
             name: 'type',
-            validation: v => v !== 'single'
+            validation: v => v !== 'single',
           }, {
             name: 'title',
-            validation: v => v === 'normal_attack'
+            validation: v => v === 'normal_attack',
           });
           langTextList.push('damage_type', 'type', 'title', 'element');
           data['title'] !== 'each' && langTextList.push({ name: 'frequency', type: 'value' });
@@ -741,22 +856,22 @@ export default {
           // skill area
           handleValueList.push({
             name: 'angle',
-            beforeColorText: v => v + '°'
+            beforeColorText: v => v + '°',
           }, {
             name: ['radius', 'move_distance', 'start_position_offsets', 'end_position_offsets'],
-            beforeColorText: v => v + 'm'
+            beforeColorText: v => v + 'm',
           });
           hiddenList.push({
             name: ['move_distance', 'angel'],
-            validation: v => v
+            validation: v => v,
           }, {
             name: ['start_position_offsets', 'end_position_offsets'],
             validation: v => v != 0,
-            validationType: 'value'
+            validationType: 'value',
           });
           langTextList.push('effective_area', {
             name: ['start_position_offsets', 'end_position_offsets'],
-            type: 'value'
+            type: 'value',
           });
           titleList.push('effective_area', 'radius', 'move_distance', 'angle',
             'start_position_offsets', 'end_position_offsets');
@@ -776,7 +891,7 @@ export default {
             data['default'] = data['min'];
           handleValueList.push({
             name: ['min', 'max', 'default'],
-            calcOnly: true
+            calcOnly: true,
           });
           const stkIdx = bch['@parent-state'].branchs
             .filter(p => p.name === 'stack')
@@ -784,27 +899,27 @@ export default {
           hiddenList.push({
             name: 'name',
             validation: v => v && v !== 'auto',
-            defaultValue: this.$lang('stack/base name') + (stkIdx + 1)
+            defaultValue: this.$lang('stack/base name') + (stkIdx + 1),
           });
         } else if (bch.name == 'effect') {
           handleValueList.push({
             name: 'radius',
-            beforeColorText: v => v + 'm'
+            beforeColorText: v => v + 'm',
           }, {
             name: 'duration',
-            beforeColorText: v => this.$lang('display duration', [v])
+            beforeColorText: v => this.$lang('display duration', [v]),
           });
           handleTextList.push('caption', 'condition', 'end_condition');
           hiddenList.push({
             name: ['condition', 'type'],
-            validation: v => v !== 'none'
+            validation: v => v !== 'none',
           }, {
             name: 'is_place',
-            validation: v => v != '0'
+            validation: v => v != '0',
           }, {
             name: 'name',
             validation: v => v,
-            defaultValue: this.$lang('effect/base name')
+            defaultValue: this.$lang('effect/base name'),
           });
           ['auto', 'hit'].includes(data['condition']) && langTextList.push('condition');
           langTextList.push('is_place', 'type');
@@ -813,7 +928,7 @@ export default {
           hiddenList.push({
             name: ['start_position_offsets', 'end_position_offsets'],
             validation: v => v != 0,
-            validationType: 'value'
+            validationType: 'value',
           });
           langTextList.push('effective_area');
           titleList.push('effective_area', 'radius');
@@ -822,35 +937,35 @@ export default {
           hiddenList.push({
             name: 'condition',
             validation: v => v && v !== 'none',
-            defaultValue: this.$lang('next/condition default')
+            defaultValue: this.$lang('next/condition default'),
           }, {
             name: 'name',
             validation: v => v,
-            defaultValue: this.$lang('effect/base name')
+            defaultValue: this.$lang('effect/base name'),
           });
         } else if (bch.name === 'passive') {
           handleTextList.push('caption');
           hiddenList.push({
             name: 'name',
             validation: v => v,
-            defaultValue: this.$lang('passive/base name')
+            defaultValue: this.$lang('passive/base name'),
           });
         } else if (bch.name === 'heal') {
           handleValueList.push('duration', 'cycle', 'constant', {
             name: 'frequency',
-            beforeColorText: v => v + this.$lang('global/times')
+            beforeColorText: v => v + this.$lang('global/times'),
           });
           hiddenList.push({
             name: 'name',
             validation: v => v,
-            defaultValue: this.$lang('heal/base name')
+            defaultValue: this.$lang('heal/base name'),
           }, {
             name: 'constant',
-            validation: v => v != 0
+            validation: v => v != 0,
           }, {
             name: 'frequency',
             validation: v => parseInt(v) > 1,
-            validationType: 'value'
+            validationType: 'value',
           });
 
           data['@extra-value-list'] = [];
@@ -864,7 +979,7 @@ export default {
             const ts = data['extra_text'].split(/\s*,\s*/);
             data['@extra-value-list'].push(...vs.map((p, i) => ({
               text: ts[i] || 'None',
-              value: p
+              value: p,
             })));
           }
 
@@ -878,19 +993,19 @@ export default {
         if (mbch.name == 'damage' && bch.name == 'extra') {
           handleValueList.push({
             name: 'ailment_chance',
-            beforeColorText: v => v + '%'
+            beforeColorText: v => v + '%',
           });
           hiddenList.push({
             name: 'condition',
             validation: v => v,
-            defaultValue: this.$lang('global suffix: extra/condition default')
+            defaultValue: this.$lang('global suffix: extra/condition default'),
           });
           handleTextList.push('caption', 'condition');
         } else if ((mbch.name === 'effect' || mbch.name === 'next' || mbch.name === 'passive') && bch.name === 'extra') {
           hiddenList.push({
             name: 'condition',
             validation: v => v,
-            defaultValue: this.$lang('global suffix: extra/condition default')
+            defaultValue: this.$lang('global suffix: extra/condition default'),
           });
           handleTextList.push('caption', 'condition');
         }
@@ -1044,7 +1159,7 @@ export default {
       dc.handleResult(v => v
         .replace(/([$_a-zA-Z][$_a-zA-Z0-9]*)(\*)(\d\.\d+)/g,
           (m, m1, m2, m3) => m1 + m2 + numStrToPercentage(m3))
-        .replace(/\*/g, '×')
+        .replace(/\*/g, '×'),
       );
 
       dc.handleResult(v => v.replace(/(\d+\.)(\d{4,})/g, (m, m1, m2) => m1 + m2.slice(0, 4)));
@@ -1059,7 +1174,7 @@ export default {
       base = 'text-light-3',
       stack = 'text-water-blue',
       extra = [],
-      beforeColorText = null
+      beforeColorText = null,
       //   <span class="...">
       //     extraHandle(v = "<span class="multiple-values"></span>")
       //   </span>
@@ -1077,11 +1192,11 @@ export default {
       const list = [
         'BSTR', 'BINT', 'BAGI', 'BVIT', 'BDEX', 'TEC',
         'STR', 'INT', 'AGI', 'VIT', 'DEX', 'shield_refining',
-        'dagger_atk', 'target_def', 'target_level', 'guard_power'
+        'dagger_atk', 'target_def', 'target_level', 'guard_power',
       ];
       list.forEach(cs => dc.handleResult(v => v
-          .replace(new RegExp('\\$' + cs, 'g'), this.$lang('formula replaced text/' + cs))
-        )
+        .replace(new RegExp('\\$' + cs, 'g'), this.$lang('formula replaced text/' + cs)),
+      ),
       );
       if (this.formulaDisplayMode == 1) {
         const stack = [];
@@ -1129,10 +1244,10 @@ export default {
         const funList = [
           {
             name: 'floor', reg: /Math\.floor\(([^()]+)\)/g,
-            target: (m, m1) => '[' + m1 + ']'
+            target: (m, m1) => '[' + m1 + ']',
           },
           { name: 'min', reg: /Math\.min\(([^()]+)\)/g },
-          { name: 'max', reg: /Math\.max\(([^()]+)\)/g }
+          { name: 'max', reg: /Math\.max\(([^()]+)\)/g },
         ];
         while (funList.find(p => v.match(p.reg)))
           funList.forEach(p => v = v.replace(p.reg, p.target || ((m, m1) => createFormulaText(p.name, m1))));
@@ -1154,30 +1269,11 @@ export default {
           .replace(/stack\[(\d+)\]/g, (m, m1) => '$__TEXT_STACK_' + m1 + '__')
           .replace(/stack/g, '$__TEXT_STACK_0__');
       return str;
-    }
+    },
   },
-  watch: {
-    branch: {
-      immediate: true,
-      handler() {
-        if (this.branch.group) {
-          this.$nextTick(() => this.toggleGroup(this.branch.group.expansion));
-        }
-      }
-    }
-  },
-  components: {
-    'damage-formula': vue_damageFormula,
-    'stats': vue_stats,
-    'heal-formula': vue_healFormula,
-    'branch-detail': vue_branchDetail,
-    'equipment-info': vue_equipmentInfo,
-    'skill-area-info': vue_skillAreaInfo
-  }
 };
 </script>
 <style lang="postcss" scoped>
-
 .main-- {
   position: relative;
 

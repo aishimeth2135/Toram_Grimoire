@@ -11,7 +11,7 @@ const store = {
       state.initItems.push({
         msg,
         promise,
-        status: 0 // 0: loading, 1: success,  -1: error
+        status: 0, // 0: loading, 1: success,  -1: error
       });
     },
     initState(state) {
@@ -49,13 +49,13 @@ const store = {
               console.error(err);
               p.status = -1;
             });
-        })
+        }),
       );
       if (!state.initItems.find(p => p.status == -1)) {
         commit('initSucceed');
       }
     },
-  }
+  },
 };
 
 export default store;

@@ -228,7 +228,7 @@ class CharacterEquipment {
       instance = 0;
       const list = [
         'one_hand_sword', 'two_hand_sword', 'bow', 'bowgun',
-        'staff', 'magic_device', 'knuckle', 'halberd', 'katana'
+        'staff', 'magic_device', 'knuckle', 'halberd', 'katana',
       ];
       type = findType(MainWeapon, list);
     }
@@ -293,7 +293,7 @@ CharacterEquipment.elementStatIds = [
   'element_earth',
   'element_wind',
   'element_light',
-  'element_dark'
+  'element_dark',
 ];
 CharacterEquipment.loadEquipment = function (data) {
   try {
@@ -311,27 +311,27 @@ CharacterEquipment.loadEquipment = function (data) {
 
     const instance = [
       MainWeapon, SubWeapon, SubArmor, BodyArmor,
-      AdditionalGear, SpecialGear, Avatar
+      AdditionalGear, SpecialGear, Avatar,
     ][data.instance];
 
     let eq;
     switch (data.instance) {
-      case 0: case 1:
-        eq = new instance(id, name, stats, getType(instance, data.type), baseAtk, stability);
-        eq.atk = atk;
-        break;
-      case 2:
-        eq = new instance(id, name, stats, getType(instance, data.type), baseDef);
-        eq.def = def;
-        break;
-      case 3: case 4: case 5:
-        eq = new instance(id, name, stats, baseDef);
-        eq.def = def;
-        if (data.instance == 3)
-          eq.setType(getType(instance, data.type));
-        break;
-      case 6:
-        eq = new instance(id, name, stats);
+    case 0: case 1:
+      eq = new instance(id, name, stats, getType(instance, data.type), baseAtk, stability);
+      eq.atk = atk;
+      break;
+    case 2:
+      eq = new instance(id, name, stats, getType(instance, data.type), baseDef);
+      eq.def = def;
+      break;
+    case 3: case 4: case 5:
+      eq = new instance(id, name, stats, baseDef);
+      eq.def = def;
+      if (data.instance == 3)
+        eq.setType(getType(instance, data.type));
+      break;
+    case 6:
+      eq = new instance(id, name, stats);
     }
 
     if (eq.hasRefining) {
@@ -353,18 +353,18 @@ CharacterEquipment.loadEquipment = function (data) {
 
     return {
       success,
-      equipment: eq
+      equipment: eq,
     };
   } catch (e) {
     console.warn(e);
     return {
-      error: true
+      error: true,
     };
   }
 };
 
 CharacterEquipment.fromOriginEquipment = function(item, {
-  statValueToNumber = true
+  statValueToNumber = true,
 } = {}) {
   /* [
     0'單手劍', 1'雙手劍', 2'弓', 3'弩', 4'法杖',
@@ -380,7 +380,7 @@ CharacterEquipment.fromOriginEquipment = function(item, {
       if (statValueToNumber)
         t.value = isNumberString(t.value) ? parseFloat(t.value) : 0;
       return t;
-    })
+    }),
   ];
 
   if (item.category === -1) {
@@ -400,14 +400,14 @@ CharacterEquipment.fromOriginEquipment = function(item, {
       MainWeapon.TYPE_BOW, MainWeapon.TYPE_BOWGUN,
       MainWeapon.TYPE_STAFF, MainWeapon.TYPE_MAGIC_DEVICE,
       MainWeapon.TYPE_KNUCKLE, MainWeapon.TYPE_HALBERD,
-      MainWeapon.TYPE_KATANA
+      MainWeapon.TYPE_KATANA,
     ][item.category];
 
     return new MainWeapon(...pre_args, t, item.baseValue, stability);
   }
   if (item.category < 200) {
     const t = [
-      SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_NINJUTSU_SCROLL
+      SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_NINJUTSU_SCROLL,
     ][item.category - 100];
     return new SubWeapon(...pre_args, t, item.baseValue, stability);
   }
@@ -590,5 +590,5 @@ class EquipmentCrystal {
 
 export {
   CharacterEquipment, EquipmentCrystal,
-  MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar
+  MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar,
 };

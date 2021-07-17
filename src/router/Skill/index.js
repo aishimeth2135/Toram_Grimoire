@@ -15,14 +15,14 @@ export default {
     leftMenuViewButtons: [{
       title: () => GetLang('Page Title/skill-query'),
       icon: 'ic-outline-menu-book',
-      path: ''
-    }]
+      path: '',
+    }],
   },
   children: [{
     path: '',
     component: vue_skillQuery,
     meta: {
-      title: () => GetLang('Page Title/skill-query')
-    }
-  }]
+      title: () => GetLang('Page Title/skill-query'),
+    },
+  }],
 };

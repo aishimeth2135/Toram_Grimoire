@@ -55,8 +55,8 @@ class StatBase {
         this.text :
         this.text + (
           (this.attributes['constant_formula'] && this.attributes['constant_formula'].includes('$u')) || !this.attributes['constant_formula'] ?
-          '%' :
-          ''
+            '%' :
+            ''
         );
     if (type === StatBase.TYPE_MULTIPLIER)
       return this.text + '%';
@@ -84,12 +84,12 @@ class StatBase {
       return res;
     }
     switch (type) {
-      case StatBase.TYPE_CONSTANT:
-        return handleFormula(this.attributes['constant_formula'] || '$t$s$v$u', this.hasMultiplier ? '' : '%');
-      case StatBase.TYPE_MULTIPLIER:
-        return handleFormula(this.attributes['multiplier_formula'] || '$t$s$v$u', '%');
-      case StatBase.TYPE_TOTAL:
-        return handleFormula(Lang('type total: preText') + '$t$s$v$u', '%');
+    case StatBase.TYPE_CONSTANT:
+      return handleFormula(this.attributes['constant_formula'] || '$t$s$v$u', this.hasMultiplier ? '' : '%');
+    case StatBase.TYPE_MULTIPLIER:
+      return handleFormula(this.attributes['multiplier_formula'] || '$t$s$v$u', '%');
+    case StatBase.TYPE_TOTAL:
+      return handleFormula(Lang('type total: preText') + '$t$s$v$u', '%');
     }
   }
 
@@ -118,7 +118,7 @@ class StatBase {
       result: this.show(type, v),
       title,
       value: v,
-      tail
+      tail,
     };
   }
 

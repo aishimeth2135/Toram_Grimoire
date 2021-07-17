@@ -1,26 +1,26 @@
 <template>
   <transition-group :name="type" :appear="appear" :tag="tag">
-    <slot></slot>
+    <slot />
   </transition-group>
 </template>
 <script>
-  // import Velocity from "velocity-animate";
+// import Velocity from "velocity-animate";
 
-  export default {
-    props: {
-      type: {
-        type: String,
-        required: true
-      },
-      tag: {
-        type: String,
-        default: 'span'
-      },
-      appear: {
-        type: Boolean
-      }
-    }
-  }
+export default {
+  props: {
+    type: {
+      type: String,
+      required: true,
+    },
+    tag: {
+      type: String,
+      default: 'span',
+    },
+    appear: {
+      type: Boolean,
+    },
+  },
+}
 </script>
 <style lang="less" scoped>
 ::v-deep(.fade-enter-from), ::v-deep(.fade-leave-to) {

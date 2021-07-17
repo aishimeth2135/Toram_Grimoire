@@ -23,12 +23,12 @@ const routes = [
   DamageCalc,
   Enchant,
   Page404,
-  Bubble
+  Bubble,
 ];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
 });
 
 router.beforeEach((to, from) => {
@@ -66,9 +66,9 @@ router.beforeEach((to, from) => {
           const title = p.meta.title;
           return {
             title: typeof title === 'function' ? title() : title,
-            path: p.path
+            path: p.path,
           };
-        })
+        }),
     });
 
     // set left menu
@@ -79,7 +79,7 @@ router.beforeEach((to, from) => {
           return {
             title: typeof p.title === 'function' ? p.title() : p.title,
             icon: p.icon,
-            path: data.path + p.path
+            path: data.path + p.path,
           };
         });
 

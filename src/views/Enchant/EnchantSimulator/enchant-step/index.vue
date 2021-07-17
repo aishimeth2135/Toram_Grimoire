@@ -1,5 +1,6 @@
 <template>
-  <div class="enchant-step px-2 pt-1 flex flex-col h-full bg-white"
+  <div
+    class="enchant-step px-2 pt-1 flex flex-col h-full bg-white"
     :class="{ [mainBorderColor]: true, 'opacity-50': step.hidden }"
   >
     <div class="border-b pl-2 flex items-center py-0.5" :class="[mainBorderColor]">
@@ -14,27 +15,40 @@
       <div class="ml-auto inline-flex items-center mr-1">
         <cy-options inline>
           <template #title="{ unfold }">
-            <cy-button-icon icon="gg-menu-left-alt" class="p-0"
-              :selected="unfold" />
+            <cy-button-icon
+              icon="gg-menu-left-alt"
+              class="p-0"
+              :selected="unfold"
+            />
           </template>
           <template #options>
             <cy-list-item @click="insertStepBefore(step)">
-              <cy-button-inline class="w-full"
-                icon="mdi-table-row-plus-before">
+              <cy-button-inline
+                class="w-full"
+                icon="mdi-table-row-plus-before"
+              >
                 {{ $lang('step/insert step before') }}
               </cy-button-inline>
             </cy-list-item>
-            <cy-list-item v-if="step.index !== 0"
-              @click="swapStep({ step, offset: -1 })">
-              <cy-button-inline class="w-full"
-                icon="eva-arrow-ios-upward-fill">
+            <cy-list-item
+              v-if="step.index !== 0"
+              @click="swapStep({ step, offset: -1 })"
+            >
+              <cy-button-inline
+                class="w-full"
+                icon="eva-arrow-ios-upward-fill"
+              >
                 {{ $lang('step/up swap') }}
               </cy-button-inline>
             </cy-list-item>
-            <cy-list-item v-if="!step.isLastStep"
-              @click="swapStep({ step, offset: 1 })">
-              <cy-button-inline class="w-full"
-                icon="eva-arrow-ios-downward-outline">
+            <cy-list-item
+              v-if="!step.isLastStep"
+              @click="swapStep({ step, offset: 1 })"
+            >
+              <cy-button-inline
+                class="w-full"
+                icon="eva-arrow-ios-downward-outline"
+              >
                 {{ $lang('step/down swap') }}
               </cy-button-inline>
             </cy-list-item>
@@ -49,8 +63,8 @@
         <cy-button-icon
           icon="jam-close-circle"
           class="p-0"
-          @click="removeStep(step)"
           icon-color="gray"
+          @click="removeStep(step)"
         />
       </div>
     </div>
@@ -58,8 +72,8 @@
       <template v-if="step.stats.length !== 0">
         <step-stat
           v-for="stat in step.stats"
-          :stat="stat"
           :key="stat.statId"
+          :stat="stat"
           class="step-stat"
         />
       </template>
@@ -132,25 +146,25 @@
       <div class="flex items-center py-0.5">
         <cy-button-icon
           icon="ic-round-add-circle-outline"
-          @click="openSelectItem('step', step, true)"
           icon-color="water-blue"
+          @click="openSelectItem('step', step, true)"
         />
         <cy-button-icon
           icon="ic-round-add-circle-outline"
-          @click="openSelectItem('step', step)"
           icon-color="red"
+          @click="openSelectItem('step', step)"
         />
         <cy-button-icon
           :icon="typeIcon"
-          @click="toggleStepType(step)"
           :icon-color="typeEach ? 'blue-green' : 'blue-green-light'"
           icon-color-hover="blue-green"
+          @click="toggleStepType(step)"
         />
         <cy-button-icon
           v-if="step.belongEquipment.stats(step.index - 1).length >= 6"
           icon="ant-design:star-outlined"
-          @click="stepAutoFill(step)"
           icon-color="orange"
+          @click="stepAutoFill(step)"
         />
         <cy-icon-text icon="mdi-creation" class="ml-auto mr-2" text-color="purple">
           {{ step.remainingPotential }}
@@ -166,13 +180,13 @@ import { EnchantStep } from '@/lib/Enchant/Enchant';
 
 export default {
   RegisterLang: "Enchant Simulator",
+  inject: ['openSelectItem'],
   props: {
     step: {
       type: EnchantStep,
-      required: true
-    }
+      required: true,
+    },
   },
-  inject: ['openSelectItem'],
   computed: {
     typeIcon() {
       return this.step.type === EnchantStep.TYPE_NORMAL ? 'ic-outline-near-me-disabled' : 'ic-outline-near-me';
@@ -208,7 +222,7 @@ export default {
         return this.$lang('invalid step');
       }
       return this.$lang('enchant step') + ' ' + (this.step.index + 1).toString();
-    }
+    },
   },
   methods: {
     ...mapMutations('enchant/step', [
@@ -244,8 +258,8 @@ export default {
     // }
   },
   components: {
-    'step-stat': vue_stepStat
-  }
+    'step-stat': vue_stepStat,
+  },
 }
 </script>
 <style lang="less" scoped>

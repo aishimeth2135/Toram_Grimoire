@@ -9,54 +9,83 @@
       </div>
     </div>
   </cy-list-item>
-  <cy-list-item v-else-if="branchStates.length === 1"
-    class="skill-item" :class="{ 'state-disabled': levelSkillStateRoot.disabled }">
+  <cy-list-item
+    v-else-if="branchStates.length === 1"
+    class="skill-item"
+    :class="{ 'state-disabled': levelSkillStateRoot.disabled }"
+  >
     <div class="line-content">
-      <cy-button text-color="purple" type="check"
+      <cy-button
+        text-color="purple"
+        type="check"
+        :selected="!levelSkillStateRoot.disabled"
         @click.stop="toggleStateRootDisable(levelSkillStateRoot)"
-        :selected="!levelSkillStateRoot.disabled">
+      >
         <cy-icon :icon="skillIconPath" src="image" class="skill-icon" />
       </cy-button>
       <div class="branch-content">
-        <div v-if="firstBranchState.handler.infoType == 'caption'"
-          class="caption" v-html="firstBranchState.handler.value.caption"></div>
-        <show-stat-datas v-else-if="firstBranchState.handler.value.stats.length != 0"
-          :statDatas="firstBranchState.handler.value.stats" />
-        <div v-else>NONE</div>
+        <div
+          v-if="firstBranchState.handler.infoType == 'caption'"
+          class="caption"
+          v-html="firstBranchState.handler.value.caption"
+        />
+        <show-stat-datas
+          v-else-if="firstBranchState.handler.value.stats.length != 0"
+          :stat-datas="firstBranchState.handler.value.stats"
+        />
+        <div v-else>
+          NONE
+        </div>
       </div>
       <span class="ml-auto">
-        <cy-button v-if="firstBranchState.handler.hasUserSets"
-        icon="ic-baseline-settings"
-        type="icon" class="p-0"
-        @click="openUserSetsWindow(firstBranchState.handler)" />
-      <cy-button v-if="hasExtraContent"
-        type="icon" class="p-0"
-        :icon="'ic-round-keyboard-arrow-' + (extraContentVisible ? 'up' : 'down')"
-        icon-color="purple"
-        @click="toggleExtraContentVisible" />
+        <cy-button
+          v-if="firstBranchState.handler.hasUserSets"
+          icon="ic-baseline-settings"
+          type="icon"
+          class="p-0"
+          @click="openUserSetsWindow(firstBranchState.handler)"
+        />
+        <cy-button
+          v-if="hasExtraContent"
+          type="icon"
+          class="p-0"
+          :icon="'ic-round-keyboard-arrow-' + (extraContentVisible ? 'up' : 'down')"
+          icon-color="purple"
+          @click="toggleExtraContentVisible"
+        />
       </span>
     </div>
     <cy-transition type="fade">
-      <div v-if="hasExtraContent && extraContentVisible"
-        class="extra-content">
-        <div v-for="state in firstBranchState.handler.value.conditionDatas"
-          :key="state.iid" class="branch-content condition-container">
+      <div
+        v-if="hasExtraContent && extraContentVisible"
+        class="extra-content"
+      >
+        <div
+          v-for="state in firstBranchState.handler.value.conditionDatas"
+          :key="state.iid"
+          class="branch-content condition-container"
+        >
           <cy-icon-text icon="ic-round-add" text-color="light-3" class="condition">
             {{ state.condition }}
           </cy-icon-text>
-          <div v-if="state.caption" class="caption" v-html="state.caption"></div>
-          <show-stat-datas v-else :statDatas="state.stats" />
+          <div v-if="state.caption" class="caption" v-html="state.caption" />
+          <show-stat-datas v-else :stat-datas="state.stats" />
         </div>
       </div>
     </cy-transition>
   </cy-list-item>
-  <cy-list-item v-else
+  <cy-list-item
+    v-else
     class="skill-item"
-    :class="{ 'state-disabled': levelSkillStateRoot.disabled }">
+    :class="{ 'state-disabled': levelSkillStateRoot.disabled }"
+  >
     <div class="line-content">
-      <cy-button text-color="purple" type="check"
+      <cy-button
+        text-color="purple"
+        type="check"
+        :selected="!levelSkillStateRoot.disabled"
         @click.stop="toggleStateRootDisable(levelSkillStateRoot)"
-        :selected="!levelSkillStateRoot.disabled">
+      >
         <cy-icon :icon="skillIconPath" src="image" class="skill-icon" />
       </cy-button>
       <div class="branch-content">
@@ -64,40 +93,63 @@
           {{ $lang('skill management/skill multiple effects') }}
         </div>
       </div>
-      <cy-button class="p-0 ml-auto" type="icon"
+      <cy-button
+        class="p-0 ml-auto"
+        type="icon"
         :icon="'ic-round-keyboard-arrow-' + (extraContentVisible ? 'up' : 'down')"
         icon-color="purple"
-        @click="toggleExtraContentVisible" />
+        @click="toggleExtraContentVisible"
+      />
     </div>
     <cy-transition type="fade">
-      <div v-if="extraContentVisible"
-        class="extra-content">
-        <div v-for="branchState in branchStates" :key="branchState.iid" class="branch"
-          :class="{ 'state-disabled': !levelSkillStateRoot.disabled && branchState.disabled }">
+      <div
+        v-if="extraContentVisible"
+        class="extra-content"
+      >
+        <div
+          v-for="branchState in branchStates"
+          :key="branchState.iid"
+          class="branch"
+          :class="{ 'state-disabled': !levelSkillStateRoot.disabled && branchState.disabled }"
+        >
           <div class="line-content">
-            <cy-button text-color="purple" type="check"
+            <cy-button
+              text-color="purple"
+              type="check"
+              :selected="!branchState.disabled"
               @click.stop="toggleBranchStateDisable(branchState)"
-              :selected="!branchState.disabled">
+            >
               {{ branchState.origin.attrs['name'] || $lang('skill management/default name of skill branch') }}
             </cy-button>
             <div class="branch-content">
-              <div v-if="branchState.handler.infoType == 'caption'"
-                class="caption" v-html="branchState.handler.value.caption"></div>
-              <show-stat-datas v-else-if="branchState.handler.value.stats.length != 0"
-                :statDatas="branchState.handler.value.stats" />
+              <div
+                v-if="branchState.handler.infoType == 'caption'"
+                class="caption"
+                v-html="branchState.handler.value.caption"
+              />
+              <show-stat-datas
+                v-else-if="branchState.handler.value.stats.length != 0"
+                :stat-datas="branchState.handler.value.stats"
+              />
             </div>
-            <cy-button v-if="branchState.handler.hasUserSets"
-              icon="ic-baseline-settings" type="icon"
+            <cy-button
+              v-if="branchState.handler.hasUserSets"
+              icon="ic-baseline-settings"
+              type="icon"
               class="p-0 ml-auto"
-              @click="openUserSetsWindow(branchState.handler)" />
+              @click="openUserSetsWindow(branchState.handler)"
+            />
           </div>
-          <div v-for="state in branchState.handler.value.conditionDatas"
-            class="branch-content condition-container" :key="state.iid">
+          <div
+            v-for="state in branchState.handler.value.conditionDatas"
+            :key="state.iid"
+            class="branch-content condition-container"
+          >
             <cy-icon-text icon="ic-round-add" text-color="light-3" class="condition">
               {{ state.condition }}
             </cy-icon-text>
-            <div v-if="state.caption" class="caption" v-html="state.caption"></div>
-            <show-stat-datas v-else :statDatas="state.stats" />
+            <div v-if="state.caption" class="caption" v-html="state.caption" />
+            <show-stat-datas v-else :stat-datas="state.stats" />
           </div>
         </div>
       </div>
@@ -110,11 +162,14 @@ import { getSkillIconPath } from "@/lib/Skill/utils/DrawSkillTree";
 
 export default {
   RegisterLang: 'Character Simulator',
-  props: ['levelSkillStateRoot'],
+  components: {
+    'show-stat-datas': vue_showStatDatas,
+  },
   inject: ['openUserSetsWindow', 'getValidLevelSkillState'],
+  props: ['levelSkillStateRoot'],
   data() {
     return {
-      extraContentVisible: false
+      extraContentVisible: false,
     }
   },
   computed: {
@@ -138,7 +193,7 @@ export default {
     },
     firstBranchState() {
       return this.branchStates[0];
-    }
+    },
   },
   methods: {
     toggleExtraContentVisible() {
@@ -149,15 +204,11 @@ export default {
     },
     toggleStateRootDisable(state) {
       state.disabled = !state.disabled;
-    }
+    },
   },
-  components: {
-    'show-stat-datas': vue_showStatDatas
-  }
 };
 </script>
 <style lang="less" scoped>
-
 .skill-item {
   cursor: auto;
 }

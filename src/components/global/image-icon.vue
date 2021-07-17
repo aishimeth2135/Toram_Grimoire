@@ -3,6 +3,6 @@
 </template>
 <script>
 export default {
-  props: ['imagePath']
+  props: ['imagePath'],
 }
 </script>

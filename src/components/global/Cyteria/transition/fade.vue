@@ -1,6 +1,6 @@
 <template>
   <transition v-bind="$attrs">
-    <slot></slot>
+    <slot />
   </transition>
 </template>
 <style lang="less" scoped>

@@ -13,7 +13,7 @@
         {{ equipmentTypeText }}
       </cy-button-border>
     </div>
-    <div class="editor" v-if="currentEquipment">
+    <div v-if="currentEquipment" class="editor">
       <custom-equipment-editor :equipment="currentEquipment" />
     </div>
     <cy-default-tips v-else icon="potum" icon-src="custom">
@@ -22,16 +22,18 @@
     <cy-bottom-content v-if="currentEquipment">
       <template #normal-content>
         <div class="flex items-center">
-          <cy-button-border class="ml-auto"
+          <cy-button-border
+            class="ml-auto"
             icon="ic-round-done"
-            @click="createCustomEquipment">
-            {{ $globalLang('global/create') }}
+            @click="createCustomEquipment"
+          >
+            {{ $rootLang('global/create') }}
           </cy-button-border>
         </div>
       </template>
     </cy-bottom-content>
     <cy-window v-model:visible="window.selectType">
-      <template v-slot:title>
+      <template #title>
         <cy-icon-text icon="gg-shape-square">
           {{ $lang('create custom equipment/select equipment type') }}
         </cy-icon-text>
@@ -39,26 +41,31 @@
       <div class="equipment-type">
         <cy-button-drop-down
           v-for="category in equipmentTypeCategorys"
-          :icon="category.icon"
           :key="category.id"
+          :icon="category.icon"
           :menu-default-visible="true"
         >
-          {{ $globalLang('common/Equipment/field/' + category.id) }}
-          <template v-slot:menu>
+          {{ $rootLang('common/Equipment/field/' + category.id) }}
+          <template #menu>
             <template v-if="category.list != null">
-              <cy-list-item v-for="item in category.list" :key="item"
+              <cy-list-item
+                v-for="item in category.list"
+                :key="item"
                 :selected="currentEquipment && currentEquipment.type === item"
-                @click="selectEquipmentType(category, item)">
+                @click="selectEquipmentType(category, item)"
+              >
                 <cy-icon-text icon="gg-shape-square">
-                  {{ $globalLang('common/Equipment/category/' + item.description) }}
+                  {{ $rootLang('common/Equipment/category/' + item.description) }}
                 </cy-icon-text>
               </cy-list-item>
             </template>
-            <cy-list-item v-else
+            <cy-list-item
+              v-else
               :selected="currentEquipment && (currentEquipment instanceof category.instance)"
-              @click="selectEquipmentType(category, null)">
+              @click="selectEquipmentType(category, null)"
+            >
               <cy-icon-text icon="gg-shape-square">
-                {{ $globalLang('common/Equipment/field/' + category.id) }}
+                {{ $rootLang('common/Equipment/field/' + category.id) }}
               </cy-icon-text>
             </cy-list-item>
           </template>
@@ -76,17 +83,20 @@ import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear
 
 export default {
   RegisterLang: 'Character Simulator',
-  emits: ['append-equipments', 'close'],
-  props: ['visible'],
+  components: {
+    'custom-equipment-editor': vue_customEquipmentEditor,
+  },
   inject: ['isElementStat'],
+  props: ['visible'],
+  emits: ['append-equipments', 'close'],
   setup() {
     const { window, toggle } = ToggleService({
-      window: ['selectType']
+      window: ['selectType'],
     });
 
     return {
       window,
-      toggle
+      toggle,
     };
   },
   data() {
@@ -100,46 +110,46 @@ export default {
           MainWeapon.TYPE_BOW, MainWeapon.TYPE_BOWGUN,
           MainWeapon.TYPE_STAFF, MainWeapon.TYPE_MAGIC_DEVICE,
           MainWeapon.TYPE_KNUCKLE, MainWeapon.TYPE_HALBERD,
-          MainWeapon.TYPE_KATANA
-        ]
+          MainWeapon.TYPE_KATANA,
+        ],
       }, {
         id: 'sub-weapon',
         icon: 'mdi-shield',
         instance: SubWeapon,
-        list: [SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_NINJUTSU_SCROLL]
+        list: [SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_NINJUTSU_SCROLL],
       }, {
         id: 'sub-armor',
         icon: 'mdi-shield',
         instance: SubArmor,
-        list: [SubArmor.TYPE_SHIELD]
+        list: [SubArmor.TYPE_SHIELD],
       }, {
         id: 'body-armor',
         icon: 'mdi-tshirt-crew',
         instance: BodyArmor,
-        list: null
+        list: null,
       }, {
         id: 'additional',
         icon: 'cib-redhat',
         instance: AdditionalGear,
-        list: null
+        list: null,
       }, {
         id: 'special',
         icon: 'fa-solid:ring',
         instance: SpecialGear,
-        list: null
+        list: null,
       }, {
         id: 'avatar',
         icon: 'eva-star-outline',
         instance: Avatar,
-        list: null
+        list: null,
       }],
-      currentEquipment: null
+      currentEquipment: null,
     };
   },
   computed: {
     equipmentTypeText() {
       return this.getEquipmentTypeText(this.currentEquipment);
-    }
+    },
   },
   methods: {
     getEquipmentTypeText(eq) {
@@ -148,8 +158,8 @@ export default {
         const idx = [BodyArmor, AdditionalGear, SpecialGear, Avatar]
           .findIndex(p => eq instanceof p);
         return idx != -1 ?
-          this.$globalLang('common/Equipment/field/' + ids[idx]) :
-          this.$globalLang('common/Equipment/category/' + eq.type.description);
+          this.$rootLang('common/Equipment/field/' + ids[idx]) :
+          this.$rootLang('common/Equipment/category/' + eq.type.description);
       }
       return this.$lang('create custom equipment/select equipment type');
     },
@@ -181,11 +191,8 @@ export default {
     },
     close() {
       this.$emit('close');
-    }
+    },
   },
-  components: {
-    'custom-equipment-editor': vue_customEquipmentEditor
-  }
 };
 </script>
 <style lang="less" scoped>

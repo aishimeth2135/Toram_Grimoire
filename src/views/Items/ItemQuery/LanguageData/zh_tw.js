@@ -5,19 +5,19 @@ export default function() {
         'normal': '一般',
         'stat': '裝備能力',
         'item-level': '道具等級',
-        'dye': '染色'
+        'dye': '染色',
       },
       'no result tips': '找不到任何結果0.0',
       'options: normal': {
         'title': '搜尋目標',
         'name': '名稱',
         'material': '製作素材',
-        'obtain-name': '取得來源'
+        'obtain-name': '取得來源',
       },
       'options: stat': {
         'select stat: window title': '選擇能力',
         'select stat: search placeholder': '搜尋能力',
-        'select stat: title': '請選擇一個能力'
+        'select stat: title': '請選擇一個能力',
       },
       'sort options': {
         'title': '排序方式',
@@ -26,13 +26,13 @@ export default function() {
           'atk': 'ATK',
           'def': 'DEF',
           'stability': '穩定度',
-          'name': '名稱'
+          'name': '名稱',
         },
         'order': {
           'title': '排序順序',
           'up': '由小至大',
-          'down': '由大至小'
-        }
+          'down': '由大至小',
+        },
       },
       'equipment detail': {
         'production equipment': '製作裝備',
@@ -45,12 +45,12 @@ export default function() {
           'item level': '道具等級',
           'item difficulty': '難易度',
           'base potential': '潛力值',
-          'spina': '眾神幣'
+          'spina': '眾神幣',
         },
         'tips: without any obtain': '取得方式未知',
         'tips: without any stat': '這個裝備沒有任何能力0.0',
       },
-      'search placeholder': '查詢...'
-    }
+      'search placeholder': '查詢...',
+    },
   };
 }

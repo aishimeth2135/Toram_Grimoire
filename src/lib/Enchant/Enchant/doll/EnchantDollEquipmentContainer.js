@@ -17,7 +17,7 @@ export default class EnchantDollEquipmentContainer {
     this.virtualStats = [];
 
     this.flags = {
-      error: null
+      error: null,
     };
 
     /** @type {EnchantDollEquipmentContainer[]} */
@@ -143,11 +143,11 @@ export default class EnchantDollEquipmentContainer {
       this.checkMakeUpPotential();
 
       if (positivesFilter === 'both' && currentCategory.stats.length > 1) {
-          // 把一個正屬移到退潛後再附的附法
-          const newDollEq = this.copy();
-          const fakeStat = currentCategory.stats[currentCategory.stats.length - 1].copy();
-          newDollEq.virtualStats.push(fakeStat);
-          resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
+        // 把一個正屬移到退潛後再附的附法
+        const newDollEq = this.copy();
+        const fakeStat = currentCategory.stats[currentCategory.stats.length - 1].copy();
+        newDollEq.virtualStats.push(fakeStat);
+        resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
       }
       // 倍率為1.2且耗潛為3且在第二順位
       const special = positivesHasRate
@@ -243,7 +243,7 @@ export default class EnchantDollEquipmentContainer {
    * 確認能力數量，確保有足夠的格子退潛
    * @returns {boolean}
    */
-   checkFillNegativeStats() {
+  checkFillNegativeStats() {
     const cstats = this.equipment.stats();
     const numNegs = cstats.filter(stat => this.negativeStats.find(nstat => nstat.equals(stat))).length;
     const negativeStatsLength = this.negativeStats.length;
@@ -577,7 +577,7 @@ export default class EnchantDollEquipmentContainer {
         return {
           type: 'step',
           stat,
-          value: stat.potentialCost
+          value: stat.potentialCost,
         };
       });
     if (list.length === 0) {
@@ -608,7 +608,7 @@ export default class EnchantDollEquipmentContainer {
             type: 'unused',
             stat: tstat,
             value,
-            list: noRatePositiveStats
+            list: noRatePositiveStats,
           })
         }
       }
@@ -656,13 +656,13 @@ export default class EnchantDollEquipmentContainer {
     const ids = steps.map(step => {
       if (step.stats.length !== 1 || step.type !== EnchantStep.TYPE_EACH) {
         return {
-          merged: true
+          merged: true,
         };
       }
       return {
         step,
         id: step.firstStat.statId,
-        merged: false
+        merged: false,
       };
     });
     ids.forEach((cur, i) => {

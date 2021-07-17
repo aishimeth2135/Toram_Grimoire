@@ -2,7 +2,7 @@ export default function() {
   return {
     'Skill Simulator': {
       'left menu': {
-        'save load': '存档/读档'
+        'save load': '存档/读档',
       },
       'skill level': '技能等级',
       'star gem level': '星石等级',
@@ -19,7 +19,7 @@ export default function() {
         'preview exported text': '预览文本',
         'star gem list': '星石清单',
         'build name': '选择配置',
-        'preview exported image: tips 1': '于IOS系统上使用此功能下载图片时，部分浏览器还不支援「设定档名」的功能，因此下载图片时可能会发生副档名不为PNG的问题。若遇到此问题，请在下载图片后自行将档名改成「XXX.png」，该图片就可以正常显示。'
+        'preview exported image: tips 1': '于IOS系统上使用此功能下载图片时，部分浏览器还不支援「设定档名」的功能，因此下载图片时可能会发生副档名不为PNG的问题。若遇到此问题，请在下载图片后自行将档名改成「XXX.png」，该图片就可以正常显示。',
       },
       'tips': {
         'copy build message': '已成功复制$0至$1。',
@@ -30,14 +30,14 @@ export default function() {
         'export build image: error': '产生图片时发生错误。',
         'download exported image: error': '下载图片时发生错误。',
         'must have at least one skill tree to export': '必须至少有一个技能树才能汇出。',
-        'The Number of Skill Builds is 0 due to an unknown cause detected': '侦测到不明原因导致没有技能配置，系统将自动产生一个新的技能配置。'
+        'The Number of Skill Builds is 0 due to an unknown cause detected': '侦测到不明原因导致没有技能配置，系统将自动产生一个新的技能配置。',
       },
       'export image': '汇出图片',
       'export text': '汇出文本',
       'export watermark': '布偶的魔法书 cy-grimoire.netlify.app',
       'exported image inner text': {
         'skill point cost sum': '总共使用了$0技能点数。',
-        'star gem skill point sum': '星石总共提供了$0技能点数。'
+        'star gem skill point sum': '星石总共提供了$0技能点数。',
       },
       'build': '配置',
       'create build': '新增配置',
@@ -55,7 +55,7 @@ export default function() {
         'frame 5-1': '透过左下角的选单进行操作设定。',
         'frame 6-1': '这里会显示((实际消耗了多少技能点数))。',
         'frame 7-1': '这里会显示((星石实际提供了多少技能点数))。',
-      }
-    }
+      },
+    },
   };
 }

@@ -64,7 +64,7 @@ export default function() {
         'stability': '稳定率',
         'probability_of_graze': 'Graze机率',
         'combo_multiplier': '连击倍率',
-        'other_multiplier': '其它倍率'
+        'other_multiplier': '其它倍率',
       },
       'Container Title': {
         'damage_type': '伤害类型',
@@ -86,7 +86,7 @@ export default function() {
         'target_resistance': '目标抗性',
         'poration': '惯性影响',
         'stability': '稳定率',
-        'other_multiplier': '其它倍率'
+        'other_multiplier': '其它倍率',
       },
       'Container Tips': {
         'damage_type': '攻击的伤害类型。',
@@ -96,7 +96,7 @@ export default function() {
           '((副手ATK))及((双手合持等级))皆可以开关。关闭后该项目便不会被计算。',
           '((副手ATK))为装备((双剑))时特有的属性。((双剑技能))中的攻击技能，((副手ATK))会被计入伤害公式内。',
           '简要而言，((副手ATK))会乘上((副手倍率))并加到有效ATK上。',
-          '技能((双手合持))的触发条件可于技能查询中查看。'
+          '技能((双手合持))的触发条件可于技能查询中查看。',
         ],
         'level_difference': '角色与目标（怪物）的等级差值。',
         'target_def': '目标的防御力。',
@@ -104,7 +104,7 @@ export default function() {
         'skill_constant': '技能的伤害常数。',
         'unsheathe_attack_contant': [
           '常数的拔刀攻击加成。',
-          '例如：缎晶((葛瓦))提供的拔刀攻击+100。'
+          '例如：缎晶((葛瓦))提供的拔刀攻击+100。',
         ],
         'other_constant': '特定情况下会有的其它常数。平常情况下不用特别设定',
         'skill_multiplier': '技能的伤害倍率。',
@@ -114,15 +114,15 @@ export default function() {
           '若想计算无暴击时的伤害，可将此项目关闭。或将暴击率设为0。',
           '魔法伤害暴击时的计算公式与物理伤害不同，此处有一个名词叫((法术暴击转化率))。((法术暴击转化率))决定魔法暴击的发生机率，以及发生暴击时的暴击伤害，两者分别从物理暴击率、物理暴击伤害按比例转化而来。',
           '目前仅有被动技能((分段爆裂))以及主动技能((元素斩劈))赋予的((衰弱))状态，会提高法术暴击转化率。',
-          '((法术暴击转化率))范例：若暴击率为80%、暴击伤害为150%、法术暴击转化率为50%。则造成魔法伤害时，暴击率为40%，暴击伤害为125%'
+          '((法术暴击转化率))范例：若暴击率为80%、暴击伤害为150%、法术暴击转化率为50%。则造成魔法伤害时，暴击率为40%，暴击伤害为125%',
         ],
         'range_damage': [
           '发动技能时，与目标的距离会有不同的伤害加成。',
-          '离目标8m以上（含）时，为视为远距离，否则为近距离。'
+          '离目标8m以上（含）时，为视为远距离，否则为近距离。',
         ],
         'unsheathe_attack_multiplier': [
           '倍率的拔刀攻击加成。',
-          '例如：缎晶((奥狄隆马其纳))提供的拔刀攻击+10%。'
+          '例如：缎晶((奥狄隆马其纳))提供的拔刀攻击+10%。',
         ],
         'stronger_against_element': '对目标属性的伤害加成。',
         'target_element_resistance': '目标对属性攻击的抗性。',
@@ -134,23 +134,23 @@ export default function() {
           '((魔法伤害))的稳定率计算与物理伤害不同，并且有上限90%。',
           '((Graze))会使稳定度减半，因此计算出来的最小伤害也会减半。',
           '((Graze机率))可透过点击进行开关。关闭后，伤害计算会视为必定不发生Graze。',
-          '((魔法伤害))不会发生Graze。'
+          '((魔法伤害))不会发生Graze。',
         ],
         'other_multiplier': [
           '特定情况下会有的其它倍率。会直接乘上最终伤害。',
-          '多个其他倍率需自行相乘后，再填入((其他倍率))。例如：120%*120%=144%。计算完毕后填入144。'
-        ]
+          '多个其他倍率需自行相乘后，再填入((其他倍率))。例如：120%*120%=144%。计算完毕后填入144。',
+        ],
       },
       'User Set': {
         'str': '角色STR',
         'dex': '角色DEX',
         'int': '角色INT',
         'agi': '角色AGI',
-        'vit': '角色VIT'
+        'vit': '角色VIT',
       },
       'Warn': {
         'Calculation Name too long': '名称不得超过16个字元。',
-        'disabled char': '已自动清除被禁用的字元。'
+        'disabled char': '已自动清除被禁用的字元。',
       },
       'build': '配置',
       'Damage': '伤害期望值',
@@ -166,7 +166,7 @@ export default function() {
       'Save Load: title': '选取档案',
       'delete': '删除',
       'copy': '复制',
-      'create calculation': '新增配置'
-    }
+      'create calculation': '新增配置',
+    },
   };
 }

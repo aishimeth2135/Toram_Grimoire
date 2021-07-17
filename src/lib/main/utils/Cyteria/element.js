@@ -79,5 +79,5 @@ export default {
   createByCode,
   isTextNode,
   calcInputWidthPx,
-  selectElementFromChild
+  selectElementFromChild,
 };

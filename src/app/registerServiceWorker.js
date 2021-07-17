@@ -32,7 +32,7 @@ export default function() {
       },
       error (error) {
         console.error('Error during service worker registration:', error)
-      }
+      },
     });
 
     window.addEventListener('load', () => {

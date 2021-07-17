@@ -6,10 +6,14 @@
           <cy-icon-text size="small">
             {{ p.text }}
           </cy-icon-text>
-          <span class="value" :class="{ 'negative': p.negative }"
-            >{{ p.displayValue }}</span>
+          <span
+            class="value"
+            :class="{ 'negative': p.negative }"
+          >{{ p.displayValue }}</span>
         </template>
-        <cy-icon-text v-else size="small"
+        <cy-icon-text
+          v-else
+          size="small"
           :text-color="p.negative ? 'gray' : 'light-3'"
         >
           {{ p.text }}
@@ -41,7 +45,7 @@ export default {
           displayValue: (v >= 0 ? '+' : '') + p.origin.getDisplayValue(v),
           negative: v < 0,
           isBoolStat,
-          hidden
+          hidden,
         };
       };
 
@@ -63,8 +67,8 @@ export default {
       return res
         .filter(p => !p.hidden)
         .filter(p => p.value != 0);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

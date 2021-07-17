@@ -3,12 +3,14 @@
     <div>
       <fieldset class="mb-4 mx-2 p-4 border-1 border-solid border-light-2">
         <legend class="px-2">
-          <cy-button v-for="(mode, i) in modeState.modes"
+          <cy-button
+            v-for="(mode, i) in modeState.modes"
             :key="mode.id"
             :icon="mode.icon"
             :selected="i === modeState.currentModeIndex"
+            type="border"
             @click="selectMode(i)"
-            type="border">
+          >
             {{ $lang('search mode/' + mode.id) }}
           </cy-button>
         </legend>
@@ -18,34 +20,51 @@
               {{ $lang('search title') }}
             </cy-icon-text>
           </div>
-          <cy-title-input icon="ic-outline-category"
+          <cy-title-input
             v-model:value="modeState['mode-normal'].searchText"
-            :placeholder="$lang('search placeholder')" />
+            icon="ic-outline-category"
+            :placeholder="$lang('search placeholder')"
+          />
         </div>
         <div v-show="currentMode === 'stats'">
-          <cy-button icon="mdi-rhombus-outline" type="border"
-            @click="toggleSelectStatWindowVisible(true)">
+          <cy-button
+            icon="mdi-rhombus-outline"
+            type="border"
+            @click="toggleSelectStatWindowVisible(true)"
+          >
             {{ currentStat ? currentStat.text : $lang('select stat: title') }}
           </cy-button>
         </div>
       </fieldset>
       <div>
         <template v-if="searchResult.length !== 0">
-          <template v-for="(category, i) in searchResult"
-            :key="category.id">
-            <cy-hr v-if="i != 0" />
-            <cy-button icon="bx-bx-cube-alt"
+          <template
+            v-for="(category, i) in searchResult"
+            :key="category.id"
+          >
+            <cy-hr v-if="i !== 0" />
+            <cy-button
+              icon="bx-bx-cube-alt"
               type="drop-down"
-              :menu-default-visible="true">
+              :menu-default-visible="false"
+            >
               {{ $lang('category title')[category.id] }}
-              <template v-slot:menu>
-                <cy-list-item v-for="cs in category.crystalStates" :key="cs.origin.id"
-                  @click="selectCrystal(cs.origin)">
+              <template #menu>
+                <cy-list-item
+                  v-for="cs in category.crystalStates"
+                  :key="cs.origin.id"
+                  @click="selectCrystal(cs.origin)"
+                >
                   <cy-icon-text :icon="cs.imagePath" icon-src="image">
                     {{ cs.origin.name }}
                   </cy-icon-text>
-                  <show-stat v-if="currentMode == 'stats' && currentStat" class="crystal-stat-detail"
-                    :stat="cs.stat" :negative-value="cs.stat.value < 0" type="preview" />
+                  <show-stat
+                    v-if="currentMode == 'stats' && currentStat"
+                    class="crystal-stat-detail"
+                    :stat="cs.stat"
+                    :negative-value="cs.stat.value < 0"
+                    type="preview"
+                  />
                 </cy-list-item>
               </template>
             </cy-button>
@@ -55,16 +74,20 @@
           {{ $lang('no result tips') }}
         </cy-default-tips>
       </div>
-      <div v-if="currentCrystal"
-        class="flex sticky bottom-2 mx-2 bg-white border-1 border-solid border-light-2 rounded-2xl mt-4">
+      <div
+        v-if="currentCrystal"
+        class="flex sticky bottom-2 mx-2 bg-white border-1 border-solid border-light-2 rounded-2xl mt-4"
+      >
         <div class="p-4">
           <div class="mb-2 text-purple">
             <cy-icon-text :icon="getCrystalImagePath(currentCrystal)" text-color="purple" icon-src="image">
               {{ currentCrystal.name }}
             </cy-icon-text>
           </div>
-          <div v-if="currentCrystal.origin.enhancer"
-            class="flex items-center pl-3 mb-2">
+          <div
+            v-if="currentCrystal.origin.enhancer"
+            class="flex items-center pl-3 mb-2"
+          >
             <cy-icon-text icon="bx-bx-cube-alt" size="small">
               {{ $lang('enhancer title') }}
               <span class="text-orange">
@@ -73,31 +96,40 @@
             </cy-icon-text>
           </div>
           <div class="pl-1">
-            <show-stat v-for="stat in currentCrystal.stats"
-              :stat="stat" :key="stat.title"
-              :negative-value="stat.value < 0" />
+            <show-stat
+              v-for="stat in currentCrystal.stats"
+              :key="stat.title"
+              :stat="stat"
+              :negative-value="stat.value < 0"
+            />
           </div>
         </div>
       </div>
     </div>
     <div>
-      <cy-window v-model:visible="modeState['mode-stats'].selectStatWindowVisible"
-        vertical-position="top">
-        <template v-slot:title>
+      <cy-window
+        v-model:visible="modeState['mode-stats'].selectStatWindowVisible"
+        vertical-position="top"
+      >
+        <template #title>
           <cy-icon-text icon="mdi-rhombus-outline">
             {{ $lang('select stat: window title') }}
           </cy-icon-text>
         </template>
-        <template v-slot:default>
-          <cy-title-input icon="ic-outline-category"
-            class="mb-3"
+        <template #default>
+          <cy-title-input
             v-model:value="modeState['mode-stats'].searchText"
-            :placeholder="$lang('select stat: search placeholder')" />
+            icon="ic-outline-category"
+            class="mb-3"
+            :placeholder="$lang('select stat: search placeholder')"
+          />
           <template v-if="statSearchResult.length != 0">
-            <cy-list-item v-for="stat in statSearchResult"
+            <cy-list-item
+              v-for="stat in statSearchResult"
               :key="`${stat.origin.baseName}-${stat.type.description}`"
               :selected="stat == currentStat"
-              @click="selectStat(stat)">
+              @click="selectStat(stat)"
+            >
               <cy-icon-text icon="mdi-rhombus-outline">
                 {{ stat.text }}
               </cy-icon-text>
@@ -120,14 +152,17 @@ import { EquipmentCrystal } from "@/lib/Character/CharacterEquipment";
 import vue_showStat from "@/components/common/show-stat.vue";
 
 export default {
-  name: 'crystal-query',
+  name: 'CrystalQuery',
   RegisterLang: 'Crystal Query',
+  components: {
+    'show-stat': vue_showStat,
+  },
   data() {
     const crystals = this.$store.state.datas.items.crystals;
     const crystalCategorys = new Array(5).fill().map((_, i) => {
       return {
         id: i,
-        crystals: crystals.filter(a => a.category == i).map(p => new EquipmentCrystal(p))
+        crystals: crystals.filter(a => a.category == i).map(p => new EquipmentCrystal(p)),
       }
     });
 
@@ -140,7 +175,7 @@ export default {
         stats.push({
           origin: stat,
           text: stat.title(type),
-          type
+          type,
         });
       })
     });
@@ -151,22 +186,22 @@ export default {
       modeState: {
         modes: [{
           id: 'normal',
-          icon: 'ic-round-list-alt'
+          icon: 'ic-round-list-alt',
         }, {
           id: 'stats',
-          icon: 'mdi-rhombus-outline'
+          icon: 'mdi-rhombus-outline',
         }],
         currentModeIndex: 0,
         'mode-normal': {
-          searchText: ''
+          searchText: '',
         },
         'mode-stats': {
           stats,
           searchText: '',
           currentStat: null,
-          selectStatWindowVisible: false
-        }
-      }
+          selectStatWindowVisible: false,
+        },
+      },
     };
   },
   computed: {
@@ -196,7 +231,7 @@ export default {
             const t = cat.crystals.filter(c => c.name.toLowerCase().includes(v));
             t.length != 0 && res.push({
               id: cat.id,
-              crystals: t
+              crystals: t,
             });
           });
         }
@@ -209,9 +244,9 @@ export default {
           const t = cat.crystals
             .filter(c => this.findCrystalStat(searchStat, c))
             .sort((a, b) => this.findCrystalStat(searchStat, b).value - this.findCrystalStat(searchStat, a).value);
-          t.length != 0 && res.push({
+          t.length !== 0 && res.push({
             id: cat.id,
-            crystals: t
+            crystals: t,
           });
         });
       }
@@ -220,18 +255,20 @@ export default {
         cat.crystalStates = cat.crystals.map(c => ({
           origin: c,
           imagePath: this.getCrystalImagePath(c),
-          stat: this.currentStat ? this.findCrystalStat(this.currentStat, c) : null
+          stat: this.currentStat ? this.findCrystalStat(this.currentStat, c) : null,
         }));
       });
 
       return res;
-    }
+    },
+  },
+  beforeCreate() {
+    init();
   },
   methods: {
     findCrystalStat(from, crystal) {
       return crystal.stats
-        .find(stat => stat.baseName == from.origin.baseName &&
-            stat.type == from.type);
+        .find(stat => stat.baseName === from.origin.baseName && stat.type === from.type);
     },
     selectStat(stat) {
       this.modeState['mode-stats'].currentStat = stat;
@@ -251,13 +288,7 @@ export default {
     },
     selectCrystal(crystal) {
       this.currentCrystal = crystal;
-    }
+    },
   },
-  beforeCreate() {
-    init();
-  },
-  components: {
-    'show-stat': vue_showStat
-  }
 };
 </script>

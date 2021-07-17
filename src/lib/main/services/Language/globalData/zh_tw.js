@@ -32,7 +32,7 @@ export default function() {
           'body-armor': '身體裝備',
           'additional': '追加裝備',
           'special': '特殊裝備',
-          'avatar': '時裝'
+          'avatar': '時裝',
         },
         'category': {
           'one-hand-sword': '單手劍',
@@ -50,7 +50,7 @@ export default function() {
           'sub-armor|shield': '盾牌',
           'body-armor|normal': '一般防具',
           'body-armor|dodge': '輕化防具',
-          'body-armor|defense': '重化防具'
+          'body-armor|defense': '重化防具',
         },
         'stat restriction': {
           'event': '活動',
@@ -72,13 +72,13 @@ export default function() {
             'magic-device': '副手魔導具',
             'knuckle': '副手拳套',
             'one-hand-sword': '雙劍',
-            'ninjutsu-scroll': '忍術卷軸'
+            'ninjutsu-scroll': '忍術卷軸',
           },
           'body': {
             'dodge': '輕化防具',
             'defense': '重化防具',
-            'normal': '一般防具'
-          }
+            'normal': '一般防具',
+          },
         },
         'obtain': {
           'mobs': '小怪',
@@ -93,12 +93,12 @@ export default function() {
           'other': '其它',
           'box': '箱子道具',
           'exchange': '交換所',
-          'ex_skill': 'EX技能'
+          'ex_skill': 'EX技能',
         },
-      }
+      },
     },
     'Loading Page': {
-      'bottom tips': '初次載入需要較長的時間，請稍後...<br />若載入途中發生錯誤，請先試著重新整理網頁。'
+      'bottom tips': '初次載入需要較長的時間，請稍後...<br />若載入途中發生錯誤，請先試著重新整理網頁。',
     },
     'Loading Message': {
       'Stats': '載入角色能力清單',
@@ -107,7 +107,7 @@ export default function() {
       'Skill': '載入技能資料',
       'Tag': '載入標籤清單',
       'Enchant': '載入附魔資料',
-      'init': '初始化'
+      'init': '初始化',
     },
     'Page Title': {
       'base': '布偶的魔法書',
@@ -117,18 +117,18 @@ export default function() {
       'item-query': '道具查詢',
       'crystal-query': '鍛晶查詢',
       'calculation': {
-        'damage': '傷害計算'
+        'damage': '傷害計算',
       },
       'enchant': {
         'enchant-simulator': '附魔模擬',
-        'enchant-doll': '附魔布偶'
-      }
+        'enchant-doll': '附魔布偶',
+      },
     },
     'Left Menu': {
       'Home': {
         'base': '主頁',
-        'about': '關於'
-      }
+        'about': '關於',
+      },
     },
     'Settings': {
       'title': '設定',
@@ -146,7 +146,7 @@ export default function() {
         'caption': '若字體顯示有問題（特定裝置會發生），或是不喜歡現在的預設字體，可以切換字體為基本字體。',
         'tips 1': '切換後可能要花費數秒的時間下載字體，才能完成替換。',
         'default font': '預設字體',
-        'base font': '基本字體'
+        'base font': '基本字體',
       },
       'set rem': {
         'title': '調整頁面大小',
@@ -164,8 +164,8 @@ export default function() {
           'lang 0': 'English',
           'lang 1': '繁體中文',
           'lang 2': '日本語',
-          'lang 3': '简体中文'
-        }
+          'lang 3': '简体中文',
+        },
       },
       'second language': {
         'title': '次要語言設定',
@@ -180,9 +180,9 @@ export default function() {
         'tips 2': '快取被清除後，下次進入頁面時資料庫需要重新下載。這可能需要數十秒的時間，請耐心等待。',
         'tips 3': '清除快取完畢後，可以使用重新整理，讓頁面立即重新載入。',
         'button texts': {
-          'clear caches of spreadsheets': '清除資料庫快取'
+          'clear caches of spreadsheets': '清除資料庫快取',
         },
-        'Clear caches of spreadsheet successfully': '已清除資料庫快取。下次進入頁面時將會重新下載資料庫。'
+        'Clear caches of spreadsheet successfully': '已清除資料庫快取。下次進入頁面時將會重新下載資料庫。',
       },
       'storage backup': {
         'title': '存檔備份',
@@ -191,17 +191,17 @@ export default function() {
         'tips 2': '讀取成功後，請直接重新整理網頁，可以確保系統正確初始化。',
         'button texts': {
           'save': '存檔資料備份',
-          'load': '讀取存檔資料'
+          'load': '讀取存檔資料',
         },
         'Save successfully': '存檔成功。',
         'Load successfully': '讀取成功。',
         'Load failed': '讀取失敗。',
         'Wrong type of file': '讀取的檔案必須為文字（.txt）檔。',
-        'Must be operated on the homepage': '為避免發生無法預期的錯誤，此功能限制只能在首頁使用。'
-      }
+        'Must be operated on the homepage': '為避免發生無法預期的錯誤，此功能限制只能在首頁使用。',
+      },
     },
     'stat base': {
-      'type total: preText': '總'
-    }
+      'type total: preText': '總',
+    },
   };
 }

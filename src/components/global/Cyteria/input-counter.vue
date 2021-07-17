@@ -1,9 +1,11 @@
 <template>
   <div class="cy--input-counter-container">
-    <div class="cy--input-counter border bg-white duration-300 outline-none"
-      :class="conunterClassList">
-      <div class="title" v-if="$slots['title']">
-        <slot name="title"></slot>
+    <div
+      class="cy--input-counter border bg-white duration-300 outline-none"
+      :class="conunterClassList"
+    >
+      <div v-if="$slots['title']" class="title">
+        <slot name="title" />
       </div>
       <div class="counter-content">
         <cy-button-icon
@@ -19,12 +21,13 @@
           :icon-color-hover="mainColorInstance.darken"
           @click="setValue(value - step)"
         />
-        <input type="number"
+        <input
           v-model.number.lazy="inputValue"
+          type="number"
           @click="selectInput($event)"
           @focus="setInputFocus(true)"
           @blur="setInputFocus(false)"
-        />
+        >
         <cy-button-icon
           icon="ic-round-add-circle-outline"
           :icon-color="mainColor"
@@ -38,7 +41,7 @@
           :icon-color-hover="mainColorInstance.darken"
           @click="setValue(range[1])"
         />
-        <slot name="unit"></slot>
+        <slot name="unit" />
       </div>
     </div>
   </div>
@@ -49,51 +52,51 @@ import Color from "@services/Color";
 const ColorList = Color.List;
 
 export default {
-  emits: ['update:value'],
   props: {
     'value': {
       type: Number,
-      require: true
+      require: true,
     },
     'range': { // [min, max]
       type: Array,
       default: () => [null, null],
-      validation: v => v.length !== 2 || !v.every(p => typeof p === 'number' || p === null)
+      validation: v => v.length !== 2 || !v.every(p => typeof p === 'number' || p === null),
     },
     'step': {
       type: Number,
-      default: 1
+      default: 1,
     },
     'type': {
       type: String,
       default: 'normal',
-      validation: v => ['normal', 'line'].includes(v)
+      validation: v => ['normal', 'line'].includes(v),
     },
     'inline': {
       type: Boolean,
-      default: false
+      default: false,
     },
     'disabled': {
       type: Boolean,
-      default: false
+      default: false,
     },
     'maxButton': {
       type: Boolean,
-      default: false
+      default: false,
     },
     'minButton': {
       type: Boolean,
-      default: false
+      default: false,
     },
     'mainColor': {
       type: String,
       default: 'light-2',
-      validation: v => ColorList.includes(v)
-    }
+      validation: v => ColorList.includes(v),
+    },
   },
+  emits: ['update:value'],
   data() {
     return {
-      focus: false
+      focus: false,
     };
   },
   computed: {
@@ -105,7 +108,7 @@ export default {
         'disabled': this.disabled,
         ['border-' + this.mainColorInstance.darken]: !this.inline && this.focus,
         ['ring-' + this.mainColorInstance.darken]: !this.inline && this.focus,
-        'ring-1': !this.inline && this.focus
+        'ring-1': !this.inline && this.focus,
       };
     },
     mainColorInstance() {
@@ -125,7 +128,7 @@ export default {
 
         this.$emit('update:value', v);
       },
-    }
+    },
   },
   methods: {
     setInputFocus(v) {
@@ -137,7 +140,7 @@ export default {
     setValue(v) {
       this.inputValue = v;
     },
-  }
+  },
 };
 </script>
 <style lang="less" scoped>

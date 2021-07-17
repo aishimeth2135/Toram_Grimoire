@@ -5,25 +5,32 @@
         {{ $lang('select crystals/window title') }}
       </cy-icon-text>
     </template>
-    <cy-title-input icon="ic-outline-category" class="mb-4"
+    <cy-title-input
       v-model:value="searchText"
-      :placeholder="$lang('select crystals/search placeholder')" />
+      icon="ic-outline-category"
+      class="mb-4"
+      :placeholder="$lang('select crystals/search placeholder')"
+    />
     <div>
       <template v-if="crystalCategorys.length != 0">
-        <template v-for="(category, i) in crystalCategorys"
-          :key="category.id">
+        <template
+          v-for="(category, i) in crystalCategorys"
+          :key="category.id"
+        >
           <cy-hr v-if="i != 0" />
           <cy-button-drop-down
             icon="bx-bx-cube-alt"
             :menu-default-visible="true"
           >
             {{ $lang('select crystals/category title')[category.id] }}
-            <template v-slot:menu>
+            <template #menu>
               <template v-for="cs in category.crystalStates">
-                <cy-list-item v-if="!cs.disabled"
+                <cy-list-item
+                  v-if="!cs.disabled"
                   :key="cs.origin.id"
                   :selected="cs.selected"
-                  @click="selectCrystal(cs.origin)">
+                  @click="selectCrystal(cs.origin)"
+                >
                   <cy-icon-text :icon="cs.imagePath" icon-src="image">
                     {{ cs.origin.name }}
                   </cy-icon-text>
@@ -45,14 +52,19 @@
     <cy-bottom-content>
       <template #normal-content>
         <div v-if="detailVisible" class="pt-1 animate-slide-up">
-          <cy-icon-text icon="bx-bx-cube-alt"
-            text-color="purple" size="small">
+          <cy-icon-text
+            icon="bx-bx-cube-alt"
+            text-color="purple"
+            size="small"
+          >
             {{ $lang('select crystals/selected crystals') }}
           </cy-icon-text>
           <div>
-            <cy-list-item v-for="c in equipment.crystals"
+            <cy-list-item
+              v-for="c in equipment.crystals"
               :key="c.id"
-              @click="selectCrystal(convertToOriginal(c))">
+              @click="selectCrystal(convertToOriginal(c))"
+            >
               <div class="flex items-center">
                 <cy-icon-text icon="bx-bx-cube-alt">
                   {{ c.name }}
@@ -60,18 +72,23 @@
                 <cy-icon-text icon="ic-round-close" class="ml-auto" />
               </div>
               <div class="pl-2 pt-1 w-full">
-                <show-stat v-for="stat in c.stats" :stat="stat"
-                  :key="stat.statId" />
+                <show-stat
+                  v-for="stat in c.stats"
+                  :key="stat.statId"
+                  :stat="stat"
+                />
               </div>
             </cy-list-item>
           </div>
         </div>
-        <div @click="toggleDetailVisible"
-          class="flex items-center cursor-pointer">
+        <div
+          class="flex items-center cursor-pointer"
+          @click="toggleDetailVisible"
+        >
           <cy-icon-text :icon="'ic-round-keyboard-arrow-' + (detailVisible ? 'down' : 'up')" />
           <div class="ml-auto leading-none">
             <cy-button-border icon="ic-round-done" @click.stop="closeWindow">
-              {{ $globalLang('global/close') }}
+              {{ $rootLang('global/close') }}
             </cy-button-border>
           </div>
         </div>
@@ -86,21 +103,24 @@ import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from "@/lib/Charac
 
 export default {
   RegisterLang: 'Character Simulator',
-  emits: ['close'],
+  components: {
+    'show-stat': vue_showStat,
+  },
   props: ['visible', 'equipment'],
+  emits: ['close'],
   data() {
     const crystals = this.$store.state.datas.items.crystals;
     const crystalCategorys = new Array(5).fill().map((p, i) => {
       return {
         id: i,
-        crystals: crystals.filter(a => a.category == i)
+        crystals: crystals.filter(a => a.category == i),
       };
     });
 
     return {
       originalCrystalCategorys: crystalCategorys,
       searchText: '',
-      detailVisible: false
+      detailVisible: false,
     };
   },
   computed: {
@@ -123,11 +143,11 @@ export default {
             origin: c,
             imagePath: this.getCrystalImagePath(c),
             disabled: !this.checkEnchaner(cat, c),
-            selected: this.findEquipmentCrystal(c) ? true : false
-          }))
+            selected: this.findEquipmentCrystal(c) ? true : false,
+          })),
         };
       });
-    }
+    },
   },
   methods: {
     checkEnchaner(category, crystal) {
@@ -187,10 +207,7 @@ export default {
       find ?
         this.equipment.removeCrystal(find) :
         this.equipment.appendCrystal(c);
-    }
+    },
   },
-  components: {
-    'show-stat': vue_showStat
-  }
 }
 </script>

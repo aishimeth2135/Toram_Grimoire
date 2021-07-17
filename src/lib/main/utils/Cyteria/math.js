@@ -1,5 +1,5 @@
 const status = {
-  checkBoundary: false
+  checkBoundary: false,
 };
 
 function removeNumberDigit(v) {

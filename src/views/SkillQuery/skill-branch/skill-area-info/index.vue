@@ -4,13 +4,19 @@
       <div class="inline-block">
         <skill-area :attrs="branch.attrs" />
         <div class="text-center">
-          <cy-icon-text icon="bx-bxs-circle"
-            class="mr-2" icon-color="water-blue"
-            size="small">
+          <cy-icon-text
+            icon="bx-bxs-circle"
+            class="mr-2"
+            icon-color="water-blue"
+            size="small"
+          >
             {{ $lang('skill area/point: character') }}
           </cy-icon-text>
-          <cy-icon-text icon="bx-bxs-circle"
-            icon-color="red" size="small">
+          <cy-icon-text
+            icon="bx-bxs-circle"
+            icon-color="red"
+            size="small"
+          >
             {{ $lang('skill area/point: target') }}
           </cy-icon-text>
         </div>
@@ -20,27 +26,27 @@
           <tbody>
             <tr>
               <td>{{ showData['effective_area: title'] }}</td>
-              <td v-html="showData['effective_area']"></td>
+              <td v-html="showData['effective_area']" />
             </tr>
             <tr v-if="branch.attrs['effective_area'] != 'sector'">
               <td>{{ showData['radius: title'] }}</td>
-              <td v-html="showData['radius']"></td>
+              <td v-html="showData['radius']" />
             </tr>
             <tr v-if="showData['move_distance']">
               <td>{{ showData['move_distance: title'] }}</td>
-              <td v-html="showData['move_distance']"></td>
+              <td v-html="showData['move_distance']" />
             </tr>
             <tr v-if="showData['angle']">
               <td>{{ showData['angle: title'] }}</td>
-              <td v-html="showData['angle']"></td>
+              <td v-html="showData['angle']" />
             </tr>
             <tr v-if="showData['start_position_offsets']">
               <td>{{ showData['start_position_offsets: title'] }}</td>
-              <td v-html="showData['start_position_offsets']"></td>
+              <td v-html="showData['start_position_offsets']" />
             </tr>
             <tr v-if="showData['end_position_offsets']">
               <td>{{ showData['end_position_offsets: title'] }}</td>
-              <td v-html="showData['end_position_offsets']"></td>
+              <td v-html="showData['end_position_offsets']" />
             </tr>
           </tbody>
         </table>
@@ -53,10 +59,10 @@ import vue_skillArea from "./skill-area.vue";
 
 export default {
   RegisterLang: 'Skill Query/Branch',
-  props: ['branch', 'showData'],
   components: {
-    'skill-area': vue_skillArea
-  }
+    'skill-area': vue_skillArea,
+  },
+  props: ['branch', 'showData'],
 }
 </script>
 <style lang="less" scoped>

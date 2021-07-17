@@ -1,7 +1,7 @@
 <template>
   <div class="stats">
-    <show-stat class="item mr-4" v-for="stat in statDatas" type="custom" :key="stat.iid">
-      <span v-html="stat.text"></span>
+    <show-stat v-for="stat in statDatas" :key="stat.iid" class="item mr-4" type="custom">
+      <span v-html="stat.text" />
     </show-stat>
   </div>
 </template>
@@ -9,10 +9,10 @@
 import vue_showStat from "../equipments/show-stat.vue";
 
 export default {
-  props: ['statDatas'],
   components: {
-    'show-stat': vue_showStat
-  }
+    'show-stat': vue_showStat,
+  },
+  props: ['statDatas'],
 };
 </script>
 <style lang="less" scoped>

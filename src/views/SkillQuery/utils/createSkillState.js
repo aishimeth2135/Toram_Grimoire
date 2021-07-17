@@ -6,7 +6,7 @@ export default function(skill, { defaultSkillLevel = 0, defaultCharacterLevel = 
     skill,
     slv: defaultSkillLevel,
     clv: defaultCharacterLevel,
-    ...handleSkillState(skill)
+    ...handleSkillState(skill),
   };
 }
 
@@ -33,14 +33,14 @@ function handleSkillState(skill) {
       '@delete-list': [],
       '@overwrite-list': [],
       '@stat-delete-list': [],
-      '@stat-overwrite-list': []
+      '@stat-overwrite-list': [],
     }));
 
     const equipment = {
       main: sef.mainWeapon,
       sub: sef.subWeapon,
       body: sef.bodyArmor,
-      operator: sef.config.equipmentConfirm
+      operator: sef.config.equipmentConfirm,
     };
 
     const state = {
@@ -49,7 +49,7 @@ function handleSkillState(skill) {
       equipment,
       historyList: [],
       stackStates: [],
-      currentHistoryIdx: -1
+      currentHistoryIdx: -1,
     };
 
     return state;
@@ -62,7 +62,7 @@ function handleSkillState(skill) {
       'skill_type': st.attrs[SkillEffect.SKILL_TYPE],
       'in_combo': st.attrs[SkillEffect.IN_COMBO],
       'action_time': st.attrs[SkillEffect.ACTION_TIME],
-      'casting_time': st.attrs[SkillEffect.CASTING_TIME]
+      'casting_time': st.attrs[SkillEffect.CASTING_TIME],
     };
   };
 
@@ -103,7 +103,7 @@ function handleSkillState(skill) {
     return {
       date: bch.attrs['date'],
       branch: bch,
-      hiddenFlag
+      hiddenFlag,
     };
   };
 
@@ -155,11 +155,11 @@ function handleSkillState(skill) {
 
     // create list of history.date
     state.historyList = [...new Set(
-        state.branchs
+      state.branchs
         .filter(p => p.name == 'history')
         .map(p => p.attrs['date'])
-        .filter(p => /\d{4}\/\d{2}\/\d{2}/.test(p))
-      )]
+        .filter(p => /\d{4}\/\d{2}\/\d{2}/.test(p)),
+    )]
       .sort((a, b) => new Date(b) >= new Date(a) ? 1 : -1);
 
     // suffix
@@ -171,8 +171,8 @@ function handleSkillState(skill) {
       'list': ['list'],
       '@global': ['formula_extra', 'group', {
         name: 'history',
-        validation: b => b.attrs['target_branch'] === void 0
-      }]
+        validation: b => b.attrs['target_branch'] === void 0,
+      }],
     };
     const searchSuffixList = (cur_bch, bch) => {
       return [cur_bch.name, '@global'].find(name => {
@@ -194,7 +194,7 @@ function handleSkillState(skill) {
      */
 
     const mainBranchNameList = ['damage', 'effect', 'proration', 'next', 'list',
-      'passive', 'heal', 'text', 'tips', 'stack', 'reference', 'history', 'import'
+      'passive', 'heal', 'text', 'tips', 'stack', 'reference', 'history', 'import',
     ];
     const isMainBranch = _bch => mainBranchNameList.includes(_bch.name);
     const resBranchs = [];
@@ -229,7 +229,7 @@ function handleSkillState(skill) {
           bch.group = {
             size: parseInt(p.attrs['size'], 10),
             expandable: p.attrs['expandable'] == 1,
-            expansion: p.attrs['expansion_default'] == 1
+            expansion: p.attrs['expansion_default'] == 1,
           };
           return false;
         }
@@ -259,7 +259,7 @@ function handleSkillState(skill) {
       .map(b => ({
         id: b.attrs['id'],
         branch: b,
-        value: parseInt(b.attrs['default'] == 'auto' ? b.attrs['min'] : b.attrs['default'], 10)
+        value: parseInt(b.attrs['default'] == 'auto' ? b.attrs['min'] : b.attrs['default'], 10),
       }));
     state.stackStates = stackStates;
 
@@ -298,7 +298,7 @@ function handleSkillState(skill) {
   });
 
   return {
-    states
+    states,
   };
 }
 
@@ -338,13 +338,13 @@ function setBranchAttributeDefault(branchs) {
       'radius': '1',
       'start_position_offsets': '0',
       'end_position_offsets': '0',
-      'target_offsets': 'auto'
+      'target_offsets': 'auto',
     },
     'base': {
-      'title': 'auto'
+      'title': 'auto',
     },
     'proration': {
-      'proration': 'auto'
+      'proration': 'auto',
     },
     'effect': {
       'condition': 'auto',
@@ -354,31 +354,31 @@ function setBranchAttributeDefault(branchs) {
       'effective_area': 'circle',
       'radius': '1',
       'start_position_offsets': '0',
-      'end_position_offsets': '0'
+      'end_position_offsets': '0',
     },
     'heal': {
       'target': 'self',
       'frequency': '1',
-      'constant': '0'
+      'constant': '0',
     },
     'list': {
-      'is_tips': '0'
+      'is_tips': '0',
     },
     'stack': {
       'min': '1',
       'default': 'auto',
-      'name': 'auto'
+      'name': 'auto',
     },
     'group': {
       'expandable': '1',
-      'expansion_default': '0'
+      'expansion_default': '0',
     },
     'import': {
-      'default_level': '5'
+      'default_level': '5',
     },
     'space': {
-      'disabled': '0'
-    }
+      'disabled': '0',
+    },
   };
 
   branchs.forEach(branch => {

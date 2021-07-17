@@ -10,9 +10,12 @@
           </cy-list-item>
         </template>
         <template #options>
-          <cy-list-item v-for="(build, i) in skillBuilds" :key="build.stateId"
+          <cy-list-item
+            v-for="(build, i) in skillBuilds"
+            :key="build.stateId"
             :selected="i === currentSkillBuildIndex"
-            @click="selectCurrentBuild(i)">
+            @click="selectCurrentBuild(i)"
+          >
             <cy-icon-text>
               {{ build.name }}
             </cy-icon-text>
@@ -21,53 +24,70 @@
       </cy-options>
     </div>
     <div class="my-3">
-      <cy-button-border icon="mdi-rhombus-outline"
+      <cy-button-border
+        icon="mdi-rhombus-outline"
         :selected="mode === 'passive'"
-        @click="setMode('passive')">
+        @click="setMode('passive')"
+      >
         {{ $lang('skill management/passive skills') }}
       </cy-button-border>
-      <cy-button-border icon="mdi-rhombus-outline"
+      <cy-button-border
+        icon="mdi-rhombus-outline"
         :selected="mode === 'active'"
-        @click="setMode('active')">
+        @click="setMode('active')"
+      >
         {{ $lang('skill management/active skills') }}
       </cy-button-border>
     </div>
     <div class="content">
       <template v-if="mode === 'passive' && passiveSkillStates.length !== 0">
-        <skill-item v-for="state in passiveSkillStates"
+        <skill-item
+          v-for="state in passiveSkillStates"
+          :key="state.levelSkill.base.id + '#' + state.levelSkill.base.name"
           :level-skill-state-root="state"
-          :key="state.levelSkill.base.id + '#' + state.levelSkill.base.name" />
+        />
       </template>
       <template v-else-if="mode === 'active' && activeSkillStates.length !== 0">
-        <skill-item v-for="state in activeSkillStates"
+        <skill-item
+          v-for="state in activeSkillStates"
+          :key="state.levelSkill.base.id + '#' + state.levelSkill.base.name"
           :level-skill-state-root="state"
-          :key="state.levelSkill.base.id + '#' + state.levelSkill.base.name" />
+        />
       </template>
       <cy-default-tips v-else icon="mdi-ghost">
         {{ $lang('skill management/there are no skills yet') }}
       </cy-default-tips>
     </div>
-    <cy-window v-if="userSetsWindow.handler && userSetsWindow.handler.hasUserSets"
-      v-model:visible="userSetsWindow.visible">
+    <cy-window
+      v-if="userSetsWindow.handler && userSetsWindow.handler.hasUserSets"
+      v-model:visible="userSetsWindow.visible"
+    >
       <template #title>
         <cy-icon-text icon="mdi-numeric">
           {{ $lang('skill management/user sets: window title') }}
         </cy-icon-text>
       </template>
-      <cy-input-counter v-for="p in userSetsWindow.handler.validUserSets"
-        :key="p.variableName" class="counter"
+      <cy-input-counter
+        v-for="p in userSetsWindow.handler.validUserSets"
+        :key="p.variableName"
+        class="counter"
         :value="p.value"
-        @update:value="userSetValue(p, $event)">
+        @update:value="userSetValue(p, $event)"
+      >
         <template #title>
           <cy-icon-text>
             {{ p.text }}
           </cy-icon-text>
         </template>
       </cy-input-counter>
-      <cy-input-counter v-for="p in userSetsWindow.handler.stackStates"
-        :key="p.id" :range="p.range" class="counter"
+      <cy-input-counter
+        v-for="p in userSetsWindow.handler.stackStates"
+        :key="p.id"
+        :range="p.range"
+        class="counter"
         :value="p.value"
-        @update:value="userSetValue(p, $event)">
+        @update:value="userSetValue(p, $event)"
+      >
         <template #title>
           <cy-icon-text>
             {{ p.name }}
@@ -89,19 +109,19 @@ import vue_skillItem from "./skill-item.vue";
 
 export default {
   RegisterLang: 'Character Simulator',
+  provide() {
+    return {
+      'openUserSetsWindow': this.openUserSetsWindow,
+    };
+  },
   props: ['characterState', 'passiveSkillStates', 'activeSkillStates'],
   data() {
     return {
       mode: 'passive',
       userSetsWindow: {
         visible: false,
-        handler: null
-      }
-    };
-  },
-  provide() {
-    return {
-      'openUserSetsWindow': this.openUserSetsWindow
+        handler: null,
+      },
     };
   },
   created() {
@@ -115,11 +135,11 @@ export default {
   computed: {
     ...mapState('character', {
       'skillBuilds': 'skillBuilds',
-      'currentSkillBuildIndex': 'currentSkillBuildIndex'
+      'currentSkillBuildIndex': 'currentSkillBuildIndex',
     }),
     ...mapGetters('character', {
-      'currentSkillBuild': 'currentSkillBuild'
-    })
+      'currentSkillBuild': 'currentSkillBuild',
+    }),
   },
   methods: {
     setMode(mode) {
@@ -135,11 +155,11 @@ export default {
     userSetValue(state, value) {
       state.value = value;
       // this.userSetsWindow.handler.notifyValueUpdate();
-    }
+    },
   },
   components: {
-    'skill-item': vue_skillItem
-  }
+    'skill-item': vue_skillItem,
+  },
 };
 </script>
 <style lang="less" scoped>
