@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --primary-dark: #85005F;
   --primary-dark-light: #c62899;
@@ -30,19 +34,19 @@
   --rgb-primary-dark: 133, 0, 95;
 }
 
-.main--font-base() {
+.main--font-base {
   font-family: 'Itim', Microsoft JhengHei, sans-serif;
 }
 
 
-.main--font-1() {
+.main--font-1 {
   font-family: 'Itim', 'naikaifont', Microsoft JhengHei, sans-serif;
 }
-.main--font-2() {
+.main--font-2 {
   font-family: 'Itim', 'Noto Sans TC', Microsoft JhengHei, sans-serif;
 }
 
-.night-mode() {
+.night-mode {
   --primary-dark: white;
   --primary-dark-light: #FFD1EA;
   --primary-light: #8a225d;
@@ -80,32 +84,32 @@ html {
 }
 
 html.theme--night-mode {
-  .night-mode();
+  @apply night-mode;
 }
 
 html {
   @apply text-base;
   
   &.font-0 {
-    .main--font-base();
+    @apply main--font-base;
 
     & input, textarea {
-      .main--font-base();
+      @apply main--font-base;
     }
   }
 
   &.font-1 {
-    .main--font-1();
+    @apply main--font-1;
 
     & input, textarea {
-      .main--font-2();
+      @apply main--font-2;
     }
   }
   &.font-2 {
-    .main--font-2();
+    @apply main--font-2;
 
     & input, textarea {
-      .main--font-2();
+      @apply main--font-2;
     }
   }
 }

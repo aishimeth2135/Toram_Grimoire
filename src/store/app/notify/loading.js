@@ -1,5 +1,5 @@
 const state = {
-  active: false
+  active: false,
 };
 
 const mutations = {
@@ -8,11 +8,11 @@ const mutations = {
   },
   hide(state) {
     state.active = false;
-  }
+  },
 };
 
 export default {
   namespaced: true,
   state,
-  mutations
+  mutations,
 };

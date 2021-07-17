@@ -23,7 +23,7 @@ export default class EnchantDoll {
     /** @type {EnchantDollConfig} */
     this.config = {
       baseType: 'none',
-      autoFindNegaitveStatsType: 'success-rate'
+      autoFindNegaitveStatsType: 'success-rate',
     };
   }
 
@@ -96,7 +96,7 @@ export default class EnchantDoll {
       itemCategorys: this.build.categorys,
       equipment: this.build.equipment,
       positiveStats,
-      negativeStats
+      negativeStats,
     });
 
     if (originalPotential !== 0) {
@@ -234,7 +234,7 @@ export default class EnchantDoll {
    *  equipment: EnchantEquipment|null
    * }}
    */
-   autoFindNegaitveStats(manuallyStats = [], originalPotential = 0) {
+  autoFindNegaitveStats(manuallyStats = [], originalPotential = 0) {
     const limit = this.numNegativeStats;
     const categorys = Grimoire.Enchant.categorys;
     const types = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
@@ -243,18 +243,18 @@ export default class EnchantDoll {
     const eq = this.build.equipment;
 
     const prioritizedShortList = {
-      [EnchantEquipment.TYPE_MAIN_WEAPON]: ['def', 'mdef', 'dodge', 'natural_hp_regen', 'natural_mp_regen'],
-      [EnchantEquipment.TYPE_BODY_ARMOR]: ['accuracy']
+      [EnchantEquipment.TYPE_MAIN_WEAPON]: ['def', 'mdef', 'dodge', 'natural_hp_regen'],
+      [EnchantEquipment.TYPE_BODY_ARMOR]: ['accuracy'],
     }[eq.fieldType];
 
     if (eq.fieldType === EnchantEquipment.TYPE_BODY_ARMOR) {
       switch (this.config.baseType) {
-        case 'physical':
-          prioritizedShortList.unshift('matk', 'magic_pierce'); break;
-        case 'magic':
-          prioritizedShortList.unshift('atk', 'physical_pierce'); break;
-        case 'none':
-          prioritizedShortList.unshift('atk', 'matk', 'physical_pierce', 'magic_pierce');
+      case 'physical':
+        prioritizedShortList.unshift('matk', 'magic_pierce'); break;
+      case 'magic':
+        prioritizedShortList.unshift('atk', 'physical_pierce'); break;
+      case 'none':
+        prioritizedShortList.unshift('atk', 'matk', 'physical_pierce', 'magic_pierce');
       }
     }
 
@@ -309,7 +309,7 @@ export default class EnchantDoll {
         return {
           categorysId,
           potentialEffect: categoryEffectSum,
-          materialPoint: materialPointSum
+          materialPoint: materialPointSum,
         };
       };
       const statsMap = new Map();
@@ -329,7 +329,7 @@ export default class EnchantDoll {
         statsMap.set(categorysId, {
           potentialEffect,
           materialPoint,
-          stats
+          stats,
         });
       });
       const negativeStatsList = Array.from(statsMap, el => el[1].stats);
@@ -339,7 +339,7 @@ export default class EnchantDoll {
         return {
           realSuccessRate: eq.realSuccessRate,
           stats: _stats,
-          equipment: eq
+          equipment: eq,
         };
       });
       return finaleList.sort((a, b) => b.realSuccessRate - a.realSuccessRate)[0];
@@ -348,7 +348,7 @@ export default class EnchantDoll {
     return {
       realSuccessRate: null,
       equipment: null,
-      stats: this.parseNegativeCategorys(negatives, limit)
+      stats: this.parseNegativeCategorys(negatives, limit),
     };
   }
 
@@ -369,7 +369,7 @@ export default class EnchantDoll {
      * @param {EnchantDollCategory} category
      * @param {number} num - 指定的能力數量
      */
-     const calcMaterialPriority = (category, num) => {
+    const calcMaterialPriority = (category, num) => {
       return category.materialPointMaximumSum('min', num);
     };
 
@@ -479,25 +479,25 @@ class EnchantDollCategory {
     this.stats = [];
   }
 
- /**
+  /**
   * @param {EnchantStat[]} stats
   * @returns {EnchantDollCategory[]}
   */
   static classifyStats(stats) {
-   const target = [];
-   stats.forEach(stat => {
-     const statCategory = stat.itemBase.belongCategory;
-     const find = target.find(category => category.category === statCategory);
-     if (find) {
-       find.stats.push(stat);
-     } else {
-       const category = new EnchantDollCategory(statCategory);
-       category.stats.push(stat);
-       target.push(category);
-     }
-   });
-   return target;
- }
+    const target = [];
+    stats.forEach(stat => {
+      const statCategory = stat.itemBase.belongCategory;
+      const find = target.find(category => category.category === statCategory);
+      if (find) {
+        find.stats.push(stat);
+      } else {
+        const category = new EnchantDollCategory(statCategory);
+        category.stats.push(stat);
+        target.push(category);
+      }
+    });
+    return target;
+  }
 
   /**
    * @param {"max-effect"|"cost"} type
@@ -536,7 +536,7 @@ class EnchantDollCategory {
    * @param {number} [num]
    * @returns {number} sum of potential effect of stats
    */
-   originalPotentialEffectMaximumSum(num) {
+  originalPotentialEffectMaximumSum(num) {
     num = num === void 0 ? this.stats.length : num;
     return -1 * this.stats.slice(0, num)
       .reduce((cur, stat) => cur + stat.originalPotential * stat.limit[0], 0)

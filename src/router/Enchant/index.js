@@ -16,24 +16,24 @@ export default {
     leftMenuViewButtons: [{
       title: () => GetLang('Page Title/enchant/enchant-simulator'),
       icon: 'mdi-cube-scan',
-      path: ''
+      path: '',
     }, {
       title: () => GetLang('Page Title/enchant/enchant-doll'),
       icon: 'mdi-leaf',
-      path: '/doll'
-    }]
+      path: '/doll',
+    }],
   },
   children: [{
     path: '',
     component: vue_enchantSimulator,
     meta: {
-      title: () => GetLang('Page Title/enchant/enchant-simulator')
-    }
+      title: () => GetLang('Page Title/enchant/enchant-simulator'),
+    },
   }, {
     path: 'doll',
     component: vue_enchantDoll,
     meta: {
-      title: () => GetLang('Page Title/enchant/enchant-doll')
-    }
-  }]
+      title: () => GetLang('Page Title/enchant/enchant-doll'),
+    },
+  }],
 };

@@ -1,10 +1,12 @@
 <template>
   <teleport v-if="root" to="body">
-    <div v-if="captionVisible"
+    <div
+      v-if="captionVisible"
       class="cy--sub-caption-container fixed border-1 rounded-lg border-purple p-1 bg-white flex z-10"
-      :style="captionPosition">
+      :style="captionPosition"
+    >
       <div class="py-1 px-2 flex flex-wrap w-max">
-        <slot></slot>
+        <slot />
       </div>
     </div>
   </teleport>
@@ -15,8 +17,8 @@ import CY from "@utils/Cyteria";
 export default {
   props: {
     root: {
-      type: HTMLElement
-    }
+      type: HTMLElement,
+    },
   },
   data() {
     return {
@@ -76,8 +78,8 @@ export default {
         el.style.right = pd;
         el.style.left = 'auto';
       }
-    }
-  }
+    },
+  },
 }
 </script>
 <style scoped>

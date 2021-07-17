@@ -46,7 +46,7 @@ class Foods {
       statId: p.base.baseName,
       level: p.level,
       negative: p.negative,
-      selected: this.foodSelected(i)
+      selected: this.foodSelected(i),
     }));
 
     return data;
@@ -71,12 +71,12 @@ class Foods {
       });
 
       return {
-        success
+        success,
       };
     } catch(e) {
       console.warn(e);
       return {
-        error: true
+        error: true,
       };
     }
   }

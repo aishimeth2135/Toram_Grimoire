@@ -6,7 +6,7 @@ const store = {
     langData: {},
     langOrder: ['en', 'zh_tw', 'ja', 'zh_cn'],
     primaryLangId: 0,
-    secondaryLangId: 0
+    secondaryLangId: 0,
   },
   getters: {
     primaryLang(state) {
@@ -38,7 +38,7 @@ const store = {
         data = data.replace(/\$(\d+)/g, (v, i) => values[i] !== void 0 && values[i] !== null ? values[i] : '?');
 
       return data || '???';
-    }
+    },
   },
   mutations: {
     injectData(state, data) {
@@ -75,7 +75,7 @@ const store = {
     },
     resetData(state) {
       state.langData = {};
-    }
+    },
   },
   actions: {
     init({ dispatch, commit, getters }, initData) {
@@ -105,11 +105,11 @@ const store = {
         'zh-tw': 1,
         'zh-hk': 1,
         'ja': 2,
-        'zh-cn': 3
+        'zh-cn': 3,
       };
       commit('setPrimaryLang', list[lang] || 0);
-    }
-  }
+    },
+  },
 };
 
 function setLangData(target, obj) {

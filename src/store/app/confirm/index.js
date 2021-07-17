@@ -1,11 +1,7 @@
 const state = {
-  items: []
+  items: [],
 };
 const mutations = {
-  /**
-   * @callback Confirm
-   * @returns {void}
-  */
   /**
    * @typedef IconSet
    * @type {object}
@@ -17,9 +13,10 @@ const mutations = {
    * @type {object}
    * @property {string} message
    * @property {string|IconSet} [icon]
-   * @property {Confirm} confirm
+   * @property {function} confirm
+   * @property {function} cancel
   */
- /**
+  /**
   * @param {object} state
   * @param {ConfirmItem} item
   */
@@ -29,11 +26,11 @@ const mutations = {
   },
   shiftItem(state) {
     state.items.shift();
-  }
+  },
 };
 
 export default {
   namespaced: true,
   state,
-  mutations
+  mutations,
 };

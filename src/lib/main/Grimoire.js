@@ -30,7 +30,7 @@ const Grimoire = {
   /** @type {EnchantSystem} */
   get Enchant() {
     return store.state.datas.enchant;
-  }
+  },
 };
 
 export default Grimoire;

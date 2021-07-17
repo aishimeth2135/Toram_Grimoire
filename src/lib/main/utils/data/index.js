@@ -9,7 +9,7 @@ export function separateText(target, pattern) {
     return {
       iid: i,
       text,
-      separate
+      separate,
     };
   });
 }
@@ -111,7 +111,7 @@ export function parseFormula(str) {
         }
 
         this.traverse(path);
-      }
+      },
     });
 
     const res = recast.print(ast).code

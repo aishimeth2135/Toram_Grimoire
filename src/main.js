@@ -1,7 +1,5 @@
-import '@/assets/css/tailwind.css';
-
 import "@/assets/css/main/font/font.css";
-import "@/assets/css/main/main.less";
+import "@/assets/css/main/main.pcss";
 import "@/assets/css/SaveLoad/main.css";
 import "@/assets/css/main/Cyteria/Cyteria.css";
 
@@ -29,8 +27,8 @@ APP
   .use(Confirm)
   .use(VueGtag, {
     property: {
-      id: 'UA-140158974-1'
-    }
+      id: 'UA-140158974-1',
+    },
   });
 
 registGlobalComponents(APP);

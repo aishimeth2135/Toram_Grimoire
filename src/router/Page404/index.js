@@ -11,6 +11,6 @@ export default {
   },
   meta: {
     title: () => '404',
-    leftMenuViewButtons: []
-  }
+    leftMenuViewButtons: [],
+  },
 };

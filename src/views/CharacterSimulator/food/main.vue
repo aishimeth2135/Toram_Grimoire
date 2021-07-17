@@ -10,9 +10,12 @@
           </cy-list-item>
         </template>
         <template #options>
-          <cy-list-item v-for="(build, i) in foodBuildStates" :key="build.iid"
+          <cy-list-item
+            v-for="(build, i) in foodBuildStates"
+            :key="build.iid"
             :selected="i == currentFoodBuildIndex"
-            @click="$store.commit('character/setCurrentFoodBuild', { index: i })">
+            @click="$store.commit('character/setCurrentFoodBuild', { index: i })"
+          >
             <cy-icon-text icon="mdi-food-apple">
               {{ build.origin.name }}
             </cy-icon-text>
@@ -25,54 +28,80 @@
         </template>
       </cy-options>
       <div class="buttons">
-        <cy-button icon="mdi-content-copy" type="border"
-          @click="copyCurrentFoodBuild">
-          {{ $globalLang('global/copy') }}
+        <cy-button
+          icon="mdi-content-copy"
+          type="border"
+          @click="copyCurrentFoodBuild"
+        >
+          {{ $rootLang('global/copy') }}
         </cy-button>
-        <cy-button icon="ic-baseline-delete-outline" type="border"
-          @click="removeCurrentFoodBuild">
-          {{ $globalLang('global/remove') }}
+        <cy-button
+          icon="ic-baseline-delete-outline"
+          type="border"
+          @click="removeCurrentFoodBuild"
+        >
+          {{ $rootLang('global/remove') }}
         </cy-button>
       </div>
     </div>
     <div class="content-title">
-      <cy-icon-text icon="mdi-checkbox-multiple-blank-circle-outline"
-        size="small" text-color="purple">
+      <cy-icon-text
+        icon="mdi-checkbox-multiple-blank-circle-outline"
+        size="small"
+        text-color="purple"
+      >
         {{ $lang('food build name') }}
       </cy-icon-text>
     </div>
     <div class="content">
-      <cy-title-input icon="mdi-clipboard-text-outline"
-        v-model:value="currentFoodBuild.name" />
+      <cy-title-input
+        v-model:value="currentFoodBuild.name"
+        icon="mdi-clipboard-text-outline"
+      />
     </div>
     <div class="content-title">
-      <cy-icon-text icon="mdi-checkbox-multiple-blank-circle-outline"
-        size="small" text-color="purple">
+      <cy-icon-text
+        icon="mdi-checkbox-multiple-blank-circle-outline"
+        size="small"
+        text-color="purple"
+      >
         {{ $lang('food list') }}
       </cy-icon-text>
     </div>
     <div class="foods content">
       <div class="content-tips">
-        <cy-icon-text icon="ic-outline-info"
-          text-color="light-3" size="small"
-          class="mr-2">
+        <cy-icon-text
+          icon="ic-outline-info"
+          text-color="light-3"
+          size="small"
+          class="mr-2"
+        >
           {{ $lang('tips: select food') }}
         </cy-icon-text>
         <cy-icon-text icon="ic-outline-info" text-color="light-3" size="small">
           {{ $lang('tips: auto select food') }}
         </cy-icon-text>
       </div>
-      <cy-list-item v-for="(food, i) in currentFoodBuild.foods"
-        :selected="foodSelected(i)" class="item"
-        :key="food.base.baseName + '-' + (food.negative ? 'n' : 'p')">
-        <cy-input-counter class="counter" type="line"
-          :range="ranges.foodLevel" :inline="true"
+      <cy-list-item
+        v-for="(food, i) in currentFoodBuild.foods"
+        :key="food.base.baseName + '-' + (food.negative ? 'n' : 'p')"
+        :selected="foodSelected(i)"
+        class="item"
+      >
+        <cy-input-counter
+          class="counter"
+          type="line"
+          :range="ranges.foodLevel"
+          :inline="true"
           :value="food.level"
-          @update:value="setFoodLevel(food, $event, i)">
+          @update:value="setFoodLevel(food, $event, i)"
+        >
           <template #title>
-            <cy-icon-text :icon="foodSelected(i) ? 'mdi-food-apple' : 'bx-bx-radio-circle'"
+            <cy-icon-text
+              :icon="foodSelected(i) ? 'mdi-food-apple' : 'bx-bx-radio-circle'"
               :text-color="food.negative ? 'orange' : 'purple'"
-              @click="selectFood(i)">
+              @click="selectFood(i)"
+            >
               {{ food.stat().show() }}
             </cy-icon-text>
           </template>
@@ -86,8 +115,11 @@
       {{ $lang('Current food-build is not exist') }}
     </cy-default-tips>
     <div style="text-align: center;">
-      <cy-button icon="ic-round-add" type="border"
-        @click="createFoodBuild">
+      <cy-button
+        icon="ic-round-add"
+        type="border"
+        @click="createFoodBuild"
+      >
         {{ $lang.extra('parent', 'append food build') }}
       </cy-button>
     </div>
@@ -100,19 +132,19 @@ export default {
   RegisterLang: {
     root: 'Character Simulator/Food Builds Control',
     extra: {
-      parent: 'Character Simulator'
+      parent: 'Character Simulator',
+    },
+  },
+  data() {
+    return {
+      ranges: {
+        foodLevel: [0, 10],
+      },
     }
   },
   created() {
     if (this.foodBuilds.length == 0)
       this.createFoodBuild();
-  },
-  data() {
-    return {
-      ranges: {
-        foodLevel: [0, 10]
-      }
-    }
   },
   computed: {
     ...mapState('character', ['foodBuilds', 'currentFoodBuildIndex']),
@@ -120,14 +152,14 @@ export default {
     foodBuildStates() {
       return this.foodBuilds.map((p, i) => ({
         iid: i,
-        origin: p
+        origin: p,
       }));
-    }
+    },
   },
   methods: {
     copyCurrentFoodBuild() {
       this.$store.commit('character/createFoodBuild', {
-        foodBuild: this.currentFoodBuild.copy()
+        foodBuild: this.currentFoodBuild.copy(),
       });
       this.$notify(this.$lang('Copy food build successfully'));
     },
@@ -138,23 +170,23 @@ export default {
       }
       const from = this.currentFoodBuild;
       this.$store.commit('character/removeFoodBuild', {
-        index: this.currentFoodBuildIndex
+        index: this.currentFoodBuildIndex,
       });
       this.$notify(this.$lang('Remove food build successfully'),
         'ic-round-delete', null, {
           buttons: [{
-            text: this.$globalLang('global/recovery'),
+            text: this.$rootLang('global/recovery'),
             click: () => {
               this.$store.commit('character/createFoodBuild', { foodBuild: from });
               this.$notify(this.$lang('Recovery food build successfully'));
             },
-            removeMessageAfterClick: true
-          }]
+            removeMessageAfterClick: true,
+          }],
         });
     },
     createFoodBuild() {
       this.$store.commit('character/createFoodBuild', {
-        name: this.$lang('food build') + ' ' + (this.foodBuilds.length + 1)
+        name: this.$lang('food build') + ' ' + (this.foodBuilds.length + 1),
       });
     },
     setFoodLevel(food, v, idx) {
@@ -175,8 +207,8 @@ export default {
         else
           this.$notify(this.$lang('Number of selected food has reached the maximum'));
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

@@ -3,10 +3,10 @@
     <div class="cy--detail-window" :style="position">
       <div class="content-container">
         <div class="content">
-          <div class="title" v-if="$slots['title']">
-            <slot name="title"></slot>
+          <div v-if="$slots['title']" class="title">
+            <slot name="title" />
           </div>
-          <slot></slot>
+          <slot />
         </div>
       </div>
     </div>
@@ -25,8 +25,8 @@ export default {
       return rect.top >= len2bottom ?
         { bottom: (len2bottom + rect.height + 10) + 'px' } :
         { top: (rect.top + rect.height + 10) + 'px' };
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

@@ -32,7 +32,7 @@ export default function() {
           'body-armor': '身体装备',
           'additional': '追加装备',
           'special': '特殊装备',
-          'avatar': '时装'
+          'avatar': '时装',
         },
         'category': {
           'one-hand-sword': '单手剑',
@@ -50,7 +50,7 @@ export default function() {
           'sub-armor|shield': '盾牌',
           'body-armor|normal': '一般防具',
           'body-armor|dodge': '轻化防具',
-          'body-armor|defense': '重化防具'
+          'body-armor|defense': '重化防具',
         },
         'stat restriction': {
           'event': '活动',
@@ -72,13 +72,13 @@ export default function() {
             'magic-device': '副手魔导具',
             'knuckle': '副手拳套',
             'one-hand-sword': '双剑',
-            'ninjutsu-scroll': '忍术卷轴'
+            'ninjutsu-scroll': '忍术卷轴',
           },
           'body': {
             'dodge': '轻化防具',
             'defense': '重化防具',
-            'normal': '一般防具'
-          }
+            'normal': '一般防具',
+          },
         },
         'obtain': {
           'mobs': '小怪',
@@ -93,12 +93,12 @@ export default function() {
           'other': '其它',
           'box': '箱子道具',
           'exchange': '交换所',
-          'ex_skill': 'EX技能'
+          'ex_skill': 'EX技能',
         },
-      }
+      },
     },
     'Loading Page': {
-      'bottom tips': '初次载入需要较长的时间，请稍后...<br />若载入途中发生错误，请先试着重新整理网页。'
+      'bottom tips': '初次载入需要较长的时间，请稍后...<br />若载入途中发生错误，请先试着重新整理网页。',
     },
     'Loading Message': {
       'Stats': '载入角色能力清单',
@@ -107,7 +107,7 @@ export default function() {
       'Skill': '载入技能资料',
       'Tag': '载入标签清单',
       'Enchant': '载入附魔资料',
-      'init': '初始化'
+      'init': '初始化',
     },
     'Page Title': {
       'base': '布偶的魔法书',
@@ -117,18 +117,18 @@ export default function() {
       'item-query': '道具查询',
       'crystal-query': '锻晶查询',
       'calculation': {
-        'damage': '伤害计算'
+        'damage': '伤害计算',
       },
       'enchant': {
         'enchant-simulator': '附魔模拟',
-        'enchant-doll': '附魔布偶'
-      }
+        'enchant-doll': '附魔布偶',
+      },
     },
     'Left Menu': {
       'Home': {
         'base': '主页',
-        'about': '关于'
-      }
+        'about': '关于',
+      },
     },
     'Settings': {
       'title': '设定',
@@ -146,7 +146,7 @@ export default function() {
         'caption': '若字体显示有问题（特定装置会发生），或是不喜欢现在的预设字体，可以切换字体为基本字体。',
         'tips 1': '切换后可能要花费数秒的时间下载字体，才能完成替换。',
         'default font': '预设字体',
-        'base font': '基本字体'
+        'base font': '基本字体',
       },
       'set rem': {
         'title': '调整页面大小',
@@ -164,8 +164,8 @@ export default function() {
           'lang 0': 'English',
           'lang 1': '繁体中文',
           'lang 2': '日本语',
-          'lang 3': '简体中文'
-        }
+          'lang 3': '简体中文',
+        },
       },
       'second language': {
         'title': '次要语言设定',
@@ -180,9 +180,9 @@ export default function() {
         'tips 2': '快取被清除后，下次进入页面时资料库需要重新下载。这可能需要数十秒的时间，请耐心等待。',
         'tips 3': '清除快取完毕后，可以使用重新整理，让页面立即重新载入。',
         'button texts': {
-          'clear caches of spreadsheets': '清除资料库快取'
+          'clear caches of spreadsheets': '清除资料库快取',
         },
-        'Clear caches of spreadsheet successfully': '已清除资料库快取。下次进入页面时将会重新下载资料库。'
+        'Clear caches of spreadsheet successfully': '已清除资料库快取。下次进入页面时将会重新下载资料库。',
       },
       'storage backup': {
         'title': '存档备份',
@@ -191,17 +191,17 @@ export default function() {
         'tips 2': '读取成功后，请直接重新整理网页，可以确保系统正确初始化。',
         'button texts': {
           'save': '存档资料备份',
-          'load': '读取存档资料'
+          'load': '读取存档资料',
         },
         'Save successfully': '存档成功。',
         'Load successfully': '读取成功。',
         'Load failed': '读取失败。',
         'Wrong type of file': '读取的档案必须为文字（.txt）档。',
-        'Must be operated on the homepage': '为避免发生无法预期的错误，此功能限制只能在首页使用。'
-      }
+        'Must be operated on the homepage': '为避免发生无法预期的错误，此功能限制只能在首页使用。',
+      },
     },
     'stat base': {
-      'type total: preText': '总'
-    }
+      'type total: preText': '总',
+    },
   };
 }

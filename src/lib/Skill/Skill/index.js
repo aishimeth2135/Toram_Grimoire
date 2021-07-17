@@ -78,7 +78,7 @@ class SkillTree {
     this.TYPE = SkillTree.TYPE;
 
     this.attrs = {
-      simulatorFlag: false
+      simulatorFlag: false,
     };
   }
   init(dtc) {
@@ -159,7 +159,7 @@ class SkillEffect {
     this.bodyArmor = b;
     this.attributes = {};
     this.config = {
-      equipmentConfirm: 0 // 0: or, 1: and
+      equipmentConfirm: 0, // 0: or, 1: and
     };
     this.TYPE = SkillEffect.TYPE;
   }
@@ -214,15 +214,15 @@ class SkillBranch {
   appendStat(baseName, v, tail) {
     let type;
     switch (tail) {
-      case '':
-        type = StatBase.TYPE_CONSTANT;
-        break;
-      case '%':
-        type = StatBase.TYPE_MULTIPLIER;
-        break;
-      case '~':
-        type = StatBase.TYPE_TOTAL;
-        break;
+    case '':
+      type = StatBase.TYPE_CONSTANT;
+      break;
+    case '%':
+      type = StatBase.TYPE_MULTIPLIER;
+      break;
+    case '~':
+      type = StatBase.TYPE_TOTAL;
+      break;
     }
     const stat = Grimoire.Character.findStatBase(baseName).createStat(type, v);
     this.stats.push(stat);

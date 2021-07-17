@@ -1,16 +1,21 @@
 <template>
   <span class="flex items-center flex-wrap my-2 mx-1">
-    <div class="input-container flex items-center py-1 px-3 border-1 border-solid border-light rounded-3xl w-full duration-300 bg-white"
-      :class="{ 'input-focus': inputFocus }">
+    <div
+      class="input-container flex items-center py-1 px-3 border-1 border-solid border-light rounded-3xl w-full duration-300 bg-white"
+      :class="{ 'input-focus': inputFocus }"
+    >
       <cy-icon-text :icon="icon" :icon-src="iconSrc" class="mr-2" />
-      <div class="input-content w-full" ref="input-content">
-        <slot></slot>
-        <input v-if="!$slots.default"
-          type="text" :value="value"
+      <div ref="input-content" class="input-content w-full">
+        <slot />
+        <input
+          v-if="!$slots.default"
+          type="text"
+          :value="value"
           :placeholder="placeholder"
           @focus="toggleInputFocus(true)"
           @blur="toggleInputFocus(false)"
-          @input="updateValue">
+          @input="updateValue"
+        >
       </div>
     </div>
   </span>
@@ -20,20 +25,20 @@ import IconSet from "./base/icon-set";
 
 export default {
   mixins: [IconSet],
-  emits: ['update:value'],
   props: {
     value: {
       type: String,
-      require: true
+      require: true,
     },
     placeholder: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
+  emits: ['update:value'],
   data() {
     return {
-      inputFocus: false
+      inputFocus: false,
     };
   },
   methods: {
@@ -45,12 +50,11 @@ export default {
     },
     toggleInputFocus(set) {
       this.inputFocus = set;
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="less" scoped>
-
 .input-container {
   &.input-focus {
     border-color: var(--primary-light-3);

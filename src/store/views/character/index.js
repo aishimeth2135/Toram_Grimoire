@@ -69,24 +69,24 @@ const store = {
         'skillRoot': 0,
         'skillTreeCategory': 1,
         'skillTree': 2,
-        'levelSkill': 3
+        'levelSkill': 3,
       };
       const index = {
         type: 0,
         'skillRoot': {
-          name: 1
+          name: 1,
         },
         'skillTreeCategory': {
-          id: 1
+          id: 1,
         },
         'skillTree': {
-          id: 1
+          id: 1,
         },
         'levelSkill': {
           id: 1,
           level: 2,
-          starGemLevel: 3
-        }
+          starGemLevel: 3,
+        },
       };
       return { type, index };
     },
@@ -98,7 +98,7 @@ const store = {
     },
     currentFoodBuild(state) {
       return state.foodBuilds[state.currentFoodBuildIndex];
-    }
+    },
   },
   mutations: {
     characterSimulatorInitFinished(state) {
@@ -137,9 +137,9 @@ const store = {
                   levelSkillTree: lst,
                   visible: false,
                 };
-              })
+              }),
           };
-        })
+        }),
       };
       state.skillBuilds.push(newBuild);
       state.currentSkillBuildIndex = state.skillBuilds.length - 1;
@@ -158,7 +158,7 @@ const store = {
     createCharacter(state, chara) {
       state.characters.push({
         iid: state.characters.length,
-        origin: chara
+        origin: chara,
       });
       state.currentCharacterIndex = state.characters.length - 1;
     },
@@ -213,7 +213,7 @@ const store = {
       }
 
       // state.deleteAllSavedDataBackup = backup;
-    }
+    },
   },
   actions: {
     loadCharacterSimulator({ commit, dispatch }, { index, resetOption = {} }) {
@@ -293,12 +293,12 @@ const store = {
       const summary = {
         characters: state.characters.map(p => p.origin.name),
         equipments: {
-          numbers: state.equipments.length
+          numbers: state.equipments.length,
         },
         skillBuilds: state.skillBuilds.map(p => p.name),
         characterIndex: state.currentCharacterIndex,
         skillBuildIndex: state.currentSkillBuildIndex,
-        foodBuildIndex: state.currentFoodBuildIndex
+        foodBuildIndex: state.currentFoodBuildIndex,
       };
 
       try {
@@ -360,7 +360,7 @@ const store = {
         }
       });
     },
-  }
+  },
 };
 
 export default store;

@@ -10,6 +10,6 @@ export default {
   },
   meta: {
     title: () => '0.0',
-    leftMenuViewButtons: []
-  }
+    leftMenuViewButtons: [],
+  },
 };

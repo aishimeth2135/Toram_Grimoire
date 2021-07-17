@@ -18,18 +18,18 @@ export default {
     leftMenuViewButtons: [{
       title: () => GetLang('Left Menu/Home/base'),
       icon: 'ant-design:home-outlined',
-      path: ''
+      path: '',
     }, {
       title: () => GetLang('Left Menu/Home/about'),
       icon: 'bx-bxs-star-half',
-      path: 'about'
-    }]
+      path: 'about',
+    }],
   },
   children: [{
     path: '',
-    component: vue_home
+    component: vue_home,
   }, {
     path: 'about',
-    component: vue_about
-  }]
+    component: vue_about,
+  }],
 };

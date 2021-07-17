@@ -10,7 +10,7 @@ const state = {
   hasInit: false,
   config: {
     characterLevel: 230,
-    smithLevel: 0
+    smithLevel: 0,
   },
 };
 const mutations = {
@@ -60,7 +60,7 @@ const mutations = {
     const data = {
       builds,
       index: state.currentBuildIndex,
-      config: state.config
+      config: state.config,
     };
     window.localStorage.setItem(SAVE_PRETEXT + target, JSON.stringify(data));
   },
@@ -71,7 +71,7 @@ const mutations = {
     const origin = {
       builds: state.build,
       index: state.currentBuildIndex,
-      config: state.config
+      config: state.config,
     };
     try {
       const odata = window.localStorage.getItem(SAVE_PRETEXT + target);
@@ -90,7 +90,7 @@ const mutations = {
       state.currentBuildIndex = origin.index;
       state.config = origin.config;
     }
-  }
+  },
 };
 
 const actions = {
@@ -120,5 +120,5 @@ export default {
   state,
   mutations,
   actions,
-  modules
+  modules,
 };

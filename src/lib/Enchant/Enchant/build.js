@@ -33,7 +33,7 @@ class EnchantBuild {
   save() {
     return {
       name: this.name,
-      equipment: this.equipment.save()
+      equipment: this.equipment.save(),
     };
   }
 
@@ -57,7 +57,7 @@ class EnchantEquipment {
   static TYPE_BODY_ARMOR = Symbol('body-armor');
   static TYPES = [
     EnchantEquipment.TYPE_MAIN_WEAPON,
-    EnchantEquipment.TYPE_BODY_ARMOR
+    EnchantEquipment.TYPE_BODY_ARMOR,
   ];
 
   constructor() {
@@ -92,7 +92,7 @@ class EnchantEquipment {
       originalPotential: this.originalPotential,
       fieldType,
       isOriginalElement,
-      steps
+      steps,
     };
   }
   /**
@@ -151,7 +151,7 @@ class EnchantEquipment {
       step.stats.forEach(stat => {
         const t = stat.materialPointCost;
         mats[t.type] += t.value;
-      })
+      }),
     );
     return mats;
   }
@@ -170,7 +170,7 @@ class EnchantEquipment {
   /**
    * @returns {number} - Percentage of success rate
    */
-   get realSuccessRate() {
+  get realSuccessRate() {
     if (!this.lastStep) {
       return 160;
     }
@@ -336,7 +336,7 @@ class EnchantStep {
   static TYPE_EACH = Symbol('each');
   static TYPES = [
     EnchantStep.TYPE_NORMAL,
-    EnchantStep.TYPE_EACH
+    EnchantStep.TYPE_EACH,
   ];
 
   /**
@@ -367,7 +367,7 @@ class EnchantStep {
       type: EnchantStep.TYPES.indexOf(this.type),
       hidden: this.hidden ? 1 : 0,
       step: this.step,
-      stats: this.stats.map(stat => stat.save())
+      stats: this.stats.map(stat => stat.save()),
     };
   }
 
@@ -402,10 +402,10 @@ class EnchantStep {
     }
     const er = this.potentialExtraRate;
     switch (this.type) {
-      case EnchantStep.TYPE_NORMAL:
-        return this.realPotentialCost(this.stats.reduce((a, b) => a + b.potentialCost, 0) * er);
-      case EnchantStep.TYPE_EACH:
-        return this.firstStat ? this.firstStat.potentialCost : 0;
+    case EnchantStep.TYPE_NORMAL:
+      return this.realPotentialCost(this.stats.reduce((a, b) => a + b.potentialCost, 0) * er);
+    case EnchantStep.TYPE_EACH:
+      return this.firstStat ? this.firstStat.potentialCost : 0;
     }
     return 0;
   }
@@ -425,7 +425,7 @@ class EnchantStep {
   /**
    * @returns {EnchantStep}
    */
-   get nextStep() {
+  get nextStep() {
     const steps = this.belongEquipment.steps();
     return steps[this.index + 1] || null;
   }
@@ -640,7 +640,7 @@ class EnchantStat {
    * @param {number} to
    * @returns {number}
    */
-   calcMaterialPointCost(from, to) {
+  calcMaterialPointCost(from, to) {
     if (from > to) {
       const t = from;
       from = to;
@@ -672,27 +672,27 @@ class EnchantStat {
    */
   showAmount(type = 'current', previousValue = 0) {
     let [sv, sv2] = this.itemBase.getUnitValue(this.type).split('|');
-      const convertThreshold = this.potentialConvertThreshold;
-      let v = this.value + previousValue;
+    const convertThreshold = this.potentialConvertThreshold;
+    let v = this.value + previousValue;
 
-      sv2 = sv2 || sv;
+    sv2 = sv2 || sv;
 
-      let v2 = 0, sign = 1;
-      if (v < 0) {
-        sign = -1;
-        v *= -1;
-      }
-      if (v > convertThreshold) {
-        v2 = v - convertThreshold;
-        v = convertThreshold;
-      }
-      v *= sign;
-      v2 *= sign;
+    let v2 = 0, sign = 1;
+    if (v < 0) {
+      sign = -1;
+      v *= -1;
+    }
+    if (v > convertThreshold) {
+      v2 = v - convertThreshold;
+      v = convertThreshold;
+    }
+    v *= sign;
+    v2 *= sign;
 
-      if (type === 'base') {
-        v -= previousValue;
-      }
-      return this.stat.show(v * sv + v2 * sv2);
+    if (type === 'base') {
+      v -= previousValue;
+    }
+    return this.stat.show(v * sv + v2 * sv2);
   }
 }
 
@@ -704,7 +704,7 @@ class EnchantStepStat extends EnchantStat {
   static TYPES = [
     StatBase.TYPE_CONSTANT,
     StatBase.TYPE_MULTIPLIER,
-    StatBase.TYPE_TOTAL
+    StatBase.TYPE_TOTAL,
   ];
 
   /**
@@ -731,7 +731,7 @@ class EnchantStepStat extends EnchantStat {
     return {
       type: EnchantStepStat.TYPES.indexOf(this.type),
       value: this.value,
-      base: this.itemBase.statBase.baseName
+      base: this.itemBase.statBase.baseName,
     };
   }
 
@@ -846,7 +846,7 @@ class EnchantStepStat extends EnchantStat {
       to = from + this.value;
     return {
       type: this.itemBase.materialPointType,
-      value: this.calcMaterialPointCost(from, to)
+      value: this.calcMaterialPointCost(from, to),
     };
   }
 
@@ -861,7 +861,7 @@ class EnchantStepStat extends EnchantStat {
    * @param {"current"|"base"|"each"} [type]
    * @returns {string}
    */
-   show(type) {
+  show(type) {
     if (type === 'current' || type === 'base') {
       const prev = this.previousStepStatValue;
       return this.showAmount(type, prev);
@@ -904,9 +904,9 @@ class EnchantStepStat extends EnchantStat {
     }
 
     const r = (5 + STATE.Character.tec / 10);
-    return (v + v2) > 0 ?
+    return (v + v2) >= 0 ?
       v * p + v2 * p * 2 :
-      Math.ceil(v * r * p / 100) + Math.ceil(v2 * r * p / 200);
+      Math.ceil((((v * p) + (v2 * p) / 2) * r) / 100);
   }
 
   /**

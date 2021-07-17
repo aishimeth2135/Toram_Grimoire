@@ -3,19 +3,21 @@
     <div>
       <search-result class="search-result" :equipments="searchResult" />
     </div>
-    <div class="flex items-end ml-auto sticky z-10 px-2"
-      style="bottom: 4.5rem">
+    <div
+      class="flex items-end ml-auto sticky z-10 px-2"
+      style="bottom: 4.5rem"
+    >
       <cy-transition type="fade">
-        <div class="main-menu" v-if="checkMenuVisible">
+        <div v-if="checkMenuVisible" class="main-menu">
           <div v-if="menuVisible.conditionOptions" class="content">
             <div v-for="type in conditions.type" :key="type.id" class="column">
               <div class="flex items-center">
                 <cy-button-check
+                  v-model:selected="type.selected"
                   class="options-title"
                   main-color="orange"
-                  v-model:selected="type.selected"
                 >
-                  {{ $globalLang('common/Equipment/field/' + type.id) }}
+                  {{ $rootLang('common/Equipment/field/' + type.id) }}
                 </cy-button-check>
                 <template v-if="type.types !== null">
                   <cy-button-border icon="ic-round-border-all" @click="selectAll(type.types)" />
@@ -31,7 +33,7 @@
                   selected-icon-src="image"
                   @click="toggleSelected(item)"
                 >
-                  {{ $globalLang('common/Equipment/category/' + item.value.description) }}
+                  {{ $rootLang('common/Equipment/category/' + item.value.description) }}
                 </cy-button-check>
               </div>
             </div>
@@ -44,21 +46,24 @@
                 </cy-icon-text>
               </div>
               <cy-button-check-group
-                class="options"
                 v-model:value="sortOptions.currentSelected"
+                class="options"
                 :options="consts.sortOptions"
               />
             </div>
             <div class="column">
               <div class="normal-title">
-                <cy-icon-text icon="fluent-arrow-sort-24-filled"
-                  text-color="purple" size="small">
+                <cy-icon-text
+                  icon="fluent-arrow-sort-24-filled"
+                  text-color="purple"
+                  size="small"
+                >
                   {{ $lang('sort options/order/title') }}
                 </cy-icon-text>
               </div>
               <cy-button-check-group
-                class="options"
                 v-model:value="sortOptions.currentOrder"
+                class="options"
                 :options="consts.sortOrderOptions"
               />
             </div>
@@ -66,17 +71,23 @@
         </div>
       </cy-transition>
       <div class="flex-shrink-0 ml-2">
-        <div class="menu-btn switch-display"
+        <div
           v-if="currentMode !== 'normal' && currentMode !== 'dye'"
-          @click="switchDisplay">
+          class="menu-btn switch-display"
+          @click="switchDisplay"
+        >
           <cy-icon-text icon="heroicons-solid:switch-vertical" />
         </div>
-        <div class="menu-btn bg-white border-water-blue"
-          @click="toggleMenuVisible('sortOptions')">
+        <div
+          class="menu-btn bg-white border-water-blue"
+          @click="toggleMenuVisible('sortOptions')"
+        >
           <cy-icon-text icon="mdi-sort-variant" icon-color="water-blue" />
         </div>
-        <div class="menu-btn bg-white border-light-4"
-          @click="toggleMenuVisible('conditionOptions')">
+        <div
+          class="menu-btn bg-white border-light-4"
+          @click="toggleMenuVisible('conditionOptions')"
+        >
           <cy-icon-text icon="mdi-checkbox-multiple-blank-circle" icon-color="light-4" />
         </div>
       </div>
@@ -85,16 +96,23 @@
       <div class="top-content">
         <cy-options inline>
           <template #title>
-            <div class="bg-white flex-shrink-0 rounded-full border-1 border-water-blue-light hover:border-water-blue inline-flex items-center justify-center mr-2 mb-2 cursor-pointer"
-              style="width: 2.8rem; height: 2.8rem;">
-              <cy-icon-text icon="heroicons-solid:switch-vertical"
+            <div
+              class="bg-white flex-shrink-0 rounded-full border-1 border-water-blue-light hover:border-water-blue inline-flex items-center justify-center mr-2 mb-2 cursor-pointer"
+              style="width: 2.8rem; height: 2.8rem;"
+            >
+              <cy-icon-text
+                icon="heroicons-solid:switch-vertical"
                 icon-color="water-blue-light"
-                icon-color-hover="water-blue" />
+                icon-color-hover="water-blue"
+              />
             </div>
           </template>
           <template #options>
-            <cy-list-item v-for="(p, id) in modes" :key="id"
-              @click="selectMode(id)">
+            <cy-list-item
+              v-for="(p, id) in modes"
+              :key="id"
+              @click="selectMode(id)"
+            >
               <cy-icon-text :icon="p.icon">
                 {{ $lang('modes/' + id) }}
               </cy-icon-text>
@@ -103,10 +121,15 @@
         </cy-options>
         <div class="w-full">
           <cy-transition type="fade">
-            <div v-if="currentMode === 'normal' && modes.normal.optionsVisible"
-              class="mode-normal-content">
-              <cy-icon-text icon="bx-bx-target-lock"
-                size="small" text-color="purple">
+            <div
+              v-if="currentMode === 'normal' && modes.normal.optionsVisible"
+              class="mode-normal-content"
+            >
+              <cy-icon-text
+                icon="bx-bx-target-lock"
+                size="small"
+                text-color="purple"
+              >
                 {{ $lang('options: normal/title') }}
               </cy-icon-text>
               <div style="padding: 0.2rem 0.4rem;">
@@ -126,17 +149,22 @@
                 <div class="mode-normal-title ml-2">
                   <div class="input-container">
                     <cy-icon-text icon="ic-outline-search" class="icon" />
-                    <input type="text" :placeholder="$lang('search placeholder')"
-                      v-model="modes.normal.searchText">
+                    <input
+                      v-model="modes.normal.searchText"
+                      type="text"
+                      :placeholder="$lang('search placeholder')"
+                    >
                   </div>
-                  <cy-button-icon icon="heroicons-solid:menu"
-                    @click="modes.normal.optionsVisible = !modes.normal.optionsVisible" />
+                  <cy-button-icon
+                    icon="heroicons-solid:menu"
+                    @click="modes.normal.optionsVisible = !modes.normal.optionsVisible"
+                  />
                 </div>
               </template>
               <template v-else-if="currentMode === 'stat'">
                 <cy-button-inline
-                  @click="toggleSelectStatVisible(true)"
                   class="w-full"
+                  @click="toggleSelectStatVisible(true)"
                 >
                   {{ modes.stat.currentStat ? modes.stat.currentStat.text : $lang('options: stat/select stat: title') }}
                 </cy-button-inline>
@@ -144,21 +172,30 @@
               <template v-else-if="currentMode === 'item-level'">
                 <div class="flex items-center">
                   <cy-icon-text icon="jam-hammer" class="ml-2" />
-                  <input type="text" placeholder="0"
+                  <input
+                    v-model="itemLevelMinimum"
+                    type="text"
+                    placeholder="0"
                     class="border-0 p-1 inline-block w-14 text-center"
-                    v-model="itemLevelMinimum">
+                  >
                   <cy-icon-text icon="mdi-tilde" />
-                  <input type="text" placeholder="300"
+                  <input
+                    v-model="itemLevelMaximum"
+                    type="text"
+                    placeholder="300"
                     class="border-0 p-1 inline-block w-14 text-center"
-                    v-model="itemLevelMaximum">
+                  >
                 </div>
               </template>
               <template v-else-if="currentMode === 'dye'">
                 <div class="mode-dye-title">
                   <div class="input-container">
                     <cy-icon-text icon="ic-outline-palette" class="ml-2" />
-                    <input type="text" :placeholder="$lang('search placeholder')"
-                      v-model="modes.dye.searchText">
+                    <input
+                      v-model="modes.dye.searchText"
+                      type="text"
+                      :placeholder="$lang('search placeholder')"
+                    >
                   </div>
                 </div>
               </template>
@@ -168,20 +205,24 @@
       </div>
     </div>
     <cy-window v-model:visible="modes.stat.selectStatVisible" vertical-position="top">
-      <template v-slot:title>
+      <template #title>
         <cy-icon-text icon="mdi-rhombus-outline">
           {{ $lang('options: stat/select stat: window title') }}
         </cy-icon-text>
       </template>
-      <template v-slot:default>
-        <cy-title-input icon="ic-outline-category"
+      <template #default>
+        <cy-title-input
           v-model:value="modes.stat.statSearchText"
-          :placeholder="$lang('options: stat/select stat: search placeholder')" />
+          icon="ic-outline-category"
+          :placeholder="$lang('options: stat/select stat: search placeholder')"
+        />
         <template v-if="statsSearchResult.length != 0">
-          <cy-list-item v-for="stat in statsSearchResult"
+          <cy-list-item
+            v-for="stat in statsSearchResult"
             :key="`${stat.origin.baseName}-${stat.type.description}`"
             :selected="stat == modes.stat.currentStat"
-            @click="selectStat(stat)">
+            @click="selectStat(stat)"
+          >
             <cy-icon-text icon="mdi-rhombus-outline">
               {{ stat.text }}
             </cy-icon-text>
@@ -207,15 +248,26 @@ import {
 import { StatBase } from "@/lib/Character/Stat";
 
 export default {
-  name: 'item-query',
+  name: 'ItemQuery',
   RegisterLang: 'Item Query',
+  components: {
+    'search-result': vue_searchResult,
+  },
+  provide() {
+    return {
+      'findStat': this.findStat,
+      'modesState': this.modes,
+      'state': this.state,
+      'findObtainByDye': this.findObtainByDye,
+    };
+  },
   data() {
     const equipments = this.$store.state.datas.items.equipments
       .map(p => CharacterEquipment.fromOriginEquipment(p, { statValueToNumber: false }));
 
     const handleOptions = opts => opts.map(p => {
       return {
-        value: p, selected: true
+        value: p, selected: true,
       };
     });
     const handleEquipmentTypes = (category, opts) => {
@@ -235,7 +287,7 @@ export default {
         stats.push({
           origin: stat,
           text: stat.title(type),
-          type
+          type,
         });
       })
     });
@@ -245,7 +297,7 @@ export default {
     return {
       state: {
         currentMode: 'normal',
-        displayMode: 0
+        displayMode: 0,
       },
       menuVisible: {
         conditionOptions: false,
@@ -257,24 +309,24 @@ export default {
           icon: 'ic-round-menu-book',
           targets: handleOptions(['name', 'material', 'obtain-name']),
           optionsVisible: false,
-          searchText: ''
+          searchText: '',
         },
         'stat': {
           icon: 'mdi-script-outline',
           stats,
           statSearchText: '',
           selectStatVisible: false,
-          currentStat: null
+          currentStat: null,
         },
         'item-level': {
           icon: 'jam-hammer',
           min: '0',
-          max: '300'
+          max: '300',
         },
         dye: {
           icon: 'ic-outline-palette',
-          searchText: ''
-        }
+          searchText: '',
+        },
       },
       equipments,
       sortOptions: {
@@ -298,10 +350,10 @@ export default {
               return this.sortOptions[this.currentMode].default(a, b);
             return av - bv;
           },
-          'name':  (a, b) => a.name.localeCompare(b.name)
+          'name':  (a, b) => a.name.localeCompare(b.name),
         },
         'normal': {
-          default: (a, b) => a.origin.id - b.origin.id
+          default: (a, b) => a.origin.id - b.origin.id,
         },
         'stat': {
           default: (a, b) => {
@@ -309,18 +361,18 @@ export default {
             const av = handleCompareValue(this.findStat(cs, a.stats).value),
               bv = handleCompareValue(this.findStat(cs, b.stats).value);
             return av - bv;
-          }
+          },
         },
         'item-level': {
           default: (a, b) => {
             const av = handleCompareValue(a.origin.recipe['item_level']),
               bv = handleCompareValue(b.origin.recipe['item_level']);
             return av - bv;
-          }
+          },
         },
         'dye': {
-          default: (a, b) => a.origin.id - b.origin.id
-        }
+          default: (a, b) => a.origin.id - b.origin.id,
+        },
       },
       conditions: {
         type: [{
@@ -331,9 +383,9 @@ export default {
             MainWeapon.TYPE_BOW, MainWeapon.TYPE_BOWGUN,
             MainWeapon.TYPE_STAFF, MainWeapon.TYPE_MAGIC_DEVICE,
             MainWeapon.TYPE_KNUCKLE, MainWeapon.TYPE_HALBERD,
-            MainWeapon.TYPE_KATANA
+            MainWeapon.TYPE_KATANA,
           ]),
-          selected: true
+          selected: true,
         }, {
           id: 'sub-weapon',
           instance: [SubWeapon, SubArmor],
@@ -341,30 +393,30 @@ export default {
             ...handleEquipmentTypes('sub-weapon', [
               SubWeapon.TYPE_ARROW,
               SubWeapon.TYPE_DAGGER,
-              SubWeapon.TYPE_NINJUTSU_SCROLL
+              SubWeapon.TYPE_NINJUTSU_SCROLL,
             ]),
             ...handleEquipmentTypes('sub-armor', [
-              SubArmor.TYPE_SHIELD
-            ])
+              SubArmor.TYPE_SHIELD,
+            ]),
           ],
-          selected: true
+          selected: true,
         }, {
           id: 'body-armor',
           instance: BodyArmor,
           types: null,
-          selected: true
+          selected: true,
         }, {
           id: 'additional',
           instance: AdditionalGear,
           types: null,
-          selected: true
+          selected: true,
         }, {
           id: 'special',
           instance: SpecialGear,
           types: null,
-          selected: true
+          selected: true,
         }],
-        obtain: ['smith', 'boss', 'mini_boss', 'mobs', 'quest', 'box', 'exchange', 'other']
+        obtain: ['smith', 'boss', 'mini_boss', 'mobs', 'quest', 'box', 'exchange', 'other'],
       },
       consts: {
         sortOrderOptions: ['down', 'up'].map(id => ({
@@ -378,14 +430,6 @@ export default {
       },
     };
   },
-  provide() {
-    return {
-      'findStat': this.findStat,
-      'modesState': this.modes,
-      'state': this.state,
-      'findObtainByDye': this.findObtainByDye
-    };
-  },
   computed: {
     itemLevelMaximum: {
       get() {
@@ -395,7 +439,7 @@ export default {
         v = parseInt(v, 10);
         this.modes['item-level'].max = Math.max(Math.min(500, v), 0);
         console.log(this.modes['item-level'].max);
-      }
+      },
     },
     itemLevelMinimum: {
       get() {
@@ -404,7 +448,7 @@ export default {
       set(v) {
         v = parseInt(v, 10);
         this.modes['item-level'].min = Math.max(Math.min(500, v), 0);
-      }
+      },
     },
     checkMenuVisible() {
       return Object.values(this.menuVisible).find(p => p);
@@ -415,7 +459,7 @@ export default {
       },
       set(v) {
         this.state.currentMode = v;
-      }
+      },
     },
     displayMode: {
       get() {
@@ -423,7 +467,7 @@ export default {
       },
       set(v) {
         this.state.displayMode = v;
-      }
+      },
     },
     statsSearchResult() {
       const searchText = this.modes.stat.statSearchText.toLowerCase();
@@ -494,28 +538,31 @@ export default {
           id: 'avatar',
           instance: Avatar,
           types: null,
-          selected: true
+          selected: true,
         });
       }
       return this.equipments.filter(p => {
         const checkType = validTypes.find(type => {
-            const checkInstance = !Array.isArray(type.instance) ?
-              p instanceof type.instance :
-              type.instance.find(a => p instanceof a);
-            if (checkInstance) {
-              if (type.types === null)
-                return true;
-              const t = type.types.find(a => p.type === a.value);
-              return t && t.selected;
-            }
-            return false;
-          });
+          const checkInstance = !Array.isArray(type.instance) ?
+            p instanceof type.instance :
+            type.instance.find(a => p instanceof a);
+          if (checkInstance) {
+            if (type.types === null)
+              return true;
+            const t = type.types.find(a => p.type === a.value);
+            return t && t.selected;
+          }
+          return false;
+        });
         const checkObtain = this.conditions.obtain
           .filter(type => type.selected)
           .find(obtain => p.origin.obtains.find(a => a == obtain.value));
         return checkType || checkObtain;
       });
-    }
+    },
+  },
+  beforeCreate() {
+    init();
   },
   methods: {
     findObtainByDye(text, eq) {
@@ -556,18 +603,11 @@ export default {
     },
     cancelAll(list) {
       list.forEach(p => p.selected = false);
-    }
+    },
   },
-  beforeCreate() {
-    init();
-  },
-  components: {
-    'search-result': vue_searchResult
-  }
 };
 </script>
 <style lang="postcss" scoped>
-
 .search-result {
   min-height: 70vh;
 }

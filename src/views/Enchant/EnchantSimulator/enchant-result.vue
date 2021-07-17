@@ -1,65 +1,94 @@
 <template>
   <div v-if="enchantResult.length !== 0">
     <div class="flex items-start">
-      <cy-button-icon :icon="contents.resultStats ? 'ant-design:star-filled' : 'ant-design:star-outlined'"
+      <cy-button-icon
+        :icon="contents.resultStats ? 'ant-design:star-filled' : 'ant-design:star-outlined'"
         class="flex-shrink-0"
         icon-color="orange"
+        :selected="contents.resultStats"
         @click="toggle('contents/resultStats')"
-        :selected="contents.resultStats" />
+      />
       <cy-transition type="fade">
         <div v-if="contents.resultStats" class="mb-2">
           <div>
-            <span v-for="item in enchantResultStats" :key="item.stat.baseName"
+            <span
+              v-for="item in enchantResultStats"
+              :key="item.stat.statId"
               :class="item.negative ? ['text-orange', 'border-orange'] : ['text-light-4', 'border-light-4']"
-              class="stat-scope">
+              class="stat-scope"
+            >
               {{ item.text }}
             </span>
           </div>
           <div class="mt-2">
-            <span v-for="item in enchantResultMaterials" :key="item.title"
-              class="stat-scope border-water-blue-light text-water-blue-light text-sm">
+            <span
+              v-for="item in enchantResultMaterials"
+              :key="item.title"
+              class="stat-scope border-water-blue-light text-water-blue-light text-sm"
+            >
               <span class="text-dark">{{ item.title }}</span>
               <span class="text-water-blue ml-2">{{ item.value }}</span>
             </span>
           </div>
         </div>
       </cy-transition>
-      <cy-button-icon icon="bx-bx-copy-alt"
+      <cy-button-icon
+        icon="bx-bx-copy-alt"
         class="ml-auto flex-shrink-0"
-        @click="copyEnchantResultText" />
+        @click="copyEnchantResultText"
+      />
     </div>
-    <div v-for="(item, i) in enchantResult" :key="item.iid"
-      class="flex items-start">
-      <div class="text-light-2 mr-3 my-1 w-6 text-right flex-shrink-0">{{ i + 1 }}.</div>
+    <div
+      v-for="(item, i) in enchantResult"
+      :key="item.iid"
+      class="flex items-start"
+    >
+      <div class="text-light-2 mr-3 my-1 w-6 text-right flex-shrink-0">
+        {{ i + 1 }}.
+      </div>
       <template v-if="item.type === 'normal'">
         <span class="mr-2 my-1 flex-shrink-0">{{ item.parts[0] }}</span>
         <div class="flex items-center flex-wrap">
-          <span v-for="part in item.parts.slice(1)" :key="part.text"
+          <span
+            v-for="part in item.parts.slice(1)"
+            :key="part.text"
             class="stat-scope"
-            :class="part.negative ? ['text-orange', 'border-orange'] : ['text-light-4', 'border-light-4']">
+            :class="part.negative ? ['text-orange', 'border-orange'] : ['text-light-4', 'border-light-4']"
+          >
             {{ part.text }}
           </span>
-          <cy-icon-text icon="mdi-creation" size="small"
-            icon-color="water-blue" text-color="water-blue"
-            class="ml-2">
+          <cy-icon-text
+            icon="mdi-creation"
+            size="small"
+            icon-color="water-blue"
+            text-color="water-blue"
+            class="ml-2"
+          >
             {{ item.remainingPotential }}
           </cy-icon-text>
         </div>
       </template>
       <div v-else>
         <template v-for="part in item.parts">
-          <span v-if="(typeof part !== 'string')" :key="part.text"
+          <span
+            v-if="(typeof part !== 'string')"
+            :key="part.text"
             class="stat-scope"
-            :class="part.negative ? ['text-orange', 'border-orange'] : ['text-light-4', 'border-light-4']">
+            :class="part.negative ? ['text-orange', 'border-orange'] : ['text-light-4', 'border-light-4']"
+          >
             {{ part.text }}
           </span>
-          <span v-else class="my-1 mr-2" :key="part">
+          <span v-else :key="part" class="my-1 mr-2">
             {{ part }}
           </span>
         </template>
-        <cy-icon-text icon="mdi-creation" size="small"
-          icon-color="water-blue" text-color="water-blue"
-          class="ml-2 my-1">
+        <cy-icon-text
+          icon="mdi-creation"
+          size="small"
+          icon-color="water-blue"
+          text-color="water-blue"
+          class="ml-2 my-1"
+        >
           {{ item.remainingPotential }}
         </cy-icon-text>
       </div>
@@ -84,13 +113,13 @@ export default {
   props: {
     equipment: {
       type: EnchantEquipment,
-      required: true
-    }
+      required: true,
+    },
   },
   RegisterLang: "Enchant Simulator",
   setup() {
     const { contents, toggle } = ToggleService({
-      contents: [{ name: 'resultStats', default: true }]
+      contents: [{ name: 'resultStats', default: true }],
     });
     return { contents, toggle };
   },
@@ -120,11 +149,11 @@ export default {
           const tparts = [{
             stat,
             text: stat.show('each'),
-            negative: stat.value < 0
+            negative: stat.value < 0,
           }, {
             stat,
             text: stat.show('current'),
-            negative: stat.value < 0
+            negative: stat.value < 0,
           }];
           const textParts = this.$lang('result/enchant: each').split(/\$\d+/);
           insertOdd(textParts, tparts);
@@ -134,7 +163,7 @@ export default {
           const tparts = step.stats.map(stat => ({
             stat,
             text: stat.show('current'),
-            negative: stat.value < 0
+            negative: stat.value < 0,
           }));
           parts = [this.$lang('result/enchant: normal'), ...tparts];
           text = this.$lang('result/enchant: normal') + tparts.map(p => p.text).join('｜');
@@ -146,7 +175,7 @@ export default {
           text,
           parts,
           remainingPotential,
-          type: step.type === EnchantStep.TYPE_EACH ? 'each' : 'normal'
+          type: step.type === EnchantStep.TYPE_EACH ? 'each' : 'normal',
         }
       });
       return result;
@@ -162,14 +191,14 @@ export default {
         .map(stat => ({
           text: stat.showAmount(),
           stat,
-          negative: stat.value < 0
+          negative: stat.value < 0,
         }));
     },
     enchantResultMaterials() {
       const titleList = this.$lang('material point type list');
       return this.equipment.allMaterialPointCost.map((p, i) => ({
         title: titleList[i],
-        value: p
+        value: p,
       }));
     },
     successRate() {
@@ -200,11 +229,11 @@ export default {
         `${materialsText}\n\n` +
         `${stepsText}\n\n` +
         `✩ ${this.$lang('success rate')}｜${this.successRate}\n` +
-        '｜cy-grimoire.netlify.app｜'
+        '｜cy-grimoire.netlify.app｜',
       );
       this.$notify(this.$lang('tips/copy result text successfully'));
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="postcss" scoped>

@@ -1,9 +1,11 @@
 <template>
   <span v-if="storageAvailable" class="app--settings">
     <cy-button-icon icon="ic-baseline-settings" @click="toggleWindowVisible" />
-    <cy-window class="main--window"
+    <cy-window
+      v-model:visible="windowVisible"
+      class="main--window"
       width="wide"
-      v-model:visible="windowVisible">
+    >
       <template #title>
         <div class="flex items-center">
           <cy-icon-text icon="ic-baseline-settings">
@@ -14,13 +16,18 @@
           </span>
         </div>
       </template>
-      <div v-if="serviceWorker.hasUpdate"
-        class="p-4 flex items-center justify-center">
+      <div
+        v-if="serviceWorker.hasUpdate"
+        class="p-4 flex items-center justify-center"
+      >
         <cy-icon-text icon="mdi-creation" text-color="purple">
           {{ $lang('update/new version detected') }}
         </cy-icon-text>
-        <cy-button-border icon="mdi-coffee-outline"
-          @click="swUpdate" class="ml-4">
+        <cy-button-border
+          icon="mdi-coffee-outline"
+          class="ml-4"
+          @click="swUpdate"
+        >
           {{ $lang('update/force update') }}
         </cy-button-border>
       </div>
@@ -58,7 +65,7 @@
             :selected="nightMode === '1'"
             @click="nightMode = nightMode !== '1' ? '1' : '0'"
           >
-             {{ $lang('night mode/title') }}
+            {{ $lang('night mode/title') }}
           </cy-button-check>
         </div>
       </fieldset>
@@ -180,7 +187,7 @@
         <cy-default-tips v-if="$route.path != '/'" icon="mdi-ghost">
           {{ $lang('storage backup/Must be operated on the homepage') }}
         </cy-default-tips>
-        <div class="buttons" v-else>
+        <div v-else class="buttons">
           <cy-button-border icon="ic-round-save" @click="saveLocalStorage">
             {{ $lang('storage backup/button texts/save') }}
           </cy-button-border>
@@ -209,23 +216,23 @@ export default {
         parseInt(localStorage[APP_STORAGE_KEYS.FONT_FAMILY], 10) : 1,
       setRem: {
         value: localStorage[APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE] ?
-          parseInt(localStorage[APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE], 10) : 160
+          parseInt(localStorage[APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE], 10) : 160,
       },
       setNightMode: {
-        value: localStorage[APP_STORAGE_KEYS.NIGHT_MODE] || '0'
+        value: localStorage[APP_STORAGE_KEYS.NIGHT_MODE] || '0',
       },
       languageState: {
         list: list1,
-        currentIndex: list1.indexOf(localStorage[APP_STORAGE_KEYS.LANGUAGE])
+        currentIndex: list1.indexOf(localStorage[APP_STORAGE_KEYS.LANGUAGE]),
       },
       secondLanguageState: {
         list: list2,
-        currentIndex: list2.indexOf(localStorage[APP_STORAGE_KEYS.SECOND_LANGUAGE])
+        currentIndex: list2.indexOf(localStorage[APP_STORAGE_KEYS.SECOND_LANGUAGE]),
       },
       update: {
         newVersionDetected: false,
-        sw: null
-      }
+        sw: null,
+      },
     };
   },
   computed: {
@@ -241,7 +248,7 @@ export default {
         this.setNightMode.value = v;
         localStorage[APP_STORAGE_KEYS.NIGHT_MODE] = v;
         document.documentElement.classList[v === '0' ? 'remove': 'add']('theme--night-mode');
-      }
+      },
     },
     remValue: {
       get() {
@@ -251,8 +258,8 @@ export default {
         localStorage.setItem(APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE, v.toString());
         this.setRem.value = v;
         document.documentElement.style.fontSize = (this.setRem.value / 10).toString() + 'px';
-      }
-    }
+      },
+    },
   },
   mounted() {
     const rel = document.documentElement;
@@ -281,7 +288,7 @@ export default {
       CY.file.save({
         data: JSON.stringify(data),
         fileType: 'text/txt',
-        fileName: 'cy-grimoire-storage.txt'
+        fileName: 'cy-grimoire-storage.txt',
       });
 
       this.$notify(this.$lang('storage backup/Save successfully'));
@@ -304,7 +311,7 @@ export default {
             return false;
           }
           return true;
-        }
+        },
       });
     },
     setLanguage(target, index) {
@@ -322,8 +329,8 @@ export default {
     },
     toggleWindowVisible() {
       this.windowVisible = !this.windowVisible;
-    }
-  }
+    },
+  },
 }
 </script>
 

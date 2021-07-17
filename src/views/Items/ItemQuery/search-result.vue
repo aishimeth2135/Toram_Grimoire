@@ -1,8 +1,11 @@
 <template>
   <div class="overflow-x-auto">
     <div class="min-w-min">
-      <result-item v-for="eq in equipments"
-        :key="eq.origin.id" :equipment="eq" />
+      <result-item
+        v-for="eq in equipments"
+        :key="eq.origin.id"
+        :equipment="eq"
+      />
     </div>
   </div>
 </template>
@@ -10,9 +13,9 @@
 import vue_resultItem from "./result-item.vue";
 
 export default {
-  props: ['equipments'],
   components: {
-    'result-item': vue_resultItem
-  }
+    'result-item': vue_resultItem,
+  },
+  props: ['equipments'],
 }
 </script>

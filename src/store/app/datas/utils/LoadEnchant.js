@@ -32,7 +32,7 @@ export default function LoadEnchantData(r, c) {
   function processItemProps(p) {
     return [
       parseInt(p[POTENTIAL_CONSTANT]),
-      parseInt(p[POTENTIAL_MULTIPLIER])
+      parseInt(p[POTENTIAL_MULTIPLIER]),
     ];
   }
 
@@ -55,7 +55,7 @@ export default function LoadEnchantData(r, c) {
         const cond = [
           EnchantItem.CONDITION_MAIN_WEAPON,
           EnchantItem.CONDITION_BODY_ARMOR,
-          EnchantItem.CONDITION_ORIGINAL_ELEMENT
+          EnchantItem.CONDITION_ORIGINAL_ELEMENT,
         ][condition_no];
         cur_item.appendConditionalProps(cond, { potential: processItemProps(p) });
       }
@@ -68,7 +68,7 @@ export default function LoadEnchantData(r, c) {
           materialPointType: MATERIAL_POINT_TYPE_LIST.indexOf(p[MATERIAL_POINT_TYPE]),
           materialPointValue: [p[MATERIAL_POINT_VALUE_CONSTANT], p[MATERIAL_POINT_VALUE_MULTIPLIER]],
           potentialConvertThreshold: [p[POTENTIAL_CONVERT_THRESHOLD_CONSTANT], p[POTENTIAL_CONVERT_THRESHOLD_MULTIPLIER]],
-          potential: processItemProps(p)
+          potential: processItemProps(p),
         });
     }
   });

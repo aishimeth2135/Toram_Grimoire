@@ -26,15 +26,15 @@ class Item {
     }
     let type;
     switch (tail) {
-      case '':
-        type = StatBase.TYPE_CONSTANT;
-        break;
-      case '%':
-        type = StatBase.TYPE_MULTIPLIER;
-        break;
-      case '~':
-        type = StatBase.TYPE_TOTAL;
-        break;
+    case '':
+      type = StatBase.TYPE_CONSTANT;
+      break;
+    case '%':
+      type = StatBase.TYPE_MULTIPLIER;
+      break;
+    case '~':
+      type = StatBase.TYPE_TOTAL;
+      break;
     }
     const statBase = Grimoire.Character.findStatBase(baseName);
     if (!statBase) {

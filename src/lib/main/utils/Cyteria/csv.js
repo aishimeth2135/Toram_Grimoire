@@ -16,7 +16,7 @@ function loadFile(config) {
   config = Object.assign({
     loadFileSucceeded: emptyFun,
     beforeLoadFile: emptyFun,
-    wrongFileType: emptyFun
+    wrongFileType: emptyFun,
   }, config);
   const input = document.createElement('input');
   input.type = 'file';

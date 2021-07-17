@@ -22,7 +22,7 @@ export default function() {
         'none': '通用',
         'main-weapon: title': '主手武器',
         'sub-weapon: title': '副手装备',
-        'body-armor: title': '身体装备'
+        'body-armor: title': '身体装备',
       },
       'effect attrs': {
         'mp_cost': 'MP消耗',
@@ -36,7 +36,7 @@ export default function() {
         'in_combo: list': ['可以放入连击', '无法放入连击', '无法放在连击的第一招'],
         'action_time: list': ['极慢', '慢', '稍慢', '一般', '稍快', '快', '极快'],
         'range: no limit': '无限制',
-        'range: main': '同#施放武器 '
+        'range: main': '同#施放武器 ',
       },
       'Branch': {
         'display duration': '$0秒内',
@@ -61,15 +61,15 @@ export default function() {
           'dagger_atk': '小刀ATK',
           'target_def': '目标DEF',
           'target_level': '目标LV',
-          'guard_power': '阻档力'
+          'guard_power': '阻档力',
         },
         'skill area': {
           'button text': '查看技能范围',
           'point: character': '角色',
-          'point: target': '目标'
+          'point: target': '目标',
         },
         'global suffix: extra': {
-          'condition default': '额外效果'
+          'condition default': '额外效果',
         },
         'damage': {
           'base name': '伤害',
@@ -79,35 +79,35 @@ export default function() {
             '@custom': {
               'default': '有效攻击力',
               'both': '有效ATK/有效MATK',
-              'dual_sword': '双剑有效ATK'
+              'dual_sword': '双剑有效ATK',
             },
           },
           'damage_type': {
             'physical': '物理伤害',
-            'magic': '魔法伤害'
+            'magic': '魔法伤害',
           },
           'type': {
-            'AOE': '范围'
+            'AOE': '范围',
           },
           'title': {
-            'normal_attack': '一般攻击的伤害提升'
+            'normal_attack': '一般攻击的伤害提升',
           },
           'frequency': {
-            'positive': '总伤害拆成$0次'
+            'positive': '总伤害拆成$0次',
           },
           'ailment text': '有$0机率使目标陷入$1。',
           'effective_area': {
             'circle': '圆形',
             'line': '直线',
-            'sector': '扇形'
+            'sector': '扇形',
           },
           'start_position_offsets': {
             'positive': '自身前方$0m处',
-            'negative': '自身后方$m处'
+            'negative': '自身后方$m处',
           },
           'end_position_offsets': {
             'positive': '目标后方$0处',
-            'negative': '目标前方$0处'
+            'negative': '目标前方$0处',
           },
           'element': {
             'neutral': '无属性',
@@ -118,11 +118,11 @@ export default function() {
             'light': '光属性',
             'dark': '暗属性',
             'one_hand_sword': '单手剑属性',
-            'arrow': '箭矢属性'
+            'arrow': '箭矢属性',
           },
           '@custom-base-caption': {
             'both': '根据<!角色的ATK及MATK的高低->。ATK比MATK高时，取<!有效ATK->；MATK比ATK高时，取<!有效MATK->。',
-            'dual_sword': '双剑有自己特殊的有效ATK公式，细节请查看#双剑特性说明 。'
+            'dual_sword': '双剑有自己特殊的有效ATK公式，细节请查看#双剑特性说明 。',
           },
           'effective_area: title': '类型',
           'radius: title': '伤害半径',
@@ -130,7 +130,7 @@ export default function() {
           'angle: title': '作用角度',
           'start_position_offsets: title': '起点位置',
           'end_position_offsets: title': '终点位置',
-          'caption of duration and cycle': '持续$0秒，每$1秒一次伤害。'
+          'caption of duration and cycle': '持续$0秒，每$1秒一次伤害。',
         },
         'damage: proration': {
           'damage: title': '伤害惯性',
@@ -139,37 +139,37 @@ export default function() {
             'physical': '物理',
             'magic': '魔法',
             'normal_attack': '一般攻击',
-            'none': '不受惯性影响'
+            'none': '不受惯性影响',
           },
           'proration': {
             'physical': '物理',
             'magic': '魔法',
             'normal_attack': '一般攻击',
-            'none': '不造成惯性'
-          }
+            'none': '不造成惯性',
+          },
         },
         'damage-detail': {
           'judgment': {
             'common': '每下伤害共用判定',
-            'separate': '每下伤害分开判定'
+            'separate': '每下伤害分开判定',
           },
           'frequency_judgment': {
             'single': '限伤时视为单次伤害',
-            'multiple': '限伤时视为多段伤害'
+            'multiple': '限伤时视为多段伤害',
           },
           'unsheathe_damage': {
             'true': '受拔刀伤害影响',
             'false': '不受拔刀伤害影响',
-            'none': '未确认是否受拔刀伤害影响'
+            'none': '未确认是否受拔刀伤害影响',
           },
           'range_damage': {
             'true': '受距离威力影响',
             'false': '不受距离威力影响',
-            'none': '未确认是否受距离威力影响'
+            'none': '未确认是否受距离威力影响',
           },
           'is_place': {
-            'true': '设置型技能'
-          }
+            'true': '设置型技能',
+          },
         },
         'proration': {
           'damage: title': '伤害惯性',
@@ -178,64 +178,64 @@ export default function() {
             'physical': '物理',
             'magic': '魔法',
             'normal_attack': '一般攻击',
-            'none': '不受惯性影响'
+            'none': '不受惯性影响',
           },
           'proration': {
             'physical': '物理',
             'magic': '魔法',
             'normal_attack': '一般攻击',
-            'none': '不造成惯性'
-          }
+            'none': '不造成惯性',
+          },
         },
         'stack': {
-          'base name': '技能层数'
+          'base name': '技能层数',
         },
         'effect': {
           'base name': '技能效果',
           'condition': {
             'auto': '施放成功后',
-            'hit': '命中成功后'
+            'hit': '命中成功后',
           },
           'type': {
             'self': '自身增益',
             'party': '全队伍增益',
             'aura': '光环',
             'circle': '领域',
-            'target': '单体增益'
+            'target': '单体增益',
           },
           'is_place': {
-            'true': '设置型技能'
+            'true': '设置型技能',
           },
           'effective_area': {
-            'circle': '圆形'
+            'circle': '圆形',
           },
           'effective_area: title': '类型',
-          'radius: title': '作用半径'
+          'radius: title': '作用半径',
         },
         'next': {
-          'condition default': '下一招技能'
+          'condition default': '下一招技能',
         },
         'passive': {
-          'base name': '被动效果'
+          'base name': '被动效果',
         },
         'global': {
-          'times': '次'
+          'times': '次',
         },
         'heal': {
           'base name': '恢复效果',
           'type': {
             'hp': '恢复HP',
-            'mp': '恢复MP'
+            'mp': '恢复MP',
           },
-          'caption of duration and cycle': '持续$0秒，每$1秒作用一次。'
+          'caption of duration and cycle': '持续$0秒，每$1秒作用一次。',
         },
         'reference': {
-          'base title': '参考连结'
-        }
+          'base title': '参考连结',
+        },
       },
       'warn': {
-        'no skill tree selected': '还没选取技能树0.0'
-      }
-    }
+        'no skill tree selected': '还没选取技能树0.0',
+      },
+    },
   };
 }

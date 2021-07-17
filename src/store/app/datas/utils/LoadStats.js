@@ -10,14 +10,14 @@ export default function(character_system, datas) {
     HIDDEN = 5,
     LANG_DATA = {
       CAPTION: 0,
-      CONSTANT_FORMULA: 1
+      CONSTANT_FORMULA: 1,
     };
 
   const c = datas[0];
   // language data
   HandleLanguageData(datas, {
     [CAPTION]: LANG_DATA.CAPTION,
-    [CONSTANT_FORMULA]: LANG_DATA.CONSTANT_FORMULA
+    [CONSTANT_FORMULA]: LANG_DATA.CONSTANT_FORMULA,
   });
 
   c.forEach((p, index) => {

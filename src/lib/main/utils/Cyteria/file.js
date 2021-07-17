@@ -48,7 +48,7 @@ function load({
   succeed = null,
   error = null,
   beforeLoad = null,
-  checkFileType = null
+  checkFileType = null,
 }) {
   try {
     const input = document.createElement('input');

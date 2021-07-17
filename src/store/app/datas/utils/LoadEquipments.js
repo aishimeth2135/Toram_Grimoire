@@ -16,7 +16,7 @@ export default function(root, c) {
       '盾牌': 200,
       '身體裝備': 300,
       '追加裝備': 400,
-      '特殊裝備': 500
+      '特殊裝備': 500,
     };
 
   function processMaterails(s) {
@@ -53,14 +53,14 @@ export default function(root, c) {
       if (p[ATTRIBUTE_CATEGORY] !== '')
         cur_attrcat = p[ATTRIBUTE_CATEGORY];
       switch (p[ATTRIBUTE_CATEGORY]) {
-        case 'obtain':
-          cur = cur_equip.appendObtain();
-          break;
-        case 'recipe':
-          cur = cur_equip.setRecipe();
-          break;
-        case 'extra':
-          cur = cur_equip.setExtra();
+      case 'obtain':
+        cur = cur_equip.appendObtain();
+        break;
+      case 'recipe':
+        cur = cur_equip.setRecipe();
+        break;
+      case 'extra':
+        cur = cur_equip.setExtra();
       }
       if (cur_attrcat === 'stats') {
         const t = p[ATTRIBUTE_VALUES[0]];

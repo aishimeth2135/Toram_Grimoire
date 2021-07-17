@@ -1,6 +1,6 @@
 <template>
   <div class="cy--list-item" :class="{ 'selected': selected }">
-    <slot></slot>
+    <slot />
   </div>
 </template>
 <script>
@@ -8,9 +8,9 @@ export default {
   props: {
     selected: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 };
 </script>
 <style lang="postcss" scoped>

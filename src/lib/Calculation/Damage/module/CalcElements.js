@@ -37,9 +37,9 @@ class Calculation {
         'dex': 0,
         'int': 0,
         'agi': 0,
-        'vit': 0
+        'vit': 0,
       },
-      valueSet: {}
+      valueSet: {},
     };
   }
   createContainer(id, cat, type) {
@@ -50,7 +50,7 @@ class Calculation {
   calcResult(config) {
     config = Object.assign({
       beforeCalculate: [],
-      valueSet: {}
+      valueSet: {},
     }, config);
     let cst = 0;
     let mul = 1;
@@ -64,12 +64,12 @@ class Calculation {
       const v = !find ? ctner.beforeCalculate() : (typeof find.value == 'function' ? find.value.call(ctner) : find.value);
 
       switch (ctner.category) {
-        case CalcItemContainer.CATEGORY_CONSTANT:
-          cst += v;
-          break;
-        case CalcItemContainer.CATEGORY_MULTIPLIER:
-          mul *= v;
-          break;
+      case CalcItemContainer.CATEGORY_CONSTANT:
+        cst += v;
+        break;
+      case CalcItemContainer.CATEGORY_MULTIPLIER:
+        mul *= v;
+        break;
       }
     });
 
@@ -142,7 +142,7 @@ class CalcItemContainer {
 
     this.status = {
       currentItem: null,
-      valueSet: {}
+      valueSet: {},
     };
   }
   appendItem() {
@@ -168,10 +168,10 @@ class CalcItemContainer {
   calculatedValue() {
     const v = this.value();
     switch (this.category) {
-      case CalcItemContainer.CATEGORY_CONSTANT:
-        return v;
-      case CalcItemContainer.CATEGORY_MULTIPLIER:
-        return (100 + v) / 100;
+    case CalcItemContainer.CATEGORY_CONSTANT:
+      return v;
+    case CalcItemContainer.CATEGORY_MULTIPLIER:
+      return (100 + v) / 100;
     }
   }
   beforeCalculate() {
@@ -200,15 +200,15 @@ class CalcItemContainer {
   notifyLinkedContainers(type) {
     const ctners = this.belongCalculation().container().filter(a => a != this && a.getLink() == this.getLink());
     switch (type) {
-      case CalcItemContainer.NOTIFY_LINKED_TYPE_CONTAINER_TOGGLE:
-        ctners.forEach(p => p.toggle());
-        // fall through
-      case CalcItemContainer.NOTIFY_LINKED_TYPE_ITEM_SELECT:
-        {
-          const i = this.item().indexOf(this.currentItem());
-          ctners.forEach(p => p.currentItem(p.item(i)));
-          break;
-        }
+    case CalcItemContainer.NOTIFY_LINKED_TYPE_CONTAINER_TOGGLE:
+      ctners.forEach(p => p.toggle());
+      // fall through
+    case CalcItemContainer.NOTIFY_LINKED_TYPE_ITEM_SELECT:
+    {
+      const i = this.item().indexOf(this.currentItem());
+      ctners.forEach(p => p.currentItem(p.item(i)));
+      break;
+    }
     }
   }
   checkCurrentItem(id) {

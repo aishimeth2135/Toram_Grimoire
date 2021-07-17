@@ -21,7 +21,7 @@ const store = {
     tag: null,
     skill: null,
     enchant: null,
-    loaded: new Map()
+    loaded: new Map(),
   },
   getters: {
     checkInit: state => id => {
@@ -29,7 +29,7 @@ const store = {
     },
     checkLoad: state => id => {
       return state.loaded.has(id);
-    }
+    },
   },
   mutations: {
     loadFinished(state, id) {
@@ -54,7 +54,7 @@ const store = {
     initEnchant(state, { checkInit }) {
       if (!checkInit('enchant'))
         state.enchant = new EnchantSystem();
-    }
+    },
   },
   actions: {
     async* loadItems({ state, commit, getters }) {
@@ -95,8 +95,8 @@ const store = {
       const datas = await DownloadDatas('Enchant');
       yield;
       loadEnchant(state.enchant, datas[0][0]);
-    }
-  }
+    },
+  },
 };
 
 export default store;

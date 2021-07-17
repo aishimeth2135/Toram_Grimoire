@@ -5,12 +5,16 @@
         {{ $lang('top caption') }}
       </cy-default-tips>
       <div class="buttons">
-        <cy-button-border icon="ic-round-save"
-          @click="$emit('manual-auto-save')">
+        <cy-button-border
+          icon="ic-round-save"
+          @click="$emit('manual-auto-save')"
+        >
           {{ $lang('save button: title') }}
         </cy-button-border>
-        <cy-button-border icon="bx-bx-loader-circle"
-          @click="$emit('manual-auto-load')">
+        <cy-button-border
+          icon="bx-bx-loader-circle"
+          @click="$emit('manual-auto-load')"
+        >
           {{ $lang('load button: title') }}
         </cy-button-border>
       </div>
@@ -45,7 +49,7 @@
     </div>
   </div>
   <cy-default-tips v-else icon="mdi-ghost">
-    {{ $globalLang('global/LocalStorage is inavailable') }}
+    {{ $rootLang('global/LocalStorage is inavailable') }}
   </cy-default-tips>
 </template>
 <script>
@@ -56,7 +60,7 @@ export default {
   emits: ['manual-auto-save', 'manual-auto-load', 'close-auto-save'],
   data() {
     return {
-      deleteCounter: 0
+      deleteCounter: 0,
     }
   },
   computed: {
@@ -70,8 +74,8 @@ export default {
       this.$store.commit('character/deleteAllSavedData');
       this.$emit('close-auto-save');
       this.$notify(this.$lang('Message: deleta all data'));
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

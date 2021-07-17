@@ -22,15 +22,15 @@ function CyTransition(props, context) {
   return h(
     getComponent(),
     attrs,
-    context.slots
+    context.slots,
   )
 }
 
 CyTransition.props = {
   type: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 };
 
 export default CyTransition;

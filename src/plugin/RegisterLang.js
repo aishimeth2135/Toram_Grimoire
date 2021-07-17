@@ -1,7 +1,7 @@
 import GetLang from "@services/Language";
 
 export default function install(app) {
-  app.config.globalProperties.$globalLang = GetLang;
+  app.config.globalProperties.$rootLang = GetLang;
 
   app.mixin({
     beforeCreate() {
@@ -9,7 +9,7 @@ export default function install(app) {
         let options = this.$options.RegisterLang;
         if (typeof options === 'string') {
           options = {
-            root: options
+            root: options,
           };
         }
         const { root, extra } = options;
@@ -32,6 +32,6 @@ export default function install(app) {
           }
         }
       }
-    }
+    },
   });
 }

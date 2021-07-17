@@ -34,39 +34,11 @@ document.addEventListener('IconifyAddedIcons', function() {
  * Export component
  */
 export default {
-  name: 'iconify-icon',
-  render() {
-    // Check if icon exists, render span if not
-    if (!Iconify.iconExists(this.name)) {
-      return h('span', {
-        style: 'display: inline-block; width: 1em;'
-      });
-    }
-
-    // Convert component properties to Iconify properties
-    let props = {};
-    if (this.color !== void 0) {
-      props.style = 'color: ' + this.color + ';';
-    }
-
-    // All optional properties
-    dataAttributes.forEach(key => {
-      if (this[key] !== void 0) {
-        props['data-' + key] = this[key];
-      }
-    });
-
-    // Get SVG attributes and body
-    let icon = Iconify.getSVGObject(this.name, props);
-    return h('svg', {
-      ...icon.attributes,
-      innerHTML: icon.body
-    });
-  },
+  name: 'IconifyIcon',
   props: {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     // If one dimension is missing, it will be generated using width/height ratio of icon.
     // By default height is '1em', width is calculated from icon's width/height ratio.
@@ -93,7 +65,7 @@ export default {
     // Horizontal: left, center, right
     // Vertical: top, middle, bottom
     // Crop: slice, meet
-    align: String
+    align: String,
   },
   beforeMount() {
     // Status of icon loading. false = not loading, string = icon name
@@ -124,7 +96,7 @@ export default {
         this._loadingIcon = this.name;
         listeners.push({
           instance: this,
-          icon: this._loadingIcon
+          icon: this._loadingIcon,
         });
 
         // Add to Iconify loading queue
@@ -146,7 +118,35 @@ export default {
     iconLoaded() {
       this._loadingIcon = false;
       this.$forceUpdate();
+    },
+  },
+  render() {
+    // Check if icon exists, render span if not
+    if (!Iconify.iconExists(this.name)) {
+      return h('span', {
+        style: 'display: inline-block; width: 1em;',
+      });
     }
-  }
+
+    // Convert component properties to Iconify properties
+    let props = {};
+    if (this.color !== void 0) {
+      props.style = 'color: ' + this.color + ';';
+    }
+
+    // All optional properties
+    dataAttributes.forEach(key => {
+      if (this[key] !== void 0) {
+        props['data-' + key] = this[key];
+      }
+    });
+
+    // Get SVG attributes and body
+    let icon = Iconify.getSVGObject(this.name, props);
+    return h('svg', {
+      ...icon.attributes,
+      innerHTML: icon.body,
+    });
+  },
 }
 </script>

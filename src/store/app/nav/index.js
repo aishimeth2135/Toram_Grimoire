@@ -3,15 +3,15 @@ import GetLang from "@services/Language";
 const store = {
   namespaced: true,
   state: {
-    items: []
+    items: [],
   },
   mutations: {
     setItems(state, { items }){
       state.items = [{
         title: GetLang('Page Title/base'),
-        path: '/'
+        path: '/',
       }, ...items];
-    }
-  }
+    },
+  },
 };
 export default store;

@@ -26,7 +26,7 @@ export default function() {
         'append equipments': '新增裝備',
         'message: remove equipment': '已移除裝備：$0。',
         'message: removed equipment recovery': '已復原裝備：$0。',
-        'message: copy equipment': '成功複製裝備。'
+        'message: copy equipment': '成功複製裝備。',
       },
       'append equipments': {
         'window title: select-mode': '選擇新增方式',
@@ -41,7 +41,7 @@ export default function() {
         'search equipment result: limit reached': '可顯示的搜尋結果數量已達上限。如果沒有找到想找的裝備，請試著更改關鍵字。',
         'search text is empty': '搜尋的關鍵字須至少一個字元。',
         'append equipments successfully': '已成功新增$0件裝備。',
-        'selected equipments cleared': '已清除選取的裝備。'
+        'selected equipments cleared': '已清除選取的裝備。',
       },
       'create custom equipment': {
         'window title': '建立自訂裝備',
@@ -57,13 +57,13 @@ export default function() {
         'equipment stats': '裝備能力',
         'equipment other': '其他',
         'window title': '自訂裝備設定',
-        'equipment can only have one element stat': '一件裝備只能擁有一個屬性'
+        'equipment can only have one element stat': '一件裝備只能擁有一個屬性',
       },
       'select crystals': {
         'window title': '選擇鍛晶',
         'search placeholder': '搜尋緞晶',
         'selected crystals': '已選擇的鍛晶',
-        'category title': ['武器', '身體裝備', '追加裝備', '特殊裝備', '通用']
+        'category title': ['武器', '身體裝備', '追加裝備', '特殊裝備', '通用'],
       },
       'skill management': {
         'passive skills': '被動技能',
@@ -76,13 +76,13 @@ export default function() {
         'tips: skill-builds data not be replaced': '自動讀檔時偵測到技能模擬器有現存的資料，讀檔這些資料將不會被刪除。',
         'formula text': {
           'target_def': '目標防禦',
-          'target_level': '目標等級'
+          'target_level': '目標等級',
         },
         'suffix branch': {
-          'condition: default': '額外效果'
+          'condition: default': '額外效果',
         },
         'no build has been created': '還沒有建立任何配置喔～請先透過左上方的選單進入「技能模擬器」，建立新的技能配置。',
-        'there are no skills yet': '這裡還沒有任何技能喔～請先透過左上方的選單進入「技能模擬器」，來進行技能的配點。請注意，要對角色能力有提升的技能才會顯示在這裡。'
+        'there are no skills yet': '這裡還沒有任何技能喔～請先透過左上方的選單進入「技能模擬器」，來進行技能的配點。請注意，要對角色能力有提升的技能才會顯示在這裡。',
       },
       'show character stats': {
         'base value': '基礎值',
@@ -103,22 +103,22 @@ export default function() {
           'halberd': '旋風槍',
           'katana': '拔刀劍',
           'main': {
-            'none': '主手｜空手'
+            'none': '主手｜空手',
           },
           'sub': {
             'magic_device': '副手｜魔導具',
             'knuckle': '副手｜拳套',
             'arrow': '箭矢',
             'dagger': '小刀',
-            'shield': '盾牌'
+            'shield': '盾牌',
           },
           'armor': {
             'normal': '身體防具｜一般',
             'dodge': '身體防具｜輕量化',
             'defense': '身體防具｜重量化',
-            'none': '身體防具｜無裝備'
-          }
-        }
+            'none': '身體防具｜無裝備',
+          },
+        },
       },
       'Food Builds Control': {
         'food build': '料理配置',
@@ -132,7 +132,7 @@ export default function() {
         'Current food-build is not exist': '無法獲取當前的料理配置，請點選下方的按鈕嘗試復原介面。',
         'Number of selected food has reached the maximum': '可選取的料理數量已達上限。',
         'tips: select food': '透過點擊前方的圓點來選取最多五個料理。',
-        'tips: auto select food': '原本是0級的料理在提升等級時會自動選取。'
+        'tips: auto select food': '原本是0級的料理在提升等級時會自動選取。',
       },
       'save-load control': {
         'Auto save Successfully': '自動存檔成功。',
@@ -146,8 +146,8 @@ export default function() {
         'delete all data: caption': [
           '在某些情況下，角色模擬器的檔案可能毀損，導致系統無法正常運行。使用下方的按鈕可以刪除角色模擬器所有資料。自動存檔功能也將暫時失效，意即當前的資料將不會自動儲存。',
           '請將下方的計數器數值調整到10，刪除按鈕就會出現。',
-          '將資料刪除成功後，請立即重新整理，來讓系統重新初始化。'
-        ]
+          '將資料刪除成功後，請立即重新整理，來讓系統重新初始化。',
+        ],
       },
       'Warn': {
         'Current character is not exist': '發生了ㄧ些小錯誤，導致無法獲取當前的角色資訊，介面也無法正常顯示......<br />請點選下面的按鈕來建立一個新的角色，以復原介面(_ _)',
@@ -161,8 +161,8 @@ export default function() {
         'Copy character successfully': '已成功複製：$0',
         'Remove character successfully': '已成功移除：$0',
         'Recovery character successfully': '已復原被刪除的：$0',
-        'Must have at least one character': '必須至少留下一個角色。'
-      }
-    }
+        'Must have at least one character': '必須至少留下一個角色。',
+      },
+    },
   };
 }

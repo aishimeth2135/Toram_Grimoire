@@ -1,22 +1,22 @@
 <template>
-	<div class="sticky-header">
-		<div class="content">
-			<slot></slot>
+  <div class="sticky-header">
+    <div class="content">
+      <slot />
       <div v-if="$slots['float-menu']" class="float-menu">
-				<div class="menu-container">
-					<slot name="float-menu"></slot>
-				</div>
+        <div class="menu-container">
+          <slot name="float-menu" />
+        </div>
       </div>
-			<div class="buttons-scope">
-				<slot name="buttons-scope"></slot>
-			</div>
-		</div>
-	</div>
+      <div class="buttons-scope">
+        <slot name="buttons-scope" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-	export default {
-	};
+export default {
+};
 </script>
 
 <style lang="less" scoped>

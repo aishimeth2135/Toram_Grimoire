@@ -1,5 +1,5 @@
 <template>
   <ul>
-    <li></li>
+    <li />
   </ul>
 </template>

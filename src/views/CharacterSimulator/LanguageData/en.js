@@ -26,7 +26,7 @@ export default function() {
         'append equipments': 'Add Equipment',
         'message: remove equipment': 'Equipment Removed: $0.',
         'message: removed equipment recovery': 'Equipment Recovered: $0.',
-        'message: copy equipment': 'Equipment successfully copied'
+        'message: copy equipment': 'Equipment successfully copied',
       },
       'append equipments': {
         'window title: select-mode': 'Select',
@@ -41,7 +41,7 @@ export default function() {
         'search equipment result: limit reached': 'Search Limit has being reached. If you cannot find the equipment, Try to search with more details.',
         'search text is empty': 'The search bar is empty',
         'append equipments successfully': 'Successfully added $0 Equipment(s).',
-        'selected equipments cleared': 'Selected Equipment cleared.'
+        'selected equipments cleared': 'Selected Equipment cleared.',
       },
       'create custom equipment': {
         'window title': 'Create Customize Equipment',
@@ -57,13 +57,13 @@ export default function() {
         'equipment stats': 'Equipment Status',
         'equipment other': 'Other',
         'window title': 'Customize Equipment Status',
-        'equipment can only have one element stat': 'One Equipment can only have one element'
+        'equipment can only have one element stat': 'One Equipment can only have one element',
       },
       'select crystals': {
         'window title': 'Select Xtal',
         'search placeholder': 'Xtal Search',
         'selected crystals': 'Selected Xtal',
-        'category title': ['Weapon', 'Body Armor', 'Additional Equipment', 'Special', 'Normal']
+        'category title': ['Weapon', 'Body Armor', 'Additional Equipment', 'Special', 'Normal'],
       },
       'skill management': {
         'passive skills': 'Passive Skills',
@@ -76,13 +76,13 @@ export default function() {
         'tips: skill-builds data not be replaced': 'Skill-builds data will not be replaced. ',
         'formula text': {
           'target_def': 'Target Def',
-          'target_level': 'Target Level'
+          'target_level': 'Target Level',
         },
         'suffix branch': {
-          'condition: default': 'Additional Effects'
+          'condition: default': 'Additional Effects',
         },
         'no build has been created': 'No build has been created~ Click the menu on the upper left corner and enter the "Skill Simulator" to set up the build.',
-        'there are no skills yet': 'There are no skills yet~ Click the menu on the upper left corner and enter the "Skill Simulator" to set up the build. Keep in mind, only skills that will boost your character will appear here.'
+        'there are no skills yet': 'There are no skills yet~ Click the menu on the upper left corner and enter the "Skill Simulator" to set up the build. Keep in mind, only skills that will boost your character will appear here.',
       },
       'show character stats': {
         'base value': 'Base ',
@@ -103,22 +103,22 @@ export default function() {
           'halberd': 'Halberd',
           'katana': 'Katana',
           'main': {
-            'none': 'None'
+            'none': 'None',
           },
           'sub': {
             'magic_device': 'Magic Device(Sub)',
             'knuckle': 'Knuckle(Sub)',
             'arrow': 'Arrow',
             'dagger': 'Dagger',
-            'shield': 'Shield'
+            'shield': 'Shield',
           },
           'armor': {
             'normal': 'Body Armor(Normal)',
             'dodge': 'Body Armor(Light)',
             'defense': 'Body Armor(Heavy)',
-            'none': 'None'
-          }
-        }
+            'none': 'None',
+          },
+        },
       },
       'Food Builds Control': {
         'food build': 'Food Buffs',
@@ -132,7 +132,7 @@ export default function() {
         'Current food-build is not exist': 'Unable to load the current food buffs, please click the buttom below to fix this issue. ',
         'Number of selected food has reached the maximum': 'No more food buff can be selected. ',
         'tips: select food': 'Click the buttom in front of the food to select it, can only select 5 or less. ',
-        'tips: auto select food': 'Food buff will be automatically selected when you level it up. '
+        'tips: auto select food': 'Food buff will be automatically selected when you level it up. ',
       },
       'save-load control': {
         'Auto save Successfully': 'Auto Save Successfully. ',
@@ -146,8 +146,8 @@ export default function() {
         'delete all data: caption': [
           'Under some condition，Errors may occur in Character Simulator that can cause a system malfunction. Use the buttom below to clear all the datas in Character Simulator. Auto-save will also be unavailable temporary，Which means the exsisting datas will not be saved automatically. ',
           'Adjust the number of "Delete Counter" below to 10，then the delete buttom will appear. ',
-          'After delete the datas, please reload immediately, so the system can reinitialize. '
-        ]
+          'After delete the datas, please reload immediately, so the system can reinitialize. ',
+        ],
       },
       'Warn': {
         'Current character is not exist': 'Some little errors occured, character datas are unable to load ，the site cannot display properly......<br /> Please click the buttoms below to create new character, to restore the site(_ _)',
@@ -161,8 +161,8 @@ export default function() {
         'Copy character successfully': 'Successfully copied: $0',
         'Remove character successfully': 'Successfully removed: $0',
         'Recovery character successfully': 'Successfully recovered: $0',
-        'Must have at least one character': 'Must have at least one character. '
-      }
-    }
+        'Must have at least one character': 'Must have at least one character. ',
+      },
+    },
   };
 }

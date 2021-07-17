@@ -2,47 +2,64 @@
   <section>
     <div class="equipment-fields-container">
       <div class="equipment-fields">
-        <equipment-field v-for="field in characterState.origin.equipmentFields"
-          :key="field.id" :field="field"
+        <equipment-field
+          v-for="field in characterState.origin.equipmentFields"
+          :key="field.id"
+          :field="field"
           @select-field-equipment="selectFieldEquipment"
-          @remove-field-equipment="removeFieldEquipment" />
+          @remove-field-equipment="removeFieldEquipment"
+        />
       </div>
     </div>
     <div class="window-container">
-      <browse-equipments :visible="window.browseEquipments"
+      <browse-equipments
+        :visible="window.browseEquipments"
         :action="browseEquipmentsState.action"
         :character-state="characterState"
-        @close="toggle('window/browseEquipments', false)" />
-      <append-equipments :visible="window.appendEquipments"
-        @close="toggle('window/appendEquipments', false)" />
-      <create-custom-equipment :visible="window.createCustomEquipment"
+        @close="toggle('window/browseEquipments', false)"
+      />
+      <append-equipments
+        :visible="window.appendEquipments"
+        @close="toggle('window/appendEquipments', false)"
+      />
+      <create-custom-equipment
+        :visible="window.createCustomEquipment"
         @close="toggle('window/createCustomEquipment', false)"
-        @append-equipments="appendEquipments" />
-      <cy-window :visible="window.customEquipmentEditor"
-        @close="toggle('window/customEquipmentEditor', false)">
+        @append-equipments="appendEquipments"
+      />
+      <cy-window
+        :visible="window.customEquipmentEditor"
+        @close="toggle('window/customEquipmentEditor', false)"
+      >
         <template #title>
           <cy-icon-text icon="ic-round-edit">
             {{ $lang('custom equipment editor/window title') }}
           </cy-icon-text>
         </template>
-        <custom-equipment-editor v-if="currentCustomEquipment"
-          :equipment="currentCustomEquipment" />
+        <custom-equipment-editor
+          v-if="currentCustomEquipment"
+          :equipment="currentCustomEquipment"
+        />
         <cy-bottom-content>
           <template #normal-content>
             <div class="flex items-center">
-              <cy-button-border icon="ic-round-done"
+              <cy-button-border
+                icon="ic-round-done"
+                class="ml-auto"
                 @click="toggle('window/customEquipmentEditor', false)"
-                class="ml-auto">
-                {{ $globalLang('global/close') }}
+              >
+                {{ $rootLang('global/close') }}
               </cy-button-border>
             </div>
           </template>
         </cy-bottom-content>
       </cy-window>
-      <select-crystals v-if="currentSelectCrystalsEquipment"
+      <select-crystals
+        v-if="currentSelectCrystalsEquipment"
         :visible="window.selectCrystals"
         :equipment="currentSelectCrystalsEquipment"
-        @close="toggle('window/selectCrystals', false)" />
+        @close="toggle('window/selectCrystals', false)"
+      />
     </div>
   </section>
 </template>
@@ -63,7 +80,6 @@ import { CharacterEquipment } from "@/lib/Character/CharacterEquipment";
 
 export default {
   RegisterLang: 'Character Simulator',
-  props: ['characterState'],
   provide() {
     return {
       'convertEquipmentData': this.convertEquipmentData,
@@ -72,9 +88,10 @@ export default {
       'openSelectCrystals': this.openSelectCrystals,
       'appendEquipments': this.appendEquipments,
       'isElementStat': this.isElementStat,
-      'setEquipmentProperty': this.setEquipmentProperty
+      'setEquipmentProperty': this.setEquipmentProperty,
     };
   },
+  props: ['characterState'],
   setup() {
     const { window, toggle } = ToggleService({
       window: [
@@ -82,29 +99,29 @@ export default {
         'appendEquipments',
         'createCustomEquipment',
         'customEquipmentEditor',
-        'selectCrystals'
-      ]
+        'selectCrystals',
+      ],
     });
 
     return {
       window,
-      toggle
+      toggle,
     };
   },
   data() {
     return {
       browseEquipmentsState: {
-        action: null
+        action: null,
       },
       currentCustomEquipment: null,
       currentSelectCrystalsEquipment: null,
-      elementStatIds: CharacterEquipment.elementStatIds
+      elementStatIds: CharacterEquipment.elementStatIds,
     };
   },
   computed: {
     ...mapState('character', {
-      'equipments': 'equipments'
-    })
+      'equipments': 'equipments',
+    }),
   },
   methods: {
     isElementStat(baseName) {
@@ -124,7 +141,7 @@ export default {
     selectFieldEquipment(field) {
       this.browseEquipmentsState.action = {
         type: 'select-field-equipment',
-        targetField: field
+        targetField: field,
       };
       this.toggle('window/browseEquipments', true);
     },
@@ -141,7 +158,7 @@ export default {
     },
     setEquipmentProperty(eq, propName, v) {
       eq[propName] = v;
-    }
+    },
   },
   components: {
     'equipment-field': vue_equipmentField,
@@ -149,8 +166,8 @@ export default {
     'browse-equipments': vue_browseEquipments,
     'create-custom-equipment': vue_createCustomEquipment,
     'custom-equipment-editor': vue_customEquipmentEditor,
-    'select-crystals': vue_selectCrystals
-  }
+    'select-crystals': vue_selectCrystals,
+  },
 }
 </script>
 <style lang="less" scoped>

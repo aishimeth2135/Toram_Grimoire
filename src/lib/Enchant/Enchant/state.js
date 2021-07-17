@@ -12,8 +12,8 @@ const STATE = {
     get smithLevel() {
       return store.state.enchant.config.smithLevel;
     },
-    tec: 255
-  }
+    tec: 255,
+  },
 };
 
 export default STATE;

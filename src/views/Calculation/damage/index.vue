@@ -1,7 +1,6 @@
 <template>
   <article>
-    <div ref="temp-main" class="app--tmp--Calculation-Damage">
-    </div>
+    <div ref="temp-main" class="app--tmp--Calculation-Damage" />
   </article>
 </template>
 <script>
@@ -17,7 +16,7 @@ export default {
   },
   mounted() {
     new DamageCalculationController().init(this.$refs['temp-main']);
-  }
+  },
 };
 </script>
 <style lang="less">
@@ -229,6 +228,4 @@ export default {
     top: 50%;
     transform: translateY(-50%);
 }
-
-
 </style>

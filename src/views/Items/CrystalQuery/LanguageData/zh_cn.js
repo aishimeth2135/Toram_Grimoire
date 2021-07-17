@@ -8,11 +8,11 @@ export default function(){
       'no result tips': '找不到任何结果0.0',
       'search mode': {
         'normal': '名称搜寻',
-        'stats': '能力搜寻'
+        'stats': '能力搜寻',
       },
       'select stat: title': '请选择一个能力',
       'select stat: window title': '选择能力',
-      'select stat: search placeholder': '搜寻能力'
-    }
+      'select stat: search placeholder': '搜寻能力',
+    },
   };
 }

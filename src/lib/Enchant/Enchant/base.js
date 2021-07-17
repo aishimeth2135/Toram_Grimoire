@@ -54,11 +54,11 @@ class EnchantItem {
    * @param {EnchantItemSets} sets
    */
   constructor(category, {
-      baseName, potential,
-      limit, unitValue,
-      materialPointType, materialPointValue,
-      potentialConvertThreshold
-    }) {
+    baseName, potential,
+    limit, unitValue,
+    materialPointType, materialPointValue,
+    potentialConvertThreshold,
+  }) {
 
     /** @type {EnchantCategory} */
     this._category = category;
@@ -70,24 +70,24 @@ class EnchantItem {
     this.conditionalProps = [];
     this.potential = {
       [StatBase.TYPE_CONSTANT]: potential[0],
-      [StatBase.TYPE_MULTIPLIER]: potential[1]
+      [StatBase.TYPE_MULTIPLIER]: potential[1],
     };
     this.limit = {
       [StatBase.TYPE_CONSTANT]: limit[0],
-      [StatBase.TYPE_MULTIPLIER]: limit[1]
+      [StatBase.TYPE_MULTIPLIER]: limit[1],
     };
     this.unitValue = {
       [StatBase.TYPE_CONSTANT]: unitValue[0] || '1',
-      [StatBase.TYPE_MULTIPLIER]: unitValue[1] || '1'
+      [StatBase.TYPE_MULTIPLIER]: unitValue[1] || '1',
     };
     this.materialPointType = materialPointType;
     this.materialPointValue = {
       [StatBase.TYPE_CONSTANT]: materialPointValue[0],
-      [StatBase.TYPE_MULTIPLIER]: materialPointValue[1]
+      [StatBase.TYPE_MULTIPLIER]: materialPointValue[1],
     };
     this.potentialConvertThreshold = {
       [StatBase.TYPE_CONSTANT]: potentialConvertThreshold[0],
-      [StatBase.TYPE_MULTIPLIER]: potentialConvertThreshold[1]
+      [StatBase.TYPE_MULTIPLIER]: potentialConvertThreshold[1],
     };
   }
 
@@ -111,12 +111,12 @@ class EnchantItem {
   checkConditionalProps(equipment) {
     return this.conditionalProps.find(p => {
       switch (p.condition) {
-        case EnchantItem.CONDITION_MAIN_WEAPON:
-          return equipment.fieldType === EnchantEquipment.TYPE_MAIN_WEAPON;
-        case EnchantItem.CONDITION_BODY_ARMOR:
-          return equipment.fieldType === EnchantEquipment.TYPE_BODY_ARMOR;
-        case EnchantItem.CONDITION_ORIGINAL_ELEMENT:
-          return equipment.isOriginalElement;
+      case EnchantItem.CONDITION_MAIN_WEAPON:
+        return equipment.fieldType === EnchantEquipment.TYPE_MAIN_WEAPON;
+      case EnchantItem.CONDITION_BODY_ARMOR:
+        return equipment.fieldType === EnchantEquipment.TYPE_BODY_ARMOR;
+      case EnchantItem.CONDITION_ORIGINAL_ELEMENT:
+        return equipment.isOriginalElement;
       }
     });
   }
@@ -180,7 +180,7 @@ class EnchantItem {
         '5': 25,
         '6': 33.5,
         '10': 50,
-        '20': 100
+        '20': 100,
       } [this.getOriginalPotential(type).toString()];
     }
     return parseFloat(t);
@@ -199,7 +199,7 @@ class EnchantItemConditionalProperties {
     this.condition = condition;
     this.potential = {
       [StatBase.TYPE_CONSTANT]: potential[0],
-      [StatBase.TYPE_MULTIPLIER]: potential[1]
+      [StatBase.TYPE_MULTIPLIER]: potential[1],
     };
   }
 }

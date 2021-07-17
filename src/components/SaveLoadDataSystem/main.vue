@@ -1,32 +1,42 @@
 <template>
   <div v-if="localStorageAvailable">
-    <cy-button-line icon="mdi:content-save-outline"
-      @click="openSelectDataWindow('save')">
+    <cy-button-line
+      icon="mdi:content-save-outline"
+      @click="openSelectDataWindow('save')"
+    >
       {{ langText('save') }}
     </cy-button-line>
-    <cy-button-line icon="mdi:download"
-      @click="openSelectDataWindow('load')">
+    <cy-button-line
+      icon="mdi:download"
+      @click="openSelectDataWindow('load')"
+    >
       {{ langText('load') }}
     </cy-button-line>
-    <cy-button-line icon="ic:round-insert-drive-file"
-      @click="handleFile('save')">
+    <cy-button-line
+      icon="ic:round-insert-drive-file"
+      @click="handleFile('save')"
+    >
       {{ langText('save to csv') }}
     </cy-button-line>
-    <cy-button-line icon="mdi:file-download-outline"
-      @click="handleFile('load')">
+    <cy-button-line
+      icon="mdi:file-download-outline"
+      @click="handleFile('load')"
+    >
       {{ langText('load from csv') }}
     </cy-button-line>
     <cy-window v-model:visible="selectDataWindowVisible">
-      <template v-slot:title>
+      <template #title>
         <cy-icon-text icon="mdi:content-save-outline">
           {{ langText('Save Load: title') }}
         </cy-icon-text>
       </template>
-      <template v-for="(o, i) in buttonsStates"
-        :key="o.title">
+      <template
+        v-for="(o, i) in buttonsStates"
+        :key="o.title"
+      >
         <div class="column" @click="selectData(i)">
           <div class="Cyteria scope-icon line">
-            <iconify-icon name="bx:bxs-book-bookmark"></iconify-icon>
+            <iconify-icon name="bx:bxs-book-bookmark" />
             <span class="text">{{ o.title }}</span>
           </div>
           <div class="detail">
@@ -67,41 +77,41 @@ export default {
   props: {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     saveData: {
       type: Function,
-      required: true
+      required: true,
     },
     loadData: {
       type: Function, // callback(String data)
-      required: true
+      required: true,
     },
     fileName: {
       type: Function,
-      default: () => 'state'
+      default: () => 'state',
     },
     saveNameList: {
       type: Function,
-      default: () => []
+      default: () => [],
     },
     actionFinished: {
       type: Function,
-      default: DoNothing
+      default: DoNothing,
     },
     beforeLoadConfirm: {
       type: Function,
-      default: DoNothing
+      default: DoNothing,
     },
     error: {
       type: Function, // callback(Error)
-      default: DoNothing
+      default: DoNothing,
     },
     saveSize: {
       type: Number,
       default: 5,
-      validator: v => Number.isInteger(v)
-    }
+      validator: v => Number.isInteger(v),
+    },
   },
   data() {
     return {
@@ -109,13 +119,18 @@ export default {
         return {
           title: Lang('file') + ' ' + i,
           names: '',
-          data: null
+          data: null,
         };
       }),
       selectDataWindowVisible: false,
       currentButtonIndex: -1,
-      currentMode: ''
+      currentMode: '',
     };
+  },
+  computed: {
+    localStorageAvailable() {
+      return CY.storageAvailable('localStorage');
+    },
   },
   beforeCreate() {
     init();
@@ -123,18 +138,13 @@ export default {
   created() {
     this.updateButtonsStates();
   },
-  computed: {
-    localStorageAvailable() {
-      return CY.storageAvailable('localStorage');
-    }
-  },
   methods: {
     updateButtonsStates() {
       this.buttonsStates.forEach((p, i) => {
         p.names = (this.getLocalStorageData(i, 'name') || '').split(',,').map((p, i) => {
           return {
             text: p,
-            iid: i
+            iid: i,
           };
         });
         p.data = this.getLocalStorageData(i, 'data') || null;
@@ -170,7 +180,7 @@ export default {
           },
           wrongFileType() {
             this.$notify(Lang('Warn/Wrong file type: csv'));
-          }
+          },
         });
       }
     },
@@ -240,8 +250,8 @@ export default {
     },
     langText(v, vs) {
       return Lang(v, vs);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

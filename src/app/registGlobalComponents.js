@@ -34,7 +34,7 @@ function registButtonAlias(APP) {
       return h(
         vue_CyButton,
         attrs,
-        context.slots
+        context.slots,
       );
     };
     APP.component('cy-button-' + name, componentFunction);

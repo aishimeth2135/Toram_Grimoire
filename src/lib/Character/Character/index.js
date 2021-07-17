@@ -25,8 +25,8 @@ class Character {
       EquipmentField.TYPE_ADDITIONAL,
       EquipmentField.TYPE_SPECIAL, {
         type: EquipmentField.TYPE_AVATAR,
-        numbers: 3
-      }
+        numbers: 3,
+      },
     ].map(p => {
       if (typeof p == 'object') {
         Array(p.numbers).fill().forEach((_, i) => {
@@ -87,27 +87,27 @@ class Character {
     const t = [];
     main_type = main_type || this.equipmentField(EquipmentField.TYPE_MAIN_WEAPON).equipmentType;
     switch (main_type) {
-      case MainWeapon.TYPE_ONE_HAND_SWORD:
-        t.push(MainWeapon.TYPE_ONE_HAND_SWORD);
-        // fall through
-      case EquipmentField.EMPTY:
-      case MainWeapon.TYPE_STAFF:
-        t.push(SubWeapon.TYPE_NINJUTSU_SCROLL);
-        // fall through
-      case MainWeapon.TYPE_BOWGUN:
-        t.push(MainWeapon.TYPE_KNUCKLE);
-        // fall through
-      case MainWeapon.TYPE_KNUCKLE:
-        t.push(MainWeapon.TYPE_MAGIC_DEVICE, SubArmor.TYPE_SHIELD);
-        // fall through
-      case MainWeapon.TYPE_HALBERD:
-        t.push(SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER);
-        break;
-      case MainWeapon.TYPE_KATANA:
-        t.push(SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_NINJUTSU_SCROLL);
-        break;
-      case MainWeapon.TYPE_BOW:
-        t.push(SubWeapon.TYPE_ARROW, MainWeapon.TYPE_KATANA);
+    case MainWeapon.TYPE_ONE_HAND_SWORD:
+      t.push(MainWeapon.TYPE_ONE_HAND_SWORD);
+      // fall through
+    case EquipmentField.EMPTY:
+    case MainWeapon.TYPE_STAFF:
+      t.push(SubWeapon.TYPE_NINJUTSU_SCROLL);
+      // fall through
+    case MainWeapon.TYPE_BOWGUN:
+      t.push(MainWeapon.TYPE_KNUCKLE);
+      // fall through
+    case MainWeapon.TYPE_KNUCKLE:
+      t.push(MainWeapon.TYPE_MAGIC_DEVICE, SubArmor.TYPE_SHIELD);
+      // fall through
+    case MainWeapon.TYPE_HALBERD:
+      t.push(SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER);
+      break;
+    case MainWeapon.TYPE_KATANA:
+      t.push(SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_NINJUTSU_SCROLL);
+      break;
+    case MainWeapon.TYPE_BOW:
+      t.push(SubWeapon.TYPE_ARROW, MainWeapon.TYPE_KATANA);
     }
     return t.includes(sub_type);
   }
@@ -141,12 +141,12 @@ class Character {
     data.level = this.level;
     data.normalBaseStats = this.normalBaseStats.map(p => ({
       name: p.name,
-      value: p.value
+      value: p.value,
     }));
     if (this.optionalBaseStat) {
       data.optionalBaseStat = {
         name: this.optionalBaseStat.name,
-        value: this.optionalBaseStat.value
+        value: this.optionalBaseStat.value,
       };
     }
 
@@ -156,7 +156,7 @@ class Character {
       [EquipmentField.TYPE_BODY_ARMOR]: 'body_armor',
       [EquipmentField.TYPE_ADDITIONAL]: 'additional',
       [EquipmentField.TYPE_SPECIAL]: 'special',
-      [EquipmentField.TYPE_AVATAR]: 'avatar'
+      [EquipmentField.TYPE_AVATAR]: 'avatar',
     };
     data.fields = this.equipmentFields.map(p => {
       let idx = -1;
@@ -170,7 +170,7 @@ class Character {
       return {
         type: fieldTypes[p.type],
         index: p.index,
-        equipmentIndex: idx
+        equipmentIndex: idx,
       };
     }).filter(p => p);
 
@@ -207,7 +207,7 @@ class Character {
         'body_armor': EquipmentField.TYPE_BODY_ARMOR,
         'additional': EquipmentField.TYPE_ADDITIONAL,
         'special': EquipmentField.TYPE_SPECIAL,
-        'avatar': EquipmentField.TYPE_AVATAR
+        'avatar': EquipmentField.TYPE_AVATAR,
       };
       fields.forEach(p => {
         if (p.equipmentIndex != -1) {
@@ -227,12 +227,12 @@ class Character {
       });
 
       return {
-        success
+        success,
       };
     } catch (e) {
       console.warn(e);
       return {
-        error: true
+        error: true,
       };
     }
   }
@@ -326,7 +326,7 @@ class CharacterStat {
     this.min = min;
     this.caption = caption;
     this.options = {
-      hidden: hidden_option // -1: default, 0: always hidden, 1: hidden when cvalue, mvalue and tvalue are zero
+      hidden: hidden_option, // -1: default, 0: always hidden, 1: hidden when cvalue, mvalue and tvalue are zero
     };
 
     this._formula = null;
@@ -390,7 +390,7 @@ class CharacterStat {
         conditionalBase: res.conditionalBase,
         hidden: ho === 0 ||
           (ho === 1 && ['constant', 'multiplier', 'total'].every(a => res.statValueParts[a] == 0)) ||
-          (ho === 2 && originalValue == 0)
+          (ho === 2 && originalValue == 0),
       };
     } catch (e) {
       console.warn(e);
@@ -414,7 +414,7 @@ class CharacterStatFormula {
     this.conditionValues.push({
       conditional,
       formula,
-      options
+      options,
     });
   }
   calc(simple_stats, vars) {
@@ -474,14 +474,14 @@ class CharacterStatFormula {
         constant: [],
         multiplier: [],
         total: [],
-        base: []
+        base: [],
       },
       initValue: {
         constant: cvalue,
         multiplier: mvalue,
         total: tvalue,
-        base: 0
-      }
+        base: 0,
+      },
     }
 
     const handleFormula = f => {
@@ -497,12 +497,12 @@ class CharacterStatFormula {
         .replace(/#([cmt]value)/g, (m, m1) => {
           defaultFormula = false;
           switch (m1) {
-            case 'cvalue':
-              return cvalue;
-            case 'mvalue':
-              return mvalue;
-            case 'tvalue':
-              return tvalue;
+          case 'cvalue':
+            return cvalue;
+          case 'mvalue':
+            return mvalue;
+          case 'tvalue':
+            return tvalue;
           }
         })
         .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
@@ -552,7 +552,7 @@ class CharacterStatFormula {
           result,
           statBasePart,
           isMul,
-          isBase
+          isBase,
         };
       })
       .filter(p => p.result)
@@ -566,23 +566,23 @@ class CharacterStatFormula {
         const data = {
           conditional: p.conditional,
           options: p.options,
-          value: v
+          value: v,
         };
         switch (t) {
-          case 'cvalue':
-            cvalue += v;
-            statPartsDetail.additionalValues.constant.push(data);
-            break;
-          case 'mvalue':
-            mvalue += v;
-            statPartsDetail.additionalValues.multiplier.push(data);
-            break;
-          case 'tvalue':
-            tvalue += v;
-            statPartsDetail.additionalValues.total.push(data);
-            break;
+        case 'cvalue':
+          cvalue += v;
+          statPartsDetail.additionalValues.constant.push(data);
+          break;
+        case 'mvalue':
+          mvalue += v;
+          statPartsDetail.additionalValues.multiplier.push(data);
+          break;
+        case 'tvalue':
+          tvalue += v;
+          statPartsDetail.additionalValues.total.push(data);
+          break;
         }
-    });
+      });
 
     const conditionalBase = conditions.find(p => p.isBase);
 
@@ -595,11 +595,11 @@ class CharacterStatFormula {
           conditional: p.conditional,
           options: p.options,
           isMul: p.isMul,
-          value: v
+          value: v,
         });
         return {
           isMul: p.isMul,
-          value: v
+          value: v,
         };
       });
 
@@ -635,10 +635,10 @@ class CharacterStatFormula {
         base: basev,
         constant: cvalue,
         multiplier: mvalue,
-        total: tvalue
+        total: tvalue,
       },
       statPartsDetail,
-      conditionalBase
+      conditionalBase,
     };
   }
 }

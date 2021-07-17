@@ -1,20 +1,28 @@
 <template>
-  <cy-window :visible="visible" @close="$emit('close')"
-    vertical-position="top">
-    <template v-slot:title>
+  <cy-window
+    :visible="visible"
+    vertical-position="top"
+    @close="$emit('close')"
+  >
+    <template #title>
       <cy-icon-text icon="bx-bx-search-alt">
         {{ $lang('window title: search') }}
       </cy-icon-text>
     </template>
-    <template v-slot:default>
-      <cy-title-input icon="ic-outline-category"
-        class="sticky top-0 bg-white z-1 pt-1 pb-2"
+    <template #default>
+      <cy-title-input
         v-model:value="searchText"
-        :placeholder="$lang('search equipment placeholder')" />
-      <div class="search-result" v-if="searchResult.length !== 0">
-        <equipment-item v-for="item in searchResult" :key="item.iid"
+        icon="ic-outline-category"
+        class="sticky top-0 bg-white z-1 pt-1 pb-2"
+        :placeholder="$lang('search equipment placeholder')"
+      />
+      <div v-if="searchResult.length !== 0" class="search-result">
+        <equipment-item
+          v-for="item in searchResult"
+          :key="item.iid"
+          :equipment="item.origin"
           @click="selectEquipment(item)"
-          :equipment="item.origin">
+        >
           <template #extra>
             <span class="text-sm text-light-2 ml-4">
               {{ item.origin.obtainText }}
@@ -22,21 +30,26 @@
             <cy-icon-text icon="ic-round-add" class="ml-auto" />
           </template>
         </equipment-item>
-        <div v-if="searchResult.length >= searchResultMaximum"
-          class="text-sm text-red py-3 px-2">
+        <div
+          v-if="searchResult.length >= searchResultMaximum"
+          class="text-sm text-red py-3 px-2"
+        >
           {{ $lang('search equipment result: limit reached') }}
         </div>
       </div>
       <cy-default-tips v-else icon="potum" icon-src="custom">
         {{ $lang.extra('parent', 'Warn/no result found') }}
       </cy-default-tips>
-      <cy-bottom-content class="selected" v-if="selected.length != 0">
+      <cy-bottom-content v-if="selected.length != 0" class="selected">
         <template #normal-content>
           <cy-transition type="fade">
             <div v-if="selectedDetailVisible" class="selected-detail">
-              <equipment-item v-for="item in selected" :key="item.iid"
+              <equipment-item
+                v-for="item in selected"
+                :key="item.iid"
+                :equipment="item.origin"
                 @click="removeSelected(item)"
-                :equipment="item.origin">
+              >
                 <template #extra>
                   <span class="text-sm text-light-2 ml-4">
                     {{ item.origin.obtainText }}
@@ -46,22 +59,26 @@
               </equipment-item>
             </div>
           </cy-transition>
-          <div class="cursor-pointer mb-2 pt-2 flex items-center"
-            @click="selectedDetailVisible = !selectedDetailVisible">
+          <div
+            class="cursor-pointer mb-2 pt-2 flex items-center"
+            @click="selectedDetailVisible = !selectedDetailVisible"
+          >
             <span class="inline-flex items-center justify-center h-7 w-7 border-1 border-solid border-light-3 mr-3 rounded-full">
               <span>{{ selected.length }}</span>
             </span>
             <span>{{ $lang('search equipment result: selected title') }}</span>
-            <cy-icon-text class="ml-auto flex-shrink-0 leading-none"
-              :icon="'ic-round-keyboard-arrow-' + (selectedDetailVisible ? 'down' : 'up')" />
+            <cy-icon-text
+              class="ml-auto flex-shrink-0 leading-none"
+              :icon="'ic-round-keyboard-arrow-' + (selectedDetailVisible ? 'down' : 'up')"
+            />
           </div>
           <div class="flex items-center">
             <div class="ml-auto">
               <cy-button-border icon="ic-round-done" @click.stop="submitSelected">
-                {{ $globalLang('global/confirm') }}
+                {{ $rootLang('global/confirm') }}
               </cy-button-border>
-              <cy-button-border icon="ic-round-close" @click.stop="clearSelected" class="ml-2">
-                {{ $globalLang('global/clear') }}
+              <cy-button-border icon="ic-round-close" class="ml-2" @click.stop="clearSelected">
+                {{ $rootLang('global/clear') }}
               </cy-button-border>
             </div>
           </div>
@@ -77,18 +94,21 @@ export default {
   RegisterLang: {
     root: 'Character Simulator/append equipments',
     extra: {
-      parent: 'Character Simulator'
-    }
+      parent: 'Character Simulator',
+    },
   },
-  emits: ['close'],
-  props: ['visible'],
+  components: {
+    'equipment-item': vue_equipmentItem,
+  },
   inject: ['convertEquipmentData', 'appendEquipments'],
+  props: ['visible'],
+  emits: ['close'],
   data() {
     return {
       searchText: '',
       selected: [],
       selectedDetailVisible: false,
-      searchResultMaximum: 30
+      searchResultMaximum: 30,
     };
   },
   computed: {
@@ -102,16 +122,16 @@ export default {
       return res.slice(0, this.searchResultMaximum).map((item, i) => {
         const o = this.convertEquipmentData(item);
 
-        const obtain = this.$globalLang('common/Equipment/obtain/' +
+        const obtain = this.$rootLang('common/Equipment/obtain/' +
           (item.obtains.length > 0 ? item.obtains[0].type : 'unknow'));
 
         return {
           origin: o,
           obtainText: obtain,
-          iid: i
+          iid: i,
         };
       });
-    }
+    },
   },
   methods: {
     submitSelected() {
@@ -125,12 +145,12 @@ export default {
       this.selected = [];
       this.$notify(this.$lang('selected equipments cleared'), 'ic-round-done', null, {
         buttons: [{
-          text: this.$globalLang('global/recovery'),
+          text: this.$rootLang('global/recovery'),
           click: () => {
             this.selected = store;
           },
-          removeMessageAfterClick: true
-        }]
+          removeMessageAfterClick: true,
+        }],
       });
     },
     removeSelected(item) {
@@ -141,14 +161,11 @@ export default {
     selectEquipment(item) {
       item = {
         origin: item.origin,
-        iid: this.selected.length
+        iid: this.selected.length,
       };
       this.selected.push(item);
-    }
+    },
   },
-  components: {
-    'equipment-item': vue_equipmentItem
-  }
 }
 </script>
 <style lang="postcss" scoped>

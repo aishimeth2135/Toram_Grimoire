@@ -3,12 +3,14 @@
     <div class="conent-container">
       <cy-icon-text icon="potum" class="icon" icon-src="custom" />
       <cy-icon-text icon="bx-bx-message-rounded-x" class="fix-icon" />
-      <div class="text">404 Not Found</div>
+      <div class="text">
+        404 Not Found
+      </div>
     </div>
   </section>
 </template>
 <script>
-  export default {};
+export default {};
 </script>
 <style lang="less" scoped>
 .main-- {

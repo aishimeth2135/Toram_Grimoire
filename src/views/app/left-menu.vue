@@ -11,8 +11,8 @@
         <div class="conent-container w-full h-full">
           <cy-button-line
             v-for="(data) in viewButtons"
-            :icon="data.icon"
             :key="data.title"
+            :icon="data.icon"
             @click="setCurrentView(data)"
           >
             {{ data.title }}
@@ -28,14 +28,14 @@ import { mapState } from 'vuex';
 export default {
   data() {
     return {
-      unfold: !this.screenWidthCheck()
+      unfold: !this.screenWidthCheck(),
     };
   },
   computed: {
     ...mapState('left-menu', ['viewButtons']),
     currentIconName() {
       return 'ic:round-menu';
-    }
+    },
   },
   methods: {
     setCurrentView(data) {
@@ -47,12 +47,11 @@ export default {
     },
     screenWidthCheck() {
       return document.body.clientWidth >= (50 + 16 + 16) * 16;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
-
 .app--left-menu {
   ::v-deep(.top-button) {
     z-index: 2;

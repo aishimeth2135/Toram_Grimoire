@@ -13,7 +13,6 @@
 
 <script>
 export default {
-  emits: ['update:value'],
   props: {
     value: {},
     options: {
@@ -21,6 +20,7 @@ export default {
       required: true,
     },
   },
+  emits: ['update:value'],
   methods: {
     selectItem(item) {
       this.$emit('update:value', item.value);

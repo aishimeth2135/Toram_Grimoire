@@ -8,12 +8,12 @@ import ja from "./module/LanguageData/ja.js";
 import zh_cn from "./module/LanguageData/zh_cn.js";
 
 export default class SaveLoadSystem {
-    constructor(){
-    }
-    init(set){
-        InitLanguageData({ zh_tw, en, ja, zh_cn });
+  constructor(){
+  }
+  init(set){
+    InitLanguageData({ zh_tw, en, ja, zh_cn });
 
-        this.controller = new Controller().init(set);
-        return this;
-    }
+    this.controller = new Controller().init(set);
+    return this;
+  }
 }

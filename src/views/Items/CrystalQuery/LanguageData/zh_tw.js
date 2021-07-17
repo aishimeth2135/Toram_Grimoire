@@ -8,11 +8,11 @@ export default function(){
       'no result tips': '找不到任何結果0.0',
       'search mode': {
         'normal': '名稱搜尋',
-        'stats': '能力搜尋'
+        'stats': '能力搜尋',
       },
       'select stat: title': '請選擇一個能力',
       'select stat: window title': '選擇能力',
-      'select stat: search placeholder': '搜尋能力'
-    }
+      'select stat: search placeholder': '搜尋能力',
+    },
   };
 }

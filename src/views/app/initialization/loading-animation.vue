@@ -1,16 +1,20 @@
 <template>
   <div class="inline-block">
-    <transition mode="out-in"
+    <transition
+      mode="out-in"
+      :css="false"
       @before-leave="beforeLeave"
       @leave="leave"
-      :css="false">
-      <svg-icon v-if="status > 1" icon-id="potum" class="custom-icon" key="1" />
-      <svg-icon v-else icon-id="potum" class="custom-icon start-icon" key="2" />
+    >
+      <svg-icon v-if="status > 1" key="1" icon-id="potum" class="custom-icon" />
+      <svg-icon v-else key="2" icon-id="potum" class="custom-icon start-icon" />
     </transition>
-    <transition appear
+    <transition
+      appear
+      :css="false"
       @enter="enter"
-      :css="false">
-      <div v-if="status > 1 && end" class="ball"></div>
+    >
+      <div v-if="status > 1 && end" class="ball" />
     </transition>
   </div>
 </template>
@@ -19,11 +23,11 @@
 import Velocity from "velocity-animate";
 
 export default {
-  emits: ['done'],
   props: ['status'],
+  emits: ['done'],
   data() {
     return {
-      end: false
+      end: false,
     }
   },
   methods: {
@@ -32,18 +36,18 @@ export default {
     },
     leave(el, done) {
       Velocity(el, {
-        rotateY: '0deg'
+        rotateY: '0deg',
       }, {
-        duration: 100
+        duration: 100,
       });
       Velocity(el, {
-        rotateY: '+=360deg'
+        rotateY: '+=360deg',
       }, {
         duration: 700, easing: [0.42, 0, 1.0, 1.0],
         complete: () => {
           this.end = true;
           done();
-        }
+        },
       });
     },
     beforeEnter() {
@@ -54,25 +58,25 @@ export default {
         width: '150vh',
         height: '150vh',
         left: '-=75vh',
-        top: '-=75vh'
+        top: '-=75vh',
       } : {
         width: '150vw',
         height: '150vw',
         left: '-=75vw',
-        top: '-=75vw'
+        top: '-=75vw',
       };
       Velocity(el, {
         backgroundColor: pwhite,
-        ...opts
+        ...opts,
       }, {
         duration: 600,
         complete: () => {
           done();
           setTimeout(() => this.$emit('done'), 100);
-        }
+        },
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

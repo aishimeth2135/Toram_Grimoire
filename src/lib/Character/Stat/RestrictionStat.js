@@ -80,7 +80,7 @@ class RestrictionStat extends Stat {
 
       'shield',
 
-      'dodge', 'defense', 'normal'
+      'dodge', 'defense', 'normal',
     ];
     const itemStatRestrictionMappingList = [
       'event',
@@ -95,11 +95,11 @@ class RestrictionStat extends Stat {
 
       SubArmor.TYPE_SHIELD,
 
-      BodyArmor.TYPE_DODGE, BodyArmor.TYPE_DEFENSE, BodyArmor.TYPE_NORMAL
+      BodyArmor.TYPE_DODGE, BodyArmor.TYPE_DEFENSE, BodyArmor.TYPE_NORMAL,
     ];
 
     const r = {
-      main: null, sub: null, body: null, other: null
+      main: null, sub: null, body: null, other: null,
     };
 
     originRestriction.split(/\s*,\s*/).forEach(q => {
@@ -131,13 +131,13 @@ class RestrictionStat extends Stat {
       main: r.main ? r.main.description : null,
       sub: r.sub ? r.sub.description : null,
       body: r.body ? r.body.description : null,
-      other: r.other ? r.other : null
+      other: r.other ? r.other : null,
     } : null;
     return {
       id: this.baseName,
       value: this.value,
       type: types.find(p => StatBase['TYPE_' + p.toUpperCase()] == this.type),
-      restriction
+      restriction,
     };
   }
   static load(data) {
@@ -165,7 +165,7 @@ class RestrictionStat extends Stat {
               res = {
                 'sub-weapon': SubWeapon,
                 'sub-armor': SubArmor,
-                'body-armor': BodyArmor
+                'body-armor': BodyArmor,
               }[instance][handleType(type)]
             }
           }

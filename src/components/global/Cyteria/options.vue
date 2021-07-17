@@ -1,12 +1,12 @@
 <template>
   <div class="cy--options" :class="rootClassList">
     <div class="title-container" @click="toggleUnfold">
-      <slot name="title" :unfold="unfold"></slot>
+      <slot name="title" :unfold="unfold" />
     </div>
     <cy-transition type="fade">
-      <div class="options-container" v-if="unfold" :style="optionsPosition" @click="toggleUnfold">
+      <div v-if="unfold" class="options-container" :style="optionsPosition" @click="toggleUnfold">
         <div class="options">
-          <slot name="options"></slot>
+          <slot name="options" />
         </div>
       </div>
     </cy-transition>
@@ -17,23 +17,23 @@ export default {
   props: {
     inline: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       unfold: false,
       optionsPosition: {
-        top: '100%'
-      }
+        top: '100%',
+      },
     };
   },
   computed: {
     rootClassList() {
       return {
-        'inline': this.inline
+        'inline': this.inline,
       };
-    }
+    },
   },
   methods: {
     toggleUnfold() {
@@ -58,8 +58,8 @@ export default {
         }
         this.optionsPosition = position;
       }
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="less" scoped>

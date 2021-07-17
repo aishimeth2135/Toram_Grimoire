@@ -1,14 +1,26 @@
 <template>
   <template v-if="src && icon">
-    <iconify-icon v-if="src === 'iconify'"
-      class="cy--icon" :name="icon" />
-    <svg-icon v-else-if="src === 'custom'"
-      class="cy--icon" :icon-id="icon" />
-    <image-icon v-else-if="src === 'image'"
-      class="cy--icon" :image-path="icon" />
+    <iconify-icon
+      v-if="src === 'iconify'"
+      class="cy--icon"
+      :name="icon"
+    />
+    <svg-icon
+      v-else-if="src === 'custom'"
+      class="cy--icon"
+      :icon-id="icon"
+    />
+    <image-icon
+      v-else-if="src === 'image'"
+      class="cy--icon"
+      :image-path="icon"
+    />
   </template>
-  <iconify-icon v-else
-    class="cy--icon" name="gg-shape-rhombus" />
+  <iconify-icon
+    v-else
+    class="cy--icon"
+    name="gg-shape-rhombus"
+  />
 </template>
 
 <script>
@@ -16,14 +28,14 @@ export default {
   props: {
     icon: {
       type: String,
-      default: 'gg-shape-rhombus'
+      default: 'gg-shape-rhombus',
     },
     src: {
       type: String,
       default: 'iconify',
-      validation: v => ['iconify', 'custom', 'image'].includes(v)
-    }
-  }
+      validation: v => ['iconify', 'custom', 'image'].includes(v),
+    },
+  },
 }
 </script>
 
