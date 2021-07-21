@@ -338,13 +338,14 @@ CharacterEquipment.loadEquipment = function (data) {
       eq.refining = refining;
     }
     if (eq.hasCrystal) {
-      eq.crystals = crystals.map(name => {
-        const c = Grimoire.Items.crystals.find(p => p.name == name);
-        if (c)
-          return new EquipmentCrystal(c);
+      eq.crystals = crystals.map(crystalName => {
+        const crystal = Grimoire.Items.crystals.find(p => p.name === crystalName);
+        if (crystal) {
+          return new EquipmentCrystal(crystal);
+        }
 
         success = false;
-        console.warn('[Error: CharacterEquipment.load] can not find crystal which name: ' + name);
+        console.warn('[Error: CharacterEquipment.load] can not find crystal which name: ' + crystalName);
         return null;
       }).filter(c => c);
     }

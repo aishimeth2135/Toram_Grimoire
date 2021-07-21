@@ -1,4 +1,4 @@
-const state = {
+const storeState = {
   active: false,
 };
 
@@ -13,6 +13,6 @@ const mutations = {
 
 export default {
   namespaced: true,
-  state,
+  state: storeState,
   mutations,
 };

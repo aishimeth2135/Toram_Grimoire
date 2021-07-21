@@ -3,7 +3,7 @@ import CY from "@utils/Cyteria";
 
 const SAVE_PRETEXT = 'app--enchant-simulator--vbeta--';
 
-const state = {
+const storeState = {
   /** @type {EnchantBuild[]} */
   builds: [],
   currentBuildIndex: -1,
@@ -94,7 +94,7 @@ const mutations = {
 };
 
 const actions = {
-  init({ commit }) {
+  init({ state, commit }) {
     if (state.hasInit) {
       return;
     }
@@ -117,7 +117,7 @@ const modules = {
 
 export default {
   namespaced: true,
-  state,
+  state: storeState,
   mutations,
   actions,
   modules,

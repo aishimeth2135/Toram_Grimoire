@@ -100,7 +100,7 @@ class SkillBranchHandler {
 
   handleDatas() {
     let caption = '', stats = [];
-    if (this.infoType == 'caption') {
+    if (this.infoType === 'caption') {
       caption = this.handleTextData(this.branch.attrs['caption']);
     }
     else {
@@ -108,10 +108,10 @@ class SkillBranchHandler {
     }
 
     const conditionDatas = this.branch.suffix
-      .filter(suf => suf.name == 'extra')
+      .filter(suf => suf.name === 'extra')
       .map((suf, i) => {
         let _stats = [], _caption = '';
-        if (suf.stats.length != 0)
+        if (suf.stats.length !== 0)
           _stats = this.statTexts(suf.stats);
         else if (suf.attrs['caption'])
           _caption = this.handleTextData(suf.attrs['caption']);
@@ -122,7 +122,7 @@ class SkillBranchHandler {
           condition: suf.attrs['condition'] || this.$lang('skill management/suffix branch/condition: default'),
         };
       })
-      .filter(p => p.stats.length != 0 || p.caption);
+      .filter(p => p.stats.length !== 0 || p.caption);
 
     return {
       stats,
@@ -204,23 +204,22 @@ class SkillBranchHandler {
     return stats.map((p, i) => {
       const dc = new DataContainer(p.value);
 
-      let v = this.calcValueStr(dc.value());
+      let value = this.calcValueStr(dc.value());
       let sign = '+';
       // if (/^\(?-?[\d.]+\)?$/.test(v)) {
       //   v = v.replace(/\(?(-?[\d.]+)\)?/, (m, m1) => m1);
       // }
-      if (v.charAt(0) == '-') {
+      if (value.charAt(0) == '-') {
         sign = '-';
       }
 
-      const beforeColorText = v => sign + (sign == '-' ? v.replace('-', '') : v) + sd.tail;
-
       const sd = p.getShowData();
+      const beforeColorText = v => sign + (sign == '-' ? v.replace('-', '') : v) + sd.tail;
       this.handleDataContainer(dc, { beforeColorText });
 
       return {
         text: sd.title + dc.result(),
-        value: parseFloat(v),
+        value: parseFloat(value),
         origin: p,
         iid: i,
       };
@@ -279,7 +278,7 @@ class SkillBranchHandler {
     dc.handleResult(v => `<span class="${clist.join(' ')}">${v}</span>`);
   }
   handleReplacedVariable(dc) {
-    const findSrc = this.skillItemType == 'passive' ? 'base' : 'passive-skills';
+    const findSrc = this.skillItemType === 'passive' ? 'base' : 'passive-skills';
     const chara = this.characterState.origin;
     const list = {
       'BSTR': chara.baseStatValue('STR'),

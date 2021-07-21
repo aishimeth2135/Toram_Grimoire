@@ -22,18 +22,17 @@ export default {
       return this.stats.map((p, i) => {
         const dc = new DataContainer(p.value);
 
-        let v = this.calcValueStr(dc.value());
+        let value = this.calcValueStr(dc.value());
         let sign = '+';
-        if (/^\(?-?[\d.]+\)?$/.test(v)) {
-          v = v.replace(/\(?(-?[\d.]+)\)?/, (m, m1) => m1);
-          if (v.charAt(0) == '-') {
+        if (/^\(?-?[\d.]+\)?$/.test(value)) {
+          value = value.replace(/\(?(-?[\d.]+)\)?/, (m, m1) => m1);
+          if (value.charAt(0) == '-') {
             sign = '-';
           }
         }
 
-        const beforeColorText = v => sign + (sign == '-' ? v.replace('-', '') : v) + sd.tail;
-
         const sd = p.getShowData();
+        const beforeColorText = v => sign + (sign == '-' ? v.replace('-', '') : v) + sd.tail;
         this.handleDataContainer(dc, { beforeColorText });
 
         return {

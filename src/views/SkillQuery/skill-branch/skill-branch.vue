@@ -1213,33 +1213,33 @@ export default {
           stack.push(...tstack);
         }
 
-        let v = dc.result();
-        v = v
+        let result = dc.result();
+        result = result
           .replace(/\$__TEXT_SLV__/g, this.$lang.extra('parent', 'skill level'))
           .replace(/\$__TEXT_CLV__/g, this.$lang.extra('parent', 'character level'))
           .replace(/\$__TEXT_STACK_(\d+)__/g, (m, m1) => stack[parseInt(m1, 10)]);
 
-        let list = [], offset = 0;
-        v.split('').forEach((c, i) => {
-          if (c == '(') {
-            if (i == 0 || !/[_a-zA-Z0-9]/.test(v[i - 1 + offset])) {
-              v = v.slice(0, i + offset) + '#left~' + v.slice(i + offset +1);
+        let handleStack = [], offset = 0;
+        result.split('').forEach((c, i) => {
+          if (c === '(') {
+            if (i === 0 || !/[_a-zA-Z0-9]/.test(result[i - 1 + offset])) {
+              result = result.slice(0, i + offset) + '#left~' + result.slice(i + offset +1);
               offset += 5;
-              list.push('normal');
+              handleStack.push('normal');
             }
             else
-              list.push('function');
+              handleStack.push('function');
           }
-          if (c == ')') {
-            if (list[list.length - 1] == 'normal') {
-              v = v.slice(0, i + offset) + '~right#' + v.slice(i + offset +1);
+          if (c === ')') {
+            if (handleStack[handleStack.length - 1] == 'normal') {
+              result = result.slice(0, i + offset) + '~right#' + result.slice(i + offset +1);
               offset += 6;
             }
-            list.pop();
+            handleStack.pop();
           }
         });
 
-        const createFormulaText = (n, v) => `<span class="formula--fix key--${n}"><span class="name">${n.toUpperCase()}</span><span class="value">${v}</span></span>`;
+        const createFormulaText = (name, value) => `<span class="formula--fix key--${name}"><span class="name">${name.toUpperCase()}</span><span class="value">${value}</span></span>`;
 
         const funList = [
           {
@@ -1249,16 +1249,16 @@ export default {
           { name: 'min', reg: /Math\.min\(([^()]+)\)/g },
           { name: 'max', reg: /Math\.max\(([^()]+)\)/g },
         ];
-        while (funList.find(p => v.match(p.reg)))
-          funList.forEach(p => v = v.replace(p.reg, p.target || ((m, m1) => createFormulaText(p.name, m1))));
+        while (funList.find(p => result.match(p.reg)))
+          funList.forEach(p => result = result.replace(p.reg, p.target || ((m, m1) => createFormulaText(p.name, m1))));
 
-        v = v
+        result = result
           .replace(/#left~/g, '(')
           .replace(/~right#/g, ')');
 
-        v = v.replace(/,/g, '<span class="arg-separate"></span>');
+        result = result.replace(/,/g, '<span class="arg-separate"></span>');
 
-        dc.handleResult(() => v);
+        dc.handleResult(() => result);
       }
     },
     formulaPretreatment(str) {

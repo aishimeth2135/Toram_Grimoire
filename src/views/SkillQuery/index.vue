@@ -563,8 +563,8 @@ export default {
       return this.skillStates.store[this.skillStates.currentStoreIndex];
     },
     currentSkillData() {
-      const p = this.currentSkillState;
-      return p ? p.states.find(p => this.checkEquipment(p.equipment)) : null;
+      const state = this.currentSkillState;
+      return state ? state.states.find(p => this.checkEquipment(p.equipment)) : null;
     },
     currentSkillBranchs() {
       return this.currentSkillData ? this.currentSkillData.branchs.filter(p => p.visible) : [];
@@ -621,9 +621,9 @@ export default {
         });
     },
     appendTag(name) {
-      const p = this.tagList.find(p => p.name == name);
-      if (p) {
-        this.tagState.tags.push(p);
+      const tag = this.tagList.find(p => p.name === name);
+      if (tag) {
+        this.tagState.tags.push(tag);
       }
     },
     closeTagWindow() {

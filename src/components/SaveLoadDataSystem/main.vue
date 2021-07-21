@@ -140,15 +140,15 @@ export default {
   },
   methods: {
     updateButtonsStates() {
-      this.buttonsStates.forEach((p, i) => {
-        p.names = (this.getLocalStorageData(i, 'name') || '').split(',,').map((p, i) => {
+      this.buttonsStates.forEach((state, idx) => {
+        state.names = (this.getLocalStorageData(idx, 'name') || '').split(',,').map((p, i) => {
           return {
             text: p,
             iid: i,
           };
         });
-        p.data = this.getLocalStorageData(i, 'data') || null;
-        p.iid = i;
+        state.data = this.getLocalStorageData(idx, 'data') || null;
+        state.iid = idx;
       });
     },
     closeSelectDataWindow() {

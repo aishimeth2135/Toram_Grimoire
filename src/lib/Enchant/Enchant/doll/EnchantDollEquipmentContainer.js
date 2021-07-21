@@ -111,8 +111,8 @@ export default class EnchantDollEquipmentContainer {
     if (eq.steps().length === 0 && allPositivesHasRate) {
       const currentCategory = positivesHasRate[0];
       const pstat = currentCategory.stats[0];
-      const step = eq.appendStep();
-      step.appendStat(pstat.itemBase, pstat.type, 1);
+      const newStep = eq.appendStep();
+      newStep.appendStat(pstat.itemBase, pstat.type, 1);
       pstat.value -= 1;
 
       {

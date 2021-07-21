@@ -177,28 +177,28 @@ export default {
       } : null;
       const datas = list
         .filter(item => item.id === 'base' || stat.statValueParts[item.id] !== 0)
-        .map((item, i) => {
-          const p = item.id,
+        .map((item, itemIdx) => {
+          const id = item.id,
             type = item.type;
-          const v = stat.statValueParts[p];
-          let title = p != 'base' ? base.show(type, v) : {
+          const v = stat.statValueParts[id];
+          let title = id !== 'base' ? base.show(type, v) : {
             text: this.$lang('base value'),
             value: vFix(stat.statValueParts['base']),
           };
-          if (p == 'multiplier')
+          if (id === 'multiplier')
             title += '｜' + Math.floor(v * stat.statValueParts['base'] / 100).toString();
 
-          const isBase = p === 'base';
+          const isBase = id === 'base';
 
           const lines = [];
-          const adds = stat.statPartsDetail.additionalValues[p].filter(p => p.value != 0);
+          const adds = stat.statPartsDetail.additionalValues[id].filter(p => p.value != 0);
           if (adds.length != 0) {
-            const initValue = stat.statPartsDetail.initValue[p];
+            const initValue = stat.statPartsDetail.initValue[id];
             let hasInit = false;
             if (initValue != 0) {
               lines.push({
                 title: this.$lang('init value'),
-                value: (p.value > 0 && !isBase ? '+' : '') +vFix(initValue),
+                value: (id.value > 0 && !isBase ? '+' : '') +vFix(initValue),
                 iid: 0,
               });
               hasInit = true;
@@ -225,21 +225,21 @@ export default {
 
           if (conditionalBase) {
             const ceqs = conditionalBase.title.equipments;
-            lines.forEach(p => {
-              if (typeof p.title == 'string')
+            lines.forEach(line => {
+              if (typeof line.title === 'string')
                 return;
-              const eqs = p.title.equipments;
+              const eqs = line.title.equipments;
               eqs.forEach((text, i) => {
                 if (eqs.length - i < ceqs.length)
                   return;
-                if (ceqs.every((p, j) => p.text == eqs[i+j].text))
+                if (ceqs.every((p, j) => p.text === eqs[i+j].text))
                   eqs.splice(i, ceqs.length);
               });
             });
           }
 
           return {
-            iid: i,
+            iid: itemIdx,
             title,
             lines,
           };

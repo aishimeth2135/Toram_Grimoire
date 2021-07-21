@@ -16,12 +16,12 @@ function handleSkillState(skill) {
   const states = [];
 
   const createState = sef => {
-    const branchs = defSef.branchs.map((p, i) => ({
+    const branchs = defSef.branchs.map((branch, i) => ({
       iid: i,
-      id: p.id,
-      name: p.name,
-      attrs: Object.assign({}, p.branchAttributes),
-      stats: p.stats.map(p => p.copy()),
+      id: branch.id,
+      name: branch.name,
+      attrs: Object.assign({}, branch.branchAttributes),
+      stats: branch.stats.map(stat => stat.copy()),
       group: null,
       history: [],
       suffix: [],
@@ -271,7 +271,7 @@ function handleSkillState(skill) {
         a.branch.suffix = bch.suffix;
       });
       [bch, ...bch.history.map(a => a.branch)].forEach((his, idx, ary) => {
-        if (idx == ary.length - 1)
+        if (idx === ary.length - 1)
           return;
         const target = ary[idx + 1],
           from = his;
@@ -285,11 +285,11 @@ function handleSkillState(skill) {
         });
 
         from.stats.forEach(stat => {
-          const idx = target.stats.findIndex(a => a.equals(stat));
-          if (idx == -1)
+          const statIdx = target.stats.findIndex(a => a.equals(stat));
+          if (statIdx === -1)
             target.stats.push(stat.copy());
-          else if (target.stats[idx].value == '')
-            target.stats.splice(idx, 1);
+          else if (target.stats[statIdx].value === '')
+            target.stats.splice(statIdx, 1);
         });
       });
     });
@@ -355,6 +355,7 @@ function setBranchAttributeDefault(branchs) {
       'radius': '1',
       'start_position_offsets': '0',
       'end_position_offsets': '0',
+      'effect_self': '1',
     },
     'heal': {
       'target': 'self',

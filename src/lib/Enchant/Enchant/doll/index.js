@@ -82,13 +82,13 @@ export default class EnchantDoll {
       return;
     }
 
-    // /**
-    //  * 把同category的進行分類。
-    //  * - positiveStats和negativeStats為基底倉庫。
-    //  * - negatives和positives為主要倉庫。
-    //  * - stat不會進行複製，因此兩倉庫的stat.value將會同步。
-    //  * - stat.value為0的能力表示被拿完了。
-    //  */
+    /**
+     * 把同category的進行分類。
+     * - positiveStats和negativeStats為基底倉庫。
+     * - negatives和positives為主要倉庫。
+     * - stat不會進行複製，因此兩倉庫的stat.value將會同步。
+     * - stat.value為0的能力表示被拿完了。
+     */
     // const negatives = EnchantDollCategory.classifyStats(negativeStats);
     // const positives = EnchantDollCategory.classifyStats(positiveStats);
 
@@ -102,6 +102,12 @@ export default class EnchantDoll {
     if (originalPotential !== 0) {
       dollEq.equipment.originalPotential = originalPotential;
     }
+
+    const firstResultEqs = [dollEq];
+    firstResultEqs.push(...dollEq.beforeFillNegative());
+
+    let resultEqs = firstResultEqs.filter(eq => eq.flags.error === null);
+    const errorEqs = firstResultEqs.filter(eq => eq.flags.error !== null);
 
     const clearRepeatEquipment = () => {
       const results = resultEqs;
@@ -133,12 +139,6 @@ export default class EnchantDoll {
     //   reqs.forEach(eq => eq.log(true));
     //   console.groupEnd();
     // };
-
-    const firstResultEqs = [dollEq];
-    firstResultEqs.push(...dollEq.beforeFillNegative());
-
-    let resultEqs = firstResultEqs.filter(eq => eq.flags.error === null);
-    const errorEqs = firstResultEqs.filter(eq => eq.flags.error !== null);
 
     if (resultEqs.length !== 0) {
       // logResultEqs('0', resultEqs);
@@ -184,7 +184,7 @@ export default class EnchantDoll {
       return resultEq;
     }
     else {
-      errorEqs.forEach(dollEq => dollEq.finalFill());
+      errorEqs.forEach(item => item.finalFill());
       errorEqs.sort((a, b) => b.equipment.realSuccessRate - a.equipment.realSuccessRate);
 
       // console.group(`%c  %c${errorEqs.length} kinds of results`,
@@ -239,7 +239,7 @@ export default class EnchantDoll {
     const categorys = Grimoire.Enchant.categorys;
     const shortlist = [];
 
-    const eq = this.build.equipment;
+    const buildEquipment = this.build.equipment;
 
     const prioritizedShortList = {
       [EnchantEquipment.TYPE_MAIN_WEAPON]: ['def', 'mdef', 'dodge', 'natural_hp_regen', {
@@ -247,9 +247,9 @@ export default class EnchantDoll {
         types: [StatBase.TYPE_MULTIPLIER],
       }],
       [EnchantEquipment.TYPE_BODY_ARMOR]: ['accuracy'],
-    }[eq.fieldType];
+    }[buildEquipment.fieldType];
 
-    if (eq.fieldType === EnchantEquipment.TYPE_BODY_ARMOR) {
+    if (buildEquipment.fieldType === EnchantEquipment.TYPE_BODY_ARMOR) {
       switch (this.config.baseType) {
       case 'physical':
         prioritizedShortList.unshift('matk', 'magic_pierce'); break;
@@ -306,15 +306,15 @@ export default class EnchantDoll {
       const originalNegativeStatsList = this.getNegativeStatsList(tshortlist, numNegativeStats);
       /** @param {EnchantDollCategory[]} categorys */
       const parseStats = stats => {
-        const categorys = EnchantDollCategory.classifyStats(stats).sort((a, b) => b.stats.length - a.stats.length);
-        categorys.forEach(_category => _category.sortStats('max-effect'));
-        const categoryEffectSum = categorys
+        const tmpCategorys = EnchantDollCategory.classifyStats(stats).sort((a, b) => b.stats.length - a.stats.length);
+        tmpCategorys.forEach(_category => _category.sortStats('max-effect'));
+        const categoryEffectSum = tmpCategorys
           .map(_category => _category.originalPotentialEffectMaximumSum())
           .reduce((cur, effect) => cur + effect, 0);
-        const materialPointSum = categorys
+        const materialPointSum = tmpCategorys
           .map(_category => _category.materialPointMaximumSum('min'))
           .reduce((cur, mpt) => cur + mpt, 0);
-        const categorysId = categorys.map(_category => _category.stats.length).join('|');
+        const categorysId = tmpCategorys.map(_category => _category.stats.length).join('|');
         return {
           categorysId,
           potentialEffect: categoryEffectSum,

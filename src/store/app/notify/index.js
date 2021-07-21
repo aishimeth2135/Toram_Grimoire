@@ -4,7 +4,7 @@ const modules = {
   loading,
 };
 
-const state = {
+const storeState = {
   messages: [],
   idCounter: 0,
 };
@@ -58,7 +58,7 @@ const actions = {
 
 export default {
   namespaced: true,
-  state,
+  state: storeState,
   mutations,
   actions,
   modules,

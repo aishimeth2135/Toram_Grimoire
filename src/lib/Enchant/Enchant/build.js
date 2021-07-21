@@ -215,13 +215,13 @@ class EnchantEquipment {
    * @returns {number} - Extra rate of specified step index
    */
   stepPotentialExtraRate(stepIdx) {
-    const t = [];
+    const categorys = [];
     this.stats(stepIdx).forEach(stat => {
       const cat = stat.itemBase.belongCategory;
-      const check = t.find(a => a.category === cat);
-      check ? ++check.cnt : t.push({ category: cat, cnt: 1 });
+      const check = categorys.find(a => a.category === cat);
+      check ? ++check.cnt : categorys.push({ category: cat, cnt: 1 });
     });
-    return calcPotentialExtraRate(t.map(t => t.cnt));
+    return calcPotentialExtraRate(categorys.map(category => category.cnt));
   }
 
   /**

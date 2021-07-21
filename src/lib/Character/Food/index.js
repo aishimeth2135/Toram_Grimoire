@@ -31,10 +31,10 @@ class Foods {
   }
 
   copy() {
-    const p = new Foods(this.name + '*');
-    p.foods = this.foods.map(p => p.copy());
-    p.selectedFoodIndexes = this.selectedFoodIndexes.slice();
-    return p;
+    const newFood = new Foods(this.name + '*');
+    newFood.foods = this.foods.map(p => p.copy());
+    newFood.selectedFoodIndexes = this.selectedFoodIndexes.slice();
+    return newFood;
   }
 
   // save and load with json-data

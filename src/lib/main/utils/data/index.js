@@ -4,7 +4,7 @@ import * as recast from "recast";
  * @param {string} str
  * @returns {string}
  */
-function parseFormula(formulaStr) {
+function parseFormula(formulaStr, { methods = {} } = {}) {
   try {
     const ast = recast.parse(formulaStr);
     // console.log(ast.program.body[0]);
@@ -25,26 +25,41 @@ function parseFormula(formulaStr) {
         return a * b;
       if (operator === '/')
         return a / b;
+      if (operator === '&&')
+        return a && b;
+      if (operator === '||')
+        return a || b;
       return 0;
     }
 
     recast.visit(ast, {
+      visitLogicalExpression(path) {
+        const node = path.node;
+        if (TNT.Literal.check(node.right) && TNT.Literal.check(node.left)) {
+          const value = calc(node.left.value, node.operator, node.right.value);
+          path.parentPath.get(path.name).replace(builders.literal(value));
+
+          back(this, path);
+          return;
+        }
+
+        this.traverse(path);
+      },
       visitBinaryExpression(path) {
         const node = path.node;
-
         if (TNT.Literal.check(node.right)) {
           if (TNT.Literal.check(node.left) || (TNT.UnaryExpression.check(node.left) && node.left.operator == '-')) {
-            const v = calc(!TNT.UnaryExpression.check(node.left) ? node.left.value : -1 * node.left.argument.value,
-              node.operator, node.right.value);
-            path.parentPath.get(path.name).replace(builders.literal(v));
+            const leftValue = !TNT.UnaryExpression.check(node.left) ? node.left.value : -1 * node.left.argument.value;
+            const value = calc(leftValue, node.operator, node.right.value);
+            path.parentPath.get(path.name).replace(builders.literal(value));
 
             back(this, path);
             return;
           }
           if (TNT.BinaryExpression.check(node.left) && (node.operator === '*' || node.operator === '/') &&
             TNT.Literal.check(node.left.right) && node.left.operator === '*') {
-            const v = calc(node.right.value, node.operator, node.left.right.value);
-            path.get('right').replace(builders.literal(v));
+            const value = calc(node.right.value, node.operator, node.left.right.value);
+            path.get('right').replace(builders.literal(value));
             path.get('left').replace(node.left.left);
 
             back(this, path);
@@ -62,16 +77,24 @@ function parseFormula(formulaStr) {
 
           const pros = [];
           let cur = node.callee;
-          while (TNT.MemberExpression.check(cur.object)) {
+          if (TNT.Identifier.check(cur)) {
+            cur = methods[cur.name];
+          } else {
+            while (TNT.MemberExpression.check(cur.object)) {
+              pros.push(cur.property.name);
+              cur = cur.object;
+            }
             pros.push(cur.property.name);
-            cur = cur.object;
+            if (cur.object.name in window) {
+              cur = window[cur.object.name];
+            } else {
+              cur = methods[cur.object.name];
+            }
+            pros.reverse().forEach(p => cur = cur[p]);
           }
-          pros.push(cur.property.name);
-          cur = window[cur.object.name];
-          pros.reverse().forEach(p => cur = cur[p]);
 
-          const res = cur(...args);
-          path.parentPath.get(path.name).replace(builders.literal(res));
+          const value = cur(...args);
+          path.parentPath.get(path.name).replace(builders.literal(value));
 
           back(this, path);
           return;
@@ -84,8 +107,8 @@ function parseFormula(formulaStr) {
         if (node.computed && TNT.ArrayExpression.check(node.object)) {
           const ary = node.object.elements;
           if (ary.every(p => TNT.Literal.check(p)) && TNT.Literal.check(node.property)) {
-            const v = ary[node.property.value].value;
-            path.parentPath.get(path.name).replace(builders.literal(v));
+            const value = ary[node.property.value].value;
+            path.parentPath.get(path.name).replace(builders.literal(value));
 
             back(this, path);
             return;
@@ -96,12 +119,17 @@ function parseFormula(formulaStr) {
       },
     });
 
-    const res = recast.print(ast).code
-      .replace(/\((\d+(?:\.\d+)?)\)/g, (m, m1) => m1);
+    const res = recast.print(ast).code.replace(/\((\d+(?:\.\d+)?)\)/g, (m, m1) => m1);
+    if (res === 'true') {
+      return true;
+    }
+    if (res === 'false') {
+      return false;
+    }
     return res;
   } catch (e) {
     console.error(e);
-    console.log('[parse formula] Unable to parse formula: ', formulaStr);
+    console.warn('[parse formula] Unable to parse formula: ', formulaStr);
     return '0';
   }
 }
@@ -116,13 +144,21 @@ function parseFormula(formulaStr) {
  * @param {string} formulaStr
  * @param {HandleFormulaOptions} options
  */
-function handleFormula(formulaStr, { vars = {}, texts = {} }) {
+function handleFormula(formulaStr, { vars = {}, texts = {}, methods = {} } = {}) {
+  if (formulaStr === '') {
+    // console.warn('[handle formula] given formula is empty.');
+    return '0';
+  }
   const varsMap = new Map();
   const handleVarsMapping = (prefix, target) => {
     Object.entries(target).forEach(([key, value]) => {
       const mapKey = `${prefix ? prefix + '.' : ''}${key}`;
       if (typeof value === 'object') {
-        handleVarsMapping(mapKey, value);
+        if (Array.isArray(value)) {
+          varsMap.set(mapKey, `[${value.toString()}]`);
+        } else {
+          handleVarsMapping(mapKey, value);
+        }
       } else {
         varsMap.set(mapKey, value);
       }
@@ -142,7 +178,7 @@ function handleFormula(formulaStr, { vars = {}, texts = {} }) {
     formulaStr = formulaStr.replace(new RegExp(key, 'g'), `__HANDLE_FORNULA_TEXT_${idx}__`);
   });
 
-  formulaStr = parseFormula(formulaStr);
+  formulaStr = parseFormula(formulaStr, { methods });
 
   textKeys.forEach((key, idx) => {
     formulaStr = formulaStr.replace(new RegExp(`__HANDLE_FORNULA_TEXT_${idx}__`, 'g'), texts[key]);

@@ -191,9 +191,9 @@ export default {
     convertToOriginal(eqCrystal) {
       let res;
       this.crystalCategorys.find(cat => {
-        const p = cat.crystals.find(p => p.id == eqCrystal.id);
-        if (p) {
-          res = p;
+        const crystal = cat.crystals.find(p => p.id == eqCrystal.id);
+        if (crystal) {
+          res = crystal;
           return true;
         }
       });

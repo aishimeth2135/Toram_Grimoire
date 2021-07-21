@@ -41,7 +41,9 @@
           :icon-color-hover="mainColorInstance.darken"
           @click="setValue(range[1])"
         />
-        <slot name="unit" />
+        <span v-if="$slots['unit']" class="text-sm ml-1">
+          <slot name="unit" />
+        </span>
       </div>
     </div>
   </div>
@@ -168,6 +170,7 @@ export default {
 
   > .counter-content {
     display: inline-flex;
+    align-items: center;
     > input {
       width: var(--input-width);
       border: 0;

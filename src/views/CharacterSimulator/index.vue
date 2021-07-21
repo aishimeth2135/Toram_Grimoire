@@ -229,9 +229,9 @@ export default {
       });
     },
     showCharacterStatDatas() {
-      return this.allCharacterStatDatas.map(p => ({
-        name: p.name,
-        stats: p.stats.filter(p => !p.hidden),
+      return this.allCharacterStatDatas.map(data => ({
+        name: data.name,
+        stats: data.stats.filter(p => !p.hidden),
       }))
     },
     validSkillStates() {
@@ -515,7 +515,7 @@ export default {
           let counter = 0;
           const branchFilter = skillItemType === 'passive' ?
             bch => bch.name === 'passive' :
-            bch => bch.name === 'effect';
+            bch => bch.name === 'effect' && bch.attrs['effect_self'] !== '0';
           const t = skillState.branchs
             .filter(branchFilter)
             .map(bch => {
@@ -663,7 +663,7 @@ export default {
         this.allSkillStates = [];
         return;
       }
-      const leveSkillTreeStates = (() => {
+      const levelSkillTreeStates = (() => {
         const res = [];
         newv.skillTreeCategoryStates.forEach(stc => {
           res.push(...stc.skillTreeStates.map(st => ({
@@ -687,7 +687,7 @@ export default {
       this.allSkillStates = (() => {
         const res = [];
 
-        leveSkillTreeStates.forEach(st => {
+        levelSkillTreeStates.forEach(st => {
           const p = st.skills.map(state => {
             let skillItemType = 'none';
             if (state.skillState.states.find(a => a.attrs['skill_type'] == 3))

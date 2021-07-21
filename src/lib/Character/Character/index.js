@@ -1,6 +1,7 @@
+import Grimoire from "@grimoire";
 import { StatBase } from "@/lib/Character/Stat";
 import { MainWeapon, SubWeapon, SubArmor } from "@/lib/Character/CharacterEquipment";
-import Grimoire from "@grimoire";
+import { handleFormula } from "@utils/data";
 
 class Character {
   static OPTIONAL_BASE_STAT_LIST = ['TEC', 'MEN', 'LUK', 'CRT'];
@@ -402,7 +403,9 @@ class CharacterStat {
 
 class CharacterStatFormula {
   constructor(parent, str) {
+    /** @type {CharacterStat} */
     this._parent = parent;
+    /** @type {string} */
     this.formula = str;
     this.conditionValues = [];
   }
@@ -417,33 +420,7 @@ class CharacterStatFormula {
       options,
     });
   }
-  calc(simple_stats, vars) {
-    const reduceValue = v => { // eslint-disable-line
-      const neg = v < 0;
-      v = Math.abs(v);
-
-      let p = 1, res = neg ? 100 : 0;
-
-      while (v !== 0) {
-        const t = Math.min(v, 50);
-        res = neg ? res * (100 + t) / 100 : res + t / p;
-        v -= t;
-        p *= 2;
-      }
-
-      return neg ? -1 * (res - 100) : res;
-    };
-
-    const safeEval = (v, dv) => {
-      try {
-        return eval(v);
-      } catch (e) {
-        console.warn('error handle: ' + v);
-        console.warn(e);
-        return dv === void 0 ? '0' : dv;
-      }
-    };
-
+  calc(pureStats, vars) {
     const handleVar = (from, var_str, def_v, is_object = false) => {
       const [v1, v2] = var_str.split('.');
       if (from[v1] === void 0)
@@ -458,14 +435,12 @@ class CharacterStatFormula {
     }
 
     const checkBaseName = stat => stat.baseName == this.belongCharacterStat.link;
-    const c_stat = simple_stats.find(stat => checkBaseName(stat) && stat.type == StatBase.TYPE_CONSTANT),
-      m_stat = simple_stats.find(stat => checkBaseName(stat) && stat.type == StatBase.TYPE_MULTIPLIER),
-      t_stat = simple_stats.find(stat => checkBaseName(stat) && stat.type == StatBase.TYPE_TOTAL);
+    const c_stat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatBase.TYPE_CONSTANT),
+      m_stat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatBase.TYPE_MULTIPLIER),
+      t_stat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatBase.TYPE_TOTAL);
     let cvalue = c_stat ? c_stat.value : 0,
       mvalue = m_stat ? m_stat.value : 0,
       tvalue = t_stat ? t_stat.value : 0;
-
-    // const hexVarlist = ['cvalue', 'mvalue', 'tvalue']; // 一般的#變數
 
     let defaultFormula = true;
 
@@ -484,19 +459,33 @@ class CharacterStatFormula {
       },
     }
 
-    const handleFormula = f => {
-      // console.group('formula: before: ', f);
+    const methods = {
+      reduceValue: value => {
+        const neg = value < 0;
+        value = Math.abs(value);
+        let rate = 1, res = neg ? 100 : 0;
+        while (value !== 0) {
+          const fixedValue = Math.min(value, 50);
+          res = neg ? res * (100 + fixedValue) / 100 : res + fixedValue / rate;
+          value -= fixedValue;
+          rate *= 2;
+        }
+
+        return neg ? -1 * (res - 100) : res;
+      },
+    };
+    const formulaHandler = f => {
       f = f
-        .replace(/\$([a-zA-Z0-9_.]+)/g, (m, m1) => {
-          const a = handleVar(vars.value['$'], m1, null, true);
-          return a ? a.result(simple_stats, vars).resultValue.toString() : '0';
+        .replace(/\$([a-zA-Z0-9_.]+)/g, (match, p1) => {
+          const a = handleVar(vars.value['$'], p1, null, true);
+          return a ? a.result(pureStats, vars).resultValue.toString() : '0';
         })
-        .replace(/@([a-zA-Z0-9_.]+)/g, (m, m1) => {
-          return handleVar(vars.value['@'], m1, '0');
+        .replace(/@([a-zA-Z0-9_.]+)/g, (match, p1) => {
+          return handleVar(vars.value['@'], p1, '0');
         })
-        .replace(/#([cmt]value)/g, (m, m1) => {
+        .replace(/#([cmt]value)/g, (match, p1) => {
           defaultFormula = false;
-          switch (m1) {
+          switch (p1) {
           case 'cvalue':
             return cvalue;
           case 'mvalue':
@@ -505,13 +494,12 @@ class CharacterStatFormula {
             return tvalue;
           }
         })
-        .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
-          return handleVar(vars.value['#'], m1, '0');
+        .replace(/#([a-zA-Z0-9_.]+)/g, (match, p1) => {
+          return handleVar(vars.value['#'], p1, '0');
         })
-        .replace(/-{2,}/g, m => Number.isInteger(m.length/2) ? '+' : '-');
-      // console.log('formula: after: ', f);
-      // console.groupEnd();
-      return safeEval(f);
+        .replace(/-{2,}/g, match => match.length % 2 === 0 ? '+' : '-');
+      const res = handleFormula(f, { methods });
+      return typeof res === 'boolean' ? res : parseFloat(res);
     }
 
     const conditions = this.conditionValues
@@ -532,7 +520,7 @@ class CharacterStatFormula {
               const t = handleVar(vars.conditional['#'], m1, true);
               return t ? 'true' : 'false';
             });
-          result = safeEval(c, true);
+          result = handleFormula(c);
         }
         p.options.forEach(option => {
           const m = option.match(/#([cmt]value)/);
@@ -561,24 +549,24 @@ class CharacterStatFormula {
     conditions
       .filter(p => p.statBasePart != null && !p.isBase)
       .forEach(p => {
-        const t = p.statBasePart;
-        const v = handleFormula(p.formula);
+        const part = p.statBasePart;
+        const value = formulaHandler(p.formula);
         const data = {
           conditional: p.conditional,
           options: p.options,
-          value: v,
+          value: value,
         };
-        switch (t) {
+        switch (part) {
         case 'cvalue':
-          cvalue += v;
+          cvalue += value;
           statPartsDetail.additionalValues.constant.push(data);
           break;
         case 'mvalue':
-          mvalue += v;
+          mvalue += value;
           statPartsDetail.additionalValues.multiplier.push(data);
           break;
         case 'tvalue':
-          tvalue += v;
+          tvalue += value;
           statPartsDetail.additionalValues.total.push(data);
           break;
         }
@@ -590,16 +578,16 @@ class CharacterStatFormula {
       .filter(p => !p.isBase)
       .filter(p => p.statBasePart == null)
       .map(p => {
-        const v = handleFormula(p.formula);
+        const value = formulaHandler(p.formula);
         statPartsDetail.additionalValues.base.push({
           conditional: p.conditional,
           options: p.options,
           isMul: p.isMul,
-          value: v,
+          value: value,
         });
         return {
           isMul: p.isMul,
-          value: v,
+          value: value,
         };
       });
 
@@ -619,16 +607,15 @@ class CharacterStatFormula {
 
       if (formula && formula.includes('#base')) {
         basev = sum(add_values) * mul(mul_values);
-        res = handleFormula(this.formula.replace('#base', basev));
+        res = formulaHandler(this.formula.replace('#base', basev));
       } else {
-        initBasev = formula ? handleFormula(formula) : 0;
+        initBasev = formula ? formulaHandler(formula) : 0;
         basev = sum([initBasev, ...add_values]) * mul(mul_values);
         res = defaultFormula ? (basev * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : basev;
       }
     }
 
     statPartsDetail.initValue['base'] = initBasev;
-
     return {
       value: res,
       statValueParts: {

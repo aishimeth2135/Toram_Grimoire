@@ -1,6 +1,6 @@
 import { SkillBranch } from "@/lib/Skill/Skill";
 
-import { parseFormula } from "@utils/data";
+import { handleFormula } from "@utils/data";
 
 /**
  * @typedef SkillState
@@ -11,7 +11,7 @@ import { parseFormula } from "@utils/data";
 /**
  * @typedef StackStates
  * @type {object}
- * @property {number} id
+ * @property {string} id
  * @property {number} value
  */
 /**
@@ -28,52 +28,41 @@ import { parseFormula } from "@utils/data";
  * @returns
  */
 export default function (str, { skillState, effectState, branch }) {
-  if (!str) {
-    console.log('input str is empty.');
-    return '0';
-  }
-  const slv = skillState.slv,
-    clv = skillState.clv;
-
-  str = str.replace(/SLv/g, slv)
-    .replace(/CLv/g, clv);
-
   const stack = [];
 
   if (branch && branch.attrs['stack_id']) {
     const ss = effectState.stackStates;
-    const t = branch.attrs['stack_id'].split(/\s*,\s*/)
-      .map(p => parseInt(p, 10))
+    const stackValues = branch.attrs['stack_id'].split(/\s*,\s*/)
       .map(p => {
-        const t = ss.find(a => a.id == p);
-        return t ? t.value : 0;
+        const item = ss.find(a => a.id === p);
+        return item ? item.value : 0;
       });
-    stack.push(...t);
-    str = str.replace(/stack(?!\[)/g, 'stack[0]');
-  } else {
-    str = str.replace(/stack(\[\d+\])?/g, '0');
+    stack.push(...stackValues);
   }
+  const stackMatches = Array.from(str.matchAll(/stack\[(\d+)\]/g));
+  stackMatches.forEach(match => {
+    const idxValue = parseInt(match[1], 10);
+    if (!stack[idxValue] && stack[idxValue] !== 0) {
+      stack[idxValue] = 0;
+    }
+  });
 
-  str = str = str.replace(/stack\[(\d+)\]/g, (m, m1) => stack[parseInt(m1, 10)]);
+  const vars = {
+    'SLv': skillState.slv,
+    'CLv': skillState.clv,
+    'stack': stackMatches.length === 0 ? stack[0] || '0' : stack,
+  };
+  const texts = {};
 
   const formulaExtra = branch ? branch.suffix.find(suf => suf.name === 'formula_extra') : null;
-  if (formulaExtra)
-    str = str.replace(/&(\d+):/g, (m, m1) => '__FORMULA_EXTRA_' + m1 + '__');
-
-  function safeEval(str, dftv) {
-    try {
-      return eval(str);
-    } catch (e) {
-      console.warn('Unable to process: ' + str);
-      return dftv === void 0 ? '??' : dftv;
-    }
-  }
-  str = parseFormula(str, safeEval);
-
   if (formulaExtra) {
-    const texts = formulaExtra.attrs['texts'].split(/\s*,\s*/);
-    str = str.replace(/__FORMULA_EXTRA_(\d+)__/g, (m, m1) => texts[parseInt(m1, 0)]);
+    const extraTexts = formulaExtra.attrs['texts'].split(/\s*,\s*/);
+    str = str.replace(/&(\d+):/g, (match, p1) => {
+      const key = '__FORMULA_EXTRA_' + p1 + '__';
+      texts[key] = extraTexts[p1];
+      return key;
+    });
   }
 
-  return str;
+  return handleFormula(str, { vars, texts });
 }
