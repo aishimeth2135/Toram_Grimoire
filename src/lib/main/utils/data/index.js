@@ -1,29 +1,12 @@
-export function separateText(target, pattern) {
-  const t = target.replace(pattern, (m, m1) => `####<--->${m1}####`);
-  return t.split('####').map((p, i) => {
-    let text = p, separate = false;
-    if (p.slice(0, 5) === '<--->') {
-      text = text.slice(5);
-      separate = true;
-    }
-    return {
-      iid: i,
-      text,
-      separate,
-    };
-  });
-}
-
 import * as recast from "recast";
+
 /**
  * @param {string} str
  * @returns {string}
  */
-export function parseFormula(str) {
+function parseFormula(formulaStr) {
   try {
-    const ast = recast.parse(str);
-    // console.log('-----------------');
-    // console.log(str);
+    const ast = recast.parse(formulaStr);
     // console.log(ast.program.body[0]);
 
     const builders = recast.types.builders;
@@ -32,7 +15,6 @@ export function parseFormula(str) {
     const back = (self, path) => path.parentPath.parentPath.parentPath ?
       self.traverse(path.parentPath.parentPath.parentPath) :
       self.traverse(path);
-
 
     const calc = (a, operator, b) => {
       if (operator === '+')
@@ -116,11 +98,57 @@ export function parseFormula(str) {
 
     const res = recast.print(ast).code
       .replace(/\((\d+(?:\.\d+)?)\)/g, (m, m1) => m1);
-    // console.log(res);
     return res;
   } catch (e) {
     console.error(e);
-    console.log('unable to parse formula: ', str);
+    console.log('[parse formula] Unable to parse formula: ', formulaStr);
     return '0';
   }
 }
+
+/**
+ * @typedef HandleFormulaOptions
+ * @type {Object}
+ * @property {object} texts - mapping of text
+ * @property {object} vars - mapping of vars
+ */
+/**
+ * @param {string} formulaStr
+ * @param {HandleFormulaOptions} options
+ */
+function handleFormula(formulaStr, { vars = {}, texts = {} }) {
+  const varsMap = new Map();
+  const handleVarsMapping = (prefix, target) => {
+    Object.entries(target).forEach(([key, value]) => {
+      const mapKey = `${prefix ? prefix + '.' : ''}${key}`;
+      if (typeof value === 'object') {
+        handleVarsMapping(mapKey, value);
+      } else {
+        varsMap.set(mapKey, value);
+      }
+    });
+  };
+  handleVarsMapping('', vars);
+  for (const [key, value] of varsMap) {
+    let realValue = value;
+    if (typeof realValue === 'function') {
+      realValue = value(key);
+    }
+    formulaStr = formulaStr.replace(new RegExp(key, 'g'), realValue);
+  }
+
+  const textKeys = Object.keys(texts);
+  textKeys.forEach((key, idx) => {
+    formulaStr = formulaStr.replace(new RegExp(key, 'g'), `__HANDLE_FORNULA_TEXT_${idx}__`);
+  });
+
+  formulaStr = parseFormula(formulaStr);
+
+  textKeys.forEach((key, idx) => {
+    formulaStr = formulaStr.replace(new RegExp(`__HANDLE_FORNULA_TEXT_${idx}__`, 'g'), texts[key]);
+  });
+
+  return formulaStr;
+}
+
+export { parseFormula, handleFormula };
