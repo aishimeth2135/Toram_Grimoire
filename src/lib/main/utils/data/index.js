@@ -72,8 +72,13 @@ function parseFormula(formulaStr, { methods = {} } = {}) {
       visitCallExpression(path) {
         const node = path.node;
 
-        if (node.arguments.every(p => TNT.Literal.check(p))) {
-          const args = node.arguments.map(p => p.value);
+        if (node.arguments.every(anode => TNT.Literal.check(anode) || TNT.UnaryExpression.check(anode))) {
+          const args = node.arguments.map(anode => {
+            if (TNT.UnaryExpression.check(anode)) {
+              return -1 * anode.argument.value;
+            }
+            return anode.value;
+          });
 
           const pros = [];
           let cur = node.callee;
