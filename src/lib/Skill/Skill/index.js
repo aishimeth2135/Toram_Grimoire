@@ -28,13 +28,13 @@ class SkillRoot {
     return null;
   }
   findSkillByName(name) {
-    let find = void 0;
+    let find = undefined;
     this.skillTreeCategorys.forEach(stc => {
       if (find) return;
       stc.skillTrees.forEach(st => {
         if (find) return;
         const t = st.skills.find(skill => skill.name === name);
-        if (t !== void 0)
+        if (t !== undefined)
           find = t;
       });
     });
@@ -144,7 +144,7 @@ class Skill extends SkillBase {
     return this;
   }
   checkData() {
-    return this.defaultEffect !== void 0 && this.defaultEffect !== null;
+    return this.defaultEffect !== undefined && this.defaultEffect !== null;
   }
 }
 Skill.TYPE = Symbol("Skill");
@@ -178,7 +178,7 @@ class SkillEffect {
     return this.parent.effects.indexOf(this);
   }
   appendAttribute(name, v) {
-    if (v !== null && v !== void 0)
+    if (v !== null && v !== undefined)
       this.attributes[name] = v;
     return this;
   }

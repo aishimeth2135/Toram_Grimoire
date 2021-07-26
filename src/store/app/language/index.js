@@ -22,20 +22,20 @@ const store = {
         while (p !== id.length) {
           cur = cur[id[p]];
           ++p;
-          if (cur === void 0)
-            return void 0;
+          if (cur === undefined)
+            return undefined;
         }
         return cur;
       })();
 
-      if (data === void 0) {
+      if (data === undefined) {
         console.warn(`[Unknow Language ID] ${id.join('/')}`);
         console.log(new Error().stack);
         return '???';
       }
 
       if (Array.isArray(values))
-        data = data.replace(/\$(\d+)/g, (v, i) => values[i] !== void 0 && values[i] !== null ? values[i] : '?');
+        data = data.replace(/\$(\d+)/g, (v, i) => values[i] !== undefined && values[i] !== null ? values[i] : '?');
 
       return data || '???';
     },
@@ -117,7 +117,7 @@ function setLangData(target, obj) {
     const p = target[k];
     const q = obj[k];
     if (typeof q === 'object' && !Array.isArray(q)) {
-      if (p === void 0) {
+      if (p === undefined) {
         target[k] = {};
       }
       setLangData(target[k], q);

@@ -81,7 +81,7 @@ function div(...nums) {
 }
 
 function setStatus(n, v) {
-  if (status[n] !== void 0)
+  if (status[n] !== undefined)
     status[n] = v;
   else
     console.warn(`[status: ${n}] not found.`)

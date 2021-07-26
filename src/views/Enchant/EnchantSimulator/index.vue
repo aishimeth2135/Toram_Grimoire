@@ -295,6 +295,7 @@ import CY from "@utils/Cyteria";
 
 /** */
 export default {
+  name: 'EnchantSimulator',
   RegisterLang: "Enchant Simulator",
   provide() {
     return {
@@ -360,6 +361,7 @@ export default {
     if (this.currentBuildIndex === -1) {
       this.createBuild();
     }
+    console.log(this.currentBuild);
   },
   beforeUnmount() {
     window.removeEventListener('beforeunload', this.listeners.windowBeforeUnload);

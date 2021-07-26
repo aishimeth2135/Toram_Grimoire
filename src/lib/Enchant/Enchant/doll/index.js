@@ -546,7 +546,7 @@ class EnchantDollCategory {
    * @returns {number} sum of potential effect of stats
    */
   originalPotentialEffectMaximumSum(num) {
-    num = num === void 0 ? this.stats.length : num;
+    num = num === undefined ? this.stats.length : num;
     return -1 * this.stats.slice(0, num)
       .reduce((cur, stat) => cur + stat.originalPotential * stat.limit[0], 0)
   }
@@ -559,7 +559,7 @@ class EnchantDollCategory {
    */
   materialPointMaximumSum(type, num) {
     type = { 'min': 0, 'max': 1 }[type];
-    num = num === void 0 ? this.stats.length : num;
+    num = num === undefined ? this.stats.length : num;
     return this.stats.slice(0, num)
       .reduce((cur, stat) => cur + stat.calcMaterialPointCost(stat.limit[type], 0), 0);
   }

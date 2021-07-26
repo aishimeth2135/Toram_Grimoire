@@ -1,4 +1,4 @@
-import handleFormula from "@/views/SkillQuery/utils/handleFormula.js";
+import handleSkillFormula from "@/views/SkillQuery/utils/handleFormula.js";
 import DataContainer from "@/views/SkillQuery/utils/DataContainer.js";
 
 import { EquipmentField } from "@/lib/Character/Character";
@@ -237,7 +237,7 @@ class SkillBranchHandler {
     };
 
     str = str.split(/\s*,,\s*/)
-      .map(p => handleFormula(p, { skillState, effectState, branch: this.branch }))
+      .map(p => handleSkillFormula(p, { skillState, effectState, branch: this.branch }))
       //.map(p => p.charAt(0) == '-' ? `(${p})` : p)
       .join('+')
       .replace(/\+-/g, '-');
@@ -297,12 +297,12 @@ class SkillBranchHandler {
       'dagger_atk': chara.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_DAGGER) ?
         chara.equipmentField(EquipmentField.TYPE_SUB_WEAPON).equipment.atk : 0,
       'target_def': () => {
-        const find = this.userSets.find(p => p.variableName == 'target_def');
+        const find = this.userSets.find(p => p.variableName === 'target_def');
         find.disabled = false;
         return find.value;
       },
       'target_level': () => {
-        const find = this.userSets.find(p => p.variableName == 'target_level');
+        const find = this.userSets.find(p => p.variableName === 'target_level');
         find.disabled = false;
         return find.value;
       },

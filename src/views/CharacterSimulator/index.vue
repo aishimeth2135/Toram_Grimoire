@@ -75,6 +75,7 @@ import createSkillState from "@/views/SkillQuery/utils/createSkillState.js";
 import SkillBranchHandler from "./skill/utils/SkillBranchHandler.js";
 
 export default {
+  name: 'CharacterSimulator',
   RegisterLang: 'Character Simulator',
   provide() {
     return {
@@ -288,17 +289,14 @@ export default {
         return [];
 
       const categoryList = this.$store.state.datas.character.characterStatCategoryList;
-      const characterStatMap = {};
-      categoryList.map(p => p.stats).flat().forEach(p => characterStatMap[p.id] = p)
-
-      const c = this.currentCharacterState.origin;
+      const chara = this.currentCharacterState.origin;
 
       let calcFieldNextFunc;
       if (calcField) {
-        const f = c.equipmentField(calcField.type);
+        const f = chara.equipmentField(calcField.type);
         const tmpEq = f.equipment;
 
-        const sub = c.equipmentField(EquipmentField.TYPE_SUB_WEAPON);
+        const sub = chara.equipmentField(EquipmentField.TYPE_SUB_WEAPON);
         const subEmpty = sub.isEmpty();
         const tmpSubEq = sub.equipment;
 
@@ -319,33 +317,69 @@ export default {
         }
       }
 
-      const isDualSword = c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD)
-        && c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD);
+      const isDualSword = chara.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD)
+        && chara.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD);
 
+
+      const mainField = chara.fieldEquipment(EquipmentField.TYPE_MAIN_WEAPON);
+      const subField = chara.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON);
+      const bodyField = chara.fieldEquipment(EquipmentField.TYPE_BODY_ARMOR);
+      const additionalField = chara.fieldEquipment(EquipmentField.TYPE_ADDITIONAL);
+      const specialField = chara.fieldEquipment(EquipmentField.TYPE_SPECIAL);
       const vars = {
         value: {
           '@': {
-            'clv': c.level,
-            'str': c.baseStatValue('STR'),
-            'dex': c.baseStatValue('DEX'),
-            'int': c.baseStatValue('INT'),
-            'agi': c.baseStatValue('AGI'),
-            'vit': c.baseStatValue('VIT'),
-            'tec': c.baseStatValue('TEC'),
-            'men': c.baseStatValue('MEN'),
-            'crt': c.baseStatValue('CRT'),
-            'luk': c.baseStatValue('LUK'),
-            'main': c.fieldEquipment(EquipmentField.TYPE_MAIN_WEAPON),
-            'sub': c.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON),
-            'armor': c.fieldEquipment(EquipmentField.TYPE_BODY_ARMOR),
-            'additional': c.fieldEquipment(EquipmentField.TYPE_ADDITIONAL),
-            'special': c.fieldEquipment(EquipmentField.TYPE_SPECIAL),
-            'shield': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubArmor.TYPE_SHIELD) ?
-              c.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON) :
-              { 'refining': 0, 'def': 0 },
-            'arrow': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_ARROW) ?
-              c.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON) :
-              { 'stability': 0, 'atk': 0 },
+            'clv': chara.level,
+            'str': chara.baseStatValue('STR'),
+            'dex': chara.baseStatValue('DEX'),
+            'int': chara.baseStatValue('INT'),
+            'agi': chara.baseStatValue('AGI'),
+            'vit': chara.baseStatValue('VIT'),
+            'tec': chara.baseStatValue('TEC'),
+            'men': chara.baseStatValue('MEN'),
+            'crt': chara.baseStatValue('CRT'),
+            'luk': chara.baseStatValue('LUK'),
+            'main': mainField ? {
+              atk: mainField.atk,
+              refining: mainField.refining,
+              stability: mainField.stability,
+            } : {
+              atk: 0,
+              refining: 0,
+              stability: 0,
+            },
+            'sub': subField ? {
+              atk: subField.atk || 0,
+              def: subField.def || 0,
+              refining: subField.refining || 0,
+              stability: subField.stability || 0,
+            } : {
+              atk: 0,
+              def: 0,
+              refining: 0,
+              stability: 0,
+            },
+            'armor': bodyField ? {
+              def: bodyField.def,
+              refining: bodyField.refining,
+            } : {
+              def: 0,
+              stability: 0,
+            },
+            'additional': additionalField ? {
+              def: additionalField.def,
+              refining: additionalField.refining,
+            } : {
+              def: 0,
+              stability: 0,
+            },
+            'special': specialField ? { def: specialField.def } : { def: 0 },
+            'shield': chara.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubArmor.TYPE_SHIELD) ?
+              chara.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON) :
+              { refining: 0, def: 0 },
+            'arrow': chara.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_ARROW) ?
+              chara.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON) :
+              { stability: 0, atk: 0 },
             'element': this.equipmentElement,
             'skill': {
               'Conversion': (() => {
@@ -356,58 +390,56 @@ export default {
               })(),
             },
           },
-          '#': {
-
-          },
-          '$': characterStatMap,
+          '#': {},
+          '$': {},
         },
         conditional: {
           '@': {
-            '1h_sword': !isDualSword && c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD),
-            '2h_sword': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_TWO_HAND_SWORD),
-            'bow': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_BOW),
-            'bowgun': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_BOWGUN),
-            'staff': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_STAFF),
-            'magic_device': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_MAGIC_DEVICE),
-            'knuckle': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_KNUCKLE),
+            '1h_sword': !isDualSword && chara.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD),
+            '2h_sword': chara.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_TWO_HAND_SWORD),
+            'bow': chara.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_BOW),
+            'bowgun': chara.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_BOWGUN),
+            'staff': chara.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_STAFF),
+            'magic_device': chara.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_MAGIC_DEVICE),
+            'knuckle': chara.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_KNUCKLE),
             'dual_sword': isDualSword,
-            'halberd': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_HALBERD),
-            'katana': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_KATANA),
+            'halberd': chara.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_HALBERD),
+            'katana': chara.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_KATANA),
             'main': {
-              'none': c.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, EquipmentField.EMPTY),
+              'none': chara.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, EquipmentField.EMPTY),
             },
             'sub': {
-              'arrow': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_ARROW),
-              'shield': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubArmor.TYPE_SHIELD),
-              'dagger': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_DAGGER),
-              'knuckle': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_KNUCKLE),
-              'magic_device': c.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_MAGIC_DEVICE),
+              'arrow': chara.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_ARROW),
+              'shield': chara.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubArmor.TYPE_SHIELD),
+              'dagger': chara.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_DAGGER),
+              'knuckle': chara.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_KNUCKLE),
+              'magic_device': chara.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_MAGIC_DEVICE),
             },
             'armor': {
-              'normal': c.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, BodyArmor.TYPE_NORMAL),
-              'dodge': c.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, BodyArmor.TYPE_DODGE),
-              'defense': c.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, BodyArmor.TYPE_DEFENSE),
-              'none': c.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, EquipmentField.EMPTY),
+              'normal': chara.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, BodyArmor.TYPE_NORMAL),
+              'dodge': chara.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, BodyArmor.TYPE_DODGE),
+              'defense': chara.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, BodyArmor.TYPE_DEFENSE),
+              'none': chara.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, EquipmentField.EMPTY),
             },
           },
           '#': {},
         },
       };
 
-      const all_stats = [];
+      const pureStats = [];
 
       const appendStat = stat => {
-        const t = all_stats.find(a => a.equals(stat));
+        const t = pureStats.find(a => a.equals(stat));
         let v = stat.value;
-        if (typeof v != 'number')
+        if (typeof v !== 'number')
           v = parseFloat(v);
         if (Number.isNaN(v))
           v = 0;
         stat.value = v;
-        t ? t.add(v) : all_stats.push(stat.copy());
+        t ? t.add(v) : pureStats.push(stat.copy());
       };
 
-      c.equipmentFields.forEach(field => {
+      chara.equipmentFields.forEach(field => {
         if (!field.isEmpty() && !field.statsDisable()) {
           field.equipment.getAllStats(this.checkStatRestriction).forEach(appendStat);
         }
@@ -455,14 +487,27 @@ export default {
         name: p.name,
         stats: p.stats.map(a => {
           //console.log('%c' + a.id, 'color: white; background-color: red');
-          const res = a.result(all_stats, vars);
+          const res = a.result(pureStats, vars);
           return {
             id: a.id,
             name: a.name,
             ...res,
           };
         }),
-      })).filter(a => a.stats.length != 0);
+      })).filter(a => a.stats.length !== 0);
+      // const p = categoryList[0];
+      // return [{
+      //   name: p.name,
+      //   stats: p.stats.slice(0, 1).map(a => {
+      //     //console.log('%c' + a.id, 'color: white; background-color: red');
+      //     const res = a.result(pureStats, vars);
+      //     return {
+      //       id: a.id,
+      //       name: a.name,
+      //       ...res,
+      //     };
+      //   }),
+      // }];
     },
     checkStatRestriction(stat) {
       const c = this.currentCharacterState.origin;

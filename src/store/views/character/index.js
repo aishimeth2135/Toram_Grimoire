@@ -250,7 +250,7 @@ const store = {
         const validEquipments = allEquipments.filter(p => p);
         commit('appendEquipments', validEquipments);
 
-        const resetSkillBuilds = resetOption.skillBuildsReplaced === void 0 ? true : resetOption.skillBuildsReplaced;
+        const resetSkillBuilds = resetOption.skillBuildsReplaced === undefined ? true : resetOption.skillBuildsReplaced;
         dispatch('loadSkillBuildsCsv', { csvString: skillBuildsCsv, reset: resetSkillBuilds });
 
         if (foodBuilds){
@@ -265,7 +265,7 @@ const store = {
         // 讀檔過程會改寫index，因此最後設定index
         commit('setCurrentCharacter', { index: summary.characterIndex });
         commit('setCurrentSkillBuild', { index: summary.skillBuildIndex });
-        commit('setCurrentFoodBuild', { index: summary.foodBuildIndex !== void 0 ? summary.foodBuildIndex : -1 });
+        commit('setCurrentFoodBuild', { index: summary.foodBuildIndex !== undefined ? summary.foodBuildIndex : -1 });
       } catch (e) {
         commit('reset');
         commit('createCharacter', new Character());

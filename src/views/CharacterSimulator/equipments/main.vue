@@ -79,6 +79,7 @@ import { EquipmentField } from "@/lib/Character/Character";
 import { CharacterEquipment } from "@/lib/Character/CharacterEquipment";
 
 export default {
+  name: 'Equipments',
   RegisterLang: 'Character Simulator',
   provide() {
     return {

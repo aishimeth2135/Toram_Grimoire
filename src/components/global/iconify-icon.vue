@@ -130,13 +130,13 @@ export default {
 
     // Convert component properties to Iconify properties
     let props = {};
-    if (this.color !== void 0) {
+    if (this.color !== undefined) {
       props.style = 'color: ' + this.color + ';';
     }
 
     // All optional properties
     dataAttributes.forEach(key => {
-      if (this[key] !== void 0) {
+      if (this[key] !== undefined) {
         props['data-' + key] = this[key];
       }
     });

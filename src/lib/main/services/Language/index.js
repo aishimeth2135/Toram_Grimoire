@@ -29,8 +29,8 @@ function HandleLanguageData(datas, mapping) {
     datas[0].forEach((p, idx) => {
       const res = langDatas
         .map(a => a && a[idx] ? a[idx][langDataIdx] : null)
-        .find(t => t !== '' && t !== null && t !== void 0);
-      if (res !== void 0)
+        .find(t => t !== '' && t !== null && t !== undefined);
+      if (res !== undefined)
         p[dataIdx] = res;
     });
   });

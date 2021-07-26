@@ -293,7 +293,7 @@ export default {
       };
     },
     toggleShowStatDetailDisplay(target, force, clear = false) {
-      force = force === void 0 ? !this.detail[target] : force;
+      force = force === undefined ? !this.detail[target] : force;
       this.detail[target] = force;
 
       if (clear && !force)

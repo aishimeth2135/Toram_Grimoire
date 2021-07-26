@@ -21,12 +21,12 @@ function setAttributes(ele, dict) {
 
 function simpleCreateHTML(type, classList, html, attr) {
   const t = document.createElement(type);
-  if (classList !== void 0 && classList !== null) {
+  if (classList !== undefined && classList !== null) {
     Array.isArray(classList) ? t.classList.add(...classList) : t.classList.add(classList);
   }
-  if (html !== void 0 && html !== null)
+  if (html !== undefined && html !== null)
     t.innerHTML = html;
-  if (attr !== void 0 && attr !== null)
+  if (attr !== undefined && attr !== null)
     setAttributes(t, attr);
   return t;
 }

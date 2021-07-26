@@ -374,7 +374,7 @@ export default {
     },
     toggleVisible(target, force) {
       target = target + 'Visible';
-      force = force === void 0 ? !this[target] : force;
+      force = force === undefined ? !this[target] : force;
       this[target] = force;
     },
   },

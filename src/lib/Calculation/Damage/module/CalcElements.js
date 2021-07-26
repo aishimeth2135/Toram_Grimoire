@@ -79,10 +79,10 @@ class Calculation {
   }
   findItem(id) {
     const c = this.findContainer(id);
-    return c ? c.getItem(id) : void 0;
+    return c ? c.getItem(id) : undefined;
   }
   container(index) {
-    if (index === void 0)
+    if (index === undefined)
       return this.containers;
     return this.containers[index];
   }
@@ -102,9 +102,9 @@ class Calculation {
     return this.name;
   }
   userSet(name, v) {
-    if (name === void 0)
+    if (name === undefined)
       return this.status.sets;
-    if (v !== void 0)
+    if (v !== undefined)
       this.status.sets[name] = v;
     return this.status.sets[name];
   }
@@ -226,7 +226,7 @@ class CalcItemContainer {
    * @return {CalcItem|CalcItem[]}
    */
   item(index) {
-    if (index === void 0)
+    if (index === undefined)
       return this.items;
     return this.items[index];
   }
@@ -314,7 +314,7 @@ class CalcItem {
       this._value = v;
     }
     const vset = this.belongContainer().belongCalculation().status.valueSet[this.itemId()];
-    const res = vset !== void 0 ? (typeof vset == 'function' ? vset.call(this) : vset) : this._value;
+    const res = vset !== undefined ? (typeof vset == 'function' ? vset.call(this) : vset) : this._value;
     return res;
   }
   toggle() {

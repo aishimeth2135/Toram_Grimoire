@@ -1,4 +1,6 @@
+import { markRaw } from "vue";
 import Grimoire from "@grimoire";
+import CharacterSystem from '../index';
 import { StatBase } from "@/lib/Character/Stat";
 import { MainWeapon, SubWeapon, SubArmor } from "@/lib/Character/CharacterEquipment";
 import { handleFormula } from "@utils/data";
@@ -56,7 +58,7 @@ class Character {
   }
   fieldEquipment(type) {
     const t = this.equipmentField(type);
-    return t ? (t.equipment || void 0) : void 0;
+    return t ? (t.equipment || undefined) : undefined;
   }
   hasOptinalBaseStat() {
     return this._optinalBaseStat ? true : false;
@@ -303,19 +305,40 @@ class EquipmentField {
 }
 
 class CharacterStatCategory {
-  constructor(name) {
+  /**
+   * @param {CharacterSystem} parent
+   * @param {string} name
+   */
+  constructor(parent, name) {
+    this._parent = parent;
     this.name = name;
-    this.stats = [];
+    this.stats = markRaw([]);
   }
+
+  get belongCategorys() {
+    return this._parent.characterStatCategoryList;
+  }
+
   appendStat(...args) {
-    const t = new CharacterStat(this, ...args);
-    this.stats.push(t);
-    return t;
+    const stat = markRaw(new CharacterStat(this, ...args));
+    this.stats.push(stat);
+    return stat;
   }
 }
 
 
 class CharacterStat {
+  /**
+   * @param {CharacterStatCategory} cat
+   * @param {string} id
+   * @param {string} name
+   * @param {string} displayFormula
+   * @param {string} link
+   * @param {number} max
+   * @param {number} min
+   * @param {string} caption
+   * @param {number} hidden_option
+   */
   constructor(cat, id, name, displayFormula, link, max, min, caption, hidden_option) {
     this.category = cat;
 
@@ -346,7 +369,7 @@ class CharacterStat {
   }
 
   setFormula(str) {
-    this._formula = new CharacterStatFormula(this, str);
+    this._formula = markRaw(new CharacterStatFormula(this, str));
     return this._formula;
   }
   getDisplayValue(v, ignoreDecimal = false) {
@@ -354,17 +377,17 @@ class CharacterStat {
     if (!displayFormula.match(/\$(?:\.\d)?v/)) {
       displayFormula = '$v' + displayFormula;
     }
-    return displayFormula.replace(/\$(?:\.(\d))?v/, (m, m1) => {
+    return displayFormula.replace(/\$(?:\.(\d))?v/, (match, p1) => {
       if (ignoreDecimal)
         return v;
-      return m1 !== void 0 ?
-        v.toFixed(parseInt(m1, 10)) :
+      return p1 !== undefined ?
+        v.toFixed(parseInt(p1, 10)) :
         Math.floor(v);
     });
   }
-  result(character_simple_stats, vars) {
+  result(currentStats, vars) {
     try {
-      const res = this._formula.calc(character_simple_stats, vars);
+      const res = this._formula.calc(currentStats, vars);
       let value = res.value;
       const originalValue = value;
 
@@ -407,40 +430,42 @@ class CharacterStatFormula {
     this._parent = parent;
     /** @type {string} */
     this.formula = str;
-    this.conditionValues = [];
+    this.conditionValues = markRaw([]);
   }
   get belongCharacterStat() {
     return this._parent;
   }
   appendConditionValue(conditional, formula, options) {
     options = options.split(/\s*,\s*/);
-    this.conditionValues.push({
-      conditional,
-      formula,
-      options,
-    });
+    const item = markRaw(new CharacterStatFormulaConditionalItem(conditional, formula, options));
+    this.conditionValues.push(item);
   }
   calc(pureStats, vars) {
-    const handleVar = (from, var_str, def_v, is_object = false) => {
-      const [v1, v2] = var_str.split('.');
-      if (from[v1] === void 0)
-        return def_v;
-      if (!is_object && typeof from[v1] == 'object') {
-        if (v2 === void 0)
-          return def_v;
-        const t = from[v1][v2];
-        return t !== void 0 ? t : def_v;
-      }
-      return from[v1];
-    }
+    // const handleVar = (from, varName, defaultValue, isObject = false) => {
+    //   const [v1, v2] = varName.split('.');
+    //   if (from[v1] === undefined)
+    //     return defaultValue;
+    //   if (!isObject && typeof from[v1] === 'object') {
+    //     if (v2 === undefined)
+    //       return defaultValue;
+    //     const t = from[v1][v2];
+    //     return t !== undefined ? t : defaultValue;
+    //   }
+    //   return from[v1];
+    // }
 
-    const checkBaseName = stat => stat.baseName == this.belongCharacterStat.link;
-    const c_stat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatBase.TYPE_CONSTANT),
-      m_stat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatBase.TYPE_MULTIPLIER),
-      t_stat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatBase.TYPE_TOTAL);
-    let cvalue = c_stat ? c_stat.value : 0,
-      mvalue = m_stat ? m_stat.value : 0,
-      tvalue = t_stat ? t_stat.value : 0;
+    const allCharacterStatMap = {};
+    this.belongCharacterStat.category.belongCategorys
+      .map(p => p.stats).flat()
+      .forEach(p => allCharacterStatMap[p.id] = p)
+
+    const checkBaseName = stat => stat.baseName === this.belongCharacterStat.link;
+    const cstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatBase.TYPE_CONSTANT),
+      mstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatBase.TYPE_MULTIPLIER),
+      tstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatBase.TYPE_TOTAL);
+    let cvalue = cstat ? cstat.value : 0,
+      mvalue = mstat ? mstat.value : 0,
+      tvalue = tstat ? tstat.value : 0;
 
     let defaultFormula = true;
 
@@ -474,33 +499,85 @@ class CharacterStatFormula {
         return neg ? -1 * (res - 100) : res;
       },
     };
-    const formulaHandler = f => {
-      f = f
-        .replace(/\$([a-zA-Z0-9_.]+)/g, (match, p1) => {
-          const a = handleVar(vars.value['$'], p1, null, true);
-          return a ? a.result(pureStats, vars).resultValue.toString() : '0';
-        })
-        .replace(/@([a-zA-Z0-9_.]+)/g, (match, p1) => {
-          return handleVar(vars.value['@'], p1, '0');
-        })
-        .replace(/#([cmt]value)/g, (match, p1) => {
-          defaultFormula = false;
-          switch (p1) {
-          case 'cvalue':
-            return cvalue;
-          case 'mvalue':
-            return mvalue;
-          case 'tvalue':
-            return tvalue;
-          }
-        })
-        .replace(/#([a-zA-Z0-9_.]+)/g, (match, p1) => {
-          return handleVar(vars.value['#'], p1, '0');
-        })
-        .replace(/-{2,}/g, match => match.length % 2 === 0 ? '+' : '-');
-      const res = handleFormula(f, { methods });
-      return typeof res === 'boolean' ? res : parseFloat(res);
+
+    const statValueVars = {
+      cvalue: 0,
+      tvalue: 0,
+      mvalue: 0,
     }
+    const handlerOptions = {
+      vars: {},
+      getters: {},
+      methods,
+      toNumber: true,
+    };
+    Object.entries(vars.value['@']).forEach(([key, value]) => {
+      handlerOptions.vars['@' + key] = value !== undefined ? value : 0;
+    });
+    ['cvalue', 'mvalue', 'tvalue'].forEach(key => {
+      handlerOptions.getters['#' + key] = () => {
+        defaultFormula = false;
+        return statValueVars[key];
+      };
+    });
+    Object.entries(allCharacterStatMap).forEach(([key, value]) => {
+      handlerOptions.getters['$' + key] = () => {
+        const src = vars.value['$'];
+        if (src[key] !== undefined) {
+          return src[key];
+        }
+        src[key] = value.result(pureStats, vars).resultValue.toString();
+        return src[key];
+      };
+    });
+    const formulaHandler = (formulaStr, { ignoreStatValue = false } = {}) => {
+      if (ignoreStatValue) {
+        statValueVars.cvalue = 0;
+        statValueVars.mvalue = 0;
+        statValueVars.tvalue = 0;
+      } else {
+        statValueVars.cvalue = cvalue;
+        statValueVars.mvalue = mvalue;
+        statValueVars.tvalue = tvalue;
+      }
+      return handleFormula(formulaStr, handlerOptions);
+      // f = f
+      //   .replace(/\$([a-zA-Z0-9_.]+)/g, (match, p1) => {
+      //     const a = handleVar(vars.value['$'], p1, null, true);
+      //     return a ? a.result(pureStats, vars).resultValue.toString() : '0';
+      //   })
+      //   .replace(/@([a-zA-Z0-9_.]+)/g, (match, p1) => {
+      //     return handleVar(vars.value['@'], p1, '0');
+      //   })
+      //   .replace(/#([cmt]value)/g, (match, p1) => {
+      //     defaultFormula = false;
+      //     switch (p1) {
+      //     case 'cvalue':
+      //       return cvalue;
+      //     case 'mvalue':
+      //       return mvalue;
+      //     case 'tvalue':
+      //       return tvalue;
+      //     }
+      //   })
+      //   .replace(/#([a-zA-Z0-9_.]+)/g, (match, p1) => {
+      //     return handleVar(vars.value['#'], p1, '0');
+      //   })
+      //   .replace(/-{2,}/g, match => match.length % 2 === 0 ? '+' : '-');
+      // const res = handleFormula(f, { methods });
+      // return typeof res === 'boolean' ? res : parseFloat(res);
+    }
+
+
+    const conditionalHandlerOptions = {
+      vars: {},
+    };
+    Object.entries(vars.conditional['@']).forEach(([key, value]) => {
+      conditionalHandlerOptions.vars['@' + key] = value !== undefined ? value : true;
+    });
+    Object.entries(vars.conditional['#']).forEach(([key, value]) => {
+      conditionalHandlerOptions.vars['#' + key] = value !== undefined ? value : true;
+    });
 
     const conditions = this.conditionValues
       .map(p => {
@@ -510,23 +587,24 @@ class CharacterStatFormula {
           isBase = false;
 
         if (p.conditional !== '#') {
-          const c = p.conditional
-            .replace(/"[^"]+"/g, 'true')
-            .replace(/@([a-zA-Z0-9_.]+)/g, (m, m1) => {
-              const t = handleVar(vars.conditional['@'], m1, true);
-              return t ? 'true' : 'false';
-            })
-            .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
-              const t = handleVar(vars.conditional['#'], m1, true);
-              return t ? 'true' : 'false';
-            });
-          result = handleFormula(c);
+          // const c = p.conditional
+          //   .replace(/"[^"]+"/g, 'true')
+          //   .replace(/@([a-zA-Z0-9_.]+)/g, (m, m1) => {
+          //     const t = handleVar(vars.conditional['@'], m1, true);
+          //     return t ? 'true' : 'false';
+          //   })
+          //   .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
+          //     const t = handleVar(vars.conditional['#'], m1, true);
+          //     return t ? 'true' : 'false';
+          //   });
+          // result = handleFormula(c);
+          result = handleFormula(p.conditional, conditionalHandlerOptions);
         }
         p.options.forEach(option => {
-          const m = option.match(/#([cmt]value)/);
-          if (m) {
-            if (statBasePart == null)
-              statBasePart = m[1];
+          const match = option.match(/#([cmt]value)/);
+          if (match) {
+            if (statBasePart === null)
+              statBasePart = match[1];
           } else if (option === '#base') {
             isBase = true;
           } else if (option === '#mul') {
@@ -547,10 +625,10 @@ class CharacterStatFormula {
 
     // #base不能和#[cmt]value共存，同時存在時，#base優先級高於#[cmt]value
     conditions
-      .filter(p => p.statBasePart != null && !p.isBase)
+      .filter(p => p.statBasePart !== null && !p.isBase)
       .forEach(p => {
         const part = p.statBasePart;
-        const value = formulaHandler(p.formula);
+        const value = formulaHandler(p.formula, { ignoreStatValue: true });
         const data = {
           conditional: p.conditional,
           options: p.options,
@@ -574,7 +652,7 @@ class CharacterStatFormula {
 
     const conditionalBase = conditions.find(p => p.isBase);
 
-    const extra_values = conditions
+    const extraValues = conditions
       .filter(p => !p.isBase)
       .filter(p => p.statBasePart == null)
       .map(p => {
@@ -591,9 +669,9 @@ class CharacterStatFormula {
         };
       });
 
-    const add_values = extra_values
+    const addValues = extraValues
       .filter(p => !p.isMul).map(p => p.value);
-    const mul_values = extra_values
+    const mulValues = extraValues
       .filter(p => p.isMul).map(p => p.value);
 
     let res = 0, basev = 0, initBasev = 0;
@@ -606,11 +684,11 @@ class CharacterStatFormula {
       const mul = ary => ary.reduce((cur, v) => cur * v, 1);
 
       if (formula && formula.includes('#base')) {
-        basev = sum(add_values) * mul(mul_values);
+        basev = sum(addValues) * mul(mulValues);
         res = formulaHandler(this.formula.replace('#base', basev));
       } else {
         initBasev = formula ? formulaHandler(formula) : 0;
-        basev = sum([initBasev, ...add_values]) * mul(mul_values);
+        basev = sum([initBasev, ...addValues]) * mul(mulValues);
         res = defaultFormula ? (basev * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : basev;
       }
     }
@@ -627,6 +705,17 @@ class CharacterStatFormula {
       statPartsDetail,
       conditionalBase,
     };
+  }
+}
+
+class CharacterStatFormulaConditionalItem {
+  constructor(conditional, formula, options) {
+    /** @type {string} */
+    this.conditional = conditional;
+    /** @type {string} */
+    this.formula = formula;
+    /** @type {string[]} */
+    this.options = options;
   }
 }
 

@@ -355,7 +355,7 @@ import vue_DrawSkillTree from "@/views/SkillSimulator/draw-skill-tree.vue";
 import vue_SkillBranch from "./skill-branch/skill-branch.vue";
 
 import createSkillState from "./utils/createSkillState.js";
-import handleFormula from "./utils/handleFormula.js";
+import handleSkillFormula from "./utils/handleFormula.js";
 
 export default {
   RegisterLang: 'Skill Query',
@@ -537,7 +537,7 @@ export default {
           const name = this.$lang('effect attrs/' + k);
           let value;
           if (type === 'value')
-            value = handleFormula(q, options);
+            value = handleSkillFormula(q, options);
           else if (type === 'list')
             value = this.$lang('effect attrs/' + k + ': list')[q];
           else if (type === 'text')
@@ -581,7 +581,7 @@ export default {
         state.currentStoreIndex = state.store.length - 1;
     },
     toggleSelectSkillTreeWindow(force) {
-      force = force === void 0 ? !this.selectSkillTreeWindowState.visible : force
+      force = force === undefined ? !this.selectSkillTreeWindowState.visible : force
       this.selectSkillTreeWindowState.visible = force;
     },
     createTagButtons(str) {

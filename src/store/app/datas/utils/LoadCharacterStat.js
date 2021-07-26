@@ -1,6 +1,10 @@
-import { CharacterStatCategory } from "@/lib/Character/Character";
+import CharacterSystem from '@/lib/Character';
 
-export default function(character_system, datas) {
+/**
+ * @param {CharacterSystem} characterSystem
+ * @param {string[][][]} datas
+ */
+export default function(characterSystem, datas) {
   const ID = 0,
     NAME = 1,
     DISPLAY_FORMULA = 2,
@@ -15,27 +19,26 @@ export default function(character_system, datas) {
     CONFIRM_CATEGORY = '0',
     CATEGORY_NAME = 1;
 
-  const handleHiddenOption = v => ['永久', '變數值為0時', '計算結果為0時'].indexOf(v);
+  const handleHiddenOption = value => ['永久', '變數值為0時', '計算結果為0時'].indexOf(value);
 
   const c = datas[0];
 
-  let cur_category, cur_stat, cur_formula;
+  let curCategory, curStat, curFormula;
   c.forEach((p, index) => {
-    if (index == 0)
+    if (index === 0)
       return;
 
     const id = p[ID];
-    if (id == CONFIRM_CATEGORY) {
-      cur_category = new CharacterStatCategory(p[CATEGORY_NAME]);
-      character_system.characterStatCategoryList.push(cur_category);
-    } else if (id == '') {
-      cur_formula.appendConditionValue(p[CONDITIONAL], p[CONDITION_VALUE], p[CONDITIONAL_OPTIONS]);
+    if (id === CONFIRM_CATEGORY) {
+      curCategory = characterSystem.appendCharacterStatCategory(p[CATEGORY_NAME]);
+    } else if (id === '') {
+      curFormula.appendConditionValue(p[CONDITIONAL], p[CONDITION_VALUE], p[CONDITIONAL_OPTIONS]);
     } else {
       let [min = null, max = null] = p[LIMIT].split('~');
       min = min !== null ? parseFloat(min) : min;
       max = max !== null ? parseFloat(max) : max;
-      cur_stat = cur_category.appendStat(id, p[NAME], p[DISPLAY_FORMULA], p[LINK], max, min, p[CAPTION], handleHiddenOption(p[HIDDEN_OPTION]));
-      cur_formula = cur_stat.setFormula(p[FORMULA]);
+      curStat = curCategory.appendStat(id, p[NAME], p[DISPLAY_FORMULA], p[LINK], max, min, p[CAPTION], handleHiddenOption(p[HIDDEN_OPTION]));
+      curFormula = curStat.setFormula(p[FORMULA]);
     }
   });
 }

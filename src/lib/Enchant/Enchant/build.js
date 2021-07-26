@@ -379,7 +379,7 @@ class EnchantStep {
   static load(categorys, equipment, data) {
     const step = new EnchantStep(equipment);
     step.type = EnchantStep.TYPES[data.type];
-    step.hidden = data.hidden === '1' ? true : false;
+    step.hidden = data.hidden === 1 ? true : false;
     const stats = data.stats.map(statData => EnchantStepStat.load(categorys, step, statData));
     step.stats = stats;
 

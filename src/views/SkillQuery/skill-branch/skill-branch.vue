@@ -427,7 +427,7 @@ import vue_branchDetail from "./branch-detail.vue";
 import vue_equipmentInfo from "./equipment-info.vue";
 import vue_skillAreaInfo from "./skill-area-info";
 
-import handleFormula from "../utils/handleFormula.js";
+import handleSkillFormula from "../utils/handleFormula.js";
 import DataContainer from "../utils/DataContainer.js";
 
 import { trimZero } from "@utils/string";
@@ -528,7 +528,7 @@ export default {
         main: eq.main != -1 ? this.$lang.extra('parent', 'equipment/main-weapon')[eq.main] : -1,
         sub: eq.sub != -1 ? this.$lang.extra('parent', 'equipment/sub-weapon')[eq.sub] : -1,
         body: eq.body != -1 ? this.$lang.extra('parent', 'equipment/body-armor')[eq.body] : -1,
-        none: eq.main == -1 && eq.sub == -1 && eq.body == -1 ? this.$lang.extra('parent', '/equipment/none') : void 0,
+        none: eq.main == -1 && eq.sub == -1 && eq.body == -1 ? this.$lang.extra('parent', '/equipment/none') : undefined,
         operator: eq.operator,
       };
     },
@@ -649,7 +649,7 @@ export default {
       return this.$lang('apply element', [s]);
     },
     toggleVisible(name, force) {
-      force = force === void 0 ? !this[name + 'Visible'] : force;
+      force = force === undefined ? !this[name + 'Visible'] : force;
 
       if (name === 'history' && force)
         this.otherEquipmentBranchVisible = false;
@@ -731,7 +731,7 @@ export default {
       const bchs = this.branch['@parent-state'].branchs;
 
       const g = this.branch.group;
-      g.expansion = force === void 0 ? !g.expansion : force;
+      g.expansion = force === undefined ? !g.expansion : force;
 
       let cur = bchs.findIndex(p => p == this.branch),
         cnt = g.size,
@@ -1017,7 +1017,7 @@ export default {
       hiddenList.forEach(({ name, validation, defaultValue, validationType = 'normal' } = {}) => {
         name = Array.isArray(name) ? name : [name];
         name.forEach(p => {
-          if (data[p] === void 0) {
+          if (data[p] === undefined) {
             if (defaultValue)
               data[p] = new DataContainer(defaultValue, p, bch);
             return;
@@ -1098,7 +1098,7 @@ export default {
       const effectState = this.branch['@parent-state'];
 
       return str.split(/\s*,,\s*/)
-        .map(p => handleFormula(p, { skillState, effectState, branch: this.branch }))
+        .map(p => handleSkillFormula(p, { skillState, effectState, branch: this.branch }))
         //.map(p => p.charAt(0) == '-' ? `(${p})` : p)
         .join('+')
         .replace(/\+-/g, '-');

@@ -1,16 +1,16 @@
 <template>
   <div class="stats">
-    <show-stat v-for="stat in statDatas" :key="stat.iid" class="item mr-4" type="custom">
+    <ShowStat v-for="stat in statDatas" :key="stat.iid" class="item mr-4" type="custom">
       <span v-html="stat.text" />
-    </show-stat>
+    </ShowStat>
   </div>
 </template>
 <script>
-import vue_showStat from "../equipments/show-stat.vue";
+import vue_ShowStat from "../equipments/show-stat.vue";
 
 export default {
   components: {
-    'show-stat': vue_showStat,
+    'ShowStat': vue_ShowStat,
   },
   props: ['statDatas'],
 };

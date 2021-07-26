@@ -588,7 +588,7 @@ export default {
       this.toggleSelectStatVisible(false);
     },
     toggleSelectStatVisible(force) {
-      force = force !== void 0 ? !this.modes.stat.selectStatVisible : force;
+      force = force !== undefined ? !this.modes.stat.selectStatVisible : force;
       this.modes.stat.selectStatVisible = force;
     },
     selectMode(id) {

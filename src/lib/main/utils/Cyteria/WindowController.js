@@ -36,7 +36,7 @@ export default class WindowController {
   }
   getWindow(name) {
     const w = this.windows[name];
-    if (w == void 0)
+    if (w == undefined)
       throw new Error('Window name: ' + name + ' is not exist');
     return w;
   }
@@ -49,7 +49,7 @@ export default class WindowController {
 
     const simpleCreateHTML = element.simpleCreateHTML;
 
-    if (this.windows[name] !== void 0)
+    if (this.windows[name] !== undefined)
       throw new Error('window name: ' + name + ' is already exist.');
 
     const el = simpleCreateHTML('div', ['Cyteria', 'window', 'hidden', ...config.extraClassList]);
@@ -71,14 +71,14 @@ export default class WindowController {
   }
   closeWindow(name) {
     const w = this.windows[name];
-    if (w == void 0)
+    if (w == undefined)
       throw new Error('Window name: ' + name + ' is not exist');
     w.classList.add('hidden');
     this.currentWindows.splice(this.currentWindows.indexOf(name), 1);
   }
   openWindow(name) {
     const w = this.windows[name];
-    if (w == void 0)
+    if (w == undefined)
       throw new Error('Window name: ' + name + ' is not exist');
     w.classList.remove('hidden');
     this.backgroundMask.classList.remove('hidden');

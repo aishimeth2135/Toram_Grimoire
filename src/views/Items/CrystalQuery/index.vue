@@ -275,7 +275,7 @@ export default {
       this.toggleSelectStatWindowVisible(false);
     },
     toggleSelectStatWindowVisible(force) {
-      force = force !== void 0 ? !this.modeState['mode-stats'].selectStatWindowVisible : force;
+      force = force !== undefined ? !this.modeState['mode-stats'].selectStatWindowVisible : force;
       this.modeState['mode-stats'].selectStatWindowVisible = force;
     },
     selectMode(idx) {

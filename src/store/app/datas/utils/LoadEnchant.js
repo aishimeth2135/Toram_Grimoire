@@ -25,7 +25,7 @@ export default function LoadEnchantData(r, c) {
       return ['', ''];
     s = s.split('::');
     const l1 = s[0] ? parseInt(s[0], 10) : s[0];
-    const l2 = s[1] === void 0 ? (typeof l1 == 'number' ? -1 * l1: l1) : s[1];
+    const l2 = s[1] === undefined ? (typeof l1 == 'number' ? -1 * l1: l1) : s[1];
     return [l1, l2];
   }
 

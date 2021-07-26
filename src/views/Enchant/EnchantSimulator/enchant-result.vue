@@ -110,6 +110,7 @@ import ENCHANT_STATE from "@/lib/Enchant/Enchant/state";
 import CY from "@utils/Cyteria";
 
 export default {
+  name: 'EnchantResult',
   props: {
     equipment: {
       type: EnchantEquipment,

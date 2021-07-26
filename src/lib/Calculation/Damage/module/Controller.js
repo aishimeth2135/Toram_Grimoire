@@ -1137,7 +1137,7 @@ export default class DamageCalculationController {
       }
     };
 
-    const check = v => v !== void 0 && v !== '';
+    const check = v => v !== undefined && v !== '';
     const checkValue = (v, if_false) => check(v) ? v : if_false;
 
     const strint_to_bool = v => v == '1' ? true : false;

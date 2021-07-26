@@ -40,7 +40,7 @@ class StatBase {
   }
 
   appendAttribute(n, v) {
-    if (n && v !== null && v !== void 0)
+    if (n && v !== null && v !== undefined)
       this.attributes[n] = v;
     return this;
   }
@@ -178,7 +178,7 @@ class Stat {
 
   /** @param {StatValue} [v] */
   show(v) {
-    if (v === void 0) {
+    if (v === undefined) {
       v = this.value;
     }
     return this.base.show(this.type, v);

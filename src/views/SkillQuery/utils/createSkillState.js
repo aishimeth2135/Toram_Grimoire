@@ -171,7 +171,7 @@ function handleSkillState(skill) {
       'list': ['list'],
       '@global': ['formula_extra', 'group', {
         name: 'history',
-        validation: b => b.attrs['target_branch'] === void 0,
+        validation: b => b.attrs['target_branch'] === undefined,
       }],
     };
     const searchSuffixList = (cur_bch, bch) => {
@@ -278,7 +278,7 @@ function handleSkillState(skill) {
 
         Object.keys(from.attrs).forEach(k => {
           const value = target.attrs[k];
-          if (value === void 0)
+          if (value === undefined)
             target.attrs[k] = from.attrs[k];
           else if (value == '')
             delete target.attrs[k];
@@ -306,7 +306,7 @@ function setBranchAttributeDefault(branchs) {
   const _sd = (target, def) => {
     const list = [];
     Object.keys(def).forEach(k => {
-      if (target[k] === void 0) {
+      if (target[k] === undefined) {
         target[k] = def[k];
         list.push(k);
       }

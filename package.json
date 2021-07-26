@@ -70,6 +70,7 @@
       "comma-dangle": ["warn", "always-multiline"],
       "no-shadow": ["error"],
       "no-use-before-define": ["error", { "functions": false, "classes": false }],
+      "no-void": ["error"],
       "vue/html-indent": ["warn", 2],
       "vue/max-attributes-per-line": ["warn", {
         "singleline": {

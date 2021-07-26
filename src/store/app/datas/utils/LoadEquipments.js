@@ -43,9 +43,9 @@ export default function(root, c) {
     try {
       if (p[NAME] !== '' && p[CATEGORY] !== '') {
         const type = CATEGORY_LIST[p[CATEGORY]];
-        cur = root.appendEquipment(p[NAME], type === void 0 ? -1 : type,
+        cur = root.appendEquipment(p[NAME], type === undefined ? -1 : type,
           p[BASE_VALUE], p[BASE_STABILITY], p[CAPTION]);
-        if (type === void 0) {
+        if (type === undefined) {
           cur.unknowCategory = p[CATEGORY];
         }
         cur_equip = cur;

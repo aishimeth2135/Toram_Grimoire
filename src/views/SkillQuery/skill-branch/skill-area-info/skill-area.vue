@@ -14,7 +14,7 @@ export default {
   },
   computed: {
     valid() {
-      return this.attrs['radius'] !== void 0;
+      return this.attrs['radius'] !== undefined;
     },
     areaDatas() {
       let width, height;
