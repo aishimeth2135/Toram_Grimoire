@@ -1,4 +1,5 @@
 import * as recast from "recast";
+import RegexEscape from "regex-escape";
 
 /**
  * @param {string} str
@@ -102,7 +103,7 @@ function parseFormula(formulaStr, { methods = {} } = {}) {
           pros.reverse().forEach(p => cur = cur[p]);
         }
 
-        const value = cur(...args) || '0';
+        const value = cur(...args) || 0;
         path.parentPath.get(path.name).replace(builders.literal(value));
 
         back(this, path);
@@ -128,14 +129,7 @@ function parseFormula(formulaStr, { methods = {} } = {}) {
     },
   });
 
-  const res = recast.print(ast).code.replace(/\((\d+(?:\.\d+)?)\)/g, (m, m1) => m1);
-  if (res === 'true') {
-    return true;
-  }
-  if (res === 'false') {
-    return false;
-  }
-  return res;
+  return recast.print(ast).code.replace(/\((\d+(?:\.\d+)?)\)/g, (m, m1) => m1);
 }
 
 /**
@@ -154,10 +148,11 @@ function handleFormula(formulaStr, {
     methods = {},
     getters = {},
     toNumber = false,
+    defaultValue = '0',
   } = {}) {
   if (formulaStr === '') {
     // console.warn('[handle formula] given formula is empty.');
-    return '0';
+    return defaultValue;
   }
   const originalFormulaStr = formulaStr;
 
@@ -197,16 +192,17 @@ function handleFormula(formulaStr, {
 
   // sort by key.length to handle longer var first
   const varMapToArray = map => Array.from(map).sort(([keya], [keyb]) => keyb.length - keya.length);
+  const handleReplacedKey = key => new RegExp(`${RegexEscape(key)}(?![a-zA-Z0-9_$'])`, 'g');
 
   varMapToArray(varsMap).forEach(([key, value]) => {
-    formulaStr = formulaStr.replace(new RegExp(key, 'g'), value ? value.toString() : '0');
+    formulaStr = formulaStr.replace(handleReplacedKey(key), typeof value !== 'string' ? value.toString() : (value || '0'));
   });
 
   const gettersMethodsRoot = '__HANDLE_FORMULA_GETTERS__';
   varMapToArray(gettersMap).forEach(([key]) => {
     // convert to method
     const methodName = `${gettersMethodsRoot}['${key}']`;
-    formulaStr = formulaStr.replace(new RegExp(key, 'g'), `${methodName}()`);
+    formulaStr = formulaStr.replace(handleReplacedKey(key), `${methodName}()`);
   });
 
   // replace '--' to '+', '+-' to '-', etc...
@@ -215,7 +211,7 @@ function handleFormula(formulaStr, {
   const getTextVarName = value => `__HANDLE_FORMULA_TEXT_${value}__`;
   const textKeys = Object.keys(texts);
   textKeys.forEach((key, idx) => {
-    formulaStr = formulaStr.replace(new RegExp(key, 'g'), getTextVarName(idx));
+    formulaStr = formulaStr.replace(handleReplacedKey(key), getTextVarName(idx));
   });
 
   methods = {
@@ -242,6 +238,13 @@ function handleFormula(formulaStr, {
   if (toNumber && typeof formulaStr === 'string') {
     const num = parseFloat(formulaStr);
     return Number.isNaN(num) ? 0 : num;
+  }
+
+  if (formulaStr === 'true') {
+    return true;
+  }
+  if (formulaStr === 'false') {
+    return false;
   }
 
   return formulaStr;

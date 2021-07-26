@@ -391,7 +391,7 @@ class CharacterStat {
       let value = res.value;
       const originalValue = value;
 
-      if (typeof value != 'number')
+      if (typeof value !== 'number')
         value = parseFloat(value);
       if (this.max !== null && value > this.max)
         value = this.max;
@@ -441,23 +441,10 @@ class CharacterStatFormula {
     this.conditionValues.push(item);
   }
   calc(pureStats, vars) {
-    // const handleVar = (from, varName, defaultValue, isObject = false) => {
-    //   const [v1, v2] = varName.split('.');
-    //   if (from[v1] === undefined)
-    //     return defaultValue;
-    //   if (!isObject && typeof from[v1] === 'object') {
-    //     if (v2 === undefined)
-    //       return defaultValue;
-    //     const t = from[v1][v2];
-    //     return t !== undefined ? t : defaultValue;
-    //   }
-    //   return from[v1];
-    // }
-
     const allCharacterStatMap = {};
     this.belongCharacterStat.category.belongCategorys
       .map(p => p.stats).flat()
-      .forEach(p => allCharacterStatMap[p.id] = p)
+      .forEach(p => allCharacterStatMap[p.id] = p);
 
     const checkBaseName = stat => stat.baseName === this.belongCharacterStat.link;
     const cstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatBase.TYPE_CONSTANT),
@@ -506,14 +493,13 @@ class CharacterStatFormula {
       mvalue: 0,
     }
     const handlerOptions = {
-      vars: {},
+      vars: {
+        ...vars.value,
+      },
       getters: {},
       methods,
       toNumber: true,
     };
-    Object.entries(vars.value['@']).forEach(([key, value]) => {
-      handlerOptions.vars['@' + key] = value !== undefined ? value : 0;
-    });
     ['cvalue', 'mvalue', 'tvalue'].forEach(key => {
       handlerOptions.getters['#' + key] = () => {
         defaultFormula = false;
@@ -521,13 +507,17 @@ class CharacterStatFormula {
       };
     });
     Object.entries(allCharacterStatMap).forEach(([key, value]) => {
-      handlerOptions.getters['$' + key] = () => {
-        const src = vars.value['$'];
+      key = '$' + key;
+      handlerOptions.getters[key] = () => {
+        const src = vars.value;
         if (src[key] !== undefined) {
           return src[key];
         }
-        src[key] = value.result(pureStats, vars).resultValue.toString();
-        return src[key];
+        let res = value.result(pureStats, vars).value;
+        res = typeof res === 'string' ? parseFloat(res) : res;
+        res = Math.floor(res);
+        src[key] = res;
+        return res;
       };
     });
     const formulaHandler = (formulaStr, { ignoreStatValue = false } = {}) => {
@@ -541,43 +531,15 @@ class CharacterStatFormula {
         statValueVars.tvalue = tvalue;
       }
       return handleFormula(formulaStr, handlerOptions);
-      // f = f
-      //   .replace(/\$([a-zA-Z0-9_.]+)/g, (match, p1) => {
-      //     const a = handleVar(vars.value['$'], p1, null, true);
-      //     return a ? a.result(pureStats, vars).resultValue.toString() : '0';
-      //   })
-      //   .replace(/@([a-zA-Z0-9_.]+)/g, (match, p1) => {
-      //     return handleVar(vars.value['@'], p1, '0');
-      //   })
-      //   .replace(/#([cmt]value)/g, (match, p1) => {
-      //     defaultFormula = false;
-      //     switch (p1) {
-      //     case 'cvalue':
-      //       return cvalue;
-      //     case 'mvalue':
-      //       return mvalue;
-      //     case 'tvalue':
-      //       return tvalue;
-      //     }
-      //   })
-      //   .replace(/#([a-zA-Z0-9_.]+)/g, (match, p1) => {
-      //     return handleVar(vars.value['#'], p1, '0');
-      //   })
-      //   .replace(/-{2,}/g, match => match.length % 2 === 0 ? '+' : '-');
-      // const res = handleFormula(f, { methods });
-      // return typeof res === 'boolean' ? res : parseFloat(res);
     }
 
 
     const conditionalHandlerOptions = {
-      vars: {},
+      vars: {
+        ...vars.conditional,
+      },
+      defaultValue: true,
     };
-    Object.entries(vars.conditional['@']).forEach(([key, value]) => {
-      conditionalHandlerOptions.vars['@' + key] = value !== undefined ? value : true;
-    });
-    Object.entries(vars.conditional['#']).forEach(([key, value]) => {
-      conditionalHandlerOptions.vars['#' + key] = value !== undefined ? value : true;
-    });
 
     const conditions = this.conditionValues
       .map(p => {
@@ -587,17 +549,6 @@ class CharacterStatFormula {
           isBase = false;
 
         if (p.conditional !== '#') {
-          // const c = p.conditional
-          //   .replace(/"[^"]+"/g, 'true')
-          //   .replace(/@([a-zA-Z0-9_.]+)/g, (m, m1) => {
-          //     const t = handleVar(vars.conditional['@'], m1, true);
-          //     return t ? 'true' : 'false';
-          //   })
-          //   .replace(/#([a-zA-Z0-9_.]+)/g, (m, m1) => {
-          //     const t = handleVar(vars.conditional['#'], m1, true);
-          //     return t ? 'true' : 'false';
-          //   });
-          // result = handleFormula(c);
           result = handleFormula(p.conditional, conditionalHandlerOptions);
         }
         p.options.forEach(option => {
@@ -621,14 +572,14 @@ class CharacterStatFormula {
           isBase,
         };
       })
-      .filter(p => p.result)
+      .filter(p => p.result);
 
     // #base不能和#[cmt]value共存，同時存在時，#base優先級高於#[cmt]value
     conditions
       .filter(p => p.statBasePart !== null && !p.isBase)
       .forEach(p => {
         const part = p.statBasePart;
-        const value = formulaHandler(p.formula, { ignoreStatValue: true });
+        const value = formulaHandler(p.formula);
         const data = {
           conditional: p.conditional,
           options: p.options,
@@ -654,7 +605,7 @@ class CharacterStatFormula {
 
     const extraValues = conditions
       .filter(p => !p.isBase)
-      .filter(p => p.statBasePart == null)
+      .filter(p => p.statBasePart === null)
       .map(p => {
         const value = formulaHandler(p.formula);
         statPartsDetail.additionalValues.base.push({
@@ -692,6 +643,7 @@ class CharacterStatFormula {
         res = defaultFormula ? (basev * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : basev;
       }
     }
+    console.groupEnd();
 
     statPartsDetail.initValue['base'] = initBasev;
     return {

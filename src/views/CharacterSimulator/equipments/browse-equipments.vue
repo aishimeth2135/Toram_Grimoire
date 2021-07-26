@@ -48,7 +48,17 @@
               && currentEquipment != action.targetField.equipment && !currentEquipmentDisable"
             class="compare"
           >
-            <character-stats-compare :before="compareData.before" :after="compareData.after" />
+            <div class="cursor-pointer flex items-center border-b border-light-2 pb-1.5 mb-2" @click="compardEquipment = !compardEquipment">
+              <cy-icon-text size="small" text-color="purple">
+                {{ $lang('compare equipments') }}
+              </cy-icon-text>
+              <cy-icon-text :icon="'ic-round-keyboard-arrow-' + (compardEquipment ? 'down' : 'up')" class="ml-auto" />
+            </div>
+            <character-stats-compare
+              v-if="compardEquipment"
+              :before="compareData.before"
+              :after="compareData.after"
+            />
           </div>
         </div>
         <cy-button-border
@@ -119,6 +129,7 @@ export default {
       currentEquipment: null,
       currentEquipmentDisable: false,
       infoUnfold: false,
+      compardEquipment: false,
     };
   },
   computed: {
@@ -240,6 +251,13 @@ export default {
         return eq instanceof SpecialGear;
       case EquipmentField.TYPE_AVATAR:
         return eq instanceof Avatar;
+      }
+    },
+  },
+  watch: {
+    visible(newValue) {
+      if (newValue) {
+        this.compardEquipment = false;
       }
     },
   },

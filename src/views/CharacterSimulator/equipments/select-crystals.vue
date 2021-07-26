@@ -65,7 +65,7 @@
               :key="c.id"
               @click="selectCrystal(convertToOriginal(c))"
             >
-              <div class="flex items-center">
+              <div class="flex items-center w-full">
                 <cy-icon-text icon="bx-bx-cube-alt">
                   {{ c.name }}
                 </cy-icon-text>
@@ -191,9 +191,9 @@ export default {
     convertToOriginal(eqCrystal) {
       let res;
       this.crystalCategorys.find(cat => {
-        const crystal = cat.crystals.find(p => p.id == eqCrystal.id);
+        const crystal = cat.crystalStates.find(p => p.origin.id == eqCrystal.id);
         if (crystal) {
-          res = crystal;
+          res = crystal.origin;
           return true;
         }
       });
