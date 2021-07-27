@@ -1,5 +1,6 @@
 import "@/assets/css/main/font/font.css";
-import "@/assets/css/main/main.pcss";
+import "@/assets/css/main/main.css";
+import "@/assets/css/main/tailwind.css";
 import "@/assets/css/SaveLoad/main.css";
 import "@/assets/css/main/Cyteria/Cyteria.css";
 

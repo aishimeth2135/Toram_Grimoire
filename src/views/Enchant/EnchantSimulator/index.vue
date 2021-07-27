@@ -361,7 +361,6 @@ export default {
     if (this.currentBuildIndex === -1) {
       this.createBuild();
     }
-    console.log(this.currentBuild);
   },
   beforeUnmount() {
     window.removeEventListener('beforeunload', this.listeners.windowBeforeUnload);

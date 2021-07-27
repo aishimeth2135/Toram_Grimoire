@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .cy-separate-text {
+    @apply border-l border-r border-light-3 mx-1.5 px-1.5 inline-block;
+  }
+}

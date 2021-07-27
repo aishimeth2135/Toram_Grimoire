@@ -20,6 +20,11 @@
           <div class="content">
             <slot />
           </div>
+          <div v-if="footer" class="sticky bottom-0 mt-4 py-2 mx-4 bg-white flex">
+            <cy-button-border class="ml-auto" @click="closeWindow">
+              {{ $rootLang('global/close') }}
+            </cy-button-border>
+          </div>
         </div>
       </div>
     </div>
@@ -48,6 +53,10 @@ export default {
       validation: v => ['normal', 'auto', 'wide'].includes(v),
     },
     forzenTop: {
+      type: Boolean,
+      default: false,
+    },
+    footer: {
       type: Boolean,
       default: false,
     },

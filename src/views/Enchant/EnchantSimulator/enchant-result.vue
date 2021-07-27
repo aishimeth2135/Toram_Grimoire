@@ -93,21 +93,64 @@
         </cy-icon-text>
       </div>
     </div>
+    <div class="flex items-center flex-wrap mt-4 px-2 cursor-pointer" @click="toggle('windows/successRateDetail')">
+      <div class="inline-flex items-center ml-auto">
+        <cy-icon-text icon="ant-design:star-outlined" icon-color="water-blue">
+          {{ $lang('success rate') }}
+        </cy-icon-text>
+        <span class="text-water-blue ml-2">
+          {{ successRate }}
+        </span>
+      </div>
+      <div class="inline-flex items-center ml-4">
+        <cy-icon-text icon="ant-design:star-outlined" icon-color="light-4">
+          {{ $lang('expected success rate') }}
+        </cy-icon-text>
+        <span class="text-light-4 ml-2">
+          {{ expectedSuccessRate }}
+        </span>
+      </div>
+      <cy-icon-text icon="bx-bx-info-circle" class="ml-3" />
+    </div>
   </div>
   <div v-else class="flex justify-center w-full">
     <cy-default-tips icon="mdi-ghost">
       {{ $lang('tips/invalid enchant result') }}
     </cy-default-tips>
   </div>
+  <cy-window
+    footer
+    :visible="windows.successRateDetail"
+    @close="toggle('windows/successRateDetail', false)"
+  >
+    <template #title>
+      <cy-icon-text icon="ant-design:star-outlined" text-color="purple">
+        {{ $lang('result/success rate detail/title') }}
+      </cy-icon-text>
+    </template>
+    <div class="px-1">
+      <div
+        v-for="text in successRateDetailCaptions"
+        :key="text"
+        class="flex items-start mb-2"
+      >
+        <cy-icon-text icon="ic-outline-near-me" class="mr-2" />
+        <span v-html="text"></span>
+      </div>
+    </div>
+  </cy-window>
 </template>
 <script>
 import { mapState } from "vuex";
+
 import { EnchantEquipment, EnchantStep } from '@/lib/Enchant/Enchant';
+import ENCHANT_STATE from "@/lib/Enchant/Enchant/state";
 
 import ToggleService from "@/setup/ToggleService";
 
-import ENCHANT_STATE from "@/lib/Enchant/Enchant/state";
 import CY from "@utils/Cyteria";
+import { trimZero } from '@utils/string';
+import { markText } from "@utils/view";
 
 export default {
   name: 'EnchantResult',
@@ -119,10 +162,11 @@ export default {
   },
   RegisterLang: "Enchant Simulator",
   setup() {
-    const { contents, toggle } = ToggleService({
+    const { windows, contents, toggle } = ToggleService({
+      windows: ['successRateDetail'],
       contents: [{ name: 'resultStats', default: true }],
     });
-    return { contents, toggle };
+    return { windows, contents, toggle };
   },
   computed: {
     ...mapState('enchant', ['config']),
@@ -207,6 +251,20 @@ export default {
       return rate === -1 ?
         this.$lang('success rate: unlimited') :
         Math.floor(rate) + '%';
+    },
+    expectedSuccessRate() {
+      const rate = this.equipment.successRate;
+      if (rate === -1) {
+        return this.$lang('success rate: unlimited');
+      }
+
+      const positiveNums = this.enchantResultStats.filter(item => item.stat.value >= 0).length;
+      let res = Math.pow(Math.floor(rate) / 100, positiveNums) * 100;
+      res = Math.min(100, res);
+      return trimZero(res.toFixed(2)) + '%';
+    },
+    successRateDetailCaptions() {
+      return this.$lang('result/success rate detail/captions').map(text => markText(text));
     },
   },
   methods: {

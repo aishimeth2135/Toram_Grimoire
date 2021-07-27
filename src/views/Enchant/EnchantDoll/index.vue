@@ -410,15 +410,9 @@
           </cy-icon-text>
         </div>
         <div class="mt-6 mb-4 flex justify-center">
-          <div class="border-1 border-purple rounded-lg pt-3 pb-6 pl-4 pr-6 bg-white">
+          <div class="border-1 border-purple rounded-lg pt-3 pb-5 pl-4 pr-6 bg-white">
             <enchant-result :equipment="resultEquipment" />
           </div>
-        </div>
-        <div class="flex items-center justify-center mt-2">
-          <cy-icon-text icon="bx-bx-star" class="mr-3">
-            {{ $lang.extra('simulator', 'success rate') }}
-          </cy-icon-text>
-          <span class="text-light-3">{{ successRate }}</span>
         </div>
         <div class="mt-6">
           <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
@@ -653,16 +647,6 @@ export default {
         this.currentEquipment.fieldType = v.type;
         this.currentEquipment.isOriginalElement = v.isOriginalElement;
       },
-    },
-
-    successRate() {
-      if (!this.resultEquipment) {
-        return 0;
-      }
-      const rate = this.resultEquipment.successRate;
-      return rate === -1 ?
-        this.$lang.extra('simulator', 'success rate: unlimited') :
-        Math.floor(rate) + '%';
     },
 
     characterLevel: {

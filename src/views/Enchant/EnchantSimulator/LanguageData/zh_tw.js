@@ -17,7 +17,8 @@ export default function(){
       'step type - each: title': '分次附、每次附',
       'last step': '最終步驟',
       'invalid step': '無效步驟',
-      'success rate': '成功率',
+      'success rate': '單項成功率',
+      'expected success rate': '期望成功率',
       'success rate: unlimited': '無限',
       'equipment original potential': '裝備初始潛力值',
       'equipment base potential': '製作裝備基礎潛力值',
@@ -44,7 +45,15 @@ export default function(){
         'enchant: each': '分次附、每次附$0、直到$1',
         'stats': '最終結果',
         'materials': '素材耗量',
-        'show detail': '顯示詳細資訊',
+        'success rate detail': {
+          'title': '成功率說明',
+          'captions': [
+            '((@單項成功率))即遊戲內所顯示的成功率，表示((!單個能力成功))的機率。',
+            '((@期望成功率))則為((!正屬全部成功))的實際機率。計算公式為((@單項成功率的正屬數量次方))，例如：單項成功率為90%、正屬數量為5，則計算方式為90%的5次方，約等於59%。',
+            '為了方便使用者對步驟作微調，((!單項成功率))會顯示超過100%，最後步驟剩潛為正時才會顯示((!無限))。',
+            '((!期望成功率))有著實際成功率的概念，因此最高只會顯示100%。',
+          ],
+        },
       },
       'stat display mode': {
         'title': '切換能力項目的資訊',
