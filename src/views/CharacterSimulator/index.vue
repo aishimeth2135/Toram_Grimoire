@@ -142,7 +142,7 @@ export default {
       this.createCharacter();
     }
     if (this.skillBuilds.length !== 0 && this.currentSkillBuildIndex === -1) {
-      this.$store.commit('character/setCurrentSkillBuild', { index: 0 });
+      this.$store.commit('character/skill/setCurrentSkillBuild', { index: 0 });
     }
 
     const evt_autoSave = () => this.autoSave();
@@ -171,15 +171,19 @@ export default {
   computed: {
     ...mapState('character', {
       'characterStates': 'characters',
-      'skillBuilds': 'skillBuilds',
       'currentCharacterStateIndex': 'currentCharacterIndex',
-      'currentSkillBuildIndex': 'currentSkillBuildIndex',
       'characterSimulatorHasInit': 'characterSimulatorHasInit',
+    }),
+    ...mapState('character/skill', {
+      'skillBuilds': 'skillBuilds',
+      'currentSkillBuildIndex': 'currentSkillBuildIndex',
     }),
     ...mapGetters('character', {
       'currentCharacterState': 'currentCharacter',
-      'currentSkillBuild': 'currentSkillBuild',
       'currentFoodBuild': 'currentFoodBuild',
+    }),
+    ...mapGetters('character/skill', {
+      'currentSkillBuild': 'currentSkillBuild',
     }),
     equipmentElement() {
       const element = {
@@ -289,37 +293,16 @@ export default {
         return [];
 
       const categoryList = this.$store.state.datas.character.characterStatCategoryList;
-      const chara = this.currentCharacterState.origin;
+      const chara = this.currentCharacterState.origin.copy();
 
-      let calcFieldNextFunc;
+      // let calcFieldNextFunc;
       if (calcField) {
-        const f = chara.equipmentField(calcField.type);
-        const tmpEq = f.equipment;
-
-        const sub = chara.equipmentField(EquipmentField.TYPE_SUB_WEAPON);
-        const subEmpty = sub.isEmpty();
-        const tmpSubEq = sub.equipment;
-
-        f.setEquipment(calcField.equipment);
-
-        // 主手武器的話，setEquipment完，副手武器有可能被移除
-        // if 不是主手武器 or 副手原本就是空的 or 更換主手後副手不是空的
-        if (calcField.type !== EquipmentField.TYPE_MAIN_WEAPON || subEmpty || !sub.isEmpty()) {
-          calcFieldNextFunc = () => {
-            tmpEq ? f.setEquipment(tmpEq) : f.removeEquipment();
-          };
-        }
-        else { // 否則必須復原副手武器
-          calcFieldNextFunc = () => {
-            tmpEq ? f.setEquipment(tmpEq) : f.removeEquipment();
-            sub.setEquipment(tmpSubEq);
-          };
-        }
+        const field = chara.equipmentField(calcField.type);
+        field.setEquipment(calcField.equipment);
       }
 
       const isDualSword = chara.checkFieldEquipmentType(EquipmentField.TYPE_MAIN_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD)
         && chara.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, MainWeapon.TYPE_ONE_HAND_SWORD);
-
 
       const mainField = chara.fieldEquipment(EquipmentField.TYPE_MAIN_WEAPON);
       const subField = chara.fieldEquipment(EquipmentField.TYPE_SUB_WEAPON);
@@ -417,6 +400,8 @@ export default {
             'none': chara.checkFieldEquipmentType(EquipmentField.TYPE_BODY_ARMOR, EquipmentField.EMPTY),
           },
         },
+        computed: {},
+        computedResultStore: {},
       };
 
       const pureStats = [];
@@ -473,9 +458,6 @@ export default {
       handlePassiveSkill && handleSkillStates(this.passiveSkillStates);
       handleActiveSkill && handleSkillStates(this.activeSkillStates);
 
-      // 還原因為calcField造成的暫時變動
-      calcFieldNextFunc && calcFieldNextFunc();
-
       return categoryList.map(p => ({
         name: p.name,
         stats: p.stats.map(a => {
@@ -488,19 +470,6 @@ export default {
           };
         }),
       })).filter(a => a.stats.length !== 0);
-      // const p = categoryList[0];
-      // return [{
-      //   name: p.name,
-      //   stats: p.stats.slice(0, 1).map(a => {
-      //     //console.log('%c' + a.id, 'color: white; background-color: red');
-      //     const res = a.result(pureStats, vars);
-      //     return {
-      //       id: a.id,
-      //       name: a.name,
-      //       ...res,
-      //     };
-      //   }),
-      // }];
     },
     checkStatRestriction(stat) {
       const c = this.currentCharacterState.origin;

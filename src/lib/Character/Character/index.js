@@ -122,13 +122,13 @@ class Character {
       const find = chara.normalBaseStats.find(a => a.name == p.name);
       find.value = p.value;
     });
-    chara.setOptinalBaseStat(this.optionalBaseStat.name);
-    chara.optionalBaseStat.value = this.optionalBaseStat.value;
+    if (this.optionalBaseStat) {
+      chara.setOptinalBaseStat(this.optionalBaseStat.name);
+      chara.optionalBaseStat.value = this.optionalBaseStat.value;
+    }
 
-    this.equipmentFields.forEach(p => {
-      if (p.isEmpty())
-        return;
-      const find = chara.equipmentFields.find(a => a.type == p.type && a.index == p.index);
+    this.equipmentFields.filter(p => !p.isEmpty()).forEach(p => {
+      const find = chara.equipmentFields.find(a => a.type === p.type && a.index === p.index);
       find.setEquipment(p.equipment);
     });
 
@@ -386,6 +386,9 @@ class CharacterStat {
     });
   }
   result(currentStats, vars) {
+    if (this.id in vars.computedResultStore) {
+      return vars.computedResultStore[this.id];
+    }
     try {
       const res = this._formula.calc(currentStats, vars);
       let value = res.value;
@@ -495,6 +498,7 @@ class CharacterStatFormula {
     const handlerOptions = {
       vars: {
         ...vars.value,
+        ...vars.computed,
       },
       getters: {},
       methods,
@@ -507,13 +511,16 @@ class CharacterStatFormula {
       };
     });
     Object.entries(allCharacterStatMap).forEach(([key, value]) => {
+      const originalKey = key;
       key = '$' + key;
       handlerOptions.getters[key] = () => {
-        const src = vars.value;
+        const src = vars.computed;
         if (src[key] !== undefined) {
           return src[key];
         }
-        let res = value.result(pureStats, vars).value;
+        let res = value.result(pureStats, vars);
+        vars.computedResultStore[originalKey] = res;
+        res = res.value;
         res = typeof res === 'string' ? parseFloat(res) : res;
         res = Math.floor(res);
         src[key] = res;
@@ -539,6 +546,7 @@ class CharacterStatFormula {
         ...vars.conditional,
       },
       defaultValue: true,
+      pure: true,
     };
 
     const conditions = this.conditionValues
@@ -643,7 +651,6 @@ class CharacterStatFormula {
         res = defaultFormula ? (basev * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : basev;
       }
     }
-    console.groupEnd();
 
     statPartsDetail.initValue['base'] = initBasev;
     return {

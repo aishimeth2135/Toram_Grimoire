@@ -16,6 +16,7 @@ export default {
 <style lang="postcss" scoped>
 .cy--list-item {
   @apply flex items-center flex-wrap cursor-pointer py-1.5 px-3 duration-300;
+  border: 1px solid transparent;
 
   &:hover, &.selected {
     background-color: rgba(var(--rgb-primary-light), 0.4);

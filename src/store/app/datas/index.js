@@ -88,7 +88,7 @@ const store = {
       yield;
       loadSkill(state.skill, datas[0]);
       loadSkillMain(state.skill, datas[1]);
-      commit('character/setSkillRoot', state.skill.skillRoot, { root: true });
+      commit('character/skill/setSkillRoot', state.skill.skillRoot, { root: true });
     },
     async* loadEnchant({ state, commit, getters }) {
       commit('initEnchant', { checkInit: getters.checkInit });

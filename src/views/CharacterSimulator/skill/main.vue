@@ -133,11 +133,11 @@ export default {
       this.selectCurrentBuild(0);
   },
   computed: {
-    ...mapState('character', {
+    ...mapState('character/skill', {
       'skillBuilds': 'skillBuilds',
       'currentSkillBuildIndex': 'currentSkillBuildIndex',
     }),
-    ...mapGetters('character', {
+    ...mapGetters('character/skill', {
       'currentSkillBuild': 'currentSkillBuild',
     }),
   },
@@ -146,7 +146,7 @@ export default {
       this.mode = mode;
     },
     selectCurrentBuild(idx) {
-      this.$store.commit('character/setCurrentSkillBuild', { index: idx })
+      this.$store.commit('character/skill/setCurrentSkillBuild', { index: idx })
     },
     openUserSetsWindow(handler) {
       this.userSetsWindow.handler = handler;

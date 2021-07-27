@@ -404,7 +404,7 @@ export default {
       SaveLoadDataSystemOptions: {
         name: 'Skill Simulator',
         saveData: () => this.saveSkillBuildsCsv(),
-        loadData: str => this.$store.dispatch('character/loadSkillBuildsCsv', { csvString: str }),
+        loadData: str => this.$store.dispatch('character/skill/loadSkillBuildsCsv', { csvString: str }),
         saveNameList: () => {
           return this.skillRootStates.map(a => a.name);
         },
@@ -418,7 +418,6 @@ export default {
     init();
   },
   created() {
-    // this.$store.dispatch('character/loadCharacterSimulator', { index: 0, resetOption: {} });
     this.skillRootStates.length == 0 ? this.createBuild() : this.selectCurrentSkillRootState(0);
   },
   updated() {
@@ -428,12 +427,12 @@ export default {
     }
   },
   computed: {
-    ...mapState('character', {
+    ...mapState('character/skill', {
       'skillRootStates': 'skillBuilds',
       'skillRoot': 'skillRoot',
       'currentSkillRootStateIndex': 'currentSkillBuildIndex',
     }),
-    ...mapGetters('character', {
+    ...mapGetters('character/skill', {
       'saveSkillBuildsCsv': 'saveSkillBuildsCsv',
       'currentSkillRootState': 'currentSkillBuild',
     }),
@@ -874,13 +873,13 @@ export default {
       }
       const cur_index = this.currentSkillRootStateIndex;
       const cur_build = this.currentSkillRootState;
-      this.$store.commit('character/removeSkillBuild', { index: cur_index });
+      this.$store.commit('character/skill/removeSkillBuild', { index: cur_index });
 
       this.$notify(this.$lang('tips/delete build message', [cur_build.name]), 'ic-round-done', null, {
         buttons: [{
           text: this.$rootLang('global/recovery'),
           click: () => {
-            this.$store.commit('character/createSkillBuild', { skillBuild: cur_build });
+            this.$store.commit('character/skill/createSkillBuild', { skillBuild: cur_build });
             this.$notify(this.$lang('tips/recovery delete build message', [cur_build.name]), 'ic-round-done');
           },
           removeMessageAfterClick: true,
@@ -913,10 +912,10 @@ export default {
       this.$notify(this.$lang('tips/copy build message', [cur_build.name, new_build.name], 'ic-round-done'));
     },
     selectCurrentSkillRootState(i) {
-      this.$store.commit('character/setCurrentSkillBuild', { index: i });
+      this.$store.commit('character/skill/setCurrentSkillBuild', { index: i });
     },
     createBuild() {
-      this.$store.commit('character/createSkillBuild', {
+      this.$store.commit('character/skill/createSkillBuild', {
         name: this.$lang('build') + ' ' + (this.skillRootStates.length + 1),
       });
 

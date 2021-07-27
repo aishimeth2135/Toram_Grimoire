@@ -67,7 +67,6 @@ export default {
     storageAvailable() {
       return CY.storageAvailable('localStorage');
     },
-    // ...Vuex.mapState('character', ['deleteAllSavedDataBackup'])
   },
   methods: {
     deleteAllSavedData() {

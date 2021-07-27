@@ -1,5 +1,6 @@
 import * as recast from "recast";
 import RegexEscape from "regex-escape";
+import { isNumberString } from '@utils/string';
 
 /**
  * @param {string} str
@@ -148,6 +149,7 @@ function handleFormula(formulaStr, {
     methods = {},
     getters = {},
     toNumber = false,
+    pure = false,
     defaultValue = '0',
   } = {}) {
   if (formulaStr === '') {
@@ -199,7 +201,8 @@ function handleFormula(formulaStr, {
   });
 
   const gettersMethodsRoot = '__HANDLE_FORMULA_GETTERS__';
-  varMapToArray(gettersMap).forEach(([key]) => {
+  const gettersAry = varMapToArray(gettersMap);
+  gettersAry.forEach(([key]) => {
     // convert to method
     const methodName = `${gettersMethodsRoot}['${key}']`;
     formulaStr = formulaStr.replace(handleReplacedKey(key), `${methodName}()`);
@@ -214,21 +217,26 @@ function handleFormula(formulaStr, {
     formulaStr = formulaStr.replace(handleReplacedKey(key), getTextVarName(idx));
   });
 
-  methods = {
-    ...methods,
-    [gettersMethodsRoot]: getters,
-  };
+  if (gettersAry.length !== 0) {
+    methods[gettersMethodsRoot] = getters;
+  }
 
-  try {
-    formulaStr = parseFormula(formulaStr, { methods });
-  } catch (error) {
-    console.groupCollapsed('[parse formula] Unable to parse formula:');
-    console.warn(originalFormulaStr);
-    console.log('Current formula: ', formulaStr);
-    console.log(Array.from(arguments));
-    console.warn(error);
-    console.groupEnd();
-    return '0';
+  if (!isNumberString(formulaStr)) {
+    try {
+      if (pure) {
+        formulaStr = (Function(`return (${formulaStr});`)()).toString();
+      } else {
+      formulaStr = parseFormula(formulaStr, { methods });
+      }
+    } catch (error) {
+      console.groupCollapsed('[parse formula] Unable to parse formula:');
+      console.warn(originalFormulaStr);
+      console.log('Current formula: ', formulaStr);
+      console.log(Array.from(arguments));
+      console.warn(error);
+      console.groupEnd();
+      return '0';
+    }
   }
 
   textKeys.forEach((key, idx) => {

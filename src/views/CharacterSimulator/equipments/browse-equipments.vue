@@ -34,7 +34,7 @@
             :key="eq.iid"
             :equipment="eq.origin"
             :selected="eq.origin === currentEquipment"
-            :current="actionType === 'select-field-equipment' && action.targetField.equipment == eq.origin"
+            :current="actionType === 'select-field-equipment' && action.targetField.equipment === eq.origin"
             :disabled="eq['@disabled']"
             @click="setCurrentEquipment(eq.origin, eq['@disabled'])"
           />
@@ -44,18 +44,11 @@
             <equipment-info :equipment="currentEquipment" />
           </div>
           <div
-            v-if="actionType == 'select-field-equipment' && currentEquipment
+            v-if="actionType === 'select-field-equipment' && currentEquipment
               && currentEquipment != action.targetField.equipment && !currentEquipmentDisable"
             class="compare"
           >
-            <div class="cursor-pointer flex items-center border-b border-light-2 pb-1.5 mb-2" @click="compardEquipment = !compardEquipment">
-              <cy-icon-text size="small" text-color="purple">
-                {{ $lang('compare equipments') }}
-              </cy-icon-text>
-              <cy-icon-text :icon="'ic-round-keyboard-arrow-' + (compardEquipment ? 'down' : 'up')" class="ml-auto" />
-            </div>
             <character-stats-compare
-              v-if="compardEquipment"
               :before="compareData.before"
               :after="compareData.after"
             />
