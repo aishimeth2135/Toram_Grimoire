@@ -458,7 +458,7 @@ export default {
       handlePassiveSkill && handleSkillStates(this.passiveSkillStates);
       handleActiveSkill && handleSkillStates(this.activeSkillStates);
 
-      return categoryList.map(p => ({
+      const result = categoryList.map(p => ({
         name: p.name,
         stats: p.stats.map(a => {
           //console.log('%c' + a.id, 'color: white; background-color: red');
@@ -470,6 +470,7 @@ export default {
           };
         }),
       })).filter(a => a.stats.length !== 0);
+      return result;
     },
     checkStatRestriction(stat) {
       const c = this.currentCharacterState.origin;

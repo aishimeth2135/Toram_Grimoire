@@ -136,8 +136,15 @@ function parseFormula(formulaStr, { methods = {} } = {}) {
 /**
  * @typedef HandleFormulaOptions
  * @type {Object}
- * @property {object} texts - mapping of text
- * @property {object} vars - mapping of vars
+ * @property {object} [texts] - mapping of text
+ * @property {object} [vars] - mapping of vars
+ * @property {object} [methods] - mapping of methods
+ * @property {object} [getters] - mapping of getters. The getter like the var in formula, but will access by function
+ * @property {boolean} [toNumber=false] - If true, result will convert to number
+ * @property {boolean} [pure=false] - If true, it have to make sure that given formula can be converted into non-vars string.
+ *                                  * it means the given formula will only contains vars and all vars are exist in options.vars.
+ *                                  * It will use performance better way to deal with given formula.
+ * @property {any} [defaultValue] - If given formula is empty, it will return options.defaultValue.
  */
 /**
  * @param {string} formulaStr
@@ -150,10 +157,12 @@ function handleFormula(formulaStr, {
     getters = {},
     toNumber = false,
     pure = false,
-    defaultValue = '0',
+    defaultValue = null,
   } = {}) {
   if (formulaStr === '') {
-    // console.warn('[handle formula] given formula is empty.');
+    if (defaultValue === undefined) {
+      return toNumber ? 0 : '0';
+    }
     return defaultValue;
   }
   const originalFormulaStr = formulaStr;
@@ -208,7 +217,7 @@ function handleFormula(formulaStr, {
     formulaStr = formulaStr.replace(handleReplacedKey(key), `${methodName}()`);
   });
 
-  // replace '--' to '+', '+-' to '-', etc...
+  // replace '--' to '+', '--+' to '+', etc...
   formulaStr = formulaStr.replace(/-{2,}/g, match => match.length % 2 === 0 ? '+' : '-');
 
   const getTextVarName = value => `__HANDLE_FORMULA_TEXT_${value}__`;
@@ -226,7 +235,7 @@ function handleFormula(formulaStr, {
       if (pure) {
         formulaStr = (Function(`return (${formulaStr});`)()).toString();
       } else {
-      formulaStr = parseFormula(formulaStr, { methods });
+        formulaStr = parseFormula(formulaStr, { methods });
       }
     } catch (error) {
       console.groupCollapsed('[parse formula] Unable to parse formula:');

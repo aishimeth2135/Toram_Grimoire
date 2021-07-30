@@ -93,22 +93,27 @@
         </cy-icon-text>
       </div>
     </div>
-    <div class="flex items-center flex-wrap mt-4 px-2 cursor-pointer" @click="toggle('windows/successRateDetail')">
-      <div class="inline-flex items-center ml-auto">
-        <cy-icon-text icon="ant-design:star-outlined" icon-color="water-blue">
-          {{ $lang('success rate') }}
-        </cy-icon-text>
-        <span class="text-water-blue ml-2">
-          {{ successRate }}
-        </span>
-      </div>
-      <div class="inline-flex items-center ml-4">
-        <cy-icon-text icon="ant-design:star-outlined" icon-color="light-4">
-          {{ $lang('expected success rate') }}
-        </cy-icon-text>
-        <span class="text-light-4 ml-2">
-          {{ expectedSuccessRate }}
-        </span>
+    <div
+      class="flex items-center mt-4 px-2 cursor-pointer"
+      @click="toggle('windows/successRateDetail')"
+    >
+      <div class="flex items-center flex-wrap justify-items-end ml-auto">
+        <div class="inline-flex items-center mr-4">
+          <cy-icon-text icon="ant-design:star-outlined" icon-color="water-blue">
+            {{ $lang('success rate') }}
+          </cy-icon-text>
+          <span class="text-water-blue ml-2">
+            {{ successRate }}
+          </span>
+        </div>
+        <div class="inline-flex items-center">
+          <cy-icon-text icon="ant-design:star-outlined" icon-color="light-4">
+            {{ $lang('expected success rate') }}
+          </cy-icon-text>
+          <span class="text-light-4 ml-2">
+            {{ expectedSuccessRate }}
+          </span>
+        </div>
       </div>
       <cy-icon-text icon="bx-bx-info-circle" class="ml-3" />
     </div>

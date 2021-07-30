@@ -1,3 +1,4 @@
+import { markRaw } from "vue";
 import Grimoire from "@grimoire";
 import GetLang from "@services/Language";
 import { StatBase, Stat } from "./StatBase.js";
@@ -14,7 +15,7 @@ class RestrictionStat extends Stat {
     super(base, type, v);
 
     /** @type {StatRestriction|null} */
-    this.restriction = restriction;
+    this.restriction = markRaw(restriction);
   }
 
   get statId() {
