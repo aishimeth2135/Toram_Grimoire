@@ -15,7 +15,7 @@ class RestrictionStat extends Stat {
     super(base, type, v);
 
     /** @type {StatRestriction|null} */
-    this.restriction = markRaw(restriction);
+    this.restriction = restriction !== null ? markRaw(restriction) : restriction;
   }
 
   get statId() {
