@@ -89,7 +89,7 @@ html {
   &.font-0 {
     @apply main--font-base;
 
-    & input, textarea {
+    & input, & textarea {
       @apply main--font-base;
     }
   }
@@ -98,13 +98,13 @@ html {
     @apply main--font-1;
 
     & input, textarea {
-      @apply main--font-2;
+      @apply main--font-1;
     }
   }
   &.font-2 {
     @apply main--font-2;
 
-    & input, textarea {
+    & input, & textarea {
       @apply main--font-2;
     }
   }

@@ -1,7 +1,9 @@
 module.exports = {
-  purge: [
-    './src/**/*.vue',
-  ],
+  purge: {
+    enabled: true,
+    content: ['./src/**/*.vue'],
+    layers: ['base', 'components'],
+  },
   theme: {
     colors: {
       light: {
@@ -29,6 +31,7 @@ module.exports = {
       green: 'var(--primary-green)',
       gray: 'var(--primary-gray)',
       transparent: 'transparent',
+      current: 'currentcolor',
     },
     borderWidth: {
       DEFAULT: '1px',

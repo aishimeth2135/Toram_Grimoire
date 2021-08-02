@@ -44,6 +44,7 @@ export default function() {
         'recipe': {
           'item level': '道具等级',
           'item difficulty': '难易度',
+          'base potential': '潜力值',
           'spina': '众神币',
         },
         'tips: without any obtain': '取得方式未知',

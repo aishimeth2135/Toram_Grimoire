@@ -133,11 +133,11 @@
         {{ $lang('result/success rate detail/title') }}
       </cy-icon-text>
     </template>
-    <div class="px-1">
+    <div class="px-1 space-y-2">
       <div
         v-for="text in successRateDetailCaptions"
         :key="text"
-        class="flex items-start mb-2"
+        class="flex items-start"
       >
         <cy-icon-text icon="ic-outline-near-me" class="mr-2" />
         <span v-html="text"></span>
