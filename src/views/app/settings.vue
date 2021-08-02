@@ -268,7 +268,9 @@ export default {
     rel.classList[this.nightMode === '0' ? 'remove': 'add']('theme--night-mode');
   },
   methods: {
-    swUpdate() {
+    async swUpdate() {
+      this.$notify.loading.show();
+      await this.$nextTick();
       this.serviceWorker.instance.waiting.postMessage({ type: 'SKIP_WAITING' });
     },
     clearSpreadsheetsCaches() {
