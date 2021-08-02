@@ -293,6 +293,7 @@ export default {
         `${materialsText}\n\n` +
         `${stepsText}\n\n` +
         `✩ ${this.$lang('success rate')}｜${this.successRate}\n` +
+        `✩ ${this.$lang('expected success rate')}｜${this.expectedSuccessRate}\n` +
         '｜cy-grimoire.netlify.app｜',
       );
       this.$notify(this.$lang('tips/copy result text successfully'));
