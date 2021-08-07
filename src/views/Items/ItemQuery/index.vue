@@ -1,8 +1,11 @@
 <template>
   <article class="flex flex-col">
-    <div>
+    <div v-if="searchResult.length > 0">
       <search-result class="search-result" :equipments="searchResult" />
     </div>
+    <cy-default-tips v-else icon="mdi-ghost" style="min-height: 30rem;">
+      {{ $lang('no result tips') }}
+    </cy-default-tips>
     <div
       class="flex items-end ml-auto sticky z-10 px-2"
       style="bottom: 4.5rem"
@@ -34,6 +37,24 @@
                   @click="toggleSelected(item)"
                 >
                   {{ $rootLang('common/Equipment/category/' + item.value.description) }}
+                </cy-button-check>
+              </div>
+            </div>
+            <div class="column">
+              <div class="flex items-center">
+                <cy-icon-text class="mr-6">
+                  {{ $lang('equipment detail/scope title/obtains') }}
+                </cy-icon-text>
+                <cy-button-border icon="ic-round-border-all" @click="selectAll(conditions.obtains)" />
+                <cy-button-border icon="eva-close-outline" @click="cancelAll(conditions.obtains)" />
+              </div>
+              <div class="options">
+                <cy-button-check
+                  v-for="obtain in conditions.obtains"
+                  :key="obtain.value"
+                  v-model:selected="obtain.selected"
+                >
+                  {{ $rootLang('common/Equipment/obtain/' + obtain.value) }}
                 </cy-button-check>
               </div>
             </div>
@@ -303,7 +324,6 @@ export default {
         conditionOptions: false,
         sortOptions: false,
       },
-      searchResultMaximum: 50,
       modes: {
         'normal': {
           icon: 'ic-round-menu-book',
@@ -416,7 +436,7 @@ export default {
           types: null,
           selected: true,
         }],
-        obtain: ['smith', 'boss', 'mini_boss', 'mobs', 'quest', 'box', 'exchange', 'other'],
+        obtains: handleOptions(['smith', 'boss', 'mini_boss', 'mobs', 'quest', 'box', 'exchange', 'other', 'unknow']),
       },
       consts: {
         sortOrderOptions: ['down', 'up'].map(id => ({
@@ -482,7 +502,7 @@ export default {
       // because array.sort is in-place, give a new array to ensure data reactive
       sr = this.sortOptions.currentOrder === 'down' ? sr.reverse() : sr.slice();
 
-      return sr.length > this.searchResultMaximum ? sr.slice(0, this.searchResultMaximum) : sr;
+      return sr;
     },
     allSearchResult() {
       if (this.currentMode === 'normal') {
@@ -541,6 +561,8 @@ export default {
           selected: true,
         });
       }
+      const unknowObtain = this.conditions.obtains.find(obtain => obtain.value === 'unknow' && obtain.selected);
+      const validObtains = this.conditions.obtains.filter(obtain => obtain.value !== 'unknow' && obtain.selected);
       return this.equipments.filter(p => {
         const checkType = validTypes.find(type => {
           const checkInstance = !Array.isArray(type.instance) ?
@@ -554,10 +576,9 @@ export default {
           }
           return false;
         });
-        const checkObtain = this.conditions.obtain
-          .filter(type => type.selected)
-          .find(obtain => p.origin.obtains.find(a => a == obtain.value));
-        return checkType || checkObtain;
+        const checkObtain = (unknowObtain && p.origin.obtains.length === 0)
+          || validObtains.find(obtain => p.origin.obtains.find(a => a['type'] === obtain.value));
+        return checkType && checkObtain;
       });
     },
   },

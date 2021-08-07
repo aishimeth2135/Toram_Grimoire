@@ -262,6 +262,9 @@ export default {
       if (rate === -1) {
         return this.$lang('success rate: unlimited');
       }
+      if (rate >= 100) {
+        return '100%';
+      }
 
       const positiveNums = this.enchantResultStats.filter(item => item.stat.value >= 0).length;
       let res = Math.pow(Math.floor(rate) / 100, positiveNums) * 100;

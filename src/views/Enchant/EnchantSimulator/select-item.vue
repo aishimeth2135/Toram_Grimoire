@@ -58,6 +58,7 @@
 import { StatBase } from "@/lib/Character/Stat";
 
 export default {
+  name: 'EnchantSelectItem',
   RegisterLang: "Enchant Simulator",
   props: {
     visible: {
@@ -72,6 +73,10 @@ export default {
       default: true,
     },
     forPositive: {
+      type: Boolean,
+      default: false,
+    },
+    defaultNegative: {
       type: Boolean,
       default: false,
     },
@@ -131,8 +136,8 @@ export default {
   },
   watch: {
     visible(newValue) {
-      if (!newValue) {
-        this.showNegativeSuggestedList = false;
+      if (newValue) {
+        this.showNegativeSuggestedList = this.defaultNegative;
       }
     },
   },

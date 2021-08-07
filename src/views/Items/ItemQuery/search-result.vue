@@ -1,21 +1,88 @@
 <template>
-  <div class="overflow-x-auto">
-    <div class="min-w-min">
-      <result-item
-        v-for="eq in equipments"
-        :key="eq.origin.id"
-        :equipment="eq"
-      />
+  <div>
+    <div ref="topHiddenFlag"></div>
+    <div class="overflow-x-auto">
+      <div class="min-w-min">
+        <ResultItem
+          v-for="eq in currentResults"
+          :key="eq.origin.id"
+          :equipment="eq"
+        />
+      </div>
+    </div>
+    <div class="flex justify-center mt-4">
+      <cy-button-border
+        icon="akar-icons:circle-chevron-left"
+        :disabled="previousPageDisabled"
+        @click="previousPage"
+      >
+        {{ $lang('previous page') }}
+      </cy-button-border>
+      <cy-button-border
+        icon="akar-icons:circle-chevron-right"
+        :disabled="nextPageDisabled"
+        @click="nextPage"
+      >
+        {{ $lang('next page') }}
+      </cy-button-border>
+    </div>
+    <div class="flex justify-center text-sm text-light-2 mt-2">
+      {{ $lang('current page', [pageCount + 1]) }}
     </div>
   </div>
 </template>
 <script>
-import vue_resultItem from "./result-item.vue";
+import { computed, ref, nextTick, readonly } from 'vue';
+import ResultItem from "./result-item.vue";
+
+const NUMBER_OF_ITEMS_OF_PAGE = 30;
 
 export default {
+  RegisterLang: 'Item Query',
   components: {
-    'result-item': vue_resultItem,
+    ResultItem,
   },
-  props: ['equipments'],
+  props: {
+    equipments: {
+      type: Array,
+      required: true,
+    },
+  },
+  setup(props) {
+    const pageCount = ref(0);
+    const currentResults = computed(() => {
+      const start = pageCount.value * NUMBER_OF_ITEMS_OF_PAGE;
+      return props.equipments.slice(start, start + NUMBER_OF_ITEMS_OF_PAGE);
+    });
+    const nextPageDisabled = computed(() => {
+      return pageCount.value * NUMBER_OF_ITEMS_OF_PAGE > props.equipments.length;
+    });
+    const previousPageDisabled = computed(() => {
+      return pageCount.value === 0;
+    });
+    const topHiddenFlag = ref(null);
+    const returnToTop = () => {
+      topHiddenFlag.value.scrollIntoView({ behavior: "smooth" });
+    };
+    const nextPage = async () => {
+      pageCount.value += 1;
+      await nextTick();
+      returnToTop();
+    };
+    const previousPage = async () => {
+      pageCount.value -= 1;
+      await nextTick();
+      returnToTop();
+    };
+    return {
+      nextPage,
+      previousPage,
+      currentResults,
+      nextPageDisabled,
+      previousPageDisabled,
+      topHiddenFlag,
+      pageCount: readonly(pageCount),
+    };
+  },
 }
 </script>

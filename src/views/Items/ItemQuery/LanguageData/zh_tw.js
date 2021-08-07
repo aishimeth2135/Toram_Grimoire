@@ -8,6 +8,9 @@ export default function() {
         'dye': '染色',
       },
       'no result tips': '找不到任何結果0.0',
+      'next page': '下一頁',
+      'previous page': '上一頁',
+      'current page': '第$0頁',
       'options: normal': {
         'title': '搜尋目標',
         'name': '名稱',

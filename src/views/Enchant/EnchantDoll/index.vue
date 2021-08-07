@@ -499,6 +499,7 @@
       :visible="windows.selectItem"
       :is-weapon="equipmentIsWeapon"
       :for-positive="stepCounter === stepContents.selectPositiveStat"
+      :default-negative="stepCounter === stepContents.selectNegativeStat"
       @select-item="selectItem"
       @close="toggle('windows/selectItem', false)"
     />

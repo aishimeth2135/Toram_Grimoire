@@ -18,6 +18,7 @@ export default class EnchantDollEquipmentContainer {
 
     this.flags = {
       error: null,
+      hasHandleFirstStep: false,
     };
 
     /** @type {EnchantDollEquipmentContainer[]} */
@@ -128,6 +129,7 @@ export default class EnchantDollEquipmentContainer {
             cstat.value += 1;
             curv = cstat.value;
             newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= 1;
+            newDollEq.flags.hasHandleFirstStep = true;
             newDollEqs.push(newDollEq);
           }
           newDollEqs.forEach(dollEq => resultEqs.push(dollEq, ...dollEq.beforeFillNegative()));
@@ -559,27 +561,34 @@ export default class EnchantDollEquipmentContainer {
      * 1. 先處理有倍率的能力。
      *  - 前面已經確保耗潛高的正屬一定在前面
      */
-    /** @type {{ type: "step"|"unused", stat: EnchantStepStat|EnchantStat, value: number }[]} */
+    /** @type {{ type: "step"|"unused", stat: EnchantStepStat|EnchantStat, value: number, existedAndNoRate: boolean }[]} */
     const list = targetEq.steps()
-      .filter(step => {
-        if (step.type !== EnchantStep.TYPE_EACH && !(step.potentialExtraRate === 1 && step.stats.length === 1)) {
-          return false;
+      .map((step, idx) => {
+        const potentialExtraRate = step.potentialExtraRate;
+        if (step.type !== EnchantStep.TYPE_EACH) {
+          if (idx === 0 && this.flags.hasHandleFirstStep) {
+            return null;
+          }
+          if (potentialExtraRate !== 1 || step.stats.length !== 1) {
+            return null;
+          }
         }
         const stat = step.firstStat;
         if (stat.value !== 1) {
-          return false;
+          return null;
         }
         const pstat = positiveStats.find(_pstat => _pstat.equals(stat));
-        return pstat.value !== 0;
-      })
-      .map(step => {
-        const stat = step.firstStat;
+        if (pstat.value === 0) {
+          return null;
+        }
         return {
           type: 'step',
           stat,
           value: stat.potentialCost,
+          existedAndNoRate: potentialExtraRate === 1,
         };
-      });
+      })
+      .filter(item => item);
     if (list.length === 0) {
       // 表示正屬都沒倍率，就不需要退潛前最大化利用潛力了
       return [];
@@ -608,12 +617,22 @@ export default class EnchantDollEquipmentContainer {
             type: 'unused',
             stat: tstat,
             value,
-            list: noRatePositiveStats,
+            existedAndNoRate: false,
           })
         }
       }
     }
-    return list.sort((a, b) => a.value - b.value); // 從最後開始拿，小的擺前面
+    /**
+     * 從最後開始拿。
+     * 1. value大的擺後面。
+     * 2. 已經附過而且沒倍率的優先擺最後面。
+     */
+    return list.sort((a, b) => {
+      if (a.existedAndNoRate !== b.existedAndNoRate) {
+        return a.existedAndNoRate ? 1 : -1;
+      }
+      return a.value - b.value;
+    });
   }
 
   fillNegative() {

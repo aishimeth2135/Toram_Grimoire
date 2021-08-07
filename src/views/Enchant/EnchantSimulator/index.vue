@@ -293,7 +293,6 @@ import ToggleService from "@/setup/ToggleService";
 import { EnchantBuild, EnchantStep, EnchantEquipment /* EnchantItem */ } from "@/lib/Enchant/Enchant";
 import CY from "@utils/Cyteria";
 
-/** */
 export default {
   name: 'EnchantSimulator',
   RegisterLang: "Enchant Simulator",
