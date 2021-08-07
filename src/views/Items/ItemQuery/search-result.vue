@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-import { computed, ref, nextTick, readonly } from 'vue';
+import { computed, ref, nextTick, readonly, watch, toRefs } from 'vue';
 import ResultItem from "./result-item.vue";
 
 const NUMBER_OF_ITEMS_OF_PAGE = 30;
@@ -49,10 +49,11 @@ export default {
     },
   },
   setup(props) {
+    const { equipments } = toRefs(props)
     const pageCount = ref(0);
     const currentResults = computed(() => {
       const start = pageCount.value * NUMBER_OF_ITEMS_OF_PAGE;
-      return props.equipments.slice(start, start + NUMBER_OF_ITEMS_OF_PAGE);
+      return equipments.value.slice(start, start + NUMBER_OF_ITEMS_OF_PAGE);
     });
     const nextPageDisabled = computed(() => {
       return pageCount.value * NUMBER_OF_ITEMS_OF_PAGE > props.equipments.length;
@@ -74,6 +75,7 @@ export default {
       await nextTick();
       returnToTop();
     };
+    watch(equipments, () => pageCount.value = 0);
     return {
       nextPage,
       previousPage,
