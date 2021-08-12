@@ -2,9 +2,9 @@ import Papa from "papaparse";
 import store from "@/store";
 
 function DataPath(id) {
-  /* 語言資料：
-      依陣列排序，依序為[en, zh_tw, ja, zh_cn]
-  */
+  /**
+   * order of language: [en, zh_tw, ja, zh_cn]
+   */
   switch (id) {
   case 'Skill':
     return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=170573319&single=true&output=csv&range=A:Q';
@@ -57,14 +57,13 @@ function DataPath(id) {
     return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwaGM9CClGkSw-6iUFmdOyIeI-_9i5RvIuHdSCTCUgFCk7GV4v1evt5C79JSG5P66ZGopM2-ZJJaEA/pub?gid=1665548440&single=true&output=csv&range=A:E';
   case 'Enchant':
     return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4beI9I-sFoTgbTaKeMHRVo3xNm3gc5nQ-MWb9u7dlzRk0QmnMoJwcaR0815IqP0t-9-htpS8mUdQ1/pub?gid=0&single=true&output=csv&range=A:M';
-
   }
   console.warn('Unknow DataPath Name: ' + id);
   return;
 }
 
 async function createLoadDataPromise(path, data_ary, index=0) {
-  if (typeof path == 'string' && path) {
+  if (typeof path === 'string' && path) {
     try {
       const f = await fetch(path);
       const csvstr = await f.text();
@@ -145,10 +144,10 @@ function loadLangDatas(pathId, promises, defaultLang=1) {
   const datas = Array(3);
 
   promises.push(createLoadDataPromise(DataPath(pathId), datas, 0));
-  if (current != defaultLang) {
+  if (current !== defaultLang) {
     const path = DataPath(pathId + '/language');
     promises.push(createLoadDataPromise(path[current], datas, 1));
-    if (current != second)
+    if (current !== second)
       promises.push(createLoadDataPromise(path[second], datas, 2));
   }
 

@@ -1,7 +1,7 @@
 <template>
   <article class="flex flex-col">
     <div>
-      <search-result class="search-result" :equipments="searchResult" />
+      <ItemQueryResult class="search-result" :equipments="searchResult" />
     </div>
     <div
       class="flex items-end ml-auto sticky z-10 px-2"
@@ -238,7 +238,7 @@
 <script>
 import init from "./init.js";
 
-import vue_searchResult from "./search-result.vue";
+import vue_ItemQueryResult from "./item-query-result";
 
 import {
   CharacterEquipment,
@@ -251,7 +251,7 @@ export default {
   name: 'ItemQuery',
   RegisterLang: 'Item Query',
   components: {
-    'search-result': vue_searchResult,
+    ItemQueryResult: vue_ItemQueryResult,
   },
   provide() {
     return {

@@ -411,7 +411,7 @@
         </div>
         <div class="mt-6 mb-4 flex justify-center">
           <div class="border-1 border-purple rounded-lg pt-3 pb-5 pl-4 pr-6 bg-white">
-            <enchant-result :equipment="resultEquipment" />
+            <EnchantResult :equipment="resultEquipment" />
           </div>
         </div>
         <div class="mt-6">
@@ -495,7 +495,7 @@
         {{ $lang('top caption')[1] }}
       </div>
     </div>
-    <select-item
+    <EnchantSelectItem
       :visible="windows.selectItem"
       :is-weapon="equipmentIsWeapon"
       :for-positive="stepCounter === stepContents.selectPositiveStat"
@@ -506,8 +506,8 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import vue_selectItem from "../EnchantSimulator/select-item.vue";
-import vue_enchantResult from "../EnchantSimulator/enchant-result.vue";
+import vue_EnchantSelectItem from "../EnchantSimulator/enchant-select-item";
+import vue_EnchantResult from "../EnchantSimulator/enchant-result";
 
 import init from "./init.js";
 import init2 from "../EnchantSimulator/init.js";
@@ -517,11 +517,16 @@ import EnchantDoll from "@/lib/Enchant/Enchant/doll";
 import { EnchantBuild, EnchantEquipment, EnchantStat } from "@/lib/Enchant/Enchant";
 
 export default {
+  name: 'EnchantDoll',
   RegisterLang: {
     root: 'Enchant Doll',
     extra: {
       'simulator': 'Enchant Simulator',
     },
+  },
+  components: {
+    EnchantSelectItem: vue_EnchantSelectItem,
+    EnchantResult: vue_EnchantResult,
   },
   setup() {
     const { windows, contents, toggle } = ToggleService({
@@ -858,10 +863,6 @@ export default {
           .push(new EnchantStat(item.origin, item.type, item.origin.getLimit(item.type)[0]));
       }
     },
-  },
-  components: {
-    'select-item': vue_selectItem,
-    'enchant-result': vue_enchantResult,
   },
 }
 </script>

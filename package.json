@@ -37,6 +37,8 @@
     "babel-eslint": "^10.1.0",
     "chinese-conv": "^1.0.1",
     "eslint": "^6.7.2",
+    "eslint-import-resolver-webpack": "^0.13.1",
+    "eslint-plugin-import": "^2.24.0",
     "eslint-plugin-jsdoc": "^33.0.0",
     "eslint-plugin-vue": "^7.0.0-alpha.0",
     "findit2": "^2.2.3",
@@ -56,8 +58,16 @@
       "parser": "babel-eslint"
     },
     "plugins": [
-      "jsdoc"
+      "jsdoc",
+      "import"
     ],
+    "settings": {
+      "import/resolver": {
+        "webpack": {
+          "config": "node_modules/@vue/cli-service/webpack.config.js"
+        }
+      }
+    },
     "rules": {
       "jsdoc/no-undefined-types": "warn",
       "no-unused-vars": "warn",
@@ -93,6 +103,12 @@
       ],
       "no-void": [
         "error"
+      ],
+      "import/no-unresolved": [
+        2,
+        {
+          "commonjs": true
+        }
       ],
       "vue/html-indent": [
         "warn",

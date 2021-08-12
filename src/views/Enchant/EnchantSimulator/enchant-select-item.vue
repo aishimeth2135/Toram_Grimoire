@@ -58,6 +58,7 @@
 import { StatBase } from "@/lib/Character/Stat";
 
 export default {
+  name: 'EnchantSelectItem',
   RegisterLang: "Enchant Simulator",
   props: {
     visible: {

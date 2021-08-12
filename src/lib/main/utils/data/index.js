@@ -13,9 +13,11 @@ function parseFormula(formulaStr, { methods = {} } = {}) {
   const builders = recast.types.builders;
   const TNT = recast.types.namedTypes;
 
-  const back = (self, path) => path.parentPath.parentPath.parentPath ?
-    self.traverse(path.parentPath.parentPath.parentPath) :
-    self.traverse(path);
+  const back = (self, path) => {
+    path.parentPath.parentPath.parentPath ?
+      self.traverse(path.parentPath.parentPath.parentPath) :
+      self.traverse(path);
+  };
 
   const calc = (a, operator, b) => {
     if (operator === '+')

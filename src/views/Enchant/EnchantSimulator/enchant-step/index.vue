@@ -70,7 +70,7 @@
     </div>
     <div class="p-1">
       <template v-if="step.stats.length !== 0">
-        <step-stat
+        <EnchantStepStat
           v-for="stat in step.stats"
           :key="stat.statId"
           :stat="stat"
@@ -175,11 +175,15 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import vue_stepStat from "./step-stat";
+import vue_EnchantStepStat from "./enchant-step-stat";
 import { EnchantStep } from '@/lib/Enchant/Enchant';
 
 export default {
+  name: 'EnchantStep',
   RegisterLang: "Enchant Simulator",
+  components: {
+    EnchantStepStat: vue_EnchantStepStat,
+  },
   inject: ['openSelectItem'],
   props: {
     step: {
@@ -256,9 +260,6 @@ export default {
     // removeStep() {
     //   this.step.remove();
     // }
-  },
-  components: {
-    'step-stat': vue_stepStat,
   },
 }
 </script>
