@@ -68,20 +68,55 @@ class CalcItemBase {
 }
 
 class Calculation {
-  constructor() {
+  /**
+   * @param {string} name
+   */
+  constructor(name) {
+    /** @type {string} */
+    this.name = name;
+
+    /** @type {Map<string, CalcItemContainer>} */
+    this._containers = new Map();
+  }
+
+  /**
+   * @param {string} id - unique ID
+   * @param {symbol} category - CalcItemContainer.CATEGORY_X
+   * @param {symbol} type - CalcItemContainer.TYPE_X
+   * @returns {Calculation} this
+   */
+  appendContainer(id, category, type) {
+    const container = new CalcItemContainer(this, id, category, type);
+    this._containers.set(id, container);
+    return this;
+  }
+
+  /**
+   * @param {string} id
+   * @returns {CalcItemContainer}
+   */
+  getContainer(id) {
+    return this._containers.get(id);
   }
 }
 
 class CalcItemContainer {
   static TYPE_NORMAL = Symbol('normal');
   static TYPE_OPTIONS = Symbol('options');
+  static CATEGORY_ADD = Symbol('add');
+  static CATEGORY_MUL = Symbol('mul');
+  static CATEGORY_OTHER = Symbol('other');
 
   /**
    * @param {Calculation} parent
+   * @param {string} id
    * @param {symbol} category
-   * @param {symbol} type
+   * @param {symbol} [type]
    */
-  constructor(parent, category, type) {
+  constructor(parent, id, category, type) {
+    /** @type {string} */
+    this.id = id;
+
     /** @type {Calculation} */
     this._parent = parent;
 
@@ -89,17 +124,35 @@ class CalcItemContainer {
     this.category = category;
 
     /** @type {symbol} */
-    this.type = type;
+    this.type = type ?? CalcItemContainer.TYPE_NORMAL;
 
-    /** @type {CalcItem[]} */
-    this.items = [];
+    /** @type {Map<string, CalcItem>} */
+    this._items = new Map();
 
     /** @type {number} */
-    this.currentItemIndex = 0;
+    this._currentItemId = 0;
   }
 
+  /**
+   * @returns {CalcItem}
+   */
   get currentItem() {
-    return this.type === CalcItemContainer.TYPE_OPTIONS ? this.items[this.currentItemIndex] : null;
+    return this.type === CalcItemContainer.TYPE_OPTIONS ? this.getItem(this._currentItemId) : null;
+  }
+
+  /**
+   * @param {string} id
+   */
+  selectItem(id) {
+    this._currentItemId = id;
+  }
+
+  /**
+   * @param {string} id
+   * @returns {CalcItem}
+   */
+  getItem(id) {
+    return this._items.get(id);
   }
 }
 
@@ -149,9 +202,8 @@ class CalcItem {
   }
 
   get enabled() {
-    const currentItem = this.belongContainer.currentItem;
-    if (currentItem) {
-      return currentItem === this;
+    if (this.belongContainer.type === CalcItemContainer.TYPE_OPTIONS) {
+      return this.belongContainer.currentItem === this;
     }
     return this._enabled;
   }
