@@ -3,7 +3,7 @@
     <div ref="topHiddenFlag"></div>
     <div class="overflow-x-auto">
       <div class="min-w-min">
-        <ResultItem
+        <ItemQueryResultItem
           v-for="eq in currentResults"
           :key="eq.origin.id"
           :equipment="eq"
@@ -33,14 +33,14 @@
 </template>
 <script>
 import { computed, ref, nextTick, readonly, watch, toRefs } from 'vue';
-import ResultItem from "./result-item.vue";
+import vue_ItemQueryResultItem from "./item-query-result-item";
 
 const NUMBER_OF_ITEMS_OF_PAGE = 30;
 
 export default {
   RegisterLang: 'Item Query',
   components: {
-    ResultItem,
+    ItemQueryResultItem: vue_ItemQueryResultItem,
   },
   props: {
     equipments: {

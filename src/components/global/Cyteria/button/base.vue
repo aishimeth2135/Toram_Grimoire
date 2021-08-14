@@ -12,17 +12,8 @@ export default {
       type: Boolean,
       default: false,
     },
-    toggle: {
-      default: undefined,
-    },
-    toggleList: {
-      type: Array,
-      default() {
-        return [true, false];
-      },
-    },
   },
-  emits: ['click', 'update:toggle'],
+  emits: ['click'],
   computed: {
     baseClass(){
       return {
@@ -35,11 +26,6 @@ export default {
     click(e) {
       if (this.disabled) {
         return;
-      }
-      if (this.toggle !== undefined) {
-        let idx = this.toggleList.indexOf(this.toggle);
-        idx = idx === this.toggleList.length - 1 ? 0 : idx + 1;
-        this.$emit('update:toggle', this.toggleList[idx]);
       }
       this.$emit('click', e);
     },

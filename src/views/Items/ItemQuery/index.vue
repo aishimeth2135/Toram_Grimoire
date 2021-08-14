@@ -1,7 +1,7 @@
 <template>
   <article class="flex flex-col">
     <div v-if="searchResult.length > 0">
-      <search-result class="search-result" :equipments="searchResult" />
+      <ItemQueryResult class="search-result" :equipments="searchResult" />
     </div>
     <cy-default-tips v-else icon="mdi-ghost" style="min-height: 30rem;">
       {{ $lang('no result tips') }}
@@ -259,7 +259,7 @@
 <script>
 import init from "./init.js";
 
-import vue_searchResult from "./search-result.vue";
+import vue_ItemQueryResult from "./item-query-result";
 
 import {
   CharacterEquipment,
@@ -272,7 +272,7 @@ export default {
   name: 'ItemQuery',
   RegisterLang: 'Item Query',
   components: {
-    'search-result': vue_searchResult,
+    ItemQueryResult: vue_ItemQueryResult,
   },
   provide() {
     return {

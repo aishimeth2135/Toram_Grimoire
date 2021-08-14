@@ -158,7 +158,7 @@
           :key="step.index"
           class="step-container"
         >
-          <enchant-step :step="step" />
+          <EnchantStep :step="step" />
         </div>
         <cy-button
           icon="ic-round-add-circle-outline"
@@ -169,7 +169,7 @@
       </div>
     </div>
     <div>
-      <select-item
+      <EnchantSelectItem
         :visible="windows.selectItem"
         :once="selectItemTarget.once"
         :is-weapon="isWeapon"
@@ -186,7 +186,7 @@
         'border-purple': contents.result,
       }"
     >
-      <enchant-result :equipment="currentEquipment" />
+      <EnchantResult :equipment="currentEquipment" />
     </div>
     <div class="sticky bottom-4">
       <div
@@ -285,8 +285,8 @@ import { mapState } from "vuex";
 import init from "./init.js";
 
 import vue_EnchantStep from "./enchant-step";
-import vue_selectItem from "./select-item";
-import vue_enchantResult from "./enchant-result";
+import vue_EnchantSelectItem from "./enchant-select-item";
+import vue_EnchantResult from "./enchant-result";
 
 import ToggleService from "@/setup/ToggleService";
 
@@ -296,6 +296,11 @@ import CY from "@utils/Cyteria";
 export default {
   name: 'EnchantSimulator',
   RegisterLang: "Enchant Simulator",
+  components: {
+    EnchantStep: vue_EnchantStep,
+    EnchantSelectItem: vue_EnchantSelectItem,
+    EnchantResult: vue_EnchantResult,
+  },
   provide() {
     return {
       openSelectItem: this.openSelectItem,
@@ -523,11 +528,6 @@ export default {
     //   console.log('=====================================');
     //   eq.steps(eq.lastStep.index).forEach(step => console.log(step, step.optimizeType()));
     // }
-  },
-  components: {
-    'enchant-step': vue_EnchantStep,
-    'select-item': vue_selectItem,
-    'enchant-result': vue_enchantResult,
   },
 };
 
