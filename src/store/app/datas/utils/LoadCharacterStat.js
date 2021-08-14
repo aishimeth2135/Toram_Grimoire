@@ -25,8 +25,12 @@ export default function(characterSystem, datas) {
 
   let curCategory, curStat, curFormula;
   c.forEach((p, index) => {
-    if (index === 0)
+    if (index === 0) {
       return;
+    }
+    if (p.every(col => col === '')) {
+      return;
+    }
 
     const id = p[ID];
     if (id === CONFIRM_CATEGORY) {
