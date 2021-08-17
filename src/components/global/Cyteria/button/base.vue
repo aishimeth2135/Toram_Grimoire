@@ -1,5 +1,5 @@
 <script>
-import IconSet from "../base/icon-set";
+import IconSet from '../base/icon-set';
 
 export default {
   mixins: [IconSet],

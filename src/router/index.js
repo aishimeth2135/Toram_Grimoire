@@ -1,19 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { trackRouter } from "vue-gtag-next";
+import { trackRouter } from 'vue-gtag-next';
 
-import Character from "./Character";
-import Home from "./Home";
-import Skill from "./Skill";
-import Items from "./Items";
-import DamageCalc from "./Calculation/damage";
-import Enchant from "./Enchant";
+import Character from './Character';
+import Home from './Home';
+import Skill from './Skill';
+import Items from './Items';
+import DamageCalc from './Calculation/damage';
+import Enchant from './Enchant';
 
-import Page404 from "./Page404";
-import Bubble from "./Bubble";
+import Page404 from './Page404';
+import Bubble from './Bubble';
 
-import store from "@/store";
+import store from '@/store';
 
-import GetLang from "@services/Language";
+import GetLang from '@services/Language';
 
 const routes = [
   Home,

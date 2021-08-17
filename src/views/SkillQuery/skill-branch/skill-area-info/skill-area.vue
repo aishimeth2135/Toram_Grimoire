@@ -1,7 +1,7 @@
 
 <script>
-import { h } from "vue";
-import { isNumberString } from "@utils/string";
+import { h } from 'vue';
+import { isNumberString } from '@utils/string';
 
 export default {
   inject: ['calcValueStr'],

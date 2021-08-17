@@ -1,10 +1,10 @@
-import app from "./app.vue";
+import app from './app.vue';
 
-import GetLang from "@services/Language";
-import ViewInit from "@services/ViewInit.js";
+import GetLang from '@services/Language';
+import ViewInit from '@services/ViewInit.js';
 
-const vue_enchantSimulator = () => import(/* webpackChunkName: "enchant-simulator" */ "@/views/Enchant/EnchantSimulator");
-const vue_enchantDoll = () => import(/* webpackChunkName: "enchant-doll" */ "@/views/Enchant/EnchantDoll");
+const vue_enchantSimulator = () => import(/* webpackChunkName: "enchant-simulator" */ '@/views/Enchant/EnchantSimulator');
+const vue_enchantDoll = () => import(/* webpackChunkName: "enchant-doll" */ '@/views/Enchant/EnchantDoll');
 
 export default {
   path: '/enchant',

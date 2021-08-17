@@ -12,7 +12,7 @@
   </teleport>
 </template>
 <script>
-import CY from "@utils/Cyteria";
+import CY from '@utils/Cyteria';
 
 export default {
   props: {

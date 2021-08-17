@@ -294,16 +294,16 @@
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex';
-import CY from "@utils/Cyteria";
+import CY from '@utils/Cyteria';
 import { LoadingNotify } from '@services/Notify';
 
-import vue_skillRoot from "./skill-root.vue";
-import vue_SaveLoadDataSystem from "@/components/SaveLoadDataSystem/main.vue";
+import vue_skillRoot from './skill-root.vue';
+import vue_SaveLoadDataSystem from '@/components/SaveLoadDataSystem/main.vue';
 
-import { getSkillElementId } from "./utils";
-import { computeDrawSkillTreeData, GetDrawSetting } from "@/lib/Skill/utils/DrawSkillTree";
+import { getSkillElementId } from './utils';
+import { computeDrawSkillTreeData, GetDrawSetting } from '@/lib/Skill/utils/DrawSkillTree';
 
-import init from "./init.js";
+import init from './init.js';
 
 export default {
   name: 'SkillQuery',
@@ -674,9 +674,9 @@ export default {
           starGemScope_topBottomPd;
 
         const skillIconGrdAddColors = function(grd) {
-          grd.addColorStop(0, "white");
-          grd.addColorStop(0.5, "#FFD1EA");
-          grd.addColorStop(1, "#f7a8d3");
+          grd.addColorStop(0, 'white');
+          grd.addColorStop(0.5, '#FFD1EA');
+          grd.addColorStop(1, '#f7a8d3');
         }
 
         const final_w = Math.max(500, ...drawDatas.map(p => p.width)),
@@ -977,7 +977,7 @@ export default {
     },
     jumpToSkillTree(st) {
       document.getElementById('skill-tree--' + getSkillElementId(st)).scrollIntoView({
-        behavior: "smooth",
+        behavior: 'smooth',
       });
       this.jumpSkillTreeVisible = false;
     },

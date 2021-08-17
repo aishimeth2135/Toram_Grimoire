@@ -157,8 +157,8 @@
   </cy-list-item>
 </template>
 <script>
-import vue_showStatDatas from "./show-stat-datas.vue";
-import { getSkillIconPath } from "@/lib/Skill/utils/DrawSkillTree";
+import vue_showStatDatas from './show-stat-datas.vue';
+import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree';
 
 export default {
   RegisterLang: 'Character Simulator',

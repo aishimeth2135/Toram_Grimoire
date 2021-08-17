@@ -1,5 +1,5 @@
-import Papa from "papaparse";
-import store from "@/store";
+import Papa from 'papaparse';
+import store from '@/store';
 
 function DataPath(id) {
   /**

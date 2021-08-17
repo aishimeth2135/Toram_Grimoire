@@ -257,16 +257,16 @@
   </article>
 </template>
 <script>
-import init from "./init.js";
+import init from './init.js';
 
-import vue_ItemQueryResult from "./item-query-result";
+import vue_ItemQueryResult from './item-query-result';
 
 import {
   CharacterEquipment,
   MainWeapon, SubWeapon,
   SubArmor, BodyArmor,
-  AdditionalGear, SpecialGear, Avatar } from "@/lib/Character/CharacterEquipment";
-import { StatBase } from "@/lib/Character/Stat";
+  AdditionalGear, SpecialGear, Avatar } from '@/lib/Character/CharacterEquipment';
+import { StatBase } from '@/lib/Character/Stat';
 
 export default {
   name: 'ItemQuery',
@@ -283,7 +283,7 @@ export default {
     };
   },
   data() {
-    const equipments = this.$store.state.datas.items.equipments
+    const equipments = this.$store.state.datas.Items.equipments
       .map(p => CharacterEquipment.fromOriginEquipment(p, { statValueToNumber: false }));
 
     const handleOptions = opts => opts.map(p => {
@@ -300,7 +300,7 @@ export default {
     };
 
     const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
-    this.$store.state.datas.character.statList.forEach(stat => {
+    this.$store.state.datas.Character.statList.forEach(stat => {
       if (stat.attributes.hidden) return;
       statTypes.forEach(type => {
         if (type === StatBase.TYPE_MULTIPLIER && !stat.hasMultiplier)

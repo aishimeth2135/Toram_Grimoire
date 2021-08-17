@@ -88,7 +88,7 @@
   </cy-window>
 </template>
 <script>
-import vue_equipmentItem from "@/components/common/equipment-item.vue";
+import vue_equipmentItem from '@/components/common/equipment-item.vue';
 
 export default {
   RegisterLang: {
@@ -114,7 +114,7 @@ export default {
   computed: {
     searchResult() {
       const text = this.searchText;
-      let res = this.$store.state.datas.items.equipments;
+      let res = this.$store.state.datas.Items.equipments;
       res = res.filter(item => (item.name.includes(text) && item.category !== -1)
         || (item.category === -1 && item.name === text));
       res.sort((a, b) => b.id - a.id);

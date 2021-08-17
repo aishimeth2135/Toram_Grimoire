@@ -1,4 +1,4 @@
-import { SkillRoot } from "./Skill";
+import { SkillRoot } from './Skill';
 
 export default class {
   constructor() {

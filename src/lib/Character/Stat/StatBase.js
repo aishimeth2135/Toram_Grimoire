@@ -1,5 +1,5 @@
-import GetLang from "@services/Language";
-import { isNumberString } from "@utils/string";
+import GetLang from '@services/Language';
+import { isNumberString } from '@utils/string';
 
 function Lang(s) {
   return GetLang('stat base/' + s);

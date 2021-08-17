@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import BaseButton from "./base";
+import BaseButton from './base';
 
 export default {
   mixins: [BaseButton],

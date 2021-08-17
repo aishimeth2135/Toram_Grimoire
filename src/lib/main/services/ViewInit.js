@@ -1,10 +1,10 @@
 // import { InitLanguageData } from "./Language";
-import GetLang from "@services/Language";
+import GetLang from '@services/Language';
 
-import store from "@/store";
+import store from '@/store';
 
 /**
- * @param  {...String} inits
+ * @param  {...string} inits
  */
 export default async function viewInit(...inits) {
   if (inits.length === 0) {

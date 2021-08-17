@@ -1,5 +1,5 @@
-import Grimoire from "@grimoire";
-import { Foods } from "@/lib/Character/Food";
+import Grimoire from '@grimoire';
+import { Foods } from '@/lib/Character/Food';
 
 export default function createFoodBuild(name) {
   const foodList = {

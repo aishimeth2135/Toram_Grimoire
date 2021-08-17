@@ -103,9 +103,9 @@
   </section>
 </template>
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters } from 'vuex';
 
-import vue_skillItem from "./skill-item.vue";
+import vue_skillItem from './skill-item.vue';
 
 export default {
   RegisterLang: 'Character Simulator',

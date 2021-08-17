@@ -1,6 +1,6 @@
-import { markRaw } from "vue";
+import { markRaw } from 'vue';
 import { StatBase } from './Stat';
-import { CharacterStatCategory } from "./Character";
+import { CharacterStatCategory } from './Character';
 
 export default class {
   constructor() {

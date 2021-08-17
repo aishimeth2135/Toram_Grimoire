@@ -1,5 +1,5 @@
-import * as recast from "recast";
-import RegexEscape from "regex-escape";
+import * as recast from 'recast';
+import RegexEscape from 'regex-escape';
 import { isNumberString } from '@utils/string';
 
 /**

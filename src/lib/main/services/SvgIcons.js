@@ -17,7 +17,7 @@ export default function Icons(name) {
 }
 
 function PageInitIcons() {
-  document.querySelectorAll("*[data-icon-name]").forEach(a => {
+  document.querySelectorAll('*[data-icon-name]').forEach(a => {
     const t = Icons(a.getAttribute('data-icon-name'));
     a.outerHTML = t;
   });

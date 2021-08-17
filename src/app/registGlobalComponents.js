@@ -1,5 +1,5 @@
 import vue_CyButton from '@/components/global/Cyteria/button.vue';
-import { h, mergeProps } from "vue";
+import { h, mergeProps } from 'vue';
 
 export default function(APP) {
   /* ==== [ auto regist global components ] ================= */

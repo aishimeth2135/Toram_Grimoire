@@ -281,21 +281,22 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import init from "./init.js";
+import { mapState } from 'vuex';
+import init from './init.js';
 
-import vue_EnchantStep from "./enchant-step";
-import vue_EnchantSelectItem from "./enchant-select-item";
-import vue_EnchantResult from "./enchant-result";
+import vue_EnchantStep from './enchant-step';
+import vue_EnchantSelectItem from './enchant-select-item';
+import vue_EnchantResult from './enchant-result';
 
-import ToggleService from "@/setup/ToggleService";
+import ToggleService from '@/setup/ToggleService';
 
-import { EnchantBuild, EnchantStep, EnchantEquipment /* EnchantItem */ } from "@/lib/Enchant/Enchant";
-import CY from "@utils/Cyteria";
+import { EnchantBuild, EnchantStep, EnchantEquipment } from '@/lib/Enchant/Enchant';
+import CY from '@utils/Cyteria';
+import { SelectItemTarget, EnchantItemData } from './type';
 
 export default {
   name: 'EnchantSimulator',
-  RegisterLang: "Enchant Simulator",
+  RegisterLang: 'Enchant Simulator',
   components: {
     EnchantStep: vue_EnchantStep,
     EnchantSelectItem: vue_EnchantSelectItem,
@@ -530,19 +531,6 @@ export default {
     // }
   },
 };
-
-/**
- * @typedef {object} SelectItemTarget
- * @property {("step"|"doll")} type
- * @property {object} target
- * @property {boolean} once
- */
-/**
- * @typedef {object} EnchantItemData
- * @property {string} id
- * @property {symbol} type
- * @property {EnchantItem} origin
- */
 </script>
 
 <style lang="postcss" scoped>

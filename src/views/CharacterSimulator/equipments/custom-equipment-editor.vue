@@ -245,8 +245,8 @@
   </div>
 </template>
 <script>
-import { StatBase, RestrictionStat } from "@/lib/Character/Stat";
-import { CharacterEquipment } from "@/lib/Character/CharacterEquipment";
+import { StatBase, RestrictionStat } from '@/lib/Character/Stat';
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 
 export default {
   RegisterLang: 'Character Simulator',
@@ -258,7 +258,7 @@ export default {
   },
   data() {
     const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
-    this.$store.state.datas.character.statList
+    this.$store.state.datas.Character.statList
       .filter(stat => !stat.attributes.hidden)
       .forEach(stat => {
         statTypes

@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-import vue_equipmentInfo from "./equipment-info.vue";
+import vue_equipmentInfo from './equipment-info.vue';
 
 export default {
   RegisterLang: 'Character Simulator',

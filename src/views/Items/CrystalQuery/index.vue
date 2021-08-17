@@ -144,12 +144,12 @@
   </article>
 </template>
 <script>
-import init from "./init.js";
+import init from './init.js';
 
-import { StatBase } from "@/lib/Character/Stat";
-import { EquipmentCrystal } from "@/lib/Character/CharacterEquipment";
+import { StatBase } from '@/lib/Character/Stat';
+import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment';
 
-import vue_showStat from "@/components/common/show-stat.vue";
+import vue_showStat from '@/components/common/show-stat.vue';
 
 export default {
   name: 'CrystalQuery',
@@ -158,7 +158,7 @@ export default {
     'show-stat': vue_showStat,
   },
   data() {
-    const crystals = this.$store.state.datas.items.crystals;
+    const crystals = this.$store.state.datas.Items.crystals;
     const crystalCategorys = new Array(5).fill().map((_, i) => {
       return {
         id: i,
@@ -167,7 +167,7 @@ export default {
     });
 
     const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
-    this.$store.state.datas.character.statList.forEach(stat => {
+    this.$store.state.datas.Character.statList.forEach(stat => {
       if (stat.attributes.hidden) return;
       statTypes.forEach(type => {
         if (type == StatBase.TYPE_MULTIPLIER && !stat.hasMultiplier)

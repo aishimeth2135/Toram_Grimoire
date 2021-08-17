@@ -22,7 +22,7 @@
   </cy-list-item>
 </template>
 <script>
-import { CharacterEquipment } from "@/lib/Character/CharacterEquipment";
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 export default {
   props: {
     equipment: {

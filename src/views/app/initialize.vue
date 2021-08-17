@@ -24,7 +24,7 @@
 <script>
 import { mapState } from 'vuex';
 
-import vue_loadingAnimation from "./initialization/loading-animation.vue";
+import vue_loadingAnimation from './initialization/loading-animation.vue';
 
 export default {
   methods: {

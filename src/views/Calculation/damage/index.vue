@@ -6,9 +6,9 @@
 <script>
 // import GetLang from "@services/Language";
 
-import init from "./init.js";
+import init from './init.js';
 
-import DamageCalculationController from "@/lib/Calculation/Damage/module/Controller.js";
+import DamageCalculationController from '@/lib/Calculation/DamageOld/module/Controller.js';
 
 export default {
   beforeCreate() {

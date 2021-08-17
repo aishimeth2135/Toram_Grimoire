@@ -1,6 +1,6 @@
-import Grimoire from "@grimoire";
-import { StatBase } from "@/lib/Character/Stat";
-import { isNumberString } from "@utils/string";
+import Grimoire from '@grimoire';
+import { StatBase } from '@/lib/Character/Stat';
+import { isNumberString } from '@utils/string';
 
 class Item {
   constructor(id, name) {
@@ -38,7 +38,7 @@ class Item {
     }
     const statBase = Grimoire.Character.findStatBase(baseName);
     if (!statBase) {
-      console.warn("[Character] Can't find stat-base with id: " + baseName);
+      console.warn('[Character] Can\'t find stat-base with id: ' + baseName);
       return;
     }
     const stat = statBase.createStat(type, v);

@@ -20,9 +20,9 @@
 
 <script>
 import { ref } from 'vue';
-import IconSet from "./base/icon-set.vue";
-import ColorSet from "./base/color-set.vue";
-import vue_subCaption from "./components/sub-caption.vue";
+import IconSet from './base/icon-set.vue';
+import ColorSet from './base/color-set.vue';
+import vue_subCaption from './components/sub-caption.vue';
 
 export default {
   components: {

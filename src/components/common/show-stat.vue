@@ -28,7 +28,7 @@
   </div>
 </template>
 <script>
-import { Stat, RestrictionStat } from "@/lib/Character/Stat";
+import { Stat, RestrictionStat } from '@/lib/Character/Stat';
 
 export default {
   props: {

@@ -1,10 +1,10 @@
-import { StatBase } from "@/lib/Character/Stat";
-import Grimoire from "@grimoire";
+import { StatBase } from '@/lib/Character/Stat';
+import Grimoire from '@grimoire';
 
-import { EnchantCategory, EnchantItem } from "../base";
-import { EnchantBuild, EnchantStat, EnchantEquipment } from "../build";
-import EnchantDollEquipmentContainer from "./EnchantDollEquipmentContainer.js";
-import STATE from "../state";
+import { EnchantCategory, EnchantItem } from '../base';
+import { EnchantBuild, EnchantStat, EnchantEquipment } from '../build';
+import EnchantDollEquipmentContainer from './EnchantDollEquipmentContainer.js';
+import STATE from '../state';
 
 export default class EnchantDoll {
   constructor() {

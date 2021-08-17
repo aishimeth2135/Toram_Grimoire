@@ -147,9 +147,9 @@
   </section>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
-import { Character } from "@/lib/Character/Character";
+import { Character } from '@/lib/Character/Character';
 
 export default {
   RegisterLang: 'Character Simulator',

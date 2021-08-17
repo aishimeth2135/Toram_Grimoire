@@ -1,4 +1,4 @@
-import GetLang from "@services/Language";
+import GetLang from '@services/Language';
 
 export default function install(app) {
   app.config.globalProperties.$rootLang = GetLang;

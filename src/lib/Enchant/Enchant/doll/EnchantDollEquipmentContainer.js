@@ -1,5 +1,5 @@
-import { EnchantStat, EnchantStepStat, EnchantEquipment, EnchantStep } from "../build";
-import { EnchantDoll, EnchantDollCategory } from "./index.js";
+import { EnchantStat, EnchantStepStat, EnchantEquipment, EnchantStep } from '../build';
+import { EnchantDoll, EnchantDollCategory } from './index.js';
 export default class EnchantDollEquipmentContainer {
   /**
    * @param {object} param

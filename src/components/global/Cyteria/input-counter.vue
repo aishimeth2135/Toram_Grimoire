@@ -49,7 +49,7 @@
   </div>
 </template>
 <script>
-import Color from "@services/Color";
+import Color from '@services/Color';
 
 const ColorList = Color.List;
 

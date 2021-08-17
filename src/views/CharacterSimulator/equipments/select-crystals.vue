@@ -97,9 +97,9 @@
   </cy-window>
 </template>
 <script>
-import vue_showStat from "./show-stat.vue";
+import vue_showStat from './show-stat.vue';
 
-import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from "@/lib/Character/CharacterEquipment";
+import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from '@/lib/Character/CharacterEquipment';
 
 export default {
   RegisterLang: 'Character Simulator',
@@ -109,7 +109,7 @@ export default {
   props: ['visible', 'equipment'],
   emits: ['close'],
   data() {
-    const crystals = this.$store.state.datas.items.crystals;
+    const crystals = this.$store.state.datas.Items.crystals;
     const crystalCategorys = new Array(5).fill().map((p, i) => {
       return {
         id: i,

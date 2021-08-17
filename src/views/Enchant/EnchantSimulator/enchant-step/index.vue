@@ -174,13 +174,13 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
-import vue_EnchantStepStat from "./enchant-step-stat";
+import { mapMutations } from 'vuex';
+import vue_EnchantStepStat from './enchant-step-stat';
 import { EnchantStep } from '@/lib/Enchant/Enchant';
 
 export default {
   name: 'EnchantStep',
-  RegisterLang: "Enchant Simulator",
+  RegisterLang: 'Enchant Simulator',
   components: {
     EnchantStepStat: vue_EnchantStepStat,
   },

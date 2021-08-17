@@ -1,8 +1,8 @@
-import handleSkillFormula from "@/views/SkillQuery/utils/handleFormula.js";
-import DataContainer from "@/views/SkillQuery/utils/DataContainer.js";
+import handleSkillFormula from '@/views/SkillQuery/utils/handleFormula.js';
+import DataContainer from '@/views/SkillQuery/utils/DataContainer.js';
 
-import { EquipmentField } from "@/lib/Character/Character";
-import { SubWeapon, SubArmor } from "@/lib/Character/CharacterEquipment";
+import { EquipmentField } from '@/lib/Character/Character';
+import { SubWeapon, SubArmor } from '@/lib/Character/CharacterEquipment';
 
 class SkillBranchHandler {
   constructor({ branch, skillState, levelSkill, view, skillItemType }) {
@@ -92,7 +92,7 @@ class SkillBranchHandler {
       .replace(/#([^\s]+)\s(\w?)/g, (m, m1, m2) => {
         let res = `<span class="light-text-2">${m1.replace(new RegExp('_', 'g'), ' ')}</span>`;
         if (m2 !== '')
-          res += " " + m2;
+          res += ' ' + m2;
         return res;
       })
       .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values">${m1}</span>`);

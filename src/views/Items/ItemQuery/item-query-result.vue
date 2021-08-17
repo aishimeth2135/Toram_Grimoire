@@ -33,7 +33,7 @@
 </template>
 <script>
 import { computed, ref, nextTick, readonly, watch, toRefs } from 'vue';
-import vue_ItemQueryResultItem from "./item-query-result-item";
+import vue_ItemQueryResultItem from './item-query-result-item';
 
 const NUMBER_OF_ITEMS_OF_PAGE = 30;
 
@@ -63,7 +63,7 @@ export default {
     });
     const topHiddenFlag = ref(null);
     const returnToTop = () => {
-      topHiddenFlag.value.scrollIntoView({ behavior: "smooth" });
+      topHiddenFlag.value.scrollIntoView({ behavior: 'smooth' });
     };
     const nextPage = async () => {
       pageCount.value += 1;

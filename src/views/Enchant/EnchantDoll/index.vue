@@ -506,16 +506,16 @@
   </section>
 </template>
 <script>
-import { mapState } from "vuex";
-import vue_EnchantSelectItem from "../EnchantSimulator/enchant-select-item";
-import vue_EnchantResult from "../EnchantSimulator/enchant-result";
+import { mapState } from 'vuex';
+import vue_EnchantSelectItem from '../EnchantSimulator/enchant-select-item';
+import vue_EnchantResult from '../EnchantSimulator/enchant-result';
 
-import init from "./init.js";
-import init2 from "../EnchantSimulator/init.js";
-import ToggleService from "@/setup/ToggleService";
+import init from './init.js';
+import init2 from '../EnchantSimulator/init.js';
+import ToggleService from '@/setup/ToggleService';
 
-import EnchantDoll from "@/lib/Enchant/Enchant/doll";
-import { EnchantBuild, EnchantEquipment, EnchantStat } from "@/lib/Enchant/Enchant";
+import EnchantDoll from '@/lib/Enchant/Enchant/doll';
+import { EnchantBuild, EnchantEquipment, EnchantStat } from '@/lib/Enchant/Enchant';
 
 export default {
   name: 'EnchantDoll',
@@ -612,7 +612,7 @@ export default {
     this.$store.dispatch('enchant/init');
   },
   mounted() {
-    this.$nextTick(() => this.$refs['first-step'].scrollIntoView({ behavior: "smooth" }));
+    this.$nextTick(() => this.$refs['first-step'].scrollIntoView({ behavior: 'smooth' }));
   },
   computed: {
     ...mapState('enchant', ['config']),
@@ -746,7 +746,7 @@ export default {
       return cur;
     },
     exportResult() {
-      const build = new EnchantBuild(this.exportState.name, this.resultEquipment.copy(this.$store.state.datas.enchant.categorys));
+      const build = new EnchantBuild(this.exportState.name, this.resultEquipment.copy(this.$store.state.datas.Enchant.categorys));
       this.$store.dispatch('enchant/exportDollBuild', build);
       this.exportState.hasExport = true;
       this.$notify(this.$lang('tips/export successfully'));
@@ -826,7 +826,7 @@ export default {
       ++this.stepCounter;
     },
     stepAfterEnter(el) {
-      el.scrollIntoView({ behavior: "smooth" });
+      el.scrollIntoView({ behavior: 'smooth' });
     },
     setStatValue(stat, v) {
       stat.value = v;

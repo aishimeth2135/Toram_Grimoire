@@ -1,7 +1,7 @@
-import { Character } from "@/lib/Character/Character";
-import { CharacterEquipment } from "@/lib/Character/CharacterEquipment";
+import { Character } from '@/lib/Character/Character';
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 
-import createFoodBuild from "./food-build.js";
+import createFoodBuild from './food-build.js';
 
 import module_skill from './skill.js';
 

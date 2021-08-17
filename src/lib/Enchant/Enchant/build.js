@@ -1,10 +1,10 @@
-import { EnchantCategory, EnchantItem } from "./base";
-import { Stat, StatBase } from "@/lib/Character/Stat";
-import STATE from "./state";
+import { EnchantCategory, EnchantItem } from './base';
+import { Stat, StatBase } from '@/lib/Character/Stat';
+import STATE from './state';
 
-import { calcPotentialExtraRate } from "./utils";
+import { calcPotentialExtraRate } from './utils';
 
-import Grimoire from "@grimoire";
+import Grimoire from '@grimoire';
 
 class EnchantBuild {
   /**

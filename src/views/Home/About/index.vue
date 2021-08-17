@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import init from "./init.js";
+import init from './init.js';
 
 export default {
   RegisterLang: 'About',

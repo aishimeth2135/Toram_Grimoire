@@ -1,32 +1,31 @@
-import ItemsSystem from "@/lib/Items";
-import CharacterSystem from "@/lib/Character";
-import TagSystem from "@/lib/Tag";
-import SkillSystem from "@/lib/Skill";
-import EnchantSystem from "@/lib/Enchant";
+import ItemsSystem from '@/lib/Items';
+import CharacterSystem from '@/lib/Character';
+import TagSystem from '@/lib/Tag';
+import SkillSystem from '@/lib/Skill';
+import EnchantSystem from '@/lib/Enchant';
+import DamageCalculationSystem from '@/lib/Calculation/Damage';
 
-import DownloadDatas from "./utils/DownloadDatas.js";
-import loadEquipments from "./utils/LoadEquipments.js";
-import loadCrystals from "./utils/LoadCrystals.js";
-import loadStats from "./utils/LoadStats.js";
-import loadCharacterStats from "./utils/LoadCharacterStat.js";
-import loadTag from "./utils/LoadTag.js";
-import { loadSkill, loadSkillMain } from "./utils/LoadSkill.js";
-import loadEnchant from "./utils/LoadEnchant.js";
+import DownloadDatas from './utils/DownloadDatas.js';
+import loadEquipments from './utils/LoadEquipments.js';
+import loadCrystals from './utils/LoadCrystals.js';
+import loadStats from './utils/LoadStats.js';
+import loadCharacterStats from './utils/LoadCharacterStat.js';
+import loadTag from './utils/LoadTag.js';
+import { loadSkill, loadSkillMain } from './utils/LoadSkill.js';
+import loadEnchant from './utils/LoadEnchant.js';
 
 const store = {
   namespaced: true,
   state: {
-    items: null,
-    character: null,
-    tag: null,
-    skill: null,
-    enchant: null,
+    Items: null,
+    Character: null,
+    Tag: null,
+    Skill: null,
+    Enchant: null,
+    DamageCalculation: null,
     loaded: new Map(),
   },
   getters: {
-    checkInit: state => id => {
-      return state[id] !== null;
-    },
     checkLoad: state => id => {
       return state.loaded.has(id);
     },
@@ -35,66 +34,69 @@ const store = {
     loadFinished(state, id) {
       state.loaded.set(id, true);
     },
-    initItems(state, { checkInit }) {
-      if (!checkInit('items'))
-        state.items = new ItemsSystem();
+    initItems(state) {
+      state.Items = new ItemsSystem();
     },
-    initCharacter(state, { checkInit }) {
-      if (!checkInit('character'))
-        state.character = new CharacterSystem();
+    initCharacter(state) {
+      state.Character = new CharacterSystem();
     },
-    initTag(state, { checkInit }) {
-      if (!checkInit('tag'))
-        state.tag = new TagSystem();
+    initTag(state) {
+      state.Tag = new TagSystem();
     },
-    initSkill(state, { checkInit }) {
-      if (!checkInit('skill'))
-        state.skill = new SkillSystem();
+    initSkill(state) {
+      state.Skill = new SkillSystem();
     },
-    initEnchant(state, { checkInit }) {
-      if (!checkInit('enchant'))
-        state.enchant = new EnchantSystem();
+    initEnchant(state) {
+      state.Enchant = new EnchantSystem();
+    },
+    initDamageCalculation(state) {
+      state.DamageCalculation = new DamageCalculationSystem();
     },
   },
   actions: {
-    async* loadItems({ state, commit, getters }) {
-      commit('initItems', { checkInit: getters.checkInit });
+    async* loadItems({ state, commit }) {
+      commit('initItems');
       const datas = await DownloadDatas('Equipment', 'Crystal');
       yield;
-      loadEquipments(state.items, datas[0][0]);
-      loadCrystals(state.items, datas[1][0]);
+      loadEquipments(state.Items, datas[0][0]);
+      loadCrystals(state.Items, datas[1][0]);
     },
-    async* loadStats({ state, commit, getters }) {
-      commit('initCharacter', { checkInit: getters.checkInit });
+    async* loadStats({ state, commit }) {
+      commit('initCharacter');
       const datas = await DownloadDatas({ path: 'Stats', lang: true });
       yield;
-      loadStats(state.character, datas[0]);
+      loadStats(state.Character, datas[0]);
     },
-    async* loadCharacterStats({ state, commit, getters }) {
-      commit('initCharacter', { checkInit: getters.checkInit });
+    async* loadCharacterStats({ state, commit }) {
+      commit('initCharacter');
       const datas = await DownloadDatas({ path: 'Character Stats', lang: true });
       yield;
-      loadCharacterStats(state.character, datas[0]);
+      loadCharacterStats(state.Character, datas[0]);
     },
-    async* loadTag({ state, commit, getters }) {
-      commit('initTag', { checkInit: getters.checkInit });
+    async* loadTag({ state, commit }) {
+      commit('initTag');
       const datas = await DownloadDatas({ path: 'Tag', lang: true });
       yield;
-      loadTag(state.tag, datas[0]);
+      loadTag(state.Tag, datas[0]);
     },
-    async* loadSkill({ state, commit, getters }) {
-      commit('initSkill', { checkInit: getters.checkInit });
+    async* loadSkill({ state, commit }) {
+      commit('initSkill');
       const datas = await DownloadDatas({ path: 'Skill', lang: true }, { path: 'Skill Main', lang: true });
       yield;
-      loadSkill(state.skill, datas[0]);
-      loadSkillMain(state.skill, datas[1]);
-      commit('character/skill/setSkillRoot', state.skill.skillRoot, { root: true });
+      loadSkill(state.Skill, datas[0]);
+      loadSkillMain(state.Skill, datas[1]);
+      commit('character/skill/setSkillRoot', state.Skill.skillRoot, { root: true });
     },
-    async* loadEnchant({ state, commit, getters }) {
-      commit('initEnchant', { checkInit: getters.checkInit });
+    async* loadEnchant({ state, commit }) {
+      commit('initEnchant');
       const datas = await DownloadDatas('Enchant');
       yield;
-      loadEnchant(state.enchant, datas[0][0]);
+      loadEnchant(state.Enchant, datas[0][0]);
+    },
+    async* loadDamageCalculation({ commit }) {
+      commit('initDamageCalculation');
+      yield;
+      // do nothing
     },
   },
 };

@@ -201,9 +201,9 @@
 </template>
 
 <script>
-import CY from "@utils/Cyteria";
-import { APP_STORAGE_KEYS } from "@consts";
-import { mapState } from "vuex";
+import CY from '@utils/Cyteria';
+import { APP_STORAGE_KEYS } from '@consts';
+import { mapState } from 'vuex';
 
 export default {
   RegisterLang: 'Settings',

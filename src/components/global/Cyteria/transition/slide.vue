@@ -14,7 +14,7 @@
   </transition>
 </template>
 <script>
-import Velocity from "velocity-animate";
+import Velocity from 'velocity-animate';
 
 export default {
   methods: {

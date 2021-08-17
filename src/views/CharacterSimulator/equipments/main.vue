@@ -64,19 +64,19 @@
   </section>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
-import vue_equipmentField from "./equipment-field.vue";
-import vue_appendEquipments from "./append-equipments.vue";
-import vue_browseEquipments from "./browse-equipments.vue";
-import vue_createCustomEquipment from "./create-custom-equipment.vue";
-import vue_customEquipmentEditor from "./custom-equipment-editor.vue";
-import vue_selectCrystals from "./select-crystals.vue";
+import vue_equipmentField from './equipment-field.vue';
+import vue_appendEquipments from './append-equipments.vue';
+import vue_browseEquipments from './browse-equipments.vue';
+import vue_createCustomEquipment from './create-custom-equipment.vue';
+import vue_customEquipmentEditor from './custom-equipment-editor.vue';
+import vue_selectCrystals from './select-crystals.vue';
 
-import ToggleService from "@/setup/ToggleService";
+import ToggleService from '@/setup/ToggleService';
 
-import { EquipmentField } from "@/lib/Character/Character";
-import { CharacterEquipment } from "@/lib/Character/CharacterEquipment";
+import { EquipmentField } from '@/lib/Character/Character';
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 
 export default {
   name: 'Equipments',

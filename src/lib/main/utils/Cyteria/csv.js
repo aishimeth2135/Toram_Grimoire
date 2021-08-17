@@ -1,6 +1,6 @@
 function saveFile(csv_str, file_name) {
   const blob = new Blob([csv_str], { type: 'text/csv;charset=utf-8;' });
-  const link = document.createElement("a");
+  const link = document.createElement('a');
 
   const url = URL.createObjectURL(blob);
   link.setAttribute('href', url);

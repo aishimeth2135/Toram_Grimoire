@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-import vue_SkillTreeCategory from "./skill-tree-category.vue";
+import vue_SkillTreeCategory from './skill-tree-category.vue';
 
 export default {
   components: {

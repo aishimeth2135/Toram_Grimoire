@@ -6,7 +6,7 @@
   </div>
 </template>
 <script>
-import vue_ShowStat from "../equipments/show-stat.vue";
+import vue_ShowStat from '../equipments/show-stat.vue';
 
 export default {
   components: {

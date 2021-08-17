@@ -40,8 +40,8 @@
 <script>
 import { mapState } from 'vuex';
 
-import vue_leftMenu from "./left-menu.vue";
-import vue_settings from "./settings.vue";
+import vue_leftMenu from './left-menu.vue';
+import vue_settings from './settings.vue';
 
 export default {
   computed: {

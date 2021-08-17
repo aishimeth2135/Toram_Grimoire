@@ -1,6 +1,10 @@
 import { CalculationBase, CalcItemBase, CalcItemBaseContainer } from './base';
 
 class Calculation {
+  /**
+   * @param {CalculationBase} base
+   * @param {string} name
+   */
   constructor(base, name) {
     /** @type {CalculationBase} */
     this.base = base;
@@ -39,6 +43,10 @@ class Calculation {
 }
 
 class CalcItemContainer {
+  /**
+   * @param {Calculation} parent
+   * @param {CalcItemBaseContainer} base
+   */
   constructor(parent, base) {
     /** @type {Calculation} */
     this._parent = parent;
@@ -56,6 +64,9 @@ class CalcItemContainer {
     this._currentItemId = null;
   }
 
+  /**
+   * generate copy of Items from ItemBases
+   */
   initItems() {
     let flag = true;
     for (const item of this.base.items.values()) {
@@ -71,7 +82,14 @@ class CalcItemContainer {
     return this._parent;
   }
 
+  get selectable() {
+    return this.base.getCurrentItemId === null;
+  }
+
   get currentItem() {
+    if (this.base.getCurrentItemId !== null) {
+      return this.items.get(this.base.getCurrentItemId(this, this.base));
+    }
     return this.items.get(this._currentItemId);
   }
 

@@ -1,15 +1,15 @@
 <script>
-import { h, mergeProps } from "vue";
+import { h, mergeProps } from 'vue';
 
-import SimpleButton from "./button/simple";
-import BorderButton from "./button/border";
-import InlineButton from "./button/inline";
-import LineButton from "./button/line";
-import IconButton from "./button/icon";
-import DropDownButton from "./button/drop-down";
-import CheckButton from "./button/check";
+import SimpleButton from './button/simple';
+import BorderButton from './button/border';
+import InlineButton from './button/inline';
+import LineButton from './button/line';
+import IconButton from './button/icon';
+import DropDownButton from './button/drop-down';
+import CheckButton from './button/check';
 
-import { ColorSetProps, getColorSetStyle } from "./base/color-set.vue";
+import { ColorSetProps, getColorSetStyle } from './base/color-set.vue';
 
 function CyButton(props, context) {
   const getComponent = () => {

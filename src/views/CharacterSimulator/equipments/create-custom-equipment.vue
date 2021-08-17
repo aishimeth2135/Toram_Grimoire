@@ -75,11 +75,11 @@
   </cy-window>
 </template>
 <script>
-import ToggleService from "@/setup/ToggleService";
+import ToggleService from '@/setup/ToggleService';
 
-import vue_customEquipmentEditor from "./custom-equipment-editor.vue";
+import vue_customEquipmentEditor from './custom-equipment-editor.vue';
 
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from "@/lib/Character/CharacterEquipment";
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from '@/lib/Character/CharacterEquipment';
 
 export default {
   RegisterLang: 'Character Simulator',

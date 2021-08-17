@@ -1,4 +1,4 @@
-import { HandleLanguageData } from "@services/Language";
+import { HandleLanguageData } from '@services/Language';
 
 export default function(character_system, datas) {
   const

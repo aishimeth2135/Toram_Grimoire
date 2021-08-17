@@ -1,9 +1,9 @@
-import { StatBase } from "@/lib/Character/Stat";
-import Grimoire from "@grimoire";
-import STATE from "./state";
-import { EnchantEquipment } from "./build";
+import { StatBase } from '@/lib/Character/Stat';
+import Grimoire from '@grimoire';
+import STATE from './state';
+import { EnchantEquipment } from './build';
 
-import { markRaw } from "vue";
+import { markRaw } from 'vue';
 
 class EnchantCategory {
   constructor(title) {

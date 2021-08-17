@@ -1,7 +1,7 @@
-import Grimoire from "@grimoire";
-import { HandleLanguageData } from "@services/Language";
+import Grimoire from '@grimoire';
+import { HandleLanguageData } from '@services/Language';
 
-import { SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch } from "@/lib/Skill/Skill";
+import { SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch } from '@/lib/Skill/Skill';
 
 function loadSkill(skillSystem, datas) {
   const sr = skillSystem.skillRoot;
@@ -92,7 +92,7 @@ function loadSkill(skillSystem, datas) {
       //console.log(p);
 
       let id = p[ID];
-      if (id !== "") {
+      if (id !== '') {
         const confirm_name = p[CONFIRM];
         id = parseInt(p[ID], 10);
         switch (confirm_name) {
@@ -108,7 +108,7 @@ function loadSkill(skillSystem, datas) {
             cur.attrs.simulatorFlag = true;
         } break;
         default: {
-          if (confirm_name != "") {
+          if (confirm_name != '') {
             cur = _TreeBack(cur, SkillTree.TYPE);
             const name = p[NAME];
             cur = cur.newElement(Skill.TYPE, { id, name });
@@ -139,7 +139,7 @@ function loadSkill(skillSystem, datas) {
       if (SKILL_ELEMENT_ORDER.indexOf(cur.TYPE) < SKILL_ELEMENT_ORDER.indexOf(SkillEffect.TYPE))
         return;
       const bno = p[EFFECT_BRANCH_NO];
-      if (bno !== "") {
+      if (bno !== '') {
         cur = _TreeBack(cur, SkillEffect.TYPE);
         const bname = p[EFFECT_BRANCH_NAME];
         cur = cur.newElement(SkillBranch.TYPE, { id: bno, name: bname });

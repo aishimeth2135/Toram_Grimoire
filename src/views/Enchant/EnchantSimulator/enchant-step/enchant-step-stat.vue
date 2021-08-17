@@ -48,13 +48,13 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
-import { EnchantStepStat } from "@/lib/Enchant/Enchant";
+import { mapMutations } from 'vuex';
+import { EnchantStepStat } from '@/lib/Enchant/Enchant';
 import { trimZero } from '@utils/string';
 
 export default {
   name: 'EnchantStepStat',
-  RegisterLang: "Enchant Simulator",
+  RegisterLang: 'Enchant Simulator',
   inject: ['rootState'],
   props: {
     stat: {

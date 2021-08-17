@@ -6,7 +6,7 @@
   </div>
 </template>
 <script>
-import vue_skillTree from "./skill-tree.vue";
+import vue_skillTree from './skill-tree.vue';
 
 export default {
   components: {

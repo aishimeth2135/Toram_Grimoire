@@ -146,16 +146,16 @@
   </cy-window>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
 import { EnchantEquipment, EnchantStep } from '@/lib/Enchant/Enchant';
-import ENCHANT_STATE from "@/lib/Enchant/Enchant/state";
+import ENCHANT_STATE from '@/lib/Enchant/Enchant/state';
 
-import ToggleService from "@/setup/ToggleService";
+import ToggleService from '@/setup/ToggleService';
 
-import CY from "@utils/Cyteria";
+import CY from '@utils/Cyteria';
 import { trimZero } from '@utils/string';
-import { markText } from "@utils/view";
+import { markText } from '@utils/view';
 
 export default {
   name: 'EnchantResult',
@@ -165,7 +165,7 @@ export default {
       required: true,
     },
   },
-  RegisterLang: "Enchant Simulator",
+  RegisterLang: 'Enchant Simulator',
   setup() {
     const { windows, contents, toggle } = ToggleService({
       windows: ['successRateDetail'],

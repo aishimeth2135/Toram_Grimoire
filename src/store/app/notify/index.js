@@ -1,4 +1,4 @@
-import loading from "./loading.js";
+import loading from './loading.js';
 
 const modules = {
   loading,

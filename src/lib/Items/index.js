@@ -1,5 +1,5 @@
-import { markRaw } from "vue";
-import { Equipment, Crystal } from "./Item";
+import { markRaw } from 'vue';
+import { Equipment, Crystal } from './Item';
 
 export default class {
   constructor() {

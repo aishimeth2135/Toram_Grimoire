@@ -125,9 +125,9 @@
   </section>
 </template>
 <script>
-import { StatBase } from "@/lib/Character/Stat";
+import { StatBase } from '@/lib/Character/Stat';
 
-import vue_statDetailEquipments from "./stat-detail-equipments.vue";
+import vue_statDetailEquipments from './stat-detail-equipments.vue';
 
 export default {
   RegisterLang: {

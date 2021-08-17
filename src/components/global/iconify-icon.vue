@@ -1,7 +1,7 @@
 <script>
 import Iconify from '@iconify/iconify';
 
-import { h } from "vue";
+import { h } from 'vue';
 
 /**
  * List of component properties to map to data- attributes

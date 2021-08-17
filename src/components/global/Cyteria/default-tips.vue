@@ -13,7 +13,7 @@
   </div>
 </template>
 <script>
-import IconSet from "./base/icon-set.vue";
+import IconSet from './base/icon-set.vue';
 
 export default {
   mixins: [IconSet],

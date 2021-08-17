@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import DataContainer from "../utils/DataContainer.js";
+import DataContainer from '../utils/DataContainer.js';
 
 export default {
   inject: ['calcValueStr', 'handleDataContainer'],

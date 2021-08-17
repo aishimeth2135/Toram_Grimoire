@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 
 import { register } from 'register-service-worker';
-import store from "@/store";
-import MessageNotify from "@services/Notify";
-import GetLang from "@services/Language";
+import store from '@/store';
+import MessageNotify from '@services/Notify';
+import GetLang from '@services/Language';
 
 export default function() {
   if (process.env.NODE_ENV === 'production') {

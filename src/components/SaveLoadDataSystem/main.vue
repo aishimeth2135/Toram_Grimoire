@@ -60,10 +60,10 @@
   </div>
 </template>
 <script>
-import CY from "@utils/Cyteria"
-import GetLang from "@services/Language";
+import CY from '@utils/Cyteria'
+import GetLang from '@services/Language';
 
-import init from "./init.js";
+import init from './init.js';
 
 function Lang(s, vs) {
   return GetLang('Save Load System/' + s, vs);

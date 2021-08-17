@@ -1,6 +1,6 @@
-import Grimoire from "@grimoire";
-import { StatBase } from "@/lib/Character/Stat";
-import CY from "@utils/Cyteria";
+import Grimoire from '@grimoire';
+import { StatBase } from '@/lib/Character/Stat';
+import CY from '@utils/Cyteria';
 
 function checkConstructorArgs() {
   Array.from(arguments).forEach((arg, i) => {
@@ -66,7 +66,7 @@ class SkillTreeCategory {
     return this.parent.skillTreeCategorys.indexOf(this);
   }
 }
-SkillTreeCategory.TYPE = Symbol("SkillTreeCategory");
+SkillTreeCategory.TYPE = Symbol('SkillTreeCategory');
 
 
 class SkillTree {
@@ -98,14 +98,14 @@ class SkillTree {
     return this.parent.skillTrees.indexOf(this);
   }
 }
-SkillTree.TYPE = Symbol("SkillTree");
+SkillTree.TYPE = Symbol('SkillTree');
 SkillTree.CATEGORY_TABLE = Symbol();
 SkillTree.CATEGORY_DRAW_TREE = Symbol();
 SkillTree.CATEGORY_EQUIPMENT = Symbol();
 
 
 class SkillBase {
-  constructor(st, id, name, cap = "") {
+  constructor(st, id, name, cap = '') {
     this.parent = st;
     this.id = id;
     this.name = name;
@@ -122,7 +122,7 @@ class SkillBase {
 
 
 class Skill extends SkillBase {
-  constructor(st, id, name, cap = "") {
+  constructor(st, id, name, cap = '') {
     super(st, id, name, cap);
 
     this.effects = [];
@@ -147,7 +147,7 @@ class Skill extends SkillBase {
     return this.defaultEffect !== undefined && this.defaultEffect !== null;
   }
 }
-Skill.TYPE = Symbol("Skill");
+Skill.TYPE = Symbol('Skill');
 Skill.CATEGORY_MAIN = Symbol();
 
 class SkillEffect {
@@ -187,7 +187,7 @@ class SkillEffect {
     return this;
   }
 }
-SkillEffect.TYPE = Symbol("SkillEffect");
+SkillEffect.TYPE = Symbol('SkillEffect');
 SkillEffect.MP_COST = Symbol('mp_cost');
 SkillEffect.RANGE = Symbol('range');
 SkillEffect.SKILL_TYPE = Symbol('skill_type');
@@ -232,7 +232,7 @@ class SkillBranch {
     return CY.object.isEmpty(this.branchAttributes) && this.stats.length == 0;
   }
 }
-SkillBranch.TYPE = Symbol("SkillBranch");
+SkillBranch.TYPE = Symbol('SkillBranch');
 
 
 class LevelSkillTree {

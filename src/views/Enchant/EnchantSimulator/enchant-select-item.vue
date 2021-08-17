@@ -55,11 +55,11 @@
   </cy-window>
 </template>
 <script>
-import { StatBase } from "@/lib/Character/Stat";
+import { StatBase } from '@/lib/Character/Stat';
 
 export default {
   name: 'EnchantSelectItem',
-  RegisterLang: "Enchant Simulator",
+  RegisterLang: 'Enchant Simulator',
   props: {
     visible: {
       type: Boolean,
@@ -84,7 +84,7 @@ export default {
   emits: ['close', 'select-item'],
   data() {
     const types = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
-    const originalCategorys = this.$store.state.datas.enchant.categorys;
+    const originalCategorys = this.$store.state.datas.Enchant.categorys;
     const categorys = originalCategorys.map(category => {
       const items = [];
       category.items.forEach(item => {

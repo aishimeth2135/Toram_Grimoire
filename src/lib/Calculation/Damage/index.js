@@ -1,9 +1,9 @@
-import { markRaw } from "vue";
-import { CalculationBase, CalcItemBaseContainer } from "./Calculation/base";
+import { markRaw } from 'vue';
+import { CalculationBase, CalcItemBaseContainer, CalcStruct, CurrentItemIdGetter } from './Calculation/base';
 
 export default class {
   constructor() {
-    this.damageCalculationBase = null;
+    this.calculationBase = null;
     this.init();
   }
   init() {
@@ -17,6 +17,11 @@ export default class {
      * @param {FactoryCreated} callback
      * @returns {CalcItemBaseContainer}
      */
+    /**
+     * @callback DamageTypeHandlerCallback
+     * @param {boolean} result - true if damage type is "physical"
+     * @returns {string} ItemBase.id
+     */
 
     const base = new CalculationBase();
 
@@ -29,6 +34,22 @@ export default class {
     /** @type {FactoryAlly} */
     const options = (id, callback) => factory(id, CalcItemBaseContainer.TYPE_OPTIONS, callback);
 
+    const utils = {
+      getCurrentDamageTypeId(itemContainer) {
+        return itemContainer.belongCalculation.containers.get('damage_type').base.id;
+      },
+      /**
+       * @param {DamageTypeHandlerCallback} handlerCallback
+       * @returns {CurrentItemIdGetter}
+       */
+      damageTypeHandler(handlerCallback) {
+        return ((itemContainer) => {
+          const currentId = utils.getCurrentDamageTypeId(itemContainer);
+          return handlerCallback(currentId === 'physical');
+        });
+      },
+    };
+
     options('damage_type', container => {
       container.appendItem('physical');
       container.appendItem('magic');
@@ -36,19 +57,30 @@ export default class {
     options('atk/base', container => {
       container.appendItem('atk');
       container.appendItem('matk');
+      container.setGetCurrentItemId(utils.damageTypeHandler(res => res ? 'atk' : 'matk'));
     });
     normal('atk/dual_sword', container => {
       container.appendItem('sub_atk');
       container.appendItem('sub_stability');
       container.setCalcResult((itemContainer) => {
+        const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer);
+        if (currentDamageTypeId !== 'physical') {
+          return 0;
+        }
         const subAtk = itemContainer.getItemValue('sub_atk');
         const subStability = itemContainer.getItemValue('sub_stability');
         return subAtk * subStability / 100;
       });
     });
     normal('atk/two_handed', container => {
-      container.appendItem('skill_level_two_handed');
+      container.appendItem('skill_level_two_handed')
+        .setDefaultValue(0)
+        .setRange(0, 10);
       container.setCalcResult((itemContainer) => {
+        const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer);
+        if (currentDamageTypeId !== 'physical') {
+          return 0;
+        }
         const value = itemContainer.getItemValue('skill_level_two_handed');
         return (100 + value * 5) / 100;
       });
@@ -60,6 +92,7 @@ export default class {
         const value = itemContainer.currentItem.value;
         return (100 - value) / 100;
       });
+      container.setGetCurrentItemId(utils.damageTypeHandler(res => res ? 'target_physical_resistance' : 'target_magic_resistance'));
     });
     normal('level_difference', container => {
       container.appendItem('character_level');
@@ -77,10 +110,12 @@ export default class {
         const value = itemContainer.currentItem.value;
         return -1 * value;
       });
+      container.setGetCurrentItemId(utils.damageTypeHandler(res => res ? 'target_def' : 'target_mdef'));
     });
     options('pierce', container => {
       container.appendItem('physical_pierce');
       container.appendItem('magic_pierce');
+      container.setGetCurrentItemId(utils.damageTypeHandler(res => res ? 'physical_pierce' : 'magic_pierce'));
     });
     normal('skill/constant', container => {
       container.appendItem('skill_constant');
@@ -102,14 +137,21 @@ export default class {
         .setDefaultValue(25)
         .setRange(0, 100, 10)
         .setUnit('%');
-        container.appendItem('magic_critical_rate_conversion_rate');
-        container.appendItem('magic_critical_damage_conversion_rate');
-        container.setCalcResult((itemContainer) => {
-          const currentDamageTypeId = itemContainer.belongCalculation.containers.get('damage_type').base.id;
-          if (currentDamageTypeId === 'physical') {
-            return 0;
-          }
-        });
+      container.appendItem('magic_critical_rate_conversion_rate');
+      container.appendItem('magic_critical_damage_conversion_rate');
+      container.setCalcResult((itemContainer) => {
+        const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer);
+        const cr = itemContainer.getItemValue('critical_rate');
+        const cd = itemContainer.getItemValue('critical_damage');
+        const mcrr = itemContainer.getItemValue('critical_rate');
+        const mcdr = itemContainer.getItemValue('critical_damage');
+        if (currentDamageTypeId === 'physical') {
+          return (cr * cd + (100 - cr)) / 10000;
+        }
+        const mcr = Math.floor(cr * mcrr / 100);
+        const mcd = Math.floor(cd * mcdr / 100);
+        return (mcr * mcd + (100 - mcr)) / 10000;
+      });
     });
     options('range_damage', container => {
       container.appendItem('short_range_damage').initForMultiplier();
@@ -135,6 +177,12 @@ export default class {
         .setRange(50, 250, 50)
         .setUnit('%');
     });
+    normal('combo_multiplier', container => {
+      container.appendItem('combo_multiplier')
+        .setDefaultValue(150)
+        .setRange(10, 150)
+        .setUnit('%');
+    });
     normal('stability', container => {
       container.appendItem('stability')
         .setDefaultValue(75)
@@ -147,14 +195,8 @@ export default class {
       container.setCalcResult((itemContainer) => {
         const stability = itemContainer.getItemValue('stability');
         const grazeProbability = itemContainer.getItemValue('probability_of_graze');
-        return (stability * (100 - grazeProbability) / 100) + (stability * grazeProbability / 200);
+        return (((stability * (100 - grazeProbability) + 100) / 200) + ((stability * grazeProbability / 2 + 100) / 200)) / 100;
       });
-    });
-    normal('combo_multiplier', container => {
-      container.appendItem('combo_multiplier')
-        .setDefaultValue(150)
-        .setRange(10, 150)
-        .setUnit('%');
     });
     normal('other_multiplier', container => {
       container.appendItem('other_multiplier')
@@ -163,7 +205,12 @@ export default class {
         .setUnit('%');
     });
 
+
+    /** @type {CalcStruct} */
     const calcStruct = {
+      options: [
+        'damage_type',
+      ],
       root: {
         operator: '*',
         left: {
@@ -192,12 +239,24 @@ export default class {
             'other_constant',
           ],
         },
-        right: {},
+        right: {
+          operator: '***',
+          list: [
+            'critical',
+            'range_damage',
+            'unsheathe_attack/multiplier',
+            'stronger_against_element',
+            'proration',
+            'combo_multiplier',
+            'stability',
+            'other_multiplier',
+          ],
+        },
       },
     };
 
     base.setCalcStruct(calcStruct);
 
-    this.damageCalculationBase = markRaw(base);
+    this.calculationBase = markRaw(base);
   }
 }

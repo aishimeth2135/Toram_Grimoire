@@ -1,9 +1,9 @@
-import element from "./element.js";
+import element from './element.js';
 
 function create(width = 0, height = 0, attr = {}) {
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   attr = Object.assign({
-    xmlns: "http://www.w3.org/2000/svg",
+    xmlns: 'http://www.w3.org/2000/svg',
     version: '1.1',
     width,
     height,
@@ -14,7 +14,7 @@ function create(width = 0, height = 0, attr = {}) {
 }
 
 function drawText(x, y, content, attr = {}) {
-  const text = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+  const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
   attr = Object.assign({
     x,
     y,
@@ -25,7 +25,7 @@ function drawText(x, y, content, attr = {}) {
 }
 
 function drawCircle(cx, cy, r, attr = {}) {
-  const circle = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+  const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
   attr = Object.assign({
     cx,
     cy,
@@ -36,7 +36,7 @@ function drawCircle(cx, cy, r, attr = {}) {
 }
 
 function drawLine(x1, y1, x2, y2, attr = {}) {
-  const line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
   attr = Object.assign({
     x1,
     y1,
@@ -48,14 +48,14 @@ function drawLine(x1, y1, x2, y2, attr = {}) {
 }
 
 function drawPath(d, attr = {}) {
-  const path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   attr = Object.assign({ d }, attr);
   element.setAttributes(path, attr);
   return path;
 }
 
 function drawSector(cx, cy, startR, endR, startAngle, endAngle, clockwise, attr = {}) {
-  const path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   attr = Object.assign({
     d: getSectorD(cx, cy, startR, endR, startAngle, endAngle, clockwise),
     fill: 'none',
@@ -83,13 +83,13 @@ function createAnimate(attributeName, attr = {}) {
     attributeName,
     repeatCount: 'indefinite',
   }, attr);
-  const ani = document.createElementNS("http://www.w3.org/2000/svg", 'animate');
+  const ani = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
   element.setAttributes(ani, attr);
   return ani;
 }
 
 function drawImage(path, x, y, width, height, attr = {}) {
-  const img = document.createElementNS("http://www.w3.org/2000/svg", 'image');
+  const img = document.createElementNS('http://www.w3.org/2000/svg', 'image');
   attr = Object.assign({
     x,
     y,
@@ -102,13 +102,13 @@ function drawImage(path, x, y, width, height, attr = {}) {
 }
 
 function createEmpty(name, attr = {}) {
-  const ele = document.createElementNS("http://www.w3.org/2000/svg", name);
+  const ele = document.createElementNS('http://www.w3.org/2000/svg', name);
   element.setAttributes(ele, attr);
   return ele;
 }
 
 function createSimpleImagePattern(id, path, width, height, attr = {}, imgattr = {}) {
-  const pat = document.createElementNS("http://www.w3.org/2000/svg", 'pattern');
+  const pat = document.createElementNS('http://www.w3.org/2000/svg', 'pattern');
   attr = Object.assign({
     width,
     height,
@@ -120,7 +120,7 @@ function createSimpleImagePattern(id, path, width, height, attr = {}, imgattr = 
 }
 
 function createLinearGradient(id, x1, y1, x2, y2, stops, attr = {}) {
-  const lg = document.createElementNS("http://www.w3.org/2000/svg", 'linearGradient');
+  const lg = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
   attr = Object.assign({
     id,
     x1,
@@ -134,7 +134,7 @@ function createLinearGradient(id, x1, y1, x2, y2, stops, attr = {}) {
 }
 
 function createRadialGradient(id, cx, cy, r, stops, attr = {}) {
-  const rg = document.createElementNS("http://www.w3.org/2000/svg", 'radialGradient');
+  const rg = document.createElementNS('http://www.w3.org/2000/svg', 'radialGradient');
   attr = Object.assign({
     id,
     cx,

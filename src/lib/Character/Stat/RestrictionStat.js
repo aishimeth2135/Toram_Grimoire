@@ -1,8 +1,8 @@
-import { markRaw } from "vue";
-import Grimoire from "@grimoire";
-import GetLang from "@services/Language";
-import { StatBase, Stat } from "./StatBase.js";
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from "../CharacterEquipment";
+import { markRaw } from 'vue';
+import Grimoire from '@grimoire';
+import GetLang from '@services/Language';
+import { StatBase, Stat } from './StatBase.js';
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from '../CharacterEquipment';
 
 class RestrictionStat extends Stat {
   /**

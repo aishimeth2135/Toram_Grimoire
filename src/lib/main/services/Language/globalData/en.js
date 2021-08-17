@@ -104,7 +104,7 @@ export default function() {
       'init': '初始化',
     },
     'Page Title': {
-      'base': "Cy's Grimoire",
+      'base': 'Cy\'s Grimoire',
       'character-simulator': 'Character Simulator',
       'skill-simulator': 'Skill Simulator',
       'skill-query': 'Skill Info',

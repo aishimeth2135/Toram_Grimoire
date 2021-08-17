@@ -57,22 +57,22 @@
   </div>
 </template>
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters } from 'vuex';
 
-import init from "./init.js";
+import init from './init.js';
 
-import vue_equipmentFields from "./equipments/main.vue";
-import vue_characterStats from "./character-stats/main.vue";
-import vue_character from "./character.vue";
-import vue_skills from "./skill/main.vue";
-import vue_saveLoad from "./save-load.vue";
-import vue_foodBuild from "./food/main.vue";
+import vue_equipmentFields from './equipments/main.vue';
+import vue_characterStats from './character-stats/main.vue';
+import vue_character from './character.vue';
+import vue_skills from './skill/main.vue';
+import vue_saveLoad from './save-load.vue';
+import vue_foodBuild from './food/main.vue';
 
-import { Character, EquipmentField } from "@/lib/Character/Character";
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from "@/lib/Character/CharacterEquipment";
+import { Character, EquipmentField } from '@/lib/Character/Character';
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from '@/lib/Character/CharacterEquipment';
 
-import createSkillState from "@/views/SkillQuery/utils/createSkillState.js";
-import SkillBranchHandler from "./skill/utils/SkillBranchHandler.js";
+import createSkillState from '@/views/SkillQuery/utils/createSkillState.js';
+import SkillBranchHandler from './skill/utils/SkillBranchHandler.js';
 
 export default {
   name: 'CharacterSimulator',
@@ -292,7 +292,7 @@ export default {
       if (!this.currentCharacterState)
         return [];
 
-      const categoryList = this.$store.state.datas.character.characterStatCategoryList;
+      const categoryList = this.$store.state.datas.Character.characterStatCategoryList;
       const chara = this.currentCharacterState.origin.copy();
 
       // let calcFieldNextFunc;

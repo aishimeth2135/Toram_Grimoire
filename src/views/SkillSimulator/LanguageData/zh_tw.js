@@ -41,7 +41,7 @@ export default function() {
       },
       'build': '配置',
       'create build': '新增配置',
-      'no skill tree selected': "還沒有選取任何技能樹喔～",
+      'no skill tree selected': '還沒有選取任何技能樹喔～',
       'no star gem set': '還沒有新增任何星石～',
       'skill tree: show details': '顯示詳細資訊',
       'skill tree: show normal': '顯示簡易資訊',

@@ -347,15 +347,15 @@
   </article>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
-import init from "./init.js";
+import init from './init.js';
 
-import vue_DrawSkillTree from "@/views/SkillSimulator/draw-skill-tree.vue";
-import vue_SkillBranch from "./skill-branch/skill-branch.vue";
+import vue_DrawSkillTree from '@/views/SkillSimulator/draw-skill-tree.vue';
+import vue_SkillBranch from './skill-branch/skill-branch.vue';
 
-import createSkillState from "./utils/createSkillState.js";
-import handleSkillFormula from "./utils/handleFormula.js";
+import createSkillState from './utils/createSkillState.js';
+import handleSkillFormula from './utils/handleFormula.js';
 
 export default {
   RegisterLang: 'Skill Query',
@@ -438,8 +438,8 @@ export default {
   },
   computed: {
     ...mapState({
-      'skillRoot': state => state.datas.skill.skillRoot,
-      'tagList': state => state.datas.tag.tagList,
+      'skillRoot': state => state.datas.Skill.skillRoot,
+      'tagList': state => state.datas.Tag.tagList,
     }),
     drawSkillTreeOptions() {
       return {
@@ -588,7 +588,7 @@ export default {
       return str.replace(/#([^\s]+)\s(\w?)/g, (m, m1, m2) => {
         let res = `<span class="${this.tagState.buttonClassName}">${m1.replace(new RegExp('_', 'g'), ' ')}</span>`;
         if (m2 !== '')
-          res += " " + m2;
+          res += ' ' + m2;
         return res;
       });
     },

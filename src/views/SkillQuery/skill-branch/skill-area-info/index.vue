@@ -55,7 +55,7 @@
   </cy-transition>
 </template>
 <script>
-import vue_skillArea from "./skill-area.vue";
+import vue_skillArea from './skill-area.vue';
 
 export default {
   RegisterLang: 'Skill Query/Branch',

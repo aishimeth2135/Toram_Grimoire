@@ -1,9 +1,9 @@
-import { markRaw } from "vue";
-import Grimoire from "@grimoire";
+import { markRaw } from 'vue';
+import Grimoire from '@grimoire';
 import CharacterSystem from '../index';
-import { StatBase } from "@/lib/Character/Stat";
-import { MainWeapon, SubWeapon, SubArmor } from "@/lib/Character/CharacterEquipment";
-import { handleFormula } from "@utils/data";
+import { StatBase } from '@/lib/Character/Stat';
+import { MainWeapon, SubWeapon, SubArmor } from '@/lib/Character/CharacterEquipment';
+import { handleFormula } from '@utils/data';
 
 class Character {
   static OPTIONAL_BASE_STAT_LIST = ['TEC', 'MEN', 'LUK', 'CRT'];

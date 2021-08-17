@@ -1,5 +1,5 @@
 
-import { CalcItemContainer } from './index';
+import { CalcItemContainer, Calculation } from './index';
 
 /**
  * @callback CalcResult
@@ -7,11 +7,44 @@ import { CalcItemContainer } from './index';
  * @param {CalcItemBaseContainer} baseContainer
  * @returns {number}
  */
+/**
+ * @callback CurrentItemIdGetter
+ * @param {CalcItemContainer} itemContainer
+ * @param {CalcItemBaseContainer} baseContainer
+ * @returns {string}
+ */
 
+/**
+ * @typedef CalcStruct
+ * @type {Object}
+ * @property {CalcStructItem} root
+ * @property {string[]} options
+ */
+/**
+ * @typedef CalcStructItem
+ * @type {CalcStructSingle|CalcStructMultiple|string}
+ */
+/**
+ * @typedef CalcStructSingle
+ * @type {Object}
+ * @property {"*"|"+"} operator
+ * @property {CalcStructItem} left
+ * @property {CalcStructItem} right
+ */
+/**
+ * @typedef CalcStructMultiple
+ * @type {Object}
+ * @property {"***"|"+++"} operator
+ * @property {CalcStructItem[]} list
+ */
+
+/** */
 class CalculationBase {
   constructor() {
     /** @type {Map<string, CalcItemBaseContainer>} */
     this.containers = new Map();
+
+    /** @type {CalcStruct} */
     this.calcStruct = null;
   }
 
@@ -28,10 +61,49 @@ class CalculationBase {
   }
 
   /**
-   * @param {object} struct
+   * @param {CalcStruct} struct
    */
   setCalcStruct(struct) {
     this.calcStruct = struct;
+  }
+
+  /**
+   * @param {string} name
+   * @returns {Calculation}
+   */
+  createCalculation(name) {
+    return new Calculation(this, name);
+  }
+
+  /**
+   * @param {Calculation} calculation
+   */
+  result(calculation) {
+    if (!this.calcStruct) {
+      return 0;
+    }
+    /**
+     * @param {CalcStructItem} item
+     * @returns {number}
+     */
+    const handle = item => {
+      if (typeof item === 'string') {
+        return calculation.containers.get(item).result();
+      }
+      if (item.operator === '+') {
+        return handle(item.left) + handle(item.right);
+      }
+      if (item.operator === '+') {
+        return handle(item.left) * handle(item.right);
+      }
+      if (item.operator === '+++') {
+        return item.list.reduce((cur, subItem) => cur + handle(subItem), 0);
+      }
+      if (item.operator === '***') {
+        return item.list.reduce((cur, subItem) => cur * handle(subItem), 1);
+      }
+    }
+    return handle(this.calcStruct.root);
   }
 }
 
@@ -60,10 +132,8 @@ class CalcItemBaseContainer {
     /** @type {CalcResult} @private */
     this._calcResult = null;
 
-    this.controls = {
-      toggle: true,
-      select: true,
-    };
+    /** @type {CurrentItemIdGetter} */
+    this.getCurrentItemId = null;
   }
 
   /**
@@ -71,6 +141,13 @@ class CalcItemBaseContainer {
    */
    setCalcResult(value) {
     this._calcResult = value;
+  }
+
+  /**
+   * @param {CurrentItemIdGetter} value
+   */
+   setGetCurrentItemId(value) {
+    this.getCurrentItemId = value;
   }
 
   /**

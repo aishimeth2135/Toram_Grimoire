@@ -6,7 +6,7 @@
  */
 function save({ data, fileType = 'text/txt', fileName }) {
   const blob = new Blob([data], { type: fileType + ';charset=utf-8;' });
-  const link = document.createElement("a");
+  const link = document.createElement('a');
 
   const url = URL.createObjectURL(blob);
   link.setAttribute('href', url);

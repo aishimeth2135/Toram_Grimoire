@@ -66,7 +66,7 @@ function selectElementFromChild(el_class, child_node) {
   while (!el_class.every(p => node.classList.contains(p)) && node != document.body)
     node = node.parentNode;
   if (node == document.body)
-    console.error("element not found: [" + el_class.join('.') + ']');
+    console.error('element not found: [' + el_class.join('.') + ']');
   return node;
 }
 

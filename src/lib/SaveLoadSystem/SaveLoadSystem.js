@@ -1,11 +1,11 @@
-import Controller from "./module/Controller.js";
+import Controller from './module/Controller.js';
 
-import { InitLanguageData } from "@services/Language";
+import { InitLanguageData } from '@services/Language';
 
-import zh_tw from "./module/LanguageData/zh_tw.js";
-import en from "./module/LanguageData/en.js";
-import ja from "./module/LanguageData/ja.js";
-import zh_cn from "./module/LanguageData/zh_cn.js";
+import zh_tw from './module/LanguageData/zh_tw.js';
+import en from './module/LanguageData/en.js';
+import ja from './module/LanguageData/ja.js';
+import zh_cn from './module/LanguageData/zh_cn.js';
 
 export default class SaveLoadSystem {
   constructor(){
