@@ -14,31 +14,20 @@ class Calculation {
 
     /** @type {Map<string, CalcItemContainer>} */
     this.containers = new Map();
+
+    this.initContainers();
   }
 
-  /**
-   * @param {Map<string, CalcItemBaseContainer>} containers
-   */
-  initContainers(containers) {
-    for (const container of containers.values()) {
-      const itemContainer = new CalcItemContainer(container);
+  initContainers() {
+    for (const container of this.base.containers.values()) {
+      const itemContainer = new CalcItemContainer(this, container);
       itemContainer.initItems();
       this.containers.set(container.id, itemContainer);
     }
   }
 
   result() {
-    const adds = [], muls = [];
-    for (const container of this.containers.values()) {
-      if (container.base.category === CalcItemBaseContainer.CATEGORY_ADD) {
-        adds.push(container);
-      } else if (container.base.category === CalcItemBaseContainer.CATEGORY_MUL) {
-        muls.push(container);
-      }
-    }
-    const addResult = adds.reduce((cur, item) => cur + item.result(), 0);
-    const result = muls.reduce((cur, item) => cur * item.result() / 100, addResult);
-    return result;
+    return this.base.result(this);
   }
 }
 
@@ -48,7 +37,7 @@ class CalcItemContainer {
    * @param {CalcItemBaseContainer} base
    */
   constructor(parent, base) {
-    /** @type {Calculation} */
+    /** @type {Calculation} @private */
     this._parent = parent;
 
     /** @type {CalcItemBaseContainer} */
@@ -74,16 +63,17 @@ class CalcItemContainer {
         this._currentItemId = item.id;
         flag = false;
       }
-      this.items.set(item.id, item);
+      const newItem = new CalcItem(item);
+      this.items.set(item.id, newItem);
     }
+  }
+
+  get selectable() {
+    return this.base.type === CalcItemBaseContainer.TYPE_OPTIONS && !this.base.getCurrentItemId;
   }
 
   get belongCalculation() {
     return this._parent;
-  }
-
-  get selectable() {
-    return this.base.getCurrentItemId === null;
   }
 
   get currentItem() {
@@ -100,6 +90,13 @@ class CalcItemContainer {
    */
   getItemValue(id) {
     return this.items.get(id).value;
+  }
+
+  /**
+   * @param {string} id
+   */
+  selectItem(id) {
+    this._currentItemId = id;
   }
 
   result() {

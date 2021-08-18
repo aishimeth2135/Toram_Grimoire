@@ -88,7 +88,12 @@ class CalculationBase {
      */
     const handle = item => {
       if (typeof item === 'string') {
-        return calculation.containers.get(item).result();
+        const container = calculation.containers.get(item);
+        const res = container.result();
+        if (!container.enabled) {
+          return container.base.isMultiplier ? container.base.disabledValue / 100 : container.base.disabledValue;
+        }
+        return container.base.isMultiplier ? res / 100 : res;
       }
       if (item.operator === '+') {
         return handle(item.left) + handle(item.right);
@@ -134,6 +139,37 @@ class CalcItemBaseContainer {
 
     /** @type {CurrentItemIdGetter} */
     this.getCurrentItemId = null;
+
+    this.isMultiplier = false;
+
+    /** @type {number} */
+    this._disabledValue = null;
+
+    this.controls = {
+      toggle: true,
+    };
+  }
+
+  get disabledValue() {
+    if (this._disabledValue !== null) {
+      return this._disabledValue;
+    }
+    return this.isMultiplier ? 100 : 0;
+  }
+
+  /**
+   * @param {string} id
+   * @returns {CalcItemBase}
+   */
+  appendItem(id) {
+    const item = new CalcItemBase(this, id);
+    if (this.isMultiplier) {
+      item.setRange(0, null, 10)
+        .setDefaultValue(100)
+        .setUnit('%');
+    }
+    this.items.set(id, item);
+    return item;
   }
 
   /**
@@ -150,14 +186,20 @@ class CalcItemBaseContainer {
     this.getCurrentItemId = value;
   }
 
+  setDisabledValue(value) {
+    this._disabledValue = value;
+  }
+
   /**
-   * @param {string} id
-   * @returns {CalcItemBase}
+   * mark this container is multipler, must call before append items.
+   *
+   * For all items:
+   * - `setRange(0, null, 10)`
+   * - `setDefaultValue(100)`
+   * - `setUnit("%")`
    */
-  appendItem(id) {
-    const item = new CalcItemBase(id);
-    this.items.set(id, item);
-    return item;
+   markMultiplier() {
+    this.isMultiplier = true;
   }
 
   /**
@@ -168,8 +210,7 @@ class CalcItemBaseContainer {
       if (this._calcResult) {
         return this._calcResult(itemContainer, this);
       }
-      const currentItem = itemContainer.currentItem;
-      return currentItem ? currentItem.value : 0;
+      return itemContainer.currentItem.value;
     })();
     return Math.floor(res);
   }
@@ -210,11 +251,11 @@ class CalcItemBase {
 
   /**
    * @param {number} min
-   * @param {number} max
-   * @param {number} step
+   * @param {number} [max=null]
+   * @param {number} [step=1]
    * @returns {CalcItemBase}
    */
-  setRange(min, max, step = 1) {
+  setRange(min, max = null, step = 1) {
     this.min = min;
     this.max = max;
     this.step = step;
@@ -235,20 +276,6 @@ class CalcItemBase {
    */
   setUnit(value) {
     this.unit = value;
-  }
-
-  /**
-   * Ally method to init simple multiplier item.
-   * - `setRange(0, null, 10)`
-   * - `setDefaultValue(100)`
-   * - `setUnit("%")`
-   * @returns {CalcItemBase}
-   */
-  initForMultiplier() {
-    this.setRange(0, null, 10)
-      .setDefaultValue(100)
-      .setUnit('%');
-    return this;
   }
 }
 

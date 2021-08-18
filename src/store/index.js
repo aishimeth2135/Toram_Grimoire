@@ -12,6 +12,7 @@ import datas from './app/datas';
 
 import character from './views/character';
 import enchant from './views/enchant';
+import damageCalculation from './views/damage-calculation';
 
 const store = createStore({
   modules: {
@@ -25,6 +26,7 @@ const store = createStore({
     character,
     enchant,
     confirm,
+    'damage-calculation': damageCalculation,
   },
 });
 

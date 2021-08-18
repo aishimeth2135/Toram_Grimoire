@@ -35,7 +35,7 @@ export default function() {
         'stronger_against_dark': '對暗屬性',
         'target_physical_resistance': '物理抗性',
         'target_magic_resistance': '魔法抗性',
-        'poration': '慣性加成',
+        'proration': '慣性加成',
         'stability': '穩定率',
         'probability_of_graze': 'Graze機率',
         'combo_multiplier': '連擊倍率',

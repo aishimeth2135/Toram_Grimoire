@@ -12,6 +12,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    inline: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['click'],
   computed: {
@@ -19,6 +23,7 @@ export default {
       return {
         'selected': this.selected,
         'disabled': this.disabled,
+        'inline': this.inline,
       };
     },
   },

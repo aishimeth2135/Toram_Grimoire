@@ -43,6 +43,9 @@ export default {
   emits: ['update:selected'],
   methods: {
     handleButtonClick(e) {
+      if (this.disabled) {
+        return;
+      }
       this.$emit('update:selected', !this.selected);
       this.click(e);
     },

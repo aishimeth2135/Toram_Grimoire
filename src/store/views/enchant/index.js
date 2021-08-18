@@ -14,10 +14,6 @@ const storeState = {
   },
 };
 const mutations = {
-  set(state, { target, key, value }) {
-    target[key] = value;
-  },
-
   setConfig(state, sets) {
     Object.entries(sets).forEach(([key, value]) => {
       state.config[key] = value;

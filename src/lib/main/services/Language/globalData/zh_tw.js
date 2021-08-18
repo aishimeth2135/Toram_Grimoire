@@ -107,6 +107,7 @@ export default function() {
       'Skill': '載入技能資料',
       'Tag': '載入標籤清單',
       'Enchant': '載入附魔資料',
+      'DamageCalculation': '載入傷害計算器',
       'init': '初始化',
     },
     'Page Title': {

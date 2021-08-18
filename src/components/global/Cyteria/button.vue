@@ -92,8 +92,6 @@ export default CyButton;
   }
 
   &.disabled {
-    opacity: 0.7;
-
     &::before {
       content: '';
       width: 100%;
@@ -104,7 +102,12 @@ export default CyButton;
       position: absolute;
       left: 0;
       top: 0;
+      @apply bg-white bg-opacity-50;
     }
+  }
+
+  &.inline {
+    @apply p-0 m-0 border-0;
   }
 }
 </style>

@@ -3,7 +3,7 @@
     ref="rootElement"
     class="cy--icon-text inline-flex"
     :class="rootClass"
-    :style="colorSetStyle"
+    :style="rootStyle"
   >
     <cy-icon :icon="icon" :src="iconSrc" class="icon" />
     <span v-if="$slots['default']" class="text">
@@ -42,6 +42,10 @@ export default {
         return ['normal', 'small'].includes(v);
       },
     },
+    iconWidth: {
+      type: String,
+      default: null,
+    },
   },
   setup() {
     const rootElement = ref(null);
@@ -50,6 +54,15 @@ export default {
     };
   },
   computed: {
+    rootStyle() {
+      if (this.iconWidth) {
+        return {
+          ...this.colorSetStyle,
+          '--icon-width': this.iconWidth,
+        };
+      }
+      return this.colorSetStyle;
+    },
     rootClass() {
       return {
         'is-item': this.type === 'item',

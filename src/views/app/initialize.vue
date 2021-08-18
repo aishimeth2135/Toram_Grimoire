@@ -100,7 +100,7 @@ export default {
             animation: loading-circle 0.8s ease infinite;
           }
           &.error {
-            --icon-color: var(--red);
+            --icon-color: var(--primary-red);
           }
         }
       }

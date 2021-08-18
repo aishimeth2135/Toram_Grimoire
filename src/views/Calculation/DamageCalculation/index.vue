@@ -1,36 +1,45 @@
 <template>
-  <section></section>
+  <section>
+    <div class="max-w-full overflow-x-auto">
+      <div v-if="currentCalculation" class="min-w-max">
+        <DamageCalculationItem
+          :calc-struct-item="currentCalculation.base.calcStruct.root"
+          root
+        />
+      </div>
+    </div>
+    <div class="sticky bottom-4">
+      <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center flex-wrap bg-white">
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
-import { computed, ref, ComputedRef, Ref } from 'vue';
+import { computed, ComputedRef } from 'vue';
 import { useStore } from 'vuex';
+import init from './init.js';
 
-import { CalculationBase } from '@/lib/Calculation/Damage/Calculation/base';
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
+
+import vue_DamageCalculationItem from './damage-calculation-item';
 
 export default {
   name: 'DamageCalculation',
+  components: {
+    DamageCalculationItem: vue_DamageCalculationItem,
+  },
   setup() {
+    init();
+
     const store = useStore();
-    /** @type {CalculationBase} */
-    const calculationBase = store.state.datas.DamageCalculation.calculationBase;
-
-    /** @type {Ref<Calculation[]>} */
-    const calculations = ref([]);
-
-    const currentCalculationIndex = ref(-1);
-
     /** @param {string} name */
-    const createCalculation = (name) => {
-      calculations.value.push(calculationBase.createCalculation(name));
-      currentCalculationIndex.value += 1;
-    };
+    const createCalculation = (name) => store.dispatch('damage-calculation/createCalculation', { name });
 
     /** @type {ComputedRef<Calculation>} */
-    const currentCalculation = computed(() => {
-      return calculations.value[currentCalculationIndex];
-    });
+    const currentCalculation = computed(() => store.getters['damage-calculation/currentCalculation']);
+
+    createCalculation('TEST 1');
 
     return {
       createCalculation,

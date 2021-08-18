@@ -3,7 +3,7 @@
     v-if="items.length !== 0"
     class="fixed w-full h-full z-100 top-0 left-0"
   >
-    <div class="absolute w-full h-full bg-black opacity-30 z-n1" />
+    <div class="absolute w-full h-full bg-black opacity-30 -z-1" />
     <div class="w-full h-full flex items-center justify-center">
       <div class="w-full max-w-sm max-h-full overflow-y-auto border border-light-2 bg-white p-6 m-4 animate-slide-up">
         <div class="mb-6 flex">

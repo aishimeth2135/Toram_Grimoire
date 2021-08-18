@@ -1,3 +1,43 @@
+function createColorConfig(varName) {
+  const handleValue = !varName ?
+    (colorName, primary = true) => `var(--${primary ? 'primary-' : ''}${colorName})` :
+    (colorName, primary = true) => `rgba(var(--rgb-${primary ? 'primary-' : ''}${colorName}), var(${varName}, 1))`;
+  return {
+    light: {
+      DEFAULT: handleValue('light'),
+      2: handleValue('light-2'),
+      3: handleValue('light-3'),
+      4: handleValue('light-4'),
+    },
+    dark: {
+      DEFAULT: handleValue('dark'),
+      light: handleValue('dark-light'),
+    },
+    white: handleValue('white', false),
+    black: handleValue('black', false),
+    red: {
+      DEFAULT: handleValue('red'),
+      light: handleValue('red-light'),
+    },
+    purple: handleValue('purple'),
+    'water-blue': {
+      DEFAULT: handleValue('water-blue'),
+      light: handleValue('water-blue-light'),
+    },
+    orange: {
+      DEFAULT: handleValue('orange'),
+      light: handleValue('orange-light'),
+    },
+    green: handleValue('green'),
+    gray: {
+      DEFAULT: handleValue('gray'),
+      light: handleValue('gray-light'),
+    },
+    transparent: 'transparent',
+    current: 'currentcolor',
+  };
+}
+
 module.exports = {
   purge: {
     enabled: true,
@@ -5,34 +45,10 @@ module.exports = {
     layers: ['base', 'components'],
   },
   theme: {
-    colors: {
-      light: {
-        DEFAULT: 'var(--primary-light)',
-        2: 'var(--primary-light-2)',
-        3: 'var(--primary-light-3)',
-        4: 'var(--primary-light-4)',
-      },
-      dark: 'var(--primary-dark)',
-      white: 'var(--white)',
-      black: 'var(--black)',
-      red: {
-        DEFAULT: 'var(--primary-red)',
-        light: 'var(--primary-red-light)',
-      },
-      purple: 'var(--primary-purple)',
-      'water-blue': {
-        DEFAULT: 'var(--primary-water-blue)',
-        light: 'var(--primary-water-blue-light)',
-      },
-      orange: {
-        DEFAULT: 'var(--primary-orange)',
-        light: 'var(--primary-orange-light)',
-      },
-      green: 'var(--primary-green)',
-      gray: 'var(--primary-gray)',
-      transparent: 'transparent',
-      current: 'currentcolor',
-    },
+    colors: createColorConfig(),
+    textColor: createColorConfig('--tw-text-opacity'),
+    backgroundColor: createColorConfig('--tw-bg-opacity'),
+    borderColor: createColorConfig('--tw-border-opacity'),
     borderWidth: {
       DEFAULT: '1px',
       '0': '0',
@@ -44,7 +60,7 @@ module.exports = {
       '8': '0.8rem',
     },
     zIndex: {
-      'n1': '-1',
+      '-1': '-1',
       '1': '1',
       '5': '5',
       '10': '10',

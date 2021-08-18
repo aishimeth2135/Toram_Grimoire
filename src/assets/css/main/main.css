@@ -16,18 +16,32 @@
   --primary-orange: #de761b;
   --primary-orange-light: #edcbad;
   --primary-green: #29d940;
-  --white: #fff;
-  --primary-white: #fff;
-  --black: #000;
-  --red: red;
   --primary-red: #f54747;
   --primary-red-light: #f09797;
+  --white: #fff;
+  --black: #000;
 
-  --rgb-white: 255, 255, 255;
-  --rgb-black: 0, 0, 0;
+  --rgb-primary-dark: 133, 0, 95;
+  --primary-dark-light: 198, 40, 153;
   --rgb-primary-light: 255, 209, 234;
   --rgb-primary-light-2: 247, 168, 211;
-  --rgb-primary-dark: 133, 0, 95;
+  --rgb-primary-light-3: 255, 95, 183;
+  --rgb-primary-light-4: 255, 0, 141;
+  --rgb-primary-purple: 156, 39, 176;
+  --rgb-primary-purple-light: 200, 115, 215;
+  --rgb-primary-water-blue-light: 154, 203, 243;
+  --rgb-primary-water-blue: 33, 150, 243;
+  --rgb-primary-gray: 136, 136, 136;
+  --rgb-primary-gray-light: 221, 221, 221;
+  --rgb-primary-blue-green: 0, 150, 136;
+  --rgb-primary-blue-green-light: 103, 209, 199;
+  --rgb-primary-orange: 222, 118, 27;
+  --rgb-primary-orange-light: 237, 203, 173;
+  --rgb-primary-green: 41, 217, 64;
+  --rgb-primary-red: 245, 71, 71;
+  --rgb-primary-red-light: 240, 151, 151;
+  --rgb-white: 255, 255, 255;
+  --rgb-black: 0, 0, 0;
 }
 
 .main--font-base {
@@ -43,7 +57,7 @@
 }
 
 .night-mode {
-  --primary-dark: white;
+  --primary-dark: #fff;
   --primary-dark-light: #FFD1EA;
   --primary-light: #8a225d;
   --primary-light-2: #a25b82;
@@ -60,18 +74,31 @@
   --primary-orange: #edcbad;
   --primary-orange-light: #7e542f;
   --primary-green: #bff5c6;
-  --white: #000;
-  --primary-white: #000;
-  --black: #fff;
-  --red: red;
   --primary-red: #f97777;
   --primary-red-light: #802828;
+  --white: #000;
+  --black: #fff;
 
-  --rgb-white: 0, 0, 0;
-  --rgb-black: 255, 255, 255;
+  --rgb-primary-dark: 255, 255, 255;
   --rgb-primary-light: 109, 23, 72;
   --rgb-primary-light-2: 162, 91, 130;
-  --rgb-primary-dark: 255, 255, 255;
+  --primary-light-3: 247, 168, 211;
+  --primary-light-4: 255, 189, 225;
+  --primary-purple: 232, 202, 237;
+  --primary-purple-light: 179, 87, 195;
+  --primary-water-blue-light: 48, 124, 185;
+  --primary-water-blue: 174, 209, 239;
+  --primary-gray: 170, 170, 170;
+  --primary-gray-light: 85, 85, 85;
+  --primary-blue-green: 129, 222, 213;
+  --primary-blue-green-light: 26, 103, 96;
+  --primary-orange: 237, 203, 173;
+  --primary-orange-light: 126, 84, 47;
+  --primary-green: 191, 245, 198;
+  --primary-red: 249, 119, 119;
+  --primary-red-light: 128, 40, 40;
+  --rgb-white: 0, 0, 0;
+  --rgb-black: 255, 255, 255;
 }
 
 html {
@@ -97,7 +124,7 @@ html {
   &.font-1 {
     @apply main--font-1;
 
-    & input, textarea {
+    & input, & textarea {
       @apply main--font-1;
     }
   }

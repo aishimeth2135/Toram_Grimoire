@@ -3,13 +3,13 @@ import app from './app.vue';
 import GetLang from '@services/Language';
 import ViewInit from '@services/ViewInit.js';
 
-const vue_DamageCalculatiom = () => import(/* webpackChunkName: "calculation-damage" */ '@/views/Calculation/DamageCalculation');
+const vue_damageCalc = () => import(/* webpackChunkName: "calculation-damage-old" */ '@/views/Calculation/damage');
 
 export default {
-  path: '/damage-calculation',
+  path: '/damage',
   component: app,
   beforeEnter(to, from, next) {
-    ViewInit('DamageCalculation').then(next);
+    ViewInit().then(next);
   },
   meta: {
     leftMenuViewButtons: [{
@@ -20,7 +20,7 @@ export default {
   },
   children: [{
     path: '',
-    component: vue_DamageCalculatiom,
+    component: vue_damageCalc,
     meta: {
       title: () => GetLang('Page Title/calculation/damage'),
     },

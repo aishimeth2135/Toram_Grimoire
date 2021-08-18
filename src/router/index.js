@@ -5,8 +5,9 @@ import Character from './Character';
 import Home from './Home';
 import Skill from './Skill';
 import Items from './Items';
-import DamageCalc from './Calculation/damage';
+import DamageCalcOld from './Calculation/DamageOld';
 import Enchant from './Enchant';
+import DamageCalculation from './Calculation/Damage';
 
 import Page404 from './Page404';
 import Bubble from './Bubble';
@@ -20,10 +21,11 @@ const routes = [
   Character,
   Skill,
   Items,
-  DamageCalc,
+  DamageCalcOld,
   Enchant,
   Page404,
   Bubble,
+  DamageCalculation,
 ];
 
 const router = createRouter({
