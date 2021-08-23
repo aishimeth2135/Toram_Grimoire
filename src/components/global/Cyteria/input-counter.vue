@@ -2,7 +2,8 @@
   <div class="cy--input-counter-container">
     <div
       class="cy--input-counter border bg-white duration-300 outline-none"
-      :class="conunterClassList"
+      :class="rootClassList"
+      :style="rootStyle"
     >
       <div v-if="$slots['title']" class="title">
         <slot name="title" />
@@ -94,6 +95,10 @@ export default {
       default: 'light-2',
       validation: v => ColorList.includes(v),
     },
+    inputWidth: {
+      type: String,
+      default: null,
+    },
   },
   emits: ['update:value'],
   data() {
@@ -102,7 +107,7 @@ export default {
     };
   },
   computed: {
-    conunterClassList() {
+    rootClassList() {
       return {
         'line': this.type === 'line',
         'inline': this.inline,
@@ -112,6 +117,13 @@ export default {
         ['ring-' + this.mainColorInstance.darken]: !this.inline && this.focus,
         'ring-1': !this.inline && this.focus,
       };
+    },
+    rootStyle() {
+      const style = {};
+      if (this.inputWidth !== null) {
+        style['--input-width'] = this.inputWidth;
+      }
+      return style;
     },
     mainColorInstance() {
       return new Color(this.mainColor);

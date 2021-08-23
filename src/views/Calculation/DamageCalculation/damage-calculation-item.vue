@@ -5,7 +5,7 @@
     :style="{ 'margin-left': ((4 - layer) * 0.5) + 'rem' }"
   >
     <div class="flex items-center">
-      <div class="p-2 w-16 text-center rounded-md bg-light bg-opacity-30 text-purple">
+      <div class="p-2 w-20 text-center rounded-md bg-light bg-opacity-30 text-purple">
         {{ currentContainerResult }}
       </div>
       <cy-button-check
@@ -20,6 +20,7 @@
         :key="item.base.id"
         :range="[item.base.min, item.base.max]"
         :value="item.value"
+        input-width="3rem"
         @update:value="setItemValue({ item, value: $event })"
       >
         <template #title>
@@ -55,7 +56,7 @@
             :icon="calcStructItem.operator === '+' ? 'mono-icons:add' : 'eva:close-fill'"
             icon-width="2rem"
             class="mt-1"
-            :style="{ 'margin-left': ((5 - layer) * 0.5) + 'rem' }"
+            :style="{ 'margin-left': ((6 - layer) * 0.5) + 'rem' }"
           />
         </div>
         <DamageCalculationItem :calc-struct-item="calcStructItem.right" :layer="layer + 1" />
@@ -67,7 +68,7 @@
               :icon="calcStructItem.operator === '+++' ? 'mono-icons:add' : 'eva:close-fill'"
               icon-width="2rem"
               class="mt-1"
-              :style="{ 'margin-left': ((5 - layer) * 0.5) + 'rem' }"
+              :style="{ 'margin-left': ((6 - layer) * 0.5) + 'rem' }"
             />
           </div>
           <DamageCalculationItem :calc-struct-item="structItem" :layer="layer + 1" />
@@ -81,6 +82,7 @@
 import { computed, ComputedRef, toRefs } from 'vue';
 import { mapMutations, useStore } from 'vuex';
 
+import { numberToFixed } from '@utils/number';
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
 
 export default {
@@ -117,7 +119,10 @@ export default {
     const currentContainerResult = computed(() => {
       if (currentContainer.value) {
         const container = currentContainer.value;
-        const res = container.result();
+        let res = container.result();
+        if (!container.base.floorResult) {
+          res = numberToFixed(res, 2);
+        }
         return container.base.isMultiplier ? res + '%' : res;
       }
       return 0;

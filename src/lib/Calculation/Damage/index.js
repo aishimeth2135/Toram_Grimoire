@@ -55,8 +55,8 @@ export default class {
       container.appendItem('magic');
     });
     options('atk/base', container => {
-      container.appendItem('atk');
-      container.appendItem('matk');
+      container.appendItem('atk').setDefaultValue(1000);
+      container.appendItem('matk').setDefaultValue(1000);
       container.setGetCurrentItemId(utils.damageTypeHandler(res => res ? 'atk' : 'matk'));
       container.controls.toggle = false;
     });
@@ -144,6 +144,7 @@ export default class {
 
     normal('critical', container => {
       container.markMultiplier();
+      container.disableFloorResult();
       container.appendItem('critical_damage')
         .setDefaultValue(150);
       container.appendItem('critical_rate')
@@ -158,11 +159,11 @@ export default class {
         const mcrr = itemContainer.getItemValue('critical_rate');
         const mcdr = itemContainer.getItemValue('critical_damage');
         if (currentDamageTypeId === 'physical') {
-          return (cr * cd + (100 - cr)) / 10000;
+          return (cr * cd + (100 - cr)) / 100;
         }
         const mcr = Math.floor(cr * mcrr / 100);
         const mcd = Math.floor(cd * mcdr / 100);
-        return (mcr * mcd + (100 - mcr)) / 10000;
+        return (mcr * mcd + (100 - mcr)) / 100;
       });
     });
     options('range_damage', container => {
@@ -199,6 +200,7 @@ export default class {
     });
     normal('stability', container => {
       container.markMultiplier();
+      container.disableFloorResult();
       container.appendItem('stability')
         .setDefaultValue(75)
         .setRange(0, 100, 10)
@@ -208,7 +210,7 @@ export default class {
       container.setCalcResult((itemContainer) => {
         const stability = itemContainer.getItemValue('stability');
         const grazeProbability = itemContainer.getItemValue('probability_of_graze');
-        return (((stability * (100 - grazeProbability) + 100) / 200) + ((stability * grazeProbability / 2 + 100) / 200)) / 100;
+        return ((stability + 100) / 200)  * (100 - grazeProbability) + ((stability / 2 + 100) / 200) * grazeProbability;
       });
     });
     normal('other_multiplier', container => {

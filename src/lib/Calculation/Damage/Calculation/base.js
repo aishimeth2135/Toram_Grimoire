@@ -98,7 +98,7 @@ class CalculationBase {
       if (item.operator === '+') {
         return handle(item.left) + handle(item.right);
       }
-      if (item.operator === '+') {
+      if (item.operator === '*') {
         return handle(item.left) * handle(item.right);
       }
       if (item.operator === '+++') {
@@ -107,8 +107,9 @@ class CalculationBase {
       if (item.operator === '***') {
         return item.list.reduce((cur, subItem) => cur * handle(subItem), 1);
       }
-    }
-    return handle(this.calcStruct.root);
+      console.warn('[DamageCalculation.result] Invalid CalcItem:', item);
+    };
+    return Math.floor(handle(this.calcStruct.root));
   }
 }
 
@@ -134,13 +135,15 @@ class CalcItemBaseContainer {
     /** @type {Map<string, CalcItemBase>} */
     this.items = new Map();
 
-    /** @type {CalcResult} @private */
-    this._calcResult = null;
-
     /** @type {CurrentItemIdGetter} */
     this.getCurrentItemId = null;
 
     this.isMultiplier = false;
+
+    this.floorResult = false;
+
+    /** @type {CalcResult} @private */
+    this._calcResult = null;
 
     /** @type {number} */
     this._disabledValue = null;
@@ -202,6 +205,10 @@ class CalcItemBaseContainer {
     this.isMultiplier = true;
   }
 
+  disableFloorResult() {
+    this.floorResult = false;
+  }
+
   /**
    * @param {CalcItemContainer} itemContainer
    */
@@ -212,7 +219,7 @@ class CalcItemBaseContainer {
       }
       return itemContainer.currentItem.value;
     })();
-    return Math.floor(res);
+    return this.floorResult ? Math.floor(res) : res;
   }
 }
 
@@ -233,10 +240,10 @@ class CalcItemBase {
     this.unit = null;
 
     /** @type {number} */
-    this.min = null;
+    this.min = -9999;
 
     /** @type {number} */
-    this.max = null;
+    this.max = 9999;
 
     /** @type {number} */
     this.step = 1;

@@ -1,6 +1,9 @@
 export default function() {
   return {
     'Damage Calculation': {
+      'result': {
+        'expected value': '傷害期望值',
+      },
       'item base: title': {
         'physical_damage': '物理傷害',
         'magic_damage': '魔法傷害',
