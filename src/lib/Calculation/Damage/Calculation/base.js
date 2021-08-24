@@ -15,12 +15,6 @@ import { CalcItemContainer, Calculation } from './index';
  */
 
 /**
- * @typedef CalcStruct
- * @type {Object}
- * @property {CalcStructItem} root
- * @property {string[]} options
- */
-/**
  * @typedef CalcStructItem
  * @type {CalcStructSingle|CalcStructMultiple|string}
  */
@@ -43,9 +37,6 @@ class CalculationBase {
   constructor() {
     /** @type {Map<string, CalcItemBaseContainer>} */
     this.containers = new Map();
-
-    /** @type {CalcStruct} */
-    this.calcStruct = null;
   }
 
   /**
@@ -61,13 +52,6 @@ class CalculationBase {
   }
 
   /**
-   * @param {CalcStruct} struct
-   */
-  setCalcStruct(struct) {
-    this.calcStruct = struct;
-  }
-
-  /**
    * @param {string} name
    * @returns {Calculation}
    */
@@ -77,9 +61,10 @@ class CalculationBase {
 
   /**
    * @param {Calculation} calculation
+   * @param {CalcStructItem} calcStruct
    */
-  result(calculation) {
-    if (!this.calcStruct) {
+  result(calculation, calcStruct) {
+    if (!calcStruct) {
       return 0;
     }
     /**
@@ -109,7 +94,7 @@ class CalculationBase {
       }
       console.warn('[DamageCalculation.result] Invalid CalcItem:', item);
     };
-    return Math.floor(handle(this.calcStruct.root));
+    return Math.floor(handle(calcStruct));
   }
 }
 
@@ -141,6 +126,8 @@ class CalcItemBaseContainer {
     this.isMultiplier = false;
 
     this.floorResult = false;
+
+    this.enabledDefaultValue = true;
 
     /** @type {CalcResult} @private */
     this._calcResult = null;
@@ -207,6 +194,10 @@ class CalcItemBaseContainer {
 
   disableFloorResult() {
     this.floorResult = false;
+  }
+
+  defaultDisabled() {
+    this.enabledDefaultValue = false;
   }
 
   /**

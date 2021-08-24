@@ -96,6 +96,10 @@ export default function() {
           'ex_skill': 'EX技能',
         },
       },
+      'Auto Save': {
+        'message: unknow error when save': '自動存檔時發生未知的錯誤。',
+        'message: unknow error when load': '自動讀取時發生未知的錯誤。',
+      },
     },
     'Loading Page': {
       'bottom tips': '初次載入需要較長的時間，請稍後...<br />若載入途中發生錯誤，請先試著重新整理網頁。',

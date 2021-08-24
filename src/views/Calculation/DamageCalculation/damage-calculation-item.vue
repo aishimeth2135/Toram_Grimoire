@@ -5,7 +5,10 @@
     :style="{ 'margin-left': ((4 - layer) * 0.5) + 'rem' }"
   >
     <div class="flex items-center">
-      <div class="p-2 w-20 text-center rounded-md bg-light bg-opacity-30 text-purple">
+      <div
+        class="p-2 w-20 text-center rounded-md bg-light bg-opacity-30 text-purple"
+        :class="{ 'opacity-60': !currentContainer.enabled }"
+      >
         {{ currentContainerResult }}
       </div>
       <cy-button-check
@@ -14,7 +17,7 @@
         @update:selected="setContainerEnabled({ container: currentContainer, value: $event })"
       />
     </div>
-    <div class="space-y-2">
+    <div class="space-y-2" :class="{ 'opacity-60': !currentContainer.enabled }">
       <cy-input-counter
         v-for="item in currentContainerItems"
         :key="item.base.id"
@@ -25,7 +28,7 @@
       >
         <template #title>
           <cy-icon-text v-if="!currentContainer.selectable">
-            {{ $lang('item base: title/' + item.base.id) }}
+            <span v-html="markText($lang('item base: title/' + item.base.id))"></span>
           </cy-icon-text>
           <cy-button-check
             v-else
@@ -83,6 +86,7 @@ import { computed, ComputedRef, toRefs } from 'vue';
 import { mapMutations, useStore } from 'vuex';
 
 import { numberToFixed } from '@utils/number';
+import { markText } from '@utils/view';
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
 
 export default {
@@ -163,6 +167,7 @@ export default {
       currentContainerResult,
       currentContainerItems,
       calcItemListIds,
+      markText,
     };
   },
   methods: {

@@ -1,12 +1,20 @@
 <template>
-  <section>
+  <section class="flex flex-col">
     <div class="max-w-full overflow-x-auto">
       <div v-if="currentCalculation" class="min-w-max">
         <DamageCalculationItem
-          :calc-struct-item="currentCalculation.base.calcStruct.root"
+          :calc-struct-item="currentCalcStruct"
           root
         />
       </div>
+    </div>
+    <div
+      class="flex items-end ml-auto sticky z-10 px-4"
+      style="bottom: 4rem"
+    >
+      <cy-button-border icon="heroicons-outline:switch-vertical" @click="toggleMode">
+        {{ $lang('mode/' + currentMode) }}
+      </cy-button-border>
     </div>
     <div class="sticky bottom-4">
       <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center flex-wrap bg-white">
@@ -20,10 +28,12 @@
 </template>
 
 <script>
-import { computed, ComputedRef } from 'vue';
+import { computed, ComputedRef, readonly, ref } from 'vue';
 import { useStore } from 'vuex';
 import init from './init.js';
+import AutoSave from '@/setup/AutoSave';
 
+import { calcStructCritical, calcStructWithoutCritical } from './consts';
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
 
 import vue_DamageCalculationItem from './damage-calculation-item';
@@ -38,20 +48,32 @@ export default {
     init();
 
     const store = useStore();
+
+    AutoSave({
+      save: () => store.dispatch('damage-calculation/save'),
+      loadFirst: () => store.dispatch('damage-calculation/load'),
+    });
+
+    const mode = ref('critical');
+
+    const toggleMode = () => mode.value = mode.value === 'critical' ? 'without_critical' : 'critical';
+
     /** @param {string} name */
     const createCalculation = (name) => store.dispatch('damage-calculation/createCalculation', { name });
 
     /** @type {ComputedRef<Calculation>} */
     const currentCalculation = computed(() => store.getters['damage-calculation/currentCalculation']);
 
-    const expectedResult = computed(() => currentCalculation.value.result());
-
-    createCalculation('TEST 1');
+    const currentCalcStruct = computed(() => mode.value === 'critical' ? calcStructCritical : calcStructWithoutCritical);
+    const expectedResult = computed(() => currentCalculation.value.result(currentCalcStruct.value));
 
     return {
       createCalculation,
       currentCalculation,
+      currentCalcStruct,
       expectedResult,
+      toggleMode,
+      currentMode: readonly(mode),
     };
   },
 };

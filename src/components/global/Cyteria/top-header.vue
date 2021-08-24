@@ -1,26 +1,17 @@
 <template>
-  <div class="sticky-header">
+  <div class="cy--top-header">
     <div class="content">
       <slot />
-      <div v-if="$slots['float-menu']" class="float-menu">
-        <div class="menu-container">
-          <slot name="float-menu" />
-        </div>
-      </div>
-      <div class="buttons-scope">
-        <slot name="buttons-scope" />
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-};
+export default {};
 </script>
 
 <style lang="postcss" scoped>
-.sticky-header {
+.cy--top-header {
 	--shadow-height: 1rem;
 	--container-height: 4rem;
 	--shadow-mask-color: var(--white);
@@ -59,29 +50,6 @@ export default {
 		white-space: nowrap;
 		overflow-y: visible;
 		padding: 0 0.4rem;
-
-		& > .float-menu {
-			position: absolute;
-			top: 0.2rem;
-			right: 0.1rem;
-			z-index: 5;
-
-			& > .menu-container {
-				border: 1px solid var(--primary-light-2);
-				background-color: var(--white);
-				width: 40rem;
-				max-width: calc(100vw - 1rem);
-				max-height: calc(100vh - 5rem);
-				overflow-y: auto;
-				white-space: normal;
-			}
-		}
-
-		& > .buttons-scope {
-			margin-left: auto;
-			margin-right: 0.4rem;
-			z-index: 6;
-		}
 	}
 }
 </style>

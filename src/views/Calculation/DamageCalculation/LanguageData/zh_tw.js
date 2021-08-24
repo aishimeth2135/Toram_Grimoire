@@ -1,8 +1,13 @@
 export default function() {
   return {
     'Damage Calculation': {
+      'build': '配置',
       'result': {
         'expected value': '傷害期望值',
+      },
+      'mode': {
+        'critical': '暴擊時傷害',
+        'without_critical': '無暴擊時傷害',
       },
       'item base: title': {
         'physical_damage': '物理傷害',
@@ -11,7 +16,7 @@ export default function() {
         'matk': 'MATK',
         'sub_atk': '副手ATK',
         'sub_stability': '副手倍率',
-        'skill_level_two_handed': '((雙手合持))等級',
+        'skill_level_two_handed': '((!雙手合持))等級',
         'character_level': '角色等級',
         'target_level': '目標等級',
         'target_def': '目標DEF',
@@ -41,6 +46,7 @@ export default function() {
         'proration': '慣性加成',
         'stability': '穩定率',
         'probability_of_graze': 'Graze機率',
+        'skill_level_long_range': '((!遠程狙擊))等級',
         'combo_multiplier': '連擊倍率',
         'other_multiplier': '其它倍率',
       },

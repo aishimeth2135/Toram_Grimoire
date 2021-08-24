@@ -1,4 +1,4 @@
-import { CalculationBase, CalcItemBase, CalcItemBaseContainer } from './base';
+import { CalculationBase, CalcItemBase, CalcItemBaseContainer, CalcStructItem } from './base';
 
 class Calculation {
   /**
@@ -26,8 +26,54 @@ class Calculation {
     }
   }
 
-  result() {
-    return this.base.result(this);
+  /**
+   * @param {CalcStructItem} calcStruct
+   * @returns {number}
+   */
+  result(calcStruct) {
+    return this.base.result(this, calcStruct);
+  }
+
+  save() {
+    const containers = Array.from(this.containers.values()).map(container => {
+      const items = Array.from(container.items.values()).map(item => ({
+        id: item.base.id,
+        value: item.value,
+      }));
+      return {
+        id: container.base.id,
+        items,
+        enabled: container.enabled,
+        currentItemId: container.selectable ? container.currentItem.base.id : null,
+      };
+    });
+    return {
+      name: this.name,
+      containers,
+    };
+  }
+
+  load(data) {
+    this.name = data.name;
+    data.containers.forEach(containerData => {
+      const container = this.containers.get(containerData.id);
+      if (!container) {
+        console.warn(`[DamageCalculation.load] Container.id: ${containerData.id} is not exist`);
+        return;
+      }
+      container.enabled = containerData.enabled;
+      if (containerData.currentItemId !== null) {
+        container.selectItem(containerData.currentItemId);
+      }
+      containerData.items.forEach(itemData => {
+        const item = container.items.get(itemData.id);
+        if (!item) {
+          console.warn(`[DamageCalculation.load] Item.id: ${itemData.id} is not exist`);
+          return;
+        }
+        item.value = itemData.value;
+      });
+    });
   }
 }
 
@@ -44,7 +90,7 @@ class CalcItemContainer {
     this.base = base;
 
     /** @type {boolean} */
-    this.enabled = true;
+    this.enabled = base.enabledDefaultValue;
 
     /** @type {Map<string, CalcItem>} */
     this.items = new Map();
@@ -114,9 +160,6 @@ class CalcItem {
 
     /** @type {number} @private */
     this._value = base.defaultValue;
-
-    /** @type {boolean} @private */
-    this._enabled = true;
   }
 
   get value() {
@@ -132,14 +175,6 @@ class CalcItem {
     value = max !== null && value > max ? max : value;
     value = min !== null && value < min ? min : value;
     this._value = value;
-  }
-
-  get enabled() {
-    return this._enabled;
-  }
-
-  toggle() {
-    this._enabled = !this._enabled;
   }
 }
 
