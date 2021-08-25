@@ -28,6 +28,9 @@ module.exports = {
     plugins: [
       // new BundleAnalyzerPlugin(),
     ],
+    externals: {
+      vue: 'Vue',
+    },
   },
 
   pwa: {

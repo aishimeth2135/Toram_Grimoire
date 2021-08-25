@@ -3,9 +3,9 @@ import { CalculationBase, CalcItemBase, CalcItemBaseContainer, CalcStructItem } 
 class Calculation {
   /**
    * @param {CalculationBase} base
-   * @param {string} name
+   * @param {string} [name]
    */
-  constructor(base, name) {
+  constructor(base, name = '') {
     /** @type {CalculationBase} */
     this.base = base;
 
@@ -74,6 +74,13 @@ class Calculation {
         item.value = itemData.value;
       });
     });
+  }
+
+  copy() {
+    const calculation = this.base.createCalculation();
+    calculation.load(this.save());
+    calculation.name = this.name + '*';
+    return calculation;
   }
 }
 

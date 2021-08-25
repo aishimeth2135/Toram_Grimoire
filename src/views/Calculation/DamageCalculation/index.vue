@@ -1,5 +1,77 @@
 <template>
-  <section class="flex flex-col">
+  <section v-if="currentCalculation" class="flex flex-col">
+    <cy-top-header class="cursor-pointer" @click="toggle('contents/mainMenu')">
+      <cy-icon-text icon="ant-design:build-outlined">
+        {{ currentCalculation.name }}
+      </cy-icon-text>
+      <cy-button-icon
+        class="ml-auto"
+        :icon="contents.mainMenu ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
+        :selected="contents.mainMenu"
+      />
+    </cy-top-header>
+    <cy-top-header-menu :visible="contents.mainMenu">
+      <div class="flex items-center">
+        <cy-title-input
+          :value="currentCalculation.name"
+          icon="ant-design:build-outlined"
+          class="w-full"
+          @update:value="setCalculationName({ calculation: currentCalculation, name: $event })"
+        />
+        <cy-options inline>
+          <template #title>
+            <cy-button-border icon="ant-design:build-outlined" />
+          </template>
+          <template #options>
+            <cy-list-item
+              v-for="item in calculationItems"
+              :key="item.index"
+              @click="selectCalculation(item.index)"
+            >
+              <cy-icon-text icon="ant-design:build-outlined">
+                {{ item.origin.name }}
+              </cy-icon-text>
+            </cy-list-item>
+            <cy-list-item @click="createCalculation">
+              <cy-icon-text icon="ic-round-add-circle-outline" text-color="light-3">
+                {{ $lang('create build') }}
+              </cy-icon-text>
+            </cy-list-item>
+          </template>
+        </cy-options>
+      </div>
+      <div class="flex items-center flex-wrap">
+        <div class="mx-2">
+          <cy-button-border
+            icon="bx-bx-copy"
+            @click="copyCurrentCalculation"
+          >
+            {{ $rootLang('global/copy') }}
+          </cy-button-border>
+          <!-- <cy-button-border
+            icon="mdi-export"
+            main-color="blue-green"
+            @click="exportBuild"
+          >
+            {{ $rootLang('global/export') }}
+          </cy-button-border>
+          <cy-button-border
+            icon="mdi-import"
+            main-color="blue-green"
+            @click="importBuild"
+          >
+            {{ $rootLang('global/import') }}
+          </cy-button-border> -->
+          <cy-button-border
+            icon="ic-baseline-delete-outline"
+            main-color="gray"
+            @click="removeCurrentCalculation"
+          >
+            {{ $rootLang('global/delete') }}
+          </cy-button-border>
+        </div>
+      </div>
+    </cy-top-header-menu>
     <div class="max-w-full overflow-x-auto">
       <div v-if="currentCalculation" class="min-w-max">
         <DamageCalculationItem
@@ -25,13 +97,18 @@
       </div>
     </div>
   </section>
+  <cy-default-tips icon="mdi-ghost">
+    0.0
+  </cy-default-tips>
 </template>
 
 <script>
-import { computed, ComputedRef, readonly, ref } from 'vue';
-import { useStore } from 'vuex';
+import { computed, readonly, ref, ComputedRef } from 'vue';
+import { mapActions, mapMutations, useStore } from 'vuex';
 import init from './init.js';
+import ToggleService from '@/setup/ToggleService';
 import AutoSave from '@/setup/AutoSave';
+import RegisterLang from '@/setup/RegisterLang';
 
 import { calcStructCritical, calcStructWithoutCritical } from './consts';
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
@@ -54,27 +131,71 @@ export default {
       loadFirst: () => store.dispatch('damage-calculation/load'),
     });
 
+    const { lang, rootLang } = RegisterLang('Damage Calculation');
+
     const mode = ref('critical');
 
     const toggleMode = () => mode.value = mode.value === 'critical' ? 'without_critical' : 'critical';
-
-    /** @param {string} name */
-    const createCalculation = (name) => store.dispatch('damage-calculation/createCalculation', { name });
 
     /** @type {ComputedRef<Calculation>} */
     const currentCalculation = computed(() => store.getters['damage-calculation/currentCalculation']);
 
     const currentCalcStruct = computed(() => mode.value === 'critical' ? calcStructCritical : calcStructWithoutCritical);
     const expectedResult = computed(() => currentCalculation.value.result(currentCalcStruct.value));
+    const removeCurrentCalculation = function() {
+      const calculation = currentCalculation.value;
+      store.commit('damage-calculation/removeCalculation', calculation);
+      this.$notify(lang('tips/Successfully removed build', [calculation.name]), {
+        buttons: [{
+          text: rootLang('global/recovery'),
+          click: () => store.commit('damage-calculation/appendCalculation', calculation),
+        }],
+      });
+    };
+
+    const copyCurrentCalculation = () => {
+      const calculation = currentCalculation.value.copy();
+      store.commit('damage-calculation/appendCalculation', calculation);
+    };
+
+    const calculationItems = computed(() => {
+      const calculations = store.state['damage-calculation'].calculations;
+      return calculations.map((calc, index) => ({
+        index,
+        origin: calc,
+      }));
+    });
+
+    // store.commit('damage-calculation/selectCalculation', 0);
+
+    const { contents, toggle } = ToggleService({
+      contents: [{ name: 'mainMenu', default: true }],
+    });
 
     return {
-      createCalculation,
       currentCalculation,
       currentCalcStruct,
       expectedResult,
-      toggleMode,
       currentMode: readonly(mode),
+      calculationItems,
+
+      // methods
+      toggleMode,
+      copyCurrentCalculation,
+      removeCurrentCalculation,
+
+      // other
+      contents,
+      toggle,
     };
+  },
+  methods: {
+    ...mapMutations('damage-calculation', ['selectCalculation']),
+    ...mapMutations('damage-calculation/calculation', ['setCalculationName']),
+    ...mapActions('damage-calculation', [
+      'createCalculation',
+      'copyCurrentCalculation',
+    ]),
   },
 };
 </script>

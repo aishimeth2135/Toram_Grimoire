@@ -7,7 +7,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: 'CyTopHeader',
+};
 </script>
 
 <style lang="postcss" scoped>
@@ -35,7 +37,7 @@ export default {};
 
 		& > .content {
 			background-color: var(--primary-bgcolor);
-			border-radius: 0.6rem 0.6rem 0 0;
+			border-radius: 0.5rem 0.5rem 0 0;
 		}
 	}
 
@@ -49,7 +51,7 @@ export default {};
 		align-items: center;
 		white-space: nowrap;
 		overflow-y: visible;
-		padding: 0 0.4rem;
+		@apply px-3;
 	}
 }
 </style>

@@ -66,6 +66,9 @@
         "webpack": {
           "config": "node_modules/@vue/cli-service/webpack.config.js"
         }
+      },
+      "jsdoc": {
+        "mode": "closure"
       }
     },
     "rules": {

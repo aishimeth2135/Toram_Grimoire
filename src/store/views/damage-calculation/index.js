@@ -20,12 +20,20 @@ const mutations = {
   },
   appendCalculation(state, calculation) {
     state.calculations.push(calculation);
-    state.currentCalculationIndex += 1;
+    state.currentCalculationIndex = state.calculations.length - 1;
+  },
+  selectCalculation(state, index) {
+    state.currentCalculationIndex = index;
+  },
+  removeCalculation(state, calculation) {
+    const index = state.calculations.indexOf(calculation);
+    state.calculations.splice(index, 1);
   },
 };
 
 const actions = {
-  createCalculation({ commit, rootState }, { name }) {
+  createCalculation({ state, commit, rootState }) {
+    const name = GetLang('Damage Calculation/build') + ' ' + (state.calculations.length + 1).toString();
     const calculationBase = rootState.datas.DamageCalculation.calculationBase;
     const calculation = calculationBase.createCalculation(name);
     commit('appendCalculation', calculation);
@@ -40,7 +48,7 @@ const actions = {
   load({ commit, dispatch, rootState }) {
     const dataString = window.localStorage.getItem(SAVE_KEY);
     if (!dataString) {
-      dispatch('createCalculation', { name: GetLang('Damage Calculation/build') + ' 1' });
+      dispatch('createCalculation');
       return;
     }
     const data = JSON.parse(dataString);
@@ -65,6 +73,7 @@ const actions = {
 };
 
 import container from './container';
+import calculation from './calculation';
 
 export default {
   namespaced: true,
@@ -73,6 +82,7 @@ export default {
   mutations,
   actions,
   modules: {
+    calculation,
     container,
   },
 };

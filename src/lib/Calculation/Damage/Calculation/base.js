@@ -52,10 +52,10 @@ class CalculationBase {
   }
 
   /**
-   * @param {string} name
+   * @param {string} [name]
    * @returns {Calculation}
    */
-  createCalculation(name) {
+  createCalculation(name = '') {
     return new Calculation(this, name);
   }
 

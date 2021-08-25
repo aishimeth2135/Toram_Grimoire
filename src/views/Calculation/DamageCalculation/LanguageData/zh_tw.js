@@ -2,12 +2,16 @@ export default function() {
   return {
     'Damage Calculation': {
       'build': '配置',
+      'create build': '新增配置',
       'result': {
         'expected value': '傷害期望值',
       },
       'mode': {
         'critical': '暴擊時傷害',
         'without_critical': '無暴擊時傷害',
+      },
+      'tips': {
+        'Successfully removed build': '移除配置「$0」成功。',
       },
       'item base: title': {
         'physical_damage': '物理傷害',

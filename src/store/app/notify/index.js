@@ -8,6 +8,7 @@ const storeState = {
   messages: [],
   idCounter: 0,
 };
+
 const mutations = {
   appendMessage(state, msg) {
     state.messages.push(msg);
@@ -23,9 +24,36 @@ const mutations = {
     msg.removeTime += 2;
   },
 };
+
+/**
+ * @typedef CreateMessageButtonItem
+ * @type {Object}
+ * @property {string} text - display text of button
+ * @property {function} click
+ * @property {boolean} removeMessageAfterClick
+ */
+/**
+ * @typedef CreateMessageOptions
+ * @type {Object}
+ * @property {CreateMessageButtonItem[]} buttons
+ * @property {function} afterHide - will be triggered after massage hidden
+ */
+/**
+ * @typedef CreateMessageParams
+ * @type {Object}
+ * @property {string} [icon] - icon ID of iconify
+ * @property {string} message - main message
+ * @property {string} [id] - ID of message, messages with the same ID will not be displayed at the same time
+ * @property {CreateMessageOptions} options
+ */
+
 const actions = {
+  /**
+   * @param {object} context
+   * @param {CreateMessageParams} params
+   */
   createMessage({ state, commit }, { icon, message, id, options }) {
-    const find = id !== null ? state.messages.find(p => p.id !== null && p.id == id) : null;
+    const find = id !== null ? state.messages.find(p => p.id !== null && p.id === id) : null;
     if (!find) {
       if (options.buttons) {
         options.buttons.forEach((p, i) => p.iid = i);

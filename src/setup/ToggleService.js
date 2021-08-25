@@ -1,5 +1,25 @@
 import { ref, readonly } from 'vue'
 
+/**
+ * @callback Toggle
+ * @param {string} id
+ * @param {boolean} force
+ * @returns {void}
+ */
+/**
+ * @typedef ToggleItemDetail
+ * @type {Object}
+ * @property {string} name
+ * @property {boolean} boolean
+ */
+/**
+ * @typedef ToggleItem
+ * @type {ToggleItemDetail | string}
+ */
+/**
+ * @param {Object.<string, ToggleItem[]>} options
+ * @returns {Object.<string, Object.<string, boolean>> & { toggle: Toggle }}
+ */
 export default function(options) {
   const dataMap = {};
   Object.entries(options).forEach(([key, value]) => {
@@ -15,10 +35,7 @@ export default function(options) {
     dataMap[key] = group;
   });
 
-  /**
-   * @param {string} id
-   * @param {boolean} force
-   */
+  /** @type {Toggle} */
   const toggle = (id, force) => {
     const [group, sub] = id.split('/');
     if (sub) {
