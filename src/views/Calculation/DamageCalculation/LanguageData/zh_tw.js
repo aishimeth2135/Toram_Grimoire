@@ -4,13 +4,15 @@ export default function() {
       'build': '配置',
       'create build': '新增配置',
       'result': {
-        'expected value': '傷害期望值',
+        'expected': '傷害期望值',
+        'range': '傷害區間',
       },
       'mode': {
         'critical': '暴擊時傷害',
         'without_critical': '無暴擊時傷害',
       },
       'tips': {
+        'At least one build must be kept': '要至少保留一個配置0.0',
         'Successfully removed build': '移除配置「$0」成功。',
       },
       'item base: title': {

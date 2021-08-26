@@ -138,10 +138,10 @@ function parseFormula(formulaStr, { methods = {} } = {}) {
 /**
  * @typedef HandleFormulaOptions
  * @type {Object}
- * @property {object} [texts] - mapping of text
- * @property {object} [vars] - mapping of vars
- * @property {object} [methods] - mapping of methods
- * @property {object} [getters] - mapping of getters. The getter like the var in formula, but will access by function
+ * @property {Object<string, string>} [texts] - mapping of text
+ * @property {Object<string, number | string>} [vars] - mapping of vars
+ * @property {Object<string, Function>} [methods] - mapping of methods
+ * @property {Object<string, function(): number | string>} [getters] - mapping of getters. The getter like the var in formula, but will access by function
  * @property {boolean} [toNumber=false] - If true, result will convert to number
  * @property {boolean} [pure=false] - If true, it have to make sure that given formula can be converted into non-vars string.
  *                                  * it means the given formula will only contains vars and all vars are exist in options.vars.

@@ -72,13 +72,16 @@
         </div>
       </div>
     </cy-top-header-menu>
-    <div class="max-w-full overflow-x-auto">
+    <div class="max-w-full overflow-x-auto px-1">
       <div v-if="currentCalculation" class="min-w-max">
         <DamageCalculationItem
           :calc-struct-item="currentCalcStruct"
           root
         />
       </div>
+    </div>
+    <div class="px-1">
+      <DamageCalculationTable />
     </div>
     <div
       class="flex items-end ml-auto sticky z-10 px-4"
@@ -89,16 +92,26 @@
       </cy-button-border>
     </div>
     <div class="sticky bottom-4">
-      <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center flex-wrap bg-white">
-        <cy-icon-text class="ml-auto">
-          {{ $lang('result/expected value') }}
+      <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center flex-wrap bg-white justify-end">
+        <!-- <cy-icon-text icon="tabler:angle">
+          {{ $lang('result/range') }}
         </cy-icon-text>
-        <span class="text-light-3 ml-3">{{ expectedResult }}</span>
+        <span class="text-light-3 ml-2 mr-4 inline-flex items-center">
+          <span>{{ resultWithStability.min }}</span>
+          <cy-icon-text icon="mdi:tilde" class="mx-1" />
+          <span>{{ resultWithStability.max }}</span>
+        </span> -->
+        <cy-icon-text icon="ant-design:star-outlined">
+          {{ $lang('result/expected') }}
+        </cy-icon-text>
+        <span class="text-light-3 ml-2">{{ expectedResult }}</span>
       </div>
     </div>
   </section>
-  <cy-default-tips icon="mdi-ghost">
-    0.0
+  <cy-default-tips v-else icon="mdi-ghost">
+    <cy-button-border @click="selectCalculation(0)">
+      {{ $rootLang('global/recovery') }}
+    </cy-button-border>
   </cy-default-tips>
 </template>
 
@@ -106,20 +119,24 @@
 import { computed, readonly, ref, ComputedRef } from 'vue';
 import { mapActions, mapMutations, useStore } from 'vuex';
 import init from './init.js';
+
 import ToggleService from '@/setup/ToggleService';
 import AutoSave from '@/setup/AutoSave';
 import RegisterLang from '@/setup/RegisterLang';
+import Notify from '@/setup/Notify';
 
 import { calcStructCritical, calcStructWithoutCritical } from './consts';
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
 
 import vue_DamageCalculationItem from './damage-calculation-item';
+import vue_DamageCalculationTable from './damage-calculation-table';
 
 export default {
   name: 'DamageCalculation',
   RegisterLang: 'Damage Calculation',
   components: {
     DamageCalculationItem: vue_DamageCalculationItem,
+    DamageCalculationTable: vue_DamageCalculationTable,
   },
   setup() {
     init();
@@ -132,22 +149,47 @@ export default {
     });
 
     const { lang, rootLang } = RegisterLang('Damage Calculation');
+    const { notify } = Notify();
 
     const mode = ref('critical');
 
     const toggleMode = () => mode.value = mode.value === 'critical' ? 'without_critical' : 'critical';
 
+    /** @type {ComputedRef<Array<Calculation>>} */
+    const calculations = computed(() => store.state['damage-calculation'].calculations);
+
     /** @type {ComputedRef<Calculation>} */
     const currentCalculation = computed(() => store.getters['damage-calculation/currentCalculation']);
 
     const currentCalcStruct = computed(() => mode.value === 'critical' ? calcStructCritical : calcStructWithoutCritical);
+
     const expectedResult = computed(() => currentCalculation.value.result(currentCalcStruct.value));
-    const removeCurrentCalculation = function() {
+
+    const resultWithStability = computed(() => {
+      const min = currentCalculation.value.result(currentCalcStruct.value, {
+        containerResult: {
+          'stability': itemContainer => itemContainer.getItemValue('stability'),
+        },
+      });
+      const max = currentCalculation.value.result(currentCalcStruct.value, {
+        containerResult: {
+          'stability': 100,
+        },
+      });
+      return { min, max };
+    });
+
+    const removeCurrentCalculation = () => {
+      if (calculations.value.length === 1) {
+        notify(lang('tips/At least one build must be kept'));
+        return;
+      }
       const calculation = currentCalculation.value;
       store.commit('damage-calculation/removeCalculation', calculation);
-      this.$notify(lang('tips/Successfully removed build', [calculation.name]), {
+      notify(lang('tips/Successfully removed build', [calculation.name]), {
         buttons: [{
           text: rootLang('global/recovery'),
+          removeMessageAfterClick: true,
           click: () => store.commit('damage-calculation/appendCalculation', calculation),
         }],
       });
@@ -159,23 +201,21 @@ export default {
     };
 
     const calculationItems = computed(() => {
-      const calculations = store.state['damage-calculation'].calculations;
-      return calculations.map((calc, index) => ({
+      return calculations.value.map((calc, index) => ({
         index,
         origin: calc,
       }));
     });
 
-    // store.commit('damage-calculation/selectCalculation', 0);
-
     const { contents, toggle } = ToggleService({
-      contents: [{ name: 'mainMenu', default: true }],
+      contents: ['mainMenu'],
     });
 
     return {
       currentCalculation,
       currentCalcStruct,
       expectedResult,
+      resultWithStability,
       currentMode: readonly(mode),
       calculationItems,
 

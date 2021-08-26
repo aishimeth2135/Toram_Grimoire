@@ -1,4 +1,4 @@
-import { CalculationBase, CalcItemBase, CalcItemBaseContainer, CalcStructItem } from './base';
+import { CalculationBase, CalcItemBase, CalcItemBaseContainer, CalcStructItem, CalcResultOptions } from './base';
 
 class Calculation {
   /**
@@ -28,10 +28,11 @@ class Calculation {
 
   /**
    * @param {CalcStructItem} calcStruct
+   * @param {CalcResultOptions} options
    * @returns {number}
    */
-  result(calcStruct) {
-    return this.base.result(this, calcStruct);
+  result(calcStruct, options) {
+    return this.base.result(this, calcStruct, options);
   }
 
   save() {

@@ -2,7 +2,7 @@ import CharacterSystem from '@/lib/Character';
 
 /**
  * @param {CharacterSystem} characterSystem
- * @param {string[][][]} datas
+ * @param {{Array<Array<Array<string>}>>} datas
  */
 export default function(characterSystem, datas) {
   const ID = 0,

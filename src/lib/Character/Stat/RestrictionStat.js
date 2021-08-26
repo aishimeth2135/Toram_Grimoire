@@ -188,7 +188,7 @@ export default RestrictionStat;
 
 /**
  * @typedef StatRestriction
- * @type {object}
+ * @type {Object}
  * @property {symbol|null} main
  * @property {symbol|null} sub
  * @property {symbol|null} body

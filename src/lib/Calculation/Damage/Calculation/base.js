@@ -7,6 +7,7 @@ import { CalcItemContainer, Calculation } from './index';
  * @param {CalcItemBaseContainer} baseContainer
  * @returns {number}
  */
+
 /**
  * @callback CurrentItemIdGetter
  * @param {CalcItemContainer} itemContainer
@@ -29,7 +30,13 @@ import { CalcItemContainer, Calculation } from './index';
  * @typedef CalcStructMultiple
  * @type {Object}
  * @property {"***"|"+++"} operator
- * @property {CalcStructItem[]} list
+ * @property {Array<CalcStructItem>} list
+ */
+
+/**
+ * @typedef CalcResultOptions
+ * @type {Object}
+ * @property {Object<string, number | function(CalcItemContainer): number>} containerResult
  */
 
 /** */
@@ -62,11 +69,15 @@ class CalculationBase {
   /**
    * @param {Calculation} calculation
    * @param {CalcStructItem} calcStruct
+   * @param {CalcResultOptions} options
    */
-  result(calculation, calcStruct) {
+  result(calculation, calcStruct, options = {}) {
     if (!calcStruct) {
       return 0;
     }
+
+    const { containerResult = {} } = options;
+
     /**
      * @param {CalcStructItem} item
      * @returns {number}
@@ -74,7 +85,16 @@ class CalculationBase {
     const handle = item => {
       if (typeof item === 'string') {
         const container = calculation.containers.get(item);
-        const res = container.result();
+        const res = (() => {
+          const resultItem = containerResult[item];
+          if (typeof resultItem === 'number') {
+            return resultItem;
+          }
+          if (typeof resultItem === 'function') {
+            return resultItem(container);
+          }
+          return container.result();
+        })();
         if (!container.enabled) {
           return container.base.isMultiplier ? container.base.disabledValue / 100 : container.base.disabledValue;
         }
@@ -125,7 +145,7 @@ class CalcItemBaseContainer {
 
     this.isMultiplier = false;
 
-    this.floorResult = false;
+    this.floorResult = true;
 
     this.enabledDefaultValue = true;
 

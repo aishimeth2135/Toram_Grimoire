@@ -4,10 +4,10 @@ import { CharacterStatCategory } from './Character';
 
 export default class {
   constructor() {
-    /** @type {StatBase[]} */
+    /** @type {Array<StatBase>} */
     this.statList = markRaw([]);
 
-    /** @type {CharacterStatCategory[]} */
+    /** @type {Array<CharacterStatCategory>} */
     this.characterStatCategoryList = markRaw([]);
   }
   appendStatBase(...args) {

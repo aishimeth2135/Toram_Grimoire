@@ -18,7 +18,7 @@ export default {
 	--container-height: 4rem;
 	--shadow-mask-color: var(--white);
 	--primary-bgcolor: var(--white);
-	--base-z-index: 10;
+	--base-z-index: 15;
 	position: sticky;
 	top: calc(-1 * var(--shadow-height));
 	height: var(--container-height);

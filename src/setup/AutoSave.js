@@ -3,7 +3,7 @@ import { GetLang } from '@services/Language';
 import { MessageNotify } from '@services/Notify';
 
 /**
- * @param {function} save
+ * @param {Function} save
  */
 export default function ({ save, loadFirst }) {
   try {

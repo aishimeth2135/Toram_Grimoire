@@ -45,7 +45,13 @@ export default {
     updateValue(e) {
       if (typeof e !== 'object')
         console.warn(e);
-      const v = typeof e === 'object' ? e.target.value : e;
+      let v = typeof e === 'object' ? e.target.value : e;
+      if (v.length > 64) {
+        v = v.slice(0, 64);
+      }
+      if (v.length === 0) {
+        v = this.value[0];
+      }
       this.$emit('update:value', v);
     },
     toggleInputFocus(set) {

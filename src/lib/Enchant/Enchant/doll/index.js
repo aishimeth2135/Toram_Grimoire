@@ -10,12 +10,12 @@ export default class EnchantDoll {
   constructor() {
     this.build = new EnchantBuild('Potum');
 
-    /** @type {EnchantStat[]} */
+    /** @type {Array<EnchantStat>} */
     this._positiveStats = [];
 
     /**
      * @typedef EnchantDollConfig
-     * @type {object}
+     * @type {Object}
      * @property {"physical"|"magic"|"none"} baseType
      * @property {"potential"|"material"} autoFindNegaitveStatsType
      */
@@ -65,7 +65,7 @@ export default class EnchantDoll {
   }
 
   /**
-   * @param {EnchantStat[]} originalNegativeStats
+   * @param {Array<EnchantStat>} originalNegativeStats
    * @param {number} [originalPotential] - default: this.build.equipment.originalPotential
    * @returns {EnchantEquipment}
    */
@@ -206,8 +206,8 @@ export default class EnchantDoll {
   }
 
   /**
-   * @param {EnchantStat[]} stats
-   * @returns {EnchantDollCategory[]}
+   * @param {Array<EnchantStat>} stats
+   * @returns {Array<EnchantDollCategory>}
    */
   classifyStats(stats) {
     const target = [];
@@ -226,7 +226,7 @@ export default class EnchantDoll {
   }
 
   /**
-   * @param {EnchantStat[]} [manuallyStats]
+   * @param {Array<EnchantStat>} [manuallyStats]
    * @param {number} [originalPotential]
    * @returns {{
    *  stats: EnchantStat[],
@@ -284,7 +284,7 @@ export default class EnchantDoll {
       });
     });
 
-    /** @type {EnchantDollCategory[]} */
+    /** @type {Array<EnchantDollCategory>} */
     const negatives = EnchantDollCategory.classifyStats(shortlist);
 
     // 先排好能力
@@ -304,7 +304,7 @@ export default class EnchantDoll {
     if (tshortlist.length >= numNegativeStats) {
       manuallyStats = manuallyStats.slice(0, this.numNegativeStats - numNegativeStats);
       const originalNegativeStatsList = this.getNegativeStatsList(tshortlist, numNegativeStats);
-      /** @param {EnchantDollCategory[]} categorys */
+      /** @param {Array<EnchantDollCategory>} categorys */
       const parseStats = stats => {
         const tmpCategorys = EnchantDollCategory.classifyStats(stats).sort((a, b) => b.stats.length - a.stats.length);
         tmpCategorys.forEach(_category => _category.sortStats('max-effect'));
@@ -417,7 +417,7 @@ export default class EnchantDoll {
   }
 
   /**
-   * @param {EnchantStat[]} stats
+   * @param {Array<EnchantStat>} stats
    */
   getNegativeStatsList(stats, length) {
     const finaleRes = [];
@@ -484,13 +484,13 @@ class EnchantDollCategory {
     /** @type {EnchantCategory} */
     this.category = category;
 
-    /** @type {EnchantStat[]} */
+    /** @type {Array<EnchantStat>} */
     this.stats = [];
   }
 
   /**
-  * @param {EnchantStat[]} stats
-  * @returns {EnchantDollCategory[]}
+  * @param {Array<EnchantStat>} stats
+  * @returns {Array<EnchantDollCategory>}
   */
   static classifyStats(stats) {
     const target = [];

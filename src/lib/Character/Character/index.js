@@ -673,7 +673,7 @@ class CharacterStatFormulaConditionalItem {
     this.conditional = conditional;
     /** @type {string} */
     this.formula = formula;
-    /** @type {string[]} */
+    /** @type {Array<string>} */
     this.options = options;
   }
 }

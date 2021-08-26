@@ -25,7 +25,7 @@ class EnchantBuild {
 
   /**
    * @typedef EnchantBuildSaveData
-   * @type {object}
+   * @type {Object}
    * @property {string} name
    * @property {EnchantEquipmentSaveData} equipment
    */
@@ -61,7 +61,7 @@ class EnchantEquipment {
   ];
 
   constructor() {
-    /** @type {EnchantStep[]} @private */
+    /** @type {Array<EnchantStep>} @private */
     this._steps = [];
     /** @type {number} */
     this.basePotential = STATE.EquipmentBasePotentialMinimum,
@@ -75,12 +75,12 @@ class EnchantEquipment {
 
   /**
    * @typedef EnchantEquipmentSaveData
-   * @type {object}
+   * @type {Object}
    * @property {number} basePotential
    * @property {number} originalPotential
    * @property {number} fieldType - symbol to number
    * @property {number} isOriginalElement - boolean to number
-   * @property {EnchantStepSaveData[]} steps
+   * @property {Array<EnchantStepSaveData>} steps
    */
   /** @return {EnchantEquipmentSaveData} */
   save() {
@@ -96,8 +96,9 @@ class EnchantEquipment {
     };
   }
   /**
-   * @param {EnchantCategory[]} categorys
+   * @param {Array<EnchantCategory>} categorys
    * @param {EnchantEquipmentSaveData} data
+   * @returns {EnchantEquipment}
    */
   static load(categorys, data) {
     const equipment = new EnchantEquipment();
@@ -115,17 +116,17 @@ class EnchantEquipment {
     return EnchantEquipment.load(categorys, data);
   }
 
-  /** @param {EnchantStep[]} steps */
+  /** @param {Array<EnchantStep>} steps */
   loadSteps(steps) {
     this._steps = steps;
   }
 
-  /** @returns {EnchantStep[]} */
+  /** @returns {Array<EnchantStep>} */
   get allSteps() {
     return this._steps;
   }
 
-  /** @returns {EnchantStep[]} */
+  /** @returns {Array<EnchantStep>} */
   get validSteps() {
     if (!this.lastStep) {
       return [];
@@ -144,7 +145,7 @@ class EnchantEquipment {
     });
   }
 
-  /** @return {number[]} */
+  /** @return {Array<number>} */
   get allMaterialPointCost() {
     const mats = Array(6).fill(0);
     this.steps().forEach(step =>
@@ -193,7 +194,7 @@ class EnchantEquipment {
   /**
    * Get all not-hidden steps before given index (include)
    * @param {number} [stepIdx]
-   * @returns {EnchantStep[]}
+   * @returns {Array<EnchantStep>}
    */
   steps(stepIdx = null) {
     stepIdx = stepIdx === null ? this._steps.length - 1 : stepIdx;
@@ -254,7 +255,7 @@ class EnchantEquipment {
   /**
    * Get all stats of steps
    * @param {number} [stepIdx]
-   * @returns {EnchantStat[]}
+   * @returns {Array<EnchantStat>}
    */
   stats(stepIdx) {
     const stats = [];
@@ -345,7 +346,7 @@ class EnchantStep {
   constructor(parent) {
     /** @type {EnchantEquipment} */
     this._parent = parent;
-    /** @type {EnchantStepStat[]} */
+    /** @type {Array<EnchantStepStat>} */
     this.stats = [];
     /** @type {symbol} */
     this.type = EnchantStep.TYPE_NORMAL;
@@ -355,11 +356,11 @@ class EnchantStep {
 
   /**
    * @typedef EnchantStepSaveData
-   * @type {object}
+   * @type {Object}
    * @property {0|1} type - symbol to number
    * @property {0|1} hidden - boolean to number
    * @property {number} step
-   * @property {EnchantStepStatSaveData[]} stats
+   * @property {Array<EnchantStepStatSaveData>} stats
    */
   /** @returns {EnchantStepSaveData} */
   save() {
@@ -372,7 +373,7 @@ class EnchantStep {
   }
 
   /**
-   * @param {EnchantCategory[]} categorys
+   * @param {Array<EnchantCategory>} categorys
    * @param {EnchantEquipment} equipment
    * @param {EnchantStepSaveData} data
    */
@@ -728,7 +729,7 @@ class EnchantStepStat extends EnchantStat {
 
   /**
    * @typedef EnchantStepStatSaveData
-   * @type {object}
+   * @type {Object}
    * @property {0|1|2} type - symbol to number
    * @property {number} value
    * @property {string} base - Basename of EnchantItem.statBase
@@ -743,7 +744,7 @@ class EnchantStepStat extends EnchantStat {
   }
 
   /**
-   * @param {EnchantCategory[]} categorys
+   * @param {Array<EnchantCategory>} categorys
    * @param {EnchantStep} step
    * @param {EnchantStepStatSaveData} data
    */
@@ -843,7 +844,7 @@ class EnchantStepStat extends EnchantStat {
 
   /**
    * @typedef MaterialPointCost
-   * @type {object}
+   * @type {Object}
    * @property {number} type
    * @property {number} value
    */

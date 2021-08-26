@@ -35,7 +35,7 @@ class StatBase {
     /** @type {number} */
     this.order = order;
 
-    /** @type {object} */
+    /** @type {Object} */
     this.attributes = {};
   }
 

@@ -9,7 +9,7 @@ class EnchantCategory {
   constructor(title) {
     /** @type {string} */
     this.title = title;
-    /** @type {EnchantItem[]} */
+    /** @type {Array<EnchantItem>} */
     this.items = markRaw([]);
     this._weaponOnly = false;
   }
@@ -33,7 +33,7 @@ class EnchantCategory {
 }
 
 /**
- * @typedef {object} EnchantItemSets
+ * @typedef {Object} EnchantItemSets
  * @property {string} baseName
  * @property {[number, number]} potential
  * @property {[string, string]} limit
@@ -66,7 +66,7 @@ class EnchantItem {
     /** @type {StatBase} */
     this.statBase = Grimoire.Character.findStatBase(baseName);
 
-    /** @type {EnchantItemConditionalProperties[]} */
+    /** @type {Array<EnchantItemConditionalProperties>} */
     this.conditionalProps = [];
     this.potential = {
       [StatBase.TYPE_CONSTANT]: potential[0],
@@ -97,7 +97,7 @@ class EnchantItem {
 
   /**
    * @param {symbol} condition
-   * @param {object} set
+   * @param {Object} set
    */
   appendConditionalProps(condition, set) {
     const t = new EnchantItemConditionalProperties(condition, set);

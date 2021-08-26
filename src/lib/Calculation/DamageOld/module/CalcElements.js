@@ -223,7 +223,7 @@ class CalcItemContainer {
   /**
    * 取得指定index的item。如果無指定index，則回傳一個包含所有item的陣列。
    * @param  {number} index
-   * @return {CalcItem|CalcItem[]}
+   * @return {CalcItem | {Array<CalcItem>}}
    */
   item(index) {
     if (index === undefined)

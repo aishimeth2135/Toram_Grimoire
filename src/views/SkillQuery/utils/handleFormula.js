@@ -4,24 +4,24 @@ import { handleFormula } from '@utils/data';
 
 /**
  * @typedef SkillState
- * @type {object}
+ * @type {Object}
  * @property {number} slv
  * @property {number} clv
  */
 /**
  * @typedef StackStates
- * @type {object}
+ * @type {Object}
  * @property {string} id
  * @property {number} value
  */
 /**
  * @typedef EffectState
- * @type {object}
- * @property {StackStates[]} stackStates
+ * @type {Object}
+ * @property {Array<StackStates>} stackStates
  */
 /**
  * @param {string} str formula
- * @param {object} param
+ * @param {Object} param
  * @param {SkillState} param.skillState
  * @param {EffectState} param.effectState
  * @param {SkillBranch} param.branch

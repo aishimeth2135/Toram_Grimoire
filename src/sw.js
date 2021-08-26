@@ -10,6 +10,19 @@ const { StaleWhileRevalidate, CacheFirst } = workbox.strategies;
 
 const handleCacheName = name => name;
 
+// jsdelivr js
+workbox.routing.registerRoute(
+  /https:\/\/cdn\.jsdelivr\.net\/npm\/.+\.js/,
+  new workbox.strategies.CacheFirst({
+    cacheName: handleCacheName('jsdelivr-cache'),
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+      })
+    ]
+  })
+);
+
 // image
 workbox.routing.registerRoute(
   /.*\.(?:png|jpg|jpeg|svg|gif)/,

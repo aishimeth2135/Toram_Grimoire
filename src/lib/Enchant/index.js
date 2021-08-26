@@ -3,7 +3,7 @@ import { EnchantCategory } from './Enchant';
 
 export default class {
   constructor() {
-    /** @type {EnchantCategory[]} */
+    /** @type {Array<EnchantCategory>} */
     this.categorys = markRaw([]);
   }
   appendCategory() {

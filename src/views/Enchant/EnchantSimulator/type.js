@@ -1,13 +1,13 @@
 import { EnchantItem } from '@/lib/Enchant/Enchant';
 
 /**
- * @typedef {object} SelectItemTarget
+ * @typedef {Object} SelectItemTarget
  * @property {"step"|"doll"} type
- * @property {object} target
+ * @property {Object} target
  * @property {boolean} once
  */
 /**
- * @typedef {object} EnchantItemData
+ * @typedef {Object} EnchantItemData
  * @property {string} id
  * @property {symbol} type
  * @property {EnchantItem} origin

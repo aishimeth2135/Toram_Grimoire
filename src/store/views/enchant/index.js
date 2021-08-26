@@ -4,7 +4,7 @@ import CY from '@utils/Cyteria';
 const SAVE_PRETEXT = 'app--enchant-simulator--vbeta--';
 
 const storeState = {
-  /** @type {EnchantBuild[]} */
+  /** @type {Array<EnchantBuild>} */
   builds: [],
   currentBuildIndex: -1,
   hasInit: false,

@@ -1,5 +1,5 @@
 /**
- * @param {object} param
+ * @param {Object} param
  * @param {string} param.data
  * @param {string} [param.fieldType = "text/txt"] - default: "text/txt"
  * @param {string} param.fileName - complete file name (name + ext)
@@ -38,7 +38,7 @@ function save({ data, fileType = 'text/txt', fileName }) {
  * @returns {boolean}
  */
 /**
- * @param {object} param
+ * @param {Object} param
  * @param {LoadFileSucceed} param.succeed
  * @param {LoadFileError} param.error
  * @param {BeforeLoadFile} param.beforeLoad

@@ -2,20 +2,25 @@ import store from '@/store';
 import LoadingNotifyItem from './LoadingNotifyItem';
 
 /**
- * @callback MessageNotifyComplete
- * @param {string} message
- * @param {string} [icon]
- * @param {string} [id]
- * @param {object} [options]
+ * @typedef MessageNotifyButtonItem
+ * @type {Object}
+ * @property {string} text - display text of button
+ * @property {function(): void} click
+ * @property {boolean} removeMessageAfterClick
  */
 /**
- * @callback MessageNotifyOptionsOnly
- * @param {string} message
- * @param {object} [options]
+ * @typedef MessageNotifyOptions
+ * @type {Object}
+ * @property {Array<MessageNotifyButtonItem>} buttons
+ * @property {function(): void} afterHide - will be triggered after massage hidden
  */
 
 /**
- * @type {MessageNotifyComplete | MessageNotifyOptionsOnly}
+ * @param {string} message
+ * @param {string | MessageNotifyOptions} [icon] - icon or options
+ * @param {?string} [id]
+ * @param {MessageNotifyOptions} [options]
+ * @returns {void}
  */
 function MessageNotify(
   message,

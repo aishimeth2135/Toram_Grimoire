@@ -28,6 +28,7 @@ const mutations = {
   removeCalculation(state, calculation) {
     const index = state.calculations.indexOf(calculation);
     state.calculations.splice(index, 1);
+    state.currentCalculationIndex = index - 1;
   },
 };
 

@@ -2,11 +2,15 @@ import { EnchantStat, EnchantStepStat, EnchantEquipment, EnchantStep } from '../
 import { EnchantDoll, EnchantDollCategory } from './index.js';
 export default class EnchantDollEquipmentContainer {
   /**
-   * @param {object} param
-   * @param {EnchantDoll} param.parent
-   * @param {EnchantEquipment} param.equipment
-   * @param {EnchantStat[]} param.positiveStats
-   * @param {EnchantStat[]} param.negativeStats
+   * @typedef EnchantDollEquipmentContainerParams
+   * @type {Object}
+   * @property {EnchantDoll} parent
+   * @property {EnchantEquipment} equipment
+   * @property {Array<EnchantStat>} positiveStats
+   * @property {Array<EnchantStat>} negativeStats
+   */
+  /**
+   * @param {EnchantDollEquipmentContainerParams} param
    */
   constructor({ itemCategorys, equipment, positiveStats, negativeStats }) {
     this.itemCategorys = itemCategorys;
@@ -21,7 +25,7 @@ export default class EnchantDollEquipmentContainer {
       hasHandleFirstStep: false,
     };
 
-    /** @type {EnchantDollEquipmentContainer[]} */
+    /** @type {Array<EnchantDollEquipmentContainer>} */
     this.clones = [];
 
     /** @type {EnchantDollEquipmentContainer} */
@@ -43,8 +47,7 @@ export default class EnchantDollEquipmentContainer {
    * 3. 過程中確保附正屬的步驟都只有附一個正屬，不附任何其他能力。
    *   - 先確保步驟單純，在「判定step.type要不要轉成TYPE_EACH」和「退潛前最大化利用剩餘潛力」時不會出錯。
    *   - 全部事情做完後才開始將可以合併的step合併、可以把type轉回TYPE_NORMAL的step轉回去。
-   * @param {object} param
-   * @returns {EnchantDollEquipmentContainer[]}
+   * @returns {Array<EnchantDollEquipmentContainer>}
    */
   beforeFillNegative() {
     if (this.equipment.stats().length === 0) {
@@ -57,9 +60,9 @@ export default class EnchantDollEquipmentContainer {
   }
 
   /**
-   * @param {object} param
+   * @param {Object} param
    * @param {"positive"|"both"} param.positivesFilter - positive: 只管正屬有無倍率, both: 同時考慮正屬及負屬來確認正屬有無倍率
-   * @returns {EnchantDollEquipmentContainer[]}
+   * @returns {Array<EnchantDollEquipmentContainer>}
    */
   handleBeforeFillNegative({ positivesFilter = 'positive' } = {}) {
     const positives = EnchantDollCategory.classifyStats(this.positiveStats);
@@ -322,7 +325,7 @@ export default class EnchantDollEquipmentContainer {
 
   /**
    * 確實清除已經拿完的能力，並且要確保不影響到category和stats的拿取順序。
-   * @param {EnchantDollCategory[]} target
+   * @param {Array<EnchantDollCategory>} target
    */
   refreshCategorys(target) {
     const removes = [];
@@ -339,7 +342,7 @@ export default class EnchantDollEquipmentContainer {
 
   /**
    * 退潛之前，嘗試最大化利用剩餘的潛。
-   * @returns {EnchantDollEquipmentContainer[]}
+   * @returns {Array<EnchantDollEquipmentContainer>}
    */
   mostUseRemainingPotential() {
     this.equipment.steps().forEach(step => step.optimizeType(-1));
@@ -347,7 +350,7 @@ export default class EnchantDollEquipmentContainer {
   }
 
   /**
-   * @returns {EnchantDollEquipmentContainer[]}
+   * @returns {Array<EnchantDollEquipmentContainer>}
    */
   handleMostUseRemainingPotential() {
     const resultEqs = [];
@@ -516,7 +519,7 @@ export default class EnchantDollEquipmentContainer {
 
   /**
    * 退潛之後，確認有沒有耗潛為1的正屬可以嘗試分次附
-   * @returns {EnchantDollEquipmentContainer[]}
+   * @returns {Array<EnchantDollEquipmentContainer>}
    */
   checkStepTypeEach() {
     const finds = this.positiveStats.filter(stat => stat.value !== 0 && stat.originalPotential === 1);
@@ -561,7 +564,15 @@ export default class EnchantDollEquipmentContainer {
      * 1. 先處理有倍率的能力。
      *  - 前面已經確保耗潛高的正屬一定在前面
      */
-    /** @type {{ type: "step"|"unused", stat: EnchantStepStat|EnchantStat, value: number, existedAndNoRate: boolean }[]} */
+    /**
+     * @typedef StatItem
+     * @type {Object}
+     * @property {"step" | "unused"} type
+     * @property {EnchantStepStat | EnchantStat} stat
+     * @property {number} value
+     * @property {boolean} existedAndNoRate
+     */
+    /** @type {Array<StatItem>} */
     const list = targetEq.steps()
       .map((step, idx) => {
         const potentialExtraRate = step.potentialExtraRate;

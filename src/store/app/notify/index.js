@@ -1,4 +1,5 @@
 import loading from './loading.js';
+import { MessageNotifyOptions } from '@services/Notify';
 
 const modules = {
   loading,
@@ -26,30 +27,17 @@ const mutations = {
 };
 
 /**
- * @typedef CreateMessageButtonItem
- * @type {Object}
- * @property {string} text - display text of button
- * @property {function} click
- * @property {boolean} removeMessageAfterClick
- */
-/**
- * @typedef CreateMessageOptions
- * @type {Object}
- * @property {CreateMessageButtonItem[]} buttons
- * @property {function} afterHide - will be triggered after massage hidden
- */
-/**
  * @typedef CreateMessageParams
  * @type {Object}
  * @property {string} [icon] - icon ID of iconify
  * @property {string} message - main message
  * @property {string} [id] - ID of message, messages with the same ID will not be displayed at the same time
- * @property {CreateMessageOptions} options
+ * @property {MessageNotifyOptions} options
  */
 
 const actions = {
   /**
-   * @param {object} context
+   * @param {Object} context
    * @param {CreateMessageParams} params
    */
   createMessage({ state, commit }, { icon, message, id, options }) {

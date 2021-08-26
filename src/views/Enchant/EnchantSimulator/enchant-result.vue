@@ -179,8 +179,8 @@ export default {
       const validSteps = this.equipment.validSteps;
 
       /**
-       * @param {any[]} target
-       * @param {any[]} src
+       * @param {Array<any>} target
+       * @param {Array<any>} src
        */
       const insertOdd = (target, src) => {
         let cur = 1, cnt = 0;

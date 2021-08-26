@@ -125,6 +125,9 @@ export default {
           }, {
             main: '夜神散華 彌禮/（曄之妹）',
             sub: '眾神幣',
+          }, '@line', {
+            main: '✩cuxin',
+            sub: '眾神幣',
           }, '@end'],
         }],
       }, {

@@ -4,20 +4,20 @@ const storeState = {
 const mutations = {
   /**
    * @typedef IconSet
-   * @type {object}
+   * @type {Object}
    * @property {string} name
    * @property {string} src
    */
   /**
    * @typedef ConfirmItem
-   * @type {object}
+   * @type {Object}
    * @property {string} message
    * @property {string|IconSet} [icon]
-   * @property {function} confirm
-   * @property {function} cancel
+   * @property {Function} confirm
+   * @property {Function} cancel
   */
   /**
-  * @param {object} state
+  * @param {Object} state
   * @param {ConfirmItem} item
   */
   appendItem(state, item) {
