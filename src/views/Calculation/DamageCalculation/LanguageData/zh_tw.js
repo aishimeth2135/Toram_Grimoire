@@ -5,11 +5,18 @@ export default function() {
       'create build': '新增配置',
       'result': {
         'expected': '傷害期望值',
+        'expected with critical rate': '綜合傷害期望值',
         'range': '傷害區間',
+        'caption: expected': '考慮穩定度計算出來的傷害期望值。',
+        'caption: expected with critical rate': '考慮爆擊率及穩定度計算出來的傷害期望值。',
+        'caption: range': '根據穩定度計算出的傷害最大值及最小值。',
       },
       'mode': {
         'critical': '暴擊時傷害',
         'without_critical': '無暴擊時傷害',
+      },
+      'compare': {
+        'select build': '選擇要比較的配置',
       },
       'tips': {
         'At least one build must be kept': '要至少保留一個配置0.0',

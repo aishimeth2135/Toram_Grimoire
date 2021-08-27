@@ -178,10 +178,11 @@ export default class {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer);
         const cd = itemContainer.getItemValue('critical_damage');
         const mcdr = itemContainer.getItemValue('magic_critical_damage_conversion_rate');
-        if (currentDamageTypeId === 'physical') {
-          return cd;
+        let result = currentDamageTypeId === 'physical' ? cd : Math.floor(cd * mcdr / 100);
+        if (result > 300) {
+          result = 300 + Math.floor((result - 300) / 2);
         }
-        return Math.floor(cd * mcdr / 100);
+        return result;
       });
     });
     normal('critical_rate', container => {

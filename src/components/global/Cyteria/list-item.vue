@@ -5,6 +5,7 @@
 </template>
 <script>
 export default {
+  name: 'CyListItem',
   props: {
     selected: {
       type: Boolean,
@@ -13,6 +14,7 @@ export default {
   },
 };
 </script>
+
 <style lang="postcss" scoped>
 .cy--list-item {
   @apply flex items-center flex-wrap cursor-pointer py-1.5 px-3 duration-300;
@@ -27,7 +29,7 @@ export default {
     border: 1px solid var(--primary-light-2);
   }
 
-  &:not(.selected) + &:not(.selected) {
+  &:not(.selected) + .cy--list-item:not(.selected) {
     border-top: 1px solid var(--primary-light);
   }
 }

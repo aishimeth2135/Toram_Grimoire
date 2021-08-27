@@ -1,37 +1,42 @@
 <template>
-  <cy-transition type="fade">
-    <div
-      v-if="visible"
-      class="window"
-      :class="rootClass"
-      @click="closeWindow"
-    >
-      <div class="content-container">
-        <div class="top-mask" />
-        <cy-button-icon
-          icon="jam-close-circle-f"
-          class="close-btn"
-          @click.stop="closeWindow"
-        />
-        <div class="container-inner" @click.stop>
-          <div class="top">
-            <slot name="title" />
-          </div>
-          <div class="content">
-            <slot />
-          </div>
-          <div v-if="footer" class="sticky bottom-0 mt-4 py-2 mx-4 bg-white flex">
-            <cy-button-border class="ml-auto" @click="closeWindow">
-              {{ $rootLang('global/close') }}
-            </cy-button-border>
+  <teleport to="#app-modals">
+    <cy-transition type="fade">
+      <div
+        v-if="visible"
+        :class="rootClass"
+        v-bind="$attrs"
+        @click="closeWindow"
+      >
+        <div class="content-container">
+          <div class="top-mask" />
+          <cy-button-icon
+            icon="jam-close-circle-f"
+            class="close-btn"
+            @click.stop="closeWindow"
+          />
+          <div class="container-inner" @click.stop>
+            <div class="top">
+              <slot name="title" />
+            </div>
+            <div class="content">
+              <slot />
+            </div>
+            <div v-if="footer" class="sticky bottom-0 mt-4 py-2 mx-4 bg-white flex">
+              <cy-button-border class="ml-auto" @click="closeWindow">
+                {{ $rootLang('global/close') }}
+              </cy-button-border>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </cy-transition>
+    </cy-transition>
+  </teleport>
 </template>
+
 <script>
 export default {
+  name: 'CyWindow',
+  inheritAttrs: false,
   props: {
     type: {
       type: String,
@@ -65,6 +70,7 @@ export default {
   computed: {
     rootClass() {
       return {
+        'cy--window': true,
         ['vertical-position-' + this.verticalPosition]: true,
         ['width-' + this.width]: true,
         'frozen-top': this.forzenTop,
@@ -80,7 +86,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.window {
+.cy--window {
   position: fixed;
   height: 100%;
   width: 100%;

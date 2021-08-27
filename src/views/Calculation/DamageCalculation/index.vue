@@ -80,19 +80,63 @@
         />
       </div>
     </div>
-    <div class="px-1">
-      <DamageCalculationTable />
+    <div
+      v-show="contents.compare"
+      class="sticky z-10 mx-3 px-4 bottom-28 border-1 border-light-3 rounded-lg p-3 bg-white overflow-y-auto"
+      style="max-height: 40vh;"
+    >
+      <DamageCalculationCompare
+        :main-calculation="currentCalculation"
+        :calculations="calculations"
+        :calc-struct="currentCalcStruct"
+      />
     </div>
     <div
-      class="flex items-end ml-auto sticky z-10 px-4"
-      style="bottom: 4rem"
+      v-if="contents.resultDetail"
+      class="sticky z-10 mx-3 px-4 bottom-28 border-1 border-light-3 rounded-lg p-3 bg-white overflow-y-auto"
+      style="max-height: 40vh;"
     >
+      <div>
+        <div class="inline-flex items-center cursor-pointer">
+          <cy-icon-text icon="ant-design:star-outlined">
+            {{ $lang('result/expected') }}
+          </cy-icon-text>
+          <span class="text-light-3 ml-2">{{ expectedResult }}</span>
+          <cy-icon-text icon="bx-bx-info-circle" class="ml-3" />
+        </div>
+      </div>
+      <div>
+        <cy-icon-text icon="tabler:angle">
+          {{ $lang('result/range') }}
+        </cy-icon-text>
+        <span class="text-light-3 ml-2 mr-4 inline-flex items-center">
+          <span>{{ resultWithStability.min }}</span>
+          <cy-icon-text icon="mdi:tilde" class="mx-1" />
+          <span>{{ resultWithStability.max }}</span>
+        </span>
+      </div>
+      <div>
+        <div class="inline-flex items-center cursor-pointer">
+          <cy-icon-text icon="ant-design:star-outlined">
+            {{ $lang('result/expected with critical') }}
+          </cy-icon-text>
+          <span class="text-light-3 ml-2">{{ expectedResult }}</span>
+          <cy-icon-text icon="bx-bx-info-circle" class="ml-3" />
+        </div>
+      </div>
+    </div>
+    <div class="flex ml-auto sticky z-10 px-4 bottom-16 mt-2">
+      <cy-button-border
+        icon="bx:bx-git-compare"
+        :selected="contents.compare"
+        @click="toggle('contents/compare')"
+      />
       <cy-button-border icon="heroicons-outline:switch-vertical" @click="toggleMode">
         {{ $lang('mode/' + currentMode) }}
       </cy-button-border>
     </div>
     <div class="sticky bottom-4">
-      <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center flex-wrap bg-white justify-end">
+      <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-2 rounded-full flex items-center flex-wrap bg-white justify-end">
         <!-- <cy-icon-text icon="tabler:angle">
           {{ $lang('result/range') }}
         </cy-icon-text>
@@ -101,10 +145,13 @@
           <cy-icon-text icon="mdi:tilde" class="mx-1" />
           <span>{{ resultWithStability.max }}</span>
         </span> -->
-        <cy-icon-text icon="ant-design:star-outlined">
-          {{ $lang('result/expected') }}
-        </cy-icon-text>
-        <span class="text-light-3 ml-2">{{ expectedResult }}</span>
+        <div class="inline-flex items-center cursor-pointer" @click="toggle('contents/resultDetail')">
+          <cy-icon-text icon="ant-design:star-outlined">
+            {{ $lang('result/expected') }}
+          </cy-icon-text>
+          <span class="text-light-3 ml-2">{{ expectedResult }}</span>
+          <cy-icon-text icon="bx-bx-info-circle" class="ml-3" />
+        </div>
       </div>
     </div>
   </section>
@@ -129,14 +176,14 @@ import { calcStructCritical, calcStructWithoutCritical } from './consts';
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
 
 import vue_DamageCalculationItem from './damage-calculation-item';
-import vue_DamageCalculationTable from './damage-calculation-table';
+import vue_DamageCalculationCompare from './damage-calculation-compare';
 
 export default {
   name: 'DamageCalculation',
   RegisterLang: 'Damage Calculation',
   components: {
     DamageCalculationItem: vue_DamageCalculationItem,
-    DamageCalculationTable: vue_DamageCalculationTable,
+    DamageCalculationCompare: vue_DamageCalculationCompare,
   },
   setup() {
     init();
@@ -208,15 +255,18 @@ export default {
     });
 
     const { contents, toggle } = ToggleService({
-      contents: ['mainMenu'],
+      contents: ['mainMenu', 'compare', 'resultDetail'],
     });
 
     return {
+      currentMode: readonly(mode),
+
+      // computed
+      calculations,
       currentCalculation,
       currentCalcStruct,
       expectedResult,
       resultWithStability,
-      currentMode: readonly(mode),
       calculationItems,
 
       // methods
