@@ -3,7 +3,7 @@ import app from './app.vue';
 import GetLang from '@services/Language';
 import ViewInit from '@services/ViewInit.js';
 
-const vue_DamageCalculatiom = () => import(/* webpackChunkName: "calculation-damage" */ '@/views/Calculation/DamageCalculation');
+const vue_DamageCalculatiom = () => import(/* webpackChunkName: "damage-calculation" */ '@/views/Calculation/DamageCalculation');
 
 export default {
   path: '/damage-calculation',
