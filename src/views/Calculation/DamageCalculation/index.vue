@@ -48,7 +48,7 @@
           >
             {{ $rootLang('global/copy') }}
           </cy-button-border>
-          <!-- <cy-button-border
+          <cy-button-border
             icon="mdi-export"
             main-color="blue-green"
             @click="exportBuild"
@@ -61,7 +61,7 @@
             @click="importBuild"
           >
             {{ $rootLang('global/import') }}
-          </cy-button-border> -->
+          </cy-button-border>
           <cy-button-border
             icon="ic-baseline-delete-outline"
             main-color="gray"
@@ -72,84 +72,111 @@
         </div>
       </div>
     </cy-top-header-menu>
-    <div class="max-w-full overflow-x-auto px-1">
+    <div class="max-w-full px-1 py-4 overflow-x-auto scrollbar-hide">
       <div v-if="currentCalculation" class="min-w-max">
+        <div
+          v-for="containerOption in calculationContainerOptions"
+          :key="containerOption.container.base.id"
+        >
+          <cy-button-check
+            v-for="item in containerOption.containerItems"
+            :key="item.base.id"
+            :selected="containerOption.container.currentItem === item"
+            @click="setContainerCurrentItemId({
+              container: containerOption.container,
+              value: item.base.id,
+            })"
+          >
+            {{ $lang('item base: title/' + item.base.id) }}
+          </cy-button-check>
+        </div>
+        <cy-hr />
         <DamageCalculationItem
           :calc-struct-item="currentCalcStruct"
           root
         />
+        <cy-hr />
+        <DamageCalculationItem calc-struct-item="critical_rate" root />
       </div>
     </div>
-    <div
-      v-show="contents.compare"
-      class="sticky z-10 mx-3 px-4 bottom-28 border-1 border-light-3 rounded-lg p-3 bg-white overflow-y-auto"
-      style="max-height: 40vh;"
-    >
-      <DamageCalculationCompare
-        :main-calculation="currentCalculation"
-        :calculations="calculations"
-        :calc-struct="currentCalcStruct"
-      />
-    </div>
-    <div
-      v-if="contents.resultDetail"
-      class="sticky z-10 mx-3 px-4 bottom-28 border-1 border-light-3 rounded-lg p-3 bg-white overflow-y-auto"
-      style="max-height: 40vh;"
-    >
-      <div>
-        <div class="inline-flex items-center cursor-pointer">
-          <cy-icon-text icon="ant-design:star-outlined">
-            {{ $lang('result/expected') }}
-          </cy-icon-text>
-          <span class="text-light-3 ml-2">{{ expectedResult }}</span>
-          <cy-icon-text icon="bx-bx-info-circle" class="ml-3" />
-        </div>
+    <cy-transition type="fade">
+      <div
+        v-show="bottomSub.compare"
+        class="sticky z-10 mx-3 px-4 bottom-28 border-1 border-light-3 rounded-lg p-3 bg-white overflow-y-auto"
+        style="max-height: 40vh;"
+      >
+        <DamageCalculationCompare />
       </div>
-      <div>
-        <cy-icon-text icon="tabler:angle">
-          {{ $lang('result/range') }}
-        </cy-icon-text>
-        <span class="text-light-3 ml-2 mr-4 inline-flex items-center">
-          <span>{{ resultWithStability.min }}</span>
-          <cy-icon-text icon="mdi:tilde" class="mx-1" />
-          <span>{{ resultWithStability.max }}</span>
-        </span>
+    </cy-transition>
+    <cy-transition type="fade">
+      <div
+        v-if="bottomSub.resultDetail"
+        class="sticky z-10 mx-3 py-3 px-4 bottom-28 border-1 border-light-3 rounded-lg bg-white overflow-y-auto"
+        style="max-height: 40vh;"
+      >
+        <template v-for="modeItem in resultModeList" :key="modeItem.id">
+          <div
+            class="flex items-center cursor-pointer min-w-max pr-3"
+            @click="selectResultMode(modeItem.id)"
+          >
+            <cy-button-check :selected="modeItem === resultMode" />
+            <div class="inline-flex items-center cursor-pointer">
+              <cy-icon-text :icon="modeItem.icon">
+                {{ $lang('result/modes/' + modeItem.id) }}
+              </cy-icon-text>
+              <span
+                v-if="modeItem.id === 'range'"
+                class="text-light-3 inline-flex items-center ml-2"
+              >
+                <span>{{ modeItem.value.min }}</span>
+                <cy-icon-text icon="mdi:tilde" class="mx-1" />
+                <span>{{ modeItem.value.max }}</span>
+              </span>
+              <span v-else class="text-light-3 ml-2">{{ modeItem.value }}</span>
+            </div>
+          </div>
+          <div>
+            <cy-icon-text
+              icon="bx-bx-info-circle"
+              size="small"
+              text-color="light-2"
+              class="ml-6"
+              align-v="start"
+            >
+              {{ $lang('result/caption/' + modeItem.id) }}
+            </cy-icon-text>
+          </div>
+        </template>
       </div>
-      <div>
-        <div class="inline-flex items-center cursor-pointer">
-          <cy-icon-text icon="ant-design:star-outlined">
-            {{ $lang('result/expected with critical') }}
-          </cy-icon-text>
-          <span class="text-light-3 ml-2">{{ expectedResult }}</span>
-          <cy-icon-text icon="bx-bx-info-circle" class="ml-3" />
-        </div>
-      </div>
-    </div>
+    </cy-transition>
     <div class="flex ml-auto sticky z-10 px-4 bottom-16 mt-2">
       <cy-button-border
         icon="bx:bx-git-compare"
-        :selected="contents.compare"
-        @click="toggle('contents/compare')"
+        :selected="bottomSub.compare"
+        @click="toggle('bottomSub/compare', null, false)"
       />
-      <cy-button-border icon="heroicons-outline:switch-vertical" @click="toggleMode">
-        {{ $lang('mode/' + currentMode) }}
+      <cy-button-border icon="heroicons-outline:switch-vertical" @click="toggleCalcMode">
+        {{ $lang('mode/' + calcMode) }}
       </cy-button-border>
     </div>
-    <div class="sticky bottom-4">
-      <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-2 rounded-full flex items-center flex-wrap bg-white justify-end">
-        <!-- <cy-icon-text icon="tabler:angle">
-          {{ $lang('result/range') }}
-        </cy-icon-text>
-        <span class="text-light-3 ml-2 mr-4 inline-flex items-center">
-          <span>{{ resultWithStability.min }}</span>
-          <cy-icon-text icon="mdi:tilde" class="mx-1" />
-          <span>{{ resultWithStability.max }}</span>
-        </span> -->
-        <div class="inline-flex items-center cursor-pointer" @click="toggle('contents/resultDetail')">
-          <cy-icon-text icon="ant-design:star-outlined">
-            {{ $lang('result/expected') }}
+    <div class="sticky bottom-4 overflow-x-auto scrollbar-hide">
+      <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-2 rounded-full flex items-center flex-wrap bg-white justify-end min-w-max">
+        <div
+          class="inline-flex items-center cursor-pointer"
+          @click="toggle('bottomSub/resultDetail', null, false)"
+        >
+          <cy-icon-text :icon="resultMode.icon">
+            {{ $lang('result/modes/' + resultMode.id) }}
           </cy-icon-text>
-          <span class="text-light-3 ml-2">{{ expectedResult }}</span>
+          <span
+            v-if="resultMode.id === 'range'"
+            class="text-light-3 inline-flex items-center ml-2"
+          >
+            <span>{{ resultMode.value.min }}</span>
+            <cy-icon-text icon="mdi:tilde" class="mx-1" />
+            <span>{{ resultMode.value.max }}</span>
+          </span>
+          <span v-else class="text-light-3 ml-2">{{ resultMode.value }}</span>
           <cy-icon-text icon="bx-bx-info-circle" class="ml-3" />
         </div>
       </div>
@@ -163,20 +190,17 @@
 </template>
 
 <script>
-import { computed, readonly, ref, ComputedRef } from 'vue';
 import { mapActions, mapMutations, useStore } from 'vuex';
 import init from './init.js';
 
 import ToggleService from '@/setup/ToggleService';
 import AutoSave from '@/setup/AutoSave';
-import RegisterLang from '@/setup/RegisterLang';
-import Notify from '@/setup/Notify';
-
-import { calcStructCritical, calcStructWithoutCritical } from './consts';
-import { Calculation } from '@/lib/Calculation/Damage/Calculation';
+import ExportBuild from '@/setup/ExportBuild';
+import { setupCalcMode, setupCalculationStore, setupResultMode, setupCalculationCalcOptions } from './setup';
 
 import vue_DamageCalculationItem from './damage-calculation-item';
 import vue_DamageCalculationCompare from './damage-calculation-compare';
+import { computed, provide } from '@vue/runtime-core';
 
 export default {
   name: 'DamageCalculation',
@@ -195,97 +219,84 @@ export default {
       loadFirst: () => store.dispatch('damage-calculation/load'),
     });
 
-    const { lang, rootLang } = RegisterLang('Damage Calculation');
-    const { notify } = Notify();
+    const {
+      calcMode,
+      currentCalcStruct,
+      toggleCalcMode,
+    } = setupCalcMode();
 
-    const mode = ref('critical');
+    const {
+      calculations,
+      currentCalculation,
+      calculationItems,
 
-    const toggleMode = () => mode.value = mode.value === 'critical' ? 'without_critical' : 'critical';
+      removeCurrentCalculation,
+      copyCurrentCalculation,
+    } = setupCalculationStore();
 
-    /** @type {ComputedRef<Array<Calculation>>} */
-    const calculations = computed(() => store.state['damage-calculation'].calculations);
+    const {
+      resultMode,
+      resultModeList,
+      selectResultMode,
+    } = setupResultMode(currentCalculation, currentCalcStruct);
 
-    /** @type {ComputedRef<Calculation>} */
-    const currentCalculation = computed(() => store.getters['damage-calculation/currentCalculation']);
+    const {
+      calculationContainerOptions,
+    } = setupCalculationCalcOptions(currentCalculation);
 
-    const currentCalcStruct = computed(() => mode.value === 'critical' ? calcStructCritical : calcStructWithoutCritical);
-
-    const expectedResult = computed(() => currentCalculation.value.result(currentCalcStruct.value));
-
-    const resultWithStability = computed(() => {
-      const min = currentCalculation.value.result(currentCalcStruct.value, {
-        containerResult: {
-          'stability': itemContainer => itemContainer.getItemValue('stability'),
-        },
-      });
-      const max = currentCalculation.value.result(currentCalcStruct.value, {
-        containerResult: {
-          'stability': 100,
-        },
-      });
-      return { min, max };
+    const { exportBuild, importBuild } = ExportBuild({
+      save: (handleSave) => {
+        const fileName = currentCalculation.value.name + '.txt';
+        const data = JSON.stringify(currentCalculation.value.save());
+        handleSave(fileName, data);
+      },
+      loaded: res => {
+        res = JSON.parse(res);
+        const calculationBase = store.state.datas.DamageCalculation.calculationBase;
+        const calculation = calculationBase.createCalculation();
+        calculation.load(res);
+        store.commit('damage-calculation/appendCalculation', calculation);
+      },
     });
 
-    const removeCurrentCalculation = () => {
-      if (calculations.value.length === 1) {
-        notify(lang('tips/At least one build must be kept'));
-        return;
-      }
-      const calculation = currentCalculation.value;
-      store.commit('damage-calculation/removeCalculation', calculation);
-      notify(lang('tips/Successfully removed build', [calculation.name]), {
-        buttons: [{
-          text: rootLang('global/recovery'),
-          removeMessageAfterClick: true,
-          click: () => store.commit('damage-calculation/appendCalculation', calculation),
-        }],
-      });
-    };
-
-    const copyCurrentCalculation = () => {
-      const calculation = currentCalculation.value.copy();
-      store.commit('damage-calculation/appendCalculation', calculation);
-    };
-
-    const calculationItems = computed(() => {
-      return calculations.value.map((calc, index) => ({
-        index,
-        origin: calc,
-      }));
+    const { contents, bottomSub, toggle } = ToggleService({
+      contents: ['mainMenu'],
+      bottomSub: ['compare', 'resultDetail'],
     });
 
-    const { contents, toggle } = ToggleService({
-      contents: ['mainMenu', 'compare', 'resultDetail'],
-    });
+    provide('currentCalculationExpectedResult', computed(() => resultModeList.value.find(item => item.id === 'expected').value));
 
     return {
-      currentMode: readonly(mode),
+      calcMode,
 
       // computed
       calculations,
       currentCalculation,
       currentCalcStruct,
-      expectedResult,
-      resultWithStability,
       calculationItems,
+      resultModeList,
+      resultMode,
+      calculationContainerOptions,
 
       // methods
-      toggleMode,
+      toggleCalcMode,
       copyCurrentCalculation,
       removeCurrentCalculation,
+      selectResultMode,
+      exportBuild,
+      importBuild,
 
       // other
+      bottomSub,
       contents,
       toggle,
     };
   },
   methods: {
     ...mapMutations('damage-calculation', ['selectCalculation']),
+    ...mapMutations('damage-calculation/container', ['setContainerCurrentItemId']),
     ...mapMutations('damage-calculation/calculation', ['setCalculationName']),
-    ...mapActions('damage-calculation', [
-      'createCalculation',
-      'copyCurrentCalculation',
-    ]),
+    ...mapActions('damage-calculation', ['createCalculation']),
   },
 };
 </script>

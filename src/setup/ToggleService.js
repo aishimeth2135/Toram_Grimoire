@@ -1,52 +1,61 @@
-import { ref, readonly } from 'vue'
+import { ref, readonly, Ref } from 'vue'
 
 /**
  * @callback Toggle
  * @param {string} id
- * @param {boolean} force
+ * @param {?boolean} [force]
+ * @param {boolean} [groupForce]
  * @returns {void}
  */
 /**
  * @typedef ToggleItemDetail
  * @type {Object}
  * @property {string} name
- * @property {boolean} boolean
+ * @property {?boolean} default
  */
 /**
  * @typedef ToggleItem
  * @type {ToggleItemDetail | string}
  */
 /**
- * @param {Object.<string, ToggleItem[]>} options
+ * @param {Object.<string, Array<ToggleItem>>} options
  * @returns {Object.<string, Object.<string, boolean>> & { toggle: Toggle }}
  */
 export default function(options) {
+  /** @type {Object<string, Object<string, Ref<boolean>>>} */
   const dataMap = {};
-  Object.entries(options).forEach(([key, value]) => {
+  Object.entries(options).forEach(([groupKey, subs]) => {
     const group = {};
-    value.forEach(p => {
-      if (typeof p === 'string') {
-        group[p] = ref(false);
-      } else if (typeof p === 'object') {
-        const { name, default: defaultValue } = p;
+    subs.forEach(subItem => {
+      if (typeof subItem === 'string') {
+        group[subItem] = ref(false);
+      } else if (typeof subItem === 'object') {
+        const { name, default: defaultValue } = subItem;
         group[name] = ref(defaultValue);
       }
     });
-    dataMap[key] = group;
+    dataMap[groupKey] = group;
   });
 
   /** @type {Toggle} */
-  const toggle = (id, force) => {
+  const toggle = (id, force, groupForce) => {
     const [group, sub] = id.split('/');
     if (sub) {
-      force = force !== undefined ? force : !dataMap[group][sub].value;
+      force = typeof force === 'boolean' ? force : !dataMap[group][sub].value;
       dataMap[group][sub].value = force;
+      if (groupForce !== undefined) {
+        Object.entries(dataMap[group]).forEach(([key, item]) => {
+          if (key !== sub) {
+            item.value = groupForce;
+          }
+        });
+      }
     } else {
       if (force === undefined) {
         console.warn('[toggle service] Toggle the group must pass param: force');
         return;
       }
-      Object.keys(dataMap[group]).forEach(k => dataMap[group][k].value = force);
+      Object.values(dataMap[group]).forEach(item => item.value = force);
     }
   }
 

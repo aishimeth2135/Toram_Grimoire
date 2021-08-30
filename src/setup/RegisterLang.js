@@ -1,5 +1,13 @@
 import GetLang from '@services/Language';
 
+/**
+ * @typedef RegisterLangOptions
+ * @property {string} root
+ * @property {Object<string, string>} extra
+ */
+/**
+ * @param {RegisterLangOptions | string} options
+ */
 export default function(options) {
   if (typeof options === 'string') {
     options = {

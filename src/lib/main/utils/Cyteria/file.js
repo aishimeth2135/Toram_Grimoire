@@ -1,3 +1,5 @@
+import sanitize from 'sanitize-filename';
+
 /**
  * @param {Object} param
  * @param {string} param.data
@@ -10,7 +12,7 @@ function save({ data, fileType = 'text/txt', fileName }) {
 
   const url = URL.createObjectURL(blob);
   link.setAttribute('href', url);
-  link.setAttribute('download', fileName);
+  link.setAttribute('download', sanitize(fileName.replace(/\s/g, '_')));
   link.style.display = 'none';
   document.body.appendChild(link);
   link.click();

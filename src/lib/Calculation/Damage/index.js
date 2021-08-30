@@ -93,10 +93,10 @@ export default class {
       container.markMultiplier();
       container.appendItem('target_physical_resistance')
         .setDefaultValue(0)
-        .setRange(null, null);
+        .setRange(null);
       container.appendItem('target_magic_resistance')
         .setDefaultValue(0)
-        .setRange(null, null);
+        .setRange(null);
       container.setCalcResult((itemContainer) => {
         const value = itemContainer.currentItem.value;
         return (100 - value);
@@ -171,33 +171,32 @@ export default class {
     });
     normal('critical_damage', container => {
       container.markMultiplier();
-      container.appendItem('critical_damage')
-        .setDefaultValue(150);
-      container.appendItem('magic_critical_damage_conversion_rate');
+      container.appendItem('critical_damage').setDefaultValue(150);
+      container.appendItem('magic_critical_damage_conversion_rate').setDefaultValue(0);
       container.setCalcResult((itemContainer) => {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer);
         const cd = itemContainer.getItemValue('critical_damage');
         const mcdr = itemContainer.getItemValue('magic_critical_damage_conversion_rate');
-        let result = currentDamageTypeId === 'physical' ? cd : Math.floor(cd * mcdr / 100);
+        let result = cd;
         if (result > 300) {
           result = 300 + Math.floor((result - 300) / 2);
         }
+        result = currentDamageTypeId === 'physical' ? result : Math.floor(result * mcdr / 100);
         return result;
       });
     });
     normal('critical_rate', container => {
       container.markMultiplier();
-      container.appendItem('critical_rate')
-        .setDefaultValue(150);
-      container.appendItem('magic_critical_rate_conversion_rate');
+      container.appendItem('critical_rate').setDefaultValue(25);
+      container.appendItem('target_critical_rate_resistance')
+        .setDefaultValue(0)
+        .setRange(null);
+      container.appendItem('magic_critical_rate_conversion_rate').setDefaultValue(0);
       container.setCalcResult((itemContainer) => {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer);
-        const cr = itemContainer.getItemValue('critical_rate');
+        const cr = Math.min(itemContainer.getItemValue('critical_rate') - itemContainer.getItemValue('target_critical_rate_resistance'), 100);
         const mcrr = itemContainer.getItemValue('magic_critical_rate_conversion_rate');
-        if (currentDamageTypeId === 'physical') {
-          return cr;
-        }
-        return Math.floor(cr * mcrr / 100);
+        return currentDamageTypeId === 'physical' ? cr : Math.floor(cr * mcrr / 100);
       });
     });
     options('range_damage', container => {

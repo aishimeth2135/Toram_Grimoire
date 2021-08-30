@@ -2,7 +2,6 @@ import element from './element.js';
 import object from './object.js';
 import svg from './svg.js';
 import number from './number.js';
-import math from './math.js';
 import csv from './csv.js';
 import file from './file.js';
 
@@ -44,5 +43,5 @@ function storageAvailable(type) {
   }
 }
 
-export { element, object, svg, number, math, csv, file, copyToClipboard, storageAvailable };
-export default { element, object, svg, number, math, csv, file, copyToClipboard, storageAvailable };
+export { element, object, svg, number, csv, file, copyToClipboard, storageAvailable };
+export default { element, object, svg, number, csv, file, copyToClipboard, storageAvailable };

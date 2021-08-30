@@ -58,7 +58,7 @@ const actions = {
       const calculationBase = rootState.datas.DamageCalculation.calculationBase;
       const calculations = [];
       data.calculations.forEach(calculationData => {
-        const calculation = calculationBase.createCalculation(calculationData.name);
+        const calculation = calculationBase.createCalculation();
         calculation.load(calculationData);
         calculations.push(calculation);
       });

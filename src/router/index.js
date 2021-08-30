@@ -5,7 +5,6 @@ import Character from './Character';
 import Home from './Home';
 import Skill from './Skill';
 import Items from './Items';
-import DamageCalcOld from './Calculation/DamageOld';
 import Enchant from './Enchant';
 import DamageCalculation from './Calculation/Damage';
 
@@ -21,7 +20,6 @@ const routes = [
   Character,
   Skill,
   Items,
-  DamageCalcOld,
   Enchant,
   Page404,
   Bubble,
@@ -32,6 +30,8 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+trackRouter(router);
 
 router.beforeEach((to, from) => {
   if (to) {
@@ -97,7 +97,5 @@ router.beforeEach((to, from) => {
     }
   }
 });
-
-trackRouter(router);
 
 export default router;

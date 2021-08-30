@@ -46,6 +46,13 @@ export default {
       type: String,
       default: null,
     },
+    alignV: {
+      type: String,
+      default: 'center',
+      validator(v) {
+        return ['start', 'center'].includes(v);
+      },
+    },
   },
   setup() {
     const rootElement = ref(null);
@@ -64,9 +71,14 @@ export default {
       return this.colorSetStyle;
     },
     rootClass() {
+      const alignVMapping = {
+        'start': 'align-v-start',
+        'center': 'align-v-center',
+      };
       return {
         'is-item': this.type === 'item',
-        ['text-' + this.size]: true,
+        ['size-' + this.size]: true,
+        [alignVMapping[this.alignV]]: true,
       };
     },
   },
@@ -74,18 +86,23 @@ export default {
 </script>
 <style lang="postcss" scoped>
 .cy--icon-text {
-  display: inline-flex;
-  align-items: center;
   --icon-color: var(--color-set--icon-color);
   --icon-width: 1.2rem;
+  --icon-margin-top-fix: 0;
   --text-color: var(--color-set--text-color);
   --text-margin-left: 0.6rem;
+
+  @apply inline-flex items-center;
 
   & > .text {
     margin-left: var(--text-margin-left);
     color: var(--text-color);
     display: inline-flex;
     align-items: center;
+  }
+
+  & > .icon {
+    margin-top: var(--icon-margin-top-fix);
   }
 
   &.is-item {
@@ -100,13 +117,24 @@ export default {
     }
   }
 
-  &.text-normal {
+  &.size-normal {
     font-size: 1rem;
   }
-  &.text-small {
+  &.size-small {
     --icon-width: 0.9rem;
-    --text-margin-left: 0.5rem;
+    --text-margin-left: 0.4rem;
     @apply text-sm;
+  }
+
+  &.align-v-start {
+    @apply items-start;
+    --icon-margin-top-fix: calc((1.5rem - var(--icon-width)) / 2);
+    &.size-small {
+      --icon-margin-top-fix: calc((1.25rem - var(--icon-width)) / 2);
+    }
+  }
+  &.align-v-center {
+    @apply items-center;
   }
 }
 </style>

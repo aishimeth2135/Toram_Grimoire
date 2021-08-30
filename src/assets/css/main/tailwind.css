@@ -18,4 +18,11 @@
       @apply w-2 h-2 rounded-full -right-1 -bottom-1;
     }
   }
+  .scrollbar-hide {
+    scrollbar-width: none!important;
+
+    &::-webkit-scrollbar {
+      display: none!important;
+    }
+  }
 }

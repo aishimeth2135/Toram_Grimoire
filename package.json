@@ -21,6 +21,7 @@
     "recast": "^0.20.4",
     "regex-escape": "^3.4.10",
     "register-service-worker": "^1.7.1",
+    "sanitize-filename": "^1.6.3",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "vue": "^3.0.0-beta.1",
     "vue-gtag-next": "^1.14.0",
@@ -124,7 +125,7 @@
         "warn",
         {
           "singleline": {
-            "max": 4,
+            "max": 5,
             "allowFirstLine": true
           },
           "multiline": {

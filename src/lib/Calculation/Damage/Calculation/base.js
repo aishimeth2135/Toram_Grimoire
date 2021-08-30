@@ -22,6 +22,7 @@ import { CalcItemContainer, Calculation } from './index';
 /**
  * @typedef CalcStructSingle
  * @type {Object}
+ * @property {string} [id]
  * @property {"*"|"+"} operator
  * @property {CalcStructItem} left
  * @property {CalcStructItem} right
@@ -29,6 +30,7 @@ import { CalcItemContainer, Calculation } from './index';
 /**
  * @typedef CalcStructMultiple
  * @type {Object}
+ * @property {string} [id]
  * @property {"***"|"+++"} operator
  * @property {Array<CalcStructItem>} list
  */
@@ -174,7 +176,7 @@ class CalcItemBaseContainer {
   appendItem(id) {
     const item = new CalcItemBase(this, id);
     if (this.isMultiplier) {
-      item.setRange(0, null, 10)
+      item.setRange(0, null)
         .setDefaultValue(100)
         .setUnit('%');
     }
@@ -204,7 +206,7 @@ class CalcItemBaseContainer {
    * mark this container is multipler, must call before append items.
    *
    * For all items:
-   * - `setRange(0, null, 10)`
+   * - `setRange(0, null)`
    * - `setDefaultValue(100)`
    * - `setUnit("%")`
    */
@@ -247,14 +249,14 @@ class CalcItemBase {
     /** @type {string} */
     this.id = id;
 
-    /** @type {string} */
-    this.unit = null;
+    /** @type {?string} */
+    this.unit = '';
 
-    /** @type {number} */
-    this.min = -9999;
+    /** @type {?number} */
+    this._min = null;
 
-    /** @type {number} */
-    this.max = 9999;
+    /** @type {?number} */
+    this._max = null;
 
     /** @type {number} */
     this.step = 1;
@@ -267,6 +269,14 @@ class CalcItemBase {
     return this._parent;
   }
 
+  get min() {
+    return this._min === null ? -9999 : this._min;
+  }
+
+  get max() {
+    return this._max === null ? 9999 : this._max;
+  }
+
   /**
    * @param {number} min
    * @param {number} [max=null]
@@ -274,8 +284,8 @@ class CalcItemBase {
    * @returns {CalcItemBase}
    */
   setRange(min, max = null, step = 1) {
-    this.min = min;
-    this.max = max;
+    this._min = min;
+    this._max = max;
     this.step = step;
     return this;
   }

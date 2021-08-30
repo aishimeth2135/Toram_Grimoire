@@ -100,6 +100,13 @@ export default function() {
         'message: unknow error when save': '自動存檔時發生未知的錯誤。',
         'message: unknow error when load': '自動讀取時發生未知的錯誤。',
       },
+      'Export build': {
+        'message: unknow error when save': '產生檔案時發生未知的錯誤。',
+        'message: load successfully': '讀取成功。',
+        'message: unknow error when load': '讀取時發生未知的錯誤。',
+        'message: load failed': '解析檔案時發生錯誤，檔案內容的格式可能有誤。',
+        'message: wrong type of .txt file': '讀取的檔案必須為文字（.txt）檔。',
+      },
     },
     'Loading Page': {
       'bottom tips': '初次載入需要較長的時間，請稍後...<br />若載入途中發生錯誤，請先試著重新整理網頁。',
@@ -122,7 +129,7 @@ export default function() {
       'item-query': '道具查詢',
       'crystal-query': '鍛晶查詢',
       'calculation': {
-        'damage': '傷害計算',
+        'damage-calculation': '傷害計算',
       },
       'enchant': {
         'enchant-simulator': '附魔模擬',

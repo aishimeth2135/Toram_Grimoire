@@ -901,7 +901,7 @@ export default {
             validation: v => v && v !== 'auto',
             defaultValue: this.$lang('stack/base name') + (stkIdx + 1),
           });
-        } else if (bch.name == 'effect') {
+        } else if (bch.name === 'effect') {
           handleValueList.push({
             name: 'radius',
             beforeColorText: v => v + 'm',
@@ -1082,7 +1082,7 @@ export default {
         data[k + ': title'] = this.$lang(`${bch.name}/${k}: title`);
       });
 
-      if (this.branch.name == 'stack') {
+      if (this.branch.name === 'stack') {
         const tmpv = parseInt(data['max'] || data['default'], 10);
         if (!Number.isNaN(tmpv) && tmpv > 999)
           data['@stack-input-width-wide'] = { '--input-width': '3rem' };

@@ -2,6 +2,7 @@ import { CalcStructItem } from '@/lib/Calculation/Damage/Calculation/base';
 
 /** @type {CalcStructItem} */
 const calcStructCritical = {
+  id: 'expected_with_critical',
   operator: '*',
   left: {
     operator: '+++',
@@ -48,6 +49,7 @@ const calcStructCritical = {
 
 /** @type {CalcStructItem} */
 const calcStructWithoutCritical = {
+  id: 'expected_without_critical',
   operator: '*',
   left: {
     operator: '+++',

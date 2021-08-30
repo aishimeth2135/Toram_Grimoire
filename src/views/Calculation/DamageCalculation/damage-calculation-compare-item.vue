@@ -3,9 +3,9 @@
     <div class="text-purple text-sm mb-1">{{ calculation.name }}</div>
     <div class="flex items-center">
       <cy-icon-text icon="ant-design:star-outlined">
-        {{ $lang('result/expected') }}
+        {{ $lang('result/modes/expected') }}
       </cy-icon-text>
-      <span class="text-light-3 ml-2 mr-4">{{ calculationResult }}</span>
+      <span class="text-light-3 ml-2 mr-4">{{ expectedResult }}</span>
       <div :class="calculationResultDifferenceRate >= 0 ? 'text-water-blue' : 'text-red'">
         {{ (calculationResultDifferenceRate >= 0 ? '+' : '') + calculationResultDifferenceRate + '%' }}
       </div>
@@ -28,35 +28,33 @@
 </template>
 
 <script>
-import { computed, toRefs } from 'vue';
+import { computed, inject, toRefs } from 'vue';
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
 import { numberToFixed } from '@utils/number';
 import { markText } from '@utils/view';
+
+import { setupExpectedResults, setupCalculationStoreState } from './setup';
 
 export default {
   name: 'DamageCalculationCompareItem',
   RegisterLang: 'Damage Calculation',
   props: {
-    comparedCalculation: {
-      type: Calculation,
-      required: true,
-    },
     calculation: {
       type: Calculation,
       required: true,
     },
-    calcStruct: {
-      type: Object,
-      required: true,
-    },
   },
   setup(props) {
-    const { calculation, comparedCalculation, calcStruct } = toRefs(props);
+    const { currentCalculation: comparedCalculation } = setupCalculationStoreState();
+    const { calculation } = toRefs(props);
 
-    const calculationResult = computed(() => calculation.value.result(calcStruct.value));
+    const { expectedResult } = setupExpectedResults(calculation);
+
+    const comparedCalculationExpectedResult = inject('currentCalculationExpectedResult');
+
     const calculationResultDifferenceRate = computed(() => {
-      const comparedResult = comparedCalculation.value.result(calcStruct.value);
-      return numberToFixed((calculationResult.value - comparedResult) * 100 / comparedResult, 1);
+      const comparedResult = comparedCalculationExpectedResult.value;
+      return numberToFixed((expectedResult.value - comparedResult) * 100 / comparedResult, 1);
     });
 
     const comparedItems = computed(() => {
@@ -82,7 +80,7 @@ export default {
     });
 
     return {
-      calculationResult,
+      expectedResult,
       comparedItems,
       calculationResultDifferenceRate,
       markText,

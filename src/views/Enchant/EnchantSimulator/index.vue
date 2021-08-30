@@ -472,7 +472,7 @@ export default {
       const data = JSON.stringify(odata);
       CY.file.save({
         data,
-        fileName: build.name.replace(/\s/g, '_') + '.txt',
+        fileName: build.name + '.txt',
       });
     },
     importBuild() {
@@ -482,7 +482,7 @@ export default {
           this.$store.commit('enchant/appendBuild', build);
           this.$notify(this.$lang('save/tips/import successfully', [`「${build.name}」`]));
         },
-        error: () => this.$lang('save/tips/import: error'),
+        error: () => this.$notify(this.$lang('save/tips/import: error')),
         checkFileType: fileType => {
           if (fileType !== 'txt') {
             this.$notify(this.$lang('save/tips/import: wrong file type'));

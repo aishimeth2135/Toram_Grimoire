@@ -66,9 +66,9 @@ export default {
         icon: 'bx-bx-cube-alt',
         path: '/items/crystal',
       }, {
-        name: 'calculation/damage',
+        name: 'calculation/damage-calculation',
         icon: 'mdi-sword',
-        path: '/damage',
+        path: '/damage-calculation',
       },
       ],
     };
@@ -76,7 +76,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="postcss" scoped>
 .content-title:hover {
   @apply border-light-3;
   & > .icon {

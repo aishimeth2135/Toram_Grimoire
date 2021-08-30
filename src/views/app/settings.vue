@@ -38,7 +38,7 @@
           </cy-icon-text>
         </legend>
         <div class="caption">{{ $lang('switch font/caption') }}</div>
-        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
           {{ $lang('switch font/tips 1') }}
         </cy-icon-text>
         <div class="buttons">
@@ -77,7 +77,7 @@
         </legend>
         <div class="caption">{{ $lang('set rem/caption') }}</div>
         <div class="flex items-center flex-wrap">
-          <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" class="mr-2">
+          <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" class="mr-2" align-v="start">
             {{ $lang('set rem/tips 1') }}
           </cy-icon-text>
         </div>
@@ -101,10 +101,10 @@
           {{ $lang('language/caption') }}
         </div>
         <div class="flex items-center flex-wrap">
-          <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" class="mr-2">
+          <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" class="mr-2" align-v="start">
             {{ $lang('language/tips 1') }}
           </cy-icon-text>
-          <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3">
+          <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
             {{ $lang('language/tips 2') }}
           </cy-icon-text>
         </div>
@@ -128,10 +128,10 @@
         <div class="caption">
           {{ $lang('second language/caption') }}
         </div>
-        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start" class="mr-2">
           {{ $lang('second language/tips 1') }}
         </cy-icon-text>
-        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
           {{ $lang('second language/tips 2') }}
         </cy-icon-text>
         <div class="buttons">
@@ -154,13 +154,13 @@
         <div class="caption">
           {{ $lang('clear caches of spreadsheets/caption') }}
         </div>
-        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
           {{ $lang('clear caches of spreadsheets/tips 1') }}
         </cy-icon-text>
-        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
           {{ $lang('clear caches of spreadsheets/tips 2') }}
         </cy-icon-text>
-        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
           {{ $lang('clear caches of spreadsheets/tips 3') }}
         </cy-icon-text>
         <div class="buttons">
@@ -178,10 +178,10 @@
         <div class="caption">
           {{ $lang('storage backup/caption') }}
         </div>
-        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
           {{ $lang('storage backup/tips 1') }}
         </cy-icon-text>
-        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3">
+        <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
           {{ $lang('storage backup/tips 2') }}
         </cy-icon-text>
         <cy-default-tips v-if="$route.path != '/'" icon="mdi-ghost">
@@ -283,7 +283,7 @@ export default {
       Array(localStorage.length).fill().map((_, i) => i).forEach(idx => {
         const key = storage.key(idx);
         const item = storage.getItem(key);
-        if (key.slice(0, 7) != 'iconify')
+        if (key.slice(0, 7) !== 'iconify')
           data[key] = item;
       });
 

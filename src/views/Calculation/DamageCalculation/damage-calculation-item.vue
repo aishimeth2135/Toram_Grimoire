@@ -2,7 +2,7 @@
   <div
     v-if="currentContainer"
     class="flex items-start"
-    :style="{ 'margin-left': ((4 - layer) * 0.5) + 'rem' }"
+    :style="root ? { 'margin-left': '1.8rem' } : { 'margin-left': ((4 - layer) * 0.5) + 'rem' }"
   >
     <div class="flex items-center">
       <div
@@ -22,6 +22,7 @@
         v-for="item in currentContainerItems"
         :key="item.base.id"
         :range="[item.base.min, item.base.max]"
+        :step="item.base.step"
         :value="item.value"
         input-width="3rem"
         @update:value="setItemValue({ item, value: $event })"

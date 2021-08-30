@@ -111,7 +111,7 @@ export default function() {
       'item-query': 'Item Search',
       'crystal-query': 'Xtal Search',
       'calculation': {
-        'damage': 'Damage Calculator',
+        'damage-calculation': 'Damage Calculator',
       },
       'enchant-simulator': 'Stats-Filling Simulator',
     },

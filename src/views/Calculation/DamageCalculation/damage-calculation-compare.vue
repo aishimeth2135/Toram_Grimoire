@@ -10,8 +10,6 @@
         v-for="item in comparedCalculationItems"
         :key="item.index"
         :calculation="item.origin"
-        :compared-calculation="mainCalculation"
-        :calc-struct="calcStruct"
       />
     </div>
     <cy-window
@@ -38,11 +36,14 @@
 </template>
 
 <script>
-import { toRefs, computed, ref, watch, Ref } from 'vue';
+import { computed, ref, watch, Ref } from 'vue';
+
 import ToggleService from '@/setup/ToggleService';
-import vue_DamageCalculationCompareItem from './damage-calculation-compare-item';
+import { setupCalculationStoreState } from './setup';
 
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
+
+import vue_DamageCalculationCompareItem from './damage-calculation-compare-item';
 
 export default {
   name: 'DamageCalculationCompare',
@@ -50,24 +51,8 @@ export default {
   components: {
     DamageCalculationCompareItem: vue_DamageCalculationCompareItem,
   },
-  props: {
-    mainCalculation: {
-      type: Calculation,
-      required: true,
-    },
-    calculations: {
-      type: Array,
-      required: true,
-    },
-    calcStruct: {
-      type: Object,
-      required: true,
-    },
-  },
-  emits: ['toggle-calculation-compare'],
-  setup(props) {
-    /** @type {{ mainCalculation: Ref<Calculation>, calculations: Ref<Array<Calculation>> }} */
-    const { mainCalculation, calculations } = toRefs(props);
+  setup() {
+    const { currentCalculation: mainCalculation, calculations } = setupCalculationStoreState();
 
     const calculationItems = computed(() => {
       return calculations.value

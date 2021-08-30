@@ -96,6 +96,17 @@ export default function() {
           'ex_skill': 'EX技能',
         },
       },
+      'Auto Save': {
+        'message: unknow error when save': '自动存档时发生未知的错误。',
+        'message: unknow error when load': '自动读取时发生未知的错误。',
+      },
+      'Export build': {
+        'message: unknow error when save': '产生档案时发生未知的错误。',
+        'message: load successfully': '读取成功。',
+        'message: unknow error when load': '读取时发生未知的错误。',
+        'message: load failed': '解析档案时发生错误，档案内容的格式可能有误。',
+        'message: wrong type of .txt file': '读取的档案必须为文字（.txt）档。',
+      },
     },
     'Loading Page': {
       'bottom tips': '初次载入需要较长的时间，请稍后...<br />若载入途中发生错误，请先试着重新整理网页。',
@@ -107,6 +118,7 @@ export default function() {
       'Skill': '载入技能资料',
       'Tag': '载入标签清单',
       'Enchant': '载入附魔资料',
+      'DamageCalculation': '载入伤害计算器',
       'init': '初始化',
     },
     'Page Title': {
@@ -117,7 +129,7 @@ export default function() {
       'item-query': '道具查询',
       'crystal-query': '锻晶查询',
       'calculation': {
-        'damage': '伤害计算',
+        'damage-calculation': '伤害计算',
       },
       'enchant': {
         'enchant-simulator': '附魔模拟',

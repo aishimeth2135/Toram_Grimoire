@@ -13,7 +13,7 @@ export default {
   },
   meta: {
     leftMenuViewButtons: [{
-      title: () => GetLang('Page Title/calculation/damage'),
+      title: () => GetLang('Page Title/calculation/damage-calculation'),
       icon: 'mdi-sword',
       path: '',
     }],
@@ -22,7 +22,7 @@ export default {
     path: '',
     component: vue_DamageCalculatiom,
     meta: {
-      title: () => GetLang('Page Title/calculation/damage'),
+      title: () => GetLang('Page Title/calculation/damage-calculation'),
     },
   }],
 };

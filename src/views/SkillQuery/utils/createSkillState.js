@@ -1,16 +1,18 @@
 import CY from '@utils/Cyteria';
 import { SkillEffect } from '@/lib/Skill/Skill';
 
+import { handleFormula } from '@utils/data';
+
 export default function(skill, { defaultSkillLevel = 0, defaultCharacterLevel = 0 } = {}) {
   return {
     skill,
     slv: defaultSkillLevel,
     clv: defaultCharacterLevel,
-    ...handleSkillState(skill),
+    ...handleSkillState(skill, { vars: { slv: defaultSkillLevel, clv: defaultCharacterLevel } }),
   };
 }
 
-function handleSkillState(skill) {
+function handleSkillState(skill, { vars }) {
   const defSef = skill.defaultEffect;
 
   const states = [];
@@ -156,7 +158,7 @@ function handleSkillState(skill) {
     // create list of history.date
     state.historyList = [...new Set(
       state.branchs
-        .filter(p => p.name == 'history')
+        .filter(p => p.name === 'history')
         .map(p => p.attrs['date'])
         .filter(p => /\d{4}\/\d{2}\/\d{2}/.test(p)),
     )]
@@ -178,7 +180,7 @@ function handleSkillState(skill) {
       return [cur_bch.name, '@global'].find(name => {
         const p = suffixBranchList[name];
 
-        return p && p.find(a => typeof a != 'object' ?
+        return p && p.find(a => typeof a !== 'object' ?
           a == bch.name :
           a.name == bch.name && a.validation(bch));
       });
@@ -255,11 +257,17 @@ function handleSkillState(skill) {
     // console.log('state.branchs: ', state.branchs);
 
     // store stacks value
-    const stackStates = state.branchs.filter(b => b.name == 'stack')
+    const stackStates = state.branchs.filter(b => b.name === 'stack')
       .map(b => ({
         id: b.attrs['id'],
         branch: b,
-        value: parseInt(b.attrs['default'] == 'auto' ? b.attrs['min'] : b.attrs['default'], 10),
+        value: handleFormula(b.attrs['default'] === 'auto' ? b.attrs['min'] : b.attrs['default'], {
+          vars: {
+            'SLv': vars.slv,
+            'CLv': vars.clv,
+          },
+          toNumber: true,
+        }),
       }));
     state.stackStates = stackStates;
 
