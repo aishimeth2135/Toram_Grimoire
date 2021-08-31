@@ -1,3 +1,5 @@
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.2.0/workbox-sw.js');
+
 workbox.googleAnalytics.initialize();
 
 workbox.core.setCacheNameDetails({
@@ -7,16 +9,18 @@ workbox.core.setCacheNameDetails({
 
 const { registerRoute, NavigationRoute } = workbox.routing;
 const { StaleWhileRevalidate, CacheFirst } = workbox.strategies;
+const { ExpirationPlugin } = workbox.expiration;
+const { CacheableResponsePlugin } = workbox.cacheableResponse;
 
 const handleCacheName = name => name;
 
 // jsdelivr js
-workbox.routing.registerRoute(
+registerRoute(
   /https:\/\/cdn\.jsdelivr\.net\/npm\/.+\.js/,
-  new workbox.strategies.CacheFirst({
+  new CacheFirst({
     cacheName: handleCacheName('jsdelivr-cache'),
     plugins: [
-      new workbox.expiration.Plugin({
+      new ExpirationPlugin({
         maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
       })
     ]
@@ -24,12 +28,12 @@ workbox.routing.registerRoute(
 );
 
 // image
-workbox.routing.registerRoute(
+registerRoute(
   /.*\.(?:png|jpg|jpeg|svg|gif)/,
-  new workbox.strategies.CacheFirst({
+  new CacheFirst({
     cacheName: handleCacheName('image-cache'),
     plugins: [
-      new workbox.expiration.Plugin({
+      new ExpirationPlugin({
         maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
       })
     ]
@@ -42,7 +46,7 @@ registerRoute(
   new CacheFirst({
     cacheName: handleCacheName('font-cache'),
     plugins: [
-      new workbox.expiration.Plugin({
+      new ExpirationPlugin({
         maxAgeSeconds: 60 * 60 * 24 * 180, // 180 days
       })
     ]
@@ -67,7 +71,7 @@ registerRoute(
   const strategy = new StaleWhileRevalidate({
     cacheName: CACHE_NAME,
     plugins: [
-      new workbox.cacheableResponse.Plugin({
+      new CacheableResponsePlugin({
         statuses: [0, 200]
       })
     ]
@@ -114,12 +118,6 @@ self.addEventListener('message', (event) => {
   }
 });
 
-/**
- * The workboxSW.precacheAndRoute() method efficiently caches and responds to
- * requests for URLs in the manifest.
- * See https://goo.gl/S9QRab
- */
-self.__precacheManifest = [].concat(self.__precacheManifest || []);
-workbox.precaching.precacheAndRoute(self.__precacheManifest, {
+workbox.precaching.precacheAndRoute(self.__WB_MANIFEST, {
   ignoreURLParametersMatching: [/source/, /calculation_data/]
 });

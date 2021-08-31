@@ -30,8 +30,15 @@
   <img src="<%= BASE_URL %>imgs/favicon/favicon128.png" style="display: none">
   <div id="app"></div>
   <div id="app-modals"></div>
+
+  <% if (process.env.NODE_ENV === 'production') { %>
+    <script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5/velocity.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.6/dist/vue.runtime.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@4.0.11/dist/vue-router.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuex@4.0.2/dist/vuex.global.min.js"></script>
+  <% } %>
   <!-- built files will be auto injected -->
-  <script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5/velocity.min.js"></script>
 </body>
 
 </html>

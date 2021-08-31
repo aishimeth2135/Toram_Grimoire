@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "serve-prod": "vue-cli-service serve --mode production --port 9080"
+    "serve-prod": "vue-cli-service serve --mode production --port 9139"
   },
   "dependencies": {
     "@iconify/iconify": "^1.0.7",
@@ -26,6 +26,7 @@
     "register-service-worker": "^1.7.1",
     "sanitize-filename": "^1.6.3",
     "tailwindcss": "^2.2.9",
+    "velocity-animate": "^1.5.2",
     "vue": "^3.2.6",
     "vue-gtag-next": "^1.14.0",
     "vue-router": "4.0.11",

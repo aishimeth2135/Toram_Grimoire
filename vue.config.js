@@ -2,40 +2,91 @@ const path = require('path');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
-  configureWebpack: {
-    devtool: 'eval-cheap-source-map',
-    devServer: {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-        'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+  // configureWebpack: {
+  //   devtool: 'eval-cheap-source-map',
+  //   devServer: {
+  //     headers: {
+  //       'Access-Control-Allow-Origin': '*',
+  //       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+  //       'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+  //     },
+  //     host: 'localhost',
+  //     port: 9039,
+  //   },
+  //   resolve: {
+  //     alias: {
+  //       '@': path.join(__dirname, 'src'),
+  //       '@global-components': path.join(__dirname, 'src', 'components', 'global'),
+  //       '@services': path.join(__dirname, 'src', 'lib', 'main', 'services'),
+  //       '@utils': path.join(__dirname, 'src', 'lib', 'main', 'utils'),
+  //       '@consts': path.join(__dirname, 'src', 'lib', 'main', 'consts'),
+  //       '@grimoire': path.join(__dirname, 'src', 'lib', 'main', 'Grimoire.js'),
+  //     },
+  //     fallback: {
+  //       'os': require.resolve('os-browserify/browser'),
+  //       'assert': require.resolve('assert/'),
+  //     },
+  //   },
+  //   performance: {
+  //     hints: false,
+  //   },
+  //   plugins: [
+  //     // new BundleAnalyzerPlugin(),
+  //   ],
+  //   externals: {
+  //     'velocity-animate': 'Velocity',
+  //   },
+  // },
+  // eslint-disable-next-line no-unused-vars
+  configureWebpack: (config) => {
+    const resultConfig = {
+      devtool: 'eval-cheap-module-source-map',
+      devServer: {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+          'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+        },
+        host: 'localhost',
+        port: 9039,
       },
-      host: 'localhost',
-      port: 9039,
-    },
-    resolve: {
-      alias: {
-        '@': path.join(__dirname, 'src'),
-        '@global-components': path.join(__dirname, 'src', 'components', 'global'),
-        '@services': path.join(__dirname, 'src', 'lib', 'main', 'services'),
-        '@utils': path.join(__dirname, 'src', 'lib', 'main', 'utils'),
-        '@consts': path.join(__dirname, 'src', 'lib', 'main', 'consts'),
-        '@grimoire': path.join(__dirname, 'src', 'lib', 'main', 'Grimoire.js'),
+      resolve: {
+        alias: {
+          '@': path.join(__dirname, 'src'),
+          '@global-components': path.join(__dirname, 'src', 'components', 'global'),
+          '@services': path.join(__dirname, 'src', 'lib', 'main', 'services'),
+          '@utils': path.join(__dirname, 'src', 'lib', 'main', 'utils'),
+          '@consts': path.join(__dirname, 'src', 'lib', 'main', 'consts'),
+          '@grimoire': path.join(__dirname, 'src', 'lib', 'main', 'Grimoire.js'),
+        },
+        fallback: {
+          'os': require.resolve('os-browserify/browser'),
+          'assert': require.resolve('assert/'),
+        },
       },
-      fallback: {
-        'os': require.resolve('os-browserify/browser'),
-        'assert': require.resolve('assert/'),
+      performance: {
+        hints: false,
       },
-    },
-    performance: {
-      hints: false,
-    },
-    plugins: [
-      // new BundleAnalyzerPlugin(),
-    ],
-    externals: {
-      'velocity-animate': 'Velocity',
-    },
+    };
+    if (process.env.NODE_ENV === 'production') {
+      return {
+        ...resultConfig,
+        externals: {
+          'papaparse': 'Papa',
+          'velocity-animate': 'Velocity',
+          'vue': 'Vue',
+          'vue-router': 'VueRouter',
+          'vuex': 'Vuex',
+        },
+      };
+    } else {
+      return {
+        ...resultConfig,
+        plugins: [
+          // new BundleAnalyzerPlugin(),
+        ],
+      };
+    }
   },
 
   pwa: {
@@ -105,7 +156,7 @@ module.exports = {
     // workbox
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
-      swSrc: 'src/sw.js',
+      swSrc: './src/sw.js',
       exclude: [/_redirects/],
     },
   },
