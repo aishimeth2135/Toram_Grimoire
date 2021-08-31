@@ -1298,7 +1298,6 @@ export default {
 }
 
 .branch.extra-branch {
-  // opacity: 0.8;
   margin-left: 1.2rem;
 }
 

@@ -41,8 +41,8 @@ export default {
 
 <style lang="postcss" scoped>
 .cy--icon {
-  // --icon-color: var(--primary-light-2);
-  // --icon-width: 1.2rem;
+  /* --icon-color: var(--primary-light-2); */
+  /* --icon-width: 1.2rem; */
   height: var(--icon-width, var(--primary-light-2));
   width: var(--icon-width, 1.2rem);
   color: var(--icon-color, 1.2rem);

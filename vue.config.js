@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
   configureWebpack: {
-    devtool: 'cheap-eval-source-map',
+    devtool: 'eval-cheap-source-map',
     devServer: {
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -21,6 +21,10 @@ module.exports = {
         '@utils': path.join(__dirname, 'src', 'lib', 'main', 'utils'),
         '@consts': path.join(__dirname, 'src', 'lib', 'main', 'consts'),
         '@grimoire': path.join(__dirname, 'src', 'lib', 'main', 'Grimoire.js'),
+      },
+      fallback: {
+        'os': require.resolve('os-browserify/browser'),
+        'assert': require.resolve('assert/'),
       },
     },
     performance: {

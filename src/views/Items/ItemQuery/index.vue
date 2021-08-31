@@ -647,9 +647,6 @@ export default {
 }
 
 .main-menu {
-  // position: absolute;
-  // right: 0;
-  // bottom: 0;
   border: 0.1rem solid var(--primary-light);
   border-radius: 0.5rem;
   padding: 1rem 1.4rem;
@@ -680,7 +677,6 @@ export default {
 .menu-btn {
   width: 3rem;
   height: 3rem;
-  // background-color: rgba(var(--rgb-primary-light), 0.3);
   border-radius: 50%;
   cursor: pointer;
   display: flex;
