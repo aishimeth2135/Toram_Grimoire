@@ -1,6 +1,7 @@
-import '@/assets/css/main/font/font.css';
-import '@/assets/css/main/main.css';
-import '@/assets/css/main/tailwind.css';
+import '@/assets/css/font/font.css';
+import '@/assets/css/main.css';
+import '@/assets/css/global.css';
+import '@/assets/css/tailwind.css';
 
 import { createApp } from 'vue';
 

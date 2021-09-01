@@ -42,7 +42,6 @@ module.exports = {
   purge: {
     enabled: true,
     content: ['./src/**/*.vue'],
-    layers: ['base', 'components'],
   },
   theme: {
     colors: createColorConfig(),
