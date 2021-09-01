@@ -1,9 +1,9 @@
 <template>
   <template v-if="src && icon">
-    <iconify-icon
+    <IconifyIcon
       v-if="src === 'iconify'"
       class="cy--icon"
-      :name="icon"
+      :icon="icon"
     />
     <svg-icon
       v-else-if="src === 'custom'"
@@ -16,15 +16,20 @@
       :image-path="icon"
     />
   </template>
-  <iconify-icon
+  <IconifyIcon
     v-else
     class="cy--icon"
-    name="gg-shape-rhombus"
+    icon="gg-shape-rhombus"
   />
 </template>
 
 <script>
+import { Icon } from '@iconify/vue';
+
 export default {
+  components: {
+    IconifyIcon: Icon,
+  },
   props: {
     icon: {
       type: String,
@@ -43,9 +48,9 @@ export default {
 .cy--icon {
   /* --icon-color: var(--primary-light-2); */
   /* --icon-width: 1.2rem; */
-  height: var(--icon-width, var(--primary-light-2));
+  height: var(--icon-width, 1.2rem);
   width: var(--icon-width, 1.2rem);
-  color: var(--icon-color, 1.2rem);
+  color: var(--icon-color, var(--primary-light-2));
 
   @apply duration-300 flex-shrink-0;
 }

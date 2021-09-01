@@ -1,8 +1,11 @@
 import Iconify from '@iconify/iconify';
 
+/**
+ * Get custom icon by icon ID.
+ * @param {string} name - icon ID
+ * @returns {string} inline svg
+ */
 export default function Icons(name) {
-  if (name.includes('iconify/'))
-    return `<span class="iconify" data-icon="${name.replace('iconify/', '')}"></span>`;
   switch (name) {
     case 'potum':
       return '<svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="1250pt" height="1250pt" viewBox="0 0 1250 1250" preserveAspectRatio="xMidYMid meet">' +

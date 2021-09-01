@@ -31,28 +31,31 @@
         </cy-icon-text>
       </template>
       <template
-        v-for="(o, i) in buttonsStates"
-        :key="o.title"
+        v-for="(state, idx) in buttonsStates"
+        :key="state.title"
       >
-        <div class="column" @click="selectData(i)">
-          <div class="Cyteria scope-icon line">
-            <iconify-icon name="bx:bxs-book-bookmark" />
-            <span class="text">{{ o.title }}</span>
-          </div>
+        <div class="column" @click="selectData(idx)">
+          <cy-icon-text icon="bx:bxs-book-bookmark">
+            {{ state.title }}
+          </cy-icon-text>
           <div class="detail">
-            <ul v-if="!noData(i)" class="Cyteria ul simple">
-              <li v-for="name in o.names" :key="name.iid">
-                {{ name.text }}
-              </li>
-            </ul>
+            <div v-if="!noData(idx)" class="pl-2">
+              <div v-for="name in state.names" :key="name.iid">
+                <cy-icon-text icon="ic:round-label-important">
+                  {{ name.text }}
+                </cy-icon-text>
+              </div>
+            </div>
             <div v-else class="no-data">
               {{ langText('no data') }}
             </div>
           </div>
         </div>
         <cy-transition type="fade">
-          <div v-if="i == currentButtonIndex" class="tips">
-            {{ langText(currentMode == 'save' ? 'Warn/Confirm to overwrite existing data' : 'Warn/Confirm to load data') }}
+          <div v-if="idx === currentButtonIndex" class="mt-1 mb-4">
+            <cy-icon-text icon="bx:bx-info-circle" align-v="start" size="small" text-color="red">
+              {{ langText(currentMode === 'save' ? 'Warn/Confirm to overwrite existing data' : 'Warn/Confirm to load data') }}
+            </cy-icon-text>
           </div>
         </cy-transition>
       </template>
@@ -271,13 +274,5 @@ export default {
     padding: 0.6rem;
     color: var(--primary-light-2);
   }
-}
-.tips {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: var(--primary-light-2);
-  font-size: 0.9rem;
-  padding: 0 0.6rem;
-  opacity: 1;
 }
 </style>

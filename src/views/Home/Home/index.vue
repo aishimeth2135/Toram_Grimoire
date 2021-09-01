@@ -22,9 +22,11 @@
             <div class="text-lg text-center">
               {{ $rootLang('Page Title/' + data.name) }}
             </div>
-            <iconify-icon
-              :name="data.icon"
-              class="icon absolute top-0 left-0 w-11 h-11 fill-current text-light-2 bg-white rounded-full"
+            <cy-icon-text
+              :icon="data.icon"
+              icon-width="2.75rem"
+              icon-color="light-2"
+              class="router-link-icon absolute top-0 left-0 bg-white rounded-full"
             />
           </div>
         </router-link>
@@ -79,7 +81,7 @@ export default {
 <style lang="postcss" scoped>
 .content-title:hover {
   @apply border-light-3;
-  & > .icon {
+  & > .router-link-icon {
     @apply text-light-3;
     animation: move-rotate 1.3s ease;
   }
