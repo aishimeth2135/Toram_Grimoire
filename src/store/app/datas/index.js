@@ -35,22 +35,34 @@ const store = {
       state.loaded.set(id, true);
     },
     initItems(state) {
-      state.Items = new ItemsSystem();
+      if (state.Items === null) {
+        state.Items = new ItemsSystem();
+      }
     },
     initCharacter(state) {
-      state.Character = new CharacterSystem();
+      if (state.Character === null) {
+        state.Character = new CharacterSystem();
+      }
     },
     initTag(state) {
-      state.Tag = new TagSystem();
+      if (state.Tag === null) {
+        state.Tag = new TagSystem();
+      }
     },
     initSkill(state) {
-      state.Skill = new SkillSystem();
+      if (state.Skill === null) {
+        state.Skill = new SkillSystem();
+      }
     },
     initEnchant(state) {
-      state.Enchant = new EnchantSystem();
+      if (state.Enchant === null) {
+        state.Enchant = new EnchantSystem();
+      }
     },
     initDamageCalculation(state) {
-      state.DamageCalculation = new DamageCalculationSystem();
+      if (state.DamageCalculation === null) {
+        state.DamageCalculation = new DamageCalculationSystem();
+      }
     },
   },
   actions: {

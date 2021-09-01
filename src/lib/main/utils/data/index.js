@@ -1,151 +1,119 @@
-import * as recast from 'recast';
-import RegexEscape from 'regex-escape';
 import { isNumberString } from '@utils/string';
+import { getVarsMap, getGettersMap, varMapToArray, handleReplacedKey } from './utils';
 
-/**
- * @param {string} str
- * @returns {string}
- */
-function parseFormula(formulaStr, { methods = {} } = {}) {
-  const ast = recast.parse(formulaStr);
-  // console.log(ast.program.body[0]);
+import jsep from 'jsep';
 
-  const builders = recast.types.builders;
-  const TNT = recast.types.namedTypes;
-
-  const back = (self, path) => {
-    path.parentPath.parentPath.parentPath ?
-      self.traverse(path.parentPath.parentPath.parentPath) :
-      self.traverse(path);
+function parseFormula(formulaStr, { vars = {} } = {}) {
+  const unknowSnippet = value => typeof value === 'string';
+  const handleIdentifier = (node, parent = null) => {
+    if (parent === null) {
+      if (window[node.name]) {
+        return window[node.name];
+      }
+      return vars[node.name];
+    }
+    return parent[node.name];
   };
-
-  const calc = (a, operator, b) => {
-    if (operator === '+')
-      return a + b;
-    if (operator === '-')
-      return a - b;
-    if (operator === '*')
-      return a * b;
-    if (operator === '/')
-      return a / b;
-    if (operator === '&&')
-      return a && b;
-    if (operator === '||')
-      return a || b;
-    return 0;
-  }
-
-  recast.visit(ast, {
-    visitLogicalExpression(path) {
-      const node = path.node;
-      if (TNT.Literal.check(node.right) && TNT.Literal.check(node.left)) {
-        const value = calc(node.left.value, node.operator, node.right.value);
-        path.parentPath.get(path.name).replace(builders.literal(value));
-
-        back(this, path);
-        return;
-      }
-
-      this.traverse(path);
-    },
-    visitBinaryExpression(path) {
-      const node = path.node;
-      if (TNT.Literal.check(node.right)) {
-        if (TNT.Literal.check(node.left) || (TNT.UnaryExpression.check(node.left) && node.left.operator === '-')) {
-          const leftValue = !TNT.UnaryExpression.check(node.left) ? node.left.value : -1 * node.left.argument.value;
-          const value = calc(leftValue, node.operator, node.right.value);
-          path.parentPath.get(path.name).replace(builders.literal(value));
-
-          back(this, path);
-          return;
+  const handle = (node) => {
+    if (node.type === 'Literal') {
+      return node.value;
+    }
+    if (node.type === 'UnaryExpression') {
+      return node.argument.type === 'Literal' ?
+        handle(node.argument) * -1 :
+        '-' + handle(node.argument);
+    }
+    if (node.type === 'BinaryExpression') {
+      const left = handle(node.left);
+      const right = handle(node.right);
+      const operator = node.operator;
+      if (unknowSnippet(left) || unknowSnippet(right))
+        return `${left}${operator}${right}`;
+      if (operator === '+')
+        return left + right;
+      if (operator === '-')
+        return left - right;
+      if (operator === '*')
+        return left * right;
+      if (operator === '/')
+        return left / right;
+    }
+    if (node.type === 'Identifier') {
+      return node.name;
+    }
+    if (node.type === 'MemberExpression') {
+      if (!node.computed) {
+        if (node.object.type === 'MemberExpression') {
+          return handleIdentifier(node.property, handle(node.object));
         }
-        if (TNT.BinaryExpression.check(node.left) && (node.operator === '*' || node.operator === '/') &&
-          TNT.Literal.check(node.left.right) && node.left.operator === '*') {
-          const value = calc(node.right.value, node.operator, node.left.right.value);
-          path.get('right').replace(builders.literal(value));
-          path.get('left').replace(node.left.left);
-
-          back(this, path);
-          return;
-        }
+        return handleIdentifier(node.property, handleIdentifier(node.object));
       }
-
-      this.traverse(path);
-    },
-    visitCallExpression(path) {
-      const node = path.node;
-
-      if (node.arguments.every(anode => TNT.Literal.check(anode) || TNT.UnaryExpression.check(anode))) {
-        const args = node.arguments.map(anode => {
-          if (TNT.UnaryExpression.check(anode)) {
-            return -1 * anode.argument.value;
-          }
-          return anode.value;
-        });
-
-        const pros = [];
+      const parent = node.object.type === 'MemberExpression' ? handle(node.object) : handleIdentifier(node.object);
+      return parent[handle(node.property)];
+    }
+    if (node.type === 'CallExpression') {
+      const args = node.arguments.map(arg => handle(arg));
+      if (args.some(arg => unknowSnippet(arg))) {
+        const chain = [];
         let cur = node.callee;
-        if (TNT.Identifier.check(cur)) {
-          cur = methods[cur.name];
-        } else {
-          while (!TNT.Identifier.check(cur)) {
-            if (TNT.Identifier.check(cur.property)) {
-              pros.push(cur.property.name);
-            } else if (TNT.Literal.check(cur.property)) {
-              pros.push(cur.property.value);
-            } else {
-              return;
-            }
-            cur = cur.object;
-          }
-          if (cur.name in window) {
-            cur = window[cur.name];
-          } else {
-            cur = methods[cur.name];
-          }
-          pros.reverse().forEach(p => cur = cur[p]);
+        while (cur.type === 'MemberExpression') {
+          chain.push(cur.computed ? cur.property.value : cur.property.name);
+          cur = cur.object;
         }
-
-        const value = cur(...args) || 0;
-        path.parentPath.get(path.name).replace(builders.literal(value));
-
-        back(this, path);
-        return;
+        chain.push(cur.name);
+        return `${chain.reverse().join('.')}(${args.join(', ')})`;
       }
-      this.traverse(path);
-    },
-    visitMemberExpression(path) {
-      const node = path.node;
-
-      if (node.computed && TNT.ArrayExpression.check(node.object)) {
-        const ary = node.object.elements;
-        if (ary.every(p => TNT.Literal.check(p)) && TNT.Literal.check(node.property)) {
-          const value = ary[node.property.value].value;
-          path.parentPath.get(path.name).replace(builders.literal(value));
-
-          back(this, path);
-          return;
-        }
+      const callee = node.callee.type === 'Identifier' ? handleIdentifier(node.callee) : handle(node.callee);
+      return callee.apply(null, args);
+    }
+    if (node.type === 'ArrayExpression') {
+      const els = node.elements.map(el => handle(el));
+      if (els.some(el => unknowSnippet(el))) {
+        return `[${els.join(', ')}]`;
       }
+    }
+    if (node.type === 'Compound') {
+      const els = handle(node.body[0]);
+      const key = handle(node.body[1][node.body[1].length - 1]);
+      if (unknowSnippet(els) || unknowSnippet(key)) {
+        return `[${els.join(', ')}][${key}]`;
+      }
+    }
+    if (node.type === 'ConditionalExpression') {
+      const test = parseConditional(node.test);
+      return handle(test ? node.consequent : node.alternate);
+    }
+    return 0;
+  };
+  return handle(jsep(formulaStr));
+}
 
-      this.traverse(path);
-    },
-  });
-
-  return recast.print(ast).code.replace(/\((\d+(?:\.\d+)?)\)/g, (m, m1) => m1);
+function parseConditional(formulaStr) {
+  const handle = (node) => {
+    if (node.type === 'Literal') {
+      return node.value;
+    }
+    if (node.type === 'LogicalExpression') {
+      const left = handle(node.left);
+      const right = handle(node.right);
+      const operator = node.operator;
+      if (operator === '&&')
+        return left && right;
+      if (operator === '||')
+        return left || right;
+    }
+  }
+  return handle(jsep(formulaStr));
 }
 
 /**
  * @typedef HandleFormulaOptions
  * @type {Object}
+ * @property {Object<string, number|string>} [vars] - mapping of vars
  * @property {Object<string, string>} [texts] - mapping of text
- * @property {Object<string, number | string>} [vars] - mapping of vars
  * @property {Object<string, Function>} [methods] - mapping of methods
- * @property {Object<string, function(): number | string>} [getters] - mapping of getters. The getter like the var in formula, but will access by function
+ * @property {Object<string, function(): number|string>} [getters] - mapping of getters. The getter like the var in formula, but will access by function
  * @property {boolean} [toNumber=false] - If true, result will convert to number
- * @property {boolean} [pure=false] - If true, it have to make sure that given formula can be converted into non-vars string.
- *                                  * it means the given formula will only contains vars and all vars are exist in options.vars.
- *                                  * It will use performance better way to deal with given formula.
  * @property {any} [defaultValue] - If given formula is empty, it will return options.defaultValue.
  */
 /**
@@ -158,7 +126,6 @@ function handleFormula(formulaStr, {
     methods = {},
     getters = {},
     toNumber = false,
-    pure = false,
     defaultValue = null,
   } = {}) {
   if (formulaStr === '') {
@@ -168,44 +135,8 @@ function handleFormula(formulaStr, {
     return defaultValue;
   }
   const originalFormulaStr = formulaStr;
-
-  const varsMap = new Map();
-  const handleVarsMapping = (prefix, target) => {
-    Object.entries(target).forEach(([key, value]) => {
-      const mapKey = `${prefix ? prefix + '.' : ''}${key}`;
-      if (typeof value === 'function') {
-        varsMap.set(mapKey, value());
-      } else if (typeof value === 'object') {
-        if (Array.isArray(value)) {
-          varsMap.set(mapKey, `[${value.toString()}]`);
-        } else {
-          handleVarsMapping(mapKey, value);
-        }
-      } else {
-        varsMap.set(mapKey, value);
-      }
-    });
-  };
-  handleVarsMapping('', vars);
-
-  const gettersMap = new Map();
-  const handleGettersMapping = (prefix, target) => {
-    Object.entries(target).forEach(([key, value]) => {
-      const mapKey = `${prefix ? prefix + '.' : ''}${key}`;
-      if (typeof value === 'object') {
-        handleGettersMapping(mapKey, value);
-      } else if (typeof value === 'function') {
-        gettersMap.set(mapKey, value);
-      } else {
-        console.warn(`[handle formula] getter: ${mapKey} is not function`);
-      }
-    });
-  };
-  handleGettersMapping('', getters);
-
-  // sort by key.length to handle longer var first
-  const varMapToArray = map => Array.from(map).sort(([keya], [keyb]) => keyb.length - keya.length);
-  const handleReplacedKey = key => new RegExp(`${RegexEscape(key)}(?![a-zA-Z0-9_$'])`, 'g');
+  const varsMap = getVarsMap(vars);
+  const gettersMap = getGettersMap(getters);
 
   varMapToArray(varsMap).forEach(([key, value]) => {
     formulaStr = formulaStr.replace(handleReplacedKey(key), typeof value !== 'string' ? value.toString() : (value || '0'));
@@ -234,15 +165,13 @@ function handleFormula(formulaStr, {
 
   if (!isNumberString(formulaStr)) {
     try {
-      if (pure) {
-        formulaStr = (Function(`return (${formulaStr});`)()).toString();
-      } else {
-        formulaStr = parseFormula(formulaStr, { methods });
-      }
+      formulaStr = parseFormula(formulaStr, {
+        vars: { ...methods },
+      });
     } catch (error) {
       console.groupCollapsed('[parse formula] Unable to parse formula:');
       console.warn(originalFormulaStr);
-      console.log('Current formula: ', formulaStr);
+      console.log('Current: ', formulaStr);
       console.log(Array.from(arguments));
       console.warn(error);
       console.groupEnd();
@@ -269,4 +198,45 @@ function handleFormula(formulaStr, {
   return formulaStr;
 }
 
-export { handleFormula };
+/**
+ * @typedef HandleConditionalOptions
+ * @type {Object}
+ * @property {Object<string, boolean>} [vars] - mapping of vars
+ * @property {boolean} [defaultValue] - If given formula is empty, it will return options.defaultValue.
+ */
+/**
+ * @param {string} formulaStr
+ * @param {HandleConditionalOptions} options
+ */
+ function handleConditional(formulaStr, {
+  vars = {},
+  defaultValue = null,
+} = {}) {
+  if (formulaStr === '') {
+    if (defaultValue === undefined) {
+      return true;
+    }
+    return defaultValue;
+  }
+  const originalFormulaStr = formulaStr;
+
+  const varsMap = getVarsMap(vars);
+  varMapToArray(varsMap).forEach(([key, value]) => {
+    formulaStr = formulaStr.replace(handleReplacedKey(key), typeof value === 'boolean' ? value.toString() : 'true');
+  });
+
+  let result = true;
+  try {
+    result = parseConditional(formulaStr);
+  } catch (error) {
+    console.groupCollapsed('[parse formula] Unable to parse conditional:');
+    console.warn(originalFormulaStr);
+    console.log('Current: ', formulaStr);
+    console.log(Array.from(arguments));
+    console.warn(error);
+    console.groupEnd();
+  }
+  return result;
+}
+
+export { handleConditional, handleFormula };

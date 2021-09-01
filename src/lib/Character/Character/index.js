@@ -3,7 +3,7 @@ import Grimoire from '@grimoire';
 import CharacterSystem from '../index';
 import { StatBase } from '@/lib/Character/Stat';
 import { MainWeapon, SubWeapon, SubArmor } from '@/lib/Character/CharacterEquipment';
-import { handleFormula } from '@utils/data';
+import { handleFormula, handleConditional } from '@utils/data';
 
 class Character {
   static OPTIONAL_BASE_STAT_LIST = ['TEC', 'MEN', 'LUK', 'CRT'];
@@ -546,7 +546,6 @@ class CharacterStatFormula {
         ...vars.conditional,
       },
       defaultValue: true,
-      pure: true,
     };
 
     const conditions = this.conditionValues
@@ -557,7 +556,7 @@ class CharacterStatFormula {
           isBase = false;
 
         if (p.conditional !== '#') {
-          result = handleFormula(p.conditional, conditionalHandlerOptions);
+          result = handleConditional(p.conditional, conditionalHandlerOptions);
         }
         p.options.forEach(option => {
           const match = option.match(/#([cmt]value)/);

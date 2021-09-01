@@ -1,16 +1,21 @@
 <template>
-  <div class="w-full">
+  <div v-if="calculationItems.length > 0" class="w-full">
     <div>
       <cy-button-border icon="bx:bx-git-compare" @click="toggle('contents/selectCalculation', true)">
         {{ $lang('compare/select build') }}
       </cy-button-border>
     </div>
-    <div class="pt-4 space-y-2">
+    <div v-if="comparedCalculationItems.length > 0" class="pt-4 space-y-2">
       <DamageCalculationCompareItem
         v-for="item in comparedCalculationItems"
         :key="item.index"
         :calculation="item.origin"
       />
+    </div>
+    <div v-else class="px-2">
+      <cy-default-tips icon="potum" icon-src="custom">
+        {{ $lang('compare/tips: introduction') }}
+      </cy-default-tips>
     </div>
     <cy-window
       :visible="contents.selectCalculation"
@@ -33,6 +38,9 @@
       </cy-list-item>
     </cy-window>
   </div>
+  <cy-default-tips v-else icon="potum" icon-src="custom">
+    {{ $lang('compare/tips: At least two builds') }}
+  </cy-default-tips>
 </template>
 
 <script>

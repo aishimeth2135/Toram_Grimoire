@@ -470,6 +470,7 @@ export default {
           };
         }),
       })).filter(a => a.stats.length !== 0);
+
       return result;
     },
     checkStatRestriction(stat) {

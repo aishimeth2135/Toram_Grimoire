@@ -25,7 +25,9 @@ export default async function viewInit(...inits) {
 
   await store.dispatch('initialize/startInit');
   initItems.forEach(async p => {
-    !p.loaded && await p.origin.next();
+    if (!p.loaded) {
+      await p.origin.next();
+    }
     store.commit('datas/loadFinished', p.id);
   });
   store.commit('initialize/initBeforeFinished');

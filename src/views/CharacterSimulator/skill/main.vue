@@ -125,7 +125,7 @@ export default {
     };
   },
   created() {
-    if (this.skillBuilds.length !== 0)
+    if (this.skillBuilds.length !== 0 && this.currentSkillBuildIndex < 0)
       this.selectCurrentBuild(0);
   },
   updated() {

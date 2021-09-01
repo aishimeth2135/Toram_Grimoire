@@ -21,6 +21,8 @@ export default function() {
       },
       'compare': {
         'select build': '選擇要比較的配置',
+        'tips: introduction': '這裡可以對目前的配置和其他配置進行比較，請點擊上方的按鈕來選擇要比較的配置0.0',
+        'tips: At least two builds': '要至少有兩個配置才可以使用比較功能0.0',
       },
       'tips': {
         'At least one build must be kept': '要至少保留一個配置0.0',
