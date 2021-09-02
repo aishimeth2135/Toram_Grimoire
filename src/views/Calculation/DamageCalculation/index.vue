@@ -96,7 +96,7 @@
           root
         />
         <cy-hr />
-        <DamageCalculationItem calc-struct-item="critical_rate" root />
+        <DamageCalculationItem calc-struct-item="critical/critical_rate" root />
       </div>
     </div>
     <cy-transition type="fade">

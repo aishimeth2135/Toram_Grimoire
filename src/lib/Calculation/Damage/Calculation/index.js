@@ -1,4 +1,4 @@
-import { CalculationBase, CalcItemBase, CalcItemBaseContainer, CalcStructItem, CalcResultOptions } from './base';
+import { CalculationBase, CalcItemBase, CalcItemContainerBase, CalcStructItem, CalcResultOptions } from './base';
 
 class Calculation {
   /**
@@ -15,14 +15,19 @@ class Calculation {
     /** @type {Map<string, CalcItemContainer>} */
     this.containers = new Map();
 
-    this.initContainers();
-  }
+    /** @type {Map<string, CalcItem>} */
+    this.items = new Map();
 
-  initContainers() {
-    for (const container of this.base.containers.values()) {
-      const itemContainer = new CalcItemContainer(this, container);
-      itemContainer.initItems();
-      this.containers.set(container.id, itemContainer);
+    // init of containers and items
+    for (const itemBase of this.base.items.values()) {
+      const item = new CalcItem(itemBase);
+      this.items.set(item.id, item);
+    }
+
+    for (const containerBase of this.base.containers.values()) {
+      const container = new CalcItemContainer(this, containerBase);
+      container.initItems();
+      this.containers.set(containerBase.id, container);
     }
   }
 
@@ -88,13 +93,13 @@ class Calculation {
 class CalcItemContainer {
   /**
    * @param {Calculation} parent
-   * @param {CalcItemBaseContainer} base
+   * @param {CalcItemContainerBase} base
    */
   constructor(parent, base) {
     /** @type {Calculation} @private */
     this._parent = parent;
 
-    /** @type {CalcItemBaseContainer} */
+    /** @type {CalcItemContainerBase} */
     this.base = base;
 
     /** @type {boolean} */
@@ -108,22 +113,22 @@ class CalcItemContainer {
   }
 
   /**
-   * generate copy of Items from ItemBases
+   * generate refs of Items from Calculation
    */
   initItems() {
     let flag = true;
-    for (const item of this.base.items.values()) {
+    for (const id of this.base.items.keys()) {
+      const item = this.belongCalculation.items.get(id);
       if (flag) {
-        this._currentItemId = item.id;
+        this._currentItemId = id;
         flag = false;
       }
-      const newItem = new CalcItem(item);
-      this.items.set(item.id, newItem);
+      this.items.set(id, item);
     }
   }
 
   get selectable() {
-    return this.base.type === CalcItemBaseContainer.TYPE_OPTIONS && !this.base.getCurrentItemId;
+    return this.base.type === CalcItemContainerBase.TYPE_OPTIONS && !this.base.getCurrentItemId;
   }
 
   get belongCalculation() {

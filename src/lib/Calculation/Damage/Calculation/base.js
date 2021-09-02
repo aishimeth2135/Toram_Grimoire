@@ -4,14 +4,14 @@ import { CalcItemContainer, Calculation } from './index';
 /**
  * @callback CalcResult
  * @param {CalcItemContainer} itemContainer
- * @param {CalcItemBaseContainer} baseContainer
+ * @param {CalcItemContainerBase} baseContainer
  * @returns {number}
  */
 
 /**
  * @callback CurrentItemIdGetter
  * @param {CalcItemContainer} itemContainer
- * @param {CalcItemBaseContainer} baseContainer
+ * @param {CalcItemContainerBase} baseContainer
  * @returns {string}
  */
 
@@ -44,21 +44,40 @@ import { CalcItemContainer, Calculation } from './index';
 /** */
 class CalculationBase {
   constructor() {
-    /** @type {Map<string, CalcItemBaseContainer>} */
+    /** @type {Map<string, CalcItemContainerBase>} */
     this.containers = new Map();
+
+    /**
+     * All items store in CalculationBase.items, CalcItemContainerBase.items will refer to CalculationBase.items
+     * @type {Map<string, CalcItemBase>}
+     */
+    this.items = new Map();
   }
 
   /**
    * @param {string} id - unique ID
    * @param {symbol} category - CalcItemContainer.CATEGORY_X
    * @param {symbol} type - CalcItemContainer.TYPE_X
-   * @returns {CalcItemBaseContainer} this
+   * @returns {CalcItemContainerBase} this
    */
    appendContainer(id, type) {
-    const container = new CalcItemBaseContainer(this, id, type);
+    const container = new CalcItemContainerBase(this, id, type);
     this.containers.set(id, container);
     return container;
   }
+
+  /**
+   * @param {CalcItemBase} item
+   * @returns {CalcItemBase}
+   */
+   appendItem(id) {
+     if (!this.items.has(id)) {
+      const item = new CalcItemBase(this, id);
+      this.items.set(id, item);
+      return item;
+     }
+     return this.items.get(id);
+   }
 
   /**
    * @param {string} [name]
@@ -120,7 +139,7 @@ class CalculationBase {
   }
 }
 
-class CalcItemBaseContainer {
+class CalcItemContainerBase {
   static TYPE_NORMAL = Symbol('normal');
   static TYPE_OPTIONS = Symbol('options');
 
@@ -137,7 +156,7 @@ class CalcItemBaseContainer {
     this._parent = parent;
 
     /** @type {symbol} */
-    this.type = type ?? CalcItemBaseContainer.TYPE_NORMAL;
+    this.type = type ?? CalcItemContainerBase.TYPE_NORMAL;
 
     /** @type {Map<string, CalcItemBase>} */
     this.items = new Map();
@@ -174,7 +193,7 @@ class CalcItemBaseContainer {
    * @returns {CalcItemBase}
    */
   appendItem(id) {
-    const item = new CalcItemBase(this, id);
+    const item = this._parent.appendItem(id);
     if (this.isMultiplier) {
       item.setRange(0, null)
         .setDefaultValue(100)
@@ -238,12 +257,12 @@ class CalcItemBaseContainer {
 
 class CalcItemBase {
   /**
-   * @param {CalcItemBaseContainer} parent
+   * @param {CalculationBase} parent
    * @param {string} id
    * @param {string} unit
    */
   constructor(parent, id) {
-    /** @type {CalcItemBaseContainer} */
+    /** @type {CalculationBase} */
     this._parent = parent;
 
     /** @type {string} */
@@ -263,10 +282,6 @@ class CalcItemBase {
 
     /** @type {number} */
     this.defaultValue = 0;
-  }
-
-  get belongContainer() {
-    return this._parent;
   }
 
   get min() {
@@ -307,4 +322,4 @@ class CalcItemBase {
   }
 }
 
-export { CalcItemBase, CalculationBase, CalcItemBaseContainer };
+export { CalcItemBase, CalculationBase, CalcItemContainerBase };

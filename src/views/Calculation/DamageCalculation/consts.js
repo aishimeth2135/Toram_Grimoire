@@ -34,7 +34,7 @@ const calcStructCritical = {
     operator: '***',
     list: [
       'skill/multiplier',
-      'critical_damage',
+      'critical/critical_damage',
       'range_damage',
       'unsheathe_attack/multiplier',
       'stronger_against_element',
@@ -81,7 +81,7 @@ const calcStructWithoutCritical = {
     operator: '***',
     list: [
       'skill/multiplier',
-      // 'critical_damage',
+      // 'critical/critical_damage',
       'range_damage',
       'unsheathe_attack/multiplier',
       'stronger_against_element',
