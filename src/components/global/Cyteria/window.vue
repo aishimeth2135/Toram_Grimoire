@@ -22,7 +22,7 @@
               <slot />
             </div>
             <div v-if="footer" class="sticky bottom-0 mt-4 py-2 mx-4 bg-white flex">
-              <cy-button-border class="ml-auto" @click="closeWindow">
+              <cy-button-border icon="ic-round-close" class="ml-auto" @click="closeWindow">
                 {{ $rootLang('global/close') }}
               </cy-button-border>
             </div>
@@ -132,7 +132,6 @@ export default {
         left: 0.3rem;
         width: 0.8rem;
         height: 0.8rem;
-        background-color: rgba(var(--rgb-white), 0.6);
       }
     }
 

@@ -5,6 +5,7 @@
       v-model:visible="windowVisible"
       class="main--window"
       width="wide"
+      footer
     >
       <template #title>
         <div class="flex items-center">

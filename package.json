@@ -9,7 +9,7 @@
     "serve-prod": "vue-cli-service serve --mode production --port 9139"
   },
   "dependencies": {
-    "@iconify/iconify": "^1.0.7",
+    "@iconify/iconify": "^2.0.4",
     "assert": "^2.0.0",
     "autoprefixer": "^10.3.3",
     "core-js": "^3.6.5",

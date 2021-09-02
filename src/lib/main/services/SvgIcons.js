@@ -17,31 +17,16 @@ export default function Icons(name) {
   }
 }
 
-let iconLoadListeners = null;
 
 function loadIconifyData(name) {
-  if (iconLoadListeners === null) {
-    iconLoadListeners = [];
-    document.addEventListener('IconifyAddedIcons', function() {
-      iconLoadListeners = iconLoadListeners.filter(p => {
-        if (Iconify.iconExists(p.iconName)) {
-          p.resolve(Iconify.getIcon(p.iconName));
-          return false;
-        }
-        return true;
-      });
-    });
-  }
   return new Promise((resolve) => {
     if (Iconify.iconExists(name)) {
       resolve(Iconify.getIcon(name));
       return;
     }
-    iconLoadListeners.push({
-      iconName: name,
-      resolve,
+    Iconify.loadIcons([name], () => {
+      resolve(Iconify.getIcon(name));
     });
-    Iconify.preloadImages([name]);
   });
 }
 
