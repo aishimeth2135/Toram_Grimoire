@@ -8165,6 +8165,11 @@ vue@^3.2.6:
     "@vue/runtime-dom" "3.2.6"
     "@vue/shared" "3.2.6"
 
+vuex-composition-helpers@^1.0.23:
+  version "1.0.23"
+  resolved "https://registry.yarnpkg.com/vuex-composition-helpers/-/vuex-composition-helpers-1.0.23.tgz#8e1df37f8175e59cc3474bf1e77d62b6490a724a"
+  integrity sha512-TZZ46Jj9Shq5mOgrQVn59fmVI1bOqEaidQjbw8qkmLRxjyJdQ6j9MxYg0Xo5QgS3dEdKNFJLHRgtCpkf57Gnjw==
+
 vuex@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-4.0.2.tgz#f896dbd5bf2a0e963f00c67e9b610de749ccacc9"

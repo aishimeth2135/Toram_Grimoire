@@ -18,6 +18,12 @@ class Calculation {
     /** @type {Map<string, CalcItem>} */
     this.items = new Map();
 
+    /** @type {Map<string, Array<CalcItemCustom>>} */
+    this.containerCustomItems = new Map([
+      ['other_constant', []],
+      ['other_multiplier', []],
+    ]);
+
     // init of containers and items
     for (const itemBase of this.base.items.values()) {
       const item = new CalcItem(itemBase);
@@ -32,6 +38,32 @@ class Calculation {
   }
 
   /**
+   * @param {string} containerId
+   * @param {string} itemId
+   * @returns {CalcItemCustom}
+   */
+  appendCustomItem(containerId, itemId) {
+    if (!this.containerCustomItems.has(containerId)) {
+      console.warn(`[Calculation.appendCustomItem] container with id ${containerId} is not exist in additional list.`);
+      return;
+    }
+    const container = this.containers.get(containerId);
+    const itemBase = container.base.items.get(itemId);
+    const newItem = new CalcItemCustom(itemBase);
+    this.containerCustomItems.get(containerId).push(newItem);
+    return newItem;
+  }
+
+  removeCustomItem(containerId, item) {
+    if (!this.containerCustomItems.has(containerId)) {
+      console.warn(`[Calculation.removeCustomItem] container with id ${containerId} is not exist in additional list.`);
+      return;
+    }
+    const items = this.containerCustomItems.get(containerId);
+    items.splice(items.indexOf(item), 1);
+  }
+
+  /**
    * @param {CalcStructItem} calcStruct
    * @param {CalcResultOptions} options
    * @returns {number}
@@ -41,10 +73,12 @@ class Calculation {
   }
 
   save() {
-    const items = Array.from(this.items.values()).map(item => ({
-      id: item.base.id,
-      value: item.value,
-    }));
+    const items = Array.from(this.items.values()).map(item => {
+      return {
+        id: item.base.id,
+        value: item.value,
+      };
+    });
     const containers = Array.from(this.containers.values()).map(container => {
       return {
         id: container.base.id,
@@ -52,10 +86,22 @@ class Calculation {
         currentItemId: container.selectable ? container.currentItem.base.id : null,
       };
     });
+    const containerCustomItems = Array.from(this.containerCustomItems.entries()).map(([containerId, customItems]) => {
+      const itemsData = customItems.map(item => ({
+        id: item.base.id,
+        name: item.name,
+        value: item.value,
+      }));
+      return {
+        containerId,
+        items: itemsData,
+      }
+    });
     return {
       name: this.name,
       containers,
       items,
+      containerCustomItems,
     };
   }
 
@@ -79,6 +125,13 @@ class Calculation {
       if (containerData.currentItemId !== null) {
         container.selectItem(containerData.currentItemId);
       }
+    });
+    data.containerCustomItems.forEach(customItemData => {
+      customItemData.items.forEach(itemData => {
+        const item = this.appendCustomItem(customItemData.containerId, itemData.id);
+        item.name = itemData.name;
+        item.value = itemData.value;
+      });
     });
   }
 
@@ -142,6 +195,21 @@ class CalcItemContainer {
     return this.items.get(this._currentItemId);
   }
 
+  get customItemAddable() {
+    return this.belongCalculation.containerCustomItems.has(this.base.id);
+  }
+
+  get customItems() {
+    return this.customItemAddable ? this.belongCalculation.containerCustomItems.get(this.base.id) : [];
+  }
+
+  createCustomItem() {
+    return this.belongCalculation.appendCustomItem(this.base.id, this.currentItem.base.id);
+  }
+  removeCustomItem(item) {
+    this.belongCalculation.removeCustomItem(this.base.id, item);
+  }
+
   /**
    * Ally method to get value of item
    * @param {string} id
@@ -188,6 +256,27 @@ class CalcItem {
     value = max !== null && value > max ? max : value;
     value = min !== null && value < min ? min : value;
     this._value = value;
+  }
+
+  get isCustom() {
+    return false;
+  }
+}
+
+class CalcItemCustom extends CalcItem {
+  /**
+   * @param {CalcItemBase} base
+   * @param {string} [name]
+   */
+  constructor(base, name = '') {
+    super(base);
+
+    /** @type {string} */
+    this.name = name;
+  }
+
+  get isCustom() {
+    return true;
   }
 }
 

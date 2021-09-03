@@ -30,7 +30,8 @@
     "vue": "^3.2.6",
     "vue-gtag-next": "^1.14.0",
     "vue-router": "4.0.11",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "vuex-composition-helpers": "^1.0.23"
   },
   "devDependencies": {
     "@iconify/vue": "^3.0.0",

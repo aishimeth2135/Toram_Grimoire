@@ -1,13 +1,22 @@
 const mutations = {
+  setEnabled(state, { container, value }) {
+    container.enabled = value;
+  },
+  setCurrentItemId(state, { container, value }) {
+    container.selectItem(value);
+  },
+  createCustomItem(state, { container, name }) {
+    const newItem = container.createCustomItem();
+    newItem.name = name;
+  },
+  removeCustomItem(state, { container, item }) {
+    container.removeCustomItem(item);
+  },
   setItemValue(state, { item, value }) {
     item.value = value;
   },
-  setContainerEnabled(state, { container, value }) {
-    console.log(container, value);
-    container.enabled = value;
-  },
-  setContainerCurrentItemId(state, { container, value }) {
-    container.selectItem(value);
+  setItemName(state, { item, value }) {
+    item.name = value;
   },
 };
 

@@ -151,6 +151,10 @@ export default class {
     });
     normal('other_constant', container => {
       container.appendItem('other_constant');
+      container.setCalcResult((itemContainer) => {
+        return itemContainer.customItems
+          .reduce((cur, item) => cur + item.value, itemContainer.getItemValue('other_constant'));
+      });
     });
 
     normal('skill/multiplier', container => {
@@ -289,6 +293,10 @@ export default class {
     normal('other_multiplier', container => {
       container.markMultiplier();
       container.appendItem('other_multiplier');
+      container.setCalcResult((itemContainer) => {
+        return itemContainer.customItems
+          .reduce((cur, item) => cur * item.value / 100, itemContainer.getItemValue('other_multiplier'));
+      });
     });
 
     this.calculationBase = markRaw(base);

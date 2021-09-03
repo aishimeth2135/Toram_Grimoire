@@ -3,6 +3,7 @@ export default function() {
     'Damage Calculation': {
       'build': '配置',
       'create build': '新增配置',
+      'create custon item': '新增',
       'result': {
         'title': '計算結果',
         'modes': {

@@ -1,16 +1,8 @@
-# toram-grimoire
+# Cy's Grimoire
 This is the web tool of mobile game "Toram Online".
-Please click [here](https://cy-grimoire.netlify.app/).
 
-## Project
-This project is created using vue-cli.
 
-### setup
-```
-yarn install
-```
+Deployed on [here](https://cy-grimoire.netlify.app/).
 
-### run
-```
-yarn serve
-```
+- Author: Cyteria
+- Email: aishimeth2135@gmail.com

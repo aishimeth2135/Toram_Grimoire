@@ -14,36 +14,76 @@
       <cy-button-check
         :selected="currentContainer.enabled"
         :disabled="!currentContainer.base.controls.toggle"
-        @update:selected="setContainerEnabled({ container: currentContainer, value: $event })"
+        @update:selected="setEnabled({ container: currentContainer, value: $event })"
       />
     </div>
     <div class="space-y-2" :class="{ 'opacity-60': !currentContainer.enabled }">
-      <cy-input-counter
+      <div
         v-for="item in currentContainerItems"
         :key="item.base.id"
-        :range="[item.base.min, item.base.max]"
-        :step="item.base.step"
-        :value="item.value"
-        input-width="3rem"
-        @update:value="setItemValue({ item, value: $event })"
+        class="flex items-center"
       >
-        <template #title>
-          <cy-icon-text v-if="!currentContainer.selectable">
-            <span v-html="markText($lang('item base: title/' + item.base.id))"></span>
-          </cy-icon-text>
-          <cy-button-check
-            v-else
-            inline
-            :selected="currentContainer.currentItem === item"
-            @click="setContainerCurrentItemId({ container: currentContainer, value: item.base.id })"
-          >
-            {{ $lang('item base: title/' + item.base.id) }}
-          </cy-button-check>
-        </template>
-        <template #unit>
-          {{ item.base.unit }}
-        </template>
-      </cy-input-counter>
+        <cy-input-counter
+          v-if="editedItem !== item"
+          :range="[item.base.min, item.base.max]"
+          :step="item.base.step"
+          :value="item.value"
+          input-width="3rem"
+          @update:value="setItemValue({ item, value: $event })"
+        >
+          <template #title>
+            <cy-icon-text v-if="!currentContainer.selectable">
+              <span v-if="!item.isCustom" v-html="markText($lang('item base: title/' + item.base.id))"></span>
+              <template v-else>
+                {{ item.name }}
+              </template>
+            </cy-icon-text>
+            <cy-button-check
+              v-else
+              inline
+              :selected="currentContainer.currentItem === item"
+              @click="setCurrentItemId({ container: currentContainer, value: item.base.id })"
+            >
+              {{ $lang('item base: title/' + item.base.id) }}
+            </cy-button-check>
+          </template>
+          <template #unit>
+            {{ item.base.unit }}
+          </template>
+        </cy-input-counter>
+        <cy-title-input
+          v-else
+          :value="item.name"
+          class="w-64"
+          @update:value="setItemName({ item, value: $event })"
+          @keyup.enter="toggleEditedItem(null)"
+        />
+        <cy-button-icon
+          v-if="item.isCustom"
+          icon="ant-design:edit-outlined"
+          class="ml-3"
+          :selected="editedItem === item"
+          @click="toggleEditedItem(item)"
+        />
+        <cy-button-icon
+          v-if="item.isCustom"
+          icon="jam:close-circle"
+          class="ml-2"
+          @click="removeCustomItem({ container: currentContainer ,item })"
+        />
+      </div>
+      <div
+        v-if="currentContainer.customItemAddable"
+        class="flex items-center justify-center p-1.5 border border-light-3 bg-white w-64 cursor-pointer duration-300 opacity-60 hover:opacity-100"
+        @click="createCustomItem({
+          container: currentContainer,
+          name: $lang('item base: title/' + currentContainer.currentItem.base.id),
+        })"
+      >
+        <cy-icon-text icon="ic:round-add-circle-outline" text-color="light-3">
+          {{ $lang('create custon item') }}
+        </cy-icon-text>
+      </div>
     </div>
   </div>
   <div
@@ -83,12 +123,13 @@
 </template>
 
 <script>
-import { computed, ComputedRef, toRefs } from 'vue';
+import { computed, toRefs, Ref, ComputedRef, ref } from 'vue';
 import { mapMutations, useStore } from 'vuex';
 
 import { numberToFixed } from '@utils/number';
 import { markText } from '@utils/view';
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
+import { CalcStructItem } from '@/lib/Calculation/Damage/Calculation/base';
 
 export default {
   name: 'DamageCalculationItem',
@@ -108,6 +149,7 @@ export default {
     },
   },
   setup(props) {
+    /** @type {{ calcStructItem: Ref<CalcStructItem> }} */
     const { calcStructItem } = toRefs(props);
     const store = useStore();
 
@@ -141,9 +183,16 @@ export default {
       if (container.base.getCurrentItemId) {
         return [container.currentItem];
       }
-      return Array.from(container.items.values());
+      return [
+        ...Array.from(container.items.values()),
+        ...container.customItems,
+      ];
     });
 
+    /**
+     * @param {CalcStructItem} structItem
+     * @returns {string}
+     */
     const getCalcItemId = structItem => {
       if (typeof structItem === 'string') {
         return structItem;
@@ -156,26 +205,40 @@ export default {
       }
     };
 
+    /** @type {ComputedRef<Array<string>>} */
     const calcItemListIds = computed(() => {
-      if (!calcStructItem.value.list) {
+      if (typeof calcStructItem.value === 'string') {
         return [];
       }
-      return calcStructItem.value.list.map(item => getCalcItemId(item));
+      if (calcStructItem.value.operator === '+++' || calcStructItem.value.operator === '***') {
+        return calcStructItem.value.list.map(item => getCalcItemId(item));
+      }
+      return [];
     });
 
+    const editedItem = ref(null);
+    const toggleEditedItem = item => editedItem.value = editedItem.value === item ? null : item;
+
     return {
+      editedItem,
+
       currentContainer,
       currentContainerResult,
       currentContainerItems,
       calcItemListIds,
       markText,
+
+      toggleEditedItem,
     };
   },
   methods: {
     ...mapMutations('damage-calculation/container', [
+      'setEnabled',
+      'setCurrentItemId',
+      'createCustomItem',
+      'removeCustomItem',
       'setItemValue',
-      'setContainerEnabled',
-      'setContainerCurrentItemId',
+      'setItemName',
     ]),
   },
 };

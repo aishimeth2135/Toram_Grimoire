@@ -82,7 +82,7 @@
             v-for="item in containerOption.containerItems"
             :key="item.base.id"
             :selected="containerOption.container.currentItem === item"
-            @click="setContainerCurrentItemId({
+            @click="setCurrentItemId({
               container: containerOption.container,
               value: item.base.id,
             })"
@@ -107,7 +107,7 @@
     <cy-transition type="fade">
       <div
         v-show="bottomSub.compare"
-        class="sticky z-10 mx-3 px-4 bottom-28 border-1 border-light-3 rounded-lg p-3 bg-white overflow-y-auto"
+        class="sticky z-10 mx-3 px-4 bottom-24 border-1 border-light-3 rounded-lg p-3 bg-white overflow-y-auto"
         style="max-height: 40vh;"
       >
         <div>
@@ -126,7 +126,7 @@
     <cy-transition type="fade">
       <div
         v-if="bottomSub.calcModeDetail"
-        class="sticky z-10 mx-3 py-3 px-4 bottom-28 border-1 border-light-3 rounded-lg bg-white overflow-y-auto"
+        class="sticky z-10 mx-3 py-3 px-4 bottom-24 border-1 border-light-3 rounded-lg bg-white overflow-y-auto"
         style="max-height: 40vh;"
       >
         <div>
@@ -165,7 +165,7 @@
     <cy-transition type="fade">
       <div
         v-if="bottomSub.resultDetail"
-        class="sticky z-10 mx-3 py-3 px-4 bottom-28 border-1 border-light-3 rounded-lg bg-white overflow-y-auto"
+        class="sticky z-10 mx-3 py-3 px-4 bottom-24 border-1 border-light-3 rounded-lg bg-white overflow-y-auto"
         style="max-height: 40vh;"
       >
         <div>
@@ -195,7 +195,7 @@
         </template>
       </div>
     </cy-transition>
-    <div class="flex ml-auto sticky z-10 px-4 bottom-16 mt-2">
+    <div class="flex ml-auto sticky z-10 px-4 bottom-14 mt-2">
       <cy-button-border
         icon="bx:bx-git-compare"
         :selected="bottomSub.compare"
@@ -207,7 +207,7 @@
         @click="toggle('bottomSub/calcModeDetail', null, false)"
       />
     </div>
-    <div class="sticky bottom-4 overflow-x-auto scrollbar-hide">
+    <div class="sticky bottom-2 overflow-x-auto scrollbar-hide">
       <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-2 rounded-full flex items-center flex-wrap bg-white justify-end min-w-max">
         <DamageCalculationResultItem
           :result-item="resultMode"
@@ -330,7 +330,7 @@ export default {
   },
   methods: {
     ...mapMutations('damage-calculation', ['selectCalculation']),
-    ...mapMutations('damage-calculation/container', ['setContainerCurrentItemId']),
+    ...mapMutations('damage-calculation/container', ['setCurrentItemId']),
     ...mapMutations('damage-calculation/calculation', ['setCalculationName']),
     ...mapActions('damage-calculation', ['createCalculation']),
   },
