@@ -41,7 +41,7 @@ const calcStructCritical = {
       'proration',
       'combo_multiplier',
       'skill/long_range',
-      'stability',
+      // 'stability',
       'other_multiplier',
     ],
   },
@@ -88,10 +88,56 @@ const calcStructWithoutCritical = {
       'proration',
       'combo_multiplier',
       'skill/long_range',
+      // 'stability',
+      'other_multiplier',
+    ],
+  },
+};
+
+/** @type {CalcStructItem} */
+const calcStructDisplay = {
+  id: 'display',
+  operator: '*',
+  left: {
+    operator: '+++',
+    list: [
+      {
+        operator: '***',
+        list: [
+          {
+            operator: '+',
+            left: 'atk/base',
+            right: 'atk/dual_sword',
+          },
+          'target_resistance',
+        ],
+      },
+      'level_difference',
+      {
+        operator: '*',
+        left: 'target_def_base',
+        right: 'pierce',
+      },
+      'skill/constant',
+      'unsheathe_attack/constant',
+      'other_constant',
+    ],
+  },
+  right: {
+    operator: '***',
+    list: [
+      'skill/multiplier',
+      'critical',
+      'range_damage',
+      'unsheathe_attack/multiplier',
+      'stronger_against_element',
+      'proration',
+      'combo_multiplier',
+      'skill/long_range',
       'stability',
       'other_multiplier',
     ],
   },
 };
 
-export { calcStructCritical, calcStructWithoutCritical };
+export { calcStructDisplay, calcStructCritical, calcStructWithoutCritical };

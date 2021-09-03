@@ -92,11 +92,16 @@
         </div>
         <cy-hr />
         <DamageCalculationItem
-          :calc-struct-item="currentCalcStruct"
+          :calc-struct-item="calcMode.calcStruct"
           root
         />
         <cy-hr />
-        <DamageCalculationItem calc-struct-item="critical/critical_rate" root />
+        <DamageCalculationItem
+          v-for="outsideItem in calcMode.outsideItems"
+          :key='outsideItem'
+          :calc-struct-item="outsideItem"
+          root
+        />
       </div>
     </div>
     <cy-transition type="fade">
@@ -105,35 +110,43 @@
         class="sticky z-10 mx-3 px-4 bottom-28 border-1 border-light-3 rounded-lg p-3 bg-white overflow-y-auto"
         style="max-height: 40vh;"
       >
+        <div>
+          <cy-icon-text icon="bx:bx-git-compare" size="small" text-color="purple">
+            {{ $lang('compare/title') }}
+          </cy-icon-text>
+        </div>
+        <div class="mb-2">
+          <cy-icon-text icon="bx-bx-info-circle" size="small" text-color="light-3" align-v="center" class="ml-2">
+            {{ $lang('compare/caption') }}
+          </cy-icon-text>
+        </div>
         <DamageCalculationCompare />
       </div>
     </cy-transition>
     <cy-transition type="fade">
       <div
-        v-if="bottomSub.resultDetail"
+        v-if="bottomSub.calcModeDetail"
         class="sticky z-10 mx-3 py-3 px-4 bottom-28 border-1 border-light-3 rounded-lg bg-white overflow-y-auto"
         style="max-height: 40vh;"
       >
-        <template v-for="modeItem in resultModeList" :key="modeItem.id">
+        <div>
+          <cy-icon-text icon="ant-design:star-outlined" size="small" text-color="purple">
+            {{ $lang('calc mode/title') }}
+          </cy-icon-text>
+        </div>
+        <div>
+          <cy-icon-text icon="bx-bx-info-circle" size="small" text-color="light-3" align-v="center" class="ml-2">
+            {{ $lang('calc mode/caption') }}
+          </cy-icon-text>
+        </div>
+        <template v-for="modeItem in calcModeList" :key="modeItem.id">
           <div
             class="flex items-center cursor-pointer min-w-max pr-3"
-            @click="selectResultMode(modeItem.id)"
+            @click="selectCalcMode(modeItem.id)"
           >
-            <cy-button-check :selected="modeItem === resultMode" />
-            <div class="inline-flex items-center cursor-pointer">
-              <cy-icon-text :icon="modeItem.icon">
-                {{ $lang('result/modes/' + modeItem.id) }}
-              </cy-icon-text>
-              <span
-                v-if="modeItem.id === 'range'"
-                class="text-light-3 inline-flex items-center ml-2"
-              >
-                <span>{{ modeItem.value.min }}</span>
-                <cy-icon-text icon="mdi:tilde" class="mx-1" />
-                <span>{{ modeItem.value.max }}</span>
-              </span>
-              <span v-else class="text-light-3 ml-2">{{ modeItem.value }}</span>
-            </div>
+            <cy-button-check :selected="modeItem === calcMode">
+              {{ $lang('calc mode/modes/' + modeItem.id) }}
+            </cy-button-check>
           </div>
           <div>
             <cy-icon-text
@@ -143,7 +156,40 @@
               class="ml-6"
               align-v="start"
             >
-              {{ $lang('result/caption/' + modeItem.id) }}
+              {{ $lang('calc mode/modes caption/' + modeItem.id) }}
+            </cy-icon-text>
+          </div>
+        </template>
+      </div>
+    </cy-transition>
+    <cy-transition type="fade">
+      <div
+        v-if="bottomSub.resultDetail"
+        class="sticky z-10 mx-3 py-3 px-4 bottom-28 border-1 border-light-3 rounded-lg bg-white overflow-y-auto"
+        style="max-height: 40vh;"
+      >
+        <div>
+          <cy-icon-text icon="ant-design:star-outlined" size="small" text-color="purple">
+            {{ $lang('result/title') }}
+          </cy-icon-text>
+        </div>
+        <template v-for="modeItem in resultModeList" :key="modeItem.id">
+          <div
+            class="flex items-center cursor-pointer min-w-max pr-3"
+            @click="selectResultMode(modeItem.id)"
+          >
+            <cy-button-check :selected="modeItem === resultMode" />
+            <DamageCalculationResultItem :result-item="modeItem" />
+          </div>
+          <div>
+            <cy-icon-text
+              icon="bx-bx-info-circle"
+              size="small"
+              text-color="light-2"
+              class="ml-6"
+              align-v="start"
+            >
+              {{ $lang('result/modes caption/' + modeItem.id) }}
             </cy-icon-text>
           </div>
         </template>
@@ -155,30 +201,18 @@
         :selected="bottomSub.compare"
         @click="toggle('bottomSub/compare', null, false)"
       />
-      <cy-button-border icon="heroicons-outline:switch-vertical" @click="toggleCalcMode">
-        {{ $lang('mode/' + calcMode) }}
-      </cy-button-border>
+      <cy-button-border
+        icon="ic:outline-calculate"
+        :selected="bottomSub.calcModeDetail"
+        @click="toggle('bottomSub/calcModeDetail', null, false)"
+      />
     </div>
     <div class="sticky bottom-4 overflow-x-auto scrollbar-hide">
       <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-2 rounded-full flex items-center flex-wrap bg-white justify-end min-w-max">
-        <div
-          class="inline-flex items-center cursor-pointer"
+        <DamageCalculationResultItem
+          :result-item="resultMode"
           @click="toggle('bottomSub/resultDetail', null, false)"
-        >
-          <cy-icon-text :icon="resultMode.icon">
-            {{ $lang('result/modes/' + resultMode.id) }}
-          </cy-icon-text>
-          <span
-            v-if="resultMode.id === 'range'"
-            class="text-light-3 inline-flex items-center ml-2"
-          >
-            <span>{{ resultMode.value.min }}</span>
-            <cy-icon-text icon="mdi:tilde" class="mx-1" />
-            <span>{{ resultMode.value.max }}</span>
-          </span>
-          <span v-else class="text-light-3 ml-2">{{ resultMode.value }}</span>
-          <cy-icon-text icon="bx-bx-info-circle" class="ml-3" />
-        </div>
+        />
       </div>
     </div>
   </section>
@@ -200,6 +234,7 @@ import { setupCalcMode, setupCalculationStore, setupResultMode, setupCalculation
 
 import vue_DamageCalculationItem from './damage-calculation-item';
 import vue_DamageCalculationCompare from './damage-calculation-compare';
+import vue_DamageCalculationResultItem from './damage-calculation-result-item';
 import { computed, provide } from '@vue/runtime-core';
 
 export default {
@@ -208,6 +243,7 @@ export default {
   components: {
     DamageCalculationItem: vue_DamageCalculationItem,
     DamageCalculationCompare: vue_DamageCalculationCompare,
+    DamageCalculationResultItem: vue_DamageCalculationResultItem,
   },
   setup() {
     init();
@@ -220,9 +256,9 @@ export default {
     });
 
     const {
+      calcModeList,
       calcMode,
-      currentCalcStruct,
-      toggleCalcMode,
+      selectCalcMode,
     } = setupCalcMode();
 
     const {
@@ -238,7 +274,7 @@ export default {
       resultMode,
       resultModeList,
       selectResultMode,
-    } = setupResultMode(currentCalculation, currentCalcStruct);
+    } = setupResultMode(currentCalculation);
 
     const {
       calculationContainerOptions,
@@ -261,25 +297,25 @@ export default {
 
     const { contents, bottomSub, toggle } = ToggleService({
       contents: ['mainMenu'],
-      bottomSub: ['compare', 'resultDetail'],
+      bottomSub: ['compare', 'resultDetail', 'calcModeDetail'],
     });
 
     provide('currentCalculationExpectedResult', computed(() => resultModeList.value.find(item => item.id === 'expected').value));
 
     return {
-      calcMode,
+      calcModeList,
 
       // computed
       calculations,
       currentCalculation,
-      currentCalcStruct,
+      calcMode,
       calculationItems,
       resultModeList,
       resultMode,
       calculationContainerOptions,
 
       // methods
-      toggleCalcMode,
+      selectCalcMode,
       copyCurrentCalculation,
       removeCurrentCalculation,
       selectResultMode,

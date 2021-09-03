@@ -21,7 +21,7 @@ class Calculation {
     // init of containers and items
     for (const itemBase of this.base.items.values()) {
       const item = new CalcItem(itemBase);
-      this.items.set(item.id, item);
+      this.items.set(itemBase.id, item);
     }
 
     for (const containerBase of this.base.containers.values()) {
@@ -41,14 +41,13 @@ class Calculation {
   }
 
   save() {
+    const items = Array.from(this.items.values()).map(item => ({
+      id: item.base.id,
+      value: item.value,
+    }));
     const containers = Array.from(this.containers.values()).map(container => {
-      const items = Array.from(container.items.values()).map(item => ({
-        id: item.base.id,
-        value: item.value,
-      }));
       return {
         id: container.base.id,
-        items,
         enabled: container.enabled,
         currentItemId: container.selectable ? container.currentItem.base.id : null,
       };
@@ -56,11 +55,20 @@ class Calculation {
     return {
       name: this.name,
       containers,
+      items,
     };
   }
 
   load(data) {
     this.name = data.name;
+    data.items.forEach(itemData => {
+      const item = this.items.get(itemData.id);
+      if (!item) {
+        console.warn(`[DamageCalculation.load] Item.id: ${itemData.id} is not exist`);
+        return;
+      }
+      item.value = itemData.value;
+    });
     data.containers.forEach(containerData => {
       const container = this.containers.get(containerData.id);
       if (!container) {
@@ -71,14 +79,6 @@ class Calculation {
       if (containerData.currentItemId !== null) {
         container.selectItem(containerData.currentItemId);
       }
-      containerData.items.forEach(itemData => {
-        const item = container.items.get(itemData.id);
-        if (!item) {
-          console.warn(`[DamageCalculation.load] Item.id: ${itemData.id} is not exist`);
-          return;
-        }
-        item.value = itemData.value;
-      });
     });
   }
 

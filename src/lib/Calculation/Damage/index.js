@@ -54,7 +54,7 @@ export default class {
       container.appendItem('physical');
       container.appendItem('magic');
     });
-    options('atk/base', container => {
+    normal('atk/base', container => {
       container.appendItem('atk').setDefaultValue(0);
       container.appendItem('matk').setDefaultValue(0);
       container.appendItem('atk_rate')
@@ -183,7 +183,7 @@ export default class {
           .get('critical/critical_rate').result();
         const cd = itemContainer.belongCalculation.containers
           .get('critical/critical_damage').result();
-        return (cr * cd + (100 - cr)) / 100;
+        return (cr * cd / 100 + (100 - cr));
       });
     });
     normal('critical/critical_damage', container => {
@@ -225,7 +225,7 @@ export default class {
         const cr_rt = itemContainer.getItemValue('target_critical_rate_resistance_total');
         const mcrr = itemContainer.getItemValue('magic_critical_rate_conversion_rate');
         let result = Math.max(cr - cr_r, 0);
-        result = Math.min(Math.floor(100, result * (100 - cr_rt) / 100));
+        result = Math.min(100, Math.floor(result * (100 - cr_rt) / 100));
         return currentDamageTypeId === 'physical' ? result : Math.floor(result * mcrr / 100);
       });
     });

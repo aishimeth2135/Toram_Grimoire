@@ -22,7 +22,7 @@ import { CalcItemContainer, Calculation } from './index';
 /**
  * @typedef CalcStructSingle
  * @type {Object}
- * @property {string} [id]
+ * @property {string=} id
  * @property {"*"|"+"} operator
  * @property {CalcStructItem} left
  * @property {CalcStructItem} right
@@ -30,7 +30,7 @@ import { CalcItemContainer, Calculation } from './index';
 /**
  * @typedef CalcStructMultiple
  * @type {Object}
- * @property {string} [id]
+ * @property {string=} id
  * @property {"***"|"+++"} operator
  * @property {Array<CalcStructItem>} list
  */
@@ -193,8 +193,9 @@ class CalcItemContainerBase {
    * @returns {CalcItemBase}
    */
   appendItem(id) {
+    const exist = this._parent.items.has(id);
     const item = this._parent.appendItem(id);
-    if (this.isMultiplier) {
+    if (!exist && this.isMultiplier) {
       item.setRange(0, null)
         .setDefaultValue(100)
         .setUnit('%');

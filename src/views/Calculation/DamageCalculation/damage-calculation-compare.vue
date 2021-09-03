@@ -2,7 +2,7 @@
   <div v-if="calculationItems.length > 0" class="w-full">
     <div>
       <cy-button-border icon="bx:bx-git-compare" @click="toggle('contents/selectCalculation', true)">
-        {{ $lang('compare/select build') }}
+        {{ lang('compare/select build') }}
       </cy-button-border>
     </div>
     <div v-if="comparedCalculationItems.length > 0" class="pt-4 space-y-2">
@@ -14,7 +14,7 @@
     </div>
     <div v-else class="px-2">
       <cy-default-tips icon="potum" icon-src="custom">
-        {{ $lang('compare/tips: introduction') }}
+        {{ lang('compare/tips: introduction') }}
       </cy-default-tips>
     </div>
     <cy-window
@@ -24,7 +24,7 @@
     >
       <template #title>
         <cy-icon-text icon="bx:bx-git-compare">
-          {{ $lang('compare/select build') }}
+          {{ lang('compare/select build') }}
         </cy-icon-text>
       </template>
       <cy-list-item
@@ -39,7 +39,7 @@
     </cy-window>
   </div>
   <cy-default-tips v-else icon="potum" icon-src="custom">
-    {{ $lang('compare/tips: At least two builds') }}
+    {{ lang('compare/tips: At least two builds') }}
   </cy-default-tips>
 </template>
 
@@ -47,6 +47,7 @@
 import { computed, ref, watch, Ref } from 'vue';
 
 import ToggleService from '@/setup/ToggleService';
+import RegisterLang from '@/setup/RegisterLang';
 import { setupCalculationStoreState } from './setup';
 
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
@@ -54,8 +55,6 @@ import { Calculation } from '@/lib/Calculation/Damage/Calculation';
 import vue_DamageCalculationCompareItem from './damage-calculation-compare-item';
 
 export default {
-  name: 'DamageCalculationCompare',
-  RegisterLang: 'Damage Calculation',
   components: {
     DamageCalculationCompareItem: vue_DamageCalculationCompareItem,
   },
@@ -92,17 +91,21 @@ export default {
       contents: ['selectCalculation'],
     });
 
+    const { lang } = RegisterLang('Damage Calculation');
+
     return {
+      // computed
       calculationItems,
       comparedCalculationItems,
 
-      // methods
+      // methodes
       toggleComparedCalculation,
 
       // other
       contents,
       toggle,
+      lang,
     };
   },
-}
+};
 </script>

@@ -1,22 +1,31 @@
-import { computed, readonly, ref, Ref, ComputedRef } from 'vue';
+import { computed, ref, Ref, ComputedRef } from 'vue';
 import { useStore } from 'vuex';
 import RegisterLang from '@/setup/RegisterLang';
 import Notify from '@/setup/Notify';
 
-import { calcStructCritical, calcStructWithoutCritical } from './consts';
+import { calcStructDisplay, calcStructCritical, calcStructWithoutCritical } from './consts';
 
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
 import { CalcStructItem } from '@/lib/Calculation/Damage/Calculation/base';
 
 const setupCalcMode = () => {
-  const calcMode = ref('critical');
-  const toggleCalcMode = () => calcMode.value = calcMode.value === 'critical' ? 'without_critical' : 'critical';
-  const currentCalcStruct = computed(() => calcMode.value === 'critical' ? calcStructCritical : calcStructWithoutCritical);
+  const calcModeList = [{
+    id: 'common',
+    calcStruct: calcStructDisplay,
+    outsideItems: ['atk/two_handed'],
+  }, {
+    id: 'critical',
+    calcStruct: calcStructCritical,
+    outsideItems: ['critical/critical_rate'],
+  }];
+  const currentCalcModeId = ref('common');
+  const selectCalcMode = id => currentCalcModeId.value = id;
+  const calcMode = computed(() => calcModeList.find(item => item.id === currentCalcModeId.value));
 
   return {
-    calcMode: readonly(calcMode),
-    currentCalcStruct,
-    toggleCalcMode,
+    calcModeList,
+    calcMode,
+    selectCalcMode,
   }
 };
 
@@ -87,23 +96,60 @@ const setupExpectedResults = (calculation) => {
   const expectedResultComputedBase = [calcStructCritical, calcStructWithoutCritical]
     .map(calcStruct => ({
       id: calcStruct.id,
-      computed: computed(() => calculation.value.result(calcStruct)),
+      result: computed(() => calculation.value.result(calcStruct)),
     }));
-  const expectedResults = computed(() => {
-    return expectedResultComputedBase.map(item => ({
-      id: item.id,
-      result: item.computed.value,
-    }));
-  });
+  // const expectedResults = computed(() => {
+  //   return expectedResultComputedBase.map(item => ({
+  //     id: item.id,
+  //     result: item.computed.value,
+  //   }));
+  // });
+
+  /**
+   * @param {string} target
+   */
+  const getResult = target => {
+    const cr = calculation.value.containers.get('critical/critical_rate').result();
+    const stability = calculation.value.containers.get('stability').getItemValue('stability');
+    const stabilityValue = (() => {
+      if (target === 'max') {
+        return 100;
+      }
+      if (target === 'min') {
+        return stability;
+      }
+      if (target === 'grazeMin') {
+        return Math.floor(stability / 2);
+      }
+    })();
+    const criticalValue = Math.floor(expectedResultComputedBase[0].result.value * stabilityValue / 100);
+    const withoutCriticalValue = Math.floor(expectedResultComputedBase[1].result.value * stabilityValue / 100);
+    return Math.floor((cr * criticalValue) / 100 + ((100 - cr) * withoutCriticalValue) / 100);
+  };
+
+  const expectedResultMax = computed(() => getResult('max'));
+  const expectedResultMin = computed(() => getResult('min'));
+  const expectedResultGrazeMin = computed(() => getResult('grazeMin'));
 
   const expectedResult = computed(() => {
-    const cr = calculation.value.containers.get('critical_rate').result();
-    return Math.floor((cr * expectedResultComputedBase[0].computed.value) / 100 + ((100 - cr) * expectedResultComputedBase[1].computed.value) / 100);
+    const max = expectedResultMax.value;
+    const stability = calculation.value.containers.get('stability').result();
+    return Math.floor(max * stability / 100);
   });
 
+  const stabilityResult = computed(() => ({
+    min: expectedResultMin.value,
+    max: expectedResultMax.value,
+  }));
+  const stabilityResultGraze = computed(() => ({
+    min: expectedResultGrazeMin.value,
+    max: expectedResultMax.value,
+  }));
+
   return {
-    expectedResults,
     expectedResult,
+    stabilityResult,
+    stabilityResultGraze,
   };
 };
 
@@ -111,29 +157,14 @@ const setupExpectedResults = (calculation) => {
  * @param {Ref<Calculation>|ComputedRef<Calculation>} calculation
  * @param {Ref<CalcStructItem>|ComputedRef<CalcStructItem>} currentCalcStruct
  */
-const setupResultMode = (calculation, currentCalcStruct) => {
+const setupResultMode = (calculation) => {
   const {
-    expectedResults,
     expectedResult,
+    stabilityResult,
+    stabilityResultGraze,
   } = setupExpectedResults(calculation);
 
-  const expectedResultWithCurrentCalcStruct = computed(() => expectedResults.value.find(item => item.id === currentCalcStruct.value.id).result);
-
-  const resultWithStability = computed(() => {
-    const min = calculation.value.result(currentCalcStruct.value, {
-      containerResult: {
-        'stability': itemContainer => itemContainer.getItemValue('stability'),
-      },
-    });
-    const max = calculation.value.result(currentCalcStruct.value, {
-      containerResult: {
-        'stability': 100,
-      },
-    });
-    return { min, max };
-  });
-
-  const resultModeId = ref('expected: selected calc struct');
+  const resultModeId = ref('expected');
 
   /** @param {string} modeId */
   const selectResultMode = modeId => {
@@ -142,13 +173,13 @@ const setupResultMode = (calculation, currentCalcStruct) => {
 
   const resultModeList = computed(() => {
     return [{
-      id: 'expected: selected calc struct',
-      icon: 'ant-design:star-outlined',
-      value: expectedResultWithCurrentCalcStruct.value,
-    }, {
-      id: 'range',
+      id: 'stability',
       icon: 'tabler:angle',
-      value: resultWithStability.value,
+      value: stabilityResult.value,
+    }, {
+      id: 'stability: with graze',
+      icon: 'tabler:angle',
+      value: stabilityResultGraze.value,
     }, {
       id: 'expected',
       icon: 'ant-design:star-outlined',

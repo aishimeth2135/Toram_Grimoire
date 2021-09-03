@@ -6,7 +6,7 @@
         v-if="viewButtons && viewButtons.length != 0"
         v-show="!unfold"
         class="menu z-1 min-h-full absolute"
-        @click.stop="menuClick()"
+        @click.stop="menuClick"
       >
         <div class="conent-container w-full h-full">
           <cy-button-line
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     setCurrentView(data) {
-      if (this.$router.currentRoute.path != data.path)
+      if (this.$router.currentRoute.path !== data.path)
         this.$router.replace(data.path);
     },
     menuClick() {

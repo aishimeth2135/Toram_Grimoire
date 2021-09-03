@@ -1,6 +1,6 @@
 import { GetLang } from '@services/Language';
 
-const SAVE_KEY = 'app--damage-calculation--data';
+const SAVE_KEY = 'app--damage-calculation--v1--data';
 
 const storeState = {
   calculations: [],
@@ -28,7 +28,7 @@ const mutations = {
   removeCalculation(state, calculation) {
     const index = state.calculations.indexOf(calculation);
     state.calculations.splice(index, 1);
-    state.currentCalculationIndex = index - 1;
+    state.currentCalculationIndex = index !== 0 ? index - 1 : index;
   },
 };
 

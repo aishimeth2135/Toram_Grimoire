@@ -4,24 +4,35 @@ export default function() {
       'build': '配置',
       'create build': '新增配置',
       'result': {
+        'title': '計算結果',
         'modes': {
-          'expected: selected calc struct': '傷害期望值',
-          'expected': '綜合傷害期望值',
-          'range': '傷害區間',
+          'expected': '傷害期望值',
+          'stability': '傷害區間',
+          'stability: with graze': 'Graze時傷害區間',
         },
-        'caption': {
-          'expected: selected calc struct': '考慮穩定度計算出來的傷害期望值。',
+        'modes caption': {
           'expected': '考慮爆擊率及穩定度計算出來的傷害期望值。',
-          'range': '根據穩定度計算出的傷害最大值及最小值。',
+          'stability': '根據穩定度計算出的傷害最大值及最小值。',
+          'stability: with graze': '考慮Graze的情況，根據穩定度計算出的傷害最大值及最小值。',
         },
       },
-      'mode': {
-        'critical': '暴擊時傷害',
-        'without_critical': '無暴擊時傷害',
+      'calc mode': {
+        'title': '介面的計算公式',
+        'caption': '這裡可以選擇介面呈現的計算公式。選擇的公式只會影響介面的呈現，不會影響能設定的項目及計算結果。',
+        'modes': {
+          'common': '基本公式',
+          'critical': '爆擊時公式',
+        },
+        'modes caption': {
+          'common': '基本的傷害公式。適用於大部分的計算場合。',
+          'critical': '暴擊時的傷害公式，主要用於將「雙手合持」呈現於計算公式中，公式只單純呈現暴擊時的傷害，暴擊率在公式之外。',
+        },
       },
       'compare': {
+        'title': '配置比較',
+        'caption': '這裡可以將目前的配置和其他多個配置進行比較。',
         'select build': '選擇要比較的配置',
-        'tips: introduction': '這裡可以對目前的配置和其他配置進行比較，請點擊上方的按鈕來選擇要比較的配置0.0',
+        'tips: introduction': '請點擊上方的按鈕來選擇要比較的配置0.0',
         'tips: At least two builds': '要至少有兩個配置才可以使用比較功能0.0',
       },
       'tips': {
