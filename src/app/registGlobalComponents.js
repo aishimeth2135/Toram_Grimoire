@@ -25,7 +25,7 @@ export default function(APP) {
 }
 
 function registButtonAlias(APP) {
-  const aliasNames = ['icon', 'line', 'border', 'drop-down', 'check', 'inline'];
+  const aliasNames = ['icon', 'line', 'border', 'drop-down', 'check', 'inline', 'switch'];
   aliasNames.map(name => {
     const componentFunction = function(props, context) {
       const attrs = mergeProps({

@@ -292,6 +292,7 @@ export default class {
     });
     normal('other_multiplier', container => {
       container.markMultiplier();
+      container.disableFloorResult();
       container.appendItem('other_multiplier');
       container.setCalcResult((itemContainer) => {
         return itemContainer.customItems

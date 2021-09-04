@@ -28,11 +28,11 @@ export default {
     },
   },
   methods: {
-    click(e) {
+    click(event) {
       if (this.disabled) {
         return;
       }
-      this.$emit('click', e);
+      this.$emit('click', event);
     },
   },
 };

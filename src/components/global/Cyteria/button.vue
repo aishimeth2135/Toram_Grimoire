@@ -1,13 +1,14 @@
 <script>
 import { h, mergeProps } from 'vue';
 
-import SimpleButton from './button/simple';
-import BorderButton from './button/border';
-import InlineButton from './button/inline';
-import LineButton from './button/line';
-import IconButton from './button/icon';
-import DropDownButton from './button/drop-down';
-import CheckButton from './button/check';
+import ButtonSimple from './button/simple';
+import ButtonBorder from './button/border';
+import ButtonInline from './button/inline';
+import ButtonLine from './button/line';
+import ButtonIcon from './button/icon';
+import ButtonDropDown from './button/drop-down';
+import ButtonCheck from './button/check';
+import ButtonSwitch from './button/switch';
 
 import { ColorSetProps, getColorSetStyle } from './base/color-set.vue';
 
@@ -15,23 +16,25 @@ function CyButton(props, context) {
   const getComponent = () => {
     const type = props.type;
     if (type === 'border') {
-      return BorderButton;
+      return ButtonBorder;
     } else if (type === 'line') {
-      return LineButton;
+      return ButtonLine;
     } else if (type === 'icon') {
-      return IconButton;
+      return ButtonIcon;
     } else if (type === 'drop-down') {
-      return DropDownButton;
+      return ButtonDropDown;
     } else if (type === 'inline') {
-      return InlineButton;
+      return ButtonInline;
     } else if (type === 'check') {
-      return CheckButton;
+      return ButtonCheck;
+    } else if (type === 'switch') {
+      return ButtonSwitch;
     }
-    return SimpleButton;
+    return ButtonSimple;
   }
 
   const attrs = mergeProps({
-    class: ['Button'],
+    class: ['cy--button-base'],
     style: getColorSetStyle(props),
   }, context.attrs);
 
@@ -48,7 +51,7 @@ CyButton.props = {
     default: 'simple',
     validator(v){
       return [
-        'simple', 'icon', 'line', 'border', 'drop-down', 'inline', 'check',
+        'simple', 'icon', 'line', 'border', 'drop-down', 'inline', 'check', 'switch',
       ].includes(v);
     },
   },
@@ -58,7 +61,7 @@ CyButton.props = {
 export default CyButton;
 </script>
 <style lang="postcss" scoped>
-.Button {
+.cy--button-base {
   --icon-width: 1.2rem;
   --icon-color: var(--color-set--icon-color);
   --text-color: var(--color-set--text-color);
@@ -73,6 +76,10 @@ export default CyButton;
   }
   &.border-0 {
     border: 0;
+  }
+
+  &.inline {
+    @apply p-0 m-0 border-0;
   }
 
   &::v-deep(.button--text) {
@@ -92,7 +99,7 @@ export default CyButton;
   }
 
   &.disabled {
-    &::before {
+    &::after {
       content: '';
       width: 100%;
       height: 100%;
@@ -106,8 +113,27 @@ export default CyButton;
     }
   }
 
-  &.inline {
-    @apply p-0 m-0 border-0;
+  &:not(.disabled):active {
+    &::before {
+      content: '';
+      width: calc(100% + 0.5rem);
+      height: calc(100% + 0.5rem);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      animation: button-active ease 0.2s forwards;
+
+      @apply bg-light absolute inline-block rounded-full -z-1;
+    }
+  }
+}
+
+@keyframes button-active {
+  from {
+    @apply bg-opacity-20;
+  }
+  to {
+    @apply bg-opacity-40;
   }
 }
 </style>

@@ -11,7 +11,7 @@
       >
         {{ currentContainerResult }}
       </div>
-      <cy-button-check
+      <cy-button-switch
         :selected="currentContainer.enabled"
         :disabled="!currentContainer.base.controls.toggle"
         @update:selected="setEnabled({ container: currentContainer, value: $event })"
