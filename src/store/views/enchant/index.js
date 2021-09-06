@@ -1,5 +1,5 @@
 import { EnchantBuild } from '@/lib/Enchant/Enchant';
-import CY from '@utils/Cyteria';
+import CY from '@/shared/utils/Cyteria';
 
 const SAVE_PRETEXT = 'app--enchant-simulator--vbeta--';
 

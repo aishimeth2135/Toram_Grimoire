@@ -30,8 +30,8 @@
 <script>
 import { computed, inject, toRefs } from 'vue';
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
-import { numberToFixed } from '@utils/number';
-import { markText } from '@utils/view';
+import { numberToFixed } from '@/shared/utils/number';
+import { markText } from '@/shared/utils/view';
 
 import { setupExpectedResults, setupCalculationStoreState } from './setup';
 

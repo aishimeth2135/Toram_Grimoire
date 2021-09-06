@@ -1,9 +1,9 @@
-import Grimoire from '@grimoire';
-import GetLang from '@services/Language';
+import Grimoire from '@/shared/Grimoire';
+import GetLang from '@/shared/services/Language';
 
 import { EquipmentField } from '../Character';
 import { RestrictionStat } from '../Stat';
-import { isNumberString } from '@utils/string';
+import { isNumberString } from '@/shared/utils/string';
 
 class CharacterEquipment {
   constructor(origin=null, name=null, stats=[]) {

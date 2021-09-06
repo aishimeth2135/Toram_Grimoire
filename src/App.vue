@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { InitLanguageSystem } from '@services/Language';
+import { InitLanguageSystem } from '@/shared/services/Language';
 
 // app components
 import vue_nav from '@/views/app/nav.vue';

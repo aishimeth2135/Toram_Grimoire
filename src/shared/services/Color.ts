@@ -23,27 +23,18 @@ export default class Color {
     'orange-light': 'orange',
   };
 
-  /**
-   * @param {string} color
-   * @returns {string}
-   */
-  static darken(color) {
+  static darken(color: string): string {
     return Color.MappingList[color] || 'light-4';
   }
 
-  /**
-   * @param {string} color
-   * @returns {string}
-   */
-  static lighten(color) {
+  static lighten(color: string): string {
     return Object.keys(Color.MappingList)
       .find(k => Color.MappingList[k] === color) || 'light';
   }
 
-  /**
-   * @param {string} value
-   */
-  constructor(value) {
+  value: string;
+
+  constructor(value: string) {
     this.value = value;
   }
 

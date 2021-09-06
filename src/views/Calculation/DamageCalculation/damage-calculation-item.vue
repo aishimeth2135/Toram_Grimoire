@@ -126,8 +126,8 @@
 import { computed, toRefs, Ref, ComputedRef, ref } from 'vue';
 import { mapMutations, useStore } from 'vuex';
 
-import { numberToFixed } from '@utils/number';
-import { markText } from '@utils/view';
+import { numberToFixed } from '@/shared/utils/number';
+import { markText } from '@/shared/utils/view';
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
 import { CalcStructItem } from '@/lib/Calculation/Damage/Calculation/base';
 

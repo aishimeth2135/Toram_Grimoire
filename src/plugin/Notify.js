@@ -1,4 +1,4 @@
-import MessageNotify from '@services/Notify';
+import MessageNotify from '@/shared/services/Notify';
 
 import store from '@/store';
 

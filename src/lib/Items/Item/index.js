@@ -1,6 +1,6 @@
-import Grimoire from '@grimoire';
+import Grimoire from '@/shared/Grimoire';
 import { StatBase } from '@/lib/Character/Stat';
-import { isNumberString } from '@utils/string';
+import { isNumberString } from '@/shared/utils/string';
 
 class Item {
   constructor(id, name) {

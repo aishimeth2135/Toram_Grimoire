@@ -5,18 +5,14 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@global-components/*": ["./src/components/global/*"],
-      "@services/*": ["./src/lib/main/services/*"],
-      "@utils/*": ["./src/lib/main/utils/*"],
-      "@grimoire": ["./src/lib/main/Grimoire.js"],
-      "@consts": ["./src/lib/main/consts/*"]
     },
-    "noUnusedLocals": false,
+    "noUnusedLocals": false
   },
   "include": [
 		"src/**/*.js",
+    "src/**/*.ts",
 		"src/**/*.vue"
-	],
+  ],
   "exclude": ["node_modules", "dist"],
   "typeAcquisition": {
     "exclude": ["dotenv"]

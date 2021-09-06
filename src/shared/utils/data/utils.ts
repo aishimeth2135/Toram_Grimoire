@@ -1,18 +1,15 @@
 import RegexEscape from 'regex-escape';
+import type { HandleFormulaVars, HandleConditionalVars, HandleFormulaGetters } from './index';
 
+type HandledVars = HandleFormulaVars | HandleConditionalVars;
+type HandledGetters = HandleFormulaGetters;
 
-/**
- * @param {Object<string, number|string>} vars
- * @returns {Map<string, number|string>}
- */
-function getVarsMap(vars) {
+function getVarsMap<T>(vars: HandledVars): Map<string, T> {
   const varsMap = new Map();
-  const handleVarsMapping = (prefix, target) => {
+  const handleVarsMapping = (prefix: string, target: HandledVars) => {
     Object.entries(target).forEach(([key, value]) => {
       const mapKey = `${prefix ? prefix + '.' : ''}${key}`;
-      if (typeof value === 'function') {
-        varsMap.set(mapKey, value());
-      } else if (typeof value === 'object') {
+      if (typeof value === 'object') {
         if (Array.isArray(value)) {
           varsMap.set(mapKey, `[${value.toString()}]`);
         } else {
@@ -27,13 +24,9 @@ function getVarsMap(vars) {
   return varsMap;
 }
 
-/**
- * @param {Object<string, function(): number|string>} getters
- * @returns {Map<string, function(): number|string>}
- */
-function getGettersMap(getters) {
+function getGettersMap<T>(getters: HandledGetters): Map<string, () => T> {
   const gettersMap = new Map();
-  const handleGettersMapping = (prefix, target) => {
+  const handleGettersMapping = (prefix: string, target: HandledGetters) => {
     Object.entries(target).forEach(([key, value]) => {
       const mapKey = `${prefix ? prefix + '.' : ''}${key}`;
       if (typeof value === 'object') {
@@ -51,14 +44,12 @@ function getGettersMap(getters) {
 
 /**
  * sort by key.length to handle longer var first
- * @param {Map<string, number|string>} map
- * @returns {Array<[string, number|string]>}
  */
-function varMapToArray(map) {
+function varMapToArray<T>(map: Map<string, T>) {
   return Array.from(map).sort(([keya], [keyb]) => keyb.length - keya.length);
 }
 
-function handleReplacedKey(key) {
+function handleReplacedKey(key: string) {
   return new RegExp(`${RegexEscape(key)}(?![a-zA-Z0-9_$'])`, 'g');
 }
 

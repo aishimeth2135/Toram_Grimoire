@@ -1,5 +1,5 @@
-import Grimoire from '@grimoire';
-import { HandleLanguageData } from '@services/Language';
+import Grimoire from '@/shared/Grimoire';
+import { HandleLanguageData } from '@/shared/services/Language';
 
 import { SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch } from '@/lib/Skill/Skill';
 

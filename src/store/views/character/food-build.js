@@ -1,4 +1,4 @@
-import Grimoire from '@grimoire';
+import Grimoire from '@/shared/Grimoire';
 import { Foods } from '@/lib/Character/Food';
 
 export default function createFoodBuild(name) {

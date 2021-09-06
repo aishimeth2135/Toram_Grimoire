@@ -291,7 +291,7 @@ import vue_EnchantResult from './enchant-result';
 import ToggleService from '@/setup/ToggleService';
 
 import { EnchantBuild, EnchantStep, EnchantEquipment } from '@/lib/Enchant/Enchant';
-import CY from '@utils/Cyteria';
+import CY from '@/shared/utils/Cyteria';
 import { SelectItemTarget, EnchantItemData } from './type';
 
 export default {

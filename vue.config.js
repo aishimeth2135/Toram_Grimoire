@@ -18,16 +18,12 @@ module.exports = {
       resolve: {
         alias: {
           '@': path.join(__dirname, 'src'),
-          '@global-components': path.join(__dirname, 'src', 'components', 'global'),
-          '@services': path.join(__dirname, 'src', 'lib', 'main', 'services'),
-          '@utils': path.join(__dirname, 'src', 'lib', 'main', 'utils'),
-          '@consts': path.join(__dirname, 'src', 'lib', 'main', 'consts'),
-          '@grimoire': path.join(__dirname, 'src', 'lib', 'main', 'Grimoire.js'),
         },
         fallback: {
           'os': require.resolve('os-browserify/browser'),
           'assert': require.resolve('assert/'),
         },
+        extensions: ['.js', '.ts', '.vue'],
       },
       performance: {
         hints: false,

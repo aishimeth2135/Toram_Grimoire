@@ -1,6 +1,6 @@
 import { markRaw } from 'vue';
-import Grimoire from '@grimoire';
-import GetLang from '@services/Language';
+import Grimoire from '@/shared/Grimoire';
+import GetLang from '@/shared/services/Language';
 import { StatBase, Stat } from './StatBase.js';
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor } from '../CharacterEquipment';
 

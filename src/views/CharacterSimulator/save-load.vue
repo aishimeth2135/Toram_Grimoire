@@ -53,7 +53,7 @@
   </cy-default-tips>
 </template>
 <script>
-import CY from '@utils/Cyteria';
+import CY from '@/shared/utils/Cyteria';
 
 export default {
   RegisterLang: 'Character Simulator/save-load control',

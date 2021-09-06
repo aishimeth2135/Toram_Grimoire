@@ -1,5 +1,5 @@
 import { StatBase } from '@/lib/Character/Stat';
-import Grimoire from '@grimoire';
+import Grimoire from '@/shared/Grimoire';
 
 import { EnchantCategory, EnchantItem } from '../base';
 import { EnchantBuild, EnchantStat, EnchantEquipment } from '../build';

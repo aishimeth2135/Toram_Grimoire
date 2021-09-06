@@ -2,8 +2,8 @@
 
 import { register } from 'register-service-worker';
 import store from '@/store';
-import MessageNotify from '@services/Notify';
-import GetLang from '@services/Language';
+import MessageNotify from '@/lib/main/services/Notify';
+import GetLang from '@/shared/services/Language';
 
 export default function() {
   if (process.env.NODE_ENV === 'production') {

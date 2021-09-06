@@ -1,5 +1,6 @@
 export default class LoadingNotifyItem {
-  constructor(message) {
+  message: string;
+  constructor(message: string) {
     this.message = message;
   }
   finished() {

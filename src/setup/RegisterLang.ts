@@ -1,14 +1,13 @@
-import GetLang from '@services/Language';
+import GetLang from '@/shared/services/Language';
 
-/**
- * @typedef RegisterLangOptions
- * @property {string} root
- * @property {Object<string, string>} extra
- */
-/**
- * @param {RegisterLangOptions | string} options
- */
-export default function(options) {
+type RegisterLangOptions = {
+  root: string
+  extra?: {
+    [x: string]: string
+  }
+}
+
+export default function(options: RegisterLangOptions | string) {
   if (typeof options === 'string') {
     options = {
       root: options,
@@ -19,17 +18,13 @@ export default function(options) {
     console.warn('[Register Lang] option: root must be string.');
     return;
   }
-  /**
-   * @param {string} id
-   * @param {Array<number|string>} [values]
-   * @returns {string}
-   */
-  const lang = (id, values) => {
+
+  const lang = (id: string, values?: Array<string>): string => {
     return GetLang(root + '/' + id, values);
   };
   lang.root = root;
   if (extra) {
-    lang.extra = function(name, id, values) {
+    lang.extra = function(name: string, id: string, values: Array<string>) {
       return GetLang(extra[name] + '/' + id, values);
     }
   }

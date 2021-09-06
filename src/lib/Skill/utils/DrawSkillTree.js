@@ -1,4 +1,4 @@
-import CY from '@utils/Cyteria';
+import CY from '@/shared/utils/Cyteria';
 
 function GetDrawSetting() {
   return {

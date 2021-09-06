@@ -9,20 +9,18 @@ function InitLanguageSystem() {
   store.dispatch('language/init', { en, zh_tw, ja, zh_cn });
 }
 
-function InitLanguageData(datas) {
+interface LangData {
+  [x: string]: unknown,
+}
+function InitLanguageData(datas: LangData) {
   store.commit('language/injectData', datas);
 }
 
-/**
- * @param {string} id
- * @param {Array<string|number>} [values]
- * @returns {string}
- */
-function GetLang(id, values) {
+function GetLang(id: string, values?: Array<string>): string {
   return store.getters['language/get'](id, values);
 }
 
-function HandleLanguageData(datas, mapping) {
+function HandleLanguageData(datas: Array<Array<string>>, mapping: { [x: number]: number }) {
   const langDatas = [datas[1], datas[2]];
   Object.entries(mapping).forEach(([key, value]) => {
     const dataIdx = key, langDataIdx = value;

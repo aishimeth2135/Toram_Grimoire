@@ -11,9 +11,15 @@ plugins:
   - import
 settings:
   import/resolver:
-    node: {}
+    node:
+      extensions:
+        - .js
+        - .ts
     webpack:
       config: node_modules/@vue/cli-service/webpack.config.js
+  import/extensions:
+    - .js
+    - .ts
   jsdoc:
     mode: closure
 globals:

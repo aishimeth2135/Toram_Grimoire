@@ -2,8 +2,8 @@ import app from './app.vue';
 
 import vue_home from '@/views/Home/Home';
 
-import GetLang from '@services/Language';
-import ViewInit from '@services/ViewInit.js';
+import GetLang from '@/shared/services/Language';
+import ViewInit from '@/shared/services/ViewInit.js';
 
 const vue_about = () => import(/* webpackChunkName: "home-about" */ '@/views/Home/About');
 

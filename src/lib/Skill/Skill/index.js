@@ -1,6 +1,6 @@
-import Grimoire from '@grimoire';
+import Grimoire from '@/shared/Grimoire';
 import { StatBase } from '@/lib/Character/Stat';
-import CY from '@utils/Cyteria';
+import CY from '@/shared/utils/Cyteria';
 
 function checkConstructorArgs() {
   Array.from(arguments).forEach((arg, i) => {

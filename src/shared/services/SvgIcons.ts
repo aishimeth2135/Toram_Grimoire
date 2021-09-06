@@ -2,10 +2,8 @@ import Iconify from '@iconify/iconify';
 
 /**
  * Get custom icon by icon ID.
- * @param {string} name - icon ID
- * @returns {string} inline svg
  */
-export default function Icons(name) {
+export default function Icons(name: string): string {
   switch (name) {
     case 'potum':
       return '<svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="1250pt" height="1250pt" viewBox="0 0 1250 1250" preserveAspectRatio="xMidYMid meet">' +
@@ -18,7 +16,7 @@ export default function Icons(name) {
 }
 
 
-function loadIconifyData(name) {
+function loadIconifyData(name: string) {
   return new Promise((resolve) => {
     if (Iconify.iconExists(name)) {
       resolve(Iconify.getIcon(name));

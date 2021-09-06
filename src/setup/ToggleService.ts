@@ -1,29 +1,31 @@
-import { ref, readonly, Ref } from 'vue'
+import { ref, readonly } from 'vue';
+import type { Ref } from 'vue';
 
-/**
- * @callback Toggle
- * @param {string} id
- * @param {?boolean} [force]
- * @param {boolean} [groupForce]
- * @returns {void}
- */
-/**
- * @typedef ToggleItemDetail
- * @type {Object}
- * @property {string} name
- * @property {?boolean} default
- */
-/**
- * @typedef ToggleItem
- * @type {ToggleItemDetail | string}
- */
-/**
- * @param {Object.<string, Array<ToggleItem>>} options
- * @returns {Object.<string, Object.<string, boolean>> & { toggle: Toggle }}
- */
-export default function(options) {
-  /** @type {Object<string, Object<string, Ref<boolean>>>} */
-  const dataMap = {};
+type ToggleItemDetail = {
+  name: string
+  default?: boolean
+}
+type ToggleItem = ToggleItemDetail | string;
+
+type ToggleServiceOptions = {
+  [x: string]: Array<ToggleItem>
+}
+
+type ToggleContentsGroup = {
+  [x: string]: {
+    readonly [x: string]: boolean
+  } | ToggleHandler
+}
+
+type ToggleServiceResult = ToggleContentsGroup & { toggle: ToggleHandler };
+type ToggleHandler = (id: string, force?: boolean, groupForce?: boolean) => void;
+
+export default function(options: ToggleServiceOptions): ToggleServiceResult {
+  const dataMap: {
+    [x: string]: {
+      [x: string]: Ref<boolean>
+    }
+  } = {};
   Object.entries(options).forEach(([groupKey, subs]) => {
     const group = {};
     subs.forEach(subItem => {
@@ -37,8 +39,7 @@ export default function(options) {
     dataMap[groupKey] = group;
   });
 
-  /** @type {Toggle} */
-  const toggle = (id, force, groupForce) => {
+  const toggle: ToggleHandler = (id, force, groupForce) => {
     const [group, sub] = id.split('/');
     if (sub) {
       force = typeof force === 'boolean' ? force : !dataMap[group][sub].value;
@@ -59,10 +60,10 @@ export default function(options) {
     }
   }
 
-  const data = {};
+  const data: ToggleServiceResult = {
+    toggle,
+  };
   Object.keys(dataMap).forEach(k => data[k] = readonly(dataMap[k]));
-
-  data.toggle = toggle;
 
   return data;
 }

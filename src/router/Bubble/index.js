@@ -1,4 +1,4 @@
-import ViewInit from '@services/ViewInit.js';
+import ViewInit from '@/shared/services/ViewInit.js';
 
 const vue_bubble = () => import(/* webpackChunkName: "bubble" */ '@/views/other/bubble.vue');
 

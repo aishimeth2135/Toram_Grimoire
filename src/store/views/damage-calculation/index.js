@@ -1,4 +1,4 @@
-import { GetLang } from '@services/Language';
+import { GetLang } from '@/shared/services/Language';
 
 const SAVE_KEY = 'app--damage-calculation--v1--data';
 

@@ -1,49 +1,34 @@
 import { markRaw } from 'vue';
-import { CalculationBase, CalcItemContainerBase, CurrentItemIdGetter } from './Calculation/base';
+import { CalculationBase, CalcItemContainerBase } from './Calculation/base';
+import { CalcItemContainer } from './Calculation';
+import type { CurrentItemIdGetter } from './Calculation/base';
 
 export default class {
+  calculationBase: CalculationBase;
   constructor() {
     this.calculationBase = null;
     this.init();
   }
   init() {
-    /**
-     * @callback FactoryCreated
-     * @param {CalcItemContainerBase} container
-     */
-    /**
-     * @callback FactoryAlly
-     * @param {string} id
-     * @param {FactoryCreated} callback
-     * @returns {CalcItemContainerBase}
-     */
-    /**
-     * @callback DamageTypeHandlerCallback
-     * @param {boolean} result - true if damage type is "physical"
-     * @returns {string} ItemBase.id
-     */
+    type FactoryCreated = (container: CalcItemContainerBase) => void;
+    type FactoryAlly = (id: string, callback: FactoryCreated) => void;
+    type DamageTypeHandlerCallback = (result: boolean) => string;
 
     const base = new CalculationBase();
 
-    const factory = (id, type, callback) => {
+    const factory = (id: string, type: symbol, callback: FactoryCreated): void => {
       const container = base.appendContainer(id, type);
       callback(container);
     };
-    /** @type {FactoryAlly} */
-    const normal = (id, callback) => factory(id, CalcItemContainerBase.TYPE_NORMAL, callback);
-    /** @type {FactoryAlly} */
-    const options = (id, callback) => factory(id, CalcItemContainerBase.TYPE_OPTIONS, callback);
+    const normal: FactoryAlly = (id, callback) => factory(id, CalcItemContainerBase.TYPE_NORMAL, callback);
+    const options: FactoryAlly = (id, callback) => factory(id, CalcItemContainerBase.TYPE_OPTIONS, callback);
 
     const utils = {
-      getCurrentDamageTypeId(itemContainer) {
+      getCurrentDamageTypeId(itemContainer: CalcItemContainer) {
         return itemContainer.belongCalculation.containers.get('damage_type').currentItem.base.id;
       },
-      /**
-       * @param {DamageTypeHandlerCallback} handlerCallback
-       * @returns {CurrentItemIdGetter}
-       */
-      damageTypeHandler(handlerCallback) {
-        return ((itemContainer) => {
+      damageTypeHandler(handlerCallback: DamageTypeHandlerCallback): CurrentItemIdGetter {
+        return ((itemContainer: CalcItemContainer) => {
           const currentId = utils.getCurrentDamageTypeId(itemContainer);
           return handlerCallback(currentId === 'physical');
         });

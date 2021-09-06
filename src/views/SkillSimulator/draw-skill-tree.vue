@@ -38,32 +38,32 @@
     </defs>
     <template v-for="p in drawOtherData">
       <circle
-        v-if="p.type == 'tree-dot'"
-        :key="`${p.type}x${p.cx}y${p.cy}`"
+        v-if="p.type === 'tree-dot'"
+        :key="`dot-${p.type}x${p.cx}y${p.cy}`"
         :cx="p.cx"
         :cy="p.cy"
         :r="p.r"
         :class="p.class"
       />
       <line
-        v-else-if="p.type == 'tree-line'"
-        :key="`${p.type}x1${p.x1}y1${p.y1}x2${p.x2}y2${p.y2}`"
+        v-else-if="p.type === 'tree-line'"
+        :key="`line-${p.type}x1${p.x1}y1${p.y1}x2${p.x2}y2${p.y2}`"
         :x1="p.x1"
         :y1="p.y1"
         :x2="p.x2"
         :y2="p.y2"
       />
       <circle
-        v-else-if="p.type == 'skill-level-circle' || p.type == 'star-gem-level-circle'"
-        :key="`${p.type}x${p.cx}y${p.cy}`"
+        v-else-if="p.type === 'skill-level-circle' || p.type === 'star-gem-level-circle'"
+        :key="`circle-${p.type}x${p.cx}y${p.cy}`"
         :cx="p.cx"
         :cy="p.cy"
         :r="p.r"
         :class="p.class"
       />
       <text
-        v-else-if="p.type == 'skill-level-text' || p.type == 'star-gem-level-text'"
-        :key="`${p.type}x${p.x}y${p.y}`"
+        v-else-if="p.type === 'skill-level-text' || p.type === 'star-gem-level-text'"
+        :key="`text-${p.type}x${p.x}y${p.y}`"
         :x="p.x"
         :y="p.y"
         :class="p.class"
@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import CY from '@utils/Cyteria';
+import CY from '@/shared/utils/Cyteria';
 import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs } from '@/lib/Skill/utils/DrawSkillTree';
 import { Skill, SkillTree, LevelSkill, LevelSkillTree } from '@/lib/Skill/Skill';
 

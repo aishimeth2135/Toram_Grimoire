@@ -50,7 +50,7 @@
   </div>
 </template>
 <script>
-import Color from '@services/Color';
+import Color from '@/shared/services/Color';
 
 const ColorList = Color.List;
 

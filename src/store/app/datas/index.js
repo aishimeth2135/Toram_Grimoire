@@ -5,14 +5,14 @@ import SkillSystem from '@/lib/Skill';
 import EnchantSystem from '@/lib/Enchant';
 import DamageCalculationSystem from '@/lib/Calculation/Damage';
 
-import DownloadDatas from './utils/DownloadDatas.js';
-import loadEquipments from './utils/LoadEquipments.js';
-import loadCrystals from './utils/LoadCrystals.js';
-import loadStats from './utils/LoadStats.js';
-import loadCharacterStats from './utils/LoadCharacterStat.js';
-import loadTag from './utils/LoadTag.js';
-import { loadSkill, loadSkillMain } from './utils/LoadSkill.js';
-import loadEnchant from './utils/LoadEnchant.js';
+import DownloadDatas from './utils/DownloadDatas';
+import loadEquipments from './utils/LoadEquipments';
+import loadCrystals from './utils/LoadCrystals';
+import loadStats from './utils/LoadStats';
+import loadCharacterStats from './utils/LoadCharacterStat';
+import loadTag from './utils/LoadTag';
+import { loadSkill, loadSkillMain } from './utils/LoadSkill';
+import loadEnchant from './utils/LoadEnchant';
 
 const store = {
   namespaced: true,

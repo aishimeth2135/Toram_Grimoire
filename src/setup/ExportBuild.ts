@@ -1,19 +1,21 @@
-import CY from '@utils/Cyteria';
+import CY from '@/shared/utils/Cyteria';
 import RegisterLang from './RegisterLang';
 import Notify from './Notify';
 
-/**
- * @param {Object} params
- * @param {function(function(string, string): void): void} params.save
- * @param {function(string): void} params.loaded
- */
-export default function({ save, loaded }) {
+type ExportBuildsSaveHandler = (fileName: string, dataString: string) => void;
+
+type ExportBuildsOptions = {
+  save: (handleSave: ExportBuildsSaveHandler) => void
+  loaded: (dataResult: string) => void 
+}
+
+export default function({ save, loaded }: ExportBuildsOptions) {
   const { lang } = RegisterLang('common/Export build');
   const { notify } = Notify();
 
   const exportBuild = () => {
     try {
-      const handleSave = (fileName, dataString) => {
+      const handleSave: ExportBuildsSaveHandler = (fileName, dataString) => {
         CY.file.save({
           data: dataString,
           fileName,

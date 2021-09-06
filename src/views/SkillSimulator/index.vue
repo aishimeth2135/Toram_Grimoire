@@ -294,8 +294,8 @@
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex';
-import CY from '@utils/Cyteria';
-import { LoadingNotify } from '@services/Notify';
+import CY from '@/shared/utils/Cyteria';
+import { LoadingNotify } from '@/lib/main/services/Notify';
 
 import vue_skillRoot from './skill-root.vue';
 import vue_SaveLoadDataSystem from '@/components/SaveLoadDataSystem/main.vue';

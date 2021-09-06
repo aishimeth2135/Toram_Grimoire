@@ -1,9 +1,10 @@
-import { isNumberString } from '@utils/string';
+import { isNumberString } from '@/shared/utils/string';
 import { getVarsMap, getGettersMap, varMapToArray, handleReplacedKey } from './utils';
 
 import jsep from 'jsep';
+import type { Expression } from 'jsep';
 
-function parseFormula(formulaStr, { vars = {} } = {}) {
+function parseFormula(formulaStr: string, { vars = {} }: { vars?: unknown } = {}) {
   const unknowSnippet = value => typeof value === 'string';
   const handleIdentifier = (node, parent = null) => {
     if (parent === null) {
@@ -88,7 +89,7 @@ function parseFormula(formulaStr, { vars = {} } = {}) {
   return handle(jsep(formulaStr));
 }
 
-function parseConditional(formulaStr) {
+function parseConditional(formulaStr: string) {
   const handle = (node) => {
     if (node.type === 'Literal') {
       return node.value;
@@ -106,28 +107,47 @@ function parseConditional(formulaStr) {
   return handle(jsep(formulaStr));
 }
 
-/**
- * @typedef HandleFormulaOptions
- * @type {Object}
- * @property {Object<string, number|string>} [vars] - mapping of vars
- * @property {Object<string, string>} [texts] - mapping of text
- * @property {Object<string, Function>} [methods] - mapping of methods
- * @property {Object<string, function(): number|string>} [getters] - mapping of getters. The getter like the var in formula, but will access by function
- * @property {boolean} [toNumber=false] - If true, result will convert to number
- * @property {any} [defaultValue] - If given formula is empty, it will return options.defaultValue.
- */
-/**
- * @param {string} formulaStr
- * @param {HandleFormulaOptions} options
- */
-function handleFormula(formulaStr, {
+type HandleFormulaVars = {
+  [x: string]: number | string | HandleFormulaVars
+}
+type HandleFormulaTexts = {
+  [x: string]: string | HandleFormulaTexts
+}
+type HandleFormulaMethods = {
+  [x: string]: Function | HandleFormulaMethods
+}
+type HandleFormulaGetters = {
+  [x: string]: () => number | string | HandleFormulaGetters
+}
+
+type HandleFormulaOptions = {
+  /** mapping of vars */
+  vars?: HandleFormulaVars
+
+  /** mapping of texts */
+  texts?: HandleFormulaTexts
+
+  /** mapping of methods */
+  methods?: HandleFormulaMethods
+
+  /** mapping of getters */
+  getters?: HandleFormulaGetters
+
+  /** If true, result will convert to number */
+  toNumber?: false
+
+  /** If given formula is empty, it will return options.defaultValue. */
+  defaultValue?: string | number
+}
+
+function handleFormula(formulaStr: string, {
     vars = {},
     texts = {},
     methods = {},
     getters = {},
     toNumber = false,
     defaultValue = null,
-  } = {}) {
+  }: HandleFormulaOptions = {}) {
   if (formulaStr === '') {
     if (defaultValue === undefined) {
       return toNumber ? 0 : '0';
@@ -180,7 +200,7 @@ function handleFormula(formulaStr, {
   }
 
   textKeys.forEach((key, idx) => {
-    formulaStr = formulaStr.replace(new RegExp(getTextVarName(idx), 'g'), texts[key]);
+    formulaStr = formulaStr.replace(new RegExp(getTextVarName(idx), 'g'), texts[key] as string);
   });
 
   if (toNumber && typeof formulaStr === 'string') {
@@ -198,20 +218,22 @@ function handleFormula(formulaStr, {
   return formulaStr;
 }
 
-/**
- * @typedef HandleConditionalOptions
- * @type {Object}
- * @property {Object<string, boolean>} [vars] - mapping of vars
- * @property {boolean} [defaultValue] - If given formula is empty, it will return options.defaultValue.
- */
-/**
- * @param {string} formulaStr
- * @param {HandleConditionalOptions} options
- */
- function handleConditional(formulaStr, {
+type HandleConditionalVars = {
+  [x: string]: boolean | HandleConditionalVars
+};
+
+type HandleConditionalOptions = {
+  /** mapping of vars */
+  vars?: HandleConditionalVars
+
+  /** If given formula is undefined, it will return options.defaultValue. */
+  defaultValue?: string | number
+}
+
+function handleConditional(formulaStr: string, {
   vars = {},
   defaultValue = null,
-} = {}) {
+}: HandleConditionalOptions = {}) {
   if (formulaStr === '') {
     if (defaultValue === undefined) {
       return true;
@@ -240,3 +262,4 @@ function handleFormula(formulaStr, {
 }
 
 export { handleConditional, handleFormula };
+export type { HandleFormulaVars, HandleFormulaGetters, HandleConditionalVars };

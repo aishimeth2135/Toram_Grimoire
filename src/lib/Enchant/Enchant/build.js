@@ -4,7 +4,7 @@ import STATE from './state';
 
 import { calcPotentialExtraRate } from './utils';
 
-import Grimoire from '@grimoire';
+import Grimoire from '@/shared/Grimoire';
 
 class EnchantBuild {
   /**

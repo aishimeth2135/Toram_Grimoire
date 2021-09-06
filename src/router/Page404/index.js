@@ -1,5 +1,5 @@
 import vue_page404 from '@/views/app/page404.vue';
-import ViewInit from '@services/ViewInit.js';
+import ViewInit from '@/shared/services/ViewInit.js';
 
 // import GetLang from "@services/Language";
 

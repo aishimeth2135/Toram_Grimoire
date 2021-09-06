@@ -430,7 +430,7 @@ import vue_skillAreaInfo from './skill-area-info';
 import handleSkillFormula from '../utils/handleFormula.js';
 import DataContainer from '../utils/DataContainer.js';
 
-import { trimZero } from '@utils/string';
+import { trimZero } from '@/shared/utils/string';
 
 export default {
   name: 'SkillBranch',

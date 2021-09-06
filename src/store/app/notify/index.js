@@ -1,5 +1,5 @@
 import loading from './loading.js';
-import { MessageNotifyOptions } from '@services/Notify';
+import { MessageNotifyOptions } from '@/shared/services/Notify';
 
 const modules = {
   loading,

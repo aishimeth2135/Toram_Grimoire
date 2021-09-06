@@ -1,12 +1,13 @@
 import sanitize from 'sanitize-filename';
 
-/**
- * @param {Object} param
- * @param {string} param.data
- * @param {string} [param.fieldType = "text/txt"] - default: "text/txt"
- * @param {string} param.fileName - complete file name (name + ext)
- */
-function save({ data, fileType = 'text/txt', fileName }) {
+
+type FileSaveOptions = {
+  data: string
+  fileType?: string
+  fileName: string
+}
+
+function save({ data, fileType = 'text/txt', fileName }: FileSaveOptions): void {
   const blob = new Blob([data], { type: fileType + ';charset=utf-8;' });
   const link = document.createElement('a');
 
@@ -20,38 +21,24 @@ function save({ data, fileType = 'text/txt', fileName }) {
 }
 
 
-/**
- * @callback LoadFileSucceed
- * @param {string} fileResult
- * @returns {void}
- */
-/**
- * @callback LoadFileError
- * @param {any} error
- * @returns {void}
- */
-/**
- * @callback BeforeLoadFile
- * @returns {void}
- */
-/**
- * @callback CheckFileType
- * @param {string} fileType - ext of file
- * @returns {boolean}
- */
-/**
- * @param {Object} param
- * @param {LoadFileSucceed} param.succeed
- * @param {LoadFileError} param.error
- * @param {BeforeLoadFile} param.beforeLoad
- * @param {CheckFileType} param.checkFileType
- */
+type FileLoadSucceed = (fileResult: string) => void;
+type FileLoadError = (error: any) => void;
+type FileLoadBefore = () => void;
+type FileLoadCheckType = (fileType: string) => boolean;
+
+type FileLoadOptions = {
+  succeed: FileLoadSucceed
+  error?: FileLoadError
+  beforeLoad?: FileLoadBefore
+  checkFileType?: FileLoadCheckType
+}
+
 function load({
   succeed = null,
   error = null,
   beforeLoad = null,
   checkFileType = null,
-}) {
+}: FileLoadOptions) {
   try {
     const input = document.createElement('input');
     input.type = 'file';
@@ -66,7 +53,7 @@ function load({
 
       const fr = new FileReader();
       fr.addEventListener('load', function() {
-        succeed && succeed(this.result);
+        succeed && succeed(this.result as string);
         document.body.removeChild(input);
       })
       fr.readAsText(file);

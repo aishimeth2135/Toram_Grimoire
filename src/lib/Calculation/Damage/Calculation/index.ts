@@ -1,24 +1,39 @@
-import { CalculationBase, CalcItemBase, CalcItemContainerBase, CalcStructItem, CalcResultOptions } from './base';
+import { CalculationBase, CalcItemBase, CalcItemContainerBase } from './base';
+import type { CalcStructItem, CalcResultOptions } from './base';
+
+interface CalculationSaveData {
+  name: string;
+  containers: Array<{
+      id: string;
+      enabled: boolean;
+      currentItemId: string | null;
+  }>;
+  items: Array<{
+      id: string;
+      value: number;
+  }>;
+  containerCustomItems: Array<{
+      containerId: string;
+      items: Array<{
+          id: string;
+          name: string;
+          value: number;
+      }>;
+  }>;
+}
 
 class Calculation {
-  /**
-   * @param {CalculationBase} base
-   * @param {string} [name]
-   */
-  constructor(base, name = '') {
-    /** @type {CalculationBase} */
+  base: CalculationBase;
+  name: string;
+  containers: Map<string, CalcItemContainer>;
+  items: Map<string, CalcItem>;
+  containerCustomItems: Map<string, Array<CalcItemCustom>>;
+
+  constructor(base: CalculationBase, name: string = '') {
     this.base = base;
-
-    /** @type {string} */
     this.name = name;
-
-    /** @type {Map<string, CalcItemContainer>} */
     this.containers = new Map();
-
-    /** @type {Map<string, CalcItem>} */
     this.items = new Map();
-
-    /** @type {Map<string, Array<CalcItemCustom>>} */
     this.containerCustomItems = new Map([
       ['other_constant', []],
       ['other_multiplier', []],
@@ -37,12 +52,7 @@ class Calculation {
     }
   }
 
-  /**
-   * @param {string} containerId
-   * @param {string} itemId
-   * @returns {CalcItemCustom}
-   */
-  appendCustomItem(containerId, itemId) {
+  appendCustomItem(containerId: string, itemId: string): CalcItemCustom {
     if (!this.containerCustomItems.has(containerId)) {
       console.warn(`[Calculation.appendCustomItem] container with id ${containerId} is not exist in additional list.`);
       return;
@@ -54,7 +64,7 @@ class Calculation {
     return newItem;
   }
 
-  removeCustomItem(containerId, item) {
+  removeCustomItem(containerId: string, item: CalcItemCustom) {
     if (!this.containerCustomItems.has(containerId)) {
       console.warn(`[Calculation.removeCustomItem] container with id ${containerId} is not exist in additional list.`);
       return;
@@ -63,16 +73,11 @@ class Calculation {
     items.splice(items.indexOf(item), 1);
   }
 
-  /**
-   * @param {CalcStructItem} calcStruct
-   * @param {CalcResultOptions} options
-   * @returns {number}
-   */
-  result(calcStruct, options) {
+  result(calcStruct: CalcStructItem, options: CalcResultOptions): number {
     return this.base.result(this, calcStruct, options);
   }
 
-  save() {
+  save(): CalculationSaveData {
     const items = Array.from(this.items.values()).map(item => {
       return {
         id: item.base.id,
@@ -105,7 +110,7 @@ class Calculation {
     };
   }
 
-  load(data) {
+  load(data: CalculationSaveData) {
     this.name = data.name;
     data.items.forEach(itemData => {
       const item = this.items.get(itemData.id);
@@ -135,7 +140,7 @@ class Calculation {
     });
   }
 
-  copy() {
+  copy(): Calculation {
     const calculation = this.base.createCalculation();
     calculation.load(this.save());
     calculation.name = this.name + '*';
@@ -144,24 +149,18 @@ class Calculation {
 }
 
 class CalcItemContainer {
-  /**
-   * @param {Calculation} parent
-   * @param {CalcItemContainerBase} base
-   */
-  constructor(parent, base) {
-    /** @type {Calculation} @private */
+  private _parent: Calculation;
+  private _currentItemId: string | null;
+  
+  base: CalcItemContainerBase;
+  enabled: boolean;
+  items: Map<string, CalcItem>;
+
+  constructor(parent: Calculation, base: CalcItemContainerBase) {
     this._parent = parent;
-
-    /** @type {CalcItemContainerBase} */
     this.base = base;
-
-    /** @type {boolean} */
     this.enabled = base.enabledDefaultValue;
-
-    /** @type {Map<string, CalcItem>} */
     this.items = new Map();
-
-    /** @type {string} @private */
     this._currentItemId = null;
   }
 
@@ -180,77 +179,66 @@ class CalcItemContainer {
     }
   }
 
-  get selectable() {
+  get selectable(): boolean {
     return this.base.type === CalcItemContainerBase.TYPE_OPTIONS && !this.base.getCurrentItemId;
   }
 
-  get belongCalculation() {
+  get belongCalculation(): Calculation {
     return this._parent;
   }
 
-  get currentItem() {
+  get currentItem(): CalcItem {
     if (this.base.getCurrentItemId !== null) {
       return this.items.get(this.base.getCurrentItemId(this, this.base));
     }
     return this.items.get(this._currentItemId);
   }
 
-  get customItemAddable() {
+  get customItemAddable(): boolean {
     return this.belongCalculation.containerCustomItems.has(this.base.id);
   }
 
-  get customItems() {
+  get customItems(): Array<CalcItem> {
     return this.customItemAddable ? this.belongCalculation.containerCustomItems.get(this.base.id) : [];
   }
 
-  createCustomItem() {
+  createCustomItem(): CalcItemCustom {
     return this.belongCalculation.appendCustomItem(this.base.id, this.currentItem.base.id);
   }
-  removeCustomItem(item) {
+  removeCustomItem(item: CalcItemCustom): void {
     this.belongCalculation.removeCustomItem(this.base.id, item);
   }
 
   /**
    * Ally method to get value of item
-   * @param {string} id
-   * @returns {number}
    */
-  getItemValue(id) {
+  getItemValue(id: string): number {
     return this.items.get(id).value;
   }
 
-  /**
-   * @param {string} id
-   */
-  selectItem(id) {
+  selectItem(id: string) {
     this._currentItemId = id;
   }
 
-  result() {
+  result(): number {
     return this.base.result(this);
   }
 }
 
 class CalcItem {
-  /**
-   * @param {CalcItemBase} base
-   */
-  constructor(base) {
-    /** @type {CalcItemBase} */
-    this.base = base;
+  private _value: number;
 
-    /** @type {number} @private */
+  base: CalcItemBase;
+
+  constructor(base: CalcItemBase) {
+    this.base = base;
     this._value = base.defaultValue;
   }
-
-  get value() {
+  get value(): number {
     return this._value;
   }
 
-  /**
-   * @param {number} value
-   */
-  set value(value) {
+  set value(value: number) {
     const max = this.base.max,
       min = this.base.min;
     value = max !== null && value > max ? max : value;
@@ -258,24 +246,22 @@ class CalcItem {
     this._value = value;
   }
 
-  get isCustom() {
+  get isCustom(): boolean {
     return false;
   }
 }
 
 class CalcItemCustom extends CalcItem {
-  /**
-   * @param {CalcItemBase} base
-   * @param {string} [name]
-   */
-  constructor(base, name = '') {
+  name: string;
+
+  constructor(base: CalcItemBase, name: string = '') {
     super(base);
 
     /** @type {string} */
     this.name = name;
   }
 
-  get isCustom() {
+  get isCustom(): boolean {
     return true;
   }
 }

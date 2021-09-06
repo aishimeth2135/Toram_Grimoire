@@ -1,76 +1,49 @@
 
 import { CalcItemContainer, Calculation } from './index';
 
-/**
- * @callback CalcResult
- * @param {CalcItemContainer} itemContainer
- * @param {CalcItemContainerBase} baseContainer
- * @returns {number}
- */
+type CalcStructItem = CalcStructSingle | CalcStructMultiple | string;
+interface CalcStructSingle {
+  id?: string
+  operator: "*" | "+"
+  left: CalcStructItem
+  right: CalcStructItem
+}
+interface CalcStructMultiple {
+  id?: string
+  operator: "***" | "+++"
+  list: Array<CalcStructItem>
+}
 
-/**
- * @callback CurrentItemIdGetter
- * @param {CalcItemContainer} itemContainer
- * @param {CalcItemContainerBase} baseContainer
- * @returns {string}
- */
+interface CalcResultOptions {
+  containerResult?: {
+    [x: string]: number | ((itemContainer: CalcItemContainer) => number)
+  }
+}
 
-/**
- * @typedef CalcStructItem
- * @type {CalcStructSingle|CalcStructMultiple|string}
- */
-/**
- * @typedef CalcStructSingle
- * @type {Object}
- * @property {string=} id
- * @property {"*"|"+"} operator
- * @property {CalcStructItem} left
- * @property {CalcStructItem} right
- */
-/**
- * @typedef CalcStructMultiple
- * @type {Object}
- * @property {string=} id
- * @property {"***"|"+++"} operator
- * @property {Array<CalcStructItem>} list
- */
-
-/**
- * @typedef CalcResultOptions
- * @type {Object}
- * @property {Object<string, number | function(CalcItemContainer): number>} containerResult
- */
+type CurrentItemIdGetter = (itemContainer: CalcItemContainer, baseContainer: CalcItemContainerBase) => string;
+type CalcResult = (itemContainer: CalcItemContainer, baseContainer: CalcItemContainerBase) => number;
 
 /** */
 class CalculationBase {
-  constructor() {
-    /** @type {Map<string, CalcItemContainerBase>} */
-    this.containers = new Map();
+  containers: Map<string, CalcItemContainerBase>;
 
-    /**
-     * All items store in CalculationBase.items, CalcItemContainerBase.items will refer to CalculationBase.items
-     * @type {Map<string, CalcItemBase>}
-     */
+  /**
+   * All items store in CalculationBase.items, CalcItemContainerBase.items will refer to CalculationBase.items
+   */
+  items: Map<string, CalcItemBase>;
+
+  constructor() {
+    this.containers = new Map();
     this.items = new Map();
   }
 
-  /**
-   * @param {string} id - unique ID
-   * @param {symbol} category - CalcItemContainer.CATEGORY_X
-   * @param {symbol} type - CalcItemContainer.TYPE_X
-   * @returns {CalcItemContainerBase} this
-   */
-   appendContainer(id, type) {
+   appendContainer(id: string, type: symbol): CalcItemContainerBase {
     const container = new CalcItemContainerBase(this, id, type);
     this.containers.set(id, container);
     return container;
   }
 
-  /**
-   * @param {CalcItemBase} item
-   * @returns {CalcItemBase}
-   */
-   appendItem(id) {
+   appendItem(id: string): CalcItemBase {
      if (!this.items.has(id)) {
       const item = new CalcItemBase(this, id);
       this.items.set(id, item);
@@ -79,31 +52,18 @@ class CalculationBase {
      return this.items.get(id);
    }
 
-  /**
-   * @param {string} [name]
-   * @returns {Calculation}
-   */
-  createCalculation(name = '') {
+  createCalculation(name: string = ''): Calculation {
     return new Calculation(this, name);
   }
 
-  /**
-   * @param {Calculation} calculation
-   * @param {CalcStructItem} calcStruct
-   * @param {CalcResultOptions} options
-   */
-  result(calculation, calcStruct, options = {}) {
+  result(calculation: Calculation, calcStruct: CalcStructItem, options: CalcResultOptions = {}): number {
     if (!calcStruct) {
       return 0;
     }
 
     const { containerResult = {} } = options;
 
-    /**
-     * @param {CalcStructItem} item
-     * @returns {number}
-     */
-    const handle = item => {
+    const handle = (item: CalcStructItem) => {
       if (typeof item === 'string') {
         const container = calculation.containers.get(item);
         const res = (() => {
@@ -143,56 +103,43 @@ class CalcItemContainerBase {
   static TYPE_NORMAL = Symbol('normal');
   static TYPE_OPTIONS = Symbol('options');
 
-  /**
-   * @param {CalculationBase} parent
-   * @param {string} id
-   * @param {symbol} [type]
-   */
-  constructor(parent, id, type) {
-    /** @type {string} */
+  private _parent: CalculationBase;
+  private _calcResult: CalcResult | null;
+
+  id: string;
+  type: symbol;
+  items: Map<string, CalcItemBase>;
+  getCurrentItemId: CurrentItemIdGetter | null;
+  isMultiplier: boolean;
+  floorResult: boolean;
+  enabledDefaultValue: boolean;
+  _disabledValue: number | null;
+  controls: { toggle: boolean };
+
+  constructor(parent: CalculationBase, id: string, type: symbol) {
     this.id = id;
-
-    /** @type {CalculationBase} @private */
     this._parent = parent;
-
-    /** @type {symbol} */
     this.type = type ?? CalcItemContainerBase.TYPE_NORMAL;
-
-    /** @type {Map<string, CalcItemBase>} */
     this.items = new Map();
-
-    /** @type {CurrentItemIdGetter} */
     this.getCurrentItemId = null;
-
     this.isMultiplier = false;
-
     this.floorResult = true;
-
     this.enabledDefaultValue = true;
-
-    /** @type {CalcResult} @private */
     this._calcResult = null;
-
-    /** @type {number} */
     this._disabledValue = null;
-
     this.controls = {
       toggle: true,
     };
   }
 
-  get disabledValue() {
+  get disabledValue(): number {
     if (this._disabledValue !== null) {
       return this._disabledValue;
     }
     return this.isMultiplier ? 100 : 0;
   }
 
-  /**
-   * @param {string} id
-   * @returns {CalcItemBase}
-   */
-  appendItem(id) {
+  appendItem(id: string): CalcItemBase {
     const exist = this._parent.items.has(id);
     const item = this._parent.appendItem(id);
     if (!exist && this.isMultiplier) {
@@ -204,21 +151,15 @@ class CalcItemContainerBase {
     return item;
   }
 
-  /**
-   * @param {CalcResult} value
-   */
-   setCalcResult(value) {
+  setCalcResult(value: CalcResult): void {
     this._calcResult = value;
   }
 
-  /**
-   * @param {CurrentItemIdGetter} value
-   */
-   setGetCurrentItemId(value) {
+   setGetCurrentItemId(value: CurrentItemIdGetter): void {
     this.getCurrentItemId = value;
   }
 
-  setDisabledValue(value) {
+  setDisabledValue(value: number): void {
     this._disabledValue = value;
   }
 
@@ -230,22 +171,19 @@ class CalcItemContainerBase {
    * - `setDefaultValue(100)`
    * - `setUnit("%")`
    */
-   markMultiplier() {
+   markMultiplier(): void {
     this.isMultiplier = true;
   }
 
-  disableFloorResult() {
+  disableFloorResult(): void {
     this.floorResult = false;
   }
 
-  defaultDisabled() {
+  defaultDisabled(): void {
     this.enabledDefaultValue = false;
   }
 
-  /**
-   * @param {CalcItemContainer} itemContainer
-   */
-  result(itemContainer) {
+  result(itemContainer: CalcItemContainer): number {
     const res = (() => {
       if (this._calcResult) {
         return this._calcResult(itemContainer, this);
@@ -257,70 +195,49 @@ class CalcItemContainerBase {
 }
 
 class CalcItemBase {
-  /**
-   * @param {CalculationBase} parent
-   * @param {string} id
-   * @param {string} unit
-   */
-  constructor(parent, id) {
-    /** @type {CalculationBase} */
+  private _parent: CalculationBase;
+  private _min: number | null;
+  private _max: number | null;
+
+  id: string;
+  unit: string;
+  step: number;
+  defaultValue: number;
+
+  constructor(parent: CalculationBase, id: string) {
     this._parent = parent;
-
-    /** @type {string} */
     this.id = id;
-
-    /** @type {?string} */
     this.unit = '';
-
-    /** @type {?number} */
     this._min = null;
-
-    /** @type {?number} */
     this._max = null;
-
-    /** @type {number} */
     this.step = 1;
-
-    /** @type {number} */
     this.defaultValue = 0;
   }
 
-  get min() {
+  get min(): number {
     return this._min === null ? -9999 : this._min;
   }
 
-  get max() {
+  get max(): number {
     return this._max === null ? 9999 : this._max;
   }
 
-  /**
-   * @param {number} min
-   * @param {number} [max=null]
-   * @param {number} [step=1]
-   * @returns {CalcItemBase}
-   */
-  setRange(min, max = null, step = 1) {
+  setRange(min: number | null, max: number | null = null, step: number = 1): CalcItemBase {
     this._min = min;
     this._max = max;
     this.step = step;
     return this;
   }
 
-  /**
-   * @param {number} value
-   * @returns {CalcItemBase}
-   */
-  setDefaultValue(value) {
+  setDefaultValue(value: number): CalcItemBase {
     this.defaultValue = value;
     return this;
   }
 
-  /**
-   * @param {string} value
-   */
-  setUnit(value) {
+  setUnit(value: string): void {
     this.unit = value;
   }
 }
 
 export { CalcItemBase, CalculationBase, CalcItemContainerBase };
+export type { CalcStructItem, CalcResultOptions, CurrentItemIdGetter };

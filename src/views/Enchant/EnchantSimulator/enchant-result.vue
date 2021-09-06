@@ -153,9 +153,9 @@ import ENCHANT_STATE from '@/lib/Enchant/Enchant/state';
 
 import ToggleService from '@/setup/ToggleService';
 
-import CY from '@utils/Cyteria';
-import { trimZero } from '@utils/string';
-import { markText } from '@utils/view';
+import CY from '@/shared/utils/Cyteria';
+import { trimZero } from '@/shared/utils/string';
+import { markText } from '@/shared/utils/view';
 
 export default {
   name: 'EnchantResult',

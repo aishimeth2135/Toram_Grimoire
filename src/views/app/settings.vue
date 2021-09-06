@@ -202,8 +202,8 @@
 </template>
 
 <script>
-import CY from '@utils/Cyteria';
-import { APP_STORAGE_KEYS } from '@consts';
+import CY from '@/shared/utils/Cyteria';
+import { APP_STORAGE_KEYS } from '@/shared/consts';
 import { mapState } from 'vuex';
 
 export default {
