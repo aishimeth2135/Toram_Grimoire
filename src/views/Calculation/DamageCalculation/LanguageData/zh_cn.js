@@ -3,24 +3,38 @@ export default function() {
     'Damage Calculation': {
       'build': '配置',
       'create build': '新增配置',
+      'create custon item': '新增',
       'result': {
+        'title': '计算结果',
         'modes': {
-          'expected: selected calc struct': '伤害期望值',
-          'expected': '综合伤害期望值',
-          'range': '伤害区间',
+          'expected': '伤害期望值',
+          'stability': '伤害区间',
+          'stability: with graze': 'Graze时伤害区间',
         },
-        'caption': {
-          'expected: selected calc struct': '考虑稳定度计算出来的伤害期望值。',
+        'modes caption': {
           'expected': '考虑爆击率及稳定度计算出来的伤害期望值。',
-          'range': '根据稳定度计算出的伤害最大值及最小值。',
+          'stability': '根据稳定度计算出的伤害最大值及最小值。',
+          'stability: with graze': '考虑Graze的情况，根据稳定度计算出的伤害最大值及最小值。',
         },
       },
-      'mode': {
-        'critical': '暴击时伤害',
-        'without_critical': '无暴击时伤害',
+      'calc mode': {
+        'title': '介面的计算公式',
+        'caption': '这里可以选择介面呈现的计算公式。选择的公式只会影响介面的呈现，不会影响能设定的项目及计算结果。',
+        'modes': {
+          'common': '基本公式',
+          'critical': '爆击时公式',
+        },
+        'modes caption': {
+          'common': '基本的伤害公式。适用于大部分的计算场合。',
+          'critical': '暴击时的伤害公式，主要用于将「双手合持」呈现于计算公式中，公式只单纯呈现暴击时的伤害，暴击率在公式之外。',
+        },
       },
       'compare': {
+        'title': '配置比较',
+        'caption': '这里可以将目前的配置和其他多个配置进行比较。',
         'select build': '选择要比较的配置',
+        'tips: introduction': '请点击上方的按钮来选择要比较的配置0.0',
+        'tips: At least two builds': '要至少有两个配置才可以使用比较功能0.0',
       },
       'tips': {
         'At least one build must be kept': '要至少保留一个配置0.0',
@@ -31,6 +45,8 @@ export default function() {
         'magic': '魔法伤害',
         'atk': 'ATK',
         'matk': 'MATK',
+        'atk_rate': 'ATK比率',
+        'matk_rate': 'MATK比率',
         'sub_atk': '副手ATK',
         'sub_stability': '副手倍率',
         'skill_level_two_handed': '((!双手合持))等级',
@@ -47,6 +63,7 @@ export default function() {
         'critical_damage': '暴击伤害',
         'critical_rate': '暴击率',
         'target_critical_rate_resistance': '目标暴击率抗性',
+        'target_critical_rate_resistance_total': '目标总暴击率抗性',
         'magic_critical_rate_conversion_rate': '法术暴击率转化率',
         'magic_critical_damage_conversion_rate': '法术暴击伤害转化率',
         'short_range_damage': '近距离威力',
