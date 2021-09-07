@@ -7,7 +7,7 @@
       </cy-icon-text>
       <span class="text-light-3 ml-2 mr-4">{{ expectedResult }}</span>
       <div :class="calculationResultDifferenceRate >= 0 ? 'text-water-blue' : 'text-red'">
-        {{ (calculationResultDifferenceRate >= 0 ? '+' : '') + calculationResultDifferenceRate + '%' }}
+        {{ calculationResultDifferenceRateDisplay }}
       </div>
     </div>
     <div class="mt-2 space-y-1 px-2">
@@ -19,8 +19,8 @@
         <cy-icon-text class="mr-2" size="small">
           <span v-html="markText($lang('item base: title/' + comparedItem.item.base.id))"></span>
         </cy-icon-text>
-        <span :class="calculationResultDifferenceRate >= 0 ? 'text-water-blue' : 'text-red'" class="text-sm">
-          {{ (comparedItem.value > 0 ? '+' : '') + comparedItem.value + (comparedItem.item.base.unit ?? '') }}
+        <span :class="comparedItem.value >= 0 ? 'text-water-blue' : 'text-red'" class="text-sm">
+          {{ (comparedItem.value > 0 ? '+' : '') + comparedItem.value + (comparedItem.item.base.unit) }}
         </span>
       </div>
     </div>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { computed, inject, toRefs } from 'vue';
+import { computed, inject, toRefs, Ref } from 'vue';
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
 import { numberToFixed } from '@/shared/utils/number';
 import { markText } from '@/shared/utils/view';
@@ -46,6 +46,7 @@ export default {
   },
   setup(props) {
     const { currentCalculation: comparedCalculation } = setupCalculationStoreState();
+    /** @type {{ calculation: Ref<Calculation> }} */
     const { calculation } = toRefs(props);
 
     const { expectedResult } = setupExpectedResults(calculation);
@@ -54,7 +55,18 @@ export default {
 
     const calculationResultDifferenceRate = computed(() => {
       const comparedResult = comparedCalculationExpectedResult.value;
+      if (comparedResult < 1) {
+        return 1000;
+      }
       return numberToFixed((expectedResult.value - comparedResult) * 100 / comparedResult, 1);
+    });
+
+    const calculationResultDifferenceRateDisplay = computed(() => {
+      if (calculationResultDifferenceRate.value > 999) {
+        return '+999~%';
+      }
+      const sign = (calculationResultDifferenceRate.value >= 0 ? '+' : '');
+      return sign + calculationResultDifferenceRate.value + '%';
     });
 
     const comparedItems = computed(() => {
@@ -71,7 +83,9 @@ export default {
             const comparedItem = comparedContainer.items.get(item.base.id);
             result.push({
               item,
-              value: item.value - comparedItem.value,
+              value: container.customItemAddable ?
+                container.result() - comparedContainer.result() :
+                item.value - comparedItem.value,
             });
           });
         }
@@ -83,6 +97,7 @@ export default {
       expectedResult,
       comparedItems,
       calculationResultDifferenceRate,
+      calculationResultDifferenceRateDisplay,
       markText,
     };
   },
