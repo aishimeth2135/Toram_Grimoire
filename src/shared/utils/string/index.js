@@ -10,5 +10,5 @@ export function isNumberString(str) {
  */
 export function trimZero(num) {
   return num.replace(/(\d+)(\.[^0]*)(0+)$/g,
-    (m, m1, m2) => m1 + (m2 === '.' ? '' : m2))
+    (m, m1, m2) => m1 + (m2 === '.' ? '' : m2));
 }

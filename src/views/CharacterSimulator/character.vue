@@ -214,7 +214,7 @@ export default {
       baseStat.value = v;
     },
   },
-}
+};
 </script>
 <style lang="less" scoped>
 .top {

@@ -581,7 +581,7 @@ export default {
         state.currentStoreIndex = state.store.length - 1;
     },
     toggleSelectSkillTreeWindow(force) {
-      force = force === undefined ? !this.selectSkillTreeWindowState.visible : force
+      force = force === undefined ? !this.selectSkillTreeWindowState.visible : force;
       this.selectSkillTreeWindowState.visible = force;
     },
     createTagButtons(str) {

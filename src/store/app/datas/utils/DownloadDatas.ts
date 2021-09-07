@@ -2,9 +2,9 @@ import Papa from 'papaparse';
 import store from '@/store';
 import { DataPath, DataPathLang } from '@/shared/services/DataPath';
 
-type PathItem = string | { path: string, lang?: boolean };
+type PathItem = string | { path: string; lang?: boolean };
 type CsvData = Array<Array<string>>;
-type LangData = [CsvData, CsvData, CsvData];
+type LangData = [CsvData, CsvData | null, CsvData | null];
 
 export default async function(...paths: Array<PathItem>): Promise<Array<LangData>> {
   const promises = paths.map(async (pathItem) => {
@@ -47,29 +47,26 @@ async function createLoadPromise(path: string): Promise<CsvData> {
     } catch (e) {
       console.warn('[Error] load backup data: ' + orignalPath);
       console.log(e);
-
-      throw e;
-    }
-    finally {
-      return null;
     }
   }
-  return null;
+  return [[]];
 }
 
 const DEFAULT_LANG = 1;
 async function loadLangDatas(pathId: string): Promise<LangData> {
   const promises: Array<Promise<CsvData>> = [];
-  const current = store.getters['language/primaryLang'],
-    second = store.getters['language/secondaryLang'];
-  const datas: Array<CsvData> = Array(3);
+  const current = store.getters['language/primaryLang'] as number,
+    second = store.getters['language/secondaryLang'] as number;
+  const datas: Array<CsvData | null> = Array(3);
 
   promises.push(createLoadPromise(DataPath(pathId)));
   if (current !== DEFAULT_LANG) {
     const path = DataPathLang(pathId);
-    promises.push(createLoadPromise(path[current]));
-    if (current !== second) {
-      promises.push(createLoadPromise(path[second]));
+    if (path[current] !== null) {
+      promises.push(createLoadPromise(path[current] as string));
+    }
+    if (current !== second && path[second] !== null) {
+      promises.push(createLoadPromise(path[second] as string));
     }
   }
 

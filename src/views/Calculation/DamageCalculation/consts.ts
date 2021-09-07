@@ -1,7 +1,6 @@
-import { CalcStructItem } from '@/lib/Calculation/Damage/Calculation/base';
+import { CalcStructExpression } from '@/lib/Calculation/Damage/Calculation/base';
 
-/** @type {CalcStructItem} */
-const calcStructCritical = {
+const calcStructCritical: CalcStructExpression = {
   id: 'expected_with_critical',
   operator: '*',
   left: {
@@ -47,8 +46,7 @@ const calcStructCritical = {
   },
 };
 
-/** @type {CalcStructItem} */
-const calcStructWithoutCritical = {
+const calcStructWithoutCritical: CalcStructExpression = {
   id: 'expected_without_critical',
   operator: '*',
   left: {
@@ -94,8 +92,7 @@ const calcStructWithoutCritical = {
   },
 };
 
-/** @type {CalcStructItem} */
-const calcStructDisplay = {
+const calcStructDisplay: CalcStructExpression = {
   id: 'display',
   operator: '*',
   left: {

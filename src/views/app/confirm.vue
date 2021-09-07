@@ -62,5 +62,5 @@ export default {
       this.$store.commit('confirm/shiftItem');
     },
   },
-}
+};
 </script>

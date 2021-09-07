@@ -70,7 +70,7 @@ const actions = {
       commit('increaseMessageCounter', find);
     }
   },
-}
+};
 
 export default {
   namespaced: true,

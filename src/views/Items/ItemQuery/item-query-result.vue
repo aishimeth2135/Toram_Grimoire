@@ -49,7 +49,7 @@ export default {
     },
   },
   setup(props) {
-    const { equipments } = toRefs(props)
+    const { equipments } = toRefs(props);
     const pageCount = ref(0);
     const currentResults = computed(() => {
       const start = pageCount.value * NUMBER_OF_ITEMS_OF_PAGE;
@@ -86,5 +86,5 @@ export default {
       pageCount: readonly(pageCount),
     };
   },
-}
+};
 </script>

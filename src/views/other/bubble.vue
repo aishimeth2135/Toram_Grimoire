@@ -21,7 +21,7 @@
   </div>
 </template>
 <script>
-import { loadIconifyData } from '@/shared/services/SvgIcons.js';
+import { loadIconifyData } from '@/shared/services/SvgIcons';
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -51,7 +51,7 @@ export default {
       viewBox: '0 0 24 24',
       displayBg: false,
       resizeListener: null,
-    }
+    };
   },
   computed: {
     iconWidth() {

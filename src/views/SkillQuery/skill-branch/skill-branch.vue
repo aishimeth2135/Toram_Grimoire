@@ -453,7 +453,7 @@ export default {
     return {
       'calcValueStr': this.calcValueStr,
       'handleDataContainer': this.handleDataContainer,
-    }
+    };
   },
   props: ['branch', 'skillState', 'type'],
   data() {
@@ -464,7 +464,7 @@ export default {
       skillAreaVisible: false,
       historyVisible: false,
       topMenuVisible: false,
-    }
+    };
   },
   computed: {
     topButtons() {
@@ -1069,7 +1069,7 @@ export default {
         }
       });
 
-      const dataContainers = []
+      const dataContainers = [];
       Object.keys(data).forEach(k => {
         if (data[k] instanceof DataContainer) {
           dataContainers.push(data[k]);
@@ -1111,7 +1111,7 @@ export default {
         dc.handle(v => this.calcValueStr(v));
         const p = dc.isNumberValue() && parseFloat(dc.value()) < 0 ? 'negative' : 'positive';
         p === 'negative' && dc.handle(v => (-1 * v).toString());
-        dc.handleResult(v => this.$lang(`${bch.name + prefix}/${key}/${p}`, [v]))
+        dc.handleResult(v => this.$lang(`${bch.name + prefix}/${key}/${p}`, [v]));
       } else {
         let p = dc.value();
         if (p == '1' || p == '0') // 轉換布林值

@@ -1,11 +1,11 @@
 import GetLang from '@/shared/services/Language';
 
 type RegisterLangOptions = {
-  root: string
+  root: string;
   extra?: {
-    [x: string]: string
-  }
-}
+    [key: string]: string;
+  };
+};
 
 export default function(options: RegisterLangOptions | string) {
   if (typeof options === 'string') {
@@ -16,7 +16,10 @@ export default function(options: RegisterLangOptions | string) {
   const { root, extra } = options;
   if (typeof root !== 'string') {
     console.warn('[Register Lang] option: root must be string.');
-    return;
+    return {
+      rootLang: GetLang,
+      lang: GetLang,
+    };
   }
 
   const lang = (id: string, values?: Array<string>): string => {
@@ -26,7 +29,7 @@ export default function(options: RegisterLangOptions | string) {
   if (extra) {
     lang.extra = function(name: string, id: string, values: Array<string>) {
       return GetLang(extra[name] + '/' + id, values);
-    }
+    };
   }
 
   return {

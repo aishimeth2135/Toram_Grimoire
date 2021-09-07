@@ -169,7 +169,7 @@ export default {
     'custom-equipment-editor': vue_customEquipmentEditor,
     'select-crystals': vue_selectCrystals,
   },
-}
+};
 </script>
 <style lang="less" scoped>
 .browse-equipments {

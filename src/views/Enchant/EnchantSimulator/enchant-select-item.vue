@@ -97,8 +97,8 @@ export default {
             type: type,
             origin: item,
           });
-        })
-      })
+        });
+      });
       return {
         origin: category,
         items,
@@ -149,5 +149,5 @@ export default {
       }
     },
   },
-}
+};
 </script>

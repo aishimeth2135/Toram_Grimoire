@@ -40,7 +40,7 @@ export default {
   },
   props: ['field'],
   emits: ['remove-field-equipment', 'select-field-equipment'],
-}
+};
 </script>
 <style lang="less" scoped>
 .equipment-field {

@@ -41,7 +41,7 @@ export default {
       validation: v => ['iconify', 'custom', 'image'].includes(v),
     },
   },
-}
+};
 </script>
 
 <style lang="postcss" scoped>

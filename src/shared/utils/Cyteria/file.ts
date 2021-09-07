@@ -2,10 +2,10 @@ import sanitize from 'sanitize-filename';
 
 
 type FileSaveOptions = {
-  data: string
-  fileType?: string
-  fileName: string
-}
+  data: string;
+  fileType?: string;
+  fileName: string;
+};
 
 function save({ data, fileType = 'text/txt', fileName }: FileSaveOptions): void {
   const blob = new Blob([data], { type: fileType + ';charset=utf-8;' });
@@ -27,11 +27,11 @@ type FileLoadBefore = () => void;
 type FileLoadCheckType = (fileType: string) => boolean;
 
 type FileLoadOptions = {
-  succeed: FileLoadSucceed
-  error?: FileLoadError
-  beforeLoad?: FileLoadBefore
-  checkFileType?: FileLoadCheckType
-}
+  succeed: FileLoadSucceed | null;
+  error?: FileLoadError | null;
+  beforeLoad?: FileLoadBefore | null;
+  checkFileType?: FileLoadCheckType | null;
+};
 
 function load({
   succeed = null,
@@ -43,20 +43,24 @@ function load({
     const input = document.createElement('input');
     input.type = 'file';
     input.addEventListener('change', function() {
-      beforeLoad && beforeLoad();
+      if (this.files !== null) {
+        beforeLoad && beforeLoad();
 
-      const file = this.files[0];
-      const type = file.name.split('.').slice(-1)[0];
-      if (checkFileType && !checkFileType(type)) {
-        return;
+        const file = this.files[0];
+        const type = file.name.split('.').slice(-1)[0];
+        if (checkFileType && !checkFileType(type)) {
+          return;
+        }
+
+        const fr = new FileReader();
+        fr.addEventListener('load', function() {
+          succeed && succeed(this.result as string);
+          document.body.removeChild(input);
+        });
+        fr.readAsText(file);
+      } else {
+        error && error(new Error('[Load File] unknown error.'));
       }
-
-      const fr = new FileReader();
-      fr.addEventListener('load', function() {
-        succeed && succeed(this.result as string);
-        document.body.removeChild(input);
-      })
-      fr.readAsText(file);
     });
 
     input.style.display = 'none';

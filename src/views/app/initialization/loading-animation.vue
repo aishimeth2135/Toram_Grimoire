@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       end: false,
-    }
+    };
   },
   methods: {
     beforeLeave(el) {
@@ -74,10 +74,10 @@ export default {
           done();
           setTimeout(() => this.$emit('done'), 100);
         },
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>

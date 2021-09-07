@@ -2,4 +2,4 @@
   <ul>
     <li />
   </ul>
-</template>
+</template>;

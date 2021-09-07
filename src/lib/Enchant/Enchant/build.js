@@ -309,7 +309,7 @@ class EnchantEquipment {
           return false;
         });
       }
-    })
+    });
   }
 
   swapStep(i1, i2) {
@@ -510,7 +510,7 @@ class EnchantStep {
     newStats.forEach(stat => {
       const t = this.stat(stat.itemBase, stat.type);
       if (t) {
-        t.value = stat.value
+        t.value = stat.value;
       } else {
         this.stats.push(stat);
       }
@@ -660,7 +660,7 @@ class EnchantStat {
       }
       return Array(_to - _from).fill()
         .map((p, i) => i + _from + 1)
-        .reduce((a, b) => a + Math.floor(b * b * bv * r / 100), 0)
+        .reduce((a, b) => a + Math.floor(b * b * bv * r / 100), 0);
     };
 
     return from * to >= 0 ? calc(from, to) : calc(from, 0) + calc(0, to);

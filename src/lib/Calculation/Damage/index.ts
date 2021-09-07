@@ -6,10 +6,6 @@ import type { CurrentItemIdGetter } from './Calculation/base';
 export default class {
   calculationBase: CalculationBase;
   constructor() {
-    this.calculationBase = null;
-    this.init();
-  }
-  init() {
     type FactoryCreated = (container: CalcItemContainerBase) => void;
     type FactoryAlly = (id: string, callback: FactoryCreated) => void;
     type DamageTypeHandlerCallback = (result: boolean) => string;
@@ -25,7 +21,7 @@ export default class {
 
     const utils = {
       getCurrentDamageTypeId(itemContainer: CalcItemContainer) {
-        return itemContainer.belongCalculation.containers.get('damage_type').currentItem.base.id;
+        return (itemContainer.belongCalculation.containers.get('damage_type') as CalcItemContainer).currentItem.base.id;
       },
       damageTypeHandler(handlerCallback: DamageTypeHandlerCallback): CurrentItemIdGetter {
         return ((itemContainer: CalcItemContainer) => {
@@ -76,7 +72,7 @@ export default class {
       container.appendItem('skill_level_two_handed')
         .setDefaultValue(0)
         .setRange(0, 10)
-        .setUnit(null);
+        .setUnit('');
       container.setCalcResult((itemContainer) => {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer);
         if (currentDamageTypeId !== 'physical') {
@@ -155,9 +151,9 @@ export default class {
         .setDefaultValue(150);
       container.appendItem('critical_rate')
         .setDefaultValue(25)
-        .setRange(0, 100, 10)
+        .setRange(0, 100, 10);
       container.appendItem('magic_critical_rate_conversion_rate')
-        .setDefaultValue(0)
+        .setDefaultValue(0);
       container.appendItem('magic_critical_damage_conversion_rate')
         .setDefaultValue(50);
       container.appendItem('target_critical_rate_resistance')
@@ -168,10 +164,10 @@ export default class {
         .setRange(0, 100);
 
       container.setCalcResult((itemContainer) => {
-        const cr = itemContainer.belongCalculation.containers
-          .get('critical/critical_rate').result();
-        const cd = itemContainer.belongCalculation.containers
-          .get('critical/critical_damage').result();
+        const cr = (itemContainer.belongCalculation.containers
+          .get('critical/critical_rate') as CalcItemContainer).result();
+        const cd = (itemContainer.belongCalculation.containers
+          .get('critical/critical_damage') as CalcItemContainer).result();
         return (cr * cd / 100 + (100 - cr));
       });
     });
@@ -202,7 +198,7 @@ export default class {
 
       /* @containers/critical */
       container.appendItem('critical_rate');
-      container.appendItem('target_critical_rate_resistance')
+      container.appendItem('target_critical_rate_resistance');
       container.appendItem('magic_critical_rate_conversion_rate');
       container.appendItem('target_critical_rate_resistance_total');
       /* --- */
@@ -254,7 +250,7 @@ export default class {
       container.appendItem('skill_level_long_range')
         .setDefaultValue(10)
         .setRange(0, 10)
-        .setUnit(null);
+        .setUnit('');
       container.setCalcResult((itemContainer) => {
         const value = itemContainer.getItemValue('skill_level_long_range');
         return (100 + value);

@@ -346,7 +346,7 @@ export default {
         windowBeforeUnload: null,
         documentVisibilityChange: null,
       },
-    }
+    };
   },
   beforeCreate() {
     init();

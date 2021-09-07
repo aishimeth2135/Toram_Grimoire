@@ -86,5 +86,5 @@ export default {
       markText,
     };
   },
-}
+};
 </script>

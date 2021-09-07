@@ -67,8 +67,9 @@ const actions = {
         currentCalculationIndex: data.currentCalculationIndex,
       });
     } catch (error) {
-      console.warn('[@/store/damage-calculation/load] unknow error');
-      console.warn(error.message);
+      console.warn('[store/damage-calculation/load] unknow error');
+      console.log(error);
+      throw error;
     }
   },
 };

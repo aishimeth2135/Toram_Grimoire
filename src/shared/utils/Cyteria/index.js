@@ -3,7 +3,7 @@ import object from './object.js';
 import svg from './svg.js';
 import number from './number.js';
 import csv from './csv.js';
-import file from './file.js';
+import file from './file';
 
 function copyToClipboard(s) {
   const input = document.createElement('textarea');

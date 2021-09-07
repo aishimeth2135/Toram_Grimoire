@@ -18,7 +18,7 @@ export default function LoadTagData(r, datas) {
   HandleLanguageData(datas, {
     [INDEX.TAG_NAME]: LANG_DATA.TAG_NAME,
     [INDEX.FRAME_VALUE]: LANG_DATA.FRAME_VALUE,
-  })
+  });
   const c = datas[0];
   let cur, curFrame;
   c.forEach((p, i) => {

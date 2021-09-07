@@ -2,7 +2,7 @@
 
 import { register } from 'register-service-worker';
 import store from '@/store';
-import MessageNotify from '@/lib/main/services/Notify';
+import MessageNotify from '@/shared/services/Notify';
 import GetLang from '@/shared/services/Language';
 
 export default function() {
@@ -31,7 +31,7 @@ export default function() {
         console.log('No internet connection found. App is running in offline mode.');
       },
       error (error) {
-        console.error('Error during service worker registration:', error)
+        console.error('Error during service worker registration:', error);
       },
     });
 
@@ -39,7 +39,7 @@ export default function() {
       let refreshing = false;
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (!refreshing) {
-          window.location.reload()
+          window.location.reload();
           refreshing = true;
         }
       });

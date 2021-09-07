@@ -84,7 +84,7 @@ class Foods {
 
 class Food {
   constructor(base, amount, negative) {
-    this.base = base
+    this.base = base;
     this.amount = amount,
     this.level = 0;
     this.negative = negative;

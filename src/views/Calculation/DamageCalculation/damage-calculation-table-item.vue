@@ -54,6 +54,6 @@ export default {
       containerItems,
     };
   },
-}
+};
 </script>
 

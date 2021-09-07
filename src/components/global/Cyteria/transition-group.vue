@@ -20,7 +20,7 @@ export default {
       type: Boolean,
     },
   },
-}
+};
 </script>
 <style lang="less" scoped>
 ::v-deep(.fade-enter-from), ::v-deep(.fade-leave-to) {

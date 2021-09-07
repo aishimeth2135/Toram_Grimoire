@@ -226,7 +226,7 @@ export default {
           parts,
           remainingPotential,
           type: step.type === EnchantStep.TYPE_EACH ? 'each' : 'normal',
-        }
+        };
       });
       return result;
     },
@@ -302,7 +302,7 @@ export default {
       this.$notify(this.$lang('tips/copy result text successfully'));
     },
   },
-}
+};
 </script>
 <style lang="postcss" scoped>
 .stat-scope {

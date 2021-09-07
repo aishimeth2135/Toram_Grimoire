@@ -261,7 +261,7 @@ export default {
     //   this.step.remove();
     // }
   },
-}
+};
 </script>
 <style lang="less" scoped>
 .step-stat + .step-stat {

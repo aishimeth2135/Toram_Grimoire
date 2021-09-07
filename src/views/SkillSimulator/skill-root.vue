@@ -22,7 +22,7 @@ export default {
       return this.skillRootState.skillTreeCategoryStates.filter(p => p.visible);
     },
   },
-}
+};
 </script>
 <style lang="less" scoped>
 .skill-root {

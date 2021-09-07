@@ -762,7 +762,7 @@ export default {
       this.$confirm({
         message: this.$lang('tips/reset confirm'),
         confirm: confirmCallback,
-      })
+      });
     },
     removePositiveStat(stat) {
       if (this.stepCounter !== this.stepContents.selectPositiveStat && this.doll.positiveStats.length === 1) {
@@ -865,7 +865,7 @@ export default {
       }
     },
   },
-}
+};
 </script>
 <style lang="postcss" scoped>
 .step-content {

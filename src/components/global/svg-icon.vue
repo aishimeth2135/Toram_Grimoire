@@ -1,6 +1,6 @@
 <script>
 import { h, mergeProps } from 'vue';
-import Icons from '@/shared/services/SvgIcons.js';
+import Icons from '@/shared/services/SvgIcons';
 
 export default function SvgIcon(props, context) {
   const tmp = document.createElement('template');

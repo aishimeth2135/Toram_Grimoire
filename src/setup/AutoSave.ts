@@ -3,9 +3,9 @@ import RegisterLang from './RegisterLang';
 import Notify from './Notify';
 
 type AutoSaveOptions = {
-  save: () => void
-  loadFirst: () => void
-}
+  save: () => void;
+  loadFirst: () => void;
+};
 
 export default function ({ save, loadFirst }: AutoSaveOptions): void {
   const { lang } = RegisterLang('common/Export build');

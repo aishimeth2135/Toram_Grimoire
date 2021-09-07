@@ -74,5 +74,5 @@ export default {
       containerDisplayOrder,
     };
   },
-}
+};
 </script>

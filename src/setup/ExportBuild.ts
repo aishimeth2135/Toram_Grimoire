@@ -5,9 +5,9 @@ import Notify from './Notify';
 type ExportBuildsSaveHandler = (fileName: string, dataString: string) => void;
 
 type ExportBuildsOptions = {
-  save: (handleSave: ExportBuildsSaveHandler) => void
-  loaded: (dataResult: string) => void 
-}
+  save: (handleSave: ExportBuildsSaveHandler) => void;
+  loaded: (dataResult: string) => void;
+};
 
 export default function({ save, loaded }: ExportBuildsOptions) {
   const { lang } = RegisterLang('common/Export build');

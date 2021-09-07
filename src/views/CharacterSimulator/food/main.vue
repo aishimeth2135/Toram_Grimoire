@@ -140,7 +140,7 @@ export default {
       ranges: {
         foodLevel: [0, 10],
       },
-    }
+    };
   },
   created() {
     if (this.foodBuilds.length == 0)

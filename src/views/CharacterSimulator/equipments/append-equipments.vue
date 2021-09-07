@@ -166,7 +166,7 @@ export default {
       this.selected.push(item);
     },
   },
-}
+};
 </script>
 <style lang="postcss" scoped>
 .selected-detail {

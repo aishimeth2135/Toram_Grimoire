@@ -68,7 +68,7 @@ export default {
       this.handleHook('afterLeave', el);
     },
   },
-}
+};
 </script>
 <style lang="less" scoped>
 .fade-slide-right-enter-from {

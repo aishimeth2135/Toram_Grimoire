@@ -334,7 +334,7 @@ export default {
       this.windowVisible = !this.windowVisible;
     },
   },
-}
+};
 </script>
 
 <style lang="postcss" scoped>

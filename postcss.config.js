@@ -6,4 +6,4 @@ module.exports = {
     'postcss-nesting': {},
     'postcss-variables': {},
   },
-}
+};

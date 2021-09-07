@@ -629,7 +629,7 @@ export default class EnchantDollEquipmentContainer {
             stat: tstat,
             value,
             existedAndNoRate: false,
-          })
+          });
         }
       }
     }

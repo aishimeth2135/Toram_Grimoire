@@ -284,7 +284,7 @@ export default {
         stat: [null, null],
         boolStat: [1, 1],
       },
-    }
+    };
   },
   computed: {
     statsSearchResult() {
@@ -378,7 +378,7 @@ export default {
       this[target] = force;
     },
   },
-}
+};
 </script>
 <style lang="less" scoped>
 .bottom-content {

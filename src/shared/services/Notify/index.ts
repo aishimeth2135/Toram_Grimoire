@@ -2,15 +2,15 @@ import store from '@/store';
 import LoadingNotifyItem from './LoadingNotifyItem';
 
 type MessageNotifyButtonItem = {
-  text: string
-  click: () => void
+  text: string;
+  click: () => void;
   removeMessageAfterClick: boolean;
-}
+};
 
 type MessageNotifyOptions = {
-  buttons?: Array<MessageNotifyButtonItem>
-  afterHide?: () => void
-}
+  buttons?: Array<MessageNotifyButtonItem>;
+  afterHide?: () => void;
+};
 
 function MessageNotify(
   message: string,

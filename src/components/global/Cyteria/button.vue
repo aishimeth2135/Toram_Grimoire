@@ -31,7 +31,7 @@ function CyButton(props, context) {
       return ButtonSwitch;
     }
     return ButtonSimple;
-  }
+  };
 
   const attrs = mergeProps({
     class: ['cy--button-base'],

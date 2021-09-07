@@ -259,7 +259,7 @@ export default {
     'equipment-info': vue_equipmentInfo,
     'character-stats-compare': vue_characterStatsCompare,
   },
-}
+};
 </script>
 <style lang="less" scoped>
 .content {

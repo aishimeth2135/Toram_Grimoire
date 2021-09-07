@@ -92,4 +92,4 @@ module.exports = {
     mixBlendMode: false,
     saturate: false,
   },
-}
+};

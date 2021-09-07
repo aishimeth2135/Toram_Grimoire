@@ -63,7 +63,7 @@ export default {
     'skill-area': vue_skillArea,
   },
   props: ['branch', 'showData'],
-}
+};
 </script>
 <style lang="less" scoped>
 .attrs-table {

@@ -163,7 +163,7 @@ export default {
       return {
         id: i,
         crystals: crystals.filter(a => a.category == i).map(p => new EquipmentCrystal(p)),
-      }
+      };
     });
 
     const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
@@ -177,7 +177,7 @@ export default {
           text: stat.title(type),
           type,
         });
-      })
+      });
     });
 
     return {

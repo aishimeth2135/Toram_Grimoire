@@ -209,5 +209,5 @@ export default {
         this.equipment.appendCrystal(c);
     },
   },
-}
+};
 </script>

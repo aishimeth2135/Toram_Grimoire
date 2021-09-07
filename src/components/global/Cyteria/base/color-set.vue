@@ -76,7 +76,7 @@ function getColorSetStyle(src) {
         props[key] = defaultValue;
       }
     }
-  }
+  };
 
   defaultProp('text', 'dark');
   defaultProp('text/hover', 'light-4');

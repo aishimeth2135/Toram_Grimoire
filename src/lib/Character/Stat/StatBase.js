@@ -14,7 +14,7 @@ class StatBase {
     if (type === 'simple')
       stats.sort((a, b) => a.base.order - b.base.order);
     return stats;
-  }
+  };
 
   /**
    * @param {string} baseName
@@ -82,7 +82,7 @@ class StatBase {
         .replace('$v', calc ? Math.floor(v) : v)
         .replace(/\$(\d+)d/, (m, m1) => v.toFixed(parseInt(m1)));
       return res;
-    }
+    };
     switch (type) {
     case StatBase.TYPE_CONSTANT:
       return handleFormula(this.attributes['constant_formula'] || '$t$s$v$u', this.hasMultiplier ? '' : '%');

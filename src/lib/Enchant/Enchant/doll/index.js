@@ -279,7 +279,7 @@ export default class EnchantDoll {
             }
             const stat = new EnchantStat(item, type, item.getLimit(type)[0]);
             shortlist.push(stat);
-          })
+          });
         }
       });
     });
@@ -386,7 +386,7 @@ export default class EnchantDoll {
       return this.config.autoFindNegaitveStatsType === 'success-rate' ?
         calcPotentialPriority(category, nums) :
         calcMaterialPriority(category, nums);
-    }
+    };
 
     negatives.sort((a, b) => {
       for (let i=1; i<=numNegatives; ++i) {
@@ -405,7 +405,7 @@ export default class EnchantDoll {
       return 0;
     });
 
-    const negativeStats = []
+    const negativeStats = [];
     negatives.find(category => {
       return category.stats.find(stat => {
         negativeStats.push(stat.copy());
@@ -435,7 +435,7 @@ export default class EnchantDoll {
         }
       }
       return res;
-    }
+    };
     let res = Array(stats.length).fill().map((_, i) => [i]);
     while (res.length !== 0 && res[0].length !== stats.length) {
       res = merge(res);
@@ -548,7 +548,7 @@ class EnchantDollCategory {
   originalPotentialEffectMaximumSum(num) {
     num = num === undefined ? this.stats.length : num;
     return -1 * this.stats.slice(0, num)
-      .reduce((cur, stat) => cur + stat.originalPotential * stat.limit[0], 0)
+      .reduce((cur, stat) => cur + stat.originalPotential * stat.limit[0], 0);
   }
 
   /**

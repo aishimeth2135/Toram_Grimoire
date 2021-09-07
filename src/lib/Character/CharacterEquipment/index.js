@@ -415,7 +415,7 @@ CharacterEquipment.fromOriginEquipment = function(item, {
   if (item.category < 300) {
     return new SubArmor(...pre_args, SubArmor.TYPE_SHIELD, item.baseValue);
   }
-}
+};
 
 class Weapon extends CharacterEquipment {
   constructor(id, name, stats, atk = 1, stability = 0) {

@@ -101,7 +101,7 @@ const actions = {
     commit('appendBuild', build);
     commit('save');
   },
-}
+};
 
 import step from './step';
 import stat from './stat';

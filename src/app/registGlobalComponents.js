@@ -12,7 +12,7 @@ export default function(APP) {
       }
       APP.component(prefix + componentName, componentConfig.default || componentConfig);
     });
-  }
+  };
 
   const requireComponent_global = require.context('@/components/global', false, /[a-zA-Z-]+\.vue$/);
   const requireComponent_cy = require.context('@/components/global/Cyteria', false, /[a-zA-Z-]+\.vue$/);

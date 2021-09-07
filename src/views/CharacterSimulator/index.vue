@@ -237,7 +237,7 @@ export default {
       return this.allCharacterStatDatas.map(data => ({
         name: data.name,
         stats: data.stats.filter(p => !p.hidden),
-      }))
+      }));
     },
     validSkillStates() {
       return this.allSkillStates
@@ -511,7 +511,7 @@ export default {
         return {
           id: null,
           value: 0,
-        }
+        };
       }
       return res;
     },
@@ -689,7 +689,7 @@ export default {
               levelSkill: skill,
               skillState: createSkillState(skill.base),
             })),
-          }
+          };
         });
       })();
 

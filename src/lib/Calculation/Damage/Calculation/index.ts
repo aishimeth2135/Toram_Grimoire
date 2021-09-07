@@ -3,23 +3,23 @@ import type { CalcStructItem, CalcResultOptions } from './base';
 
 interface CalculationSaveData {
   name: string;
-  containers: Array<{
+  containers: {
       id: string;
       enabled: boolean;
       currentItemId: string | null;
-  }>;
-  items: Array<{
+  }[];
+  items: {
       id: string;
       value: number;
-  }>;
-  containerCustomItems: Array<{
+  }[];
+  containerCustomItems: {
       containerId: string;
-      items: Array<{
+      items: {
           id: string;
           name: string;
           value: number;
-      }>;
-  }>;
+      }[];
+  }[];
 }
 
 class Calculation {
@@ -27,7 +27,7 @@ class Calculation {
   name: string;
   containers: Map<string, CalcItemContainer>;
   items: Map<string, CalcItem>;
-  containerCustomItems: Map<string, Array<CalcItemCustom>>;
+  containerCustomItems: Map<string, CalcItemCustom[]>;
 
   constructor(base: CalculationBase, name: string = '') {
     this.base = base;
@@ -52,16 +52,19 @@ class Calculation {
     }
   }
 
-  appendCustomItem(containerId: string, itemId: string): CalcItemCustom {
+  appendCustomItem(containerId: string, itemId: string): CalcItemCustom | null {
     if (!this.containerCustomItems.has(containerId)) {
       console.warn(`[Calculation.appendCustomItem] container with id ${containerId} is not exist in additional list.`);
-      return;
+      return null;
     }
     const container = this.containers.get(containerId);
-    const itemBase = container.base.items.get(itemId);
-    const newItem = new CalcItemCustom(itemBase);
-    this.containerCustomItems.get(containerId).push(newItem);
-    return newItem;
+    const itemBase = container ? container.base.items.get(itemId) : null;
+    if (itemBase) {
+      const newItem = new CalcItemCustom(itemBase);
+      (this.containerCustomItems.get(containerId) as CalcItemCustom[]).push(newItem);
+      return newItem;
+    }
+    return null;
   }
 
   removeCustomItem(containerId: string, item: CalcItemCustom) {
@@ -69,11 +72,11 @@ class Calculation {
       console.warn(`[Calculation.removeCustomItem] container with id ${containerId} is not exist in additional list.`);
       return;
     }
-    const items = this.containerCustomItems.get(containerId);
+    const items = this.containerCustomItems.get(containerId) as CalcItemCustom[];
     items.splice(items.indexOf(item), 1);
   }
 
-  result(calcStruct: CalcStructItem, options: CalcResultOptions): number {
+  result(calcStruct: CalcStructItem, options?: CalcResultOptions): number {
     return this.base.result(this, calcStruct, options);
   }
 
@@ -100,7 +103,7 @@ class Calculation {
       return {
         containerId,
         items: itemsData,
-      }
+      };
     });
     return {
       name: this.name,
@@ -134,8 +137,10 @@ class Calculation {
     data.containerCustomItems.forEach(customItemData => {
       customItemData.items.forEach(itemData => {
         const item = this.appendCustomItem(customItemData.containerId, itemData.id);
-        item.name = itemData.name;
-        item.value = itemData.value;
+        if (item) {
+          item.name = itemData.name;
+          item.value = itemData.value;
+        }
       });
     });
   }
@@ -151,7 +156,7 @@ class Calculation {
 class CalcItemContainer {
   private _parent: Calculation;
   private _currentItemId: string | null;
-  
+
   base: CalcItemContainerBase;
   enabled: boolean;
   items: Map<string, CalcItem>;
@@ -170,7 +175,7 @@ class CalcItemContainer {
   initItems() {
     let flag = true;
     for (const id of this.base.items.keys()) {
-      const item = this.belongCalculation.items.get(id);
+      const item = this.belongCalculation.items.get(id) as CalcItem;
       if (flag) {
         this._currentItemId = id;
         flag = false;
@@ -189,21 +194,24 @@ class CalcItemContainer {
 
   get currentItem(): CalcItem {
     if (this.base.getCurrentItemId !== null) {
-      return this.items.get(this.base.getCurrentItemId(this, this.base));
+      return this.items.get(this.base.getCurrentItemId(this, this.base)) as CalcItem;
     }
-    return this.items.get(this._currentItemId);
+    return this.items.get(this._currentItemId as string) as CalcItem;
   }
 
   get customItemAddable(): boolean {
     return this.belongCalculation.containerCustomItems.has(this.base.id);
   }
 
-  get customItems(): Array<CalcItem> {
-    return this.customItemAddable ? this.belongCalculation.containerCustomItems.get(this.base.id) : [];
+  get customItems(): CalcItemCustom[] {
+    return this.customItemAddable ? this.belongCalculation.containerCustomItems.get(this.base.id) as CalcItemCustom[] : [];
   }
 
-  createCustomItem(): CalcItemCustom {
-    return this.belongCalculation.appendCustomItem(this.base.id, this.currentItem.base.id);
+  createCustomItem(): CalcItemCustom | null {
+    if (this.customItemAddable) {
+      return this.belongCalculation.appendCustomItem(this.base.id, this.currentItem.base.id);
+    }
+    return null;
   }
   removeCustomItem(item: CalcItemCustom): void {
     this.belongCalculation.removeCustomItem(this.base.id, item);
@@ -213,7 +221,11 @@ class CalcItemContainer {
    * Ally method to get value of item
    */
   getItemValue(id: string): number {
-    return this.items.get(id).value;
+    if (!this.items.has(id)) {
+      console.warn('[CalcItemContainer.getItemValue] unknown item id: ' + id);
+      return 0;
+    }
+    return (this.items.get(id) as CalcItem).value;
   }
 
   selectItem(id: string) {
@@ -266,4 +278,4 @@ class CalcItemCustom extends CalcItem {
   }
 }
 
-export { CalcItemContainer, Calculation };
+export { CalcItemContainer, Calculation, CalcItem, CalcItemCustom };

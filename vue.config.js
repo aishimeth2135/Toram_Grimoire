@@ -2,7 +2,7 @@ const path = require('path');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line
   configureWebpack: (config) => {
     const resultConfig = {
       devtool: 'eval-cheap-module-source-map',
@@ -121,4 +121,4 @@ module.exports = {
       exclude: [/_redirects/],
     },
   },
-}
+};

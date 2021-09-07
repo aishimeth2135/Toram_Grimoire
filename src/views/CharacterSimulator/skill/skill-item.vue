@@ -170,7 +170,7 @@ export default {
   data() {
     return {
       extraContentVisible: false,
-    }
+    };
   },
   computed: {
     skillIconPath() {

@@ -167,7 +167,7 @@ class RestrictionStat extends Stat {
                 'sub-weapon': SubWeapon,
                 'sub-armor': SubArmor,
                 'body-armor': BodyArmor,
-              }[instance][handleType(type)]
+              }[instance][handleType(type)];
             }
           }
 

@@ -37,7 +37,7 @@ export default {
       return {
         ...this.baseClass,
         'type-inline': this.inline,
-      }
+      };
     },
   },
 };

@@ -15,7 +15,7 @@ function removeAllChild(node) {
 function setAttributes(ele, dict) {
   Object.keys(dict).forEach(k => {
     if (dict[k] !== null)
-      ele.setAttribute(k, dict[k])
+      ele.setAttribute(k, dict[k]);
   });
 }
 

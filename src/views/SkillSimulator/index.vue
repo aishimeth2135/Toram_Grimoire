@@ -295,7 +295,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import CY from '@/shared/utils/Cyteria';
-import { LoadingNotify } from '@/lib/main/services/Notify';
+import { LoadingNotify } from '@/shared/services/Notify';
 
 import vue_skillRoot from './skill-root.vue';
 import vue_SaveLoadDataSystem from '@/components/SaveLoadDataSystem/main.vue';
@@ -311,7 +311,7 @@ export default {
   provide() {
     return {
       'drawSkillTreeOptions': this.drawSkillTreeOptions,
-    }
+    };
   },
   data() {
     // const r = this.skillRoot;
@@ -324,7 +324,7 @@ export default {
         values: values,
         currentIndex: values.indexOf(current_value),
       };
-    }
+    };
 
     const skillPointState = {
       mode: 'normal',
@@ -677,7 +677,7 @@ export default {
           grd.addColorStop(0, 'white');
           grd.addColorStop(0.5, '#FFD1EA');
           grd.addColorStop(1, '#f7a8d3');
-        }
+        };
 
         const final_w = Math.max(500, ...drawDatas.map(p => p.width)),
           final_h = drawDatas.reduce(

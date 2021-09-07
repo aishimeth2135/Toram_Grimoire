@@ -26,5 +26,5 @@ export default {
       this.$emit('update:value', item.value);
     },
   },
-}
+};
 </script>

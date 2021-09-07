@@ -310,7 +310,7 @@ export default {
           text: stat.title(type),
           type,
         });
-      })
+      });
     });
 
     const handleCompareValue = v => /^-?\d+$/.test(v) ? parseFloat(v) : -99999;

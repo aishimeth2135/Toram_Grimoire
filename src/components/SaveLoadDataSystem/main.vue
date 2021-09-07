@@ -63,7 +63,7 @@
   </div>
 </template>
 <script>
-import CY from '@/shared/utils/Cyteria'
+import CY from '@/shared/utils/Cyteria';
 import GetLang from '@/shared/services/Language';
 
 import init from './init.js';

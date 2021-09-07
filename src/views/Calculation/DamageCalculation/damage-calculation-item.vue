@@ -2,7 +2,7 @@
   <div
     v-if="currentContainer"
     class="flex items-start"
-    :style="root ? { 'margin-left': '1.8rem' } : { 'margin-left': ((4 - layer) * 0.5) + 'rem' }"
+    :style="{ marginLeft: root ? '1.8rem' : ((4 - layer) * 0.5) + 'rem' }"
   >
     <div class="flex items-center">
       <div

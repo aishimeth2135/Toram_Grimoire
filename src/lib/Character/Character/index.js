@@ -38,7 +38,7 @@ class Character {
         return;
       }
       this.equipmentFields.push(new EquipmentField(this, p));
-    })
+    });
   }
 
   get baseStats() {
@@ -472,7 +472,7 @@ class CharacterStatFormula {
         total: tvalue,
         base: 0,
       },
-    }
+    };
 
     const methods = {
       reduceValue: value => {
@@ -494,7 +494,7 @@ class CharacterStatFormula {
       cvalue: 0,
       tvalue: 0,
       mvalue: 0,
-    }
+    };
     const handlerOptions = {
       vars: {
         ...vars.value,
@@ -538,7 +538,7 @@ class CharacterStatFormula {
         statValueVars.tvalue = tvalue;
       }
       return handleFormula(formulaStr, handlerOptions);
-    }
+    };
 
 
     const conditionalHandlerOptions = {
@@ -568,7 +568,7 @@ class CharacterStatFormula {
           } else if (option === '#mul') {
             isMul = true;
           }
-        })
+        });
         return {
           conditional: p.conditional,
           formula: p.formula,

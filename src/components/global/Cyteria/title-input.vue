@@ -58,7 +58,7 @@ export default {
       this.inputFocus = set;
     },
   },
-}
+};
 </script>
 <style lang="less" scoped>
 .input-container {

@@ -2,37 +2,37 @@ import { ref, readonly } from 'vue';
 import type { Ref } from 'vue';
 
 type ToggleItemDetail = {
-  name: string
-  default?: boolean
-}
+  name: string;
+  default?: boolean;
+};
 type ToggleItem = ToggleItemDetail | string;
 
 type ToggleServiceOptions = {
-  [x: string]: Array<ToggleItem>
-}
+  [key: string]: Array<ToggleItem>;
+};
 
 type ToggleContentsGroup = {
-  [x: string]: {
-    readonly [x: string]: boolean
-  } | ToggleHandler
-}
+  [key: string]: {
+    readonly [key: string]: boolean;
+  } | ToggleHandler;
+};
 
 type ToggleServiceResult = ToggleContentsGroup & { toggle: ToggleHandler };
 type ToggleHandler = (id: string, force?: boolean, groupForce?: boolean) => void;
 
 export default function(options: ToggleServiceOptions): ToggleServiceResult {
   const dataMap: {
-    [x: string]: {
-      [x: string]: Ref<boolean>
-    }
+    [key: string]: {
+      [key: string]: Ref<boolean>;
+    };
   } = {};
   Object.entries(options).forEach(([groupKey, subs]) => {
-    const group = {};
+    const group: { [key: string]: Ref<boolean> } = {};
     subs.forEach(subItem => {
       if (typeof subItem === 'string') {
         group[subItem] = ref(false);
       } else if (typeof subItem === 'object') {
-        const { name, default: defaultValue } = subItem;
+        const { name, default: defaultValue = false } = subItem;
         group[name] = ref(defaultValue);
       }
     });
@@ -56,9 +56,9 @@ export default function(options: ToggleServiceOptions): ToggleServiceResult {
         console.warn('[toggle service] Toggle the group must pass param: force');
         return;
       }
-      Object.values(dataMap[group]).forEach(item => item.value = force);
+      Object.values(dataMap[group]).forEach(item => item.value = force as boolean);
     }
-  }
+  };
 
   const data: ToggleServiceResult = {
     toggle,

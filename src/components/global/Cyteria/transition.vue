@@ -13,7 +13,7 @@ function CyTransition(props, context) {
       console.warn('[cy-transition] unknow type');
       return Transition;
     }
-  }
+  };
 
   const attrs = mergeProps({
     name: props.type,
@@ -23,7 +23,7 @@ function CyTransition(props, context) {
     getComponent(),
     attrs,
     context.slots,
-  )
+  );
 }
 
 CyTransition.props = {

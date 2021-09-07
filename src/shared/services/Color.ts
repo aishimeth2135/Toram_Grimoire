@@ -10,7 +10,7 @@ export default class Color {
     'green',
     'blue-green', 'blue-green-light',
   ];
-  static MappingList = {
+  static MappingList: { [key: string]: string } = {
     'white': 'white',
     'dark': 'light-4',
     'light': 'light-2',

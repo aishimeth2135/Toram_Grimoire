@@ -151,7 +151,7 @@ export default {
     showStatDetailCaption() {
       if (this.detail.currentStat) {
         return this.detail.currentStat.origin.caption
-          .replace(/\(\(([^)]+)\)\)/g, (_, m1) => `<span class="separate-scope">${m1}</span>`)
+          .replace(/\(\(([^)]+)\)\)/g, (_, m1) => `<span class="separate-scope">${m1}</span>`);
       }
       return '';
     },
@@ -305,7 +305,7 @@ export default {
       this.detail.currentStat = stat;
     },
   },
-}
+};
 </script>
 <style lang="postcss" scoped>
 .stat-scope {

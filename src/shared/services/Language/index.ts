@@ -5,31 +5,33 @@ import zh_cn from './globalData/zh_cn.js';
 
 import store from '@/store';
 
+type LangData = {
+  [key: string]: unknown;
+};
+
 function InitLanguageSystem() {
   store.dispatch('language/init', { en, zh_tw, ja, zh_cn });
 }
 
-interface LangData {
-  [x: string]: unknown,
-}
 function InitLanguageData(datas: LangData) {
   store.commit('language/injectData', datas);
 }
 
-function GetLang(id: string, values?: Array<string>): string {
+function GetLang(id: string, values?: string[]): string {
   return store.getters['language/get'](id, values);
 }
 
-function HandleLanguageData(datas: Array<Array<string>>, mapping: { [x: number]: number }) {
+function HandleLanguageData(datas: string[][][], mapping: { [key: number]: number }) {
   const langDatas = [datas[1], datas[2]];
   Object.entries(mapping).forEach(([key, value]) => {
-    const dataIdx = key, langDataIdx = value;
-    datas[0].forEach((p, idx) => {
+    const dataIdx = parseInt(key, 10), langDataIdx = value;
+    datas[0].forEach((data, idx) => {
       const res = langDatas
-        .map(a => a && a[idx] ? a[idx][langDataIdx] : null)
-        .find(t => t !== '' && t !== null && t !== undefined);
-      if (res !== undefined)
-        p[dataIdx] = res;
+        .map(langData => langData && langData[idx] ? langData[idx][langDataIdx] : null)
+        .find(field => field !== '' && field !== null && field !== undefined);
+      if (res) {
+        data[dataIdx] = res;
+      }
     });
   });
 }

@@ -264,7 +264,7 @@ export default {
   data() {
     return {
       detailVisible: false,
-    }
+    };
   },
   computed: {
     recipeInfoValid() {
@@ -319,7 +319,7 @@ export default {
       });
     },
   },
-}
+};
 </script>
 <style lang="postcss" scoped>
 .result-item {

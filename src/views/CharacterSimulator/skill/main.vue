@@ -146,7 +146,7 @@ export default {
       this.mode = mode;
     },
     selectCurrentBuild(idx) {
-      this.$store.commit('character/skill/setCurrentSkillBuild', { index: idx })
+      this.$store.commit('character/skill/setCurrentSkillBuild', { index: idx });
     },
     openUserSetsWindow(handler) {
       this.userSetsWindow.handler = handler;

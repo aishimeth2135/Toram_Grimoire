@@ -1,5 +1,6 @@
-import RegexEscape from 'regex-escape';
+import escapeStringRegexp from 'escape-string-regexp';
 import type { HandleFormulaVars, HandleConditionalVars, HandleFormulaGetters } from './index';
+import jsep from 'jsep';
 
 type HandledVars = HandleFormulaVars | HandleConditionalVars;
 type HandledGetters = HandleFormulaGetters;
@@ -50,7 +51,34 @@ function varMapToArray<T>(map: Map<string, T>) {
 }
 
 function handleReplacedKey(key: string) {
-  return new RegExp(`${RegexEscape(key)}(?![a-zA-Z0-9_$'])`, 'g');
+  return new RegExp(`${escapeStringRegexp(key)}(?![a-zA-Z0-9_$'])`, 'g');
 }
 
-export { getVarsMap, getGettersMap, varMapToArray, handleReplacedKey };
+const jsepTypes = {
+  isArrayExpression(node: jsep.Expression): node is jsep.ArrayExpression {
+    return node.type === 'ArrayExpression';
+  },
+  isBinaryExpression (node: jsep.Expression): node is jsep.BinaryExpression {
+    return node.type === 'BinaryExpression';
+  },
+  isCallExpression(node: jsep.Expression): node is jsep.CallExpression {
+    return node.type === 'CallExpression';
+  },
+  isIdentifier(node: jsep.Expression): node is jsep.Identifier {
+    return node.type === 'Identifier';
+  },
+  isLiteral(node: jsep.Expression): node is jsep.Literal {
+    return node.type === 'Literal';
+  },
+  isMemberExpression(node: jsep.Expression): node is jsep.MemberExpression {
+    return node.type === 'MemberExpression';
+  },
+  isUnaryExpression(node: jsep.Expression): node is jsep.UnaryExpression {
+    return node.type === 'UnaryExpression';
+  },
+  isConditionalExpression(node: jsep.Expression): node is jsep.ConditionalExpression {
+    return node.type === 'ConditionalExpression';
+  },
+};
+
+export { getVarsMap, getGettersMap, varMapToArray, handleReplacedKey, jsepTypes };

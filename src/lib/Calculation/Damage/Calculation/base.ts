@@ -1,23 +1,25 @@
 
 import { CalcItemContainer, Calculation } from './index';
 
-type CalcStructItem = CalcStructSingle | CalcStructMultiple | string;
+type CalcStructExpression = CalcStructSingle | CalcStructMultiple;
+type CalcStructItem = CalcStructExpression | string;
+
 interface CalcStructSingle {
-  id?: string
-  operator: "*" | "+"
-  left: CalcStructItem
-  right: CalcStructItem
+  id?: string;
+  operator: '*' | '+';
+  left: CalcStructItem;
+  right: CalcStructItem;
 }
 interface CalcStructMultiple {
-  id?: string
-  operator: "***" | "+++"
-  list: Array<CalcStructItem>
+  id?: string;
+  operator: '***' | '+++';
+  list: Array<CalcStructItem>;
 }
 
 interface CalcResultOptions {
   containerResult?: {
-    [x: string]: number | ((itemContainer: CalcItemContainer) => number)
-  }
+    [key: string]: number | ((itemContainer: CalcItemContainer) => number);
+  };
 }
 
 type CurrentItemIdGetter = (itemContainer: CalcItemContainer, baseContainer: CalcItemContainerBase) => string;
@@ -49,7 +51,7 @@ class CalculationBase {
       this.items.set(id, item);
       return item;
      }
-     return this.items.get(id);
+     return this.items.get(id) as CalcItemBase;
    }
 
   createCalculation(name: string = ''): Calculation {
@@ -63,23 +65,27 @@ class CalculationBase {
 
     const { containerResult = {} } = options;
 
-    const handle = (item: CalcStructItem) => {
+    const handle = (item: CalcStructItem): number => {
       if (typeof item === 'string') {
         const container = calculation.containers.get(item);
-        const res = (() => {
-          const resultItem = containerResult[item];
-          if (typeof resultItem === 'number') {
-            return resultItem;
+        if (container !== undefined) {
+          const res = (() => {
+            const resultItem = containerResult[item];
+            if (typeof resultItem === 'number') {
+              return resultItem;
+            }
+            if (typeof resultItem === 'function') {
+              return resultItem(container);
+            }
+            return container.result();
+          })();
+          if (!container.enabled) {
+            return container.base.isMultiplier ? container.base.disabledValue / 100 : container.base.disabledValue;
           }
-          if (typeof resultItem === 'function') {
-            return resultItem(container);
-          }
-          return container.result();
-        })();
-        if (!container.enabled) {
-          return container.base.isMultiplier ? container.base.disabledValue / 100 : container.base.disabledValue;
+          return container.base.isMultiplier ? res / 100 : res;
         }
-        return container.base.isMultiplier ? res / 100 : res;
+        console.warn('[DamageCalculation.result] unknown container id:', item);
+        return 0;
       }
       if (item.operator === '+') {
         return handle(item.left) + handle(item.right);
@@ -94,6 +100,7 @@ class CalculationBase {
         return item.list.reduce((cur, subItem) => cur * handle(subItem), 1);
       }
       console.warn('[DamageCalculation.result] Invalid CalcItem:', item);
+      return 0;
     };
     return Math.floor(handle(calcStruct));
   }
@@ -240,4 +247,4 @@ class CalcItemBase {
 }
 
 export { CalcItemBase, CalculationBase, CalcItemContainerBase };
-export type { CalcStructItem, CalcResultOptions, CurrentItemIdGetter };
+export type { CalcStructItem, CalcStructExpression, CalcResultOptions, CurrentItemIdGetter };

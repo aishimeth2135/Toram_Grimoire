@@ -359,7 +359,7 @@ export default {
       viewBox: `0 0 ${areaDatas.width} ${areaDatas.height}`,
       preserveAspectRatio: 'xMidYMid meet',
       class: 'main--draw-skill-area',
-    }, childs)
+    }, childs);
   },
 };
 </script>

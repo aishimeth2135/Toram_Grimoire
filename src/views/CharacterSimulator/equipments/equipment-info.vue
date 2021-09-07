@@ -223,5 +223,5 @@ export default {
       this.openSelectCrystals(this.equipment);
     },
   },
-}
+};
 </script>
