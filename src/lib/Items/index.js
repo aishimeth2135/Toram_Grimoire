@@ -3,7 +3,9 @@ import { Equipment, Crystal } from './Item';
 
 export default class {
   constructor() {
+    /** @type {Equipment[]} */
     this.equipments = markRaw([]);
+    /** @type {Crystal[]} */
     this.crystals = markRaw([]);
   }
   appendEquipment() {

@@ -1,39 +1,51 @@
+import { ValuesType } from 'utility-types';
 import { markRaw } from 'vue';
 import Grimoire from '@/shared/Grimoire';
 import CharacterSystem from '../index';
 import { StatBase } from '@/lib/Character/Stat';
-import { MainWeapon, SubWeapon, SubArmor } from '@/lib/Character/CharacterEquipment';
+import { MainWeapon, SubWeapon, SubArmor, CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 import { handleFormula, handleConditional } from '@/shared/utils/data';
 
+import { EquipmentFieldTypes, CharacterBaseStatTypes, CharacterOptionalBaseStatTypes } from './consts';
+
+type EquipmentFieldType = ValuesType<typeof EquipmentFieldTypes>;
+type CharacterBaseStatType = ValuesType<typeof CharacterBaseStatTypes>;
+type CharacterOptionalBaseStatType = ValuesType<typeof CharacterOptionalBaseStatTypes>;
+type CharacterBaseStatValidType = CharacterBaseStatType | CharacterOptionalBaseStatType;
+
 class Character {
-  static OPTIONAL_BASE_STAT_LIST = ['TEC', 'MEN', 'LUK', 'CRT'];
+  private _baseStats: CharacterBaseStat[];
+  private _optinalBaseStat: CharacterBaseStat | null;
+
+  name: string;
+  level: number;
+  equipmentFields: EquipmentField[];
 
   constructor(name = 'Potum') {
     this.name = name;
 
     this.level = 1;
-    this._baseStats = [];
+    this._baseStats = Object.values(CharacterBaseStatTypes)
+      .map(p => new CharacterBaseStat(p));
+
     this._optinalBaseStat = null;
 
     this.equipmentFields = [];
 
     // init
-    this._baseStats.push(...['STR', 'DEX', 'INT', 'AGI', 'VIT']
-      .map(p => new CharacterBaseStat(p)));
-
     [
-      EquipmentField.TYPE_MAIN_WEAPON,
-      EquipmentField.TYPE_SUB_WEAPON,
-      EquipmentField.TYPE_BODY_ARMOR,
-      EquipmentField.TYPE_ADDITIONAL,
-      EquipmentField.TYPE_SPECIAL, {
-        type: EquipmentField.TYPE_AVATAR,
+      EquipmentFieldTypes['main-weapon'],
+      EquipmentFieldTypes['sub-weapon'],
+      EquipmentFieldTypes['body-armor'],
+      EquipmentFieldTypes['additional'],
+      EquipmentFieldTypes['special'], {
+        type: EquipmentFieldTypes['avatar'],
         numbers: 3,
       },
     ].map(p => {
-      if (typeof p == 'object') {
-        Array(p.numbers).fill().forEach((_, i) => {
-          this.equipmentFields.push(new EquipmentField(this, p.type, i));
+      if (typeof p === 'object') {
+        Array(p.numbers).fill(null).forEach((items, idx) => {
+          this.equipmentFields.push(new EquipmentField(this, p.type, idx));
         });
         return;
       }
@@ -53,33 +65,33 @@ class Character {
     return this._optinalBaseStat;
   }
 
-  equipmentField(type) {
-    return this.equipmentFields.find(p => p.type == type);
+  equipmentField(type: EquipmentFieldType) {
+    return this.equipmentFields.find(item => item.type === type);
   }
-  fieldEquipment(type) {
-    const t = this.equipmentField(type);
-    return t ? (t.equipment || undefined) : undefined;
+  fieldEquipment(type: EquipmentFieldType) {
+    const field = this.equipmentField(type);
+    return field ? field.equipment : undefined;
   }
   hasOptinalBaseStat() {
     return this._optinalBaseStat ? true : false;
   }
-  setOptinalBaseStat(name) {
-    const list = Character.OPTIONAL_BASE_STAT_LIST;
-    if (!list.includes(name))
-      throw new Error('argument "name" must be in the following list: ' + list.join(', '));
+  setOptinalBaseStat(name: CharacterOptionalBaseStatType) {
+    if (!Object.values(CharacterOptionalBaseStatTypes).includes(name))
+      throw new Error('argument "name" must be in the following list: ' + Object.values(CharacterOptionalBaseStatTypes).join(', '));
 
     this._optinalBaseStat = new CharacterBaseStat(name);
   }
   clearOptinalBaseStat() {
     this._optinalBaseStat = null;
   }
-  baseStat(name) {
-    if (Character.OPTIONAL_BASE_STAT_LIST.includes(name))
-      return this._optinalBaseStat == null || this._optinalBaseStat.name != name ?
+  baseStat(name: CharacterBaseStatValidType) {
+    if (Object.values(CharacterOptionalBaseStatTypes).includes(name as CharacterOptionalBaseStatType)) {
+      return this._optinalBaseStat === null || this._optinalBaseStat.name != name ?
         null : this._optinalBaseStat;
-    return this._baseStats.find(p => p.name == name);
+    }
+    return this._baseStats.find(p => p.name === name);
   }
-  baseStatValue(name) {
+  baseStatValue(name: CharacterBaseStatValidType) {
     const stat = this.baseStat(name);
     return stat ? stat.value : 0;
   }
@@ -242,28 +254,22 @@ class Character {
 }
 
 class CharacterBaseStat {
-  constructor(name, value = 1) {
+  name: string;
+  value: number;
+
+  constructor(name: string, value: number = 1) {
     this.name = name;
     this.value = value;
   }
 }
 
 class EquipmentField {
-  static TYPE_MAIN_WEAPON = Symbol('main-weapon');
-  static TYPE_SUB_WEAPON = Symbol('sub-weapon');
-  static TYPE_BODY_ARMOR = Symbol('body-armor');
-  static TYPE_ADDITIONAL = Symbol('additional');
-  static TYPE_SPECIAL = Symbol('special');
-  static TYPE_AVATAR = Symbol('avatar');
+  private _parent: Character;
+  type: EquipmentFieldType;
+  index: number;
+  equipment: CharacterEquipment | null;
 
-  static EMPTY = Symbol('empty');
-
-  /**
-   * @param  {Character} parent
-   * @param  {symbol} type   Equipment.TYPE_XXX
-   * @param  {number} [index]  同樣的type有多個時才需要指定，表示是第幾個。
-   */
-  constructor(parent, type, index = 0) {
+  constructor(parent: Character, type: EquipmentFieldType, index: number = 0) {
     this._parent = parent;
     this.type = type;
     this.index = index;

@@ -15,15 +15,17 @@ interface CalcStructMultiple {
   operator: '***' | '+++';
   list: Array<CalcStructItem>;
 }
-
 interface CalcResultOptions {
   containerResult?: {
     [key: string]: number | ((itemContainer: CalcItemContainer) => number);
   };
 }
-
-type CurrentItemIdGetter = (itemContainer: CalcItemContainer, baseContainer: CalcItemContainerBase) => string;
-type CalcResult = (itemContainer: CalcItemContainer, baseContainer: CalcItemContainerBase) => number;
+interface CurrentItemIdGetter {
+  (itemContainer: CalcItemContainer, baseContainer: CalcItemContainerBase): string;
+}
+interface CalcResult {
+  (itemContainer: CalcItemContainer, baseContainer: CalcItemContainerBase): number;
+}
 
 /** */
 class CalculationBase {

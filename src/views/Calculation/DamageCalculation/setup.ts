@@ -173,9 +173,6 @@ const setupResultMode = (calculation: Ref<Calculation> | ComputedRef<Calculation
   };
 };
 
-/**
- * @param {Ref<Calculation>|ComputedRef<Calculation>} calculation
- */
 const setupCalculationCalcOptions = (calculation: Ref<Calculation> | ComputedRef<Calculation>) => {
   const options = [{
     containerId: 'damage_type',

@@ -21,13 +21,12 @@ export default function(character_system, datas) {
   });
 
   c.forEach((p, index) => {
-    if (index == 0 || character_system.findStatBase(p[BASE_NAME]))
+    if (index === 0 || character_system.findStatBase(p[BASE_NAME]))
       return;
-    const stat = character_system.appendStatBase(p[BASE_NAME], p[CAPTION], p[HAS_MULTIPLIER] == '無' ? false : true, parseInt(p[ORDER], 10) || 999);
-    if (p[CONSTANT_FORMULA])
-      stat.appendAttribute('constant_formula', p[CONSTANT_FORMULA]);
-    stat.appendAttribute('hidden', p[HIDDEN] != '');
-    // if ( p[MULTIPLIER_FORMULA] )
-    //  stat.appendAttribute('multiplier_formula', p[MULTIPLIER_FORMULA]);
+    const stat = character_system.appendStatBase(p[BASE_NAME], p[CAPTION], p[HAS_MULTIPLIER] === '無' ? false : true, parseInt(p[ORDER], 10) || 999);
+    if (p[CONSTANT_FORMULA]) {
+      stat.constantDisplayFormat = p[CONSTANT_FORMULA];
+    }
+    stat.hidden = p[HIDDEN] !== '';
   });
 }

@@ -245,7 +245,7 @@
   </div>
 </template>
 <script>
-import { StatBase, RestrictionStat } from '@/lib/Character/Stat';
+import { StatBase, StatRestriction } from '@/lib/Character/Stat';
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 
 export default {
@@ -334,7 +334,7 @@ export default {
       });
       this.appendedStats.forEach(p => {
         const v = p.origin.checkBoolStat() ? 1 : 0;
-        const stat = RestrictionStat.from(p.origin.createStat(p.type, v));
+        const stat = StatRestriction.from(p.origin.createStat(p.type, v));
         stats.push(stat);
       });
       this.deletedStats = [];
