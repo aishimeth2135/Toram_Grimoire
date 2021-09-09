@@ -98,7 +98,7 @@ import vue_equipmentItem from '@/components/common/equipment-item.vue';
 import vue_equipmentInfo from './equipment-info.vue';
 import vue_characterStatsCompare from '../main/character-stats-compare.vue';
 
-import { EquipmentField } from '@/lib/Character/Character';
+import { EquipmentFieldTypes } from '@/lib/Character/Character/enums';
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from '@/lib/Character/CharacterEquipment';
 
 import { mapState } from 'vuex';
@@ -228,22 +228,22 @@ export default {
     },
     fieldFilter(eq) {
       switch (this.action.targetField.type) {
-      case EquipmentField.TYPE_MAIN_WEAPON:
-        return eq instanceof MainWeapon;
-      case EquipmentField.TYPE_SUB_WEAPON:
-        if (eq instanceof MainWeapon || eq instanceof SubWeapon || eq instanceof SubArmor) {
-          const t = this.characterState.origin.testSubWeapon(eq.type);
-          return t;
-        }
-        return false;
-      case EquipmentField.TYPE_BODY_ARMOR:
-        return eq instanceof BodyArmor;
-      case EquipmentField.TYPE_ADDITIONAL:
-        return eq instanceof AdditionalGear;
-      case EquipmentField.TYPE_SPECIAL:
-        return eq instanceof SpecialGear;
-      case EquipmentField.TYPE_AVATAR:
-        return eq instanceof Avatar;
+        case EquipmentFieldTypes.MainWeapon:
+          return eq instanceof MainWeapon;
+        case EquipmentFieldTypes.SubWeapon:
+          if (eq instanceof MainWeapon || eq instanceof SubWeapon || eq instanceof SubArmor) {
+            const t = this.characterState.origin.subWeaponValid(eq.type);
+            return t;
+          }
+          return false;
+        case EquipmentFieldTypes.BodyArmor:
+          return eq instanceof BodyArmor;
+        case EquipmentFieldTypes.Additional:
+          return eq instanceof AdditionalGear;
+        case EquipmentFieldTypes.Special:
+          return eq instanceof SpecialGear;
+        case EquipmentFieldTypes.Avatar:
+          return eq instanceof Avatar;
       }
     },
   },

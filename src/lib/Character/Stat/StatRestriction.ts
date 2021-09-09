@@ -2,8 +2,9 @@ import { markRaw } from 'vue';
 import Grimoire from '@/shared/Grimoire';
 import GetLang from '@/shared/services/Language';
 import { StatBase, Stat } from './StatBase';
-import type { StatValue, StatType } from './StatBase';
-import { EquipmentTypes } from '../CharacterEquipment/consts';
+import type { StatValue } from './StatBase';
+import { StatTypes } from './enums';
+import { EquipmentTypes } from '../CharacterEquipment/enums';
 
 interface StatRestrictionItems {
   main: string | null;
@@ -15,7 +16,7 @@ interface StatRestrictionItems {
 class StatRestriction extends Stat {
   restriction: StatRestrictionItems | null;
 
-  constructor(base: StatBase, type: StatType, value: StatValue, restriction: StatRestrictionItems | null = null) {
+  constructor(base: StatBase, type: StatTypes, value: StatValue, restriction: StatRestrictionItems | null = null) {
     super(base, type, value);
     this.restriction = restriction !== null ? markRaw(restriction) : restriction;
   }
@@ -84,17 +85,17 @@ class StatRestriction extends Stat {
     const itemStatRestrictionMappingList = [
       'event',
 
-      EquipmentTypes['one-hand-sword'], EquipmentTypes['two-hand-sword'],
-      EquipmentTypes['bow'], EquipmentTypes['bowgun'],
-      EquipmentTypes['staff'], EquipmentTypes['magic-device'],
-      EquipmentTypes['knuckle'], EquipmentTypes['halberd'],
-      EquipmentTypes['katana'],
+      EquipmentTypes.OneHandSword, EquipmentTypes.TwoHandSword,
+      EquipmentTypes.Bow, EquipmentTypes.Bowgun,
+      EquipmentTypes.Staff, EquipmentTypes.MagicDevice,
+      EquipmentTypes.Knuckle, EquipmentTypes.Halberd,
+      EquipmentTypes.Katana,
 
-      EquipmentTypes['sub-weapon|arrow'], EquipmentTypes['sub-weapon|dagger'], EquipmentTypes['sub-weapon|ninjutsu-scroll'],
+      EquipmentTypes.Arrow, EquipmentTypes.Dagger, EquipmentTypes.NinjutsuScroll,
 
-      EquipmentTypes['sub-armor|shield'],
+      EquipmentTypes.Shield,
 
-      EquipmentTypes['body-armor|dodge'], EquipmentTypes['body-armor|defense'], EquipmentTypes['body-armor|normal'],
+      EquipmentTypes.BodyDodge, EquipmentTypes.BodyDefense, EquipmentTypes.BodyNormal,
     ];
 
     const newOriginRestriction: StatRestrictionItems = {
@@ -175,7 +176,7 @@ class StatRestriction extends Stat {
 interface StatRestrictionSaveData {
   id: string;
   value: StatValue;
-  type: StatType;
+  type: StatTypes;
   restriction: {
     main: string | null;
     sub: string | null;

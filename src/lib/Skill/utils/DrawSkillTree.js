@@ -82,111 +82,111 @@ function computeDrawSkillTreeData(st, options) {
       return;
     const c = p.charAt(0);
     switch (c) {
-    case 'L':
-      if (x > maxw)
-        maxw = x;
-      x = 0;
-      ++y;
-      break;
-    case 'E':
-      ++x;
-      break;
-    case 'D':
-    case 'S':
-      {
-        p.slice(1).split('').forEach(t => {
-          t == 'R' && data.push({
-            type: 'tree-line',
-            x1: tran(x),
-            y1: tran(y),
-            x2: tran(x + 1),
-            y2: tran(y),
-          });
-          t == 'B' && data.push({
-            type: 'tree-line',
-            x1: tran(x),
-            y1: tran(y),
-            x2: tran(x),
-            y2: tran(y + 1),
-          });
-        });
-        let t;
-        if (c == 'D')
-          data.push({
-            type: 'tree-dot',
-            cx: tran(x),
-            cy: tran(y),
-            r: 2,
-            class: ['dot'],
-          });
-        if (c == 'S') {
-          const _skill = findSkillByDrawOrder(cnt);
-          const bskill = getBaseSkill(_skill);
-          const name = bskill.name || '?';
-          const skill_circle = {
-            type: 'skill-circle',
-            cx: tran(x),
-            cy: tran(y),
-            r: w / 2,
-            class: ['skill-circle'],
-            style: {},
-            skill: _skill,
-            path: getSkillIconPath(bskill),
-          };
-          let skill_name = null,
-            extra_data = [];
-
-          if (name != '?') {
-            if (name != '@lock') {
-              skill_name = {
-                type: 'skill-name',
-                x: tran(x),
-                y: tran(y) - w / 2 - textMargin,
-                innerText: name,
-                class: ['skill-name'],
-              };
-              const patid = getSkillIconPatternId(bskill);
-              skill_circle.style.fill = 'url(#' + patid + ')';
-              extra_data = options.setSkillButtonExtraData(_skill, Object.assign({
-                cx: x,
-                cy: y,
-                lengthTransformFunction: tran,
-                documentFragment: t,
-              }, drawData));
-            } else {
-              skill_circle.class.push('lock');
-            }
-          }
-          data.push(skill_circle);
-          skill_name && data.push(skill_name);
-
-          if (!Array.isArray(extra_data)) throw Error('options: setSkillButon must return array.');
-          extra_data.length > 0 && data.push(...extra_data);
-          ++cnt;
-        }
+      case 'L':
+        if (x > maxw)
+          maxw = x;
+        x = 0;
+        ++y;
+        break;
+      case 'E':
         ++x;
-      }
-      break;
-    case 'H':
-      data.push({
-        type: 'tree-line',
-        x1: tran(x),
-        y1: tran(y),
-        x2: tran(x + 1),
-        y2: tran(y),
-      });
-      ++x;
-      break;
-    case 'V':
-      data.push({
-        type: 'tree-line',
-        x1: tran(x),
-        y1: tran(y),
-        x2: tran(x),
-        y2: tran(y + 1),
-      });
-      ++x;
-      break;
+        break;
+      case 'D':
+      case 'S':
+        {
+          p.slice(1).split('').forEach(t => {
+            t == 'R' && data.push({
+              type: 'tree-line',
+              x1: tran(x),
+              y1: tran(y),
+              x2: tran(x + 1),
+              y2: tran(y),
+            });
+            t == 'B' && data.push({
+              type: 'tree-line',
+              x1: tran(x),
+              y1: tran(y),
+              x2: tran(x),
+              y2: tran(y + 1),
+            });
+          });
+          let t;
+          if (c == 'D')
+            data.push({
+              type: 'tree-dot',
+              cx: tran(x),
+              cy: tran(y),
+              r: 2,
+              class: ['dot'],
+            });
+          if (c == 'S') {
+            const _skill = findSkillByDrawOrder(cnt);
+            const bskill = getBaseSkill(_skill);
+            const name = bskill.name || '?';
+            const skill_circle = {
+              type: 'skill-circle',
+              cx: tran(x),
+              cy: tran(y),
+              r: w / 2,
+              class: ['skill-circle'],
+              style: {},
+              skill: _skill,
+              path: getSkillIconPath(bskill),
+            };
+            let skill_name = null,
+              extra_data = [];
+
+            if (name != '?') {
+              if (name != '@lock') {
+                skill_name = {
+                  type: 'skill-name',
+                  x: tran(x),
+                  y: tran(y) - w / 2 - textMargin,
+                  innerText: name,
+                  class: ['skill-name'],
+                };
+                const patid = getSkillIconPatternId(bskill);
+                skill_circle.style.fill = 'url(#' + patid + ')';
+                extra_data = options.setSkillButtonExtraData(_skill, Object.assign({
+                  cx: x,
+                  cy: y,
+                  lengthTransformFunction: tran,
+                  documentFragment: t,
+                }, drawData));
+              } else {
+                skill_circle.class.push('lock');
+              }
+            }
+            data.push(skill_circle);
+            skill_name && data.push(skill_name);
+
+            if (!Array.isArray(extra_data)) throw Error('options: setSkillButon must return array.');
+            extra_data.length > 0 && data.push(...extra_data);
+            ++cnt;
+          }
+          ++x;
+        }
+        break;
+      case 'H':
+        data.push({
+          type: 'tree-line',
+          x1: tran(x),
+          y1: tran(y),
+          x2: tran(x + 1),
+          y2: tran(y),
+        });
+        ++x;
+        break;
+      case 'V':
+        data.push({
+          type: 'tree-line',
+          x1: tran(x),
+          y1: tran(y),
+          x2: tran(x),
+          y2: tran(y + 1),
+        });
+        ++x;
+        break;
     }
   });
 

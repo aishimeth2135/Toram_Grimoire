@@ -1,5 +1,6 @@
 import { EnchantCategory, EnchantItem } from './base';
-import { Stat, StatBase } from '@/lib/Character/Stat';
+import { Stat } from '@/lib/Character/Stat';
+import { StatTypes } from '@/lib/Character/Stat/enums';
 import STATE from './state';
 
 import { calcPotentialExtraRate } from './utils';
@@ -403,10 +404,10 @@ class EnchantStep {
     }
     const er = this.potentialExtraRate;
     switch (this.type) {
-    case EnchantStep.TYPE_NORMAL:
-      return this.realPotentialCost(this.stats.reduce((a, b) => a + b.potentialCost, 0) * er);
-    case EnchantStep.TYPE_EACH:
-      return this.firstStat ? this.firstStat.potentialCost : 0;
+      case EnchantStep.TYPE_NORMAL:
+        return this.realPotentialCost(this.stats.reduce((a, b) => a + b.potentialCost, 0) * er);
+      case EnchantStep.TYPE_EACH:
+        return this.firstStat ? this.firstStat.potentialCost : 0;
     }
     return 0;
   }
@@ -710,9 +711,9 @@ class EnchantStepStat extends EnchantStat {
   static POTENTIAL_CONVERT_DEFAULT_THRESHOLD = 20;
 
   static TYPES = [
-    StatBase.TYPE_CONSTANT,
-    StatBase.TYPE_MULTIPLIER,
-    StatBase.TYPE_TOTAL,
+    StatTypes.Constant,
+    StatTypes.Multiplier,
+    StatTypes.Total,
   ];
 
   /**

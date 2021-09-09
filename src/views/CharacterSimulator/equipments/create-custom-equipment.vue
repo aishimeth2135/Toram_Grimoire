@@ -80,6 +80,7 @@ import ToggleService from '@/setup/ToggleService';
 import vue_customEquipmentEditor from './custom-equipment-editor.vue';
 
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from '@/lib/Character/CharacterEquipment';
+import { MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList } from '@/lib/Character/CharacterEquipment/enums';
 
 export default {
   RegisterLang: 'Character Simulator',
@@ -105,23 +106,17 @@ export default {
         id: 'main-weapon',
         icon: 'mdi-sword',
         instance: MainWeapon,
-        list: [
-          MainWeapon.TYPE_ONE_HAND_SWORD, MainWeapon.TYPE_TWO_HAND_SWORD,
-          MainWeapon.TYPE_BOW, MainWeapon.TYPE_BOWGUN,
-          MainWeapon.TYPE_STAFF, MainWeapon.TYPE_MAGIC_DEVICE,
-          MainWeapon.TYPE_KNUCKLE, MainWeapon.TYPE_HALBERD,
-          MainWeapon.TYPE_KATANA,
-        ],
+        list: MainWeaponTypeList,
       }, {
         id: 'sub-weapon',
         icon: 'mdi-shield',
         instance: SubWeapon,
-        list: [SubWeapon.TYPE_ARROW, SubWeapon.TYPE_DAGGER, SubWeapon.TYPE_NINJUTSU_SCROLL],
+        list: SubWeaponTypeList,
       }, {
         id: 'sub-armor',
         icon: 'mdi-shield',
         instance: SubArmor,
-        list: [SubArmor.TYPE_SHIELD],
+        list: SubArmorTypeList,
       }, {
         id: 'body-armor',
         icon: 'mdi-tshirt-crew',

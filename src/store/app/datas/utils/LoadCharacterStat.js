@@ -41,7 +41,16 @@ export default function(characterSystem, datas) {
       let [min = null, max = null] = p[LIMIT].split('~');
       min = min !== null ? parseFloat(min) : min;
       max = max !== null ? parseFloat(max) : max;
-      curStat = curCategory.appendStat(id, p[NAME], p[DISPLAY_FORMULA], p[LINK], max, min, p[CAPTION], handleHiddenOption(p[HIDDEN_OPTION]));
+      curStat = curCategory.appendStat({
+        id,
+        name: p[NAME],
+        displayFormula: p[DISPLAY_FORMULA],
+        link: p[LINK],
+        max,
+        min,
+        caption: p[CAPTION],
+        hiddenOption: handleHiddenOption(p[HIDDEN_OPTION]),
+      });
       curFormula = curStat.setFormula(p[FORMULA]);
     }
   });

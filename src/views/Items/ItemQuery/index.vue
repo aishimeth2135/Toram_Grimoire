@@ -13,7 +13,7 @@
       <cy-transition type="fade">
         <div v-if="checkMenuVisible" class="main-menu">
           <div v-if="menuVisible.conditionOptions" class="content">
-            <div v-for="type in conditions.type" :key="type.id" class="column">
+            <div v-for="(type) in conditions.type" :key="type.id" class="column">
               <div class="flex items-center">
                 <cy-button-check
                   v-model:selected="type.selected"
@@ -265,8 +265,10 @@ import {
   CharacterEquipment,
   MainWeapon, SubWeapon,
   SubArmor, BodyArmor,
-  AdditionalGear, SpecialGear, Avatar } from '@/lib/Character/CharacterEquipment';
-import { StatBase } from '@/lib/Character/Stat';
+  AdditionalGear, SpecialGear, Avatar,
+} from '@/lib/Character/CharacterEquipment';
+import { MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList } from '@/lib/Character/CharacterEquipment/enums';
+import { StatTypes } from '@/lib/Character/Stat/enums';
 
 export default {
   name: 'ItemQuery',
@@ -299,11 +301,11 @@ export default {
       return opts;
     };
 
-    const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
+    const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier];
     this.$store.state.datas.Character.statList.forEach(stat => {
       if (stat.attributes.hidden) return;
       statTypes.forEach(type => {
-        if (type === StatBase.TYPE_MULTIPLIER && !stat.hasMultiplier)
+        if (type === StatTypes.Multiplier && !stat.hasMultiplier)
           return;
         stats.push({
           origin: stat,
@@ -398,26 +400,14 @@ export default {
         type: [{
           id: 'main-weapon',
           instance: MainWeapon,
-          types: handleEquipmentTypes('main-weapon', [
-            MainWeapon.TYPE_ONE_HAND_SWORD, MainWeapon.TYPE_TWO_HAND_SWORD,
-            MainWeapon.TYPE_BOW, MainWeapon.TYPE_BOWGUN,
-            MainWeapon.TYPE_STAFF, MainWeapon.TYPE_MAGIC_DEVICE,
-            MainWeapon.TYPE_KNUCKLE, MainWeapon.TYPE_HALBERD,
-            MainWeapon.TYPE_KATANA,
-          ]),
+          types: handleEquipmentTypes('main-weapon', MainWeaponTypeList),
           selected: true,
         }, {
           id: 'sub-weapon',
           instance: [SubWeapon, SubArmor],
           types: [
-            ...handleEquipmentTypes('sub-weapon', [
-              SubWeapon.TYPE_ARROW,
-              SubWeapon.TYPE_DAGGER,
-              SubWeapon.TYPE_NINJUTSU_SCROLL,
-            ]),
-            ...handleEquipmentTypes('sub-armor', [
-              SubArmor.TYPE_SHIELD,
-            ]),
+            ...handleEquipmentTypes('sub-weapon', SubWeaponTypeList),
+            ...handleEquipmentTypes('sub-armor', SubArmorTypeList),
           ],
           selected: true,
         }, {

@@ -1,5 +1,5 @@
 import Grimoire from '@/shared/Grimoire';
-import { StatBase } from '@/lib/Character/Stat';
+import { StatTypes } from '@/lib/Character/Stat/enums';
 import CY from '@/shared/utils/Cyteria';
 
 function checkConstructorArgs() {
@@ -214,15 +214,15 @@ class SkillBranch {
   appendStat(baseName, v, tail) {
     let type;
     switch (tail) {
-    case '':
-      type = StatBase.TYPE_CONSTANT;
-      break;
-    case '%':
-      type = StatBase.TYPE_MULTIPLIER;
-      break;
-    case '~':
-      type = StatBase.TYPE_TOTAL;
-      break;
+      case '':
+        type = StatTypes.Constant;
+        break;
+      case '%':
+        type = StatTypes.Multiplier;
+        break;
+      case '~':
+        type = StatTypes.Total;
+        break;
     }
     const stat = Grimoire.Character.findStatBase(baseName).createStat(type, v);
     this.stats.push(stat);

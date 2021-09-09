@@ -125,7 +125,7 @@
   </section>
 </template>
 <script>
-import { StatBase } from '@/lib/Character/Stat';
+import { StatTypes } from '@/lib/Character/Stat/enums';
 
 import vue_statDetailEquipments from './stat-detail-equipments.vue';
 
@@ -164,7 +164,7 @@ export default {
 
       const stat = this.detail.currentStat;
       const base = stat.origin.linkedStatBase;
-      const types = [null, StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER, StatBase.TYPE_TOTAL];
+      const types = [null, StatTypes.Constant, StatTypes.Multiplier, StatTypes.Total];
 
       const list = (base ? ['base', 'constant', 'multiplier', 'total'] : ['base'])
         .map((p, i) => ({

@@ -1,5 +1,6 @@
-import { StatBase } from '@/lib/Character/Stat';
 import Grimoire from '@/shared/Grimoire';
+import { StatBase } from '@/lib/Character/Stat';
+import { StatTypes } from '@/lib/Character/Stat/enums';
 import STATE from './state';
 import { EnchantEquipment } from './build';
 
@@ -69,25 +70,25 @@ class EnchantItem {
     /** @type {Array<EnchantItemConditionalProperties>} */
     this.conditionalProps = [];
     this.potential = {
-      [StatBase.TYPE_CONSTANT]: potential[0],
-      [StatBase.TYPE_MULTIPLIER]: potential[1],
+      [StatTypes.Constant]: potential[0],
+      [StatTypes.Multiplier]: potential[1],
     };
     this.limit = {
-      [StatBase.TYPE_CONSTANT]: limit[0],
-      [StatBase.TYPE_MULTIPLIER]: limit[1],
+      [StatTypes.Constant]: limit[0],
+      [StatTypes.Multiplier]: limit[1],
     };
     this.unitValue = {
-      [StatBase.TYPE_CONSTANT]: unitValue[0] || '1',
-      [StatBase.TYPE_MULTIPLIER]: unitValue[1] || '1',
+      [StatTypes.Constant]: unitValue[0] || '1',
+      [StatTypes.Multiplier]: unitValue[1] || '1',
     };
     this.materialPointType = materialPointType;
     this.materialPointValue = {
-      [StatBase.TYPE_CONSTANT]: materialPointValue[0],
-      [StatBase.TYPE_MULTIPLIER]: materialPointValue[1],
+      [StatTypes.Constant]: materialPointValue[0],
+      [StatTypes.Multiplier]: materialPointValue[1],
     };
     this.potentialConvertThreshold = {
-      [StatBase.TYPE_CONSTANT]: potentialConvertThreshold[0],
-      [StatBase.TYPE_MULTIPLIER]: potentialConvertThreshold[1],
+      [StatTypes.Constant]: potentialConvertThreshold[0],
+      [StatTypes.Multiplier]: potentialConvertThreshold[1],
     };
   }
 
@@ -111,12 +112,12 @@ class EnchantItem {
   checkConditionalProps(equipment) {
     return this.conditionalProps.find(p => {
       switch (p.condition) {
-      case EnchantItem.CONDITION_MAIN_WEAPON:
-        return equipment.fieldType === EnchantEquipment.TYPE_MAIN_WEAPON;
-      case EnchantItem.CONDITION_BODY_ARMOR:
-        return equipment.fieldType === EnchantEquipment.TYPE_BODY_ARMOR;
-      case EnchantItem.CONDITION_ORIGINAL_ELEMENT:
-        return equipment.isOriginalElement;
+        case EnchantItem.CONDITION_MAIN_WEAPON:
+          return equipment.fieldType === EnchantEquipment.TYPE_MAIN_WEAPON;
+        case EnchantItem.CONDITION_BODY_ARMOR:
+          return equipment.fieldType === EnchantEquipment.TYPE_BODY_ARMOR;
+        case EnchantItem.CONDITION_ORIGINAL_ELEMENT:
+          return equipment.isOriginalElement;
       }
     });
   }
@@ -198,8 +199,8 @@ class EnchantItemConditionalProperties {
     /** @type {symbol} */
     this.condition = condition;
     this.potential = {
-      [StatBase.TYPE_CONSTANT]: potential[0],
-      [StatBase.TYPE_MULTIPLIER]: potential[1],
+      [StatTypes.Constant]: potential[0],
+      [StatTypes.Multiplier]: potential[1],
     };
   }
 }

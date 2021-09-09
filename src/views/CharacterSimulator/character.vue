@@ -149,7 +149,7 @@
 <script>
 import { mapState } from 'vuex';
 
-import { Character } from '@/lib/Character/Character';
+import { CharacterOptionalBaseStatTypes } from '@/lib/Character/Character/enums';
 
 export default {
   RegisterLang: 'Character Simulator',
@@ -173,7 +173,7 @@ export default {
       return this.characterState.origin;
     },
     characterOptionalBaseStatList() {
-      return Character.OPTIONAL_BASE_STAT_LIST;
+      return Object.values(CharacterOptionalBaseStatTypes);
     },
   },
   methods: {

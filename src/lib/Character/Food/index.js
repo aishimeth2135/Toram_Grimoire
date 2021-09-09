@@ -1,4 +1,4 @@
-import { StatBase } from '@/lib/Character/Stat';
+import { StatTypes } from '@/lib/Character/Stat/enums';
 
 class Foods {
   constructor(name) {
@@ -91,10 +91,10 @@ class Food {
   }
   stat() {
     const v = Math.min(this.level, 5) * this.amount[0] + Math.max(this.level - 5, 0) * this.amount[1];
-    return this.base.createStat(StatBase.TYPE_CONSTANT, this.negative ? -1 * v : v);
+    return this.base.createStat(StatTypes.Constant, this.negative ? -1 * v : v);
   }
   statTitle() {
-    return this.base.title(StatBase.TYPE_CONSTANT);
+    return this.base.title(StatTypes.Constant);
   }
   copy() {
     const t = new Food(this.base, this.amount, this.negative);

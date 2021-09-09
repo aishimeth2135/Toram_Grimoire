@@ -1,10 +1,7 @@
-import { ValuesType } from 'utility-types';
-
 import GetLang from '@/shared/services/Language';
 import { isNumberString } from '@/shared/utils/string';
-import { StatTypes } from './consts';
+import { StatTypes } from './enums';
 
-type StatType = ValuesType<typeof StatTypes>;
 
 function Lang(id: string) {
   return GetLang('stat base/' + id);
@@ -13,10 +10,6 @@ function Lang(id: string) {
 type StatValue = number | string;
 
 class StatBase {
-  static TYPE_CONSTANT = Symbol('constant');
-  static TYPE_MULTIPLIER = Symbol('multiplier');
-  static TYPE_TOTAL = Symbol('total');
-
   static sortStats = function(stats: Stat[], type = 'simple') {
     if (type === 'simple')
       stats.sort((itema, itemb) => itema.base.order - itemb.base.order);
@@ -39,22 +32,22 @@ class StatBase {
     this.multiplierDisplayFormat = '$t$s$v$u';
   }
 
-  title(type: StatType): string {
-    if (type === StatTypes.constant) {
+  title(type: StatTypes): string {
+    if (type === StatTypes.Constant) {
       if (this.hasMultiplier || this.text[this.text.length - 1] === '%') {
         return this.text;
       }
       const unit = this.constantDisplayFormat.includes('$u') ? '%' : '';
       return this.text + unit;
     }
-    if (type === StatTypes.multiplier || type === StatTypes.total) {
+    if (type === StatTypes.Multiplier || type === StatTypes.Total) {
       return this.text + '%';
     }
     console.warn('[StatBase.title] invalid type');
     return this.text;
   }
 
-  show(type: StatType, value: StatValue): string {
+  show(type: StatTypes, value: StatValue): string {
     const calc = (typeof value === 'string' && isNumberString(value)) || typeof value === 'number';
     if (typeof value !== 'number' && calc) {
       value = parseFloat(value);
@@ -75,27 +68,27 @@ class StatBase {
       return res;
     };
     switch (type) {
-      case StatTypes.constant:
+      case StatTypes.Constant:
         return handleFormula(this.constantDisplayFormat, this.hasMultiplier ? '' : '%');
-      case StatTypes.multiplier:
+      case StatTypes.Multiplier:
         return handleFormula(this.multiplierDisplayFormat, '%');
-      case StatTypes.total:
+      case StatTypes.Total:
         return handleFormula(Lang('type total: preText') + '$t$s$v$u', '%');
     }
     return '';
   }
 
-  getShowData(type: StatType, v: StatValue) {
+  getShowData(type: StatTypes, v: StatValue) {
     let title = '', tail = '';
-    if (type === StatTypes.constant) {
+    if (type === StatTypes.Constant) {
       title = this.text;
       if (!this.hasMultiplier && this.constantDisplayFormat.includes('$u')) {
         tail = '%';
       }
-    } else if (type === StatTypes.multiplier) {
+    } else if (type === StatTypes.Multiplier) {
       title = this.text;
       tail = this.multiplierDisplayFormat.includes('$u') ? '%' : '';
-    } else if (type === StatTypes.total) {
+    } else if (type === StatTypes.Total) {
       title = Lang('type total: preText') + this.text;
       tail = '%';
     }
@@ -107,23 +100,23 @@ class StatBase {
     };
   }
 
-  createStat(type: StatType, value: StatValue): Stat {
-    if (!this.hasMultiplier && type === StatTypes.multiplier) {
-      type = StatTypes.constant;
+  createStat(type: StatTypes, value: StatValue): Stat {
+    if (!this.hasMultiplier && type === StatTypes.Multiplier) {
+      type = StatTypes.Constant;
     }
     return new Stat(this, type, value);
   }
 
-  checkBoolStat(type: StatType) {
-    type = type || StatTypes.constant;
-    return type === StatTypes.constant && this.constantDisplayFormat === '$t';
+  checkBoolStat(type?: StatTypes) {
+    type = type || StatTypes.Constant;
+    return type === StatTypes.Constant && this.constantDisplayFormat === '$t';
   }
 
-  statId(type: StatType) {
+  statId(type: StatTypes) {
     const typeShorthand = {
-      [StatTypes.constant]: '$',
-      [StatTypes.multiplier]: '%',
-      [StatTypes.total]: '~',
+      [StatTypes.Constant]: '$',
+      [StatTypes.Multiplier]: '%',
+      [StatTypes.Total]: '~',
     }[type];
     return `${this.baseName}${typeShorthand}`;
   }
@@ -131,10 +124,10 @@ class StatBase {
 
 class Stat {
   base: StatBase;
-  type: StatType;
+  type: StatTypes;
   value: StatValue;
 
-  constructor(base: StatBase, type: StatType, v: StatValue = 0) {
+  constructor(base: StatBase, type: StatTypes, v: StatValue = 0) {
     this.base = base;
     this.type = type;
     this.value = v;
@@ -185,4 +178,4 @@ class Stat {
 }
 
 export { Stat, StatBase };
-export type { StatValue, StatType };
+export type { StatValue, StatTypes };

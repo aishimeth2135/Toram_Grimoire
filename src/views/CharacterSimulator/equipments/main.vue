@@ -75,7 +75,7 @@ import vue_selectCrystals from './select-crystals.vue';
 
 import ToggleService from '@/setup/ToggleService';
 
-import { EquipmentField } from '@/lib/Character/Character';
+import { EquipmentFieldTypes } from '@/lib/Character/Character/enums';
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 
 export default {
@@ -148,9 +148,9 @@ export default {
     },
     removeFieldEquipment(field) {
       field.removeEquipment();
-      if (field.type == EquipmentField.TYPE_MAIN_WEAPON) {
+      if (field.type === EquipmentFieldTypes.MainWeapon) {
         this.characterState.origin
-          .equipmentField(EquipmentField.TYPE_SUB_WEAPON)
+          .equipmentField(EquipmentFieldTypes.SubWeapon)
           .removeEquipment();
       }
     },

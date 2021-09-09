@@ -50,7 +50,7 @@
             <span class="ml-2 text-purple">{{ equipment.def }}</span>
           </template>
         </div>
-        <div class="mt-1 pl-1" :class="{ 'opacity-50': statsDisable }">
+        <div class="mt-1 pl-1" :class="{ 'opacity-50': statsDisabled }">
           <show-stat
             v-for="stat in equipment.stats"
             :key="stat.statId"
@@ -61,7 +61,7 @@
         <div
           v-if="equipment.hasCrystal && equipment.crystals.length > 0"
           class="border-t border-solid border-light mt-2 pt-1"
-          :class="{ 'opacity-50': statsDisable }"
+          :class="{ 'opacity-50': statsDisabled }"
         >
           <cy-icon-text
             v-for="c in equipment.crystals"
@@ -186,7 +186,7 @@ export default {
     'equipment': {
       type: CharacterEquipment,
     },
-    'statsDisable': {
+    'statsDisabled': {
       type: Boolean,
       default: false,
     },

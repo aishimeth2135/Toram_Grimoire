@@ -55,7 +55,7 @@
   </cy-window>
 </template>
 <script>
-import { StatBase } from '@/lib/Character/Stat';
+import { StatTypes } from '@/lib/Character/Stat/enums';
 
 export default {
   name: 'EnchantSelectItem',
@@ -83,13 +83,13 @@ export default {
   },
   emits: ['close', 'select-item'],
   data() {
-    const types = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
+    const types = [StatTypes.Constant, StatTypes.Multiplier];
     const originalCategorys = this.$store.state.datas.Enchant.categorys;
     const categorys = originalCategorys.map(category => {
       const items = [];
       category.items.forEach(item => {
         types.forEach(type => {
-          if (type === StatBase.TYPE_MULTIPLIER && !item.statBase.hasMultiplier) {
+          if (type === StatTypes.Multiplier && !item.statBase.hasMultiplier) {
             return;
           }
           items.push({

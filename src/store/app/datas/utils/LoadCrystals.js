@@ -29,32 +29,32 @@ export default function(root, c) {
       if (p[ATTRIBUTE_CATEGORY] !== '')
         cur_attrcat = p[ATTRIBUTE_CATEGORY];
       switch (p[ATTRIBUTE_CATEGORY]) {
-      case 'obtain':
-        cur = cur_crystal.appendObtain();
-        break;
-      case 'other':
-        cur = null;
-        break;
+        case 'obtain':
+          cur = cur_crystal.appendObtain();
+          break;
+        case 'other':
+          cur = null;
+          break;
       }
       switch (cur_attrcat) {
-      case 'stats':
-        {
-          const t = p[ATTRIBUTE_VALUES[0]];
-          let tail = t.slice(-1),
-            v = t;
-          if (tail !== '%' && tail !== '~')
-            tail = '';
-          else
-            v = t.slice(0, -1);
-          cur_crystal.appendStat(p[ATTRIBUTE_NAME], parseFloat(v), tail, p[ATTRIBUTE_VALUES[1]]);
-        }
-        break;
-      case 'obtain':
-        cur[p[ATTRIBUTE_NAME]] = p[ATTRIBUTE_VALUES[0]];
-        break;
-      case 'other':
-        if (p[ATTRIBUTE_NAME] == 'enhancer')
-          cur_crystal.setEnhancer(p[ATTRIBUTE_VALUES[0]]);
+        case 'stats':
+          {
+            const t = p[ATTRIBUTE_VALUES[0]];
+            let tail = t.slice(-1),
+              v = t;
+            if (tail !== '%' && tail !== '~')
+              tail = '';
+            else
+              v = t.slice(0, -1);
+            cur_crystal.appendStat(p[ATTRIBUTE_NAME], parseFloat(v), tail, p[ATTRIBUTE_VALUES[1]]);
+          }
+          break;
+        case 'obtain':
+          cur[p[ATTRIBUTE_NAME]] = p[ATTRIBUTE_VALUES[0]];
+          break;
+        case 'other':
+          if (p[ATTRIBUTE_NAME] == 'enhancer')
+            cur_crystal.setEnhancer(p[ATTRIBUTE_VALUES[0]]);
       }
     } catch (e) {
       console.log(p, index);

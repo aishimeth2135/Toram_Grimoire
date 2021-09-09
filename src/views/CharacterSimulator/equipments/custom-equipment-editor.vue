@@ -245,7 +245,8 @@
   </div>
 </template>
 <script>
-import { StatBase, StatRestriction } from '@/lib/Character/Stat';
+import { StatTypes } from '@/lib/Character/Stat/enums';
+import { StatRestriction } from '@/lib/Character/Stat';
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 
 export default {
@@ -257,12 +258,12 @@ export default {
     },
   },
   data() {
-    const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
+    const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier];
     this.$store.state.datas.Character.statList
       .filter(stat => !stat.attributes.hidden)
       .forEach(stat => {
         statTypes
-          .filter(type => !(type === StatBase.TYPE_MULTIPLIER && !stat.hasMultiplier))
+          .filter(type => !(type === StatTypes.Multiplier && !stat.hasMultiplier))
           .forEach(type => {
             stats.push({
               origin: stat,

@@ -5,8 +5,8 @@ import Notify from './Notify';
 type ExportBuildsSaveHandler = (fileName: string, dataString: string) => void;
 
 type ExportBuildsOptions = {
-  save: (handleSave: ExportBuildsSaveHandler) => void;
-  loaded: (dataResult: string) => void;
+  readonly save: (handleSave: ExportBuildsSaveHandler) => void;
+  readonly loaded: (dataResult: string) => void;
 };
 
 export default function({ save, loaded }: ExportBuildsOptions) {

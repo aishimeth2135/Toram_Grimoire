@@ -25,7 +25,7 @@ function DataPathLang(id: string): Array<string | null> {
   /**
    * order of language: [en, zh_tw, ja, zh_cn]
    */
-   switch (id) {
+  switch (id) {
     case 'Skill':
       return [
         'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=170573319&single=true&output=csv&range=R:R',
@@ -61,9 +61,9 @@ function DataPathLang(id: string): Array<string | null> {
         'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=1107380961&single=true&output=csv&range=F:G',
         'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=1107380961&single=true&output=csv&range=H:I',
       ];
-    }
-    console.warn('Unknow DataPath Name: ' + id);
-    return [];
+  }
+  console.warn('Unknow DataPath Name: ' + id);
+  return [];
 }
 
 export { DataPath, DataPathLang };

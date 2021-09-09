@@ -1,8 +1,8 @@
 import GetLang from '@/shared/services/Language';
 
 type RegisterLangOptions = {
-  root: string;
-  extra?: {
+  readonly root: string;
+  readonly extra?: {
     [key: string]: string;
   };
 };

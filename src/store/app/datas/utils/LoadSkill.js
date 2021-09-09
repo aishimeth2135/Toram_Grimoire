@@ -70,13 +70,13 @@ function loadSkill(skillSystem, datas) {
   }
   function SetEffectDefault(sef, v, parent) {
     switch (v) {
-    case 2:
-    case 3:
-      sef.setConfig({ equipmentConfirm: 1 });
-      if (v !== 2) break;
+      case 2:
+      case 3:
+        sef.setConfig({ equipmentConfirm: 1 });
+        if (v !== 2) break;
       // fall through
-    case 0:
-      parent.setDefaultEffect(sef);
+      case 0:
+        parent.setDefaultEffect(sef);
     }
   }
 
@@ -96,44 +96,44 @@ function loadSkill(skillSystem, datas) {
         const confirm_name = p[CONFIRM];
         id = parseInt(p[ID], 10);
         switch (confirm_name) {
-        case CONFIRM_SKILL_TREE_CATEGORY: {
-          const name = p[SKILL_TREE_CATEGORY_NAME];
-          cur = sr.newElement(SkillTreeCategory.TYPE, { id, name });
-        } break;
-        case CONFIRM_SKILL_TREE: {
-          cur = _TreeBack(cur, SkillTreeCategory.TYPE);
-          const name = p[SKILL_TREE_NAME];
-          cur = cur.newElement(SkillTree.TYPE, { id, name });
-          if (p[SKILL_TREE_SIMULATOR_FLAG])
-            cur.attrs.simulatorFlag = true;
-        } break;
-        default: {
-          if (confirm_name != '') {
-            cur = _TreeBack(cur, SkillTree.TYPE);
-            const name = p[NAME];
-            cur = cur.newElement(Skill.TYPE, { id, name });
+          case CONFIRM_SKILL_TREE_CATEGORY: {
+            const name = p[SKILL_TREE_CATEGORY_NAME];
+            cur = sr.newElement(SkillTreeCategory.TYPE, { id, name });
+          } break;
+          case CONFIRM_SKILL_TREE: {
+            cur = _TreeBack(cur, SkillTreeCategory.TYPE);
+            const name = p[SKILL_TREE_NAME];
+            cur = cur.newElement(SkillTree.TYPE, { id, name });
+            if (p[SKILL_TREE_SIMULATOR_FLAG])
+              cur.attrs.simulatorFlag = true;
+          } break;
+          default: {
+            if (confirm_name != '') {
+              cur = _TreeBack(cur, SkillTree.TYPE);
+              const name = p[NAME];
+              cur = cur.newElement(Skill.TYPE, { id, name });
+            }
           }
-        }
-        // fall through
-        case '': {
-          const mainWeapon = MAIN_WEAPON_LIST.indexOf(p[MAIN_WEAPON]),
-            subWeapon = SUB_WEAPON_LIST.indexOf(p[SUB_WEAPON]),
-            bodyArmor = BODY_ARMOR_LIST.indexOf(p[BODY_ARMOR]),
-            default_set = DEFAULT_SET_LIST.indexOf(p[DEFAULT_SET]);
-          if (default_set === -1)
-            return;
-          cur = _TreeBack(cur, Skill.TYPE);
-          const sef = cur.newElement(SkillEffect.TYPE, { mainWeapon, subWeapon, bodyArmor });
-          SetEffectDefault(sef, default_set, cur);
+          // fall through
+          case '': {
+            const mainWeapon = MAIN_WEAPON_LIST.indexOf(p[MAIN_WEAPON]),
+              subWeapon = SUB_WEAPON_LIST.indexOf(p[SUB_WEAPON]),
+              bodyArmor = BODY_ARMOR_LIST.indexOf(p[BODY_ARMOR]),
+              default_set = DEFAULT_SET_LIST.indexOf(p[DEFAULT_SET]);
+            if (default_set === -1)
+              return;
+            cur = _TreeBack(cur, Skill.TYPE);
+            const sef = cur.newElement(SkillEffect.TYPE, { mainWeapon, subWeapon, bodyArmor });
+            SetEffectDefault(sef, default_set, cur);
 
-          cur = sef
-            .appendAttribute(SkillEffect.MP_COST, _nullConfirm(p[MP_COST], ''))
-            .appendAttribute(SkillEffect.RANGE, _nullConfirm(p[RANGE], ''))
-            .appendAttribute(SkillEffect.SKILL_TYPE, _nullConfirm(SKILL_TYPE_LIST.indexOf(p[SKILL_TYPE]), -1))
-            .appendAttribute(SkillEffect.IN_COMBO, _nullConfirm(IN_COMBO_LIST.indexOf(p[IN_COMBO]), -1))
-            .appendAttribute(SkillEffect.ACTION_TIME, _nullConfirm(ACTION_TIME_LIST.indexOf(p[ACTION_TIME]), -1))
-            .appendAttribute(SkillEffect.CASTING_TIME, _nullConfirm(p[CASTING_TIME], ''));
-        }
+            cur = sef
+              .appendAttribute(SkillEffect.MP_COST, _nullConfirm(p[MP_COST], ''))
+              .appendAttribute(SkillEffect.RANGE, _nullConfirm(p[RANGE], ''))
+              .appendAttribute(SkillEffect.SKILL_TYPE, _nullConfirm(SKILL_TYPE_LIST.indexOf(p[SKILL_TYPE]), -1))
+              .appendAttribute(SkillEffect.IN_COMBO, _nullConfirm(IN_COMBO_LIST.indexOf(p[IN_COMBO]), -1))
+              .appendAttribute(SkillEffect.ACTION_TIME, _nullConfirm(ACTION_TIME_LIST.indexOf(p[ACTION_TIME]), -1))
+              .appendAttribute(SkillEffect.CASTING_TIME, _nullConfirm(p[CASTING_TIME], ''));
+          }
         }
       }
       if (SKILL_ELEMENT_ORDER.indexOf(cur.TYPE) < SKILL_ELEMENT_ORDER.indexOf(SkillEffect.TYPE))
@@ -185,38 +185,38 @@ function loadSkillMain(skillSystem, datas) {
     const data = lang_c ? lang_c[index] : null,
       sdata = slang_c ? slang_c[index] : null;
     switch (cat) {
-    case CONFIRM_SKILL_TREE_CATEGORY:
-      [data, sdata].find(t => {
-        if (!t)
-          return;
-        const name = t[LANG_DATA.CATEGORY_NAME];
-        if (name) {
-          target.name = name;
-          return true;
-        }
-      });
-      break;
-    case CONFIRM_SKILL_TREE:
-      [data, sdata].find(t => {
-        if (!t)
-          return;
-        const name = t[LANG_DATA.SKILL_TREE_NAME];
-        if (name) {
-          target.name = name;
-          return true;
-        }
-      });
-      break;
-    case '':
-      [data, sdata].find(t => {
-        if (!t)
-          return;
-        const name = t[LANG_DATA.SKILL_NAME];
-        if (name) {
-          target.name = name;
-          return true;
-        }
-      });
+      case CONFIRM_SKILL_TREE_CATEGORY:
+        [data, sdata].find(t => {
+          if (!t)
+            return;
+          const name = t[LANG_DATA.CATEGORY_NAME];
+          if (name) {
+            target.name = name;
+            return true;
+          }
+        });
+        break;
+      case CONFIRM_SKILL_TREE:
+        [data, sdata].find(t => {
+          if (!t)
+            return;
+          const name = t[LANG_DATA.SKILL_TREE_NAME];
+          if (name) {
+            target.name = name;
+            return true;
+          }
+        });
+        break;
+      case '':
+        [data, sdata].find(t => {
+          if (!t)
+            return;
+          const name = t[LANG_DATA.SKILL_NAME];
+          if (name) {
+            target.name = name;
+            return true;
+          }
+        });
     }
   };
 
@@ -226,23 +226,23 @@ function loadSkillMain(skillSystem, datas) {
     try {
       const cat = p[CATEGORY], id = parseInt(p[ID], 10);
       switch (cat) {
-      case CONFIRM_SKILL_TREE_CATEGORY:
-        cur_stc = sr.skillTreeCategorys.find(a => a.id == id);
-        loadLangData(cat, cur_stc, i);
-        break;
-      case CONFIRM_SKILL_TREE:
-        cur_st = cur_stc.skillTrees.find(a => a.id == id);
-        cur_st.init(p[SKILL_TREE_DRAW_TREE_CODE]);
-        loadLangData(cat, cur_st, i);
-        break;
-      case '': {
-        const skill = cur_st.skills.find(a => a.id == id);
-        skill.init(
-          p[PREVIOUS_SKILL] === '-' ? -1 : parseInt(p[PREVIOUS_SKILL], 10),
-          parseInt(p[DRAW_SKILL_TREE_ORDER]),
-        );
-        loadLangData(cat, skill, i);
-      }
+        case CONFIRM_SKILL_TREE_CATEGORY:
+          cur_stc = sr.skillTreeCategorys.find(a => a.id == id);
+          loadLangData(cat, cur_stc, i);
+          break;
+        case CONFIRM_SKILL_TREE:
+          cur_st = cur_stc.skillTrees.find(a => a.id == id);
+          cur_st.init(p[SKILL_TREE_DRAW_TREE_CODE]);
+          loadLangData(cat, cur_st, i);
+          break;
+        case '': {
+          const skill = cur_st.skills.find(a => a.id == id);
+          skill.init(
+            p[PREVIOUS_SKILL] === '-' ? -1 : parseInt(p[PREVIOUS_SKILL], 10),
+            parseInt(p[DRAW_SKILL_TREE_ORDER]),
+          );
+          loadLangData(cat, skill, i);
+        }
       }
     }
     catch (e) {

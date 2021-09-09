@@ -3,15 +3,15 @@ parser: vue-eslint-parser
 env:
   node: true
 extends:
-  - plugin:vue/vue3-essential
   - eslint:recommended
-  - '@vue/typescript'
+  - plugin:vue/vue3-essential
+  - "@vue/typescript"
 parserOptions:
   parsers:
-    js: '@babel/eslint-parser'
-    ts: '@typescript-eslint/parser'
-    <template>: '@babel/eslint-parser'
-  parser: '@typescript-eslint/parser'
+    js: "@babel/eslint-parser"
+    ts: "@typescript-eslint/parser"
+    <template>: "@babel/eslint-parser"
+  parser: "@typescript-eslint/parser"
 plugins:
   - jsdoc
   - import
@@ -34,8 +34,13 @@ globals:
   defineExpose: readonly
   withDefaults: readonly
 rules:
-  no-use-before-define: 'off'
-  no-unused-vars: 'off'
+  no-use-before-define: off
+  no-unused-vars: off
+  no-shadow: off
+  indent:
+    - error
+    - 2
+    - SwitchCase: 1
   jsdoc/no-undefined-types: warn
   no-trailing-spaces: warn
   object-curly-spacing:
@@ -51,8 +56,6 @@ rules:
   comma-dangle:
     - warn
     - always-multiline
-  no-shadow:
-    - error
   no-void:
     - error
   quotes:
@@ -64,16 +67,18 @@ rules:
   import/no-unresolved:
     - 2
     - commonjs: true
-  '@typescript-eslint/semi':
+  "@typescript-eslint/semi":
     - error
-  '@typescript-eslint/member-delimiter-style':
+  "@typescript-eslint/member-delimiter-style":
     - error
-  '@typescript-eslint/no-use-before-define':
+  "@typescript-eslint/no-use-before-define":
     - error
     - functions: false
       classes: false
       typedefs: false
-  '@typescript-eslint/no-unused-vars':
+  "@typescript-eslint/no-unused-vars":
+    - error
+  "@typescript-eslint/no-shadow":
     - error
   vue/html-indent:
     - warn

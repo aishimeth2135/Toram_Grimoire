@@ -2,13 +2,13 @@ import { ref, readonly } from 'vue';
 import type { Ref } from 'vue';
 
 type ToggleItemDetail = {
-  name: string;
-  default?: boolean;
+  readonly name: string;
+  readonly default?: boolean;
 };
 type ToggleItem = ToggleItemDetail | string;
 
 type ToggleServiceOptions = {
-  [key: string]: Array<ToggleItem>;
+  readonly [key: string]: Array<ToggleItem>;
 };
 
 type ToggleContentsGroup = {

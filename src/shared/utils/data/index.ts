@@ -163,20 +163,20 @@ type HandleFormulaOptions = {
   getters?: HandleFormulaGetters;
 
   /** If true, result will convert to number */
-  toNumber?: false;
+  toNumber?: boolean;
 
   /** If given formula is empty, it will return options.defaultValue. */
   defaultValue?: string | number | null;
 };
 
 function handleFormula(formulaStr: string, {
-    vars = {},
-    texts = {},
-    methods = {},
-    getters = {},
-    toNumber = false,
-    defaultValue = null,
-  }: HandleFormulaOptions = {}) {
+  vars = {},
+  texts = {},
+  methods = {},
+  getters = {},
+  toNumber = false,
+  defaultValue = null,
+}: HandleFormulaOptions = {}) {
   if (formulaStr === '') {
     if (defaultValue === undefined) {
       return toNumber ? 0 : '0';
@@ -256,17 +256,14 @@ type HandleConditionalOptions = {
   vars?: HandleConditionalVars;
 
   /** If given formula is undefined, it will return options.defaultValue. */
-  defaultValue?: string | number | null;
+  defaultValue?: boolean;
 };
 
 function handleConditional(formulaStr: string, {
   vars = {},
-  defaultValue = null,
+  defaultValue = true,
 }: HandleConditionalOptions = {}) {
   if (formulaStr === '') {
-    if (defaultValue === undefined) {
-      return true;
-    }
     return defaultValue;
   }
   const originalFormulaStr = formulaStr;

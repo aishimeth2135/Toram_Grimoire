@@ -41,20 +41,20 @@ class CalculationBase {
     this.items = new Map();
   }
 
-   appendContainer(id: string, type: symbol): CalcItemContainerBase {
+  appendContainer(id: string, type: symbol): CalcItemContainerBase {
     const container = new CalcItemContainerBase(this, id, type);
     this.containers.set(id, container);
     return container;
   }
 
-   appendItem(id: string): CalcItemBase {
-     if (!this.items.has(id)) {
+  appendItem(id: string): CalcItemBase {
+    if (!this.items.has(id)) {
       const item = new CalcItemBase(this, id);
       this.items.set(id, item);
       return item;
-     }
-     return this.items.get(id) as CalcItemBase;
-   }
+    }
+    return this.items.get(id) as CalcItemBase;
+  }
 
   createCalculation(name: string = ''): Calculation {
     return new Calculation(this, name);
@@ -164,7 +164,7 @@ class CalcItemContainerBase {
     this._calcResult = value;
   }
 
-   setGetCurrentItemId(value: CurrentItemIdGetter): void {
+  setGetCurrentItemId(value: CurrentItemIdGetter): void {
     this.getCurrentItemId = value;
   }
 
@@ -180,7 +180,7 @@ class CalcItemContainerBase {
    * - `setDefaultValue(100)`
    * - `setUnit("%")`
    */
-   markMultiplier(): void {
+  markMultiplier(): void {
     this.isMultiplier = true;
   }
 

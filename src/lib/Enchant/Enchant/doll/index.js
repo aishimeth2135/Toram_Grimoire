@@ -1,5 +1,5 @@
-import { StatBase } from '@/lib/Character/Stat';
 import Grimoire from '@/shared/Grimoire';
+import { StatTypes } from '@/lib/Character/Stat/enums';
 
 import { EnchantCategory, EnchantItem } from '../base';
 import { EnchantBuild, EnchantStat, EnchantEquipment } from '../build';
@@ -244,19 +244,19 @@ export default class EnchantDoll {
     const prioritizedShortList = {
       [EnchantEquipment.TYPE_MAIN_WEAPON]: ['def', 'mdef', 'dodge', 'natural_hp_regen', {
         baseName: 'natural_mp_regen',
-        types: [StatBase.TYPE_MULTIPLIER],
+        types: [StatTypes.Multiplier],
       }],
       [EnchantEquipment.TYPE_BODY_ARMOR]: ['accuracy'],
     }[buildEquipment.fieldType];
 
     if (buildEquipment.fieldType === EnchantEquipment.TYPE_BODY_ARMOR) {
       switch (this.config.baseType) {
-      case 'physical':
-        prioritizedShortList.unshift('matk', 'magic_pierce'); break;
-      case 'magic':
-        prioritizedShortList.unshift('atk', 'physical_pierce'); break;
-      case 'none':
-        prioritizedShortList.unshift('atk', 'matk', 'physical_pierce', 'magic_pierce');
+        case 'physical':
+          prioritizedShortList.unshift('matk', 'magic_pierce'); break;
+        case 'magic':
+          prioritizedShortList.unshift('atk', 'physical_pierce'); break;
+        case 'none':
+          prioritizedShortList.unshift('atk', 'matk', 'physical_pierce', 'magic_pierce');
       }
     }
 
@@ -269,9 +269,9 @@ export default class EnchantDoll {
           return statBaseItem === item.statBase.baseName;
         });
         if (find) {
-          const types = typeof find === 'object' ? find.types : [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
+          const types = typeof find === 'object' ? find.types : [StatTypes.Constant, StatTypes.Multiplier];
           types.forEach(type => {
-            if (type === StatBase.TYPE_MULTIPLIER && !item.statBase.hasMultiplier) {
+            if (type === StatTypes.Multiplier && !item.statBase.hasMultiplier) {
               return;
             }
             if (this.hasPositiveStat(item, type)) {

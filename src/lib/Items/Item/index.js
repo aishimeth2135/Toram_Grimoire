@@ -1,5 +1,5 @@
 import Grimoire from '@/shared/Grimoire';
-import { StatBase } from '@/lib/Character/Stat';
+import { StatTypes } from '@/lib/Character/Stat/enums';
 import { isNumberString } from '@/shared/utils/string';
 
 class Item {
@@ -26,15 +26,15 @@ class Item {
     }
     let type;
     switch (tail) {
-    case '':
-      type = StatBase.TYPE_CONSTANT;
-      break;
-    case '%':
-      type = StatBase.TYPE_MULTIPLIER;
-      break;
-    case '~':
-      type = StatBase.TYPE_TOTAL;
-      break;
+      case '':
+        type = StatTypes.Constant;
+        break;
+      case '%':
+        type = StatTypes.Multiplier;
+        break;
+      case '~':
+        type = StatTypes.Total;
+        break;
     }
     const statBase = Grimoire.Character.findStatBase(baseName);
     if (!statBase) {

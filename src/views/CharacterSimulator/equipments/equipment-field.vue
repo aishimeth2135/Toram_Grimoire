@@ -2,11 +2,11 @@
   <div class="equipment-field p-3 border border-solid border-light m-2 bg-white">
     <div class="flex items-center border-b border-solid border-light pb-1 mb-3">
       <cy-icon-text icon="gg-shape-square" size="small" text-color="purple">
-        {{ $rootLang('common/Equipment/field/' + field.type.description) }}
+        {{ $rootLang('common/Equipment/field/' + field.type) }}
       </cy-icon-text>
       <div class="ml-auto leading-none">
         <cy-button-icon
-          v-if="!field.isEmpty()"
+          v-if="!field.isEmpty"
           icon="ic-round-close"
           class="p-0"
           icon-color="red"
@@ -21,9 +21,9 @@
       </div>
     </div>
     <equipment-info
-      v-if="!field.isEmpty()"
+      v-if="!field.isEmpty"
       :equipment="field.equipment"
-      :stats-disabled="field.statsDisable()"
+      :stats-disabled="field.statsDisabled()"
     />
     <cy-default-tips v-else icon="potum" icon-src="custom">
       {{ $lang('Warn/no equipment selected') }}

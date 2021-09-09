@@ -670,26 +670,26 @@ export default {
         }
         const t = new Set();
         switch (main) {
-        case 0: case 1: case 5:
-          t.add(7);
+          case 0: case 1: case 5:
+            t.add(7);
           /* falls through */
-        case 4:
-          t.add(5);
+          case 4:
+            t.add(5);
           /* falls through */
-        case 7:
-          t.add(1).add(2).add(3).add(4);
-          break;
-        case 9:
-          t.add(3).add(7);
-          break;
-        case 8:
-          t.add(1).add(3);
-          break;
-        case 3:
-          t.add(1).add(6);
-          break;
-        case 6:
-          t.add(7);
+          case 7:
+            t.add(1).add(2).add(3).add(4);
+            break;
+          case 9:
+            t.add(3).add(7);
+            break;
+          case 8:
+            t.add(1).add(3);
+            break;
+          case 3:
+            t.add(1).add(6);
+            break;
+          case 6:
+            t.add(7);
         }
         t.add(0);
         return t.has(sub);

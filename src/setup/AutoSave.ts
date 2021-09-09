@@ -3,8 +3,8 @@ import RegisterLang from './RegisterLang';
 import Notify from './Notify';
 
 type AutoSaveOptions = {
-  save: () => void;
-  loadFirst: () => void;
+  readonly save: () => void;
+  readonly loadFirst: () => void;
 };
 
 export default function ({ save, loadFirst }: AutoSaveOptions): void {

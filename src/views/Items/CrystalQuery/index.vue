@@ -146,7 +146,7 @@
 <script>
 import init from './init.js';
 
-import { StatBase } from '@/lib/Character/Stat';
+import { StatTypes } from '@/lib/Character/Stat/enums';
 import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment';
 
 import vue_showStat from '@/components/common/show-stat.vue';
@@ -166,11 +166,11 @@ export default {
       };
     });
 
-    const stats = [], statTypes = [StatBase.TYPE_CONSTANT, StatBase.TYPE_MULTIPLIER];
+    const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier];
     this.$store.state.datas.Character.statList.forEach(stat => {
       if (stat.attributes.hidden) return;
       statTypes.forEach(type => {
-        if (type == StatBase.TYPE_MULTIPLIER && !stat.hasMultiplier)
+        if (type === StatTypes.Multiplier && !stat.hasMultiplier)
           return;
         stats.push({
           origin: stat,

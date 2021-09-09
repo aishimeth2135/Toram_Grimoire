@@ -53,14 +53,14 @@ export default function(root, c) {
       if (p[ATTRIBUTE_CATEGORY] !== '')
         cur_attrcat = p[ATTRIBUTE_CATEGORY];
       switch (p[ATTRIBUTE_CATEGORY]) {
-      case 'obtain':
-        cur = cur_equip.appendObtain();
-        break;
-      case 'recipe':
-        cur = cur_equip.setRecipe();
-        break;
-      case 'extra':
-        cur = cur_equip.setExtra();
+        case 'obtain':
+          cur = cur_equip.appendObtain();
+          break;
+        case 'recipe':
+          cur = cur_equip.setRecipe();
+          break;
+        case 'extra':
+          cur = cur_equip.setExtra();
       }
       if (cur_attrcat === 'stats') {
         const t = p[ATTRIBUTE_VALUES[0]];

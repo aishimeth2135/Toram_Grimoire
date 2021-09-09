@@ -1,9 +1,8 @@
 import handleSkillFormula from '@/views/SkillQuery/utils/handleFormula.js';
 import DataContainer from '@/views/SkillQuery/utils/DataContainer.js';
 
-import { EquipmentField } from '@/lib/Character/Character';
-import { SubWeapon, SubArmor } from '@/lib/Character/CharacterEquipment';
-
+import { EquipmentFieldTypes } from '@/lib/Character/Character/enums';
+import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums';
 class SkillBranchHandler {
   constructor({ branch, skillState, levelSkill, view, skillItemType }) {
     this.branch = branch;
@@ -292,10 +291,10 @@ class SkillBranchHandler {
       'AGI': this.findCharacterStatResult(findSrc, 'agi').value,
       'VIT': this.findCharacterStatResult(findSrc, 'vit').value,
       'DEX': this.findCharacterStatResult(findSrc, 'dex').value,
-      'shield_refining': chara.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubArmor.TYPE_SHIELD) ?
-        chara.equipmentField(EquipmentField.TYPE_SUB_WEAPON).equipment.refining : 0,
-      'dagger_atk': chara.checkFieldEquipmentType(EquipmentField.TYPE_SUB_WEAPON, SubWeapon.TYPE_DAGGER) ?
-        chara.equipmentField(EquipmentField.TYPE_SUB_WEAPON).equipment.atk : 0,
+      'shield_refining': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Shield) ?
+        chara.equipmentField(EquipmentFieldTypes.SubWeapon).equipment.refining : 0,
+      'dagger_atk': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Dagger) ?
+        chara.equipmentField(EquipmentFieldTypes.SubWeapon).equipment.atk : 0,
       'target_def': () => {
         const find = this.userSets.find(p => p.variableName === 'target_def');
         find.disabled = false;
