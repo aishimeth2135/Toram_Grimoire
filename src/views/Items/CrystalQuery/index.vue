@@ -168,7 +168,7 @@ export default {
 
     const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier];
     this.$store.state.datas.Character.statList.forEach(stat => {
-      if (stat.attributes.hidden) return;
+      if (stat.hidden) return;
       statTypes.forEach(type => {
         if (type === StatTypes.Multiplier && !stat.hasMultiplier)
           return;

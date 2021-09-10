@@ -7,10 +7,9 @@ import { isNumberString } from '@/shared/utils/string';
 import { StatRestriction } from '../Stat';
 import type { StatRestrictionSaveData } from '../Stat/StatRestriction';
 
-import { EquipmentTypes } from './enums';
+import { EquipmentTypes, EquipmentCategorys } from './enums';
 
 type EquipmentOrigin = Equipment | null;
-
 abstract class CharacterEquipment {
   private _name: string;
   private _isCustom: boolean;
@@ -90,7 +89,6 @@ abstract class CharacterEquipment {
     if (this.type === EquipmentTypes.Additional || this.type === EquipmentTypes.Special || this.type === EquipmentTypes.Avatar) {
       return GetLang('common/Equipment/field/' + this.type);
     }
-    console.log(this.type);
     return GetLang('common/Equipment/category/' + this.type);
   }
   get categoryIcon(): string {
@@ -112,37 +110,36 @@ abstract class CharacterEquipment {
   getCategoryImagePath(fieldId = -1): string {
     let category = '';
     if (this instanceof MainWeapon) {
-      category = 'main-weapon';
+      category = EquipmentCategorys.MainWeapon;
     } else if (this instanceof BodyArmor) {
-      category = 'body-armor';
+      category = EquipmentCategorys.BodyArmor;
     } else if (this instanceof SubWeapon) {
-      category = 'sub-weapon';
+      category = EquipmentCategorys.SubWeapon;
     } else if (this instanceof SubArmor) {
-      category = 'sub-armor';
+      category = EquipmentCategorys.SubArmor;
     } else if (this instanceof AdditionalGear) {
-      category = 'additional';
+      category = EquipmentCategorys.Additional;
     } else if (this instanceof SpecialGear) {
-      category = 'special';
+      category = EquipmentCategorys.Special;
     } else if (this instanceof Avatar) {
-      category = 'avatar';
+      category = EquipmentCategorys.Avatar;
       fieldId = 0;
     } else {
       return '#';
     }
-    return CharacterEquipment.getImagePath(category, this.type || null, fieldId);
+    return CharacterEquipment.getImagePath(category as EquipmentCategorys, this.type, fieldId);
   }
 
-  static getImagePath(category: string, type: string | null = null, fieldId: number = -1): string {
+  static getImagePath(category: EquipmentCategorys, type: EquipmentTypes, fieldId: number = -1): string {
     const pre = '/imgs/character/equipment';
     const categoryStr = (() => {
-      if (category === 'body-armor' || category === 'sub-weapon' || category === 'sub-armor') {
+      if (category === 'additional' || category === 'special' || category === 'avatar') {
         return '';
       }
-      return category;
+      return category + '/';
     })();
-    const typeStr = type !== null ? (categoryStr ? '/' : '') + type.replace('|', '/') : '';
     const fieldIdStr = fieldId !== -1 ? '/i' + fieldId.toString() : '';
-    return `${pre}/${categoryStr}${typeStr}${fieldIdStr}.png`;
+    return `${pre}/${categoryStr}${type}${fieldIdStr}.png`;
   }
 
   getAllStats(checkRestriction: (stat: StatRestriction) => boolean = () => true): StatRestriction[] {
@@ -322,7 +319,7 @@ abstract class CharacterEquipment {
     try {
       let success = true;
 
-      const { id, name, instance, type, stability, refining, atk, def, crystals, isCustom } = data;
+      const { id, name, instance, stability, refining, atk, def, crystals, isCustom } = data;
       const stats = data.stats.map(p => StatRestriction.load(p)).filter(stat => stat !== null) as StatRestriction[];
 
       stats.forEach(stat => {
@@ -338,13 +335,21 @@ abstract class CharacterEquipment {
       //   AdditionalGear, SpecialGear, Avatar,
       // ][data.instance];
 
+      const type: EquipmentTypes = (() => {
+        const originalType = data.type as string;
+        if (instance === 3 && (originalType === 'normal' || originalType === 'dodge' || originalType === 'defense')) {
+          return 'body-' + originalType;
+        }
+        return originalType.replace(/_/g, '-');
+      })() as EquipmentTypes;
+
       let eq;
       if (instance === 0) {
-        eq = new MainWeapon(origin, name, stats, type as EquipmentTypes, atk as number, stability);
+        eq = new MainWeapon(origin, name, stats, type, atk as number, stability);
       } else if (instance === 1) {
-        eq = new SubWeapon(origin, name, stats, type as EquipmentTypes, atk as number, stability);
+        eq = new SubWeapon(origin, name, stats, type, atk as number, stability);
       } else if (instance === 2) {
-        eq = new SubArmor(origin, name, stats, type as EquipmentTypes, def as number);
+        eq = new SubArmor(origin, name, stats, type, def as number);
       } else if (instance === 3) {
         eq = new BodyArmor(origin, name, stats, def as number);
         eq.setType(type as EquipmentTypes);

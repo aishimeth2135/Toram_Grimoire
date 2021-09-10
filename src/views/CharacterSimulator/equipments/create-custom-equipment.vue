@@ -32,7 +32,7 @@
         </div>
       </template>
     </cy-bottom-content>
-    <cy-window v-model:visible="window.selectType">
+    <cy-window :visible="window.selectType" @close="toggle('window/selectType')">
       <template #title>
         <cy-icon-text icon="gg-shape-square">
           {{ $lang('create custom equipment/select equipment type') }}
@@ -43,6 +43,7 @@
           v-for="category in equipmentTypeCategorys"
           :key="category.id"
           :icon="category.icon"
+          :icon-src="category.iconSrc || 'image'"
           :menu-default-visible="true"
         >
           {{ $rootLang('common/Equipment/field/' + category.id) }}
@@ -54,8 +55,8 @@
                 :selected="currentEquipment && currentEquipment.type === item"
                 @click="selectEquipmentType(category, item)"
               >
-                <cy-icon-text icon="gg-shape-square">
-                  {{ $rootLang('common/Equipment/category/' + item.description) }}
+                <cy-icon-text :icon="getImagePath(category.id, item)" icon-src="image">
+                  {{ $rootLang('common/Equipment/category/' + item) }}
                 </cy-icon-text>
               </cy-list-item>
             </template>
@@ -79,8 +80,8 @@ import ToggleService from '@/setup/ToggleService';
 
 import vue_customEquipmentEditor from './custom-equipment-editor.vue';
 
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from '@/lib/Character/CharacterEquipment';
-import { MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList } from '@/lib/Character/CharacterEquipment/enums';
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar, CharacterEquipment } from '@/lib/Character/CharacterEquipment';
+import { EquipmentTypes, EquipmentCategorys, MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList } from '@/lib/Character/CharacterEquipment/enums';
 
 export default {
   RegisterLang: 'Character Simulator',
@@ -94,7 +95,6 @@ export default {
     const { window, toggle } = ToggleService({
       window: ['selectType'],
     });
-
     return {
       window,
       toggle,
@@ -103,38 +103,39 @@ export default {
   data() {
     return {
       equipmentTypeCategorys: [{
-        id: 'main-weapon',
-        icon: 'mdi-sword',
+        id: EquipmentCategorys.MainWeapon,
+        icon: CharacterEquipment.getImagePath(EquipmentCategorys.MainWeapon, EquipmentTypes.OneHandSword),
         instance: MainWeapon,
         list: MainWeaponTypeList,
       }, {
-        id: 'sub-weapon',
-        icon: 'mdi-shield',
+        id: EquipmentCategorys.SubWeapon,
+        icon: CharacterEquipment.getImagePath(EquipmentCategorys.SubWeapon, EquipmentTypes.Arrow),
         instance: SubWeapon,
         list: SubWeaponTypeList,
       }, {
-        id: 'sub-armor',
-        icon: 'mdi-shield',
+        id: EquipmentCategorys.SubArmor,
+        icon: CharacterEquipment.getImagePath(EquipmentCategorys.SubArmor, EquipmentTypes.Shield),
         instance: SubArmor,
         list: SubArmorTypeList,
       }, {
-        id: 'body-armor',
-        icon: 'mdi-tshirt-crew',
+        id: EquipmentCategorys.BodyArmor,
+        icon: CharacterEquipment.getImagePath(EquipmentCategorys.BodyArmor, EquipmentTypes.BodyNormal),
         instance: BodyArmor,
         list: null,
       }, {
-        id: 'additional',
-        icon: 'cib-redhat',
+        id: EquipmentCategorys.Additional,
+        icon: CharacterEquipment.getImagePath(EquipmentCategorys.Additional, EquipmentTypes.Additional),
         instance: AdditionalGear,
         list: null,
       }, {
-        id: 'special',
-        icon: 'fa-solid:ring',
+        id: EquipmentCategorys.Special,
+        icon: CharacterEquipment.getImagePath(EquipmentCategorys.Special, EquipmentTypes.Special),
         instance: SpecialGear,
         list: null,
       }, {
-        id: 'avatar',
+        id: EquipmentCategorys.Avatar,
         icon: 'eva-star-outline',
+        iconSrc: 'iconify',
         instance: Avatar,
         list: null,
       }],
@@ -145,6 +146,7 @@ export default {
     equipmentTypeText() {
       return this.getEquipmentTypeText(this.currentEquipment);
     },
+    getImagePath: () => CharacterEquipment.getImagePath,
   },
   methods: {
     getEquipmentTypeText(eq) {
@@ -154,7 +156,7 @@ export default {
           .findIndex(p => eq instanceof p);
         return idx != -1 ?
           this.$rootLang('common/Equipment/field/' + ids[idx]) :
-          this.$rootLang('common/Equipment/category/' + eq.type.description);
+          this.$rootLang('common/Equipment/category/' + eq.type);
       }
       return this.$lang('create custom equipment/select equipment type');
     },

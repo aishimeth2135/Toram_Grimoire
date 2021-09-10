@@ -1,69 +1,79 @@
-import { ref, readonly } from 'vue';
+import { ref } from 'vue';
 import type { Ref } from 'vue';
 
-type ToggleItemDetail = {
+interface ToggleItemDetail {
   readonly name: string;
   readonly default?: boolean;
-};
+}
+
 type ToggleItem = ToggleItemDetail | string;
 
-type ToggleServiceOptions = {
-  readonly [key: string]: Array<ToggleItem>;
-};
+type ToggleServiceOptions = Record<string, ToggleServiceOptionGroup>;
+type ToggleServiceOptionGroup = readonly ToggleItem[];
 
-type ToggleContentsGroup = {
-  [key: string]: {
-    readonly [key: string]: boolean;
-  } | ToggleHandler;
-};
+type ContentKey<Content> = Content extends { name: infer Name } ? Name : Content;
+type ContentKeys<Contents extends ToggleServiceOptionGroup> = ContentKey<Contents[number]>;
 
-type ToggleServiceResult = ToggleContentsGroup & { toggle: ToggleHandler };
+type ToggleServiceGroups<Groups extends ToggleServiceOptions> = Record<keyof Groups, ToggleServiceGroupContents<Groups[keyof Groups]>>;
+type ToggleServiceGroupContents<Group extends ToggleServiceOptionGroup> = {
+  [key in ContentKeys<Group>]: Ref<boolean>;
+};
+type ToggleServiceResult<Groups extends ToggleServiceOptions> = ToggleServiceGroups<Groups> & { toggle: ToggleHandler };
+
 type ToggleHandler = (id: string, force?: boolean, groupForce?: boolean) => void;
 
-export default function(options: ToggleServiceOptions): ToggleServiceResult {
-  const dataMap: {
-    [key: string]: {
-      [key: string]: Ref<boolean>;
-    };
-  } = {};
+
+export default function ToggleService<GroupMap extends ToggleServiceOptions>(options: GroupMap): ToggleServiceResult<GroupMap> {
+  const dataMap = {} as ToggleServiceGroups<GroupMap>;
   Object.entries(options).forEach(([groupKey, subs]) => {
-    const group: { [key: string]: Ref<boolean> } = {};
-    subs.forEach(subItem => {
+    const group = {} as ToggleServiceGroupContents<GroupMap[typeof groupKey]>;
+    subs.forEach((subItem) => {
       if (typeof subItem === 'string') {
-        group[subItem] = ref(false);
+        group[subItem as (keyof typeof group)] = ref(false);
       } else if (typeof subItem === 'object') {
         const { name, default: defaultValue = false } = subItem;
-        group[name] = ref(defaultValue);
+        group[name as (keyof typeof group)] = ref(defaultValue);
       }
     });
-    dataMap[groupKey] = group;
+    dataMap[groupKey as keyof GroupMap] = group;
   });
 
   const toggle: ToggleHandler = (id, force, groupForce) => {
     const [group, sub] = id.split('/');
     if (sub) {
-      force = typeof force === 'boolean' ? force : !dataMap[group][sub].value;
-      dataMap[group][sub].value = force;
+      const targetGroup = dataMap[group] as { [key: string]: Ref<boolean> };
+      force = typeof force === 'boolean' ? force : !targetGroup[sub].value;
+      targetGroup[sub].value = force;
       if (groupForce !== undefined) {
-        Object.entries(dataMap[group]).forEach(([key, item]) => {
+        Object.entries(targetGroup).forEach(([key, item]) => {
           if (key !== sub) {
             item.value = groupForce;
           }
         });
       }
     } else {
+      const targetGroup = dataMap[group] as { [key: string]: Ref<boolean> };
       if (force === undefined) {
         console.warn('[toggle service] Toggle the group must pass param: force');
         return;
       }
-      Object.values(dataMap[group]).forEach(item => item.value = force as boolean);
+      Object.values(targetGroup).forEach(item => item.value = force as boolean);
     }
   };
 
-  const data: ToggleServiceResult = {
-    toggle,
-  };
-  Object.keys(dataMap).forEach(k => data[k] = readonly(dataMap[k]));
+  const resultGroups = {} as ToggleServiceGroups<GroupMap>;
+  Object.keys(dataMap).forEach((key: keyof typeof resultGroups) => {
+    resultGroups[key] = dataMap[key];
+  });
 
-  return data;
+  return {
+    toggle,
+    ...resultGroups,
+  };
 }
+
+const { window, test,  toggle } = ToggleService({
+  window: ['selectType'],
+});
+
+const t = window.ttt;

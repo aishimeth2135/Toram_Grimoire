@@ -13,7 +13,7 @@ interface CalcStructSingle {
 interface CalcStructMultiple {
   id?: string;
   operator: '***' | '+++';
-  list: Array<CalcStructItem>;
+  list: CalcStructItem[];
 }
 interface CalcResultOptions {
   containerResult?: {

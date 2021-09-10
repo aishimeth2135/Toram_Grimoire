@@ -28,6 +28,7 @@
 <script>
 export default {
   // data create by [main.vue].methods.handleCharacterStateDatas()
+  RegisterLang: 'Character Simulator',
   props: ['before', 'after'],
   computed: {
     comparedStatsDatas() {

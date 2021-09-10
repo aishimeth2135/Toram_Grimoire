@@ -90,7 +90,7 @@ class Character {
     this._optinalBaseStat = null;
   }
   baseStat(name: CharacterBaseStatValidType) {
-    if ((Object.values(CharacterOptionalBaseStatTypes) as ReadonlyArray<string>).includes(name)) {
+    if ((Object.values(CharacterOptionalBaseStatTypes) as readonly string[]).includes(name)) {
       return this._optinalBaseStat === null || this._optinalBaseStat.name !== name ?
         null : this._optinalBaseStat;
     }

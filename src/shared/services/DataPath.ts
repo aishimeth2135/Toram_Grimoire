@@ -21,7 +21,7 @@ function DataPath(id: string): string{
   return '';
 }
 
-function DataPathLang(id: string): Array<string | null> {
+function DataPathLang(id: string): (string | null)[] {
   /**
    * order of language: [en, zh_tw, ja, zh_cn]
    */

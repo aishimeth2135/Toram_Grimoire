@@ -83,7 +83,7 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
       // return parent[handle(node.property)];
     }
     if (jsepTypes.isCallExpression(node)) {
-      const args: Array<unknown> = node.arguments.map(arg => handle(arg));
+      const args: unknown[] = node.arguments.map(arg => handle(arg));
       if (args.some(arg => unknowSnippet(arg))) {
         const chain = [];
         let cur = node.callee;
@@ -98,7 +98,7 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
       return callee(...args);
     }
     if (jsepTypes.isArrayExpression(node)) {
-      const els: Array<unknown> = node.elements.map(el => handle(el));
+      const els: unknown[] = node.elements.map(el => handle(el));
       if (els.some(el => unknowSnippet(el))) {
         return `[${els.join(', ')}]`;
       }

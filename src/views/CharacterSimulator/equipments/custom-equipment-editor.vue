@@ -260,7 +260,7 @@ export default {
   data() {
     const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier];
     this.$store.state.datas.Character.statList
-      .filter(stat => !stat.attributes.hidden)
+      .filter(stat => !stat.hidden)
       .forEach(stat => {
         statTypes
           .filter(type => !(type === StatTypes.Multiplier && !stat.hasMultiplier))

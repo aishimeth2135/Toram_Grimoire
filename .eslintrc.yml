@@ -37,6 +37,7 @@ rules:
   no-use-before-define: off
   no-unused-vars: off
   no-shadow: off
+  no-dupe-class-members: off
   indent:
     - error
     - 2
@@ -79,6 +80,10 @@ rules:
   "@typescript-eslint/no-unused-vars":
     - error
   "@typescript-eslint/no-shadow":
+    - error
+  "@typescript-eslint/array-type":
+    - error
+  "@typescript-eslint/no-dupe-class-members":
     - error
   vue/html-indent:
     - warn

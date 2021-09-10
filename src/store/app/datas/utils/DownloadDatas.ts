@@ -3,10 +3,10 @@ import store from '@/store';
 import { DataPath, DataPathLang } from '@/shared/services/DataPath';
 
 type PathItem = string | { path: string; lang?: boolean };
-type CsvData = Array<Array<string>>;
+type CsvData = string[][];
 type LangData = [CsvData, CsvData | null, CsvData | null];
 
-export default async function(...paths: Array<PathItem>): Promise<Array<LangData>> {
+export default async function(...paths: PathItem[]): Promise<LangData[]> {
   const promises = paths.map(async (pathItem) => {
     if (typeof pathItem === 'string') {
       pathItem = { path: pathItem };
@@ -54,10 +54,10 @@ async function createLoadPromise(path: string): Promise<CsvData> {
 
 const DEFAULT_LANG = 1;
 async function loadLangDatas(pathId: string): Promise<LangData> {
-  const promises: Array<Promise<CsvData>> = [];
+  const promises: Promise<CsvData>[] = [];
   const current = store.getters['language/primaryLang'] as number,
     second = store.getters['language/secondaryLang'] as number;
-  const datas: Array<CsvData | null> = Array(3);
+  const datas: (CsvData | null)[] = Array(3);
 
   promises.push(createLoadPromise(DataPath(pathId)));
   if (current !== DEFAULT_LANG) {

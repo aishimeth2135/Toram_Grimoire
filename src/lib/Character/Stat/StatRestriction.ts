@@ -113,17 +113,17 @@ class StatRestriction extends Stat {
       const restrictionIndex = itemStatRestrictionList.indexOf(restriction);
       if (!['main', 'sub', 'body'].includes(eqType) || restrictionIndex === -1) {
         if (restriction !== '') {
-          console.warn('[warn] unknow restriction of stat: ' + q);
+          console.warn('[CharacterEquipment.fromOrigin] unknow restriction of stat: ' + q);
         }
         return StatRestriction.from(stat, newOriginRestriction);
       }
 
-      const restrictionToSymbol = itemStatRestrictionMappingList[restrictionIndex];
-      if (typeof restrictionToSymbol === 'string') {
-        newOriginRestriction.other = restrictionToSymbol;
+      const restrictionToType = itemStatRestrictionMappingList[restrictionIndex];
+      if (restrictionToType === 'event') {
+        newOriginRestriction.other = restrictionToType;
       }
       else {
-        newOriginRestriction[eqType] = restrictionToSymbol;
+        newOriginRestriction[eqType] = restrictionToType;
       }
     });
 

@@ -8,7 +8,7 @@ type MessageNotifyButtonItem = {
 };
 
 type MessageNotifyOptions = {
-  buttons?: Array<MessageNotifyButtonItem>;
+  buttons?: MessageNotifyButtonItem[];
   afterHide?: () => void;
 };
 

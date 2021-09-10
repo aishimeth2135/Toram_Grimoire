@@ -9,21 +9,31 @@ const enum EquipmentTypes {
   Halberd = 'halberd',
   Katana = 'katana',
 
-  Arrow = 'sub-weapon|arrow',
-  Dagger = 'sub-weapon|dagger',
-  NinjutsuScroll = 'sub-weapon|ninjutsu-scroll',
+  Arrow = 'arrow',
+  Dagger = 'dagger',
+  NinjutsuScroll = 'ninjutsu-scroll',
 
-  Shield = 'sub-armor|shield',
+  Shield = 'shield',
 
-  BodyNormal = 'body-armor|normal',
-  BodyDodge = 'body-armor|dodge',
-  BodyDefense = 'body-armor|defense',
+  BodyNormal = 'body-normal',
+  BodyDodge = 'body-dodge',
+  BodyDefense = 'body-defense',
 
   Additional = 'additional',
   Special = 'special',
   Avatar = 'avatar',
 
   Empty = 'empty',
+}
+
+const enum EquipmentCategorys {
+  MainWeapon = 'main-weapon',
+  SubWeapon = 'sub-weapon',
+  SubArmor = 'sub-armor',
+  BodyArmor = 'body-armor',
+  Additional = 'additional',
+  Special = 'special',
+  Avatar = 'avatar',
 }
 
 const MainWeaponTypeList = [
@@ -50,6 +60,7 @@ const SubArmorTypeList = [
 
 export {
   EquipmentTypes,
+  EquipmentCategorys,
   MainWeaponTypeList,
   SubWeaponTypeList,
   SubArmorTypeList,
