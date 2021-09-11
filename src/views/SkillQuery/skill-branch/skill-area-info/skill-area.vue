@@ -21,7 +21,7 @@ export default {
       const $sd = this.attrs; // 別名
 
       const type = $sd['effective_area'];
-      const grid = v => parseFloat((v*15).toFixed(1)); // [1 m] to [x px]
+      const grid = v => parseFloat((v * 15).toFixed(1)); // [1 m] to [x px]
       const radius = parseFloat(this.calcValueStr($sd['radius'])),
         startPositionOffsets = parseFloat(this.calcValueStr($sd['start_position_offsets'])),
         endPositionOffsets = parseFloat(this.calcValueStr($sd['end_position_offsets'])),
@@ -51,7 +51,7 @@ export default {
         skill_range_default;
       skill_range = isNumberString(skill_range) ? parseFloat(skill_range) : skill_range_default;
       const targetOffset = $sd['target_offsets'] === 'auto' ?
-        (type == 'circle' && $sd['end_position'] === 'self' ? radius*0.5 : Math.min(7, skill_range)) :
+        (type == 'circle' && $sd['end_position'] === 'self' ? radius * 0.5 : Math.min(7, skill_range)) :
         parseFloat(this.calcValueStr($sd['target_offsets']));
       const moveDistance = Math.min(Math.max(targetOffset + moveDistanceFix, originalMoveDistance), 9);
 
@@ -191,7 +191,7 @@ export default {
         const area_bg = {
           type: 'path',
           attrs: {
-            d: `M${grid(ax)} ${grid(ay+radius)}A${grid(radius)} ${grid(radius)},0 0 1,${grid(ax)} ${grid(ay-radius)}L${grid(endx)} ${grid(endy-radius)}A${grid(radius)} ${grid(radius)},0 0 1,${grid(endx)} ${grid(endy+radius)}Z`,
+            d: `M${grid(ax)} ${grid(ay + radius)}A${grid(radius)} ${grid(radius)},0 0 1,${grid(ax)} ${grid(ay - radius)}L${grid(endx)} ${grid(endy - radius)}A${grid(radius)} ${grid(radius)},0 0 1,${grid(endx)} ${grid(endy + radius)}Z`,
             fill: pcolorl,
           },
         };
@@ -204,14 +204,14 @@ export default {
         height = grid(endy + radius + padding);
         width = grid(endx + radius + padding);
       } else if (type === 'sector') {
-        const deg = Math.PI/180;
+        const deg = Math.PI / 180;
         const angle = parseFloat(this.calcValueStr($sd['angle']));
         const sectorWidth = 2,
           minRadius = Math.max(startPositionOffsets, 1),
           maxRadius = moveDistance;
         // character
         let bx = padding;
-        const by = padding + maxRadius * Math.sin(angle*deg/2);
+        const by = padding + maxRadius * Math.sin(angle * deg / 2);
 
         // target
         const tx = bx + targetOffset,
@@ -235,19 +235,19 @@ export default {
         const areaSectorD = this.createSectorPathD({
           cx: grid(bx), cy: grid(by), minRadius: grid(minRadius),
           radius: grid(maxRadius),
-          startAngle: angle/2, endAngle: -angle/2, clockwise: 1,
+          startAngle: angle / 2, endAngle: -angle / 2, clockwise: 1,
         });
 
         const startSectorD = this.createSectorPathD({
           cx: grid(bx), cy: grid(by), minRadius: grid(minRadius),
           radius: grid(minRadius + sectorWidth),
-          startAngle: angle/2, endAngle: -angle/2, clockwise: 1,
+          startAngle: angle / 2, endAngle: -angle / 2, clockwise: 1,
         });
 
         const endSectorD = this.createSectorPathD({
           cx: grid(bx), cy: grid(by), minRadius: grid(Math.max(maxRadius - sectorWidth, 0)),
           radius: grid(maxRadius),
-          startAngle: angle/2, endAngle: -angle/2, clockwise: 1,
+          startAngle: angle / 2, endAngle: -angle / 2, clockwise: 1,
         });
 
         datas.push({
@@ -286,7 +286,7 @@ export default {
         datas.push(chara);
         datas.push(tar);
 
-        height = grid(by + padding + maxRadius * Math.sin(angle*deg/2));
+        height = grid(by + padding + maxRadius * Math.sin(angle * deg / 2));
         width = grid(bx + moveDistance + padding);
       }
 
@@ -298,7 +298,7 @@ export default {
     },
   },
   methods: {
-    createSectorPathD({ cx, cy, minRadius=0, radius, startAngle, endAngle, clockwise=0 }={}){
+    createSectorPathD({ cx, cy, minRadius = 0, radius, startAngle, endAngle, clockwise = 0 } = {}){
       /**
        -- Draw Sector --
         * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -324,7 +324,7 @@ export default {
         ---------------------------------------------------------
         */
 
-      const deg = Math.PI/180;
+      const deg = Math.PI / 180;
       const cosEnd = Math.cos(endAngle * deg),
         cosStart = Math.cos(startAngle * deg),
         sinEnd = -1 * Math.sin(endAngle * deg),

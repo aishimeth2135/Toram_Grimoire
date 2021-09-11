@@ -346,13 +346,16 @@ export default class EnchantDollEquipmentContainer {
    */
   mostUseRemainingPotential() {
     this.equipment.steps().forEach(step => step.optimizeType(-1));
-    return this.handleMostUseRemainingPotential();
+    return [
+      ...this.handleMostUseRemainingPotential(true),
+      ...this.handleMostUseRemainingPotential(false),
+    ];
   }
 
   /**
    * @returns {Array<EnchantDollEquipmentContainer>}
    */
-  handleMostUseRemainingPotential() {
+  handleMostUseRemainingPotential(checkSpecial) {
     const resultEqs = [];
 
     const newDollEq = this.copy();
@@ -361,8 +364,10 @@ export default class EnchantDollEquipmentContainer {
     if (originalPotentialList.length > 0) {
       const ceq = newDollEq.equipment;
       const positiveStats = newDollEq.positiveStats;
-      let special = originalPotentialList
-        .find(p => p.type === 'step' && p.stat.potential === 3 && p.stat.belongStep.potentialExtraRate <= 1.2);
+      let special = checkSpecial ?
+        originalPotentialList
+          .find(p => p.type === 'step' && p.stat.potential === 3 && p.stat.belongStep.potentialExtraRate <= 1.2) :
+        null;
 
       // 從最大的開始拿
       let cur = originalPotentialList[originalPotentialList.length - 1];

@@ -182,6 +182,15 @@ class EnchantEquipment {
     return Math.max(160 + pot * 230 / d, 0);
   }
 
+  get operationStepsNum() {
+    return this.steps(this.lastStep.index).reduce((cur, step) => {
+      if (step.type === EnchantStep.TYPE_EACH) {
+        return cur + Math.ceil(step.firstStat.value / step.step);
+      }
+      return cur + 1;
+    }, 0);
+  }
+
   /**
    * append new empty step
    * @returns {EnchantStep}

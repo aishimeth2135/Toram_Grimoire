@@ -218,7 +218,7 @@ export default {
     clearCurrentEquipment() {
       this.currentEquipment = null;
     },
-    setCurrentEquipment(eq, disabled=false) {
+    setCurrentEquipment(eq, disabled = false) {
       if (this.currentEquipment === eq && !disabled) {
         this.selectEquipment();
         return;

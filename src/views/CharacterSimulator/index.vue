@@ -69,6 +69,7 @@ import vue_saveLoad from './save-load.vue';
 import vue_foodBuild from './food/main.vue';
 
 import { Character, EquipmentField } from '@/lib/Character/Character';
+import { CharacterBaseStatTypes, CharacterOptionalBaseStatTypes } from '@/lib/Character/Character/enums';
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums';
 import { EquipmentTypes, MainWeaponTypeList } from '@/lib/Character/CharacterEquipment/enums';
 
@@ -313,15 +314,15 @@ export default {
       const vars = {
         value: {
           '@clv': chara.level,
-          '@str': chara.baseStatValue('STR'),
-          '@dex': chara.baseStatValue('DEX'),
-          '@int': chara.baseStatValue('INT'),
-          '@agi': chara.baseStatValue('AGI'),
-          '@vit': chara.baseStatValue('VIT'),
-          '@tec': chara.baseStatValue('TEC'),
-          '@men': chara.baseStatValue('MEN'),
-          '@crt': chara.baseStatValue('CRT'),
-          '@luk': chara.baseStatValue('LUK'),
+          '@str': chara.baseStatValue(CharacterBaseStatTypes.STR),
+          '@dex': chara.baseStatValue(CharacterBaseStatTypes.DEX),
+          '@int': chara.baseStatValue(CharacterBaseStatTypes.INT),
+          '@agi': chara.baseStatValue(CharacterBaseStatTypes.AGI),
+          '@vit': chara.baseStatValue(CharacterBaseStatTypes.VIT),
+          '@tec': chara.baseStatValue(CharacterOptionalBaseStatTypes.TEC),
+          '@men': chara.baseStatValue(CharacterOptionalBaseStatTypes.MEN),
+          '@crt': chara.baseStatValue(CharacterOptionalBaseStatTypes.CRT),
+          '@luk': chara.baseStatValue(CharacterOptionalBaseStatTypes.LUK),
           '@main': mainField ? {
             atk: mainField.atk,
             refining: mainField.refining,

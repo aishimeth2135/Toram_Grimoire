@@ -70,7 +70,7 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
       // }
       const parent = handle(object) as (ValidObjectVar | string);
       if (typeof parent !== 'string') {
-        return parent[handle(property) as string] as ValidVarValue;
+        return parent[handle(property) as string];
       }
       return `${parent}.${handle(property) as string}`;
       // if (!node.computed) {
@@ -119,8 +119,8 @@ function handleConditionalNode(rootNode: jsep.Expression): boolean {
       return node.value as boolean;
     }
     if (jsepTypes.isBinaryExpression(node)) {
-      const left = handle(node.left) as boolean;
-      const right = handle(node.right) as boolean;
+      const left = handle(node.left);
+      const right = handle(node.right);
       const operator = node.operator;
       if (operator === '&&')
         return left && right;

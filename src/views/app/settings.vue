@@ -248,7 +248,7 @@ export default {
       set(v) {
         this.setNightMode.value = v;
         localStorage[APP_STORAGE_KEYS.NIGHT_MODE] = v;
-        document.documentElement.classList[v === '0' ? 'remove': 'add']('theme--night-mode');
+        document.documentElement.classList[v === '0' ? 'remove' : 'add']('theme--night-mode');
       },
     },
     remValue: {
@@ -266,7 +266,7 @@ export default {
     const rel = document.documentElement;
     rel.classList.add('font-' + this.currentFont.toString());
     rel.style.fontSize = (this.setRem.value / 10).toString() + 'px';
-    rel.classList[this.nightMode === '0' ? 'remove': 'add']('theme--night-mode');
+    rel.classList[this.nightMode === '0' ? 'remove' : 'add']('theme--night-mode');
   },
   methods: {
     async swUpdate() {

@@ -42,17 +42,12 @@ export default {
     };
   },
   methods: {
-    updateValue(e) {
-      if (typeof e !== 'object')
-        console.warn(e);
-      let v = typeof e === 'object' ? e.target.value : e;
-      if (v.length > 64) {
-        v = v.slice(0, 64);
+    updateValue(evt) {
+      let value = typeof evt === 'object' ? evt.target.value : evt;
+      if (value.length > 64) {
+        value = value.slice(0, 64);
       }
-      if (v.length === 0) {
-        v = this.value[0];
-      }
-      this.$emit('update:value', v);
+      this.$emit('update:value', value);
     },
     toggleInputFocus(set) {
       this.inputFocus = set;

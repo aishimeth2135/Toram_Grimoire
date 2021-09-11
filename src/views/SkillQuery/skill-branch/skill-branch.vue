@@ -1103,7 +1103,7 @@ export default {
         .join('+')
         .replace(/\+-/g, '-');
     },
-    handleDataContainerLangText(dc, { type = 'normal', prefix = '', afterHandle }={}) {
+    handleDataContainerLangText(dc, { type = 'normal', prefix = '', afterHandle } = {}) {
       dc.handle(v => this.formulaPretreatment(v));
 
       const bch = dc.branch, key = dc.key;
@@ -1150,7 +1150,7 @@ export default {
     handleMarkText(str, className = 'text-light-3') {
       return str.replace(/<!([^>]+)->/g, (m, m1) => `<span class="${className}">${m1}</span>`);
     },
-    handleDataContainer(dc, { beforeColorText, toPercentage=false }={}) {
+    handleDataContainer(dc, { beforeColorText, toPercentage = false } = {}) {
       dc.handle(v => this.formulaPretreatment(v));
 
       const numStrToPercentage = s => (100 * parseFloat(s)).toFixed(1).replace('.0', '') + '%';
@@ -1223,7 +1223,7 @@ export default {
         result.split('').forEach((c, i) => {
           if (c === '(') {
             if (i === 0 || !/[_a-zA-Z0-9]/.test(result[i - 1 + offset])) {
-              result = result.slice(0, i + offset) + '#left~' + result.slice(i + offset +1);
+              result = result.slice(0, i + offset) + '#left~' + result.slice(i + offset + 1);
               offset += 5;
               handleStack.push('normal');
             }
@@ -1232,7 +1232,7 @@ export default {
           }
           if (c === ')') {
             if (handleStack[handleStack.length - 1] == 'normal') {
-              result = result.slice(0, i + offset) + '~right#' + result.slice(i + offset +1);
+              result = result.slice(0, i + offset) + '~right#' + result.slice(i + offset + 1);
               offset += 6;
             }
             handleStack.pop();

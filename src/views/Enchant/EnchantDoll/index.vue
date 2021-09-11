@@ -500,6 +500,7 @@
       :is-weapon="equipmentIsWeapon"
       :for-positive="stepCounter === stepContents.selectPositiveStat"
       :default-negative="stepCounter === stepContents.selectNegativeStat"
+      :selected-items="selectedItems"
       @select-item="selectItem"
       @close="toggle('windows/selectItem', false)"
     />
@@ -676,6 +677,13 @@ export default {
         return this.config.smithLevel;
       },
     },
+    selectedItems() {
+      const toItem = stat => ({ origin: stat.itemBase, type: stat.type });
+      const posItems = this.doll.positiveStats.map(toItem);
+      const negItems = this.selectNegativeStatState.auto ? [] :
+        this.selectNegativeStatState.manually.map(toItem);
+      return [...posItems, ...negItems];
+    },
   },
   methods: {
     updateAutoFindNegativeStats(value) {
@@ -838,8 +846,10 @@ export default {
     selectItem(item) {
       const mode = this.selectItemMode;
       if (mode === 'positiveStats') {
-        if (this.doll.hasPositiveStat(item.origin, item.type)) {
-          this.$notify(this.$lang('tips/stat repeated'));
+        const findPosStat = this.doll.getPositiveStat(item.origin, item.type);
+        if (findPosStat) {
+          // this.$notify(this.$lang('tips/stat repeated'));
+          this.doll.removePositiveStat(findPosStat);
           return;
         }
         const value = this.selectPositiveStatState.autoFill ? item.origin.getLimit(item.type)[1] : 1;
@@ -852,8 +862,10 @@ export default {
           this.$notify(this.$lang('tips/stat repeated'));
           return;
         }
-        if (nstats.find(stat => stat.itemBase === item.origin && stat.type === item.type)) {
-          this.$notify(this.$lang('tips/stat repeated'));
+        const findNegStat = nstats.find(stat => stat.itemBase === item.origin && stat.type === item.type);
+        if (findNegStat) {
+          // this.$notify(this.$lang('tips/stat repeated'));
+          this.removeNegativeStat(findNegStat);
           return;
         }
         if (nstats.length >= this.doll.numNegativeStats) {

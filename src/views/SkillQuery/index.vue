@@ -752,11 +752,11 @@ export default {
       else {
         const list = [1, 5, 10];
         const idx = list.findIndex(p => res <= p);
-        res = list[idx-1];
+        res = list[idx - 1];
       }
       this.setSkillLevel(res);
     },
-    toggleEquipmentType(type, flag=true) {
+    toggleEquipmentType(type, flag = true) {
       const p = type;
       const state = this.equipmentState;
       const list = state[p + 'List'];

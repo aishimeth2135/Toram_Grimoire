@@ -38,10 +38,7 @@ rules:
   no-unused-vars: off
   no-shadow: off
   no-dupe-class-members: off
-  indent:
-    - error
-    - 2
-    - SwitchCase: 1
+  indent: off
   jsdoc/no-undefined-types: warn
   no-trailing-spaces: warn
   object-curly-spacing:
@@ -65,6 +62,18 @@ rules:
   semi:
     - error
     - always
+  func-call-spacing:
+    - error
+    - never
+  space-in-parens:
+    - error
+    - never
+  semi-spacing:
+    - error
+  space-infix-ops:
+    - error
+  arrow-spacing:
+    - error
   import/no-unresolved:
     - 2
     - commonjs: true
@@ -85,6 +94,10 @@ rules:
     - error
   "@typescript-eslint/no-dupe-class-members":
     - error
+  "@typescript-eslint/indent":
+    - error
+    - 2
+    - SwitchCase: 1
   vue/html-indent:
     - warn
     - 2

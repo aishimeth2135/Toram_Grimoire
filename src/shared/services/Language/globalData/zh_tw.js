@@ -75,9 +75,9 @@ export default function() {
             'ninjutsu-scroll': '忍術卷軸',
           },
           'body': {
-            'dodge': '輕化防具',
-            'defense': '重化防具',
-            'normal': '一般防具',
+            'body-dodge': '輕化防具',
+            'body-defense': '重化防具',
+            'body-normal': '一般防具',
           },
         },
         'obtain': {

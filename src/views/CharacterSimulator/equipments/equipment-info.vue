@@ -215,7 +215,7 @@ export default {
       const len = eq.customTypeList.length;
 
       ++this.currentCustomTypeIndex;
-      if ( this.currentCustomTypeIndex == len )
+      if (this.currentCustomTypeIndex == len)
         this.currentCustomTypeIndex = 0;
       eq.setCustomType(eq.customTypeList[this.currentCustomTypeIndex]);
     },

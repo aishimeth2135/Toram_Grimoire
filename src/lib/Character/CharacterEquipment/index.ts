@@ -253,6 +253,7 @@ abstract class CharacterEquipment {
       isCustom: false,
       id: -1,
       name: '',
+      type: EquipmentTypes.Empty,
     };
 
     let instance = -1;
@@ -276,8 +277,7 @@ abstract class CharacterEquipment {
       instance = 6;
 
     data.instance = instance;
-    if (this.type)
-      data.type = this.type;
+    data.type = this.type;
 
     // == [ stats ] ==================================================
     data.stats = this.stats.map(stat => stat.save());
@@ -336,7 +336,7 @@ abstract class CharacterEquipment {
       // ][data.instance];
 
       const type: EquipmentTypes = (() => {
-        const originalType = data.type as string;
+        const originalType = (data.type || EquipmentTypes.Avatar) as string;
         if (instance === 3 && (originalType === 'normal' || originalType === 'dodge' || originalType === 'defense')) {
           return 'body-' + originalType;
         }
@@ -352,7 +352,7 @@ abstract class CharacterEquipment {
         eq = new SubArmor(origin, name, stats, type, def as number);
       } else if (instance === 3) {
         eq = new BodyArmor(origin, name, stats, def as number);
-        eq.setType(type as EquipmentTypes);
+        eq.setType(type);
       } else if (instance === 4) {
         eq = new AdditionalGear(origin, name, stats, def as number);
       } else if (instance === 5) {
@@ -452,7 +452,7 @@ interface EquipmentSaveData {
   stats: StatRestrictionSaveData[];
   isCustom: boolean;
   id: number;
-  type?: EquipmentTypes;
+  type: EquipmentTypes;
   atk?: number;
   def?: number;
   stability?: number;

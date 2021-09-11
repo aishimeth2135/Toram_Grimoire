@@ -1,6 +1,7 @@
 import { markRaw } from 'vue';
 import { CalculationBase, CalcItemContainerBase } from './Calculation/base';
 import { CalcItemContainer } from './Calculation';
+import { ContainerTypes } from './Calculation/enums';
 import type { CurrentItemIdGetter } from './Calculation/base';
 
 export default class {
@@ -12,12 +13,12 @@ export default class {
 
     const base = new CalculationBase();
 
-    const factory = (id: string, type: symbol, callback: FactoryCreated): void => {
+    const factory = (id: string, type: ContainerTypes, callback: FactoryCreated): void => {
       const container = base.appendContainer(id, type);
       callback(container);
     };
-    const normal: FactoryAlly = (id, callback) => factory(id, CalcItemContainerBase.TYPE_NORMAL, callback);
-    const options: FactoryAlly = (id, callback) => factory(id, CalcItemContainerBase.TYPE_OPTIONS, callback);
+    const normal: FactoryAlly = (id, callback) => factory(id, ContainerTypes.Normal, callback);
+    const options: FactoryAlly = (id, callback) => factory(id, ContainerTypes.Options, callback);
 
     const utils = {
       getCurrentDamageTypeId(itemContainer: CalcItemContainer) {

@@ -66,7 +66,7 @@ export default {
 
     const iconNumber = this.$route.params.number;
     if (iconNumber) {
-      const [max, interval=this.generationInterval] = iconNumber.split('+');
+      const [max, interval = this.generationInterval] = iconNumber.split('+');
       this.iconMaximum = max;
       this.generationInterval = interval;
     }
@@ -118,7 +118,7 @@ export default {
       const start_x = xf(getRandomInt(-20, -5)),
         start_y = yf(105) - yStep();
       let cur = start_y - yStep(2);
-      let d = `M${ox},${yf(100)}C${start_x},${start_y} ${start_x},${start_y-yf(2)} ${ox},${cur}`;
+      let d = `M${ox},${yf(100)}C${start_x},${start_y} ${start_x},${start_y - yf(2)} ${ox},${cur}`;
       let flip = true;
       while (cur > 0) {
         cur -= yStep();
@@ -135,7 +135,7 @@ export default {
         const l = this.colors.length;
         if (this.colors.length == 1)
           return this.colors[0];
-        return '#' + this.colors[getRandomInt(0, l-1)];
+        return '#' + this.colors[getRandomInt(0, l - 1)];
       }
       return this.randowHexColor();
     },

@@ -60,8 +60,12 @@ export default class EnchantDoll {
    * @param {EnchantItem} itemBase
    * @param {symbol} type
    */
-  hasPositiveStat(itemBase, type) {
+  getPositiveStat(itemBase, type) {
     return this._positiveStats.find(stat => stat.itemBase === itemBase && stat.type === type);
+  }
+
+  hasPositiveStat(itemBase, type) {
+    return this.getPositiveStat(itemBase, type) ? true : false;
   }
 
   /**
@@ -140,6 +144,17 @@ export default class EnchantDoll {
     //   console.groupEnd();
     // };
 
+    const sortResult = (build1, build2) => {
+      const sr2 = Math.floor(build2.equipment.realSuccessRate);
+      const sr1 = Math.floor(build1.equipment.realSuccessRate);
+      if (sr2 === sr1) {
+        // 步驟少的
+        return build1.equipment.operationStepsNum - build2.equipment.operationStepsNum;
+      }
+      // 成功率高的
+      return sr2 - sr1;
+    };
+
     if (resultEqs.length !== 0) {
       // logResultEqs('0', resultEqs);
       resultEqs.forEach(cdollEq => cdollEq.clearVirtualStats());
@@ -163,7 +178,7 @@ export default class EnchantDoll {
       // logResultEqs('4', resultEqs);
 
       // 回傳成功率最高的裝備
-      resultEqs.sort((a, b) => b.equipment.realSuccessRate - a.equipment.realSuccessRate);
+      resultEqs.sort(sortResult);
 
       // console.group(`%c  %c${resultEqs.length} kinds of results\n%c  %c${errorEqs.length} kinds of error-results`,
       //   'background-color: #e8caed; border-radius: 50%; margin-right: 12px',
@@ -171,7 +186,7 @@ export default class EnchantDoll {
       //   'background-color: red; border-radius: 50%; margin-right: 12px',
       //   'color: #e8caed');
       // resultEqs.forEach(deq => {
-      //   console.group(`[ ${deq.equipment.successRate} ]`);
+      //   console.group(`[ ${deq.equipment.successRate} ] [steps: ${deq.equipment.operationStepsNum}]`);
       //   deq.equipment.steps().forEach(step => console.log(step.toString()));
       //   console.groupEnd();
       // });
@@ -185,7 +200,7 @@ export default class EnchantDoll {
     }
     else {
       errorEqs.forEach(item => item.finalFill());
-      errorEqs.sort((a, b) => b.equipment.realSuccessRate - a.equipment.realSuccessRate);
+      errorEqs.sort(sortResult);
 
       // console.group(`%c  %c${errorEqs.length} kinds of results`,
       //   'background-color: red; border-radius: 50%; margin-right: 12px',
@@ -389,7 +404,7 @@ export default class EnchantDoll {
     };
 
     negatives.sort((a, b) => {
-      for (let i=1; i<=numNegatives; ++i) {
+      for (let i = 1; i <= numNegatives; ++i) {
         if (i >= a.stats.length && i >= b.stats.length) {
           return 0;
         }
@@ -424,8 +439,8 @@ export default class EnchantDoll {
 
     const merge = ary => {
       const res = [];
-      for (let i=0; i<ary.length - 1; ++i) {
-        for (let j=0; j<stats.length; ++j) {
+      for (let i = 0; i < ary.length - 1; ++i) {
+        for (let j = 0; j < stats.length; ++j) {
           const p = ary[i];
           if (p[p.length - 1] < j) {
             const newEl = p.slice();

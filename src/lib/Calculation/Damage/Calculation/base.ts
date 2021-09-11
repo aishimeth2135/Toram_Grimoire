@@ -1,5 +1,5 @@
-
 import { CalcItemContainer, Calculation } from './index';
+import { ContainerTypes } from './enums';
 
 type CalcStructExpression = CalcStructSingle | CalcStructMultiple;
 type CalcStructItem = CalcStructExpression | string;
@@ -41,7 +41,7 @@ class CalculationBase {
     this.items = new Map();
   }
 
-  appendContainer(id: string, type: symbol): CalcItemContainerBase {
+  appendContainer(id: string, type: ContainerTypes): CalcItemContainerBase {
     const container = new CalcItemContainerBase(this, id, type);
     this.containers.set(id, container);
     return container;
@@ -109,14 +109,11 @@ class CalculationBase {
 }
 
 class CalcItemContainerBase {
-  static TYPE_NORMAL = Symbol('normal');
-  static TYPE_OPTIONS = Symbol('options');
-
   private _parent: CalculationBase;
   private _calcResult: CalcResult | null;
 
   id: string;
-  type: symbol;
+  type: ContainerTypes;
   items: Map<string, CalcItemBase>;
   getCurrentItemId: CurrentItemIdGetter | null;
   isMultiplier: boolean;
@@ -125,10 +122,10 @@ class CalcItemContainerBase {
   _disabledValue: number | null;
   controls: { toggle: boolean };
 
-  constructor(parent: CalculationBase, id: string, type: symbol) {
+  constructor(parent: CalculationBase, id: string, type: ContainerTypes) {
     this.id = id;
     this._parent = parent;
-    this.type = type ?? CalcItemContainerBase.TYPE_NORMAL;
+    this.type = type ?? ContainerTypes.Normal;
     this.items = new Map();
     this.getCurrentItemId = null;
     this.isMultiplier = false;

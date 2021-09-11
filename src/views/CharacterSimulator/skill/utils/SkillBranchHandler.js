@@ -242,7 +242,7 @@ class SkillBranchHandler {
       .replace(/\+-/g, '-');
     return /^-?[\d.]+$/.test(str) || !repeat ? str : this.calcValueStr(str, false);
   }
-  handleDataContainer(dc, { beforeColorText }={}) {
+  handleDataContainer(dc, { beforeColorText } = {}) {
     //const numStrToPercentage = s => (100 * parseFloat(s)).toFixed(1).replace('.0', '') + '%';
 
     this.handleReplacedVariable(dc);

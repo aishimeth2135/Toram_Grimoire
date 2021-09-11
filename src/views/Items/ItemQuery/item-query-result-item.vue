@@ -310,7 +310,7 @@ export default {
         const type = this.$rootLang('common/Equipment/obtain/' + p.type);
         const icon = icons[p.type];
         const name = p.type !== 'smith' ? p.name : this.$lang('equipment detail/production equipment');
-        const { map=null, dye=null } = p;
+        const { map = null, dye = null } = p;
         return {
           iid: i,
           isDrop: ['mobs', 'boss', 'mini_boss'].includes(p.type),

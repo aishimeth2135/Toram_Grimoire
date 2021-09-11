@@ -198,7 +198,7 @@ export default {
             if (initValue != 0) {
               lines.push({
                 title: this.$lang('init value'),
-                value: (id.value > 0 && !isBase ? '+' : '') +vFix(initValue),
+                value: (id.value > 0 && !isBase ? '+' : '') + vFix(initValue),
                 iid: 0,
               });
               hasInit = true;
@@ -232,7 +232,7 @@ export default {
               eqs.forEach((text, i) => {
                 if (eqs.length - i < ceqs.length)
                   return;
-                if (ceqs.every((p, j) => p.text === eqs[i+j].text))
+                if (ceqs.every((p, j) => p.text === eqs[i + j].text))
                   eqs.splice(i, ceqs.length);
               });
             });

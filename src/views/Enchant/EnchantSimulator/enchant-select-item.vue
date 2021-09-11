@@ -35,13 +35,14 @@
         {{ category.origin.title }}
       </cy-icon-text>
       <div>
-        <cy-button
+        <cy-button-check
           v-for="item in category.items"
           :key="item.id"
+          :selected="selectedItems.some(_item => item.origin === _item.origin && item.type === _item.type)"
           @click="itemClick(item)"
         >
           {{ item.origin.statBase.title(item.type) }}
-        </cy-button>
+        </cy-button-check>
       </div>
     </div>
     <div class="sticky bottom-0 mt-4 py-2 bg-white flex border-t-1 border-light-2">
@@ -79,6 +80,11 @@ export default {
     defaultNegative: {
       type: Boolean,
       default: false,
+    },
+    // origin of selected items
+    selectedItems: {
+      type: Array,
+      default: () => [],
     },
   },
   emits: ['close', 'select-item'],

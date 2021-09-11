@@ -1,24 +1,25 @@
 import { CalculationBase, CalcItemBase, CalcItemContainerBase } from './base';
 import type { CalcStructItem, CalcResultOptions } from './base';
+import { ContainerTypes } from './enums';
 
 interface CalculationSaveData {
   name: string;
   containers: {
-      id: string;
-      enabled: boolean;
-      currentItemId: string | null;
+    id: string;
+    enabled: boolean;
+    currentItemId: string | null;
   }[];
   items: {
-      id: string;
-      value: number;
+    id: string;
+    value: number;
   }[];
   containerCustomItems: {
-      containerId: string;
-      items: {
-          id: string;
-          name: string;
-          value: number;
-      }[];
+    containerId: string;
+    items: {
+      id: string;
+      name: string;
+      value: number;
+    }[];
   }[];
 }
 
@@ -185,7 +186,7 @@ class CalcItemContainer {
   }
 
   get selectable(): boolean {
-    return this.base.type === CalcItemContainerBase.TYPE_OPTIONS && !this.base.getCurrentItemId;
+    return this.base.type === ContainerTypes.Options && !this.base.getCurrentItemId;
   }
 
   get belongCalculation(): Calculation {

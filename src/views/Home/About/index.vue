@@ -128,6 +128,9 @@ export default {
           }, '@line', {
             main: '✩cuxin',
             sub: '眾神幣',
+          }, {
+            main: '紺野木綿季、優紀',
+            sub: '眾神幣',
           }, '@end'],
         }],
       }, {

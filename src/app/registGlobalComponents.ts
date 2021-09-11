@@ -1,12 +1,13 @@
+import type { App, FunctionalComponent } from 'vue';
 import vue_CyButton from '@/components/global/Cyteria/button.vue';
 import { h, mergeProps } from 'vue';
 
-export default function(APP) {
+export default function(APP: App<Element>) {
   /* ==== [ auto regist global components ] ================= */
-  const registComponents = (requireComponent, prefix = '', excludes = []) => {
+  const registComponents = (requireComponent: __WebpackModuleApi.RequireContext, prefix = '', excludes: string[] = []) => {
     requireComponent.keys().forEach(fileName => {
       const componentConfig = requireComponent(fileName);
-      const componentName = fileName.split('/').pop().replace(/\.\w+$/, '');
+      const componentName = (fileName.split('/').pop() as string).replace(/\.\w+$/, '');
       if (excludes.includes(componentName)) {
         return;
       }
@@ -24,10 +25,10 @@ export default function(APP) {
   registButtonAlias(APP);
 }
 
-function registButtonAlias(APP) {
+function registButtonAlias(APP: App<Element>) {
   const aliasNames = ['icon', 'line', 'border', 'drop-down', 'check', 'inline', 'switch'];
   aliasNames.map(name => {
-    const componentFunction = function(props, context) {
+    const componentFunction: FunctionalComponent = function(props, context) {
       const attrs = mergeProps({
         type: name,
       }, context.attrs);

@@ -355,9 +355,9 @@ export default {
         else {
           const find = ss => ss.find(a => this.isElementStat(a.origin.baseName));
 
-          if ( this.isElementStat(stat.origin.baseName) && (
+          if (this.isElementStat(stat.origin.baseName) && (
             (this.equipment.elementStat && !find(this.deletedStats)) ||
-            find(this.appendedStats) ) ) {
+            find(this.appendedStats))) {
             this.$notify(this.$lang('custom equipment editor/equipment can only have one element stat'),
               null, 'equipment can only have one element stat');
           } else {

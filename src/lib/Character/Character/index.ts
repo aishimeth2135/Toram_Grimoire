@@ -140,7 +140,7 @@ class Character {
       find.value = p.value;
     });
     if (this.optionalBaseStat !== null) {
-      chara.setOptinalBaseStat(this.optionalBaseStat.name as CharacterOptionalBaseStatTypes);
+      chara.setOptinalBaseStat(this.optionalBaseStat.name);
       (chara.optionalBaseStat as CharacterBaseStat<CharacterOptionalBaseStatTypes>).value = this.optionalBaseStat.value;
     }
 
@@ -386,7 +386,7 @@ interface CharacterStatFormulaResultConditionalBase {
   formula: string;
   options: string[];
   result: boolean;
-  statBasePart: string;
+  statBasePart: string | null;
   isMul: boolean;
   isBase: boolean;
 }
@@ -719,7 +719,7 @@ class CharacterStatFormula {
 
     const conditions: CharacterStatFormulaResultConditionalBase[] = this.conditionValues
       .map(p => {
-        let statBasePart = '',
+        let statBasePart: string | null = null,
           result = true,
           isMul = false,
           isBase = false;

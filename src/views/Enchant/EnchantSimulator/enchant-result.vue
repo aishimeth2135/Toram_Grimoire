@@ -280,7 +280,7 @@ export default {
       const resultStatsText = this.enchantResultStats.map(item => item.text).join('｜');
       const materialsText = this.enchantResultMaterials.map(item => `${item.title} ${item.value}`).join('｜');
       const stepsText = this.enchantResult
-        .map((p, i) => `${i+1}. ${p.text}`)
+        .map((p, i) => `${i + 1}. ${p.text}`)
         .join('\n');
       const basePotential = this.equipment.basePotential === ENCHANT_STATE.EquipmentBasePotentialMinimum ?
         '' :

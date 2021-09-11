@@ -1,29 +1,25 @@
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import type { Ref } from 'vue';
-
+import type { UnwrapNestedRefs } from '@vue/reactivity';
 interface ToggleItemDetail {
   readonly name: string;
   readonly default?: boolean;
 }
 
 type ToggleItem = ToggleItemDetail | string;
-
-type ToggleServiceOptions = Record<string, ToggleServiceOptionGroup>;
-type ToggleServiceOptionGroup = readonly ToggleItem[];
+type ToggleHandler = (id: string, force?: boolean, groupForce?: boolean) => void;
 
 type ContentKey<Content> = Content extends { name: infer Name } ? Name : Content;
 type ContentKeys<Contents extends ToggleServiceOptionGroup> = ContentKey<Contents[number]>;
 
+type ToggleServiceOptions = Record<string, ToggleServiceOptionGroup>;
 type ToggleServiceGroups<Groups extends ToggleServiceOptions> = Record<keyof Groups, ToggleServiceGroupContents<Groups[keyof Groups]>>;
-type ToggleServiceGroupContents<Group extends ToggleServiceOptionGroup> = {
-  [key in ContentKeys<Group>]: Ref<boolean>;
-};
 type ToggleServiceResult<Groups extends ToggleServiceOptions> = ToggleServiceGroups<Groups> & { toggle: ToggleHandler };
+type ToggleServiceOptionGroup = readonly ToggleItem[];
+type ToggleServiceGroupContents<Group extends ToggleServiceOptionGroup> = Record<ContentKeys<Group>, Ref<boolean>>;
 
-type ToggleHandler = (id: string, force?: boolean, groupForce?: boolean) => void;
 
-
-export default function ToggleService<GroupMap extends ToggleServiceOptions>(options: GroupMap): ToggleServiceResult<GroupMap> {
+export default function ToggleService<GroupMap extends ToggleServiceOptions>(options: GroupMap): UnwrapNestedRefs<ToggleServiceResult<GroupMap>> {
   const dataMap = {} as ToggleServiceGroups<GroupMap>;
   Object.entries(options).forEach(([groupKey, subs]) => {
     const group = {} as ToggleServiceGroupContents<GroupMap[typeof groupKey]>;
@@ -40,8 +36,8 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(opt
 
   const toggle: ToggleHandler = (id, force, groupForce) => {
     const [group, sub] = id.split('/');
+    const targetGroup = dataMap[group] as Record<string, Ref<boolean>>;
     if (sub) {
-      const targetGroup = dataMap[group] as { [key: string]: Ref<boolean> };
       force = typeof force === 'boolean' ? force : !targetGroup[sub].value;
       targetGroup[sub].value = force;
       if (groupForce !== undefined) {
@@ -52,7 +48,6 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(opt
         });
       }
     } else {
-      const targetGroup = dataMap[group] as { [key: string]: Ref<boolean> };
       if (force === undefined) {
         console.warn('[toggle service] Toggle the group must pass param: force');
         return;
@@ -66,14 +61,15 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(opt
     resultGroups[key] = dataMap[key];
   });
 
-  return {
+  return reactive({
     toggle,
     ...resultGroups,
-  };
+  });
 }
 
-const { window, test,  toggle } = ToggleService({
-  window: ['selectType'],
-});
+// const { window, test,  toggle } = ToggleService({
+//   window: ['selectType'],
+// });
 
-const t = window.ttt;
+// const t = window.ttt;
+// const t2 = window.selectType;

@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import { register } from 'register-service-worker';
 import store from '@/store';
 import MessageNotify from '@/shared/services/Notify';

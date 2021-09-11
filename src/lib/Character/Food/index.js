@@ -66,7 +66,7 @@ class Foods {
             this.appendSelectedFood(findIdx);
         } else {
           success = false;
-          console.warn(`Can not find Food which stat-base-name: ${p.statId}, negative: ${p.negative}` );
+          console.warn(`Can not find Food which stat-base-name: ${p.statId}, negative: ${p.negative}`);
         }
       });
 

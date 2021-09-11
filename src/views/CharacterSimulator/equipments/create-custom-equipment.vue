@@ -32,7 +32,7 @@
         </div>
       </template>
     </cy-bottom-content>
-    <cy-window :visible="window.selectType" @close="toggle('window/selectType')">
+    <cy-window v-model:visible="window.selectType">
       <template #title>
         <cy-icon-text icon="gg-shape-square">
           {{ $lang('create custom equipment/select equipment type') }}
