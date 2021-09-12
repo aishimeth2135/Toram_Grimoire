@@ -359,10 +359,10 @@ export default {
           },
           '@special': specialField ? { def: specialField.def } : { def: 0 },
           '@shield': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Shield) ?
-            chara.fieldEquipment(EquipmentFieldTypes.SubWeapon) :
+            { refining: subField.refining, def: subField.def } :
             { refining: 0, def: 0 },
           '@arrow': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow) ?
-            chara.fieldEquipment(EquipmentFieldTypes.SubWeapon) :
+            { stability: subField.stability, atk: subField.atk } :
             { stability: 0, atk: 0 },
           '@element': this.equipmentElement,
           '@skill': {
@@ -405,7 +405,6 @@ export default {
         computed: {},
         computedResultStore: {},
       };
-
       const pureStats = [];
 
       const appendStat = stat => {

@@ -176,9 +176,9 @@ function handleFormula(formulaStr: string, {
   getters = {},
   toNumber = false,
   defaultValue = null,
-}: HandleFormulaOptions = {}) {
+}: HandleFormulaOptions = {}): number | string {
   if (formulaStr === '') {
-    if (defaultValue === undefined) {
+    if (defaultValue === null) {
       return toNumber ? 0 : '0';
     }
     return defaultValue;
@@ -235,13 +235,6 @@ function handleFormula(formulaStr: string, {
   if (toNumber && typeof formulaStr === 'string') {
     const num = parseFloat(formulaStr);
     return Number.isNaN(num) ? 0 : num;
-  }
-
-  if (formulaStr === 'true') {
-    return true;
-  }
-  if (formulaStr === 'false') {
-    return false;
   }
 
   return formulaStr;

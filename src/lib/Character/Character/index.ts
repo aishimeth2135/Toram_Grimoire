@@ -706,7 +706,7 @@ class CharacterStatFormula {
         statValueVars.mvalue = mvalue;
         statValueVars.tvalue = tvalue;
       }
-      return handleFormula(formulaStr, handlerOptions);
+      return handleFormula(formulaStr, handlerOptions) as number;
     };
 
 
@@ -755,7 +755,7 @@ class CharacterStatFormula {
       .filter(p => p.statBasePart !== null && !p.isBase)
       .forEach(p => {
         const part = p.statBasePart;
-        const value = formulaHandler(p.formula) as number;
+        const value = formulaHandler(p.formula);
         const data: StatPartsDetailAdditionalValueItem = {
           conditional: p.conditional,
           options: p.options,
@@ -783,7 +783,7 @@ class CharacterStatFormula {
       .filter(p => !p.isBase)
       .filter(p => p.statBasePart === null)
       .map(p => {
-        const value = formulaHandler(p.formula) as number;
+        const value = formulaHandler(p.formula);
         statPartsDetail.additionalValues.base.push({
           conditional: p.conditional,
           options: p.options,
@@ -812,9 +812,9 @@ class CharacterStatFormula {
 
       if (formula && formula.includes('#base')) {
         basev = sum(addValues) * mul(mulValues);
-        res = formulaHandler(this.formula.replace('#base', basev.toString())) as number;
+        res = formulaHandler(this.formula.replace('#base', basev.toString()));
       } else {
-        initBasev = formula ? formulaHandler(formula) as number : 0;
+        initBasev = formula ? formulaHandler(formula) : 0;
         basev = sum([initBasev, ...addValues]) * mul(mulValues);
         res = defaultFormula ? (basev * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : basev;
       }

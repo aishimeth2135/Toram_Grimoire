@@ -10,7 +10,10 @@ function getVarsMap<T>(vars: HandledVars): Map<string, T> {
   const handleVarsMapping = (prefix: string, target: HandledVars) => {
     Object.entries(target).forEach(([key, value]) => {
       const mapKey = `${prefix ? prefix + '.' : ''}${key}`;
-      if (typeof value === 'object') {
+      if (value === null || value === undefined) {
+        varsMap.set(mapKey, 0);
+        console.warn(`[handle formula] vars: ${mapKey} is null or undefined`);
+      } else if (typeof value === 'object') {
         if (Array.isArray(value)) {
           varsMap.set(mapKey, `[${value.toString()}]`);
         } else {
@@ -30,11 +33,15 @@ function getGettersMap<T>(getters: HandledGetters): Map<string, () => T> {
   const handleGettersMapping = (prefix: string, target: HandledGetters) => {
     Object.entries(target).forEach(([key, value]) => {
       const mapKey = `${prefix ? prefix + '.' : ''}${key}`;
-      if (typeof value === 'object') {
+      if (value === null || value === undefined) {
+        gettersMap.set(mapKey, () => 0);
+        console.warn(`[handle formula] vars: ${mapKey} is null or undefined`);
+      } else if (typeof value === 'object') {
         handleGettersMapping(mapKey, value);
       } else if (typeof value === 'function') {
         gettersMap.set(mapKey, value);
       } else {
+        gettersMap.set(mapKey, () => 0);
         console.warn(`[handle formula] getter: ${mapKey} is not function`);
       }
     });
