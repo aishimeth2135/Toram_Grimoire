@@ -29,7 +29,9 @@
 
 <script>
 import { computed, inject, toRefs, Ref } from 'vue';
+
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
+
 import { numberToFixed } from '@/shared/utils/number';
 import { markText } from '@/shared/utils/view';
 

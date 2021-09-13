@@ -224,18 +224,19 @@
 </template>
 
 <script>
+import { computed, provide } from '@vue/runtime-core';
 import { mapActions, mapMutations, useStore } from 'vuex';
-import init from './init.js';
 
-import ToggleService from '@/setup/ToggleService';
+
 import AutoSave from '@/setup/AutoSave';
 import ExportBuild from '@/setup/ExportBuild';
-import { setupCalcMode, setupCalculationStore, setupResultMode, setupCalculationCalcOptions } from './setup';
+import ToggleService from '@/setup/ToggleService';
 
-import vue_DamageCalculationItem from './damage-calculation-item';
 import vue_DamageCalculationCompare from './damage-calculation-compare';
+import vue_DamageCalculationItem from './damage-calculation-item';
 import vue_DamageCalculationResultItem from './damage-calculation-result-item';
-import { computed, provide } from '@vue/runtime-core';
+import init from './init.js';
+import { setupCalcMode, setupCalculationStore, setupResultMode, setupCalculationCalcOptions } from './setup';
 
 export default {
   name: 'DamageCalculation',

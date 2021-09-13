@@ -1,9 +1,9 @@
+import csv from './csv.js';
 import element from './element.js';
+import file from './file';
+import number from './number.js';
 import object from './object.js';
 import svg from './svg.js';
-import number from './number.js';
-import csv from './csv.js';
-import file from './file';
 
 function copyToClipboard(s) {
   const input = document.createElement('textarea');

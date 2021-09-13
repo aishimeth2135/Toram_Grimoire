@@ -1,6 +1,9 @@
 import Papa from 'papaparse';
+
 import store from '@/store';
+
 import { DataPath, DataPathLang } from '@/shared/services/DataPath';
+
 
 type PathItem = string | { path: string; lang?: boolean };
 type CsvData = string[][];

@@ -1,6 +1,7 @@
 import { onUnmounted } from 'vue';
-import RegisterLang from './RegisterLang';
+
 import Notify from './Notify';
+import RegisterLang from './RegisterLang';
 
 type AutoSaveOptions = {
   readonly save: () => void;

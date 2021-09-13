@@ -1,6 +1,6 @@
+import type { UnwrapNestedRefs } from '@vue/reactivity';
 import { ref, reactive } from 'vue';
 import type { Ref } from 'vue';
-import type { UnwrapNestedRefs } from '@vue/reactivity';
 interface ToggleItemDetail {
   readonly name: string;
   readonly default?: boolean;

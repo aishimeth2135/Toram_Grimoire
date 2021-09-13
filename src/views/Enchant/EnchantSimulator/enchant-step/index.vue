@@ -175,8 +175,10 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
-import vue_EnchantStepStat from './enchant-step-stat';
+
 import { EnchantStep } from '@/lib/Enchant/Enchant';
+
+import vue_EnchantStepStat from './enchant-step-stat';
 
 export default {
   name: 'EnchantStep',

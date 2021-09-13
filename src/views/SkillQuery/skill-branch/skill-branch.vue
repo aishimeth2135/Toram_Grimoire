@@ -420,17 +420,17 @@
   </div>
 </template>
 <script>
-import vue_damageFormula from './damage-formula.vue';
-import vue_healFormula from './heal-formula.vue';
-import vue_stats from './stats.vue';
-import vue_branchDetail from './branch-detail.vue';
-import vue_equipmentInfo from './equipment-info.vue';
-import vue_skillAreaInfo from './skill-area-info';
-
-import handleSkillFormula from '../utils/handleFormula.js';
-import DataContainer from '../utils/DataContainer.js';
-
 import { trimZero } from '@/shared/utils/string';
+
+import DataContainer from '../utils/DataContainer.js';
+import handleSkillFormula from '../utils/handleFormula.js';
+import vue_branchDetail from './branch-detail.vue';
+import vue_damageFormula from './damage-formula.vue';
+import vue_equipmentInfo from './equipment-info.vue';
+import vue_healFormula from './heal-formula.vue';
+import vue_skillAreaInfo from './skill-area-info';
+import vue_stats from './stats.vue';
+
 
 export default {
   name: 'SkillBranch',

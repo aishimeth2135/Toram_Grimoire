@@ -1,6 +1,7 @@
 import type { App, FunctionalComponent } from 'vue';
-import vue_CyButton from '@/components/global/Cyteria/button.vue';
 import { h, mergeProps } from 'vue';
+
+import vue_CyButton from '@/components/global/Cyteria/button.vue';
 
 export default function(APP: App<Element>) {
   /* ==== [ auto regist global components ] ================= */

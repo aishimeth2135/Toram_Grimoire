@@ -1,5 +1,5 @@
-import { CalcItemContainer, Calculation } from './index';
 import { ContainerTypes } from './enums';
+import { CalcItemContainer, Calculation } from './index';
 
 type CalcStructExpression = CalcStructSingle | CalcStructMultiple;
 type CalcStructItem = CalcStructExpression | string;

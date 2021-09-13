@@ -1,5 +1,6 @@
 import GetLang from '@/shared/services/Language';
 import { isNumberString } from '@/shared/utils/string';
+
 import { StatTypes } from './enums';
 
 
@@ -78,7 +79,7 @@ class StatBase {
     return '';
   }
 
-  getShowData(type: StatTypes, v: StatValue) {
+  getShowData(type: StatTypes, value: StatValue) {
     let title = '', tail = '';
     if (type === StatTypes.Constant) {
       title = this.text;
@@ -93,18 +94,25 @@ class StatBase {
       tail = '%';
     }
     return {
-      result: this.show(type, v),
+      result: this.show(type, value),
       title,
-      value: v,
+      value,
       tail,
     };
   }
 
-  createStat(type: StatTypes, value: StatValue): Stat {
+  createStat(type: StatTypes, value: number): Stat {
     if (!this.hasMultiplier && type === StatTypes.Multiplier) {
       type = StatTypes.Constant;
     }
     return new Stat(this, type, value);
+  }
+
+  createStatComputed(type: StatTypes, value: string): StatComputed {
+    if (!this.hasMultiplier && type === StatTypes.Multiplier) {
+      type = StatTypes.Constant;
+    }
+    return new StatComputed(this, type, value);
   }
 
   checkBoolStat(type?: StatTypes) {
@@ -123,16 +131,22 @@ class StatBase {
 }
 
 class Stat {
-  base: StatBase;
-  type: StatTypes;
-  value: StatValue;
+  private _base: StatBase;
+  private _type: StatTypes;
+  value: number;
 
-  constructor(base: StatBase, type: StatTypes, v: StatValue = 0) {
-    this.base = base;
-    this.type = type;
-    this.value = v;
+  constructor(base: StatBase, type: StatTypes, value: number = 0) {
+    this._base = base;
+    this._type = type;
+    this.value = value;
   }
 
+  get base() {
+    return this._base;
+  }
+  get type() {
+    return this._type;
+  }
   get statId() {
     return this.base.statId(this.type);
   }
@@ -146,7 +160,7 @@ class Stat {
     return this.base.baseName;
   }
 
-  show(value: StatValue) {
+  show(value?: StatValue) {
     return this.base.show(this.type, value ?? this.value);
   }
 
@@ -154,7 +168,7 @@ class Stat {
     return this.base.getShowData(this.type, this.value);
   }
 
-  add(value: number | string) {
+  add(value: number) {
     if (typeof this.value === 'number' && typeof value === 'number') {
       this.value += value;
     }
@@ -177,5 +191,50 @@ class Stat {
   }
 }
 
+class StatComputed {
+  base: StatBase;
+  type: StatTypes;
+  value: string;
+
+  constructor(base: StatBase, type: StatTypes, value: string = '') {
+    this.base = base;
+    this.type = type;
+    this.value = value;
+  }
+
+  get statId() {
+    return this.base.statId(this.type);
+  }
+  get isBoolStat() {
+    return this.base.checkBoolStat(this.type);
+  }
+  get title() {
+    return this.base.title(this.type);
+  }
+  get baseName() {
+    return this.base.baseName;
+  }
+
+  show(value?: StatValue) {
+    return this.base.show(this.type, value ?? this.value);
+  }
+
+  getShowData() {
+    return this.base.getShowData(this.type, this.value);
+  }
+
+  /**
+   * if input_stat.baseName == this.baseName and input_stat.type == this.type, return true.
+   * (value do not have to be equal)
+   */
+  equals(stat: Stat): boolean {
+    return stat.base === this.base && stat.type === this.type;
+  }
+
+  copy(): StatComputed {
+    return this.base.createStatComputed(this.type, this.value);
+  }
+}
+
 export { Stat, StatBase };
-export type { StatValue, StatTypes };
+export type { StatValue };

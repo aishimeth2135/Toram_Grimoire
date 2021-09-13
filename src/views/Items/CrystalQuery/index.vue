@@ -144,12 +144,13 @@
   </article>
 </template>
 <script>
-import init from './init.js';
-
-import { StatTypes } from '@/lib/Character/Stat/enums';
 import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment';
+import { StatTypes } from '@/lib/Character/Stat/enums';
 
 import vue_showStat from '@/components/common/show-stat.vue';
+
+import init from './init.js';
+
 
 export default {
   name: 'CrystalQuery',

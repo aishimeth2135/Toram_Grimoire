@@ -1,6 +1,7 @@
 import CY from '@/shared/utils/Cyteria';
-import RegisterLang from './RegisterLang';
+
 import Notify from './Notify';
+import RegisterLang from './RegisterLang';
 
 type ExportBuildsSaveHandler = (fileName: string, dataString: string) => void;
 

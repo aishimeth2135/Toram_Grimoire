@@ -1,6 +1,7 @@
 <script>
 import { Transition } from 'vue';
 import { h, mergeProps } from 'vue';
+
 import Fade from './transition/fade.vue';
 
 function CyTransition(props, context) {

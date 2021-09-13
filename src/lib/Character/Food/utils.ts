@@ -1,8 +1,10 @@
 import Grimoire from '@/shared/Grimoire';
-import { Foods } from '@/lib/Character/Food';
 
-export default function createFoodBuild(name) {
-  const foodList = {
+import { FoodsBase } from './index';
+import type { FoodAmount } from './index';
+
+function initFoodsBase(foodsBase: FoodsBase) {
+  const foodList: Record<string, FoodAmount | { positive: FoodAmount; negative: FoodAmount }> = {
     'max_hp': [400, 600],
     'max_mp': [60, 140],
     'str': [2, 4],
@@ -45,7 +47,6 @@ export default function createFoodBuild(name) {
     'dark_resistance': [2, 4],
   };
 
-  const foods = new Foods(name);
   Object.keys(foodList).forEach(key => {
     const value = foodList[key];
     const base = Grimoire.Character.findStatBase(key);
@@ -54,13 +55,13 @@ export default function createFoodBuild(name) {
       return;
     }
     if (Array.isArray(value)) {
-      foods.appendFood(base, value);
+      foodsBase.appendFoodBase(base, value);
     }
     else {
-      foods.appendFood(base, value.positive);
-      foods.appendFood(base, value.negative, true);
+      foodsBase.appendFoodBase(base, value.positive);
+      foodsBase.appendFoodBase(base, value.negative, true);
     }
   });
-
-  return foods;
 }
+
+export { initFoodsBase };

@@ -1,7 +1,8 @@
-import app from './app.vue';
 
 import GetLang from '@/shared/services/Language';
 import ViewInit from '@/shared/services/ViewInit';
+
+import app from './app.vue';
 
 const vue_enchantSimulator = () => import(/* webpackChunkName: "enchant-simulator" */ '@/views/Enchant/EnchantSimulator');
 const vue_enchantDoll = () => import(/* webpackChunkName: "enchant-doll" */ '@/views/Enchant/EnchantDoll');

@@ -1,12 +1,11 @@
+import { Equipment, Crystal } from '@/lib/Items/Item';
+
 import Grimoire from '@/shared/Grimoire';
 import GetLang from '@/shared/services/Language';
-
-import { Equipment, Crystal } from '@/lib/Items/Item';
 import { isNumberString } from '@/shared/utils/string';
 
 import { StatRestriction } from '../Stat';
 import type { StatRestrictionSaveData } from '../Stat/StatRestriction';
-
 import { EquipmentTypes, EquipmentCategorys } from './enums';
 
 type EquipmentOrigin = Equipment | null;

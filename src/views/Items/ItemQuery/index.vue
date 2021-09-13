@@ -257,10 +257,6 @@
   </article>
 </template>
 <script>
-import init from './init.js';
-
-import vue_ItemQueryResult from './item-query-result';
-
 import {
   CharacterEquipment,
   MainWeapon, SubWeapon,
@@ -269,6 +265,9 @@ import {
 } from '@/lib/Character/CharacterEquipment';
 import { MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList } from '@/lib/Character/CharacterEquipment/enums';
 import { StatTypes } from '@/lib/Character/Stat/enums';
+
+import init from './init.js';
+import vue_ItemQueryResult from './item-query-result';
 
 export default {
   name: 'ItemQuery',

@@ -1,8 +1,9 @@
 import { markRaw } from 'vue';
-import { CalculationBase, CalcItemContainerBase } from './Calculation/base';
+
 import { CalcItemContainer } from './Calculation';
-import { ContainerTypes } from './Calculation/enums';
+import { CalculationBase, CalcItemContainerBase } from './Calculation/base';
 import type { CurrentItemIdGetter } from './Calculation/base';
+import { ContainerTypes } from './Calculation/enums';
 
 export default class {
   calculationBase: CalculationBase;

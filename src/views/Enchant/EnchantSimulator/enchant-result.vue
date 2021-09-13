@@ -151,11 +151,11 @@ import { mapState } from 'vuex';
 import { EnchantEquipment, EnchantStep } from '@/lib/Enchant/Enchant';
 import ENCHANT_STATE from '@/lib/Enchant/Enchant/state';
 
-import ToggleService from '@/setup/ToggleService';
-
 import CY from '@/shared/utils/Cyteria';
 import { trimZero } from '@/shared/utils/string';
 import { markText } from '@/shared/utils/view';
+
+import ToggleService from '@/setup/ToggleService';
 
 export default {
   name: 'EnchantResult',
@@ -198,11 +198,11 @@ export default {
           const stat = step.stats[0];
           const tparts = [{
             stat,
-            text: stat.show('each'),
+            text: stat.showEach(),
             negative: stat.value < 0,
           }, {
             stat,
-            text: stat.show('current'),
+            text: stat.showCurrent(),
             negative: stat.value < 0,
           }];
           const textParts = this.$lang('result/enchant: each').split(/\$\d+/);
@@ -212,7 +212,7 @@ export default {
         } else {
           const tparts = step.stats.map(stat => ({
             stat,
-            text: stat.show('current'),
+            text: stat.showCurrent(),
             negative: stat.value < 0,
           }));
           parts = [this.$lang('result/enchant: normal'), ...tparts];

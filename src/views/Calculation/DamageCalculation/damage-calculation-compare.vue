@@ -46,13 +46,15 @@
 <script>
 import { computed, ref, watch, Ref } from 'vue';
 
-import ToggleService from '@/setup/ToggleService';
-import RegisterLang from '@/setup/RegisterLang';
-import { setupCalculationStoreState } from './setup';
-
 import { Calculation } from '@/lib/Calculation/Damage/Calculation';
 
+import RegisterLang from '@/setup/RegisterLang';
+import ToggleService from '@/setup/ToggleService';
+
 import vue_DamageCalculationCompareItem from './damage-calculation-compare-item';
+import { setupCalculationStoreState } from './setup';
+
+
 
 export default {
   components: {

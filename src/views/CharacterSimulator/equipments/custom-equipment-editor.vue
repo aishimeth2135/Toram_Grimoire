@@ -245,9 +245,9 @@
   </div>
 </template>
 <script>
-import { StatTypes } from '@/lib/Character/Stat/enums';
-import { StatRestriction } from '@/lib/Character/Stat';
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
+import { StatRestriction } from '@/lib/Character/Stat';
+import { StatTypes } from '@/lib/Character/Stat/enums';
 
 export default {
   RegisterLang: 'Character Simulator',

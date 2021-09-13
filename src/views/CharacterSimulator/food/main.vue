@@ -1,6 +1,6 @@
 <template>
   <div v-if="currentFoodBuild">
-    <div class="top">
+    <div class="pb-4">
       <cy-options>
         <template #title>
           <cy-list-item>
@@ -27,7 +27,7 @@
           </cy-list-item>
         </template>
       </cy-options>
-      <div class="buttons">
+      <div class="pt-1">
         <cy-button
           icon="mdi-content-copy"
           type="border"
@@ -44,7 +44,7 @@
         </cy-button>
       </div>
     </div>
-    <div class="content-title">
+    <div class="mt-4 mb-2 pl-1">
       <cy-icon-text
         icon="mdi-checkbox-multiple-blank-circle-outline"
         size="small"
@@ -53,13 +53,13 @@
         {{ $lang('food build name') }}
       </cy-icon-text>
     </div>
-    <div class="content">
+    <div class="pl-4">
       <cy-title-input
         v-model:value="currentFoodBuild.name"
         icon="mdi-clipboard-text-outline"
       />
     </div>
-    <div class="content-title">
+    <div class="mt-4 mb-2 pl-1">
       <cy-icon-text
         icon="mdi-checkbox-multiple-blank-circle-outline"
         size="small"
@@ -68,8 +68,8 @@
         {{ $lang('food list') }}
       </cy-icon-text>
     </div>
-    <div class="foods content">
-      <div class="content-tips">
+    <div class="foods pl-4">
+      <div class="mb-2">
         <cy-icon-text
           icon="ic-outline-info"
           text-color="light-3"
@@ -84,12 +84,12 @@
       </div>
       <cy-list-item
         v-for="(food, i) in currentFoodBuild.foods"
-        :key="food.base.baseName + '-' + (food.negative ? 'n' : 'p')"
+        :key="food.foodBase.base.baseName + '-' + (food.foodBase.negative ? 'n' : 'p')"
         :selected="foodSelected(i)"
-        class="item"
+        class="py-1.5 px-3"
       >
         <cy-input-counter
-          class="counter"
+          style="width: 25rem;"
           type="line"
           :range="ranges.foodLevel"
           :inline="true"
@@ -211,33 +211,3 @@ export default {
   },
 };
 </script>
-<style lang="less" scoped>
-.top {
-  margin-bottom: 1rem;
-
-  > .buttons {
-    padding-top: 0.3rem;
-  }
-}
-
-.item {
-  padding: 0.4rem 0.8rem;
-}
-.counter {
-  width: 25rem;
-}
-
-.content-title {
-  margin-top: 1rem;
-  margin-bottom: 0.6rem;
-  padding-left: 0.3rem;
-}
-
-.content-tips {
-  margin-bottom: 0.6rem;
-}
-
-.content {
-  padding-left: 1rem;
-}
-</style>

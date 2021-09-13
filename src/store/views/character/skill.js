@@ -1,4 +1,5 @@
 import Papa from 'papaparse';
+
 import { LevelSkillTree } from '@/lib/Skill/Skill';
 
 const storeState = {

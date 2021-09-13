@@ -93,15 +93,16 @@
   </cy-window>
 </template>
 <script>
-import vue_equipmentItem from '@/components/common/equipment-item.vue';
-
-import vue_equipmentInfo from './equipment-info.vue';
-import vue_characterStatsCompare from '../main/character-stats-compare.vue';
+import { mapState } from 'vuex';
 
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums';
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from '@/lib/Character/CharacterEquipment';
 
-import { mapState } from 'vuex';
+import vue_equipmentItem from '@/components/common/equipment-item.vue';
+
+import vue_characterStatsCompare from '../main/character-stats-compare.vue';
+import vue_equipmentInfo from './equipment-info.vue';
+
 
 export default {
   RegisterLang: {

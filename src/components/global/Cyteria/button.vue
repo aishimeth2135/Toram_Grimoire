@@ -1,16 +1,15 @@
 <script>
 import { h, mergeProps } from 'vue';
 
-import ButtonSimple from './button/simple';
+import { ColorSetProps, getColorSetStyle } from './base/color-set.vue';
 import ButtonBorder from './button/border';
+import ButtonCheck from './button/check';
+import ButtonDropDown from './button/drop-down';
+import ButtonIcon from './button/icon';
 import ButtonInline from './button/inline';
 import ButtonLine from './button/line';
-import ButtonIcon from './button/icon';
-import ButtonDropDown from './button/drop-down';
-import ButtonCheck from './button/check';
+import ButtonSimple from './button/simple';
 import ButtonSwitch from './button/switch';
-
-import { ColorSetProps, getColorSetStyle } from './base/color-set.vue';
 
 function CyButton(props, context) {
   const getComponent = () => {

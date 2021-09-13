@@ -12,7 +12,6 @@
 </template>
 <script>
 import vue_drawSkillTree from './draw-skill-tree.vue';
-
 import { getSkillElementId } from './utils';
 
 export default {

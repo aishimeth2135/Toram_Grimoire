@@ -74,8 +74,8 @@ const actions = {
   },
 };
 
-import container from './container';
 import calculation from './calculation';
+import container from './container';
 
 export default {
   namespaced: true,

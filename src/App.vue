@@ -14,12 +14,12 @@
 import { InitLanguageSystem } from '@/shared/services/Language';
 
 // app components
-import vue_nav from '@/views/app/nav.vue';
-import vue_initialize from '@/views/app/initialize.vue';
-import vue_footer from '@/views/app/footer.vue';
-import vue_notify from '@/views/app/notify.vue';
-import vue_loading from '@/views/app/loading.vue';
 import vue_confirm from '@/views/app/confirm.vue';
+import vue_footer from '@/views/app/footer.vue';
+import vue_initialize from '@/views/app/initialize.vue';
+import vue_loading from '@/views/app/loading.vue';
+import vue_nav from '@/views/app/nav.vue';
+import vue_notify from '@/views/app/notify.vue';
 
 export default {
   name: 'App',

@@ -1,7 +1,9 @@
+
+import { markRaw } from 'vue';
+
 import { Character } from '@/lib/Character/Character';
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
-
-import createFoodBuild from './food-build.js';
+import { FoodBase } from '@/lib/Character/Food';
 
 import module_skill from './skill.js';
 
@@ -13,6 +15,8 @@ const store = {
     characterSimulatorHasInit: false,
     characters: [],
     equipments: [],
+
+    foodsBase: markRaw(new FoodBase()),
     foodBuilds: [],
     // deleteAllSavedDataBackup: null
   },
@@ -63,7 +67,7 @@ const store = {
       state.currentFoodBuildIndex = index;
     },
     createFoodBuild(state, { name, foodBuild }) {
-      state.foodBuilds.push(foodBuild ? foodBuild : createFoodBuild(name));
+      state.foodBuilds.push(foodBuild ? foodBuild : state.foodsBase.createFoods(name));
       state.currentFoodBuildIndex = state.foodBuilds.length - 1;
     },
     removeFoodBuild(state, { index }) {
@@ -99,7 +103,7 @@ const store = {
     },
   },
   actions: {
-    loadCharacterSimulator({ commit, dispatch }, { index, resetOption = {} }) {
+    loadCharacterSimulator({ state, commit, dispatch }, { index, resetOption = {} }) {
       const prefix = 'app--character-simulator--data-' + index;
       if (!window.localStorage.getItem(prefix)) {
         throw new Error(`Index: ${index} of Character-Simulator Data is not exist.`);
@@ -138,7 +142,7 @@ const store = {
 
         if (foodBuilds){
           foodBuilds.forEach(p => {
-            const foods = createFoodBuild('potum');
+            const foods = state.foodsBase.createFoods();
             const load = foods.load(p);
             if (!load.error)
               commit('createFoodBuild', { foodBuild: foods });

@@ -17,8 +17,9 @@
 </template>
 
 <script>
-import { Calculation } from '@/lib/Calculation/Damage/Calculation';
 import { computed, toRefs } from '@vue/runtime-core';
+
+import { Calculation } from '@/lib/Calculation/Damage/Calculation';
 
 export default {
   name: 'DamageCalculationTableItem',

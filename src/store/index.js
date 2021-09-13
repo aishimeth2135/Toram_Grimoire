@@ -1,18 +1,17 @@
 import { createStore } from 'vuex';
 
-import main from './main';
 
-import language from './app/language';
-import initialize from './app/initialize';
-import notify from './app/notify';
-import leftMenu from './app/left-menu';
-import nav from './app/nav';
 import confirm from './app/confirm';
 import datas from './app/datas';
-
+import initialize from './app/initialize';
+import language from './app/language';
+import leftMenu from './app/left-menu';
+import nav from './app/nav';
+import notify from './app/notify';
+import main from './main';
 import character from './views/character';
-import enchant from './views/enchant';
 import damageCalculation from './views/damage-calculation';
+import enchant from './views/enchant';
 
 const store = createStore({
   modules: {

@@ -1,6 +1,7 @@
 import escapeStringRegexp from 'escape-string-regexp';
-import type { HandleFormulaVars, HandleConditionalVars, HandleFormulaGetters } from './index';
 import jsep from 'jsep';
+
+import type { HandleFormulaVars, HandleConditionalVars, HandleFormulaGetters } from './index';
 
 type HandledVars = HandleFormulaVars | HandleConditionalVars;
 type HandledGetters = HandleFormulaGetters;

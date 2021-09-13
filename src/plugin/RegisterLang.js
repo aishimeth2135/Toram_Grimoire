@@ -1,4 +1,5 @@
 import GetLang from '@/shared/services/Language';
+
 import RegisterLang from '@/setup/RegisterLang';
 
 export default function install(app) {

@@ -282,16 +282,19 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import init from './init.js';
 
-import vue_EnchantStep from './enchant-step';
-import vue_EnchantSelectItem from './enchant-select-item';
-import vue_EnchantResult from './enchant-result';
+
+
+import { EnchantBuild, EnchantStep, EnchantEquipment } from '@/lib/Enchant/Enchant';
+
+import CY from '@/shared/utils/Cyteria';
 
 import ToggleService from '@/setup/ToggleService';
 
-import { EnchantBuild, EnchantStep, EnchantEquipment } from '@/lib/Enchant/Enchant';
-import CY from '@/shared/utils/Cyteria';
+import vue_EnchantResult from './enchant-result';
+import vue_EnchantSelectItem from './enchant-select-item';
+import vue_EnchantStep from './enchant-step';
+import init from './init.js';
 import { SelectItemTarget, EnchantItemData } from './type';
 
 export default {

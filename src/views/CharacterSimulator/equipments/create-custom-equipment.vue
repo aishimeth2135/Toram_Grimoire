@@ -76,12 +76,13 @@
   </cy-window>
 </template>
 <script>
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar, CharacterEquipment } from '@/lib/Character/CharacterEquipment';
+import { EquipmentTypes, EquipmentCategorys, MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList } from '@/lib/Character/CharacterEquipment/enums';
+
 import ToggleService from '@/setup/ToggleService';
 
 import vue_customEquipmentEditor from './custom-equipment-editor.vue';
 
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar, CharacterEquipment } from '@/lib/Character/CharacterEquipment';
-import { EquipmentTypes, EquipmentCategorys, MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList } from '@/lib/Character/CharacterEquipment/enums';
 
 export default {
   RegisterLang: 'Character Simulator',

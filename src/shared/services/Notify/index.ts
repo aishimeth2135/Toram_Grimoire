@@ -1,4 +1,5 @@
 import store from '@/store';
+
 import LoadingNotifyItem from './LoadingNotifyItem';
 
 type MessageNotifyButtonItem = {

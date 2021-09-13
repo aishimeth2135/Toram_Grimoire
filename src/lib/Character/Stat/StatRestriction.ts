@@ -1,10 +1,11 @@
 import { markRaw } from 'vue';
+
 import Grimoire from '@/shared/Grimoire';
 import GetLang from '@/shared/services/Language';
-import { StatBase, Stat } from './StatBase';
-import type { StatValue } from './StatBase';
-import { StatTypes } from './enums';
+
 import { EquipmentTypes } from '../CharacterEquipment/enums';
+import { StatTypes } from './enums';
+import { StatBase, Stat } from './StatBase';
 
 interface StatRestrictionItems {
   main: string | null;
@@ -16,7 +17,7 @@ interface StatRestrictionItems {
 class StatRestriction extends Stat {
   restriction: StatRestrictionItems | null;
 
-  constructor(base: StatBase, type: StatTypes, value: StatValue, restriction: StatRestrictionItems | null = null) {
+  constructor(base: StatBase, type: StatTypes, value: number, restriction: StatRestrictionItems | null = null) {
     super(base, type, value);
     this.restriction = restriction !== null ? markRaw(restriction) : restriction;
   }
@@ -175,7 +176,7 @@ class StatRestriction extends Stat {
 
 interface StatRestrictionSaveData {
   id: string;
-  value: StatValue;
+  value: number;
   type: StatTypes;
   restriction: {
     main: string | null;

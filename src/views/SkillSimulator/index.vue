@@ -294,16 +294,19 @@
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex';
-import CY from '@/shared/utils/Cyteria';
-import { LoadingNotify } from '@/shared/services/Notify';
 
-import vue_skillRoot from './skill-root.vue';
-import vue_SaveLoadDataSystem from '@/components/SaveLoadDataSystem/main.vue';
-
-import { getSkillElementId } from './utils';
 import { computeDrawSkillTreeData, GetDrawSetting } from '@/lib/Skill/utils/DrawSkillTree';
 
+import { LoadingNotify } from '@/shared/services/Notify';
+import CY from '@/shared/utils/Cyteria';
+
+import vue_SaveLoadDataSystem from '@/components/SaveLoadDataSystem/main.vue';
+
 import init from './init.js';
+import vue_skillRoot from './skill-root.vue';
+import { getSkillElementId } from './utils';
+
+
 
 export default {
   name: 'SkillQuery',

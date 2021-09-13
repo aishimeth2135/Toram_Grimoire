@@ -1,18 +1,18 @@
-import ItemsSystem from '@/lib/Items';
-import CharacterSystem from '@/lib/Character';
-import TagSystem from '@/lib/Tag';
-import SkillSystem from '@/lib/Skill';
-import EnchantSystem from '@/lib/Enchant';
 import DamageCalculationSystem from '@/lib/Calculation/Damage';
+import CharacterSystem from '@/lib/Character';
+import EnchantSystem from '@/lib/Enchant';
+import ItemsSystem from '@/lib/Items';
+import SkillSystem from '@/lib/Skill';
+import TagSystem from '@/lib/Tag';
 
 import DownloadDatas from './utils/DownloadDatas';
-import loadEquipments from './utils/LoadEquipments';
-import loadCrystals from './utils/LoadCrystals';
-import loadStats from './utils/LoadStats';
 import loadCharacterStats from './utils/LoadCharacterStat';
-import loadTag from './utils/LoadTag';
-import { loadSkill, loadSkillMain } from './utils/LoadSkill';
+import loadCrystals from './utils/LoadCrystals';
 import loadEnchant from './utils/LoadEnchant';
+import loadEquipments from './utils/LoadEquipments';
+import { loadSkill, loadSkillMain } from './utils/LoadSkill';
+import loadStats from './utils/LoadStats';
+import loadTag from './utils/LoadTag';
 
 const store = {
   namespaced: true,

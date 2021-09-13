@@ -1,6 +1,6 @@
 import { EnchantItem } from '@/lib/Enchant/Enchant';
 
-export default function LoadEnchantData(r, c) {
+export default function LoadEnchantData(root, csvData) {
   const STAT_ID = 0,
     CONDITION = 1,
     CONDITION_LIST = ['主手武器', '身體裝備', '原有屬性'],
@@ -20,55 +20,75 @@ export default function LoadEnchantData(r, c) {
     CATEGORY_TITLE = 2,
     CATEGORY_EXTRA = 3;
 
-  function processLimit(s) {
-    if (s === '')
-      return ['', ''];
-    s = s.split('::');
-    const l1 = s[0] ? parseInt(s[0], 10) : s[0];
-    const l2 = s[1] === undefined ? (typeof l1 == 'number' ? -1 * l1 : l1) : s[1];
+  const handleItemValue = (value) => value !== '' ? parseFloat(value) : null;
+
+  const handleLimit = (str) => {
+    if (str === '')
+      return [null, null];
+    const limitStrs = str.split('::');
+    const l1 = handleItemValue(limitStrs[0]);
+    const l2 = limitStrs[1] === undefined ? (l1 !== null ? -1 * l1 : l1) : handleItemValue(limitStrs[1]);
     return [l1, l2];
-  }
+  };
 
-  function processItemProps(p) {
+  const handleUnitValue = (str) => {
+    const [str1, str2] = str.split('|');
+    const v1 = str1 ? parseInt(str1) : 1;
+    const v2 = str2 ? parseInt(str2) : v1;
+    return [v1, v2];
+  };
+
+  const processItemProps = (targetRow) => {
     return [
-      parseInt(p[POTENTIAL_CONSTANT]),
-      parseInt(p[POTENTIAL_MULTIPLIER]),
+      handleItemValue(targetRow[POTENTIAL_CONSTANT]),
+      handleItemValue(targetRow[POTENTIAL_MULTIPLIER]),
     ];
-  }
+  };
 
-  let cur_cat, cur_item;
-  c.forEach((p, i) => {
-    if (i === 0)
+  let currentCategory, currentItem;
+  csvData.forEach((row, idx) => {
+    if (idx === 0)
       return;
-    if (p[STAT_ID] === '') {
-      const check = p[CHECK];
+    if (row[STAT_ID] === '') {
+      const check = row[CHECK];
       if (check === '')
         return;
-      if (check == '0') {
-        cur_cat = r.appendCategory(p[CATEGORY_TITLE]);
-        if (p[CATEGORY_EXTRA] === 'weapon-only')
-          cur_cat.setWeaponOnly();
+      if (check === '0') {
+        currentCategory = root.appendCategory(row[CATEGORY_TITLE]);
+        if (row[CATEGORY_EXTRA] === 'weapon-only')
+          currentCategory.setWeaponOnly();
         return;
       }
-      const condition_no = CONDITION_LIST.indexOf(p[CONDITION]);
-      if (condition_no != -1) {
+      const conditionId = CONDITION_LIST.indexOf(row[CONDITION]);
+      if (conditionId !== -1) {
         const cond = [
           EnchantItem.CONDITION_MAIN_WEAPON,
           EnchantItem.CONDITION_BODY_ARMOR,
           EnchantItem.CONDITION_ORIGINAL_ELEMENT,
-        ][condition_no];
-        cur_item.appendConditionalProps(cond, { potential: processItemProps(p) });
+        ][conditionId];
+        currentItem.appendConditionalProps(cond, { potential: processItemProps(row) });
       }
     } else {
-      cur_item = cur_cat
+      currentItem = currentCategory
         .appendItem({
-          baseName: p[STAT_ID],
-          limit: [processLimit(p[LIMIT_CONSTANT]), processLimit(p[LIMIT_MULTIPLIER])],
-          unitValue: [p[UNIT_VALUE_CONSTANT], p[UNIT_VALUE_MULTIPLIER]],
-          materialPointType: MATERIAL_POINT_TYPE_LIST.indexOf(p[MATERIAL_POINT_TYPE]),
-          materialPointValue: [p[MATERIAL_POINT_VALUE_CONSTANT], p[MATERIAL_POINT_VALUE_MULTIPLIER]],
-          potentialConvertThreshold: [p[POTENTIAL_CONVERT_THRESHOLD_CONSTANT], p[POTENTIAL_CONVERT_THRESHOLD_MULTIPLIER]],
-          potential: processItemProps(p),
+          baseName: row[STAT_ID],
+          limit: [
+            handleLimit(row[LIMIT_CONSTANT]),
+            handleLimit(row[LIMIT_MULTIPLIER]),
+          ],
+          unitValue: [
+            handleUnitValue(row[UNIT_VALUE_CONSTANT]),
+            handleUnitValue(row[UNIT_VALUE_MULTIPLIER])],
+          materialPointType: MATERIAL_POINT_TYPE_LIST.indexOf(row[MATERIAL_POINT_TYPE]),
+          materialPointValue: [
+            handleItemValue(row[MATERIAL_POINT_VALUE_CONSTANT]),
+            handleItemValue(row[MATERIAL_POINT_VALUE_MULTIPLIER]),
+          ],
+          potentialConvertThreshold: [
+            handleItemValue(row[POTENTIAL_CONVERT_THRESHOLD_CONSTANT]),
+            handleItemValue(row[POTENTIAL_CONVERT_THRESHOLD_MULTIPLIER]),
+          ],
+          potential: processItemProps(row),
         });
     }
   });

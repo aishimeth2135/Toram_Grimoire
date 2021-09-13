@@ -1,7 +1,9 @@
+import jsep from 'jsep';
+
 import { isNumberString } from '@/shared/utils/string';
+
 import { getVarsMap, getGettersMap, varMapToArray, handleReplacedKey, jsepTypes } from './utils';
 
-import jsep from 'jsep';
 
 type ValidVarValue = string | number | Function;
 type ParseFormulaVars = {

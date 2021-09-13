@@ -8,7 +8,7 @@
         :text-color="stat.value >= 0 ? 'dark' : 'orange'"
         :icon="stat.valid ? 'gg-shape-rhombus' : 'ic-round-close'"
       >
-        {{ stat.show('base') }}
+        {{ stat.showBase() }}
       </cy-icon-text>
       <cy-icon-text
         v-if="rootState.statDisplayMode === 0"
@@ -49,7 +49,9 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
+
 import { EnchantStepStat } from '@/lib/Enchant/Enchant';
+
 import { trimZero } from '@/shared/utils/string';
 
 export default {

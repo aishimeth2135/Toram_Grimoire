@@ -1,5 +1,6 @@
-import Grimoire from '@/shared/Grimoire';
 import { StatTypes } from '@/lib/Character/Stat/enums';
+
+import Grimoire from '@/shared/Grimoire';
 import CY from '@/shared/utils/Cyteria';
 
 function checkConstructorArgs() {

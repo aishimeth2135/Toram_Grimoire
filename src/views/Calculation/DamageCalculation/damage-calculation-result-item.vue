@@ -16,8 +16,9 @@
 </template>
 
 <script setup>
-import RegisterLang from '@/setup/RegisterLang';
 import { toRefs } from 'vue';
+
+import RegisterLang from '@/setup/RegisterLang';
 
 const props = defineProps({
   resultItem: {

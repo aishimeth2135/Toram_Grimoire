@@ -1,18 +1,68 @@
-import { EnchantCategory, EnchantItem } from './base';
 import { Stat } from '@/lib/Character/Stat';
-import { StatTypes } from '@/lib/Character/Stat/enums';
-import STATE from './state';
-
-import { calcPotentialExtraRate } from './utils';
+import { StatTypes, StatNormalTypes } from '@/lib/Character/Stat/enums';
 
 import Grimoire from '@/shared/Grimoire';
 
+import { EnchantCategory, EnchantItem } from './base';
+import STATE from './state';
+import { calcPotentialExtraRate } from './utils';
+import { EnchantEquipmentTypes, EnchantStepTypes } from './enums';
+import type { MaterialPointTypeRange } from './base';
+
+const EnchantEquipmentTypesList = [
+  EnchantEquipmentTypes.MainWeapon,
+  EnchantEquipmentTypes.BodyArmor,
+] as const;
+
+const EnchantStepTypesList = [
+  EnchantStepTypes.Normal,
+  EnchantStepTypes.Each,
+] as const;
+
+const EnchantStepStatTypesList = [
+  StatTypes.Constant,
+  StatTypes.Multiplier,
+] as const;
+
+type EnchantBuildSaveData = {
+  name: string;
+  equipment: EnchantEquipmentSaveData;
+};
+
+type EnchantEquipmentSaveData = {
+  basePotential: number;
+  originalPotential: number;
+  fieldType: number;
+  isOriginalElement: boolean;
+  steps: EnchantStepSaveData[];
+};
+
+type EnchantStepSaveData = {
+  type: number;
+  hidden: boolean;
+  step: number;
+  stats: EnchantStepStatSaveData[];
+};
+
+type EnchantStepStatSaveData = {
+  type: number;
+  value: number;
+
+  // basename of EnchantItem.statBase
+  base: string;
+};
+
+interface MaterialPointCost {
+  type: MaterialPointTypeRange;
+  value: number;
+}
+
 class EnchantBuild {
-  /**
-   * @param {string} name
-   * @param {EnchantEquipment} [equipment]
-   */
-  constructor(name, equipment = null) {
+  name: string;
+  equipment: EnchantEquipment;
+  categorys: EnchantCategory[];
+
+  constructor(name: string, equipment: EnchantEquipment | null = null) {
     this.name = name;
     if (equipment) {
       this.equipment = equipment;
@@ -24,24 +74,14 @@ class EnchantBuild {
     this.categorys = Grimoire.Enchant.categorys; // link
   }
 
-  /**
-   * @typedef EnchantBuildSaveData
-   * @type {Object}
-   * @property {string} name
-   * @property {EnchantEquipmentSaveData} equipment
-   */
-  /** @returns {EnchantBuildSaveData} */
-  save() {
+  save(): EnchantBuildSaveData {
     return {
       name: this.name,
       equipment: this.equipment.save(),
     };
   }
 
-  /**
-   * @param {EnchantBuildSaveData} data
-   */
-  static load(data) {
+  static load(data: EnchantBuildSaveData) {
     const categorys = Grimoire.Enchant.categorys;
     const equipment = EnchantEquipment.load(categorys, data.equipment);
     return new EnchantBuild(data.name, equipment);
@@ -54,100 +94,81 @@ class EnchantBuild {
 }
 
 class EnchantEquipment {
-  static TYPE_MAIN_WEAPON = Symbol('main-weapon');
-  static TYPE_BODY_ARMOR = Symbol('body-armor');
-  static TYPES = [
-    EnchantEquipment.TYPE_MAIN_WEAPON,
-    EnchantEquipment.TYPE_BODY_ARMOR,
-  ];
+  private _steps: EnchantStep[];
+
+  basePotential: number;
+  originalPotential: number;
+  fieldType: EnchantEquipmentTypes;
+  isOriginalElement: boolean;
 
   constructor() {
-    /** @type {Array<EnchantStep>} @private */
     this._steps = [];
-    /** @type {number} */
     this.basePotential = STATE.EquipmentBasePotentialMinimum,
-    /** @type {number} */
     this.originalPotential = 1;
-    /** @type {symbol} */
-    this.fieldType = EnchantEquipment.TYPE_MAIN_WEAPON;
-    /** @type {boolean} */
+    this.fieldType = EnchantEquipmentTypes.MainWeapon;
     this.isOriginalElement = false;
   }
 
-  /**
-   * @typedef EnchantEquipmentSaveData
-   * @type {Object}
-   * @property {number} basePotential
-   * @property {number} originalPotential
-   * @property {number} fieldType - symbol to number
-   * @property {number} isOriginalElement - boolean to number
-   * @property {Array<EnchantStepSaveData>} steps
-   */
-  /** @return {EnchantEquipmentSaveData} */
-  save() {
-    const fieldType = EnchantEquipment.TYPES.indexOf(this.fieldType);
-    const isOriginalElement = this.isOriginalElement ? 1 : 0;
+  save(): EnchantEquipmentSaveData {
+    const fieldType = EnchantEquipmentTypesList.indexOf(this.fieldType);
     const steps = this._steps.map(step => step.save());
     return {
       basePotential: this.basePotential,
       originalPotential: this.originalPotential,
       fieldType,
-      isOriginalElement,
+      isOriginalElement: this.isOriginalElement,
       steps,
     };
   }
-  /**
-   * @param {Array<EnchantCategory>} categorys
-   * @param {EnchantEquipmentSaveData} data
-   * @returns {EnchantEquipment}
-   */
-  static load(categorys, data) {
+
+  static load(categorys: EnchantCategory[], data: EnchantEquipmentSaveData): EnchantEquipment {
     const equipment = new EnchantEquipment();
     equipment.basePotential = data.basePotential;
     equipment.originalPotential = data.originalPotential;
-    equipment.fieldType = EnchantEquipment.TYPES[data.fieldType];
-    equipment.isOriginalElement = data.isOriginalElement === 1 ? true : false;
+    equipment.fieldType = EnchantEquipmentTypesList[data.fieldType];
+    equipment.isOriginalElement = typeof data.isOriginalElement === 'number' ?
+      (data.isOriginalElement ? true : false) :
+      data.isOriginalElement;
     const steps = data.steps.map(stepData => EnchantStep.load(categorys, equipment, stepData));
     equipment.loadSteps(steps);
     return equipment;
   }
 
-  copy(categorys) {
+  copy(categorys: EnchantCategory[]) {
     const data = this.save();
     return EnchantEquipment.load(categorys, data);
   }
 
-  /** @param {Array<EnchantStep>} steps */
-  loadSteps(steps) {
+  loadSteps(steps: EnchantStep[]) {
     this._steps = steps;
   }
 
-  /** @returns {Array<EnchantStep>} */
-  get allSteps() {
+  get allSteps(): EnchantStep[] {
     return this._steps;
   }
 
-  /** @returns {Array<EnchantStep>} */
-  get validSteps() {
+  get validSteps(): EnchantStep[] {
     if (!this.lastStep) {
       return [];
     }
     return this.steps(this.lastStep.index).filter(step => step.stats.length !== 0);
   }
 
-  /** @returns {EnchantStep} */
-  get lastStep() {
+  get firstStep(): EnchantStep | null {
+    return this.steps()[0] || null;
+  }
+
+  get lastStep(): EnchantStep | null {
     return this.steps().find((step, i, ary) => {
       if ((i === ary.length - 1)) {
         return true;
       }
       return step.remainingPotential < 1
         || !step.belongEquipment.checkStats(step.index);
-    });
+    }) || null;
   }
 
-  /** @return {Array<number>} */
-  get allMaterialPointCost() {
+  get allMaterialPointCost(): number[] {
     const mats = Array(6).fill(0);
     this.steps().forEach(step =>
       step.stats.forEach(stat => {
@@ -159,9 +180,9 @@ class EnchantEquipment {
   }
 
   /**
-   * @returns {number} - Percentage of success rate
+   * @returns {number} - Percentage of success rate, if value > 160, it will return -1
    */
-  get successRate() {
+  get successRate(): number {
     if (!this.lastStep) {
       return -1;
     }
@@ -170,9 +191,9 @@ class EnchantEquipment {
   }
 
   /**
-   * @returns {number} - Percentage of success rate
+   * @returns Percentage of success rate
    */
-  get realSuccessRate() {
+  get realSuccessRate(): number {
     if (!this.lastStep) {
       return 160;
     }
@@ -183,8 +204,14 @@ class EnchantEquipment {
   }
 
   get operationStepsNum() {
+    if (!this.lastStep) {
+      return 0;
+    }
     return this.steps(this.lastStep.index).reduce((cur, step) => {
-      if (step.type === EnchantStep.TYPE_EACH) {
+      if (!step.firstStat) {
+        return cur;
+      }
+      if (step.type === EnchantStepTypes.Each) {
         return cur + Math.ceil(step.firstStat.value / step.step);
       }
       return cur + 1;
@@ -193,9 +220,8 @@ class EnchantEquipment {
 
   /**
    * append new empty step
-   * @returns {EnchantStep}
    */
-  appendStep() {
+  appendStep(): EnchantStep {
     const step = new EnchantStep(this);
     this._steps.push(step);
     return step;
@@ -203,30 +229,26 @@ class EnchantEquipment {
 
   /**
    * Get all not-hidden steps before given index (include)
-   * @param {number} [stepIdx]
-   * @returns {Array<EnchantStep>}
    */
-  steps(stepIdx = null) {
-    stepIdx = stepIdx === null ? this._steps.length - 1 : stepIdx;
+  steps(stepIdx?: number): EnchantStep[] {
+    stepIdx = stepIdx === undefined ? this._steps.length - 1 : stepIdx;
     return stepIdx < 0 ? [] :
       this._steps.slice(0, stepIdx + 1).filter(step => !step.hidden);
   }
 
   /**
-   * @param {number} [stepIdx]
-   * @returns {number} - Remaining potential of specified step index
+   * @returns Remaining potential of specified step index
    */
-  stepRemainingPotential(stepIdx) {
+  stepRemainingPotential(stepIdx?: number): number {
     return this.steps(stepIdx)
       .reduce((c, step) => (c - step.potentialCost), this.originalPotential);
   }
 
   /**
-   * @param {number} [stepIdx]
-   * @returns {number} - Extra rate of specified step index
+   * @returns  Extra rate of specified step index
    */
-  stepPotentialExtraRate(stepIdx) {
-    const categorys = [];
+  stepPotentialExtraRate(stepIdx?: number): number {
+    const categorys: { category: EnchantCategory; cnt: number }[] = [];
     this.stats(stepIdx).forEach(stat => {
       const cat = stat.itemBase.belongCategory;
       const check = categorys.find(a => a.category === cat);
@@ -240,7 +262,7 @@ class EnchantEquipment {
    * @param {EnchantStep} target
    * @returns {EnchantStep} - new EnchantStep be inserted
    */
-  insertStepBefore(target) {
+  insertStepBefore(target: EnchantStep): EnchantStep {
     const step = new EnchantStep(this);
     this._steps.splice(target.index, 0, step);
     return step;
@@ -249,12 +271,8 @@ class EnchantEquipment {
   /**
    * Calc sum of value of specified stat of all steps before step index,
    * then return EnchantStat which value is sum.
-   * @param {EnchantItem} itemBase
-   * @param {symbol} type
-   * @param {number} [stepIdx]
-   * @returns {EnchantStat}
    */
-  stat(itemBase, type, stepIdx) {
+  stat(itemBase: EnchantItem, type: StatNormalTypes, stepIdx?: number): EnchantStat {
     const v = this.steps(stepIdx).reduce((c, step) => {
       const t = step.stat(itemBase, type);
       return t && t.valid ? c + t.value : c;
@@ -264,11 +282,9 @@ class EnchantEquipment {
 
   /**
    * Get all stats of steps
-   * @param {number} [stepIdx]
-   * @returns {Array<EnchantStat>}
    */
-  stats(stepIdx) {
-    const stats = [];
+  stats(stepIdx?: number): EnchantStat[] {
+    const stats: EnchantStat[] = [];
     this.steps(stepIdx).forEach(step => {
       step.stats.filter(stat => stat.valid).forEach(stat => {
         const t = stats.find(b => b.equals(stat));
@@ -278,28 +294,18 @@ class EnchantEquipment {
     return stats;
   }
 
-  /**
-   * @param {number} [stepIdx]
-   * @returns {boolean}
-   */
-  checkStats(stepIdx) {
+  checkStats(stepIdx?: number): boolean {
     return this.checkStatsMaximumNumber(stepIdx);
   }
 
-  /**
-   * @param {number} [stepIdx]
-   * @returns {boolean}
-   */
-  checkStatsMaximumNumber(stepIdx) {
+  checkStatsMaximumNumber(stepIdx?: number): boolean {
     return this.stats(stepIdx).length < STATE.EquipmentItemMaximumNumber;
   }
 
   /**
    * Check remaining potential of step > 0
-   * @param {number} [stepIdx]
-   * @returns {boolean}
    */
-  checkStepRemainingPotential(stepIdx) {
+  checkStepRemainingPotential(stepIdx?: number): boolean {
     return this.stepRemainingPotential(stepIdx) > 0;
   }
 
@@ -322,7 +328,7 @@ class EnchantEquipment {
     });
   }
 
-  swapStep(i1, i2) {
+  swapStep(i1: number, i2: number) {
     if (i1 < 0 || i2 < 0 || i1 >= this._steps.length || i2 >= this._steps.length) {
       return false;
     }
@@ -332,90 +338,68 @@ class EnchantEquipment {
     return true;
   }
 
-  /**
-   * @param {EnchantStat|EnchantStepStat} stat
-   * @param {number} [stepIdx]
-  */
-  hasStat(stat, stepIdx) {
+  hasStat(stat: EnchantStat | EnchantStepStat, stepIdx?: number) {
     return this.stats(stepIdx).find(q => q.equals(stat)) ? true : false;
   }
 }
 
 
 class EnchantStep {
-  static TYPE_NORMAL = Symbol('normal');
-  static TYPE_EACH = Symbol('each');
-  static TYPES = [
-    EnchantStep.TYPE_NORMAL,
-    EnchantStep.TYPE_EACH,
-  ];
+  private _parent: EnchantEquipment;
+  stats: EnchantStepStat[];
+  type: EnchantStepTypes;
+  step: number;
+  hidden: boolean;
 
-  /**
-   * @param {EnchantEquipment} parent
-   */
-  constructor(parent) {
-    /** @type {EnchantEquipment} */
+  constructor(parent: EnchantEquipment) {
     this._parent = parent;
-    /** @type {Array<EnchantStepStat>} */
     this.stats = [];
-    /** @type {symbol} */
-    this.type = EnchantStep.TYPE_NORMAL;
+    this.type = EnchantStepTypes.Normal;
     this.step = 1; // step for type == "each"
     this.hidden = false;
   }
 
-  /**
-   * @typedef EnchantStepSaveData
-   * @type {Object}
-   * @property {0|1} type - symbol to number
-   * @property {0|1} hidden - boolean to number
-   * @property {number} step
-   * @property {Array<EnchantStepStatSaveData>} stats
-   */
-  /** @returns {EnchantStepSaveData} */
-  save() {
+
+  save(): EnchantStepSaveData {
     return {
-      type: EnchantStep.TYPES.indexOf(this.type),
-      hidden: this.hidden ? 1 : 0,
+      type: EnchantStepTypesList.indexOf(this.type),
+      hidden: this.hidden,
       step: this.step,
       stats: this.stats.map(stat => stat.save()),
     };
   }
 
-  /**
-   * @param {Array<EnchantCategory>} categorys
-   * @param {EnchantEquipment} equipment
-   * @param {EnchantStepSaveData} data
-   */
-  static load(categorys, equipment, data) {
+  static load(categorys: EnchantCategory[], equipment: EnchantEquipment, data: EnchantStepSaveData): EnchantStep {
     const step = new EnchantStep(equipment);
-    step.type = EnchantStep.TYPES[data.type];
-    step.hidden = data.hidden === 1 ? true : false;
-    const stats = data.stats.map(statData => EnchantStepStat.load(categorys, step, statData));
-    step.stats = stats;
+    step.type = EnchantStepTypesList[data.type];
+    step.hidden = typeof data.hidden === 'number' ? (data.hidden === 1 ? true : false) : data.hidden;
+    const stats = data.stats.map(statData => EnchantStepStat.load(categorys, step, statData)).filter(stat => stat);
+    step.stats = stats as EnchantStepStat[];
 
     return step;
   }
 
-  /** @return {EnchantEquipment} */
-  get belongEquipment() {
+  get belongEquipment(): EnchantEquipment {
     return this._parent;
   }
+
   get potentialExtraRate() {
     return this.belongEquipment.stepPotentialExtraRate(this.index);
   }
+
   get index() {
     return this._parent.allSteps.indexOf(this);
   }
+
   get potentialCost() {
     if (this.stats.length === 0) {
       return 0;
     }
     const er = this.potentialExtraRate;
     switch (this.type) {
-      case EnchantStep.TYPE_NORMAL:
+      case EnchantStepTypes.Normal:
         return this.realPotentialCost(this.stats.reduce((a, b) => a + b.potentialCost, 0) * er);
-      case EnchantStep.TYPE_EACH:
+      case EnchantStepTypes.Each:
         return this.firstStat ? this.firstStat.potentialCost : 0;
     }
     return 0;
@@ -423,43 +407,33 @@ class EnchantStep {
   get remainingPotential() {
     return this.belongEquipment.stepRemainingPotential(this.index);
   }
-  /**
-   * @returns {EnchantStep}
-   */
-  get previousStep() {
+
+  get previousStep(): EnchantStep | null {
     const idx = this.index;
     if (idx === 0)
       return null;
     const steps = this.belongEquipment.steps();
     return steps[idx - 1];
   }
-  /**
-   * @returns {EnchantStep}
-   */
-  get nextStep() {
+
+  get nextStep(): EnchantStep | null {
     const steps = this.belongEquipment.steps();
     return steps[this.index + 1] || null;
   }
+
   get isLastStep() {
     return this.belongEquipment.lastStep === this;
   }
+
   get afterLastStep() {
-    return this.belongEquipment.lastStep.index < this.index;
+    return (this.belongEquipment.lastStep as EnchantStep).index < this.index;
   }
-  /**
-   * @returns {EnchantStepStat}
-   */
-  get firstStat() {
+
+  get firstStat(): EnchantStepStat | null {
     return this.stats[0] || null;
   }
 
-  /**
-   * @param {EnchantItem} itemBase
-   * @param {symbol} type
-   * @param {number} [v]
-   * @returns {EnchantStepStat}
-   */
-  appendStat(itemBase, type, v) {
+  appendStat(itemBase: EnchantItem, type: StatNormalTypes, v: number): EnchantStepStat | null {
     const stat = new EnchantStepStat(this, itemBase, type, v);
     if (!this.belongEquipment.checkStats() && !this.belongEquipment.hasStat(stat)) {
       return null;
@@ -468,42 +442,30 @@ class EnchantStep {
     return stat;
   }
 
-  /**
-   * @param {EnchantItem} itemBase
-   * @param {symbol} type
-   * @returns {EnchantStepStat} undefined if not found
-   */
-  stat(itemBase, type) {
-    return this.stats.find(stat => stat.itemBase === itemBase && stat.type === type);
+  stat(itemBase: EnchantItem, type: StatTypes): EnchantStepStat | null {
+    return this.stats.find(stat => stat.itemBase === itemBase && stat.type === type) || null;
   }
+
   remove() {
     this.belongEquipment.allSteps.splice(this.index, 1);
     this.stats.forEach(p => p.remove());
   }
 
-  /**
-   * @param {number} p
-   * @returns {number}
-   */
-  realPotentialCost(p) {
+
+  realPotentialCost(p: number): number {
     return p >= 0 ? Math.floor(p) : Math.ceil(p);
   }
 
-  /**
-   * @param {EnchantItem} itemBase
-   * @param {symbol} type
-   * @returns {boolean}
-   */
-  hasStat(itemBase, type) {
+  hasStat(itemBase: EnchantItem, type: StatTypes): boolean {
     return this.stat(itemBase, type) ? true : false;
   }
 
   autoFill() {
-    if (this.index === 0) {
+    if (this.index === 0 || !this.belongEquipment.lastStep) {
       return;
     }
     const stats = this.belongEquipment.stats(this.belongEquipment.lastStep.index);
-    const newStats = [];
+    const newStats: EnchantStepStat[] = [];
     stats.filter(stat => stat.value > 0).forEach(stat => {
       const max = stat.limit[1];
       const find = this.stat(stat.itemBase, stat.type);
@@ -529,15 +491,15 @@ class EnchantStep {
 
   /**
    * check whether the cost of potential will reduce after modify type
-   * @param {number} autoFix - if return value greater than autoFix, it will auto modify type to optimize
-   * @returns {number} number between -2 and 2
+   * @param autoFix - if return value greater than autoFix, it will auto modify type to optimize
+   * @returns number between -2 and 2
    *                    - 2: cost will reduce
    *                    - 1: TYPE_EACH is unnecessary
    *                    - 0: potential cost will not reduce, but cost may reduce if stat.value increased
    *                    - -1: cost will not reduce
    *                    - -2: stats.length != 1 or cost <= 0
    */
-  optimizeType(autoFix = 2) {
+  optimizeType(autoFix: number = 2): number {
     if (this.stats.length !== 1) {
       return -2;
     }
@@ -547,12 +509,12 @@ class EnchantStep {
       if (old <= 0) {
         return -2;
       }
-      this.type = this.type === EnchantStep.TYPE_NORMAL ? EnchantStep.TYPE_EACH : EnchantStep.TYPE_NORMAL;
+      this.type = this.type === EnchantStepTypes.Normal ? EnchantStepTypes.Each : EnchantStepTypes.Normal;
       if (this.potentialCost > old) {
         return -1;
       }
       if (this.potentialCost === old) {
-        if (oldType === EnchantStep.TYPE_EACH) {
+        if (oldType === EnchantStepTypes.Each) {
           return 1;
         } else if (this.potentialExtraRate > 1) {
           return 0;
@@ -568,45 +530,38 @@ class EnchantStep {
   }
 
   toString() {
-    return `${this.type === EnchantStep.TYPE_EACH ? '@' : '#'}|${this.stats.map(stat => stat.show('base')).join(', ')}|${this.remainingPotential}pt`;
+    return `${this.type === EnchantStepTypes.Each ? '@' : '#'}|${this.stats.map(stat => stat.showBase()).join(', ')}|${this.remainingPotential}pt`;
   }
 }
 
 class EnchantStat {
-  /**
-   * @param {EnchantItem} itemBase
-   * @param {symbol} type
-   * @param {number} [v]
-   */
-  constructor(itemBase, type, v) {
-    this.itemBase = itemBase;
+  itemBase: EnchantItem;
+  stat: Stat;
 
-    /** @type {Stat} */
+  constructor(itemBase: EnchantItem, type: StatNormalTypes, v: number) {
+    this.itemBase = itemBase;
     this.stat = itemBase.statBase.createStat(type, v);
   }
 
-  /** @return {number} */
-  get value() {
-    return this.stat.value;
+  get value(): number {
+    return this.stat.value as number;
   }
 
   /** @param {number} v */
-  set value(v) {
+  set value(v: number) {
     this.stat.value = v;
   }
 
   /** @return {string} */
-  get baseName() {
+  get baseName(): string {
     return this.stat.baseName;
   }
 
-  /** @return {symbol} */
-  get type() {
-    return this.stat.type;
+  get type(): StatNormalTypes {
+    return this.stat.type as StatNormalTypes;
   }
 
-  /** @return {string} */
-  get statId() {
+  get statId(): string {
     return this.stat.statId;
   }
 
@@ -622,22 +577,15 @@ class EnchantStat {
     return this.itemBase.getPotentialConvertThreshold(this.type);
   }
 
-  /**
-   * @param {number} [v]
-   * @returns {string}
-   */
-  show() {
+  show(): string {
     return this.stat.show();
   }
-  add(v) {
-    return this.stat.add(v);
+
+  add(value: number) {
+    return this.stat.add(value);
   }
 
-  /**
-   * @param {EnchantStat} estat
-   * @returns {boolean}
-   */
-  equals(estat) {
+  equals(estat: EnchantStat | EnchantStepStat): boolean {
     return this.stat.equals(estat.stat);
   }
 
@@ -647,11 +595,8 @@ class EnchantStat {
 
   /**
    * calc material point cost of from -> old. order of params has no effect.
-   * @param {number} from
-   * @param {number} to
-   * @returns {number}
    */
-  calcMaterialPointCost(from, to) {
+  calcMaterialPointCost(from: number, to: number): number {
     if (from > to) {
       const t = from;
       from = to;
@@ -662,31 +607,24 @@ class EnchantStat {
     const r = 100 - Math.floor(smithlv / 10) - Math.floor(smithlv / 50);
     const bv = this.itemBase.getMaterialPointValue(this.type);
 
-    const calc = (_from, _to) => {
+    const calc = (_from: number, _to: number) => {
       _to = Math.abs(_to);
       _from = Math.abs(_from);
       if (_from > _to) {
         [_from, _to] = [_to, _from];
       }
-      return Array(_to - _from).fill()
-        .map((p, i) => i + _from + 1)
-        .reduce((a, b) => a + Math.floor(b * b * bv * r / 100), 0);
+      return Array(_to - _from).fill(0)
+        .map((item, idx) => idx + _from + 1)
+        .reduce((item1, item2) => item1 + Math.floor(item2 * item2 * bv * r / 100), 0);
     };
 
     return from * to >= 0 ? calc(from, to) : calc(from, 0) + calc(0, to);
   }
 
-  /**
-   * @param {"current"|"base"} [type]
-   * @param {number} [previousValue]
-   * @returns {string}
-   */
-  showAmount(type = 'current', previousValue = 0) {
-    let [sv, sv2] = this.itemBase.getUnitValue(this.type).split('|');
+  showAmount(type: 'current' | 'base' = 'current', previousValue: number = 0): string {
+    const [unitValue, unitValue2] = this.itemBase.getUnitValue(this.type);
     const convertThreshold = this.potentialConvertThreshold;
     let v = this.value + previousValue;
-
-    sv2 = sv2 || sv;
 
     const sign = v < 0 ? -1 : 1;
     v *= sign;
@@ -710,55 +648,30 @@ class EnchantStat {
     v *= sign;
     v2 *= sign;
 
-    return this.stat.show(v * sv + v2 * sv2);
+    return this.stat.show(v * unitValue + v2 * unitValue2);
   }
 }
 
-/** */
+
 class EnchantStepStat extends EnchantStat {
-  /** @const */
   static POTENTIAL_CONVERT_DEFAULT_THRESHOLD = 20;
 
-  static TYPES = [
-    StatTypes.Constant,
-    StatTypes.Multiplier,
-    StatTypes.Total,
-  ];
+  private _parent: EnchantStep;
 
-  /**
-   * @param {EnchantStep} parent
-   * @param {EnchantItem} itemBase
-   * @param {symbol} type
-   * @param {number} [v]
-   */
-  constructor(parent, itemBase, type, v) {
-    super(itemBase, type, v);
-    /** @private */
+  constructor(parent: EnchantStep, itemBase: EnchantItem, type: StatNormalTypes, value: number) {
+    super(itemBase, type, value);
     this._parent = parent;
   }
 
-  /**
-   * @typedef EnchantStepStatSaveData
-   * @type {Object}
-   * @property {0|1|2} type - symbol to number
-   * @property {number} value
-   * @property {string} base - Basename of EnchantItem.statBase
-   */
-  /** @return {EnchantStepStatSaveData} */
-  save() {
+  save(): EnchantStepStatSaveData {
     return {
-      type: EnchantStepStat.TYPES.indexOf(this.type),
+      type: EnchantStepStatTypesList.indexOf(this.type),
       value: this.value,
       base: this.itemBase.statBase.baseName,
     };
   }
 
-  /**
-   * @param {Array<EnchantCategory>} categorys
-   * @param {EnchantStep} step
-   * @param {EnchantStepStatSaveData} data
-   */
-  static load(categorys, step, data) {
+  static load(categorys: EnchantCategory[], step: EnchantStep, data: EnchantStepStatSaveData) {
     let itemBase;
     categorys.find(category => {
       itemBase = category.items.find(item => item.statBase.baseName === data.base);
@@ -768,48 +681,42 @@ class EnchantStepStat extends EnchantStat {
       console.warn(`can not find the EnchantItem "${data.base}" when load EnchantStepStat`);
       return null;
     }
-    const type = EnchantStepStat.TYPES[data.type];
+    const type = EnchantStepStatTypesList[data.type];
     return new EnchantStepStat(step, itemBase, type, data.value);
   }
 
-  get value() {
+  override get value() {
     return this.stat.value;
   }
-  /**
-   * @override
-   * @param {number} v
-   */
-  set value(v) {
+
+  override set value(value: number) {
     const eqstat = this.belongEquipment.stat(this.itemBase, this.type);
     const [min, max] = this.limit;
     const ov = eqstat.add(-1 * this.value);
-    if (ov + v > max)
-      v = max - ov;
-    if (ov + v < min)
-      v = min - ov;
+    if (ov + value > max)
+      value = max - ov;
+    if (ov + value < min)
+      value = min - ov;
 
-    this.stat.value = v;
+    this.stat.value = value;
   }
 
 
-  /** @return {number} */
-  get index() {
+  get index(): number {
     return this._parent.stats.indexOf(this);
   }
 
-  /** @return {boolean} */
-  get valid() {
-    if (this._parent.type === EnchantStep.TYPE_EACH && this.index !== 0) {
+  get valid(): boolean {
+    if (this._parent.type === EnchantStepTypes.Each && this.index !== 0) {
       return false;
     }
-    if (this.itemBase.belongCategory.isWeaponOnly && this.belongEquipment.fieldType !== EnchantEquipment.TYPE_MAIN_WEAPON) {
+    if (this.itemBase.belongCategory.weaponOnly && this.belongEquipment.fieldType !== EnchantEquipmentTypes.MainWeapon) {
       return false;
     }
     return true;
   }
 
-  /** @return {EnchantEquipment} */
-  get belongEquipment() {
+  get belongEquipment(): EnchantEquipment {
     return this._parent.belongEquipment;
   }
 
@@ -821,11 +728,10 @@ class EnchantStepStat extends EnchantStat {
     return this.itemBase.getPotential(this.type, this.belongEquipment);
   }
 
-  /** @return {number} */
-  get potentialCost() {
+  get potentialCost(): number {
     const prev = this.previousStepStatValue;
 
-    if (this._parent.type === EnchantStep.TYPE_NORMAL)
+    if (this._parent.type === EnchantStepTypes.Normal)
       return this.calcPotentialCost(this.value, prev);
     else {
       const er = this._parent.potentialExtraRate;
@@ -845,21 +751,13 @@ class EnchantStepStat extends EnchantStat {
     }
   }
 
-  /** @return {number} */
-  get finalPotentialEffect() {
-    return this._parent.type === EnchantStep.TYPE_NORMAL ?
+  get finalPotentialEffect(): number {
+    return this._parent.type === EnchantStepTypes.Normal ?
       -1 * this.potentialCost * this._parent.potentialExtraRate :
       -1 * this._parent.potentialCost;
   }
 
-  /**
-   * @typedef MaterialPointCost
-   * @type {Object}
-   * @property {number} type
-   * @property {number} value
-   */
-  /** @return {MaterialPointCost} */
-  get materialPointCost() {
+  get materialPointCost(): MaterialPointCost {
     const from = this.previousStepStatValue,
       to = from + this.value;
     return {
@@ -868,18 +766,13 @@ class EnchantStepStat extends EnchantStat {
     };
   }
 
-  /** @returns {number} */
-  get previousStepStatValue() {
+  get previousStepStatValue(): number {
     const stat = this.belongEquipment
       .stat(this.itemBase, this.type, this._parent.index - 1);
     return stat ? stat.value : 0;
   }
 
-  /**
-   * @param {"current"|"base"|"each"} [type]
-   * @returns {string}
-   */
-  show(type) {
+  private _handleShow(type: 'current' | 'base' | 'each'): string {
     if (type === 'current' || type === 'base') {
       const prev = this.previousStepStatValue;
       return this.showAmount(type, prev);
@@ -887,54 +780,60 @@ class EnchantStepStat extends EnchantStat {
       return this.stat.show(this.belongStep.step);
     }
 
-    return super.show();
+    return this.stat.show();
   }
 
-  /**
-   * @param {number} v - increased value
-   * @param {number} pre - previous value before increase
-   * @returns {number}
-   */
-  calcPotentialCost(v, pre = 0) {
+  showCurrent() {
+    return this._handleShow('current');
+  }
+
+  showBase() {
+    return this._handleShow('base');
+  }
+
+  showEach() {
+    return this._handleShow('each');
+  }
+
+  calcPotentialCost(value: number, pre: number = 0): number {
     const p = this.potential;
     const convertThreshold = this.itemBase.getPotentialConvertThreshold(this.type);
 
-    const sign = v < 0 ? -1 : 1;
+    const sign = value < 0 ? -1 : 1;
 
     let v2 = 0;
     if (pre * sign <= convertThreshold) {
-      v += pre;
-      v *= sign;
+      value += pre;
+      value *= sign;
 
-      if (v > convertThreshold) {
-        v2 = v - convertThreshold;
-        v = convertThreshold;
+      if (value > convertThreshold) {
+        v2 = value - convertThreshold;
+        value = convertThreshold;
       }
-      v *= sign;
+      value *= sign;
       v2 *= sign;
 
-      v -= pre;
+      value -= pre;
     } else {
-      v2 = v;
-      v = 0;
+      v2 = value;
+      value = 0;
     }
 
     const r = (5 + STATE.Character.tec / 10);
-    return (v + v2) >= 0 ?
-      v * p + v2 * p * 2 :
-      Math.ceil((((v * p) + (v2 * p) / 2) * r) / 100);
+    return (value + v2) >= 0 ?
+      value * p + v2 * p * 2 :
+      Math.ceil((((value * p) + (v2 * p) / 2) * r) / 100);
   }
 
   /**
    * remove this stat from step
-   * @return {void}
    */
-  remove() {
+  remove(): void {
     this._parent.stats.splice(this.index, 1);
     this.belongEquipment.refreshStats();
   }
 
-  pure() {
+  pure(): EnchantStat {
     return super.copy();
   }
 }

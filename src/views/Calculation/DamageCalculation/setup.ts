@@ -1,12 +1,14 @@
 import { computed, ref } from 'vue';
 import type { Ref, ComputedRef } from 'vue';
 import { useStore } from 'vuex';
-import RegisterLang from '@/setup/RegisterLang';
+
+import { CalcItemContainer, Calculation } from '@/lib/Calculation/Damage/Calculation';
+
 import Notify from '@/setup/Notify';
+import RegisterLang from '@/setup/RegisterLang';
 
 import { calcStructDisplay, calcStructCritical, calcStructWithoutCritical } from './consts';
 
-import { CalcItemContainer, Calculation } from '@/lib/Calculation/Damage/Calculation';
 
 const setupCalcMode = () => {
   const calcModeList = [{

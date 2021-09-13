@@ -24,10 +24,9 @@
           >
             {{ $lang('select crystals/category title')[category.id] }}
             <template #menu>
-              <template v-for="cs in category.crystalStates">
+              <template v-for="cs in category.crystalStates" :key="cs.origin.id">
                 <cy-list-item
                   v-if="!cs.disabled"
-                  :key="cs.origin.id"
                   :selected="cs.selected"
                   @click="selectCrystal(cs.origin)"
                 >
@@ -35,7 +34,7 @@
                     {{ cs.origin.name }}
                   </cy-icon-text>
                 </cy-list-item>
-                <cy-list-item v-else :key="cs.origin.id">
+                <cy-list-item v-else>
                   <cy-icon-text :icon="cs.imagePath" text-color="gray" icon-src="image">
                     {{ cs.origin.name }}
                   </cy-icon-text>
@@ -97,9 +96,10 @@
   </cy-window>
 </template>
 <script>
+import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from '@/lib/Character/CharacterEquipment';
+
 import vue_showStat from './show-stat.vue';
 
-import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from '@/lib/Character/CharacterEquipment';
 
 export default {
   RegisterLang: 'Character Simulator',

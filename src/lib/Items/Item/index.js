@@ -1,5 +1,6 @@
-import Grimoire from '@/shared/Grimoire';
 import { StatTypes } from '@/lib/Character/Stat/enums';
+
+import Grimoire from '@/shared/Grimoire';
 import { isNumberString } from '@/shared/utils/string';
 
 class Item {

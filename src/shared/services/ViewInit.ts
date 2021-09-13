@@ -1,6 +1,8 @@
 // import { InitLanguageData } from "./Language";
-import GetLang from '@/shared/services/Language';
 import store from '@/store';
+
+import GetLang from '@/shared/services/Language';
+
 
 export default async function viewInit(...inits: string[]) {
   if (inits.length === 0) {

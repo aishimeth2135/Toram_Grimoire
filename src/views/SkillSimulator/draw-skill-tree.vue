@@ -95,9 +95,10 @@
 </template>
 
 <script>
-import CY from '@/shared/utils/Cyteria';
-import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs } from '@/lib/Skill/utils/DrawSkillTree';
 import { Skill, SkillTree, LevelSkill, LevelSkillTree } from '@/lib/Skill/Skill';
+import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs } from '@/lib/Skill/utils/DrawSkillTree';
+
+import CY from '@/shared/utils/Cyteria';
 
 function DoNothing() {
   // do nothing

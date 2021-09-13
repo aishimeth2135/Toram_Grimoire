@@ -508,15 +508,16 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import vue_EnchantSelectItem from '../EnchantSimulator/enchant-select-item';
-import vue_EnchantResult from '../EnchantSimulator/enchant-result';
 
-import init from './init.js';
-import init2 from '../EnchantSimulator/init.js';
+import { EnchantBuild, EnchantEquipment, EnchantStat } from '@/lib/Enchant/Enchant';
+import EnchantDoll from '@/lib/Enchant/Enchant/doll';
+
 import ToggleService from '@/setup/ToggleService';
 
-import EnchantDoll from '@/lib/Enchant/Enchant/doll';
-import { EnchantBuild, EnchantEquipment, EnchantStat } from '@/lib/Enchant/Enchant';
+import vue_EnchantResult from '../EnchantSimulator/enchant-result';
+import vue_EnchantSelectItem from '../EnchantSimulator/enchant-select-item';
+import init2 from '../EnchantSimulator/init.js';
+import init from './init.js';
 
 export default {
   name: 'EnchantDoll',

@@ -1,10 +1,12 @@
+
 import store from '@/store';
 
-import ItemsSystem from '@/lib/Items';
 import CharacterSystem from '@/lib/Character';
-import TagSystem from '@/lib/Tag';
-import SkillSystem from '@/lib/Skill';
 import EnchantSystem from '@/lib/Enchant';
+import ItemsSystem from '@/lib/Items';
+import SkillSystem from '@/lib/Skill';
+import TagSystem from '@/lib/Tag';
+
 
 const Grimoire = {
   /** @type {CharacterSystem} */

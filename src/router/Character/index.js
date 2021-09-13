@@ -1,7 +1,8 @@
-import app from './app.vue';
 
 import GetLang from '@/shared/services/Language';
 import ViewInit from '@/shared/services/ViewInit';
+
+import app from './app.vue';
 
 const vue_characterSimulator = () => import(/* webpackChunkName: "character-simulator" */ '@/views/CharacterSimulator');
 const vue_skillSimulator = () => import(/* webpackChunkName: "skill-simulator" */ '@/views/SkillSimulator');

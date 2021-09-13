@@ -54,6 +54,7 @@
     "eslint": "^7.32.0",
     "eslint-import-resolver-webpack": "^0.13.1",
     "eslint-plugin-import": "^2.24.0",
+    "eslint-plugin-import-helpers": "^1.1.0",
     "eslint-plugin-jsdoc": "^36.0.8",
     "eslint-plugin-vue": "^7.17.0",
     "findit2": "^2.2.3",

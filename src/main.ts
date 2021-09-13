@@ -4,19 +4,18 @@ import '@/assets/css/global.css';
 import '@/assets/css/tailwind.css';
 
 import { createApp } from 'vue';
-
-import App from './App.vue';
-import router from './router/index.js';
-import store from '@/store';
-
 import VueGtag from 'vue-gtag-next';
 
-import RegisterLang from '@/plugin/RegisterLang.js';
-import Notify from '@/plugin/Notify';
-import Confirm from '@/plugin/Confirm';
+import store from '@/store';
 
+import Confirm from '@/plugin/Confirm';
+import Notify from '@/plugin/Notify';
+import RegisterLang from '@/plugin/RegisterLang.js';
+
+import App from './App.vue';
 import registerServiceWorker from './app/registerServiceWorker';
 import registGlobalComponents from './app/registGlobalComponents';
+import router from './router/index.js';
 
 const APP = createApp(App);
 APP

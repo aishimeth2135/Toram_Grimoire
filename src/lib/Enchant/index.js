@@ -1,4 +1,5 @@
 import { markRaw } from 'vue';
+
 import { EnchantCategory } from './Enchant';
 
 export default class {

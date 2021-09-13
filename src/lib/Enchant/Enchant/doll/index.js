@@ -1,10 +1,11 @@
-import Grimoire from '@/shared/Grimoire';
 import { StatTypes } from '@/lib/Character/Stat/enums';
+
+import Grimoire from '@/shared/Grimoire';
 
 import { EnchantCategory, EnchantItem } from '../base';
 import { EnchantBuild, EnchantStat, EnchantEquipment } from '../build';
-import EnchantDollEquipmentContainer from './EnchantDollEquipmentContainer.js';
 import STATE from '../state';
+import EnchantDollEquipmentContainer from './EnchantDollEquipmentContainer';
 
 export default class EnchantDoll {
   constructor() {
@@ -135,7 +136,7 @@ export default class EnchantDoll {
 
     // const logResultEqs = (id, reqs) => {
     //   // console.log('==== [', id, '] ===================');
-    //   // console.log(reqs.map(req => req.positiveStats.map(stat => stat.show())));
+    //   // console.log(reqs.map(req => req.positiveStats.map(stat => stat.stat.show())));
     //   // console.log(reqs.map(req => req.copy().equipment.steps().map(step => step.toString())));
     //   console.group(`%c  %c [${id}] number of current equipments: ${resultEqs.length}`,
     //     'background-color: #e8caed; border-radius: 50%; margin-right: 12px',
@@ -524,8 +525,8 @@ class EnchantDollCategory {
   }
 
   /**
-   * @param {"max-effect"|"cost"} type
-   * @param {any} payload
+   * @param {"max-effect"|"max-cost"} type
+   * @param {any} [payload]
    */
   sortStats(type, payload) {
     if (type === 'max-effect') {

@@ -168,8 +168,9 @@
 </template>
 
 <script>
-import vue_showStat from './show-stat.vue';
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
+
+import vue_showStat from './show-stat.vue';
 
 export default {
   RegisterLang: 'Character Simulator',

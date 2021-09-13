@@ -1,4 +1,5 @@
 import { EnchantBuild } from '@/lib/Enchant/Enchant';
+
 import CY from '@/shared/utils/Cyteria';
 
 const SAVE_PRETEXT = 'app--enchant-simulator--vbeta--';
@@ -103,8 +104,8 @@ const actions = {
   },
 };
 
-import step from './step';
 import stat from './stat';
+import step from './step';
 
 const modules = {
   step,

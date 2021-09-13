@@ -349,11 +349,10 @@
 <script>
 import { mapState } from 'vuex';
 
-import init from './init.js';
-
 import vue_DrawSkillTree from '@/views/SkillSimulator/draw-skill-tree.vue';
-import vue_SkillBranch from './skill-branch/skill-branch.vue';
 
+import init from './init.js';
+import vue_SkillBranch from './skill-branch/skill-branch.vue';
 import createSkillState from './utils/createSkillState.js';
 import handleSkillFormula from './utils/handleFormula.js';
 

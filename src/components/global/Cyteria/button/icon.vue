@@ -17,8 +17,9 @@
 
 <script>
 import { ref } from 'vue';
-import BaseButton from './base';
+
 import vue_subCaption from '../components/sub-caption.vue';
+import BaseButton from './base';
 
 export default {
   components: {
