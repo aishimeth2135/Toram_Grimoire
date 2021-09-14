@@ -416,7 +416,7 @@ abstract class CharacterEquipment {
       return new Avatar(...pre_args);
     }
 
-    const stability = parseInt(item.baseStability, 10);
+    const stability = item.baseStability;
     if (item.category === 300)
       return new BodyArmor(...pre_args, item.baseValue);
     if (item.category === 400)

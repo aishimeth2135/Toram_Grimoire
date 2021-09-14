@@ -1,10 +1,10 @@
 import store from '@/store';
+import type { LangCsvData } from '@/store/app/datas/utils/DownloadDatas';
 
 import en from './globalData/en.js';
 import ja from './globalData/ja.js';
 import zh_cn from './globalData/zh_cn.js';
 import zh_tw from './globalData/zh_tw.js';
-
 
 type LangData = {
   [key: string]: unknown;
@@ -22,7 +22,7 @@ function GetLang(id: string, values?: string[]): string {
   return store.getters['language/get'](id, values);
 }
 
-function HandleLanguageData(datas: string[][][], mapping: { [key: number]: number }) {
+function HandleLanguageData(datas: LangCsvData, mapping: { [key: number]: number }) {
   const langDatas = [datas[1], datas[2]];
   Object.entries(mapping).forEach(([key, value]) => {
     const dataIdx = parseInt(key, 10), langDataIdx = value;

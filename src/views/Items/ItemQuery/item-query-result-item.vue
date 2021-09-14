@@ -268,12 +268,12 @@ export default {
   },
   computed: {
     recipeInfoValid() {
-      const r = this.originEquipment.recipe;
-      return this.equipment.creatable && (r['item_level'] || r['item_difficulty']);
+      const recipe = this.originEquipment.recipe;
+      return this.equipment.creatable && (recipe['item_level'] || recipe['item_difficulty']);
     },
     dyeObtains() {
-      const t = this.findObtainByDye(this.modesState.dye.searchText, this.equipment);
-      return this.obtainsDataConvert(t);
+      const obtain = this.findObtainByDye(this.modesState.dye.searchText, this.equipment);
+      return this.obtainsDataConvert(obtain);
     },
     previewStat() {
       return this.state.currentMode === 'stat' ?
@@ -306,14 +306,14 @@ export default {
         'box': 'mdi-treasure-chest',
         'exchange': 'bx-bx-shopping-bag',
       };
-      return obtains.map((p, i) => {
-        const type = this.$rootLang('common/Equipment/obtain/' + p.type);
-        const icon = icons[p.type];
-        const name = p.type !== 'smith' ? p.name : this.$lang('equipment detail/production equipment');
-        const { map = null, dye = null } = p;
+      return obtains.map((item, idx) => {
+        const type = this.$rootLang('common/Equipment/obtain/' + item.type);
+        const icon = icons[item.type];
+        const name = item.type !== 'smith' ? item.name : this.$lang('equipment detail/production equipment');
+        const { map = null, dye = null } = item;
         return {
-          iid: i,
-          isDrop: ['mobs', 'boss', 'mini_boss'].includes(p.type),
+          iid: idx,
+          isDrop: ['mobs', 'boss', 'mini_boss'].includes(item.type),
           type, name, map, dye, icon,
         };
       });

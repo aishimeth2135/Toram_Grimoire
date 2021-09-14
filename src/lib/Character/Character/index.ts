@@ -97,7 +97,7 @@ class Character {
       return this._optinalBaseStat === null || this._optinalBaseStat.name !== name ?
         null : this._optinalBaseStat;
     }
-    return this._baseStats.find(p => p.name === name);
+    return this._baseStats.find(bstat => bstat.name === name);
   }
   baseStatValue(name: CharacterBaseStatValidType) {
     const stat = this.baseStat(name);
@@ -138,9 +138,9 @@ class Character {
   copy() {
     const chara = new Character(this.name + '*');
     chara.level = this.level;
-    this.normalBaseStats.forEach(p => {
-      const find = chara.normalBaseStats.find(a => a.name === p.name) as CharacterBaseStat<CharacterBaseStatTypes>;
-      find.value = p.value;
+    this.normalBaseStats.forEach(bstat => {
+      const find = chara.normalBaseStats.find(_bstat => _bstat.name === bstat.name) as CharacterBaseStat<CharacterBaseStatTypes>;
+      find.value = bstat.value;
     });
     if (this.optionalBaseStat !== null) {
       chara.setOptinalBaseStat(this.optionalBaseStat.name);
@@ -167,9 +167,9 @@ class Character {
     // == [ name ] =====
     data.name = this.name;
     data.level = this.level;
-    data.normalBaseStats = this.normalBaseStats.map(p => ({
-      name: p.name,
-      value: p.value,
+    data.normalBaseStats = this.normalBaseStats.map(bstat => ({
+      name: bstat.name,
+      value: bstat.value,
     }));
     if (this.optionalBaseStat) {
       data.optionalBaseStat = {
@@ -211,12 +211,12 @@ class Character {
       const { name, level, normalBaseStats, optionalBaseStat, fields } = data;
       this.name = name;
       this.level = level;
-      normalBaseStats.forEach(p => {
-        const find = this.normalBaseStats.find(a => a.name === p.name);
+      normalBaseStats.forEach(bstat => {
+        const find = this.normalBaseStats.find(a => a.name === bstat.name);
         if (find)
-          find.value = p.value;
+          find.value = bstat.value;
         else {
-          console.warn('[Character.save] Can not find CharacterBaseStat which name: ' + p.name);
+          console.warn('[Character.save] Can not find CharacterBaseStat which name: ' + bstat.name);
           success = false;
         }
       });
@@ -414,8 +414,8 @@ interface CharacterStatOptions {
   name: string;
   displayFormula: string;
   link: string;
-  max: number;
-  min: number;
+  max: number | null;
+  min: number | null;
   caption: string;
   hiddenOption: number;
 }
@@ -450,8 +450,8 @@ class CharacterStat {
   name: string;
   displayFormula: string;
   link: string;
-  max: number;
-  min: number;
+  max: number | null;
+  min: number | null;
   caption: string;
   options: {
     hidden: number;
@@ -618,8 +618,8 @@ class CharacterStatFormula {
   calc(pureStats: Stat[], vars: CharacterStatResultVars): CharacterStatFormulaResult {
     const allCharacterStatMap: { [key: string]: CharacterStat } = {};
     this.belongCharacterStat.category.belongCategorys
-      .map(p => p.stats).flat()
-      .forEach(p => allCharacterStatMap[p.id] = p);
+      .map(cat => cat.stats).flat()
+      .forEach(stat => allCharacterStatMap[stat.id] = stat);
 
     const checkBaseName = (stat: Stat) => stat.baseName === this.belongCharacterStat.link;
     const cstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Constant),
@@ -721,16 +721,16 @@ class CharacterStatFormula {
     };
 
     const conditions: CharacterStatFormulaResultConditionalBase[] = this.conditionValues
-      .map(p => {
+      .map(item => {
         let statBasePart: string | null = null,
           result = true,
           isMul = false,
           isBase = false;
 
-        if (p.conditional !== '#') {
-          result = handleConditional(p.conditional, conditionalHandlerOptions);
+        if (item.conditional !== '#') {
+          result = handleConditional(item.conditional, conditionalHandlerOptions);
         }
-        p.options.forEach(option => {
+        item.options.forEach(option => {
           const match = option.match(/#([cmt]value)/);
           if (match) {
             if (statBasePart === null)
@@ -742,26 +742,26 @@ class CharacterStatFormula {
           }
         });
         return {
-          conditional: p.conditional,
-          formula: p.formula,
-          options: p.options,
+          conditional: item.conditional,
+          formula: item.formula,
+          options: item.options,
           result,
           statBasePart,
           isMul,
           isBase,
         };
       })
-      .filter(p => p.result);
+      .filter(item => item.result);
 
     // #base不能和#[cmt]value共存，同時存在時，#base優先級高於#[cmt]value
     conditions
-      .filter(p => p.statBasePart !== null && !p.isBase)
-      .forEach(p => {
-        const part = p.statBasePart;
-        const value = formulaHandler(p.formula);
+      .filter(item => item.statBasePart !== null && !item.isBase)
+      .forEach(item => {
+        const part = item.statBasePart;
+        const value = formulaHandler(item.formula);
         const data: StatPartsDetailAdditionalValueItem = {
-          conditional: p.conditional,
-          options: p.options,
+          conditional: item.conditional,
+          options: item.options,
           value: value,
         };
         switch (part) {
@@ -780,29 +780,29 @@ class CharacterStatFormula {
         }
       });
 
-    const conditionalBase = conditions.find(p => p.isBase) || null;
+    const conditionalBase = conditions.find(item => item.isBase) || null;
 
     const extraValues = conditions
-      .filter(p => !p.isBase)
-      .filter(p => p.statBasePart === null)
-      .map(p => {
-        const value = formulaHandler(p.formula);
+      .filter(item => !item.isBase)
+      .filter(item => item.statBasePart === null)
+      .map(item => {
+        const value = formulaHandler(item.formula);
         statPartsDetail.additionalValues.base.push({
-          conditional: p.conditional,
-          options: p.options,
-          isMul: p.isMul,
+          conditional: item.conditional,
+          options: item.options,
+          isMul: item.isMul,
           value: value,
         });
         return {
-          isMul: p.isMul,
+          isMul: item.isMul,
           value: value,
         };
       });
 
     const addValues = extraValues
-      .filter(p => !p.isMul).map(p => p.value);
+      .filter(item => !item.isMul).map(item => item.value);
     const mulValues = extraValues
-      .filter(p => p.isMul).map(p => p.value);
+      .filter(item => item.isMul).map(item => item.value);
 
     let res = 0, basev = 0, initBasev = 0;
 
@@ -850,4 +850,4 @@ class CharacterStatFormulaConditionalItem {
   }
 }
 
-export { CharacterStatCategory, CharacterStat, Character, EquipmentField };
+export { CharacterStatCategory, CharacterStat, CharacterStatFormula, Character, EquipmentField };
