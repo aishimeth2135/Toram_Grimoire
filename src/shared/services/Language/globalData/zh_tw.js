@@ -119,6 +119,7 @@ export default function() {
       'Tag': '載入標籤清單',
       'Enchant': '載入附魔資料',
       'DamageCalculation': '載入傷害計算器',
+      'Food': '載入料理資料',
       'init': '初始化',
     },
     'Page Title': {

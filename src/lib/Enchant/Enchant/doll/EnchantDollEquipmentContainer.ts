@@ -1,7 +1,7 @@
 import { EnchantCategory } from '../base';
 import { EnchantStat, EnchantStepStat, EnchantEquipment, EnchantStep } from '../build';
 import { EnchantStepTypes } from '../enums';
-import { EnchantDollCategory } from './index.js';
+import { EnchantDollCategory } from './index';
 
 interface MostUsePotentialStatItemUnused {
   type: 'unused';

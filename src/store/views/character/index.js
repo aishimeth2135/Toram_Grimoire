@@ -1,34 +1,29 @@
 
-import { markRaw } from 'vue';
-
 import { Character } from '@/lib/Character/Character';
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
-import { FoodBase } from '@/lib/Character/Food';
 
-import module_skill from './skill.js';
+import module_skill from './skill';
+import module_food from './food';
 
 const store = {
   namespaced: true,
   state: {
     currentCharacterIndex: -1,
-    currentFoodBuildIndex: -1,
     characterSimulatorHasInit: false,
     characters: [],
     equipments: [],
-
-    foodsBase: markRaw(new FoodBase()),
-    foodBuilds: [],
     // deleteAllSavedDataBackup: null
+    autoSaveDisabled: false,
   },
   getters: {
     currentCharacter(state) {
       return state.characters[state.currentCharacterIndex];
     },
-    currentFoodBuild(state) {
-      return state.foodBuilds[state.currentFoodBuildIndex];
-    },
   },
   mutations: {
+    closeAutoSave(state) {
+      state.autoSaveDisabled = true;
+    },
     characterSimulatorInitFinished(state) {
       state.characterSimulatorHasInit = true;
     },
@@ -37,7 +32,7 @@ const store = {
         state.skill.skillBuilds = [];
       state.characters = [];
       state.equipments = [];
-      state.foodBuilds = [];
+      state.food.foodBuilds = [];
     },
     setCurrentCharacter(state, { index }) {
       state.currentCharacterIndex = index;
@@ -62,18 +57,6 @@ const store = {
     },
     removeEquipment(state, { index }) {
       state.equipments.splice(index, 1);
-    },
-    setCurrentFoodBuild(state, { index }) {
-      state.currentFoodBuildIndex = index;
-    },
-    createFoodBuild(state, { name, foodBuild }) {
-      state.foodBuilds.push(foodBuild ? foodBuild : state.foodsBase.createFoods(name));
-      state.currentFoodBuildIndex = state.foodBuilds.length - 1;
-    },
-    removeFoodBuild(state, { index }) {
-      state.foodBuilds.splice(index, 1);
-      if (state.currentFoodBuildIndex >= state.foodBuilds.length)
-        state.currentFoodBuildIndex = state.foodBuilds.length - 1;
     },
     deleteAllSavedData() {
       // const backup = {};
@@ -142,32 +125,33 @@ const store = {
 
         if (foodBuilds){
           foodBuilds.forEach(p => {
-            const foods = state.foodsBase.createFoods();
+            const foods = state.food.foodsBase.createFoods();
             const load = foods.load(p);
             if (!load.error)
-              commit('createFoodBuild', { foodBuild: foods });
+              commit('food/createFoodBuild', { foodBuild: foods });
           });
         }
 
         // 讀檔過程會改寫index，因此最後設定index
         commit('setCurrentCharacter', { index: summary.characterIndex });
         commit('skill/setCurrentSkillBuild', { index: summary.skillBuildIndex });
-        commit('setCurrentFoodBuild', { index: summary.foodBuildIndex !== undefined ? summary.foodBuildIndex : -1 });
-      } catch (e) {
+        commit('food/setCurrentFoodBuild', { index: summary.foodBuildIndex !== undefined ? summary.foodBuildIndex : -1 });
+      } catch (error) {
         commit('reset');
         commit('createCharacter', new Character());
         console.warn('Error when load Character-Simulator data.');
-        throw e;
+        commit('closeAutoSave');
+        throw error;
       }
     },
     saveCharacterSimulator({ state, getters }, { index = -1 }) {
       const characters = state.characters.map(p => p.origin.save(state.equipments));
       const equipments = state.equipments.map(p => p.save());
       const skillBuildsCsv = getters['skill/saveSkillBuildsCsv']();
-      const foodBuilds = state.foodBuilds.map(p => p.save());
+      const foodBuilds = state.food.foodBuilds.map(p => p.save());
 
       let prefix = 'app--character-simulator--data-';
-      if (index == -1) {
+      if (index === -1) {
         let cnt = 0;
         while (window.localStorage.getItem(prefix + cnt))
           ++cnt;
@@ -185,7 +169,7 @@ const store = {
         skillBuilds: state.skill.skillBuilds.map(p => p.name),
         characterIndex: state.currentCharacterIndex,
         skillBuildIndex: state.skill.currentSkillBuildIndex,
-        foodBuildIndex: state.currentFoodBuildIndex,
+        foodBuildIndex: state.food.currentFoodBuildIndex,
       };
 
       try {
@@ -206,6 +190,7 @@ const store = {
   },
   modules: {
     skill: module_skill,
+    food: module_food,
   },
 };
 

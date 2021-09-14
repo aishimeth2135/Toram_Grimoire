@@ -1,7 +1,8 @@
-import { SkillEffect } from '@/lib/Skill/Skill';
 
 import CY from '@/shared/utils/Cyteria';
 import { handleFormula } from '@/shared/utils/data';
+
+import { SkillEffect } from '@/lib/Skill/Skill';
 
 export default function(skill, { defaultSkillLevel = 0, defaultCharacterLevel = 0 } = {}) {
   return {

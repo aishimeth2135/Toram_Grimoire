@@ -11,7 +11,7 @@ export default {
   path: '/character',
   component: app,
   beforeEnter(to, from, next) {
-    ViewInit('Stats', 'Items', 'CharacterStats', 'Skill').then(next);
+    ViewInit('Stats', 'Items', 'CharacterStats', 'Skill', 'Food').then(next);
   },
   meta: {
     leftMenuViewButtons: [{

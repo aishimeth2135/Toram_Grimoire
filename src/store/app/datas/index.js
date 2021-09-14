@@ -34,29 +34,53 @@ const store = {
     loadFinished(state, id) {
       state.loaded.set(id, true);
     },
-    initItems(state) {
+    initItems(state, { Equipments = null, Crystals = null } = {}) {
       if (state.Items === null) {
         state.Items = new ItemsSystem();
       }
+      if (Equipments) {
+        loadEquipments(state.Items, Equipments);
+      }
+      if (Crystals) {
+        loadCrystals(state.Items, Crystals);
+      }
     },
-    initCharacter(state) {
+    initCharacter(state, { Stats = null, CharacterStats = null } = {}) {
       if (state.Character === null) {
         state.Character = new CharacterSystem();
       }
+      if (Stats) {
+        loadStats(state.Character, Stats);
+      }
+      if (CharacterStats) {
+        loadCharacterStats(state.Character, CharacterStats);
+      }
     },
-    initTag(state) {
+    initTag(state, { Tag = null } = {}) {
       if (state.Tag === null) {
         state.Tag = new TagSystem();
       }
+      if (Tag) {
+        loadTag(state.Tag, Tag);
+      }
     },
-    initSkill(state) {
+    initSkill(state, { Skill = null, SkillMain = null } = {}) {
       if (state.Skill === null) {
         state.Skill = new SkillSystem();
       }
+      if (Skill) {
+        loadSkill(state.Skill, Skill);
+      }
+      if (SkillMain) {
+        loadSkillMain(state.Skill, SkillMain);
+      }
     },
-    initEnchant(state) {
+    initEnchant(state, { Enchant = null } = {}) {
       if (state.Enchant === null) {
         state.Enchant = new EnchantSystem();
+      }
+      if (Enchant) {
+        loadEnchant(state.Enchant, Enchant);
       }
     },
     initDamageCalculation(state) {
@@ -66,48 +90,50 @@ const store = {
     },
   },
   actions: {
-    async* loadItems({ state, commit }) {
-      commit('initItems');
+    async* loadItems({ commit }) {
       const datas = await DownloadDatas('Equipment', 'Crystal');
       yield;
-      loadEquipments(state.Items, datas[0][0]);
-      loadCrystals(state.Items, datas[1][0]);
+      commit('initItems', {
+        Equipments: datas[0][0],
+        Crystals: datas[1][0],
+      });
     },
-    async* loadStats({ state, commit }) {
-      commit('initCharacter');
+    async* loadStats({ commit }) {
       const datas = await DownloadDatas({ path: 'Stats', lang: true });
       yield;
-      loadStats(state.Character, datas[0]);
+      commit('initCharacter', { Stats: datas[0] });
     },
-    async* loadCharacterStats({ state, commit }) {
-      commit('initCharacter');
+    async* loadCharacterStats({ commit }) {
       const datas = await DownloadDatas({ path: 'Character Stats', lang: true });
       yield;
-      loadCharacterStats(state.Character, datas[0]);
+      commit('initCharacter', { CharacterStats: datas[0] });
     },
-    async* loadTag({ state, commit }) {
-      commit('initTag');
+    async* loadTag({ commit }) {
       const datas = await DownloadDatas({ path: 'Tag', lang: true });
       yield;
-      loadTag(state.Tag, datas[0]);
+      commit('initTag', { Tag: datas[0] });
     },
     async* loadSkill({ state, commit }) {
-      commit('initSkill');
       const datas = await DownloadDatas({ path: 'Skill', lang: true }, { path: 'Skill Main', lang: true });
       yield;
-      loadSkill(state.Skill, datas[0]);
-      loadSkillMain(state.Skill, datas[1]);
+      commit('initSkill', {
+        Skill: datas[0],
+        SkillMain: datas[1],
+      });
       commit('character/skill/setSkillRoot', state.Skill.skillRoot, { root: true });
     },
-    async* loadEnchant({ state, commit }) {
-      commit('initEnchant');
+    async* loadFood({ commit }) {
+      yield;
+      commit('character/food/setFoodsBase', null, { root: true });
+    },
+    async* loadEnchant({ commit }) {
       const datas = await DownloadDatas('Enchant');
       yield;
-      loadEnchant(state.Enchant, datas[0][0]);
+      commit('initEnchant', { Enchant: datas[0][0] });
     },
     async* loadDamageCalculation({ commit }) {
-      commit('initDamageCalculation');
       yield;
+      commit('initDamageCalculation');
       // do nothing
     },
   },

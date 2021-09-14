@@ -7,15 +7,15 @@ import { DataPath, DataPathLang } from '@/shared/services/DataPath';
 
 type PathItem = string | { path: string; lang?: boolean };
 type CsvData = string[][];
-type LangData = [CsvData, CsvData | null, CsvData | null];
+type LangCsvData = [CsvData, CsvData | null, CsvData | null];
 
-export default async function(...paths: PathItem[]): Promise<LangData[]> {
+export default async function(...paths: PathItem[]): Promise<LangCsvData[]> {
   const promises = paths.map(async (pathItem) => {
     if (typeof pathItem === 'string') {
       pathItem = { path: pathItem };
     }
     const { path: pathId, lang = false } = pathItem;
-    const results: LangData = lang ?
+    const results: LangCsvData = lang ?
       await loadLangDatas(pathId) :
       [await createLoadPromise(DataPath(pathId)), null, null];
     return results;
@@ -56,7 +56,7 @@ async function createLoadPromise(path: string): Promise<CsvData> {
 }
 
 const DEFAULT_LANG = 1;
-async function loadLangDatas(pathId: string): Promise<LangData> {
+async function loadLangDatas(pathId: string): Promise<LangCsvData> {
   const promises: Promise<CsvData>[] = [];
   const current = store.getters['language/primaryLang'] as number,
     second = store.getters['language/secondaryLang'] as number;
@@ -77,7 +77,7 @@ async function loadLangDatas(pathId: string): Promise<LangData> {
   results.map((item, idx) => {
     datas[idx] = item.status === 'fulfilled' ? item.value : null;
   });
-  return datas as LangData;
+  return datas as LangCsvData;
 }
 
-export type { CsvData };
+export type { CsvData, LangCsvData };

@@ -274,7 +274,7 @@ class CalcItemCustom extends CalcItem {
     this.name = name;
   }
 
-  get isCustom(): boolean {
+  override get isCustom(): boolean {
     return true;
   }
 }

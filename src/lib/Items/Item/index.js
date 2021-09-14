@@ -1,7 +1,8 @@
-import { StatTypes } from '@/lib/Character/Stat/enums';
 
 import Grimoire from '@/shared/Grimoire';
 import { isNumberString } from '@/shared/utils/string';
+
+import { StatTypes } from '@/lib/Character/Stat/enums';
 
 class Item {
   constructor(id, name) {

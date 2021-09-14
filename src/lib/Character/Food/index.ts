@@ -1,3 +1,5 @@
+import { markRaw } from 'vue';
+
 import { StatTypes } from '@/lib/Character/Stat/enums';
 
 import { StatBase } from '../Stat';
@@ -18,12 +20,12 @@ class FoodsBase {
   foodBases: FoodBase[];
 
   constructor() {
-    this.foodBases = [];
+    this.foodBases = markRaw([]);
     initFoodsBase(this);
   }
 
   appendFoodBase(base: StatBase, amount: FoodAmount, negative: boolean = false) {
-    const foodBase = new FoodBase(base, amount, negative);
+    const foodBase = markRaw(new FoodBase(base, amount, negative));
     this.foodBases.push(foodBase);
     return foodBase;
   }
@@ -31,6 +33,7 @@ class FoodsBase {
   createFoods(name: string = 'Potum') {
     const foods = new Foods(name);
     this.foodBases.forEach(foodBase => foods.appendFood(foodBase));
+    return foods;
   }
 }
 

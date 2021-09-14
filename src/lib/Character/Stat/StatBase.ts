@@ -23,6 +23,7 @@ class StatBase {
   order: number;
   constantDisplayFormat: string;
   multiplierDisplayFormat: string;
+  hidden: boolean;
 
   constructor(baseName: string, text: string, hasMultiplier: boolean, order: number) {
     this.baseName = baseName;
@@ -31,6 +32,7 @@ class StatBase {
     this.order = order;
     this.constantDisplayFormat = '$t$s$v$u';
     this.multiplierDisplayFormat = '$t$s$v$u';
+    this.hidden = false;
   }
 
   title(type: StatTypes): string {
@@ -76,7 +78,6 @@ class StatBase {
       case StatTypes.Total:
         return handleFormula(Lang('type total: preText') + '$t$s$v$u', '%');
     }
-    return '';
   }
 
   getShowData(type: StatTypes, value: StatValue) {

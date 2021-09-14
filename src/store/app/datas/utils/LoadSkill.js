@@ -1,7 +1,8 @@
-import { SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch } from '@/lib/Skill/Skill';
 
 import Grimoire from '@/shared/Grimoire';
 import { HandleLanguageData } from '@/shared/services/Language';
+
+import { SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch } from '@/lib/Skill/Skill';
 
 
 function loadSkill(skillSystem, datas) {

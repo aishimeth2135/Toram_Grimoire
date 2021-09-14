@@ -84,8 +84,8 @@ rules:
       groups:
         - module
         - /^@\/store/
-        - /^@\/lib\//
         - /^@\/shared\//
+        - /^@\/lib\//
         - /^@\/setup\//
         - /^@\//
         - - parent

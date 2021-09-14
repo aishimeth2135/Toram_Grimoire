@@ -119,7 +119,6 @@ export default {
       // levelSkillStateRoot[]
       allSkillStates: [],
 
-      autoSaveDisable: false,
       listeners: {
         windowBeforeUnload: null,
         documentVisibilityChange: null,
@@ -176,6 +175,7 @@ export default {
       'characterStates': 'characters',
       'currentCharacterStateIndex': 'currentCharacterIndex',
       'characterSimulatorHasInit': 'characterSimulatorHasInit',
+      'autoSaveDisabled': 'autoSaveDisabled',
     }),
     ...mapState('character/skill', {
       'skillBuilds': 'skillBuilds',
@@ -183,11 +183,9 @@ export default {
     }),
     ...mapGetters('character', {
       'currentCharacterState': 'currentCharacter',
-      'currentFoodBuild': 'currentFoodBuild',
     }),
-    ...mapGetters('character/skill', {
-      'currentSkillBuild': 'currentSkillBuild',
-    }),
+    ...mapGetters('character/skill', ['currentSkillBuild']),
+    ...mapGetters('character/food', ['currentFoodBuild']),
     equipmentElement() {
       const element = {
         'fire': 0,
@@ -257,10 +255,10 @@ export default {
   methods: {
     /* ==[ character - main ]==========================================*/
     closeAutoSave() {
-      this.autoSaveDisable = true;
+      this.$store.commit('character/closeAutoSave');
     },
     autoSave() {
-      if (!this.autoSaveDisable) {
+      if (!this.autoSaveDisabled) {
         this.$store.dispatch('character/saveCharacterSimulator', { index: 0 });
         this.$notify(this.$lang('save-load control/Auto save Successfully'), 'mdi-ghost', 'auto save successfully');
       }

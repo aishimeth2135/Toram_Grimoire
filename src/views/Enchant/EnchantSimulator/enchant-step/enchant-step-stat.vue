@@ -50,9 +50,10 @@
 <script>
 import { mapMutations } from 'vuex';
 
+import { trimZero } from '@/shared/utils/string';
+
 import { EnchantStepStat } from '@/lib/Enchant/Enchant';
 
-import { trimZero } from '@/shared/utils/string';
 
 export default {
   name: 'EnchantStepStat',

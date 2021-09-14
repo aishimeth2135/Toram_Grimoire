@@ -295,10 +295,11 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 
-import { computeDrawSkillTreeData, GetDrawSetting } from '@/lib/Skill/utils/DrawSkillTree';
 
 import { LoadingNotify } from '@/shared/services/Notify';
 import CY from '@/shared/utils/Cyteria';
+
+import { computeDrawSkillTreeData, GetDrawSetting } from '@/lib/Skill/utils/DrawSkillTree';
 
 import vue_SaveLoadDataSystem from '@/components/SaveLoadDataSystem/main.vue';
 

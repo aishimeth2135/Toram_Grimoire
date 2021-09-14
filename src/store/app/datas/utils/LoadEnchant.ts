@@ -1,6 +1,11 @@
-import { EnchantItem } from '@/lib/Enchant/Enchant';
+import EnchantSystem from '@/lib/Enchant';
+import { EnchantCategory, EnchantItem } from '@/lib/Enchant/Enchant';
+import { EnchantItemConditions } from '@/lib/Enchant/Enchant/enums';
+import type { MaterialPointTypeRange } from '@/lib/Enchant/Enchant/base';
 
-export default function LoadEnchantData(root, csvData) {
+import type { CsvData } from './DownloadDatas';
+
+export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
   const STAT_ID = 0,
     CONDITION = 1,
     CONDITION_LIST = ['主手武器', '身體裝備', '原有屬性'],
@@ -20,9 +25,9 @@ export default function LoadEnchantData(root, csvData) {
     CATEGORY_TITLE = 2,
     CATEGORY_EXTRA = 3;
 
-  const handleItemValue = (value) => value !== '' ? parseFloat(value) : null;
+  const handleItemValue = (value: string) => value !== '' ? parseFloat(value) : null;
 
-  const handleLimit = (str) => {
+  const handleLimit = (str: string): [number | null, number | null] => {
     if (str === '')
       return [null, null];
     const limitStrs = str.split('::');
@@ -31,21 +36,21 @@ export default function LoadEnchantData(root, csvData) {
     return [l1, l2];
   };
 
-  const handleUnitValue = (str) => {
+  const handleUnitValue = (str: string): [number, number] => {
     const [str1, str2] = str.split('|');
     const v1 = str1 ? parseInt(str1) : 1;
     const v2 = str2 ? parseInt(str2) : v1;
     return [v1, v2];
   };
 
-  const processItemProps = (targetRow) => {
+  const processItemProps = (targetRow: string[]): [number, number] => {
     return [
-      handleItemValue(targetRow[POTENTIAL_CONSTANT]),
-      handleItemValue(targetRow[POTENTIAL_MULTIPLIER]),
+      handleItemValue(targetRow[POTENTIAL_CONSTANT]) as number,
+      handleItemValue(targetRow[POTENTIAL_MULTIPLIER]) as number,
     ];
   };
 
-  let currentCategory, currentItem;
+  let currentCategory: EnchantCategory, currentItem: EnchantItem;
   csvData.forEach((row, idx) => {
     if (idx === 0)
       return;
@@ -62,9 +67,9 @@ export default function LoadEnchantData(root, csvData) {
       const conditionId = CONDITION_LIST.indexOf(row[CONDITION]);
       if (conditionId !== -1) {
         const cond = [
-          EnchantItem.CONDITION_MAIN_WEAPON,
-          EnchantItem.CONDITION_BODY_ARMOR,
-          EnchantItem.CONDITION_ORIGINAL_ELEMENT,
+          EnchantItemConditions.MainWeapon,
+          EnchantItemConditions.BodyArmor,
+          EnchantItemConditions.OriginalElement,
         ][conditionId];
         currentItem.appendConditionalProps(cond, { potential: processItemProps(row) });
       }
@@ -78,8 +83,9 @@ export default function LoadEnchantData(root, csvData) {
           ],
           unitValue: [
             handleUnitValue(row[UNIT_VALUE_CONSTANT]),
-            handleUnitValue(row[UNIT_VALUE_MULTIPLIER])],
-          materialPointType: MATERIAL_POINT_TYPE_LIST.indexOf(row[MATERIAL_POINT_TYPE]),
+            handleUnitValue(row[UNIT_VALUE_MULTIPLIER]),
+          ],
+          materialPointType: MATERIAL_POINT_TYPE_LIST.indexOf(row[MATERIAL_POINT_TYPE]) as MaterialPointTypeRange,
           materialPointValue: [
             handleItemValue(row[MATERIAL_POINT_VALUE_CONSTANT]),
             handleItemValue(row[MATERIAL_POINT_VALUE_MULTIPLIER]),

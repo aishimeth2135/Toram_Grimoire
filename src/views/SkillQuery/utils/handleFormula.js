@@ -1,6 +1,7 @@
+import { handleFormula } from '@/shared/utils/data';
+
 import { SkillBranch } from '@/lib/Skill/Skill';
 
-import { handleFormula } from '@/shared/utils/data';
 
 /**
  * @typedef SkillState

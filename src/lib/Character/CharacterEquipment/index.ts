@@ -1,8 +1,9 @@
-import { Equipment, Crystal } from '@/lib/Items/Item';
 
 import Grimoire from '@/shared/Grimoire';
 import GetLang from '@/shared/services/Language';
 import { isNumberString } from '@/shared/utils/string';
+
+import { Equipment, Crystal } from '@/lib/Items/Item';
 
 import { StatRestriction } from '../Stat';
 import type { StatRestrictionSaveData } from '../Stat/StatRestriction';
@@ -460,8 +461,8 @@ interface EquipmentSaveData {
 }
 
 abstract class Weapon extends CharacterEquipment {
-  atk: number;
-  stability: number;
+  override atk: number;
+  override stability: number;
 
   constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], atk: number | string = 1, stability = 0) {
     super(origin, name, stats);
@@ -471,15 +472,15 @@ abstract class Weapon extends CharacterEquipment {
     this.atk = atk;
     this.stability = stability;
   }
-  get hasStability() {
+  override get hasStability() {
     return true;
   }
 }
 
 class MainWeapon extends Weapon {
-  refining: number;
+  override refining: number;
+  override crystals: EquipmentCrystal[];
   type: EquipmentTypes;
-  crystals: EquipmentCrystal[];
 
   constructor(
     origin: EquipmentOrigin,
@@ -499,16 +500,16 @@ class MainWeapon extends Weapon {
   get refiningAdditionAmount() {
     return Math.floor(this.atk * this.refining * this.refining / 100) + this.refining;
   }
-  get hasRefining() {
+  override get hasRefining() {
     return true;
   }
-  get hasCrystal() {
+  override get hasCrystal() {
     return true;
   }
-  get hasElement() {
+  override get hasElement() {
     return true;
   }
-  get creatable() {
+  override get creatable() {
     return true;
   }
 }
@@ -530,13 +531,13 @@ class SubWeapon extends Weapon {
     this.type = type;
   }
 
-  get hasElement() {
+  override get hasElement() {
     return this.type === EquipmentTypes.Arrow;
   }
 }
 
 abstract class Armor extends CharacterEquipment {
-  def: number;
+  override def: number;
 
   constructor(
     origin: EquipmentOrigin,
@@ -553,8 +554,8 @@ abstract class Armor extends CharacterEquipment {
 }
 
 class SubArmor extends Armor {
+  override refining: number;
   type: EquipmentTypes;
-  refining: number;
 
   constructor(
     origin: EquipmentOrigin,
@@ -568,15 +569,15 @@ class SubArmor extends Armor {
     this.type = type;
     this.refining = 0;
   }
-  get hasRefining() {
+  override get hasRefining() {
     return true;
   }
 }
 
 class BodyArmor extends Armor {
+  override refining: number;
+  override crystals: EquipmentCrystal[];
   type: EquipmentTypes;
-  refining: number;
-  crystals: EquipmentCrystal[];
 
   constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], def: number | string) {
     super(origin, name, stats, def);
@@ -595,20 +596,20 @@ class BodyArmor extends Armor {
       EquipmentTypes.BodyDefense,
     ];
   }
-  get hasRefining() {
+  override get hasRefining() {
     return true;
   }
-  get hasCrystal() {
+  override get hasCrystal() {
     return true;
   }
-  get creatable() {
+  override get creatable() {
     return true;
   }
 }
 
 class AdditionalGear extends Armor {
-  refining: number;
-  crystals: EquipmentCrystal[];
+  override refining: number;
+  override crystals: EquipmentCrystal[];
 
   readonly type: EquipmentTypes;
 
@@ -619,16 +620,16 @@ class AdditionalGear extends Armor {
     this.crystals = [];
     this.type = EquipmentTypes.Additional;
   }
-  get hasRefining() {
+  override get hasRefining() {
     return true;
   }
-  get hasCrystal() {
+  override get hasCrystal() {
     return true;
   }
 }
 
 class SpecialGear extends Armor {
-  crystals: EquipmentCrystal[];
+  override crystals: EquipmentCrystal[];
 
   readonly type: EquipmentTypes;
 
@@ -638,7 +639,7 @@ class SpecialGear extends Armor {
     this.crystals = [];
     this.type = EquipmentTypes.Special;
   }
-  get hasCrystal() {
+  override get hasCrystal() {
     return true;
   }
 }

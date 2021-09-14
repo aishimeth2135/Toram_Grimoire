@@ -1,7 +1,8 @@
-import { StatTypes } from '@/lib/Character/Stat/enums';
 
 import Grimoire from '@/shared/Grimoire';
 import CY from '@/shared/utils/Cyteria';
+
+import { StatTypes } from '@/lib/Character/Stat/enums';
 
 function checkConstructorArgs() {
   Array.from(arguments).forEach((arg, i) => {

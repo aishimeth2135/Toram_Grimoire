@@ -22,7 +22,7 @@ class StatRestriction extends Stat {
     this.restriction = restriction !== null ? markRaw(restriction) : restriction;
   }
 
-  get statId() {
+  override get statId() {
     let rtext = 'none++';
     if (this.restriction !== null) {
       const r = this.restriction;
@@ -36,7 +36,7 @@ class StatRestriction extends Stat {
     return `${this.base.statId(this.type)}|${rtext}`;
   }
 
-  copy() {
+  override copy() {
     return new StatRestriction(this.base, this.type, this.value, this.restriction);
   }
 

@@ -509,8 +509,10 @@
 <script>
 import { mapState } from 'vuex';
 
-import { EnchantBuild, EnchantEquipment, EnchantStat } from '@/lib/Enchant/Enchant';
+import { EnchantBuild, EnchantStat } from '@/lib/Enchant/Enchant';
 import EnchantDoll from '@/lib/Enchant/Enchant/doll';
+import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums';
+import { AutoFindNegaitveStatsTypes, EnchantDollBaseTypes } from '@/lib/Enchant/Enchant/doll/enums';
 
 import ToggleService from '@/setup/ToggleService';
 
@@ -577,24 +579,31 @@ export default {
       },
 
       dollConfigOptions: {
-        baseType: ['physical', 'magic', 'none'],
-        autoFindNegaitveStatsType: ['success-rate', 'material'],
+        baseType: [
+          EnchantDollBaseTypes.Physical,
+          EnchantDollBaseTypes.Magic,
+          EnchantDollBaseTypes.None,
+        ],
+        autoFindNegaitveStatsType: [
+          AutoFindNegaitveStatsTypes.SuccessRate,
+          AutoFindNegaitveStatsTypes.Material,
+        ],
       },
 
       equipmentTypeOptions: [{
         id: 0,
         text: this.$lang.extra('simulator', 'equipment types/main-weapon'),
-        type: EnchantEquipment.TYPE_MAIN_WEAPON,
+        type: EnchantEquipmentTypes.MainWeapon,
         isOriginalElement: false,
       }, {
         id: 1,
         text: this.$lang.extra('simulator', 'equipment types/body-armor'),
-        type: EnchantEquipment.TYPE_BODY_ARMOR,
+        type: EnchantEquipmentTypes.BodyArmor,
         isOriginalElement: false,
       }, {
         id: 2,
         text: this.$lang.extra('simulator', 'equipment types/main-weapon|original-element'),
-        type: EnchantEquipment.TYPE_MAIN_WEAPON,
+        type: EnchantEquipmentTypes.MainWeapon,
         isOriginalElement: true,
       }],
     };
@@ -619,7 +628,7 @@ export default {
   computed: {
     ...mapState('enchant', ['config']),
     equipmentIsWeapon() {
-      return this.currentEquipment.fieldType === EnchantEquipment.TYPE_MAIN_WEAPON;
+      return this.currentEquipment.fieldType === EnchantEquipmentTypes.MainWeapon;
     },
     nextStepDisabled() {
       if (this.stepCounter === this.stepContents.selectNegativeStat) {
@@ -646,7 +655,7 @@ export default {
     currentEquipmentType: {
       get() {
         const eq = this.currentEquipment;
-        if (eq.fieldType === EnchantEquipment.TYPE_MAIN_WEAPON) {
+        if (eq.fieldType === EnchantEquipmentTypes.MainWeapon) {
           return eq.isOriginalElement ? 2 : 0;
         }
         return 1;
@@ -800,12 +809,12 @@ export default {
       if (this.stepCounter === this.stepContents.selectPositiveStat) {
         const physicals = ['atk', 'physical_pierce'];
         const magic = ['matk', 'magic_pierce'];
-        let current = 'none';
+        let current = EnchantDollBaseTypes.None;
         if (this.doll.positiveStats.find(stat => physicals.includes(stat.baseName))) {
-          current = 'physical';
+          current = EnchantDollBaseTypes.Physical;
         }
         if (this.doll.positiveStats.find(stat => magic.includes(stat.baseName))) {
-          current = current === 'physical' ? 'none' : 'magic';
+          current = current === EnchantDollBaseTypes.Physical ? EnchantDollBaseTypes.None : EnchantDollBaseTypes.Magic;
         }
         this.doll.config.baseType = current;
       }

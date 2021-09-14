@@ -285,9 +285,10 @@ import { mapState } from 'vuex';
 
 
 
-import { EnchantBuild, EnchantStep, EnchantEquipment } from '@/lib/Enchant/Enchant';
-
 import CY from '@/shared/utils/Cyteria';
+
+import { EnchantBuild, EnchantStep, EnchantEquipment } from '@/lib/Enchant/Enchant';
+import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums';
 
 import ToggleService from '@/setup/ToggleService';
 
@@ -331,17 +332,17 @@ export default {
       equipmentTypeOptions: [{
         id: 0,
         text: this.$lang('equipment types/main-weapon'),
-        type: EnchantEquipment.TYPE_MAIN_WEAPON,
+        type: EnchantEquipmentTypes.MainWeapon,
         isOriginalElement: false,
       }, {
         id: 1,
         text: this.$lang('equipment types/body-armor'),
-        type: EnchantEquipment.TYPE_BODY_ARMOR,
+        type: EnchantEquipmentTypes.BodyArmor,
         isOriginalElement: false,
       }, {
         id: 2,
         text: this.$lang('equipment types/main-weapon|original-element'),
-        type: EnchantEquipment.TYPE_MAIN_WEAPON,
+        type: EnchantEquipmentTypes.MainWeapon,
         isOriginalElement: true,
       }],
 
@@ -413,7 +414,7 @@ export default {
     currentEquipmentType: {
       get() {
         const eq = this.currentEquipment;
-        if (eq.fieldType === EnchantEquipment.TYPE_MAIN_WEAPON) {
+        if (eq.fieldType === EnchantEquipmentTypes.MainWeapon) {
           return eq.isOriginalElement ? 2 : 0;
         }
         return 1;

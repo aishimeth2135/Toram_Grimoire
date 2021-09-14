@@ -1,12 +1,13 @@
 import { markRaw } from 'vue';
 
+import Grimoire from '@/shared/Grimoire';
+import { handleFormula, handleConditional } from '@/shared/utils/data';
+
 import { SubWeapon, SubArmor, CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums';
 import { StatBase, Stat } from '@/lib/Character/Stat';
 import { StatTypes } from  '@/lib/Character/Stat/enums';
 
-import Grimoire from '@/shared/Grimoire';
-import { handleFormula, handleConditional } from '@/shared/utils/data';
 
 import CharacterSystem from '../index';
 import { EquipmentFieldTypes, CharacterBaseStatTypes, CharacterOptionalBaseStatTypes } from './enums';

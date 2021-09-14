@@ -1,9 +1,10 @@
 import { markRaw } from 'vue';
 
+import Grimoire from '@/shared/Grimoire';
+
 import { StatBase } from '@/lib/Character/Stat';
 import { StatTypes, StatNormalTypes } from '@/lib/Character/Stat/enums';
 
-import Grimoire from '@/shared/Grimoire';
 
 import { EnchantEquipment } from './build';
 import STATE from './state';

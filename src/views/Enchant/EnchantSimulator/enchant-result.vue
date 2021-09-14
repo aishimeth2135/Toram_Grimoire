@@ -148,12 +148,13 @@
 <script>
 import { mapState } from 'vuex';
 
-import { EnchantEquipment, EnchantStep } from '@/lib/Enchant/Enchant';
-import ENCHANT_STATE from '@/lib/Enchant/Enchant/state';
 
 import CY from '@/shared/utils/Cyteria';
 import { trimZero } from '@/shared/utils/string';
 import { markText } from '@/shared/utils/view';
+
+import ENCHANT_STATE from '@/lib/Enchant/Enchant/state';
+import { EnchantEquipment, EnchantStep } from '@/lib/Enchant/Enchant';
 
 import ToggleService from '@/setup/ToggleService';
 

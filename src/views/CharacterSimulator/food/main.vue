@@ -147,8 +147,8 @@ export default {
       this.createFoodBuild();
   },
   computed: {
-    ...mapState('character', ['foodBuilds', 'currentFoodBuildIndex']),
-    ...mapGetters('character', ['currentFoodBuild']),
+    ...mapState('character/food', ['foodBuilds', 'currentFoodBuildIndex']),
+    ...mapGetters('character/food', ['currentFoodBuild']),
     foodBuildStates() {
       return this.foodBuilds.map((p, i) => ({
         iid: i,
@@ -158,7 +158,7 @@ export default {
   },
   methods: {
     copyCurrentFoodBuild() {
-      this.$store.commit('character/createFoodBuild', {
+      this.$store.commit('character/food/createFoodBuild', {
         foodBuild: this.currentFoodBuild.copy(),
       });
       this.$notify(this.$lang('Copy food build successfully'));
@@ -169,7 +169,7 @@ export default {
         return;
       }
       const from = this.currentFoodBuild;
-      this.$store.commit('character/removeFoodBuild', {
+      this.$store.commit('character/food/removeFoodBuild', {
         index: this.currentFoodBuildIndex,
       });
       this.$notify(this.$lang('Remove food build successfully'),
@@ -177,7 +177,7 @@ export default {
           buttons: [{
             text: this.$rootLang('global/recovery'),
             click: () => {
-              this.$store.commit('character/createFoodBuild', { foodBuild: from });
+              this.$store.commit('character/food/createFoodBuild', { foodBuild: from });
               this.$notify(this.$lang('Recovery food build successfully'));
             },
             removeMessageAfterClick: true,
@@ -185,7 +185,7 @@ export default {
         });
     },
     createFoodBuild() {
-      this.$store.commit('character/createFoodBuild', {
+      this.$store.commit('character/food/createFoodBuild', {
         name: this.$lang('food build') + ' ' + (this.foodBuilds.length + 1),
       });
     },

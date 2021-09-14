@@ -1,7 +1,7 @@
+import Grimoire from '@/shared/Grimoire';
+
 import { Stat } from '@/lib/Character/Stat';
 import { StatTypes, StatNormalTypes } from '@/lib/Character/Stat/enums';
-
-import Grimoire from '@/shared/Grimoire';
 
 import { EnchantCategory, EnchantItem } from './base';
 import STATE from './state';
