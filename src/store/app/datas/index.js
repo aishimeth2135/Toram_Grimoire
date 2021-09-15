@@ -123,6 +123,7 @@ const store = {
       commit('character/skill/setSkillRoot', state.Skill.skillRoot, { root: true });
     },
     async* loadFood({ commit }) {
+      // do nothing
       yield;
       commit('character/food/setFoodsBase', null, { root: true });
     },
@@ -132,9 +133,9 @@ const store = {
       commit('initEnchant', { Enchant: datas[0][0] });
     },
     async* loadDamageCalculation({ commit }) {
+      // do nothing
       yield;
       commit('initDamageCalculation');
-      // do nothing
     },
   },
 };

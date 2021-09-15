@@ -131,15 +131,17 @@ class StatBase {
   }
 }
 
-class Stat {
+abstract class StatElementBase {
   private _base: StatBase;
   private _type: StatTypes;
-  value: number;
 
-  constructor(base: StatBase, type: StatTypes, value: number = 0) {
+  abstract value: StatValue;
+
+  abstract copy(): StatElementBase;
+
+  constructor(base: StatBase, type: StatTypes) {
     this._base = base;
     this._type = type;
-    this.value = value;
   }
 
   get base() {
@@ -169,6 +171,23 @@ class Stat {
     return this.base.getShowData(this.type, this.value);
   }
 
+  /**
+   * if input_stat.baseName == this.baseName and input_stat.type == this.type, return true.
+   * (value do not have to be equal)
+   */
+  equals(stat: StatElementBase): boolean {
+    return stat.base === this.base && stat.type === this.type;
+  }
+}
+
+class Stat extends StatElementBase {
+  value: number;
+
+  constructor(base: StatBase, type: StatTypes, value: number = 0) {
+    super(base, type);
+    this.value = value;
+  }
+
   add(value: number) {
     if (typeof this.value === 'number' && typeof value === 'number') {
       this.value += value;
@@ -179,57 +198,17 @@ class Stat {
     return this.value;
   }
 
-  /**
-   * if input_stat.baseName == this.baseName and input_stat.type == this.type, return true.
-   * (value do not have to be equal)
-   */
-  equals(stat: Stat): boolean {
-    return stat.base === this.base && stat.type === this.type;
-  }
-
   copy(): Stat {
     return this.base.createStat(this.type, this.value);
   }
 }
 
-class StatComputed {
-  base: StatBase;
-  type: StatTypes;
+class StatComputed extends StatElementBase {
   value: string;
 
   constructor(base: StatBase, type: StatTypes, value: string = '') {
-    this.base = base;
-    this.type = type;
+    super(base, type);
     this.value = value;
-  }
-
-  get statId() {
-    return this.base.statId(this.type);
-  }
-  get isBoolStat() {
-    return this.base.checkBoolStat(this.type);
-  }
-  get title() {
-    return this.base.title(this.type);
-  }
-  get baseName() {
-    return this.base.baseName;
-  }
-
-  show(value?: StatValue) {
-    return this.base.show(this.type, value ?? this.value);
-  }
-
-  getShowData() {
-    return this.base.getShowData(this.type, this.value);
-  }
-
-  /**
-   * if input_stat.baseName == this.baseName and input_stat.type == this.type, return true.
-   * (value do not have to be equal)
-   */
-  equals(stat: Stat): boolean {
-    return stat.base === this.base && stat.type === this.type;
   }
 
   copy(): StatComputed {
@@ -237,5 +216,5 @@ class StatComputed {
   }
 }
 
-export { Stat, StatBase };
+export { Stat, StatComputed, StatBase };
 export type { StatValue };

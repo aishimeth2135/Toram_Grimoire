@@ -2,8 +2,6 @@
 import CY from '@/shared/utils/Cyteria';
 import { handleFormula } from '@/shared/utils/data';
 
-import { SkillEffect } from '@/lib/Skill/Skill';
-
 export default function(skill, { defaultSkillLevel = 0, defaultCharacterLevel = 0 } = {}) {
   return {
     skill,
@@ -43,7 +41,7 @@ function handleSkillState(skill, { vars }) {
       main: sef.mainWeapon,
       sub: sef.subWeapon,
       body: sef.bodyArmor,
-      operator: sef.config.equipmentConfirm,
+      operator: sef.equipmentOperator,
     };
 
     const state = {
@@ -60,12 +58,12 @@ function handleSkillState(skill, { vars }) {
 
   const convertStateAttrs = st => {
     st.attrs = {
-      'mp_cost': st.attrs[SkillEffect.MP_COST],
-      'range': st.attrs[SkillEffect.RANGE],
-      'skill_type': st.attrs[SkillEffect.SKILL_TYPE],
-      'in_combo': st.attrs[SkillEffect.IN_COMBO],
-      'action_time': st.attrs[SkillEffect.ACTION_TIME],
-      'casting_time': st.attrs[SkillEffect.CASTING_TIME],
+      'mp_cost': st.attrs.mpCost,
+      'range': st.attrs.range,
+      'skill_type': st.attrs.skillType,
+      'in_combo': st.attrs.inCombo,
+      'action_time': st.attrs.actionTime,
+      'casting_time': st.attrs.castingTime,
     };
   };
 

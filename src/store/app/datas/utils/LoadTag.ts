@@ -1,6 +1,11 @@
 import { HandleLanguageData } from '@/shared/services/Language';
 
-export default function LoadTagData(r, datas) {
+import TagSystem from '@/lib/Tag';
+import { Tag, TagFrame } from '@/lib/Tag/Tag';
+
+import { LangCsvData } from './DownloadDatas';
+
+export default function LoadTagData(root: TagSystem, datas: LangCsvData) {
   const
     // TAG_NAME = 0,
     FRAME_NAME = 1,
@@ -20,24 +25,25 @@ export default function LoadTagData(r, datas) {
     [INDEX.FRAME_VALUE]: LANG_DATA.FRAME_VALUE,
   });
   const c = datas[0];
-  let cur, curFrame;
-  c.forEach((p, i) => {
-    if (i == 0)
+  let curTag: Tag;
+  let curFrame: TagFrame;
+  c.forEach((row, idx) => {
+    if (idx === 0)
       return;
     try {
-      let name = p[INDEX.TAG_NAME];
+      const name = row[INDEX.TAG_NAME];
       if (name !== '')
-        cur = r.appendTag(name);
-      const fn = p[FRAME_NAME],
-        fv = p[INDEX.FRAME_VALUE];
+        curTag = root.appendTag(name);
+      const fn = row[FRAME_NAME],
+        fv = row[INDEX.FRAME_VALUE];
       if (fn !== '')
-        curFrame = cur.appendFrame(fn, fv);
+        curFrame = curTag.appendFrame(fn, fv);
       else
         curFrame.appendValue(fv);
     } catch (e) {
-      console.warn('Error when load Tag-List.');
+      console.warn('[Load Tag] unknown error');
       console.log(e);
-      console.log(p);
+      console.log(row);
     }
   });
 }

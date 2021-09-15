@@ -7,31 +7,25 @@ import ItemsSystem from '@/lib/Items';
 import SkillSystem from '@/lib/Skill';
 import TagSystem from '@/lib/Tag';
 
-
 const Grimoire = {
-  /** @type {CharacterSystem} */
   get Character() {
-    return store.state.datas.Character;
+    return store.state.datas.Character as CharacterSystem;
   },
 
-  /** @type {ItemsSystem} */
   get Items() {
-    return store.state.datas.Items;
+    return store.state.datas.Items as ItemsSystem;
   },
 
-  /** @type {SkillSystem} */
   get Skill() {
-    return store.state.datas.Skill;
+    return store.state.datas.Skill as SkillSystem;
   },
 
-  /** @type {TagSystem} */
   get Tag() {
-    return store.state.datas.Tag;
+    return store.state.datas.Tag as TagSystem;
   },
 
-  /** @type {EnchantSystem} */
   get Enchant() {
-    return store.state.datas.Enchant;
+    return store.state.datas.Enchant as EnchantSystem;
   },
 };
 
