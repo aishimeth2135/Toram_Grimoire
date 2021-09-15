@@ -679,4 +679,3 @@ export {
   CharacterEquipment, EquipmentCrystal,
   MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar,
 };
-export type { EquipmentTypes };

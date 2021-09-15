@@ -165,7 +165,9 @@ class SkillEffect extends SkillNode {
   subWeapon: number;
   bodyArmor: number;
   attributes: SkillEffectAttrs;
-  equipmentOperator: number;
+
+  // 0: or, 1: and
+  equipmentOperator: 0 | 1;
 
   constructor(skill: Skill, main: number, sub: number, body: number) {
     super();
