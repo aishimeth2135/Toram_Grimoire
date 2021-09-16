@@ -430,11 +430,7 @@ export default {
 
       const handleSkillStates = states => {
         const branchStatDatasToStats = stats => {
-          return stats.map(stat => {
-            const p = stat.origin.copy();
-            p.value = stat.value;
-            return p;
-          });
+          return stats.map(stat => stat.origin.toStat(stat.value));
         };
         states.forEach(levelSkillStateRoot => {
           if (levelSkillStateRoot.disabled)

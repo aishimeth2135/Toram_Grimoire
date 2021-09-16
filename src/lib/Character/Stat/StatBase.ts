@@ -214,6 +214,10 @@ class StatComputed extends StatElementBase {
   copy(): StatComputed {
     return this.base.createStatComputed(this.type, this.value);
   }
+
+  toStat(value: number) {
+    return new Stat(this.base, this.type, value);
+  }
 }
 
 export { Stat, StatComputed, StatBase };

@@ -15,6 +15,7 @@ import RegisterLang from '@/plugin/RegisterLang.js';
 import App from './App.vue';
 import registerServiceWorker from './app/registerServiceWorker';
 import registGlobalComponents from './app/registGlobalComponents';
+import initPackages from './app/initPackages';
 import router from './router/index.js';
 
 const APP = createApp(App);
@@ -32,5 +33,6 @@ APP
 
 registGlobalComponents(APP);
 registerServiceWorker();
+initPackages();
 
 APP.mount('#app');

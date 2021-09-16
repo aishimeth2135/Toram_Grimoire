@@ -42,7 +42,7 @@ export default function(root: ItemsSystem, csvData: CsvData) {
       }
       const propName = row[ATTRIBUTE_NAME];
       const propValue = row[ATTRIBUTE_VALUES[0]];
-      if (currentCategory === 'stat') {
+      if (currentCategory === 'stats') {
         let tail = propValue.slice(-1),
           value = propValue;
         if (tail !== '%' && tail !== '~')

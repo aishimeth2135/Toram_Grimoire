@@ -11,6 +11,7 @@ abstract class SkillNode {
 abstract class SkillElement extends SkillNode {
   id: number;
   name: string;
+  abstract get index(): number;
 
   constructor(id: number, name: string) {
     super();
@@ -27,6 +28,10 @@ class SkillRoot extends SkillNode {
     super();
     this.parent = null;
     this.skillTreeCategorys = [];
+  }
+
+  get index() {
+    return -1;
   }
 
   appendSkillTreeCategory(id: number, name: string) {
@@ -61,6 +66,10 @@ class SkillTreeCategory extends SkillElement {
     this.skillTrees = [];
   }
 
+  get index() {
+    return this.parent.skillTreeCategorys.indexOf(this);
+  }
+
   appendSkillTree(id: number, name: string) {
     const el = new SkillTree(this, id, name);
     this.skillTrees.push(el);
@@ -88,6 +97,11 @@ class SkillTree extends SkillElement {
       simulatorFlag: false,
     };
   }
+
+  get index() {
+    return this.parent.skillTrees.indexOf(this);
+  }
+
   init(dtc: string) {
     this.drawTreeCode = dtc;
   }
@@ -101,7 +115,7 @@ class SkillTree extends SkillElement {
 
 
 
-class SkillBase extends SkillElement {
+abstract class SkillBase extends SkillElement {
   parent: SkillTree;
   caption: string;
   previous: number;
@@ -131,6 +145,10 @@ class Skill extends SkillBase {
 
     this.effects = [];
     this._defaultEffect = null;
+  }
+
+  get index() {
+    return this.parent.skills.indexOf(this);
   }
 
   get defaultEffect(): SkillEffect {

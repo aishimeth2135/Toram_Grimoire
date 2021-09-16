@@ -5,7 +5,7 @@ import { isNumberString } from '@/shared/utils/string';
 import { getVarsMap, getGettersMap, varMapToArray, handleReplacedKey, jsepTypes } from './utils';
 
 
-type ValidVarValue = string | number | Function;
+type ValidVarValue = string | number | string[] | number[] | Function;
 type ParseFormulaVars = {
   [key: string]: ValidVarValue | ParseFormulaVars;
 };
@@ -15,15 +15,6 @@ type ValidObjectVar = {
 
 function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVars } = {}): string | number {
   const unknowSnippet = (value: unknown) => typeof value === 'string';
-  // const handleIdentifier = (node: jsep.Identifier, parent: object = null) => {
-  //   if (parent === null) {
-  //     if (window[node.name]) {
-  //       return window[node.name];
-  //     }
-  //     return vars[node.name];
-  //   }
-  //   return parent[node.name];
-  // };
   const handle = (node: jsep.Expression): ValidVarValue | object => {
     if (node.type === 'Literal') {
       return node.value as (number | string);
@@ -60,29 +51,11 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
     if (jsepTypes.isMemberExpression(node)) {
       const object = node.object;
       const property = node.property;
-      // if (jsepTypes.isIdentifier(object)) {
-      //   if (object.name in vars) {
-      //     console.log(object, vars);
-      //     return vars[object.name] as ValidVarValue;
-      //   }
-      //   if (object.name in window) {
-      //     return vars[object.name] as ValidVarValue;
-      //   }
-      //   return property.name as string;
-      // }
       const parent = handle(object) as (ValidObjectVar | string);
       if (typeof parent !== 'string') {
         return parent[handle(property) as string];
       }
       return `${parent}.${handle(property) as string}`;
-      // if (!node.computed) {
-      //   if (jsepTypes.isMemberExpression(node.object)) {
-      //     return handleIdentifier(node.property, handle(node.object));
-      //   }
-      //   return handleIdentifier(node.property, handleIdentifier(node.object));
-      // }
-      // const parent = jsepTypes.isIdentifier(node.object) ? handleIdentifier(node.object) : handle(node.object);
-      // return parent[handle(node.property)];
     }
     if (jsepTypes.isCallExpression(node)) {
       const args: unknown[] = node.arguments.map(arg => handle(arg));
@@ -139,7 +112,7 @@ function parseConditional(formulaStr: string) {
 }
 
 type HandleFormulaVars = {
-  [key: string]: number | string | HandleFormulaVars;
+  [key: string]: number | string | number[] | string[] | HandleFormulaVars;
 };
 type HandleFormulaTexts = {
   [key: string]: string | HandleFormulaTexts;
@@ -186,12 +159,12 @@ function handleFormula(formulaStr: string, {
     return defaultValue;
   }
   const originalFormulaStr = formulaStr;
-  const varsMap = getVarsMap<string | number>(vars);
+  // const varsMap = getVarsMap<string | number>(vars);
   const gettersMap = getGettersMap<string | number>(getters);
 
-  varMapToArray(varsMap).forEach(([key, value]) => {
-    formulaStr = formulaStr.replace(handleReplacedKey(key), typeof value !== 'string' ? value.toString() : (value || '0'));
-  });
+  // varMapToArray(varsMap).forEach(([key, value]) => {
+  //   formulaStr = formulaStr.replace(handleReplacedKey(key), typeof value !== 'string' ? value.toString() : (value || '0'));
+  // });
 
   const gettersMethodsRoot = '__HANDLE_FORMULA_GETTERS__';
   const gettersAry = varMapToArray(gettersMap);
@@ -217,7 +190,7 @@ function handleFormula(formulaStr: string, {
   if (!isNumberString(formulaStr)) {
     try {
       formulaStr = parseFormula(formulaStr, {
-        vars: { ...methods },
+        vars: { ...vars, ...methods },
       }).toString();
     } catch (error) {
       console.groupCollapsed('[parse formula] Unable to parse formula:');

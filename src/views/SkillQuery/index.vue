@@ -314,10 +314,9 @@
           </span>
         </div>
         <div class="px-2">
-          <template v-for="(fr) in currentTag.frames">
+          <template v-for="(fr) in currentTag.frames" :key="fr.type + fr.value">
             <div
               v-if="fr.type === 'category'"
-              :key="fr.type + fr.value"
               class="my-2"
             >
               <cy-icon-text icon="ic-baseline-label" size="small">
@@ -326,13 +325,11 @@
             </div>
             <div
               v-else-if="fr.type === 'caption'"
-              :key="fr.type + fr.value"
               class="py-1"
               v-html="fr.value"
             />
             <div
               v-else-if="fr.type === 'list'"
-              :key="fr.type + fr.value.join('|')"
               class="mt-2"
             >
               <div v-for="(v) in fr.value" :key="v" class="leaf-list-item">
@@ -377,8 +374,8 @@ export default {
       },
       drawSkillTreeBaseOptions: {
         skillTreeType: 'normal',
-        skillCircleClickListener(e, skill) {
-          if (skill.name != '@lock')
+        skillCircleClickListener(error, skill) {
+          if (skill.name !== '@lock')
             self.selectSkill(skill);
         },
       },
