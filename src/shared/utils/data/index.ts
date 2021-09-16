@@ -4,20 +4,19 @@ import { isNumberString } from '@/shared/utils/string';
 
 import { getVarsMap, getGettersMap, varMapToArray, handleReplacedKey, jsepTypes } from './utils';
 
-
-type ValidVarValue = string | number | string[] | number[] | Function;
+type PureValue = string | number | boolean;
+type CommonValue = PureValue | boolean[] | string[] | number[];
+type CommonFunction = (...args: any[]) => PureValue;
+type CommonValueExtended = CommonValue | CommonFunction;
 type ParseFormulaVars = {
-  [key: string]: ValidVarValue | ParseFormulaVars;
-};
-type ValidObjectVar = {
-  [key: string]: ValidVarValue;
+  [key: string]: CommonValueExtended | ParseFormulaVars;
 };
 
-function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVars } = {}): string | number {
+function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVars } = {}): PureValue {
   const unknowSnippet = (value: unknown) => typeof value === 'string';
-  const handle = (node: jsep.Expression): ValidVarValue | object => {
-    if (node.type === 'Literal') {
-      return node.value as (number | string);
+  const handle = (node: jsep.Expression): CommonValueExtended | object => {
+    if (jsepTypes.isLiteral(node)) {
+      return node.value as PureValue;
     }
     if (jsepTypes.isUnaryExpression(node)) {
       return jsepTypes.isLiteral(node.argument) ?
@@ -25,19 +24,29 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
         '-' + handle(node.argument);
     }
     if (jsepTypes.isBinaryExpression(node)) {
-      const left = handle(node.left) as number;
-      const right = handle(node.right) as number;
+      let left = handle(node.left) as (number | boolean);
+      let right = handle(node.right) as (number | boolean);
       const operator = node.operator;
       if (unknowSnippet(left) || unknowSnippet(right))
         return `${left}${operator}${right}`;
-      if (operator === '+')
-        return left + right;
-      if (operator === '-')
-        return left - right;
-      if (operator === '*')
-        return left * right;
-      if (operator === '/')
-        return left / right;
+      if (operator === '+' || operator === '-' || operator === '*' || operator === '/') {
+        if (typeof left === 'boolean')
+          left = left ? 1 : 0;
+        if (typeof right === 'boolean')
+          right = right ? 1 : 0;
+        if (operator === '+')
+          return left + right;
+        if (operator === '-')
+          return left - right;
+        if (operator === '*')
+          return left * right;
+        if (operator === '/')
+          return left / right;
+      }
+      if (operator === '&&')
+        return left && right;
+      if (operator === '||')
+        return left || right;
     }
     if (jsepTypes.isIdentifier(node)) {
       if (node.name in vars) {
@@ -51,7 +60,7 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
     if (jsepTypes.isMemberExpression(node)) {
       const object = node.object;
       const property = node.property;
-      const parent = handle(object) as (ValidObjectVar | string);
+      const parent = handle(object) as (ParseFormulaVars | string);
       if (typeof parent !== 'string') {
         return parent[handle(property) as string];
       }
@@ -80,68 +89,42 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
       return els;
     }
     if (jsepTypes.isConditionalExpression(node)) {
-      const test = handleConditionalNode(node.test);
+      const test = handle(node.test);
       return handle(test ? node.consequent : node.alternate);
     }
     return 0;
   };
-  return handle(jsep(formulaStr)) as number | string;
-}
-
-function handleConditionalNode(rootNode: jsep.Expression): boolean {
-  const handle = (node: jsep.Expression): boolean => {
-    if (jsepTypes.isLiteral(node)) {
-      return node.value as boolean;
-    }
-    if (jsepTypes.isBinaryExpression(node)) {
-      const left = handle(node.left);
-      const right = handle(node.right);
-      const operator = node.operator;
-      if (operator === '&&')
-        return left && right;
-      if (operator === '||')
-        return left || right;
-    }
-    return false;
-  };
-  return handle(rootNode);
-}
-
-function parseConditional(formulaStr: string) {
-  return handleConditionalNode(jsep(formulaStr));
+  return handle(jsep(formulaStr)) as PureValue;
 }
 
 type HandleFormulaVars = {
-  [key: string]: number | string | number[] | string[] | HandleFormulaVars;
+  [key: string]: CommonValue | HandleFormulaVars;
 };
 type HandleFormulaTexts = {
   [key: string]: string | HandleFormulaTexts;
 };
 type HandleFormulaMethods = {
-  [key: string]: Function | HandleFormulaMethods;
+  [key: string]: CommonFunction | HandleFormulaMethods;
 };
 type HandleFormulaGetters = {
-  [key: string]: () => number | string | HandleFormulaGetters;
+  [key: string]: (() => PureValue) | HandleFormulaGetters;
 };
 
 type HandleFormulaOptions = {
   /** mapping of vars */
   vars?: HandleFormulaVars;
-
   /** mapping of texts */
   texts?: HandleFormulaTexts;
-
   /** mapping of methods */
   methods?: HandleFormulaMethods;
-
   /** mapping of getters */
   getters?: HandleFormulaGetters;
-
   /** If true, result will convert to number */
   toNumber?: boolean;
-
+  /** If true, result will convert to boolean */
+  toBoolean?: boolean;
   /** If given formula is empty, it will return options.defaultValue. */
-  defaultValue?: string | number | null;
+  defaultValue?: PureValue | null;
 };
 
 function handleFormula(formulaStr: string, {
@@ -150,22 +133,24 @@ function handleFormula(formulaStr: string, {
   methods = {},
   getters = {},
   toNumber = false,
+  toBoolean = false,
   defaultValue = null,
-}: HandleFormulaOptions = {}): number | string {
+}: HandleFormulaOptions = {}): PureValue {
   if (formulaStr === '') {
     if (defaultValue === null) {
-      return toNumber ? 0 : '0';
+      if (toNumber) {
+        return 0;
+      }
+      if (toBoolean) {
+        return false;
+      }
+      return '0';
     }
     return defaultValue;
   }
   const originalFormulaStr = formulaStr;
-  // const varsMap = getVarsMap<string | number>(vars);
+
   const gettersMap = getGettersMap<string | number>(getters);
-
-  // varMapToArray(varsMap).forEach(([key, value]) => {
-  //   formulaStr = formulaStr.replace(handleReplacedKey(key), typeof value !== 'string' ? value.toString() : (value || '0'));
-  // });
-
   const gettersMethodsRoot = '__HANDLE_FORMULA_GETTERS__';
   const gettersAry = varMapToArray(gettersMap);
   gettersAry.forEach(([key]) => {
@@ -177,9 +162,10 @@ function handleFormula(formulaStr: string, {
   // replace '--' to '+', '--+' to '+', etc...
   formulaStr = formulaStr.replace(/-{2,}/g, match => match.length % 2 === 0 ? '+' : '-');
 
+  const textsMap = getVarsMap<string>(texts);
   const getTextVarName = (value: number) => `__HANDLE_FORMULA_TEXT_${value}__`;
-  const textKeys = Object.keys(texts);
-  textKeys.forEach((key, idx) => {
+  const textsAry = varMapToArray(textsMap);
+  textsAry.forEach(([key], idx) => {
     formulaStr = formulaStr.replace(handleReplacedKey(key), getTextVarName(idx));
   });
 
@@ -203,8 +189,8 @@ function handleFormula(formulaStr: string, {
     }
   }
 
-  textKeys.forEach((key, idx) => {
-    formulaStr = formulaStr.replace(new RegExp(getTextVarName(idx), 'g'), texts[key] as string);
+  textsAry.forEach(([key], idx) => {
+    formulaStr = formulaStr.replace(new RegExp(getTextVarName(idx), 'g'), textsMap.get(key) as string);
   });
 
   if (toNumber && typeof formulaStr === 'string') {
@@ -212,47 +198,14 @@ function handleFormula(formulaStr: string, {
     return Number.isNaN(num) ? 0 : num;
   }
 
+  if (toBoolean) {
+    if (typeof formulaStr === 'string') {
+      return formulaStr === 'true' ? true : false;
+    }
+    return !!formulaStr;
+  }
+
   return formulaStr;
-}
-
-type HandleConditionalVars = {
-  [key: string]: boolean | HandleConditionalVars;
-};
-
-type HandleConditionalOptions = {
-  /** mapping of vars */
-  vars?: HandleConditionalVars;
-
-  /** If given formula is undefined, it will return options.defaultValue. */
-  defaultValue?: boolean;
-};
-
-function handleConditional(formulaStr: string, {
-  vars = {},
-  defaultValue = true,
-}: HandleConditionalOptions = {}) {
-  if (formulaStr === '') {
-    return defaultValue;
-  }
-  const originalFormulaStr = formulaStr;
-
-  const varsMap = getVarsMap<boolean>(vars);
-  varMapToArray(varsMap).forEach(([key, value]) => {
-    formulaStr = formulaStr.replace(handleReplacedKey(key), typeof value === 'boolean' ? value.toString() : 'true');
-  });
-
-  let result = true;
-  try {
-    result = parseConditional(formulaStr);
-  } catch (error) {
-    console.groupCollapsed('[parse formula] Unable to parse conditional:');
-    console.warn(originalFormulaStr);
-    console.log('Current: ', formulaStr);
-    console.log(vars);
-    console.warn(error);
-    console.groupEnd();
-  }
-  return result;
 }
 
 // console.log(handleFormula('test.a.c(123)', {
@@ -265,5 +218,5 @@ function handleConditional(formulaStr: string, {
 //   },
 // }));
 
-export { handleConditional, handleFormula };
-export type { HandleFormulaVars, HandleFormulaGetters, HandleConditionalVars };
+export { handleFormula };
+export type { HandleFormulaVars, HandleFormulaGetters };

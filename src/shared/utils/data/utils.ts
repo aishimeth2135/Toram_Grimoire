@@ -1,9 +1,9 @@
 import escapeStringRegexp from 'escape-string-regexp';
 import jsep from 'jsep';
 
-import type { HandleFormulaVars, HandleConditionalVars, HandleFormulaGetters } from './index';
+import type { HandleFormulaVars, HandleFormulaGetters } from './index';
 
-type HandledVars = HandleFormulaVars | HandleConditionalVars;
+type HandledVars = HandleFormulaVars;
 type HandledGetters = HandleFormulaGetters;
 
 function getVarsMap<T>(vars: HandledVars): Map<string, T> {

@@ -1,7 +1,7 @@
 import { markRaw } from 'vue';
 
 import Grimoire from '@/shared/Grimoire';
-import { handleFormula, handleConditional } from '@/shared/utils/data';
+import { handleFormula } from '@/shared/utils/data';
 
 import { SubWeapon, SubArmor, CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums';
@@ -717,6 +717,7 @@ class CharacterStatFormula {
       vars: {
         ...vars.conditional,
       },
+      toBoolean: true,
       defaultValue: true,
     };
 
@@ -728,7 +729,7 @@ class CharacterStatFormula {
           isBase = false;
 
         if (item.conditional !== '#') {
-          result = handleConditional(item.conditional, conditionalHandlerOptions);
+          result = handleFormula(item.conditional, conditionalHandlerOptions) as boolean;
         }
         item.options.forEach(option => {
           const match = option.match(/#([cmt]value)/);
