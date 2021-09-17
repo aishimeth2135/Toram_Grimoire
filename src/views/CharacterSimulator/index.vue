@@ -538,7 +538,7 @@ export default {
                 handler,
                 disabled: false,
               };
-              ++counter;
+              counter += 1;
 
               return res;
             });

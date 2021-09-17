@@ -215,8 +215,8 @@ export default {
       const eq = this.equipment;
       const len = eq.customTypeList.length;
 
-      ++this.currentCustomTypeIndex;
-      if (this.currentCustomTypeIndex == len)
+      this.currentCustomTypeIndex += 1;
+      if (this.currentCustomTypeIndex === len)
         this.currentCustomTypeIndex = 0;
       eq.setCustomType(eq.customTypeList[this.currentCustomTypeIndex]);
     },

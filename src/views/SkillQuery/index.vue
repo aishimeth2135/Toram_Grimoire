@@ -570,9 +570,9 @@ export default {
     switchSkill(type) {
       const state = this.skillStates;
       if (type === 'previous' && state.currentStoreIndex !== 0)
-        --state.currentStoreIndex;
+        state.currentStoreIndex -= 1;
       else if (type === 'next' && state.currentStoreIndex !== state.store.length - 1)
-        ++state.currentStoreIndex;
+        state.currentStoreIndex += 1;
       else if (type === 'last' && state.currentStoreIndex !== state.store.length - 1)
         state.currentStoreIndex = state.store.length - 1;
     },

@@ -252,7 +252,7 @@ class EnchantEquipment {
     this.stats(stepIdx).forEach(stat => {
       const cat = stat.itemBase.belongCategory;
       const check = categorys.find(a => a.category === cat);
-      check ? ++check.cnt : categorys.push({ category: cat, cnt: 1 });
+      check ? (check.cnt += 1) : categorys.push({ category: cat, cnt: 1 });
     });
     return calcPotentialExtraRate(categorys.map(category => category.cnt));
   }

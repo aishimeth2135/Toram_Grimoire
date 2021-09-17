@@ -219,4 +219,4 @@ function handleFormula(formulaStr: string, {
 // }));
 
 export { handleFormula };
-export type { HandleFormulaVars, HandleFormulaGetters };
+export type { HandleFormulaVars, HandleFormulaTexts, HandleFormulaGetters };

@@ -25,7 +25,7 @@ const mutations = {
   /** @param {EnchantBuild} build */
   appendBuild(state, build) {
     state.builds.push(build);
-    ++state.currentBuildIndex;
+    state.currentBuildIndex += 1;
   },
 
   /** @param {EnchantBuild} build */
@@ -33,7 +33,7 @@ const mutations = {
     const idx = state.builds.indexOf(build);
     state.builds.splice(idx, 1);
     if (state.currentBuildIndex > 0) {
-      --state.currentBuildIndex;
+      state.currentBuildIndex -= 1;
     }
   },
 
@@ -41,7 +41,7 @@ const mutations = {
   copyBuild(state, build) {
     const newBuild = build.copy();
     newBuild.name += '*';
-    ++state.currentBuildIndex;
+    state.currentBuildIndex += 1;
     state.builds.splice(state.currentBuildIndex, 0, newBuild);
   },
   setCurrentBuild(state, { index = 0 } = {}) {

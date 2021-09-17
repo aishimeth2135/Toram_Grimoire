@@ -270,49 +270,6 @@ function regressHistoryBranches(effectItem: SkillEffectItem) {
   });
 }
 
-function computeBranchAttrValue(branchItem: SkillBranchItem, attrKey: string) {
-  let str = branchItem.attrs[attrKey];
-  const stack: number[] = [];
-
-  if (branchItem.attrs['stack_id']) {
-    const stackStates = branchItem.parent.stackStates;
-    const stackValues = branchItem.attrs['stack_id'].split(/\s*,\s*/)
-      .map(id => parseInt(id, 10))
-      .map(id => {
-        const item = stackStates.find(state => state.stackId === id);
-        return item ? item.value : 0;
-      });
-    stack.push(...stackValues);
-  }
-  const stackMatches = Array.from(str.matchAll(/stack\[(\d+)\]/g));
-  stackMatches.forEach(match => {
-    const idxValue = parseInt(match[1], 10);
-    if (stack[idxValue] === undefined) {
-      stack[idxValue] = 0;
-    }
-  });
-  str = str.replace(/stack(?!\[)/g, 'stack[0]');
-
-  const vars = {
-    'SLv': branchItem.belongContainer.vars.skillLevel,
-    'CLv': branchItem.belongContainer.vars.characterLevel,
-    'stack': stack,
-  };
-  const texts = {} as Record<string, string>;
-
-  const formulaExtra = branchItem.suffixBranches.find(suf => suf.name === 'formula_extra');
-  if (formulaExtra) {
-    const extraTexts = (formulaExtra.attrs['texts'] || '').split(/\s*,\s*/);
-    str = str.replace(/&(\d+):/g, (match, p1) => {
-      const key = '__FORMULA_EXTRA_' + p1 + '__';
-      texts[key] = extraTexts[p1];
-      return key;
-    });
-  }
-
-  return handleFormula(str, { vars, texts });
-}
-
 export {
   convertEffectEquipment,
   effectOverwrite,
@@ -320,6 +277,5 @@ export {
   handleVirtualBranches,
   initStackStates,
   regressHistoryBranches,
-  computeBranchAttrValue,
 };
 

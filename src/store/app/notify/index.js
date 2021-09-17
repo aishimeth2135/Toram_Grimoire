@@ -22,7 +22,7 @@ const mutations = {
       msgs.splice(idx, 1);
   },
   increaseMessageCounter(state, msg) {
-    ++msg.counter;
+    msg.counter += 1;
     msg.removeTime += 2;
   },
 };
@@ -56,9 +56,9 @@ const actions = {
         removeTime: 4,
         iid: state.idCounter,
       };
-      ++state.idCounter;
+      state.idCounter += 1;
       const timer = setInterval(() => {
-        --msg.removeTime;
+        msg.removeTime -= 1;
         if (msg.removeTime <= 0) {
           commit('removeMessage', msg);
           clearInterval(timer);

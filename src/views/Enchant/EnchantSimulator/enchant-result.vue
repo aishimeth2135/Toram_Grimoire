@@ -187,7 +187,7 @@ export default {
         let cur = 1, cnt = 0;
         while (cnt < src.length || cur < target.length) {
           target.splice(cur, 0, src[cnt]);
-          ++cnt;
+          cnt += 1;
           cur += 2;
         }
       };

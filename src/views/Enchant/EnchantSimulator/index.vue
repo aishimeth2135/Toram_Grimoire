@@ -454,7 +454,7 @@ export default {
       const name = this.$lang('build') + ' ' + (this.buildCount + 1).toString();
       const build = new EnchantBuild(name);
       this.$store.commit('enchant/appendBuild', build);
-      ++this.buildCount;
+      this.buildCount += 1;
     },
     async removeBuild() {
       if (this.builds.length === 1) {

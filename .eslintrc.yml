@@ -75,6 +75,9 @@ rules:
     - error
   arrow-spacing:
     - error
+  no-plusplus:
+    - error
+    - allowForLoopAfterthoughts: true
   import/no-unresolved:
     - 2
     - commonjs: true

@@ -79,7 +79,7 @@ const store = {
           return false;
         });
         find = finds.length > 0;
-        ++cnt;
+        cnt += 1;
       }
 
       // state.deleteAllSavedDataBackup = backup;
@@ -154,7 +154,7 @@ const store = {
       if (index === -1) {
         let cnt = 0;
         while (window.localStorage.getItem(prefix + cnt))
-          ++cnt;
+          cnt += 1;
         prefix = prefix + cnt;
       }
       else {

@@ -1,3 +1,5 @@
+import { HandleFormulaGetters, HandleFormulaVars } from '@/shared/utils/data';
+
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums';
 import { StatComputed } from '@/lib/Character/Stat';
 
@@ -11,10 +13,16 @@ import {
   regressHistoryBranches,
 } from './utils';
 
+
 class SkillComputingContainer {
   vars: {
     characterLevel: number;
     skillLevel: number;
+  };
+
+  handleFormulaExtends: {
+    vars?: HandleFormulaVars;
+    texts?: HandleFormulaGetters;
   };
 
   constructor() {
@@ -22,6 +30,7 @@ class SkillComputingContainer {
       characterLevel: 0,
       skillLevel: 0,
     };
+    this.handleFormulaExtends = {};
   }
 
   createSkillItem(skill: Skill) {

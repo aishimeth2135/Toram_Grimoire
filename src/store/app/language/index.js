@@ -21,7 +21,7 @@ const store = {
         let p = 0, cur = state.langData;
         while (p !== id.length) {
           cur = cur[id[p]];
-          ++p;
+          p += 1;
           if (cur === undefined)
             return undefined;
         }

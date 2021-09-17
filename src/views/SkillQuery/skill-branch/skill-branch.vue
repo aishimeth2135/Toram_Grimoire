@@ -740,7 +740,7 @@ export default {
 
       const len = bchs.length - 1;
       while (cnt != 0 && cur != len) {
-        --cnt;
+        cnt -= 1;
         cur += 1;
 
         const p = bchs[cur];

@@ -154,8 +154,8 @@ export default {
         path: `path('${path}')`,
       };
 
-      ++this.idCounter;
-      ++this.counter;
+      this.idCounter += 1;
+      this.counter += 1;
       if (this.counter == this.iconMaximum)
         this.counter = 0;
     },

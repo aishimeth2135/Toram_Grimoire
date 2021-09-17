@@ -829,7 +829,7 @@ export default {
                 this.resultEquipment = this.doll.calc(this.negativeStats);
               }
               await this.$nextTick();
-              ++this.stepCounter;
+              this.stepCounter += 1;
             } catch(e) {
               console.warn('[enchant-doll] some error when auto find potential minimum');
               console.log(e);
@@ -841,7 +841,7 @@ export default {
         });
         return;
       }
-      ++this.stepCounter;
+      this.stepCounter += 1;
     },
     stepAfterEnter(el) {
       el.scrollIntoView({ behavior: 'smooth' });
