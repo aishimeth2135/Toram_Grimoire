@@ -1,4 +1,3 @@
-import { EnchantStep } from '@/lib/Enchant/Enchant';
 import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums';
 
 const mutations = {

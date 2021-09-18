@@ -177,9 +177,9 @@
 import { mapMutations } from 'vuex';
 
 import { EnchantStep } from '@/lib/Enchant/Enchant';
+import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums';
 
 import vue_EnchantStepStat from './enchant-step-stat';
-import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums';
 
 export default {
   name: 'EnchantStep',
