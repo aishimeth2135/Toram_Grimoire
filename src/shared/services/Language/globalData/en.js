@@ -113,7 +113,10 @@ export default function() {
       'calculation': {
         'damage-calculation': 'Damage Calculator',
       },
-      'enchant-simulator': 'Stats-Filling Simulator',
+      'enchant': {
+        'enchant-simulator': 'Stats-Filling Simulator',
+        'enchant-doll': 'Stats-Filling Doll',
+      },
     },
     'Left Menu': {
       'Home': {
