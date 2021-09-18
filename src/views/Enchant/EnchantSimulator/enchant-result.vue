@@ -157,6 +157,7 @@ import ENCHANT_STATE from '@/lib/Enchant/Enchant/state';
 import { EnchantEquipment, EnchantStep } from '@/lib/Enchant/Enchant';
 
 import ToggleService from '@/setup/ToggleService';
+import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums';
 
 export default {
   name: 'EnchantResult',
@@ -195,7 +196,7 @@ export default {
       const result = validSteps.map((step, i) => {
         let text = '';
         let parts = [];
-        if (step.type === EnchantStep.TYPE_EACH) {
+        if (step.type === EnchantStepTypes.Each) {
           const stat = step.stats[0];
           const tparts = [{
             stat,
@@ -226,7 +227,7 @@ export default {
           text,
           parts,
           remainingPotential,
-          type: step.type === EnchantStep.TYPE_EACH ? 'each' : 'normal',
+          type: step.type === EnchantStepTypes.Each ? 'each' : 'normal',
         };
       });
       return result;

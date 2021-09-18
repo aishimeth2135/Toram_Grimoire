@@ -1,8 +1,9 @@
 import { EnchantStep } from '@/lib/Enchant/Enchant';
+import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums';
 
 const mutations = {
   toggleStepType(state, step) {
-    step.type = step.type === EnchantStep.TYPE_NORMAL ? EnchantStep.TYPE_EACH : EnchantStep.TYPE_NORMAL;
+    step.type = step.type === EnchantStepTypes.Normal ? EnchantStepTypes.Each : EnchantStepTypes.Normal;
   },
   toggleStepHidden(state, step) {
     step.hidden = !step.hidden;

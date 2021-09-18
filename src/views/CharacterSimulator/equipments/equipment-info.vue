@@ -91,7 +91,7 @@
             icon="heroicons-solid:switch-vertical"
             @click="switchCustomType"
           >
-            {{ $rootLang('common/Equipment/category/' + equipment.type.description) }}
+            {{ $rootLang('common/Equipment/category/' + equipment.type) }}
           </cy-button-border>
         </div>
         <cy-input-counter

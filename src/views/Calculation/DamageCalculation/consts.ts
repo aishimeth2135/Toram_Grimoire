@@ -7,18 +7,22 @@ const calcStructCritical: CalcStructExpression = {
     operator: '+++',
     list: [
       {
-        operator: '***',
-        list: [
-          {
-            operator: '+',
-            left: 'atk/base',
-            right: 'atk/dual_sword',
+        operator: '*',
+        left: {
+          operator: '+',
+          left: {
+            operator: '*',
+            left: {
+              operator: '+',
+              left: 'atk/base',
+              right: 'atk/dual_sword',
+            },
+            right: 'atk/two_handed',
           },
-          'atk/two_handed',
-          'target_resistance',
-        ],
+          right: 'level_difference',
+        },
+        right: 'target_resistance',
       },
-      'level_difference',
       {
         operator: '*',
         left: 'target_def_base',
@@ -53,18 +57,17 @@ const calcStructWithoutCritical: CalcStructExpression = {
     operator: '+++',
     list: [
       {
-        operator: '***',
-        list: [
-          {
-            operator: '+',
-            left: 'atk/base',
-            right: 'atk/dual_sword',
-          },
-          // 'atk/two_handed',
-          'target_resistance',
-        ],
+        operator: '*',
+        left: {
+          operator: '+++',
+          list: [
+            'atk/base',
+            'atk/dual_sword',
+            'level_difference',
+          ],
+        },
+        right: 'target_resistance',
       },
-      'level_difference',
       {
         operator: '*',
         left: 'target_def_base',
@@ -99,17 +102,17 @@ const calcStructDisplay: CalcStructExpression = {
     operator: '+++',
     list: [
       {
-        operator: '***',
-        list: [
-          {
-            operator: '+',
-            left: 'atk/base',
-            right: 'atk/dual_sword',
-          },
-          'target_resistance',
-        ],
+        operator: '*',
+        left: {
+          operator: '+++',
+          list: [
+            'atk/base',
+            'atk/dual_sword',
+            'level_difference',
+          ],
+        },
+        right: 'target_resistance',
       },
-      'level_difference',
       {
         operator: '*',
         left: 'target_def_base',

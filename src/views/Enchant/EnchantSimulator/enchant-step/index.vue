@@ -179,6 +179,7 @@ import { mapMutations } from 'vuex';
 import { EnchantStep } from '@/lib/Enchant/Enchant';
 
 import vue_EnchantStepStat from './enchant-step-stat';
+import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums';
 
 export default {
   name: 'EnchantStep',
@@ -195,10 +196,10 @@ export default {
   },
   computed: {
     typeIcon() {
-      return this.step.type === EnchantStep.TYPE_NORMAL ? 'ic-outline-near-me-disabled' : 'ic-outline-near-me';
+      return this.step.type === EnchantStepTypes.Normal ? 'ic-outline-near-me-disabled' : 'ic-outline-near-me';
     },
     typeEach() {
-      return this.step.type === EnchantStep.TYPE_EACH;
+      return this.step.type === EnchantStepTypes.Each;
     },
     mainTextColor() {
       let textColor = 'purple';
@@ -240,28 +241,6 @@ export default {
       'setStepStepValue',
       'stepAutoFill',
     ]),
-    // stepSet(key, value) {
-    //   this.$store.commit('enchant/set', {
-    //     target: this.step, key, value,
-    //   });
-    // },
-    // toggleStepType() {
-    //   const step = this.step;
-    //   const type = step.type === EnchantStep.TYPE_NORMAL ? EnchantStep.TYPE_EACH : EnchantStep.TYPE_NORMAL;
-    //   this.stepSet('type', type);
-    // },
-    // toggleStepHidden() {
-    //   this.stepSet('hidden', !this.step.hidden);
-    // },
-    // swapStep(offset) {
-    //   this.step.belongEquipment.swapStep(this.step.index, this.step.index + offset);
-    // },
-    // insertStepBefore() {
-    //   this.step.belongEquipment.insertStepBefore(this.step);
-    // },
-    // removeStep() {
-    //   this.step.remove();
-    // }
   },
 };
 </script>

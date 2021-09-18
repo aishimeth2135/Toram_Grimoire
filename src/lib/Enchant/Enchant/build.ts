@@ -371,7 +371,7 @@ class EnchantStep {
 
   static load(categorys: EnchantCategory[], equipment: EnchantEquipment, data: EnchantStepSaveData): EnchantStep {
     const step = new EnchantStep(equipment);
-    step.type = EnchantStepTypesList[data.type];
+    step.type = EnchantStepTypesList[data.type] ?? EnchantStepTypes.Normal;
     step.hidden = typeof data.hidden === 'number' ? (data.hidden === 1 ? true : false) : data.hidden;
     const stats = data.stats.map(statData => EnchantStepStat.load(categorys, step, statData)).filter(stat => stat);
     step.stats = stats as EnchantStepStat[];
