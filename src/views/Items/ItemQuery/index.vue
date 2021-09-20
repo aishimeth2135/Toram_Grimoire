@@ -36,7 +36,7 @@
                   selected-icon-src="image"
                   @click="toggleSelected(item)"
                 >
-                  {{ $rootLang('common/Equipment/category/' + item.value.description) }}
+                  {{ $rootLang('common/Equipment/category/' + item.value) }}
                 </cy-button-check>
               </div>
             </div>
