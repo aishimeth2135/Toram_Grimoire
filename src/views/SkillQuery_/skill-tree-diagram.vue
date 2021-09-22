@@ -8,80 +8,80 @@
   >
     <defs>
       <pattern
-        v-for="(p) in skillIconPatternData"
-        :id="p.id"
-        :key="p.id"
-        :width="p.width"
-        :height="p.height"
+        v-for="data in skillIconPatternData"
+        :id="data.id"
+        :key="data.id"
+        :width="data.width"
+        :height="data.height"
       >
-        <template v-for="(q) in p.elements">
+        <template v-for="el in data.elements">
           <circle
-            v-if="q.type === 'circle'"
-            :key="`${q.type}x${p.cx}y${q.cy}`"
-            :cx="q.cx"
-            :cy="q.cy"
-            :r="q.r"
-            :class="q.class"
+            v-if="el.type === 'circle'"
+            :key="`${el.type}x${el.cx}y${el.cy}`"
+            :cx="el.cx"
+            :cy="el.cy"
+            :r="el.r"
+            :class="el.class"
           />
           <image
-            v-else-if="q.type === 'image'"
-            :key="`${q.type}x${p.x}y${q.y}`"
-            :xlink:href="q.path"
-            :x="q.x"
-            :y="q.y"
-            :width="q.width"
-            :height="q.height"
+            v-else-if="el.type === 'image'"
+            :key="`${el.type}x${el.x}y${el.y}`"
+            :xlink:href="el.path"
+            :x="el.x"
+            :y="el.y"
+            :width="el.width"
+            :height="el.height"
             @error="skillIconImageNotFound($event)"
           />
         </template>
       </pattern>
     </defs>
-    <template v-for="p in drawOtherData">
+    <template v-for="data in drawOtherData">
       <circle
-        v-if="p.type === 'tree-dot'"
-        :key="`dot-${p.type}x${p.cx}y${p.cy}`"
-        :cx="p.cx"
-        :cy="p.cy"
-        :r="p.r"
-        :class="p.class"
+        v-if="data.type === 'tree-dot'"
+        :key="`dot-${data.type}x${data.cx}y${data.cy}`"
+        :cx="data.cx"
+        :cy="data.cy"
+        :r="data.r"
+        :class="data.class"
       />
       <line
-        v-else-if="p.type === 'tree-line'"
-        :key="`line-${p.type}x1${p.x1}y1${p.y1}x2${p.x2}y2${p.y2}`"
-        :x1="p.x1"
-        :y1="p.y1"
-        :x2="p.x2"
-        :y2="p.y2"
+        v-else-if="data.type === 'tree-line'"
+        :key="`line-${data.type}x1${data.x1}y1${data.y1}x2${data.x2}y2${data.y2}`"
+        :x1="data.x1"
+        :y1="data.y1"
+        :x2="data.x2"
+        :y2="data.y2"
       />
       <circle
-        v-else-if="p.type === 'skill-level-circle' || p.type === 'star-gem-level-circle'"
-        :key="`circle-${p.type}x${p.cx}y${p.cy}`"
-        :cx="p.cx"
-        :cy="p.cy"
-        :r="p.r"
-        :class="p.class"
+        v-else-if="data.type === 'skill-level-circle' || data.type === 'star-gem-level-circle'"
+        :key="`circle-${data.type}x${data.cx}y${data.cy}`"
+        :cx="data.cx"
+        :cy="data.cy"
+        :r="data.r"
+        :class="data.class"
       />
       <text
-        v-else-if="p.type === 'skill-level-text' || p.type === 'star-gem-level-text'"
-        :key="`text-${p.type}x${p.x}y${p.y}`"
-        :x="p.x"
-        :y="p.y"
-        :class="p.class"
+        v-else-if="data.type === 'skill-level-text' || data.type === 'star-gem-level-text'"
+        :key="`text-${data.type}x${data.x}y${data.y}`"
+        :x="data.x"
+        :y="data.y"
+        :class="data.class"
       >
-        {{ p.innerText }}
+        {{ data.innerText }}
       </text>
     </template>
     <template
-      v-for="(p, i) in drawCircleData"
-      :key="p.skill.id"
+      v-for="(data, i) in drawCircleData"
+      :key="data.skill.id"
     >
       <circle
-        :cx="p.cx"
-        :cy="p.cy"
-        :r="p.r"
-        :class="handleSkillCircleClass(p)"
-        :style="p.style"
-        @click="skillCircleClick($event, p.skill)"
+        :cx="data.cx"
+        :cy="data.cy"
+        :r="data.r"
+        :class="handleSkillCircleClass(data)"
+        :style="data.style"
+        @click="$emit('skill-click', data.skill)"
       />
       <text
         :x="drawNameData[i].x"
@@ -101,15 +101,12 @@ import { Skill, SkillTree, LevelSkill, LevelSkillTree } from '@/lib/Skill/Skill'
 import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs } from '@/lib/Skill/utils/DrawSkillTree';
 
 export default {
+  emits: ['skill-click'],
   props: {
     skillTree: [SkillTree, LevelSkillTree],
     setSkillButtonExtraData: {
       type: Function,
       default: (skill, data) => [], // eslint-disable-line
-    },
-    skillCircleClickListener: {
-      type: Function,
-      default: () => {},
     },
     skillTreeType: {
       type: String,
@@ -133,14 +130,14 @@ export default {
     },
     drawCircleData() {
       return this.drawTreeData.data
-        .filter(p => p.type === 'skill-circle');
+        .filter(data => data.type === 'skill-circle');
     },
     drawNameData() {
       return this.drawTreeData.data
-        .filter(p => p.type === 'skill-name');
+        .filter(data => data.type === 'skill-name');
     },
     drawOtherData() {
-      return this.drawTreeData.data.filter(p => p.type !== 'skill-circle' && p.type !== 'skill-name');
+      return this.drawTreeData.data.filter(data => data.type !== 'skill-circle' && data.type !== 'skill-name');
     },
   },
   beforeCreate() {
@@ -156,9 +153,6 @@ export default {
       if (this.currentSkill === data.skill)
         ary.push('selected');
       return ary;
-    },
-    skillCircleClick(evt, skill) {
-      this.skillCircleClickListener(evt, skill);
     },
     skillIconImageNotFound(evt) {
       evt.target.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '/imgs/skill_icons/unknow.svg');

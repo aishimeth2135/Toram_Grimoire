@@ -4,26 +4,31 @@ import { isNumberString } from '@/shared/utils/string';
 import { StatComputed } from '@/lib/Character/Stat';
 
 import { SkillBranchItem } from '.';
-import ResultContainer from './ResultContainer';
+import { ResultContainerBase, ResultContainer, ResultContainerStat, TextResultContainer } from './ResultContainer';
 
 interface HighlightTextOptions {
   beforeHighlight?: (current: string) => string;
 }
-
-function handleHighlight(container: ResultContainer, originalFormula: string = '', { beforeHighlight }: HighlightTextOptions = {}) {
+function handleHighlight(container: ResultContainerBase, { beforeHighlight }: HighlightTextOptions = {}) {
   if (!isNumberString(container.value)) {
     container.handle(value => `<span class="cy--text-separate">${value}</span>`);
   }
   if (beforeHighlight) {
     container.handle(beforeHighlight);
   }
+  const originalFormula = container.origin;
   const className = isNumberString(container.value) && parseFloat(container.value) < 0 ?
     (originalFormula.includes('stack') ? 'text-blue-green' : 'text-red') :
     (originalFormula.includes('stack') ? 'text-water-blue' : 'text-light-3');
   container.handle(value => `<span class="${className}">${value}</span>`);
 }
 
-function computedBranchHelper(branchItem: SkillBranchItem, values: string[]) {
+interface ComputedBranchHelperResult {
+  vars: HandleFormulaVars;
+  texts: HandleFormulaTexts;
+  handleFormulaExtra: (formula: string) => string;
+}
+function computedBranchHelper(branchItem: SkillBranchItem, values: string[]): ComputedBranchHelperResult {
   const stack: number[] = [];
 
   if (branchItem.attrs['stack_id']) {
@@ -59,7 +64,7 @@ function computedBranchHelper(branchItem: SkillBranchItem, values: string[]) {
     ...handleFormulaExtends.texts,
   } as HandleFormulaTexts;
 
-  const getTextKey = (idx: number) => '__FORMULA_EXTRA_' + idx + '__';
+  const getTextKey = (idx: number) => '__FORMULA_EXTRA_' + idx.toString() + '__';
 
   const formulaExtra = branchItem.suffixBranches.find(suf => suf.name === 'formula_extra');
   if (formulaExtra) {
@@ -73,7 +78,7 @@ function computedBranchHelper(branchItem: SkillBranchItem, values: string[]) {
   return {
     vars,
     texts,
-    handleFormulaExtra: (str: string) => str.replace(/&(\d+):/g, (match, p1) => getTextKey(p1)),
+    handleFormulaExtra: (str) => str.replace(/&(\d+):/g, (match, p1) => getTextKey(p1)),
   };
 }
 
@@ -85,16 +90,21 @@ function formulaPretreatment(value: string) {
     .replace(/stack(?!\[)/g, 'stack[0]');
 }
 
-function computeBranchValueAttrs<Key extends string>(branchItem: SkillBranchItem, attrKeys: Key[]): Record<Key, string> {
+function computeBranchValueAttrs<Key extends string>(
+  helper: ComputedBranchHelperResult,
+  attrs: Record<string, string>,
+  attrKeys: Key[],
+): Record<Key, string> {
   const {
     vars,
     texts,
     handleFormulaExtra,
-  } = computedBranchHelper(branchItem, attrKeys.map(attrKey => branchItem.attrs[attrKey] || '0'));
+  } = helper;
+  // computedBranchHelper(branchItem, attrKeys.map(attrKey => branchItem.attrs[attrKey] || '0'));
 
   const attrValues = {} as Record<Key, string>;
   attrKeys.forEach(attrKey => {
-    let str = branchItem.attrs[attrKey];
+    let str = attrs[attrKey];
     if (str === undefined) {
       attrValues[attrKey] = '0';
       return;
@@ -115,19 +125,23 @@ interface HandleBranchValueAttrsMap {
 type HandleBranchValueAttrsResult<AttrMap extends HandleBranchValueAttrsMap> = {
   [key in keyof AttrMap]: ResultContainer;
 };
-function handleBranchValueAttrs<AttrMap extends HandleBranchValueAttrsMap>(branchItem: SkillBranchItem, attrMap: AttrMap): HandleBranchValueAttrsResult<AttrMap> {
+function handleBranchValueAttrs<AttrMap extends HandleBranchValueAttrsMap>(
+  helper: ComputedBranchHelperResult,
+  attrs: Record<string, string>,
+  attrMap: AttrMap,
+): HandleBranchValueAttrsResult<AttrMap> {
   const attrKeys = Object.keys(attrMap) as (keyof AttrMap)[];
-  const attrValues = computeBranchValueAttrs(branchItem, attrKeys as string[]) as Record<keyof AttrMap, string>;
+  const attrValues = computeBranchValueAttrs(helper, attrs, attrKeys as string[]) as Record<keyof AttrMap, string>;
   const attrResult = {} as HandleBranchValueAttrsResult<AttrMap>;
   attrKeys.forEach(attrKey => {
-    const originalFormula = branchItem.attrs[attrKey as string];
+    const originalFormula = attrs[attrKey as string];
     if (originalFormula === undefined) {
-      attrResult[attrKey] = new ResultContainer('0');
+      attrResult[attrKey] = new ResultContainer('0', '0');
       return;
     }
     const options = (attrMap[attrKey] || {}) as HighlightTextOptions;
-    const container = new ResultContainer(attrValues[attrKey]);
-    handleHighlight(container, originalFormula, options);
+    const container = new ResultContainer(originalFormula, attrValues[attrKey]);
+    handleHighlight(container, options);
 
     attrResult[attrKey] = container;
   });
@@ -135,20 +149,70 @@ function handleBranchValueAttrs<AttrMap extends HandleBranchValueAttrsMap>(branc
   return attrResult;
 }
 
-// interface HandleBranchTextAttrsMap {
-//   [key: string]: null;
-// }
-// function computedBranchTextAttrs<AttrMap extends HandleBranchTextAttrsMap>(branchItem: SkillBranchItem, attrMap: AttrMap): HandleBranchValueAttrsResult<AttrMap> {
-
-// }
-
-function computedBranchStats(branchItem: SkillBranchItem): StatComputed[] {
-  const stats = branchItem.stats;
+function computedBranchTextAttrs<Key extends string>(
+  helper: ComputedBranchHelperResult,
+  attrs: Record<string, string>,
+  attrKeys: Key[],
+): Record<Key, string> {
   const {
     vars,
     texts,
     handleFormulaExtra,
-  } = computedBranchHelper(branchItem, stats.map(stat => stat.value));
+  } = helper;
+  // computedBranchHelper(branchItem, attrKeys.map(attrKey => branchItem.attrs[attrKey] || '0'));
+
+  const attrValues = {} as Record<Key, string>;
+  attrKeys.forEach(attrKey => {
+    let str = attrs[attrKey];
+    if (str === undefined) {
+      attrValues[attrKey] = '0';
+      return;
+    }
+    str = formulaPretreatment(str);
+    str = handleFormulaExtra(str);
+
+    attrValues[attrKey] = handleFormula(str, { vars, texts }) as string;
+  });
+
+  return attrValues;
+}
+interface HandleBranchTextAttrsMap {
+  [key: string]: null;
+}
+type HandleBranchTextAttrsResult<AttrMap extends HandleBranchValueAttrsMap> = {
+  [key in keyof AttrMap]: TextResultContainer;
+};
+function handleBranchTextAttrs<AttrMap extends HandleBranchTextAttrsMap>(
+  helper: ComputedBranchHelperResult,
+  attrs: Record<string, string>,
+  attrMap: AttrMap,
+): HandleBranchTextAttrsResult<AttrMap> {
+  const attrKeys = Object.keys(attrMap) as (keyof AttrMap)[];
+  const attrValues = computedBranchTextAttrs(helper, attrs, attrKeys as string[]) as Record<keyof AttrMap, string>;
+  const attrResult = {} as HandleBranchTextAttrsResult<AttrMap>;
+  attrKeys.forEach(attrKey => {
+    const originalFormula = attrs[attrKey as string];
+    if (originalFormula === undefined) {
+      attrResult[attrKey] = new TextResultContainer('0');
+      return;
+    }
+    const options = (attrMap[attrKey] || {}) as HighlightTextOptions;
+    const container = new TextResultContainer(attrValues[attrKey]);
+    handleHighlight(container, options);
+
+    attrResult[attrKey] = container;
+  });
+
+  return attrResult;
+}
+
+function computedBranchStats(helper: ComputedBranchHelperResult, stats: StatComputed[]): StatComputed[] {
+  const {
+    vars,
+    texts,
+    handleFormulaExtra,
+  } = helper;
+  // computedBranchHelper(branchItem, stats.map(stat => stat.value));
 
   return stats.map(stat => {
     let str = stat.value;
@@ -160,14 +224,14 @@ function computedBranchStats(branchItem: SkillBranchItem): StatComputed[] {
   });
 }
 
-function handleBranchStats(branchItem: SkillBranchItem): ResultContainer[] {
-  const newStats = computedBranchStats(branchItem);
+function handleBranchStats(helper: ComputedBranchHelperResult, stats: StatComputed[]): ResultContainerStat[] {
+  const newStats = computedBranchStats(helper, stats);
   return newStats.map(stat => {
-    const container = new ResultContainer(stat.value);
+    const originalStat = stats.find(_stat => _stat.equals(stat)) as StatComputed;
+    const container = new ResultContainerStat(originalStat, stat);
     const sign = isNumberString(container.value) && parseFloat(stat.value) < 0 ? '' : '+';
-    const originalStat = branchItem.stats.find(_stat => _stat.equals(stat)) as StatComputed;
     const showData = stat.getShowData();
-    handleHighlight(container, originalStat.value, {
+    handleHighlight(container, {
       beforeHighlight: value => value + showData.tail,
     });
     container.handle(value => showData.title + sign + value);
@@ -176,8 +240,12 @@ function handleBranchStats(branchItem: SkillBranchItem): ResultContainer[] {
 }
 
 export {
+  computedBranchHelper,
   computeBranchValueAttrs,
   handleBranchValueAttrs,
+  computedBranchTextAttrs,
+  handleBranchTextAttrs,
   computedBranchStats,
   handleBranchStats,
 };
+export type { HandleBranchValueAttrsMap };

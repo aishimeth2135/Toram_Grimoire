@@ -18,7 +18,6 @@ type ToggleServiceResult<Groups extends ToggleServiceOptions> = ToggleServiceGro
 type ToggleServiceOptionGroup = readonly ToggleItem[];
 type ToggleServiceGroupContents<Group extends ToggleServiceOptionGroup> = Record<ContentKeys<Group>, Ref<boolean>>;
 
-
 export default function ToggleService<GroupMap extends ToggleServiceOptions>(options: GroupMap): UnwrapNestedRefs<ToggleServiceResult<GroupMap>> {
   const dataMap = {} as ToggleServiceGroups<GroupMap>;
   Object.entries(options).forEach(([groupKey, subs]) => {
