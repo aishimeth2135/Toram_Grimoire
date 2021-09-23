@@ -11,6 +11,7 @@ import {
   separateSuffixBranches,
   handleVirtualBranches,
   regressHistoryBranches,
+  setBranchAttrsDefaultValue,
 } from './utils';
 
 
@@ -95,6 +96,7 @@ class SkillEffectItem {
     separateSuffixBranches(this);
     handleVirtualBranches(this);
     regressHistoryBranches(this);
+    setBranchAttrsDefaultValue(this);
   }
 }
 

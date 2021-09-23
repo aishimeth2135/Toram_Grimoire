@@ -38,6 +38,10 @@ class ResultContainerStat extends ResultContainer {
   }
 }
 
+interface TextResultContainerParseResult {
+  containers: ResultContainer[];
+  parts: (string | ResultContainer)[];
+}
 const TEXT_PARSE_PATTERN = /\$\{[^}]+\}/g;
 class TextResultContainer extends ResultContainerBase {
   override origin: string;
@@ -45,9 +49,7 @@ class TextResultContainer extends ResultContainerBase {
   containers: ResultContainer[];
   parts: (string | ResultContainer)[];
 
-  constructor(value: string) {
-    super();
-
+  static parse(value: string): TextResultContainerParseResult {
     const textParts = value.split(TEXT_PARSE_PATTERN);
     const matches = value.match(TEXT_PARSE_PATTERN) || [];
     const
@@ -59,15 +61,26 @@ class TextResultContainer extends ResultContainerBase {
       } else {
         const cur = matches.shift() as string;
         const container = new ResultContainer(cur, cur);
-        this.containers.push(container);
+        containers.push(container);
         parts.push(container);
       }
     });
 
-    this.origin = value;
-    this.value = value;
+    return {
+      parts,
+      containers,
+    };
+  }
+
+  constructor(origin: string, value: string, parseResult: TextResultContainerParseResult) {
+    super();
+
+    const { parts, containers } = parseResult;
+
     this.parts = parts;
     this.containers = containers;
+    this.origin = origin;
+    this.value = value;
   }
 
   override get result() {
@@ -80,3 +93,5 @@ class TextResultContainer extends ResultContainerBase {
 }
 
 export { ResultContainerBase, ResultContainer, ResultContainerStat, TextResultContainer };
+export type { TextResultContainerParseResult };
+

@@ -5,6 +5,7 @@ import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums';
 import { SkillBranch, SkillEffect } from '../Skill';
 import { SkillBranchItem, SkillEffectItem } from './index';
 import type { EquipmentRestriction, BranchHistoryItem, BranchGroupState, BranchStackState } from './index';
+import { branchAttrsDefaultValue } from './consts';
 
 function effectOverwrite(to: SkillEffectItem, from: SkillEffect) {
   const toBranches = to.branchItems;
@@ -270,6 +271,17 @@ function regressHistoryBranches(effectItem: SkillEffectItem) {
   });
 }
 
+function setBranchAttrsDefaultValue(effectItem: SkillEffectItem) {
+  effectItem.branchItems.forEach(branchItem => {
+    const defaultValueList = branchAttrsDefaultValue[branchItem.name];
+    Object.entries(defaultValueList).forEach(([key, value]) => {
+      if (branchItem.attrs[key] === undefined) {
+        branchItem.attrs[key] = value;
+      }
+    });
+  });
+}
+
 export {
   convertEffectEquipment,
   effectOverwrite,
@@ -277,5 +289,5 @@ export {
   handleVirtualBranches,
   initStackStates,
   regressHistoryBranches,
+  setBranchAttrsDefaultValue,
 };
-
