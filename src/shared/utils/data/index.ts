@@ -12,6 +12,18 @@ type ParseFormulaVars = {
   [key: string]: CommonValueExtended | ParseFormulaVars;
 };
 
+function calcNumberBinaryExpression(left: number, operator: string, right: number): number {
+  if (operator === '+')
+    return left + right;
+  if (operator === '-')
+    return left - right;
+  if (operator === '*')
+    return left * right;
+  if (operator === '/')
+    return left / right;
+  return 0;
+}
+
 function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVars } = {}): PureValue {
   const unknowSnippet = (value: unknown) => typeof value === 'string';
   const handle = (node: jsep.Expression): CommonValueExtended | object => {
@@ -26,6 +38,10 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
     if (jsepTypes.isBinaryExpression(node)) {
       let left = handle(node.left) as (number | boolean);
       let right = handle(node.right) as (number | boolean);
+      if (typeof left === 'string' && isNumberString(left))
+        left = parseFloat(left);
+      if (typeof right === 'string' && isNumberString(right))
+        right = parseFloat(right);
       const operator = node.operator;
       if (unknowSnippet(left) || unknowSnippet(right))
         return `${left}${operator}${right}`;
@@ -34,14 +50,7 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
           left = left ? 1 : 0;
         if (typeof right === 'boolean')
           right = right ? 1 : 0;
-        if (operator === '+')
-          return left + right;
-        if (operator === '-')
-          return left - right;
-        if (operator === '*')
-          return left * right;
-        if (operator === '/')
-          return left / right;
+        return calcNumberBinaryExpression(left, operator, right);
       }
       if (operator === '&&')
         return left && right;
@@ -189,6 +198,17 @@ function handleFormula(formulaStr: string, {
     }
   }
 
+  formulaStr = formulaStr
+    .replace(/(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g, (match, left, operator, right) => {
+      left = parseFloat(left);
+      right = parseFloat(right);
+      return calcNumberBinaryExpression(left, operator, right).toString();
+    })
+    .replace(/(-?\d+(?:\.\d+)?)([+-])(-?\d+(?:\.\d+)?)/g, (match, left, operator, right) => {
+      left = parseFloat(left);
+      right = parseFloat(right);
+      return calcNumberBinaryExpression(left, operator, right).toString();
+    });
   textsAry.forEach(([key], idx) => {
     formulaStr = formulaStr.replace(new RegExp(getTextVarName(idx), 'g'), textsMap.get(key) as string);
   });

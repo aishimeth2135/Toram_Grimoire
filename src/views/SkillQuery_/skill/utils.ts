@@ -10,6 +10,7 @@ import {
   handleBranchValueAttrs,
 } from '@/lib/Skill/SkillComputingContainer/compute';
 import type { HandleBranchValueAttrsMap, HandleBranchTextAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute';
+import { ResultContainer } from '@/lib/Skill/SkillComputingContainer/ResultContainer';
 
 function cloneBranchAttrs(branchItem: SkillBranchItem): Record<string, string> {
   const attrs = {} as Record<string, string>;
@@ -33,17 +34,18 @@ function handleBranchLangAttrs<AttrMap extends HandleBranchLangAttrsMap>(
   helper: ComputedBranchHelperResult,
   attrs: Record<string, string>,
   attrMap: AttrMap,
-): Record<keyof AttrMap, string> {
-  const attrValues = {} as Record<keyof AttrMap, string>;
+): Record<keyof AttrMap, ResultContainer> {
+  const attrValues = {} as Record<keyof AttrMap, ResultContainer>;
   const attrKeys = Object.keys(attrMap) as (keyof AttrMap)[];
   attrKeys.forEach((attrKey) => {
     const { type = 'normal', prefix = '', afterHandle = null } = (attrMap[attrKey] || {}) as HandleBranchLangAttrsOptions;
     const value = attrs[attrKey as string];
+    let resultStr: string;
     if (type === 'value') {
       const resultValue = computeBranchValue(value, helper);
       const sign = isNumberString(resultValue) && parseFloat(resultValue) < 0 ? 'negative' : 'positive';
       const displayValue = sign === 'negative' ? -1 * parseFloat(resultValue) : resultValue;
-      attrValues[attrKey] = lang(`${branchItem.name + prefix}/${attrKey}/${sign}`, [displayValue.toString()]);
+      resultStr = lang(`${branchItem.name + prefix}/${attrKey}/${sign}`, [displayValue.toString()]);
     } else {
       let displayValue = value;
       if (displayValue === '1' || displayValue === '0') {
@@ -52,8 +54,9 @@ function handleBranchLangAttrs<AttrMap extends HandleBranchLangAttrsMap>(
       let preName = branchItem.name + prefix;
       preName = branchItem.mainBranch ? branchItem.mainBranch.name + ': ' + preName : preName;
       const result = lang(`${preName}/${attrKey}/${displayValue}`);
-      attrValues[attrKey] = afterHandle ? afterHandle(result) : result;
+      resultStr = afterHandle ? afterHandle(result) : result;
     }
+    attrValues[attrKey] = new ResultContainer(value, resultStr);
   });
   return attrValues;
 }
@@ -70,7 +73,7 @@ interface HandleDisplayDataOptions {
   texts?: HandleBranchTextAttrsMap;
   langs?: HandleBranchLangAttrsMap;
   filters?: HandleDisplayDataOptionFilters;
-  lang?: GetLangHandler;
+  langHandler?: GetLangHandler;
 }
 function handleDisplayData(branchItem: SkillBranchItem, {
   values = {},
@@ -108,7 +111,7 @@ function handleDisplayData(branchItem: SkillBranchItem, {
 
   const valueDatas = handleBranchValueAttrs(helper, attrs, values);
   const textDatas = handleBranchTextAttrs(helper, attrs, texts);
-  const langDatas = handleBranchLangAttrs(langHandler, branchItem, helper, attrs, langs);
+  const langDatas = handleBranchLangAttrs(langHandler as GetLangHandler, branchItem, helper, attrs, langs);
 
   const containerResult = {
     ...valueDatas,
