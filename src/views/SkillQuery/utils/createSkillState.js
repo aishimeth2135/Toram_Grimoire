@@ -111,17 +111,19 @@ function handleSkillState(skill, { vars }) {
   skill.effects.forEach(overwriteSef => {
     const state = createState(overwriteSef);
 
-    if (overwriteSef != defSef) {
+    if (overwriteSef !== defSef) {
       // 執行覆蓋
-      Object.getOwnPropertySymbols(overwriteSef.attributes).forEach(k => {
+      Object.keys(overwriteSef.attributes).forEach(k => {
         const value = overwriteSef.attributes[k];
         // 空值就移除
-        value == '' && state.attrs[k] ? delete state.attrs[k] : (state.attrs[k] = value);
+        if (value !== '' && value !== -1) {
+          state.attrs[k] = value;
+        }
       });
 
       overwriteSef.branchs.forEach(branch => {
         const idx = state.branchs.findIndex(b => b.id != '-' && b.id == branch.id);
-        const p = idx != -1 ? state.branchs[idx] : null;
+        const p = idx !== -1 ? state.branchs[idx] : null;
         // ==== p: original branch ====
 
         if (!p)
