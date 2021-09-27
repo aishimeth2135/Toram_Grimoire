@@ -168,12 +168,12 @@ class Skill extends SkillBase {
 }
 
 interface SkillEffectAttrs {
-  mpCost: string;
-  range: string;
-  skillType: number;
-  inCombo: number;
-  actionTime: number;
-  castingTime: string;
+  mpCost: string | null;
+  range: string | null;
+  skillType: number | null;
+  inCombo: number | null;
+  actionTime: number | null;
+  castingTime: string | null;
 }
 
 class SkillEffect extends SkillNode {

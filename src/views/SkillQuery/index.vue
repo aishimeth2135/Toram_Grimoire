@@ -525,7 +525,7 @@ export default {
       const p = this.currentSkillData;
       const options = { skillState: this.currentSkillState, effectState: p };
       return p ? Object.keys(p.attrs)
-        .filter(k => p.attrs[k] || p.attrs[k] === 0)
+        .filter(k => p.attrs[k] !== null)
         .map(k => {
           const q = p.attrs[k];
           let { type, icon, extraHandle } = datas[k];

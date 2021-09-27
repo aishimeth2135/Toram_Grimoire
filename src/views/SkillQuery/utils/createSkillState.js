@@ -116,7 +116,7 @@ function handleSkillState(skill, { vars }) {
       Object.keys(overwriteSef.attributes).forEach(k => {
         const value = overwriteSef.attributes[k];
         // 空值就移除
-        if (value !== '' && value !== -1) {
+        if (value !== null) {
           state.attrs[k] = value;
         }
       });

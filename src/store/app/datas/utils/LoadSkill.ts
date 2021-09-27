@@ -63,6 +63,10 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
   });
   const csvData = datas[0];
 
+  const checkNull = <T extends number | string>(value: T, nullValue: T) => {
+    return value === nullValue ? null : value;
+  };
+
   csvData.forEach(function (row, index) {
     try {
       if (index === 0) return;
@@ -103,12 +107,12 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
           if (defaultSelected === 2 || defaultSelected === 3) {
             curSkillEffect.equipmentOperator = 1;
           }
-          curSkillEffect.attributes.mpCost = row[MP_COST];
-          curSkillEffect.attributes.range = row[RANGE];
-          curSkillEffect.attributes.skillType = SKILL_TYPE_LIST.indexOf(row[SKILL_TYPE]);
-          curSkillEffect.attributes.inCombo = IN_COMBO_LIST.indexOf(row[IN_COMBO]);
-          curSkillEffect.attributes.actionTime = ACTION_TIME_LIST.indexOf(row[ACTION_TIME]);
-          curSkillEffect.attributes.castingTime = row[CASTING_TIME];
+          curSkillEffect.attributes.mpCost = checkNull(row[MP_COST], '');
+          curSkillEffect.attributes.range = checkNull(row[RANGE], '');
+          curSkillEffect.attributes.skillType = checkNull(SKILL_TYPE_LIST.indexOf(row[SKILL_TYPE]), -1);
+          curSkillEffect.attributes.inCombo = checkNull(IN_COMBO_LIST.indexOf(row[IN_COMBO]), -1);
+          curSkillEffect.attributes.actionTime = checkNull(ACTION_TIME_LIST.indexOf(row[ACTION_TIME]), -1);
+          curSkillEffect.attributes.castingTime = checkNull(row[CASTING_TIME], '');
         }
       }
       if (curElement !== 'effect')
