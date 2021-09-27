@@ -199,16 +199,22 @@ function handleFormula(formulaStr: string, {
   }
 
   formulaStr = formulaStr
-    .replace(/(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g, (match, left, operator, right) => {
+    .replace(/^(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g, (match, left, operator, right) => {
       left = parseFloat(left);
       right = parseFloat(right);
       return calcNumberBinaryExpression(left, operator, right).toString();
+    })
+    .replace(/([^/\d])(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g, (match, pre,  left, operator, right) => {
+      left = parseFloat(left);
+      right = parseFloat(right);
+      return pre + calcNumberBinaryExpression(left, operator, right).toString();
     })
     .replace(/(-?\d+(?:\.\d+)?)([+-])(-?\d+(?:\.\d+)?)/g, (match, left, operator, right) => {
       left = parseFloat(left);
       right = parseFloat(right);
       return calcNumberBinaryExpression(left, operator, right).toString();
     });
+
   textsAry.forEach(([key], idx) => {
     formulaStr = formulaStr.replace(new RegExp(getTextVarName(idx), 'g'), textsMap.get(key) as string);
   });
