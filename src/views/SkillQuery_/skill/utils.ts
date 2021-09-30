@@ -60,29 +60,29 @@ function handleBranchLangAttrs<AttrMap extends HandleBranchLangAttrsMap>(
   });
   return attrValues;
 }
+type HandleDisplayDataOptionFilterValidation = (value: string) => boolean;
 interface HandleDisplayDataOptionFilterItem {
-  validation: (value: string) => boolean;
+  validation: HandleDisplayDataOptionFilterValidation;
   calc?: boolean;
   defaultValue?: string;
 }
 interface HandleDisplayDataOptionFilters {
-  [key: string]: HandleDisplayDataOptionFilterItem;
+  [key: string]: HandleDisplayDataOptionFilterValidation | HandleDisplayDataOptionFilterItem;
 }
 interface HandleDisplayDataOptions {
   values?: HandleBranchValueAttrsMap;
   texts?: HandleBranchTextAttrsMap;
-  langs?: HandleBranchLangAttrsMap;
+  langs?: HandleBranchLangAttrsMap | string[];
   filters?: HandleDisplayDataOptionFilters;
   langHandler?: GetLangHandler;
 }
-function handleDisplayData(branchItem: SkillBranchItem, {
+function handleDisplayData(branchItem: SkillBranchItem, attrs: Record<string, string>, {
   values = {},
   texts = {},
   langs = {},
   filters = {},
   langHandler,
 }: HandleDisplayDataOptions) {
-  const attrs = cloneBranchAttrs(branchItem);
   const helper = computedBranchHelper(branchItem, [
     ...Object.keys(values),
     ...branchItem.stats.map(stat => stat.value),
@@ -90,6 +90,9 @@ function handleDisplayData(branchItem: SkillBranchItem, {
 
   Object.entries(filters).forEach(([key, value]) => {
     const attrValue = attrs[key];
+    if (typeof value === 'function') {
+      value = { validation: value };
+    }
     const { validation, calc = false, defaultValue = null } = value;
     if (attrValue === undefined) {
       if (defaultValue !== null) {
@@ -109,9 +112,13 @@ function handleDisplayData(branchItem: SkillBranchItem, {
     }
   });
 
+  if (Array.isArray(langs)) {
+    langs = keysToAttrMap<HandleBranchLangAttrsMap>(langs);
+  }
+
   const valueDatas = handleBranchValueAttrs(helper, attrs, values);
   const textDatas = handleBranchTextAttrs(helper, attrs, texts);
-  const langDatas = handleBranchLangAttrs(langHandler as GetLangHandler, branchItem, helper, attrs, langs);
+  const langDatas = langHandler ? handleBranchLangAttrs(langHandler, branchItem, helper, attrs, langs) : {};
 
   const containerResult = {
     ...valueDatas,
@@ -127,4 +134,15 @@ function handleDisplayData(branchItem: SkillBranchItem, {
   return result;
 }
 
-export { cloneBranchAttrs, handleDisplayData };
+function keysToAttrMap<T extends Record<string, any>>(keys: string[]) {
+  const newAttrMap = {} as Record<string, any>;
+  keys.forEach(key => newAttrMap[key] = null);
+  return newAttrMap as T;
+}
+
+export { cloneBranchAttrs, handleDisplayData, keysToAttrMap };
+export type {
+  HandleDisplayDataOptionFilters,
+  HandleBranchLangAttrsMap,
+};
+

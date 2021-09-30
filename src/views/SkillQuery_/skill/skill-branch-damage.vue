@@ -9,10 +9,12 @@ import { computed, toRefs } from 'vue';
 import type { Ref } from 'vue';
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
-import { computedBranchHelper, handleBranchValueAttrs } from '@/lib/Skill/SkillComputingContainer/compute';
 import type { HandleBranchValueAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute';
 
-import { cloneBranchAttrs } from './utils';
+import RegisterLang from '@/setup/RegisterLang';
+
+import { cloneBranchAttrs, handleDisplayData, keysToAttrMap } from './utils';
+import type { HandleDisplayDataOptionFilters, HandleBranchLangAttrsMap } from './utils';
 
 interface Prop {
   skillBranchItem: SkillBranchItem;
@@ -21,15 +23,31 @@ interface Prop {
 const props = defineProps<Prop>();
 const { skillBranchItem } = toRefs(props) as { skillBranchItem: Ref<SkillBranchItem> };
 
+const { lang, rootLang } = RegisterLang('Skill Query/Branch');
+
 const displayData = computed(() => {
   const branchItem = skillBranchItem.value;
-  const attrs = cloneBranchAttrs(branchItem);
+  const filters = {
+    'constant': value => value !== '0',
+    'multiplier': value => value !== '0',
+    'extra_constant': value => value !== '0',
+    'is_place': value => value !== '0',
+    'frequency': value => value !== '1',
+    'name': {
+      validation: value => value !== '',
+      defaultValue: lang('damage/base name'),
+    },
+    'base': value => value !== 'none',
+    'element': value => value !== 'none',
+    'type': value => value !== 'single',
+    'title':  value => value !== 'normal_attack',
+  } as HandleDisplayDataOptionFilters;
   const valueAttrsMap = {
-    'multiplier': null,
+    'multiplier': { beforeHighlight: value => value + '%' },
     'constant': null,
     'extra_constant': null,
-    'frequency': null,
-    'ailment_chance': null,
+    'frequency': { beforeHighlight: value => value + rootLang('global/times') },
+    'ailment_chance': { beforeHighlight: value => value + '%' },
     'duration': null,
     'cycle': null,
     'radius': null,
@@ -41,14 +59,48 @@ const displayData = computed(() => {
   if (branchItem.attrs['target_offset'] !== 'auto') {
     valueAttrsMap['target_offset'] = null;
   }
-  const helper = computedBranchHelper(skillBranchItem.value, [
-    ...Object.keys(valueAttrsMap),
-    ...branchItem.stats.map(stat => stat.value),
-  ]);
-  const valueDatas = handleBranchValueAttrs(helper, attrs, valueAttrsMap);
+  const langAttrsMap = keysToAttrMap<HandleBranchLangAttrsMap>(['damage_type', 'type', 'title', 'element']);
 
-  return {
-    ...valueDatas,
-  };
+  const attrs = cloneBranchAttrs(branchItem);
+  // const customDatas = {} as Record<string, string>;
+
+  if (attrs['base'] === 'auto') {
+    const baseSuffix = branchItem.suffixBranches.find(bch => bch.name === 'base');
+    if (baseSuffix) {
+      const baseSuffixAttrs = baseSuffix.attrs;
+      if (baseSuffixAttrs['type'] !== 'custom') {
+        attrs['@custom-base-caption'] = baseSuffixAttrs['type'];
+        attrs['base'] = `@custom/${baseSuffixAttrs['type']}`;
+        langAttrsMap['base'] = null;
+        langAttrsMap['@custom-base-caption'] = {
+          afterHandle: value => value,
+        };
+        // langs.push('base', {
+        //   name: '@custom-base-caption',
+        //   afterHandle: v => this.createTagButtons(this.handleMarkText(v, 'text-purple')),
+        // });
+      } else {
+        if (baseSuffixAttrs['title'] === 'auto') {
+          attrs['base'] = '@custom/default';
+          langAttrsMap['base'] = null;
+        } else {
+          attrs['base'] = baseSuffixAttrs['title'];
+        }
+        if (baseSuffixAttrs['caption']) {
+          attrs['@custom-base-caption'] = baseSuffixAttrs['caption'];
+        }
+      }
+    } else {
+      attrs['base'] = attrs['damage_type'] === 'physical' ? 'atk' : 'matk';
+      langAttrsMap['base'] = null;
+    }
+  }
+
+  return handleDisplayData(branchItem, attrs, {
+    values: valueAttrsMap,
+    langs: langAttrsMap,
+    filters,
+    langHandler: lang,
+  });
 });
 </script>
