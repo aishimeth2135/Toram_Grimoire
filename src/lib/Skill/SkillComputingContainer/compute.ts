@@ -16,10 +16,22 @@ function computeBranchValue(str: string, helper: ComputedBranchHelperResult): st
   return handleFormula(str, { vars, texts }) as string;
 }
 
-interface HighlightTextOptions {
-  beforeHighlight?: (current: string) => string;
+interface HighlightTextOptionsDetail {
+  beforeHighlight?: (current: string) => string | string;
 }
-function handleHighlight(container: ResultContainerBase, { beforeHighlight }: HighlightTextOptions = {}) {
+type HighlightTextOptions = string | HighlightTextOptionsDetail;
+function handleHighlight(container: ResultContainerBase, options: HighlightTextOptions = {}) {
+  if (typeof options === 'string') {
+    const unit = options;
+    options = {
+      beforeHighlight: value => value + unit,
+    };
+  }
+  let { beforeHighlight } = options;
+  if (typeof beforeHighlight === 'string') {
+    const unit = beforeHighlight;
+    beforeHighlight = value => value + unit;
+  }
   if (!isNumberString(container.value)) {
     container.handle(value => `<span class="cy--text-separate">${value}</span>`);
   }
@@ -38,7 +50,7 @@ interface ComputedBranchHelperResult {
   texts: HandleFormulaTexts;
   handleFormulaExtra: (formula: string) => string;
 }
-function computedBranchHelper(branchItem: SkillBranchItem, values: string[]): ComputedBranchHelperResult {
+function computedBranchHelper(branchItem: SkillBranchItem, values: string[] = []): ComputedBranchHelperResult {
   const stack: number[] = [];
 
   if (branchItem.attrs['stack_id']) {
@@ -125,6 +137,7 @@ function computeBranchValueAttrs<Key extends string>(
 }
 
 // type HandleBranchAttrValuesResultValueType<Value> = Value extends { pure: true } ? number : string;
+type HandleBranchValueAttrOptions = HighlightTextOptions;
 interface HandleBranchValueAttrsMap {
   [key: string]: HighlightTextOptions | null;
 }
@@ -145,7 +158,7 @@ function handleBranchValueAttrs<AttrMap extends HandleBranchValueAttrsMap>(
       attrResult[attrKey] = new ResultContainer('0', '0');
       return;
     }
-    const options = (attrMap[attrKey] || {}) as HighlightTextOptions;
+    const options = (attrMap[attrKey] || {}) as HandleBranchValueAttrOptions;
     const container = new ResultContainer(originalFormula, attrValues[attrKey]);
     handleHighlight(container, options);
 

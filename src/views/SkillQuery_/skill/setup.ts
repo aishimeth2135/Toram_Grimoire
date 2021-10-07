@@ -1,19 +1,11 @@
 
-import { ref, onUpdated } from 'vue';
+import { ref, provide, onUpdated } from 'vue';
 import type { Ref } from 'vue';
 
-function SkillTag(detailWindow: Ref<HTMLElement>) {
-  const TAG_BUTTON_CLASS_NAME = 'click-button--tag';
+import { SkillTagInjectionKey } from './injection-keys';
+import { createTagButtons, TAG_BUTTON_CLASS_NAME } from './branch-handlers/utils';
 
-  const createTagButton = (html: string): string => {
-    return html.replace(/#([^\s]+)\s(\w?)/g, (m, m1, m2) => {
-      let res = `<span class="${TAG_BUTTON_CLASS_NAME}">${m1.replace(new RegExp('_', 'g'), ' ')}</span>`;
-      if (m2 !== '')
-        res += ' ' + m2;
-      return res;
-    });
-  };
-
+function SkillTag(detailWindow: Ref<HTMLElement | null>) {
   const positionElement: Ref<null | HTMLElement> = ref(null);
   const currentTags: Ref<{ name: string }[]> = ref([]);
   const tagWindowVisible = ref(false);
@@ -70,9 +62,13 @@ function SkillTag(detailWindow: Ref<HTMLElement>) {
     }
   });
 
+  provide(SkillTagInjectionKey, {
+    handleTagButtonContent,
+  });
+
   return {
     handleTagButtonContent,
-    createTagButton,
+    createTagButtons,
   };
 }
 

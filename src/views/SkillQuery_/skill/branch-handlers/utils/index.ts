@@ -1,5 +1,6 @@
 import { isNumberString } from '@/shared/utils/string';
 import { GetLangHandler } from '@/shared/services/Language';
+import { numberToFixed } from '@/shared/utils/number';
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
 import {
@@ -60,6 +61,7 @@ function handleBranchLangAttrs<AttrMap extends HandleBranchLangAttrsMap>(
   });
   return attrValues;
 }
+
 type HandleDisplayDataOptionFilterValidation = (value: string) => boolean;
 interface HandleDisplayDataOptionFilterItem {
   validation: HandleDisplayDataOptionFilterValidation;
@@ -72,19 +74,33 @@ interface HandleDisplayDataOptionFilters {
 interface HandleDisplayDataOptions {
   values?: HandleBranchValueAttrsMap;
   texts?: HandleBranchTextAttrsMap;
-  langs?: HandleBranchLangAttrsMap | string[];
+  langs?: HandleBranchLangAttrsMap;
   filters?: HandleDisplayDataOptionFilters;
+  pureValues?: string[];
+  labels?: string[];
   langHandler?: GetLangHandler;
 }
-function handleDisplayData(branchItem: SkillBranchItem, attrs: Record<string, string>, {
-  values = {},
-  texts = {},
-  langs = {},
-  filters = {},
-  langHandler,
-}: HandleDisplayDataOptions) {
+type HandleDisplayDataOptionsWithLangHander = HandleDisplayDataOptions & { langHandler: GetLangHandler };
+type HandleDisplayDataOptionsType<Options extends HandleDisplayDataOptions> =
+  Options extends ({ langs: HandleBranchLangAttrsMap } | { labels: string[] }) ?
+    HandleDisplayDataOptionsWithLangHander :
+    Options;
+function handleDisplayData<Options extends HandleDisplayDataOptions>(
+  branchItem: SkillBranchItem,
+  attrs: Record<string, string>, {
+    values = {},
+    texts = {},
+    langs = {},
+    filters = {},
+    pureValues = [],
+    labels = [],
+    langHandler,
+  }: HandleDisplayDataOptionsType<Options>,
+): Record<string, string> {
   const helper = computedBranchHelper(branchItem, [
-    ...Object.keys(values),
+    ...Object.keys(values).map(key => branchItem.attrs[key]),
+    ...Object.keys(texts).map(key => branchItem.attrs[key]),
+    ...pureValues.map(key => branchItem.attrs[key]),
     ...branchItem.stats.map(stat => stat.value),
   ]);
 
@@ -112,10 +128,6 @@ function handleDisplayData(branchItem: SkillBranchItem, attrs: Record<string, st
     }
   });
 
-  if (Array.isArray(langs)) {
-    langs = keysToAttrMap<HandleBranchLangAttrsMap>(langs);
-  }
-
   const valueDatas = handleBranchValueAttrs(helper, attrs, values);
   const textDatas = handleBranchTextAttrs(helper, attrs, texts);
   const langDatas = langHandler ? handleBranchLangAttrs(langHandler, branchItem, helper, attrs, langs) : {};
@@ -131,16 +143,38 @@ function handleDisplayData(branchItem: SkillBranchItem, attrs: Record<string, st
     result[key] = value.result;
   });
 
+  labels.forEach(key => {
+    result[key + ': label'] = langHandler ? langHandler(`${branchItem.name}/${key}: label`) : key;
+  });
+
+  pureValues.forEach(key => {
+    result[key] = computeBranchValue(attrs[key], helper);
+  });
+
   return result;
 }
 
-function keysToAttrMap<T extends Record<string, any>>(keys: string[]) {
-  const newAttrMap = {} as Record<string, any>;
-  keys.forEach(key => newAttrMap[key] = null);
-  return newAttrMap as T;
+const TAG_BUTTON_CLASS_NAME = 'click-button--tag';
+function createTagButtons(html: string): string {
+  return html.replace(/#([^\s]+)\s(\w?)/g, (m, m1, m2) => {
+    let res = `<span class="${TAG_BUTTON_CLASS_NAME}">${m1.replace(new RegExp('_', 'g'), ' ')}</span>`;
+    if (m2 !== '')
+      res += ' ' + m2;
+    return res;
+  });
 }
 
-export { cloneBranchAttrs, handleDisplayData, keysToAttrMap };
+function numberStringToPercentage(str: string) {
+  return numberToFixed(100 * parseFloat(str), 1).toString() + '%';
+}
+
+export {
+  cloneBranchAttrs,
+  handleDisplayData,
+  createTagButtons,
+  numberStringToPercentage,
+  TAG_BUTTON_CLASS_NAME,
+};
 export type {
   HandleDisplayDataOptionFilters,
   HandleBranchLangAttrsMap,
