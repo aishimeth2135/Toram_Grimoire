@@ -1,9 +1,16 @@
 import { StatComputed } from '@/lib/Character/Stat';
 
 abstract class ResultContainerBase {
-  abstract origin: string;
-  abstract value: string;
+  /** The original data of attr */
+  abstract readonly origin: string;
+
+  /** The calculated value of attr */
+  abstract readonly value: string;
+
+  /** result to display */
   abstract get result(): string;
+
+  /** method to modify result */
   abstract handle(handler: (value: string) => string): void;
 }
 

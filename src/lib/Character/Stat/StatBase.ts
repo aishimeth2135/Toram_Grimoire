@@ -66,7 +66,7 @@ class StatBase {
       if (typeof value === 'number') {
         res = res
           .replace('$v', (calc ? Math.floor(value) : value).toString())
-          .replace(/\$(\d+)d/, (match, p1) => (value as number).toFixed(parseInt(p1)));
+          .replace(/\$(\d+)d/, (match, p1) => (value as number).toFixed(parseInt(p1, 10)));
       }
       return res;
     };

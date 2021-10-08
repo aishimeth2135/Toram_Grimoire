@@ -1,4 +1,4 @@
-import { isNumberString } from '@/shared/utils/string';
+import { isNumberString, trimZero } from '@/shared/utils/string';
 import { GetLangHandler } from '@/shared/services/Language';
 import { numberToFixed } from '@/shared/utils/number';
 
@@ -7,11 +7,14 @@ import {
   computeBranchValue,
   computedBranchHelper,
   ComputedBranchHelperResult,
+  handleBranchStats,
   handleBranchTextAttrs,
   handleBranchValueAttrs,
 } from '@/lib/Skill/SkillComputingContainer/compute';
 import type { HandleBranchValueAttrsMap, HandleBranchTextAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute';
-import { ResultContainer } from '@/lib/Skill/SkillComputingContainer/ResultContainer';
+import { ResultContainer, ResultContainerBase } from '@/lib/Skill/SkillComputingContainer/ResultContainer';
+
+import DisplayDataContainer from './DisplayDataContainer';
 
 function cloneBranchAttrs(branchItem: SkillBranchItem): Record<string, string> {
   const attrs = {} as Record<string, string>;
@@ -20,6 +23,8 @@ function cloneBranchAttrs(branchItem: SkillBranchItem): Record<string, string> {
   });
   return attrs;
 }
+
+type SkillDisplayData = Record<string, string>;
 
 interface HandleBranchLangAttrsOptions {
   prefix?: string;
@@ -96,7 +101,7 @@ function handleDisplayData<Options extends HandleDisplayDataOptions>(
     labels = [],
     langHandler,
   }: HandleDisplayDataOptionsType<Options>,
-): Record<string, string> {
+): DisplayDataContainer {
   const helper = computedBranchHelper(branchItem, [
     ...Object.keys(values).map(key => branchItem.attrs[key]),
     ...Object.keys(texts).map(key => branchItem.attrs[key]),
@@ -131,16 +136,54 @@ function handleDisplayData<Options extends HandleDisplayDataOptions>(
   const valueDatas = handleBranchValueAttrs(helper, attrs, values);
   const textDatas = handleBranchTextAttrs(helper, attrs, texts);
   const langDatas = langHandler ? handleBranchLangAttrs(langHandler, branchItem, helper, attrs, langs) : {};
+  const statDatas = handleBranchStats(helper, branchItem.stats);
 
-  const containerResult = {
-    ...valueDatas,
-    ...textDatas,
-    ...langDatas,
+  const result = {} as SkillDisplayData;
+
+  const handleContainerFormulaValue = (container: ResultContainerBase) => {
+    container.handle(value => {
+      return value
+        .replace(/([$_a-zA-Z][$_a-zA-Z0-9]*)(\*)(\d\.\d+)/g, (match, p1, p2, p3) => p1 + p2 + numberStringToPercentage(p3))
+        .replace(/\*/g, '×');
+    });
+    container.handle(value => value.replace(/(\d+\.)(\d{4,})/g, (m, m1, m2) => m1 + m2.slice(0, 4)));
+    container.handle(trimZero);
   };
 
-  const result = {} as Record<string, string>;
-  Object.entries(containerResult).forEach(([key, value]) => {
-    result[key] = value.result;
+  Object.entries(valueDatas).forEach(([key, container]) => {
+    handleContainerFormulaValue(container);
+    result[key] = container.result;
+  });
+
+  Object.entries(textDatas).forEach(([key, container]) => {
+    handleContainerFormulaValue(container);
+
+    let str = container.result;
+    str = str.replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values">${m1}</span>`);
+    str = createTagButtons(str);
+
+    const branchAttrs = branchItem.attrs;
+
+    const replacedLabels = [
+      ...(branchAttrs['mark'] || '').split(/\s*,\s*/),
+      ...(branchAttrs['branch'] || '').split(/\s*,\s*/),
+      ...(branchAttrs['skill'] || '').split(/\s*,\s*/),
+    ];
+
+    replacedLabels.forEach(label => {
+      str = str.replace(new RegExp(label, 'g'), match => `<span class="text-light-3">${match}</span>`);
+    });
+
+    result[key] = str;
+  });
+
+  Object.entries(langDatas).forEach(([key, container]) => {
+    result[key] = container.result;
+  });
+
+  Object.entries(statDatas).forEach(([key, container]) => {
+    handleContainerFormulaValue(container);
+    result[key] = container.result;
   });
 
   labels.forEach(key => {
@@ -151,7 +194,18 @@ function handleDisplayData<Options extends HandleDisplayDataOptions>(
     result[key] = computeBranchValue(attrs[key], helper);
   });
 
-  return result;
+  const containers = {
+    ...valueDatas,
+    ...textDatas,
+    ...langDatas,
+  };
+
+  return new DisplayDataContainer({
+    branchItem,
+    containers,
+    value: result,
+    statContainers: statDatas,
+  });
 }
 
 const TAG_BUTTON_CLASS_NAME = 'click-button--tag';
@@ -178,5 +232,6 @@ export {
 export type {
   HandleDisplayDataOptionFilters,
   HandleBranchLangAttrsMap,
+  SkillDisplayData,
 };
 

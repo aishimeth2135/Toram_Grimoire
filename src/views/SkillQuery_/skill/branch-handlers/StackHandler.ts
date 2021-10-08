@@ -22,12 +22,19 @@ export default function StackHandler(branchItem: SkillBranchItem, { lang }: {
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     name: {
       validation: value => !!value && value !== 'auto',
-      defaultValue: lang('stack/base name') + (idx + 1),
+      defaultValue: lang('stack/base name') + (idx + 1).toString(),
     },
   });
 
-  return handleDisplayData(branchItem, attrs, {
+  const displayData = handleDisplayData(branchItem, attrs, {
     filters: filters.value,
     pureValues,
   });
+
+  const tmpv = parseInt(displayData.get('max') || displayData.get('default'), 10);
+  if (!Number.isNaN(tmpv) && tmpv > 999) {
+    displayData.customDatas.stackInputWidth = '3rem';
+  }
+
+  return displayData;
 }

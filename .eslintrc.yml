@@ -78,6 +78,9 @@ rules:
   no-plusplus:
     - error
     - allowForLoopAfterthoughts: true
+  radix:
+    - error
+    - always
   import/no-unresolved:
     - 2
     - commonjs: true

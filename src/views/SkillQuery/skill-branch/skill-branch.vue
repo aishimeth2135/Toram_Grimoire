@@ -964,7 +964,7 @@ export default {
             validation: v => v != 0,
           }, {
             name: 'frequency',
-            validation: v => parseInt(v) > 1,
+            validation: v => parseInt(v, 10) > 1,
             validationType: 'value',
           });
 

@@ -64,8 +64,8 @@ class SkillBranchHandler {
     this.stackStates.forEach(p => {
       const attrs = p.branch.attrs;
       p.range =  [
-        parseInt(this.calcValueStr(attrs['min'])),
-        attrs['max'] ? parseInt(this.calcValueStr(attrs['max'])) : null,
+        parseInt(this.calcValueStr(attrs['min']), 10),
+        attrs['max'] ? parseInt(this.calcValueStr(attrs['max']), 10) : null,
       ];
     });
 

@@ -106,15 +106,19 @@ export default function DamageHandler(branchItem: SkillBranchItem, { lang, rootL
   if (prorationBch) {
     const _data = ProrationHandler(prorationBch, { lang });
     ['damage', 'proration', 'damage: title', 'proration: title'].forEach(key => {
-      attrs['@proration/' + key] = _data[key];
+      attrs['@proration/' + key] = _data.get(key);
     });
   }
 
-  return handleDisplayData(branchItem, attrs, {
+  const result = handleDisplayData(branchItem, attrs, {
     values: valueAttrsMap.value,
     langs: langAttrsMap.value,
     filters: filters.value,
     labels,
     langHandler: lang,
   });
+
+  // result.value['@frequency-visible'] = branchItem.attrs['title'] === 'each' ? '1' : '0';
+
+  return result;
 }

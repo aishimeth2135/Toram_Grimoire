@@ -55,8 +55,7 @@ export default function HealHandler(branchItem: SkillBranchItem, { lang }: {
     langHandler: lang,
   });
 
-  return {
-    displayData,
-    extraValueList,
-  };
+  displayData.customDatas.extraValueList = extraValueList;
+
+  return displayData;
 }
