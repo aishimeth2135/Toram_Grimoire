@@ -83,6 +83,9 @@ export default {
           });
         } else {
           Array.from(container.items.values()).forEach(item => {
+            if (result.find(resItem => resItem.item.base.id === item.base.id)) {
+              return;
+            }
             const comparedItem = comparedContainer.items.get(item.base.id);
             result.push({
               item,

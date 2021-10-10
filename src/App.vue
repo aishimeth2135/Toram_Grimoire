@@ -1,40 +1,26 @@
 <template>
   <div id="app">
-    <app-nav />
+    <AppNav />
     <router-view class="main-section app-main" />
-    <app-footer />
-    <app-initialize />
-    <app-confirm />
-    <app-notify />
-    <app-loading />
+    <AppFooter />
+    <AppInitialize />
+    <AppConfirm />
+    <AppNotify />
+    <AppLoading />
   </div>
 </template>
 
-<script>
+<script setup>
 import { InitLanguageSystem } from '@/shared/services/Language';
 
-// app components
-import vue_confirm from '@/views/app/confirm.vue';
-import vue_footer from '@/views/app/footer.vue';
-import vue_initialize from '@/views/app/initialize.vue';
-import vue_loading from '@/views/app/loading.vue';
-import vue_nav from '@/views/app/nav.vue';
-import vue_notify from '@/views/app/notify.vue';
+import AppConfirm from '@/views/app/confirm.vue';
+import AppFooter from '@/views/app/footer.vue';
+import AppInitialize from '@/views/app/initialize.vue';
+import AppLoading from '@/views/app/loading.vue';
+import AppNav from '@/views/app/nav.vue';
+import AppNotify from '@/views/app/notify.vue';
 
-export default {
-  name: 'App',
-  components: {
-    'app-initialize': vue_initialize,
-    'app-footer': vue_footer,
-    'app-nav': vue_nav,
-    'app-notify': vue_notify,
-    'app-loading': vue_loading,
-    'app-confirm': vue_confirm,
-  },
-  beforeCreate() {
-    InitLanguageSystem();
-  },
-};
+InitLanguageSystem();
 </script>
 
 <style lang="less" scoped>

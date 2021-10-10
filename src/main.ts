@@ -12,14 +12,14 @@ import Confirm from '@/plugin/Confirm';
 import Notify from '@/plugin/Notify';
 import RegisterLang from '@/plugin/RegisterLang.js';
 
-import App from './App.vue';
+import AppView from './App.vue';
 import registerServiceWorker from './app/registerServiceWorker';
 import registGlobalComponents from './app/registGlobalComponents';
 import initPackages from './app/initPackages';
 import router from './router/index.js';
 
-const APP = createApp(App);
-APP
+const app = createApp(AppView);
+app
   .use(router)
   .use(store)
   .use(RegisterLang)
@@ -31,8 +31,8 @@ APP
     },
   });
 
-registGlobalComponents(APP);
+registGlobalComponents(app);
 registerServiceWorker();
 initPackages();
 
-APP.mount('#app');
+app.mount('#app');

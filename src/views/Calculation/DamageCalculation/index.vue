@@ -224,7 +224,7 @@
 </template>
 
 <script>
-import { computed, provide } from '@vue/runtime-core';
+import { computed, provide } from 'vue';
 import { mapActions, mapMutations, useStore } from 'vuex';
 
 
