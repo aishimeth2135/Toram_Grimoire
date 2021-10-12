@@ -1,5 +1,5 @@
 <template>
-  <cy-window :visible="visible" @close="$emit('close')">
+  <cy-modal :visible="visible" @close="$emit('close')">
     <template #title>
       <cy-icon-text
         v-if="once"
@@ -53,7 +53,7 @@
         {{ $rootLang('global/close') }}
       </cy-button-border>
     </div>
-  </cy-window>
+  </cy-modal>
 </template>
 <script>
 import { StatTypes } from '@/lib/Character/Stat/enums';

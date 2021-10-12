@@ -1,7 +1,7 @@
 <template>
   <span v-if="storageAvailable" class="app--settings">
     <cy-button-icon icon="ic-baseline-settings" @click="toggleWindowVisible" />
-    <cy-window
+    <cy-modal
       v-model:visible="windowVisible"
       class="main--window"
       width="wide"
@@ -197,7 +197,7 @@
           </cy-button-border>
         </div>
       </fieldset>
-    </cy-window>
+    </cy-modal>
   </span>
 </template>
 

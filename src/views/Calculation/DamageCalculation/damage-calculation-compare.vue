@@ -17,7 +17,7 @@
         {{ lang('compare/tips: introduction') }}
       </cy-default-tips>
     </div>
-    <cy-window
+    <cy-modal
       :visible="contents.selectCalculation"
       footer
       @close="toggle('contents/selectCalculation', false)"
@@ -36,7 +36,7 @@
           {{ item.origin.name }}
         </cy-button-check>
       </cy-list-item>
-    </cy-window>
+    </cy-modal>
   </div>
   <cy-default-tips v-else icon="potum" icon-src="custom">
     {{ lang('compare/tips: At least two builds') }}

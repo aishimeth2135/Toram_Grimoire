@@ -27,7 +27,7 @@
         @close="toggle('window/createCustomEquipment', false)"
         @append-equipments="appendEquipments"
       />
-      <cy-window
+      <cy-modal
         :visible="window.customEquipmentEditor"
         @close="toggle('window/customEquipmentEditor', false)"
       >
@@ -53,7 +53,7 @@
             </div>
           </template>
         </cy-bottom-content>
-      </cy-window>
+      </cy-modal>
       <select-crystals
         v-if="currentSelectCrystalsEquipment"
         :visible="window.selectCrystals"

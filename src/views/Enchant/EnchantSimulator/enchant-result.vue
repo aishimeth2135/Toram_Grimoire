@@ -123,7 +123,7 @@
       {{ $lang('tips/invalid enchant result') }}
     </cy-default-tips>
   </div>
-  <cy-window
+  <cy-modal
     footer
     :visible="windows.successRateDetail"
     @close="toggle('windows/successRateDetail', false)"
@@ -143,7 +143,7 @@
         <span v-html="text"></span>
       </div>
     </div>
-  </cy-window>
+  </cy-modal>
 </template>
 <script>
 import { mapState } from 'vuex';

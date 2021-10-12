@@ -238,7 +238,7 @@
           </cy-transition>
         </div>
       </div>
-      <cy-window
+      <cy-modal
         v-model:visible="previewExportedImageWindowVisible"
         frozen-top
         width="auto"
@@ -266,8 +266,8 @@
         <div>
           <img :src="currentExportedImage || '#'">
         </div>
-      </cy-window>
-      <cy-window
+      </cy-modal>
+      <cy-modal
         v-model:visible="previewExportedTextWindowVisible"
         frozen-top
         width="auto"
@@ -288,7 +288,7 @@
           </div>
         </template>
         <div ref="previewExportedTextContent" class="exported-text-content" v-html="currentExportedText" />
-      </cy-window>
+      </cy-modal>
     </div>
   </article>
 </template>

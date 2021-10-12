@@ -1,5 +1,5 @@
 <template>
-  <cy-window :visible="visible" @close="close">
+  <cy-modal :visible="visible" @close="close">
     <template #title>
       <cy-icon-text icon="gg-shape-square">
         {{ $lang('create custom equipment/window title') }}
@@ -32,7 +32,7 @@
         </div>
       </template>
     </cy-bottom-content>
-    <cy-window v-model:visible="window.selectType">
+    <cy-modal v-model:visible="window.selectType">
       <template #title>
         <cy-icon-text icon="gg-shape-square">
           {{ $lang('create custom equipment/select equipment type') }}
@@ -72,8 +72,8 @@
           </template>
         </cy-button-drop-down>
       </div>
-    </cy-window>
-  </cy-window>
+    </cy-modal>
+  </cy-modal>
 </template>
 <script>
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar, CharacterEquipment } from '@/lib/Character/CharacterEquipment';

@@ -1,5 +1,5 @@
 <template>
-  <cy-window
+  <cy-modal
     :visible="visible"
     vertical-position="top"
     @close="$emit('close')"
@@ -85,7 +85,7 @@
         </template>
       </cy-bottom-content>
     </template>
-  </cy-window>
+  </cy-modal>
 </template>
 <script>
 import vue_equipmentItem from '@/components/common/equipment-item.vue';

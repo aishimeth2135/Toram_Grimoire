@@ -1,5 +1,5 @@
 <template>
-  <cy-window
+  <cy-modal
     :visible="visible"
     width="wide"
     @close="closeWindow"
@@ -90,7 +90,7 @@
         </template>
       </cy-bottom-content>
     </template>
-  </cy-window>
+  </cy-modal>
 </template>
 <script>
 import { mapState } from 'vuex';

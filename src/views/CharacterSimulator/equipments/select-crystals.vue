@@ -1,5 +1,5 @@
 <template>
-  <cy-window :visible="visible" @close="closeWindow">
+  <cy-modal :visible="visible" @close="closeWindow">
     <template #title>
       <cy-icon-text icon="bx-bx-cube-alt">
         {{ $lang('select crystals/window title') }}
@@ -93,7 +93,7 @@
         </div>
       </template>
     </cy-bottom-content>
-  </cy-window>
+  </cy-modal>
 </template>
 <script>
 import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from '@/lib/Character/CharacterEquipment';

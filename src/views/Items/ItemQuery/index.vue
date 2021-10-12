@@ -225,7 +225,7 @@
         </div>
       </div>
     </div>
-    <cy-window v-model:visible="modes.stat.selectStatVisible" vertical-position="top">
+    <cy-modal v-model:visible="modes.stat.selectStatVisible" vertical-position="top">
       <template #title>
         <cy-icon-text icon="mdi-rhombus-outline">
           {{ $lang('options: stat/select stat: window title') }}
@@ -253,7 +253,7 @@
           {{ $lang('no result tips') }}
         </cy-default-tips>
       </template>
-    </cy-window>
+    </cy-modal>
   </article>
 </template>
 <script>

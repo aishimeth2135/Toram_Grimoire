@@ -58,7 +58,7 @@
         {{ $lang('skill management/there are no skills yet') }}
       </cy-default-tips>
     </div>
-    <cy-window
+    <cy-modal
       v-if="userSetsWindow.handler && userSetsWindow.handler.hasUserSets"
       v-model:visible="userSetsWindow.visible"
     >
@@ -94,7 +94,7 @@
           </cy-icon-text>
         </template>
       </cy-input-counter>
-    </cy-window>
+    </cy-modal>
   </section>
   <section v-else>
     <cy-default-tips icon="mdi-ghost">

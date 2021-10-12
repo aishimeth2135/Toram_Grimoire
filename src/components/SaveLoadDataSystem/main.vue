@@ -24,7 +24,7 @@
     >
       {{ langText('load from csv') }}
     </cy-button-line>
-    <cy-window v-model:visible="selectDataWindowVisible">
+    <cy-modal v-model:visible="selectDataWindowVisible">
       <template #title>
         <cy-icon-text icon="mdi:content-save-outline">
           {{ langText('Save Load: title') }}
@@ -59,7 +59,7 @@
           </div>
         </cy-transition>
       </template>
-    </cy-window>
+    </cy-modal>
   </div>
 </template>
 <script>

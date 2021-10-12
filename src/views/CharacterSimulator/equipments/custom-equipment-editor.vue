@@ -67,7 +67,7 @@
         </cy-input-counter>
       </div>
     </template>
-    <cy-window v-model:visible="selectStatWindowVisible">
+    <cy-modal v-model:visible="selectStatWindowVisible">
       <template #title>
         <cy-icon-text icon="mdi-rhombus-outline">
           {{ $lang('custom equipment editor/select stat: window title') }}
@@ -241,7 +241,7 @@
           </div>
         </template>
       </cy-bottom-content>
-    </cy-window>
+    </cy-modal>
   </div>
 </template>
 <script>

@@ -107,7 +107,7 @@
       </div>
     </div>
     <div>
-      <cy-window
+      <cy-modal
         v-model:visible="modeState['mode-stats'].selectStatWindowVisible"
         vertical-position="top"
       >
@@ -139,7 +139,7 @@
             {{ $lang('no result tips') }}
           </cy-default-tips>
         </template>
-      </cy-window>
+      </cy-modal>
     </div>
   </article>
 </template>
