@@ -38,6 +38,37 @@
   <img src="<%= BASE_URL %>imgs/favicon/favicon128.png" style="display: none">
   <div id="app"></div>
   <div id="app-modals"></div>
+
+  <div id="app--error" data-flag="0" style="max-width: 800px; margin: 16px auto;"></div>
+  <script id="app--error--script">
+    (function() {
+      window.onerror = function(message, source, line) {
+        const el = document.getElementById('app--error');
+        if (el) {
+          if (el.getAttribute('data-flag') === '0') {
+            el.setAttribute('data-flag', '1');
+            const top = document.createElement('div');
+            top.innerText = '發生未知的錯誤，請將下方的錯誤訊息回報給作者。\nAn unknown error has occurred, please report the error message below to the author.';
+            top.style.marginBottom = '32px';
+            top.style.padding = '16px';
+            el.appendChild(top);
+          }
+          const row = document.createElement('div');
+          row.innerText = message + '\n\nsource: ' + source + '\nline: ' + line;
+          row.style.marginBottom = '16px';
+          row.style.padding = '16px';
+          el.appendChild(row);
+        }
+        console.log(error);
+      };
+      setTimeout(function() {
+        const el = document.getElementById('app--error--script');
+        if (el) {
+          el.parentElement.removeChild(el);
+        }
+      }, 100);
+    })();
+  </script>
 </body>
 
 </html>

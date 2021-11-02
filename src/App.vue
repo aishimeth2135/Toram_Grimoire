@@ -11,6 +11,8 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
+
 import { InitLanguageSystem } from '@/shared/services/Language';
 
 import AppConfirm from '@/views/app/confirm.vue';
@@ -19,6 +21,13 @@ import AppInitialize from '@/views/app/initialize.vue';
 import AppLoading from '@/views/app/loading.vue';
 import AppNav from '@/views/app/nav.vue';
 import AppNotify from '@/views/app/notify.vue';
+
+onMounted(() => {
+  const el = document.getElementById('app--error');
+  if (el) {
+    el.parentElement.removeChild(el);
+  }
+});
 
 InitLanguageSystem();
 </script>
