@@ -63,8 +63,9 @@
     "webpack-bundle-analyzer": "^4.4.1"
   },
   "browserslist": [
-    "> 1%",
-    "last 2 versions",
+    "> 0.5%",
+    "last 5 versions",
+    "ios_saf >= 12",
     "not dead"
   ]
 }
