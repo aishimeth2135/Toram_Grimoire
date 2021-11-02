@@ -26,7 +26,12 @@ function calcNumberBinaryExpression(left: number, operator: string, right: numbe
 
 function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVars } = {}): PureValue {
   const unknowSnippet = (value: unknown) => typeof value === 'string';
-  const handle = (node: jsep.Expression): CommonValueExtended | object => {
+  const handleArray = (ary: jsep.Expression[]): unknown[] => {
+    return ary
+      .map(arg => handle(arg))
+      .map(el => typeof el === 'string' && isNumberString(el) ? parseFloat(el) : el);
+  };
+  function handle(node: jsep.Expression): CommonValueExtended | object {
     if (jsepTypes.isLiteral(node)) {
       return node.value as PureValue;
     }
@@ -76,7 +81,7 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
       return `${parent}.${handle(property) as string}`;
     }
     if (jsepTypes.isCallExpression(node)) {
-      const args: unknown[] = node.arguments.map(arg => handle(arg));
+      const args = handleArray(node.arguments);
       if (args.some(arg => unknowSnippet(arg))) {
         const chain = [];
         let cur = node.callee;
@@ -91,7 +96,7 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
       return callee(...args);
     }
     if (jsepTypes.isArrayExpression(node)) {
-      const els: unknown[] = node.elements.map(el => handle(el));
+      const els: unknown[] = handleArray(node.elements);
       if (els.some(el => unknowSnippet(el))) {
         return `[${els.join(', ')}]`;
       }
@@ -102,7 +107,7 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
       return handle(test ? node.consequent : node.alternate);
     }
     return 0;
-  };
+  }
   return handle(jsep(formulaStr)) as PureValue;
 }
 
