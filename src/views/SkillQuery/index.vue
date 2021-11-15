@@ -383,7 +383,7 @@ export default {
         store: [],
         currentStoreIndex: -1,
         skillLevel: 10,
-        characterLevel: 220,
+        characterLevel: 235,
         displayMode: 'normal',
         optionsWindowVisible: false,
         optionsMode: 0,
