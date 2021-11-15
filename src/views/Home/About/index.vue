@@ -123,7 +123,7 @@ export default {
             main: '曄痕/櫻雨痕',
             sub: '眾神幣',
           }, {
-            main: '夜神散華 彌禮/（曄之妹）',
+            main: '夜神散華 禮彌/（曄之妹）',
             sub: '眾神幣',
           }, '@line', {
             main: '✩cuxin',
