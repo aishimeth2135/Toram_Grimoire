@@ -20,6 +20,53 @@
   <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+  <script id="app--error--script">
+    (function() {
+      function showMessage(error, extraMessage) {
+        var message = error.message;
+        var el = document.getElementById('app--error');
+        if (el) {
+          if (el.getAttribute('data-flag') === '0') {
+            el.setAttribute('data-flag', '1');
+            var top = document.createElement('div');
+            top.innerText = '發生未知的錯誤，請將下方的錯誤訊息回報給作者。\nAn unknown error has occurred, please report the error message below to the author.';
+            top.style.marginBottom = '32px';
+            top.style.padding = '16px';
+            el.appendChild(top);
+          }
+          var row = document.createElement('div');
+          row.innerText = message;
+          if (extraMessage) {
+            row.innerText += '\n' + extraMessage;
+          }
+          row.style.marginBottom = '16px';
+          row.style.padding = '16px';
+          el.appendChild(row);
+        }
+        console.log('Something wrong...')
+        console.log(message);
+        if (extraMessage) {
+          console.log(extraMessage);
+        }
+      }
+      window.onerror = function(message, source, lineno, colno, error) {
+        showMessage(error);
+      };
+      var scripts = document.head.getElementsByTagName('script');
+      var scriptHandler = function(error) {
+        showMessage(error, 'The script ' + oError.target.src + " didn't load correctly.");
+      };
+      for (var i=0; i<scripts.length; ++i) {
+        scripts[i].onerror = scriptHandler;
+      }
+      setTimeout(function() {
+        var el = document.getElementById('app--error--script');
+        if (el) {
+          el.parentElement.removeChild(el);
+        }
+      }, 500);
+    })();
+  </script>
 
   <% if (process.env.NODE_ENV === 'production') { %>
     <script defer src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script>
@@ -40,35 +87,6 @@
   <div id="app-modals"></div>
 
   <div id="app--error" data-flag="0" style="max-width: 800px; margin: 16px auto;"></div>
-  <script id="app--error--script">
-    (function() {
-      window.onerror = function(message, source, line) {
-        const el = document.getElementById('app--error');
-        if (el) {
-          if (el.getAttribute('data-flag') === '0') {
-            el.setAttribute('data-flag', '1');
-            const top = document.createElement('div');
-            top.innerText = '發生未知的錯誤，請將下方的錯誤訊息回報給作者。\nAn unknown error has occurred, please report the error message below to the author.';
-            top.style.marginBottom = '32px';
-            top.style.padding = '16px';
-            el.appendChild(top);
-          }
-          const row = document.createElement('div');
-          row.innerText = message + '\n\nsource: ' + source + '\nline: ' + line;
-          row.style.marginBottom = '16px';
-          row.style.padding = '16px';
-          el.appendChild(row);
-        }
-        console.log(error);
-      };
-      setTimeout(function() {
-        const el = document.getElementById('app--error--script');
-        if (el) {
-          el.parentElement.removeChild(el);
-        }
-      }, 100);
-    })();
-  </script>
 </body>
 
 </html>
