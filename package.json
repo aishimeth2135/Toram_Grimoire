@@ -65,7 +65,7 @@
   "browserslist": [
     "> 0.5%",
     "last 5 versions",
-    "ios_saf >= 12",
+    "ios_saf >= 11",
     "not dead"
   ]
 }
