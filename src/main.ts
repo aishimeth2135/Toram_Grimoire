@@ -8,15 +8,19 @@ import VueGtag from 'vue-gtag-next';
 
 import store from '@/store';
 
+import { InitLanguageSystem } from '@/shared/services/Language';
+
 import Confirm from '@/plugin/Confirm';
 import Notify from '@/plugin/Notify';
 import RegisterLang from '@/plugin/RegisterLang.js';
 
 import AppView from './App.vue';
+
 import registerServiceWorker from './app/registerServiceWorker';
 import registGlobalComponents from './app/registGlobalComponents';
 import initPackages from './app/initPackages';
-import router from './router/index.js';
+import initI18n from './app/initI18n';
+import router from './router';
 
 const app = createApp(AppView);
 app
@@ -34,5 +38,11 @@ app
 registGlobalComponents(app);
 registerServiceWorker();
 initPackages();
+initI18n(app);
 
-app.mount('#app');
+(async () => {
+  InitLanguageSystem();
+  await store.dispatch('language/updateLocalMessages');
+  app.mount('#app');
+})();
+

@@ -12,6 +12,7 @@
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
     "noImplicitOverride": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
     "baseUrl": ".",
     "outDir": "built",

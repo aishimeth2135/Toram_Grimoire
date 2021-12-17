@@ -1,5 +1,5 @@
 <template>
-  <span
+  <button
     class="button--main-content inline-flex items-center m-1 px-1.5"
     :class="baseClass"
     @click="handleButtonClick"
@@ -15,14 +15,14 @@
     >
       <slot />
     </span>
-  </span>
+  </button>
 </template>
 
 <script>
-import BaseButton from './base';
+import ButtonBase from './base';
 
 export default {
-  mixins: [BaseButton],
+  mixins: [ButtonBase],
   emits: ['update:selected'],
   methods: {
     handleButtonClick(e) {

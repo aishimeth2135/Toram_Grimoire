@@ -40,6 +40,7 @@ rules:
   no-shadow: off
   no-dupe-class-members: off
   indent: off
+  func-call-spacing: off
   jsdoc/no-undefined-types: warn
   no-trailing-spaces: warn
   object-curly-spacing:
@@ -63,9 +64,6 @@ rules:
   semi:
     - error
     - always
-  func-call-spacing:
-    - error
-    - never
   space-in-parens:
     - error
     - never
@@ -94,6 +92,7 @@ rules:
         - /^@\/lib\//
         - /^@\/setup\//
         - /^@\//
+        - /(?!@\/).+\.vue$/
         - - parent
           - sibling
           - index
@@ -121,6 +120,9 @@ rules:
     - error
     - 2
     - SwitchCase: 1
+  "@typescript-eslint/func-call-spacing":
+    - error
+    - never
   vue/html-indent:
     - warn
     - 2

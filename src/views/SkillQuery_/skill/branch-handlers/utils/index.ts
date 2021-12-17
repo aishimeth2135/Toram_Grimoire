@@ -1,8 +1,9 @@
 import { isNumberString, trimZero } from '@/shared/utils/string';
-import { GetLangHandler } from '@/shared/services/Language';
 import { numberToFixed } from '@/shared/utils/number';
+import Grimoire from '@/shared/Grimoire';
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
+import { SkillBranchItemSuffix } from '@/lib/Skill/SkillComputingContainer';
+import type { SkillBranchItemBase } from '@/lib/Skill/SkillComputingContainer';
 import {
   computeBranchValue,
   computedBranchHelper,
@@ -13,56 +14,76 @@ import {
 } from '@/lib/Skill/SkillComputingContainer/compute';
 import type { HandleBranchValueAttrsMap, HandleBranchTextAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute';
 import { ResultContainer, ResultContainerBase } from '@/lib/Skill/SkillComputingContainer/ResultContainer';
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums';
+
+import { createTagButtons } from '@/views/SkillQuery_/utils';
 
 import DisplayDataContainer from './DisplayDataContainer';
+import { handleFunctionHighlight } from './utils';
 
-function cloneBranchAttrs(branchItem: SkillBranchItem): Record<string, string> {
+function cloneBranchAttrs(
+  branchItem: SkillBranchItemBase,
+  initValueMap?: Record<string, string | ((value: string) => string)>,
+): Record<string, string> {
   const attrs = {} as Record<string, string>;
-  Object.entries(branchItem.attrs).forEach(([key, value]) => {
+  Object.entries(branchItem.allAttrs).forEach(([key, value]) => {
     attrs[key] = value;
   });
+  if (typeof initValueMap === 'object') {
+    Object.entries(initValueMap).forEach(([key, value]) => {
+      if (typeof value === 'function') {
+        attrs[key] = value(attrs[key]);
+      } else if (attrs[key] === undefined) {
+        attrs[key] = value;
+      }
+    });
+  }
   return attrs;
 }
 
 type SkillDisplayData = Record<string, string>;
 
 interface HandleBranchLangAttrsOptions {
-  prefix?: string;
-  type?: 'normal' | 'value';
+  prefix?: string; // unused now
+  type?: 'auto' | 'normal' | 'value' | 'boolean';
   afterHandle?: ((value: string) => string) | null;
 }
 interface HandleBranchLangAttrsMap {
   [key: string]: HandleBranchLangAttrsOptions | null;
 }
 function handleBranchLangAttrs<AttrMap extends HandleBranchLangAttrsMap>(
-  lang: GetLangHandler,
-  branchItem: SkillBranchItem,
+  branchItem: SkillBranchItemBase,
   helper: ComputedBranchHelperResult,
   attrs: Record<string, string>,
   attrMap: AttrMap,
 ): Record<keyof AttrMap, ResultContainer> {
+  const { t } = Grimoire.i18n;
+
   const attrValues = {} as Record<keyof AttrMap, ResultContainer>;
   const attrKeys = Object.keys(attrMap) as (keyof AttrMap)[];
   attrKeys.forEach((attrKey) => {
-    const { type = 'normal', prefix = '', afterHandle = null } = (attrMap[attrKey] || {}) as HandleBranchLangAttrsOptions;
+    const { type = 'auto', prefix = '', afterHandle = null } = (attrMap[attrKey] || {}) as HandleBranchLangAttrsOptions;
     const value = attrs[attrKey as string];
+    if (!value) {
+      return;
+    }
     let resultStr: string;
     if (type === 'value') {
       const resultValue = computeBranchValue(value, helper);
       const sign = isNumberString(resultValue) && parseFloat(resultValue) < 0 ? 'negative' : 'positive';
       const displayValue = sign === 'negative' ? -1 * parseFloat(resultValue) : resultValue;
-      resultStr = lang(`${branchItem.name + prefix}/${attrKey}/${sign}`, [displayValue.toString()]);
+      resultStr = t(`skill-query.branch.${branchItem.name + prefix}.${attrKey}.${sign}`, { value: displayValue.toString() });
     } else {
       let displayValue = value;
-      if (displayValue === '1' || displayValue === '0') {
+      if ((type === 'auto' || type === 'boolean') && (displayValue === '1' || displayValue === '0')) {
         displayValue = displayValue === '1' ? 'true' : 'false';
       }
       let preName = branchItem.name + prefix;
-      preName = branchItem.mainBranch ? branchItem.mainBranch.name + ': ' + preName : preName;
-      const result = lang(`${preName}/${attrKey}/${displayValue}`);
+      preName = branchItem instanceof SkillBranchItemSuffix ? branchItem.mainBranch.name + ': ' + preName : preName;
+      const result = t(`skill-query.branch.${preName}.${attrKey}.${displayValue}`);
       resultStr = afterHandle ? afterHandle(result) : result;
     }
-    attrValues[attrKey] = new ResultContainer(value, resultStr);
+    attrValues[attrKey] = new ResultContainer(attrKey as string, value, resultStr);
   });
   return attrValues;
 }
@@ -71,7 +92,6 @@ type HandleDisplayDataOptionFilterValidation = (value: string) => boolean;
 interface HandleDisplayDataOptionFilterItem {
   validation: HandleDisplayDataOptionFilterValidation;
   calc?: boolean;
-  defaultValue?: string;
 }
 interface HandleDisplayDataOptionFilters {
   [key: string]: HandleDisplayDataOptionFilterValidation | HandleDisplayDataOptionFilterItem;
@@ -82,60 +102,54 @@ interface HandleDisplayDataOptions {
   langs?: HandleBranchLangAttrsMap;
   filters?: HandleDisplayDataOptionFilters;
   pureValues?: string[];
-  labels?: string[];
-  langHandler?: GetLangHandler;
+  pureDatas?: string[];
+  titles?: string[];
+  formulaDisplayMode?: FormulaDisplayModes;
 }
-type HandleDisplayDataOptionsWithLangHander = HandleDisplayDataOptions & { langHandler: GetLangHandler };
-type HandleDisplayDataOptionsType<Options extends HandleDisplayDataOptions> =
-  Options extends ({ langs: HandleBranchLangAttrsMap } | { labels: string[] }) ?
-    HandleDisplayDataOptionsWithLangHander :
-    Options;
-function handleDisplayData<Options extends HandleDisplayDataOptions>(
-  branchItem: SkillBranchItem,
+
+function handleDisplayData<Branch extends SkillBranchItemBase>(
+  branchItem: Branch,
   attrs: Record<string, string>, {
     values = {},
     texts = {},
     langs = {},
     filters = {},
     pureValues = [],
-    labels = [],
-    langHandler,
-  }: HandleDisplayDataOptionsType<Options>,
-): DisplayDataContainer {
+    pureDatas = [],
+    titles = [],
+    formulaDisplayMode,
+  }: HandleDisplayDataOptions,
+): DisplayDataContainer<Branch> {
+  const { t } = Grimoire.i18n;
+
   const helper = computedBranchHelper(branchItem, [
-    ...Object.keys(values).map(key => branchItem.attrs[key]),
-    ...Object.keys(texts).map(key => branchItem.attrs[key]),
-    ...pureValues.map(key => branchItem.attrs[key]),
+    ...Object.keys(values).map(key => branchItem.attr(key)),
+    ...Object.keys(texts).map(key => branchItem.attr(key)),
+    ...pureValues.map(key => branchItem.attr(key)),
     ...branchItem.stats.map(stat => stat.value),
-  ]);
+  ], formulaDisplayMode);
+
+  formulaDisplayMode = helper.formulaDisplayMode;
 
   Object.entries(filters).forEach(([key, value]) => {
     const attrValue = attrs[key];
     if (typeof value === 'function') {
       value = { validation: value };
     }
-    const { validation, calc = false, defaultValue = null } = value;
-    if (attrValue === undefined) {
-      if (defaultValue !== null) {
-        attrs[key] = defaultValue;
-      }
-      return;
-    }
+    const { validation, calc = false } = value;
     const validatedValue = calc ? computeBranchValue(attrValue, helper) : attrValue;
     if (!validation(validatedValue)) {
-      if (defaultValue !== null) {
-        attrs[key] = defaultValue;
-      } else {
-        delete attrs[key];
-        delete values[key];
-        delete texts[key];
-      }
+      delete attrs[key];
+      delete values[key];
+      delete texts[key];
+      const idx = titles.indexOf(key);
+      idx > -1 && titles.splice(idx, 1);
     }
   });
 
   const valueDatas = handleBranchValueAttrs(helper, attrs, values);
   const textDatas = handleBranchTextAttrs(helper, attrs, texts);
-  const langDatas = langHandler ? handleBranchLangAttrs(langHandler, branchItem, helper, attrs, langs) : {};
+  const langDatas = handleBranchLangAttrs(branchItem, helper, attrs, langs);
   const statDatas = handleBranchStats(helper, branchItem.stats);
 
   const result = {} as SkillDisplayData;
@@ -152,27 +166,38 @@ function handleDisplayData<Options extends HandleDisplayDataOptions>(
 
   Object.entries(valueDatas).forEach(([key, container]) => {
     handleContainerFormulaValue(container);
-    result[key] = container.result;
+
+    let str = container.result;
+    if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
+      str = handleFunctionHighlight(str);
+    }
+
+    result[key] = str;
   });
 
   Object.entries(textDatas).forEach(([key, container]) => {
     handleContainerFormulaValue(container);
 
     let str = container.result;
-    str = str.replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values">${m1}</span>`);
+    str = str.replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="cy--text-separate border-light-3">${m1}</span>`);
     str = createTagButtons(str);
 
-    const branchAttrs = branchItem.attrs;
+    const handleReplaceLabel = (attrKey: string) => {
+      const labels = branchItem.attr(attrKey).split(/\s*,\s*/).filter(item => item);
+      labels.forEach((label, idx) => {
+        str = str.replace(new RegExp(label, 'g'), () => `__HANDLE_REPLACE_LABEL_${idx}__`);
+      });
+      labels.forEach((label, idx) => {
+        str = str.replace(new RegExp(`__HANDLE_REPLACE_LABEL_${idx}__`, 'g'), () => `<span class="click-button--${attrKey}">${label}</span>`);
+      });
+    };
+    handleReplaceLabel('mark');
+    handleReplaceLabel('branch');
+    handleReplaceLabel('skill');
 
-    const replacedLabels = [
-      ...(branchAttrs['mark'] || '').split(/\s*,\s*/),
-      ...(branchAttrs['branch'] || '').split(/\s*,\s*/),
-      ...(branchAttrs['skill'] || '').split(/\s*,\s*/),
-    ];
-
-    replacedLabels.forEach(label => {
-      str = str.replace(new RegExp(label, 'g'), match => `<span class="text-light-3">${match}</span>`);
-    });
+    if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
+      str = handleFunctionHighlight(str);
+    }
 
     result[key] = str;
   });
@@ -181,17 +206,12 @@ function handleDisplayData<Options extends HandleDisplayDataOptions>(
     result[key] = container.result;
   });
 
-  Object.entries(statDatas).forEach(([key, container]) => {
+  statDatas.forEach(container => {
     handleContainerFormulaValue(container);
-    result[key] = container.result;
   });
 
-  labels.forEach(key => {
-    result[key + ': label'] = langHandler ? langHandler(`${branchItem.name}/${key}: label`) : key;
-  });
-
-  pureValues.forEach(key => {
-    result[key] = computeBranchValue(attrs[key], helper);
+  titles.forEach(key => {
+    result[key + ': title'] = t(`skill-query.branch.${branchItem.name}.${key}: title`);
   });
 
   const containers = {
@@ -200,21 +220,37 @@ function handleDisplayData<Options extends HandleDisplayDataOptions>(
     ...langDatas,
   };
 
+  pureValues.forEach(key => {
+    const value = computeBranchValue(attrs[key], helper);
+    const container = new ResultContainer(key, attrs[key], value);
+
+    if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
+      handleContainerFormulaValue(container);
+    }
+
+    let str = container.result;
+    if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
+      str = handleFunctionHighlight(str);
+    }
+
+    containers[key] = container;
+    result[key] = str;
+  });
+
+  pureDatas.forEach(key => {
+    const value = attrs[key];
+    if (value === undefined) {
+      return;
+    }
+    result[key] = value;
+    containers[key] = new ResultContainer(key, value, value);
+  });
+
   return new DisplayDataContainer({
     branchItem,
     containers,
     value: result,
     statContainers: statDatas,
-  });
-}
-
-const TAG_BUTTON_CLASS_NAME = 'click-button--tag';
-function createTagButtons(html: string): string {
-  return html.replace(/#([^\s]+)\s(\w?)/g, (m, m1, m2) => {
-    let res = `<span class="${TAG_BUTTON_CLASS_NAME}">${m1.replace(new RegExp('_', 'g'), ' ')}</span>`;
-    if (m2 !== '')
-      res += ' ' + m2;
-    return res;
   });
 }
 
@@ -225,9 +261,7 @@ function numberStringToPercentage(str: string) {
 export {
   cloneBranchAttrs,
   handleDisplayData,
-  createTagButtons,
   numberStringToPercentage,
-  TAG_BUTTON_CLASS_NAME,
 };
 export type {
   HandleDisplayDataOptionFilters,

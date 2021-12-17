@@ -131,24 +131,6 @@ export default function() {
           'start_position_offsets: title': '起點位置',
           'end_position_offsets: title': '終點位置',
           'caption of duration and cycle': '持續$0秒，每$1秒一次傷害。',
-        },
-        'damage: proration': {
-          'damage: title': '傷害慣性',
-          'proration: title': '造成慣性',
-          'damage': {
-            'physical': '物理',
-            'magic': '魔法',
-            'normal_attack': '一般攻擊',
-            'none': '不受慣性影響',
-          },
-          'proration': {
-            'physical': '物理',
-            'magic': '魔法',
-            'normal_attack': '一般攻擊',
-            'none': '不造成慣性',
-          },
-        },
-        'damage-detail': {
           'judgment': {
             'common': '每下傷害共用判定',
             'separate': '每下傷害分開判定',
@@ -169,6 +151,22 @@ export default function() {
           },
           'is_place': {
             'true': '設置型技能',
+          },
+        },
+        'damage: proration': {
+          'damage: title': '傷害慣性',
+          'proration: title': '造成慣性',
+          'damage': {
+            'physical': '物理',
+            'magic': '魔法',
+            'normal_attack': '一般攻擊',
+            'none': '不受慣性影響',
+          },
+          'proration': {
+            'physical': '物理',
+            'magic': '魔法',
+            'normal_attack': '一般攻擊',
+            'none': '不造成慣性',
           },
         },
         'proration': {

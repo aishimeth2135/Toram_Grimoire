@@ -38,6 +38,10 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(opt
     const targetGroup = dataMap[group] as Record<string, Ref<boolean>>;
     if (sub) {
       force = typeof force === 'boolean' ? force : !targetGroup[sub].value;
+      if (!targetGroup[sub]) {
+        console.warn(`[ToggleService] key "${id}" not found.`);
+        return;
+      }
       targetGroup[sub].value = force;
       if (groupForce !== undefined) {
         Object.entries(targetGroup).forEach(([key, item]) => {

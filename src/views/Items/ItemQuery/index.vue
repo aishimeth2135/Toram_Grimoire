@@ -292,10 +292,10 @@ export default {
         value: p, selected: true,
       };
     });
-    const handleEquipmentTypes = (category, opts) => {
+    const handleEquipmentTypes = (opts) => {
       opts = handleOptions(opts);
       opts.forEach(opt => {
-        opt.imagePath = CharacterEquipment.getImagePath(category, opt.value);
+        opt.imagePath = CharacterEquipment.getImagePath(opt.value);
       });
       return opts;
     };
@@ -399,14 +399,14 @@ export default {
         type: [{
           id: 'main-weapon',
           instance: MainWeapon,
-          types: handleEquipmentTypes('main-weapon', MainWeaponTypeList),
+          types: handleEquipmentTypes(MainWeaponTypeList),
           selected: true,
         }, {
           id: 'sub-weapon',
           instance: [SubWeapon, SubArmor],
           types: [
-            ...handleEquipmentTypes('sub-weapon', SubWeaponTypeList),
-            ...handleEquipmentTypes('sub-armor', SubArmorTypeList),
+            ...handleEquipmentTypes(SubWeaponTypeList),
+            ...handleEquipmentTypes(SubArmorTypeList),
           ],
           selected: true,
         }, {

@@ -5,7 +5,7 @@
         v-if="isSingleValue"
         class="text-sm mr-1 text-light-2"
       >
-        {{ lang('pretext: is constant') }}
+        {{ t('skill-query.branch.heal.constant-pretext') }}
       </span>
       <span
         v-if="container.get('constant')"
@@ -37,28 +37,26 @@
 
 <script lang="ts" setup>
 import { computed, toRefs } from '@vue/reactivity';
+import { useI18n } from 'vue-i18n';
 
 import { isNumberString } from '@/shared/utils/string';
 
-import RegisterLang from '@/setup/RegisterLang';
-
 import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer';
 
-interface Prop {
+interface Props {
   container: DisplayDataContainer;
 }
 
-const props = defineProps<Prop>();
+const props = defineProps<Props>();
 
 const { container } = toRefs(props);
+const { t } = useI18n();
 
 const extraValueList = computed(() => container.value.customDatas.extraValueList as { text: string; value: string }[]);
 
 const isSingleValue = computed(() => {
   return extraValueList.value.length === 0 && isNumberString(container.value.containers['constant'].value);
 });
-
-const { lang } = RegisterLang('Skill Query/Branch');
 </script>
 
 <style lang="postcss" scoped>

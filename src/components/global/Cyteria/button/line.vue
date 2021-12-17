@@ -1,5 +1,5 @@
 <template>
-  <span
+  <button
     class="cy-button--line button--main-content flex items-center justify-start border-l-2 border-solid py-1 px-3 m-2"
     :class="rootClass"
     @click="click"
@@ -18,14 +18,14 @@
     >
       <slot name="content-right" />
     </span>
-  </span>
+  </button>
 </template>
 
 <script>
-import BaseButton from './base';
+import ButtonBase from './base';
 
 export default {
-  mixins: [BaseButton],
+  mixins: [ButtonBase],
   props: {
     inline: {
       type: Boolean,

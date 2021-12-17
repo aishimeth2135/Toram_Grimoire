@@ -1,9 +1,9 @@
-const branchComputedAttrList = {
-  'damage': ['multiplier'],
-};
+import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums';
 
-const branchAttrsDefaultValue = {
-  'damage': {
+import { SkillBranchNames } from '../Skill/enums';
+
+const BRANCH_ATTRS_DEFAULT_VALUE: Record<string, Record<string, string>> = {
+  [SkillBranchNames.Damage]: {
     'constant': '0',
     'multiplier': '0',
     'extra_constant': '0',
@@ -28,13 +28,14 @@ const branchAttrsDefaultValue = {
     'end_position_offsets': '0',
     'target_offsets': 'auto',
   },
-  'base': {
+  [SkillBranchNames.Base]: {
     'title': 'auto',
   },
-  'proration': {
+  [SkillBranchNames.Proration]: {
     'proration': 'auto',
   },
-  'effect': {
+  [SkillBranchNames.Effect]: {
+    'duration': '0',
     'condition': 'auto',
     'type': 'self',
     'is_place': '0',
@@ -45,81 +46,72 @@ const branchAttrsDefaultValue = {
     'end_position_offsets': '0',
     'effect_self': '1',
   },
-  'heal': {
+  [SkillBranchNames.Heal]: {
     'target': 'self',
     'frequency': '1',
     'constant': '0',
   },
-  'list': {
+  [SkillBranchNames.List]: {
     'is_tips': '0',
   },
-  'stack': {
+  [SkillBranchNames.Stack]: {
     'min': '1',
     'default': 'auto',
     'name': 'auto',
   },
-  'group': {
+  [SkillBranchNames.Group]: {
     'expandable': '1',
     'expansion_default': '0',
   },
-  'import': {
+  [SkillBranchNames.Import]: {
     'default_level': '5',
   },
-  'space': {
+  [SkillBranchNames.Space]: {
     'disabled': '0',
   },
-} as Record<string, Record<string, string>>;
+} as const;
 
-// const branchAttrsType = {
-//   'damage': {
-//     values: [
-//       'multiplier',
-//       'constant',
-//       'extra_constant',
-//       'frequency',
-//       'ailment_chance',
-//       'duration',
-//       'cycle',
-//       'radius',
-//       'angel',
-//       'start_position_offsets',
-//       'end_position_offsets',
-//       'move_distance',
-//       (value: string) => value !== 'auto',
-//     ],
-//     texts: [],
-//     suffixs: {
-//       'extra': {
-//         values: ['ailment_chance'],
-//         texts: [],
-//       },
-//       'base': {
-//         values: [],
-//         texts: ['caption'],
-//       },
-//     },
-//   },
-//   'effect': {
-//     values: [
-//       'duration',
-//       'radius',
-//     ],
-//     texts: ['caption'],
-//     suffixs: {
-//       'extra': {
-//         values: [],
-//         texts: ['caption'],
-//       },
-//     },
-//   },
-//   'next': 'effect',
-//   'passive': {
-//     values: [],
-//     texts: ['caption'],
-//   },
-//   'heal': {
-//     values: [],
-//   },
-// };
+/**
+   * 0'空手', 1'單手劍', 2'雙手劍', 3'弓', 4'弩', 5'法杖',
+   * 6'魔導具', 7'拳套', 8'旋風槍', 9'拔刀劍', 10'雙劍',
+   *
+   * 0'無裝備', 1'箭矢', 2'盾牌', 3'小刀', 4'魔導具',
+   * 5'拳套', 6'拔刀劍', 7'忍術卷軸',
+  */
+const EQUIPMENT_TYPE_MAIN_ORDER = [
+  EquipmentTypes.Empty,
+  EquipmentTypes.OneHandSword,
+  EquipmentTypes.TwoHandSword,
+  EquipmentTypes.Bow,
+  EquipmentTypes.Bowgun,
+  EquipmentTypes.Staff,
+  EquipmentTypes.MagicDevice,
+  EquipmentTypes.Knuckle,
+  EquipmentTypes.Halberd,
+  EquipmentTypes.Katana,
+] as const;
 
-export { branchComputedAttrList, branchAttrsDefaultValue };
+const EQUIPMENT_TYPE_SUB_ORDER = [
+  EquipmentTypes.Empty,
+  EquipmentTypes.Arrow,
+  EquipmentTypes.Shield,
+  EquipmentTypes.Dagger,
+  EquipmentTypes.MagicDevice,
+  EquipmentTypes.Knuckle,
+  EquipmentTypes.Katana,
+  EquipmentTypes.NinjutsuScroll,
+] as const;
+
+const EQUIPMENT_TYPE_BODY_ORDER = [
+  EquipmentTypes.Empty,
+  EquipmentTypes.BodyDodge,
+  EquipmentTypes.BodyDefense,
+  EquipmentTypes.BodyNormal,
+] as const;
+
+export {
+  BRANCH_ATTRS_DEFAULT_VALUE,
+  EQUIPMENT_TYPE_MAIN_ORDER,
+  EQUIPMENT_TYPE_SUB_ORDER,
+  EQUIPMENT_TYPE_BODY_ORDER,
+};

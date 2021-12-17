@@ -1,5 +1,5 @@
 <template>
-  <span
+  <button
     class="button--main-content inline-flex items-center py-0.5 px-2"
     :class="baseClass"
     @click="click"
@@ -11,13 +11,13 @@
     >
       <slot />
     </span>
-  </span>
+  </button>
 </template>
 
 <script>
-import BaseButton from './base';
+import ButtonBase from './base';
 
 export default {
-  mixins: [BaseButton],
+  mixins: [ButtonBase],
 };
 </script>

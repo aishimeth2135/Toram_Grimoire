@@ -3,7 +3,9 @@ import Grimoire from '@/shared/Grimoire';
 import { HandleLanguageData } from '@/shared/services/Language';
 
 import SkillSystem from '@/lib/Skill';
-import { SkillElement, SkillTreeCategory, SkillTree, Skill, SkillEffect, SkillBranch } from '@/lib/Skill/Skill';
+import { SkillElement, SkillTreeCategory, SkillTree, Skill, SkillBranch, SkillEffect } from '@/lib/Skill/Skill';
+import type { SkillEffectBase } from '@/lib/Skill/Skill';
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums';
 
 import type { CsvData, LangCsvData } from './DownloadDatas';
 
@@ -17,7 +19,7 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
     /* Skill */
     NAME = 1,
     DEFAULT_SET = 2,
-    DEFAULT_SET_LIST = ['預設', '非預設', '預設/and', '非預設/and'],
+    DEFAULT_SET_LIST = ['預設', '非預設', '預設/and', '非預設/and', '歷史紀錄'],
     MAIN_WEAPON = 3,
     SUB_WEAPON = 4,
     BODY_ARMOR = 5,
@@ -48,13 +50,17 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
     /* Language Data */
     LANG_DATA = {
       EFFECT_BRANCH_ATTRIBUTE_VALUE: 0,
+    },
+    HISTORY_EFFECT = {
+      TARGET_EFFECT_ID: 3,
+      DATE: 4,
     };
 
   let curElement: string = '';
   let curSkillTreeCategory: SkillTreeCategory;
   let curSkillTree: SkillTree;
   let curSkill: Skill;
-  let curSkillEffect: SkillEffect;
+  let curSkillEffect: SkillEffectBase | void;
   let curSkillBranch: SkillBranch;
 
   // language data
@@ -99,28 +105,34 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
           if (defaultSelected === -1) {
             return;
           }
-          curSkillEffect = curSkill.appendSkillEffect(mainWeapon, subWeapon, bodyArmor);
+          curSkillEffect = defaultSelected !== 4 ?
+            curSkill.appendSkillEffect(mainWeapon, subWeapon, bodyArmor) :
+            curSkill.appendSkillEffectHistory(parseInt(row[HISTORY_EFFECT.TARGET_EFFECT_ID], 10), row[HISTORY_EFFECT.DATE]);
           curElement = 'effect';
-          if (defaultSelected === 0 || defaultSelected === 2) {
-            curSkill.setDefaultEffect(curSkillEffect);
+          if (curSkillEffect && curSkillEffect instanceof SkillEffect) {
+            if (defaultSelected === 0 || defaultSelected === 2) {
+              curSkill.setDefaultEffect(curSkillEffect);
+            }
+            if (defaultSelected === 2 || defaultSelected === 3) {
+              curSkillEffect.equipmentOperator = 1;
+            }
+            curSkillEffect.attributes.mpCost = checkNull(row[MP_COST], '');
+            curSkillEffect.attributes.range = checkNull(row[RANGE], '');
+            curSkillEffect.attributes.skillType = checkNull(SKILL_TYPE_LIST.indexOf(row[SKILL_TYPE]), -1);
+            curSkillEffect.attributes.inCombo = checkNull(IN_COMBO_LIST.indexOf(row[IN_COMBO]), -1);
+            curSkillEffect.attributes.actionTime = checkNull(ACTION_TIME_LIST.indexOf(row[ACTION_TIME]), -1);
+            curSkillEffect.attributes.castingTime = checkNull(row[CASTING_TIME], '');
           }
-          if (defaultSelected === 2 || defaultSelected === 3) {
-            curSkillEffect.equipmentOperator = 1;
-          }
-          curSkillEffect.attributes.mpCost = checkNull(row[MP_COST], '');
-          curSkillEffect.attributes.range = checkNull(row[RANGE], '');
-          curSkillEffect.attributes.skillType = checkNull(SKILL_TYPE_LIST.indexOf(row[SKILL_TYPE]), -1);
-          curSkillEffect.attributes.inCombo = checkNull(IN_COMBO_LIST.indexOf(row[IN_COMBO]), -1);
-          curSkillEffect.attributes.actionTime = checkNull(ACTION_TIME_LIST.indexOf(row[ACTION_TIME]), -1);
-          curSkillEffect.attributes.castingTime = checkNull(row[CASTING_TIME], '');
         }
       }
-      if (curElement !== 'effect')
+      if (curElement !== 'effect' || !curSkillEffect) {
         return;
-      const bid = row[EFFECT_BRANCH_NO] ? parseInt(row[EFFECT_BRANCH_NO], 10) : null;
+      }
+      const bid = row[EFFECT_BRANCH_NO] || null;
       if (bid !== null) {
+        const bidNum: number = bid === '-' ? -1 : parseInt(row[EFFECT_BRANCH_NO], 10);
         const bname = row[EFFECT_BRANCH_NAME];
-        curSkillBranch = curSkillEffect.appendSkillBranch(bid, bname);
+        curSkillBranch = curSkillEffect.appendSkillBranch(bidNum, bname as SkillBranchNames);
       }
       const propName = row[EFFECT_BRANCH_ATTRIBUTE_NAME],
         propValue = row[EFFECT_BRANCH_ATTRIBUTE_VALUE];

@@ -1,0 +1,41 @@
+<template>
+  <div class="flex items-center space-x-2">
+    <div class="cy--text-underline text-light-2 flex items-center">
+      <cy-icon-text icon="mdi-sword" display-block>
+        {{ t('skill-query.branch.proration.proration: title') }}
+      </cy-icon-text>
+      <div class="text-light-3 ml-1.5">
+        {{ container.get('proration') }}
+      </div>
+    </div>
+    <div class="cy--text-underline text-light-2 flex items-center">
+      <cy-icon-text icon="mdi-sword" display-block>
+        {{ t('skill-query.branch.proration.damage: title') }}
+      </cy-icon-text>
+      <div class="text-light-3 ml-1.5">
+        {{ container.get('damage') }}
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { computed, toRefs } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
+
+import ProrationHandler from './branch-handlers/ProrationHandler';
+
+interface Props {
+  branchItem: SkillBranchItem;
+}
+
+const props = defineProps<Props>();
+const { branchItem } = toRefs(props);
+
+const container = computed(() => ProrationHandler(branchItem.value));
+
+const { t } = useI18n();
+</script>
+

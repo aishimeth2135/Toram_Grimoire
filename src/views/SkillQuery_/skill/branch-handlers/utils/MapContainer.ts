@@ -15,7 +15,7 @@ export default class MapContainer<AttrMap extends Record<string, any>> {
     this._attrMap[key] = (null) as AttrMap[keyof AttrMap];
   }
 
-  remove(key: string) {
+  remove(key: keyof AttrMap) {
     delete this._attrMap[key];
   }
 
@@ -28,7 +28,7 @@ export default class MapContainer<AttrMap extends Record<string, any>> {
   }
 }
 
-function keysToAttrMap<T extends Record<string, any>>(keys: string[]) {
+function keysToAttrMap<T extends Record<string, any>>(keys: string[]): T {
   const newAttrMap = {} as Record<string, any>;
   keys.forEach(key => newAttrMap[key] = null);
   return newAttrMap as T;

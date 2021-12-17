@@ -422,14 +422,15 @@
 <script>
 import { trimZero } from '@/shared/utils/string';
 
-import DataContainer from '../utils/DataContainer.js';
-import handleSkillFormula from '../utils/handleFormula.js';
 import vue_branchDetail from './branch-detail.vue';
 import vue_damageFormula from './damage-formula.vue';
 import vue_equipmentInfo from './equipment-info.vue';
 import vue_healFormula from './heal-formula.vue';
-import vue_skillAreaInfo from './skill-area-info';
 import vue_stats from './stats.vue';
+
+import vue_skillAreaInfo from './skill-area-info';
+import handleSkillFormula from '../utils/handleFormula.js';
+import DataContainer from '../utils/DataContainer.js';
 
 
 export default {
@@ -597,10 +598,10 @@ export default {
         return null;
 
       const res = this.skillState.states
-        .filter(p => p.branchs.find(b => b.id == this.branch.id))
+        .filter(p => p.branches.find(b => b.id == this.branch.id))
         .map((p, i) => ({
           iid: i,
-          branch: p.branchs.find(b => b.id == this.branch.id),
+          branch: p.branches.find(b => b.id == this.branch.id),
         }));
 
       return res.length === 0 ? null : res;
@@ -728,7 +729,7 @@ export default {
       return data;
     },
     toggleGroup(force) {
-      const bchs = this.branch['@parent-state'].branchs;
+      const bchs = this.branch['@parent-state'].branches;
 
       const g = this.branch.group;
       g.expansion = force === undefined ? !g.expansion : force;
@@ -893,7 +894,7 @@ export default {
             name: ['min', 'max', 'default'],
             calcOnly: true,
           });
-          const stkIdx = bch['@parent-state'].branchs
+          const stkIdx = bch['@parent-state'].branches
             .filter(p => p.name === 'stack')
             .indexOf(bch);
           hiddenList.push({

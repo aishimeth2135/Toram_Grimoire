@@ -6,6 +6,30 @@ import type { HandleFormulaVars, HandleFormulaGetters } from './index';
 type HandledVars = HandleFormulaVars;
 type HandledGetters = HandleFormulaGetters;
 
+/**
+ * Unwrap vars to one layer mapping
+ * ex:
+ * {
+ *   a: {
+ *     b: 2,
+ *     c: {
+ *       d: 100
+ *     }
+ *   },
+ *   e: 200,
+ *   f: [2, 3]
+ * }
+ * will output
+ * {
+ *   'a.b.c.d': 100
+ *   'a.b': 2,
+ *   'e': 200
+ *   'f[0]': 2,
+ *   'f[1]': 3
+ * }
+ * @param vars - vars object
+ * @returns one layer mapping with Map
+ */
 function getVarsMap<T>(vars: HandledVars): Map<string, T> {
   const varsMap = new Map();
   const handleVarsMapping = (prefix: string, target: HandledVars) => {
@@ -16,7 +40,7 @@ function getVarsMap<T>(vars: HandledVars): Map<string, T> {
         console.warn(`[handle formula] vars: ${mapKey} is null or undefined`);
       } else if (typeof value === 'object') {
         if (Array.isArray(value)) {
-          varsMap.set(mapKey, `[${value.toString()}]`);
+          value.forEach((el, idx) => varsMap.set(`${mapKey}[${idx}]`, el));
         } else {
           handleVarsMapping(mapKey, value);
         }

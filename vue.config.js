@@ -1,6 +1,9 @@
 const path = require('path');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+/**
+ * @type {import('@vue/cli-service').ProjectOptions}
+ */
 module.exports = {
   // eslint-disable-next-line
   configureWebpack: (config) => {
@@ -48,6 +51,18 @@ module.exports = {
         ...resultConfig,
       };
     }
+  },
+  chainWebpack(config) {
+    /* eslint-disable @typescript-eslint/indent */
+    config.module
+      .rule('yaml')
+        .test(/\.ya?ml$/)
+        .use('yaml')
+          .loader('js-yaml-loader');
+    /* eslint-enable @typescript-eslint/indent */
+  },
+  css: {
+    sourceMap: true,
   },
 
   pwa: {
