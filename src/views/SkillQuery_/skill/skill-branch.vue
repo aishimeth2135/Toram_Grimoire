@@ -33,7 +33,7 @@
       icon-width="1.5rem"
       @click="toggle('contents/sub')"
     />
-    <div v-if="skillBranchItem.groupState.isGroupEnd" class="pt-5">
+    <div v-if="skillBranchItem.groupState.isGroupEnd && !sub" class="pt-5">
       <div class="group-end" />
     </div>
   </div>

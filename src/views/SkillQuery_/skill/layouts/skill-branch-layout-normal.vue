@@ -1,5 +1,5 @@
 <template>
-  <fieldset class="border-1 border-light p-2 pt-1 bg-white">
+  <fieldset class="skill-branch-layout-normal border-1 border-light p-2 pt-1 bg-white">
     <legend class="flex items-center px-3">
       <cy-icon-text
         :icon="nameIcon"
@@ -84,5 +84,11 @@ const subContentDatas = computed(() => {
 .sub-content-item {
   margin: 0.1rem 0;
   @apply mr-3 inline-flex items-center;
+}
+
+.skill-branch-layout-normal {
+  @media screen and (min-width: 40rem) {
+    min-width: 30rem;
+  }
 }
 </style>

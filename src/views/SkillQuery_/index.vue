@@ -10,7 +10,7 @@
         icon="bx:bx-search"
       />
     </cy-top-header>
-    <div>
+    <div class="px-1">
       <div ref="skillTreeCategoryMenuElement" class="p-1">
         <cy-button-border
           v-for="stc in skillRoot.skillTreeCategorys"
@@ -34,7 +34,7 @@
           {{ st.name }}
         </cy-button-border>
       </div>
-      <div v-if="currentSkillTree">
+      <div v-if="currentSkillTree" class="max-w-full overflow-x-auto">
         <SkillTreeDiagram
           :skill-tree="currentSkillTree"
           skill-tree-type="normal"

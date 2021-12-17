@@ -3,13 +3,13 @@
     <div
       v-if="(visible || keepVisible)"
       ref="rootElement"
-      class="cy--hover-float-wrapper z-10 fixed py-0.5"
+      class="cy--hover-float-wrapper z-10 fixed py-0.5 px-4"
       :style="position ?? undefined"
       @mouseenter="visible = true"
       @mouseleave="hideCaption"
     >
       <div
-        class="absolute -top-9 right-0"
+        class="absolute -top-9 right-4"
         :class="{ 'invisible': !keepVisible }"
       >
         <div class="flex items-center border-1 rounded-md border-light py-1 px-2 bg-white bg-opacity-70">
@@ -19,8 +19,7 @@
         </div>
       </div>
       <div
-        class="w-max"
-        :class="custom ? 'overflow-y-auto' : 'border-1 rounded-lg border-light-3 px-4 py-2 bg-white overflow-y-auto'"
+        :class="contentClass"
         style="max-height: calc(45vh - 5rem);"
         @click="contentClick"
       >
@@ -53,7 +52,15 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const emit = defineEmits<Emits>();
 
-const { element, target, positionMode } = toRefs(props);
+const { element, target, positionMode, custom } = toRefs(props);
+
+const contentClass = computed(() => {
+  let classList = 'overflow-y-auto max-w-full';
+  if (!custom.value) {
+    classList += ' border-1 rounded-lg border-light-3 px-4 py-2 bg-white';
+  }
+  return classList;
+});
 
 const visible = ref(false);
 const position: Ref<CSSProperties | null> = ref(null);
@@ -106,11 +113,13 @@ const updateCaptionPosition = async () => {
   } else {
     resultPosition.top = (rect.top + rect.height + margin) + 'px';
   }
-  const len2right = window.innerWidth - rect.right;
-  if (rect.left >= len2right) {
-    resultPosition.right = (ww - rect.right + margin) + 'px';
-  } else {
-    resultPosition.left = (rect.left + margin) + 'px';
+  if (positionMode.value !== 'h-middle') {
+    const len2right = window.innerWidth - rect.right;
+    if (rect.left >= len2right) {
+      resultPosition.right = (ww - rect.right + margin) + 'px';
+    } else {
+      resultPosition.left = (rect.left + margin) + 'px';
+    }
   }
   position.value = resultPosition;
   await nextTick();
@@ -144,11 +153,16 @@ const updateHookBinding = async () => {
   }
   const bindHooks = (node: HTMLElement) => {
     const show = function(this: HTMLElement) { showCaption(this); };
+    const click = function(evt: MouseEvent) {
+      evt.stopPropagation();
+      enableKeepVisible();
+    };
     node.addEventListener('mouseenter', show);
     node.addEventListener('mouseleave', hideCaption);
-    node.addEventListener('touchstart', show);
-    node.addEventListener('touchend', hideCaption);
-    node.addEventListener('click', enableKeepVisible);
+    // node.addEventListener('touchstart', show);
+    // node.addEventListener('touchend', hideCaption);
+    node.addEventListener('click', click);
+
   };
   if (target?.value === undefined) {
     bindHooks(el);
@@ -165,12 +179,20 @@ defineExpose({
 });
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 .cy--hover-float-wrapper {
+  @apply flex;
   max-width: 50rem;
 
-  @media screen and (max-height: 50rem) {
-    max-width: calc(100vw - 2rem);
+  &.layout-h-middle {
+    width: 50rem;
+    @apply justify-center;
+    left: auto;
+    right: auto;
+  }
+
+  @media screen and (max-width: 50rem) {
+    max-width: 100vw;
   }
 }
 </style>

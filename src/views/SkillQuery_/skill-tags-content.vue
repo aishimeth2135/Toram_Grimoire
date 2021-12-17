@@ -1,22 +1,23 @@
 <template>
-  <cy-detail-window
-    v-if="currentTag || (currentTag && visible)"
-    :position-element="positionElement"
-  >
-    <div class="skill-tag-modal-content" @click="emit('update:visible', false)">
+  <div v-if="currentTag" class="skill-tag-content-wrapper">
+    <div class="skill-tag-content">
       <div class="mb-1 flex items-center">
-        <!-- <cy-button
-          v-if="tagState.tags.length > 1"
-          icon="jam-arrow-left"
-          type="inline"
-          @click.stop="previousTag"
-        /> -->
+        <cy-button-icon
+          v-if="tags.length > 1"
+          icon="ic:round-arrow-back"
+          :disabled="currentTagIdx === 0"
+          @click.stop="goPreviousTag"
+        />
         <cy-icon-text icon="ri-leaf-fill" text-color="purple">
           {{ currentTag.name }}
         </cy-icon-text>
-        <span v-if="visible" class="ml-auto text-sm text-water-blue">
-          {{ t('skill-query.click anywhere to close') }}
-        </span>
+        <cy-button-icon
+          v-if="tags.length > 1"
+          icon="ic:round-arrow-forward"
+          class="ml-auto"
+          :disabled="currentTagIdx === tags.length - 1"
+          @click.stop="goNextTag"
+        />
       </div>
       <div class="px-2">
         <template v-for="frame in currentTag.frames" :key="frame.type + frame.value">
@@ -49,53 +50,76 @@
         </template>
       </div>
     </div>
-  </cy-detail-window>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import { computed, toRefs } from 'vue';
+import { computed, toRefs, ref, watch } from 'vue';
 
 import { markText } from '@/shared/utils/view';
 
 import Tag from '@/lib/Tag/Tag';
 
+import { createTagButtons } from './utils';
 
 interface Props {
   tags: Tag[];
-  visible: boolean;
-  positionElement: HTMLElement | null;
-}
-
-interface Emits {
-  (evt: 'update:visible', value: boolean): void;
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits<Emits>();
-
-const { t } = useI18n();
 
 const { tags } = toRefs(props);
 
+const currentTagIdx = ref(0);
 const currentTag = computed(() => {
   if (tags.value.length === 0) {
     return null;
   }
-  return tags.value[tags.value.length - 1];
+  return tags.value[currentTagIdx.value];
 });
+
+watch(tags, (value) => {
+  currentTagIdx.value = value.length - 1;
+}, { deep: true });
 
 const handleText = (html: string) => {
   html = markText(html);
   html = html.replace(/\(\(((?:(?!\(\().)+)\)\)/g, (match, p1) => `<span class="bracket-text">${p1}</span>`);
+  html = createTagButtons(html);
   return html;
+};
+
+const goPreviousTag = () => {
+  currentTagIdx.value -= 1;
+};
+const goNextTag = () => {
+  currentTagIdx.value += 1;
 };
 </script>
 
 <style lang="postcss" scoped>
-.skill-tag-modal-content {
+.skill-tag-content-wrapper {
+  @apply bg-white bg-opacity-95 border border-b-0 border-light-2 shadow-sm mx-2;
+
+  max-width: 30rem;
+  min-width: 12.5rem;
+  /* max-height: calc(47vh - 3rem); */
+
+  & > .skill-tag-content {
+    @apply border-b border-light-2 p-4 pb-0;
+
+    &::after {
+      content: '';
+      @apply block sticky h-4 bottom-0 bg-white bg-opacity-60;
+      border-radius: 20% 20% 0 0;
+    }
+  }
   &:deep(.bracket-text) {
     @apply border-l-1 border-r-1 border-current mx-2 px-2 text-light-4;
+  }
+
+  &:deep(.click-button--tag) {
+    @apply text-orange cursor-pointer inline-block px-0.5;
   }
 }
 </style>

@@ -13,7 +13,7 @@
         v-html="container.get('constant')"
       />
       <cy-icon-text
-        v-if="container.get('constant') && container.get('@extra-value-list').length !== 0"
+        v-if="container.get('constant') && extraValueList.length !== 0"
         icon="ic-round-add"
       />
 

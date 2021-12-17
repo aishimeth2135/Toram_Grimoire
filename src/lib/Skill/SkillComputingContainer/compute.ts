@@ -4,7 +4,7 @@ import Grimoire from '@/shared/Grimoire';
 
 import { StatComputed } from '@/lib/Character/Stat';
 
-import { SkillBranchItem, SkillBranchItemBase } from '.';
+import { SkillBranchItem, SkillBranchItemBase, SkillBranchItemSuffix } from '.';
 import { ResultContainerBase, ResultContainer, ResultContainerStat, TextResultContainer } from './ResultContainer';
 import type { TextResultContainerParseResult } from './ResultContainer';
 import { FormulaDisplayModes } from './enums';
@@ -23,7 +23,6 @@ function computeBranchValue(str: string, helper: ComputedBranchHelperResult): st
     .replace(/stack(?!\[)/g, 'stack[0]');
 
   str = handleFormulaExtra(str);
-
   return handleFormula(str, { vars, texts }) as string;
 }
 
@@ -74,22 +73,24 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
 
   formulaDisplayMode = formulaDisplayMode ?? branchItem.parent.parent.parent.config.formulaDisplayMode;
 
+  const branchItemStack = branchItem instanceof SkillBranchItemSuffix ? branchItem.mainBranch : branchItem;
+  const stackIds = branchItemStack.hasAttr('stack_id') ?
+    branchItemStack.attr('stack_id').split(/\s*,\s*/).map(id => parseInt(id, 10)) : [];
+
   if (formulaDisplayMode === 'original-formula') {
     const stack: string[] = [];
     const { t } = Grimoire.i18n;
 
-    if (branchItem.attr('stack_id')) {
+    if (branchItemStack.attr('stack_id')) {
       const stackStates = branchItem.parent.stackStates;
-      const stackNames = branchItem.attr('stack_id').split(/\s*,\s*/)
-        .map(id => parseInt(id, 10))
-        .map((id, idx) => {
-          const item = stackStates.find(state => state.stackId === id);
-          let name = item ? item.branch.attr('name') : 'auto';
-          if (name === 'auto') {
-            name = `${t('skill-query.branch.stack.base-name')}${idx + 1}`;
-          }
-          return name;
-        });
+      const stackNames = stackIds.map((id, idx) => {
+        const item = stackStates.find(state => state.stackId === id);
+        let name = item ? item.branch.attr('name') : 'auto';
+        if (name === 'auto') {
+          name = `${t('skill-query.branch.stack.base-name')}${idx + 1}`;
+        }
+        return name;
+      });
       stack.push(...stackNames);
     }
 
@@ -117,14 +118,12 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
   } else {
     const stack: number[] = [];
 
-    if (branchItem.attr('stack_id')) {
+    if (branchItemStack.attr('stack_id')) {
       const stackStates = branchItem.parent.stackStates;
-      const stackValues = branchItem.attr('stack_id').split(/\s*,\s*/)
-        .map(id => parseInt(id, 10))
-        .map(id => {
-          const item = stackStates.find(state => state.stackId === id);
-          return item ? item.value : 0;
-        });
+      const stackValues = stackIds.map(id => {
+        const item = stackStates.find(state => state.stackId === id);
+        return item ? item.value : 0;
+      });
       stack.push(...stackValues);
     }
 

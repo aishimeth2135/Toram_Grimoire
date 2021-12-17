@@ -64,6 +64,8 @@ branch:
     "in_combo: title": 連擊
     "action_time: title": 動作時間
     "casting_time: title": 詠唱時間
+    mp_cost:
+      0: 無消耗
     skill_type:
       instant: 瞬發
       casting: 須詠唱
