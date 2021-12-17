@@ -1,6 +1,6 @@
 <template>
   <div class="cy-button--drop-down py-2 px-3 m-1 bg-white">
-    <div
+    <button
       class="content-title button--main-content flex items-center justify-start"
       @click="titleClick"
     >
@@ -18,7 +18,7 @@
       >
         <slot name="content-right" />
       </span>
-    </div>
+    </button>
     <div v-show="menuVisible" class="menu">
       <slot name="menu" />
     </div>
@@ -26,10 +26,10 @@
 </template>
 
 <script>
-import BaseButton from './base';
+import ButtonBase from './base';
 
 export default {
-  mixins: [BaseButton],
+  mixins: [ButtonBase],
   props: {
     menuDefaultVisible: {
       type: Boolean,

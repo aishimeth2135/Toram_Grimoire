@@ -1,5 +1,5 @@
 <template>
-  <span
+  <button
     ref="rootElement"
     class="cy-button--icon button--main-content inline-flex p-1 mx-1 relative"
     :class="baseClass"
@@ -12,20 +12,21 @@
     >
       <slot name="caption" />
     </sub-caption>
-  </span>
+  </button>
 </template>
 
 <script>
 import { ref } from 'vue';
 
 import vue_subCaption from '../components/sub-caption.vue';
-import BaseButton from './base';
+
+import ButtonBase from './base';
 
 export default {
   components: {
     'sub-caption': vue_subCaption,
   },
-  mixins: [BaseButton],
+  mixins: [ButtonBase],
   setup() {
     const rootElement = ref(null);
     return {

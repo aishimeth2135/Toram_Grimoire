@@ -17,7 +17,7 @@ function handleSkillState(skill, { vars }) {
   const states = [];
 
   const createState = sef => {
-    const branchs = defSef.branchs.map((branch, i) => ({
+    const branches = defSef.branches.map((branch, i) => ({
       iid: i,
       id: branch.id,
       name: branch.name,
@@ -45,7 +45,7 @@ function handleSkillState(skill, { vars }) {
     };
 
     const state = {
-      branchs,
+      branches,
       attrs: Object.assign({}, defSef.attributes),
       equipment,
       historyList: [],
@@ -121,9 +121,9 @@ function handleSkillState(skill, { vars }) {
         }
       });
 
-      overwriteSef.branchs.forEach(branch => {
-        const idx = state.branchs.findIndex(b => b.id != '-' && b.id == branch.id);
-        const p = idx !== -1 ? state.branchs[idx] : null;
+      overwriteSef.branches.forEach(branch => {
+        const idx = state.branches.findIndex(b => b.id != '-' && b.id == branch.id);
+        const p = idx !== -1 ? state.branches[idx] : null;
         // ==== p: original branch ====
 
         if (!p)
@@ -131,7 +131,7 @@ function handleSkillState(skill, { vars }) {
 
         // 如果 branch.id 一樣但 branch.name 為空值且isEmpty。去除此 branch。
         if (branch.name === '' && branchEmpty(branch)) {
-          state.branchs.splice(idx, 1);
+          state.branches.splice(idx, 1);
           return;
         }
 
@@ -146,19 +146,19 @@ function handleSkillState(skill, { vars }) {
       });
     }
 
-    state.branchs = state.branchs
+    state.branches = state.branches
       .filter(p => !(CY.object.isEmpty(p.attrs) && p.stats.length === 0));
-    state.branchs.forEach(p => p['@parent-state'] = state);
+    state.branches.forEach(p => p['@parent-state'] = state);
 
     // init of state attrs
     convertStateAttrs(state);
 
     // init of branch values
-    setBranchAttributeDefault(state.branchs);
+    setBranchAttributeDefault(state.branches);
 
     // create list of history.date
     state.historyList = [...new Set(
-      state.branchs
+      state.branches
         .filter(p => p.name === 'history')
         .map(p => p.attrs['date'])
         .filter(p => /\d{4}\/\d{2}\/\d{2}/.test(p)),
@@ -188,7 +188,7 @@ function handleSkillState(skill, { vars }) {
     };
 
     // 建立@parent-branch指標
-    state.branchs.forEach(b => b.attrs['@parent-branch'] = b);
+    state.branches.forEach(b => b.attrs['@parent-branch'] = b);
 
     /**
      * [重置branchs]
@@ -202,7 +202,7 @@ function handleSkillState(skill, { vars }) {
     const isMainBranch = _bch => mainBranchNameList.includes(_bch.name);
     const resBranchs = [];
     let space_flag = false;
-    state.branchs.forEach(bch => {
+    state.branches.forEach(bch => {
       if (bch.name == 'space') {
         space_flag = true;
         return;
@@ -225,7 +225,7 @@ function handleSkillState(skill, { vars }) {
 
     const vitualBranchList = ['history'];
 
-    state.branchs = resBranchs.filter(bch => {
+    state.branches = resBranchs.filter(bch => {
       // handle group
       bch.suffix = bch.suffix.filter(p => {
         if (p.name == 'group') {
@@ -255,10 +255,10 @@ function handleSkillState(skill, { vars }) {
       return true;
     });
 
-    // console.log('state.branchs: ', state.branchs);
+    // console.log('state.branches: ', state.branches);
 
     // store stacks value
-    const stackStates = state.branchs.filter(b => b.name === 'stack')
+    const stackStates = state.branches.filter(b => b.name === 'stack')
       .map(b => ({
         id: b.attrs['id'],
         branch: b,
@@ -273,7 +273,7 @@ function handleSkillState(skill, { vars }) {
     state.stackStates = stackStates;
 
     // handle history
-    state.branchs.forEach(bch => {
+    state.branches.forEach(bch => {
       bch.history.sort((a, b) => new Date(b.date) >= new Date(a.date) ? 1 : -1);
       bch.history.forEach(a => {
         a.branch.name = bch.name;
@@ -311,7 +311,7 @@ function handleSkillState(skill, { vars }) {
   };
 }
 
-function setBranchAttributeDefault(branchs) {
+function setBranchAttributeDefault(branches) {
   const _sd = (target, def) => {
     const list = [];
     Object.keys(def).forEach(k => {
@@ -391,7 +391,7 @@ function setBranchAttributeDefault(branchs) {
     },
   };
 
-  branchs.forEach(branch => {
+  branches.forEach(branch => {
     const p = def_list[branch.name];
     branch['@is-default-list'] = p ? _sd(branch.attrs, p) : [];
   });

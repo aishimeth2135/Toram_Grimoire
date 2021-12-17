@@ -1,5 +1,13 @@
 import CY from '@/shared/utils/Cyteria';
 
+const LOCALE_LIST = ['en', 'zh-TW', 'ja', 'zh-CN'];
+const LOCALE_NAMESPACE_LIST = [
+  'app',
+  'common',
+  'global',
+  'skill-query',
+];
+
 const store = {
   namespaced: true,
   state: {
@@ -7,6 +15,7 @@ const store = {
     langOrder: ['en', 'zh_tw', 'ja', 'zh_cn'],
     primaryLangId: 0,
     secondaryLangId: 0,
+    i18n: null,
   },
   getters: {
     primaryLang(state) {
@@ -14,6 +23,12 @@ const store = {
     },
     secondaryLang(state) {
       return state.secondaryLangId;
+    },
+    primaryLocale(state) {
+      return LOCALE_LIST[state.primaryLangId];
+    },
+    secondaryLocale(state) {
+      return LOCALE_LIST[state.secondaryLangId];
     },
     get: state => (id, values) => {
       let data = (() => {
@@ -76,6 +91,9 @@ const store = {
     resetData(state) {
       state.langData = {};
     },
+    setI18nInstance(state, i18n) {
+      state.i18n = i18n;
+    },
   },
   actions: {
     init({ dispatch, commit, getters }, initData) {
@@ -108,6 +126,45 @@ const store = {
         'zh-cn': 3,
       };
       commit('setPrimaryLang', list[lang] || 0);
+    },
+    initLocale({ dispatch, commit }) {
+      if (CY.storageAvailable('localStorage')) {
+        // default
+        if (!localStorage['app--language'])
+          localStorage['app--language'] = 'auto';
+        if (!localStorage['app--second-language'])
+          localStorage['app--second-language'] = '0';
+
+        const curLangSet = localStorage['app--language'];
+        curLangSet === 'auto' ?
+          dispatch('autoSetLang') :
+          commit('setPrimaryLang', parseInt(curLangSet, 10));
+
+        commit('setSecondaryLang', parseInt(localStorage['app--second-language'], 10));
+      } else {
+        dispatch('autoSetLang');
+      }
+    },
+    async updateLocalMessages({ state, getters }) {
+      const primaryLocale = getters.primaryLocale;
+      const fallbackLocale = getters.secondaryLocale;
+      const loadData = async (locale) => {
+        const data = {};
+        const promises = LOCALE_NAMESPACE_LIST.map(async (filePath) => {
+          const module = await import(
+            /* webpackInclude: /\.yaml$/ */
+            /* webpackChunkName: "i18n-messages-[request]" */
+            `@/locales/${locale}/${filePath}.yaml`
+          );
+          data[filePath] = module.default;
+        });
+        await Promise.all(promises);
+        return data;
+      };
+      const messages = await loadData(primaryLocale);
+      const fallbackMessages = await loadData(fallbackLocale);
+      state.i18n.setLocaleMessage(primaryLocale, messages);
+      state.i18n.setLocaleMessage(fallbackLocale, fallbackMessages);
     },
   },
 };

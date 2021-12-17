@@ -1,19 +1,28 @@
-import type { GetLangHandler } from '@/shared/services/Language';
+import Grimoire from '@/shared/Grimoire';
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
+import { SkillBranchItemSuffix } from '@/lib/Skill/SkillComputingContainer';
 import type { HandleBranchTextAttrsMap, HandleBranchValueAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute';
 
 import { cloneBranchAttrs, handleDisplayData } from './utils';
 import MapContainer from './utils/MapContainer';
 import type { HandleDisplayDataOptionFilters } from './utils';
+import DisplayDataContainer from './utils/DisplayDataContainer';
 
-export default function ExtraHandler(branchItem: SkillBranchItem, { lang }: {
-  lang: GetLangHandler;
-  rootLang: GetLangHandler;
-}) {
+export default function ExtraHandler(branchItem: SkillBranchItemSuffix) {
+  const { t } = Grimoire.i18n;
+
+  const attrs = cloneBranchAttrs(branchItem, {
+    condition: t('skill-query.branch.global-suffix.extra.condition-default-value'),
+  });
+
   const mainBranch = branchItem.mainBranch;
   if (!mainBranch) {
-    return {} as Record<string, string>;
+    return new DisplayDataContainer({
+      branchItem,
+      containers: {},
+      statContainers: [],
+      value: {},
+    });
   }
   const filters = new MapContainer<HandleDisplayDataOptionFilters>();
   const valueAttrsMap = new MapContainer<HandleBranchValueAttrsMap>();
@@ -21,27 +30,18 @@ export default function ExtraHandler(branchItem: SkillBranchItem, { lang }: {
 
   if (mainBranch.name === 'damage') {
     valueAttrsMap.set('ailment_chance', '%');
-    filters.set('condition', {
-      validation: value => !!value,
-      defaultValue: lang('global suffix: extra/condition default'),
-    });
+    filters.set('caption', value => !!value);
     textAttrsMap.append('caption');
     textAttrsMap.append('condition');
-  } else if (['effect', 'next', 'passive'].includes(branchItem.name)) {
-    filters.set('condition', {
-      validation: value => !!value,
-      defaultValue: lang('global suffix: extra/condition default'),
-    });
+  } else if (['effect', 'next', 'passive'].includes(mainBranch.name)) {
+    filters.set('caption', value => !!value);
     textAttrsMap.append('caption');
     textAttrsMap.append('condition');
   }
-
-  const attrs = cloneBranchAttrs(branchItem);
 
   return handleDisplayData(branchItem, attrs, {
     values: valueAttrsMap.value,
     texts: textAttrsMap.value,
     filters: filters.value,
-    langHandler: lang,
   });
 }

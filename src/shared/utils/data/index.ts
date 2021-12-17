@@ -4,6 +4,30 @@ import { isNumberString } from '@/shared/utils/string';
 
 import { getVarsMap, getGettersMap, varMapToArray, handleReplacedKey, jsepTypes } from './utils';
 
+function trimBrackets(value: string) {
+  if (value[0] === '(') {
+    let stackCount = 0;
+    let trimNum = 0;
+    value.split('').some((char, idx, ary) => {
+      if (char === '(') {
+        stackCount += 1;
+      } else if (char === ')') {
+        if (stackCount === ary.length - idx) {
+          trimNum = ary.length - idx;
+          return;
+        }
+        stackCount -= 1;
+      }
+      if (idx > 0 && stackCount === 0) {
+        return true;
+      }
+      return false;
+    });
+    return value.slice(trimNum, value.length - trimNum);
+  }
+  return value;
+}
+
 type PureValue = string | number | boolean;
 type CommonValue = PureValue | boolean[] | string[] | number[];
 type CommonFunction = (...args: any[]) => PureValue;
@@ -48,8 +72,9 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
       if (typeof right === 'string' && isNumberString(right))
         right = parseFloat(right);
       const operator = node.operator;
-      if (unknowSnippet(left) || unknowSnippet(right))
-        return `${left}${operator}${right}`;
+      if (unknowSnippet(left) || unknowSnippet(right)) {
+        return operator === '+' || operator === '-' ? `(${left}${operator}${right})` : `${left}${operator}${right}`;
+      }
       if (operator === '+' || operator === '-' || operator === '*' || operator === '/') {
         if (typeof left === 'boolean')
           left = left ? 1 : 0;
@@ -90,7 +115,8 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
           cur = cur.object;
         }
         chain.push(cur.name);
-        return `${chain.reverse().join('.')}(${args.join(', ')})`;
+        const argStrings = (args as PureValue[]).map(arg => trimBrackets(arg.toString()));
+        return `${chain.reverse().join('.')}(${argStrings.join(', ')})`;
       }
       const callee = handle(node.callee) as Function;
       return callee(...args);
@@ -115,7 +141,7 @@ type HandleFormulaVars = {
   [key: string]: CommonValue | HandleFormulaVars;
 };
 type HandleFormulaTexts = {
-  [key: string]: string | HandleFormulaTexts;
+  [key: string]: string | string[] | HandleFormulaTexts;
 };
 type HandleFormulaMethods = {
   [key: string]: CommonFunction | HandleFormulaMethods;
@@ -203,6 +229,10 @@ function handleFormula(formulaStr: string, {
     }
   }
 
+  /**
+   * extra handling
+   * ex: convert "角色STR*6/2" to "角色STR*3"
+   */
   formulaStr = formulaStr
     .replace(/^(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g, (match, left, operator, right) => {
       left = parseFloat(left);
@@ -236,7 +266,7 @@ function handleFormula(formulaStr: string, {
     return !!formulaStr;
   }
 
-  return formulaStr;
+  return trimBrackets(formulaStr);
 }
 
 // console.log(handleFormula('test.a.c(123)', {

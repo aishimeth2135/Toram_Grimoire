@@ -1,7 +1,7 @@
 <template>
   <span
     ref="rootElement"
-    class="cy--icon-text inline-flex"
+    class="cy--icon-text"
     :class="rootClass"
     :style="rootStyle"
   >
@@ -54,6 +54,10 @@ export default {
         return ['start', 'center'].includes(v);
       },
     },
+    displayBlock: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup() {
     const rootElement = ref(null);
@@ -80,6 +84,8 @@ export default {
         'is-item': this.type === 'item',
         ['size-' + this.size]: true,
         [alignVMapping[this.alignV]]: true,
+        'flex': this.displayBlock,
+        'inline-flex': !this.displayBlock,
       };
     },
   },

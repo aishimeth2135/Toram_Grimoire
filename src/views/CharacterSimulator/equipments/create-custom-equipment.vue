@@ -55,7 +55,7 @@
                 :selected="currentEquipment && currentEquipment.type === item"
                 @click="selectEquipmentType(category, item)"
               >
-                <cy-icon-text :icon="getImagePath(category.id, item)" icon-src="image">
+                <cy-icon-text :icon="getImagePath(item)" icon-src="image">
                   {{ $rootLang('common/Equipment/category/' + item) }}
                 </cy-icon-text>
               </cy-list-item>
@@ -105,32 +105,32 @@ export default {
     return {
       equipmentTypeCategorys: [{
         id: EquipmentCategorys.MainWeapon,
-        icon: CharacterEquipment.getImagePath(EquipmentCategorys.MainWeapon, EquipmentTypes.OneHandSword),
+        icon: CharacterEquipment.getImagePath(EquipmentTypes.OneHandSword),
         instance: MainWeapon,
         list: MainWeaponTypeList,
       }, {
         id: EquipmentCategorys.SubWeapon,
-        icon: CharacterEquipment.getImagePath(EquipmentCategorys.SubWeapon, EquipmentTypes.Arrow),
+        icon: CharacterEquipment.getImagePath(EquipmentTypes.Arrow),
         instance: SubWeapon,
         list: SubWeaponTypeList,
       }, {
         id: EquipmentCategorys.SubArmor,
-        icon: CharacterEquipment.getImagePath(EquipmentCategorys.SubArmor, EquipmentTypes.Shield),
+        icon: CharacterEquipment.getImagePath(EquipmentTypes.Shield),
         instance: SubArmor,
         list: SubArmorTypeList,
       }, {
         id: EquipmentCategorys.BodyArmor,
-        icon: CharacterEquipment.getImagePath(EquipmentCategorys.BodyArmor, EquipmentTypes.BodyNormal),
+        icon: CharacterEquipment.getImagePath(EquipmentTypes.BodyNormal),
         instance: BodyArmor,
         list: null,
       }, {
         id: EquipmentCategorys.Additional,
-        icon: CharacterEquipment.getImagePath(EquipmentCategorys.Additional, EquipmentTypes.Additional),
+        icon: CharacterEquipment.getImagePath(EquipmentTypes.Additional),
         instance: AdditionalGear,
         list: null,
       }, {
         id: EquipmentCategorys.Special,
-        icon: CharacterEquipment.getImagePath(EquipmentCategorys.Special, EquipmentTypes.Special),
+        icon: CharacterEquipment.getImagePath(EquipmentTypes.Special),
         instance: SpecialGear,
         list: null,
       }, {

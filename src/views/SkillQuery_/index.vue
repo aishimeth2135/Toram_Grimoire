@@ -1,19 +1,22 @@
 <template>
-  <section>
-    <cy-top-header class="cursor-pointer" @click="toggle('contents/mainMenu')">
-      <cy-icon-text icon="ant-design:build-outlined">
+  <section class="flex flex-col">
+    <cy-top-header class="cursor-pointer" @click="toggle('contents/search')">
+      <cy-icon-text v-if="currentSkill" icon="bx:bxs-book-bookmark">
+        {{ currentSkill.name }}
       </cy-icon-text>
+      <div v-else class="text-light-2">{{ t('skill-query.search-tips') }}</div>
       <cy-button-icon
         class="ml-auto"
-        :icon="contents.mainMenu ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
-        :selected="contents.mainMenu"
+        icon="bx:bx-search"
       />
     </cy-top-header>
-    <cy-top-header-menu :visible="contents.mainMenu">
-      <div class="p-1">
+    <div>
+      <div ref="skillTreeCategoryMenuElement" class="p-1">
         <cy-button-border
           v-for="stc in skillRoot.skillTreeCategorys"
           :key="stc.id"
+          icon="uil:books"
+          :selected="currentSkillTreeCategory?.id === stc.id"
           @click="selectCurrentSkillTreeCategory(stc)"
         >
           {{ stc.name }}
@@ -24,6 +27,8 @@
         <cy-button-border
           v-for="st in currentSkillTreeCategory.skillTrees"
           :key="st.id"
+          icon="bx:bxs-book-bookmark"
+          :selected="currentSkillTree?.id === st.id"
           @click="selectCurrentSkillTree(st)"
         >
           {{ st.name }}
@@ -37,41 +42,128 @@
           @skill-click="selectCurrentSkill"
         />
       </div>
-    </cy-top-header-menu>
+    </div>
+    <div
+      v-if="currentSkill"
+      ref="skillEffectElement"
+      class="pt-10"
+      style="min-height: 50vh;"
+    >
+      <div v-if="contents.skillEffect" class="border-t-1 border-orange pt-4">
+        <SkillEffect
+          :skill-effect-item="currentSkillEffectItem"
+          @set-current-skill="selectCurrentSkill"
+        />
+      </div>
+    </div>
+    <div
+      v-if="currentSkillTree"
+      class="flex items-end ml-auto sticky z-10 px-2 bottom-14 mt-4"
+    >
+      <cy-button-circle icon="icon-park-outline:to-top-one" main-color="purple" @click="goToSkillTop" />
+    </div>
+    <SkillQueryMenu
+      v-if="currentSkillTree"
+      v-model:selected-equipment="currentEquipment"
+      :skill-computing-container="computingContainer"
+      :skill-tree="currentSkillTree"
+    />
+    <SkillQuerySearch
+      v-if="contents.search"
+      @close="toggle('contents/search', false)"
+      @submit="selectCurrentSkillFromSearch"
+    />
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, nextTick } from 'vue';
 import type { Ref, ComputedRef } from 'vue';
 import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
 
 import { SkillRoot, SkillTree, SkillTreeCategory, Skill } from '@/lib/Skill/Skill';
+import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer';
 
 import ToggleService from '@/setup/ToggleService';
 
 import SkillTreeDiagram from './skill-tree-diagram.vue';
+import SkillEffect from './skill-effect.vue';
+import SkillQueryMenu from './skill-query-menu/index.vue';
+import SkillQuerySearch from './skill-query-search.vue';
+
+import { setupComputingContainer } from './setup';
 
 const store = useStore();
+
+const { toggle, contents } = ToggleService({
+  contents: ['skillEffect', 'search'] as const,
+});
+
+const { t } = useI18n();
+
+const skillEffectElement: Ref<HTMLElement | null> = ref(null);
+const jumpToSkillEffect = async () => {
+  await nextTick();
+  if (skillEffectElement.value) {
+    skillEffectElement.value.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+const skillTreeCategoryMenuElement: Ref<HTMLElement | null> = ref(null);
+const goToSkillTop = async () => {
+  await nextTick();
+  if (skillTreeCategoryMenuElement.value) {
+    skillTreeCategoryMenuElement.value.scrollIntoView({ behavior: 'auto' });
+  }
+};
 
 const skillRoot: ComputedRef<SkillRoot> = computed(() => store.state.datas.Skill.skillRoot);
 
 const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null);
+const currentSkillTree: Ref<SkillTree | null> = ref(null);
+const currentSkill: Ref<Skill | null> = ref(null);
+
 const selectCurrentSkillTreeCategory = (stc: SkillTreeCategory) => {
   currentSkillTreeCategory.value = stc;
+  currentSkillTree.value = null;
+  currentSkill.value = null;
 };
 
-const currentSkillTree: Ref<SkillTree | null> = ref(null);
 const selectCurrentSkillTree = (st: SkillTree) => {
   currentSkillTree.value = st;
+  currentSkill.value = null;
 };
 
-const currentSkill: Ref<Skill | null> = ref(null);
 const selectCurrentSkill = (skill: Skill) => {
   currentSkill.value = skill;
+  toggle('contents/skillEffect', true);
+  jumpToSkillEffect();
 };
 
-const { toggle, contents } = ToggleService({
-  contents: ['mainMenu'] as const,
+const selectCurrentSkillFromSearch = (skill: Skill) => {
+  currentSkillTreeCategory.value = skill.parent.parent;
+  currentSkillTree.value = skill.parent;
+  currentSkill.value = skill;
+  toggle('contents/search');
+  toggle('contents/skillEffect', true);
+  jumpToSkillEffect();
+};
+
+const currentEquipment: Ref<EquipmentRestriction> = ref({
+  main: null,
+  sub: null,
+  body: null,
+});
+
+const {
+  computingContainer,
+  currentSkillItem,
+} = setupComputingContainer(currentSkill);
+
+const currentSkillEffectItem = computed(() => {
+  if (!currentSkillItem.value) {
+    return null;
+  }
+  return currentSkillItem.value.findEffectItem(currentEquipment.value) || null;
 });
 </script>

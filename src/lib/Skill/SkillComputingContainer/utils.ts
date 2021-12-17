@@ -2,48 +2,76 @@ import { handleFormula } from '@/shared/utils/data';
 
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums';
 
-import { SkillBranch, SkillEffect } from '../Skill';
+import { SkillBranch, SkillEffect, SkillEffectAttrs } from '../Skill';
 import { SkillBranchItem, SkillEffectItem } from './index';
-import type { EquipmentRestriction, BranchHistoryItem, BranchGroupState, BranchStackState } from './index';
-import { branchAttrsDefaultValue } from './consts';
+import type { SkillEffectItemBase, EquipmentRestriction, BranchGroupState, BranchStackState } from './index';
+import { BRANCH_ATTRS_DEFAULT_VALUE, EQUIPMENT_TYPE_MAIN_ORDER, EQUIPMENT_TYPE_SUB_ORDER, EQUIPMENT_TYPE_BODY_ORDER } from './consts';
+import { SkillBranchNames } from '../Skill/enums';
 
 function effectOverwrite(to: SkillEffectItem, from: SkillEffect) {
-  const toBranches = to.branchItems;
+  branchesOverwrite(to.branchItems, from.branches, fromBranch => fromBranch.name === '' && fromBranch.isEmpty);
+}
 
+function effectAttrsToBranch(effectItem: SkillEffectItem, origin: SkillEffect) {
+  if (effectItem.branchItems.find(branchItem => branchItem.name === SkillBranchNames.Basic)) {
+    return;
+  }
+  const CONVERT_LIST: Record<string, (value: string) => string> = {
+    'mp_cost': value => value,
+    'range': value => value === '-' ? 'no_limit' : value,
+    'skill_type': value => ['instant', 'casting', 'charging', 'passive', 'extra'][parseInt(value, 10)],
+    'in_combo': value => ['1', '0', 'not_lead'][parseInt(value, 10)],
+    'action_time': value => ['very_slow', 'slow', 'little_slow', 'normal', 'little_fast', 'fast', 'very_fast'][parseInt(value, 10)],
+    'casting_time': value => value,
+  };
+  const branch = new SkillBranch(origin, 139, SkillBranchNames.Basic);
+  (Object.entries(origin.attributes) as ([keyof SkillEffectAttrs, string | number])[]).forEach(([key, value]) => {
+    if (value !== null) {
+      const attrKey = key.replace(/[A-Z]/g, char => '_' + char.toLowerCase());
+      const handle = CONVERT_LIST[attrKey];
+      const res = handle ? handle(value.toString()) : value.toString();
+      branch.appendBranchAttribute(attrKey, res);
+    }
+  });
+  effectItem.branchItems.unshift(new SkillBranchItem(effectItem, branch));
+}
+
+function branchesOverwrite<Branch extends SkillBranch | SkillBranchItem>(to: SkillBranchItem[], from: Branch[], isEmpty: (branch: Branch) => boolean) {
   /**
    * If some fromBranch.name === '' && fromBranch.isEmpty`.
    * Remove branch which id` is same as fromBranch in toBranches.`
    */
-  from.branchs.forEach(fromBranch => {
-    const idx = toBranches.findIndex(bch => bch.id !== -1 && bch.id === fromBranch.id);
+  from.forEach(fromBranch => {
+    if (fromBranch.id === -1) {
+      return;
+    }
+    const idx = to.findIndex(bch => bch.id === fromBranch.id);
     if (idx === -1) {
       return;
     }
-    if (fromBranch.name === '' && fromBranch.isEmpty && fromBranch.id !== -1) {
-      toBranches.splice(idx, 1);
+    if (isEmpty(fromBranch)) {
+      to.splice(idx, 1);
       return;
     }
 
-    const toBranch = toBranches[idx];
+    const toBranch = to[idx];
     branchOverwrite(toBranch, fromBranch);
   });
 }
 
-
-function branchOverwrite(to: SkillBranchItem, from: SkillBranch) {
+function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchItem) {
   // 如果 branch.id 一樣但 branch.name 不一樣，先清空所有屬性。
   // branch.name 為空值時，默認兩者同名。
-  if (from.name !== '' && to.name !== from.name) {
+  if (from.name !== SkillBranchNames.None && to.name !== from.name) {
     to.name = from.name;
-    to.attrs = {};
+    to.clearAttr();
   }
 
-  Object.keys(from.branchAttributes).forEach(key => {
-    const value = from.branchAttributes[key];
-    if (value === '' && to.attrs[key]) {
-      delete to.attrs[key];
+  Object.entries(from instanceof SkillBranch ? from.branchAttributes : from.allAttrs).forEach(([key, value]) => {
+    if (value === '' && to.attr(key)) {
+      to.removeAttr(key);
     } else {
-      to.attrs[key] = value;
+      to.setAttr(key, value);
     }
   });
 
@@ -62,57 +90,44 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch) {
   });
 }
 
+/**
+ * Convert equipment data of skill to array of EquipmentRestriction
+ * @param main - id of skill data of main weapon
+ * @param sub - id of skill data of sub weapon
+ * @param body - id of skill data of body armor
+ * @param operator - 1: and, 0: or
+ */
 function convertEffectEquipment(main: number, sub: number, body: number, operator: 0 | 1): EquipmentRestriction[] {
-  const mainList = [
-    EquipmentTypes.Empty,
-    EquipmentTypes.OneHandSword,
-    EquipmentTypes.TwoHandSword,
-    EquipmentTypes.Bow,
-    EquipmentTypes.Bowgun,
-    EquipmentTypes.Staff,
-    EquipmentTypes.MagicDevice,
-    EquipmentTypes.Knuckle,
-    EquipmentTypes.Halberd,
-    EquipmentTypes.Katana,
-  ] as const;
-
-  const subList = [
-    EquipmentTypes.Empty,
-    EquipmentTypes.Arrow,
-    EquipmentTypes.Shield,
-    EquipmentTypes.Dagger,
-    EquipmentTypes.MagicDevice,
-    EquipmentTypes.Knuckle,
-    EquipmentTypes.Katana,
-    EquipmentTypes.NinjutsuScroll,
-  ] as const;
-
-  const bodyList = [
-    EquipmentTypes.Empty,
-    EquipmentTypes.BodyDodge,
-    EquipmentTypes.BodyDefense,
-    EquipmentTypes.BodyNormal,
-  ] as const;
-
+  if (main === -1 && sub === -1 && body === -1) {
+    return [{
+      main: null,
+      sub: null,
+      body: null,
+    }];
+  }
   const results: Map<string, EquipmentRestriction> = new Map();
   const appendResult = (data: EquipmentRestriction) => {
-    const key = [data.main, data.sub, data.body].map(value => value === null ? '-' : value).join('|');
+    const list = [data.main, data.sub, data.body];
+    if (list.every(value => value === null)) {
+      return;
+    }
+    const key = list.map(value => value === null ? '-' : value).join('|');
     results.set(key, data);
   };
 
-  const mainData = main < 10 ? {
-    main: main === -1 ? null : mainList[main],
-    sub: null,
-    body: null,
-  } : {
+  const mainData = main === 10 ? {
     main: EquipmentTypes.OneHandSword,
     sub: EquipmentTypes.OneHandSword,
+    body: null,
+  } : {
+    main: main === -1 ? null : EQUIPMENT_TYPE_MAIN_ORDER[main],
+    sub: null,
     body: null,
   };
   const firstResult: EquipmentRestriction = mainData;
   appendResult(mainData);
 
-  const subItem = sub === -1 ? null : subList[sub];
+  const subItem = sub === -1 ? null : EQUIPMENT_TYPE_SUB_ORDER[sub];
   if (operator === 1) {
     firstResult.sub = subItem;
   } else {
@@ -123,7 +138,7 @@ function convertEffectEquipment(main: number, sub: number, body: number, operato
     });
   }
 
-  const bodyItem = body === -1 ? null : bodyList[body];
+  const bodyItem = body === -1 ? null : EQUIPMENT_TYPE_BODY_ORDER[body];
   if (operator === 1) {
     firstResult.body = bodyItem;
   } else {
@@ -137,39 +152,43 @@ function convertEffectEquipment(main: number, sub: number, body: number, operato
   return Array.from(results.values());
 }
 
-function separateSuffixBranches(effectItem: SkillEffectItem) {
+function separateSuffixBranches(effectItem: SkillEffectItemBase) {
+  type SuffixBranchListKey = SkillBranchNames | '@global';
   const suffixBranchList = {
-    'damage': ['extra', 'proration', 'base'],
-    'effect': ['extra'],
-    'next': ['extra'],
-    'passive': ['extra'],
-    'list': ['list'],
-    '@global': ['formula_extra', 'group', {
-      name: 'history',
-      validation: (bch: SkillBranchItem) => bch.attrs['target_branch'] === undefined,
-    }],
-  } as Record<string, (string | { name: string; validation: (bch: SkillBranchItem) => Boolean })[]>;
+    [SkillBranchNames.Damage]: [SkillBranchNames.Extra, SkillBranchNames.Proration, SkillBranchNames.Base],
+    [SkillBranchNames.Effect]: [SkillBranchNames.Extra],
+    [SkillBranchNames.Passive]: [SkillBranchNames.Extra],
+    [SkillBranchNames.List]: [SkillBranchNames.List],
+    '@global': [SkillBranchNames.FormulaExtra, SkillBranchNames.Group],
+  } as Record<SuffixBranchListKey, SkillBranchNames[]>;
 
   const searchSuffixList = (current: SkillBranchItem, bch: SkillBranchItem) => {
-    return [current.name, '@global'].find(name => {
+    return ([current.name, '@global'] as SuffixBranchListKey[]).find(name => {
       const suffixList = suffixBranchList[name];
-
-      return suffixList && suffixList.find(item => typeof item !== 'object' ?
-        item === bch.name :
-        item.name === bch.name && item.validation(bch));
+      return suffixList && suffixList.find(item => item === bch.name);
     });
   };
 
   const mainBranchNameList = [
-    'damage', 'effect', 'proration', 'next', 'list',
-    'passive', 'heal', 'text', 'tips', 'stack', 'reference', 'history', 'import',
+    SkillBranchNames.Damage,
+    SkillBranchNames.Effect,
+    SkillBranchNames.Proration,
+    SkillBranchNames.List,
+    SkillBranchNames.Passive,
+    SkillBranchNames.Heal,
+    SkillBranchNames.Text,
+    SkillBranchNames.Tips,
+    SkillBranchNames.Stack,
+    SkillBranchNames.Reference,
+    SkillBranchNames.Import,
+    SkillBranchNames.Basic,
   ];
   const isMainBranch = (_bch: SkillBranchItem) => mainBranchNameList.includes(_bch.name);
   const resBranches: SkillBranchItem[] = [];
   let spaceFlag = false;
 
   effectItem.branchItems.forEach(bch => {
-    if (bch.name === 'space') {
+    if (bch.name === SkillBranchNames.Space) {
       spaceFlag = true;
       return;
     }
@@ -181,35 +200,40 @@ function separateSuffixBranches(effectItem: SkillEffectItem) {
       return;
     }
     if (curBranch && !spaceFlag && searchSuffixList(curBranch, bch)) {
-      bch.mainBranch = curBranch;
-      curBranch.suffixBranches.push(bch);
+      curBranch.suffixBranches.push(bch.toSuffix(curBranch));
     } else if (isMainBranch(bch)) {
       resBranches.push(bch);
       spaceFlag = false;
     }
   });
+
+  effectItem.branchItems = resBranches;
 }
 
-function handleVirtualBranches(effectItem: SkillEffectItem) {
+function handleVirtualBranches(effectItem: SkillEffectItemBase) {
   effectItem.branchItems = effectItem.branchItems.filter(branchItem => {
-    if (branchItem.name === 'history') {
-      const historyItem: BranchHistoryItem = {
-        branch: branchItem,
-        date: branchItem.attrs['date'],
-        hidden: false,
-      };
-      const targetBranch = effectItem.branchItems.find(bch => bch.id === parseInt(branchItem.attrs['target_branch'], 10));
-      targetBranch?.historys.push(historyItem);
-      return false;
-    }
+    // if (branchItem.name === SkillBranchNames.History) {
+    //   const date = branchItem.attr('date');
+    //   const targetBranch = effectItem.branchItems.find(bch => bch.id === branchItem.attrNumber('target_branch'));
+    //   if (targetBranch) {
+    //     if (effectItem.historys.has(date)) {
+    //       effectItem.historys.get(date)!.push(branchItem);
+    //     } else {
+    //       effectItem.historys.set(date, [branchItem]);
+    //     }
+    //   }
+    //   return false;
+    // }
 
     // virtial suffixs
     branchItem.suffixBranches = branchItem.suffixBranches.filter(suffix => {
-      if (suffix.name === 'group') {
+      if (suffix.name === SkillBranchNames.Group) {
         const groupState: BranchGroupState = {
-          size: parseInt(suffix.attrs['size'], 10),
-          expandable: suffix.attrs['expandable'] === '1',
-          expansion: suffix.attrs['expansion_default'] === '1',
+          size: parseInt(suffix.attr('size'), 10),
+          expandable: suffix.attr('expandable') === '1',
+          expanded: suffix.attr('expansion_default') === '1',
+          parentExpanded: true,
+          isGroupEnd: false,
         };
         branchItem.groupState = groupState;
         return false;
@@ -221,62 +245,59 @@ function handleVirtualBranches(effectItem: SkillEffectItem) {
   });
 }
 
-function initStackStates(effectItem: SkillEffectItem, vars: { slv: number; clv: number }) {
-  const stackStates: BranchStackState[] = effectItem.branchItems.filter(branchItem => branchItem.name === 'stack').map(branchItem => {
-    return {
-      stackId: parseInt(branchItem.attrs['id'], 10),
-      branch: branchItem,
-      value: handleFormula(branchItem.attrs['default'] === 'auto' ? branchItem.attrs['min'] : branchItem.attrs['default'], {
-        vars: {
-          'SLv': vars.slv,
-          'CLv': vars.clv,
-        },
-        toNumber: true,
-      }) as number,
-    };
-  });
+function initStackStates(effectItem: SkillEffectItemBase) {
+  const vars = {
+    slv: effectItem.parent.parent.vars.skillLevel,
+    clv: effectItem.parent.parent.vars.characterLevel,
+  };
+  const stackStates: BranchStackState[] = effectItem.branchItems
+    .filter(branchItem => branchItem.name === SkillBranchNames.Stack)
+    .map(branchItem => {
+      return {
+        stackId: branchItem.stackId as number,
+        branch: branchItem,
+        value: handleFormula(branchItem.attr('default') === 'auto' ? branchItem.attr('min') : branchItem.attr('default'), {
+          vars: {
+            'SLv': vars.slv,
+            'CLv': vars.clv,
+          },
+          toNumber: true,
+        }) as number,
+      };
+    });
   effectItem.stackStates = stackStates;
 }
 
 function regressHistoryBranches(effectItem: SkillEffectItem) {
-  effectItem.branchItems.forEach(branchItem => {
-    const historys = branchItem.historys;
-    historys.sort((item1, item2) => new Date(item2.date) >= new Date(item1.date) ? 1 : -1);
-    historys.forEach(item => {
-      item.branch.name = branchItem.name;
-      item.branch.suffixBranches = branchItem.suffixBranches;
-    });
-    [branchItem, ...historys.map(item => item.branch)].forEach((his, idx, ary) => {
-      if (idx === ary.length - 1)
+  // 日期新的擺前面
+  effectItem.historys.sort((item1, item2) => new Date(item1.date) <= new Date(item2.date) ? 1 : -1);
+  effectItem.historys.forEach((history, idx, ary) => {
+    const nextEffect = idx === 0 ? effectItem : ary[idx - 1];
+    const toBranches = nextEffect.branchItems.map(bch => new SkillBranchItem(history, bch));
+    const fromBranches = history.branchItems;
+    fromBranches.forEach((historyBch) => {
+      if (historyBch.id === -1) {
+        history.removedBranches.push(historyBch);
+        toBranches.push(historyBch);
         return;
-      const target = ary[idx + 1],
-        from = his;
-
-      Object.keys(from.attrs).forEach(key => {
-        const value = target.attrs[key];
-        if (value === undefined)
-          target.attrs[key] = from.attrs[key];
-        else if (value === '')
-          delete target.attrs[key];
-      });
-
-      from.stats.forEach(stat => {
-        const statIdx = target.stats.findIndex(_stat => _stat.equals(stat));
-        if (statIdx === -1)
-          target.stats.push(stat.copy());
-        else if (target.stats[statIdx].value === '')
-          target.stats.splice(statIdx, 1);
-      });
+      }
+      const next = (nextEffect.branchItems as SkillBranchItem[]).find(bch => bch.id === historyBch.id);
+      const current = toBranches.find(bch => bch.id === historyBch.id);
+      if (current && next) {
+        history.nexts.set(current, next);
+      }
     });
+    branchesOverwrite(toBranches, fromBranches, fromBranch => fromBranch.name === '' && fromBranch.isEmpty);
+    history.branchItems = toBranches;
   });
 }
 
 function setBranchAttrsDefaultValue(effectItem: SkillEffectItem) {
   effectItem.branchItems.forEach(branchItem => {
-    const defaultValueList = branchAttrsDefaultValue[branchItem.name];
+    const defaultValueList = BRANCH_ATTRS_DEFAULT_VALUE[branchItem.name] || {};
     Object.entries(defaultValueList).forEach(([key, value]) => {
-      if (branchItem.attrs[key] === undefined) {
-        branchItem.attrs[key] = value;
+      if (!branchItem.hasAttr(key)) {
+        branchItem.setAttr(key, value);
       }
     });
   });
@@ -285,6 +306,7 @@ function setBranchAttrsDefaultValue(effectItem: SkillEffectItem) {
 export {
   convertEffectEquipment,
   effectOverwrite,
+  effectAttrsToBranch,
   separateSuffixBranches,
   handleVirtualBranches,
   initStackStates,

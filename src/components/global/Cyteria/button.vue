@@ -2,14 +2,17 @@
 import { h, mergeProps } from 'vue';
 
 import { ColorSetProps, getColorSetStyle } from './base/color-set.vue';
+
 import ButtonBorder from './button/border';
 import ButtonCheck from './button/check';
+import ButtonRadio from './button/radio';
 import ButtonDropDown from './button/drop-down';
 import ButtonIcon from './button/icon';
 import ButtonInline from './button/inline';
 import ButtonLine from './button/line';
 import ButtonSimple from './button/simple';
 import ButtonSwitch from './button/switch';
+import ButtonCircle from './button/circle';
 
 function CyButton(props, context) {
   const getComponent = () => {
@@ -26,16 +29,24 @@ function CyButton(props, context) {
       return ButtonInline;
     } else if (type === 'check') {
       return ButtonCheck;
+    } else if (type === 'radio') {
+      return ButtonRadio;
     } else if (type === 'switch') {
       return ButtonSwitch;
+    } else if (type === 'circle') {
+      return ButtonCircle;
     }
     return ButtonSimple;
   };
 
-  const attrs = mergeProps({
+  const resultProps = {
     class: ['cy--button-base'],
     style: getColorSetStyle(props),
-  }, context.attrs);
+  };
+  if (props.iconWidth !== null) {
+    resultProps.style['--icon-width'] = props.iconWidth;
+  }
+  const attrs = mergeProps(resultProps, context.attrs);
 
   return h(
     getComponent(),
@@ -50,9 +61,13 @@ CyButton.props = {
     default: 'simple',
     validator(v){
       return [
-        'simple', 'icon', 'line', 'border', 'drop-down', 'inline', 'check', 'switch',
+        'simple', 'icon', 'line', 'border', 'drop-down', 'inline', 'check', 'switch', 'radio', 'circle',
       ].includes(v);
     },
+  },
+  iconWidth: {
+    type: String,
+    default: null,
   },
   ...ColorSetProps,
 };
@@ -112,7 +127,7 @@ export default CyButton;
     }
   }
 
-  &:not(.disabled):active {
+  &:not(.disabled):focus {
     &::before {
       content: '';
       width: calc(100% + 0.5rem);

@@ -7,7 +7,7 @@ import { Equipment, Crystal } from '@/lib/Items/Item';
 
 import { StatRestriction } from '../Stat';
 import type { StatRestrictionSaveData } from '../Stat/StatRestriction';
-import { EquipmentTypes, EquipmentCategorys } from './enums';
+import { EquipmentTypes } from './enums';
 
 type EquipmentOrigin = Equipment | null;
 abstract class CharacterEquipment {
@@ -108,38 +108,18 @@ abstract class CharacterEquipment {
   }
 
   getCategoryImagePath(fieldId = -1): string {
-    let category = '';
-    if (this instanceof MainWeapon) {
-      category = EquipmentCategorys.MainWeapon;
-    } else if (this instanceof BodyArmor) {
-      category = EquipmentCategorys.BodyArmor;
-    } else if (this instanceof SubWeapon) {
-      category = EquipmentCategorys.SubWeapon;
-    } else if (this instanceof SubArmor) {
-      category = EquipmentCategorys.SubArmor;
-    } else if (this instanceof AdditionalGear) {
-      category = EquipmentCategorys.Additional;
-    } else if (this instanceof SpecialGear) {
-      category = EquipmentCategorys.Special;
-    } else if (this instanceof Avatar) {
-      category = EquipmentCategorys.Avatar;
+    if (this instanceof Avatar) {
       fieldId = 0;
     } else {
       return '#';
     }
-    return CharacterEquipment.getImagePath(category as EquipmentCategorys, this.type, fieldId);
+    return CharacterEquipment.getImagePath(this.type, fieldId);
   }
 
-  static getImagePath(category: EquipmentCategorys, type: EquipmentTypes, fieldId: number = -1): string {
+  static getImagePath(type: EquipmentTypes, fieldId: number = -1): string {
     const pre = '/imgs/character/equipment';
-    const categoryStr = (() => {
-      if (category === 'additional' || category === 'special' || category === 'avatar') {
-        return '';
-      }
-      return category + '/';
-    })();
     const fieldIdStr = fieldId !== -1 ? '/i' + fieldId.toString() : '';
-    return `${pre}/${categoryStr}${type}${fieldIdStr}.png`;
+    return `${pre}/${type}${fieldIdStr}.png`;
   }
 
   getAllStats(checkRestriction: (stat: StatRestriction) => boolean = () => true): StatRestriction[] {

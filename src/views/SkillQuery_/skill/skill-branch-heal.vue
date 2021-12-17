@@ -1,0 +1,54 @@
+<template>
+  <div>
+    <SkillBranchLayoutNormal
+      :container="container"
+      :sub-contents="subContents"
+    >
+      <skillHealFormula :container="container" />
+    </SkillBranchLayoutNormal>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { computed, toRefs } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import { ComponentPropsType } from '@/shared/utils/type';
+
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
+
+import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue';
+import skillHealFormula from './layouts/skill-heal-formula.vue';
+
+import HealHandler from './branch-handlers/HealHandler';
+
+interface Props {
+  branchItem: SkillBranchItem;
+}
+
+const { t } = useI18n();
+
+const props = defineProps<Props>();
+const { branchItem } = toRefs(props);
+
+const container = computed(() => HealHandler(branchItem.value));
+
+const subContents = computed(() => {
+  const result = [] as NonNullable<ComponentPropsType<typeof SkillBranchLayoutNormal>['subContents']>;
+  result.push({
+    key: 'frequency',
+    icon: 'bi-circle-square',
+  });
+  if (container.value.get('duration') && container.value.get('cycle')) {
+    result.push({
+      key: 'duration+cycle',
+      icon: 'ic-round-timer',
+      title: t('skill-query.branch.heal.duration-caption-with-cycle', {
+        duration: container.value.get('duration'),
+        cycle: container.value.get('cycle'),
+      }),
+    });
+  }
+  return result;
+});
+</script>

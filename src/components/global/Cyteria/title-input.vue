@@ -9,12 +9,14 @@
         <slot />
         <input
           v-if="!$slots.default"
+          ref="mainInput"
           type="text"
           :value="value"
           :placeholder="placeholder"
           @focus="toggleInputFocus(true)"
           @blur="toggleInputFocus(false)"
           @input="updateValue"
+          @keyup="$emit('keyup', $event)"
         >
       </div>
     </div>
@@ -35,7 +37,7 @@ export default {
       default: '',
     },
   },
-  emits: ['update:value'],
+  emits: ['update:value', 'keyup'],
   data() {
     return {
       inputFocus: false,
@@ -51,6 +53,9 @@ export default {
     },
     toggleInputFocus(set) {
       this.inputFocus = set;
+    },
+    focus() {
+      this.$refs.mainInput?.focus();
     },
   },
 };

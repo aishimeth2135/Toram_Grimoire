@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue';
-import type { Ref, ComputedRef } from 'vue';
+import type { Ref } from 'vue';
 import { useStore } from 'vuex';
 
 import { CalcItemContainer, Calculation } from '@/lib/Calculation/Damage/Calculation';
@@ -88,7 +88,7 @@ const setupCalculationStore = () => {
   };
 };
 
-const setupExpectedResults = (calculation: Ref<Calculation> | ComputedRef<Calculation>) => {
+const setupExpectedResults = (calculation: Ref<Calculation>) => {
   const expectedResultComputedBase = [calcStructCritical, calcStructWithoutCritical]
     .map(calcStruct => ({
       id: calcStruct.id,
@@ -138,7 +138,7 @@ const setupExpectedResults = (calculation: Ref<Calculation> | ComputedRef<Calcul
   };
 };
 
-const setupResultMode = (calculation: Ref<Calculation> | ComputedRef<Calculation>) => {
+const setupResultMode = (calculation: Ref<Calculation>) => {
   const {
     expectedResult,
     stabilityResult,
@@ -175,7 +175,7 @@ const setupResultMode = (calculation: Ref<Calculation> | ComputedRef<Calculation
   };
 };
 
-const setupCalculationCalcOptions = (calculation: Ref<Calculation> | ComputedRef<Calculation>) => {
+const setupCalculationCalcOptions = (calculation: Ref<Calculation>) => {
   const options = [{
     containerId: 'damage_type',
   }];

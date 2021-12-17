@@ -56,16 +56,16 @@ import { computed, toRefs } from '@vue/reactivity';
 
 import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer';
 
-interface Prop {
+interface Props {
   container: DisplayDataContainer;
 }
 
-const props = defineProps<Prop>();
+const props = defineProps<Props>();
 
 const { container } = toRefs(props);
 
 const frequencyVisible = computed(() => {
-  return container.value.branchItem.attrs['title'] === 'each';
+  return container.value.branchItem.attr('title') === 'each';
 });
 </script>
 

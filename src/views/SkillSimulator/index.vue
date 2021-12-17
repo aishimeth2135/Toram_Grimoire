@@ -303,8 +303,9 @@ import { computeDrawSkillTreeData, GetDrawSetting } from '@/lib/Skill/utils/Draw
 
 import vue_SaveLoadDataSystem from '@/components/SaveLoadDataSystem/main.vue';
 
-import init from './init.js';
 import vue_skillRoot from './skill-root.vue';
+
+import init from './init.js';
 import { getSkillElementId } from './utils';
 
 

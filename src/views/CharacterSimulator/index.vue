@@ -72,9 +72,10 @@ import vue_characterStats from './character-stats/main.vue';
 import vue_character from './character.vue';
 import vue_equipmentFields from './equipments/main.vue';
 import vue_foodBuild from './food/main.vue';
-import init from './init.js';
 import vue_saveLoad from './save-load.vue';
 import vue_skills from './skill/main.vue';
+
+import init from './init.js';
 import SkillBranchHandler from './skill/utils/SkillBranchHandler.js';
 
 export default {
@@ -521,7 +522,7 @@ export default {
           const branchFilter = skillItemType === 'passive' ?
             bch => bch.name === 'passive' :
             bch => bch.name === 'effect' && bch.attrs['effect_self'] !== '0';
-          const t = skillState.branchs
+          const t = skillState.branches
             .filter(branchFilter)
             .map(bch => {
               const handler = new SkillBranchHandler({
@@ -691,7 +692,7 @@ export default {
               skillItemType = 'passive';
             else {
               const find = state.skillState.states.find(a => {
-                return a.attrs['skill_type'] != 3 && a.branchs.find(bch => bch.stats.length != 0);
+                return a.attrs['skill_type'] != 3 && a.branches.find(bch => bch.stats.length != 0);
               });
               if (find)
                 skillItemType = 'active';

@@ -1,5 +1,5 @@
 <template>
-  <span
+  <button
     class="button--main-content inline-flex items-center py-0.5 px-2 m-1"
     :class="baseClass"
     @click="handleButtonClick"
@@ -14,14 +14,14 @@
     >
       <slot />
     </span>
-  </span>
+  </button>
 </template>
 
 <script>
-import BaseButton from './base';
+import ButtonBase from './base';
 
 export default {
-  mixins: [BaseButton],
+  mixins: [ButtonBase],
   props: {
     selectedIcon: {
       type: String,

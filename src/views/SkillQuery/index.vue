@@ -112,7 +112,7 @@
               </transition>
             </fieldset> -->
           </div>
-          <div class="skill-branchs">
+          <div class="skill-branches">
             <transition-group name="branch-fade" appear>
               <SkillBranch
                 v-for="(branch) in currentSkillBranchs"
@@ -348,8 +348,9 @@ import { mapState } from 'vuex';
 
 import vue_DrawSkillTree from '@/views/SkillSimulator/draw-skill-tree.vue';
 
-import init from './init.js';
 import vue_SkillBranch from './skill-branch/skill-branch.vue';
+
+import init from './init.js';
 import createSkillState from './utils/createSkillState.js';
 import handleSkillFormula from './utils/handleFormula.js';
 
@@ -563,7 +564,7 @@ export default {
       return state ? state.states.find(p => this.checkEquipment(p.equipment)) : null;
     },
     currentSkillBranchs() {
-      return this.currentSkillData ? this.currentSkillData.branchs.filter(p => p.visible) : [];
+      return this.currentSkillData ? this.currentSkillData.branches.filter(p => p.visible) : [];
     },
   },
   methods: {
@@ -919,7 +920,7 @@ export default {
   }
 }
 
-.skill-branchs {
+.skill-branches {
   padding: 1rem 0.5rem;
 }
 
