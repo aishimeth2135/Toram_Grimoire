@@ -145,6 +145,7 @@
     </div>
   </cy-modal>
 </template>
+
 <script>
 import { mapState } from 'vuex';
 
@@ -305,6 +306,7 @@ export default {
   },
 };
 </script>
+
 <style lang="postcss" scoped>
 .stat-scope {
   border-bottom-width: 1px;

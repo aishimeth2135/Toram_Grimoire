@@ -173,6 +173,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import { mapMutations } from 'vuex';
 
@@ -244,6 +245,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .step-stat + .step-stat {
   border-top: 1px solid var(--primary-light);

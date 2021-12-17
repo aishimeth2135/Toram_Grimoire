@@ -30,7 +30,7 @@ export default function ExtraHandler(branchItem: SkillBranchItem) {
   if (attrs['mp_cost'] !== '0') {
     valueAttrsMap.append('mp_cost');
   } else {
-    langAttrsMap.append('mp_cost');
+    langAttrsMap.set('mp_cost', { type: 'normal' });
   }
   if (attrs['range'] === 'main') {
     langAttrsMap.set('range', { afterHandle: value => createTagButtons(value) });

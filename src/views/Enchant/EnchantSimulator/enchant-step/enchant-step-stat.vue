@@ -47,6 +47,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import { mapMutations } from 'vuex';
 

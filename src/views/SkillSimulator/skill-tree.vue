@@ -10,6 +10,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import vue_drawSkillTree from './draw-skill-tree.vue';
 
@@ -34,6 +35,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .skill-tree {
   border-top: 1px solid var(--primary-light);

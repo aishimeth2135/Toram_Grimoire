@@ -364,6 +364,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .main--draw-skill-area {
   max-height: 20rem;

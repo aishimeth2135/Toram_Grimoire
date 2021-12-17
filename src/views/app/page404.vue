@@ -9,9 +9,11 @@
     </div>
   </section>
 </template>
+
 <script>
 export default {};
 </script>
+
 <style lang="less" scoped>
 .main-- {
   width: 100%;

@@ -3,6 +3,7 @@
     <slot />
   </transition>
 </template>
+
 <style lang="less" scoped>
 .fade-enter-from, .fade-leave-to {
   opacity: 0;

@@ -27,6 +27,7 @@
     >{{ text }}</span><span>{{ stat.show() }}</span>
   </div>
 </template>
+
 <script>
 import { Stat, StatRestriction } from '@/lib/Character/Stat';
 

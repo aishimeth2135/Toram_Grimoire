@@ -32,6 +32,7 @@
     </template>
   </div>
 </template>
+
 <script>
 export default {
   RegisterLang: 'Skill Query/Branch',
@@ -44,6 +45,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .extra-value {
   display: inline-flex;

@@ -5,6 +5,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import vue_skillTree from './skill-tree.vue';
 
@@ -20,5 +21,6 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 </style>

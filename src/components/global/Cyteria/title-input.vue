@@ -22,6 +22,7 @@
     </div>
   </span>
 </template>
+
 <script>
 import IconSet from './base/icon-set';
 
@@ -60,6 +61,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .input-container {
   &.input-focus {

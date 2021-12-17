@@ -74,6 +74,7 @@ CyButton.props = {
 
 export default CyButton;
 </script>
+
 <style lang="postcss" scoped>
 .cy--button-base {
   --icon-width: 1.2rem;

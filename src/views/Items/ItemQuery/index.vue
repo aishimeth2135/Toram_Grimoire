@@ -256,6 +256,7 @@
     </cy-modal>
   </article>
 </template>
+
 <script>
 import {
   CharacterEquipment,
@@ -617,6 +618,7 @@ export default {
   },
 };
 </script>
+
 <style lang="postcss" scoped>
 .search-result {
   min-height: 70vh;

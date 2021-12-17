@@ -54,6 +54,7 @@
     </div>
   </cy-transition>
 </template>
+
 <script>
 import vue_skillArea from './skill-area.vue';
 
@@ -65,6 +66,7 @@ export default {
   props: ['branch', 'showData'],
 };
 </script>
+
 <style lang="less" scoped>
 .attrs-table {
   tr {

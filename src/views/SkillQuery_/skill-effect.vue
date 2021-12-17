@@ -31,17 +31,21 @@
         <SkillEffectHistory :skill-effect-item="effectItem" />
       </div>
     </div>
-    <skillTagsModal
-      ref="skillTagModalElement"
-      v-model:visible="tagModalVisible"
-      :tags="currentTags"
-      :position-element="positionElement"
-    />
   </div>
   <cy-default-tips v-else icon="uil:books">
     <div>{{ t('skill-query.no-any-skill-effect-match-message.0') }}</div>
     <div>{{ t('skill-query.no-any-skill-effect-match-message.1') }}</div>
   </cy-default-tips>
+  <cy-hover-float
+    ref="tagHoverFloatComponent"
+    :element="skillBranchesElement"
+    target=".click-button--tag"
+    custom
+    position-mode="h-middle"
+    @element-hover="tagButtonHover"
+  >
+    <skillTagsContent ref="tagDetailContent" :tags="currentTags" />
+  </cy-hover-float>
   <cy-hover-float
     ref="skillHoverFloatComponent"
     :element="skillBranchesElement"
@@ -67,8 +71,8 @@
     position-mode="h-middle"
     @element-hover="branchButtonHover"
   >
-    <div v-if="currentHoveringBranch" style="width: 48rem;" class="bg-white bg-opacity-60">
-      <SkillBranch :skill-branch-item="currentHoveringBranch" class="w-full bg-opacity-100" />
+    <div v-if="currentHoveringBranch" class="bg-white bg-opacity-60">
+      <SkillBranch :skill-branch-item="currentHoveringBranch" class="w-full bg-opacity-100" sub />
     </div>
   </cy-hover-float>
 </template>
@@ -91,7 +95,7 @@ import { Skill, SkillRoot } from '@/lib/Skill/Skill';
 import ToggleService from '@/setup/ToggleService';
 
 import SkillBranch from './skill/skill-branch.vue';
-import skillTagsModal from './skill-tags-modal.vue';
+import skillTagsContent from './skill-tags-content.vue';
 import SkillEffectHistory from './skill-effect-history/index.vue';
 import SkillTitle from './skill/skill-title.vue';
 
@@ -134,24 +138,23 @@ const skillBranchItemStates = computed(() => {
   }));
 });
 
-const skillTagModalElement: Ref<{ $el: HTMLElement } | null> = ref(null);
+const tagDetailContent: Ref<{ $el: HTMLElement } | null> = ref(null);
 
 const {
   currentTags,
-  tagModalVisible,
-  positionElement,
-  handleTagButtonContent,
-} = setupSkillTag(skillTagModalElement);
+  tagButtonHover,
+} = setupSkillTag(tagDetailContent);
 
 const skillBranchesElement: Ref<HTMLElement | null> = ref(null);
+const tagHoverFloatComponent: Ref<{ update: Function } | null> = ref(null);
 const skillHoverFloatComponent: Ref<{ update: Function } | null> = ref(null);
 const branchHoverFloatComponent: Ref<{ update: Function } | null> = ref(null);
 
 watch(effectItem, async () => {
   setTab('skillInfo');
   await nextTick();
-  if (skillBranchesElement.value) {
-    handleTagButtonContent(skillBranchesElement.value);
+  if (tagHoverFloatComponent.value) {
+    tagHoverFloatComponent.value.update();
   }
   if (skillHoverFloatComponent.value) {
     skillHoverFloatComponent.value.update();

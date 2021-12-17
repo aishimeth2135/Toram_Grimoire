@@ -34,6 +34,7 @@
     </transition-group>
   </div>
 </template>
+
 <script>
 import { mapState } from 'vuex';
 
@@ -51,6 +52,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .main--show-message {
   position: fixed;

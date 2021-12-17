@@ -91,6 +91,7 @@ export default {
   },
 };
 </script>
+
 <style lang="postcss" scoped>
 .cy--icon-text {
   --icon-color: var(--color-set--icon-color);

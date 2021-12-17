@@ -20,6 +20,7 @@
     <div class="toggle-bg-area" @click="toggleBackground" />
   </div>
 </template>
+
 <script>
 import { loadIconifyData } from '@/shared/services/SvgIcons';
 
@@ -162,6 +163,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .main--bubble {
   width: 99vw;

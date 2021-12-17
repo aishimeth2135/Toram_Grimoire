@@ -5,6 +5,7 @@
     </ShowStat>
   </div>
 </template>
+
 <script>
 import vue_ShowStat from '../equipments/show-stat.vue';
 
@@ -15,6 +16,7 @@ export default {
   props: ['statDatas'],
 };
 </script>
+
 <style lang="less" scoped>
 .stats {
   margin: 0 0.5rem;

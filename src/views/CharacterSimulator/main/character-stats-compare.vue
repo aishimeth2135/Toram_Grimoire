@@ -25,6 +25,7 @@
     </cy-default-tips>
   </div>
 </template>
+
 <script>
 export default {
   // data create by [main.vue].methods.handleCharacterStateDatas()
@@ -72,6 +73,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .line {
   display: flex;

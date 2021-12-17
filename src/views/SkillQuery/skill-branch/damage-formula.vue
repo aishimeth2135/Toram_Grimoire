@@ -50,6 +50,7 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   props: ['showData'],
@@ -60,6 +61,7 @@ export default {
   },
 };
 </script>
+
 <style lang="postcss" scoped>
 .divider {
   @apply border-l-1 border-light-2 mx-2 h-6;

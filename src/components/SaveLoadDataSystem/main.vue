@@ -62,6 +62,7 @@
     </cy-modal>
   </div>
 </template>
+
 <script>
 import GetLang from '@/shared/services/Language';
 import CY from '@/shared/utils/Cyteria';
@@ -257,6 +258,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .column {
   margin-bottom: 0.5rem;

@@ -49,6 +49,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import Color from '@/shared/services/Color';
 
@@ -157,6 +158,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .cy--input-counter-container {
   display: block;

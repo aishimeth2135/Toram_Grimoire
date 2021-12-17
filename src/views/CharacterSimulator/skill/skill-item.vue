@@ -156,6 +156,7 @@
     </cy-transition>
   </cy-list-item>
 </template>
+
 <script>
 import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree';
 
@@ -209,6 +210,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .skill-item {
   cursor: auto;

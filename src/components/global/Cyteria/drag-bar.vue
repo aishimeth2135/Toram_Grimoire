@@ -31,6 +31,7 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   props: {
@@ -90,6 +91,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .drag-bar-layout {
     padding: 0.6rem 0;

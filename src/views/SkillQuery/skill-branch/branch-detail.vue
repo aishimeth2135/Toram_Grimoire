@@ -13,11 +13,13 @@
     </transition-group>
   </div>
 </template>
+
 <script>
 export default {
   props: ['detailShowData'],
 };
 </script>
+
 <style lang="less" scoped>
 .branch-detail {
   border-bottom: 1px solid var(--primary-light);

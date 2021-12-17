@@ -343,6 +343,7 @@
     </cy-detail-window>
   </article>
 </template>
+
 <script>
 import { mapState } from 'vuex';
 

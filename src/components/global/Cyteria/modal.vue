@@ -85,6 +85,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .cy--window {
   position: fixed;

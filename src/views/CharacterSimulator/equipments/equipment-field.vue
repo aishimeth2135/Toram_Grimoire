@@ -30,6 +30,7 @@
     </cy-default-tips>
   </div>
 </template>
+
 <script>
 import vue_equipmentInfo from './equipment-info.vue';
 
@@ -42,6 +43,7 @@ export default {
   emits: ['remove-field-equipment', 'select-field-equipment'],
 };
 </script>
+
 <style lang="less" scoped>
 .equipment-field {
   width: 23rem;

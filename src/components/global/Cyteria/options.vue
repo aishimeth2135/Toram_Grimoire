@@ -12,6 +12,7 @@
     </cy-transition>
   </div>
 </template>
+
 <script>
 export default {
   props: {
@@ -62,6 +63,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .cy--options {
   position: relative;
