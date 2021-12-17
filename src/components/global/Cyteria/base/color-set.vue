@@ -108,6 +108,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 // .cy--base--color-content {
 //   @colors: ~'dark', ~'light', ~'light-2', ~'light-3', ~'light-4', ~'purple',

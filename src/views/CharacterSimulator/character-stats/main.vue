@@ -124,6 +124,7 @@
     </cy-detail-window>
   </section>
 </template>
+
 <script>
 import { StatTypes } from '@/lib/Character/Stat/enums';
 
@@ -307,6 +308,7 @@ export default {
   },
 };
 </script>
+
 <style lang="postcss" scoped>
 .stat-scope {
   &::before {

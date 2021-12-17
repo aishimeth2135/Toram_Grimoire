@@ -419,6 +419,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import { trimZero } from '@/shared/utils/string';
 
@@ -1274,6 +1275,7 @@ export default {
   },
 };
 </script>
+
 <style lang="postcss" scoped>
 .main-- {
   position: relative;

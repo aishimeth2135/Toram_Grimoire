@@ -87,6 +87,7 @@
     </template>
   </cy-modal>
 </template>
+
 <script>
 import vue_equipmentItem from '@/components/common/equipment-item.vue';
 
@@ -168,6 +169,7 @@ export default {
   },
 };
 </script>
+
 <style lang="postcss" scoped>
 .selected-detail {
   max-height: min(20rem, 50vh);

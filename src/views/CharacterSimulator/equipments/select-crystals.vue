@@ -95,6 +95,7 @@
     </cy-bottom-content>
   </cy-modal>
 </template>
+
 <script>
 import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from '@/lib/Character/CharacterEquipment';
 

@@ -11,9 +11,11 @@
     <slot name="custom" />
   </div>
 </template>
+
 <script>
 export default {};
 </script>
+
 <style lang="less" scoped>
 .cy--bottom-content {
   position: sticky;

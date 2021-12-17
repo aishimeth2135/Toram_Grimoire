@@ -55,6 +55,7 @@
     </div>
   </cy-modal>
 </template>
+
 <script>
 import { StatTypes } from '@/lib/Character/Stat/enums';
 

@@ -9,6 +9,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import vue_SkillTreeCategory from './skill-tree-category.vue';
 
@@ -24,6 +25,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .skill-root {
   padding: 0.6rem 0.2rem;

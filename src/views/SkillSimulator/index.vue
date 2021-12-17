@@ -292,6 +292,7 @@
     </div>
   </article>
 </template>
+
 <script>
 import { mapState, mapGetters } from 'vuex';
 
@@ -993,6 +994,7 @@ export default {
   },
 };
 </script>
+
 <style lang="postcss" scoped>
 .main {
   & > .top {

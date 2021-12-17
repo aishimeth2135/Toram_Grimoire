@@ -1,6 +1,7 @@
 <template>
   <hr class="cy--hr">
 </template>
+
 <style scoped>
 .cy--hr {
   border: 0;

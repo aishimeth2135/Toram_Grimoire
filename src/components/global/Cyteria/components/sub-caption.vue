@@ -11,6 +11,7 @@
     </div>
   </teleport>
 </template>
+
 <script>
 import CY from '@/shared/utils/Cyteria';
 
@@ -82,6 +83,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .cy--sub-caption-container {
   max-width: calc(100vw - 2rem);

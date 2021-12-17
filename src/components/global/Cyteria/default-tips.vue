@@ -12,6 +12,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import IconSet from './base/icon-set.vue';
 

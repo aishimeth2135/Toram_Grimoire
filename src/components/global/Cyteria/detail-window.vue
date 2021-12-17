@@ -12,6 +12,7 @@
     </div>
   </cy-transition>
 </template>
+
 <script>
 export default {
   props: ['positionElement'],
@@ -29,6 +30,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .cy--detail-window {
   position: fixed;

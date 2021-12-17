@@ -75,6 +75,7 @@
     </cy-modal>
   </cy-modal>
 </template>
+
 <script>
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar, CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 import { EquipmentTypes, EquipmentCategorys, MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList } from '@/lib/Character/CharacterEquipment/enums';
@@ -193,6 +194,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .editor {
   border-top: 1px solid var(--primary-light-2);

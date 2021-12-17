@@ -280,6 +280,7 @@
     Loading...
   </div>
 </template>
+
 <script>
 import { mapState } from 'vuex';
 

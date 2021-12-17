@@ -14,6 +14,7 @@
     <slot />
   </cy-icon-text>
 </template>
+
 <script>
 import vue_showStat from '@/components/common/show-stat.vue';
 

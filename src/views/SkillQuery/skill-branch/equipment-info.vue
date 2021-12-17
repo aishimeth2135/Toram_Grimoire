@@ -21,6 +21,7 @@
     </cy-icon-text>
   </span>
 </template>
+
 <script>
 export default {
   filters: {
@@ -55,6 +56,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .equipment-item {
   margin-right: 0.4rem;

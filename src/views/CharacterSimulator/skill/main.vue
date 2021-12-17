@@ -102,6 +102,7 @@
     </cy-default-tips>
   </section>
 </template>
+
 <script>
 import { mapState, mapGetters } from 'vuex';
 
@@ -162,6 +163,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .top {
   border-bottom: 0.1rem solid var(--primary-light);

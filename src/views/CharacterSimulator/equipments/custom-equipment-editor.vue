@@ -244,6 +244,7 @@
     </cy-modal>
   </div>
 </template>
+
 <script>
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 import { StatRestriction } from '@/lib/Character/Stat';
@@ -381,6 +382,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .bottom-content {
   ::v-deep(.top) {

@@ -181,3 +181,6 @@ rules:
     - error
   vue/valid-define-emits:
     - error
+  vue/padding-line-between-blocks:
+    - error
+    - always

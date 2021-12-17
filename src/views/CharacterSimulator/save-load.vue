@@ -52,6 +52,7 @@
     {{ $rootLang('global/LocalStorage is inavailable') }}
   </cy-default-tips>
 </template>
+
 <script>
 import CY from '@/shared/utils/Cyteria';
 
@@ -77,6 +78,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .content {
   & + & {

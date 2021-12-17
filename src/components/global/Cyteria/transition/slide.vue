@@ -13,6 +13,7 @@
     <slot />
   </transition>
 </template>
+
 <script>
 import Velocity from 'velocity-animate';
 
@@ -70,6 +71,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .fade-slide-right-enter-from {
   transform: translateX(-20%);

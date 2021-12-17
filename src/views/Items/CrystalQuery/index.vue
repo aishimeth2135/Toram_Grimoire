@@ -143,6 +143,7 @@
     </div>
   </article>
 </template>
+
 <script>
 import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment';
 import { StatTypes } from '@/lib/Character/Stat/enums';

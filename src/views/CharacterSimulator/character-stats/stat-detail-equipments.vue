@@ -26,6 +26,7 @@
     <span class="text-orange">{{ $lang('equipped with: suffix text') }}</span>
   </span>
 </template>
+
 <script>
 export default {
   RegisterLang: {

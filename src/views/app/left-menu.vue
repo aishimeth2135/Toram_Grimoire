@@ -22,6 +22,7 @@
     </transition>
   </span>
 </template>
+
 <script>
 import { mapState } from 'vuex';
 
@@ -51,6 +52,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .app--left-menu {
   ::v-deep(.top-button) {

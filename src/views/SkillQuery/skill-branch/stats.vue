@@ -11,6 +11,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import DataContainer from '../utils/DataContainer.js';
 

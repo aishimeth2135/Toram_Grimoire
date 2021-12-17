@@ -251,6 +251,7 @@
     </cy-transition>
   </div>
 </template>
+
 <script>
 import vue_showStat from '@/components/common/show-stat.vue';
 
@@ -321,6 +322,7 @@ export default {
   },
 };
 </script>
+
 <style lang="postcss" scoped>
 .result-item {
   max-height: 70vh;

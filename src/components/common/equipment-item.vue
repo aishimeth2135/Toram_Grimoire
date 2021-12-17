@@ -21,6 +21,7 @@
     <slot name="extra" />
   </cy-list-item>
 </template>
+
 <script>
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 export default {

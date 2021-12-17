@@ -3,6 +3,7 @@
     <slot />
   </transition-group>
 </template>
+
 <script>
 // import Velocity from "velocity-animate";
 
@@ -22,6 +23,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 ::v-deep(.fade-enter-from), ::v-deep(.fade-leave-to) {
   opacity: 0;

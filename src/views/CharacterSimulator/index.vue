@@ -56,6 +56,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import { mapState, mapGetters } from 'vuex';
 

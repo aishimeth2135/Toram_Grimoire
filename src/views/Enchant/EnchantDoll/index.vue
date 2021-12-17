@@ -506,6 +506,7 @@
     />
   </section>
 </template>
+
 <script>
 import { mapState } from 'vuex';
 
@@ -889,6 +890,7 @@ export default {
   },
 };
 </script>
+
 <style lang="postcss" scoped>
 .step-content {
   padding: 2rem 1rem;
