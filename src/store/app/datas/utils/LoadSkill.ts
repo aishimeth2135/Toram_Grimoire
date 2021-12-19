@@ -75,7 +75,9 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
 
   csvData.forEach(function (row, index) {
     try {
-      if (index === 0) return;
+      if (index === 0 || row.every(item => item === '')) {
+        return;
+      }
       //console.log(row);
 
       const id = row[ID] !== '' ? parseInt(row[ID], 10) : null;

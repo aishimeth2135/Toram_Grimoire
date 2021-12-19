@@ -89,6 +89,7 @@ const EQUIPMENT_TYPE_MAIN_ORDER = [
   EquipmentTypes.Knuckle,
   EquipmentTypes.Halberd,
   EquipmentTypes.Katana,
+  EquipmentTypes.DualSword,
 ] as const;
 
 const EQUIPMENT_TYPE_SUB_ORDER = [

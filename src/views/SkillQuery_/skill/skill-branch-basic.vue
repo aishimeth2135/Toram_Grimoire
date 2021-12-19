@@ -34,7 +34,7 @@ const ATTR_DATAS: {
     'not_lead':'mdi-numeric-1-circle-outline',
   },
 }, {
-  key: 'list',
+  key: 'action_time',
   icon: 'bx-bx-timer',
 }, {
   key: 'casting_time',

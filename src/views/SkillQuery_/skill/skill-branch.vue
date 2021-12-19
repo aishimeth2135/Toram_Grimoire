@@ -8,24 +8,26 @@
       :is="currentComponent"
       :branch-item="skillBranchItem"
     />
-    <div v-if="!sub && contents.sub">
-      <div class="flex items-center px-4 pt-2 pb-1 space-x-2">
-        <cy-icon-text icon="ic:round-label" />
-        <SkillEquipmentButton
-          v-for="(branch, idx) in otherEffectBranches"
-          :key="branch.parent.equipmentId"
-          :skill-branch-item="branch"
-          :selected="currentOtherEffectBranch === branch"
-          @click="setCurrentOtherEffectBranch(idx)"
-        />
+    <cy-transition type="fade">
+      <div v-if="!sub && contents.sub">
+        <div class="flex items-center px-4 pt-2 pb-1 space-x-2">
+          <cy-icon-text icon="ic:round-label" />
+          <SkillEquipmentButton
+            v-for="(branch, idx) in otherEffectBranches"
+            :key="branch.parent.equipmentId"
+            :skill-branch-item="branch"
+            :selected="currentOtherEffectBranch === branch"
+            @click="setCurrentOtherEffectBranch(idx)"
+          />
+        </div>
+        <div v-if="currentOtherEffectBranch">
+          <SkillBranch
+            :skill-branch-item="currentOtherEffectBranch"
+            sub
+          />
+        </div>
       </div>
-      <div v-if="currentOtherEffectBranch">
-        <SkillBranch
-          :skill-branch-item="currentOtherEffectBranch"
-          sub
-        />
-      </div>
-    </div>
+    </cy-transition>
     <cy-button-icon
       v-if="subButtonAvailable"
       icon="mdi:leaf-circle-outline"
@@ -125,6 +127,12 @@ const paddingBottomClass = computed(() => {
   if ([SkillBranchNames.Tips, SkillBranchNames.Text, SkillBranchNames.List].includes(cur) && next === SkillBranchNames.Tips) {
     return 'pb-1.5';
   }
+  if (cur === SkillBranchNames.Reference && next === SkillBranchNames.Reference) {
+    return 'pb-1';
+  }
+  if (next === SkillBranchNames.Reference) {
+    return 'pb-4';
+  }
   if (next === SkillBranchNames.List) {
     return 'pb-4';
   }
@@ -150,7 +158,12 @@ const subButtonAvailable = computed(() => {
   if (otherEffectBranches.value.length === 0 || sub.value) {
     return false;
   }
-  return [SkillBranchNames.Damage, SkillBranchNames.Effect, SkillBranchNames.Heal].includes(branchItem.value.name);
+  return [
+    SkillBranchNames.Damage,
+    SkillBranchNames.Effect,
+    SkillBranchNames.Heal,
+    SkillBranchNames.Passive,
+  ].includes(branchItem.value.name);
 });
 </script>
 

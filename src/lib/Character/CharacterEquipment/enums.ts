@@ -8,6 +8,7 @@ const enum EquipmentTypes {
   Knuckle = 'knuckle',
   Halberd = 'halberd',
   Katana = 'katana',
+  DualSword = 'dual-sword',
 
   Arrow = 'arrow',
   Dagger = 'dagger',

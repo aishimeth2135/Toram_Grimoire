@@ -31,6 +31,20 @@
     </div>
     <div class="px-1">
       <slot></slot>
+      <div v-if="hasArea">
+        <div>
+          <cy-button-switch
+            :selected="contents.areaDetail"
+            icon="carbon:zoom-in-area"
+            @click.stop="toggle('contents/areaDetail')"
+          >
+            {{ t('skill-query.branch.skill-area.button-text') }}
+          </cy-button-switch>
+        </div>
+        <div v-if="contents.areaDetail">
+          <SkillAreaDetail :skill-branch-item="container.branchItem" />
+        </div>
+      </div>
     </div>
     <div>
       <slot name="extra"></slot>
@@ -40,11 +54,18 @@
 
 <script lang="ts" setup>
 import { computed, toRefs } from '@vue/reactivity';
+import { useI18n } from 'vue-i18n';
+
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
+
+import ToggleService from '@/setup/ToggleService';
+
+import SkillAreaDetail from './skill-area-detail/index.vue';
 
 import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer';
 
 interface Props {
-  container: DisplayDataContainer;
+  container: DisplayDataContainer<SkillBranchItem>;
   nameProps?: string[];
   nameIcon?: string;
   subContents?: {
@@ -54,12 +75,20 @@ interface Props {
     color?: string;
     value?: string;
   }[];
+  hasArea?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   nameIcon: 'mdi-checkbox-multiple-blank-circle',
+  hasArea: false,
 });
-const { container, subContents } = toRefs(props);
+const { container, subContents, hasArea } = toRefs(props);
+
+const { t } = useI18n();
+
+const { toggle, contents } = ToggleService({
+  contents: ['areaDetail'] as const,
+});
 
 const subContentDatas = computed(() => {
   if (!subContents?.value) {

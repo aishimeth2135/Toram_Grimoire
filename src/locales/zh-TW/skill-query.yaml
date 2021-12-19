@@ -198,6 +198,7 @@ branch:
       circle: 圓形
     "effective_area: title": 類型
     "radius: title": 作用半徑
+    "angle: title": 作用角度
   passive:
     base-name: 被動效果
   global:

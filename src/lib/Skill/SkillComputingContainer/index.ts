@@ -114,14 +114,25 @@ class SkillEffectItem extends SkillEffectItemBase {
 
   constructor(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect) {
     super(parent);
+
     this.branchItems = defaultSef.branches.map(bch => new SkillBranchItem(this, bch));
+    if (!this.branchItems.some(branchItem => branchItem.name === SkillBranchNames.Basic)) {
+      const basicBranch = effectAttrsToBranch(defaultSef);
+      this.branchItems.unshift(new SkillBranchItem(this, basicBranch));
+    }
 
     const current = from ? from : defaultSef;
-    this.equipments = markRaw(convertEffectEquipment(current.mainWeapon, current.subWeapon, current.bodyArmor, current.equipmentOperator));
+    const dualSwordRegress = defaultSef.parent.effects.every(eft => eft.mainWeapon !== 10);
+    this.equipments = markRaw(convertEffectEquipment(
+      current.mainWeapon,
+      current.subWeapon,
+      current.bodyArmor,
+      current.equipmentOperator,
+      dualSwordRegress,
+    ));
     this.stackStates = [];
     this.historys = current.historys.map(history => new SkillEffectItemHistory(parent, this, history));
 
-    effectAttrsToBranch(this, from ? from : defaultSef);
     if (from) {
       effectOverwrite(this, from);
     }
