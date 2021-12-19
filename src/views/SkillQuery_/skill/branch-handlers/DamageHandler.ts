@@ -53,6 +53,8 @@ export default function DamageHandler(branchItem: SkillBranchItem) {
     'frequency_judgment',
   ]);
 
+  const pureDatas = ['name', 'ailment_name', 'end_condition'];
+
   if (attrs['base'] === 'auto') {
     const baseSuffix = branchItem.suffixBranches.find(bch => bch.name === 'base');
     if (baseSuffix) {
@@ -69,9 +71,11 @@ export default function DamageHandler(branchItem: SkillBranchItem) {
           langAttrsMap.append('base');
         } else {
           attrs['base'] = baseSuffix.attr('title');
+          pureDatas.push('base');
         }
         if (baseSuffix.attr('caption')) {
           attrs['@custom-base-caption'] = baseSuffix.attr('caption');
+          pureDatas.push('@custom-base-caption');
         }
       }
     } else {
@@ -96,8 +100,6 @@ export default function DamageHandler(branchItem: SkillBranchItem) {
       attrs['@proration/' + key] = _data.get(key);
     });
   }
-
-  const pureDatas = ['name', 'ailment_name', 'end_condition'];
 
   const result = handleDisplayData(branchItem, attrs, {
     values: valueAttrsMap.value,

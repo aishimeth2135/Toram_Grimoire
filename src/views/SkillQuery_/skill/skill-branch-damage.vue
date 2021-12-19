@@ -5,21 +5,9 @@
       name-icon="ri-sword-fill"
       :name-props="nameProps"
       :sub-contents="subContents"
+      :has-area="hasArea"
     >
       <SkillDamageFormula :container="container" />
-      <div v-if="hasArea">
-        <div>
-          <cy-button-switch
-            v-model:selected="contents.areaDetail"
-            icon="carbon:zoom-in-area"
-          >
-            {{ t('skill-query.branch.skill-area.button-text') }}
-          </cy-button-switch>
-        </div>
-        <div v-if="contents.areaDetail">
-          <SkillAreaDetail :skill-branch-item="container.branchItem" />
-        </div>
-      </div>
       <template #extra>
         <skillBranchExtraColumn
           v-if="container.get('ailment_name')"
@@ -49,12 +37,9 @@ import { ComponentPropsType } from '@/shared/utils/type';
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums';
 
-import ToggleService from '@/setup/ToggleService';
-
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue';
 import SkillDamageFormula from './layouts/skill-damage-formula.vue';
 import SkillBranchExtraColumn from './layouts/skill-branch-extra-column.vue';
-import SkillAreaDetail from './layouts/skill-area-detail/index.vue';
 
 import DamageHandler from './branch-handlers/DamageHandler';
 import ExtraHandler from './branch-handlers/ExtraHandler';
@@ -79,10 +64,6 @@ const { t } = useI18n();
 
 const props = defineProps<Props>();
 const { branchItem } = toRefs(props);
-
-const { contents } = ToggleService({
-  contents: ['areaDetail'] as const,
-});
 
 const container = computed(() => DamageHandler(branchItem.value));
 

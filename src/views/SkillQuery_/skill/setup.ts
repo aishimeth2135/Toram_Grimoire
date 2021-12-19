@@ -7,14 +7,17 @@ import { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputingCont
 function setupOtherEffectBranches(branchItem: Ref<SkillBranchItem>) {
   const otherEffectBranches = computed(() => {
     const branches: SkillBranchItem<SkillEffectItem>[] = [];
-    if (branchItem.value.id === -1) {
-      return branches;
-    }
-    branchItem.value.parent.parent.effectItems.forEach(effectItem => {
-      if (toRaw(effectItem) === toRaw(branchItem.value.parent)) {
+    const current = branchItem.value;
+    current.parent.parent.effectItems.forEach(effectItem => {
+      if (toRaw(effectItem) === toRaw(current.parent)) {
         return;
       }
-      const bch = effectItem.branchItems.find(item => item.id === branchItem.value.id);
+      const bch = effectItem.branchItems.find(item => {
+        if (current.id !== -1 && item.id === current.id) {
+          return true;
+        }
+        return item.suffixBranches.some(suf => current.suffixBranches.some(_suf => suf.id === _suf.id));
+      });
       if (bch) {
         branches.push(bch);
       }

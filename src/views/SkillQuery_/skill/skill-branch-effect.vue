@@ -4,6 +4,7 @@
       :container="container"
       :name-props="nameProps"
       :sub-contents="subContents"
+      :has-area="hasArea"
     >
       <div class="mb-1">
         <div
@@ -99,5 +100,9 @@ const extraSuffixBranchDatas = computed(() => {
       }
       return baseData;
     });
+});
+
+const hasArea = computed(() => {
+  return container.value.getOrigin('type') === 'aura' || container.value.getOrigin('type') === 'circle';
 });
 </script>
