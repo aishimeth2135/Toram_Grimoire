@@ -125,7 +125,7 @@ const setTab = (target: keyof typeof tabs) => {
 };
 
 const tabVisible = computed(() => {
-  return effectItem.value && effectItem.value.parent.effectItems.some(item => item.historys.length > 0);
+  return effectItem.value?.parent.effectItems.some(item => item.historys.length > 0) ?? false;
 });
 
 const skillBranchItemStates = computed(() => {
@@ -153,15 +153,9 @@ const branchHoverFloatComponent: Ref<{ update: Function } | null> = ref(null);
 watch(effectItem, async () => {
   setTab('skillInfo');
   await nextTick();
-  if (tagHoverFloatComponent.value) {
-    tagHoverFloatComponent.value.update();
-  }
-  if (skillHoverFloatComponent.value) {
-    skillHoverFloatComponent.value.update();
-  }
-  if (branchHoverFloatComponent.value) {
-    branchHoverFloatComponent.value.update();
-  }
+  tagHoverFloatComponent.value?.update();
+  skillHoverFloatComponent.value?.update();
+  branchHoverFloatComponent.value?.update();
 }, { immediate: true });
 
 const currentHoveringSkill: Ref<Skill | null> = ref(null);
@@ -169,12 +163,14 @@ const skillButtonHover = (el: HTMLElement) => {
   const skillRoot = store.state.datas.Skill.skillRoot as SkillRoot;
   const skillName = el.innerText;
   let result: Skill | null = null;
-  skillRoot.skillTreeCategorys.forEach(stc => {
-    stc.skillTrees.forEach(st => {
+  skillRoot.skillTreeCategorys.some(stc => {
+    return stc.skillTrees.some(st => {
       const matchedSkill = st.skills.find(skill => skill.name === skillName);
       if (matchedSkill) {
         result = matchedSkill;
+        return true;
       }
+      return false;
     });
   });
   currentHoveringSkill.value = result;
@@ -183,7 +179,7 @@ const skillButtonHover = (el: HTMLElement) => {
 const currentHoveringBranch: Ref<SkillBranchItem | null> = ref(null);
 const branchButtonHover = (el: HTMLElement) => {
   const branchName = el.innerText;
-  currentHoveringBranch.value = effectItem.value!.branchItems.find(bch => bch.attr('name') === branchName) || null;
+  currentHoveringBranch.value = effectItem.value!.branchItems.find(bch => bch.attr('name') === branchName) ?? null;
 };
 </script>
 
