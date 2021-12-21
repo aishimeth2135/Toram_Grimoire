@@ -55,7 +55,7 @@ const stackState = computed(() => {
 
 const stackValue: WritableComputedRef<number> = computed({
   set(value) {
-    setStackValue(branchItem.value.stackId as number, value);
+    setStackValue(branchItem.value, value);
   },
   get() {
     return stackState.value ? stackState.value.value : 0;

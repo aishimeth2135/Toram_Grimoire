@@ -1,7 +1,9 @@
 import { InjectionKey } from 'vue';
 
+import { SkillBranchItemBase } from '@/lib/Skill/SkillComputingContainer';
+
 interface ComputingContainerInjection {
-  setStackValue: (stackId: number, value: number) => void;
+  setStackValue: (branchItem: SkillBranchItemBase, value: number) => void;
 }
 
 const ComputingContainerInjectionKey: InjectionKey<ComputingContainerInjection> = Symbol('skill-computing-container');

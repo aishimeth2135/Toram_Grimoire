@@ -10,7 +10,13 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts">
+export default {
+  name: 'App',
+};
+</script>
+
+<script lang="ts" setup>
 import { onMounted } from 'vue';
 
 import AppConfirm from '@/views/app/confirm.vue';
@@ -24,7 +30,7 @@ import AppNotify from '@/views/app/notify.vue';
 onMounted(() => {
   const el = document.getElementById('app--error');
   if (el) {
-    el.parentElement.removeChild(el);
+    el.parentElement!.removeChild(el);
   }
 });
 </script>

@@ -240,7 +240,7 @@ class SkillEffect extends SkillEffectBase {
   }
 
   appendHistory(date: string): SkillEffectHistory {
-    const history = new SkillEffectHistory(this.parent, date);
+    const history = new SkillEffectHistory(this, date);
     this.historys.push(history);
     return history;
   }
@@ -248,10 +248,12 @@ class SkillEffect extends SkillEffectBase {
 
 class SkillEffectHistory extends SkillEffectBase {
   readonly date: string;
+  readonly parentEffect: SkillEffect;
 
-  constructor(skill: Skill, date: string) {
-    super(skill);
+  constructor(skillEffect: SkillEffect, date: string) {
+    super(skillEffect.parent);
     this.date = date;
+    this.parentEffect = skillEffect;
   }
 }
 

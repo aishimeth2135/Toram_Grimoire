@@ -190,7 +190,7 @@ const subButtonAvailable = computed(() => {
 }
 
 :deep(.click-button--skill) {
-  @apply text-red cursor-pointer inline-block px-0.5;
+  @apply text-blue-purple cursor-pointer inline-block px-0.5;
 }
 
 :deep(.click-button--mark) {

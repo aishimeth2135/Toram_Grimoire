@@ -3,7 +3,7 @@ import Grimoire from '@/shared/Grimoire';
 import { HandleLanguageData } from '@/shared/services/Language';
 
 import SkillSystem from '@/lib/Skill';
-import { SkillElement, SkillTreeCategory, SkillTree, Skill, SkillBranch, SkillEffect } from '@/lib/Skill/Skill';
+import { SkillElement, SkillTreeCategory, SkillTree, Skill, SkillBranch, SkillEffect, SkillEffectHistory } from '@/lib/Skill/Skill';
 import type { SkillEffectBase } from '@/lib/Skill/Skill';
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums';
 
@@ -107,9 +107,12 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
           if (defaultSelected === -1) {
             return;
           }
-          curSkillEffect = defaultSelected !== 4 ?
-            curSkill.appendSkillEffect(mainWeapon, subWeapon, bodyArmor) :
-            curSkill.appendSkillEffectHistory(parseInt(row[HISTORY_EFFECT.TARGET_EFFECT_ID], 10), row[HISTORY_EFFECT.DATE]);
+          if (defaultSelected !== 4) {
+            curSkillEffect = curSkill.appendSkillEffect(mainWeapon, subWeapon, bodyArmor);
+          } else {
+            const targetEffectId = row[HISTORY_EFFECT.TARGET_EFFECT_ID] ? parseInt(row[HISTORY_EFFECT.TARGET_EFFECT_ID], 10) : -1;
+            curSkillEffect = curSkill.appendSkillEffectHistory(targetEffectId, row[HISTORY_EFFECT.DATE]);
+          }
           curElement = 'effect';
           if (curSkillEffect && curSkillEffect instanceof SkillEffect) {
             if (defaultSelected === 0 || defaultSelected === 2) {
@@ -126,6 +129,8 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
             curSkillEffect.attributes.castingTime = checkNull(row[CASTING_TIME], '');
           }
         }
+      } else if (curSkillEffect instanceof SkillEffectHistory && row[HISTORY_EFFECT.DATE] !== '') {
+        curSkillEffect = curSkill.appendSkillEffectHistory(curSkillEffect.parentEffect.effectId, row[HISTORY_EFFECT.DATE]);
       }
       if (curElement !== 'effect' || !curSkillEffect) {
         return;

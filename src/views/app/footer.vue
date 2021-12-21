@@ -1,5 +1,5 @@
 <template>
-  <footer class="app--footer">
+  <footer v-once class="app--footer">
     <div class="main-content">
       <cy-icon-text icon="uil-twitter-alt" class="ml-auto">
         <a href="https://twitter.com/Cyteria_w" target="_blank" class="text-purple mr-2">Cyteria</a>

@@ -1,10 +1,9 @@
 <template>
-  <div>
+  <div class="pt-2">
     <SkillEffectItemHistory
-      v-for="(historyItem, idx) in skillEffectItem.historys"
+      v-for="historyItem in skillEffectItem.historys"
       :key="historyItem.date"
       :skill-effect-history-item="historyItem"
-      :detail-visible-default="idx === 0"
     />
   </div>
 </template>
