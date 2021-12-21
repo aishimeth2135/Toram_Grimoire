@@ -3,7 +3,7 @@ import type { Ref, ComputedRef } from 'vue';
 
 import Grimoire from '@/shared/Grimoire';
 
-import SkillComputingContainer, { SkillItem } from '@/lib/Skill/SkillComputingContainer';
+import SkillComputingContainer, { SkillBranchItem, SkillEffectItem, SkillEffectItemHistory, SkillItem } from '@/lib/Skill/SkillComputingContainer';
 import { Skill } from '@/lib/Skill/Skill';
 import Tag from '@/lib/Tag/Tag';
 
@@ -76,13 +76,29 @@ function setupComputingContainer(skill: Ref<Skill | null>) {
     return reactive(computingContainer.value.createSkillItem(skill.value)) as SkillItem;
   });
 
-  const setStackValue = (stackId: number, value: number) => {
-    currentSkillItem.value?.effectItems.forEach(effectItem => {
-      const stackState = findStackState(effectItem, stackId);
+  const setStackValue = (branchItem: SkillBranchItem, value: number) => {
+    const stackId = branchItem.stackId;
+    if (typeof stackId !== 'number') {
+      return;
+    }
+    const effect = branchItem.parent;
+    if (effect instanceof SkillEffectItem) {
+      effect.parent.effectItems.forEach(effectItem => {
+        const stackState = findStackState(effectItem, stackId);
+        if (stackState) {
+          stackState.value = value;
+        }
+      });
+    } else if (effect instanceof SkillEffectItemHistory) {
+      const stackState = findStackState(effect, stackId);
       if (stackState) {
         stackState.value = value;
       }
-    });
+      // const next = effect.nexts.get(branchItem);
+      // if (next) {
+      //   setStackValue(next, value);
+      // }
+    }
   };
 
   provide(ComputingContainerInjectionKey, { setStackValue });

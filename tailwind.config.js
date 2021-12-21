@@ -20,6 +20,7 @@ function createColorConfig(varName) {
       light: handleValue('red-light'),
     },
     purple: handleValue('purple'),
+    'blue-purple': handleValue('blue-purple'),
     'water-blue': {
       DEFAULT: handleValue('water-blue'),
       light: handleValue('water-blue-light'),
@@ -55,12 +56,14 @@ module.exports = {
     borderWidth: {
       DEFAULT: '1px',
       '0': '0',
-      '1': '0.1rem',
-      '2': '0.2rem',
-      '3': '0.3rem',
-      '4': '0.4rem',
-      '6': '0.6rem',
-      '8': '0.8rem',
+      '1': '0.125rem',
+      '2': '0.25rem',
+      '3': '0.375rem',
+      '4': '0.5rem',
+      '5': '0.625rem',
+      '6': '0.75rem',
+      '7': '0.875rem',
+      '8': '1rem',
     },
     zIndex: {
       '-1': '-1',

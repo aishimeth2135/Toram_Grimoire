@@ -1,47 +1,67 @@
 <template>
-  <div class="skill-effect-history-item-wrapper">
+  <div
+    class="skill-effect-history-item-wrapper px-2"
+    :class="{ 'detail-active': contents.detail }"
+  >
     <cy-list-item @click="toggle('contents/detail')">
       <div class="flex items-center w-full">
-        <cy-icon-text icon="ic:round-history">{{ historyItem.date }}</cy-icon-text>
+        <cy-icon-text
+          icon="ic:round-history"
+          :text-color="contents.detail ? 'light-3' : 'dark'"
+        >
+          {{ historyItem.date }}
+        </cy-icon-text>
         <cy-icon-text
           :icon="contents.detail ? 'ic:round-keyboard-arrow-up' : 'ic:round-keyboard-arrow-down'"
           class="ml-auto"
         />
       </div>
     </cy-list-item>
-    <div v-if="contents.detail">
-      <div
-        v-for="({ branchItem, iid }) in stackBranchItemDatas"
-        :key="iid"
-      >
-        <SkillBranch :skill-branch-item="branchItem" sub />
+    <div v-if="contents.detail" class="pt-2">
+      <div v-if="introductionBranchItemDatas.length > 0" class="space-y-3 pb-4">
+        <div
+          v-for="({ branchItem, iid }) in introductionBranchItemDatas"
+          :key="iid"
+          class="px-2"
+        >
+          <SkillBranch :skill-branch-item="branchItem" sub />
+        </div>
+      </div>
+      <div v-if="stackBranchItemDatas.length > 0" class="space-y-3 pb-4">
+        <div
+          v-for="({ branchItem, iid }) in stackBranchItemDatas"
+          :key="iid"
+        >
+          <SkillBranch :skill-branch-item="branchItem" sub />
+        </div>
       </div>
       <div
         v-for="branchItem in modifiedBranchItems"
         :key="branchItem.id"
-        class="p-4 border-l-2 border-light-3"
+        class="history-item-compare"
       >
         <div>
           <SkillBranch :skill-branch-item="branchItem" sub />
         </div>
-        <div class="flex justify-center w-full py-2">
+        <div class="history-item-compare-arrow-wrapper">
           <cy-icon-text icon="ic:round-keyboard-double-arrow-down" icon-color="light-4" />
         </div>
         <div v-if="historyItem.nexts.get(branchItem) && !(historyItem.nexts.get(branchItem)!.isEmpty)">
           <SkillBranch :skill-branch-item="historyItem.nexts.get(branchItem)!" sub />
         </div>
-        <div v-else class="border border-light-2 p-4">
-          {{ t('skill-query.branch-removed') }}
+        <div v-else class="history-item-compare-empty">
+          <cy-icon-text icon="mdi:book-remove-outline">{{ t('skill-query.branch-removed') }}</cy-icon-text>
         </div>
       </div>
       <div
         v-for="({ branchItem, iid }) in addedBranchItemDatas"
         :key="iid"
+        class="history-item-compare"
       >
-        <div class="border border-light-2 p-4">
-          {{ t('skill-query.branch-added') }}
+        <div class="history-item-compare-empty">
+          <cy-icon-text icon="mdi:book-plus-outline">{{ t('skill-query.branch-added') }}</cy-icon-text>
         </div>
-        <div class="flex justify-center w-full py-2">
+        <div class="history-item-compare-arrow-wrapper">
           <cy-icon-text icon="ic:round-keyboard-double-arrow-down" icon-color="light-4" />
         </div>
         <div>
@@ -51,16 +71,22 @@
       <div
         v-for="({ branchItem, iid }) in removedBranchItemDatas"
         :key="iid"
+        class="history-item-compare"
       >
         <div>
           <SkillBranch :skill-branch-item="branchItem" sub />
         </div>
-        <div class="flex justify-center w-full py-2">
+        <div class="history-item-compare-arrow-wrapper">
           <cy-icon-text icon="ic:round-keyboard-double-arrow-down" icon-color="light-4" />
         </div>
-        <div class="border border-light-2 p-4">
-          {{ t('skill-query.branch-removed') }}
+        <div class="history-item-compare-empty">
+          <cy-icon-text icon="mdi:book-remove-outline">{{ t('skill-query.branch-removed') }}</cy-icon-text>
         </div>
+      </div>
+    </div>
+    <div v-else-if="introductionBranchItemDatas.length > 0">
+      <div>
+        <SkillBranch :skill-branch-item="introductionBranchItemDatas[0].branchItem" sub />
       </div>
     </div>
   </div>
@@ -79,18 +105,13 @@ import SkillBranch from '../skill/skill-branch.vue';
 
 interface Props {
   skillEffectHistoryItem: SkillEffectItemHistory;
-  detailVisibleDefault?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  detailVisibleDefault: false,
-});
+const props = defineProps<Props>();
 
-const { skillEffectHistoryItem: historyItem, detailVisibleDefault } = toRefs(props);
+const { skillEffectHistoryItem: historyItem } = toRefs(props);
 
 const { t } = useI18n();
-
-const { contents, toggle } = ToggleService({ contents: [{ name: 'detail', default: detailVisibleDefault.value }] });
 
 const modifiedBranchItems = computed(() => historyItem.value.modifiedBranchItems);
 const usedStackIds = computed(() => {
@@ -118,15 +139,38 @@ const addedBranchItemDatas = computed(() => {
     .map((bch, iid) => ({ branchItem: bch, iid }));
 });
 
+const introductionBranchItemDatas = computed(() => {
+  return historyItem.value.branchItems
+    .filter(bch => historyItem.value.introductionBranches.includes(bch))
+    .map((bch, iid) => ({ branchItem: bch, iid }));
+});
+
 const removedBranchItemDatas = computed(() => {
   return historyItem.value.branchItems
     .filter(bch => historyItem.value.removedBranches.includes(bch))
     .map((bch, iid) => ({ branchItem: bch, iid }));
 });
+
+const { contents, toggle } = ToggleService({
+  contents: [{ name: 'detail', default: introductionBranchItemDatas.value.length === 0 }],
+});
 </script>
 
 <style lang="postcss" scoped>
-.skill-effect-history-item-wrapper + .skill-effect-history-item-wrapper {
+.skill-effect-history-item-wrapper {
   border-top: 1px solid var(--primary-light);
+  &.detail-active {
+    @apply border-l-1 border-light pb-2 mb-2;
+  }
+}
+
+.history-item-compare {
+  @apply p-2 pl-4 border-l-2 border-light-3;
+}
+.history-item-compare-arrow-wrapper {
+  @apply flex justify-center w-full py-2;
+}
+.history-item-compare-empty {
+  @apply border border-light-2 p-4 flex content-center;
 }
 </style>

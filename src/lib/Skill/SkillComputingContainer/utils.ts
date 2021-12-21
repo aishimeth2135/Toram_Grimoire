@@ -3,7 +3,7 @@ import { handleFormula } from '@/shared/utils/data';
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums';
 
 import { SkillBranch, SkillEffect, SkillEffectAttrs } from '../Skill';
-import { SkillBranchItem, SkillEffectItem } from './index';
+import { SkillBranchItem, SkillEffectItem, SkillEffectItemHistory } from './index';
 import type { SkillEffectItemBase, EquipmentRestriction, BranchGroupState, BranchStackState } from './index';
 import { BRANCH_ATTRS_DEFAULT_VALUE, EQUIPMENT_TYPE_MAIN_ORDER, EQUIPMENT_TYPE_SUB_ORDER, EQUIPMENT_TYPE_BODY_ORDER } from './consts';
 import { SkillBranchNames } from '../Skill/enums';
@@ -71,7 +71,13 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchIte
   Object.entries(from instanceof SkillBranch ? from.branchAttributes : from.allAttrs).forEach(([key, value]) => {
     if (value === '' && to.attr(key)) {
       to.removeAttr(key);
+      to.record.attrs.remove.push(key);
     } else {
+      if (to.hasAttr(key)) {
+        to.record.attrs.overwrite.push(key);
+      } else {
+        to.record.attrs.append.push(key);
+      }
       to.setAttr(key, value);
     }
   });
@@ -192,31 +198,41 @@ function separateSuffixBranches(effectItem: SkillEffectItemBase) {
   const resBranches: SkillBranchItem[] = [];
   let spaceFlag = false;
 
-  effectItem.branchItems.forEach(bch => {
-    if (bch.name === SkillBranchNames.Space) {
+  effectItem.branchItems.forEach(branchItem => {
+    if (branchItem.name === SkillBranchNames.Space) {
       spaceFlag = true;
       return;
     }
 
-    const curBranch = resBranches.length !== 0 ? resBranches[resBranches.length - 1] : null;
+    const mainBranch = resBranches.length !== 0 ? resBranches[resBranches.length - 1] : null;
 
-    if (!curBranch && isMainBranch(bch)) {
-      resBranches.push(bch);
+    if (!mainBranch && isMainBranch(branchItem)) {
+      resBranches.push(branchItem);
       return;
     }
-    if (curBranch && !spaceFlag && searchSuffixList(curBranch, bch)) {
-      curBranch.suffixBranches.push(bch.toSuffix(curBranch));
-    } else if (isMainBranch(bch)) {
-      resBranches.push(bch);
+    if (mainBranch && !spaceFlag && searchSuffixList(mainBranch, branchItem)) {
+      mainBranch.suffixBranches.push(branchItem.toSuffix(mainBranch));
+      if (effectItem instanceof SkillEffectItemHistory) {
+        if (effectItem.nexts.has(branchItem)) {
+          const next = effectItem.parentEffect.branchItems.find(bch => bch.suffixBranches.some(suf => suf.id === branchItem.id));
+          if (next) {
+            const newNext = next.clone(effectItem);
+            effectItem.nexts.set(mainBranch, newNext);
+          }
+          effectItem.nexts.delete(branchItem);
+        }
+      }
+    } else if (isMainBranch(branchItem)) {
+      resBranches.push(branchItem);
       spaceFlag = false;
     }
   });
 
-  effectItem.branchItems = resBranches;
+  effectItem.branchItems.splice(0, effectItem.branchItems.length, ...resBranches);
 }
 
 function handleVirtualBranches(effectItem: SkillEffectItemBase) {
-  effectItem.branchItems = effectItem.branchItems.filter(branchItem => {
+  const newBranchItems = effectItem.branchItems.filter(branchItem => {
     // if (branchItem.name === SkillBranchNames.History) {
     //   const date = branchItem.attr('date');
     //   const targetBranch = effectItem.branchItems.find(bch => bch.id === branchItem.attrNumber('target_branch'));
@@ -231,7 +247,7 @@ function handleVirtualBranches(effectItem: SkillEffectItemBase) {
     // }
 
     // virtial suffixs
-    branchItem.suffixBranches = branchItem.suffixBranches.filter(suffix => {
+    const filtered = branchItem.suffixBranches.filter(suffix => {
       if (suffix.name === SkillBranchNames.Group) {
         const groupState: BranchGroupState = {
           size: parseInt(suffix.attr('size'), 10),
@@ -246,8 +262,11 @@ function handleVirtualBranches(effectItem: SkillEffectItemBase) {
       return true;
     });
 
+    branchItem.suffixBranches.splice(0, branchItem.suffixBranches.length, ...filtered);
+
     return true;
   });
+  effectItem.branchItems.splice(0, effectItem.branchItems.length, ...newBranchItems);
 }
 
 function initStackStates(effectItem: SkillEffectItemBase) {
@@ -270,7 +289,7 @@ function initStackStates(effectItem: SkillEffectItemBase) {
         }) as number,
       };
     });
-  effectItem.stackStates = stackStates;
+  effectItem.stackStates.splice(0, effectItem.stackStates.length, ...stackStates);
 }
 
 function regressHistoryBranches(effectItem: SkillEffectItem) {
@@ -278,22 +297,29 @@ function regressHistoryBranches(effectItem: SkillEffectItem) {
   effectItem.historys.sort((item1, item2) => new Date(item1.date) <= new Date(item2.date) ? 1 : -1);
   effectItem.historys.forEach((history, idx, ary) => {
     const nextEffect = idx === 0 ? effectItem : ary[idx - 1];
-    const toBranches = nextEffect.branchItems.map(bch => new SkillBranchItem(history, bch));
+    const toBranches = nextEffect.branchItems.map(bch => bch.clone(history));
     const fromBranches = history.branchItems;
+    let meetFirstBranchHasId = false;
     fromBranches.forEach((historyBch) => {
       if (historyBch.id === -1) {
-        history.removedBranches.push(historyBch);
-        toBranches.push(historyBch);
+        if (meetFirstBranchHasId) {
+          history.removedBranches.push(historyBch);
+          toBranches.push(historyBch);
+        } else {
+          history.introductionBranches.push(historyBch);
+          toBranches.unshift(historyBch);
+        }
         return;
       }
+      meetFirstBranchHasId = true;
       const next = (nextEffect.branchItems as SkillBranchItem[]).find(bch => bch.id === historyBch.id);
       const current = toBranches.find(bch => bch.id === historyBch.id);
       if (current && next) {
-        history.nexts.set(current, next);
+        history.nexts.set(current, next.clone(history));
       }
     });
     branchesOverwrite(toBranches, fromBranches, fromBranch => fromBranch.name === '' && fromBranch.isEmpty);
-    history.branchItems = toBranches;
+    history.branchItems.splice(0, history.branchItems.length, ...toBranches);
   });
 }
 

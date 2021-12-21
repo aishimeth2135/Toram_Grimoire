@@ -7,10 +7,9 @@
   --primary-light-4: #ff008d;
   --primary-purple: #9c27b0;
   --primary-purple-light: #c873d7;
-  --primary-water-blue-light: #9acbf3;
+  --primary-blue-purple: #8330ff;
   --primary-water-blue: #2196f3;
-  --primary-gray: #888;
-  --primary-gray-light: #ddd;
+  --primary-water-blue-light: #9acbf3;
   --primary-blue-green: #009688;
   --primary-blue-green-light: #a0e8e1;
   --primary-orange: #de761b;
@@ -18,6 +17,8 @@
   --primary-green: #23ad35;
   --primary-red: #f54747;
   --primary-red-light: #f09797;
+  --primary-gray: #888;
+  --primary-gray-light: #ddd;
   --white: #fff;
   --black: #000;
 
@@ -29,10 +30,9 @@
   --rgb-primary-light-4: 255, 0, 141;
   --rgb-primary-purple: 156, 39, 176;
   --rgb-primary-purple-light: 200, 115, 215;
-  --rgb-primary-water-blue-light: 154, 203, 243;
+  --rgb-primary-blue-purple: 131, 48, 255;
   --rgb-primary-water-blue: 33, 150, 243;
-  --rgb-primary-gray: 136, 136, 136;
-  --rgb-primary-gray-light: 221, 221, 221;
+  --rgb-primary-water-blue-light: 154, 203, 243;
   --rgb-primary-blue-green: 0, 150, 136;
   --rgb-primary-blue-green-light: 160, 232, 225;
   --rgb-primary-orange: 222, 118, 27;
@@ -40,6 +40,8 @@
   --rgb-primary-green: 35, 173, 53;
   --rgb-primary-red: 245, 71, 71;
   --rgb-primary-red-light: 240, 151, 151;
+  --rgb-primary-gray: 136, 136, 136;
+  --rgb-primary-gray-light: 221, 221, 221;
   --rgb-white: 255, 255, 255;
   --rgb-black: 0, 0, 0;
 }
@@ -65,10 +67,9 @@
   --primary-light-4: #ffbde1;
   --primary-purple: #e8caed;
   --primary-purple-light: #b357c3;
-  --primary-water-blue-light: #307cb9;
+  --primary-blue-purple: #8330ff;
   --primary-water-blue: #aed1ef;
-  --primary-gray: #AAA;
-  --primary-gray-light: #555;
+  --primary-water-blue-light: #307cb9;
   --primary-blue-green: #81ded5;
   --primary-blue-green-light: #1a6760;
   --primary-orange: #edcbad;
@@ -76,6 +77,8 @@
   --primary-green: #bff5c6;
   --primary-red: #f97777;
   --primary-red-light: #802828;
+  --primary-gray: #AAA;
+  --primary-gray-light: #555;
   --white: #000;
   --black: #fff;
 
@@ -86,10 +89,9 @@
   --rgb-primary-light-4: 255, 189, 225;
   --rgb-primary-purple: 232, 202, 237;
   --rgb-primary-purple-light: 179, 87, 195;
-  --rgb-primary-water-blue-light: 48, 124, 185;
+  --rgb-primary-blue-purple: 131, 48, 255;
   --rgb-primary-water-blue: 174, 209, 239;
-  --rgb-primary-gray: 170, 170, 170;
-  --rgb-primary-gray-light: 85, 85, 85;
+  --rgb-primary-water-blue-light: 48, 124, 185;
   --rgb-primary-blue-green: 129, 222, 213;
   --rgb-primary-blue-green-light: 26, 103, 96;
   --rgb-primary-orange: 237, 203, 173;
@@ -97,6 +99,8 @@
   --rgb-primary-green: 191, 245, 198;
   --rgb-primary-red: 249, 119, 119;
   --rgb-primary-red-light: 128, 40, 40;
+  --rgb-primary-gray: 170, 170, 170;
+  --rgb-primary-gray-light: 85, 85, 85;
   --rgb-white: 0, 0, 0;
   --rgb-black: 255, 255, 255;
 }

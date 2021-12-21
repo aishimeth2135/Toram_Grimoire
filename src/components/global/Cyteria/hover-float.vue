@@ -172,8 +172,6 @@ const updateHookBinding = async () => {
   }
 };
 
-// watch(element, updateHookBinding);
-
 defineExpose({
   update: updateHookBinding,
 });

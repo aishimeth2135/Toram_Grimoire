@@ -22,9 +22,9 @@
     <div ref="skillBranchesElement">
       <div v-if="tabs.skillInfo">
         <SkillBranch
-          v-for="branchItemState in skillBranchItemStates"
-          :key="branchItemState.iid"
-          :skill-branch-item="branchItemState.item"
+          v-for="branchItemData in skillBranchItemDatas"
+          :key="branchItemData.id"
+          :skill-branch-item="branchItemData.item"
         />
       </div>
       <div v-if="tabs.skillHistory">
@@ -128,13 +128,13 @@ const tabVisible = computed(() => {
   return effectItem.value?.parent.effectItems.some(item => item.historys.length > 0) ?? false;
 });
 
-const skillBranchItemStates = computed(() => {
+const skillBranchItemDatas = computed(() => {
   if (!effectItem.value) {
     return [];
   }
   return effectItem.value.branchItems.map((item, idx) => ({
     item,
-    iid: idx,
+    id: `branch--${item.id !== -1 ? item.id : 'none-' + idx}`,
   }));
 });
 
