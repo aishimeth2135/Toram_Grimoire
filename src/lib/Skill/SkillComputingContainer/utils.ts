@@ -87,11 +87,14 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchIte
     const findedStat = to.stats[idx];
     if (idx === -1) {
       to.stats.push(stat.copy());
+      to.record.stats.append.push([stat.baseName, stat.type]);
     } else {
       if (stat.value === '') {
         to.stats.splice(idx, 1);
+        to.record.stats.remove.push([stat.baseName, stat.type]);
       } else {
         findedStat.value = stat.value;
+        to.record.stats.overwrite.push([stat.baseName, stat.type]);
       }
     }
   });
@@ -212,16 +215,16 @@ function separateSuffixBranches(effectItem: SkillEffectItemBase) {
     }
     if (mainBranch && !spaceFlag && searchSuffixList(mainBranch, branchItem)) {
       mainBranch.suffixBranches.push(branchItem.toSuffix(mainBranch));
-      if (effectItem instanceof SkillEffectItemHistory) {
-        if (effectItem.nexts.has(branchItem)) {
-          const next = effectItem.parentEffect.branchItems.find(bch => bch.suffixBranches.some(suf => suf.id === branchItem.id));
-          if (next) {
-            const newNext = next.clone(effectItem);
-            effectItem.nexts.set(mainBranch, newNext);
-          }
-          effectItem.nexts.delete(branchItem);
-        }
-      }
+      // if (effectItem instanceof SkillEffectItemHistory) {
+      //   if (effectItem.nexts.has(branchItem)) {
+      //     const next = effectItem.parentEffect.branchItems.find(bch => bch.suffixBranches.some(suf => suf.id === branchItem.id));
+      //     if (next) {
+      //       const newNext = next.clone(effectItem);
+      //       effectItem.nexts.set(mainBranch, newNext);
+      //     }
+      //     effectItem.nexts.delete(branchItem);
+      //   }
+      // }
     } else if (isMainBranch(branchItem)) {
       resBranches.push(branchItem);
       spaceFlag = false;
@@ -312,14 +315,34 @@ function regressHistoryBranches(effectItem: SkillEffectItem) {
         return;
       }
       meetFirstBranchHasId = true;
-      const next = (nextEffect.branchItems as SkillBranchItem[]).find(bch => bch.id === historyBch.id);
-      const current = toBranches.find(bch => bch.id === historyBch.id);
-      if (current && next) {
-        history.nexts.set(current, next.clone(history));
-      }
+      history.nextEffect = nextEffect;
+      // const next = (nextEffect.branchItems as SkillBranchItem[]).find(bch => bch.id === historyBch.id);
+      // const current = toBranches.find(bch => bch.id === historyBch.id);
+      // if (current && next) {
+      //   history.nexts.set(current, next.clone(history));
+      // }
     });
     branchesOverwrite(toBranches, fromBranches, fromBranch => fromBranch.name === '' && fromBranch.isEmpty);
     history.branchItems.splice(0, history.branchItems.length, ...toBranches);
+  });
+}
+
+function initHistoryNexts(history: SkillEffectItemHistory) {
+  history.modifiedBranchItems.forEach(branchItem => {
+    const next = branchItem.id !== -1 ?
+      history.nextEffect.branchItems.find(bch => branchItem.id === bch.id) :
+      history.nextEffect.branchItems.find(bch => bch.suffixBranches.some(suf => branchItem.suffixBranches.some(_suf => suf.id === _suf.id)));
+    if (next) {
+      const nextClone = next.clone(history);
+      nextClone.setHistoryRecord(branchItem.record);
+      nextClone.suffixBranches.forEach(suffix => {
+        const find = branchItem.suffixBranches.find(suf => suf.id === suffix.id);
+        if (find) {
+          suffix.setHistoryRecord(find.record);
+        }
+      });
+      history.nexts.set(branchItem, nextClone);
+    }
   });
 }
 
@@ -342,5 +365,6 @@ export {
   handleVirtualBranches,
   initStackStates,
   regressHistoryBranches,
+  initHistoryNexts,
   setBranchAttrsDefaultValue,
 };

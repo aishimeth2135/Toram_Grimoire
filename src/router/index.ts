@@ -1,5 +1,5 @@
 import { trackRouter } from 'vue-gtag-next';
-import { createRouter, createWebHistory, RouteMeta } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import type { RouteRecordRaw } from 'vue-router';
 
 import store from '@/store';
@@ -65,25 +65,25 @@ router.beforeEach((to, from) => {
     // set nav
     store.commit('nav/setItems', {
       items: to.matched
-        .filter(p => p.meta && p.meta.title)
-        .map(p => {
-          const title = p.meta.title;
+        .filter(item => item.meta?.title)
+        .map(item => {
+          const { title, path } = item.meta;
           return {
             title: typeof title === 'function' ? title() : title,
-            path: p.path,
+            path: path,
           };
         }),
     });
 
     // set left menu
     {
-      const data = to.matched.slice().reverse().find(p => p.meta && p.meta.leftMenuViewButtons);
+      const data = to.matched.slice().reverse().find(item => item.meta?.leftMenuViewButtons);
       if (data) {
-        const res = (data.meta.leftMenuViewButtons as NonNullable<RouteMeta['leftMenuViewButtons']>).map(p => {
+        const res = data.meta.leftMenuViewButtons!.map(({ title, icon, path }) => {
           return {
-            title: typeof p.title === 'function' ? p.title() : p.title,
-            icon: p.icon,
-            path: data.path + p.path,
+            title: typeof title === 'function' ? title() : title,
+            icon: icon,
+            path: data.path + path,
           };
         });
 

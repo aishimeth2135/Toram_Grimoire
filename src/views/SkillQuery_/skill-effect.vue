@@ -79,7 +79,7 @@
 
 <script lang="ts">
 export default {
-  name: 'SkillQuery',
+  name: 'SkillEffect',
 };
 </script>
 

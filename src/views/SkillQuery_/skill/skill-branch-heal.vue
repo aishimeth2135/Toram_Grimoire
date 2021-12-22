@@ -3,6 +3,7 @@
     <SkillBranchLayoutNormal
       :container="container"
       :sub-contents="subContents"
+      :name-props="nameProps"
     >
       <skillHealFormula :container="container" />
     </SkillBranchLayoutNormal>
@@ -32,6 +33,10 @@ const props = defineProps<Props>();
 const { branchItem } = toRefs(props);
 
 const container = computed(() => HealHandler(branchItem.value));
+
+const nameProps = computed(() => {
+  return [container.value.get('type')];
+});
 
 const subContents = computed(() => {
   const result = [] as NonNullable<ComponentPropsType<typeof SkillBranchLayoutNormal>['subContents']>;

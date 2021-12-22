@@ -553,7 +553,7 @@ div.steps-content-container {
     width: calc(46rem + 5px);
 
     @media screen and (max-width: 50rem) {
-      @apply w-full;
+     width: 100%;
     }
 
     & > .step-container {

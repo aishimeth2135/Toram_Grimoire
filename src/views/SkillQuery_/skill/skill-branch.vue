@@ -190,7 +190,7 @@ const subButtonAvailable = computed(() => {
 }
 
 :deep(.click-button--skill) {
-  @apply text-blue-purple cursor-pointer inline-block px-0.5;
+  @apply text-red cursor-pointer inline-block px-0.5;
 }
 
 :deep(.click-button--mark) {
@@ -199,6 +199,16 @@ const subButtonAvailable = computed(() => {
 
 :deep(.click-button--branch) {
   @apply text-blue-green cursor-pointer inline-block px-0.5;
+}
+
+:deep(.history-compare--mark) {
+  /* position: relative;
+
+  &::after {
+    content: '';
+    @apply h-2 w-2 rounded-full bg-blue-purple absolute top-0 -right-2;
+  } */
+  @apply bg-blue-purple bg-opacity-10;
 }
 
 :deep(.skill-formula-function-wrapper) {

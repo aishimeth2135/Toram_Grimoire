@@ -2,8 +2,8 @@ import { isNumberString, trimZero } from '@/shared/utils/string';
 import { numberToFixed } from '@/shared/utils/number';
 import Grimoire from '@/shared/Grimoire';
 
-import { SkillBranchItemSuffix } from '@/lib/Skill/SkillComputingContainer';
-import type { SkillBranchItemBase } from '@/lib/Skill/SkillComputingContainer';
+import { SkillBranchItemSuffix, SkillEffectItemHistory } from '@/lib/Skill/SkillComputingContainer';
+import type { SkillBranchItemBase, SkillBranchItemOverwriteRecords } from '@/lib/Skill/SkillComputingContainer';
 import {
   computeBranchValue,
   computedBranchHelper,
@@ -15,6 +15,7 @@ import {
 import type { HandleBranchValueAttrsMap, HandleBranchTextAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute';
 import { ResultContainer, ResultContainerBase } from '@/lib/Skill/SkillComputingContainer/ResultContainer';
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums';
+import { StatComputed } from '@/lib/Character/Stat';
 
 import { createTagButtons } from '@/views/SkillQuery_/utils';
 
@@ -164,6 +165,28 @@ function handleDisplayData<Branch extends SkillBranchItemBase>(
     container.handle(trimZero);
   };
 
+  const handleAttrHistoryHighlight = branchItem.parent instanceof SkillEffectItemHistory ?
+    (key: string, value: string) => {
+      const searchKeys = ['overwrite', 'append', 'remove'] as const;
+      if (searchKeys.some(searchKey => branchItem.record.attrs[searchKey].includes(key) || branchItem.historyRecord?.attrs[searchKey].includes(key))) {
+        return `<span class="history-compare--mark">${value}</span>`;
+      }
+      return value;
+    } :
+    (key: string, value: string) => value;
+
+  const handleStatHistoryHighlight = branchItem.parent instanceof SkillEffectItemHistory ?
+    (stat: StatComputed, value: string) => {
+      const searchKeys = ['overwrite', 'append', 'remove'] as const;
+      const _find = (target: SkillBranchItemOverwriteRecords | null) => searchKeys
+        .some(searchKey => target?.stats[searchKey].some(([baseName, type]) => stat.baseName === baseName && stat.type === type));
+      if (_find(branchItem.record) || _find(branchItem.historyRecord)) {
+        return `<span class="history-compare--mark">${value}</span>`;
+      }
+      return value;
+    } :
+    (stat: StatComputed, value: string) => value;
+
   Object.entries(valueDatas).forEach(([key, container]) => {
     handleContainerFormulaValue(container);
 
@@ -171,6 +194,7 @@ function handleDisplayData<Branch extends SkillBranchItemBase>(
     if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
       str = handleFunctionHighlight(str);
     }
+    str = handleAttrHistoryHighlight(key, str);
 
     result[key] = str;
   });
@@ -199,15 +223,20 @@ function handleDisplayData<Branch extends SkillBranchItemBase>(
       str = handleFunctionHighlight(str);
     }
 
+    str = handleAttrHistoryHighlight(key, str);
+
     result[key] = str;
   });
 
   Object.entries(langDatas).forEach(([key, container]) => {
-    result[key] = container.result;
+    let str = container.result;
+    str = handleAttrHistoryHighlight(key, str);
+    result[key] = str;
   });
 
   statDatas.forEach(container => {
     handleContainerFormulaValue(container);
+    container.handle(value => handleStatHistoryHighlight(container.stat, value));
   });
 
   titles.forEach(key => {

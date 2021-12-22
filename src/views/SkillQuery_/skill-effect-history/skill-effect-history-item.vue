@@ -16,6 +16,12 @@
           class="ml-auto"
         />
       </div>
+      <div v-if="introductionBranchItemDatas.length > 0 && !contents.detail" class="flex items-start w-full">
+        <cy-icon-text icon="ic:round-label" class="ml-2 mt-1.5" />
+        <div>
+          <SkillBranch :skill-branch-item="introductionBranchItemDatas[0].branchItem" sub />
+        </div>
+      </div>
     </cy-list-item>
     <div v-if="contents.detail" class="pt-2">
       <div v-if="introductionBranchItemDatas.length > 0" class="space-y-3 pb-4">
@@ -82,11 +88,6 @@
         <div class="history-item-compare-empty">
           <cy-icon-text icon="mdi:book-remove-outline">{{ t('skill-query.branch-removed') }}</cy-icon-text>
         </div>
-      </div>
-    </div>
-    <div v-else-if="introductionBranchItemDatas.length > 0">
-      <div>
-        <SkillBranch :skill-branch-item="introductionBranchItemDatas[0].branchItem" sub />
       </div>
     </div>
   </div>
@@ -166,6 +167,10 @@ const { contents, toggle } = ToggleService({
 
 .history-item-compare {
   @apply p-2 pl-4 border-l-2 border-light-3;
+}
+
+.history-item-compare + .history-item-compare {
+  @apply mt-4;
 }
 .history-item-compare-arrow-wrapper {
   @apply flex justify-center w-full py-2;

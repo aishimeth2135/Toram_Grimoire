@@ -16,6 +16,7 @@ import {
   setBranchAttrsDefaultValue,
   initStackStates,
   effectAttrsToBranch,
+  initHistoryNexts,
 } from './utils';
 import { SkillBranchNames } from '../Skill/enums';
 import { FormulaDisplayModes } from './enums';
@@ -148,6 +149,7 @@ class SkillEffectItem extends SkillEffectItemBase {
     this.historys.forEach(history => {
       separateSuffixBranches(history);
       handleVirtualBranches(history);
+      initHistoryNexts(history);
     });
 
     initStackStates(this);
@@ -158,18 +160,12 @@ class SkillEffectItem extends SkillEffectItemBase {
       if (effectEquipment.main === null && effectEquipment.sub === null && effectEquipment.body === null) {
         return true;
       }
-      let atLeastOneEqual = false;
-      const res = (['main', 'sub', 'body'] as const).every(key => {
-        if (effectEquipment[key] === null || equipment[key] === null) {
+      return (['main', 'sub', 'body'] as const).every(key => {
+        if (effectEquipment[key] === null) {
           return true;
         }
-        const equal = effectEquipment[key] === equipment[key];
-        if (equal) {
-          atLeastOneEqual = true;
-        }
-        return equal;
+        return effectEquipment[key] === equipment[key];
       });
-      return atLeastOneEqual && res;
     });
   }
 
@@ -187,6 +183,7 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
   readonly date: string;
   readonly introductionBranches: SkillBranchItem[];
   readonly removedBranches: SkillBranchItem[];
+  nextEffect!: SkillEffectItemBase;
 
   // store the previous branch of every item in branchItems
   nexts: Map<SkillBranchItem, SkillBranchItem | null>;
@@ -213,10 +210,14 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
   }
 }
 
-type BranchOverwriteRecord<T> = {
+type SkillBranchItemOverwriteRecord<T> = {
   overwrite: T[];
   append: T[];
   remove: T[];
+};
+type SkillBranchItemOverwriteRecords = {
+  attrs: SkillBranchItemOverwriteRecord<string>;
+  stats: SkillBranchItemOverwriteRecord<[string, StatTypes]>;
 };
 abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEffectItemBase> {
   private _attrs: Record<string, string>;
@@ -235,10 +236,14 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
   /* default branch from default effect that has not been overwritten  */
   readonly default: SkillBranch;
 
-  readonly record: {
-    attrs: BranchOverwriteRecord<string>;
-    stats: BranchOverwriteRecord<[string, StatTypes]>;
-  };
+  /** Record of overwrite */
+  readonly record: SkillBranchItemOverwriteRecords;
+
+  /**
+   * Record of overwrite for next of SkillBranchEffectHistory.nexts
+   * this property should reference to record of other branch
+  */
+  private _historyRecord: SkillBranchItemOverwriteRecords | null;
 
   abstract clone(): SkillBranchItemBase;
 
@@ -269,6 +274,8 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
         remove: [],
       },
     };
+
+    this._historyRecord = null;
   }
 
   get name(): SkillBranchNames {
@@ -324,6 +331,24 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
 
   clearAttr() {
     this._attrs = {};
+  }
+
+  syncRecord(record: SkillBranchItemOverwriteRecords) {
+    this.record.attrs.overwrite = record.attrs.overwrite.slice();
+    this.record.attrs.append = record.attrs.append.slice();
+    this.record.attrs.remove = record.attrs.remove.slice();
+
+    this.record.stats.overwrite = record.stats.overwrite.map(item => item.slice() as [string, StatTypes]);
+    this.record.stats.append = record.stats.append.map(item => item.slice() as [string, StatTypes]);
+    this.record.stats.remove = record.stats.remove.map(item => item.slice() as [string, StatTypes]);
+  }
+
+  setHistoryRecord(record: SkillBranchItemOverwriteRecords) {
+    this._historyRecord = record;
+  }
+
+  get historyRecord() {
+    return this._historyRecord;
   }
 }
 
@@ -388,22 +413,16 @@ class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> 
   }
 
   toSuffix(mainBranch: SkillBranchItem): SkillBranchItemSuffix {
-    return new SkillBranchItemSuffix(this.parent, this, mainBranch);
+    const suffix = new SkillBranchItemSuffix(this.parent, this, mainBranch);
+    suffix.syncRecord(this.record);
+    return suffix;
   }
 
   override clone<TargetParent extends SkillEffectItemBase = SkillEffectItem>(parent?: TargetParent): SkillBranchItem<TargetParent> {
     parent = (parent ?? this.parent) as TargetParent;
-    const clone = new SkillBranchItem(parent as TargetParent, this);
+    const clone = new SkillBranchItem(parent, this);
 
-    clone.suffixBranches.push(...this.suffixBranches.map(suf => suf.clone()));
-
-    clone.record.attrs.overwrite = this.record.attrs.overwrite.slice();
-    clone.record.attrs.append = this.record.attrs.append.slice();
-    clone.record.attrs.remove = this.record.attrs.remove.slice();
-
-    clone.record.stats.overwrite = this.record.stats.overwrite.map(item => item.slice() as [string, StatTypes]);
-    clone.record.stats.append = this.record.stats.append.map(item => item.slice() as [string, StatTypes]);
-    clone.record.stats.remove = this.record.stats.remove.map(item => item.slice() as [string, StatTypes]);
+    clone.suffixBranches.push(...this.suffixBranches.map(suf => suf.clone(parent)));
 
     return clone;
   }
@@ -418,8 +437,9 @@ class SkillBranchItemSuffix<Parent extends SkillEffectItemBase = SkillEffectItem
     this.mainBranch = mainBranch;
   }
 
-  override clone(): SkillBranchItemSuffix {
-    return new SkillBranchItemSuffix(this.parent, this, this.mainBranch);
+  override clone<TargetParent extends SkillEffectItemBase = SkillEffectItem>(parent?: TargetParent): SkillBranchItemSuffix<TargetParent> {
+    parent = (parent ?? this.parent) as TargetParent;
+    return new SkillBranchItemSuffix(parent, this, this.mainBranch);
   }
 }
 
@@ -437,4 +457,5 @@ export type {
   EquipmentRestriction,
   BranchGroupState,
   BranchStackState,
+  SkillBranchItemOverwriteRecords,
 };
