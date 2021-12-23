@@ -85,7 +85,6 @@
 
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue';
-import type { WritableComputedRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { SkillTree } from '@/lib/Skill/Skill';
@@ -110,7 +109,7 @@ const emit = defineEmits<Emits>();
 
 const { skillTree, skillComputingContainer: computingContainer } = toRefs(props);
 
-const skillLevel: WritableComputedRef<number> = computed({
+const skillLevel = computed<number>({
   get() {
     return computingContainer.value.vars.skillLevel;
   },
@@ -118,7 +117,7 @@ const skillLevel: WritableComputedRef<number> = computed({
     computingContainer.value.vars.skillLevel = value;
   },
 });
-const characterLevel: WritableComputedRef<number> = computed({
+const characterLevel = computed<number>({
   get() {
     return computingContainer.value.vars.characterLevel;
   },
@@ -126,7 +125,7 @@ const characterLevel: WritableComputedRef<number> = computed({
     computingContainer.value.vars.characterLevel = value;
   },
 });
-const formulaDisplayMode: WritableComputedRef<FormulaDisplayModes> = computed({
+const formulaDisplayMode = computed<FormulaDisplayModes>({
   get() {
     return computingContainer.value.config.formulaDisplayMode;
   },
@@ -136,7 +135,7 @@ const formulaDisplayMode: WritableComputedRef<FormulaDisplayModes> = computed({
 });
 
 const { contents, toggle } = ToggleService({
-  contents: ['advancedMenu'],
+  contents: ['advancedMenu'] as const,
 });
 
 const {

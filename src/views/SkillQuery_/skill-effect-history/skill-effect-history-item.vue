@@ -176,6 +176,6 @@ const { contents, toggle } = ToggleService({
   @apply flex justify-center w-full py-2;
 }
 .history-item-compare-empty {
-  @apply border border-light-2 p-4 flex content-center;
+  @apply border border-light-2 p-4 flex justify-center;
 }
 </style>

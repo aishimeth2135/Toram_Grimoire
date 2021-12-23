@@ -4,7 +4,7 @@
       <cy-icon-text v-if="currentSkill" icon="bx:bxs-book-bookmark">
         {{ currentSkill.name }}
       </cy-icon-text>
-      <div v-else class="text-light-2">{{ t('skill-query.search-tips') }}</div>
+      <div v-else class="text-light-2 ml-2">{{ t('skill-query.search-tips') }}</div>
       <cy-button-icon
         class="ml-auto"
         icon="bx:bx-search"

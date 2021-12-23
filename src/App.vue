@@ -1,12 +1,14 @@
 <template>
   <div id="app">
-    <AppNav />
-    <router-view class="main-section app-main" />
-    <AppFooter />
-    <AppInitialize />
-    <AppConfirm />
-    <AppNotify />
-    <AppLoading />
+    <template v-if="store.state.language.i18nMessageLoaded">
+      <AppNav />
+      <router-view class="main-section app-main" />
+      <AppFooter />
+      <AppInitialize />
+      <AppConfirm />
+      <AppNotify />
+      <AppLoading />
+    </template>
   </div>
 </template>
 
@@ -18,6 +20,7 @@ export default {
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
+import { useStore } from 'vuex';
 
 import AppConfirm from '@/views/app/confirm.vue';
 import AppFooter from '@/views/app/footer.vue';
@@ -33,6 +36,8 @@ onMounted(() => {
     el.parentElement!.removeChild(el);
   }
 });
+
+const store = useStore();
 </script>
 
 <style lang="less" scoped>

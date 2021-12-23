@@ -299,6 +299,7 @@ import { mapState, mapGetters } from 'vuex';
 
 import { LoadingNotify } from '@/shared/services/Notify';
 import CY from '@/shared/utils/Cyteria';
+import Grimoire from '@/shared/Grimoire';
 
 import { computeDrawSkillTreeData, GetDrawSetting } from '@/lib/Skill/utils/DrawSkillTree';
 
@@ -308,8 +309,6 @@ import vue_skillRoot from './skill-root.vue';
 
 import init from './init.js';
 import { getSkillElementId } from './utils';
-
-
 
 export default {
   name: 'SkillQuery',
@@ -497,7 +496,7 @@ export default {
     },
     copyExportedText() {
       if (CY.copyToClipboard(this.$refs.previewExportedTextContent.innerText))
-        this.$notify(this.$rootLang('global/copy to clipboard finished'));
+        this.$notify(Grimoire.i18n.t('app.features.copy-to-clipboard-success-tips'));
     },
     downloadExportedImage() {
       if (this.currentExportedImage === null) {

@@ -1,7 +1,6 @@
 
 import type { RouteRecordRaw } from 'vue-router';
 
-import GetLang from '@/shared/services/Language';
 import ViewInit from '@/shared/services/ViewInit';
 
 import WrapperView from './wrapper.vue';
@@ -17,11 +16,11 @@ export default {
   },
   meta: {
     leftMenuViewButtons: [{
-      title: () => GetLang('Page Title/enchant/enchant-simulator'),
+      title: 'app.page-title.enchant-simulator',
       icon: 'mdi-cube-scan',
       path: '',
     }, {
-      title: () => GetLang('Page Title/enchant/enchant-doll'),
+      title: 'app.page-title.enchant-doll',
       icon: 'mdi-leaf',
       path: '/doll',
     }],
@@ -30,13 +29,13 @@ export default {
     path: '',
     component: vue_enchantSimulator,
     meta: {
-      title: () => GetLang('Page Title/enchant/enchant-simulator'),
+      title: 'app.page-title.enchant-simulator',
     },
   }, {
     path: 'doll',
     component: vue_enchantDoll,
     meta: {
-      title: () => GetLang('Page Title/enchant/enchant-doll'),
+      title: 'app.page-title.enchant-doll',
     },
   }],
 } as RouteRecordRaw;

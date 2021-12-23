@@ -1,7 +1,6 @@
 
 import type { RouteRecordRaw } from 'vue-router';
 
-import GetLang from '@/shared/services/Language';
 import ViewInit from '@/shared/services/ViewInit';
 
 import WrapperView from './wrapper.vue';
@@ -16,7 +15,7 @@ export default {
   },
   meta: {
     leftMenuViewButtons: [{
-      title: () => GetLang('Page Title/calculation/damage-calculation'),
+      title: 'page-title.damage-calculation',
       icon: 'mdi-sword',
       path: '',
     }],
@@ -25,7 +24,7 @@ export default {
     path: '',
     component: DamageCalculatiomView,
     meta: {
-      title: () => GetLang('Page Title/calculation/damage-calculation'),
+      title: 'page-title.damage-calculation',
     },
   }],
 } as RouteRecordRaw;

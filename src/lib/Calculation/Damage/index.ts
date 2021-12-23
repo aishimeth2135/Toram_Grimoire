@@ -97,6 +97,7 @@ export default class {
         return (100 - value);
       });
       container.setGetCurrentItemId(utils.damageTypeHandler(res => res ? 'target_physical_resistance' : 'target_magic_resistance'));
+      container.disableFloorResult();
     });
     normal('level_difference', container => {
       container.appendItem('character_level');

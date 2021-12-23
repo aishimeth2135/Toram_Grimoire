@@ -1,14 +1,9 @@
 skill-info: 技能資訊
 historical-record: 歷史紀錄
-click anywhere to close: 點擊任意處關閉
 select-skill: 選擇技能
 close-select-skill: 關閉
 skill-level: 技能等級
 character-level: 角色等級
-switch-skill: 技能切換
-previous-skill: 上一個
-next-skill: 下一個
-last-skill: 最近
 search-tips: 點擊這裡來搜尋技能
 go-to-skill: 查看
 formula-display-mode:
@@ -17,7 +12,6 @@ formula-display-mode:
   original-formula: 顯示原始公式
 branch-added: 新增
 branch-removed: 移除
-default-message: 請點選這裡或右上角的按鈕來選擇一個技能。
 no-any-skill-effect-match-message:
   - 目前選取的技能與裝備不相符。
   - 請更改裝備類型或是選擇其他技能。
@@ -30,7 +24,6 @@ equipment:
 branch:
   duration-caption: "{duration}秒內"
   ailment-title: 命中成功後
-  "other equipment info: title": 各裝備的效果
   apply-element: 套用{element}。
   unknow-variable: 未知參數
   formula-replaced-text:
@@ -212,5 +205,3 @@ branch:
     constant-pretext: 固定值
   reference:
     base-title: 參考連結
-warn:
-  no skill tree selected: 還沒選取技能樹0.0

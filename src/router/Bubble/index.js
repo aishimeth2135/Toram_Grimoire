@@ -9,7 +9,7 @@ export default {
     ViewInit().then(next);
   },
   meta: {
-    title: () => '0.0',
+    title: '0.0',
     leftMenuViewButtons: [],
   },
 };

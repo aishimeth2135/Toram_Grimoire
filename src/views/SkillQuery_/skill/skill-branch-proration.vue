@@ -4,17 +4,13 @@
       <cy-icon-text icon="mdi-sword" display-block>
         {{ t('skill-query.branch.proration.proration: title') }}
       </cy-icon-text>
-      <div class="text-light-3 ml-1.5">
-        {{ container.get('proration') }}
-      </div>
+      <div class="text-light-3 ml-1.5" v-html="container.get('proration')"></div>
     </div>
     <div class="cy--text-underline text-light-2 flex items-center">
       <cy-icon-text icon="mdi-sword" display-block>
         {{ t('skill-query.branch.proration.damage: title') }}
       </cy-icon-text>
-      <div class="text-light-3 ml-1.5">
-        {{ container.get('damage') }}
-      </div>
+      <div class="text-light-3 ml-1.5" v-html="container.get('damage')"></div>
     </div>
   </div>
 </template>

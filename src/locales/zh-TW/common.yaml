@@ -65,6 +65,8 @@ Equipment:
     box: 箱子道具
     exchange: 交換所
     ex_skill: EX技能
+Stat:
+  type-total: 總{text}
 Auto Save:
   "message: unknow error when save": 自動存檔時發生未知的錯誤。
   "message: unknow error when load": 自動讀取時發生未知的錯誤。

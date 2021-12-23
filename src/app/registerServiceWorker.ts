@@ -2,8 +2,8 @@ import { register } from 'register-service-worker';
 
 import store from '@/store';
 
-import GetLang from '@/shared/services/Language';
 import MessageNotify from '@/shared/services/Notify';
+import Grimoire from '@/shared/Grimoire';
 
 
 export default function() {
@@ -12,7 +12,7 @@ export default function() {
       ready (registration) {
         if (registration.waiting) {
           store.commit('main/serviceWorkerHasUpdate', registration);
-          MessageNotify(GetLang('Settings/update/tips: new version detected'));
+          MessageNotify(Grimoire.i18n.t('app.settings.update.new-version-detected-tips'));
         }
       },
       registered () {},
@@ -22,7 +22,7 @@ export default function() {
           registration.installing.addEventListener('statechange', () => {
             if (registration.waiting && navigator.serviceWorker.controller) {
               store.commit('main/serviceWorkerHasUpdate', registration);
-              MessageNotify(GetLang('Settings/update/tips: new version detected'));
+              MessageNotify(Grimoire.i18n.t('app.settings.update.new-version-detected-tips'));
             }
           });
         }

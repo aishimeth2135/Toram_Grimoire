@@ -104,6 +104,9 @@ module.exports = {
           '100%': { transform: 'translateY(0)' },
         },
       },
+      spacing: {
+        '128': '32rem',
+      },
       animation: {
         'slide-up': 'global-slide-up 0.4s ease',
       },

@@ -11,7 +11,7 @@ export default {
     ViewInit().then(next);
   },
   meta: {
-    title: () => '404',
+    title: '404',
     leftMenuViewButtons: [],
   },
 } as RouteRecordRaw;

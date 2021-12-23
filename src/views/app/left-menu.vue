@@ -15,7 +15,7 @@
             :icon="data.icon"
             @click="setCurrentView(data)"
           >
-            {{ data.title }}
+            {{ t(data.title) }}
           </cy-button-line>
         </div>
       </div>
@@ -24,9 +24,16 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import { mapState } from 'vuex';
 
 export default {
+  setup() {
+    const { t } = useI18n();
+    return {
+      t,
+    };
+  },
   data() {
     return {
       unfold: !this.screenWidthCheck(),

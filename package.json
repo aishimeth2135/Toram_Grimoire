@@ -27,7 +27,7 @@
     "vue-i18n": "^9.2.0-beta.17",
     "vue-router": "4.0.11",
     "vuex": "^4.0.2",
-    "vuex-composition-helpers": "^1.0.23"
+    "vuex-composition-helpers": "^2.0.1"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.15.4",

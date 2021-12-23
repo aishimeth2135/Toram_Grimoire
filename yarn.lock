@@ -7530,10 +7530,10 @@ vue@^3.2.26:
     "@vue/server-renderer" "3.2.26"
     "@vue/shared" "3.2.26"
 
-vuex-composition-helpers@^1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/vuex-composition-helpers/-/vuex-composition-helpers-1.0.23.tgz#8e1df37f8175e59cc3474bf1e77d62b6490a724a"
-  integrity sha512-TZZ46Jj9Shq5mOgrQVn59fmVI1bOqEaidQjbw8qkmLRxjyJdQ6j9MxYg0Xo5QgS3dEdKNFJLHRgtCpkf57Gnjw==
+vuex-composition-helpers@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/vuex-composition-helpers/-/vuex-composition-helpers-2.0.1.tgz#8a1a2e5ac18e5e8e2c52f7ec717797f6261bcf6c"
+  integrity sha512-i2Bg24AH9/AL5nDdh2lmP19Mcl86EJLV7EeVjrCtqY29wkzZa6PWaYYKcbwbYffYoAiTtz1n54VhIaZ1MxNAkw==
 
 vuex@^4.0.2:
   version "4.0.2"

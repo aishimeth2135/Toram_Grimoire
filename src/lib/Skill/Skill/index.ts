@@ -168,7 +168,7 @@ class Skill extends SkillBase {
   appendSkillEffectHistory(effectId: number, date: string): SkillEffectHistory | void {
     const effect = this.effects.find(eft => eft.effectId === effectId);
     if (!effect) {
-      console.warn('[SkillEffect.appendSkillEffectHistory] can not find target effect.');
+      console.warn(`[SkillEffect.appendSkillEffectHistory] can not find target effect with id: ${effectId}.`, this.effects);
       return;
     }
     return effect.appendHistory(date);

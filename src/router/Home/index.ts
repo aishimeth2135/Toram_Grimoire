@@ -1,6 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-import GetLang from '@/shared/services/Language';
 import ViewInit from '@/shared/services/ViewInit';
 
 import HomeView from '@/views/Home/Home/index.vue';
@@ -18,11 +17,11 @@ export default {
   meta: {
     title: null,
     leftMenuViewButtons: [{
-      title: () => GetLang('Left Menu/Home/base'),
+      title: 'app.page-title.home',
       icon: 'ant-design:home-outlined',
       path: '',
     }, {
-      title: () => GetLang('Left Menu/Home/about'),
+      title: 'app.page-title.about',
       icon: 'bx-bxs-star-half',
       path: 'about',
     }],
@@ -33,5 +32,8 @@ export default {
   }, {
     path: 'about',
     component: AboutView,
+    meta: {
+      title: 'app.page-title.about',
+    },
   }],
 } as RouteRecordRaw;

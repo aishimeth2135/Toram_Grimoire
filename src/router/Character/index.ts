@@ -1,7 +1,6 @@
 
 import type { RouteRecordRaw } from 'vue-router';
 
-import GetLang from '@/shared/services/Language';
 import ViewInit from '@/shared/services/ViewInit';
 
 import WrapperView from './wrapper.vue';
@@ -17,11 +16,11 @@ export default {
   },
   meta: {
     leftMenuViewButtons: [{
-      title: () => GetLang('Page Title/character-simulator'),
+      title: 'app.page-title.character-simulator',
       icon: 'gridicons-user',
       path: '',
     }, {
-      title: () => GetLang('Page Title/skill-simulator'),
+      title: 'app.page-title.skill-simulator',
       icon: 'bx-bxs-star-half',
       path: '/skill',
     }],
@@ -30,13 +29,13 @@ export default {
     path: '',
     component: CharacterSimulatorView,
     meta: {
-      title: () => GetLang('Page Title/character-simulator'),
+      title: 'app.page-title.character-simulator',
     },
   }, {
     path: 'skill',
     component: SkillSimulatorView,
     meta: {
-      title: () => GetLang('Page Title/skill-simulator'),
+      title: 'app.page-title.skill-simulator',
     },
   }],
 } as RouteRecordRaw;

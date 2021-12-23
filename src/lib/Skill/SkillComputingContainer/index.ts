@@ -65,10 +65,10 @@ class SkillItem {
 
     const defaultSef = skill.defaultEffect;
     const otherSefs = skill.effects.filter(sef => sef !== defaultSef);
-    this.effectItems = markRaw([
+    this.effectItems = [
       new SkillEffectItem(this, defaultSef),
       ...otherSefs.map(sef => new SkillEffectItem(this, defaultSef, sef)),
-    ]);
+    ];
   }
 
   findEffectItem(equipment: EquipmentRestriction) {
@@ -117,7 +117,7 @@ class SkillEffectItem extends SkillEffectItemBase {
   constructor(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect) {
     super(parent);
 
-    this.branchItems = markRaw(defaultSef.branches.map(bch => new SkillBranchItem(this, bch)));
+    this.branchItems = defaultSef.branches.map(bch => new SkillBranchItem(this, bch));
     if (!this.branchItems.some(branchItem => branchItem.name === SkillBranchNames.Basic)) {
       const basicBranch = effectAttrsToBranch(defaultSef);
       this.branchItems.unshift(new SkillBranchItem(this, basicBranch));

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-1 flex items-center flex-wrap">
+  <div class="p-1 pr-3 flex items-center flex-wrap">
     <cy-input-counter
       v-if="branchItem.parent.parent.parent.config.formulaDisplayMode === FormulaDisplayModes.Normal"
       v-model:value="stackValue"

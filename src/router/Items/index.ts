@@ -1,7 +1,6 @@
 
 import type { RouteRecordRaw } from 'vue-router';
 
-import GetLang from '@/shared/services/Language';
 import ViewInit from '@/shared/services/ViewInit';
 
 import WrapperView from './wrapper.vue';
@@ -17,11 +16,11 @@ export default {
   },
   meta: {
     leftMenuViewButtons: [{
-      title: () => GetLang('Page Title/item-query'),
+      title: 'app.page-title/item-query',
       icon: 'jam-box-f',
       path: '',
     }, {
-      title: () => GetLang('Page Title/crystal-query'),
+      title: 'app.page-title/crystal-query',
       icon: 'bx-bx-cube-alt',
       path: '/crystal',
     }],
@@ -30,13 +29,13 @@ export default {
     path: '',
     component: ItemQueryView,
     meta: {
-      title: () => GetLang('Page Title/item-query'),
+      title: 'app.page-title.item-query',
     },
   }, {
     path: 'crystal',
     component: CrystalQueryView,
     meta: {
-      title: () => GetLang('Page Title/crystal-query'),
+      title: 'app.page-title.crystal-query',
     },
   }],
 } as RouteRecordRaw;

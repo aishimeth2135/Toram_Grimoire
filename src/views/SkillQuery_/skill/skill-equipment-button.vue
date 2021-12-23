@@ -41,11 +41,11 @@
 import { toRefs, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
+import { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer';
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 
 interface Props {
-  skillBranchItem: SkillBranchItem;
+  skillBranchItem: SkillBranchItem<SkillEffectItem>;
   selected?: boolean;
 }
 

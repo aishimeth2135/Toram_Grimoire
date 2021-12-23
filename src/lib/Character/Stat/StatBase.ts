@@ -1,3 +1,4 @@
+import Grimoire from '@/shared/Grimoire';
 import GetLang from '@/shared/services/Language';
 import { isNumberString } from '@/shared/utils/string';
 
@@ -91,7 +92,7 @@ class StatBase {
       title = this.text;
       tail = this.multiplierDisplayFormat.includes('$u') ? '%' : '';
     } else if (type === StatTypes.Total) {
-      title = Lang('type total: preText') + this.text;
+      title = Grimoire.i18n.t('common.Stat.type-total', { text: this.text });
       tail = '%';
     }
     return {

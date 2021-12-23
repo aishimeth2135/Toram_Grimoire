@@ -13,7 +13,7 @@
         />
         <span>
           <router-link
-            v-if="i != items.length - 1"
+            v-if="i !== items.length - 1"
             v-slot="{ navigate }"
             :to="item.path"
             custom
@@ -24,11 +24,11 @@
               @click="navigate"
               @keypress.enter="navigate"
             >
-              {{ item.title }}
+              {{ t(item.title) }}
             </span>
           </router-link>
           <template v-else>
-            {{ item.title }}
+            {{ t(item.title) }}
           </template>
         </span>
       </template>
@@ -40,12 +40,19 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import { mapState } from 'vuex';
 
 import vue_leftMenu from './left-menu.vue';
 import vue_settings from './settings.vue';
 
 export default {
+  setup() {
+    const { t } = useI18n();
+    return {
+      t,
+    };
+  },
   computed: {
     ...mapState('nav', ['items']),
   },

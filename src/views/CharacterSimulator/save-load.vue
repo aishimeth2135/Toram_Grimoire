@@ -49,16 +49,24 @@
     </div>
   </div>
   <cy-default-tips v-else icon="mdi-ghost">
-    {{ $rootLang('global/LocalStorage is inavailable') }}
+    {{ t('app.features.localStorage-inavailable-tips') }}
   </cy-default-tips>
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
+
 import CY from '@/shared/utils/Cyteria';
 
 export default {
   RegisterLang: 'Character Simulator/save-load control',
   emits: ['manual-auto-save', 'manual-auto-load', 'close-auto-save'],
+  setup() {
+    const { t } = useI18n();
+    return {
+      t,
+    };
+  },
   data() {
     return {
       deleteCounter: 0,

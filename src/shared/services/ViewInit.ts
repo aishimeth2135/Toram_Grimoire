@@ -1,9 +1,6 @@
 // import { InitLanguageData } from "./Language";
 import store from '@/store';
 
-import GetLang from '@/shared/services/Language';
-
-
 export default async function viewInit(...inits: string[]) {
   if (inits.length === 0) {
     store.commit('initialize/skipInit');
@@ -14,7 +11,7 @@ export default async function viewInit(...inits: string[]) {
       const loaded = store.getters['datas/checkLoad'](id) as boolean;
       const origin = loaded ? null : ((await store.dispatch('datas/load' + id)) as AsyncGenerator<void, void, void>);
       const promise = loaded ? Promise.resolve() : (origin as AsyncGenerator).next();
-      const msg = GetLang('Loading Message/' + id);
+      const msg = 'app.loading-message.' + id;
       return { id, origin, promise, msg, loaded };
     });
 

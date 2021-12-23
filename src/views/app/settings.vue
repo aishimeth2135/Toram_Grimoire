@@ -10,7 +10,7 @@
       <template #title>
         <div class="flex items-center">
           <cy-icon-text icon="ic-baseline-settings">
-            {{ $lang('title') }}
+            {{ t('app.settings.title') }}
           </cy-icon-text>
           <span class="ml-auto text-purple">
             v{{ $store.state.main.version }}
@@ -22,71 +22,71 @@
         class="p-4 flex items-center justify-center"
       >
         <cy-icon-text icon="mdi-creation" text-color="purple">
-          {{ $lang('update/new version detected') }}
+          {{ t('app.settings.update.new-version-detected') }}
         </cy-icon-text>
         <cy-button-border
           icon="mdi-coffee-outline"
           class="ml-4"
           @click="swUpdate"
         >
-          {{ $lang('update/force update') }}
+          {{ t('app.settings.update.force-update') }}
         </cy-button-border>
       </div>
       <fieldset class="column">
         <legend>
           <cy-icon-text icon="ic-round-text-fields" text-color="purple">
-            {{ $lang('switch font/title') }}
+            {{ t('app.settings.switch-font.title') }}
           </cy-icon-text>
         </legend>
-        <div class="caption">{{ $lang('switch font/caption') }}</div>
+        <div class="caption">{{ t('app.settings.switch-font.caption') }}</div>
         <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
-          {{ $lang('switch font/tips 1') }}
+          {{ t('app.settings.switch-font.tips-1') }}
         </cy-icon-text>
         <div class="buttons">
           <cy-button-check :selected="currentFont === 1" @click="switchFont(1)">
-            {{ $lang('switch font/default font') }}
+            {{ t('app.settings.switch-font.default-font') }}
           </cy-button-check>
           <cy-button-check :selected="currentFont === 0" @click="switchFont(0)">
-            {{ $lang('switch font/base font') }}
+            {{ t('app.settings.switch-font.base-font') }}
           </cy-button-check>
           <cy-button-check :selected="currentFont === 2" @click="switchFont(2)">
-            {{ $lang('switch font/base font') + '-2' }}
+            {{ t('app.settings.switch-font.base-font') + '-2' }}
           </cy-button-check>
         </div>
       </fieldset>
       <fieldset class="column">
         <legend>
           <cy-icon-text icon="mdi-weather-night" text-color="purple">
-            {{ $lang('night mode/title') }}
+            {{ t('app.settings.night-mode.title') }}
           </cy-icon-text>
         </legend>
-        <div class="caption">{{ $lang('night mode/caption') }}</div>
+        <div class="caption">{{ t('app.settings.night-mode.caption') }}</div>
         <div class="mt-4 mb-2">
           <cy-button-check
             :selected="nightMode === '1'"
             @click="nightMode = nightMode !== '1' ? '1' : '0'"
           >
-            {{ $lang('night mode/title') }}
+            {{ t('app.settings.night-mode.title') }}
           </cy-button-check>
         </div>
       </fieldset>
       <fieldset class="column">
         <legend>
           <cy-icon-text icon="bx-bx-ruler" text-color="purple">
-            {{ $lang('set rem/title') }}
+            {{ t('app.settings.set-rem.title') }}
           </cy-icon-text>
         </legend>
-        <div class="caption">{{ $lang('set rem/caption') }}</div>
+        <div class="caption">{{ t('app.settings.set-rem.caption') }}</div>
         <div class="flex items-center flex-wrap">
           <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" class="mr-2" align-v="start">
-            {{ $lang('set rem/tips 1') }}
+            {{ t('app.settings.set-rem.tips-1') }}
           </cy-icon-text>
         </div>
         <div class="mt-4 mb-2">
           <cy-input-counter v-model:value="remValue" :range="[120, 200]">
             <template #title>
               <cy-icon-text icon="bx-bx-ruler">
-                {{ $lang('set rem/rem title') }}
+                {{ t('app.settings.set-rem.rem-title') }}
               </cy-icon-text>
             </template>
           </cy-input-counter>
@@ -95,18 +95,18 @@
       <fieldset class="column">
         <legend>
           <cy-icon-text icon="ion-language" text-color="purple">
-            {{ $lang('language/title') }}
+            {{ t('app.settings.primary-language.title') }}
           </cy-icon-text>
         </legend>
         <div class="caption">
-          {{ $lang('language/caption') }}
+          {{ t('app.settings.primary-language.caption') }}
         </div>
         <div class="flex items-center flex-wrap">
           <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" class="mr-2" align-v="start">
-            {{ $lang('language/tips 1') }}
+            {{ t('app.settings.primary-language.tips-1') }}
           </cy-icon-text>
           <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
-            {{ $lang('language/tips 2') }}
+            {{ t('app.settings.primary-language.tips-2') }}
           </cy-icon-text>
         </div>
         <div class="buttons">
@@ -116,24 +116,24 @@
             :selected="languageState.currentIndex === i"
             @click="setLanguage(0, i)"
           >
-            {{ $lang('language/button texts/lang ' + item) }}
+            {{ t('app.settings.primary-language.lang-title.' + item) }}
           </cy-button-check>
         </div>
       </fieldset>
       <fieldset class="column">
         <legend>
           <cy-icon-text icon="ion-language" text-color="purple">
-            {{ $lang('second language/title') }}
+            {{ t('app.settings.secondary-language.title') }}
           </cy-icon-text>
         </legend>
         <div class="caption">
-          {{ $lang('second language/caption') }}
+          {{ t('app.settings.secondary-language.caption') }}
         </div>
         <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start" class="mr-2">
-          {{ $lang('second language/tips 1') }}
+          {{ t('app.settings.secondary-language.tips-1') }}
         </cy-icon-text>
         <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
-          {{ $lang('second language/tips 2') }}
+          {{ t('app.settings.secondary-language.tips-2') }}
         </cy-icon-text>
         <div class="buttons">
           <cy-button-check
@@ -142,58 +142,58 @@
             :selected="secondLanguageState.currentIndex === i"
             @click="setLanguage(1, i)"
           >
-            {{ $lang('language/button texts/lang ' + item) }}
+            {{ t('app.settings.primary-language.lang-title.' + item) }}
           </cy-button-check>
         </div>
       </fieldset>
       <fieldset class="column">
         <legend>
           <cy-icon-text icon="carbon-cloud-data-ops" text-color="purple">
-            {{ $lang('clear caches of spreadsheets/title') }}
+            {{ t('app.settings.clear-spreadsheets-caches.title') }}
           </cy-icon-text>
         </legend>
         <div class="caption">
-          {{ $lang('clear caches of spreadsheets/caption') }}
+          {{ t('app.settings.clear-spreadsheets-caches.caption') }}
         </div>
         <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
-          {{ $lang('clear caches of spreadsheets/tips 1') }}
+          {{ t('app.settings.clear-spreadsheets-caches.tips-1') }}
         </cy-icon-text>
         <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
-          {{ $lang('clear caches of spreadsheets/tips 2') }}
+          {{ t('app.settings.clear-spreadsheets-caches.tips-2') }}
         </cy-icon-text>
         <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
-          {{ $lang('clear caches of spreadsheets/tips 3') }}
+          {{ t('app.settings.clear-spreadsheets-caches.tips-3') }}
         </cy-icon-text>
         <div class="buttons">
           <cy-button-border icon="ic-round-delete" @click="clearSpreadsheetsCaches">
-            {{ $lang('clear caches of spreadsheets/button texts/clear caches of spreadsheets') }}
+            {{ t('app.settings.clear-spreadsheets-caches.button-text') }}
           </cy-button-border>
         </div>
       </fieldset>
       <fieldset class="column">
         <legend>
           <cy-icon-text icon="ic-round-save">
-            {{ $lang('storage backup/title') }}
+            {{ t('app.settings.storage-backup.title') }}
           </cy-icon-text>
         </legend>
         <div class="caption">
-          {{ $lang('storage backup/caption') }}
+          {{ t('app.settings.storage-backup.caption') }}
         </div>
         <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
-          {{ $lang('storage backup/tips 1') }}
+          {{ t('app.settings.storage-backup.tips-1') }}
         </cy-icon-text>
         <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
-          {{ $lang('storage backup/tips 2') }}
+          {{ t('app.settings.storage-backup.tips-2') }}
         </cy-icon-text>
         <cy-default-tips v-if="$route.path != '/'" icon="mdi-ghost">
-          {{ $lang('storage backup/Must be operated on the homepage') }}
+          {{ t('app.settings.storage-backup.restriction-homepage') }}
         </cy-default-tips>
         <div v-else class="buttons">
           <cy-button-border icon="ic-round-save" @click="saveLocalStorage">
-            {{ $lang('storage backup/button texts/save') }}
+            {{ t('app.settings.storage-backup.save') }}
           </cy-button-border>
           <cy-button-border icon="bx-bx-loader-circle" @click="loadLocalStorage">
-            {{ $lang('storage backup/button texts/load') }}
+            {{ t('app.settings.storage-backup.load') }}
           </cy-button-border>
         </div>
       </fieldset>
@@ -203,12 +203,16 @@
 
 <script>
 import { mapState } from 'vuex';
+import { useI18n } from 'vue-i18n';
 
 import { APP_STORAGE_KEYS } from '@/shared/consts';
 import CY from '@/shared/utils/Cyteria';
 
 export default {
-  RegisterLang: 'Settings',
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     const list1 = ['auto', '0', '1', '2', '3'],
       list2 = ['0', '1', '2', '3'];
@@ -246,19 +250,19 @@ export default {
       get() {
         return this.setNightMode.value;
       },
-      set(v) {
-        this.setNightMode.value = v;
-        localStorage[APP_STORAGE_KEYS.NIGHT_MODE] = v;
-        document.documentElement.classList[v === '0' ? 'remove' : 'add']('theme--night-mode');
+      set(value) {
+        this.setNightMode.value = value;
+        localStorage[APP_STORAGE_KEYS.NIGHT_MODE] = value;
+        document.documentElement.classList.toggle('theme--night-mode', value === '1');
       },
     },
     remValue: {
       get() {
         return this.setRem.value;
       },
-      set(v) {
-        localStorage.setItem(APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE, v.toString());
-        this.setRem.value = v;
+      set(value) {
+        localStorage.setItem(APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE, value.toString());
+        this.setRem.value = value;
         document.documentElement.style.fontSize = (this.setRem.value / 10).toString() + 'px';
       },
     },
@@ -267,7 +271,7 @@ export default {
     const rel = document.documentElement;
     rel.classList.add('font-' + this.currentFont.toString());
     rel.style.fontSize = (this.setRem.value / 10).toString() + 'px';
-    rel.classList[this.nightMode === '0' ? 'remove' : 'add']('theme--night-mode');
+    rel.classList.toggle('theme--night-mode', this.nightMode === '1');
   },
   methods: {
     async swUpdate() {
@@ -277,7 +281,7 @@ export default {
     },
     clearSpreadsheetsCaches() {
       caches.delete('google-spreadsheets-csv-files')
-        .then(p => p && this.$notify(this.$lang('clear caches of spreadsheets/Clear caches of spreadsheet successfully')));
+        .then(res => res && this.$notify(this.t('app.settings.clear-spreadsheets-caches.success-tips')));
     },
     saveLocalStorage() {
       const data = {};
@@ -295,7 +299,7 @@ export default {
         fileName: 'cy-grimoire-storage.txt',
       });
 
-      this.$notify(this.$lang('storage backup/Save successfully'));
+      this.$notify(this.t('app.settings.storage-backup.save-success-tips'));
     },
     loadLocalStorage() {
       const storage = window.localStorage;
@@ -304,14 +308,14 @@ export default {
         succeed: data => {
           data = JSON.parse(data);
           Object.keys(data).forEach(k => storage.setItem(k, data[k]));
-          this.$notify(this.$lang('storage backup/Load successfully'));
+          this.$notify(this.t('app.settings.storage-backup.load-success-tips'));
         },
         error: () => {
-          this.$notify(this.$lang('storage backup/Load failed'));
+          this.$notify(this.t('app.settings.storage-backup.load-failed-tips'));
         },
         checkFileType: type => {
-          if (type != 'txt') {
-            this.$notify(this.$lang('storage backup/Wrong type of file'));
+          if (type !== 'txt') {
+            this.$notify(this.t('app.settings.storage-backup.wrong-file-type-tips'));
             return false;
           }
           return true;

@@ -4,8 +4,6 @@ import type { RouteRecordRaw } from 'vue-router';
 
 import store from '@/store';
 
-import GetLang from '@/shared/services/Language';
-
 import Bubble from './Bubble';
 import DamageCalculation from './Calculation/Damage';
 import Character from './Character';
@@ -37,13 +35,8 @@ trackRouter(router);
 router.beforeEach((to, from) => {
   if (to) {
     { // set title and meta tags
-      const data = to.matched.slice().reverse().find(p => p.meta && p.meta.title);
-      if (data) {
-        const title = data.meta.title;
-        document.title = GetLang('Page Title/base') + '｜' + (typeof title === 'function' ? title() : title);
-      } else {
-        document.title = GetLang('Page Title/base');
-      }
+      const data = to.matched.slice().reverse().find(p => p.meta?.title);
+      store.dispatch('main/updateTitle', data ? data.meta.title : '');
     }
     {
       document.head.querySelectorAll('*[data-vue-router-mata-tag-controlled]').forEach(el => el.remove());
@@ -69,7 +62,7 @@ router.beforeEach((to, from) => {
         .map(item => {
           const { title, path } = item.meta;
           return {
-            title: typeof title === 'function' ? title() : title,
+            title,
             path: path,
           };
         }),
@@ -81,7 +74,7 @@ router.beforeEach((to, from) => {
       if (data) {
         const res = data.meta.leftMenuViewButtons!.map(({ title, icon, path }) => {
           return {
-            title: typeof title === 'function' ? title() : title,
+            title,
             icon: icon,
             path: data.path + path,
           };

@@ -1,69 +1,71 @@
 Equipment:
   field:
-    main-weapon: 主手武器
-    sub-weapon: 副手武器
-    sub-armor: 副手防具
-    body-armor: 身體裝備
-    additional: 追加裝備
-    special: 特殊裝備
-    avatar: 時裝
+    main-weapon: Main Weapon
+    sub-weapon: Sub Weapon
+    sub-armor: Sub Armor(Shield)
+    body-armor: Body Armor
+    additional: Additional Equipment
+    special: Special Equipment
+    avatar: Avatar
   category:
-    one-hand-sword: 單手劍
-    two-hand-sword: 雙手劍
-    bow: 弓
-    bowgun: 弩
-    staff: 杖
-    magic-device: 魔導具
-    knuckle: 拳套
-    halberd: 旋風槍
-    katana: 拔刀劍
-    arrow: 箭矢
-    dagger: 小刀
-    ninjutsu-scroll: 忍術卷軸
-    shield: 盾牌
-    body-normal: 一般防具
-    body-dodge: 輕化防具
-    body-defense: 重化防具
-    empty: 空手
+    one-hand-sword: One-Handed Sword
+    two-hand-sword: Two-Handed Sword
+    bow: Bow
+    bowgun: Bowgun
+    staff: Staff
+    magic-device: Magic Device
+    knuckle: Knuckle
+    halberd: Halberd
+    katana: Katana
+    dual-sword: Dual Sword
+    arrow: Arrow
+    dagger: Dagger
+    ninjutsu-scroll: Ninjutsu Scroll
+    shield: Shield
+    body-normal: Normal Armor
+    body-dodge: Light Armor
+    body-defense: Heavy Armor
+    empty: Empty
   stat restriction:
-    event: 活動
-    one-hand-sword: 單手劍
-    two-hand-sword: 雙手劍
-    dual-sword: 雙劍
-    bow: 弓
-    bowgun: 弩
-    staff: 法杖
-    magic-device: 魔導具
-    knuckle: 拳套
-    halberd: 旋風槍
-    katana: 拔刀劍
+    event: Event
+    one-hand-sword: One-Handed Sword
+    two-hand-sword: Two-Handed Sword
+    dual-sword: Dual Sword
+    bow: Bow
+    bowgun: Bowgin
+    staff: Staff
+    magic-device: Magic Device
+    knuckle: Knuckle
+    halberd: Halberd
+    katana: Katana
     sub:
-      arrow: 箭矢
-      shield: 盾牌
-      dagger: 小刀
-      katana: 副手拔刀劍
-      magic-device: 副手魔導具
-      knuckle: 副手拳套
-      one-hand-sword: 雙劍
-      ninjutsu-scroll: 忍術卷軸
+      arrow: Arrow
+      shield: Shield
+      dagger: Dagger
+      katana: Katana(Sub)
+      magic-device: Magic Device(Sub)
+      knuckle: Knuckle(Sub)
+      one-hand-sword: One-Hand Sword(Dual Sword Sub)
+      ninjutsu-scroll: Ninjutsu Scroll
     body:
-      body-dodge: 輕化防具
-      body-defense: 重化防具
-      body-normal: 一般防具
+      body-normal: Normal Armor
+      body-dodge: Light Armor
+      body-defense: Heavy Armor
   obtain:
-    mobs: 小怪
-    boss: 定點BOSS
-    mini_boss: 地圖BOSS
-    quest: 任務
-    smith: 鐵匠鋪
-    create equipment: 製作裝備
-    all smith: 各個城鎮的鐵匠鋪
-    no data: 尚無資料
-    unknow: 未知
-    other: 其它
-    box: 箱子道具
-    exchange: 交換所
-    ex_skill: EX技能
+    mobs: Mobs Drop
+    boss: Boss Drop
+    mini_boss: Mini Boss Drop
+    quest: Quest Reward
+    smith: Smith craft
+    create-equipment: 製作裝備
+    no-data: No Data
+    unknow: Unknown
+    other: Other
+    box: Loot Box content具
+    exchange: Exchange
+    ex_skill: EX SKill
+Stat:
+  type-total: Total {text}
 Auto Save:
   "message: unknow error when save": 自動存檔時發生未知的錯誤。
   "message: unknow error when load": 自動讀取時發生未知的錯誤。

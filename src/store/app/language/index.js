@@ -16,6 +16,7 @@ const store = {
     primaryLangId: 0,
     secondaryLangId: 0,
     i18n: null,
+    i18nMessageLoaded: false,
   },
   getters: {
     primaryLang(state) {
@@ -94,6 +95,9 @@ const store = {
     setI18nInstance(state, i18n) {
       state.i18n = i18n;
     },
+    markI18nMessageLoaded(state) {
+      state.i18nMessageLoaded = true;
+    },
   },
   actions: {
     init({ dispatch, commit, getters }, initData) {
@@ -145,7 +149,7 @@ const store = {
         dispatch('autoSetLang');
       }
     },
-    async updateLocalMessages({ state, getters }) {
+    async updateLocalMessages({ state, getters, commit, dispatch }) {
       const primaryLocale = getters.primaryLocale;
       const fallbackLocale = getters.secondaryLocale;
       const loadData = async (locale) => {
@@ -165,6 +169,9 @@ const store = {
       const fallbackMessages = await loadData(fallbackLocale);
       state.i18n.setLocaleMessage(primaryLocale, messages);
       state.i18n.setLocaleMessage(fallbackLocale, fallbackMessages);
+
+      commit('markI18nMessageLoaded');
+      dispatch('main/updateTitle', null, { root: true });
     },
   },
 };

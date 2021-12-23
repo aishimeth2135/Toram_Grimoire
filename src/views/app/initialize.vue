@@ -1,111 +1,59 @@
 <template>
-  <div v-show="status !== 3 && !skipInit" class="app--initialize">
+  <div
+    v-if="status !== 3 && !skipInit"
+    class="w-full h-full fixed top-0 left-0 bg-white z-100 flex items-center justify-center p-4"
+  >
     <template v-if="status < 3">
-      <div class="content-container">
-        <div class="main">
-          <loading-animation :status="status" @done="$store.commit('initialize/initFinished')" />
+      <div class="max-w-full text-center w-128">
+        <div class="border-b border-light pb-4">
+          <LoadingAnimation :status="status" @done="$store.commit('initialize/initFinished')" />
         </div>
-        <div class="msg">
-          <div v-for="item in initItems" :key="item.msg" class="column">
-            <span class="text">{{ item.msg }}</span>
+        <div class="pt-8 inline-block">
+          <div v-for="item in initItems" :key="item.msg" class="flex justify-center items-center mb-2 pl-1">
+            <span class="mr-3 w-full text-light-4">{{ t(item.msg) }}</span>
             <cy-icon-text
-              class="status-icon"
+              class="flex"
               :icon="statusIcon(item.status)"
-              :class="{ 'loading': item.status === 0, 'error': item.status === -1 }"
+              :class="{ 'loading-circle': item.status === 0 }"
+              :icon-color="item.status === -1 ? 'red' : 'water-blue'"
             />
           </div>
         </div>
       </div>
-      <div class="bottom-tips" v-html="$rootLang('Loading Page/bottom tips')" />
+      <div class="absolute right-4 bottom-4 text-sm">
+        <div>{{ t('app.loading-message.bottom-tips.0') }}</div>
+        <div>{{ t('app.loading-message.bottom-tips.1') }}</div>
+      </div>
     </template>
   </div>
 </template>
 
-<script>
-import { mapState } from 'vuex';
+<script setup>
+import { useI18n } from 'vue-i18n';
+import { createNamespacedHelpers } from 'vuex-composition-helpers';
 
-import vue_loadingAnimation from './initialization/loading-animation.vue';
+import LoadingAnimation from './initialization/loading-animation.vue';
 
-export default {
-  methods: {
-    statusIcon(v) {
-      if (v >= 0)
-        return ['mdi-loading', 'ic-round-check-circle-outline'][v];
-      return 'ic-round-close';
-    },
-  },
-  computed: {
-    ...mapState('initialize', ['initItems', 'status', 'msgItems', 'skipInit']),
-  },
-  components: {
-    'loading-animation': vue_loadingAnimation,
-  },
+const { useState } = createNamespacedHelpers('initialize');
+
+const {
+  initItems,
+  status,
+  skipInit,
+} = useState(['initItems', 'status', 'msgItems', 'skipInit']);
+
+const { t } = useI18n();
+const statusIcon = (value) => {
+  if (value >= 0) {
+    return ['mdi-loading', 'ic-round-check-circle-outline'][value];
+  }
+  return 'ic-round-close';
 };
 </script>
 
 <style lang="less" scoped>
-.app--initialize {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: var(--white);
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-
-  > .bottom-tips {
-    position: absolute;
-    right: 1rem;
-    bottom: 1rem;
-    font-size: 0.9rem;
-  }
-
-  > .content-container {
-    width: 30rem;
-    max-width: 100%;
-    text-align: center;
-
-    > .main {
-      border-bottom: 1px var(--primary-light) solid;
-      padding-bottom: 1rem;
-    }
-
-    > .msg {
-      padding-top: 2rem;
-      display: inline-block;
-
-      > .column {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 0.5rem;
-        padding-left: 2rem;
-
-        > .text {
-          margin-right: 0.8rem;
-          width: 100%;
-          color: var(--primary-light-4);
-        }
-        > .status-icon {
-          display: flex;
-        }
-        > .status-icon {
-          --icon-color: var(--primary-water-blue);
-
-          &.loading {
-            animation: loading-circle 0.8s ease infinite;
-          }
-          &.error {
-            --icon-color: var(--primary-red);
-          }
-        }
-      }
-    }
-  }
+&.loading-circle {
+  animation: loading-circle 0.8s ease infinite;
 }
 @keyframes loading-circle {
   0% {

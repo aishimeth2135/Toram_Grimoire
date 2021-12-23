@@ -1,7 +1,6 @@
 
 import type { RouteRecordRaw } from 'vue-router';
 
-import GetLang from '@/shared/services/Language';
 import ViewInit from '@/shared/services/ViewInit';
 
 import WrapperView from './wrapper.vue';
@@ -17,7 +16,7 @@ export default {
   },
   meta: {
     leftMenuViewButtons: [{
-      title: () => GetLang('Page Title/skill-query'),
+      title: 'app.page-title.skill-query',
       icon: 'ic-outline-menu-book',
       path: '',
     }],
@@ -26,13 +25,13 @@ export default {
     path: '',
     component: SkillQueryView,
     meta: {
-      title: () => GetLang('Page Title/skill-query'),
+      title: 'app.page-title.skill-query',
     },
   }, {
     path: 'beta',
     component: SkillQueryBetaView,
     meta: {
-      title: () => GetLang('Page Title/skill-query'),
+      title: 'app.page-title.skill-query',
     },
   }],
 } as RouteRecordRaw;
