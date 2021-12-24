@@ -1,6 +1,6 @@
 <template>
   <div v-if="effectItem">
-    <div v-if="tabVisible" class="space-x-2 mb-3">
+    <div v-if="tabVisible" class="space-x-2 mb-3 px-2">
       <cy-button-inline
         icon="bx:bxs-book-bookmark"
         class="skill-effect-tab-button"

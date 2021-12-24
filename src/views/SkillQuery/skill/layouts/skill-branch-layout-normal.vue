@@ -113,6 +113,10 @@ const subContentDatas = computed(() => {
 .sub-content-item {
   margin: 0.1rem 0;
   @apply mr-3 inline-flex items-center;
+
+  & .text-light-3 {
+    @apply text-purple;
+  }
 }
 
 .skill-branch-layout-normal {

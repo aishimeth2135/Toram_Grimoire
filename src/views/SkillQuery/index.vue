@@ -77,10 +77,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, nextTick } from 'vue';
+import { computed, ref, nextTick, watch } from 'vue';
 import type { Ref, ComputedRef } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
 
 import { SkillRoot, SkillTree, SkillTreeCategory, Skill } from '@/lib/Skill/Skill';
 import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer';
@@ -101,6 +102,9 @@ const { toggle, contents } = ToggleService({
 });
 
 const { t } = useI18n();
+
+const router = useRouter();
+const route = useRoute();
 
 const skillEffectElement: Ref<HTMLElement | null> = ref(null);
 const jumpToSkillEffect = async () => {
@@ -127,27 +131,40 @@ const selectCurrentSkillTreeCategory = (stc: SkillTreeCategory) => {
   currentSkillTreeCategory.value = stc;
   currentSkillTree.value = null;
   currentSkill.value = null;
+  toggle('contents/skillEffect', false);
 };
 
 const selectCurrentSkillTree = (st: SkillTree) => {
   currentSkillTree.value = st;
   currentSkill.value = null;
+  toggle('contents/skillEffect', false);
 };
 
-const selectCurrentSkill = (skill: Skill) => {
+const selectCurrentSkill = (skill: Skill, syncParent = false) => {
+  if (syncParent) {
+    currentSkillTreeCategory.value = skill.parent.parent;
+    currentSkillTree.value = skill.parent;
+  }
   currentSkill.value = skill;
   toggle('contents/skillEffect', true);
   jumpToSkillEffect();
 };
 
 const selectCurrentSkillFromSearch = (skill: Skill) => {
-  currentSkillTreeCategory.value = skill.parent.parent;
-  currentSkillTree.value = skill.parent;
-  currentSkill.value = skill;
   toggle('contents/search');
-  toggle('contents/skillEffect', true);
-  jumpToSkillEffect();
+  selectCurrentSkill(skill, true);
 };
+
+if (route.params.skillName) {
+  const skill = skillRoot.value.findSkillByName((route.params.skillName as string).replaceAll('-', ' '));
+  if (skill) {
+    selectCurrentSkill(skill, true);
+  }
+}
+
+watch(currentSkill, skill => {
+  router.replace({ name: 'SkillQuery', params: { skillName: skill ? skill.name.replaceAll(' ', '-') : '' } });
+});
 
 const currentEquipment: Ref<EquipmentRestriction> = ref({
   main: null,

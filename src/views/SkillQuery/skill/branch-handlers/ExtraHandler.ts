@@ -27,21 +27,23 @@ export default function ExtraHandler(branchItem: SkillBranchItemSuffix) {
   const filters = new MapContainer<HandleDisplayDataOptionFilters>();
   const valueAttrsMap = new MapContainer<HandleBranchValueAttrsMap>();
   const textAttrsMap = new MapContainer<HandleBranchTextAttrsMap>();
+  const pureValues = [];
 
   if (mainBranch.name === 'damage') {
     valueAttrsMap.set('ailment_chance', '%');
     filters.set('caption', value => !!value);
-    textAttrsMap.append('caption');
-    textAttrsMap.append('condition');
+    filters.set('element', value => !!value);
+    textAttrsMap.append('caption', 'condition');
+    pureValues.push('element');
   } else if (['effect', 'next', 'passive'].includes(mainBranch.name)) {
     filters.set('caption', value => !!value);
-    textAttrsMap.append('caption');
-    textAttrsMap.append('condition');
+    textAttrsMap.append('caption', 'condition');
   }
 
   return handleDisplayData(branchItem, attrs, {
     values: valueAttrsMap.value,
     texts: textAttrsMap.value,
     filters: filters.value,
+    pureValues,
   });
 }

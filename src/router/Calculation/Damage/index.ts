@@ -8,6 +8,7 @@ import WrapperView from './wrapper.vue';
 const DamageCalculatiomView = () => import(/* webpackChunkName: "damage-calculation" */ '@/views/Calculation/DamageCalculation/index.vue');
 
 export default {
+  name: 'DamageCalculation',
   path: '/damage-calculation',
   component: WrapperView,
   beforeEnter(to, from, next) {
@@ -21,6 +22,7 @@ export default {
     }],
   },
   children: [{
+    name: 'DamageCalculationMain',
     path: '',
     component: DamageCalculatiomView,
     meta: {

@@ -110,8 +110,6 @@ abstract class CharacterEquipment {
   getCategoryImagePath(fieldId = -1): string {
     if (this instanceof Avatar) {
       fieldId = 0;
-    } else {
-      return '#';
     }
     return CharacterEquipment.getImagePath(this.type, fieldId);
   }

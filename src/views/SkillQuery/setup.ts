@@ -78,7 +78,6 @@ function setupComputingContainer(skill: Ref<Skill | null>) {
 
   const setStackValue = (branchItem: SkillBranchItem, value: number) => {
     const stackId = branchItem.stackId;
-    console.log(branchItem, stackId, value);
     if (typeof stackId !== 'number') {
       return;
     }

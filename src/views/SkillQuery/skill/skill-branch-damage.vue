@@ -159,7 +159,12 @@ const subContents = computed(() => {
 
 const extraSuffixBranchDatas = computed(() => {
   return branchItem.value.suffixBranches
-    .filter(suffix => suffix.name === SkillBranchNames.Extra && (suffix.attr('caption') || suffix.stats.length > 0))
+    .filter(suffix => suffix.name === SkillBranchNames.Extra && (
+      suffix.attr('caption') ||
+      suffix.attr('ailment_name') ||
+      suffix.attr('element') ||
+      suffix.stats.length > 0
+    ))
     .map((suffix, idx) => {
       const dataContainer = ExtraHandler(suffix);
       const baseData: ComponentPropsType<typeof SkillBranchExtraColumn> & { iid: number } = {

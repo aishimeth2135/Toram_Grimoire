@@ -337,7 +337,7 @@ const Render = () => {
 
 <style lang="less" scoped>
 .main--draw-skill-area {
-  max-height: 20rem;
-  max-width: 25rem;
+  max-height: 16rem;
+  max-width: 100%;
 }
 </style>

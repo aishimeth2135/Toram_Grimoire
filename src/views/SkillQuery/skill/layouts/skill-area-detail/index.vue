@@ -1,7 +1,7 @@
 <template>
   <cy-transition type="fade">
-    <div class="m-3 flex flex-wrap items-start p-3">
-      <div class="inline-block">
+    <div class="m-3 p-3 flex items-center flex-wrap">
+      <div>
         <SkillAreaAnimation :container="container"/>
         <div class="text-center">
           <cy-icon-text
@@ -21,7 +21,7 @@
           </cy-icon-text>
         </div>
       </div>
-      <div class="inline-block pt-4 pl-4">
+      <div class="pt-4 pl-4">
         <table class="attrs-table">
           <tbody>
             <tr>

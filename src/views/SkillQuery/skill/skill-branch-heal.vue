@@ -44,11 +44,11 @@ const subContents = computed(() => {
     key: 'frequency',
     icon: 'bi-circle-square',
   });
-  if (container.value.get('duration') && container.value.get('cycle')) {
+  if (container.value.getValue('duration') !== '0' && container.value.getValue('cycle') !== '0') {
     result.push({
-      key: 'duration+cycle',
+      key: 'duration|cycle',
       icon: 'ic-round-timer',
-      title: t('skill-query.branch.heal.duration-caption-with-cycle', {
+      title: t('skill-query.branch.damage.duration-caption-with-cycle', {
         duration: container.value.get('duration'),
         cycle: container.value.get('cycle'),
       }),

@@ -1,12 +1,12 @@
 <template>
-  <div class="flex items-center space-x-2">
-    <div class="cy--text-underline text-light-2 flex items-center">
+  <div class="flex items-center flex-wrap">
+    <div class="cy--text-underline text-light-2 flex items-center mr-2 mt-0.5">
       <cy-icon-text icon="mdi-sword" display-block>
         {{ t('skill-query.branch.proration.proration: title') }}
       </cy-icon-text>
       <div class="text-light-3 ml-1.5" v-html="container.get('proration')"></div>
     </div>
-    <div class="cy--text-underline text-light-2 flex items-center">
+    <div class="cy--text-underline text-light-2 flex items-center mt-0.5">
       <cy-icon-text icon="mdi-sword" display-block>
         {{ t('skill-query.branch.proration.damage: title') }}
       </cy-icon-text>

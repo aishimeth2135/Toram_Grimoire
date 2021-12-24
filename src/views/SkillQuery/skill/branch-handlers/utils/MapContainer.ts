@@ -11,8 +11,8 @@ export default class MapContainer<AttrMap extends Record<string, any>> {
     }
   }
 
-  append(key: keyof AttrMap) {
-    this._attrMap[key] = (null) as AttrMap[keyof AttrMap];
+  append(...keys: (keyof AttrMap)[]) {
+    keys.forEach(key => this._attrMap[key] = (null) as AttrMap[keyof AttrMap]);
   }
 
   remove(key: keyof AttrMap) {

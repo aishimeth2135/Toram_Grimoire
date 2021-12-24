@@ -205,6 +205,14 @@ const subButtonAvailable = computed(() => {
   @apply bg-blue-purple bg-opacity-10;
 }
 
+:deep(.result-value--stack) {
+  @apply text-water-blue;
+
+  &.value-dark {
+    @apply text-blue-green;
+  }
+}
+
 :deep(.skill-formula-function-wrapper) {
   @apply rounded-md pr-1 pl-2 mx-0.5 inline-flex items-center;
 

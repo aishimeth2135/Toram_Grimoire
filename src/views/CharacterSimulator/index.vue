@@ -60,14 +60,12 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 
-
-
 import { Character, EquipmentField } from '@/lib/Character/Character';
 import { CharacterBaseStatTypes, CharacterOptionalBaseStatTypes } from '@/lib/Character/Character/enums';
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums';
 import { EquipmentTypes, MainWeaponTypeList } from '@/lib/Character/CharacterEquipment/enums';
 
-import createSkillState from '@/views/SkillQuery/utils/createSkillState.js';
+import createSkillState from '@/views/SkillQueryOld/utils/createSkillState.js';
 
 import vue_characterStats from './character-stats/main.vue';
 import vue_character from './character.vue';

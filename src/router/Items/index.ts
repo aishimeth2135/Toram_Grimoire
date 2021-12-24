@@ -9,6 +9,7 @@ const ItemQueryView = () => import(/* webpackChunkName: "item-query" */ '@/views
 const CrystalQueryView = () => import(/* webpackChunkName: "crystal-query" */ '@/views/Items/CrystalQuery/index.vue');
 
 export default {
+  name: 'Items',
   path: '/items',
   component: WrapperView,
   beforeEnter(to, from, next) {
@@ -26,12 +27,14 @@ export default {
     }],
   },
   children: [{
+    name: 'ItemsQuery',
     path: '',
     component: ItemQueryView,
     meta: {
       title: 'app.page-title.item-query',
     },
   }, {
+    name: 'CrystalQuery',
     path: 'crystal',
     component: CrystalQueryView,
     meta: {

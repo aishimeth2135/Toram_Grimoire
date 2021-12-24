@@ -9,6 +9,7 @@ const CharacterSimulatorView = () => import(/* webpackChunkName: "character-simu
 const SkillSimulatorView = () => import(/* webpackChunkName: "skill-simulator" */ '@/views/SkillSimulator/index.vue');
 
 export default {
+  name: 'Character',
   path: '/character',
   component: WrapperView,
   beforeEnter(to, from, next) {
@@ -26,12 +27,14 @@ export default {
     }],
   },
   children: [{
+    name: 'CharacterSimulator',
     path: '',
     component: CharacterSimulatorView,
     meta: {
       title: 'app.page-title.character-simulator',
     },
   }, {
+    name: 'SkillSimulator',
     path: 'skill',
     component: SkillSimulatorView,
     meta: {

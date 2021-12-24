@@ -143,8 +143,10 @@ function handleDisplayData<Branch extends SkillBranchItemBase>(
       delete attrs[key];
       delete values[key];
       delete texts[key];
-      const idx = titles.indexOf(key);
-      idx > -1 && titles.splice(idx, 1);
+      const idxTitle = titles.indexOf(key);
+      idxTitle > -1 && titles.splice(idxTitle, 1);
+      const idxPureValues = pureValues.indexOf(key);
+      idxPureValues > -1 && pureValues.splice(idxPureValues, 1);
     }
   });
 

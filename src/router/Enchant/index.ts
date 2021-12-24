@@ -9,6 +9,7 @@ const EnchantSimulatorView = () => import(/* webpackChunkName: "enchant-simulato
 const EnchantDollView = () => import(/* webpackChunkName: "enchant-doll" */ '@/views/Enchant/EnchantDoll/index.vue');
 
 export default {
+  name: 'Enchant',
   path: '/enchant',
   component: WrapperView,
   beforeEnter(to, from, next) {
@@ -26,12 +27,14 @@ export default {
     }],
   },
   children: [{
+    name: 'EnchantSimulator',
     path: '',
     component: EnchantSimulatorView,
     meta: {
       title: 'app.page-title.enchant-simulator',
     },
   }, {
+    name: 'EnchantDoll',
     path: 'doll',
     component: EnchantDollView,
     meta: {
