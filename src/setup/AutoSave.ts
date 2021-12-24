@@ -1,7 +1,7 @@
 import { onUnmounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import Notify from './Notify';
-import RegisterLang from './RegisterLang';
 
 type AutoSaveOptions = {
   readonly save: () => void;
@@ -9,20 +9,20 @@ type AutoSaveOptions = {
 };
 
 export default function ({ save, loadFirst }: AutoSaveOptions): void {
-  const { lang } = RegisterLang('common/Export build');
+  const { t } = useI18n();
   const { notify } = Notify();
 
   try {
     loadFirst();
   } catch (error) {
-    notify(lang('common/Auto Save/message: unknow error when load'));
+    notify(t('common.auto-save.load-unknow-error-tips'));
     return;
   }
   const saveHandler = () => {
     try {
       save();
     } catch (error) {
-      notify(lang('common/Auto Save/message: unknow error when save'));
+      notify(t('common.auto-save.save-unknow-error-tips'));
     }
   };
   const beforeunload = () => saveHandler();

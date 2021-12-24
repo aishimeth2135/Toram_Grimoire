@@ -39,26 +39,15 @@
   </nav>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { mapState } from 'vuex';
+import { useStore } from 'vuex';
 
-import vue_leftMenu from './left-menu.vue';
-import vue_settings from './settings.vue';
+import AppLeftMenu from './left-menu.vue';
+import AppSettings from './settings.vue';
 
-export default {
-  setup() {
-    const { t } = useI18n();
-    return {
-      t,
-    };
-  },
-  computed: {
-    ...mapState('nav', ['items']),
-  },
-  components: {
-    AppLeftMenu: vue_leftMenu,
-    AppSettings: vue_settings,
-  },
-};
+const { t } = useI18n();
+const store = useStore();
+const items = computed(() => store.state.nav.items);
 </script>

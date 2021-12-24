@@ -22,13 +22,13 @@ export default {
     }],
   },
   children: [{
-    path: '',
+    path: 'old',
     component: SkillQueryView,
     meta: {
       title: 'app.page-title.skill-query',
     },
   }, {
-    path: 'beta',
+    path: ':skillName?',
     component: SkillQueryBetaView,
     meta: {
       title: 'app.page-title.skill-query',

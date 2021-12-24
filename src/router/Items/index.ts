@@ -16,11 +16,11 @@ export default {
   },
   meta: {
     leftMenuViewButtons: [{
-      title: 'app.page-title/item-query',
+      title: 'app.page-title.item-query',
       icon: 'jam-box-f',
       path: '',
     }, {
-      title: 'app.page-title/crystal-query',
+      title: 'app.page-title.crystal-query',
       icon: 'bx-bx-cube-alt',
       path: '/crystal',
     }],

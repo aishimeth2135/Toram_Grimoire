@@ -2,8 +2,8 @@
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums';
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums';
 
-import DataContainer from '@/views/SkillQuery/utils/DataContainer.js';
-import handleSkillFormula from '@/views/SkillQuery/utils/handleFormula.js';
+import DataContainer from '@/views/SkillQueryOld/utils/DataContainer.js';
+import handleSkillFormula from '@/views/SkillQueryOld/utils/handleFormula.js';
 class SkillBranchHandler {
   constructor({ branch, skillState, levelSkill, view, skillItemType }) {
     this.branch = branch;

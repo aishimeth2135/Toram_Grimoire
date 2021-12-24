@@ -19,64 +19,65 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
+// @ts-ignore
 import Velocity from 'velocity-animate';
+import { ref } from 'vue';
 
-export default {
-  props: ['status'],
-  emits: ['done'],
-  data() {
-    return {
-      end: false,
-    };
-  },
-  methods: {
-    beforeLeave(el) {
-      el.classList.remove('start-icon');
+interface Props {
+  status: number;
+}
+interface Emits {
+  (evt: 'done'): void;
+}
+
+defineProps<Props>();
+const emit = defineEmits<Emits>();
+
+const end = ref(false);
+
+const beforeLeave = (el: Element) => {
+  el.classList.remove('start-icon');
+};
+const leave = (el: Element, done: Function) => {
+  Velocity(el, {
+    rotateY: '0deg',
+  }, {
+    duration: 100,
+  });
+  Velocity(el, {
+    rotateY: '+=360deg',
+  }, {
+    duration: 700, easing: [0.42, 0, 1.0, 1.0],
+    complete: () => {
+      end.value = true;
+      done();
     },
-    leave(el, done) {
-      Velocity(el, {
-        rotateY: '0deg',
-      }, {
-        duration: 100,
-      });
-      Velocity(el, {
-        rotateY: '+=360deg',
-      }, {
-        duration: 700, easing: [0.42, 0, 1.0, 1.0],
-        complete: () => {
-          this.end = true;
-          done();
-        },
-      });
+  });
+};
+const enter = (el: Element, done: Function) => {
+  const pwhite = getComputedStyle(document.body).getPropertyValue('--white').trim();
+  const opts = window.innerHeight > window.innerWidth ? {
+    width: '150vh',
+    height: '150vh',
+    left: '-=75vh',
+    top: '-=75vh',
+  } : {
+    width: '150vw',
+    height: '150vw',
+    left: '-=75vw',
+    top: '-=75vw',
+  };
+  Velocity(el, {
+    backgroundColor: pwhite,
+    ...opts,
+  }, {
+    duration: 600,
+    complete: () => {
+      done();
+      setTimeout(() => emit('done'), 100);
     },
-    beforeEnter() {
-    },
-    enter(el, done) {
-      const pwhite = getComputedStyle(document.body).getPropertyValue('--white').trim();
-      const opts = window.innerHeight > window.innerWidth ? {
-        width: '150vh',
-        height: '150vh',
-        left: '-=75vh',
-        top: '-=75vh',
-      } : {
-        width: '150vw',
-        height: '150vw',
-        left: '-=75vw',
-        top: '-=75vw',
-      };
-      Velocity(el, {
-        backgroundColor: pwhite,
-        ...opts,
-      }, {
-        duration: 600,
-        complete: () => {
-          done();
-          setTimeout(() => this.$emit('done'), 100);
-        },
-      });
-    },
-  },
+  });
 };
 </script>
 

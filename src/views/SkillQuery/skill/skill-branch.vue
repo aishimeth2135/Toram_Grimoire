@@ -202,12 +202,6 @@ const subButtonAvailable = computed(() => {
 }
 
 :deep(.history-compare--mark) {
-  /* position: relative;
-
-  &::after {
-    content: '';
-    @apply h-2 w-2 rounded-full bg-blue-purple absolute top-0 -right-2;
-  } */
   @apply bg-blue-purple bg-opacity-10;
 }
 
@@ -242,12 +236,10 @@ const subButtonAvailable = computed(() => {
     }
   }
   & > .value {
-    background-color: var(--white);
-    @apply rounded ml-1.5 mr-1 px-2 inline-flex items-center text-sm;
+    @apply bg-white rounded ml-1.5 mr-1 px-2 inline-flex items-center text-sm;
 
     & > .param-separate {
-      @apply inline-block border-l-1 mx-2 mt-0.5;
-      height: 0.75rem;
+      @apply inline-block border-l-1 mx-2 mt-0.5 h-3;
     }
   }
 }

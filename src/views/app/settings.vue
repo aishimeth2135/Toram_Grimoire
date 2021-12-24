@@ -32,7 +32,7 @@
           {{ t('app.settings.update.force-update') }}
         </cy-button-border>
       </div>
-      <fieldset class="column">
+      <fieldset class="app--settings-column">
         <legend>
           <cy-icon-text icon="ic-round-text-fields" text-color="purple">
             {{ t('app.settings.switch-font.title') }}
@@ -54,7 +54,7 @@
           </cy-button-check>
         </div>
       </fieldset>
-      <fieldset class="column">
+      <fieldset class="app--settings-column">
         <legend>
           <cy-icon-text icon="mdi-weather-night" text-color="purple">
             {{ t('app.settings.night-mode.title') }}
@@ -70,7 +70,7 @@
           </cy-button-check>
         </div>
       </fieldset>
-      <fieldset class="column">
+      <fieldset class="app--settings-column">
         <legend>
           <cy-icon-text icon="bx-bx-ruler" text-color="purple">
             {{ t('app.settings.set-rem.title') }}
@@ -92,7 +92,7 @@
           </cy-input-counter>
         </div>
       </fieldset>
-      <fieldset class="column">
+      <fieldset class="app--settings-column">
         <legend>
           <cy-icon-text icon="ion-language" text-color="purple">
             {{ t('app.settings.primary-language.title') }}
@@ -120,7 +120,7 @@
           </cy-button-check>
         </div>
       </fieldset>
-      <fieldset class="column">
+      <fieldset class="app--settings-column">
         <legend>
           <cy-icon-text icon="ion-language" text-color="purple">
             {{ t('app.settings.secondary-language.title') }}
@@ -146,7 +146,7 @@
           </cy-button-check>
         </div>
       </fieldset>
-      <fieldset class="column">
+      <fieldset class="app--settings-column">
         <legend>
           <cy-icon-text icon="carbon-cloud-data-ops" text-color="purple">
             {{ t('app.settings.clear-spreadsheets-caches.title') }}
@@ -170,7 +170,7 @@
           </cy-button-border>
         </div>
       </fieldset>
-      <fieldset class="column">
+      <fieldset class="app--settings-column">
         <legend>
           <cy-icon-text icon="ic-round-save">
             {{ t('app.settings.storage-backup.title') }}
@@ -343,7 +343,7 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-.column {
+.app--settings-column {
   @apply py-2 px-5 mb-3 border-1 border-solid border-light;
 
   & > .caption {

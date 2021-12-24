@@ -95,7 +95,7 @@ export default {
   left: 0;
   display: flex;
   justify-content: center;
-  z-index: 50;
+  z-index: 49;
   background-color: rgba(var(--rgb-black), 0.1);
 
   & > .content-container {

@@ -57,21 +57,22 @@ Equipment:
     mini_boss: Mini Boss Drop
     quest: Quest Reward
     smith: Smith craft
-    create-equipment: 製作裝備
+    create-equipment: Create Equipment
     no-data: No Data
     unknow: Unknown
     other: Other
-    box: Loot Box content具
+    box: Loot Box content
     exchange: Exchange
-    ex_skill: EX SKill
+    ex_skill: Ex SKill
 Stat:
   type-total: Total {text}
-Auto Save:
-  "message: unknow error when save": 自動存檔時發生未知的錯誤。
-  "message: unknow error when load": 自動讀取時發生未知的錯誤。
-Export build:
-  "message: unknow error when save": 產生檔案時發生未知的錯誤。
-  "message: load successfully": 讀取成功。
-  "message: unknow error when load": 讀取時發生未知的錯誤。
-  "message: load failed": 解析檔案時發生錯誤，檔案內容的格式可能有誤。
-  "message: wrong type of .txt file": 讀取的檔案必須為文字（.txt）檔。
+auto-save:
+  save-unknow-error-tips: 自動存檔時發生未知的錯誤。
+  load-unknow-error-tips: 自動讀取時發生未知的錯誤。
+export-build:
+  save-unknow-error-tips: 產生檔案時發生未知的錯誤。
+  load-success-tips: 產生檔案時發生未知的錯誤。
+  load-unknow-error-tips: 讀取時發生未知的錯誤。
+  load-failed-tips: 解析檔案時發生錯誤，檔案內容的格式可能有誤。
+  load-wrong-file-type-tips: 讀取的檔案必須為文字（.txt）檔。
+

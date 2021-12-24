@@ -1,7 +1,8 @@
+import { useI18n } from 'vue-i18n';
+
 import CY from '@/shared/utils/Cyteria';
 
 import Notify from './Notify';
-import RegisterLang from './RegisterLang';
 
 type ExportBuildsSaveHandler = (fileName: string, dataString: string) => void;
 
@@ -11,7 +12,7 @@ type ExportBuildsOptions = {
 };
 
 export default function({ save, loaded }: ExportBuildsOptions) {
-  const { lang } = RegisterLang('common/Export build');
+  const { t } = useI18n();
   const { notify } = Notify();
 
   const exportBuild = () => {
@@ -24,7 +25,7 @@ export default function({ save, loaded }: ExportBuildsOptions) {
       };
       save(handleSave);
     } catch (error) {
-      notify(lang('message: unknow error when save'));
+      notify(t('common.export-build.save-unknow-error-tips'));
       return;
     }
   };
@@ -34,15 +35,15 @@ export default function({ save, loaded }: ExportBuildsOptions) {
       succeed: res => {
         try {
           loaded(res);
-          notify(lang('message: load successfully'));
+          notify(t('common.export-build.load-success-tips'));
         } catch (error) {
-          notify(lang('message: load failed'));
+          notify(t('common.export-build.load-failed-tips'));
         }
       },
-      error: () => notify(lang('message: unknow error when load')),
+      error: () => notify(t('common.export-build.load-unknow-error-tips')),
       checkFileType: fileType => {
         if (fileType !== 'txt') {
-          notify(lang('message: wrong type of .txt file'));
+          notify(t('common.export-build.load-wrong-file-type-tips'));
           return false;
         }
         return true;

@@ -1,5 +1,5 @@
 <template>
-  <div class="main--show-message">
+  <div class="fixed bottom-14 right-5 w-80 z-50;" style="max-width: calc(100vw - 2rem)">
     <transition-group name="fade-slide">
       <div
         v-for="msg in messages"
@@ -54,15 +54,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.main--show-message {
-  position: fixed;
-  bottom: 3.3rem;
-  right: 1.2rem;
-  max-width: calc(100vw - 2rem);
-  width: 20rem;
-  z-index: 60;
-}
-
 .fade-slide-enter-from {
   opacity: 0;
   transform: translateX(-30%);

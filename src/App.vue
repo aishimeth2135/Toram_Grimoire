@@ -9,6 +9,14 @@
       <AppNotify />
       <AppLoading />
     </template>
+    <div class="fixed w-full h-full flex items-center justify-center bg-white">
+      <div class="flex justify-center flex-wrap">
+        <LoadingAnimation :status="0" />
+        <div class="text-xl w-full text-center mt-2 text-light-2">
+          Load language data...
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -28,7 +36,7 @@ import AppInitialize from '@/views/app/initialize.vue';
 import AppLoading from '@/views/app/loading.vue';
 import AppNav from '@/views/app/nav.vue';
 import AppNotify from '@/views/app/notify.vue';
-
+import LoadingAnimation from '@/views/app/initialization/loading-animation.vue';
 
 onMounted(() => {
   const el = document.getElementById('app--error');

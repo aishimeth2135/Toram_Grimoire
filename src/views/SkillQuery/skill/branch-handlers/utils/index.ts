@@ -17,7 +17,7 @@ import { ResultContainer, ResultContainerBase } from '@/lib/Skill/SkillComputing
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums';
 import { StatComputed } from '@/lib/Character/Stat';
 
-import { createTagButtons } from '@/views/SkillQuery_/utils';
+import { createTagButtons } from '@/views/SkillQuery/utils';
 
 import DisplayDataContainer from './DisplayDataContainer';
 import { handleFunctionHighlight } from './utils';

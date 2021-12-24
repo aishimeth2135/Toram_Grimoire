@@ -1,16 +1,9 @@
 import Grimoire from '@/shared/Grimoire';
-import GetLang from '@/shared/services/Language';
 import { isNumberString } from '@/shared/utils/string';
 
 import { StatTypes } from './enums';
 
-
-function Lang(id: string) {
-  return GetLang('stat base/' + id);
-}
-
 type StatValue = number | string;
-
 class StatBase {
   static sortStats = function(stats: Stat[], type = 'simple') {
     if (type === 'simple')
@@ -77,7 +70,7 @@ class StatBase {
       case StatTypes.Multiplier:
         return handleFormula(this.multiplierDisplayFormat, '%');
       case StatTypes.Total:
-        return handleFormula(Lang('type total: preText') + '$t$s$v$u', '%');
+        return handleFormula(Grimoire.i18n.t('common.Stat.type-total', { text: '$t$s$v$u' }), '%');
     }
   }
 

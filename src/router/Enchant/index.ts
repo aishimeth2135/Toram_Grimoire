@@ -5,8 +5,8 @@ import ViewInit from '@/shared/services/ViewInit';
 
 import WrapperView from './wrapper.vue';
 
-const vue_enchantSimulator = () => import(/* webpackChunkName: "enchant-simulator" */ '@/views/Enchant/EnchantSimulator/index.vue');
-const vue_enchantDoll = () => import(/* webpackChunkName: "enchant-doll" */ '@/views/Enchant/EnchantDoll/index.vue');
+const EnchantSimulatorView = () => import(/* webpackChunkName: "enchant-simulator" */ '@/views/Enchant/EnchantSimulator/index.vue');
+const EnchantDollView = () => import(/* webpackChunkName: "enchant-doll" */ '@/views/Enchant/EnchantDoll/index.vue');
 
 export default {
   path: '/enchant',
@@ -27,13 +27,13 @@ export default {
   },
   children: [{
     path: '',
-    component: vue_enchantSimulator,
+    component: EnchantSimulatorView,
     meta: {
       title: 'app.page-title.enchant-simulator',
     },
   }, {
     path: 'doll',
-    component: vue_enchantDoll,
+    component: EnchantDollView,
     meta: {
       title: 'app.page-title.enchant-doll',
     },

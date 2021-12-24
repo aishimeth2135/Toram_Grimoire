@@ -96,17 +96,6 @@ export default function() {
           'ex_skill': 'EX技能',
         },
       },
-      'Auto Save': {
-        'message: unknow error when save': '自動存檔時發生未知的錯誤。',
-        'message: unknow error when load': '自動讀取時發生未知的錯誤。',
-      },
-      'Export build': {
-        'message: unknow error when save': '產生檔案時發生未知的錯誤。',
-        'message: load successfully': '讀取成功。',
-        'message: unknow error when load': '讀取時發生未知的錯誤。',
-        'message: load failed': '解析檔案時發生錯誤，檔案內容的格式可能有誤。',
-        'message: wrong type of .txt file': '讀取的檔案必須為文字（.txt）檔。',
-      },
     },
   };
 }
