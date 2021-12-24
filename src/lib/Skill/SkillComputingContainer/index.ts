@@ -133,7 +133,7 @@ class SkillEffectItem extends SkillEffectItemBase {
       dualSwordRegress,
     ));
 
-    this.historys = markRaw(current.historys.map(history => new SkillEffectItemHistory(parent, this, history)));
+    this.historys = current.historys.map(history => new SkillEffectItemHistory(parent, this, history));
 
     if (from) {
       effectOverwrite(this, from);
@@ -141,7 +141,6 @@ class SkillEffectItem extends SkillEffectItemBase {
     setBranchAttrsDefaultValue(this);
 
     regressHistoryBranches(this);
-    this.historys.forEach(history => initStackStates(history));
 
     separateSuffixBranches(this);
     handleVirtualBranches(this);
@@ -149,6 +148,7 @@ class SkillEffectItem extends SkillEffectItemBase {
     this.historys.forEach(history => {
       separateSuffixBranches(history);
       handleVirtualBranches(history);
+      initStackStates(history);
       initHistoryNexts(history);
     });
 
@@ -195,7 +195,7 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
     this.origin = historyEffect;
     this.parentEffect = parentEffect;
     this.date = historyEffect.date;
-    this.nexts = markRaw(new Map());
+    this.nexts = new Map();
     this.introductionBranches = markRaw([]);
     this.removedBranches = markRaw([]);
   }

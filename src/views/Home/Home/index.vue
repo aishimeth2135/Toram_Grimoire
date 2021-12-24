@@ -20,7 +20,7 @@
             @click="navigate"
           >
             <div class="text-lg text-center">
-              {{ $rootLang('Page Title/' + data.name) }}
+              {{ t('app.page-title.' + data.name) }}
             </div>
             <cy-icon-text
               :icon="data.icon"
@@ -35,47 +35,52 @@
   </article>
 </template>
 
-<script>
+<script lang="ts">
+import { useI18n } from 'vue-i18n';
+
+const HOME_LINK_BUTTONS = [{
+  name: 'skill-query',
+  icon: 'ic-outline-menu-book',
+  path: '/skill',
+}, {
+  name: 'character-simulator',
+  icon: 'mdi-ghost',
+  path: '/character',
+}, {
+  name: 'skill-simulator',
+  icon: 'ant-design:build-outlined',
+  path: '/character/skill',
+}, {
+  name: 'enchant-simulator',
+  icon: 'mdi-cube-scan',
+  path: '/enchant',
+}, {
+  name: 'enchant-doll',
+  icon: 'ant-design:calculator-outlined',
+  path: '/enchant/doll',
+}, {
+  name: 'item-query',
+  icon: 'jam-box',
+  path: '/items',
+}, {
+  name: 'crystal-query',
+  icon: 'bx-bx-cube-alt',
+  path: '/items/crystal',
+}, {
+  name: 'damage-calculation',
+  icon: 'mdi-sword',
+  path: '/damage-calculation',
+}];
+
 export default {
-  data(){
-    return {
-      columns: [{
-        name: 'skill-query',
-        icon: 'ic-outline-menu-book',
-        path: '/skill',
-      }, {
-        name: 'character-simulator',
-        icon: 'mdi-ghost',
-        path: '/character',
-      }, {
-        name: 'skill-simulator',
-        icon: 'ant-design:build-outlined',
-        path: '/character/skill',
-      }, {
-        name: 'enchant/enchant-simulator',
-        icon: 'mdi-cube-scan',
-        path: '/enchant',
-      }, {
-        name: 'enchant/enchant-doll',
-        icon: 'ant-design:calculator-outlined',
-        path: '/enchant/doll',
-      }, {
-        name: 'item-query',
-        icon: 'jam-box',
-        path: '/items',
-      }, {
-        name: 'crystal-query',
-        icon: 'bx-bx-cube-alt',
-        path: '/items/crystal',
-      }, {
-        name: 'calculation/damage-calculation',
-        icon: 'mdi-sword',
-        path: '/damage-calculation',
-      },
-      ],
-    };
-  },
+  name: 'Home',
 };
+</script>
+
+<script lang="ts" setup>
+const columns = HOME_LINK_BUTTONS;
+
+const { t } = useI18n();
 </script>
 
 <style lang="postcss" scoped>

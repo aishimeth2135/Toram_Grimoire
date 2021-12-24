@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from '@vue/reactivity';
+import { computed, toRefs } from 'vue';
 
 import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer';
 

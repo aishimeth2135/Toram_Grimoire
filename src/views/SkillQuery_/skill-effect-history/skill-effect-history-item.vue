@@ -42,7 +42,7 @@
         </div>
       </div>
       <div
-        v-for="branchItem in modifiedBranchItems"
+        v-for="{ branchItem, next } in modifiedBranchItemDatas"
         :key="branchItem.id"
         class="history-item-compare"
       >
@@ -52,8 +52,8 @@
         <div class="history-item-compare-arrow-wrapper">
           <cy-icon-text icon="ic:round-keyboard-double-arrow-down" icon-color="light-4" />
         </div>
-        <div v-if="historyItem.nexts.get(branchItem) && !(historyItem.nexts.get(branchItem)!.isEmpty)">
-          <SkillBranch :skill-branch-item="historyItem.nexts.get(branchItem)!" sub />
+        <div v-if="next && !next.isEmpty">
+          <SkillBranch :skill-branch-item="next" sub />
         </div>
         <div v-else class="history-item-compare-empty">
           <cy-icon-text icon="mdi:book-remove-outline">{{ t('skill-query.branch-removed') }}</cy-icon-text>
@@ -94,7 +94,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
+import { computed, toRefs, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { SkillEffectItemHistory } from '@/lib/Skill/SkillComputingContainer';
@@ -115,6 +115,16 @@ const { skillEffectHistoryItem: historyItem } = toRefs(props);
 const { t } = useI18n();
 
 const modifiedBranchItems = computed(() => historyItem.value.modifiedBranchItems);
+const modifiedBranchItemDatas = computed(() => {
+  return historyItem.value.modifiedBranchItems.map(branchItem => {
+    const next = historyItem.value.nexts.get(toRaw(branchItem)) ?? null;
+    return {
+      branchItem,
+      next,
+    };
+  });
+});
+
 const usedStackIds = computed(() => {
   const stackIds = new Set<number>();
   modifiedBranchItems.value.forEach(bch => {
