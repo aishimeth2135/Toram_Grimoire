@@ -16,7 +16,7 @@
           </div>
           <div
             v-if="searchResult.length !== 0"
-            class="bg-white overflow-y-auto"
+            class="bg-white overflow-y-auto mx-2"
             style="max-height: 70vh;"
           >
             <cy-list-item
