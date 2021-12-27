@@ -1,5 +1,5 @@
 <template>
-  <section class="flex flex-col">
+  <section class="app--skill-query--wrapper flex flex-col">
     <cy-top-header class="cursor-pointer" @click="toggle('contents/search')">
       <cy-icon-text v-if="currentSkill" icon="bx:bxs-book-bookmark">
         {{ currentSkill.name }}

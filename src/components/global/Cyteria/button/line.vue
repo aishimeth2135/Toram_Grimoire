@@ -7,7 +7,7 @@
     <cy-icon :icon="icon" :src="iconSrc" />
     <span
       v-if="$slots['default']"
-      class="button--text inline-flex items-center ml-2 duration-300 whitespace-nowrap"
+      class="button--text flex items-center ml-2 duration-300 whitespace-nowrap w-full"
     >
       <slot />
     </span>

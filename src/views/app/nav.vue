@@ -1,21 +1,22 @@
 <template>
-  <nav class="border-b border-solid border-light flex items-center py-1 px-4 mb-4 bg-white">
-    <AppLeftMenu />
+  <nav class="border-b border-solid border-light flex items-center py-1 px-3 mb-4 bg-white">
+    <cy-button-icon icon="ic:round-menu" @click="store.commit('left-menu/toggleVisible')" />
     <div class="inline-flex items-center whitespace-nowrap overflow-y-auto px-2 text-sm">
+      <!-- <cy-icon-text icon="potum" icon-src="custom" class="mr-2" /> -->
       <template
-        v-for="(item, i) in items"
+        v-for="(item, idx) in items"
         :key="item.path"
       >
         <cy-icon-text
-          v-if="i !== 0"
+          v-if="idx !== 0"
           icon="ic-round-keyboard-arrow-right"
           class="mx-2"
         />
         <span>
           <router-link
-            v-if="i !== items.length - 1"
+            v-if="idx !== items.length - 1"
             v-slot="{ navigate }"
-            :to="item.path"
+            :to="{ name: item.pathName }"
             custom
           >
             <span
@@ -44,10 +45,10 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 
-import AppLeftMenu from './left-menu.vue';
 import AppSettings from './settings.vue';
 
 const { t } = useI18n();
 const store = useStore();
 const items = computed(() => store.state.nav.items);
 </script>
+

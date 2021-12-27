@@ -1,122 +1,92 @@
 <template>
-  <span class="app--left-menu relative z-50" @click="unfold=!unfold">
-    <cy-button-icon :icon="currentIconName" class="top-button" />
-    <transition name="fade">
-      <div
-        v-if="viewButtons && viewButtons.length != 0"
-        v-show="!unfold"
-        class="menu z-1 min-h-full absolute"
-        @click.stop="menuClick"
-      >
-        <div class="conent-container w-full h-full">
-          <cy-button-line
-            v-for="(data) in viewButtons"
-            :key="data.title"
-            :icon="data.icon"
-            @click="setCurrentView(data)"
-          >
-            {{ t(data.title) }}
-          </cy-button-line>
-        </div>
+  <transition name="fade">
+    <div
+      v-if="viewButtons && viewButtons.length !== 0"
+      v-show="visible"
+      class="app-left-menu--wrapper"
+      @click.stop="toggleVisible"
+    >
+      <div class="content-container" @click.stop>
+        <cy-button-line
+          v-for="(data) in viewButtons"
+          :key="data.title"
+          :icon="data.icon"
+          class="w-full"
+          @click="setCurrentView(data)"
+        >
+          {{ t(data.title) }}
+        </cy-button-line>
       </div>
-    </transition>
-  </span>
+    </div>
+  </transition>
 </template>
 
-<script>
-import { useI18n } from 'vue-i18n';
-import { mapState } from 'vuex';
-
+<script lang="ts">
 export default {
-  setup() {
-    const { t } = useI18n();
-    return {
-      t,
-    };
-  },
-  data() {
-    return {
-      unfold: !this.screenWidthCheck(),
-    };
-  },
-  computed: {
-    ...mapState('left-menu', ['viewButtons']),
-    currentIconName() {
-      return 'ic:round-menu';
-    },
-  },
-  methods: {
-    setCurrentView(data) {
-      if (this.$router.currentRoute.path !== data.path)
-        this.$router.replace(data.path);
-    },
-    menuClick() {
-      this.unfold = !this.screenWidthCheck();
-    },
-    screenWidthCheck() {
-      return document.body.clientWidth >= (50 + 16 + 16) * 16;
-    },
-  },
+  name: 'AppLeftMenu',
 };
 </script>
 
-<style lang="less" scoped>
-.app--left-menu {
-  ::v-deep(.top-button) {
-    z-index: 2;
-    position: relative;
-    display: block;
+<script lang="ts" setup>
+import { useI18n } from 'vue-i18n';
+import { createNamespacedHelpers } from 'vuex-composition-helpers';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const { t } = useI18n();
+const store = useStore();
+const { useState } = createNamespacedHelpers('left-menu');
+
+const {
+  viewButtons,
+  visible,
+} = useState(['viewButtons', 'visible']);
+
+const setCurrentView = (data: { pathName: string }) => {
+  if (router.currentRoute.value.name !== data.pathName) {
+    router.replace({ name: data.pathName });
+  }
+};
+
+const toggleVisible = () => {
+  store.commit('left-menu/toggleVisible');
+};
+</script>
+
+<style lang="postcss" scoped>
+.app-left-menu--wrapper {
+  @apply fixed w-64 top-11 left-2 opacity-100 z-100;
+  height: calc(100% - 5rem);
+
+  &.fade-enter-from, &.fade-leave-to {
+    opacity: 0;
   }
 
-  & > .menu {
-    width: 15.5rem;
-    top: 3.2rem;
-    left: 0.4rem;
-    max-height: calc(100vh - 5rem);
-    opacity: 1;
+  &.fade-enter-active, &.fade-leave-active {
+    @apply duration-200;
+  }
 
-    &.fade-enter-from,
-    &.fade-leave-to {
-      opacity: 0;
-    }
-
-    &.fade-enter-active,
-    &.fade-leave-active {
-      transition: all 0.4s ease;
-    }
-
-    > .conent-container {
-      padding: 0.6rem;
-      padding-top: 1rem;
-    }
+  & > .content-container {
+    @apply p-2 w-full h-full overflow-y-auto;
   }
 }
 
 @media screen and (max-width: 82rem) {
-  .app--left-menu {
-    > .top-button {
-      z-index: 0;
+  .app-left-menu--wrapper {
+    @apply top-0 left-0 right-auto bg-black bg-opacity-50 h-full;
+    width: calc(100% + 30rem);
+
+    &.fade-enter-from, &.fade-leave-to {
+      @apply -left-80 opacity-100;
     }
 
-    >.menu {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: auto;
-      height: 100%;
-      width: calc(100% + 30rem);
-      background-color: rgba(var(--rgb-black), 0.5);
+    & > .content-container {
+      @apply w-64 bg-white bg-opacity-100 pt-4;
+    }
 
-      &.fade-enter-from,
-      &.fade-leave-to {
-        left: -20rem;
-        opacity: 1;
-      }
-
-      > .conent-container {
-        width: 16rem;
-        background-color: var(--white);
-      }
+    &.content-invisible {
+      display: none;
     }
   }
 }

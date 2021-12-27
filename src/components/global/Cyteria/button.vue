@@ -97,12 +97,12 @@ export default CyButton;
     @apply p-0 m-0 border-0;
   }
 
-  &::v-deep(.button--text) {
+  & :deep(.button--text) {
+    @apply text-center;
     color: var(--text-color, var(--primary-dark));
-    text-align: center;
   }
 
-  &.button--main-content, &::v-deep(.button--main-content) {
+  &.button--main-content, & :deep(.button--main-content) {
     cursor: pointer;
     border-color: var(--border-color, var(--primary-light));
 

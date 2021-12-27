@@ -29,6 +29,7 @@ export default function EffectHandler(branchItem: SkillBranchItem) {
     type: value => value !== 'none',
     is_place: value => value !== '0',
     duration: value => value !== '0',
+    target: value => !!value,
   });
 
   const langAttrsMap = new MapContainer<HandleBranchLangAttrsMap>(['is_place', 'type']);
@@ -39,7 +40,7 @@ export default function EffectHandler(branchItem: SkillBranchItem) {
     langAttrsMap.append('condition');
   }
 
-  const pureDatas = ['name'];
+  const pureDatas = ['name', 'target'];
 
   return handleDisplayData(branchItem, attrs, {
     values: valueAttrsMap.value,

@@ -10,7 +10,7 @@ export default async function viewInit(...inits: string[]) {
     .map(async id => {
       const loaded = store.getters['datas/checkLoad'](id) as boolean;
       const origin = loaded ? null : ((await store.dispatch('datas/load' + id)) as AsyncGenerator<void, void, void>);
-      const promise = loaded ? Promise.resolve() : (origin as AsyncGenerator).next();
+      const promise = loaded ? Promise.resolve() : origin!.next();
       const msg = 'app.loading-message.' + id;
       return { id, origin, promise, msg, loaded };
     });
@@ -21,7 +21,7 @@ export default async function viewInit(...inits: string[]) {
   await store.dispatch('initialize/startInit');
   resolvedInitItems.forEach(async item => {
     if (!item.loaded) {
-      await (item.origin as AsyncGenerator).next();
+      await item.origin!.next();
     }
     store.commit('datas/loadFinished', item.id);
   });

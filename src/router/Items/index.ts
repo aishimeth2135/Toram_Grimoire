@@ -19,15 +19,15 @@ export default {
     leftMenuViewButtons: [{
       title: 'app.page-title.item-query',
       icon: 'jam-box-f',
-      path: '',
+      pathName: 'ItemQuery',
     }, {
       title: 'app.page-title.crystal-query',
       icon: 'bx-bx-cube-alt',
-      path: '/crystal',
+      pathName: 'CrystalQuery',
     }],
   },
   children: [{
-    name: 'ItemsQuery',
+    name: 'ItemQuery',
     path: '',
     component: ItemQueryView,
     meta: {

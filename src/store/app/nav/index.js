@@ -7,7 +7,7 @@ const store = {
     setItems(state, { items }){
       state.items = [{
         title: 'app.page-title.base',
-        path: '/',
+        pathName: 'Home',
       }, ...items];
     },
   },

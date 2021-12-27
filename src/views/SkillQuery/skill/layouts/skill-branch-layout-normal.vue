@@ -7,8 +7,8 @@
       >
         {{ container.get('name') }}
       </cy-icon-text>
-      <div v-if="nameProps" class="inline-flex text-sm self-end space-x-1.5 ml-3">
-        <span v-for="nameProp in nameProps" :key="nameProp" class="inline-block text-green">
+      <div v-if="nameProps" class="flex text-sm text-green space-x-1.5 ml-3">
+        <span v-for="nameProp in nameProps" :key="nameProp" class="inline-block">
           {{ nameProp }}
         </span>
       </div>
@@ -109,10 +109,9 @@ const subContentDatas = computed(() => {
 });
 </script>
 
-<style lang="postcss">
+<style lang="postcss" scoped>
 .sub-content-item {
-  margin: 0.1rem 0;
-  @apply mr-3 inline-flex items-center;
+  @apply my-0.5 mr-3 inline-flex items-center;
 
   & .text-light-3 {
     @apply text-purple;

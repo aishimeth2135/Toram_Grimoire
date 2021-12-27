@@ -33,9 +33,9 @@ async function createLoadPromise(path: string): Promise<CsvData> {
 
       return Papa.parse(csvstr).data as CsvData;
 
-    } catch (e) {
+    } catch (err) {
       console.warn(`[Error] load data: ${path}. Try to use backup...`);
-      console.log(e);
+      console.log(err);
     }
 
     const orignalPath = path;
@@ -47,9 +47,9 @@ async function createLoadPromise(path: string): Promise<CsvData> {
       const csvstr = await f.text();
 
       return Papa.parse(csvstr).data as CsvData;
-    } catch (e) {
+    } catch (err) {
       console.warn('[Error] load backup data: ' + orignalPath);
-      console.log(e);
+      throw err;
     }
   }
   return [[]];

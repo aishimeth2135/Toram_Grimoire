@@ -15,7 +15,7 @@ export default function AreaHandler(branchItem: SkillBranchItem, formulaDisplayM
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     'move_distance': value => !!value,
-    'angel': value => !!value,
+    'angle': value => !!value,
     start_position_offsets: {
       validation: value => value !== '0',
       calc: true,
@@ -27,12 +27,15 @@ export default function AreaHandler(branchItem: SkillBranchItem, formulaDisplayM
   });
 
   const valueAttrsMap = new MapContainer<HandleBranchValueAttrsMap>({
-    'radius': 'm',
-    'angel': '°',
+    'angle': '°',
     'start_position_offsets': 'm',
     'end_position_offsets': 'm',
     'move_distance': 'm',
   });
+
+  if (attrs['effective_area'] !== 'sector') {
+    valueAttrsMap.append('radius', 'm');
+  }
 
   const langAttrsMap = new MapContainer<HandleBranchLangAttrsMap>(['effective_area']);
 

@@ -3,8 +3,8 @@ import Grimoire from '@/shared/Grimoire';
 const store = {
   namespaced: true,
   state: {
-    redirectPath: null,
-    version: '4.3.3',
+    redirectPathName: null,
+    version: '4.3.4',
     serviceWorker: {
       instance: null,
       hasUpdate: false,
@@ -12,11 +12,11 @@ const store = {
     documentTitleId: '',
   },
   mutations: {
-    setRedirectPath(state, path) {
-      state.redirectPath = path;
+    setRedirectPathName(state, path) {
+      state.redirectPathName = path;
     },
-    clearRedirectPath(state) {
-      state.redirectPath = null;
+    clearRedirectPathName(state) {
+      state.redirectPathName = null;
     },
     serviceWorkerHasUpdate(state, payload) {
       state.serviceWorker.instance = payload;

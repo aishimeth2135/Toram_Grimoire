@@ -169,7 +169,74 @@ const subButtonAvailable = computed(() => {
 
 <style lang="postcss" scoped>
 .skill-branch-wrapper {
-  @apply relative;
+  @apply relative content-auto;
+
+  & :deep(.click-button--tag) {
+    @apply text-orange cursor-pointer inline-block px-0.5;
+  }
+
+  & :deep(.click-button--skill) {
+    @apply text-red cursor-pointer inline-block px-0.5;
+  }
+
+  & :deep(.click-button--mark) {
+    @apply text-light-3;
+  }
+
+  & :deep(.click-button--branch) {
+    @apply text-blue-green cursor-pointer inline-block px-0.5;
+  }
+
+  & :deep(.history-compare--mark) {
+    @apply bg-blue-purple bg-opacity-10;
+  }
+
+  & :deep(.result-value--stack) {
+    @apply text-water-blue;
+
+    &.value-dark {
+      @apply text-blue-green;
+    }
+  }
+
+  & :deep(.skill-formula-function-wrapper) {
+    @apply rounded-md pr-1 pl-2 mx-0.5 inline-flex items-center;
+
+    &.key--floor {
+      @apply bg-light;
+      & > .name {
+        @apply text-light-4;
+      }
+      & .param-separate {
+        @apply border-light;
+      }
+    }
+    &.key--min {
+      @apply bg-water-blue-light;
+      & > .name {
+        @apply text-water-blue;
+      }
+      & .param-separate {
+        @apply border-water-blue-light;
+      }
+    }
+    &.key--max {
+      @apply bg-blue-green-light;
+      & > .name {
+        @apply text-blue-green;
+      }
+      & .param-separate {
+        @apply border-blue-green-light;
+      }
+    }
+    & > .value {
+      @apply bg-white rounded ml-1.5 mr-1 px-2 inline-flex items-center text-sm;
+
+      & > .param-separate {
+        @apply inline-block border-l-1 mx-2 mt-0.5 h-3;
+      }
+    }
+  }
 }
 
 .toggle-sub-button {
@@ -184,71 +251,10 @@ const subButtonAvailable = computed(() => {
     @apply absolute -right-2 -top-2 w-4 h-4 bg-light-3;
   }
 }
+</style>
 
-:deep(.click-button--tag) {
-  @apply text-orange cursor-pointer inline-block px-0.5;
-}
-
-:deep(.click-button--skill) {
-  @apply text-red cursor-pointer inline-block px-0.5;
-}
-
-:deep(.click-button--mark) {
-  @apply text-light-3;
-}
-
-:deep(.click-button--branch) {
-  @apply text-blue-green cursor-pointer inline-block px-0.5;
-}
-
-:deep(.history-compare--mark) {
-  @apply bg-blue-purple bg-opacity-10;
-}
-
-:deep(.result-value--stack) {
-  @apply text-water-blue;
-
-  &.value-dark {
-    @apply text-blue-green;
-  }
-}
-
-:deep(.skill-formula-function-wrapper) {
-  @apply rounded-md pr-1 pl-2 mx-0.5 inline-flex items-center;
-
-  &.key--floor {
-    @apply bg-light;
-    & > .name {
-      @apply text-light-4;
-    }
-    & .param-separate {
-      @apply border-light;
-    }
-  }
-  &.key--min {
-    @apply bg-water-blue-light;
-    & > .name {
-      @apply text-water-blue;
-    }
-    & .param-separate {
-      @apply border-water-blue-light;
-    }
-  }
-  &.key--max {
-    @apply bg-blue-green-light;
-    & > .name {
-      @apply text-blue-green;
-    }
-    & .param-separate {
-      @apply border-blue-green-light;
-    }
-  }
-  & > .value {
-    @apply bg-white rounded ml-1.5 mr-1 px-2 inline-flex items-center text-sm;
-
-    & > .param-separate {
-      @apply inline-block border-l-1 mx-2 mt-0.5 h-3;
-    }
-  }
+<style lang="postcss">
+html.theme--night-mode .app--skill-query--wrapper .history-compare--mark {
+  @apply bg-opacity-30 !important;
 }
 </style>
