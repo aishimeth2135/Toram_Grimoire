@@ -90,52 +90,7 @@ function getColorSetStyle(src) {
   };
 }
 
-function getColorSetClasses(src) {
-  const props = {};
-
-  Object.keys(ColorSetProps).forEach(key => props[key] = src[key]);
-
-  /**
-   * @param {string} id
-   * @param {string} defaultValue
-   */
-  const defaultProp = (id, defaultValue) => {
-    const [name, type = ''] = id.split('/');
-    const key = name + 'Color' + (type ? (type[0].toUpperCase() + type.slice(1)) : '');
-    if (props[key] === '!default') {
-      props[key] = defaultValue;
-      return;
-    }
-    if (props[key] === 'default') {
-      if (props.mainColor !== 'default') {
-        const mc = props.mainColor;
-        props[key] = type === 'hover' || name === 'text' ? mc : Color.lighten(mc);
-      } else {
-        props[key] = defaultValue;
-      }
-    }
-  };
-
-  defaultProp('text', 'dark');
-  defaultProp('text/hover', 'light-4');
-  defaultProp('icon', 'light-2');
-  defaultProp('icon/hover', 'light-4');
-  defaultProp('border', 'light');
-  defaultProp('border/hover', 'light-3');
-
-  const handle = (key, color, colorHover) => ({
-    [`${key}-${color}`]: true,
-    [`hover:${key}-${colorHover}`]: true,
-  });
-
-  return {
-    text: handle('text'),
-    icon: handle('text'),
-    border: handle('border'),
-  };
-}
-
-export { ColorSetProps, getColorSetStyle, getColorSetClasses };
+export { ColorSetProps, getColorSetStyle };
 
 export default {
   props: ColorSetProps,

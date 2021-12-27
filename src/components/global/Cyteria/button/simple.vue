@@ -1,7 +1,7 @@
 <template>
   <button
     class="button--main-content inline-flex items-center border-b border-solid py-0.5 px-2 m-1"
-    :class="baseClass"
+    :class="baseClassList"
     @click="click"
   >
     <cy-icon :icon="icon" :src="iconSrc" />
@@ -14,10 +14,17 @@
   </button>
 </template>
 
-<script>
-import ButtonBase from './base';
+<script lang="ts">
+import { defineComponent } from 'vue';
 
-export default {
-  mixins: [ButtonBase],
-};
+import { ButtonBaseProps, setupButtonBase } from './setup';
+
+export default defineComponent({
+  name: 'CyButtonSimple',
+  emits: ['click'],
+  props: ButtonBaseProps,
+  setup(props, { emit }) {
+    return setupButtonBase(props, (evt) => emit('click', evt));
+  },
+});
 </script>

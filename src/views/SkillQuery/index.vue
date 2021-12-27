@@ -156,14 +156,14 @@ const selectCurrentSkillFromSearch = (skill: Skill) => {
 };
 
 if (route.params.skillName) {
-  const skill = skillRoot.value.findSkillByName((route.params.skillName as string).replaceAll('-', ' '));
+  const skill = skillRoot.value.findSkillByName((route.params.skillName as string).replaceAll('-', ' ').replaceAll('_', '/'));
   if (skill) {
     selectCurrentSkill(skill, true);
   }
 }
 
 watch(currentSkill, skill => {
-  router.replace({ name: 'SkillQuery', params: { skillName: skill ? skill.name.replaceAll(' ', '-') : '' } });
+  router.replace({ name: 'SkillQuery', params: { skillName: skill ? skill.name.replaceAll(' ', '-').replaceAll('/', '_') : '' } });
 });
 
 const currentEquipment: Ref<EquipmentRestriction> = ref({

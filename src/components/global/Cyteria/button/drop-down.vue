@@ -25,36 +25,39 @@
   </div>
 </template>
 
-<script>
-import ButtonBase from './base';
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
 
-export default {
-  mixins: [ButtonBase],
+import { ButtonBaseProps, setupButtonBase } from './setup';
+
+export default defineComponent({
+  name: 'CyButtonDropDown',
+  emits: ['click'],
   props: {
     menuDefaultVisible: {
       type: Boolean,
       default: false,
     },
+    ...ButtonBaseProps,
   },
-  data(){
+  setup(props, { emit }) {
+    const { click } = setupButtonBase(props, (evt) => emit('click', evt));
+    const menuVisible = ref(false);
+    const titleClick = () => {
+      menuVisible.value = !menuVisible.value;
+    };
     return {
-      menuVisible: false,
+      click,
+      titleClick,
+      menuVisible,
     };
   },
-  mounted() {
-    this.menuVisible = this.menuDefaultVisible;
-  },
-  methods: {
-    titleClick() {
-      this.menuVisible = !this.menuVisible;
-    },
-  },
-};
+});
 </script>
 
 <style lang="postcss" scoped>
 .cy-button--drop-down {
-  --icon-width: 1.3rem;
+  --icon-width: 1.25rem;
   border-left: 0.2rem solid var(--primary-light-2);
 }
 </style>

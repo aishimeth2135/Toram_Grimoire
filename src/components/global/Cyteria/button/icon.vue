@@ -1,43 +1,30 @@
 <template>
   <button
-    ref="rootElement"
     class="cy-button--icon button--main-content inline-flex p-1 mx-1 relative"
-    :class="baseClass"
+    :class="baseClassList"
     @click="click"
   >
     <cy-icon :icon="icon" :src="iconSrc" />
-    <sub-caption
-      v-if="$slots['caption']"
-      :root="rootElement"
-    >
-      <slot name="caption" />
-    </sub-caption>
   </button>
 </template>
 
-<script>
-import { ref } from 'vue';
+<script lang="ts">
+import { defineComponent } from 'vue';
 
-import vue_subCaption from '../components/sub-caption.vue';
+import { ButtonBaseProps, setupButtonBase } from './setup';
 
-import ButtonBase from './base';
-
-export default {
-  components: {
-    'sub-caption': vue_subCaption,
+export default defineComponent({
+  name: 'CyButtonIcon',
+  emits: ['click'],
+  props: ButtonBaseProps,
+  setup(props, { emit }) {
+    return setupButtonBase(props, (evt) => emit('click', evt));
   },
-  mixins: [ButtonBase],
-  setup() {
-    const rootElement = ref(null);
-    return {
-      rootElement,
-    };
-  },
-};
+});
 </script>
 
 <style scoped>
 .cy-button--icon {
-  --icon-width: 1.3rem;
+  --icon-width: 1.25rem;
 }
 </style>
