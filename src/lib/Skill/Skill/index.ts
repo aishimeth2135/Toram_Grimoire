@@ -115,6 +115,10 @@ class SkillTree extends SkillElement {
     this.skills.push(el);
     return el;
   }
+
+  get skillTreeId(): string {
+    return `${this.parent.id}-${this.id}`;
+  }
 }
 
 
@@ -179,7 +183,7 @@ class Skill extends SkillBase {
     return this;
   }
 
-  skillId(): string {
+  get skillId(): string {
     return `${this.parent.parent.id}-${this.parent.id}-${this.id}`;
   }
 }

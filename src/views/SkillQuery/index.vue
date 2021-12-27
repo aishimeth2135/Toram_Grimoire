@@ -77,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, nextTick, watch } from 'vue';
+import { computed, ref, nextTick } from 'vue';
 import type { Ref, ComputedRef } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
@@ -127,17 +127,23 @@ const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null);
 const currentSkillTree: Ref<SkillTree | null> = ref(null);
 const currentSkill: Ref<Skill | null> = ref(null);
 
+const updateRouteParam = (id: string) => {
+  router.replace({ name: 'SkillQuery', params: { skillId: id } });
+};
+
 const selectCurrentSkillTreeCategory = (stc: SkillTreeCategory) => {
   currentSkillTreeCategory.value = stc;
   currentSkillTree.value = null;
   currentSkill.value = null;
   toggle('contents/skillEffect', false);
+  updateRouteParam(stc.id.toString());
 };
 
 const selectCurrentSkillTree = (st: SkillTree) => {
   currentSkillTree.value = st;
   currentSkill.value = null;
   toggle('contents/skillEffect', false);
+  updateRouteParam(st.skillTreeId);
 };
 
 const selectCurrentSkill = (skill: Skill, syncParent = false) => {
@@ -148,6 +154,8 @@ const selectCurrentSkill = (skill: Skill, syncParent = false) => {
   currentSkill.value = skill;
   toggle('contents/skillEffect', true);
   jumpToSkillEffect();
+
+  updateRouteParam(skill.skillId);
 };
 
 const selectCurrentSkillFromSearch = (skill: Skill) => {
@@ -155,16 +163,32 @@ const selectCurrentSkillFromSearch = (skill: Skill) => {
   selectCurrentSkill(skill, true);
 };
 
-if (route.params.skillName) {
-  const skill = skillRoot.value.findSkillByName((route.params.skillName as string).replaceAll('-', ' ').replaceAll('_', '/'));
-  if (skill) {
-    selectCurrentSkill(skill, true);
-  }
+if (route.params.skillId) {
+  const skillId = route.params.skillId as string;
+  skillId.split('-').every((idStr, idx) => {
+    const id = parseInt(idStr, 10);
+    if (idx === 0) {
+      const stc = skillRoot.value.skillTreeCategorys.find(item => item.id === id);
+      if (stc) {
+        selectCurrentSkillTreeCategory(stc);
+        return true;
+      }
+    } else if (idx === 1) {
+      const st = currentSkillTreeCategory.value!.skillTrees.find(item => item.id === id);
+      if (st) {
+        selectCurrentSkillTree(st);
+        return true;
+      }
+    } else if (idx === 2) {
+      const skill = currentSkillTree.value!.skills.find(item => item.id === id);
+      if (skill) {
+        selectCurrentSkill(skill);
+        return true;
+      }
+    }
+    return false;
+  });
 }
-
-watch(currentSkill, skill => {
-  router.replace({ name: 'SkillQuery', params: { skillName: skill ? skill.name.replaceAll(' ', '-').replaceAll('/', '_') : '' } });
-});
 
 const currentEquipment: Ref<EquipmentRestriction> = ref({
   main: null,
