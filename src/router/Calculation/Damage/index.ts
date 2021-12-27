@@ -18,7 +18,7 @@ export default {
     leftMenuViewButtons: [{
       title: 'page-title.damage-calculation',
       icon: 'mdi-sword',
-      path: '',
+      pathName: 'DamageCalculationMain',
     }],
   },
   children: [{

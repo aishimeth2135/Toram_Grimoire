@@ -1,8 +1,8 @@
 <template>
   <button
     class="button--main-content inline-flex items-center py-0.5 px-2 m-1"
-    :class="baseClass"
-    @click="handleButtonClick"
+    :class="baseClassList"
+    @click="click"
   >
     <cy-icon
       :icon="selected ? selectedIcon : icon"
@@ -17,12 +17,16 @@
   </button>
 </template>
 
-<script>
-import ButtonBase from './base';
+<script lang="ts">
+import { defineComponent, toRefs } from 'vue';
 
-export default {
-  mixins: [ButtonBase],
+import { ButtonBaseProps, setupButtonBase } from './setup';
+
+export default defineComponent({
+  name: 'CyButtonRadio',
+  emits: ['click', 'update:selected'],
   props: {
+    ...ButtonBaseProps,
     selectedIcon: {
       type: String,
       default: 'mdi:radiobox-marked',
@@ -40,15 +44,18 @@ export default {
       default: 'iconify',
     },
   },
-  emits: ['update:selected'],
-  methods: {
-    handleButtonClick(e) {
-      if (this.disabled) {
-        return;
+  setup(props, { emit }) {
+    const { baseClassList, click: originalClick } = setupButtonBase(props, (evt) => emit('click', evt));
+    const { selected } = toRefs(props);
+    const click = (evt: MouseEvent) => {
+      if (originalClick(evt)) {
+        emit('update:selected', selected.value);
       }
-      this.$emit('update:selected', !this.selected);
-      this.click(e);
-    },
+    };
+    return {
+      baseClassList,
+      click,
+    };
   },
-};
+});
 </script>

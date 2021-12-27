@@ -35,14 +35,14 @@ import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums';
 
 import { findStackState } from '../utils';
-import { ComputingContainerInjection, ComputingContainerInjectionKey } from '../injection-keys';
+import { ComputingContainerInjectionKey } from '../injection-keys';
 import StackHandler from './branch-handlers/StackHandler';
 
 interface Props {
   branchItem: SkillBranchItem;
 }
 
-const { setStackValue } = inject(ComputingContainerInjectionKey) as ComputingContainerInjection;
+const { setStackValue } = inject(ComputingContainerInjectionKey)!;
 
 const props = defineProps<Props>();
 const { branchItem } = toRefs(props);
@@ -58,7 +58,7 @@ const stackValue: WritableComputedRef<number> = computed({
     setStackValue(branchItem.value, value);
   },
   get() {
-    return stackState.value ? stackState.value.value : 0;
+    return stackState.value?.value ?? 0;
   },
 });
 

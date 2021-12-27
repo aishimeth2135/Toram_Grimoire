@@ -18,7 +18,7 @@ interface Props {
 const props = defineProps<Props>();
 const { container } = toRefs(props);
 
-const valid = computed(() => container.value.has('radius'));
+const valid = computed(() => container.value.has('radius') || container.value.getOrigin('effective_area') === 'sector');
 
 type AreaElement = {
   type: string;
@@ -225,6 +225,7 @@ const areaDatas = computed(() => {
     const sectorWidth = 2,
       minRadius = Math.max(startPositionOffsets, 1),
       maxRadius = moveDistance;
+
     // character
     let bx = padding;
     const by = padding + maxRadius * Math.sin(angle * deg / 2);
@@ -330,14 +331,7 @@ const Render = () => {
     width: datas.width, height: datas.height,
     viewBox: `0 0 ${datas.width} ${datas.height}`,
     preserveAspectRatio: 'xMidYMid meet',
-    class: 'main--draw-skill-area',
+    class: 'max-h-64 max-w-full',
   }, childs);
 };
 </script>
-
-<style lang="less" scoped>
-.main--draw-skill-area {
-  max-height: 16rem;
-  max-width: 100%;
-}
-</style>

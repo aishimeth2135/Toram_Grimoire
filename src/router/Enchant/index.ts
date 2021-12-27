@@ -19,11 +19,11 @@ export default {
     leftMenuViewButtons: [{
       title: 'app.page-title.enchant-simulator',
       icon: 'mdi-cube-scan',
-      path: '',
+      pathName: 'EnchantSimulator',
     }, {
       title: 'app.page-title.enchant-doll',
       icon: 'mdi-leaf',
-      path: '/doll',
+      pathName: 'EnchantDoll',
     }],
   },
   children: [{

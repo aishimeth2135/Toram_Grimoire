@@ -2,6 +2,7 @@
   <div id="app">
     <template v-if="store.state.language.i18nMessageLoaded">
       <AppNav />
+      <AppLeftMenu />
       <router-view class="main-section app-main" />
       <AppFooter />
       <AppInitialize />
@@ -30,12 +31,13 @@ export default {
 import { onMounted } from 'vue';
 import { useStore } from 'vuex';
 
-import AppConfirm from '@/views/app/confirm.vue';
+import AppNav from '@/views/app/nav.vue';
+import AppLeftMenu from '@/views/app/left-menu.vue';
 import AppFooter from '@/views/app/footer.vue';
 import AppInitialize from '@/views/app/initialize.vue';
 import AppLoading from '@/views/app/loading.vue';
-import AppNav from '@/views/app/nav.vue';
 import AppNotify from '@/views/app/notify.vue';
+import AppConfirm from '@/views/app/confirm.vue';
 import LoadingAnimation from '@/views/app/initialization/loading-animation.vue';
 
 onMounted(() => {
@@ -55,7 +57,7 @@ const store = useStore();
   }
 
   &::v-deep(.main-section) {
-    max-width: 50rem;
+    max-width: 48rem;
     margin-left: auto;
     margin-right: auto;
   }

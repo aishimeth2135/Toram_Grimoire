@@ -1,13 +1,13 @@
 <template>
   <button
     class="cy-button--line button--main-content flex items-center justify-start border-l-2 border-solid py-1 px-3 m-2"
-    :class="rootClass"
+    :class="baseClassList"
     @click="click"
   >
     <cy-icon :icon="icon" :src="iconSrc" />
     <span
       v-if="$slots['default']"
-      class="button--text inline-flex items-center ml-2 duration-300 whitespace-nowrap"
+      class="button--text flex items-center ml-2 duration-300 whitespace-nowrap w-full"
     >
       <slot />
     </span>
@@ -21,36 +21,24 @@
   </button>
 </template>
 
-<script>
-import ButtonBase from './base';
+<script lang="ts">
+import { defineComponent } from 'vue';
 
-export default {
-  mixins: [ButtonBase],
-  props: {
-    inline: {
-      type: Boolean,
-      default: false,
-    },
+import { ButtonBaseProps, setupButtonBase } from './setup';
+
+export default defineComponent({
+  name: 'CyButtonLine',
+  emits: ['click'],
+  props: ButtonBaseProps,
+  setup(props, { emit }) {
+    return setupButtonBase(props, (evt) => emit('click', evt));
   },
-  computed: {
-    rootClass() {
-      return {
-        ...this.baseClass,
-        'type-inline': this.inline,
-      };
-    },
-  },
-};
+});
 </script>
 
 <style lang="postcss" scoped>
 .cy-button--line {
-  --icon-width: 1.3rem;
+  --icon-width: 1.25rem;
   --border-color: var(--primary-light-2);
-
-  &.type-inline {
-    display: inline-flex;
-    min-width: 15rem;
-  }
 }
 </style>

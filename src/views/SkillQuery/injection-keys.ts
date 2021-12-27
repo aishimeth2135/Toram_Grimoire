@@ -9,5 +9,5 @@ interface ComputingContainerInjection {
 const ComputingContainerInjectionKey: InjectionKey<ComputingContainerInjection> = Symbol('skill-computing-container');
 
 export { ComputingContainerInjectionKey };
-export type { ComputingContainerInjection };
+
 

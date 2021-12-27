@@ -46,16 +46,9 @@ const ColorSetProps = {
 };
 
 function getColorSetStyle(src) {
-  const KEYS = [
-    'textColor', 'textColorHover',
-    'iconColor', 'iconColorHover',
-    'borderColor', 'borderColorHover',
-    'mainColor',
-  ];
-
   const props = {};
 
-  KEYS.forEach(key => props[key] = src[key]);
+  Object.keys(ColorSetProps).forEach(key => props[key] = src[key]);
 
   /**
    * @param {string} id

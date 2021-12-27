@@ -19,7 +19,7 @@ export default {
     leftMenuViewButtons: [{
       title: 'app.page-title.skill-query',
       icon: 'ic-outline-menu-book',
-      path: '',
+      pathName: 'Skill',
     }],
   },
   children: [{

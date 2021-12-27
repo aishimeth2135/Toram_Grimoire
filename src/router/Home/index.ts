@@ -20,11 +20,11 @@ export default {
     leftMenuViewButtons: [{
       title: 'app.page-title.home',
       icon: 'ant-design:home-outlined',
-      path: '',
+      pathName: 'Home',
     }, {
       title: 'app.page-title.about',
       icon: 'bx-bxs-star-half',
-      path: 'about',
+      pathName: 'About',
     }],
   },
   children: [{

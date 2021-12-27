@@ -160,9 +160,9 @@ export default {
     }
   },
   mounted() {
-    if (this.$store.state.main.redirectPath === '/character/skill') {
-      this.$router.replace('/character/skill');
-      this.$store.commit('main/clearRedirectPath');
+    if (this.$store.state.main.redirectPathName === 'SkillSimulator') {
+      this.$router.replace({ name: 'SkillSimulator' });
+      this.$store.commit('main/clearRedirectPathName');
     }
   },
   unmounted() {

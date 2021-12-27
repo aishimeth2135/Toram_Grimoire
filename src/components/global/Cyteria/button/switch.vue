@@ -1,8 +1,8 @@
 <template>
   <button
     class="button--main-content inline-flex items-center m-1 px-1.5"
-    :class="baseClass"
-    @click="handleButtonClick"
+    :class="baseClassList"
+    @click="click"
   >
     <cy-icon
       :icon="selected ? 'ic:round-toggle-on' : 'ic:outline-toggle-off'"
@@ -18,20 +18,27 @@
   </button>
 </template>
 
-<script>
-import ButtonBase from './base';
+<script lang="ts">
+import { defineComponent, toRefs } from 'vue';
 
-export default {
-  mixins: [ButtonBase],
-  emits: ['update:selected'],
-  methods: {
-    handleButtonClick(e) {
-      if (this.disabled) {
-        return;
+import { ButtonBaseProps, setupButtonBase } from './setup';
+
+export default defineComponent({
+  name: 'CyButtonSwitch',
+  emits: ['click', 'update:selected'],
+  props: ButtonBaseProps,
+  setup(props, { emit }) {
+    const { baseClassList, click: originalClick } = setupButtonBase(props, (evt) => emit('click', evt));
+    const { selected } = toRefs(props);
+    const click = (evt: MouseEvent) => {
+      if (originalClick(evt)) {
+        emit('update:selected', selected.value);
       }
-      this.$emit('update:selected', !this.selected);
-      this.click(e);
-    },
+    };
+    return {
+      baseClassList,
+      click,
+    };
   },
-};
+});
 </script>

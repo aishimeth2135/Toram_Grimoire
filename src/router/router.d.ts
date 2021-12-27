@@ -6,7 +6,7 @@ declare module 'vue-router' {
     leftMenuViewButtons?: {
       title: string;
       icon: string;
-      path: string;
+      pathName: string;
     }[];
     metaTags?: Record<string, string>[];
   }

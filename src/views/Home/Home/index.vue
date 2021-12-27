@@ -10,10 +10,10 @@
     <section class="flex justify-center flex-wrap">
       <div
         v-for="data in columns"
-        :key="data.name + '|' + data.path"
+        :key="data.name + '|' + data.pathName"
         class="inline-block m-5"
       >
-        <router-link v-slot="{ navigate }" :to="data.path" custom>
+        <router-link v-slot="{ navigate }" :to="{ name: data.pathName }" custom>
           <div
             class="content-title flex items-center justify-center relative cursor-pointer duration-300 bg-white p-4 w-36 h-36 rounded-full border-2 border-solid border-light-2"
             role="link"
@@ -41,35 +41,35 @@ import { useI18n } from 'vue-i18n';
 const HOME_LINK_BUTTONS = [{
   name: 'skill-query',
   icon: 'ic-outline-menu-book',
-  path: '/skill',
+  pathName: 'SkillQuery',
 }, {
   name: 'character-simulator',
   icon: 'mdi-ghost',
-  path: '/character',
+  pathName: 'CharacterSimulator',
 }, {
   name: 'skill-simulator',
   icon: 'ant-design:build-outlined',
-  path: '/character/skill',
+  pathName: 'SkillSimulator',
 }, {
   name: 'enchant-simulator',
   icon: 'mdi-cube-scan',
-  path: '/enchant',
+  pathName: 'EnchantSimulator',
 }, {
   name: 'enchant-doll',
   icon: 'ant-design:calculator-outlined',
-  path: '/enchant/doll',
+  pathName: 'EnchantDoll',
 }, {
   name: 'item-query',
   icon: 'jam-box',
-  path: '/items',
+  pathName: 'ItemQuery',
 }, {
   name: 'crystal-query',
   icon: 'bx-bx-cube-alt',
-  path: '/items/crystal',
+  pathName: 'CrystalQuery',
 }, {
   name: 'damage-calculation',
   icon: 'mdi-sword',
-  path: '/damage-calculation',
+  pathName: 'DamageCalculation',
 }];
 
 export default {

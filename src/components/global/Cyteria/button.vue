@@ -1,78 +1,137 @@
-<script>
-import { h, mergeProps } from 'vue';
+<script lang="ts">
+import { defineComponent, h, mergeProps, computed, toRefs } from 'vue';
 
-import { ColorSetProps, getColorSetStyle } from './base/color-set.vue';
+import ButtonBorder from './button/border.vue';
+import ButtonCheck from './button/check.vue';
+import ButtonRadio from './button/radio.vue';
+import ButtonDropDown from './button/drop-down.vue';
+import ButtonIcon from './button/icon.vue';
+import ButtonInline from './button/inline.vue';
+import ButtonLine from './button/line.vue';
+import ButtonSimple from './button/simple.vue';
+import ButtonSwitch from './button/switch.vue';
+import ButtonCircle from './button/circle.vue';
 
-import ButtonBorder from './button/border';
-import ButtonCheck from './button/check';
-import ButtonRadio from './button/radio';
-import ButtonDropDown from './button/drop-down';
-import ButtonIcon from './button/icon';
-import ButtonInline from './button/inline';
-import ButtonLine from './button/line';
-import ButtonSimple from './button/simple';
-import ButtonSwitch from './button/switch';
-import ButtonCircle from './button/circle';
+import { ColorSetProps, setupColorSetStyles } from './setup/color-set';
 
-function CyButton(props, context) {
-  const getComponent = () => {
-    const type = props.type;
-    if (type === 'border') {
-      return ButtonBorder;
-    } else if (type === 'line') {
-      return ButtonLine;
-    } else if (type === 'icon') {
-      return ButtonIcon;
-    } else if (type === 'drop-down') {
-      return ButtonDropDown;
-    } else if (type === 'inline') {
-      return ButtonInline;
-    } else if (type === 'check') {
-      return ButtonCheck;
-    } else if (type === 'radio') {
-      return ButtonRadio;
-    } else if (type === 'switch') {
-      return ButtonSwitch;
-    } else if (type === 'circle') {
-      return ButtonCircle;
-    }
-    return ButtonSimple;
-  };
-
-  const resultProps = {
-    class: ['cy--button-base'],
-    style: getColorSetStyle(props),
-  };
-  if (props.iconWidth !== null) {
-    resultProps.style['--icon-width'] = props.iconWidth;
-  }
-  const attrs = mergeProps(resultProps, context.attrs);
-
-  return h(
-    getComponent(),
-    attrs,
-    context.slots,
-  );
-}
-
-CyButton.props = {
-  type: {
-    type: String,
-    default: 'simple',
-    validator(v){
-      return [
-        'simple', 'icon', 'line', 'border', 'drop-down', 'inline', 'check', 'switch', 'radio', 'circle',
-      ].includes(v);
+export default defineComponent({
+  name: 'CyButton',
+  props: {
+    type: {
+      type: String,
+      default: 'simple',
+      validator: (value: string) => {
+        return [
+          'simple', 'icon', 'line', 'border', 'drop-down', 'inline', 'check', 'switch', 'radio', 'circle',
+        ].includes(value);
+      },
     },
+    iconWidth: {
+      type: String,
+      default: null,
+    },
+    ...ColorSetProps,
   },
-  iconWidth: {
-    type: String,
-    default: null,
-  },
-  ...ColorSetProps,
-};
+  setup(props) {
+    const { colorSetStyles } = setupColorSetStyles(props);
+    const { type: buttonType, iconWidth } = toRefs(props);
+    const currentComponent = computed(() => {
+      const type = buttonType.value;
+      if (type === 'border') {
+        return ButtonBorder;
+      } else if (type === 'line') {
+        return ButtonLine;
+      } else if (type === 'icon') {
+        return ButtonIcon;
+      } else if (type === 'drop-down') {
+        return ButtonDropDown;
+      } else if (type === 'inline') {
+        return ButtonInline;
+      } else if (type === 'check') {
+        return ButtonCheck;
+      } else if (type === 'radio') {
+        return ButtonRadio;
+      } else if (type === 'switch') {
+        return ButtonSwitch;
+      } else if (type === 'circle') {
+        return ButtonCircle;
+      }
+      return ButtonSimple;
+    });
 
-export default CyButton;
+    const resultProps = computed(() => {
+      const style = {
+        ...colorSetStyles.value,
+      };
+      if (iconWidth.value !== null) {
+        style['--icon-width'] = iconWidth.value;
+      }
+      return {
+        class: ['cy--button-base'],
+        style,
+      };
+    });
+
+    return {
+      colorSetStyles,
+      currentComponent,
+      resultProps,
+    };
+  },
+  render() {
+    const attrs = mergeProps(this.resultProps, this.$attrs);
+    return h(
+      this.currentComponent,
+      attrs,
+      this.$slots,
+    );
+  },
+});
+
+// const CyButton: FunctionalComponent<ExtractPropTypes<typeof Props>> = (props, context) => {
+//   const getComponent = () => {
+//     const type = props.type;
+//     if (type === 'border') {
+//       return ButtonBorder;
+//     } else if (type === 'line') {
+//       return ButtonLine;
+//     } else if (type === 'icon') {
+//       return ButtonIcon;
+//     } else if (type === 'drop-down') {
+//       return ButtonDropDown;
+//     } else if (type === 'inline') {
+//       return ButtonInline;
+//     } else if (type === 'check') {
+//       return ButtonCheck;
+//     } else if (type === 'radio') {
+//       return ButtonRadio;
+//     } else if (type === 'switch') {
+//       return ButtonSwitch;
+//     } else if (type === 'circle') {
+//       return ButtonCircle;
+//     }
+//     return ButtonSimple;
+//   };
+
+//   const resultProps = {
+//     class: ['cy--button-base'],
+//     style: getColorSetStyles(props),
+//   };
+//   if (props.iconWidth !== null) {
+//     resultProps.style['--icon-width'] = props.iconWidth;
+//   }
+//   const attrs = mergeProps(resultProps, context.attrs);
+
+//   return h(
+//     getComponent(),
+//     attrs,
+//     context.slots,
+//   );
+// };
+
+// CyButton.props = Props;
+
+// export default CyButton;
 </script>
 
 <style lang="postcss" scoped>
@@ -97,12 +156,12 @@ export default CyButton;
     @apply p-0 m-0 border-0;
   }
 
-  &::v-deep(.button--text) {
+  & :deep(.button--text) {
+    @apply text-center;
     color: var(--text-color, var(--primary-dark));
-    text-align: center;
   }
 
-  &.button--main-content, &::v-deep(.button--main-content) {
+  &.button--main-content, & :deep(.button--main-content) {
     cursor: pointer;
     border-color: var(--border-color, var(--primary-light));
 
@@ -114,18 +173,7 @@ export default CyButton;
   }
 
   &.disabled {
-    &::after {
-      content: '';
-      width: 100%;
-      height: 100%;
-      cursor: not-allowed;
-      z-index: 10;
-      display: inline-block;
-      position: absolute;
-      left: 0;
-      top: 0;
-      @apply bg-white bg-opacity-50;
-    }
+    @apply cursor-not-allowed opacity-80;
   }
 
   &:not(.disabled):focus {

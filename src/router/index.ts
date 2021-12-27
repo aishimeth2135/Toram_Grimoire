@@ -60,10 +60,10 @@ router.beforeEach((to, from) => {
       items: to.matched
         .filter(item => item.meta?.title)
         .map(item => {
-          const { title, path } = item.meta;
+          const { name, meta } = item;
           return {
-            title,
-            path: path,
+            title: meta.title,
+            pathName: name,
           };
         }),
     });
@@ -72,11 +72,11 @@ router.beforeEach((to, from) => {
     {
       const data = to.matched.slice().reverse().find(item => item.meta?.leftMenuViewButtons);
       if (data) {
-        const res = data.meta.leftMenuViewButtons!.map(({ title, icon, path }) => {
+        const res = data.meta.leftMenuViewButtons!.map(({ title, icon, pathName }) => {
           return {
             title,
             icon: icon,
-            path: data.path + path,
+            pathName,
           };
         });
 
@@ -85,10 +85,10 @@ router.beforeEach((to, from) => {
     }
   }
 
-  if (to.path === '/character/skill') {
-    if (from.path !== '/character') {
-      store.commit('main/setRedirectPath', '/character/skill');
-      return '/character';
+  if (to.name === 'SkillSimulator') {
+    if (from.name !== 'CharacterSimulator') {
+      store.commit('main/setRedirectPathName', 'SkillSimulator');
+      return { name: 'CharacterSimulator' };
     }
   }
 });

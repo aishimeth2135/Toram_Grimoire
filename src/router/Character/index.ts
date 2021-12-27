@@ -19,11 +19,11 @@ export default {
     leftMenuViewButtons: [{
       title: 'app.page-title.character-simulator',
       icon: 'gridicons-user',
-      path: '',
+      pathName: 'CharacterSimulator',
     }, {
       title: 'app.page-title.skill-simulator',
       icon: 'bx-bxs-star-half',
-      path: '/skill',
+      pathName: 'SkillSimulator',
     }],
   },
   children: [{

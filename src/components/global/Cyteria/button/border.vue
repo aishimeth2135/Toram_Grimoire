@@ -1,7 +1,7 @@
 <template>
   <button
     class="button--main-content inline-flex items-center py-1 px-3 m-1 rounded-2xl border-1 bg-white"
-    :class="baseClass"
+    :class="baseClassList"
     @click="click"
   >
     <slot name="icon">
@@ -16,10 +16,17 @@
   </button>
 </template>
 
-<script>
-import ButtonBase from './base';
+<script lang="ts">
+import { defineComponent } from 'vue';
 
-export default {
-  mixins: [ButtonBase],
-};
+import { ButtonBaseProps, setupButtonBase } from './setup';
+
+export default defineComponent({
+  name: 'CyButtonBorder',
+  emits: ['click'],
+  props: ButtonBaseProps,
+  setup(props, { emit }) {
+    return setupButtonBase(props, (evt) => emit('click', evt));
+  },
+});
 </script>
