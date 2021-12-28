@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="status !== 3 && !skipInit"
+    v-if="status !== 3"
     class="w-full h-full fixed top-0 left-0 bg-white z-100 flex items-center justify-center p-4"
   >
     <template v-if="status < 3">
@@ -47,8 +47,7 @@ const { useState } = createNamespacedHelpers('initialize');
 const {
   initItems,
   status,
-  skipInit,
-} = useState(['initItems', 'status', 'msgItems', 'skipInit']);
+} = useState(['initItems', 'status', 'msgItems']);
 
 const { t } = useI18n();
 const statusIcon = (value: number) => {

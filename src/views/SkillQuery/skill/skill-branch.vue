@@ -72,12 +72,14 @@ import { setupOtherEffectBranches } from './setup';
 interface Props {
   skillBranchItem: SkillBranchItem;
   sub?: boolean;
+  contentAuto?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   sub: false,
+  contentAuto: true,
 });
-const { skillBranchItem: branchItem, sub } = toRefs(props);
+const { skillBranchItem: branchItem, sub, contentAuto } = toRefs(props);
 
 const { contents, toggle } = ToggleService({
   contents: ['sub'] as const,
@@ -145,6 +147,7 @@ const rootClass = computed(() => {
     'px-3': !sub.value,
     'border-l-2': contents.sub,
     'border-light-3': contents.sub,
+    'content-auto': contentAuto.value,
   };
 });
 
@@ -169,7 +172,7 @@ const subButtonAvailable = computed(() => {
 
 <style lang="postcss" scoped>
 .skill-branch-wrapper {
-  @apply relative content-auto;
+  @apply relative;
 
   & :deep(.click-button--tag) {
     @apply text-orange cursor-pointer inline-block px-0.5;

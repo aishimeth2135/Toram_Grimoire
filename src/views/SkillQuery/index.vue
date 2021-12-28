@@ -52,7 +52,7 @@
       <div v-if="contents.skillEffect" class="border-t-1 border-orange pt-4">
         <SkillEffect
           :skill-effect-item="currentSkillEffectItem"
-          @set-current-skill="selectCurrentSkill"
+          @set-current-skill="skill => selectCurrentSkill(skill, true)"
         />
       </div>
     </div>

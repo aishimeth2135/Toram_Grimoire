@@ -4,7 +4,6 @@ const store = {
     initItems: [],
     status: 0, // 0: loading, 1: success, 2: finished
     msgItems: [],
-    skipInit: false,
   },
   mutations: {
     appendInitItems(state, { msg, promise }) {
@@ -16,42 +15,39 @@ const store = {
     },
     initState(state) {
       state.status = 0;
-      state.skipInit = false;
+      state.initItems = [];
     },
     initSucceed(state) {
       state.status = 1;
     },
     initBeforeFinished(state) {
-      if (state.status != 1)
-        throw new Error('[ERROR] view init.');
+      if (state.status !== 1)
+        throw new Error(`[ViewInit] Unknow error. The status should be 1 instead of ${state.status}`);
       state.status = 2;
     },
     initFinished(state) {
-      if (state.status != 2)
-        throw new Error('[ERROR] view init.');
+      if (state.status !== 2)
+        throw new Error(`[ViewInit] Unknow error. The status should be 2 instead of ${state.status}`);
       state.status = 3;
       state.initItems = [];
     },
     skipInit(state) {
-      state.skipInit = true;
+      state.status = 3;
     },
   },
   actions: {
     async startInit({ state, commit }) {
-      commit('initState');
-      // if ( state.initItems.length != 0 )
-      //       throw new Error('Something is initializing......');
       await Promise.all(
-        state.initItems.map(p => {
-          return p.promise
-            .then(() => p.status = 1)
+        state.initItems.map(item => {
+          return item.promise
+            .then(() => item.status = 1)
             .catch(err => {
               console.error(err);
-              p.status = -1;
+              item.status = -1;
             });
         }),
       );
-      if (!state.initItems.find(p => p.status == -1)) {
+      if (state.initItems.every(item => item.status !== -1)) {
         commit('initSucceed');
       }
     },

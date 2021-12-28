@@ -72,7 +72,12 @@
     @element-hover="branchButtonHover"
   >
     <div v-if="currentHoveringBranch" class="bg-white bg-opacity-70">
-      <SkillBranch :skill-branch-item="currentHoveringBranch" class="w-full bg-opacity-100" sub />
+      <SkillBranch
+        :skill-branch-item="currentHoveringBranch"
+        class="w-full bg-opacity-100"
+        sub
+        :content-auto="false"
+      />
     </div>
   </cy-hover-float>
 </template>

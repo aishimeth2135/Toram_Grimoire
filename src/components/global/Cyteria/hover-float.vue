@@ -12,7 +12,7 @@
         class="absolute -top-9 right-4"
         :class="{ 'invisible': !keepVisible }"
       >
-        <div class="flex items-center border-1 rounded-md border-light py-1 px-2 bg-white bg-opacity-70">
+        <div class="flex items-center border-1 rounded-md border-light py-1 px-2 bg-white bg-opacity-85">
           <cy-icon-text icon="fluent:cursor-click-24-regular" class="ml-auto" />
           <cy-icon-text icon="ic:round-arrow-forward" />
           <cy-icon-text icon="jam:close-circle" />
@@ -81,6 +81,8 @@ const fixPosition = () => {
   const ww = window.innerWidth;
   const pd = CY.element.convertRemToPixels(1);
 
+  console.log(rect);
+
   if (positionMode.value === 'h-middle') {
     const spacing = (ww - rect.width) / 2;
     position.value.left = spacing + 'px';
@@ -122,6 +124,7 @@ const updateCaptionPosition = async () => {
     }
   }
   position.value = resultPosition;
+
   await nextTick();
   fixPosition();
 };
@@ -174,6 +177,7 @@ const updateHookBinding = async () => {
 
 defineExpose({
   update: updateHookBinding,
+  fixPosition,
 });
 </script>
 
