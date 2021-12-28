@@ -81,8 +81,6 @@ const fixPosition = () => {
   const ww = window.innerWidth;
   const pd = CY.element.convertRemToPixels(1);
 
-  console.log(rect);
-
   if (positionMode.value === 'h-middle') {
     const spacing = (ww - rect.width) / 2;
     position.value.left = spacing + 'px';

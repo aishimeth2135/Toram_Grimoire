@@ -1,8 +1,11 @@
 // import { InitLanguageData } from "./Language";
+import { nextTick } from 'vue';
+
 import store from '@/store';
 
 export default async function viewInit(...inits: string[]) {
   store.commit('initialize/initState');
+  await nextTick();
 
   if (inits.length === 0) {
     store.commit('initialize/skipInit');
@@ -23,12 +26,12 @@ export default async function viewInit(...inits: string[]) {
   resolvedInitItems.forEach(item => store.commit('initialize/appendInitItems', item));
 
   await store.dispatch('initialize/startInit');
-  resolvedInitItems.forEach(async item => {
+  await Promise.all(resolvedInitItems.map(async item => {
     if (!item.loaded) {
       await item.origin!.next();
       console.log(`[Init: ${item.id}] Loading finished.`);
     }
     store.commit('datas/loadFinished', item.id);
-  });
+  }));
   store.commit('initialize/initBeforeFinished');
 }
