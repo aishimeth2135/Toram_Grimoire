@@ -80,7 +80,7 @@ export default {
         title: 'team',
         list: [{
           title: 'skill data',
-          list: ['緋月音'],
+          list: ['緋月音', 'Discord群組: Phantom\'s Library'],
         }, {
           title: 'equipment data',
           list: ['緋月音', '真白', '萌月'],

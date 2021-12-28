@@ -29,6 +29,7 @@ export default function DamageHandler(branchItem: SkillBranchItem) {
     'title':  value => value === 'normal_attack',
     'range_damage': value => value !== '0',
     'unsheathe_damage': value => value !== '0',
+    'ailment_name': value => !!value,
   });
   const valueAttrsMap = new MapContainer<HandleBranchValueAttrsMap>({
     'multiplier': '%',

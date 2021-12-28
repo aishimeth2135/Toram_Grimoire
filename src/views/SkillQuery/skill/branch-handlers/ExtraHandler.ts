@@ -30,7 +30,10 @@ export default function ExtraHandler(branchItem: SkillBranchItemSuffix) {
   const pureValues = [];
 
   if (mainBranch.name === 'damage') {
+    pureValues.push('ailment_name');
     valueAttrsMap.set('ailment_chance', '%');
+    filters.set('ailment_name', value => !!value);
+
     filters.set('caption', value => !!value);
     filters.set('element', value => !!value);
     textAttrsMap.append('caption', 'condition');
