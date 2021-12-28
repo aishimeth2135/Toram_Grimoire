@@ -71,7 +71,7 @@ export default defineComponent({
       return colorSetStyles.value;
     });
 
-    const rootClass = () => computed(() => {
+    const rootClass = computed(() => {
       const alignVMapping = {
         'start': 'align-v-start',
         'center': 'align-v-center',
