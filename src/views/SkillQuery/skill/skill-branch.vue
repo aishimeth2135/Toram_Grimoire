@@ -147,6 +147,7 @@ const rootClass = computed(() => {
     'px-3': !sub.value,
     'border-l-2': contents.sub,
     'border-light-3': contents.sub,
+    'ml-2': contents.sub,
     'content-auto': contentAuto.value,
   };
 });
