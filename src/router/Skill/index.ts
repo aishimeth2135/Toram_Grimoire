@@ -5,8 +5,8 @@ import ViewInit from '@/shared/services/ViewInit';
 
 import WrapperView from './wrapper.vue';
 
-const SkillQueryOldView = () => import(/* webpackChunkName: "skill-query" */ '@/views/SkillQueryOld/index.vue');
-const SkillQueryView = () => import(/* webpackChunkName: "skill-query-beta" */ '@/views/SkillQuery/index.vue');
+// const SkillQueryOldView = () => import(/* webpackChunkName: "skill-query-old" */ '@/views/SkillQueryOld/index.vue');
+const SkillQueryView = () => import(/* webpackChunkName: "skill-query" */ '@/views/SkillQuery/index.vue');
 
 export default {
   name: 'Skill',
@@ -23,18 +23,18 @@ export default {
     }],
   },
   children: [{
-    name: 'SkillQueryOld',
-    path: 'old',
-    component: SkillQueryOldView,
-    meta: {
-      title: 'app.page-title.skill-query',
-    },
-  }, {
     name: 'SkillQuery',
     path: ':skillId?',
     component: SkillQueryView,
     meta: {
       title: 'app.page-title.skill-query',
     },
-  }],
+  }, /* {
+    name: 'SkillQueryOld',
+    path: 'old',
+    component: SkillQueryOldView,
+    meta: {
+      title: 'app.page-title.skill-query',
+    },
+  } */],
 } as RouteRecordRaw;
