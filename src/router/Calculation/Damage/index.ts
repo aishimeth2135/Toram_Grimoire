@@ -16,7 +16,7 @@ export default {
   },
   meta: {
     leftMenuViewButtons: [{
-      title: 'page-title.damage-calculation',
+      title: 'app.page-title.damage-calculation',
       icon: 'mdi-sword',
       pathName: 'DamageCalculationMain',
     }],
@@ -26,7 +26,7 @@ export default {
     path: '',
     component: DamageCalculatiomView,
     meta: {
-      title: 'page-title.damage-calculation',
+      title: 'app.page-title.damage-calculation',
     },
   }],
 } as RouteRecordRaw;

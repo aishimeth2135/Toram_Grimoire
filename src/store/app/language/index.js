@@ -155,12 +155,12 @@ const store = {
       const loadData = async (locale) => {
         const data = {};
         const promises = LOCALE_NAMESPACE_LIST.map(async (filePath) => {
-          const module = await import(
+          const dataModule = await import(
             /* webpackInclude: /\.yaml$/ */
             /* webpackChunkName: "i18n-messages-[request]" */
             `@/locales/${locale}/${filePath}.yaml`
           );
-          data[filePath] = module.default;
+          data[filePath] = dataModule.default;
         });
         await Promise.all(promises);
         return data;

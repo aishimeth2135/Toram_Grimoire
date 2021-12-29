@@ -1,21 +1,36 @@
 <template>
   <transition name="fade">
     <div
-      v-if="viewButtons && viewButtons.length !== 0"
       v-show="visible"
       class="app-left-menu--wrapper"
       @click.stop="toggleVisible"
     >
       <div class="content-container" @click.stop>
-        <cy-button-line
-          v-for="(data) in viewButtons"
-          :key="data.title"
-          :icon="data.icon"
-          class="w-full"
-          @click="setCurrentView(data)"
-        >
-          {{ t(data.title) }}
-        </cy-button-line>
+        <div class="h-full overflow-y-auto">
+          <div class="mx-1">
+            <router-link
+              v-for="(data) in viewButtons"
+              :key="data.title"
+              v-slot="{ navigate }"
+              :to="{ name: data.pathName }"
+              custom
+            >
+              <cy-button-line
+                :icon="data.icon"
+                class="app-left-menu--link-button"
+                @click="navigate"
+              >
+                {{ t(data.title) }}
+              </cy-button-line>
+            </router-link>
+          </div>
+        </div>
+        <div v-if="router.currentRoute.value.name !== 'Home'" class="flex mt-auto pt-2 ai-center justify-end">
+          <cy-button-circle icon="bx:bx-share-alt" @click="copyCurrentUrl" />
+          <router-link v-slot="{ navigate }" :to="{ name: 'Home' }" custom>
+            <cy-button-circle icon="ant-design:home-outlined" @click="navigate" />
+          </router-link>
+        </div>
       </div>
     </div>
   </transition>
@@ -32,6 +47,11 @@ import { useI18n } from 'vue-i18n';
 import { createNamespacedHelpers } from 'vuex-composition-helpers';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import type { Ref } from 'vue';
+
+import CY from '@/shared/utils/Cyteria';
+
+import Notify from '@/setup/Notify';
 
 const router = useRouter();
 const { t } = useI18n();
@@ -41,23 +61,31 @@ const { useState } = createNamespacedHelpers('left-menu');
 const {
   viewButtons,
   visible,
-} = useState(['viewButtons', 'visible']);
-
-const setCurrentView = (data: { pathName: string }) => {
-  if (router.currentRoute.value.name !== data.pathName) {
-    router.replace({ name: data.pathName });
-  }
+} = useState(['viewButtons', 'visible']) as {
+  viewButtons: Ref<{
+    title: string;
+    icon: string;
+    pathName: string;
+  }[] | null>;
+  visible: Ref<boolean>;
 };
 
 const toggleVisible = () => {
   store.commit('left-menu/toggleVisible');
+};
+
+const { notify } = Notify();
+
+const copyCurrentUrl = () => {
+  CY.copyToClipboard(window.location.href);
+  notify(t('app.features.copy-url-to-clipboard-success-tips'));
 };
 </script>
 
 <style lang="postcss" scoped>
 .app-left-menu--wrapper {
   @apply fixed w-64 top-11 left-2 opacity-100 z-100;
-  height: calc(100% - 5rem);
+  height: calc(100% - 6.5rem);
 
   &.fade-enter-from, &.fade-leave-to {
     opacity: 0;
@@ -68,7 +96,7 @@ const toggleVisible = () => {
   }
 
   & > .content-container {
-    @apply p-2 w-full h-full overflow-y-auto;
+    @apply p-2 pb-1 h-full w-full border-r border-light flex flex-col;
   }
 }
 
@@ -89,5 +117,10 @@ const toggleVisible = () => {
       display: none;
     }
   }
+}
+
+.app-left-menu--link-button {
+  @apply w-full;
+  @apply mx-0 !important;
 }
 </style>

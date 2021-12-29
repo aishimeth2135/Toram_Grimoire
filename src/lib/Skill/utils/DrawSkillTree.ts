@@ -1,3 +1,4 @@
+import { Images } from '@/shared/services/Images';
 import CY from '@/shared/utils/Cyteria';
 
 import { LevelSkill, LevelSkillTree, Skill, SkillTree } from '../Skill';
@@ -216,7 +217,8 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
 }
 
 function getSkillIconPath(skill: Skill): string {
-  return `/imgs/skill_icons/stc_${skill.parent.parent.id}/st_${skill.parent.id}/si_${skill.id}.png`;
+  // return `/imgs/skill_icons/stc_${skill.parent.parent.id}/st_${skill.parent.id}/si_${skill.id}.png`;
+  return Images.skillIcons.get(skill.skillId);
 }
 
 interface SkillIconPatternDataItem {
@@ -275,4 +277,10 @@ function getSkillIconPatternId(skill: Skill): string {
   return `skill-icon-pattern--${skill.parent.parent.id}-${skill.parent.id}-${skill.id}`;
 }
 
-export { createDrawSkillTreeDefs, computeDrawSkillTreeData, getSkillIconPatternData, GetDrawSetting, getSkillIconPath };
+export {
+  createDrawSkillTreeDefs,
+  computeDrawSkillTreeData,
+  getSkillIconPatternData,
+  GetDrawSetting,
+  getSkillIconPath,
+};

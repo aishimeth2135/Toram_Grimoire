@@ -142,7 +142,7 @@ export default {
           id: cat.id,
           crystalStates: cs.map(c => ({
             origin: c,
-            imagePath: this.getCrystalImagePath(c),
+            imagePath: c.crystalIconPath,
             disabled: !this.checkEnchaner(cat, c),
             selected: this.findEquipmentCrystal(c) ? true : false,
           })),
@@ -176,11 +176,6 @@ export default {
       });
 
       return check1 && check2;
-    },
-    getCrystalImagePath(c) {
-      const type = c.enhancer ? 'enhance' :
-        ['weapon', 'body', 'additional', 'special', 'normal'][c.category];
-      return '/imgs/crystals/' + type + '.png';
     },
     toggleDetailVisible() {
       this.detailVisible = !this.detailVisible;

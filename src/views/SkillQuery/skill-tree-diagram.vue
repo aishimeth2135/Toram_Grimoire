@@ -31,7 +31,6 @@
             :y="el.y"
             :width="el.width"
             :height="el.height"
-            @error="skillIconImageNotFound($event)"
           />
         </template>
       </pattern>
@@ -153,9 +152,6 @@ export default {
       if (this.currentSkill === data.skill)
         ary.push('selected');
       return ary;
-    },
-    skillIconImageNotFound(evt) {
-      evt.target.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '/imgs/skill_icons/unknow.svg');
     },
   },
 };

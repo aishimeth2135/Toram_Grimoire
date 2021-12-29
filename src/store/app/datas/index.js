@@ -1,3 +1,5 @@
+import { InitCrystalIcons, InitEquipmentIcons, InitSkillIcons } from '@/shared/services/Images';
+
 import DamageCalculationSystem from '@/lib/Calculation/Damage';
 import CharacterSystem from '@/lib/Character';
 import EnchantSystem from '@/lib/Enchant';
@@ -97,11 +99,13 @@ const store = {
         Equipments: datas[0][0],
         Crystals: datas[1][0],
       });
+      await InitCrystalIcons();
     },
     async* loadStats({ commit }) {
       const datas = await DownloadDatas({ path: 'Stats', lang: true });
       yield;
       commit('initCharacter', { Stats: datas[0] });
+      await InitEquipmentIcons();
     },
     async* loadCharacterStats({ commit }) {
       const datas = await DownloadDatas({ path: 'Character Stats', lang: true });
@@ -121,6 +125,7 @@ const store = {
         SkillMain: datas[1],
       });
       commit('character/skill/setSkillRoot', state.Skill.skillRoot, { root: true });
+      await InitSkillIcons();
     },
     async* loadFood({ commit }) {
       // do nothing

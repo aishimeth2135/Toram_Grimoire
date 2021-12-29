@@ -80,7 +80,7 @@
       >
         <div class="p-4">
           <div class="mb-2 text-purple">
-            <cy-icon-text :icon="getCrystalImagePath(currentCrystal)" text-color="purple" icon-src="image">
+            <cy-icon-text :icon="currentCrystal.crystalIconPath" text-color="purple" icon-src="image">
               {{ currentCrystal.name }}
             </cy-icon-text>
           </div>
@@ -256,7 +256,7 @@ export default {
       res.forEach(cat => {
         cat.crystalStates = cat.crystals.map(c => ({
           origin: c,
-          imagePath: this.getCrystalImagePath(c),
+          imagePath: c.crystalIconPath,
           stat: this.currentStat ? this.findCrystalStat(this.currentStat, c) : null,
         }));
       });
@@ -282,11 +282,6 @@ export default {
     },
     selectMode(idx) {
       this.modeState.currentModeIndex = idx;
-    },
-    getCrystalImagePath(c) {
-      const type = c.origin.enhancer ? 'enhance' :
-        ['weapon', 'body', 'additional', 'special', 'normal'][c.origin.category];
-      return '/imgs/crystals/' + type + '.png';
     },
     selectCrystal(crystal) {
       this.currentCrystal = crystal;

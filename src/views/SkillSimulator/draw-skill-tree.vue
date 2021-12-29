@@ -31,7 +31,6 @@
             :y="q.y"
             :width="q.width"
             :height="q.height"
-            @error="skillIconImageNotFound($event)"
           />
         </template>
       </pattern>
@@ -159,9 +158,6 @@ export default {
     },
     skillCircleClick(evt, skill) {
       this.skillCircleClickListener(evt, skill);
-    },
-    skillIconImageNotFound(evt) {
-      evt.target.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '/imgs/skill_icons/unknow.svg');
     },
   },
 };

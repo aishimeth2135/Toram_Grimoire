@@ -10,7 +10,7 @@
       <AppNotify />
       <AppLoading />
     </template>
-    <div class="fixed w-full h-full flex items-center justify-center bg-white">
+    <div v-else class="fixed w-full h-full top-0 left-0 flex items-center justify-center bg-white z-100">
       <div class="flex justify-center flex-wrap">
         <LoadingAnimation :status="0" />
         <div class="text-xl w-full text-center mt-2 text-light-2">

@@ -2,6 +2,7 @@
 import Grimoire from '@/shared/Grimoire';
 import GetLang from '@/shared/services/Language';
 import { isNumberString } from '@/shared/utils/string';
+import { Images } from '@/shared/services/Images';
 
 import { Equipment, Crystal } from '@/lib/Items/Item';
 
@@ -115,9 +116,10 @@ abstract class CharacterEquipment {
   }
 
   static getImagePath(type: EquipmentTypes, fieldId: number = -1): string {
-    const pre = '/imgs/character/equipment';
-    const fieldIdStr = fieldId !== -1 ? '/i' + fieldId.toString() : '';
-    return `${pre}/${type}${fieldIdStr}.png`;
+    // const pre = '/imgs/character/equipment';
+    // const fieldIdStr = fieldId !== -1 ? '/i' + fieldId.toString() : '';
+    // return `${pre}/${type}${fieldIdStr}.png`;
+    return Images.equipmentIcons.get(type + (fieldId === -1 ? '' : `-${fieldId}`));
   }
 
   getAllStats(checkRestriction: (stat: StatRestriction) => boolean = () => true): StatRestriction[] {
@@ -650,6 +652,12 @@ class EquipmentCrystal {
 
   copy() {
     return new EquipmentCrystal(this.origin);
+  }
+
+  get crystalIconPath() {
+    const type = this.origin.enhancer ? 'enhance' :
+      ['weapon', 'body', 'additional', 'special', 'normal'][this.origin.category];
+    return type ? Images.crystalIcons.get(type) : '#';
   }
 }
 

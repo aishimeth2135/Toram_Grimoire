@@ -576,10 +576,6 @@ export default {
             src: '/imgs/favicon/favicon48.png',
             loadedImage: null,
           },
-          unknowSkillIcon: {
-            src: '/imgs/skill_icons/unknow.svg',
-            loadedImage: null,
-          },
         };
         //
         const drawDatas = [],
@@ -628,19 +624,11 @@ export default {
 
                   function img_load() {
                     img.removeEventListener('load', img_load);
-                    img.removeEventListener('error', img_error);
                     p.loadedImage = img;
                     resolve();
                   }
 
-                  function img_error() {
-                    img.removeEventListener('load', img_load);
-                    img.removeEventListener('error', img_error);
-                    p.loadedImage = otherIconData.unknowSkillIcon.loadedImage;
-                    resolve();
-                  }
                   img.addEventListener('load', img_load);
-                  img.addEventListener('error', img_error);
                   img.src = p.path;
                 });
               }),

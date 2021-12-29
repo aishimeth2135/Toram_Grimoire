@@ -67,7 +67,7 @@
             v-for="c in equipment.crystals"
             :key="c.id"
             class="mr-3 my-1"
-            :icon="getCrystalImagePath(c)"
+            :icon="c.crystalIconPath"
             icon-src="image"
           >
             {{ c.name }}
@@ -138,7 +138,7 @@
             v-for="c in equipment.crystals"
             :key="c.id"
             type="line"
-            :icon="getCrystalImagePath(c)"
+            :icon="c.crystalIconPath"
             icon-src="image"
             @click="editCrystal"
           >
@@ -205,11 +205,6 @@ export default {
       //   return ['E', 'B', 'C', 'D', 'A', 'S'][v - 10];
       // }
       return v;
-    },
-    getCrystalImagePath(c) {
-      const type = c.origin.enhancer ? 'enhance' :
-        ['weapon', 'body', 'additional', 'special', 'normal'][c.origin.category];
-      return '/imgs/crystals/' + type + '.png';
     },
     switchCustomType(){
       const eq = this.equipment;

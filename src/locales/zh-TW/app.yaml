@@ -81,4 +81,5 @@ settings:
     restriction-homepage: 為避免發生無法預期的錯誤，此功能限制只能在首頁使用。
 features:
   copy-to-clipboard-success-tips: 已複製文本至剪貼簿。
+  copy-url-to-clipboard-success-tips: 已複製網址至剪貼簿。
   localStorage-inavailable-tips: 此瀏覽器版本無法使用內建儲存功能。
