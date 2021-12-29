@@ -111,10 +111,10 @@
         </div>
         <div class="buttons">
           <cy-button-check
-            v-for="(item, i) in languageState.list"
+            v-for="(item, idx) in languageState.list"
             :key="item"
-            :selected="languageState.currentIndex === i"
-            @click="setLanguage(0, i)"
+            :selected="languageState.currentIndex === idx"
+            @click="setLanguage(0, idx)"
           >
             {{ t('app.settings.primary-language.lang-title.' + item) }}
           </cy-button-check>
@@ -137,10 +137,10 @@
         </cy-icon-text>
         <div class="buttons">
           <cy-button-check
-            v-for="(item, i) in secondLanguageState.list"
+            v-for="(item, idx) in secondLanguageState.list"
             :key="item"
-            :selected="secondLanguageState.currentIndex === i"
-            @click="setLanguage(1, i)"
+            :selected="secondLanguageState.currentIndex === idx"
+            @click="setLanguage(1, idx)"
           >
             {{ t('app.settings.primary-language.lang-title.' + item) }}
           </cy-button-check>
@@ -185,7 +185,7 @@
         <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
           {{ t('app.settings.storage-backup.tips-2') }}
         </cy-icon-text>
-        <cy-default-tips v-if="$route.path != '/'" icon="mdi-ghost">
+        <cy-default-tips v-if="$route.path !== '/'" icon="mdi-ghost">
           {{ t('app.settings.storage-backup.restriction-homepage') }}
         </cy-default-tips>
         <div v-else class="buttons">

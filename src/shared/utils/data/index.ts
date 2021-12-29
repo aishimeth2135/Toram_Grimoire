@@ -67,16 +67,20 @@ function calcNumberBinaryExpression(left: number, operator: string, right: numbe
  *   => "50+100"
  *   => "150"
  * # ex5:
- *   formula: "20*5+func1(20, 3)+100+foo+20*a+func2(20*b, c)+func1(20, c)+func1(20, c*bar)"
+ *   formula: "20*5+func1(20, 3)+100+foo+20*a+user.func2(20*b, user.age)+func1(20, c)+func1(20, user.age*bar)"
  *   vars: {
  *     func1: (value1, value2) => value1 * value2
- *     func2: (value1, value2) => value + value2
  *     a: 5,
  *     b: 2,
- *     c: 10,
+ *     user: {
+ *       age: 10,
+ *       func2: (value1, value2) => value + value2
+ *     },
  *   }
  *   => "100+60+100+foo+100+50+200+func1(20, 10*bar)"
  *   => "260+foo+350+func1(20, 10*bar)"
+ *
+ * note: "window.Math" will auto inject to vars as "Math"
  *
  * @param formulaStr - formula to parse
  * @param params.vars - given variables, this function will try to look inside variables

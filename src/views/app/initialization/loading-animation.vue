@@ -6,7 +6,7 @@
       @before-leave="beforeLeave"
       @leave="leave"
     >
-      <svg-icon v-if="status > 1" key="1" icon-id="potum" class="custom-icon" />
+      <svg-icon v-if="innerStatus > 1" key="1" icon-id="potum" class="custom-icon" />
       <svg-icon v-else key="2" icon-id="potum" class="custom-icon start-icon" />
     </transition>
     <transition
@@ -14,7 +14,7 @@
       :css="false"
       @enter="enter"
     >
-      <div v-if="status > 1 && end" class="ball" />
+      <div v-if="innerStatus > 1 && end" class="ball" />
     </transition>
   </div>
 </template>
@@ -22,7 +22,7 @@
 <script lang="ts" setup>
 // @ts-ignore
 import Velocity from 'velocity-animate';
-import { ref } from 'vue';
+import { onMounted, ref, toRefs, watch } from 'vue';
 
 interface Props {
   status: number;
@@ -31,9 +31,12 @@ interface Emits {
   (evt: 'done'): void;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
+const { status } = toRefs(props);
+
+const innerStatus = ref(0);
 const end = ref(false);
 
 const beforeLeave = (el: Element) => {
@@ -79,6 +82,11 @@ const enter = (el: Element, done: Function) => {
     },
   });
 };
+
+onMounted(() => {
+  innerStatus.value = status.value;
+  watch(status, value => innerStatus.value = value);
+});
 </script>
 
 <style lang="less" scoped>
