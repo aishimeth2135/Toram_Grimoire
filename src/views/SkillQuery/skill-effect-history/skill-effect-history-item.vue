@@ -152,7 +152,7 @@ const addedBranchItemDatas = computed(() => {
 
 const introductionBranchItemDatas = computed(() => {
   return historyItem.value.branchItems
-    .filter(bch => historyItem.value.introductionBranches.includes(bch))
+    .filter(bch => historyItem.value.introductionBranches.includes(toRaw(bch)))
     .map((bch, iid) => ({ branchItem: bch, iid }));
 });
 
