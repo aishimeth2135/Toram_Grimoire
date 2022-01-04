@@ -655,9 +655,7 @@ class EquipmentCrystal {
   }
 
   get crystalIconPath() {
-    const type = this.origin.enhancer ? 'enhance' :
-      ['weapon', 'body', 'additional', 'special', 'normal'][this.origin.category];
-    return type ? Images.crystalIcons.get(type) : '#';
+    return this.origin.crystalIconPath;
   }
 }
 

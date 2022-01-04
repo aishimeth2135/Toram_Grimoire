@@ -1,6 +1,7 @@
 
 import Grimoire from '@/shared/Grimoire';
 import { isNumberString } from '@/shared/utils/string';
+import { Images } from '@/shared/services/Images';
 
 import { StatTypes } from '@/lib/Character/Stat/enums';
 import { Stat } from '@/lib/Character/Stat';
@@ -120,6 +121,12 @@ class Crystal extends Item {
   }
   setEnhancer(name: string) {
     this.enhancer = name;
+  }
+
+  get crystalIconPath() {
+    const type = this.enhancer ? 'enhance' :
+      ['weapon', 'body', 'additional', 'special', 'normal'][this.category];
+    return type ? Images.crystalIcons.get(type) : '#';
   }
 }
 
