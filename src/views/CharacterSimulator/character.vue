@@ -11,10 +11,10 @@
         </template>
         <template #options>
           <cy-list-item
-            v-for="(chara, i) in characterStates"
+            v-for="(chara, idx) in characterStates"
             :key="chara.iid"
-            :selected="i == currentCharacterStateIndex"
-            @click="$store.commit('character/setCurrentCharacter', { index: i })"
+            :selected="idx === currentCharacterStateIndex"
+            @click="store.setCurrentCharacter(idx)"
           >
             <cy-icon-text icon="bx-bx-face">
               {{ chara.origin.name }}
@@ -148,7 +148,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'pinia';
+
+import { useCharacterStore } from '@/stores/views/character';
 
 import { CharacterOptionalBaseStatTypes } from '@/lib/Character/Character/enums';
 
@@ -156,6 +158,10 @@ export default {
   RegisterLang: 'Character Simulator',
   props: ['characterState'],
   emits: ['create-character'],
+  setup() {
+    const store = useCharacterStore();
+    return { store };
+  },
   data() {
     return {
       ranges: {
@@ -166,7 +172,7 @@ export default {
     };
   },
   computed: {
-    ...mapState('character', {
+    ...mapState(useCharacterStore, {
       'characterStates': 'characters',
       'currentCharacterStateIndex': 'currentCharacterIndex',
     }),
@@ -184,13 +190,13 @@ export default {
         return;
       }
       const from = this.characterState.origin;
-      this.$store.commit('character/removeCharacter', { index: this.currentCharacterStateIndex });
+      this.store.removeCharacter(this.currentCharacterStateIndex);
       this.$notify(this.$lang('Warn/Remove character successfully', [from.name]),
         'ic-round-delete', null, {
           buttons: [{
             text: this.$rootLang('global/recovery'),
             click: () => {
-              this.$store.commit('character/createCharacter', from);
+              this.store.createCharacter(from);
               this.$notify(this.$lang('Warn/Recovery character successfully', [from.name]));
             },
             removeMessageAfterClick: true,
@@ -199,7 +205,7 @@ export default {
     },
     copyCurrentCharacter() {
       const from = this.characterState.origin;
-      this.$store.commit('character/createCharacter', from.copy());
+      this.createCharacter(from.copy());
       this.$notify(this.$lang('Warn/Copy character successfully', [from.name]));
     },
     setOptionalBaseStat(name) {

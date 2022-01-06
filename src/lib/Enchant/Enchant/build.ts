@@ -443,7 +443,7 @@ class EnchantStep {
   }
 
   stat(itemBase: EnchantItem, type: StatTypes): EnchantStepStat | null {
-    return this.stats.find(stat => stat.itemBase === itemBase && stat.type === type) || null;
+    return this.stats.find(stat => stat.itemBase === itemBase && stat.type === type) ?? null;
   }
 
   remove() {
@@ -839,3 +839,4 @@ class EnchantStepStat extends EnchantStat {
 }
 
 export { EnchantStat, EnchantStepStat, EnchantStep, EnchantEquipment, EnchantBuild };
+export type { EnchantBuildSaveData };

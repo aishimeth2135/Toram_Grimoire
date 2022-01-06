@@ -16,7 +16,7 @@
           :value="currentCalculation.name"
           icon="ant-design:build-outlined"
           class="w-full"
-          @update:value="setCalculationName({ calculation: currentCalculation, name: $event })"
+          @update:value="currentCalculation.name = $event"
         />
         <cy-options inline>
           <template #title>
@@ -26,15 +26,15 @@
             <cy-list-item
               v-for="item in calculationItems"
               :key="item.index"
-              @click="selectCalculation(item.index)"
+              @click="store.selectCalculation(item.index)"
             >
               <cy-icon-text icon="ant-design:build-outlined">
                 {{ item.origin.name }}
               </cy-icon-text>
             </cy-list-item>
-            <cy-list-item @click="createCalculation">
+            <cy-list-item @click="store.createCalculation()">
               <cy-icon-text icon="ic-round-add-circle-outline" text-color="light-3">
-                {{ $lang('create build') }}
+                {{ lang('create build') }}
               </cy-icon-text>
             </cy-list-item>
           </template>
@@ -46,28 +46,28 @@
             icon="bx-bx-copy"
             @click="copyCurrentCalculation"
           >
-            {{ $rootLang('global/copy') }}
+            {{ rootLang('global/copy') }}
           </cy-button-border>
           <cy-button-border
             icon="mdi-export"
             main-color="blue-green"
             @click="exportBuild"
           >
-            {{ $rootLang('global/export') }}
+            {{ rootLang('global/export') }}
           </cy-button-border>
           <cy-button-border
             icon="mdi-import"
             main-color="blue-green"
             @click="importBuild"
           >
-            {{ $rootLang('global/import') }}
+            {{ rootLang('global/import') }}
           </cy-button-border>
           <cy-button-border
             icon="ic-baseline-delete-outline"
             main-color="gray"
             @click="removeCurrentCalculation"
           >
-            {{ $rootLang('global/delete') }}
+            {{ rootLang('global/delete') }}
           </cy-button-border>
         </div>
       </div>
@@ -82,12 +82,9 @@
             v-for="item in containerOption.containerItems"
             :key="item.base.id"
             :selected="containerOption.container.currentItem === item"
-            @click="setCurrentItemId({
-              container: containerOption.container,
-              value: item.base.id,
-            })"
+            @click="containerOption.container.selectItem(item.base.id)"
           >
-            {{ $lang('item base: title/' + item.base.id) }}
+            {{ lang('item base: title/' + item.base.id) }}
           </cy-button-check>
         </div>
         <cy-hr />
@@ -112,12 +109,12 @@
       >
         <div>
           <cy-icon-text icon="bx:bx-git-compare" size="small" text-color="purple">
-            {{ $lang('compare/title') }}
+            {{ lang('compare/title') }}
           </cy-icon-text>
         </div>
         <div class="mb-2">
           <cy-icon-text icon="bx-bx-info-circle" size="small" text-color="light-3" align-v="center" class="ml-2">
-            {{ $lang('compare/caption') }}
+            {{ lang('compare/caption') }}
           </cy-icon-text>
         </div>
         <DamageCalculationCompare />
@@ -131,12 +128,12 @@
       >
         <div>
           <cy-icon-text icon="ant-design:star-outlined" size="small" text-color="purple">
-            {{ $lang('calc mode/title') }}
+            {{ lang('calc mode/title') }}
           </cy-icon-text>
         </div>
         <div>
           <cy-icon-text icon="bx-bx-info-circle" size="small" text-color="light-3" align-v="center" class="ml-2">
-            {{ $lang('calc mode/caption') }}
+            {{ lang('calc mode/caption') }}
           </cy-icon-text>
         </div>
         <template v-for="modeItem in calcModeList" :key="modeItem.id">
@@ -145,7 +142,7 @@
             @click="selectCalcMode(modeItem.id)"
           >
             <cy-button-check :selected="modeItem === calcMode">
-              {{ $lang('calc mode/modes/' + modeItem.id) }}
+              {{ lang('calc mode/modes/' + modeItem.id) }}
             </cy-button-check>
           </div>
           <div>
@@ -156,7 +153,7 @@
               class="ml-6"
               align-v="start"
             >
-              {{ $lang('calc mode/modes caption/' + modeItem.id) }}
+              {{ lang('calc mode/modes caption/' + modeItem.id) }}
             </cy-icon-text>
           </div>
         </template>
@@ -170,7 +167,7 @@
       >
         <div>
           <cy-icon-text icon="ant-design:star-outlined" size="small" text-color="purple">
-            {{ $lang('result/title') }}
+            {{ lang('result/title') }}
           </cy-icon-text>
         </div>
         <template v-for="modeItem in resultModeList" :key="modeItem.id">
@@ -189,7 +186,7 @@
               class="ml-6"
               align-v="start"
             >
-              {{ $lang('result/modes caption/' + modeItem.id) }}
+              {{ lang('result/modes caption/' + modeItem.id) }}
             </cy-icon-text>
           </div>
         </template>
@@ -217,123 +214,95 @@
     </div>
   </section>
   <cy-default-tips v-else icon="mdi-ghost">
-    <cy-button-border @click="selectCalculation(0)">
-      {{ $rootLang('global/recovery') }}
+    <cy-button-border @click="store.selectCalculation(0)">
+      {{ rootLang('global/recovery') }}
     </cy-button-border>
   </cy-default-tips>
 </template>
 
-<script>
-import { computed, provide } from 'vue';
-import { mapActions, mapMutations, useStore } from 'vuex';
+<script lang="ts">
+export default {
+  name: 'DamageCalculation',
+};
+</script>
 
+<script lang="ts" setup>
+import { computed, provide } from 'vue';
+
+
+import { useDamageCalculationStore } from '@/stores/views/damage-calculation';
+import { useDatasStore } from '@/stores/app/datas';
+
+import { CalculationSaveData } from '@/lib/Calculation/Damage/Calculation';
 
 import AutoSave from '@/setup/AutoSave';
 import ExportBuild from '@/setup/ExportBuild';
 import ToggleService from '@/setup/ToggleService';
+import RegisterLang from '@/setup/RegisterLang';
 
-import vue_DamageCalculationCompare from './damage-calculation-compare';
-import vue_DamageCalculationItem from './damage-calculation-item';
-import vue_DamageCalculationResultItem from './damage-calculation-result-item';
+import DamageCalculationCompare from './damage-calculation-compare.vue';
+import DamageCalculationItem from './damage-calculation-item.vue';
+import DamageCalculationResultItem from './damage-calculation-result-item.vue';
+
 import init from './init.js';
 import { setupCalcMode, setupCalculationStore, setupResultMode, setupCalculationCalcOptions } from './setup';
 
-export default {
-  name: 'DamageCalculation',
-  RegisterLang: 'Damage Calculation',
-  components: {
-    DamageCalculationItem: vue_DamageCalculationItem,
-    DamageCalculationCompare: vue_DamageCalculationCompare,
-    DamageCalculationResultItem: vue_DamageCalculationResultItem,
+init();
+
+const store = useDamageCalculationStore();
+const datasStore = useDatasStore();
+
+AutoSave({
+  save: () => store.save(),
+  loadFirst: () => store.load(),
+});
+
+const {
+  calcModeList,
+  calcMode,
+  selectCalcMode,
+} = setupCalcMode();
+
+const {
+  // calculations,
+  currentCalculation,
+  calculationItems,
+
+  removeCurrentCalculation,
+  copyCurrentCalculation,
+} = setupCalculationStore();
+
+const {
+  resultMode,
+  resultModeList,
+  selectResultMode,
+} = setupResultMode(currentCalculation);
+
+const {
+  calculationContainerOptions,
+} = setupCalculationCalcOptions(currentCalculation);
+
+const { exportBuild, importBuild } = ExportBuild({
+  save: (handleSave) => {
+    const fileName = currentCalculation.value.name + '.txt';
+    const data = JSON.stringify(currentCalculation.value.save());
+    handleSave(fileName, data);
   },
-  setup() {
-    init();
-
-    const store = useStore();
-
-    AutoSave({
-      save: () => store.dispatch('damage-calculation/save'),
-      loadFirst: () => store.dispatch('damage-calculation/load'),
-    });
-
-    const {
-      calcModeList,
-      calcMode,
-      selectCalcMode,
-    } = setupCalcMode();
-
-    const {
-      calculations,
-      currentCalculation,
-      calculationItems,
-
-      removeCurrentCalculation,
-      copyCurrentCalculation,
-    } = setupCalculationStore();
-
-    const {
-      resultMode,
-      resultModeList,
-      selectResultMode,
-    } = setupResultMode(currentCalculation);
-
-    const {
-      calculationContainerOptions,
-    } = setupCalculationCalcOptions(currentCalculation);
-
-    const { exportBuild, importBuild } = ExportBuild({
-      save: (handleSave) => {
-        const fileName = currentCalculation.value.name + '.txt';
-        const data = JSON.stringify(currentCalculation.value.save());
-        handleSave(fileName, data);
-      },
-      loaded: res => {
-        res = JSON.parse(res);
-        const calculationBase = store.state.datas.DamageCalculation.calculationBase;
-        const calculation = calculationBase.createCalculation();
-        calculation.load(res);
-        store.commit('damage-calculation/appendCalculation', calculation);
-      },
-    });
-
-    const { contents, bottomSub, toggle } = ToggleService({
-      contents: ['mainMenu'],
-      bottomSub: ['compare', 'resultDetail', 'calcModeDetail'],
-    });
-
-    provide('currentCalculationExpectedResult', computed(() => resultModeList.value.find(item => item.id === 'expected').value));
-
-    return {
-      calcModeList,
-
-      // computed
-      calculations,
-      currentCalculation,
-      calcMode,
-      calculationItems,
-      resultModeList,
-      resultMode,
-      calculationContainerOptions,
-
-      // methods
-      selectCalcMode,
-      copyCurrentCalculation,
-      removeCurrentCalculation,
-      selectResultMode,
-      exportBuild,
-      importBuild,
-
-      // other
-      bottomSub,
-      contents,
-      toggle,
-    };
+  loaded: res => {
+    const saveData = JSON.parse(res) as CalculationSaveData;
+    const calculationBase = datasStore.DamageCalculation!.calculationBase;
+    const calculation = calculationBase.createCalculation();
+    calculation.load(saveData);
+    store.appendCalculation(calculation);
   },
-  methods: {
-    ...mapMutations('damage-calculation', ['selectCalculation']),
-    ...mapMutations('damage-calculation/container', ['setCurrentItemId']),
-    ...mapMutations('damage-calculation/calculation', ['setCalculationName']),
-    ...mapActions('damage-calculation', ['createCalculation']),
-  },
-};
+});
+
+const { contents, bottomSub, toggle } = ToggleService({
+  contents: ['mainMenu'] as const,
+  bottomSub: ['compare', 'resultDetail', 'calcModeDetail'] as const,
+});
+
+const { lang, rootLang } = RegisterLang('Damage Calculation');
+
+provide('currentCalculationExpectedResult', computed(() => resultModeList.value.find(item => item.id === 'expected')!.value));
 </script>

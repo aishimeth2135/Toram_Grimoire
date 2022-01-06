@@ -1,6 +1,6 @@
 
 import Grimoire from '@/shared/Grimoire';
-import GetLang from '@/shared/services/Language';
+import { GetLang } from '@/shared/services/Language';
 import { isNumberString } from '@/shared/utils/string';
 import { Images } from '@/shared/services/Images';
 
@@ -663,3 +663,4 @@ export {
   CharacterEquipment, EquipmentCrystal,
   MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar,
 };
+export type { EquipmentSaveData };

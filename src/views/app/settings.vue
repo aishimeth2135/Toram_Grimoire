@@ -13,12 +13,12 @@
             {{ t('app.settings.title') }}
           </cy-icon-text>
           <span class="ml-auto text-purple">
-            v{{ $store.state.main.version }}
+            v{{ mainStore.version }}
           </span>
         </div>
       </template>
       <div
-        v-if="serviceWorker.hasUpdate"
+        v-if="mainStore.serviceWorker.hasUpdate"
         class="p-4 flex items-center justify-center"
       >
         <cy-icon-text icon="mdi-creation" text-color="purple">
@@ -202,8 +202,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import { useI18n } from 'vue-i18n';
+
+import { useMainStore } from '@/stores/app/main';
 
 import { APP_STORAGE_KEYS } from '@/shared/consts';
 import CY from '@/shared/utils/Cyteria';
@@ -211,7 +212,8 @@ import CY from '@/shared/utils/Cyteria';
 export default {
   setup() {
     const { t } = useI18n();
-    return { t };
+    const mainStore = useMainStore();
+    return { t, mainStore };
   },
   data() {
     const list1 = ['auto', '0', '1', '2', '3'],
@@ -242,7 +244,6 @@ export default {
     };
   },
   computed: {
-    ...mapState('main', ['serviceWorker']),
     storageAvailable() {
       return CY.storageAvailable('localStorage');
     },
@@ -277,7 +278,7 @@ export default {
     async swUpdate() {
       this.$notify.loading.show();
       await this.$nextTick();
-      this.serviceWorker.instance.waiting.postMessage({ type: 'SKIP_WAITING' });
+      this.mainStore.serviceWorker.registration.waiting.postMessage({ type: 'SKIP_WAITING' });
     },
     clearSpreadsheetsCaches() {
       caches.delete('google-spreadsheets-csv-files')

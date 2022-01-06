@@ -94,7 +94,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'pinia';
+
+import { useCharacterStore } from '@/stores/views/character';
 
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums';
 import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from '@/lib/Character/CharacterEquipment';
@@ -119,6 +121,10 @@ export default {
   ],
   props: ['visible', 'action', 'characterState'],
   emits: ['close'],
+  setup() {
+    const store = useCharacterStore();
+    return { store };
+  },
   data() {
     return {
       currentEquipment: null,
@@ -128,9 +134,8 @@ export default {
     };
   },
   computed: {
-    ...mapState('character', {
-      'equipments': 'equipments',
-    }),
+    ...mapState(useCharacterStore, ['equipments']),
+
     currentCharacterStateDatas() {
       return this.handleCharacterStateDatas({
         handlePassiveSkill: true,
@@ -183,9 +188,7 @@ export default {
     removeSelectedEquipment() {
       const eq = this.currentEquipment;
       const index = this.equipments.indexOf(eq);
-      index != -1 && this.$store.commit('character/removeEquipment', {
-        index,
-      });
+      index != -1 && this.store.removeEquipment(index);
 
       const modifiedFields = this.characterState.origin.equipmentFields.filter(field => {
         if (field.equipment === eq) {

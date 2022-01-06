@@ -1,13 +1,9 @@
+import { LeftMenuViewButton } from '@/stores/app/left-menu';
 import 'vue-router';
-
 declare module 'vue-router' {
   interface RouteMeta {
     title?: string | null;
-    leftMenuViewButtons?: {
-      title: string;
-      icon: string;
-      pathName: string;
-    }[];
+    leftMenuViewButtons?: LeftMenuViewButton[];
     metaTags?: Record<string, string>[];
   }
 }

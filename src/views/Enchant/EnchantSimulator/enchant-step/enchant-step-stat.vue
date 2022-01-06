@@ -1,4 +1,6 @@
 <template>
+  <!-- eslint-disable vue/no-mutating-props -->
+  <!-- this component is splitted to handle EnchantStepStat -->
   <div class="pt-1">
     <div
       class="flex items-center flex-wrap py-0.5"
@@ -30,27 +32,24 @@
     </div>
     <div class="flex items-center pb-0.5 overflow-y-auto">
       <cy-input-counter
+        v-model:value="stat.value"
         inline
         max-button
         min-button
-        :value="stat.value"
         :range="stat.limit"
         :disabled="!stat.valid"
-        @update:value="setStatValue({ stat, value: $event })"
       />
       <cy-button-icon
         icon="jam-close-circle"
         class="ml-auto"
         icon-color="gray"
-        @click="removeStat(stat)"
+        @click="stat.remove()"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
-
 import { trimZero } from '@/shared/utils/string';
 
 import { EnchantStepStat } from '@/lib/Enchant/Enchant';
@@ -65,9 +64,6 @@ export default {
       type: EnchantStepStat,
       required: true,
     },
-  },
-  methods: {
-    ...mapMutations('enchant/stat', ['setStatValue', 'removeStat']),
   },
   computed: {
     potentialEffect() {

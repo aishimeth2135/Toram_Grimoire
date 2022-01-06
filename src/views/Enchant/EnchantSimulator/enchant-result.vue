@@ -147,7 +147,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'pinia';
+
+import { useEnchantStore } from '@/stores/views/enchant';
 
 import CY from '@/shared/utils/Cyteria';
 import { trimZero } from '@/shared/utils/string';
@@ -176,7 +178,7 @@ export default {
     return { windows, contents, toggle };
   },
   computed: {
-    ...mapState('enchant', ['config']),
+    ...mapState(useEnchantStore, ['config']),
     enchantResult() {
       const validSteps = this.equipment.validSteps;
 
@@ -288,7 +290,7 @@ export default {
         '' :
         `${this.$lang('equipment base potential')}｜${this.equipment.basePotential}\n`;
       CY.copyToClipboard(
-        `✩ ${this.$lang('equipment types/' + this.equipment.fieldType.description)}\n` +
+        `✩ ${this.$lang('equipment types/' + this.equipment.fieldType)}\n` +
         `${this.$lang('equipment original potential')}｜${this.equipment.originalPotential}\n` +
         `${this.$lang('smith level')}｜${this.config.smithLevel}\n` +
         basePotential +

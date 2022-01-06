@@ -3,7 +3,7 @@
     <div
       v-show="visible"
       class="app-left-menu--wrapper"
-      @click.stop="toggleVisible"
+      @click.stop="leftMenuStore.toggleVisible()"
     >
       <div class="content-container" @click.stop>
         <div class="h-full overflow-y-auto">
@@ -44,10 +44,10 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import { createNamespacedHelpers } from 'vuex-composition-helpers';
-import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import type { Ref } from 'vue';
+import { storeToRefs } from 'pinia';
+
+import { useLeftMenuStore } from '@/stores/app/left-menu';
 
 import CY from '@/shared/utils/Cyteria';
 
@@ -55,24 +55,13 @@ import Notify from '@/setup/Notify';
 
 const router = useRouter();
 const { t } = useI18n();
-const store = useStore();
-const { useState } = createNamespacedHelpers('left-menu');
+
+const leftMenuStore = useLeftMenuStore();
 
 const {
   viewButtons,
   visible,
-} = useState(['viewButtons', 'visible']) as {
-  viewButtons: Ref<{
-    title: string;
-    icon: string;
-    pathName: string;
-  }[] | null>;
-  visible: Ref<boolean>;
-};
-
-const toggleVisible = () => {
-  store.commit('left-menu/toggleVisible');
-};
+} = storeToRefs(leftMenuStore);
 
 const { notify } = Notify();
 
@@ -84,7 +73,7 @@ const copyCurrentUrl = () => {
 
 <style lang="postcss" scoped>
 .app-left-menu--wrapper {
-  @apply fixed w-64 top-11 left-2 opacity-100 z-100;
+  @apply fixed w-64 top-11 left-2 opacity-100;
   height: calc(100% - 6.5rem);
 
   &.fade-enter-from, &.fade-leave-to {
@@ -102,7 +91,7 @@ const copyCurrentUrl = () => {
 
 @media screen and (max-width: 82rem) {
   .app-left-menu--wrapper {
-    @apply top-0 left-0 right-auto bg-black bg-opacity-50 h-full;
+    @apply top-0 left-0 right-auto bg-black bg-opacity-50 h-full z-100;
     width: calc(100% + 30rem);
 
     &.fade-enter-from, &.fade-leave-to {

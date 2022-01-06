@@ -35,6 +35,8 @@
       function showMessage(error, extraMessage) {
         var message = error.message;
         var el = document.getElementById('app--error');
+        console.log('Something wrong...')
+        console.log(message);
         if (el) {
           if (el.getAttribute('data-flag') === '0') {
             el.setAttribute('data-flag', '1');
@@ -53,8 +55,6 @@
           row.style.padding = '16px';
           el.appendChild(row);
         }
-        console.log('Something wrong...')
-        console.log(message);
         if (extraMessage) {
           console.log(extraMessage);
         }
@@ -83,7 +83,6 @@
     <script defer src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/vue@3.2.20/dist/vue.global.prod.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/vue-router@4.0.11/dist/vue-router.global.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/vuex@4.0.2/dist/vuex.global.min.js"></script>
   <% } %>
 </head>
 

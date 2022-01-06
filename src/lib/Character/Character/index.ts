@@ -852,3 +852,4 @@ class CharacterStatFormulaConditionalItem {
 }
 
 export { CharacterStatCategory, CharacterStat, CharacterStatFormula, Character, EquipmentField };
+export type { CharacterSaveData };

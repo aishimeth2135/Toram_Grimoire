@@ -294,14 +294,17 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'pinia';
 
+import { useCharacterSkillStore } from '@/stores/views/character/skill';
 
-import { LoadingNotify } from '@/shared/services/Notify';
 import CY from '@/shared/utils/Cyteria';
 import Grimoire from '@/shared/Grimoire';
 
 import { computeDrawSkillTreeData, GetDrawSetting } from '@/lib/Skill/utils/DrawSkillTree';
+
+import Notify from '@/setup/Notify';
+
 
 import vue_SaveLoadDataSystem from '@/components/SaveLoadDataSystem/main.vue';
 
@@ -317,6 +320,11 @@ export default {
     return {
       'drawSkillTreeOptions': this.drawSkillTreeOptions,
     };
+  },
+  setup() {
+    const skillStore = useCharacterSkillStore();
+    const { loading: loadingNotify } = Notify();
+    return { skillStore, loadingNotify };
   },
   data() {
     // const r = this.skillRoot;
@@ -408,8 +416,8 @@ export default {
       ],
       SaveLoadDataSystemOptions: {
         name: 'Skill Simulator',
-        saveData: () => this.saveSkillBuildsCsv(),
-        loadData: str => this.$store.dispatch('character/skill/loadSkillBuildsCsv', { csvString: str }),
+        saveData: () => this.skillStore.saveSkillBuildsCsv(),
+        loadData: str => this.skillStore.loadSkillBuildsCsv({ csvString: str }),
         saveNameList: () => {
           return this.skillRootStates.map(a => a.name);
         },
@@ -432,15 +440,13 @@ export default {
     }
   },
   computed: {
-    ...mapState('character/skill', {
+    ...mapState(useCharacterSkillStore, {
       'skillRootStates': 'skillBuilds',
       'skillRoot': 'skillRoot',
       'currentSkillRootStateIndex': 'currentSkillBuildIndex',
-    }),
-    ...mapGetters('character/skill', {
-      'saveSkillBuildsCsv': 'saveSkillBuildsCsv',
       'currentSkillRootState': 'currentSkillBuild',
     }),
+
     currentStarGemList() {
       const list = [];
       this.currentSkillRootState.skillTreeCategoryStates.forEach(stc => {
@@ -553,7 +559,7 @@ export default {
     },
     async exportCurrentBuildImage() {
       if (!this.beforeExportConfirm()) return;
-      const loadingNotifyItem = LoadingNotify(this.$lang('tips/export build image: loading message'));
+      const loadingNotifyItem = this.loadingNotify(this.$lang('tips/export build image: loading message'));
       try {
         const drawSetting = GetDrawSetting();
 
@@ -866,13 +872,13 @@ export default {
       }
       const cur_index = this.currentSkillRootStateIndex;
       const cur_build = this.currentSkillRootState;
-      this.$store.commit('character/skill/removeSkillBuild', { index: cur_index });
+      this.skillStore.removeSkillBuild(cur_index);
 
       this.$notify(this.$lang('tips/delete build message', [cur_build.name]), 'ic-round-done', null, {
         buttons: [{
           text: this.$rootLang('global/recovery'),
           click: () => {
-            this.$store.commit('character/skill/createSkillBuild', { skillBuild: cur_build });
+            this.skillStore.createSkillBuild({ skillBuild: cur_build });
             this.$notify(this.$lang('tips/recovery delete build message', [cur_build.name]), 'ic-round-done');
           },
           removeMessageAfterClick: true,
@@ -904,11 +910,11 @@ export default {
       this.buildInformationVisible = false;
       this.$notify(this.$lang('tips/copy build message', [cur_build.name, new_build.name], 'ic-round-done'));
     },
-    selectCurrentSkillRootState(i) {
-      this.$store.commit('character/skill/setCurrentSkillBuild', { index: i });
+    selectCurrentSkillRootState(idx) {
+      this.skillStore.setCurrentSkillBuild(idx);
     },
     createBuild() {
-      this.$store.commit('character/skill/createSkillBuild', {
+      this.skillStore.createSkillBuild({
         name: this.$lang('build') + ' ' + (this.skillRootStates.length + 1),
       });
 

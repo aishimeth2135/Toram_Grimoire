@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="items.length !== 0"
+    v-if="store.confirmItems.length !== 0"
     class="fixed w-full h-full z-100 top-0 left-0"
   >
     <div class="absolute w-full h-full bg-black opacity-30 -z-1" />
@@ -25,7 +25,7 @@
             class="ml-auto"
             @click="confirm"
           >
-            {{ $rootLang('global/confirm') }}
+            {{ rootLang('global/confirm') }}
           </cy-button-border>
           <cy-button-border
             icon="ic-round-cancel"
@@ -33,7 +33,7 @@
             main-color="gray"
             @click="cancel"
           >
-            {{ $rootLang('global/cancel') }}
+            {{ rootLang('global/cancel') }}
           </cy-button-border>
         </div>
       </div>
@@ -41,27 +41,29 @@
   </div>
 </template>
 
-<script>
-import { mapState } from 'vuex';
-
+<script lang="ts">
 export default {
-  computed: {
-    ...mapState('confirm', ['items']),
-    item() {
-      return this.items[0];
-    },
-  },
-  methods: {
-    confirm() {
-      this.item.confirm();
-      this.shiftItem();
-    },
-    cancel() {
-      this.shiftItem();
-    },
-    shiftItem() {
-      this.$store.commit('confirm/shiftItem');
-    },
-  },
+  name: 'AppConfirm',
 };
+</script>
+
+<script lang="ts" setup>
+import { computed } from 'vue';
+
+import { ConfirmItem, useConfirmStore } from '@/stores/app/confirm';
+
+import { GetLang } from '@/shared/services/Language';
+
+const store = useConfirmStore();
+
+// if store.confirmItems.length is 0, this component will hide
+const item = computed<ConfirmItem>(() => store.confirmItems[0]);
+
+const confirm = () => {
+  item.value.confirm?.();
+};
+
+const cancel = () => store.nextItem();
+
+const rootLang = GetLang;
 </script>

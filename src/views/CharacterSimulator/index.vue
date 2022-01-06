@@ -58,7 +58,13 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'pinia';
+
+import { useCharacterStore } from '@/stores/views/character';
+import { useCharacterSkillStore } from '@/stores/views/character/skill';
+import { useCharacterFoodStore } from '@/stores/views/character/food';
+import { useMainStore } from '@/stores/app/main';
+import { useDatasStore } from '@/stores/app/datas';
 
 import { Character, EquipmentField } from '@/lib/Character/Character';
 import { CharacterBaseStatTypes, CharacterOptionalBaseStatTypes } from '@/lib/Character/Character/enums';
@@ -86,6 +92,12 @@ export default {
       'handleCharacterStateDatas': this.handleCharacterStateDatas,
       'checkStatRestriction': this.checkStatRestriction,
     };
+  },
+  setup() {
+    const store = useCharacterStore();
+    const mainStore = useMainStore();
+    const datasStore = useDatasStore();
+    return { store, mainStore, datasStore };
   },
   data() {
     return {
@@ -135,16 +147,16 @@ export default {
       this.autoLoad({ resetOption: { skillBuildsReplaced: false } });
       this.$notify(this.$lang('skill management/tips: skill-builds data not be replaced'));
     }
-    this.$store.commit('character/characterSimulatorInitFinished');
+    this.store.characterSimulatorInitFinished();
 
     if (this.characterStates.length !== 0 && this.currentCharacterIndex === -1) {
-      this.$store.commit('character/setCurrentCharacter', { index: 0 });
+      this.store.setCurrentCharacter(0);
     }
     if (this.characterStates.length === 0) {
       this.createCharacter();
     }
     if (this.skillBuilds.length !== 0 && this.currentSkillBuildIndex === -1) {
-      this.$store.commit('character/skill/setCurrentSkillBuild', { index: 0 });
+      this.store.setCurrentCharacter(0);
     }
 
     const evt_autoSave = () => this.autoSave();
@@ -156,13 +168,13 @@ export default {
   },
   updated() {
     if (this.currentCharacterStateIndex >= this.characterStates.length) {
-      this.$store.commit('character/setCurrentCharacter', { index: 0 });
+      this.store.setCurrentCharacter(0);
     }
   },
   mounted() {
-    if (this.$store.state.main.redirectPathName === 'SkillSimulator') {
+    if (this.mainStore.redirectPathName === 'SkillSimulator') {
       this.$router.replace({ name: 'SkillSimulator' });
-      this.$store.commit('main/clearRedirectPathName');
+      this.mainStore.clearRedirectPathName();
     }
   },
   unmounted() {
@@ -171,21 +183,20 @@ export default {
     this.autoSave();
   },
   computed: {
-    ...mapState('character', {
+    ...mapState(useCharacterStore, {
       'characterStates': 'characters',
       'currentCharacterStateIndex': 'currentCharacterIndex',
       'characterSimulatorHasInit': 'characterSimulatorHasInit',
       'autoSaveDisabled': 'autoSaveDisabled',
-    }),
-    ...mapState('character/skill', {
-      'skillBuilds': 'skillBuilds',
-      'currentSkillBuildIndex': 'currentSkillBuildIndex',
-    }),
-    ...mapGetters('character', {
       'currentCharacterState': 'currentCharacter',
     }),
-    ...mapGetters('character/skill', ['currentSkillBuild']),
-    ...mapGetters('character/food', ['currentFoodBuild']),
+    ...mapState(useCharacterSkillStore, {
+      'skillBuilds': 'skillBuilds',
+      'currentSkillBuildIndex': 'currentSkillBuildIndex',
+      'currentSkillBuild': 'currentSkillBuild',
+    }),
+    ...mapState(useCharacterFoodStore, ['currentFoodBuild']),
+
     equipmentElement() {
       const element = {
         'fire': 0,
@@ -255,17 +266,17 @@ export default {
   methods: {
     /* ==[ character - main ]==========================================*/
     closeAutoSave() {
-      this.$store.commit('character/closeAutoSave');
+      this.store.closeAutoSave();
     },
     autoSave() {
       if (!this.autoSaveDisabled) {
-        this.$store.dispatch('character/saveCharacterSimulator', { index: 0 });
+        this.store.saveCharacterSimulator(0);
         this.$notify(this.$lang('save-load control/Auto save Successfully'), 'mdi-ghost', 'auto save successfully');
       }
     },
     autoLoad({ resetOption } = {}) {
       try {
-        this.$store.dispatch('character/loadCharacterSimulator', { index: 0, resetOption });
+        this.store.loadCharacterSimulator({ index: 0, resetOption });
         this.$notify(this.$lang('save-load control/Auto load Successfully'), 'mdi-ghost', 'auto load successfully');
       } catch (e) {
         console.warn(e);
@@ -293,7 +304,7 @@ export default {
       if (!this.currentCharacterState)
         return [];
 
-      const categoryList = this.$store.state.datas.Character.characterStatCategoryList;
+      const categoryList = this.datasStore.Character.characterStatCategoryList;
       const chara = this.currentCharacterState.origin.copy();
 
       // let calcFieldNextFunc;
@@ -651,7 +662,7 @@ export default {
     createCharacter() {
       const c = new Character(this.$lang('character') + ' ' + (this.characterStates.length + 1).toString());
       // this.currentCharacterStateIndex = this.characterStates.length;
-      this.$store.commit('character/createCharacter', c);
+      this.store.createCharacter(c);
     },
   },
   watch: {

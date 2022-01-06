@@ -246,4 +246,4 @@ class CalcItemBase {
 }
 
 export { CalcItemBase, CalculationBase, CalcItemContainerBase };
-export type { CalcStructItem, CalcStructExpression, CalcResultOptions, CurrentItemIdGetter };
+export type { CalcStructItem, CalcStructSingle, CalcStructMultiple, CalcStructExpression, CalcResultOptions, CurrentItemIdGetter };

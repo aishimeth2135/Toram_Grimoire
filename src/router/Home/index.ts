@@ -9,7 +9,7 @@ import WrapperView from './wrapper.vue';
 const AboutView = () => import(/* webpackChunkName: "home-about" */ '@/views/Home/About/index.vue');
 
 export default {
-  name: 'Index',
+  name: 'AppRoot',
   path: '/',
   component: WrapperView,
   beforeEnter(to, from, next) {

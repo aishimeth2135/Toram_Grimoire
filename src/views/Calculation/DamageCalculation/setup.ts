@@ -1,6 +1,8 @@
 import { computed, ref } from 'vue';
 import type { Ref } from 'vue';
-import { useStore } from 'vuex';
+import { storeToRefs } from 'pinia';
+
+import { useDamageCalculationStore } from '@/stores/views/damage-calculation';
 
 import { CalcItemContainer, Calculation } from '@/lib/Calculation/Damage/Calculation';
 
@@ -22,7 +24,7 @@ const setupCalcMode = () => {
   }];
   const currentCalcModeId = ref('common');
   const selectCalcMode = (id: string) => currentCalcModeId.value = id;
-  const calcMode = computed(() => calcModeList.find(item => item.id === currentCalcModeId.value));
+  const calcMode = computed(() => calcModeList.find(item => item.id === currentCalcModeId.value)!);
 
   return {
     calcModeList,
@@ -32,10 +34,14 @@ const setupCalcMode = () => {
 };
 
 const setupCalculationStoreState = () => {
-  const store = useStore();
-
-  const calculations = computed(() => store.state['damage-calculation'].calculations as Calculation[]);
-  const currentCalculation = computed(() => store.getters['damage-calculation/currentCalculation'] as Calculation);
+  const store = useDamageCalculationStore();
+  const {
+    calculations,
+    currentCalculation,
+  }: {
+    calculations: Ref<Calculation[]>;
+    currentCalculation: Ref<Calculation>;
+  } = storeToRefs(store);
 
   return {
     calculations,
@@ -44,7 +50,7 @@ const setupCalculationStoreState = () => {
 };
 
 const setupCalculationStore = () => {
-  const store = useStore();
+  const store = useDamageCalculationStore();
   const { lang, rootLang } = RegisterLang('Damage Calculation');
   const { notify } = Notify();
 
@@ -56,19 +62,19 @@ const setupCalculationStore = () => {
       return;
     }
     const calculation = currentCalculation.value;
-    store.commit('damage-calculation/removeCalculation', calculation);
+    store.removeCalculation(calculation);
     notify(lang('tips/Successfully removed build', [calculation.name]), {
       buttons: [{
         text: rootLang('global/recovery'),
         removeMessageAfterClick: true,
-        click: () => store.commit('damage-calculation/appendCalculation', calculation),
+        click: () => store.appendCalculation(calculation),
       }],
     });
   };
 
   const copyCurrentCalculation = () => {
     const calculation = currentCalculation.value.copy();
-    store.commit('damage-calculation/appendCalculation', calculation);
+    store.appendCalculation(calculation);
   };
 
   const calculationItems = computed(() => {

@@ -18,6 +18,7 @@
     "less-loader": "^10.0.1",
     "os-browserify": "^0.3.0",
     "papaparse": "^5.3.1",
+    "pinia": "^2.0.9",
     "register-service-worker": "^1.7.1",
     "sanitize-filename": "^1.6.3",
     "utility-types": "^3.10.0",
@@ -26,7 +27,6 @@
     "vue-gtag-next": "^1.14.0",
     "vue-i18n": "^9.2.0-beta.17",
     "vue-router": "4.0.11",
-    "vuex": "^4.0.2",
     "vuex-composition-helpers": "^2.0.1"
   },
   "devDependencies": {

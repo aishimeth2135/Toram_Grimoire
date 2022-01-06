@@ -1,38 +1,30 @@
 
-import type { VueI18n } from 'vue-i18n';
-
-import store from '@/store';
-
-import CharacterSystem from '@/lib/Character';
-import EnchantSystem from '@/lib/Enchant';
-import ItemsSystem from '@/lib/Items';
-import SkillSystem from '@/lib/Skill';
-import TagSystem from '@/lib/Tag';
-
+import { DatasStoreBase } from '@/stores/app/datas';
+import { I18nStore } from '@/stores/app/language';
 
 const Grimoire = {
   get Character() {
-    return store.state.datas.Character as CharacterSystem;
+    return DatasStoreBase.Character!;
   },
 
   get Items() {
-    return store.state.datas.Items as ItemsSystem;
+    return DatasStoreBase.Items!;
   },
 
   get Skill() {
-    return store.state.datas.Skill as SkillSystem;
+    return DatasStoreBase.Skill!;
   },
 
   get Tag() {
-    return store.state.datas.Tag as TagSystem;
+    return DatasStoreBase.Tag!;
   },
 
   get Enchant() {
-    return store.state.datas.Enchant as EnchantSystem;
+    return DatasStoreBase.Enchant!;
   },
 
   get i18n() {
-    return store.state.language.i18n as VueI18n;
+    return I18nStore.i18n!;
   },
 };
 

@@ -285,12 +285,12 @@ function handleFormula(formulaStr: string, {
       left = parseFloat(left);
       right = parseFloat(right);
       return pre + calcNumberBinaryExpression(left, operator, right).toString();
-    })
-    .replace(/(-?\d+(?:\.\d+)?)([+-])(-?\d+(?:\.\d+)?)/g, (match, left, operator, right) => {
-      left = parseFloat(left);
-      right = parseFloat(right);
-      return calcNumberBinaryExpression(left, operator, right).toString();
     });
+  // .replace(/(-?\d+(?:\.\d+)?)([+-])(-?\d+(?:\.\d+)?)/g, (match, left, operator, right) => {
+  //   left = parseFloat(left);
+  //   right = parseFloat(right);
+  //   return calcNumberBinaryExpression(left, operator, right).toString();
+  // });
 
   textsAry.forEach(([key], idx) => {
     formulaStr = formulaStr.replace(new RegExp(getTextVarName(idx), 'g'), textsMap.get(key) as string);

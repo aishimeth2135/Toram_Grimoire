@@ -104,7 +104,9 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'pinia';
+
+import { useCharacterSkillStore } from '@/stores/views/character/skill';
 
 import vue_skillItem from './skill-item.vue';
 
@@ -116,6 +118,10 @@ export default {
     };
   },
   props: ['characterState', 'passiveSkillStates', 'activeSkillStates'],
+  setup() {
+    const skillStore = useCharacterSkillStore();
+    return { skillStore };
+  },
   data() {
     return {
       mode: 'passive',
@@ -134,11 +140,9 @@ export default {
       this.selectCurrentBuild(0);
   },
   computed: {
-    ...mapState('character/skill', {
+    ...mapState(useCharacterSkillStore, {
       'skillBuilds': 'skillBuilds',
       'currentSkillBuildIndex': 'currentSkillBuildIndex',
-    }),
-    ...mapGetters('character/skill', {
       'currentSkillBuild': 'currentSkillBuild',
     }),
   },
@@ -147,7 +151,7 @@ export default {
       this.mode = mode;
     },
     selectCurrentBuild(idx) {
-      this.$store.commit('character/skill/setCurrentSkillBuild', { index: idx });
+      this.skillStore.setCurrentSkillBuild(idx);
     },
     openUserSetsWindow(handler) {
       this.userSetsWindow.handler = handler;

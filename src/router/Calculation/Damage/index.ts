@@ -1,6 +1,8 @@
 
 import type { RouteRecordRaw } from 'vue-router';
 
+import { DataStoreIds } from '@/stores/app/datas/enums';
+
 import ViewInit from '@/shared/services/ViewInit';
 
 import WrapperView from './wrapper.vue';
@@ -12,7 +14,7 @@ export default {
   path: '/damage-calculation',
   component: WrapperView,
   beforeEnter(to, from, next) {
-    ViewInit('DamageCalculation').then(next);
+    ViewInit(DataStoreIds.DamageCalculation).then(next);
   },
   meta: {
     leftMenuViewButtons: [{

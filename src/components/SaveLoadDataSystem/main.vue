@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import GetLang from '@/shared/services/Language';
+import { GetLang } from '@/shared/services/Language';
 import CY from '@/shared/utils/Cyteria';
 
 import init from './init.js';

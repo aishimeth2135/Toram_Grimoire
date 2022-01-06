@@ -1,7 +1,7 @@
 import { markRaw } from 'vue';
 
 import Grimoire from '@/shared/Grimoire';
-import GetLang from '@/shared/services/Language';
+import { GetLang } from '@/shared/services/Language';
 
 import { EquipmentTypes } from '../CharacterEquipment/enums';
 import { StatTypes } from './enums';

@@ -40,7 +40,6 @@ module.exports = {
           'velocity-animate': 'Velocity',
           'vue': 'Vue',
           'vue-router': 'VueRouter',
-          'vuex': 'Vuex',
         },
         plugins: [
           // new BundleAnalyzerPlugin(),
@@ -126,7 +125,7 @@ module.exports = {
       favicon16: 'imgs/favicon/favicon16.png',
       appleTouchIcon: 'imgs/favicon/favicon152.png',
       maskIcon: 'imgs/favicon/favicon.svg',
-      msTileImage: 'img/favicon/favicon144x144.png',
+      msTileImage: 'img/favicon/favicon144.png',
     },
 
     // workbox

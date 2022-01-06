@@ -92,7 +92,8 @@ export default {
 import { computed, ref, watch, toRefs, nextTick } from 'vue';
 import { Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useStore } from 'vuex';
+
+import { useDatasStore } from '@/stores/app/datas';
 
 import { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer';
 import { Skill, SkillRoot } from '@/lib/Skill/Skill';
@@ -123,7 +124,7 @@ const { t } = useI18n();
 const { tabs, toggle } = ToggleService({
   tabs: [{ name: 'skillInfo', default: true }, 'skillHistory'] as const,
 });
-const store = useStore();
+const datasStore = useDatasStore();
 
 const setTab = (target: keyof typeof tabs) => {
   toggle(`tabs/${target}`, true, false);
@@ -165,7 +166,7 @@ watch(effectItem, async () => {
 
 const currentHoveringSkill: Ref<Skill | null> = ref(null);
 const skillButtonHover = (el: HTMLElement) => {
-  const skillRoot = store.state.datas.Skill.skillRoot as SkillRoot;
+  const skillRoot = datasStore.Skill!.skillRoot as SkillRoot;
   const skillName = el.innerText;
   let result: Skill | null = null;
   skillRoot.skillTreeCategorys.some(stc => {

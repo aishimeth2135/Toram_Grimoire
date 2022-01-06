@@ -14,65 +14,56 @@
         v-for="item in calculationItems"
         :key="item.index"
         :calculation="item.origin"
-        :order="containerDisplayOrder"
+        :order="CONTAINER_DISPLAY_ORDER"
       />
     </div>
   </div>
 </template>
 
-<script>
-import { computed, ComputedRef } from 'vue';
-import { useStore } from 'vuex';
-
-import { Calculation } from '@/lib/Calculation/Damage/Calculation';
-
-import vue_DamageCalculationTableItem from './damage-calculation-table-item';
+<script lang="ts">
+const CONTAINER_DISPLAY_ORDER = [
+  'atk/base',
+  'atk/dual_sword',
+  'atk/two_handed',
+  'target_resistance',
+  'level_difference',
+  'target_def_base',
+  'pierce',
+  'skill/constant',
+  'unsheathe_attack/constant',
+  'other_constant',
+  'skill/multiplier',
+  'critical_damage',
+  'range_damage',
+  'unsheathe_attack/multiplier',
+  'stronger_against_element',
+  'proration',
+  'combo_multiplier',
+  'skill/long_range',
+  'stability',
+  'other_multiplier',
+];
 
 export default {
   name: 'DamageCalculationTable',
-  components: {
-    DamageCalculationTableItem: vue_DamageCalculationTableItem,
-  },
-  setup() {
-    const store = useStore();
-
-    /** @type {ComputedRef<Array<Calculation>>} */
-    const calculations = computed(() => store.state['damage-calculation'].calculations);
-
-    const calculationItems = computed(() => {
-      return calculations.value.map((calc, index) => ({
-        index,
-        origin: calc,
-      }));
-    });
-
-    const containerDisplayOrder = [
-      'atk/base',
-      'atk/dual_sword',
-      'atk/two_handed',
-      'target_resistance',
-      'level_difference',
-      'target_def_base',
-      'pierce',
-      'skill/constant',
-      'unsheathe_attack/constant',
-      'other_constant',
-      'skill/multiplier',
-      'critical_damage',
-      'range_damage',
-      'unsheathe_attack/multiplier',
-      'stronger_against_element',
-      'proration',
-      'combo_multiplier',
-      'skill/long_range',
-      'stability',
-      'other_multiplier',
-    ];
-
-    return {
-      calculationItems,
-      containerDisplayOrder,
-    };
-  },
 };
+</script>
+
+<script lang="ts" setup>
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+
+import { useDamageCalculationStore } from '@/stores/views/damage-calculation';
+
+import DamageCalculationTableItem from './damage-calculation-table-item.vue';
+
+const store = useDamageCalculationStore();
+const { calculations } = storeToRefs(store);
+
+const calculationItems = computed(() => {
+  return calculations.value.map((calc, index) => ({
+    index,
+    origin: calc,
+  }));
+});
 </script>

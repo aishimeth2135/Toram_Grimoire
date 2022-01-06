@@ -345,7 +345,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'pinia';
+
+import { useDatasStore } from '@/stores/app/datas';
 
 import vue_DrawSkillTree from '@/views/SkillSimulator/draw-skill-tree.vue';
 
@@ -435,9 +437,9 @@ export default {
     init();
   },
   computed: {
-    ...mapState({
-      'skillRoot': state => state.datas.Skill.skillRoot,
-      'tagList': state => state.datas.Tag.tagList,
+    ...mapState(useDatasStore, {
+      'skillRoot': state => state.Skill.skillRoot,
+      'tagList': state => state.Tag.tagList,
     }),
     drawSkillTreeOptions() {
       return {

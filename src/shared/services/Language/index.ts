@@ -1,30 +1,31 @@
-import store from '@/store';
-import type { LangCsvData } from '@/store/app/datas/utils/DownloadDatas';
+import type { LangCsvData } from '@/stores/app/datas/utils/DownloadDatas';
+import { useLanguageStore } from '@/stores/app/language';
+import type { LangInjectData } from '@/stores/app/language';
 
 import en from './globalData/en.js';
 import ja from './globalData/ja.js';
 import zh_cn from './globalData/zh_cn.js';
 import zh_tw from './globalData/zh_tw.js';
 
-type LangData = {
-  [key: string]: unknown;
-};
-
 interface GetLangHandler {
   (id: string, values?: string[]): string;
 }
 
+let GetLang: GetLangHandler;
+
 function InitLanguageSystem() {
-  store.dispatch('language/init', { en, zh_tw, ja, zh_cn });
+  const languageStore = useLanguageStore();
+  languageStore.init({ en, zh_tw, ja, zh_cn });
+
+  GetLang = function(id, values) {
+    return languageStore.get(id, values);
+  };
 }
 
-function InitLanguageData(datas: LangData) {
-  store.commit('language/injectData', datas);
+function InitLanguageData(datas: LangInjectData) {
+  const languageStore = useLanguageStore();
+  languageStore.injectData(datas);
 }
-
-const GetLang: GetLangHandler = function(id, values) {
-  return store.getters['language/get'](id, values);
-};
 
 function HandleLanguageData(datas: LangCsvData, mapping: { [key: number]: number }) {
   const langDatas = [datas[1], datas[2]];
@@ -40,8 +41,6 @@ function HandleLanguageData(datas: LangCsvData, mapping: { [key: number]: number
     });
   });
 }
-
-export default GetLang;
 
 export { InitLanguageSystem, GetLang, InitLanguageData, HandleLanguageData };
 export type { GetLangHandler };

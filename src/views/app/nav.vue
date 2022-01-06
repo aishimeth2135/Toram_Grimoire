@@ -1,10 +1,10 @@
 <template>
   <nav class="border-b border-solid border-light flex items-center py-1 px-3 mb-4 bg-white">
-    <cy-button-icon icon="ic:round-menu" @click="store.commit('left-menu/toggleVisible')" />
+    <cy-button-icon icon="ic:round-menu" @click="leftMenuStore.toggleVisible()" />
     <div class="inline-flex items-center whitespace-nowrap overflow-y-auto px-2 text-sm">
       <!-- <cy-icon-text icon="potum" icon-src="custom" class="mr-2" /> -->
       <template
-        v-for="(item, idx) in items"
+        v-for="(item, idx) in navItems"
         :key="item.path"
       >
         <cy-icon-text
@@ -14,7 +14,7 @@
         />
         <span>
           <router-link
-            v-if="idx !== items.length - 1"
+            v-if="idx !== navItems.length - 1"
             v-slot="{ navigate }"
             :to="{ name: item.pathName }"
             custom
@@ -41,14 +41,19 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
-import { useStore } from 'vuex';
+
+import { useNavStore } from '@/stores/app/nav';
+import { useLeftMenuStore } from '@/stores/app/left-menu';
 
 import AppSettings from './settings.vue';
 
 const { t } = useI18n();
-const store = useStore();
-const items = computed(() => store.state.nav.items);
+
+const navStore = useNavStore();
+const { navItems } = storeToRefs(navStore);
+
+const leftMenuStore = useLeftMenuStore();
 </script>
 

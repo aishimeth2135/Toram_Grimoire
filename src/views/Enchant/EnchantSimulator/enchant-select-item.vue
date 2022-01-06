@@ -57,6 +57,8 @@
 </template>
 
 <script>
+import { useDatasStore } from '@/stores/app/datas';
+
 import { StatTypes } from '@/lib/Character/Stat/enums';
 
 export default {
@@ -89,9 +91,13 @@ export default {
     },
   },
   emits: ['close', 'select-item'],
+  setup() {
+    const datasStore = useDatasStore();
+    return { datasStore };
+  },
   data() {
     const types = [StatTypes.Constant, StatTypes.Multiplier];
-    const originalCategorys = this.$store.state.datas.Enchant.categorys;
+    const originalCategorys = this.datasStore.Enchant.categorys;
     const categorys = originalCategorys.map(category => {
       const items = [];
       category.items.forEach(item => {

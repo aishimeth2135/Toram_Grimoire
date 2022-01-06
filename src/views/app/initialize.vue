@@ -6,7 +6,7 @@
     <template v-if="status < 3">
       <div class="max-w-full text-center w-128">
         <div class="border-b border-light pb-4">
-          <LoadingAnimation :status="status" @done="store.commit('initialize/initFinished')" />
+          <LoadingAnimation :status="status" @done="initializeStore.initFinished()" />
         </div>
         <div class="pt-8 inline-block">
           <div v-for="item in initItems" :key="item.msg" class="flex justify-center items-center mb-2 pl-1">
@@ -36,18 +36,18 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import { useStore } from 'vuex';
-import { createNamespacedHelpers } from 'vuex-composition-helpers';
+import { storeToRefs } from 'pinia';
+
+import { useInitializeStore } from '@/stores/app/initialize';
 
 import LoadingAnimation from './initialization/loading-animation.vue';
 
-const store = useStore();
-const { useState } = createNamespacedHelpers('initialize');
+const initializeStore = useInitializeStore();
 
 const {
   initItems,
   status,
-} = useState(['initItems', 'status', 'msgItems']);
+} = storeToRefs(initializeStore);
 
 const { t } = useI18n();
 const statusIcon = (value: number) => {

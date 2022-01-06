@@ -280,3 +280,4 @@ class CalcItemCustom extends CalcItem {
 }
 
 export { CalcItemContainer, Calculation, CalcItem, CalcItemCustom };
+export type { CalculationSaveData };
