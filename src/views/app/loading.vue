@@ -1,6 +1,6 @@
 <template>
   <div
-    v-show="active"
+    v-show="store.active"
     class="app--loading fixed w-full h-full top-0 left-0 flex justify-center z-100 p-4"
   >
     <div class="main-container">
@@ -12,14 +12,16 @@
   </div>
 </template>
 
-<script>
-import { mapState } from 'vuex';
+<script lang="ts">
+import { useLoadingStore } from '@/stores/app/loading';
 
 export default {
-  computed: {
-    ...mapState('notify/loading', ['active']),
-  },
+  name: 'AppLoading',
 };
+</script>
+
+<script lang="ts" setup>
+const store = useLoadingStore();
 </script>
 
 <style lang="postcss" scoped>

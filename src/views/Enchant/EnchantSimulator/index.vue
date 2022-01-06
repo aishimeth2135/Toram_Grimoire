@@ -164,6 +164,7 @@
           icon="ic-round-add-circle-outline"
           class="step-container border flex items-center justify-center"
           style="--icon-width: 3.5rem; height: 12rem"
+          hide-focus
           @click="appendStep"
         />
       </div>
@@ -173,6 +174,7 @@
         :visible="windows.selectItem"
         :once="selectItemTarget.once"
         :is-weapon="isWeapon"
+        :selected-items="selectedItems"
         @close="toggle('windows/selectItem', false)"
         @select-item="selectItem"
       />
@@ -282,9 +284,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'pinia';
 
-
+import { useEnchantStore } from '@/stores/views/enchant';
 
 import CY from '@/shared/utils/Cyteria';
 
@@ -318,7 +320,8 @@ export default {
       windows: ['selectItem'],
       contents: ['top', 'extraOptions', 'result'],
     });
-    return { windows, contents, toggle };
+    const store = useEnchantStore();
+    return { windows, contents, toggle, store };
   },
   data() {
     return {
@@ -357,7 +360,7 @@ export default {
     init();
   },
   created() {
-    this.$store.dispatch('enchant/init');
+    this.store.init();
     this.$notify(this.$lang('save/tips/auto load successfully'));
 
     const evt_autoSave = () => this.autoSave();
@@ -368,7 +371,7 @@ export default {
     this.listeners.documentVisibilityChange = evt_autoSave_2;
   },
   mounted() {
-    if (this.currentBuildIndex === -1) {
+    if (this.enchantBuilds.length === 0) {
       this.createBuild();
     }
   },
@@ -378,18 +381,13 @@ export default {
     this.autoSave();
   },
   computed: {
-    ...mapState('enchant', ['builds', 'currentBuildIndex', 'config']),
+    ...mapState(useEnchantStore, ['enchantBuilds', 'currentBuild', 'config']),
 
     buildDatas() {
-      return this.builds.map((build, i) => ({
+      return this.enchantBuilds.map((build, i) => ({
         origin: build,
         iid: i,
       }));
-    },
-
-    /** @return {EnchantBuild} */
-    currentBuild() {
-      return this.builds[this.currentBuildIndex];
     },
 
     /** @return {EnchantEquipment} */
@@ -411,6 +409,12 @@ export default {
     isWeapon() {
       return this.currentEquipmentType !== 1;
     },
+    selectedItems() {
+      return (this.selectItemTarget.target?.stats ?? []).map(stat => ({
+        origin: stat.itemBase,
+        type: stat.type,
+      }));
+    },
 
     currentEquipmentType: {
       get() {
@@ -427,16 +431,16 @@ export default {
     },
 
     characterLevel: {
-      set(v) {
-        this.$store.commit('enchant/setConfig', { characterLevel: v });
+      set(value) {
+        this.store.config.characterLevel = value;
       },
       get() {
         return this.config.characterLevel;
       },
     },
     smithLevel: {
-      set(v) {
-        this.$store.commit('enchant/setConfig', { smithLevel: v });
+      set(value) {
+        this.store.config.smithLevel = value;
       },
       get() {
         return this.config.smithLevel;
@@ -445,29 +449,29 @@ export default {
   },
   methods: {
     autoSave() {
-      this.$store.commit('enchant/save');
+      this.store.save();
       this.$notify(this.$lang('save/tips/auto save successfully'));
     },
     setCurrentBuild(data) {
-      this.$store.commit('enchant/setCurrentBuild', { index: data.iid });
+      this.store.setCurrentBuild(data.iid);
     },
     createBuild() {
       const name = this.$lang('build') + ' ' + (this.buildCount + 1).toString();
       const build = new EnchantBuild(name);
-      this.$store.commit('enchant/appendBuild', build);
+      this.store.appendBuild(build);
       this.buildCount += 1;
     },
     async removeBuild() {
-      if (this.builds.length === 1) {
+      if (this.enchantBuilds.length === 1) {
         this.$notify(this.$lang('tips/keep at least one build'));
         return;
       }
       if (await this.$confirm(this.$lang('tips/confirm: remove build'))) {
-        this.$store.commit('enchant/removeBuild', this.currentBuild);
+        this.store.removeBuild(this.currentBuild);
       }
     },
     copyBuild() {
-      this.$store.commit('enchant/copyBuild', this.currentBuild);
+      this.store.copyBuild(this.currentBuild);
       this.$notify(this.$lang('tips/copy build successfully'));
     },
     exportBuild() {
@@ -484,7 +488,7 @@ export default {
       CY.file.load({
         succeed: res => {
           const build = EnchantBuild.load(JSON.parse(res));
-          this.$store.commit('enchant/appendBuild', build);
+          this.store.appendBuild(build);
           this.$notify(this.$lang('save/tips/import successfully', [`「${build.name}」`]));
         },
         error: () => this.$notify(this.$lang('save/tips/import: error')),
@@ -511,8 +515,10 @@ export default {
     selectItem(item) {
       const { type, target } = this.selectItemTarget;
       if (type === 'step' && target instanceof EnchantStep) {
-        if (target.hasStat(item.origin, item.type)) {
-          this.$notify(this.$lang('tips/step stat repeated'));
+        const matchedStat = target.stat(item.origin, item.type);
+        if (matchedStat) {
+          // this.$notify(this.$lang('tips/step stat repeated'));
+          matchedStat.remove();
           return;
         }
         const stat = target.appendStat(item.origin, item.type);

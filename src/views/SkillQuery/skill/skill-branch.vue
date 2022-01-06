@@ -4,37 +4,41 @@
     :class="rootClass"
     class="skill-branch-wrapper"
   >
-    <component
-      :is="currentComponent"
-      :branch-item="skillBranchItem"
-    />
-    <cy-transition type="fade">
-      <div v-if="!sub && contents.sub">
-        <div class="flex items-center px-4 pt-2 pb-1 space-x-2">
-          <cy-icon-text icon="ic:round-label" />
-          <SkillEquipmentButton
-            v-for="(branch, idx) in otherEffectBranches"
-            :key="branch.parent.equipmentId"
-            :skill-branch-item="branch"
-            :selected="currentOtherEffectBranch === branch"
-            @click="setCurrentOtherEffectBranch(idx)"
-          />
-        </div>
-        <div v-if="currentOtherEffectBranch">
-          <SkillBranch
-            :skill-branch-item="currentOtherEffectBranch"
-            sub
-          />
-        </div>
+    <div :class="{ 'sub-content-active': contents.sub }">
+      <div class="relative pt-1">
+        <component
+          :is="currentComponent"
+          :branch-item="skillBranchItem"
+        />
+        <cy-button-icon
+          v-if="subButtonAvailable"
+          icon="mdi:leaf-circle-outline"
+          class="toggle-sub-button"
+          icon-width="1.5rem"
+          @click="toggle('contents/sub')"
+        />
       </div>
-    </cy-transition>
-    <cy-button-icon
-      v-if="subButtonAvailable"
-      icon="mdi:leaf-circle-outline"
-      class="toggle-sub-button"
-      icon-width="1.5rem"
-      @click="toggle('contents/sub')"
-    />
+      <cy-transition type="fade">
+        <div v-if="!sub && contents.sub">
+          <div class="flex items-center px-4 pt-2 pb-1 space-x-2">
+            <cy-icon-text icon="ic:round-label" />
+            <SkillEquipmentButton
+              v-for="(branch, idx) in otherEffectBranches"
+              :key="branch.parent.equipmentId"
+              :skill-branch-item="branch"
+              :selected="currentOtherEffectBranch === branch"
+              @click="setCurrentOtherEffectBranch(idx)"
+            />
+          </div>
+          <div v-if="currentOtherEffectBranch">
+            <SkillBranch
+              :skill-branch-item="currentOtherEffectBranch"
+              sub
+            />
+          </div>
+        </div>
+      </cy-transition>
+    </div>
     <div v-if="skillBranchItem.groupState.isGroupEnd && !sub" class="pt-5">
       <div class="group-end" />
     </div>
@@ -108,6 +112,13 @@ const currentComponent = computed(() => {
   return SkillBranchText;
 });
 
+const NORMAL_LAYOUT_BRANCH_NAMES = [
+  SkillBranchNames.Damage,
+  SkillBranchNames.Effect,
+  SkillBranchNames.Heal,
+  SkillBranchNames.Passive,
+];
+
 const paddingBottomClass = computed(() => {
   const curBch = branchItem.value;
   const branchItems = curBch.parent.branchItems;
@@ -120,11 +131,13 @@ const paddingBottomClass = computed(() => {
   const next = nextBch.name;
   const cur = curBch.name;
 
+  const nextNormalLayout = NORMAL_LAYOUT_BRANCH_NAMES.includes(next);
+
   if (nextBch.isGroup || (curBch.isGroup && !curBch.groupState.expanded)) {
-    return 'pb-5';
+    return nextNormalLayout ? 'pb-4' : 'pb-5';
   }
   if (curBch.attrBoolean('is_mark') || nextBch.attrBoolean('is_mark')) {
-    return 'pb-4';
+    return nextNormalLayout ? 'pb-3' : 'pb-4';
   }
   if ([SkillBranchNames.Tips, SkillBranchNames.Text, SkillBranchNames.List].includes(cur) && next === SkillBranchNames.Tips) {
     return 'pb-1.5';
@@ -138,16 +151,13 @@ const paddingBottomClass = computed(() => {
   if (next === SkillBranchNames.List) {
     return 'pb-4';
   }
-  return 'pb-3';
+  return nextNormalLayout ? 'pb-2' : 'pb-3';
 });
 
 const rootClass = computed(() => {
   return {
     [paddingBottomClass.value]: true,
     'px-3': !sub.value,
-    'border-l-2': contents.sub,
-    'border-light-3': contents.sub,
-    'ml-2': contents.sub,
     'content-auto': contentAuto.value,
   };
 });
@@ -162,19 +172,12 @@ const subButtonAvailable = computed(() => {
   if (otherEffectBranches.value.length === 0 || sub.value) {
     return false;
   }
-  return [
-    SkillBranchNames.Damage,
-    SkillBranchNames.Effect,
-    SkillBranchNames.Heal,
-    SkillBranchNames.Passive,
-  ].includes(branchItem.value.name);
+  return NORMAL_LAYOUT_BRANCH_NAMES.includes(branchItem.value.name);
 });
 </script>
 
 <style lang="postcss" scoped>
 .skill-branch-wrapper {
-  @apply relative;
-
   & :deep(.click-button--tag) {
     @apply text-orange cursor-pointer inline-block px-0.5;
   }
@@ -244,9 +247,12 @@ const subButtonAvailable = computed(() => {
 }
 
 .toggle-sub-button {
-  @apply absolute -top-1 right-2.5;
+  @apply absolute top-0 right-2.5;
 }
 
+.sub-content-active {
+  @apply border-l-2 border-light-3 pl-3 pb-2;
+}
 .group-end {
   @apply border-t-1 border-light-3 relative;
 

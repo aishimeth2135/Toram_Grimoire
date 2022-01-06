@@ -258,6 +258,8 @@
 </template>
 
 <script>
+import { useDatasStore } from '@/stores/app/datas';
+
 import {
   CharacterEquipment,
   MainWeapon, SubWeapon,
@@ -284,8 +286,12 @@ export default {
       'findObtainByDye': this.findObtainByDye,
     };
   },
+  setup() {
+    const datasStore = useDatasStore();
+    return { datasStore };
+  },
   data() {
-    const equipments = this.$store.state.datas.Items.equipments
+    const equipments = this.datasStore.Items.equipments
       .map(p => CharacterEquipment.fromOriginEquipment(p, { statValueToNumber: false }));
 
     const handleOptions = opts => opts.map(p => {
@@ -302,7 +308,7 @@ export default {
     };
 
     const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier];
-    this.$store.state.datas.Character.statList.forEach(stat => {
+    this.datasStore.Character.statList.forEach(stat => {
       if (stat.hidden) return;
       statTypes.forEach(type => {
         if (type === StatTypes.Multiplier && !stat.hasMultiplier)

@@ -246,6 +246,8 @@
 </template>
 
 <script>
+import { useDatasStore } from '@/stores/app/datas';
+
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
 import { StatRestriction } from '@/lib/Character/Stat';
 import { StatTypes } from '@/lib/Character/Stat/enums';
@@ -258,9 +260,13 @@ export default {
       type: CharacterEquipment,
     },
   },
+  setup() {
+    const datasStore = useDatasStore();
+    return { datasStore };
+  },
   data() {
     const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier];
-    this.$store.state.datas.Character.statList
+    this.datasStore.Character.statList
       .filter(stat => !stat.hidden)
       .forEach(stat => {
         statTypes

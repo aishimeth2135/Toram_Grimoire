@@ -79,9 +79,10 @@
 <script setup lang="ts">
 import { computed, ref, nextTick } from 'vue';
 import type { Ref, ComputedRef } from 'vue';
-import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
+import { useDatasStore } from '@/stores/app/datas';
 
 import { SkillRoot, SkillTree, SkillTreeCategory, Skill } from '@/lib/Skill/Skill';
 import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer';
@@ -95,7 +96,7 @@ import SkillQuerySearch from './skill-query-search.vue';
 
 import { setupComputingContainer } from './setup';
 
-const store = useStore();
+const datasStore = useDatasStore();
 
 const { toggle, contents } = ToggleService({
   contents: ['skillEffect', 'search'] as const,
@@ -121,7 +122,7 @@ const goToSkillTop = async () => {
   }
 };
 
-const skillRoot: ComputedRef<SkillRoot> = computed(() => store.state.datas.Skill.skillRoot);
+const skillRoot: ComputedRef<SkillRoot> = computed(() => datasStore.Skill!.skillRoot);
 
 const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null);
 const currentSkillTree: Ref<SkillTree | null> = ref(null);

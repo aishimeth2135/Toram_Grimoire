@@ -97,6 +97,8 @@
 </template>
 
 <script>
+import { useDatasStore } from '@/stores/app/datas';
+
 import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from '@/lib/Character/CharacterEquipment';
 
 import vue_showStat from './show-stat.vue';
@@ -109,8 +111,12 @@ export default {
   },
   props: ['visible', 'equipment'],
   emits: ['close'],
+  setup() {
+    const datasStore = useDatasStore();
+    return { datasStore };
+  },
   data() {
-    const crystals = this.$store.state.datas.Items.crystals;
+    const crystals = this.datasStore.Items.crystals;
     const crystalCategorys = new Array(5).fill().map((p, i) => {
       return {
         id: i,

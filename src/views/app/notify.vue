@@ -2,7 +2,7 @@
   <div class="fixed bottom-14 right-5 w-80 z-50;" style="max-width: calc(100vw - 2rem)">
     <transition-group name="fade-slide">
       <div
-        v-for="msg in messages"
+        v-for="msg in store.messages"
         :key="msg.iid"
         class="duration-300 bg-dark text-white p-3 flex items-center mt-4 rounded w-full flex-wrap relative"
       >
@@ -20,7 +20,7 @@
           />
           <span class="text">{{ msg.message }}</span>
         </div>
-        <div v-if="msg.options.buttons && msg.options.buttons.length != 0">
+        <div v-if="msg.options.buttons?.length !== 0">
           <span
             v-for="btn in msg.options.buttons"
             :key="btn.iid"
@@ -35,21 +35,23 @@
   </div>
 </template>
 
-<script>
-import { mapState } from 'vuex';
-
+<script lang="ts">
 export default {
-  computed: {
-    ...mapState('notify', ['messages']),
-  },
-  methods: {
-    messageButtonClick(msg, btn) {
-      if (btn.click)
-        btn.click();
-      if (btn.removeMessageAfterClick)
-        this.$store.commit('notify/removeMessage', msg);
-    },
-  },
+  name: 'AppNotify',
+};
+</script>
+
+<script lang="ts" setup>
+import { useNotifyStore } from '@/stores/app/notify';
+import type { NotifyMessageItem, MessageNotifyButtonItemWithId } from '@/stores/app/notify';
+
+const store = useNotifyStore();
+
+const messageButtonClick = (msg: NotifyMessageItem, btn: MessageNotifyButtonItemWithId) => {
+  btn?.click();
+  if (btn.removeMessageAfterClick) {
+    store.removeMessage(msg);
+  }
 };
 </script>
 

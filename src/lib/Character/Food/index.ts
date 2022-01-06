@@ -167,5 +167,5 @@ class Food {
 }
 
 export { FoodsBase, Foods };
-export type { FoodAmount };
+export type { FoodAmount, FoodsSaveData };
 

@@ -1,6 +1,8 @@
 
 import type { RouteRecordRaw } from 'vue-router';
 
+import { DataStoreIds } from '@/stores/app/datas/enums';
+
 import ViewInit from '@/shared/services/ViewInit';
 
 import WrapperView from './wrapper.vue';
@@ -13,7 +15,7 @@ export default {
   path: '/skill',
   component: WrapperView,
   beforeEnter(to, from, next) {
-    ViewInit('Stats', 'Skill', 'Tag').then(next);
+    ViewInit(DataStoreIds.Stats, DataStoreIds.Skill, DataStoreIds.Tag).then(next);
   },
   meta: {
     leftMenuViewButtons: [{

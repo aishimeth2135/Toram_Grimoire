@@ -14,7 +14,7 @@
       <cy-button-switch
         :selected="currentContainer.enabled"
         :disabled="!currentContainer.base.controls.toggle"
-        @update:selected="setEnabled({ container: currentContainer, value: $event })"
+        @update:selected="currentContainer!.enabled = $event"
       />
     </div>
     <div class="space-y-2" :class="{ 'opacity-60': !currentContainer.enabled }">
@@ -29,22 +29,22 @@
           :step="item.base.step"
           :value="item.value"
           input-width="3rem"
-          @update:value="setItemValue({ item, value: $event })"
+          @update:value="item.value = $event"
         >
           <template #title>
             <cy-icon-text v-if="!currentContainer.selectable">
-              <span v-if="!item.isCustom" v-html="markText($lang('item base: title/' + item.base.id))"></span>
+              <span v-if="!item.isCustom" v-html="markText(lang('item base: title/' + item.base.id))"></span>
               <template v-else>
-                {{ item.name }}
+                {{ (item as CalcItemCustom).name }}
               </template>
             </cy-icon-text>
             <cy-button-check
               v-else
               inline
               :selected="currentContainer.currentItem === item"
-              @click="setCurrentItemId({ container: currentContainer, value: item.base.id })"
+              @click="currentContainer!.selectItem(item.base.id)"
             >
-              {{ $lang('item base: title/' + item.base.id) }}
+              {{ lang('item base: title/' + item.base.id) }}
             </cy-button-check>
           </template>
           <template #unit>
@@ -52,10 +52,10 @@
           </template>
         </cy-input-counter>
         <cy-title-input
-          v-else
+          v-else-if="item instanceof CalcItemCustom"
           :value="item.name"
           class="w-64"
-          @update:value="setItemName({ item, value: $event })"
+          @update:value="item.name = $event"
           @keyup.enter="toggleEditedItem(null)"
         />
         <cy-button-icon
@@ -69,19 +69,16 @@
           v-if="item.isCustom"
           icon="jam:close-circle"
           class="ml-2"
-          @click="removeCustomItem({ container: currentContainer ,item })"
+          @click="removeCustomItem(item as CalcItemCustom)"
         />
       </div>
       <div
         v-if="currentContainer.customItemAddable"
         class="flex items-center justify-center p-1.5 border border-light-3 bg-white w-64 cursor-pointer duration-300 opacity-60 hover:opacity-100"
-        @click="createCustomItem({
-          container: currentContainer,
-          name: $lang('item base: title/' + currentContainer.currentItem.base.id),
-        })"
+        @click="createCustomItem"
       >
         <cy-icon-text icon="ic:round-add-circle-outline" text-color="light-3">
-          {{ $lang('create custon item') }}
+          {{ lang('create custon item') }}
         </cy-icon-text>
       </div>
     </div>
@@ -92,7 +89,7 @@
     :class="{ 'border-l-2': !root }"
     style="margin-left: -0.2rem;"
   >
-    <div>
+    <div v-if="typeof calcStructItem !== 'string'">
       <template v-if="calcStructItem.operator === '+' || calcStructItem.operator === '*'">
         <DamageCalculationItem :calc-struct-item="calcStructItem.left" :layer="layer + 1" />
         <div>
@@ -106,7 +103,7 @@
         <DamageCalculationItem :calc-struct-item="calcStructItem.right" :layer="layer + 1" />
       </template>
       <template v-else-if="calcStructItem.operator === '+++' || calcStructItem.operator === '***'">
-        <template v-for="(structItem, idx) in calcStructItem.list" :key="calcItemListIds[idx]">
+        <template v-for="(structItem, idx) in calcStructItem.list" :key="getCalcItemId(structItem)">
           <div v-if="idx !== 0">
             <cy-icon-text
               :icon="calcStructItem.operator === '+++' ? 'mono-icons:add' : 'eva:close-fill'"
@@ -122,126 +119,111 @@
   </div>
 </template>
 
-<script>
-import { computed, toRefs, Ref, ComputedRef, ref } from 'vue';
-import { mapMutations, useStore } from 'vuex';
+<script lang="ts">
+export default {
+  name: 'DamageCalculationItem',
+};
+</script>
+
+<script lang="ts" setup>
+import { computed, toRefs, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+
+import { useDamageCalculationStore } from '@/stores/views/damage-calculation';
 
 import { numberToFixed } from '@/shared/utils/number';
 import { markText } from '@/shared/utils/view';
 
-import { Calculation } from '@/lib/Calculation/Damage/Calculation';
 import { CalcStructItem } from '@/lib/Calculation/Damage/Calculation/base';
+import { CalcItem, CalcItemCustom } from '@/lib/Calculation/Damage/Calculation';
+
+import RegisterLang from '@/setup/RegisterLang';
+
+interface Props {
+  calcStructItem: CalcStructItem;
+  root?: boolean;
+  layer?: number;
+}
 
 
-export default {
-  name: 'DamageCalculationItem',
-  RegisterLang: 'Damage Calculation',
-  props: {
-    calcStructItem: {
-      type: [Object, String],
-      require: true,
-    },
-    root: {
-      type: Boolean,
-      default: false,
-    },
-    layer: {
-      type: Number,
-      default: 0,
-    },
-  },
-  setup(props) {
-    /** @type {{ calcStructItem: Ref<CalcStructItem> }} */
-    const { calcStructItem } = toRefs(props);
-    const store = useStore();
+const props = withDefaults(defineProps<Props>(), {
+  root: false,
+  layer: 0,
+});
 
-    /** @type {ComputedRef<Calculation>} */
-    const currentCalculation = computed(() => store.getters['damage-calculation/currentCalculation']);
+const { calcStructItem } = toRefs(props);
 
-    const currentContainer = computed(() => {
-      if (typeof calcStructItem.value === 'string') {
-        return currentCalculation.value.containers.get(calcStructItem.value);
-      }
-      return null;
-    });
+const { lang } = RegisterLang('Damage Calculation');
 
-    const currentContainerResult = computed(() => {
-      if (currentContainer.value) {
-        const container = currentContainer.value;
-        let res = container.result();
-        if (!container.base.floorResult) {
-          res = numberToFixed(res, 2);
-        }
-        return container.base.isMultiplier ? res + '%' : res;
-      }
-      return 0;
-    });
+const store = useDamageCalculationStore();
 
-    const currentContainerItems = computed(() => {
-      if (!currentContainer.value) {
-        return [];
-      }
-      const container = currentContainer.value;
-      if (container.base.getCurrentItemId) {
-        return [container.currentItem];
-      }
-      return [
-        ...Array.from(container.items.values()),
-        ...container.customItems,
-      ];
-    });
+const { currentCalculation } = storeToRefs(store);
 
-    /**
-     * @param {CalcStructItem} structItem
-     * @returns {string}
-     */
-    const getCalcItemId = structItem => {
-      if (typeof structItem === 'string') {
-        return structItem;
-      }
-      if (structItem.operator === '+' || structItem.operator === '*') {
-        return `(${getCalcItemId(structItem.left)})${structItem.operator}(${getCalcItemId(structItem.right)})`;
-      }
-      if (structItem.operator === '+++' || structItem.operator === '***') {
-        return structItem.list.map(item => `(${getCalcItemId(item)})`).join(structItem.operator);
-      }
-    };
+const currentContainer = computed(() => {
+  if (typeof calcStructItem.value === 'string') {
+    return currentCalculation.value.containers.get(calcStructItem.value) ?? null;
+  }
+  return null;
+});
 
-    /** @type {ComputedRef<Array<string>>} */
-    const calcItemListIds = computed(() => {
-      if (typeof calcStructItem.value === 'string') {
-        return [];
-      }
-      if (calcStructItem.value.operator === '+++' || calcStructItem.value.operator === '***') {
-        return calcStructItem.value.list.map(item => getCalcItemId(item));
-      }
-      return [];
-    });
+const currentContainerResult = computed(() => {
+  if (currentContainer.value) {
+    const container = currentContainer.value;
+    let res = container.result();
+    if (!container.base.floorResult) {
+      res = numberToFixed(res, 2);
+    }
+    return container.base.isMultiplier ? res + '%' : res;
+  }
+  return 0;
+});
 
-    const editedItem = ref(null);
-    const toggleEditedItem = item => editedItem.value = editedItem.value === item ? null : item;
+const currentContainerItems = computed(() => {
+  if (!currentContainer.value) {
+    return [];
+  }
+  const container = currentContainer.value;
+  if (container.base.getCurrentItemId) {
+    return [container.currentItem];
+  }
+  return [
+    ...Array.from(container.items.values()),
+    ...container.customItems,
+  ];
+});
 
-    return {
-      editedItem,
+const getCalcItemId = (structItem: CalcStructItem): string => {
+  if (typeof structItem === 'string') {
+    return structItem;
+  }
+  if (structItem.operator === '+' || structItem.operator === '*') {
+    return `(${getCalcItemId(structItem.left)})${structItem.operator}(${getCalcItemId(structItem.right)})`;
+  }
+  if (structItem.operator === '+++' || structItem.operator === '***') {
+    return structItem.list.map(item => `(${getCalcItemId(item)})`).join(structItem.operator);
+  }
+  return structItem.toString();
+};
 
-      currentContainer,
-      currentContainerResult,
-      currentContainerItems,
-      calcItemListIds,
-      markText,
+const createCustomItem = () => {
+  if (!currentContainer.value || !currentContainer.value) {
+    return;
+  }
+  const newItem = currentContainer.value.createCustomItem();
+  if (newItem) {
+    newItem.name = lang('item base: title/' + currentContainer.value.currentItem.base.id);
+  }
+};
+const removeCustomItem = (item: CalcItemCustom) => {
+  if (!currentContainer.value) {
+    return;
+  }
+  currentContainer.value.removeCustomItem(item);
+};
 
-      toggleEditedItem,
-    };
-  },
-  methods: {
-    ...mapMutations('damage-calculation/container', [
-      'setEnabled',
-      'setCurrentItemId',
-      'createCustomItem',
-      'removeCustomItem',
-      'setItemValue',
-      'setItemName',
-    ]),
-  },
+const editedItem = ref<CalcItem | null>(null);
+
+const toggleEditedItem = (item: CalcItem | null) => {
+  editedItem.value = editedItem.value === item ? null : item;
 };
 </script>

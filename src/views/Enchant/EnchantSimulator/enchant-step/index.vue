@@ -1,4 +1,6 @@
 <template>
+  <!-- eslint-disable vue/no-mutating-props -->
+  <!-- this component is splitted to handle EnchantStep -->
   <div
     class="enchant-step px-2 pt-1 flex flex-col h-full bg-white"
     :class="{ [mainBorderColor]: true, 'opacity-50': step.hidden }"
@@ -58,13 +60,13 @@
           :icon="step.hidden ? 'mdi-checkbox-blank-off-outline' : 'mdi-checkbox-blank-outline'"
           class="p-0"
           :icon-color="step.hidden ? 'red' : 'red-light'"
-          @click="toggleStepHidden(step)"
+          @click="step.hidden = !step.hidden"
         />
         <cy-button-icon
           icon="jam-close-circle"
           class="p-0"
           icon-color="gray"
-          @click="removeStep(step)"
+          @click="step.remove()"
         />
       </div>
     </div>
@@ -130,10 +132,9 @@
       <cy-transition type="fade">
         <div v-if="typeEach" class="border-b border-light-2 py-0.5">
           <cy-input-counter
-            :value="step.step"
+            v-model:value="step.step"
             inline
             main-color="blue-green"
-            @update:value="setStepStepValue({ step, value: $event })"
           >
             <template #title>
               <cy-icon-text icon="ic-outline-near-me" icon-color="blue-green">
@@ -164,7 +165,7 @@
           v-if="step.belongEquipment.stats(step.index - 1).length >= 6"
           icon="ant-design:star-outlined"
           icon-color="orange"
-          @click="stepAutoFill(step)"
+          @click="step.autoFill()"
         />
         <cy-icon-text icon="mdi-creation" class="ml-auto mr-2" text-color="purple">
           {{ step.remainingPotential }}
@@ -175,8 +176,6 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
-
 import { EnchantStep } from '@/lib/Enchant/Enchant';
 import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums';
 
@@ -233,15 +232,15 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('enchant/step', [
-      'toggleStepType',
-      'toggleStepHidden',
-      'swapStep',
-      'insertStepBefore',
-      'removeStep',
-      'setStepStepValue',
-      'stepAutoFill',
-    ]),
+    toggleStepType(step) {
+      step.type = step.type === EnchantStepTypes.Normal ? EnchantStepTypes.Each : EnchantStepTypes.Normal;
+    },
+    swapStep({ step, offset }) {
+      step.belongEquipment.swapStep(step.index, step.index + offset);
+    },
+    insertStepBefore(step) {
+      step.belongEquipment.insertStepBefore(step);
+    },
   },
 };
 </script>

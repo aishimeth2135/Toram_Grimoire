@@ -1,6 +1,8 @@
 
 import type { RouteRecordRaw } from 'vue-router';
 
+import { DataStoreIds } from '@/stores/app/datas/enums';
+
 import ViewInit from '@/shared/services/ViewInit';
 
 import WrapperView from './wrapper.vue';
@@ -13,7 +15,7 @@ export default {
   path: '/enchant',
   component: WrapperView,
   beforeEnter(to, from, next) {
-    ViewInit('Stats', 'Enchant').then(next);
+    ViewInit(DataStoreIds.Stats, DataStoreIds.Enchant).then(next);
   },
   meta: {
     leftMenuViewButtons: [{

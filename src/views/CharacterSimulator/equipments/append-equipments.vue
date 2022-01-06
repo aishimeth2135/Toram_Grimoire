@@ -89,6 +89,8 @@
 </template>
 
 <script>
+import { useDatasStore } from '@/stores/app/datas';
+
 import vue_equipmentItem from '@/components/common/equipment-item.vue';
 
 export default {
@@ -104,6 +106,10 @@ export default {
   inject: ['convertEquipmentData', 'appendEquipments'],
   props: ['visible'],
   emits: ['close'],
+  setup() {
+    const datasStore = useDatasStore();
+    return { datasStore };
+  },
   data() {
     return {
       searchText: '',
@@ -115,7 +121,7 @@ export default {
   computed: {
     searchResult() {
       const text = this.searchText;
-      let res = this.$store.state.datas.Items.equipments;
+      let res = this.datasStore.Items.equipments;
       res = res.filter(item => (item.name.includes(text) && item.category !== -1)
         || (item.category === -1 && item.name === text));
       res.sort((a, b) => b.id - a.id);

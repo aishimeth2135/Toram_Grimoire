@@ -56,6 +56,8 @@
 <script>
 import { useI18n } from 'vue-i18n';
 
+import { useCharacterStore } from '@/stores/views/character';
+
 import CY from '@/shared/utils/Cyteria';
 
 export default {
@@ -63,8 +65,10 @@ export default {
   emits: ['manual-auto-save', 'manual-auto-load', 'close-auto-save'],
   setup() {
     const { t } = useI18n();
+    const store = useCharacterStore();
     return {
       t,
+      store,
     };
   },
   data() {
@@ -79,7 +83,7 @@ export default {
   },
   methods: {
     deleteAllSavedData() {
-      this.$store.commit('character/deleteAllSavedData');
+      this.store.deleteAllSavedData();
       this.$emit('close-auto-save');
       this.$notify(this.$lang('Message: deleta all data'));
     },

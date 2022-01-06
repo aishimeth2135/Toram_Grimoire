@@ -1,4 +1,4 @@
-import GetLang from '@/shared/services/Language';
+import { GetLang } from '@/shared/services/Language';
 
 interface RegisterLangOptions {
   readonly root: string;
@@ -27,7 +27,7 @@ export default function(options: RegisterLangOptions | string) {
   };
   lang.root = root;
   if (extra) {
-    lang.extra = function(name: string, id: string, values: string[]) {
+    lang.extra = function(name: string, id: string, values?: string[]) {
       return GetLang(extra[name] + '/' + id, values);
     };
   }

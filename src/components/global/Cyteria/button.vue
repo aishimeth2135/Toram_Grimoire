@@ -30,11 +30,15 @@ export default defineComponent({
       type: String,
       default: null,
     },
+    hideFocus: {
+      type: Boolean,
+      default: false,
+    },
     ...ColorSetProps,
   },
   setup(props) {
     const { colorSetStyles } = setupColorSetStyles(props);
-    const { type: buttonType, iconWidth } = toRefs(props);
+    const { type: buttonType, iconWidth, hideFocus } = toRefs(props);
     const currentComponent = computed(() => {
       const type = buttonType.value;
       if (type === 'border') {
@@ -67,7 +71,10 @@ export default defineComponent({
         style['--icon-width'] = iconWidth.value;
       }
       return {
-        class: ['cy--button-base'],
+        class: {
+          'cy--button-base': true,
+          'focus-enabled': !hideFocus.value,
+        },
         style,
       };
     });
@@ -173,10 +180,10 @@ export default defineComponent({
   }
 
   &.disabled {
-    @apply cursor-not-allowed opacity-80;
+    @apply cursor-not-allowed opacity-75;
   }
 
-  &:not(.disabled):focus {
+  &.focus-enabled:not(.disabled):focus {
     &::before {
       content: '';
       width: calc(100% + 0.5rem);

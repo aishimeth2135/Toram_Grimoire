@@ -214,7 +214,12 @@ function handleDisplayData<Branch extends SkillBranchItemBase>(
         str = str.replace(new RegExp(label, 'g'), () => `__HANDLE_REPLACE_LABEL_${idx}__`);
       });
       labels.forEach((label, idx) => {
-        str = str.replace(new RegExp(`__HANDLE_REPLACE_LABEL_${idx}__`, 'g'), () => `<span class="click-button--${attrKey}">${label}</span>`);
+        let firstFlag = true;
+        str = str.replace(new RegExp(`__HANDLE_REPLACE_LABEL_${idx}__`, 'g'), () => {
+          const className = firstFlag ? `click-button--${attrKey}` : 'text-light-3';
+          firstFlag = false;
+          return `<span class="${className}">${label}</span>`;
+        });
       });
     };
     handleReplaceLabel('mark');

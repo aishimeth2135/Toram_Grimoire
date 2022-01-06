@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <template v-if="store.state.language.i18nMessageLoaded">
+    <template v-if="languageStore.i18nMessageLoaded">
       <AppNav />
       <AppLeftMenu />
       <router-view class="main-section app-main" />
@@ -29,7 +29,8 @@ export default {
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import { useStore } from 'vuex';
+
+import { useLanguageStore } from '@/stores/app/language';
 
 import AppNav from '@/views/app/nav.vue';
 import AppLeftMenu from '@/views/app/left-menu.vue';
@@ -47,7 +48,8 @@ onMounted(() => {
   }
 });
 
-const store = useStore();
+const languageStore = useLanguageStore();
+languageStore.updateLocaleMessages();
 </script>
 
 <style lang="less" scoped>

@@ -65,7 +65,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'pinia';
+
+import { useCharacterStore } from '@/stores/views/character';
 
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums';
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
@@ -105,10 +107,12 @@ export default {
         'selectCrystals',
       ],
     });
+    const store = useCharacterStore();
 
     return {
       window,
       toggle,
+      store,
     };
   },
   data() {
@@ -122,9 +126,7 @@ export default {
     };
   },
   computed: {
-    ...mapState('character', {
-      'equipments': 'equipments',
-    }),
+    ...mapState(useCharacterStore, ['equipments']),
   },
   methods: {
     isElementStat(baseName) {
@@ -139,7 +141,7 @@ export default {
       this.toggle('window/customEquipmentEditor', true);
     },
     appendEquipments(eqs) {
-      this.$store.commit('character/appendEquipments', eqs);
+      this.store.appendEquipments(eqs);
     },
     selectFieldEquipment(field) {
       this.browseEquipmentsState.action = {

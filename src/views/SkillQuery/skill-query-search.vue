@@ -37,7 +37,8 @@
 <script lang="ts" setup>
 import { ref, computed, watch, onMounted, nextTick } from 'vue';
 import type { Ref, ComputedRef, WritableComputedRef } from 'vue';
-import { useStore } from 'vuex';
+
+import { useDatasStore } from '@/stores/app/datas';
 
 import { Skill, SkillRoot } from '@/lib/Skill/Skill';
 
@@ -50,8 +51,8 @@ interface Emits {
 
 const emit = defineEmits<Emits>();
 
-const store = useStore();
-const skillRoot: ComputedRef<SkillRoot> = computed(() => store.state.datas.Skill.skillRoot);
+const datasStore = useDatasStore();
+const skillRoot: ComputedRef<SkillRoot> = computed(() => datasStore.Skill!.skillRoot);
 
 const searchText = ref('');
 

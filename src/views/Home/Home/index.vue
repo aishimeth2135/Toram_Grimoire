@@ -69,7 +69,7 @@ const HOME_LINK_BUTTONS = [{
 }, {
   name: 'damage-calculation',
   icon: 'mdi-sword',
-  pathName: 'DamageCalculation',
+  pathName: 'DamageCalculationMain',
 }];
 
 export default {

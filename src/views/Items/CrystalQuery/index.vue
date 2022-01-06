@@ -145,6 +145,8 @@
 </template>
 
 <script>
+import { useDatasStore } from '@/stores/app/datas';
+
 import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment';
 import { StatTypes } from '@/lib/Character/Stat/enums';
 
@@ -159,8 +161,12 @@ export default {
   components: {
     'show-stat': vue_showStat,
   },
+  setup() {
+    const datasStore = useDatasStore();
+    return { datasStore };
+  },
   data() {
-    const crystals = this.$store.state.datas.Items.crystals;
+    const crystals = this.datasStore.Items.crystals;
     const crystalCategorys = new Array(5).fill().map((_, i) => {
       return {
         id: i,
@@ -169,7 +175,7 @@ export default {
     });
 
     const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier];
-    this.$store.state.datas.Character.statList.forEach(stat => {
+    this.datasStore.Character.statList.forEach(stat => {
       if (stat.hidden) return;
       statTypes.forEach(type => {
         if (type === StatTypes.Multiplier && !stat.hasMultiplier)

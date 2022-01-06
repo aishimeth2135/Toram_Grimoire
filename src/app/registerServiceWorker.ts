@@ -1,18 +1,21 @@
 import { register } from 'register-service-worker';
 
-import store from '@/store';
+import { useMainStore } from '@/stores/app/main';
 
-import MessageNotify from '@/shared/services/Notify';
 import Grimoire from '@/shared/Grimoire';
+
+import Notify from '@/setup/Notify';
 
 
 export default function() {
+  const mainStore = useMainStore();
+  const { notify } = Notify();
   if (process.env.NODE_ENV === 'production') {
     register(`${process.env.BASE_URL}sw.js`, {
       ready (registration) {
         if (registration.waiting) {
-          store.commit('main/serviceWorkerHasUpdate', registration);
-          MessageNotify(Grimoire.i18n.t('app.settings.update.new-version-detected-tips'));
+          mainStore.serviceWorkerHasUpdate(registration);
+          notify(Grimoire.i18n.t('app.settings.update.new-version-detected-tips'));
         }
       },
       registered () {},
@@ -21,8 +24,8 @@ export default function() {
         if (registration.installing) {
           registration.installing.addEventListener('statechange', () => {
             if (registration.waiting && navigator.serviceWorker.controller) {
-              store.commit('main/serviceWorkerHasUpdate', registration);
-              MessageNotify(Grimoire.i18n.t('app.settings.update.new-version-detected-tips'));
+              mainStore.serviceWorkerHasUpdate(registration);
+              notify(Grimoire.i18n.t('app.settings.update.new-version-detected-tips'));
             }
           });
         }

@@ -508,7 +508,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'pinia';
+
+import { useEnchantStore } from '@/stores/views/enchant';
+import { useDatasStore } from '@/stores/app/datas';
 
 import { EnchantBuild, EnchantStat } from '@/lib/Enchant/Enchant';
 import EnchantDoll from '@/lib/Enchant/Enchant/doll';
@@ -539,7 +542,9 @@ export default {
       windows: ['selectItem'],
       contents: ['setConfig'],
     });
-    return { windows, contents, toggle };
+    const store = useEnchantStore();
+    const datasStore = useDatasStore();
+    return { windows, contents, toggle, store, datasStore };
   },
   data() {
     return {
@@ -621,13 +626,13 @@ export default {
       this.updateAutoFindNegativeStats(this.selectNegativeStatState.auto);
     });
 
-    this.$store.dispatch('enchant/init');
+    this.store.init();
   },
   mounted() {
     this.$nextTick(() => this.$refs['first-step'].scrollIntoView({ behavior: 'smooth' }));
   },
   computed: {
-    ...mapState('enchant', ['config']),
+    ...mapState(useEnchantStore, ['config']),
     equipmentIsWeapon() {
       return this.currentEquipment.fieldType === EnchantEquipmentTypes.MainWeapon;
     },
@@ -668,21 +673,16 @@ export default {
     },
 
     characterLevel: {
-      set(v) {
-        this.$store.commit('enchant/setConfig', { characterLevel: v });
-        this.doll.positiveStats.forEach(stat => {
-          if (stat.value > stat.limit[1]) {
-            stat.value = stat.limit[1];
-          }
-        });
+      set(value) {
+        this.store.config.characterLevel = value;
       },
       get() {
         return this.config.characterLevel;
       },
     },
     smithLevel: {
-      set(v) {
-        this.$store.commit('enchant/setConfig', { smithLevel: v });
+      set(value) {
+        this.store.config.smithLevel = value;
       },
       get() {
         return this.config.smithLevel;
@@ -765,8 +765,8 @@ export default {
       return cur;
     },
     exportResult() {
-      const build = new EnchantBuild(this.exportState.name, this.resultEquipment.copy(this.$store.state.datas.Enchant.categorys));
-      this.$store.dispatch('enchant/exportDollBuild', build);
+      const build = new EnchantBuild(this.exportState.name, this.resultEquipment.copy());
+      this.store.exportDollBuild(build);
       this.exportState.hasExport = true;
       this.$notify(this.$lang('tips/export successfully'));
     },

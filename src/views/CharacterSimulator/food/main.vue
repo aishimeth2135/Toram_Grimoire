@@ -11,10 +11,10 @@
         </template>
         <template #options>
           <cy-list-item
-            v-for="(build, i) in foodBuildStates"
+            v-for="(build, idx) in foodBuildStates"
             :key="build.iid"
-            :selected="i == currentFoodBuildIndex"
-            @click="$store.commit('character/setCurrentFoodBuild', { index: i })"
+            :selected="idx === currentFoodBuildIndex"
+            @click="foodStore.setCurrentFoodBuild(idx)"
           >
             <cy-icon-text icon="mdi-food-apple">
               {{ build.origin.name }}
@@ -120,21 +120,25 @@
         type="border"
         @click="createFoodBuild"
       >
-        {{ $lang.extra('parent', 'append food build') }}
+        {{ $lang('append food build') }}
       </cy-button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'pinia';
+
+import { useCharacterFoodStore } from '@/stores/views/character/food';
 
 export default {
+  name: 'CharacterSimulatorFood',
   RegisterLang: {
     root: 'Character Simulator/Food Builds Control',
-    extra: {
-      parent: 'Character Simulator',
-    },
+  },
+  setup() {
+    const foodStore = useCharacterFoodStore();
+    return { foodStore };
   },
   data() {
     return {
@@ -144,12 +148,12 @@ export default {
     };
   },
   created() {
-    if (this.foodBuilds.length == 0)
+    if (this.foodBuilds.length === 0)
       this.createFoodBuild();
   },
   computed: {
-    ...mapState('character/food', ['foodBuilds', 'currentFoodBuildIndex']),
-    ...mapGetters('character/food', ['currentFoodBuild']),
+    ...mapState(useCharacterFoodStore, ['foodBuilds', 'currentFoodBuildIndex', 'currentFoodBuild']),
+
     foodBuildStates() {
       return this.foodBuilds.map((p, i) => ({
         iid: i,
@@ -159,7 +163,7 @@ export default {
   },
   methods: {
     copyCurrentFoodBuild() {
-      this.$store.commit('character/food/createFoodBuild', {
+      this.foodStore.createFoodBuild({
         foodBuild: this.currentFoodBuild.copy(),
       });
       this.$notify(this.$lang('Copy food build successfully'));
@@ -170,15 +174,13 @@ export default {
         return;
       }
       const from = this.currentFoodBuild;
-      this.$store.commit('character/food/removeFoodBuild', {
-        index: this.currentFoodBuildIndex,
-      });
+      this.foodStore.removeFoodBuild(this.currentFoodBuildIndex);
       this.$notify(this.$lang('Remove food build successfully'),
         'ic-round-delete', null, {
           buttons: [{
             text: this.$rootLang('global/recovery'),
             click: () => {
-              this.$store.commit('character/food/createFoodBuild', { foodBuild: from });
+              this.foodStore.createFoodBuild({ foodBuild: from });
               this.$notify(this.$lang('Recovery food build successfully'));
             },
             removeMessageAfterClick: true,
@@ -186,7 +188,7 @@ export default {
         });
     },
     createFoodBuild() {
-      this.$store.commit('character/food/createFoodBuild', {
+      this.foodStore.createFoodBuild({
         name: this.$lang('food build') + ' ' + (this.foodBuilds.length + 1),
       });
     },
