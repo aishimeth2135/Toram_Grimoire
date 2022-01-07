@@ -33,7 +33,7 @@
         >
           <template #title>
             <cy-icon-text v-if="!currentContainer.selectable">
-              <span v-if="!item.isCustom" v-html="markText(t('damage-calculation.item-base.titles.' + item.base.id))"></span>
+              <span v-if="!item.isCustom" v-html="markText(t('damage-calculation.item-base-titles.' + item.base.id))"></span>
               <template v-else>
                 {{ (item as CalcItemCustom).name }}
               </template>
@@ -44,7 +44,7 @@
               :selected="currentContainer.currentItem === item"
               @click="currentContainer!.selectItem(item.base.id)"
             >
-              {{ t('damage-calculation.item-base.titles.' + item.base.id) }}
+              {{ t('damage-calculation.item-base-titles.' + item.base.id) }}
             </cy-button-check>
           </template>
           <template #unit>

@@ -6,6 +6,7 @@ export const enum LocaleGlobalNamespaces {
 
 export const enum LocaleViewNamespaces {
   SkillQuery = 'skill-query',
+  DamageCalculation = 'damage-calculation',
 }
 
 export type LocaleNamespaces = LocaleGlobalNamespaces | LocaleViewNamespaces;

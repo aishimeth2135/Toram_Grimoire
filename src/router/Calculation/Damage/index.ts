@@ -2,8 +2,9 @@
 import type { RouteRecordRaw } from 'vue-router';
 
 import { DataStoreIds } from '@/stores/app/datas/enums';
+import { LocaleViewNamespaces } from '@/stores/app/language/enums';
 
-import { ViewInit } from '@/shared/services/ViewInit';
+import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit';
 
 import WrapperView from './wrapper.vue';
 
@@ -14,6 +15,7 @@ export default {
   path: '/damage-calculation',
   component: WrapperView,
   beforeEnter(to, from, next) {
+    PrepareLocaleInit(LocaleViewNamespaces.DamageCalculation);
     ViewInit(DataStoreIds.DamageCalculation).then(next);
   },
   meta: {
