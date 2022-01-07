@@ -15,14 +15,12 @@ class Tag {
 
 class TagFrame {
   type: string;
-  value: string | string[];
+  value: string[];
   constructor(type: string, value: string) {
     this.type = type;
-    this.value = value;
+    this.value = [value];
   }
   appendValue(value: string) {
-    if (!Array.isArray(this.value))
-      this.value = [this.value];
     this.value.push(value);
   }
 }

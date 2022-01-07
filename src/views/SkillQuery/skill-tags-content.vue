@@ -20,22 +20,22 @@
         />
       </div>
       <div class="px-2">
-        <template v-for="frame in currentTag.frames" :key="frame.type + frame.value">
+        <template v-for="frame in currentTag.frames" :key="frame.type + frame.value.join(',')">
           <div
             v-if="frame.type === 'category'"
             class="my-2"
           >
             <cy-icon-text icon="ic-baseline-label" size="small">
-              {{ frame.value }}
+              {{ frame.value[0] }}
             </cy-icon-text>
           </div>
           <div
-            v-else-if="frame.type === 'caption' && typeof frame.value === 'string'"
+            v-else-if="frame.type === 'caption'"
             class="py-1"
-            v-html="handleText(frame.value)"
+            v-html="handleText(frame.value[0])"
           />
           <div
-            v-else-if="frame.type === 'list' && Array.isArray(frame.value)"
+            v-else-if="frame.type === 'list'"
             class="mt-2"
           >
             <div v-for="frameValue in frame.value" :key="frameValue" class="flex items-start py-0.5">

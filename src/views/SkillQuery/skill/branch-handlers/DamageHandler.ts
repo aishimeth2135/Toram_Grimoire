@@ -100,6 +100,7 @@ export default function DamageHandler(branchItem: SkillBranchItem) {
     ['damage', 'proration', 'damage: title', 'proration: title'].forEach(key => {
       attrs['@proration/' + key] = _data.get(key);
     });
+    pureDatas.push('@proration/damage', '@proration/damage: title', '@proration/proration', '@proration/proration: title');
   }
 
   const result = handleDisplayData(branchItem, attrs, {
