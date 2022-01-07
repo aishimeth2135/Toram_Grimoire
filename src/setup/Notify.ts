@@ -1,6 +1,5 @@
+import { useLoadingStore } from '@/stores/app/loading';
 import { useNotifyStore } from '@/stores/app/notify';
-
-import LoadingNotifyItem from './LoadingNotifyItem';
 
 interface MessageNotifyButtonItem {
   text: string;
@@ -14,7 +13,6 @@ interface MessageNotifyOptions {
 }
 
 let notifyStore: ReturnType<typeof useNotifyStore>;
-
 function MessageNotify(
   message: string,
   icon: string | MessageNotifyOptions = 'bx-bx-message-rounded-dots',
@@ -31,14 +29,26 @@ function MessageNotify(
   notifyStore.createMessage({ message, icon, id, options });
 }
 
-function LoadingNotify(message: string) {
-  return new LoadingNotifyItem(message);
-}
+let loadingStore: ReturnType<typeof useLoadingStore>;
+const LoadingHandler = {
+  show(text?: string) {
+    if (!loadingStore) {
+      loadingStore = useLoadingStore();
+    }
+    loadingStore.show(text);
+  },
+  hide() {
+    if (!loadingStore) {
+      loadingStore = useLoadingStore();
+    }
+    loadingStore.hide();
+  },
+};
 
 export default function () {
   return {
     notify: MessageNotify,
-    loading: LoadingNotify,
+    loading: LoadingHandler,
   };
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="inline-flex items-center cursor-pointer">
     <cy-icon-text :icon="resultItem.icon">
-      {{ lang('result/modes/' + resultItem.id) }}
+      {{ t('damage-calculation.result.modes.' + resultItem.id) }}
     </cy-icon-text>
     <span
       v-if="(typeof resultItem.value === 'object')"
@@ -15,17 +15,18 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { toRefs } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import RegisterLang from '@/setup/RegisterLang';
+import type { ResultModeItem } from './setup';
 
-const props = defineProps({
-  resultItem: {
-    type: Object,
-  },
-});
+interface Props {
+  resultItem: ResultModeItem;
+}
+
+const props = defineProps<Props>();
 const { resultItem } = toRefs(props);
-const { lang } = RegisterLang('Damage Calculation');
+const { t } = useI18n();
 </script>
 

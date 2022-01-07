@@ -1,13 +1,12 @@
 import csv from './csv.js';
-import element from './element.js';
+import element from './element';
 import file from './file';
-import number from './number.js';
-import object from './object.js';
-import svg from './svg.js';
+import object from './object';
+import svg from './svg';
 
-function copyToClipboard(s) {
+function copyToClipboard(str: string) {
   const input = document.createElement('textarea');
-  input.value = s;
+  input.value = str;
   document.body.appendChild(input);
   input.select();
   const t = document.execCommand('copy');
@@ -15,17 +14,13 @@ function copyToClipboard(s) {
   return t;
 }
 
-/**
- * @param {"localStorage"|"sessionStorage"} type
- * @returns {boolean}
- */
-function storageAvailable(type) {
+function storageAvailable(type: 'localStorage' | 'sessionStorage'): boolean {
   //copy from: https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
   const storage = window[type];
   try {
-    var x = '__storage_test__';
-    storage.setItem(x, x);
-    storage.removeItem(x);
+    const testKey = '__storage_test__';
+    storage.setItem(testKey, testKey);
+    storage.removeItem(testKey);
     return true;
   } catch (e) {
     return e instanceof DOMException && (
@@ -43,5 +38,5 @@ function storageAvailable(type) {
   }
 }
 
-export { element, object, svg, number, csv, file, copyToClipboard, storageAvailable };
-export default { element, object, svg, number, csv, file, copyToClipboard, storageAvailable };
+export { element, object, svg, csv, file, copyToClipboard, storageAvailable };
+export default { element, object, svg, csv, file, copyToClipboard, storageAvailable };

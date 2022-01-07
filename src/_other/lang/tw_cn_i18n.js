@@ -18,14 +18,14 @@ finder.on('file', function (file) {
 finder.on('end', async function() {
   console.log('start handle...');
   console.log(files);
-  for (file of files) {
+  for (const file of files) {
     const text = await fs.readFile(file, { encoding: 'utf8' });
     const data = conv.sify(text);
     console.log(`[handle] ${file}`);
     const toPath = path.join(localesPath, 'zh-CN', path.basename(file));
-    console.log(`  -> ${toPath}`);
+    console.log(`      -> ${toPath}`);
     await fs.writeFile(toPath, data);
-    console.log('...success');
+    console.log('       ~ Done');
   }
   console.log('Finished');
 });

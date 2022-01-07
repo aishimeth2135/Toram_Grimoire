@@ -559,7 +559,7 @@ export default {
     },
     async exportCurrentBuildImage() {
       if (!this.beforeExportConfirm()) return;
-      const loadingNotifyItem = this.loadingNotify(this.$lang('tips/export build image: loading message'));
+      this.loadingNotify.show(this.$lang('tips/export build image: loading message'));
       try {
         const drawSetting = GetDrawSetting();
 
@@ -862,7 +862,7 @@ export default {
         this.$notify(this.$lang('tips/export build image: error'));
       } finally {
         this.buildInformationVisible = false;
-        loadingNotifyItem.finished();
+        this.loadingNotify.hide();
       }
     },
     deleteCurrentBuild() {

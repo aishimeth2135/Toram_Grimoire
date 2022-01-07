@@ -6,7 +6,7 @@
     <div class="main-container">
       <svg-icon icon-id="potum" class="custom-icon" />
       <div class="mt-4 text-xl">
-        Loading...
+        {{ store.loadingText }}
       </div>
     </div>
   </div>

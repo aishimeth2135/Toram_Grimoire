@@ -1,12 +1,12 @@
 import type { App } from 'vue';
 
 import { useConfirmStore } from '@/stores/app/confirm';
-import type { ConfirmItem } from '@/stores/app/confirm';
+import type { ConfirmItemParam } from '@/stores/app/confirm';
 
 export default function(app: App) {
   const confirmStore = useConfirmStore();
-  const confirm = (item: string | ConfirmItem) => {
-    const realItem: ConfirmItem = typeof item === 'string' ? {
+  const confirm = (item: string | ConfirmItemParam) => {
+    const realItem: ConfirmItemParam = typeof item === 'string' ? {
       message: item,
     } : item;
 

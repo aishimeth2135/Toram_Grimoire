@@ -3,6 +3,8 @@ node_modules
 /dist
 /built
 
+.VSCodeCounter
+
 # local env files
 .env.local
 .env.*.local

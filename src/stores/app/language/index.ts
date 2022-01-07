@@ -3,8 +3,10 @@ import { computed, readonly, ref, shallowReactive } from 'vue';
 import { VueI18n } from 'vue-i18n';
 
 import CY from '@/shared/utils/Cyteria';
+import { APP_STORAGE_KEYS } from '@/shared/consts';
 
-import { useMainStore } from './main';
+import { useMainStore } from '../main';
+import { LocaleGlobalNamespaces, LocaleNamespaces, LocaleViewNamespaces } from './enums';
 
 interface LangData {
   [key: string]: LangData | string;
@@ -14,11 +16,10 @@ type LangInjectData = Record<string, LangData | (() => LangData)>;
 
 const LANG_ORDER = ['en', 'zh_tw', 'ja', 'zh_cn'];
 const LOCALE_LIST = ['en', 'zh-TW', 'ja', 'zh-CN'];
-const LOCALE_NAMESPACE_LIST = [
-  'app',
-  'common',
-  'global',
-  'skill-query',
+const LOCALE_GLOBAL_NAMESPACE_LIST: LocaleGlobalNamespaces[] = [
+  LocaleGlobalNamespaces.App,
+  LocaleGlobalNamespaces.Common,
+  LocaleGlobalNamespaces.Global,
 ];
 
 export const I18nStore: {
@@ -114,21 +115,21 @@ export const useLanguageStore = defineStore('app-language', () => {
   const initLocale = () => {
     if (CY.storageAvailable('localStorage')) {
       // default
-      if (!localStorage.getItem('app--language')) {
-        localStorage.setItem('app--language', 'auto');
+      if (!localStorage.getItem(APP_STORAGE_KEYS.PRIMARY_LOCALE)) {
+        localStorage.setItem(APP_STORAGE_KEYS.PRIMARY_LOCALE, 'auto');
       }
-      if (!localStorage.getItem('app--second-language')) {
-        localStorage.setItem('app--second-language', '0');
+      if (!localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE)) {
+        localStorage.setItem(APP_STORAGE_KEYS.FALLBACK_LOCALE, '0');
       }
 
-      const curLangSet = localStorage.getItem('app--language')!;
+      const curLangSet = localStorage.getItem(APP_STORAGE_KEYS.PRIMARY_LOCALE)!;
       if (curLangSet === 'auto') {
         autoSetLang();
       } else {
         primaryLang.value = parseInt(curLangSet, 10);
       }
 
-      secondaryLang.value = parseInt(localStorage.getItem('app--second-language')!, 10);
+      secondaryLang.value = parseInt(localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE)!, 10);
     } else {
       autoSetLang();
     }
@@ -139,24 +140,30 @@ export const useLanguageStore = defineStore('app-language', () => {
 
     langData.value = {};
     injectData(initData);
-    document.body.classList.add('lang-' + primaryLang.value);
   };
 
   const mainStore = useMainStore();
 
-  const updateLocaleMessages = async () => {
+  const loadLocaleMessageCache: Set<LocaleNamespaces> = new Set();
+  type LoadLocaleMessages<Namespace extends LocaleNamespaces = LocaleNamespaces> = (namespaces: Namespace | Namespace[]) => Promise<void>;
+  const loadLocaleMessages: LoadLocaleMessages = async (namespaces) => {
+    const namespaceList = typeof namespaces === 'string' ? [namespaces] : namespaces;
     if (!i18n.value) {
       console.warn('[Init language data] instance is no found');
       return;
     }
     const loadData = async (locale: string) => {
       const data = {} as Record<string, object>;
-      const promises = LOCALE_NAMESPACE_LIST.map(async (filePath) => {
+      const promises = namespaceList.map(async (filePath) => {
+        if (loadLocaleMessageCache.has(filePath)) {
+          return;
+        }
         const dataModule = await import(
           /* webpackInclude: /\.yaml$/ */
           /* webpackChunkName: "i18n-messages-[request]" */
           `@/locales/${locale}/${filePath}.yaml`
         );
+        loadLocaleMessageCache.add(filePath);
         data[filePath] = dataModule.default;
       });
       await Promise.all(promises);
@@ -164,8 +171,16 @@ export const useLanguageStore = defineStore('app-language', () => {
     };
     const messages = await loadData(primaryLocale.value);
     const fallbackMessages = await loadData(fallbackLocale.value);
-    i18n.value.setLocaleMessage(primaryLocale.value, messages);
-    i18n.value.setLocaleMessage(fallbackLocale.value, fallbackMessages);
+    i18n.value.mergeLocaleMessage(primaryLocale.value, messages);
+    i18n.value.mergeLocaleMessage(fallbackLocale.value, fallbackMessages);
+  };
+
+  const updateLocaleGlobalMessages = async () => {
+    if (!i18n.value) {
+      console.warn('[Init language data] instance is no found');
+      return;
+    }
+    await loadLocaleMessages(LOCALE_GLOBAL_NAMESPACE_LIST);
 
     i18nMessageLoaded.value = true;
     mainStore.updateTitle();
@@ -184,7 +199,8 @@ export const useLanguageStore = defineStore('app-language', () => {
     setI18nInstance,
     initLocale,
     init,
-    updateLocaleMessages,
+    loadLocaleMessages: loadLocaleMessages as LoadLocaleMessages<LocaleViewNamespaces>,
+    updateLocaleGlobalMessages,
   };
 });
 

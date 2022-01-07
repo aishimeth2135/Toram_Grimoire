@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router';
 
 import { DataStoreIds } from '@/stores/app/datas/enums';
 
-import ViewInit from '@/shared/services/ViewInit';
+import { ViewInit } from '@/shared/services/ViewInit';
 
 import WrapperView from './wrapper.vue';
 

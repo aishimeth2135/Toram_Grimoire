@@ -112,12 +112,9 @@ html {
 html {
   @apply text-base;
 
-  &.font-0 {
+  @mixin main--font-base;
+  & input, & textarea {
     @mixin main--font-base;
-
-    & input, & textarea {
-      @mixin main--font-base;
-    }
   }
 
   &.font-1 {
