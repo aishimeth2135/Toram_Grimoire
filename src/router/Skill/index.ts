@@ -2,8 +2,9 @@
 import type { RouteRecordRaw } from 'vue-router';
 
 import { DataStoreIds } from '@/stores/app/datas/enums';
+import { LocaleViewNamespaces } from '@/stores/app/language/enums';
 
-import ViewInit from '@/shared/services/ViewInit';
+import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit';
 
 import WrapperView from './wrapper.vue';
 
@@ -15,6 +16,9 @@ export default {
   path: '/skill',
   component: WrapperView,
   beforeEnter(to, from, next) {
+    if (to.name === 'SkillQuery') {
+      PrepareLocaleInit(LocaleViewNamespaces.SkillQuery);
+    }
     ViewInit(DataStoreIds.Stats, DataStoreIds.Skill, DataStoreIds.Tag).then(next);
   },
   meta: {

@@ -34,7 +34,7 @@
             </cy-list-item>
             <cy-list-item @click="store.createCalculation()">
               <cy-icon-text icon="ic-round-add-circle-outline" text-color="light-3">
-                {{ lang('create build') }}
+                {{ t('damage-calculation.create-build') }}
               </cy-icon-text>
             </cy-list-item>
           </template>
@@ -46,28 +46,28 @@
             icon="bx-bx-copy"
             @click="copyCurrentCalculation"
           >
-            {{ rootLang('global/copy') }}
+            {{ t('global.copy') }}
           </cy-button-border>
           <cy-button-border
             icon="mdi-export"
             main-color="blue-green"
             @click="exportBuild"
           >
-            {{ rootLang('global/export') }}
+            {{ t('global.export') }}
           </cy-button-border>
           <cy-button-border
             icon="mdi-import"
             main-color="blue-green"
             @click="importBuild"
           >
-            {{ rootLang('global/import') }}
+            {{ t('global.import') }}
           </cy-button-border>
           <cy-button-border
             icon="ic-baseline-delete-outline"
             main-color="gray"
             @click="removeCurrentCalculation"
           >
-            {{ rootLang('global/delete') }}
+            {{ t('global.delete') }}
           </cy-button-border>
         </div>
       </div>
@@ -84,7 +84,7 @@
             :selected="containerOption.container.currentItem === item"
             @click="containerOption.container.selectItem(item.base.id)"
           >
-            {{ lang('item base: title/' + item.base.id) }}
+            {{ t('damage-calculation.item-base-titles.' + item.base.id) }}
           </cy-button-check>
         </div>
         <cy-hr />
@@ -109,12 +109,12 @@
       >
         <div>
           <cy-icon-text icon="bx:bx-git-compare" size="small" text-color="purple">
-            {{ lang('compare/title') }}
+            {{ t('damage-calculation.compare.title') }}
           </cy-icon-text>
         </div>
         <div class="mb-2">
           <cy-icon-text icon="bx-bx-info-circle" size="small" text-color="light-3" align-v="center" class="ml-2">
-            {{ lang('compare/caption') }}
+            {{ t('damage-calculation.compare.caption') }}
           </cy-icon-text>
         </div>
         <DamageCalculationCompare />
@@ -128,12 +128,12 @@
       >
         <div>
           <cy-icon-text icon="ant-design:star-outlined" size="small" text-color="purple">
-            {{ lang('calc mode/title') }}
+            {{ t('damage-calculation.calc-mode.title') }}
           </cy-icon-text>
         </div>
         <div>
           <cy-icon-text icon="bx-bx-info-circle" size="small" text-color="light-3" align-v="center" class="ml-2">
-            {{ lang('calc mode/caption') }}
+            {{ t('damage-calculation.calc-mode.caption') }}
           </cy-icon-text>
         </div>
         <template v-for="modeItem in calcModeList" :key="modeItem.id">
@@ -142,7 +142,7 @@
             @click="selectCalcMode(modeItem.id)"
           >
             <cy-button-check :selected="modeItem === calcMode">
-              {{ lang('calc mode/modes/' + modeItem.id) }}
+              {{ t('damage-calculation.calc-mode.modes.' + modeItem.id) }}
             </cy-button-check>
           </div>
           <div>
@@ -153,7 +153,7 @@
               class="ml-6"
               align-v="start"
             >
-              {{ lang('calc mode/modes caption/' + modeItem.id) }}
+              {{ t('damage-calculation.calc-mode.modes-caption.' + modeItem.id) }}
             </cy-icon-text>
           </div>
         </template>
@@ -167,7 +167,7 @@
       >
         <div>
           <cy-icon-text icon="ant-design:star-outlined" size="small" text-color="purple">
-            {{ lang('result/title') }}
+            {{ t('damage-calculation.result.title') }}
           </cy-icon-text>
         </div>
         <template v-for="modeItem in resultModeList" :key="modeItem.id">
@@ -186,7 +186,7 @@
               class="ml-6"
               align-v="start"
             >
-              {{ lang('result/modes caption/' + modeItem.id) }}
+              {{ t('damage-calculation.result.modes-caption.' + modeItem.id) }}
             </cy-icon-text>
           </div>
         </template>
@@ -215,7 +215,7 @@
   </section>
   <cy-default-tips v-else icon="mdi-ghost">
     <cy-button-border @click="store.selectCalculation(0)">
-      {{ rootLang('global/recovery') }}
+      {{ t('global.recovery') }}
     </cy-button-border>
   </cy-default-tips>
 </template>
@@ -228,7 +228,7 @@ export default {
 
 <script lang="ts" setup>
 import { computed, provide } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 
 import { useDamageCalculationStore } from '@/stores/views/damage-calculation';
 import { useDatasStore } from '@/stores/app/datas';
@@ -238,16 +238,13 @@ import { CalculationSaveData } from '@/lib/Calculation/Damage/Calculation';
 import AutoSave from '@/setup/AutoSave';
 import ExportBuild from '@/setup/ExportBuild';
 import ToggleService from '@/setup/ToggleService';
-import RegisterLang from '@/setup/RegisterLang';
 
 import DamageCalculationCompare from './damage-calculation-compare.vue';
 import DamageCalculationItem from './damage-calculation-item.vue';
 import DamageCalculationResultItem from './damage-calculation-result-item.vue';
 
-import init from './init.js';
-import { setupCalcMode, setupCalculationStore, setupResultMode, setupCalculationCalcOptions } from './setup';
-
-init();
+import { setupCalcMode, setupCalculationStore, setupResultMode, setupCalculationCalcOptions, ResultModeItem, ResultModeIdExpected } from './setup';
+import { DamageCalculationRootInjectionKey } from './injection-keys';
 
 const store = useDamageCalculationStore();
 const datasStore = useDatasStore();
@@ -302,7 +299,7 @@ const { contents, bottomSub, toggle } = ToggleService({
   bottomSub: ['compare', 'resultDetail', 'calcModeDetail'] as const,
 });
 
-const { lang, rootLang } = RegisterLang('Damage Calculation');
+const { t } = useI18n();
 
-provide('currentCalculationExpectedResult', computed(() => resultModeList.value.find(item => item.id === 'expected')!.value));
+provide(DamageCalculationRootInjectionKey, computed(() => (resultModeList.value.find(item => item.id === 'expected') as ResultModeItem<ResultModeIdExpected>).value));
 </script>

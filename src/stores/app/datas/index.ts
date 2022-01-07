@@ -78,7 +78,6 @@ export const useDatasStore = defineStore('app-datas', () => {
     }
   };
 
-
   const initEnchantInstance = () => {
     if (Enchant.value === null) {
       DatasStoreBase.Enchant = new EnchantSystem();
@@ -127,10 +126,12 @@ export const useDatasStore = defineStore('app-datas', () => {
     const datas = await DownloadDatas({ path: 'Skill', lang: true }, { path: 'Skill Main', lang: true });
     yield;
     initSkillInstance();
+
     loadSkill(Skill.value!, datas[0]);
     loadSkillMain(Skill.value!, datas[1]);
     const skillStore = useCharacterSkillStore();
     skillStore.initSkillRoot(Skill.value!.skillRoot);
+
     await InitSkillIcons();
   };
 

@@ -20,6 +20,7 @@ import registGlobalComponents from './app/registGlobalComponents';
 import initPackages from './app/initPackages';
 import initI18n from './app/initI18n';
 import createAppRouter from './router';
+import { useSettingStore } from './stores/app/setting';
 
 const app = createApp(AppView);
 
@@ -37,6 +38,11 @@ registerServiceWorker();
 initPackages();
 initI18n(app);
 InitLanguageSystem();
+
+{
+  const settingStore = useSettingStore();
+  settingStore.initDocumentElementClassList();
+}
 
 // custom pulgins
 app

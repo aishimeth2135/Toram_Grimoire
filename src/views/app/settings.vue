@@ -1,8 +1,8 @@
 <template>
   <span v-if="storageAvailable" class="app--settings">
-    <cy-button-icon icon="ic-baseline-settings" @click="toggleWindowVisible" />
+    <cy-button-icon icon="ic-baseline-settings" @click="toggle('modals/main')" />
     <cy-modal
-      v-model:visible="windowVisible"
+      v-model:visible="modals.main"
       class="main--window"
       width="wide"
       footer
@@ -42,17 +42,7 @@
         <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
           {{ t('app.settings.switch-font.tips-1') }}
         </cy-icon-text>
-        <div class="buttons">
-          <cy-button-check :selected="currentFont === 1" @click="switchFont(1)">
-            {{ t('app.settings.switch-font.default-font') }}
-          </cy-button-check>
-          <cy-button-check :selected="currentFont === 0" @click="switchFont(0)">
-            {{ t('app.settings.switch-font.base-font') }}
-          </cy-button-check>
-          <cy-button-check :selected="currentFont === 2" @click="switchFont(2)">
-            {{ t('app.settings.switch-font.base-font') + '-2' }}
-          </cy-button-check>
-        </div>
+        <cy-button-check-group v-model:value="appFont" :options="appFontOptions" class="buttons" />
       </fieldset>
       <fieldset class="app--settings-column">
         <legend>
@@ -62,10 +52,7 @@
         </legend>
         <div class="caption">{{ t('app.settings.night-mode.caption') }}</div>
         <div class="mt-4 mb-2">
-          <cy-button-check
-            :selected="nightMode === '1'"
-            @click="nightMode = nightMode !== '1' ? '1' : '0'"
-          >
+          <cy-button-check v-model:selected="appNightMode">
             {{ t('app.settings.night-mode.title') }}
           </cy-button-check>
         </div>
@@ -83,7 +70,7 @@
           </cy-icon-text>
         </div>
         <div class="mt-4 mb-2">
-          <cy-input-counter v-model:value="remValue" :range="[120, 200]">
+          <cy-input-counter v-model:value="appRem" :range="[120, 200]">
             <template #title>
               <cy-icon-text icon="bx-bx-ruler">
                 {{ t('app.settings.set-rem.rem-title') }}
@@ -111,9 +98,9 @@
         </div>
         <div class="buttons">
           <cy-button-check
-            v-for="(item, idx) in languageState.list"
+            v-for="(item, idx) in primaryLanguageList"
             :key="item"
-            :selected="languageState.currentIndex === idx"
+            :selected="primaryLanguage === idx"
             @click="setLanguage(0, idx)"
           >
             {{ t('app.settings.primary-language.lang-title.' + item) }}
@@ -137,9 +124,9 @@
         </cy-icon-text>
         <div class="buttons">
           <cy-button-check
-            v-for="(item, idx) in secondLanguageState.list"
+            v-for="(item, idx) in fallbackLanguageList"
             :key="item"
-            :selected="secondLanguageState.currentIndex === idx"
+            :selected="fallbackLanguage === idx"
             @click="setLanguage(1, idx)"
           >
             {{ t('app.settings.primary-language.lang-title.' + item) }}
@@ -201,146 +188,133 @@
   </span>
 </template>
 
-<script>
+<script lang="ts">
+export default {
+  name: 'AppSetting',
+};
+</script>
+
+<script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
+import { computed, ref, nextTick } from 'vue';
+import { storeToRefs } from 'pinia';
 
 import { useMainStore } from '@/stores/app/main';
+import { useSettingStore } from '@/stores/app/setting';
 
 import { APP_STORAGE_KEYS } from '@/shared/consts';
 import CY from '@/shared/utils/Cyteria';
 
-export default {
-  setup() {
-    const { t } = useI18n();
-    const mainStore = useMainStore();
-    return { t, mainStore };
-  },
-  data() {
-    const list1 = ['auto', '0', '1', '2', '3'],
-      list2 = ['0', '1', '2', '3'];
-    return {
-      windowVisible: false,
-      currentFont: localStorage[APP_STORAGE_KEYS.FONT_FAMILY] !== undefined ?
-        parseInt(localStorage[APP_STORAGE_KEYS.FONT_FAMILY], 10) : 1,
-      setRem: {
-        value: localStorage[APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE] ?
-          parseInt(localStorage[APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE], 10) : 160,
-      },
-      setNightMode: {
-        value: localStorage[APP_STORAGE_KEYS.NIGHT_MODE] || '0',
-      },
-      languageState: {
-        list: list1,
-        currentIndex: list1.indexOf(localStorage[APP_STORAGE_KEYS.LANGUAGE]),
-      },
-      secondLanguageState: {
-        list: list2,
-        currentIndex: list2.indexOf(localStorage[APP_STORAGE_KEYS.SECOND_LANGUAGE]),
-      },
-      update: {
-        newVersionDetected: false,
-        sw: null,
-      },
-    };
-  },
-  computed: {
-    storageAvailable() {
-      return CY.storageAvailable('localStorage');
-    },
-    nightMode: {
-      get() {
-        return this.setNightMode.value;
-      },
-      set(value) {
-        this.setNightMode.value = value;
-        localStorage[APP_STORAGE_KEYS.NIGHT_MODE] = value;
-        document.documentElement.classList.toggle('theme--night-mode', value === '1');
-      },
-    },
-    remValue: {
-      get() {
-        return this.setRem.value;
-      },
-      set(value) {
-        localStorage.setItem(APP_STORAGE_KEYS.ROOT_ELEMENT_FONT_SIZE, value.toString());
-        this.setRem.value = value;
-        document.documentElement.style.fontSize = (this.setRem.value / 10).toString() + 'px';
-      },
-    },
-  },
-  mounted() {
-    const rel = document.documentElement;
-    rel.classList.add('font-' + this.currentFont.toString());
-    rel.style.fontSize = (this.setRem.value / 10).toString() + 'px';
-    rel.classList.toggle('theme--night-mode', this.nightMode === '1');
-  },
-  methods: {
-    async swUpdate() {
-      this.$notify.loading.show();
-      await this.$nextTick();
-      this.mainStore.serviceWorker.registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-    },
-    clearSpreadsheetsCaches() {
-      caches.delete('google-spreadsheets-csv-files')
-        .then(res => res && this.$notify(this.t('app.settings.clear-spreadsheets-caches.success-tips')));
-    },
-    saveLocalStorage() {
-      const data = {};
-      const storage = window.localStorage;
-      Array(localStorage.length).fill().map((_, i) => i).forEach(idx => {
-        const key = storage.key(idx);
-        const item = storage.getItem(key);
-        if (key.slice(0, 7) !== 'iconify')
-          data[key] = item;
-      });
+import ToggleService from '@/setup/ToggleService';
+import Notify from '@/setup/Notify';
 
-      CY.file.save({
-        data: JSON.stringify(data),
-        fileType: 'text/txt',
-        fileName: 'cy-grimoire-storage.txt',
-      });
+const { t } = useI18n();
+const mainStore = useMainStore();
 
-      this.$notify(this.t('app.settings.storage-backup.save-success-tips'));
-    },
-    loadLocalStorage() {
-      const storage = window.localStorage;
+const { modals, toggle } = ToggleService({ modals: ['main'] as const });
 
-      CY.file.load({
-        succeed: data => {
-          data = JSON.parse(data);
-          Object.keys(data).forEach(k => storage.setItem(k, data[k]));
-          this.$notify(this.t('app.settings.storage-backup.load-success-tips'));
-        },
-        error: () => {
-          this.$notify(this.t('app.settings.storage-backup.load-failed-tips'));
-        },
-        checkFileType: type => {
-          if (type !== 'txt') {
-            this.$notify(this.t('app.settings.storage-backup.wrong-file-type-tips'));
-            return false;
-          }
-          return true;
-        },
-      });
-    },
-    setLanguage(target, index) {
-      const state = target === 0 ? this.languageState : this.secondLanguageState;
-      const key = target === 0 ? APP_STORAGE_KEYS.LANGUAGE : APP_STORAGE_KEYS.SECOND_LANGUAGE;
-      state.currentIndex = index;
-      localStorage[key] = state.list[index];
-    },
-    switchFont(id) {
-      const origin = localStorage.getItem(APP_STORAGE_KEYS.FONT_FAMILY);
-      origin != '0' && document.documentElement.classList.remove('font-' + origin);
-      localStorage.setItem(APP_STORAGE_KEYS.FONT_FAMILY, id.toString());
-      id != 0 && document.documentElement.classList.add('font-' + id);
-      this.currentFont = id;
-    },
-    toggleWindowVisible() {
-      this.windowVisible = !this.windowVisible;
-    },
+const primaryLanguageList = ['auto', '0', '1', '2', '3'];
+const fallbackLanguageList = ['0', '1', '2', '3'];
+
+const _primaryLanguage = ref(primaryLanguageList.indexOf(localStorage.getItem(APP_STORAGE_KEYS.PRIMARY_LOCALE) ?? 'auto'));
+const primaryLanguage = computed<number>({
+  get() {
+    return _primaryLanguage.value;
   },
+  set(value) {
+    _primaryLanguage.value = value;
+    localStorage.setItem(APP_STORAGE_KEYS.PRIMARY_LOCALE, primaryLanguageList[value]);
+  },
+});
+
+const _fallbackLanguage = ref(fallbackLanguageList.indexOf(localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE) ?? 'auto'));
+const fallbackLanguage = computed<number>({
+  get() {
+    return _fallbackLanguage.value;
+  },
+  set(value) {
+    _fallbackLanguage.value = value;
+    localStorage.setItem(APP_STORAGE_KEYS.FALLBACK_LOCALE, fallbackLanguageList[value]);
+  },
+});
+
+const storageAvailable = CY.storageAvailable('localStorage');
+const { notify, loading } = Notify();
+
+const swUpdate = async () => {
+  loading.show();
+  await nextTick();
+  mainStore.serviceWorker.registration?.waiting?.postMessage({ type: 'SKIP_WAITING' });
 };
+
+const clearSpreadsheetsCaches = () => {
+  caches.delete('google-spreadsheets-csv-files')
+    .then(res => res && notify(t('app.settings.clear-spreadsheets-caches.success-tips')));
+};
+
+const saveLocalStorage = () => {
+  const data = {} as Record<string, string>;
+  const storage = window.localStorage;
+  Array(localStorage.length).fill(null).map((_, i) => i).forEach(idx => {
+    const key = storage.key(idx)!;
+    const item = storage.getItem(key)!;
+    if (key.slice(0, 7) !== 'iconify') {
+      data[key] = item;
+    }
+  });
+
+  CY.file.save({
+    data: JSON.stringify(data),
+    fileType: 'text/txt',
+    fileName: 'cy-grimoire-storage.txt',
+  });
+
+  notify(t('app.settings.storage-backup.save-success-tips'));
+};
+
+const loadLocalStorage = () => {
+  const storage = window.localStorage;
+
+  CY.file.load({
+    succeed: (data) => {
+      const jsonData = JSON.parse(data) as Record<string, string>;
+      Object.keys(jsonData).forEach(key => storage.setItem(key, jsonData[key]));
+      notify(t('app.settings.storage-backup.load-success-tips'));
+    },
+    error: () => {
+      notify(t('app.settings.storage-backup.load-failed-tips'));
+    },
+    checkFileType: type => {
+      if (type !== 'txt') {
+        notify(t('app.settings.storage-backup.wrong-file-type-tips'));
+        return false;
+      }
+      return true;
+    },
+  });
+};
+
+const setLanguage = (target: 0 | 1, index: number) => {
+  const state = target === 0 ? primaryLanguage : fallbackLanguage;
+  const list = target === 0 ? primaryLanguageList : fallbackLanguageList;
+  const key = target === 0 ? APP_STORAGE_KEYS.PRIMARY_LOCALE : APP_STORAGE_KEYS.FALLBACK_LOCALE;
+  state.value = index;
+  localStorage[key] = list[index];
+};
+
+const settingStore = useSettingStore();
+const { appFont, appRem, appNightMode } = storeToRefs(settingStore);
+
+const appFontOptions = [{
+  text: t('app.settings.switch-font.default-font'),
+  value: 0,
+}, {
+  text: t('app.settings.switch-font.base-font'),
+  value: 1,
+}, {
+  text: t('app.settings.switch-font.base-font') + '-2',
+  value: 2,
+}];
 </script>
 
 <style lang="postcss" scoped>

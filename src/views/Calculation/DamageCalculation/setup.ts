@@ -144,6 +144,18 @@ const setupExpectedResults = (calculation: Ref<Calculation>) => {
   };
 };
 
+type ResultModeIdStability = 'stability' | 'stability-with-graze';
+type ResultModeIdExpected = 'expected';
+type ResultModeId = ResultModeIdStability | ResultModeIdExpected;
+interface ResultModeItem<Id extends ResultModeId = ResultModeId> {
+  id: Id;
+  icon: string;
+  value: Id extends ResultModeIdExpected ? number : {
+    min: number;
+    max: number;
+  };
+}
+
 const setupResultMode = (calculation: Ref<Calculation>) => {
   const {
     expectedResult,
@@ -151,19 +163,19 @@ const setupResultMode = (calculation: Ref<Calculation>) => {
     stabilityResultGraze,
   } = setupExpectedResults(calculation);
 
-  const resultModeId = ref('expected');
+  const resultModeId = ref<ResultModeId>('expected');
 
-  const selectResultMode = (modeId: string) => {
+  const selectResultMode = (modeId: ResultModeId) => {
     resultModeId.value = modeId;
   };
 
-  const resultModeList = computed(() => {
+  const resultModeList = computed<ResultModeItem[]>(() => {
     return [{
       id: 'stability',
       icon: 'tabler:angle',
       value: stabilityResult.value,
     }, {
-      id: 'stability: with graze',
+      id: 'stability-with-graze',
       icon: 'tabler:angle',
       value: stabilityResultGraze.value,
     }, {
@@ -172,7 +184,7 @@ const setupResultMode = (calculation: Ref<Calculation>) => {
       value: expectedResult.value,
     }];
   });
-  const resultMode = computed(() => resultModeList.value.find(item => item.id === resultModeId.value));
+  const resultMode = computed(() => resultModeList.value.find(item => item.id === resultModeId.value)!);
 
   return {
     resultMode,
@@ -208,4 +220,9 @@ export {
   setupExpectedResults,
   setupResultMode,
   setupCalculationCalcOptions,
+};
+export type {
+  ResultModeIdStability,
+  ResultModeIdExpected,
+  ResultModeItem,
 };

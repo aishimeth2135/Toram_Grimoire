@@ -67,12 +67,12 @@ Equipment:
     ex_skill: EX技能
 Stat:
   type-total: 总{text}
-Auto Save:
-  "message: unknow error when save": 自动存档时发生未知的错误。
-  "message: unknow error when load": 自动读取时发生未知的错误。
-Export build:
-  "message: unknow error when save": 产生档案时发生未知的错误。
-  "message: load successfully": 读取成功。
-  "message: unknow error when load": 读取时发生未知的错误。
-  "message: load failed": 解析档案时发生错误，档案内容的格式可能有误。
-  "message: wrong type of .txt file": 读取的档案必须为文字（.txt）档。
+auto-save:
+  save-unknow-error-tips: 自动存档时发生未知的错误。
+  load-unknow-error-tips: 自动读取时发生未知的错误。
+export-build:
+  save-unknow-error-tips: 产生档案时发生未知的错误。
+  load-success-tips: 产生档案时发生未知的错误。
+  load-unknow-error-tips: 读取时发生未知的错误。
+  load-failed-tips: 解析档案时发生错误，档案内容的格式可能有误。
+  load-wrong-file-type-tips: 读取的档案必须为文字（.txt）档。

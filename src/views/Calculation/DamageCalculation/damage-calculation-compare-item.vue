@@ -3,7 +3,7 @@
     <div class="text-purple text-sm mb-1">{{ calculation.name }}</div>
     <div class="flex items-center">
       <cy-icon-text icon="ant-design:star-outlined">
-        {{ $lang('result/modes/expected') }}
+        {{ t('damage-calculation.result.modes.expected') }}
       </cy-icon-text>
       <span class="text-light-3 ml-2 mr-4">{{ expectedResult }}</span>
       <div :class="calculationResultDifferenceRate >= 0 ? 'text-water-blue' : 'text-red'">
@@ -17,7 +17,7 @@
         class="flex items-center"
       >
         <cy-icon-text class="mr-2" size="small">
-          <span v-html="markText($lang('item base: title/' + comparedItem.item.base.id))"></span>
+          <span v-html="markText(t('damage-calculation.item-base-titles.' + comparedItem.item.base.id))"></span>
         </cy-icon-text>
         <span :class="comparedItem.value >= 0 ? 'text-water-blue' : 'text-red'" class="text-sm">
           {{ (comparedItem.value > 0 ? '+' : '') + comparedItem.value + (comparedItem.item.base.unit) }}
@@ -27,85 +27,73 @@
   </div>
 </template>
 
-<script>
-import { computed, inject, toRefs, Ref } from 'vue';
-
+<script lang="ts" setup>
+import { computed, inject, toRefs } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { numberToFixed } from '@/shared/utils/number';
 import { markText } from '@/shared/utils/view';
 
-import { Calculation } from '@/lib/Calculation/Damage/Calculation';
+import { CalcItem, Calculation } from '@/lib/Calculation/Damage/Calculation';
 
 import { setupExpectedResults, setupCalculationStoreState } from './setup';
+import { DamageCalculationRootInjectionKey } from './injection-keys';
 
-export default {
-  name: 'DamageCalculationCompareItem',
-  RegisterLang: 'Damage Calculation',
-  props: {
-    calculation: {
-      type: Calculation,
-      required: true,
-    },
-  },
-  setup(props) {
-    const { currentCalculation: comparedCalculation } = setupCalculationStoreState();
-    /** @type {{ calculation: Ref<Calculation> }} */
-    const { calculation } = toRefs(props);
+interface Props {
+  calculation: Calculation;
+}
 
-    const { expectedResult } = setupExpectedResults(calculation);
+const props = defineProps<Props>();
+const { calculation } = toRefs(props);
 
-    const comparedCalculationExpectedResult = inject('currentCalculationExpectedResult');
+const { t } = useI18n();
 
-    const calculationResultDifferenceRate = computed(() => {
-      const comparedResult = comparedCalculationExpectedResult.value;
-      if (comparedResult < 1) {
-        return 1000;
-      }
-      return numberToFixed((expectedResult.value - comparedResult) * 100 / comparedResult, 1);
-    });
+const { currentCalculation: comparedCalculation } = setupCalculationStoreState();
 
-    const calculationResultDifferenceRateDisplay = computed(() => {
-      if (calculationResultDifferenceRate.value > 999) {
-        return '+999~%';
-      }
-      const sign = (calculationResultDifferenceRate.value >= 0 ? '+' : '');
-      return sign + calculationResultDifferenceRate.value + '%';
-    });
+const { expectedResult } = setupExpectedResults(calculation);
 
-    const comparedItems = computed(() => {
-      const result = [];
-      Array.from(calculation.value.containers.values()).forEach(container => {
-        const comparedContainer = comparedCalculation.value.containers.get(container.base.id);
-        if (container.selectable) {
-          result.push({
-            item: container.currentItem,
-            value: container.currentItem.value - comparedContainer.currentItem.value,
-          });
-        } else {
-          Array.from(container.items.values()).forEach(item => {
-            if (result.find(resItem => resItem.item.base.id === item.base.id)) {
-              return;
-            }
-            const comparedItem = comparedContainer.items.get(item.base.id);
-            result.push({
-              item,
-              value: container.customItemAddable ?
-                container.result() - comparedContainer.result() :
-                item.value - comparedItem.value,
-            });
-          });
-        }
+const comparedCalculationExpectedResult = inject(DamageCalculationRootInjectionKey)!;
+
+const calculationResultDifferenceRate = computed(() => {
+  const comparedResult = comparedCalculationExpectedResult.value;
+  if (comparedResult < 1) {
+    return 1000;
+  }
+  return numberToFixed((expectedResult.value - comparedResult) * 100 / comparedResult, 1);
+});
+
+const calculationResultDifferenceRateDisplay = computed(() => {
+  if (calculationResultDifferenceRate.value > 999) {
+    return '+999~%';
+  }
+  const sign = (calculationResultDifferenceRate.value >= 0 ? '+' : '');
+  return sign + calculationResultDifferenceRate.value + '%';
+});
+
+const comparedItems = computed(() => {
+  const result: { item: CalcItem; value: number }[] = [];
+  Array.from(calculation.value.containers.values()).forEach(container => {
+    const comparedContainer = comparedCalculation.value.containers.get(container.base.id)!;
+    if (container.selectable) {
+      result.push({
+        item: container.currentItem,
+        value: container.currentItem.value - comparedContainer.currentItem.value,
       });
-      return result.filter(item => item.value !== 0);
-    });
-
-    return {
-      expectedResult,
-      comparedItems,
-      calculationResultDifferenceRate,
-      calculationResultDifferenceRateDisplay,
-      markText,
-    };
-  },
-};
+    } else {
+      Array.from(container.items.values()).forEach(item => {
+        if (result.find(resItem => resItem.item.base.id === item.base.id)) {
+          return;
+        }
+        const comparedItem = comparedContainer.items.get(item.base.id)!;
+        result.push({
+          item,
+          value: container.customItemAddable ?
+            container.result() - comparedContainer.result() :
+            item.value - comparedItem.value,
+        });
+      });
+    }
+  });
+  return result.filter(item => item.value !== 0);
+});
 </script>

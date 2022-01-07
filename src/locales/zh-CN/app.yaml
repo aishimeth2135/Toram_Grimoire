@@ -11,6 +11,7 @@ loading-message:
   bottom-tips:
     0: 初次载入需要较长的时间，请稍后...
     1: 若载入途中发生错误，请先试着重新整理网页。
+  init-locale: 载入语言资料
 page-title:
   base: 布偶的魔法书
   character-simulator: 角色模拟
@@ -81,4 +82,5 @@ settings:
     restriction-homepage: 为避免发生无法预期的错误，此功能限制只能在首页使用。
 features:
   copy-to-clipboard-success-tips: 已复制文本至剪贴簿。
+  copy-url-to-clipboard-success-tips: 已复制网址至剪贴簿。
   localStorage-inavailable-tips: 此浏览器版本无法使用内建储存功能。

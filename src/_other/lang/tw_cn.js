@@ -15,7 +15,7 @@ finder.on('file', function (file) {
 finder.on('end', async function() {
   console.log('start handle...');
   console.log(files);
-  for (file of files) {
+  for (const file of files) {
     const text = await fs.readFile(file, { encoding: 'utf8' });
     const data = conv.sify(text);
     console.log('handle: ' + file);

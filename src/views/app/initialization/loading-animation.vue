@@ -6,7 +6,7 @@
       @before-leave="beforeLeave"
       @leave="leave"
     >
-      <svg-icon v-if="innerStatus > 1" key="1" icon-id="potum" class="custom-icon" />
+      <svg-icon v-if="innerStatus >= InitializeStatus.BeforeFinished" key="1" icon-id="potum" class="custom-icon" />
       <svg-icon v-else key="2" icon-id="potum" class="custom-icon start-icon" />
     </transition>
     <transition
@@ -14,7 +14,7 @@
       :css="false"
       @enter="enter"
     >
-      <div v-if="innerStatus > 1 && end" class="ball" />
+      <div v-if="innerStatus >= InitializeStatus.BeforeFinished && end" class="ball" />
     </transition>
   </div>
 </template>
@@ -23,6 +23,8 @@
 // @ts-ignore
 import Velocity from 'velocity-animate';
 import { onMounted, ref, toRefs, watch } from 'vue';
+
+import { InitializeStatus } from '@/stores/app/initialize/enums';
 
 interface Props {
   status: number;

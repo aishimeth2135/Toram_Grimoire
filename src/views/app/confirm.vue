@@ -5,12 +5,12 @@
   >
     <div class="absolute w-full h-full bg-black opacity-30 -z-1" />
     <div class="w-full h-full flex items-center justify-center">
-      <div class="w-full max-w-sm max-h-full overflow-y-auto border border-light-2 bg-white p-6 m-4 animate-slide-up">
+      <div class="w-full max-w-sm max-h-full overflow-y-auto border border-light-2 bg-white p-6 m-4 app-confirm-slide-up">
         <div class="mb-6 flex">
-          <div v-if="item.icon">
+          <div>
             <cy-icon-text
-              v-if="(typeof item.icon === 'string')"
               :icon="item.icon"
+              :icon-src="(typeof item.icon === 'string') ? 'iconify' : item.icon.src"
               style="--icon-width: 2rem"
               class="flex-shrink-0 mr-4"
             />
@@ -67,3 +67,20 @@ const cancel = () => store.nextItem();
 
 const rootLang = GetLang;
 </script>
+
+<style lang="postcss" scoped>
+.app-confirm-slide-up {
+  animation: app-confirm-slide-up 0.3s ease;
+}
+
+@keyframes app-confirm-slide-up {
+  0% {
+    transform: translateY(30%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+</style>

@@ -19,18 +19,27 @@ function GetDrawSetting(): DrawSettingData {
   };
 }
 
+
 function createDrawSkillTreeDefs() {
   const defs = CY.svg.createEmpty('defs') as SVGDefsElement;
   defs.id = 'app--draw-skill-tree-defs';
 
-  const w = GetDrawSetting().gridWidth,
-    Circle = CY.svg.drawCircle;
+  const w = GetDrawSetting().gridWidth;
+  const drawCircle = (cx: number, cy: number, r: number) => {
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', cx.toString());
+    circle.setAttribute('cy', cy.toString());
+    circle.setAttribute('r', r.toString());
+    circle.setAttribute('fill', 'var(--white)');
+    circle.setAttribute('stroke-width', '0');
+    return circle;
+  };
 
   // @lock
   const lockPattern = CY.svg.createEmpty('pattern', { width: 1, height: 1, id: 'skill-icon-lock' });
   const lock = CY.svg.create(w, w, { x: (w - 24) / 2, y: (w - 24) / 2 });
   lock.innerHTML = '<path fill="var(--primary-light)" d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/>';
-  lockPattern.appendChild(Circle(w / 2, w / 2, w / 2, { fill: 'var(--white)', 'stroke-width': 0 }));
+  lockPattern.appendChild(drawCircle(w / 2, w / 2, w / 2));
   lockPattern.appendChild(lock);
 
   defs.appendChild(lockPattern);
@@ -268,9 +277,6 @@ function getSkillIconPatternData(skillTree: SkillTree): SkillIconPatternDataItem
         }],
       };
     });
-  // const pat = CY.svg.createEmpty('pattern', {id: patid, width: 1, height: 1});
-  // pat.appendChild(Circle(w/2, w/2, w/2, {fill: 'url(#skill-icon-bg)', 'stroke-width': 0}));
-  // pat.appendChild(CY.svg.drawImage(`${skillIconPathRoot}si_${_skill.id}.png`, iconPad, iconPad, w-iconPad*2, w-iconPad*2));
 }
 
 function getSkillIconPatternId(skill: Skill): string {

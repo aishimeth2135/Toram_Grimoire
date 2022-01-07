@@ -33,7 +33,7 @@
         >
           <template #title>
             <cy-icon-text v-if="!currentContainer.selectable">
-              <span v-if="!item.isCustom" v-html="markText(lang('item base: title/' + item.base.id))"></span>
+              <span v-if="!item.isCustom" v-html="markText(t('damage-calculation.item-base.titles.' + item.base.id))"></span>
               <template v-else>
                 {{ (item as CalcItemCustom).name }}
               </template>
@@ -44,7 +44,7 @@
               :selected="currentContainer.currentItem === item"
               @click="currentContainer!.selectItem(item.base.id)"
             >
-              {{ lang('item base: title/' + item.base.id) }}
+              {{ t('damage-calculation.item-base.titles.' + item.base.id) }}
             </cy-button-check>
           </template>
           <template #unit>
@@ -78,7 +78,7 @@
         @click="createCustomItem"
       >
         <cy-icon-text icon="ic:round-add-circle-outline" text-color="light-3">
-          {{ lang('create custon item') }}
+          {{ t('damage-calculation.create-custom-item') }}
         </cy-icon-text>
       </div>
     </div>
@@ -128,6 +128,7 @@ export default {
 <script lang="ts" setup>
 import { computed, toRefs, ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
 
 import { useDamageCalculationStore } from '@/stores/views/damage-calculation';
 
@@ -136,8 +137,6 @@ import { markText } from '@/shared/utils/view';
 
 import { CalcStructItem } from '@/lib/Calculation/Damage/Calculation/base';
 import { CalcItem, CalcItemCustom } from '@/lib/Calculation/Damage/Calculation';
-
-import RegisterLang from '@/setup/RegisterLang';
 
 interface Props {
   calcStructItem: CalcStructItem;
@@ -153,7 +152,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { calcStructItem } = toRefs(props);
 
-const { lang } = RegisterLang('Damage Calculation');
+const { t } = useI18n();
 
 const store = useDamageCalculationStore();
 
@@ -211,7 +210,7 @@ const createCustomItem = () => {
   }
   const newItem = currentContainer.value.createCustomItem();
   if (newItem) {
-    newItem.name = lang('item base: title/' + currentContainer.value.currentItem.base.id);
+    newItem.name = t('damage-calculation.item-base-titles.' + currentContainer.value.currentItem.base.id);
   }
 };
 const removeCustomItem = (item: CalcItemCustom) => {

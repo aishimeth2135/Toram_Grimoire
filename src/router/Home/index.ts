@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-import ViewInit from '@/shared/services/ViewInit';
+import { ViewInit } from '@/shared/services/ViewInit';
 
 import HomeView from '@/views/Home/Home/index.vue';
 

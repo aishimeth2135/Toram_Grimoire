@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-import ViewInit from '@/shared/services/ViewInit';
+import { ViewInit } from '@/shared/services/ViewInit';
 
 import Page404View from '@/views/app/page404.vue';
 

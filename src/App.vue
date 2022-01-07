@@ -14,7 +14,7 @@
       <div class="flex justify-center flex-wrap">
         <LoadingAnimation :status="0" />
         <div class="text-xl w-full text-center mt-2 text-light-2">
-          Load language data...
+          Initializing...
         </div>
       </div>
     </div>
@@ -49,7 +49,7 @@ onMounted(() => {
 });
 
 const languageStore = useLanguageStore();
-languageStore.updateLocaleMessages();
+languageStore.updateLocaleGlobalMessages();
 </script>
 
 <style lang="less" scoped>
