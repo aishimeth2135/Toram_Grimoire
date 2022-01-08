@@ -307,10 +307,10 @@ const { appFont, appRem, appNightMode } = storeToRefs(settingStore);
 
 const appFontOptions = [{
   text: t('app.settings.switch-font.default-font'),
-  value: 0,
+  value: 1,
 }, {
   text: t('app.settings.switch-font.base-font'),
-  value: 1,
+  value: 0,
 }, {
   text: t('app.settings.switch-font.base-font') + '-2',
   value: 2,
