@@ -1,4 +1,5 @@
 const path = require('path');
+const { RetryChunkLoadPlugin } = require('webpack-retry-chunk-load-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 /**
@@ -43,6 +44,10 @@ module.exports = {
         },
         plugins: [
           // new BundleAnalyzerPlugin(),
+          new RetryChunkLoadPlugin({
+            retryDelay: 200,
+            maxRetries: 3,
+          }),
         ],
       };
     } else {

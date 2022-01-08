@@ -6129,7 +6129,7 @@ prettier@^1.18.2:
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
   integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
 
-"prettier@^1.18.2 || ^2.0.0":
+"prettier@^1.18.2 || ^2.0.0", prettier@^2.2.1:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.5.1.tgz#fff75fa9d519c54cf0fce328c1017d94546bc56a"
   integrity sha512-vBZcPRUR5MZJwoyi3ZoyQlc1rXeEck8KgeC9AwwOn+exuxLxq5toTRDTSaVrXHxelDMHy9zlicw8u66yxoSUFg==
@@ -7660,6 +7660,13 @@ webpack-merge@^5.7.3:
   dependencies:
     clone-deep "^4.0.1"
     wildcard "^2.0.0"
+
+webpack-retry-chunk-load-plugin@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/webpack-retry-chunk-load-plugin/-/webpack-retry-chunk-load-plugin-3.0.0.tgz#8519d606c33469e152e37507d1568835af83410f"
+  integrity sha512-MnnBu55A/kPXb+n8QG+7aN0wHOy7n1LOtRn6laynWFtci4X2FqAMzF4G5awKFwu5lOGXWq8ADLHSPA2z3pmUQg==
+  dependencies:
+    prettier "^2.2.1"
 
 webpack-sources@^1.4.3:
   version "1.4.3"

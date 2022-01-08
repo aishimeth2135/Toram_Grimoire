@@ -27,7 +27,8 @@
     "vue-gtag-next": "^1.14.0",
     "vue-i18n": "^9.2.0-beta.17",
     "vue-router": "4.0.11",
-    "vuex-composition-helpers": "^2.0.1"
+    "vuex-composition-helpers": "^2.0.1",
+    "webpack-retry-chunk-load-plugin": "^3.0.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.15.4",
