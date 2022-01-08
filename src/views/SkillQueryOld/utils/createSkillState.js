@@ -198,6 +198,7 @@ function handleSkillState(skill, { vars }) {
 
     const mainBranchNameList = ['damage', 'effect', 'proration', 'next', 'list',
       'passive', 'heal', 'text', 'tips', 'stack', 'reference', 'history', 'import',
+      'basic',
     ];
     const isMainBranch = _bch => mainBranchNameList.includes(_bch.name);
     const resBranchs = [];
@@ -212,6 +213,9 @@ function handleSkillState(skill, { vars }) {
 
       if (!curBranch && isMainBranch(bch)) {
         resBranchs.push(bch);
+        return;
+      }
+      if (!curBranch) {
         return;
       }
       if (!space_flag && searchSuffixList(curBranch, bch)) {
