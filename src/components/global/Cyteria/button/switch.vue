@@ -32,7 +32,7 @@ export default defineComponent({
     const { selected } = toRefs(props);
     const click = (evt: MouseEvent) => {
       if (originalClick(evt)) {
-        emit('update:selected', selected.value);
+        emit('update:selected', !selected.value);
       }
     };
     return {

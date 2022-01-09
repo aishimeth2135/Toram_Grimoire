@@ -52,9 +52,9 @@
         </legend>
         <div class="caption">{{ t('app.settings.night-mode.caption') }}</div>
         <div class="mt-4 mb-2">
-          <cy-button-check v-model:selected="appNightMode">
+          <cy-button-switch v-model:selected="appNightMode">
             {{ t('app.settings.night-mode.title') }}
-          </cy-button-check>
+          </cy-button-switch>
         </div>
       </fieldset>
       <fieldset class="app--settings-column">

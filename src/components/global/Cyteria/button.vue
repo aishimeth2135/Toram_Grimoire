@@ -180,7 +180,7 @@ export default defineComponent({
   }
 
   &.disabled {
-    @apply cursor-not-allowed opacity-75;
+    @apply cursor-not-allowed opacity-40;
   }
 
   &.focus-enabled:not(.disabled):focus {
