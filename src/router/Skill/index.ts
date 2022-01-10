@@ -6,7 +6,7 @@ import { LocaleViewNamespaces } from '@/stores/app/language/enums';
 
 import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit';
 
-import WrapperView from './wrapper.vue';
+import ViewWrapper from './view-wrapper.vue';
 
 // const SkillQueryOldView = () => import(/* webpackChunkName: "skill-query-old" */ '@/views/SkillQueryOld/index.vue');
 const SkillQueryView = () => import(/* webpackChunkName: "skill-query" */ '@/views/SkillQuery/index.vue');
@@ -14,7 +14,7 @@ const SkillQueryView = () => import(/* webpackChunkName: "skill-query" */ '@/vie
 export default {
   name: 'Skill',
   path: '/skill',
-  component: WrapperView,
+  component: ViewWrapper,
   beforeEnter(to, from, next) {
     if (to.name === 'SkillQuery') {
       PrepareLocaleInit(LocaleViewNamespaces.SkillQuery);

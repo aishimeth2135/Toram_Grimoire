@@ -87,7 +87,7 @@ class EnchantBuild {
     return new EnchantBuild(data.name, equipment);
   }
 
-  copy() {
+  clone() {
     const data = this.save();
     return EnchantBuild.load(data);
   }
@@ -134,7 +134,7 @@ class EnchantEquipment {
     return equipment;
   }
 
-  copy(categorys: EnchantCategory[]) {
+  clone(categorys: EnchantCategory[]) {
     const data = this.save();
     return EnchantEquipment.load(categorys, data);
   }
@@ -589,7 +589,7 @@ class EnchantStat {
     return this.stat.equals(estat.stat);
   }
 
-  copy() {
+  clone() {
     return new EnchantStat(this.itemBase, this.type, this.value);
   }
 
@@ -834,7 +834,7 @@ class EnchantStepStat extends EnchantStat {
   }
 
   pure(): EnchantStat {
-    return super.copy();
+    return super.clone();
   }
 }
 

@@ -4,14 +4,14 @@ import { ViewInit } from '@/shared/services/ViewInit';
 
 import HomeView from '@/views/Home/Home/index.vue';
 
-import WrapperView from './wrapper.vue';
+import ViewWrapper from './view-wrapper.vue';
 
 const AboutView = () => import(/* webpackChunkName: "home-about" */ '@/views/Home/About/index.vue');
 
 export default {
   name: 'AppRoot',
   path: '/',
-  component: WrapperView,
+  component: ViewWrapper,
   beforeEnter(to, from, next) {
     ViewInit().then(next);
   },

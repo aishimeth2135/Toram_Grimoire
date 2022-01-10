@@ -135,7 +135,7 @@ class Character {
     return validSubs.includes(subType);
   }
 
-  copy() {
+  clone() {
     const chara = new Character(this.name + '*');
     chara.level = this.level;
     this.normalBaseStats.forEach(bstat => {

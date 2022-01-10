@@ -31,6 +31,10 @@ const BRANCH_ATTRS_DEFAULT_VALUE: Record<string, Record<string, string>> = {
   [SkillBranchNames.Base]: {
     'title': 'auto',
   },
+  [SkillBranchNames.Extra]: {
+    'condition': 'auto',
+    'type': 'normal',
+  },
   [SkillBranchNames.Proration]: {
     'proration': 'auto',
   },
@@ -69,7 +73,7 @@ const BRANCH_ATTRS_DEFAULT_VALUE: Record<string, Record<string, string>> = {
   [SkillBranchNames.Space]: {
     'disabled': '0',
   },
-} as const;
+};
 
 /**
    * 0'空手', 1'單手劍', 2'雙手劍', 3'弓', 4'弩', 5'法杖',

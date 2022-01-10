@@ -73,7 +73,7 @@ const HOME_LINK_BUTTONS = [{
 }];
 
 export default {
-  name: 'Home',
+  name: 'AppHome',
 };
 </script>
 

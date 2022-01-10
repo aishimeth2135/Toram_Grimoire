@@ -39,6 +39,7 @@ const customIconDatas = {
 };
 
 export default {
+  name: 'DollBubble',
   data() {
     return {
       icons: [],

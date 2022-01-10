@@ -146,7 +146,7 @@ class Calculation {
     });
   }
 
-  copy(): Calculation {
+  clone(): Calculation {
     const calculation = this.base.createCalculation();
     calculation.load(this.save());
     calculation.name = this.name + '*';

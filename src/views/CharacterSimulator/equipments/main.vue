@@ -83,7 +83,7 @@ import vue_selectCrystals from './select-crystals.vue';
 
 
 export default {
-  name: 'Equipments',
+  name: 'CharacterSimulatorEquipments',
   RegisterLang: 'Character Simulator',
   provide() {
     return {

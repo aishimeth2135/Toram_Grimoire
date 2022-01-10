@@ -1,7 +1,10 @@
+import { CSSProperties } from 'vue';
+
 import { Images } from '@/shared/services/Images';
 import CY from '@/shared/utils/Cyteria';
 
 import { LevelSkill, LevelSkillTree, Skill, SkillTree } from '../Skill';
+import { DrawSkillTreeDataTypes } from './enums';
 
 interface DrawSettingData {
   gridWidth: number;
@@ -18,7 +21,6 @@ function GetDrawSetting(): DrawSettingData {
     iconPadding: 4,
   };
 }
-
 
 function createDrawSkillTreeDefs() {
   const defs = CY.svg.createEmpty('defs') as SVGDefsElement;
@@ -59,16 +61,18 @@ function createDrawSkillTreeDefs() {
 }
 
 interface ComputeDrawSkillTreeDataOptions {
-  setSkillButtonExtraData?: (skill: Skill | LevelSkill, drawData: {
-    cx: number;
-    cy: number;
-    lengthTransformFunction: (value: number) => number;
-  } & DrawSettingData) => DrawSkillTreeData[];
+  setSkillButtonExtraData?: (skill: Skill | LevelSkill, drawData: DrawSkillTreeDataExtraCallbackPayload) => DrawSkillTreeData[];
 }
-
 interface DrawSkillTreeData {
   type: string;
+  class?: string[];
+  style?: CSSProperties;
   [key: string]: any;
+}
+interface DrawSkillTreeDataExtraCallbackPayload extends DrawSettingData {
+  cx: number;
+  cy: number;
+  lengthTransformFunction: (value: number) => number;
 }
 
 function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
@@ -125,7 +129,7 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
       subs.forEach(sub => {
         if (sub === 'R') {
           data.push({
-            type: 'tree-line',
+            type: DrawSkillTreeDataTypes.TreeLine,
             x1: tran(curx),
             y1: tran(cury),
             x2: tran(curx + 1),
@@ -133,7 +137,7 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
           });
         } else if (sub === 'B') {
           data.push({
-            type: 'tree-line',
+            type: DrawSkillTreeDataTypes.TreeLine,
             x1: tran(curx),
             y1: tran(cury),
             x2: tran(curx),
@@ -143,7 +147,7 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
       });
       if (main === 'D') {
         data.push({
-          type: 'tree-dot',
+          type: DrawSkillTreeDataTypes.TreeDot,
           cx: tran(curx),
           cy: tran(cury),
           r: 2,
@@ -154,7 +158,7 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
         const bskill = getBaseSkill(_skill);
         const name = bskill.name || '?';
         const skillCircleData = {
-          type: 'skill-circle',
+          type: DrawSkillTreeDataTypes.SkillCircle,
           cx: tran(curx),
           cy: tran(cury),
           r: width / 2,
@@ -169,7 +173,7 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
         if (name !== '?') {
           if (name !== '@lock') {
             skillNameData = {
-              type: 'skill-name',
+              type: DrawSkillTreeDataTypes.SkillName,
               x: tran(curx),
               y: tran(cury) - width / 2 - textMargin,
               innerText: name,
@@ -181,7 +185,7 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
               cx: curx,
               cy: cury,
               lengthTransformFunction: tran,
-            }, drawData));
+            }, drawData) as DrawSkillTreeDataExtraCallbackPayload);
           } else {
             skillCircleData.class.push('lock');
           }
@@ -196,7 +200,7 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
       curx += 1;
     } else if (main === 'H') {
       data.push({
-        type: 'tree-line',
+        type: DrawSkillTreeDataTypes.TreeLine,
         x1: tran(curx),
         y1: tran(cury),
         x2: tran(curx + 1),
@@ -205,7 +209,7 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
       curx += 1;
     } else if (main === 'V') {
       data.push({
-        type: 'tree-line',
+        type: DrawSkillTreeDataTypes.TreeLine,
         x1: tran(curx),
         y1: tran(cury),
         x2: tran(curx),
@@ -250,7 +254,10 @@ interface SkillIconPatternDataItem {
   }];
 }
 
-function getSkillIconPatternData(skillTree: SkillTree): SkillIconPatternDataItem[] {
+function getSkillIconPatternData(skillTree: SkillTree | LevelSkillTree): SkillIconPatternDataItem[] {
+  if (skillTree instanceof LevelSkillTree) {
+    skillTree = skillTree.base;
+  }
   const drawData = GetDrawSetting();
   const width = drawData.gridWidth,
     iconPad = drawData.iconPadding;
@@ -290,3 +297,4 @@ export {
   GetDrawSetting,
   getSkillIconPath,
 };
+export type { DrawSkillTreeData, DrawSkillTreeDataExtraCallbackPayload };

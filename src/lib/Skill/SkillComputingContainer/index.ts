@@ -256,7 +256,7 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
     this.name = this._name; // init _inherit
 
     this._attrs = markRaw(Object.assign({}, branch instanceof SkillBranch ? branch.branchAttributes : branch.allAttrs));
-    this.stats = markRaw(branch.stats.map(stat => stat.copy()));
+    this.stats = markRaw(branch.stats.map(stat => stat.clone()));
 
     this.isEmpty = branch.isEmpty;
 

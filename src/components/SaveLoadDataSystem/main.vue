@@ -78,6 +78,7 @@ const DoNothing = function() {
 };
 
 export default {
+  name: 'SaveLoadDataSystem',
   props: {
     name: {
       type: String,

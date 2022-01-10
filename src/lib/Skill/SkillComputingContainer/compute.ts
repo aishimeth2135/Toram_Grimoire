@@ -286,7 +286,7 @@ function handleBranchTextAttrs<AttrMap extends HandleBranchTextAttrsMap>(
 function computedBranchStats(helper: ComputedBranchHelperResult, stats: StatComputed[]): StatComputed[] {
   return stats.map(stat => {
     const str = stat.value;
-    const newStat = stat.copy();
+    const newStat = stat.clone();
     newStat.value = computeBranchValue(str, helper);
     return newStat;
   });

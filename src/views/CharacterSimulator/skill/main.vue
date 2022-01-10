@@ -111,6 +111,7 @@ import { useCharacterSkillStore } from '@/stores/views/character/skill';
 import vue_skillItem from './skill-item.vue';
 
 export default {
+  name: 'CharacterSimulatorSkills',
   RegisterLang: 'Character Simulator',
   provide() {
     return {

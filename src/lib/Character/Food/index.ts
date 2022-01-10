@@ -90,9 +90,9 @@ class Foods {
     this.selectedFoodIndexes.splice(i, 1);
   }
 
-  copy() {
+  clone() {
     const newFood = new Foods(this.name + '*');
-    newFood.foods = this.foods.map(p => p.copy());
+    newFood.foods = this.foods.map(p => p.clone());
     newFood.selectedFoodIndexes = this.selectedFoodIndexes.slice();
     return newFood;
   }
@@ -159,7 +159,7 @@ class Food {
     return this.foodBase.statTitle();
   }
 
-  copy() {
+  clone() {
     const newFood = new Food(this.foodBase);
     newFood.level = this.level;
     return newFood;

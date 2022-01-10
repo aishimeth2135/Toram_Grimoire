@@ -15,6 +15,7 @@
 
 <script>
 export default {
+  name: 'CyOptions',
   props: {
     inline: {
       type: Boolean,

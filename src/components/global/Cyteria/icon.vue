@@ -27,6 +27,7 @@
 import { Icon } from '@iconify/vue';
 
 export default {
+  name: 'CyIcon',
   components: {
     IconifyIcon: Icon,
   },

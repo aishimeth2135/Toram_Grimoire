@@ -25,7 +25,6 @@ const enum SkillBranchNames {
   Group = 'group',
   Space = 'space',
   FormulaExtra = 'formula_extra',
-  History = 'history',
 
   None = '',
 }

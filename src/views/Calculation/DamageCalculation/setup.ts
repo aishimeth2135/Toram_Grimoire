@@ -73,7 +73,7 @@ const setupCalculationStore = () => {
   };
 
   const copyCurrentCalculation = () => {
-    const calculation = currentCalculation.value.copy();
+    const calculation = currentCalculation.value.clone();
     store.appendCalculation(calculation);
   };
 

@@ -1,10 +1,10 @@
-import { SkillBranchItem, SkillBranchItemSuffix } from '@/lib/Skill/SkillComputingContainer';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
 import type { HandleBranchTextAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute';
 
 import { cloneBranchAttrs, handleDisplayData, HandleDisplayDataOptionFilters } from './utils';
 import MapContainer from './utils/MapContainer';
 
-export default function TextHandler(branchItem: SkillBranchItem | SkillBranchItemSuffix) {
+export default function ReferenceHandler(branchItem: SkillBranchItem) {
   const attrs = cloneBranchAttrs(branchItem);
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({

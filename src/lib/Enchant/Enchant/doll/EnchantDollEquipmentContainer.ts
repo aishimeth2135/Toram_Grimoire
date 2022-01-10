@@ -41,9 +41,9 @@ export default class EnchantDollEquipmentContainer {
 
   constructor({ itemCategorys, equipment, positiveStats, negativeStats }: EnchantDollEquipmentContainerParams) {
     this.itemCategorys = itemCategorys;
-    this.equipment = equipment.copy(itemCategorys);
-    this.positiveStats = positiveStats.map(stat => stat.copy());
-    this.negativeStats = negativeStats.map(stat => stat.copy());
+    this.equipment = equipment.clone(itemCategorys);
+    this.positiveStats = positiveStats.map(stat => stat.clone());
+    this.negativeStats = negativeStats.map(stat => stat.clone());
 
     this.virtualStats = [];
 
@@ -74,7 +74,7 @@ export default class EnchantDollEquipmentContainer {
    */
   beforeFillNegative(): EnchantDollEquipmentContainer[] {
     if (this.equipment.stats().length === 0) {
-      const newDollEq = this.copy();
+      const newDollEq = this.clone();
       const res1 = this.handleBeforeFillNegative({ positivesFilter: 'positive' });
       const res2 = newDollEq.handleBeforeFillNegative({ positivesFilter: 'both' });
       return [...res1, newDollEq, ...res2];
@@ -147,7 +147,7 @@ export default class EnchantDollEquipmentContainer {
           let newDollEq: EnchantDollEquipmentContainer = this, curv = 1;
           const newDollEqs = [];
           while (curv < maxv) {
-            newDollEq = newDollEq.copy();
+            newDollEq = newDollEq.clone();
             const cstep = newDollEq.equipment.firstStep as EnchantStep;
             const cstat = cstep.firstStat as EnchantStepStat;
             cstat.value += 1;
@@ -157,7 +157,7 @@ export default class EnchantDollEquipmentContainer {
             newDollEqs.push(newDollEq);
           }
           newDollEqs.forEach(dollEq => resultEqs.push(dollEq, ...dollEq.beforeFillNegative()));
-          // const newDollEq = this.copy();
+          // const newDollEq = this.clone();
           // const cstep = newDollEq.equipment.steps()[0];
           // const cstat = cstep.stats[0];
           // cstat.value = maxv;
@@ -170,8 +170,8 @@ export default class EnchantDollEquipmentContainer {
 
       if (positivesFilter === 'both' && currentCategory.stats.length > 1) {
         // 把一個正屬移到退潛後再附的附法
-        const newDollEq = this.copy();
-        const fakeStat = currentCategory.stats[currentCategory.stats.length - 1].copy();
+        const newDollEq = this.clone();
+        const fakeStat = currentCategory.stats[currentCategory.stats.length - 1].clone();
         newDollEq.virtualStats.push(fakeStat);
         resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
       }
@@ -184,9 +184,9 @@ export default class EnchantDollEquipmentContainer {
        */
       if (special) {
         // 建立副本，去做正常的附法
-        const newDollEq = this.copy();
+        const newDollEq = this.clone();
 
-        const originalPositiveStats = this.positiveStats.map(stat => stat.copy());
+        const originalPositiveStats = this.positiveStats.map(stat => stat.clone());
 
         special.stats.slice(0, 2).forEach(_pstat => {
           const step = eq.appendStep();
@@ -218,7 +218,7 @@ export default class EnchantDollEquipmentContainer {
              * - 原本的裝備嘗試「以正屬為優先，多的負屬拉到最後一個步驟」。
              */
             appendFlag = true;
-            resultEqs.push(this.copy());
+            resultEqs.push(this.clone());
           }
           if (eq.hasStat(pstat) || this.virtualStats.find(_stat => _stat.equals(pstat))) {
             // 表示這件裝備這能力已經做過了
@@ -236,7 +236,7 @@ export default class EnchantDollEquipmentContainer {
              *  - 嘗試在這裡就把耗潛3的能力先分次附完的附法。
              *  - 建立一個副本去做正常的附法。
              */
-            const newDollEq = this.copy();
+            const newDollEq = this.clone();
             newDollEq.checkMakeUpPotential();
             resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
 
@@ -299,7 +299,7 @@ export default class EnchantDollEquipmentContainer {
         const bstep = eq.insertStepBefore(step);
 
         // 留著還原
-        const originalNegativeStats = this.negativeStats.map(stat => stat.copy());
+        const originalNegativeStats = this.negativeStats.map(stat => stat.clone());
         const restoreNegative = () => {
           this.negativeStats = originalNegativeStats;
           bstep.remove();
@@ -368,7 +368,7 @@ export default class EnchantDollEquipmentContainer {
   handleMostUseRemainingPotential(checkSpecial: boolean): EnchantDollEquipmentContainer[] {
     const resultEqs = [];
 
-    const newDollEq = this.copy();
+    const newDollEq = this.clone();
     const originalPotentialList = newDollEq.getMostUsePotentialStatlList();
 
     if (originalPotentialList.length > 0) {
@@ -525,7 +525,7 @@ export default class EnchantDollEquipmentContainer {
 
           if (previousStep.remainingPotential > 0 && lastStep.remainingPotential === 0) {
             // 複製一份
-            resultEqs.push(this.copy());
+            resultEqs.push(this.clone());
           }
 
           // 還原
@@ -546,7 +546,7 @@ export default class EnchantDollEquipmentContainer {
   checkStepTypeEach() {
     const finds = this.positiveStats.filter(stat => stat.value !== 0 && stat.originalPotential === 1);
     if (finds.length !== 0) {
-      const newDollEq = this.copy();
+      const newDollEq = this.clone();
       const ceq = newDollEq.equipment;
       const noChange = finds.every(find => {
         if (this.equipment.stats().length === 7 && !this.equipment.hasStat(find)) {
@@ -743,19 +743,19 @@ export default class EnchantDollEquipmentContainer {
         return true;
       }
       const previousStep = step.previousStep as EnchantStep;
-      const stats = step.stats.map(stat => stat.copy());
+      const stats = step.stats.map(stat => stat.clone());
       step.remove();
       stats.forEach(stat => previousStep.appendStat(stat.itemBase, stat.type, stat.value));
     });
   }
 
-  copy() {
+  clone() {
     const itemCategorys = this.itemCategorys;
     const equipment = this.equipment;
     const positiveStats = this.positiveStats;
     const negativeStats = this.negativeStats;
     const t = new EnchantDollEquipmentContainer({ itemCategorys, equipment, positiveStats, negativeStats });
-    t.virtualStats = this.virtualStats.map(_stat => _stat.copy());
+    t.virtualStats = this.virtualStats.map(_stat => _stat.clone());
 
     this.clones.push(t);
     t.copyFrom = this;

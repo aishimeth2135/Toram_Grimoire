@@ -765,7 +765,7 @@ export default {
       return cur;
     },
     exportResult() {
-      const build = new EnchantBuild(this.exportState.name, this.resultEquipment.copy());
+      const build = new EnchantBuild(this.exportState.name, this.resultEquipment.clone());
       this.store.exportDollBuild(build);
       this.exportState.hasExport = true;
       this.$notify(this.$lang('tips/export successfully'));

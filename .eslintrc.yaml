@@ -131,12 +131,8 @@ rules:
     - 2
   vue/max-attributes-per-line:
     - warn
-    - singleline:
-        max: 5
-        allowFirstLine: true
-      multiline:
-        max: 1
-        allowFirstLine: false
+    - singleline: 5
+      multiline: 1
   vue/html-closing-bracket-newline:
     - warn
     - singleline: never

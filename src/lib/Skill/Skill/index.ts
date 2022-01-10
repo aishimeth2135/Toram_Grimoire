@@ -203,6 +203,12 @@ class SkillEffectBase extends SkillNode {
     this.branches.push(el);
     return el;
   }
+
+  appendSkillBranchFrom(branch: SkillBranch) {
+    const el = markRaw(branch.clone());
+    this.branches.push(el);
+    return el;
+  }
 }
 
 interface SkillEffectAttrs {
@@ -272,7 +278,7 @@ class SkillBranch extends SkillNode {
   branchAttributes: Record<string, string>;
   stats: StatComputed[];
 
-  private _attributeEmpty: boolean;
+  protected _attributeEmpty: boolean;
 
   constructor(sef: SkillEffectBase, id: number, name: SkillBranchNames) {
     super();
@@ -312,6 +318,14 @@ class SkillBranch extends SkillNode {
     const stat = markRaw(statBase.createStatComputed(type, value));
     this.stats.push(stat);
     return stat;
+  }
+
+  clone(): SkillBranch {
+    const newBranch = new SkillBranch(this.parent, this.id, this.name);
+    newBranch.branchAttributes = markRaw({ ...this.branchAttributes });
+    newBranch.stats = markRaw(this.stats.map(stat => stat.clone()));
+    newBranch._attributeEmpty = this._attributeEmpty;
+    return newBranch;
   }
 }
 

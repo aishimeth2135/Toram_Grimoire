@@ -179,7 +179,7 @@ export default {
       this.infoUnfold = !this.infoUnfold;
     },
     copySelectedEquipment() {
-      const eq = this.currentEquipment.copy();
+      const eq = this.currentEquipment.clone();
       eq.name = eq.name + '*';
       this.appendEquipments([eq]);
       this.$notify(this.$lang('message: copy equipment'), 'mdi-content-copy',

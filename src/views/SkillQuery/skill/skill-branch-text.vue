@@ -17,6 +17,7 @@
 import { computed, toRefs } from 'vue';
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums';
 
 import TextHandler from './branch-handlers/TextHandler';
 
@@ -42,7 +43,7 @@ const rootClicked = () => {
 
 const rootClassList = computed(() => {
   return {
-    'tips': branchItem.value.name === 'tips',
+    'is-tips': branchItem.value.name === SkillBranchNames.Tips,
     'is-mark': branchItem.value.attrBoolean('is_mark'),
     'is-group': branchItem.value.isGroup,
     'group-active': branchItem.value.groupState.expanded,
@@ -54,7 +55,7 @@ const rootClassList = computed(() => {
 .text-content {
   @apply px-3 py-1 w-full flex items-start;
 
-  &.tips {
+  &.is-tips {
     @apply text-light-3 text-sm pl-5;
 
     &:deep(.text-light-3) {

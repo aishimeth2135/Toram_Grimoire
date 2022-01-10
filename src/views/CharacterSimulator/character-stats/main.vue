@@ -131,6 +131,7 @@ import { StatTypes } from '@/lib/Character/Stat/enums';
 import vue_statDetailEquipments from './stat-detail-equipments.vue';
 
 export default {
+  name: 'CharacterSimulatorCharacterStats',
   RegisterLang: {
     root: 'Character Simulator/show character stats',
   },

@@ -68,12 +68,12 @@ abstract class CharacterEquipment {
     return false;
   }
   get allStats() {
-    const all = this.stats.map(p => p.copy());
+    const all = this.stats.map(p => p.clone());
     if (this.hasCrystal) {
       (this.crystals as EquipmentCrystal[]).forEach(c => {
         c.stats.forEach(stat => {
           const t = all.find(a => a.equals(stat));
-          t ? t.add(stat.value) : all.push(stat.copy());
+          t ? t.add(stat.value) : all.push(stat.clone());
         });
       });
     }
@@ -125,7 +125,7 @@ abstract class CharacterEquipment {
   getAllStats(checkRestriction: (stat: StatRestriction) => boolean = () => true): StatRestriction[] {
     const all = this.stats
       .map(p => {
-        const stat = p.copy();
+        const stat = p.clone();
         if (!checkRestriction(stat))
           stat.value = 0;
         return stat;
@@ -137,7 +137,7 @@ abstract class CharacterEquipment {
           if (t)
             t.add(checkRestriction(stat) ? stat.value : 0);
           else {
-            const a = stat.copy();
+            const a = stat.clone();
             if (!checkRestriction(a))
               a.value = 0;
             all.push(a);
@@ -173,8 +173,8 @@ abstract class CharacterEquipment {
     }
   }
 
-  copy(): CharacterEquipment {
-    const stats = this.stats.map(p => p.copy());
+  clone(): CharacterEquipment {
+    const stats = this.stats.map(p => p.clone());
     const name = this.name;
 
     let eq;
@@ -218,7 +218,7 @@ abstract class CharacterEquipment {
     if (this.hasStability)
       eq.stability = this.stability;
     if (this.hasCrystal)
-      eq.crystals = (this.crystals as EquipmentCrystal[]).map(p => p.copy());
+      eq.crystals = (this.crystals as EquipmentCrystal[]).map(p => p.clone());
     if (this.isCustom)
       eq.setCustom(true);
 
@@ -650,7 +650,7 @@ class EquipmentCrystal {
     return this.origin.name;
   }
 
-  copy() {
+  clone() {
     return new EquipmentCrystal(this.origin);
   }
 

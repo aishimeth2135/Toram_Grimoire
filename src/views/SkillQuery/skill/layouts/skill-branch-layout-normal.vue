@@ -48,6 +48,14 @@
     </div>
     <div>
       <slot name="extra"></slot>
+      <SkillBranchExtraColumn
+        v-for="suffixData in extraColumns"
+        :key="suffixData.id"
+        :icon="suffixData.icon"
+        :title="suffixData.title"
+        :text="suffixData.text"
+        :stat-containers="suffixData.statContainers"
+      />
     </div>
   </fieldset>
 </template>
@@ -61,8 +69,10 @@ import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
 import ToggleService from '@/setup/ToggleService';
 
 import SkillAreaDetail from './skill-area-detail/index.vue';
+import SkillBranchExtraColumn from './skill-branch-extra-column.vue';
 
 import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer';
+import { ExtraSuffixBranchData } from '../setup';
 
 interface Props {
   container: DisplayDataContainer<SkillBranchItem>;
@@ -76,11 +86,13 @@ interface Props {
     value?: string;
   }[];
   hasArea?: boolean;
+  extraColumns?: ExtraSuffixBranchData[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   nameIcon: 'mdi-checkbox-multiple-blank-circle',
   hasArea: false,
+  extraColumns: () => [],
 });
 const { container, subContents, hasArea } = toRefs(props);
 

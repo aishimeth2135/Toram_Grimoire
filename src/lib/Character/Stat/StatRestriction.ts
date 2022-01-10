@@ -36,7 +36,7 @@ class StatRestriction extends Stat {
     return `${this.base.statId(this.type)}|${rtext}`;
   }
 
-  override copy() {
+  override clone() {
     return new StatRestriction(this.base, this.type, this.value, this.restriction);
   }
 

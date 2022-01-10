@@ -155,6 +155,7 @@ import { useCharacterStore } from '@/stores/views/character';
 import { CharacterOptionalBaseStatTypes } from '@/lib/Character/Character/enums';
 
 export default {
+  name: 'CharacterSimulatorCharacter',
   RegisterLang: 'Character Simulator',
   props: ['characterState'],
   emits: ['create-character'],
@@ -205,7 +206,7 @@ export default {
     },
     copyCurrentCharacter() {
       const from = this.characterState.origin;
-      this.createCharacter(from.copy());
+      this.createCharacter(from.clone());
       this.$notify(this.$lang('Warn/Copy character successfully', [from.name]));
     },
     setOptionalBaseStat(name) {

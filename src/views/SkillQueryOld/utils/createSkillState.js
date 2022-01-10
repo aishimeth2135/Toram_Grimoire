@@ -22,7 +22,7 @@ function handleSkillState(skill, { vars }) {
       id: branch.id,
       name: branch.name,
       attrs: Object.assign({}, branch.branchAttributes),
-      stats: branch.stats.map(stat => stat.copy()),
+      stats: branch.stats.map(stat => stat.clone()),
       group: null,
       history: [],
       suffix: [],
@@ -85,7 +85,7 @@ function handleSkillState(skill, { vars }) {
       let idx = target.stats.findIndex(b => stat.equals(b));
       let findStat = target.stats[idx];
       if (idx === -1) {
-        target.stats.push(stat.copy());
+        target.stats.push(stat.clone());
         target['@stat-overwrite-list'].push(stat.baseName);
       } else {
         if (stat.value === '') {
@@ -300,7 +300,7 @@ function handleSkillState(skill, { vars }) {
         from.stats.forEach(stat => {
           const statIdx = target.stats.findIndex(a => a.equals(stat));
           if (statIdx === -1)
-            target.stats.push(stat.copy());
+            target.stats.push(stat.clone());
           else if (target.stats[statIdx].value === '')
             target.stats.splice(statIdx, 1);
         });

@@ -4,6 +4,7 @@
       :container="container"
       :sub-contents="subContents"
       :name-props="nameProps"
+      :extra-columns="extraSuffixBranchDatas"
     >
       <skillHealFormula :container="container" />
     </SkillBranchLayoutNormal>
@@ -22,6 +23,7 @@ import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue';
 import skillHealFormula from './layouts/skill-heal-formula.vue';
 
 import HealHandler from './branch-handlers/HealHandler';
+import { setupCommonExtraSuffixBranches } from './setup';
 
 interface Props {
   branchItem: SkillBranchItem;
@@ -56,4 +58,6 @@ const subContents = computed(() => {
   }
   return result;
 });
+
+const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(branchItem);
 </script>

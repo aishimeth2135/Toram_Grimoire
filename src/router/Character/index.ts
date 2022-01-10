@@ -5,7 +5,7 @@ import { DataStoreIds } from '@/stores/app/datas/enums';
 
 import { ViewInit } from '@/shared/services/ViewInit';
 
-import WrapperView from './wrapper.vue';
+import ViewWrapper from './view-wrapper.vue';
 
 const CharacterSimulatorView = () => import(/* webpackChunkName: "character-simulator" */ '@/views/CharacterSimulator/index.vue');
 const SkillSimulatorView = () => import(/* webpackChunkName: "skill-simulator" */ '@/views/SkillSimulator/index.vue');
@@ -13,7 +13,7 @@ const SkillSimulatorView = () => import(/* webpackChunkName: "skill-simulator" *
 export default {
   name: 'Character',
   path: '/character',
-  component: WrapperView,
+  component: ViewWrapper,
   beforeEnter(to, from, next) {
     ViewInit(DataStoreIds.Stats, DataStoreIds.Items, DataStoreIds.CharacterStats, DataStoreIds.Skill, DataStoreIds.Food).then(next);
   },

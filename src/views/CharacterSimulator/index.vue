@@ -305,7 +305,7 @@ export default {
         return [];
 
       const categoryList = this.datasStore.Character.characterStatCategoryList;
-      const chara = this.currentCharacterState.origin.copy();
+      const chara = this.currentCharacterState.origin.clone();
 
       // let calcFieldNextFunc;
       if (calcField) {
@@ -425,7 +425,7 @@ export default {
         if (Number.isNaN(v))
           v = 0;
         stat.value = v;
-        t ? t.add(v) : pureStats.push(stat.copy());
+        t ? t.add(v) : pureStats.push(stat.clone());
       };
 
       chara.equipmentFields.forEach(field => {

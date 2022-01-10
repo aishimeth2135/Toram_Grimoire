@@ -4,6 +4,12 @@
   </transition>
 </template>
 
+<script>
+export default {
+  name: 'CyTransitionFade',
+};
+</script>
+
 <style lang="less" scoped>
 .fade-enter-from, .fade-leave-to {
   opacity: 0;

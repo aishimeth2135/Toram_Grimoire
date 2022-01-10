@@ -26,7 +26,7 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
     MAIN_WEAPON_LIST = ['空手', '單手劍', '雙手劍', '弓', '弩', '法杖', '魔導具', '拳套', '旋風槍', '拔刀劍', '雙劍'],
     SUB_WEAPON_LIST = ['無裝備', '箭矢', '盾牌', '小刀', '魔導具', '拳套', '拔刀劍', '忍術卷軸'],
     BODY_ARMOR_LIST = ['無裝備', '輕量化', '重量化', '一般'],
-    EFFECT_BRANCH_NO = 6,
+    EFFECT_BRANCH_ID = 6,
     EFFECT_BRANCH_NAME = 7,
     EFFECT_BRANCH_ATTRIBUTE_NAME = 8,
     EFFECT_BRANCH_ATTRIBUTE_VALUE = 9,
@@ -61,7 +61,7 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
   let curSkillTree: SkillTree;
   let curSkill: Skill;
   let curSkillEffect: SkillEffectBase | void;
-  let curSkillBranch: SkillBranch;
+  let curSkillBranch: SkillBranch | void;
 
   // language data
   HandleLanguageData(datas, {
@@ -71,6 +71,17 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
 
   const checkNull = <T extends number | string>(value: T, nullValue: T) => {
     return value === nullValue ? null : value;
+  };
+
+  /**
+   * if branch id is empty, clone branches from previous effect
+   */
+  const checkEffectEmpty = (row: string[], previewEffect: SkillEffectBase | void, currentEffect: SkillEffectBase) => {
+    if (previewEffect && previewEffect !== currentEffect && !row[EFFECT_BRANCH_ID]) {
+      previewEffect.branches.forEach(bch => currentEffect.appendSkillBranchFrom(bch));
+      return true;
+    }
+    return false;
   };
 
   csvData.forEach(function (row, index) {
@@ -107,6 +118,7 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
           if (defaultSelected === -1) {
             return;
           }
+          const previousEffect = curSkillEffect;
           if (defaultSelected !== 4) {
             curSkillEffect = curSkill.appendSkillEffect(mainWeapon, subWeapon, bodyArmor);
           } else {
@@ -127,19 +139,29 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
             curSkillEffect.attributes.inCombo = checkNull(IN_COMBO_LIST.indexOf(row[IN_COMBO]), -1);
             curSkillEffect.attributes.actionTime = checkNull(ACTION_TIME_LIST.indexOf(row[ACTION_TIME]), -1);
             curSkillEffect.attributes.castingTime = checkNull(row[CASTING_TIME], '');
+            if (checkEffectEmpty(row, previousEffect, curSkillEffect)) {
+              return;
+            }
           }
         }
       } else if (curSkillEffect instanceof SkillEffectHistory && row[HISTORY_EFFECT.DATE] !== '') {
+        const previousEffect = curSkillEffect;
         curSkillEffect = curSkill.appendSkillEffectHistory(curSkillEffect.parentEffect.effectId, row[HISTORY_EFFECT.DATE]);
+        if (checkEffectEmpty(row, previousEffect, curSkillEffect!)) {
+          return;
+        }
       }
       if (curElement !== 'effect' || !curSkillEffect) {
         return;
       }
-      const bid = row[EFFECT_BRANCH_NO] || null;
+      const bid = row[EFFECT_BRANCH_ID] || null;
       if (bid !== null) {
-        const bidNum: number = bid === '-' ? -1 : parseInt(row[EFFECT_BRANCH_NO], 10);
+        const bidNum: number = bid === '-' ? -1 : parseInt(row[EFFECT_BRANCH_ID], 10);
         const bname = row[EFFECT_BRANCH_NAME];
         curSkillBranch = curSkillEffect.appendSkillBranch(bidNum, bname as SkillBranchNames);
+      }
+      if (!curSkillBranch) {
+        return;
       }
       const propName = row[EFFECT_BRANCH_ATTRIBUTE_NAME],
         propValue = row[EFFECT_BRANCH_ATTRIBUTE_VALUE];
@@ -151,7 +173,7 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
       }
     }
     catch (e) {
-      // console.warn('[Error] When Load Skill Data');
+      console.warn('[LoadSkill] unable to parse row:', row);
       //console.log(e);
       // console.log(row);
     }

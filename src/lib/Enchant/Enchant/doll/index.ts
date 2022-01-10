@@ -75,8 +75,8 @@ export default class EnchantDoll {
 
   calc(originalNegativeStats: EnchantStat[], originalPotential: number = 0): EnchantEquipment | null {
     // 暫存要附的能力，如果能力都被拿完了表示已經計算完畢
-    const negativeStats = originalNegativeStats.map(p => p.copy());
-    const positiveStats = this._positiveStats.map(p => p.copy());
+    const negativeStats = originalNegativeStats.map(p => p.clone());
+    const positiveStats = this._positiveStats.map(p => p.clone());
     if (negativeStats.find(stat => stat.value === 0) || positiveStats.find(stat => stat.value === 0)) {
       console.warn('[enchant-doll] value of some given stats is zero.');
       return null;
@@ -136,7 +136,7 @@ export default class EnchantDoll {
     // const logResultEqs = (id, reqs) => {
     //   // console.log('==== [', id, '] ===================');
     //   // console.log(reqs.map(req => req.positiveStats.map(stat => stat.stat.show())));
-    //   // console.log(reqs.map(req => req.copy().equipment.steps().map(step => step.toString())));
+    //   // console.log(reqs.map(req => req.clone().equipment.steps().map(step => step.toString())));
     //   console.group(`%c  %c [${id}] number of current equipments: ${resultEqs.length}`,
     //     'background-color: #e8caed; border-radius: 50%; margin-right: 12px',
     //     'color: #e8caed');
@@ -396,7 +396,7 @@ export default class EnchantDoll {
     const negativeStats: EnchantStat[] = [];
     negatives.find(category => {
       return category.stats.find(stat => {
-        negativeStats.push(stat.copy());
+        negativeStats.push(stat.clone());
         return negativeStats.length === numNegatives;
       });
     });

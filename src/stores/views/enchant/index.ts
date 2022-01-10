@@ -54,7 +54,7 @@ export const useEnchantStore = defineStore('view-enchant', () => {
   };
 
   const copyBuild = (build: EnchantBuild) => {
-    const newBuild = build.copy();
+    const newBuild = build.clone();
     newBuild.name += '*';
     currentBuildIndex.value += 1;
     enchantBuilds.value.splice(currentBuildIndex.value, 0, newBuild);

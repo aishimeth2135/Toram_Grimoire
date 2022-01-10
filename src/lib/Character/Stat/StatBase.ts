@@ -131,7 +131,7 @@ abstract class StatElementBase {
 
   abstract value: StatValue;
 
-  abstract copy(): StatElementBase;
+  abstract clone(): StatElementBase;
 
   constructor(base: StatBase, type: StatTypes) {
     this._base = base;
@@ -192,7 +192,7 @@ class Stat extends StatElementBase {
     return this.value;
   }
 
-  copy(): Stat {
+  clone(): Stat {
     return this.base.createStat(this.type, this.value);
   }
 }
@@ -205,7 +205,7 @@ class StatComputed extends StatElementBase {
     this.value = value;
   }
 
-  copy(): StatComputed {
+  clone(): StatComputed {
     return this.base.createStatComputed(this.type, this.value);
   }
 

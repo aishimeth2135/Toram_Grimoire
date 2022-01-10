@@ -6,22 +6,15 @@
       :name-props="nameProps"
       :sub-contents="subContents"
       :has-area="hasArea"
+      :extra-columns="extraSuffixBranchDatas"
     >
       <SkillDamageFormula :container="container" />
       <template #extra>
-        <skillBranchExtraColumn
+        <SkillBranchExtraColumn
           v-if="container.get('ailment_name')"
           icon="ri-plant-line"
           :title="t('skill-query.branch.ailment-title')"
           :text="getAilmentText(container)"
-        />
-        <skillBranchExtraColumn
-          v-for="suffixData in extraSuffixBranchDatas"
-          :key="suffixData.iid"
-          :icon="suffixData.icon"
-          :title="suffixData.title"
-          :text="suffixData.text"
-          :stat-containers="suffixData.statContainers"
         />
       </template>
     </SkillBranchLayoutNormal>
@@ -45,6 +38,7 @@ import DamageHandler from './branch-handlers/DamageHandler';
 import ExtraHandler from './branch-handlers/ExtraHandler';
 import { TAG_BUTTON_CLASS_NAME } from '../utils';
 import DisplayDataContainer from './branch-handlers/utils/DisplayDataContainer';
+import { ExtraSuffixBranchData } from './setup';
 
 const ELEMENT_ICON_MAPPING = {
   'neutral': 'bx-bx-circle',
@@ -167,8 +161,8 @@ const extraSuffixBranchDatas = computed(() => {
     ))
     .map((suffix, idx) => {
       const dataContainer = ExtraHandler(suffix);
-      const baseData: ComponentPropsType<typeof SkillBranchExtraColumn> & { iid: number } = {
-        iid: idx,
+      const baseData: ExtraSuffixBranchData = {
+        id: idx.toString(),
         icon: 'eva-checkmark-circle-2-outline',
         title: dataContainer.get('condition'),
       };

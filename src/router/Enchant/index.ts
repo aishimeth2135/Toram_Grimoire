@@ -5,7 +5,7 @@ import { DataStoreIds } from '@/stores/app/datas/enums';
 
 import { ViewInit } from '@/shared/services/ViewInit';
 
-import WrapperView from './wrapper.vue';
+import ViewWrapper from './view-wrapper.vue';
 
 const EnchantSimulatorView = () => import(/* webpackChunkName: "enchant-simulator" */ '@/views/Enchant/EnchantSimulator/index.vue');
 const EnchantDollView = () => import(/* webpackChunkName: "enchant-doll" */ '@/views/Enchant/EnchantDoll/index.vue');
@@ -13,7 +13,7 @@ const EnchantDollView = () => import(/* webpackChunkName: "enchant-doll" */ '@/v
 export default {
   name: 'Enchant',
   path: '/enchant',
-  component: WrapperView,
+  component: ViewWrapper,
   beforeEnter(to, from, next) {
     ViewInit(DataStoreIds.Stats, DataStoreIds.Enchant).then(next);
   },

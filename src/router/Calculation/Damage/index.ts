@@ -6,14 +6,14 @@ import { LocaleViewNamespaces } from '@/stores/app/language/enums';
 
 import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit';
 
-import WrapperView from './wrapper.vue';
+import ViewWrapper from './view-wrapper.vue';
 
 const DamageCalculatiomView = () => import(/* webpackChunkName: "damage-calculation" */ '@/views/Calculation/DamageCalculation/index.vue');
 
 export default {
   name: 'DamageCalculation',
   path: '/damage-calculation',
-  component: WrapperView,
+  component: ViewWrapper,
   beforeEnter(to, from, next) {
     PrepareLocaleInit(LocaleViewNamespaces.DamageCalculation);
     ViewInit(DataStoreIds.DamageCalculation).then(next);

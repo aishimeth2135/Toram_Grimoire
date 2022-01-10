@@ -86,7 +86,7 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchIte
     const idx = to.stats.findIndex(_stat => stat.equals(_stat));
     const findedStat = to.stats[idx];
     if (idx === -1) {
-      to.stats.push(stat.copy());
+      to.stats.push(stat.clone());
       to.record.stats.append.push([stat.baseName, stat.type]);
     } else {
       if (stat.value === '') {
@@ -172,6 +172,7 @@ function separateSuffixBranches(effectItem: SkillEffectItemBase) {
     [SkillBranchNames.Damage]: [SkillBranchNames.Extra, SkillBranchNames.Proration, SkillBranchNames.Base],
     [SkillBranchNames.Effect]: [SkillBranchNames.Extra],
     [SkillBranchNames.Passive]: [SkillBranchNames.Extra],
+    [SkillBranchNames.Heal]: [SkillBranchNames.Extra],
     [SkillBranchNames.List]: [SkillBranchNames.List],
     '@global': [SkillBranchNames.FormulaExtra, SkillBranchNames.Group],
   } as Record<SuffixBranchListKey, SkillBranchNames[]>;
@@ -236,20 +237,6 @@ function separateSuffixBranches(effectItem: SkillEffectItemBase) {
 
 function handleVirtualBranches(effectItem: SkillEffectItemBase) {
   const newBranchItems = effectItem.branchItems.filter(branchItem => {
-    // if (branchItem.name === SkillBranchNames.History) {
-    //   const date = branchItem.attr('date');
-    //   const targetBranch = effectItem.branchItems.find(bch => bch.id === branchItem.attrNumber('target_branch'));
-    //   if (targetBranch) {
-    //     if (effectItem.historys.has(date)) {
-    //       effectItem.historys.get(date)!.push(branchItem);
-    //     } else {
-    //       effectItem.historys.set(date, [branchItem]);
-    //     }
-    //   }
-    //   return false;
-    // }
-
-    // virtial suffixs
     const filtered = branchItem.suffixBranches.filter(suffix => {
       if (suffix.name === SkillBranchNames.Group) {
         const groupState: BranchGroupState = {

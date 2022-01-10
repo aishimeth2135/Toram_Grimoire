@@ -6,8 +6,7 @@ import MapContainer from './utils/MapContainer';
 import type { HandleDisplayDataOptionFilters } from './utils';
 import { createTagButtons } from '../../utils';
 
-export default function ExtraHandler(branchItem: SkillBranchItem) {
-
+export default function BasicHandler(branchItem: SkillBranchItem) {
   const attrs = cloneBranchAttrs(branchItem);
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({

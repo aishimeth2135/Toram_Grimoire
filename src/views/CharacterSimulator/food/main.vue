@@ -164,7 +164,7 @@ export default {
   methods: {
     copyCurrentFoodBuild() {
       this.foodStore.createFoodBuild({
-        foodBuild: this.currentFoodBuild.copy(),
+        foodBuild: this.currentFoodBuild.clone(),
       });
       this.$notify(this.$lang('Copy food build successfully'));
     },

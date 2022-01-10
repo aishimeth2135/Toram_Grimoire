@@ -2,6 +2,12 @@
   <hr class="cy--hr">
 </template>
 
+<script>
+export default {
+  name: 'CyHr',
+};
+</script>
+
 <style scoped>
 .cy--hr {
   border: 0;

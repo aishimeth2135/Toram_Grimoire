@@ -35,9 +35,9 @@
         </template>
       </pattern>
     </defs>
-    <template v-for="data in drawOtherData">
+    <template v-for="data in drawOtherDatas">
       <circle
-        v-if="data.type === 'tree-dot'"
+        v-if="data.type === DrawSkillTreeDataTypes.TreeDot"
         :key="`dot-${data.type}x${data.cx}y${data.cy}`"
         :cx="data.cx"
         :cy="data.cy"
@@ -45,7 +45,7 @@
         :class="data.class"
       />
       <line
-        v-else-if="data.type === 'tree-line'"
+        v-else-if="data.type === DrawSkillTreeDataTypes.TreeLine"
         :key="`line-${data.type}x1${data.x1}y1${data.y1}x2${data.x2}y2${data.y2}`"
         :x1="data.x1"
         :y1="data.y1"
@@ -71,7 +71,7 @@
       </text>
     </template>
     <template
-      v-for="(data, i) in drawCircleData"
+      v-for="(data, idx) in drawCircleDatas"
       :key="data.skill.id"
     >
       <circle
@@ -80,80 +80,73 @@
         :r="data.r"
         :class="handleSkillCircleClass(data)"
         :style="data.style"
-        @click="$emit('skill-click', data.skill)"
+        @click="emit('skill-click', data.skill)"
       />
       <text
-        :x="drawNameData[i].x"
-        :y="drawNameData[i].y"
-        :class="drawNameData[i].class"
+        :x="drawNameDatas[idx].x"
+        :y="drawNameDatas[idx].y"
+        :class="drawNameDatas[idx].class"
       >
-        {{ drawNameData[i].innerText }}
+        {{ drawNameDatas[idx].innerText }}
       </text>
     </template>
   </svg>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { computed, toRefs } from 'vue';
+
 import CY from '@/shared/utils/Cyteria';
 
 import { Skill, SkillTree, LevelSkill, LevelSkillTree } from '@/lib/Skill/Skill';
-import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs } from '@/lib/Skill/utils/DrawSkillTree';
+import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs, DrawSkillTreeData, DrawSkillTreeDataExtraCallbackPayload } from '@/lib/Skill/utils/DrawSkillTree';
+import { DrawSkillTreeDataTypes } from '@/lib/Skill/utils/enums';
 
-export default {
-  emits: ['skill-click'],
-  props: {
-    skillTree: [SkillTree, LevelSkillTree],
-    setSkillButtonExtraData: {
-      type: Function,
-      default: (skill, data) => [], // eslint-disable-line
-    },
-    skillTreeType: {
-      type: String,
-      validator: v => ['normal', 'level-skill-tree'].indexOf(v) !== -1,
-    },
-    currentSkill: {
-      type: [Skill, LevelSkill],
-      default: null,
-    },
-  },
-  computed: {
-    drawTreeData() {
-      return computeDrawSkillTreeData(this.skillTree, {
-        setSkillButtonExtraData: this.setSkillButtonExtraData,
-        skillTreeType: this.skillTreeType,
-      });
-    },
-    skillIconPatternData() {
-      const st = this.skillTreeType === 'level-skill-tree' ? this.skillTree.base : this.skillTree;
-      return getSkillIconPatternData(st);
-    },
-    drawCircleData() {
-      return this.drawTreeData.data
-        .filter(data => data.type === 'skill-circle');
-    },
-    drawNameData() {
-      return this.drawTreeData.data
-        .filter(data => data.type === 'skill-name');
-    },
-    drawOtherData() {
-      return this.drawTreeData.data.filter(data => data.type !== 'skill-circle' && data.type !== 'skill-name');
-    },
-  },
-  beforeCreate() {
-    if (!document.getElementById('app--draw-skill-tree-defs')) {
-      const svg = CY.svg.create();
-      svg.append(createDrawSkillTreeDefs());
-      document.body.append(svg);
-    }
-  },
-  methods: {
-    handleSkillCircleClass(data) {
-      const ary = data.class.slice();
-      if (this.currentSkill === data.skill)
-        ary.push('selected');
-      return ary;
-    },
-  },
+interface Props {
+  skillTree: SkillTree | LevelSkillTree;
+  setSkillButtonExtraData?: (skill: Skill | LevelSkill, data: DrawSkillTreeDataExtraCallbackPayload) => DrawSkillTreeData[];
+  currentSkill?: Skill | LevelSkill | null;
+}
+
+interface Emits {
+  (evt: 'skill-click', skill: Skill | LevelSkill): void;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  setSkillButtonExtraData: () => [],
+  currentSkill: null,
+});
+
+const emit = defineEmits<Emits>();
+
+if (!document.getElementById('app--draw-skill-tree-defs')) {
+  const svg = CY.svg.create();
+  svg.append(createDrawSkillTreeDefs());
+  document.body.append(svg);
+}
+
+const { skillTree, setSkillButtonExtraData, currentSkill } = toRefs(props);
+
+const drawTreeData = computed(() => {
+  return computeDrawSkillTreeData(skillTree.value, {
+    setSkillButtonExtraData: setSkillButtonExtraData.value,
+  });
+});
+
+const skillIconPatternData = computed(() => getSkillIconPatternData(skillTree.value));
+
+const drawCircleDatas = computed(() => drawTreeData.value.data.filter(item => item.type === DrawSkillTreeDataTypes.SkillCircle));
+
+const drawNameDatas = computed(() => drawTreeData.value.data.filter(item => item.type === DrawSkillTreeDataTypes.SkillName));
+
+const drawOtherDatas = computed(() => drawTreeData.value.data.filter(item => item.type !== DrawSkillTreeDataTypes.SkillName && item.type !== DrawSkillTreeDataTypes.SkillCircle));
+
+const handleSkillCircleClass = (data: DrawSkillTreeData) => {
+  const classList = data.class?.slice() ?? [];
+  if (currentSkill.value === data.skill) {
+    classList.push('selected');
+  }
+  return classList;
 };
 </script>
 
