@@ -358,6 +358,7 @@ import createSkillState from './utils/createSkillState.js';
 import handleSkillFormula from './utils/handleFormula.js';
 
 export default {
+  name: 'SkillQueryOld',
   RegisterLang: 'Skill Query',
   provide() {
     return {

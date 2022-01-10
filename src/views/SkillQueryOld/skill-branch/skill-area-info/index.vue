@@ -59,6 +59,7 @@
 import vue_skillArea from './skill-area.vue';
 
 export default {
+  name: 'SkillAreaInfo',
   RegisterLang: 'Skill Query/Branch',
   components: {
     'skill-area': vue_skillArea,

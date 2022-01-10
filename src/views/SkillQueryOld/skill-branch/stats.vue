@@ -16,6 +16,7 @@
 import DataContainer from '../utils/DataContainer.js';
 
 export default {
+  name: 'SkillQueryOldSkillBranchStats',
   inject: ['calcValueStr', 'handleDataContainer'],
   props: ['stats'],
   computed: {
