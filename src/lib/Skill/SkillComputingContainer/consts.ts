@@ -32,7 +32,6 @@ const BRANCH_ATTRS_DEFAULT_VALUE: Record<string, Record<string, string>> = {
     'title': 'auto',
   },
   [SkillBranchNames.Extra]: {
-    'condition': 'auto',
     'type': 'normal',
   },
   [SkillBranchNames.Proration]: {
