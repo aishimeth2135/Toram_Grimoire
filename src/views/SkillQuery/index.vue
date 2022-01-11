@@ -84,7 +84,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import { useDatasStore } from '@/stores/app/datas';
 
-import { SkillRoot, SkillTree, SkillTreeCategory, Skill } from '@/lib/Skill/Skill';
+import { SkillRoot, SkillTree, SkillTreeCategory, Skill, LevelSkill } from '@/lib/Skill/Skill';
 import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer';
 
 import ToggleService from '@/setup/ToggleService';
@@ -147,7 +147,11 @@ const selectCurrentSkillTree = (st: SkillTree) => {
   updateRouteParam(st.skillTreeId);
 };
 
-const selectCurrentSkill = (skill: Skill, syncParent = false) => {
+/** TODO: skill will never be LevelSkill */
+const selectCurrentSkill = (skill: Skill | LevelSkill, syncParent = false) => {
+  if (skill instanceof LevelSkill) {
+    return;
+  }
   if (syncParent) {
     currentSkillTreeCategory.value = skill.parent.parent;
     currentSkillTree.value = skill.parent;
