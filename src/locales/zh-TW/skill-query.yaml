@@ -50,6 +50,7 @@ branch:
   global-suffix:
     extra:
       condition-default-value: 額外效果
+      condition-next-default-value: 下一招技能
   basic:
     "mp_cost: title": MP消耗
     "range: title": 射程

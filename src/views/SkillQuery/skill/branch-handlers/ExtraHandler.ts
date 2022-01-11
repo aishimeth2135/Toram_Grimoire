@@ -12,7 +12,9 @@ export default function ExtraHandler(branchItem: SkillBranchItemSuffix) {
   const { t } = Grimoire.i18n;
 
   const attrs = cloneBranchAttrs(branchItem, {
-    condition: t('skill-query.branch.global-suffix.extra.condition-default-value'),
+    condition: branchItem.attr('type') === 'normal' ?
+      t('skill-query.branch.global-suffix.extra.condition-default-value') :
+      t('skill-query.branch.global-suffix.extra.condition-next-default-value'),
   });
 
   const mainBranch = branchItem.mainBranch;
