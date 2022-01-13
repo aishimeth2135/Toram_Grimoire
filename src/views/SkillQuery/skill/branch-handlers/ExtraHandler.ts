@@ -40,7 +40,7 @@ export default function ExtraHandler(branchItem: SkillBranchItemSuffix) {
     filters.set('element', value => !!value);
     textAttrsMap.append('caption', 'condition');
     pureValues.push('element');
-  } else if (['effect', 'next', 'passive'].includes(mainBranch.name)) {
+  } else if (['effect', 'next', 'passive', 'heal'].includes(mainBranch.name)) {
     filters.set('caption', value => !!value);
     textAttrsMap.append('caption', 'condition');
   }
