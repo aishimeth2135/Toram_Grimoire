@@ -68,6 +68,7 @@ module.exports = {
   css: {
     sourceMap: true,
   },
+  productionSourceMap: false,
 
   pwa: {
     name: 'Toram Grimoire',
@@ -136,7 +137,7 @@ module.exports = {
     // workbox
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
-      swSrc: './src/sw.js',
+      swSrc: './src/sw.ts',
       exclude: [/_redirects/],
     },
   },

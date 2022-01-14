@@ -1,18 +1,26 @@
+import 'workbox-sw';
+
+import type { RouteHandler } from 'workbox-core';
+
+declare const self: ServiceWorkerGlobalScope;
+
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.2.0/workbox-sw.js');
+
+console.log('test...');
 
 workbox.googleAnalytics.initialize();
 
 workbox.core.setCacheNameDetails({
   prefix: 'toram-grimoire',
-  suffix: 'v2'
+  suffix: 'v2',
 });
 
-const { registerRoute, NavigationRoute } = workbox.routing;
+const { registerRoute } = workbox.routing;
 const { StaleWhileRevalidate, CacheFirst } = workbox.strategies;
 const { ExpirationPlugin } = workbox.expiration;
 const { CacheableResponsePlugin } = workbox.cacheableResponse;
 
-const handleCacheName = name => name;
+const handleCacheName = (name: string) => name;
 
 // jsdelivr js
 registerRoute(
@@ -22,9 +30,9 @@ registerRoute(
     plugins: [
       new ExpirationPlugin({
         maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
-      })
-    ]
-  })
+      }),
+    ],
+  }),
 );
 
 // image
@@ -35,9 +43,9 @@ registerRoute(
     plugins: [
       new ExpirationPlugin({
         maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
-      })
-    ]
-  })
+      }),
+    ],
+  }),
 );
 
 // font
@@ -48,9 +56,9 @@ registerRoute(
     plugins: [
       new ExpirationPlugin({
         maxAgeSeconds: 60 * 60 * 24 * 180, // 180 days
-      })
-    ]
-  })
+      }),
+    ],
+  }),
 );
 
 // google spreadsheets csv
@@ -72,11 +80,11 @@ registerRoute(
     cacheName: CACHE_NAME,
     plugins: [
       new CacheableResponsePlugin({
-        statuses: [0, 200]
-      })
-    ]
+        statuses: [0, 200],
+      }),
+    ],
   });
-  const handler = async (params) => {
+  const handler: RouteHandler = async (params) => {
     try {
       return await strategy.handle(params);
     } catch (e) {
@@ -88,13 +96,13 @@ registerRoute(
       const csvstr = await f.text();
 
       const req = new Request(url, {
-        method: 'GET'
+        method: 'GET',
       });
 
       const res = new Response(csvstr, {
         headers: new Headers({
-          'Content-Type': 'text/csv'
-        })
+          'Content-Type': 'text/csv',
+        }),
       });
       const cacheRes = res.clone();
 
@@ -107,8 +115,8 @@ registerRoute(
 
   // Register this strategy to handle all navigations.
   registerRoute(
-    /^https:\/\/docs\.google\.com\/spreadsheets\/.+output\=csv.+/,
-    handler
+    /^https:\/\/docs\.google\.com\/spreadsheets\/.+output=csv.+/,
+    handler,
   );
 }
 
@@ -119,5 +127,5 @@ self.addEventListener('message', (event) => {
 });
 
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST, {
-  ignoreURLParametersMatching: [/source/, /calculation_data/]
+  ignoreURLParametersMatching: [/source/, /calculation_data/],
 });
