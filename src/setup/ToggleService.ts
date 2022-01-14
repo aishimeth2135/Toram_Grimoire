@@ -7,14 +7,16 @@ interface ToggleItemDetail {
   readonly default?: boolean;
 }
 
-type ToggleHandlerGroupsIdsTmp<Groups extends ToggleServiceOptions> = {
+type ToggleHandlerGroupContentsIdsTmp<Groups extends ToggleServiceOptions> = {
   [GroupId in keyof Groups]: {
     [Id in `${GroupId & string}/${ContentKeys<Groups[GroupId]>}`]: never;
   };
 }[keyof Groups];
-type ToggleHandlerGroupsIds<Groups extends ToggleServiceOptions> = keyof UnionToIntersection<ToggleHandlerGroupsIdsTmp<Groups>>;
+type ToggleHandlerGroupContentsIds<Groups extends ToggleServiceOptions> = keyof UnionToIntersection<ToggleHandlerGroupContentsIdsTmp<Groups>>;
+type ToggleHandleIds<Groups extends ToggleServiceOptions> = ToggleHandlerGroupContentsIds<Groups>;
 interface ToggleHandler<Groups extends ToggleServiceOptions> {
-  (id: ToggleHandlerGroupsIds<Groups>, force?: boolean | null, groupForce?: boolean): void;
+  (id: ToggleHandleIds<Groups>, force?: boolean | null, groupForce?: boolean): void;
+  (id: keyof Groups, groupForce: boolean): void;
 }
 
 type ToggleItem = ToggleItemDetail | string;
@@ -34,9 +36,9 @@ type ToggleServiceGroupContents<Group extends ToggleServiceOptionGroup> = {
 type ToggleServiceResult<Groups extends ToggleServiceOptions> = ToggleServiceGroups<Groups> & { toggle: ToggleHandler<Groups> };
 
 
-export default function ToggleService<GroupMap extends ToggleServiceOptions>(options: GroupMap): UnwrapNestedRefs<ToggleServiceResult<GroupMap>> {
+export default function ToggleService<GroupMap extends ToggleServiceOptions>(groups: GroupMap): UnwrapNestedRefs<ToggleServiceResult<GroupMap>> {
   const dataMap = {} as ToggleServiceGroups<GroupMap>;
-  Object.entries(options).forEach(([groupKey, subs]) => {
+  Object.entries(groups).forEach(([groupKey, subs]) => {
     const group = {} as ToggleServiceGroupContents<GroupMap[typeof groupKey]>;
     subs.forEach((subItem) => {
       if (typeof subItem === 'string') {
@@ -49,7 +51,7 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(opt
     dataMap[groupKey as keyof GroupMap] = group;
   });
 
-  const toggle: ToggleHandler<GroupMap> = (id, force, groupForce) => {
+  const toggle = <ToggleHandler<GroupMap>>((id, force, groupForce) => {
     const [group, sub] = (id as string).split('/');
     const targetGroup = dataMap[group] as Record<string, Ref<boolean>>;
     if (sub) {
@@ -67,13 +69,13 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(opt
         });
       }
     } else {
-      if (force === undefined) {
-        console.warn('[toggle service] Toggle the group must pass param: force');
+      if (force === undefined || force === null) {
+        console.warn('[ToggleService] Toggle the group must pass param: groupForce');
         return;
       }
-      Object.values(targetGroup).forEach(item => item.value = force as boolean);
+      Object.values(targetGroup).forEach(item => item.value = force!);
     }
-  };
+  });
 
   const resultGroups = {} as ToggleServiceGroups<GroupMap>;
   Object.keys(dataMap).forEach((key: keyof typeof resultGroups) => {
