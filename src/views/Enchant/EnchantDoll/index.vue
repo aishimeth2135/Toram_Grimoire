@@ -513,6 +513,8 @@ import { mapState } from 'pinia';
 import { useEnchantStore } from '@/stores/views/enchant';
 import { useDatasStore } from '@/stores/app/datas';
 
+import Grimoire from '@/shared/Grimoire';
+
 import { EnchantBuild, EnchantStat } from '@/lib/Enchant/Enchant';
 import EnchantDoll from '@/lib/Enchant/Enchant/doll';
 import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums';
@@ -765,7 +767,7 @@ export default {
       return cur;
     },
     exportResult() {
-      const build = new EnchantBuild(this.exportState.name, this.resultEquipment.clone());
+      const build = new EnchantBuild(this.exportState.name, this.resultEquipment.clone(Grimoire.Enchant.categorys));
       this.store.exportDollBuild(build);
       this.exportState.hasExport = true;
       this.$notify(this.$lang('tips/export successfully'));
