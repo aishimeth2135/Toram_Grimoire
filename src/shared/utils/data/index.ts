@@ -100,8 +100,9 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
       return node.value as PureValue;
     }
     if (jsepTypes.isUnaryExpression(node)) {
-      return jsepTypes.isLiteral(node.argument) ?
-        (node.argument.value as number) * -1 :
+      const arg = handle(node.argument, node);
+      return typeof arg !== 'string' || isNumberString(arg) ?
+        (arg as number) * -1 :
         '-' + handle(node.argument, node);
     }
     if (jsepTypes.isBinaryExpression(node)) {
@@ -320,6 +321,29 @@ function handleFormula(formulaStr: string, {
 //     },
 //   },
 // }));
+
+// setTimeout(() => {
+//   console.log(handleFormula('300*reduceValue(-#test)/100', {
+//     vars: {
+//       '#test': '-100',
+//     },
+//     methods: {
+//       reduceValue: (value: number) => {
+//         const neg = value < 0;
+//         value = Math.abs(value);
+//         let rate = 1, res = neg ? 100 : 0;
+//         while (value !== 0) {
+//           const fixedValue = Math.min(value, 50);
+//           res = neg ? res * (100 + fixedValue) / 100 : res + fixedValue / rate;
+//           value -= fixedValue;
+//           rate *= 2;
+//         }
+
+//         return neg ? -1 * (res - 100) : res;
+//       },
+//     },
+//   }));
+// }, 3000);
 
 export { handleFormula };
 export type { HandleFormulaVars, HandleFormulaTexts, HandleFormulaGetters };

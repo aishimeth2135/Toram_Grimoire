@@ -66,7 +66,7 @@ import { useCharacterFoodStore } from '@/stores/views/character/food';
 import { useMainStore } from '@/stores/app/main';
 import { useDatasStore } from '@/stores/app/datas';
 
-import { Character, EquipmentField } from '@/lib/Character/Character';
+import { Character } from '@/lib/Character/Character';
 import { CharacterBaseStatTypes, CharacterOptionalBaseStatTypes } from '@/lib/Character/Character/enums';
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums';
 import { EquipmentTypes, MainWeaponTypeList } from '@/lib/Character/CharacterEquipment/enums';
@@ -584,7 +584,7 @@ export default {
           null,
         ];
         const subs = [
-          EquipmentField.EMPTY,
+          EquipmentTypes.Empty,
           EquipmentTypes.Arrow,
           EquipmentTypes.Shield,
           EquipmentTypes.Dagger,
