@@ -28,41 +28,41 @@ export default {
       optionsPosition: {
         top: '100%',
       },
-    };
+    }
   },
   computed: {
     rootClassList() {
       return {
         'inline': this.inline,
-      };
+      }
     },
   },
   methods: {
     toggleUnfold() {
-      this.unfold = !this.unfold;
+      this.unfold = !this.unfold
 
       if (this.unfold) {
-        const rect = this.$el.getBoundingClientRect();
+        const rect = this.$el.getBoundingClientRect()
 
-        const position = {};
+        const position = {}
 
-        const len2bottom = window.innerHeight - rect.bottom;
+        const len2bottom = window.innerHeight - rect.bottom
         if (rect.top >= len2bottom) {
-          position.bottom = '100%';
+          position.bottom = '100%'
         } else {
-          position.top = '100%';
+          position.top = '100%'
         }
-        const len2right = window.innerWidth - rect.right;
+        const len2right = window.innerWidth - rect.right
         if (rect.left >= len2right) {
-          position.right = '0';
+          position.right = '0'
         } else {
-          position.left = '0';
+          position.left = '0'
         }
-        this.optionsPosition = position;
+        this.optionsPosition = position
       }
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

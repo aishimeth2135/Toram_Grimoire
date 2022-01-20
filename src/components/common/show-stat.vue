@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { Stat, StatRestriction } from '@/lib/Character/Stat';
+import { Stat, StatRestriction } from '@/lib/Character/Stat'
 
 export default {
   props: {
@@ -53,10 +53,10 @@ export default {
   computed: {
     restrictionTexts() {
       if (this.stat instanceof StatRestriction) {
-        return this.stat.restrictionTexts();
+        return this.stat.restrictionTexts()
       }
-      return [];
+      return []
     },
   },
-};
+}
 </script>

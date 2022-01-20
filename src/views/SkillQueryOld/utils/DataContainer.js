@@ -1,32 +1,32 @@
-import { isNumberString } from '@/shared/utils/string';
+import { isNumberString } from '@/shared/utils/string'
 
 class DataContainer {
   constructor(o, branch, key) {
-    this.branch = branch;
-    this.key = key;
-    this.origin = o;
-    this._value = o;
-    this._result = o;
+    this.branch = branch
+    this.key = key
+    this.origin = o
+    this._value = o
+    this._result = o
   }
   set(v) {
-    this._value = v;
-    this._result = v;
+    this._value = v
+    this._result = v
   }
   handle(_handle) {
-    this.set(_handle(this._value));
+    this.set(_handle(this._value))
   }
   handleResult(_handle) {
-    this._result = _handle(this._result);
+    this._result = _handle(this._result)
   }
   isNumberValue() {
-    return isNumberString(this._value);
+    return isNumberString(this._value)
   }
   value() {
-    return this._value;
+    return this._value
   }
   result() {
-    return this._result;
+    return this._result
   }
 }
 
-export default DataContainer;
+export default DataContainer

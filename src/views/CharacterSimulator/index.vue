@@ -58,30 +58,30 @@
 </template>
 
 <script>
-import { mapState } from 'pinia';
+import { mapState } from 'pinia'
 
-import { useCharacterStore } from '@/stores/views/character';
-import { useCharacterSkillStore } from '@/stores/views/character/skill';
-import { useCharacterFoodStore } from '@/stores/views/character/food';
-import { useMainStore } from '@/stores/app/main';
-import { useDatasStore } from '@/stores/app/datas';
+import { useCharacterStore } from '@/stores/views/character'
+import { useCharacterSkillStore } from '@/stores/views/character/skill'
+import { useCharacterFoodStore } from '@/stores/views/character/food'
+import { useMainStore } from '@/stores/app/main'
+import { useDatasStore } from '@/stores/app/datas'
 
-import { Character } from '@/lib/Character/Character';
-import { CharacterBaseStatTypes, CharacterOptionalBaseStatTypes } from '@/lib/Character/Character/enums';
-import { EquipmentFieldTypes } from '@/lib/Character/Character/enums';
-import { EquipmentTypes, MainWeaponTypeList } from '@/lib/Character/CharacterEquipment/enums';
+import { Character } from '@/lib/Character/Character'
+import { CharacterBaseStatTypes, CharacterOptionalBaseStatTypes } from '@/lib/Character/Character/enums'
+import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
+import { EquipmentTypes, MainWeaponTypeList } from '@/lib/Character/CharacterEquipment/enums'
 
-import createSkillState from '@/views/SkillQueryOld/utils/createSkillState.js';
+import createSkillState from '@/views/SkillQueryOld/utils/createSkillState.js'
 
-import vue_characterStats from './character-stats/main.vue';
-import vue_character from './character.vue';
-import vue_equipmentFields from './equipments/main.vue';
-import vue_foodBuild from './food/main.vue';
-import vue_saveLoad from './save-load.vue';
-import vue_skills from './skill/main.vue';
+import vue_characterStats from './character-stats/main.vue'
+import vue_character from './character.vue'
+import vue_equipmentFields from './equipments/main.vue'
+import vue_foodBuild from './food/main.vue'
+import vue_saveLoad from './save-load.vue'
+import vue_skills from './skill/main.vue'
 
-import init from './init.js';
-import SkillBranchHandler from './skill/utils/SkillBranchHandler.js';
+import init from './init.js'
+import SkillBranchHandler from './skill/utils/SkillBranchHandler.js'
 
 export default {
   name: 'CharacterSimulator',
@@ -91,13 +91,13 @@ export default {
       'getValidLevelSkillState': this.getValidLevelSkillState,
       'handleCharacterStateDatas': this.handleCharacterStateDatas,
       'checkStatRestriction': this.checkStatRestriction,
-    };
+    }
   },
   setup() {
-    const store = useCharacterStore();
-    const mainStore = useMainStore();
-    const datasStore = useDatasStore();
-    return { store, mainStore, datasStore };
+    const store = useCharacterStore()
+    const mainStore = useMainStore()
+    const datasStore = useDatasStore()
+    return { store, mainStore, datasStore }
   },
   data() {
     return {
@@ -135,52 +135,52 @@ export default {
         windowBeforeUnload: null,
         documentVisibilityChange: null,
       },
-    };
+    }
   },
   beforeCreate() {
-    init();
+    init()
   },
   created() {
     if (this.skillBuilds.length === 0 || this.characterSimulatorHasInit)
-      this.autoLoad();
+      this.autoLoad()
     else {
-      this.autoLoad({ resetOption: { skillBuildsReplaced: false } });
-      this.$notify(this.$lang('skill management/tips: skill-builds data not be replaced'));
+      this.autoLoad({ resetOption: { skillBuildsReplaced: false } })
+      this.$notify(this.$lang('skill management/tips: skill-builds data not be replaced'))
     }
-    this.store.characterSimulatorInitFinished();
+    this.store.characterSimulatorInitFinished()
 
     if (this.characterStates.length !== 0 && this.currentCharacterIndex === -1) {
-      this.store.setCurrentCharacter(0);
+      this.store.setCurrentCharacter(0)
     }
     if (this.characterStates.length === 0) {
-      this.createCharacter();
+      this.createCharacter()
     }
     if (this.skillBuilds.length !== 0 && this.currentSkillBuildIndex === -1) {
-      this.store.setCurrentCharacter(0);
+      this.store.setCurrentCharacter(0)
     }
 
-    const evt_autoSave = () => this.autoSave();
-    const evt_autoSave_2 = () => document.visibilityState === 'hidden' && this.autoSave();
-    window.addEventListener('beforeunload', evt_autoSave);
-    document.addEventListener('visibilitychange', evt_autoSave_2);
-    this.listeners.windowBeforeUnload = evt_autoSave;
-    this.listeners.documentVisibilityChange = evt_autoSave_2;
+    const evt_autoSave = () => this.autoSave()
+    const evt_autoSave_2 = () => document.visibilityState === 'hidden' && this.autoSave()
+    window.addEventListener('beforeunload', evt_autoSave)
+    document.addEventListener('visibilitychange', evt_autoSave_2)
+    this.listeners.windowBeforeUnload = evt_autoSave
+    this.listeners.documentVisibilityChange = evt_autoSave_2
   },
   updated() {
     if (this.currentCharacterStateIndex >= this.characterStates.length) {
-      this.store.setCurrentCharacter(0);
+      this.store.setCurrentCharacter(0)
     }
   },
   mounted() {
     if (this.mainStore.redirectPathName === 'SkillSimulator') {
-      this.$router.replace({ name: 'SkillSimulator' });
-      this.mainStore.clearRedirectPathName();
+      this.$router.replace({ name: 'SkillSimulator' })
+      this.mainStore.clearRedirectPathName()
     }
   },
   unmounted() {
-    window.removeEventListener('beforeunload', this.listeners.windowBeforeUnload);
-    document.removeEventListener('visibilitychange', this.listeners.documentVisibilityChange);
-    this.autoSave();
+    window.removeEventListener('beforeunload', this.listeners.windowBeforeUnload)
+    document.removeEventListener('visibilitychange', this.listeners.documentVisibilityChange)
+    this.autoSave()
   },
   computed: {
     ...mapState(useCharacterStore, {
@@ -205,95 +205,95 @@ export default {
         'wind': 0,
         'light': 0,
         'dark': 0,
-      };
-      const chara = this.currentCharacterState.origin;
-      const setElement = stat => element[stat.baseName.replace('element_', '')] = 1;
+      }
+      const chara = this.currentCharacterState.origin
+      const setElement = stat => element[stat.baseName.replace('element_', '')] = 1
 
-      const sub = chara.equipmentField(EquipmentFieldTypes.SubWeapon);
+      const sub = chara.equipmentField(EquipmentFieldTypes.SubWeapon)
       // 主手弓副手矢時，矢優先於弓
       if (chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.Bow) &&
          chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow) &&
         sub.equipment.elementStat) {
-        setElement(sub.equipment.elementStat);
-        return element;
+        setElement(sub.equipment.elementStat)
+        return element
       }
 
       // 主手
-      const main = chara.equipmentField(EquipmentFieldTypes.MainWeapon);
+      const main = chara.equipmentField(EquipmentFieldTypes.MainWeapon)
       if (!main.isEmpty && main.equipment.elementStat)
-        setElement(main.equipment.elementStat);
+        setElement(main.equipment.elementStat)
 
       // 雙劍副手：雙重屬性
       if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword) &&
           sub.equipment.elementStat) {
-        setElement(sub.equipment.elementStat);
+        setElement(sub.equipment.elementStat)
       }
 
-      return element;
+      return element
     },
     baseCharacterStatDatas() {
-      return this.handleCharacterStateDatas();
+      return this.handleCharacterStateDatas()
     },
     passiveSkillsCharacterStatDatas() {
       return this.handleCharacterStateDatas({
         handlePassiveSkill: true,
-      });
+      })
     },
     allCharacterStatDatas() {
       return this.handleCharacterStateDatas({
         handlePassiveSkill: true,
         handleActiveSkill: true,
-      });
+      })
     },
     showCharacterStatDatas() {
       return this.allCharacterStatDatas.map(data => ({
         name: data.name,
         stats: data.stats.filter(p => !p.hidden),
-      }));
+      }))
     },
     validSkillStates() {
       return this.allSkillStates
         .filter(state => state.levelSkillTreeState.originState.visible &&
-          (state.levelSkill.level() > 0 || state.levelSkill.starGemLevel() > 0));
+          (state.levelSkill.level() > 0 || state.levelSkill.starGemLevel() > 0))
     },
     passiveSkillStates() {
-      return this.validSkillStates.filter(state => state.type === 'passive');
+      return this.validSkillStates.filter(state => state.type === 'passive')
     },
     activeSkillStates() {
-      return this.validSkillStates.filter(state => state.type === 'active');
+      return this.validSkillStates.filter(state => state.type === 'active')
     },
   },
   methods: {
     /* ==[ character - main ]==========================================*/
     closeAutoSave() {
-      this.store.closeAutoSave();
+      this.store.closeAutoSave()
     },
     autoSave() {
       if (!this.autoSaveDisabled) {
-        this.store.saveCharacterSimulator(0);
-        this.$notify(this.$lang('save-load control/Auto save Successfully'), 'mdi-ghost', 'auto save successfully');
+        this.store.saveCharacterSimulator(0)
+        this.$notify(this.$lang('save-load control/Auto save Successfully'), 'mdi-ghost', 'auto save successfully')
       }
     },
     autoLoad({ resetOption } = {}) {
       try {
-        this.store.loadCharacterSimulator({ index: 0, resetOption });
-        this.$notify(this.$lang('save-load control/Auto load Successfully'), 'mdi-ghost', 'auto load successfully');
+        this.store.loadCharacterSimulator({ index: 0, resetOption })
+        this.$notify(this.$lang('save-load control/Auto load Successfully'), 'mdi-ghost', 'auto load successfully')
       } catch (e) {
-        console.warn(e);
-        console.warn('[Grimoire: character-simulator] Auto load faild. If you are entering this page for the first time, you can ignore this message.');
+        console.warn(e)
+        console.warn('[Grimoire: character-simulator] Auto load faild. If you are entering this page for the first time, you can ignore this message.')
       }
     },
     findSkillById(stc, st, s) {
       return this.allSkillStates.find(state => {
-        const skill = state.levelSkill.base;
+        const skill = state.levelSkill.base
         if (skill.id != s)
-          return false;
+          return false
         if (skill.parent.id != st)
-          return false;
+          return false
         if (skill.parent.parent.id != stc)
-          return false;
-        return true;
-      });
+          return false
+        return true
+      })
     },
     handleCharacterStateDatas({
       handleFood = true,
@@ -302,25 +302,25 @@ export default {
       calcField = null,
     } = {}) {
       if (!this.currentCharacterState)
-        return [];
+        return []
 
-      const categoryList = this.datasStore.Character.characterStatCategoryList;
-      const chara = this.currentCharacterState.origin.clone();
+      const categoryList = this.datasStore.Character.characterStatCategoryList
+      const chara = this.currentCharacterState.origin.clone()
 
       // let calcFieldNextFunc;
       if (calcField) {
-        const field = chara.equipmentField(calcField.type);
-        field.setEquipment(calcField.equipment);
+        const field = chara.equipmentField(calcField.type)
+        field.setEquipment(calcField.equipment)
       }
 
       const isDualSword = chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.OneHandSword)
-        && chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword);
+        && chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword)
 
-      const mainField = chara.fieldEquipment(EquipmentFieldTypes.MainWeapon);
-      const subField = chara.fieldEquipment(EquipmentFieldTypes.SubWeapon);
-      const bodyField = chara.fieldEquipment(EquipmentFieldTypes.BodyArmor);
-      const additionalField = chara.fieldEquipment(EquipmentFieldTypes.Additional);
-      const specialField = chara.fieldEquipment(EquipmentFieldTypes.Special);
+      const mainField = chara.fieldEquipment(EquipmentFieldTypes.MainWeapon)
+      const subField = chara.fieldEquipment(EquipmentFieldTypes.SubWeapon)
+      const bodyField = chara.fieldEquipment(EquipmentFieldTypes.BodyArmor)
+      const additionalField = chara.fieldEquipment(EquipmentFieldTypes.Additional)
+      const specialField = chara.fieldEquipment(EquipmentFieldTypes.Special)
       const vars = {
         value: {
           '@clv': chara.level,
@@ -377,10 +377,10 @@ export default {
           '@element': this.equipmentElement,
           '@skill': {
             'Conversion': (() => {
-              const skill = this.findSkillById(4, 1, 1);
+              const skill = this.findSkillById(4, 1, 1)
               if (!skill)
-                return 0;
-              return skill.disabled ? 0 : skill.levelSkill.level();
+                return 0
+              return skill.disabled ? 0 : skill.levelSkill.level()
             })(),
           },
         },
@@ -414,124 +414,124 @@ export default {
         },
         computed: {},
         computedResultStore: {},
-      };
-      const pureStats = [];
+      }
+      const pureStats = []
 
       const appendStat = stat => {
-        const t = pureStats.find(a => a.equals(stat));
-        let v = stat.value;
+        const t = pureStats.find(a => a.equals(stat))
+        let v = stat.value
         if (typeof v !== 'number')
-          v = parseFloat(v);
+          v = parseFloat(v)
         if (Number.isNaN(v))
-          v = 0;
-        stat.value = v;
-        t ? t.add(v) : pureStats.push(stat.clone());
-      };
+          v = 0
+        stat.value = v
+        t ? t.add(v) : pureStats.push(stat.clone())
+      }
 
       chara.equipmentFields.forEach(field => {
         if (!field.isEmpty && !field.statsDisabled()) {
-          field.equipment.getAllStats(this.checkStatRestriction).forEach(appendStat);
+          field.equipment.getAllStats(this.checkStatRestriction).forEach(appendStat)
         }
-      });
+      })
 
       if (handleFood && this.currentFoodBuild) {
         this.currentFoodBuild.selectedFoods
-          .map(p => p.stat()).forEach(appendStat);
+          .map(p => p.stat()).forEach(appendStat)
       }
 
       const handleSkillStates = states => {
         const branchStatDatasToStats = stats => {
-          return stats.map(stat => stat.origin.toStat(stat.value));
-        };
+          return stats.map(stat => stat.origin.toStat(stat.value))
+        }
         states.forEach(levelSkillStateRoot => {
           if (levelSkillStateRoot.disabled)
-            return;
-          const state = this.getValidLevelSkillState(levelSkillStateRoot);
+            return
+          const state = this.getValidLevelSkillState(levelSkillStateRoot)
           if (state) {
             state.branchStates
               .filter(bs => !bs.disabled)
               .forEach(bs => {
-                const v = bs.handler.value;
+                const v = bs.handler.value
                 if (v.stats.length != 0)
-                  branchStatDatasToStats(v.stats).forEach(appendStat);
+                  branchStatDatasToStats(v.stats).forEach(appendStat)
                 v.conditionDatas
                   .filter(cs => cs.stats.length != 0)
-                  .forEach(cs => branchStatDatasToStats(cs.stats).forEach(appendStat));
-              });
+                  .forEach(cs => branchStatDatasToStats(cs.stats).forEach(appendStat))
+              })
           }
-        });
-      };
+        })
+      }
 
-      handlePassiveSkill && handleSkillStates(this.passiveSkillStates);
-      handleActiveSkill && handleSkillStates(this.activeSkillStates);
+      handlePassiveSkill && handleSkillStates(this.passiveSkillStates)
+      handleActiveSkill && handleSkillStates(this.activeSkillStates)
 
       const result = categoryList.map(p => ({
         name: p.name,
         stats: p.stats.map(a => {
           //console.log('%c' + a.id, 'color: white; background-color: red');
-          const res = a.result(pureStats, vars);
+          const res = a.result(pureStats, vars)
           return {
             id: a.id,
             name: a.name,
             ...res,
-          };
+          }
         }),
-      })).filter(a => a.stats.length !== 0);
+      })).filter(a => a.stats.length !== 0)
 
-      return result;
+      return result
     },
     checkStatRestriction(stat) {
-      const c = this.currentCharacterState.origin;
-      const types = stat.restriction;
+      const c = this.currentCharacterState.origin
+      const types = stat.restriction
       if (!types)
-        return true;
+        return true
 
       if (['main', 'sub', 'body', 'other'].every(k => types[k] === null))
-        return true;
+        return true
 
       return types.other ||
         c.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, types.main) ||
         c.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, types.sub) ||
-        c.checkFieldEquipmentType(EquipmentFieldTypes.BodyArmor, types.body);
+        c.checkFieldEquipmentType(EquipmentFieldTypes.BodyArmor, types.body)
     },
     /* ==[ skill item - skill branch ]================================ */
     findCharacterStatResult(src, id) {
       if (src === 'all')
-        src = this.allCharacterStatDatas;
+        src = this.allCharacterStatDatas
       else if (src === 'passive-skills')
-        src = this.passiveSkillsCharacterStatDatas;
+        src = this.passiveSkillsCharacterStatDatas
       else if (src === 'base')
-        src = this.baseCharacterStatDatas;
+        src = this.baseCharacterStatDatas
       else
-        console.warn('Unknow source name: ' + src);
+        console.warn('Unknow source name: ' + src)
 
-      let res;
+      let res
       src.find(cat => {
-        const p = cat.stats.find(stat => stat.id == id);
+        const p = cat.stats.find(stat => stat.id == id)
         if (p) {
-          res = p;
-          return true;
+          res = p
+          return true
         }
-      });
+      })
       if (!res) {
-        console.warn(`Can not find CharacterStat data with id: ${id}.`);
+        console.warn(`Can not find CharacterStat data with id: ${id}.`)
         return {
           id: null,
           value: 0,
-        };
+        }
       }
-      return res;
+      return res
     },
     /* ==[ skill item ]=============================================== */
     handleLevelSkillState({ levelSkillState, skillItemType }) {
       return levelSkillState.skillState.states.map(skillState => {
-        const branchStates = [];
+        const branchStates = []
 
         if (skillItemType !== 'none') {
-          let counter = 0;
+          let counter = 0
           const branchFilter = skillItemType === 'passive' ?
             bch => bch.name === 'passive' :
-            bch => bch.name === 'effect' && bch.attrs['effect_self'] !== '0';
+            bch => bch.name === 'effect' && bch.attrs['effect_self'] !== '0'
           const t = skillState.branches
             .filter(branchFilter)
             .map(bch => {
@@ -542,47 +542,47 @@ export default {
                 view: this,
                 findCharacterStatResult: this.findCharacterStatResult,
                 skillItemType: skillItemType,
-              });
+              })
               const res = {
                 iid: counter,
                 origin: bch,
                 handler,
                 disabled: false,
-              };
-              counter += 1;
+              }
+              counter += 1
 
-              return res;
-            });
-          branchStates.push(...t);
+              return res
+            })
+          branchStates.push(...t)
         }
 
         return {
           equipment: skillState.equipment,
           skillState,
           branchStates,
-        };
-      });
+        }
+      })
     },
     getValidLevelSkillState(levelSkillStateRoot) {
       return levelSkillStateRoot.states
-        .find(p => this.checkSkillEquipmentType(p.equipment, levelSkillStateRoot));
+        .find(p => this.checkSkillEquipmentType(p.equipment, levelSkillStateRoot))
     },
     checkSkillEquipmentType(eq, skillState) {
       const fieldEq = (() => {
-        const chara = this.currentCharacterState.origin;
+        const chara = this.currentCharacterState.origin
         let mainField = chara.equipmentField(EquipmentFieldTypes.MainWeapon),
           subField = chara.equipmentField(EquipmentFieldTypes.SubWeapon),
-          bodyField = chara.equipmentField(EquipmentFieldTypes.BodyArmor);
+          bodyField = chara.equipmentField(EquipmentFieldTypes.BodyArmor)
         const types = {
           main: mainField.equipmentType,
           sub: subField.equipmentType,
           body: bodyField.equipmentType,
-        };
+        }
         const mains = [
           EquipmentTypes.Empty,
           ...MainWeaponTypeList,
           null,
-        ];
+        ]
         const subs = [
           EquipmentTypes.Empty,
           EquipmentTypes.Arrow,
@@ -592,13 +592,13 @@ export default {
           EquipmentTypes.Knuckle,
           EquipmentTypes.Katana,
           EquipmentTypes.NinjutsuScroll,
-        ];
+        ]
         const bodys = [
           EquipmentTypes.Empty,
           EquipmentTypes.BodyDodge,
           EquipmentTypes.BodyDefense,
           EquipmentTypes.BodyNormal,
-        ];
+        ]
         /**
          * 0'空手', 1'單手劍', 2'雙手劍', 3'弓', 4'弩', 5'法杖',
          * 6'魔導具', 7'拳套', 8'旋風槍', 9'拔刀劍', 10'雙劍',
@@ -608,79 +608,79 @@ export default {
          *
          * 0'無裝備', 1'輕量化', 2'重量化', 3'一般',
         */
-        let main = -1, sub = -1, body = -1;
+        let main = -1, sub = -1, body = -1
 
-        mainField = types.main;
-        subField = types.sub;
-        bodyField = types.body;
+        mainField = types.main
+        subField = types.sub
+        bodyField = types.body
 
         if (mainField) {
           main = mainField === EquipmentTypes.OneHandSword &&
             subField && subField === EquipmentTypes.OneHandSword ?
             10 :
-            mains.indexOf(mainField);
+            mains.indexOf(mainField)
         }
         if (subField && main != 10) {
-          sub = subs.indexOf(subField);
+          sub = subs.indexOf(subField)
         }
         if (bodyField) {
-          body = bodys.indexOf(bodyField);
+          body = bodys.indexOf(bodyField)
         }
 
-        return { main, sub, body };
-      })();
+        return { main, sub, body }
+      })()
 
-      const forDualSword = eq.main === 1 && fieldEq.main === 10 && !skillState.states.find(a => a.equipment.main == 10);
+      const forDualSword = eq.main === 1 && fieldEq.main === 10 && !skillState.states.find(a => a.equipment.main == 10)
 
-      const { main, sub, body } = eq;
-      const _eq = { main, sub, body };
+      const { main, sub, body } = eq
+      const _eq = { main, sub, body }
 
       /* ==== [ start compare ] ==================  */
-      const a = _eq, b = fieldEq, operator = eq.operator;
+      const a = _eq, b = fieldEq, operator = eq.operator
 
       /* 通用 */
-      const _check = t => [t.main, t.sub, t.body].every(p => p == -1);
+      const _check = t => [t.main, t.sub, t.body].every(p => p == -1)
       if (_check(a) || _check(b))
-        return true;
+        return true
 
       // or
       if (operator === 0) {
-        const check = key => a[key] != -1 && b[key] != -1 && a[key] == b[key];
-        return check('main') || forDualSword || check('sub') || check('body');
+        const check = key => a[key] != -1 && b[key] != -1 && a[key] == b[key]
+        return check('main') || forDualSword || check('sub') || check('body')
       }
       // and
       if (operator === 1) {
-        const check = key => a[key] != -1 && b[key] != -1 && a[key] != b[key];
-        return !(check('main') || forDualSword) && !check('sub') && !check('body');
+        const check = key => a[key] != -1 && b[key] != -1 && a[key] != b[key]
+        return !(check('main') || forDualSword) && !check('sub') && !check('body')
       }
     },
 
     /* ==[ main ]=============================================== */
     setCurrentContent(idx) {
-      this.currentContentIndex = idx;
+      this.currentContentIndex = idx
     },
     createCharacter() {
-      const c = new Character(this.$lang('character') + ' ' + (this.characterStates.length + 1).toString());
+      const c = new Character(this.$lang('character') + ' ' + (this.characterStates.length + 1).toString())
       // this.currentCharacterStateIndex = this.characterStates.length;
-      this.store.createCharacter(c);
+      this.store.createCharacter(c)
     },
   },
   watch: {
     currentSkillBuild(newv) {
       if (!newv || !this.currentCharacterState) {
-        this.allSkillStates = [];
-        return;
+        this.allSkillStates = []
+        return
       }
       const levelSkillTreeStates = (() => {
-        const res = [];
+        const res = []
         newv.skillTreeCategoryStates.forEach(stc => {
           res.push(...stc.skillTreeStates.map(st => ({
             levelSkillTree: st.levelSkillTree,
             originState: st,
-          })));
-        });
+          })))
+        })
         return res.map(p => {
-          const levelSkillTree = p.levelSkillTree;
+          const levelSkillTree = p.levelSkillTree
           return {
             originState: p.originState,
             levelSkillTree,
@@ -688,24 +688,24 @@ export default {
               levelSkill: skill,
               skillState: createSkillState(skill.base),
             })),
-          };
-        });
-      })();
+          }
+        })
+      })()
 
       this.allSkillStates = (() => {
-        const res = [];
+        const res = []
 
         levelSkillTreeStates.forEach(st => {
           const p = st.skills.map(state => {
-            let skillItemType = 'none';
+            let skillItemType = 'none'
             if (state.skillState.states.find(a => a.attrs['skill_type'] == 3))
-              skillItemType = 'passive';
+              skillItemType = 'passive'
             else {
               const find = state.skillState.states.find(a => {
-                return a.attrs['skill_type'] != 3 && a.branches.find(bch => bch.stats.length != 0);
-              });
+                return a.attrs['skill_type'] != 3 && a.branches.find(bch => bch.stats.length != 0)
+              })
               if (find)
-                skillItemType = 'active';
+                skillItemType = 'active'
             }
             return {
               states: this.handleLevelSkillState({
@@ -717,13 +717,13 @@ export default {
               // originalLevelSkillState: state,
               levelSkillTreeState: st,
               disabled: skillItemType != 'passive',
-            };
-          });
-          res.push(...p);
-        });
+            }
+          })
+          res.push(...p)
+        })
 
-        return res;
-      })();
+        return res
+      })()
     },
   },
   components: {
@@ -734,5 +734,5 @@ export default {
     'save-load': vue_saveLoad,
     'food-build': vue_foodBuild,
   },
-};
+}
 </script>

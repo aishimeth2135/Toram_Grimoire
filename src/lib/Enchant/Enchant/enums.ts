@@ -14,4 +14,4 @@ const enum EnchantStepTypes {
   Each = 'each',
 }
 
-export { EnchantItemConditions, EnchantEquipmentTypes, EnchantStepTypes };
+export { EnchantItemConditions, EnchantEquipmentTypes, EnchantStepTypes }

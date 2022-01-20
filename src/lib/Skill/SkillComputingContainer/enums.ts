@@ -3,4 +3,4 @@ const enum FormulaDisplayModes {
   OriginalFormula = 'original-formula',
 }
 
-export { FormulaDisplayModes };
+export { FormulaDisplayModes }

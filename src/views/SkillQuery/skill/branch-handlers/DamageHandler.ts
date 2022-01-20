@@ -1,21 +1,21 @@
-import { markText } from '@/shared/utils/view';
-import Grimoire from '@/shared/Grimoire';
+import { markText } from '@/shared/utils/view'
+import Grimoire from '@/shared/Grimoire'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
-import type { HandleBranchValueAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import type { HandleBranchValueAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { cloneBranchAttrs, handleDisplayData } from './utils';
-import MapContainer from './utils/MapContainer';
-import type { HandleDisplayDataOptionFilters, HandleBranchLangAttrsMap } from './utils';
-import ProrationHandler from './ProrationHandler';
-import { createTagButtons } from '../../utils';
+import { cloneBranchAttrs, handleDisplayData } from './utils'
+import MapContainer from './utils/MapContainer'
+import type { HandleDisplayDataOptionFilters, HandleBranchLangAttrsMap } from './utils'
+import ProrationHandler from './ProrationHandler'
+import { createTagButtons } from '../../utils'
 
 export default function DamageHandler(branchItem: SkillBranchItem) {
-  const { t } = Grimoire.i18n;
+  const { t } = Grimoire.i18n
 
   const attrs = cloneBranchAttrs(branchItem, {
     name: t('skill-query.branch.damage.base-name'),
-  });
+  })
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     'constant': value => value !== '0',
@@ -30,7 +30,7 @@ export default function DamageHandler(branchItem: SkillBranchItem) {
     'range_damage': value => value !== '0',
     'unsheathe_damage': value => value !== '0',
     'ailment_name': value => !!value,
-  });
+  })
   const valueAttrsMap = new MapContainer<HandleBranchValueAttrsMap>({
     'multiplier': '%',
     'constant': null,
@@ -39,9 +39,9 @@ export default function DamageHandler(branchItem: SkillBranchItem) {
     'ailment_chance': '%',
     'duration': null,
     'cycle': null,
-  });
+  })
   if (branchItem.attr('target_offset') !== 'auto') {
-    valueAttrsMap.append('target_offset');
+    valueAttrsMap.append('target_offset')
   }
   const langAttrsMap = new MapContainer<HandleBranchLangAttrsMap>([
     'damage_type',
@@ -52,55 +52,55 @@ export default function DamageHandler(branchItem: SkillBranchItem) {
     'unsheathe_damage',
     'judgment',
     'frequency_judgment',
-  ]);
+  ])
 
-  const pureDatas = ['name', 'ailment_name', 'end_condition'];
+  const pureDatas = ['name', 'ailment_name', 'end_condition']
 
   if (attrs['base'] === 'auto') {
-    const baseSuffix = branchItem.suffixBranches.find(bch => bch.name === 'base');
+    const baseSuffix = branchItem.suffixBranches.find(bch => bch.name === 'base')
     if (baseSuffix) {
       if (baseSuffix.attr('type') !== 'custom') {
-        attrs['@custom-base-caption'] = baseSuffix.attr('type');
-        attrs['base'] = `@custom.${baseSuffix.attr('type')}`;
-        langAttrsMap.append('base');
+        attrs['@custom-base-caption'] = baseSuffix.attr('type')
+        attrs['base'] = `@custom.${baseSuffix.attr('type')}`
+        langAttrsMap.append('base')
         langAttrsMap.set('@custom-base-caption', {
           afterHandle: value => createTagButtons(markText(value, { mark: 'text-purple' })),
-        });
+        })
       } else {
         if (baseSuffix.attr('title') === 'auto') {
-          attrs['base'] = '@custom.default';
-          langAttrsMap.append('base');
+          attrs['base'] = '@custom.default'
+          langAttrsMap.append('base')
         } else {
-          attrs['base'] = baseSuffix.attr('title');
-          pureDatas.push('base');
+          attrs['base'] = baseSuffix.attr('title')
+          pureDatas.push('base')
         }
         if (baseSuffix.attr('caption')) {
-          attrs['@custom-base-caption'] = baseSuffix.attr('caption');
-          pureDatas.push('@custom-base-caption');
+          attrs['@custom-base-caption'] = baseSuffix.attr('caption')
+          pureDatas.push('@custom-base-caption')
         }
       }
     } else {
-      attrs['base'] = attrs['damage_type'] === 'physical' ? 'atk' : 'matk';
-      langAttrsMap.append('base');
+      attrs['base'] = attrs['damage_type'] === 'physical' ? 'atk' : 'matk'
+      langAttrsMap.append('base')
     }
   } else {
-    langAttrsMap.append('base');
+    langAttrsMap.append('base')
   }
   if (attrs['detail_display'] === 'auto') {
-    attrs['detail_display'] = attrs['title'] === 'normal_attack' ? '0' : '1';
+    attrs['detail_display'] = attrs['title'] === 'normal_attack' ? '0' : '1'
   }
 
   if (attrs['frequency_judgment'] === 'auto') {
-    attrs['frequency_judgment'] = attrs['title'] !== 'each' ? 'single' : 'multiple';
+    attrs['frequency_judgment'] = attrs['title'] !== 'each' ? 'single' : 'multiple'
   }
 
-  const prorationBch = branchItem.suffixBranches.find(suf => suf.name === 'proration');
+  const prorationBch = branchItem.suffixBranches.find(suf => suf.name === 'proration')
   if (prorationBch) {
     const _data = ProrationHandler(prorationBch);
     ['damage', 'proration', 'damage: title', 'proration: title'].forEach(key => {
-      attrs['@proration/' + key] = _data.get(key);
-    });
-    pureDatas.push('@proration/damage', '@proration/damage: title', '@proration/proration', '@proration/proration: title');
+      attrs['@proration/' + key] = _data.get(key)
+    })
+    pureDatas.push('@proration/damage', '@proration/damage: title', '@proration/proration', '@proration/proration: title')
   }
 
   const result = handleDisplayData(branchItem, attrs, {
@@ -108,9 +108,9 @@ export default function DamageHandler(branchItem: SkillBranchItem) {
     langs: langAttrsMap.value,
     filters: filters.value,
     pureDatas,
-  });
+  })
 
   // result.value['@frequency-visible'] = branchItem.attrs['title'] === 'each' ? '1' : '0';
 
-  return result;
+  return result
 }

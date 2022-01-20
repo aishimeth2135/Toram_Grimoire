@@ -17,7 +17,7 @@
 <script>
 export default {
   props: ['detailShowData'],
-};
+}
 </script>
 
 <style lang="less" scoped>

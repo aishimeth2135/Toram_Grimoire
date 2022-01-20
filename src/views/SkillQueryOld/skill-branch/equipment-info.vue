@@ -30,7 +30,7 @@ export default {
         'main': 'mdi-sword',
         'sub': 'mdi-shield',
         'body': 'mdi-tshirt-crew',
-      }[fieldType];
+      }[fieldType]
     },
   },
   props: ['equipment'],
@@ -40,21 +40,21 @@ export default {
         'main': 'mdi-sword',
         'sub': 'mdi-shield',
         'body': 'mdi-tshirt-crew',
-      };
-      const t =  ['main', 'sub', 'body'].filter(name => this.equipment[name] != -1);
-      const o = this.equipment.operator == 0 ? 'or' : 'and';
-      const res = [];
+      }
+      const t =  ['main', 'sub', 'body'].filter(name => this.equipment[name] != -1)
+      const o = this.equipment.operator == 0 ? 'or' : 'and'
+      const res = []
       t.forEach((name, i) => {
         res.push({
           text: this.equipment[name],
           icon: icons[name],
-        });
-        i != t.length - 1 && res.push(o);
-      });
-      return res;
+        })
+        i != t.length - 1 && res.push(o)
+      })
+      return res
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

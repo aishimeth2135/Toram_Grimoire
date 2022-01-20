@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import IconSet from './base/icon-set';
+import IconSet from './base/icon-set'
 
 export default {
   mixins: [IconSet],
@@ -42,24 +42,24 @@ export default {
   data() {
     return {
       inputFocus: false,
-    };
+    }
   },
   methods: {
     updateValue(evt) {
-      let value = typeof evt === 'object' ? evt.target.value : evt;
+      let value = typeof evt === 'object' ? evt.target.value : evt
       if (value.length > 64) {
-        value = value.slice(0, 64);
+        value = value.slice(0, 64)
       }
-      this.$emit('update:value', value);
+      this.$emit('update:value', value)
     },
     toggleInputFocus(set) {
-      this.inputFocus = set;
+      this.inputFocus = set
     },
     focus() {
-      this.$refs.mainInput?.focus();
+      this.$refs.mainInput?.focus()
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

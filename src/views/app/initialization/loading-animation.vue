@@ -21,10 +21,10 @@
 
 <script lang="ts" setup>
 // @ts-ignore
-import Velocity from 'velocity-animate';
-import { onMounted, ref, toRefs, watch } from 'vue';
+import Velocity from 'velocity-animate'
+import { onMounted, ref, toRefs, watch } from 'vue'
 
-import { InitializeStatus } from '@/stores/app/initialize/enums';
+import { InitializeStatus } from '@/stores/app/initialize/enums'
 
 interface Props {
   status: number;
@@ -33,35 +33,35 @@ interface Emits {
   (evt: 'done'): void;
 }
 
-const props = defineProps<Props>();
-const emit = defineEmits<Emits>();
+const props = defineProps<Props>()
+const emit = defineEmits<Emits>()
 
-const { status } = toRefs(props);
+const { status } = toRefs(props)
 
-const innerStatus = ref(0);
-const end = ref(false);
+const innerStatus = ref(0)
+const end = ref(false)
 
 const beforeLeave = (el: Element) => {
-  el.classList.remove('start-icon');
-};
+  el.classList.remove('start-icon')
+}
 const leave = (el: Element, done: Function) => {
   Velocity(el, {
     rotateY: '0deg',
   }, {
     duration: 100,
-  });
+  })
   Velocity(el, {
     rotateY: '+=360deg',
   }, {
     duration: 700, easing: [0.42, 0, 1.0, 1.0],
     complete: () => {
-      end.value = true;
-      done();
+      end.value = true
+      done()
     },
-  });
-};
+  })
+}
 const enter = (el: Element, done: Function) => {
-  const pwhite = getComputedStyle(document.body).getPropertyValue('--white').trim();
+  const pwhite = getComputedStyle(document.body).getPropertyValue('--white').trim()
   const opts = window.innerHeight > window.innerWidth ? {
     width: '150vh',
     height: '150vh',
@@ -72,23 +72,23 @@ const enter = (el: Element, done: Function) => {
     height: '150vw',
     left: '-=75vw',
     top: '-=75vw',
-  };
+  }
   Velocity(el, {
     backgroundColor: pwhite,
     ...opts,
   }, {
     duration: 600,
     complete: () => {
-      done();
-      setTimeout(() => emit('done'), 100);
+      done()
+      setTimeout(() => emit('done'), 100)
     },
-  });
-};
+  })
+}
 
 onMounted(() => {
-  innerStatus.value = status.value;
-  watch(status, value => innerStatus.value = value);
-});
+  innerStatus.value = status.value
+  watch(status, value => innerStatus.value = value)
+})
 </script>
 
 <style lang="less" scoped>

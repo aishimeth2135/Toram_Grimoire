@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import vue_skillTree from './skill-tree.vue';
+import vue_skillTree from './skill-tree.vue'
 
 export default {
   components: {
@@ -16,10 +16,10 @@ export default {
   props: ['skillTreeCategoryState'],
   computed: {
     skillTreeStates() {
-      return this.skillTreeCategoryState.skillTreeStates.filter(st => st.visible);
+      return this.skillTreeCategoryState.skillTreeStates.filter(st => st.visible)
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

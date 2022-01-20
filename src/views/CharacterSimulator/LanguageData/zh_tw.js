@@ -164,5 +164,5 @@ export default function() {
         'Must have at least one character': '必須至少留下一個角色。',
       },
     },
-  };
+  }
 }

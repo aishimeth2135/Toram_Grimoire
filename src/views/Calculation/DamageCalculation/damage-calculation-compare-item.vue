@@ -28,72 +28,72 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, toRefs } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, inject, toRefs } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { numberToFixed } from '@/shared/utils/number';
-import { markText } from '@/shared/utils/view';
+import { numberToFixed } from '@/shared/utils/number'
+import { markText } from '@/shared/utils/view'
 
-import { CalcItem, Calculation } from '@/lib/Calculation/Damage/Calculation';
+import { CalcItem, Calculation } from '@/lib/Calculation/Damage/Calculation'
 
-import { setupExpectedResults, setupCalculationStoreState } from './setup';
-import { DamageCalculationRootInjectionKey } from './injection-keys';
+import { setupExpectedResults, setupCalculationStoreState } from './setup'
+import { DamageCalculationRootInjectionKey } from './injection-keys'
 
 interface Props {
   calculation: Calculation;
 }
 
-const props = defineProps<Props>();
-const { calculation } = toRefs(props);
+const props = defineProps<Props>()
+const { calculation } = toRefs(props)
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const { currentCalculation: comparedCalculation } = setupCalculationStoreState();
+const { currentCalculation: comparedCalculation } = setupCalculationStoreState()
 
-const { expectedResult } = setupExpectedResults(calculation);
+const { expectedResult } = setupExpectedResults(calculation)
 
-const comparedCalculationExpectedResult = inject(DamageCalculationRootInjectionKey)!;
+const comparedCalculationExpectedResult = inject(DamageCalculationRootInjectionKey)!
 
 const calculationResultDifferenceRate = computed(() => {
-  const comparedResult = comparedCalculationExpectedResult.value;
+  const comparedResult = comparedCalculationExpectedResult.value
   if (comparedResult < 1) {
-    return 1000;
+    return 1000
   }
-  return numberToFixed((expectedResult.value - comparedResult) * 100 / comparedResult, 1);
-});
+  return numberToFixed((expectedResult.value - comparedResult) * 100 / comparedResult, 1)
+})
 
 const calculationResultDifferenceRateDisplay = computed(() => {
   if (calculationResultDifferenceRate.value > 999) {
-    return '+999~%';
+    return '+999~%'
   }
-  const sign = (calculationResultDifferenceRate.value >= 0 ? '+' : '');
-  return sign + calculationResultDifferenceRate.value + '%';
-});
+  const sign = (calculationResultDifferenceRate.value >= 0 ? '+' : '')
+  return sign + calculationResultDifferenceRate.value + '%'
+})
 
 const comparedItems = computed(() => {
-  const result: { item: CalcItem; value: number }[] = [];
+  const result: { item: CalcItem; value: number }[] = []
   Array.from(calculation.value.containers.values()).forEach(container => {
-    const comparedContainer = comparedCalculation.value.containers.get(container.base.id)!;
+    const comparedContainer = comparedCalculation.value.containers.get(container.base.id)!
     if (container.selectable) {
       result.push({
         item: container.currentItem,
         value: container.currentItem.value - comparedContainer.currentItem.value,
-      });
+      })
     } else {
       Array.from(container.items.values()).forEach(item => {
         if (result.find(resItem => resItem.item.base.id === item.base.id)) {
-          return;
+          return
         }
-        const comparedItem = comparedContainer.items.get(item.base.id)!;
+        const comparedItem = comparedContainer.items.get(item.base.id)!
         result.push({
           item,
           value: container.customItemAddable ?
             container.result() - comparedContainer.result() :
             item.value - comparedItem.value,
-        });
-      });
+        })
+      })
     }
-  });
-  return result.filter(item => item.value !== 0);
-});
+  })
+  return result.filter(item => item.value !== 0)
+})
 </script>

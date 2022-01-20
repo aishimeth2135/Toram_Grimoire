@@ -16,7 +16,7 @@ export default class Color {
     'orange', 'orange-light',
 
     'gray', 'gray-light',
-  ];
+  ]
   static MappingList: { [key: string]: string } = {
     'white': 'white',
     'dark': 'light-4',
@@ -28,28 +28,28 @@ export default class Color {
     'gray-light': 'gray',
     'blue-green-light': 'blue-green',
     'orange-light': 'orange',
-  };
+  }
 
   static darken(color: string): string {
-    return Color.MappingList[color] || 'light-4';
+    return Color.MappingList[color] || 'light-4'
   }
 
   static lighten(color: string): string {
     return Object.keys(Color.MappingList)
-      .find(k => Color.MappingList[k] === color) || 'light';
+      .find(k => Color.MappingList[k] === color) || 'light'
   }
 
-  value: string;
+  value: string
 
   constructor(value: string) {
-    this.value = value;
+    this.value = value
   }
 
   get darken() {
-    return Color.darken(this.value);
+    return Color.darken(this.value)
   }
 
   get lighten() {
-    return Color.lighten(this.value);
+    return Color.lighten(this.value)
   }
 }

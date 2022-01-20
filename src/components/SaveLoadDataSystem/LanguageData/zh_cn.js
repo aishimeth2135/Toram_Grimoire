@@ -19,5 +19,5 @@ export default function(){
         'is empty': '没有可储存的资料。',
       },
     },
-  };
+  }
 }

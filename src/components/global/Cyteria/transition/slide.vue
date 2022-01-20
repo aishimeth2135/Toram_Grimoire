@@ -15,62 +15,62 @@
 </template>
 
 <script>
-import Velocity from 'velocity-animate';
+import Velocity from 'velocity-animate'
 
 export default {
   name: 'CyTransitionSlide',
   methods: {
     getBox(el) {
-      el = el.cloneNode(true);
+      el = el.cloneNode(true)
 
-      el.style.position = 'absolute';
-      el.style.visibility = 'hidden';
-      el.style.display = 'block';
+      el.style.position = 'absolute'
+      el.style.visibility = 'hidden'
+      el.style.display = 'block'
 
-      document.body.append(el);
-      const box = el.getBoundingClientRect();
-      el.remove();
+      document.body.append(el)
+      const box = el.getBoundingClientRect()
+      el.remove()
 
-      return box;
+      return box
     },
     handleHook(hook, el, done) {
-      console.log(hook, el);
+      console.log(hook, el)
       if (this.type === 'slide-up') {
-        const h = this.getBox(el).height;
-        const mb = (-1 * Math.floor(h)) + 'px';
+        const h = this.getBox(el).height
+        const mb = (-1 * Math.floor(h)) + 'px'
         const ops = {
           easing: 'ease',
           duration: 400,
           complete: done,
-        };
+        }
 
         if (hook === 'enter') {
-          Velocity(el, { marginBottom: ['', mb] }, ops);
+          Velocity(el, { marginBottom: ['', mb] }, ops)
         } else if (hook === 'leave') {
-          Velocity(el, { marginBottom: mb }, ops);
+          Velocity(el, { marginBottom: mb }, ops)
         }
       }
     },
     beforeEnter(el) {
-      this.handleHook('beforeEnter', el);
+      this.handleHook('beforeEnter', el)
     },
     enter(el, done) {
-      this.handleHook('enter', el, done);
+      this.handleHook('enter', el, done)
     },
     afterEnter(el) {
-      this.handleHook('afterEnter', el);
+      this.handleHook('afterEnter', el)
     },
     beforeLeave(el) {
-      this.handleHook('beforeLeave', el);
+      this.handleHook('beforeLeave', el)
     },
     leave(el, done) {
-      this.handleHook('leave', el, done);
+      this.handleHook('leave', el, done)
     },
     afterLeave(el) {
-      this.handleHook('afterLeave', el);
+      this.handleHook('afterLeave', el)
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

@@ -50,9 +50,9 @@
 </template>
 
 <script>
-import { trimZero } from '@/shared/utils/string';
+import { trimZero } from '@/shared/utils/string'
 
-import { EnchantStepStat } from '@/lib/Enchant/Enchant';
+import { EnchantStepStat } from '@/lib/Enchant/Enchant'
 
 
 export default {
@@ -67,15 +67,15 @@ export default {
   },
   computed: {
     potentialEffect() {
-      return trimZero(this.stat.finalPotentialEffect.toFixed(2));
+      return trimZero(this.stat.finalPotentialEffect.toFixed(2))
     },
     materialPoint() {
-      const mp = this.stat.materialPointCost;
+      const mp = this.stat.materialPointCost
       return {
         title: this.$lang('material point type list')[mp.type],
         value: mp.value,
-      };
+      }
     },
   },
-};
+}
 </script>

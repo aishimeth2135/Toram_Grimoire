@@ -44,28 +44,28 @@
 <script lang="ts">
 export default {
   name: 'AppConfirm',
-};
+}
 </script>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed } from 'vue'
 
-import { ConfirmItem, useConfirmStore } from '@/stores/app/confirm';
+import { ConfirmItem, useConfirmStore } from '@/stores/app/confirm'
 
-import { GetLang } from '@/shared/services/Language';
+import { GetLang } from '@/shared/services/Language'
 
-const store = useConfirmStore();
+const store = useConfirmStore()
 
 // if store.confirmItems.length is 0, this component will hide
-const item = computed<ConfirmItem>(() => store.confirmItems[0]);
+const item = computed<ConfirmItem>(() => store.confirmItems[0])
 
 const confirm = () => {
-  item.value.confirm?.();
-};
+  item.value.confirm?.()
+}
 
-const cancel = () => store.nextItem();
+const cancel = () => store.nextItem()
 
-const rootLang = GetLang;
+const rootLang = GetLang
 </script>
 
 <style lang="postcss" scoped>

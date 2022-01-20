@@ -1,13 +1,13 @@
-import { toRefs, computed } from 'vue';
-import type { ExtractPropTypes } from 'vue';
+import { toRefs, computed } from 'vue'
+import type { ExtractPropTypes } from 'vue'
 
-import Color from '@/shared/services/Color';
+import Color from '@/shared/services/Color'
 
-const ColorList = Color.List;
+const ColorList = Color.List
 
 const colorValidator = (value: string) => {
-  return value === 'default' || value === '!default' || ColorList.includes(value);
-};
+  return value === 'default' || value === '!default' || ColorList.includes(value)
+}
 
 const ColorSetProps = {
   textColor: {
@@ -45,7 +45,7 @@ const ColorSetProps = {
     default: 'default',
     validator: colorValidator,
   },
-};
+}
 
 function getColorSetStyles(src: ExtractPropTypes<typeof ColorSetProps>) {
   const {
@@ -56,30 +56,30 @@ function getColorSetStyles(src: ExtractPropTypes<typeof ColorSetProps>) {
     borderColor,
     borderColorHover,
     mainColor,
-  } = toRefs(src);
+  } = toRefs(src)
 
   const colorPropWithDefault = (value: string, id: string, defaultValue: string) => {
-    const [name, type = ''] = id.split('/');
+    const [name, type = ''] = id.split('/')
     if (value === '!default') {
-      return defaultValue;
+      return defaultValue
     }
     if (value === 'default') {
       if (mainColor.value !== 'default') {
-        const mc = mainColor.value;
-        return type === 'hover' || name === 'text' ? mc : Color.lighten(mc);
+        const mc = mainColor.value
+        return type === 'hover' || name === 'text' ? mc : Color.lighten(mc)
       } else {
-        return defaultValue;
+        return defaultValue
       }
     }
-    return value;
-  };
+    return value
+  }
 
   const handle = (key: string, color: string, colorHover: string) => {
     return {
       [`--color-set--${key}-color`]: `var(--primary-${color})`,
       [`--color-set--${key}-color-hover`]: `var(--primary-${colorHover})`,
-    } as Record<string, string>;
-  };
+    } as Record<string, string>
+  }
 
   return {
     ...handle(
@@ -97,17 +97,17 @@ function getColorSetStyles(src: ExtractPropTypes<typeof ColorSetProps>) {
       colorPropWithDefault(borderColor.value, 'border', 'light'),
       colorPropWithDefault(borderColorHover.value, 'border/hover', 'light-3'),
     ),
-  };
+  }
 }
 
 function setupColorSetStyles(src: ExtractPropTypes<typeof ColorSetProps>) {
   const colorSetStyles = computed(() => {
-    return getColorSetStyles(src);
-  });
+    return getColorSetStyles(src)
+  })
 
   return {
     colorSetStyles,
-  };
+  }
 }
 
-export { ColorSetProps, getColorSetStyles, setupColorSetStyles };
+export { ColorSetProps, getColorSetStyles, setupColorSetStyles }

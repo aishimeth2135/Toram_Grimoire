@@ -35,72 +35,72 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted, nextTick } from 'vue';
-import type { Ref, ComputedRef, WritableComputedRef } from 'vue';
+import { ref, computed, watch, onMounted, nextTick } from 'vue'
+import type { Ref, ComputedRef, WritableComputedRef } from 'vue'
 
-import { useDatasStore } from '@/stores/app/datas';
+import { useDatasStore } from '@/stores/app/datas'
 
-import { Skill, SkillRoot } from '@/lib/Skill/Skill';
+import { Skill, SkillRoot } from '@/lib/Skill/Skill'
 
-import SkillTitle from './skill/skill-title.vue';
+import SkillTitle from './skill/skill-title.vue'
 
 interface Emits {
   (evt: 'submit', skill: Skill): void;
   (evt: 'close'): void;
 }
 
-const emit = defineEmits<Emits>();
+const emit = defineEmits<Emits>()
 
-const datasStore = useDatasStore();
-const skillRoot: ComputedRef<SkillRoot> = computed(() => datasStore.Skill!.skillRoot);
+const datasStore = useDatasStore()
+const skillRoot: ComputedRef<SkillRoot> = computed(() => datasStore.Skill!.skillRoot)
 
-const searchText = ref('');
+const searchText = ref('')
 
 const searchResult: ComputedRef<Skill[]> = computed(() => {
   if (searchText.value === '') {
-    return [];
+    return []
   }
-  const result: Skill[] = [];
+  const result: Skill[] = []
   skillRoot.value.skillTreeCategorys.forEach(stc => {
     stc.skillTrees.forEach(st => {
-      const matchedSkills = st.skills.filter(skill => skill.name.includes(searchText.value));
-      result.push(...matchedSkills);
-    });
-  });
-  return result;
-});
+      const matchedSkills = st.skills.filter(skill => skill.name.includes(searchText.value))
+      result.push(...matchedSkills)
+    })
+  })
+  return result
+})
 
-const _selectedSearchResultIdx = ref(-1);
+const _selectedSearchResultIdx = ref(-1)
 const selectedSearchResultIdx: WritableComputedRef<number> = computed({
   get() {
-    return _selectedSearchResultIdx.value;
+    return _selectedSearchResultIdx.value
   },
   set(value) {
     if (value >= searchResult.value.length) {
-      value = searchResult.value.length - 1;
+      value = searchResult.value.length - 1
     }
     if (value < 0) {
-      value = 0;
+      value = 0
     }
-    _selectedSearchResultIdx.value = value;
+    _selectedSearchResultIdx.value = value
   },
-});
+})
 
 watch(searchResult, () => {
-  selectedSearchResultIdx.value = 0;
-});
+  selectedSearchResultIdx.value = 0
+})
 
 const selectSkillFromKeyup = () => {
-  const skill = searchResult.value[selectedSearchResultIdx.value];
+  const skill = searchResult.value[selectedSearchResultIdx.value]
   if (skill) {
-    emit('submit', skill);
+    emit('submit', skill)
   }
-};
+}
 
-const searchInputComponent: Ref<{ focus: Function } | null> = ref(null);
+const searchInputComponent: Ref<{ focus: Function } | null> = ref(null)
 
 onMounted(async () => {
-  await nextTick();
-  searchInputComponent.value?.focus();
-});
+  await nextTick()
+  searchInputComponent.value?.focus()
+})
 </script>

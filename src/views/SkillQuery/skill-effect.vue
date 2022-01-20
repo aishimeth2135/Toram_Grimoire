@@ -85,27 +85,27 @@
 <script lang="ts">
 export default {
   name: 'SkillEffect',
-};
+}
 </script>
 
 <script lang="ts" setup>
-import { computed, ref, watch, toRefs, nextTick } from 'vue';
-import { Ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, ref, watch, toRefs, nextTick } from 'vue'
+import { Ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { useDatasStore } from '@/stores/app/datas';
+import { useDatasStore } from '@/stores/app/datas'
 
-import { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer';
-import { Skill, SkillRoot } from '@/lib/Skill/Skill';
+import { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
+import { Skill, SkillRoot } from '@/lib/Skill/Skill'
 
-import ToggleService from '@/setup/ToggleService';
+import ToggleService from '@/setup/ToggleService'
 
-import SkillBranch from './skill/skill-branch.vue';
-import skillTagsContent from './skill-tags-content.vue';
-import SkillEffectHistory from './skill-effect-history/index.vue';
-import SkillTitle from './skill/skill-title.vue';
+import SkillBranch from './skill/skill-branch.vue'
+import skillTagsContent from './skill-tags-content.vue'
+import SkillEffectHistory from './skill-effect-history/index.vue'
+import SkillTitle from './skill/skill-title.vue'
 
-import { setupSkillTag } from './setup';
+import { setupSkillTag } from './setup'
 
 interface Props {
   skillEffectItem: SkillEffectItem | null;
@@ -115,78 +115,78 @@ interface Emits {
   (evt: 'set-current-skill', skill: Skill): void;
 }
 
-const props = defineProps<Props>();
-const emit = defineEmits<Emits>();
+const props = defineProps<Props>()
+const emit = defineEmits<Emits>()
 
-const { skillEffectItem: effectItem } = toRefs(props);
+const { skillEffectItem: effectItem } = toRefs(props)
 
-const { t } = useI18n();
+const { t } = useI18n()
 const { tabs, toggle } = ToggleService({
   tabs: [{ name: 'skillInfo', default: true }, 'skillHistory'] as const,
-});
-const datasStore = useDatasStore();
+})
+const datasStore = useDatasStore()
 
 const setTab = (target: keyof typeof tabs) => {
-  toggle(`tabs/${target}`, true, false);
-};
+  toggle(`tabs/${target}`, true, false)
+}
 
 const tabVisible = computed(() => {
-  return effectItem.value?.parent.effectItems.some(item => item.historys.length > 0) ?? false;
-});
+  return effectItem.value?.parent.effectItems.some(item => item.historys.length > 0) ?? false
+})
 
 const skillBranchItemDatas = computed(() => {
   if (!effectItem.value) {
-    return [];
+    return []
   }
   return effectItem.value.branchItems.map((item, idx) => ({
     item,
     id: `branch--${item.id !== -1 ? item.id : 'none-' + idx}`,
-  }));
-});
+  }))
+})
 
-const tagDetailContent: Ref<{ $el: HTMLElement } | null> = ref(null);
+const tagDetailContent: Ref<{ $el: HTMLElement } | null> = ref(null)
 
 const {
   currentTags,
   tagButtonHover,
-} = setupSkillTag(tagDetailContent);
+} = setupSkillTag(tagDetailContent)
 
-const skillBranchesElement: Ref<HTMLElement | null> = ref(null);
-const tagHoverFloatComponent: Ref<{ update: Function } | null> = ref(null);
-const skillHoverFloatComponent: Ref<{ update: Function } | null> = ref(null);
-const branchHoverFloatComponent: Ref<{ update: Function } | null> = ref(null);
+const skillBranchesElement: Ref<HTMLElement | null> = ref(null)
+const tagHoverFloatComponent: Ref<{ update: Function } | null> = ref(null)
+const skillHoverFloatComponent: Ref<{ update: Function } | null> = ref(null)
+const branchHoverFloatComponent: Ref<{ update: Function } | null> = ref(null)
 
 watch(effectItem, async () => {
-  setTab('skillInfo');
-  await nextTick();
-  tagHoverFloatComponent.value?.update();
-  skillHoverFloatComponent.value?.update();
-  branchHoverFloatComponent.value?.update();
-}, { immediate: true });
+  setTab('skillInfo')
+  await nextTick()
+  tagHoverFloatComponent.value?.update()
+  skillHoverFloatComponent.value?.update()
+  branchHoverFloatComponent.value?.update()
+}, { immediate: true })
 
-const currentHoveringSkill: Ref<Skill | null> = ref(null);
+const currentHoveringSkill: Ref<Skill | null> = ref(null)
 const skillButtonHover = (el: HTMLElement) => {
-  const skillRoot = datasStore.Skill!.skillRoot as SkillRoot;
-  const skillName = el.innerText;
-  let result: Skill | null = null;
+  const skillRoot = datasStore.Skill!.skillRoot as SkillRoot
+  const skillName = el.innerText
+  let result: Skill | null = null
   skillRoot.skillTreeCategorys.some(stc => {
     return stc.skillTrees.some(st => {
-      const matchedSkill = st.skills.find(skill => skill.name === skillName);
+      const matchedSkill = st.skills.find(skill => skill.name === skillName)
       if (matchedSkill) {
-        result = matchedSkill;
-        return true;
+        result = matchedSkill
+        return true
       }
-      return false;
-    });
-  });
-  currentHoveringSkill.value = result;
-};
+      return false
+    })
+  })
+  currentHoveringSkill.value = result
+}
 
-const currentHoveringBranch: Ref<SkillBranchItem | null> = ref(null);
+const currentHoveringBranch: Ref<SkillBranchItem | null> = ref(null)
 const branchButtonHover = (el: HTMLElement) => {
-  const branchName = el.innerText;
-  currentHoveringBranch.value = effectItem.value!.branchItems.find(bch => bch.attr('name') === branchName) ?? null;
-};
+  const branchName = el.innerText
+  currentHoveringBranch.value = effectItem.value!.branchItems.find(bch => bch.attr('name') === branchName) ?? null
+}
 </script>
 
 <style lang="postcss" scoped>

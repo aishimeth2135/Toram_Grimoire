@@ -1,8 +1,8 @@
-import { HandleLanguageData } from '@/shared/services/Language';
+import { HandleLanguageData } from '@/shared/services/Language'
 
-import CharacterSystem from '@/lib/Character';
+import CharacterSystem from '@/lib/Character'
 
-import type { LangCsvData } from './DownloadDatas';
+import type { LangCsvData } from './DownloadDatas'
 
 export default function(characterSystem: CharacterSystem, datas: LangCsvData) {
   const
@@ -15,23 +15,23 @@ export default function(characterSystem: CharacterSystem, datas: LangCsvData) {
     LANG_DATA = {
       CAPTION: 0,
       CONSTANT_FORMULA: 1,
-    };
+    }
 
-  const csvData = datas[0];
+  const csvData = datas[0]
   // language data
   HandleLanguageData(datas, {
     [CAPTION]: LANG_DATA.CAPTION,
     [CONSTANT_FORMULA]: LANG_DATA.CONSTANT_FORMULA,
-  });
+  })
 
   csvData.forEach((row, index) => {
     if (index === 0 || characterSystem.findStatBase(row[BASE_NAME]))
-      return;
+      return
     const stat = characterSystem.appendStatBase(
-      row[BASE_NAME], row[CAPTION], row[HAS_MULTIPLIER] !== '無', row[ORDER] ? parseInt(row[ORDER], 10) : 999);
+      row[BASE_NAME], row[CAPTION], row[HAS_MULTIPLIER] !== '無', row[ORDER] ? parseInt(row[ORDER], 10) : 999)
     if (row[CONSTANT_FORMULA]) {
-      stat.constantDisplayFormat = row[CONSTANT_FORMULA];
+      stat.constantDisplayFormat = row[CONSTANT_FORMULA]
     }
-    stat.hidden = row[HIDDEN] !== '';
-  });
+    stat.hidden = row[HIDDEN] !== ''
+  })
 }

@@ -108,5 +108,5 @@ export default function() {
         'message: wrong type of .txt file': '读取的档案必须为文字（.txt）档。',
       },
     },
-  };
+  }
 }

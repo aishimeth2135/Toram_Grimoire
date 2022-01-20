@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import vue_skillArea from './skill-area.vue';
+import vue_skillArea from './skill-area.vue'
 
 export default {
   name: 'SkillAreaInfo',
@@ -65,7 +65,7 @@ export default {
     'skill-area': vue_skillArea,
   },
   props: ['branch', 'showData'],
-};
+}
 </script>
 
 <style lang="less" scoped>

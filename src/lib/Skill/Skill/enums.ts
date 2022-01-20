@@ -31,4 +31,4 @@ const enum SkillBranchNames {
 
 export {
   SkillBranchNames,
-};
+}

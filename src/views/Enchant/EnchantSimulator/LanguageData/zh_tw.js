@@ -93,5 +93,5 @@ export default function(){
         },
       },
     },
-  };
+  }
 }

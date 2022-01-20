@@ -1,20 +1,20 @@
-import { trackRouter } from 'vue-gtag-next';
-import { createRouter, createWebHistory } from 'vue-router';
-import type { RouteRecordRaw } from 'vue-router';
+import { trackRouter } from 'vue-gtag-next'
+import { createRouter, createWebHistory } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 
-import { useMainStore } from '@/stores/app/main';
-import { useNavStore } from '@/stores/app/nav';
-import type { NavItem } from '@/stores/app/nav';
-import { useLeftMenuStore } from '@/stores/app/left-menu';
+import { useMainStore } from '@/stores/app/main'
+import { useNavStore } from '@/stores/app/nav'
+import type { NavItem } from '@/stores/app/nav'
+import { useLeftMenuStore } from '@/stores/app/left-menu'
 
-import Bubble from './Bubble';
-import DamageCalculation from './Calculation/Damage';
-import Character from './Character';
-import Enchant from './Enchant';
-import Home from './Home';
-import Items from './Items';
-import Page404 from './Page404';
-import Skill from './Skill';
+import Bubble from './Bubble'
+import DamageCalculation from './Calculation/Damage'
+import Character from './Character'
+import Enchant from './Enchant'
+import Home from './Home'
+import Items from './Items'
+import Page404 from './Page404'
+import Skill from './Skill'
 
 export default function createAppRouter() {
   const routes: RouteRecordRaw[] = [
@@ -26,38 +26,38 @@ export default function createAppRouter() {
     Page404,
     Bubble,
     DamageCalculation,
-  ];
+  ]
 
   const router = createRouter({
     history: createWebHistory(),
     routes,
-  });
+  })
 
-  trackRouter(router);
+  trackRouter(router)
 
-  const mainStore = useMainStore();
-  const navStore = useNavStore();
-  const leftMenuStore = useLeftMenuStore();
+  const mainStore = useMainStore()
+  const navStore = useNavStore()
+  const leftMenuStore = useLeftMenuStore()
 
   router.beforeEach((to, from) => {
     if (to) {
       { // set title and meta tags
-        const data = to.matched.slice().reverse().find(p => p.meta?.title);
-        mainStore.updateTitle(data ? data.meta.title : '');
+        const data = to.matched.slice().reverse().find(p => p.meta?.title)
+        mainStore.updateTitle(data ? data.meta.title : '')
       }
       {
-        document.head.querySelectorAll('*[data-vue-router-mata-tag-controlled]').forEach(el => el.remove());
-        const data = to.matched.slice().reverse().find(p => p.meta && p.meta.metaTags);
+        document.head.querySelectorAll('*[data-vue-router-mata-tag-controlled]').forEach(el => el.remove())
+        const data = to.matched.slice().reverse().find(p => p.meta && p.meta.metaTags)
         if (data) {
-          const metaTags = data.meta.metaTags;
+          const metaTags = data.meta.metaTags
           if (metaTags) {
             const els = metaTags.map(def => {
-              const el = document.createElement('meta');
-              Object.keys(def).forEach(key => el.setAttribute(key, def[key]));
-              el.setAttribute('data-vue-router-mata-tag-controlled', '');
-              return el;
-            });
-            document.head.append(...els);
+              const el = document.createElement('meta')
+              Object.keys(def).forEach(key => el.setAttribute(key, def[key]))
+              el.setAttribute('data-vue-router-mata-tag-controlled', '')
+              return el
+            })
+            document.head.append(...els)
           }
         }
       }
@@ -66,41 +66,41 @@ export default function createAppRouter() {
       const navItems: NavItem[] = to.matched
         .filter(item => item.meta?.title)
         .map(item => {
-          const { name, meta } = item;
+          const { name, meta } = item
           if (!name) {
-            console.warn('[Router] name of route:', item, 'not found.');
+            console.warn('[Router] name of route:', item, 'not found.')
           }
           return {
             title: meta.title as string,
             pathName: (name || 'Home') as string,
-          };
-        });
-      navStore.setItems(navItems);
+          }
+        })
+      navStore.setItems(navItems)
 
       // set left menu
       {
-        const data = to.matched.slice().reverse().find(item => item.meta?.leftMenuViewButtons);
+        const data = to.matched.slice().reverse().find(item => item.meta?.leftMenuViewButtons)
         if (data) {
           const res = data.meta.leftMenuViewButtons!.map(({ title, icon, pathName }) => {
             return {
               title,
               icon: icon,
               pathName,
-            };
-          });
+            }
+          })
 
-          leftMenuStore.setViewButtons(res);
+          leftMenuStore.setViewButtons(res)
         }
       }
     }
 
     if (to.name === 'SkillSimulator') {
       if (from.name !== 'CharacterSimulator') {
-        mainStore.setRedirectPathName('SkillSimulator');
-        return { name: 'CharacterSimulator' };
+        mainStore.setRedirectPathName('SkillSimulator')
+        return { name: 'CharacterSimulator' }
       }
     }
-  });
+  })
 
-  return router;
+  return router
 }

@@ -421,17 +421,17 @@
 </template>
 
 <script>
-import { trimZero } from '@/shared/utils/string';
+import { trimZero } from '@/shared/utils/string'
 
-import vue_branchDetail from './branch-detail.vue';
-import vue_damageFormula from './damage-formula.vue';
-import vue_equipmentInfo from './equipment-info.vue';
-import vue_healFormula from './heal-formula.vue';
-import vue_stats from './stats.vue';
+import vue_branchDetail from './branch-detail.vue'
+import vue_damageFormula from './damage-formula.vue'
+import vue_equipmentInfo from './equipment-info.vue'
+import vue_healFormula from './heal-formula.vue'
+import vue_stats from './stats.vue'
 
-import vue_skillAreaInfo from './skill-area-info';
-import handleSkillFormula from '../utils/handleFormula.js';
-import DataContainer from '../utils/DataContainer.js';
+import vue_skillAreaInfo from './skill-area-info'
+import handleSkillFormula from '../utils/handleFormula.js'
+import DataContainer from '../utils/DataContainer.js'
 
 
 export default {
@@ -455,7 +455,7 @@ export default {
     return {
       'calcValueStr': this.calcValueStr,
       'handleDataContainer': this.handleDataContainer,
-    };
+    }
   },
   props: ['branch', 'skillState', 'type'],
   data() {
@@ -466,7 +466,7 @@ export default {
       skillAreaVisible: false,
       historyVisible: false,
       topMenuVisible: false,
-    };
+    }
   },
   computed: {
     topButtons() {
@@ -491,12 +491,12 @@ export default {
           'true': 'ic-round-history-toggle-off',
           'false': 'ic-round-history',
         },
-      }];
+      }]
 
-      const res = list.filter(p => p.valid);
-      res.forEach(p => p.icon = p.icon[this[p.name + 'Visible'] ? 'true' : 'false']);
+      const res = list.filter(p => p.valid)
+      res.forEach(p => p.icon = p.icon[this[p.name + 'Visible'] ? 'true' : 'false'])
 
-      return res.length > 0 ? (this.topMenuVisible ? res : []) : null;
+      return res.length > 0 ? (this.topMenuVisible ? res : []) : null
     },
     // confirmHistoryDate() {
     //   return this.branch.suffix.find(p => p.name === 'history');
@@ -510,21 +510,21 @@ export default {
         'wind': 'simple-icons:tailwindcss',
         'light': 'carbon-light',
         'dark': 'bx-bx-moon',
-      }[this.branch.attrs['element']] || 'bx-bx-circle';
+      }[this.branch.attrs['element']] || 'bx-bx-circle'
     },
     rootClassList() {
       return {
         'left-line': this.otherEquipmentBranchVisible || this.historyVisible,
-      };
+      }
     },
     historyDatas() {
       return this.branch.history.map((p, i) => ({
         iid: i,
         branch: p.branch,
-      }));
+      }))
     },
     equipmentTitle() {
-      const eq = this.branch['@parent-state'].equipment;
+      const eq = this.branch['@parent-state'].equipment
 
       return {
         main: eq.main != -1 ? this.$lang.extra('parent', 'equipment/main-weapon')[eq.main] : -1,
@@ -532,28 +532,28 @@ export default {
         body: eq.body != -1 ? this.$lang.extra('parent', 'equipment/body-armor')[eq.body] : -1,
         none: eq.main == -1 && eq.sub == -1 && eq.body == -1 ? this.$lang.extra('parent', '/equipment/none') : undefined,
         operator: eq.operator,
-      };
+      }
     },
     stackValueRange() {
       let min = parseInt(this.showData['min'], 10),
-        max = parseInt(this.showData['max'], 10);
+        max = parseInt(this.showData['max'], 10)
 
-      max = !Number.isNaN(max) ? max : null;
-      min = !Number.isNaN(min) ? min : null;
+      max = !Number.isNaN(max) ? max : null
+      min = !Number.isNaN(min) ? min : null
 
-      return [min, max];
+      return [min, max]
     },
     subContentValid() {
-      const p = this.branch.name;
+      const p = this.branch.name
       if (p === 'damage')
-        return this.showData['title'] || this.isScoped || this.showData['element'] || this.showData['frequency'];
+        return this.showData['title'] || this.isScoped || this.showData['element'] || this.showData['frequency']
       if (p === 'heal')
-        return this.showData['frequency'];
+        return this.showData['frequency']
 
-      return true;
+      return true
     },
     detailShowData() {
-      return this.handleDetailShowData(this.branch);
+      return this.handleDetailShowData(this.branch)
     },
     branchClass() {
       return {
@@ -561,72 +561,72 @@ export default {
         [this.branch.name]: true,
         'branch-mark': this.isMark,
         'other-equipment': this.type === 'other-equipment',
-      };
+      }
     },
     isScoped() {
       if (this.branch.name === 'damage') {
         if (this.branch.attrs['type'] === 'AOE')
-          return true;
+          return true
       }
       if (this.branch.name === 'effect') {
         if (this.branch.attrs['type'] === 'aura' || this.branch.attrs['type'] === 'circle')
-          return true;
+          return true
       }
-      return false;
+      return false
     },
     isMark() {
-      return this.branch.attrs['is_mark'] === '1';
+      return this.branch.attrs['is_mark'] === '1'
     },
     suffixBranchShowDatas() {
       return this.branch.suffix
         .filter(p => p.name == 'extra')
         .map((p, i) => {
-          const t = this.handleShowData(p);
-          t['@--key'] = p.name + i;
-          return t;
-        });
+          const t = this.handleShowData(p)
+          t['@--key'] = p.name + i
+          return t
+        })
     },
     titleIconName() {
       if (this.branch.name == 'damage')
-        return 'ri-sword-fill';
-      return 'mdi-checkbox-multiple-blank-circle';
+        return 'ri-sword-fill'
+      return 'mdi-checkbox-multiple-blank-circle'
     },
     showData() {
-      return this.handleShowData(this.branch);
+      return this.handleShowData(this.branch)
     },
     otherEquipmentBranchDatas() {
       if (this.branch.id === '-')
-        return null;
+        return null
 
       const res = this.skillState.states
         .filter(p => p.branches.find(b => b.id == this.branch.id))
         .map((p, i) => ({
           iid: i,
           branch: p.branches.find(b => b.id == this.branch.id),
-        }));
+        }))
 
-      return res.length === 0 ? null : res;
+      return res.length === 0 ? null : res
     },
     formulaDisplayMode() {
-      return this.getFormulaDisplayMode();
+      return this.getFormulaDisplayMode()
     },
     stackValue: {
       get() {
-        return this.stackState ? this.stackState.value : null;
+        return this.stackState ? this.stackState.value : null
       },
       set(v) {
         if (this.stackState) {
-          this.stackState.value = v;
+          this.stackState.value = v
         }
       },
     },
     stackState() {
       if (this.branch.name !== 'stack') {
-        return null;
+        return null
       }
-      const stack_id = this.branch.attrs['id'];
-      const p = this.branch['@parent-state'].stackStates.find(a => a.id == stack_id);
-      return p ? p : null;
+      const stack_id = this.branch.attrs['id']
+      const p = this.branch['@parent-state'].stackStates.find(a => a.id == stack_id)
+      return p ? p : null
     },
   },
   watch: {
@@ -634,61 +634,61 @@ export default {
       immediate: true,
       handler() {
         if (this.branch.group) {
-          this.$nextTick(() => this.toggleGroup(this.branch.group.expansion));
+          this.$nextTick(() => this.toggleGroup(this.branch.group.expansion))
         }
       },
     },
   },
   updated() {
-    this.handleTagButton(this.$el);
+    this.handleTagButton(this.$el)
   },
   mounted() {
-    this.handleTagButton(this.$el);
+    this.handleTagButton(this.$el)
   },
   methods: {
     extraElementCaption(v) {
-      const s = `<span class="text-light-3">${this.$lang('damage/element/' + v)}</span>`;
-      return this.$lang('apply element', [s]);
+      const s = `<span class="text-light-3">${this.$lang('damage/element/' + v)}</span>`
+      return this.$lang('apply element', [s])
     },
     toggleVisible(name, force) {
-      force = force === undefined ? !this[name + 'Visible'] : force;
+      force = force === undefined ? !this[name + 'Visible'] : force
 
       if (name === 'history' && force)
-        this.otherEquipmentBranchVisible = false;
+        this.otherEquipmentBranchVisible = false
       else if (name === 'otherEquipmentBranch' && force)
-        this.historyVisible = false;
+        this.historyVisible = false
 
-      this[name + 'Visible'] = force;
+      this[name + 'Visible'] = force
     },
     handleDetailShowData(bch) {
-      const attrs = bch.attrs;
+      const attrs = bch.attrs
       // const data = Object.assign({}, attrs);
       const data = {
         '@data-list': [],
-      };
-      const handleList = [];
+      }
+      const handleList = []
 
       if (bch.name == 'damage') {
-        attrs['is_place'] == '1' && handleList.push('is_place');
+        attrs['is_place'] == '1' && handleList.push('is_place')
         handleList.push({
           name: ['range_damage', 'unsheathe_damage'],
           type: 'bool',
-        });
+        })
         this.calcValueStr(attrs['frequency']) > 1 && handleList.push('judgment', {
           name: 'frequency_judgment',
           convert: v => {
             if (v == 'auto')
-              return bch.attrs['title'] != 'each' ? 'single' : 'multiple';
-            return v;
+              return bch.attrs['title'] != 'each' ? 'single' : 'multiple'
+            return v
           },
-        });
+        })
       }
 
       handleList.forEach(item => {
-        const default_icon = 'ic-outline-info';
+        const default_icon = 'ic-outline-info'
         if (typeof item == 'object') {
-          let { name, type = 'normal', icon, convert } = item;
-          name = Array.isArray(name) ? name : [name];
+          let { name, type = 'normal', icon, convert } = item
+          name = Array.isArray(name) ? name : [name]
           if (!icon) {
             icon = {
               'bool': {
@@ -696,132 +696,132 @@ export default {
                 '0': 'ic-round-close',
                 'none': 'mdi-help',
               },
-            } [type] || { '@default': default_icon };
+            } [type] || { '@default': default_icon }
           }
           name.forEach(k => {
-            const tmp = new DataContainer(bch.attrs[k], bch, k);
-            convert && tmp.handle(v => convert(v));
+            const tmp = new DataContainer(bch.attrs[k], bch, k)
+            convert && tmp.handle(v => convert(v))
 
-            this.handleDataContainerLangText(tmp, { prefix: '-detail' });
-            const v = tmp.result();
-            let classList = null;
+            this.handleDataContainerLangText(tmp, { prefix: '-detail' })
+            const v = tmp.result()
+            let classList = null
             if (type == 'bool') {
-              classList = attrs[k] == '1' ? null : ['dark'];
+              classList = attrs[k] == '1' ? null : ['dark']
             }
             data['@data-list'].push({
               id: k,
               icon: icon[attrs[k]] || icon['@default'],
               value: v,
               classList,
-            });
-          });
+            })
+          })
         } else {
-          const tmp = new DataContainer(bch.attrs[item], bch, item);
-          this.handleDataContainerLangText(tmp, { prefix: '-detail' });
-          const v = tmp.result();
+          const tmp = new DataContainer(bch.attrs[item], bch, item)
+          this.handleDataContainerLangText(tmp, { prefix: '-detail' })
+          const v = tmp.result()
           data['@data-list'].push({
             id: item,
             icon: default_icon,
             value: v,
-          });
+          })
         }
-      });
+      })
 
-      return data;
+      return data
     },
     toggleGroup(force) {
-      const bchs = this.branch['@parent-state'].branches;
+      const bchs = this.branch['@parent-state'].branches
 
-      const g = this.branch.group;
-      g.expansion = force === undefined ? !g.expansion : force;
+      const g = this.branch.group
+      g.expansion = force === undefined ? !g.expansion : force
 
       let cur = bchs.findIndex(p => p == this.branch),
         cnt = g.size,
         cur_g = g,
-        last = null;
+        last = null
 
-      const len = bchs.length - 1;
+      const len = bchs.length - 1
       while (cnt != 0 && cur != len) {
-        cnt -= 1;
-        cur += 1;
+        cnt -= 1
+        cur += 1
 
-        const p = bchs[cur];
+        const p = bchs[cur]
         if (cur_g.expandable) {
-          p.visible = !g.expansion ? false : cur_g.expansion;
-          last = p;
+          p.visible = !g.expansion ? false : cur_g.expansion
+          last = p
         }
 
         if (p.group) {
-          cnt += p.group.size;
-          cur_g = p.group;
+          cnt += p.group.size
+          cur_g = p.group
         }
       }
 
       if (last) {
-        last.isGroupTail = last.visible;
+        last.isGroupTail = last.visible
       }
     },
     ailmentText(showData) {
-      return this.$lang('damage/ailment text', [showData['ailment_chance'], `<span class="${this.tagButtonClassName}">${showData['ailment_name']}</span>`]);
+      return this.$lang('damage/ailment text', [showData['ailment_chance'], `<span class="${this.tagButtonClassName}">${showData['ailment_name']}</span>`])
     },
     handleShowData(bch) {
-      const attrs = bch.attrs;
-      const data = Object.assign({}, attrs);
+      const attrs = bch.attrs
+      const data = Object.assign({}, attrs)
 
       // 四個清單。會按照步驟對data內的資料做轉換。
-      const hiddenList = []; // 1. 驗證是否隱藏
-      const handleValueList = []; // 2-1. 需計算公式的數值
-      const handleTextList = []; // 2-2. 需計算內行公式的文字
-      const langTextList = []; // 3. 需轉換語言的
-      const titleList = []; // 4. 需從語言清單獲取標題的
+      const hiddenList = [] // 1. 驗證是否隱藏
+      const handleValueList = [] // 2-1. 需計算公式的數值
+      const handleTextList = [] // 2-2. 需計算內行公式的文字
+      const langTextList = [] // 3. 需轉換語言的
+      const titleList = [] // 4. 需從語言清單獲取標題的
 
       if (bch.name === 'proration') {
         if (data['proration'] === 'auto')
-          data['proration'] = data['damage'];
-        langTextList.push('damage', 'proration');
-        titleList.push('damage', 'proration');
+          data['proration'] = data['damage']
+        langTextList.push('damage', 'proration')
+        titleList.push('damage', 'proration')
       } else if (bch.name === 'list') {
         if (!bch.mainBranch) {
           const suffixList = bch.suffix
             .filter(p => p.name === 'list')
-            .map(p => this.handleShowData(p));
-          data['@list-datas'] = [data, ...suffixList];
+            .map(p => this.handleShowData(p))
+          data['@list-datas'] = [data, ...suffixList]
         }
-        handleTextList.push('text');
+        handleTextList.push('text')
       } else if (!bch.mainBranch) {
         if (bch.name === 'damage') {
           // base
           if (data['base'] === 'auto') {
-            const baseSuffix = bch.suffix.find(p => p.name === 'base');
+            const baseSuffix = bch.suffix.find(p => p.name === 'base')
             if (baseSuffix) {
-              const baseSuffixAttrs = baseSuffix.attrs;
+              const baseSuffixAttrs = baseSuffix.attrs
               if (baseSuffixAttrs['type'] !== 'custom') {
-                data['@custom-base-caption'] = baseSuffixAttrs['type'];
-                data['base'] = `@custom/${baseSuffixAttrs['type']}`;
+                data['@custom-base-caption'] = baseSuffixAttrs['type']
+                data['base'] = `@custom/${baseSuffixAttrs['type']}`
                 langTextList.push('base', {
                   name: '@custom-base-caption',
                   afterHandle: v => this.createTagButtons(this.handleMarkText(v, 'text-purple')),
-                });
+                })
               } else {
                 if (baseSuffixAttrs['title'] === 'auto') {
-                  data['base'] = '@custom/default';
-                  langTextList.push('base');
+                  data['base'] = '@custom/default'
+                  langTextList.push('base')
                 } else {
-                  data['base'] = baseSuffixAttrs['title'];
+                  data['base'] = baseSuffixAttrs['title']
                 }
                 if (baseSuffixAttrs['caption']) {
-                  data['@custom-base-caption'] = baseSuffixAttrs['caption'];
+                  data['@custom-base-caption'] = baseSuffixAttrs['caption']
                 }
               }
             } else {
-              data['base'] = data['damage_type'] === 'physical' ? 'atk' : 'matk';
-              langTextList.push('base');
+              data['base'] = data['damage_type'] === 'physical' ? 'atk' : 'matk'
+              langTextList.push('base')
             }
           } else {
-            langTextList.push('base');
+            langTextList.push('base')
           }
           if (data['detail_display'] === 'auto')
-            data['detail_display'] = data['title'] === 'normal_attack' ? '0' : '1';
+            data['detail_display'] = data['title'] === 'normal_attack' ? '0' : '1'
 
           handleValueList.push('constant', 'extra_constant', 'duration', 'cycle', {
             name: ['multiplier', 'ailment_chance'],
@@ -829,7 +829,7 @@ export default {
           }, {
             name: 'frequency',
             beforeColorText: v => v + this.$lang('global/times'),
-          });
+          })
 
           hiddenList.push({
             name: ['constant', 'multiplier', 'extra_constant', 'is_place'],
@@ -851,9 +851,9 @@ export default {
           }, {
             name: 'title',
             validation: v => v === 'normal_attack',
-          });
-          langTextList.push('damage_type', 'type', 'title', 'element');
-          data['title'] !== 'each' && langTextList.push({ name: 'frequency', type: 'value' });
+          })
+          langTextList.push('damage_type', 'type', 'title', 'element')
+          data['title'] !== 'each' && langTextList.push({ name: 'frequency', type: 'value' })
 
           // skill area
           handleValueList.push({
@@ -862,7 +862,7 @@ export default {
           }, {
             name: ['radius', 'move_distance', 'start_position_offsets', 'end_position_offsets'],
             beforeColorText: v => v + 'm',
-          });
+          })
           hiddenList.push({
             name: ['move_distance', 'angel'],
             validation: v => v,
@@ -870,39 +870,39 @@ export default {
             name: ['start_position_offsets', 'end_position_offsets'],
             validation: v => v != 0,
             validationType: 'value',
-          });
+          })
           langTextList.push('effective_area', {
             name: ['start_position_offsets', 'end_position_offsets'],
             type: 'value',
-          });
+          })
           titleList.push('effective_area', 'radius', 'move_distance', 'angle',
-            'start_position_offsets', 'end_position_offsets');
+            'start_position_offsets', 'end_position_offsets')
           {
-            const prorationBch = bch.suffix.find(suf => suf.name === 'proration');
+            const prorationBch = bch.suffix.find(suf => suf.name === 'proration')
             if (prorationBch) {
               const _data = this.handleShowData(prorationBch);
               ['damage', 'proration', 'damage: title', 'proration: title'].forEach(k => {
-                data['@proration: ' + k] = _data[k];
-              });
+                data['@proration: ' + k] = _data[k]
+              })
             }
           }
         } else if (bch.name === 'text' || bch.name === 'tips') {
-          handleTextList.push('text');
+          handleTextList.push('text')
         } else if (bch.name === 'stack') {
           if (data['default'] === 'auto')
-            data['default'] = data['min'];
+            data['default'] = data['min']
           handleValueList.push({
             name: ['min', 'max', 'default'],
             calcOnly: true,
-          });
+          })
           const stkIdx = bch['@parent-state'].branches
             .filter(p => p.name === 'stack')
-            .indexOf(bch);
+            .indexOf(bch)
           hiddenList.push({
             name: 'name',
             validation: v => v && v !== 'auto',
             defaultValue: this.$lang('stack/base name') + (stkIdx + 1),
-          });
+          })
         } else if (bch.name === 'effect') {
           handleValueList.push({
             name: 'radius',
@@ -910,8 +910,8 @@ export default {
           }, {
             name: 'duration',
             beforeColorText: v => this.$lang('display duration', [v]),
-          });
-          handleTextList.push('caption', 'condition', 'end_condition');
+          })
+          handleTextList.push('caption', 'condition', 'end_condition')
           hiddenList.push({
             name: ['condition', 'type'],
             validation: v => v !== 'none',
@@ -923,19 +923,19 @@ export default {
             validation: v => v,
             defaultValue: this.$lang('effect/base name'),
           });
-          ['auto', 'hit'].includes(data['condition']) && langTextList.push('condition');
-          langTextList.push('is_place', 'type');
+          ['auto', 'hit'].includes(data['condition']) && langTextList.push('condition')
+          langTextList.push('is_place', 'type')
 
           // skill area
           hiddenList.push({
             name: ['start_position_offsets', 'end_position_offsets'],
             validation: v => v != 0,
             validationType: 'value',
-          });
-          langTextList.push('effective_area');
-          titleList.push('effective_area', 'radius');
+          })
+          langTextList.push('effective_area')
+          titleList.push('effective_area', 'radius')
         } else if (bch.name === 'next') {
-          handleTextList.push('caption');
+          handleTextList.push('caption')
           hiddenList.push({
             name: 'condition',
             validation: v => v && v !== 'none',
@@ -944,19 +944,19 @@ export default {
             name: 'name',
             validation: v => v,
             defaultValue: this.$lang('effect/base name'),
-          });
+          })
         } else if (bch.name === 'passive') {
-          handleTextList.push('caption');
+          handleTextList.push('caption')
           hiddenList.push({
             name: 'name',
             validation: v => v,
             defaultValue: this.$lang('passive/base name'),
-          });
+          })
         } else if (bch.name === 'heal') {
           handleValueList.push('duration', 'cycle', 'constant', {
             name: 'frequency',
             beforeColorText: v => v + this.$lang('global/times'),
-          });
+          })
           hiddenList.push({
             name: 'name',
             validation: v => v,
@@ -968,209 +968,209 @@ export default {
             name: 'frequency',
             validation: v => parseInt(v, 10) > 1,
             validationType: 'value',
-          });
+          })
 
-          data['@extra-value-list'] = [];
+          data['@extra-value-list'] = []
           if (data['extra_value'] && data['extra_text']) {
             const vs = data['extra_value'].split(/\s*,,\s*/)
               .map(p => {
-                const dc = new DataContainer(p, 'extra_value', bch);
-                this.handleDataContainer(dc, { toPercentage: true });
-                return dc.result();
-              });
-            const ts = data['extra_text'].split(/\s*,\s*/);
+                const dc = new DataContainer(p, 'extra_value', bch)
+                this.handleDataContainer(dc, { toPercentage: true })
+                return dc.result()
+              })
+            const ts = data['extra_text'].split(/\s*,\s*/)
             data['@extra-value-list'].push(...vs.map((p, i) => ({
               text: ts[i] || 'None',
               value: p,
-            })));
+            })))
           }
 
-          langTextList.push('type');
+          langTextList.push('type')
         }
 
         // siffix
-        data['@suffix'] = bch.suffix.map(p => this.handleShowData(p));
+        data['@suffix'] = bch.suffix.map(p => this.handleShowData(p))
       } else {
-        const mbch = bch.mainBranch;
+        const mbch = bch.mainBranch
         if (mbch.name == 'damage' && bch.name == 'extra') {
           handleValueList.push({
             name: 'ailment_chance',
             beforeColorText: v => v + '%',
-          });
+          })
           hiddenList.push({
             name: 'condition',
             validation: v => v,
             defaultValue: this.$lang('global suffix: extra/condition default'),
-          });
-          handleTextList.push('caption', 'condition');
+          })
+          handleTextList.push('caption', 'condition')
         } else if ((mbch.name === 'effect' || mbch.name === 'next' || mbch.name === 'passive') && bch.name === 'extra') {
           hiddenList.push({
             name: 'condition',
             validation: v => v,
             defaultValue: this.$lang('global suffix: extra/condition default'),
-          });
-          handleTextList.push('caption', 'condition');
+          })
+          handleTextList.push('caption', 'condition')
         }
       }
 
       // convert data to DataContainer
-      Object.keys(data).forEach(k => data[k] = new DataContainer(data[k], bch, k));
+      Object.keys(data).forEach(k => data[k] = new DataContainer(data[k], bch, k))
 
       hiddenList.forEach(({ name, validation, defaultValue, validationType = 'normal' } = {}) => {
-        name = Array.isArray(name) ? name : [name];
+        name = Array.isArray(name) ? name : [name]
         name.forEach(p => {
           if (data[p] === undefined) {
             if (defaultValue)
-              data[p] = new DataContainer(defaultValue, p, bch);
-            return;
+              data[p] = new DataContainer(defaultValue, p, bch)
+            return
           }
-          const dc = data[p];
-          const t = validationType === 'value' ? this.calcValueStr(dc.origin) : dc.origin;
+          const dc = data[p]
+          const t = validationType === 'value' ? this.calcValueStr(dc.origin) : dc.origin
           if (!validation(t)) {
             if (defaultValue) {
-              data[p].set(defaultValue);
+              data[p].set(defaultValue)
             } else
-              delete data[p];
+              delete data[p]
           }
-        });
-      });
+        })
+      })
 
       handleValueList.forEach(k => {
         if (typeof k === 'object') {
-          let { name, beforeColorText, calcOnly } = k;
-          name = Array.isArray(name) ? name : [name];
+          let { name, beforeColorText, calcOnly } = k
+          name = Array.isArray(name) ? name : [name]
           name.forEach(p => {
-            const dc = data[p];
-            if (!dc) return;
+            const dc = data[p]
+            if (!dc) return
             !calcOnly ?
               this.handleDataContainer(dc, { beforeColorText }) :
-              dc.handle(v => this.calcValueStr(v));
-          });
+              dc.handle(v => this.calcValueStr(v))
+          })
         } else if (data[k]) {
-          this.handleDataContainer(data[k]);
+          this.handleDataContainer(data[k])
         }
-      });
+      })
 
-      handleTextList.forEach(k => data[k] && data[k].handleResult(v => this.handleTextData(v, bch)));
+      handleTextList.forEach(k => data[k] && data[k].handleResult(v => this.handleTextData(v, bch)))
 
       langTextList.forEach(k => {
         if (typeof k === 'object') {
-          let { name, type = 'normal', afterHandle } = k;
-          name = Array.isArray(name) ? name : [name];
+          let { name, type = 'normal', afterHandle } = k
+          name = Array.isArray(name) ? name : [name]
           name.forEach(a => {
-            const dc = data[a];
+            const dc = data[a]
             if (!dc)
-              return;
-            this.handleDataContainerLangText(dc, { type, afterHandle });
-          });
+              return
+            this.handleDataContainerLangText(dc, { type, afterHandle })
+          })
         } else {
-          const dc = data[k];
+          const dc = data[k]
           if (!dc)
-            return;
-          this.handleDataContainerLangText(dc);
+            return
+          this.handleDataContainerLangText(dc)
         }
-      });
+      })
 
-      const dataContainers = [];
+      const dataContainers = []
       Object.keys(data).forEach(k => {
         if (data[k] instanceof DataContainer) {
-          dataContainers.push(data[k]);
-          data[k] = data[k].result();
+          dataContainers.push(data[k])
+          data[k] = data[k].result()
         }
-      });
-      data['@--data-container-records'] = dataContainers;
+      })
+      data['@--data-container-records'] = dataContainers
 
       titleList.forEach(k => {
-        data[k + ': title'] = this.$lang(`${bch.name}/${k}: title`);
-      });
+        data[k + ': title'] = this.$lang(`${bch.name}/${k}: title`)
+      })
 
       if (this.branch.name === 'stack') {
-        const tmpv = parseInt(data['max'] || data['default'], 10);
+        const tmpv = parseInt(data['max'] || data['default'], 10)
         if (!Number.isNaN(tmpv) && tmpv > 999)
-          data['@stack-input-width-wide'] = { '--input-width': '3rem' };
+          data['@stack-input-width-wide'] = { '--input-width': '3rem' }
       }
 
-      return data;
+      return data
     },
     calcValueStr(str) {
       if (!str) {
-        return '0';
+        return '0'
       }
-      const skillState = this.skillState;
-      const effectState = this.branch['@parent-state'];
+      const skillState = this.skillState
+      const effectState = this.branch['@parent-state']
 
       return str.split(/\s*,,\s*/)
         .map(p => handleSkillFormula(p, { skillState, effectState, branch: this.branch }))
         //.map(p => p.charAt(0) == '-' ? `(${p})` : p)
         .join('+')
-        .replace(/\+-/g, '-');
+        .replace(/\+-/g, '-')
     },
     handleDataContainerLangText(dc, { type = 'normal', prefix = '', afterHandle } = {}) {
-      dc.handle(v => this.formulaPretreatment(v));
+      dc.handle(v => this.formulaPretreatment(v))
 
-      const bch = dc.branch, key = dc.key;
+      const bch = dc.branch, key = dc.key
       if (type === 'value') {
-        dc.handle(v => this.calcValueStr(v));
-        const p = dc.isNumberValue() && parseFloat(dc.value()) < 0 ? 'negative' : 'positive';
-        p === 'negative' && dc.handle(v => (-1 * v).toString());
-        dc.handleResult(v => this.$lang(`${bch.name + prefix}/${key}/${p}`, [v]));
+        dc.handle(v => this.calcValueStr(v))
+        const p = dc.isNumberValue() && parseFloat(dc.value()) < 0 ? 'negative' : 'positive'
+        p === 'negative' && dc.handle(v => (-1 * v).toString())
+        dc.handleResult(v => this.$lang(`${bch.name + prefix}/${key}/${p}`, [v]))
       } else {
-        let p = dc.value();
+        let p = dc.value()
         if (p == '1' || p == '0') // 轉換布林值
-          p = p == '1' ? 'true' : 'false';
-        let preName = bch.name + prefix;
-        preName = bch.mainBranch ? bch.mainBranch.name + ': ' + preName : preName;
-        dc.handleResult(() => this.$lang(`${preName}/${key}/${p}`));
+          p = p == '1' ? 'true' : 'false'
+        let preName = bch.name + prefix
+        preName = bch.mainBranch ? bch.mainBranch.name + ': ' + preName : preName
+        dc.handleResult(() => this.$lang(`${preName}/${key}/${p}`))
         if (afterHandle) {
-          dc.handleResult(afterHandle);
+          dc.handleResult(afterHandle)
         }
       }
     },
     handleTextData(str, bch) {
       if (!str)
-        return str;
+        return str
 
       str = str
         .replace(/\$\{([^}]+)\}(%?)/g, (m, m1, m2) => {
-          const dc = new DataContainer(m1);
-          this.handleDataContainer(dc, { beforeColorText: v => v + m2 });
-          return dc.result();
+          const dc = new DataContainer(m1)
+          this.handleDataContainer(dc, { beforeColorText: v => v + m2 })
+          return dc.result()
         })
-        .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values">${m1}</span>`);
-      str = this.createTagButtons(str);
+        .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values">${m1}</span>`)
+      str = this.createTagButtons(str)
 
-      const data = bch.attrs;
+      const data = bch.attrs
 
       data['mark'] && data['mark'].split(/\s*,\s*/)
-        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="text-light-3">${m}</span>`));
+        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="text-light-3">${m}</span>`))
       data['branch'] && data['branch'].split(/\s*,\s*/)
-        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="text-light-3">${m}</span>`));
+        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="text-light-3">${m}</span>`))
       data['skill'] && data['skill'].split(/\s*,\s*/)
-        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="text-light-3">${m}</span>`));
-      return str;
+        .forEach(p => str = str.replace(new RegExp(p, 'g'), m => `<span class="text-light-3">${m}</span>`))
+      return str
     },
     handleMarkText(str, className = 'text-light-3') {
-      return str.replace(/<!([^>]+)->/g, (m, m1) => `<span class="${className}">${m1}</span>`);
+      return str.replace(/<!([^>]+)->/g, (m, m1) => `<span class="${className}">${m1}</span>`)
     },
     handleDataContainer(dc, { beforeColorText, toPercentage = false } = {}) {
-      dc.handle(v => this.formulaPretreatment(v));
+      dc.handle(v => this.formulaPretreatment(v))
 
-      const numStrToPercentage = s => (100 * parseFloat(s)).toFixed(1).replace('.0', '') + '%';
+      const numStrToPercentage = s => (100 * parseFloat(s)).toFixed(1).replace('.0', '') + '%'
 
-      dc.handle(v => this.calcValueStr(v));
+      dc.handle(v => this.calcValueStr(v))
       dc.handleResult(v => v
         .replace(/([$_a-zA-Z][$_a-zA-Z0-9]*)(\*)(\d\.\d+)/g,
           (m, m1, m2, m3) => m1 + m2 + numStrToPercentage(m3))
         .replace(/\*/g, '×'),
-      );
+      )
 
-      dc.handleResult(v => v.replace(/(\d+\.)(\d{4,})/g, (m, m1, m2) => m1 + m2.slice(0, 4)));
-      dc.handleResult(trimZero);
+      dc.handleResult(v => v.replace(/(\d+\.)(\d{4,})/g, (m, m1, m2) => m1 + m2.slice(0, 4)))
+      dc.handleResult(trimZero)
 
-      dc.isNumberValue() && toPercentage && dc.handleResult(v => numStrToPercentage(v));
-      this.handleReplacedVariable(dc);
+      dc.isNumberValue() && toPercentage && dc.handleResult(v => numStrToPercentage(v))
+      this.handleReplacedVariable(dc)
 
-      this.dataResultHighlight(dc, { beforeColorText });
+      this.dataResultHighlight(dc, { beforeColorText })
     },
     dataResultHighlight(dc, {
       base = 'text-light-3',
@@ -1181,67 +1181,67 @@ export default {
       //     extraHandle(v = "<span class="multiple-values"></span>")
       //   </span>
     } = {}) {
-      const clist = [(dc.origin.includes('stack') ? stack : base), ...extra];
-      dc.isNumberValue() && parseFloat(dc.value()) < 0 && clist.push('text-dark');
-      !dc.isNumberValue() && dc.handleResult(v => `<span class="multiple-values">${v}</span>`);
+      const clist = [(dc.origin.includes('stack') ? stack : base), ...extra]
+      dc.isNumberValue() && parseFloat(dc.value()) < 0 && clist.push('text-dark')
+      !dc.isNumberValue() && dc.handleResult(v => `<span class="multiple-values">${v}</span>`)
 
-      beforeColorText && dc.handleResult(v => beforeColorText(v));
-      dc.handleResult(v => `<span class="${clist.join(' ')}">${v}</span>`);
+      beforeColorText && dc.handleResult(v => beforeColorText(v))
+      dc.handleResult(v => `<span class="${clist.join(' ')}">${v}</span>`)
     },
     handleReplacedVariable(dc) {
       if (dc.isNumberValue())
-        return;
+        return
       const list = [
         'BSTR', 'BINT', 'BAGI', 'BVIT', 'BDEX', 'TEC',
         'STR', 'INT', 'AGI', 'VIT', 'DEX', 'shield_refining',
         'dagger_atk', 'target_def', 'target_level', 'guard_power',
-      ];
+      ]
       list.forEach(cs => dc.handleResult(v => v
         .replace(new RegExp('\\$' + cs, 'g'), this.$lang('formula replaced text/' + cs)),
       ),
-      );
+      )
       if (this.formulaDisplayMode == 1) {
-        const stack = [];
+        const stack = []
         if (this.branch.attrs['stack_id']) {
-          const ss = this.branch['@parent-state'].stackStates;
+          const ss = this.branch['@parent-state'].stackStates
           const tstack = this.branch.attrs['stack_id'].split(/\s*,\s*/)
             .map(p => parseInt(p, 10))
             .map(p => {
-              const t = ss.find(a => a.id == p);
+              const t = ss.find(a => a.id == p)
               return t ?
                 (t.branch.attrs['name'] != 'auto' ? t.branch.attrs['name'] : this.$lang('stack/base name')) :
-                this.$lang('unknow variable');
-            });
-          stack.push(...tstack);
+                this.$lang('unknow variable')
+            })
+          stack.push(...tstack)
         }
 
-        let result = dc.result();
+        let result = dc.result()
         result = result
           .replace(/\$__TEXT_SLV__/g, this.$lang.extra('parent', 'skill level'))
           .replace(/\$__TEXT_CLV__/g, this.$lang.extra('parent', 'character level'))
-          .replace(/\$__TEXT_STACK_(\d+)__/g, (m, m1) => stack[parseInt(m1, 10)]);
+          .replace(/\$__TEXT_STACK_(\d+)__/g, (m, m1) => stack[parseInt(m1, 10)])
 
-        let handleStack = [], offset = 0;
+        let handleStack = [], offset = 0
         result.split('').forEach((c, i) => {
           if (c === '(') {
             if (i === 0 || !/[_a-zA-Z0-9]/.test(result[i - 1 + offset])) {
-              result = result.slice(0, i + offset) + '#left~' + result.slice(i + offset + 1);
-              offset += 5;
-              handleStack.push('normal');
+              result = result.slice(0, i + offset) + '#left~' + result.slice(i + offset + 1)
+              offset += 5
+              handleStack.push('normal')
             }
             else
-              handleStack.push('function');
+              handleStack.push('function')
           }
           if (c === ')') {
             if (handleStack[handleStack.length - 1] == 'normal') {
-              result = result.slice(0, i + offset) + '~right#' + result.slice(i + offset + 1);
-              offset += 6;
+              result = result.slice(0, i + offset) + '~right#' + result.slice(i + offset + 1)
+              offset += 6
             }
-            handleStack.pop();
+            handleStack.pop()
           }
-        });
+        })
 
-        const createFormulaText = (name, value) => `<span class="formula--fix key--${name}"><span class="name">${name.toUpperCase()}</span><span class="value">${value}</span></span>`;
+        const createFormulaText = (name, value) => `<span class="formula--fix key--${name}"><span class="name">${name.toUpperCase()}</span><span class="value">${value}</span></span>`
 
         const funList = [
           {
@@ -1250,17 +1250,17 @@ export default {
           },
           { name: 'min', reg: /Math\.min\(([^()]+)\)/g },
           { name: 'max', reg: /Math\.max\(([^()]+)\)/g },
-        ];
+        ]
         while (funList.find(p => result.match(p.reg)))
-          funList.forEach(p => result = result.replace(p.reg, p.target || ((m, m1) => createFormulaText(p.name, m1))));
+          funList.forEach(p => result = result.replace(p.reg, p.target || ((m, m1) => createFormulaText(p.name, m1))))
 
         result = result
           .replace(/#left~/g, '(')
-          .replace(/~right#/g, ')');
+          .replace(/~right#/g, ')')
 
-        result = result.replace(/,/g, '<span class="arg-separate"></span>');
+        result = result.replace(/,/g, '<span class="arg-separate"></span>')
 
-        dc.handleResult(() => result);
+        dc.handleResult(() => result)
       }
     },
     formulaPretreatment(str) {
@@ -1269,11 +1269,11 @@ export default {
           .replace(/CLv/g, '$__TEXT_CLV__')
           .replace(/SLv/g, '$__TEXT_SLV__')
           .replace(/stack\[(\d+)\]/g, (m, m1) => '$__TEXT_STACK_' + m1 + '__')
-          .replace(/stack/g, '$__TEXT_STACK_0__');
-      return str;
+          .replace(/stack/g, '$__TEXT_STACK_0__')
+      return str
     },
   },
-};
+}
 </script>
 
 <style lang="postcss" scoped>

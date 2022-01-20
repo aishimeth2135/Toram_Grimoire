@@ -38,21 +38,21 @@
 <script lang="ts">
 export default {
   name: 'AppNotify',
-};
+}
 </script>
 
 <script lang="ts" setup>
-import { useNotifyStore } from '@/stores/app/notify';
-import type { NotifyMessageItem, MessageNotifyButtonItemWithId } from '@/stores/app/notify';
+import { useNotifyStore } from '@/stores/app/notify'
+import type { NotifyMessageItem, MessageNotifyButtonItemWithId } from '@/stores/app/notify'
 
-const store = useNotifyStore();
+const store = useNotifyStore()
 
 const messageButtonClick = (msg: NotifyMessageItem, btn: MessageNotifyButtonItemWithId) => {
-  btn?.click();
+  btn?.click()
   if (btn.removeMessageAfterClick) {
-    store.removeMessage(msg);
+    store.removeMessage(msg)
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

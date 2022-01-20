@@ -42,28 +42,28 @@ const CONTAINER_DISPLAY_ORDER = [
   'skill/long_range',
   'stability',
   'other_multiplier',
-];
+]
 
 export default {
   name: 'DamageCalculationTable',
-};
+}
 </script>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-import { storeToRefs } from 'pinia';
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 
-import { useDamageCalculationStore } from '@/stores/views/damage-calculation';
+import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 
-import DamageCalculationTableItem from './damage-calculation-table-item.vue';
+import DamageCalculationTableItem from './damage-calculation-table-item.vue'
 
-const store = useDamageCalculationStore();
-const { calculations } = storeToRefs(store);
+const store = useDamageCalculationStore()
+const { calculations } = storeToRefs(store)
 
 const calculationItems = computed(() => {
   return calculations.value.map((calc, index) => ({
     index,
     origin: calc,
-  }));
-});
+  }))
+})
 </script>

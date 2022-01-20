@@ -10,16 +10,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from 'vue'
 
-import { ButtonBaseProps, setupButtonBase } from './setup';
+import { ButtonBaseProps, setupButtonBase } from './setup'
 
 export default defineComponent({
   name: 'CyButtonCircle',
   emits: ['click'],
   props: ButtonBaseProps,
   setup(props, { emit }) {
-    return setupButtonBase(props, (evt) => emit('click', evt));
+    return setupButtonBase(props, (evt) => emit('click', evt))
   },
-});
+})
 </script>

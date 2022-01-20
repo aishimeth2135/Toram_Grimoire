@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import vue_equipmentInfo from './equipment-info.vue';
+import vue_equipmentInfo from './equipment-info.vue'
 
 export default {
   RegisterLang: 'Character Simulator',
@@ -41,7 +41,7 @@ export default {
   },
   props: ['field'],
   emits: ['remove-field-equipment', 'select-field-equipment'],
-};
+}
 </script>
 
 <style lang="less" scoped>

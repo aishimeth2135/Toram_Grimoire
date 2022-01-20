@@ -30,10 +30,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, toRefs, computed, nextTick } from 'vue';
-import type { Ref, CSSProperties } from 'vue';
+import { ref, toRefs, computed, nextTick } from 'vue'
+import type { Ref, CSSProperties } from 'vue'
 
-import CY from '@/shared/utils/Cyteria';
+import CY from '@/shared/utils/Cyteria'
 
 interface Props {
   element: HTMLElement | null;
@@ -49,134 +49,134 @@ interface Emits {
 const props = withDefaults(defineProps<Props>(), {
   custom: false,
   positionMode: 'auto',
-});
-const emit = defineEmits<Emits>();
+})
+const emit = defineEmits<Emits>()
 
-const { element, target, positionMode, custom } = toRefs(props);
+const { element, target, positionMode, custom } = toRefs(props)
 
 const contentClass = computed(() => {
-  let classList = 'overflow-y-auto max-w-full';
+  let classList = 'overflow-y-auto max-w-full'
   if (!custom.value) {
-    classList += ' border-1 rounded-lg border-light-3 px-4 py-2 bg-white';
+    classList += ' border-1 rounded-lg border-light-3 px-4 py-2 bg-white'
   }
-  return classList;
-});
+  return classList
+})
 
-const visible = ref(false);
-const position: Ref<CSSProperties | null> = ref(null);
-const currentElement: Ref<HTMLElement | null> = ref(null);
-const rootElement: Ref<HTMLElement | null> = ref(null);
-const keepVisible = ref(false);
+const visible = ref(false)
+const position: Ref<CSSProperties | null> = ref(null)
+const currentElement: Ref<HTMLElement | null> = ref(null)
+const rootElement: Ref<HTMLElement | null> = ref(null)
+const keepVisible = ref(false)
 
 const targetElement = computed(() => {
-  return currentElement.value || null;
-});
+  return currentElement.value || null
+})
 
 const fixPosition = () => {
-  const el = rootElement.value;
+  const el = rootElement.value
   if (!el || position.value === null) {
-    return;
+    return
   }
-  const rect = el.getBoundingClientRect();
-  const ww = window.innerWidth;
-  const pd = CY.element.convertRemToPixels(1);
+  const rect = el.getBoundingClientRect()
+  const ww = window.innerWidth
+  const pd = CY.element.convertRemToPixels(1)
 
   if (positionMode.value === 'h-middle') {
-    const spacing = (ww - rect.width) / 2;
-    position.value.left = spacing + 'px';
-    position.value.right = 'auto';
-    return;
+    const spacing = (ww - rect.width) / 2
+    position.value.left = spacing + 'px'
+    position.value.right = 'auto'
+    return
   }
   if (rect.left < pd) {
-    position.value.left = pd.toString() + 'px';
-    position.value.right = 'auto';
+    position.value.left = pd.toString() + 'px'
+    position.value.right = 'auto'
   } else if (rect.right > ww - pd) {
-    position.value.right = pd.toString() + 'px';
-    position.value.left = 'auto';
+    position.value.right = pd.toString() + 'px'
+    position.value.left = 'auto'
   }
-};
+}
 const updateCaptionPosition = async () => {
-  const el = targetElement.value;
+  const el = targetElement.value
   if (!el) {
-    position.value = null;
-    return;
+    position.value = null
+    return
   }
-  const rect = el.getBoundingClientRect();
+  const rect = el.getBoundingClientRect()
 
-  const resultPosition: CSSProperties = {};
+  const resultPosition: CSSProperties = {}
 
-  const margin = CY.element.convertRemToPixels(-0.1);
-  const wh = window.innerHeight, ww = window.innerWidth;
-  const len2bottom = wh - rect.bottom;
+  const margin = CY.element.convertRemToPixels(-0.1)
+  const wh = window.innerHeight, ww = window.innerWidth
+  const len2bottom = wh - rect.bottom
   if (rect.top >= len2bottom) {
-    resultPosition.bottom = (wh - rect.bottom + rect.height + margin) + 'px';
+    resultPosition.bottom = (wh - rect.bottom + rect.height + margin) + 'px'
   } else {
-    resultPosition.top = (rect.top + rect.height + margin) + 'px';
+    resultPosition.top = (rect.top + rect.height + margin) + 'px'
   }
   if (positionMode.value !== 'h-middle') {
-    const len2right = window.innerWidth - rect.right;
+    const len2right = window.innerWidth - rect.right
     if (rect.left >= len2right) {
-      resultPosition.right = (ww - rect.right + margin) + 'px';
+      resultPosition.right = (ww - rect.right + margin) + 'px'
     } else {
-      resultPosition.left = (rect.left + margin) + 'px';
+      resultPosition.left = (rect.left + margin) + 'px'
     }
   }
-  position.value = resultPosition;
+  position.value = resultPosition
 
-  await nextTick();
-  fixPosition();
-};
+  await nextTick()
+  fixPosition()
+}
 const showCaption = (el: HTMLElement) => {
-  visible.value = true;
-  currentElement.value = el;
-  emit('element-hover', el);
-  updateCaptionPosition();
-};
+  visible.value = true
+  currentElement.value = el
+  emit('element-hover', el)
+  updateCaptionPosition()
+}
 const hideCaption = () => {
-  visible.value = false;
+  visible.value = false
   if (!keepVisible.value) {
-    currentElement.value = null;
+    currentElement.value = null
   }
-};
+}
 const enableKeepVisible = () => {
-  keepVisible.value = true;
-};
+  keepVisible.value = true
+}
 const contentClick = () => {
-  keepVisible.value = false;
-  hideCaption();
-};
+  keepVisible.value = false
+  hideCaption()
+}
 
 const updateHookBinding = async () => {
-  await nextTick();
-  const el = element.value;
+  await nextTick()
+  const el = element.value
   if (!el) {
-    return;
+    return
   }
   const bindHooks = (node: HTMLElement) => {
-    const show = function(this: HTMLElement) { showCaption(this); };
+    const show = function(this: HTMLElement) { showCaption(this) }
     const click = function(evt: MouseEvent) {
-      evt.stopPropagation();
-      enableKeepVisible();
-    };
-    node.addEventListener('mouseenter', show);
-    node.addEventListener('mouseleave', hideCaption);
+      evt.stopPropagation()
+      enableKeepVisible()
+    }
+    node.addEventListener('mouseenter', show)
+    node.addEventListener('mouseleave', hideCaption)
     // node.addEventListener('touchstart', show);
     // node.addEventListener('touchend', hideCaption);
-    node.addEventListener('click', click);
+    node.addEventListener('click', click)
 
-  };
-  if (target?.value === undefined) {
-    bindHooks(el);
-  } else {
-    const nodes = el.querySelectorAll(target.value);
-    nodes.forEach(node => bindHooks(node as HTMLElement));
   }
-};
+  if (target?.value === undefined) {
+    bindHooks(el)
+  } else {
+    const nodes = el.querySelectorAll(target.value)
+    nodes.forEach(node => bindHooks(node as HTMLElement))
+  }
+}
 
 defineExpose({
   update: updateHookBinding,
   fixPosition,
-});
+})
 </script>
 
 <style lang="postcss" scoped>

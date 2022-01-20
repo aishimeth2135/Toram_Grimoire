@@ -122,21 +122,21 @@
 <script lang="ts">
 export default {
   name: 'DamageCalculationItem',
-};
+}
 </script>
 
 <script lang="ts" setup>
-import { computed, toRefs, ref } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useI18n } from 'vue-i18n';
+import { computed, toRefs, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
-import { useDamageCalculationStore } from '@/stores/views/damage-calculation';
+import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 
-import { numberToFixed } from '@/shared/utils/number';
-import { markText } from '@/shared/utils/view';
+import { numberToFixed } from '@/shared/utils/number'
+import { markText } from '@/shared/utils/view'
 
-import { CalcStructItem } from '@/lib/Calculation/Damage/Calculation/base';
-import { CalcItem, CalcItemCustom } from '@/lib/Calculation/Damage/Calculation';
+import { CalcStructItem } from '@/lib/Calculation/Damage/Calculation/base'
+import { CalcItem, CalcItemCustom } from '@/lib/Calculation/Damage/Calculation'
 
 interface Props {
   calcStructItem: CalcStructItem;
@@ -148,81 +148,81 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   root: false,
   layer: 0,
-});
+})
 
-const { calcStructItem } = toRefs(props);
+const { calcStructItem } = toRefs(props)
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const store = useDamageCalculationStore();
+const store = useDamageCalculationStore()
 
-const { currentCalculation } = storeToRefs(store);
+const { currentCalculation } = storeToRefs(store)
 
 const currentContainer = computed(() => {
   if (typeof calcStructItem.value === 'string') {
-    return currentCalculation.value.containers.get(calcStructItem.value) ?? null;
+    return currentCalculation.value.containers.get(calcStructItem.value) ?? null
   }
-  return null;
-});
+  return null
+})
 
 const currentContainerResult = computed(() => {
   if (currentContainer.value) {
-    const container = currentContainer.value;
-    let res = container.result();
+    const container = currentContainer.value
+    let res = container.result()
     if (!container.base.floorResult) {
-      res = numberToFixed(res, 2);
+      res = numberToFixed(res, 2)
     }
-    return container.base.isMultiplier ? res + '%' : res;
+    return container.base.isMultiplier ? res + '%' : res
   }
-  return 0;
-});
+  return 0
+})
 
 const currentContainerItems = computed(() => {
   if (!currentContainer.value) {
-    return [];
+    return []
   }
-  const container = currentContainer.value;
+  const container = currentContainer.value
   if (container.base.getCurrentItemId) {
-    return [container.currentItem];
+    return [container.currentItem]
   }
   return [
     ...Array.from(container.items.values()),
     ...container.customItems,
-  ];
-});
+  ]
+})
 
 const getCalcItemId = (structItem: CalcStructItem): string => {
   if (typeof structItem === 'string') {
-    return structItem;
+    return structItem
   }
   if (structItem.operator === '+' || structItem.operator === '*') {
-    return `(${getCalcItemId(structItem.left)})${structItem.operator}(${getCalcItemId(structItem.right)})`;
+    return `(${getCalcItemId(structItem.left)})${structItem.operator}(${getCalcItemId(structItem.right)})`
   }
   if (structItem.operator === '+++' || structItem.operator === '***') {
-    return structItem.list.map(item => `(${getCalcItemId(item)})`).join(structItem.operator);
+    return structItem.list.map(item => `(${getCalcItemId(item)})`).join(structItem.operator)
   }
-  return structItem.toString();
-};
+  return structItem.toString()
+}
 
 const createCustomItem = () => {
   if (!currentContainer.value || !currentContainer.value) {
-    return;
+    return
   }
-  const newItem = currentContainer.value.createCustomItem();
+  const newItem = currentContainer.value.createCustomItem()
   if (newItem) {
-    newItem.name = t('damage-calculation.item-base-titles.' + currentContainer.value.currentItem.base.id);
+    newItem.name = t('damage-calculation.item-base-titles.' + currentContainer.value.currentItem.base.id)
   }
-};
+}
 const removeCustomItem = (item: CalcItemCustom) => {
   if (!currentContainer.value) {
-    return;
+    return
   }
-  currentContainer.value.removeCustomItem(item);
-};
+  currentContainer.value.removeCustomItem(item)
+}
 
-const editedItem = ref<CalcItem | null>(null);
+const editedItem = ref<CalcItem | null>(null)
 
 const toggleEditedItem = (item: CalcItem | null) => {
-  editedItem.value = editedItem.value === item ? null : item;
-};
+  editedItem.value = editedItem.value === item ? null : item
+}
 </script>

@@ -1,15 +1,15 @@
 
-import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router'
 
-import { DataStoreIds } from '@/stores/app/datas/enums';
-import { LocaleViewNamespaces } from '@/stores/app/language/enums';
+import { DataStoreIds } from '@/stores/app/datas/enums'
+import { LocaleViewNamespaces } from '@/stores/app/language/enums'
 
-import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit';
+import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
 
-import ViewWrapper from './view-wrapper.vue';
+import ViewWrapper from './view-wrapper.vue'
 
 // const SkillQueryOldView = () => import(/* webpackChunkName: "skill-query-old" */ '@/views/SkillQueryOld/index.vue');
-const SkillQueryView = () => import(/* webpackChunkName: "skill-query" */ '@/views/SkillQuery/index.vue');
+const SkillQueryView = () => import(/* webpackChunkName: "skill-query" */ '@/views/SkillQuery/index.vue')
 
 export default {
   name: 'Skill',
@@ -17,9 +17,9 @@ export default {
   component: ViewWrapper,
   beforeEnter(to, from, next) {
     if (to.name === 'SkillQuery') {
-      PrepareLocaleInit(LocaleViewNamespaces.SkillQuery);
+      PrepareLocaleInit(LocaleViewNamespaces.SkillQuery)
     }
-    ViewInit(DataStoreIds.Stats, DataStoreIds.Skill, DataStoreIds.Tag).then(next);
+    ViewInit(DataStoreIds.Stats, DataStoreIds.Skill, DataStoreIds.Tag).then(next)
   },
   meta: {
     leftMenuViewButtons: [{
@@ -43,4 +43,4 @@ export default {
       title: 'app.page-title.skill-query',
     },
   } */],
-} as RouteRecordRaw;
+} as RouteRecordRaw

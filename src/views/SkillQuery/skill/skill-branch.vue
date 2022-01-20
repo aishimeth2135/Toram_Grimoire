@@ -48,30 +48,30 @@
 <script lang="ts">
 export default {
   name: 'SkillBranch',
-};
+}
 </script>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
+import { computed, toRefs } from 'vue'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
-import ToggleService from '@/setup/ToggleService';
+import ToggleService from '@/setup/ToggleService'
 
-import SkillBranchDamage from './skill-branch-damage.vue';
-import SkillBranchEffect from './skill-branch-effect.vue';
-import SkillBranchHeal from './skill-branch-heal.vue';
-import SkillBranchPassive from './skill-branch-passive.vue';
-import SkillBranchStack from './skill-branch-stack.vue';
-import SkillBranchText from './skill-branch-text.vue';
-import SkillBranchList from './skill-branch-list.vue';
-import SkillBranchProration from './skill-branch-proration.vue';
-import SkillBranchBasic from './skill-branch-basic.vue';
-import SkillBranchReference from './skill-branch-reference.vue';
-import SkillEquipmentButton from './skill-equipment-button.vue';
+import SkillBranchDamage from './skill-branch-damage.vue'
+import SkillBranchEffect from './skill-branch-effect.vue'
+import SkillBranchHeal from './skill-branch-heal.vue'
+import SkillBranchPassive from './skill-branch-passive.vue'
+import SkillBranchStack from './skill-branch-stack.vue'
+import SkillBranchText from './skill-branch-text.vue'
+import SkillBranchList from './skill-branch-list.vue'
+import SkillBranchProration from './skill-branch-proration.vue'
+import SkillBranchBasic from './skill-branch-basic.vue'
+import SkillBranchReference from './skill-branch-reference.vue'
+import SkillEquipmentButton from './skill-equipment-button.vue'
 
-import { setupOtherEffectBranches } from './setup';
+import { setupOtherEffectBranches } from './setup'
 
 interface Props {
   skillBranchItem: SkillBranchItem;
@@ -82,98 +82,98 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   sub: false,
   contentAuto: true,
-});
-const { skillBranchItem: branchItem, sub, contentAuto } = toRefs(props);
+})
+const { skillBranchItem: branchItem, sub, contentAuto } = toRefs(props)
 
 const { contents, toggle } = ToggleService({
   contents: ['sub'] as const,
-});
+})
 
 const currentComponent = computed(() => {
   if (branchItem.value.name === SkillBranchNames.Damage) {
-    return SkillBranchDamage;
+    return SkillBranchDamage
   } else if (branchItem.value.name === SkillBranchNames.Effect) {
-    return SkillBranchEffect;
+    return SkillBranchEffect
   } else if (branchItem.value.name === SkillBranchNames.Heal) {
-    return SkillBranchHeal;
+    return SkillBranchHeal
   } else if (branchItem.value.name === SkillBranchNames.Passive) {
-    return SkillBranchPassive;
+    return SkillBranchPassive
   } else if (branchItem.value.name === SkillBranchNames.Stack) {
-    return SkillBranchStack;
+    return SkillBranchStack
   } else if (branchItem.value.name === SkillBranchNames.Proration) {
-    return SkillBranchProration;
+    return SkillBranchProration
   } else if (branchItem.value.name === SkillBranchNames.List) {
-    return SkillBranchList;
+    return SkillBranchList
   } else if (branchItem.value.name === SkillBranchNames.Basic) {
-    return SkillBranchBasic;
+    return SkillBranchBasic
   } else if (branchItem.value.name === SkillBranchNames.Reference) {
-    return SkillBranchReference;
+    return SkillBranchReference
   }
-  return SkillBranchText;
-});
+  return SkillBranchText
+})
 
 const NORMAL_LAYOUT_BRANCH_NAMES = [
   SkillBranchNames.Damage,
   SkillBranchNames.Effect,
   SkillBranchNames.Heal,
   SkillBranchNames.Passive,
-];
+]
 
 const paddingBottomClass = computed(() => {
-  const curBch = branchItem.value;
-  const branchItems = curBch.parent.branchItems;
-  const idx = branchItems.indexOf(curBch);
+  const curBch = branchItem.value
+  const branchItems = curBch.parent.branchItems
+  const idx = branchItems.indexOf(curBch)
   if (idx === branchItems.length - 1 || sub.value) {
-    return 'pb-0';
+    return 'pb-0'
   }
 
-  const nextBch = branchItems[idx + 1];
-  const next = nextBch.name;
-  const cur = curBch.name;
+  const nextBch = branchItems[idx + 1]
+  const next = nextBch.name
+  const cur = curBch.name
 
-  const nextNormalLayout = NORMAL_LAYOUT_BRANCH_NAMES.includes(next);
+  const nextNormalLayout = NORMAL_LAYOUT_BRANCH_NAMES.includes(next)
 
   if (nextBch.isGroup || (curBch.isGroup && !curBch.groupState.expanded)) {
-    return nextNormalLayout ? 'pb-4' : 'pb-5';
+    return nextNormalLayout ? 'pb-4' : 'pb-5'
   }
   if (curBch.attrBoolean('is_mark') || nextBch.attrBoolean('is_mark')) {
-    return nextNormalLayout ? 'pb-3' : 'pb-4';
+    return nextNormalLayout ? 'pb-3' : 'pb-4'
   }
   if ([SkillBranchNames.Tips, SkillBranchNames.Text, SkillBranchNames.List].includes(cur) && next === SkillBranchNames.Tips) {
-    return 'pb-1.5';
+    return 'pb-1.5'
   }
   if (cur === SkillBranchNames.Reference && next === SkillBranchNames.Reference) {
-    return 'pb-1';
+    return 'pb-1'
   }
   if (next === SkillBranchNames.Reference) {
-    return 'pb-4';
+    return 'pb-4'
   }
   if (next === SkillBranchNames.List) {
-    return 'pb-4';
+    return 'pb-4'
   }
-  return nextNormalLayout ? 'pb-2' : 'pb-3';
-});
+  return nextNormalLayout ? 'pb-2' : 'pb-3'
+})
 
 const rootClass = computed(() => {
   return {
     [paddingBottomClass.value]: true,
     'px-3': !sub.value,
     'content-auto': contentAuto.value,
-  };
-});
+  }
+})
 
 const {
   otherEffectBranches,
   currentOtherEffectBranch,
   setCurrentOtherEffectBranch,
-} = setupOtherEffectBranches(branchItem);
+} = setupOtherEffectBranches(branchItem)
 
 const subButtonAvailable = computed(() => {
   if (otherEffectBranches.value.length === 0 || sub.value) {
-    return false;
+    return false
   }
-  return NORMAL_LAYOUT_BRANCH_NAMES.includes(branchItem.value.name);
-});
+  return NORMAL_LAYOUT_BRANCH_NAMES.includes(branchItem.value.name)
+})
 </script>
 
 <style lang="postcss" scoped>

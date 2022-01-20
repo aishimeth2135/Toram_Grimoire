@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n'
 
 const HOME_LINK_BUTTONS = [{
   name: 'skill-query',
@@ -70,17 +70,17 @@ const HOME_LINK_BUTTONS = [{
   name: 'damage-calculation',
   icon: 'mdi-sword',
   pathName: 'DamageCalculationMain',
-}];
+}]
 
 export default {
   name: 'AppHome',
-};
+}
 </script>
 
 <script lang="ts" setup>
-const columns = HOME_LINK_BUTTONS;
+const columns = HOME_LINK_BUTTONS
 
-const { t } = useI18n();
+const { t } = useI18n()
 </script>
 
 <style lang="postcss" scoped>

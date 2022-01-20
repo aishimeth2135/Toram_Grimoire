@@ -1,16 +1,16 @@
-import { markRaw } from 'vue';
+import { markRaw } from 'vue'
 
-import { EnchantCategory } from './Enchant';
+import { EnchantCategory } from './Enchant'
 
 export default class {
-  categorys: EnchantCategory[];
+  categorys: EnchantCategory[]
 
   constructor() {
-    this.categorys = markRaw([]);
+    this.categorys = markRaw([])
   }
   appendCategory(title: string) {
-    const category = markRaw(new EnchantCategory(title));
-    this.categorys.push(category);
-    return category;
+    const category = markRaw(new EnchantCategory(title))
+    this.categorys.push(category)
+    return category
   }
 }

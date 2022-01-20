@@ -38,11 +38,11 @@
 </template>
 
 <script lang="ts" setup>
-import { toRefs, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { toRefs, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer';
-import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
+import { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 interface Props {
   skillBranchItem: SkillBranchItem<SkillEffectItem>;
@@ -51,38 +51,38 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   selected: false,
-});
-const { skillBranchItem: branchItem } = toRefs(props);
+})
+const { skillBranchItem: branchItem } = toRefs(props)
 
-const { t } = useI18n();
+const { t } = useI18n()
 
 const iconDatas = computed(() => {
-  const { equipments } = branchItem.value.parent;
+  const { equipments } = branchItem.value.parent
   return equipments.map((equip, idx) => {
-    const icons: { icon: string; src: string; text?: string }[] = [];
-    const fields = (['main', 'sub', 'body'] as const).filter(key => equip[key] !== null);
+    const icons: { icon: string; src: string; text?: string }[] = []
+    const fields = (['main', 'sub', 'body'] as const).filter(key => equip[key] !== null)
     if (fields.length === 0) {
-      icons.push({ icon: 'mdi:checkbox-multiple-blank-circle-outline', src: 'iconify', text: t('skill-query.equipment.none') });
+      icons.push({ icon: 'mdi:checkbox-multiple-blank-circle-outline', src: 'iconify', text: t('skill-query.equipment.none') })
     }
-    const operatorIcon = 'ic-round-add';
+    const operatorIcon = 'ic-round-add'
     fields.forEach((key, fieldIdx) => {
       if (fieldIdx !== 0) {
-        icons.push({ icon: operatorIcon, src: 'iconify' });
+        icons.push({ icon: operatorIcon, src: 'iconify' })
       } else {
         if (fields.length === 1 && key === 'sub') {
-          icons.push({ icon: 'mdi:radiobox-marked', src: 'iconify' });
-          icons.push({ icon: 'ic-round-add', src: 'iconify' });
+          icons.push({ icon: 'mdi:radiobox-marked', src: 'iconify' })
+          icons.push({ icon: 'ic-round-add', src: 'iconify' })
         }
       }
-      const icon = CharacterEquipment.getImagePath(equip[key]!);
-      icons.push({ icon, src: 'image' });
-    });
+      const icon = CharacterEquipment.getImagePath(equip[key]!)
+      icons.push({ icon, src: 'image' })
+    })
     return {
       icons: icons.map((icon, iid) => ({ ...icon, iid })),
       iid: idx,
-    };
-  });
-});
+    }
+  })
+})
 </script>
 
 <style lang="postcss" scoped>

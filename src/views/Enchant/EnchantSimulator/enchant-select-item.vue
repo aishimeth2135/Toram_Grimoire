@@ -57,9 +57,9 @@
 </template>
 
 <script>
-import { useDatasStore } from '@/stores/app/datas';
+import { useDatasStore } from '@/stores/app/datas'
 
-import { StatTypes } from '@/lib/Character/Stat/enums';
+import { StatTypes } from '@/lib/Character/Stat/enums'
 
 export default {
   name: 'EnchantSelectItem',
@@ -92,75 +92,75 @@ export default {
   },
   emits: ['close', 'select-item'],
   setup() {
-    const datasStore = useDatasStore();
-    return { datasStore };
+    const datasStore = useDatasStore()
+    return { datasStore }
   },
   data() {
-    const types = [StatTypes.Constant, StatTypes.Multiplier];
-    const originalCategorys = this.datasStore.Enchant.categorys;
+    const types = [StatTypes.Constant, StatTypes.Multiplier]
+    const originalCategorys = this.datasStore.Enchant.categorys
     const categorys = originalCategorys.map(category => {
-      const items = [];
+      const items = []
       category.items.forEach(item => {
         types.forEach(type => {
           if (type === StatTypes.Multiplier && !item.statBase.hasMultiplier) {
-            return;
+            return
           }
           items.push({
             id: item.statBase.statId(type),
             type: type,
             origin: item,
-          });
-        });
-      });
+          })
+        })
+      })
       return {
         origin: category,
         items,
-      };
-    });
+      }
+    })
     return {
       categorys,
       showNegativeSuggestedList: false,
-    };
+    }
   },
   computed: {
     negativeSuggestedList() {
       if (this.isWeapon) {
-        return ['def', 'mdef', 'dodge', 'natural_hp_regen', 'natural_mp_regen'];
+        return ['def', 'mdef', 'dodge', 'natural_hp_regen', 'natural_mp_regen']
       }
-      return ['atk', 'matk', 'physical_pierce', 'magic_pierce', 'accuracy'];
+      return ['atk', 'matk', 'physical_pierce', 'magic_pierce', 'accuracy']
     },
     validCategorys() {
       if (!this.showNegativeSuggestedList) {
-        return this.categorys;
+        return this.categorys
       }
-      const categorys = [];
+      const categorys = []
       this.categorys.forEach(category => {
         const newItems = category.items
-          .filter(item => this.negativeSuggestedList.includes(item.origin.statBase.baseName));
+          .filter(item => this.negativeSuggestedList.includes(item.origin.statBase.baseName))
         if (newItems.length > 0) {
           categorys.push({
             origin: category.origin,
             items: newItems,
-          });
+          })
         }
-      });
-      return categorys;
+      })
+      return categorys
     },
   },
   watch: {
     visible(newValue) {
       if (newValue) {
-        this.showNegativeSuggestedList = this.defaultNegative;
+        this.showNegativeSuggestedList = this.defaultNegative
       }
     },
   },
   methods: {
     itemClick(item) {
-      this.$emit('select-item', item);
+      this.$emit('select-item', item)
       if (this.once) {
-        this.$emit('close');
+        this.$emit('close')
       }
     },
   },
-};
+}
 </script>

@@ -44,18 +44,18 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch, Ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, ref, watch, Ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { Calculation } from '@/lib/Calculation/Damage/Calculation';
+import { Calculation } from '@/lib/Calculation/Damage/Calculation'
 
-import ToggleService from '@/setup/ToggleService';
+import ToggleService from '@/setup/ToggleService'
 
-import DamageCalculationCompareItem from './damage-calculation-compare-item.vue';
+import DamageCalculationCompareItem from './damage-calculation-compare-item.vue'
 
-import { setupCalculationStoreState } from './setup';
+import { setupCalculationStoreState } from './setup'
 
-const { currentCalculation: mainCalculation, calculations } = setupCalculationStoreState();
+const { currentCalculation: mainCalculation, calculations } = setupCalculationStoreState()
 
 const calculationItems = computed(() => {
   return calculations.value
@@ -63,28 +63,28 @@ const calculationItems = computed(() => {
     .map((calc, index) => ({
       index,
       origin: calc,
-    }));
-});
+    }))
+})
 
-const comparedCalculations: Ref<Calculation[]> = ref([]);
+const comparedCalculations: Ref<Calculation[]> = ref([])
 
 const toggleComparedCalculation = (calc: Calculation) => {
-  const calcs = comparedCalculations.value;
-  const idx = calcs.indexOf(calc);
-  idx >= 0 ? calcs.splice(idx, 1) : calcs.push(calc);
-};
+  const calcs = comparedCalculations.value
+  const idx = calcs.indexOf(calc)
+  idx >= 0 ? calcs.splice(idx, 1) : calcs.push(calc)
+}
 
 watch(calculations, newValue => {
-  comparedCalculations.value = comparedCalculations.value.filter(calc => newValue.includes(calc));
-});
+  comparedCalculations.value = comparedCalculations.value.filter(calc => newValue.includes(calc))
+})
 
 const comparedCalculationItems = computed(() => {
-  return calculationItems.value.filter(calcItem => comparedCalculations.value.includes(calcItem.origin));
-});
+  return calculationItems.value.filter(calcItem => comparedCalculations.value.includes(calcItem.origin))
+})
 
 const { contents, toggle } = ToggleService({
   contents: ['selectCalculation'],
-});
+})
 
-const { t } = useI18n();
+const { t } = useI18n()
 </script>

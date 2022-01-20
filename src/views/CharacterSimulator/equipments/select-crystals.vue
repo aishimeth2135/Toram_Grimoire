@@ -97,11 +97,11 @@
 </template>
 
 <script>
-import { useDatasStore } from '@/stores/app/datas';
+import { useDatasStore } from '@/stores/app/datas'
 
-import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from '@/lib/Character/CharacterEquipment';
+import { MainWeapon, BodyArmor, AdditionalGear, SpecialGear } from '@/lib/Character/CharacterEquipment'
 
-import vue_showStat from './show-stat.vue';
+import vue_showStat from './show-stat.vue'
 
 
 export default {
@@ -112,38 +112,38 @@ export default {
   props: ['visible', 'equipment'],
   emits: ['close'],
   setup() {
-    const datasStore = useDatasStore();
-    return { datasStore };
+    const datasStore = useDatasStore()
+    return { datasStore }
   },
   data() {
-    const crystals = this.datasStore.Items.crystals;
+    const crystals = this.datasStore.Items.crystals
     const crystalCategorys = new Array(5).fill().map((p, i) => {
       return {
         id: i,
         crystals: crystals.filter(a => a.category == i),
-      };
-    });
+      }
+    })
 
     return {
       originalCrystalCategorys: crystalCategorys,
       searchText: '',
       detailVisible: false,
-    };
+    }
   },
   computed: {
     crystalCategorys() {
       if (!this.equipment)
-        return [];
-      const eq = this.equipment;
+        return []
+      const eq = this.equipment
       const category = [MainWeapon, BodyArmor, AdditionalGear, SpecialGear]
-        .findIndex(p => eq instanceof p);
+        .findIndex(p => eq instanceof p)
 
       const res = this.originalCrystalCategorys
-        .filter(c => c.id == category || c.id == 4);
+        .filter(c => c.id == category || c.id == 4)
 
       return res.map(cat => {
         const cs = this.searchText == '' ? cat.crystals :
-          cat.crystals.filter(c => c.name.toLowerCase().includes(this.searchText.toLowerCase()));
+          cat.crystals.filter(c => c.name.toLowerCase().includes(this.searchText.toLowerCase()))
         return {
           id: cat.id,
           crystalStates: cs.map(c => ({
@@ -152,64 +152,64 @@ export default {
             disabled: !this.checkEnchaner(cat, c),
             selected: this.findEquipmentCrystal(c) ? true : false,
           })),
-        };
-      });
+        }
+      })
     },
   },
   methods: {
     checkEnchaner(category, crystal) {
-      const find = name => category.crystals.find(c => c.name == name);
+      const find = name => category.crystals.find(c => c.name == name)
       const check1 = !this.equipment.crystals.find(c => {
-        let cur = c.origin;
+        let cur = c.origin
         while (cur.enhancer) {
-          cur = find(cur.enhancer);
+          cur = find(cur.enhancer)
           if (!cur)
-            break;
+            break
           if (cur.name == crystal.name)
-            return true;
+            return true
         }
-      });
-      const findByEnhancer = name => category.crystals.find(c => c.enhancer == name);
+      })
+      const findByEnhancer = name => category.crystals.find(c => c.enhancer == name)
       const check2 = !this.equipment.crystals.map(c => c.origin).find(c => {
-        let cur = c;
+        let cur = c
         while (true) { // eslint-disable-line
-          cur = findByEnhancer(cur.name);
+          cur = findByEnhancer(cur.name)
           if (!cur)
-            break;
+            break
           if (cur.name == crystal.name)
-            return true;
+            return true
         }
-      });
+      })
 
-      return check1 && check2;
+      return check1 && check2
     },
     toggleDetailVisible() {
-      this.detailVisible = !this.detailVisible;
+      this.detailVisible = !this.detailVisible
     },
     closeWindow() {
-      this.$emit('close');
-      this.searchResult = this.crystalCategorys;
+      this.$emit('close')
+      this.searchResult = this.crystalCategorys
     },
     convertToOriginal(eqCrystal) {
-      let res;
+      let res
       this.crystalCategorys.find(cat => {
-        const crystal = cat.crystalStates.find(p => p.origin.id == eqCrystal.id);
+        const crystal = cat.crystalStates.find(p => p.origin.id == eqCrystal.id)
         if (crystal) {
-          res = crystal.origin;
-          return true;
+          res = crystal.origin
+          return true
         }
-      });
-      return res;
+      })
+      return res
     },
     findEquipmentCrystal(c) {
-      return this.equipment.crystals.find(p => p.id == c.id);
+      return this.equipment.crystals.find(p => p.id == c.id)
     },
     selectCrystal(c) {
-      const find = this.findEquipmentCrystal(c);
+      const find = this.findEquipmentCrystal(c)
       find ?
         this.equipment.removeCrystal(find) :
-        this.equipment.appendCrystal(c);
+        this.equipment.appendCrystal(c)
     },
   },
-};
+}
 </script>

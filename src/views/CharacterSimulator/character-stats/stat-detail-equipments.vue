@@ -33,5 +33,5 @@ export default {
     root: 'Character Simulator/show character stats',
   },
   props: ['equipmentTexts'],
-};
+}
 </script>

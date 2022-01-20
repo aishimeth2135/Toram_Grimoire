@@ -1,6 +1,6 @@
-import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums';
+import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 
-import { SkillBranchNames } from '../Skill/enums';
+import { SkillBranchNames } from '../Skill/enums'
 
 const BRANCH_ATTRS_DEFAULT_VALUE: Record<string, Record<string, string>> = {
   [SkillBranchNames.Damage]: {
@@ -72,7 +72,7 @@ const BRANCH_ATTRS_DEFAULT_VALUE: Record<string, Record<string, string>> = {
   [SkillBranchNames.Space]: {
     'disabled': '0',
   },
-};
+}
 
 /**
    * 0'空手', 1'單手劍', 2'雙手劍', 3'弓', 4'弩', 5'法杖',
@@ -93,7 +93,7 @@ const EQUIPMENT_TYPE_MAIN_ORDER = [
   EquipmentTypes.Halberd,
   EquipmentTypes.Katana,
   EquipmentTypes.DualSword,
-] as const;
+] as const
 
 const EQUIPMENT_TYPE_SUB_ORDER = [
   EquipmentTypes.Empty,
@@ -104,18 +104,18 @@ const EQUIPMENT_TYPE_SUB_ORDER = [
   EquipmentTypes.Knuckle,
   EquipmentTypes.Katana,
   EquipmentTypes.NinjutsuScroll,
-] as const;
+] as const
 
 const EQUIPMENT_TYPE_BODY_ORDER = [
   EquipmentTypes.Empty,
   EquipmentTypes.BodyDodge,
   EquipmentTypes.BodyDefense,
   EquipmentTypes.BodyNormal,
-] as const;
+] as const
 
 export {
   BRANCH_ATTRS_DEFAULT_VALUE,
   EQUIPMENT_TYPE_MAIN_ORDER,
   EQUIPMENT_TYPE_SUB_ORDER,
   EQUIPMENT_TYPE_BODY_ORDER,
-};
+}

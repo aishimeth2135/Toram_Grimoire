@@ -14,7 +14,7 @@ function markText(str: string, {
 }: MarkTextOptions = {}): string {
   return str
     .replace(/\(\(!((?:(?!\(\().)+)\)\)/g, (match, p1) => `<span class="${mark}">${p1}</span>`)
-    .replace(/\(\(_((?:(?!\(\().)+)\)\)/g, (match, p1) => `<span class="cy--text-underline ${underline}">${p1}</span>`);
+    .replace(/\(\(_((?:(?!\(\().)+)\)\)/g, (match, p1) => `<span class="cy--text-underline ${underline}">${p1}</span>`)
 }
 
-export { markText };
+export { markText }

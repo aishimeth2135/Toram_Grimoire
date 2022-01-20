@@ -1,18 +1,18 @@
-import { markRaw } from 'vue';
+import { markRaw } from 'vue'
 
-import Grimoire from '@/shared/Grimoire';
-import { handleFormula } from '@/shared/utils/data';
+import Grimoire from '@/shared/Grimoire'
+import { handleFormula } from '@/shared/utils/data'
 
-import { SubWeapon, SubArmor, CharacterEquipment } from '@/lib/Character/CharacterEquipment';
-import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums';
-import { StatBase, Stat } from '@/lib/Character/Stat';
-import { StatTypes } from  '@/lib/Character/Stat/enums';
+import { SubWeapon, SubArmor, CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
+import { StatBase, Stat } from '@/lib/Character/Stat'
+import { StatTypes } from  '@/lib/Character/Stat/enums'
 
 
-import CharacterSystem from '../index';
-import { EquipmentFieldTypes, CharacterBaseStatTypes, CharacterOptionalBaseStatTypes } from './enums';
+import CharacterSystem from '../index'
+import { EquipmentFieldTypes, CharacterBaseStatTypes, CharacterOptionalBaseStatTypes } from './enums'
 
-type CharacterBaseStatValidType = CharacterBaseStatTypes | CharacterOptionalBaseStatTypes;
+type CharacterBaseStatValidType = CharacterBaseStatTypes | CharacterOptionalBaseStatTypes
 class Character {
   private _baseStats: readonly [
     CharacterBaseStat<CharacterBaseStatTypes.STR>,
@@ -20,11 +20,11 @@ class Character {
     CharacterBaseStat<CharacterBaseStatTypes.INT>,
     CharacterBaseStat<CharacterBaseStatTypes.AGI>,
     CharacterBaseStat<CharacterBaseStatTypes.VIT>,
-  ];
-  private _optinalBaseStat: CharacterBaseStat<CharacterOptionalBaseStatTypes> | null;
+  ]
+  private _optinalBaseStat: CharacterBaseStat<CharacterOptionalBaseStatTypes> | null
 
-  name: string;
-  level: number;
+  name: string
+  level: number
   readonly equipmentFields: readonly [
     EquipmentField,
     EquipmentField,
@@ -34,21 +34,21 @@ class Character {
     EquipmentField,
     EquipmentField,
     EquipmentField,
-  ];
+  ]
 
   constructor(name = 'Potum') {
-    this.name = name;
+    this.name = name
 
-    this.level = 1;
+    this.level = 1
     this._baseStats = [
       new CharacterBaseStat(CharacterBaseStatTypes.STR),
       new CharacterBaseStat(CharacterBaseStatTypes.DEX),
       new CharacterBaseStat(CharacterBaseStatTypes.INT),
       new CharacterBaseStat(CharacterBaseStatTypes.AGI),
       new CharacterBaseStat(CharacterBaseStatTypes.VIT),
-    ] as const;
+    ] as const
 
-    this._optinalBaseStat = null;
+    this._optinalBaseStat = null
 
     this.equipmentFields = [
       new EquipmentField(this, EquipmentFieldTypes.MainWeapon),
@@ -59,100 +59,100 @@ class Character {
       new EquipmentField(this, EquipmentFieldTypes.Avatar, 0),
       new EquipmentField(this, EquipmentFieldTypes.Avatar, 1),
       new EquipmentField(this, EquipmentFieldTypes.Avatar, 2),
-    ] as const;
+    ] as const
   }
 
   get baseStats() {
-    const res: CharacterBaseStat<CharacterBaseStatTypes | CharacterOptionalBaseStatTypes>[] = this._baseStats.slice();
+    const res: CharacterBaseStat<CharacterBaseStatTypes | CharacterOptionalBaseStatTypes>[] = this._baseStats.slice()
     if (this._optinalBaseStat !== null) {
-      res.push(this._optinalBaseStat);
+      res.push(this._optinalBaseStat)
     }
-    return res;
+    return res
   }
   get normalBaseStats() {
-    return this._baseStats;
+    return this._baseStats
   }
   get optionalBaseStat() {
-    return this._optinalBaseStat;
+    return this._optinalBaseStat
   }
 
   equipmentField(type: EquipmentFieldTypes): EquipmentField {
-    return this.equipmentFields.find(item => item.type === type) as EquipmentField;
+    return this.equipmentFields.find(item => item.type === type) as EquipmentField
   }
   fieldEquipment(type: EquipmentFieldTypes) {
-    const field = this.equipmentField(type);
-    return field ? field.equipment : undefined;
+    const field = this.equipmentField(type)
+    return field ? field.equipment : undefined
   }
   hasOptinalBaseStat() {
-    return this._optinalBaseStat ? true : false;
+    return this._optinalBaseStat ? true : false
   }
   setOptinalBaseStat(name: CharacterOptionalBaseStatTypes) {
-    this._optinalBaseStat = new CharacterBaseStat(name);
+    this._optinalBaseStat = new CharacterBaseStat(name)
   }
   clearOptinalBaseStat() {
-    this._optinalBaseStat = null;
+    this._optinalBaseStat = null
   }
   baseStat(name: CharacterBaseStatValidType) {
     if ((Object.values(CharacterOptionalBaseStatTypes) as readonly string[]).includes(name)) {
       return this._optinalBaseStat === null || this._optinalBaseStat.name !== name ?
-        null : this._optinalBaseStat;
+        null : this._optinalBaseStat
     }
-    return this._baseStats.find(bstat => bstat.name === name);
+    return this._baseStats.find(bstat => bstat.name === name)
   }
   baseStatValue(name: CharacterBaseStatValidType) {
-    const stat = this.baseStat(name);
-    return stat ? stat.value : 0;
+    const stat = this.baseStat(name)
+    return stat ? stat.value : 0
   }
   checkFieldEquipmentType(fieldType: EquipmentFieldTypes, eqType: EquipmentTypes) {
-    return this.equipmentField(fieldType).equipmentType === eqType;
+    return this.equipmentField(fieldType).equipmentType === eqType
   }
   subWeaponValid(subType: EquipmentTypes, mainType: EquipmentTypes) {
-    const validSubs: EquipmentTypes[] = [];
-    mainType = mainType || this.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType;
+    const validSubs: EquipmentTypes[] = []
+    mainType = mainType || this.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
     switch (mainType) {
       case EquipmentTypes.OneHandSword:
-        validSubs.push(EquipmentTypes.OneHandSword);
+        validSubs.push(EquipmentTypes.OneHandSword)
         // fall through
       case EquipmentTypes.Empty:
       case EquipmentTypes.Staff:
-        validSubs.push(EquipmentTypes.NinjutsuScroll);
+        validSubs.push(EquipmentTypes.NinjutsuScroll)
         // fall through
       case EquipmentTypes.Bowgun:
-        validSubs.push(EquipmentTypes.Knuckle);
+        validSubs.push(EquipmentTypes.Knuckle)
         // fall through
       case EquipmentTypes.Knuckle:
-        validSubs.push(EquipmentTypes.MagicDevice, EquipmentTypes.Shield);
+        validSubs.push(EquipmentTypes.MagicDevice, EquipmentTypes.Shield)
         // fall through
       case EquipmentTypes.Halberd:
-        validSubs.push(EquipmentTypes.Arrow, EquipmentTypes.Dagger);
-        break;
+        validSubs.push(EquipmentTypes.Arrow, EquipmentTypes.Dagger)
+        break
       case EquipmentTypes.Katana:
-        validSubs.push(EquipmentTypes.Dagger, EquipmentTypes.NinjutsuScroll);
-        break;
+        validSubs.push(EquipmentTypes.Dagger, EquipmentTypes.NinjutsuScroll)
+        break
       case EquipmentTypes.Bow:
-        validSubs.push(EquipmentTypes.Arrow, EquipmentTypes.Katana);
+        validSubs.push(EquipmentTypes.Arrow, EquipmentTypes.Katana)
     }
-    return validSubs.includes(subType);
+    return validSubs.includes(subType)
   }
 
   clone() {
-    const chara = new Character(this.name + '*');
-    chara.level = this.level;
+    const chara = new Character(this.name + '*')
+    chara.level = this.level
     this.normalBaseStats.forEach(bstat => {
-      const find = chara.normalBaseStats.find(_bstat => _bstat.name === bstat.name) as CharacterBaseStat<CharacterBaseStatTypes>;
-      find.value = bstat.value;
-    });
+      const find = chara.normalBaseStats.find(_bstat => _bstat.name === bstat.name) as CharacterBaseStat<CharacterBaseStatTypes>
+      find.value = bstat.value
+    })
     if (this.optionalBaseStat !== null) {
       chara.setOptinalBaseStat(this.optionalBaseStat.name);
-      (chara.optionalBaseStat as CharacterBaseStat<CharacterOptionalBaseStatTypes>).value = this.optionalBaseStat.value;
+      (chara.optionalBaseStat as CharacterBaseStat<CharacterOptionalBaseStatTypes>).value = this.optionalBaseStat.value
     }
 
     this.equipmentFields.filter(field => !field.isEmpty).forEach(field => {
-      const find = chara.equipmentFields.find(targetField => field.type === targetField.type && field.index === targetField.index) as EquipmentField;
-      find.setEquipment(field.equipment);
-    });
+      const find = chara.equipmentFields.find(targetField => field.type === targetField.type && field.index === targetField.index) as EquipmentField
+      find.setEquipment(field.equipment)
+    })
 
-    return chara;
+    return chara
   }
 
   // save and load with json-data
@@ -162,20 +162,20 @@ class Character {
       level: this.level,
       normalBaseStats: [],
       fields: [],
-    };
+    }
 
     // == [ name ] =====
-    data.name = this.name;
-    data.level = this.level;
+    data.name = this.name
+    data.level = this.level
     data.normalBaseStats = this.normalBaseStats.map(bstat => ({
       name: bstat.name,
       value: bstat.value,
-    }));
+    }))
     if (this.optionalBaseStat) {
       data.optionalBaseStat = {
         name: this.optionalBaseStat.name,
         value: this.optionalBaseStat.value,
-      };
+      }
     }
 
     const fieldTypes = {
@@ -185,48 +185,48 @@ class Character {
       [EquipmentFieldTypes.Additional]: 'additional',
       [EquipmentFieldTypes.Special]: 'special',
       [EquipmentFieldTypes.Avatar]: 'avatar',
-    } as const;
+    } as const
     data.fields = this.equipmentFields.map(field => {
-      let idx = -1;
+      let idx = -1
       if (field.equipment !== null) {
-        idx = equipments.indexOf(field.equipment);
+        idx = equipments.indexOf(field.equipment)
         if (idx === -1) {
-          console.warn('Can not find equipment of Field in List of equipments');
-          return null;
+          console.warn('Can not find equipment of Field in List of equipments')
+          return null
         }
       }
       return {
         type: fieldTypes[field.type],
         index: field.index,
         equipmentIndex: idx,
-      };
-    }).filter(field => field !== null) as CharacterSaveDataField[];
+      }
+    }).filter(field => field !== null) as CharacterSaveDataField[]
 
-    return data;
+    return data
   }
   load(data: CharacterSaveData, equipments: CharacterEquipment[]) {
     try {
-      let success = true;
+      let success = true
 
-      const { name, level, normalBaseStats, optionalBaseStat, fields } = data;
-      this.name = name;
-      this.level = level;
+      const { name, level, normalBaseStats, optionalBaseStat, fields } = data
+      this.name = name
+      this.level = level
       normalBaseStats.forEach(bstat => {
-        const find = this.normalBaseStats.find(a => a.name === bstat.name);
+        const find = this.normalBaseStats.find(a => a.name === bstat.name)
         if (find)
-          find.value = bstat.value;
+          find.value = bstat.value
         else {
-          console.warn('[Character.save] Can not find CharacterBaseStat which name: ' + bstat.name);
-          success = false;
+          console.warn('[Character.save] Can not find CharacterBaseStat which name: ' + bstat.name)
+          success = false
         }
-      });
+      })
       if (optionalBaseStat) {
-        this.setOptinalBaseStat(optionalBaseStat.name);
+        this.setOptinalBaseStat(optionalBaseStat.name)
         if (this.optionalBaseStat)
-          this.optionalBaseStat.value = optionalBaseStat.value;
+          this.optionalBaseStat.value = optionalBaseStat.value
         else {
-          console.warn('[Character.save] Can not find Optional-CharacterBaseStat which name: ' + optionalBaseStat.name);
-          success = false;
+          console.warn('[Character.save] Can not find Optional-CharacterBaseStat which name: ' + optionalBaseStat.name)
+          success = false
         }
       }
       const fieldTypes = {
@@ -236,32 +236,32 @@ class Character {
         'additional': EquipmentFieldTypes.Additional,
         'special': EquipmentFieldTypes.Special,
         'avatar': EquipmentFieldTypes.Avatar,
-      } as const;
+      } as const
       fields.forEach(fieldData => {
         if (fieldData.equipmentIndex !== -1) {
-          const find = this.equipmentFields.find(field => field.type === fieldTypes[fieldData.type] && field.index === fieldData.index);
+          const find = this.equipmentFields.find(field => field.type === fieldTypes[fieldData.type] && field.index === fieldData.index)
           if (find) {
-            const eq = equipments[fieldData.equipmentIndex];
+            const eq = equipments[fieldData.equipmentIndex]
             if (eq)
-              find.equipment = eq;
+              find.equipment = eq
             else
-              console.warn(`Index: ${fieldData.index} of equipments is null.`);
+              console.warn(`Index: ${fieldData.index} of equipments is null.`)
           }
           else {
-            console.warn(`Can not find Equipment Field of Character which type: ${fieldData.type} , index: ${fieldData.index}`);
-            success = false;
+            console.warn(`Can not find Equipment Field of Character which type: ${fieldData.type} , index: ${fieldData.index}`)
+            success = false
           }
         }
-      });
+      })
 
       return {
         success,
-      };
+      }
     } catch (e) {
-      console.warn(e);
+      console.warn(e)
       return {
         error: true,
-      };
+      }
     }
   }
 }
@@ -286,81 +286,81 @@ interface CharacterSaveDataField {
 }
 
 class CharacterBaseStat<T> {
-  name: T;
-  value: number;
+  name: T
+  value: number
 
   constructor(name: T, value: number = 1) {
-    this.name = name;
-    this.value = value;
+    this.name = name
+    this.value = value
   }
 }
 
 class EquipmentField {
-  private _parent: Character;
-  type: EquipmentFieldTypes;
-  index: number;
-  equipment: CharacterEquipment | null;
+  private _parent: Character
+  type: EquipmentFieldTypes
+  index: number
+  equipment: CharacterEquipment | null
 
   constructor(parent: Character, type: EquipmentFieldTypes, index: number = 0) {
-    this._parent = parent;
-    this.type = type;
-    this.index = index;
+    this._parent = parent
+    this.type = type
+    this.index = index
 
-    this.equipment = null;
+    this.equipment = null
   }
 
   get belongCharacter() {
-    return this._parent;
+    return this._parent
   }
   get equipmentType(): EquipmentTypes {
     if (this.isEmpty)
-      return EquipmentTypes.Empty;
-    return (this.equipment as CharacterEquipment).type;
+      return EquipmentTypes.Empty
+    return (this.equipment as CharacterEquipment).type
   }
   get isEmpty() {
-    return this.equipment === null;
+    return this.equipment === null
   }
 
   setEquipment(equip: CharacterEquipment | null) {
-    this.equipment = equip;
+    this.equipment = equip
     if (this.type === EquipmentFieldTypes.MainWeapon) {
-      const c = this.belongCharacter;
-      const sub = c.equipmentField(EquipmentFieldTypes.SubWeapon);
+      const c = this.belongCharacter
+      const sub = c.equipmentField(EquipmentFieldTypes.SubWeapon)
       if (!c.subWeaponValid(sub.equipmentType, this.equipmentType))
-        sub.removeEquipment();
+        sub.removeEquipment()
     }
   }
   removeEquipment() {
-    this.setEquipment(null);
+    this.setEquipment(null)
   }
   statsDisabled() {
     if (!this.isEmpty && this.type === EquipmentFieldTypes.SubWeapon) {
-      const eq = this.equipment;
-      return !(eq instanceof SubWeapon) && !(eq instanceof SubArmor);
+      const eq = this.equipment
+      return !(eq instanceof SubWeapon) && !(eq instanceof SubArmor)
     }
-    return false;
+    return false
   }
 }
 
 class CharacterStatCategory {
-  private _parent: CharacterSystem;
-  name: string;
-  stats: CharacterStat[];
+  private _parent: CharacterSystem
+  name: string
+  stats: CharacterStat[]
 
   constructor(parent: CharacterSystem, name: string) {
-    this._parent = parent;
-    this.name = name;
-    this.stats = markRaw([]);
+    this._parent = parent
+    this.name = name
+    this.stats = markRaw([])
   }
 
   get belongCategorys() {
-    return this._parent.characterStatCategoryList;
+    return this._parent.characterStatCategoryList
   }
 
   appendStat(options: CharacterStatOptions) {
-    const stat = markRaw(new CharacterStat(this, options));
-    this.stats.push(stat);
-    return stat;
+    const stat = markRaw(new CharacterStat(this, options))
+    this.stats.push(stat)
+    return stat
   }
 }
 
@@ -443,22 +443,22 @@ interface CharacterStatResultVars {
   };
 }
 class CharacterStat {
-  private _formula: CharacterStatFormula | null;
+  private _formula: CharacterStatFormula | null
 
-  category: CharacterStatCategory;
-  id: string;
-  name: string;
-  displayFormula: string;
-  link: string;
-  max: number | null;
-  min: number | null;
-  caption: string;
+  category: CharacterStatCategory
+  id: string
+  name: string
+  displayFormula: string
+  link: string
+  max: number | null
+  min: number | null
+  caption: string
   options: {
     hidden: number;
-  };
+  }
 
-  isBoolStat: boolean;
-  linkedStatBase: StatBase | null;
+  isBoolStat: boolean
+  linkedStatBase: StatBase | null
 
   constructor(
     category: CharacterStatCategory, {
@@ -471,75 +471,75 @@ class CharacterStat {
       caption,
       hiddenOption,
     }: CharacterStatOptions) {
-    this.category = category;
+    this.category = category
 
-    this.id = id;
-    this.name = name;
-    this.displayFormula = displayFormula;
-    this.link = link; // const
-    this.max = max;
-    this.min = min;
-    this.caption = caption;
+    this.id = id
+    this.name = name
+    this.displayFormula = displayFormula
+    this.link = link // const
+    this.max = max
+    this.min = min
+    this.caption = caption
     this.options = {
       hidden: hiddenOption, // -1: default, 0: always hidden, 1: hidden when cvalue, mvalue and tvalue are zero
-    };
+    }
 
-    this._formula = null;
-    this.isBoolStat = false;
-    this.linkedStatBase = null;
+    this._formula = null
+    this.isBoolStat = false
+    this.linkedStatBase = null
 
     if (this.link) {
-      const base = Grimoire.Character.findStatBase(this.link);
+      const base = Grimoire.Character.findStatBase(this.link)
       if (!base)
-        console.warn(`Link of CharacterStat: ${this.link} is not found.`);
+        console.warn(`Link of CharacterStat: ${this.link} is not found.`)
       else {
-        this.isBoolStat = base.checkBoolStat();
-        this.linkedStatBase = base;
+        this.isBoolStat = base.checkBoolStat()
+        this.linkedStatBase = base
       }
     }
   }
 
   setFormula(str: string): CharacterStatFormula {
-    this._formula = markRaw(new CharacterStatFormula(this, str));
-    return this._formula;
+    this._formula = markRaw(new CharacterStatFormula(this, str))
+    return this._formula
   }
 
   getDisplayValue(value: number, ignoreDecimal: boolean = false): string {
-    let displayFormula = this.displayFormula;
+    let displayFormula = this.displayFormula
     if (!displayFormula.match(/\$(?:\.\d)?v/)) {
-      displayFormula = '$v' + displayFormula;
+      displayFormula = '$v' + displayFormula
     }
     return displayFormula.replace(/\$(?:\.(\d))?v/, (match, p1) => {
       if (ignoreDecimal)
-        return value.toString();
+        return value.toString()
       return p1 !== undefined ?
         value.toFixed(parseInt(p1, 10)) :
-        Math.floor(value).toString();
-    });
+        Math.floor(value).toString()
+    })
   }
 
   result(currentStats: Stat[], vars: CharacterStatResultVars): CharacterStatResult {
     if (this.id in vars.computedResultStore) {
-      return vars.computedResultStore[this.id];
+      return vars.computedResultStore[this.id]
     }
-    const formula = this._formula as CharacterStatFormula;
+    const formula = this._formula as CharacterStatFormula
     try {
-      const res = formula.calc(currentStats, vars);
-      let value = res.value;
-      const originalValue = value;
+      const res = formula.calc(currentStats, vars)
+      let value = res.value
+      const originalValue = value
 
       if (typeof value !== 'number')
-        value = parseFloat(value);
+        value = parseFloat(value)
       if (this.max !== null && value > this.max)
-        value = this.max;
+        value = this.max
       if (this.min !== null && value < this.min)
-        value = this.min;
+        value = this.min
 
-      const ho = this.options.hidden;
-      const displayValue = this.getDisplayValue(value);
+      const ho = this.options.hidden
+      const displayValue = this.getDisplayValue(value)
 
       // resultValue: after min-max and to integer
-      const resultValue = parseFloat(displayValue.replace(/[^\-\d.]/g, ''));
+      const resultValue = parseFloat(displayValue.replace(/[^\-\d.]/g, ''))
 
       return {
         origin: this,
@@ -552,9 +552,9 @@ class CharacterStat {
         hidden: ho === 0 ||
           (ho === 1 && (['constant', 'multiplier', 'total'] as const).every(a => res.statValueParts[a] === 0)) ||
           (ho === 2 && originalValue == 0),
-      };
+      }
     } catch (error) {
-      console.warn(error);
+      console.warn(error)
       return {
         origin: this,
         value: 0,
@@ -590,46 +590,46 @@ class CharacterStat {
           isBase: false,
         },
         hidden: true,
-      };
+      }
     }
   }
 }
 
 
 class CharacterStatFormula {
-  private _parent: CharacterStat;
+  private _parent: CharacterStat
 
-  readonly formula: string;
-  conditionValues: CharacterStatFormulaConditionalItem[];
+  readonly formula: string
+  conditionValues: CharacterStatFormulaConditionalItem[]
 
   constructor(parent: CharacterStat, str: string) {
-    this._parent = parent;
-    this.formula = str;
-    this.conditionValues = markRaw([]);
+    this._parent = parent
+    this.formula = str
+    this.conditionValues = markRaw([])
   }
   get belongCharacterStat() {
-    return this._parent;
+    return this._parent
   }
   appendConditionValue(conditional: string, formula: string, options: string) {
-    const optionList = options.split(/\s*,\s*/);
-    const item = markRaw(new CharacterStatFormulaConditionalItem(conditional, formula, optionList));
-    this.conditionValues.push(item);
+    const optionList = options.split(/\s*,\s*/)
+    const item = markRaw(new CharacterStatFormulaConditionalItem(conditional, formula, optionList))
+    this.conditionValues.push(item)
   }
   calc(pureStats: Stat[], vars: CharacterStatResultVars): CharacterStatFormulaResult {
-    const allCharacterStatMap: { [key: string]: CharacterStat } = {};
+    const allCharacterStatMap: { [key: string]: CharacterStat } = {}
     this.belongCharacterStat.category.belongCategorys
       .map(cat => cat.stats).flat()
-      .forEach(stat => allCharacterStatMap[stat.id] = stat);
+      .forEach(stat => allCharacterStatMap[stat.id] = stat)
 
-    const checkBaseName = (stat: Stat) => stat.baseName === this.belongCharacterStat.link;
+    const checkBaseName = (stat: Stat) => stat.baseName === this.belongCharacterStat.link
     const cstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Constant),
       mstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Multiplier),
-      tstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Total);
+      tstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Total)
     let cvalue = cstat ? cstat.value as number : 0,
       mvalue = mstat ? mstat.value as number : 0,
-      tvalue = tstat ? tstat.value as number : 0;
+      tvalue = tstat ? tstat.value as number : 0
 
-    let defaultFormula = true;
+    let defaultFormula = true
 
     const statPartsDetail: StatPartsDetail = {
       additionalValues: {
@@ -644,29 +644,29 @@ class CharacterStatFormula {
         total: tvalue,
         base: 0,
       },
-    };
+    }
 
     const methods = {
       reduceValue: (value: number) => {
-        const neg = value < 0;
-        value = Math.abs(value);
-        let rate = 1, res = neg ? 100 : 0;
+        const neg = value < 0
+        value = Math.abs(value)
+        let rate = 1, res = neg ? 100 : 0
         while (value !== 0) {
-          const fixedValue = Math.min(value, 50);
-          res = neg ? res * (100 + fixedValue) / 100 : res + fixedValue / rate;
-          value -= fixedValue;
-          rate *= 2;
+          const fixedValue = Math.min(value, 50)
+          res = neg ? res * (100 + fixedValue) / 100 : res + fixedValue / rate
+          value -= fixedValue
+          rate *= 2
         }
 
-        return neg ? -1 * (res - 100) : res;
+        return neg ? -1 * (res - 100) : res
       },
-    };
+    }
 
     const statValueVars = {
       cvalue: 0,
       tvalue: 0,
       mvalue: 0,
-    };
+    }
     const handlerOptions = {
       vars: {
         ...vars.value,
@@ -678,39 +678,39 @@ class CharacterStatFormula {
     };
     (['cvalue', 'mvalue', 'tvalue'] as const).forEach(key => {
       handlerOptions.getters['#' + key] = () => {
-        defaultFormula = false;
-        return statValueVars[key];
-      };
-    });
+        defaultFormula = false
+        return statValueVars[key]
+      }
+    })
     Object.entries(allCharacterStatMap).forEach(([key, value]) => {
-      const originalKey = key;
-      key = '$' + key;
+      const originalKey = key
+      key = '$' + key
       handlerOptions.getters[key] = () => {
-        const src = vars.computed;
+        const src = vars.computed
         if (src[key] !== undefined) {
-          return src[key];
+          return src[key]
         }
-        const originalRes = value.result(pureStats, vars);
-        vars.computedResultStore[originalKey] = originalRes;
-        let res = originalRes.value;
-        res = typeof res === 'string' ? parseFloat(res) : res;
-        res = Math.floor(res);
-        src[key] = res;
-        return res;
-      };
-    });
+        const originalRes = value.result(pureStats, vars)
+        vars.computedResultStore[originalKey] = originalRes
+        let res = originalRes.value
+        res = typeof res === 'string' ? parseFloat(res) : res
+        res = Math.floor(res)
+        src[key] = res
+        return res
+      }
+    })
     const formulaHandler = (formulaStr: string, { ignoreStatValue = false } = {}) => {
       if (ignoreStatValue) {
-        statValueVars.cvalue = 0;
-        statValueVars.mvalue = 0;
-        statValueVars.tvalue = 0;
+        statValueVars.cvalue = 0
+        statValueVars.mvalue = 0
+        statValueVars.tvalue = 0
       } else {
-        statValueVars.cvalue = cvalue;
-        statValueVars.mvalue = mvalue;
-        statValueVars.tvalue = tvalue;
+        statValueVars.cvalue = cvalue
+        statValueVars.mvalue = mvalue
+        statValueVars.tvalue = tvalue
       }
-      return handleFormula(formulaStr, handlerOptions) as number;
-    };
+      return handleFormula(formulaStr, handlerOptions) as number
+    }
 
 
     const conditionalHandlerOptions = {
@@ -719,29 +719,29 @@ class CharacterStatFormula {
       },
       toBoolean: true,
       defaultValue: true,
-    };
+    }
 
     const conditions: CharacterStatFormulaResultConditionalBase[] = this.conditionValues
       .map(item => {
         let statBasePart: string | null = null,
           result = true,
           isMul = false,
-          isBase = false;
+          isBase = false
 
         if (item.conditional !== '#') {
-          result = handleFormula(item.conditional, conditionalHandlerOptions) as boolean;
+          result = handleFormula(item.conditional, conditionalHandlerOptions) as boolean
         }
         item.options.forEach(option => {
-          const match = option.match(/#([cmt]value)/);
+          const match = option.match(/#([cmt]value)/)
           if (match) {
             if (statBasePart === null)
-              statBasePart = match[1];
+              statBasePart = match[1]
           } else if (option === '#base') {
-            isBase = true;
+            isBase = true
           } else if (option === '#mul') {
-            isMul = true;
+            isMul = true
           }
-        });
+        })
         return {
           conditional: item.conditional,
           formula: item.formula,
@@ -750,81 +750,81 @@ class CharacterStatFormula {
           statBasePart,
           isMul,
           isBase,
-        };
+        }
       })
-      .filter(item => item.result);
+      .filter(item => item.result)
 
     // #base不能和#[cmt]value共存，同時存在時，#base優先級高於#[cmt]value
     conditions
       .filter(item => item.statBasePart !== null && !item.isBase)
       .forEach(item => {
-        const part = item.statBasePart;
-        const value = formulaHandler(item.formula);
+        const part = item.statBasePart
+        const value = formulaHandler(item.formula)
         const data: StatPartsDetailAdditionalValueItem = {
           conditional: item.conditional,
           options: item.options,
           value: value,
-        };
+        }
         switch (part) {
           case 'cvalue':
-            cvalue += value;
-            statPartsDetail.additionalValues.constant.push(data);
-            break;
+            cvalue += value
+            statPartsDetail.additionalValues.constant.push(data)
+            break
           case 'mvalue':
-            mvalue += value;
-            statPartsDetail.additionalValues.multiplier.push(data);
-            break;
+            mvalue += value
+            statPartsDetail.additionalValues.multiplier.push(data)
+            break
           case 'tvalue':
-            tvalue += value;
-            statPartsDetail.additionalValues.total.push(data);
-            break;
+            tvalue += value
+            statPartsDetail.additionalValues.total.push(data)
+            break
         }
-      });
+      })
 
-    const conditionalBase = conditions.find(item => item.isBase) || null;
+    const conditionalBase = conditions.find(item => item.isBase) || null
 
     const extraValues = conditions
       .filter(item => !item.isBase)
       .filter(item => item.statBasePart === null)
       .map(item => {
-        const value = formulaHandler(item.formula);
+        const value = formulaHandler(item.formula)
         statPartsDetail.additionalValues.base.push({
           conditional: item.conditional,
           options: item.options,
           isMul: item.isMul,
           value: value,
-        });
+        })
         return {
           isMul: item.isMul,
           value: value,
-        };
-      });
+        }
+      })
 
     const addValues = extraValues
-      .filter(item => !item.isMul).map(item => item.value);
+      .filter(item => !item.isMul).map(item => item.value)
     const mulValues = extraValues
-      .filter(item => item.isMul).map(item => item.value);
+      .filter(item => item.isMul).map(item => item.value)
 
-    let res = 0, basev = 0, initBasev = 0;
+    let res = 0, basev = 0, initBasev = 0
 
-    const formula = conditionalBase ? conditionalBase.formula : this.formula;
+    const formula = conditionalBase ? conditionalBase.formula : this.formula
 
     // formula是"0"的話，計算結果無條件為0。
     if (formula !== '0') {
-      const sum = (ary: number[]) => ary.reduce((cur, v) => cur + v, 0);
-      const mul = (ary: number[]) => ary.reduce((cur, v) => cur * v, 1);
+      const sum = (ary: number[]) => ary.reduce((cur, v) => cur + v, 0)
+      const mul = (ary: number[]) => ary.reduce((cur, v) => cur * v, 1)
 
       if (formula && formula.includes('#base')) {
-        basev = sum(addValues) * mul(mulValues);
-        res = formulaHandler(this.formula.replace('#base', basev.toString()));
+        basev = sum(addValues) * mul(mulValues)
+        res = formulaHandler(this.formula.replace('#base', basev.toString()))
       } else {
-        initBasev = formula ? formulaHandler(formula) : 0;
-        basev = sum([initBasev, ...addValues]) * mul(mulValues);
-        res = defaultFormula ? (basev * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : basev;
+        initBasev = formula ? formulaHandler(formula) : 0
+        basev = sum([initBasev, ...addValues]) * mul(mulValues)
+        res = defaultFormula ? (basev * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : basev
       }
     }
 
-    statPartsDetail.initValue['base'] = initBasev;
+    statPartsDetail.initValue['base'] = initBasev
     return {
       value: res,
       statValueParts: {
@@ -835,21 +835,21 @@ class CharacterStatFormula {
       },
       statPartsDetail,
       conditionalBase,
-    };
+    }
   }
 }
 
 class CharacterStatFormulaConditionalItem {
-  readonly conditional: string;
-  readonly formula: string;
-  readonly options: string[];
+  readonly conditional: string
+  readonly formula: string
+  readonly options: string[]
 
   constructor(conditional: string, formula: string, options: string[]) {
-    this.conditional = conditional;
-    this.formula = formula;
-    this.options = options;
+    this.conditional = conditional
+    this.formula = formula
+    this.options = options
   }
 }
 
-export { CharacterStatCategory, CharacterStat, CharacterStatFormula, Character, EquipmentField };
-export type { CharacterSaveData };
+export { CharacterStatCategory, CharacterStat, CharacterStatFormula, Character, EquipmentField }
+export type { CharacterSaveData }

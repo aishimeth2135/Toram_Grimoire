@@ -1,15 +1,15 @@
-import { computed, ref } from 'vue';
-import type { Ref } from 'vue';
-import { storeToRefs } from 'pinia';
+import { computed, ref } from 'vue'
+import type { Ref } from 'vue'
+import { storeToRefs } from 'pinia'
 
-import { useDamageCalculationStore } from '@/stores/views/damage-calculation';
+import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 
-import { CalcItemContainer, Calculation } from '@/lib/Calculation/Damage/Calculation';
+import { CalcItemContainer, Calculation } from '@/lib/Calculation/Damage/Calculation'
 
-import Notify from '@/setup/Notify';
-import RegisterLang from '@/setup/RegisterLang';
+import Notify from '@/setup/Notify'
+import RegisterLang from '@/setup/RegisterLang'
 
-import { calcStructDisplay, calcStructCritical, calcStructWithoutCritical } from './consts';
+import { calcStructDisplay, calcStructCritical, calcStructWithoutCritical } from './consts'
 
 
 const setupCalcMode = () => {
@@ -21,68 +21,68 @@ const setupCalcMode = () => {
     id: 'critical',
     calcStruct: calcStructCritical,
     outsideItems: ['critical/critical_rate'],
-  }];
-  const currentCalcModeId = ref('common');
-  const selectCalcMode = (id: string) => currentCalcModeId.value = id;
-  const calcMode = computed(() => calcModeList.find(item => item.id === currentCalcModeId.value)!);
+  }]
+  const currentCalcModeId = ref('common')
+  const selectCalcMode = (id: string) => currentCalcModeId.value = id
+  const calcMode = computed(() => calcModeList.find(item => item.id === currentCalcModeId.value)!)
 
   return {
     calcModeList,
     calcMode,
     selectCalcMode,
-  };
-};
+  }
+}
 
 const setupCalculationStoreState = () => {
-  const store = useDamageCalculationStore();
+  const store = useDamageCalculationStore()
   const {
     calculations,
     currentCalculation,
   }: {
     calculations: Ref<Calculation[]>;
     currentCalculation: Ref<Calculation>;
-  } = storeToRefs(store);
+  } = storeToRefs(store)
 
   return {
     calculations,
     currentCalculation,
-  };
-};
+  }
+}
 
 const setupCalculationStore = () => {
-  const store = useDamageCalculationStore();
-  const { lang, rootLang } = RegisterLang('Damage Calculation');
-  const { notify } = Notify();
+  const store = useDamageCalculationStore()
+  const { lang, rootLang } = RegisterLang('Damage Calculation')
+  const { notify } = Notify()
 
-  const { calculations, currentCalculation } = setupCalculationStoreState();
+  const { calculations, currentCalculation } = setupCalculationStoreState()
 
   const removeCurrentCalculation = () => {
     if (calculations.value.length === 1) {
-      notify(lang('tips/At least one build must be kept'));
-      return;
+      notify(lang('tips/At least one build must be kept'))
+      return
     }
-    const calculation = currentCalculation.value;
-    store.removeCalculation(calculation);
+    const calculation = currentCalculation.value
+    store.removeCalculation(calculation)
     notify(lang('tips/Successfully removed build', [calculation.name]), {
       buttons: [{
         text: rootLang('global/recovery'),
         removeMessageAfterClick: true,
         click: () => store.appendCalculation(calculation),
       }],
-    });
-  };
+    })
+  }
 
   const copyCurrentCalculation = () => {
-    const calculation = currentCalculation.value.clone();
-    store.appendCalculation(calculation);
-  };
+    const calculation = currentCalculation.value.clone()
+    store.appendCalculation(calculation)
+  }
 
   const calculationItems = computed(() => {
     return calculations.value.map((calc, index) => ({
       index,
       origin: calc,
-    }));
-  });
+    }))
+  })
 
   return {
     calculations,
@@ -91,62 +91,62 @@ const setupCalculationStore = () => {
 
     removeCurrentCalculation,
     copyCurrentCalculation,
-  };
-};
+  }
+}
 
 const setupExpectedResults = (calculation: Ref<Calculation>) => {
   const expectedResultComputedBase = [calcStructCritical, calcStructWithoutCritical]
     .map(calcStruct => ({
       id: calcStruct.id,
       result: computed(() => calculation.value.result(calcStruct)),
-    }));
+    }))
 
   const getResult = (target: string) => {
-    const cr = (calculation.value.containers.get('critical/critical_rate') as CalcItemContainer).result();
-    const stability = (calculation.value.containers.get('stability') as CalcItemContainer).getItemValue('stability');
+    const cr = (calculation.value.containers.get('critical/critical_rate') as CalcItemContainer).result()
+    const stability = (calculation.value.containers.get('stability') as CalcItemContainer).getItemValue('stability')
     const stabilityValue = (() => {
       if (target === 'min') {
-        return stability;
+        return stability
       }
       if (target === 'grazeMin') {
-        return Math.floor(stability / 2);
+        return Math.floor(stability / 2)
       }
-      return 100;
-    })();
-    const criticalValue = Math.floor(expectedResultComputedBase[0].result.value * stabilityValue / 100);
-    const withoutCriticalValue = Math.floor(expectedResultComputedBase[1].result.value * stabilityValue / 100);
-    return Math.floor((cr * criticalValue) / 100 + ((100 - cr) * withoutCriticalValue) / 100);
-  };
+      return 100
+    })()
+    const criticalValue = Math.floor(expectedResultComputedBase[0].result.value * stabilityValue / 100)
+    const withoutCriticalValue = Math.floor(expectedResultComputedBase[1].result.value * stabilityValue / 100)
+    return Math.floor((cr * criticalValue) / 100 + ((100 - cr) * withoutCriticalValue) / 100)
+  }
 
-  const expectedResultMax = computed(() => getResult('max'));
-  const expectedResultMin = computed(() => getResult('min'));
-  const expectedResultGrazeMin = computed(() => getResult('grazeMin'));
+  const expectedResultMax = computed(() => getResult('max'))
+  const expectedResultMin = computed(() => getResult('min'))
+  const expectedResultGrazeMin = computed(() => getResult('grazeMin'))
 
   const expectedResult = computed(() => {
-    const max = expectedResultMax.value;
-    const stability = (calculation.value.containers.get('stability') as CalcItemContainer).result();
-    return Math.floor(max * stability / 100);
-  });
+    const max = expectedResultMax.value
+    const stability = (calculation.value.containers.get('stability') as CalcItemContainer).result()
+    return Math.floor(max * stability / 100)
+  })
 
   const stabilityResult = computed(() => ({
     min: expectedResultMin.value,
     max: expectedResultMax.value,
-  }));
+  }))
   const stabilityResultGraze = computed(() => ({
     min: expectedResultGrazeMin.value,
     max: expectedResultMax.value,
-  }));
+  }))
 
   return {
     expectedResult,
     stabilityResult,
     stabilityResultGraze,
-  };
-};
+  }
+}
 
-type ResultModeIdStability = 'stability' | 'stability-with-graze';
-type ResultModeIdExpected = 'expected';
-type ResultModeId = ResultModeIdStability | ResultModeIdExpected;
+type ResultModeIdStability = 'stability' | 'stability-with-graze'
+type ResultModeIdExpected = 'expected'
+type ResultModeId = ResultModeIdStability | ResultModeIdExpected
 interface ResultModeItem<Id extends ResultModeId = ResultModeId> {
   id: Id;
   icon: string;
@@ -161,13 +161,13 @@ const setupResultMode = (calculation: Ref<Calculation>) => {
     expectedResult,
     stabilityResult,
     stabilityResultGraze,
-  } = setupExpectedResults(calculation);
+  } = setupExpectedResults(calculation)
 
-  const resultModeId = ref<ResultModeId>('expected');
+  const resultModeId = ref<ResultModeId>('expected')
 
   const selectResultMode = (modeId: ResultModeId) => {
-    resultModeId.value = modeId;
-  };
+    resultModeId.value = modeId
+  }
 
   const resultModeList = computed<ResultModeItem[]>(() => {
     return [{
@@ -182,36 +182,36 @@ const setupResultMode = (calculation: Ref<Calculation>) => {
       id: 'expected',
       icon: 'ant-design:star-outlined',
       value: expectedResult.value,
-    }];
-  });
-  const resultMode = computed(() => resultModeList.value.find(item => item.id === resultModeId.value)!);
+    }]
+  })
+  const resultMode = computed(() => resultModeList.value.find(item => item.id === resultModeId.value)!)
 
   return {
     resultMode,
     resultModeList,
     selectResultMode,
-  };
-};
+  }
+}
 
 const setupCalculationCalcOptions = (calculation: Ref<Calculation>) => {
   const options = [{
     containerId: 'damage_type',
-  }];
+  }]
 
   const calculationContainerOptions = computed(() => {
     return options.map(item => {
-      const container = calculation.value.containers.get(item.containerId) as CalcItemContainer;
+      const container = calculation.value.containers.get(item.containerId) as CalcItemContainer
       return {
         container,
         containerItems: Array.from(container.items.values()),
-      };
-    });
-  });
+      }
+    })
+  })
 
   return {
     calculationContainerOptions,
-  };
-};
+  }
+}
 
 export {
   setupCalcMode,
@@ -220,9 +220,9 @@ export {
   setupExpectedResults,
   setupResultMode,
   setupCalculationCalcOptions,
-};
+}
 export type {
   ResultModeIdStability,
   ResultModeIdExpected,
   ResultModeItem,
-};
+}

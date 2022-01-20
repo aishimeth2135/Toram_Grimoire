@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import DataContainer from '../utils/DataContainer.js';
+import DataContainer from '../utils/DataContainer.js'
 
 export default {
   name: 'SkillQueryOldSkillBranchStats',
@@ -22,27 +22,27 @@ export default {
   computed: {
     statTexts() {
       return this.stats.map((p, i) => {
-        const dc = new DataContainer(p.value);
+        const dc = new DataContainer(p.value)
 
-        let value = this.calcValueStr(dc.value());
-        let sign = '+';
+        let value = this.calcValueStr(dc.value())
+        let sign = '+'
         if (/^\(?-?[\d.]+\)?$/.test(value)) {
-          value = value.replace(/\(?(-?[\d.]+)\)?/, (m, m1) => m1);
+          value = value.replace(/\(?(-?[\d.]+)\)?/, (m, m1) => m1)
           if (value.charAt(0) == '-') {
-            sign = '-';
+            sign = '-'
           }
         }
 
-        const sd = p.getShowData();
-        const beforeColorText = v => sign + (sign == '-' ? v.replace('-', '') : v) + sd.tail;
-        this.handleDataContainer(dc, { beforeColorText });
+        const sd = p.getShowData()
+        const beforeColorText = v => sign + (sign == '-' ? v.replace('-', '') : v) + sd.tail
+        this.handleDataContainer(dc, { beforeColorText })
 
         return {
           text: sd.title + dc.result(),
           iid: i,
-        };
-      });
+        }
+      })
     },
   },
-};
+}
 </script>

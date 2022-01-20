@@ -42,33 +42,33 @@
 <script lang="ts">
 export default {
   name: 'AppInitialzie',
-};
+}
 </script>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
 
-import { useInitializeStore } from '@/stores/app/initialize';
-import { InitializeStatus, InitItemStatus } from '@/stores/app/initialize/enums';
+import { useInitializeStore } from '@/stores/app/initialize'
+import { InitializeStatus, InitItemStatus } from '@/stores/app/initialize/enums'
 
-import LoadingAnimation from './initialization/loading-animation.vue';
+import LoadingAnimation from './initialization/loading-animation.vue'
 
 
-const initializeStore = useInitializeStore();
+const initializeStore = useInitializeStore()
 
 const {
   initItems,
   status,
-} = storeToRefs(initializeStore);
+} = storeToRefs(initializeStore)
 
-const { t } = useI18n();
+const { t } = useI18n()
 const statusIcon = (value: number) => {
   if (value >= 0) {
-    return ['mdi-loading', 'ic-round-check-circle-outline'][value];
+    return ['mdi-loading', 'ic-round-check-circle-outline'][value]
   }
-  return 'ic-round-close';
-};
+  return 'ic-round-close'
+}
 </script>
 
 <style lang="less" scoped>

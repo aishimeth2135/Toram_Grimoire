@@ -64,18 +64,18 @@
 </template>
 
 <script>
-import { GetLang } from '@/shared/services/Language';
-import CY from '@/shared/utils/Cyteria';
+import { GetLang } from '@/shared/services/Language'
+import CY from '@/shared/utils/Cyteria'
 
-import init from './init.js';
+import init from './init.js'
 
 function Lang(s, vs) {
-  return GetLang('Save Load System/' + s, vs);
+  return GetLang('Save Load System/' + s, vs)
 }
 
 const DoNothing = function() {
   // do nothing
-};
+}
 
 export default {
   name: 'SaveLoadDataSystem',
@@ -125,23 +125,23 @@ export default {
           title: Lang('file') + ' ' + i,
           names: '',
           data: null,
-        };
+        }
       }),
       selectDataWindowVisible: false,
       currentButtonIndex: -1,
       currentMode: '',
-    };
+    }
   },
   computed: {
     localStorageAvailable() {
-      return CY.storageAvailable('localStorage');
+      return CY.storageAvailable('localStorage')
     },
   },
   beforeCreate() {
-    init();
+    init()
   },
   created() {
-    this.updateButtonsStates();
+    this.updateButtonsStates()
   },
   methods: {
     updateButtonsStates() {
@@ -150,114 +150,114 @@ export default {
           return {
             text: p,
             iid: i,
-          };
-        });
-        state.data = this.getLocalStorageData(idx, 'data') || null;
-        state.iid = idx;
-      });
+          }
+        })
+        state.data = this.getLocalStorageData(idx, 'data') || null
+        state.iid = idx
+      })
     },
     closeSelectDataWindow() {
-      this.selectDataWindowVisible = false;
+      this.selectDataWindowVisible = false
     },
     handleFile(mode) {
       if (mode == 'save') {
-        const str = this.saveData();
+        const str = this.saveData()
         if (!str) {
-          this.$notify(Lang('Warn/File is empty'));
-          return;
+          this.$notify(Lang('Warn/File is empty'))
+          return
         }
         try {
-          CY.csv.saveFile(str, this.fileName());
-          this.actionFinished();
+          CY.csv.saveFile(str, this.fileName())
+          this.actionFinished()
         } catch (e) {
-          this.error(e);
+          this.error(e)
         }
       } else if (mode == 'load') {
         CY.csv.loadFile({
           loadFileSucceeded: res => {
             try {
-              this.loadData(res);
-              this.actionFinished();
+              this.loadData(res)
+              this.actionFinished()
             } catch (e) {
-              this.$notify(Lang('Warn/An error occurred while loading data'));
-              this.error(e);
+              this.$notify(Lang('Warn/An error occurred while loading data'))
+              this.error(e)
             }
           },
           wrongFileType() {
-            this.$notify(Lang('Warn/Wrong file type: csv'));
+            this.$notify(Lang('Warn/Wrong file type: csv'))
           },
-        });
+        })
       }
     },
     noData(index) {
-      return this.buttonsStates[index].data == null;
+      return this.buttonsStates[index].data == null
     },
     openSelectDataWindow(mode) {
-      this.selectDataWindowVisible = true;
-      this.currentMode = mode;
+      this.selectDataWindowVisible = true
+      this.currentMode = mode
 
-      this.currentButtonIndex = -1;
+      this.currentButtonIndex = -1
     },
     selectData(index) {
       if (this.currentMode == 'save') {
         if (this.noData(index) || this.currentButtonIndex == index) {
-          this.saving(index);
-          this.currentButtonIndex = -1;
-          this.closeSelectDataWindow();
-          return;
+          this.saving(index)
+          this.currentButtonIndex = -1
+          this.closeSelectDataWindow()
+          return
         }
       } else if (this.currentMode == 'load') {
         if (!this.noData(index) && (this.beforeLoadConfirm() || this.currentButtonIndex == index)) {
-          this.loading(index);
-          this.currentButtonIndex = -1;
-          this.closeSelectDataWindow();
-          return;
+          this.loading(index)
+          this.currentButtonIndex = -1
+          this.closeSelectDataWindow()
+          return
         }
       }
 
       if (this.currentButtonIndex != index)
-        this.currentButtonIndex = index;
+        this.currentButtonIndex = index
     },
     saving(index) {
       try {
-        const str = this.saveData();
-        const name = this.saveNameList().join(',,');
+        const str = this.saveData()
+        const name = this.saveNameList().join(',,')
 
-        this.saveLocalStorageData(index, 'name', name);
-        this.saveLocalStorageData(index, 'data', str);
+        this.saveLocalStorageData(index, 'name', name)
+        this.saveLocalStorageData(index, 'data', str)
 
-        this.$notify(Lang('Warn/Saving success'));
-        this.actionFinished();
-        this.updateButtonsStates();
+        this.$notify(Lang('Warn/Saving success'))
+        this.actionFinished()
+        this.updateButtonsStates()
       } catch (e) {
-        this.error(e);
+        this.error(e)
       }
     },
     loading(index) {
-      const d = this.getLocalStorageData(index, 'data');
+      const d = this.getLocalStorageData(index, 'data')
       try {
-        this.loadData(d);
-        this.$notify(Lang('Warn/Loading success'));
-        this.actionFinished();
+        this.loadData(d)
+        this.$notify(Lang('Warn/Loading success'))
+        this.actionFinished()
       } catch (e) {
-        this.$notify(Lang('Warn/An error occurred while loading data'));
-        this.error(e);
+        this.$notify(Lang('Warn/An error occurred while loading data'))
+        this.error(e)
       }
     },
     localStorageKey(index, type) {
-      return 'Save-Load-Data-System--' + index + '--' + this.name + '--' + type;
+      return 'Save-Load-Data-System--' + index + '--' + this.name + '--' + type
     },
     saveLocalStorageData(index, type, data) {
-      return window.localStorage.setItem(this.localStorageKey(index, type), data);
+      return window.localStorage.setItem(this.localStorageKey(index, type), data)
     },
     getLocalStorageData(index, type) {
-      return window.localStorage.getItem(this.localStorageKey(index, type));
+      return window.localStorage.getItem(this.localStorageKey(index, type))
     },
     langText(v, vs) {
-      return Lang(v, vs);
+      return Lang(v, vs)
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

@@ -55,5 +55,5 @@ export default function() {
       },
       'search placeholder': '查詢...',
     },
-  };
+  }
 }

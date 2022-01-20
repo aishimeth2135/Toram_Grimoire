@@ -1,7 +1,7 @@
-import Grimoire from '@/shared/Grimoire';
+import Grimoire from '@/shared/Grimoire'
 
-import { FoodsBase } from './index';
-import type { FoodAmount } from './index';
+import { FoodsBase } from './index'
+import type { FoodAmount } from './index'
 
 function initFoodsBase(foodsBase: FoodsBase) {
   const foodList: Record<string, FoodAmount | { positive: FoodAmount; negative: FoodAmount }> = {
@@ -45,23 +45,23 @@ function initFoodsBase(foodsBase: FoodsBase) {
     'wind_resistance': [2, 4],
     'light_resistance': [2, 4],
     'dark_resistance': [2, 4],
-  };
+  }
 
   Object.keys(foodList).forEach(key => {
-    const value = foodList[key];
-    const base = Grimoire.Character.findStatBase(key);
+    const value = foodList[key]
+    const base = Grimoire.Character.findStatBase(key)
     if (!base) {
-      console.warn('Can not find Statbase which base-name: ' + key);
-      return;
+      console.warn('Can not find Statbase which base-name: ' + key)
+      return
     }
     if (Array.isArray(value)) {
-      foodsBase.appendFoodBase(base, value);
+      foodsBase.appendFoodBase(base, value)
     }
     else {
-      foodsBase.appendFoodBase(base, value.positive);
-      foodsBase.appendFoodBase(base, value.negative, true);
+      foodsBase.appendFoodBase(base, value.positive)
+      foodsBase.appendFoodBase(base, value.negative, true)
     }
-  });
+  })
 }
 
-export { initFoodsBase };
+export { initFoodsBase }

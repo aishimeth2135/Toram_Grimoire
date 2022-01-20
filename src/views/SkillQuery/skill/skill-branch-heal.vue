@@ -12,40 +12,40 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, toRefs } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { ComponentPropsType } from '@/shared/utils/type';
+import { ComponentPropsType } from '@/shared/utils/type'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
-import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue';
-import skillHealFormula from './layouts/skill-heal-formula.vue';
+import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
+import skillHealFormula from './layouts/skill-heal-formula.vue'
 
-import HealHandler from './branch-handlers/HealHandler';
-import { setupCommonExtraSuffixBranches } from './setup';
+import HealHandler from './branch-handlers/HealHandler'
+import { setupCommonExtraSuffixBranches } from './setup'
 
 interface Props {
   branchItem: SkillBranchItem;
 }
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const props = defineProps<Props>();
-const { branchItem } = toRefs(props);
+const props = defineProps<Props>()
+const { branchItem } = toRefs(props)
 
-const container = computed(() => HealHandler(branchItem.value));
+const container = computed(() => HealHandler(branchItem.value))
 
 const nameProps = computed(() => {
-  return [container.value.get('type')];
-});
+  return [container.value.get('type')]
+})
 
 const subContents = computed(() => {
-  const result = [] as NonNullable<ComponentPropsType<typeof SkillBranchLayoutNormal>['subContents']>;
+  const result = [] as NonNullable<ComponentPropsType<typeof SkillBranchLayoutNormal>['subContents']>
   result.push({
     key: 'frequency',
     icon: 'bi-circle-square',
-  });
+  })
   if (container.value.getValue('duration') !== '0' && container.value.getValue('cycle') !== '0') {
     result.push({
       key: 'duration|cycle',
@@ -54,10 +54,10 @@ const subContents = computed(() => {
         duration: container.value.get('duration'),
         cycle: container.value.get('cycle'),
       }),
-    });
+    })
   }
-  return result;
-});
+  return result
+})
 
-const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(branchItem);
+const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(branchItem)
 </script>

@@ -1,5 +1,5 @@
-import { LeftMenuViewButton } from '@/stores/app/left-menu';
-import 'vue-router';
+import { LeftMenuViewButton } from '@/stores/app/left-menu'
+import 'vue-router'
 declare module 'vue-router' {
   interface RouteMeta {
     title?: string | null;

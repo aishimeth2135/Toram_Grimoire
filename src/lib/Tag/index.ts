@@ -1,14 +1,14 @@
-import Tag from './Tag';
+import Tag from './Tag'
 
 export default class {
-  tagList: Tag[];
+  tagList: Tag[]
 
   constructor() {
-    this.tagList = [];
+    this.tagList = []
   }
   appendTag(name: string) {
-    const tag = new Tag(name);
-    this.tagList.push(tag);
-    return tag;
+    const tag = new Tag(name)
+    this.tagList.push(tag)
+    return tag
   }
 }

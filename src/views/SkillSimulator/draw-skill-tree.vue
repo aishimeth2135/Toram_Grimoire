@@ -94,10 +94,10 @@
 </template>
 
 <script>
-import CY from '@/shared/utils/Cyteria';
+import CY from '@/shared/utils/Cyteria'
 
-import { Skill, SkillTree, LevelSkill, LevelSkillTree } from '@/lib/Skill/Skill';
-import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs } from '@/lib/Skill/utils/DrawSkillTree';
+import { Skill, SkillTree, LevelSkill, LevelSkillTree } from '@/lib/Skill/Skill'
+import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs } from '@/lib/Skill/utils/DrawSkillTree'
 
 export default {
   props: {
@@ -124,43 +124,43 @@ export default {
       return computeDrawSkillTreeData(this.skillTree, {
         setSkillButtonExtraData: this.setSkillButtonExtraData,
         skillTreeType: this.skillTreeType,
-      });
+      })
     },
     skillIconPatternData() {
-      const st = this.skillTreeType === 'level-skill-tree' ? this.skillTree.base : this.skillTree;
-      return getSkillIconPatternData(st);
+      const st = this.skillTreeType === 'level-skill-tree' ? this.skillTree.base : this.skillTree
+      return getSkillIconPatternData(st)
     },
     drawCircleData() {
       return this.drawTreeData.data
-        .filter(p => p.type === 'skill-circle');
+        .filter(p => p.type === 'skill-circle')
     },
     drawNameData() {
       return this.drawTreeData.data
-        .filter(p => p.type === 'skill-name');
+        .filter(p => p.type === 'skill-name')
     },
     drawOtherData() {
-      return this.drawTreeData.data.filter(p => p.type !== 'skill-circle' && p.type !== 'skill-name');
+      return this.drawTreeData.data.filter(p => p.type !== 'skill-circle' && p.type !== 'skill-name')
     },
   },
   beforeCreate() {
     if (!document.getElementById('app--draw-skill-tree-defs')) {
-      const svg = CY.svg.create();
-      svg.append(createDrawSkillTreeDefs());
-      document.body.append(svg);
+      const svg = CY.svg.create()
+      svg.append(createDrawSkillTreeDefs())
+      document.body.append(svg)
     }
   },
   methods: {
     handleSkillCircleClass(data) {
-      const ary = data.class.slice();
+      const ary = data.class.slice()
       if (this.currentSkill === data.skill)
-        ary.push('selected');
-      return ary;
+        ary.push('selected')
+      return ary
     },
     skillCircleClick(evt, skill) {
-      this.skillCircleClickListener(evt, skill);
+      this.skillCircleClickListener(evt, skill)
     },
   },
-};
+}
 </script>
 
 <style lang="postcss" scoped>

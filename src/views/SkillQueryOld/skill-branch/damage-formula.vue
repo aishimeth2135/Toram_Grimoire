@@ -56,10 +56,10 @@ export default {
   props: ['showData'],
   computed: {
     showFrequency() {
-      return this.showData['@parent-branch'].attrs['title'] === 'each';
+      return this.showData['@parent-branch'].attrs['title'] === 'each'
     },
   },
-};
+}
 </script>
 
 <style lang="postcss" scoped>

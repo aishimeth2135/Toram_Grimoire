@@ -24,10 +24,10 @@ interface Emits {
   (evt: 'update:value', value: any): void;
 }
 
-defineProps<Props>();
-const emit = defineEmits<Emits>();
+defineProps<Props>()
+const emit = defineEmits<Emits>()
 
 const selectItem = (item: { text: string; value: any }) => {
-  emit('update:value', item.value);
-};
+  emit('update:value', item.value)
+}
 </script>

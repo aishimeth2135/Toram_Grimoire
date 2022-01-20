@@ -284,22 +284,22 @@
 </template>
 
 <script>
-import { mapState } from 'pinia';
+import { mapState } from 'pinia'
 
-import { useEnchantStore } from '@/stores/views/enchant';
+import { useEnchantStore } from '@/stores/views/enchant'
 
-import CY from '@/shared/utils/Cyteria';
+import CY from '@/shared/utils/Cyteria'
 
-import { EnchantBuild, EnchantStep, EnchantEquipment } from '@/lib/Enchant/Enchant';
-import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums';
+import { EnchantBuild, EnchantStep, EnchantEquipment } from '@/lib/Enchant/Enchant'
+import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
 
-import ToggleService from '@/setup/ToggleService';
+import ToggleService from '@/setup/ToggleService'
 
-import vue_EnchantResult from './enchant-result';
-import vue_EnchantSelectItem from './enchant-select-item';
-import vue_EnchantStep from './enchant-step';
-import init from './init.js';
-import { SelectItemTarget, EnchantItemData } from './type';
+import vue_EnchantResult from './enchant-result'
+import vue_EnchantSelectItem from './enchant-select-item'
+import vue_EnchantStep from './enchant-step'
+import init from './init.js'
+import { SelectItemTarget, EnchantItemData } from './type'
 
 export default {
   name: 'EnchantSimulator',
@@ -313,15 +313,15 @@ export default {
     return {
       openSelectItem: this.openSelectItem,
       rootState: this.state,
-    };
+    }
   },
   setup() {
     const { windows, contents, toggle } = ToggleService({
       windows: ['selectItem'],
       contents: ['top', 'extraOptions', 'result'],
-    });
-    const store = useEnchantStore();
-    return { windows, contents, toggle, store };
+    })
+    const store = useEnchantStore()
+    return { windows, contents, toggle, store }
   },
   data() {
     return {
@@ -354,31 +354,31 @@ export default {
         windowBeforeUnload: null,
         documentVisibilityChange: null,
       },
-    };
+    }
   },
   beforeCreate() {
-    init();
+    init()
   },
   created() {
-    this.store.init();
-    this.$notify(this.$lang('save/tips/auto load successfully'));
+    this.store.init()
+    this.$notify(this.$lang('save/tips/auto load successfully'))
 
-    const evt_autoSave = () => this.autoSave();
-    const evt_autoSave_2 = () => document.visibilityState === 'hidden' && this.autoSave();
-    window.addEventListener('beforeunload', evt_autoSave);
-    document.addEventListener('visibilitychange', evt_autoSave_2);
-    this.listeners.windowBeforeUnload = evt_autoSave;
-    this.listeners.documentVisibilityChange = evt_autoSave_2;
+    const evt_autoSave = () => this.autoSave()
+    const evt_autoSave_2 = () => document.visibilityState === 'hidden' && this.autoSave()
+    window.addEventListener('beforeunload', evt_autoSave)
+    document.addEventListener('visibilitychange', evt_autoSave_2)
+    this.listeners.windowBeforeUnload = evt_autoSave
+    this.listeners.documentVisibilityChange = evt_autoSave_2
   },
   mounted() {
     if (this.enchantBuilds.length === 0) {
-      this.createBuild();
+      this.createBuild()
     }
   },
   beforeUnmount() {
-    window.removeEventListener('beforeunload', this.listeners.windowBeforeUnload);
-    document.removeEventListener('visibilitychange', this.listeners.documentVisibilityChange);
-    this.autoSave();
+    window.removeEventListener('beforeunload', this.listeners.windowBeforeUnload)
+    document.removeEventListener('visibilitychange', this.listeners.documentVisibilityChange)
+    this.autoSave()
   },
   computed: {
     ...mapState(useEnchantStore, ['enchantBuilds', 'currentBuild', 'config']),
@@ -387,150 +387,150 @@ export default {
       return this.enchantBuilds.map((build, i) => ({
         origin: build,
         iid: i,
-      }));
+      }))
     },
 
     /** @return {EnchantEquipment} */
     currentEquipment() {
       if (!this.currentBuild) {
-        return null;
+        return null
       }
-      return this.currentBuild.equipment;
+      return this.currentBuild.equipment
     },
     successRate() {
       if (!this.currentEquipment) {
-        return 0;
+        return 0
       }
-      const rate = this.currentEquipment.successRate;
+      const rate = this.currentEquipment.successRate
       return rate === -1 ?
         this.$lang('success rate: unlimited') :
-        Math.floor(rate) + '%';
+        Math.floor(rate) + '%'
     },
     isWeapon() {
-      return this.currentEquipmentType !== 1;
+      return this.currentEquipmentType !== 1
     },
     selectedItems() {
       return (this.selectItemTarget.target?.stats ?? []).map(stat => ({
         origin: stat.itemBase,
         type: stat.type,
-      }));
+      }))
     },
 
     currentEquipmentType: {
       get() {
-        const eq = this.currentEquipment;
+        const eq = this.currentEquipment
         if (eq.fieldType === EnchantEquipmentTypes.MainWeapon) {
-          return eq.isOriginalElement ? 2 : 0;
+          return eq.isOriginalElement ? 2 : 0
         }
-        return 1;
+        return 1
       },
       set(v) {
-        this.currentEquipment.fieldType = v.type;
-        this.currentEquipment.isOriginalElement = v.isOriginalElement;
+        this.currentEquipment.fieldType = v.type
+        this.currentEquipment.isOriginalElement = v.isOriginalElement
       },
     },
 
     characterLevel: {
       set(value) {
-        this.store.config.characterLevel = value;
+        this.store.config.characterLevel = value
       },
       get() {
-        return this.config.characterLevel;
+        return this.config.characterLevel
       },
     },
     smithLevel: {
       set(value) {
-        this.store.config.smithLevel = value;
+        this.store.config.smithLevel = value
       },
       get() {
-        return this.config.smithLevel;
+        return this.config.smithLevel
       },
     },
   },
   methods: {
     autoSave() {
-      this.store.save();
-      this.$notify(this.$lang('save/tips/auto save successfully'));
+      this.store.save()
+      this.$notify(this.$lang('save/tips/auto save successfully'))
     },
     setCurrentBuild(data) {
-      this.store.setCurrentBuild(data.iid);
+      this.store.setCurrentBuild(data.iid)
     },
     createBuild() {
-      const name = this.$lang('build') + ' ' + (this.buildCount + 1).toString();
-      const build = new EnchantBuild(name);
-      this.store.appendBuild(build);
-      this.buildCount += 1;
+      const name = this.$lang('build') + ' ' + (this.buildCount + 1).toString()
+      const build = new EnchantBuild(name)
+      this.store.appendBuild(build)
+      this.buildCount += 1
     },
     async removeBuild() {
       if (this.enchantBuilds.length === 1) {
-        this.$notify(this.$lang('tips/keep at least one build'));
-        return;
+        this.$notify(this.$lang('tips/keep at least one build'))
+        return
       }
       if (await this.$confirm(this.$lang('tips/confirm: remove build'))) {
-        this.store.removeBuild(this.currentBuild);
+        this.store.removeBuild(this.currentBuild)
       }
     },
     copyBuild() {
-      this.store.copyBuild(this.currentBuild);
-      this.$notify(this.$lang('tips/copy build successfully'));
+      this.store.copyBuild(this.currentBuild)
+      this.$notify(this.$lang('tips/copy build successfully'))
     },
     exportBuild() {
       /** @type {EnchantBuild} */
-      const build = this.currentBuild;
-      const odata = build.save();
-      const data = JSON.stringify(odata);
+      const build = this.currentBuild
+      const odata = build.save()
+      const data = JSON.stringify(odata)
       CY.file.save({
         data,
         fileName: build.name + '.txt',
-      });
+      })
     },
     importBuild() {
       CY.file.load({
         succeed: res => {
-          const build = EnchantBuild.load(JSON.parse(res));
-          this.store.appendBuild(build);
-          this.$notify(this.$lang('save/tips/import successfully', [`「${build.name}」`]));
+          const build = EnchantBuild.load(JSON.parse(res))
+          this.store.appendBuild(build)
+          this.$notify(this.$lang('save/tips/import successfully', [`「${build.name}」`]))
         },
         error: () => this.$notify(this.$lang('save/tips/import: error')),
         checkFileType: fileType => {
           if (fileType !== 'txt') {
-            this.$notify(this.$lang('save/tips/import: wrong file type'));
-            return false;
+            this.$notify(this.$lang('save/tips/import: wrong file type'))
+            return false
           }
-          return true;
+          return true
         },
-      });
+      })
     },
 
     appendStep() {
-      this.currentEquipment.appendStep();
+      this.currentEquipment.appendStep()
     },
 
     openSelectItem(type, target, once = false) {
-      this.selectItemTarget = { type, target, once };
-      this.toggle('windows/selectItem', true);
+      this.selectItemTarget = { type, target, once }
+      this.toggle('windows/selectItem', true)
     },
 
     /** @param {EnchantItemData} item */
     selectItem(item) {
-      const { type, target } = this.selectItemTarget;
+      const { type, target } = this.selectItemTarget
       if (type === 'step' && target instanceof EnchantStep) {
-        const matchedStat = target.stat(item.origin, item.type);
+        const matchedStat = target.stat(item.origin, item.type)
         if (matchedStat) {
           // this.$notify(this.$lang('tips/step stat repeated'));
-          matchedStat.remove();
-          return;
+          matchedStat.remove()
+          return
         }
-        const stat = target.appendStat(item.origin, item.type);
+        const stat = target.appendStat(item.origin, item.type)
         if (!stat) {
-          this.$notify(this.$lang('tips/number of stats of equipment has reached the upper limit'));
-          return;
+          this.$notify(this.$lang('tips/number of stats of equipment has reached the upper limit'))
+          return
         }
-        const eq = stat.belongEquipment;
-        const min = stat.limit[0];
-        const pot = stat.itemBase.getPotential(stat.type, eq);
+        const eq = stat.belongEquipment
+        const min = stat.limit[0]
+        const pot = stat.itemBase.getPotential(stat.type, eq)
         stat.value = pot > stat.originalPotential ?
-          (min - Math.min(eq.stat(stat.itemBase, stat.type, eq.lastStep.index).value, 0)) : 0;
+          (min - Math.min(eq.stat(stat.itemBase, stat.type, eq.lastStep.index).value, 0)) : 0
       }
     },
 
@@ -541,7 +541,7 @@ export default {
     //   eq.steps(eq.lastStep.index).forEach(step => console.log(step, step.optimizeType()));
     // }
   },
-};
+}
 </script>
 
 <style lang="postcss" scoped>

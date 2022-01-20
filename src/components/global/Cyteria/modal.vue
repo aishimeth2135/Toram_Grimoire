@@ -74,16 +74,16 @@ export default {
         ['vertical-position-' + this.verticalPosition]: true,
         ['width-' + this.width]: true,
         'frozen-top': this.forzenTop,
-      };
+      }
     },
   },
   methods: {
     closeWindow() {
-      this.$emit('update:visible', false);
-      this.$emit('close');
+      this.$emit('update:visible', false)
+      this.$emit('close')
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

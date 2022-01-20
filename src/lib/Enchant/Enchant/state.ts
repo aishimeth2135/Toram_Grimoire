@@ -1,4 +1,4 @@
-import { enchantConfig } from '@/stores/views/enchant';
+import { enchantConfig } from '@/stores/views/enchant'
 
 const STATE = {
   PotentialCapacity: 100,
@@ -7,13 +7,13 @@ const STATE = {
   PotentialConvertDefaultThreshold: 20,
   Character: {
     get level() {
-      return enchantConfig.characterLevel;
+      return enchantConfig.characterLevel
     },
     get smithLevel() {
-      return enchantConfig.smithLevel;
+      return enchantConfig.smithLevel
     },
     tec: 255,
   },
-};
+}
 
-export default STATE;
+export default STATE

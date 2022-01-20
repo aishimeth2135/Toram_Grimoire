@@ -18,9 +18,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer';
+import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 
-import SkillBranchStats from './skill-branch-stats.vue';
+import SkillBranchStats from './skill-branch-stats.vue'
 
 interface Props {
   icon: string;
@@ -30,6 +30,6 @@ interface Props {
   statContainers?: ResultContainerStat[];
 }
 
-defineProps<Props>();
+defineProps<Props>()
 </script>
 

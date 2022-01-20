@@ -1,14 +1,14 @@
 function getGcd(a: number, b: number): number {
-  const max = Math.max(a, b);
-  const min = Math.min(a, b);
+  const max = Math.max(a, b)
+  const min = Math.min(a, b)
   if (max % min === 0) {
-    return min;
+    return min
   }
-  return getGcd(max % min, min);
+  return getGcd(max % min, min)
 }
 
 function getLcm(a: number, b: number) {
-  return a * b / getGcd(a, b);
+  return a * b / getGcd(a, b)
 }
 
-export { getGcd, getLcm };
+export { getGcd, getLcm }

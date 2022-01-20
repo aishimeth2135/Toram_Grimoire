@@ -1,45 +1,45 @@
-import { StatComputed } from '@/lib/Character/Stat';
+import { StatComputed } from '@/lib/Character/Stat'
 
-type ResultHandler = (currentResult: string, suffix: string) => string;
+type ResultHandler = (currentResult: string, suffix: string) => string
 
 abstract class ResultContainerBase {
   /** The key of attr */
-  abstract readonly key: string;
+  abstract readonly key: string
 
   /** The original data of attr */
-  abstract readonly origin: string;
+  abstract readonly origin: string
 
   /** The calculated value of attr */
-  abstract readonly value: string;
+  abstract readonly value: string
 
   /** result to display */
-  abstract get result(): string;
+  abstract get result(): string
 
   /** method to modify result */
-  abstract handle(handler: ResultHandler): void;
+  abstract handle(handler: ResultHandler): void
 }
 
 class ResultContainer extends ResultContainerBase {
-  override key: string;
-  override origin: string;
-  override value: string;
+  override key: string
+  override origin: string
+  override value: string
 
   /** suffix to insert before result if needed */
-  suffix: string;
+  suffix: string
 
-  private _result: string;
+  private _result: string
 
   constructor(key: string, origin: string, value: string, suffix: string = '') {
-    super();
-    this.key = key;
-    this.origin = origin;
-    this.value = value;
-    this._result = value.toString();
-    this.suffix = suffix;
+    super()
+    this.key = key
+    this.origin = origin
+    this.value = value
+    this._result = value.toString()
+    this.suffix = suffix
   }
 
   override get result() {
-    return this._result;
+    return this._result
   }
 
   /**
@@ -47,16 +47,16 @@ class ResultContainer extends ResultContainerBase {
    * @param handler
    */
   override handle(handler: ResultHandler) {
-    this._result = handler(this._result, this.suffix);
+    this._result = handler(this._result, this.suffix)
   }
 }
 
 class ResultContainerStat extends ResultContainer {
-  stat: StatComputed;
+  stat: StatComputed
 
   constructor(origin: StatComputed, stat: StatComputed) {
-    super(origin.baseName, origin.value, stat.value);
-    this.stat = stat;
+    super(origin.baseName, origin.value, stat.value)
+    this.stat = stat
   }
 }
 
@@ -65,12 +65,12 @@ interface TextResultContainerParseResult {
   parts: (string | ResultContainer)[];
 }
 class TextResultContainer extends ResultContainerBase {
-  override key: string;
-  override origin: string;
-  override value: string;
+  override key: string
+  override origin: string
+  override value: string
 
-  containers: ResultContainer[];
-  parts: (string | ResultContainer)[];
+  containers: ResultContainer[]
+  parts: (string | ResultContainer)[]
 
   /**
    * Parse the text-type string data and convert it to TextResultContainer.
@@ -79,54 +79,54 @@ class TextResultContainer extends ResultContainerBase {
    * @returns the new TextResultContainer instance
    */
   static parse(key: string, value: string, calcValueHanlder: (value: string) => string): TextResultContainerParseResult {
-    const textParts = value.split(/\$\{([^}]+)\}/g);
+    const textParts = value.split(/\$\{([^}]+)\}/g)
     const
       parts: (string | ResultContainer)[] = [],
-      containers: ResultContainer[] = [];
+      containers: ResultContainer[] = []
     textParts.forEach((el, idx) => {
       if (idx % 2 === 0) {
-        parts.push(el);
+        parts.push(el)
       } else {
-        const next = idx === textParts.length - 1 ? null : textParts[idx + 1];
-        let suffix = '';
+        const next = idx === textParts.length - 1 ? null : textParts[idx + 1]
+        let suffix = ''
         if (next && next[0] === '%') {
-          textParts[idx + 1] = next.slice(1);
-          suffix = '%';
+          textParts[idx + 1] = next.slice(1)
+          suffix = '%'
         }
-        const calculatedValue = calcValueHanlder(el);
-        const container = new ResultContainer(key, el, calculatedValue, suffix);
-        containers.push(container);
-        parts.push(container);
+        const calculatedValue = calcValueHanlder(el)
+        const container = new ResultContainer(key, el, calculatedValue, suffix)
+        containers.push(container)
+        parts.push(container)
       }
-    });
+    })
 
     return {
       parts,
       containers,
-    };
+    }
   }
 
   constructor(key: string, origin: string, value: string, parseResult: TextResultContainerParseResult) {
-    super();
+    super()
 
-    const { parts, containers } = parseResult;
+    const { parts, containers } = parseResult
 
-    this.key = key;
-    this.parts = parts;
-    this.containers = containers;
-    this.origin = origin;
-    this.value = value;
+    this.key = key
+    this.parts = parts
+    this.containers = containers
+    this.origin = origin
+    this.value = value
   }
 
   override get result() {
-    return this.parts.map(part => typeof part === 'string' ? part : part.result).join('');
+    return this.parts.map(part => typeof part === 'string' ? part : part.result).join('')
   }
 
   override handle(handler: ResultHandler) {
-    this.containers.forEach(container => container.handle(handler));
+    this.containers.forEach(container => container.handle(handler))
   }
 }
 
-export { ResultContainerBase, ResultContainer, ResultContainerStat, TextResultContainer };
-export type { TextResultContainerParseResult };
+export { ResultContainerBase, ResultContainer, ResultContainerStat, TextResultContainer }
+export type { TextResultContainerParseResult }
 

@@ -253,7 +253,7 @@
 </template>
 
 <script>
-import vue_showStat from '@/components/common/show-stat.vue';
+import vue_showStat from '@/components/common/show-stat.vue'
 
 export default {
   RegisterLang: 'Item Query',
@@ -265,33 +265,33 @@ export default {
   data() {
     return {
       detailVisible: false,
-    };
+    }
   },
   computed: {
     recipeInfoValid() {
-      const recipe = this.originEquipment.recipe;
-      return this.equipment.creatable && (recipe['item_level'] || recipe['item_difficulty']);
+      const recipe = this.originEquipment.recipe
+      return this.equipment.creatable && (recipe['item_level'] || recipe['item_difficulty'])
     },
     dyeObtains() {
-      const obtain = this.findObtainByDye(this.modesState.dye.searchText, this.equipment);
-      return this.obtainsDataConvert(obtain);
+      const obtain = this.findObtainByDye(this.modesState.dye.searchText, this.equipment)
+      return this.obtainsDataConvert(obtain)
     },
     previewStat() {
       return this.state.currentMode === 'stat' ?
         this.findStat(this.currentSearchStat, this.equipment.stats)
-        : null;
+        : null
     },
     currentSearchStat() {
-      return this.modesState.stat.currentStat;
+      return this.modesState.stat.currentStat
     },
     originEquipment() {
-      return this.equipment.origin;
+      return this.equipment.origin
     },
     obtainsData() {
-      return this.obtainsDataConvert(this.originEquipment.obtains);
+      return this.obtainsDataConvert(this.originEquipment.obtains)
     },
     firstObtain() {
-      return this.obtainsData.length !== 0 ? this.obtainsData[0] : null;
+      return this.obtainsData.length !== 0 ? this.obtainsData[0] : null
     },
   },
   methods: {
@@ -306,21 +306,21 @@ export default {
         'other': 'gg-shape-rhombus',
         'box': 'mdi-treasure-chest',
         'exchange': 'bx-bx-shopping-bag',
-      };
+      }
       return obtains.map((item, idx) => {
-        const type = this.$rootLang('common/Equipment/obtain/' + item.type);
-        const icon = icons[item.type];
-        const name = item.type !== 'smith' ? item.name : this.$lang('equipment detail/production equipment');
-        const { map = null, dye = null } = item;
+        const type = this.$rootLang('common/Equipment/obtain/' + item.type)
+        const icon = icons[item.type]
+        const name = item.type !== 'smith' ? item.name : this.$lang('equipment detail/production equipment')
+        const { map = null, dye = null } = item
         return {
           iid: idx,
           isDrop: ['mobs', 'boss', 'mini_boss'].includes(item.type),
           type, name, map, dye, icon,
-        };
-      });
+        }
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="postcss" scoped>

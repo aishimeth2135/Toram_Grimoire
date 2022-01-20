@@ -5,7 +5,7 @@
 <script>
 export default {
   name: 'CyHr',
-};
+}
 </script>
 
 <style scoped>

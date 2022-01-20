@@ -164,5 +164,5 @@ export default function() {
         'Must have at least one character': 'Must have at least one character. ',
       },
     },
-  };
+  }
 }

@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import { computed, toRefs } from '@vue/runtime-core';
+import { computed, toRefs } from '@vue/runtime-core'
 
-import { Calculation } from '@/lib/Calculation/Damage/Calculation';
+import { Calculation } from '@/lib/Calculation/Damage/Calculation'
 
 export default {
   name: 'DamageCalculationTableItem',
@@ -34,27 +34,27 @@ export default {
     },
   },
   setup(props) {
-    const { calculation, order } = toRefs(props);
+    const { calculation, order } = toRefs(props)
     const containerItems = computed(() => {
       return order.value.map(id => {
-        const container = calculation.value.containers.get(id);
+        const container = calculation.value.containers.get(id)
         const items = Array.from(container.items.values()).map(item => {
           return {
             origin: item,
             valueDisplay: item.value + (item.base.unit ?? ''),
-          };
-        });
+          }
+        })
         return {
           origin: container,
           items,
-        };
-      });
-    });
+        }
+      })
+    })
 
     return {
       containerItems,
-    };
+    }
   },
-};
+}
 </script>
 

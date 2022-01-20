@@ -1,18 +1,18 @@
 <script lang="ts">
-import { defineComponent, h, mergeProps, computed, toRefs } from 'vue';
+import { defineComponent, h, mergeProps, computed, toRefs } from 'vue'
 
-import ButtonBorder from './button/border.vue';
-import ButtonCheck from './button/check.vue';
-import ButtonRadio from './button/radio.vue';
-import ButtonDropDown from './button/drop-down.vue';
-import ButtonIcon from './button/icon.vue';
-import ButtonInline from './button/inline.vue';
-import ButtonLine from './button/line.vue';
-import ButtonSimple from './button/simple.vue';
-import ButtonSwitch from './button/switch.vue';
-import ButtonCircle from './button/circle.vue';
+import ButtonBorder from './button/border.vue'
+import ButtonCheck from './button/check.vue'
+import ButtonRadio from './button/radio.vue'
+import ButtonDropDown from './button/drop-down.vue'
+import ButtonIcon from './button/icon.vue'
+import ButtonInline from './button/inline.vue'
+import ButtonLine from './button/line.vue'
+import ButtonSimple from './button/simple.vue'
+import ButtonSwitch from './button/switch.vue'
+import ButtonCircle from './button/circle.vue'
 
-import { ColorSetProps, setupColorSetStyles } from './setup/color-set';
+import { ColorSetProps, setupColorSetStyles } from './setup/color-set'
 
 export default defineComponent({
   name: 'CyButton',
@@ -23,7 +23,7 @@ export default defineComponent({
       validator: (value: string) => {
         return [
           'simple', 'icon', 'line', 'border', 'drop-down', 'inline', 'check', 'switch', 'radio', 'circle',
-        ].includes(value);
+        ].includes(value)
       },
     },
     iconWidth: {
@@ -37,38 +37,38 @@ export default defineComponent({
     ...ColorSetProps,
   },
   setup(props) {
-    const { colorSetStyles } = setupColorSetStyles(props);
-    const { type: buttonType, iconWidth, hideFocus } = toRefs(props);
+    const { colorSetStyles } = setupColorSetStyles(props)
+    const { type: buttonType, iconWidth, hideFocus } = toRefs(props)
     const currentComponent = computed(() => {
-      const type = buttonType.value;
+      const type = buttonType.value
       if (type === 'border') {
-        return ButtonBorder;
+        return ButtonBorder
       } else if (type === 'line') {
-        return ButtonLine;
+        return ButtonLine
       } else if (type === 'icon') {
-        return ButtonIcon;
+        return ButtonIcon
       } else if (type === 'drop-down') {
-        return ButtonDropDown;
+        return ButtonDropDown
       } else if (type === 'inline') {
-        return ButtonInline;
+        return ButtonInline
       } else if (type === 'check') {
-        return ButtonCheck;
+        return ButtonCheck
       } else if (type === 'radio') {
-        return ButtonRadio;
+        return ButtonRadio
       } else if (type === 'switch') {
-        return ButtonSwitch;
+        return ButtonSwitch
       } else if (type === 'circle') {
-        return ButtonCircle;
+        return ButtonCircle
       }
-      return ButtonSimple;
-    });
+      return ButtonSimple
+    })
 
     const resultProps = computed(() => {
       const style = {
         ...colorSetStyles.value,
-      };
+      }
       if (iconWidth.value !== null) {
-        style['--icon-width'] = iconWidth.value;
+        style['--icon-width'] = iconWidth.value
       }
       return {
         class: {
@@ -76,24 +76,24 @@ export default defineComponent({
           'focus-enabled': !hideFocus.value,
         },
         style,
-      };
-    });
+      }
+    })
 
     return {
       colorSetStyles,
       currentComponent,
       resultProps,
-    };
+    }
   },
   render() {
-    const attrs = mergeProps(this.resultProps, this.$attrs);
+    const attrs = mergeProps(this.resultProps, this.$attrs)
     return h(
       this.currentComponent,
       attrs,
       this.$slots,
-    );
+    )
   },
-});
+})
 
 // const CyButton: FunctionalComponent<ExtractPropTypes<typeof Props>> = (props, context) => {
 //   const getComponent = () => {

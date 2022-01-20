@@ -7,7 +7,7 @@
 <script>
 export default {
   name: 'CyTransitionFade',
-};
+}
 </script>
 
 <style lang="less" scoped>

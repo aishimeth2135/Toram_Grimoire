@@ -1,21 +1,21 @@
 
-import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router'
 
-import { DataStoreIds } from '@/stores/app/datas/enums';
+import { DataStoreIds } from '@/stores/app/datas/enums'
 
-import { ViewInit } from '@/shared/services/ViewInit';
+import { ViewInit } from '@/shared/services/ViewInit'
 
-import ViewWrapper from './view-wrapper.vue';
+import ViewWrapper from './view-wrapper.vue'
 
-const CharacterSimulatorView = () => import(/* webpackChunkName: "character-simulator" */ '@/views/CharacterSimulator/index.vue');
-const SkillSimulatorView = () => import(/* webpackChunkName: "skill-simulator" */ '@/views/SkillSimulator/index.vue');
+const CharacterSimulatorView = () => import(/* webpackChunkName: "character-simulator" */ '@/views/CharacterSimulator/index.vue')
+const SkillSimulatorView = () => import(/* webpackChunkName: "skill-simulator" */ '@/views/SkillSimulator/index.vue')
 
 export default {
   name: 'Character',
   path: '/character',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
-    ViewInit(DataStoreIds.Stats, DataStoreIds.Items, DataStoreIds.CharacterStats, DataStoreIds.Skill, DataStoreIds.Food).then(next);
+    ViewInit(DataStoreIds.Stats, DataStoreIds.Items, DataStoreIds.CharacterStats, DataStoreIds.Skill, DataStoreIds.Food).then(next)
   },
   meta: {
     leftMenuViewButtons: [{
@@ -43,4 +43,4 @@ export default {
       title: 'app.page-title.skill-simulator',
     },
   }],
-} as RouteRecordRaw;
+} as RouteRecordRaw

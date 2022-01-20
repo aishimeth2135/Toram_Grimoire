@@ -1,17 +1,17 @@
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
-import { HandleBranchValueAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute';
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums';
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import { HandleBranchValueAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 
-import { cloneBranchAttrs, HandleBranchLangAttrsMap, handleDisplayData } from './utils';
-import type { HandleDisplayDataOptionFilters } from './utils';
-import MapContainer from './utils/MapContainer';
+import { cloneBranchAttrs, HandleBranchLangAttrsMap, handleDisplayData } from './utils'
+import type { HandleDisplayDataOptionFilters } from './utils'
+import MapContainer from './utils/MapContainer'
 
 export default function AreaHandler(branchItem: SkillBranchItem, formulaDisplayMode?: FormulaDisplayModes) {
-  const attrs = cloneBranchAttrs(branchItem);
+  const attrs = cloneBranchAttrs(branchItem)
 
-  const basicBranch = branchItem.parent.branchItems.find(bch => bch.name === SkillBranchNames.Basic);
-  attrs['@range'] = basicBranch?.attr('range') ?? '';
+  const basicBranch = branchItem.parent.branchItems.find(bch => bch.name === SkillBranchNames.Basic)
+  attrs['@range'] = basicBranch?.attr('range') ?? ''
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     'move_distance': value => !!value,
@@ -24,24 +24,24 @@ export default function AreaHandler(branchItem: SkillBranchItem, formulaDisplayM
       validation: value => value !== '0',
       calc: true,
     },
-  });
+  })
 
   const valueAttrsMap = new MapContainer<HandleBranchValueAttrsMap>({
     'angle': '°',
     'start_position_offsets': 'm',
     'end_position_offsets': 'm',
     'move_distance': 'm',
-  });
+  })
 
   if (attrs['effective_area'] !== 'sector') {
-    valueAttrsMap.append('radius', 'm');
+    valueAttrsMap.append('radius', 'm')
   }
 
-  const langAttrsMap = new MapContainer<HandleBranchLangAttrsMap>(['effective_area']);
+  const langAttrsMap = new MapContainer<HandleBranchLangAttrsMap>(['effective_area'])
 
-  const pureValues = [];
+  const pureValues = []
   if (attrs['@range'] && attrs['@range'] !== 'no_limit' && attrs['@range'] !== 'main') {
-    pureValues.push('@range');
+    pureValues.push('@range')
   }
 
   const titles = formulaDisplayMode === FormulaDisplayModes.Normal ? [] : [
@@ -51,9 +51,9 @@ export default function AreaHandler(branchItem: SkillBranchItem, formulaDisplayM
     'angle',
     'start_position_offsets',
     'end_position_offsets',
-  ];
+  ]
 
-  const pureDatas = ['target_offsets', 'end_position'];
+  const pureDatas = ['target_offsets', 'end_position']
 
   return handleDisplayData(branchItem, attrs, {
     filters: filters.value,
@@ -63,5 +63,5 @@ export default function AreaHandler(branchItem: SkillBranchItem, formulaDisplayM
     pureValues,
     pureDatas,
     formulaDisplayMode,
-  });
+  })
 }

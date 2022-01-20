@@ -47,17 +47,17 @@ const MainWeaponTypeList = [
   EquipmentTypes.Knuckle,
   EquipmentTypes.Halberd,
   EquipmentTypes.Katana,
-] as const;
+] as const
 
 const SubWeaponTypeList = [
   EquipmentTypes.Arrow,
   EquipmentTypes.Dagger,
   EquipmentTypes.NinjutsuScroll,
-] as const;
+] as const
 
 const SubArmorTypeList = [
   EquipmentTypes.Shield,
-] as const;
+] as const
 
 export {
   EquipmentTypes,
@@ -65,5 +65,5 @@ export {
   MainWeaponTypeList,
   SubWeaponTypeList,
   SubArmorTypeList,
-};
+}
 

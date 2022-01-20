@@ -345,17 +345,17 @@
 </template>
 
 <script>
-import { mapState } from 'pinia';
+import { mapState } from 'pinia'
 
-import { useDatasStore } from '@/stores/app/datas';
+import { useDatasStore } from '@/stores/app/datas'
 
-import vue_DrawSkillTree from '@/views/SkillSimulator/draw-skill-tree.vue';
+import vue_DrawSkillTree from '@/views/SkillSimulator/draw-skill-tree.vue'
 
-import vue_SkillBranch from './skill-branch/skill-branch.vue';
+import vue_SkillBranch from './skill-branch/skill-branch.vue'
 
-import init from './init.js';
-import createSkillState from './utils/createSkillState.js';
-import handleSkillFormula from './utils/handleFormula.js';
+import init from './init.js'
+import createSkillState from './utils/createSkillState.js'
+import handleSkillFormula from './utils/handleFormula.js'
 
 export default {
   name: 'SkillQueryOld',
@@ -366,10 +366,10 @@ export default {
       'tagButtonClassName': this.tagState.buttonClassName,
       'createTagButtons': this.createTagButtons,
       'getFormulaDisplayMode': () => this.skillStates.formulaDisplayMode,
-    };
+    }
   },
   data() {
-    const self = this;
+    const self = this
 
     return {
       selectSkillTreeWindowState: {
@@ -381,7 +381,7 @@ export default {
         skillTreeType: 'normal',
         skillCircleClickListener(error, skill) {
           if (skill.name !== '@lock')
-            self.selectSkill(skill);
+            self.selectSkill(skill)
         },
       },
       skillStates: {
@@ -413,29 +413,29 @@ export default {
         characterLevel: [1, 230],
         skillLevel: [1, 10],
       },
-    };
+    }
   },
   updated() {
-    const tagWindow = this.$refs['tag-window-content'];
+    const tagWindow = this.$refs['tag-window-content']
     if (tagWindow) {
-      const self = this;
+      const self = this
       const click = function(e) {
-        e.stopPropagation();
-        self.appendTag(this.innerText);
-      };
+        e.stopPropagation()
+        self.appendTag(this.innerText)
+      }
       tagWindow.querySelectorAll('.' + this.tagState.buttonClassName)
         .forEach(p => {
           if (p.getAttribute('data-listener-ctr') == '1')
-            return;
-          p.addEventListener('click', click);
-          p.setAttribute('data-listener-ctr', '1');
-        });
+            return
+          p.addEventListener('click', click)
+          p.setAttribute('data-listener-ctr', '1')
+        })
     }
     if (this.$refs['effect-attrs'])
-      this.handleTagButton(this.$refs['effect-attrs']);
+      this.handleTagButton(this.$refs['effect-attrs'])
   },
   beforeCreate() {
-    init();
+    init()
   },
   computed: {
     ...mapState(useDatasStore, {
@@ -446,7 +446,7 @@ export default {
       return {
         currentSkill: this.currentSkillState ? this.currentSkillState.skill : null,
         ...this.drawSkillTreeBaseOptions,
-      };
+      }
     },
     equipmentCategoryList() {
       const list = [{
@@ -461,36 +461,36 @@ export default {
         name: 'body-armor',
         shortName: 'body',
         icon: 'mdi-tshirt-crew',
-      }];
+      }]
 
-      return list.filter(p => this.equipmentState[p.shortName + 'List'].length != 0);
+      return list.filter(p => this.equipmentState[p.shortName + 'List'].length != 0)
     },
     currentTag() {
-      const idx = this.tagState.tags.length - 1;
+      const idx = this.tagState.tags.length - 1
       if (idx === -1)
-        return null;
+        return null
 
-      const cur = this.tagState.tags[idx];
+      const cur = this.tagState.tags[idx]
       const frs = cur.frames.map(fr => {
         const handle = v => {
           v = v.replace(/\(\(!((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="text-light-3">${m1}</span>`)
-            .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values text-light-3">${m1}</span>`);
-          return this.createTagButtons(v);
-        };
+            .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values text-light-3">${m1}</span>`)
+          return this.createTagButtons(v)
+        }
 
-        let value = fr.value;
+        let value = fr.value
         if (fr.type === 'list') {
-          value = !Array.isArray(value) ? [value] : value;
-          value = value.map(v => handle(v));
+          value = !Array.isArray(value) ? [value] : value
+          value = value.map(v => handle(v))
         } else {
           if (Array.isArray(value))
-            value = value[0];
-          value = handle(value);
+            value = value[0]
+          value = handle(value)
         }
-        return { type: fr.type, value };
-      });
+        return { type: fr.type, value }
+      })
 
-      return { name: cur.name, frames: frs };
+      return { name: cur.name, frames: frs }
     },
     currentSkillAttrs() {
       const datas = {
@@ -503,10 +503,10 @@ export default {
           icon: 'mdi-target-variant',
           extraHandle: (v, type) => {
             if (type === 'value')
-              return v + 'm';
+              return v + 'm'
             return v === '-' ?
               this.$lang('effect attrs/range: no limit') :
-              this.createTagButtons(this.$lang('effect attrs/range: main'));
+              this.createTagButtons(this.$lang('effect attrs/range: main'))
           },
         },
         'skill_type': {
@@ -526,125 +526,125 @@ export default {
           icon: 'zmdi-time-restore',
           extraHandle: v => v + 's',
         },
-      };
-      const p = this.currentSkillData;
-      const options = { skillState: this.currentSkillState, effectState: p };
+      }
+      const p = this.currentSkillData
+      const options = { skillState: this.currentSkillState, effectState: p }
       return p ? Object.keys(p.attrs)
         .filter(k => p.attrs[k] !== null)
         .map(k => {
-          const q = p.attrs[k];
-          let { type, icon, extraHandle } = datas[k];
-          type = typeof type === 'function' ? type(q) : type;
-          const name = this.$lang('effect attrs/' + k);
-          let value;
+          const q = p.attrs[k]
+          let { type, icon, extraHandle } = datas[k]
+          type = typeof type === 'function' ? type(q) : type
+          const name = this.$lang('effect attrs/' + k)
+          let value
           if (type === 'value')
-            value = handleSkillFormula(q, options);
+            value = handleSkillFormula(q, options)
           else if (type === 'list')
-            value = this.$lang('effect attrs/' + k + ': list')[q];
+            value = this.$lang('effect attrs/' + k + ': list')[q]
           else if (type === 'text')
-            value = q;
-          value = extraHandle ? extraHandle(value, type) : value;
-          icon = Array.isArray(icon) ? icon[q] : icon;
-          return { name, value, icon };
-        }) : null;
+            value = q
+          value = extraHandle ? extraHandle(value, type) : value
+          icon = Array.isArray(icon) ? icon[q] : icon
+          return { name, value, icon }
+        }) : null
     },
     currentSkillTreeCategory() {
-      const idx = this.selectSkillTreeWindowState.currentIndex_stc;
-      return this.selectSkillTreeWindowState.currentIndex_stc != -1 ? this.skillRoot.skillTreeCategorys[idx] : null;
+      const idx = this.selectSkillTreeWindowState.currentIndex_stc
+      return this.selectSkillTreeWindowState.currentIndex_stc != -1 ? this.skillRoot.skillTreeCategorys[idx] : null
     },
     currentSkillTree() {
-      const state = this.selectSkillTreeWindowState;
+      const state = this.selectSkillTreeWindowState
       if (state.currentIndex_stc == -1 || state.currentIndex_st == -1)
-        return null;
-      return this.skillRoot.skillTreeCategorys[state.currentIndex_stc].skillTrees[state.currentIndex_st];
+        return null
+      return this.skillRoot.skillTreeCategorys[state.currentIndex_stc].skillTrees[state.currentIndex_st]
     },
     currentSkillState() {
       if (this.skillStates.store.length === 0)
-        return null;
-      return this.skillStates.store[this.skillStates.currentStoreIndex];
+        return null
+      return this.skillStates.store[this.skillStates.currentStoreIndex]
     },
     currentSkillData() {
-      const state = this.currentSkillState;
-      return state ? state.states.find(p => this.checkEquipment(p.equipment)) : null;
+      const state = this.currentSkillState
+      return state ? state.states.find(p => this.checkEquipment(p.equipment)) : null
     },
     currentSkillBranchs() {
-      return this.currentSkillData ? this.currentSkillData.branches.filter(p => p.visible) : [];
+      return this.currentSkillData ? this.currentSkillData.branches.filter(p => p.visible) : []
     },
   },
   methods: {
     switchSkill(type) {
-      const state = this.skillStates;
+      const state = this.skillStates
       if (type === 'previous' && state.currentStoreIndex !== 0)
-        state.currentStoreIndex -= 1;
+        state.currentStoreIndex -= 1
       else if (type === 'next' && state.currentStoreIndex !== state.store.length - 1)
-        state.currentStoreIndex += 1;
+        state.currentStoreIndex += 1
       else if (type === 'last' && state.currentStoreIndex !== state.store.length - 1)
-        state.currentStoreIndex = state.store.length - 1;
+        state.currentStoreIndex = state.store.length - 1
     },
     toggleSelectSkillTreeWindow(force) {
-      force = force === undefined ? !this.selectSkillTreeWindowState.visible : force;
-      this.selectSkillTreeWindowState.visible = force;
+      force = force === undefined ? !this.selectSkillTreeWindowState.visible : force
+      this.selectSkillTreeWindowState.visible = force
     },
     createTagButtons(str) {
       return str.replace(/#([^\s]+)\s(\w?)/g, (m, m1, m2) => {
-        let res = `<span class="${this.tagState.buttonClassName}">${m1.replace(new RegExp('_', 'g'), ' ')}</span>`;
+        let res = `<span class="${this.tagState.buttonClassName}">${m1.replace(new RegExp('_', 'g'), ' ')}</span>`
         if (m2 !== '')
-          res += ' ' + m2;
-        return res;
-      });
+          res += ' ' + m2
+        return res
+      })
     },
     previousTag() {
-      this.tagState.tags.pop();
+      this.tagState.tags.pop()
     },
     handleTagButton(el) {
       if (!el.querySelector)
-        return;
-      const self = this;
+        return
+      const self = this
       const enter = function() {
-        self.clearTag();
-        self.appendTag(this.innerText);
-        self.tagState.positionElement = this;
-      };
+        self.clearTag()
+        self.appendTag(this.innerText)
+        self.tagState.positionElement = this
+      }
       const leave = function() {
         if (!self.tagState.windowVisible)
-          self.clearTag();
-      };
+          self.clearTag()
+      }
       const click = function() {
-        self.tagState.windowVisible = true;
-      };
+        self.tagState.windowVisible = true
+      }
       el.querySelectorAll('.' + this.tagState.buttonClassName)
         .forEach(p => {
           if (!this.tagList.find(a => a.name === p.innerText))
-            return;
-          p.addEventListener('mouseenter', enter);
-          p.addEventListener('mouseleave', leave);
-          p.addEventListener('click', click);
-        });
+            return
+          p.addEventListener('mouseenter', enter)
+          p.addEventListener('mouseleave', leave)
+          p.addEventListener('click', click)
+        })
     },
     appendTag(name) {
-      const tag = this.tagList.find(p => p.name === name);
+      const tag = this.tagList.find(p => p.name === name)
       if (tag) {
-        this.tagState.tags.push(tag);
+        this.tagState.tags.push(tag)
       }
     },
     closeTagWindow() {
-      this.tagState.windowVisible = false;
-      this.clearTag();
+      this.tagState.windowVisible = false
+      this.clearTag()
     },
     clearTag() {
-      this.tagState.tags = [];
+      this.tagState.tags = []
     },
     currentHistoryDate() {
-      const p = this.currentSkillData;
+      const p = this.currentSkillData
       if (!p || p.currentHistoryIdx == -1)
-        return null;
-      return p.historyList[p.currentHistoryIdx];
+        return null
+      return p.historyList[p.currentHistoryIdx]
     },
     selectHistory(idx) {
-      this.currentSkillData.currentHistoryIdx = idx;
+      this.currentSkillData.currentHistoryIdx = idx
     },
     toggleSelectHistoryVisble() {
-      this.selectHistoryVisble = !this.selectHistoryVisble;
+      this.selectHistoryVisble = !this.selectHistoryVisble
     },
     /**
      * confirm the type of main-weapon and sub-weapon.is correct and fix.
@@ -654,7 +654,7 @@ export default {
      */
     confirmWeaponType(target) {
       if (target !== 'main' && target !== 'sub') {
-        return;
+        return
       }
       /**
        * 0'空手', 1'單手劍', 2'雙手劍', 3'弓', 4'弩', 5'法杖',
@@ -665,135 +665,135 @@ export default {
       */
       const check = () => {
         const main = this.equipmentState.main,
-          sub = this.equipmentState.sub;
+          sub = this.equipmentState.sub
         if (main === -1 || sub === -1) {
-          return true;
+          return true
         }
-        const t = new Set();
+        const t = new Set()
         switch (main) {
           case 0: case 1: case 5:
-            t.add(7);
+            t.add(7)
           /* falls through */
           case 4:
-            t.add(5);
+            t.add(5)
           /* falls through */
           case 7:
-            t.add(1).add(2).add(3).add(4);
-            break;
+            t.add(1).add(2).add(3).add(4)
+            break
           case 9:
-            t.add(3).add(7);
-            break;
+            t.add(3).add(7)
+            break
           case 8:
-            t.add(1).add(3);
-            break;
+            t.add(1).add(3)
+            break
           case 3:
-            t.add(1).add(6);
-            break;
+            t.add(1).add(6)
+            break
           case 6:
-            t.add(7);
+            t.add(7)
         }
-        t.add(0);
-        return t.has(sub);
-      };
+        t.add(0)
+        return t.has(sub)
+      }
       while (!check()) {
-        this.toggleEquipmentType(target === 'main' ? 'sub' : 'main', false);
+        this.toggleEquipmentType(target === 'main' ? 'sub' : 'main', false)
       }
     },
     checkEquipment(skillEqs) {
-      const selectedEqs = this.equipmentState;
+      const selectedEqs = this.equipmentState
       /* 通用 */
       if ([skillEqs.main, skillEqs.sub, skillEqs.body].every(p => p === -1)) {
-        return true;
+        return true
       }
 
       /* 非通用 */
 
       /* 雙劍用 */
       const checkDualSword = selectedEqs.main === 1 && skillEqs === 10
-        && !this.currentSkillState.states.find(a => a.equipment.main === 10);
+        && !this.currentSkillState.states.find(a => a.equipment.main === 10)
 
       // or
       if (skillEqs.operator === 0) {
         if (selectedEqs.main !== -1 && selectedEqs.main === skillEqs.main || checkDualSword)
-          return true;
+          return true
         if (selectedEqs.sub !== -1 && selectedEqs.sub === skillEqs.sub)
-          return true;
+          return true
         if (selectedEqs.body !== -1 && selectedEqs.body === skillEqs.body)
-          return true;
-        return false;
+          return true
+        return false
       }
 
       // and
       if (skillEqs.operator === 1) {
         if (selectedEqs.main !== skillEqs.main && !checkDualSword)
-          return false;
+          return false
         if (selectedEqs.sub !== skillEqs.sub)
-          return false;
+          return false
         if (selectedEqs.body !== skillEqs.body)
-          return false;
-        return true;
+          return false
+        return true
       }
     },
     setCharacterLevel(v) {
-      this.skillStates.characterLevel = v;
+      this.skillStates.characterLevel = v
       if (this.currentSkillState){
-        this.currentSkillState.clv = v;
+        this.currentSkillState.clv = v
       }
     },
     setSkillLevel(v) {
-      this.skillStates.skillLevel = v;
+      this.skillStates.skillLevel = v
       if (this.currentSkillState){
-        this.currentSkillState.slv = v;
+        this.currentSkillState.slv = v
       }
     },
     toggleSkillLevel() {
-      let res = this.skillStates.skillLevel;
+      let res = this.skillStates.skillLevel
       if (res === 1)
-        res = 10;
+        res = 10
       else {
-        const list = [1, 5, 10];
-        const idx = list.findIndex(p => res <= p);
-        res = list[idx - 1];
+        const list = [1, 5, 10]
+        const idx = list.findIndex(p => res <= p)
+        res = list[idx - 1]
       }
-      this.setSkillLevel(res);
+      this.setSkillLevel(res)
     },
     toggleEquipmentType(type, flag = true) {
-      const p = type;
-      const state = this.equipmentState;
-      const list = state[p + 'List'];
-      const idx = list.indexOf(state[p]) + 1;
-      state[p] = list[idx == list.length ? 0 : idx];
+      const p = type
+      const state = this.equipmentState
+      const list = state[p + 'List']
+      const idx = list.indexOf(state[p]) + 1
+      state[p] = list[idx == list.length ? 0 : idx]
 
-      flag && this.confirmWeaponType(p);
+      flag && this.confirmWeaponType(p)
     },
     selectEquipment(target, id) {
-      this.equipmentState[target] = id;
-      this.confirmWeaponType(target);
+      this.equipmentState[target] = id
+      this.confirmWeaponType(target)
     },
     appendSkillState(skill) {
       if (!skill)
-        return;
-      const state = this.skillStates;
+        return
+      const state = this.skillStates
       const newState = createSkillState(skill, {
         defaultSkillLevel: state.skillLevel,
         defaultCharacterLevel: state.characterLevel,
-      });
-      state.store.push(newState);
+      })
+      state.store.push(newState)
     },
     selectSkillTree(idx) {
-      this.selectSkillTreeWindowState.currentIndex_st = idx;
-      this.skillStates.store = [];
+      this.selectSkillTreeWindowState.currentIndex_st = idx
+      this.skillStates.store = []
 
       const main = new Set(),
         sub = new Set(),
-        body = new Set();
+        body = new Set()
       this.currentSkillTree.skills.forEach(skill => {
         skill.effects.forEach(sef => {
-          main.add(sef.mainWeapon);
-          sub.add(sef.subWeapon);
-          body.add(sef.bodyArmor);
-        });
-      });
+          main.add(sef.mainWeapon)
+          sub.add(sef.subWeapon)
+          body.add(sef.bodyArmor)
+        })
+      })
 
       /**
        * 1. 把0(無裝備)排到最後面。
@@ -801,53 +801,53 @@ export default {
        *   - 空的Set就不會出現在裝備選項。
       */
       const after = target => {
-        target.delete(-1);
+        target.delete(-1)
         if (target.size !== 0) {
           if (target.has(0)) {
-            target.delete(0);
-            target.add(0);
+            target.delete(0)
+            target.add(0)
           }
-          target.add(-1);
+          target.add(-1)
         }
-      };
-      after(main);
-      after(sub);
-      after(body);
+      }
+      after(main)
+      after(sub)
+      after(body)
 
-      const state = this.equipmentState;
-      state.mainList = [...main];
-      state.subList = [...sub];
-      state.bodyList = [...body];
+      const state = this.equipmentState
+      state.mainList = [...main]
+      state.subList = [...sub]
+      state.bodyList = [...body]
 
-      state.main = state.mainList.length !== 0 ? state.mainList[0] : -1;
-      state.sub = state.subList.length !== 0 ? state.subList[0] : -1;
-      state.body = state.bodyList.length !== 0 ? state.bodyList[0] : -1;
+      state.main = state.mainList.length !== 0 ? state.mainList[0] : -1
+      state.sub = state.subList.length !== 0 ? state.subList[0] : -1
+      state.body = state.bodyList.length !== 0 ? state.bodyList[0] : -1
 
-      this.confirmWeaponType('main');
+      this.confirmWeaponType('main')
     },
     selectSkillTreeCategory(idx) {
-      this.selectSkillTreeWindowState.currentIndex_stc = idx;
-      this.selectSkillTreeWindowState.currentIndex_st = -1;
+      this.selectSkillTreeWindowState.currentIndex_stc = idx
+      this.selectSkillTreeWindowState.currentIndex_st = -1
     },
     selectSkill(skill) {
       if (this.currentSkillState && this.currentSkillState.skill === skill)
-        return;
-      const state = this.skillStates;
+        return
+      const state = this.skillStates
       if (state.currentStoreIndex !== state.store.length - 1)
-        state.store = state.store.slice(0, state.currentStoreIndex + 1);
-      this.appendSkillState(skill);
-      state.currentStoreIndex = state.store.length - 1;
-      this.selectSkillTreeWindowState.visible = false;
+        state.store = state.store.slice(0, state.currentStoreIndex + 1)
+      this.appendSkillState(skill)
+      state.currentStoreIndex = state.store.length - 1
+      this.selectSkillTreeWindowState.visible = false
     },
     getEquipmentText(value, type) {
-      return value === -1 ? this.$lang('equipment/no select') : this.$lang('equipment/' + type)[value];
+      return value === -1 ? this.$lang('equipment/no select') : this.$lang('equipment/' + type)[value]
     },
   },
   components: {
     DrawSkillTree: vue_DrawSkillTree,
     SkillBranch: vue_SkillBranch,
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

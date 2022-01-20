@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import vue_showStat from '@/components/common/show-stat.vue';
+import vue_showStat from '@/components/common/show-stat.vue'
 
 export default {
   components: {
@@ -27,8 +27,8 @@ export default {
   computed: {
     statValid() {
       // this.stat may be undefined when this.type is "custom"
-      return  !this.stat || this.checkStatRestriction(this.stat);
+      return  !this.stat || this.checkStatRestriction(this.stat)
     },
   },
-};
+}
 </script>

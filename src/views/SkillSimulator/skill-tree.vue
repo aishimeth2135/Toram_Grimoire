@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import vue_drawSkillTree from './draw-skill-tree.vue';
+import vue_drawSkillTree from './draw-skill-tree.vue'
 
-import { getSkillElementId } from './utils';
+import { getSkillElementId } from './utils'
 
 export default {
   components: {
@@ -27,13 +27,13 @@ export default {
       return {
         skillTree: this.skillTreeState.levelSkillTree,
         ...this.drawSkillTreeOptions,
-      };
+      }
     },
     skillTreeId() {
-      return 'skill-tree--' + getSkillElementId(this.skillTreeState.origin);
+      return 'skill-tree--' + getSkillElementId(this.skillTreeState.origin)
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
