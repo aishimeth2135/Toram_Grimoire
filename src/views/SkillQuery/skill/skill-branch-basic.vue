@@ -39,27 +39,27 @@ const ATTR_DATAS: {
 }, {
   key: 'casting_time',
   icon: 'zmdi-time-restore',
-}];
+}]
 </script>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, toRefs } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
-import BasicHandler from './branch-handlers/BasicHandler';
+import BasicHandler from './branch-handlers/BasicHandler'
 
 interface Props {
   branchItem: SkillBranchItem;
 }
 
-const props = defineProps<Props>();
-const { branchItem } = toRefs(props);
+const props = defineProps<Props>()
+const { branchItem } = toRefs(props)
 
-const container = computed(() => BasicHandler(branchItem.value));
+const container = computed(() => BasicHandler(branchItem.value))
 
-const { t } = useI18n();
+const { t } = useI18n()
 
 const attrDatas = computed(() => {
   return ATTR_DATAS
@@ -67,14 +67,14 @@ const attrDatas = computed(() => {
     .map(({ key, icon }) => {
       const iconRes = typeof icon === 'object' ?
         icon[container.value.branchItem.attr(key)] :
-        icon;
-      const value = container.value.get(key);
+        icon
+      const value = container.value.get(key)
       return {
         key,
         icon: iconRes,
         title: t(`skill-query.branch.basic.${key}: title`),
         value,
-      };
-    });
-});
+      }
+    })
+})
 </script>

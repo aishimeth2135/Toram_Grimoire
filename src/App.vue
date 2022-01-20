@@ -24,32 +24,32 @@
 <script lang="ts">
 export default {
   name: 'App',
-};
+}
 </script>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { onMounted } from 'vue'
 
-import { useLanguageStore } from '@/stores/app/language';
+import { useLanguageStore } from '@/stores/app/language'
 
-import AppNav from '@/views/app/nav.vue';
-import AppLeftMenu from '@/views/app/left-menu.vue';
-import AppFooter from '@/views/app/footer.vue';
-import AppInitialize from '@/views/app/initialize.vue';
-import AppLoading from '@/views/app/loading.vue';
-import AppNotify from '@/views/app/notify.vue';
-import AppConfirm from '@/views/app/confirm.vue';
-import LoadingAnimation from '@/views/app/initialization/loading-animation.vue';
+import AppNav from '@/views/app/nav.vue'
+import AppLeftMenu from '@/views/app/left-menu.vue'
+import AppFooter from '@/views/app/footer.vue'
+import AppInitialize from '@/views/app/initialize.vue'
+import AppLoading from '@/views/app/loading.vue'
+import AppNotify from '@/views/app/notify.vue'
+import AppConfirm from '@/views/app/confirm.vue'
+import LoadingAnimation from '@/views/app/initialization/loading-animation.vue'
 
 onMounted(() => {
-  const el = document.getElementById('app--error');
+  const el = document.getElementById('app--error')
   if (el) {
-    el.parentElement!.removeChild(el);
+    el.parentElement!.removeChild(el)
   }
-});
+})
 
-const languageStore = useLanguageStore();
-languageStore.updateLocaleGlobalMessages();
+const languageStore = useLanguageStore()
+languageStore.updateLocaleGlobalMessages()
 </script>
 
 <style lang="less" scoped>

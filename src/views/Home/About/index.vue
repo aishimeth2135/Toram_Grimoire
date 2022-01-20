@@ -141,18 +141,18 @@ const ABOUT_DATAS = {
       list: ['如果有意願協助資料上的測試、輸入或翻譯，或有意願贊助（遊戲內的資源），也歡迎洽詢作者。'],
     }],
   }],
-};
+}
 
 export default {
   name: 'AppAbout',
-};
+}
 </script>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n'
 
-const datas = ABOUT_DATAS;
-const { t } = useI18n();
+const datas = ABOUT_DATAS
+const { t } = useI18n()
 </script>
 
 <style lang="less" scoped>

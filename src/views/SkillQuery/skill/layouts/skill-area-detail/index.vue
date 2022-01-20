@@ -43,33 +43,33 @@ const ALL_DISPLAY_ATTR_KEYS = [
   'angle',
   'start_position_offsets',
   'end_position_offsets',
-];
+]
 </script>
 
 <script lang="ts" setup>
-import { toRefs, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { toRefs, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 
-import SkillAreaAnimation from './skill-area-animation.vue';
+import SkillAreaAnimation from './skill-area-animation.vue'
 
-import AreaHandler from '../../branch-handlers/AreaHandler';
+import AreaHandler from '../../branch-handlers/AreaHandler'
 
 interface Props {
   skillBranchItem: SkillBranchItem;
 }
 
-const props = defineProps<Props>();
-const { skillBranchItem: branchItem } = toRefs(props);
+const props = defineProps<Props>()
+const { skillBranchItem: branchItem } = toRefs(props)
 
-const displayContainer = computed(() => AreaHandler(branchItem.value));
+const displayContainer = computed(() => AreaHandler(branchItem.value))
 
-const container = computed(() => AreaHandler(branchItem.value, FormulaDisplayModes.Normal));
+const container = computed(() => AreaHandler(branchItem.value, FormulaDisplayModes.Normal))
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const displayAttrsKeys = computed(() => ALL_DISPLAY_ATTR_KEYS.filter(key => container.value.has(key)));
+const displayAttrsKeys = computed(() => ALL_DISPLAY_ATTR_KEYS.filter(key => container.value.has(key)))
 </script>
 

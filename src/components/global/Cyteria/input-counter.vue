@@ -51,9 +51,9 @@
 </template>
 
 <script>
-import Color from '@/shared/services/Color';
+import Color from '@/shared/services/Color'
 
-const ColorList = Color.List;
+const ColorList = Color.List
 
 export default {
   props: {
@@ -105,7 +105,7 @@ export default {
   data() {
     return {
       focus: false,
-    };
+    }
   },
   computed: {
     rootClassList() {
@@ -117,46 +117,46 @@ export default {
         ['border-' + this.mainColorInstance.darken]: !this.inline && this.focus,
         ['ring-' + this.mainColorInstance.darken]: !this.inline && this.focus,
         'ring-1': !this.inline && this.focus,
-      };
+      }
     },
     rootStyle() {
-      const style = {};
+      const style = {}
       if (this.inputWidth !== null) {
-        style['--input-width'] = this.inputWidth;
+        style['--input-width'] = this.inputWidth
       }
-      return style;
+      return style
     },
     mainColorInstance() {
-      return new Color(this.mainColor);
+      return new Color(this.mainColor)
     },
     inputValue: {
       get() {
-        return this.value;
+        return this.value
       },
       set(v) {
-        v = v || 0;
+        v = v || 0
 
         const min = this.range[0],
-          max = this.range[1];
-        max !== null && (v = Math.min(max, v));
-        min !== null && (v = Math.max(min, v));
+          max = this.range[1]
+        max !== null && (v = Math.min(max, v))
+        min !== null && (v = Math.max(min, v))
 
-        this.$emit('update:value', v);
+        this.$emit('update:value', v)
       },
     },
   },
   methods: {
     setInputFocus(v) {
-      this.focus = v;
+      this.focus = v
     },
     selectInput(e) {
-      e.target.select();
+      e.target.select()
     },
     setValue(v) {
-      this.inputValue = v;
+      this.inputValue = v
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

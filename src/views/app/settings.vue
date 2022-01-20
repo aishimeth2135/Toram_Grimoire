@@ -191,119 +191,119 @@
 <script lang="ts">
 export default {
   name: 'AppSetting',
-};
+}
 </script>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import { computed, ref, nextTick } from 'vue';
-import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n'
+import { computed, ref, nextTick } from 'vue'
+import { storeToRefs } from 'pinia'
 
-import { useMainStore } from '@/stores/app/main';
-import { useSettingStore } from '@/stores/app/setting';
+import { useMainStore } from '@/stores/app/main'
+import { useSettingStore } from '@/stores/app/setting'
 
-import { APP_STORAGE_KEYS } from '@/shared/consts';
-import CY from '@/shared/utils/Cyteria';
+import { APP_STORAGE_KEYS } from '@/shared/consts'
+import CY from '@/shared/utils/Cyteria'
 
-import ToggleService from '@/setup/ToggleService';
-import Notify from '@/setup/Notify';
+import ToggleService from '@/setup/ToggleService'
+import Notify from '@/setup/Notify'
 
-const { t } = useI18n();
-const mainStore = useMainStore();
+const { t } = useI18n()
+const mainStore = useMainStore()
 
-const { modals, toggle } = ToggleService({ modals: ['main'] as const });
+const { modals, toggle } = ToggleService({ modals: ['main'] as const })
 
-const primaryLanguageList = ['auto', '0', '1', '2', '3'];
-const fallbackLanguageList = ['0', '1', '2', '3'];
+const primaryLanguageList = ['auto', '0', '1', '2', '3']
+const fallbackLanguageList = ['0', '1', '2', '3']
 
-const _primaryLanguage = ref(primaryLanguageList.indexOf(localStorage.getItem(APP_STORAGE_KEYS.PRIMARY_LOCALE) ?? 'auto'));
+const _primaryLanguage = ref(primaryLanguageList.indexOf(localStorage.getItem(APP_STORAGE_KEYS.PRIMARY_LOCALE) ?? 'auto'))
 const primaryLanguage = computed<number>({
   get() {
-    return _primaryLanguage.value;
+    return _primaryLanguage.value
   },
   set(value) {
-    _primaryLanguage.value = value;
-    localStorage.setItem(APP_STORAGE_KEYS.PRIMARY_LOCALE, primaryLanguageList[value]);
+    _primaryLanguage.value = value
+    localStorage.setItem(APP_STORAGE_KEYS.PRIMARY_LOCALE, primaryLanguageList[value])
   },
-});
+})
 
-const _fallbackLanguage = ref(fallbackLanguageList.indexOf(localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE) ?? 'auto'));
+const _fallbackLanguage = ref(fallbackLanguageList.indexOf(localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE) ?? 'auto'))
 const fallbackLanguage = computed<number>({
   get() {
-    return _fallbackLanguage.value;
+    return _fallbackLanguage.value
   },
   set(value) {
-    _fallbackLanguage.value = value;
-    localStorage.setItem(APP_STORAGE_KEYS.FALLBACK_LOCALE, fallbackLanguageList[value]);
+    _fallbackLanguage.value = value
+    localStorage.setItem(APP_STORAGE_KEYS.FALLBACK_LOCALE, fallbackLanguageList[value])
   },
-});
+})
 
-const storageAvailable = CY.storageAvailable('localStorage');
-const { notify, loading } = Notify();
+const storageAvailable = CY.storageAvailable('localStorage')
+const { notify, loading } = Notify()
 
 const swUpdate = async () => {
-  loading.show();
-  await nextTick();
-  mainStore.serviceWorker.registration?.waiting?.postMessage({ type: 'SKIP_WAITING' });
-};
+  loading.show()
+  await nextTick()
+  mainStore.serviceWorker.registration?.waiting?.postMessage({ type: 'SKIP_WAITING' })
+}
 
 const clearSpreadsheetsCaches = () => {
   caches.delete('google-spreadsheets-csv-files')
-    .then(res => res && notify(t('app.settings.clear-spreadsheets-caches.success-tips')));
-};
+    .then(res => res && notify(t('app.settings.clear-spreadsheets-caches.success-tips')))
+}
 
 const saveLocalStorage = () => {
-  const data = {} as Record<string, string>;
-  const storage = window.localStorage;
+  const data = {} as Record<string, string>
+  const storage = window.localStorage
   Array(localStorage.length).fill(null).map((_, i) => i).forEach(idx => {
-    const key = storage.key(idx)!;
-    const item = storage.getItem(key)!;
+    const key = storage.key(idx)!
+    const item = storage.getItem(key)!
     if (key.slice(0, 7) !== 'iconify') {
-      data[key] = item;
+      data[key] = item
     }
-  });
+  })
 
   CY.file.save({
     data: JSON.stringify(data),
     fileType: 'text/txt',
     fileName: 'cy-grimoire-storage.txt',
-  });
+  })
 
-  notify(t('app.settings.storage-backup.save-success-tips'));
-};
+  notify(t('app.settings.storage-backup.save-success-tips'))
+}
 
 const loadLocalStorage = () => {
-  const storage = window.localStorage;
+  const storage = window.localStorage
 
   CY.file.load({
     succeed: (data) => {
-      const jsonData = JSON.parse(data) as Record<string, string>;
-      Object.keys(jsonData).forEach(key => storage.setItem(key, jsonData[key]));
-      notify(t('app.settings.storage-backup.load-success-tips'));
+      const jsonData = JSON.parse(data) as Record<string, string>
+      Object.keys(jsonData).forEach(key => storage.setItem(key, jsonData[key]))
+      notify(t('app.settings.storage-backup.load-success-tips'))
     },
     error: () => {
-      notify(t('app.settings.storage-backup.load-failed-tips'));
+      notify(t('app.settings.storage-backup.load-failed-tips'))
     },
     checkFileType: type => {
       if (type !== 'txt') {
-        notify(t('app.settings.storage-backup.wrong-file-type-tips'));
-        return false;
+        notify(t('app.settings.storage-backup.wrong-file-type-tips'))
+        return false
       }
-      return true;
+      return true
     },
-  });
-};
+  })
+}
 
 const setLanguage = (target: 0 | 1, index: number) => {
-  const state = target === 0 ? primaryLanguage : fallbackLanguage;
-  const list = target === 0 ? primaryLanguageList : fallbackLanguageList;
-  const key = target === 0 ? APP_STORAGE_KEYS.PRIMARY_LOCALE : APP_STORAGE_KEYS.FALLBACK_LOCALE;
-  state.value = index;
-  localStorage[key] = list[index];
-};
+  const state = target === 0 ? primaryLanguage : fallbackLanguage
+  const list = target === 0 ? primaryLanguageList : fallbackLanguageList
+  const key = target === 0 ? APP_STORAGE_KEYS.PRIMARY_LOCALE : APP_STORAGE_KEYS.FALLBACK_LOCALE
+  state.value = index
+  localStorage[key] = list[index]
+}
 
-const settingStore = useSettingStore();
-const { appFont, appRem, appNightMode } = storeToRefs(settingStore);
+const settingStore = useSettingStore()
+const { appFont, appRem, appNightMode } = storeToRefs(settingStore)
 
 const appFontOptions = [{
   text: t('app.settings.switch-font.default-font'),
@@ -314,7 +314,7 @@ const appFontOptions = [{
 }, {
   text: t('app.settings.switch-font.base-font') + '-2',
   value: 2,
-}];
+}]
 </script>
 
 <style lang="postcss" scoped>

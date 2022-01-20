@@ -19,26 +19,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from 'vue';
+import { defineComponent, toRefs } from 'vue'
 
-import { ButtonBaseProps, setupButtonBase } from './setup';
+import { ButtonBaseProps, setupButtonBase } from './setup'
 
 export default defineComponent({
   name: 'CyButtonSwitch',
   emits: ['click', 'update:selected'],
   props: ButtonBaseProps,
   setup(props, { emit }) {
-    const { baseClassList, click: originalClick } = setupButtonBase(props, (evt) => emit('click', evt));
-    const { selected } = toRefs(props);
+    const { baseClassList, click: originalClick } = setupButtonBase(props, (evt) => emit('click', evt))
+    const { selected } = toRefs(props)
     const click = (evt: MouseEvent) => {
       if (originalClick(evt)) {
-        emit('update:selected', !selected.value);
+        emit('update:selected', !selected.value)
       }
-    };
+    }
     return {
       baseClassList,
       click,
-    };
+    }
   },
-});
+})
 </script>

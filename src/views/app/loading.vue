@@ -13,15 +13,15 @@
 </template>
 
 <script lang="ts">
-import { useLoadingStore } from '@/stores/app/loading';
+import { useLoadingStore } from '@/stores/app/loading'
 
 export default {
   name: 'AppLoading',
-};
+}
 </script>
 
 <script lang="ts" setup>
-const store = useLoadingStore();
+const store = useLoadingStore()
 </script>
 
 <style lang="postcss" scoped>

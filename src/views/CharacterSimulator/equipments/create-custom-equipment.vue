@@ -77,12 +77,12 @@
 </template>
 
 <script>
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar, CharacterEquipment } from '@/lib/Character/CharacterEquipment';
-import { EquipmentTypes, EquipmentCategorys, MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList } from '@/lib/Character/CharacterEquipment/enums';
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar, CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import { EquipmentTypes, EquipmentCategorys, MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList } from '@/lib/Character/CharacterEquipment/enums'
 
-import ToggleService from '@/setup/ToggleService';
+import ToggleService from '@/setup/ToggleService'
 
-import vue_customEquipmentEditor from './custom-equipment-editor.vue';
+import vue_customEquipmentEditor from './custom-equipment-editor.vue'
 
 
 export default {
@@ -96,11 +96,11 @@ export default {
   setup() {
     const { window, toggle } = ToggleService({
       window: ['selectType'],
-    });
+    })
     return {
       window,
       toggle,
-    };
+    }
   },
   data() {
     return {
@@ -142,57 +142,57 @@ export default {
         list: null,
       }],
       currentEquipment: null,
-    };
+    }
   },
   computed: {
     equipmentTypeText() {
-      return this.getEquipmentTypeText(this.currentEquipment);
+      return this.getEquipmentTypeText(this.currentEquipment)
     },
     getImagePath: () => CharacterEquipment.getImagePath,
   },
   methods: {
     getEquipmentTypeText(eq) {
       if (eq) {
-        const ids = ['body-armor', 'additional', 'special', 'avatar'];
+        const ids = ['body-armor', 'additional', 'special', 'avatar']
         const idx = [BodyArmor, AdditionalGear, SpecialGear, Avatar]
-          .findIndex(p => eq instanceof p);
+          .findIndex(p => eq instanceof p)
         return idx != -1 ?
           this.$rootLang('common/Equipment/field/' + ids[idx]) :
-          this.$rootLang('common/Equipment/category/' + eq.type);
+          this.$rootLang('common/Equipment/category/' + eq.type)
       }
-      return this.$lang('create custom equipment/select equipment type');
+      return this.$lang('create custom equipment/select equipment type')
     },
     createCustomEquipment() {
-      this.$emit('append-equipments', [this.currentEquipment]);
-      this.currentEquipment = null;
-      this.close();
+      this.$emit('append-equipments', [this.currentEquipment])
+      this.currentEquipment = null
+      this.close()
     },
     selectEquipmentType(category, type) {
-      const from = this.currentEquipment;
-      const name = from ? from.name : '';
+      const from = this.currentEquipment
+      const name = from ? from.name : ''
 
       const eq = category.list !== null ?
         new category.instance(null, name, [], type) :
-        new category.instance(null, name, []);
-      eq.setCustom(true);
+        new category.instance(null, name, [])
+      eq.setCustom(true)
 
       if (!name) {
-        eq.name = this.$lang('custom equipment: default name prefix') + this.getEquipmentTypeText(eq);
+        eq.name = this.$lang('custom equipment: default name prefix') + this.getEquipmentTypeText(eq)
       }
       if (from) {
         eq.stats = !eq.hasElement ?
           from.stats.filter(p => !this.isElementStat(p.baseName)) :
-          from.stats;
+          from.stats
       }
 
-      this.currentEquipment = eq;
-      this.toggle('window/selectType', false);
+      this.currentEquipment = eq
+      this.toggle('window/selectType', false)
     },
     close() {
-      this.$emit('close');
+      this.$emit('close')
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

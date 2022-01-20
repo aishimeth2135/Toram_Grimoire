@@ -89,9 +89,9 @@
 </template>
 
 <script>
-import { useDatasStore } from '@/stores/app/datas';
+import { useDatasStore } from '@/stores/app/datas'
 
-import vue_equipmentItem from '@/components/common/equipment-item.vue';
+import vue_equipmentItem from '@/components/common/equipment-item.vue'
 
 export default {
   RegisterLang: {
@@ -107,8 +107,8 @@ export default {
   props: ['visible'],
   emits: ['close'],
   setup() {
-    const datasStore = useDatasStore();
-    return { datasStore };
+    const datasStore = useDatasStore()
+    return { datasStore }
   },
   data() {
     return {
@@ -116,64 +116,64 @@ export default {
       selected: [],
       selectedDetailVisible: false,
       searchResultMaximum: 30,
-    };
+    }
   },
   computed: {
     searchResult() {
-      const text = this.searchText;
-      let res = this.datasStore.Items.equipments;
+      const text = this.searchText
+      let res = this.datasStore.Items.equipments
       res = res.filter(item => (item.name.includes(text) && item.category !== -1)
-        || (item.category === -1 && item.name === text));
-      res.sort((a, b) => b.id - a.id);
+        || (item.category === -1 && item.name === text))
+      res.sort((a, b) => b.id - a.id)
 
       return res.slice(0, this.searchResultMaximum).map((item, i) => {
-        const o = this.convertEquipmentData(item);
+        const o = this.convertEquipmentData(item)
 
         const obtain = this.$rootLang('common/Equipment/obtain/' +
-          (item.obtains.length > 0 ? item.obtains[0].type : 'unknow'));
+          (item.obtains.length > 0 ? item.obtains[0].type : 'unknow'))
 
         return {
           origin: o,
           obtainText: obtain,
           iid: i,
-        };
-      });
+        }
+      })
     },
   },
   methods: {
     submitSelected() {
-      this.appendEquipments(this.selected.map(p => p.origin.clone()));
-      this.$notify(this.$lang('append equipments successfully', [this.selected.length]), 'ic-round-done');
-      this.selected = [];
-      this.$emit('close');
+      this.appendEquipments(this.selected.map(p => p.origin.clone()))
+      this.$notify(this.$lang('append equipments successfully', [this.selected.length]), 'ic-round-done')
+      this.selected = []
+      this.$emit('close')
     },
     clearSelected() {
-      const store = this.selected;
-      this.selected = [];
+      const store = this.selected
+      this.selected = []
       this.$notify(this.$lang('selected equipments cleared'), 'ic-round-done', null, {
         buttons: [{
           text: this.$rootLang('global/recovery'),
           click: () => {
-            this.selected = store;
+            this.selected = store
           },
           removeMessageAfterClick: true,
         }],
-      });
+      })
     },
     removeSelected(item) {
-      const idx = item.iid;
-      this.selected.splice(idx, 1);
-      this.selected.slice(idx).forEach(p => p.iid = p.iid - 1);
+      const idx = item.iid
+      this.selected.splice(idx, 1)
+      this.selected.slice(idx).forEach(p => p.iid = p.iid - 1)
     },
     selectEquipment(item) {
       item = {
         origin: item.origin,
         iid: this.selected.length,
-      };
-      this.selected.push(item);
+      }
+      this.selected.push(item)
     },
   },
-};
+}
 </script>
 
 <style lang="postcss" scoped>

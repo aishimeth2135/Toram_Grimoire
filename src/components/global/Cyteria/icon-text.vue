@@ -12,10 +12,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, toRefs } from 'vue';
+import { computed, defineComponent, PropType, toRefs } from 'vue'
 
-import { IconSetProps } from './setup/icon-set';
-import { ColorSetProps, setupColorSetStyles } from './setup/color-set';
+import { IconSetProps } from './setup/icon-set'
+import { ColorSetProps, setupColorSetStyles } from './setup/color-set'
 
 export default defineComponent({
   // mixins: [IconSet, ColorSet],
@@ -30,7 +30,7 @@ export default defineComponent({
       type: String as PropType<'normal' | 'small'>,
       default: 'normal',
       validator: (value: string) => {
-        return ['normal', 'small'].includes(value);
+        return ['normal', 'small'].includes(value)
       },
     },
     iconWidth: {
@@ -41,7 +41,7 @@ export default defineComponent({
       type: String as PropType<'start' | 'center'>,
       default: 'center',
       validator: (value: string) => {
-        return ['start', 'center'].includes(value);
+        return ['start', 'center'].includes(value)
       },
     },
     displayBlock: {
@@ -52,45 +52,45 @@ export default defineComponent({
     ...ColorSetProps,
   },
   setup(props) {
-    const { colorSetStyles } = setupColorSetStyles(props);
+    const { colorSetStyles } = setupColorSetStyles(props)
     const {
       iconWidth,
       type,
       size,
       alignV,
       displayBlock,
-    } = toRefs(props);
+    } = toRefs(props)
 
     const rootStyle = computed(() => {
       if (iconWidth.value !== null) {
         return {
           ...colorSetStyles.value,
           '--icon-width': iconWidth.value,
-        };
+        }
       }
-      return colorSetStyles.value;
-    });
+      return colorSetStyles.value
+    })
 
     const rootClass = computed(() => {
       const alignVMapping = {
         'start': 'align-v-start',
         'center': 'align-v-center',
-      };
+      }
       return {
         'is-item': type.value === 'item',
         ['size-' + size.value]: true,
         [alignVMapping[alignV.value]]: true,
         'flex': displayBlock.value,
         'inline-flex': !displayBlock.value,
-      };
-    });
+      }
+    })
 
     return {
       rootStyle,
       rootClass,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="postcss" scoped>

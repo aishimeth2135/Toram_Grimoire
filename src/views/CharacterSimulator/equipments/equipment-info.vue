@@ -168,9 +168,9 @@
 </template>
 
 <script>
-import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
-import vue_showStat from './show-stat.vue';
+import vue_showStat from './show-stat.vue'
 
 export default {
   RegisterLang: 'Character Simulator',
@@ -197,27 +197,27 @@ export default {
       mode: 0, // 0: normal, 1: edit
       currentCustomTypeIndex: 0,
       baseValueRange: [0, 999],
-    };
+    }
   },
   methods: {
     equipmentRefiningText(v){
       // if (v >= 10) {
       //   return ['E', 'B', 'C', 'D', 'A', 'S'][v - 10];
       // }
-      return v;
+      return v
     },
     switchCustomType(){
-      const eq = this.equipment;
-      const len = eq.customTypeList.length;
+      const eq = this.equipment
+      const len = eq.customTypeList.length
 
-      this.currentCustomTypeIndex += 1;
+      this.currentCustomTypeIndex += 1
       if (this.currentCustomTypeIndex === len)
-        this.currentCustomTypeIndex = 0;
-      eq.setCustomType(eq.customTypeList[this.currentCustomTypeIndex]);
+        this.currentCustomTypeIndex = 0
+      eq.setCustomType(eq.customTypeList[this.currentCustomTypeIndex])
     },
     editCrystal(){
-      this.openSelectCrystals(this.equipment);
+      this.openSelectCrystals(this.equipment)
     },
   },
-};
+}
 </script>

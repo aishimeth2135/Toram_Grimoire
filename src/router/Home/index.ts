@@ -1,19 +1,19 @@
-import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router'
 
-import { ViewInit } from '@/shared/services/ViewInit';
+import { ViewInit } from '@/shared/services/ViewInit'
 
-import HomeView from '@/views/Home/Home/index.vue';
+import HomeView from '@/views/Home/Home/index.vue'
 
-import ViewWrapper from './view-wrapper.vue';
+import ViewWrapper from './view-wrapper.vue'
 
-const AboutView = () => import(/* webpackChunkName: "home-about" */ '@/views/Home/About/index.vue');
+const AboutView = () => import(/* webpackChunkName: "home-about" */ '@/views/Home/About/index.vue')
 
 export default {
   name: 'AppRoot',
   path: '/',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
-    ViewInit().then(next);
+    ViewInit().then(next)
   },
   meta: {
     title: null,
@@ -39,4 +39,4 @@ export default {
       title: 'app.page-title.about',
     },
   }],
-} as RouteRecordRaw;
+} as RouteRecordRaw

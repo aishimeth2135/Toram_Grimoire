@@ -42,7 +42,7 @@ export default {
     range: {
       type: Array,
       default () {
-        return [0, 100];
+        return [0, 100]
       },
     },
     value: {
@@ -58,38 +58,38 @@ export default {
   data() {
     return {
       isMouseDown: false,
-    };
+    }
   },
   computed: {
     offset() {
-      return Math.floor(100 * (this.value - this.range[0]) / (this.range[1] - this.range[0])) + '%';
+      return Math.floor(100 * (this.value - this.range[0]) / (this.range[1] - this.range[0])) + '%'
     },
   },
   methods: {
     cancelMouseDown() {
-      this.isMouseDown = false;
+      this.isMouseDown = false
     },
     startMouseDown() {
-      this.isMouseDown = true;
+      this.isMouseDown = true
     },
     updateValue(e) {
       if (!this.isMouseDown && e.type != 'click')
-        return;
-      const x = e.offsetX;
-      const box_w = e.target.getBoundingClientRect().width;
+        return
+      const x = e.offsetX
+      const box_w = e.target.getBoundingClientRect().width
 
-      let v = Math.floor(this.range[1] * x / box_w + 0.5);
-      v = Math.min(this.range[1], v);
-      v = Math.max(this.range[0], v);
+      let v = Math.floor(this.range[1] * x / box_w + 0.5)
+      v = Math.min(this.range[1], v)
+      v = Math.max(this.range[0], v)
 
-      this.$emit('update:value', v);
+      this.$emit('update:value', v)
     },
     setValue(e) {
-      const v = parseInt(e.target.value, 10);
-      this.$emit('update:value', v);
+      const v = parseInt(e.target.value, 10)
+      this.$emit('update:value', v)
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

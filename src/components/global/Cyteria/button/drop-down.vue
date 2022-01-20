@@ -26,9 +26,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref } from 'vue'
 
-import { ButtonBaseProps, setupButtonBase } from './setup';
+import { ButtonBaseProps, setupButtonBase } from './setup'
 
 export default defineComponent({
   name: 'CyButtonDropDown',
@@ -41,18 +41,18 @@ export default defineComponent({
     ...ButtonBaseProps,
   },
   setup(props, { emit }) {
-    const { click } = setupButtonBase(props, (evt) => emit('click', evt));
-    const menuVisible = ref(false);
+    const { click } = setupButtonBase(props, (evt) => emit('click', evt))
+    const menuVisible = ref(false)
     const titleClick = () => {
-      menuVisible.value = !menuVisible.value;
-    };
+      menuVisible.value = !menuVisible.value
+    }
     return {
       click,
       titleClick,
       menuVisible,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="postcss" scoped>

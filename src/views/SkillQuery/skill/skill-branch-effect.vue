@@ -24,34 +24,34 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
+import { computed, toRefs } from 'vue'
 
-import { ComponentPropsType } from '@/shared/utils/type';
+import { ComponentPropsType } from '@/shared/utils/type'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
-import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue';
-import SkillBranchStats from './layouts/skill-branch-stats.vue';
+import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
+import SkillBranchStats from './layouts/skill-branch-stats.vue'
 
-import EffectHandler from './branch-handlers/EffectHandler';
-import { setupCommonExtraSuffixBranches } from './setup';
+import EffectHandler from './branch-handlers/EffectHandler'
+import { setupCommonExtraSuffixBranches } from './setup'
 
 interface Props {
   branchItem: SkillBranchItem;
 }
 
-const props = defineProps<Props>();
-const { branchItem } = toRefs(props);
+const props = defineProps<Props>()
+const { branchItem } = toRefs(props)
 
-const container = computed(() => EffectHandler(branchItem.value));
+const container = computed(() => EffectHandler(branchItem.value))
 
 const nameProps = computed(() => {
-  const res = [];
+  const res = []
   if (container.value.get('type')) {
-    res.push(container.value.get('type'));
+    res.push(container.value.get('type'))
   }
-  return res;
-});
+  return res
+})
 
 const subContents = computed(() => {
   return [{
@@ -66,12 +66,12 @@ const subContents = computed(() => {
   }, {
     key: 'is_place',
     icon: 'emojione-monotone:heavy-large-circle',
-  }] as NonNullable<ComponentPropsType<typeof SkillBranchLayoutNormal>['subContents']>;
-});
+  }] as NonNullable<ComponentPropsType<typeof SkillBranchLayoutNormal>['subContents']>
+})
 
-const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(branchItem);
+const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(branchItem)
 
 const hasArea = computed(() => {
-  return container.value.getOrigin('type') === 'aura' || container.value.getOrigin('type') === 'circle';
-});
+  return container.value.getOrigin('type') === 'aura' || container.value.getOrigin('type') === 'circle'
+})
 </script>

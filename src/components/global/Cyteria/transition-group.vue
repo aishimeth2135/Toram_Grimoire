@@ -21,7 +21,7 @@ export default {
       type: Boolean,
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

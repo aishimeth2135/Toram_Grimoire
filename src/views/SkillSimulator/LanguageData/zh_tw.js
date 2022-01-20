@@ -57,5 +57,5 @@ export default function() {
         'frame 7-1': '這裡會顯示((星石實際提供了多少技能點數))。',
       },
     },
-  };
+  }
 }

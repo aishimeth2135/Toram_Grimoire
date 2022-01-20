@@ -126,9 +126,9 @@
 </template>
 
 <script>
-import { StatTypes } from '@/lib/Character/Stat/enums';
+import { StatTypes } from '@/lib/Character/Stat/enums'
 
-import vue_statDetailEquipments from './stat-detail-equipments.vue';
+import vue_statDetailEquipments from './stat-detail-equipments.vue'
 
 export default {
   name: 'CharacterSimulatorCharacterStats',
@@ -147,167 +147,167 @@ export default {
         visible: false,
         hovering: false,
       },
-    };
+    }
   },
   computed: {
     showStatDetailCaption() {
       if (this.detail.currentStat) {
         return this.detail.currentStat.origin.caption
-          .replace(/\(\(([^)]+)\)\)/g, (_, m1) => `<span class="separate-scope">${m1}</span>`);
+          .replace(/\(\(([^)]+)\)\)/g, (_, m1) => `<span class="separate-scope">${m1}</span>`)
       }
-      return '';
+      return ''
     },
     showStatDetailDatas() {
       if (!this.detail.currentStat || this.detail.currentStat.origin.isBoolStat)
-        return [];
+        return []
       const vFix = v => v.toString()
         .replace(/^(-?\d+\.)(\d{3,})$/, (m, m1, m2) => m1 + m2.slice(0, 3))
-        .replace(/^(-?\d+)(\.0+)$/, (m, m1) => m1);
+        .replace(/^(-?\d+)(\.0+)$/, (m, m1) => m1)
 
-      const stat = this.detail.currentStat;
-      const base = stat.origin.linkedStatBase;
-      const types = [null, StatTypes.Constant, StatTypes.Multiplier, StatTypes.Total];
+      const stat = this.detail.currentStat
+      const base = stat.origin.linkedStatBase
+      const types = [null, StatTypes.Constant, StatTypes.Multiplier, StatTypes.Total]
 
       const list = (base ? ['base', 'constant', 'multiplier', 'total'] : ['base'])
         .map((p, i) => ({
           type: types[i],
           id: p,
-        }));
+        }))
 
       const conditionalBase = stat.conditionalBase ? {
         title: this.handleConditional(stat.conditionalBase),
-      } : null;
+      } : null
       const datas = list
         .filter(item => item.id === 'base' || stat.statValueParts[item.id] !== 0)
         .map((item, itemIdx) => {
           const id = item.id,
-            type = item.type;
-          const v = stat.statValueParts[id];
+            type = item.type
+          const v = stat.statValueParts[id]
           let title = id !== 'base' ? base.show(type, v) : {
             text: this.$lang('base value'),
             value: vFix(stat.statValueParts['base']),
-          };
+          }
           if (id === 'multiplier')
-            title += '｜' + Math.floor(v * stat.statValueParts['base'] / 100).toString();
+            title += '｜' + Math.floor(v * stat.statValueParts['base'] / 100).toString()
 
-          const isBase = id === 'base';
+          const isBase = id === 'base'
 
-          const lines = [];
-          const adds = stat.statPartsDetail.additionalValues[id].filter(p => p.value != 0);
+          const lines = []
+          const adds = stat.statPartsDetail.additionalValues[id].filter(p => p.value != 0)
           if (adds.length != 0) {
-            const initValue = stat.statPartsDetail.initValue[id];
-            let hasInit = false;
+            const initValue = stat.statPartsDetail.initValue[id]
+            let hasInit = false
             if (initValue != 0) {
               lines.push({
                 title: this.$lang('init value'),
                 value: (id.value > 0 && !isBase ? '+' : '') + vFix(initValue),
                 iid: 0,
-              });
-              hasInit = true;
+              })
+              hasInit = true
             }
             const t = adds
               .sort(p => p.isMul ? 1 : -1)
               .map((p, i) => {
-                let value = 0;
+                let value = 0
                 if (p.isMul) {
-                  value = p.value > 0 ? `×${vFix(p.value)}` : `×(${vFix(p.value)})`;
+                  value = p.value > 0 ? `×${vFix(p.value)}` : `×(${vFix(p.value)})`
                 } else {
-                  value = (p.value > 0 && (hasInit || !isBase) ? '+' : '') + vFix(p.value);
+                  value = (p.value > 0 && (hasInit || !isBase) ? '+' : '') + vFix(p.value)
                   if (!hasInit)
-                    hasInit = true;
+                    hasInit = true
                 }
                 return {
                   iid: i + 1,
                   title: this.handleConditional(p),
                   value,
-                };
-              });
-            lines.push(...t);
+                }
+              })
+            lines.push(...t)
           }
 
           if (conditionalBase) {
-            const ceqs = conditionalBase.title.equipments;
+            const ceqs = conditionalBase.title.equipments
             lines.forEach(line => {
               if (typeof line.title === 'string')
-                return;
-              const eqs = line.title.equipments;
+                return
+              const eqs = line.title.equipments
               eqs.forEach((text, i) => {
                 if (eqs.length - i < ceqs.length)
-                  return;
+                  return
                 if (ceqs.every((p, j) => p.text === eqs[i + j].text))
-                  eqs.splice(i, ceqs.length);
-              });
-            });
+                  eqs.splice(i, ceqs.length)
+              })
+            })
           }
 
           return {
             iid: itemIdx,
             title,
             lines,
-          };
-        });
+          }
+        })
 
       return {
         datas,
         conditionalBase,
-      };
+      }
     },
   },
   methods: {
     handleConditional(conditionObj) {
-      const captions = [];
+      const captions = []
       conditionObj.options.forEach(p => {
-        const m = p.match(/^"([^"]+)"$/);
+        const m = p.match(/^"([^"]+)"$/)
         m && captions.push({
           iid: captions.length,
           text: m[1],
-        });
-      });
+        })
+      })
 
-      let str = conditionObj.conditional;
+      let str = conditionObj.conditional
       if (str === '#') {
-        str = captions.length == 0 ? [this.$lang('additional value')] : [];
+        str = captions.length == 0 ? [this.$lang('additional value')] : []
       } else {
         str = str.replace(/\s+/g, '')
           .replace(/(?:&&|\|\|)#[a-zA-Z0-9._]+/g, '')
           .replace(/#[a-zA-Z0-9._]+(?:&&|\|\|)/g, '')
           .replace(/@([a-zA-Z0-9._]+)/g, (m, m1) => {
-            m1 = m1.replace(/\./g, '/');
-            return this.$lang('text of conditional values/' + m1) + ',';
+            m1 = m1.replace(/\./g, '/')
+            return this.$lang('text of conditional values/' + m1) + ','
           })
           .replace(/&&|\|\|/g, m => m === '&&' ? '+,' : '/,')
           .replace(/\(|\)/g, m => m + ',')
-          .replace(/^\(([^)]+)\)$/, (m, m1) => m1);
+          .replace(/^\(([^)]+)\)$/, (m, m1) => m1)
 
-        str = str.split(',');
+        str = str.split(',')
         if (str[str.length - 1] == '')
-          str = str.slice(0, -1);
+          str = str.slice(0, -1)
       }
 
       const equipments = str.map((p, i) => ({
         iid: i,
         text: p,
-      }));
+      }))
 
       return {
         equipments,
         captions,
-      };
+      }
     },
     toggleShowStatDetailDisplay(target, force, clear = false) {
-      force = force === undefined ? !this.detail[target] : force;
-      this.detail[target] = force;
+      force = force === undefined ? !this.detail[target] : force
+      this.detail[target] = force
 
       if (clear && !force)
-        this.detail.currentStat = null;
-      return force;
+        this.detail.currentStat = null
+      return force
     },
     setStatDetail(e, stat) {
-      this.detail.positionElement = e.target.closest('.stat-scope');
-      this.detail.currentStat = stat;
+      this.detail.positionElement = e.target.closest('.stat-scope')
+      this.detail.currentStat = stat
     },
   },
-};
+}
 </script>
 
 <style lang="postcss" scoped>

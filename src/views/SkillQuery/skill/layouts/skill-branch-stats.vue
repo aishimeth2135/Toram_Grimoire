@@ -11,11 +11,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer';
+import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 
 interface Props {
   statContainers: ResultContainerStat[];
 }
 
-defineProps<Props>();
+defineProps<Props>()
 </script>

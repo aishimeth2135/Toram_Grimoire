@@ -104,11 +104,11 @@
 </template>
 
 <script>
-import { mapState } from 'pinia';
+import { mapState } from 'pinia'
 
-import { useCharacterSkillStore } from '@/stores/views/character/skill';
+import { useCharacterSkillStore } from '@/stores/views/character/skill'
 
-import vue_skillItem from './skill-item.vue';
+import vue_skillItem from './skill-item.vue'
 
 export default {
   name: 'CharacterSimulatorSkills',
@@ -116,12 +116,12 @@ export default {
   provide() {
     return {
       'openUserSetsWindow': this.openUserSetsWindow,
-    };
+    }
   },
   props: ['characterState', 'passiveSkillStates', 'activeSkillStates'],
   setup() {
-    const skillStore = useCharacterSkillStore();
-    return { skillStore };
+    const skillStore = useCharacterSkillStore()
+    return { skillStore }
   },
   data() {
     return {
@@ -130,15 +130,15 @@ export default {
         visible: false,
         handler: null,
       },
-    };
+    }
   },
   created() {
     if (this.skillBuilds.length !== 0 && this.currentSkillBuildIndex < 0)
-      this.selectCurrentBuild(0);
+      this.selectCurrentBuild(0)
   },
   updated() {
     if (this.skillBuilds.length !== 0 && this.currentSkillBuildIndex < 0)
-      this.selectCurrentBuild(0);
+      this.selectCurrentBuild(0)
   },
   computed: {
     ...mapState(useCharacterSkillStore, {
@@ -149,24 +149,24 @@ export default {
   },
   methods: {
     setMode(mode) {
-      this.mode = mode;
+      this.mode = mode
     },
     selectCurrentBuild(idx) {
-      this.skillStore.setCurrentSkillBuild(idx);
+      this.skillStore.setCurrentSkillBuild(idx)
     },
     openUserSetsWindow(handler) {
-      this.userSetsWindow.handler = handler;
-      this.userSetsWindow.visible = true;
+      this.userSetsWindow.handler = handler
+      this.userSetsWindow.visible = true
     },
     userSetValue(state, value) {
-      state.value = value;
+      state.value = value
       // this.userSetsWindow.handler.notifyValueUpdate();
     },
   },
   components: {
     'skill-item': vue_skillItem,
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

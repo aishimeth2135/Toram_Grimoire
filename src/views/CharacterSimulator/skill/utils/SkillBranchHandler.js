@@ -1,30 +1,30 @@
 
-import { EquipmentFieldTypes } from '@/lib/Character/Character/enums';
-import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums';
+import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
+import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 
-import DataContainer from '@/views/SkillQueryOld/utils/DataContainer.js';
-import handleSkillFormula from '@/views/SkillQueryOld/utils/handleFormula.js';
+import DataContainer from '@/views/SkillQueryOld/utils/DataContainer.js'
+import handleSkillFormula from '@/views/SkillQueryOld/utils/handleFormula.js'
 class SkillBranchHandler {
   constructor({ branch, skillState, levelSkill, view, skillItemType }) {
-    this.branch = branch;
-    this.skillState = skillState;
-    this.levelSkill = levelSkill;
-    this.skillItemType = skillItemType;
-    this.view = view;
+    this.branch = branch
+    this.skillState = skillState
+    this.levelSkill = levelSkill
+    this.skillItemType = skillItemType
+    this.view = view
 
     this.userSets = (() => {
-      const res = [];
+      const res = []
 
-      const formulaExtra = this.branch.suffix.find(suf => suf.name === 'formula_extra');
+      const formulaExtra = this.branch.suffix.find(suf => suf.name === 'formula_extra')
       if (formulaExtra) {
-        const texts = formulaExtra.attrs['texts'].split(/\s*,\s*/);
+        const texts = formulaExtra.attrs['texts'].split(/\s*,\s*/)
         res.push(...texts.map((text, i) => ({
           text,
           value: 0,
           variableName: this.formulaExtraVariableName(i),
           disabled: false,
           ignore: false,
-        })));
+        })))
       }
 
       res.push({
@@ -39,106 +39,106 @@ class SkillBranchHandler {
         variableName: 'target_level',
         disabled: true,
         ignore: true,
-      });
+      })
 
-      return res;
-    })();
+      return res
+    })()
 
     const stackIds = this.branch.attrs['stack_id'] ?
-      this.branch.attrs['stack_id'].split(/\s*,\s*/) : [];
+      this.branch.attrs['stack_id'].split(/\s*,\s*/) : []
     this.stackStates = stackIds.length == 0 ? [] : this.skillState.stackStates
       .filter(p => stackIds.includes(p.id))
       .map((p, i) => {
-        const attrs = p.branch.attrs;
-        let name = attrs['name'];
+        const attrs = p.branch.attrs
+        let name = attrs['name']
         if (name == 'auto')
-          name = this.$lang('skill management/default name of stack') + i;
+          name = this.$lang('skill management/default name of stack') + i
         return {
           id: p.id,
           name,
           value: p.value,
           branch: p.branch,
-        };
-      });
+        }
+      })
 
     this.stackStates.forEach(p => {
-      const attrs = p.branch.attrs;
+      const attrs = p.branch.attrs
       p.range =  [
         parseInt(this.calcValueStr(attrs['min']), 10),
         attrs['max'] ? parseInt(this.calcValueStr(attrs['max']), 10) : null,
-      ];
-    });
+      ]
+    })
 
-    this.infoType = this.branch.attrs['caption'] ? 'caption' : 'stats';
+    this.infoType = this.branch.attrs['caption'] ? 'caption' : 'stats'
   }
   // computed
   get hasUserSets() {
-    return this.stackStates.length != 0 || this.validUserSets.length != 0;
+    return this.stackStates.length != 0 || this.validUserSets.length != 0
   }
   get validUserSets() {
-    return this.userSets.filter(p => !p.disabled);
+    return this.userSets.filter(p => !p.disabled)
   }
   get value() {
-    return this.handleDatas();
+    return this.handleDatas()
   }
 
   handleTextData(str) {
     return str
       .replace(/\$\{([^}]+)\}(%?)/g, (m, m1, m2) => {
-        const dc = new DataContainer(m1);
-        this.handleDataContainer(dc, { beforeColorText: v => v + m2 });
-        return dc.result();
+        const dc = new DataContainer(m1)
+        this.handleDataContainer(dc, { beforeColorText: v => v + m2 })
+        return dc.result()
       })
       .replace(/#([^\s]+)\s(\w?)/g, (m, m1, m2) => {
-        let res = `<span class="light-text-2">${m1.replace(new RegExp('_', 'g'), ' ')}</span>`;
+        let res = `<span class="light-text-2">${m1.replace(new RegExp('_', 'g'), ' ')}</span>`
         if (m2 !== '')
-          res += ' ' + m2;
-        return res;
+          res += ' ' + m2
+        return res
       })
-      .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values">${m1}</span>`);
+      .replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="multiple-values">${m1}</span>`)
   }
 
   handleDatas() {
-    let caption = '', stats = [];
+    let caption = '', stats = []
     if (this.infoType === 'caption') {
-      caption = this.handleTextData(this.branch.attrs['caption']);
+      caption = this.handleTextData(this.branch.attrs['caption'])
     }
     else {
-      stats = this.statTexts(this.branch.stats);
+      stats = this.statTexts(this.branch.stats)
     }
 
     const conditionDatas = this.branch.suffix
       .filter(suf => suf.name === 'extra')
       .map((suf, i) => {
-        let _stats = [], _caption = '';
+        let _stats = [], _caption = ''
         if (suf.stats.length !== 0)
-          _stats = this.statTexts(suf.stats);
+          _stats = this.statTexts(suf.stats)
         else if (suf.attrs['caption'])
-          _caption = this.handleTextData(suf.attrs['caption']);
+          _caption = this.handleTextData(suf.attrs['caption'])
         return {
           iid: i,
           stats: _stats,
           caption: _caption,
           condition: suf.attrs['condition'] || this.$lang('skill management/suffix branch/condition: default'),
-        };
+        }
       })
-      .filter(p => p.stats.length !== 0 || p.caption);
+      .filter(p => p.stats.length !== 0 || p.caption)
 
     return {
       stats,
       caption,
       conditionDatas,
-    };
+    }
   }
 
   get findCharacterStatResult() {
-    return this.view.findCharacterStatResult;
+    return this.view.findCharacterStatResult
   }
   get $lang() {
-    return this.view.$lang;
+    return this.view.$lang
   }
   get characterState() {
-    return this.view.currentCharacterState;
+    return this.view.currentCharacterState
   }
 
   // save and load with json-data
@@ -198,56 +198,56 @@ class SkillBranchHandler {
 
   // methods
   formulaExtraVariableName(idx) {
-    return '__FORMULA_EXTRA_' + idx + '__';
+    return '__FORMULA_EXTRA_' + idx + '__'
   }
   statTexts(stats) {
     return stats.map((p, i) => {
-      const dc = new DataContainer(p.value);
+      const dc = new DataContainer(p.value)
 
-      let value = this.calcValueStr(dc.value());
-      let sign = '+';
+      let value = this.calcValueStr(dc.value())
+      let sign = '+'
       // if (/^\(?-?[\d.]+\)?$/.test(v)) {
       //   v = v.replace(/\(?(-?[\d.]+)\)?/, (m, m1) => m1);
       // }
       if (value.charAt(0) == '-') {
-        sign = '-';
+        sign = '-'
       }
 
-      const sd = p.getShowData();
-      const beforeColorText = v => sign + (sign == '-' ? v.replace('-', '') : v) + sd.tail;
-      this.handleDataContainer(dc, { beforeColorText });
+      const sd = p.getShowData()
+      const beforeColorText = v => sign + (sign == '-' ? v.replace('-', '') : v) + sd.tail
+      this.handleDataContainer(dc, { beforeColorText })
 
       return {
         text: sd.title + dc.result(),
         value: parseFloat(value),
         origin: p,
         iid: i,
-      };
-    });
+      }
+    })
   }
   calcValueStr(str, repeat = true) {
     if (!str)
-      return str;
+      return str
     const skillState = {
       clv: this.characterState.origin.level,
       slv: Math.max(this.levelSkill.level(), this.levelSkill.starGemLevel()),
-    };
+    }
     const effectState = {
       stackStates: this.stackStates,
-    };
+    }
 
     str = str.split(/\s*,,\s*/)
       .map(p => handleSkillFormula(p, { skillState, effectState, branch: this.branch }))
       //.map(p => p.charAt(0) == '-' ? `(${p})` : p)
       .join('+')
-      .replace(/\+-/g, '-');
-    return /^-?[\d.]+$/.test(str) || !repeat ? str : this.calcValueStr(str, false);
+      .replace(/\+-/g, '-')
+    return /^-?[\d.]+$/.test(str) || !repeat ? str : this.calcValueStr(str, false)
   }
   handleDataContainer(dc, { beforeColorText } = {}) {
     //const numStrToPercentage = s => (100 * parseFloat(s)).toFixed(1).replace('.0', '') + '%';
 
-    this.handleReplacedVariable(dc);
-    dc.handle(v => this.calcValueStr(v));
+    this.handleReplacedVariable(dc)
+    dc.handle(v => this.calcValueStr(v))
     // dc.handleResult(v => v
     //   .replace(/([$_a-zA-Z][$_a-zA-Z0-9]*)(\*)(\d\.\d+)/g,
     //     (m, m1, m2, m3) => m1 + m2 + numStrToPercentage(m3))
@@ -255,11 +255,11 @@ class SkillBranchHandler {
     // );
 
     if (!dc.isNumberValue())
-      dc.handle(() => '0');
-    dc.handleResult(v => v.replace(/(\d+\.)(\d{2,})/g, (m, m1, m2) => m1 + m2.slice(0, 2)));
+      dc.handle(() => '0')
+    dc.handleResult(v => v.replace(/(\d+\.)(\d{2,})/g, (m, m1, m2) => m1 + m2.slice(0, 2)))
 
     // dc.isNumberValue() && toPercentage && dc.handleResult(v => numStrToPercentage(v));
-    this.dataResultHighlight(dc, { beforeColorText });
+    this.dataResultHighlight(dc, { beforeColorText })
   }
   dataResultHighlight(dc, {
     base = 'light-text',
@@ -270,16 +270,16 @@ class SkillBranchHandler {
     //     extraHandle(v = "<span class="multiple-values"></span>")
     //   </span>
   } = {}) {
-    const clist = [(dc.origin.includes('stack') ? stack : base), ...extra];
-    dc.isNumberValue() && parseFloat(dc.value()) < 0 && clist.push('text-dark');
+    const clist = [(dc.origin.includes('stack') ? stack : base), ...extra]
+    dc.isNumberValue() && parseFloat(dc.value()) < 0 && clist.push('text-dark')
     //!dc.isNumberValue() && dc.handleResult(v => `<span class="multiple-values">${v}</span>`);
 
-    beforeColorText && dc.handleResult(v => beforeColorText(v));
-    dc.handleResult(v => `<span class="${clist.join(' ')}">${v}</span>`);
+    beforeColorText && dc.handleResult(v => beforeColorText(v))
+    dc.handleResult(v => `<span class="${clist.join(' ')}">${v}</span>`)
   }
   handleReplacedVariable(dc) {
-    const findSrc = this.skillItemType === 'passive' ? 'base' : 'passive-skills';
-    const chara = this.characterState.origin;
+    const findSrc = this.skillItemType === 'passive' ? 'base' : 'passive-skills'
+    const chara = this.characterState.origin
     const list = {
       'BSTR': chara.baseStatValue('STR'),
       'BINT': chara.baseStatValue('INT'),
@@ -297,31 +297,31 @@ class SkillBranchHandler {
       'dagger_atk': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Dagger) ?
         chara.equipmentField(EquipmentFieldTypes.SubWeapon).equipment.atk : 0,
       'target_def': () => {
-        const find = this.userSets.find(p => p.variableName === 'target_def');
-        find.disabled = false;
-        return find.value;
+        const find = this.userSets.find(p => p.variableName === 'target_def')
+        find.disabled = false
+        return find.value
       },
       'target_level': () => {
-        const find = this.userSets.find(p => p.variableName === 'target_level');
-        find.disabled = false;
-        return find.value;
+        const find = this.userSets.find(p => p.variableName === 'target_level')
+        find.disabled = false
+        return find.value
       },
       'guard_power': this.findCharacterStatResult(findSrc, 'guard_power').value,
-    };
+    }
 
     dc.handle(v => {
       Object.keys(list).forEach(k => {
-        v = v.replace(new RegExp('\\$' + k, 'g'), list[k]);
-      });
-      v = v.replace(/&(\d+):/g, (m, m1) => this.formulaExtraVariableName(m1));
+        v = v.replace(new RegExp('\\$' + k, 'g'), list[k])
+      })
+      v = v.replace(/&(\d+):/g, (m, m1) => this.formulaExtraVariableName(m1))
       this.userSets.filter(p => !p.ignore).forEach(p => {
-        v = v.replace(new RegExp(p.variableName, 'g'), p.value);
-      });
-      return v;
-    });
+        v = v.replace(new RegExp(p.variableName, 'g'), p.value)
+      })
+      return v
+    })
 
-    return dc;
+    return dc
   }
 }
 
-export default SkillBranchHandler;
+export default SkillBranchHandler

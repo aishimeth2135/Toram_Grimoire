@@ -94,17 +94,17 @@
 </template>
 
 <script>
-import { mapState } from 'pinia';
+import { mapState } from 'pinia'
 
-import { useCharacterStore } from '@/stores/views/character';
+import { useCharacterStore } from '@/stores/views/character'
 
-import { EquipmentFieldTypes } from '@/lib/Character/Character/enums';
-import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from '@/lib/Character/CharacterEquipment';
+import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
+import { MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar } from '@/lib/Character/CharacterEquipment'
 
-import vue_equipmentItem from '@/components/common/equipment-item.vue';
+import vue_equipmentItem from '@/components/common/equipment-item.vue'
 
-import vue_characterStatsCompare from '../main/character-stats-compare.vue';
-import vue_equipmentInfo from './equipment-info.vue';
+import vue_characterStatsCompare from '../main/character-stats-compare.vue'
+import vue_equipmentInfo from './equipment-info.vue'
 
 
 export default {
@@ -122,8 +122,8 @@ export default {
   props: ['visible', 'action', 'characterState'],
   emits: ['close'],
   setup() {
-    const store = useCharacterStore();
-    return { store };
+    const store = useCharacterStore()
+    return { store }
   },
   data() {
     return {
@@ -131,7 +131,7 @@ export default {
       currentEquipmentDisable: false,
       infoUnfold: false,
       compardEquipment: false,
-    };
+    }
   },
   computed: {
     ...mapState(useCharacterStore, ['equipments']),
@@ -140,11 +140,11 @@ export default {
       return this.handleCharacterStateDatas({
         handlePassiveSkill: true,
         handleActiveSkill: true,
-      });
+      })
     },
     compareData() {
       if (!this.currentEquipment)
-        return null;
+        return null
       return {
         before: this.currentCharacterStateDatas,
         after: this.handleCharacterStateDatas({
@@ -155,12 +155,12 @@ export default {
             equipment: this.currentEquipment,
           },
         }),
-      };
+      }
     },
     actionType() {
       if (!this.action)
-        return 'normal';
-      return this.action.type;
+        return 'normal'
+      return this.action.type
     },
     browsedEquipments() {
       return this.equipments
@@ -169,93 +169,93 @@ export default {
             origin: p,
             iid: i,
             '@disabled': !this.fieldFilter(p),
-          };
+          }
         })
-        .sort((a, b) => a.origin.name.localeCompare(b.origin.name));
+        .sort((a, b) => a.origin.name.localeCompare(b.origin.name))
     },
   },
   methods: {
     toggleInfoUnfold() {
-      this.infoUnfold = !this.infoUnfold;
+      this.infoUnfold = !this.infoUnfold
     },
     copySelectedEquipment() {
-      const eq = this.currentEquipment.clone();
-      eq.name = eq.name + '*';
-      this.appendEquipments([eq]);
+      const eq = this.currentEquipment.clone()
+      eq.name = eq.name + '*'
+      this.appendEquipments([eq])
       this.$notify(this.$lang('message: copy equipment'), 'mdi-content-copy',
-        'browse equipment/copy equipment');
+        'browse equipment/copy equipment')
     },
     removeSelectedEquipment() {
-      const eq = this.currentEquipment;
-      const index = this.equipments.indexOf(eq);
-      index != -1 && this.store.removeEquipment(index);
+      const eq = this.currentEquipment
+      const index = this.equipments.indexOf(eq)
+      index != -1 && this.store.removeEquipment(index)
 
       const modifiedFields = this.characterState.origin.equipmentFields.filter(field => {
         if (field.equipment === eq) {
-          field.removeEquipment();
-          return true;
+          field.removeEquipment()
+          return true
         }
-        return false;
-      });
+        return false
+      })
       this.$notify(this.$lang('message: remove equipment', [eq.name]),
         'ic-baseline-delete-outline', null, {
           buttons: [{
             text: this.$rootLang('global/recovery'),
             click: () => {
-              this.appendEquipments([eq]);
-              modifiedFields.forEach(field => field.setEquipment(eq));
-              this.$notify(this.$lang('message: removed equipment recovery', [eq.name]));
+              this.appendEquipments([eq])
+              modifiedFields.forEach(field => field.setEquipment(eq))
+              this.$notify(this.$lang('message: removed equipment recovery', [eq.name]))
             },
             removeMessageAfterClick: true,
           }],
-        });
+        })
 
-      this.currentEquipment = null;
+      this.currentEquipment = null
     },
     selectEquipment() {
-      this.action.targetField.setEquipment(this.currentEquipment);
-      this.closeWindow();
+      this.action.targetField.setEquipment(this.currentEquipment)
+      this.closeWindow()
     },
     closeWindow() {
-      this.clearCurrentEquipment();
-      this.$emit('close');
+      this.clearCurrentEquipment()
+      this.$emit('close')
     },
     clearCurrentEquipment() {
-      this.currentEquipment = null;
+      this.currentEquipment = null
     },
     setCurrentEquipment(eq, disabled = false) {
       if (this.currentEquipment === eq && !disabled) {
-        this.selectEquipment();
-        return;
+        this.selectEquipment()
+        return
       }
-      this.currentEquipment = eq;
-      this.currentEquipmentDisable = disabled;
+      this.currentEquipment = eq
+      this.currentEquipmentDisable = disabled
     },
     fieldFilter(eq) {
       switch (this.action.targetField.type) {
         case EquipmentFieldTypes.MainWeapon:
-          return eq instanceof MainWeapon;
+          return eq instanceof MainWeapon
         case EquipmentFieldTypes.SubWeapon:
           if (eq instanceof MainWeapon || eq instanceof SubWeapon || eq instanceof SubArmor) {
-            const t = this.characterState.origin.subWeaponValid(eq.type);
-            return t;
+            const t = this.characterState.origin.subWeaponValid(eq.type)
+            return t
           }
-          return false;
+          return false
         case EquipmentFieldTypes.BodyArmor:
-          return eq instanceof BodyArmor;
+          return eq instanceof BodyArmor
         case EquipmentFieldTypes.Additional:
-          return eq instanceof AdditionalGear;
+          return eq instanceof AdditionalGear
         case EquipmentFieldTypes.Special:
-          return eq instanceof SpecialGear;
+          return eq instanceof SpecialGear
         case EquipmentFieldTypes.Avatar:
-          return eq instanceof Avatar;
+          return eq instanceof Avatar
       }
     },
   },
   watch: {
     visible(newValue) {
       if (newValue) {
-        this.compardEquipment = false;
+        this.compardEquipment = false
       }
     },
   },
@@ -264,7 +264,7 @@ export default {
     'equipment-info': vue_equipmentInfo,
     'character-stats-compare': vue_characterStatsCompare,
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

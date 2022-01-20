@@ -1,7 +1,7 @@
 function createColorConfig(varName) {
   const handleValue = !varName ?
     (colorName, primary = true) => `var(--${primary ? 'primary-' : ''}${colorName})` :
-    (colorName, primary = true) => `rgba(var(--rgb-${primary ? 'primary-' : ''}${colorName}), var(${varName}, 1))`;
+    (colorName, primary = true) => `rgba(var(--rgb-${primary ? 'primary-' : ''}${colorName}), var(${varName}, 1))`
   return {
     light: {
       DEFAULT: handleValue('light'),
@@ -40,7 +40,7 @@ function createColorConfig(varName) {
     },
     transparent: 'transparent',
     current: 'currentcolor',
-  };
+  }
 }
 
 module.exports = {
@@ -122,4 +122,4 @@ module.exports = {
     mixBlendMode: false,
     saturate: false,
   },
-};
+}

@@ -223,42 +223,42 @@
 <script lang="ts">
 export default {
   name: 'DamageCalculation',
-};
+}
 </script>
 
 <script lang="ts" setup>
-import { computed, provide } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, provide } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { useDamageCalculationStore } from '@/stores/views/damage-calculation';
-import { useDatasStore } from '@/stores/app/datas';
+import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
+import { useDatasStore } from '@/stores/app/datas'
 
-import { CalculationSaveData } from '@/lib/Calculation/Damage/Calculation';
+import { CalculationSaveData } from '@/lib/Calculation/Damage/Calculation'
 
-import AutoSave from '@/setup/AutoSave';
-import ExportBuild from '@/setup/ExportBuild';
-import ToggleService from '@/setup/ToggleService';
+import AutoSave from '@/setup/AutoSave'
+import ExportBuild from '@/setup/ExportBuild'
+import ToggleService from '@/setup/ToggleService'
 
-import DamageCalculationCompare from './damage-calculation-compare.vue';
-import DamageCalculationItem from './damage-calculation-item.vue';
-import DamageCalculationResultItem from './damage-calculation-result-item.vue';
+import DamageCalculationCompare from './damage-calculation-compare.vue'
+import DamageCalculationItem from './damage-calculation-item.vue'
+import DamageCalculationResultItem from './damage-calculation-result-item.vue'
 
-import { setupCalcMode, setupCalculationStore, setupResultMode, setupCalculationCalcOptions, ResultModeItem, ResultModeIdExpected } from './setup';
-import { DamageCalculationRootInjectionKey } from './injection-keys';
+import { setupCalcMode, setupCalculationStore, setupResultMode, setupCalculationCalcOptions, ResultModeItem, ResultModeIdExpected } from './setup'
+import { DamageCalculationRootInjectionKey } from './injection-keys'
 
-const store = useDamageCalculationStore();
-const datasStore = useDatasStore();
+const store = useDamageCalculationStore()
+const datasStore = useDatasStore()
 
 AutoSave({
   save: () => store.save(),
   loadFirst: () => store.load(),
-});
+})
 
 const {
   calcModeList,
   calcMode,
   selectCalcMode,
-} = setupCalcMode();
+} = setupCalcMode()
 
 const {
   // calculations,
@@ -267,39 +267,39 @@ const {
 
   removeCurrentCalculation,
   copyCurrentCalculation,
-} = setupCalculationStore();
+} = setupCalculationStore()
 
 const {
   resultMode,
   resultModeList,
   selectResultMode,
-} = setupResultMode(currentCalculation);
+} = setupResultMode(currentCalculation)
 
 const {
   calculationContainerOptions,
-} = setupCalculationCalcOptions(currentCalculation);
+} = setupCalculationCalcOptions(currentCalculation)
 
 const { exportBuild, importBuild } = ExportBuild({
   save: (handleSave) => {
-    const fileName = currentCalculation.value.name + '.txt';
-    const data = JSON.stringify(currentCalculation.value.save());
-    handleSave(fileName, data);
+    const fileName = currentCalculation.value.name + '.txt'
+    const data = JSON.stringify(currentCalculation.value.save())
+    handleSave(fileName, data)
   },
   loaded: res => {
-    const saveData = JSON.parse(res) as CalculationSaveData;
-    const calculationBase = datasStore.DamageCalculation!.calculationBase;
-    const calculation = calculationBase.createCalculation();
-    calculation.load(saveData);
-    store.appendCalculation(calculation);
+    const saveData = JSON.parse(res) as CalculationSaveData
+    const calculationBase = datasStore.DamageCalculation!.calculationBase
+    const calculation = calculationBase.createCalculation()
+    calculation.load(saveData)
+    store.appendCalculation(calculation)
   },
-});
+})
 
 const { contents, bottomSub, toggle } = ToggleService({
   contents: ['mainMenu'] as const,
   bottomSub: ['compare', 'resultDetail', 'calcModeDetail'] as const,
-});
+})
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-provide(DamageCalculationRootInjectionKey, computed(() => (resultModeList.value.find(item => item.id === 'expected') as ResultModeItem<ResultModeIdExpected>).value));
+provide(DamageCalculationRootInjectionKey, computed(() => (resultModeList.value.find(item => item.id === 'expected') as ResultModeItem<ResultModeIdExpected>).value))
 </script>

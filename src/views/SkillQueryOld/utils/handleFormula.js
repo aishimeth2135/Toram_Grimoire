@@ -1,6 +1,6 @@
-import { handleFormula } from '@/shared/utils/data';
+import { handleFormula } from '@/shared/utils/data'
 
-import { SkillBranch } from '@/lib/Skill/Skill';
+import { SkillBranch } from '@/lib/Skill/Skill'
 
 
 /**
@@ -29,41 +29,41 @@ import { SkillBranch } from '@/lib/Skill/Skill';
  * @returns
  */
 export default function (str, { skillState, effectState, branch }) {
-  const stack = [];
+  const stack = []
 
   if (branch && branch.attrs['stack_id']) {
-    const ss = effectState.stackStates;
+    const ss = effectState.stackStates
     const stackValues = branch.attrs['stack_id'].split(/\s*,\s*/)
       .map(p => {
-        const item = ss.find(a => a.id === p);
-        return item ? item.value : 0;
-      });
-    stack.push(...stackValues);
+        const item = ss.find(a => a.id === p)
+        return item ? item.value : 0
+      })
+    stack.push(...stackValues)
   }
-  const stackMatches = Array.from(str.matchAll(/stack\[(\d+)\]/g));
+  const stackMatches = Array.from(str.matchAll(/stack\[(\d+)\]/g))
   stackMatches.forEach(match => {
-    const idxValue = parseInt(match[1], 10);
+    const idxValue = parseInt(match[1], 10)
     if (!stack[idxValue] && stack[idxValue] !== 0) {
-      stack[idxValue] = 0;
+      stack[idxValue] = 0
     }
-  });
+  })
 
   const vars = {
     'SLv': skillState.slv,
     'CLv': skillState.clv,
     'stack': stackMatches.length === 0 ? stack[0] || '0' : stack,
-  };
-  const texts = {};
+  }
+  const texts = {}
 
-  const formulaExtra = branch ? branch.suffix.find(suf => suf.name === 'formula_extra') : null;
+  const formulaExtra = branch ? branch.suffix.find(suf => suf.name === 'formula_extra') : null
   if (formulaExtra) {
-    const extraTexts = formulaExtra.attrs['texts'].split(/\s*,\s*/);
+    const extraTexts = formulaExtra.attrs['texts'].split(/\s*,\s*/)
     str = str.replace(/&(\d+):/g, (match, p1) => {
-      const key = '__FORMULA_EXTRA_' + p1 + '__';
-      texts[key] = extraTexts[p1];
-      return key;
-    });
+      const key = '__FORMULA_EXTRA_' + p1 + '__'
+      texts[key] = extraTexts[p1]
+      return key
+    })
   }
 
-  return handleFormula(str, { vars, texts });
+  return handleFormula(str, { vars, texts })
 }

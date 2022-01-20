@@ -258,19 +258,19 @@
 </template>
 
 <script>
-import { useDatasStore } from '@/stores/app/datas';
+import { useDatasStore } from '@/stores/app/datas'
 
 import {
   CharacterEquipment,
   MainWeapon, SubWeapon,
   SubArmor, BodyArmor,
   AdditionalGear, SpecialGear, Avatar,
-} from '@/lib/Character/CharacterEquipment';
-import { MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList } from '@/lib/Character/CharacterEquipment/enums';
-import { StatTypes } from '@/lib/Character/Stat/enums';
+} from '@/lib/Character/CharacterEquipment'
+import { MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList } from '@/lib/Character/CharacterEquipment/enums'
+import { StatTypes } from '@/lib/Character/Stat/enums'
 
-import init from './init.js';
-import vue_ItemQueryResult from './item-query-result';
+import init from './init.js'
+import vue_ItemQueryResult from './item-query-result'
 
 export default {
   name: 'ItemQuery',
@@ -284,44 +284,44 @@ export default {
       'modesState': this.modes,
       'state': this.state,
       'findObtainByDye': this.findObtainByDye,
-    };
+    }
   },
   setup() {
-    const datasStore = useDatasStore();
-    return { datasStore };
+    const datasStore = useDatasStore()
+    return { datasStore }
   },
   data() {
     const equipments = this.datasStore.Items.equipments
-      .map(p => CharacterEquipment.fromOriginEquipment(p, { statValueToNumber: false }));
+      .map(p => CharacterEquipment.fromOriginEquipment(p, { statValueToNumber: false }))
 
     const handleOptions = opts => opts.map(p => {
       return {
         value: p, selected: true,
-      };
-    });
+      }
+    })
     const handleEquipmentTypes = (opts) => {
-      opts = handleOptions(opts);
+      opts = handleOptions(opts)
       opts.forEach(opt => {
-        opt.imagePath = CharacterEquipment.getImagePath(opt.value);
-      });
-      return opts;
-    };
+        opt.imagePath = CharacterEquipment.getImagePath(opt.value)
+      })
+      return opts
+    }
 
-    const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier];
+    const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier]
     this.datasStore.Character.statList.forEach(stat => {
-      if (stat.hidden) return;
+      if (stat.hidden) return
       statTypes.forEach(type => {
         if (type === StatTypes.Multiplier && !stat.hasMultiplier)
-          return;
+          return
         stats.push({
           origin: stat,
           text: stat.title(type),
           type,
-        });
-      });
-    });
+        })
+      })
+    })
 
-    const handleCompareValue = v => /^-?\d+$/.test(v) ? parseFloat(v) : -99999;
+    const handleCompareValue = v => /^-?\d+$/.test(v) ? parseFloat(v) : -99999
 
     return {
       state: {
@@ -363,20 +363,20 @@ export default {
         global: {
           'atk': (a, b) => {
             const av = a.is === 'weapon' ? a.atk + 9999 : a.def,
-              bv = b.is === 'weapon' ? b.atk + 9999 : b.def;
-            return av - bv;
+              bv = b.is === 'weapon' ? b.atk + 9999 : b.def
+            return av - bv
           },
           'def': (a, b) => {
             const av = a.is === 'armor' ? a.def + 9999 : b.atk,
-              bv = b.is === 'armor' ? b.def + 9999 : b.atk;
-            return av - bv;
+              bv = b.is === 'armor' ? b.def + 9999 : b.atk
+            return av - bv
           },
           'stability': (a, b) => {
             const av = a.is === 'weapon' ? a.stability : -1,
-              bv = b.is === 'weapon' ? b.stability : -1;
+              bv = b.is === 'weapon' ? b.stability : -1
             if (av === -1 && bv === -1)
-              return this.sortOptions[this.currentMode].default(a, b);
-            return av - bv;
+              return this.sortOptions[this.currentMode].default(a, b)
+            return av - bv
           },
           'name':  (a, b) => a.name.localeCompare(b.name),
         },
@@ -385,17 +385,17 @@ export default {
         },
         'stat': {
           default: (a, b) => {
-            const cs = this.modes.stat.currentStat;
+            const cs = this.modes.stat.currentStat
             const av = handleCompareValue(this.findStat(cs, a.stats).value),
-              bv = handleCompareValue(this.findStat(cs, b.stats).value);
-            return av - bv;
+              bv = handleCompareValue(this.findStat(cs, b.stats).value)
+            return av - bv
           },
         },
         'item-level': {
           default: (a, b) => {
             const av = handleCompareValue(a.origin.recipe['item_level']),
-              bv = handleCompareValue(b.origin.recipe['item_level']);
-            return av - bv;
+              bv = handleCompareValue(b.origin.recipe['item_level'])
+            return av - bv
           },
         },
         'dye': {
@@ -444,185 +444,185 @@ export default {
           text: this.$lang('sort options/options/' + id),
         })),
       },
-    };
+    }
   },
   computed: {
     itemLevelMaximum: {
       get() {
-        return this.modes['item-level'].max;
+        return this.modes['item-level'].max
       },
       set(v) {
-        v = parseInt(v, 10);
-        this.modes['item-level'].max = Math.max(Math.min(500, v), 0);
-        console.log(this.modes['item-level'].max);
+        v = parseInt(v, 10)
+        this.modes['item-level'].max = Math.max(Math.min(500, v), 0)
+        console.log(this.modes['item-level'].max)
       },
     },
     itemLevelMinimum: {
       get() {
-        return this.modes['item-level'].min;
+        return this.modes['item-level'].min
       },
       set(v) {
-        v = parseInt(v, 10);
-        this.modes['item-level'].min = Math.max(Math.min(500, v), 0);
+        v = parseInt(v, 10)
+        this.modes['item-level'].min = Math.max(Math.min(500, v), 0)
       },
     },
     checkMenuVisible() {
-      return Object.values(this.menuVisible).find(p => p);
+      return Object.values(this.menuVisible).find(p => p)
     },
     currentMode: {
       get() {
-        return this.state.currentMode;
+        return this.state.currentMode
       },
       set(v) {
-        this.state.currentMode = v;
+        this.state.currentMode = v
       },
     },
     displayMode: {
       get() {
-        return this.state.displayMode;
+        return this.state.displayMode
       },
       set(v) {
-        this.state.displayMode = v;
+        this.state.displayMode = v
       },
     },
     statsSearchResult() {
-      const searchText = this.modes.stat.statSearchText.toLowerCase();
-      return this.modes.stat.stats.filter(stat => stat.text.toLowerCase().includes(searchText));
+      const searchText = this.modes.stat.statSearchText.toLowerCase()
+      return this.modes.stat.stats.filter(stat => stat.text.toLowerCase().includes(searchText))
     },
     searchResult() {
-      let sr = this.allSearchResult;
+      let sr = this.allSearchResult
       const mode = this.currentMode,
-        target = this.sortOptions.currentSelected;
-      sr.sort(target === 'default' ? this.sortOptions[mode].default : this.sortOptions.global[target]);
+        target = this.sortOptions.currentSelected
+      sr.sort(target === 'default' ? this.sortOptions[mode].default : this.sortOptions.global[target])
 
       // because array.sort is in-place, give a new array to ensure data reactive
-      sr = this.sortOptions.currentOrder === 'down' ? sr.reverse() : sr.slice();
+      sr = this.sortOptions.currentOrder === 'down' ? sr.reverse() : sr.slice()
 
-      return sr;
+      return sr
     },
     allSearchResult() {
       if (this.currentMode === 'normal') {
-        const searchText = this.modes.normal.searchText.toLowerCase();
+        const searchText = this.modes.normal.searchText.toLowerCase()
         if (searchText === '')
-          return this.validEquipments;
+          return this.validEquipments
         const targets = this.modes.normal.targets
           .filter(p => p.selected)
-          .map(p => p.value);
+          .map(p => p.value)
         return this.validEquipments
           .filter(p => {
-            const eq = p.origin;
+            const eq = p.origin
             return targets.find(q => {
               if (q === 'name')
-                return eq.name.toLowerCase().includes(searchText);
+                return eq.name.toLowerCase().includes(searchText)
               else if (q === 'material')
                 return eq.recipe && eq.recipe['materials'] &&
-                  eq.recipe['materials'].find(c => c.name.toLowerCase().includes(searchText));
+                  eq.recipe['materials'].find(c => c.name.toLowerCase().includes(searchText))
               else if (q === 'obtain-name')
-                return eq.obtains.find(b => b['name'] && b['name'].toLowerCase().includes(searchText));
-            });
-          });
+                return eq.obtains.find(b => b['name'] && b['name'].toLowerCase().includes(searchText))
+            })
+          })
       }
       else if (this.currentMode === 'stat') {
-        const searchStat = this.modes.stat.currentStat;
-        if (!searchStat) return [];
+        const searchStat = this.modes.stat.currentStat
+        if (!searchStat) return []
 
-        return this.validEquipments.filter(p => this.findStat(searchStat, p.stats));
+        return this.validEquipments.filter(p => this.findStat(searchStat, p.stats))
       }
       else if (this.currentMode === 'item-level') {
         const min = this.modes['item-level'].min || 0,
-          max = this.modes['item-level'].max || 999;
+          max = this.modes['item-level'].max || 999
 
         return this.validEquipments.filter(p => {
-          if (!p.origin.recipe) return false;
-          const v = parseInt(p.origin.recipe['item_level'], 10);
-          if (Number.isNaN(v)) return;
-          return v >= min && v <= max;
-        });
+          if (!p.origin.recipe) return false
+          const v = parseInt(p.origin.recipe['item_level'], 10)
+          if (Number.isNaN(v)) return
+          return v >= min && v <= max
+        })
       }
       else if (this.currentMode === 'dye') {
-        const searchText = this.modes.dye.searchText;
+        const searchText = this.modes.dye.searchText
         if (searchText === '')
-          return [];
-        return this.validEquipments.filter(p => this.findObtainByDye(searchText, p).length > 0);
+          return []
+        return this.validEquipments.filter(p => this.findObtainByDye(searchText, p).length > 0)
       }
-      return [];
+      return []
     },
     validEquipments() {
-      const validTypes = this.conditions.type.filter(type => type.selected);
+      const validTypes = this.conditions.type.filter(type => type.selected)
       if (validTypes.length === 0) {
         validTypes.push({
           id: 'avatar',
           instance: Avatar,
           types: null,
           selected: true,
-        });
+        })
       }
-      const unknowObtain = this.conditions.obtains.find(obtain => obtain.value === 'unknow' && obtain.selected);
-      const validObtains = this.conditions.obtains.filter(obtain => obtain.value !== 'unknow' && obtain.selected);
+      const unknowObtain = this.conditions.obtains.find(obtain => obtain.value === 'unknow' && obtain.selected)
+      const validObtains = this.conditions.obtains.filter(obtain => obtain.value !== 'unknow' && obtain.selected)
       return this.equipments.filter(p => {
         const checkType = validTypes.find(type => {
           const checkInstance = !Array.isArray(type.instance) ?
             p instanceof type.instance :
-            type.instance.find(a => p instanceof a);
+            type.instance.find(a => p instanceof a)
           if (checkInstance) {
             if (type.types === null)
-              return true;
-            const t = type.types.find(a => p.type === a.value);
-            return t && t.selected;
+              return true
+            const t = type.types.find(a => p.type === a.value)
+            return t && t.selected
           }
-          return false;
-        });
+          return false
+        })
         const checkObtain = (unknowObtain && p.origin.obtains.length === 0)
-          || validObtains.find(obtain => p.origin.obtains.find(a => a['type'] === obtain.value));
-        return checkType && checkObtain;
-      });
+          || validObtains.find(obtain => p.origin.obtains.find(a => a['type'] === obtain.value))
+        return checkType && checkObtain
+      })
     },
   },
   beforeCreate() {
-    init();
+    init()
   },
   methods: {
     findObtainByDye(text, eq) {
-      text = text.toLowerCase();
-      return eq.origin.obtains.filter(b => b['dye'] && b['dye'].toLowerCase().includes(text));
+      text = text.toLowerCase()
+      return eq.origin.obtains.filter(b => b['dye'] && b['dye'].toLowerCase().includes(text))
     },
     selectSortOption(id) {
-      this.sortOptions.currentSelected = id;
+      this.sortOptions.currentSelected = id
     },
     toggleMenuVisible(id) {
-      const o = this.menuVisible;
-      Object.entries(o).forEach(([key]) => o[key] = key === id ? !o[key] : false);
+      const o = this.menuVisible
+      Object.entries(o).forEach(([key]) => o[key] = key === id ? !o[key] : false)
     },
     findStat(target, stats) {
       return stats.find(stat => stat.baseName === target.origin.baseName &&
-        stat.type === target.type);
+        stat.type === target.type)
     },
     switchDisplay() {
-      this.displayMode = this.displayMode == 0 ? 1 : 0;
+      this.displayMode = this.displayMode == 0 ? 1 : 0
     },
     selectStat(stat) {
-      this.modes.stat.currentStat = stat;
-      this.toggleSelectStatVisible(false);
+      this.modes.stat.currentStat = stat
+      this.toggleSelectStatVisible(false)
     },
     toggleSelectStatVisible(force) {
-      force = force !== undefined ? !this.modes.stat.selectStatVisible : force;
-      this.modes.stat.selectStatVisible = force;
+      force = force !== undefined ? !this.modes.stat.selectStatVisible : force
+      this.modes.stat.selectStatVisible = force
     },
     selectMode(id) {
-      this.currentMode = id;
-      this.displayMode = 0;
+      this.currentMode = id
+      this.displayMode = 0
     },
     toggleSelected(target) {
-      target.selected = !target.selected;
+      target.selected = !target.selected
     },
     selectAll(list) {
-      list.forEach(p => p.selected = true);
+      list.forEach(p => p.selected = true)
     },
     cancelAll(list) {
-      list.forEach(p => p.selected = false);
+      list.forEach(p => p.selected = false)
     },
   },
-};
+}
 </script>
 
 <style lang="postcss" scoped>

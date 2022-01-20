@@ -28,52 +28,52 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs, inject, ComputedRef } from 'vue';
-import type { WritableComputedRef } from 'vue';
+import { computed, toRefs, inject, ComputedRef } from 'vue'
+import type { WritableComputedRef } from 'vue'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 
-import { findStackState } from '../utils';
-import { ComputingContainerInjectionKey } from '../injection-keys';
-import StackHandler from './branch-handlers/StackHandler';
+import { findStackState } from '../utils'
+import { ComputingContainerInjectionKey } from '../injection-keys'
+import StackHandler from './branch-handlers/StackHandler'
 
 interface Props {
   branchItem: SkillBranchItem;
 }
 
-const { setStackValue } = inject(ComputingContainerInjectionKey)!;
+const { setStackValue } = inject(ComputingContainerInjectionKey)!
 
-const props = defineProps<Props>();
-const { branchItem } = toRefs(props);
+const props = defineProps<Props>()
+const { branchItem } = toRefs(props)
 
-const container = computed(() => StackHandler(branchItem.value));
+const container = computed(() => StackHandler(branchItem.value))
 
 const stackState = computed(() => {
-  return findStackState(branchItem.value.parent, branchItem.value.stackId as number);
-});
+  return findStackState(branchItem.value.parent, branchItem.value.stackId as number)
+})
 
 const stackValue: WritableComputedRef<number> = computed({
   set(value) {
-    setStackValue(branchItem.value, value);
+    setStackValue(branchItem.value, value)
   },
   get() {
-    return stackState.value?.value ?? 0;
+    return stackState.value?.value ?? 0
   },
-});
+})
 
 const stackValueRangeOrigin: ComputedRef<[string, string]> = computed(() => {
-  return [container.value.get('min'), container.value.get('max')];
-});
+  return [container.value.get('min'), container.value.get('max')]
+})
 
 const stackValueRange = computed(() => {
-  let max: number | null = parseInt(stackValueRangeOrigin.value[1], 10);
-  let min: number | null = parseInt(stackValueRangeOrigin.value[0], 10);
+  let max: number | null = parseInt(stackValueRangeOrigin.value[1], 10)
+  let min: number | null = parseInt(stackValueRangeOrigin.value[0], 10)
 
-  max = !Number.isNaN(max) ? max : null;
-  min = !Number.isNaN(min) ? min : null;
+  max = !Number.isNaN(max) ? max : null
+  min = !Number.isNaN(min) ? min : null
 
-  return [min, max];
-});
+  return [min, max]
+})
 </script>
 

@@ -41,6 +41,7 @@ rules:
   no-dupe-class-members: off
   indent: off
   func-call-spacing: off
+  semi: off
   # vue/no-mutating-props: off
   jsdoc/no-undefined-types: warn
   no-trailing-spaces: warn
@@ -62,9 +63,6 @@ rules:
   quotes:
     - error
     - single
-  semi:
-    - error
-    - always
   space-in-parens:
     - error
     - never
@@ -102,6 +100,7 @@ rules:
         ignoreCase: true
   "@typescript-eslint/semi":
     - error
+    - never
   "@typescript-eslint/member-delimiter-style":
     - error
   "@typescript-eslint/no-use-before-define":

@@ -1,4 +1,4 @@
-import { EnchantItem } from '@/lib/Enchant/Enchant';
+import { EnchantItem } from '@/lib/Enchant/Enchant'
 
 /**
  * @typedef {Object} SelectItemTarget
@@ -13,4 +13,4 @@ import { EnchantItem } from '@/lib/Enchant/Enchant';
  * @property {EnchantItem} origin
  */
 
-export {};
+export {}

@@ -1,5 +1,5 @@
 function isNumberString(str: string): boolean {
-  return /^-?\d+(?:\.\d+)?$/.test(str);
+  return /^-?\d+(?:\.\d+)?$/.test(str)
 }
 
 /**
@@ -8,10 +8,10 @@ function isNumberString(str: string): boolean {
  */
 function trimZero(num: string): string {
   return num.replace(/(\d+)(\.[^0]*)(0+)$/g,
-    (m, m1, m2) => m1 + (m2 === '.' ? '' : m2));
+    (m, m1, m2) => m1 + (m2 === '.' ? '' : m2))
 }
 
 export {
   isNumberString,
   trimZero,
-};
+}

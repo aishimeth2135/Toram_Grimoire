@@ -237,5 +237,5 @@ export default function() {
         'no skill tree selected': '还没选取技能树0.0',
       },
     },
-  };
+  }
 }

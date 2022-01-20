@@ -79,5 +79,5 @@ export default function(){
         'unknow error when calc': 'Stats Filling doll don’t know why he got lost...Please contact the author.',
       },
     },
-  };
+  }
 }

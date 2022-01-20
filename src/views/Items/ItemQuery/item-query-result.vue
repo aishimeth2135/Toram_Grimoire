@@ -33,11 +33,11 @@
 </template>
 
 <script>
-import { computed, ref, nextTick, readonly, watch, toRefs } from 'vue';
+import { computed, ref, nextTick, readonly, watch, toRefs } from 'vue'
 
-import vue_ItemQueryResultItem from './item-query-result-item';
+import vue_ItemQueryResultItem from './item-query-result-item'
 
-const NUMBER_OF_ITEMS_OF_PAGE = 30;
+const NUMBER_OF_ITEMS_OF_PAGE = 30
 
 export default {
   RegisterLang: 'Item Query',
@@ -51,33 +51,33 @@ export default {
     },
   },
   setup(props) {
-    const { equipments } = toRefs(props);
-    const pageCount = ref(0);
+    const { equipments } = toRefs(props)
+    const pageCount = ref(0)
     const currentResults = computed(() => {
-      const start = pageCount.value * NUMBER_OF_ITEMS_OF_PAGE;
-      return equipments.value.slice(start, start + NUMBER_OF_ITEMS_OF_PAGE);
-    });
+      const start = pageCount.value * NUMBER_OF_ITEMS_OF_PAGE
+      return equipments.value.slice(start, start + NUMBER_OF_ITEMS_OF_PAGE)
+    })
     const nextPageDisabled = computed(() => {
-      return pageCount.value * NUMBER_OF_ITEMS_OF_PAGE > props.equipments.length;
-    });
+      return pageCount.value * NUMBER_OF_ITEMS_OF_PAGE > props.equipments.length
+    })
     const previousPageDisabled = computed(() => {
-      return pageCount.value === 0;
-    });
-    const topHiddenFlag = ref(null);
+      return pageCount.value === 0
+    })
+    const topHiddenFlag = ref(null)
     const returnToTop = () => {
-      topHiddenFlag.value.scrollIntoView({ behavior: 'smooth' });
-    };
+      topHiddenFlag.value.scrollIntoView({ behavior: 'smooth' })
+    }
     const nextPage = async () => {
-      pageCount.value += 1;
-      await nextTick();
-      returnToTop();
-    };
+      pageCount.value += 1
+      await nextTick()
+      returnToTop()
+    }
     const previousPage = async () => {
-      pageCount.value -= 1;
-      await nextTick();
-      returnToTop();
-    };
-    watch(equipments, () => pageCount.value = 0);
+      pageCount.value -= 1
+      await nextTick()
+      returnToTop()
+    }
+    watch(equipments, () => pageCount.value = 0)
     return {
       nextPage,
       previousPage,
@@ -86,7 +86,7 @@ export default {
       previousPageDisabled,
       topHiddenFlag,
       pageCount: readonly(pageCount),
-    };
+    }
   },
-};
+}
 </script>

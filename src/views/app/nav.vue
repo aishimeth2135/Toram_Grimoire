@@ -41,19 +41,19 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia';
-import { useI18n } from 'vue-i18n';
+import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
-import { useNavStore } from '@/stores/app/nav';
-import { useLeftMenuStore } from '@/stores/app/left-menu';
+import { useNavStore } from '@/stores/app/nav'
+import { useLeftMenuStore } from '@/stores/app/left-menu'
 
-import AppSettings from './settings.vue';
+import AppSettings from './settings.vue'
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const navStore = useNavStore();
-const { navItems } = storeToRefs(navStore);
+const navStore = useNavStore()
+const { navItems } = storeToRefs(navStore)
 
-const leftMenuStore = useLeftMenuStore();
+const leftMenuStore = useLeftMenuStore()
 </script>
 

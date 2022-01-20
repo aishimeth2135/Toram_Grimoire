@@ -508,24 +508,24 @@
 </template>
 
 <script>
-import { mapState } from 'pinia';
+import { mapState } from 'pinia'
 
-import { useEnchantStore } from '@/stores/views/enchant';
-import { useDatasStore } from '@/stores/app/datas';
+import { useEnchantStore } from '@/stores/views/enchant'
+import { useDatasStore } from '@/stores/app/datas'
 
-import Grimoire from '@/shared/Grimoire';
+import Grimoire from '@/shared/Grimoire'
 
-import { EnchantBuild, EnchantStat } from '@/lib/Enchant/Enchant';
-import EnchantDoll from '@/lib/Enchant/Enchant/doll';
-import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums';
-import { AutoFindNegaitveStatsTypes, EnchantDollBaseTypes } from '@/lib/Enchant/Enchant/doll/enums';
+import { EnchantBuild, EnchantStat } from '@/lib/Enchant/Enchant'
+import EnchantDoll from '@/lib/Enchant/Enchant/doll'
+import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
+import { AutoFindNegaitveStatsTypes, EnchantDollBaseTypes } from '@/lib/Enchant/Enchant/doll/enums'
 
-import ToggleService from '@/setup/ToggleService';
+import ToggleService from '@/setup/ToggleService'
 
-import vue_EnchantResult from '../EnchantSimulator/enchant-result';
-import vue_EnchantSelectItem from '../EnchantSimulator/enchant-select-item';
-import init2 from '../EnchantSimulator/init.js';
-import init from './init.js';
+import vue_EnchantResult from '../EnchantSimulator/enchant-result'
+import vue_EnchantSelectItem from '../EnchantSimulator/enchant-select-item'
+import init2 from '../EnchantSimulator/init.js'
+import init from './init.js'
 
 export default {
   name: 'EnchantDoll',
@@ -543,10 +543,10 @@ export default {
     const { windows, contents, toggle } = ToggleService({
       windows: ['selectItem'],
       contents: ['setConfig'],
-    });
-    const store = useEnchantStore();
-    const datasStore = useDatasStore();
-    return { windows, contents, toggle, store, datasStore };
+    })
+    const store = useEnchantStore()
+    const datasStore = useDatasStore()
+    return { windows, contents, toggle, store, datasStore }
   },
   data() {
     return {
@@ -614,283 +614,283 @@ export default {
         type: EnchantEquipmentTypes.MainWeapon,
         isOriginalElement: true,
       }],
-    };
+    }
   },
   beforeCreate() {
-    init();
-    init2(); // load lang data
+    init()
+    init2() // load lang data
   },
   created() {
     this.$watch(() => this.selectNegativeStatState.auto, newv => {
-      this.updateAutoFindNegativeStats(newv);
-    });
+      this.updateAutoFindNegativeStats(newv)
+    })
     this.$watch(() => this.doll.config.baseType, () => {
-      this.updateAutoFindNegativeStats(this.selectNegativeStatState.auto);
-    });
+      this.updateAutoFindNegativeStats(this.selectNegativeStatState.auto)
+    })
 
-    this.store.init();
+    this.store.init()
   },
   mounted() {
-    this.$nextTick(() => this.$refs['first-step'].scrollIntoView({ behavior: 'smooth' }));
+    this.$nextTick(() => this.$refs['first-step'].scrollIntoView({ behavior: 'smooth' }))
   },
   computed: {
     ...mapState(useEnchantStore, ['config']),
     equipmentIsWeapon() {
-      return this.currentEquipment.fieldType === EnchantEquipmentTypes.MainWeapon;
+      return this.currentEquipment.fieldType === EnchantEquipmentTypes.MainWeapon
     },
     nextStepDisabled() {
       if (this.stepCounter === this.stepContents.selectNegativeStat) {
-        return this.negativeStats.length === 0;
+        return this.negativeStats.length === 0
       }
       if (this.stepCounter === this.stepContents.selectPositiveStat) {
-        return this.doll.positiveStats.length === 0;
+        return this.doll.positiveStats.length === 0
       }
-      return false;
+      return false
     },
     autoNegativeStats() {
-      return this.autoNegativeStatsData ? this.autoNegativeStatsData.stats : [];
+      return this.autoNegativeStatsData ? this.autoNegativeStatsData.stats : []
     },
     negativeStats() {
       if (this.selectNegativeStatState.auto) {
-        return this.autoNegativeStats;
+        return this.autoNegativeStats
       }
-      return this.selectNegativeStatState.manually;
+      return this.selectNegativeStatState.manually
     },
 
     currentEquipment() {
-      return this.doll.build.equipment;
+      return this.doll.build.equipment
     },
     currentEquipmentType: {
       get() {
-        const eq = this.currentEquipment;
+        const eq = this.currentEquipment
         if (eq.fieldType === EnchantEquipmentTypes.MainWeapon) {
-          return eq.isOriginalElement ? 2 : 0;
+          return eq.isOriginalElement ? 2 : 0
         }
-        return 1;
+        return 1
       },
       set(v) {
-        this.currentEquipment.fieldType = v.type;
-        this.currentEquipment.isOriginalElement = v.isOriginalElement;
+        this.currentEquipment.fieldType = v.type
+        this.currentEquipment.isOriginalElement = v.isOriginalElement
       },
     },
 
     characterLevel: {
       set(value) {
-        this.store.config.characterLevel = value;
+        this.store.config.characterLevel = value
       },
       get() {
-        return this.config.characterLevel;
+        return this.config.characterLevel
       },
     },
     smithLevel: {
       set(value) {
-        this.store.config.smithLevel = value;
+        this.store.config.smithLevel = value
       },
       get() {
-        return this.config.smithLevel;
+        return this.config.smithLevel
       },
     },
     selectedItems() {
-      const toItem = stat => ({ origin: stat.itemBase, type: stat.type });
-      const posItems = this.doll.positiveStats.map(toItem);
+      const toItem = stat => ({ origin: stat.itemBase, type: stat.type })
+      const posItems = this.doll.positiveStats.map(toItem)
       const negItems = this.selectNegativeStatState.auto ? [] :
-        this.selectNegativeStatState.manually.map(toItem);
-      return [...posItems, ...negItems];
+        this.selectNegativeStatState.manually.map(toItem)
+      return [...posItems, ...negItems]
     },
   },
   methods: {
     updateAutoFindNegativeStats(value) {
       if (value === true) {
-        const manuallyStats = this.selectNegativeStatState.manually;
+        const manuallyStats = this.selectNegativeStatState.manually
         if (this.equipmentState.autoFindPotentialMinimum) {
-          this.autoFindNegaitveStats(manuallyStats, true);
-          return;
+          this.autoFindNegaitveStats(manuallyStats, true)
+          return
         }
-        this.autoFindNegaitveStats(manuallyStats);
+        this.autoFindNegaitveStats(manuallyStats)
       } else {
-        this.autoNegativeStatsData = null;
+        this.autoNegativeStatsData = null
       }
     },
     autoFindNegaitveStats(manuallyStats, originalPotentialUnknow = false) {
-      this.autoNegativeStatsData = null;
-      this.$notify.loading.show();
+      this.autoNegativeStatsData = null
+      this.$notify.loading.show()
       this.$nextTick(() => {
         setTimeout(() => {
           try {
             if (originalPotentialUnknow) {
-              this.autoNegativeStatsData = this.doll.autoFindNegaitveStats(manuallyStats, 99);
+              this.autoNegativeStatsData = this.doll.autoFindNegaitveStats(manuallyStats, 99)
               // if (this.autoNegativeStatsData.realSuccessRate >= 100) {
               //   this.autoFindPotentialMinimumEquipment();
               //   this.autoNegativeStatsData = this.doll.autoFindNegaitveStats(manuallyStats);
               // }
             } else {
-              this.autoNegativeStatsData = this.doll.autoFindNegaitveStats(manuallyStats);
+              this.autoNegativeStatsData = this.doll.autoFindNegaitveStats(manuallyStats)
             }
           } catch (e) {
-            console.warn('[enchant-doll] some error when auto find negative stats');
-            console.log(e);
-            this.$notify(this.$lang('tips/unknow error when calc'));
+            console.warn('[enchant-doll] some error when auto find negative stats')
+            console.log(e)
+            this.$notify(this.$lang('tips/unknow error when calc'))
           } finally {
-            this.$nextTick(() => this.$notify.loading.hide());
+            this.$nextTick(() => this.$notify.loading.hide())
           }
-        }, 50);
-      });
+        }, 50)
+      })
     },
     maskClick() {
-      this.$notify(this.$lang('tips/cannot directly modify the settings of the previous step'));
+      this.$notify(this.$lang('tips/cannot directly modify the settings of the previous step'))
     },
     autoFindPotentialMinimumEquipment() {
       if (this.autoNegativeStatsData && this.autoNegativeStatsData.equipment) {
-        const data = this.autoNegativeStatsData;
+        const data = this.autoNegativeStatsData
         if (data.realSuccessRate < 100) {
-          this.currentEquipment.originalPotential = this.consts.autoFindPotentialMinimumLimit;
-          return data.equipment;
+          this.currentEquipment.originalPotential = this.consts.autoFindPotentialMinimumLimit
+          return data.equipment
         }
       }
       let left = 1,
         right = this.consts.autoFindPotentialMinimumLimit,
-        mid = Math.floor((left + right) / 2);
-      let cur = this.doll.calc(this.negativeStats, mid);
+        mid = Math.floor((left + right) / 2)
+      let cur = this.doll.calc(this.negativeStats, mid)
       while (right - left > 1) {
         if (cur.realSuccessRate <= 100) {
-          left = mid;
+          left = mid
         } else {
-          right = mid;
+          right = mid
         }
-        mid = Math.floor((left + right) / 2);
-        cur = this.doll.calc(this.negativeStats, mid);
+        mid = Math.floor((left + right) / 2)
+        cur = this.doll.calc(this.negativeStats, mid)
       }
       if (cur.realSuccessRate < 100) {
-        cur = this.doll.calc(this.negativeStats, right);
+        cur = this.doll.calc(this.negativeStats, right)
       }
-      this.currentEquipment.originalPotential = cur.originalPotential;
-      return cur;
+      this.currentEquipment.originalPotential = cur.originalPotential
+      return cur
     },
     exportResult() {
-      const build = new EnchantBuild(this.exportState.name, this.resultEquipment.clone(Grimoire.Enchant.categorys));
-      this.store.exportDollBuild(build);
-      this.exportState.hasExport = true;
-      this.$notify(this.$lang('tips/export successfully'));
+      const build = new EnchantBuild(this.exportState.name, this.resultEquipment.clone(Grimoire.Enchant.categorys))
+      this.store.exportDollBuild(build)
+      this.exportState.hasExport = true
+      this.$notify(this.$lang('tips/export successfully'))
     },
     reset() {
       const confirmCallback = () => {
-        this.doll = new EnchantDoll();
-        this.stepCounter = 0;
-        this.selectNegativeStatState.manually = [];
-        this.exportState.hasExport = false;
-        this.selectNegativeStatState.auto = false;
-      };
+        this.doll = new EnchantDoll()
+        this.stepCounter = 0
+        this.selectNegativeStatState.manually = []
+        this.exportState.hasExport = false
+        this.selectNegativeStatState.auto = false
+      }
       this.$confirm({
         message: this.$lang('tips/reset confirm'),
         confirm: confirmCallback,
-      });
+      })
     },
     removePositiveStat(stat) {
       if (this.stepCounter !== this.stepContents.selectPositiveStat && this.doll.positiveStats.length === 1) {
-        this.$notify(this.$lang('tips/at least one positive stat'));
-        return;
+        this.$notify(this.$lang('tips/at least one positive stat'))
+        return
       }
-      this.doll.removePositiveStat(stat);
+      this.doll.removePositiveStat(stat)
     },
     removeNegativeStat(stat) {
-      const manually = this.selectNegativeStatState.manually;
-      const index = manually.indexOf(stat);
-      manually.splice(index, 1);
+      const manually = this.selectNegativeStatState.manually
+      const index = manually.indexOf(stat)
+      manually.splice(index, 1)
     },
     backToStep(id) {
-      this.stepCounter = id;
-      this.exportState.hasExport = false;
-      this.resultEquipment = null;
+      this.stepCounter = id
+      this.exportState.hasExport = false
+      this.resultEquipment = null
       if (this.stepCounter < this.stepContents.selectNegativeStat) {
-        this.selectNegativeStatState.auto = false;
+        this.selectNegativeStatState.auto = false
       }
       if (id < this.stepContents.selectNegativeStat) {
-        this.selectNegativeStatState.manually = [];
+        this.selectNegativeStatState.manually = []
       }
     },
     nextStep() {
       if (this.stepCounter === this.stepContents.selectPositiveStat) {
-        const physicals = ['atk', 'physical_pierce'];
-        const magic = ['matk', 'magic_pierce'];
-        let current = EnchantDollBaseTypes.None;
+        const physicals = ['atk', 'physical_pierce']
+        const magic = ['matk', 'magic_pierce']
+        let current = EnchantDollBaseTypes.None
         if (this.doll.positiveStats.find(stat => physicals.includes(stat.baseName))) {
-          current = EnchantDollBaseTypes.Physical;
+          current = EnchantDollBaseTypes.Physical
         }
         if (this.doll.positiveStats.find(stat => magic.includes(stat.baseName))) {
-          current = current === EnchantDollBaseTypes.Physical ? EnchantDollBaseTypes.None : EnchantDollBaseTypes.Magic;
+          current = current === EnchantDollBaseTypes.Physical ? EnchantDollBaseTypes.None : EnchantDollBaseTypes.Magic
         }
-        this.doll.config.baseType = current;
+        this.doll.config.baseType = current
       }
       if (this.stepCounter === this.stepContents.selectNegativeStat) {
-        this.$notify.loading.show();
+        this.$notify.loading.show()
         this.$nextTick(() => {
           setTimeout(async () => {
             try {
               if (this.equipmentState.autoFindPotentialMinimum) {
-                this.resultEquipment = this.autoFindPotentialMinimumEquipment();
+                this.resultEquipment = this.autoFindPotentialMinimumEquipment()
               } else {
-                this.resultEquipment = this.doll.calc(this.negativeStats);
+                this.resultEquipment = this.doll.calc(this.negativeStats)
               }
-              await this.$nextTick();
-              this.stepCounter += 1;
+              await this.$nextTick()
+              this.stepCounter += 1
             } catch(e) {
-              console.warn('[enchant-doll] some error when auto find potential minimum');
-              console.log(e);
-              this.$notify(this.$lang('tips/unknow error when calc'));
+              console.warn('[enchant-doll] some error when auto find potential minimum')
+              console.log(e)
+              this.$notify(this.$lang('tips/unknow error when calc'))
             } finally {
-              this.$notify.loading.hide();
+              this.$notify.loading.hide()
             }
-          }, 50);
-        });
-        return;
+          }, 50)
+        })
+        return
       }
-      this.stepCounter += 1;
+      this.stepCounter += 1
     },
     stepAfterEnter(el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      el.scrollIntoView({ behavior: 'smooth' })
     },
     setStatValue(stat, v) {
-      stat.value = v;
+      stat.value = v
     },
     openSelectItem(mode) {
-      this.selectItemMode = mode;
-      this.toggle('windows/selectItem', true);
+      this.selectItemMode = mode
+      this.toggle('windows/selectItem', true)
     },
     selectItem(item) {
-      const mode = this.selectItemMode;
+      const mode = this.selectItemMode
       if (mode === 'positiveStats') {
-        const findPosStat = this.doll.getPositiveStat(item.origin, item.type);
+        const findPosStat = this.doll.getPositiveStat(item.origin, item.type)
         if (findPosStat) {
           // this.$notify(this.$lang('tips/stat repeated'));
-          this.doll.removePositiveStat(findPosStat);
-          return;
+          this.doll.removePositiveStat(findPosStat)
+          return
         }
-        const value = this.selectPositiveStatState.autoFill ? item.origin.getLimit(item.type)[1] : 1;
+        const value = this.selectPositiveStatState.autoFill ? item.origin.getLimit(item.type)[1] : 1
         if (!this.doll.appendPositiveStat(item.origin, item.type, value)) {
-          this.$notify(this.$lang('tips/number of stats has reached the upper limit'));
+          this.$notify(this.$lang('tips/number of stats has reached the upper limit'))
         }
       } else {
-        const nstats = this.negativeStats;
+        const nstats = this.negativeStats
         if (this.doll.hasPositiveStat(item.origin, item.type)) {
-          this.$notify(this.$lang('tips/stat repeated'));
-          return;
+          this.$notify(this.$lang('tips/stat repeated'))
+          return
         }
-        const findNegStat = nstats.find(stat => stat.itemBase === item.origin && stat.type === item.type);
+        const findNegStat = nstats.find(stat => stat.itemBase === item.origin && stat.type === item.type)
         if (findNegStat) {
           // this.$notify(this.$lang('tips/stat repeated'));
-          this.removeNegativeStat(findNegStat);
-          return;
+          this.removeNegativeStat(findNegStat)
+          return
         }
         if (nstats.length >= this.doll.numNegativeStats) {
-          this.$notify(this.$lang('tips/number of stats has reached the upper limit'));
-          return;
+          this.$notify(this.$lang('tips/number of stats has reached the upper limit'))
+          return
         }
         this.selectNegativeStatState.manually
-          .push(new EnchantStat(item.origin, item.type, item.origin.getLimit(item.type)[0]));
+          .push(new EnchantStat(item.origin, item.type, item.origin.getLimit(item.type)[0]))
       }
     },
   },
-};
+}
 </script>
 
 <style lang="postcss" scoped>

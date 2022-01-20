@@ -79,5 +79,5 @@ export default function(){
         'unknow error when calc': '附魔布偶不知道為什麼迷路了...請聯絡作者。',
       },
     },
-  };
+  }
 }

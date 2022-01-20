@@ -1,4 +1,4 @@
-import { CalcStructExpression } from '@/lib/Calculation/Damage/Calculation/base';
+import { CalcStructExpression } from '@/lib/Calculation/Damage/Calculation/base'
 
 const calcStructCritical: CalcStructExpression = {
   id: 'expected_with_critical',
@@ -48,7 +48,7 @@ const calcStructCritical: CalcStructExpression = {
       'other_multiplier',
     ],
   },
-};
+}
 
 const calcStructWithoutCritical: CalcStructExpression = {
   id: 'expected_without_critical',
@@ -93,7 +93,7 @@ const calcStructWithoutCritical: CalcStructExpression = {
       'other_multiplier',
     ],
   },
-};
+}
 
 const calcStructDisplay: CalcStructExpression = {
   id: 'display',
@@ -138,6 +138,6 @@ const calcStructDisplay: CalcStructExpression = {
       'other_multiplier',
     ],
   },
-};
+}
 
-export { calcStructDisplay, calcStructCritical, calcStructWithoutCritical };
+export { calcStructDisplay, calcStructCritical, calcStructWithoutCritical }

@@ -17,12 +17,12 @@
 </template>
 
 <script lang="ts" setup>
-import { Skill } from '@/lib/Skill/Skill';
-import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree';
+import { Skill } from '@/lib/Skill/Skill'
+import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
 
 interface Props {
   skill: Skill;
 }
 
-defineProps<Props>();
+defineProps<Props>()
 </script>

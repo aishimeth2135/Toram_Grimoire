@@ -52,21 +52,21 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
+import { computed, toRefs } from 'vue'
 
-import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer';
+import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer'
 
 interface Props {
   container: DisplayDataContainer;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
-const { container } = toRefs(props);
+const { container } = toRefs(props)
 
 const frequencyVisible = computed(() => {
-  return container.value.branchItem.attr('title') === 'each';
-});
+  return container.value.branchItem.attr('title') === 'each'
+})
 </script>
 
 <style lang="postcss" scoped>

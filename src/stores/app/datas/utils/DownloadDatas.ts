@@ -1,85 +1,85 @@
-import Papa from 'papaparse';
+import Papa from 'papaparse'
 
-import { useLanguageStore } from '@/stores/app/language';
+import { useLanguageStore } from '@/stores/app/language'
 
-import { DataPath, DataPathLang } from '@/shared/services/DataPath';
+import { DataPath, DataPathLang } from '@/shared/services/DataPath'
 
 
-type PathItem = string | { path: string; lang?: boolean };
-type CsvData = string[][];
-type LangCsvData = [CsvData, CsvData | null, CsvData | null];
+type PathItem = string | { path: string; lang?: boolean }
+type CsvData = string[][]
+type LangCsvData = [CsvData, CsvData | null, CsvData | null]
 
 export default async function(...paths: PathItem[]): Promise<LangCsvData[]> {
   const promises = paths.map(async (pathItem) => {
     if (typeof pathItem === 'string') {
-      pathItem = { path: pathItem };
+      pathItem = { path: pathItem }
     }
-    const { path: pathId, lang = false } = pathItem;
+    const { path: pathId, lang = false } = pathItem
     const results: LangCsvData = lang ?
       await loadLangDatas(pathId) :
-      [await createLoadPromise(DataPath(pathId)), null, null];
-    return results;
-  });
-  const result = await Promise.all(promises);
+      [await createLoadPromise(DataPath(pathId)), null, null]
+    return results
+  })
+  const result = await Promise.all(promises)
 
-  return result;
+  return result
 }
 
 async function createLoadPromise(path: string): Promise<CsvData> {
   if (path) {
     try {
-      const res = await fetch(path);
-      const csvstr = await res.text();
+      const res = await fetch(path)
+      const csvstr = await res.text()
 
-      return Papa.parse(csvstr).data as CsvData;
+      return Papa.parse(csvstr).data as CsvData
 
     } catch (err) {
-      console.warn(`[DownloadData] load "${path}" failed. Try to use backup...`);
-      console.log(err);
+      console.warn(`[DownloadData] load "${path}" failed. Try to use backup...`)
+      console.log(err)
     }
 
-    const orignalPath = path;
+    const orignalPath = path
     try {
-      path = encodeURIComponent(path);
-      path = 'https://script.google.com/macros/s/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo/exec?url=' + path;
+      path = encodeURIComponent(path)
+      path = 'https://script.google.com/macros/s/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo/exec?url=' + path
 
-      const res = await fetch(path);
-      const csvstr = await res.text();
+      const res = await fetch(path)
+      const csvstr = await res.text()
 
-      return Papa.parse(csvstr).data as CsvData;
+      return Papa.parse(csvstr).data as CsvData
     } catch (err) {
-      console.warn(`[DownloadData] load backup of "${path}" failed. path: ${orignalPath}`);
-      throw err;
+      console.warn(`[DownloadData] load backup of "${path}" failed. path: ${orignalPath}`)
+      throw err
     }
   }
-  return [[]];
+  return [[]]
 }
 
-const DEFAULT_LANG = 1;
+const DEFAULT_LANG = 1
 async function loadLangDatas(pathId: string): Promise<LangCsvData> {
-  const languageStore = useLanguageStore();
+  const languageStore = useLanguageStore()
 
-  const promises: Promise<CsvData>[] = [];
+  const promises: Promise<CsvData>[] = []
   const current = languageStore.primaryLang,
-    second = languageStore.secondaryLang;
-  const datas: (CsvData | null)[] = Array(3);
+    second = languageStore.secondaryLang
+  const datas: (CsvData | null)[] = Array(3)
 
-  promises.push(createLoadPromise(DataPath(pathId)));
+  promises.push(createLoadPromise(DataPath(pathId)))
   if (current !== DEFAULT_LANG) {
-    const path = DataPathLang(pathId);
+    const path = DataPathLang(pathId)
     if (path[current] !== null) {
-      promises.push(createLoadPromise(path[current] as string));
+      promises.push(createLoadPromise(path[current] as string))
     }
     if (current !== second && path[second] !== null) {
-      promises.push(createLoadPromise(path[second] as string));
+      promises.push(createLoadPromise(path[second] as string))
     }
   }
 
-  const results = await Promise.allSettled(promises);
+  const results = await Promise.allSettled(promises)
   results.map((item, idx) => {
-    datas[idx] = item.status === 'fulfilled' ? item.value : null;
-  });
-  return datas as LangCsvData;
+    datas[idx] = item.status === 'fulfilled' ? item.value : null
+  })
+  return datas as LangCsvData
 }
 
-export type { CsvData, LangCsvData };
+export type { CsvData, LangCsvData }

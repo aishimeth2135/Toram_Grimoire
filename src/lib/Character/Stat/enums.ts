@@ -4,7 +4,7 @@ const enum StatTypes {
   Total = 'total',
 }
 
-type StatNormalTypes = StatTypes.Constant | StatTypes.Multiplier;
+type StatNormalTypes = StatTypes.Constant | StatTypes.Multiplier
 
-export { StatTypes, StatNormalTypes };
+export { StatTypes, StatNormalTypes }
 

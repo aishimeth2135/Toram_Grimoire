@@ -158,9 +158,9 @@
 </template>
 
 <script>
-import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree';
+import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
 
-import vue_showStatDatas from './show-stat-datas.vue';
+import vue_showStatDatas from './show-stat-datas.vue'
 
 export default {
   RegisterLang: 'Character Simulator',
@@ -172,43 +172,43 @@ export default {
   data() {
     return {
       extraContentVisible: false,
-    };
+    }
   },
   computed: {
     skillIconPath() {
-      return getSkillIconPath(this.levelSkill.base);
+      return getSkillIconPath(this.levelSkill.base)
     },
     hasExtraContent() { // only for if (branchStates.length == 1)
-      return this.firstBranchState.handler.value.conditionDatas.length !== 0;
+      return this.firstBranchState.handler.value.conditionDatas.length !== 0
     },
     levelSkillState() {
-      return this.getValidLevelSkillState(this.levelSkillStateRoot);
+      return this.getValidLevelSkillState(this.levelSkillStateRoot)
     },
     disabled() {
-      return this.levelSkillState && this.firstBranchState ? false : true;
+      return this.levelSkillState && this.firstBranchState ? false : true
     },
     levelSkill() {
-      return this.levelSkillStateRoot.levelSkill;
+      return this.levelSkillStateRoot.levelSkill
     },
     branchStates() {
-      return this.levelSkillState.branchStates;
+      return this.levelSkillState.branchStates
     },
     firstBranchState() {
-      return this.branchStates[0];
+      return this.branchStates[0]
     },
   },
   methods: {
     toggleExtraContentVisible() {
-      this.extraContentVisible = !this.extraContentVisible;
+      this.extraContentVisible = !this.extraContentVisible
     },
     toggleBranchStateDisable(state) {
-      state.disabled = !state.disabled;
+      state.disabled = !state.disabled
     },
     toggleStateRootDisable(state) {
-      state.disabled = !state.disabled;
+      state.disabled = !state.disabled
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

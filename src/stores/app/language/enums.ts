@@ -9,4 +9,4 @@ export const enum LocaleViewNamespaces {
   DamageCalculation = 'damage-calculation',
 }
 
-export type LocaleNamespaces = LocaleGlobalNamespaces | LocaleViewNamespaces;
+export type LocaleNamespaces = LocaleGlobalNamespaces | LocaleViewNamespaces

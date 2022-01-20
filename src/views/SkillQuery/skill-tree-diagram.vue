@@ -94,13 +94,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
+import { computed, toRefs } from 'vue'
 
-import CY from '@/shared/utils/Cyteria';
+import CY from '@/shared/utils/Cyteria'
 
-import { Skill, SkillTree, LevelSkill, LevelSkillTree } from '@/lib/Skill/Skill';
-import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs, DrawSkillTreeData, DrawSkillTreeDataExtraCallbackPayload } from '@/lib/Skill/utils/DrawSkillTree';
-import { DrawSkillTreeDataTypes } from '@/lib/Skill/utils/enums';
+import { Skill, SkillTree, LevelSkill, LevelSkillTree } from '@/lib/Skill/Skill'
+import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs, DrawSkillTreeData, DrawSkillTreeDataExtraCallbackPayload } from '@/lib/Skill/utils/DrawSkillTree'
+import { DrawSkillTreeDataTypes } from '@/lib/Skill/utils/enums'
 
 interface Props {
   skillTree: SkillTree | LevelSkillTree;
@@ -115,39 +115,39 @@ interface Emits {
 const props = withDefaults(defineProps<Props>(), {
   setSkillButtonExtraData: () => [],
   currentSkill: null,
-});
+})
 
-const emit = defineEmits<Emits>();
+const emit = defineEmits<Emits>()
 
 if (!document.getElementById('app--draw-skill-tree-defs')) {
-  const svg = CY.svg.create();
-  svg.append(createDrawSkillTreeDefs());
-  document.body.append(svg);
+  const svg = CY.svg.create()
+  svg.append(createDrawSkillTreeDefs())
+  document.body.append(svg)
 }
 
-const { skillTree, setSkillButtonExtraData, currentSkill } = toRefs(props);
+const { skillTree, setSkillButtonExtraData, currentSkill } = toRefs(props)
 
 const drawTreeData = computed(() => {
   return computeDrawSkillTreeData(skillTree.value, {
     setSkillButtonExtraData: setSkillButtonExtraData.value,
-  });
-});
+  })
+})
 
-const skillIconPatternData = computed(() => getSkillIconPatternData(skillTree.value));
+const skillIconPatternData = computed(() => getSkillIconPatternData(skillTree.value))
 
-const drawCircleDatas = computed(() => drawTreeData.value.data.filter(item => item.type === DrawSkillTreeDataTypes.SkillCircle));
+const drawCircleDatas = computed(() => drawTreeData.value.data.filter(item => item.type === DrawSkillTreeDataTypes.SkillCircle))
 
-const drawNameDatas = computed(() => drawTreeData.value.data.filter(item => item.type === DrawSkillTreeDataTypes.SkillName));
+const drawNameDatas = computed(() => drawTreeData.value.data.filter(item => item.type === DrawSkillTreeDataTypes.SkillName))
 
-const drawOtherDatas = computed(() => drawTreeData.value.data.filter(item => item.type !== DrawSkillTreeDataTypes.SkillName && item.type !== DrawSkillTreeDataTypes.SkillCircle));
+const drawOtherDatas = computed(() => drawTreeData.value.data.filter(item => item.type !== DrawSkillTreeDataTypes.SkillName && item.type !== DrawSkillTreeDataTypes.SkillCircle))
 
 const handleSkillCircleClass = (data: DrawSkillTreeData) => {
-  const classList = data.class?.slice() ?? [];
+  const classList = data.class?.slice() ?? []
   if (currentSkill.value === data.skill) {
-    classList.push('selected');
+    classList.push('selected')
   }
-  return classList;
-};
+  return classList
+}
 </script>
 
 <style lang="postcss" scoped>

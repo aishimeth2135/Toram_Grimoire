@@ -246,11 +246,11 @@
 </template>
 
 <script>
-import { useDatasStore } from '@/stores/app/datas';
+import { useDatasStore } from '@/stores/app/datas'
 
-import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
-import { StatRestriction } from '@/lib/Character/Stat';
-import { StatTypes } from '@/lib/Character/Stat/enums';
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import { StatRestriction } from '@/lib/Character/Stat'
+import { StatTypes } from '@/lib/Character/Stat/enums'
 
 export default {
   RegisterLang: 'Character Simulator',
@@ -261,11 +261,11 @@ export default {
     },
   },
   setup() {
-    const datasStore = useDatasStore();
-    return { datasStore };
+    const datasStore = useDatasStore()
+    return { datasStore }
   },
   data() {
-    const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier];
+    const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier]
     this.datasStore.Character.statList
       .filter(stat => !stat.hidden)
       .forEach(stat => {
@@ -276,9 +276,9 @@ export default {
               origin: stat,
               text: stat.title(type),
               type,
-            });
-          });
-      });
+            })
+          })
+      })
 
     return {
       searchText: '',
@@ -292,101 +292,101 @@ export default {
         stat: [null, null],
         boolStat: [1, 1],
       },
-    };
+    }
   },
   computed: {
     statsSearchResult() {
       if (this.searchText === '') {
-        return this.elementFilterStats;
+        return this.elementFilterStats
       }
       return this.elementFilterStats
         .filter(stat => stat.origin.title(stat.type).toLowerCase()
-          .includes(this.searchText.toLowerCase()));
+          .includes(this.searchText.toLowerCase()))
     },
     hasOther() {
-      return this.equipment.hasStability;
+      return this.equipment.hasStability
     },
     equipmentStatsDatas() {
-      return this.stats.filter(stat => this.equipment.findStat(stat.origin.baseName, stat.type));
+      return this.stats.filter(stat => this.equipment.findStat(stat.origin.baseName, stat.type))
     },
     elementFilterStats() {
       return !this.equipment.hasElement ?
         this.stats.filter(p => !this.isElementStat(p.origin.baseName)) :
-        this.stats;
+        this.stats
     },
   },
   methods: {
     cancelEquipmentSelection() {
-      const { deletedStats, appendedStats } = this;
-      this.deletedStats = [];
-      this.appendedStats = [];
+      const { deletedStats, appendedStats } = this
+      this.deletedStats = []
+      this.appendedStats = []
       this.$notify(this.$lang('Warn/create custom equipment editor: selected stats clear'),
         'ic-round-done', null, {
           buttons: [{
             text: this.$rootLang('global/recovery'),
             click: () => {
-              this.deletedStats = deletedStats;
-              this.appendedStats = appendedStats;
+              this.deletedStats = deletedStats
+              this.appendedStats = appendedStats
             },
             removeMessageAfterClick: true,
           }],
-        });
-      this.toggleWindowVisible('selectStat', false);
+        })
+      this.toggleWindowVisible('selectStat', false)
     },
     confirmEquipmentSelection() {
-      const stats = this.equipment.stats;
+      const stats = this.equipment.stats
       this.deletedStats.forEach(p => {
-        const stat = this.equipment.findStat(p.origin.baseName, p.type);
-        const idx = stats.indexOf(stat);
-        stats.splice(idx, 1);
-      });
+        const stat = this.equipment.findStat(p.origin.baseName, p.type)
+        const idx = stats.indexOf(stat)
+        stats.splice(idx, 1)
+      })
       this.appendedStats.forEach(p => {
-        const v = p.origin.checkBoolStat() ? 1 : 0;
-        const stat = StatRestriction.from(p.origin.createStat(p.type, v));
-        stats.push(stat);
-      });
-      this.deletedStats = [];
-      this.appendedStats = [];
-      this.toggleWindowVisible('selectStat', false);
+        const v = p.origin.checkBoolStat() ? 1 : 0
+        const stat = StatRestriction.from(p.origin.createStat(p.type, v))
+        stats.push(stat)
+      })
+      this.deletedStats = []
+      this.appendedStats = []
+      this.toggleWindowVisible('selectStat', false)
     },
     selectStat(stat) {
       const appendedIdx = this.appendedStats.indexOf(stat),
-        deletedIdx = this.deletedStats.indexOf(stat);
+        deletedIdx = this.deletedStats.indexOf(stat)
       if (appendedIdx != -1) {
-        this.appendedStats.splice(appendedIdx, 1);
+        this.appendedStats.splice(appendedIdx, 1)
       } else if (deletedIdx != -1) {
-        this.deletedStats.splice(deletedIdx, 1);
+        this.deletedStats.splice(deletedIdx, 1)
       } else {
         if (this.equipment.findStat(stat.origin.baseName, stat.type))
-          this.deletedStats.push(stat);
+          this.deletedStats.push(stat)
         else {
-          const find = ss => ss.find(a => this.isElementStat(a.origin.baseName));
+          const find = ss => ss.find(a => this.isElementStat(a.origin.baseName))
 
           if (this.isElementStat(stat.origin.baseName) && (
             (this.equipment.elementStat && !find(this.deletedStats)) ||
             find(this.appendedStats))) {
             this.$notify(this.$lang('custom equipment editor/equipment can only have one element stat'),
-              null, 'equipment can only have one element stat');
+              null, 'equipment can only have one element stat')
           } else {
-            this.appendedStats.push(stat);
+            this.appendedStats.push(stat)
           }
         }
       }
     },
     setStatValue(stat, v) {
-      stat.value = v;
+      stat.value = v
     },
     toggleWindowVisible(target, force) {
-      target = target + 'Window';
-      this.toggleVisible(target, force);
+      target = target + 'Window'
+      this.toggleVisible(target, force)
     },
     toggleVisible(target, force) {
-      target = target + 'Visible';
-      force = force === undefined ? !this[target] : force;
-      this[target] = force;
+      target = target + 'Visible'
+      force = force === undefined ? !this[target] : force
+      this[target] = force
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

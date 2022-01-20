@@ -1,9 +1,9 @@
-import { SkillRoot } from './Skill';
+import { SkillRoot } from './Skill'
 
 export default class {
-  skillRoot: SkillRoot;
+  skillRoot: SkillRoot
 
   constructor() {
-    this.skillRoot = new SkillRoot();
+    this.skillRoot = new SkillRoot()
   }
 }

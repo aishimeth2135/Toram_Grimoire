@@ -22,12 +22,12 @@
 </template>
 
 <script>
-import { loadIconifyData } from '@/shared/services/SvgIcons';
+import { loadIconifyData } from '@/shared/services/SvgIcons'
 
 function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min + 1)) + min //The maximum is inclusive and the minimum is inclusive
 }
 
 const customIconDatas = {
@@ -36,7 +36,7 @@ const customIconDatas = {
     width: 1250,
     height: 1250,
   },
-};
+}
 
 export default {
   name: 'DollBubble',
@@ -53,116 +53,116 @@ export default {
       viewBox: '0 0 24 24',
       displayBg: false,
       resizeListener: null,
-    };
+    }
   },
   computed: {
     iconWidth() {
-      return Math.max(Math.floor(this.viewWidth * 5 / 100), 48);
+      return Math.max(Math.floor(this.viewWidth * 5 / 100), 48)
     },
   },
   mounted() {
-    const colors = this.$route.params.color;
+    const colors = this.$route.params.color
     if (colors && colors != 'random') {
-      this.colors = colors.split('+');
+      this.colors = colors.split('+')
     }
 
-    const iconNumber = this.$route.params.number;
+    const iconNumber = this.$route.params.number
     if (iconNumber) {
-      const [max, interval = this.generationInterval] = iconNumber.split('+');
-      this.iconMaximum = max;
-      this.generationInterval = interval;
+      const [max, interval = this.generationInterval] = iconNumber.split('+')
+      this.iconMaximum = max
+      this.generationInterval = interval
     }
 
-    const iconName = this.$route.params.iconName;
+    const iconName = this.$route.params.iconName
 
     const setIcon = data => {
-      this.$refs['icon-defs'].innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><defs><g id="bubble--icon-group">${data.iconData}</g></defs></svg>`;
-      this.viewBox = `0 0 ${data.width} ${data.height}`;
-      setInterval(this.createIcon, this.generationInterval);
-    };
+      this.$refs['icon-defs'].innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><defs><g id="bubble--icon-group">${data.iconData}</g></defs></svg>`
+      this.viewBox = `0 0 ${data.width} ${data.height}`
+      setInterval(this.createIcon, this.generationInterval)
+    }
 
-    const customIconList = Object.keys(customIconDatas);
-    const customIcon = customIconList.find(p => p == iconName);
+    const customIconList = Object.keys(customIconDatas)
+    const customIcon = customIconList.find(p => p == iconName)
 
     if (customIcon) {
-      setIcon(customIconDatas[customIcon]);
+      setIcon(customIconDatas[customIcon])
     }
     else {
       loadIconifyData(iconName)
-        .then(({ body, width, height }) => setIcon({ iconData: body, width, height }));
+        .then(({ body, width, height }) => setIcon({ iconData: body, width, height }))
     }
 
     const lis = () => {
-      this.viewWidth = window.innerWidth;
-      this.viewHeight = window.innerHeight;
-    };
+      this.viewWidth = window.innerWidth
+      this.viewHeight = window.innerHeight
+    }
 
-    window.addEventListener('resize', lis);
-    this.resizeListener = lis;
+    window.addEventListener('resize', lis)
+    this.resizeListener = lis
   },
   beforeUnmount() {
-    window.removeEventListener('resize', this.resizeListener);
+    window.removeEventListener('resize', this.resizeListener)
   },
   methods: {
     toggleBackground() {
-      this.displayBg = !this.displayBg;
+      this.displayBg = !this.displayBg
     },
     createRandowPathDefinition() {
       const vw = this.viewWidth,
-        vh = this.viewHeight;
+        vh = this.viewHeight
 
-      const ox = Math.floor(getRandomInt(10, 90) * vw / 100);
+      const ox = Math.floor(getRandomInt(10, 90) * vw / 100)
 
       const yf = l => Math.floor((l * vh / 1000)) * 10,
         xf = l => ox + Math.floor((l * vw / 10000)) * 10,
-        yStep = (add = 0) => yf(getRandomInt(8 + add, 12 + add));
+        yStep = (add = 0) => yf(getRandomInt(8 + add, 12 + add))
 
       const start_x = xf(getRandomInt(-20, -5)),
-        start_y = yf(105) - yStep();
-      let cur = start_y - yStep(2);
-      let d = `M${ox},${yf(100)}C${start_x},${start_y} ${start_x},${start_y - yf(2)} ${ox},${cur}`;
-      let flip = true;
+        start_y = yf(105) - yStep()
+      let cur = start_y - yStep(2)
+      let d = `M${ox},${yf(100)}C${start_x},${start_y} ${start_x},${start_y - yf(2)} ${ox},${cur}`
+      let flip = true
       while (cur > 0) {
-        cur -= yStep();
-        d += `S${xf(flip ? getRandomInt(5, 20) : getRandomInt(-20, -5))},${cur} ${ox},`;
-        cur -= yStep();
-        d += cur;
-        flip = !flip;
+        cur -= yStep()
+        d += `S${xf(flip ? getRandomInt(5, 20) : getRandomInt(-20, -5))},${cur} ${ox},`
+        cur -= yStep()
+        d += cur
+        flip = !flip
       }
 
-      return d;
+      return d
     },
     generateColor() {
       if (this.colors) {
-        const l = this.colors.length;
+        const l = this.colors.length
         if (this.colors.length == 1)
-          return this.colors[0];
-        return '#' + this.colors[getRandomInt(0, l - 1)];
+          return this.colors[0]
+        return '#' + this.colors[getRandomInt(0, l - 1)]
       }
-      return this.randowHexColor();
+      return this.randowHexColor()
     },
     randowHexColor() {
       return Array(3).fill()
         .map(() => getRandomInt(0, 255).toString(16))
-        .reduce((c, a) => c + (a.length == 1 ? '0' + a : a), '#');
+        .reduce((c, a) => c + (a.length == 1 ? '0' + a : a), '#')
     },
     createIcon() {
-      const color = this.generateColor();
-      const path = this.createRandowPathDefinition();
+      const color = this.generateColor()
+      const path = this.createRandowPathDefinition()
 
       this.icons[this.counter] = {
         id: this.idCounter,
         color,
         path: `path('${path}')`,
-      };
+      }
 
-      this.idCounter += 1;
-      this.counter += 1;
+      this.idCounter += 1
+      this.counter += 1
       if (this.counter == this.iconMaximum)
-        this.counter = 0;
+        this.counter = 0
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

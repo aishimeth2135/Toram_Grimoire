@@ -61,18 +61,18 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, toRefs } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
-import ToggleService from '@/setup/ToggleService';
+import ToggleService from '@/setup/ToggleService'
 
-import SkillAreaDetail from './skill-area-detail/index.vue';
-import SkillBranchExtraColumn from './skill-branch-extra-column.vue';
+import SkillAreaDetail from './skill-area-detail/index.vue'
+import SkillBranchExtraColumn from './skill-branch-extra-column.vue'
 
-import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer';
-import { ExtraSuffixBranchData } from '../setup';
+import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer'
+import { ExtraSuffixBranchData } from '../setup'
 
 interface Props {
   container: DisplayDataContainer<SkillBranchItem>;
@@ -93,18 +93,18 @@ const props = withDefaults(defineProps<Props>(), {
   nameIcon: 'mdi-checkbox-multiple-blank-circle',
   hasArea: false,
   extraColumns: () => [],
-});
-const { container, subContents, hasArea } = toRefs(props);
+})
+const { container, subContents, hasArea } = toRefs(props)
 
-const { t } = useI18n();
+const { t } = useI18n()
 
 const { toggle, contents } = ToggleService({
   contents: ['areaDetail'] as const,
-});
+})
 
 const subContentDatas = computed(() => {
   if (!subContents?.value) {
-    return [];
+    return []
   }
   return subContents.value
     .filter(subContent => subContent.key.split('|').every(key => container.value.has(key)))
@@ -115,10 +115,10 @@ const subContentDatas = computed(() => {
         title: subContent.title ?? container.value.get(subContent.key),
         color: subContent.value ? 'dark' : (subContent.color ? subContent.color : 'light-3'),
         value: subContent.value ?? '',
-      };
+      }
     })
-    .filter(item => item.title || (item.title && item.value));
-});
+    .filter(item => item.title || (item.title && item.value))
+})
 </script>
 
 <style lang="postcss" scoped>

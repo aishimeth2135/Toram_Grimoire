@@ -94,77 +94,77 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs, toRaw } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, toRefs, toRaw } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { SkillEffectItemHistory } from '@/lib/Skill/SkillComputingContainer';
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums';
+import { SkillEffectItemHistory } from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
-import ToggleService from '@/setup/ToggleService';
+import ToggleService from '@/setup/ToggleService'
 
-import SkillBranch from '../skill/skill-branch.vue';
+import SkillBranch from '../skill/skill-branch.vue'
 
 interface Props {
   skillEffectHistoryItem: SkillEffectItemHistory;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
-const { skillEffectHistoryItem: historyItem } = toRefs(props);
+const { skillEffectHistoryItem: historyItem } = toRefs(props)
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const modifiedBranchItems = computed(() => historyItem.value.modifiedBranchItems);
+const modifiedBranchItems = computed(() => historyItem.value.modifiedBranchItems)
 const modifiedBranchItemDatas = computed(() => {
   return historyItem.value.modifiedBranchItems.map(branchItem => {
-    const next = historyItem.value.nexts.get(toRaw(branchItem)) ?? null;
+    const next = historyItem.value.nexts.get(toRaw(branchItem)) ?? null
     return {
       branchItem,
       next,
-    };
-  });
-});
+    }
+  })
+})
 
 const usedStackIds = computed(() => {
-  const stackIds = new Set<number>();
+  const stackIds = new Set<number>()
   modifiedBranchItems.value.forEach(bch => {
     bch.attr('stack_id').split(/\s*,\s*/)
       .map(id => parseInt(id, 10))
-      .forEach(id => stackIds.add(id));
-  });
-  return [...stackIds];
-});
+      .forEach(id => stackIds.add(id))
+  })
+  return [...stackIds]
+})
 
 const stackBranchItemDatas = computed(() => {
   return historyItem.value.branchItems
     .filter(bch => bch.name === SkillBranchNames.Stack && usedStackIds.value.includes(bch.stackId as number))
-    .map((bch, iid) => ({ branchItem: bch, iid }));
-});
+    .map((bch, iid) => ({ branchItem: bch, iid }))
+})
 
 const addedBranchItemDatas = computed(() => {
   const branchIds = historyItem.value.origin.branches
     .filter(bch => bch.isEmpty && bch.id !== -1)
-    .map(bch => bch.id);
+    .map(bch => bch.id)
   return historyItem.value.branchItems
     .filter(bch => branchIds.includes(bch.id))
-    .map((bch, iid) => ({ branchItem: bch, iid }));
-});
+    .map((bch, iid) => ({ branchItem: bch, iid }))
+})
 
 const introductionBranchItemDatas = computed(() => {
   return historyItem.value.branchItems
     .filter(bch => historyItem.value.introductionBranches.includes(toRaw(bch)))
-    .map((bch, iid) => ({ branchItem: bch, iid }));
-});
+    .map((bch, iid) => ({ branchItem: bch, iid }))
+})
 
 const removedBranchItemDatas = computed(() => {
   return historyItem.value.branchItems
     .filter(bch => historyItem.value.removedBranches.includes(bch))
-    .map((bch, iid) => ({ branchItem: bch, iid }));
-});
+    .map((bch, iid) => ({ branchItem: bch, iid }))
+})
 
 const { contents, toggle } = ToggleService({
   contents: [{ name: 'detail', default: introductionBranchItemDatas.value.length === 0 }],
-});
+})
 </script>
 
 <style lang="postcss" scoped>

@@ -54,47 +54,47 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs, ref, watch } from 'vue';
+import { computed, toRefs, ref, watch } from 'vue'
 
-import { markText } from '@/shared/utils/view';
+import { markText } from '@/shared/utils/view'
 
-import Tag from '@/lib/Tag/Tag';
+import Tag from '@/lib/Tag/Tag'
 
-import { createTagButtons } from './utils';
+import { createTagButtons } from './utils'
 
 interface Props {
   tags: Tag[];
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
-const { tags } = toRefs(props);
+const { tags } = toRefs(props)
 
-const currentTagIdx = ref(0);
+const currentTagIdx = ref(0)
 const currentTag = computed(() => {
   if (tags.value.length === 0) {
-    return null;
+    return null
   }
-  return tags.value[currentTagIdx.value];
-});
+  return tags.value[currentTagIdx.value]
+})
 
 watch(tags, (value) => {
-  currentTagIdx.value = value.length - 1;
-}, { deep: true });
+  currentTagIdx.value = value.length - 1
+}, { deep: true })
 
 const handleText = (html: string) => {
-  html = markText(html);
-  html = html.replace(/\(\(((?:(?!\(\().)+)\)\)/g, (match, p1) => `<span class="bracket-text">${p1}</span>`);
-  html = createTagButtons(html);
-  return html;
-};
+  html = markText(html)
+  html = html.replace(/\(\(((?:(?!\(\().)+)\)\)/g, (match, p1) => `<span class="bracket-text">${p1}</span>`)
+  html = createTagButtons(html)
+  return html
+}
 
 const goPreviousTag = () => {
-  currentTagIdx.value -= 1;
-};
+  currentTagIdx.value -= 1
+}
 const goNextTag = () => {
-  currentTagIdx.value += 1;
-};
+  currentTagIdx.value += 1
+}
 </script>
 
 <style lang="postcss" scoped>

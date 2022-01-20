@@ -9,4 +9,4 @@ const enum AutoFindNegaitveStatsTypes {
   Material = 'material',
 }
 
-export { EnchantDollBaseTypes, AutoFindNegaitveStatsTypes };
+export { EnchantDollBaseTypes, AutoFindNegaitveStatsTypes }

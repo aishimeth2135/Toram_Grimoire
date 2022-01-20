@@ -127,9 +127,9 @@
 </template>
 
 <script>
-import { mapState } from 'pinia';
+import { mapState } from 'pinia'
 
-import { useCharacterFoodStore } from '@/stores/views/character/food';
+import { useCharacterFoodStore } from '@/stores/views/character/food'
 
 export default {
   name: 'CharacterSimulatorFood',
@@ -137,19 +137,19 @@ export default {
     root: 'Character Simulator/Food Builds Control',
   },
   setup() {
-    const foodStore = useCharacterFoodStore();
-    return { foodStore };
+    const foodStore = useCharacterFoodStore()
+    return { foodStore }
   },
   data() {
     return {
       ranges: {
         foodLevel: [0, 10],
       },
-    };
+    }
   },
   created() {
     if (this.foodBuilds.length === 0)
-      this.createFoodBuild();
+      this.createFoodBuild()
   },
   computed: {
     ...mapState(useCharacterFoodStore, ['foodBuilds', 'currentFoodBuildIndex', 'currentFoodBuild']),
@@ -158,59 +158,59 @@ export default {
       return this.foodBuilds.map((p, i) => ({
         iid: i,
         origin: p,
-      }));
+      }))
     },
   },
   methods: {
     copyCurrentFoodBuild() {
       this.foodStore.createFoodBuild({
         foodBuild: this.currentFoodBuild.clone(),
-      });
-      this.$notify(this.$lang('Copy food build successfully'));
+      })
+      this.$notify(this.$lang('Copy food build successfully'))
     },
     removeCurrentFoodBuild() {
       if (this.foodBuilds.length <= 1) {
-        this.$notify(this.$lang('Must have at least one food build'));
-        return;
+        this.$notify(this.$lang('Must have at least one food build'))
+        return
       }
-      const from = this.currentFoodBuild;
-      this.foodStore.removeFoodBuild(this.currentFoodBuildIndex);
+      const from = this.currentFoodBuild
+      this.foodStore.removeFoodBuild(this.currentFoodBuildIndex)
       this.$notify(this.$lang('Remove food build successfully'),
         'ic-round-delete', null, {
           buttons: [{
             text: this.$rootLang('global/recovery'),
             click: () => {
-              this.foodStore.createFoodBuild({ foodBuild: from });
-              this.$notify(this.$lang('Recovery food build successfully'));
+              this.foodStore.createFoodBuild({ foodBuild: from })
+              this.$notify(this.$lang('Recovery food build successfully'))
             },
             removeMessageAfterClick: true,
           }],
-        });
+        })
     },
     createFoodBuild() {
       this.foodStore.createFoodBuild({
         name: this.$lang('food build') + ' ' + (this.foodBuilds.length + 1),
-      });
+      })
     },
     setFoodLevel(food, v, idx) {
-      const oldv = food.level;
-      food.level = v;
+      const oldv = food.level
+      food.level = v
       if (oldv == 0 && this.currentFoodBuild.checkSelectedFoodsMaximum() && !this.foodSelected(idx))
-        this.currentFoodBuild.appendSelectedFood(idx);
+        this.currentFoodBuild.appendSelectedFood(idx)
     },
     foodSelected(idx) {
-      return this.currentFoodBuild.foodSelected(idx);
+      return this.currentFoodBuild.foodSelected(idx)
     },
     selectFood(idx) {
       if (this.foodSelected(idx)) {
-        this.currentFoodBuild.removeSelectedFood(idx);
+        this.currentFoodBuild.removeSelectedFood(idx)
       } else {
         if (this.currentFoodBuild.checkSelectedFoodsMaximum())
-          this.currentFoodBuild.appendSelectedFood(idx);
+          this.currentFoodBuild.appendSelectedFood(idx)
         else
-          this.$notify(this.$lang('Number of selected food has reached the maximum'));
+          this.$notify(this.$lang('Number of selected food has reached the maximum'))
       }
     },
   },
-};
+}
 </script>

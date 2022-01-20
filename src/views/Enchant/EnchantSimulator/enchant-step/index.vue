@@ -176,10 +176,10 @@
 </template>
 
 <script>
-import { EnchantStep } from '@/lib/Enchant/Enchant';
-import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums';
+import { EnchantStep } from '@/lib/Enchant/Enchant'
+import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums'
 
-import vue_EnchantStepStat from './enchant-step-stat';
+import vue_EnchantStepStat from './enchant-step-stat'
 
 export default {
   name: 'EnchantStep',
@@ -196,53 +196,53 @@ export default {
   },
   computed: {
     typeIcon() {
-      return this.step.type === EnchantStepTypes.Normal ? 'ic-outline-near-me-disabled' : 'ic-outline-near-me';
+      return this.step.type === EnchantStepTypes.Normal ? 'ic-outline-near-me-disabled' : 'ic-outline-near-me'
     },
     typeEach() {
-      return this.step.type === EnchantStepTypes.Each;
+      return this.step.type === EnchantStepTypes.Each
     },
     mainTextColor() {
-      let textColor = 'purple';
+      let textColor = 'purple'
       if (this.step.isLastStep) {
-        textColor = 'water-blue';
+        textColor = 'water-blue'
       }
       if (this.step.afterLastStep) {
-        textColor = 'gray';
+        textColor = 'gray'
       }
-      return textColor;
+      return textColor
     },
     mainBorderColor() {
-      let borderColor = 'border-purple';
+      let borderColor = 'border-purple'
       if (this.step.isLastStep) {
-        borderColor = 'border-water-blue';
+        borderColor = 'border-water-blue'
       }
       if (this.step.afterLastStep) {
-        borderColor = 'border-gray';
+        borderColor = 'border-gray'
       }
-      return borderColor;
+      return borderColor
     },
     stepTitle() {
       if (this.step.isLastStep) {
-        return this.$lang('last step');
+        return this.$lang('last step')
       }
       if (this.step.afterLastStep) {
-        return this.$lang('invalid step');
+        return this.$lang('invalid step')
       }
-      return this.$lang('enchant step') + ' ' + (this.step.index + 1).toString();
+      return this.$lang('enchant step') + ' ' + (this.step.index + 1).toString()
     },
   },
   methods: {
     toggleStepType(step) {
-      step.type = step.type === EnchantStepTypes.Normal ? EnchantStepTypes.Each : EnchantStepTypes.Normal;
+      step.type = step.type === EnchantStepTypes.Normal ? EnchantStepTypes.Each : EnchantStepTypes.Normal
     },
     swapStep({ step, offset }) {
-      step.belongEquipment.swapStep(step.index, step.index + offset);
+      step.belongEquipment.swapStep(step.index, step.index + offset)
     },
     insertStepBefore(step) {
-      step.belongEquipment.insertStepBefore(step);
+      step.belongEquipment.insertStepBefore(step)
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

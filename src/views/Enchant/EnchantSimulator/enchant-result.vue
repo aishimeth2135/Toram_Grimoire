@@ -147,19 +147,19 @@
 </template>
 
 <script>
-import { mapState } from 'pinia';
+import { mapState } from 'pinia'
 
-import { useEnchantStore } from '@/stores/views/enchant';
+import { useEnchantStore } from '@/stores/views/enchant'
 
-import CY from '@/shared/utils/Cyteria';
-import { trimZero } from '@/shared/utils/string';
-import { markText } from '@/shared/utils/view';
+import CY from '@/shared/utils/Cyteria'
+import { trimZero } from '@/shared/utils/string'
+import { markText } from '@/shared/utils/view'
 
-import ENCHANT_STATE from '@/lib/Enchant/Enchant/state';
-import { EnchantEquipment } from '@/lib/Enchant/Enchant';
-import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums';
+import ENCHANT_STATE from '@/lib/Enchant/Enchant/state'
+import { EnchantEquipment } from '@/lib/Enchant/Enchant'
+import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums'
 
-import ToggleService from '@/setup/ToggleService';
+import ToggleService from '@/setup/ToggleService'
 
 export default {
   name: 'EnchantResult',
@@ -174,32 +174,32 @@ export default {
     const { windows, contents, toggle } = ToggleService({
       windows: ['successRateDetail'],
       contents: [{ name: 'resultStats', default: true }],
-    });
-    return { windows, contents, toggle };
+    })
+    return { windows, contents, toggle }
   },
   computed: {
     ...mapState(useEnchantStore, ['config']),
     enchantResult() {
-      const validSteps = this.equipment.validSteps;
+      const validSteps = this.equipment.validSteps
 
       /**
        * @param {Array<any>} target
        * @param {Array<any>} src
        */
       const insertOdd = (target, src) => {
-        let cur = 1, cnt = 0;
+        let cur = 1, cnt = 0
         while (cnt < src.length || cur < target.length) {
-          target.splice(cur, 0, src[cnt]);
-          cnt += 1;
-          cur += 2;
+          target.splice(cur, 0, src[cnt])
+          cnt += 1
+          cur += 2
         }
-      };
+      }
 
       const result = validSteps.map((step, i) => {
-        let text = '';
-        let parts = [];
+        let text = ''
+        let parts = []
         if (step.type === EnchantStepTypes.Each) {
-          const stat = step.stats[0];
+          const stat = step.stats[0]
           const tparts = [{
             stat,
             text: stat.showEach(),
@@ -208,87 +208,87 @@ export default {
             stat,
             text: stat.showCurrent(),
             negative: stat.value < 0,
-          }];
-          const textParts = this.$lang('result/enchant: each').split(/\$\d+/);
-          insertOdd(textParts, tparts);
-          parts = textParts;
-          text = parts.map(p => typeof p !== 'string' ? p.text : p).join('');
+          }]
+          const textParts = this.$lang('result/enchant: each').split(/\$\d+/)
+          insertOdd(textParts, tparts)
+          parts = textParts
+          text = parts.map(p => typeof p !== 'string' ? p.text : p).join('')
         } else {
           const tparts = step.stats.map(stat => ({
             stat,
             text: stat.showCurrent(),
             negative: stat.value < 0,
-          }));
-          parts = [this.$lang('result/enchant: normal'), ...tparts];
-          text = this.$lang('result/enchant: normal') + tparts.map(p => p.text).join('｜');
+          }))
+          parts = [this.$lang('result/enchant: normal'), ...tparts]
+          text = this.$lang('result/enchant: normal') + tparts.map(p => p.text).join('｜')
         }
-        const remainingPotential = step.remainingPotential;
-        text += '｜' + remainingPotential + 'pt';
+        const remainingPotential = step.remainingPotential
+        text += '｜' + remainingPotential + 'pt'
         return {
           iid: i,
           text,
           parts,
           remainingPotential,
           type: step.type === EnchantStepTypes.Each ? 'each' : 'normal',
-        };
-      });
-      return result;
+        }
+      })
+      return result
     },
     enchantResultStats() {
-      const eq = this.equipment;
+      const eq = this.equipment
       return eq.stats(eq.lastStep.index)
         .sort((a, b) => {
-          const av = a.stat.base.order + (a.value < 0 ? 99999 : 0);
-          const bv = b.stat.base.order + (b.value < 0 ? 99999 : 0);
-          return av - bv;
+          const av = a.stat.base.order + (a.value < 0 ? 99999 : 0)
+          const bv = b.stat.base.order + (b.value < 0 ? 99999 : 0)
+          return av - bv
         })
         .map(stat => ({
           text: stat.showAmount(),
           stat,
           negative: stat.value < 0,
-        }));
+        }))
     },
     enchantResultMaterials() {
-      const titleList = this.$lang('material point type list');
+      const titleList = this.$lang('material point type list')
       return this.equipment.allMaterialPointCost.map((p, i) => ({
         title: titleList[i],
         value: p,
-      }));
+      }))
     },
     successRate() {
-      const rate = this.equipment.successRate;
+      const rate = this.equipment.successRate
       return rate === -1 ?
         this.$lang('success rate: unlimited') :
-        Math.floor(rate) + '%';
+        Math.floor(rate) + '%'
     },
     expectedSuccessRate() {
-      const rate = this.equipment.successRate;
+      const rate = this.equipment.successRate
       if (rate === -1) {
-        return this.$lang('success rate: unlimited');
+        return this.$lang('success rate: unlimited')
       }
       if (rate >= 100) {
-        return '100%';
+        return '100%'
       }
 
-      const positiveNums = this.enchantResultStats.filter(item => item.stat.value >= 0).length;
-      let res = Math.pow(Math.floor(rate) / 100, positiveNums) * 100;
-      res = Math.min(100, res);
-      return trimZero(res.toFixed(2)) + '%';
+      const positiveNums = this.enchantResultStats.filter(item => item.stat.value >= 0).length
+      let res = Math.pow(Math.floor(rate) / 100, positiveNums) * 100
+      res = Math.min(100, res)
+      return trimZero(res.toFixed(2)) + '%'
     },
     successRateDetailCaptions() {
-      return this.$lang('result/success rate detail/captions').map(text => markText(text));
+      return this.$lang('result/success rate detail/captions').map(text => markText(text))
     },
   },
   methods: {
     copyEnchantResultText() {
-      const resultStatsText = this.enchantResultStats.map(item => item.text).join('｜');
-      const materialsText = this.enchantResultMaterials.map(item => `${item.title} ${item.value}`).join('｜');
+      const resultStatsText = this.enchantResultStats.map(item => item.text).join('｜')
+      const materialsText = this.enchantResultMaterials.map(item => `${item.title} ${item.value}`).join('｜')
       const stepsText = this.enchantResult
         .map((p, i) => `${i + 1}. ${p.text}`)
-        .join('\n');
+        .join('\n')
       const basePotential = this.equipment.basePotential === ENCHANT_STATE.EquipmentBasePotentialMinimum ?
         '' :
-        `${this.$lang('equipment base potential')}｜${this.equipment.basePotential}\n`;
+        `${this.$lang('equipment base potential')}｜${this.equipment.basePotential}\n`
       CY.copyToClipboard(
         `✩ ${this.$lang('equipment types/' + this.equipment.fieldType)}\n` +
         `${this.$lang('equipment original potential')}｜${this.equipment.originalPotential}\n` +
@@ -302,11 +302,11 @@ export default {
         `✩ ${this.$lang('success rate')}｜${this.successRate}\n` +
         `✩ ${this.$lang('expected success rate')}｜${this.expectedSuccessRate}\n` +
         '｜cy-grimoire.netlify.app｜',
-      );
-      this.$notify(this.$lang('tips/copy result text successfully'));
+      )
+      this.$notify(this.$lang('tips/copy result text successfully'))
     },
   },
-};
+}
 </script>
 
 <style lang="postcss" scoped>

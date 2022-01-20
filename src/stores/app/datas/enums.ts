@@ -9,4 +9,4 @@ const enum DataStoreIds {
   DamageCalculation = 'DamageCalculation',
 }
 
-export { DataStoreIds };
+export { DataStoreIds }

@@ -148,11 +148,11 @@
 </template>
 
 <script>
-import { mapState } from 'pinia';
+import { mapState } from 'pinia'
 
-import { useCharacterStore } from '@/stores/views/character';
+import { useCharacterStore } from '@/stores/views/character'
 
-import { CharacterOptionalBaseStatTypes } from '@/lib/Character/Character/enums';
+import { CharacterOptionalBaseStatTypes } from '@/lib/Character/Character/enums'
 
 export default {
   name: 'CharacterSimulatorCharacter',
@@ -160,8 +160,8 @@ export default {
   props: ['characterState'],
   emits: ['create-character'],
   setup() {
-    const store = useCharacterStore();
-    return { store };
+    const store = useCharacterStore()
+    return { store }
   },
   data() {
     return {
@@ -170,7 +170,7 @@ export default {
         baseStat: [1, 500],
         optionalBaseStat: [1, 255],
       },
-    };
+    }
   },
   computed: {
     ...mapState(useCharacterStore, {
@@ -178,51 +178,51 @@ export default {
       'currentCharacterStateIndex': 'currentCharacterIndex',
     }),
     character() {
-      return this.characterState.origin;
+      return this.characterState.origin
     },
     characterOptionalBaseStatList() {
-      return Object.values(CharacterOptionalBaseStatTypes);
+      return Object.values(CharacterOptionalBaseStatTypes)
     },
   },
   methods: {
     removeCurrentCharacter() {
       if (this.characterStates.length <= 1) {
-        this.$notify(this.$lang('Warn/Must have at least one character'));
-        return;
+        this.$notify(this.$lang('Warn/Must have at least one character'))
+        return
       }
-      const from = this.characterState.origin;
-      this.store.removeCharacter(this.currentCharacterStateIndex);
+      const from = this.characterState.origin
+      this.store.removeCharacter(this.currentCharacterStateIndex)
       this.$notify(this.$lang('Warn/Remove character successfully', [from.name]),
         'ic-round-delete', null, {
           buttons: [{
             text: this.$rootLang('global/recovery'),
             click: () => {
-              this.store.createCharacter(from);
-              this.$notify(this.$lang('Warn/Recovery character successfully', [from.name]));
+              this.store.createCharacter(from)
+              this.$notify(this.$lang('Warn/Recovery character successfully', [from.name]))
             },
             removeMessageAfterClick: true,
           }],
-        });
+        })
     },
     copyCurrentCharacter() {
-      const from = this.characterState.origin;
-      this.createCharacter(from.clone());
-      this.$notify(this.$lang('Warn/Copy character successfully', [from.name]));
+      const from = this.characterState.origin
+      this.createCharacter(from.clone())
+      this.$notify(this.$lang('Warn/Copy character successfully', [from.name]))
     },
     setOptionalBaseStat(name) {
-      this.character.setOptinalBaseStat(name);
+      this.character.setOptinalBaseStat(name)
     },
     clearOptionalBaseStat() {
-      this.character.clearOptinalBaseStat();
+      this.character.clearOptinalBaseStat()
     },
     setLevel(v) {
-      this.character.level = v;
+      this.character.level = v
     },
     setBaseStat(baseStat, v) {
-      baseStat.value = v;
+      baseStat.value = v
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

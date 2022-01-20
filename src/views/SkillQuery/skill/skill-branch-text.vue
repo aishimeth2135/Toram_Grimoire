@@ -14,32 +14,32 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
+import { computed, toRefs } from 'vue'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
-import TextHandler from './branch-handlers/TextHandler';
+import TextHandler from './branch-handlers/TextHandler'
 
 interface Props {
   branchItem: SkillBranchItem;
 }
 
-const props = defineProps<Props>();
-const { branchItem } = toRefs(props);
+const props = defineProps<Props>()
+const { branchItem } = toRefs(props)
 
-const container = computed(() => TextHandler(branchItem.value));
+const container = computed(() => TextHandler(branchItem.value))
 
 if (branchItem.value.isGroup) {
   // not toggle, init only
-  branchItem.value.toggleGroupExpanded(true, branchItem.value.groupState.expanded);
+  branchItem.value.toggleGroupExpanded(true, branchItem.value.groupState.expanded)
 }
 
 const rootClicked = () => {
   if (branchItem.value.isGroup) {
-    branchItem.value.toggleGroupExpanded(true);
+    branchItem.value.toggleGroupExpanded(true)
   }
-};
+}
 
 const rootClassList = computed(() => {
   return {
@@ -47,8 +47,8 @@ const rootClassList = computed(() => {
     'is-mark': branchItem.value.attrBoolean('is_mark'),
     'is-group': branchItem.value.isGroup,
     'group-active': branchItem.value.groupState.expanded,
-  };
-});
+  }
+})
 </script>
 
 <style lang="postcss" scoped>

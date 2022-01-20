@@ -13,5 +13,5 @@
 <script>
 export default {
   name: 'AppPage404',
-};
+}
 </script>

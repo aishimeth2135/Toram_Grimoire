@@ -1,5 +1,5 @@
-import { useLoadingStore } from '@/stores/app/loading';
-import { useNotifyStore } from '@/stores/app/notify';
+import { useLoadingStore } from '@/stores/app/loading'
+import { useNotifyStore } from '@/stores/app/notify'
 
 interface MessageNotifyButtonItem {
   text: string;
@@ -12,7 +12,7 @@ interface MessageNotifyOptions {
   afterHide?: () => void;
 }
 
-let notifyStore: ReturnType<typeof useNotifyStore>;
+let notifyStore: ReturnType<typeof useNotifyStore>
 function MessageNotify(
   message: string,
   icon: string | MessageNotifyOptions = 'bx-bx-message-rounded-dots',
@@ -20,36 +20,36 @@ function MessageNotify(
   options: MessageNotifyOptions = {},
 ): void {
   if (!notifyStore) {
-    notifyStore = useNotifyStore();
+    notifyStore = useNotifyStore()
   }
   if (typeof icon === 'object') {
-    options = icon;
-    icon = 'bx-bx-message-rounded-dots';
+    options = icon
+    icon = 'bx-bx-message-rounded-dots'
   }
-  notifyStore.createMessage({ message, icon, id, options });
+  notifyStore.createMessage({ message, icon, id, options })
 }
 
-let loadingStore: ReturnType<typeof useLoadingStore>;
+let loadingStore: ReturnType<typeof useLoadingStore>
 const LoadingHandler = {
   show(text?: string) {
     if (!loadingStore) {
-      loadingStore = useLoadingStore();
+      loadingStore = useLoadingStore()
     }
-    loadingStore.show(text);
+    loadingStore.show(text)
   },
   hide() {
     if (!loadingStore) {
-      loadingStore = useLoadingStore();
+      loadingStore = useLoadingStore()
     }
-    loadingStore.hide();
+    loadingStore.hide()
   },
-};
+}
 
 export default function () {
   return {
     notify: MessageNotify,
     loading: LoadingHandler,
-  };
+  }
 }
 
-export type { MessageNotifyButtonItem, MessageNotifyOptions };
+export type { MessageNotifyButtonItem, MessageNotifyOptions }

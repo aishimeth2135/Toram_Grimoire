@@ -1,213 +1,213 @@
 
-import { markRaw } from 'vue';
+import { markRaw } from 'vue'
 
-import Grimoire from '@/shared/Grimoire';
+import Grimoire from '@/shared/Grimoire'
 
-import { StatTypes } from '@/lib/Character/Stat/enums';
-import { StatComputed } from '@/lib/Character/Stat';
+import { StatTypes } from '@/lib/Character/Stat/enums'
+import { StatComputed } from '@/lib/Character/Stat'
 
-import { SkillBranchNames } from './enums';
+import { SkillBranchNames } from './enums'
 
 abstract class SkillNode {
-  abstract parent: SkillNode | null;
+  abstract parent: SkillNode | null
 }
 
 abstract class SkillElement extends SkillNode {
-  id: number;
-  name: string;
-  abstract get index(): number;
+  id: number
+  name: string
+  abstract get index(): number
 
   constructor(id: number, name: string) {
-    super();
-    this.id = id;
-    this.name = name;
+    super()
+    this.id = id
+    this.name = name
   }
 }
 
 class SkillRoot extends SkillNode {
-  parent: null;
-  skillTreeCategorys: SkillTreeCategory[];
+  parent: null
+  skillTreeCategorys: SkillTreeCategory[]
 
   constructor() {
-    super();
-    this.parent = null;
-    this.skillTreeCategorys = markRaw([]);
+    super()
+    this.parent = null
+    this.skillTreeCategorys = markRaw([])
   }
 
   get index() {
-    return -1;
+    return -1
   }
 
   appendSkillTreeCategory(id: number, name: string) {
-    const el = markRaw(new SkillTreeCategory(this, id, name));
-    this.skillTreeCategorys.push(el);
-    return el;
+    const el = markRaw(new SkillTreeCategory(this, id, name))
+    this.skillTreeCategorys.push(el)
+    return el
   }
 
   findSkillByName(name: string): Skill | null {
-    let find: Skill | null = null;
+    let find: Skill | null = null
     this.skillTreeCategorys.forEach(stc => {
-      if (find) return;
+      if (find) return
       stc.skillTrees.forEach(st => {
-        if (find) return;
-        const skill = st.skills.find(sk => sk.name === name);
+        if (find) return
+        const skill = st.skills.find(sk => sk.name === name)
         if (skill !== undefined)
-          find = skill;
-      });
-    });
-    return find;
+          find = skill
+      })
+    })
+    return find
   }
 }
 
 
 class SkillTreeCategory extends SkillElement {
-  parent: SkillRoot;
-  skillTrees: SkillTree[];
+  parent: SkillRoot
+  skillTrees: SkillTree[]
 
   constructor(sr: SkillRoot, id: number, name: string) {
-    super(id, name);
-    this.parent = sr;
-    this.skillTrees = markRaw([]);
+    super(id, name)
+    this.parent = sr
+    this.skillTrees = markRaw([])
   }
 
   get index() {
-    return this.parent.skillTreeCategorys.indexOf(this);
+    return this.parent.skillTreeCategorys.indexOf(this)
   }
 
   appendSkillTree(id: number, name: string) {
-    const el = markRaw(new SkillTree(this, id, name));
-    this.skillTrees.push(el);
-    return el;
+    const el = markRaw(new SkillTree(this, id, name))
+    this.skillTrees.push(el)
+    return el
   }
 }
 
 
 class SkillTree extends SkillElement {
-  parent: SkillTreeCategory;
-  skills: Skill[];
+  parent: SkillTreeCategory
+  skills: Skill[]
   attrs: {
     simulatorFlag: boolean;
-  };
-  drawTreeCode: string;
+  }
+  drawTreeCode: string
 
   constructor(stc: SkillTreeCategory, id: number, name: string) {
-    super(id, name);
-    this.parent = stc;
-    this.skills = markRaw([]);
+    super(id, name)
+    this.parent = stc
+    this.skills = markRaw([])
 
-    this.drawTreeCode = '';
+    this.drawTreeCode = ''
 
     this.attrs = markRaw({
       simulatorFlag: false,
-    });
+    })
   }
 
   get index() {
-    return this.parent.skillTrees.indexOf(this);
+    return this.parent.skillTrees.indexOf(this)
   }
 
   init(dtc: string) {
-    this.drawTreeCode = dtc;
+    this.drawTreeCode = dtc
   }
 
   appendSkill(id: number, name: string) {
-    const el = markRaw(new Skill(this, id, name));
-    this.skills.push(el);
-    return el;
+    const el = markRaw(new Skill(this, id, name))
+    this.skills.push(el)
+    return el
   }
 
   get skillTreeId(): string {
-    return `${this.parent.id}-${this.id}`;
+    return `${this.parent.id}-${this.id}`
   }
 }
 
 
 
 abstract class SkillBase extends SkillElement {
-  parent: SkillTree;
-  caption: string;
-  previous: number;
-  drawOrder: number;
+  parent: SkillTree
+  caption: string
+  previous: number
+  drawOrder: number
 
   constructor(st: SkillTree, id: number, name: string, caption: string = '') {
-    super(id, name);
-    this.parent = st;
-    this.caption = caption;
-    this.previous = -1;
-    this.drawOrder = id;
+    super(id, name)
+    this.parent = st
+    this.caption = caption
+    this.previous = -1
+    this.drawOrder = id
   }
 
   init(pre: number, drawOrder: number) {
-    this.previous = pre;
-    this.drawOrder = drawOrder;
+    this.previous = pre
+    this.drawOrder = drawOrder
   }
 }
 
 
 class Skill extends SkillBase {
-  effects: SkillEffect[];
-  private _defaultEffect: SkillEffect | null;
+  effects: SkillEffect[]
+  private _defaultEffect: SkillEffect | null
 
   constructor(st: SkillTree, id: number, name: string, caption: string = '') {
-    super(st, id, name, caption);
+    super(st, id, name, caption)
 
-    this.effects = [];
-    this._defaultEffect = null;
+    this.effects = []
+    this._defaultEffect = null
   }
 
   get index() {
-    return this.parent.skills.indexOf(this);
+    return this.parent.skills.indexOf(this)
   }
 
   get defaultEffect(): SkillEffect {
-    return this._defaultEffect as SkillEffect;
+    return this._defaultEffect as SkillEffect
   }
 
   appendSkillEffect(main: number, sub: number, body: number) {
-    const el = markRaw(new SkillEffect(this, this.effects.length, main, sub, body));
-    this.effects.push(el);
-    return el;
+    const el = markRaw(new SkillEffect(this, this.effects.length, main, sub, body))
+    this.effects.push(el)
+    return el
   }
 
   appendSkillEffectHistory(effectId: number, date: string): SkillEffectHistory | void {
-    const effect = this.effects.find(eft => eft.effectId === effectId);
+    const effect = this.effects.find(eft => eft.effectId === effectId)
     if (!effect) {
-      console.warn(`[SkillEffect.appendSkillEffectHistory] can not find target effect with id: ${effectId}.`, this.effects);
-      return;
+      console.warn(`[SkillEffect.appendSkillEffectHistory] can not find target effect with id: ${effectId}.`, this.effects)
+      return
     }
-    return effect.appendHistory(date);
+    return effect.appendHistory(date)
   }
 
   setDefaultEffect(sef: SkillEffect) {
-    this._defaultEffect = sef;
-    return this;
+    this._defaultEffect = sef
+    return this
   }
 
   get skillId(): string {
-    return `${this.parent.parent.id}-${this.parent.id}-${this.id}`;
+    return `${this.parent.parent.id}-${this.parent.id}-${this.id}`
   }
 }
 
 class SkillEffectBase extends SkillNode {
-  parent: Skill;
-  branches: SkillBranch[];
+  parent: Skill
+  branches: SkillBranch[]
 
   constructor(skill: Skill) {
-    super();
-    this.parent = skill;
-    this.branches = markRaw([]);
+    super()
+    this.parent = skill
+    this.branches = markRaw([])
   }
 
   appendSkillBranch(id: number, name: SkillBranchNames) {
-    const el = markRaw(new SkillBranch(this, id, name));
-    this.branches.push(el);
-    return el;
+    const el = markRaw(new SkillBranch(this, id, name))
+    this.branches.push(el)
+    return el
   }
 
   appendSkillBranchFrom(branch: SkillBranch) {
-    const el = markRaw(branch.clone());
-    this.branches.push(el);
-    return el;
+    const el = markRaw(branch.clone())
+    this.branches.push(el)
+    return el
   }
 }
 
@@ -220,20 +220,20 @@ interface SkillEffectAttrs {
   castingTime: string | null;
 }
 class SkillEffect extends SkillEffectBase {
-  effectId: number;
-  attributes: SkillEffectAttrs;
-  historys: SkillEffectHistory[];
+  effectId: number
+  attributes: SkillEffectAttrs
+  historys: SkillEffectHistory[]
 
-  mainWeapon: number;
-  subWeapon: number;
-  bodyArmor: number;
+  mainWeapon: number
+  subWeapon: number
+  bodyArmor: number
   // 0: or, 1: and
-  equipmentOperator: 0 | 1;
+  equipmentOperator: 0 | 1
 
   constructor(skill: Skill, effectId: number, main: number, sub: number, body: number) {
-    super(skill);
-    this.effectId = effectId;
-    this.historys = [];
+    super(skill)
+    this.effectId = effectId
+    this.historys = []
     this.attributes = markRaw({
       mpCost: '0',
       range: '0',
@@ -241,185 +241,185 @@ class SkillEffect extends SkillEffectBase {
       inCombo: 0,
       actionTime: 3,
       castingTime: '0',
-    });
+    })
 
-    this.mainWeapon = main;
-    this.subWeapon = sub;
-    this.bodyArmor = body;
-    this.equipmentOperator = 0;
+    this.mainWeapon = main
+    this.subWeapon = sub
+    this.bodyArmor = body
+    this.equipmentOperator = 0
   }
 
   appendHistory(date: string): SkillEffectHistory {
-    const history = new SkillEffectHistory(this, date);
-    this.historys.push(history);
-    return history;
+    const history = new SkillEffectHistory(this, date)
+    this.historys.push(history)
+    return history
   }
 }
 
 class SkillEffectHistory extends SkillEffectBase {
-  readonly date: string;
-  readonly parentEffect: SkillEffect;
+  readonly date: string
+  readonly parentEffect: SkillEffect
 
   constructor(skillEffect: SkillEffect, date: string) {
-    super(skillEffect.parent);
-    this.date = date;
-    this.parentEffect = skillEffect;
+    super(skillEffect.parent)
+    this.date = date
+    this.parentEffect = skillEffect
   }
 }
 
 class SkillBranch extends SkillNode {
-  parent: SkillEffectBase;
+  parent: SkillEffectBase
 
   // id of branch. -1 means no define
-  id: number;
+  id: number
   // type of branch
-  name: SkillBranchNames;
+  name: SkillBranchNames
 
-  branchAttributes: Record<string, string>;
-  stats: StatComputed[];
+  branchAttributes: Record<string, string>
+  stats: StatComputed[]
 
-  protected _attributeEmpty: boolean;
+  protected _attributeEmpty: boolean
 
   constructor(sef: SkillEffectBase, id: number, name: SkillBranchNames) {
-    super();
-    this.parent = sef;
-    this.id = id;
-    this.name = name;
-    this.branchAttributes = markRaw({});
-    this.stats = markRaw([]);
+    super()
+    this.parent = sef
+    this.id = id
+    this.name = name
+    this.branchAttributes = markRaw({})
+    this.stats = markRaw([])
 
-    this._attributeEmpty = true;
+    this._attributeEmpty = true
   }
 
   get isEmpty() {
-    return this._attributeEmpty && this.stats.length === 0;
+    return this._attributeEmpty && this.stats.length === 0
   }
 
   appendBranchAttribute(name: string, value: string) {
-    this._attributeEmpty = false;
-    this.branchAttributes[name] = value;
-    return this;
+    this._attributeEmpty = false
+    this.branchAttributes[name] = value
+    return this
   }
 
   appendStat(baseName: string, value: string, tail: string): StatComputed | null {
     const type = (() => {
       if (tail === '%') {
-        return StatTypes.Multiplier;
+        return StatTypes.Multiplier
       }
       if (tail === '~') {
-        return StatTypes.Total;
+        return StatTypes.Total
       }
-      return StatTypes.Constant;
-    })();
-    const statBase = Grimoire.Character.findStatBase(baseName);
+      return StatTypes.Constant
+    })()
+    const statBase = Grimoire.Character.findStatBase(baseName)
     if (!statBase) {
-      return null;
+      return null
     }
-    const stat = markRaw(statBase.createStatComputed(type, value));
-    this.stats.push(stat);
-    return stat;
+    const stat = markRaw(statBase.createStatComputed(type, value))
+    this.stats.push(stat)
+    return stat
   }
 
   clone(): SkillBranch {
-    const newBranch = new SkillBranch(this.parent, this.id, this.name);
-    newBranch.branchAttributes = markRaw({ ...this.branchAttributes });
-    newBranch.stats = markRaw(this.stats.map(stat => stat.clone()));
-    newBranch._attributeEmpty = this._attributeEmpty;
-    return newBranch;
+    const newBranch = new SkillBranch(this.parent, this.id, this.name)
+    newBranch.branchAttributes = markRaw({ ...this.branchAttributes })
+    newBranch.stats = markRaw(this.stats.map(stat => stat.clone()))
+    newBranch._attributeEmpty = this._attributeEmpty
+    return newBranch
   }
 }
 
 
 class LevelSkillTree {
-  base: SkillTree;
-  levelSkills: LevelSkill[];
+  base: SkillTree
+  levelSkills: LevelSkill[]
 
   constructor(st: SkillTree) {
-    this.base = st;
-    this.levelSkills = [];
+    this.base = st
+    this.levelSkills = []
   }
 
   appendLevelSkill(skill: Skill) {
-    const el = new LevelSkill(this, skill);
-    this.levelSkills.push(el);
-    return el;
+    const el = new LevelSkill(this, skill)
+    this.levelSkills.push(el)
+    return el
   }
 
   skillPointCost() {
-    return this.levelSkills.reduce((cur, skill) => cur + skill.level(), 0);
+    return this.levelSkills.reduce((cur, skill) => cur + skill.level(), 0)
   }
 
   starGemSkillPoint() {
     return this.levelSkills
-      .reduce((c, skill) => c + Math.max(0, skill.starGemLevel() - skill.level()), 0);
+      .reduce((c, skill) => c + Math.max(0, skill.starGemLevel() - skill.level()), 0)
   }
 }
 
 class LevelSkill {
-  parent: LevelSkillTree;
-  base: Skill;
+  parent: LevelSkillTree
+  base: Skill
 
-  private _level: number;
-  private _starGemLevel: number;
+  private _level: number
+  private _starGemLevel: number
 
   constructor(st: LevelSkillTree, skill: Skill) {
-    this.parent = st;
-    this.base = skill;
+    this.parent = st
+    this.base = skill
 
-    this._level = 0;
-    this._starGemLevel = 0;
+    this._level = 0
+    this._starGemLevel = 0
   }
   level(value?: number) {
     if (typeof value === 'number') {
-      value = Math.max(0, Math.min(10, value));
-      this._level = value;
+      value = Math.max(0, Math.min(10, value))
+      this._level = value
     }
-    return this._level;
+    return this._level
   }
   addLevel(value: number) {
-    this.level(this._level + value);
-    return this._level;
+    this.level(this._level + value)
+    return this._level
   }
 
   updateTree(forward = false) {
     if (!forward) {
-      let current: LevelSkill = this;
+      let current: LevelSkill = this
       while (current.base.previous !== -1) {
-        const pre = current.parent.levelSkills.find(sk => sk.base.id === current.base.previous);
+        const pre = current.parent.levelSkills.find(sk => sk.base.id === current.base.previous)
         if (!pre) {
-          break;
+          break
         }
-        current = pre;
-        current.level() < 5 && current.level(5);
+        current = pre
+        current.level() < 5 && current.level(5)
       }
     } else if (forward && this.level() < 5) {
-      const stk: LevelSkill[] = [this];
+      const stk: LevelSkill[] = [this]
       while (stk.length !== 0) {
-        const current = stk.pop() as LevelSkill;
+        const current = stk.pop() as LevelSkill
         this.parent.levelSkills.forEach(skill => {
           if (skill.base.previous === current.base.id) {
-            stk.push(skill);
-            skill.level() > 0 && skill.level(0);
+            stk.push(skill)
+            skill.level() > 0 && skill.level(0)
           }
-        });
+        })
       }
     }
   }
   starGemLevel(value?: number) {
     if (typeof value === 'number') {
-      value = Math.max(0, Math.min(10, value));
-      this._starGemLevel = value;
+      value = Math.max(0, Math.min(10, value))
+      this._starGemLevel = value
     }
 
-    return this._starGemLevel;
+    return this._starGemLevel
   }
   addStarGemLevel(value: number) {
-    this.starGemLevel(this._starGemLevel + value);
-    return this._starGemLevel;
+    this.starGemLevel(this._starGemLevel + value)
+    return this._starGemLevel
   }
 
   get id() {
-    return this.base.id;
+    return this.base.id
   }
 }
 
@@ -435,5 +435,5 @@ export {
   LevelSkillTree,
   LevelSkill,
   SkillEffectHistory,
-};
-export type { SkillEffectBase, SkillEffectAttrs };
+}
+export type { SkillEffectBase, SkillEffectAttrs }

@@ -77,139 +77,139 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, nextTick } from 'vue';
-import type { Ref, ComputedRef } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router';
+import { computed, ref, nextTick } from 'vue'
+import type { Ref, ComputedRef } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute, useRouter } from 'vue-router'
 
-import { useDatasStore } from '@/stores/app/datas';
+import { useDatasStore } from '@/stores/app/datas'
 
-import { SkillRoot, SkillTree, SkillTreeCategory, Skill, LevelSkill } from '@/lib/Skill/Skill';
-import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer';
+import { SkillRoot, SkillTree, SkillTreeCategory, Skill, LevelSkill } from '@/lib/Skill/Skill'
+import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer'
 
-import ToggleService from '@/setup/ToggleService';
+import ToggleService from '@/setup/ToggleService'
 
-import SkillTreeDiagram from './skill-tree-diagram.vue';
-import SkillEffect from './skill-effect.vue';
-import SkillQueryMenu from './skill-query-menu/index.vue';
-import SkillQuerySearch from './skill-query-search.vue';
+import SkillTreeDiagram from './skill-tree-diagram.vue'
+import SkillEffect from './skill-effect.vue'
+import SkillQueryMenu from './skill-query-menu/index.vue'
+import SkillQuerySearch from './skill-query-search.vue'
 
-import { setupComputingContainer } from './setup';
+import { setupComputingContainer } from './setup'
 
-const datasStore = useDatasStore();
+const datasStore = useDatasStore()
 
 const { toggle, contents } = ToggleService({
   contents: ['skillEffect', 'search'] as const,
-});
+})
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const router = useRouter();
-const route = useRoute();
+const router = useRouter()
+const route = useRoute()
 
-const skillEffectElement: Ref<HTMLElement | null> = ref(null);
+const skillEffectElement: Ref<HTMLElement | null> = ref(null)
 const jumpToSkillEffect = async () => {
-  await nextTick();
+  await nextTick()
   if (skillEffectElement.value) {
-    skillEffectElement.value.scrollIntoView({ behavior: 'smooth' });
+    skillEffectElement.value.scrollIntoView({ behavior: 'smooth' })
   }
-};
-const skillTreeCategoryMenuElement: Ref<HTMLElement | null> = ref(null);
+}
+const skillTreeCategoryMenuElement: Ref<HTMLElement | null> = ref(null)
 const goToSkillTop = async () => {
-  await nextTick();
+  await nextTick()
   if (skillTreeCategoryMenuElement.value) {
-    skillTreeCategoryMenuElement.value.scrollIntoView({ behavior: 'auto' });
+    skillTreeCategoryMenuElement.value.scrollIntoView({ behavior: 'auto' })
   }
-};
+}
 
-const skillRoot: ComputedRef<SkillRoot> = computed(() => datasStore.Skill!.skillRoot);
+const skillRoot: ComputedRef<SkillRoot> = computed(() => datasStore.Skill!.skillRoot)
 
-const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null);
-const currentSkillTree: Ref<SkillTree | null> = ref(null);
-const currentSkill: Ref<Skill | null> = ref(null);
+const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null)
+const currentSkillTree: Ref<SkillTree | null> = ref(null)
+const currentSkill: Ref<Skill | null> = ref(null)
 
 const updateRouteParam = (id: string) => {
-  router.replace({ name: 'SkillQuery', params: { skillId: id } });
-};
+  router.replace({ name: 'SkillQuery', params: { skillId: id } })
+}
 
 const selectCurrentSkillTreeCategory = (stc: SkillTreeCategory) => {
-  currentSkillTreeCategory.value = stc;
-  currentSkillTree.value = null;
-  currentSkill.value = null;
-  toggle('contents/skillEffect', false);
-  updateRouteParam(stc.id.toString());
-};
+  currentSkillTreeCategory.value = stc
+  currentSkillTree.value = null
+  currentSkill.value = null
+  toggle('contents/skillEffect', false)
+  updateRouteParam(stc.id.toString())
+}
 
 const selectCurrentSkillTree = (st: SkillTree) => {
-  currentSkillTree.value = st;
-  currentSkill.value = null;
-  toggle('contents/skillEffect', false);
-  updateRouteParam(st.skillTreeId);
-};
+  currentSkillTree.value = st
+  currentSkill.value = null
+  toggle('contents/skillEffect', false)
+  updateRouteParam(st.skillTreeId)
+}
 
 /** TODO: skill will never be LevelSkill */
 const selectCurrentSkill = (skill: Skill | LevelSkill, syncParent = false) => {
   if (skill instanceof LevelSkill) {
-    return;
+    return
   }
   if (syncParent) {
-    currentSkillTreeCategory.value = skill.parent.parent;
-    currentSkillTree.value = skill.parent;
+    currentSkillTreeCategory.value = skill.parent.parent
+    currentSkillTree.value = skill.parent
   }
-  currentSkill.value = skill;
-  toggle('contents/skillEffect', true);
-  jumpToSkillEffect();
+  currentSkill.value = skill
+  toggle('contents/skillEffect', true)
+  jumpToSkillEffect()
 
-  updateRouteParam(skill.skillId);
-};
+  updateRouteParam(skill.skillId)
+}
 
 const selectCurrentSkillFromSearch = (skill: Skill) => {
-  toggle('contents/search');
-  selectCurrentSkill(skill, true);
-};
+  toggle('contents/search')
+  selectCurrentSkill(skill, true)
+}
 
 if (route.params.skillId) {
-  const skillId = route.params.skillId as string;
+  const skillId = route.params.skillId as string
   skillId.split('-').every((idStr, idx) => {
-    const id = parseInt(idStr, 10);
+    const id = parseInt(idStr, 10)
     if (idx === 0) {
-      const stc = skillRoot.value.skillTreeCategorys.find(item => item.id === id);
+      const stc = skillRoot.value.skillTreeCategorys.find(item => item.id === id)
       if (stc) {
-        selectCurrentSkillTreeCategory(stc);
-        return true;
+        selectCurrentSkillTreeCategory(stc)
+        return true
       }
     } else if (idx === 1) {
-      const st = currentSkillTreeCategory.value!.skillTrees.find(item => item.id === id);
+      const st = currentSkillTreeCategory.value!.skillTrees.find(item => item.id === id)
       if (st) {
-        selectCurrentSkillTree(st);
-        return true;
+        selectCurrentSkillTree(st)
+        return true
       }
     } else if (idx === 2) {
-      const skill = currentSkillTree.value!.skills.find(item => item.id === id);
+      const skill = currentSkillTree.value!.skills.find(item => item.id === id)
       if (skill) {
-        selectCurrentSkill(skill);
-        return true;
+        selectCurrentSkill(skill)
+        return true
       }
     }
-    return false;
-  });
+    return false
+  })
 }
 
 const currentEquipment: Ref<EquipmentRestriction> = ref({
   main: null,
   sub: null,
   body: null,
-});
+})
 
 const {
   computingContainer,
   currentSkillItem,
-} = setupComputingContainer(currentSkill);
+} = setupComputingContainer(currentSkill)
 
 const currentSkillEffectItem = computed(() => {
   if (!currentSkillItem.value) {
-    return null;
+    return null
   }
-  return currentSkillItem.value.findEffectItem(currentEquipment.value) || null;
-});
+  return currentSkillItem.value.findEffectItem(currentEquipment.value) || null
+})
 </script>

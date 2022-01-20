@@ -13,7 +13,7 @@ export default {
       default: false,
     },
   },
-};
+}
 </script>
 
 <style lang="postcss" scoped>

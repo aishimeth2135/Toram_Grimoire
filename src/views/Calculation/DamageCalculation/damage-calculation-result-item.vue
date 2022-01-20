@@ -16,17 +16,17 @@
 </template>
 
 <script lang="ts" setup>
-import { toRefs } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { toRefs } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import type { ResultModeItem } from './setup';
+import type { ResultModeItem } from './setup'
 
 interface Props {
   resultItem: ResultModeItem;
 }
 
-const props = defineProps<Props>();
-const { resultItem } = toRefs(props);
-const { t } = useI18n();
+const props = defineProps<Props>()
+const { resultItem } = toRefs(props)
+const { t } = useI18n()
 </script>
 

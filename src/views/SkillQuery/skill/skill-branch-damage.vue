@@ -22,23 +22,23 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, toRefs } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { ComponentPropsType } from '@/shared/utils/type';
+import { ComponentPropsType } from '@/shared/utils/type'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
-import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue';
-import SkillDamageFormula from './layouts/skill-damage-formula.vue';
-import SkillBranchExtraColumn from './layouts/skill-branch-extra-column.vue';
+import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
+import SkillDamageFormula from './layouts/skill-damage-formula.vue'
+import SkillBranchExtraColumn from './layouts/skill-branch-extra-column.vue'
 
-import DamageHandler from './branch-handlers/DamageHandler';
-import ExtraHandler from './branch-handlers/ExtraHandler';
-import { TAG_BUTTON_CLASS_NAME } from '../utils';
-import DisplayDataContainer from './branch-handlers/utils/DisplayDataContainer';
-import { ExtraSuffixBranchData } from './setup';
+import DamageHandler from './branch-handlers/DamageHandler'
+import ExtraHandler from './branch-handlers/ExtraHandler'
+import { TAG_BUTTON_CLASS_NAME } from '../utils'
+import DisplayDataContainer from './branch-handlers/utils/DisplayDataContainer'
+import { ExtraSuffixBranchData } from './setup'
 
 const ELEMENT_ICON_MAPPING = {
   'neutral': 'bx-bx-circle',
@@ -48,45 +48,45 @@ const ELEMENT_ICON_MAPPING = {
   'wind': 'simple-icons:tailwindcss',
   'light': 'carbon-light',
   'dark': 'bx-bx-moon',
-};
+}
 
 interface Props {
   branchItem: SkillBranchItem;
 }
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const props = defineProps<Props>();
-const { branchItem } = toRefs(props);
+const props = defineProps<Props>()
+const { branchItem } = toRefs(props)
 
-const container = computed(() => DamageHandler(branchItem.value));
+const container = computed(() => DamageHandler(branchItem.value))
 
 const nameProps = computed(() => {
-  const res = [container.value.get('damage_type')];
+  const res = [container.value.get('damage_type')]
   if (container.value.get('type')) {
-    res.push(container.value.get('type'));
+    res.push(container.value.get('type'))
   }
-  return res;
-});
+  return res
+})
 
 const getAilmentText = (dataContainer: DisplayDataContainer) => {
   return t('skill-query.branch.damage.ailment-caption', {
     chance: dataContainer.get('ailment_chance'),
     name: `<span class="${TAG_BUTTON_CLASS_NAME}">${dataContainer.get('ailment_name')}</span>`,
-  });
-};
+  })
+}
 
 const getElementIcon = (value: string) => {
-  return ELEMENT_ICON_MAPPING[value as keyof typeof ELEMENT_ICON_MAPPING] || 'bx-bx-circle';
-};
+  return ELEMENT_ICON_MAPPING[value as keyof typeof ELEMENT_ICON_MAPPING] || 'bx-bx-circle'
+}
 
 const getElementCaption = (value: string) => {
-  const str = `<span class="text-light-3">${t('skill-query.branch.damage.element.' + value)}</span>`;
-  return t('skill-query.branch.apply-element', { element: str });
-};
+  const str = `<span class="text-light-3">${t('skill-query.branch.damage.element.' + value)}</span>`
+  return t('skill-query.branch.apply-element', { element: str })
+}
 
 const subContents = computed(() => {
-  const result = [] as NonNullable<ComponentPropsType<typeof SkillBranchLayoutNormal>['subContents']>;
+  const result = [] as NonNullable<ComponentPropsType<typeof SkillBranchLayoutNormal>['subContents']>
   result.push({
     key: 'title',
     icon: 'bx-bx-game',
@@ -96,12 +96,12 @@ const subContents = computed(() => {
   }, {
     key: 'is_place',
     icon: 'emojione-monotone:heavy-large-circle',
-  });
+  })
   if (branchItem.value.attr('title') !== 'each') {
     result.push({
       key: 'frequency',
       icon: 'bi-circle-square',
-    });
+    })
   }
   if (container.value.getValue('duration') !== '0' && container.value.getValue('cycle') !== '0') {
     result.push({
@@ -111,7 +111,7 @@ const subContents = computed(() => {
         duration: container.value.get('duration'),
         cycle: container.value.get('cycle'),
       }),
-    });
+    })
   }
   result.push({
     key: '@proration/damage',
@@ -123,22 +123,22 @@ const subContents = computed(() => {
     icon: 'ri-error-warning-line',
     title: container.value.get('@proration/proration: title'),
     value: container.value.get('@proration/proration'),
-  });
+  })
   const getBoolIcon = (value: string): string => {
     const mapping = {
       '1': 'ic:round-check-circle-outline',
       '0': 'jam:close-circle',
       'none': 'bx:bx-help-circle',
-    };
-    return mapping[value as keyof typeof mapping];
-  };
+    }
+    return mapping[value as keyof typeof mapping]
+  }
   result.push({
     key: 'range_damage',
     icon: getBoolIcon(branchItem.value.attr('range_damage')),
   }, {
     key: 'unsheathe_damage',
     icon: getBoolIcon(branchItem.value.attr('unsheathe_damage')),
-  });
+  })
   if (container.value.get('frequency') && parseInt(container.value.get('frequency'), 10) > 1) {
     result.push({
       key: 'judgment',
@@ -146,10 +146,10 @@ const subContents = computed(() => {
     }, {
       key: 'frequency_judgment',
       icon: 'ic-outline-info',
-    });
+    })
   }
-  return result;
-});
+  return result
+})
 
 const extraSuffixBranchDatas = computed(() => {
   return branchItem.value.suffixBranches
@@ -160,29 +160,29 @@ const extraSuffixBranchDatas = computed(() => {
       suffix.stats.length > 0
     ))
     .map((suffix, idx) => {
-      const dataContainer = ExtraHandler(suffix);
+      const dataContainer = ExtraHandler(suffix)
       const baseData: ExtraSuffixBranchData = {
         id: idx.toString(),
         icon: 'eva-checkmark-circle-2-outline',
         title: dataContainer.get('condition'),
-      };
+      }
       if (dataContainer.get('target')) {
-        baseData.titleProps = [dataContainer.get('target')];
+        baseData.titleProps = [dataContainer.get('target')]
       }
       if (dataContainer.get('caption')) {
-        baseData.text = dataContainer.get('caption');
+        baseData.text = dataContainer.get('caption')
       } else if (dataContainer.get('ailment_name')) {
-        baseData.text = getAilmentText(dataContainer);
+        baseData.text = getAilmentText(dataContainer)
       } else if (dataContainer.get('element')) {
-        baseData.text = getElementCaption(dataContainer.get('element'));
+        baseData.text = getElementCaption(dataContainer.get('element'))
       } else {
-        baseData.statContainers = dataContainer.statContainers;
+        baseData.statContainers = dataContainer.statContainers
       }
-      return baseData;
-    });
-});
+      return baseData
+    })
+})
 
 const hasArea = computed(() => {
-  return container.value.getOrigin('type') === 'AOE';
-});
+  return container.value.getOrigin('type') === 'AOE'
+})
 </script>

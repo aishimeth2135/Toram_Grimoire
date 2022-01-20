@@ -40,10 +40,10 @@ export default {
   computed: {
     isSingleValue() {
       return this.showData['@extra-value-list'].length === 0 &&
-        this.showData['@--data-container-records'].find(p => p.key === 'constant').isNumberValue();
+        this.showData['@--data-container-records'].find(p => p.key === 'constant').isNumberValue()
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

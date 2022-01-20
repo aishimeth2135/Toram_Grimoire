@@ -1,30 +1,30 @@
 <script>
-import { Transition } from 'vue';
-import { h, mergeProps } from 'vue';
+import { Transition } from 'vue'
+import { h, mergeProps } from 'vue'
 
-import Fade from './transition/fade.vue';
+import Fade from './transition/fade.vue'
 
 function CyTransition(props, context) {
   const getComponent = () => {
-    const type = props.type;
-    const main = type.split('-')[0];
+    const type = props.type
+    const main = type.split('-')[0]
     if (main === 'fade') {
-      return Fade;
+      return Fade
     } else {
-      console.warn('[cy-transition] unknow type');
-      return Transition;
+      console.warn('[cy-transition] unknow type')
+      return Transition
     }
-  };
+  }
 
   const attrs = mergeProps({
     name: props.type,
-  }, context.attrs);
+  }, context.attrs)
 
   return h(
     getComponent(),
     attrs,
     context.slots,
-  );
+  )
 }
 
 CyTransition.props = {
@@ -32,7 +32,7 @@ CyTransition.props = {
     type: String,
     required: true,
   },
-};
+}
 
-export default CyTransition;
+export default CyTransition
 </script>

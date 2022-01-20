@@ -1,21 +1,21 @@
 
-import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router'
 
-import { DataStoreIds } from '@/stores/app/datas/enums';
+import { DataStoreIds } from '@/stores/app/datas/enums'
 
-import { ViewInit } from '@/shared/services/ViewInit';
+import { ViewInit } from '@/shared/services/ViewInit'
 
-import ViewWrapper from './view-wrapper.vue';
+import ViewWrapper from './view-wrapper.vue'
 
-const EnchantSimulatorView = () => import(/* webpackChunkName: "enchant-simulator" */ '@/views/Enchant/EnchantSimulator/index.vue');
-const EnchantDollView = () => import(/* webpackChunkName: "enchant-doll" */ '@/views/Enchant/EnchantDoll/index.vue');
+const EnchantSimulatorView = () => import(/* webpackChunkName: "enchant-simulator" */ '@/views/Enchant/EnchantSimulator/index.vue')
+const EnchantDollView = () => import(/* webpackChunkName: "enchant-doll" */ '@/views/Enchant/EnchantDoll/index.vue')
 
 export default {
   name: 'Enchant',
   path: '/enchant',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
-    ViewInit(DataStoreIds.Stats, DataStoreIds.Enchant).then(next);
+    ViewInit(DataStoreIds.Stats, DataStoreIds.Enchant).then(next)
   },
   meta: {
     leftMenuViewButtons: [{
@@ -43,4 +43,4 @@ export default {
       title: 'app.page-title.enchant-doll',
     },
   }],
-} as RouteRecordRaw;
+} as RouteRecordRaw

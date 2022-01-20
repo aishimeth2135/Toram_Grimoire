@@ -1,35 +1,35 @@
 export default class MapContainer<AttrMap extends Record<string, any>> {
-  private _attrMap: AttrMap;
+  private _attrMap: AttrMap
 
   constructor(mapOrKeys?: string[] | AttrMap) {
     if (Array.isArray(mapOrKeys)) {
-      this._attrMap = keysToAttrMap<AttrMap>(mapOrKeys);
+      this._attrMap = keysToAttrMap<AttrMap>(mapOrKeys)
     } else if (typeof mapOrKeys === 'object') {
-      this._attrMap = mapOrKeys;
+      this._attrMap = mapOrKeys
     } else {
-      this._attrMap = {} as AttrMap;
+      this._attrMap = {} as AttrMap
     }
   }
 
   append(...keys: (keyof AttrMap)[]) {
-    keys.forEach(key => this._attrMap[key] = (null) as AttrMap[keyof AttrMap]);
+    keys.forEach(key => this._attrMap[key] = (null) as AttrMap[keyof AttrMap])
   }
 
   remove(key: keyof AttrMap) {
-    delete this._attrMap[key];
+    delete this._attrMap[key]
   }
 
   set(key: keyof AttrMap, value: AttrMap[keyof AttrMap]) {
-    this._attrMap[key] = value;
+    this._attrMap[key] = value
   }
 
   get value() {
-    return this._attrMap;
+    return this._attrMap
   }
 }
 
 function keysToAttrMap<T extends Record<string, any>>(keys: string[]): T {
-  const newAttrMap = {} as Record<string, any>;
-  keys.forEach(key => newAttrMap[key] = null);
-  return newAttrMap as T;
+  const newAttrMap = {} as Record<string, any>
+  keys.forEach(key => newAttrMap[key] = null)
+  return newAttrMap as T
 }

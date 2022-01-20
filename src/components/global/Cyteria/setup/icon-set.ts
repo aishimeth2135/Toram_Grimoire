@@ -5,6 +5,6 @@ const IconSetProps = {
   iconSrc: {
     type: String,
   },
-};
+}
 
-export { IconSetProps };
+export { IconSetProps }

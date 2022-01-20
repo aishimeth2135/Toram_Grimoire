@@ -19,16 +19,16 @@ export default {
   computed: {
     position() {
       if (!this.positionElement)
-        return { };
-      const rect = this.positionElement.getBoundingClientRect();
+        return { }
+      const rect = this.positionElement.getBoundingClientRect()
 
-      const len2bottom = window.innerHeight - rect.bottom;
+      const len2bottom = window.innerHeight - rect.bottom
       return rect.top >= len2bottom ?
         { bottom: (len2bottom + rect.height + 10) + 'px' } :
-        { top: (rect.top + rect.height + 10) + 'px' };
+        { top: (rect.top + rect.height + 10) + 'px' }
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

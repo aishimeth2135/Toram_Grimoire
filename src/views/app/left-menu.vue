@@ -39,36 +39,36 @@
 <script lang="ts">
 export default {
   name: 'AppLeftMenu',
-};
+}
 </script>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
-import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 
-import { useLeftMenuStore } from '@/stores/app/left-menu';
+import { useLeftMenuStore } from '@/stores/app/left-menu'
 
-import CY from '@/shared/utils/Cyteria';
+import CY from '@/shared/utils/Cyteria'
 
-import Notify from '@/setup/Notify';
+import Notify from '@/setup/Notify'
 
-const router = useRouter();
-const { t } = useI18n();
+const router = useRouter()
+const { t } = useI18n()
 
-const leftMenuStore = useLeftMenuStore();
+const leftMenuStore = useLeftMenuStore()
 
 const {
   viewButtons,
   visible,
-} = storeToRefs(leftMenuStore);
+} = storeToRefs(leftMenuStore)
 
-const { notify } = Notify();
+const { notify } = Notify()
 
 const copyCurrentUrl = () => {
-  CY.copyToClipboard(window.location.href);
-  notify(t('app.features.copy-url-to-clipboard-success-tips'));
-};
+  CY.copyToClipboard(window.location.href)
+  notify(t('app.features.copy-url-to-clipboard-success-tips'))
+}
 </script>
 
 <style lang="postcss" scoped>

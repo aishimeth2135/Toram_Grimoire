@@ -54,41 +54,41 @@
 </template>
 
 <script>
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n'
 
-import { useCharacterStore } from '@/stores/views/character';
+import { useCharacterStore } from '@/stores/views/character'
 
-import CY from '@/shared/utils/Cyteria';
+import CY from '@/shared/utils/Cyteria'
 
 export default {
   RegisterLang: 'Character Simulator/save-load control',
   emits: ['manual-auto-save', 'manual-auto-load', 'close-auto-save'],
   setup() {
-    const { t } = useI18n();
-    const store = useCharacterStore();
+    const { t } = useI18n()
+    const store = useCharacterStore()
     return {
       t,
       store,
-    };
+    }
   },
   data() {
     return {
       deleteCounter: 0,
-    };
+    }
   },
   computed: {
     storageAvailable() {
-      return CY.storageAvailable('localStorage');
+      return CY.storageAvailable('localStorage')
     },
   },
   methods: {
     deleteAllSavedData() {
-      this.store.deleteAllSavedData();
-      this.$emit('close-auto-save');
-      this.$notify(this.$lang('Message: deleta all data'));
+      this.store.deleteAllSavedData()
+      this.$emit('close-auto-save')
+      this.$notify(this.$lang('Message: deleta all data'))
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

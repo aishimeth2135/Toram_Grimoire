@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { Icon } from '@iconify/vue';
+import { Icon } from '@iconify/vue'
 
 export default {
   name: 'CyIcon',
@@ -42,7 +42,7 @@ export default {
       validation: v => ['iconify', 'custom', 'image'].includes(v),
     },
   },
-};
+}
 </script>
 
 <style lang="postcss" scoped>

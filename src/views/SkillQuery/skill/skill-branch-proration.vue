@@ -16,22 +16,22 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, toRefs } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
-import ProrationHandler from './branch-handlers/ProrationHandler';
+import ProrationHandler from './branch-handlers/ProrationHandler'
 
 interface Props {
   branchItem: SkillBranchItem;
 }
 
-const props = defineProps<Props>();
-const { branchItem } = toRefs(props);
+const props = defineProps<Props>()
+const { branchItem } = toRefs(props)
 
-const container = computed(() => ProrationHandler(branchItem.value));
+const container = computed(() => ProrationHandler(branchItem.value))
 
-const { t } = useI18n();
+const { t } = useI18n()
 </script>
 

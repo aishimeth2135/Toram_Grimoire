@@ -17,22 +17,22 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, toRefs } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
-import ReferenceHandler from './branch-handlers/ReferenceHandler';
+import ReferenceHandler from './branch-handlers/ReferenceHandler'
 
 interface Props {
   branchItem: SkillBranchItem;
 }
 
-const props = defineProps<Props>();
-const { branchItem } = toRefs(props);
+const props = defineProps<Props>()
+const { branchItem } = toRefs(props)
 
-const container = computed(() => ReferenceHandler(branchItem.value));
+const container = computed(() => ReferenceHandler(branchItem.value))
 
-const { t } = useI18n();
+const { t } = useI18n()
 </script>
 

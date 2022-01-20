@@ -145,14 +145,14 @@
 </template>
 
 <script>
-import { useDatasStore } from '@/stores/app/datas';
+import { useDatasStore } from '@/stores/app/datas'
 
-import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment';
-import { StatTypes } from '@/lib/Character/Stat/enums';
+import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
+import { StatTypes } from '@/lib/Character/Stat/enums'
 
-import vue_showStat from '@/components/common/show-stat.vue';
+import vue_showStat from '@/components/common/show-stat.vue'
 
-import init from './init.js';
+import init from './init.js'
 
 
 export default {
@@ -162,31 +162,31 @@ export default {
     'show-stat': vue_showStat,
   },
   setup() {
-    const datasStore = useDatasStore();
-    return { datasStore };
+    const datasStore = useDatasStore()
+    return { datasStore }
   },
   data() {
-    const crystals = this.datasStore.Items.crystals;
+    const crystals = this.datasStore.Items.crystals
     const crystalCategorys = new Array(5).fill().map((_, i) => {
       return {
         id: i,
         crystals: crystals.filter(a => a.category == i).map(p => new EquipmentCrystal(p)),
-      };
-    });
+      }
+    })
 
-    const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier];
+    const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier]
     this.datasStore.Character.statList.forEach(stat => {
-      if (stat.hidden) return;
+      if (stat.hidden) return
       statTypes.forEach(type => {
         if (type === StatTypes.Multiplier && !stat.hasMultiplier)
-          return;
+          return
         stats.push({
           origin: stat,
           text: stat.title(type),
           type,
-        });
-      });
-    });
+        })
+      })
+    })
 
     return {
       crystalCategorys,
@@ -210,53 +210,53 @@ export default {
           selectStatWindowVisible: false,
         },
       },
-    };
+    }
   },
   computed: {
     currentMode() {
-      return this.modeState.modes[this.modeState.currentModeIndex].id;
+      return this.modeState.modes[this.modeState.currentModeIndex].id
     },
     currentStat() {
-      return this.modeState['mode-stats'].currentStat;
+      return this.modeState['mode-stats'].currentStat
     },
     statSearchResult() {
-      const s = this.modeState['mode-stats'];
-      const v = s.searchText.toLowerCase();
+      const s = this.modeState['mode-stats']
+      const v = s.searchText.toLowerCase()
       if (v === '') {
-        return s.stats;
+        return s.stats
       }
-      return s.stats.filter(stat => stat.text.toLowerCase().includes(v));
+      return s.stats.filter(stat => stat.text.toLowerCase().includes(v))
     },
     searchResult() {
-      const res = [];
+      const res = []
       if (this.currentMode === 'normal') {
-        const v = this.modeState['mode-normal'].searchText.toLowerCase();
+        const v = this.modeState['mode-normal'].searchText.toLowerCase()
         if (v === '') {
-          res.push(...this.crystalCategorys);
+          res.push(...this.crystalCategorys)
         }
         else {
           this.crystalCategorys.forEach(cat => {
-            const t = cat.crystals.filter(c => c.name.toLowerCase().includes(v));
+            const t = cat.crystals.filter(c => c.name.toLowerCase().includes(v))
             t.length != 0 && res.push({
               id: cat.id,
               crystals: t,
-            });
-          });
+            })
+          })
         }
       } else if (this.currentMode === 'stats') {
-        const searchStat = this.currentStat;
+        const searchStat = this.currentStat
         if (!searchStat) {
-          return [];
+          return []
         }
         this.crystalCategorys.forEach(cat => {
           const t = cat.crystals
             .filter(c => this.findCrystalStat(searchStat, c))
-            .sort((a, b) => this.findCrystalStat(searchStat, b).value - this.findCrystalStat(searchStat, a).value);
+            .sort((a, b) => this.findCrystalStat(searchStat, b).value - this.findCrystalStat(searchStat, a).value)
           t.length !== 0 && res.push({
             id: cat.id,
             crystals: t,
-          });
-        });
+          })
+        })
       }
 
       res.forEach(cat => {
@@ -264,34 +264,34 @@ export default {
           origin: c,
           imagePath: c.crystalIconPath,
           stat: this.currentStat ? this.findCrystalStat(this.currentStat, c) : null,
-        }));
-      });
+        }))
+      })
 
-      return res;
+      return res
     },
   },
   beforeCreate() {
-    init();
+    init()
   },
   methods: {
     findCrystalStat(from, crystal) {
       return crystal.stats
-        .find(stat => stat.baseName === from.origin.baseName && stat.type === from.type);
+        .find(stat => stat.baseName === from.origin.baseName && stat.type === from.type)
     },
     selectStat(stat) {
-      this.modeState['mode-stats'].currentStat = stat;
-      this.toggleSelectStatWindowVisible(false);
+      this.modeState['mode-stats'].currentStat = stat
+      this.toggleSelectStatWindowVisible(false)
     },
     toggleSelectStatWindowVisible(force) {
-      force = force !== undefined ? !this.modeState['mode-stats'].selectStatWindowVisible : force;
-      this.modeState['mode-stats'].selectStatWindowVisible = force;
+      force = force !== undefined ? !this.modeState['mode-stats'].selectStatWindowVisible : force
+      this.modeState['mode-stats'].selectStatWindowVisible = force
     },
     selectMode(idx) {
-      this.modeState.currentModeIndex = idx;
+      this.modeState.currentModeIndex = idx
     },
     selectCrystal(crystal) {
-      this.currentCrystal = crystal;
+      this.currentCrystal = crystal
     },
   },
-};
+}
 </script>

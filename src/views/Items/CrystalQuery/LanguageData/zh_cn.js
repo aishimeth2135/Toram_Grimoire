@@ -14,5 +14,5 @@ export default function(){
       'select stat: window title': '选择能力',
       'select stat: search placeholder': '搜寻能力',
     },
-  };
+  }
 }

@@ -36,27 +36,27 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, toRefs } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { isNumberString } from '@/shared/utils/string';
+import { isNumberString } from '@/shared/utils/string'
 
-import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer';
+import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer'
 
 interface Props {
   container: DisplayDataContainer;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
-const { container } = toRefs(props);
-const { t } = useI18n();
+const { container } = toRefs(props)
+const { t } = useI18n()
 
-const extraValueList = computed(() => container.value.customDatas.extraValueList as { text: string; value: string }[]);
+const extraValueList = computed(() => container.value.customDatas.extraValueList as { text: string; value: string }[])
 
 const isSingleValue = computed(() => {
-  return extraValueList.value.length === 0 && isNumberString(container.value.containers['constant'].value);
-});
+  return extraValueList.value.length === 0 && isNumberString(container.value.containers['constant'].value)
+})
 </script>
 
 <style lang="postcss" scoped>

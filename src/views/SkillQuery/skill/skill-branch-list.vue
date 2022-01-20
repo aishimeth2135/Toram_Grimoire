@@ -17,26 +17,26 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
+import { computed, toRefs } from 'vue'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer';
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
-import ListHandler from './branch-handlers/ListHandler';
+import ListHandler from './branch-handlers/ListHandler'
 
 interface Props {
   branchItem: SkillBranchItem;
 }
 
-const props = defineProps<Props>();
-const { branchItem } = toRefs(props);
+const props = defineProps<Props>()
+const { branchItem } = toRefs(props)
 
-const containers = computed(() => ListHandler(branchItem.value));
+const containers = computed(() => ListHandler(branchItem.value))
 
-const containerStates = computed(() => containers.value.map((container, iid) => ({ iid, container })));
+const containerStates = computed(() => containers.value.map((container, iid) => ({ iid, container })))
 
 const isTips = computed(() => {
-  return branchItem.value.attrBoolean('is_tips');
-});
+  return branchItem.value.attrBoolean('is_tips')
+})
 </script>
 
 <style lang="postcss" scoped>

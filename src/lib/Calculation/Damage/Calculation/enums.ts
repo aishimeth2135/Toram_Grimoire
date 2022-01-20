@@ -3,4 +3,4 @@ const enum ContainerTypes {
   Options = 'options',
 }
 
-export { ContainerTypes };
+export { ContainerTypes }

@@ -1,21 +1,21 @@
 
-import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router'
 
-import { DataStoreIds } from '@/stores/app/datas/enums';
+import { DataStoreIds } from '@/stores/app/datas/enums'
 
-import { ViewInit } from '@/shared/services/ViewInit';
+import { ViewInit } from '@/shared/services/ViewInit'
 
-import ViewWrapper from './view-wrapper.vue';
+import ViewWrapper from './view-wrapper.vue'
 
-const ItemQueryView = () => import(/* webpackChunkName: "item-query" */ '@/views/Items/ItemQuery/index.vue');
-const CrystalQueryView = () => import(/* webpackChunkName: "crystal-query" */ '@/views/Items/CrystalQuery/index.vue');
+const ItemQueryView = () => import(/* webpackChunkName: "item-query" */ '@/views/Items/ItemQuery/index.vue')
+const CrystalQueryView = () => import(/* webpackChunkName: "crystal-query" */ '@/views/Items/CrystalQuery/index.vue')
 
 export default {
   name: 'Items',
   path: '/items',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
-    ViewInit(DataStoreIds.Stats, DataStoreIds.Items).then(next);
+    ViewInit(DataStoreIds.Stats, DataStoreIds.Items).then(next)
   },
   meta: {
     leftMenuViewButtons: [{
@@ -43,4 +43,4 @@ export default {
       title: 'app.page-title.crystal-query',
     },
   }],
-} as RouteRecordRaw;
+} as RouteRecordRaw

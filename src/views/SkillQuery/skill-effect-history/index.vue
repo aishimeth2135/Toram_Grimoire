@@ -9,13 +9,13 @@
 </template>
 
 <script lang="ts" setup>
-import { SkillEffectItem } from '@/lib/Skill/SkillComputingContainer';
+import { SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
 
-import SkillEffectItemHistory from './skill-effect-history-item.vue';
+import SkillEffectItemHistory from './skill-effect-history-item.vue'
 
 interface Props {
   skillEffectItem: SkillEffectItem;
 }
 
-defineProps<Props>();
+defineProps<Props>()
 </script>

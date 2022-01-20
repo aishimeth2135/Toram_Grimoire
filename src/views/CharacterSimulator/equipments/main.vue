@@ -65,21 +65,21 @@
 </template>
 
 <script>
-import { mapState } from 'pinia';
+import { mapState } from 'pinia'
 
-import { useCharacterStore } from '@/stores/views/character';
+import { useCharacterStore } from '@/stores/views/character'
 
-import { EquipmentFieldTypes } from '@/lib/Character/Character/enums';
-import { CharacterEquipment } from '@/lib/Character/CharacterEquipment';
+import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
-import ToggleService from '@/setup/ToggleService';
+import ToggleService from '@/setup/ToggleService'
 
-import vue_appendEquipments from './append-equipments.vue';
-import vue_browseEquipments from './browse-equipments.vue';
-import vue_createCustomEquipment from './create-custom-equipment.vue';
-import vue_customEquipmentEditor from './custom-equipment-editor.vue';
-import vue_equipmentField from './equipment-field.vue';
-import vue_selectCrystals from './select-crystals.vue';
+import vue_appendEquipments from './append-equipments.vue'
+import vue_browseEquipments from './browse-equipments.vue'
+import vue_createCustomEquipment from './create-custom-equipment.vue'
+import vue_customEquipmentEditor from './custom-equipment-editor.vue'
+import vue_equipmentField from './equipment-field.vue'
+import vue_selectCrystals from './select-crystals.vue'
 
 
 export default {
@@ -94,7 +94,7 @@ export default {
       'appendEquipments': this.appendEquipments,
       'isElementStat': this.isElementStat,
       'setEquipmentProperty': this.setEquipmentProperty,
-    };
+    }
   },
   props: ['characterState'],
   setup() {
@@ -106,14 +106,14 @@ export default {
         'customEquipmentEditor',
         'selectCrystals',
       ],
-    });
-    const store = useCharacterStore();
+    })
+    const store = useCharacterStore()
 
     return {
       window,
       toggle,
       store,
-    };
+    }
   },
   data() {
     return {
@@ -123,46 +123,46 @@ export default {
       currentCustomEquipment: null,
       currentSelectCrystalsEquipment: null,
       elementStatIds: CharacterEquipment.elementStatIds,
-    };
+    }
   },
   computed: {
     ...mapState(useCharacterStore, ['equipments']),
   },
   methods: {
     isElementStat(baseName) {
-      return this.elementStatIds.includes(baseName);
+      return this.elementStatIds.includes(baseName)
     },
     openSelectCrystals(eq) {
-      this.currentSelectCrystalsEquipment = eq;
-      this.toggle('window/selectCrystals', true);
+      this.currentSelectCrystalsEquipment = eq
+      this.toggle('window/selectCrystals', true)
     },
     openCustomEquipmentEditor(eq) {
-      this.currentCustomEquipment = eq;
-      this.toggle('window/customEquipmentEditor', true);
+      this.currentCustomEquipment = eq
+      this.toggle('window/customEquipmentEditor', true)
     },
     appendEquipments(eqs) {
-      this.store.appendEquipments(eqs);
+      this.store.appendEquipments(eqs)
     },
     selectFieldEquipment(field) {
       this.browseEquipmentsState.action = {
         type: 'select-field-equipment',
         targetField: field,
-      };
-      this.toggle('window/browseEquipments', true);
+      }
+      this.toggle('window/browseEquipments', true)
     },
     removeFieldEquipment(field) {
-      field.removeEquipment();
+      field.removeEquipment()
       if (field.type === EquipmentFieldTypes.MainWeapon) {
         this.characterState.origin
           .equipmentField(EquipmentFieldTypes.SubWeapon)
-          .removeEquipment();
+          .removeEquipment()
       }
     },
     convertEquipmentData(item) {
-      return CharacterEquipment.fromOriginEquipment(item);
+      return CharacterEquipment.fromOriginEquipment(item)
     },
     setEquipmentProperty(eq, propName, v) {
-      eq[propName] = v;
+      eq[propName] = v
     },
   },
   components: {
@@ -173,7 +173,7 @@ export default {
     'custom-equipment-editor': vue_customEquipmentEditor,
     'select-crystals': vue_selectCrystals,
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

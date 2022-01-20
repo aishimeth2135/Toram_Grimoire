@@ -1,5 +1,5 @@
-const path = require('path');
-const { RetryChunkLoadPlugin } = require('webpack-retry-chunk-load-plugin');
+const path = require('path')
+const { RetryChunkLoadPlugin } = require('webpack-retry-chunk-load-plugin')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 /**
@@ -32,7 +32,7 @@ module.exports = {
       performance: {
         hints: false,
       },
-    };
+    }
     if (process.env.NODE_ENV === 'production') {
       return {
         ...resultConfig,
@@ -49,11 +49,11 @@ module.exports = {
             maxRetries: 3,
           }),
         ],
-      };
+      }
     } else {
       return {
         ...resultConfig,
-      };
+      }
     }
   },
   chainWebpack(config) {
@@ -62,7 +62,7 @@ module.exports = {
       .rule('yaml')
         .test(/\.ya?ml$/)
         .use('yaml')
-          .loader('js-yaml-loader');
+          .loader('js-yaml-loader')
     /* eslint-enable @typescript-eslint/indent */
   },
   css: {
@@ -141,4 +141,4 @@ module.exports = {
       exclude: [/_redirects/],
     },
   },
-};
+}

@@ -84,70 +84,70 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, toRefs } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { SkillTree } from '@/lib/Skill/Skill';
-import SkillComputingContainer, { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer';
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums';
+import { SkillTree } from '@/lib/Skill/Skill'
+import SkillComputingContainer, { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer'
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 
-import ToggleService from '@/setup/ToggleService';
+import ToggleService from '@/setup/ToggleService'
 
-import { setupEquipmentSelect, setupSkillLevel } from './setup';
+import { setupEquipmentSelect, setupSkillLevel } from './setup'
 
 interface Props {
   skillTree: SkillTree;
   skillComputingContainer: SkillComputingContainer;
   selectedEquipment: EquipmentRestriction;
 }
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
 interface Emits {
   (event: 'update:selected-equipment', value: EquipmentRestriction): void;
 }
-const emit = defineEmits<Emits>();
+const emit = defineEmits<Emits>()
 
-const { skillTree, skillComputingContainer: computingContainer } = toRefs(props);
+const { skillTree, skillComputingContainer: computingContainer } = toRefs(props)
 
 const skillLevel = computed<number>({
   get() {
-    return computingContainer.value.vars.skillLevel;
+    return computingContainer.value.vars.skillLevel
   },
   set(value) {
-    computingContainer.value.vars.skillLevel = value;
+    computingContainer.value.vars.skillLevel = value
   },
-});
+})
 const characterLevel = computed<number>({
   get() {
-    return computingContainer.value.vars.characterLevel;
+    return computingContainer.value.vars.characterLevel
   },
   set(value) {
-    computingContainer.value.vars.characterLevel = value;
+    computingContainer.value.vars.characterLevel = value
   },
-});
+})
 const formulaDisplayMode = computed<FormulaDisplayModes>({
   get() {
-    return computingContainer.value.config.formulaDisplayMode;
+    return computingContainer.value.config.formulaDisplayMode
   },
   set(value) {
-    computingContainer.value.config.formulaDisplayMode = value;
+    computingContainer.value.config.formulaDisplayMode = value
   },
-});
+})
 
 const { contents, toggle } = ToggleService({
   contents: ['advancedMenu'] as const,
-});
+})
 
 const {
   equipmentOptions,
   getEquipmentText,
   getEquipmentImagePath,
   toggleCurrentEquipment,
-} = setupEquipmentSelect(skillTree, emit);
+} = setupEquipmentSelect(skillTree, emit)
 
 const {
   toggleSkillLevel,
-} = setupSkillLevel(skillLevel);
+} = setupSkillLevel(skillLevel)
 
-const { t } = useI18n();
+const { t } = useI18n()
 </script>

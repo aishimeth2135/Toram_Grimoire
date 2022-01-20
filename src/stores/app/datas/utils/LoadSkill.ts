@@ -1,16 +1,16 @@
 
-import Grimoire from '@/shared/Grimoire';
-import { HandleLanguageData } from '@/shared/services/Language';
+import Grimoire from '@/shared/Grimoire'
+import { HandleLanguageData } from '@/shared/services/Language'
 
-import SkillSystem from '@/lib/Skill';
-import { SkillElement, SkillTreeCategory, SkillTree, Skill, SkillBranch, SkillEffect, SkillEffectHistory } from '@/lib/Skill/Skill';
-import type { SkillEffectBase } from '@/lib/Skill/Skill';
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums';
+import SkillSystem from '@/lib/Skill'
+import { SkillElement, SkillTreeCategory, SkillTree, Skill, SkillBranch, SkillEffect, SkillEffectHistory } from '@/lib/Skill/Skill'
+import type { SkillEffectBase } from '@/lib/Skill/Skill'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
-import type { CsvData, LangCsvData } from './DownloadDatas';
+import type { CsvData, LangCsvData } from './DownloadDatas'
 
 function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
-  const sr = skillSystem.skillRoot;
+  const sr = skillSystem.skillRoot
 
   const
     /* all */
@@ -54,135 +54,135 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
     HISTORY_EFFECT = {
       TARGET_EFFECT_ID: 3,
       DATE: 4,
-    };
+    }
 
-  let curElement: string = '';
-  let curSkillTreeCategory: SkillTreeCategory;
-  let curSkillTree: SkillTree;
-  let curSkill: Skill;
-  let curSkillEffect: SkillEffectBase | void;
-  let curSkillBranch: SkillBranch | void;
+  let curElement: string = ''
+  let curSkillTreeCategory: SkillTreeCategory
+  let curSkillTree: SkillTree
+  let curSkill: Skill
+  let curSkillEffect: SkillEffectBase | void
+  let curSkillBranch: SkillBranch | void
 
   // language data
   HandleLanguageData(datas, {
     [EFFECT_BRANCH_ATTRIBUTE_VALUE]: LANG_DATA.EFFECT_BRANCH_ATTRIBUTE_VALUE,
-  });
-  const csvData = datas[0];
+  })
+  const csvData = datas[0]
 
   const checkNull = <T extends number | string>(value: T, nullValue: T) => {
-    return value === nullValue ? null : value;
-  };
+    return value === nullValue ? null : value
+  }
 
   /**
    * if branch id is empty, clone branches from previous effect
    */
   const checkEffectEmpty = (row: string[], previewEffect: SkillEffectBase | void, currentEffect: SkillEffectBase) => {
     if (previewEffect && previewEffect !== currentEffect && !row[EFFECT_BRANCH_ID]) {
-      previewEffect.branches.forEach(bch => currentEffect.appendSkillBranchFrom(bch));
-      return true;
+      previewEffect.branches.forEach(bch => currentEffect.appendSkillBranchFrom(bch))
+      return true
     }
-    return false;
-  };
+    return false
+  }
 
   csvData.forEach(function (row, index) {
     try {
       if (index === 0 || row.every(item => item === '')) {
-        return;
+        return
       }
       //console.log(row);
 
-      const id = row[ID] !== '' ? parseInt(row[ID], 10) : null;
+      const id = row[ID] !== '' ? parseInt(row[ID], 10) : null
       if (id !== null) {
-        const confirmName = row[CONFIRM];
+        const confirmName = row[CONFIRM]
         if (confirmName === CONFIRM_SKILL_TREE_CATEGORY) {
-          const name = row[SKILL_TREE_CATEGORY_NAME];
-          curSkillTreeCategory = sr.appendSkillTreeCategory(id, name);
-          curElement = 'tree-category';
+          const name = row[SKILL_TREE_CATEGORY_NAME]
+          curSkillTreeCategory = sr.appendSkillTreeCategory(id, name)
+          curElement = 'tree-category'
         } else if (confirmName === CONFIRM_SKILL_TREE) {
-          const name = row[SKILL_TREE_NAME];
-          curSkillTree = curSkillTreeCategory.appendSkillTree(id, name);
-          curElement = 'tree';
+          const name = row[SKILL_TREE_NAME]
+          curSkillTree = curSkillTreeCategory.appendSkillTree(id, name)
+          curElement = 'tree'
           if (row[SKILL_TREE_SIMULATOR_FLAG])
-            curSkillTree.attrs.simulatorFlag = true;
+            curSkillTree.attrs.simulatorFlag = true
         } else {
           if (confirmName !== '') {
-            const name = row[NAME];
-            curSkill = curSkillTree.appendSkill(id, name);
-            curElement = 'skill';
+            const name = row[NAME]
+            curSkill = curSkillTree.appendSkill(id, name)
+            curElement = 'skill'
           }
 
           const mainWeapon = MAIN_WEAPON_LIST.indexOf(row[MAIN_WEAPON]),
             subWeapon = SUB_WEAPON_LIST.indexOf(row[SUB_WEAPON]),
             bodyArmor = BODY_ARMOR_LIST.indexOf(row[BODY_ARMOR]),
-            defaultSelected = DEFAULT_SET_LIST.indexOf(row[DEFAULT_SET]);
+            defaultSelected = DEFAULT_SET_LIST.indexOf(row[DEFAULT_SET])
           if (defaultSelected === -1) {
-            return;
+            return
           }
-          const previousEffect = curSkillEffect;
+          const previousEffect = curSkillEffect
           if (defaultSelected !== 4) {
-            curSkillEffect = curSkill.appendSkillEffect(mainWeapon, subWeapon, bodyArmor);
+            curSkillEffect = curSkill.appendSkillEffect(mainWeapon, subWeapon, bodyArmor)
           } else {
-            const targetEffectId = row[HISTORY_EFFECT.TARGET_EFFECT_ID] ? parseInt(row[HISTORY_EFFECT.TARGET_EFFECT_ID], 10) : -1;
-            curSkillEffect = curSkill.appendSkillEffectHistory(targetEffectId, row[HISTORY_EFFECT.DATE]);
+            const targetEffectId = row[HISTORY_EFFECT.TARGET_EFFECT_ID] ? parseInt(row[HISTORY_EFFECT.TARGET_EFFECT_ID], 10) : -1
+            curSkillEffect = curSkill.appendSkillEffectHistory(targetEffectId, row[HISTORY_EFFECT.DATE])
           }
-          curElement = 'effect';
+          curElement = 'effect'
           if (curSkillEffect && curSkillEffect instanceof SkillEffect) {
             if (defaultSelected === 0 || defaultSelected === 2) {
-              curSkill.setDefaultEffect(curSkillEffect);
+              curSkill.setDefaultEffect(curSkillEffect)
             }
             if (defaultSelected === 2 || defaultSelected === 3) {
-              curSkillEffect.equipmentOperator = 1;
+              curSkillEffect.equipmentOperator = 1
             }
-            curSkillEffect.attributes.mpCost = checkNull(row[MP_COST], '');
-            curSkillEffect.attributes.range = checkNull(row[RANGE], '');
-            curSkillEffect.attributes.skillType = checkNull(SKILL_TYPE_LIST.indexOf(row[SKILL_TYPE]), -1);
-            curSkillEffect.attributes.inCombo = checkNull(IN_COMBO_LIST.indexOf(row[IN_COMBO]), -1);
-            curSkillEffect.attributes.actionTime = checkNull(ACTION_TIME_LIST.indexOf(row[ACTION_TIME]), -1);
-            curSkillEffect.attributes.castingTime = checkNull(row[CASTING_TIME], '');
+            curSkillEffect.attributes.mpCost = checkNull(row[MP_COST], '')
+            curSkillEffect.attributes.range = checkNull(row[RANGE], '')
+            curSkillEffect.attributes.skillType = checkNull(SKILL_TYPE_LIST.indexOf(row[SKILL_TYPE]), -1)
+            curSkillEffect.attributes.inCombo = checkNull(IN_COMBO_LIST.indexOf(row[IN_COMBO]), -1)
+            curSkillEffect.attributes.actionTime = checkNull(ACTION_TIME_LIST.indexOf(row[ACTION_TIME]), -1)
+            curSkillEffect.attributes.castingTime = checkNull(row[CASTING_TIME], '')
             if (checkEffectEmpty(row, previousEffect, curSkillEffect)) {
-              return;
+              return
             }
           }
         }
       } else if (curSkillEffect instanceof SkillEffectHistory && row[HISTORY_EFFECT.DATE] !== '') {
-        const previousEffect = curSkillEffect;
-        curSkillEffect = curSkill.appendSkillEffectHistory(curSkillEffect.parentEffect.effectId, row[HISTORY_EFFECT.DATE]);
+        const previousEffect = curSkillEffect
+        curSkillEffect = curSkill.appendSkillEffectHistory(curSkillEffect.parentEffect.effectId, row[HISTORY_EFFECT.DATE])
         if (checkEffectEmpty(row, previousEffect, curSkillEffect!)) {
-          return;
+          return
         }
       }
       if (curElement !== 'effect' || !curSkillEffect) {
-        return;
+        return
       }
-      const bid = row[EFFECT_BRANCH_ID] || null;
+      const bid = row[EFFECT_BRANCH_ID] || null
       if (bid !== null) {
-        const bidNum: number = bid === '-' ? -1 : parseInt(row[EFFECT_BRANCH_ID], 10);
-        const bname = row[EFFECT_BRANCH_NAME];
-        curSkillBranch = curSkillEffect.appendSkillBranch(bidNum, bname as SkillBranchNames);
+        const bidNum: number = bid === '-' ? -1 : parseInt(row[EFFECT_BRANCH_ID], 10)
+        const bname = row[EFFECT_BRANCH_NAME]
+        curSkillBranch = curSkillEffect.appendSkillBranch(bidNum, bname as SkillBranchNames)
       }
       if (!curSkillBranch) {
-        return;
+        return
       }
       const propName = row[EFFECT_BRANCH_ATTRIBUTE_NAME],
-        propValue = row[EFFECT_BRANCH_ATTRIBUTE_VALUE];
+        propValue = row[EFFECT_BRANCH_ATTRIBUTE_VALUE]
       if (propName !== '') {
         if (!Grimoire.Character.findStatBase(propName))
-          curSkillBranch.appendBranchAttribute(propName, propValue);
+          curSkillBranch.appendBranchAttribute(propName, propValue)
         else
-          curSkillBranch.appendStat(propName, propValue, row[EFFECT_BRANCH_ATTRIBUTE_EXTRA]);
+          curSkillBranch.appendStat(propName, propValue, row[EFFECT_BRANCH_ATTRIBUTE_EXTRA])
       }
     }
     catch (e) {
-      console.warn('[LoadSkill] unable to parse row:', row);
+      console.warn('[LoadSkill] unable to parse row:', row)
       //console.log(e);
       // console.log(row);
     }
-  });
+  })
 }
 
 
 function loadSkillMain(skillSystem: SkillSystem, datas: LangCsvData) {
-  const sr = skillSystem.skillRoot;
+  const sr = skillSystem.skillRoot
 
   const CATEGORY = 0,
     ID = 1,
@@ -195,69 +195,69 @@ function loadSkillMain(skillSystem: SkillSystem, datas: LangCsvData) {
       CATEGORY_NAME: 0,
       SKILL_TREE_NAME: 0,
       SKILL_NAME: 0,
-    };
+    }
 
-  let curSkillTreeCategory: SkillTreeCategory;
-  let curSkillTree: SkillTree;
-  const [csvData, primaryLangCsvData, secondaryLangCsvData] = datas;
+  let curSkillTreeCategory: SkillTreeCategory
+  let curSkillTree: SkillTree
+  const [csvData, primaryLangCsvData, secondaryLangCsvData] = datas
 
   const loadLangData = (cat: string, target: SkillElement, index: number) => {
     const data = primaryLangCsvData ? primaryLangCsvData[index] : null,
-      sdata = secondaryLangCsvData ? secondaryLangCsvData[index] : null;
+      sdata = secondaryLangCsvData ? secondaryLangCsvData[index] : null
     const key = (() => {
       if (cat === CONFIRM_SKILL_TREE_CATEGORY)
-        return LANG_DATA.CATEGORY_NAME;
+        return LANG_DATA.CATEGORY_NAME
       if (cat === CONFIRM_SKILL_TREE)
-        return LANG_DATA.SKILL_TREE_NAME;
-      return LANG_DATA.SKILL_NAME;
-    })();
-    const validDatas = [data, sdata].filter(item => item) as CsvData;
+        return LANG_DATA.SKILL_TREE_NAME
+      return LANG_DATA.SKILL_NAME
+    })()
+    const validDatas = [data, sdata].filter(item => item) as CsvData
     validDatas.some(item => {
-      const name = item[key];
+      const name = item[key]
       if (name) {
-        target.name = name;
-        return true;
+        target.name = name
+        return true
       }
-    });
-  };
+    })
+  }
 
   csvData.forEach((row, idx) => {
     if (idx === 0 || row[ID] === '')
-      return;
+      return
     try {
-      const cat = row[CATEGORY], id = parseInt(row[ID], 10);
+      const cat = row[CATEGORY], id = parseInt(row[ID], 10)
       if (cat === CONFIRM_SKILL_TREE_CATEGORY) {
-        const find = sr.skillTreeCategorys.find(a => a.id === id);
+        const find = sr.skillTreeCategorys.find(a => a.id === id)
         if (find) {
-          curSkillTreeCategory = find;
-          loadLangData(cat, curSkillTreeCategory, idx);
+          curSkillTreeCategory = find
+          loadLangData(cat, curSkillTreeCategory, idx)
         }
       } else if (cat === CONFIRM_SKILL_TREE) {
-        const find = curSkillTreeCategory.skillTrees.find(a => a.id === id);
+        const find = curSkillTreeCategory.skillTrees.find(a => a.id === id)
         if (find) {
-          curSkillTree = find;
-          curSkillTree.init(row[SKILL_TREE_DRAW_TREE_CODE]);
-          loadLangData(cat, curSkillTree, idx);
+          curSkillTree = find
+          curSkillTree.init(row[SKILL_TREE_DRAW_TREE_CODE])
+          loadLangData(cat, curSkillTree, idx)
         }
       } else if (cat === '') {
-        const find = curSkillTree.skills.find(a => a.id === id);
+        const find = curSkillTree.skills.find(a => a.id === id)
         if (find) {
           find.init(
             row[PREVIOUS_SKILL] === '-' ? -1 : parseInt(row[PREVIOUS_SKILL], 10),
             parseInt(row[DRAW_SKILL_TREE_ORDER], 10),
-          );
-          loadLangData(cat, find, idx);
+          )
+          loadLangData(cat, find, idx)
         }
       }
     }
     catch (error) {
-      console.groupCollapsed('[LoadSkillMain] unknown error');
-      console.warn(error);
-      console.warn(row);
-      console.groupEnd();
+      console.groupCollapsed('[LoadSkillMain] unknown error')
+      console.warn(error)
+      console.warn(row)
+      console.groupEnd()
     }
-  });
+  })
 }
 
 
-export { loadSkill, loadSkillMain };
+export { loadSkill, loadSkillMain }

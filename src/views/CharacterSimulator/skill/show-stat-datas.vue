@@ -7,14 +7,14 @@
 </template>
 
 <script>
-import vue_ShowStat from '../equipments/show-stat.vue';
+import vue_ShowStat from '../equipments/show-stat.vue'
 
 export default {
   components: {
     'ShowStat': vue_ShowStat,
   },
   props: ['statDatas'],
-};
+}
 </script>
 
 <style lang="less" scoped>
