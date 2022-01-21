@@ -8,7 +8,7 @@ interface MarkTextOptions {
 /**
  * Mark the text by html code.
  */
-function markText(str: string, {
+export function markText(str: string, {
   mark = 'text-light-4',
   underline = 'text-light-4',
 }: MarkTextOptions = {}): string {
@@ -17,4 +17,3 @@ function markText(str: string, {
     .replace(/\(\(_((?:(?!\(\().)+)\)\)/g, (match, p1) => `<span class="cy--text-underline ${underline}">${p1}</span>`)
 }
 
-export { markText }

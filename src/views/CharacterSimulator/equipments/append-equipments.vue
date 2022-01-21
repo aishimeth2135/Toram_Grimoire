@@ -1,7 +1,7 @@
 <template>
   <cy-modal
     :visible="visible"
-    vertical-position="top"
+    vertical-position="start"
     @close="$emit('close')"
   >
     <template #title>

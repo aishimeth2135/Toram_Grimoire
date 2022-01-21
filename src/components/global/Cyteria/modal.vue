@@ -3,28 +3,49 @@
     <cy-transition type="fade">
       <div
         v-if="visible"
+        class="cy--modal"
         :class="rootClass"
         v-bind="$attrs"
         @click="closeWindow"
       >
-        <div class="content-container">
-          <div class="top-mask" />
+        <div class="modal-wrapper">
           <cy-button-icon
             icon="jam-close-circle-f"
-            class="close-btn"
+            icon-width="1.5rem"
+            class="cy--modal--close-btn"
             @click.stop="closeWindow"
           />
-          <div class="container-inner" @click.stop>
-            <div class="top">
+          <div class="modal-container" @click.stop>
+            <div class="pb-2 px-4">
               <slot name="title" />
             </div>
-            <div class="content">
+            <div class="p-4 pt-0 relative">
               <slot />
             </div>
             <div v-if="footer" class="sticky bottom-0 mt-4 py-2 mx-4 bg-white flex">
               <cy-button-border icon="ic-round-close" class="ml-auto" @click="closeWindow">
-                {{ $rootLang('global/close') }}
+                {{ t('global.close') }}
               </cy-button-border>
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="$slots['content-extra']"
+          ref="extraContentElement"
+          class="modal-extra-wrapper bg-opacity-100"
+          :style="extraContentStyle"
+        >
+          <div class="modal-extra-container" @click.stop>
+            <div class="modal-extra" @click="showExtraContent">
+              <slot name="content-extra" />
+            </div>
+            <div class="absolute left-0 -bottom-16">
+              <cy-button-circle
+                v-show="extraContent.main"
+                main-color="water-blue"
+                icon="ep:arrow-right-bold"
+                @click="hideExtraContent"
+              />
             </div>
           </div>
         </div>
@@ -33,172 +54,145 @@
   </teleport>
 </template>
 
-<script>
+<script lang="ts">
+import { computed, CSSProperties, ref, Ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+import { remToPixels } from '@/shared/utils/element'
+
+import ToggleService from '@/setup/ToggleService'
+
 export default {
   name: 'CyModal',
   inheritAttrs: false,
-  props: {
-    type: {
-      type: String,
-      default: 'normal',
-    },
-    visible: {
-      required: true,
-    },
-    confirmCallback: {
-      type: Function,
-    },
-    verticalPosition: {
-      type: String,
-      default: 'center',
-    },
-    width: {
-      type: String,
-      default: 'normal',
-      validation: v => ['normal', 'auto', 'wide'].includes(v),
-    },
-    forzenTop: {
-      type: Boolean,
-      default: false,
-    },
-    footer: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ['update:visible', 'close'],
-  computed: {
-    rootClass() {
-      return {
-        'cy--window': true,
-        ['vertical-position-' + this.verticalPosition]: true,
-        ['width-' + this.width]: true,
-        'frozen-top': this.forzenTop,
-      }
-    },
-  },
-  methods: {
-    closeWindow() {
-      this.$emit('update:visible', false)
-      this.$emit('close')
-    },
-  },
 }
 </script>
 
-<style lang="less" scoped>
-.cy--window {
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  z-index: 49;
-  background-color: rgba(var(--rgb-black), 0.1);
+<script lang="ts" setup>
+interface Props {
+  visible: boolean;
+  verticalPosition?: 'start' | 'center';
+  width?: 'normal' | 'auto' | 'wide';
+  footer?: boolean;
+}
+interface Emits {
+  (evt: 'close'): void;
+  (evt: 'update:visible', value: boolean): void;
+}
 
-  & > .content-container {
-    position: relative;
-    display: inline-block;
-    margin: 1rem 0.5rem;
+const props = withDefaults(defineProps<Props>(), {
+  verticalPosition: 'center',
+  width: 'normal',
+  footer: false,
+})
+const emit = defineEmits<Emits>()
+
+const rootClass = computed(() => {
+  return {
+    'items-start': props.verticalPosition === 'start',
+    'items-center': props.verticalPosition === 'center',
+    ['width-' + props.width]: true,
+  }
+})
+
+const closeWindow = () => {
+  emit('update:visible', false)
+  emit('close')
+}
+
+const { extraContent, toggle } = ToggleService({ extraContent: ['main'] as const })
+
+const extraContentElement: Ref<HTMLElement | null> = ref(null)
+const extraContentStyleOriginal = { left: 'calc(50% + 13rem)' }
+const extraContentStyle = ref<CSSProperties>(extraContentStyleOriginal)
+const showExtraContent = () => {
+  if (extraContentElement.value && !extraContent.main) {
+    const pd = remToPixels(1)
+    const ww = window.innerWidth
+    const rect = extraContentElement.value.getBoundingClientRect()
+    if (rect.width > ww + 2 * pd) {
+      extraContentStyle.value = { left: '1rem' }
+      toggle('extraContent/main', true)
+      return
+    }
+    if (rect.right > ww - pd) {
+      extraContentStyle.value = { left: `calc(50% + 13rem - ${rect.right - ww + pd}px)` }
+      toggle('extraContent/main', true)
+      return
+    }
+  }
+}
+const hideExtraContent = () => {
+  if (extraContent.main) {
+    toggle('extraContent/main', false)
+    extraContentStyle.value = extraContentStyleOriginal
+  }
+}
+
+const { t } = useI18n()
+</script>
+
+<style lang="postcss" scoped>
+.cy--modal {
+  @apply fixed h-full w-full top-0 left-0 flex justify-center bg-black bg-opacity-10;
+
+  z-index: 49;
+
+  & > .modal-wrapper {
+    @apply relative inline-block my-4 mx-2 bg-opacity-100 max-w-full;
+
     height: calc(100% - 2rem);
 
-    @media screen and (max-width: 26rem) {
-      width: calc(100% - 1rem)!important;
-    }
+    & > .modal-container {
+      @apply w-full overflow-y-auto max-h-full pt-3 border-1 border-light bg-white;
 
-    & > .top-mask {
-      position: absolute;
-      background-color: var(--white);
-      height: 0.9rem;
-      width: calc(100% - 2rem);
-      top: 0.1rem;
-      left: 1rem;
-      z-index: 1;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: -0.75rem;
-      right: -0.8rem;
-      z-index: 51;
-      --icon-width: 1.5rem;
-      padding: 0;
-
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0.3rem;
-        left: 0.3rem;
-        width: 0.8rem;
-        height: 0.8rem;
-      }
-    }
-
-    > .container-inner {
-      width: 100%;
       min-height: 10rem;
-      overflow-y: auto;
-      max-height: 100%;
-      padding-top: 0.75rem;
-      border: 0.1rem solid var(--primary-light);
-      background-color: var(--white);
-
-      > .top {
-        padding: 0.6rem 1rem;
-        padding-top: 0;
-      }
-
-      > .content {
-        padding: 1rem;
-        padding-top: 0;
-      }
     }
   }
 
-  &.frozen-top {
-    > .content-container {
-      > .container-inner {
-        >.top {
-          background-color: var(--white);
-          position: sticky;
-          top: 0;
-          left: 0;
-          z-index: 5;
-        }
-      }
+  &.width-normal > .modal-wrapper {
+    width: 25rem;
+  }
+  &.width-wide > .modal-wrapper {
+    width: 42.5rem;
+  }
+  &.width-auto > .modal-wrapper {
+    width: auto;
+
+    & > .modal-container {
+      overflow: auto;
     }
   }
+}
 
-  &.width-normal {
-    > .content-container {
-      width: 25rem;
-    }
-  }
+.modal-extra-wrapper {
+  @apply absolute w-80 h-full max-w-full m-4 duration-300 flex items-center;
+}
 
-  &.width-auto {
-    > .content-container {
-      width: auto;
-      max-width: calc(100% - 1rem);
+.modal-extra-container {
+  @apply max-h-full w-full relative;
+}
 
-      > .container-inner {
-        overflow: auto;
-      }
-    }
-  }
+.modal-extra {
+  @apply max-h-full w-full pr-2 overflow-y-auto;
 
-  &.width-wide {
-    > .content-container {
-      width: 42.5rem;
-    }
-  }
+  max-height: 70%;
+}
 
-  &.vertical-position-top {
-    align-items: flex-start;
-  }
-  &.vertical-position-center {
-    align-items: center;
+.cy--modal--close-btn {
+  position: absolute;
+  top: -0.75rem;
+  right: -0.8rem;
+  z-index: 51;
+  padding: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0.3rem;
+    left: 0.3rem;
+    width: 0.8rem;
+    height: 0.8rem;
   }
 }
 </style>

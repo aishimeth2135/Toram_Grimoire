@@ -109,7 +109,7 @@
     <div>
       <cy-modal
         v-model:visible="modeState['mode-stats'].selectStatWindowVisible"
-        vertical-position="top"
+        vertical-position="start"
       >
         <template #title>
           <cy-icon-text icon="mdi-rhombus-outline">
