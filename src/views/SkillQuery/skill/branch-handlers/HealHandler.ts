@@ -8,7 +8,7 @@ import { cloneBranchAttrs, handleDisplayData, numberStringToPercentage } from '.
 import MapContainer from './utils/MapContainer'
 import type { HandleDisplayDataOptionFilters, HandleBranchLangAttrsMap } from './utils'
 
-export default function HealHandler(branchItem: SkillBranchItem) {
+export default function HealHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
   const attrs = cloneBranchAttrs(branchItem, {

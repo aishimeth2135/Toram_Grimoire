@@ -7,7 +7,7 @@ import { cloneBranchAttrs, HandleBranchLangAttrsMap, handleDisplayData } from '.
 import type { HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
-export default function AreaHandler(branchItem: SkillBranchItem, formulaDisplayMode?: FormulaDisplayModes) {
+export default function AreaHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem, formulaDisplayMode?: FormulaDisplayModes) {
   const attrs = cloneBranchAttrs(branchItem)
 
   const basicBranch = branchItem.parent.branchItems.find(bch => bch.name === SkillBranchNames.Basic)

@@ -8,7 +8,7 @@ import { cloneBranchAttrs, handleDisplayData } from './utils'
 import type { HandleBranchLangAttrsMap, HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
-export default function EffectHandler(branchItem: SkillBranchItem) {
+export default function EffectHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
   const attrs = cloneBranchAttrs(branchItem, {

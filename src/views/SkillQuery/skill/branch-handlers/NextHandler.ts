@@ -7,7 +7,7 @@ import { cloneBranchAttrs, handleDisplayData } from './utils'
 import type { HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
-export default function ProrationHandler(branchItem: SkillBranchItem) {
+export default function ProrationHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
   const attrs = cloneBranchAttrs(branchItem, {

@@ -6,7 +6,7 @@ import type { HandleBranchTextAttrsMap } from '@/lib/Skill/SkillComputingContain
 import { cloneBranchAttrs, handleDisplayData, HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
-export default function PassiveHandler(branchItem: SkillBranchItem) {
+export default function PassiveHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
   const attrs = cloneBranchAttrs(branchItem, {

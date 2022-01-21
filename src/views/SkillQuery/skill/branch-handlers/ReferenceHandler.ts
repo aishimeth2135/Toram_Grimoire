@@ -4,7 +4,7 @@ import type { HandleBranchTextAttrsMap } from '@/lib/Skill/SkillComputingContain
 import { cloneBranchAttrs, handleDisplayData, HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
-export default function ReferenceHandler(branchItem: SkillBranchItem) {
+export default function ReferenceHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
   const attrs = cloneBranchAttrs(branchItem)
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
