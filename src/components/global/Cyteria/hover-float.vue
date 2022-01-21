@@ -33,7 +33,7 @@
 import { ref, toRefs, computed, nextTick } from 'vue'
 import type { Ref, CSSProperties } from 'vue'
 
-import CY from '@/shared/utils/Cyteria'
+import { remToPixels } from '@/shared/utils/element'
 
 interface Props {
   element: HTMLElement | null;
@@ -79,7 +79,7 @@ const fixPosition = () => {
   }
   const rect = el.getBoundingClientRect()
   const ww = window.innerWidth
-  const pd = CY.element.convertRemToPixels(1)
+  const pd = remToPixels(1)
 
   if (positionMode.value === 'h-middle') {
     const spacing = (ww - rect.width) / 2
@@ -105,7 +105,7 @@ const updateCaptionPosition = async () => {
 
   const resultPosition: CSSProperties = {}
 
-  const margin = CY.element.convertRemToPixels(-0.1)
+  const margin = remToPixels(-0.1)
   const wh = window.innerHeight, ww = window.innerWidth
   const len2bottom = wh - rect.bottom
   if (rect.top >= len2bottom) {

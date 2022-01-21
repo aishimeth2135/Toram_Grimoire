@@ -225,7 +225,7 @@
         </div>
       </div>
     </div>
-    <cy-modal v-model:visible="modes.stat.selectStatVisible" vertical-position="top">
+    <cy-modal v-model:visible="modes.stat.selectStatVisible" vertical-position="start">
       <template #title>
         <cy-icon-text icon="mdi-rhombus-outline">
           {{ $lang('options: stat/select stat: window title') }}
