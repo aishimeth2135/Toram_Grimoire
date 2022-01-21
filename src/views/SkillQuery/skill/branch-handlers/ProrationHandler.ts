@@ -4,7 +4,7 @@ import { cloneBranchAttrs, handleDisplayData } from './utils'
 import type { HandleBranchLangAttrsMap } from './utils'
 import MapContainer from './utils/MapContainer'
 
-export default function ProrationHandler(branchItem: SkillBranchItem | SkillBranchItemSuffix) {
+export default function ProrationHandler<BranchItem extends SkillBranchItem | SkillBranchItemSuffix>(branchItem: BranchItem) {
   const attrs = cloneBranchAttrs(branchItem)
   if (attrs['proration'] === 'auto') {
     attrs['proration'] = attrs['damage']

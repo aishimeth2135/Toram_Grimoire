@@ -1,5 +1,5 @@
-import { ref, computed, provide, reactive, watch, nextTick } from 'vue'
-import type { Ref, ComputedRef } from 'vue'
+import { ref, provide, watch, nextTick, reactive } from 'vue'
+import type { Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
@@ -59,22 +59,20 @@ function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
 }
 
 function setupComputingContainer(skill: Ref<Skill | null>) {
-  const computingContainer: Ref<SkillComputingContainer> = ref(new SkillComputingContainer())
+  const computingContainer = reactive(new SkillComputingContainer())
   const FORMULA_REPLACED_VARS = [
     'BSTR', 'BINT', 'BAGI', 'BVIT', 'BDEX', 'TEC',
     'STR', 'INT', 'AGI', 'VIT', 'DEX', 'shield_refining',
     'dagger_atk', 'target_def', 'target_level', 'guard_power',
   ]
   FORMULA_REPLACED_VARS.forEach(varName => {
-    computingContainer.value.handleFormulaExtends.texts['$' + varName] = Grimoire.i18n.t(`skill-query.branch.formula-replaced-text.${varName}`)
+    computingContainer.handleFormulaExtends.texts['$' + varName] = Grimoire.i18n.t(`skill-query.branch.formula-replaced-text.${varName}`)
   })
 
-  const currentSkillItem: ComputedRef<SkillItem | null> = computed(() => {
-    if (!skill.value) {
-      return null
-    }
-    return reactive(computingContainer.value.createSkillItem(skill.value)) as SkillItem
-  })
+  const currentSkillItem: Ref<SkillItem | null> = ref(null)
+  watch(skill, newValue => {
+    currentSkillItem.value = newValue ? computingContainer.createSkillItem(newValue) : null
+  }, { immediate: true })
 
   const setStackValue = (branchItem: SkillBranchItem, value: number) => {
     const stackId = branchItem.stackId

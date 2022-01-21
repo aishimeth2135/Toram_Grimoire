@@ -10,7 +10,7 @@ import type { HandleDisplayDataOptionFilters, HandleBranchLangAttrsMap } from '.
 import ProrationHandler from './ProrationHandler'
 import { createTagButtons } from '../../utils'
 
-export default function DamageHandler(branchItem: SkillBranchItem) {
+export default function DamageHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
   const attrs = cloneBranchAttrs(branchItem, {

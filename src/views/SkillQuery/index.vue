@@ -207,6 +207,7 @@ const {
 } = setupComputingContainer(currentSkill)
 
 const currentSkillEffectItem = computed(() => {
+  console.log('compute...')
   if (!currentSkillItem.value) {
     return null
   }

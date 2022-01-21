@@ -8,7 +8,7 @@ import MapContainer from './utils/MapContainer'
 import type { HandleDisplayDataOptionFilters } from './utils'
 import DisplayDataContainer from './utils/DisplayDataContainer'
 
-export default function ExtraHandler(branchItem: SkillBranchItemSuffix) {
+export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
   const attrs = cloneBranchAttrs(branchItem, {

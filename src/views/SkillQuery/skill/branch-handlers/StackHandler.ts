@@ -4,7 +4,7 @@ import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
 import { cloneBranchAttrs, handleDisplayData } from './utils'
 
-export default function StackHandler(branchItem: SkillBranchItem) {
+export default function StackHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
   const idx = branchItem.parent.branchItems

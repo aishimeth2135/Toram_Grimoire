@@ -1,4 +1,4 @@
-import { markRaw } from 'vue'
+import { markRaw, reactive } from 'vue'
 
 import { HandleFormulaTexts, HandleFormulaVars } from '@/shared/utils/data'
 
@@ -104,7 +104,9 @@ abstract class SkillEffectItemBase {
 
   constructor(parent: SkillItem) {
     this.parent = parent
-    this.stackStates = []
+
+    // user-set
+    this.stackStates = reactive([])
   }
 }
 
