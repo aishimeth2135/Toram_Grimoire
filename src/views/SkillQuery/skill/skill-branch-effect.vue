@@ -26,8 +26,6 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import { ComponentPropsType } from '@/shared/utils/type'
-
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
@@ -35,6 +33,7 @@ import SkillBranchStats from './layouts/skill-branch-stats.vue'
 
 import EffectHandler from './branch-handlers/EffectHandler'
 import { setupCommonExtraSuffixBranches } from './setup'
+import { NormalLayoutSubContent } from './layouts/setup'
 
 interface Props {
   branchItem: SkillBranchItem;
@@ -66,7 +65,7 @@ const subContents = computed(() => {
   }, {
     key: 'is_place',
     icon: 'emojione-monotone:heavy-large-circle',
-  }] as NonNullable<ComponentPropsType<typeof SkillBranchLayoutNormal>['subContents']>
+  }] as NormalLayoutSubContent[]
 })
 
 const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(branchItem)

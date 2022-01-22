@@ -92,10 +92,6 @@ function setupComputingContainer(skill: Ref<Skill | null>) {
       if (stackState) {
         stackState.value = value
       }
-      // const next = effect.nexts.get(branchItem);
-      // if (next) {
-      //   setStackValue(next, value);
-      // }
     }
   }
 

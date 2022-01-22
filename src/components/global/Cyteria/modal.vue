@@ -30,16 +30,16 @@
           </div>
         </div>
         <div
-          v-if="$slots['content-extra']"
+          v-if="$slots['extra-content']"
           ref="extraContentElement"
           class="modal-extra-wrapper bg-opacity-100"
           :style="extraContentStyle"
         >
           <div class="modal-extra-container" @click.stop>
             <div class="modal-extra" @click="showExtraContent">
-              <slot name="content-extra" />
+              <slot name="extra-content" />
             </div>
-            <div class="absolute left-0 -bottom-16">
+            <div class="absolute right-4 -bottom-16">
               <cy-button-circle
                 v-show="extraContent.main"
                 main-color="water-blue"
@@ -103,20 +103,20 @@ const closeWindow = () => {
 const { extraContent, toggle } = ToggleService({ extraContent: ['main'] as const })
 
 const extraContentElement: Ref<HTMLElement | null> = ref(null)
-const extraContentStyleOriginal = { left: 'calc(50% + 13rem)' }
-const extraContentStyle = ref<CSSProperties>(extraContentStyleOriginal)
+const extraContentStyle = ref<CSSProperties>({})
 const showExtraContent = () => {
   if (extraContentElement.value && !extraContent.main) {
     const pd = remToPixels(1)
     const ww = window.innerWidth
     const rect = extraContentElement.value.getBoundingClientRect()
-    if (rect.width > ww + 2 * pd) {
-      extraContentStyle.value = { left: '1rem' }
+    if (rect.width + 2 * pd > ww) {
+      extraContentStyle.value = { left: '0' }
       toggle('extraContent/main', true)
       return
     }
     if (rect.right > ww - pd) {
-      extraContentStyle.value = { left: `calc(50% + 13rem - ${rect.right - ww + pd}px)` }
+      const base = ww <= remToPixels(32) ? '50% + 40vw' : '50% + 13rem'
+      extraContentStyle.value = { left: `calc(${base} - ${rect.right - ww + pd}px)` }
       toggle('extraContent/main', true)
       return
     }
@@ -125,7 +125,7 @@ const showExtraContent = () => {
 const hideExtraContent = () => {
   if (extraContent.main) {
     toggle('extraContent/main', false)
-    extraContentStyle.value = extraContentStyleOriginal
+    extraContentStyle.value = {}
   }
 }
 
@@ -166,17 +166,23 @@ const { t } = useI18n()
 }
 
 .modal-extra-wrapper {
-  @apply absolute w-80 h-full max-w-full m-4 duration-300 flex items-center;
+  @apply absolute w-80 h-full max-w-full mx-2 my-4 duration-300 flex items-center;
+
+  left: calc(50% + 13rem);
+
+  @media screen and (max-width: 32rem) {
+    left: calc(50% + 40vw);
+  }
 }
 
 .modal-extra-container {
-  @apply max-h-full w-full relative;
+  @apply w-full relative flex flex-col;
+
+  max-height: calc(100% - 12rem);
 }
 
 .modal-extra {
-  @apply max-h-full w-full pr-2 overflow-y-auto;
-
-  max-height: 70%;
+  @apply w-full h-full pr-2 overflow-y-auto;
 }
 
 .cy--modal--close-btn {
