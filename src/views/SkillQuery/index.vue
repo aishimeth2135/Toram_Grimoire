@@ -128,8 +128,8 @@ const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null)
 const currentSkillTree: Ref<SkillTree | null> = ref(null)
 const currentSkill: Ref<Skill | null> = ref(null)
 
-const updateRouteParam = (id: string) => {
-  router.replace({ name: 'SkillQuery', params: { skillId: id } })
+const updateRouteParam = (skillId: string) => {
+  router.replace({ name: 'SkillQuery', params: { skillId } })
 }
 
 const selectCurrentSkillTreeCategory = (stc: SkillTreeCategory) => {

@@ -25,8 +25,6 @@
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { ComponentPropsType } from '@/shared/utils/type'
-
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
@@ -39,6 +37,7 @@ import ExtraHandler from './branch-handlers/ExtraHandler'
 import { TAG_BUTTON_CLASS_NAME } from '../utils'
 import DisplayDataContainer from './branch-handlers/utils/DisplayDataContainer'
 import { ExtraSuffixBranchData } from './setup'
+import { NormalLayoutSubContent } from './layouts/setup'
 
 const ELEMENT_ICON_MAPPING = {
   'neutral': 'bx-bx-circle',
@@ -86,7 +85,7 @@ const getElementCaption = (value: string) => {
 }
 
 const subContents = computed(() => {
-  const result = [] as NonNullable<ComponentPropsType<typeof SkillBranchLayoutNormal>['subContents']>
+  const result: NormalLayoutSubContent[] = []
   result.push({
     key: 'title',
     icon: 'bx-bx-game',

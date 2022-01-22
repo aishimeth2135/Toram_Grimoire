@@ -13,7 +13,7 @@
         </span>
       </div>
     </legend>
-    <div v-if="subContentDatas" class="fles items-center flex-wrap px-1">
+    <div v-if="subContentDatas" class="flex items-center flex-wrap px-1 space-x-3">
       <template v-for="contentData in subContentDatas" :key="contentData.key">
         <span class="sub-content-item">
           <cy-icon-text
@@ -73,18 +73,13 @@ import SkillBranchExtraColumn from './skill-branch-extra-column.vue'
 
 import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer'
 import { ExtraSuffixBranchData } from '../setup'
+import { NormalLayoutSubContent } from './setup'
 
 interface Props {
   container: DisplayDataContainer<SkillBranchItem>;
   nameProps?: string[];
   nameIcon?: string;
-  subContents?: {
-    key: string;
-    icon: string;
-    title?: string;
-    color?: string;
-    value?: string;
-  }[];
+  subContents?: NormalLayoutSubContent[];
   hasArea?: boolean;
   extraColumns?: ExtraSuffixBranchData[];
 }
@@ -123,7 +118,7 @@ const subContentDatas = computed(() => {
 
 <style lang="postcss" scoped>
 .sub-content-item {
-  @apply my-0.5 mr-3 inline-flex items-center;
+  @apply my-0.5 inline-flex items-center;
 
   & .text-light-3 {
     @apply text-purple;

@@ -15,8 +15,6 @@
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { ComponentPropsType } from '@/shared/utils/type'
-
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
@@ -24,6 +22,7 @@ import skillHealFormula from './layouts/skill-heal-formula.vue'
 
 import HealHandler from './branch-handlers/HealHandler'
 import { setupCommonExtraSuffixBranches } from './setup'
+import { NormalLayoutSubContent } from './layouts/setup'
 
 interface Props {
   branchItem: SkillBranchItem;
@@ -41,7 +40,7 @@ const nameProps = computed(() => {
 })
 
 const subContents = computed(() => {
-  const result = [] as NonNullable<ComponentPropsType<typeof SkillBranchLayoutNormal>['subContents']>
+  const result: NormalLayoutSubContent[] = []
   result.push({
     key: 'frequency',
     icon: 'bi-circle-square',
