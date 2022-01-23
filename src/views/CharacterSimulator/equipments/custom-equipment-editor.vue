@@ -82,7 +82,7 @@
       <template v-if="statsSearchResult.length !== 0">
         <cy-list-item
           v-for="stat in statsSearchResult"
-          :key="`${stat.origin.baseName}-${stat.type.description}`"
+          :key="stat.origin.statId(stat.type)"
           :selected="(equipment.findStat(stat.origin.baseName, stat.type) ? true : false) || appendedStats.includes(stat) || deletedStats.includes(stat)"
           @click="selectStat(stat)"
         >
@@ -149,7 +149,7 @@
               <template v-if="equipmentStatsDatas.length != 0">
                 <cy-list-item
                   v-for="stat in equipmentStatsDatas"
-                  :key="`current-${stat.origin.baseName}-${stat.type.description}`"
+                  :key="`current-${stat.origin.statId(stat.type)}`"
                   @click="selectStat(stat)"
                 >
                   <cy-icon-text icon="mdi-rhombus-outline">
@@ -175,7 +175,7 @@
               <template v-if="appendedStats.length != 0">
                 <cy-list-item
                   v-for="stat in appendedStats"
-                  :key="`append-${stat.origin.baseName}-${stat.type.description}`"
+                  :key="`append-${stat.origin.statId(stat.type)}`"
                   @click="selectStat(stat)"
                 >
                   <cy-icon-text
@@ -205,7 +205,7 @@
               <template v-if="deletedStats.length != 0">
                 <cy-list-item
                   v-for="stat in deletedStats"
-                  :key="`delete-${stat.origin.baseName}-${stat.type.description}`"
+                  :key="`delete-${stat.origin.statId(stat.type)}`"
                   @click="selectStat(stat)"
                 >
                   <cy-icon-text

@@ -126,7 +126,7 @@
           <template v-if="statSearchResult.length != 0">
             <cy-list-item
               v-for="stat in statSearchResult"
-              :key="`${stat.origin.baseName}-${stat.type.description}`"
+              :key="stat.origin.statId(stat.type)"
               :selected="stat == currentStat"
               @click="selectStat(stat)"
             >
