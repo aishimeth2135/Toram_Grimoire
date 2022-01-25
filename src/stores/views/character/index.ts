@@ -214,6 +214,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     characters,
     equipments,
     currentCharacter,
+    currentCharacterIndex,
     characterSimulatorHasInit: readonly(characterSimulatorHasInit),
 
     autoSaveDisabled: readonly(autoSaveDisabled),

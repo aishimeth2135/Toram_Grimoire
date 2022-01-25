@@ -206,7 +206,7 @@ export default {
     },
     copyCurrentCharacter() {
       const from = this.characterState.origin
-      this.createCharacter(from.clone())
+      this.store.createCharacter(from.clone())
       this.$notify(this.$lang('Warn/Copy character successfully', [from.name]))
     },
     setOptionalBaseStat(name) {
