@@ -130,7 +130,8 @@ class Calculation {
         console.warn(`[DamageCalculation.load] Container.id: ${containerData.id} is not exist`)
         return
       }
-      container.enabled = containerData.enabled
+      // enabled will always be true if container is virtual
+      container.enabled = container.base.isVirtual ? true : containerData.enabled
       if (containerData.currentItemId !== null) {
         container.selectItem(containerData.currentItemId)
       }
