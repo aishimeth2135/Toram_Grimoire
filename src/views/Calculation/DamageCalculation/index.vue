@@ -243,7 +243,7 @@ import DamageCalculationCompare from './damage-calculation-compare.vue'
 import DamageCalculationItem from './damage-calculation-item.vue'
 import DamageCalculationResultItem from './damage-calculation-result-item.vue'
 
-import { setupCalcMode, setupCalculationStore, setupResultMode, setupCalculationCalcOptions, ResultModeItem, ResultModeIdExpected } from './setup'
+import { setupCalcMode, setupCalculationStore, setupResultMode, setupCalculationCalcOptions } from './setup'
 import { DamageCalculationRootInjectionKey } from './injection-keys'
 
 const store = useDamageCalculationStore()
@@ -301,5 +301,11 @@ const { contents, bottomSub, toggle } = ToggleService({
 
 const { t } = useI18n()
 
-provide(DamageCalculationRootInjectionKey, computed(() => (resultModeList.value.find(item => item.id === 'expected') as ResultModeItem<ResultModeIdExpected>).value))
+provide(DamageCalculationRootInjectionKey, {
+  currentExpectedResult: computed(() => {
+    const resultItem = resultModeList.value.find(item => item.id === 'expected')!.value
+    return resultItem as number
+  }),
+  currentCalcMode: calcMode,
+})
 </script>

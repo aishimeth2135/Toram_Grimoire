@@ -259,8 +259,8 @@ class CalcItem {
     this._value = value
   }
 
-  get isCustom(): boolean {
-    return false
+  isCustom(): this is CalcItemCustom {
+    return this instanceof CalcItemCustom
   }
 }
 
@@ -270,12 +270,7 @@ class CalcItemCustom extends CalcItem {
   constructor(base: CalcItemBase, name: string = '') {
     super(base)
 
-    /** @type {string} */
     this.name = name
-  }
-
-  override get isCustom(): boolean {
-    return true
   }
 }
 

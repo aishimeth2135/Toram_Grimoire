@@ -5,22 +5,31 @@ import { storeToRefs } from 'pinia'
 import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 
 import { CalcItemContainer, Calculation } from '@/lib/Calculation/Damage/Calculation'
+import { CalcStructExpression } from '@/lib/Calculation/Damage/Calculation/base'
 
 import Notify from '@/setup/Notify'
 import RegisterLang from '@/setup/RegisterLang'
 
 import { calcStructDisplay, calcStructCritical, calcStructWithoutCritical } from './consts'
 
+interface CalcModeItem {
+  id: 'common' | 'critical';
+  calcStruct: CalcStructExpression;
+  outsideItems: string[];
+  maxLayer: number;
+}
 
 const setupCalcMode = () => {
-  const calcModeList = [{
+  const calcModeList: CalcModeItem[] = [{
     id: 'common',
     calcStruct: calcStructDisplay,
     outsideItems: ['atk/two_handed'],
+    maxLayer: 4,
   }, {
     id: 'critical',
     calcStruct: calcStructCritical,
     outsideItems: ['critical/critical_rate'],
+    maxLayer: 6,
   }]
   const currentCalcModeId = ref('common')
   const selectCalcMode = (id: string) => currentCalcModeId.value = id
@@ -102,8 +111,8 @@ const setupExpectedResults = (calculation: Ref<Calculation>) => {
     }))
 
   const getResult = (target: string) => {
-    const cr = (calculation.value.containers.get('critical/critical_rate') as CalcItemContainer).result()
-    const stability = (calculation.value.containers.get('stability') as CalcItemContainer).getItemValue('stability')
+    const cr = calculation.value.containers.get('critical/critical_rate')!.result()
+    const stability = calculation.value.containers.get('stability')!.getItemValue('stability')
     const stabilityValue = (() => {
       if (target === 'min') {
         return stability
@@ -124,7 +133,8 @@ const setupExpectedResults = (calculation: Ref<Calculation>) => {
 
   const expectedResult = computed(() => {
     const max = expectedResultMax.value
-    const stability = (calculation.value.containers.get('stability') as CalcItemContainer).result()
+    const stabilityContainer = calculation.value.containers.get('stability')!
+    const stability = stabilityContainer.enabled ? stabilityContainer!.result() : 100
     return Math.floor(max * stability / 100)
   })
 
@@ -220,9 +230,9 @@ export {
   setupExpectedResults,
   setupResultMode,
   setupCalculationCalcOptions,
-}
-export type {
+
   ResultModeIdStability,
   ResultModeIdExpected,
   ResultModeItem,
+  CalcModeItem,
 }

@@ -52,7 +52,7 @@ const { currentCalculation: comparedCalculation } = setupCalculationStoreState()
 
 const { expectedResult } = setupExpectedResults(calculation)
 
-const comparedCalculationExpectedResult = inject(DamageCalculationRootInjectionKey)!
+const { currentExpectedResult :comparedCalculationExpectedResult } = inject(DamageCalculationRootInjectionKey)!
 
 const calculationResultDifferenceRate = computed(() => {
   const comparedResult = comparedCalculationExpectedResult.value

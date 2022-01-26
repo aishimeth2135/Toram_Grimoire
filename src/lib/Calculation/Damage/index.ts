@@ -150,37 +150,21 @@ export default class {
       container.markMultiplier()
       container.disableFloorResult()
 
-      container.appendItem('critical_damage')
-        .setDefaultValue(150)
-      container.appendItem('critical_rate')
-        .setDefaultValue(25)
-        .setRange(0, 100, 10)
-      container.appendItem('magic_critical_rate_conversion_rate')
-        .setDefaultValue(0)
-      container.appendItem('magic_critical_damage_conversion_rate')
-        .setDefaultValue(50)
-      container.appendItem('target_critical_rate_resistance')
-        .setDefaultValue(0)
-        .setRange(null)
-      container.appendItem('target_critical_rate_resistance_total')
-        .setDefaultValue(0)
-        .setRange(0, 100)
+      container.setVirtual(['critical/critical_rate', 'critical/critical_damage'])
 
       container.setCalcResult((itemContainer) => {
-        const cr = (itemContainer.belongCalculation.containers
-          .get('critical/critical_rate') as CalcItemContainer).result()
-        const cd = (itemContainer.belongCalculation.containers
-          .get('critical/critical_damage') as CalcItemContainer).result()
+        const cr = itemContainer.belongCalculation.containers.get('critical/critical_rate')!.result()
+        const cd = itemContainer.belongCalculation.containers.get('critical/critical_damage')!.result()
         return (cr * cd / 100 + (100 - cr))
       })
     })
     normal('critical/critical_damage', container => {
       container.markMultiplier()
 
-      /* @containers/critical */
       container.appendItem('critical_damage')
+        .setDefaultValue(150)
       container.appendItem('magic_critical_damage_conversion_rate')
-      /* --- */
+        .setDefaultValue(50)
 
       container.setCalcResult((itemContainer) => {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
@@ -199,12 +183,17 @@ export default class {
     normal('critical/critical_rate', container => {
       container.markMultiplier()
 
-      /* @containers/critical */
       container.appendItem('critical_rate')
-      container.appendItem('target_critical_rate_resistance')
+        .setDefaultValue(25)
+        .setRange(0, 100, 10)
       container.appendItem('magic_critical_rate_conversion_rate')
+        .setDefaultValue(0)
+      container.appendItem('target_critical_rate_resistance')
+        .setDefaultValue(0)
+        .setRange(null)
       container.appendItem('target_critical_rate_resistance_total')
-      /* --- */
+        .setDefaultValue(0)
+        .setRange(0, 100)
 
       container.setCalcResult((itemContainer) => {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)

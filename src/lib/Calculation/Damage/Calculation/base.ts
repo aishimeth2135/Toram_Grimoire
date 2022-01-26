@@ -71,6 +71,9 @@ class CalculationBase {
       if (typeof item === 'string') {
         const container = calculation.containers.get(item)
         if (container !== undefined) {
+          if (!container.enabled) {
+            return container.base.isMultiplier ? container.base.disabledValue / 100 : container.base.disabledValue
+          }
           const res = (() => {
             const resultItem = containerResult[item]
             if (typeof resultItem === 'number') {
@@ -81,9 +84,6 @@ class CalculationBase {
             }
             return container.result()
           })()
-          if (!container.enabled) {
-            return container.base.isMultiplier ? container.base.disabledValue / 100 : container.base.disabledValue
-          }
           return container.base.isMultiplier ? res / 100 : res
         }
         console.warn('[DamageCalculation.result] unknown container id:', item)
@@ -122,6 +122,8 @@ class CalcItemContainerBase {
   _disabledValue: number | null
   controls: { toggle: boolean }
 
+  readonly references: string[]
+
   constructor(parent: CalculationBase, id: string, type: ContainerTypes) {
     this.id = id
     this._parent = parent
@@ -136,6 +138,7 @@ class CalcItemContainerBase {
     this.controls = {
       toggle: true,
     }
+    this.references = []
   }
 
   get disabledValue(): number {
@@ -145,6 +148,18 @@ class CalcItemContainerBase {
     return this.isMultiplier ? 100 : 0
   }
 
+  get isVirtual() {
+    return this.references.length !== 0
+  }
+
+  setVirtual(referenceContainerIds: string[]) {
+    if (this.items.size > 0) {
+      console.warn('[CalcItemContainerBase.setVirtual] Unable to set container to virtual if container already have item')
+      return
+    }
+    this.references.push(...referenceContainerIds)
+  }
+
   appendItem(id: string): CalcItemBase {
     const exist = this._parent.items.has(id)
     const item = this._parent.appendItem(id)
@@ -152,6 +167,10 @@ class CalcItemContainerBase {
       item.setRange(0, null)
         .setDefaultValue(100)
         .setUnit('%')
+    }
+    if (this.isVirtual) {
+      console.warn('[CalcItemContainerBase.appendItem] Unable to append item to virtual container')
+      return item
     }
     this.items.set(id, item)
     return item

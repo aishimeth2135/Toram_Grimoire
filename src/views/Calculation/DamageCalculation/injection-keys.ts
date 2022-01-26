@@ -1,5 +1,9 @@
 import type { Ref, InjectionKey } from 'vue'
 
-import type { ResultModeIdExpected, ResultModeItem } from './setup'
+import { CalcModeItem } from './setup'
+interface DamageCalculationRootInjection {
+  currentExpectedResult: Ref<number>;
+  currentCalcMode: Ref<CalcModeItem>;
+}
 
-export const DamageCalculationRootInjectionKey: InjectionKey<Ref<ResultModeItem<ResultModeIdExpected>['value']>> = Symbol()
+export const DamageCalculationRootInjectionKey: InjectionKey<DamageCalculationRootInjection> = Symbol()
