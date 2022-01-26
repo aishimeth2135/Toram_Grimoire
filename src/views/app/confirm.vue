@@ -25,7 +25,7 @@
             class="ml-auto"
             @click="confirm"
           >
-            {{ rootLang('global/confirm') }}
+            {{ t('global.confirm') }}
           </cy-button-border>
           <cy-button-border
             icon="ic-round-cancel"
@@ -33,7 +33,7 @@
             main-color="gray"
             @click="cancel"
           >
-            {{ rootLang('global/cancel') }}
+            {{ t('global.cancel') }}
           </cy-button-border>
         </div>
       </div>
@@ -49,10 +49,10 @@ export default {
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { ConfirmItem, useConfirmStore } from '@/stores/app/confirm'
 
-import { GetLang } from '@/shared/services/Language'
 
 const store = useConfirmStore()
 
@@ -65,7 +65,7 @@ const confirm = () => {
 
 const cancel = () => store.nextItem()
 
-const rootLang = GetLang
+const { t } = useI18n()
 </script>
 
 <style lang="postcss" scoped>

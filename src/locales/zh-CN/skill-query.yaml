@@ -193,6 +193,8 @@ branch:
     "effective_area: title": 类型
     "radius: title": 作用半径
     "angle: title": 作用角度
+  next:
+    condition-default-value: 下一招技能
   passive:
     base-name: 被动效果
   global:

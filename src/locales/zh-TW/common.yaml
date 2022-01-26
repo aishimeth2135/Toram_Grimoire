@@ -26,7 +26,7 @@ Equipment:
     body-dodge: 輕化防具
     body-defense: 重化防具
     empty: 空手
-  stat restriction:
+  stat-restriction:
     event: 活動
     one-hand-sword: 單手劍
     two-hand-sword: 雙手劍

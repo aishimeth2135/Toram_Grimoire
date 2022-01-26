@@ -1,6 +1,5 @@
 
 import Grimoire from '@/shared/Grimoire'
-import { GetLang } from '@/shared/services/Language'
 import { isNumberString } from '@/shared/utils/string'
 import { Images } from '@/shared/services/Images'
 
@@ -88,9 +87,9 @@ abstract class CharacterEquipment {
 
   get categoryText() {
     if (this.type === EquipmentTypes.Additional || this.type === EquipmentTypes.Special || this.type === EquipmentTypes.Avatar) {
-      return GetLang('common/Equipment/field/' + this.type)
+      return Grimoire.i18n.t('common.Equipment.field.' + this.type)
     }
-    return GetLang('common/Equipment/category/' + this.type)
+    return Grimoire.i18n.t('common.Equipment.category.' + this.type)
   }
   get categoryIcon(): string {
     if (this instanceof BodyArmor) {

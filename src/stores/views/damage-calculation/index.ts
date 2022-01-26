@@ -6,7 +6,7 @@ import type { Ref } from 'vue'
 
 import { useDatasStore } from '@/stores/app/datas'
 
-import { GetLang } from '@/shared/services/Language'
+import Grimoire from '@/shared/Grimoire'
 
 import { Calculation } from '@/lib/Calculation/Damage/Calculation'
 import type { CalculationSaveData } from '@/lib/Calculation/Damage/Calculation'
@@ -51,7 +51,7 @@ export const useDamageCalculationStore = defineStore('views-damage-calculation',
   const datas = useDatasStore()
 
   const createCalculation = () => {
-    const name = GetLang('Damage Calculation/build') + ' ' + (calculations.value.length + 1).toString()
+    const name = Grimoire.i18n.t('damage-calculation.build') + ' ' + (calculations.value.length + 1).toString()
     const calculationBase = datas.DamageCalculation!.calculationBase
     const calculation = calculationBase.createCalculation(name)
     appendCalculation(calculation)

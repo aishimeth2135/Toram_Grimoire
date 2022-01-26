@@ -1,7 +1,6 @@
 import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
-import { GetLang } from '@/shared/services/Language'
 
 import { EquipmentTypes } from '../CharacterEquipment/enums'
 import { StatTypes } from './enums'
@@ -60,7 +59,7 @@ class StatRestriction extends Stat {
         showData.push((item.key === 'main' ? '' : item.key + '/') + type)
       })
     }
-    return showData.map(p => GetLang('common/Equipment/stat restriction/' + p))
+    return showData.map(item => Grimoire.i18n.t('common.Equipment.stat-restriction.' + item))
   }
 
   static from(stat: Stat, restriction: StatRestrictionItems | null): StatRestriction {

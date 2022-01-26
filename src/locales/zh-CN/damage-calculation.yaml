@@ -7,7 +7,7 @@ result:
     expected: 伤害期望值
     stability: 伤害区间
     stability-with-graze: Graze时伤害区间
-  modes caption:
+  modes-caption:
     expected: 考虑爆击率及稳定度计算出来的伤害期望值。
     stability: 根据稳定度计算出的伤害最大值及最小值。
     stability-with-graze: 考虑Graze的情况，根据稳定度计算出的伤害最大值及最小值。
