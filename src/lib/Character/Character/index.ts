@@ -1,7 +1,7 @@
 import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
-import { handleFormula } from '@/shared/utils/data'
+import { computeFormula } from '@/shared/utils/data'
 
 import { SubWeapon, SubArmor, CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
@@ -671,21 +671,27 @@ class CharacterStatFormula {
       vars: {
         ...vars.value,
         ...vars.computed,
+        ...methods,
       },
-      getters: {} as { [key: string]: () => number },
       methods,
       toNumber: true,
-    };
-    (['cvalue', 'mvalue', 'tvalue'] as const).forEach(key => {
-      handlerOptions.getters['#' + key] = () => {
+    }
+    const appendGetter = (key: string, handler: () => number) => {
+      Object.defineProperty(handlerOptions.vars, key, {
+        get: handler,
+      })
+    }
+
+    ;(['cvalue', 'mvalue', 'tvalue'] as const).forEach(key => {
+      appendGetter('#' + key, () => {
         defaultFormula = false
         return statValueVars[key]
-      }
+      })
     })
     Object.entries(allCharacterStatMap).forEach(([key, value]) => {
       const originalKey = key
       key = '$' + key
-      handlerOptions.getters[key] = () => {
+      appendGetter(key, () => {
         const src = vars.computed
         if (src[key] !== undefined) {
           return src[key]
@@ -697,7 +703,7 @@ class CharacterStatFormula {
         res = Math.floor(res)
         src[key] = res
         return res
-      }
+      })
     })
     const formulaHandler = (formulaStr: string, { ignoreStatValue = false } = {}) => {
       if (ignoreStatValue) {
@@ -709,7 +715,7 @@ class CharacterStatFormula {
         statValueVars.mvalue = mvalue
         statValueVars.tvalue = tvalue
       }
-      return handleFormula(formulaStr, handlerOptions) as number
+      return computeFormula(formulaStr, handlerOptions.vars) as number
     }
 
 
@@ -729,7 +735,7 @@ class CharacterStatFormula {
           isBase = false
 
         if (item.conditional !== '#') {
-          result = handleFormula(item.conditional, conditionalHandlerOptions) as boolean
+          result = computeFormula(item.conditional, conditionalHandlerOptions.vars, true) as boolean
         }
         item.options.forEach(option => {
           const match = option.match(/#([cmt]value)/)

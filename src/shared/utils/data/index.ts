@@ -13,8 +13,8 @@ function trimBrackets(value: string) {
         stackCount += 1
       } else if (char === ')') {
         if (stackCount === ary.length - idx) {
-          trimNum = ary.length - idx
-          return
+          trimNum = stackCount - 1
+          return true
         }
         stackCount -= 1
       }
@@ -48,25 +48,30 @@ function calcNumberBinaryExpression(left: number, operator: string, right: numbe
   return 0
 }
 
+interface ParseFormulaOptions {
+  /** if true, formula will for compile and param vars will be ignore */
+  compile?: string;
+}
+
 /**
  * Parse formula. Computed the literal and identifier of formula.
  *
- * # ex1:
+ * #### ex1:
  *   formula: "100+30*2+(10+10)*2"
  *   => "200"
- * # ex2:
+ * #### ex2:
  *   formula: "100+a*2+b*3"
  *   vars: { a: 60, b: "40" }  // b will be convert to number before calculate
  *   => "300"
- * # ex3:
+ * #### ex3:
  *   formula: "100+50+abc+200*3"
  *   => "150+abc+600"
- * # ex4:
+ * #### ex4:
  *   formula: func1(20, 30)+100
  *   vars: { func1: (value1, value2) => value1 + value2 }
  *   => "50+100"
  *   => "150"
- * # ex5:
+ * #### ex5:
  *   formula: "20*5+func1(20, 3)+100+foo+20*a+user.func2(20*b, user.age)+func1(20, c)+func1(20, user.age*bar)"
  *   vars: {
  *     func1: (value1, value2) => value1 * value2
@@ -83,12 +88,17 @@ function calcNumberBinaryExpression(left: number, operator: string, right: numbe
  * note: "window.Math" will auto inject to vars as "Math"
  *
  * @param formulaStr - formula to parse
- * @param params.vars - given variables, this function will try to look inside variables
- *                      when metting identifier and replace identifier with value of variable.
- *                      If not found, identifier will keep its name in returned formula.
+ * @param vars - given variables, this function will try to look inside variables
+ *               when metting identifier and replace identifier with value of variable.
+ *               If not found, identifier will keep its name in returned formula.
+ * @param options
  * @returns parse result of formula
  */
-function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVars } = {}): PureValue {
+function parseFormula(formulaStr: string, vars: ParseFormulaVars = {}, options: ParseFormulaOptions = {}): PureValue {
+  // inject Math
+  vars.Math = window.Math as unknown as ParseFormulaVars
+
+  const _options = options
   const unknowSnippet = (value: unknown) => typeof value === 'string'
   const handleArray = (ary: jsep.Expression[], parentNode: jsep.Expression): unknown[] => {
     return ary
@@ -131,11 +141,12 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
         return left || right
     }
     if (jsepTypes.isIdentifier(node)) {
-      if (node.name in vars) {
-        return vars[node.name]
+      const isRoot = !parentNode || !jsepTypes.isMemberExpression(parentNode) || parentNode.object === node
+      if (_options.compile) {
+        return isRoot ? `${_options.compile}['${node.name}']` : `['${node.name}']`
       }
-      if (node.name === 'Math') {
-        return window.Math
+      if (node.name in vars && isRoot) {
+        return vars[node.name]
       }
       return node.name
     }
@@ -146,7 +157,8 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
       if (typeof parent !== 'string') {
         return parent[handle(property, node) as string]
       }
-      return `${parent}.${handle(property, node) as string}`
+      const child = handle(property, node) as string
+      return `${parent}${child.startsWith('[') ? '' : '.'}${child}`
     }
     if (jsepTypes.isCallExpression(node)) {
       const args = handleArray(node.arguments, node)
@@ -159,9 +171,16 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
         }
         chain.push(cur.name)
         const argStrings = (args as PureValue[]).map(arg => trimBrackets(arg.toString()))
-        return `${chain.reverse().join('.')}(${argStrings.join(', ')})`
+        let funcName = (chain.reverse() as string[])
+          .map((item, idx) => (idx === 0 || item.startsWith('[') ? '' : '.') + item).join('')
+        funcName = options.compile ? `${options.compile}.${funcName}` : funcName
+        return `${funcName}(${argStrings.join(', ')})`
       }
-      const callee = handle(node.callee, node) as Function
+      const callee = handle(node.callee, node) as (Function | string)
+      if (typeof callee === 'string') {
+        const argStrings = (args as PureValue[]).map(arg => trimBrackets(arg.toString()))
+        return `${callee}(${argStrings.join(', ')})`
+      }
       return callee(...args)
     }
     if (jsepTypes.isArrayExpression(node)) {
@@ -177,6 +196,7 @@ function parseFormula(formulaStr: string, { vars = {} }: { vars?: ParseFormulaVa
     }
     return 0
   }
+
   return handle(jsep(formulaStr), null) as PureValue
 }
 
@@ -258,9 +278,7 @@ function handleFormula(formulaStr: string, {
 
   if (!isNumberString(formulaStr)) {
     try {
-      formulaStr = parseFormula(formulaStr, {
-        vars: { ...vars, ...methods },
-      }).toString()
+      formulaStr = parseFormula(formulaStr, { ...vars, ...methods }).toString()
     } catch (error) {
       console.groupCollapsed('[parse formula] Unable to parse formula:')
       console.warn(originalFormulaStr)
@@ -345,5 +363,59 @@ function handleFormula(formulaStr: string, {
 //   }));
 // }, 3000);
 
-export { handleFormula }
+
+const _computeFormulaCaches: Map<string, Function> = new Map()
+
+/**
+ * Compute given formula to pure value by "vars". (Suppose all variables exist in "vars")
+ * note: the method will compile given formula by Function constructor.
+ *
+ * @param formula - formual to compute
+ * @param vars - variables mapping
+ * @param defaultValue - default return value if error
+ * @returns value
+ */
+function computeFormula(formula: string, vars: any, defaultValue: any = 0): unknown {
+  // auto inject Math
+  vars.Math = window.Math
+
+  let handle: Function
+  if (_computeFormulaCaches.has(formula)) {
+    handle = _computeFormulaCaches.get(formula)!
+  } else {
+    const paramName = '__VARS__'
+    const body = parseFormula(formula, {}, { compile: paramName })
+    const func = new Function(paramName, `return (${body});`)
+    _computeFormulaCaches.set(formula, func)
+    handle = func
+  }
+  try {
+    return handle(vars) as unknown
+  } catch (error) {
+    console.warn('[computeFormula] unknown error')
+    console.log(error)
+    return defaultValue
+  }
+}
+
+// setTimeout(() => {
+//   // const vars = {
+//   //   foo: {
+//   //     bar: {
+//   //       test: (value: number) => value * 100,
+//   //     },
+//   //   },
+//   //   test: {
+//   //     aa: {
+//   //       bb: {
+//   //         cc: 100,
+//   //       },
+//   //       cc: 23,
+//   //     },
+//   //   },
+//   // }
+//   console.log(parseFormula('foo.bar.test(10) + Math.floor(123) + test.aa.bb.cc + 50 + test.aa.cc', {}, { compile: '__VARS__' }))
+// }, 1000)
+
+export { handleFormula, computeFormula }
 export type { HandleFormulaVars, HandleFormulaTexts, HandleFormulaGetters }
