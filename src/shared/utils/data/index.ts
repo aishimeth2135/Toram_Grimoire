@@ -330,6 +330,41 @@ function handleFormula(formulaStr: string, {
   return trimBrackets(formulaStr)
 }
 
+const _computeFormulaCaches: Map<string, Function> = new Map()
+
+/**
+ * Compute given formula to pure value by "vars". (Suppose all variables exist in "vars")
+ * note: the method will compile given formula by Function constructor.
+ *
+ * @param formula - formual to compute
+ * @param vars - variables mapping
+ * @param defaultValue - default return value if error
+ * @returns value
+ */
+function computeFormula(formula: string, vars: any, defaultValue: any = 0): unknown {
+  // auto inject Math
+  vars.Math = window.Math
+
+  let handle: Function
+  if (_computeFormulaCaches.has(formula)) {
+    handle = _computeFormulaCaches.get(formula)!
+  } else {
+    const paramName = '__VARS__'
+    const body = parseFormula(formula, {}, { compile: paramName })
+    let func: Function
+    try {
+      func = new Function(paramName, `return (${body});`)
+    } catch (error) {
+      console.warn('[computeFormula] unknown error when try to create function')
+      console.log(error)
+      func = () => defaultValue
+    }
+    _computeFormulaCaches.set(formula, func)
+    handle = func
+  }
+  return handle(vars) as unknown
+}
+
 // console.log(handleFormula('test.a.c(123)', {
 //   methods: {
 //     test: {
@@ -362,41 +397,6 @@ function handleFormula(formulaStr: string, {
 //     },
 //   }));
 // }, 3000);
-
-
-const _computeFormulaCaches: Map<string, Function> = new Map()
-
-/**
- * Compute given formula to pure value by "vars". (Suppose all variables exist in "vars")
- * note: the method will compile given formula by Function constructor.
- *
- * @param formula - formual to compute
- * @param vars - variables mapping
- * @param defaultValue - default return value if error
- * @returns value
- */
-function computeFormula(formula: string, vars: any, defaultValue: any = 0): unknown {
-  // auto inject Math
-  vars.Math = window.Math
-
-  let handle: Function
-  if (_computeFormulaCaches.has(formula)) {
-    handle = _computeFormulaCaches.get(formula)!
-  } else {
-    const paramName = '__VARS__'
-    const body = parseFormula(formula, {}, { compile: paramName })
-    const func = new Function(paramName, `return (${body});`)
-    _computeFormulaCaches.set(formula, func)
-    handle = func
-  }
-  try {
-    return handle(vars) as unknown
-  } catch (error) {
-    console.warn('[computeFormula] unknown error')
-    console.log(error)
-    return defaultValue
-  }
-}
 
 // setTimeout(() => {
 //   // const vars = {
