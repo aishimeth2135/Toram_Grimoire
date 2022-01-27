@@ -56,7 +56,7 @@ class StatRestriction extends Stat {
       items.filter(item => item.value !== null).forEach(item => {
         const [instance, originalType] = (item.value as string).split('|')
         const type = originalType ? originalType : instance
-        showData.push((item.key === 'main' ? '' : item.key + '/') + type)
+        showData.push((item.key === 'main' ? '' : item.key + '.') + type)
       })
     }
     return showData.map(item => Grimoire.i18n.t('common.Equipment.stat-restriction.' + item))
