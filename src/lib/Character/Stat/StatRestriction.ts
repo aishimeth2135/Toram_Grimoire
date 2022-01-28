@@ -2,14 +2,13 @@ import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
+import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer'
+
 import { EquipmentTypes } from '../CharacterEquipment/enums'
 import { StatTypes } from './enums'
 import { StatBase, Stat } from './StatBase'
 
-interface StatRestrictionItems {
-  main: string | null;
-  sub: string | null;
-  body: string | null;
+interface StatRestrictionItems extends EquipmentRestriction {
   other: string | null;
 }
 
@@ -82,7 +81,7 @@ class StatRestriction extends Stat {
 
       'dodge', 'defense', 'normal',
     ]
-    const itemStatRestrictionMappingList = [
+    const itemStatRestrictionMappingList: ('event' | EquipmentTypes)[] = [
       'event',
 
       EquipmentTypes.OneHandSword, EquipmentTypes.TwoHandSword,
@@ -121,8 +120,7 @@ class StatRestriction extends Stat {
       const restrictionToType = itemStatRestrictionMappingList[restrictionIndex]
       if (restrictionToType === 'event') {
         newOriginRestriction.other = restrictionToType
-      }
-      else {
+      } else {
         newOriginRestriction[eqType] = restrictionToType
       }
     })
@@ -177,12 +175,7 @@ interface StatRestrictionSaveData {
   id: string;
   value: number;
   type: StatTypes;
-  restriction: {
-    main: string | null;
-    sub: string | null;
-    body: string | null;
-    other: string | null;
-  } | null;
+  restriction: StatRestrictionItems | null;
 }
 
 export default StatRestriction
