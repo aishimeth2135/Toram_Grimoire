@@ -646,7 +646,15 @@ class CharacterStatFormula {
       },
     }
 
-    const methods = {
+    const statValueVars = {
+      cvalue: 0,
+      tvalue: 0,
+      mvalue: 0,
+    }
+    const handlerVars = {
+      ...vars.value,
+      ...vars.computed,
+
       reduceValue: (value: number) => {
         const neg = value < 0
         value = Math.abs(value)
@@ -661,23 +669,8 @@ class CharacterStatFormula {
         return neg ? -1 * (res - 100) : res
       },
     }
-
-    const statValueVars = {
-      cvalue: 0,
-      tvalue: 0,
-      mvalue: 0,
-    }
-    const handlerOptions = {
-      vars: {
-        ...vars.value,
-        ...vars.computed,
-        ...methods,
-      },
-      methods,
-      toNumber: true,
-    }
     const appendGetter = (key: string, handler: () => number) => {
-      Object.defineProperty(handlerOptions.vars, key, {
+      Object.defineProperty(handlerVars, key, {
         get: handler,
       })
     }
@@ -715,16 +708,12 @@ class CharacterStatFormula {
         statValueVars.mvalue = mvalue
         statValueVars.tvalue = tvalue
       }
-      return computeFormula(formulaStr, handlerOptions.vars) as number
+      return computeFormula(formulaStr, handlerVars) as number
     }
 
 
-    const conditionalHandlerOptions = {
-      vars: {
-        ...vars.conditional,
-      },
-      toBoolean: true,
-      defaultValue: true,
+    const conditionalHandlerVars = {
+      ...vars.conditional,
     }
 
     const conditions: CharacterStatFormulaResultConditionalBase[] = this.conditionValues
@@ -735,7 +724,7 @@ class CharacterStatFormula {
           isBase = false
 
         if (item.conditional !== '#') {
-          result = computeFormula(item.conditional, conditionalHandlerOptions.vars, true) as boolean
+          result = computeFormula(item.conditional, conditionalHandlerVars, true) as boolean
         }
         item.options.forEach(option => {
           const match = option.match(/#([cmt]value)/)

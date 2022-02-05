@@ -23,9 +23,11 @@
               <slot />
             </div>
             <div v-if="footer" class="sticky bottom-0 mt-4 py-2 mx-4 bg-white flex">
-              <cy-button-border icon="ic-round-close" class="ml-auto" @click="closeWindow">
-                {{ t('global.close') }}
-              </cy-button-border>
+              <slot name="footer" :close-window="closeWindow">
+                <cy-button-border icon="ic-round-close" class="ml-auto" @click="closeWindow">
+                  {{ t('global.close') }}
+                </cy-button-border>
+              </slot>
             </div>
           </div>
         </div>

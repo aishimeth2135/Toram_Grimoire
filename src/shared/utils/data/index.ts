@@ -339,9 +339,9 @@ const _computeFormulaCaches: Map<string, Function> = new Map()
  * @param formula - formual to compute
  * @param vars - variables mapping
  * @param defaultValue - default return value if error
- * @returns value
+ * @returns result after computing formula
  */
-function computeFormula(formula: string, vars: any, defaultValue: any = 0): unknown {
+function computeFormula(formula: string, vars: Record<string, any>, defaultValue: any = 0): unknown {
   // auto inject Math
   vars.Math = window.Math
 
