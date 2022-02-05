@@ -16,7 +16,7 @@ no-any-skill-effect-match-message:
   - 目前選取的技能與裝備不相符。
   - 請更改裝備類型或是選擇其他技能。
 equipment:
-  no-select: 無選取
+  no-select: 任意
   none: 通用
   "main: title": 主手武器
   "sub: title": 副手裝備
