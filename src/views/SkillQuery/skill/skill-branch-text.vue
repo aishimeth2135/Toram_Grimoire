@@ -56,9 +56,12 @@ const rootClassList = computed(() => {
   @apply px-3 py-1 w-full flex items-start;
 
   &.is-tips {
-    @apply text-light-3 text-sm pl-5;
+    @apply text-sm pl-5;
 
-    &:deep(.text-light-3) {
+    /* APPLY text-light-3 */
+    color: var(--primary-light-3);
+
+    & :deep(.text-light-3) {
       color: var(--primary-purple);
     }
   }

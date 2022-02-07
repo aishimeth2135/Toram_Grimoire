@@ -1,8 +1,7 @@
 module.exports = {
   plugins: {
-    'postcss-mixins': {},
     'postcss-discard-comments': {},
-    'tailwindcss/nesting': require('postcss-nested'),
+    'tailwindcss/nesting': {},
     'postcss-simple-vars': {},
     tailwindcss: require('./tailwind.config'),
     autoprefixer: {},

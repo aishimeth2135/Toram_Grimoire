@@ -160,7 +160,9 @@ export default defineComponent({
   }
 
   &.inline {
-    @apply p-0 m-0 border-0;
+    margin: 0;
+    padding: 0;
+    border: 0;
   }
 
   & :deep(.button--text) {
