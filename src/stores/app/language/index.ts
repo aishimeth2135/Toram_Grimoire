@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, readonly, ref, shallowReactive } from 'vue'
-import { VueI18n } from 'vue-i18n'
+import { Composer } from 'vue-i18n'
 
 import CY from '@/shared/utils/Cyteria'
 import { APP_STORAGE_KEYS } from '@/shared/consts'
@@ -23,7 +23,7 @@ const LOCALE_GLOBAL_NAMESPACE_LIST: LocaleGlobalNamespaces[] = [
 ]
 
 export const I18nStore: {
-  i18n: VueI18n | null;
+  i18n: Composer | null;
 } = shallowReactive({
   i18n: null,
 })
@@ -96,7 +96,7 @@ export const useLanguageStore = defineStore('app-language', () => {
     })
   }
 
-  const setI18nInstance = (i18nInstance: VueI18n) => {
+  const setI18nInstance = (i18nInstance: Composer) => {
     I18nStore.i18n = i18nInstance
   }
 
