@@ -1,6 +1,5 @@
+<!-- this component is splitted to handle EnchantStep -->
 <template>
-  <!-- eslint-disable vue/no-mutating-props -->
-  <!-- this component is splitted to handle EnchantStep -->
   <div
     class="enchant-step px-2 pt-1 flex flex-col h-full bg-white"
     :class="{ [mainBorderColor]: true, 'opacity-50': step.hidden }"
@@ -60,7 +59,7 @@
           :icon="step.hidden ? 'mdi-checkbox-blank-off-outline' : 'mdi-checkbox-blank-outline'"
           class="p-0"
           :icon-color="step.hidden ? 'red' : 'red-light'"
-          @click="step.hidden = !step.hidden"
+          @click="step.hidden = !step.hidden/* eslint-disable-line vue/no-mutating-props */"
         />
         <cy-button-icon
           icon="jam-close-circle"
@@ -132,7 +131,7 @@
       <cy-transition type="fade">
         <div v-if="typeEach" class="border-b border-light-2 py-0.5">
           <cy-input-counter
-            v-model:value="step.step"
+            v-model:value="step.step/* eslint-disable-line vue/no-mutating-props */"
             inline
             main-color="blue-green"
           >
