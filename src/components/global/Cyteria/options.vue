@@ -1,117 +1,110 @@
 <template>
-  <div class="cy--options" :class="rootClassList">
+  <div ref="rootElement" class="cy--options" :class="rootClassList">
     <div class="title-container" @click="toggleUnfold">
       <slot name="title" :unfold="unfold" />
     </div>
-    <cy-transition type="fade">
-      <div v-if="unfold" class="options-container" :style="optionsPosition" @click="toggleUnfold">
-        <div class="options">
-          <slot name="options" />
+    <teleport to="#app-popovers">
+      <cy-transition type="fade">
+        <div v-if="unfold" class="cy--options-container" :style="optionsPosition" @click="toggleUnfold">
+          <div class="options-items">
+            <slot name="options" />
+          </div>
         </div>
-      </div>
-    </cy-transition>
+      </cy-transition>
+    </teleport>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'CyOptions',
-  props: {
-    inline: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  data() {
-    return {
-      unfold: false,
-      optionsPosition: {
-        top: '100%',
-      },
-    }
-  },
-  computed: {
-    rootClassList() {
-      return {
-        'inline': this.inline,
-      }
-    },
-  },
-  methods: {
-    toggleUnfold() {
-      this.unfold = !this.unfold
-
-      if (this.unfold) {
-        const rect = this.$el.getBoundingClientRect()
-
-        const position = {}
-
-        const len2bottom = window.innerHeight - rect.bottom
-        if (rect.top >= len2bottom) {
-          position.bottom = '100%'
-        } else {
-          position.top = '100%'
-        }
-        const len2right = window.innerWidth - rect.right
-        if (rect.left >= len2right) {
-          position.right = '0'
-        } else {
-          position.left = '0'
-        }
-        this.optionsPosition = position
-      }
-    },
-  },
 }
 </script>
 
-<style lang="less" scoped>
+<script lang="ts" setup>
+import { computed, CSSProperties, Ref, ref } from 'vue'
+
+interface Props {
+  inline?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  inline: false,
+})
+
+const rootElement: Ref<HTMLElement | null> = ref(null)
+const unfold = ref(false)
+const optionsPosition: Ref<CSSProperties> = ref({})
+
+const rootClassList = computed(() => ({ 'cy--options-inline': props.inline }))
+
+const toggleUnfold = () => {
+  unfold.value = !unfold.value
+
+  if (unfold.value) {
+    const rect = rootElement.value!.getBoundingClientRect()
+
+    const position = {} as CSSProperties
+    const padding = 8
+
+    const len2bottom = window.innerHeight - rect.bottom
+    if (rect.top >= len2bottom) {
+      position.bottom = ((window.innerHeight - rect.bottom) + rect.height + padding) + 'px'
+    } else {
+      position.top = (rect.top + rect.height + padding) + 'px'
+    }
+    const len2right = window.innerWidth - rect.right
+    if (rect.left >= len2right) {
+      position.right = ((window.innerWidth - rect.right) + padding) + 'px'
+    } else {
+      position.left = (rect.left + padding) + 'px'
+    }
+    optionsPosition.value = position
+  }
+}
+</script>
+
+<style lang="postcss" scoped>
 .cy--options {
   position: relative;
   margin: 0.3rem 0.4rem;
   max-width: 20rem;
   background-color: var(--white);
 
-  &.inline {
+  &.cy--options-inline {
     margin: 0;
     display: inline-block;
     background-color: transparent;
 
-    > .title-container {
+    & > .title-container {
       border: 0;
       display: flex;
     }
   }
 
-  > .title-container {
+  & > .title-container {
     border: 1px solid var(--primary-light-2);
     transition: 0.3s ease;
   }
-  > .options-container {
-    position: absolute;
-    z-index: 20;
-    width: 100%;
-    min-width: 15rem;
+}
 
-    &::before {
-      content: '';
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(var(--rgb-white), 0.5);
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
+.cy--options-container {
+  position: fixed;
+  z-index: 20;
+  min-width: 15rem;
 
-    > .options {
-      max-height: 40vh;
-      overflow-y: auto;
-      // box-shadow: 0.1rem 0.1rem 0.2rem rgba(var(--rgb-primary-dark), 0.4);
-      border: 1px solid var(--primary-light-2);
-      background-color: var(--white);
-      z-index: 1;
-    }
+  &::before {
+    content: '';
+
+    @apply fixed w-full h-full bg-white bg-opacity-50 top-0 left-0 -z-1;
+  }
+
+  & > .options-items {
+    max-height: 40vh;
+    overflow-y: auto;
+    border: 1px solid var(--primary-light-2);
+    background-color: var(--white);
+    z-index: 1;
   }
 }
 </style>

@@ -26,6 +26,11 @@ class SkillComputingContainer {
     skillLevel: number;
   }
 
+  varGetters: {
+    characterLevel: (() => number) | null;
+    skillLevel: ((skill: Skill) => number) | null;
+  }
+
   handleFormulaExtends: {
     vars: HandleFormulaVars;
     texts: HandleFormulaTexts;
@@ -39,6 +44,10 @@ class SkillComputingContainer {
     this.vars = {
       characterLevel: 250,
       skillLevel: 10,
+    }
+    this.varGetters = {
+      characterLevel: null,
+      skillLevel: null,
     }
     this.handleFormulaExtends = markRaw({
       vars: {},

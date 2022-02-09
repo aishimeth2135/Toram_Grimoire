@@ -141,8 +141,8 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
 
     vars = {
       ...handleFormulaExtends.vars,
-      'SLv': branchItem.belongContainer.vars.skillLevel,
-      'CLv': branchItem.belongContainer.vars.characterLevel,
+      'SLv': branchItem.belongContainer.varGetters.skillLevel?.(branchItem.default.parent.parent) ?? branchItem.belongContainer.vars.skillLevel,
+      'CLv': branchItem.belongContainer.varGetters.characterLevel?.() ?? branchItem.belongContainer.vars.characterLevel,
       'stack': stack,
     } as HandleFormulaVars
     texts = {
