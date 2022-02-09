@@ -44,7 +44,10 @@ const isTips = computed(() => {
   @apply px-3 py-0.5 w-full flex items-start;
 
   &.tips {
-    @apply text-light-3 text-sm pl-5;
+    @apply text-sm pl-5;
+
+    /* APPLY text-light-3 */
+    color: var(--primary-light-3);
 
     & :deep(.text-light-3) {
       color: var(--primary-purple);

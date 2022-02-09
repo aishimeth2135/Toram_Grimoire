@@ -59,7 +59,6 @@
     "postcss": "^8.4.5",
     "postcss-discard-comments": "^5.0.1",
     "postcss-loader": "^6.2.1",
-    "postcss-mixins": "^9.0.1",
     "postcss-nested": "^5.0.6",
     "postcss-simple-vars": "^6.0.3",
     "tailwindcss": "^3.0.7",

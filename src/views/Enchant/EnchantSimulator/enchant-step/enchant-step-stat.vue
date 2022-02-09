@@ -1,6 +1,6 @@
+
+<!-- this component is splitted to handle EnchantStepStat -->
 <template>
-  <!-- eslint-disable vue/no-mutating-props -->
-  <!-- this component is splitted to handle EnchantStepStat -->
   <div class="pt-1">
     <div
       class="flex items-center flex-wrap py-0.5"
@@ -32,7 +32,7 @@
     </div>
     <div class="flex items-center pb-0.5 overflow-y-auto">
       <cy-input-counter
-        v-model:value="stat.value"
+        v-model:value="stat.value/* eslint-disable-line vue/no-mutating-props */"
         inline
         max-button
         min-button

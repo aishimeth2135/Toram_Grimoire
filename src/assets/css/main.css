@@ -93,13 +93,13 @@ html.theme--night-mode {
   --rgb-black: 255, 255, 255;
 }
 
-@define-mixin main--font-base {
+.main--font-base {
   font-family: 'Itim', Microsoft JhengHei, sans-serif;
 }
-@define-mixin main--font-1 {
+.main--font-1 {
   font-family: 'Itim', 'naikaifont', Microsoft JhengHei, sans-serif;
 }
-@define-mixin main--font-2 {
+.main--font-2 {
   font-family: 'Itim', 'Noto Sans TC', Microsoft JhengHei, sans-serif;
 }
 
@@ -110,25 +110,24 @@ html {
 }
 
 html {
-  @apply text-base;
+  @apply text-base main--font-base;
 
-  @mixin main--font-base;
   & input, & textarea {
-    @mixin main--font-base;
+    @apply main--font-base;
   }
 
   &.font-1 {
-    @mixin main--font-1;
+    @apply main--font-1;
 
     & input, & textarea {
-      @mixin main--font-1;
+      @apply main--font-1;
     }
   }
   &.font-2 {
-    @mixin main--font-2;
+    @apply main--font-2;
 
     & input, & textarea {
-      @mixin main--font-2;
+      @apply main--font-2;
     }
   }
 }
