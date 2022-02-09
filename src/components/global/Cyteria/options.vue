@@ -93,6 +93,11 @@ const toggleUnfold = () => {
   z-index: 20;
   min-width: 15rem;
 
+  @media screen and (max-width: 15rem) {
+    min-width: auto;
+    width: 100%;
+  }
+
   &::before {
     content: '';
 
