@@ -105,15 +105,23 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
     })
 
     const handleFormulaExtends = branchItem.belongContainer.handleFormulaExtends
-
+    const extendsDatas = {
+      vars: { ...handleFormulaExtends.vars },
+      texts: { ...handleFormulaExtends.texts },
+    }
+    branchItem.belongContainer.handleFormulaDynamicExtends.forEach(getter => {
+      const data = getter()
+      Object.assign(extendsDatas.vars, data.vars)
+      Object.assign(extendsDatas.texts, data.texts)
+    })
     vars = {
-      ...handleFormulaExtends.vars,
+      ...extendsDatas.vars,
     } as HandleFormulaVars
     texts = {
       'SLv': t('skill-query.skill-level'),
       'CLv': t('skill-query.character-level'),
       'stack': stack,
-      ...handleFormulaExtends.texts,
+      ...extendsDatas.texts,
     } as HandleFormulaTexts
   } else {
     const stack: number[] = []

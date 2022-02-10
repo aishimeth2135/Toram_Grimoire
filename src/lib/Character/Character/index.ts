@@ -365,13 +365,6 @@ class CharacterStatCategory {
 }
 
 
-interface CharacterStatResult extends CharacterStatFormulaResult {
-  origin: CharacterStat;
-  resultValue: number;
-  displayValue: string;
-  hidden: boolean;
-}
-
 interface CharacterStatFormulaResult {
   value: number;
   readonly statValueParts: {
@@ -382,6 +375,12 @@ interface CharacterStatFormulaResult {
   };
   readonly statPartsDetail: StatPartsDetail;
   readonly conditionalBase: CharacterStatFormulaResultConditionalBase | null;
+}
+interface CharacterStatResult extends CharacterStatFormulaResult {
+  origin: CharacterStat;
+  resultValue: number;
+  displayValue: string;
+  hidden: boolean;
 }
 
 interface CharacterStatFormulaResultConditionalBase {

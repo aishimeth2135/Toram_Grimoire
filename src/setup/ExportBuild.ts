@@ -11,7 +11,7 @@ type ExportBuildsOptions = {
   readonly loaded: (dataResult: string) => void;
 }
 
-export default function({ save, loaded }: ExportBuildsOptions) {
+export default function ExportBuild({ save, loaded }: ExportBuildsOptions) {
   const { t } = useI18n()
   const { notify } = Notify()
 
