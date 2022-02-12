@@ -40,6 +40,8 @@ export const useCharacterStore = defineStore('view-character', () => {
   const food = useCharacterFoodStore()
   const skillBuildStore = useCharacterSkillBuildStore()
 
+  const saveDisabled = ref(false)
+
   const currentCharacter = computed<Character>(() => characters.value[currentCharacterIndex.value])
 
   const characterSimulatorInitFinished = () => {
@@ -105,6 +107,8 @@ export const useCharacterStore = defineStore('view-character', () => {
       find = finds.length > 0
       cnt += 1
     }
+
+    saveDisabled.value = true
   }
 
   interface CharacterSimulatorSaveData {
@@ -163,7 +167,8 @@ export const useCharacterStore = defineStore('view-character', () => {
   const loadCharacterSimulator = ({ index = 0 }: { index?: number } = {}) => {
     const prefix = 'app--character-simulator--data-' + index
     if (!window.localStorage.getItem(prefix)) {
-      throw new Error(`Index: ${index} of Character-Simulator Data is not exist.`)
+      console.warn(`Index: ${index} of Character-Simulator Data is not exist.`)
+      return
     }
     try {
       reset()
@@ -212,6 +217,9 @@ export const useCharacterStore = defineStore('view-character', () => {
    * @param index - 0: auto save
    */
   const saveCharacterSimulator = (index: number = 0) => {
+    if (saveDisabled.value) {
+      return
+    }
     const {
       characters: charactersData,
       equipments: equipmentsData,
