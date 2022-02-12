@@ -1,19 +1,27 @@
 <template>
-  <div class="cy--list-item" :class="{ 'selected': selected }">
+  <div class="cy--list-item" :class="{ 'selected': selected, 'is-pure': pure }">
     <slot />
   </div>
 </template>
 
-<script>
+
+
+<script lang="ts">
 export default {
   name: 'CyListItem',
-  props: {
-    selected: {
-      type: Boolean,
-      default: false,
-    },
-  },
 }
+</script>
+
+<script lang="ts" setup>
+interface Props {
+  selected?: boolean;
+  pure?: boolean;
+}
+
+withDefaults(defineProps<Props>(), {
+  selected: false,
+  pure: false,
+})
 </script>
 
 <style lang="postcss" scoped>
@@ -23,6 +31,10 @@ export default {
 
   &:hover, &.selected {
     background-color: rgba(var(--rgb-primary-light), 0.4);
+  }
+
+  &.is-pure {
+    @apply cursor-auto;
   }
 
   &.selected {

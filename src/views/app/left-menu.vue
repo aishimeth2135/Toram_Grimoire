@@ -25,7 +25,7 @@
             </router-link>
           </div>
         </div>
-        <div v-if="router.currentRoute.value.name !== 'Home'" class="flex mt-auto pt-2 ai-center justify-end">
+        <div v-if="router.currentRoute.value.name !== 'Home'" class="flex mt-auto pt-2 ai-center justify-end space-x-2">
           <cy-button-circle icon="bx:bx-share-alt" @click="copyCurrentUrl" />
           <router-link v-slot="{ navigate }" :to="{ name: 'Home' }" custom>
             <cy-button-circle icon="ant-design:home-outlined" @click="navigate" />

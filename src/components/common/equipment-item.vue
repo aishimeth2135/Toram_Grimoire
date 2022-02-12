@@ -6,7 +6,7 @@
     >
       <span :class="{ 'text-purple': current }">{{ equipment.name }}</span>
       <span
-        v-if="equipment.hasRefining && equipment.refining != 0"
+        v-if="equipment.hasRefining && equipment.refining !== 0"
         class="ml-1 text-water-blue"
       >
         +{{ equipment.refining }}
@@ -22,26 +22,19 @@
   </cy-list-item>
 </template>
 
-<script>
+<script lang="ts" setup>
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-export default {
-  props: {
-    equipment: {
-      type: CharacterEquipment,
-      required: true,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    current: {
-      type: Boolean,
-      default: false,
-    },
-    selected: {
-      type: Boolean,
-      default: false,
-    },
-  },
+
+interface Props {
+  equipment: CharacterEquipment;
+  disabled?: boolean;
+  current?: boolean;
+  selected?: boolean;
 }
+
+withDefaults(defineProps<Props>(), {
+  disabled: false,
+  current: false,
+  selected: false,
+})
 </script>

@@ -10,7 +10,7 @@ import Tag from '@/lib/Tag/Tag'
 import { findStackState, TAG_BUTTON_CLASS_NAME } from './utils'
 import { ComputingContainerInjectionKey } from './injection-keys'
 
-function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
+export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
   const currentTags: Ref<Tag[]> = ref([])
 
   const findTag = (tagName: string): Tag | null => {
@@ -58,7 +58,7 @@ function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
   }
 }
 
-function setupComputingContainer(skill: Ref<Skill | null>) {
+export function setupComputingContainer(skill: Ref<Skill | null>) {
   const computingContainer = reactive(new SkillComputingContainer())
   const FORMULA_REPLACED_VARS = [
     'BSTR', 'BINT', 'BAGI', 'BVIT', 'BDEX', 'TEC',
@@ -101,9 +101,4 @@ function setupComputingContainer(skill: Ref<Skill | null>) {
     currentSkillItem,
     computingContainer,
   }
-}
-
-export {
-  setupSkillTag,
-  setupComputingContainer,
 }

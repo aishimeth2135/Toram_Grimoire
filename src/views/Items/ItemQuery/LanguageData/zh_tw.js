@@ -16,6 +16,7 @@ export default function() {
         'name': '名稱',
         'material': '製作素材',
         'obtain-name': '取得來源',
+        'map': '地圖',
       },
       'options: stat': {
         'select stat: window title': '選擇能力',

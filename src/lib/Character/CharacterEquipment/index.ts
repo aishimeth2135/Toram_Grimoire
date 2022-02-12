@@ -10,10 +10,13 @@ import type { StatRestrictionSaveData } from '../Stat/StatRestriction'
 import { EquipmentTypes } from './enums'
 
 type EquipmentOrigin = Equipment | null
+
+let characterEquipmentAutoIncreasement = 0
 abstract class CharacterEquipment {
   private _name: string
   private _isCustom: boolean
 
+  instanceId: number
   origin: EquipmentOrigin
   stats: StatRestriction[]
 
@@ -22,19 +25,25 @@ abstract class CharacterEquipment {
   stability?: number
   atk?: number
   def?: number
+  customTypeList?: EquipmentTypes[]
 
   abstract type: EquipmentTypes
 
   constructor(origin: EquipmentOrigin = null, name: string = '', stats: StatRestriction[] = []) {
+    this.instanceId = characterEquipmentAutoIncreasement
+    characterEquipmentAutoIncreasement += 1
+
     this.origin = origin
     this.stats = stats
     this._name = name
     this._isCustom = false
   }
 
+  // TODO: remove getter to support lagacy
   get id() {
-    return this.origin ? this.origin.id : 0
+    return this.instanceId
   }
+
   get name() {
     return this._name ? this._name : (this.origin ? this.origin.name : '')
   }
@@ -51,6 +60,17 @@ abstract class CharacterEquipment {
       return 'avatar'
     return 'other'
   }
+
+  isWeapon(): this is Weapon {
+    return this instanceof Weapon
+  }
+  isArmor(): this is Armor {
+    return this instanceof Armor
+  }
+  isAvatar(): this is Avatar {
+    return this instanceof Avatar
+  }
+
   get hasRefining() {
     return false
   }
@@ -158,7 +178,7 @@ abstract class CharacterEquipment {
   }
   appendCrystal(origin: Crystal) {
     if (this.hasCrystal) {
-      const crystals = this.crystals as EquipmentCrystal[]
+      const crystals = this.crystals!
       if (crystals.length < 2) {
         crystals.push(new EquipmentCrystal(origin))
       }
@@ -166,7 +186,7 @@ abstract class CharacterEquipment {
   }
   removeCrystal(crystal: EquipmentCrystal) {
     if (this.hasCrystal) {
-      const crystals = this.crystals as EquipmentCrystal[]
+      const crystals = this.crystals!
       const idx = crystals.indexOf(crystal)
       crystals.splice(idx, 1)
     }
@@ -176,7 +196,7 @@ abstract class CharacterEquipment {
     const stats = this.stats.map(p => p.clone())
     const name = this.name
 
-    let eq
+    let eq: CharacterEquipment | null = null
     if (this instanceof Weapon) {
       if (this instanceof MainWeapon) {
         eq = new MainWeapon(this.origin, name, stats, this.type, this.atk)
@@ -372,7 +392,7 @@ abstract class CharacterEquipment {
 
   static fromOriginEquipment(item: Equipment, {
     statValueToNumber = true,
-  } = {}) {
+  } = {}): CharacterEquipment {
     /* [
       0'單手劍', 1'雙手劍', 2'弓', 3'弩', 4'法杖',
       5'魔導具', 6'拳套', 7'旋風槍', 8'拔刀劍',
@@ -422,6 +442,8 @@ abstract class CharacterEquipment {
     if (item.category < 300) {
       return new SubArmor(...pre_args, EquipmentTypes.Shield, item.baseValue)
     }
+
+    return new Avatar(...pre_args)
   }
 }
 
@@ -443,7 +465,7 @@ abstract class Weapon extends CharacterEquipment {
   override atk: number
   override stability: number
 
-  constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], atk: number | string = 1, stability = 0) {
+  constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], atk: number | string = 1, stability: number = 0) {
     super(origin, name, stats)
 
     atk = typeof atk === 'string' ? parseInt(atk, 10) : atk
@@ -466,8 +488,8 @@ class MainWeapon extends Weapon {
     name: string,
     stats: StatRestriction[],
     type: EquipmentTypes,
-    atk: number,
-    stability: number = 0,
+    atk?: number,
+    stability?: number,
   ) {
     super(origin, name, stats, atk, stability)
 
@@ -502,8 +524,8 @@ class SubWeapon extends Weapon {
     name: string,
     stats: StatRestriction[],
     type: EquipmentTypes,
-    atk: number,
-    stability: number = 0,
+    atk?: number,
+    stability?: number,
   ) {
     super(origin, name, stats, atk, stability)
 
@@ -541,7 +563,7 @@ class SubArmor extends Armor {
     name: string,
     stats: StatRestriction[],
     type: EquipmentTypes,
-    def: number | string = 0,
+    def?: number | string,
   ) {
     super(origin, name, stats, def)
 
@@ -556,24 +578,25 @@ class SubArmor extends Armor {
 class BodyArmor extends Armor {
   override refining: number
   override crystals: EquipmentCrystal[]
+  override customTypeList: EquipmentTypes[]
+
   type: EquipmentTypes
 
-  constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], def: number | string) {
+  constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], def?: number | string) {
     super(origin, name, stats, def)
 
     this.type = EquipmentTypes.BodyNormal
     this.refining = 0
     this.crystals = []
-  }
-  setType(type: EquipmentTypes) {
-    this.type = type
-  }
-  get customTypeList() {
-    return [
+
+    this.customTypeList = [
       EquipmentTypes.BodyNormal,
       EquipmentTypes.BodyDodge,
       EquipmentTypes.BodyDefense,
     ]
+  }
+  setType(type: EquipmentTypes) {
+    this.type = type
   }
   override get hasRefining() {
     return true
@@ -592,7 +615,7 @@ class AdditionalGear extends Armor {
 
   readonly type: EquipmentTypes
 
-  constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], def: number | string) {
+  constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], def?: number | string) {
     super(origin, name, stats, def)
 
     this.refining = 0
@@ -612,7 +635,7 @@ class SpecialGear extends Armor {
 
   readonly type: EquipmentTypes
 
-  constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], def: number | string) {
+  constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], def?: number | string) {
     super(origin, name, stats, def)
 
     this.crystals = []
@@ -659,7 +682,15 @@ class EquipmentCrystal {
 }
 
 export {
-  CharacterEquipment, EquipmentCrystal,
-  MainWeapon, SubWeapon, SubArmor, BodyArmor, AdditionalGear, SpecialGear, Avatar,
+  CharacterEquipment,
+  EquipmentCrystal,
+
+  MainWeapon,
+  SubWeapon,
+  SubArmor,
+  BodyArmor,
+  AdditionalGear,
+  SpecialGear,
+  Avatar,
 }
 export type { EquipmentSaveData }

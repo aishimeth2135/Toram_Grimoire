@@ -210,7 +210,7 @@ export default {
       this.$notify(this.$lang('Warn/Copy character successfully', [from.name]))
     },
     setOptionalBaseStat(name) {
-      this.character.setOptinalBaseStat(name)
+      this.character.setOptionalBaseStat(name)
     },
     clearOptionalBaseStat() {
       this.character.clearOptinalBaseStat()
