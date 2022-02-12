@@ -54,7 +54,7 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(branchIt
     pureDatas,
   })
 
-  displayData.customDatas.extraValueList = extraValueList
+  displayData.setCustomData('extraValueList', extraValueList)
 
   return displayData
 }

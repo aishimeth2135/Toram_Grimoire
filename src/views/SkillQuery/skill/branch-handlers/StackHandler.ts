@@ -27,7 +27,7 @@ export default function StackHandler<BranchItem extends SkillBranchItem>(branchI
 
   const tmpv = parseInt(displayData.get('max') || displayData.get('default'), 10)
   if (!Number.isNaN(tmpv) && tmpv > 999) {
-    displayData.customDatas.stackInputWidth = '3rem'
+    displayData.setCustomData('stackInputWidth', '3rem')
   }
 
   return displayData

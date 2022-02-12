@@ -335,7 +335,7 @@ export default {
       modes: {
         'normal': {
           icon: 'ic-round-menu-book',
-          targets: handleOptions(['name', 'material', 'obtain-name']),
+          targets: handleOptions(['name', 'material', 'obtain-name', 'map']),
           optionsVisible: false,
           searchText: '',
         },
@@ -518,7 +518,9 @@ export default {
                 return eq.recipe && eq.recipe['materials'] &&
                   eq.recipe['materials'].find(c => c.name.toLowerCase().includes(searchText))
               else if (q === 'obtain-name')
-                return eq.obtains.find(b => b['name'] && b['name'].toLowerCase().includes(searchText))
+                return eq.obtains.find(b => b['name']?.toLowerCase().includes(searchText) ?? false)
+              else if (q === 'map')
+                return eq.obtains.find(b => b['map']?.toLowerCase().includes(searchText) ?? false)
             })
           })
       }

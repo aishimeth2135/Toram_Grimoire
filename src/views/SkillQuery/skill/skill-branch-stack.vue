@@ -4,7 +4,7 @@
       v-if="branchItem.parent.parent.parent.config.formulaDisplayMode === FormulaDisplayModes.Normal"
       v-model:value="stackValue"
       :range="stackValueRange"
-      :input-width="container.customDatas.stackInputWidth"
+      :input-width="container.getCustomData('stackInputWidth')"
     >
       <template #title>
         <cy-icon-text icon="ion-leaf">

@@ -13,6 +13,8 @@ import CharacterSystem from '../index'
 import { EquipmentFieldTypes, CharacterBaseStatTypes, CharacterOptionalBaseStatTypes } from './enums'
 
 type CharacterBaseStatValidType = CharacterBaseStatTypes | CharacterOptionalBaseStatTypes
+
+let _characterAutoIncreasement = 0
 class Character {
   private _baseStats: readonly [
     CharacterBaseStat<CharacterBaseStatTypes.STR>,
@@ -23,8 +25,10 @@ class Character {
   ]
   private _optinalBaseStat: CharacterBaseStat<CharacterOptionalBaseStatTypes> | null
 
+  instanceId: number
   name: string
   level: number
+
   readonly equipmentFields: readonly [
     EquipmentField,
     EquipmentField,
@@ -37,6 +41,9 @@ class Character {
   ]
 
   constructor(name = 'Potum') {
+    this.instanceId = _characterAutoIncreasement
+    _characterAutoIncreasement += 1
+
     this.name = name
 
     this.level = 1
@@ -62,6 +69,14 @@ class Character {
     ] as const
   }
 
+  // TODO: remove old character-simulator
+  get iid(): number {
+    return this.instanceId
+  }
+  get origin(): Character {
+    return this
+  }
+
   get baseStats() {
     const res: CharacterBaseStat<CharacterBaseStatTypes | CharacterOptionalBaseStatTypes>[] = this._baseStats.slice()
     if (this._optinalBaseStat !== null) {
@@ -80,13 +95,12 @@ class Character {
     return this.equipmentFields.find(item => item.type === type) as EquipmentField
   }
   fieldEquipment(type: EquipmentFieldTypes) {
-    const field = this.equipmentField(type)
-    return field ? field.equipment : undefined
+    return this.equipmentField(type)?.equipment ?? null
   }
   hasOptinalBaseStat() {
     return this._optinalBaseStat ? true : false
   }
-  setOptinalBaseStat(name: CharacterOptionalBaseStatTypes) {
+  setOptionalBaseStat(name: CharacterOptionalBaseStatTypes) {
     this._optinalBaseStat = new CharacterBaseStat(name)
   }
   clearOptinalBaseStat() {
@@ -103,12 +117,12 @@ class Character {
     const stat = this.baseStat(name)
     return stat ? stat.value : 0
   }
-  checkFieldEquipmentType(fieldType: EquipmentFieldTypes, eqType: EquipmentTypes) {
-    return this.equipmentField(fieldType).equipmentType === eqType
+  checkFieldEquipmentType(fieldType: EquipmentFieldTypes, eqType: EquipmentTypes | null) {
+    return eqType === null || this.equipmentField(fieldType).equipmentType === eqType
   }
-  subWeaponValid(subType: EquipmentTypes, mainType: EquipmentTypes) {
+  subWeaponValid(subType: EquipmentTypes, mainType?: EquipmentTypes) {
     const validSubs: EquipmentTypes[] = []
-    mainType = mainType || this.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
+    mainType = mainType ?? this.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
     switch (mainType) {
       case EquipmentTypes.OneHandSword:
         validSubs.push(EquipmentTypes.OneHandSword)
@@ -143,7 +157,7 @@ class Character {
       find.value = bstat.value
     })
     if (this.optionalBaseStat !== null) {
-      chara.setOptinalBaseStat(this.optionalBaseStat.name);
+      chara.setOptionalBaseStat(this.optionalBaseStat.name);
       (chara.optionalBaseStat as CharacterBaseStat<CharacterOptionalBaseStatTypes>).value = this.optionalBaseStat.value
     }
 
@@ -204,7 +218,7 @@ class Character {
 
     return data
   }
-  load(data: CharacterSaveData, equipments: CharacterEquipment[]) {
+  load(data: CharacterSaveData, equipments: CharacterEquipment[]): { success: boolean; error: null | boolean } {
     try {
       let success = true
 
@@ -221,7 +235,7 @@ class Character {
         }
       })
       if (optionalBaseStat) {
-        this.setOptinalBaseStat(optionalBaseStat.name)
+        this.setOptionalBaseStat(optionalBaseStat.name)
         if (this.optionalBaseStat)
           this.optionalBaseStat.value = optionalBaseStat.value
         else {
@@ -256,10 +270,12 @@ class Character {
 
       return {
         success,
+        error: null,
       }
     } catch (e) {
       console.warn(e)
       return {
+        success: false,
         error: true,
       }
     }
@@ -365,13 +381,6 @@ class CharacterStatCategory {
 }
 
 
-interface CharacterStatResult extends CharacterStatFormulaResult {
-  origin: CharacterStat;
-  resultValue: number;
-  displayValue: string;
-  hidden: boolean;
-}
-
 interface CharacterStatFormulaResult {
   value: number;
   readonly statValueParts: {
@@ -382,6 +391,12 @@ interface CharacterStatFormulaResult {
   };
   readonly statPartsDetail: StatPartsDetail;
   readonly conditionalBase: CharacterStatFormulaResultConditionalBase | null;
+}
+interface CharacterStatResult extends CharacterStatFormulaResult {
+  origin: CharacterStat;
+  resultValue: number;
+  displayValue: string;
+  hidden: boolean;
 }
 
 interface CharacterStatFormulaResultConditionalBase {
@@ -430,10 +445,10 @@ interface StatPartsDetailAdditionalValueItem {
 
 interface CharacterStatResultVars {
   value: {
-    [key: string]: number;
+    [key: string]: number | Record<string, number>;
   };
   conditional: {
-    [key: string]: boolean;
+    [key: string]: boolean | Record<string, boolean>;
   };
   computed: {
     [key: string]: number;
@@ -607,14 +622,20 @@ class CharacterStatFormula {
     this.formula = str
     this.conditionValues = markRaw([])
   }
+
   get belongCharacterStat() {
     return this._parent
   }
+
   appendConditionValue(conditional: string, formula: string, options: string) {
     const optionList = options.split(/\s*,\s*/)
     const item = markRaw(new CharacterStatFormulaConditionalItem(conditional, formula, optionList))
     this.conditionValues.push(item)
   }
+
+  /**
+   * @param pureStats - pure stats. all stat ID of stat must be unique
+   */
   calc(pureStats: Stat[], vars: CharacterStatResultVars): CharacterStatFormulaResult {
     const allCharacterStatMap: { [key: string]: CharacterStat } = {}
     this.belongCharacterStat.category.belongCategorys
@@ -847,4 +868,4 @@ class CharacterStatFormulaConditionalItem {
 }
 
 export { CharacterStatCategory, CharacterStat, CharacterStatFormula, Character, EquipmentField }
-export type { CharacterSaveData }
+export type { CharacterSaveData, CharacterStatResultVars, CharacterStatResult, CharacterStatFormulaResultConditionalBase, StatPartsDetailAdditionalValueItem }

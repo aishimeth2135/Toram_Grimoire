@@ -349,7 +349,7 @@ import { mapState } from 'pinia'
 
 import { useDatasStore } from '@/stores/app/datas'
 
-import vue_DrawSkillTree from '@/views/SkillSimulator/draw-skill-tree.vue'
+import vue_DrawSkillTree from '@/views/SkillSimulatorOld/draw-skill-tree.vue'
 
 import vue_SkillBranch from './skill-branch/skill-branch.vue'
 

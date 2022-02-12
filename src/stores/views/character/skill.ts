@@ -165,7 +165,7 @@ export const useCharacterSkillStore = defineStore('view-character-skill', () => 
     return Papa.unparse(datas)
   }
 
-  const loadSkillBuildsCsv = ({ csvString, reset = true }: { csvString: string; reset: boolean }) => {
+  const loadSkillBuildsCsv = ({ csvString }: { csvString: string }) => {
     const { type, index } = SAVE_CSV_CONFIG
 
     const createBuild = () => {
@@ -193,9 +193,7 @@ export const useCharacterSkillStore = defineStore('view-character-skill', () => 
 
       if (currentType === CsvSkillElementTypes.SkillRoot) {
         if (!hasInit) {
-          if (reset) {
-            resetSkillBuilds()
-          }
+          resetSkillBuilds()
           cur = createBuild()
           hasInit = true
         } else {
@@ -233,3 +231,5 @@ export const useCharacterSkillStore = defineStore('view-character-skill', () => 
     loadSkillBuildsCsv,
   }
 })
+
+export type { SkillBuildState }

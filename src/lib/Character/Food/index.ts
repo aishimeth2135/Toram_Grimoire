@@ -31,7 +31,7 @@ class FoodsBase {
   }
 
   createFoods(name: string = 'Potum') {
-    const foods = new Foods(name)
+    const foods = new FoodBuild(name)
     this.foodBases.forEach(foodBase => foods.appendFood(foodBase))
     return foods
   }
@@ -42,10 +42,13 @@ class FoodBase {
   amount: FoodAmount
   negative: boolean
 
+  foodBaseId: string
+
   constructor(base: StatBase, amount: FoodAmount, negative: boolean) {
     this.base = base
     this.amount = amount,
     this.negative = negative
+    this.foodBaseId = this.base.statId(StatTypes.Constant)
   }
   getStat(level: number) {
     const value = Math.min(level, 5) * this.amount[0] + Math.max(level - 5, 0) * this.amount[1]
@@ -54,14 +57,20 @@ class FoodBase {
   statTitle() {
     return this.base.title(StatTypes.Constant)
   }
+
 }
 
-class Foods {
+let _foodBuildAutoIncreasement = 0
+class FoodBuild {
+  instanceId: number
   name: string
   foods: Food[]
   selectedFoodIndexes: number[]
 
   constructor(name: string) {
+    this.instanceId = _foodBuildAutoIncreasement
+    _foodBuildAutoIncreasement += 1
+
     this.name = name
     this.foods = []
 
@@ -91,7 +100,7 @@ class Foods {
   }
 
   clone() {
-    const newFood = new Foods(this.name + '*')
+    const newFood = new FoodBuild(this.name + '*')
     newFood.foods = this.foods.map(p => p.clone())
     newFood.selectedFoodIndexes = this.selectedFoodIndexes.slice()
     return newFood
@@ -126,7 +135,7 @@ class Foods {
             this.appendSelectedFood(findIdx)
         } else {
           success = false
-          console.warn(`[Foods.load] Can not find Food which stat-base-name: ${p.statId}, negative: ${p.negative}`)
+          console.warn(`[FoodBuild.load] Can not find Food which stat-base-name: ${p.statId}, negative: ${p.negative}`)
         }
       })
 
@@ -166,6 +175,6 @@ class Food {
   }
 }
 
-export { FoodsBase, Foods }
-export type { FoodAmount, FoodsSaveData }
+export { FoodsBase, FoodBuild }
+export type { Food, FoodAmount, FoodsSaveData }
 

@@ -20,6 +20,12 @@ import {
 } from './utils'
 import { SkillBranchNames } from '../Skill/enums'
 import { FormulaDisplayModes } from './enums'
+
+interface HandleFormulaExtends {
+  vars: HandleFormulaVars;
+  texts: HandleFormulaTexts;
+}
+
 class SkillComputingContainer {
   vars: {
     characterLevel: number;
@@ -31,10 +37,9 @@ class SkillComputingContainer {
     skillLevel: ((skill: Skill) => number) | null;
   }
 
-  handleFormulaExtends: {
-    vars: HandleFormulaVars;
-    texts: HandleFormulaTexts;
-  }
+  handleFormulaExtends: HandleFormulaExtends
+
+  handleFormulaDynamicExtends: (() => HandleFormulaExtends)[]
 
   config: {
     formulaDisplayMode: FormulaDisplayModes;
@@ -53,6 +58,7 @@ class SkillComputingContainer {
       vars: {},
       texts: {},
     })
+    this.handleFormulaDynamicExtends = []
     this.config = {
       formulaDisplayMode: FormulaDisplayModes.Normal,
     }
@@ -258,6 +264,10 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
 
   abstract clone(): SkillBranchItemBase
 
+  /**
+   * @param parent parent SkillEffectItem
+   * @param branch branch from default effect of skill, branch should be overwrite later
+   */
   constructor(parent: Parent, branch: SkillBranch | SkillBranchItemBase) {
     this.parent = parent
     this.id = branch.id

@@ -2,8 +2,9 @@
 import type { RouteRecordRaw } from 'vue-router'
 
 import { DataStoreIds } from '@/stores/app/datas/enums'
+import { LocaleViewNamespaces } from '@/stores/app/language/enums'
 
-import { ViewInit } from '@/shared/services/ViewInit'
+import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
@@ -15,6 +16,7 @@ export default {
   path: '/character',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
+    PrepareLocaleInit(LocaleViewNamespaces.CharacterSimulator, LocaleViewNamespaces.SkillSimulator, LocaleViewNamespaces.SkillQuery)
     ViewInit(DataStoreIds.Stats, DataStoreIds.Items, DataStoreIds.CharacterStats, DataStoreIds.Skill, DataStoreIds.Food).then(next)
   },
   meta: {

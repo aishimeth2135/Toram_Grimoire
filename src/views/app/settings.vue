@@ -278,6 +278,16 @@ const loadLocalStorage = () => {
   CY.file.load({
     succeed: (data) => {
       const jsonData = JSON.parse(data) as Record<string, string>
+
+      // reset
+      Array(localStorage.length).fill(null).map((_, i) => i).forEach(idx => {
+        const key = storage.key(idx)!
+        const item = storage.getItem(key)!
+        if (key.slice(0, 7) !== 'iconify') {
+          storage.removeItem(key)
+        }
+      })
+
       Object.keys(jsonData).forEach(key => storage.setItem(key, jsonData[key]))
       notify(t('app.settings.storage-backup.load-success-tips'))
     },

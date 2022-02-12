@@ -3,13 +3,16 @@ import { ResultContainerBase, ResultContainerStat } from '@/lib/Skill/SkillCompu
 
 import type { SkillDisplayData } from '.'
 
+let _autoIncreasement = 0
 export default class DisplayDataContainer<Branch extends SkillBranchItemBase = SkillBranchItemBase> {
   private _value: SkillDisplayData
+  private _customDatas!: Record<string, any>
+
+  readonly instanceId: number
 
   readonly branchItem: Branch
   readonly containers: Record<string, ResultContainerBase>
   readonly statContainers: ResultContainerStat[]
-  readonly customDatas: Record<string, any>
 
   constructor({ branchItem, containers, statContainers, value }: {
     branchItem: Branch;
@@ -17,11 +20,13 @@ export default class DisplayDataContainer<Branch extends SkillBranchItemBase = S
     statContainers: ResultContainerStat[];
     value: SkillDisplayData;
   }) {
+    this.instanceId = _autoIncreasement
+    _autoIncreasement += 1
+
     this.branchItem = branchItem
     this.containers = containers
     this.statContainers = statContainers
     this._value = value
-    this.customDatas = {}
   }
 
   get(key: string): string {
@@ -38,5 +43,16 @@ export default class DisplayDataContainer<Branch extends SkillBranchItemBase = S
 
   getOrigin(key: string): string {
     return this.containers[key]?.origin ?? ''
+  }
+
+  setCustomData(key: string, value: any): void {
+    if (!this._customDatas) {
+      this._customDatas = {}
+    }
+    this._customDatas[key] = value
+  }
+
+  getCustomData(key: string): any {
+    return this._customDatas?.[key]
   }
 }

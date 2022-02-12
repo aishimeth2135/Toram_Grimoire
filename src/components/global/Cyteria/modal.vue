@@ -6,14 +6,14 @@
         class="cy--modal"
         :class="rootClass"
         v-bind="$attrs"
-        @click="closeWindow"
+        @click="closeModal"
       >
         <div class="modal-wrapper">
           <cy-button-icon
             icon="jam-close-circle-f"
             icon-width="1.5rem"
             class="cy--modal--close-btn"
-            @click.stop="closeWindow"
+            @click.stop="closeModal"
           />
           <div class="modal-container" @click.stop>
             <div class="pb-2 px-4">
@@ -23,8 +23,8 @@
               <slot />
             </div>
             <div v-if="footer" class="sticky bottom-0 mt-4 py-2 mx-4 bg-white flex">
-              <slot name="footer" :close-window="closeWindow">
-                <cy-button-border icon="ic-round-close" class="ml-auto" @click="closeWindow">
+              <slot name="footer" :close-modal="closeModal">
+                <cy-button-border icon="ic-round-close" class="ml-auto" @click="closeModal">
                   {{ t('global.close') }}
                 </cy-button-border>
               </slot>
@@ -97,7 +97,7 @@ const rootClass = computed(() => {
   }
 })
 
-const closeWindow = () => {
+const closeModal = () => {
   emit('update:visible', false)
   emit('close')
 }
