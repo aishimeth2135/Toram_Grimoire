@@ -89,6 +89,7 @@ class SkillTree extends SkillElement {
     simulatorFlag: boolean;
   }
   drawTreeCode: string
+  readonly skillTreeId: string
 
   constructor(stc: SkillTreeCategory, id: number, name: string) {
     super(id, name)
@@ -100,6 +101,8 @@ class SkillTree extends SkillElement {
     this.attrs = markRaw({
       simulatorFlag: false,
     })
+
+    this.skillTreeId = `${this.parent.id}-${this.id}`
   }
 
   get index() {
@@ -114,10 +117,6 @@ class SkillTree extends SkillElement {
     const el = markRaw(new Skill(this, id, name))
     this.skills.push(el)
     return el
-  }
-
-  get skillTreeId(): string {
-    return `${this.parent.id}-${this.id}`
   }
 }
 
@@ -146,21 +145,19 @@ abstract class SkillBase extends SkillElement {
 
 class Skill extends SkillBase {
   effects: SkillEffect[]
-  private _defaultEffect: SkillEffect | null
+  defaultEffect!: SkillEffect
+
+  readonly skillId: string
 
   constructor(st: SkillTree, id: number, name: string, caption: string = '') {
     super(st, id, name, caption)
 
     this.effects = []
-    this._defaultEffect = null
+    this.skillId = `${this.parent.parent.id}-${this.parent.id}-${this.id}`
   }
 
   get index() {
     return this.parent.skills.indexOf(this)
-  }
-
-  get defaultEffect(): SkillEffect {
-    return this._defaultEffect as SkillEffect
   }
 
   appendSkillEffect(main: number, sub: number, body: number) {
@@ -179,12 +176,8 @@ class Skill extends SkillBase {
   }
 
   setDefaultEffect(sef: SkillEffect) {
-    this._defaultEffect = sef
+    this.defaultEffect = sef
     return this
-  }
-
-  get skillId(): string {
-    return `${this.parent.parent.id}-${this.parent.id}-${this.id}`
   }
 }
 

@@ -1,0 +1,125 @@
+<!-- this component is editor for CharacterEquipment -->
+<template>
+  <div class="px-1 pt-2">
+    <div
+      v-if="equipment.customTypeList"
+      class="mb-2 flex items-center"
+    >
+      <cy-icon-text
+        icon="mdi-checkbox-multiple-blank-circle"
+        class="mr-2"
+        text-color="purple"
+        size="small"
+      >
+        {{ t('character-simulator.equipment-info.equipment-type') }}
+      </cy-icon-text>
+      <cy-button-border
+        icon="heroicons-solid:switch-vertical"
+        @click="toggleCustomType"
+      >
+        {{ t('common.Equipment.category.' + equipment.type) }}
+      </cy-button-border>
+    </div>
+    <cy-input-counter
+      v-if="equipment.isWeapon()"
+      v-model:value="equipment.atk/* eslint-disable-line vue/no-mutating-props */"
+      class="mb-3"
+      :range="baseValueRange"
+    >
+      <template #title>
+        <cy-icon-text icon="mdi-sword">
+          ATK
+        </cy-icon-text>
+      </template>
+    </cy-input-counter>
+    <cy-input-counter
+      v-else-if="equipment.isArmor()"
+      v-model:value="equipment.def/* eslint-disable-line vue/no-mutating-props */"
+      class="mb-3"
+      :range="baseValueRange"
+    >
+      <template #title>
+        <cy-icon-text icon="mdi-shield">
+          DEF
+        </cy-icon-text>
+      </template>
+    </cy-input-counter>
+    <cy-input-counter
+      v-if="equipment.hasRefining"
+      v-model:value="equipment.refining/* eslint-disable-line vue/no-mutating-props */"
+      class="mb-3"
+      :range="[0, 15]"
+    >
+      <template #title>
+        <cy-icon-text icon="mdi-cube-send">
+          {{ t('character-simulator.equipment-info.refining') }}
+        </cy-icon-text>
+      </template>
+    </cy-input-counter>
+    <div v-if="equipment.hasCrystal" class="crystals">
+      <cy-button
+        v-for="c in equipment.crystals"
+        :key="c.id"
+        type="line"
+        :icon="c.crystalIconPath"
+        icon-src="image"
+        @click="editCrystal"
+      >
+        {{ c.name }}
+      </cy-button>
+      <cy-button
+        v-if="equipment.crystals!.length < 2"
+        icon="bx-bx-circle"
+        type="line"
+        @click="editCrystal(equipment)"
+      >
+        {{ t('character-simulator.equipment-info.crystal-empty') }}
+      </cy-button>
+    </div>
+    <div class="mt-3 pt-2 border-t border-solid border-light">
+      <cy-button
+        icon="ic-round-edit"
+        type="border"
+        @click="editBasic(equipment)"
+      >
+        {{ t('character-simulator.equipment-basic-editor.title') }}
+      </cy-button>
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { useI18n } from 'vue-i18n'
+import { inject, ref, toRefs } from 'vue'
+
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+
+import { CharacterSimulatorInjectionKey } from '../injection-keys'
+
+interface Props {
+  equipment: CharacterEquipment;
+}
+
+const props = defineProps<Props>()
+
+const { equipment } = toRefs(props)
+
+const { t } = useI18n()
+
+const baseValueRange = [0, 999]
+
+const customTypeList = equipment.value.customTypeList ?? []
+
+const currentCustomTypeIndex = ref(customTypeList.indexOf(equipment.value.type))
+
+const toggleCustomType = () => {
+  const len = customTypeList.length
+  currentCustomTypeIndex.value += 1
+  if (currentCustomTypeIndex.value === len) {
+    currentCustomTypeIndex.value = 0
+  }
+  equipment.value.setCustomType(customTypeList[currentCustomTypeIndex.value])
+}
+
+const { editCrystal, editBasic } = inject(CharacterSimulatorInjectionKey)!
+</script>

@@ -38,6 +38,10 @@ class StatRestriction extends Stat {
     return new StatRestriction(this.base, this.type, this.value, this.restriction)
   }
 
+  pure() {
+    return new Stat(this.base, this.type, this.value)
+  }
+
   restrictionTexts(): string[] {
     const showData: string[] = []
     if (this.restriction !== null) {

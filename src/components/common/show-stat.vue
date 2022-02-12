@@ -24,39 +24,35 @@
       v-for="text in restrictionTexts"
       :key="text"
       class="text-water-blue text-sm mr-1"
-    >{{ text }}</span><span>{{ stat.show() }}</span>
+    >
+      {{ text }}
+    </span>
+    <span>{{ stat.show() }}</span>
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { computed } from 'vue'
+
 import { Stat, StatRestriction } from '@/lib/Character/Stat'
 
-export default {
-  props: {
-    stat: {
-      type: [Stat, StatRestriction],
-    },
-    type: {
-      type: String,
-      validation: v => ['normal', 'preview'].includes(v),
-      default: 'normal',
-    },
-    negativeValue: {
-      type: Boolean,
-      default: false,
-    },
-    invalid: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  computed: {
-    restrictionTexts() {
-      if (this.stat instanceof StatRestriction) {
-        return this.stat.restrictionTexts()
-      }
-      return []
-    },
-  },
+interface Props {
+  stat: Stat | StatRestriction;
+  type?: 'normal' | 'preview';
+  negativeValue?: boolean;
+  invalid?: boolean;
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  type: 'normal',
+  negativeValue: false,
+  invalid: false,
+})
+
+const restrictionTexts = computed(() => {
+  if (props.stat instanceof StatRestriction) {
+    return props.stat.restrictionTexts()
+  }
+  return []
+})
 </script>

@@ -1,19 +1,22 @@
 
 import { defineStore } from 'pinia'
-import { computed, readonly, ref } from 'vue'
+import { computed, ComputedRef, readonly, ref } from 'vue'
 import type { Ref } from 'vue'
+
+import Grimoire from '@/shared/Grimoire'
 
 import { Character, CharacterSaveData } from '@/lib/Character/Character'
 import { CharacterEquipment, EquipmentSaveData } from '@/lib/Character/CharacterEquipment'
 import { FoodsSaveData } from '@/lib/Character/Food'
 
-import { useCharacterSkillStore } from './skill'
-import { useCharacterFoodStore } from './food'
+import ExportBuild from '@/setup/ExportBuild'
 
-interface CharacterState {
-  origin: Character;
-  iid: number;
-}
+import { SkillBuildState, useCharacterSkillStore } from './skill'
+import { useCharacterFoodStore } from './food'
+import { setupCharacterSkills, setupCharacterStats, setupFoodStats } from './setup'
+import { SkillBuild, SkillBuildSaveData } from './skill-build/SkillBuild'
+import { useCharacterSkillBuildStore } from './skill-build'
+
 
 interface CharacterStoreSaveSummary {
   characters: string[];
@@ -29,14 +32,15 @@ interface CharacterStoreSaveSummary {
 export const useCharacterStore = defineStore('view-character', () => {
   const currentCharacterIndex = ref(-1)
   const characterSimulatorHasInit = ref(false)
-  const characters: Ref<CharacterState[]> = ref([])
+  const characters: Ref<Character[]> = ref([])
   const equipments: Ref<CharacterEquipment[]> = ref([])
   const autoSaveDisabled = ref(false)
 
   const skill = useCharacterSkillStore()
   const food = useCharacterFoodStore()
+  const skillBuildStore = useCharacterSkillBuildStore()
 
-  const currentCharacter = computed(() => characters.value[currentCharacterIndex.value] ?? null)
+  const currentCharacter = computed<Character>(() => characters.value[currentCharacterIndex.value])
 
   const characterSimulatorInitFinished = () => {
     characterSimulatorHasInit.value = true
@@ -46,11 +50,8 @@ export const useCharacterStore = defineStore('view-character', () => {
     autoSaveDisabled.value = false
   }
 
-  type ResetOptions = { skillBuildsReplaced?: boolean }
-  const reset = ({ skillBuildsReplaced = true }: ResetOptions = {}) => {
-    if (skillBuildsReplaced) {
-      skill.resetSkillBuilds()
-    }
+  const reset = () => {
+    skill.resetSkillBuilds()
     characters.value = []
     equipments.value = []
     food.resetFoodBuilds()
@@ -60,19 +61,17 @@ export const useCharacterStore = defineStore('view-character', () => {
     currentCharacterIndex.value = idx
   }
 
-  const createCharacter = (chara: Character) => {
-    characters.value.push({
-      iid: characters.value.length,
-      origin: chara,
-    })
+  const createCharacter = (chara?: Character) => {
+    if (chara) {
+      characters.value.push(chara)
+    } else {
+      characters.value.push(new Character(Grimoire.i18n.t('character-simulator.character')  + ' ' + (characters.value.length + 1)))
+    }
     currentCharacterIndex.value = characters.value.length - 1
   }
 
-  const removeCharacter = (idx: number) => {
+  const removeCharacter = (idx: number = currentCharacterIndex.value) => {
     characters.value.splice(idx, 1)
-    characters.value.forEach((state, i) => {
-      state.iid = i
-    })
     if (currentCharacterIndex.value >= characters.value.length) {
       currentCharacterIndex.value = characters.value.length - 1
     }
@@ -91,7 +90,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     const storage = window.localStorage
 
     let find = true, cnt = 0
-    const list = ['', '--characters', '--equipments', '--skillBuilds', '--foodBuilds']
+    const list = ['', '--characters', '--equipments', '--skillBuilds', '--skillBuilds-v2', '--foodBuilds']
     while (find) {
       const cur_prefix = prefix + cnt
       const finds = list.filter(p => {
@@ -108,105 +107,194 @@ export const useCharacterStore = defineStore('view-character', () => {
     }
   }
 
-  const loadCharacterSimulator = ({ index, resetOptions = {} }: { index: number; resetOptions?: ResetOptions }) => {
+  interface CharacterSimulatorSaveData {
+    characters: CharacterSaveData[];
+    equipments: EquipmentSaveData[];
+    skillBuilds: SkillBuildSaveData[];
+    foodBuilds: FoodsSaveData[];
+  }
+  const createCharacterSimulatorSaveData = (): CharacterSimulatorSaveData => {
+    const charactersData = characters.value.map(item => item.save(equipments.value))
+    const equipmentsData = equipments.value.map(item => item.save())
+    const skillBuildsData = skillBuildStore.saveSkillBuilds()
+    const foodBuildsData = food.foodBuilds.map(item => item.save())
+
+    return {
+      characters: charactersData,
+      equipments: equipmentsData,
+      skillBuilds: skillBuildsData,
+      foodBuilds: foodBuildsData,
+    }
+  }
+  const loadCharacterSimulatorSaveData = (saveData: CharacterSimulatorSaveData, { ignoreSkillBuilds = false }: { ignoreSkillBuilds?: boolean } = {}) => {
+    const allValidEquipments = saveData.equipments.map(data => {
+      const load = CharacterEquipment.loadEquipment(data)
+      if (!load.error) {
+        return load.equipment
+      }
+      return null
+    }).filter(item => item) as CharacterEquipment[]
+
+    saveData.characters.forEach(charaRow => {
+      const chara = new Character()
+      const load = chara.load(charaRow, allValidEquipments)
+      if (!load.error) {
+        createCharacter(chara)
+      }
+    })
+
+    appendEquipments(allValidEquipments)
+
+    if (!ignoreSkillBuilds) {
+      saveData.skillBuilds.forEach(buildData => {
+        const build = SkillBuild.load(buildData)
+        skillBuildStore.appendSkillBuild(build)
+      })
+    }
+
+    saveData.foodBuilds.forEach(data => {
+      const foods = food.foodsBase!.createFoods()
+      const load = foods.load(data)
+      if (!load.error)
+        food.createFoodBuild({ foodBuild: foods })
+    })
+  }
+
+  const loadCharacterSimulator = ({ index = 0 }: { index?: number } = {}) => {
     const prefix = 'app--character-simulator--data-' + index
     if (!window.localStorage.getItem(prefix)) {
       throw new Error(`Index: ${index} of Character-Simulator Data is not exist.`)
     }
     try {
-      reset(resetOptions)
+      reset()
 
       const summary = JSON.parse(window.localStorage.getItem(prefix)!) as CharacterStoreSaveSummary
       const characterDatas = JSON.parse(window.localStorage.getItem(prefix + '--characters')!) as CharacterSaveData[]
       const equipmentDatas = JSON.parse(window.localStorage.getItem(prefix + '--equipments')!) as EquipmentSaveData[]
-      const skillBuildsCsv = window.localStorage.getItem(prefix + '--skillBuilds')!
+      const skillBuildsCsv = window.localStorage.getItem(prefix + '--skillBuilds') ?? null
+      const skillBuildsV2OriginalData = window.localStorage.getItem(prefix + '--skillBuilds-v2')
+      const skillBuildsV2Data = skillBuildsV2OriginalData ? JSON.parse(skillBuildsV2OriginalData) as SkillBuildSaveData[] : null
 
       const foodBuildsDataString = window.localStorage.getItem(prefix + '--foodBuilds')
       const foodBuilds = foodBuildsDataString ? JSON.parse(foodBuildsDataString) as FoodsSaveData[] : []
 
-      const allValidEquipments = equipmentDatas.map(data => {
-        const load = CharacterEquipment.loadEquipment(data)
-        if (!load.error) {
-          return load.equipment
-        }
-        return null
-      }).filter(item => item) as CharacterEquipment[]
+      const loadSkillBuildLagacy = !!skillBuildsV2Data
 
-      characterDatas.forEach(charaRow => {
-        const chara = new Character()
-        const load = chara.load(charaRow, allValidEquipments)
-        if (!load.error) {
-          createCharacter(chara)
-        }
+      loadCharacterSimulatorSaveData({
+        characters: characterDatas,
+        equipments: equipmentDatas,
+        skillBuilds: skillBuildsV2Data ?? [],
+        foodBuilds,
       })
 
-      appendEquipments(allValidEquipments)
-
-      const resetSkillBuilds = resetOptions.skillBuildsReplaced === undefined ?? true
-      skill.loadSkillBuildsCsv({ csvString: skillBuildsCsv, reset: resetSkillBuilds })
-
-      foodBuilds.forEach(data => {
-        const foods = food.foodsBase!.createFoods()
-        const load = foods.load(data)
-        if (!load.error)
-          food.createFoodBuild({ foodBuild: foods })
-      })
+      if (loadSkillBuildLagacy && skillBuildsCsv) {
+        skill.loadSkillBuildsCsv({ csvString: skillBuildsCsv })
+        ;(skill.skillBuilds as SkillBuildState[]).forEach(state => {
+          const build = SkillBuild.loadFromLagacy(state)
+          skillBuildStore.appendSkillBuild(build)
+        })
+      }
 
       // 讀檔過程會改寫index，因此最後設定index
       setCurrentCharacter(summary.characterIndex)
-      skill.setCurrentSkillBuild(summary.skillBuildIndex)
+      skillBuildStore.setCurrentSkillBuild(summary.skillBuildIndex)
       food.setCurrentFoodBuild(summary.foodBuildIndex ?? -1)
     } catch (error) {
       reset()
-      createCharacter(new Character())
+      createCharacter()
       closeAutoSave()
       console.warn('Error when load Character-Simulator data.')
       throw error
     }
   }
 
-  const saveCharacterSimulator = (index: number = -1) => {
-    const charactersData = characters.value.map(item => item.origin.save(equipments.value))
-    const equipmentsData = equipments.value.map(item => item.save())
-    const skillBuildsCsv = skill.saveSkillBuildsCsv()
-    const foodBuildsData = food.foodBuilds.map(item => item.save())
+  /**
+   * @param index - 0: auto save
+   */
+  const saveCharacterSimulator = (index: number = 0) => {
+    const {
+      characters: charactersData,
+      equipments: equipmentsData,
+      skillBuilds: skillBuildsData,
+      foodBuilds: foodBuildsData,
+    } = createCharacterSimulatorSaveData()
 
-    let prefix = 'app--character-simulator--data-'
-    if (index === -1) {
-      let cnt = 0
-      while (window.localStorage.getItem(prefix + cnt)) {
-        cnt += 1
-      }
-      prefix = prefix + cnt
-    }
-    else {
-      prefix = prefix + index
-    }
+    const prefix = 'app--character-simulator--data-' + index
+    // if (index === -1) {
+    //   let cnt = 0
+    //   while (window.localStorage.getItem(prefix + cnt)) {
+    //     cnt += 1
+    //   }
+    //   prefix = prefix + cnt
+    // }
+    // else {
+    //   prefix = prefix + index
+    // }
 
     const summary: CharacterStoreSaveSummary = {
-      characters: characters.value.map(item => item.origin.name),
+      characters: characters.value.map(item => item.name),
       equipments: {
         numbers: equipments.value.length,
       },
       skillBuilds: skill.skillBuilds.map(p => p.name),
       characterIndex: currentCharacterIndex.value,
-      skillBuildIndex: skill.currentSkillBuildIndex,
+      skillBuildIndex: skillBuildStore.currentSkillBuildIndex,
       foodBuildIndex: food.currentFoodBuildIndex,
     }
 
+    const originalData = {
+      summary: window.localStorage.getItem(prefix) ?? '',
+      '--characters': window.localStorage.getItem(prefix + '--characters') ?? '',
+      '--equipments': window.localStorage.getItem(prefix + '--equipments') ?? '',
+      '--skillBuilds-v2': window.localStorage.getItem(prefix + '--skillBuilds-v2') ?? '',
+      '--foodBuilds': window.localStorage.getItem(prefix + '--foodBuilds') ?? '',
+    }
     try {
       window.localStorage.setItem(prefix, JSON.stringify(summary))
       window.localStorage.setItem(prefix + '--characters', JSON.stringify(charactersData))
       window.localStorage.setItem(prefix + '--equipments', JSON.stringify(equipmentsData))
-      window.localStorage.setItem(prefix + '--skillBuilds', skillBuildsCsv)
+      window.localStorage.setItem(prefix + '--skillBuilds-v2', JSON.stringify(skillBuildsData))
       window.localStorage.setItem(prefix + '--foodBuilds', JSON.stringify(foodBuildsData))
     } catch (err) {
-      console.warn('[Character Simulator] Unknown error when save datas')
+      console.warn('[character-simulator] Unknown error when save datas')
       console.warn(err)
-      window.localStorage.removeItem(prefix + '--characters')
-      window.localStorage.removeItem(prefix + '--equipments')
-      window.localStorage.removeItem(prefix + '--skillBuilds')
-      window.localStorage.removeItem(prefix + '--foodBuilds')
+      window.localStorage.setItem(prefix, originalData.summary)
+      window.localStorage.setItem(prefix + '--characters', originalData['--characters'])
+      window.localStorage.setItem(prefix + '--equipments', originalData['--equipments'])
+      window.localStorage.setItem(prefix + '--skillBuilds-v2', originalData['--skillBuilds-v2'])
+      window.localStorage.setItem(prefix + '--foodBuilds', originalData['--foodBuilds'])
+    }
+  }
+
+  const {
+    exportBuild: exportCharacterSimulator,
+    importBuild: importCharacterSimulator,
+  } = ExportBuild({
+    save(handler) {
+      const data = createCharacterSimulatorSaveData()
+      handler('cy-grimoire-character-simulator.txt', JSON.stringify(data))
+    },
+    loaded(res) {
+      const saveData = JSON.parse(res) as CharacterSimulatorSaveData
+      loadCharacterSimulatorSaveData(saveData)
+    },
+  })
+
+  const {
+    activeSkillResultStates,
+    passiveSkillResultStates,
+    allValidSkillsStats,
+    getSkillBranchItemState,
+  } = setupCharacterSkills(currentCharacter, computed(() => skillBuildStore.currentSkillBuild) as ComputedRef<SkillBuild | null>)
+
+  const { allFoodBuildStats } = setupFoodStats(computed(() => food.currentFoodBuild))
+
+  const { characterStatCategoryResults } = setupCharacterStats(currentCharacter, allValidSkillsStats, allFoodBuildStats)
+
+  const setupCharacterComparedStatCategoryResults = (comparedCharacter: Ref<Character | null>) => {
+    const { characterStatCategoryResults: comparedCharacterStatCategoryResults } = setupCharacterStats(comparedCharacter, allValidSkillsStats, allFoodBuildStats)
+    return {
+      comparedCharacterStatCategoryResults,
     }
   }
 
@@ -219,6 +307,14 @@ export const useCharacterStore = defineStore('view-character', () => {
 
     autoSaveDisabled: readonly(autoSaveDisabled),
     characterSimulatorInitFinished,
+
+    characterStatCategoryResults,
+    setupCharacterComparedStatCategoryResults,
+
+    activeSkillResultStates,
+    passiveSkillResultStates,
+    getSkillBranchItemState,
+
     reset,
     setCurrentCharacter,
     createCharacter,
@@ -229,5 +325,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     deleteAllSavedData,
     loadCharacterSimulator,
     saveCharacterSimulator,
+    exportCharacterSimulator,
+    importCharacterSimulator,
   }
 })

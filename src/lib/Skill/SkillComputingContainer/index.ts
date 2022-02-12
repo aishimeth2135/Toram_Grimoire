@@ -264,6 +264,10 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
 
   abstract clone(): SkillBranchItemBase
 
+  /**
+   * @param parent parent SkillEffectItem
+   * @param branch branch from default effect of skill, branch should be overwrite later
+   */
   constructor(parent: Parent, branch: SkillBranch | SkillBranchItemBase) {
     this.parent = parent
     this.id = branch.id

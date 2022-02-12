@@ -146,35 +146,39 @@ const contentClick = () => {
   hideCaption()
 }
 
-const updateHookBinding = async () => {
+const DATA_FLAG_NAME = 'data-cy-hover-float-flag'
+const listenerShow = function(this: HTMLElement) { showCaption(this) }
+const listenerClick = function(evt: MouseEvent) {
+  evt.stopPropagation()
+  enableKeepVisible()
+}
+const updateListenerBinding = async () => {
   await nextTick()
   const el = element.value
   if (!el) {
     return
   }
-  const bindHooks = (node: HTMLElement) => {
-    const show = function(this: HTMLElement) { showCaption(this) }
-    const click = function(evt: MouseEvent) {
-      evt.stopPropagation()
-      enableKeepVisible()
+  const bind = (node: HTMLElement) => {
+    if (node.getAttribute(DATA_FLAG_NAME) !== null) {
+      return
     }
-    node.addEventListener('mouseenter', show)
+    node.addEventListener('mouseenter', listenerShow)
     node.addEventListener('mouseleave', hideCaption)
     // node.addEventListener('touchstart', show);
     // node.addEventListener('touchend', hideCaption);
-    node.addEventListener('click', click)
-
+    node.addEventListener('click', listenerClick)
+    node.setAttribute(DATA_FLAG_NAME, 'true')
   }
   if (target?.value === undefined) {
-    bindHooks(el)
+    bind(el)
   } else {
     const nodes = el.querySelectorAll(target.value)
-    nodes.forEach(node => bindHooks(node as HTMLElement))
+    nodes.forEach(node => bind(node as HTMLElement))
   }
 }
 
 defineExpose({
-  update: updateHookBinding,
+  update: updateListenerBinding,
   fixPosition,
 })
 </script>

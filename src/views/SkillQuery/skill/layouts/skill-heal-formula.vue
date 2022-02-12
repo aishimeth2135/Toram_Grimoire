@@ -52,7 +52,7 @@ const props = defineProps<Props>()
 const { container } = toRefs(props)
 const { t } = useI18n()
 
-const extraValueList = computed(() => container.value.customDatas.extraValueList as { text: string; value: string }[])
+const extraValueList = computed(() => container.value.getCustomData('extraValueList') as { text: string; value: string }[])
 
 const isSingleValue = computed(() => {
   return extraValueList.value.length === 0 && isNumberString(container.value.containers['constant'].value)

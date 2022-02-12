@@ -52,17 +52,9 @@
         :x2="data.x2"
         :y2="data.y2"
       />
-      <circle
-        v-else-if="data.type === 'skill-level-circle' || data.type === 'star-gem-level-circle'"
-        :key="`circle-${data.type}x${data.cx}y${data.cy}`"
-        :cx="data.cx"
-        :cy="data.cy"
-        :r="data.r"
-        :class="data.class"
-      />
       <text
-        v-else-if="data.type === 'skill-level-text' || data.type === 'star-gem-level-text'"
-        :key="`text-${data.type}x${data.x}y${data.y}`"
+        v-else-if="data.type === DrawSkillTreeDataTypes.SkillLevelText || data.type === DrawSkillTreeDataTypes.StarGemLevelText"
+        :key="`level-text-${data.type}x${data.x}y${data.y}`"
         :x="data.x"
         :y="data.y"
         :class="data.class"
@@ -99,12 +91,13 @@ import { computed, toRefs } from 'vue'
 import CY from '@/shared/utils/Cyteria'
 
 import { Skill, SkillTree, LevelSkill, LevelSkillTree } from '@/lib/Skill/Skill'
-import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs, DrawSkillTreeData, DrawSkillTreeDataExtraCallbackPayload } from '@/lib/Skill/utils/DrawSkillTree'
+import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs, DrawSkillTreeData, SetSkillButtonExtraDataHandle, GetSkillLevelHandler } from '@/lib/Skill/utils/DrawSkillTree'
 import { DrawSkillTreeDataTypes } from '@/lib/Skill/utils/enums'
 
 interface Props {
   skillTree: SkillTree | LevelSkillTree;
-  setSkillButtonExtraData?: (skill: Skill | LevelSkill, data: DrawSkillTreeDataExtraCallbackPayload) => DrawSkillTreeData[];
+  setSkillButtonExtraData?: SetSkillButtonExtraDataHandle;
+  getSkillLevel?: GetSkillLevelHandler;
   currentSkill?: Skill | LevelSkill | null;
 }
 
@@ -113,7 +106,8 @@ interface Emits {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  setSkillButtonExtraData: () => [],
+  setSkillButtonExtraData: undefined,
+  getSkillLevel: undefined,
   currentSkill: null,
 })
 
@@ -125,11 +119,12 @@ if (!document.getElementById('app--draw-skill-tree-defs')) {
   document.body.append(svg)
 }
 
-const { skillTree, setSkillButtonExtraData, currentSkill } = toRefs(props)
+const { skillTree, setSkillButtonExtraData, currentSkill, getSkillLevel } = toRefs(props)
 
 const drawTreeData = computed(() => {
   return computeDrawSkillTreeData(skillTree.value, {
     setSkillButtonExtraData: setSkillButtonExtraData.value,
+    getSkillLevel: getSkillLevel.value,
   })
 })
 

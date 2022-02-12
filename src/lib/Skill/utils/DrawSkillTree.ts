@@ -60,11 +60,15 @@ function createDrawSkillTreeDefs() {
   return defs
 }
 
+type SetSkillButtonExtraDataHandle = (skill: Skill | LevelSkill, drawData: DrawSkillTreeDataExtraCallbackPayload) => DrawSkillTreeData[]
+type GetSkillLevelHandler = (skill: Skill) => { level: number; starGemLevel: number }
+
 interface ComputeDrawSkillTreeDataOptions {
-  setSkillButtonExtraData?: (skill: Skill | LevelSkill, drawData: DrawSkillTreeDataExtraCallbackPayload) => DrawSkillTreeData[];
+  setSkillButtonExtraData?: SetSkillButtonExtraDataHandle;
+  getSkillLevel?: GetSkillLevelHandler;
 }
 interface DrawSkillTreeData {
-  type: string;
+  type: DrawSkillTreeDataTypes;
   class?: string[];
   style?: CSSProperties;
   [key: string]: any;
@@ -77,6 +81,7 @@ interface DrawSkillTreeDataExtraCallbackPayload extends DrawSettingData {
 
 function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
   setSkillButtonExtraData = () => [],
+  getSkillLevel,
 }: ComputeDrawSkillTreeDataOptions = {}) {
 
   const findSkillByDrawOrder = (order: number) => {
@@ -167,7 +172,7 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
           skill: _skill,
           path: getSkillIconPath(bskill),
         }
-        let skillNameData = null,
+        let skillNameData: DrawSkillTreeData | null = null,
           extraDatas: DrawSkillTreeData[] = []
 
         if (name !== '?') {
@@ -186,6 +191,29 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
               cy: cury,
               lengthTransformFunction: tran,
             }, drawData) as DrawSkillTreeDataExtraCallbackPayload)
+            if (getSkillLevel && _skill instanceof Skill) {
+              const { level, starGemLevel } = getSkillLevel(_skill)
+              const offset = drawData.gridWidth / 2 + 3
+              const textYFix = 1
+              if (level !== 0) {
+                extraDatas.push({
+                  type: DrawSkillTreeDataTypes.SkillLevelText,
+                  x: tran(curx) + offset,
+                  y: tran(cury) + offset + textYFix,
+                  innerText: level,
+                  class: ['skill-level-text'],
+                })
+              }
+              if (starGemLevel !== 0) {
+                extraDatas.push({
+                  type: DrawSkillTreeDataTypes.StarGemLevelText,
+                  x: tran(curx) - offset,
+                  y: tran(cury) + offset + textYFix,
+                  innerText: starGemLevel,
+                  class: ['star-gem-level-text'],
+                })
+              }
+            }
           } else {
             skillCircleData.class.push('lock')
           }
@@ -297,4 +325,8 @@ export {
   GetDrawSetting,
   getSkillIconPath,
 }
-export type { DrawSkillTreeData, DrawSkillTreeDataExtraCallbackPayload }
+export type {
+  DrawSkillTreeData,
+  SetSkillButtonExtraDataHandle,
+  GetSkillLevelHandler,
+}

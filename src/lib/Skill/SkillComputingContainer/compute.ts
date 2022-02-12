@@ -77,6 +77,17 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
   const stackIds = branchItemStack.hasAttr('stack_id') ?
     branchItemStack.attr('stack_id').split(/\s*,\s*/).map(id => parseInt(id, 10)) : []
 
+  const handleFormulaExtends = branchItem.belongContainer.handleFormulaExtends
+  const extendsDatas = {
+    vars: { ...handleFormulaExtends.vars },
+    texts: { ...handleFormulaExtends.texts },
+  }
+  branchItem.belongContainer.handleFormulaDynamicExtends.forEach(getter => {
+    const data = getter()
+    Object.assign(extendsDatas.vars, data.vars)
+    Object.assign(extendsDatas.texts, data.texts)
+  })
+
   if (formulaDisplayMode === 'original-formula') {
     const stack: string[] = []
     const { t } = Grimoire.i18n
@@ -104,16 +115,6 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
       })
     })
 
-    const handleFormulaExtends = branchItem.belongContainer.handleFormulaExtends
-    const extendsDatas = {
-      vars: { ...handleFormulaExtends.vars },
-      texts: { ...handleFormulaExtends.texts },
-    }
-    branchItem.belongContainer.handleFormulaDynamicExtends.forEach(getter => {
-      const data = getter()
-      Object.assign(extendsDatas.vars, data.vars)
-      Object.assign(extendsDatas.texts, data.texts)
-    })
     vars = {
       ...extendsDatas.vars,
     } as HandleFormulaVars
@@ -145,16 +146,14 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
       })
     })
 
-    const handleFormulaExtends = branchItem.belongContainer.handleFormulaExtends
-
     vars = {
-      ...handleFormulaExtends.vars,
+      ...extendsDatas.vars,
       'SLv': branchItem.belongContainer.varGetters.skillLevel?.(branchItem.default.parent.parent) ?? branchItem.belongContainer.vars.skillLevel,
       'CLv': branchItem.belongContainer.varGetters.characterLevel?.() ?? branchItem.belongContainer.vars.characterLevel,
       'stack': stack,
     } as HandleFormulaVars
     texts = {
-      ...handleFormulaExtends.texts,
+      ...extendsDatas.texts,
     } as HandleFormulaTexts
   }
 

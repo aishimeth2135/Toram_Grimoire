@@ -142,6 +142,7 @@ function handleDisplayData<Branch extends SkillBranchItemBase>(
     if (!validation(validatedValue)) {
       delete attrs[key]
       delete values[key]
+      delete langs[key]
       delete texts[key]
       const idxTitle = titles.indexOf(key)
       idxTitle > -1 && titles.splice(idxTitle, 1)

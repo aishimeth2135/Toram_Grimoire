@@ -37,7 +37,6 @@
       <div v-if="currentSkillTree" class="max-w-full overflow-x-auto">
         <SkillTreeDiagram
           :skill-tree="currentSkillTree"
-          skill-tree-type="normal"
           :current-skill="currentSkill"
           @skill-click="selectCurrentSkill"
         />
@@ -82,7 +81,7 @@ import type { Ref, ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
-import { useDatasStore } from '@/stores/app/datas'
+import Grimoire from '@/shared/Grimoire'
 
 import { SkillRoot, SkillTree, SkillTreeCategory, Skill, LevelSkill } from '@/lib/Skill/Skill'
 import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer'
@@ -95,8 +94,6 @@ import SkillQueryMenu from './skill-query-menu/index.vue'
 import SkillQuerySearch from './skill-query-search.vue'
 
 import { setupComputingContainer } from './setup'
-
-const datasStore = useDatasStore()
 
 const { toggle, contents } = ToggleService({
   contents: ['skillEffect', 'search'] as const,
@@ -122,7 +119,7 @@ const goToSkillTop = async () => {
   }
 }
 
-const skillRoot: ComputedRef<SkillRoot> = computed(() => datasStore.Skill!.skillRoot)
+const skillRoot: ComputedRef<SkillRoot> = computed(() => Grimoire.Skill.skillRoot)
 
 const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null)
 const currentSkillTree: Ref<SkillTree | null> = ref(null)

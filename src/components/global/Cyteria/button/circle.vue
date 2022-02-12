@@ -1,6 +1,6 @@
 <template>
   <button
-    class="button--main-content inline-flex items-center justify-center mr-2 mb-2 border-1 bg-white rounded-full"
+    class="button--main-content inline-flex items-center justify-center border-1 bg-white rounded-full"
     style="width: 2.8rem; height: 2.8rem;"
     :class="baseClassList"
     @click="click"
