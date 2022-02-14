@@ -42,6 +42,7 @@ rules:
   indent: off
   func-call-spacing: off
   semi: off
+  comma-dangle: off
   # vue/no-mutating-props: off
   jsdoc/no-undefined-types: warn
   no-trailing-spaces: warn
@@ -55,9 +56,6 @@ rules:
     - warn
     - before: false
       after: true
-  comma-dangle:
-    - warn
-    - always-multiline
   no-void:
     - error
   quotes:
@@ -125,6 +123,9 @@ rules:
   "@typescript-eslint/func-call-spacing":
     - error
     - never
+  "@typescript-eslint/comma-dangle":
+    - warn
+    - always-multiline
   vue/html-indent:
     - warn
     - 2

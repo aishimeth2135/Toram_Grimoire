@@ -2,12 +2,12 @@
   <button
     class="button--main-content inline-flex items-center m-1 px-1.5"
     :class="baseClassList"
+    style="--icon-width: 2rem"
     @click="click"
   >
     <cy-icon
       :icon="selected ? 'ic:round-toggle-on' : 'ic:outline-toggle-off'"
       src="iconify"
-      style="--icon-width: 2rem"
     />
     <span
       v-if="$slots['default']"

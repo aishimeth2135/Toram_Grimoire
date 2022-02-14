@@ -6,6 +6,7 @@ import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 
 import { CalcItemContainer, Calculation } from '@/lib/Calculation/Damage/Calculation'
 import { CalcStructExpression } from '@/lib/Calculation/Damage/Calculation/base'
+import { CalculationContainerIds, CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
 
 import Notify from '@/setup/Notify'
 import RegisterLang from '@/setup/RegisterLang'
@@ -111,8 +112,8 @@ const setupExpectedResults = (calculation: Ref<Calculation>) => {
     }))
 
   const getResult = (target: string) => {
-    const cr = calculation.value.containers.get('critical/critical_rate')!.result()
-    const stability = calculation.value.containers.get('stability')!.getItemValue('stability')
+    const cr = calculation.value.containers.get(CalculationContainerIds.CriticalRate)!.result()
+    const stability = calculation.value.containers.get(CalculationContainerIds.Stability)!.getItemValue(CalculationItemIds.Stability)
     const stabilityValue = (() => {
       if (target === 'min') {
         return stability
@@ -133,8 +134,8 @@ const setupExpectedResults = (calculation: Ref<Calculation>) => {
 
   const expectedResult = computed(() => {
     const max = expectedResultMax.value
-    const stabilityContainer = calculation.value.containers.get('stability')!
-    const stability = stabilityContainer.enabled ? stabilityContainer!.result() : 100
+    const stabilityContainer = calculation.value.containers.get(CalculationContainerIds.Stability)!
+    const stability = stabilityContainer.enabled ? stabilityContainer.result() : 100
     return Math.floor(max * stability / 100)
   })
 
@@ -205,7 +206,7 @@ const setupResultMode = (calculation: Ref<Calculation>) => {
 
 const setupCalculationCalcOptions = (calculation: Ref<Calculation>) => {
   const options = [{
-    containerId: 'damage_type',
+    containerId: CalculationContainerIds.DamageType,
   }]
 
   const calculationContainerOptions = computed(() => {

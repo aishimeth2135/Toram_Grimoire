@@ -72,7 +72,7 @@ auto-save:
   load-unknow-error-tips: 自动读取时发生未知的错误。
 export-build:
   save-unknow-error-tips: 产生档案时发生未知的错误。
-  load-success-tips: 产生档案时发生未知的错误。
+  load-success-tips: 读取成功。
   load-unknow-error-tips: 读取时发生未知的错误。
   load-failed-tips: 解析档案时发生错误，档案内容的格式可能有误。
   load-wrong-file-type-tips: 读取的档案必须为文字（.txt）档。

@@ -2,7 +2,7 @@ second: second
 confirm: Confirm
 cancel: Cancel
 clear: Clear
-split-string: ","
+split-string: ','
 menu: Menu
 delete: Delete
 remove: Remove
@@ -18,3 +18,4 @@ export: Export
 import: Import
 reset: Reset
 times: times
+all: All

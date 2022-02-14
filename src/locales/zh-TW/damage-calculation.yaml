@@ -69,7 +69,9 @@ item-base-titles:
   target_magic_resistance: 魔法抗性
   proration: 慣性加成
   stability: 穩定率
-  probability_of_graze: Graze機率
+  target_dodge: 目標迴避
+  accuracy: 命中
+  promised_accuracy_rate: 保底命中率
   skill_level_long_range: ((!遠程狙擊))等級
   combo_multiplier: 連擊倍率
   other_multiplier: 其它倍率

@@ -1,8 +1,8 @@
-import { ContainerTypes } from './enums'
+import { CalculationContainerIds, CalculationItemIds, ContainerTypes } from './enums'
 import { CalcItemContainer, Calculation } from './index'
 
 type CalcStructExpression = CalcStructSingle | CalcStructMultiple
-type CalcStructItem = CalcStructExpression | string
+type CalcStructItem = CalcStructExpression | CalculationContainerIds
 
 interface CalcStructSingle {
   id?: string;
@@ -21,7 +21,7 @@ interface CalcResultOptions {
   };
 }
 interface CurrentItemIdGetter {
-  (itemContainer: CalcItemContainer, baseContainer: CalcItemContainerBase): string;
+  (itemContainer: CalcItemContainer, baseContainer: CalcItemContainerBase): CalculationItemIds;
 }
 interface CalcResult {
   (itemContainer: CalcItemContainer, baseContainer: CalcItemContainerBase): number;
@@ -29,25 +29,25 @@ interface CalcResult {
 
 /** */
 class CalculationBase {
-  containers: Map<string, CalcItemContainerBase>
+  containers: Map<CalculationContainerIds, CalcItemContainerBase>
 
   /**
    * All items store in CalculationBase.items, CalcItemContainerBase.items will refer to CalculationBase.items
    */
-  items: Map<string, CalcItemBase>
+  items: Map<CalculationItemIds, CalcItemBase>
 
   constructor() {
     this.containers = new Map()
     this.items = new Map()
   }
 
-  appendContainer(id: string, type: ContainerTypes): CalcItemContainerBase {
+  appendContainer(id: CalculationContainerIds, type: ContainerTypes): CalcItemContainerBase {
     const container = new CalcItemContainerBase(this, id, type)
     this.containers.set(id, container)
     return container
   }
 
-  appendItem(id: string): CalcItemBase {
+  appendItem(id: CalculationItemIds): CalcItemBase {
     if (!this.items.has(id)) {
       const item = new CalcItemBase(this, id)
       this.items.set(id, item)
@@ -112,9 +112,9 @@ class CalcItemContainerBase {
   private _parent: CalculationBase
   private _calcResult: CalcResult | null
 
-  id: string
+  id: CalculationContainerIds
   type: ContainerTypes
-  items: Map<string, CalcItemBase>
+  items: Map<CalculationItemIds, CalcItemBase>
   getCurrentItemId: CurrentItemIdGetter | null
   isMultiplier: boolean
   floorResult: boolean
@@ -122,9 +122,9 @@ class CalcItemContainerBase {
   _disabledValue: number | null
   controls: { toggle: boolean }
 
-  readonly references: string[]
+  readonly references: CalculationContainerIds[]
 
-  constructor(parent: CalculationBase, id: string, type: ContainerTypes) {
+  constructor(parent: CalculationBase, id: CalculationContainerIds, type: ContainerTypes) {
     this.id = id
     this._parent = parent
     this.type = type ?? ContainerTypes.Normal
@@ -152,7 +152,7 @@ class CalcItemContainerBase {
     return this.references.length !== 0
   }
 
-  setVirtual(referenceContainerIds: string[]) {
+  setVirtual(referenceContainerIds: CalculationContainerIds[]) {
     if (this.items.size > 0) {
       console.warn('[CalcItemContainerBase.setVirtual] Unable to set container to virtual if container already have item')
       return
@@ -160,7 +160,7 @@ class CalcItemContainerBase {
     this.references.push(...referenceContainerIds)
   }
 
-  appendItem(id: string): CalcItemBase {
+  appendItem(id: CalculationItemIds): CalcItemBase {
     const exist = this._parent.items.has(id)
     const item = this._parent.appendItem(id)
     if (!exist && this.isMultiplier) {
@@ -224,12 +224,12 @@ class CalcItemBase {
   private _min: number | null
   private _max: number | null
 
-  id: string
+  id: CalculationItemIds
   unit: string
   step: number
   defaultValue: number
 
-  constructor(parent: CalculationBase, id: string) {
+  constructor(parent: CalculationBase, id: CalculationItemIds) {
     this._parent = parent
     this.id = id
     this.unit = ''
