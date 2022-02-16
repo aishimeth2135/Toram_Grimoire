@@ -23,26 +23,24 @@
   />
 </template>
 
-<script>
-import { Icon } from '@iconify/vue'
-
+<script lang="ts">
 export default {
   name: 'CyIcon',
-  components: {
-    IconifyIcon: Icon,
-  },
-  props: {
-    icon: {
-      type: String,
-      default: 'gg-shape-rhombus',
-    },
-    src: {
-      type: String,
-      default: 'iconify',
-      validation: v => ['iconify', 'custom', 'image'].includes(v),
-    },
-  },
 }
+</script>
+
+<script lang="ts" setup>
+import { Icon as IconifyIcon } from '@iconify/vue'
+
+interface Props {
+  icon?: string;
+  src?: 'iconify' | 'custom' | 'image';
+}
+
+withDefaults(defineProps<Props>(), {
+  icon: 'gg-shape-rhombus',
+  src: 'iconify',
+})
 </script>
 
 <style lang="postcss" scoped>

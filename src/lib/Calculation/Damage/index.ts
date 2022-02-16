@@ -3,18 +3,18 @@ import { markRaw } from 'vue'
 import { CalcItemContainer } from './Calculation'
 import { CalculationBase, CalcItemContainerBase } from './Calculation/base'
 import type { CurrentItemIdGetter } from './Calculation/base'
-import { ContainerTypes } from './Calculation/enums'
+import { CalculationContainerIds, CalculationItemIds, ContainerTypes } from './Calculation/enums'
 
-export default class {
+export default class DamageCalculationSystem {
   calculationBase: CalculationBase
   constructor() {
     type FactoryCreated = (container: CalcItemContainerBase) => void
-    type FactoryAlly = (id: string, callback: FactoryCreated) => void
-    type DamageTypeHandlerCallback = (result: boolean) => string
+    type FactoryAlly = (id: CalculationContainerIds, callback: FactoryCreated) => void
+    type DamageTypeHandlerCallback = (result: boolean) => CalculationItemIds
 
     const base = new CalculationBase()
 
-    const factory = (id: string, type: ContainerTypes, callback: FactoryCreated): void => {
+    const factory = (id: CalculationContainerIds, type: ContainerTypes, callback: FactoryCreated): void => {
       const container = base.appendContainer(id, type)
       callback(container)
     }
@@ -23,55 +23,55 @@ export default class {
 
     const utils = {
       getCurrentDamageTypeId(itemContainer: CalcItemContainer) {
-        return (itemContainer.belongCalculation.containers.get('damage_type') as CalcItemContainer).currentItem.base.id
+        return (itemContainer.belongCalculation.containers.get(CalculationContainerIds.DamageType) as CalcItemContainer).currentItem.base.id
       },
       damageTypeHandler(handlerCallback: DamageTypeHandlerCallback): CurrentItemIdGetter {
         return ((itemContainer: CalcItemContainer) => {
           const currentId = utils.getCurrentDamageTypeId(itemContainer)
-          return handlerCallback(currentId === 'physical')
+          return handlerCallback(currentId === CalculationItemIds.Physical)
         })
       },
     }
 
-    options('damage_type', container => {
-      container.appendItem('physical')
-      container.appendItem('magic')
+    options(CalculationContainerIds.DamageType, container => {
+      container.appendItem(CalculationItemIds.Physical)
+      container.appendItem(CalculationItemIds.Magic)
     })
-    normal('atk/base', container => {
-      container.appendItem('atk').setDefaultValue(0)
-      container.appendItem('matk').setDefaultValue(0)
-      container.appendItem('atk_rate')
+    normal(CalculationContainerIds.AtkBase, container => {
+      container.appendItem(CalculationItemIds.Atk)
+      container.appendItem(CalculationItemIds.Matk)
+      container.appendItem(CalculationItemIds.AtkRate)
         .setDefaultValue(100).setRange(0).setUnit('%')
-      container.appendItem('matk_rate')
+      container.appendItem(CalculationItemIds.MatkRate)
         .setDefaultValue(100).setRange(0).setUnit('%')
       // container.setGetCurrentItemId(utils.damageTypeHandler(res => res ? 'atk' : 'matk'));
       container.controls.toggle = false
       container.setCalcResult((itemContainer) => {
-        const atk = itemContainer.getItemValue('atk')
-        const matk = itemContainer.getItemValue('matk')
-        const atkr = itemContainer.getItemValue('atk_rate')
-        const matkr = itemContainer.getItemValue('matk_rate')
+        const atk = itemContainer.getItemValue(CalculationItemIds.Atk)
+        const matk = itemContainer.getItemValue(CalculationItemIds.Matk)
+        const atkr = itemContainer.getItemValue(CalculationItemIds.AtkRate)
+        const matkr = itemContainer.getItemValue(CalculationItemIds.MatkRate)
         return Math.floor(atk * atkr / 100) + Math.floor(matk * matkr / 100)
       })
     })
-    normal('atk/dual_sword', container => {
-      container.appendItem('sub_atk')
-      container.appendItem('sub_stability')
+    normal(CalculationContainerIds.AtkDualSword, container => {
+      container.appendItem(CalculationItemIds.SubAtk)
+      container.appendItem(CalculationItemIds.SubStability)
         .setRange(0).setUnit('%')
       container.setCalcResult((itemContainer) => {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
-        if (currentDamageTypeId !== 'physical') {
+        if (currentDamageTypeId !== CalculationItemIds.Physical) {
           return 0
         }
-        const subAtk = itemContainer.getItemValue('sub_atk')
-        const subStability = itemContainer.getItemValue('sub_stability')
+        const subAtk = itemContainer.getItemValue(CalculationItemIds.SubAtk)
+        const subStability = itemContainer.getItemValue(CalculationItemIds.SubStability)
         return subAtk * subStability / 100
       })
     })
-    normal('atk/two_handed', container => {
+    normal(CalculationContainerIds.AtkTwoHanded, container => {
       container.markMultiplier()
       container.defaultDisabled()
-      container.appendItem('skill_level_two_handed')
+      container.appendItem(CalculationItemIds.SkillLevelTwoHanded)
         .setDefaultValue(0)
         .setRange(0, 10)
         .setUnit('')
@@ -80,96 +80,96 @@ export default class {
         if (currentDamageTypeId !== 'physical') {
           return 0
         }
-        const value = itemContainer.getItemValue('skill_level_two_handed')
+        const value = itemContainer.getItemValue(CalculationItemIds.SkillLevelTwoHanded)
         return (100 + value * 5)
       })
     })
-    options('target_resistance', container => {
+    options(CalculationContainerIds.TargetResistance, container => {
       container.markMultiplier()
-      container.appendItem('target_physical_resistance')
+      container.appendItem(CalculationItemIds.TargetPhysicalResistance)
         .setDefaultValue(0)
         .setRange(null)
-      container.appendItem('target_magic_resistance')
+      container.appendItem(CalculationItemIds.TargetMagicResistance)
         .setDefaultValue(0)
         .setRange(null)
       container.setCalcResult((itemContainer) => {
         const value = itemContainer.currentItem.value
         return (100 - value)
       })
-      container.setGetCurrentItemId(utils.damageTypeHandler(res => res ? 'target_physical_resistance' : 'target_magic_resistance'))
+      container.setGetCurrentItemId(utils.damageTypeHandler(res => res ? CalculationItemIds.TargetPhysicalResistance : CalculationItemIds.TargetMagicResistance))
       container.disableFloorResult()
     })
-    normal('level_difference', container => {
-      container.appendItem('character_level')
-      container.appendItem('target_level')
+    normal(CalculationContainerIds.LevelDifference, container => {
+      container.appendItem(CalculationItemIds.CharacterLevel)
+      container.appendItem(CalculationItemIds.TargetLevel)
       container.setCalcResult((itemContainer) => {
-        const clv = itemContainer.getItemValue('character_level')
-        const tlv = itemContainer.getItemValue('target_level')
+        const clv = itemContainer.getItemValue(CalculationItemIds.CharacterLevel)
+        const tlv = itemContainer.getItemValue(CalculationItemIds.TargetLevel)
         return clv - tlv
       })
     })
-    options('target_def_base', container => {
-      container.appendItem('target_def')
-      container.appendItem('target_mdef')
+    options(CalculationContainerIds.TargetDefBase, container => {
+      container.appendItem(CalculationItemIds.TargetDef)
+      container.appendItem(CalculationItemIds.TargetMdef)
       container.setCalcResult((itemContainer) => {
         const value = itemContainer.currentItem.value
         return -1 * value
       })
-      container.setGetCurrentItemId(utils.damageTypeHandler(res => res ? 'target_def' : 'target_mdef'))
+      container.setGetCurrentItemId(utils.damageTypeHandler(res => res ? CalculationItemIds.TargetDef : CalculationItemIds.TargetMdef))
     })
-    options('pierce', container => {
+    options(CalculationContainerIds.Pierce, container => {
       container.markMultiplier()
-      container.appendItem('physical_pierce').setDefaultValue(0)
-      container.appendItem('magic_pierce').setDefaultValue(0)
+      container.appendItem(CalculationItemIds.PhysicalPierce).setDefaultValue(0)
+      container.appendItem(CalculationItemIds.MagicPierce).setDefaultValue(0)
       container.setCalcResult((itemContainer) => {
         const value = itemContainer.currentItem.value
         return (100 - value)
       })
-      container.setGetCurrentItemId(utils.damageTypeHandler(res => res ? 'physical_pierce' : 'magic_pierce'))
+      container.setGetCurrentItemId(utils.damageTypeHandler(res => res ? CalculationItemIds.PhysicalPierce : CalculationItemIds.MagicPierce))
     })
-    normal('skill/constant', container => {
-      container.appendItem('skill_constant')
+    normal(CalculationContainerIds.SkillConstant, container => {
+      container.appendItem(CalculationItemIds.SkillConstant)
     })
-    normal('unsheathe_attack/constant', container => {
-      container.appendItem('unsheathe_attack_constant')
+    normal(CalculationContainerIds.UnsheatheAttackConstant, container => {
+      container.appendItem(CalculationItemIds.UnsheatheAttackConstant)
     })
-    normal('other_constant', container => {
-      container.appendItem('other_constant')
+    normal(CalculationContainerIds.OtherConstant, container => {
+      container.appendItem(CalculationItemIds.OtherConstant)
       container.setCalcResult((itemContainer) => {
         return itemContainer.customItems
-          .reduce((cur, item) => cur + item.value, itemContainer.getItemValue('other_constant'))
+          .reduce((cur, item) => cur + item.value, itemContainer.getItemValue(CalculationItemIds.OtherConstant))
       })
     })
 
-    normal('skill/multiplier', container => {
+    normal(CalculationContainerIds.SkillMultiplier, container => {
       container.markMultiplier()
-      container.appendItem('skill_multiplier')
+      container.appendItem(CalculationItemIds.SkillMultiplier)
     })
 
-    normal('critical', container => {
+    // normal(CalculationContainerIds.Critical, container => {
+    //   container.markMultiplier()
+    //   container.disableFloorResult()
+
+    //   container.setVirtual([CalculationContainerIds.CriticalRate, CalculationContainerIds.CriticalDamage])
+
+    //   container.setCalcResult((itemContainer) => {
+    //     const cr = itemContainer.belongCalculation.containers.get(CalculationContainerIds.CriticalRate)!.result()
+    //     const cd = itemContainer.belongCalculation.containers.get(CalculationContainerIds.CriticalDamage)!.result()
+    //     return (cr * cd / 100 + (100 - cr))
+    //   })
+    // })
+    normal(CalculationContainerIds.CriticalDamage, container => {
       container.markMultiplier()
-      container.disableFloorResult()
 
-      container.setVirtual(['critical/critical_rate', 'critical/critical_damage'])
-
-      container.setCalcResult((itemContainer) => {
-        const cr = itemContainer.belongCalculation.containers.get('critical/critical_rate')!.result()
-        const cd = itemContainer.belongCalculation.containers.get('critical/critical_damage')!.result()
-        return (cr * cd / 100 + (100 - cr))
-      })
-    })
-    normal('critical/critical_damage', container => {
-      container.markMultiplier()
-
-      container.appendItem('critical_damage')
+      container.appendItem(CalculationItemIds.CriticalDamage)
         .setDefaultValue(150)
-      container.appendItem('magic_critical_damage_conversion_rate')
+      container.appendItem(CalculationItemIds.MagicCriticalDamageConversionRate)
         .setDefaultValue(50)
 
       container.setCalcResult((itemContainer) => {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
-        const cd = itemContainer.getItemValue('critical_damage')
-        const mcdr = itemContainer.getItemValue('magic_critical_damage_conversion_rate')
+        const cd = itemContainer.getItemValue(CalculationItemIds.CriticalDamage)
+        const mcdr = itemContainer.getItemValue(CalculationItemIds.MagicCriticalDamageConversionRate)
         let result = cd
         if (result > 300) {
           result = 300 + Math.floor((result - 300) / 2)
@@ -180,96 +180,141 @@ export default class {
         return result
       })
     })
-    normal('critical/critical_rate', container => {
+    normal(CalculationContainerIds.CriticalRate, container => {
       container.markMultiplier()
 
-      container.appendItem('critical_rate')
+      container.appendItem(CalculationItemIds.CriticalRate)
         .setDefaultValue(25)
         .setRange(0, 100, 10)
-      container.appendItem('magic_critical_rate_conversion_rate')
+      container.appendItem(CalculationItemIds.MagicCriticalRateConversionRate)
         .setDefaultValue(0)
-      container.appendItem('target_critical_rate_resistance')
+      container.appendItem(CalculationItemIds.TargetCriticalRateResistance)
         .setDefaultValue(0)
         .setRange(null)
-      container.appendItem('target_critical_rate_resistance_total')
+      container.appendItem(CalculationItemIds.TargetCriticalRateResistanceTotal)
         .setDefaultValue(0)
         .setRange(0, 100)
 
       container.setCalcResult((itemContainer) => {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
-        const cr = itemContainer.getItemValue('critical_rate')
-        const cr_r = itemContainer.getItemValue('target_critical_rate_resistance')
-        const cr_rt = itemContainer.getItemValue('target_critical_rate_resistance_total')
-        const mcrr = itemContainer.getItemValue('magic_critical_rate_conversion_rate')
+        const cr = itemContainer.getItemValue(CalculationItemIds.CriticalRate)
+        const cr_r = itemContainer.getItemValue(CalculationItemIds.TargetCriticalRateResistance)
+        const cr_rt = itemContainer.getItemValue(CalculationItemIds.TargetCriticalRateResistanceTotal)
+        const mcrr = itemContainer.getItemValue(CalculationItemIds.MagicCriticalRateConversionRate)
         let result = Math.max(cr - cr_r, 0)
         result = Math.min(100, Math.floor(result * (100 - cr_rt) / 100))
         return currentDamageTypeId === 'physical' ? result : Math.floor(result * mcrr / 100)
       })
     })
-    options('range_damage', container => {
+    options(CalculationContainerIds.RangeDamage, container => {
       container.markMultiplier()
-      container.appendItem('short_range_damage')
-      container.appendItem('long_range_damage')
+      container.appendItem(CalculationItemIds.ShortRangeDamage)
+      container.appendItem(CalculationItemIds.LongRangeDamage)
     })
-    normal('unsheathe_attack/multiplier', container => {
+    normal(CalculationContainerIds.UnsheatheAttackMultiplier, container => {
       container.markMultiplier()
-      container.appendItem('unsheathe_attack_multiplier')
+      container.appendItem(CalculationItemIds.UnsheatheAttackMultiplier)
     })
-    options('stronger_against_element', container => {
+    options(CalculationContainerIds.StrongerAgainstElement, container => {
       container.markMultiplier()
-      container.appendItem('stronger_against_neutral')
-      container.appendItem('stronger_against_fire')
-      container.appendItem('stronger_against_water')
-      container.appendItem('stronger_against_earth')
-      container.appendItem('stronger_against_wind')
-      container.appendItem('stronger_against_light')
-      container.appendItem('stronger_against_dark')
+      container.appendItem(CalculationItemIds.StrongerAgainstNeutral)
+      container.appendItem(CalculationItemIds.StrongerAgainstFire)
+      container.appendItem(CalculationItemIds.StrongerAgainstWater)
+      container.appendItem(CalculationItemIds.StrongerAgainstEarth)
+      container.appendItem(CalculationItemIds.StrongerAgainstWind)
+      container.appendItem(CalculationItemIds.StrongerAgainstLight)
+      container.appendItem(CalculationItemIds.StrongerAgainstDark)
     })
-    normal('proration', container => {
+    normal(CalculationContainerIds.Proration, container => {
       container.markMultiplier()
-      container.appendItem('proration')
+      container.appendItem(CalculationItemIds.Proration)
         .setDefaultValue(250)
         .setRange(50, 250, 50)
     })
-    normal('combo_multiplier', container => {
+    normal(CalculationContainerIds.ComboMultiplier, container => {
       container.markMultiplier()
-      container.appendItem('combo_multiplier')
+      container.appendItem(CalculationItemIds.ComboMultiplier)
         .setDefaultValue(150)
     })
-    normal('skill/long_range', container => {
+    normal(CalculationContainerIds.SkillLongRange, container => {
       container.markMultiplier()
       container.defaultDisabled()
-      container.appendItem('skill_level_long_range')
+      container.appendItem(CalculationItemIds.SkillLevelLongRange)
         .setDefaultValue(10)
         .setRange(0, 10)
         .setUnit('')
       container.setCalcResult((itemContainer) => {
-        const value = itemContainer.getItemValue('skill_level_long_range')
+        const value = itemContainer.getItemValue(CalculationItemIds.SkillLevelLongRange)
         return (100 + value)
       })
     })
-    normal('stability', container => {
+    normal(CalculationContainerIds.Stability, container => {
       container.markMultiplier()
-      container.disableFloorResult()
-      container.appendItem('stability')
+      container.appendItem(CalculationItemIds.Stability)
         .setDefaultValue(75)
         .setRange(0, 100, 10)
-      container.appendItem('probability_of_graze')
+      container.setCalcResult(itemContainer => itemContainer.getItemValue(CalculationItemIds.Stability))
+      // container.setCalcResult((itemContainer) => {
+      //   const stability = itemContainer.getItemValue(CalculationItemIds.Stability)
+      //   const accuracy = itemContainer.getItemValue(CalculationItemIds.Accuracy)
+      //   const targetDodge = itemContainer.getItemValue(CalculationItemIds.TargetDodge)
+      //   const accuracyRate = Math.min(100, Math.max(0, 300 + accuracy - targetDodge) / 3)
+      //   const promiseAccuracy = itemContainer.getItemValue(CalculationItemIds.PromisedAccuracyRate)
+      //   const cr = itemContainer.belongCalculation.containers.get(CalculationContainerIds.CriticalRate)!.getItemValue(CalculationItemIds.CriticalRate)
+      //   return (((stability + 100) / 2)  * accuracyRate + ((stability / 2 + 100) / 2) * (100 - accuracyRate) * (cr + (100 - cr) * promiseAccuracy / 100) / 100) / 100
+      // })
+    })
+    normal(CalculationContainerIds.Accuracy, container => {
+      container.markMultiplier()
+      container.appendItem(CalculationItemIds.Accuracy).setUnit('')
+      container.appendItem(CalculationItemIds.SkillRealMpCost)
+        .setRange(0, null, 100)
         .setDefaultValue(0)
+        .setUnit('')
+      container.appendItem(CalculationItemIds.TargetDodge).setUnit('')
+      container.appendItem(CalculationItemIds.PromisedAccuracyRate)
         .setRange(0, 100, 10)
       container.setCalcResult((itemContainer) => {
-        const stability = itemContainer.getItemValue('stability')
-        const grazeProbability = itemContainer.getItemValue('probability_of_graze')
-        return ((stability + 100) / 200)  * (100 - grazeProbability) + ((stability / 2 + 100) / 200) * grazeProbability
+        const accuracy = itemContainer.getItemValue(CalculationItemIds.Accuracy)
+        const skillRealMpCost = itemContainer.getItemValue(CalculationItemIds.SkillRealMpCost)
+        const targetDodge = itemContainer.getItemValue(CalculationItemIds.TargetDodge)
+        return Math.min(100, Math.max(0, 300 + accuracy + Math.floor(skillRealMpCost / 100) * 30 - targetDodge) / 3)
       })
     })
-    normal('other_multiplier', container => {
+    normal(CalculationContainerIds.Critical_Accuracy_Stability, container => {
       container.markMultiplier()
       container.disableFloorResult()
-      container.appendItem('other_multiplier')
+
+      container.setVirtual([
+        CalculationContainerIds.CriticalRate,
+        CalculationContainerIds.CriticalDamage,
+        CalculationContainerIds.Stability,
+        CalculationContainerIds.Accuracy,
+      ])
+
+      container.setCalcResult((itemContainer) => {
+        const cr = itemContainer.belongCalculation.containers.get(CalculationContainerIds.CriticalRate)!.result()
+        const cd = itemContainer.belongCalculation.containers.get(CalculationContainerIds.CriticalDamage)!.result()
+        const acContainer = itemContainer.belongCalculation.containers.get(CalculationContainerIds.Accuracy)!
+        const ac = acContainer.result()
+
+        // no need to check `acContainer.enable` beacause `ac` is `100` when `acContaner.enable` is `false`
+        const pac = acContainer.getItemValue(CalculationItemIds.PromisedAccuracyRate)
+
+        const stability = itemContainer.belongCalculation.containers.get(CalculationContainerIds.Stability)!.result()
+        return (
+          ((stability + 100) / 2 * ac + (stability / 2 + 100) / 2 * (100 - ac)) * cr * cd / 100 +
+          ((stability + 100) / 2 * ac + (stability / 2 + 100) / 2 * Math.max(0, pac - ac)) * (100 - cr)
+        ) / 10000
+      })
+    })
+    normal(CalculationContainerIds.OtherMultiplier, container => {
+      container.markMultiplier()
+      container.disableFloorResult()
+      container.appendItem(CalculationItemIds.OtherMultiplier)
       container.setCalcResult((itemContainer) => {
         return itemContainer.customItems
-          .reduce((cur, item) => cur * item.value / 100, itemContainer.getItemValue('other_multiplier'))
+          .reduce((cur, item) => cur * item.value / 100, itemContainer.getItemValue(CalculationItemIds.OtherMultiplier))
       })
     })
 

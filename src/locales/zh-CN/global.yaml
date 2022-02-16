@@ -18,3 +18,4 @@ export: 汇出
 import: 汇入
 reset: 重置
 times: 次
+all: 全部

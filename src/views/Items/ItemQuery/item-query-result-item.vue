@@ -306,6 +306,7 @@ export default {
         'other': 'gg-shape-rhombus',
         'box': 'mdi-treasure-chest',
         'exchange': 'bx-bx-shopping-bag',
+        'ex_skill': 'gg-shape-rhombus',
       }
       return obtains.map((item, idx) => {
         const type = this.$rootLang('common/Equipment/obtain/' + item.type)

@@ -26,7 +26,7 @@ Equipment:
     body-dodge: Light Armor
     body-defense: Heavy Armor
     empty: Empty
-  stat restriction:
+  stat-restriction:
     event: Event
     one-hand-sword: One-Handed Sword
     two-hand-sword: Two-Handed Sword
@@ -57,8 +57,6 @@ Equipment:
     mini_boss: Mini Boss Drop
     quest: Quest Reward
     smith: Smith craft
-    create-equipment: Create Equipment
-    no-data: No Data
     unknow: Unknown
     other: Other
     box: Loot Box content

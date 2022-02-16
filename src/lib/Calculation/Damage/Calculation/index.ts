@@ -1,22 +1,22 @@
 import { CalculationBase, CalcItemBase, CalcItemContainerBase } from './base'
 import type { CalcStructItem, CalcResultOptions } from './base'
-import { ContainerTypes } from './enums'
+import { CalculationContainerIds, CalculationItemIds, ContainerTypes } from './enums'
 
 interface CalculationSaveData {
   name: string;
   containers: {
-    id: string;
+    id: CalculationContainerIds;
     enabled: boolean;
-    currentItemId: string | null;
+    currentItemId: CalculationItemIds | null;
   }[];
   items: {
-    id: string;
+    id: CalculationItemIds;
     value: number;
   }[];
   containerCustomItems: {
-    containerId: string;
+    containerId: CalculationContainerIds;
     items: {
-      id: string;
+      id: CalculationItemIds;
       name: string;
       value: number;
     }[];
@@ -26,9 +26,9 @@ interface CalculationSaveData {
 class Calculation {
   base: CalculationBase
   name: string
-  containers: Map<string, CalcItemContainer>
-  items: Map<string, CalcItem>
-  containerCustomItems: Map<string, CalcItemCustom[]>
+  containers: Map<CalculationContainerIds, CalcItemContainer>
+  items: Map<CalculationItemIds, CalcItem>
+  containerCustomItems: Map<CalculationContainerIds, CalcItemCustom[]>
 
   constructor(base: CalculationBase, name: string = '') {
     this.base = base
@@ -36,8 +36,8 @@ class Calculation {
     this.containers = new Map()
     this.items = new Map()
     this.containerCustomItems = new Map([
-      ['other_constant', []],
-      ['other_multiplier', []],
+      [CalculationContainerIds.OtherConstant, []],
+      [CalculationContainerIds.OtherMultiplier, []],
     ])
 
     // init of containers and items
@@ -53,7 +53,7 @@ class Calculation {
     }
   }
 
-  appendCustomItem(containerId: string, itemId: string): CalcItemCustom | null {
+  appendCustomItem(containerId: CalculationContainerIds, itemId: CalculationItemIds): CalcItemCustom | null {
     if (!this.containerCustomItems.has(containerId)) {
       console.warn(`[Calculation.appendCustomItem] container with id ${containerId} is not exist in additional list.`)
       return null
@@ -61,14 +61,14 @@ class Calculation {
     const container = this.containers.get(containerId)
     const itemBase = container ? container.base.items.get(itemId) : null
     if (itemBase) {
-      const newItem = new CalcItemCustom(itemBase);
-      (this.containerCustomItems.get(containerId) as CalcItemCustom[]).push(newItem)
+      const newItem = new CalcItemCustom(itemBase)
+      this.containerCustomItems.get(containerId)!.push(newItem)
       return newItem
     }
     return null
   }
 
-  removeCustomItem(containerId: string, item: CalcItemCustom) {
+  removeCustomItem(containerId: CalculationContainerIds, item: CalcItemCustom) {
     if (!this.containerCustomItems.has(containerId)) {
       console.warn(`[Calculation.removeCustomItem] container with id ${containerId} is not exist in additional list.`)
       return
@@ -88,13 +88,15 @@ class Calculation {
         value: item.value,
       }
     })
-    const containers = Array.from(this.containers.values()).map(container => {
-      return {
-        id: container.base.id,
-        enabled: container.enabled,
-        currentItemId: container.selectable ? container.currentItem.base.id : null,
-      }
-    })
+    const containers = Array.from(this.containers.values())
+      .filter(container => !container.base.isVirtual)
+      .map(container => {
+        return {
+          id: container.base.id,
+          enabled: container.enabled,
+          currentItemId: container.selectable ? container.currentItem.base.id : null,
+        }
+      })
     const containerCustomItems = Array.from(this.containerCustomItems.entries()).map(([containerId, customItems]) => {
       const itemsData = customItems.map(item => ({
         id: item.base.id,
@@ -157,11 +159,11 @@ class Calculation {
 
 class CalcItemContainer {
   private _parent: Calculation
-  private _currentItemId: string | null
+  private _currentItemId: CalculationItemIds | null
 
   base: CalcItemContainerBase
   enabled: boolean
-  items: Map<string, CalcItem>
+  items: Map<CalculationItemIds, CalcItem>
 
   constructor(parent: Calculation, base: CalcItemContainerBase) {
     this._parent = parent
@@ -198,7 +200,7 @@ class CalcItemContainer {
     if (this.base.getCurrentItemId !== null) {
       return this.items.get(this.base.getCurrentItemId(this, this.base)) as CalcItem
     }
-    return this.items.get(this._currentItemId as string) as CalcItem
+    return this.items.get(this._currentItemId!) as CalcItem
   }
 
   get customItemAddable(): boolean {
@@ -222,7 +224,7 @@ class CalcItemContainer {
   /**
    * Ally method to get value of item
    */
-  getItemValue(id: string): number {
+  getItemValue(id: CalculationItemIds): number {
     if (!this.items.has(id)) {
       console.warn('[CalcItemContainer.getItemValue] unknown item id: ' + id)
       return 0
@@ -230,7 +232,7 @@ class CalcItemContainer {
     return (this.items.get(id) as CalcItem).value
   }
 
-  selectItem(id: string) {
+  selectItem(id: CalculationItemIds) {
     this._currentItemId = id
   }
 
