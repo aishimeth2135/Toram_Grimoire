@@ -16,7 +16,7 @@ import { calcStructDisplay, calcStructCritical, calcStructWithoutCritical } from
 interface CalcModeItem {
   id: 'common' | 'critical';
   calcStruct: CalcStructExpression;
-  outsideItems: string[];
+  outsideItems: CalculationContainerIds[];
   maxLayer: number;
 }
 
@@ -24,12 +24,12 @@ const setupCalcMode = () => {
   const calcModeList: CalcModeItem[] = [{
     id: 'common',
     calcStruct: calcStructDisplay,
-    outsideItems: ['atk/two_handed'],
+    outsideItems: [CalculationContainerIds.AtkTwoHanded],
     maxLayer: 4,
   }, {
     id: 'critical',
     calcStruct: calcStructCritical,
-    outsideItems: ['critical/critical_rate'],
+    outsideItems: [CalculationContainerIds.Critical_Accuracy_Stability],
     maxLayer: 6,
   }]
   const currentCalcModeId = ref('common')
@@ -105,38 +105,33 @@ const setupCalculationStore = () => {
 }
 
 const setupExpectedResults = (calculation: Ref<Calculation>) => {
-  const expectedResultComputedBase = [calcStructCritical, calcStructWithoutCritical]
-    .map(calcStruct => ({
-      id: calcStruct.id,
-      result: computed(() => calculation.value.result(calcStruct)),
-    }))
-
-  const getResult = (target: string) => {
+  const stabilityRef = computed(() => calculation.value.containers.get(CalculationContainerIds.Stability)!.result())
+  const baseResultCritical = computed(() => calculation.value.result(calcStructCritical))
+  const baseResultCriticalRate = computed(() => {
     const cr = calculation.value.containers.get(CalculationContainerIds.CriticalRate)!.result()
-    const stability = calculation.value.containers.get(CalculationContainerIds.Stability)!.getItemValue(CalculationItemIds.Stability)
-    const stabilityValue = (() => {
-      if (target === 'min') {
-        return stability
-      }
-      if (target === 'grazeMin') {
-        return Math.floor(stability / 2)
-      }
-      return 100
-    })()
-    const criticalValue = Math.floor(expectedResultComputedBase[0].result.value * stabilityValue / 100)
-    const withoutCriticalValue = Math.floor(expectedResultComputedBase[1].result.value * stabilityValue / 100)
-    return Math.floor((cr * criticalValue) / 100 + ((100 - cr) * withoutCriticalValue) / 100)
-  }
+    const acContainer = calculation.value.containers.get(CalculationContainerIds.Accuracy)!
+    const ac = acContainer.result()
+    const stability = stabilityRef.value
+    return ((stability + 100) / 2 * ac + (stability / 2 + 100) / 2 * (100 - ac)) * cr / 1000000
+  })
+  const baseResultWithoutCritical = computed(() => calculation.value.result(calcStructWithoutCritical))
+  const baseResultWithoutCriticalRate = computed(() => {
+    const cr = calculation.value.containers.get(CalculationContainerIds.CriticalRate)!.result()
+    const acContainer = calculation.value.containers.get(CalculationContainerIds.Accuracy)!
+    const ac = acContainer.result()
+    const pac = acContainer.getItemValue(CalculationItemIds.PromisedAccuracyRate)
+    const stability = stabilityRef.value
+    return ((stability + 100) / 2 * ac + (stability / 2 + 100) / 2 * Math.max(0, pac - ac)) * (100 - cr) / 1000000
+  })
+  const expectedResultCritical = computed(() => baseResultCritical.value * baseResultCriticalRate.value)
+  const expectedResultWithoutCritical = computed(() => baseResultWithoutCritical.value * baseResultWithoutCriticalRate.value)
 
-  const expectedResultMax = computed(() => getResult('max'))
-  const expectedResultMin = computed(() => getResult('min'))
-  const expectedResultGrazeMin = computed(() => getResult('grazeMin'))
+  const expectedResultMax = computed(() => Math.floor(baseResultCritical.value))
+  const expectedResultMin = computed(() => Math.floor(baseResultWithoutCritical.value * stabilityRef.value / 100))
+  const expectedResultGrazeMin = computed(() => Math.floor(baseResultWithoutCritical.value * stabilityRef.value / 200))
 
   const expectedResult = computed(() => {
-    const max = expectedResultMax.value
-    const stabilityContainer = calculation.value.containers.get(CalculationContainerIds.Stability)!
-    const stability = stabilityContainer.enabled ? stabilityContainer.result() : 100
-    return Math.floor(max * stability / 100)
+    return Math.floor(expectedResultCritical.value + expectedResultWithoutCritical.value)
   })
 
   const stabilityResult = computed(() => ({

@@ -88,13 +88,15 @@ class Calculation {
         value: item.value,
       }
     })
-    const containers = Array.from(this.containers.values()).map(container => {
-      return {
-        id: container.base.id,
-        enabled: container.enabled,
-        currentItemId: container.selectable ? container.currentItem.base.id : null,
-      }
-    })
+    const containers = Array.from(this.containers.values())
+      .filter(container => !container.base.isVirtual)
+      .map(container => {
+        return {
+          id: container.base.id,
+          enabled: container.enabled,
+          currentItemId: container.selectable ? container.currentItem.base.id : null,
+        }
+      })
     const containerCustomItems = Array.from(this.containerCustomItems.entries()).map(([containerId, customItems]) => {
       const itemsData = customItems.map(item => ({
         id: item.base.id,

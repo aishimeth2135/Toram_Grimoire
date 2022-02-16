@@ -8,18 +8,18 @@ result:
     stability: 傷害區間
     stability-with-graze: Graze時傷害區間
   modes-caption:
-    expected: 考慮爆擊率及穩定度計算出來的傷害期望值。
-    stability: 根據穩定度計算出的傷害最大值及最小值。
-    stability-with-graze: 考慮Graze的情況，根據穩定度計算出的傷害最大值及最小值。
+    expected: 考慮暴擊率、命中率及穩定度計算出來的傷害期望值。
+    stability: 呈現傷害可能打出的最大數字及最小數字。最大值為暴擊時的最大傷害，最小值為沒暴擊且穩定度為最低時的傷害。
+    stability-with-graze: 與傷害區間相似，但最小值的部分也考慮Graze的情況。
 calc-mode:
   title: 介面的計算公式
   caption: 這裡可以選擇介面呈現的計算公式。選擇的公式只會影響介面的呈現，不會影響能設定的項目及計算結果。
   modes:
     common: 基本公式
-    critical: 爆擊時公式
+    critical: 暴擊時公式
   modes-caption:
     common: 基本的傷害公式。適用於大部分的計算場合。
-    critical: 暴擊時的傷害公式，主要用於將「雙手合持」呈現於計算公式中，公式只單純呈現暴擊時的傷害，暴擊率在公式之外。
+    critical: 暴擊時的傷害公式，主要用於將「雙手合持」呈現於計算公式中，公式只單純呈現暴擊時的傷害，部分項目在公式之外。
 compare:
   title: 配置比較
   caption: 這裡可以將目前的配置和其他多個配置進行比較。
@@ -71,6 +71,7 @@ item-base-titles:
   stability: 穩定率
   target_dodge: 目標迴避
   accuracy: 命中
+  skill_real_mp_cost: 技能實際MP消耗
   promised_accuracy_rate: 保底命中率
   skill_level_long_range: ((!遠程狙擊))等級
   combo_multiplier: 連擊倍率

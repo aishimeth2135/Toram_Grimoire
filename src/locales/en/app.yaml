@@ -1,16 +1,17 @@
 loading-message:
   Stats: 載入角色能力清單
-  CharacterStats: 載入角色模擬器資料
+  CharacterStats: Loading Character Simulator
   Items: 載入裝備資料
   Skill: 載入技能資料
   Tag: 載入標籤清單
   Enchant: 載入附魔資料
-  DamageCalculation: 載入傷害計算器
+  DamageCalculation: Loading Damage Calculation
   Food: 載入料理資料
-  init: 初始化
+  init: Initializing
   bottom-tips:
-    0: 初次載入需要較長的時間，請稍後...
-    1: 若載入途中發生錯誤，請先試著重新整理網頁。
+    '0': 初次載入需要較長的時間，請稍後...
+    '1': 若載入途中發生錯誤，請先試著重新整理網頁。
+  init-locale: ''
 page-title:
   base: Cy\'s Grimoire
   character-simulator: Character Simulator
@@ -49,11 +50,11 @@ settings:
     tips-1: 設定完畢後，頁面需重新整理方得生效。
     tips-2: 尚未翻譯的部分依然會顯示其他語言。
     lang-title:
+      '0': English
+      '1': 繁體中文
+      '2': 日本語
+      '3': 简体中文
       auto: 自動判定
-      0: English
-      1: 繁體中文
-      2: 日本語
-      3: 简体中文
   secondary-language:
     title: 次要語言設定
     caption: 可設定第二優先級的語言。簡單來說，若選擇的語言還沒有翻譯，便會優先顯示這邊設定的語言。
@@ -61,7 +62,8 @@ settings:
     tips-2: 若第二優先級語言依然沒有翻譯，則會顯示原始資料（一般而言是繁體中文）。
   clear-spreadsheets-caches:
     title: 清除資料庫快取
-    caption: 魔法書頁面的載入時間，大約有99%都是用於下載資料庫。為了改善使用者體驗，魔法書使用了快取技術，讓使用者只要下載一次資料庫，之後進入相同的頁面時可以不用重新下載，達到幾乎零讀取時間，並在背景將快取更新到最新。然而有時候資料庫的資料更新後，頁面卻還是一直使用快取（舊的資料庫資料），而可能導致程式無法正確運作。因此下方的按鈕提供刪除資料庫快取的功能，下次進入頁面時資料庫將會重新下載，如此一來可以確保資料庫是最新的。
+    caption: >-
+      魔法書頁面的載入時間，大約有99%都是用於下載資料庫。為了改善使用者體驗，魔法書使用了快取技術，讓使用者只要下載一次資料庫，之後進入相同的頁面時可以不用重新下載，達到幾乎零讀取時間，並在背景將快取更新到最新。然而有時候資料庫的資料更新後，頁面卻還是一直使用快取（舊的資料庫資料），而可能導致程式無法正確運作。因此下方的按鈕提供刪除資料庫快取的功能，下次進入頁面時資料庫將會重新下載，如此一來可以確保資料庫是最新的。
     tips-1: 一般情況下，也不用特別使用這個功能。當較舊的資料庫資料會導致程式無法正常運作時，才必須使用此功能。
     tips-2: 快取被清除後，下次進入頁面時資料庫需要重新下載。這可能需要數十秒的時間，請耐心等待。
     tips-3: 清除快取完畢後，可以使用重新整理，讓頁面立即重新載入。
@@ -69,7 +71,8 @@ settings:
     success-tips: 已清除資料庫快取。下次進入頁面時將會重新下載資料庫。
   storage-backup:
     title: 存檔備份
-    caption: 由於魔法書的存檔功能皆是利用瀏覽器本身的功能，將資料儲存在裝置上，因此可能因為清除瀏覽資料或更換裝置等因素，導致存檔遺失。透過下方的按鈕可以將整個魔法書的存檔資料儲存成一個檔案，並在需要讀取資料時，透過下方的按鈕進行讀取。亦可以讀取他人提供的檔案，也可以跨瀏覽器進行資料的儲存與讀取。
+    caption: >-
+      由於魔法書的存檔功能皆是利用瀏覽器本身的功能，將資料儲存在裝置上，因此可能因為清除瀏覽資料或更換裝置等因素，導致存檔遺失。透過下方的按鈕可以將整個魔法書的存檔資料儲存成一個檔案，並在需要讀取資料時，透過下方的按鈕進行讀取。亦可以讀取他人提供的檔案，也可以跨瀏覽器進行資料的儲存與讀取。
     tips-1: 進行讀取後，原本的資料將會被覆蓋。
     tips-2: 讀取成功後，請直接重新整理網頁，可以確保系統正確初始化。
     save: 存檔資料備份
@@ -80,5 +83,22 @@ settings:
     wrong-file-type-tips: 讀取的檔案必須為文字（.txt）檔。
     restriction-homepage: 為避免發生無法預期的錯誤，此功能限制只能在首頁使用。
 features:
-  copy-to-clipboard-success-tips: 已複製文本至剪貼簿。
-  localStorage-inavailable-tips: 此瀏覽器版本無法使用內建儲存功能。
+  copy-to-clipboard-success-tips: Text copied to clipboard.
+  localStorage-inavailable-tips: The built-in storage feature is not available for this browser version.
+  copy-url-to-clipboard-success-tips: URL copied to clipboard.
+about:
+  author:
+    sub-title: Doll.
+    title: Author
+    toram-id: Toram ID
+  team:
+    other: Other
+    equipment-data: Equipment Datas
+    skill-data: Skill Datas
+    sub-title: Thanks to the entire production team 0.0
+  donate:
+    donor: Personal Sponsorship
+    sub-title: Thank you to everyone who is willing to sponsor~
+    group: Guild Sponsor
+  words:
+    title: ''

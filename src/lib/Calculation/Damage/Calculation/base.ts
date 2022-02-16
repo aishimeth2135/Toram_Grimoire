@@ -16,8 +16,8 @@ interface CalcStructMultiple {
   list: CalcStructItem[];
 }
 interface CalcResultOptions {
-  containerResult?: {
-    [key: string]: number | ((itemContainer: CalcItemContainer) => number);
+  containerResults?: {
+    [key in CalculationContainerIds]?: number | ((itemContainer: CalcItemContainer) => number);
   };
 }
 interface CurrentItemIdGetter {
@@ -65,17 +65,18 @@ class CalculationBase {
       return 0
     }
 
-    const { containerResult = {} } = options
+    const { containerResults = {} } = options
 
     const handle = (item: CalcStructItem): number => {
       if (typeof item === 'string') {
         const container = calculation.containers.get(item)
         if (container !== undefined) {
-          if (!container.enabled) {
-            return container.base.isMultiplier ? container.base.disabledValue / 100 : container.base.disabledValue
-          }
           const res = (() => {
-            const resultItem = containerResult[item]
+            if (!container.enabled) {
+              // disabled value
+              return container.result()
+            }
+            const resultItem = containerResults[item]
             if (typeof resultItem === 'number') {
               return resultItem
             }
@@ -209,6 +210,9 @@ class CalcItemContainerBase {
   }
 
   result(itemContainer: CalcItemContainer): number {
+    if (!itemContainer.enabled) {
+      return this.disabledValue
+    }
     const res = (() => {
       if (this._calcResult) {
         return this._calcResult(itemContainer, this)
@@ -247,7 +251,7 @@ class CalcItemBase {
     return this._max === null ? 9999 : this._max
   }
 
-  setRange(min: number | null, max: number | null = null, step: number = 1): CalcItemBase {
+  setRange(min: number | null, max: number | null = null, step: number = 1): this {
     this._min = min
     this._max = max
     this.step = step
@@ -259,8 +263,9 @@ class CalcItemBase {
     return this
   }
 
-  setUnit(value: string): void {
+  setUnit(value: string): this {
     this.unit = value
+    return this
   }
 }
 
