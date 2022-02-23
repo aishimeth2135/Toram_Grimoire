@@ -33,7 +33,10 @@ function createColorConfig(varName) {
       DEFAULT: handleValue('orange'),
       light: handleValue('orange-light'),
     },
-    green: handleValue('green'),
+    green: {
+      DEFAULT: handleValue('green'),
+      light: handleValue('green-light'),
+    },
     gray: {
       DEFAULT: handleValue('gray'),
       light: handleValue('gray-light'),
@@ -44,7 +47,10 @@ function createColorConfig(varName) {
 }
 
 module.exports = {
-  content: ['./src/**/*.vue', './src/**/*.ts', './src/**/*.js'],
+  content: [
+    './index.html',
+    './src/**/*.{vue,js,ts,jsx,tsx}',
+  ],
   theme: {
     colors: createColorConfig(),
     textColor: createColorConfig('--tw-text-opacity'),

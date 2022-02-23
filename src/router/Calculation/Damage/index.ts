@@ -8,7 +8,7 @@ import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
-const DamageCalculatiomView = () => import(/* webpackChunkName: "damage-calculation" */ '@/views/Calculation/DamageCalculation/index.vue')
+const DamageCalculatiomView = () => import('@/views/Calculation/DamageCalculation/index.vue')
 
 export default {
   name: 'DamageCalculation',

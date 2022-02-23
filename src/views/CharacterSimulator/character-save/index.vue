@@ -1,6 +1,22 @@
 <template>
   <div v-if="storageAvailable">
     <div class="p-4">
+      <cy-default-tips icon="mdi:export" text-align="left">
+        {{ t('character-simulator.save-load-control.export-save-data-caption') }}
+      </cy-default-tips>
+      <div class="pl-3 flex items-center">
+        <cy-button-border
+          icon="mdi:export"
+          @click="toggle('modals/exportSaveData', true)"
+        >
+          {{ t('character-simulator.save-load-control.export-save-data-title') }}
+        </cy-button-border>
+        <cy-button-border icon="mdi:import" @click="importSaveData">
+          {{ t('global.import') }}
+        </cy-button-border>
+      </div>
+    </div>
+    <div class="p-4 border-t border-light-2">
       <cy-default-tips icon="bx-bx-message-square-dots" text-align="left">
         {{ t('character-simulator.save-load-control.manual-save-load-caption') }}
       </cy-default-tips>
@@ -47,6 +63,10 @@
         </cy-button-border>
       </div>
     </div>
+    <CharacterSaveExport
+      :visible="modals.exportSaveData"
+      @close="toggle('modals/exportSaveData', false)"
+    />
   </div>
   <cy-default-tips v-else icon="mdi-ghost">
     {{ t('app.features.localStorage-inavailable-tips') }}
@@ -57,15 +77,45 @@
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 
-import { useCharacterStore } from '@/stores/views/character'
+import { CharacterSimulatorSaveData, useCharacterStore } from '@/stores/views/character'
 
 import CY from '@/shared/utils/Cyteria'
+import Cyteria from '@/shared/utils/Cyteria'
+
+import ToggleService from '@/setup/ToggleService'
+import Notify from '@/setup/Notify'
+
+import CharacterSaveExport from './character-save-export.vue'
 
 const deleteCounter = ref(0)
 
 const { t } = useI18n()
+const { notify } = Notify()
 const store = useCharacterStore()
+const { modals, toggle } = ToggleService({ modals: ['exportSaveData'] as const })
 
 const storageAvailable = CY.storageAvailable('localStorage')
+
+const importSaveData = () => {
+  Cyteria.file.load({
+    succeed: res => {
+      try {
+        const data = JSON.parse(res) as CharacterSimulatorSaveData
+        store.loadCharacterSimulatorSaveData(data)
+        notify(t('common.export-build.load-success-tips'))
+      } catch (error) {
+        notify(t('common.export-build.load-failed-tips'))
+      }
+    },
+    error: () => notify(t('common.export-build.load-unknow-error-tips')),
+    checkFileType: fileType => {
+      if (fileType !== 'txt') {
+        notify(t('common.export-build.load-wrong-file-type-tips'))
+        return false
+      }
+      return true
+    },
+  })
+}
 </script>
 

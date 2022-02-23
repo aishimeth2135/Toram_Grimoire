@@ -4,7 +4,7 @@
       <div
         v-for="column in datas.columns"
         :key="column.title"
-        class="column flex p-4 bg-white rounded-md m-4 border-1 border-transparent hover:border-light-2 duration-300"
+        class="cy--about-column flex p-4 bg-white rounded-md m-4 border-1 border-transparent hover:border-light-2 duration-300"
       >
         <div class="flex items-center justify-center w-24 h-24 relative flex-shrink-0 rounded-full mr-3 mb-4 border-1 border-solid border-light-3 bg-white">
           <div>{{ t(`app.about.${column.title}.title`) }}</div>
@@ -75,7 +75,7 @@ const ABOUT_DATAS = {
     title: 'team',
     list: [{
       title: 'skill-data',
-      list: ['緋月音', 'Discord群組: Phantom\'s Library'],
+      list: ['緋月音', '(Discord) Phantom\'s Library'],
     }, {
       title: 'equipment-data',
       list: ['緋月音', '真白', '萌月'],
@@ -156,7 +156,7 @@ const { t } = useI18n()
 </script>
 
 <style lang="less" scoped>
-.column {
+.cy--about-column {
   @media screen and (max-width: 50rem) {
     flex-wrap: wrap;
   }

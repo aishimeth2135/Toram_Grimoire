@@ -1,4 +1,2 @@
 append-equipments:
-  append-equipments-success-tips: ''
   search-text-empty-tips: Search keywords must be at least one character.
-  title: ''

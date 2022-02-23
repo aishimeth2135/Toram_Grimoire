@@ -1,4 +1,4 @@
-character-stats: 角色面板
+character-stats: 面板
 character: 角色
 custom-equipment:
   button-title: 自訂裝備
@@ -52,9 +52,9 @@ equipment-basic-editor:
   equipment-name: 裝備名稱
   equipment-stats: 裝備能力
   equipment-other: 其它設定
-  no-equipment-type-selected-tips: 請先選擇一個裝備類別
+  no-equipment-type-selected-tips: 請先選擇一個裝備類別。
   selected-stats-cleared-tips: 已取消更動。
-  only-one-element-stat-tips: 一件裝備只能擁有一個屬性
+  only-one-element-stat-tips: 一件裝備只能擁有一個屬性，請確認編輯中的能力清單。
 select-crystals:
   title: 選擇鍛晶
   search-placeholder: 搜尋緞晶
@@ -69,6 +69,7 @@ skill-build:
   title: 技能
   passive-skills: 被動技能
   active-skills: 主動技能
+  disable-skills: 停用{type}
   user-set-title: 參數數值設定
   stack-default-name: 技能層數
   skill-effect-default-name: 技能效果
@@ -110,6 +111,7 @@ character-stat-detail:
       none: 身體防具｜無裝備
 food-build:
   title: 料理
+  disable-foods: 停用料理
   food-build: 料理配置
   create-food-build: 新增料理配置
   food-build-name: 料理配置名稱
@@ -118,13 +120,14 @@ food-build:
   remove-food-build-success-tips: 移除料理配置成功。
   restore-food-build-success-tips: 復原料理配置成功。
   at-least-one-food-build-tips: 必須至少留下一個配置。
-  no-food-build-exist-tips: 無法獲取當前的料理配置，請點選下方的按鈕嘗試復原介面。
   selected-food-limit-reached: 可選取的料理數量已達上限。
   introduction:
     - 透過點擊前方的圓點來選取最多五個料理。
     - 原本是0級的料理在提升等級時會自動選取。
 save-load-control:
   title: 存檔
+  export-save-data-title: 匯出角色模擬器資料
+  export-save-data-caption: 可以將角色模擬器的資料匯出成一個檔案，用於備份或分享給他人。可以自行選擇想要匯出的角色、裝備、技能配置或料理配置。
   auto-save-success-tips: 自動存檔成功。
   auto-load-success-tips: 自動讀取成功。
   manual-save-button-title: 手動存檔
@@ -134,9 +137,11 @@ save-load-control:
   deleta-all-data-success-tips: 成功刪除角色模擬器所有資料，系統也已關閉自動存檔功能。請重新整理網頁。
   deleta-all-data-counter-title: 計數器
   deleta-all-data-caption:
-    - 在某些情況下，角色模擬器的檔案可能毀損，導致系統無法正常運行。使用下方的按鈕可以刪除角色模擬器所有資料。自動存檔功能也將暫時失效，意即當前的資料將不會自動儲存。
+    - >-
+      在某些情況下，角色模擬器的檔案可能毀損，導致系統無法正常運行。使用下方的按鈕可以刪除角色模擬器所有資料。自動存檔功能也將暫時失效，意即當前的資料將不會自動儲存。
     - 請將下方的計數器數值調整到10，刪除按鈕就會出現。
     - 將資料刪除成功後，請立即重新整理，來讓系統重新初始化。
+  export-build: 匯出配置
 main-tips:
   current-character-not-exist: 發生了一些小錯誤，導致無法獲取當前的角色資訊，介面也無法正常顯示......<br />請點選下面的按鈕來建立一個新的角色，以復原介面(_ _)
   no-equipment-selected: 這個欄位是空的
@@ -144,4 +149,3 @@ main-tips:
   no-result: 找不到任何結果0.0
   clear-equipments-completed-tips: 清除成功。
   character-stats-compare-no-result: 沒有任何能力值變化。
-

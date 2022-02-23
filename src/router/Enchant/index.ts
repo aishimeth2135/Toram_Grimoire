@@ -7,8 +7,8 @@ import { ViewInit } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
-const EnchantSimulatorView = () => import(/* webpackChunkName: "enchant-simulator" */ '@/views/Enchant/EnchantSimulator/index.vue')
-const EnchantDollView = () => import(/* webpackChunkName: "enchant-doll" */ '@/views/Enchant/EnchantDoll/index.vue')
+const EnchantSimulatorView = () => import('@/views/Enchant/EnchantSimulator/index.vue')
+const EnchantDollView = () => import('@/views/Enchant/EnchantDoll/index.vue')
 
 export default {
   name: 'Enchant',

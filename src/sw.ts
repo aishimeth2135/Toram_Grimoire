@@ -1,12 +1,9 @@
-import 'workbox-sw'
-
 import type { RouteHandler } from 'workbox-core'
+import 'workbox-sw'
 
 declare const self: ServiceWorkerGlobalScope
 
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.2.0/workbox-sw.js')
-
-console.log('test...')
 
 workbox.googleAnalytics.initialize()
 
@@ -22,14 +19,42 @@ const { CacheableResponsePlugin } = workbox.cacheableResponse
 
 const handleCacheName = (name: string) => name
 
-// jsdelivr js
+const daysToSeconds = (day: number) => 60 * 60 * 24 * day
+
+// jsdelivr CDN
 registerRoute(
   /https:\/\/cdn\.jsdelivr\.net\/npm\/.+\.js/,
   new CacheFirst({
     cacheName: handleCacheName('jsdelivr-cache'),
     plugins: [
       new ExpirationPlugin({
-        maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+        maxAgeSeconds: daysToSeconds(180),
+      }),
+    ],
+  }),
+)
+
+// polyfill.io CDN
+registerRoute(
+  'https://polyfill.io/v3/polyfill.min.js',
+  new CacheFirst({
+    cacheName: handleCacheName('polyfill-io-cache'),
+    plugins: [
+      new ExpirationPlugin({
+        maxAgeSeconds: daysToSeconds(30),
+      }),
+    ],
+  }),
+)
+
+// iconify
+registerRoute(
+  /https:\/\/api\.iconify\.design\/(?:[^/.]+)\.json/,
+  new CacheFirst({
+    cacheName: handleCacheName('iconify-icon-cache'),
+    plugins: [
+      new ExpirationPlugin({
+        maxAgeSeconds: daysToSeconds(180),
       }),
     ],
   }),
@@ -42,7 +67,7 @@ registerRoute(
     cacheName: handleCacheName('image-cache'),
     plugins: [
       new ExpirationPlugin({
-        maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+        maxAgeSeconds: daysToSeconds(60),
       }),
     ],
   }),
@@ -55,24 +80,11 @@ registerRoute(
     cacheName: handleCacheName('font-cache'),
     plugins: [
       new ExpirationPlugin({
-        maxAgeSeconds: 60 * 60 * 24 * 180, // 180 days
+        maxAgeSeconds: daysToSeconds(360),
       }),
     ],
   }),
 )
-
-// google spreadsheets csv
-// registerRoute(
-//   /^https:\/\/docs\.google\.com\/spreadsheets\/.+output\=csv.+/,
-//   new StaleWhileRevalidate({
-//     cacheName: 'google-spreadsheets-csv-files',
-//     plugins: [
-//       new workbox.cacheableResponse.Plugin({
-//         statuses: [0, 200]
-//       })
-//     ]
-//   })
-// );
 
 {
   const CACHE_NAME = handleCacheName('google-spreadsheets-csv-files')
@@ -87,29 +99,29 @@ registerRoute(
   const handler: RouteHandler = async (params) => {
     try {
       return await strategy.handle(params)
-    } catch (e) {
+    } catch (error) {
       const url = params.url.href
       let path = encodeURIComponent(url)
       path = 'https://script.google.com/macros/s/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo/exec?url=' + path
 
-      const f = await fetch(path)
-      const csvstr = await f.text()
+      const res = await fetch(path)
+      const csvstr = await res.text()
 
       const req = new Request(url, {
         method: 'GET',
       })
 
-      const res = new Response(csvstr, {
+      const newRes = new Response(csvstr, {
         headers: new Headers({
           'Content-Type': 'text/csv',
         }),
       })
-      const cacheRes = res.clone()
+      const cacheRes = newRes.clone()
 
       caches.open(CACHE_NAME).then(cache => cache.put(req, cacheRes))
-      console.log(`[sw] Fetch backup url of "${params.url.href}" successfully.`)
+      console.log(`[sw] Fetch backup url of "${url}" successfully.`)
 
-      return res
+      return newRes
     }
   }
 
@@ -127,5 +139,5 @@ self.addEventListener('message', (event) => {
 })
 
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST, {
-  ignoreURLParametersMatching: [/source/, /calculation_data/],
+  ignoreURLParametersMatching: [/source/],
 })

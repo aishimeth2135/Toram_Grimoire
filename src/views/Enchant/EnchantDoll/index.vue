@@ -522,8 +522,9 @@ import { AutoFindNegaitveStatsTypes, EnchantDollBaseTypes } from '@/lib/Enchant/
 
 import ToggleService from '@/setup/ToggleService'
 
-import vue_EnchantResult from '../EnchantSimulator/enchant-result'
-import vue_EnchantSelectItem from '../EnchantSimulator/enchant-select-item'
+import vue_EnchantResult from '../EnchantSimulator/enchant-result.vue'
+import vue_EnchantSelectItem from '../EnchantSimulator/enchant-select-item.vue'
+
 import init2 from '../EnchantSimulator/init.js'
 import init from './init.js'
 

@@ -278,13 +278,21 @@
       </div>
     </div>
   </section>
-  <div v-else>
-    Loading...
+  <div v-else class="p-4">
+    <div class="text-center mb-3">
+      {{ t('common.tips.view-unknow-error-tips') }}
+    </div>
+    <div class="flex justify-center w-full">
+      <cy-button-border @click="createBuild">
+        {{ $lang('append build') }}
+      </cy-button-border>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
 import { useEnchantStore } from '@/stores/views/enchant'
 
@@ -295,11 +303,11 @@ import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
 
 import ToggleService from '@/setup/ToggleService'
 
-import vue_EnchantResult from './enchant-result'
-import vue_EnchantSelectItem from './enchant-select-item'
-import vue_EnchantStep from './enchant-step'
+import vue_EnchantResult from './enchant-result.vue'
+import vue_EnchantSelectItem from './enchant-select-item.vue'
+import vue_EnchantStep from './enchant-step/index.vue'
+
 import init from './init.js'
-import { SelectItemTarget, EnchantItemData } from './type'
 
 export default {
   name: 'EnchantSimulator',
@@ -321,7 +329,8 @@ export default {
       contents: ['top', 'extraOptions', 'result'],
     })
     const store = useEnchantStore()
-    return { windows, contents, toggle, store }
+    const { t } = useI18n()
+    return { windows, contents, toggle, store, t }
   },
   data() {
     return {
@@ -329,7 +338,6 @@ export default {
         statDisplayMode: 0,
       },
 
-      /** @type {SelectItemTarget} */
       selectItemTarget: {},
 
       buildCount: 0,
@@ -511,7 +519,6 @@ export default {
       this.toggle('windows/selectItem', true)
     },
 
-    /** @param {EnchantItemData} item */
     selectItem(item) {
       const { type, target } = this.selectItemTarget
       if (type === 'step' && target instanceof EnchantStep) {

@@ -1,5 +1,5 @@
 <template>
-  <cy-modal :visible="visible" @close="emit('close')">
+  <cy-modal :visible="visible" footer @close="emit('close')">
     <template #title>
       <cy-icon-text icon="gg-shape-square">
         {{ t('character-simulator.create-custom-equipment.title') }}
@@ -14,7 +14,10 @@
           {{ equipmentTypeText }}
         </cy-button-border>
       </div>
-      <cy-modal v-model:visible="modals.selectType">
+      <div class="mt-3">
+        <CharacterEquipmentBasicEditor :equipment="equipment" />
+      </div>
+      <cy-modal v-model:visible="modals.selectType" footer>
         <template #title>
           <cy-icon-text icon="gg-shape-square">
             {{ t('character-simulator.create-custom-equipment.select-equipment-type') }}
@@ -57,7 +60,7 @@
       </cy-modal>
     </template>
     <template #footer="{ closeModal }">
-      <div class="flex items-center justify-end">
+      <div class="flex items-center justify-end w-full">
         <cy-button-border
           icon="ic-round-done"
           :disabled="!equipment"
@@ -82,6 +85,8 @@ import { EquipmentCategorys, EquipmentTypes, MainWeaponTypeList, SubArmorTypeLis
 
 import ToggleService from '@/setup/ToggleService'
 
+import CharacterEquipmentBasicEditor from './character-equipment-basic-editor.vue'
+
 import { setupCharacterStore } from '../setup'
 
 interface Props {
@@ -95,7 +100,7 @@ defineProps<Props>()
 const emit = defineEmits<Emits>()
 
 const { t } = useI18n()
-const { modals, toggle } = ToggleService({ modals: ['selectType'] })
+const { modals, toggle } = ToggleService({ modals: ['selectType'] as const })
 const { store } = setupCharacterStore()
 
 const equipment: Ref<CharacterEquipment | null> = ref(null)
@@ -188,6 +193,7 @@ const selectEquipmentType = (category: EquipmentCategorys, type: EquipmentTypes 
   selectedEquipmentType.category = category
   selectedEquipmentType.type = type
   updateEquipment()
+  toggle('modals/selectType', false)
 }
 
 const submit = () => {

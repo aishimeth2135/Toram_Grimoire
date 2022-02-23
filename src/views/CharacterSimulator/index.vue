@@ -3,17 +3,19 @@
     <div style="min-height: 70vh">
       <component :is="currentTab" />
     </div>
-    <div class="sticky bottom-2 bg-white border-1 border-solid border-light-2 rounded-2xl px-4 py-1 z-10 mx-2 mt-4 space-x-2">
-      <cy-button-inline
-        v-for="content in tabDatas"
-        :key="content.id"
-        :icon="content.icon"
-        :selected="tabs[content.id]"
-        class="my-1"
-        @click="toggle(`tabs/${content.id}`, true, false)"
-      >
-        {{ content.text }}
-      </cy-button-inline>
+    <div class="sticky bottom-2 mx-2 flex items-end justify-end space-x-2">
+      <div class="w-full bg-white border-1 border-light-2 rounded-2xl px-4 py-0.5 z-10 mt-4 space-x-2">
+        <cy-button-inline
+          v-for="content in tabDatas"
+          :key="content.id"
+          :icon="content.icon"
+          :selected="tabs[content.id]"
+          class="my-1"
+          @click="toggle(`tabs/${content.id}`, true, false)"
+        >
+          {{ content.text }}
+        </cy-button-inline>
+      </div>
     </div>
 
     <CharacterBrowseEquipments
@@ -29,10 +31,6 @@
       :equipment="editBasicCurrentEquipment"
       @close="editBasicCurrentEquipment = null"
     />
-    <CharacterEquipmentBasicEditStat
-      :equipment="editStatCurrentEquipment"
-      @close="editStatCurrentEquipment = null"
-    />
     <CharacterAppendEquipments
       :visible="modals.appendEquipments"
       @close="toggle('modals/appendEquipments', false)"
@@ -40,6 +38,10 @@
     <CharacterEquipmentCustomCreate
       :visible="modals.createCustomEquipment"
       @close="toggle('modals/createCustomEquipment', false)"
+    />
+    <CharacterEquipmentBasicEditStat
+      :equipment="editStatCurrentEquipment"
+      @close="editStatCurrentEquipment = null"
     />
   </article>
 </template>
@@ -74,7 +76,7 @@ import CharacterEquipmentBasicEditStat from './character-equipment/character-equ
 import CharacterBrowseEquipments from './character-browse-equipments.vue'
 import CharacterAppendEquipments from './character-equipment/character-append-equipments.vue'
 import CharacterEquipmentCustomCreate from './character-equipment/character-equipment-custom-create.vue'
-import CharacterSave from './character-save.vue'
+import CharacterSave from './character-save/index.vue'
 
 import { CharacterSimulatorInjectionKey } from './injection-keys'
 import { setupCharacterFoodStore, setupCharacterStore } from './setup'

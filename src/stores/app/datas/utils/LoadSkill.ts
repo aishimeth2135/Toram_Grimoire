@@ -178,6 +178,12 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
       // console.log(row);
     }
   })
+
+  skillSystem.skillRoot.skillTreeCategorys.forEach(stc => {
+    stc.skillTrees.forEach(st => {
+      st.skills.forEach(skill => skill.initType())
+    })
+  })
 }
 
 

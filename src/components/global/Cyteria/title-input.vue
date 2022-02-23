@@ -1,21 +1,21 @@
 <template>
   <span class="flex items-center flex-wrap my-2 mx-1">
     <div
-      class="input-container flex items-center py-1 px-3 border-1 border-solid border-light rounded-3xl w-full duration-300 bg-white"
-      :class="{ 'input-focus': inputFocus }"
+      class="flex items-center py-0.5 px-3 border-1 border-solid rounded-3xl w-full duration-300 bg-white"
+      :class="{ 'border-light-3': inputFocus, 'border-light': !inputFocus }"
     >
       <cy-icon-text :icon="icon" :icon-src="iconSrc" class="mr-2" />
-      <div ref="input-content" class="input-content w-full">
+      <div ref="input-content" class="w-full">
         <slot />
         <input
           v-if="!$slots.default"
           ref="mainInput"
+          v-model="innerValue"
           type="text"
-          :value="value"
           :placeholder="placeholder"
-          @focus="toggleInputFocus(true)"
-          @blur="toggleInputFocus(false)"
-          @input="updateValue"
+          class="p-0.5 border-0 duration-200 text-base w-full"
+          @focus="setInputFocus(true)"
+          @blur="setInputFocus(false)"
           @keyup="$emit('keyup', $event)"
         >
       </div>
@@ -23,59 +23,44 @@
   </span>
 </template>
 
-<script>
-import IconSet from './base/icon-set'
+<script lang="ts">
+import { computed, defineComponent, ref } from 'vue'
 
-export default {
-  mixins: [IconSet],
+import { IconSetProps } from './setup/icon-set'
+
+export default defineComponent({
   props: {
     value: {
       type: String,
-      require: true,
+      required: true,
     },
     placeholder: {
       type: String,
       default: '',
     },
+    ...IconSetProps,
   },
   emits: ['update:value', 'keyup'],
-  data() {
-    return {
-      inputFocus: false,
+  setup(props, { emit }) {
+    const inputFocus = ref(false)
+
+    const innerValue = computed<string>({
+      get() {
+        return props.value
+      },
+      set(value) {
+        if (value.length > 64) {
+          value = value.slice(0, 64)
+        }
+        emit('update:value', value)
+      },
+    })
+
+    const setInputFocus = (value: boolean) => {
+      inputFocus.value = value
     }
+
+    return { inputFocus, innerValue, setInputFocus }
   },
-  methods: {
-    updateValue(evt) {
-      let value = typeof evt === 'object' ? evt.target.value : evt
-      if (value.length > 64) {
-        value = value.slice(0, 64)
-      }
-      this.$emit('update:value', value)
-    },
-    toggleInputFocus(set) {
-      this.inputFocus = set
-    },
-    focus() {
-      this.$refs.mainInput?.focus()
-    },
-  },
-}
+})
 </script>
-
-<style lang="less" scoped>
-.input-container {
-  &.input-focus {
-    border-color: var(--primary-light-3);
-  }
-
-  & > .input-content {
-    & > input {
-      padding: 0.2rem;
-      border: 0;
-      transition: 0.3s;
-      font-size: 1rem;
-      width: 100%;
-    }
-  }
-}
-</style>

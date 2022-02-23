@@ -13,14 +13,13 @@
     <cy-top-header-menu :visible="contents.mainMenu">
       <div class="flex items-center">
         <cy-title-input
-          :value="currentCalculation.name"
+          v-model:value="currentCalculation.name"
           icon="ant-design:build-outlined"
           class="w-full"
-          @update:value="currentCalculation.name = $event"
         />
         <cy-options inline>
           <template #title>
-            <cy-button-border icon="ant-design:build-outlined" />
+            <cy-button-circle icon="ant-design:build-outlined" size="small" />
           </template>
           <template #options>
             <cy-list-item
@@ -192,15 +191,17 @@
         </template>
       </div>
     </cy-transition>
-    <div class="flex ml-auto sticky z-10 px-4 bottom-14 mt-2">
-      <cy-button-border
+    <div class="flex ml-auto sticky z-10 px-4 bottom-14 mt-2 space-x-2">
+      <cy-button-circle
         icon="bx:bx-git-compare"
         :selected="bottomSub.compare"
+        size="small"
         @click="toggle('bottomSub/compare', null, false)"
       />
-      <cy-button-border
+      <cy-button-circle
         icon="ic:outline-calculate"
         :selected="bottomSub.calcModeDetail"
+        size="small"
         @click="toggle('bottomSub/calcModeDetail', null, false)"
       />
     </div>

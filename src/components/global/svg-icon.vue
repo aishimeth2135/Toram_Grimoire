@@ -3,7 +3,7 @@ import { h, mergeProps } from 'vue'
 
 import Icons from '@/shared/services/SvgIcons'
 
-export default function SvgIcon(props, context) {
+function SvgIcon(props, context) {
   const tmp = document.createElement('template')
   tmp.innerHTML = Icons(props.iconId)
   const svgEl = tmp.content.firstChild
@@ -23,4 +23,6 @@ SvgIcon.props = {
     default: '',
   },
 }
+
+export default SvgIcon
 </script>

@@ -44,6 +44,11 @@ export const useCharacterSkillBuildStore = defineStore('view-character-skill-bui
     return skillBuilds.value.map(build => build.save())
   }
 
+  const reset = () => {
+    skillBuilds.value = []
+    currentSkillBuildIndex.value = -1
+  }
+
   return {
     skillBuilds,
     currentSkillBuildIndex,
@@ -54,5 +59,6 @@ export const useCharacterSkillBuildStore = defineStore('view-character-skill-bui
     removeCurrentSkillBuild,
     appendSkillBuild,
     saveSkillBuilds,
+    reset,
   }
 })

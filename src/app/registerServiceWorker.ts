@@ -1,4 +1,4 @@
-import { register } from 'register-service-worker'
+import { registerSW } from 'virtual:pwa-register'
 
 import { useMainStore } from '@/stores/app/main'
 
@@ -6,47 +6,19 @@ import Grimoire from '@/shared/Grimoire'
 
 import Notify from '@/setup/Notify'
 
-
 export default function() {
-  const mainStore = useMainStore()
-  const { notify } = Notify()
-  if (process.env.NODE_ENV === 'production') {
-    register(`${process.env.BASE_URL}sw.js`, {
-      ready (registration) {
-        if (registration.waiting) {
-          mainStore.serviceWorkerHasUpdate(registration)
-          notify(Grimoire.i18n.t('app.settings.update.new-version-detected-tips'))
-        }
+  if (import.meta.env.MODE === 'production') {
+    const mainStore = useMainStore()
+    const { notify } = Notify()
+    const updateSW = registerSW({
+      onNeedRefresh() {
+        mainStore.serviceWorkerHasUpdate(updateSW)
+        notify(Grimoire.i18n.t('app.settings.update.new-version-detected-tips'))
       },
-      registered () {},
-      cached () {},
-      updatefound (registration) {
-        if (registration.installing) {
-          registration.installing.addEventListener('statechange', () => {
-            if (registration.waiting && navigator.serviceWorker.controller) {
-              mainStore.serviceWorkerHasUpdate(registration)
-              notify(Grimoire.i18n.t('app.settings.update.new-version-detected-tips'))
-            }
-          })
-        }
+      onRegisterError(error) {
+        console.warn('[sw] Error during service worker registration.')
+        console.error(error)
       },
-      updated () {},
-      offline () {
-        console.log('No internet connection found. App is running in offline mode.')
-      },
-      error (error) {
-        console.error('Error during service worker registration:', error)
-      },
-    })
-
-    window.addEventListener('load', () => {
-      let refreshing = false
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (!refreshing) {
-          window.location.reload()
-          refreshing = true
-        }
-      })
     })
   }
 }

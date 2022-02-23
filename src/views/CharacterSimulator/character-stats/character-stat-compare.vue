@@ -1,22 +1,22 @@
 <template>
   <div>
     <template v-if="comparedStatsDatas.length != 0">
-      <div v-for="p in comparedStatsDatas" :key="p.id" class="flex items-center">
-        <template v-if="!p.isBoolStat">
+      <div v-for="data in comparedStatsDatas" :key="data.id" class="flex items-center">
+        <template v-if="!data.isBoolStat">
           <cy-icon-text size="small">
-            {{ p.text }}
+            {{ data.text }}
           </cy-icon-text>
           <span
             class="text-sm ml-1 text-light-3"
-            :class="{ 'text-gray': p.negative }"
-          >{{ p.displayValue }}</span>
+            :class="{ 'text-gray': data.negative }"
+          >{{ data.displayValue }}</span>
         </template>
         <cy-icon-text
           v-else
           size="small"
-          :text-color="p.negative ? 'gray' : 'light-3'"
+          :text-color="data.negative ? 'gray' : 'light-3'"
         >
-          {{ p.text }}
+          {{ data.text }}
         </cy-icon-text>
       </div>
     </template>

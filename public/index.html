@@ -18,15 +18,14 @@
   <meta property="twitter:description" content="The web tool of Toram Online."/>
   <meta property="twitter:image" content="https://cy-grimoire.netlify.app/imgs/og-image.png"/>
 
-  <link rel="manifest" href="<%= BASE_URL %>manifest.json">
-  <link rel="icon" sizes="any" href="<%= BASE_URL %>imgs/favicon/favicon.svg">
-  <link rel="icon" type="image/png" sizes="16x16" href="<%= BASE_URL %>imgs/favicon/favicon16.png">
-  <link rel="icon" type="image/png" sizes="24x24" href="<%= BASE_URL %>imgs/favicon/favicon24.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="<%= BASE_URL %>imgs/favicon/favicon32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="<%= BASE_URL %>imgs/favicon/favicon48.png">
-  <link rel="icon" type="image/png" sizes="64x64" href="<%= BASE_URL %>imgs/favicon/favicon64.png">
-  <link rel="icon" type="image/png" sizes="128x128" href="<%= BASE_URL %>imgs/favicon/favicon128.png">
-  <link rel="shortcut icon" type="image/x-icon" sizes="16x16" href="<%= BASE_URL %>imgs/favicon/favicon16.ico">
+  <link rel="icon" sizes="any" href="<%- envBaseUrl %>imgs/favicon/favicon.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="<%- envBaseUrl %>imgs/favicon/favicon16.png">
+  <link rel="icon" type="image/png" sizes="24x24" href="<%- envBaseUrl %>imgs/favicon/favicon24.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="<%- envBaseUrl %>imgs/favicon/favicon32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="<%- envBaseUrl %>imgs/favicon/favicon48.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="<%- envBaseUrl %>imgs/favicon/favicon64.png">
+  <link rel="icon" type="image/png" sizes="128x128" href="<%- envBaseUrl %>imgs/favicon/favicon128.png">
+  <link rel="shortcut icon" type="image/x-icon" sizes="16x16" href="<%- envBaseUrl %>imgs/favicon/favicon16.ico">
   <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
@@ -78,12 +77,7 @@
     })();
   </script>
 
-  <% if (process.env.NODE_ENV === 'production') { %>
-    <script defer src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/vue@3.2.20/dist/vue.global.prod.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/vue-router@4.0.11/dist/vue-router.global.min.js"></script>
-  <% } %>
+  <%- externalScripts %>
 </head>
 
 <body>
@@ -91,7 +85,7 @@
     <strong>We're sorry but this page doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     <strong>很抱歉，此網站無法在禁用JavaScript的情況下運作。請到瀏覽器的設定中開啟JavaScript。</strong>
   </noscript>
-  <img src="<%= BASE_URL %>imgs/og-image.png" style="display: none">
+  <img src="<%- envBaseUrl %>imgs/og-image.png" style="display: none">
   <div id="app"></div>
   <div id="app-modals"></div>
   <div id="app-notify"></div>

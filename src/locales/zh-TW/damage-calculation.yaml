@@ -28,7 +28,7 @@ compare:
   at-least-two-builds-tips: 要至少有兩個配置才可以使用比較功能0.0
 tips:
   at-least-one-build: 要至少保留一個配置0.0
-  removed-build-success: 移除配置「$0」成功。
+  removed-build-success: 移除配置「{name}」成功。
 item-base-titles:
   physical: 物理傷害
   magic: 魔法傷害

@@ -7,8 +7,8 @@ import { ViewInit } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
-const ItemQueryView = () => import(/* webpackChunkName: "item-query" */ '@/views/Items/ItemQuery/index.vue')
-const CrystalQueryView = () => import(/* webpackChunkName: "crystal-query" */ '@/views/Items/CrystalQuery/index.vue')
+const ItemQueryView = () => import('@/views/Items/ItemQuery/index.vue')
+const CrystalQueryView = () => import('@/views/Items/CrystalQuery/index.vue')
 
 export default {
   name: 'Items',
