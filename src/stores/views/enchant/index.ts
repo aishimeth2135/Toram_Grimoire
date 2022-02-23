@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, ref, shallowReactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import type { Ref } from 'vue'
 
 import CY from '@/shared/utils/Cyteria'
@@ -18,10 +18,28 @@ interface EnchantStoreSaveData {
   config: EnchantStoreConfig;
 }
 
-export const enchantConfig: EnchantStoreConfig = shallowReactive({
-  characterLevel: 230,
-  smithLevel: 0,
-})
+export const enchantConfig: EnchantStoreConfig = (() => {
+  const _characterLevel = ref(240)
+  const _smithLevel = ref(0)
+  return reactive({
+    characterLevel: computed<number>({
+      get() {
+        return _characterLevel.value
+      },
+      set(value) {
+        _characterLevel.value = Math.max(0, Math.min(240, value))
+      },
+    }),
+    smithLevel: computed<number>({
+      get() {
+        return _smithLevel.value
+      },
+      set(value) {
+        _smithLevel.value = Math.max(0, Math.min(300, value))
+      },
+    }),
+  })
+})()
 
 const SAVE_PRETEXT = 'app--enchant-simulator--vbeta--'
 
