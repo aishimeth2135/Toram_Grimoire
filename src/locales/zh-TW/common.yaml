@@ -73,3 +73,5 @@ export-build:
   load-unknow-error-tips: 讀取時發生未知的錯誤。
   load-failed-tips: 解析檔案時發生錯誤，檔案內容的格式可能有誤。
   load-wrong-file-type-tips: 讀取的檔案必須為文字（.txt）檔。
+tips:
+  view-unknow-error-tips: 發生未知的錯誤，請點擊下方的按鈕嘗試還原介面。

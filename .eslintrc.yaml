@@ -1,5 +1,4 @@
 root: true
-parser: vue-eslint-parser
 env:
   node: true
 extends:
@@ -8,10 +7,7 @@ extends:
   - "@vue/typescript"
 parserOptions:
   parsers:
-    js: "@babel/eslint-parser"
     ts: "@typescript-eslint/parser"
-    <template>: "@babel/eslint-parser"
-  parser: "@typescript-eslint/parser"
 plugins:
   - jsdoc
   - import
@@ -22,8 +18,14 @@ settings:
       extensions:
         - .js
         - .ts
-    webpack:
-      config: node_modules/@vue/cli-service/webpack.config.js
+    alias:
+      map:
+        - - "@"
+          - ./src
+      extensions:
+        - .js
+        - .ts
+        - .css
   import/extensions:
     - .js
     - .ts
@@ -58,6 +60,7 @@ rules:
       after: true
   no-void:
     - error
+    - allowAsStatement: true
   quotes:
     - error
     - single
@@ -77,8 +80,9 @@ rules:
     - error
     - always
   import/no-unresolved:
-    - 2
+    - error
     - commonjs: true
+      ignore: ['^virtual:']
   import-helpers/order-imports:
     - warn
     - newlinesBetween: always

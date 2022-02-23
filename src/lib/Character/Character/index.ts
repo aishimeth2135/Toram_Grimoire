@@ -340,10 +340,11 @@ class EquipmentField {
   setEquipment(equip: CharacterEquipment | null) {
     this.equipment = equip
     if (this.type === EquipmentFieldTypes.MainWeapon) {
-      const c = this.belongCharacter
-      const sub = c.equipmentField(EquipmentFieldTypes.SubWeapon)
-      if (!c.subWeaponValid(sub.equipmentType, this.equipmentType))
+      const chara = this.belongCharacter
+      const sub = chara.equipmentField(EquipmentFieldTypes.SubWeapon)
+      if (!chara.subWeaponValid(sub.equipmentType, this.equipmentType)) {
         sub.removeEquipment()
+      }
     }
   }
   removeEquipment() {

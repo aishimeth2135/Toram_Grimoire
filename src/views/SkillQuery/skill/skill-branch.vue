@@ -10,25 +10,29 @@
           :is="currentComponent"
           :branch-item="skillBranchItem"
         />
-        <cy-button-icon
+        <cy-button-circle
           v-if="subButtonAvailable"
-          icon="mdi:leaf-circle-outline"
+          icon="mdi:select-compare"
           class="toggle-sub-button"
-          icon-width="1.5rem"
+          size="small"
           @click="toggle('contents/sub')"
         />
       </div>
       <cy-transition type="fade">
         <div v-if="!sub && contents.sub">
-          <div class="flex items-center px-4 pt-2 pb-1 space-x-2">
-            <cy-icon-text icon="ic:round-label" />
-            <SkillEquipmentButton
-              v-for="(branch, idx) in otherEffectBranches"
-              :key="branch.parent.equipmentId"
-              :skill-branch-item="branch"
-              :selected="currentOtherEffectBranch === branch"
-              @click="setCurrentOtherEffectBranch(idx)"
-            />
+          <div class="flex items-center pl-4 pt-2 pb-1 space-x-2">
+            <cy-icon-text icon="ic:round-label" class="flex-shrink-0" />
+            <div class="flex items-center flex-wrap">
+              <div class="mr-2">
+                <SkillEquipmentButton
+                  v-for="(branch, idx) in otherEffectBranches"
+                  :key="branch.parent.equipmentId"
+                  :skill-branch-item="branch"
+                  :selected="currentOtherEffectBranch === branch"
+                  @click="setCurrentOtherEffectBranch(idx)"
+                />
+              </div>
+            </div>
           </div>
           <div v-if="currentOtherEffectBranch">
             <SkillBranch
@@ -247,7 +251,7 @@ const subButtonAvailable = computed(() => {
 }
 
 .toggle-sub-button {
-  @apply absolute top-0 right-2.5;
+  @apply absolute top-0 -right-2;
 }
 
 .sub-content-active {

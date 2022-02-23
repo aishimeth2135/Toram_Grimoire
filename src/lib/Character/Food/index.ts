@@ -84,16 +84,22 @@ class FoodBuild {
   appendFood(foodBase: FoodBase) {
     this.foods.push(new Food(foodBase))
   }
-  checkSelectedFoodsMaximum() {
-    return this.selectedFoodIndexes.length < 5
-  }
   foodSelected(idx: number) {
     return this.selectedFoodIndexes.includes(idx)
   }
-  appendSelectedFood(idx: number) {
-    if (this.checkSelectedFoodsMaximum() && !this.foodSelected(idx))
+
+  /**
+   * @param idx - index of food
+   * @returns true if append successfully
+   */
+  appendSelectedFood(idx: number): boolean {
+    if (this.selectedFoodIndexes.length < 5 && !this.foodSelected(idx)) {
       this.selectedFoodIndexes.push(idx)
+      return true
+    }
+    return false
   }
+
   removeSelectedFood(idx: number) {
     const i = this.selectedFoodIndexes.indexOf(idx)
     this.selectedFoodIndexes.splice(i, 1)

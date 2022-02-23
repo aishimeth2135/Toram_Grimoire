@@ -178,7 +178,7 @@
 import { EnchantStep } from '@/lib/Enchant/Enchant'
 import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums'
 
-import vue_EnchantStepStat from './enchant-step-stat'
+import vue_EnchantStepStat from './enchant-step-stat.vue'
 
 export default {
   name: 'EnchantStep',

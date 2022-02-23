@@ -1,24 +1,29 @@
 <template>
   <cy-list-item :class="{ 'opacity-50': disabled }" :selected="selected">
-    <cy-icon-text
-      :icon="equipment.is !== 'avatar' ? equipment.getCategoryImagePath() : equipment.categoryIcon"
-      :icon-src="equipment.is !== 'avatar' ? 'image' : 'iconify'"
-    >
-      <span :class="{ 'text-purple': current }">{{ equipment.name }}</span>
-      <span
-        v-if="equipment.hasRefining && equipment.refining !== 0"
-        class="ml-1 text-water-blue"
+    <div class="flex items-center w-full">
+      <cy-icon-text
+        :icon="equipment.is !== 'avatar' ? equipment.getCategoryImagePath() : equipment.categoryIcon"
+        :icon-src="equipment.is !== 'avatar' ? 'image' : 'iconify'"
       >
-        +{{ equipment.refining }}
-      </span>
-    </cy-icon-text>
-    <cy-icon-text
-      v-if="current"
-      icon="carbon-location-current"
-      class="ml-auto"
-      icon-color="purple"
-    />
-    <slot name="extra" />
+        <span :class="{ 'text-purple': current }">{{ equipment.name }}</span>
+        <span
+          v-if="equipment.hasRefining && equipment.refining !== 0"
+          class="ml-1 text-water-blue"
+        >
+          +{{ equipment.refining }}
+        </span>
+      </cy-icon-text>
+      <cy-icon-text
+        v-if="current"
+        icon="carbon-location-current"
+        class="ml-auto"
+        icon-color="purple"
+      />
+      <slot name="title-end" />
+    </div>
+    <div class="w-full">
+      <slot name="content" />
+    </div>
   </cy-list-item>
 </template>
 

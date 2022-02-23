@@ -20,7 +20,7 @@
               {{ foodBuild.name }}
             </cy-icon-text>
           </cy-list-item>
-          <cy-list-item @click="store.createFoodBuild">
+          <cy-list-item @click="store.createFoodBuild()">
             <cy-icon-text icon="ic-round-add-circle-outline">
               {{ t('character-simulator.food-build.create-food-build') }}
             </cy-icon-text>
@@ -28,20 +28,19 @@
         </template>
       </cy-options>
       <div class="pt-1">
-        <cy-button
-          icon="mdi-content-copy"
-          type="border"
+        <cy-button-border
+          icon="bx:copy-alt"
           @click="copyCurrentFoodBuild"
         >
           {{ t('global.copy') }}
-        </cy-button>
-        <cy-button
+        </cy-button-border>
+        <cy-button-border
           icon="ic-baseline-delete-outline"
-          type="border"
+          main-color="gray"
           @click="removeCurrentFoodBuild"
         >
           {{ t('global.remove') }}
-        </cy-button>
+        </cy-button-border>
       </div>
     </div>
     <div class="mb-2 pl-1">
@@ -71,6 +70,11 @@
           {{ t('character-simulator.food-build.food-list') }}
         </cy-icon-text>
       </div>
+      <div>
+        <cy-button-switch v-model:selected="disableAll">
+          {{ t('character-simulator.food-build.disable-foods') }}
+        </cy-button-switch>
+      </div>
       <div class="pl-4 mt-1">
         <cy-icon-text icon="ic-outline-info" text-color="light-3" size="small" class="mr-2">
           {{ t('character-simulator.food-build.introduction.0') }}
@@ -80,7 +84,7 @@
         </cy-icon-text>
       </div>
     </div>
-    <div class="mt-1">
+    <div class="mt-1" :class="{ 'opacity-50': disableAll }">
       <CharacterFoodItem
         v-for="food in currentFoodBuild.foods"
         :key="food.foodBase.foodBaseId"
@@ -98,6 +102,9 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
+
+import { useCharacterStore } from '@/stores/views/character'
 
 import Notify from '@/setup/Notify'
 
@@ -108,6 +115,7 @@ import { setupCharacterFoodStore } from './setup'
 const { t } = useI18n()
 const { notify } = Notify()
 
+const characterStore = useCharacterStore()
 const { store, foodBuilds, currentFoodBuild } = setupCharacterFoodStore()
 
 const copyCurrentFoodBuild = () => {
@@ -136,4 +144,13 @@ const removeCurrentFoodBuild = () => {
       }],
     })
 }
+
+const disableAll = computed<boolean>({
+  get() {
+    return !characterStore.handleCharacterStatsConfig.handleFood
+  },
+  set(value) {
+    characterStore.handleCharacterStatsConfig.handleFood = !value
+  },
+})
 </script>

@@ -4,8 +4,6 @@
   </div>
 </template>
 
-
-
 <script lang="ts">
 export default {
   name: 'CyListItem',
@@ -30,7 +28,7 @@ withDefaults(defineProps<Props>(), {
   border: 1px solid transparent;
 
   &:hover, &.selected {
-    background-color: rgba(var(--rgb-primary-light), 0.4);
+    background-color: rgba(var(--rgb-primary-light), 0.2);
   }
 
   &.is-pure {

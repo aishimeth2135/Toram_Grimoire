@@ -1,19 +1,13 @@
 import Grimoire from '@/shared/Grimoire'
 
 import { Skill, SkillTree } from '@/lib/Skill/Skill'
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import { SkillTypes } from '@/lib/Skill/Skill/enums'
 
 import { SkillBuildState } from '../skill'
 
-interface SkillStateBase {
+interface SkillState {
   level: number;
   starGemLevel: number;
-
-  /** boolean is expected, null if default value is unknown */
-  enabled: boolean | null;
-}
-
-interface SkillState extends SkillStateBase {
   enabled: boolean;
 }
 
@@ -30,7 +24,7 @@ interface SkillBuildSaveData {
 let _skillBuildAutoIncreasement = 0
 export class SkillBuild {
   /** Map<skill-id, skill-level> */
-  protected _skillStatesMap: Map<Skill, SkillStateBase>
+  protected _skillStatesMap: Map<Skill, SkillState>
   protected _skillTreesSet: Set<SkillTree>
 
   instanceId: number
@@ -51,18 +45,13 @@ export class SkillBuild {
 
   getSkillState(skill: Skill): SkillState {
     if (!this._skillStatesMap.has(skill)) {
-      const enabledDefaultValue = skill.effects.some(eft => eft.branches.some(bch => bch.name === SkillBranchNames.Passive))
       this._skillStatesMap.set(skill, {
         level: 0,
         starGemLevel: 0,
-        enabled: enabledDefaultValue,
+        enabled: skill.type === SkillTypes.Passive,
       })
     }
     const state = this._skillStatesMap.get(skill)!
-    if (state.enabled === null) {
-      const enabledDefaultValue = skill.effects.some(eft => eft.branches.some(bch => bch.name === SkillBranchNames.Passive))
-      state.enabled = enabledDefaultValue
-    }
     return state as SkillState
   }
 
@@ -132,12 +121,14 @@ export class SkillBuild {
   }
 
   save(): SkillBuildSaveData {
-    const skillStates = [...this._skillStatesMap.entries()].map(([skill, state]) => ({
-      skillId: skill.skillId,
-      enabled: state.enabled ?? true,
-      level: state.level,
-      starGemLevel: state.starGemLevel,
-    }))
+    const skillStates = [...this._skillStatesMap.entries()]
+      .filter(([, state]) => state.level !== 0 || state.starGemLevel !== 0)
+      .map(([skill, state]) => ({
+        skillId: skill.skillId,
+        enabled: state.enabled ?? true,
+        level: state.level,
+        starGemLevel: state.starGemLevel,
+      }))
     const selectedSkillTrees = [...this._skillTreesSet.keys()].map(skillTree => skillTree.skillTreeId)
     return {
       name: this.name,
@@ -175,11 +166,10 @@ export class SkillBuild {
         })
       })
       if (skill) {
-        newBuild._skillStatesMap.set(skill, {
-          enabled: state.enabled,
-          level: state.level,
-          starGemLevel: state.starGemLevel,
-        })
+        const _state = newBuild.getSkillState(skill)
+        _state.enabled = state.enabled
+        _state.level = state.level
+        _state.starGemLevel = state.starGemLevel
       }
     })
     return newBuild
@@ -222,11 +212,9 @@ export class SkillBuild {
             })
           })
           if (skill) {
-            newBuild._skillStatesMap.set(skill, {
-              enabled: null,
-              level: levelSkill.level(),
-              starGemLevel: levelSkill.starGemLevel(),
-            })
+            const _state = newBuild.getSkillState(skill)
+            _state.level = levelSkill.level()
+            _state.starGemLevel = levelSkill.starGemLevel()
           }
         })
       })

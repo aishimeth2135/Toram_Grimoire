@@ -244,7 +244,7 @@ const { notify, loading } = Notify()
 const swUpdate = async () => {
   loading.show()
   await nextTick()
-  mainStore.serviceWorker.registration?.waiting?.postMessage({ type: 'SKIP_WAITING' })
+  mainStore.serviceWorker.update?.(true)
 }
 
 const clearSpreadsheetsCaches = () => {
@@ -281,9 +281,8 @@ const loadLocalStorage = () => {
 
       // reset
       Array(localStorage.length).fill(null).map((_, i) => i).forEach(idx => {
-        const key = storage.key(idx)!
-        const item = storage.getItem(key)!
-        if (key.slice(0, 7) !== 'iconify') {
+        const key = storage.key(idx)
+        if (key && !key.startsWith('iconify')) {
           storage.removeItem(key)
         }
       })

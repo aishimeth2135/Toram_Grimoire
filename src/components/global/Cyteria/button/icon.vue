@@ -1,7 +1,8 @@
 <template>
   <button
-    class="cy-button--icon button--main-content inline-flex p-1 mx-1 relative"
+    class="button--main-content inline-flex p-1 mx-1 relative"
     :class="baseClassList"
+    style="--icon-width: 1.25rem"
     @click="click"
   >
     <cy-icon :icon="icon" :src="iconSrc" />
@@ -22,9 +23,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style scoped>
-.cy-button--icon {
-  --icon-width: 1.25rem;
-}
-</style>

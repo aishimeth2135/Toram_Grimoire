@@ -25,7 +25,23 @@
           :selected="selectedEquipment === equip"
           :disabled="showAll && !equipmentAvailable(equip)"
           @click="selectedEquipment = equip"
-        />
+        >
+          <template v-if="selectedEquipment === equip" #content>
+            <div class="flex items-center justify-end mt-0.5 space-x-2" @click.stop>
+              <cy-button-circle
+                icon="bx:copy-alt"
+                size="small"
+                @click="copySelectedEquipment"
+              />
+              <cy-button-circle
+                icon="ic-baseline-delete-outline"
+                main-color="gray"
+                size="small"
+                @click="removeSelectedEquipment"
+              />
+            </div>
+          </template>
+        </EquipmentItem>
       </div>
     </template>
     <template #footer="{ closeModal }">
@@ -70,6 +86,8 @@ import { EquipmentField } from '@/lib/Character/Character'
 import { AdditionalGear, Avatar, BodyArmor, CharacterEquipment, MainWeapon, SpecialGear, SubArmor, SubWeapon } from '@/lib/Character/CharacterEquipment'
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 
+import Notify from '@/setup/Notify'
+
 import EquipmentItem from '@/components/common/equipment-item.vue'
 
 import CharacterEquipmentInfo from './character-equipment/character-equipment-info.vue'
@@ -90,6 +108,7 @@ const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
 const { t } = useI18n()
+const { notify } = Notify()
 
 const { store, equipments, currentCharacter, characterStatCategoryResults } = setupCharacterStore()
 
@@ -154,6 +173,35 @@ const closeModal = () => {
   emit('close')
   // clear
   selectedEquipment.value = null
+}
+
+const copySelectedEquipment = () => {
+  if (!selectedEquipment.value) {
+    return
+  }
+  const newEquip = selectedEquipment.value.clone()
+  newEquip.name = selectedEquipment.value.name + ' *'
+  store.appendEquipments([newEquip], equipments.value.indexOf(selectedEquipment.value) + 1)
+  notify(t('character-simulator.browse-equipments.copy-equipment-tips'), 'bx:copy-alt', 'copy-equipment-tips')
+}
+
+const removeSelectedEquipment = () => {
+  if (!selectedEquipment.value) {
+    return
+  }
+  const eq = selectedEquipment.value
+  selectedEquipment.value = null
+  store.removeEquipment(eq)
+  notify(t('character-simulator.browse-equipments.remove-equipment-tips', { name: eq.name }), 'ic-baseline-delete-outline', null, {
+    buttons: [{
+      text: t('global.recovery'),
+      click: () => {
+        store.appendEquipments([eq])
+        notify(t('character-simulator.browse-equipments.removed-equipment-restore-tips', { name: eq.name }))
+      },
+      removeMessageAfterClick: true,
+    }],
+  })
 }
 
 const { appendEquipments, createCustomEquipment } = inject(CharacterSimulatorInjectionKey)!

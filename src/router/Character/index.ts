@@ -8,8 +8,8 @@ import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
-const CharacterSimulatorView = () => import(/* webpackChunkName: "character-simulator" */ '@/views/CharacterSimulator/index.vue')
-const SkillSimulatorView = () => import(/* webpackChunkName: "skill-simulator" */ '@/views/SkillSimulator/index.vue')
+const CharacterSimulatorView = () => import('@/views/CharacterSimulator/index.vue')
+const SkillSimulatorView = () => import('@/views/SkillSimulator/index.vue')
 
 export default {
   name: 'Character',

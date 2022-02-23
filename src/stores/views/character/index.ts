@@ -1,7 +1,6 @@
 
 import { defineStore } from 'pinia'
-import { computed, ComputedRef, readonly, ref } from 'vue'
-import type { Ref } from 'vue'
+import { computed, Ref, readonly, ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
@@ -29,6 +28,13 @@ interface CharacterStoreSaveSummary {
   foodBuildIndex: number;
 }
 
+interface CharacterSimulatorSaveData {
+  characters: CharacterSaveData[];
+  equipments: EquipmentSaveData[];
+  skillBuilds: SkillBuildSaveData[];
+  foodBuilds: FoodsSaveData[];
+}
+
 export const useCharacterStore = defineStore('view-character', () => {
   const currentCharacterIndex = ref(-1)
   const characterSimulatorHasInit = ref(false)
@@ -41,6 +47,12 @@ export const useCharacterStore = defineStore('view-character', () => {
   const skillBuildStore = useCharacterSkillBuildStore()
 
   const saveDisabled = ref(false)
+
+  const handleCharacterStatsConfig = ref({
+    handleFood: true,
+    handleActiveSkill: true,
+    handlePassiveSkill: true,
+  })
 
   const currentCharacter = computed<Character>(() => characters.value[currentCharacterIndex.value])
 
@@ -56,6 +68,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     skill.resetSkillBuilds()
     characters.value = []
     equipments.value = []
+    skillBuildStore.reset()
     food.resetFoodBuilds()
   }
 
@@ -79,12 +92,24 @@ export const useCharacterStore = defineStore('view-character', () => {
     }
   }
 
-  const appendEquipments = (eqs: CharacterEquipment[]) => {
-    equipments.value.push(...eqs)
+  const appendEquipments = (eqs: CharacterEquipment[], index = -1) => {
+    if (index < 0 || index >= equipments.value.length) {
+      equipments.value.push(...eqs)
+    } else {
+      equipments.value.splice(index, 0, ...eqs)
+    }
   }
 
-  const removeEquipment = (idx: number) => {
-    equipments.value.splice(idx, 1)
+  const removeEquipment = (equipment: CharacterEquipment) => {
+    const idx = equipments.value.indexOf(equipment)
+    if (idx > -1) {
+      equipments.value.splice(idx, 1)
+      currentCharacter.value.equipmentFields.forEach(field => {
+        if (field.equipment?.instanceId === equipment.instanceId) {
+          field.removeEquipment()
+        }
+      })
+    }
   }
 
   const deleteAllSavedData = () => {
@@ -111,12 +136,6 @@ export const useCharacterStore = defineStore('view-character', () => {
     saveDisabled.value = true
   }
 
-  interface CharacterSimulatorSaveData {
-    characters: CharacterSaveData[];
-    equipments: EquipmentSaveData[];
-    skillBuilds: SkillBuildSaveData[];
-    foodBuilds: FoodsSaveData[];
-  }
   const createCharacterSimulatorSaveData = (): CharacterSimulatorSaveData => {
     const charactersData = characters.value.map(item => item.save(equipments.value))
     const equipmentsData = equipments.value.map(item => item.save())
@@ -167,7 +186,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   const loadCharacterSimulator = ({ index = 0 }: { index?: number } = {}) => {
     const prefix = 'app--character-simulator--data-' + index
     if (!window.localStorage.getItem(prefix)) {
-      console.warn(`Index: ${index} of Character-Simulator Data is not exist.`)
+      console.warn(`[character-simulator] index ${index} of data is not exist.`)
       return
     }
     try {
@@ -288,19 +307,37 @@ export const useCharacterStore = defineStore('view-character', () => {
     },
   })
 
+  const currentSkillBuild = computed(() => skillBuildStore.currentSkillBuild as (SkillBuild | null))
+
   const {
     activeSkillResultStates,
     passiveSkillResultStates,
     allValidSkillsStats,
     getSkillBranchItemState,
-  } = setupCharacterSkills(currentCharacter, computed(() => skillBuildStore.currentSkillBuild) as ComputedRef<SkillBuild | null>)
+  } = setupCharacterSkills(
+    currentCharacter,
+    currentSkillBuild,
+    handleCharacterStatsConfig,
+  )
 
   const { allFoodBuildStats } = setupFoodStats(computed(() => food.currentFoodBuild))
 
-  const { characterStatCategoryResults } = setupCharacterStats(currentCharacter, allValidSkillsStats, allFoodBuildStats)
+  const { characterStatCategoryResults } = setupCharacterStats(
+    currentCharacter,
+    currentSkillBuild,
+    allValidSkillsStats,
+    allFoodBuildStats,
+    handleCharacterStatsConfig,
+  )
 
   const setupCharacterComparedStatCategoryResults = (comparedCharacter: Ref<Character | null>) => {
-    const { characterStatCategoryResults: comparedCharacterStatCategoryResults } = setupCharacterStats(comparedCharacter, allValidSkillsStats, allFoodBuildStats)
+    const { characterStatCategoryResults: comparedCharacterStatCategoryResults } = setupCharacterStats(
+      comparedCharacter,
+      currentSkillBuild,
+      allValidSkillsStats,
+      allFoodBuildStats,
+      handleCharacterStatsConfig,
+    )
     return {
       comparedCharacterStatCategoryResults,
     }
@@ -312,6 +349,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     currentCharacter,
     currentCharacterIndex,
     characterSimulatorHasInit: readonly(characterSimulatorHasInit),
+    handleCharacterStatsConfig,
 
     autoSaveDisabled: readonly(autoSaveDisabled),
     characterSimulatorInitFinished,
@@ -333,7 +371,12 @@ export const useCharacterStore = defineStore('view-character', () => {
     deleteAllSavedData,
     loadCharacterSimulator,
     saveCharacterSimulator,
+    loadCharacterSimulatorSaveData,
+
+    createCharacterSimulatorSaveData,
     exportCharacterSimulator,
     importCharacterSimulator,
   }
 })
+
+export type { CharacterSimulatorSaveData }

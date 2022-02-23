@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="mb-3">
-      <div class="flex items-center">
-        <cy-icon-text icon="mdi-ghost" text-color="purple">
+    <div class="mb-2 flex items-center flex-wrap">
+      <div class="flex mr-4">
+        <cy-icon-text icon="gridicons:stats-alt" main-color="orange">
           {{ characterStatResult.name }}
         </cy-icon-text>
       </div>
       <div
         v-if="characterStatResult.origin.max ||characterStatResult.origin.min"
-        class="flex items-center text-light-2 text-sm mt-1 space-x-0.5"
+        class="flex items-center ml-auto text-light-2 text-sm space-x-0.5"
       >
         <div v-if="characterStatResult.origin.min">{{ characterStatResult.origin.min }}</div>
         <cy-icon-text icon="mdi:tilde" icon-width="0.8rem" />
@@ -31,12 +31,14 @@
       :key="data.iid"
       class="mt-1"
     >
-      <cy-icon-text v-if="(typeof data.title !== 'object')">
-        {{ data.title }}
-      </cy-icon-text>
-      <cy-icon-text v-else>
-        <span>{{ data.title.text }}</span>
-        <span class="ml-1 text-light-3">{{ data.title.value }}</span>
+      <cy-icon-text icon="mdi:label-outline" text-color="purple">
+        <template v-if="(typeof data.title !== 'object')">
+          {{ data.title }}
+        </template>
+        <template v-else>
+          <span>{{ data.title.text }}</span>
+          <span class="ml-1.5 text-light-3">{{ data.title.value }}</span>
+        </template>
       </cy-icon-text>
       <div
         v-if="data.lines.length !== 0"
@@ -60,11 +62,10 @@
               :equipment-texts="line.title.equipments"
               class="mr-2"
             />
-            <span>
+            <span class="space-x-1">
               <span
-                v-for="(caption, idx) in line.title.captions"
+                v-for="caption in line.title.captions"
                 :key="caption.iid"
-                :class="{ 'mr-1': idx !== line.title.captions.length - 1 }"
               >
                 {{ caption.text }}
               </span>

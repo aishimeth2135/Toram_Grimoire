@@ -24,15 +24,15 @@
       </cy-options>
     </div>
     <div class="pt-3">
-      <cy-button-border :selected="tabs.active" @click="toggle('tabs/active', true, false)">
+      <cy-button-border :selected="tabs.active" icon="uil:books" @click="toggle('tabs/active', true, false)">
         {{ t('character-simulator.skill-build.active-skills') }}
       </cy-button-border>
-      <cy-button-border :selected="tabs.passive" @click="toggle('tabs/passive', true, false)">
+      <cy-button-border :selected="tabs.passive" icon="uil:books" @click="toggle('tabs/passive', true, false)">
         {{ t('character-simulator.skill-build.passive-skills') }}
       </cy-button-border>
     </div>
     <div class="pt-3">
-      <CharacterSkillTab :skill-results-states="currentSkillResultsStates" />
+      <CharacterSkillTab :type="tabs.active ? SkillTypes.Active : SkillTypes.Passive" />
     </div>
   </section>
   <cy-default-tips v-else>
@@ -48,24 +48,18 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
 
-import { SkillResultsState } from '@/stores/views/character/setup'
+import { SkillTypes } from '@/lib/Skill/Skill/enums'
 
 import ToggleService from '@/setup/ToggleService'
 
 import CharacterSkillTab from './character-skill-tab/index.vue'
 
-import { setupCharacterSkillBuildStore, setupCharacterStore } from '../setup'
+import { setupCharacterSkillBuildStore } from '../setup'
 
 const { t } = useI18n()
 
 const { tabs, toggle } = ToggleService({ tabs: [{ name:'active', default: true }, 'passive'] as const })
 
-const { store } = setupCharacterStore()
 const { store: skillBuildStore, skillBuilds, currentSkillBuild } = setupCharacterSkillBuildStore()
-
-const currentSkillResultsStates = computed(() => {
-  return (tabs.active ? store.activeSkillResultStates : store.passiveSkillResultStates) as SkillResultsState[]
-})
 </script>

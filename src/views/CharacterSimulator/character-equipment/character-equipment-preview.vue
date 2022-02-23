@@ -2,10 +2,10 @@
   <div class="px-2">
     <div
       v-if="equipment.isWeapon() || equipment.isArmor()"
-      class="flex items-center my-2 rounded-2xl border-1 border-solid border-light py-1 px-3"
+      class="flex items-center my-2 rounded-2xl border-1 border-solid border-light py-0.5 px-3"
     >
       <template v-if="equipment.isWeapon()">
-        <cy-icon-text icon="mdi-sword">
+        <cy-icon-text icon="mdi-sword" text-color="light-2">
           ATK
         </cy-icon-text>
         <span class="ml-2 text-purple">
@@ -19,7 +19,7 @@
         <span class="ml-auto">{{ equipment.stability }}%</span>
       </template>
       <template v-else>
-        <cy-icon-text icon="mdi-shield">
+        <cy-icon-text icon="mdi-shield" text-color="light-2">
           DEF
         </cy-icon-text>
         <span class="ml-2 text-purple">{{ equipment.def }}</span>
@@ -35,15 +35,16 @@
     </div>
     <div
       v-if="equipment.hasCrystal && equipment.crystals!.length > 0"
-      class="border-t border-solid border-light mt-2 pt-1"
+      class="border-t border-solid border-light mt-2 pt-1.5 space-x-3"
       :class="{ 'opacity-50': statsDisabled }"
     >
       <cy-icon-text
         v-for="crystal in equipment.crystals"
         :key="crystal.id"
-        class="mr-3 my-1"
         :icon="crystal.crystalIconPath"
         icon-src="image"
+        text-color="blue-green"
+        size="small"
       >
         {{ crystal.name }}
       </cy-icon-text>

@@ -1,15 +1,14 @@
 import type { ImageStore } from '.'
 
 /**
- * convert image to modules
+ * convert images to one ImageStore
  */
 export default function LoadSkillIcons(target: ImageStore) {
-  const requireContext = require.context('@/assets/images/skill-icons', true, /stc_\d+\/st_\d+\/si_\d+\.png$/)
-  requireContext.keys().forEach(fileName => {
-    const image = requireContext(fileName)
-    const match = fileName.match(/stc_(\d+)\/st_(\d+)\/si_(\d+)\.png$/)
+  const modules = import.meta.globEager('/src/assets/images/skill-icons/**/*.png')
+  Object.entries(modules as Record<string, any>).forEach(([path, context]) => {
+    const match = path.match(/stc_(\d+)\/st_(\d+)\/si_(\d+)\.png$/)
     if (match) {
-      target.append(`${match[1]}-${match[2]}-${match[3]}`, image)
+      target.append(`${match[1]}-${match[2]}-${match[3]}`, context.default as string)
     }
   })
 }

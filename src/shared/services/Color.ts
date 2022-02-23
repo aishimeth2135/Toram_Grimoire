@@ -11,7 +11,7 @@ export default class Color {
     'blue-purple',
     'water-blue', 'water-blue-light',
     'blue-green', 'blue-green-light',
-    'green',
+    'green', 'green-light',
 
     'orange', 'orange-light',
 
@@ -28,6 +28,7 @@ export default class Color {
     'gray-light': 'gray',
     'blue-green-light': 'blue-green',
     'orange-light': 'orange',
+    'green-light': 'green',
   }
 
   static darken(color: string): string {

@@ -40,6 +40,17 @@ export default function createAppRouter() {
   const leftMenuStore = useLeftMenuStore()
 
   router.beforeEach((to, from) => {
+    mainStore.startRouting()
+
+    if (to.name === 'SkillSimulator') {
+      if (from.name !== 'CharacterSimulator') {
+        mainStore.setRedirectPathName('SkillSimulator')
+        return { name: 'CharacterSimulator' }
+      }
+    }
+  })
+
+  router.afterEach((to) => {
     if (to) {
       { // set title and meta tags
         const data = to.matched.slice().reverse().find(p => p.meta?.title)
@@ -94,12 +105,7 @@ export default function createAppRouter() {
       }
     }
 
-    if (to.name === 'SkillSimulator') {
-      if (from.name !== 'CharacterSimulator') {
-        mainStore.setRedirectPathName('SkillSimulator')
-        return { name: 'CharacterSimulator' }
-      }
-    }
+    mainStore.endRouting()
   })
 
   return router

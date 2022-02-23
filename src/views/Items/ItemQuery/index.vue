@@ -269,8 +269,9 @@ import {
 import { MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList } from '@/lib/Character/CharacterEquipment/enums'
 import { StatTypes } from '@/lib/Character/Stat/enums'
 
+import vue_ItemQueryResult from './item-query-result.vue'
+
 import init from './init.js'
-import vue_ItemQueryResult from './item-query-result'
 
 export default {
   name: 'ItemQuery',

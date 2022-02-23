@@ -1,9 +1,17 @@
 <template>
   <div class="space-y-4" style="min-height: 75vh">
+    <cy-default-tips
+      v-if="selectedSkillTrees.length === 0"
+      icon="bx:message-rounded-edit"
+      class="my-6"
+    >
+      {{ t('skill-simulator.default-tips') }}
+    </cy-default-tips>
     <div
       v-for="skillTree in selectedSkillTrees"
       :key="skillTree.skillTreeId"
-      class="border-l-1 border-light-2 pl-3"
+      :ref="(el) => skillTreeElements.set(skillTree.skillTreeId, el as (HTMLElement | null))"
+      class="border-l-2 border-light-2 pl-3 pt-1"
     >
       <div>
         <cy-icon-text icon="bx:bxs-book-bookmark">{{ skillTree.name }}</cy-icon-text>
@@ -20,7 +28,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
@@ -35,6 +44,7 @@ interface Emits {
 }
 const emit = defineEmits<Emits>()
 
+const { t } = useI18n()
 const { currentSkillBuild } = setupSkillBuildStore()
 
 const skillTrees: SkillTree[] = []
@@ -51,4 +61,13 @@ const skillClick = (skill: Skill | LevelSkill) => {
 }
 
 const { getSkillLevel } = setupSkillLevel()
+
+const skillTreeElements = reactive(new Map<string, HTMLElement | null>())
+const goSkillTree = (skillTree: SkillTree) => {
+  skillTreeElements.get(skillTree.skillTreeId)?.scrollIntoView({ behavior: 'smooth' })
+}
+
+defineExpose({
+  goSkillTree,
+})
 </script>
