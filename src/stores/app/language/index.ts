@@ -14,6 +14,7 @@ interface LangData {
 
 type LangInjectData = Record<string, LangData | (() => LangData)>
 
+export const DEFAULT_LOCALE = 'zh-TW'
 const LANG_ORDER = ['en', 'zh_tw', 'ja', 'zh_cn']
 const LOCALE_LIST = ['en', 'zh-TW', 'ja', 'zh-CN']
 const LOCALE_GLOBAL_NAMESPACE_LIST: LocaleGlobalNamespaces[] = [
@@ -144,7 +145,6 @@ export const useLanguageStore = defineStore('app-language', () => {
 
   const mainStore = useMainStore()
 
-  const loadLocaleMessageCache: Set<LocaleNamespaces> = new Set()
   type LoadLocaleMessages<Namespace extends LocaleNamespaces = LocaleNamespaces> = (namespaces: Namespace | Namespace[]) => Promise<void>
   const loadLocaleMessages: LoadLocaleMessages = async (namespaces) => {
     const namespaceList = typeof namespaces === 'string' ? [namespaces] : namespaces
@@ -155,15 +155,7 @@ export const useLanguageStore = defineStore('app-language', () => {
     const loadData = async (locale: string) => {
       const data = {} as Record<string, object>
       const promises = namespaceList.map(async (filePath) => {
-        if (loadLocaleMessageCache.has(filePath)) {
-          return
-        }
-        const dataModule = await import(
-          /* webpackInclude: /\.yaml$/ */
-          /* webpackChunkName: "i18n-messages-[request]" */
-          `@/locales/${locale}/${filePath}.yaml`
-        )
-        loadLocaleMessageCache.add(filePath)
+        const dataModule = await import(`../../../locales/${locale}/${filePath}.yaml`)
         data[filePath] = dataModule.default
       })
       await Promise.all(promises)
@@ -173,6 +165,11 @@ export const useLanguageStore = defineStore('app-language', () => {
     const fallbackMessages = await loadData(fallbackLocale.value)
     i18n.value.mergeLocaleMessage(primaryLocale.value, messages)
     i18n.value.mergeLocaleMessage(fallbackLocale.value, fallbackMessages)
+
+    if (primaryLocale.value !== DEFAULT_LOCALE && fallbackLocale.value !== DEFAULT_LOCALE) {
+      const defaultMessages = await loadData(DEFAULT_LOCALE)
+      i18n.value.mergeLocaleMessage(DEFAULT_LOCALE, defaultMessages)
+    }
   }
 
   const updateLocaleGlobalMessages = async () => {

@@ -17,7 +17,8 @@
     "baseUrl": ".",
     "outDir": "built",
     "types": [
-      "webpack-env"
+      "vite/client",
+      "vite-plugin-pwa/client"
     ],
     "paths": {
       "@/*": [

@@ -1,4 +1,4 @@
-const UnknowSkillIcon = require('@/assets/images/skill-icons/unknow.svg')
+import UnknowSkillIcon from '@/assets/images/skill-icons/unknow.svg'
 
 class ImageStore {
   private _items: Map<string, string>
@@ -23,17 +23,17 @@ const Images = {
 }
 
 async function InitSkillIcons() {
-  const dataModule = await import(/* webpackChunkName: "image--skill-icons" */'./LoadSkillIcons')
+  const dataModule = await import('./LoadSkillIcons')
   dataModule.default(Images.skillIcons)
 }
 
 async function InitEquipmentIcons() {
-  const dataModule = await import(/* webpackChunkName: "image--equipment-icons" */'./LoadEquipmentIcons')
+  const dataModule = await import('./LoadEquipmentIcons')
   dataModule.default(Images.equipmentIcons)
 }
 
 async function InitCrystalIcons() {
-  const dataModule = await import(/* webpackChunkName: "image--crystal-icons" */'./LoadCrystalIcons')
+  const dataModule = await import('./LoadCrystalIcons')
   dataModule.default(Images.crystalIcons)
 }
 

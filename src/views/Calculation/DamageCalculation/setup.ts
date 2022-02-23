@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue'
 import type { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
 import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 
@@ -9,7 +10,6 @@ import { CalcStructExpression } from '@/lib/Calculation/Damage/Calculation/base'
 import { CalculationContainerIds, CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
 
 import Notify from '@/setup/Notify'
-import RegisterLang from '@/setup/RegisterLang'
 
 import { calcStructDisplay, calcStructCritical, calcStructWithoutCritical } from './consts'
 
@@ -61,21 +61,21 @@ const setupCalculationStoreState = () => {
 
 const setupCalculationStore = () => {
   const store = useDamageCalculationStore()
-  const { lang, rootLang } = RegisterLang('Damage Calculation')
   const { notify } = Notify()
+  const { t } = useI18n()
 
   const { calculations, currentCalculation } = setupCalculationStoreState()
 
   const removeCurrentCalculation = () => {
     if (calculations.value.length === 1) {
-      notify(lang('tips/At least one build must be kept'))
+      notify(t('damage-calculation.tips.at-least-one-build'))
       return
     }
     const calculation = currentCalculation.value
     store.removeCalculation(calculation)
-    notify(lang('tips/Successfully removed build', [calculation.name]), {
+    notify(t('damage-calculation.tips.removed-build-success', { name: calculation.name }), {
       buttons: [{
-        text: rootLang('global/recovery'),
+        text: t('global.recovery'),
         removeMessageAfterClick: true,
         click: () => store.appendCalculation(calculation),
       }],

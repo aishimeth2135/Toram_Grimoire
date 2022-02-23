@@ -143,7 +143,7 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 .cy--button-base {
-  --icon-width: 1.2rem;
+  --icon-width: 1.125rem;
   --icon-color: var(--color-set--icon-color);
   --text-color: var(--color-set--text-color);
   --border-color: var(--color-set--border-color);

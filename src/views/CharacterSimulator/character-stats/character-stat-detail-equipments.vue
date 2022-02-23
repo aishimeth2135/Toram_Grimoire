@@ -4,6 +4,7 @@
       keypath="character-simulator.character-stat-detail.equipped-with-text"
       tag="div"
       scope="global"
+      class="text-orange"
     >
       <template #equip>
         <span class="mx-1 text-green inline-flex items-center">

@@ -4,3 +4,5 @@ increase-level: 增加
 decrease-level: 減少
 skill-build: 技能配置
 create-build: 新增配置
+default-tips: 還沒有選取任何技能樹。請點擊右下方的按鈕來新增技能樹0.0
+remove-build-tips: 移除配置成功。

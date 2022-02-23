@@ -1,4 +1,9 @@
-const enum SkillBranchNames {
+export const enum SkillTypes {
+  Active = 'active',
+  Passive = 'passive',
+}
+
+export const enum SkillBranchNames {
   Damage = 'damage',
   Effect = 'effect',
   Next = 'next',
@@ -27,8 +32,4 @@ const enum SkillBranchNames {
   FormulaExtra = 'formula_extra',
 
   None = '',
-}
-
-export {
-  SkillBranchNames,
 }

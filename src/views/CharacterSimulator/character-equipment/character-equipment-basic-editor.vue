@@ -22,7 +22,7 @@
         {{ t('character-simulator.equipment-basic-editor.equipment-stats') }}
       </cy-icon-text>
     </div>
-    <div class="mt-2 space-y-1">
+    <div class="mt-2 space-y-1.5 pl-1">
       <div
         v-for="stat in currentEquipment.stats"
         :key="stat.statId"
@@ -55,10 +55,10 @@
       >
         {{ t('character-simulator.equipment-basic-editor.equipment-other') }}
       </cy-icon-text>
-      <div class="mt-2 content">
+      <div class="mt-2 pl-1">
         <cy-input-counter
           v-if="currentEquipment.hasStability"
-          v-model:value="currentEquipment.stability"
+          v-model:value="equipmentStability"
         >
           <template #title>
             <cy-icon-text icon="mdi-rhombus-outline">
@@ -94,6 +94,15 @@ const ranges = {
 }
 
 const currentEquipment = computed(() => props.equipment!)
+
+const equipmentStability = computed<number>({
+  get() {
+    return currentEquipment.value.stability!
+  },
+  set(value) {
+    currentEquipment.value.stability = value
+  },
+})
 
 const hasOther = computed(() => currentEquipment.value.hasStability)
 

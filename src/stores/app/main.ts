@@ -5,18 +5,19 @@ import Grimoire from '@/shared/Grimoire'
 
 import { useLanguageStore } from './language'
 
-const version = '4.4.2.1'
+const version = '4.4.5'
 
 export const useMainStore = defineStore('app-main', () => {
   const redirectPathName = ref<string | null>(null)
   const serviceWorker = shallowReactive<{
-    registration: ServiceWorkerRegistration | null;
+    update: Function | null;
     hasUpdate: boolean;
   }>({
-    registration: null,
+    update: null,
     hasUpdate: false,
   })
   const documentTitleId = ref('')
+  const routerGuiding = ref(false)
 
   const setRedirectPathName = (path: string) => {
     redirectPathName.value = path
@@ -25,8 +26,8 @@ export const useMainStore = defineStore('app-main', () => {
     redirectPathName.value = null
   }
 
-  const serviceWorkerHasUpdate = (registration: ServiceWorkerRegistration) => {
-    serviceWorker.registration = registration
+  const serviceWorkerHasUpdate = (update: Function) => {
+    serviceWorker.update = update
     serviceWorker.hasUpdate = true
   }
 
@@ -59,6 +60,10 @@ export const useMainStore = defineStore('app-main', () => {
     clearRedirectPathName,
     serviceWorkerHasUpdate,
     updateTitle,
+
+    startRouting: () => routerGuiding.value = true,
+    endRouting: () => routerGuiding.value = false,
+    routerGuiding: readonly(routerGuiding),
   }
 })
 

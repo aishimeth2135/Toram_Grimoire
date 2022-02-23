@@ -34,7 +34,17 @@ export interface SkillResultsState {
   stackContainers: DisplayDataContainerAlly[];
 }
 
-export function setupCharacterSkills(character: Ref<Character>, skillBuild: Ref<SkillBuild | null>) {
+interface HandleCharacterStatsOptions {
+  handleFood: boolean;
+  handleActiveSkill: boolean;
+  handlePassiveSkill: boolean;
+}
+
+export function setupCharacterSkills(
+  character: Ref<Character>,
+  skillBuild: Ref<SkillBuild | null>,
+  handleConfig: Ref<HandleCharacterStatsOptions>,
+) {
   const computingContainer: Ref<SkillComputingContainer> = ref(new SkillComputingContainer())
   computingContainer.value.varGetters.skillLevel = skill => {
     if (!skillBuild.value) {
@@ -218,8 +228,19 @@ export function setupCharacterSkills(character: Ref<Character>, skillBuild: Ref<
     if (!skillBuild.value) {
       return []
     }
+    const list: SkillResultsState[] = []
+    if (handleConfig.value.handleActiveSkill) {
+      list.push(...activeSkillResultStates.value)
+    }
+    if (handleConfig.value.handlePassiveSkill) {
+      list.push(...passiveSkillResultStates.value)
+    }
+    if (list.length === 0) {
+      return []
+    }
+
     const stats: Map<string, Stat> = new Map()
-    ;[...activeSkillResultStates.value, ...passiveSkillResultStates.value]
+    list
       .filter(resultState => {
         const state = skillBuild.value!.getSkillState(resultState.skill)
         return state.enabled && state.level !== 0
@@ -272,7 +293,13 @@ export interface CharacterStatCategoryResult {
   stats: CharacterStatResultWithId[];
 }
 
-export function setupCharacterStats(character: Ref<Character | null>, skillStats: Ref<Stat[]>, foodStats: Ref<Stat[]>) {
+export function setupCharacterStats(
+  character: Ref<Character | null>,
+  skillBuild: Ref<SkillBuild | null>,
+  skillStats: Ref<Stat[]>,
+  foodStats: Ref<Stat[]>,
+  handleConfig: Ref<HandleCharacterStatsOptions>,
+) {
   const allEquipmentStats = computed(() => {
     if (!character.value) {
       return []
@@ -294,6 +321,12 @@ export function setupCharacterStats(character: Ref<Character | null>, skillStats
   })
 
   const equipmentElement = computed(() => character.value ? getCharacterElement(character.value) : {})
+
+  const skill_Conversion = computed(() => {
+    const stc = Grimoire.Skill.skillRoot.skillTreeCategorys.find(_stc => _stc.id === 4)
+    const st = stc?.skillTrees.find(_st => _st.id === 1)
+    return st?.skills.find(_skill => _skill.id === 1) ?? null
+  })
 
   const computedVarsBase = computed(() => {
     const chara = character.value!
@@ -361,13 +394,7 @@ export function setupCharacterStats(character: Ref<Character | null>, skillStats
           { stability: 0, atk: 0 },
         '@element': equipmentElement.value,
         '@skill': {
-          // 'Conversion': (() => {
-          //   const skill = this.findSkillById(4, 1, 1)
-          //   if (!skill)
-          //     return 0
-          //   return skill.disabled ? 0 : skill.levelSkill.level()
-          // })(),
-          'Conversion': 0,
+          'Conversion': skill_Conversion.value ? skillBuild.value?.getSkillState(skill_Conversion.value).level ?? 0 : 0,
         },
       },
       conditional: {
@@ -401,15 +428,7 @@ export function setupCharacterStats(character: Ref<Character | null>, skillStats
     }
   })
 
-  interface HandleCharacterStatsOptions {
-    handleFood?: boolean;
-    handleSkill?: boolean;
-  }
-
-  const characterStatCategoryResults = computed(({
-    handleFood = true,
-    handleSkill = true,
-  }: HandleCharacterStatsOptions = {}) => {
+  const characterStatCategoryResults = computed(() => {
     if (!character.value) {
       return []
     }
@@ -426,8 +445,10 @@ export function setupCharacterStats(character: Ref<Character | null>, skillStats
     }
 
     mergeStats(allEquipmentStats.value)
-    handleSkill && mergeStats(skillStats.value)
-    handleFood && mergeStats(foodStats.value)
+    mergeStats(skillStats.value)
+    if (handleConfig.value.handleFood) {
+      mergeStats(foodStats.value)
+    }
 
     const categoryList = Grimoire.Character.characterStatCategoryList
     const pureStats = [...allStats.values()]

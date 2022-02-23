@@ -15,6 +15,7 @@
   --primary-orange: #de761b;
   --primary-orange-light: #edcbad;
   --primary-green: #23ad35;
+  --primary-green-light: #8ae696;
   --primary-red: #f54747;
   --primary-red-light: #f09797;
   --primary-gray: #888;
@@ -38,6 +39,7 @@
   --rgb-primary-orange: 222, 118, 27;
   --rgb-primary-orange-light: 237, 203, 173;
   --rgb-primary-green: 35, 173, 53;
+  --rgb-primary-green-light: 138, 230, 150;
   --rgb-primary-red: 245, 71, 71;
   --rgb-primary-red-light: 240, 151, 151;
   --rgb-primary-gray: 136, 136, 136;
@@ -63,6 +65,7 @@ html.theme--night-mode {
   --primary-orange: #edcbad;
   --primary-orange-light: #7e542f;
   --primary-green: #bff5c6;
+  --primary-green-light: #23ad35;
   --primary-red: #f97777;
   --primary-red-light: #802828;
   --primary-gray: #AAA;
@@ -85,6 +88,7 @@ html.theme--night-mode {
   --rgb-primary-orange: 237, 203, 173;
   --rgb-primary-orange-light: 126, 84, 47;
   --rgb-primary-green: 191, 245, 198;
+  --rgb-primary-green-light: 35, 173, 53;
   --rgb-primary-red: 249, 119, 119;
   --rgb-primary-red-light: 128, 40, 40;
   --rgb-primary-gray: 170, 170, 170;

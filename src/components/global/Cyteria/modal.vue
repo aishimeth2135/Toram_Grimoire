@@ -136,7 +136,7 @@ const { t } = useI18n()
 
 <style lang="postcss" scoped>
 .cy--modal {
-  @apply fixed h-full w-full top-0 left-0 flex justify-center bg-black bg-opacity-10;
+  @apply fixed h-full w-full top-0 left-0 flex justify-center bg-black bg-opacity-10 overscroll-none;
 
   z-index: 49;
 

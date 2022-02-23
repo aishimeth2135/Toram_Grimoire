@@ -70,9 +70,6 @@ export const useCharacterSkillStore = defineStore('view-character-skill', () => 
   const initSkillRoot = (sr: SkillRoot) => {
     skillRoot.value = sr
   }
-  const setCurrentSkillBuild = (idx: number) => {
-    currentSkillBuildIndex.value = idx
-  }
 
   const createSkillBuild = ({ name, skillBuild }: { name?: string; skillBuild?: SkillBuildState }) => {
     const root = skillRoot.value
@@ -104,13 +101,6 @@ export const useCharacterSkillStore = defineStore('view-character-skill', () => 
     skillBuilds.value.push(newBuild)
     currentSkillBuildIndex.value = skillBuilds.value.length - 1
     return newBuild
-  }
-
-  const removeSkillBuild = (idx: number) => {
-    skillBuilds.value.splice(idx, 1)
-    if (currentSkillBuildIndex.value >= skillBuilds.value.length) {
-      currentSkillBuildIndex.value = skillBuilds.value.length - 1
-    }
   }
 
   const resetSkillBuilds = () => {
@@ -223,9 +213,7 @@ export const useCharacterSkillStore = defineStore('view-character-skill', () => 
     currentSkillBuildIndex: readonly(currentSkillBuildIndex),
 
     initSkillRoot,
-    setCurrentSkillBuild,
     createSkillBuild,
-    removeSkillBuild,
     resetSkillBuilds,
     saveSkillBuildsCsv,
     loadSkillBuildsCsv,

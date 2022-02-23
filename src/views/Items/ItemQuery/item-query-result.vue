@@ -35,7 +35,7 @@
 <script>
 import { computed, ref, nextTick, readonly, watch, toRefs } from 'vue'
 
-import vue_ItemQueryResultItem from './item-query-result-item'
+import vue_ItemQueryResultItem from './item-query-result-item.vue'
 
 const NUMBER_OF_ITEMS_OF_PAGE = 30
 

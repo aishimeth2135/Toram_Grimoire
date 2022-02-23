@@ -1,7 +1,7 @@
 <template>
-  <div class="cy-button--drop-down py-2 px-3 m-1 bg-white">
+  <div class="py-2 px-3 m-1 bg-white border-l-2 border-light-2">
     <button
-      class="content-title button--main-content flex items-center justify-start"
+      class="content-title button--main-content flex items-center justify-start w-full"
       @click="titleClick"
     >
       <cy-icon :icon="icon" :src="iconSrc" />
@@ -12,14 +12,12 @@
         <slot />
       </span>
       <slot name="tail" />
-      <span
-        v-if="$slots['content-right']"
-        class="inline-flex items-center ml-auto"
-      >
-        <slot name="content-right" />
-      </span>
+      <cy-icon-text
+        class="ml-auto"
+        :icon="menuVisible ? 'ic:round-keyboard-arrow-up' : 'ic:round-keyboard-arrow-down'"
+      />
     </button>
-    <div v-show="menuVisible" class="menu">
+    <div v-show="menuVisible" class="mt-2">
       <slot name="menu" />
     </div>
   </div>
@@ -54,10 +52,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style lang="postcss" scoped>
-.cy-button--drop-down {
-  --icon-width: 1.25rem;
-  border-left: 0.2rem solid var(--primary-light-2);
-}
-</style>

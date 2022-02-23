@@ -6,7 +6,7 @@ import HomeView from '@/views/Home/Home/index.vue'
 
 import ViewWrapper from './view-wrapper.vue'
 
-const AboutView = () => import(/* webpackChunkName: "home-about" */ '@/views/Home/About/index.vue')
+const AboutView = () => import('@/views/Home/About/index.vue')
 
 export default {
   name: 'AppRoot',

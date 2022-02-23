@@ -96,7 +96,7 @@ export default defineComponent({
 <style lang="postcss" scoped>
 .cy--icon-text {
   --icon-color: var(--color-set--icon-color);
-  --icon-width: 1.25rem;
+  --icon-width: 1.125rem;
   --icon-margin-top-fix: 0;
   --text-color: var(--color-set--text-color);
   --text-margin-left: 0.625rem;

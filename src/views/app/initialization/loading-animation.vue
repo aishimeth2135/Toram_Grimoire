@@ -6,7 +6,7 @@
       @before-leave="beforeLeave"
       @leave="leave"
     >
-      <svg-icon v-if="innerStatus >= InitializeStatus.BeforeFinished" key="1" icon-id="potum" class="custom-icon" />
+      <svg-icon v-if="available" key="1" icon-id="potum" class="custom-icon" />
       <svg-icon v-else key="2" icon-id="potum" class="custom-icon start-icon" />
     </transition>
     <transition
@@ -14,7 +14,7 @@
       :css="false"
       @enter="enter"
     >
-      <div v-if="innerStatus >= InitializeStatus.BeforeFinished && end" class="ball" />
+      <div v-if="available && end" class="ball" />
     </transition>
   </div>
 </template>
@@ -22,9 +22,10 @@
 <script lang="ts" setup>
 // @ts-ignore
 import Velocity from 'velocity-animate'
-import { onMounted, ref, toRefs, watch } from 'vue'
+import { computed, onMounted, ref, toRefs, watch } from 'vue'
 
 import { InitializeStatus } from '@/stores/app/initialize/enums'
+import { useMainStore } from '@/stores/app/main'
 
 interface Props {
   status: number;
@@ -37,9 +38,14 @@ const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
 const { status } = toRefs(props)
+const mainStore = useMainStore()
 
 const innerStatus = ref(0)
 const end = ref(false)
+
+const available = computed(() => {
+  return innerStatus.value >= InitializeStatus.BeforeFinished && !mainStore.routerGuiding
+})
 
 const beforeLeave = (el: Element) => {
   el.classList.remove('start-icon')

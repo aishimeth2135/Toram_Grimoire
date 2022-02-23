@@ -1,10 +1,20 @@
 <template>
   <div>
-    <CharacterSkillItem
-      v-for="skillResultsState in validResultStates"
-      :key="skillResultsState.skill.skillId"
-      :skill-results-state="skillResultsState"
-    />
+    <div class="flex items-center">
+      <cy-button-switch v-model:selected="allSkillEnabled">
+        {{ t('global.all') }}
+      </cy-button-switch>
+      <cy-button-switch v-model:selected="disableAll">
+        {{ disableAllButtonTitle }}
+      </cy-button-switch>
+    </div>
+    <div :class="{ 'opacity-50': disableAll }">
+      <CharacterSkillItem
+        v-for="skillResultsState in validResultStates"
+        :key="skillResultsState.skill.skillId"
+        :skill-results-state="skillResultsState"
+      />
+    </div>
   </div>
 </template>
 
@@ -16,22 +26,64 @@ export default {
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { SkillResultsState } from '@/stores/views/character/setup'
 
+import { SkillTypes } from '@/lib/Skill/Skill/enums'
+
 import CharacterSkillItem from './character-skill-item.vue'
 
-import { setupCharacterSkillBuildStore } from '../../setup'
+import { setupCharacterSkillBuildStore, setupCharacterStore } from '../../setup'
 
 interface Props {
-  skillResultsStates: SkillResultsState[];
+  type: SkillTypes;
 }
 
 const props = defineProps<Props>()
 
+const { t } = useI18n()
+const { store } = setupCharacterStore()
+
+const skillResultsStates = computed(() => {
+  return (props.type === SkillTypes.Active ? store.activeSkillResultStates : store.passiveSkillResultStates) as SkillResultsState[]
+})
+
 const { currentSkillBuild } = setupCharacterSkillBuildStore()
 const validResultStates = computed(() => {
-  return props.skillResultsStates
+  return skillResultsStates.value
     .filter(state => currentSkillBuild.value!.getSkillState(state.skill).level > 0)
+})
+
+const validSkillStates = computed(() => validResultStates.value.map(state => currentSkillBuild.value!.getSkillState(state.skill)))
+const allSkillEnabled = computed<boolean>({
+  get() {
+    return validSkillStates.value.every(state => state.enabled)
+  },
+  set(value) {
+    validSkillStates.value.forEach(state => state.enabled = value)
+  },
+})
+
+const disableAll = computed<boolean>({
+  get() {
+    return !(props.type === SkillTypes.Active ?
+      store.handleCharacterStatsConfig.handleActiveSkill :
+      store.handleCharacterStatsConfig.handlePassiveSkill)
+  },
+  set(value) {
+    if (props.type === SkillTypes.Active) {
+      store.handleCharacterStatsConfig.handleActiveSkill = !value
+    } else {
+      store.handleCharacterStatsConfig.handlePassiveSkill = !value
+    }
+  },
+})
+
+const disableAllButtonTitle = computed(() => {
+  const type = props.type === SkillTypes.Active ?
+    t('character-simulator.skill-build.active-skills') :
+    t('character-simulator.skill-build.passive-skills')
+  return t('character-simulator.skill-build.disable-skills', { type })
 })
 </script>

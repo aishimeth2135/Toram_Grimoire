@@ -65,7 +65,7 @@ export const useNotifyStore = defineStore('app-notify', () => {
     }
     else {
       find.counter += 1
-      find.removeTime += 2
+      find.removeTime = Math.min(find.removeTime + 1, 8)
     }
   }
 

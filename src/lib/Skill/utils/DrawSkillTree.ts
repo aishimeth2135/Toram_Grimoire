@@ -15,8 +15,8 @@ interface DrawSettingData {
 
 function GetDrawSetting(): DrawSettingData {
   return {
-    gridWidth: 50,
-    svgPadding: 40,
+    gridWidth: 48,
+    svgPadding: 16,
     textMargin: 5,
     iconPadding: 4,
   }
@@ -104,7 +104,7 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
 
   const codes = drawTreeCode.toUpperCase()
     .replace(/([A-Z])(\d+)/g, (match, word, count) => Array(parseInt(count, 10)).fill(word).join(' '))
-    .split(' ')
+    .split(/[\s\n]+/)
   const drawData = GetDrawSetting()
   const width = drawData.gridWidth,
     paddding = drawData.svgPadding,

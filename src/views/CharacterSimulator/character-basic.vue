@@ -28,10 +28,17 @@
         </template>
       </cy-options>
       <div class="flex items-center">
-        <cy-button-border icon="mdi-content-copy" @click="copyCurrentCharacter">
+        <cy-button-border
+          icon="bx:copy-alt"
+          @click="copyCurrentCharacter"
+        >
           {{ t('global.copy') }}
         </cy-button-border>
-        <cy-button-border icon="ic-baseline-delete-outline" @click="removeCurrentCharacter">
+        <cy-button-border
+          icon="ic-baseline-delete-outline"
+          main-color="gray"
+          @click="removeCurrentCharacter"
+        >
           {{ t('global.remove') }}
         </cy-button-border>
       </div>
@@ -45,7 +52,7 @@
         {{ t('character-simulator.character-basic.character-name') }}
       </cy-icon-text>
     </div>
-    <div class="mt-2 px-2">
+    <div class="mt-2 px-2" style="max-width: 25rem">
       <cy-title-input
         v-model:value="currentCharacter.name"
         icon="mdi-clipboard-text-outline"
@@ -82,7 +89,7 @@
         {{ t('character-simulator.character-basic.character-stat-points') }}
       </cy-icon-text>
     </div>
-    <div class="space-y-3 px-2 mt-2">
+    <div class="space-y-2 px-2 mt-2">
       <div
         v-for="baseStat in currentCharacter.normalBaseStats"
         :key="baseStat.name"
@@ -126,22 +133,20 @@
     </div>
     <div class="mt-2 px-2">
       <div class="flex items-center flex-wrap">
-        <cy-button-border
-          icon="ic-round-close"
+        <cy-button-radio
           :selected="!currentCharacter.optionalBaseStat"
           @click="currentCharacter!.clearOptinalBaseStat()"
         >
           {{ t('global.none') }}
-        </cy-button-border>
-        <cy-button-border
+        </cy-button-radio>
+        <cy-button-radio
           v-for="option in characterOptionalBaseStatOptions"
           :key="option"
-          icon="mdi-checkbox-multiple-blank-circle-outline"
           :selected="currentCharacter.baseStat(option) ? true : false"
           @click="currentCharacter!.setOptionalBaseStat(option)"
         >
           {{ option }}
-        </cy-button-border>
+        </cy-button-radio>
       </div>
     </div>
   </section>

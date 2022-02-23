@@ -25,7 +25,7 @@
           :equipment="item"
           @click="appendEquipment(item)"
         >
-          <template #extra>
+          <template #title-end>
             <span class="text-sm text-light-2 ml-4">
               {{ getObtainText(item) }}
             </span>

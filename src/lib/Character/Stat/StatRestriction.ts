@@ -65,7 +65,7 @@ class StatRestriction extends Stat {
     return showData.map(item => Grimoire.i18n.t('common.Equipment.stat-restriction.' + item))
   }
 
-  static from(stat: Stat, restriction: StatRestrictionItems | null): StatRestriction {
+  static from(stat: Stat, restriction?: StatRestrictionItems | null): StatRestriction {
     return new StatRestriction(stat.base, stat.type, stat.value, restriction)
   }
 

@@ -2,7 +2,8 @@
   <div>
     <div class="flex items-center">
       <cy-icon-text
-        class="mr-2 text-purple"
+        class="mr-2"
+        text-color="purple"
         :icon="(equipment.isAvatar() as boolean) ? equipment.categoryIcon : equipment.getCategoryImagePath()"
         :icon-src="equipment.isAvatar() ? 'iconify' : 'image'"
         :icon-color="equipment.isCustom ? 'green' : 'light-2'"
@@ -32,6 +33,7 @@
         <CharacterSimulatorEquipmentPreview
           v-if="mode === Modes.Info"
           :equipment="equipment"
+          :stats-disabled="statsDisabled"
         />
         <CharacterSimulatorEquipmentEditor
           v-else-if="mode === Modes.Editor"

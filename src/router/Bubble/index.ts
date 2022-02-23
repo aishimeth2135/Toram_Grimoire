@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import { ViewInit } from '@/shared/services/ViewInit'
 
-const vue_bubble = () => import(/* webpackChunkName: "bubble" */ '@/views/other/bubble.vue')
+const vue_bubble = () => import('@/views/other/bubble.vue')
 
 export default {
   name: 'Bubble',

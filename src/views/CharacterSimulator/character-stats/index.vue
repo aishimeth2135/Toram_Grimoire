@@ -10,14 +10,14 @@
           <legend class="py-0 px-2 ml-3">
             <cy-icon-text
               icon="mdi-creation"
-              text-color="purple"
+              text-color="light-2"
               size="small"
             >
               {{ data.name }}
             </cy-icon-text>
           </legend>
         </fieldset>
-        <div class="pl-4">
+        <div>
           <span
             v-for="stat in data.stats"
             :key="stat.id"

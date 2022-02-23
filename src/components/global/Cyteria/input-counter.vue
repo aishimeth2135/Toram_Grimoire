@@ -5,7 +5,7 @@
       :class="rootClassList"
       :style="rootStyle"
     >
-      <div v-if="$slots['title']" class="title">
+      <div v-if="$slots['title']" class="inline-flex mr-3">
         <slot name="title" />
       </div>
       <div class="counter-content">
@@ -14,7 +14,7 @@
           icon="akar-icons:circle-chevron-left"
           :icon-color="mainColor"
           :icon-color-hover="mainColorInstance.darken"
-          @click="setValue(range[0])"
+          @click="setValue(range[0]!)"
         />
         <cy-button-icon
           icon="ic-round-remove-circle-outline"
@@ -40,7 +40,7 @@
           icon="akar-icons:circle-chevron-right"
           :icon-color="mainColor"
           :icon-color-hover="mainColorInstance.darken"
-          @click="setValue(range[1])"
+          @click="setValue(range[1]!)"
         />
         <span v-if="$slots['unit']" class="text-sm ml-1">
           <slot name="unit" />
@@ -50,124 +50,109 @@
   </div>
 </template>
 
-<script>
-import Color from '@/shared/services/Color'
-
-const ColorList = Color.List
-
+<script lang="ts">
 export default {
-  props: {
-    'value': {
-      type: Number,
-      require: true,
-    },
-    'range': { // [min, max]
-      type: Array,
-      default: () => [null, null],
-      validation: v => v.length !== 2 || !v.every(p => typeof p === 'number' || p === null),
-    },
-    'step': {
-      type: Number,
-      default: 1,
-    },
-    'type': {
-      type: String,
-      default: 'normal',
-      validation: v => ['normal', 'line'].includes(v),
-    },
-    'inline': {
-      type: Boolean,
-      default: false,
-    },
-    'disabled': {
-      type: Boolean,
-      default: false,
-    },
-    'maxButton': {
-      type: Boolean,
-      default: false,
-    },
-    'minButton': {
-      type: Boolean,
-      default: false,
-    },
-    'mainColor': {
-      type: String,
-      default: 'light-2',
-      validation: v => ColorList.includes(v),
-    },
-    inputWidth: {
-      type: String,
-      default: null,
-    },
-  },
-  emits: ['update:value'],
-  data() {
-    return {
-      focus: false,
-    }
-  },
-  computed: {
-    rootClassList() {
-      return {
-        'line': this.type === 'line',
-        'inline': this.inline,
-        ['border-' + this.mainColor]: !this.focus,
-        'disabled': this.disabled,
-        ['border-' + this.mainColorInstance.darken]: !this.inline && this.focus,
-        ['ring-' + this.mainColorInstance.darken]: !this.inline && this.focus,
-        'ring-1': !this.inline && this.focus,
-      }
-    },
-    rootStyle() {
-      const style = {}
-      if (this.inputWidth !== null) {
-        style['--input-width'] = this.inputWidth
-      }
-      return style
-    },
-    mainColorInstance() {
-      return new Color(this.mainColor)
-    },
-    inputValue: {
-      get() {
-        return this.value
-      },
-      set(v) {
-        v = v || 0
-
-        const min = this.range[0],
-          max = this.range[1]
-        max !== null && (v = Math.min(max, v))
-        min !== null && (v = Math.max(min, v))
-
-        this.$emit('update:value', v)
-      },
-    },
-  },
-  methods: {
-    setInputFocus(v) {
-      this.focus = v
-    },
-    selectInput(e) {
-      e.target.select()
-    },
-    setValue(v) {
-      this.inputValue = v
-    },
-  },
+  name: 'CyInputCounter',
 }
 </script>
 
-<style lang="less" scoped>
+<script lang="ts" setup>
+import { computed, ref } from 'vue'
+
+import Color from '@/shared/services/Color'
+
+interface Props {
+  value: number;
+  range?: (number | null)[];
+  step?: number;
+  type?: 'normal' | 'line';
+  inline?: boolean;
+  disabled?: boolean;
+  maxButton?: boolean;
+  minButton?: boolean;
+  mainColor?: string;
+  inputWidth?: string | null;
+}
+interface Emits {
+  (evt: 'update:value', value: number): void;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  range: () => [null, null],
+  step: 1,
+  type: 'normal',
+  inline: false,
+  disabled: false,
+  maxButton: false,
+  minButton: false,
+  mainColor: 'light-2',
+  inputWidth: null,
+})
+const emit = defineEmits<Emits>()
+
+const focus = ref(false)
+
+const mainColorInstance = computed(() => new Color(props.mainColor))
+
+const rootClassList = computed(() => {
+  return {
+    'line': props.type === 'line',
+    'inline': props.inline,
+    ['border-' + props.mainColor]: !focus.value,
+    'disabled': props.disabled,
+    ['border-' + mainColorInstance.value.darken]: !props.inline && focus.value,
+    ['ring-' + mainColorInstance.value.darken]: !props.inline && focus.value,
+    'ring-1': !props.inline && focus.value,
+  } as Record<string, boolean>
+})
+
+const rootStyle = computed(() => {
+  const style = {} as Record<string, any>
+  if (props.inputWidth !== null) {
+    style['--input-width'] = props.inputWidth
+  }
+  return style
+})
+
+const inputValue = computed<number>({
+  get() {
+    return props.value
+  },
+  set(value) {
+    if (props.disabled) {
+      return
+    }
+    value = value || 0
+
+    const min = props.range[0],
+      max = props.range[1]
+    max !== null && (value = Math.min(max, value))
+    min !== null && (value = Math.max(min, value))
+
+    emit('update:value', value)
+  },
+})
+
+const setInputFocus = (value: boolean) => {
+  focus.value = value
+}
+const selectInput = (evt: MouseEvent) => {
+  (evt.target as HTMLInputElement).select()
+}
+const setValue = (value: number) => {
+  inputValue.value = value
+}
+</script>
+
+<style lang="postcss" scoped>
 .cy--input-counter-container {
   display: block;
-  --input-width: 2.1rem;
+  --input-width: 2.125rem;
 }
 .cy--input-counter {
   display: inline-flex;
   align-items: center;
-  padding: 0.3rem 1rem;
+  padding: 0.25rem 1rem;
   transition: border-color 0.3s;
   position: relative;
 
@@ -177,15 +162,11 @@ export default {
     background-color: transparent;
   }
 
-  > .title {
-    display: inline-flex;
-    margin-right: 0.8rem;
-  }
-
-  > .counter-content {
+  & > .counter-content {
     display: inline-flex;
     align-items: center;
-    > input {
+
+    & > input {
       width: var(--input-width);
       border: 0;
       outline: 0;
@@ -196,7 +177,7 @@ export default {
 
   &.line {
     display: flex;
-    > .counter-content {
+    & > .counter-content {
       margin-left: auto;
     }
   }

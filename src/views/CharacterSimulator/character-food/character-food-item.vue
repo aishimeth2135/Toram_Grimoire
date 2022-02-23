@@ -23,8 +23,11 @@ const FOOD_LEVEL_RANGE = [0, 10]
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { Food } from '@/lib/Character/Food'
+
+import Notify from '@/setup/Notify'
 
 import { setupCharacterFoodStore } from './setup'
 
@@ -33,6 +36,9 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+const { t } = useI18n()
+const { notify } = Notify()
 
 const foodLevelRange = FOOD_LEVEL_RANGE
 
@@ -43,7 +49,9 @@ const foodIndex = computed(() => currentFoodBuild.value.foods.indexOf(props.food
 const selected = computed<boolean>({
   set(value) {
     if (value) {
-      currentFoodBuild.value.appendSelectedFood(foodIndex.value)
+      if (!currentFoodBuild.value.appendSelectedFood(foodIndex.value)) {
+        notify(t('character-simulator.food-build.selected-food-limit-reached'))
+      }
     } else {
       currentFoodBuild.value.removeSelectedFood(foodIndex.value)
     }

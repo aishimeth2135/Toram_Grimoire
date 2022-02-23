@@ -6,7 +6,7 @@ import Grimoire from '@/shared/Grimoire'
 import { StatTypes } from '@/lib/Character/Stat/enums'
 import { StatComputed } from '@/lib/Character/Stat'
 
-import { SkillBranchNames } from './enums'
+import { SkillBranchNames, SkillTypes } from './enums'
 
 abstract class SkillNode {
   abstract parent: SkillNode | null
@@ -146,6 +146,7 @@ abstract class SkillBase extends SkillElement {
 class Skill extends SkillBase {
   effects: SkillEffect[]
   defaultEffect!: SkillEffect
+  type!: SkillTypes
 
   readonly skillId: string
 
@@ -158,6 +159,10 @@ class Skill extends SkillBase {
 
   get index() {
     return this.parent.skills.indexOf(this)
+  }
+
+  initType() {
+    this.type = this.effects.some(eft => eft.branches.some(bch => bch.name === SkillBranchNames.Passive)) ? SkillTypes.Passive : SkillTypes.Active
   }
 
   appendSkillEffect(main: number, sub: number, body: number) {
