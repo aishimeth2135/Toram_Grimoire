@@ -1,9 +1,9 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ 'overscroll-none': mainStore.routerGuiding }">
     <template v-if="languageStore.i18nMessageLoaded">
       <AppNav />
       <AppLeftMenu />
-      <router-view class="main-section app-main" />
+      <router-view class="app--main" />
       <AppFooter />
       <AppInitialize />
       <AppConfirm />
@@ -41,6 +41,8 @@ import AppNotify from '@/views/app/notify.vue'
 import AppConfirm from '@/views/app/confirm.vue'
 import LoadingAnimation from '@/views/app/initialization/loading-animation.vue'
 
+import { useMainStore } from './stores/app/main'
+
 onMounted(() => {
   const el = document.getElementById('app--error')
   if (el) {
@@ -50,18 +52,15 @@ onMounted(() => {
 
 const languageStore = useLanguageStore()
 languageStore.updateLocaleGlobalMessages()
+
+const mainStore = useMainStore()
 </script>
 
-<style lang="less" scoped>
-#app {
-  .app-main {
-    min-height: calc(100vh - 8rem);
-  }
-
-  &::v-deep(.main-section) {
-    max-width: 48rem;
-    margin-left: auto;
-    margin-right: auto;
-  }
+<style lang="postcss" scoped>
+.app--main {
+  min-height: calc(100vh - 8rem);
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

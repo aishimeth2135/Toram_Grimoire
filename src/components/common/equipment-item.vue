@@ -1,6 +1,6 @@
 <template>
-  <cy-list-item :class="{ 'opacity-50': disabled }" :selected="selected">
-    <div class="flex items-center w-full">
+  <cy-list-item :selected="selected">
+    <div class="flex items-center w-full" :class="{ 'opacity-50': disabled }">
       <cy-icon-text
         :icon="equipment.is !== 'avatar' ? equipment.getCategoryImagePath() : equipment.categoryIcon"
         :icon-src="equipment.is !== 'avatar' ? 'image' : 'iconify'"

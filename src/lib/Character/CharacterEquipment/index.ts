@@ -135,9 +135,6 @@ abstract class CharacterEquipment {
   }
 
   static getImagePath(type: EquipmentTypes, fieldId: number = -1): string {
-    // const pre = '/imgs/character/equipment';
-    // const fieldIdStr = fieldId !== -1 ? '/i' + fieldId.toString() : '';
-    // return `${pre}/${type}${fieldIdStr}.png`;
     return Images.equipmentIcons.get(type + (fieldId === -1 ? '' : `-${fieldId}`))
   }
 
@@ -210,14 +207,11 @@ abstract class CharacterEquipment {
     if (this instanceof Armor) {
       if (this instanceof SubArmor) {
         eq = new SubArmor(this.origin, name, stats, this.type, this.def)
-      }
-      if (this instanceof BodyArmor) {
+      } else if (this instanceof BodyArmor) {
         eq = new BodyArmor(this.origin, name, stats, this.def)
-      }
-      if (this instanceof AdditionalGear) {
+      } else if (this instanceof AdditionalGear) {
         eq = new AdditionalGear(this.origin, name, stats, this.def)
-      }
-      if (this instanceof SpecialGear) {
+      } else if (this instanceof SpecialGear) {
         eq = new SpecialGear(this.origin, name, stats, this.def)
       }
       if (eq) {
@@ -258,22 +252,19 @@ abstract class CharacterEquipment {
     let instance = -1
     if (this instanceof MainWeapon) {
       instance = 0
-    }
-    else if (this instanceof SubWeapon) {
+    } else if (this instanceof SubWeapon) {
       instance = 1
-    }
-    else if (this instanceof SubArmor) {
+    } else if (this instanceof SubArmor) {
       instance = 2
-    }
-    else if (this instanceof BodyArmor) {
+    } else if (this instanceof BodyArmor) {
       instance = 3
-    }
-    else if (this instanceof AdditionalGear)
+    } else if (this instanceof AdditionalGear) {
       instance = 4
-    else if (this instanceof SpecialGear)
+    } else if (this instanceof SpecialGear) {
       instance = 5
-    else if (this instanceof Avatar)
+    } else if (this instanceof Avatar) {
       instance = 6
+    }
 
     data.instance = instance
     data.type = this.type
@@ -314,10 +305,8 @@ abstract class CharacterEquipment {
     'element_dark',
   ]
 
-  static loadEquipment(data: EquipmentSaveData) {
+  static loadEquipment(data: EquipmentSaveData): CharacterEquipment | null {
     try {
-      let success = true
-
       const { id, name, instance, stability, refining, atk, def, crystals, isCustom } = data
       const stats = data.stats.map(p => StatRestriction.load(p)).filter(stat => stat !== null) as StatRestriction[]
 
@@ -365,28 +354,22 @@ abstract class CharacterEquipment {
       }
       if (eq.hasCrystal && crystals) {
         eq.crystals = crystals.map(crystalName => {
-          const crystal = Grimoire.Items.crystals.find(p => p.name === crystalName)
+          const crystal = Grimoire.Items.crystals.find(_crystal => _crystal.name === crystalName)
           if (crystal) {
             return new EquipmentCrystal(crystal)
           }
-
-          success = false
-          console.warn('[Error: CharacterEquipment.load] can not find crystal which name: ' + crystalName)
+          console.warn('[CharacterEquipment.load] Can not find crystal: ' + crystalName)
           return null
-        }).filter(crystal => crystal !== null) as EquipmentCrystal[]
+        }).filter(crystal => crystal) as EquipmentCrystal[]
       }
 
       eq.setCustom(isCustom)
 
-      return {
-        success,
-        equipment: eq,
-      }
-    } catch (e) {
-      console.warn(e)
-      return {
-        error: true,
-      }
+      return eq
+    } catch (err) {
+      console.warn('[CharacterEquipment.load] An unexpected error occurred.')
+      console.warn(err)
+      return null
     }
   }
 

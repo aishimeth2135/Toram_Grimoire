@@ -67,6 +67,13 @@ export class SkillBuild {
     this.regressSkillTree(skill, levelSet)
   }
 
+  addStarGemLevel(skill: Skill, level: number) {
+    const state = this.getSkillState(skill)
+    let levelSet = state.starGemLevel + level
+    levelSet = Math.min(10, Math.max(levelSet, 0))
+    state.starGemLevel = levelSet
+  }
+
   regressSkillTree(start: Skill, level: number) {
     const checkSkill = (skill: Skill, set: number) => {
       this.getSkillState(skill).level = set
@@ -106,6 +113,20 @@ export class SkillBuild {
 
   get allSkills(): Skill[] {
     return [...this._skillStatesMap.keys()]
+  }
+
+  get skillPointSum() {
+    let level = 0
+    let starGemLevel = 0
+    ;[...this._skillStatesMap.values()].forEach(state => {
+      level += state.level
+      starGemLevel += Math.max(state.starGemLevel - state.level, 0)
+    })
+
+    return {
+      level,
+      starGemLevel,
+    }
   }
 
   toggleSkillTreeSelected(skillTree: SkillTree) {

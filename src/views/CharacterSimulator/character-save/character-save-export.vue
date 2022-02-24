@@ -6,7 +6,7 @@
       </cy-icon-text>
     </template>
     <template #default>
-      <template v-for="datasItem in exportDatas" :key="datasItem.id">
+      <template v-for="datasItem in exportDatasDisplay" :key="datasItem.id">
         <div class="flex items-center sticky top-0 bg-white z-1">
           <cy-button-check
             :selected="datasItem.items.size === datasItem.originalItems.length"
@@ -67,12 +67,11 @@ import { useI18n } from 'vue-i18n'
 import { computed, reactive, ref, toRefs, watch } from 'vue'
 
 import { SkillBuildSaveData } from '@/stores/views/character/skill-build/SkillBuild'
-import { CharacterSimulatorSaveData } from '@/stores/views/character'
+import { CharacterSimulatorSaveData, EquipmentSaveDataWithIndex } from '@/stores/views/character'
 
 import Cyteria from '@/shared/utils/Cyteria'
 
 import { CharacterSaveData } from '@/lib/Character/Character'
-import { EquipmentSaveData } from '@/lib/Character/CharacterEquipment'
 import { FoodsSaveData } from '@/lib/Character/Food'
 
 import { setupCharacterStore } from '../setup'
@@ -120,7 +119,7 @@ const exportDataItemCharacters: ExportDataItem<CharacterSaveData> = reactive({
   items: new Set(),
   originalItems: [],
 })
-const exportDataItemEquipments: ExportDataItem<EquipmentSaveData> = reactive({
+const exportDataItemEquipments: ExportDataItem<EquipmentSaveDataWithIndex> = reactive({
   id: ExportDataItemIds.Equipments,
   title: t('character-simulator.equipment-info.equipment'),
   collapse: false,
@@ -147,6 +146,8 @@ const exportDatas: ExportDataItem[] = reactive([
   exportDataItemSkillBuilds,
   exportDataItemFoodBuilds,
 ])
+
+const exportDatasDisplay = computed(() => exportDatas.filter(data => data.originalItems.length !== 0))
 
 const allSelected = computed<boolean>({
   get() {

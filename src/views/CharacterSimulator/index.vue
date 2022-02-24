@@ -27,13 +27,13 @@
       :equipment="editCrystalCurrentEquipment"
       @close="editCrystalCurrentEquipment = null"
     />
-    <CharacterEquipmentBasic
-      :equipment="editBasicCurrentEquipment"
-      @close="editBasicCurrentEquipment = null"
-    />
     <CharacterAppendEquipments
       :visible="modals.appendEquipments"
       @close="toggle('modals/appendEquipments', false)"
+    />
+    <CharacterEquipmentBasic
+      :equipment="editBasicCurrentEquipment"
+      @close="editBasicCurrentEquipment = null"
     />
     <CharacterEquipmentCustomCreate
       :visible="modals.createCustomEquipment"
@@ -53,7 +53,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, onMounted, provide, Ref, ref } from 'vue'
+import { computed, onMounted, provide, Ref, ref, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
@@ -181,21 +181,22 @@ const { store: foodStore, foodBuilds } = setupCharacterFoodStore()
 const mainStore = useMainStore()
 const router = useRouter()
 
-onMounted(() => {
-  if (mainStore.redirectPathName === 'SkillSimulator') {
-    router.replace({ name: 'SkillSimulator' })
-    mainStore.clearRedirectPathName()
-  }
+AutoSave({
+  save: () => store.saveCharacterSimulator(),
+  loadFirst: () => store.loadCharacterSimulator(),
+})
+
+onMounted(async () => {
   if (characters.value.length === 0) {
     store.createCharacter()
   }
   if (foodBuilds.value.length === 0) {
     foodStore.createFoodBuild()
   }
-})
-
-AutoSave({
-  save: () => store.saveCharacterSimulator(),
-  loadFirst: () => store.loadCharacterSimulator(),
+  if (mainStore.redirectPathName === 'SkillSimulator') {
+    await nextTick()
+    mainStore.clearRedirectPathName()
+    router.replace({ name: 'SkillSimulator' })
+  }
 })
 </script>

@@ -33,7 +33,7 @@ import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { LevelSkill, Skill, SkillTree } from '@/lib/Skill/Skill'
+import { Skill, SkillTree } from '@/lib/Skill/Skill'
 
 import SkillTreeDiagram from '@/views/SkillQuery/skill-tree-diagram.vue'
 
@@ -52,11 +52,7 @@ Grimoire.Skill.skillRoot.skillTreeCategorys.forEach(stc => skillTrees.push(...st
 
 const selectedSkillTrees = computed<SkillTree[]>(() => currentSkillBuild.value?.selectedSkillTrees ?? [])
 
-/** TODO: skill will never be LevelSkill */
-const skillClick = (skill: Skill | LevelSkill) => {
-  if (skill instanceof LevelSkill) {
-    return
-  }
+const skillClick = (skill: Skill) => {
   emit('skill-click', skill)
 }
 

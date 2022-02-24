@@ -72,7 +72,7 @@
         :r="data.r"
         :class="handleSkillCircleClass(data)"
         :style="data.style"
-        @click="emit('skill-click', data.skill)"
+        @click="emit('skill-click', data.skill!)"
       />
       <text
         :x="drawNameDatas[idx].x"
@@ -90,19 +90,19 @@ import { computed, toRefs } from 'vue'
 
 import CY from '@/shared/utils/Cyteria'
 
-import { Skill, SkillTree, LevelSkill, LevelSkillTree } from '@/lib/Skill/Skill'
+import { Skill, SkillTree } from '@/lib/Skill/Skill'
 import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs, DrawSkillTreeData, SetSkillButtonExtraDataHandle, GetSkillLevelHandler } from '@/lib/Skill/utils/DrawSkillTree'
 import { DrawSkillTreeDataTypes } from '@/lib/Skill/utils/enums'
 
 interface Props {
-  skillTree: SkillTree | LevelSkillTree;
+  skillTree: SkillTree;
   setSkillButtonExtraData?: SetSkillButtonExtraDataHandle;
   getSkillLevel?: GetSkillLevelHandler;
-  currentSkill?: Skill | LevelSkill | null;
+  currentSkill?: Skill | null;
 }
 
 interface Emits {
-  (evt: 'skill-click', skill: Skill | LevelSkill): void;
+  (evt: 'skill-click', skill: Skill): void;
 }
 
 const props = withDefaults(defineProps<Props>(), {

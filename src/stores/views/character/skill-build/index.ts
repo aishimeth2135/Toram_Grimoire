@@ -23,9 +23,11 @@ export const useCharacterSkillBuildStore = defineStore('view-character-skill-bui
     return newBuild
   }
 
-  const appendSkillBuild = (build: SkillBuild) => {
+  const appendSkillBuild = (build: SkillBuild, updateIndex = true) => {
     skillBuilds.value.push(build)
-    currentSkillBuildIndex.value = skillBuilds.value.length - 1
+    if (updateIndex) {
+      currentSkillBuildIndex.value = skillBuilds.value.length - 1
+    }
   }
 
   const copyCurrentSkillBuild = () => {

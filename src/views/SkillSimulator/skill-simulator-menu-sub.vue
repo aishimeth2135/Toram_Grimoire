@@ -1,9 +1,9 @@
 <template>
-  <div v-if="currentSkillBuild" class="flex items-end ml-auto sticky z-10 px-2 bottom-20 mt-4">
-    <cy-transition type="fade">
+  <div v-if="currentSkillBuild" class="flex items-end ml-auto sticky z-10 px-2 mt-4 space-x-3" style="bottom: 4.5rem">
+    <cy-transition type="fade" mode="out-in">
       <div
         v-if="contents.mainMenu"
-        class="space-y-2 border-1 border-light-2 rounded-xl p-4 bg-white mr-3 overflow-y-auto"
+        class="space-y-2 border-1 border-light-2 rounded-xl p-4 bg-white overflow-y-auto"
         style="max-height: 60vh;"
       >
         <div class="flex items-center">
@@ -49,10 +49,18 @@
             {{ t('global.remove') }}
           </cy-button-border>
         </div>
+        <div class="mt-3 pt-3 border-t border-light-2 space-x-2">
+          <cy-button-border icon="uil:image-download" @click="emit('export-image')">
+            {{ t('skill-simulator.export-image.title') }}
+          </cy-button-border>
+          <cy-button-border icon="mdi:note-text-outline" @click="emit('export-text')">
+            {{ t('skill-simulator.export-text-title') }}
+          </cy-button-border>
+        </div>
       </div>
       <div
         v-else-if="contents.selectSkillTree"
-        class="space-y-2 border-1 border-light-2 rounded-xl p-4 bg-white mr-3 overflow-y-auto"
+        class="space-y-2 border-1 border-light-2 rounded-xl p-4 bg-white overflow-y-auto"
         style="max-height: 60vh;"
       >
         <div v-for="stc in skillTreeCategorys" :key="`stc-${stc.id}`">
@@ -73,7 +81,7 @@
       </div>
       <div
         v-else-if="contents.goSkillTree"
-        class="space-y-2 border-1 border-light-2 rounded-xl p-4 bg-white mr-3 overflow-y-auto"
+        class="space-y-2 border-1 border-light-2 rounded-xl p-4 bg-white overflow-y-auto"
         style="max-height: 60vh;"
       >
         <div v-for="stc in skillTreeCategorys" :key="`stc-${stc.id}`">
@@ -89,6 +97,24 @@
             >
               {{ st.name }}
             </cy-button-inline>
+          </div>
+        </div>
+      </div>
+      <div v-else class="space-x-2.5 flex items-center">
+        <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white">
+          <cy-icon-text icon="mdi:script-outline" size="small">
+            {{ t('skill-simulator.skill-level-point') }}
+          </cy-icon-text>
+          <div class="text-sm text-light-3">
+            {{ skillPointSum.level }}
+          </div>
+        </div>
+        <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white">
+          <cy-icon-text icon="mdi:judaism" size="small">
+            {{ t('skill-simulator.star-gem-level-point') }}
+          </cy-icon-text>
+          <div class="text-sm text-water-blue">
+            {{ skillPointSum.starGemLevel }}
           </div>
         </div>
       </div>
@@ -128,6 +154,8 @@ import { setupSkillBuildStore } from './setup'
 
 interface Emits {
   (evt: 'go-skill-tree', skillTree: SkillTree): void;
+  (evt: 'export-image'): void;
+  (evt: 'export-text'): void;
 }
 
 const emit = defineEmits<Emits>()
@@ -147,5 +175,15 @@ const removeCurrentSkillBuild = () => {
 
 const { contents, toggle } = ToggleService({
   contents: ['mainMenu', 'selectSkillTree', 'goSkillTree'] as const,
+})
+
+const skillPointSum = computed(() => {
+  if (!currentSkillBuild.value) {
+    return {
+      level: 0,
+      starGemLevel: 0,
+    }
+  }
+  return currentSkillBuild.value.skillPointSum
 })
 </script>

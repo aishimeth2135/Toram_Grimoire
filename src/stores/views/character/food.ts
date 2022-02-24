@@ -19,12 +19,14 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
 
   const setCurrentFoodBuild = (idx: number) => currentFoodBuildIndex.value = idx
 
-  const createFoodBuild = ({ name, foodBuild }: { name?: string; foodBuild?: FoodBuild } = {}) => {
+  const createFoodBuild = ({ name, foodBuild }: { name?: string; foodBuild?: FoodBuild } = {}, updateIndex = true) => {
     if (!foodsBase.value) {
       return
     }
     foodBuilds.value.push(foodBuild ?? foodsBase.value.createFoods(name || (Grimoire.i18n.t('character-simulator.food-build.food-build') + ' ' + (foodBuilds.value.length + 1))))
-    currentFoodBuildIndex.value = foodBuilds.value.length - 1
+    if (updateIndex) {
+      currentFoodBuildIndex.value = foodBuilds.value.length - 1
+    }
   }
 
   const removeFoodBuild = (idx: number) => {

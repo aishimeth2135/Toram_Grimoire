@@ -2,17 +2,23 @@ import sanitize from 'sanitize-filename'
 
 
 type FileSaveOptions = {
-  data: string;
+  data?: string;
   fileType?: string;
   fileName: string;
+  dataUrl?: string;
 }
 
-function save({ data, fileType = 'text/txt', fileName }: FileSaveOptions): void {
-  const blob = new Blob([data], { type: fileType + ';charset=utf-8;' })
+function save({ data, fileType = 'text/txt', fileName, dataUrl }: FileSaveOptions): void {
+  if (!dataUrl) {
+    if (!data) {
+      console.warn('[file.save] data and dataUrl must give at least one.')
+      return
+    }
+    const blob = new Blob([data], { type: fileType + ';charset=utf-8;' })
+    dataUrl = URL.createObjectURL(blob)
+  }
   const link = document.createElement('a')
-
-  const url = URL.createObjectURL(blob)
-  link.setAttribute('href', url)
+  link.setAttribute('href', dataUrl)
   link.setAttribute('download', sanitize(fileName.replace(/\s/g, '_')))
   link.style.display = 'none'
   document.body.appendChild(link)

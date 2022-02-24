@@ -1,8 +1,18 @@
 skill-level: 技能等級
 star-gem-level: 星石等級
+skill-level-point: 技能點數
+star-gem-level-point: 星石點數
+star-gem-list: 星石清單
 increase-level: 增加
 decrease-level: 減少
 skill-build: 技能配置
 create-build: 新增配置
 default-tips: 還沒有選取任何技能樹。請點擊右下方的按鈕來新增技能樹0.0
 remove-build-tips: 移除配置成功。
+export-image:
+  skill-point-sum-caption: 總共使用了{sum}技能點數。
+  star-gem-point-sum-caption: 星石總共提供了{sum}技能點數。
+  watermark: 布偶的魔法書 cy-grimoire.netlify.app
+  preview-ios-tips: 於IOS系統上使用此功能下載圖片時，部分瀏覽器還不支援「設定檔名」的功能，因此下載圖片時可能會發生副檔名不為PNG的問題。若遇到此問題，請在下載圖片後自行將檔名改成「XXX.png」，該圖片就可以正常顯示。
+  title: 匯出圖片
+export-text-title: 匯出文本

@@ -205,7 +205,7 @@ class Character {
       if (field.equipment !== null) {
         idx = equipments.indexOf(field.equipment)
         if (idx === -1) {
-          console.warn('Can not find equipment of Field in List of equipments')
+          console.warn('[Character.save] Can not find equipment in list.')
           return null
         }
       }
@@ -218,20 +218,21 @@ class Character {
 
     return data
   }
-  load(data: CharacterSaveData, equipments: CharacterEquipment[]): { success: boolean; error: null | boolean } {
-    try {
-      let success = true
 
+  /**
+   * @returns true if load successfully
+   */
+  load(data: CharacterSaveData, equipments: (CharacterEquipment | null)[]): boolean {
+    try {
       const { name, level, normalBaseStats, optionalBaseStat, fields } = data
       this.name = name
       this.level = level
       normalBaseStats.forEach(bstat => {
-        const find = this.normalBaseStats.find(a => a.name === bstat.name)
+        const find = this.normalBaseStats.find(_bstat => _bstat.name === bstat.name)
         if (find)
           find.value = bstat.value
         else {
           console.warn('[Character.save] Can not find CharacterBaseStat which name: ' + bstat.name)
-          success = false
         }
       })
       if (optionalBaseStat) {
@@ -240,7 +241,6 @@ class Character {
           this.optionalBaseStat.value = optionalBaseStat.value
         else {
           console.warn('[Character.save] Can not find Optional-CharacterBaseStat which name: ' + optionalBaseStat.name)
-          success = false
         }
       }
       const fieldTypes = {
@@ -256,28 +256,21 @@ class Character {
           const find = this.equipmentFields.find(field => field.type === fieldTypes[fieldData.type] && field.index === fieldData.index)
           if (find) {
             const eq = equipments[fieldData.equipmentIndex]
-            if (eq)
+            if (eq) {
               find.equipment = eq
-            else
-              console.warn(`Index: ${fieldData.index} of equipments is null.`)
+            }
           }
           else {
-            console.warn(`Can not find Equipment Field of Character which type: ${fieldData.type} , index: ${fieldData.index}`)
-            success = false
+            console.warn(`[Character.load] Can not find equipment field of character which type: ${fieldData.type} , index: ${fieldData.index}`)
           }
         }
       })
 
-      return {
-        success,
-        error: null,
-      }
-    } catch (e) {
-      console.warn(e)
-      return {
-        success: false,
-        error: true,
-      }
+      return true
+    } catch (err) {
+      console.warn('[Character.load] An unexpected error occurred.')
+      console.error(err)
+      return false
     }
   }
 }
