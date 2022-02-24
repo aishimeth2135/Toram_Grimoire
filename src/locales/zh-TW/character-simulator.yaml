@@ -42,7 +42,7 @@ equipment-info:
   crystal-empty: 空空的鍛晶
   equipment-type: 裝備類型
 equipment-basic-editor:
-  title: 自訂裝備設定
+  title: 裝備設定
   edit-stats:
     title: 管理裝備能力
     search-placeholder: 搜尋能力

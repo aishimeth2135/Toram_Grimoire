@@ -60,37 +60,39 @@
       </div>
     </template>
     <template #extra-content>
-      <div class="flex items-center mb-3 px-3 py-1 bg-white border-1 border-light-2">
-        <i18n-t
-          keypath="character-simulator.append-equipments.search-equipment-selected-text"
-          tag="div"
-          class="flex-items-center"
-          scope="global"
-        >
-          <template #num>
-            <span class="inline-flex items-center justify-center h-7 w-7 border-1 border-light-3 mr-3 rounded-full">
-              <span>{{ selectedEquipments.length }}</span>
-            </span>
-          </template>
-        </i18n-t>
-        <span class="ml-auto text-light-3 cursor-pointer" @click="clearSelectedEquipments">
-          {{ t('global.clear') }}
-        </span>
-      </div>
-      <div v-if="selectedEquipments.length !== 0" class="border-1 border-light-2 bg-white">
-        <EquipmentItem
-          v-for="item in selectedEquipments"
-          :key="item.instanceId"
-          :equipment="item"
-          @click="removeEquipment(item)"
-        >
-          <template #extra>
-            <span class="text-sm text-light-2 ml-4">
-              {{ getObtainText(item) }}
-            </span>
-            <cy-icon-text icon="ic-round-close" class="ml-auto" />
-          </template>
-        </EquipmentItem>
+      <div class="bg-white border-1 border-light-2 px-1">
+        <div class="flex items-center px-3 py-2">
+          <i18n-t
+            keypath="character-simulator.append-equipments.search-equipment-selected-text"
+            tag="div"
+            class="flex-items-center"
+            scope="global"
+          >
+            <template #num>
+              <span class="inline-flex items-center justify-center h-7 w-7 border-1 border-light-3 mr-3 rounded-full">
+                <span>{{ selectedEquipments.length }}</span>
+              </span>
+            </template>
+          </i18n-t>
+          <span class="ml-auto text-light-3 cursor-pointer" @click="clearSelectedEquipments">
+            {{ t('global.clear') }}
+          </span>
+        </div>
+        <div v-if="selectedEquipments.length !== 0">
+          <EquipmentItem
+            v-for="item in selectedEquipments"
+            :key="item.instanceId"
+            :equipment="item"
+            @click="removeEquipment(item)"
+          >
+            <template #title-end>
+              <span class="text-sm text-light-2 ml-4">
+                {{ getObtainText(item) }}
+              </span>
+              <cy-icon-text icon="ic-round-close" class="ml-auto" />
+            </template>
+          </EquipmentItem>
+        </div>
       </div>
     </template>
   </cy-modal>

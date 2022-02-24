@@ -57,7 +57,7 @@ const { element, target, positionMode, custom } = toRefs(props)
 const contentClass = computed(() => {
   let classList = 'overflow-y-auto max-w-full'
   if (!custom.value) {
-    classList += ' border-1 rounded-lg border-light-3 px-4 py-2 bg-white'
+    classList += ' border-1 rounded-md drop-shadow border-light-3 px-4 py-2 bg-white'
   }
   return classList
 })

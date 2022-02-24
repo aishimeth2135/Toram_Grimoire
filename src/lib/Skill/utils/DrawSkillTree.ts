@@ -3,12 +3,13 @@ import { CSSProperties } from 'vue'
 import { Images } from '@/shared/services/Images'
 import CY from '@/shared/utils/Cyteria'
 
-import { LevelSkill, LevelSkillTree, Skill, SkillTree } from '../Skill'
+import { Skill, SkillTree } from '../Skill'
 import { DrawSkillTreeDataTypes } from './enums'
 
 interface DrawSettingData {
   gridWidth: number;
-  svgPadding: number;
+  svgPaddingX: number;
+  svgPaddingY: number;
   textMargin: number;
   iconPadding: number;
 }
@@ -16,7 +17,8 @@ interface DrawSettingData {
 function GetDrawSetting(): DrawSettingData {
   return {
     gridWidth: 48,
-    svgPadding: 16,
+    svgPaddingX: 48,
+    svgPaddingY: 24,
     textMargin: 5,
     iconPadding: 4,
   }
@@ -60,7 +62,7 @@ function createDrawSkillTreeDefs() {
   return defs
 }
 
-type SetSkillButtonExtraDataHandle = (skill: Skill | LevelSkill, drawData: DrawSkillTreeDataExtraCallbackPayload) => DrawSkillTreeData[]
+type SetSkillButtonExtraDataHandle = (skill: Skill, drawData: DrawSkillTreeDataExtraCallbackPayload) => DrawSkillTreeData[]
 type GetSkillLevelHandler = (skill: Skill) => { level: number; starGemLevel: number }
 
 interface ComputeDrawSkillTreeDataOptions {
@@ -71,34 +73,26 @@ interface DrawSkillTreeData {
   type: DrawSkillTreeDataTypes;
   class?: string[];
   style?: CSSProperties;
+  skill?: Skill;
   [key: string]: any;
 }
 interface DrawSkillTreeDataExtraCallbackPayload extends DrawSettingData {
   cx: number;
   cy: number;
-  lengthTransformFunction: (value: number) => number;
+  lengthTransformFunction: (value: number, type: 'x' | 'y') => number;
 }
 
-function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
+function computeDrawSkillTreeData(skillTree: SkillTree, {
   setSkillButtonExtraData = () => [],
   getSkillLevel,
 }: ComputeDrawSkillTreeDataOptions = {}) {
 
   const findSkillByDrawOrder = (order: number) => {
-    if (skillTree instanceof SkillTree) {
-      return skillTree.skills.find(sk => sk.drawOrder === order) as Skill
-    }
-    return skillTree.levelSkills.find(sk => sk.base.drawOrder === order) as LevelSkill
-  }
-  const getBaseSkill = (skill: Skill | LevelSkill): Skill => {
-    if (skill instanceof Skill) {
-      return skill
-    }
-    return skill.base
+    return skillTree.skills.find(sk => sk.drawOrder === order)!
   }
 
-  const skills = skillTree instanceof SkillTree ? skillTree.skills : skillTree.levelSkills
-  let drawTreeCode = skillTree instanceof SkillTree ? skillTree.drawTreeCode : skillTree.base.drawTreeCode
+  const skills = skillTree.skills
+  let drawTreeCode = skillTree.drawTreeCode
 
   drawTreeCode = drawTreeCode || 'S E S E S E S L S E S E S E S L S E S E S E S L S E S E S E S'
 
@@ -107,7 +101,8 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
     .split(/[\s\n]+/)
   const drawData = GetDrawSetting()
   const width = drawData.gridWidth,
-    paddding = drawData.svgPadding,
+    padddingX = drawData.svgPaddingX,
+    padddingY = drawData.svgPaddingY,
     textMargin = drawData.textMargin
 
   const data: DrawSkillTreeData[] = []
@@ -116,7 +111,13 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
     maxw = 0,
     cnt = 0
 
-  const tran = (value: number) => paddding + width / 2 + value * width + textMargin
+  const tran = (value: number, type: 'x' | 'y') => {
+    const paddding = type === 'x' ? padddingX : padddingY
+    return paddding + width / 2 + value * width + textMargin
+  }
+
+  const tranX = (value: number) => tran(value, 'x')
+  const tranY = (value: number) => tran(value, 'y')
 
   codes.forEach(code => {
     if (cnt === skills.length)
@@ -135,42 +136,41 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
         if (sub === 'R') {
           data.push({
             type: DrawSkillTreeDataTypes.TreeLine,
-            x1: tran(curx),
-            y1: tran(cury),
-            x2: tran(curx + 1),
-            y2: tran(cury),
+            x1: tranX(curx),
+            y1: tranY(cury),
+            x2: tranX(curx + 1),
+            y2: tranY(cury),
           })
         } else if (sub === 'B') {
           data.push({
             type: DrawSkillTreeDataTypes.TreeLine,
-            x1: tran(curx),
-            y1: tran(cury),
-            x2: tran(curx),
-            y2: tran(cury + 1),
+            x1: tranX(curx),
+            y1: tranY(cury),
+            x2: tranX(curx),
+            y2: tranY(cury + 1),
           })
         }
       })
       if (main === 'D') {
         data.push({
           type: DrawSkillTreeDataTypes.TreeDot,
-          cx: tran(curx),
-          cy: tran(cury),
+          cx: tranX(curx),
+          cy: tranY(cury),
           r: 2,
           class: ['dot'],
         })
       } else if (main === 'S') {
-        const _skill = findSkillByDrawOrder(cnt)
-        const bskill = getBaseSkill(_skill)
-        const name = bskill.name || '?'
+        const skill = findSkillByDrawOrder(cnt)
+        const name = skill.name || '?'
         const skillCircleData = {
           type: DrawSkillTreeDataTypes.SkillCircle,
-          cx: tran(curx),
-          cy: tran(cury),
+          cx: tranX(curx),
+          cy: tranY(cury),
           r: width / 2,
           class: ['skill-circle'],
           style: {} as Record<string, string>,
-          skill: _skill,
-          path: getSkillIconPath(bskill),
+          skill,
+          path: getSkillIconPath(skill),
         }
         let skillNameData: DrawSkillTreeData | null = null,
           extraDatas: DrawSkillTreeData[] = []
@@ -179,27 +179,29 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
           if (name !== '@lock') {
             skillNameData = {
               type: DrawSkillTreeDataTypes.SkillName,
-              x: tran(curx),
-              y: tran(cury) - width / 2 - textMargin,
+              x: tranX(curx),
+              y: tranY(cury) - width / 2 - textMargin,
               innerText: name,
               class: ['skill-name'],
             }
-            const patid = getSkillIconPatternId(bskill)
+            const patid = getSkillIconPatternId(skill)
             skillCircleData.style.fill = 'url(#' + patid + ')'
-            extraDatas = setSkillButtonExtraData(_skill, Object.assign({
+            extraDatas = setSkillButtonExtraData(skill, Object.assign({
               cx: curx,
               cy: cury,
               lengthTransformFunction: tran,
             }, drawData) as DrawSkillTreeDataExtraCallbackPayload)
-            if (getSkillLevel && _skill instanceof Skill) {
-              const { level, starGemLevel } = getSkillLevel(_skill)
+
+            // render skill level
+            if (getSkillLevel) {
+              const { level, starGemLevel } = getSkillLevel(skill)
               const offset = drawData.gridWidth / 2 + 3
               const textYFix = 1
               if (level !== 0) {
                 extraDatas.push({
                   type: DrawSkillTreeDataTypes.SkillLevelText,
-                  x: tran(curx) + offset,
-                  y: tran(cury) + offset + textYFix,
+                  x: tranX(curx) + offset,
+                  y: tranY(cury) + offset + textYFix,
                   innerText: level,
                   class: ['skill-level-text'],
                 })
@@ -207,8 +209,8 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
               if (starGemLevel !== 0) {
                 extraDatas.push({
                   type: DrawSkillTreeDataTypes.StarGemLevelText,
-                  x: tran(curx) - offset,
-                  y: tran(cury) + offset + textYFix,
+                  x: tranX(curx) - offset,
+                  y: tranY(cury) + offset + textYFix,
                   innerText: starGemLevel,
                   class: ['star-gem-level-text'],
                 })
@@ -229,19 +231,19 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
     } else if (main === 'H') {
       data.push({
         type: DrawSkillTreeDataTypes.TreeLine,
-        x1: tran(curx),
-        y1: tran(cury),
-        x2: tran(curx + 1),
-        y2: tran(cury),
+        x1: tranX(curx),
+        y1: tranY(cury),
+        x2: tranX(curx + 1),
+        y2: tranY(cury),
       })
       curx += 1
     } else if (main === 'V') {
       data.push({
         type: DrawSkillTreeDataTypes.TreeLine,
-        x1: tran(curx),
-        y1: tran(cury),
-        x2: tran(curx),
-        y2: tran(cury + 1),
+        x1: tranX(curx),
+        y1: tranY(cury),
+        x2: tranX(curx),
+        y2: tranY(cury + 1),
       })
       curx += 1
     }
@@ -252,8 +254,8 @@ function computeDrawSkillTreeData(skillTree: SkillTree | LevelSkillTree, {
 
   return {
     data: data,
-    width: tran(maxw) - width / 2 + paddding,
-    height: tran(cury) + width / 2 + paddding + textMargin,
+    width: tranX(maxw) - width / 2 + padddingX,
+    height: tranY(cury) + width / 2 + padddingY + textMargin,
   }
 }
 
@@ -282,10 +284,7 @@ interface SkillIconPatternDataItem {
   }];
 }
 
-function getSkillIconPatternData(skillTree: SkillTree | LevelSkillTree): SkillIconPatternDataItem[] {
-  if (skillTree instanceof LevelSkillTree) {
-    skillTree = skillTree.base
-  }
+function getSkillIconPatternData(skillTree: SkillTree): SkillIconPatternDataItem[] {
   const drawData = GetDrawSetting()
   const width = drawData.gridWidth,
     iconPad = drawData.iconPadding

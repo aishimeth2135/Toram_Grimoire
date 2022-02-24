@@ -57,7 +57,7 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(gro
     if (sub) {
       force = force ?? !targetGroup[sub].value
       if (!targetGroup[sub]) {
-        console.warn(`[ToggleService] key "${id}" not found.`)
+        console.warn(`[ToggleService] invalid key "${id}".`)
         return
       }
       targetGroup[sub].value = force
@@ -70,7 +70,7 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(gro
       }
     } else {
       if (force === undefined || force === null) {
-        console.warn('[ToggleService] Toggle the group must pass param: groupForce')
+        console.warn('[ToggleService] Toggle the group must pass param: groupForce.')
         return
       }
       Object.values(targetGroup).forEach(item => item.value = force!)

@@ -16,15 +16,20 @@
             @click.stop="closeModal"
           />
           <div class="modal-container" @click.stop>
-            <div class="pb-2 px-4">
-              <slot name="title" />
+            <div v-if="slots['title'] || title" class="pb-2 px-4">
+              <slot name="title">
+                <cy-icon-text :icon="titleIcon">
+                  {{ title }}
+                </cy-icon-text>
+              </slot>
             </div>
             <div class="p-4 pt-0 relative">
               <slot />
             </div>
-            <div v-if="footer" class="sticky bottom-0 mt-4 py-2 mx-4 bg-white flex">
+            <div v-if="footer" class="sticky bottom-0 mt-4 py-2 mx-4 bg-white flex justify-end space-x-2">
               <slot name="footer" :close-modal="closeModal">
-                <cy-button-border icon="ic-round-close" class="ml-auto" @click="closeModal">
+                <slot name="footer-actions" />
+                <cy-button-border icon="ic-round-close" @click="closeModal">
                   {{ t('global.close') }}
                 </cy-button-border>
               </slot>
@@ -57,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { computed, CSSProperties, ref, Ref } from 'vue'
+import { computed, CSSProperties, ref, Ref, useSlots } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { remToPixels } from '@/shared/utils/element'
@@ -76,6 +81,8 @@ interface Props {
   verticalPosition?: 'start' | 'center';
   width?: 'normal' | 'auto' | 'wide';
   footer?: boolean;
+  title?: string;
+  titleIcon?: string;
 }
 interface Emits {
   (evt: 'close'): void;
@@ -88,6 +95,8 @@ const props = withDefaults(defineProps<Props>(), {
   footer: false,
 })
 const emit = defineEmits<Emits>()
+
+const slots = useSlots()
 
 const rootClass = computed(() => {
   return {
@@ -136,7 +145,7 @@ const { t } = useI18n()
 
 <style lang="postcss" scoped>
 .cy--modal {
-  @apply fixed h-full w-full top-0 left-0 flex justify-center bg-black bg-opacity-10 overscroll-none;
+  @apply fixed h-full w-full top-0 left-0 flex justify-center bg-black bg-opacity-10;
 
   z-index: 49;
 
@@ -146,7 +155,7 @@ const { t } = useI18n()
     height: calc(100% - 2rem);
 
     & > .modal-container {
-      @apply w-full overflow-y-auto max-h-full pt-3 border-1 border-light bg-white;
+      @apply w-full overflow-y-auto max-h-full pt-3 border-1 border-light bg-white overscroll-none;
 
       min-height: 10rem;
     }
@@ -184,7 +193,7 @@ const { t } = useI18n()
 }
 
 .modal-extra {
-  @apply w-full h-full pr-2 overflow-y-auto;
+  @apply w-full h-full pr-2 overflow-y-auto overscroll-none;
 }
 
 .cy--modal--close-btn {

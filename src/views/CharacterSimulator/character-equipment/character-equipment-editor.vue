@@ -46,7 +46,7 @@
     </cy-input-counter>
     <cy-input-counter
       v-if="equipment.hasRefining"
-      v-model:value="equipment.refining/* eslint-disable-line vue/no-mutating-props */"
+      v-model:value="refining"
       class="mb-3"
       :range="[0, 15]"
     >
@@ -57,40 +57,37 @@
       </template>
     </cy-input-counter>
     <div v-if="equipment.hasCrystal" class="crystals">
-      <cy-button
+      <cy-button-line
         v-for="c in equipment.crystals"
         :key="c.id"
-        type="line"
         :icon="c.crystalIconPath"
         icon-src="image"
         @click="editCrystal"
       >
         {{ c.name }}
-      </cy-button>
-      <cy-button
+      </cy-button-line>
+      <cy-button-line
         v-if="equipment.crystals!.length < 2"
         icon="bx-bx-circle"
-        type="line"
         @click="editCrystal(equipment)"
       >
         {{ t('character-simulator.equipment-info.crystal-empty') }}
-      </cy-button>
+      </cy-button-line>
     </div>
     <div class="mt-3 pt-2 border-t border-solid border-light">
-      <cy-button
+      <cy-button-border
         icon="ic-round-edit"
-        type="border"
         @click="editBasic(equipment)"
       >
         {{ t('character-simulator.equipment-basic-editor.title') }}
-      </cy-button>
+      </cy-button-border>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { inject, ref, toRefs } from 'vue'
+import { computed, inject, ref, toRefs } from 'vue'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
@@ -120,6 +117,15 @@ const toggleCustomType = () => {
   }
   equipment.value.setCustomType(customTypeList[currentCustomTypeIndex.value])
 }
+
+const refining = computed<number>({
+  get() {
+    return equipment.value.refining!
+  },
+  set(value) {
+    equipment.value.refining = value
+  },
+})
 
 const { editCrystal, editBasic } = inject(CharacterSimulatorInjectionKey)!
 </script>

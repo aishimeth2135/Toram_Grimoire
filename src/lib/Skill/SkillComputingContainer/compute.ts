@@ -15,7 +15,10 @@ function computeBranchValue(str: string, helper: ComputedBranchHelperResult): st
     texts,
     handleFormulaExtra,
   } = helper
-
+  if (typeof str !== 'string') {
+    console.warn('[computeBranchValue] unexpected value: ' + str, helper)
+    return ''
+  }
   str = str
     // convert "A,,B" to "(A)+(B)"
     .split(/\s*,,\s*/).map(part => `(${part})`).join('+')

@@ -65,7 +65,7 @@
       </div>
     </template>
     <template v-if="selectedEquipment" #extra-content>
-      <div v-if="selectedEquipment" class="bg-white border-1 border-light-2 p-3">
+      <div v-if="selectedEquipment" class="bg-white border-1 border-light-2 py-2 px-3">
         <CharacterEquipmentInfo :equipment="selectedEquipment" />
       </div>
       <div v-if="compareCharacter" class="bg-white border-1 border-light-2 p-3 mt-3">

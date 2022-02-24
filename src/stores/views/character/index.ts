@@ -16,6 +16,9 @@ import { setupCharacterSkills, setupCharacterStats, setupFoodStats } from './set
 import { SkillBuild, SkillBuildSaveData } from './skill-build/SkillBuild'
 import { useCharacterSkillBuildStore } from './skill-build'
 
+interface EquipmentSaveDataWithIndex extends EquipmentSaveData {
+  idx: number;
+}
 
 interface CharacterStoreSaveSummary {
   characters: string[];
@@ -30,7 +33,7 @@ interface CharacterStoreSaveSummary {
 
 interface CharacterSimulatorSaveData {
   characters: CharacterSaveData[];
-  equipments: EquipmentSaveData[];
+  equipments: EquipmentSaveDataWithIndex[];
   skillBuilds: SkillBuildSaveData[];
   foodBuilds: FoodsSaveData[];
 }
@@ -76,13 +79,15 @@ export const useCharacterStore = defineStore('view-character', () => {
     currentCharacterIndex.value = idx
   }
 
-  const createCharacter = (chara?: Character) => {
+  const createCharacter = (chara?: Character, updateIndex = true) => {
     if (chara) {
       characters.value.push(chara)
     } else {
       characters.value.push(new Character(Grimoire.i18n.t('character-simulator.character')  + ' ' + (characters.value.length + 1)))
     }
-    currentCharacterIndex.value = characters.value.length - 1
+    if (updateIndex) {
+      currentCharacterIndex.value = characters.value.length - 1
+    }
   }
 
   const removeCharacter = (idx: number = currentCharacterIndex.value) => {
@@ -138,7 +143,7 @@ export const useCharacterStore = defineStore('view-character', () => {
 
   const createCharacterSimulatorSaveData = (): CharacterSimulatorSaveData => {
     const charactersData = characters.value.map(item => item.save(equipments.value))
-    const equipmentsData = equipments.value.map(item => item.save())
+    const equipmentsData = equipments.value.map((item, idx) => ({ idx, ...item.save() }))
     const skillBuildsData = skillBuildStore.saveSkillBuilds()
     const foodBuildsData = food.foodBuilds.map(item => item.save())
 
@@ -150,28 +155,32 @@ export const useCharacterStore = defineStore('view-character', () => {
     }
   }
   const loadCharacterSimulatorSaveData = (saveData: CharacterSimulatorSaveData, { ignoreSkillBuilds = false }: { ignoreSkillBuilds?: boolean } = {}) => {
-    const allValidEquipments = saveData.equipments.map(data => {
-      const load = CharacterEquipment.loadEquipment(data)
-      if (!load.error) {
-        return load.equipment
-      }
-      return null
-    }).filter(item => item) as CharacterEquipment[]
+    // lagacy
+    if (saveData.equipments.some(data => typeof data.idx !== 'number')) {
+      saveData.equipments = saveData.equipments.map((item, idx) => ({ ...item, idx }))
+    }
+
+    const allValidEquipmentsLength = saveData.equipments.map(data => data.idx).reduce((cur, item2) => Math.max(cur, item2), 0)
+    const allValidEquipments = Array<(CharacterEquipment | null)>(allValidEquipmentsLength).fill(null)
+    saveData.equipments.forEach(data => {
+      const equip = CharacterEquipment.loadEquipment(data)
+      allValidEquipments[data.idx] = equip
+    })
 
     saveData.characters.forEach(charaRow => {
       const chara = new Character()
       const load = chara.load(charaRow, allValidEquipments)
-      if (!load.error) {
-        createCharacter(chara)
+      if (load) {
+        createCharacter(chara, false)
       }
     })
 
-    appendEquipments(allValidEquipments)
+    appendEquipments(allValidEquipments.filter(equip => equip) as CharacterEquipment[])
 
     if (!ignoreSkillBuilds) {
       saveData.skillBuilds.forEach(buildData => {
         const build = SkillBuild.load(buildData)
-        skillBuildStore.appendSkillBuild(build)
+        skillBuildStore.appendSkillBuild(build, false)
       })
     }
 
@@ -179,7 +188,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       const foods = food.foodsBase!.createFoods()
       const load = foods.load(data)
       if (!load.error)
-        food.createFoodBuild({ foodBuild: foods })
+        food.createFoodBuild({ foodBuild: foods }, false)
     })
   }
 
@@ -194,7 +203,7 @@ export const useCharacterStore = defineStore('view-character', () => {
 
       const summary = JSON.parse(window.localStorage.getItem(prefix)!) as CharacterStoreSaveSummary
       const characterDatas = JSON.parse(window.localStorage.getItem(prefix + '--characters')!) as CharacterSaveData[]
-      const equipmentDatas = JSON.parse(window.localStorage.getItem(prefix + '--equipments')!) as EquipmentSaveData[]
+      const equipmentDatas = JSON.parse(window.localStorage.getItem(prefix + '--equipments')!) as EquipmentSaveDataWithIndex[]
       const skillBuildsCsv = window.localStorage.getItem(prefix + '--skillBuilds') ?? null
       const skillBuildsV2OriginalData = window.localStorage.getItem(prefix + '--skillBuilds-v2')
       const skillBuildsV2Data = skillBuildsV2OriginalData ? JSON.parse(skillBuildsV2OriginalData) as SkillBuildSaveData[] : null
@@ -379,4 +388,4 @@ export const useCharacterStore = defineStore('view-character', () => {
   }
 })
 
-export type { CharacterSimulatorSaveData }
+export type { CharacterSimulatorSaveData, EquipmentSaveDataWithIndex }

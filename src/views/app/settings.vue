@@ -159,7 +159,7 @@
       </fieldset>
       <fieldset class="app--settings-column">
         <legend>
-          <cy-icon-text icon="ic-round-save">
+          <cy-icon-text icon="ic-round-save" text-color="purple">
             {{ t('app.settings.storage-backup.title') }}
           </cy-icon-text>
         </legend>
