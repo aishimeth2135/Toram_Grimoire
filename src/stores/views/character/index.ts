@@ -213,13 +213,6 @@ export const useCharacterStore = defineStore('view-character', () => {
 
       const loadSkillBuildLagacy = !!skillBuildsV2Data
 
-      loadCharacterSimulatorSaveData({
-        characters: characterDatas,
-        equipments: equipmentDatas,
-        skillBuilds: skillBuildsV2Data ?? [],
-        foodBuilds,
-      })
-
       if (loadSkillBuildLagacy && skillBuildsCsv) {
         skill.loadSkillBuildsCsv({ csvString: skillBuildsCsv })
         ;(skill.skillBuilds as SkillBuildState[]).forEach(state => {
@@ -227,6 +220,13 @@ export const useCharacterStore = defineStore('view-character', () => {
           skillBuildStore.appendSkillBuild(build)
         })
       }
+
+      loadCharacterSimulatorSaveData({
+        characters: characterDatas,
+        equipments: equipmentDatas,
+        skillBuilds: skillBuildsV2Data ?? [],
+        foodBuilds,
+      }, { ignoreSkillBuilds: loadSkillBuildLagacy })
 
       // 讀檔過程會改寫index，因此最後設定index
       setCurrentCharacter(summary.characterIndex)

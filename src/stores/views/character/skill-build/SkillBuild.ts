@@ -75,9 +75,6 @@ export class SkillBuild {
   }
 
   regressSkillTree(start: Skill, level: number) {
-    const checkSkill = (skill: Skill, set: number) => {
-      this.getSkillState(skill).level = set
-    }
     if (level < 5) {
       const stk: Skill[] = [start]
       while (stk.length !== 0) {
@@ -85,19 +82,24 @@ export class SkillBuild {
         current.parent.skills.forEach(skill => {
           if (skill.previous === current.id) {
             stk.push(skill)
-            checkSkill(skill, 0)
+            this.getSkillState(skill).level = 0
           }
         })
       }
     }
-    let current = start
-    while (current.previous !== -1) {
-      const pre = current.parent.skills.find(sk => sk.id === current.previous)
-      if (!pre) {
-        break
+    if (level > 0) {
+      let current = start
+      while (current.previous !== -1) {
+        const pre = current.parent.skills.find(sk => sk.id === current.previous)
+        if (!pre) {
+          break
+        }
+        current = pre
+        const state = this.getSkillState(current)
+        if (state.level < 5) {
+          state.level = 5
+        }
       }
-      current = pre
-      checkSkill(current, 5)
     }
   }
 

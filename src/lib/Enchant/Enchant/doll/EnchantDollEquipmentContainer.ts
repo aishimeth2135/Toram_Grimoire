@@ -63,6 +63,10 @@ export default class EnchantDollEquipmentContainer {
     return this.copyFrom.cloneId + '-' + this.copyFrom.clones.indexOf(this).toString()
   }
 
+  findPositiveStat(stat: EnchantStat) {
+    return this.positiveStats.find(_stat => _stat.equals(stat))!
+  }
+
   /**
    * 退潛之前，把有倍率的能力先至少都附1，確保退最多的潛力值。
    * 1. 能力格優先保留給負屬，中途隨時確認剩下的格子夠不夠負屬全上，不夠的話就直接中止。
@@ -95,7 +99,7 @@ export default class EnchantDollEquipmentContainer {
     negatives.forEach(category => category.sortStats('max-effect'))
 
     const eq = this.equipment
-    const resultEqs = []
+    const resultEqs: EnchantDollEquipmentContainer[] = []
 
     // 倍率低的擺後面，補潛力時會被優先取用
     negatives.sort((a, b) => b.stats.length - a.stats.length)
@@ -179,9 +183,9 @@ export default class EnchantDollEquipmentContainer {
       const special = positivesHasRate
         .find((category, i) => i !== 0 && category.stats.length > 2 && category.stats[1].originalPotential === 3)
       /**
-       * 忽略其他能力，優先把耗潛3的能力往前附在第二個的附法
-       * FOR: A8%CD%CDC
-       */
+      * 忽略其他能力，優先把耗潛3的能力往前附在第二個的附法
+      * FOR: A8%CD%CDC
+      */
       if (special) {
         // 建立副本，去做正常的附法
         const newDollEq = this.clone()
@@ -386,16 +390,17 @@ export default class EnchantDollEquipmentContainer {
       const checkStepsRemainingPotential = () => allSteps.every(step => step.remainingPotential > 0)
 
       while (originalPotentialList.length !== 0) {
-        const pstat = positiveStats.find(stat => stat.equals(cur.stat)) as EnchantStat
+        const pstat = positiveStats.find(stat => stat.equals(cur.stat))!
         while (checkStepsRemainingPotential() && pstat.value !== 0) {
           if (cur.type === 'step') {
             cur.stat.value += 1
             pstat.value -= 1
           } else {
+            pstat.value -= 1
             cur = {
-              stat: firstStep.appendStat(cur.stat.itemBase, cur.stat.type, 1) as EnchantStepStat,
+              stat: firstStep.appendStat(cur.stat.itemBase, cur.stat.type, 1)!,
               type: 'step',
-              value: pstat.value - 1,
+              value: pstat.value,
               existedAndNoRate: cur.existedAndNoRate,
             }
           }
@@ -416,12 +421,14 @@ export default class EnchantDollEquipmentContainer {
           let specialFlag = false
           const currentSpecial = special as MostUsePotentialStatItemStep
           while (cur.stat.value !== 0) {
-            const lastRemainingPotential = (ceq.lastStep as EnchantStep).remainingPotential
+            const lastRemainingPotential = ceq.lastStep!.remainingPotential
             if (lastRemainingPotential !== 1 && (lastRemainingPotential - 1) % POTENTIAL === 0) {
               const _pstat = positiveStats.find(stat => stat.equals(currentSpecial.stat)) as EnchantStat
-              const maxv = Math.floor(lastRemainingPotential / POTENTIAL)
-              if (maxv + special.stat.value <= special.stat.potentialConvertThreshold && maxv <= _pstat.value
-                  && maxv * POTENTIAL < currentSpecial.stat.belongStep.remainingPotential) {
+              const maxv = (lastRemainingPotential - 1) / POTENTIAL
+              if (maxv + special.stat.value <= special.stat.potentialConvertThreshold
+                && maxv <= _pstat.value
+                && maxv * POTENTIAL < currentSpecial.stat.belongStep.remainingPotential
+              ) {
                 originalPotentialList.splice(originalPotentialList.indexOf(special), 1)
                 pstat.value += (statOriginalValue - cur.stat.value)
                 _pstat.value -= maxv
@@ -506,15 +513,16 @@ export default class EnchantDollEquipmentContainer {
     if (!lastStep) {
       return []
     }
-    const resultEqs = []
+    const resultEqs: EnchantDollEquipmentContainer[] = []
 
-    const lastStepStat = lastStep.firstStat as EnchantStepStat
+    const lastStepStat = lastStep.firstStat!
     if (lastStepStat.potential === 1) {
       const previousStep = lastStep.previousStep
+      // let flag = false
       if (previousStep) {
-        const preStepStat = previousStep.firstStat as EnchantStepStat
-        const prePstat = this.positiveStats.find(stat => stat.equals(preStepStat)) as EnchantStat
-        const lastPstat = this.positiveStats.find(stat => stat.equals(lastStepStat))  as EnchantStat
+        const preStepStat = previousStep.firstStat!
+        const prePstat = this.findPositiveStat(preStepStat)
+        const lastPstat = this.findPositiveStat(lastStepStat)
         if (prePstat && prePstat.value > 0) {
           const lastStatValueOffset = lastStepStat.value - 1
           lastStepStat.value = 1
@@ -525,6 +533,7 @@ export default class EnchantDollEquipmentContainer {
 
           if (previousStep.remainingPotential > 0 && lastStep.remainingPotential === 0) {
             // 複製一份
+            // flag = true
             resultEqs.push(this.clone())
           }
 
@@ -534,6 +543,55 @@ export default class EnchantDollEquipmentContainer {
           preStepStat.value -= 1
           prePstat.value += 1
         }
+        // /**
+        //  * 特別處理。
+        //  *
+        //  * 舉例：
+        //  * 1. ATK6%, CD10 | 2
+        //  * 2. CR1 | 1
+        //  * 3. (退潛)
+        //  *
+        //  * 轉換成:
+        //  * 1. ATK7%, CD7 | 1
+        //  * 2. CR1 | 0
+        //  * 3. (退潛)
+        //  *
+        //  * 步驟2剩潛為0的話，會在checkMergeStepToFillNegative被處理
+        //  */
+        // const POTENTIAL3_STAT_VALUE = 3
+        // if (!flag && preStepStat.potential === 3 && preStepStat.value > POTENTIAL3_STAT_VALUE && previousStep.stats.length > 1) {
+        //   // previousStep.stats.length > 1 means previousStep.extraRate === 1
+        //   const p10 = previousStep.stats.find(stat => {
+        //     if (stat.itemBase.getPotential(stat.type, this.equipment) !== 10) {
+        //       return false
+        //     }
+        //     return this.findPositiveStat(stat).value > 0
+        //   })
+        //   if (p10) {
+        //     const POTENTIAL10_STAT_VALUE = 1
+        //     const pstat = this.findPositiveStat(p10)
+        //     const lastStatValueOffset = lastStepStat.value - 1
+        //     lastStepStat.value = 1
+        //     p10.value += POTENTIAL10_STAT_VALUE
+        //     preStepStat.value -= POTENTIAL3_STAT_VALUE
+
+        //     lastPstat.value += lastStatValueOffset
+        //     prePstat.value += POTENTIAL3_STAT_VALUE
+        //     pstat.value -= POTENTIAL10_STAT_VALUE
+
+        //     if (previousStep.remainingPotential > 0 && lastStep.remainingPotential === 0) {
+        //       resultEqs.push(this.clone())
+        //     }
+
+        //     // 還原
+        //     lastStepStat.value += lastStatValueOffset
+        //     lastPstat.value -= lastStatValueOffset
+        //     preStepStat.value -= 1
+        //     prePstat.value += 1
+        //     p10.value -= POTENTIAL10_STAT_VALUE
+        //     pstat.value += POTENTIAL10_STAT_VALUE
+        //   }
+        // }
       }
     }
     return resultEqs
@@ -541,42 +599,48 @@ export default class EnchantDollEquipmentContainer {
 
   /**
    * 退潛之後，確認有沒有耗潛為1的正屬可以嘗試分次附
-   * @returns {Array<EnchantDollEquipmentContainer>}
    */
   checkStepTypeEach() {
+    const resultEqs: EnchantDollEquipmentContainer[] = []
     const finds = this.positiveStats.filter(stat => stat.value !== 0 && stat.originalPotential === 1)
     if (finds.length !== 0) {
-      const newDollEq = this.clone()
-      const ceq = newDollEq.equipment
-      const noChange = finds.every(find => {
-        if (this.equipment.stats().length === 7 && !this.equipment.hasStat(find)) {
-          return true
+      const handle = (checkPotentialConvertThreshold: boolean) => {
+        const newDollEq = this.clone()
+        const ceq = newDollEq.equipment
+        const noChange = finds.every(find => {
+          if (this.equipment.stats().length === 7 && !this.equipment.hasStat(find)) {
+            return true
+          }
+          const pstat = newDollEq.positiveStats.find(stat => stat.equals(find))  as EnchantStat
+          if (pstat.value > 0) {
+            const tstep = ceq.appendStep()
+            tstep.type = EnchantStepTypes.Each
+            const tstat = tstep.appendStat(pstat.itemBase, pstat.type, 0) as EnchantStepStat
+            const potentialConvertThreshold = tstat.potentialConvertThreshold
+            const preStat = ceq.stat(tstat.itemBase, tstat.type)
+            const prev = preStat ? preStat.value : 0
+            while ((!checkPotentialConvertThreshold || prev + tstat.value < potentialConvertThreshold) && ceq.stepRemainingPotential() > 0 && pstat.value > 0) {
+              tstat.value += 1
+              pstat.value -= 1
+            }
+            if (ceq.stepRemainingPotential() <= 0) {
+              tstat.value -= 1
+              pstat.value += 1
+            }
+            if (tstat.value === 0) {
+              tstep.remove()
+            }
+          }
+          return false
+        })
+        if (!noChange) {
+          resultEqs.push(newDollEq)
         }
-        const pstat = newDollEq.positiveStats.find(stat => stat.equals(find))  as EnchantStat
-        if (pstat.value > 0) {
-          const tstep = ceq.appendStep()
-          tstep.type = EnchantStepTypes.Each
-          const tstat = tstep.appendStat(pstat.itemBase, pstat.type, 0) as EnchantStepStat
-          const potentialConvertThreshold = tstat.potentialConvertThreshold
-          const preStat = ceq.stat(tstat.itemBase, tstat.type)
-          const prev = preStat ? preStat.value : 0
-          while (prev + tstat.value < potentialConvertThreshold && ceq.stepRemainingPotential() > 0 && pstat.value > 0) {
-            tstat.value += 1
-            pstat.value -= 1
-          }
-          if (ceq.stepRemainingPotential() <= 0) {
-            tstat.value -= 1
-            pstat.value += 1
-          }
-          if (tstat.value === 0) {
-            tstep.remove()
-          }
-        }
-        return false
-      })
-      return noChange ? [] : [newDollEq]
+      }
+      handle(true)
+      handle(false)
     }
-    return []
+    return resultEqs
   }
 
   getMostUsePotentialStatlList(): MostUsePotentialStatItem[] {
@@ -602,7 +666,7 @@ export default class EnchantDollEquipmentContainer {
         if (stat.value !== 1) {
           return null
         }
-        const pstat = positiveStats.find(_pstat => _pstat.equals(stat)) as EnchantStat
+        const pstat = positiveStats.find(_pstat => _pstat.equals(stat))!
         if (pstat.value === 0) {
           return null
         }
@@ -654,7 +718,17 @@ export default class EnchantDollEquipmentContainer {
      */
     return list.sort((a, b) => {
       if (a.existedAndNoRate !== b.existedAndNoRate) {
-        return a.existedAndNoRate ? 1 : -1
+        if (a.existedAndNoRate || b.existedAndNoRate) {
+          const target = a.existedAndNoRate ? a : b
+          // stat as EnchantStepStat if existedAndNoRate is true
+          const cstat = target.stat as EnchantStepStat
+          const pstat = positiveStats.find(_pstat => _pstat.equals(cstat))!
+          if (target.value * pstat.value >= cstat.belongStep.remainingPotential) {
+            return a.existedAndNoRate ? 1 : -1
+          }
+        } else {
+          return a.existedAndNoRate ? 1 : -1
+        }
       }
       return a.value - b.value
     })
@@ -776,6 +850,8 @@ export default class EnchantDollEquipmentContainer {
       }
     }
     steps.forEach(step => console.log(step.toString()))
+    console.log('  [pos] ' + this.positiveStats.map(stat => stat.show()).join('|'))
+    console.log('  [neg] ' + this.negativeStats.map(stat => stat.show()).join('|'))
     console.groupEnd()
   }
 }

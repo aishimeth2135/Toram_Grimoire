@@ -133,16 +133,16 @@ export default class EnchantDoll {
       // console.log(`%c[clear repeat] from ${results.length} to ${resultEqs.length}`, 'color: #e8caed');
     }
 
-    // const logResultEqs = (id, reqs) => {
+    // const logResultEqs = (id: string, reqs: EnchantDollEquipmentContainer[]) => {
     //   // console.log('==== [', id, '] ===================');
     //   // console.log(reqs.map(req => req.positiveStats.map(stat => stat.stat.show())));
     //   // console.log(reqs.map(req => req.clone().equipment.steps().map(step => step.toString())));
     //   console.group(`%c  %c [${id}] number of current equipments: ${resultEqs.length}`,
     //     'background-color: #e8caed; border-radius: 50%; margin-right: 12px',
-    //     'color: #e8caed');
-    //   reqs.forEach(eq => eq.log(true));
-    //   console.groupEnd();
-    // };
+    //     'color: #e8caed')
+    //   reqs.forEach(eq => eq.log(true))
+    //   console.groupEnd()
+    // }
 
     const sortResult = (build1: EnchantDollEquipmentContainer, build2: EnchantDollEquipmentContainer) => {
       const sr2 = Math.floor(build2.equipment.realSuccessRate)
@@ -156,13 +156,13 @@ export default class EnchantDoll {
     }
 
     if (resultEqs.length !== 0) {
-      // logResultEqs('0', resultEqs);
+      // logResultEqs('0', resultEqs)
       resultEqs.forEach(cdollEq => cdollEq.clearVirtualStats())
       clearRepeatEquipment()
 
       resultEqs.forEach(cdollEq => resultEqs.push(...cdollEq.mostUseRemainingPotential()))
       clearRepeatEquipment()
-      // logResultEqs('1', resultEqs);
+      // logResultEqs('1', resultEqs)
 
       // 負屬全上
       resultEqs.forEach(cdollEq => cdollEq.checkRemainingPotentialBeforeFillNegative())
@@ -184,13 +184,13 @@ export default class EnchantDoll {
       //   'background-color: #e8caed; border-radius: 50%; margin-right: 12px',
       //   'color: #e8caed',
       //   'background-color: red; border-radius: 50%; margin-right: 12px',
-      //   'color: #e8caed');
+      //   'color: #e8caed')
       // resultEqs.forEach(deq => {
-      //   console.group(`[ ${deq.equipment.successRate} ] [steps: ${deq.equipment.operationStepsNum}]`);
-      //   deq.equipment.steps().forEach(step => console.log(step.toString()));
-      //   console.groupEnd();
-      // });
-      // console.groupEnd();
+      //   console.group(`[ ${deq.equipment.successRate} ] [steps: ${deq.equipment.operationStepsNum}]`)
+      //   deq.equipment.steps().forEach(step => console.log(step.toString()))
+      //   console.groupEnd()
+      // })
+      // console.groupEnd()
 
       const result = resultEqs[0]
       result.checkMergeSteps()

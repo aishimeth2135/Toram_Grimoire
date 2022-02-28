@@ -62,7 +62,7 @@
         :key="c.id"
         :icon="c.crystalIconPath"
         icon-src="image"
-        @click="editCrystal"
+        @click="editCrystal(equipment)"
       >
         {{ c.name }}
       </cy-button-line>

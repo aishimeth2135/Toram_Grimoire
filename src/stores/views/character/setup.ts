@@ -276,7 +276,7 @@ export function setupCharacterSkills(
 
 export function setupFoodStats(foodBuild: Ref<FoodBuild>) {
   const allFoodBuildStats = computed(() => {
-    return foodBuild.value.foods.filter(food => food.level !== 0).map(food => food.stat())
+    return foodBuild.value.selectedFoods.filter(food => food.level !== 0).map(food => food.stat())
   })
 
   return {
