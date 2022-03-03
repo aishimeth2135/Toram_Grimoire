@@ -25,7 +25,7 @@ export const useCharacterSkillBuildStore = defineStore('view-character-skill-bui
 
   const appendSkillBuild = (build: SkillBuild, updateIndex = true) => {
     skillBuilds.value.push(build)
-    if (updateIndex) {
+    if (updateIndex || currentSkillBuildIndex.value === -1) {
       currentSkillBuildIndex.value = skillBuilds.value.length - 1
     }
   }

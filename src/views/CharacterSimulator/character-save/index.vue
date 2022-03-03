@@ -4,6 +4,11 @@
       <cy-default-tips icon="mdi:export" text-align="left">
         {{ t('character-simulator.save-load-control.export-save-data-caption') }}
       </cy-default-tips>
+      <div class="pb-2 px-4">
+        <cy-icon-text size="small" icon="ic:outline-info" text-color="light-3">
+          {{ t('character-simulator.save-load-control.export-save-data-tips[0]') }}
+        </cy-icon-text>
+      </div>
       <div class="pl-3 flex items-center">
         <cy-button-border
           icon="mdi:export"
@@ -57,7 +62,7 @@
           v-if="deleteCounter === 10"
           icon="ic-round-delete"
           style="margin-top: 0.6rem;"
-          @click="store.deleteAllSavedData()"
+          @click="store.deleteAllSavedData(), notify(t('character-simulator.save-load-control.deleta-all-data-success-tips'))"
         >
           {{ t('character-simulator.save-load-control.deleta-all-data-title') }}
         </cy-button-border>

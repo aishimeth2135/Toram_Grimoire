@@ -39,10 +39,12 @@
       target="span[data-stat-id]"
       @element-hover="statHover"
     >
-      <CharacterStatDetail
-        v-if="currentHoverStat"
-        :character-stat-result="currentHoverStat"
-      />
+      <div style="max-width: 30rem">
+        <CharacterStatDetail
+          v-if="currentHoverStat"
+          :character-stat-result="currentHoverStat"
+        />
+      </div>
     </cy-hover-float>
   </section>
 </template>

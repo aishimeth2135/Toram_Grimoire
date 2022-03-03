@@ -24,6 +24,7 @@ browse-equipments:
   copy-equipment-tips: 已複製裝備。
   move-equipment-title: 移動中
   no-any-equipment-tips: 這裡目前空空的...請點選右上角的按扭來新增裝備0.0
+  equipment-item-actions-tips: 請打開左下角的「顯示全部裝備」以使用整理相關的功能。
 append-equipments:
   title: 新增裝備
   search-equipment-placeholder: 搜尋裝備名稱...
@@ -130,6 +131,8 @@ save-load-control:
   title: 存檔
   export-save-data-title: 匯出角色模擬器資料
   export-save-data-caption: 可以將角色模擬器的資料匯出成一個檔案，用於備份或分享給他人。可以自行選擇想要匯出的角色、裝備、技能配置或料理配置。
+  export-save-data-tips:
+    - 匯入資料後不會覆蓋原本的檔案。
   auto-save-success-tips: 自動存檔成功。
   auto-load-success-tips: 自動讀取成功。
   manual-save-button-title: 手動存檔
@@ -139,8 +142,7 @@ save-load-control:
   deleta-all-data-success-tips: 成功刪除角色模擬器所有資料，系統也已關閉自動存檔功能。請重新整理網頁。
   deleta-all-data-counter-title: 計數器
   deleta-all-data-caption:
-    - >-
-      在某些情況下，角色模擬器的檔案可能毀損，導致系統無法正常運行。使用下方的按鈕可以刪除角色模擬器所有資料。自動存檔功能也將暫時失效，意即當前的資料將不會自動儲存。
+    - 在某些情況下，角色模擬器的檔案可能毀損，導致系統無法正常運行。使用下方的按鈕可以刪除角色模擬器所有資料。自動存檔功能也將暫時失效，意即當前的資料將不會自動儲存。
     - 請將下方的計數器數值調整到10，刪除按鈕就會出現。
     - 將資料刪除成功後，請立即重新整理，來讓系統重新初始化。
   export-build: 匯出配置

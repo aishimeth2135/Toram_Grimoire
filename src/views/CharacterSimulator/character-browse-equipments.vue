@@ -1,13 +1,12 @@
 <template>
   <cy-modal
     :visible="visible"
+    :title="t('character-simulator.browse-equipments.action.select-field-equipment')"
+    title-icon="fluent:apps-list-detail-20-regular"
     footer
     @close="closeModal"
   >
     <template #default>
-      <cy-icon-text icon="fluent:apps-list-detail-20-regular">
-        {{ t('character-simulator.browse-equipments.action.select-field-equipment') }}
-      </cy-icon-text>
       <div class="flex items-center justify-end mb-3">
         <cy-button-border icon="ic:round-add-circle-outline" @click="createCustomEquipment">
           {{ t('character-simulator.custom-equipment.button-title') }}
@@ -27,7 +26,7 @@
           @click="selectedEquipment = equip"
         >
           <template v-if="selectedEquipment === equip || equip === movingEquipment" #content>
-            <div class="flex items-center justify-end mt-0.5 space-x-2" @click.stop>
+            <div class="flex items-center justify-end mt-1 space-x-2" @click.stop>
               <template v-if="!movingEquipment">
                 <template v-if="showAll">
                   <cy-button-circle
@@ -47,6 +46,14 @@
                     size="small"
                     main-color="water-blue"
                     @click="store.moveEquipment(equip, 1)"
+                  />
+                </template>
+                <template v-else>
+                  <cy-button-circle
+                    icon="ic:outline-tips-and-updates"
+                    size="small"
+                    main-color="blue-green"
+                    @click="notify(t('character-simulator.browse-equipments.equipment-item-actions-tips'))"
                   />
                 </template>
                 <cy-button-circle
