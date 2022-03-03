@@ -23,10 +23,10 @@
                 </cy-icon-text>
               </slot>
             </div>
-            <div class="p-4 pt-0 relative">
+            <div class="p-4 pt-0 relative h-full overflow-y-auto overscroll-none">
               <slot />
             </div>
-            <div v-if="footer" class="sticky bottom-0 mt-4 py-2 mx-4 bg-white flex justify-end space-x-2">
+            <div v-if="footer" class="py-1.5 mx-4 bg-white flex justify-end space-x-2">
               <slot name="footer" :close-modal="closeModal">
                 <slot name="footer-actions" />
                 <cy-button-border icon="ic-round-close" @click="closeModal">
@@ -150,12 +150,12 @@ const { t } = useI18n()
   z-index: 49;
 
   & > .modal-wrapper {
-    @apply relative inline-block my-4 mx-2 bg-opacity-100 max-w-full;
+    @apply relative inline-block mb-2 mt-2.5 mx-2 bg-opacity-100 max-w-full;
 
-    height: calc(100% - 2rem);
+    height: calc(100% - 1.125rem);
 
     & > .modal-container {
-      @apply w-full overflow-y-auto max-h-full pt-3 border-1 border-light bg-white overscroll-none;
+      @apply w-full max-h-full pt-3 border-1 border-light bg-white flex flex-col;
 
       min-height: 10rem;
     }

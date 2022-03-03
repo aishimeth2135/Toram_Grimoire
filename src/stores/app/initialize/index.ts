@@ -73,6 +73,7 @@ export const useInitializeStore = defineStore('app-initialize', () => {
     status.value = InitializeStatus.LocaleLoading
     if (initLocaleNamespaces.value.length > 0) {
       await languageStore.loadLocaleMessages(initLocaleNamespaces.value)
+      initLocaleNamespaces.value = []
     }
     status.value = InitializeStatus.LocaleSuccess
   }

@@ -6,6 +6,7 @@ import { useDatasStore } from '@/stores/app/datas'
 import { DataStoreIds } from '@/stores/app/datas/enums'
 import { LocaleViewNamespaces } from '@/stores/app/language/enums'
 import { InitializeStatus } from '@/stores/app/initialize/enums'
+import { useLanguageStore } from '@/stores/app/language'
 
 export async function ViewInit(...inits: DataStoreIds[]) {
   const initializeStore = useInitializeStore()
@@ -52,5 +53,7 @@ export async function ViewInit(...inits: DataStoreIds[]) {
 
 export function PrepareLocaleInit(...namespaces: LocaleViewNamespaces[]) {
   const initializeStore = useInitializeStore()
+  const languageStore = useLanguageStore()
+  namespaces = namespaces.filter(namespace => !languageStore.i18nLoadedLocaleNamespaces.has(namespace))
   initializeStore.appendLoadLocaleNamespace(...namespaces)
 }

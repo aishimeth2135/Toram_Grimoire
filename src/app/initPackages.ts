@@ -13,7 +13,7 @@ export default function() {
     Iconify.disableCache('all')
     if (Cyteria.storageAvailable('localStorage')) {
       const storage = window.localStorage
-      Array(localStorage.length).fill(null).map((_item, i) => i).forEach(idx => {
+      Array(localStorage.length).fill(null).map((_item, idx) => idx).forEach(idx => {
         const key = storage.key(idx)
         if (key && key.startsWith('iconify')) {
           storage.removeItem(key)

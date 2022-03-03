@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="px-1.5">
     <div class="pb-4">
       <cy-options>
         <template #title>

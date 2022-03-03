@@ -32,6 +32,7 @@ export default {
     path: ':skillId?',
     component: SkillQueryView,
     meta: {
+      parentPathName: 'Skill',
       title: 'app.page-title.skill-query',
     },
   }],

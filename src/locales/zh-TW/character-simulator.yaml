@@ -22,6 +22,8 @@ browse-equipments:
   remove-equipment-tips: 已移除裝備「{name}」。
   removed-equipment-restore-tips: 已復原裝備「{name}」。
   copy-equipment-tips: 已複製裝備。
+  move-equipment-title: 移動中
+  no-any-equipment-tips: 這裡目前空空的...請點選右上角的按扭來新增裝備0.0
 append-equipments:
   title: 新增裝備
   search-equipment-placeholder: 搜尋裝備名稱...

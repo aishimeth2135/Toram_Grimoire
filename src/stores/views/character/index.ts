@@ -117,6 +117,22 @@ export const useCharacterStore = defineStore('view-character', () => {
     }
   }
 
+  const moveEquipment = (equipment: CharacterEquipment, offset: number, datum?: CharacterEquipment) => {
+    if (offset === 0) {
+      return
+    }
+    const datumIdx = equipments.value.indexOf(datum ?? equipment)
+    const equipmentIdx = equipments.value.indexOf(equipment)
+    if (datumIdx > -1 && equipmentIdx > -1) {
+      let targetIdx = datumIdx + offset
+      if (datum) {
+        targetIdx += (targetIdx > equipmentIdx ? -1 : 1)
+      }
+      equipments.value.splice(equipmentIdx, 1)
+      equipments.value.splice(targetIdx, 0, equipment)
+    }
+  }
+
   const deleteAllSavedData = () => {
     const prefix = 'app--character-simulator--data-'
     const storage = window.localStorage
@@ -211,7 +227,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       const foodBuildsDataString = window.localStorage.getItem(prefix + '--foodBuilds')
       const foodBuilds = foodBuildsDataString ? JSON.parse(foodBuildsDataString) as FoodsSaveData[] : []
 
-      const loadSkillBuildLagacy = !!skillBuildsV2Data
+      const loadSkillBuildLagacy = !skillBuildsV2Data
 
       if (loadSkillBuildLagacy && skillBuildsCsv) {
         skill.loadSkillBuildsCsv({ csvString: skillBuildsCsv })
@@ -272,7 +288,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       equipments: {
         numbers: equipments.value.length,
       },
-      skillBuilds: skill.skillBuilds.map(p => p.name),
+      skillBuilds: skill.skillBuilds.map(item => item.name),
       characterIndex: currentCharacterIndex.value,
       skillBuildIndex: skillBuildStore.currentSkillBuildIndex,
       foodBuildIndex: food.currentFoodBuildIndex,
@@ -376,6 +392,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     removeCharacter,
     appendEquipments,
     removeEquipment,
+    moveEquipment,
 
     deleteAllSavedData,
     loadCharacterSimulator,

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, readonly, ref, shallowReactive } from 'vue'
+import { computed, reactive, readonly, ref, shallowReactive } from 'vue'
 import { Composer } from 'vue-i18n'
 
 import CY from '@/shared/utils/Cyteria'
@@ -35,6 +35,7 @@ export const useLanguageStore = defineStore('app-language', () => {
   const secondaryLang = ref(0)
   const i18nMessageLoaded = ref(false)
   const i18n = computed(() => I18nStore.i18n)
+  const i18nLoadedLocaleNamespaces = reactive(new Set<LocaleNamespaces>())
 
   const primaryLocale = computed(() => {
     return LOCALE_LIST[primaryLang.value]
@@ -154,9 +155,9 @@ export const useLanguageStore = defineStore('app-language', () => {
     }
     const loadData = async (locale: string) => {
       const data = {} as Record<string, object>
-      const promises = namespaceList.map(async (filePath) => {
-        const dataModule = await import(`../../../locales/${locale}/${filePath}.yaml`)
-        data[filePath] = dataModule.default
+      const promises = namespaceList.map(async (namespace) => {
+        const dataModule = await import(`../../../locales/${locale}/${namespace}.yaml`)
+        data[namespace] = dataModule.default
       })
       await Promise.all(promises)
       return data
@@ -170,6 +171,8 @@ export const useLanguageStore = defineStore('app-language', () => {
       const defaultMessages = await loadData(DEFAULT_LOCALE)
       i18n.value.mergeLocaleMessage(DEFAULT_LOCALE, defaultMessages)
     }
+
+    namespaceList.forEach(namespace => i18nLoadedLocaleNamespaces.add(namespace))
   }
 
   const updateLocaleGlobalMessages = async () => {
@@ -188,6 +191,7 @@ export const useLanguageStore = defineStore('app-language', () => {
     secondaryLang: readonly(secondaryLang),
     i18n: readonly(i18n),
     i18nMessageLoaded: readonly(i18nMessageLoaded),
+    i18nLoadedLocaleNamespaces,
     primaryLocale,
     fallbackLocale,
     injectData,

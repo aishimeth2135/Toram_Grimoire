@@ -16,7 +16,7 @@
           {{ t('character-simulator.browse-equipments.append-equipments') }}
         </cy-button-border>
       </div>
-      <div>
+      <transition-group v-if="displayEquipments.length > 0" tag="div">
         <EquipmentItem
           v-for="equip in displayEquipments"
           :key="equip.id"
@@ -26,23 +26,75 @@
           :disabled="showAll && !equipmentAvailable(equip)"
           @click="selectedEquipment = equip"
         >
-          <template v-if="selectedEquipment === equip" #content>
+          <template v-if="selectedEquipment === equip || equip === movingEquipment" #content>
             <div class="flex items-center justify-end mt-0.5 space-x-2" @click.stop>
-              <cy-button-circle
-                icon="bx:copy-alt"
-                size="small"
-                @click="copySelectedEquipment"
-              />
-              <cy-button-circle
-                icon="ic-baseline-delete-outline"
-                main-color="gray"
-                size="small"
-                @click="removeSelectedEquipment"
-              />
+              <template v-if="!movingEquipment">
+                <template v-if="showAll">
+                  <cy-button-circle
+                    icon="mdi:cursor-move"
+                    size="small"
+                    main-color="green"
+                    @click="movingEquipment = equip"
+                  />
+                  <cy-button-circle
+                    icon="ic:round-arrow-upward"
+                    size="small"
+                    main-color="water-blue"
+                    @click="store.moveEquipment(equip, -1)"
+                  />
+                  <cy-button-circle
+                    icon="ic:round-arrow-downward"
+                    size="small"
+                    main-color="water-blue"
+                    @click="store.moveEquipment(equip, 1)"
+                  />
+                </template>
+                <cy-button-circle
+                  icon="bx:copy-alt"
+                  size="small"
+                  @click="copySelectedEquipment"
+                />
+                <cy-button-circle
+                  icon="ic-baseline-delete-outline"
+                  main-color="gray"
+                  size="small"
+                  @click="removeSelectedEquipment"
+                />
+              </template>
+              <template v-else>
+                <div v-if="equip === movingEquipment" class="ml-1 mr-auto self-end">
+                  <cy-icon-text icon="mdi:cursor-move" text-color="light-3" size="small">
+                    {{ t('character-simulator.browse-equipments.move-equipment-title') }}
+                  </cy-icon-text>
+                </div>
+                <template v-if="equip !== movingEquipment">
+                  <cy-button-circle
+                    icon="ic:baseline-move-up"
+                    size="small"
+                    main-color="water-blue"
+                    @click="store.moveEquipment(movingEquipment!, -1, equip), movingEquipment = null"
+                  />
+                  <cy-button-circle
+                    icon="ic:baseline-move-down"
+                    size="small"
+                    main-color="water-blue"
+                    @click="store.moveEquipment(movingEquipment!, 1, equip), movingEquipment = null"
+                  />
+                </template>
+                <cy-button-circle
+                  icon="ic:baseline-stop"
+                  size="small"
+                  main-color="green"
+                  @click="movingEquipment = null"
+                />
+              </template>
             </div>
           </template>
         </EquipmentItem>
-      </div>
+      </transition-group>
+      <cy-default-tips v-else class="py-6 px-4">
+        {{ t('character-simulator.browse-equipments.no-any-equipment-tips') }}
+      </cy-default-tips>
     </template>
     <template #footer="{ closeModal }">
       <div class="flex items-center w-full">
@@ -114,6 +166,7 @@ const { store, equipments, currentCharacter, characterStatCategoryResults } = se
 
 const showAll = ref(false)
 const selectedEquipment: Ref<CharacterEquipment | null> = ref(null)
+const movingEquipment: Ref<CharacterEquipment | null> = ref(null)
 
 const equipmentAvailable = (eq: CharacterEquipment) => {
   if (!props.targetField) {

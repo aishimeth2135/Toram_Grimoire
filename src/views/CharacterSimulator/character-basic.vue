@@ -1,5 +1,5 @@
 <template>
-  <section v-if="currentCharacter">
+  <section v-if="currentCharacter" class="px-2">
     <div class="py-2">
       <cy-options>
         <template #title>

@@ -100,21 +100,23 @@
           </div>
         </div>
       </div>
-      <div v-else class="space-x-2.5 flex items-center">
-        <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white">
-          <cy-icon-text icon="mdi:script-outline" size="small">
-            {{ t('skill-simulator.skill-level-point') }}
-          </cy-icon-text>
-          <div class="text-sm text-light-3">
-            {{ skillPointSum.level }}
+      <div v-else class="relative">
+        <div class="space-x-2.5 flex items-center absolute bottom-0 right-0">
+          <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
+            <cy-icon-text icon="mdi:script-outline" size="small">
+              {{ t('skill-simulator.skill-level-point') }}
+            </cy-icon-text>
+            <div class="text-sm text-light-3">
+              {{ skillPointSum.level }}
+            </div>
           </div>
-        </div>
-        <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white">
-          <cy-icon-text icon="mdi:judaism" size="small">
-            {{ t('skill-simulator.star-gem-level-point') }}
-          </cy-icon-text>
-          <div class="text-sm text-water-blue">
-            {{ skillPointSum.starGemLevel }}
+          <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
+            <cy-icon-text icon="mdi:judaism" size="small">
+              {{ t('skill-simulator.star-gem-level-point') }}
+            </cy-icon-text>
+            <div class="text-sm text-water-blue">
+              {{ skillPointSum.starGemLevel }}
+            </div>
           </div>
         </div>
       </div>

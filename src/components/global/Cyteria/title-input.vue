@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, nextTick, Ref, ref } from 'vue'
 
 import { IconSetProps } from './setup/icon-set'
 
@@ -41,8 +41,9 @@ export default defineComponent({
     ...IconSetProps,
   },
   emits: ['update:value', 'keyup'],
-  setup(props, { emit }) {
+  setup(props, { emit, expose  }) {
     const inputFocus = ref(false)
+    const mainInput: Ref<HTMLInputElement | null> = ref(null)
 
     const innerValue = computed<string>({
       get() {
@@ -60,7 +61,14 @@ export default defineComponent({
       inputFocus.value = value
     }
 
-    return { inputFocus, innerValue, setInputFocus }
+    expose({
+      focus: async () => {
+        await nextTick()
+        mainInput.value?.focus()
+      },
+    })
+
+    return { inputFocus, innerValue, setInputFocus, mainInput }
   },
 })
 </script>

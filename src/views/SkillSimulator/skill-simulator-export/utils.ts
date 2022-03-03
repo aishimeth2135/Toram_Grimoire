@@ -133,7 +133,7 @@ export async function exportSkillBuildImage(skillBuild: SkillBuild) {
       grd.addColorStop(1, '#f7a8d3')
     }
 
-    const final_w = Math.max(500, ...drawDatas.map(p => p.width))
+    const final_w = Math.max(500, ...drawDatas.map(item => item.width))
     const final_h = drawDatas.reduce(
       (cur, item) => cur +
       item.height + st_extra_top_pd + title_preRect_pt + title_preRect_h + st_extra_pb,
@@ -155,37 +155,37 @@ export async function exportSkillBuildImage(skillBuild: SkillBuild) {
       const ctx = canvas.getContext('2d')!
       ctx.lineWidth = 2
 
-      drawData.data.forEach(p => {
+      drawData.data.forEach(item => {
         ctx.beginPath()
-        if (p.type === DrawSkillTreeDataTypes.SkillCircle) {
-          const grd = ctx.createLinearGradient(p.cx, p.cy - p.r, p.cx, p.cy + p.r)
+        if (item.type === DrawSkillTreeDataTypes.SkillCircle) {
+          const grd = ctx.createLinearGradient(item.cx, item.cy - item.r, item.cx, item.cy + item.r)
           skillIconGrdAddColors(grd)
           ctx.fillStyle = grd
           ctx.strokeStyle = '#ff5fb7'
-          ctx.arc(p.cx, p.cy, p.r, 0, Math.PI * 2)
+          ctx.arc(item.cx, item.cy, item.r, 0, Math.PI * 2)
           ctx.fill()
           ctx.stroke()
           const ir = skill_icon_width / 2
-          ctx.drawImage(p.loadedImage, p.cx - ir, p.cy - ir, 2 * ir, 2 * ir)
-        } else if (p.type === DrawSkillTreeDataTypes.TreeLine) {
-          ctx.moveTo(p.x1, p.y1)
-          ctx.lineTo(p.x2, p.y2)
+          ctx.drawImage(item.loadedImage, item.cx - ir, item.cy - ir, 2 * ir, 2 * ir)
+        } else if (item.type === DrawSkillTreeDataTypes.TreeLine) {
+          ctx.moveTo(item.x1, item.y1)
+          ctx.lineTo(item.x2, item.y2)
           ctx.strokeStyle = pcolorl
           ctx.stroke()
-        } else if (p.type === DrawSkillTreeDataTypes.TreeDot) {
+        } else if (item.type === DrawSkillTreeDataTypes.TreeDot) {
           ctx.strokeStyle = pcolorl
-          ctx.arc(p.cx, p.cy, p.r, 0, Math.PI * 2)
+          ctx.arc(item.cx, item.cy, item.r, 0, Math.PI * 2)
           ctx.stroke()
-        } else if (p.type === DrawSkillTreeDataTypes.SkillLevelText || p.type === DrawSkillTreeDataTypes.StarGemLevelText) {
+        } else if (item.type === DrawSkillTreeDataTypes.SkillLevelText || item.type === DrawSkillTreeDataTypes.StarGemLevelText) {
           ctx.font = `${Cyteria.element.convertRemToPixels(1)}px 'Itim'`
           ctx.textAlign = 'center'
           ctx.textBaseline = 'middle'
           ctx.fillStyle = bodyComputedStyle.getPropertyValue(
-            p.type === DrawSkillTreeDataTypes.SkillLevelText ?
+            item.type === DrawSkillTreeDataTypes.SkillLevelText ?
               '--primary-light-4' :
               '--primary-water-blue',
           )
-          ctx.fillText(p.innerText, p.x, p.y)
+          ctx.fillText(item.innerText, item.x, item.y)
         }
       })
 

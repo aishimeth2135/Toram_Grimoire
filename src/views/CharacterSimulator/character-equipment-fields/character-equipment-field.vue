@@ -25,7 +25,7 @@
       :equipment="equipmentField.equipment!"
       :stats-disabled="equipmentField.statsDisabled()"
     />
-    <cy-default-tips v-else icon="potum" icon-src="custom">
+    <cy-default-tips v-else icon="mdi:dots-horizontal-circle-outline">
       {{ t('character-simulator.main-tips.no-equipment-selected') }}
     </cy-default-tips>
   </div>

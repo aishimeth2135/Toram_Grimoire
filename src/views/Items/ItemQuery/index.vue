@@ -455,7 +455,6 @@ export default {
       set(v) {
         v = parseInt(v, 10)
         this.modes['item-level'].max = Math.max(Math.min(500, v), 0)
-        console.log(this.modes['item-level'].max)
       },
     },
     itemLevelMinimum: {
