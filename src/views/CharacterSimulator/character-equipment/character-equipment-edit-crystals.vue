@@ -119,7 +119,7 @@ const availableCrystalCategoryIds = computed(() => {
     return [2, 4]
   }
   if (equipment.value instanceof SpecialGear) {
-    return [2, 4]
+    return [3, 4]
   }
   return [4]
 })

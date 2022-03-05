@@ -243,7 +243,7 @@ export function setupCharacterSkills(
     list
       .filter(resultState => {
         const state = skillBuild.value!.getSkillState(resultState.skill)
-        return state.enabled && state.level !== 0
+        return state.enabled && (state.level !== 0 || state.starGemLevel !== 0)
       })
       .forEach(resultState => {
         resultState.results

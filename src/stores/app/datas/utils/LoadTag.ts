@@ -24,12 +24,13 @@ export default function LoadTagData(root: TagSystem, datas: LangCsvData) {
     [INDEX.TAG_NAME]: LANG_DATA.TAG_NAME,
     [INDEX.FRAME_VALUE]: LANG_DATA.FRAME_VALUE,
   })
-  const c = datas[0]
+  const data = datas[0]
   let curTag: Tag
   let curFrame: TagFrame
-  c.forEach((row, idx) => {
-    if (idx === 0)
+  data.forEach((row, idx) => {
+    if (idx === 0) {
       return
+    }
     try {
       const name = row[INDEX.TAG_NAME]
       if (name !== '')
@@ -40,9 +41,9 @@ export default function LoadTagData(root: TagSystem, datas: LangCsvData) {
         curFrame = curTag.appendFrame(fn, fv)
       else
         curFrame.appendValue(fv)
-    } catch (e) {
-      console.warn('[Load Tag] unknown error')
-      console.log(e)
+    } catch (err) {
+      console.warn('[LoadTag] unknown error')
+      console.error(err)
       console.log(row)
     }
   })
