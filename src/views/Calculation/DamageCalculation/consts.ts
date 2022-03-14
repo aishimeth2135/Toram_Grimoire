@@ -135,7 +135,7 @@ const calcStructDisplay: CalcStructExpression = {
       CalculationContainerIds.Proration,
       CalculationContainerIds.ComboMultiplier,
       CalculationContainerIds.SkillLongRange,
-      CalculationContainerIds.Stability,
+      // CalculationContainerIds.Stability,
       CalculationContainerIds.OtherMultiplier,
     ],
   },

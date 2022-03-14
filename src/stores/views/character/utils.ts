@@ -12,9 +12,9 @@ export function checkStatRestriction(chara: Character, stat: StatRestriction) {
     return true
   }
   return !!types.other
-    || chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, types.main)
-    || chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, types.sub)
-    || chara.checkFieldEquipmentType(EquipmentFieldTypes.BodyArmor, types.body)
+    || (types.main !== null && chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, types.main))
+    || (types.sub !== null && chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, types.sub))
+    || (types.body !== null && chara.checkFieldEquipmentType(EquipmentFieldTypes.BodyArmor, types.body))
 }
 
 export function getCharacterElement(chara: Character) {

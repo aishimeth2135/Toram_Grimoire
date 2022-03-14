@@ -98,7 +98,7 @@
           <div class="pl-1">
             <show-stat
               v-for="stat in currentCrystal.stats"
-              :key="stat.title"
+              :key="stat.statId"
               :stat="stat"
               :negative-value="stat.value < 0"
             />
