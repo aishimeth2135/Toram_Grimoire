@@ -215,7 +215,7 @@ const compareCharacter = computed(() => {
     return null
   }
   const newCharacter = currentCharacter.value.clone()
-  newCharacter.equipmentField(props.targetField.type).setEquipment(selectedEquipment.value)
+  newCharacter.equipmentField(props.targetField.type, props.targetField.index).setEquipment(selectedEquipment.value)
   return newCharacter
 })
 

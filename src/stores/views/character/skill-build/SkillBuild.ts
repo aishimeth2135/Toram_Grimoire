@@ -134,6 +134,7 @@ export class SkillBuild {
   toggleSkillTreeSelected(skillTree: SkillTree) {
     if (this._skillTreesSet.has(skillTree)) {
       this._skillTreesSet.delete(skillTree)
+      skillTree.skills.forEach(skill => this._skillStatesMap.delete(skill))
     } else {
       this._skillTreesSet.add(skillTree)
     }
@@ -177,7 +178,7 @@ export class SkillBuild {
       }
     })
     data.skillStates.forEach(state => {
-      let skill: Skill | null = null
+      let skill!: Skill
       Grimoire.Skill.skillRoot.skillTreeCategorys.some(stc => {
         return stc.skillTrees.some(st => {
           const find = st.skills.find(_skill => _skill.skillId === state.skillId)
@@ -188,7 +189,7 @@ export class SkillBuild {
           return false
         })
       })
-      if (skill) {
+      if (skill && newBuild._skillTreesSet.has(skill.parent)) {
         const _state = newBuild.getSkillState(skill)
         _state.enabled = state.enabled
         _state.level = state.level

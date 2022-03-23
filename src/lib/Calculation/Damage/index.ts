@@ -171,9 +171,6 @@ export default class DamageCalculationSystem {
         const cd = itemContainer.getItemValue(CalculationItemIds.CriticalDamage)
         const mcdr = itemContainer.getItemValue(CalculationItemIds.MagicCriticalDamageConversionRate)
         let result = cd
-        if (result > 300) {
-          result = 300 + Math.floor((result - 300) / 2)
-        }
         result = currentDamageTypeId === 'physical' ?
           result :
           Math.floor((result - 100) * mcdr / 100) + 100

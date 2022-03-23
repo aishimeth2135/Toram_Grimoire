@@ -91,8 +91,8 @@ class Character {
     return this._optinalBaseStat
   }
 
-  equipmentField(type: EquipmentFieldTypes): EquipmentField {
-    return this.equipmentFields.find(item => item.type === type) as EquipmentField
+  equipmentField(type: EquipmentFieldTypes, index: number = 0): EquipmentField {
+    return this.equipmentFields.find(item => item.type === type && item.index === index)!
   }
   fieldEquipment(type: EquipmentFieldTypes) {
     return this.equipmentField(type)?.equipment ?? null

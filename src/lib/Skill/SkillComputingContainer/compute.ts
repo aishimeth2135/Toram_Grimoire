@@ -17,7 +17,7 @@ function computeBranchValue(str: string, helper: ComputedBranchHelperResult): st
   } = helper
   if (typeof str !== 'string') {
     console.warn('[computeBranchValue] unexpected value: ' + str, helper)
-    return ''
+    return '0'
   }
   str = str
     // convert "A,,B" to "(A)+(B)"
