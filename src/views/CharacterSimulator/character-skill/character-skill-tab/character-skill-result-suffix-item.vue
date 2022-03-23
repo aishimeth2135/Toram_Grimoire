@@ -6,7 +6,7 @@
         :disabled="container.statContainers.length === 0"
         inline
       >
-        {{ container.get('condition') }}
+        <span v-html="container.get('condition')"></span>
       </cy-button-switch>
     </div>
     <div class="flex items-center">

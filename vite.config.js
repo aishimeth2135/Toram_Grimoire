@@ -1,7 +1,6 @@
 // @ts-check
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { viteExternalsPlugin } from 'vite-plugin-externals'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import { VitePWA } from 'vite-plugin-pwa'
 import content from '@originjs/vite-plugin-content'
@@ -40,13 +39,7 @@ export default defineConfig(({ mode }) => {
       inject: {
         data: {
           envBaseUrl: base,
-          externalScripts: !useExternal ? '' : `
-            <script defer src="https://polyfill.io/v3/polyfill.min.js"></script>
-            <script defer src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script>
-            <script defer src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
-            <script defer src="https://cdn.jsdelivr.net/npm/vue@3.2.31/dist/vue.global.prod.js"></script>
-            <script defer src="https://cdn.jsdelivr.net/npm/vue-router@4.0.11/dist/vue-router.global.min.js"></script>
-          `,
+          externalScripts: !useExternal ? '' : '<script defer src="https://polyfill.io/v3/polyfill.min.js"></script>',
         },
       },
     }),
@@ -57,15 +50,6 @@ export default defineConfig(({ mode }) => {
   if (useLagacy) {
     plugins.push(legacy({
       targets: browserslist,
-    }))
-  }
-
-  if (useExternal) {
-    plugins.push(viteExternalsPlugin({
-      'papaparse': 'Papa',
-      'velocity-animate': 'Velocity',
-      'vue': 'Vue',
-      'vue-router': 'VueRouter',
     }))
   }
 
