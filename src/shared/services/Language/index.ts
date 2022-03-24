@@ -27,7 +27,10 @@ function InitLanguageData(datas: LangInjectData) {
   languageStore.injectData(datas)
 }
 
-function HandleLanguageData(datas: LangCsvData, mapping: { [key: number]: number }) {
+function HandleLanguageData(datas: LangCsvData, mapping: { [key: number]: number }): void {
+  if (!datas[0]) {
+    return
+  }
   const langDatas = [datas[1], datas[2]]
   Object.entries(mapping).forEach(([key, value]) => {
     const dataIdx = parseInt(key, 10), langDataIdx = value

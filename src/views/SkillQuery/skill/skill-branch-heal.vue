@@ -49,7 +49,7 @@ const subContents = computed(() => {
     result.push({
       key: 'duration|cycle',
       icon: 'ic-round-timer',
-      title: t('skill-query.branch.damage.duration-caption-with-cycle', {
+      title: t('skill-query.branch.heal.duration-caption-with-cycle', {
         duration: container.value.get('duration'),
         cycle: container.value.get('cycle'),
       }),

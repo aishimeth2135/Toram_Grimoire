@@ -1,7 +1,8 @@
 <!-- this component is splitted to handle EnchantStep -->
 <template>
   <div
-    class="enchant-step px-2 pt-1 flex flex-col h-full bg-white"
+    class="px-2 pt-1 flex flex-col h-full bg-white border"
+    style="min-height: 12.5rem"
     :class="{ [mainBorderColor]: true, 'opacity-50': step.hidden }"
   >
     <div class="border-b pl-2 flex items-center py-0.5" :class="[mainBorderColor]">
@@ -23,34 +24,34 @@
             />
           </template>
           <template #options>
-            <cy-list-item @click="insertStepBefore(step)">
+            <cy-list-item @click="insertStepBefore">
               <cy-button-inline
                 class="w-full"
                 icon="mdi-table-row-plus-before"
               >
-                {{ $lang('step/insert step before') }}
+                {{ t('enchant-simulator.step.insert-step-before') }}
               </cy-button-inline>
             </cy-list-item>
             <cy-list-item
               v-if="step.index !== 0"
-              @click="swapStep({ step, offset: -1 })"
+              @click="swapStep(-1)"
             >
               <cy-button-inline
                 class="w-full"
                 icon="eva-arrow-ios-upward-fill"
               >
-                {{ $lang('step/up swap') }}
+                {{ t('enchant-simulator.step.step-move-up') }}
               </cy-button-inline>
             </cy-list-item>
             <cy-list-item
               v-if="!step.isLastStep"
-              @click="swapStep({ step, offset: 1 })"
+              @click="swapStep(1)"
             >
               <cy-button-inline
                 class="w-full"
                 icon="eva-arrow-ios-downward-outline"
               >
-                {{ $lang('step/down swap') }}
+                {{ t('enchant-simulator.step.step-move-up') }}
               </cy-button-inline>
             </cy-list-item>
           </template>
@@ -71,17 +72,17 @@
     </div>
     <div class="p-1">
       <template v-if="step.stats.length !== 0">
-        <EnchantStepStat
-          v-for="stat in step.stats"
+        <EnchantStepStatView
+          v-for="(stat, idx) in step.stats"
           :key="stat.statId"
           :stat="stat"
-          class="step-stat"
+          :class="idx !== 0 ? 'border-t border-light' : ''"
         />
       </template>
       <div v-else-if="step.index === 0" class="pt-3 pb-2 px-2">
         <div>
           <cy-icon-text size="small" text-color="purple">
-            {{ $lang('step/button caption: title') }}
+            {{ t('enchant-simulator.step.button-caption-title') }}
           </cy-icon-text>
         </div>
         <div class="pl-2">
@@ -91,7 +92,7 @@
               icon="ic-round-add-circle-outline"
               icon-color="water-blue"
             >
-              {{ $lang('step/select one stat item') }}
+              {{ t('enchant-simulator.step.select-one-stat-item') }}
             </cy-icon-text>
           </div>
           <div>
@@ -100,7 +101,7 @@
               icon="ic-round-add-circle-outline"
               icon-color="red"
             >
-              {{ $lang('step/select multiple stat items') }}
+              {{ t('enchant-simulator.step.select-multiple-stat-items') }}
             </cy-icon-text>
           </div>
           <div>
@@ -109,7 +110,7 @@
               icon="ic-outline-near-me"
               icon-color="blue-green"
             >
-              {{ $lang('step/type: each') }}
+              {{ t('enchant-simulator.step.step-type-each') }}
             </cy-icon-text>
           </div>
           <div>
@@ -118,18 +119,18 @@
               icon="ant-design:star-outlined"
               icon-color="orange"
             >
-              {{ $lang('step/auto fill positive stat') }}
+              {{ t('enchant-simulator.step.auto-fill-positive-stat') }}
             </cy-icon-text>
           </div>
         </div>
       </div>
       <cy-default-tips v-else icon="fluent-leaf-two-16-filled">
-        {{ $lang('tips/step is empty') }}
+        {{ t('enchant-simulator.tips.step-empty') }}
       </cy-default-tips>
     </div>
     <div class="border-t border-purple mt-auto pt-0.5">
       <cy-transition type="fade">
-        <div v-if="typeEach" class="border-b border-light-2 py-0.5">
+        <div v-if="isTypeEach" class="border-b border-light-2 py-0.5">
           <cy-input-counter
             v-model:value="step.step/* eslint-disable-line vue/no-mutating-props */"
             inline
@@ -137,7 +138,7 @@
           >
             <template #title>
               <cy-icon-text icon="ic-outline-near-me" icon-color="blue-green">
-                {{ $lang('step type - each: title') }}
+                {{ t('enchant-simulator.step.step-type-each-title') }}
               </cy-icon-text>
             </template>
           </cy-input-counter>
@@ -156,9 +157,9 @@
         />
         <cy-button-icon
           :icon="typeIcon"
-          :icon-color="typeEach ? 'blue-green' : 'blue-green-light'"
+          :icon-color="isTypeEach ? 'blue-green' : 'blue-green-light'"
           icon-color-hover="blue-green"
-          @click="toggleStepType(step)"
+          @click="toggleStepType"
         />
         <cy-button-icon
           v-if="step.belongEquipment.stats(step.index - 1).length >= 6"
@@ -174,82 +175,75 @@
   </div>
 </template>
 
-<script>
-import { EnchantStep } from '@/lib/Enchant/Enchant'
-import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums'
-
-import vue_EnchantStepStat from './enchant-step-stat.vue'
-
+<script lang="ts">
 export default {
   name: 'EnchantStep',
-  RegisterLang: 'Enchant Simulator',
-  components: {
-    EnchantStepStat: vue_EnchantStepStat,
-  },
-  inject: ['openSelectItem'],
-  props: {
-    step: {
-      type: EnchantStep,
-      required: true,
-    },
-  },
-  computed: {
-    typeIcon() {
-      return this.step.type === EnchantStepTypes.Normal ? 'ic-outline-near-me-disabled' : 'ic-outline-near-me'
-    },
-    typeEach() {
-      return this.step.type === EnchantStepTypes.Each
-    },
-    mainTextColor() {
-      let textColor = 'purple'
-      if (this.step.isLastStep) {
-        textColor = 'water-blue'
-      }
-      if (this.step.afterLastStep) {
-        textColor = 'gray'
-      }
-      return textColor
-    },
-    mainBorderColor() {
-      let borderColor = 'border-purple'
-      if (this.step.isLastStep) {
-        borderColor = 'border-water-blue'
-      }
-      if (this.step.afterLastStep) {
-        borderColor = 'border-gray'
-      }
-      return borderColor
-    },
-    stepTitle() {
-      if (this.step.isLastStep) {
-        return this.$lang('last step')
-      }
-      if (this.step.afterLastStep) {
-        return this.$lang('invalid step')
-      }
-      return this.$lang('enchant step') + ' ' + (this.step.index + 1).toString()
-    },
-  },
-  methods: {
-    toggleStepType(step) {
-      step.type = step.type === EnchantStepTypes.Normal ? EnchantStepTypes.Each : EnchantStepTypes.Normal
-    },
-    swapStep({ step, offset }) {
-      step.belongEquipment.swapStep(step.index, step.index + offset)
-    },
-    insertStepBefore(step) {
-      step.belongEquipment.insertStepBefore(step)
-    },
-  },
 }
 </script>
 
-<style lang="less" scoped>
-.step-stat + .step-stat {
-  border-top: 1px solid var(--primary-light);
+<script lang="ts" setup>
+import { computed, inject, toRefs } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+import { EnchantStep } from '@/lib/Enchant/Enchant'
+import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums'
+
+import EnchantStepStatView from './enchant-step-stat.vue'
+
+import { EnchantSimulatorInjectionKey } from '../injection-keys'
+
+interface Props {
+  step: EnchantStep;
 }
-.enchant-step {
-  min-height: 12rem;
-  border-width: 1px;
+
+const props = defineProps<Props>()
+
+const { step } = toRefs(props)
+const { t } = useI18n()
+
+const { openSelectItem } = inject(EnchantSimulatorInjectionKey)!
+
+const typeIcon = computed(() => step.value.type === EnchantStepTypes.Normal ? 'ic-outline-near-me-disabled' : 'ic-outline-near-me')
+
+const isTypeEach = computed(() => step.value.type === EnchantStepTypes.Each)
+
+const mainTextColor = computed(() => {
+  if (step.value.isLastStep) {
+    return 'water-blue'
+  }
+  if (step.value.afterLastStep) {
+    return 'gray'
+  }
+  return 'purple'
+})
+
+const mainBorderColor = computed(() => {
+  if (step.value.isLastStep) {
+    return 'border-water-blue'
+  }
+  if (step.value.afterLastStep) {
+    return 'border-gray'
+  }
+  return 'border-purple'
+})
+const stepTitle = computed(() => {
+  if (step.value.isLastStep) {
+    return t('enchant-simulator.last-step')
+  }
+  if (step.value.afterLastStep) {
+    return t('enchant-simulator.invalid-step')
+  }
+  return t('enchant-simulator.enchant-step') + ' ' + (step.value.index + 1).toString()
+})
+
+const toggleStepType = () => {
+  step.value.type = step.value.type === EnchantStepTypes.Normal ? EnchantStepTypes.Each : EnchantStepTypes.Normal
 }
-</style>
+const swapStep = (offset: number) => {
+  const index = step.value.index
+  step.value.belongEquipment.swapStep(index, index + offset)
+}
+const insertStepBefore = () => {
+  step.value.belongEquipment.insertStepBefore(step.value)
+}
+</script>

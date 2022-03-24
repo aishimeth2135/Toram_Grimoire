@@ -16,7 +16,7 @@
       </div>
     </div>
     <div
-      class="p-4 top-12 border-1 border-light-2 rounded-xl mx-4 mb-4 z-10 bg-white duration-300"
+      class="p-4 top-12 border-1 border-light-2 rounded-lg mx-4 mb-4 z-10 bg-white duration-300"
       :class="{ sticky: contents.top, 'border-purple': contents.top }"
     >
       <div class="flex items-center">
@@ -41,7 +41,7 @@
             </cy-list-item>
             <cy-list-item @click="createBuild">
               <cy-icon-text icon="ic-round-add-circle-outline" text-color="light-3">
-                {{ $lang('append build') }}
+                {{ t('enchant-simulator.append-build') }}
               </cy-icon-text>
             </cy-list-item>
           </template>
@@ -53,38 +53,38 @@
             icon="bx-bx-copy"
             @click="copyBuild"
           >
-            {{ $rootLang('global/copy') }}
+            {{ t('global.copy') }}
           </cy-button-border>
           <cy-button-border
             icon="mdi-export"
             main-color="blue-green"
             @click="exportBuild"
           >
-            {{ $rootLang('global/export') }}
+            {{ t('global.export') }}
           </cy-button-border>
           <cy-button-border
             icon="mdi-import"
             main-color="blue-green"
             @click="importBuild"
           >
-            {{ $rootLang('global/import') }}
+            {{ t('global.import') }}
           </cy-button-border>
           <cy-button-border
             icon="ic-baseline-delete-outline"
             main-color="gray"
             @click="removeBuild"
           >
-            {{ $rootLang('global/delete') }}
+            {{ t('global.delete') }}
           </cy-button-border>
         </div>
       </div>
       <cy-icon-text size="small" text-color="purple" class="mt-4">
-        {{ $lang('base options') }}
+        {{ t('enchant-simulator.base-options') }}
       </cy-icon-text>
       <div class="flex items-center flex-wrap p-2 mr-2">
         <cy-input-counter v-model:value="currentEquipment.originalPotential">
           <template #title>
-            <cy-icon-text>{{ $lang('equipment original potential') }}</cy-icon-text>
+            <cy-icon-text>{{ t('enchant-simulator.equipment-original-potential') }}</cy-icon-text>
           </template>
         </cy-input-counter>
         <cy-button-icon
@@ -99,7 +99,7 @@
       <cy-transition type="fade">
         <div v-if="contents.extraOptions">
           <cy-icon-text size="small" text-color="water-blue" icon-color="water-blue" class="mt-4">
-            {{ $lang('advanced options') }}
+            {{ t('enchant-simulator.advanced-options') }}
           </cy-icon-text>
           <div class="p-2">
             <cy-input-counter
@@ -107,45 +107,45 @@
               main-color="water-blue-light"
             >
               <template #title>
-                <cy-icon-text>{{ $lang('equipment base potential') }}</cy-icon-text>
+                <cy-icon-text>{{ t('enchant-simulator.equipment-base-potential') }}</cy-icon-text>
               </template>
             </cy-input-counter>
           </div>
           <cy-icon-text size="small" text-color="water-blue" icon-color="water-blue" class="mt-4">
-            {{ $lang('common options') }}
+            {{ t('enchant-simulator.common-options') }}
           </cy-icon-text>
           <div class="p-2">
             <cy-input-counter
-              v-model:value="characterLevel"
+              v-model:value="config.characterLevel"
               :step="10"
               main-color="water-blue-light"
             >
               <template #title>
-                <cy-icon-text>{{ $lang('character level') }}</cy-icon-text>
+                <cy-icon-text>{{ t('enchant-simulator.common-options') }}</cy-icon-text>
               </template>
             </cy-input-counter>
             <cy-input-counter
-              v-model:value="smithLevel"
+              v-model:value="config.smithLevel"
               :step="10"
               class="mt-3"
               main-color="water-blue-light"
             >
               <template #title>
-                <cy-icon-text>{{ $lang('smith level') }}</cy-icon-text>
+                <cy-icon-text>{{ t('enchant-simulator.smith-level') }}</cy-icon-text>
               </template>
             </cy-input-counter>
           </div>
         </div>
       </cy-transition>
       <cy-icon-text size="small" text-color="purple" class="mt-3">
-        {{ $lang('equipment type') }}
+        {{ t('enchant-simulator.equipment-type') }}
       </cy-icon-text>
       <div class="py-0.5 px-2">
         <cy-button-check
           v-for="option in equipmentTypeOptions"
           :key="option.id"
           :selected="currentEquipmentType === option.id"
-          @click="currentEquipmentType = option"
+          @click="currentEquipmentType = option.id"
         >
           {{ option.text }}
         </cy-button-check>
@@ -158,7 +158,7 @@
           :key="step.index"
           class="step-container"
         >
-          <EnchantStep :step="step" />
+          <EnchantStepView :step="step" />
         </div>
         <cy-button
           icon="ic-round-add-circle-outline"
@@ -180,17 +180,18 @@
       />
     </div>
     <div
-      class="border-1 border-light-2 pt-2 pb-4 pl-2 pr-4 mx-3 mt-4 rounded-2xl bg-white duration-300"
-      style="bottom: 4.75rem"
+      class="border-1 border-light-2 pt-2 pb-4 pl-2 pr-4 mx-3 mt-4 rounded-lg bg-white duration-300"
+      :style="contents.result ? 'bottom: 4.25rem; max-height: calc(90vh - 6.5rem)' : 'bottom: 4.25rem'"
       :class="{
-        sticky: contents.result,
+        'sticky': contents.result,
+        'overflow-y-auto': contents.result,
         'animate-slide-up': contents.result,
         'border-purple': contents.result,
       }"
     >
       <EnchantResult :equipment="currentEquipment" />
     </div>
-    <div class="sticky bottom-4">
+    <div class="sticky bottom-3">
       <div
         v-if="currentEquipment.allSteps.length === 0 && !contents.result"
         class="border-1 border-light-2 py-4 px-5 mx-3 mt-3 rounded-2xl bg-white"
@@ -201,15 +202,15 @@
             type="border"
             @click="appendStep"
           >
-            {{ $lang('append enchant step') }}
+            {{ t('enchant-simulator.append-enchant-step') }}
           </cy-button>
         </div>
         <div class="text-sm text-water-blue pt-1 text-center">
-          {{ $lang('footer guide/title: close') }}
+          {{ t('enchant-simulator.footer-guide.title-close') }}
         </div>
         <div class="pt-3">
           <cy-icon-text size="small" text-color="purple">
-            {{ $lang('footer guide/title') }}
+            {{ t('enchant-simulator.footer-guide.title') }}
           </cy-icon-text>
         </div>
         <div class="pt-1">
@@ -219,18 +220,18 @@
             size="small"
             class="mr-3"
           >
-            {{ $lang('footer guide/toggle result/titles')[0] }}
+            {{ t('enchant-simulator.footer-guide.toggle-result.titles.0') }}
           </cy-icon-text>
           <cy-icon-text
             icon="akar-icons:circle-chevron-up"
             text-color="purple"
             size="small"
           >
-            {{ $lang('footer guide/toggle result/titles')[1] }}
+            {{ t('enchant-simulator.footer-guide.toggle-result.titles.1') }}
           </cy-icon-text>
         </div>
         <div class="pl-3 text-sm">
-          {{ $lang('footer guide/toggle result/caption') }}
+          {{ t('enchant-simulator.footer-guide.toggle-result.caption') }}
         </div>
         <div class="mt-3">
           <cy-icon-text
@@ -240,7 +241,7 @@
             size="small"
             class="mr-3"
           >
-            {{ $lang('footer guide/toggle display mode/titles')[0] }}
+            {{ t('enchant-simulator.footer-guide.toggle-display-mode.titles.0') }}
           </cy-icon-text>
           <cy-icon-text
             icon="mdi-cube-off-outline"
@@ -248,14 +249,14 @@
             icon-color="water-blue"
             size="small"
           >
-            {{ $lang('footer guide/toggle display mode/titles')[1] }}
+            {{ t('enchant-simulator.footer-guide.toggle-display-mode.titles.1') }}
           </cy-icon-text>
         </div>
         <div class="pl-3 text-sm">
-          {{ $lang('footer guide/toggle display mode/caption') }}
+          {{ t('enchant-simulator.footer-guide.toggle-display-mode.caption') }}
         </div>
       </div>
-      <div class="border-1 border-light-2 py-2 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center flex-wrap bg-white">
+      <div class="border-1 border-light-2 py-1.5 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center flex-wrap bg-white">
         <cy-button-icon
           :icon="contents.result ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
           :selected="contents.result"
@@ -270,7 +271,7 @@
         />
         <!-- <cy-button-icon @click="optimizeSteps" /> -->
         <cy-icon-text icon="bx-bx-star" class="ml-auto mr-3">
-          {{ $lang('success rate') }}
+          {{ t('enchant-simulator.success-rate') }}
         </cy-icon-text>
         <span class="text-light-4">
           {{ successRate }}
@@ -284,271 +285,226 @@
     </div>
     <div class="flex justify-center w-full">
       <cy-button-border @click="createBuild">
-        {{ $lang('append build') }}
+        {{ t('enchant-simulator.append-build') }}
       </cy-button-border>
     </div>
   </div>
 </template>
 
-<script>
-import { mapState } from 'pinia'
+<script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
+import { computed, onMounted, provide, reactive, Ref, ref } from 'vue'
 
 import { useEnchantStore } from '@/stores/views/enchant'
 
-import CY from '@/shared/utils/Cyteria'
-
-import { EnchantBuild, EnchantStep, EnchantEquipment } from '@/lib/Enchant/Enchant'
+import { EnchantBuild, EnchantStep } from '@/lib/Enchant/Enchant'
 import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
+import { EnchantBuildSaveData } from '@/lib/Enchant/Enchant/build'
 
 import ToggleService from '@/setup/ToggleService'
+import AutoSave from '@/setup/AutoSave'
+import Notify from '@/setup/Notify'
+import Confirm from '@/setup/Confirm'
+import ExportBuild from '@/setup/ExportBuild'
 
-import vue_EnchantResult from './enchant-result.vue'
-import vue_EnchantSelectItem from './enchant-select-item.vue'
-import vue_EnchantStep from './enchant-step/index.vue'
+import EnchantResult from './enchant-result.vue'
+import EnchantSelectItem from './enchant-select-item.vue'
+import EnchantStepView from './enchant-step/index.vue'
 
-import init from './init.js'
+import { EnchantStatOptionBase } from './setup'
+import { EnchantSimulatorInjectionKey } from './injection-keys'
 
-export default {
-  name: 'EnchantSimulator',
-  RegisterLang: 'Enchant Simulator',
-  components: {
-    EnchantStep: vue_EnchantStep,
-    EnchantSelectItem: vue_EnchantSelectItem,
-    EnchantResult: vue_EnchantResult,
-  },
-  provide() {
-    return {
-      openSelectItem: this.openSelectItem,
-      rootState: this.state,
-    }
-  },
-  setup() {
-    const { windows, contents, toggle } = ToggleService({
-      windows: ['selectItem'],
-      contents: ['top', 'extraOptions', 'result'],
-    })
-    const store = useEnchantStore()
-    const { t } = useI18n()
-    return { windows, contents, toggle, store, t }
-  },
-  data() {
-    return {
-      state: {
-        statDisplayMode: 0,
-      },
+const { windows, contents, toggle } = ToggleService({
+  windows: ['selectItem'] as const,
+  contents: ['top', 'extraOptions', 'result'] as const,
+})
+const store = useEnchantStore()
+const { t } = useI18n()
+const { notify } = Notify()
+const { confirm } = Confirm()
 
-      selectItemTarget: {},
+const { enchantBuilds, currentBuild, config } = (() => {
+  const { enchantBuilds: _enchantBuilds, currentBuild: _currentBuild, config: _config } = storeToRefs(store)
+  return {
+    enchantBuilds: _enchantBuilds as Ref<EnchantBuild[]>,
+    currentBuild: _currentBuild as Ref<EnchantBuild | null>,
+    config: _config,
+  }
+})()
 
-      buildCount: 0,
-      equipmentTypeOptions: [{
-        id: 0,
-        text: this.$lang('equipment types/main-weapon'),
-        type: EnchantEquipmentTypes.MainWeapon,
-        isOriginalElement: false,
-      }, {
-        id: 1,
-        text: this.$lang('equipment types/body-armor'),
-        type: EnchantEquipmentTypes.BodyArmor,
-        isOriginalElement: false,
-      }, {
-        id: 2,
-        text: this.$lang('equipment types/main-weapon|original-element'),
-        type: EnchantEquipmentTypes.MainWeapon,
-        isOriginalElement: true,
-      }],
+const state = reactive({
+  statDisplayMode: 0,
+})
 
-      listeners: {
-        windowBeforeUnload: null,
-        documentVisibilityChange: null,
-      },
-    }
-  },
-  beforeCreate() {
-    init()
-  },
-  created() {
-    this.store.init()
-    this.$notify(this.$lang('save/tips/auto load successfully'))
-
-    const evt_autoSave = () => this.autoSave()
-    const evt_autoSave_2 = () => document.visibilityState === 'hidden' && this.autoSave()
-    window.addEventListener('beforeunload', evt_autoSave)
-    document.addEventListener('visibilitychange', evt_autoSave_2)
-    this.listeners.windowBeforeUnload = evt_autoSave
-    this.listeners.documentVisibilityChange = evt_autoSave_2
-  },
-  mounted() {
-    if (this.enchantBuilds.length === 0) {
-      this.createBuild()
-    }
-  },
-  beforeUnmount() {
-    window.removeEventListener('beforeunload', this.listeners.windowBeforeUnload)
-    document.removeEventListener('visibilitychange', this.listeners.documentVisibilityChange)
-    this.autoSave()
-  },
-  computed: {
-    ...mapState(useEnchantStore, ['enchantBuilds', 'currentBuild', 'config']),
-
-    buildDatas() {
-      return this.enchantBuilds.map((build, i) => ({
-        origin: build,
-        iid: i,
-      }))
-    },
-
-    /** @return {EnchantEquipment} */
-    currentEquipment() {
-      if (!this.currentBuild) {
-        return null
-      }
-      return this.currentBuild.equipment
-    },
-    successRate() {
-      if (!this.currentEquipment) {
-        return 0
-      }
-      const rate = this.currentEquipment.successRate
-      return rate === -1 ?
-        this.$lang('success rate: unlimited') :
-        Math.floor(rate) + '%'
-    },
-    isWeapon() {
-      return this.currentEquipmentType !== 1
-    },
-    selectedItems() {
-      return (this.selectItemTarget.target?.stats ?? []).map(stat => ({
-        origin: stat.itemBase,
-        type: stat.type,
-      }))
-    },
-
-    currentEquipmentType: {
-      get() {
-        const eq = this.currentEquipment
-        if (eq.fieldType === EnchantEquipmentTypes.MainWeapon) {
-          return eq.isOriginalElement ? 2 : 0
-        }
-        return 1
-      },
-      set(v) {
-        this.currentEquipment.fieldType = v.type
-        this.currentEquipment.isOriginalElement = v.isOriginalElement
-      },
-    },
-
-    characterLevel: {
-      set(value) {
-        this.store.config.characterLevel = value
-      },
-      get() {
-        return this.config.characterLevel
-      },
-    },
-    smithLevel: {
-      set(value) {
-        this.store.config.smithLevel = value
-      },
-      get() {
-        return this.config.smithLevel
-      },
-    },
-  },
-  methods: {
-    autoSave() {
-      this.store.save()
-      this.$notify(this.$lang('save/tips/auto save successfully'))
-    },
-    setCurrentBuild(data) {
-      this.store.setCurrentBuild(data.iid)
-    },
-    createBuild() {
-      const name = this.$lang('build') + ' ' + (this.buildCount + 1).toString()
-      const build = new EnchantBuild(name)
-      this.store.appendBuild(build)
-      this.buildCount += 1
-    },
-    async removeBuild() {
-      if (this.enchantBuilds.length === 1) {
-        this.$notify(this.$lang('tips/keep at least one build'))
-        return
-      }
-      if (await this.$confirm(this.$lang('tips/confirm: remove build'))) {
-        this.store.removeBuild(this.currentBuild)
-      }
-    },
-    copyBuild() {
-      this.store.copyBuild(this.currentBuild)
-      this.$notify(this.$lang('tips/copy build successfully'))
-    },
-    exportBuild() {
-      /** @type {EnchantBuild} */
-      const build = this.currentBuild
-      const odata = build.save()
-      const data = JSON.stringify(odata)
-      CY.file.save({
-        data,
-        fileName: build.name + '.txt',
-      })
-    },
-    importBuild() {
-      CY.file.load({
-        succeed: res => {
-          const build = EnchantBuild.load(JSON.parse(res))
-          this.store.appendBuild(build)
-          this.$notify(this.$lang('save/tips/import successfully', [`「${build.name}」`]))
-        },
-        error: () => this.$notify(this.$lang('save/tips/import: error')),
-        checkFileType: fileType => {
-          if (fileType !== 'txt') {
-            this.$notify(this.$lang('save/tips/import: wrong file type'))
-            return false
-          }
-          return true
-        },
-      })
-    },
-
-    appendStep() {
-      this.currentEquipment.appendStep()
-    },
-
-    openSelectItem(type, target, once = false) {
-      this.selectItemTarget = { type, target, once }
-      this.toggle('windows/selectItem', true)
-    },
-
-    selectItem(item) {
-      const { type, target } = this.selectItemTarget
-      if (type === 'step' && target instanceof EnchantStep) {
-        const matchedStat = target.stat(item.origin, item.type)
-        if (matchedStat) {
-          // this.$notify(this.$lang('tips/step stat repeated'));
-          matchedStat.remove()
-          return
-        }
-        const stat = target.appendStat(item.origin, item.type)
-        if (!stat) {
-          this.$notify(this.$lang('tips/number of stats of equipment has reached the upper limit'))
-          return
-        }
-        const eq = stat.belongEquipment
-        const min = stat.limit[0]
-        const pot = stat.itemBase.getPotential(stat.type, eq)
-        stat.value = pot > stat.originalPotential ?
-          (min - Math.min(eq.stat(stat.itemBase, stat.type, eq.lastStep.index).value, 0)) : 0
-      }
-    },
-
-    // optimizeSteps() {
-    //   /** @type {EnchantEquipment} */
-    //   const eq = this.currentEquipment;
-    //   console.log('=====================================');
-    //   eq.steps(eq.lastStep.index).forEach(step => console.log(step, step.optimizeType()));
-    // }
-  },
+const selectItemTarget = reactive({
+  target: null,
+  type: 'step',
+  once: false,
+}) as {
+  target: EnchantStep | null;
+  type: 'step';
+  once: boolean;
 }
+const buildCount = ref(0)
+
+const equipmentTypeOptions = [{
+  id: 0,
+  text: t('enchant-simulator.equipment-types.main-weapon'),
+  type: EnchantEquipmentTypes.MainWeapon,
+  isOriginalElement: false,
+}, {
+  id: 1,
+  text: t('enchant-simulator.equipment-types.body-armor'),
+  type: EnchantEquipmentTypes.BodyArmor,
+  isOriginalElement: false,
+}, {
+  id: 2,
+  text: t('enchant-simulator.equipment-types.main-weapon_original-element'),
+  type: EnchantEquipmentTypes.MainWeapon,
+  isOriginalElement: true,
+}]
+
+AutoSave({
+  save: () => store.save(),
+  loadFirst: () => store.init(),
+})
+
+const buildDatas = computed(() => {
+  return enchantBuilds.value.map((build, idx) => ({
+    origin: build,
+    iid: idx,
+  }))
+})
+
+const currentEquipment = computed(() => currentBuild.value!.equipment)
+
+const successRate = computed(() => {
+  const rate = currentEquipment.value.successRate
+  return rate === -1 ?
+    t('enchant-simulator.success-rate-unlimited') :
+    Math.floor(rate) + '%'
+})
+
+const selectedItems = computed(() => {
+  return (selectItemTarget.target?.stats ?? []).map(stat => ({
+    id: stat.statId,
+    origin: stat.itemBase,
+    type: stat.type,
+  }))
+})
+
+const currentEquipmentType = computed<number>({
+  get() {
+    const eq = currentEquipment.value
+    if (eq?.fieldType === EnchantEquipmentTypes.MainWeapon) {
+      return eq.isOriginalElement ? 2 : 0
+    }
+    return 1
+  },
+  set(value) {
+    const item = equipmentTypeOptions[value]
+    currentEquipment.value.fieldType = item.type
+    currentEquipment.value.isOriginalElement = item.isOriginalElement
+  },
+})
+
+const isWeapon = computed(() => {
+  return currentEquipmentType.value !== 1
+})
+
+const setCurrentBuild = (data: (typeof buildDatas)['value'][number]) => {
+  store.setCurrentBuild(data.iid)
+}
+
+const createBuild = () => {
+  const name = t('enchant-simulator.build') + ' ' + (buildCount.value + 1).toString()
+  const build = new EnchantBuild(name)
+  store.appendBuild(build)
+  buildCount.value += 1
+}
+
+const removeBuild = async () => {
+  if (enchantBuilds.value.length === 1) {
+    notify(t('enchant-simulator.tips.keep-at-least-one-build'))
+    return
+  }
+  if (await confirm(t('enchant-simulator.tips.remove-build-confirm'))) {
+    store.removeBuild(currentBuild.value!)
+  }
+}
+
+const copyBuild = () => {
+  store.copyBuild(currentBuild.value!)
+  notify(t('enchant-simulator.tips.copy-build-success'))
+}
+
+const {
+  exportBuild,
+  importBuild,
+} = ExportBuild({
+  save(handler) {
+    const build = currentBuild.value!
+    const data = build.save()
+    handler(build.name + '.txt', JSON.stringify(data))
+  },
+  loaded(res) {
+    const saveData = JSON.parse(res) as EnchantBuildSaveData
+    const build = EnchantBuild.load(saveData)
+    store.appendBuild(build)
+  },
+})
+
+const appendStep = () => {
+  currentEquipment.value.appendStep()
+}
+
+const openSelectItem = (type: 'step', target: EnchantStep, once = false) => {
+  selectItemTarget.type = type
+  selectItemTarget.target = target
+  selectItemTarget.once = once
+  toggle('windows/selectItem', true)
+}
+
+const selectItem = (item: EnchantStatOptionBase) => {
+  const { type, target } = selectItemTarget
+  if (type === 'step' && target instanceof EnchantStep) {
+    const matchedStat = target.stat(item.origin, item.type)
+    if (matchedStat) {
+      // this.$notify(this.$lang('tips/step stat repeated'));
+      matchedStat.remove()
+      return
+    }
+    const stat = target.appendStat(item.origin, item.type, 0)
+    if (!stat) {
+      notify(t('enchant-simulator.tips.stats-reached-upper-limit'))
+      return
+    }
+    const eq = stat.belongEquipment
+    const min = stat.limit[0]
+    const pot = stat.itemBase.getPotential(stat.type, eq)
+    stat.value = pot > stat.originalPotential ?
+      (min - Math.min(eq.stat(stat.itemBase, stat.type, eq.lastStep!.index).value, 0)) : 0
+  }
+}
+
+onMounted(() => {
+  if (store.enchantBuilds.length === 0) {
+    createBuild()
+  }
+})
+
+provide(EnchantSimulatorInjectionKey, {
+  openSelectItem,
+  rootState: state,
+})
+
+// optimizeSteps() {
+//   /** @type {EnchantEquipment} */
+//   const eq = this.currentEquipment;
+//   console.log('=====================================');
+//   eq.steps(eq.lastStep.index).forEach(step => console.log(step, step.optimizeType()));
+// }
 </script>
 
 <style lang="postcss" scoped>
