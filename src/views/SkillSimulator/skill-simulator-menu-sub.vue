@@ -1,9 +1,9 @@
 <template>
-  <div v-if="currentSkillBuild" class="flex items-end ml-auto sticky z-10 px-2 mt-4 space-x-3" style="bottom: 4.5rem">
+  <div v-if="currentSkillBuild" class="flex items-end justify-end ml-auto px-2 mt-4 space-x-3">
     <cy-transition type="fade" mode="out-in">
       <div
         v-if="contents.mainMenu"
-        class="space-y-2 border-1 border-light-2 rounded-xl p-4 bg-white overflow-y-auto"
+        class="space-y-2 border-1 border-light-2 rounded-xl p-4 bg-white overflow-y-auto pointer-events-auto"
         style="max-height: 60vh;"
       >
         <div class="flex items-center">
@@ -60,7 +60,7 @@
       </div>
       <div
         v-else-if="contents.selectSkillTree"
-        class="space-y-2 border-1 border-light-2 rounded-xl p-4 bg-white overflow-y-auto"
+        class="space-y-2 border-1 border-light-2 rounded-xl p-4 bg-white overflow-y-auto pointer-events-auto"
         style="max-height: 60vh;"
       >
         <div v-for="stc in skillTreeCategorys" :key="`stc-${stc.id}`">
@@ -81,7 +81,7 @@
       </div>
       <div
         v-else-if="contents.goSkillTree"
-        class="space-y-2 border-1 border-light-2 rounded-xl p-4 bg-white overflow-y-auto"
+        class="space-y-2 border-1 border-light-2 rounded-xl p-4 bg-white overflow-y-auto pointer-events-auto"
         style="max-height: 60vh;"
       >
         <div v-for="stc in skillTreeCategorys" :key="`stc-${stc.id}`">
@@ -100,28 +100,26 @@
           </div>
         </div>
       </div>
-      <div v-else class="relative">
-        <div class="space-x-2.5 flex items-center absolute bottom-0 right-0">
-          <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
-            <cy-icon-text icon="mdi:script-outline" size="small">
-              {{ t('skill-simulator.skill-level-point') }}
-            </cy-icon-text>
-            <div class="text-sm text-light-3">
-              {{ skillPointSum.level }}
-            </div>
+      <div v-else class="space-x-2.5 flex items-center pointer-events-auto">
+        <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
+          <cy-icon-text icon="mdi:script-outline" size="small">
+            {{ t('skill-simulator.skill-level-point') }}
+          </cy-icon-text>
+          <div class="text-sm text-light-3">
+            {{ skillPointSum.level }}
           </div>
-          <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
-            <cy-icon-text icon="mdi:judaism" size="small">
-              {{ t('skill-simulator.star-gem-level-point') }}
-            </cy-icon-text>
-            <div class="text-sm text-water-blue">
-              {{ skillPointSum.starGemLevel }}
-            </div>
+        </div>
+        <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
+          <cy-icon-text icon="mdi:judaism" size="small">
+            {{ t('skill-simulator.star-gem-level-point') }}
+          </cy-icon-text>
+          <div class="text-sm text-water-blue">
+            {{ skillPointSum.starGemLevel }}
           </div>
         </div>
       </div>
     </cy-transition>
-    <div class="flex-shrink-0 flex flex-col space-y-3">
+    <div class="flex-shrink-0 flex flex-col space-y-3 pointer-events-auto">
       <cy-button-circle
         icon="ic:baseline-settings"
         main-color="orange"

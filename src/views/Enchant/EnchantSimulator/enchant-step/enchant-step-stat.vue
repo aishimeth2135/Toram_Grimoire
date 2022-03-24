@@ -49,33 +49,33 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { computed, inject } from 'vue'
+import { useI18n } from 'vue-i18n'
+
 import { trimZero } from '@/shared/utils/string'
 
 import { EnchantStepStat } from '@/lib/Enchant/Enchant'
 
+import { EnchantSimulatorInjectionKey } from '../injection-keys'
 
-export default {
-  name: 'EnchantStepStat',
-  RegisterLang: 'Enchant Simulator',
-  inject: ['rootState'],
-  props: {
-    stat: {
-      type: EnchantStepStat,
-      required: true,
-    },
-  },
-  computed: {
-    potentialEffect() {
-      return trimZero(this.stat.finalPotentialEffect.toFixed(2))
-    },
-    materialPoint() {
-      const mp = this.stat.materialPointCost
-      return {
-        title: this.$lang('material point type list')[mp.type],
-        value: mp.value,
-      }
-    },
-  },
+interface Props {
+  stat: EnchantStepStat;
 }
+
+const props = defineProps<Props>()
+
+const { t } = useI18n()
+
+const { rootState } = inject(EnchantSimulatorInjectionKey)!
+
+const potentialEffect = computed(() => trimZero(props.stat.finalPotentialEffect.toFixed(2)))
+
+const materialPoint = computed(() => {
+  const mp = props.stat.materialPointCost
+  return {
+    title: t(`enchant-simulator.material-point-type-list.${mp.type}`),
+    value: mp.value,
+  }
+})
 </script>

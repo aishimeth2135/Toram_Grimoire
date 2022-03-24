@@ -2,8 +2,9 @@
 import type { RouteRecordRaw } from 'vue-router'
 
 import { DataStoreIds } from '@/stores/app/datas/enums'
+import { LocaleViewNamespaces } from '@/stores/app/language/enums'
 
-import { ViewInit } from '@/shared/services/ViewInit'
+import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
@@ -15,6 +16,11 @@ export default {
   path: '/enchant',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
+    if (to.name === 'EnchantSimulator') {
+      PrepareLocaleInit(LocaleViewNamespaces.EnchantSimulator)
+    } else if (to.name === 'EnchantDoll') {
+      PrepareLocaleInit(LocaleViewNamespaces.EnchantSimulator, LocaleViewNamespaces.EnchantDoll)
+    }
     ViewInit(DataStoreIds.Stats, DataStoreIds.Enchant).then(next)
   },
   meta: {

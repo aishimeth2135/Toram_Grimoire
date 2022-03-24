@@ -8,8 +8,6 @@ import { Character, CharacterSaveData } from '@/lib/Character/Character'
 import { CharacterEquipment, EquipmentSaveData } from '@/lib/Character/CharacterEquipment'
 import { FoodsSaveData } from '@/lib/Character/Food'
 
-import ExportBuild from '@/setup/ExportBuild'
-
 import { SkillBuildState, useCharacterSkillStore } from './skill'
 import { useCharacterFoodStore } from './food'
 import { setupCharacterSkills, setupCharacterStats, setupFoodStats } from './setup'
@@ -318,20 +316,6 @@ export const useCharacterStore = defineStore('view-character', () => {
     }
   }
 
-  const {
-    exportBuild: exportCharacterSimulator,
-    importBuild: importCharacterSimulator,
-  } = ExportBuild({
-    save(handler) {
-      const data = createCharacterSimulatorSaveData()
-      handler('cy-grimoire-character-simulator.txt', JSON.stringify(data))
-    },
-    loaded(res) {
-      const saveData = JSON.parse(res) as CharacterSimulatorSaveData
-      loadCharacterSimulatorSaveData(saveData)
-    },
-  })
-
   const currentSkillBuild = computed(() => skillBuildStore.currentSkillBuild as (SkillBuild | null))
 
   const {
@@ -400,8 +384,6 @@ export const useCharacterStore = defineStore('view-character', () => {
     loadCharacterSimulatorSaveData,
 
     createCharacterSimulatorSaveData,
-    exportCharacterSimulator,
-    importCharacterSimulator,
   }
 })
 

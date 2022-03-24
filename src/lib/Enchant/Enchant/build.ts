@@ -433,8 +433,8 @@ class EnchantStep {
     return this.stats[0] || null
   }
 
-  appendStat(itemBase: EnchantItem, type: StatNormalTypes, v: number): EnchantStepStat | null {
-    const stat = new EnchantStepStat(this, itemBase, type, v)
+  appendStat(itemBase: EnchantItem, type: StatNormalTypes, value: number): EnchantStepStat | null {
+    const stat = new EnchantStepStat(this, itemBase, type, value)
     if (!this.belongEquipment.checkStats() && !this.belongEquipment.hasStat(stat)) {
       return null
     }
@@ -538,9 +538,9 @@ class EnchantStat {
   itemBase: EnchantItem
   stat: Stat
 
-  constructor(itemBase: EnchantItem, type: StatNormalTypes, v: number) {
+  constructor(itemBase: EnchantItem, type: StatNormalTypes, value: number) {
     this.itemBase = itemBase
-    this.stat = itemBase.statBase.createStat(type, v)
+    this.stat = itemBase.statBase.createStat(type, value)
   }
 
   get value(): number {

@@ -15,12 +15,14 @@
         </cy-button-border>
       </div>
     </div>
-    <SkillSimulatorMenuSub
-      @go-skill-tree="goSkillTree"
-      @export-image="toggle('modals/exportImage')"
-      @export-text="toggle('modals/exportText')"
-    />
-    <SkillSimulatorMenu @update-menu-data="updateMenuData" />
+    <div class="sticky bottom-2 z-10 pointer-events-none">
+      <SkillSimulatorMenuSub
+        @go-skill-tree="goSkillTree"
+        @export-image="toggle('modals/exportImage')"
+        @export-text="toggle('modals/exportText')"
+      />
+      <SkillSimulatorMenu @update-menu-data="updateMenuData" />
+    </div>
     <SkillSimulatorExportImage
       :visible="modals.exportImage"
       :skill-build="currentSkillBuild"

@@ -112,6 +112,26 @@ export function setupCharacterSkills(
     const computingResultsActive: Map<Skill, ComputedRef<SkillResult[]>> = new Map()
     const computingResultsPassive: Map<Skill, ComputedRef<SkillResult[]>> = new Map()
     const stackContainers: Map<Skill, ComputedRef<DisplayDataContainerAlly[]>> = new Map()
+
+    const handleComputingResults = (target: ComputedRef<SkillBranchItem[]>, handler: (bch: SkillBranchItem) => DisplayDataContainer) => {
+      return computed(() => {
+        return target.value.map(bch => {
+          const container = (
+            bch.name === SkillBranchNames.Effect || bch.name === SkillBranchNames.Passive
+              ? handler(bch)
+              : new DisplayDataContainer({ branchItem: bch, containers: {}, statContainers: [], value: {} }) // empty container
+          ) as DisplayDataContainerAlly
+          const suffixContainers = bch.suffixBranches
+            .filter(suf => suf.name === SkillBranchNames.Extra && suf.stats.length !== 0 && suf.attr('type') !== 'next')
+            .map(suf => ExtraHandler(suf) as DisplayDataContainerSuffixAlly)
+          return {
+            container,
+            suffixContainers,
+          } as SkillResult
+        })
+      })
+    }
+
     allSkills.forEach(skill => {
       const skillItem = computingContainer.value.createSkillItem(skill)
 
@@ -136,24 +156,6 @@ export function setupCharacterSkills(
           .map(_bch => StackHandler(_bch)) ?? []
       })
 
-      const handleComputingResults = (target: ComputedRef<SkillBranchItem[]>, handler: (bch: SkillBranchItem) => DisplayDataContainer) => {
-        return computed(() => {
-          return target.value.map(bch => {
-            const container = (
-              bch.name === SkillBranchNames.Effect || bch.name === SkillBranchNames.Passive
-                ? handler(bch)
-                : new DisplayDataContainer({ branchItem: bch, containers: {}, statContainers: [], value: {} }) // empty container
-            ) as DisplayDataContainerAlly
-            const suffixContainers = bch.suffixBranches
-              .filter(suf => suf.name === SkillBranchNames.Extra && suf.stats.length !== 0 && suf.attr('type') !== 'next')
-              .map(suf => ExtraHandler(suf) as DisplayDataContainerSuffixAlly)
-            return {
-              container,
-              suffixContainers,
-            } as SkillResult
-          })
-        })
-      }
       if (activeSkillBranchItems) {
         computingResultsActive.set(skill, handleComputingResults(activeSkillBranchItems, EffectHandler))
       }

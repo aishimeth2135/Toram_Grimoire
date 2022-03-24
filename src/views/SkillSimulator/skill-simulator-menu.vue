@@ -1,6 +1,6 @@
 <template>
-  <div class="sticky bottom-2 z-10 mx-2 mt-4">
-    <div class="bg-white border-1 border-solid border-light-2 rounded-lg px-3 py-1 mb-3 overflow-y-auto space-x-2">
+  <div class="mx-2 mt-2">
+    <div class="bg-white border-1 border-solid border-light-2 rounded-lg px-3 py-1 overflow-y-auto space-x-2 pointer-events-auto">
       <cy-button-inline
         :icon="mode === 'skill' ? 'bx:bxs-book-bookmark' : 'bx:bx-star'"
         @click="mode = mode === 'skill' ? 'star-gem' : 'skill'"

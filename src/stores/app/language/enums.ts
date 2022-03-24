@@ -9,6 +9,8 @@ export const enum LocaleViewNamespaces {
   DamageCalculation = 'damage-calculation',
   SkillSimulator = 'skill-simulator',
   CharacterSimulator = 'character-simulator',
+  EnchantSimulator = 'enchant-simulator',
+  EnchantDoll = 'enchant-doll',
 }
 
 export type LocaleNamespaces = LocaleGlobalNamespaces | LocaleViewNamespaces

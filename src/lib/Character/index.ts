@@ -3,7 +3,7 @@ import { markRaw } from 'vue'
 import { CharacterStatCategory } from './Character'
 import { StatBase } from './Stat'
 
-export default class {
+export default class CharacterSystem {
   statList: StatBase[]
   characterStatCategoryList: CharacterStatCategory[]
 

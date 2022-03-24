@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-4" style="min-height: 75vh">
+  <div class="space-y-4 px-1" style="min-height: 75vh">
     <cy-default-tips
       v-if="selectedSkillTrees.length === 0"
       icon="bx:message-rounded-edit"
@@ -16,7 +16,7 @@
       <div>
         <cy-icon-text icon="bx:bxs-book-bookmark">{{ skillTree.name }}</cy-icon-text>
       </div>
-      <div>
+      <div class="max-w-full overflow-x-auto">
         <SkillTreeDiagram
           :skill-tree="skillTree"
           :get-skill-level="getSkillLevel"
