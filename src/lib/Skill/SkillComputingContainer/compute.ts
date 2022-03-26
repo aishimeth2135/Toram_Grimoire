@@ -162,8 +162,15 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
 
   const getTextKey = (idx: number) => '__FORMULA_EXTRA_' + idx.toString() + '__'
 
+  let mainBranchItem
   if (branchItem instanceof SkillBranchItem) {
-    const formulaExtra = branchItem.suffixBranches.find(suf => suf.name === 'formula_extra')
+    mainBranchItem = branchItem
+  } else if (branchItem instanceof SkillBranchItemSuffix) {
+    mainBranchItem = branchItem.mainBranch
+  }
+
+  if (mainBranchItem) {
+    const formulaExtra = mainBranchItem.suffixBranches.find(suf => suf.name === 'formula_extra')
     if (formulaExtra) {
       const extraTexts = (formulaExtra.attr('texts')).split(/\s*,\s*/)
       extraTexts.forEach((text, idx) => {
