@@ -2,8 +2,9 @@
 import type { RouteRecordRaw } from 'vue-router'
 
 import { DataStoreIds } from '@/stores/app/datas/enums'
+import { LocaleViewNamespaces } from '@/stores/app/language/enums'
 
-import { ViewInit } from '@/shared/services/ViewInit'
+import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
@@ -15,6 +16,9 @@ export default {
   path: '/items',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
+    if (to.name === 'CrystalQuery') {
+      PrepareLocaleInit(LocaleViewNamespaces.CrystalQuery)
+    }
     ViewInit(DataStoreIds.Stats, DataStoreIds.Items).then(next)
   },
   meta: {

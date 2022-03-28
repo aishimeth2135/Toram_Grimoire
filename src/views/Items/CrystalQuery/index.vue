@@ -1,297 +1,250 @@
 <template>
-  <article>
-    <div>
-      <fieldset class="mb-4 mx-2 p-4 border-1 border-solid border-light-2">
-        <legend class="px-2">
-          <cy-button
-            v-for="(mode, i) in modeState.modes"
-            :key="mode.id"
-            :icon="mode.icon"
-            :selected="i === modeState.currentModeIndex"
-            type="border"
-            @click="selectMode(i)"
-          >
-            {{ $lang('search mode/' + mode.id) }}
-          </cy-button>
-        </legend>
-        <div v-show="currentMode === 'normal'">
-          <div class="mb-1 text-purple">
-            <cy-icon-text icon="ic-outline-search" size="small">
-              {{ $lang('search title') }}
-            </cy-icon-text>
-          </div>
-          <cy-title-input
-            v-model:value="modeState['mode-normal'].searchText"
-            icon="ic-outline-category"
-            :placeholder="$lang('search placeholder')"
+  <section>
+    <div ref="topElement" />
+    <div class="overflow-x-auto" style="min-height: 75vh">
+      <template v-if="currentItems.length !== 0">
+        <div class="min-w-min divide-y divide-light">
+          <CrystalQueryResultItem
+            v-for="crystal in currentItems"
+            :key="crystal.id"
+            :crystal="crystal"
+            :detail-visible-default="resultItemsDetailVisibleDefault"
+            :preview-stat="mode === 'stat' ? modeStat.statItem : null"
+            :preview-mode="resultItemPreviewMode"
           />
         </div>
-        <div v-show="currentMode === 'stats'">
-          <cy-button
-            icon="mdi-rhombus-outline"
-            type="border"
-            @click="toggleSelectStatWindowVisible(true)"
-          >
-            {{ currentStat ? currentStat.text : $lang('select stat: title') }}
-          </cy-button>
-        </div>
-      </fieldset>
-      <div>
-        <template v-if="searchResult.length !== 0">
-          <template
-            v-for="(category, i) in searchResult"
-            :key="category.id"
-          >
-            <cy-hr v-if="i !== 0" />
-            <cy-button
-              icon="bx-bx-cube-alt"
-              type="drop-down"
-              :menu-default-visible="false"
+        <cy-pagination
+          v-model:value="page"
+          :max-page="maxPage"
+          @changed="pageChanged"
+        />
+      </template>
+      <cy-default-tips v-else>
+        {{ t('crystal-query.no-results-tips') }}
+      </cy-default-tips>
+    </div>
+    <div class="sticky bottom-2 mx-2 mt-2 pointer-events-none z-5 flex flex-wrap">
+      <div class="flex items-end ml-auto mb-2 space-x-2 pointer-events-auto">
+        <div v-if="contents.searchFilter" class="border-1 border-light-3 rounded-md p-4 bg-white">
+          <div class="flex items-center">
+            <cy-icon-text size="small" text-color="purple">
+              {{ t('crystal-query.crystal-category.title') }}
+            </cy-icon-text>
+            <div class="inline-flex items-center ml-4 space-x-2">
+              <cy-button-circle size="small" icon="ic-round-border-all" @click="toggleSearchFilterAll(searchFilter.category, true)" />
+              <cy-button-circle size="small" icon="eva-close-outline" @click="toggleSearchFilterAll(searchFilter.category, false)" />
+            </div>
+          </div>
+          <div>
+            <cy-button-check
+              v-for="option in searchFilter.category.options"
+              :key="option"
+              :selected="searchFilter.category.selectedOptions.includes(option)"
+              @click="toggleSearchFilter(searchFilter.category, option)"
             >
-              {{ $lang('category title')[category.id] }}
-              <template #menu>
-                <cy-list-item
-                  v-for="cs in category.crystalStates"
-                  :key="cs.origin.id"
-                  @click="selectCrystal(cs.origin)"
-                >
-                  <cy-icon-text :icon="cs.imagePath" icon-src="image">
-                    {{ cs.origin.name }}
-                  </cy-icon-text>
-                  <show-stat
-                    v-if="currentMode == 'stats' && currentStat"
-                    class="crystal-stat-detail"
-                    :stat="cs.stat"
-                    :negative-value="cs.stat.value < 0"
-                    type="preview"
-                  />
-                </cy-list-item>
-              </template>
-            </cy-button>
-          </template>
-        </template>
-        <cy-default-tips v-else icon="bx-bx-message-rounded-x">
-          {{ $lang('no result tips') }}
-        </cy-default-tips>
+              {{ t('crystal-query.crystal-category.categorys.' + option) }}
+            </cy-button-check>
+          </div>
+        </div>
+        <div class="flex-shrink-0 flex flex-col items-center space-y-2">
+          <cy-button-circle
+            v-if="mode === 'stat'"
+            icon="ci:list-checklist-alt"
+            main-color="blue-green"
+            @click="resultItemPreviewMode = resultItemPreviewMode === 'default' ? 'mode' : 'default'"
+          />
+          <cy-button-circle
+            icon="mdi:arrow-expand"
+            main-color="water-blue"
+            @click="resultItemsDetailVisibleDefault = !resultItemsDetailVisibleDefault"
+          />
+          <cy-button-circle
+            icon="mdi:filter"
+            main-color="orange"
+            @click="toggle('contents/searchFilter')"
+          />
+        </div>
       </div>
-      <div
-        v-if="currentCrystal"
-        class="flex sticky bottom-2 mx-2 bg-white border-1 border-solid border-light-2 rounded-2xl mt-4"
-      >
-        <div class="p-4">
-          <div class="mb-2 text-purple">
-            <cy-icon-text :icon="currentCrystal.crystalIconPath" text-color="purple" icon-src="image">
-              {{ currentCrystal.name }}
-            </cy-icon-text>
-          </div>
-          <div
-            v-if="currentCrystal.origin.enhancer"
-            class="flex items-center pl-3 mb-2"
-          >
-            <cy-icon-text icon="bx-bx-cube-alt" size="small">
-              {{ $lang('enhancer title') }}
-              <span class="text-orange">
-                {{ currentCrystal.origin.enhancer }}
-              </span>
-            </cy-icon-text>
-          </div>
-          <div class="pl-1">
-            <show-stat
-              v-for="stat in currentCrystal.stats"
-              :key="stat.statId"
-              :stat="stat"
-              :negative-value="stat.value < 0"
+      <div class="flex items-center space-x-2 w-full pointer-events-auto">
+        <cy-options inline>
+          <template #title>
+            <cy-button-circle
+              icon="heroicons-solid:switch-vertical"
+              main-color="water-blue"
+            />
+          </template>
+          <template #options>
+            <div class="my-1 px-2">
+              <cy-icon-text size="small" text-color="light-2">
+                {{ t('crystal-query.modes.title') }}
+              </cy-icon-text>
+            </div>
+            <div>
+              <cy-list-item
+                v-for="modeItem in modes"
+                :key="modeItem.id"
+                :selected="mode === modeItem.id"
+                @click="selectMode(modeItem.id)"
+              >
+                <cy-icon-text :icon="modeItem.icon">
+                  {{ t('crystal-query.modes.' + modeItem.id) }}
+                </cy-icon-text>
+              </cy-list-item>
+            </div>
+          </template>
+        </cy-options>
+        <div class="border-1 border-light-2 px-4 py-0.5 rounded-full bg-white w-full">
+          <div v-if="mode === 'normal'" class="flex items-center w-full">
+            <cy-icon-text icon="ic-outline-search" />
+            <input
+              v-model="modeNormal.searchText"
+              type="text"
+              class="border-0 p-1 ml-2 inline-block w-full bg-transparent"
+              :placeholder="t('global.search')"
             />
           </div>
+          <cy-button-inline
+            v-else-if="mode === 'stat'"
+            icon="mdi-rhombus-outline"
+            :main-color="modeStat.statItem ? 'default' : 'red'"
+            @click="toggle('modals/selectStat')"
+          >
+            {{ modeStat.statItem ? modeStat.statItem.text : t('crystal-query.select-stat.title') }}
+          </cy-button-inline>
         </div>
       </div>
     </div>
-    <div>
-      <cy-modal
-        v-model:visible="modeState['mode-stats'].selectStatWindowVisible"
-        vertical-position="start"
-      >
-        <template #title>
-          <cy-icon-text icon="mdi-rhombus-outline">
-            {{ $lang('select stat: window title') }}
-          </cy-icon-text>
-        </template>
-        <template #default>
-          <cy-title-input
-            v-model:value="modeState['mode-stats'].searchText"
-            icon="ic-outline-category"
-            class="mb-3"
-            :placeholder="$lang('select stat: search placeholder')"
-          />
-          <template v-if="statSearchResult.length != 0">
-            <cy-list-item
-              v-for="stat in statSearchResult"
-              :key="stat.origin.statId(stat.type)"
-              :selected="stat == currentStat"
-              @click="selectStat(stat)"
-            >
-              <cy-icon-text icon="mdi-rhombus-outline">
-                {{ stat.text }}
-              </cy-icon-text>
-            </cy-list-item>
-          </template>
-          <cy-default-tips v-else icon="bx-bx-message-rounded-x">
-            {{ $lang('no result tips') }}
-          </cy-default-tips>
-        </template>
-      </cy-modal>
-    </div>
-  </article>
+    <CrystalQuerySelectStat
+      v-model:selected-stat-item="modeStat.statItem"
+      :visible="modals.selectStat"
+      @close="toggle('modals/selectStat')"
+    />
+  </section>
 </template>
 
-<script>
-import { useDatasStore } from '@/stores/app/datas'
-
-import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
-import { StatTypes } from '@/lib/Character/Stat/enums'
-
-import vue_showStat from '@/components/common/show-stat.vue'
-
-import init from './init.js'
-
-
+<script lang="ts">
 export default {
   name: 'CrystalQuery',
-  RegisterLang: 'Crystal Query',
-  components: {
-    'show-stat': vue_showStat,
-  },
-  setup() {
-    const datasStore = useDatasStore()
-    return { datasStore }
-  },
-  data() {
-    const crystals = this.datasStore.Items.crystals
-    const crystalCategorys = new Array(5).fill().map((_, i) => {
-      return {
-        id: i,
-        crystals: crystals.filter(a => a.category == i).map(p => new EquipmentCrystal(p)),
-      }
-    })
+}
+</script>
 
-    const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier]
-    this.datasStore.Character.statList.forEach(stat => {
-      if (stat.hidden) return
-      statTypes.forEach(type => {
-        if (type === StatTypes.Multiplier && !stat.hasMultiplier)
-          return
-        stats.push({
-          origin: stat,
-          text: stat.title(type),
-          type,
-        })
-      })
-    })
+<script lang="ts" setup>
+import { computed, reactive, Ref, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-    return {
-      crystalCategorys,
-      currentCrystal: null,
-      modeState: {
-        modes: [{
-          id: 'normal',
-          icon: 'ic-round-list-alt',
-        }, {
-          id: 'stats',
-          icon: 'mdi-rhombus-outline',
-        }],
-        currentModeIndex: 0,
-        'mode-normal': {
-          searchText: '',
-        },
-        'mode-stats': {
-          stats,
-          searchText: '',
-          currentStat: null,
-          selectStatWindowVisible: false,
-        },
-      },
+import Grimoire from '@/shared/Grimoire'
+
+import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
+
+import PageControl from '@/setup/PageControl'
+import ToggleService from '@/setup/ToggleService'
+
+import CrystalQueryResultItem from './crystal-query-result-item.vue'
+import CrystalQuerySelectStat from './crystal-query-select-stat.vue'
+
+import { StatOptionItem } from './setup'
+
+const { t } = useI18n()
+const { modals, contents, toggle } = ToggleService({
+  modals: ['selectStat'] as const,
+  contents: ['searchFilter'] as const,
+})
+
+const crystals = Grimoire.Items.crystals.map(crystal => new EquipmentCrystal(crystal))
+const resultItemsDetailVisibleDefault = ref(false)
+const topElement: Ref<HTMLElement | null> = ref(null)
+
+// ----- mode
+const mode: Ref<'normal' | 'stat'> = ref('normal')
+const modes: {
+  id: 'normal' | 'stat';
+  icon: string;
+}[] = [{
+  id: 'normal',
+  icon: 'ic:baseline-search',
+}, {
+  id: 'stat',
+  icon: 'mdi:script-outline',
+}]
+
+const resultItemPreviewMode: Ref<'default' | 'mode'> = ref('default')
+
+const modeNormal = reactive({
+  searchText: '',
+})
+
+const modeStat = reactive({
+  statItem: null,
+}) as {
+  statItem: StatOptionItem | null;
+}
+
+const selectMode = (id: 'normal' | 'stat') => {
+  mode.value = id
+  resultItemPreviewMode.value = id === 'stat' ? 'mode' : 'default'
+}
+
+// ----- search filter
+interface SearchFilterItem {
+  options: unknown[];
+  selectedOptions: unknown[];
+}
+
+const searchFilter = reactive({
+  category: {
+    options: [0, 1, 2, 3, 4],
+    selectedOptions: [0, 1, 2, 3, 4],
+  },
+}) as Record<'category', SearchFilterItem>
+
+const toggleSearchFilter = (target: SearchFilterItem, item: unknown) => {
+  const idx = target.selectedOptions.indexOf(item)
+  if (idx > -1) {
+    target.selectedOptions.splice(idx, 1)
+  } else {
+    target.selectedOptions.push(item)
+  }
+}
+
+const toggleSearchFilterAll = (target: SearchFilterItem, force: boolean) => {
+  target.selectedOptions = force ? target.options.slice() : []
+}
+
+// search result
+const resultCrystals = computed(() => {
+  const filteredCrystals = crystals.filter(crystal => searchFilter.category.selectedOptions.includes(crystal.origin.category))
+  if (mode.value === 'normal') {
+    const text = modeNormal.searchText.toLowerCase()
+    return filteredCrystals.filter(crystal => crystal.name.toLowerCase().includes(text))
+  }
+  if (mode.value === 'stat') {
+    if (!modeStat.statItem) {
+      return []
     }
-  },
-  computed: {
-    currentMode() {
-      return this.modeState.modes[this.modeState.currentModeIndex].id
-    },
-    currentStat() {
-      return this.modeState['mode-stats'].currentStat
-    },
-    statSearchResult() {
-      const s = this.modeState['mode-stats']
-      const v = s.searchText.toLowerCase()
-      if (v === '') {
-        return s.stats
-      }
-      return s.stats.filter(stat => stat.text.toLowerCase().includes(v))
-    },
-    searchResult() {
-      const res = []
-      if (this.currentMode === 'normal') {
-        const v = this.modeState['mode-normal'].searchText.toLowerCase()
-        if (v === '') {
-          res.push(...this.crystalCategorys)
-        }
-        else {
-          this.crystalCategorys.forEach(cat => {
-            const t = cat.crystals.filter(c => c.name.toLowerCase().includes(v))
-            t.length != 0 && res.push({
-              id: cat.id,
-              crystals: t,
-            })
-          })
-        }
-      } else if (this.currentMode === 'stats') {
-        const searchStat = this.currentStat
-        if (!searchStat) {
-          return []
-        }
-        this.crystalCategorys.forEach(cat => {
-          const t = cat.crystals
-            .filter(c => this.findCrystalStat(searchStat, c))
-            .sort((a, b) => this.findCrystalStat(searchStat, b).value - this.findCrystalStat(searchStat, a).value)
-          t.length !== 0 && res.push({
-            id: cat.id,
-            crystals: t,
-          })
-        })
-      }
+    const statItem = modeStat.statItem
+    const result = filteredCrystals
+      .filter(crystal => crystal.stats.find(stat => stat.base === statItem.origin && stat.type === statItem.type))
+    result.sort((item1, item2) => {
+      const value1 = item1.stats
+        .filter(stat => stat.base === statItem.origin && stat.type === statItem.type)
+        .reduce((cur, stat) => cur + stat.value, 0)
+      const value2 = item2.stats
+        .filter(stat => stat.base === statItem.origin && stat.type === statItem.type)
+        .reduce((cur, stat) => cur + stat.value, 0)
+      return value2 - value1
+    })
+    return result
+  }
+  return []
+})
 
-      res.forEach(cat => {
-        cat.crystalStates = cat.crystals.map(c => ({
-          origin: c,
-          imagePath: c.crystalIconPath,
-          stat: this.currentStat ? this.findCrystalStat(this.currentStat, c) : null,
-        }))
-      })
+// ----- page control
+const { currentItems, page, maxPage } = PageControl({
+  items: resultCrystals,
+  step: 30,
+})
 
-      return res
-    },
-  },
-  beforeCreate() {
-    init()
-  },
-  methods: {
-    findCrystalStat(from, crystal) {
-      return crystal.stats
-        .find(stat => stat.baseName === from.origin.baseName && stat.type === from.type)
-    },
-    selectStat(stat) {
-      this.modeState['mode-stats'].currentStat = stat
-      this.toggleSelectStatWindowVisible(false)
-    },
-    toggleSelectStatWindowVisible(force) {
-      force = force !== undefined ? !this.modeState['mode-stats'].selectStatWindowVisible : force
-      this.modeState['mode-stats'].selectStatWindowVisible = force
-    },
-    selectMode(idx) {
-      this.modeState.currentModeIndex = idx
-    },
-    selectCrystal(crystal) {
-      this.currentCrystal = crystal
-    },
-  },
+const pageChanged = () => {
+  topElement.value?.scrollIntoView({ behavior: 'smooth' })
 }
 </script>

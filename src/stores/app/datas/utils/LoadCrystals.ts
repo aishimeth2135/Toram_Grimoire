@@ -17,8 +17,9 @@ export default function(root: ItemsSystem, csvData: CsvData) {
   let currentType: number
   let currentBossType: number
   csvData.forEach((row, index) => {
-    // if ( index == 0 )
-    //     return;
+    if (index === 0) {
+      return
+    }
     if (!row[NAME] && !row[ATTRIBUTE_CATEGORY] && !row[ATTRIBUTE_NAME])
       return
     try {

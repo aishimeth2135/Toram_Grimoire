@@ -123,10 +123,13 @@ class Crystal extends Item {
     this.enhancer = name
   }
 
-  get crystalIconPath() {
-    const type = this.enhancer ? 'enhance' :
-      ['weapon', 'body', 'additional', 'special', 'normal'][this.category]
+  get crystalBaseIconPath() {
+    const type = ['weapon', 'body', 'additional', 'special', 'normal'][this.category]
     return type ? Images.crystalIcons.get(type) : '#'
+  }
+
+  get crystalIconPath() {
+    return this.enhancer ? Images.crystalIcons.get('enhance') : this.crystalBaseIconPath
   }
 }
 
