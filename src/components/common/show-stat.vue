@@ -19,7 +19,7 @@
       <span>{{ stat.show() }}</span>
     </cy-icon-text>
   </div>
-  <div v-else class="w-full text-sm text-purple m-0">
+  <div v-else class="w-full text-sm m-0">
     <span
       v-for="text in restrictionTexts"
       :key="text"
@@ -27,7 +27,7 @@
     >
       {{ text }}
     </span>
-    <span>{{ stat.show() }}</span>
+    <span :class="negativeValue ? 'text-red' : 'text-purple'">{{ stat.show() }}</span>
   </div>
 </template>
 

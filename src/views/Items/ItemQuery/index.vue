@@ -109,7 +109,7 @@
           class="menu-btn bg-white border-light-4"
           @click="toggleMenuVisible('conditionOptions')"
         >
-          <cy-icon-text icon="mdi-checkbox-multiple-blank-circle" icon-color="light-4" />
+          <cy-icon-text icon="mdi:filter" icon-color="light-4" />
         </div>
       </div>
     </div>
@@ -122,7 +122,7 @@
               style="width: 2.8rem; height: 2.8rem;"
             >
               <cy-icon-text
-                icon="heroicons-solid:switch-vertical"
+                icon="ic:baseline-settings"
                 icon-color="water-blue-light"
                 icon-color-hover="water-blue"
               />
@@ -490,7 +490,7 @@ export default {
       return this.modes.stat.stats.filter(stat => stat.text.toLowerCase().includes(searchText))
     },
     searchResult() {
-      let sr = this.allSearchResult
+      let sr = this.allSearchResult.slice()
       const mode = this.currentMode,
         target = this.sortOptions.currentSelected
       sr.sort(target === 'default' ? this.sortOptions[mode].default : this.sortOptions.global[target])

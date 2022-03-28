@@ -1,0 +1,16 @@
+select-stat:
+  title: 選擇能力
+modes:
+  title: 搜尋模式
+  normal: 一般
+  stat: 鍛晶能力
+crystal-category:
+  title: 鍛晶類型
+  categorys:
+    - 武器鍛晶
+    - 防具鍛晶
+    - 追加鍛晶
+    - 特殊鍛晶
+    - 通用鍛晶
+no-results-tips: 找不到任何結果0.0
+enhancer-pretext: 可以強化
