@@ -151,7 +151,7 @@ import { useI18n } from 'vue-i18n'
 import { useEnchantStore } from '@/stores/views/enchant'
 
 import CY from '@/shared/utils/Cyteria'
-import { trimZero } from '@/shared/utils/string'
+import { trimFloatStringZero } from '@/shared/utils/string'
 import { markText } from '@/shared/utils/view'
 
 import ENCHANT_STATE from '@/lib/Enchant/Enchant/state'
@@ -275,7 +275,7 @@ const expectedSuccessRate = computed(() => {
   const positiveNums = enchantResultStats.value.filter(item => item.stat.value >= 0).length
   let res = Math.pow(Math.floor(rate) / 100, positiveNums) * 100
   res = Math.min(100, res)
-  return trimZero(res.toFixed(2)) + '%'
+  return trimFloatStringZero(res.toFixed(2)) + '%'
 })
 
 const successRateDetailCaptions = computed(() => {

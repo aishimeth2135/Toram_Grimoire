@@ -1,4 +1,4 @@
-import { isNumberString, trimZero } from '@/shared/utils/string'
+import { isNumberString, trimFloatStringZero } from '@/shared/utils/string'
 import { numberToFixed } from '@/shared/utils/number'
 import Grimoire from '@/shared/Grimoire'
 
@@ -165,7 +165,7 @@ function handleDisplayData<Branch extends SkillBranchItemBase>(
         .replace(/\*/g, '×')
     })
     container.handle(value => value.replace(/(\d+\.)(\d{4,})/g, (m, m1, m2) => m1 + m2.slice(0, 4)))
-    container.handle(trimZero)
+    container.handle(trimFloatStringZero)
   }
 
   const handleAttrHistoryHighlight = branchItem.parent instanceof SkillEffectItemHistory ?

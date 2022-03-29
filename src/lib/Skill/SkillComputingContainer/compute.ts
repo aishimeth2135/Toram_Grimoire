@@ -183,7 +183,11 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
   return {
     vars,
     texts,
-    handleFormulaExtra: (str) => str.replace(/&(\d+):/g, (match, p1) => getTextKey(p1)),
+    handleFormulaExtra: (str) => {
+      return str
+        .replace(/&(\d+):/g, (match, p1) => getTextKey(p1))
+        .replace(/extra\[(\d+)\]/g, (match, p1) => getTextKey(p1))
+    },
     branchItem,
     formulaDisplayMode,
   }
