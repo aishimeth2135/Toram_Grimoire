@@ -53,7 +53,7 @@
 import { computed, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { trimZero } from '@/shared/utils/string'
+import { trimFloatStringZero } from '@/shared/utils/string'
 
 import { EnchantStepStat } from '@/lib/Enchant/Enchant'
 
@@ -69,7 +69,7 @@ const { t } = useI18n()
 
 const { rootState } = inject(EnchantSimulatorInjectionKey)!
 
-const potentialEffect = computed(() => trimZero(props.stat.finalPotentialEffect.toFixed(2)))
+const potentialEffect = computed(() => trimFloatStringZero(props.stat.finalPotentialEffect.toFixed(2)))
 
 const materialPoint = computed(() => {
   const mp = props.stat.materialPointCost

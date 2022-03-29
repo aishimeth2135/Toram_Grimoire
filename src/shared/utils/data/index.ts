@@ -230,6 +230,9 @@ type HandleFormulaOptions = {
   defaultValue?: PureValue | null;
 }
 
+const HANDLE_FORMULA_EXTRA_PATTERN_1 = /^(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g
+const HANDLE_FORMULA_EXTRA_PATTERN_2 = /([^/\d])(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g
+
 function handleFormula(formulaStr: string, {
   vars = {},
   texts = {},
@@ -295,12 +298,12 @@ function handleFormula(formulaStr: string, {
    * ex: convert "角色STR*6/2" to "角色STR*3"
    */
   formulaStr = formulaStr
-    .replace(/^(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g, (match, left, operator, right) => {
+    .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (match, left, operator, right) => {
       left = parseFloat(left)
       right = parseFloat(right)
       return calcNumberBinaryExpression(left, operator, right).toString()
     })
-    .replace(/([^/\d])(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g, (match, pre,  left, operator, right) => {
+    .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, pre,  left, operator, right) => {
       left = parseFloat(left)
       right = parseFloat(right)
       return pre + calcNumberBinaryExpression(left, operator, right).toString()
