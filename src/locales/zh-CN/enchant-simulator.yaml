@@ -1,0 +1,84 @@
+build: 配置
+base-options: 基本设定
+advanced-options: 进阶设定
+common-options: 共通设定
+equipment-type: 装备类型
+append-build: 新增配置
+equipment-types:
+  main-weapon: 主手武器
+  body-armor: 身体防具
+  main-weapon_original-element: 主手武器｜原有属性
+enchant-step: 步骤
+append-enchant-step: 新增步骤
+last-step: 最终步骤
+invalid-step: 无效步骤
+success-rate: 单项成功率
+expected-success-rate: 期望成功率
+success-rate-unlimited: 无限
+equipment-original-potential: 装备初始潜力值
+equipment-base-potential: 制作装备基础潜力值
+character-level: 角色等级
+smith-level: 基础锻造熟练度
+material-point-type-list:
+  - 金属
+  - 兽品
+  - 木材
+  - 布料
+  - 药品
+  - 魔素
+step:
+  insert-step-before: 向前插入步骤
+  step-move-up: 上移一格
+  step-move-down: 下移一格
+  auto-fill-positive-stat: 正属全上（特定条件才会出现）
+  select-one-stat-item: 选择单项能力
+  select-multiple-stat-items: 选择多项能力
+  step-type-each: 分次附模式
+  button-caption-title: 关于按钮
+  step-type-each-title: 分次附、每次附
+select-item:
+  show-negative-suggested-list: 显示建议退潜
+result:
+  enchant-step-normal: 附
+  enchant-step-each: 分次附、每次附{stat}、直到{target}
+  stats: 最终结果
+  materials: 素材耗量
+  success-rate-detail:
+    title: 成功率说明
+    captions:
+      - ((_单项成功率))即游戏内所显示的成功率，表示((!单个能力成功))的机率。
+      - ((_期望成功率))则为((!正属全部成功))的实际机率，计算公式为((_单项成功率的正属数量次方))。例如：单项成功率为90%、正属数量为5，则计算方式为90%的5次方，约等于59%。
+      - 为了方便使用者对步骤作微调，((!单项成功率))会显示超过100%，最后步骤剩潜为正时才会显示((!无限))。
+      - ((!期望成功率))有着实际成功率的概念，因此最高只会显示100%。
+stat-display-mode:
+  title: 切换能力项目的资讯
+  potential-cost: 潜力消耗
+  material-point: 素材消耗
+tips:
+  step-stat-repeated: 这个步骤已经有这个能力了0.0
+  step-empty: 这个步骤还空空的...
+  stats-reached-upper-limit: 这件装备的能力数量已达上限。
+  keep-at-least-one-build: 请至少保留一个配置0.0
+  invalid-enchant-result: 目前的配置还没办法产生结果唷0.0
+  remove-build-confirm: 确定要移除这个配置吗0.0？
+  copy-build-success: 复制配置成功。
+  copy-result-text-success: 复制结果成功。
+save-tips:
+  auto-save-success: 自动存档成功。
+  auto-load-success: 自动读取成功。
+  export-success: 汇出成功。
+  import-success: 汇入$0成功。
+  import-failed: 汇入时发生错误。
+footer-guide:
+  title: 关于下方选单
+  title-close: 新增一个步骤来关闭这个说明视窗0.0
+  toggle-result:
+    titles:
+      - 正常模式
+      - 悬浮模式
+    caption: 点击按钮来切换步骤结果的显示模式，可以在不用滑动到最下面的情况下快速查看步骤结果。
+  toggle-display-mode:
+    titles:
+      - 潜力消耗
+      - 素材消耗
+    caption: 对于每个步骤的能力项目后方会显示什么资讯，可以在两者之间作切换。预设为「潜力消耗」

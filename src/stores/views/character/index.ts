@@ -49,10 +49,11 @@ export const useCharacterStore = defineStore('view-character', () => {
 
   const saveDisabled = ref(false)
 
-  const handleCharacterStatsConfig = ref({
+  const setupOptions = ref({
     handleFood: true,
     handleActiveSkill: true,
     handlePassiveSkill: true,
+    skillDisplayStatsOnly: true,
   })
 
   const currentCharacter = computed<Character>(() => characters.value[currentCharacterIndex.value])
@@ -326,7 +327,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   } = setupCharacterSkills(
     currentCharacter,
     currentSkillBuild,
-    handleCharacterStatsConfig,
+    setupOptions,
   )
 
   const { allFoodBuildStats } = setupFoodStats(computed(() => food.currentFoodBuild))
@@ -336,7 +337,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     currentSkillBuild,
     allValidSkillsStats,
     allFoodBuildStats,
-    handleCharacterStatsConfig,
+    setupOptions,
   )
 
   const setupCharacterComparedStatCategoryResults = (comparedCharacter: Ref<Character | null>) => {
@@ -345,7 +346,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       currentSkillBuild,
       allValidSkillsStats,
       allFoodBuildStats,
-      handleCharacterStatsConfig,
+      setupOptions,
     )
     return {
       comparedCharacterStatCategoryResults,
@@ -358,7 +359,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     currentCharacter,
     currentCharacterIndex,
     characterSimulatorHasInit: readonly(characterSimulatorHasInit),
-    handleCharacterStatsConfig,
+    setupOptions,
 
     autoSaveDisabled: readonly(autoSaveDisabled),
     characterSimulatorInitFinished,

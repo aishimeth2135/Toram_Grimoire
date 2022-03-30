@@ -145,7 +145,7 @@ branch:
     "angle: title": 作用角度
     "start_position_offsets: title": 起点位置
     "end_position_offsets: title": 终点位置
-    duration-caption-with-cycle: 持续{duration}秒，每{cycle}秒一次伤害。
+    duration-caption-with-cycle: 持续{duration}秒，每{cycle}秒一次伤害
   "damage: proration":
     "damage: title": 伤害惯性
     "proration: title": 造成惯性
@@ -204,7 +204,7 @@ branch:
     type:
       hp: 恢复HP
       mp: 恢复MP
-    duration-caption-with-cycle: 持续{duration}秒，每{cycle}秒作用一次。
+    duration-caption-with-cycle: 持续{duration}秒，每{cycle}秒作用一次
     constant-pretext: 固定值
   reference:
     base-title: 参考连结

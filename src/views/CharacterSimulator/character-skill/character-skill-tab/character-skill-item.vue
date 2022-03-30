@@ -26,9 +26,8 @@
             {{ t('character-simulator.skill-build.skill-invalid') }}
           </div>
         </div>
-        <div class="ml-auto">
+        <div v-if="skillResultsState.stackContainers.length > 0" class="ml-auto inline-flex">
           <cy-button-icon
-            v-if="skillResultsState.stackContainers.length > 0"
             icon="ic:baseline-settings"
             inline
             @click="toggle('contents/options')"
