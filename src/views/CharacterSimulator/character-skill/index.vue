@@ -23,16 +23,28 @@
         </template>
       </cy-options>
     </div>
-    <div class="pt-3">
+    <div class="pt-3 flex items-center max-w-full overflow-x-auto">
       <cy-button-border :selected="tabs.active" icon="uil:books" @click="toggle('tabs/active', true, false)">
         {{ t('character-simulator.skill-build.active-skills') }}
       </cy-button-border>
       <cy-button-border :selected="tabs.passive" icon="uil:books" @click="toggle('tabs/passive', true, false)">
         {{ t('character-simulator.skill-build.passive-skills') }}
       </cy-button-border>
+      <cy-button-icon
+        icon="ic:round-settings"
+        :selected="contents.options"
+        @click="toggle('contents/options')"
+      />
     </div>
-    <div class="pt-3">
-      <CharacterSkillTab :type="tabs.active ? SkillTypes.Active : SkillTypes.Passive" />
+    <div v-if="contents.options" class="border-1 border-light-2 rounded-md mt-2 mb-4 p-3 bg-white">
+      <cy-button-check v-model:selected="characterStore.setupOptions.skillDisplayStatsOnly">
+        {{ t('character-simulator.skill-build.display-stats-only') }}
+      </cy-button-check>
+    </div>
+    <div class="pt-3 overflow-x-auto">
+      <div style="min-width: 25rem">
+        <CharacterSkillTab :type="tabs.active ? SkillTypes.Active : SkillTypes.Passive" />
+      </div>
     </div>
   </section>
   <cy-default-tips v-else>
@@ -49,6 +61,8 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
+
 import { SkillTypes } from '@/lib/Skill/Skill/enums'
 
 import ToggleService from '@/setup/ToggleService'
@@ -59,7 +73,12 @@ import { setupCharacterSkillBuildStore } from '../setup'
 
 const { t } = useI18n()
 
-const { tabs, toggle } = ToggleService({ tabs: [{ name:'active', default: true }, 'passive'] as const })
+const { tabs, contents, toggle } = ToggleService({
+  tabs: [{ name:'active', default: true }, 'passive'] as const,
+  contents: ['options'] as const,
+})
+
+const characterStore = useCharacterStore()
 
 const { store: skillBuildStore, skillBuilds, currentSkillBuild } = setupCharacterSkillBuildStore()
 </script>

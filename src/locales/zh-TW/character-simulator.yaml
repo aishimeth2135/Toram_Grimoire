@@ -73,6 +73,7 @@ skill-build:
   passive-skills: 被動技能
   active-skills: 主動技能
   disable-skills: 停用{type}
+  display-stats-only: 僅顯示有影響角色能力的技能效果
   user-set-title: 參數數值設定
   stack-default-name: 技能層數
   skill-effect-default-name: 技能效果

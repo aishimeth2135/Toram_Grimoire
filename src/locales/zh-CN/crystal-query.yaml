@@ -1,0 +1,16 @@
+select-stat:
+  title: 选择能力
+modes:
+  title: 搜寻模式
+  normal: 一般
+  stat: 锻晶能力
+crystal-category:
+  title: 锻晶类型
+  categorys:
+    - 武器锻晶
+    - 防具锻晶
+    - 追加锻晶
+    - 特殊锻晶
+    - 通用锻晶
+no-results-tips: 找不到任何结果0.0
+enhancer-pretext: 可以强化

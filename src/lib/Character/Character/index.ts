@@ -322,9 +322,10 @@ class EquipmentField {
     return this._parent
   }
   get equipmentType(): EquipmentTypes {
-    if (this.isEmpty)
+    if (this.isEmpty) {
       return EquipmentTypes.Empty
-    return (this.equipment as CharacterEquipment).type
+    }
+    return this.equipment!.type
   }
   get isEmpty() {
     return this.equipment === null

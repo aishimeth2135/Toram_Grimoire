@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-wrap space-x-3">
+  <div class="flex flex-wrap">
     <div
       v-for="container in statContainers"
       :key="container.stat.statId"
-      class="text-light"
+      class="text-light mr-3"
     >
       <span class="text-dark" v-html="container.result"></span>
     </div>

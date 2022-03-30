@@ -8,7 +8,7 @@ import SkillComputingContainer, { EquipmentRestriction, SkillBranchItem, SkillBr
 import { Skill, SkillBranch } from '@/lib/Skill/Skill'
 import { CharacterBaseStatTypes, CharacterOptionalBaseStatTypes, EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import { Stat, StatRestriction } from '@/lib/Character/Stat'
+import { Stat, StatComputed, StatRestriction } from '@/lib/Character/Stat'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { FoodBuild } from '@/lib/Character/Food'
 
@@ -34,16 +34,17 @@ export interface SkillResultsState {
   stackContainers: DisplayDataContainerAlly[];
 }
 
-interface HandleCharacterStatsOptions {
+interface CharacterSetupOptions {
   handleFood: boolean;
   handleActiveSkill: boolean;
   handlePassiveSkill: boolean;
+  skillDisplayStatsOnly: boolean;
 }
 
 export function setupCharacterSkills(
   character: Ref<Character>,
   skillBuild: Ref<SkillBuild | null>,
-  handleConfig: Ref<HandleCharacterStatsOptions>,
+  handleOptions: Ref<CharacterSetupOptions>,
 ) {
   const computingContainer: Ref<SkillComputingContainer> = ref(new SkillComputingContainer())
   computingContainer.value.varGetters.skillLevel = skill => {
@@ -137,14 +138,15 @@ export function setupCharacterSkills(
 
       const currentEffectItem = computed(() => skillItem.findEffectItem(currentCharacterEquipment.value) ?? null)
 
-      const checkActive = (bch: SkillBranchItem) => bch.name === SkillBranchNames.Effect
+      const checkBranchStats = (stats: StatComputed[]) => !handleOptions.value.skillDisplayStatsOnly || stats.length !== 0
+      const checkActive = (bch: SkillBranchItem) => (bch.name === SkillBranchNames.Effect && checkBranchStats(bch.stats))
         || bch.suffixBranches.some(suf => suf.name === SkillBranchNames.Extra && suf.stats.length !== 0)
       const activeValid = skillItem.effectItems.some(effectItem => effectItem.branchItems.some(checkActive))
       const activeSkillBranchItems = !activeValid ? null : computed(() => {
         return currentEffectItem.value?.branchItems.filter(checkActive) ?? []
       })
 
-      const checkPassive = (bch: SkillBranchItem) => bch.name === SkillBranchNames.Passive
+      const checkPassive = (bch: SkillBranchItem) => bch.name === SkillBranchNames.Passive && checkBranchStats(bch.stats)
       const passiveValid = skillItem.effectItems.some(effectItem => effectItem.branchItems.some(checkPassive))
       const passiveSkillBranchItems = !passiveValid ? null : computed(() => {
         return currentEffectItem.value?.branchItems.filter(checkPassive) ?? []
@@ -231,10 +233,10 @@ export function setupCharacterSkills(
       return []
     }
     const list: SkillResultsState[] = []
-    if (handleConfig.value.handleActiveSkill) {
+    if (handleOptions.value.handleActiveSkill) {
       list.push(...activeSkillResultStates.value)
     }
-    if (handleConfig.value.handlePassiveSkill) {
+    if (handleOptions.value.handlePassiveSkill) {
       list.push(...passiveSkillResultStates.value)
     }
     if (list.length === 0) {
@@ -300,7 +302,7 @@ export function setupCharacterStats(
   skillBuild: Ref<SkillBuild | null>,
   skillStats: Ref<Stat[]>,
   foodStats: Ref<Stat[]>,
-  handleConfig: Ref<HandleCharacterStatsOptions>,
+  handleConfig: Ref<CharacterSetupOptions>,
 ) {
   const allEquipmentStats = computed(() => {
     if (!character.value) {

@@ -147,10 +147,10 @@ const removeCurrentFoodBuild = () => {
 
 const disableAll = computed<boolean>({
   get() {
-    return !characterStore.handleCharacterStatsConfig.handleFood
+    return !characterStore.setupOptions.handleFood
   },
   set(value) {
-    characterStore.handleCharacterStatsConfig.handleFood = !value
+    characterStore.setupOptions.handleFood = !value
   },
 })
 </script>

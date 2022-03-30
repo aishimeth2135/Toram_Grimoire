@@ -71,14 +71,14 @@ const allSkillEnabled = computed<boolean>({
 const disableAll = computed<boolean>({
   get() {
     return !(props.type === SkillTypes.Active ?
-      store.handleCharacterStatsConfig.handleActiveSkill :
-      store.handleCharacterStatsConfig.handlePassiveSkill)
+      store.setupOptions.handleActiveSkill :
+      store.setupOptions.handlePassiveSkill)
   },
   set(value) {
     if (props.type === SkillTypes.Active) {
-      store.handleCharacterStatsConfig.handleActiveSkill = !value
+      store.setupOptions.handleActiveSkill = !value
     } else {
-      store.handleCharacterStatsConfig.handlePassiveSkill = !value
+      store.setupOptions.handlePassiveSkill = !value
     }
   },
 })

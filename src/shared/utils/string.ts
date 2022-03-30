@@ -1,16 +1,23 @@
 const NUMBER_STRING_PATTERN = /^-?\d+(?:\.\d+)?$/
 export function isNumberString(str: string): boolean {
-  if (str.length > 1 && str.startsWith('0')) {
+  if (typeof str !== 'string') {
+    str = '' + str
+  }
+  if (str.length > 1 && str.startsWith('0') && !str.includes('.')) {
     return false
   }
   return NUMBER_STRING_PATTERN.test(str)
 }
 
+const INTEGER_STRING_PATTERN = /^-?\d+(?:\.\d+)?$/
 export function isIntegerString(str: string): boolean {
+  if (typeof str !== 'string') {
+    str = '' + str
+  }
   if (str.length > 1 && str.startsWith('0')) {
     return false
   }
-  return Number.isInteger(parseInt(str, 10))
+  return INTEGER_STRING_PATTERN.test(str)
 }
 
 const TRIM_ZERO_PATTERN = /(\d+)(\.[^0]*)(0+)$/g

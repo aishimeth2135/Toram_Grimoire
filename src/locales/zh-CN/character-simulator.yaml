@@ -1,4 +1,4 @@
-character-stats: 角色面板
+character-stats: 面板
 character: 角色
 custom-equipment:
   button-title: 自订装备
@@ -22,6 +22,9 @@ browse-equipments:
   remove-equipment-tips: 已移除装备「{name}」。
   removed-equipment-restore-tips: 已复原装备「{name}」。
   copy-equipment-tips: 已复制装备。
+  move-equipment-title: 移动中
+  no-any-equipment-tips: 这里目前空空的...请点选右上角的按扭来新增装备0.0
+  equipment-item-actions-tips: 请打开左下角的「显示全部装备」以使用整理相关的功能。
 append-equipments:
   title: 新增装备
   search-equipment-placeholder: 搜寻装备名称...
@@ -42,7 +45,7 @@ equipment-info:
   crystal-empty: 空空的锻晶
   equipment-type: 装备类型
 equipment-basic-editor:
-  title: 自订装备设定
+  title: 装备设定
   edit-stats:
     title: 管理装备能力
     search-placeholder: 搜寻能力
@@ -52,9 +55,9 @@ equipment-basic-editor:
   equipment-name: 装备名称
   equipment-stats: 装备能力
   equipment-other: 其它设定
-  no-equipment-type-selected-tips: 请先选择一个装备类别
+  no-equipment-type-selected-tips: 请先选择一个装备类别。
   selected-stats-cleared-tips: 已取消更动。
-  only-one-element-stat-tips: 一件装备只能拥有一个属性
+  only-one-element-stat-tips: 一件装备只能拥有一个属性，请确认编辑中的能力清单。
 select-crystals:
   title: 选择锻晶
   search-placeholder: 搜寻缎晶
@@ -69,6 +72,8 @@ skill-build:
   title: 技能
   passive-skills: 被动技能
   active-skills: 主动技能
+  disable-skills: 停用{type}
+  display-stats-only: 仅显示有影响角色能力的技能效果
   user-set-title: 参数数值设定
   stack-default-name: 技能层数
   skill-effect-default-name: 技能效果
@@ -110,6 +115,7 @@ character-stat-detail:
       none: 身体防具｜无装备
 food-build:
   title: 料理
+  disable-foods: 停用料理
   food-build: 料理配置
   create-food-build: 新增料理配置
   food-build-name: 料理配置名称
@@ -124,6 +130,10 @@ food-build:
     - 原本是0级的料理在提升等级时会自动选取。
 save-load-control:
   title: 存档
+  export-save-data-title: 汇出角色模拟器资料
+  export-save-data-caption: 可以将角色模拟器的资料汇出成一个档案，用于备份或分享给他人。可以自行选择想要汇出的角色、装备、技能配置或料理配置。
+  export-save-data-tips:
+    - 汇入资料后不会覆盖原本的档案。
   auto-save-success-tips: 自动存档成功。
   auto-load-success-tips: 自动读取成功。
   manual-save-button-title: 手动存档
@@ -133,10 +143,10 @@ save-load-control:
   deleta-all-data-success-tips: 成功删除角色模拟器所有资料，系统也已关闭自动存档功能。请重新整理网页。
   deleta-all-data-counter-title: 计数器
   deleta-all-data-caption:
-    - >-
-      在某些情况下，角色模拟器的档案可能毁损，导致系统无法正常运行。使用下方的按钮可以删除角色模拟器所有资料。自动存档功能也将暂时失效，意即当前的资料将不会自动储存。
+    - 在某些情况下，角色模拟器的档案可能毁损，导致系统无法正常运行。使用下方的按钮可以删除角色模拟器所有资料。自动存档功能也将暂时失效，意即当前的资料将不会自动储存。
     - 请将下方的计数器数值调整到10，删除按钮就会出现。
     - 将资料删除成功后，请立即重新整理，来让系统重新初始化。
+  export-build: 汇出配置
 main-tips:
   current-character-not-exist: 发生了一些小错误，导致无法获取当前的角色资讯，介面也无法正常显示......<br />请点选下面的按钮来建立一个新的角色，以复原介面(_ _)
   no-equipment-selected: 这个栏位是空的
