@@ -194,22 +194,22 @@
     <div class="sticky bottom-3">
       <div
         v-if="currentEquipment.allSteps.length === 0 && !contents.result"
-        class="border-1 border-light-2 py-4 px-5 mx-3 mt-3 rounded-2xl bg-white"
+        class="border-1 border-light-2 py-4 px-5 mx-4 mt-3 rounded-lg bg-white"
       >
         <div class="text-center">
-          <cy-button
+          <cy-button-border
             icon="ic-round-add-circle-outline"
-            type="border"
+            main-color="red"
             @click="appendStep"
           >
             {{ t('enchant-simulator.append-enchant-step') }}
-          </cy-button>
+          </cy-button-border>
         </div>
         <div class="text-sm text-water-blue pt-1 text-center">
           {{ t('enchant-simulator.footer-guide.title-close') }}
         </div>
         <div class="pt-3">
-          <cy-icon-text size="small" text-color="purple">
+          <cy-icon-text size="small" main-color="orange">
             {{ t('enchant-simulator.footer-guide.title') }}
           </cy-icon-text>
         </div>
@@ -256,7 +256,7 @@
           {{ t('enchant-simulator.footer-guide.toggle-display-mode.caption') }}
         </div>
       </div>
-      <div class="border-1 border-light-2 py-1.5 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center flex-wrap bg-white">
+      <div class="border-1 border-light-2 py-1 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center flex-wrap bg-white">
         <cy-button-icon
           :icon="contents.result ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
           :selected="contents.result"

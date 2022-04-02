@@ -292,7 +292,7 @@ const copyEnchantResultText = () => {
     '' :
     `${t('enchant-simulator.equipment-base-potential')}｜${equipment.value.basePotential}\n`
   CY.copyToClipboard(
-    `✩ ${t('enchant-simulator.equipment-type.' + equipment.value.fieldType)}\n` +
+    `✩ ${t('enchant-simulator.equipment-types.' + equipment.value.fieldType)}\n` +
     `${t('enchant-simulator.equipment-original-potential')}｜${equipment.value.originalPotential}\n` +
     `${t('enchant-simulator.smith-level')}｜${config.value.smithLevel}\n` +
     basePotential +
