@@ -182,7 +182,7 @@ export default class DamageCalculationSystem {
 
       container.appendItem(CalculationItemIds.CriticalRate)
         .setDefaultValue(25)
-        .setRange(0, 100, 10)
+        .setRange(0, null, 10)
       container.appendItem(CalculationItemIds.MagicCriticalRateConversionRate)
         .setDefaultValue(0)
       container.appendItem(CalculationItemIds.TargetCriticalRateResistance)
@@ -199,8 +199,9 @@ export default class DamageCalculationSystem {
         const cr_rt = itemContainer.getItemValue(CalculationItemIds.TargetCriticalRateResistanceTotal)
         const mcrr = itemContainer.getItemValue(CalculationItemIds.MagicCriticalRateConversionRate)
         let result = Math.max(cr - cr_r, 0)
-        result = Math.min(100, Math.floor(result * (100 - cr_rt) / 100))
-        return currentDamageTypeId === 'physical' ? result : Math.floor(result * mcrr / 100)
+        result = Math.max(0, Math.floor(result * (100 - cr_rt) / 100))
+        result = currentDamageTypeId === 'physical' ? result : Math.floor(result * mcrr / 100)
+        return Math.min(100, result)
       })
     })
     options(CalculationContainerIds.RangeDamage, container => {

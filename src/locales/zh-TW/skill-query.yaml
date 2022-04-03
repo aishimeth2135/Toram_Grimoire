@@ -21,6 +21,8 @@ equipment:
   "main: title": 主手武器
   "sub: title": 副手裝備
   "body: title": 身體裝備
+tag:
+  no-data-tips: 這個名詞還沒有說明(_ _)
 branch:
   duration-caption: "{duration}秒內"
   ailment-title: 命中成功後

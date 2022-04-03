@@ -16,11 +16,7 @@ export default {
   path: '/enchant',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
-    if (to.name === 'EnchantSimulator') {
-      PrepareLocaleInit(LocaleViewNamespaces.EnchantSimulator)
-    } else if (to.name === 'EnchantDoll') {
-      PrepareLocaleInit(LocaleViewNamespaces.EnchantSimulator, LocaleViewNamespaces.EnchantDoll)
-    }
+    PrepareLocaleInit(LocaleViewNamespaces.EnchantSimulator, LocaleViewNamespaces.EnchantDoll)
     ViewInit(DataStoreIds.Stats, DataStoreIds.Enchant).then(next)
   },
   meta: {

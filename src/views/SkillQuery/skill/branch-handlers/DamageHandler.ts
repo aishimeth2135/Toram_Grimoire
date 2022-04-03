@@ -52,6 +52,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(branch
     'unsheathe_damage',
     'judgment',
     'frequency_judgment',
+    'is_place',
   ])
 
   const pureDatas = ['name', 'ailment_name', 'end_condition']

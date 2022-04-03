@@ -1,5 +1,6 @@
 import { ref, provide, watch, nextTick, reactive } from 'vue'
 import type { Ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
@@ -11,6 +12,8 @@ import { findStackState, TAG_BUTTON_CLASS_NAME } from './utils'
 import { ComputingContainerInjectionKey } from './injection-keys'
 
 export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
+  const { t } = useI18n()
+
   const currentTags: Ref<Tag[]> = ref([])
 
   const findTag = (tagName: string): Tag | null => {
@@ -18,10 +21,14 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
     return tag || null
   }
 
+  const emptyTag = new Tag('0.0')
+  emptyTag.appendFrame('caption', t('skill-query.tag.no-data-tips'))
   const appendTag = (tagName: string): void => {
     const tag = findTag(tagName)
     if (tag) {
       currentTags.value.push(tag)
+    } else {
+      currentTags.value.push(emptyTag)
     }
   }
 

@@ -15,9 +15,7 @@ export default {
   path: '/skill',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
-    if (to.name === 'SkillQuery') {
-      PrepareLocaleInit(LocaleViewNamespaces.SkillQuery)
-    }
+    PrepareLocaleInit(LocaleViewNamespaces.SkillQuery)
     ViewInit(DataStoreIds.Stats, DataStoreIds.Skill, DataStoreIds.Tag).then(next)
   },
   meta: {

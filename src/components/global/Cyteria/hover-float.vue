@@ -11,6 +11,7 @@
       <div
         class="absolute -top-9 right-4"
         :class="{ 'invisible': !keepVisible }"
+        @click="contentClick"
       >
         <div class="flex items-center border-1 rounded-md border-light py-1 px-2 bg-white bg-opacity-85">
           <cy-icon-text icon="fluent:cursor-click-24-regular" class="ml-auto" />

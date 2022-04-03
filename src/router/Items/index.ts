@@ -16,9 +16,7 @@ export default {
   path: '/items',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
-    if (to.name === 'CrystalQuery') {
-      PrepareLocaleInit(LocaleViewNamespaces.CrystalQuery)
-    }
+    PrepareLocaleInit(LocaleViewNamespaces.CrystalQuery)
     ViewInit(DataStoreIds.Stats, DataStoreIds.Items).then(next)
   },
   meta: {
