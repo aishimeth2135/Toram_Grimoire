@@ -29,8 +29,9 @@ export function getCharacterElement(chara: Character) {
   const setElement = (stat: StatRestriction) => element[stat.baseName.replace('element_', '')] = 1
 
   const sub = chara.equipmentField(EquipmentFieldTypes.SubWeapon)
-  // 主手弓副手矢時，矢優先於弓
-  if (chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.Bow)
+  // 主手弓/弩、副手矢時，矢優先於弓
+  if ((chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.Bow)
+    || chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.Bowgun))
     && chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow)
     && sub.equipment!.elementStat) {
     setElement(sub.equipment!.elementStat)
