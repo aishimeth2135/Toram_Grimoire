@@ -44,15 +44,16 @@ class SkillRoot extends SkillNode {
     return el
   }
 
-  findSkillByName(name: string): Skill | null {
+  findSkillById(skillId: string): Skill | null {
     let find: Skill | null = null
-    this.skillTreeCategorys.forEach(stc => {
-      if (find) return
-      stc.skillTrees.forEach(st => {
-        if (find) return
-        const skill = st.skills.find(sk => sk.name === name)
-        if (skill !== undefined)
+    this.skillTreeCategorys.some(stc => {
+      return stc.skillTrees.some(st => {
+        const skill = st.skills.find(sk => sk.skillId === skillId)
+        if (skill) {
           find = skill
+          return true
+        }
+        return false
       })
     })
     return find

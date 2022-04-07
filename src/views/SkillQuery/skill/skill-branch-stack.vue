@@ -5,6 +5,7 @@
       v-model:value="stackValue"
       :range="stackValueRange"
       :input-width="container.getCustomData('stackInputWidth')"
+      :step="stackStep"
     >
       <template #title>
         <cy-icon-text icon="ion-leaf">
@@ -30,6 +31,8 @@
 <script lang="ts" setup>
 import { computed, toRefs, inject, ComputedRef } from 'vue'
 import type { WritableComputedRef } from 'vue'
+
+import { isNumberString } from '@/shared/utils/string'
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
@@ -74,6 +77,11 @@ const stackValueRange = computed(() => {
   min = !Number.isNaN(min) ? min : null
 
   return [min, max]
+})
+
+const stackStep = computed(() => {
+  const step = container.value.get('step')
+  return isNumberString(step) ? parseInt(step, 10) : 1
 })
 </script>
 

@@ -43,6 +43,7 @@ class SkillComputingContainer {
 
   config: {
     formulaDisplayMode: FormulaDisplayModes;
+    getFormulaExtraValue: ((formula: string) => string | null) | null;
   }
 
   constructor() {
@@ -61,6 +62,7 @@ class SkillComputingContainer {
     this.handleFormulaDynamicExtends = []
     this.config = {
       formulaDisplayMode: FormulaDisplayModes.Normal,
+      getFormulaExtraValue: null,
     }
   }
 
