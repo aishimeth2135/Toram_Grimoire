@@ -21,7 +21,7 @@ export default function StackHandler<BranchItem extends SkillBranchItem>(branchI
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     max: value => !!value,
   })
-  const pureValues = ['min', 'max', 'default']
+  const pureValues = ['min', 'max', 'default', 'step']
   const pureDatas = ['name', 'unit']
 
   const displayData = handleDisplayData(branchItem, attrs, {

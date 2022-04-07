@@ -8,6 +8,7 @@ import { SkillBranchItem, SkillBranchItemBase, SkillBranchItemSuffix } from '.'
 import { ResultContainerBase, ResultContainer, ResultContainerStat, TextResultContainer } from './ResultContainer'
 import type { TextResultContainerParseResult } from './ResultContainer'
 import { FormulaDisplayModes } from './enums'
+import { SkillBranchNames } from '../Skill/enums'
 
 function computeBranchValue(str: string, helper: ComputedBranchHelperResult): string {
   const {
@@ -63,6 +64,8 @@ interface ComputedBranchHelperResult {
   handleFormulaExtra: (formula: string) => string;
   formulaDisplayMode: FormulaDisplayModes;
 }
+const HANDLE_FORMULA_EXTRA_PATTERN_1 = /&(\d+):/g
+const HANDLE_FORMULA_EXTRA_PATTERN_2 = /extra\[(\d+)\]/g
 /**
  * Create data contains vars and texts of branchItem to compute formula.
  * @param branchItem
@@ -139,8 +142,9 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
       stack.push(...stackValues)
     }
 
+    const STACK_ITEM_PATTERN = /stack\[(\d+)\]/g
     values.forEach(value => {
-      const stackMatches = Array.from(value.matchAll(/stack\[(\d+)\]/g))
+      const stackMatches = Array.from(value.matchAll(STACK_ITEM_PATTERN))
       stackMatches.forEach(match => {
         const idxValue = parseInt(match[1], 10)
         if (stack[idxValue] === undefined) {
@@ -148,6 +152,10 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
         }
       })
     })
+
+    if (stack.length === 0) {
+      stack.push(0)
+    }
 
     vars = {
       ...extendsDatas.vars,
@@ -160,7 +168,7 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
     } as HandleFormulaTexts
   }
 
-  const getTextKey = (idx: number) => '__FORMULA_EXTRA_' + idx.toString() + '__'
+  const getTextKey = (idx: number) => '__FORMULA_EXTRA_TEXT_' + idx.toString() + '__'
 
   let mainBranchItem
   if (branchItem instanceof SkillBranchItem) {
@@ -169,24 +177,30 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
     mainBranchItem = branchItem.mainBranch
   }
 
-  if (mainBranchItem) {
-    const formulaExtra = mainBranchItem.suffixBranches.find(suf => suf.name === 'formula_extra')
-    if (formulaExtra) {
-      const extraTexts = (formulaExtra.attr('texts')).split(/\s*,\s*/)
-      extraTexts.forEach((text, idx) => {
-        const key = getTextKey(idx)
-        texts[key] = text
-      })
-    }
+  const formulaExtra = mainBranchItem ? mainBranchItem.suffixBranches.find(suf => suf.name === SkillBranchNames.FormulaExtra) : null
+
+  if (mainBranchItem && formulaExtra) {
+    const extraTexts = (formulaExtra.attr('texts')).split(/\s*,\s*/)
+    extraTexts.forEach((text, idx) => {
+      const key = getTextKey(idx)
+      texts[key] = text
+    })
   }
 
   return {
     vars,
     texts,
     handleFormulaExtra: (str) => {
+      const getFormulaExtraValue = branchItem.belongContainer.config.getFormulaExtraValue
+      if (!getFormulaExtraValue || !formulaExtra) {
+        return str
+          .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (match, p1) => getTextKey(p1))
+          .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, p1) => getTextKey(p1))
+      }
+      const getFormula = (index: string) => formulaExtra.attr(`values.${index}`)
       return str
-        .replace(/&(\d+):/g, (match, p1) => getTextKey(p1))
-        .replace(/extra\[(\d+)\]/g, (match, p1) => getTextKey(p1))
+        .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (match, p1) => getFormulaExtraValue(getFormula(p1)) ?? getTextKey(p1))
+        .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, p1) => getFormulaExtraValue(getFormula(p1)) ?? getTextKey(p1))
     },
     branchItem,
     formulaDisplayMode,

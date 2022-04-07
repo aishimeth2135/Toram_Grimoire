@@ -4,7 +4,6 @@ import '@/assets/css/global.css'
 import '@/assets/css/tailwind.css'
 
 import { createApp } from 'vue'
-import VueGtag from 'vue-gtag-next'
 import { createPinia } from 'pinia'
 
 import { InitLanguageSystem } from '@/shared/services/Language'
@@ -21,17 +20,16 @@ import initPackages from './app/initPackages'
 import initI18n from './app/initI18n'
 import createAppRouter from './router'
 import { useSettingStore } from './stores/app/setting'
+import { initGtag } from './app/initGtag'
 
 const app = createApp(AppView)
 
-app
-  .use(createPinia())
-  .use(createAppRouter())
-  .use(VueGtag, {
-    property: {
-      id: 'UA-140158974-1',
-    },
-  })
+app.use(createPinia())
+
+const router = createAppRouter()
+app.use(router)
+
+initGtag(app, router)
 
 registGlobalComponents(app)
 registerServiceWorker()

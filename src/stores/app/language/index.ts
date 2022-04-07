@@ -5,6 +5,8 @@ import { Composer } from 'vue-i18n'
 import CY from '@/shared/utils/Cyteria'
 import { APP_STORAGE_KEYS } from '@/shared/consts'
 
+import Notify from '@/setup/Notify'
+
 import { useMainStore } from '../main'
 import { LocaleGlobalNamespaces, LocaleNamespaces, LocaleViewNamespaces } from './enums'
 
@@ -153,13 +155,43 @@ export const useLanguageStore = defineStore('app-language', () => {
       console.warn('[Init language data] instance is no found')
       return
     }
+
+    let unknownError = false
+
     const loadData = async (locale: string) => {
       const data = {} as Record<string, object>
       const promises = namespaceList.map(async (namespace) => {
-        const dataModule = await import(`../../../locales/${locale}/${namespace}.yaml`)
-        data[namespace] = dataModule.default
+        let count = 0
+        let resultData: object | null = null
+        const retry = async () => {
+          try {
+            const dataModule = await import(`../../../locales/${locale}/${namespace}.yaml`)
+            if (dataModule?.default) {
+              resultData = dataModule.default
+            } else {
+              count += 1
+            }
+          } catch (err) {
+            count += 1
+          }
+          if (!resultData) {
+            if (count < 3) {
+              await retry()
+            } else {
+              unknownError = true
+            }
+          }
+        }
+        await retry()
+        data[namespace] = resultData ?? {}
       })
       await Promise.all(promises)
+
+      if (unknownError) {
+        const { notify } = Notify()
+        notify('An unknown error occurred while initializing the locale datas, texts on the page will be displayed abnormally. Please refresh the page later to try to reinitialize.')
+      }
+
       return data
     }
     const messages = await loadData(primaryLocale.value)

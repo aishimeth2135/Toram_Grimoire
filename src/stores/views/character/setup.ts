@@ -2,6 +2,7 @@ import { computed, ComputedRef, reactive, ref, Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
+import { computeFormula } from '@/shared/utils/data'
 
 import { Character, CharacterStatResult, CharacterStatResultVars } from '@/lib/Character/Character'
 import SkillComputingContainer, { EquipmentRestriction, SkillBranchItem, SkillBranchItemSuffix, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
@@ -84,6 +85,88 @@ export function setupCharacterSkills(
     }
   })
   computingContainer.value.handleFormulaDynamicExtends.push(() => ({ vars: extendVars.value, texts: {} }))
+
+  const getFormulaExtraValueVars = computed(() => {
+    const chara = character.value
+
+    const mainField = chara.fieldEquipment(EquipmentFieldTypes.MainWeapon)
+    const subField = chara.fieldEquipment(EquipmentFieldTypes.SubWeapon)
+    const bodyField = chara.fieldEquipment(EquipmentFieldTypes.BodyArmor)
+    const additionalField = chara.fieldEquipment(EquipmentFieldTypes.Additional)
+    const specialField = chara.fieldEquipment(EquipmentFieldTypes.Special)
+    return {
+      '@C': {
+        'str': chara.baseStatValue(CharacterBaseStatTypes.STR),
+        'dex': chara.baseStatValue(CharacterBaseStatTypes.DEX),
+        'int': chara.baseStatValue(CharacterBaseStatTypes.INT),
+        'agi': chara.baseStatValue(CharacterBaseStatTypes.AGI),
+        'vit': chara.baseStatValue(CharacterBaseStatTypes.VIT),
+        'tec': chara.baseStatValue(CharacterOptionalBaseStatTypes.TEC),
+        'men': chara.baseStatValue(CharacterOptionalBaseStatTypes.MEN),
+        'crt': chara.baseStatValue(CharacterOptionalBaseStatTypes.CRT),
+        'luk': chara.baseStatValue(CharacterOptionalBaseStatTypes.LUK),
+        'main': mainField ? {
+          atk: mainField.atk,
+          refining: mainField.refining,
+          stability: mainField.stability,
+        } : {
+          atk: 0,
+          refining: 0,
+          stability: 0,
+        },
+        'sub': subField ? {
+          atk: subField.atk || 0,
+          def: subField.def || 0,
+          refining: subField.refining || 0,
+          stability: subField.stability || 0,
+        } : {
+          atk: 0,
+          def: 0,
+          refining: 0,
+          stability: 0,
+        },
+        'armor': bodyField ? {
+          def: bodyField.def,
+          refining: bodyField.refining,
+        } : {
+          def: 0,
+          refining: 0,
+        },
+        'additional': additionalField ? {
+          def: additionalField.def,
+          refining: additionalField.refining,
+        } : {
+          def: 0,
+          refining: 0,
+        },
+        'special': specialField ? { def: specialField.def } : { def: 0 },
+        'shield': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Shield) ?
+          { refining: subField!.refining, def: subField!.def } :
+          { refining: 0, def: 0 },
+        'arrow': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow) ?
+          { stability: subField!.stability, atk: subField!.atk } :
+          { stability: 0, atk: 0 },
+      },
+      getSkillLevel: (skillId: string) => {
+        const skill = Grimoire.Skill.skillRoot.findSkillById(skillId)
+        return skill ? (skillBuild.value?.getSkillState(skill).level ?? 0) : 0
+      },
+    } as Record<string, any>
+  })
+
+  computingContainer.value.config.getFormulaExtraValue = (formula) => {
+    if (!formula) {
+      return null
+    }
+    const res = computeFormula(formula, getFormulaExtraValueVars.value, 0)
+    if (typeof res === 'number') {
+      return res.toString()
+    }
+    if (typeof res === 'string' && isNumberString(res)) {
+      return res
+    }
+    return null
+  }
 
   const currentCharacterEquipment = computed<EquipmentRestriction>(() => {
     const main = character.value.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType

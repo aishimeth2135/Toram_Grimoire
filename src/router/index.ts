@@ -1,5 +1,4 @@
-import { trackRouter } from 'vue-gtag-next'
-import { createRouter, createWebHistory, RouteLocationNormalized } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
 import { useMainStore } from '@/stores/app/main'
@@ -31,23 +30,6 @@ export default function createAppRouter() {
   const router = createRouter({
     history: createWebHistory(),
     routes,
-  })
-
-  trackRouter(router, {
-    template(_to) {
-      const to = _to as RouteLocationNormalized
-      let toPath = to.path
-      if (to.meta.parentPathName) {
-        const match = to.matched.find(item => item.name === to.meta.parentPathName)
-        if (match) {
-          toPath = match.path
-        }
-      }
-      return {
-        page_title: to.name as string,
-        page_path: toPath,
-      }
-    },
   })
 
   const mainStore = useMainStore()

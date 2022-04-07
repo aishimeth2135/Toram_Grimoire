@@ -61,6 +61,7 @@ const BRANCH_ATTRS_DEFAULT_VALUE: Record<string, Record<string, string>> = {
     'min': '1',
     'default': 'auto',
     'name': 'auto',
+    'step': '1',
   },
   [SkillBranchNames.Group]: {
     'expandable': '1',

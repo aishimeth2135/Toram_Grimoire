@@ -365,7 +365,11 @@ function computeFormula(formula: string, vars: Record<string, any>, defaultValue
     _computeFormulaCaches.set(formula, func)
     handle = func
   }
-  return handle(vars) as unknown
+  try {
+    return handle(vars) as unknown
+  } catch (err) {
+    return defaultValue
+  }
 }
 
 // console.log(handleFormula('test.a.c(123)', {
