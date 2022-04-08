@@ -42,11 +42,23 @@ interface CharacterSetupOptions {
   skillDisplayStatsOnly: boolean;
 }
 
+interface SkillSetupPostponeOptions {
+  getCharacterStatValue: (id: string) => number;
+  getSkillBranchItemState: (skillBranch: SkillBranch) => SkillBranchItemState;
+}
+interface SkillBranchItemState {
+  enabled: boolean;
+  vars?: Record<string, number>;
+}
+
 export function setupCharacterSkills(
-  character: Ref<Character>,
+  character: Ref<Character | null>,
   skillBuild: Ref<SkillBuild | null>,
   handleOptions: Ref<CharacterSetupOptions>,
+  postponeOptions?: SkillSetupPostponeOptions,
 ) {
+  const isPostpone = !!postponeOptions
+
   const computingContainer: Ref<SkillComputingContainer> = ref(new SkillComputingContainer())
   computingContainer.value.varGetters.skillLevel = skill => {
     if (!skillBuild.value) {
@@ -55,9 +67,13 @@ export function setupCharacterSkills(
     const state = skillBuild.value.getSkillState(skill)
     return Math.max(state.level, state.starGemLevel)
   }
-  computingContainer.value.varGetters.characterLevel = () => character.value.level
+  computingContainer.value.varGetters.characterLevel = () => character.value?.level ?? 0
 
   const extendVars = computed(() => {
+    if (!character.value) {
+      return {} as Record<string, any>
+    }
+
     const subField = character.value.fieldEquipment(EquipmentFieldTypes.SubWeapon)
 
     return {
@@ -82,11 +98,20 @@ export function setupCharacterSkills(
       '$DEX': 0,
 
       '$guard_power': 0,
-    }
+    } as Record<string, any>
   })
-  computingContainer.value.handleFormulaDynamicExtends.push(() => ({ vars: extendVars.value, texts: {} }))
+  computingContainer.value.handleFormulaDynamicExtends.push(() => {
+    if (!character.value) {
+      return { vars: {}, texts: {} }
+    }
+    return { vars: extendVars.value, texts: {} }
+  })
 
   const getFormulaExtraValueVars = computed(() => {
+    if (!character.value) {
+      return {}
+    }
+
     const chara = character.value
 
     const mainField = chara.fieldEquipment(EquipmentFieldTypes.MainWeapon)
@@ -96,15 +121,6 @@ export function setupCharacterSkills(
     const specialField = chara.fieldEquipment(EquipmentFieldTypes.Special)
     return {
       '@C': {
-        'str': chara.baseStatValue(CharacterBaseStatTypes.STR),
-        'dex': chara.baseStatValue(CharacterBaseStatTypes.DEX),
-        'int': chara.baseStatValue(CharacterBaseStatTypes.INT),
-        'agi': chara.baseStatValue(CharacterBaseStatTypes.AGI),
-        'vit': chara.baseStatValue(CharacterBaseStatTypes.VIT),
-        'tec': chara.baseStatValue(CharacterOptionalBaseStatTypes.TEC),
-        'men': chara.baseStatValue(CharacterOptionalBaseStatTypes.MEN),
-        'crt': chara.baseStatValue(CharacterOptionalBaseStatTypes.CRT),
-        'luk': chara.baseStatValue(CharacterOptionalBaseStatTypes.LUK),
         'main': mainField ? {
           atk: mainField.atk,
           refining: mainField.refining,
@@ -146,6 +162,10 @@ export function setupCharacterSkills(
         'arrow': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow) ?
           { stability: subField!.stability, atk: subField!.atk } :
           { stability: 0, atk: 0 },
+        'stat': (id: string) => {
+          const getter = postponeOptions?.getCharacterStatValue
+          return getter ? getter(id) : 0
+        },
       },
       getSkillLevel: (skillId: string) => {
         const skill = Grimoire.Skill.skillRoot.findSkillById(skillId)
@@ -155,20 +175,31 @@ export function setupCharacterSkills(
   })
 
   computingContainer.value.config.getFormulaExtraValue = (formula) => {
+    if (!character.value) {
+      return null
+    }
     if (!formula) {
       return null
     }
     const res = computeFormula(formula, getFormulaExtraValueVars.value, 0)
     if (typeof res === 'number') {
-      return res.toString()
+      return res
     }
     if (typeof res === 'string' && isNumberString(res)) {
-      return res
+      return parseFloat(res)
     }
     return null
   }
 
   const currentCharacterEquipment = computed<EquipmentRestriction>(() => {
+    if (!character.value) {
+      return {
+        main: null,
+        sub: null,
+        body: null,
+      }
+    }
+
     const main = character.value.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
     const sub = character.value.equipmentField(EquipmentFieldTypes.SubWeapon).equipmentType
     const body = character.value.equipmentField(EquipmentFieldTypes.BodyArmor).equipmentType
@@ -197,6 +228,25 @@ export function setupCharacterSkills(
     const computingResultsPassive: Map<Skill, ComputedRef<SkillResult[]>> = new Map()
     const stackContainers: Map<Skill, ComputedRef<DisplayDataContainerAlly[]>> = new Map()
 
+    const checkPostpone = (bch: SkillBranchItem) => {
+      const result = (() => {
+        const stackBranches = bch.parent.branchItems
+          .filter(_bch => _bch.checkBranchName(SkillBranchNames.Stack))
+          .filter(_bch => bch.linkedStackIds.includes(_bch.stackId!))
+        if (stackBranches.some(_bch => _bch.postpone)) {
+          return true
+        }
+        return bch.postpone
+      })()
+      return isPostpone ? result : !result
+    }
+    const suffixBranchFilter = (suf: SkillBranchItemSuffix) => {
+      if (!checkPostpone(suf.mainBranch)) {
+        return false
+      }
+      return suf.name === SkillBranchNames.Extra && suf.stats.length !== 0 && suf.attr('type') !== 'next'
+    }
+
     const handleComputingResults = (target: ComputedRef<SkillBranchItem[]>, handler: (bch: SkillBranchItem) => DisplayDataContainer) => {
       return computed(() => {
         return target.value.map(bch => {
@@ -206,7 +256,7 @@ export function setupCharacterSkills(
               : new DisplayDataContainer({ branchItem: bch, containers: {}, statContainers: [], value: {} }) // empty container
           ) as DisplayDataContainerAlly
           const suffixContainers = bch.suffixBranches
-            .filter(suf => suf.name === SkillBranchNames.Extra && suf.stats.length !== 0 && suf.attr('type') !== 'next')
+            .filter(suffixBranchFilter)
             .map(suf => ExtraHandler(suf) as DisplayDataContainerSuffixAlly)
           return {
             container,
@@ -222,14 +272,24 @@ export function setupCharacterSkills(
       const currentEffectItem = computed(() => skillItem.findEffectItem(currentCharacterEquipment.value) ?? null)
 
       const checkBranchStats = (stats: StatComputed[]) => !handleOptions.value.skillDisplayStatsOnly || stats.length !== 0
-      const checkActive = (bch: SkillBranchItem) => (bch.name === SkillBranchNames.Effect && checkBranchStats(bch.stats))
-        || bch.suffixBranches.some(suf => suf.name === SkillBranchNames.Extra && suf.stats.length !== 0)
+      const checkActive = (bch: SkillBranchItem) => {
+        if (!checkPostpone(bch)) {
+          return false
+        }
+        if (bch.name === SkillBranchNames.Effect && checkBranchStats(bch.stats)) {
+          return true
+        }
+        if (bch.suffixBranches.some(suffixBranchFilter)) {
+          return true
+        }
+        return false
+      }
       const activeValid = skillItem.effectItems.some(effectItem => effectItem.branchItems.some(checkActive))
       const activeSkillBranchItems = !activeValid ? null : computed(() => {
         return currentEffectItem.value?.branchItems.filter(checkActive) ?? []
       })
 
-      const checkPassive = (bch: SkillBranchItem) => bch.name === SkillBranchNames.Passive && checkBranchStats(bch.stats)
+      const checkPassive = (bch: SkillBranchItem) => bch.name === SkillBranchNames.Passive && checkPostpone(bch) && checkBranchStats(bch.stats)
       const passiveValid = skillItem.effectItems.some(effectItem => effectItem.branchItems.some(checkPassive))
       const passiveSkillBranchItems = !passiveValid ? null : computed(() => {
         return currentEffectItem.value?.branchItems.filter(checkPassive) ?? []
@@ -237,7 +297,7 @@ export function setupCharacterSkills(
 
       const allStackContainers = computed(() => {
         return currentEffectItem.value?.branchItems
-          .filter(_bch => _bch.name === SkillBranchNames.Stack)
+          .filter(_bch => _bch.name === SkillBranchNames.Stack && !_bch.hasAttr('value'))
           .map(_bch => StackHandler(_bch)) ?? []
       })
 
@@ -260,30 +320,26 @@ export function setupCharacterSkills(
 
   const allSkills = computed(() => skillBuild.value?.allSkills ?? [])
 
-  interface SkillBranchItemState {
-    enabled: boolean;
-    vars?: Record<string, number>;
-  }
-  const skillBranchStates: Map<SkillBranch, SkillBranchItemState> = reactive(new Map())
-
   /**
    * @param skillBranch - skill branch as key from default effect of Skill
    */
-  const getSkillBranchItemState = (skillBranch: SkillBranch) => {
-    if (!skillBranchStates.has(skillBranch)) {
-      const state: SkillBranchItemState = { enabled: true }
-      skillBranchStates.set(skillBranch, state)
+  let getSkillBranchItemState: (skillBranch: SkillBranch) => SkillBranchItemState
+  if (!isPostpone) {
+    const skillBranchStates: Map<SkillBranch, SkillBranchItemState> | null = reactive(new Map())
+    getSkillBranchItemState = (skillBranch: SkillBranch) => {
+      if (!skillBranchStates.has(skillBranch)) {
+        const state: SkillBranchItemState = { enabled: true }
+        skillBranchStates.set(skillBranch, state)
+      }
+      return skillBranchStates.get(skillBranch)!
     }
-    return skillBranchStates.get(skillBranch)!
+  } else {
+    getSkillBranchItemState = postponeOptions.getSkillBranchItemState
   }
 
   const getUsedStackContainers = (branchItems: SkillBranchItem[], skill: Skill) => {
     const stackIds = new Set<number>()
-    branchItems.forEach(bch => {
-      bch.attr('stack_id').split(/\s*,\s*/)
-        .map(id => parseInt(id, 10))
-        .forEach(id => stackIds.add(id))
-    })
+    branchItems.forEach(bch => bch.linkedStackIds.forEach(id => stackIds.add(id)))
     const stackIdList = [...stackIds]
     return (skillStackContainers.get(skill)?.value ?? []).filter(container => stackIdList.includes(container.branchItem.stackId!))
   }
@@ -383,9 +439,12 @@ export interface CharacterStatCategoryResult {
 export function setupCharacterStats(
   character: Ref<Character | null>,
   skillBuild: Ref<SkillBuild | null>,
-  skillStats: Ref<Stat[]>,
+  skillSetupDatas: {
+    stats: Ref<Stat[]>;
+    getSkillBranchItemState: (skillBranch: SkillBranch) => SkillBranchItemState;
+  },
   foodStats: Ref<Stat[]>,
-  handleConfig: Ref<CharacterSetupOptions>,
+  handleOptions: Ref<CharacterSetupOptions>,
 ) {
   const allEquipmentStats = computed(() => {
     if (!character.value) {
@@ -515,7 +574,7 @@ export function setupCharacterStats(
     }
   })
 
-  const characterStatCategoryResults = computed(() => {
+  const getResultsComputed = (postponeStats?: Ref<Stat[]>) => computed(() => {
     if (!character.value) {
       return []
     }
@@ -532,9 +591,12 @@ export function setupCharacterStats(
     }
 
     mergeStats(allEquipmentStats.value)
-    mergeStats(skillStats.value)
-    if (handleConfig.value.handleFood) {
+    mergeStats(skillSetupDatas.stats.value)
+    if (handleOptions.value.handleFood) {
       mergeStats(foodStats.value)
+    }
+    if (postponeStats) {
+      mergeStats(postponeStats.value)
     }
 
     const categoryList = Grimoire.Character.characterStatCategoryList
@@ -558,7 +620,37 @@ export function setupCharacterStats(
     } as CharacterStatCategoryResult)).filter(item => item.stats.length !== 0)
   })
 
+  const _characterStatCategoryResults = getResultsComputed()
+
+  const {
+    allValidSkillsStats: postponedAllValidSkillsStats,
+    activeSkillResultStates: postponedActiveSkillResultStates,
+    passiveSkillResultStates: postponedPassiveSkillResultStates,
+  } = setupCharacterSkills(
+    character,
+    skillBuild,
+    handleOptions,
+    {
+      getCharacterStatValue: (id: string) => {
+        let find!: CharacterStatResultWithId
+        _characterStatCategoryResults.value.some(categoryResult => {
+          const statResult = categoryResult.stats.find(stat => stat.id === id)
+          if (statResult) {
+            find = statResult
+            return true
+          }
+          return false
+        })
+        return find ? find.resultValue : 0
+      },
+      getSkillBranchItemState: skillSetupDatas.getSkillBranchItemState,
+    },
+  )
+  const characterStatCategoryResults = getResultsComputed(postponedAllValidSkillsStats)
+
   return {
     characterStatCategoryResults,
+    postponedActiveSkillResultStates,
+    postponedPassiveSkillResultStates,
   }
 }

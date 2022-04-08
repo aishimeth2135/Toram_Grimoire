@@ -4,7 +4,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { StatComputed } from '@/lib/Character/Stat'
 
-import { SkillBranchItem, SkillBranchItemBase, SkillBranchItemSuffix } from '.'
+import { SkillBranchItem, SkillBranchItemBaseChilds, SkillBranchItemSuffix } from '.'
 import { ResultContainerBase, ResultContainer, ResultContainerStat, TextResultContainer } from './ResultContainer'
 import type { TextResultContainerParseResult } from './ResultContainer'
 import { FormulaDisplayModes } from './enums'
@@ -60,7 +60,7 @@ function handleHighlight(container: ResultContainerBase, options: HighlightTextO
 interface ComputedBranchHelperResult {
   vars: HandleFormulaVars;
   texts: HandleFormulaTexts;
-  branchItem: SkillBranchItemBase;
+  branchItem: SkillBranchItemBaseChilds;
   handleFormulaExtra: (formula: string) => string;
   formulaDisplayMode: FormulaDisplayModes;
 }
@@ -73,15 +73,14 @@ const HANDLE_FORMULA_EXTRA_PATTERN_2 = /extra\[(\d+)\]/g
  * @param [formulaDisplayMode] - formula display mode, default value is from ComoutingContainer.config
  * @returns data using for compute
  */
-function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] = [], formulaDisplayMode?: FormulaDisplayModes): ComputedBranchHelperResult {
+function computedBranchHelper(branchItem: SkillBranchItemBaseChilds, values: string[] = [], formulaDisplayMode?: FormulaDisplayModes): ComputedBranchHelperResult {
   let vars: HandleFormulaVars
   let texts: HandleFormulaTexts
 
   formulaDisplayMode = formulaDisplayMode ?? branchItem.parent.parent.parent.config.formulaDisplayMode
 
-  const branchItemStack = branchItem instanceof SkillBranchItemSuffix ? branchItem.mainBranch : branchItem
-  const stackIds = branchItemStack.hasAttr('stack_id') ?
-    branchItemStack.attr('stack_id').split(/\s*,\s*/).map(id => parseInt(id, 10)) : []
+  const branchItemStack: SkillBranchItem = branchItem instanceof SkillBranchItemSuffix ? branchItem.mainBranch : branchItem
+  const stackIds = branchItemStack.linkedStackIds
 
   const handleFormulaExtends = branchItem.belongContainer.handleFormulaExtends
   const extendsDatas = {
@@ -98,7 +97,7 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
     const stack: string[] = []
     const { t } = Grimoire.i18n
 
-    if (branchItemStack.attr('stack_id')) {
+    if (stackIds.length > 0) {
       const stackStates = branchItem.parent.stackStates
       const stackNames = stackIds.map((id, idx) => {
         const item = stackStates.find(state => state.stackId === id)
@@ -133,11 +132,18 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
   } else {
     const stack: number[] = []
 
-    if (branchItemStack.attr('stack_id')) {
+    if (stackIds.length > 0) {
+      const getFormulaExtraValue = branchItem.belongContainer.config.getFormulaExtraValue
       const stackStates = branchItem.parent.stackStates
       const stackValues = stackIds.map(id => {
         const item = stackStates.find(state => state.stackId === id)
-        return item ? item.value : 0
+        if (!item) {
+          return 0
+        }
+        if (!getFormulaExtraValue || !item.branch.hasAttr('value')) {
+          return item.value
+        }
+        return getFormulaExtraValue(item.branch.attr('value')) ?? item.value
       })
       stack.push(...stackValues)
     }
@@ -199,8 +205,8 @@ function computedBranchHelper(branchItem: SkillBranchItemBase, values: string[] 
       }
       const getFormula = (index: string) => formulaExtra.attr(`values.${index}`)
       return str
-        .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (match, p1) => getFormulaExtraValue(getFormula(p1)) ?? getTextKey(p1))
-        .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, p1) => getFormulaExtraValue(getFormula(p1)) ?? getTextKey(p1))
+        .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (match, p1) => getFormulaExtraValue(getFormula(p1))?.toString() ?? getTextKey(p1))
+        .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, p1) => getFormulaExtraValue(getFormula(p1))?.toString() ?? getTextKey(p1))
     },
     branchItem,
     formulaDisplayMode,

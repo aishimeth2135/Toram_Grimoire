@@ -3,7 +3,7 @@ import { numberToFixed } from '@/shared/utils/number'
 import Grimoire from '@/shared/Grimoire'
 
 import { SkillBranchItemSuffix, SkillEffectItemHistory } from '@/lib/Skill/SkillComputingContainer'
-import type { SkillBranchItemBase, SkillBranchItemOverwriteRecords } from '@/lib/Skill/SkillComputingContainer'
+import type { SkillBranchItemBaseChilds, SkillBranchItemOverwriteRecords } from '@/lib/Skill/SkillComputingContainer'
 import {
   computeBranchValue,
   computedBranchHelper,
@@ -23,7 +23,7 @@ import DisplayDataContainer from './DisplayDataContainer'
 import { handleFunctionHighlight } from './utils'
 
 function cloneBranchAttrs(
-  branchItem: SkillBranchItemBase,
+  branchItem: SkillBranchItemBaseChilds,
   initValueMap?: Record<string, string | ((value: string) => string)>,
 ): Record<string, string> {
   const attrs = {} as Record<string, string>
@@ -53,7 +53,7 @@ interface HandleBranchLangAttrsMap {
   [key: string]: HandleBranchLangAttrsOptions | null;
 }
 function handleBranchLangAttrs<AttrMap extends HandleBranchLangAttrsMap>(
-  branchItem: SkillBranchItemBase,
+  branchItem: SkillBranchItemBaseChilds,
   helper: ComputedBranchHelperResult,
   attrs: Record<string, string>,
   attrMap: AttrMap,
@@ -108,7 +108,7 @@ interface HandleDisplayDataOptions {
   formulaDisplayMode?: FormulaDisplayModes;
 }
 
-function handleDisplayData<Branch extends SkillBranchItemBase>(
+function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   branchItem: Branch,
   attrs: Record<string, string>, {
     values = {},

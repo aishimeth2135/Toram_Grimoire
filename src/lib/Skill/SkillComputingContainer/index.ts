@@ -43,7 +43,7 @@ class SkillComputingContainer {
 
   config: {
     formulaDisplayMode: FormulaDisplayModes;
-    getFormulaExtraValue: ((formula: string) => string | null) | null;
+    getFormulaExtraValue: ((formula: string) => number | null) | null;
   }
 
   constructor() {
@@ -252,6 +252,11 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
 
   readonly isEmpty: boolean
 
+  /** (character-simulator only)
+   * If true, the computing of this branch must be postponed until after all character stat have been computed.
+   */
+  readonly postpone: boolean
+
   /* default branch from default effect that has not been overwritten  */
   readonly default: SkillBranch
 
@@ -282,6 +287,9 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
     this.stats = markRaw(branch.stats.map(stat => stat.clone()))
 
     this.isEmpty = branch.isEmpty
+
+    this.postpone = this._attrs['postpone'] === '1'
+    delete this._attrs['postpone']
 
     this.default = branch instanceof SkillBranch ? branch : branch.default
 
@@ -356,6 +364,10 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
     this._attrs = {}
   }
 
+  checkBranchName(name: SkillBranchNames) {
+    return this.name === name
+  }
+
   syncRecord(record: SkillBranchItemOverwriteRecords) {
     this.record.attrs.overwrite = record.attrs.overwrite.slice()
     this.record.attrs.append = record.attrs.append.slice()
@@ -377,12 +389,20 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
 
 class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> extends SkillBranchItemBase<Parent> {
   readonly suffixBranches: SkillBranchItemSuffix[]
+  readonly linkedStackIds: number[]
+  readonly stackId: number | null
+
   groupState: BranchGroupState
 
   constructor(parent: Parent, branch: SkillBranch | SkillBranchItem) {
     super(parent, branch)
 
     this.suffixBranches = markRaw([])
+
+    this.stackId = this.name === SkillBranchNames.Stack ? this.attrNumber('id') : null
+
+    this.linkedStackIds = this.stackId !== null ? [] :
+      this.attr('stack_id').split(/\s*,\s*/).map(id => parseInt(id, 10))
 
     this.groupState = {
       size: 0,
@@ -391,13 +411,6 @@ class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> 
       parentExpanded: true,
       isGroupEnd: false,
     }
-  }
-
-  get stackId() {
-    if (this.name === SkillBranchNames.Stack) {
-      return this.attrNumber('id')
-    }
-    return null
   }
 
   get isGroup(): boolean {
@@ -466,7 +479,10 @@ class SkillBranchItemSuffix<Parent extends SkillEffectItemBase = SkillEffectItem
   }
 }
 
+type SkillBranchItemBaseChilds = SkillBranchItem | SkillBranchItemSuffix
+
 export default SkillComputingContainer
+
 export {
   SkillItem,
   SkillEffectItem,
@@ -474,9 +490,10 @@ export {
   SkillBranchItem,
   SkillBranchItemSuffix,
 }
+
 export type {
   SkillEffectItemBase,
-  SkillBranchItemBase,
+  SkillBranchItemBaseChilds,
   EquipmentRestriction,
   BranchGroupState,
   BranchStackState,

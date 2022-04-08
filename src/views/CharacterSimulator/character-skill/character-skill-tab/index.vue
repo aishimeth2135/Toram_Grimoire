@@ -15,6 +15,13 @@
         :skill-results-state="skillResultsState"
       />
     </div>
+    <div class="border-t-1 border-light mt-2 pt-0.5" :class="{ 'opacity-50': disableAll }">
+      <CharacterSkillItem
+        v-for="skillResultsState in postponedValidResultStates"
+        :key="skillResultsState.skill.skillId"
+        :skill-results-state="skillResultsState"
+      />
+    </div>
   </div>
 </template>
 
@@ -52,6 +59,18 @@ const skillResultsStates = computed(() => {
 const { currentSkillBuild } = setupCharacterSkillBuildStore()
 const validResultStates = computed(() => {
   return skillResultsStates.value
+    .filter(state => {
+      const skillState = currentSkillBuild.value!.getSkillState(state.skill)
+      return skillState.level > 0 || skillState.starGemLevel > 0
+    })
+})
+
+const postponedSkillResultsStates = computed(() => {
+  return (props.type === SkillTypes.Active ? store.postponedActiveSkillResultStates : store.postponedPassiveSkillResultStates) as SkillResultsState[]
+})
+
+const postponedValidResultStates = computed(() => {
+  return postponedSkillResultsStates.value
     .filter(state => {
       const skillState = currentSkillBuild.value!.getSkillState(state.skill)
       return skillState.level > 0 || skillState.starGemLevel > 0

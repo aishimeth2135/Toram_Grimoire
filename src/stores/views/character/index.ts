@@ -332,10 +332,17 @@ export const useCharacterStore = defineStore('view-character', () => {
 
   const { allFoodBuildStats } = setupFoodStats(computed(() => food.currentFoodBuild))
 
-  const { characterStatCategoryResults } = setupCharacterStats(
+  const {
+    characterStatCategoryResults,
+    postponedActiveSkillResultStates,
+    postponedPassiveSkillResultStates,
+  } = setupCharacterStats(
     currentCharacter,
     currentSkillBuild,
-    allValidSkillsStats,
+    {
+      stats: allValidSkillsStats,
+      getSkillBranchItemState,
+    },
     allFoodBuildStats,
     setupOptions,
   )
@@ -344,7 +351,10 @@ export const useCharacterStore = defineStore('view-character', () => {
     const { characterStatCategoryResults: comparedCharacterStatCategoryResults } = setupCharacterStats(
       comparedCharacter,
       currentSkillBuild,
-      allValidSkillsStats,
+      {
+        stats: allValidSkillsStats,
+        getSkillBranchItemState,
+      },
       allFoodBuildStats,
       setupOptions,
     )
@@ -370,6 +380,9 @@ export const useCharacterStore = defineStore('view-character', () => {
     activeSkillResultStates,
     passiveSkillResultStates,
     getSkillBranchItemState,
+
+    postponedActiveSkillResultStates,
+    postponedPassiveSkillResultStates,
 
     reset,
     setCurrentCharacter,
