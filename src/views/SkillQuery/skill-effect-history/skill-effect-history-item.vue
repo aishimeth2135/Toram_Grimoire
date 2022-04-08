@@ -127,11 +127,7 @@ const modifiedBranchItemDatas = computed(() => {
 
 const usedStackIds = computed(() => {
   const stackIds = new Set<number>()
-  modifiedBranchItems.value.forEach(bch => {
-    bch.attr('stack_id').split(/\s*,\s*/)
-      .map(id => parseInt(id, 10))
-      .forEach(id => stackIds.add(id))
-  })
+  modifiedBranchItems.value.forEach(bch => bch.linkedStackIds.forEach(id => stackIds.add(id)))
   return [...stackIds]
 })
 

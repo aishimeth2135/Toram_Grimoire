@@ -107,6 +107,9 @@ function parseFormula(formulaStr: string, vars: ParseFormulaVars = {}, options: 
   }
   function handle(node: jsep.Expression, parentNode: jsep.Expression | null): CommonValueExtended | object {
     if (jsepTypes.isLiteral(node)) {
+      if (typeof node.value === 'string') {
+        return node.raw as PureValue
+      }
       return node.value as PureValue
     }
     if (jsepTypes.isUnaryExpression(node)) {
@@ -170,10 +173,17 @@ function parseFormula(formulaStr: string, vars: ParseFormulaVars = {}, options: 
           cur = cur.object
         }
         chain.push(cur.name)
+        if (options.compile) {
+          chain.push(options.compile)
+        }
         const argStrings = (args as PureValue[]).map(arg => trimBrackets(arg.toString()))
-        let funcName = (chain.reverse() as string[])
-          .map((item, idx) => (idx === 0 || item.startsWith('[') ? '' : '.') + item).join('')
-        funcName = options.compile ? `${options.compile}.${funcName}` : funcName
+        const funcName = (chain.reverse() as string[])
+          .map((item, idx) => {
+            if (idx === 0) {
+              return item
+            }
+            return `['${item}']`
+          }).join('')
         return `${funcName}(${argStrings.join(', ')})`
       }
       const callee = handle(node.callee, node) as (Function | string)
@@ -358,7 +368,11 @@ function computeFormula(formula: string, vars: Record<string, any>, defaultValue
     try {
       func = new Function(paramName, `return (${body});`)
     } catch (error) {
-      console.warn('[computeFormula] unknown error when try to create function')
+      console.warn('[computeFormula] unknown error when try to create function.')
+      console.log({
+        origin: formula,
+        body: body,
+      })
       console.log(error)
       func = () => defaultValue
     }

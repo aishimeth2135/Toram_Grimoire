@@ -1,10 +1,10 @@
-import type { SkillBranchItemBase } from '@/lib/Skill/SkillComputingContainer'
+import type { SkillBranchItemBaseChilds } from '@/lib/Skill/SkillComputingContainer'
 import { ResultContainerBase, ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 
 import type { SkillDisplayData } from '.'
 
 let _autoIncreasement = 0
-export default class DisplayDataContainer<Branch extends SkillBranchItemBase = SkillBranchItemBase> {
+export default class DisplayDataContainer<Branch extends SkillBranchItemBaseChilds = SkillBranchItemBaseChilds> {
   private _value: SkillDisplayData
   private _customDatas!: Record<string, any>
 
