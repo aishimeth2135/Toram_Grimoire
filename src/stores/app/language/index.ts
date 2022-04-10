@@ -166,11 +166,7 @@ export const useLanguageStore = defineStore('app-language', () => {
         const retry = async () => {
           try {
             const dataModule = await import(`../../../locales/${locale}/${namespace}.yaml`)
-            if (dataModule?.default) {
-              resultData = dataModule.default
-            } else {
-              count += 1
-            }
+            resultData = dataModule.default ?? {}
           } catch (err) {
             count += 1
           }
