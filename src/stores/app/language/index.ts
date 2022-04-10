@@ -162,7 +162,7 @@ export const useLanguageStore = defineStore('app-language', () => {
       const data = {} as Record<string, object>
       const promises = namespaceList.map(async (namespace) => {
         let count = 0
-        let resultData: object | null = null
+        let resultData!: object
         const retry = async () => {
           try {
             const dataModule = await import(`../../../locales/${locale}/${namespace}.yaml`)
@@ -174,23 +174,16 @@ export const useLanguageStore = defineStore('app-language', () => {
           } catch (err) {
             count += 1
           }
-          if (!resultData) {
-            if (count < 3) {
-              await retry()
-            } else {
-              unknownError = true
-            }
-          }
         }
-        await retry()
+        while (count < 3 && !resultData) {
+          await retry()
+        }
+        if (!resultData) {
+          unknownError = true
+        }
         data[namespace] = resultData ?? {}
       })
       await Promise.all(promises)
-
-      if (unknownError) {
-        const { notify } = Notify()
-        notify('An unknown error occurred while initializing the locale datas, texts on the page will be displayed abnormally. Please refresh the page later to try to reinitialize.')
-      }
 
       return data
     }
@@ -205,6 +198,11 @@ export const useLanguageStore = defineStore('app-language', () => {
     }
 
     namespaceList.forEach(namespace => i18nLoadedLocaleNamespaces.add(namespace))
+
+    if (unknownError) {
+      const { notify } = Notify()
+      notify('An unknown error occurred while initializing the locale datas, texts on the page will be displayed abnormally. Please refresh the page later to try to reinitialize.')
+    }
   }
 
   const updateLocaleGlobalMessages = async () => {
