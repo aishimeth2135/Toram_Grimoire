@@ -43,29 +43,26 @@
       </div>
     </div>
     <div
-      v-if="currentSkill"
+      v-if="currentSkillItem"
       ref="skillEffectElement"
       class="pt-10"
       style="min-height: 50vh;"
     >
       <div v-if="contents.skillEffect" class="border-t-1 border-orange pt-4">
         <SkillEffect
-          :skill-effect-item="currentSkillEffectItem"
+          v-model:selected-equipment="currentEquipment"
+          :skill-item="currentSkillItem"
           @set-current-skill="skill => selectCurrentSkill(skill, true)"
         />
       </div>
-    </div>
-    <div
-      v-if="currentSkillTree"
-      class="flex items-end ml-auto sticky z-10 px-2 bottom-14 mt-4"
-    >
-      <cy-button-circle icon="icon-park-outline:to-top-one" main-color="purple" @click="goToSkillTop" />
     </div>
     <SkillQueryMenu
       v-if="currentSkillTree"
       v-model:selected-equipment="currentEquipment"
       :skill-computing-container="computingContainer"
       :skill-tree="currentSkillTree"
+      :skill-item="currentSkillItem"
+      @go-skill-top="goToSkillTop"
     />
     <SkillQuerySearch
       v-if="contents.search"
@@ -198,11 +195,4 @@ const {
   computingContainer,
   currentSkillItem,
 } = setupComputingContainer(currentSkill)
-
-const currentSkillEffectItem = computed(() => {
-  if (!currentSkillItem.value) {
-    return null
-  }
-  return currentSkillItem.value.findEffectItem(currentEquipment.value) || null
-})
 </script>

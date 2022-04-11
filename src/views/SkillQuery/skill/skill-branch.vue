@@ -27,7 +27,7 @@
                 <SkillEquipmentButton
                   v-for="(branch, idx) in otherEffectBranches"
                   :key="branch.parent.equipmentId"
-                  :skill-branch-item="branch"
+                  :equipments="branch.parent.equipments"
                   :selected="currentOtherEffectBranch === branch"
                   @click="setCurrentOtherEffectBranch(idx)"
                 />

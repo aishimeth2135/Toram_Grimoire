@@ -14,13 +14,15 @@ branch-added: 新增
 branch-removed: 移除
 no-any-skill-effect-match-message:
   - 目前选取的技能与装备不相符。
-  - 请更改装备类型或是选择其他技能。
+  - 可以透过下方的按钮快速切换装备类型或是选择其他技能。
 equipment:
   no-select: 任意
   none: 通用
   "main: title": 主手武器
   "sub: title": 副手装备
   "body: title": 身体装备
+tag:
+  no-data-tips: 这个名词还没有说明(_ _)
 branch:
   duration-caption: "{duration}秒内"
   ailment-title: 命中成功后

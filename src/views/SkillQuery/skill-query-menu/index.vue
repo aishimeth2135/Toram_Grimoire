@@ -61,6 +61,20 @@
         </div>
       </div>
     </div>
+    <div v-else class="mb-2">
+      <div class="flex justify-end items-end space-x-2 w-full pointer-events-none">
+        <div v-if="contents.switchEffect && skillItem" class="border-1 border-light-2 p-3 rounded-md pointer-events-auto bg-white">
+          <SkillSwitchEffectButtons
+            :skill-item="skillItem"
+            @select-equipment="emit('update:selected-equipment', $event)"
+          />
+        </div>
+        <div class="pointer-events-auto flex flex-col space-y-2">
+          <cy-button-circle icon="mdi:checkbox-multiple-blank-circle-outline" main-color="water-blue" @click="toggle('contents/switchEffect')" />
+          <cy-button-circle icon="icon-park-outline:to-top-one" main-color="purple" @click="emit('go-skill-top')" />
+        </div>
+      </div>
+    </div>
     <div class="flex items-center bg-white border-1 border-solid border-light-2 rounded-2xl px-4 py-1">
       <cy-button-inline icon="mdi:order-numeric-descending" @click="toggleSkillLevel">
         {{ `Lv.${skillLevel}` }}
@@ -77,7 +91,7 @@
       <cy-button-icon
         class="ml-auto"
         :icon="contents.advancedMenu ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
-        @click="toggle('contents/advancedMenu')"
+        @click="toggle('contents/advancedMenu', null, false)"
       />
     </div>
   </div>
@@ -88,14 +102,17 @@ import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { SkillTree } from '@/lib/Skill/Skill'
-import SkillComputingContainer, { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { EquipmentRestriction, SkillItem } from '@/lib/Skill/SkillComputingContainer'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 
 import ToggleService from '@/setup/ToggleService'
 
+import SkillSwitchEffectButtons from '../skill-switch-effect-buttons.vue'
+
 import { setupEquipmentSelect, setupSkillLevel } from './setup'
 
 interface Props {
+  skillItem: SkillItem | null;
   skillTree: SkillTree;
   skillComputingContainer: SkillComputingContainer;
   selectedEquipment: EquipmentRestriction;
@@ -103,7 +120,8 @@ interface Props {
 const props = defineProps<Props>()
 
 interface Emits {
-  (event: 'update:selected-equipment', value: EquipmentRestriction): void;
+  (evt: 'update:selected-equipment', value: EquipmentRestriction): void;
+  (evt: 'go-skill-top'): void;
 }
 const emit = defineEmits<Emits>()
 
@@ -135,7 +153,7 @@ const formulaDisplayMode = computed<FormulaDisplayModes>({
 })
 
 const { contents, toggle } = ToggleService({
-  contents: ['advancedMenu'] as const,
+  contents: ['advancedMenu', 'switchEffect'] as const,
 })
 
 const {

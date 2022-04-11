@@ -14,7 +14,7 @@ branch-added: 新增
 branch-removed: 移除
 no-any-skill-effect-match-message:
   - 目前選取的技能與裝備不相符。
-  - 請更改裝備類型或是選擇其他技能。
+  - 可以透過下方的按鈕快速切換裝備類型或是選擇其他技能。
 equipment:
   no-select: 任意
   none: 通用

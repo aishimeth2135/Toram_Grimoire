@@ -38,27 +38,25 @@
 </template>
 
 <script lang="ts" setup>
-import { toRefs, computed } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
+import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 interface Props {
-  skillBranchItem: SkillBranchItem<SkillEffectItem>;
+  equipments: EquipmentRestriction[];
   selected?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   selected: false,
 })
-const { skillBranchItem: branchItem } = toRefs(props)
 
 const { t } = useI18n()
 
 const iconDatas = computed(() => {
-  const { equipments } = branchItem.value.parent
-  return equipments.map((equip, idx) => {
+  return props.equipments.map((equip, idx) => {
     const icons: { icon: string; src: string; text?: string }[] = []
     const fields = (['main', 'sub', 'body'] as const).filter(key => equip[key] !== null)
     if (fields.length === 0) {
