@@ -32,10 +32,18 @@
       </div>
     </div>
   </div>
-  <cy-default-tips v-else icon="uil:books">
-    <div>{{ t('skill-query.no-any-skill-effect-match-message.0') }}</div>
-    <div>{{ t('skill-query.no-any-skill-effect-match-message.1') }}</div>
-  </cy-default-tips>
+  <div v-else>
+    <cy-default-tips icon="uil:books">
+      <div>{{ t('skill-query.no-any-skill-effect-match-message.0') }}</div>
+      <div>{{ t('skill-query.no-any-skill-effect-match-message.1') }}</div>
+    </cy-default-tips>
+    <div class="mt-4">
+      <SkillSwitchEffectButtons
+        :skill-item="skillItem"
+        @select-equipment="emit('update:selected-equipment', $event)"
+      />
+    </div>
+  </div>
   <cy-hover-float
     ref="tagHoverFloatComponent"
     :element="skillBranchesElement"
@@ -89,13 +97,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, ref, watch, toRefs, nextTick } from 'vue'
+import { computed, ref, watch, nextTick } from 'vue'
 import { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useDatasStore } from '@/stores/app/datas'
 
-import { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
+import { EquipmentRestriction, SkillBranchItem, SkillItem } from '@/lib/Skill/SkillComputingContainer'
 import { Skill, SkillRoot } from '@/lib/Skill/Skill'
 
 import ToggleService from '@/setup/ToggleService'
@@ -104,21 +112,29 @@ import SkillBranch from './skill/skill-branch.vue'
 import skillTagsContent from './skill-tags-content.vue'
 import SkillEffectHistory from './skill-effect-history/index.vue'
 import SkillTitle from './skill/skill-title.vue'
+import SkillSwitchEffectButtons from './skill-switch-effect-buttons.vue'
 
 import { setupSkillTag } from './setup'
 
 interface Props {
-  skillEffectItem: SkillEffectItem | null;
+  skillItem: SkillItem;
+  selectedEquipment: EquipmentRestriction;
 }
 
 interface Emits {
   (evt: 'set-current-skill', skill: Skill): void;
+  (event: 'update:selected-equipment', value: EquipmentRestriction): void;
 }
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-const { skillEffectItem: effectItem } = toRefs(props)
+const effectItem = computed(() => {
+  if (!props.skillItem) {
+    return null
+  }
+  return props.skillItem.findEffectItem(props.selectedEquipment) || null
+})
 
 const { t } = useI18n()
 const { tabs, toggle } = ToggleService({

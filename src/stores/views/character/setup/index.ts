@@ -19,8 +19,8 @@ import PassiveHandler from '@/views/SkillQuery/skill/branch-handlers/PassiveHand
 import ExtraHandler from '@/views/SkillQuery/skill/branch-handlers/ExtraHandler'
 import StackHandler from '@/views/SkillQuery/skill/branch-handlers/StackHandler'
 
-import { SkillBuild } from './skill-build/SkillBuild'
-import { checkStatRestriction, getCharacterElement } from './utils'
+import { SkillBuild } from '../skill-build/SkillBuild'
+import { checkStatRestriction, getCharacterElement } from '../utils'
 
 type DisplayDataContainerAlly = DisplayDataContainer<SkillBranchItem<SkillEffectItem>>
 type DisplayDataContainerSuffixAlly = DisplayDataContainer<SkillBranchItemSuffix<SkillEffectItem>>
@@ -574,53 +574,65 @@ export function setupCharacterStats(
     }
   })
 
-  const getResultsComputed = (postponeStats?: Ref<Stat[]>) => computed(() => {
-    if (!character.value) {
-      return []
+  const setupResults = (postponeStats?: Ref<Stat[]>) => {
+    const characterPureStats = computed(() => {
+      if (!character.value) {
+        return []
+      }
+      const allStats = new Map<string, Stat>()
+      const mergeStats = (stats: Stat[]) => {
+        stats.forEach(stat => {
+          if (allStats.has(stat.statId)) {
+            allStats.get(stat.statId)!.add(stat.value)
+          } else {
+            allStats.set(stat.statId, stat.clone())
+          }
+        })
+      }
+
+      mergeStats(allEquipmentStats.value)
+      mergeStats(skillSetupDatas.stats.value)
+      if (handleOptions.value.handleFood) {
+        mergeStats(foodStats.value)
+      }
+      if (postponeStats) {
+        mergeStats(postponeStats.value)
+      }
+      return [...allStats.values()]
+    })
+
+    const categoryResults = computed(() => {
+      if (!character.value) {
+        return []
+      }
+      const categoryList = Grimoire.Character.characterStatCategoryList
+      const pureStats = [...characterPureStats.value]
+      const vars = {
+        ...computedVarsBase.value,
+        computed: {},
+        computedResultStore: {},
+      }  as CharacterStatResultVars
+
+      return categoryList.map(category => ({
+        name: category.name,
+        stats: category.stats.map(stat => {
+          const res = stat.result(pureStats, vars)
+          return {
+            id: stat.id,
+            name: stat.name,
+            ...res,
+          } as CharacterStatResultWithId
+        }),
+      } as CharacterStatCategoryResult)).filter(item => item.stats.length !== 0)
+    })
+
+    return {
+      categoryResults,
+      characterPureStats,
     }
+  }
 
-    const allStats = new Map<string, Stat>()
-    const mergeStats = (stats: Stat[]) => {
-      stats.forEach(stat => {
-        if (allStats.has(stat.statId)) {
-          allStats.get(stat.statId)!.add(stat.value)
-        } else {
-          allStats.set(stat.statId, stat.clone())
-        }
-      })
-    }
-
-    mergeStats(allEquipmentStats.value)
-    mergeStats(skillSetupDatas.stats.value)
-    if (handleOptions.value.handleFood) {
-      mergeStats(foodStats.value)
-    }
-    if (postponeStats) {
-      mergeStats(postponeStats.value)
-    }
-
-    const categoryList = Grimoire.Character.characterStatCategoryList
-    const pureStats = [...allStats.values()]
-    const vars = {
-      ...computedVarsBase.value,
-      computed: {},
-      computedResultStore: {},
-    }  as CharacterStatResultVars
-
-    return categoryList.map(category => ({
-      name: category.name,
-      stats: category.stats.map(stat => {
-        const res = stat.result(pureStats, vars)
-        return {
-          id: stat.id,
-          name: stat.name,
-          ...res,
-        } as CharacterStatResultWithId
-      }),
-    } as CharacterStatCategoryResult)).filter(item => item.stats.length !== 0)
-  })
-
-  const _characterStatCategoryResults = getResultsComputed()
+  const { categoryResults: _characterStatCategoryResults } = setupResults()
 
   const {
     allValidSkillsStats: postponedAllValidSkillsStats,
@@ -646,10 +658,11 @@ export function setupCharacterStats(
       getSkillBranchItemState: skillSetupDatas.getSkillBranchItemState,
     },
   )
-  const characterStatCategoryResults = getResultsComputed(postponedAllValidSkillsStats)
+  const { categoryResults: characterStatCategoryResults, characterPureStats } = setupResults(postponedAllValidSkillsStats)
 
   return {
     characterStatCategoryResults,
+    characterPureStats,
     postponedActiveSkillResultStates,
     postponedPassiveSkillResultStates,
   }
