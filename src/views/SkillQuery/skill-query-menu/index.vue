@@ -63,7 +63,11 @@
     </div>
     <div v-else class="mb-2">
       <div class="flex justify-end items-end space-x-2 w-full pointer-events-none">
-        <div v-if="contents.switchEffect && skillItem" class="border-1 border-light-2 p-3 rounded-md pointer-events-auto bg-white">
+        <div
+          v-if="contents.switchEffect && skillItem"
+          class="border-1 border-light-2 p-3 rounded-md pointer-events-auto bg-white overflow-y-auto"
+          style="max-height: 60vh"
+        >
           <SkillSwitchEffectButtons
             :skill-item="skillItem"
             @select-equipment="emit('update:selected-equipment', $event)"

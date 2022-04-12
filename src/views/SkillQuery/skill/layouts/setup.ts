@@ -4,4 +4,5 @@ export interface NormalLayoutSubContent {
   title?: string;
   color?: string;
   value?: string;
+  type?: 'primary' | 'normal';
 }

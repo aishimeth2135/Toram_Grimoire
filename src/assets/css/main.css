@@ -8,6 +8,7 @@
   --primary-purple: #9c27b0;
   --primary-purple-light: #c873d7;
   --primary-blue-purple: #8330ff;
+  --primary-blue-purple-light: #caa6ff;
   --primary-water-blue: #2196f3;
   --primary-water-blue-light: #9acbf3;
   --primary-blue-green: #009688;
@@ -32,6 +33,7 @@
   --rgb-primary-purple: 156, 39, 176;
   --rgb-primary-purple-light: 200, 115, 215;
   --rgb-primary-blue-purple: 131, 48, 255;
+  --rgb-primary-blue-purple-light: 202, 166, 255;
   --rgb-primary-water-blue: 33, 150, 243;
   --rgb-primary-water-blue-light: 154, 203, 243;
   --rgb-primary-blue-green: 0, 150, 136;
@@ -58,6 +60,7 @@ html.theme--night-mode {
   --primary-purple: #e8caed;
   --primary-purple-light: #b357c3;
   --primary-blue-purple: #e6d6ff;
+  --primary-blue-purple-light: #b485ff;
   --primary-water-blue: #aed1ef;
   --primary-water-blue-light: #307cb9;
   --primary-blue-green: #81ded5;
@@ -81,6 +84,7 @@ html.theme--night-mode {
   --rgb-primary-purple: 232, 202, 237;
   --rgb-primary-purple-light: 179, 87, 195;
   --rgb-primary-blue-purple: 230, 214, 255;
+  --rgb-primary-blue-purple-light: 180, 133, 255;
   --rgb-primary-water-blue: 174, 209, 239;
   --rgb-primary-water-blue-light: 48, 124, 185;
   --rgb-primary-blue-green: 129, 222, 213;

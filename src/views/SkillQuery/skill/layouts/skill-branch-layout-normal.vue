@@ -20,10 +20,11 @@
             size="small"
             :text-color="contentData.color"
             :icon="contentData.icon"
+            :main-color="contentData.type === 'primary' ? 'red' : 'default'"
           >
             <span v-html="contentData.title"></span>
           </cy-icon-text>
-          <span v-if="contentData.value" class="text-light-3 text-sm ml-1.5">
+          <span v-if="contentData.value" class="text-sm ml-1.5 text-light-3">
             {{ contentData.value }}
           </span>
         </span>
@@ -108,8 +109,9 @@ const subContentDatas = computed(() => {
         key: subContent.key,
         icon: subContent.icon,
         title: subContent.title ?? container.value.get(subContent.key),
-        color: subContent.value ? 'dark' : (subContent.color ? subContent.color : 'light-3'),
+        color: subContent.value ? 'light-2' : (subContent.color || (subContent.type === 'primary' ? 'red' : 'light-3')),
         value: subContent.value ?? '',
+        type: subContent.type ?? 'normal',
       }
     })
     .filter(item => item.title || (item.title && item.value))
