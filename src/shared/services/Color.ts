@@ -5,10 +5,9 @@ export default class Color {
 
     'purple',
 
-    'red',
-    'red-light',
+    'red', 'red-light',
 
-    'blue-purple',
+    'blue-purple', 'blue-purple-light',
     'water-blue', 'water-blue-light',
     'blue-green', 'blue-green-light',
     'green', 'green-light',
@@ -17,7 +16,7 @@ export default class Color {
 
     'gray', 'gray-light',
   ]
-  static MappingList: { [key: string]: string } = {
+  static MappingList: Record<string, string> = {
     'white': 'white',
     'dark': 'light-4',
     'light': 'light-2',
@@ -25,6 +24,7 @@ export default class Color {
     'purple': 'light-4',
     'red-light': 'red',
     'water-blue-light': 'water-blue',
+    'blue-purple-light': 'blue-purple',
     'gray-light': 'gray',
     'blue-green-light': 'blue-green',
     'orange-light': 'orange',
@@ -37,7 +37,7 @@ export default class Color {
 
   static lighten(color: string): string {
     return Object.keys(Color.MappingList)
-      .find(k => Color.MappingList[k] === color) || 'light'
+      .find(key => Color.MappingList[key] === color) || 'light'
   }
 
   value: string

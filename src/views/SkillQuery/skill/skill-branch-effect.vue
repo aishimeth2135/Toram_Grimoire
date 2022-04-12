@@ -56,12 +56,14 @@ const subContents = computed(() => {
   return [{
     key: 'condition',
     icon: 'eva-checkmark-circle-2-outline',
+    type: 'primary',
   }, {
     key: 'duration',
     icon: 'zmdi-time-interval',
   }, {
     key: 'end_condition',
     icon: 'zmdi-time-interval',
+    type: 'primary',
   }, {
     key: 'is_place',
     icon: 'emojione-monotone:heavy-large-circle',

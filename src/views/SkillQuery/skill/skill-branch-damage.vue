@@ -89,6 +89,7 @@ const subContents = computed(() => {
   result.push({
     key: 'title',
     icon: 'bx-bx-game',
+    type: 'primary',
   }, {
     key: 'element',
     icon: getElementIcon(branchItem.value.attr('element')),
@@ -138,13 +139,13 @@ const subContents = computed(() => {
     key: 'unsheathe_damage',
     icon: getBoolIcon(branchItem.value.attr('unsheathe_damage')),
   })
-  if (container.value.get('frequency') && parseInt(container.value.get('frequency'), 10) > 1) {
+  if (container.value.has('frequency') && parseInt(container.value.getValue('frequency'), 10) > 1) {
     result.push({
       key: 'judgment',
-      icon: 'ic-outline-info',
+      icon: 'ic:outline-view-timeline',
     }, {
       key: 'frequency_judgment',
-      icon: 'ic-outline-info',
+      icon: 'ic:outline-view-timeline',
     })
   }
   return result
