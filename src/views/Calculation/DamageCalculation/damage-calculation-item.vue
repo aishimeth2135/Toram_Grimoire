@@ -3,6 +3,7 @@
     v-if="currentContainer"
     class="flex items-start"
     :style="{ marginLeft: root ? '1.8rem' : ((maxLayer - layer) * 0.5) + 'rem' }"
+    :class="{ 'opacity-50': currentContainer.hidden }"
   >
     <div
       class="p-2 w-20 text-center rounded-md bg-light bg-opacity-30 text-purple"
@@ -20,7 +21,7 @@
           v-model:selected="container.enabled"
           :disabled="!container.base.controls.toggle"
         />
-        <div class="space-y-2" :class="{ 'opacity-60': !container.enabled }">
+        <div class="space-y-2" :class="{ 'opacity-60': !container.enabled && !container.hidden }">
           <div
             v-for="item in getContainerItems(container)"
             :key="item.base.id"
@@ -140,6 +141,7 @@ import { markText } from '@/shared/utils/view'
 
 import { CalcStructItem } from '@/lib/Calculation/Damage/Calculation/base'
 import { CalcItem, CalcItemContainer, CalcItemCustom } from '@/lib/Calculation/Damage/Calculation'
+import { ContainerTypes } from '@/lib/Calculation/Damage/Calculation/enums'
 
 import { DamageCalculationRootInjectionKey } from './injection-keys'
 
@@ -197,7 +199,7 @@ const currentContainerResult = computed(() => {
 })
 
 const getContainerItems = (container: CalcItemContainer) => {
-  if (container.base.getCurrentItemId) {
+  if (!container.selectable && container.base.type === ContainerTypes.Options) {
     return [container.currentItem]
   }
   return [

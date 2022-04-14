@@ -5,25 +5,8 @@ import { isNumberString } from '@/shared/utils/string'
 import { getVarsMap, getGettersMap, varMapToArray, handleReplacedKey, jsepTypes } from './utils'
 
 function trimBrackets(value: string) {
-  if (value[0] === '(') {
-    let stackCount = 0
-    let trimNum = 0
-    value.split('').some((char, idx, ary) => {
-      if (char === '(') {
-        stackCount += 1
-      } else if (char === ')') {
-        if (stackCount === ary.length - idx) {
-          trimNum = stackCount - 1
-          return true
-        }
-        stackCount -= 1
-      }
-      if (idx > 0 && stackCount === 0) {
-        return true
-      }
-      return false
-    })
-    return value.slice(trimNum, value.length - trimNum)
+  while (value[0] === '(' && value[value.length - 1] === ')') {
+    value = value.slice(1, value.length - 1)
   }
   return value
 }
@@ -182,7 +165,7 @@ function parseFormula(formulaStr: string, vars: ParseFormulaVars = {}, options: 
             if (idx === 0) {
               return item
             }
-            return `['${item}']`
+            return options.compile ? `['${item}']` : `.${item}`
           }).join('')
         return `${funcName}(${argStrings.join(', ')})`
       }
@@ -324,10 +307,6 @@ function handleFormula(formulaStr: string, {
   //   return calcNumberBinaryExpression(left, operator, right).toString();
   // });
 
-  textsAry.forEach(([key], idx) => {
-    formulaStr = formulaStr.replace(new RegExp(getTextVarName(idx), 'g'), textsMap.get(key) as string)
-  })
-
   if (toNumber && typeof formulaStr === 'string') {
     const num = parseFloat(formulaStr)
     return Number.isNaN(num) ? 0 : num
@@ -340,7 +319,13 @@ function handleFormula(formulaStr: string, {
     return !!formulaStr
   }
 
-  return trimBrackets(formulaStr)
+  formulaStr = trimBrackets(formulaStr)
+
+  textsAry.forEach(([key], idx) => {
+    formulaStr = formulaStr.replaceAll(getTextVarName(idx), textsMap.get(key) as string)
+  })
+
+  return formulaStr
 }
 
 const _computeFormulaCaches: Map<string, Function> = new Map()
@@ -349,7 +334,7 @@ const _computeFormulaCaches: Map<string, Function> = new Map()
  * Compute given formula to pure value by "vars". (Suppose all variables exist in "vars")
  * note: the method will compile given formula by Function constructor.
  *
- * @param formula - formual to compute
+ * @param formula - formula to compute
  * @param vars - variables mapping
  * @param defaultValue - default return value if error
  * @returns result after computing formula

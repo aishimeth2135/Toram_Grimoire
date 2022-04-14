@@ -1,25 +1,27 @@
 <template>
-  <div class="p-1 pr-3 flex items-center flex-wrap">
-    <cy-input-counter
-      v-if="branchItem.parent.parent.parent.config.formulaDisplayMode === FormulaDisplayModes.Normal"
-      v-model:value="stackValue"
-      :range="stackValueRange"
-      :input-width="container.getCustomData('stackInputWidth')"
-      :step="stackStep"
-    >
-      <template #title>
-        <cy-icon-text icon="ion-leaf">
-          {{ container.get('name') }}
-        </cy-icon-text>
-      </template>
-      <template v-if="container.get('unit')" #unit>
-        <span class="text-light-3">{{ container.get('unit') }}</span>
-      </template>
-    </cy-input-counter>
-    <cy-icon-text v-else icon="ion-leaf">
-      {{ container.get('name') }}
-    </cy-icon-text>
-    <div class="flex items-center space-x-1 ml-4">
+  <div class="p-1 pr-3 flex items-center flex-wrap pb-0.5">
+    <div class="mt-0.5">
+      <cy-input-counter
+        v-if="branchItem.parent.parent.parent.config.formulaDisplayMode === FormulaDisplayModes.Normal"
+        v-model:value="stackValue"
+        :range="stackValueRange"
+        :input-width="container.getCustomData('stackInputWidth')"
+        :step="stackStep"
+      >
+        <template #title>
+          <cy-icon-text icon="ion-leaf">
+            {{ container.get('name') }}
+          </cy-icon-text>
+        </template>
+        <template v-if="container.get('unit')" #unit>
+          <span class="text-light-3">{{ container.get('unit') }}</span>
+        </template>
+      </cy-input-counter>
+      <cy-icon-text v-else icon="ion-leaf">
+        {{ container.get('name') }}
+      </cy-icon-text>
+    </div>
+    <div class="flex items-center space-x-1 ml-4 mt-0.5">
       <cy-icon-text icon="icon-park-outline:inner-shadow-top-right" class="mr-2" />
       <div v-if="stackValueRangeOrigin[0]" class="text-light-3">{{ stackValueRangeOrigin[0] }}</div>
       <cy-icon-text icon="mdi:tilde" icon-width="0.8rem" />

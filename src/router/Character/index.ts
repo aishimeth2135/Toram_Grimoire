@@ -17,7 +17,7 @@ export default {
   component: ViewWrapper,
   beforeEnter(to, from, next) {
     PrepareLocaleInit(LocaleViewNamespaces.CharacterSimulator, LocaleViewNamespaces.SkillSimulator, LocaleViewNamespaces.SkillQuery)
-    ViewInit(DataStoreIds.Stats, DataStoreIds.Items, DataStoreIds.CharacterStats, DataStoreIds.Skill, DataStoreIds.Food).then(next)
+    ViewInit(DataStoreIds.Stats, DataStoreIds.Items, DataStoreIds.CharacterStats, DataStoreIds.Skill, DataStoreIds.Food, DataStoreIds.DamageCalculation).then(next)
   },
   meta: {
     leftMenuViewButtons: [{

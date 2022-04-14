@@ -4,7 +4,7 @@ export const enum ContainerTypes {
 }
 
 export const enum CalculationContainerIds {
-  DamageType = 'damage_type',
+  BaseType = 'base_type',
   AtkBase = 'atk/base',
   AtkDualSword = 'atk/dual_sword',
   AtkTwoHanded = 'atk/two_handed',
@@ -34,6 +34,7 @@ export const enum CalculationContainerIds {
 export const enum CalculationItemIds {
   Physical = 'physical',
   Magic = 'magic',
+  SpecialBase = 'special_base',
   Atk = 'atk',
   Matk = 'matk',
   AtkRate = 'atk_rate',

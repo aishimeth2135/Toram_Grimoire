@@ -1,8 +1,8 @@
 <template>
-  <div class="sticky bottom-2 z-10 mx-2 mt-4">
+  <div class="sticky bottom-2 z-10 mx-2 mt-4 pointer-events-none">
     <div
       v-if="contents.advancedMenu"
-      class="bg-white border-1 border-solid border-light-2 rounded-lg p-4 mb-3 overflow-y-auto"
+      class="bg-white border-1 border-solid border-light-2 rounded-lg p-4 mb-3 overflow-y-auto pointer-events-auto"
       style="max-height: 60vh;"
     >
       <div class="space-y-3">
@@ -62,7 +62,7 @@
       </div>
     </div>
     <div v-else class="mb-2">
-      <div class="flex justify-end items-end space-x-2 w-full pointer-events-none">
+      <div class="flex justify-end items-end space-x-2 w-full">
         <div
           v-if="contents.switchEffect && skillItem"
           class="border-1 border-light-2 p-3 rounded-md pointer-events-auto bg-white overflow-y-auto"
@@ -74,12 +74,21 @@
           />
         </div>
         <div class="pointer-events-auto flex flex-col space-y-2">
-          <cy-button-circle icon="mdi:checkbox-multiple-blank-circle-outline" main-color="water-blue" @click="toggle('contents/switchEffect')" />
-          <cy-button-circle icon="icon-park-outline:to-top-one" main-color="purple" @click="emit('go-skill-top')" />
+          <cy-button-circle
+            v-if="skillItem"
+            icon="mdi:checkbox-multiple-blank-circle-outline"
+            main-color="water-blue"
+            @click="toggle('contents/switchEffect')"
+          />
+          <cy-button-circle
+            icon="icon-park-outline:to-top-one"
+            main-color="purple"
+            @click="emit('go-skill-top')"
+          />
         </div>
       </div>
     </div>
-    <div class="flex items-center bg-white border-1 border-solid border-light-2 rounded-2xl px-4 py-1">
+    <div class="flex items-center bg-white border-1 border-solid border-light-2 rounded-2xl px-4 py-1 pointer-events-auto">
       <cy-button-inline icon="mdi:order-numeric-descending" @click="toggleSkillLevel">
         {{ `Lv.${skillLevel}` }}
       </cy-button-inline>

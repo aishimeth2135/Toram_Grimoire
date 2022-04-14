@@ -211,40 +211,46 @@ const subButtonAvailable = computed(() => {
   }
 
   & :deep(.skill-formula-function-wrapper) {
-    @apply rounded-md pr-1 pl-2 mx-0.5 inline-flex items-center;
+    @apply rounded-md pr-1 pl-1.5 mx-0.5 inline-flex items-center;
 
     &.key--floor {
       @apply bg-light;
       & > .name {
         @apply text-light-4;
       }
-      & .param-separate {
+      & > .value > .param-separate {
         @apply border-light;
       }
     }
     &.key--min {
-      @apply bg-water-blue-light;
+      @apply bg-water-blue-light bg-opacity-50;
       & > .name {
         @apply text-water-blue;
       }
-      & .param-separate {
+      & > .value > .param-separate {
         @apply border-water-blue-light;
       }
     }
     &.key--max {
-      @apply bg-blue-green-light;
+      @apply bg-blue-green-light bg-opacity-50;
       & > .name {
         @apply text-blue-green;
       }
-      & .param-separate {
+      & > .value >  .param-separate {
         @apply border-blue-green-light;
       }
     }
+
+    & > .name {
+      @apply text-sm
+    }
     & > .value {
-      @apply bg-white rounded ml-1.5 mr-1 px-2 inline-flex items-center text-sm;
+      @apply ml-1.5 mr-1 px-2 inline-flex items-center text-sm bg-white bg-opacity-75;
 
       & > .param-separate {
-        @apply inline-block border-l-1 mx-2 mt-0.5 h-3;
+        @apply inline-block mx-2 mt-0.5 h-4 bg-opacity-0;
+
+        border-left-width: 0.1875rem;
       }
     }
   }

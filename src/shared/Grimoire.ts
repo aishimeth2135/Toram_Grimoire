@@ -23,6 +23,10 @@ const Grimoire = {
     return DatasStoreBase.Enchant!
   },
 
+  get DamageCalculation() {
+    return DatasStoreBase.DamageCalculation!
+  },
+
   get i18n() {
     return I18nStore.i18n!
   },
