@@ -1,6 +1,7 @@
 import { handleFormula } from '@/shared/utils/data'
 
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
+import { StatComputed } from '@/lib/Character/Stat'
 
 import { SkillBranch, SkillEffect, SkillEffectAttrs } from '../Skill'
 import { SkillBranchItem, SkillEffectItem, SkillEffectItemHistory } from './index'
@@ -257,6 +258,21 @@ function handleVirtualBranches(effectItem: SkillEffectItemBase) {
     return true
   })
   effectItem.branchItems.splice(0, effectItem.branchItems.length, ...newBranchItems)
+}
+
+export function initBranchesPostpone(effectItem: SkillEffectItem) {
+  const allStackBranches = effectItem.branchItems.filter(_bch => _bch.checkBranchName(SkillBranchNames.Stack))
+  const postponeVarList = ['$STR', '$INT', '$AGI', '$VIT', '$DEX', '$guard_power']
+  const checkStatsContainsPostponeVar = (stats: StatComputed[]) => stats.some(_stat => postponeVarList.some(stat => _stat.value.includes(stat)))
+  effectItem.branchItems.forEach(bch => {
+    const stackBranches = allStackBranches.filter(_bch => bch.linkedStackIds.includes(_bch.stackId!))
+    if (stackBranches.some(_bch => _bch.postpone)) {
+      bch.postpone = true
+    }
+    if (checkStatsContainsPostponeVar(bch.stats) || bch.suffixBranches.some(suf => checkStatsContainsPostponeVar(suf.stats))) {
+      bch.postpone = true
+    }
+  })
 }
 
 function initStackStates(effectItem: SkillEffectItemBase) {

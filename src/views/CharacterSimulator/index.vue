@@ -69,6 +69,7 @@ import CharacterBasic from './character-basic.vue'
 import CharacterStats from './character-stats/index.vue'
 import CharacterEquipmentFields from './character-equipment-fields/index.vue'
 import CharacterSkill from './character-skill/index.vue'
+import CharacterDamage from './character-damage/index.vue'
 import CharacterFood from './character-food/index.vue'
 import CharacterEquipmentEditCrystals from './character-equipment/character-equipment-edit-crystals.vue'
 import CharacterEquipmentBasic from './character-equipment/character-equipment-basic.vue'
@@ -86,6 +87,7 @@ const enum TabIds {
   CharacterStats = 'characterStats',
   EquipmentFields = 'equipmentFields',
   Skill = 'skill',
+  Damage = 'damage',
   Food = 'food',
   Save = 'save',
 }
@@ -98,6 +100,7 @@ const { modals, tabs, toggle } = ToggleService({
     TabIds.CharacterStats,
     { name: TabIds.EquipmentFields, default: true },
     TabIds.Skill,
+    TabIds.Damage,
     TabIds.Food,
     TabIds.Save,
   ] as TabIds[],
@@ -118,7 +121,13 @@ const tabDatas = [{
   id: TabIds.Skill,
   icon: 'ant-design:build-outlined',
   text: t('character-simulator.skill-build.title'),
-}, {
+},
+// {
+//   id: TabIds.Damage,
+//   icon: 'ic:outline-calculate',
+//   text: t('character-simulator.character-damage.title'),
+// },
+{
   id: TabIds.Food,
   icon: 'mdi-food-apple',
   text: t('character-simulator.food-build.title'),
@@ -137,6 +146,9 @@ const currentTab = computed(() => {
   }
   if (tabs[TabIds.Skill]) {
     return CharacterSkill
+  }
+  if (tabs[TabIds.Damage]) {
+    return CharacterDamage
   }
   if (tabs[TabIds.Food]) {
     return CharacterFood

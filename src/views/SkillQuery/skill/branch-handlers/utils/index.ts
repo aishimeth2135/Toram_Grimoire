@@ -108,6 +108,9 @@ interface HandleDisplayDataOptions {
   formulaDisplayMode?: FormulaDisplayModes;
 }
 
+const FORMULA_VALUE_TO_PERCENTAGE_PATTERN = /([$_a-zA-Z][$_a-zA-Z0-9]*)(\*)(\d\.\d+)/g
+const MUL_PATTERN = /\*/g
+
 function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   branchItem: Branch,
   attrs: Record<string, string>, {
@@ -161,8 +164,8 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   const handleContainerFormulaValue = (container: ResultContainerBase) => {
     container.handle(value => {
       return value
-        .replace(/([$_a-zA-Z][$_a-zA-Z0-9]*)(\*)(\d\.\d+)/g, (match, p1, p2, p3) => p1 + p2 + numberStringToPercentage(p3))
-        .replace(/\*/g, '×')
+        .replace(FORMULA_VALUE_TO_PERCENTAGE_PATTERN, (match, p1, p2, p3) => p1 + p2 + numberStringToPercentage(p3))
+        .replace(MUL_PATTERN, '×')
     })
     container.handle(value => value.replace(/(\d+\.)(\d{4,})/g, (m, m1, m2) => m1 + m2.slice(0, 4)))
     container.handle(trimFloatStringZero)
@@ -245,6 +248,9 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   statDatas.forEach(container => {
     handleContainerFormulaValue(container)
     container.handle(value => handleStatHistoryHighlight(container.stat, value))
+    if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
+      container.handle(value => handleFunctionHighlight(value))
+    }
   })
 
   titles.forEach(key => {

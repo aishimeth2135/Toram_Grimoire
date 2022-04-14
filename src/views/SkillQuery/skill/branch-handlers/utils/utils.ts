@@ -1,9 +1,24 @@
+const FUNCTION_HIGHLIGHT_LIST: {
+  name: string;
+  reg: RegExp;
+  target?: (match: string, p1: string) => string;
+}[] = [
+  {
+    name: 'floor', reg: /Math\.floor\(([^()]+)\)/g,
+    target: (match: string, p1: string) => '[' + p1 + ']',
+  },
+  { name: 'min', reg: /Math\.min\(([^()]+)\)/g },
+  { name: 'max', reg: /Math\.max\(([^()]+)\)/g },
+]
+
+const VAR_CHAR_PATTERN = /[_a-zA-Z0-9]/
+
 function handleFunctionHighlight(result: string) {
   const handleStack: ('normal' | 'function')[] = []
   let offset = 0 // offset for "#left~" and "~right#"
   result.split('').forEach((char, idx) => {
     if (char === '(') {
-      if (idx === 0 || !/[_a-zA-Z0-9]/.test(result[idx - 1 + offset])) {
+      if (idx === 0 || !VAR_CHAR_PATTERN.test(result[idx - 1 + offset])) {
         result = result.slice(0, idx + offset) + '#left~' + result.slice(idx + offset + 1)
         offset += 5
         handleStack.push('normal')
@@ -22,24 +37,12 @@ function handleFunctionHighlight(result: string) {
 
   const createFormulaText = (name: string, value: string) => `<span class="skill-formula-function-wrapper key--${name}"><span class="name">${name.toUpperCase()}</span><span class="value">${value}</span></span>`
 
-  const funList: {
-    name: string;
-    reg: RegExp;
-    target?: (match: string, p1: string) => string;
-  }[] = [
-    {
-      name: 'floor', reg: /Math\.floor\(([^()]+)\)/g,
-      target: (match: string, p1: string) => '[' + p1 + ']',
-    },
-    { name: 'min', reg: /Math\.min\(([^()]+)\)/g },
-    { name: 'max', reg: /Math\.max\(([^()]+)\)/g },
-  ]
-  while (funList.find(item => result.match(item.reg))) {
-    funList.forEach(item => result = result.replace(item.reg, item.target ?? ((match, p1) => createFormulaText(item.name, p1))))
+  while (FUNCTION_HIGHLIGHT_LIST.find(item => result.match(item.reg))) {
+    FUNCTION_HIGHLIGHT_LIST.forEach(item => result = result.replace(item.reg, item.target ?? ((match, p1) => createFormulaText(item.name, p1))))
   }
   result = result
-    .replace(/#left~/g, '(')
-    .replace(/~right#/g, ')')
+    .replaceAll('#left~', '(')
+    .replaceAll('~right#', ')')
 
   result = result.replace(/,/g, '<span class="param-separate"></span>')
 

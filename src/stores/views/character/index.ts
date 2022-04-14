@@ -7,12 +7,14 @@ import Grimoire from '@/shared/Grimoire'
 import { Character, CharacterSaveData } from '@/lib/Character/Character'
 import { CharacterEquipment, EquipmentSaveData } from '@/lib/Character/CharacterEquipment'
 import { FoodsSaveData } from '@/lib/Character/Food'
+import { Skill } from '@/lib/Skill/Skill'
 
 import { SkillBuildState, useCharacterSkillStore } from './skill'
 import { useCharacterFoodStore } from './food'
 import { setupCharacterSkills, setupCharacterStats, setupFoodStats } from './setup'
 import { SkillBuild, SkillBuildSaveData } from './skill-build/SkillBuild'
 import { useCharacterSkillBuildStore } from './skill-build'
+import setupDamageCalculation, { CalculationOptions, TargetProperties } from './setup/setupDamageCalculation'
 
 interface EquipmentSaveDataWithIndex extends EquipmentSaveData {
   idx: number;
@@ -334,8 +336,10 @@ export const useCharacterStore = defineStore('view-character', () => {
 
   const {
     characterStatCategoryResults,
+    characterPureStats,
     postponedActiveSkillResultStates,
     postponedPassiveSkillResultStates,
+    damageSkillResultStates,
   } = setupCharacterStats(
     currentCharacter,
     currentSkillBuild,
@@ -363,6 +367,47 @@ export const useCharacterStore = defineStore('view-character', () => {
     }
   }
 
+  const targetProperties: Ref<TargetProperties> = ref({
+    physicalResistance: 0,
+    magicResistance: 0,
+    def: 0,
+    mdef: 0,
+    level: 0,
+    criticalRateResistance: 0,
+    criticalRateResistanceTotal: 0,
+    dodge: 0,
+  })
+
+  const calculationOptions: Ref<CalculationOptions> = ref({
+    proration: 0,
+    comboMultiplier: 0,
+  })
+
+  const { setupDamageCalculationExpectedResult } = (() => {
+    const allSkillResultStates = computed(() => ([
+      ...activeSkillResultStates.value,
+      ...passiveSkillResultStates.value,
+      ...postponedActiveSkillResultStates.value,
+      ...postponedPassiveSkillResultStates.value,
+    ]))
+    const getSkillLevel = (targetSkill: Skill) => {
+      if (!currentSkillBuild.value) {
+        return 0
+      }
+      if (allSkillResultStates.value.some(state => state.skill === targetSkill && state.results.length > 0)) {
+        return currentSkillBuild.value.getSkillState(targetSkill).level
+      }
+      return 0
+    }
+
+    return setupDamageCalculation(
+      currentCharacter,
+      characterStatCategoryResults,
+      characterPureStats,
+      getSkillLevel,
+    )
+  })()
+
   return {
     characters,
     equipments,
@@ -379,6 +424,7 @@ export const useCharacterStore = defineStore('view-character', () => {
 
     activeSkillResultStates,
     passiveSkillResultStates,
+    damageSkillResultStates,
     getSkillBranchItemState,
 
     postponedActiveSkillResultStates,
@@ -391,6 +437,11 @@ export const useCharacterStore = defineStore('view-character', () => {
     appendEquipments,
     removeEquipment,
     moveEquipment,
+
+    // damage calculation
+    setupDamageCalculationExpectedResult,
+    targetProperties,
+    calculationOptions,
 
     deleteAllSavedData,
     loadCharacterSimulator,

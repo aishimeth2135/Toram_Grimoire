@@ -201,7 +201,7 @@ const setupResultMode = (calculation: Ref<Calculation>) => {
 
 const setupCalculationCalcOptions = (calculation: Ref<Calculation>) => {
   const options = [{
-    containerId: CalculationContainerIds.DamageType,
+    containerId: CalculationContainerIds.BaseType,
   }]
 
   const calculationContainerOptions = computed(() => {

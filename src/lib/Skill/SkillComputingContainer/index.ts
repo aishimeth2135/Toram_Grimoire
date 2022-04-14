@@ -17,6 +17,7 @@ import {
   initStackStates,
   effectAttrsToBranch,
   initHistoryNexts,
+  initBranchesPostpone,
 } from './utils'
 import { SkillBranchNames } from '../Skill/enums'
 import { FormulaDisplayModes } from './enums'
@@ -163,6 +164,7 @@ class SkillEffectItem extends SkillEffectItemBase {
 
     separateSuffixBranches(this)
     handleVirtualBranches(this)
+    initBranchesPostpone(this)
 
     this.historys.forEach(history => {
       separateSuffixBranches(history)
@@ -255,7 +257,7 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
   /** (character-simulator only)
    * If true, the computing of this branch must be postponed until after all character stat have been computed.
    */
-  readonly postpone: boolean
+  postpone: boolean
 
   /* default branch from default effect that has not been overwritten  */
   readonly default: SkillBranch

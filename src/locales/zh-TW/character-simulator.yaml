@@ -84,6 +84,8 @@ skill-build:
     target_level: 目標等級
   no-any-build-tips: 還沒有建立任何配置喔～請先透過左上方的選單進入「技能模擬器」，建立新的技能配置。
   no-any-skill-tips: 這裡還沒有任何技能喔～請先透過左上方的選單進入「技能模擬器」，來進行技能的配點。請注意，要對角色能力有提升的技能才會顯示在這裡。
+character-damage:
+  title: 傷害
 character-stat-detail:
   base-value: 基礎值
   init-value: 初始值

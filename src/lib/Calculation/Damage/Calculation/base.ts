@@ -21,10 +21,13 @@ interface CalcResultOptions {
   };
 }
 interface CurrentItemIdGetter {
-  (itemContainer: CalcItemContainer, baseContainer: CalcItemContainerBase): CalculationItemIds;
+  (itemContainer: CalcItemContainer): CalculationItemIds | null;
+}
+interface HiddenGetter {
+  (itemContainer: CalcItemContainer): boolean;
 }
 interface CalcResult {
-  (itemContainer: CalcItemContainer, baseContainer: CalcItemContainerBase): number;
+  (itemContainer: CalcItemContainer): number;
 }
 
 /** */
@@ -72,7 +75,7 @@ class CalculationBase {
         const container = calculation.containers.get(item)
         if (container !== undefined) {
           const res = (() => {
-            if (!container.enabled) {
+            if (!container.enabled || container.hidden) {
               // disabled value
               return container.result()
             }
@@ -117,6 +120,7 @@ class CalcItemContainerBase {
   type: ContainerTypes
   items: Map<CalculationItemIds, CalcItemBase>
   getCurrentItemId: CurrentItemIdGetter | null
+  getHidden: HiddenGetter | null
   isMultiplier: boolean
   floorResult: boolean
   enabledDefaultValue: boolean
@@ -131,6 +135,7 @@ class CalcItemContainerBase {
     this.type = type ?? ContainerTypes.Normal
     this.items = new Map()
     this.getCurrentItemId = null
+    this.getHidden = null
     this.isMultiplier = false
     this.floorResult = true
     this.enabledDefaultValue = true
@@ -185,6 +190,10 @@ class CalcItemContainerBase {
     this.getCurrentItemId = value
   }
 
+  setGetHidden(value: HiddenGetter): void {
+    this.getHidden = value
+  }
+
   setDisabledValue(value: number): void {
     this._disabledValue = value
   }
@@ -210,12 +219,12 @@ class CalcItemContainerBase {
   }
 
   result(itemContainer: CalcItemContainer): number {
-    if (!itemContainer.enabled) {
+    if (!itemContainer.enabled || itemContainer.hidden) {
       return this.disabledValue
     }
     const res = (() => {
       if (this._calcResult) {
-        return this._calcResult(itemContainer, this)
+        return this._calcResult(itemContainer)
       }
       return itemContainer.currentItem.value
     })()
