@@ -105,37 +105,52 @@ const { modals, tabs, toggle } = ToggleService({
     TabIds.Save,
   ] as TabIds[],
 })
-const tabDatas = [{
-  id: TabIds.Basic,
-  icon: 'bx-bxs-face',
-  text: t('character-simulator.character-basic.title'),
-}, {
-  id: TabIds.CharacterStats,
-  icon: 'bx-bxs-user-detail',
-  text: t('character-simulator.character-stats'),
-}, {
-  id: TabIds.EquipmentFields,
-  icon: 'gg-shape-square',
-  text: t('character-simulator.equipment-info.equipment'),
-}, {
-  id: TabIds.Skill,
-  icon: 'ant-design:build-outlined',
-  text: t('character-simulator.skill-build.title'),
-},
-// {
-//   id: TabIds.Damage,
-//   icon: 'ic:outline-calculate',
-//   text: t('character-simulator.character-damage.title'),
-// },
-{
-  id: TabIds.Food,
-  icon: 'mdi-food-apple',
-  text: t('character-simulator.food-build.title'),
-}, {
-  id: TabIds.Save,
-  icon: 'mdi-ghost',
-  text: t('character-simulator.save-load-control.title'),
-}]
+
+const { store, characters } = setupCharacterStore()
+const { store: foodStore, foodBuilds } = setupCharacterFoodStore()
+
+const mainStore = useMainStore()
+const router = useRouter()
+
+const tabDatas = computed(() => {
+  const options = [{
+    id: TabIds.Basic,
+    icon: 'bx-bxs-face',
+    text: t('character-simulator.character-basic.title'),
+  }, {
+    id: TabIds.CharacterStats,
+    icon: 'bx-bxs-user-detail',
+    text: t('character-simulator.character-stats'),
+  }, {
+    id: TabIds.EquipmentFields,
+    icon: 'gg-shape-square',
+    text: t('character-simulator.equipment-info.equipment'),
+  }, {
+    id: TabIds.Skill,
+    icon: 'ant-design:build-outlined',
+    text: t('character-simulator.skill-build.title'),
+  }]
+
+  if (characters.value.some(chara => chara.name === '@CatDoll0.0')) {
+    options.push({
+      id: TabIds.Damage,
+      icon: 'ic:outline-calculate',
+      text: t('character-simulator.character-damage.title'),
+    })
+  }
+
+  options.push({
+    id: TabIds.Food,
+    icon: 'mdi-food-apple',
+    text: t('character-simulator.food-build.title'),
+  }, {
+    id: TabIds.Save,
+    icon: 'mdi-ghost',
+    text: t('character-simulator.save-load-control.title'),
+  })
+
+  return options
+})
 
 const currentTab = computed(() => {
   if (tabs[TabIds.CharacterStats]) {
@@ -186,12 +201,6 @@ provide(CharacterSimulatorInjectionKey, {
   appendEquipments: () => toggle('modals/appendEquipments', true),
   createCustomEquipment: () => toggle('modals/createCustomEquipment', true),
 })
-
-const { store, characters } = setupCharacterStore()
-const { store: foodStore, foodBuilds } = setupCharacterFoodStore()
-
-const mainStore = useMainStore()
-const router = useRouter()
 
 AutoSave({
   save: () => store.saveCharacterSimulator(),

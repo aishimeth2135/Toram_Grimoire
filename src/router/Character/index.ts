@@ -16,7 +16,7 @@ export default {
   path: '/character',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
-    PrepareLocaleInit(LocaleViewNamespaces.CharacterSimulator, LocaleViewNamespaces.SkillSimulator, LocaleViewNamespaces.SkillQuery)
+    PrepareLocaleInit(LocaleViewNamespaces.CharacterSimulator, LocaleViewNamespaces.SkillSimulator, LocaleViewNamespaces.SkillQuery, LocaleViewNamespaces.DamageCalculation)
     ViewInit(DataStoreIds.Stats, DataStoreIds.Items, DataStoreIds.CharacterStats, DataStoreIds.Skill, DataStoreIds.Food, DataStoreIds.DamageCalculation).then(next)
   },
   meta: {

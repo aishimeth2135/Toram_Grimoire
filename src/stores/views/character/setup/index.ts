@@ -313,7 +313,7 @@ export function setupCharacterSkills(
       if (damageSkillBranchItems) {
         computingResultsDamage.set(skill, handleComputingResults(damageSkillBranchItems, DamageHandler, [SkillBranchNames.Damage]))
       }
-      if (activeSkillBranchItems || passiveSkillBranchItems) {
+      if (activeSkillBranchItems || passiveSkillBranchItems || damageSkillBranchItems) {
         stackContainers.set(skill, allStackContainers)
       }
     })

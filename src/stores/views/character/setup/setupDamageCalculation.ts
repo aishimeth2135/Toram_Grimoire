@@ -2,13 +2,16 @@
 import { computed, ref, Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { isNumberString } from '@/shared/utils/string'
 
-import { CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
+import { CalculationContainerIds, CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
 import { Stat } from '@/lib/Character/Stat'
 import { Character } from '@/lib/Character/Character'
 import { Skill } from '@/lib/Skill/Skill'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import { EnemyElements } from '@/lib/Enemy/enums'
 
-import { CharacterStatCategoryResult } from '.'
+import { CharacterStatCategoryResult, SkillResult } from '.'
 import { setupCalculationExpectedResult } from '../../damage-calculation/setup'
 
 export interface TargetProperties {
@@ -20,6 +23,7 @@ export interface TargetProperties {
   criticalRateResistance: number;
   criticalRateResistanceTotal: number;
   dodge: number;
+  element: null | EnemyElements;
 }
 
 export interface CalculationOptions {
@@ -103,18 +107,70 @@ export default function setupDamageCalculation(
     skillMultiplier: number;
   }
 
+  const elementsMap: Record<EnemyElements, CalculationItemIds> = {
+    [EnemyElements.Neutral]: CalculationItemIds.StrongerAgainstNeutral,
+    [EnemyElements.Fire]: CalculationItemIds.StrongerAgainstFire,
+    [EnemyElements.Water]: CalculationItemIds.StrongerAgainstWater,
+    [EnemyElements.Wind]: CalculationItemIds.StrongerAgainstWind,
+    [EnemyElements.Earth]: CalculationItemIds.StrongerAgainstEarth,
+    [EnemyElements.Light]: CalculationItemIds.StrongerAgainstLight,
+    [EnemyElements.Dark]: CalculationItemIds.StrongerAgainstDark,
+  }
+
   const setupDamageCalculationExpectedResult = (
-    vars: Ref<SkillProperties>,
+    skillResult: Ref<SkillResult>,
     targetProperties: Ref<TargetProperties>,
     calculationOptions: Ref<CalculationOptions>,
   ) => {
     const calculation = ref(calculationBase.createCalculation(''))
 
+    const container = computed(() => skillResult.value.container)
+
+    const valid = computed(() => {
+      const constant = container.value.getValue('constant')
+      const multiplier = container.value.getValue('multiplier')
+      return isNumberString(constant) && isNumberString(multiplier)
+    })
+
+    const skillProperties = computed(() => {
+      if (!valid.value) {
+        return {
+          skillRealMpCost: 0,
+          skillConstant: 0,
+          skillMultiplier: 0,
+        }
+      }
+      const constant = container.value.getValue('constant')
+      const multiplier = container.value.getValue('multiplier')
+      return {
+        skillRealMpCost: 0,
+        skillConstant: parseInt(constant, 10),
+        skillMultiplier: parseInt(multiplier, 10),
+      } as SkillProperties
+    })
+
+    const baseSuffixBranch = computed(() => container.value.branchItem.suffixBranches.find(suf => suf.checkBranchName(SkillBranchNames.Base)))
+
     const varsMap = computed(() => {
+      let atkRate = 100
+      let matkRate = 100
+      const baseBranch = baseSuffixBranch.value
+      if (baseBranch) {
+        if (baseBranch.hasAttr('atk_rate')) {
+          atkRate = baseBranch.attrNumber('atk_rate')
+        }
+        if (baseBranch.hasAttr('matk_rate')) {
+          matkRate = baseBranch.attrNumber('matk_rate')
+        }
+      }
+
       return new Map<CalculationItemIds, number>([
-        [CalculationItemIds.SkillRealMpCost, vars.value.skillRealMpCost],
-        [CalculationItemIds.SkillConstant, vars.value.skillConstant],
-        [CalculationItemIds.SkillMultiplier, vars.value.skillMultiplier],
+        [CalculationItemIds.AtkRate, atkRate],
+        [CalculationItemIds.MatkRate, matkRate],
+
+        [CalculationItemIds.SkillRealMpCost, skillProperties.value.skillRealMpCost],
+        [CalculationItemIds.SkillConstant, skillProperties.value.skillConstant],
+        [CalculationItemIds.SkillMultiplier, skillProperties.value.skillMultiplier],
 
         [CalculationItemIds.TargetPhysicalResistance, targetProperties.value.physicalResistance],
         [CalculationItemIds.TargetMagicResistance, targetProperties.value.magicResistance],
@@ -134,8 +190,76 @@ export default function setupDamageCalculation(
       return calculationVars.value.get(itemId) ?? varsMap.value.get(itemId) ?? null
     }
 
+    const containerCurrentItemBaseEntries = computed(() => {
+      let damageType = CalculationItemIds.SpecialBase
+      let targetDefType = CalculationItemIds.TargetDef
+      let targetResistanceType = CalculationItemIds.TargetPhysicalResistance
+
+      const attrBase = container.value.getOrigin('base')
+      if (attrBase === 'atk') {
+        damageType = CalculationItemIds.Physical
+      }
+      if (attrBase === 'matk') {
+        damageType = CalculationItemIds.Magic
+        targetDefType = CalculationItemIds.TargetMdef
+        targetResistanceType = CalculationItemIds.TargetMagicResistance
+      }
+
+      const baseBranch = baseSuffixBranch.value
+      if (baseBranch) {
+        if (baseBranch.hasAttr('target_def_type')) {
+          if (baseBranch.attr('target_def_type') === 'def') {
+            targetDefType = CalculationItemIds.TargetDef
+          } else if (baseBranch.attr('target_def_type') === 'mdef') {
+            targetDefType = CalculationItemIds.TargetMdef
+          }
+        }
+        if (baseBranch.hasAttr('target_resistance_type')) {
+          if (baseBranch.attr('target_resistance_type') === 'physical') {
+            targetResistanceType = CalculationItemIds.TargetPhysicalResistance
+          } else if (baseBranch.attr('target_resistance_type') === 'magic') {
+            targetResistanceType = CalculationItemIds.TargetMagicResistance
+          }
+        }
+      }
+
+      return [
+        [CalculationContainerIds.BaseType, damageType],
+        [CalculationContainerIds.TargetDefBase, targetDefType],
+        [CalculationContainerIds.TargetResistance, targetResistanceType],
+      ] as [CalculationContainerIds, CalculationItemIds][]
+    })
+
+    const containerCurrentItemMap = computed(() => {
+      const entries = containerCurrentItemBaseEntries.value.slice()
+      if (targetProperties.value.element !== null) {
+        entries.push([CalculationContainerIds.StrongerAgainstElement, elementsMap[targetProperties.value.element]])
+      }
+      return new Map(entries)
+    })
+
+    calculation.value.config.getContainerCurrentItemId = (containerId) => {
+      return containerCurrentItemMap.value.get(containerId) ?? null
+    }
+
+    calculation.value.config.getContainerForceHidden = (containerId) => {
+      if (containerId === CalculationContainerIds.StrongerAgainstElement) {
+        return targetProperties.value.element === null
+      }
+      if (containerId === CalculationContainerIds.UnsheatheAttackConstant
+        || containerId === CalculationContainerIds.UnsheatheAttackMultiplier) {
+        return container.value.getOrigin('unsheathe_damage') !== '1'
+      }
+      if (containerId === CalculationContainerIds.RangeDamage) {
+        return container.value.getOrigin('range_damage') !== '1'
+      }
+      return null
+    }
+
     const { expectedResult } = setupCalculationExpectedResult(calculation)
     return {
+      calculation,
+      valid,
       expectedResult,
     }
   }
