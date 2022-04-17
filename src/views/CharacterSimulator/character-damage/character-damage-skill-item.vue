@@ -6,22 +6,36 @@
           class="mr-3 flex flex-shrink-0"
           style="min-width: 10rem"
         >
-          <cy-button-switch
+          <cy-button-check
             v-model:selected="enabled"
             inline
           >
             <cy-icon-text :text-color="!invalid ? 'purple' : 'gray'" :icon="skillIconPath" icon-src="image">
               {{ skillResultsState.skill.name }}
             </cy-icon-text>
-          </cy-button-switch>
+          </cy-button-check>
           <div v-if="invalid" class="text-gray">
             {{ t('character-simulator.skill-build.skill-invalid') }}
           </div>
         </div>
+        <div v-if="skillResultsState.stackContainers.length > 0 && enabled" class="ml-auto inline-flex">
+          <cy-button-icon
+            icon="ic:baseline-settings"
+            inline
+            @click="toggle('contents/options')"
+          />
+        </div>
       </div>
-      <div v-if="enabled" class="py-2 space-y-2">
-        <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
-          <CharacterDamageSkillResultItem :result="result" />
+      <div v-if="enabled">
+        <cy-transition type="fade">
+          <div v-if="contents.options" class="my-2 flex">
+            <CharacterSkillItemOptions class="ml-auto" :skill-results-state="skillResultsState" />
+          </div>
+        </cy-transition>
+        <div class="py-2 pl-2 space-y-2">
+          <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
+            <CharacterDamageSkillResultItem :result="result" />
+          </div>
         </div>
       </div>
     </div>
@@ -36,7 +50,10 @@ import { SkillResultsState } from '@/stores/views/character/setup'
 
 import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
 
+import ToggleService from '@/setup/ToggleService'
+
 import CharacterDamageSkillResultItem from './character-damage-skill-result-item.vue'
+import CharacterSkillItemOptions from '../character-skill/character-skill-tab/character-skill-item-options.vue'
 
 interface Props {
   skillResultsState: SkillResultsState;
@@ -45,6 +62,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const { t } = useI18n()
+const { contents, toggle } = ToggleService({ contents: ['options'] })
 
 const enabled = ref(false)
 

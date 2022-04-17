@@ -376,11 +376,12 @@ export const useCharacterStore = defineStore('view-character', () => {
     criticalRateResistance: 0,
     criticalRateResistanceTotal: 0,
     dodge: 0,
+    element: null,
   })
 
   const calculationOptions: Ref<CalculationOptions> = ref({
-    proration: 0,
-    comboMultiplier: 0,
+    proration: 100,
+    comboMultiplier: 100,
   })
 
   const { setupDamageCalculationExpectedResult } = (() => {

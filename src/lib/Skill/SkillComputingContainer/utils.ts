@@ -268,8 +268,9 @@ export function initBranchesPostpone(effectItem: SkillEffectItem) {
     const stackBranches = allStackBranches.filter(_bch => bch.linkedStackIds.includes(_bch.stackId!))
     if (stackBranches.some(_bch => _bch.postpone)) {
       bch.postpone = true
-    }
-    if (checkStatsContainsPostponeVar(bch.stats) || bch.suffixBranches.some(suf => checkStatsContainsPostponeVar(suf.stats))) {
+    } else if (checkStatsContainsPostponeVar(bch.stats) || bch.suffixBranches.some(suf => checkStatsContainsPostponeVar(suf.stats))) {
+      bch.postpone = true
+    } else if (bch.checkBranchName(SkillBranchNames.Damage)) {
       bch.postpone = true
     }
   })

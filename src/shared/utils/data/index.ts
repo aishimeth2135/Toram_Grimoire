@@ -322,7 +322,7 @@ function handleFormula(formulaStr: string, {
   formulaStr = trimBrackets(formulaStr)
 
   textsAry.forEach(([key], idx) => {
-    formulaStr = formulaStr.replaceAll(getTextVarName(idx), textsMap.get(key) as string)
+    formulaStr = formulaStr.replace(new RegExp(getTextVarName(idx), 'g'), textsMap.get(key) as string)
   })
 
   return formulaStr

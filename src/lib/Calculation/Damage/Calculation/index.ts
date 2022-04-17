@@ -26,6 +26,7 @@ interface CalculationSaveData {
 interface CalculationConfig {
   getItemValue: ((itemId: CalculationItemIds) => number | null) | null;
   getContainerCurrentItemId: ((containerId: CalculationContainerIds) => CalculationItemIds | null) | null;
+  getContainerForceHidden: ((containerId: CalculationContainerIds) => boolean | null) | null;
 }
 
 class Calculation {
@@ -61,6 +62,7 @@ class Calculation {
     this.config = {
       getItemValue: null,
       getContainerCurrentItemId: null,
+      getContainerForceHidden: null,
     }
   }
 
@@ -207,6 +209,12 @@ class CalcItemContainer {
   }
 
   get hidden(): boolean {
+    if (this._calculation.config.getContainerForceHidden) {
+      const value = this._calculation.config.getContainerForceHidden(this.base.id)
+      if (value !== null) {
+        return value
+      }
+    }
     return this.base.getHidden?.(this) ?? false
   }
 
