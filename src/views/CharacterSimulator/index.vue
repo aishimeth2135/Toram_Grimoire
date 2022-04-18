@@ -131,7 +131,7 @@ const tabDatas = computed(() => {
     text: t('character-simulator.skill-build.title'),
   }]
 
-  if (characters.value.some(chara => chara.name === '@CatDoll0.0')) {
+  if (characters.value.some(chara => chara.name === '__DOLL_DAMAGE__')) {
     options.push({
       id: TabIds.Damage,
       icon: 'ic:outline-calculate',

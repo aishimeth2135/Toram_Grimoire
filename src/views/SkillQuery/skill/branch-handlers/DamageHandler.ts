@@ -31,6 +31,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(branch
     'unsheathe_damage': value => value !== 'unused',
     'judgment': value => value !== 'none',
     'ailment_name': value => !!value,
+    'frequency_judgment': value => value !== 'none',
   })
   const valueAttrsMap = new MapContainer<HandleBranchValueAttrsMap>({
     'multiplier': '%',

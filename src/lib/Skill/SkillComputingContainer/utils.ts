@@ -106,7 +106,7 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchIte
  * @param main - id of skill data of main weapon
  * @param sub - id of skill data of sub weapon
  * @param body - id of skill data of body armor
- * @param operator - 1: and, 0: or\
+ * @param operator - 1: and, 0: or
  * @param dualSwordRegress - if true, it will create EquipmentRestriction for dual-sword when main is one-hand-sword
  */
 function convertEffectEquipment(main: number, sub: number, body: number, operator: 0 | 1, dualSwordRegress: boolean = false): EquipmentRestriction[] {
@@ -132,7 +132,7 @@ function convertEffectEquipment(main: number, sub: number, body: number, operato
     sub: null,
     body: null,
   }
-  if (dualSwordRegress && EQUIPMENT_TYPE_MAIN_ORDER[main] === EquipmentTypes.OneHandSword) {
+  if (dualSwordRegress && EQUIPMENT_TYPE_MAIN_ORDER[main] === EquipmentTypes.OneHandSword && operator === 0) {
     appendResult({
       main: EquipmentTypes.DualSword,
       sub: null,

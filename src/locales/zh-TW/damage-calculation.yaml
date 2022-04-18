@@ -30,9 +30,8 @@ tips:
   at-least-one-build: 要至少保留一個配置0.0
   removed-build-success: 移除配置「{name}」成功。
 item-base-titles:
-  physical: 物理公式
-  magic: 魔法公式
-  special_base: 特殊公式
+  physical: 物理傷害
+  magic: 魔法傷害
   atk: ATK
   matk: MATK
   atk_rate: ATK比率

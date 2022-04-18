@@ -34,7 +34,6 @@ export const enum CalculationContainerIds {
 export const enum CalculationItemIds {
   Physical = 'physical',
   Magic = 'magic',
-  SpecialBase = 'special_base',
   Atk = 'atk',
   Matk = 'matk',
   AtkRate = 'atk_rate',

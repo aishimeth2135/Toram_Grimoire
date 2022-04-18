@@ -95,7 +95,6 @@ branch:
     damage_type:
       physical: 物理傷害
       magic: 魔法傷害
-      special: 特殊傷害
     type:
       AOE: 範圍
     title:
