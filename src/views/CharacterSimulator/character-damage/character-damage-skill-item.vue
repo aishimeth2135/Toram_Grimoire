@@ -1,6 +1,6 @@
 <template>
   <cy-list-item pure>
-    <div class="w-full">
+    <div class="w-full py-0.5">
       <div class="flex items-center">
         <div
           class="mr-3 flex flex-shrink-0"
@@ -14,7 +14,7 @@
               {{ skillResultsState.skill.name }}
             </cy-icon-text>
           </cy-button-check>
-          <div v-if="invalid" class="text-gray">
+          <div v-if="invalid" class="text-light-2 ml-3">
             {{ t('character-simulator.skill-build.skill-invalid') }}
           </div>
         </div>
@@ -26,15 +26,18 @@
           />
         </div>
       </div>
-      <div v-if="enabled">
+      <div v-if="enabled && !invalid">
         <cy-transition type="fade">
           <div v-if="contents.options" class="my-2 flex">
             <CharacterSkillItemOptions class="ml-auto" :skill-results-state="skillResultsState" />
           </div>
         </cy-transition>
-        <div class="py-2 pl-2 space-y-2">
+        <div class="pt-2 pl-2 space-y-2">
           <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
-            <CharacterDamageSkillResultItem :result="result" />
+            <CharacterDamageSkillResultItem
+              :result="result"
+              :basic-container="skillResultsState.basicContainer"
+            />
           </div>
         </div>
       </div>

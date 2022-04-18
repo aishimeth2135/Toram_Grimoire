@@ -19,6 +19,7 @@ import PassiveHandler from '@/views/SkillQuery/skill/branch-handlers/PassiveHand
 import ExtraHandler from '@/views/SkillQuery/skill/branch-handlers/ExtraHandler'
 import StackHandler from '@/views/SkillQuery/skill/branch-handlers/StackHandler'
 import DamageHandler from '@/views/SkillQuery/skill/branch-handlers/DamageHandler'
+import BasicHandler from '@/views/SkillQuery/skill/branch-handlers/BasicHandler'
 
 import { SkillBuild } from '../skill-build/SkillBuild'
 import { checkStatRestriction, getCharacterElement } from '../utils'
@@ -34,6 +35,7 @@ export interface SkillResultsState {
   skill: Skill;
   results: SkillResult[];
   stackContainers: DisplayDataContainerAlly[];
+  basicContainer: DisplayDataContainerAlly | null;
 }
 
 interface CharacterSetupOptions {
@@ -223,6 +225,7 @@ export function setupCharacterSkills(
     passiveSkillResults,
     damageSkillResults,
     skillStackContainers,
+    skillBasicContainers,
   } = (() => {
     const allSkills: Skill[] = []
     Grimoire.Skill.skillRoot.skillTreeCategorys.forEach(stc => stc.skillTrees.forEach(st => allSkills.push(...st.skills)))
@@ -230,6 +233,7 @@ export function setupCharacterSkills(
     const computingResultsPassive: Map<Skill, ComputedRef<SkillResult[]>> = new Map()
     const computingResultsDamage: Map<Skill, ComputedRef<SkillResult[]>> = new Map()
     const stackContainers: Map<Skill, ComputedRef<DisplayDataContainerAlly[]>> = new Map()
+    const basicContainers: Map<Skill, ComputedRef<DisplayDataContainerAlly | null>> = new Map()
 
     const checkPostpone = (bch: SkillBranchItem) => isPostpone ? bch.postpone : !bch.postpone
     const suffixBranchFilter = (suf: SkillBranchItemSuffix) => {
@@ -265,10 +269,10 @@ export function setupCharacterSkills(
       // active
       const checkBranchStats = (stats: StatComputed[]) => !handleOptions.value.skillDisplayStatsOnly || stats.length !== 0
       const checkActive = (bch: SkillBranchItem) => {
-        if (!checkPostpone(bch)) {
+        if (!checkPostpone(bch) || bch.checkBranchName(SkillBranchNames.Damage)) {
           return false
         }
-        if (bch.name === SkillBranchNames.Effect && checkBranchStats(bch.stats)) {
+        if (bch.checkBranchName(SkillBranchNames.Effect) && checkBranchStats(bch.stats)) {
           return true
         }
         if (bch.suffixBranches.some(suffixBranchFilter)) {
@@ -298,12 +302,6 @@ export function setupCharacterSkills(
         })
       }
 
-      const allStackContainers = computed(() => {
-        return currentEffectItem.value?.branchItems
-          .filter(_bch => _bch.name === SkillBranchNames.Stack && !_bch.hasAttr('value'))
-          .map(_bch => StackHandler(_bch)) ?? []
-      })
-
       if (activeSkillBranchItems) {
         computingResultsActive.set(skill, handleComputingResults(activeSkillBranchItems, EffectHandler, [SkillBranchNames.Effect]))
       }
@@ -314,7 +312,15 @@ export function setupCharacterSkills(
         computingResultsDamage.set(skill, handleComputingResults(damageSkillBranchItems, DamageHandler, [SkillBranchNames.Damage]))
       }
       if (activeSkillBranchItems || passiveSkillBranchItems || damageSkillBranchItems) {
-        stackContainers.set(skill, allStackContainers)
+        stackContainers.set(skill, computed(() => {
+          return currentEffectItem.value?.branchItems
+            .filter(_bch => _bch.name === SkillBranchNames.Stack && !_bch.hasAttr('value'))
+            .map(_bch => StackHandler(_bch)) ?? []
+        }))
+        basicContainers.set(skill, computed(() => {
+          const basicBranch = currentEffectItem.value?.branchItems.find(bch => bch.checkBranchName(SkillBranchNames.Basic))
+          return basicBranch ? BasicHandler(basicBranch) : null
+        }))
       }
     })
     return {
@@ -322,6 +328,7 @@ export function setupCharacterSkills(
       passiveSkillResults: reactive(computingResultsPassive),
       damageSkillResults: reactive(computingResultsDamage),
       skillStackContainers: stackContainers,
+      skillBasicContainers: basicContainers,
     }
   })()
 
@@ -356,10 +363,12 @@ export function setupCharacterSkills(
       return allSkills.value.filter(skill => target.has(skill)).map(skill => {
         const results = target.get(skill)!
         const stackContainers = getUsedStackContainers(results.value.map(result => result.container.branchItem), skill)
+        const basicContainer = skillBasicContainers.get(skill)!
         return reactive({
           skill,
           results,
           stackContainers,
+          basicContainer,
         }) as SkillResultsState
       })
     })
@@ -578,29 +587,45 @@ export function setupCharacterStats(
     }
   })
 
-  const setupResults = (postponeStats?: Ref<Stat[]>) => {
+  const mergeStats = (allStats: Map<string, Stat>, stats: Stat[]) => {
+    stats.forEach(stat => {
+      if (allStats.has(stat.statId)) {
+        allStats.get(stat.statId)!.add(stat.value)
+      } else {
+        allStats.set(stat.statId, stat.clone())
+      }
+    })
+  }
+
+  const basePureStatsEntries = computed(() => {
+    const allStats = new Map<string, Stat>()
+
+    mergeStats(allStats, allEquipmentStats.value)
+    mergeStats(allStats, skillSetupDatas.stats.value)
+    if (handleOptions.value.handleFood) {
+      mergeStats(allStats, foodStats.value)
+    }
+    return [...allStats]
+  })
+
+  interface CharacterStatSetupResults {
+    categoryResults: ComputedRef<CharacterStatCategoryResult[]>;
+    characterPureStats: ComputedRef<Stat[]>;
+  }
+
+  const setupResults = (postponeStats?: Ref<Stat[]>, resultsCache?: CharacterStatSetupResults): CharacterStatSetupResults => {
     const characterPureStats = computed(() => {
       if (!character.value) {
         return []
       }
-      const allStats = new Map<string, Stat>()
-      const mergeStats = (stats: Stat[]) => {
-        stats.forEach(stat => {
-          if (allStats.has(stat.statId)) {
-            allStats.get(stat.statId)!.add(stat.value)
-          } else {
-            allStats.set(stat.statId, stat.clone())
-          }
-        })
+      if (postponeStats && postponeStats.value.length === 0 && resultsCache) {
+        return resultsCache.characterPureStats.value
       }
 
-      mergeStats(allEquipmentStats.value)
-      mergeStats(skillSetupDatas.stats.value)
-      if (handleOptions.value.handleFood) {
-        mergeStats(foodStats.value)
-      }
+      const allStats = new Map<string, Stat>(basePureStatsEntries.value.map(([statId, stat]) => [statId, stat.clone()]))
+
       if (postponeStats) {
-        mergeStats(postponeStats.value)
+        mergeStats(allStats, postponeStats.value)
       }
       return [...allStats.values()]
     })
@@ -609,6 +634,10 @@ export function setupCharacterStats(
       if (!character.value) {
         return []
       }
+      if (postponeStats && postponeStats.value.length === 0 && resultsCache) {
+        return resultsCache.categoryResults.value
+      }
+
       const categoryList = Grimoire.Character.characterStatCategoryList
       const pureStats = [...characterPureStats.value]
       const vars = {
@@ -636,7 +665,8 @@ export function setupCharacterStats(
     }
   }
 
-  const { categoryResults: _characterStatCategoryResults } = setupResults()
+  const baseResults = setupResults()
+  const { categoryResults: _characterStatCategoryResults } = baseResults
 
   const {
     allValidSkillsStats: postponedAllValidSkillsStats,
@@ -663,7 +693,33 @@ export function setupCharacterStats(
       getSkillBranchItemState: skillSetupDatas.getSkillBranchItemState,
     },
   )
-  const { categoryResults: characterStatCategoryResults, characterPureStats } = setupResults(postponedAllValidSkillsStats)
+  const finalResults = setupResults(postponedAllValidSkillsStats, baseResults)
+  const { categoryResults: characterStatCategoryResults, characterPureStats } = finalResults
+
+  const setupCharacterStatCategoryResultsExtended = (otherStats: Ref<Stat[]>) => {
+    const stats = computed(() => {
+      if (otherStats.value.length === 0) {
+        return []
+      }
+      const _otherStats = otherStats.value.slice()
+      const baseStats = postponedAllValidSkillsStats.value.map(stat => {
+        const statToMergeIdx = _otherStats.findIndex(_stat => _stat.equals(stat))
+        if (statToMergeIdx > -1) {
+          const newStat = stat.clone()
+          const statToMerge = _otherStats[statToMergeIdx]
+          newStat.value += statToMerge.value
+          _otherStats.splice(statToMergeIdx, 1)
+          return newStat
+        }
+        return stat
+      })
+      if (_otherStats.length > 0) {
+        baseStats.push(..._otherStats)
+      }
+      return baseStats
+    })
+    return setupResults(stats, finalResults)
+  }
 
   return {
     characterStatCategoryResults,
@@ -671,5 +727,6 @@ export function setupCharacterStats(
     postponedActiveSkillResultStates,
     postponedPassiveSkillResultStates,
     damageSkillResultStates,
+    setupCharacterStatCategoryResultsExtended,
   }
 }

@@ -60,6 +60,7 @@
             <template #title>
               <cy-icon-text>{{ t('damage-calculation.item-base-titles.target_physical_resistance') }}</cy-icon-text>
             </template>
+            <template #unit>%</template>
           </cy-input-counter>
         </div>
         <div>
@@ -67,6 +68,7 @@
             <template #title>
               <cy-icon-text>{{ t('damage-calculation.item-base-titles.target_magic_resistance') }}</cy-icon-text>
             </template>
+            <template #unit>%</template>
           </cy-input-counter>
         </div>
         <div>
@@ -75,6 +77,31 @@
               <cy-icon-text>{{ t('damage-calculation.item-base-titles.target_dodge') }}</cy-icon-text>
             </template>
           </cy-input-counter>
+        </div>
+        <div>
+          <cy-input-counter v-model:value="store.targetProperties.criticalRateResistance">
+            <template #title>
+              <cy-icon-text>{{ t('damage-calculation.item-base-titles.target_critical_rate_resistance') }}</cy-icon-text>
+            </template>
+            <template #unit>%</template>
+          </cy-input-counter>
+        </div>
+        <div>
+          <cy-input-counter v-model:value="store.targetProperties.criticalRateResistanceTotal">
+            <template #title>
+              <cy-icon-text>{{ t('damage-calculation.item-base-titles.target_critical_rate_resistance_total') }}</cy-icon-text>
+            </template>
+            <template #unit>%</template>
+          </cy-input-counter>
+        </div>
+        <div class="pt-2.5">
+          <cy-icon-text text-color="purple" size="small">
+            {{ t('character-simulator.character-damage.range-damage-title') }}
+          </cy-icon-text>
+          <cy-button-check-group
+            v-model:value="store.targetProperties.rangeDamage"
+            :options="rangeDamageOptions"
+          />
         </div>
         <div class="pt-2">
           <cy-icon-text text-color="purple" size="small">
@@ -110,6 +137,7 @@ import { useI18n } from 'vue-i18n'
 import { SkillResultsState } from '@/stores/views/character/setup'
 
 import { EnemyElements } from '@/lib/Enemy/enums'
+import { CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
 
 import ToggleService from '@/setup/ToggleService'
 
@@ -163,5 +191,16 @@ const elementOptions: {
 }, {
   text: t('character-simulator.enemy-elements.dark'),
   value: EnemyElements.Dark,
+}]
+
+const rangeDamageOptions: {
+  text: string;
+  value: CalculationItemIds;
+}[] = [{
+  text: t('damage-calculation.item-base-titles.short_range_damage'),
+  value: CalculationItemIds.ShortRangeDamage,
+}, {
+  text: t('damage-calculation.item-base-titles.long_range_damage'),
+  value: CalculationItemIds.LongRangeDamage,
 }]
 </script>

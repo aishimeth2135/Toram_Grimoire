@@ -39,7 +39,6 @@ export default class DamageCalculationSystem {
     options(CalculationContainerIds.BaseType, container => {
       container.appendItem(CalculationItemIds.Physical)
       container.appendItem(CalculationItemIds.Magic)
-      container.appendItem(CalculationItemIds.SpecialBase)
     })
     normal(CalculationContainerIds.AtkBase, container => {
       container.appendItem(CalculationItemIds.Atk)

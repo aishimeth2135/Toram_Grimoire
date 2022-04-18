@@ -8,6 +8,7 @@ import { Character, CharacterSaveData } from '@/lib/Character/Character'
 import { CharacterEquipment, EquipmentSaveData } from '@/lib/Character/CharacterEquipment'
 import { FoodsSaveData } from '@/lib/Character/Food'
 import { Skill } from '@/lib/Skill/Skill'
+import { CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
 
 import { SkillBuildState, useCharacterSkillStore } from './skill'
 import { useCharacterFoodStore } from './food'
@@ -336,10 +337,10 @@ export const useCharacterStore = defineStore('view-character', () => {
 
   const {
     characterStatCategoryResults,
-    characterPureStats,
     postponedActiveSkillResultStates,
     postponedPassiveSkillResultStates,
     damageSkillResultStates,
+    setupCharacterStatCategoryResultsExtended,
   } = setupCharacterStats(
     currentCharacter,
     currentSkillBuild,
@@ -377,11 +378,12 @@ export const useCharacterStore = defineStore('view-character', () => {
     criticalRateResistanceTotal: 0,
     dodge: 0,
     element: null,
+    rangeDamage: CalculationItemIds.ShortRangeDamage,
   })
 
   const calculationOptions: Ref<CalculationOptions> = ref({
-    proration: 100,
-    comboMultiplier: 100,
+    proration: 150,
+    comboMultiplier: 250,
   })
 
   const { setupDamageCalculationExpectedResult } = (() => {
@@ -393,18 +395,20 @@ export const useCharacterStore = defineStore('view-character', () => {
     ]))
     const getSkillLevel = (targetSkill: Skill) => {
       if (!currentSkillBuild.value) {
-        return 0
+        return {
+          valid: false,
+          level: 0,
+        }
       }
-      if (allSkillResultStates.value.some(state => state.skill === targetSkill && state.results.length > 0)) {
-        return currentSkillBuild.value.getSkillState(targetSkill).level
+      return {
+        valid: allSkillResultStates.value.some(state => state.skill === targetSkill && state.results.length > 0),
+        level: currentSkillBuild.value.getSkillState(targetSkill).level,
       }
-      return 0
     }
 
     return setupDamageCalculation(
       currentCharacter,
-      characterStatCategoryResults,
-      characterPureStats,
+      setupCharacterStatCategoryResultsExtended,
       getSkillLevel,
     )
   })()
