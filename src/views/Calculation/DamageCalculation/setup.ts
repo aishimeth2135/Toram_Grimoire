@@ -24,7 +24,7 @@ const setupCalcMode = () => {
   const calcModeList: CalcModeItem[] = [{
     id: 'common',
     calcStruct: calcStructDisplay,
-    outsideItems: [CalculationContainerIds.AtkTwoHanded],
+    outsideItems: [CalculationContainerIds.BaseTwoHanded],
     maxLayer: 4,
   }, {
     id: 'critical',
@@ -201,7 +201,7 @@ const setupResultMode = (calculation: Ref<Calculation>) => {
 
 const setupCalculationCalcOptions = (calculation: Ref<Calculation>) => {
   const options = [{
-    containerId: CalculationContainerIds.BaseType,
+    containerId: CalculationContainerIds.DamageType,
   }]
 
   const calculationContainerOptions = computed(() => {

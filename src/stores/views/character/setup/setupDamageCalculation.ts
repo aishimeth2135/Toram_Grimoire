@@ -255,7 +255,7 @@ export default function setupDamageCalculation(
       }
 
       return [
-        [CalculationContainerIds.BaseType, damageType],
+        [CalculationContainerIds.DamageType, damageType],
         [CalculationContainerIds.TargetDefBase, targetDefType],
         [CalculationContainerIds.TargetResistance, targetResistanceType],
         [CalculationContainerIds.RangeDamage, targetProperties.value.rangeDamage],
@@ -277,9 +277,12 @@ export default function setupDamageCalculation(
     const containerForceHiddenMap = computed(() => {
       const unsheatheDamageHidden = container.value.getOrigin('unsheathe_damage') !== '1'
       const skillRange = basicContainer.value?.getValue('range')
+      const baseNone = container.value.branchItem.attr('base') === 'none'
+
       return new Map([
-        [CalculationContainerIds.AtkBase, container.value.branchItem.attr('base') === 'none'],
-        [CalculationContainerIds.AtkDualSword, !character.value
+        [CalculationContainerIds.BaseAtk, baseNone || container.value.getOrigin('base') === 'matk'],
+        [CalculationContainerIds.BaseMatk, baseNone || container.value.getOrigin('base') === 'atk'],
+        [CalculationContainerIds.BaseDualSword, !character.value
           || !character.value.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.OneHandSword)
           || !character.value.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword),
         ],
@@ -287,7 +290,7 @@ export default function setupDamageCalculation(
         [CalculationContainerIds.UnsheatheAttackConstant, unsheatheDamageHidden],
         [CalculationContainerIds.UnsheatheAttackMultiplier, unsheatheDamageHidden],
         [CalculationContainerIds.RangeDamage, container.value.getOrigin('range_damage') !== '1'],
-        [CalculationContainerIds.AtkTwoHanded, !getSkillLevel(skillTwoHanded).valid],
+        [CalculationContainerIds.BaseTwoHanded, !getSkillLevel(skillTwoHanded).valid],
         [CalculationContainerIds.SkillLongRange, !skillRange || !isNumberString(skillRange) || parseFloat(skillRange) < 8],
       ])
     })

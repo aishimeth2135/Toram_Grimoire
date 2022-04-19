@@ -15,10 +15,10 @@ export const calcStructCritical: CalcStructExpression = {
             operator: '*',
             left: {
               operator: '+',
-              left: CalculationContainerIds.AtkBase,
-              right: CalculationContainerIds.AtkDualSword,
+              left: CalculationContainerIds.Base,
+              right: CalculationContainerIds.BaseDualSword,
             },
-            right: CalculationContainerIds.AtkTwoHanded,
+            right: CalculationContainerIds.BaseTwoHanded,
           },
           right: CalculationContainerIds.LevelDifference,
         },
@@ -62,8 +62,8 @@ export const calcStructWithoutCritical: CalcStructExpression = {
         left: {
           operator: '+++',
           list: [
-            CalculationContainerIds.AtkBase,
-            CalculationContainerIds.AtkDualSword,
+            CalculationContainerIds.Base,
+            CalculationContainerIds.BaseDualSword,
             CalculationContainerIds.LevelDifference,
           ],
         },

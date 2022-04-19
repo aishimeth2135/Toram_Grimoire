@@ -4,10 +4,12 @@ export const enum ContainerTypes {
 }
 
 export const enum CalculationContainerIds {
-  BaseType = 'base_type',
-  AtkBase = 'atk/base',
-  AtkDualSword = 'atk/dual_sword',
-  AtkTwoHanded = 'atk/two_handed',
+  DamageType = 'damage_type',
+  Base = 'base',
+  BaseAtk = 'base/atk',
+  BaseMatk = 'base/matk',
+  BaseDualSword = 'base/dual_sword',
+  BaseTwoHanded = 'base/two_handed',
   TargetResistance = 'target_resistance',
   LevelDifference = 'level_difference',
   TargetDefBase = 'target_def_base',

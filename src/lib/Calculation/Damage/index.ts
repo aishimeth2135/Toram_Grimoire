@@ -25,39 +25,50 @@ export default class DamageCalculationSystem {
       getCurrentItemId(itemContainer: CalcItemContainer, containerId: CalculationContainerIds) {
         return itemContainer.belongCalculation.containers.get(containerId)!.currentItem.base.id
       },
-      getCurrentBaseTypeId(itemContainer: CalcItemContainer) {
-        return utils.getCurrentItemId(itemContainer, CalculationContainerIds.BaseType)
+      getCurrentDamageTypeId(itemContainer: CalcItemContainer) {
+        return utils.getCurrentItemId(itemContainer, CalculationContainerIds.DamageType)
       },
       damageTypeHandler(handlerCallback: DamageTypeHandlerCallback): CurrentItemIdGetter {
         return ((itemContainer: CalcItemContainer) => {
-          const currentId = utils.getCurrentBaseTypeId(itemContainer)
+          const currentId = utils.getCurrentDamageTypeId(itemContainer)
           return handlerCallback(currentId === CalculationItemIds.Physical)
         })
       },
     }
 
-    options(CalculationContainerIds.BaseType, container => {
+    options(CalculationContainerIds.DamageType, container => {
       container.appendItem(CalculationItemIds.Physical)
       container.appendItem(CalculationItemIds.Magic)
     })
-    normal(CalculationContainerIds.AtkBase, container => {
+    normal(CalculationContainerIds.BaseAtk, container => {
       container.appendItem(CalculationItemIds.Atk)
-      container.appendItem(CalculationItemIds.Matk)
       container.appendItem(CalculationItemIds.AtkRate)
         .setDefaultValue(100).setRange(0).setUnit('%')
-      container.appendItem(CalculationItemIds.MatkRate)
-        .setDefaultValue(100).setRange(0).setUnit('%')
-      // container.setGetCurrentItemId(utils.damageTypeHandler(res => res ? 'atk' : 'matk'));
-      container.controls.toggle = false
       container.setCalcResult((itemContainer) => {
         const atk = itemContainer.getItemValue(CalculationItemIds.Atk)
-        const matk = itemContainer.getItemValue(CalculationItemIds.Matk)
         const atkr = itemContainer.getItemValue(CalculationItemIds.AtkRate)
-        const matkr = itemContainer.getItemValue(CalculationItemIds.MatkRate)
-        return Math.floor(atk * atkr / 100) + Math.floor(matk * matkr / 100)
+        return Math.floor(atk * atkr / 100)
       })
     })
-    normal(CalculationContainerIds.AtkDualSword, container => {
+    normal(CalculationContainerIds.BaseMatk, container => {
+      container.appendItem(CalculationItemIds.Matk)
+      container.appendItem(CalculationItemIds.MatkRate)
+        .setDefaultValue(100).setRange(0).setUnit('%')
+      container.setCalcResult((itemContainer) => {
+        const matk = itemContainer.getItemValue(CalculationItemIds.Matk)
+        const matkr = itemContainer.getItemValue(CalculationItemIds.MatkRate)
+        return Math.floor(matk * matkr / 100)
+      })
+    })
+    normal(CalculationContainerIds.Base, container => {
+      container.setVirtual([CalculationContainerIds.BaseAtk, CalculationContainerIds.BaseMatk])
+      container.setCalcResult((itemContainer) => {
+        const baseAtk = itemContainer.belongCalculation.containers.get(CalculationContainerIds.BaseAtk)!.result()
+        const baseMatk = itemContainer.belongCalculation.containers.get(CalculationContainerIds.BaseMatk)!.result()
+        return baseAtk + baseMatk
+      })
+    })
+    normal(CalculationContainerIds.BaseDualSword, container => {
       container.appendItem(CalculationItemIds.SubAtk)
       container.appendItem(CalculationItemIds.SubStability)
         .setRange(0).setUnit('%')
@@ -67,11 +78,11 @@ export default class DamageCalculationSystem {
         return subAtk * subStability / 100
       })
       container.setGetHidden((itemContainer) => {
-        const currentBaseTypeId = utils.getCurrentBaseTypeId(itemContainer)
+        const currentBaseTypeId = utils.getCurrentDamageTypeId(itemContainer)
         return currentBaseTypeId === CalculationItemIds.Magic
       })
     })
-    normal(CalculationContainerIds.AtkTwoHanded, container => {
+    normal(CalculationContainerIds.BaseTwoHanded, container => {
       container.markMultiplier()
       container.defaultDisabled()
       container.appendItem(CalculationItemIds.SkillLevelTwoHanded)
@@ -83,7 +94,7 @@ export default class DamageCalculationSystem {
         return (100 + value * 5)
       })
       container.setGetHidden((itemContainer) => {
-        const currentBaseTypeId = utils.getCurrentBaseTypeId(itemContainer)
+        const currentBaseTypeId = utils.getCurrentDamageTypeId(itemContainer)
         return currentBaseTypeId === CalculationItemIds.Magic
       })
     })
@@ -100,7 +111,7 @@ export default class DamageCalculationSystem {
         return (100 - value)
       })
       container.setGetCurrentItemId((itemContainer) => {
-        const currentBaseTypeId = utils.getCurrentBaseTypeId(itemContainer)
+        const currentBaseTypeId = utils.getCurrentDamageTypeId(itemContainer)
         if (currentBaseTypeId === CalculationItemIds.Physical) {
           return CalculationItemIds.TargetPhysicalResistance
         }
@@ -128,7 +139,7 @@ export default class DamageCalculationSystem {
         return -1 * value
       })
       container.setGetCurrentItemId((itemContainer) => {
-        const currentBaseTypeId = utils.getCurrentBaseTypeId(itemContainer)
+        const currentBaseTypeId = utils.getCurrentDamageTypeId(itemContainer)
         if (currentBaseTypeId === CalculationItemIds.Physical) {
           return CalculationItemIds.TargetDef
         }
@@ -197,7 +208,7 @@ export default class DamageCalculationSystem {
         .setDefaultValue(50)
 
       container.setCalcResult((itemContainer) => {
-        const currentDamageTypeId = utils.getCurrentBaseTypeId(itemContainer)
+        const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
         const cd = itemContainer.getItemValue(CalculationItemIds.CriticalDamage)
         const mcdr = itemContainer.getItemValue(CalculationItemIds.MagicCriticalDamageConversionRate)
         let result = cd
@@ -223,7 +234,7 @@ export default class DamageCalculationSystem {
         .setRange(0, 100)
 
       container.setCalcResult((itemContainer) => {
-        const currentDamageTypeId = utils.getCurrentBaseTypeId(itemContainer)
+        const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
         const cr = itemContainer.getItemValue(CalculationItemIds.CriticalRate)
         const cr_r = itemContainer.getItemValue(CalculationItemIds.TargetCriticalRateResistance)
         const cr_rt = itemContainer.getItemValue(CalculationItemIds.TargetCriticalRateResistanceTotal)
@@ -303,6 +314,10 @@ export default class DamageCalculationSystem {
       container.appendItem(CalculationItemIds.PromisedAccuracyRate)
         .setRange(0, 100, 10)
       container.setCalcResult((itemContainer) => {
+        const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
+        if (currentDamageTypeId === CalculationItemIds.Magic) {
+          return 100
+        }
         const accuracy = itemContainer.getItemValue(CalculationItemIds.Accuracy)
         const skillRealMpCost = itemContainer.getItemValue(CalculationItemIds.SkillRealMpCost)
         const targetDodge = itemContainer.getItemValue(CalculationItemIds.TargetDodge)
