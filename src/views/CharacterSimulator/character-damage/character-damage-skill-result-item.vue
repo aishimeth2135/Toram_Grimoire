@@ -43,8 +43,16 @@
         class="flex items-center space-x-2"
         :class="{ 'opacity-50': item.hidden }"
       >
-        <div v-html="markText(t('damage-calculation.item-base-titles.' + item.item.base.id))"></div>
-        <div class="text-light-3">{{ item.item.value + item.item.base.unit }}</div>
+        <div
+          :class="{ 'text-orange': !item.valueValid }"
+          v-html="markText(t('damage-calculation.item-base-titles.' + item.item.base.id))"
+        ></div>
+        <div
+          v-if="item.valueValid"
+          class="text-light-3"
+        >
+          {{ item.item.value + item.item.base.unit }}
+        </div>
       </div>
     </div>
   </div>
@@ -143,18 +151,22 @@ const calculationItems = computed(() => {
   const items: {
     item: CalcItem;
     hidden: boolean;
+    valueValid: boolean;
   }[] = []
   containers.forEach(container => {
     const hidden = container.hidden
+    const valueValid = container.base.controls.valueValid
     if (container.base.type === ContainerTypes.Options) {
       items.push({
         item: container.currentItem,
         hidden,
+        valueValid,
       })
     } else {
       items.push(...[...container.items.values()].map(item => ({
         item,
         hidden,
+        valueValid,
       })))
     }
   })

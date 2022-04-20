@@ -125,7 +125,10 @@ class CalcItemContainerBase {
   floorResult: boolean
   enabledDefaultValue: boolean
   _disabledValue: number | null
-  controls: { toggle: boolean }
+  controls: {
+    toggle: boolean;
+    valueValid: boolean;
+  }
 
   readonly references: CalculationContainerIds[]
 
@@ -143,6 +146,7 @@ class CalcItemContainerBase {
     this._disabledValue = null
     this.controls = {
       toggle: true,
+      valueValid: true,
     }
     this.references = []
   }
