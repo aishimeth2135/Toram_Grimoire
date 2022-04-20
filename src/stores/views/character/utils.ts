@@ -2,6 +2,7 @@ import { Character } from '@/lib/Character/Character'
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { StatRestriction } from '@/lib/Character/Stat'
+import { EnemyElements } from '@/lib/Enemy/enums'
 
 export function checkStatRestriction(chara: Character, stat: StatRestriction) {
   const types = stat.restriction
@@ -18,7 +19,7 @@ export function checkStatRestriction(chara: Character, stat: StatRestriction) {
 }
 
 export function getCharacterElement(chara: Character) {
-  const element: Record<string, number> = {
+  const element: Partial<Record<EnemyElements, number>> = {
     'fire': 0,
     'water': 0,
     'earth': 0,
@@ -26,7 +27,7 @@ export function getCharacterElement(chara: Character) {
     'light': 0,
     'dark': 0,
   }
-  const setElement = (stat: StatRestriction) => element[stat.baseName.replace('element_', '')] = 1
+  const setElement = (stat: StatRestriction) => element[stat.baseName.replace('element_', '') as EnemyElements] = 1
 
   const sub = chara.equipmentField(EquipmentFieldTypes.SubWeapon)
   // 主手弓/弩、副手矢時，矢優先於弓
@@ -40,8 +41,9 @@ export function getCharacterElement(chara: Character) {
 
   // 主手
   const main = chara.equipmentField(EquipmentFieldTypes.MainWeapon)
-  if (!main.isEmpty && main.equipment!.elementStat)
+  if (!main.isEmpty && main.equipment!.elementStat) {
     setElement(main.equipment!.elementStat)
+  }
 
   // 雙劍副手：雙重屬性
   if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword)

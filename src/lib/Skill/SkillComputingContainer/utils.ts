@@ -352,12 +352,14 @@ function initHistoryNexts(history: SkillEffectItemHistory) {
 
 function setBranchAttrsDefaultValue(effectItem: SkillEffectItem) {
   effectItem.branchItems.forEach(branchItem => {
-    const defaultValueList = BRANCH_ATTRS_DEFAULT_VALUE[branchItem.name] || {}
-    Object.entries(defaultValueList).forEach(([key, value]) => {
-      if (!branchItem.hasAttr(key)) {
-        branchItem.setAttr(key, value)
-      }
-    })
+    const defaultValueList = BRANCH_ATTRS_DEFAULT_VALUE[branchItem.name]
+    if (defaultValueList) {
+      Object.entries(defaultValueList).forEach(([key, value]) => {
+        if (!branchItem.hasAttr(key)) {
+          branchItem.setAttr(key, value)
+        }
+      })
+    }
   })
 }
 
