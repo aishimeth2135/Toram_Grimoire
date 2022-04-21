@@ -2,7 +2,7 @@
   <div v-if="equipment">
     <cy-icon-text
       icon="mdi-clipboard-edit-outline"
-      size="small"
+      small
       text-color="purple"
     >
       {{ t('character-simulator.equipment-basic-editor.equipment-name') }}
@@ -16,7 +16,7 @@
     <div class="mt-3">
       <cy-icon-text
         icon="mdi-rhombus-outline"
-        size="small"
+        small
         text-color="purple"
       >
         {{ t('character-simulator.equipment-basic-editor.equipment-stats') }}
@@ -50,7 +50,7 @@
     <div v-if="hasOther" class="mt-3">
       <cy-icon-text
         icon="mdi-rhombus-outline"
-        size="small"
+        small
         text-color="purple"
       >
         {{ t('character-simulator.equipment-basic-editor.equipment-other') }}

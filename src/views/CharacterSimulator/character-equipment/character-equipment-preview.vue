@@ -44,7 +44,7 @@
         :icon="crystal.crystalIconPath"
         icon-src="image"
         text-color="blue-green"
-        size="small"
+        small
       >
         {{ crystal.name }}
       </cy-icon-text>

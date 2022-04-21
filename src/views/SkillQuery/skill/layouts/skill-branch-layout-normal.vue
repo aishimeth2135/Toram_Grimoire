@@ -17,7 +17,7 @@
       <template v-for="contentData in subContentDatas" :key="contentData.key">
         <span class="sub-content-item">
           <cy-icon-text
-            size="small"
+            small
             :text-color="contentData.color"
             :icon="contentData.icon"
             :main-color="contentData.type === 'primary' ? 'red' : 'default'"

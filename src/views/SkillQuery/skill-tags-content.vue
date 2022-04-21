@@ -25,7 +25,7 @@
             v-if="frame.type === 'category'"
             class="my-2"
           >
-            <cy-icon-text icon="ic-baseline-label" size="small">
+            <cy-icon-text icon="ic-baseline-label" small>
               {{ frame.value[0] }}
             </cy-icon-text>
           </div>

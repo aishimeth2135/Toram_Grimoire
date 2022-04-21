@@ -13,7 +13,7 @@
           />
           <cy-options inline>
             <template #title>
-              <cy-button-circle icon="ant-design:build-outlined" size="small" />
+              <cy-button-circle icon="ant-design:build-outlined" small />
             </template>
             <template #options>
               <cy-list-item
@@ -65,7 +65,7 @@
       >
         <div v-for="stc in skillTreeCategorys" :key="`stc-${stc.id}`">
           <div>
-            <cy-icon-text icon="uil:books" main-color="orange" size="small">{{ stc.name }}</cy-icon-text>
+            <cy-icon-text icon="uil:books" main-color="orange" small>{{ stc.name }}</cy-icon-text>
           </div>
           <div class="pl-2">
             <cy-button-check
@@ -86,7 +86,7 @@
       >
         <div v-for="stc in skillTreeCategorys" :key="`stc-${stc.id}`">
           <div>
-            <cy-icon-text icon="uil:books" main-color="orange" size="small">{{ stc.name }}</cy-icon-text>
+            <cy-icon-text icon="uil:books" main-color="orange" small>{{ stc.name }}</cy-icon-text>
           </div>
           <div class="pl-2">
             <cy-button-inline
@@ -102,7 +102,7 @@
       </div>
       <div v-else class="space-x-2.5 flex items-center pointer-events-auto">
         <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
-          <cy-icon-text icon="mdi:script-outline" size="small">
+          <cy-icon-text icon="mdi:script-outline" small>
             {{ t('skill-simulator.skill-level-point') }}
           </cy-icon-text>
           <div class="text-sm text-light-3">
@@ -110,7 +110,7 @@
           </div>
         </div>
         <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
-          <cy-icon-text icon="mdi:judaism" size="small">
+          <cy-icon-text icon="mdi:judaism" small>
             {{ t('skill-simulator.star-gem-level-point') }}
           </cy-icon-text>
           <div class="text-sm text-water-blue">

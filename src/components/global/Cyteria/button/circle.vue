@@ -18,17 +18,16 @@ export default defineComponent({
   name: 'CyButtonCircle',
   emits: ['click'],
   props: {
-    size: {
-      type: String,
-      default: 'normal',
-      validation: (value: string) => ['normal', 'small'].includes(value),
+    small: {
+      type: Boolean,
+      default: false,
     },
     ...ButtonBaseProps,
   },
   setup(props, { emit }) {
     const widthStyle = computed(() => {
-      const width = props.size === 'normal' ? '2.75rem' : '2.25rem'
-      const iconWidth = props.size === 'normal' ? '1.25rem' : '1rem'
+      const width = props.small ? '2.25rem' : '2.75rem'
+      const iconWidth = props.small ? '1rem' : '1.25rem'
       return {
         width: width,
         height: width,

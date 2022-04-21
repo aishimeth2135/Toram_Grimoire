@@ -2,7 +2,7 @@
   <div class="px-3 py-1 w-full flex items-center flex-wrap space-x-4">
     <cy-icon-text
       icon="entypo-link"
-      size="small"
+      small
       text-color="purple"
     >
       {{ t('skill-query.branch.reference.base-title') }}

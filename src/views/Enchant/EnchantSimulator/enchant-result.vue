@@ -59,7 +59,7 @@
           </span>
           <cy-icon-text
             icon="mdi-creation"
-            size="small"
+            small
             icon-color="water-blue"
             text-color="water-blue"
             class="ml-2"
@@ -84,7 +84,7 @@
         </template>
         <cy-icon-text
           icon="mdi-creation"
-          size="small"
+          small
           icon-color="water-blue"
           text-color="water-blue"
           class="ml-2 my-1"

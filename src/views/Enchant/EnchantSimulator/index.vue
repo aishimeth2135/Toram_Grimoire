@@ -78,7 +78,7 @@
           </cy-button-border>
         </div>
       </div>
-      <cy-icon-text size="small" text-color="purple" class="mt-4">
+      <cy-icon-text small text-color="purple" class="mt-4">
         {{ t('enchant-simulator.base-options') }}
       </cy-icon-text>
       <div class="flex items-center flex-wrap p-2 mr-2">
@@ -98,7 +98,7 @@
       </div>
       <cy-transition type="fade">
         <div v-if="contents.extraOptions">
-          <cy-icon-text size="small" text-color="water-blue" icon-color="water-blue" class="mt-4">
+          <cy-icon-text small text-color="water-blue" icon-color="water-blue" class="mt-4">
             {{ t('enchant-simulator.advanced-options') }}
           </cy-icon-text>
           <div class="p-2">
@@ -111,7 +111,7 @@
               </template>
             </cy-input-counter>
           </div>
-          <cy-icon-text size="small" text-color="water-blue" icon-color="water-blue" class="mt-4">
+          <cy-icon-text small text-color="water-blue" icon-color="water-blue" class="mt-4">
             {{ t('enchant-simulator.common-options') }}
           </cy-icon-text>
           <div class="p-2">
@@ -137,7 +137,7 @@
           </div>
         </div>
       </cy-transition>
-      <cy-icon-text size="small" text-color="purple" class="mt-3">
+      <cy-icon-text small text-color="purple" class="mt-3">
         {{ t('enchant-simulator.equipment-type') }}
       </cy-icon-text>
       <div class="py-0.5 px-2">
@@ -209,7 +209,7 @@
           {{ t('enchant-simulator.footer-guide.title-close') }}
         </div>
         <div class="pt-3">
-          <cy-icon-text size="small" main-color="orange">
+          <cy-icon-text small main-color="orange">
             {{ t('enchant-simulator.footer-guide.title') }}
           </cy-icon-text>
         </div>
@@ -217,7 +217,7 @@
           <cy-icon-text
             icon="akar-icons:circle-chevron-down"
             text-color="purple"
-            size="small"
+            small
             class="mr-3"
           >
             {{ t('enchant-simulator.footer-guide.toggle-result.titles.0') }}
@@ -225,7 +225,7 @@
           <cy-icon-text
             icon="akar-icons:circle-chevron-up"
             text-color="purple"
-            size="small"
+            small
           >
             {{ t('enchant-simulator.footer-guide.toggle-result.titles.1') }}
           </cy-icon-text>
@@ -238,7 +238,7 @@
             icon="mdi-cube-outline"
             text-color="purple"
             icon-color="water-blue"
-            size="small"
+            small
             class="mr-3"
           >
             {{ t('enchant-simulator.footer-guide.toggle-display-mode.titles.0') }}
@@ -247,7 +247,7 @@
             icon="mdi-cube-off-outline"
             text-color="purple"
             icon-color="water-blue"
-            size="small"
+            small
           >
             {{ t('enchant-simulator.footer-guide.toggle-display-mode.titles.1') }}
           </cy-icon-text>
@@ -471,7 +471,6 @@ const selectItem = (item: EnchantStatOptionBase) => {
   if (type === 'step' && target instanceof EnchantStep) {
     const matchedStat = target.stat(item.origin, item.type)
     if (matchedStat) {
-      // this.$notify(this.$lang('tips/step stat repeated'));
       matchedStat.remove()
       return
     }

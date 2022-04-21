@@ -65,8 +65,8 @@ item-base-titles:
   stronger_against_wind: 对风属性
   stronger_against_light: 对光属性
   stronger_against_dark: 对暗属性
-  target_physical_resistance: 物理抗性
-  target_magic_resistance: 魔法抗性
+  target_physical_resistance: 目标物理抗性
+  target_magic_resistance: 目标魔法抗性
   proration: 惯性加成
   stability: 稳定率
   target_dodge: 目标回避

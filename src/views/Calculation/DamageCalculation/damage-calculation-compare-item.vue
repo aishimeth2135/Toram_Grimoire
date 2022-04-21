@@ -16,7 +16,7 @@
         :key="comparedItem.item.base.id"
         class="flex items-center"
       >
-        <cy-icon-text class="mr-2" size="small">
+        <cy-icon-text class="mr-2" small>
           <span v-html="markText(t('damage-calculation.item-base-titles.' + comparedItem.item.base.id))"></span>
         </cy-icon-text>
         <span :class="comparedItem.value >= 0 ? 'text-water-blue' : 'text-red'" class="text-sm">

@@ -9,7 +9,7 @@
         icon="mdi-checkbox-multiple-blank-circle"
         class="mr-2"
         text-color="purple"
-        size="small"
+        small
       >
         {{ t('character-simulator.equipment-info.equipment-type') }}
       </cy-icon-text>

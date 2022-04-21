@@ -196,7 +196,7 @@
         <div class="mt-2 ml-4 mr-2">
           <cy-icon-text
             icon="ic-outline-info"
-            size="small"
+            small
             text-color="water-blue"
             icon-color="water-blue-light"
           >
@@ -206,7 +206,7 @@
         <div class="mt-1 ml-4 mr-2">
           <cy-icon-text
             icon="ic-outline-info"
-            size="small"
+            small
             text-color="water-blue"
             icon-color="water-blue-light"
           >
@@ -216,7 +216,7 @@
         <div v-if="equipmentState.autoFindPotentialMinimum" class="mt-1 ml-4 mr-2">
           <cy-icon-text
             icon="ic-outline-info"
-            size="small"
+            small
             text-color="water-blue"
             icon-color="water-blue-light"
           >
@@ -275,10 +275,10 @@
           class="flex justify-center mt-4"
         >
           <div>
-            <cy-icon-text size="small" icon-color="water-blue" class="mr-4">
+            <cy-icon-text small icon-color="water-blue" class="mr-4">
               {{ t('enchant-doll.select-negatives.auto-select') }}
             </cy-icon-text>
-            <cy-icon-text size="small">
+            <cy-icon-text small>
               {{ t('enchant-doll.select-negatives.manually-selected') }}
             </cy-icon-text>
           </div>
@@ -337,7 +337,7 @@
             <div>
               <cy-icon-text
                 icon="ic-outline-info"
-                size="small"
+                small
                 text-color="water-blue"
                 icon-color="water-blue-light"
               >
@@ -399,7 +399,7 @@
         >
           <cy-icon-text
             icon="ic-outline-info"
-            size="small"
+            small
             text-color="water-blue"
             icon-color="water-blue-light"
           >
@@ -475,7 +475,7 @@
     >
       <cy-icon-text
         icon="ic-outline-info"
-        size="small"
+        small
         text-color="water-blue"
         icon-color="water-blue-light"
       >

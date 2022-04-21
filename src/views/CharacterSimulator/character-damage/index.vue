@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="border-b-1 border-light-2 pb-2 mb-3">
-      <cy-icon-text text-color="purple" size="small">
+      <cy-icon-text text-color="purple" small>
         {{ t('character-simulator.character-damage.options-base-title') }}
       </cy-icon-text>
       <div class="space-y-1.5 pb-3 px-2 pt-1">
@@ -95,7 +95,7 @@
           </cy-input-counter>
         </div>
         <div class="pt-2.5">
-          <cy-icon-text text-color="purple" size="small">
+          <cy-icon-text text-color="purple" small>
             {{ t('character-simulator.character-damage.range-damage-title') }}
           </cy-icon-text>
           <cy-button-check-group
@@ -104,7 +104,7 @@
           />
         </div>
         <div class="pt-2">
-          <cy-icon-text text-color="purple" size="small">
+          <cy-icon-text text-color="purple" small>
             {{ t('character-simulator.enemy-elements.title') }}
           </cy-icon-text>
           <cy-button-check-group

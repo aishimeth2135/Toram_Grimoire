@@ -21,7 +21,7 @@
       <div>
         <div v-for="category in currentCrystalCategorys" :key="category.id">
           <div>
-            <cy-icon-text icon="bx-bx-cube-alt" size="small" text-color="purple">
+            <cy-icon-text icon="bx-bx-cube-alt" small text-color="purple">
               {{ t(`character-simulator.select-crystals.category-title.${category.id}`) }}
             </cy-icon-text>
             <div class="mt-2 px-2">
@@ -59,7 +59,12 @@
             </cy-icon-text>
           </div>
           <div class="mt-2 px-2">
-            <ShowStat v-for="stat in crystal.stats" :key="stat.statId" :stat="stat" />
+            <ShowStat
+              v-for="stat in crystal.stats"
+              :key="stat.statId"
+              :stat="stat"
+              :negative-value="stat.value < 0"
+            />
           </div>
         </div>
       </div>

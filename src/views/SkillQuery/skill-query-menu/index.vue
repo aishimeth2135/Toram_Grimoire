@@ -11,7 +11,7 @@
           :key="key"
         >
           <div>
-            <cy-icon-text text-color="purple" size="small">
+            <cy-icon-text text-color="purple" small>
               {{ t(`skill-query.equipment.${key}: title`) }}
             </cy-icon-text>
           </div>
@@ -41,7 +41,7 @@
       </div>
       <div class="mt-3">
         <div>
-          <cy-icon-text text-color="purple" size="small">
+          <cy-icon-text text-color="purple" small>
             {{ t(`skill-query.formula-display-mode.title`) }}
           </cy-icon-text>
         </div>

@@ -1,6 +1,6 @@
 <template>
   <article>
-    <div style="min-height: 70vh">
+    <div style="min-height: 70vh" class="max-w-full overflow-x-auto">
       <component :is="currentTab" />
     </div>
     <div class="sticky bottom-2 mx-2 flex items-end justify-end space-x-2">

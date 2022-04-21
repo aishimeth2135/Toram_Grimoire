@@ -1,7 +1,7 @@
 <template>
   <div class="px-3 py-2 border border-solid border-light m-1.5 bg-white" style="width: 23.25rem">
     <div class="flex items-center border-b border-solid border-light pb-1 mb-2.5">
-      <cy-icon-text icon="gg-shape-square" size="small" text-color="light-2">
+      <cy-icon-text icon="gg-shape-square" small text-color="light-2">
         {{ t('common.Equipment.field.' + equipmentField.type) }}
       </cy-icon-text>
       <div class="ml-auto leading-none">

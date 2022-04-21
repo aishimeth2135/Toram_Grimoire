@@ -16,7 +16,7 @@
         </cy-icon-text>
         <div v-if="previewMode === 'default'" class="flex items-center space-x-2">
           <template v-if="crystal.origin.enhancer">
-            <cy-icon-text icon="mdi:arrow-up-bold-outline" size="small" main-color="blue-green">
+            <cy-icon-text icon="mdi:arrow-up-bold-outline" small main-color="blue-green">
               {{ crystal.origin.enhancer }}
             </cy-icon-text>
             <cy-icon-text
@@ -49,7 +49,7 @@
           />
         </div>
         <div v-if="crystal.origin.enhancer" class="flex items-center mt-3">
-          <cy-icon-text icon="mdi:arrow-up-bold-outline" size="small" icon-color="blue-green" text-color="light-2">
+          <cy-icon-text icon="mdi:arrow-up-bold-outline" small icon-color="blue-green" text-color="light-2">
             {{ t('crystal-query.enhancer-pretext') }}
           </cy-icon-text>
           <span class="text-blue-green text-sm ml-0.5">{{ crystal.origin.enhancer }}</span>

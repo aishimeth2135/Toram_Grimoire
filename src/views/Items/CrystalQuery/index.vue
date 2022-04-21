@@ -27,12 +27,12 @@
       <div class="flex items-end ml-auto mb-2 space-x-2 pointer-events-auto">
         <div v-if="contents.searchFilter" class="border-1 border-light-3 rounded-md p-4 bg-white">
           <div class="flex items-center">
-            <cy-icon-text size="small" text-color="purple">
+            <cy-icon-text small text-color="purple">
               {{ t('crystal-query.crystal-category.title') }}
             </cy-icon-text>
             <div class="inline-flex items-center ml-4 space-x-2">
-              <cy-button-circle size="small" icon="ic-round-border-all" @click="toggleSearchFilterAll(searchFilter.category, true)" />
-              <cy-button-circle size="small" icon="eva-close-outline" @click="toggleSearchFilterAll(searchFilter.category, false)" />
+              <cy-button-circle small icon="ic-round-border-all" @click="toggleSearchFilterAll(searchFilter.category, true)" />
+              <cy-button-circle small icon="eva-close-outline" @click="toggleSearchFilterAll(searchFilter.category, false)" />
             </div>
           </div>
           <div>
@@ -75,7 +75,7 @@
           </template>
           <template #options>
             <div class="my-1 px-2">
-              <cy-icon-text size="small" text-color="light-2">
+              <cy-icon-text small text-color="light-2">
                 {{ t('crystal-query.modes.title') }}
               </cy-icon-text>
             </div>

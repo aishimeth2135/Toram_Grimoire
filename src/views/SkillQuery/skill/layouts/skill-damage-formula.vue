@@ -43,7 +43,7 @@
       v-if="container.get('@custom-base-caption')"
       class="pl-4 mb-2.5 flex items-center flex-wrap"
     >
-      <cy-icon-text text-color="purple" size="small" class="mt-1">
+      <cy-icon-text text-color="purple" small class="mt-1">
         {{ container.get('base') }}
       </cy-icon-text>
       <div class="pl-3 text-light-3 text-sm mt-1" v-html="container.get('@custom-base-caption')" />

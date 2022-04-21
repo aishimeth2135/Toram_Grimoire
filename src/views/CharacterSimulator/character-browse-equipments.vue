@@ -31,19 +31,19 @@
                 <template v-if="showAll">
                   <cy-button-circle
                     icon="mdi:cursor-move"
-                    size="small"
+                    small
                     main-color="green"
                     @click="movingEquipment = equip"
                   />
                   <cy-button-circle
                     icon="ic:round-arrow-upward"
-                    size="small"
+                    small
                     main-color="water-blue"
                     @click="store.moveEquipment(equip, -1)"
                   />
                   <cy-button-circle
                     icon="ic:round-arrow-downward"
-                    size="small"
+                    small
                     main-color="water-blue"
                     @click="store.moveEquipment(equip, 1)"
                   />
@@ -51,46 +51,46 @@
                 <template v-else>
                   <cy-button-circle
                     icon="ic:outline-tips-and-updates"
-                    size="small"
+                    small
                     main-color="blue-green"
                     @click="notify(t('character-simulator.browse-equipments.equipment-item-actions-tips'))"
                   />
                 </template>
                 <cy-button-circle
                   icon="bx:copy-alt"
-                  size="small"
+                  small
                   @click="copySelectedEquipment"
                 />
                 <cy-button-circle
                   icon="ic-baseline-delete-outline"
                   main-color="gray"
-                  size="small"
+                  small
                   @click="removeSelectedEquipment"
                 />
               </template>
               <template v-else>
                 <div v-if="equip === movingEquipment" class="ml-1 mr-auto self-end">
-                  <cy-icon-text icon="mdi:cursor-move" text-color="light-3" size="small">
+                  <cy-icon-text icon="mdi:cursor-move" text-color="light-3" small>
                     {{ t('character-simulator.browse-equipments.move-equipment-title') }}
                   </cy-icon-text>
                 </div>
                 <template v-if="equip !== movingEquipment">
                   <cy-button-circle
                     icon="ic:baseline-move-up"
-                    size="small"
+                    small
                     main-color="water-blue"
                     @click="store.moveEquipment(movingEquipment!, -1, equip), movingEquipment = null"
                   />
                   <cy-button-circle
                     icon="ic:baseline-move-down"
-                    size="small"
+                    small
                     main-color="water-blue"
                     @click="store.moveEquipment(movingEquipment!, 1, equip), movingEquipment = null"
                   />
                 </template>
                 <cy-button-circle
                   icon="ic:baseline-stop"
-                  size="small"
+                  small
                   main-color="green"
                   @click="movingEquipment = null"
                 />

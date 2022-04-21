@@ -214,6 +214,10 @@ export default function setupDamageCalculation(
 
     const calculation = ref(calculationBase.createCalculation(''))
 
+    for (const ctner of calculation.value.containers.values()) {
+      ctner.enabled = true
+    }
+
     const valid = computed(() => {
       const constant = container.value.getValue('constant') || '0'
       const multiplier = container.value.getValue('multiplier') || '0'
@@ -275,7 +279,9 @@ export default function setupDamageCalculation(
     })
 
     calculation.value.config.getItemValue = (itemId) => {
-      return calculationVars.value.get(itemId) ?? varsMap.value.get(itemId) ?? null
+      const result = calculationVars.value.get(itemId) ?? varsMap.value.get(itemId) ?? null
+      console.log(itemId, result)
+      return result
     }
 
     const containerCurrentItemMap = computed(() => {

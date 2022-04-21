@@ -19,7 +19,7 @@
         />
         <cy-options inline>
           <template #title>
-            <cy-button-circle icon="ant-design:build-outlined" size="small" />
+            <cy-button-circle icon="ant-design:build-outlined" small />
           </template>
           <template #options>
             <cy-list-item
@@ -107,12 +107,12 @@
         style="max-height: 40vh;"
       >
         <div>
-          <cy-icon-text icon="bx:bx-git-compare" size="small" text-color="purple">
+          <cy-icon-text icon="bx:bx-git-compare" small text-color="purple">
             {{ t('damage-calculation.compare.title') }}
           </cy-icon-text>
         </div>
         <div class="mb-2">
-          <cy-icon-text icon="bx-bx-info-circle" size="small" text-color="light-3" align-v="center" class="ml-2">
+          <cy-icon-text icon="bx-bx-info-circle" small text-color="light-3" align-v="center" class="ml-2">
             {{ t('damage-calculation.compare.caption') }}
           </cy-icon-text>
         </div>
@@ -126,12 +126,12 @@
         style="max-height: 40vh;"
       >
         <div>
-          <cy-icon-text icon="ant-design:star-outlined" size="small" text-color="purple">
+          <cy-icon-text icon="ant-design:star-outlined" small text-color="purple">
             {{ t('damage-calculation.calc-mode.title') }}
           </cy-icon-text>
         </div>
         <div>
-          <cy-icon-text icon="bx-bx-info-circle" size="small" text-color="light-3" align-v="center" class="ml-2">
+          <cy-icon-text icon="bx-bx-info-circle" small text-color="light-3" align-v="center" class="ml-2">
             {{ t('damage-calculation.calc-mode.caption') }}
           </cy-icon-text>
         </div>
@@ -147,7 +147,7 @@
           <div>
             <cy-icon-text
               icon="bx-bx-info-circle"
-              size="small"
+              small
               text-color="light-2"
               class="ml-6"
               align-v="start"
@@ -165,7 +165,7 @@
         style="max-height: 40vh;"
       >
         <div>
-          <cy-icon-text icon="ant-design:star-outlined" size="small" text-color="purple">
+          <cy-icon-text icon="ant-design:star-outlined" small text-color="purple">
             {{ t('damage-calculation.result.title') }}
           </cy-icon-text>
         </div>
@@ -180,7 +180,7 @@
           <div>
             <cy-icon-text
               icon="bx-bx-info-circle"
-              size="small"
+              small
               text-color="light-2"
               class="ml-6"
               align-v="start"
@@ -195,13 +195,13 @@
       <cy-button-circle
         icon="bx:bx-git-compare"
         :selected="bottomSub.compare"
-        size="small"
+        small
         @click="toggle('bottomSub/compare', null, false)"
       />
       <cy-button-circle
         icon="ic:outline-calculate"
         :selected="bottomSub.calcModeDetail"
-        size="small"
+        small
         @click="toggle('bottomSub/calcModeDetail', null, false)"
       />
     </div>
