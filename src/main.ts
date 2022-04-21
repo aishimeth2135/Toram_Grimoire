@@ -6,11 +6,8 @@ import '@/assets/css/tailwind.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
-import { InitLanguageSystem } from '@/shared/services/Language'
-
 import Confirm from '@/plugin/Confirm'
 import Notify from '@/plugin/Notify'
-import RegisterLang from '@/plugin/RegisterLang'
 
 import AppView from './App.vue'
 
@@ -35,7 +32,6 @@ registGlobalComponents(app)
 registerServiceWorker()
 initPackages()
 initI18n(app)
-InitLanguageSystem()
 
 {
   const settingStore = useSettingStore()
@@ -44,7 +40,6 @@ InitLanguageSystem()
 
 // custom pulgins
 app
-  .use(RegisterLang)
   .use(Notify)
   .use(Confirm)
 

@@ -41,7 +41,7 @@
               </cy-icon-text>
             </legend>
             <div class="caption">{{ t('app.settings.switch-font.caption') }}</div>
-            <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
+            <cy-icon-text icon="bx-bx-error-circle" small text-color="light-3" align-v="start">
               {{ t('app.settings.switch-font.tips-1') }}
             </cy-icon-text>
             <cy-button-check-group v-model:value="appFont" :options="appFontOptions" class="buttons" />
@@ -71,7 +71,7 @@
             </legend>
             <div class="caption">{{ t('app.settings.set-rem.caption') }}</div>
             <div class="flex items-center flex-wrap">
-              <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" class="mr-2" align-v="start">
+              <cy-icon-text icon="bx-bx-error-circle" small text-color="light-3" class="mr-2" align-v="start">
                 {{ t('app.settings.set-rem.tips-1') }}
               </cy-icon-text>
             </div>
@@ -97,10 +97,10 @@
               {{ t('app.settings.primary-language.caption') }}
             </div>
             <div class="flex items-center flex-wrap">
-              <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" class="mr-2" align-v="start">
+              <cy-icon-text icon="bx-bx-error-circle" small text-color="light-3" class="mr-2" align-v="start">
                 {{ t('app.settings.primary-language.tips-1') }}
               </cy-icon-text>
-              <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
+              <cy-icon-text icon="bx-bx-error-circle" small text-color="light-3" align-v="start">
                 {{ t('app.settings.primary-language.tips-2') }}
               </cy-icon-text>
             </div>
@@ -126,10 +126,10 @@
             <div class="caption">
               {{ t('app.settings.secondary-language.caption') }}
             </div>
-            <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start" class="mr-2">
+            <cy-icon-text icon="bx-bx-error-circle" small text-color="light-3" align-v="start" class="mr-2">
               {{ t('app.settings.secondary-language.tips-1') }}
             </cy-icon-text>
-            <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
+            <cy-icon-text icon="bx-bx-error-circle" small text-color="light-3" align-v="start">
               {{ t('app.settings.secondary-language.tips-2') }}
             </cy-icon-text>
             <div class="buttons">
@@ -154,13 +154,13 @@
             <div class="caption">
               {{ t('app.settings.clear-spreadsheets-caches.caption') }}
             </div>
-            <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
+            <cy-icon-text icon="bx-bx-error-circle" small text-color="light-3" align-v="start">
               {{ t('app.settings.clear-spreadsheets-caches.tips-1') }}
             </cy-icon-text>
-            <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
+            <cy-icon-text icon="bx-bx-error-circle" small text-color="light-3" align-v="start">
               {{ t('app.settings.clear-spreadsheets-caches.tips-2') }}
             </cy-icon-text>
-            <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
+            <cy-icon-text icon="bx-bx-error-circle" small text-color="light-3" align-v="start">
               {{ t('app.settings.clear-spreadsheets-caches.tips-3') }}
             </cy-icon-text>
             <div class="buttons">
@@ -180,10 +180,10 @@
             <div class="caption">
               {{ t('app.settings.storage-backup.caption') }}
             </div>
-            <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
+            <cy-icon-text icon="bx-bx-error-circle" small text-color="light-3" align-v="start">
               {{ t('app.settings.storage-backup.tips-1') }}
             </cy-icon-text>
-            <cy-icon-text icon="bx-bx-error-circle" size="small" text-color="light-3" align-v="start">
+            <cy-icon-text icon="bx-bx-error-circle" small text-color="light-3" align-v="start">
               {{ t('app.settings.storage-backup.tips-2') }}
             </cy-icon-text>
             <cy-default-tips v-if="$route.path !== '/'" icon="mdi-ghost">

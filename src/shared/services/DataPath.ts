@@ -17,7 +17,7 @@ function DataPath(id: string): string{
     case 'Enchant':
       return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4beI9I-sFoTgbTaKeMHRVo3xNm3gc5nQ-MWb9u7dlzRk0QmnMoJwcaR0815IqP0t-9-htpS8mUdQ1/pub?gid=0&single=true&output=csv&range=A:M'
   }
-  console.warn('Unknow DataPath Name: ' + id)
+  console.warn('[DataPath] unknown ID: ' + id)
   return ''
 }
 
@@ -62,7 +62,7 @@ function DataPathLang(id: string): (string | null)[] {
         'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=1107380961&single=true&output=csv&range=H:I',
       ]
   }
-  console.warn('Unknow DataPath Name: ' + id)
+  console.warn('[DataPath] unknown ID: ' + id)
   return []
 }
 

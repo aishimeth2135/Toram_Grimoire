@@ -52,11 +52,11 @@
           <cy-icon-text
             v-if="typeof line.title === 'string'"
             icon="ic-round-add"
-            size="small"
+            small
           >
             {{ line.title }}
           </cy-icon-text>
-          <cy-icon-text v-else icon="ic-round-add" size="small">
+          <cy-icon-text v-else icon="ic-round-add" small>
             <CharacterStatDetailEquipments
               v-if="line.title.equipments.length !== 0"
               :equipment-texts="line.title.equipments"

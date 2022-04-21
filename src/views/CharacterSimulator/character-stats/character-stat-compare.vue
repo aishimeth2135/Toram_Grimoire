@@ -3,7 +3,7 @@
     <template v-if="comparedStatsDatas.length != 0">
       <div v-for="data in comparedStatsDatas" :key="data.id" class="flex items-center">
         <template v-if="!data.isBoolStat">
-          <cy-icon-text size="small">
+          <cy-icon-text small>
             {{ data.text }}
           </cy-icon-text>
           <span
@@ -13,7 +13,7 @@
         </template>
         <cy-icon-text
           v-else
-          size="small"
+          small
           :text-color="data.negative ? 'gray' : 'light-3'"
         >
           {{ data.text }}

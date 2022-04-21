@@ -16,13 +16,13 @@
         v-if="rootState.statDisplayMode === 0"
         icon="mdi-creation"
         class="ml-auto mr-2"
-        size="small"
+        small
         text-color="purple"
       >
         {{ potentialEffect }}
       </cy-icon-text>
       <div v-else class="inline-flex items-center ml-auto">
-        <cy-icon-text icon="mdi-cube-outline" size="small" icon-color="water-blue-light">
+        <cy-icon-text icon="mdi-cube-outline" small icon-color="water-blue-light">
           {{ materialPoint.title }}
         </cy-icon-text>
         <span class="text-sm ml-2 text-water-blue">

@@ -46,7 +46,7 @@
     <div class="mt-3">
       <cy-icon-text
         icon="mdi-checkbox-multiple-blank-circle-outline"
-        size="small"
+        small
         text-color="purple"
       >
         {{ t('character-simulator.character-basic.character-name') }}
@@ -61,7 +61,7 @@
     <div class="content-title">
       <cy-icon-text
         icon="mdi-checkbox-multiple-blank-circle-outline"
-        size="small"
+        small
         text-color="purple"
       >
         {{ t('character-simulator.character-basic.character-level') }}
@@ -83,7 +83,7 @@
     <div class="mt-3">
       <cy-icon-text
         icon="mdi-checkbox-multiple-blank-circle-outline"
-        size="small"
+        small
         text-color="purple"
       >
         {{ t('character-simulator.character-basic.character-stat-points') }}
@@ -125,7 +125,7 @@
     <div class="mt-3">
       <cy-icon-text
         icon="mdi-checkbox-multiple-blank-circle-outline"
-        size="small"
+        small
         text-color="purple"
       >
         {{ t('character-simulator.character-basic.character-optional-base-stat') }}

@@ -11,7 +11,7 @@
             <cy-icon-text
               icon="mdi-creation"
               text-color="light-2"
-              size="small"
+              small
             >
               {{ data.name }}
             </cy-icon-text>

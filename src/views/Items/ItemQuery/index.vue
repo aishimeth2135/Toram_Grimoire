@@ -4,30 +4,34 @@
       <ItemQueryResult class="search-result" :equipments="searchResult" />
     </div>
     <cy-default-tips v-else icon="mdi-ghost" style="min-height: 30rem;">
-      {{ $lang('no result tips') }}
+      {{t('item-query.no-result-tips') }}
     </cy-default-tips>
     <div
       class="flex items-end ml-auto sticky z-10 px-2"
       style="bottom: 4.5rem"
     >
       <cy-transition type="fade">
-        <div v-if="checkMenuVisible" class="main-menu">
-          <div v-if="menuVisible.conditionOptions" class="content">
-            <div v-for="(type) in conditions.type" :key="type.id" class="column">
-              <div class="flex items-center">
+        <div
+          v-if="menus.conditionOptions || menus.sortOptions"
+          class="border-1 border-light rounded-md pt-4 px-5 pb-6 bg-white overflow-y-auto"
+          style="max-height: 70vh"
+        >
+          <div v-if="menus.conditionOptions" class="space-y-3">
+            <div v-for="(type) in conditions.type" :key="type.id">
+              <div class="flex items-center space-x-2">
                 <cy-button-check
                   v-model:selected="type.selected"
-                  class="options-title"
+                  class="mr-4 cursor-pointer"
                   main-color="orange"
                 >
-                  {{ $rootLang('common/Equipment/field/' + type.id) }}
+                  {{ t('common.Equipment.field.' + type.id) }}
                 </cy-button-check>
-                <template v-if="type.types !== null">
-                  <cy-button-border icon="ic-round-border-all" @click="selectAll(type.types)" />
-                  <cy-button-border icon="eva-close-outline" @click="cancelAll(type.types)" />
+                <template v-if="type.types.length > 1">
+                  <cy-button-circle icon="ic-round-border-all" small @click="selectAll(type.types)" />
+                  <cy-button-circle icon="eva-close-outline" small @click="cancelAll(type.types)" />
                 </template>
               </div>
-              <div v-if="type.types !== null" class="options">
+              <div v-if="type.types.length > 1" class="px-2">
                 <cy-button-check
                   v-for="item in type.types"
                   :key="item.value"
@@ -36,106 +40,99 @@
                   selected-icon-src="image"
                   @click="toggleSelected(item)"
                 >
-                  {{ $rootLang('common/Equipment/category/' + item.value) }}
+                  {{ t('common.Equipment.category.' + item.value) }}
                 </cy-button-check>
               </div>
             </div>
-            <div class="column">
-              <div class="flex items-center">
-                <cy-icon-text class="mr-6">
-                  {{ $lang('equipment detail/scope title/obtains') }}
+            <div>
+              <div class="flex items-center space-x-2">
+                <cy-icon-text class="mr-4">
+                  {{ t('item-query.equipment-detail.content-titles.obtains') }}
                 </cy-icon-text>
-                <cy-button-border icon="ic-round-border-all" @click="selectAll(conditions.obtains)" />
-                <cy-button-border icon="eva-close-outline" @click="cancelAll(conditions.obtains)" />
+                <cy-button-circle icon="ic-round-border-all" small @click="selectAll(conditions.obtains)" />
+                <cy-button-circle icon="eva-close-outline" small @click="cancelAll(conditions.obtains)" />
               </div>
-              <div class="options">
+              <div class="px-2">
                 <cy-button-check
                   v-for="obtain in conditions.obtains"
                   :key="obtain.value"
                   v-model:selected="obtain.selected"
                 >
-                  {{ $rootLang('common/Equipment/obtain/' + obtain.value) }}
+                  {{ t('common.Equipment.obtain.' + obtain.value) }}
                 </cy-button-check>
               </div>
             </div>
           </div>
-          <div v-else-if="menuVisible.sortOptions" class="content">
-            <div class="column">
-              <div class="normal-title">
-                <cy-icon-text icon="mdi-sort-variant" text-color="purple" size="small">
-                  {{ $lang('sort options/title') }}
+          <div v-else-if="menus.sortOptions">
+            <div>
+              <div class="mb-1">
+                <cy-icon-text icon="mdi-sort-variant" text-color="purple" small>
+                  {{ t('item-query.sort-options.title') }}
                 </cy-icon-text>
               </div>
               <cy-button-check-group
-                v-model:value="sortOptions.currentSelected"
-                class="options"
+                v-model:value="sortState.currentSelected"
+                class="px-2"
                 :options="consts.sortOptions"
               />
             </div>
-            <div class="column">
-              <div class="normal-title">
+            <div>
+              <div class="mb-1">
                 <cy-icon-text
                   icon="fluent-arrow-sort-24-filled"
                   text-color="purple"
-                  size="small"
+                  small
                 >
-                  {{ $lang('sort options/order/title') }}
+                  {{ t('item-query.sort-options.order.title') }}
                 </cy-icon-text>
               </div>
               <cy-button-check-group
-                v-model:value="sortOptions.currentOrder"
-                class="options"
+                v-model:value="sortState.currentOrder"
+                class="px-2"
                 :options="consts.sortOrderOptions"
               />
             </div>
           </div>
         </div>
       </cy-transition>
-      <div class="flex-shrink-0 ml-2">
-        <div
-          v-if="currentMode !== 'normal' && currentMode !== 'dye'"
-          class="menu-btn switch-display"
-          @click="switchDisplay"
-        >
-          <cy-icon-text icon="heroicons-solid:switch-vertical" />
-        </div>
-        <div
-          class="menu-btn bg-white border-water-blue"
-          @click="toggleMenuVisible('sortOptions')"
-        >
-          <cy-icon-text icon="mdi-sort-variant" icon-color="water-blue" />
-        </div>
-        <div
-          class="menu-btn bg-white border-light-4"
-          @click="toggleMenuVisible('conditionOptions')"
-        >
-          <cy-icon-text icon="mdi:filter" icon-color="light-4" />
-        </div>
+      <div class="flex flex-col flex-shrink-0 ml-2 space-y-2">
+        <cy-button-circle
+          v-if="state.currentMode === SearchModes.Stat || state.currentMode === SearchModes.ItemLevel"
+          icon="heroicons-solid:switch-vertical"
+          main-color="orange"
+          @click="state.displayMode = state.displayMode === 0 ? 1 : 0"
+        />
+        <cy-button-circle
+          icon="mdi-sort-variant"
+          main-color="water-blue"
+          @click="toggle('menus/sortOptions')"
+        />
+        <cy-button-circle
+          icon="mdi:filter"
+          border-color="light-3"
+          @click="toggle('menus/conditionOptions')"
+        />
       </div>
     </div>
-    <div class="bottom-menu">
-      <div class="top-content">
+    <div class="sticky bottom-3 px-2 z-10">
+      <div class="flex items-end w-full">
         <cy-options inline>
           <template #title>
-            <div
-              class="bg-white flex-shrink-0 rounded-full border-1 border-water-blue-light hover:border-water-blue inline-flex items-center justify-center mr-2 mb-2 cursor-pointer"
-              style="width: 2.8rem; height: 2.8rem;"
-            >
-              <cy-icon-text
+            <div class="mb-2 mr-2">
+              <cy-button-circle
                 icon="ic:baseline-settings"
-                icon-color="water-blue-light"
-                icon-color-hover="water-blue"
+                main-color="water-blue"
               />
             </div>
           </template>
           <template #options>
             <cy-list-item
-              v-for="(p, id) in modes"
+              v-for="(mode, id) in modes"
               :key="id"
               @click="selectMode(id)"
             >
-              <cy-icon-text :icon="p.icon">
-                {{ $lang('modes/' + id) }}
+              <cy-icon-text :icon="mode.icon">
+                {{ t('item-query.modes.' + id) }}
               </cy-icon-text>
             </cy-list-item>
           </template>
@@ -143,54 +140,54 @@
         <div class="w-full">
           <cy-transition type="fade">
             <div
-              v-if="currentMode === 'normal' && modes.normal.optionsVisible"
+              v-if="state.currentMode === SearchModes.Normal && modes[SearchModes.Normal].optionsVisible"
               class="mode-normal-content"
             >
               <cy-icon-text
                 icon="bx-bx-target-lock"
-                size="small"
+                small
                 text-color="purple"
               >
-                {{ $lang('options: normal/title') }}
+                {{ t('item-query.options-normal.title') }}
               </cy-icon-text>
               <div style="padding: 0.2rem 0.4rem;">
                 <cy-button-check
-                  v-for="item in modes.normal.targets"
+                  v-for="item in modes[SearchModes.Normal].targets"
                   :key="item.value"
                   v-model:selected="item.selected"
                 >
-                  {{ $lang('options: normal/' + item.value) }}
+                  {{ t('item-query.options-normal.' + item.value) }}
                 </cy-button-check>
               </div>
             </div>
           </cy-transition>
           <div class="flex items-center">
             <div class="mode-options-container w-full">
-              <template v-if="currentMode === 'normal'">
+              <template v-if="state.currentMode === SearchModes.Normal">
                 <div class="mode-normal-title ml-2">
                   <div class="input-container">
                     <cy-icon-text icon="ic-outline-search" class="icon" />
                     <input
-                      v-model="modes.normal.searchText"
+                      v-model="modes[SearchModes.Normal].searchText"
                       type="text"
-                      :placeholder="$lang('search placeholder')"
+                      :placeholder="t('global.search')"
                     >
                   </div>
                   <cy-button-icon
                     icon="heroicons-solid:menu"
-                    @click="modes.normal.optionsVisible = !modes.normal.optionsVisible"
+                    @click="modes[SearchModes.Normal].optionsVisible = !modes[SearchModes.Normal].optionsVisible"
                   />
                 </div>
               </template>
-              <template v-else-if="currentMode === 'stat'">
+              <template v-else-if="state.currentMode === SearchModes.Stat">
                 <cy-button-inline
                   class="w-full"
-                  @click="toggleSelectStatVisible(true)"
+                  @click="toggle('modals/selecteStat')"
                 >
-                  {{ modes.stat.currentStat ? modes.stat.currentStat.text : $lang('options: stat/select stat: title') }}
+                  {{ modes[SearchModes.Stat].currentStat?.text ?? t('item-query.options-stat.select-stat.title') }}
                 </cy-button-inline>
               </template>
-              <template v-else-if="currentMode === 'item-level'">
+              <template v-else-if="state.currentMode === SearchModes.ItemLevel">
                 <div class="flex items-center">
                   <cy-icon-text icon="jam-hammer" class="ml-2" />
                   <input
@@ -208,14 +205,14 @@
                   >
                 </div>
               </template>
-              <template v-else-if="currentMode === 'dye'">
+              <template v-else-if="state.currentMode === SearchModes.Dye">
                 <div class="mode-dye-title">
                   <div class="input-container">
                     <cy-icon-text icon="ic-outline-palette" class="ml-2" />
                     <input
-                      v-model="modes.dye.searchText"
+                      v-model="modes[SearchModes.Dye].searchText"
                       type="text"
-                      :placeholder="$lang('search placeholder')"
+                      :placeholder="t('global.search')"
                     >
                   </div>
                 </div>
@@ -225,17 +222,17 @@
         </div>
       </div>
     </div>
-    <cy-modal v-model:visible="modes.stat.selectStatVisible" vertical-position="start">
+    <cy-modal v-model:visible="modals.selecteStat" vertical-position="start">
       <template #title>
         <cy-icon-text icon="mdi-rhombus-outline">
-          {{ $lang('options: stat/select stat: window title') }}
+          {{ t('item-query.options-stat.select-stat.title') }}
         </cy-icon-text>
       </template>
       <template #default>
         <cy-title-input
           v-model:value="modes.stat.statSearchText"
           icon="ic-outline-category"
-          :placeholder="$lang('options: stat/select stat: search placeholder')"
+          :placeholder="t('item-query.options-stat.select-stat.search-placeholder')"
         />
         <template v-if="statsSearchResult.length != 0">
           <cy-list-item
@@ -250,451 +247,298 @@
           </cy-list-item>
         </template>
         <cy-default-tips v-else icon="bx-bx-message-rounded-x">
-          {{ $lang('no result tips') }}
+          {{ t('item-query.no-result-tips') }}
         </cy-default-tips>
       </template>
     </cy-modal>
   </article>
 </template>
 
-<script>
-import { useDatasStore } from '@/stores/app/datas'
-
-import {
-  CharacterEquipment,
-  MainWeapon, SubWeapon,
-  SubArmor, BodyArmor,
-  AdditionalGear, SpecialGear, Avatar,
-} from '@/lib/Character/CharacterEquipment'
-import { MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList } from '@/lib/Character/CharacterEquipment/enums'
-import { StatTypes } from '@/lib/Character/Stat/enums'
-
-import vue_ItemQueryResult from './item-query-result.vue'
-
-import init from './init.js'
-
+<script lang="ts">
 export default {
   name: 'ItemQuery',
-  RegisterLang: 'Item Query',
-  components: {
-    ItemQueryResult: vue_ItemQueryResult,
-  },
-  provide() {
-    return {
-      'findStat': this.findStat,
-      'modesState': this.modes,
-      'state': this.state,
-      'findObtainByDye': this.findObtainByDye,
-    }
-  },
-  setup() {
-    const datasStore = useDatasStore()
-    return { datasStore }
-  },
-  data() {
-    const equipments = this.datasStore.Items.equipments
-      .map(p => CharacterEquipment.fromOriginEquipment(p, { statValueToNumber: false }))
+}
+</script>
 
-    const handleOptions = opts => opts.map(p => {
-      return {
-        value: p, selected: true,
+<script lang="ts" setup>
+import { computed, reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+import Grimoire from '@/shared/Grimoire'
+import { isNumberString } from '@/shared/utils/string'
+
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import { MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList, EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
+
+import ToggleService from '@/setup/ToggleService'
+
+import ItemQueryResult from './item-query-result.vue'
+
+import { CommonOption, StatOption, SearchModes, handleOptions, findStat, findObtainByDye, useItemQueryModes } from './setup'
+
+const equipments = Grimoire.Items.equipments
+  .map(equip => CharacterEquipment.fromOriginEquipment(equip, { statValueToNumber: false }))
+
+const handleCompareValue = (value: string) => isNumberString(value) ? parseFloat(value) : -99999
+
+const {
+  state,
+  modes,
+} = useItemQueryModes()
+
+const { menus, modals, toggle } = ToggleService({
+  menus: ['conditionOptions', 'sortOptions'] as const,
+  modals: ['selecteStat'] as const,
+})
+
+const { t } = useI18n()
+
+interface EquipmentTypeOption extends CommonOption {
+  imagePath: string;
+}
+const handleEquipmentTypes = (opts: EquipmentTypes[]): EquipmentTypeOption[] => {
+  const newOpts = handleOptions(opts)
+  const finalOpts = newOpts.map(opt => ({
+    ...opt,
+    imagePath: CharacterEquipment.getImagePath(opt.value as EquipmentTypes),
+  }))
+  return finalOpts
+}
+
+const sortState = reactive({
+  currentSelected: 'default',
+  currentOrder: 'down',
+})
+
+type SortHandler =(item1: CharacterEquipment, item2: CharacterEquipment) => number
+
+const sortOptions: {
+  [mode in SearchModes]: {
+    default: SortHandler;
+  };
+} & {
+  'global': Record<string, SortHandler>;
+} = {
+  global: {
+    'atk': (item1, item2) => {
+      const value1 = item1.isWeapon() ? item1.atk + 9999 : item1.def ?? 0,
+        value2 = item2.isWeapon() ? item2.atk + 9999 : item2.def ?? 0
+      return value1 - value2
+    },
+    'def': (item1, item2) => {
+      const value1 = item1.isArmor() ? item1.def + 9999 : item2.atk ?? 0,
+        value2 = item2.isArmor() ? item2.def + 9999 : item2.atk ?? 0
+      return value1 - value2
+    },
+    'stability': (item1, item2) => {
+      const value1 = item1.isWeapon() ? item1.stability : -1,
+        value2 = item2.isWeapon() ? item2.stability : -1
+      if (value1 === -1 && value2 === -1) {
+        return sortOptions[state.currentMode].default(item1, item2)
       }
+      return value1 - value2
+    },
+    'name':  (item1, item2) => item1.name.localeCompare(item2.name),
+  },
+  [SearchModes.Normal]: {
+    default: (item1, item2) => item1.origin!.id - item2.origin!.id,
+  },
+  [SearchModes.Stat]: {
+    default: (item1, item2) => {
+      const cs = modes[SearchModes.Stat].currentStat
+      if (!cs) {
+        return 0
+      }
+      const value1 = findStat(cs, item1.stats)?.value ?? -99999,
+        value2 = findStat(cs, item2.stats)?.value ?? -99999
+      return value1 - value2
+    },
+  },
+  [SearchModes.ItemLevel]: {
+    default: (item1, item2) => {
+      const value1 = handleCompareValue(item1.origin!.recipe?.['item_level']?.toString() ?? ''),
+        value2 = handleCompareValue(item2.origin!.recipe?.['item_level']?.toString() ?? '')
+      return value1 - value2
+    },
+  },
+  [SearchModes.Dye]: {
+    default: (item1, item2) => item1.origin!.id - item2.origin!.id,
+  },
+}
+
+const conditions: {
+  type: {
+    id: string;
+    types: EquipmentTypeOption[];
+    selected: boolean;
+  }[];
+  obtains: CommonOption[];
+} = reactive({
+  type: [{
+    id: 'main-weapon',
+    types: handleEquipmentTypes(MainWeaponTypeList),
+    selected: true,
+  }, {
+    id: 'sub-weapon',
+    types: [
+      ...handleEquipmentTypes(SubWeaponTypeList),
+      ...handleEquipmentTypes(SubArmorTypeList),
+    ],
+    selected: true,
+  }, {
+    id: 'body-armor',
+    types: handleEquipmentTypes([EquipmentTypes.BodyNormal]),
+    selected: true,
+  }, {
+    id: 'additional',
+    types: handleEquipmentTypes([EquipmentTypes.Additional]),
+    selected: true,
+  }, {
+    id: 'special',
+    types: handleEquipmentTypes([EquipmentTypes.Special]),
+    selected: true,
+  }],
+  obtains: handleOptions(['smith', 'boss', 'mini_boss', 'mobs', 'quest', 'box', 'exchange', 'other', 'unknow']),
+})
+
+const consts = {
+  sortOrderOptions: ['down', 'up'].map(id => ({
+    value: id,
+    text: t('item-query.sort-options.order.' + id),
+  })),
+  sortOptions: ['default', 'atk', 'def', 'stability', 'name'].map(id => ({
+    value: id,
+    text: t('item-query.sort-options.options.' + id),
+  })),
+}
+
+const itemLevelMaximum = computed<number>({
+  get() {
+    return modes[SearchModes.ItemLevel].max
+  },
+  set(value) {
+    modes[SearchModes.ItemLevel].max = Math.max(Math.min(500, value), 0)
+  },
+})
+const itemLevelMinimum = computed<number>({
+  get() {
+    return modes[SearchModes.ItemLevel].min
+  },
+  set(value) {
+    modes[SearchModes.ItemLevel].min = Math.max(Math.min(500, value), 0)
+  },
+})
+
+const statsSearchResult = computed(() => {
+  const searchText = modes[SearchModes.Stat].statSearchText.toLowerCase()
+  return modes[SearchModes.Stat].stats.filter(stat => stat.text.toLowerCase().includes(searchText))
+})
+
+const validEquipments = computed(() => {
+  const validTypes = conditions.type.filter(type => type.selected)
+  if (validTypes.length === 0) {
+    validTypes.push({
+      id: 'avatar',
+      types: handleEquipmentTypes([EquipmentTypes.Avatar]),
+      selected: true,
     })
-    const handleEquipmentTypes = (opts) => {
-      opts = handleOptions(opts)
-      opts.forEach(opt => {
-        opt.imagePath = CharacterEquipment.getImagePath(opt.value)
-      })
-      return opts
-    }
-
-    const stats = [], statTypes = [StatTypes.Constant, StatTypes.Multiplier]
-    this.datasStore.Character.statList.forEach(stat => {
-      if (stat.hidden) return
-      statTypes.forEach(type => {
-        if (type === StatTypes.Multiplier && !stat.hasMultiplier)
-          return
-        stats.push({
-          origin: stat,
-          text: stat.title(type),
-          type,
-        })
-      })
+  }
+  const unknowObtain = conditions.obtains.find(obtain => obtain.value === 'unknow' && obtain.selected)
+  const validObtains = conditions.obtains.filter(obtain => obtain.value !== 'unknow' && obtain.selected)
+  return equipments.filter(equip => {
+    const checkType = validTypes.some(item => {
+      return item.types.some(_item => _item.value === equip.type)
     })
+    const checkObtain = (unknowObtain && equip.origin!.obtains.length === 0)
+      || validObtains.find(obtain => equip.origin!.obtains.find(eqObtain => eqObtain['type'] === obtain.value))
+    return checkType && checkObtain
+  })
+})
 
-    const handleCompareValue = v => /^-?\d+$/.test(v) ? parseFloat(v) : -99999
-
-    return {
-      state: {
-        currentMode: 'normal',
-        displayMode: 0,
-      },
-      menuVisible: {
-        conditionOptions: false,
-        sortOptions: false,
-      },
-      modes: {
-        'normal': {
-          icon: 'ic-round-menu-book',
-          targets: handleOptions(['name', 'material', 'obtain-name', 'map']),
-          optionsVisible: false,
-          searchText: '',
-        },
-        'stat': {
-          icon: 'mdi-script-outline',
-          stats,
-          statSearchText: '',
-          selectStatVisible: false,
-          currentStat: null,
-        },
-        'item-level': {
-          icon: 'jam-hammer',
-          min: '0',
-          max: '300',
-        },
-        dye: {
-          icon: 'ic-outline-palette',
-          searchText: '',
-        },
-      },
-      equipments,
-      sortOptions: {
-        currentSelected: 'default',
-        currentOrder: 'down',
-        global: {
-          'atk': (a, b) => {
-            const av = a.is === 'weapon' ? a.atk + 9999 : a.def,
-              bv = b.is === 'weapon' ? b.atk + 9999 : b.def
-            return av - bv
-          },
-          'def': (a, b) => {
-            const av = a.is === 'armor' ? a.def + 9999 : b.atk,
-              bv = b.is === 'armor' ? b.def + 9999 : b.atk
-            return av - bv
-          },
-          'stability': (a, b) => {
-            const av = a.is === 'weapon' ? a.stability : -1,
-              bv = b.is === 'weapon' ? b.stability : -1
-            if (av === -1 && bv === -1)
-              return this.sortOptions[this.currentMode].default(a, b)
-            return av - bv
-          },
-          'name':  (a, b) => a.name.localeCompare(b.name),
-        },
-        'normal': {
-          default: (a, b) => a.origin.id - b.origin.id,
-        },
-        'stat': {
-          default: (a, b) => {
-            const cs = this.modes.stat.currentStat
-            const av = handleCompareValue(this.findStat(cs, a.stats).value),
-              bv = handleCompareValue(this.findStat(cs, b.stats).value)
-            return av - bv
-          },
-        },
-        'item-level': {
-          default: (a, b) => {
-            const av = handleCompareValue(a.origin.recipe['item_level']),
-              bv = handleCompareValue(b.origin.recipe['item_level'])
-            return av - bv
-          },
-        },
-        'dye': {
-          default: (a, b) => a.origin.id - b.origin.id,
-        },
-      },
-      conditions: {
-        type: [{
-          id: 'main-weapon',
-          instance: MainWeapon,
-          types: handleEquipmentTypes(MainWeaponTypeList),
-          selected: true,
-        }, {
-          id: 'sub-weapon',
-          instance: [SubWeapon, SubArmor],
-          types: [
-            ...handleEquipmentTypes(SubWeaponTypeList),
-            ...handleEquipmentTypes(SubArmorTypeList),
-          ],
-          selected: true,
-        }, {
-          id: 'body-armor',
-          instance: BodyArmor,
-          types: null,
-          selected: true,
-        }, {
-          id: 'additional',
-          instance: AdditionalGear,
-          types: null,
-          selected: true,
-        }, {
-          id: 'special',
-          instance: SpecialGear,
-          types: null,
-          selected: true,
-        }],
-        obtains: handleOptions(['smith', 'boss', 'mini_boss', 'mobs', 'quest', 'box', 'exchange', 'other', 'unknow']),
-      },
-      consts: {
-        sortOrderOptions: ['down', 'up'].map(id => ({
-          value: id,
-          text: this.$lang('sort options/order/' + id),
-        })),
-        sortOptions: ['default', 'atk', 'def', 'stability', 'name'].map(id => ({
-          value: id,
-          text: this.$lang('sort options/options/' + id),
-        })),
-      },
+const allSearchResult = computed(() => {
+  if (state.currentMode === SearchModes.Normal) {
+    const searchText = modes[SearchModes.Normal].searchText.toLowerCase()
+    if (searchText === '') {
+      return validEquipments.value
     }
-  },
-  computed: {
-    itemLevelMaximum: {
-      get() {
-        return this.modes['item-level'].max
-      },
-      set(v) {
-        v = parseInt(v, 10)
-        this.modes['item-level'].max = Math.max(Math.min(500, v), 0)
-      },
-    },
-    itemLevelMinimum: {
-      get() {
-        return this.modes['item-level'].min
-      },
-      set(v) {
-        v = parseInt(v, 10)
-        this.modes['item-level'].min = Math.max(Math.min(500, v), 0)
-      },
-    },
-    checkMenuVisible() {
-      return Object.values(this.menuVisible).find(p => p)
-    },
-    currentMode: {
-      get() {
-        return this.state.currentMode
-      },
-      set(v) {
-        this.state.currentMode = v
-      },
-    },
-    displayMode: {
-      get() {
-        return this.state.displayMode
-      },
-      set(v) {
-        this.state.displayMode = v
-      },
-    },
-    statsSearchResult() {
-      const searchText = this.modes.stat.statSearchText.toLowerCase()
-      return this.modes.stat.stats.filter(stat => stat.text.toLowerCase().includes(searchText))
-    },
-    searchResult() {
-      let sr = this.allSearchResult.slice()
-      const mode = this.currentMode,
-        target = this.sortOptions.currentSelected
-      sr.sort(target === 'default' ? this.sortOptions[mode].default : this.sortOptions.global[target])
-
-      // because array.sort is in-place, give a new array to ensure data reactive
-      sr = this.sortOptions.currentOrder === 'down' ? sr.reverse() : sr.slice()
-
-      return sr
-    },
-    allSearchResult() {
-      if (this.currentMode === 'normal') {
-        const searchText = this.modes.normal.searchText.toLowerCase()
-        if (searchText === '')
-          return this.validEquipments
-        const targets = this.modes.normal.targets
-          .filter(p => p.selected)
-          .map(p => p.value)
-        return this.validEquipments
-          .filter(p => {
-            const eq = p.origin
-            return targets.find(q => {
-              if (q === 'name')
-                return eq.name.toLowerCase().includes(searchText)
-              else if (q === 'material')
-                return eq.recipe && eq.recipe['materials'] &&
-                  eq.recipe['materials'].find(c => c.name.toLowerCase().includes(searchText))
-              else if (q === 'obtain-name')
-                return eq.obtains.find(b => b['name']?.toLowerCase().includes(searchText) ?? false)
-              else if (q === 'map')
-                return eq.obtains.find(b => b['map']?.toLowerCase().includes(searchText) ?? false)
-            })
-          })
-      }
-      else if (this.currentMode === 'stat') {
-        const searchStat = this.modes.stat.currentStat
-        if (!searchStat) return []
-
-        return this.validEquipments.filter(p => this.findStat(searchStat, p.stats))
-      }
-      else if (this.currentMode === 'item-level') {
-        const min = this.modes['item-level'].min || 0,
-          max = this.modes['item-level'].max || 999
-
-        return this.validEquipments.filter(p => {
-          if (!p.origin.recipe) return false
-          const v = parseInt(p.origin.recipe['item_level'], 10)
-          if (Number.isNaN(v)) return
-          return v >= min && v <= max
-        })
-      }
-      else if (this.currentMode === 'dye') {
-        const searchText = this.modes.dye.searchText
-        if (searchText === '')
-          return []
-        return this.validEquipments.filter(p => this.findObtainByDye(searchText, p).length > 0)
-      }
-      return []
-    },
-    validEquipments() {
-      const validTypes = this.conditions.type.filter(type => type.selected)
-      if (validTypes.length === 0) {
-        validTypes.push({
-          id: 'avatar',
-          instance: Avatar,
-          types: null,
-          selected: true,
-        })
-      }
-      const unknowObtain = this.conditions.obtains.find(obtain => obtain.value === 'unknow' && obtain.selected)
-      const validObtains = this.conditions.obtains.filter(obtain => obtain.value !== 'unknow' && obtain.selected)
-      return this.equipments.filter(p => {
-        const checkType = validTypes.find(type => {
-          const checkInstance = !Array.isArray(type.instance) ?
-            p instanceof type.instance :
-            type.instance.find(a => p instanceof a)
-          if (checkInstance) {
-            if (type.types === null)
-              return true
-            const t = type.types.find(a => p.type === a.value)
-            return t && t.selected
+    const targets = modes[SearchModes.Normal].targets
+      .filter(opt => opt.selected)
+      .map(opt => opt.value)
+    return validEquipments.value
+      .filter(equip => {
+        const origin = equip.origin!
+        return targets.find(target => {
+          if (target === 'name') {
+            return origin.name.toLowerCase().includes(searchText)
+          } else if (target === 'material') {
+            return origin.recipe && origin.recipe['materials'] &&
+              origin.recipe['materials'].find(item => item.name.toLowerCase().includes(searchText))
+          } else if (target === 'obtain-name') {
+            return origin.obtains.find(obtain => obtain['name']?.toLowerCase().includes(searchText) ?? false)
+          } else if (target === 'map') {
+            return origin.obtains.find(obtain => obtain['map']?.toLowerCase().includes(searchText) ?? false)
           }
-          return false
         })
-        const checkObtain = (unknowObtain && p.origin.obtains.length === 0)
-          || validObtains.find(obtain => p.origin.obtains.find(a => a['type'] === obtain.value))
-        return checkType && checkObtain
       })
-    },
-  },
-  beforeCreate() {
-    init()
-  },
-  methods: {
-    findObtainByDye(text, eq) {
-      text = text.toLowerCase()
-      return eq.origin.obtains.filter(b => b['dye'] && b['dye'].toLowerCase().includes(text))
-    },
-    selectSortOption(id) {
-      this.sortOptions.currentSelected = id
-    },
-    toggleMenuVisible(id) {
-      const o = this.menuVisible
-      Object.entries(o).forEach(([key]) => o[key] = key === id ? !o[key] : false)
-    },
-    findStat(target, stats) {
-      return stats.find(stat => stat.baseName === target.origin.baseName &&
-        stat.type === target.type)
-    },
-    switchDisplay() {
-      this.displayMode = this.displayMode == 0 ? 1 : 0
-    },
-    selectStat(stat) {
-      this.modes.stat.currentStat = stat
-      this.toggleSelectStatVisible(false)
-    },
-    toggleSelectStatVisible(force) {
-      force = force !== undefined ? !this.modes.stat.selectStatVisible : force
-      this.modes.stat.selectStatVisible = force
-    },
-    selectMode(id) {
-      this.currentMode = id
-      this.displayMode = 0
-    },
-    toggleSelected(target) {
-      target.selected = !target.selected
-    },
-    selectAll(list) {
-      list.forEach(p => p.selected = true)
-    },
-    cancelAll(list) {
-      list.forEach(p => p.selected = false)
-    },
-  },
+  } else if (state.currentMode === SearchModes.Stat) {
+    const searchStat = modes[SearchModes.Stat].currentStat
+    if (!searchStat) {
+      return []
+    }
+    return validEquipments.value.filter(equip => findStat(searchStat, equip.stats))
+  } else if (state.currentMode === SearchModes.ItemLevel) {
+    const min = modes[SearchModes.ItemLevel].min || 0,
+      max = modes[SearchModes.ItemLevel].max || 999
+
+    return validEquipments.value.filter(equip => {
+      if (!equip.origin!.recipe) {
+        return false
+      }
+      const value = equip.origin!.recipe?.['item_level'] ?? 0
+      return value >= min && value <= max
+    })
+  } else if (state.currentMode === SearchModes.Dye) {
+    const searchText = modes[SearchModes.Dye].searchText
+    if (searchText === '') {
+      return []
+    }
+    return validEquipments.value.filter(equip => findObtainByDye(searchText, equip).length > 0)
+  }
+  return []
+})
+
+const searchResult = computed(() => {
+  let sr = allSearchResult.value.slice()
+  const mode = state.currentMode,
+    target = sortState.currentSelected
+  sr.sort(target === 'default' ? sortOptions[mode].default : sortOptions.global[target])
+  return sortState.currentOrder === 'down' ? sr.reverse() : sr.slice()
+})
+
+const toggleSelected = (item: CommonOption) => {
+  item.selected = !item.selected
+}
+const selectAll = (list: CommonOption[]) => {
+  list.forEach(item => item.selected = true)
+}
+const cancelAll = (list: CommonOption[]) => {
+  list.forEach(item => item.selected = false)
+}
+
+const selectStat = (stat: StatOption) => {
+  modes[SearchModes.Stat].currentStat = stat
+  toggle('modals/selecteStat', false)
+}
+
+const selectMode = (id: SearchModes)  => {
+  state.currentMode = id
+  state.displayMode = 0
 }
 </script>
 
 <style lang="postcss" scoped>
 .search-result {
   min-height: 70vh;
-}
-
-.bottom-menu {
-  position: sticky;
-  bottom: 0.8rem;
-  padding: 0 0.6rem;
-  z-index: 10;
-
-  & > .top-content {
-    display: flex;
-    align-items: flex-end;
-    width: 100%;
-  }
-}
-
-.main-menu {
-  border: 0.1rem solid var(--primary-light);
-  border-radius: 0.5rem;
-  padding: 1rem 1.4rem;
-  padding-bottom: 2rem;
-  background-color: var(--white);
-  max-height: 70vh;
-  overflow-y: auto;
-
-  & > .content {
-    & > .column {
-      & .options-title {
-        margin-right: 1rem;
-        cursor: pointer;
-      }
-      & > .normal-title {
-        margin-bottom: 0.3rem;
-      }
-      & + .column {
-        margin-top: 0.8rem;
-      }
-      & > .options {
-        padding: 0 0.6rem;
-      }
-    }
-  }
-}
-
-.menu-btn {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0.5rem;
-  flex-shrink: 0;
-  z-index: 11;
-
-  @apply border-1 opacity-70 duration-300;
-
-  &.switch-display {
-    background-color: var(--white);
-    border-color: var(--primary-orange);
-  }
-
-  &:hover {
-    opacity: 1;
-  }
 }
 
 .mode-options-container {

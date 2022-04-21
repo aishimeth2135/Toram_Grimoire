@@ -75,7 +75,7 @@
       <div class="space-y-3">
         <div class="p-4 bg-white border-1 border-light-2">
           <div>
-            <cy-icon-text icon="carbon:location-current" size="small" text-color="purple">
+            <cy-icon-text icon="carbon:location-current" small text-color="purple">
               {{ t('character-simulator.equipment-basic-editor.edit-stats.current-stats') }}
             </cy-icon-text>
           </div>
@@ -95,7 +95,7 @@
         </div>
         <div v-if="appendedStatOptions.length !== 0" class="p-4 bg-white border-1 border-light-2">
           <div>
-            <cy-icon-text icon="ic-round-add" size="small" text-color="purple">
+            <cy-icon-text icon="ic-round-add" small text-color="purple">
               {{ t('character-simulator.equipment-basic-editor.edit-stats.appended-stats') }}
             </cy-icon-text>
           </div>
@@ -111,7 +111,7 @@
         </div>
         <div v-if="removedStatOptions.length !== 0" class="p-4 bg-white border-1 border-light-2">
           <div>
-            <cy-icon-text icon="ic-round-delete" size="small" text-color="purple">
+            <cy-icon-text icon="ic-round-delete" small text-color="purple">
               {{ t('character-simulator.equipment-basic-editor.edit-stats.removed-stats') }}
             </cy-icon-text>
           </div>

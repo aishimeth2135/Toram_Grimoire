@@ -14,7 +14,7 @@
           v-if="subButtonAvailable"
           icon="mdi:select-compare"
           class="toggle-sub-button"
-          size="small"
+          small
           @click="toggle('contents/sub')"
         />
       </div>

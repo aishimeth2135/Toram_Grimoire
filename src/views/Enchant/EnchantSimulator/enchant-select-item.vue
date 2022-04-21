@@ -29,7 +29,7 @@
       />
       <cy-icon-text
         class="w-full"
-        size="small"
+        small
         text-color="purple"
       >
         {{ category.origin.title }}

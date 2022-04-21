@@ -26,12 +26,9 @@ export default defineComponent({
       default: 'normal',
       validator: (value: string) => ['normal', 'item'].includes(value),
     },
-    size: {
-      type: String as PropType<'normal' | 'small'>,
-      default: 'normal',
-      validator: (value: string) => {
-        return ['normal', 'small'].includes(value)
-      },
+    small: {
+      type: Boolean,
+      default: false,
     },
     iconWidth: {
       type: String,
@@ -56,7 +53,6 @@ export default defineComponent({
     const {
       iconWidth,
       type,
-      size,
       alignV,
       displayBlock,
     } = toRefs(props)
@@ -78,7 +74,7 @@ export default defineComponent({
       }
       return {
         'is-item': type.value === 'item',
-        ['size-' + size.value]: true,
+        'size-small': props.small,
         [alignVMapping[alignV.value]]: true,
         'flex': displayBlock.value,
         'inline-flex': !displayBlock.value,
@@ -100,6 +96,7 @@ export default defineComponent({
   --icon-margin-top-fix: 0;
   --text-color: var(--color-set--text-color);
   --text-margin-left: 0.625rem;
+  font-size: 1rem;
 
   @apply inline-flex items-center;
 
@@ -124,9 +121,6 @@ export default defineComponent({
     }
   }
 
-  &.size-normal {
-    font-size: 1rem;
-  }
   &.size-small {
     --icon-width: 0.875rem;
     --text-margin-left: 0.375rem;

@@ -175,8 +175,6 @@ rules:
     - error
     - presets:
         - all
-      custom:
-        - RegisterLang
   vue/v-on-function-call:
     - error
     - never

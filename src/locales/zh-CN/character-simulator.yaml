@@ -84,6 +84,22 @@ skill-build:
     target_level: 目标等级
   no-any-build-tips: 还没有建立任何配置喔～请先透过左上方的选单进入「技能模拟器」，建立新的技能配置。
   no-any-skill-tips: 这里还没有任何技能喔～请先透过左上方的选单进入「技能模拟器」，来进行技能的配点。请注意，要对角色能力有提升的技能才会显示在这里。
+character-damage:
+  title: 伤害
+  target-options-title: 目标数值设定
+  options-base-title: 基本设定
+  element-none: 无设定
+  no-result: 伤害公式待更新
+  range-damage-title: 目标距离判定
+enemy-elements:
+  title: 目标属性
+  neutral: 无属性
+  fire: 火属性
+  water: 水属性
+  wind: 风属性
+  earth: 地属性
+  light: 光属性
+  dark: 暗属性
 character-stat-detail:
   base-value: 基础值
   init-value: 初始值

@@ -8,14 +8,14 @@
             icon="bx-bxs-circle"
             class="mr-2"
             icon-color="water-blue"
-            size="small"
+            small
           >
             {{ t('skill-query.branch.skill-area.point: character') }}
           </cy-icon-text>
           <cy-icon-text
             icon="bx-bxs-circle"
             icon-color="red"
-            size="small"
+            small
           >
             {{ t('skill-query.branch.skill-area.point: target') }}
           </cy-icon-text>

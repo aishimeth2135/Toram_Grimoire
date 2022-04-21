@@ -8,7 +8,7 @@
     <div class="border-b pl-2 flex items-center py-0.5" :class="[mainBorderColor]">
       <cy-icon-text
         icon="bx-bxs-book-content"
-        size="small"
+        small
         :text-color="mainTextColor"
         :icon-color="mainTextColor"
       >
@@ -81,14 +81,14 @@
       </template>
       <div v-else-if="step.index === 0" class="pt-3 pb-2 px-2">
         <div>
-          <cy-icon-text size="small" text-color="purple">
+          <cy-icon-text small text-color="purple">
             {{ t('enchant-simulator.step.button-caption-title') }}
           </cy-icon-text>
         </div>
         <div class="pl-2">
           <div>
             <cy-icon-text
-              size="small"
+              small
               icon="ic-round-add-circle-outline"
               icon-color="water-blue"
             >
@@ -97,7 +97,7 @@
           </div>
           <div>
             <cy-icon-text
-              size="small"
+              small
               icon="ic-round-add-circle-outline"
               icon-color="red"
             >
@@ -106,7 +106,7 @@
           </div>
           <div>
             <cy-icon-text
-              size="small"
+              small
               icon="ic-outline-near-me"
               icon-color="blue-green"
             >
@@ -115,7 +115,7 @@
           </div>
           <div>
             <cy-icon-text
-              size="small"
+              small
               icon="ant-design:star-outlined"
               icon-color="orange"
             >

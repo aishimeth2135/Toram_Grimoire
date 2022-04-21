@@ -15,7 +15,7 @@
         <cy-icon-text icon="mdi:image-outline" icon-width="3rem" />
       </div>
       <div class="p-3 border border-light-2 mt-6" style="max-width: 27.5rem">
-        <cy-icon-text icon="ic:outline-info" size="small" align-v="start" text-color="light-2">
+        <cy-icon-text icon="ic:outline-info" small align-v="start" text-color="light-2">
           {{ t('skill-simulator.export-image.preview-ios-tips') }}
         </cy-icon-text>
       </div>

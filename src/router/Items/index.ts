@@ -16,7 +16,7 @@ export default {
   path: '/items',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
-    PrepareLocaleInit(LocaleViewNamespaces.CrystalQuery)
+    PrepareLocaleInit(LocaleViewNamespaces.ItemQuery, LocaleViewNamespaces.CrystalQuery)
     ViewInit(DataStoreIds.Stats, DataStoreIds.Items).then(next)
   },
   meta: {
