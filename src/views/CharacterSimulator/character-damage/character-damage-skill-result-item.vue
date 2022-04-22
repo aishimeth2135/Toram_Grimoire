@@ -175,6 +175,6 @@ const calculationItems = computed(() => {
 
 const statExtraContainers = computed(() => {
   return props.result.suffixContainers
-    .filter(suf => suf.branchItem.checkBranchName(SkillBranchNames.Extra) && suf.statContainers.length > 0)
+    .filter(suf => suf.branchItem.is(SkillBranchNames.Extra) && suf.statContainers.length > 0)
 })
 </script>

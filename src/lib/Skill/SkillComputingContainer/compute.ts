@@ -30,6 +30,13 @@ function computeBranchValue(str: string, helper: ComputedBranchHelperResult): st
   return handleFormula(str, { vars, texts }) as string
 }
 
+function handleDisplayValue(container: ResultContainer, helper: ComputedBranchHelperResult): void {
+  if (helper.branchItem.hasAttr(`${container.key}.display`)) {
+    const displayValue = computeBranchValue(helper.branchItem.attr(`${container.key}.display`), helper)
+    container.initDisplayValue(displayValue)
+  }
+}
+
 interface HighlightTextOptionsDetail {
   beforeHighlight?: (current: string) => string | string;
 }
@@ -264,6 +271,7 @@ function handleBranchValueAttrs<AttrMap extends HandleBranchValueAttrsMap>(
     }
     const options = (attrMap[attrKey] || {}) as HandleBranchValueAttrOptions
     const container = new ResultContainer(attrKey as string, originalFormula, attrValues[attrKey])
+    handleDisplayValue(container, helper)
     handleHighlight(container, options)
 
     attrResult[attrKey] = container
@@ -338,6 +346,7 @@ function handleBranchStats(helper: ComputedBranchHelperResult, stats: StatComput
   return newStats.map(stat => {
     const originalStat = stats.find(_stat => _stat.equals(stat)) as StatComputed
     const container = new ResultContainerStat(originalStat, stat)
+    handleDisplayValue(container, helper)
     const sign = isNumberString(container.value) && parseFloat(stat.value) < 0 ? '' : '+'
     const showData = stat.getShowData()
     handleHighlight(container, {

@@ -175,6 +175,7 @@ function separateSuffixBranches(effectItem: SkillEffectItemBase) {
     [SkillBranchNames.Passive]: [SkillBranchNames.Extra],
     [SkillBranchNames.Heal]: [SkillBranchNames.Extra],
     [SkillBranchNames.List]: [SkillBranchNames.List],
+    [SkillBranchNames.Table]: [SkillBranchNames.Row],
     '@global': [SkillBranchNames.FormulaExtra, SkillBranchNames.Group],
   } as Record<SuffixBranchListKey, SkillBranchNames[]>
 
@@ -198,6 +199,7 @@ function separateSuffixBranches(effectItem: SkillEffectItemBase) {
     SkillBranchNames.Reference,
     SkillBranchNames.Import,
     SkillBranchNames.Basic,
+    SkillBranchNames.Table,
   ]
   const isMainBranch = (_bch: SkillBranchItem) => mainBranchNameList.includes(_bch.name)
   const resBranches: SkillBranchItem[] = []
@@ -261,7 +263,7 @@ function handleVirtualBranches(effectItem: SkillEffectItemBase) {
 }
 
 export function initBranchesPostpone(effectItem: SkillEffectItem) {
-  const allStackBranches = effectItem.branchItems.filter(_bch => _bch.checkBranchName(SkillBranchNames.Stack))
+  const allStackBranches = effectItem.branchItems.filter(_bch => _bch.is(SkillBranchNames.Stack))
   const postponeVarList = ['$STR', '$INT', '$AGI', '$VIT', '$DEX', '$guard_power']
   const checkStatsContainsPostponeVar = (stats: StatComputed[]) => stats.some(_stat => postponeVarList.some(stat => _stat.value.includes(stat)))
   effectItem.branchItems.forEach(bch => {
@@ -270,7 +272,7 @@ export function initBranchesPostpone(effectItem: SkillEffectItem) {
       bch.postpone = true
     } else if (checkStatsContainsPostponeVar(bch.stats) || bch.suffixBranches.some(suf => checkStatsContainsPostponeVar(suf.stats))) {
       bch.postpone = true
-    } else if (bch.checkBranchName(SkillBranchNames.Damage)) {
+    } else if (bch.is(SkillBranchNames.Damage)) {
       bch.postpone = true
     }
   })

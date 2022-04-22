@@ -241,7 +241,7 @@ export default function setupDamageCalculation(
       } as SkillProperties
     })
 
-    const baseSuffixBranch = computed(() => container.value.branchItem.suffixBranches.find(suf => suf.checkBranchName(SkillBranchNames.Base)))
+    const baseSuffixBranch = computed(() => container.value.branchItem.suffixBranches.find(suf => suf.is(SkillBranchNames.Base)))
 
     const varsMap = computed(() => {
       let atkRate = 100

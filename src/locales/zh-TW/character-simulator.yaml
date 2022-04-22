@@ -83,7 +83,6 @@ skill-build:
     target_def: 目標防禦
     target_level: 目標等級
   no-any-build-tips: 還沒有建立任何配置喔～請先透過左上方的選單進入「技能模擬器」，建立新的技能配置。
-  no-any-skill-tips: 這裡還沒有任何技能喔～請先透過左上方的選單進入「技能模擬器」，來進行技能的配點。請注意，要對角色能力有提升的技能才會顯示在這裡。
 character-damage:
   title: 傷害
   target-options-title: 目標數值設定
@@ -159,14 +158,12 @@ save-load-control:
   deleta-all-data-success-tips: 成功刪除角色模擬器所有資料，系統也已關閉自動存檔功能。請重新整理網頁。
   deleta-all-data-counter-title: 計數器
   deleta-all-data-caption:
-    - 在某些情況下，角色模擬器的檔案可能毀損，導致系統無法正常運行。使用下方的按鈕可以刪除角色模擬器所有資料。自動存檔功能也將暫時失效，意即當前的資料將不會自動儲存。
+    - >-
+      在某些情況下，角色模擬器的檔案可能毀損，導致系統無法正常運行。使用下方的按鈕可以刪除角色模擬器所有資料。自動存檔功能也將暫時失效，意即當前的資料將不會自動儲存。
     - 請將下方的計數器數值調整到10，刪除按鈕就會出現。
     - 將資料刪除成功後，請立即重新整理，來讓系統重新初始化。
   export-build: 匯出配置
 main-tips:
-  current-character-not-exist: 發生了一些小錯誤，導致無法獲取當前的角色資訊，介面也無法正常顯示......<br />請點選下面的按鈕來建立一個新的角色，以復原介面(_ _)
   no-equipment-selected: 這個欄位是空的
-  no-eligible-equipments-found: 沒有符合條件的裝備～點擊上面的按鈕來新增裝備。
   no-result: 找不到任何結果0.0
-  clear-equipments-completed-tips: 清除成功。
   character-stats-compare-no-result: 沒有任何能力值變化。

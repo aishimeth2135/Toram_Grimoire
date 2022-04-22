@@ -49,6 +49,10 @@ class ResultContainer extends ResultContainerBase {
   override handle(handler: ResultHandler) {
     this._result = handler(this._result, this.suffix)
   }
+
+  initDisplayValue(value: string) {
+    this._result = value
+  }
 }
 
 class ResultContainerStat extends ResultContainer {

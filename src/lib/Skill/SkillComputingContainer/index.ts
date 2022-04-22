@@ -366,7 +366,7 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
     this._attrs = {}
   }
 
-  checkBranchName(name: SkillBranchNames) {
+  is(name: SkillBranchNames) {
     return this.name === name
   }
 
