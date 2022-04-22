@@ -34,8 +34,8 @@ export default defineConfig(({ mode }) => {
     }),
     createHtmlPlugin({
       minify: true,
-      entry: 'src/main.ts',
-      template: 'public/index.html',
+      entry: '/src/main.ts',
+      template: 'src/index.html',
       inject: {
         data: {
           envBaseUrl: base,
