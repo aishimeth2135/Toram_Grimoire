@@ -14,9 +14,12 @@
           {{ equipmentTypeText }}
         </cy-button-border>
       </div>
-      <div class="mt-3">
+      <div v-if="equipment" class="mt-3">
         <CharacterEquipmentBasicEditor :equipment="equipment" />
       </div>
+      <cy-default-tips>
+        {{ t('character-simulator.equipment-basic-editor.no-equipment-type-selected-tips') }}
+      </cy-default-tips>
       <cy-modal v-model:visible="modals.selectType" footer>
         <template #title>
           <cy-icon-text icon="gg-shape-square">
@@ -51,7 +54,7 @@
                 @click="selectEquipmentType(category.id, null)"
               >
                 <cy-icon-text icon="gg-shape-square">
-                  {{ t('common.Equipment.field.' + category.id) }}
+                  {{ t(`common.Equipment.field.${category.id}`) }}
                 </cy-icon-text>
               </cy-list-item>
             </template>

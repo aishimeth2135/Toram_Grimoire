@@ -74,6 +74,7 @@ import SkillBranchProration from './skill-branch-proration.vue'
 import SkillBranchBasic from './skill-branch-basic.vue'
 import SkillBranchReference from './skill-branch-reference.vue'
 import SkillEquipmentButton from './skill-equipment-button.vue'
+import skillBranchTable from './skill-branch-table.vue'
 
 import { setupOtherEffectBranches } from './setup'
 
@@ -94,24 +95,26 @@ const { contents, toggle } = ToggleService({
 })
 
 const currentComponent = computed(() => {
-  if (branchItem.value.name === SkillBranchNames.Damage) {
+  if (branchItem.value.is(SkillBranchNames.Damage)) {
     return SkillBranchDamage
-  } else if (branchItem.value.name === SkillBranchNames.Effect) {
+  } else if (branchItem.value.is(SkillBranchNames.Effect)) {
     return SkillBranchEffect
-  } else if (branchItem.value.name === SkillBranchNames.Heal) {
+  } else if (branchItem.value.is(SkillBranchNames.Heal)) {
     return SkillBranchHeal
-  } else if (branchItem.value.name === SkillBranchNames.Passive) {
+  } else if (branchItem.value.is(SkillBranchNames.Passive)) {
     return SkillBranchPassive
-  } else if (branchItem.value.name === SkillBranchNames.Stack) {
+  } else if (branchItem.value.is(SkillBranchNames.Stack)) {
     return SkillBranchStack
-  } else if (branchItem.value.name === SkillBranchNames.Proration) {
+  } else if (branchItem.value.is(SkillBranchNames.Proration)) {
     return SkillBranchProration
-  } else if (branchItem.value.name === SkillBranchNames.List) {
+  } else if (branchItem.value.is(SkillBranchNames.List)) {
     return SkillBranchList
-  } else if (branchItem.value.name === SkillBranchNames.Basic) {
+  } else if (branchItem.value.is(SkillBranchNames.Basic)) {
     return SkillBranchBasic
-  } else if (branchItem.value.name === SkillBranchNames.Reference) {
+  } else if (branchItem.value.is(SkillBranchNames.Reference)) {
     return SkillBranchReference
+  } else if (branchItem.value.is(SkillBranchNames.Table)) {
+    return skillBranchTable
   }
   return SkillBranchText
 })

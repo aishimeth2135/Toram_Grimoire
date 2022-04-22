@@ -18,6 +18,10 @@ export const enum SkillBranchNames {
   Import = 'import',
 
   //
+  Table = 'table',
+  Row = 'row',
+
+  //
   Basic = 'basic',
 
   // main branch: @damage, @effect, @next, @passive

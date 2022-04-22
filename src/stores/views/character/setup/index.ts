@@ -269,10 +269,10 @@ export function setupCharacterSkills(
       // active
       const checkBranchStats = (stats: StatComputed[]) => !handleOptions.value.skillDisplayStatsOnly || stats.length !== 0
       const checkActive = (bch: SkillBranchItem) => {
-        if (!checkPostpone(bch) || bch.checkBranchName(SkillBranchNames.Damage)) {
+        if (!checkPostpone(bch) || bch.is(SkillBranchNames.Damage)) {
           return false
         }
-        if (bch.checkBranchName(SkillBranchNames.Effect) && checkBranchStats(bch.stats)) {
+        if (bch.is(SkillBranchNames.Effect) && checkBranchStats(bch.stats)) {
           return true
         }
         if (bch.suffixBranches.some(suffixBranchFilter)) {
@@ -318,7 +318,7 @@ export function setupCharacterSkills(
             .map(_bch => StackHandler(_bch)) ?? []
         }))
         basicContainers.set(skill, computed(() => {
-          const basicBranch = currentEffectItem.value?.branchItems.find(bch => bch.checkBranchName(SkillBranchNames.Basic))
+          const basicBranch = currentEffectItem.value?.branchItems.find(bch => bch.is(SkillBranchNames.Basic))
           return basicBranch ? BasicHandler(basicBranch) : null
         }))
       }
