@@ -12,6 +12,7 @@ import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import { Stat, StatComputed, StatRestriction } from '@/lib/Character/Stat'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { FoodBuild } from '@/lib/Character/Food'
+import { StatTypes } from '@/lib/Character/Stat/enums'
 
 import EffectHandler from '@/views/SkillQuery/skill/branch-handlers/EffectHandler'
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/utils/DisplayDataContainer'
@@ -47,6 +48,7 @@ interface CharacterSetupOptions {
 
 interface SkillSetupPostponeOptions {
   getCharacterStatValue: (id: string) => number;
+  getCharacterPureStatValue: (id: string) => number;
   getSkillBranchItemState: (skillBranch: SkillBranch) => SkillBranchItemState;
 }
 interface SkillBranchItemState {
@@ -63,13 +65,14 @@ export function setupCharacterSkills(
   const isPostpone = !!postponeOptions
 
   const computingContainer: Ref<SkillComputingContainer> = ref(new SkillComputingContainer())
-  computingContainer.value.varGetters.skillLevel = skill => {
+  const getSkillLevel = (skill: Skill) => {
     if (!skillBuild.value) {
       return 0
     }
     const state = skillBuild.value.getSkillState(skill)
     return Math.max(state.level, state.starGemLevel)
   }
+  computingContainer.value.varGetters.skillLevel = getSkillLevel
   computingContainer.value.varGetters.characterLevel = () => character.value?.level ?? 0
 
   const extendVars = computed(() => {
@@ -107,7 +110,16 @@ export function setupCharacterSkills(
     if (!character.value) {
       return { vars: {}, texts: {} }
     }
-    return { vars: extendVars.value, texts: {} }
+    return {
+      vars: extendVars.value,
+      texts: {},
+      methods: {
+        getSkillLevel: (skillId: string) => {
+          const skill = Grimoire.Skill.skillRoot.findSkillById(skillId)
+          return skill ? getSkillLevel(skill) : 0
+        },
+      },
+    }
   })
 
   const getFormulaExtraValueVars = computed(() => {
@@ -167,6 +179,10 @@ export function setupCharacterSkills(
           { stability: 0, atk: 0 },
         'stat': (id: string) => {
           const getter = postponeOptions?.getCharacterStatValue
+          return getter ? getter(id) : 0
+        },
+        'pureStat': (id: string) => {
+          const getter = postponeOptions?.getCharacterPureStatValue
           return getter ? getter(id) : 0
         },
       },
@@ -666,7 +682,10 @@ export function setupCharacterStats(
   }
 
   const baseResults = setupResults()
-  const { categoryResults: _characterStatCategoryResults } = baseResults
+  const {
+    categoryResults: _characterStatCategoryResults,
+    characterPureStats: _characterPureStats,
+  } = baseResults
 
   const {
     allValidSkillsStats: postponedAllValidSkillsStats,
@@ -689,6 +708,17 @@ export function setupCharacterStats(
           return false
         })
         return find ? find.resultValue : 0
+      },
+      getCharacterPureStatValue: (id: string) => {
+        let type = StatTypes.Constant
+        if (id.charAt(id.length - 1) === '%') {
+          type = StatTypes.Multiplier
+          id = id.slice(0, id.length - 1)
+        } else if (id.charAt(id.length - 1) === '~') {
+          type = StatTypes.Total
+          id = id.slice(0, id.length - 1)
+        }
+        return _characterPureStats.value.find(stat => stat.baseName === id && stat.type === type)?.value ?? 0
       },
       getSkillBranchItemState: skillSetupDatas.getSkillBranchItemState,
     },

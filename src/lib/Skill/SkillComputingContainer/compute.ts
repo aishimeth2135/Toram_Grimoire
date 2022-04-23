@@ -1,12 +1,11 @@
-import { handleFormula, HandleFormulaTexts, HandleFormulaVars } from '@/shared/utils/data'
+import { handleFormula, HandleFormulaMethods, HandleFormulaTexts, HandleFormulaVars } from '@/shared/utils/data'
 import { isNumberString } from '@/shared/utils/string'
 import Grimoire from '@/shared/Grimoire'
 
 import { StatComputed } from '@/lib/Character/Stat'
 
 import { SkillBranchItem, SkillBranchItemBaseChilds, SkillBranchItemSuffix } from '.'
-import { ResultContainerBase, ResultContainer, ResultContainerStat, TextResultContainer } from './ResultContainer'
-import type { TextResultContainerParseResult } from './ResultContainer'
+import { ResultContainerBase, ResultContainer, ResultContainerStat, TextResultContainer, TextResultContainerParseResult } from './ResultContainer'
 import { FormulaDisplayModes } from './enums'
 import { SkillBranchNames } from '../Skill/enums'
 
@@ -14,6 +13,7 @@ function computeBranchValue(str: string, helper: ComputedBranchHelperResult): st
   const {
     vars,
     texts,
+    methods,
     handleFormulaExtra,
   } = helper
   if (typeof str !== 'string') {
@@ -27,7 +27,7 @@ function computeBranchValue(str: string, helper: ComputedBranchHelperResult): st
     .replace(/stack(?!\[)/g, 'stack[0]')
 
   str = handleFormulaExtra(str)
-  return handleFormula(str, { vars, texts }) as string
+  return handleFormula(str, { vars, texts, methods }) as string
 }
 
 function handleDisplayValue(container: ResultContainer, helper: ComputedBranchHelperResult): void {
@@ -67,6 +67,7 @@ function handleHighlight(container: ResultContainerBase, options: HighlightTextO
 interface ComputedBranchHelperResult {
   vars: HandleFormulaVars;
   texts: HandleFormulaTexts;
+  methods: HandleFormulaMethods;
   branchItem: SkillBranchItemBaseChilds;
   handleFormulaExtra: (formula: string) => string;
   formulaDisplayMode: FormulaDisplayModes;
@@ -93,11 +94,17 @@ function computedBranchHelper(branchItem: SkillBranchItemBaseChilds, values: str
   const extendsDatas = {
     vars: { ...handleFormulaExtends.vars },
     texts: { ...handleFormulaExtends.texts },
+    methods: {
+      getSkillLevel: () => 0,
+    },
   }
   branchItem.belongContainer.handleFormulaDynamicExtends.forEach(getter => {
     const data = getter()
     Object.assign(extendsDatas.vars, data.vars)
     Object.assign(extendsDatas.texts, data.texts)
+    if (data.methods) {
+      Object.assign(extendsDatas.methods, data.methods)
+    }
   })
 
   if (formulaDisplayMode === 'original-formula') {
@@ -203,6 +210,7 @@ function computedBranchHelper(branchItem: SkillBranchItemBaseChilds, values: str
   return {
     vars,
     texts,
+    methods: extendsDatas.methods,
     handleFormulaExtra: (str) => {
       const getFormulaExtraValue = branchItem.belongContainer.config.getFormulaExtraValue
       if (!getFormulaExtraValue || !formulaExtra) {
@@ -280,32 +288,27 @@ function handleBranchValueAttrs<AttrMap extends HandleBranchValueAttrsMap>(
   return attrResult
 }
 
-function computedBranchTextAttrs<Key extends string>(
-  helper: ComputedBranchHelperResult,
-  attrs: Record<string, string>,
-  attrKeys: Key[],
-): Record<Key, TextResultContainerParseResult> {
-  const attrValues = {} as Record<Key, TextResultContainerParseResult>
-  attrKeys.forEach(attrKey => {
-    const textStr = attrs[attrKey]
-    if (textStr === undefined) {
-      attrValues[attrKey] = {
-        containers: [],
-        parts: ['0'],
-      }
-      return
-    }
-    const parseResult = TextResultContainer.parse(attrKey, textStr, value => computeBranchValue(value, helper))
-    attrValues[attrKey] = parseResult
-  })
-
-  return attrValues
-}
 interface HandleBranchTextAttrsMap {
   [key: string]: null;
 }
 type HandleBranchTextAttrsResult<AttrMap extends HandleBranchValueAttrsMap> = {
   [key in keyof AttrMap]: TextResultContainer;
+}
+function computedBranchText(
+  helper: ComputedBranchHelperResult,
+  attrKey: string,
+  attrValue: string | undefined,
+) {
+  const textStr = attrValue
+  if (textStr === undefined) {
+    const _parseResult = {
+      containers: [],
+      parts: ['0'],
+    } as TextResultContainerParseResult
+    return new TextResultContainer(attrKey as string, '0', '0', _parseResult)
+  }
+  const parseResult = TextResultContainer.parse(attrKey, textStr, value => computeBranchValue(value, helper))
+  return new TextResultContainer(attrKey as string, textStr, textStr, parseResult)
 }
 function handleBranchTextAttrs<AttrMap extends HandleBranchTextAttrsMap>(
   helper: ComputedBranchHelperResult,
@@ -313,19 +316,11 @@ function handleBranchTextAttrs<AttrMap extends HandleBranchTextAttrsMap>(
   attrMap: AttrMap,
 ): HandleBranchTextAttrsResult<AttrMap> {
   const attrKeys = Object.keys(attrMap) as (keyof AttrMap)[]
-  const attrValues = computedBranchTextAttrs(helper, attrs, attrKeys as string[]) as Record<keyof AttrMap, TextResultContainerParseResult>
   const attrResult = {} as HandleBranchTextAttrsResult<AttrMap>
   attrKeys.forEach(attrKey => {
-    const parseResult = attrValues[attrKey]
-    const originalFormula = attrs[attrKey as string]
-    if (originalFormula === undefined) {
-      attrResult[attrKey] = new TextResultContainer(attrKey as string, '0', '0', parseResult)
-      return
-    }
+    const container = computedBranchText(helper, attrKey as string, attrs[attrKey as string])
     const options = (attrMap[attrKey] || {}) as HighlightTextOptions
-    const container = new TextResultContainer(attrKey as string, originalFormula, attrs[attrKey as string], parseResult)
     handleHighlight(container, options)
-
     attrResult[attrKey] = container
   })
 
@@ -347,12 +342,19 @@ function handleBranchStats(helper: ComputedBranchHelperResult, stats: StatComput
     const originalStat = stats.find(_stat => _stat.equals(stat)) as StatComputed
     const container = new ResultContainerStat(originalStat, stat)
     handleDisplayValue(container, helper)
-    const sign = isNumberString(container.value) && parseFloat(stat.value) < 0 ? '' : '+'
+    if (helper.branchItem.hasAttr(`${container.key}.displayTitle`)) {
+      const displayTitleContainer = computedBranchText(
+        helper,
+        `${container.key}.displayTitle`,
+        helper.branchItem.attr(`${container.key}.displayTitle`),
+      )
+      handleHighlight(displayTitleContainer)
+      container.setDisplayTitle(displayTitleContainer.result)
+    }
     const showData = stat.getShowData()
     handleHighlight(container, {
       beforeHighlight: value => value + showData.tail,
     })
-    container.handle(value => showData.title + sign + value)
     return container
   })
 }
@@ -362,7 +364,6 @@ export {
   computedBranchHelper,
   computeBranchValueAttrs,
   handleBranchValueAttrs,
-  computedBranchTextAttrs,
   handleBranchTextAttrs,
   computedBranchStats,
   handleBranchStats,

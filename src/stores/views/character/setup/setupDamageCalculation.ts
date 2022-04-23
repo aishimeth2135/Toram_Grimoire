@@ -175,13 +175,13 @@ export default function setupDamageCalculation(
         [CalculationItemIds.UnsheatheAttackConstant, resultValue('unsheathe_attack')],
         [CalculationItemIds.UnsheatheAttackMultiplier, resultValue('unsheathe_attack_multiplier')],
         [CalculationItemIds.CriticalDamage, resultValue('critical_damage')],
-        [CalculationItemIds.MagicCriticalDamageConversionRate, statValue('magic_cd_percentage')],
+        [CalculationItemIds.MagicCriticalDamageConversionRate, 50 + statValue('magic_cd_percentage')],
         [CalculationItemIds.CriticalRate, resultValue('critical_rate')],
-        [CalculationItemIds.MagicCriticalRateConversionRate, statValue('magic_cr_percentage')],
+        [CalculationItemIds.MagicCriticalRateConversionRate, statValue('magic_crt_percentage')],
         [CalculationItemIds.ShortRangeDamage, resultValue('short_range_damage')],
         [CalculationItemIds.LongRangeDamage, resultValue('long_range_damage')],
         [CalculationItemIds.Stability, resultValue('stability')],
-        [CalculationItemIds.Accuracy, statValue('accuracy')],
+        [CalculationItemIds.Accuracy, resultValue('accuracy')],
         [CalculationItemIds.PromisedAccuracyRate, promisedAccuracyRate.value],
         [CalculationItemIds.StrongerAgainstNeutral, resultValue('stronger_against_neutral')],
         [CalculationItemIds.StrongerAgainstFire, resultValue('stronger_against_fire') + skillElementExtra.value.fire],
@@ -194,6 +194,9 @@ export default function setupDamageCalculation(
         [CalculationItemIds.CharacterLevel, character.value.level],
         [CalculationItemIds.SkillLevelTwoHanded, getSkillLevel(skillTwoHanded).level],
         [CalculationItemIds.SkillLevelLongRange, getSkillLevel(skillLongRange).level],
+        [CalculationItemIds.OtherMultiplier,
+          (100 + statValue('total_damage_A')) * (100 + statValue('total_damage_B')) / 100,
+        ],
 
         // [CalculationItemIds.SkillRealMpCost, 0],
         // [CalculationItemIds.SkillConstant, 0],
@@ -422,6 +425,15 @@ function getSkillElement(chara: Character, branchItem: SkillBranchItem) {
 
   const sub = chara.equipmentField(EquipmentFieldTypes.SubWeapon)
 
+  if (skillElement === 'against') {
+    element[EnemyElements.Fire] = 1
+    element[EnemyElements.Water] = 1
+    element[EnemyElements.Earth] = 1
+    element[EnemyElements.Wind] = 1
+    element[EnemyElements.Light] = 1
+    element[EnemyElements.Dark] = 1
+    return element
+  }
   if (skillElement !== 'none') {
     if (isValidElement(skillElement)) {
       element[skillElement] = 1

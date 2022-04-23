@@ -204,12 +204,16 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     result[key] = str
   })
 
+  const handleTextResult = (str: string) => {
+    str = str.replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="cy--text-separate border-light-3">${m1}</span>`)
+    str = createTagButtons(str)
+    return str
+  }
+
   Object.entries(textDatas).forEach(([key, container]) => {
     handleContainerFormulaValue(container)
 
-    let str = container.result
-    str = str.replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="cy--text-separate border-light-3">${m1}</span>`)
-    str = createTagButtons(str)
+    let str = handleTextResult(container.result)
 
     const handleReplaceLabel = (attrKey: string) => {
       const labels = branchItem.attr(attrKey).split(/\s*,\s*/).filter(item => item)
@@ -246,6 +250,11 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     handleContainerFormulaValue(container)
     container.handle(value => handleStatHistoryHighlight(container.stat, value))
     container.handle(value => handleFunctionHighlight(value))
+
+    const sign = isNumberString(container.value) && parseFloat(container.value) < 0 ? '' : '+'
+    const showData = container.stat.getShowData()
+    const title = container.displayTitle ? handleTextResult(container.displayTitle) : showData.title
+    container.handle(value => title + sign + value)
   })
 
   titles.forEach(key => {
