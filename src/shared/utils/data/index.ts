@@ -424,4 +424,4 @@ function computeFormula(formula: string, vars: Record<string, any>, defaultValue
 // }, 1000)
 
 export { handleFormula, computeFormula }
-export type { HandleFormulaVars, HandleFormulaTexts, HandleFormulaGetters }
+export type { HandleFormulaVars, HandleFormulaTexts, HandleFormulaGetters, HandleFormulaMethods }

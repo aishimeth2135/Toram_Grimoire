@@ -57,10 +57,16 @@ class ResultContainer extends ResultContainerBase {
 
 class ResultContainerStat extends ResultContainer {
   stat: StatComputed
+  displayTitle: string | null
 
   constructor(origin: StatComputed, stat: StatComputed) {
     super(origin.baseName, origin.value, stat.value)
     this.stat = stat
+    this.displayTitle = null
+  }
+
+  setDisplayTitle(title: string) {
+    this.displayTitle = title
   }
 }
 

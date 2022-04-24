@@ -122,6 +122,7 @@ branch:
       dark: 暗屬性
       one_hand_sword: 單手劍屬性
       arrow: 箭矢屬性
+      against: 有利屬性
     judgment:
       common: 每下傷害共用判定
       separate: 每下傷害分開判定

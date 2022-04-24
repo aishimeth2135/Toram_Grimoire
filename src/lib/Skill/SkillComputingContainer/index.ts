@@ -1,6 +1,6 @@
 import { markRaw, reactive } from 'vue'
 
-import { HandleFormulaTexts, HandleFormulaVars } from '@/shared/utils/data'
+import { HandleFormulaTexts, HandleFormulaVars, HandleFormulaMethods } from '@/shared/utils/data'
 
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { StatComputed } from '@/lib/Character/Stat'
@@ -25,6 +25,7 @@ import { FormulaDisplayModes } from './enums'
 interface HandleFormulaExtends {
   vars: HandleFormulaVars;
   texts: HandleFormulaTexts;
+  methods?: HandleFormulaMethods;
 }
 
 class SkillComputingContainer {
