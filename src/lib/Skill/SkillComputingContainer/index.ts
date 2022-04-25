@@ -178,7 +178,25 @@ class SkillEffectItem extends SkillEffectItemBase {
   }
 
   equipmentMatch(equipment: EquipmentRestriction): boolean {
-    return this.equipments.some(effectEquipment => {
+    const equipments = this.equipments.slice()
+
+    // 雙手合持 (0-6-11)
+    if (this.parent.parent.varGetters.skillLevel && this.parent.skill.skillId === '0-6-11') {
+      // 忍道 (4-5-1)
+      const skillNinjaSpirit = this.parent.skill.parent.parent.parent.findSkillById('4-5-1')
+      if (skillNinjaSpirit) {
+        const skillNinjaSpiritLevel = this.parent.parent.varGetters.skillLevel(skillNinjaSpirit)
+        if (skillNinjaSpiritLevel === 10) {
+          equipments.push({
+            main: null,
+            sub: EquipmentTypes.NinjutsuScroll,
+            body: null,
+          })
+        }
+      }
+    }
+
+    return equipments.some(effectEquipment => {
       if (effectEquipment.main === null && effectEquipment.sub === null && effectEquipment.body === null) {
         return true
       }
@@ -238,11 +256,11 @@ type SkillBranchItemOverwriteRecord<T> = {
   remove: T[];
 }
 type SkillBranchItemOverwriteRecords = {
-  attrs: SkillBranchItemOverwriteRecord<string>;
+  props: SkillBranchItemOverwriteRecord<string>;
   stats: SkillBranchItemOverwriteRecord<[string, StatTypes]>;
 }
 abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEffectItemBase> {
-  private _attrs: Record<string, string>
+  private _props: Record<string, string>
 
   private _name: SkillBranchNames
   private _inherit: SkillBranchNames | null
@@ -255,7 +273,8 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
 
   readonly isEmpty: boolean
 
-  /** (character-simulator only)
+  /**
+   * (character-simulator only)
    * If true, the computing of this branch must be postponed until after all character stat have been computed.
    */
   postpone: boolean
@@ -269,14 +288,14 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
   /**
    * Record of overwrite for next of SkillBranchEffectHistory.nexts
    * this property should reference to record of other branch
-  */
+   */
   private _historyRecord: SkillBranchItemOverwriteRecords | null
 
   abstract clone(): SkillBranchItemBase
 
   /**
-   * @param parent parent SkillEffectItem
-   * @param branch branch from default effect of skill, branch should be overwrite later
+   * @param parent - parent SkillEffectItem
+   * @param branch - branch from default effect of skill, branch should be overwrite later
    */
   constructor(parent: Parent, branch: SkillBranch | SkillBranchItemBase) {
     this.parent = parent
@@ -286,18 +305,18 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
     this._inherit = null
     this.name = this._name // init _inherit
 
-    this._attrs = markRaw(Object.assign({}, branch instanceof SkillBranch ? branch.branchAttributes : branch.allAttrs))
+    this._props = markRaw(Object.assign({}, branch instanceof SkillBranch ? branch.props : branch.allProps))
     this.stats = markRaw(branch.stats.map(stat => stat.clone()))
 
     this.isEmpty = branch.isEmpty
 
-    this.postpone = this._attrs['postpone'] === '1'
-    delete this._attrs['postpone']
+    this.postpone = this._props['postpone'] === '1'
+    delete this._props['postpone']
 
     this.default = branch instanceof SkillBranch ? branch : branch.default
 
     this.record = {
-      attrs: {
+      props: {
         overwrite: [],
         append: [],
         remove: [],
@@ -334,37 +353,37 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
     return this.parent.parent.parent
   }
 
-  get allAttrs() {
-    return this._attrs
+  get allProps() {
+    return this._props
   }
 
-  attr(key: string): string {
-    return this._attrs[key] || ''
+  prop(key: string): string {
+    return this._props[key] || ''
   }
 
-  attrNumber(key: string): number {
-    const attr = parseInt(this._attrs[key], 10)
+  propNumber(key: string): number {
+    const attr = parseInt(this._props[key], 10)
     return Number.isNaN(attr) ? 0 : attr
   }
 
-  attrBoolean(key: string): boolean {
-    return this._attrs[key] === '1'
+  propBoolean(key: string): boolean {
+    return this._props[key] === '1'
   }
 
-  hasAttr(key: string) {
-    return this._attrs[key] !== undefined
+  hasProp(key: string) {
+    return this._props[key] !== undefined
   }
 
-  setAttr(key: string, value: string) {
-    this._attrs[key] = value
+  setProp(key: string, value: string) {
+    this._props[key] = value
   }
 
-  removeAttr(key: string) {
-    delete this._attrs[key]
+  removeProp(key: string) {
+    delete this._props[key]
   }
 
-  clearAttr() {
-    this._attrs = {}
+  clearProp() {
+    this._props = {}
   }
 
   is(name: SkillBranchNames) {
@@ -372,9 +391,9 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
   }
 
   syncRecord(record: SkillBranchItemOverwriteRecords) {
-    this.record.attrs.overwrite = record.attrs.overwrite.slice()
-    this.record.attrs.append = record.attrs.append.slice()
-    this.record.attrs.remove = record.attrs.remove.slice()
+    this.record.props.overwrite = record.props.overwrite.slice()
+    this.record.props.append = record.props.append.slice()
+    this.record.props.remove = record.props.remove.slice()
 
     this.record.stats.overwrite = record.stats.overwrite.map(item => item.slice() as [string, StatTypes])
     this.record.stats.append = record.stats.append.map(item => item.slice() as [string, StatTypes])
@@ -402,10 +421,10 @@ class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> 
 
     this.suffixBranches = markRaw([])
 
-    this.stackId = this.name === SkillBranchNames.Stack ? this.attrNumber('id') : null
+    this.stackId = this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
 
     this.linkedStackIds = this.stackId !== null ? [] :
-      this.attr('stack_id').split(/\s*,\s*/).map(id => parseInt(id, 10))
+      this.prop('stack_id').split(/\s*,\s*/).map(id => parseInt(id, 10))
 
     this.groupState = {
       size: 0,

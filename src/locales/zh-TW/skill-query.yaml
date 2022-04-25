@@ -162,6 +162,8 @@ branch:
       magic: 魔法
       normal_attack: 一般攻擊
       none: 不造成慣性
+  "damage: extra":
+    condition-default-value: 此傷害
   proration:
     "damage: title": 傷害慣性
     "proration: title": 造成慣性

@@ -2,16 +2,16 @@ import { isNumberString } from '@/shared/utils/string'
 import Grimoire from '@/shared/Grimoire'
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
-import { computeBranchValue, computedBranchHelper, HandleBranchValueAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute'
+import { computeBranchValue, computedBranchHelper, HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { cloneBranchAttrs, handleDisplayData, numberStringToPercentage } from './utils'
+import { cloneBranchProps, handleDisplayData, numberStringToPercentage } from './utils'
 import MapContainer from './utils/MapContainer'
 import type { HandleDisplayDataOptionFilters, HandleBranchLangAttrsMap } from './utils'
 
 export default function HealHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
-  const attrs = cloneBranchAttrs(branchItem, {
+  const props = cloneBranchProps(branchItem, {
     name: t('skill-query.branch.heal.base-name'),
   })
 
@@ -22,14 +22,14 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(branchIt
       calc: true,
     },
   })
-  const valueAttrsMap = new MapContainer<HandleBranchValueAttrsMap>(['duration', 'cycle', 'constant'])
-  valueAttrsMap.set('frequency', t('global.times'))
+  const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>(['duration', 'cycle', 'constant'])
+  valuePropsMap.set('frequency', t('global.times'))
 
   const langAttrsMap = new MapContainer<HandleBranchLangAttrsMap>(['type'])
 
   const extraValueList: { text: string; value: string }[] = []
-  if (attrs['extra_value'] && attrs['extra_text']) {
-    const originalValues = attrs['extra_value'].split(/\s*,,\s*/)
+  if (props['extra_value'] && props['extra_text']) {
+    const originalValues = props['extra_value'].split(/\s*,,\s*/)
     const helper = computedBranchHelper(branchItem, originalValues)
     const values = originalValues.map(item => {
       let res = computeBranchValue(item, helper)
@@ -38,7 +38,7 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(branchIt
       }
       return res
     })
-    const texts = attrs['extra_text'].split(/\s*,\s*/)
+    const texts = props['extra_text'].split(/\s*,\s*/)
     extraValueList.push(...values.map((value, idx) => ({
       text: texts[idx] || '@',
       value,
@@ -47,8 +47,8 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(branchIt
 
   const pureDatas = ['name']
 
-  const displayData = handleDisplayData(branchItem, attrs, {
-    values: valueAttrsMap.value,
+  const displayData = handleDisplayData(branchItem, props, {
+    values: valuePropsMap.value,
     langs: langAttrsMap.value,
     filters: filters.value,
     pureDatas,

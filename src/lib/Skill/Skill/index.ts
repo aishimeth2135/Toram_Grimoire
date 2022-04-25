@@ -210,7 +210,7 @@ class SkillEffectBase extends SkillNode {
   }
 }
 
-interface SkillEffectAttrs {
+interface SkillEffectBasicProps {
   mpCost: string | null;
   range: string | null;
   skillType: number | null;
@@ -220,7 +220,7 @@ interface SkillEffectAttrs {
 }
 class SkillEffect extends SkillEffectBase {
   effectId: number
-  attributes: SkillEffectAttrs
+  basicProps: SkillEffectBasicProps
   historys: SkillEffectHistory[]
 
   mainWeapon: number
@@ -233,7 +233,7 @@ class SkillEffect extends SkillEffectBase {
     super(skill)
     this.effectId = effectId
     this.historys = []
-    this.attributes = markRaw({
+    this.basicProps = markRaw({
       mpCost: '0',
       range: '0',
       skillType: 0,
@@ -274,29 +274,33 @@ class SkillBranch extends SkillNode {
   // type of branch
   name: SkillBranchNames
 
-  branchAttributes: Record<string, string>
+  props: Record<string, string>
   stats: StatComputed[]
 
-  protected _attributeEmpty: boolean
+  protected _propsEmpty: boolean
 
   constructor(sef: SkillEffectBase, id: number, name: SkillBranchNames) {
     super()
     this.parent = sef
     this.id = id
     this.name = name
-    this.branchAttributes = markRaw({})
+    this.props = markRaw({})
     this.stats = markRaw([])
 
-    this._attributeEmpty = true
+    this._propsEmpty = true
   }
 
   get isEmpty() {
-    return this._attributeEmpty && this.stats.length === 0
+    return this._propsEmpty && this.stats.length === 0
   }
 
-  appendBranchAttribute(name: string, value: string) {
-    this._attributeEmpty = false
-    this.branchAttributes[name] = value
+  appendProp(name: string, value: string, valueSub?: string) {
+    if (valueSub) {
+      const [prop, subProp] = name.split('.')
+      name = prop + valueSub + (subProp ? `.${subProp}` : '')
+    }
+    this._propsEmpty = false
+    this.props[name] = value
     return this
   }
 
@@ -321,9 +325,9 @@ class SkillBranch extends SkillNode {
 
   clone(): SkillBranch {
     const newBranch = new SkillBranch(this.parent, this.id, this.name)
-    newBranch.branchAttributes = markRaw({ ...this.branchAttributes })
+    newBranch.props = markRaw({ ...this.props })
     newBranch.stats = markRaw(this.stats.map(stat => stat.clone()))
-    newBranch._attributeEmpty = this._attributeEmpty
+    newBranch._propsEmpty = this._propsEmpty
     return newBranch
   }
 }
@@ -435,4 +439,4 @@ export {
   LevelSkill,
   SkillEffectHistory,
 }
-export type { SkillEffectBase, SkillEffectAttrs }
+export type { SkillEffectBase, SkillEffectBasicProps as SkillEffectAttrs }

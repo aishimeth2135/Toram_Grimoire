@@ -2,7 +2,7 @@ import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 
 import { SkillBranchNames } from '../Skill/enums'
 
-const BRANCH_ATTRS_DEFAULT_VALUE: Partial<Record<SkillBranchNames, Record<string, string>>> = {
+const BRANCH_PROPS_DEFAULT_VALUE: Partial<Record<SkillBranchNames, Record<string, string>>> = {
   [SkillBranchNames.Damage]: {
     'constant': '0',
     'multiplier': '0',
@@ -116,7 +116,7 @@ const EQUIPMENT_TYPE_BODY_ORDER = [
 ] as const
 
 export {
-  BRANCH_ATTRS_DEFAULT_VALUE,
+  BRANCH_PROPS_DEFAULT_VALUE,
   EQUIPMENT_TYPE_MAIN_ORDER,
   EQUIPMENT_TYPE_SUB_ORDER,
   EQUIPMENT_TYPE_BODY_ORDER,

@@ -276,18 +276,18 @@ export default class DamageCalculationSystem {
       container.appendItem(CalculationItemIds.ComboMultiplier)
         .setDefaultValue(150)
     })
-    normal(CalculationContainerIds.SkillLongRange, container => {
-      container.markMultiplier()
-      container.defaultDisabled()
-      container.appendItem(CalculationItemIds.SkillLevelLongRange)
-        .setDefaultValue(10)
-        .setRange(0, 10)
-        .setUnit('')
-      container.setCalcResult((itemContainer) => {
-        const value = itemContainer.getItemValue(CalculationItemIds.SkillLevelLongRange)
-        return (100 + value)
-      })
-    })
+    // normal(CalculationContainerIds.SkillLongRange, container => {
+    //   container.markMultiplier()
+    //   container.defaultDisabled()
+    //   container.appendItem(CalculationItemIds.SkillLevelLongRange)
+    //     .setDefaultValue(10)
+    //     .setRange(0, 10)
+    //     .setUnit('')
+    //   container.setCalcResult((itemContainer) => {
+    //     const value = itemContainer.getItemValue(CalculationItemIds.SkillLevelLongRange)
+    //     return (100 + value)
+    //   })
+    // })
     normal(CalculationContainerIds.Stability, container => {
       container.markMultiplier()
       container.appendItem(CalculationItemIds.Stability)

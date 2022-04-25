@@ -413,6 +413,16 @@ export const useCharacterStore = defineStore('view-character', () => {
     )
   })()
 
+  const getDamageCalculationSkillState = (() => {
+    const skillStates = ref(new Map<Skill, { enabled: boolean }>())
+    return (_skill: Skill) => {
+      if (!skillStates.value.has(_skill)) {
+        skillStates.value.set(_skill, { enabled: false })
+      }
+      return skillStates.value.get(_skill)!
+    }
+  })()
+
   return {
     characters,
     equipments,
@@ -447,6 +457,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     setupDamageCalculationExpectedResult,
     targetProperties,
     calculationOptions,
+    getDamageCalculationSkillState,
 
     deleteAllSavedData,
     loadCharacterSimulator,

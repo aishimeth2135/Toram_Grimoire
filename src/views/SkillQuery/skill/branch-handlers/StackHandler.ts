@@ -2,7 +2,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
-import { cloneBranchAttrs, handleDisplayData, HandleDisplayDataOptionFilters } from './utils'
+import { cloneBranchProps, handleDisplayData, HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
 export default function StackHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
@@ -11,12 +11,12 @@ export default function StackHandler<BranchItem extends SkillBranchItem>(branchI
   const idx = branchItem.parent.branchItems
     .filter(item => item.name === 'stack')
     .indexOf(branchItem)
-  const attrs = cloneBranchAttrs(branchItem, {
+  const props = cloneBranchProps(branchItem, {
     name: value => value === 'auto' ? t('skill-query.branch.stack.base-name') + (idx + 1).toString() : value,
   })
 
-  if (attrs['default'] === 'auto') {
-    attrs['default'] = attrs['min']
+  if (props['default'] === 'auto') {
+    props['default'] = props['min']
   }
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     max: value => !!value,
@@ -24,7 +24,7 @@ export default function StackHandler<BranchItem extends SkillBranchItem>(branchI
   const pureValues = ['min', 'max', 'default', 'step']
   const pureDatas = ['name', 'unit']
 
-  const displayData = handleDisplayData(branchItem, attrs, {
+  const displayData = handleDisplayData(branchItem, props, {
     filters: filters.value,
     pureValues,
     pureDatas,

@@ -70,19 +70,6 @@ const againstElementMap: Record<EnemyElements, EnemyElements> = {
   [EnemyElements.Dark]: EnemyElements.Light,
 }
 
-const mainWeaponBaseRangeMapping: Partial<Record<EquipmentTypes, number>> = {
-  [EquipmentTypes.Empty]: 1,
-  [EquipmentTypes.OneHandSword]: 2,
-  [EquipmentTypes.TwoHandSword]: 3,
-  [EquipmentTypes.Staff]: 2,
-  [EquipmentTypes.MagicDevice]: 6,
-  [EquipmentTypes.Bow]: 10,
-  [EquipmentTypes.Bowgun]: 5,
-  [EquipmentTypes.Knuckle]: 8,
-  [EquipmentTypes.Halberd]: 2,
-  [EquipmentTypes.Katana]: 4,
-}
-
 export default function setupDamageCalculation(
   character: Ref<Character | null>,
   setupCharacterStatCategoryResultsExtended: (otherStats: Ref<Stat[]>) => {
@@ -94,7 +81,6 @@ export default function setupDamageCalculation(
   const calculationBase = Grimoire.DamageCalculation.calculationBase
 
   const skillTwoHanded = Grimoire.Skill.skillRoot.findSkillById('0-6-11')!
-  const skillLongRange = Grimoire.Skill.skillRoot.findSkillById('0-1-11')!
 
   const promisedAccuracyRate = computed(() => {
     if (!character.value) {
@@ -193,7 +179,6 @@ export default function setupDamageCalculation(
 
         [CalculationItemIds.CharacterLevel, character.value.level],
         [CalculationItemIds.SkillLevelTwoHanded, getSkillLevel(skillTwoHanded).level],
-        [CalculationItemIds.SkillLevelLongRange, getSkillLevel(skillLongRange).level],
         [CalculationItemIds.OtherMultiplier,
           (100 + statValue('total_damage_A')) * (100 + statValue('total_damage_B')) / 100,
         ],
@@ -251,11 +236,11 @@ export default function setupDamageCalculation(
       let matkRate = 100
       const baseBranch = baseSuffixBranch.value
       if (baseBranch) {
-        if (baseBranch.hasAttr('atk_rate')) {
-          atkRate = baseBranch.attrNumber('atk_rate')
+        if (baseBranch.hasProp('atk_rate')) {
+          atkRate = baseBranch.propNumber('atk_rate')
         }
-        if (baseBranch.hasAttr('matk_rate')) {
-          matkRate = baseBranch.attrNumber('matk_rate')
+        if (baseBranch.hasProp('matk_rate')) {
+          matkRate = baseBranch.propNumber('matk_rate')
         }
       }
 
@@ -282,9 +267,7 @@ export default function setupDamageCalculation(
     })
 
     calculation.value.config.getItemValue = (itemId) => {
-      const result = calculationVars.value.get(itemId) ?? varsMap.value.get(itemId) ?? null
-      console.log(itemId, result)
-      return result
+      return calculationVars.value.get(itemId) ?? varsMap.value.get(itemId) ?? null
     }
 
     const containerCurrentItemMap = computed(() => {
@@ -300,17 +283,17 @@ export default function setupDamageCalculation(
 
       const baseBranch = baseSuffixBranch.value
       if (baseBranch) {
-        if (baseBranch.hasAttr('target_def_type')) {
-          if (baseBranch.attr('target_def_type') === 'def') {
+        if (baseBranch.hasProp('target_def_type')) {
+          if (baseBranch.prop('target_def_type') === 'def') {
             targetDefType = CalculationItemIds.TargetDef
-          } else if (baseBranch.attr('target_def_type') === 'mdef') {
+          } else if (baseBranch.prop('target_def_type') === 'mdef') {
             targetDefType = CalculationItemIds.TargetMdef
           }
         }
-        if (baseBranch.hasAttr('target_resistance_type')) {
-          if (baseBranch.attr('target_resistance_type') === 'physical') {
+        if (baseBranch.hasProp('target_resistance_type')) {
+          if (baseBranch.prop('target_resistance_type') === 'physical') {
             targetResistanceType = CalculationItemIds.TargetPhysicalResistance
-          } else if (baseBranch.attr('target_resistance_type') === 'magic') {
+          } else if (baseBranch.prop('target_resistance_type') === 'magic') {
             targetResistanceType = CalculationItemIds.TargetMagicResistance
           }
         }
@@ -332,27 +315,9 @@ export default function setupDamageCalculation(
       return containerCurrentItemMap.value.get(containerId) ?? null
     }
 
-    const mainWeaponRange = computed(() => {
-      if (!character.value) {
-        return 0
-      }
-      const main = character.value.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
-      return (mainWeaponBaseRangeMapping[main] ?? 0) + statValue('weapon_range')
-    })
-
     const containerForceHiddenMap = computed(() => {
       const unsheatheDamageHidden = container.value.getOrigin('unsheathe_damage') !== '1'
-      const skillRange = basicContainer.value?.getValue('range')
-      const baseNone = container.value.branchItem.attr('base') === 'none'
-
-      let skillRangeValue: number | null = null
-      if (skillRange) {
-        if (basicContainer.value?.getOrigin('range') === 'main') {
-          skillRangeValue = mainWeaponRange.value
-        } else if (isNumberString(skillRange)) {
-          skillRangeValue = parseFloat(skillRange)
-        }
-      }
+      const baseNone = container.value.branchItem.prop('base') === 'none'
 
       const mainType = character.value?.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
 
@@ -368,7 +333,6 @@ export default function setupDamageCalculation(
         [CalculationContainerIds.UnsheatheAttackMultiplier, unsheatheDamageHidden],
         [CalculationContainerIds.RangeDamage, container.value.getOrigin('range_damage') !== '1'],
         [CalculationContainerIds.BaseTwoHanded, !getSkillLevel(skillTwoHanded).valid || mainType !== EquipmentTypes.Katana],
-        [CalculationContainerIds.SkillLongRange, skillRangeValue === null || skillRangeValue < 8],
       ])
     })
 
@@ -420,8 +384,8 @@ function getSkillElement(chara: Character, branchItem: SkillBranchItem) {
   const element = createElementMap()
   const setElement = (stat: StatRestriction) => element[stat.baseName.replace('element_', '') as EnemyElements] = 1
 
-  const skillElement = branchItem.attr('element')
-  const skillDualElement = branchItem.attr('dual_element')
+  const skillElement = branchItem.prop('element')
+  const skillDualElement = branchItem.prop('dual_element')
 
   const sub = chara.equipmentField(EquipmentFieldTypes.SubWeapon)
 

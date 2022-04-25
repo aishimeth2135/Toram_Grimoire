@@ -1,13 +1,13 @@
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
-import type { HandleBranchValueAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute'
+import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { cloneBranchAttrs, HandleBranchLangAttrsMap, handleDisplayData } from './utils'
+import { cloneBranchProps, HandleBranchLangAttrsMap, handleDisplayData } from './utils'
 import MapContainer from './utils/MapContainer'
 import type { HandleDisplayDataOptionFilters } from './utils'
 import { createTagButtons } from '../../utils'
 
 export default function BasicHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
-  const attrs = cloneBranchAttrs(branchItem)
+  const props = cloneBranchProps(branchItem)
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     'mp_cost': value => !!value,
@@ -17,7 +17,7 @@ export default function BasicHandler<BranchItem extends SkillBranchItem>(branchI
     'action_time': value => !!value,
     'casting_time': value => !!value,
   })
-  const valueAttrsMap = new MapContainer<HandleBranchValueAttrsMap>({
+  const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>({
     'casting_time': 's',
   })
   const langAttrsMap = new MapContainer<HandleBranchLangAttrsMap>({
@@ -26,21 +26,21 @@ export default function BasicHandler<BranchItem extends SkillBranchItem>(branchI
     'action_time': { type: 'normal' },
   })
 
-  if (attrs['mp_cost'] !== '0') {
-    valueAttrsMap.append('mp_cost')
+  if (props['mp_cost'] !== '0') {
+    valuePropsMap.append('mp_cost')
   } else {
     langAttrsMap.set('mp_cost', { type: 'normal' })
   }
-  if (attrs['range'] === 'main') {
+  if (props['range'] === 'main') {
     langAttrsMap.set('range', { afterHandle: value => createTagButtons(value) })
-  } else if (attrs['range'] === 'no_limit') {
+  } else if (props['range'] === 'no_limit') {
     langAttrsMap.append('range')
   } else {
-    valueAttrsMap.set('range', 'm')
+    valuePropsMap.set('range', 'm')
   }
 
-  return handleDisplayData(branchItem, attrs, {
-    values: valueAttrsMap.value,
+  return handleDisplayData(branchItem, props, {
+    values: valuePropsMap.value,
     langs: langAttrsMap.value,
     filters: filters.value,
   })

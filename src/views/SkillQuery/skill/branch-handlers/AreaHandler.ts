@@ -1,17 +1,17 @@
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
-import { HandleBranchValueAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute'
+import { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 
-import { cloneBranchAttrs, HandleBranchLangAttrsMap, handleDisplayData } from './utils'
+import { cloneBranchProps, HandleBranchLangAttrsMap, handleDisplayData } from './utils'
 import type { HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
 export default function AreaHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem, formulaDisplayMode?: FormulaDisplayModes) {
-  const attrs = cloneBranchAttrs(branchItem)
+  const props = cloneBranchProps(branchItem)
 
   const basicBranch = branchItem.parent.branchItems.find(bch => bch.name === SkillBranchNames.Basic)
-  attrs['@range'] = basicBranch?.attr('range') ?? ''
+  props['@range'] = basicBranch?.prop('range') ?? ''
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     'move_distance': value => !!value,
@@ -26,21 +26,21 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(branchIt
     },
   })
 
-  const valueAttrsMap = new MapContainer<HandleBranchValueAttrsMap>({
+  const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>({
     'angle': '°',
     'start_position_offsets': 'm',
     'end_position_offsets': 'm',
     'move_distance': 'm',
   })
 
-  if (attrs['effective_area'] !== 'sector') {
-    valueAttrsMap.append('radius', 'm')
+  if (props['effective_area'] !== 'sector') {
+    valuePropsMap.append('radius', 'm')
   }
 
   const langAttrsMap = new MapContainer<HandleBranchLangAttrsMap>(['effective_area'])
 
   const pureValues = []
-  if (attrs['@range'] && attrs['@range'] !== 'no_limit' && attrs['@range'] !== 'main') {
+  if (props['@range'] && props['@range'] !== 'no_limit' && props['@range'] !== 'main') {
     pureValues.push('@range')
   }
 
@@ -55,9 +55,9 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(branchIt
 
   const pureDatas = ['target_offsets', 'end_position']
 
-  return handleDisplayData(branchItem, attrs, {
+  return handleDisplayData(branchItem, props, {
     filters: filters.value,
-    values: valueAttrsMap.value,
+    values: valuePropsMap.value,
     langs: langAttrsMap.value,
     titles,
     pureValues,

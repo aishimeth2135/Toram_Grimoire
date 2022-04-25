@@ -29,7 +29,7 @@ export const enum CalculationContainerIds {
   StrongerAgainstElement = 'stronger_against_element',
   Proration = 'proration',
   ComboMultiplier = 'combo_multiplier',
-  SkillLongRange = 'skill/long_range',
+  // SkillLongRange = 'skill/long_range',
   OtherMultiplier = 'other_multiplier',
 }
 
@@ -73,7 +73,7 @@ export const enum CalculationItemIds {
   StrongerAgainstDark = 'stronger_against_dark',
   Proration = 'proration',
   ComboMultiplier = 'combo_multiplier',
-  SkillLevelLongRange = 'skill_level_long_range',
+  // SkillLevelLongRange = 'skill_level_long_range',
   Stability = 'stability',
   Accuracy = 'accuracy',
   SkillRealMpCost = 'skill_real_mp_cost',

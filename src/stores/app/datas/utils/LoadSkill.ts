@@ -133,12 +133,12 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
             if (defaultSelected === 2 || defaultSelected === 3) {
               curSkillEffect.equipmentOperator = 1
             }
-            curSkillEffect.attributes.mpCost = checkNull(row[MP_COST], '')
-            curSkillEffect.attributes.range = checkNull(row[RANGE], '')
-            curSkillEffect.attributes.skillType = checkNull(SKILL_TYPE_LIST.indexOf(row[SKILL_TYPE]), -1)
-            curSkillEffect.attributes.inCombo = checkNull(IN_COMBO_LIST.indexOf(row[IN_COMBO]), -1)
-            curSkillEffect.attributes.actionTime = checkNull(ACTION_TIME_LIST.indexOf(row[ACTION_TIME]), -1)
-            curSkillEffect.attributes.castingTime = checkNull(row[CASTING_TIME], '')
+            curSkillEffect.basicProps.mpCost = checkNull(row[MP_COST], '')
+            curSkillEffect.basicProps.range = checkNull(row[RANGE], '')
+            curSkillEffect.basicProps.skillType = checkNull(SKILL_TYPE_LIST.indexOf(row[SKILL_TYPE]), -1)
+            curSkillEffect.basicProps.inCombo = checkNull(IN_COMBO_LIST.indexOf(row[IN_COMBO]), -1)
+            curSkillEffect.basicProps.actionTime = checkNull(ACTION_TIME_LIST.indexOf(row[ACTION_TIME]), -1)
+            curSkillEffect.basicProps.castingTime = checkNull(row[CASTING_TIME], '')
             if (checkEffectEmpty(row, previousEffect, curSkillEffect)) {
               return
             }
@@ -166,10 +166,11 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
       const propName = row[EFFECT_BRANCH_ATTRIBUTE_NAME],
         propValue = row[EFFECT_BRANCH_ATTRIBUTE_VALUE]
       if (propName !== '') {
-        if (!Grimoire.Character.findStatBase(propName))
-          curSkillBranch.appendBranchAttribute(propName, propValue)
-        else
+        if (!Grimoire.Character.findStatBase(propName)) {
+          curSkillBranch.appendProp(propName, propValue, row[EFFECT_BRANCH_ATTRIBUTE_EXTRA])
+        } else {
           curSkillBranch.appendStat(propName, propValue, row[EFFECT_BRANCH_ATTRIBUTE_EXTRA])
+        }
       }
     }
     catch (e) {
