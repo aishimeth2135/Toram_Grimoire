@@ -92,12 +92,12 @@ const subContents = computed(() => {
     type: 'primary',
   }, {
     key: 'element',
-    icon: getElementIcon(branchItem.value.attr('element')),
+    icon: getElementIcon(branchItem.value.prop('element')),
   }, {
     key: 'is_place',
     icon: 'emojione-monotone:heavy-large-circle',
   })
-  if (branchItem.value.attr('title') !== 'each') {
+  if (branchItem.value.prop('title') !== 'each') {
     result.push({
       key: 'frequency',
       icon: 'bi-circle-square',
@@ -134,10 +134,10 @@ const subContents = computed(() => {
   }
   result.push({
     key: 'range_damage',
-    icon: getBoolIcon(branchItem.value.attr('range_damage')),
+    icon: getBoolIcon(branchItem.value.prop('range_damage')),
   }, {
     key: 'unsheathe_damage',
-    icon: getBoolIcon(branchItem.value.attr('unsheathe_damage')),
+    icon: getBoolIcon(branchItem.value.prop('unsheathe_damage')),
   })
   if (container.value.has('frequency') && parseInt(container.value.getValue('frequency'), 10) > 1) {
     result.push({
@@ -154,12 +154,12 @@ const subContents = computed(() => {
 const extraSuffixBranchDatas = computed(() => {
   return branchItem.value.suffixBranches
     .filter(suffix => suffix.is(SkillBranchNames.Extra) && (
-      suffix.attr('caption') ||
-      suffix.attr('ailment_name') ||
-      suffix.attr('element') ||
+      suffix.prop('caption') ||
+      suffix.prop('ailment_name') ||
+      suffix.prop('element') ||
       suffix.stats.length > 0
     ))
-    .filter(suffix => !suffix.attrBoolean('hidden'))
+    .filter(suffix => !suffix.propBoolean('hidden'))
     .map((suffix, idx) => {
       const dataContainer = ExtraHandler(suffix)
       const baseData: ExtraSuffixBranchData = {

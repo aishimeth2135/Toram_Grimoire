@@ -143,7 +143,7 @@ const paddingBottomClass = computed(() => {
   if (nextBch.isGroup || (curBch.isGroup && !curBch.groupState.expanded)) {
     return nextNormalLayout ? 'pb-4' : 'pb-5'
   }
-  if (curBch.attrBoolean('is_mark') || nextBch.attrBoolean('is_mark')) {
+  if (curBch.propBoolean('is_mark') || nextBch.propBoolean('is_mark')) {
     return nextNormalLayout ? 'pb-3' : 'pb-4'
   }
   if ([SkillBranchNames.Tips, SkillBranchNames.Text, SkillBranchNames.List].includes(cur) && next === SkillBranchNames.Tips) {

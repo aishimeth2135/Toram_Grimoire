@@ -35,7 +35,7 @@ const containers = computed(() => ListHandler(branchItem.value))
 const containerStates = computed(() => containers.value.map((container, iid) => ({ iid, container })))
 
 const isTips = computed(() => {
-  return branchItem.value.attrBoolean('is_tips')
+  return branchItem.value.propBoolean('is_tips')
 })
 </script>
 

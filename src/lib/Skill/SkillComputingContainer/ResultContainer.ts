@@ -58,15 +58,21 @@ class ResultContainer extends ResultContainerBase {
 class ResultContainerStat extends ResultContainer {
   stat: StatComputed
   displayTitle: string | null
+  conditionValue: string | null
 
   constructor(origin: StatComputed, stat: StatComputed) {
-    super(origin.baseName, origin.value, stat.value)
+    super(stat.statId, origin.value, stat.value)
     this.stat = stat
     this.displayTitle = null
+    this.conditionValue = null
   }
 
   setDisplayTitle(title: string) {
     this.displayTitle = title
+  }
+
+  setConditionValue(title: string) {
+    this.conditionValue = title
   }
 }
 

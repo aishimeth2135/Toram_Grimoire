@@ -36,7 +36,7 @@
           <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
             <CharacterDamageSkillResultItem
               :result="result"
-              :basic-container="skillResultsState.basicContainer"
+              :skill-results-state="skillResultsState"
             />
           </div>
         </div>
@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { SkillResultsState } from '@/stores/views/character/setup'
@@ -58,16 +58,26 @@ import ToggleService from '@/setup/ToggleService'
 import CharacterDamageSkillResultItem from './character-damage-skill-result-item.vue'
 import CharacterSkillItemOptions from '../character-skill/character-skill-tab/character-skill-item-options.vue'
 
+import { setupCharacterStore } from '../setup'
+
 interface Props {
   skillResultsState: SkillResultsState;
 }
 
 const props = defineProps<Props>()
 
+const { store } = setupCharacterStore()
 const { t } = useI18n()
 const { contents, toggle } = ToggleService({ contents: ['options'] })
 
-const enabled = ref(false)
+const enabled = computed<boolean>({
+  get() {
+    return store.getDamageCalculationSkillState(props.skillResultsState.skill).enabled
+  },
+  set(value) {
+    store.getDamageCalculationSkillState(props.skillResultsState.skill).enabled = value
+  },
+})
 
 const skillIconPath = computed(() => getSkillIconPath(props.skillResultsState.skill))
 

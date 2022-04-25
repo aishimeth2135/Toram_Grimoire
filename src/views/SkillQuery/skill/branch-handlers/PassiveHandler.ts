@@ -1,15 +1,15 @@
 import Grimoire from '@/shared/Grimoire'
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
-import type { HandleBranchTextAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute'
+import type { HandleBranchTextPropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { cloneBranchAttrs, handleDisplayData, HandleDisplayDataOptionFilters } from './utils'
+import { cloneBranchProps, handleDisplayData, HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
 export default function PassiveHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
-  const attrs = cloneBranchAttrs(branchItem, {
+  const props = cloneBranchProps(branchItem, {
     name: t('skill-query.branch.passive.base-name'),
   })
 
@@ -17,12 +17,12 @@ export default function PassiveHandler<BranchItem extends SkillBranchItem>(branc
     caption: value => !!value,
   })
 
-  const textAttrsMap = new MapContainer<HandleBranchTextAttrsMap>(['caption'])
+  const textPropsMap = new MapContainer<HandleBranchTextPropsMap>(['caption'])
 
   const pureDatas = ['name']
 
-  return handleDisplayData(branchItem, attrs, {
-    texts: textAttrsMap.value,
+  return handleDisplayData(branchItem, props, {
+    texts: textPropsMap.value,
     filters: filters.value,
     pureDatas,
   })

@@ -9,10 +9,10 @@ import {
   computedBranchHelper,
   ComputedBranchHelperResult,
   handleBranchStats,
-  handleBranchTextAttrs,
-  handleBranchValueAttrs,
+  handleBranchTextProps,
+  handleBranchValueProps,
 } from '@/lib/Skill/SkillComputingContainer/compute'
-import type { HandleBranchValueAttrsMap, HandleBranchTextAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute'
+import type { HandleBranchValuePropsMap, HandleBranchTextPropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 import { ResultContainer, ResultContainerBase } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 import { StatComputed } from '@/lib/Character/Stat'
@@ -22,12 +22,12 @@ import { createTagButtons } from '@/views/SkillQuery/utils'
 import DisplayDataContainer from './DisplayDataContainer'
 import { handleFunctionHighlight } from './utils'
 
-function cloneBranchAttrs(
+function cloneBranchProps(
   branchItem: SkillBranchItemBaseChilds,
   initValueMap?: Record<string, string | ((value: string) => string)>,
 ): Record<string, string> {
   const attrs = {} as Record<string, string>
-  Object.entries(branchItem.allAttrs).forEach(([key, value]) => {
+  Object.entries(branchItem.allProps).forEach(([key, value]) => {
     attrs[key] = value
   })
   if (typeof initValueMap === 'object') {
@@ -98,8 +98,8 @@ interface HandleDisplayDataOptionFilters {
   [key: string]: HandleDisplayDataOptionFilterValidation | HandleDisplayDataOptionFilterItem;
 }
 interface HandleDisplayDataOptions {
-  values?: HandleBranchValueAttrsMap;
-  texts?: HandleBranchTextAttrsMap;
+  values?: HandleBranchValuePropsMap;
+  texts?: HandleBranchTextPropsMap;
   langs?: HandleBranchLangAttrsMap;
   filters?: HandleDisplayDataOptionFilters;
   pureValues?: string[];
@@ -128,9 +128,9 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   const { t } = Grimoire.i18n
 
   const helper = computedBranchHelper(branchItem, [
-    ...Object.keys(values).map(key => branchItem.attr(key)),
-    ...Object.keys(texts).map(key => branchItem.attr(key)),
-    ...pureValues.map(key => branchItem.attr(key)),
+    ...Object.keys(values).map(key => branchItem.prop(key)),
+    ...Object.keys(texts).map(key => branchItem.prop(key)),
+    ...pureValues.map(key => branchItem.prop(key)),
     ...branchItem.stats.map(stat => stat.value),
   ], formulaDisplayMode)
 
@@ -155,8 +155,8 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     }
   })
 
-  const valueDatas = handleBranchValueAttrs(helper, attrs, values)
-  const textDatas = handleBranchTextAttrs(helper, attrs, texts)
+  const valueDatas = handleBranchValueProps(helper, attrs, values)
+  const textDatas = handleBranchTextProps(helper, attrs, texts)
   const langDatas = handleBranchLangAttrs(branchItem, helper, attrs, langs)
   const statDatas = handleBranchStats(helper, branchItem.stats)
 
@@ -175,7 +175,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   const handleAttrHistoryHighlight = branchItem.parent instanceof SkillEffectItemHistory ?
     (key: string, value: string) => {
       const searchKeys = ['overwrite', 'append', 'remove'] as const
-      if (searchKeys.some(searchKey => branchItem.record.attrs[searchKey].includes(key) || branchItem.historyRecord?.attrs[searchKey].includes(key))) {
+      if (searchKeys.some(searchKey => branchItem.record.props[searchKey].includes(key) || branchItem.historyRecord?.props[searchKey].includes(key))) {
         return `<span class="history-compare--mark">${value}</span>`
       }
       return value
@@ -216,7 +216,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     let str = handleTextResult(container.result)
 
     const handleReplaceLabel = (attrKey: string) => {
-      const labels = branchItem.attr(attrKey).split(/\s*,\s*/).filter(item => item)
+      const labels = branchItem.prop(attrKey).split(/\s*,\s*/).filter(item => item)
       labels.forEach((label, idx) => {
         str = str.replace(new RegExp(label, 'g'), () => `__HANDLE_REPLACE_LABEL_${idx}__`)
       })
@@ -304,7 +304,7 @@ function numberStringToPercentage(str: string) {
 }
 
 export {
-  cloneBranchAttrs,
+  cloneBranchProps,
   handleDisplayData,
   numberStringToPercentage,
 }

@@ -13,6 +13,7 @@ import { Stat, StatComputed, StatRestriction } from '@/lib/Character/Stat'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { FoodBuild } from '@/lib/Character/Food'
 import { StatTypes } from '@/lib/Character/Stat/enums'
+import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 
 import EffectHandler from '@/views/SkillQuery/skill/branch-handlers/EffectHandler'
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/utils/DisplayDataContainer'
@@ -24,6 +25,7 @@ import BasicHandler from '@/views/SkillQuery/skill/branch-handlers/BasicHandler'
 
 import { SkillBuild } from '../skill-build/SkillBuild'
 import { checkStatRestriction, getCharacterElement } from '../utils'
+import { getSkillStatContainerValid } from './utils'
 
 type DisplayDataContainerAlly = DisplayDataContainer<SkillBranchItem<SkillEffectItem>>
 type DisplayDataContainerSuffixAlly = DisplayDataContainer<SkillBranchItemSuffix<SkillEffectItem>>
@@ -115,6 +117,10 @@ export function setupCharacterSkills(
       texts: {},
       methods: {
         getSkillLevel: (skillId: string) => {
+          const skill = Grimoire.Skill.skillRoot.findSkillById(skillId)
+          return skill ? getSkillLevel(skill) : 0
+        },
+        $getSkillLevel: (skillId: string) => {
           const skill = Grimoire.Skill.skillRoot.findSkillById(skillId)
           return skill ? getSkillLevel(skill) : 0
         },
@@ -256,7 +262,7 @@ export function setupCharacterSkills(
       if (!checkPostpone(suf.mainBranch)) {
         return false
       }
-      return suf.name === SkillBranchNames.Extra && suf.stats.length !== 0 && suf.attr('type') !== 'next'
+      return suf.name === SkillBranchNames.Extra && suf.stats.length !== 0 && suf.prop('type') !== 'next'
     }
 
     const handleComputingResults = (target: ComputedRef<SkillBranchItem[]>, handler: (bch: SkillBranchItem) => DisplayDataContainer, validBranchNames: SkillBranchNames[]) => {
@@ -330,7 +336,7 @@ export function setupCharacterSkills(
       if (activeSkillBranchItems || passiveSkillBranchItems || damageSkillBranchItems) {
         stackContainers.set(skill, computed(() => {
           return currentEffectItem.value?.branchItems
-            .filter(_bch => _bch.name === SkillBranchNames.Stack && !_bch.hasAttr('value'))
+            .filter(_bch => _bch.name === SkillBranchNames.Stack && !_bch.hasProp('value'))
             .map(_bch => StackHandler(_bch)) ?? []
         }))
         basicContainers.set(skill, computed(() => {
@@ -410,6 +416,17 @@ export function setupCharacterSkills(
     }
 
     const stats: Map<string, Stat> = new Map()
+    const handleStatContainer = (statContainer: ResultContainerStat) => {
+      if (!isNumberString(statContainer.value)) {
+        return
+      }
+      const statId = statContainer.stat.statId
+      if (stats.has(statId)) {
+        stats.get(statId)!.add(parseFloat(statContainer.value))
+      } else {
+        stats.set(statId, statContainer.stat.toStat(parseFloat(statContainer.value)))
+      }
+    }
     list
       .filter(resultState => {
         const state = skillBuild.value!.getSkillState(resultState.skill)
@@ -419,17 +436,13 @@ export function setupCharacterSkills(
         resultState.results
           .filter(result => getSkillBranchItemState(result.container.branchItem.default).enabled)
           .forEach(result => {
-            result.container.statContainers.forEach(statContainer => {
-              if (!isNumberString(statContainer.value)) {
-                return
-              }
-              const statId = statContainer.stat.statId
-              if (stats.has(statId)) {
-                stats.get(statId)!.add(parseFloat(statContainer.value))
-              } else {
-                stats.set(statId, statContainer.stat.toStat(parseFloat(statContainer.value)))
-              }
-            })
+            result.container.statContainers
+              .filter(stat => getSkillStatContainerValid(character.value, resultState, stat))
+              .forEach(handleStatContainer)
+            result.suffixContainers
+              .forEach(suffix => suffix.statContainers
+                .filter(stat => getSkillStatContainerValid(character.value, resultState, stat))
+                .forEach(handleStatContainer))
           })
       })
     return [...stats.values()]
@@ -443,6 +456,7 @@ export function setupCharacterSkills(
     allValidSkillsStats,
 
     getSkillBranchItemState,
+    getSkillStatContainerValid,
   }
 }
 

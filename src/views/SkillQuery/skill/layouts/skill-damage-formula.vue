@@ -65,7 +65,7 @@ const props = defineProps<Props>()
 const { container } = toRefs(props)
 
 const frequencyVisible = computed(() => {
-  return container.value.branchItem.attr('title') === 'each'
+  return container.value.branchItem.prop('title') === 'each'
 })
 </script>
 

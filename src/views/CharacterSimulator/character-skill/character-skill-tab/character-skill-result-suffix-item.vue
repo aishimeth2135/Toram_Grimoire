@@ -41,5 +41,5 @@ const { store } = setupCharacterStore()
 
 const branchItemState = computed(() => store.getSkillBranchItemState(props.container.branchItem.default))
 
-const toggleable = computed(() => props.container.branchItem.attr('condition') !== 'auto')
+const toggleable = computed(() => props.container.branchItem.prop('condition') !== 'auto')
 </script>

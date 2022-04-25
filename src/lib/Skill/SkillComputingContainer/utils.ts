@@ -6,18 +6,18 @@ import { StatComputed } from '@/lib/Character/Stat'
 import { SkillBranch, SkillEffect, SkillEffectAttrs } from '../Skill'
 import { SkillBranchItem, SkillEffectItem, SkillEffectItemHistory } from './index'
 import type { SkillEffectItemBase, EquipmentRestriction, BranchGroupState, BranchStackState } from './index'
-import { BRANCH_ATTRS_DEFAULT_VALUE, EQUIPMENT_TYPE_MAIN_ORDER, EQUIPMENT_TYPE_SUB_ORDER, EQUIPMENT_TYPE_BODY_ORDER } from './consts'
+import { BRANCH_PROPS_DEFAULT_VALUE, EQUIPMENT_TYPE_MAIN_ORDER, EQUIPMENT_TYPE_SUB_ORDER, EQUIPMENT_TYPE_BODY_ORDER } from './consts'
 import { SkillBranchNames } from '../Skill/enums'
 
 function effectOverwrite(to: SkillEffectItem, from: SkillEffect) {
   const fromBranches = from.branches.slice()
   if (!fromBranches.some(bch => bch.name === SkillBranchNames.Basic)) {
-    fromBranches.unshift(effectAttrsToBranch(from))
+    fromBranches.unshift(effectBasicPropsToBranch(from))
   }
   branchesOverwrite(to.branchItems, fromBranches, fromBranch => fromBranch.name === '' && fromBranch.isEmpty)
 }
 
-function effectAttrsToBranch(origin: SkillEffect) {
+function effectBasicPropsToBranch(origin: SkillEffect) {
   const CONVERT_LIST: Record<string, (value: string) => string> = {
     'mp_cost': value => value,
     'range': value => value === '-' ? 'no_limit' : value,
@@ -27,12 +27,12 @@ function effectAttrsToBranch(origin: SkillEffect) {
     'casting_time': value => value,
   }
   const branch = new SkillBranch(origin, 139, SkillBranchNames.Basic);
-  (Object.entries(origin.attributes) as ([keyof SkillEffectAttrs, string | number])[]).forEach(([key, value]) => {
+  (Object.entries(origin.basicProps) as ([keyof SkillEffectAttrs, string | number])[]).forEach(([key, value]) => {
     if (value !== null) {
       const attrKey = key.replace(/[A-Z]/g, char => '_' + char.toLowerCase())
       const handle = CONVERT_LIST[attrKey]
       const res = handle ? handle(value.toString()) : value.toString()
-      branch.appendBranchAttribute(attrKey, res)
+      branch.appendProp(attrKey, res)
     }
   })
   return branch
@@ -66,20 +66,20 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchIte
   // branch.name 為空值時，默認兩者同名。
   if (from.name !== SkillBranchNames.None && to.name !== from.name) {
     to.name = from.name
-    to.clearAttr()
+    to.clearProp()
   }
 
-  Object.entries(from instanceof SkillBranch ? from.branchAttributes : from.allAttrs).forEach(([key, value]) => {
-    if (value === '' && to.attr(key)) {
-      to.removeAttr(key)
-      to.record.attrs.remove.push(key)
+  Object.entries(from instanceof SkillBranch ? from.props : from.allProps).forEach(([key, value]) => {
+    if (value === '' && to.prop(key)) {
+      to.removeProp(key)
+      to.record.props.remove.push(key)
     } else {
-      if (to.hasAttr(key)) {
-        to.record.attrs.overwrite.push(key)
+      if (to.hasProp(key)) {
+        to.record.props.overwrite.push(key)
       } else {
-        to.record.attrs.append.push(key)
+        to.record.props.append.push(key)
       }
-      to.setAttr(key, value)
+      to.setProp(key, value)
     }
   })
 
@@ -243,9 +243,9 @@ function handleVirtualBranches(effectItem: SkillEffectItemBase) {
     const filtered = branchItem.suffixBranches.filter(suffix => {
       if (suffix.name === SkillBranchNames.Group) {
         const groupState: BranchGroupState = {
-          size: parseInt(suffix.attr('size'), 10),
-          expandable: suffix.attr('expandable') === '1',
-          expanded: suffix.attr('expansion_default') === '1',
+          size: parseInt(suffix.prop('size'), 10),
+          expandable: suffix.prop('expandable') === '1',
+          expanded: suffix.prop('expansion_default') === '1',
           parentExpanded: true,
           isGroupEnd: false,
         }
@@ -289,7 +289,7 @@ function initStackStates(effectItem: SkillEffectItemBase) {
       return {
         stackId: branchItem.stackId as number,
         branch: branchItem,
-        value: handleFormula(branchItem.attr('default') === 'auto' ? branchItem.attr('min') : branchItem.attr('default'), {
+        value: handleFormula(branchItem.prop('default') === 'auto' ? branchItem.prop('min') : branchItem.prop('default'), {
           vars: {
             'SLv': vars.slv,
             'CLv': vars.clv,
@@ -354,11 +354,11 @@ function initHistoryNexts(history: SkillEffectItemHistory) {
 
 function setBranchAttrsDefaultValue(effectItem: SkillEffectItem) {
   effectItem.branchItems.forEach(branchItem => {
-    const defaultValueList = BRANCH_ATTRS_DEFAULT_VALUE[branchItem.name]
+    const defaultValueList = BRANCH_PROPS_DEFAULT_VALUE[branchItem.name]
     if (defaultValueList) {
       Object.entries(defaultValueList).forEach(([key, value]) => {
-        if (!branchItem.hasAttr(key)) {
-          branchItem.setAttr(key, value)
+        if (!branchItem.hasProp(key)) {
+          branchItem.setProp(key, value)
         }
       })
     }
@@ -368,7 +368,7 @@ function setBranchAttrsDefaultValue(effectItem: SkillEffectItem) {
 export {
   convertEffectEquipment,
   effectOverwrite,
-  effectAttrsToBranch,
+  effectBasicPropsToBranch as effectAttrsToBranch,
   separateSuffixBranches,
   handleVirtualBranches,
   initStackStates,

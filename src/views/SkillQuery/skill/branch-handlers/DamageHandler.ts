@@ -2,9 +2,9 @@ import { markText } from '@/shared/utils/view'
 import Grimoire from '@/shared/Grimoire'
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
-import type { HandleBranchValueAttrsMap } from '@/lib/Skill/SkillComputingContainer/compute'
+import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { cloneBranchAttrs, handleDisplayData } from './utils'
+import { cloneBranchProps, handleDisplayData } from './utils'
 import MapContainer from './utils/MapContainer'
 import type { HandleDisplayDataOptionFilters, HandleBranchLangAttrsMap } from './utils'
 import ProrationHandler from './ProrationHandler'
@@ -13,7 +13,7 @@ import { createTagButtons } from '../../utils'
 export default function DamageHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
-  const attrs = cloneBranchAttrs(branchItem, {
+  const props = cloneBranchProps(branchItem, {
     name: t('skill-query.branch.damage.base-name'),
   })
 
@@ -33,7 +33,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(branch
     'ailment_name': value => !!value,
     'frequency_judgment': value => value !== 'none',
   })
-  const valueAttrsMap = new MapContainer<HandleBranchValueAttrsMap>({
+  const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>({
     'multiplier': '%',
     'constant': null,
     'extra_constant': null,
@@ -42,8 +42,8 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(branch
     'duration': null,
     'cycle': null,
   })
-  if (branchItem.attr('target_offset') !== 'auto') {
-    valueAttrsMap.append('target_offset')
+  if (branchItem.prop('target_offset') !== 'auto') {
+    valuePropsMap.append('target_offset')
   }
   const langAttrsMap = new MapContainer<HandleBranchLangAttrsMap>([
     'damage_type',
@@ -59,61 +59,61 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(branch
 
   const pureDatas = ['name', 'ailment_name', 'end_condition']
 
-  if (attrs['base'] === 'auto') {
+  if (props['base'] === 'auto') {
     const baseSuffix = branchItem.suffixBranches.find(bch => bch.name === 'base')
     if (baseSuffix) {
-      if (baseSuffix.attr('type') !== 'custom') {
-        attrs['@custom-base-caption'] = baseSuffix.attr('type')
-        attrs['base'] = `@custom.${baseSuffix.attr('type')}`
+      if (baseSuffix.prop('type') !== 'custom') {
+        props['@custom-base-caption'] = baseSuffix.prop('type')
+        props['base'] = `@custom.${baseSuffix.prop('type')}`
         langAttrsMap.append('base')
         langAttrsMap.set('@custom-base-caption', {
           afterHandle: value => createTagButtons(markText(value, { mark: 'text-purple' })),
         })
       } else {
-        if (baseSuffix.attr('title') === 'auto') {
-          attrs['base'] = '@custom.default'
+        if (baseSuffix.prop('title') === 'auto') {
+          props['base'] = '@custom.default'
           langAttrsMap.append('base')
         } else {
-          attrs['base'] = baseSuffix.attr('title')
+          props['base'] = baseSuffix.prop('title')
           pureDatas.push('base')
         }
-        if (baseSuffix.attr('caption')) {
-          attrs['@custom-base-caption'] = baseSuffix.attr('caption')
+        if (baseSuffix.prop('caption')) {
+          props['@custom-base-caption'] = baseSuffix.prop('caption')
           pureDatas.push('@custom-base-caption')
         }
       }
     } else {
-      attrs['base'] = attrs['damage_type'] === 'physical' ? 'atk' : 'matk'
+      props['base'] = props['damage_type'] === 'physical' ? 'atk' : 'matk'
       langAttrsMap.append('base')
     }
   } else {
     langAttrsMap.append('base')
   }
-  if (attrs['detail_display'] === 'auto') {
-    attrs['detail_display'] = attrs['title'] === 'normal_attack' ? '0' : '1'
+  if (props['detail_display'] === 'auto') {
+    props['detail_display'] = props['title'] === 'normal_attack' ? '0' : '1'
   }
 
-  if (attrs['frequency_judgment'] === 'auto') {
-    attrs['frequency_judgment'] = attrs['title'] !== 'each' ? 'single' : 'multiple'
+  if (props['frequency_judgment'] === 'auto') {
+    props['frequency_judgment'] = props['title'] !== 'each' ? 'single' : 'multiple'
   }
 
   const prorationBch = branchItem.suffixBranches.find(suf => suf.name === 'proration')
   if (prorationBch) {
     const _data = ProrationHandler(prorationBch);
     ['damage', 'proration', 'damage: title', 'proration: title'].forEach(key => {
-      attrs['@proration/' + key] = _data.get(key)
+      props['@proration/' + key] = _data.get(key)
     })
     pureDatas.push('@proration/damage', '@proration/damage: title', '@proration/proration', '@proration/proration: title')
   }
 
-  const result = handleDisplayData(branchItem, attrs, {
-    values: valueAttrsMap.value,
+  const result = handleDisplayData(branchItem, props, {
+    values: valuePropsMap.value,
     langs: langAttrsMap.value,
     filters: filters.value,
     pureDatas,
   })
 
-  // result.value['@frequency-visible'] = branchItem.attrs['title'] === 'each' ? '1' : '0';
+  // result.value['@frequency-visible'] = branchItem.props['title'] === 'each' ? '1' : '0';
 
   return result
 }

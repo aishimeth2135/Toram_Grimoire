@@ -44,7 +44,7 @@ const rootClicked = () => {
 const rootClassList = computed(() => {
   return {
     'is-tips': branchItem.value.name === SkillBranchNames.Tips,
-    'is-mark': branchItem.value.attrBoolean('is_mark'),
+    'is-mark': branchItem.value.propBoolean('is_mark'),
     'is-group': branchItem.value.isGroup,
     'group-active': branchItem.value.groupState.expanded,
   }

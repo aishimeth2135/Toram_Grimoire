@@ -41,7 +41,6 @@ const calcStructDisplay: CalcStructExpression = {
       CalculationContainerIds.StrongerAgainstElement,
       CalculationContainerIds.Proration,
       CalculationContainerIds.ComboMultiplier,
-      CalculationContainerIds.SkillLongRange,
       // CalculationContainerIds.Stability,
       CalculationContainerIds.OtherMultiplier,
     ],

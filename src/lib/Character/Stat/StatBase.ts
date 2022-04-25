@@ -117,7 +117,7 @@ class StatBase {
 
   statId(type: StatTypes) {
     const typeShorthand = {
-      [StatTypes.Constant]: '$',
+      [StatTypes.Constant]: '',
       [StatTypes.Multiplier]: '%',
       [StatTypes.Total]: '~',
     }[type]

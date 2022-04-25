@@ -536,16 +536,19 @@ class CharacterStat {
     try {
       const res = formula.calc(currentStats, vars)
       let value = res.value
+      if (typeof value !== 'number') {
+        value = parseFloat(value)
+      }
       const originalValue = value
 
-      if (typeof value !== 'number')
-        value = parseFloat(value)
-      if (this.max !== null && value > this.max)
+      if (this.max !== null && value > this.max) {
         value = this.max
-      if (this.min !== null && value < this.min)
+      }
+      if (this.min !== null && value < this.min) {
         value = this.min
+      }
 
-      const ho = this.options.hidden
+      const hiddenOption = this.options.hidden
       const displayValue = this.getDisplayValue(value)
 
       // resultValue: after min-max and to integer
@@ -559,9 +562,9 @@ class CharacterStat {
         statValueParts: res.statValueParts,
         statPartsDetail: res.statPartsDetail,
         conditionalBase: res.conditionalBase,
-        hidden: ho === 0 ||
-          (ho === 1 && (['constant', 'multiplier', 'total'] as const).every(a => res.statValueParts[a] === 0)) ||
-          (ho === 2 && originalValue == 0),
+        hidden: hiddenOption === 0 ||
+          (hiddenOption === 1 && (['constant', 'multiplier', 'total'] as const).every(a => res.statValueParts[a] === 0)) ||
+          (hiddenOption === 2 && originalValue === 0),
       }
     } catch (error) {
       console.warn(error)
@@ -629,7 +632,7 @@ class CharacterStatFormula {
   }
 
   /**
-   * @param pureStats - pure stats. all stat ID of stat must be unique
+   * @param pureStats - pure stats. All stat ID of stat must be unique
    */
   calc(pureStats: Stat[], vars: CharacterStatResultVars): CharacterStatFormulaResult {
     const allCharacterStatMap: { [key: string]: CharacterStat } = {}
@@ -641,9 +644,9 @@ class CharacterStatFormula {
     const cstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Constant),
       mstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Multiplier),
       tstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Total)
-    let cvalue = cstat ? cstat.value as number : 0,
-      mvalue = mstat ? mstat.value as number : 0,
-      tvalue = tstat ? tstat.value as number : 0
+    let cvalue = cstat ? cstat.value : 0,
+      mvalue = mstat ? mstat.value : 0,
+      tvalue = tstat ? tstat.value : 0
 
     let defaultFormula = true
 
@@ -724,7 +727,7 @@ class CharacterStatFormula {
         statValueVars.mvalue = mvalue
         statValueVars.tvalue = tvalue
       }
-      return computeFormula(formulaStr, handlerVars) as number
+      return (computeFormula(formulaStr, handlerVars) ?? 0) as number
     }
 
 
@@ -745,8 +748,9 @@ class CharacterStatFormula {
         item.options.forEach(option => {
           const match = option.match(/#([cmt]value)/)
           if (match) {
-            if (statBasePart === null)
+            if (statBasePart === null) {
               statBasePart = match[1]
+            }
           } else if (option === '#base') {
             isBase = true
           } else if (option === '#mul') {
@@ -822,8 +826,8 @@ class CharacterStatFormula {
 
     // formula是"0"的話，計算結果無條件為0。
     if (formula !== '0') {
-      const sum = (ary: number[]) => ary.reduce((cur, v) => cur + v, 0)
-      const mul = (ary: number[]) => ary.reduce((cur, v) => cur * v, 1)
+      const sum = (ary: number[]) => ary.reduce((cur, value) => cur + value, 0)
+      const mul = (ary: number[]) => ary.reduce((cur, value) => cur * value, 1)
 
       if (formula && formula.includes('#base')) {
         basev = sum(addValues) * mul(mulValues)

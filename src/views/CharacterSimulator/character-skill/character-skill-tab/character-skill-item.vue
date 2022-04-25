@@ -20,7 +20,12 @@
             <div v-if="isMutipleItem" class="text-light-2">
               {{ t('character-simulator.skill-build.skill-multiple-effects') }}
             </div>
-            <CharacterSkillResultItem v-else :result="firstResult" hide-name />
+            <CharacterSkillResultItem
+              v-else
+              :result="firstResult"
+              hide-name
+              :skill-results-state="SkillResultsState"
+            />
           </template>
           <div v-else-if="invalid" class="text-gray">
             {{ t('character-simulator.skill-build.skill-invalid') }}
@@ -45,6 +50,7 @@
             v-for="result in skillResultsState.results"
             :key="result.container.instanceId"
             :result="result"
+            :skill-results-state="SkillResultsState"
           />
         </div>
       </div>

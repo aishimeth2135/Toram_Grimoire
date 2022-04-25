@@ -201,7 +201,7 @@ const skillButtonHover = (el: HTMLElement) => {
 const currentHoveringBranch: Ref<SkillBranchItem | null> = ref(null)
 const branchButtonHover = (el: HTMLElement) => {
   const branchName = el.innerText
-  currentHoveringBranch.value = effectItem.value!.branchItems.find(bch => bch.attr('name') === branchName) ?? null
+  currentHoveringBranch.value = effectItem.value!.branchItems.find(bch => bch.prop('name') === branchName) ?? null
 }
 </script>
 
