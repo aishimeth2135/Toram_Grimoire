@@ -5,7 +5,7 @@
     @click="rootClicked"
   >
     <cy-icon-text
-      v-if="branchItem.name === 'tips'"
+      v-if="branchItem.is(SkillBranchNames.Tips)"
       icon="ic:outline-tips-and-updates"
       class="mr-2 mt-0.5"
     />
@@ -43,7 +43,7 @@ const rootClicked = () => {
 
 const rootClassList = computed(() => {
   return {
-    'is-tips': branchItem.value.name === SkillBranchNames.Tips,
+    'is-tips': branchItem.value.is(SkillBranchNames.Tips),
     'is-mark': branchItem.value.propBoolean('is_mark'),
     'is-group': branchItem.value.isGroup,
     'group-active': branchItem.value.groupState.expanded,

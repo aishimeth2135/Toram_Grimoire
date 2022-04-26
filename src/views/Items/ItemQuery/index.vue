@@ -446,9 +446,7 @@ const validEquipments = computed(() => {
   const unknowObtain = conditions.obtains.find(obtain => obtain.value === 'unknow' && obtain.selected)
   const validObtains = conditions.obtains.filter(obtain => obtain.value !== 'unknow' && obtain.selected)
   return equipments.filter(equip => {
-    const checkType = validTypes.some(item => {
-      return item.types.some(_item => _item.value === equip.type)
-    })
+    const checkType = validTypes.some(typeItem => typeItem.types.some(item => item.selected && item.value === equip.type))
     const checkObtain = (unknowObtain && equip.origin!.obtains.length === 0)
       || validObtains.find(obtain => equip.origin!.obtains.find(eqObtain => eqObtain['type'] === obtain.value))
     return checkType && checkObtain
@@ -491,10 +489,10 @@ const allSearchResult = computed(() => {
       max = modes[SearchModes.ItemLevel].max || 999
 
     return validEquipments.value.filter(equip => {
-      if (!equip.origin!.recipe) {
+      if (!equip.origin!.recipe?.['item_level']) {
         return false
       }
-      const value = equip.origin!.recipe?.['item_level'] ?? 0
+      let value = equip.origin!.recipe?.['item_level']
       return value >= min && value <= max
     })
   } else if (state.currentMode === SearchModes.Dye) {

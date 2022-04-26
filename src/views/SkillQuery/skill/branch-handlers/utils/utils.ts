@@ -5,7 +5,8 @@ function handleFunctionHighlight(result: string): string {
     target?: (match: string, p1: string) => string;
   }[] = [
     {
-      name: 'floor', reg: /Math\.floor\(([^()]+)\)/g,
+      name: 'floor',
+      reg: /Math\.floor\(([^()]+)\)/g,
       target: (match: string, p1: string) => '[' + p1 + ']',
     },
     { name: 'min', reg: /Math\.min\(([^()]+)\)/g },
@@ -26,8 +27,7 @@ function handleFunctionHighlight(result: string): string {
         result = result.slice(0, idx + offset) + '#left~' + result.slice(idx + offset + 1)
         offset += 5
         handleStack.push('normal')
-      }
-      else {
+      } else {
         handleStack.push('function')
       }
     } else if (char === ')') {

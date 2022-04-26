@@ -101,13 +101,13 @@ class FoodBuild {
   }
 
   removeSelectedFood(idx: number) {
-    const i = this.selectedFoodIndexes.indexOf(idx)
-    this.selectedFoodIndexes.splice(i, 1)
+    const foodIdx = this.selectedFoodIndexes.indexOf(idx)
+    this.selectedFoodIndexes.splice(foodIdx, 1)
   }
 
   clone() {
     const newFood = new FoodBuild(this.name + '*')
-    newFood.foods = this.foods.map(p => p.clone())
+    newFood.foods = this.foods.map(food => food.clone())
     newFood.selectedFoodIndexes = this.selectedFoodIndexes.slice()
     return newFood
   }
@@ -117,11 +117,11 @@ class FoodBuild {
     const data = {} as FoodsSaveData
     data.name = this.name
 
-    data.foods = this.foods.map((p, i) => ({
-      statId: p.foodBase.base.baseName,
-      level: p.level,
-      negative: p.foodBase.negative,
-      selected: this.foodSelected(i),
+    data.foods = this.foods.map((food, idx) => ({
+      statId: food.foodBase.base.baseName,
+      level: food.level,
+      negative: food.foodBase.negative,
+      selected: this.foodSelected(idx),
     }))
 
     return data
@@ -132,16 +132,17 @@ class FoodBuild {
 
       const { name, foods } = data
       this.name = name
-      foods.forEach(p => {
-        const findIdx = this.foods.findIndex(a => a.foodBase.base.baseName === p.statId && a.foodBase.negative === p.negative)
+      foods.forEach(food => {
+        const findIdx = this.foods.findIndex(_food => _food.foodBase.base.baseName === food.statId && _food.foodBase.negative === food.negative)
         if (findIdx !== -1) {
           const find = this.foods[findIdx]
-          find.level = p.level
-          if (p.selected)
+          find.level = food.level
+          if (food.selected) {
             this.appendSelectedFood(findIdx)
+          }
         } else {
           success = false
-          console.warn(`[FoodBuild.load] Can not find Food which stat-base-name: ${p.statId}, negative: ${p.negative}`)
+          console.warn(`[FoodBuild.load] Can not find Food which stat-base-name: ${food.statId}, negative: ${food.negative}`)
         }
       })
 

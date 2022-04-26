@@ -206,7 +206,7 @@ function separateSuffixBranches(effectItem: SkillEffectItemBase) {
   let spaceFlag = false
 
   effectItem.branchItems.forEach(branchItem => {
-    if (branchItem.name === SkillBranchNames.Space) {
+    if (branchItem.is(SkillBranchNames.Space)) {
       spaceFlag = true
       return
     }
@@ -241,7 +241,7 @@ function separateSuffixBranches(effectItem: SkillEffectItemBase) {
 function handleVirtualBranches(effectItem: SkillEffectItemBase) {
   const newBranchItems = effectItem.branchItems.filter(branchItem => {
     const filtered = branchItem.suffixBranches.filter(suffix => {
-      if (suffix.name === SkillBranchNames.Group) {
+      if (suffix.is(SkillBranchNames.Group)) {
         const groupState: BranchGroupState = {
           size: parseInt(suffix.prop('size'), 10),
           expandable: suffix.prop('expandable') === '1',
@@ -274,6 +274,8 @@ export function initBranchesPostpone(effectItem: SkillEffectItem) {
       bch.postpone = true
     } else if (bch.is(SkillBranchNames.Damage)) {
       bch.postpone = true
+    } else if (bch.stats.some(stat => bch.hasProp(stat.statId, 'conditionValue'))) {
+      bch.postpone = true
     }
   })
 }
@@ -284,7 +286,7 @@ function initStackStates(effectItem: SkillEffectItemBase) {
     clv: effectItem.parent.parent.vars.characterLevel,
   }
   const stackStates: BranchStackState[] = effectItem.branchItems
-    .filter(branchItem => branchItem.name === SkillBranchNames.Stack)
+    .filter(branchItem => branchItem.is(SkillBranchNames.Stack))
     .map(branchItem => {
       return {
         stackId: branchItem.stackId as number,

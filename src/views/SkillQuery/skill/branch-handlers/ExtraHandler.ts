@@ -35,7 +35,7 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(b
   const textPropsMap = new MapContainer<HandleBranchTextPropsMap>()
   const pureValues = []
 
-  if (mainBranch.name === 'damage') {
+  if (mainBranch.is(SkillBranchNames.Damage)) {
     pureValues.push('ailment_name')
     valuePropsMap.set('ailment_chance', '%')
     filters.set('ailment_name', value => !!value)

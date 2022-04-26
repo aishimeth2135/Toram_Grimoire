@@ -3,7 +3,7 @@ import { Crystal, ItemObtain } from '@/lib/Items/Item'
 
 import type { CsvData } from './DownloadDatas'
 
-export default function(root: ItemsSystem, csvData: CsvData) {
+export default function (root: ItemsSystem, csvData: CsvData) {
   const NAME = 0,
     ATTRIBUTE_CATEGORY = 1,
     ATTRIBUTE_NAME = 2,
@@ -20,8 +20,9 @@ export default function(root: ItemsSystem, csvData: CsvData) {
     if (index === 0) {
       return
     }
-    if (!row[NAME] && !row[ATTRIBUTE_CATEGORY] && !row[ATTRIBUTE_NAME])
+    if (!row[NAME] && !row[ATTRIBUTE_CATEGORY] && !row[ATTRIBUTE_NAME]) {
       return
+    }
     try {
       if (row[NAME] === '0') {
         currentType = parseInt(row[TYPE_ID], 10)
@@ -46,10 +47,11 @@ export default function(root: ItemsSystem, csvData: CsvData) {
       if (currentCategory === 'stats') {
         let tail = propValue.slice(-1),
           value = propValue
-        if (tail !== '%' && tail !== '~')
+        if (tail !== '%' && tail !== '~') {
           tail = ''
-        else
+        } else {
           value = propValue.slice(0, -1)
+        }
         currentCrystal.appendStat(propName, value, tail, row[ATTRIBUTE_VALUES[1]])
       } else if (currentCategory === 'obtain') {
         if ((['name', 'map', 'dye', 'type', 'npc']).includes(propName)) {

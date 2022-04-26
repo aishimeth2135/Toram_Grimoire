@@ -24,7 +24,6 @@
               v-else
               :result="firstResult"
               hide-name
-              :skill-results-state="SkillResultsState"
             />
           </template>
           <div v-else-if="invalid" class="text-gray">
@@ -50,7 +49,6 @@
             v-for="result in skillResultsState.results"
             :key="result.container.instanceId"
             :result="result"
-            :skill-results-state="SkillResultsState"
           />
         </div>
       </div>

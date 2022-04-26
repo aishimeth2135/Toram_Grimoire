@@ -127,7 +127,7 @@ export async function exportSkillBuildImage(skillBuild: SkillBuild) {
       (sgc_lineCount - 1) * sgc_margin +
       starGemScope_py
 
-    const skillIconGrdAddColors = function(grd: CanvasGradient) {
+    const skillIconGrdAddColors = function (grd: CanvasGradient) {
       grd.addColorStop(0, 'white')
       grd.addColorStop(0.5, '#FFD1EA')
       grd.addColorStop(1, '#f7a8d3')
@@ -264,8 +264,9 @@ export async function exportSkillBuildImage(skillBuild: SkillBuild) {
         fctx.drawImage(item.loadedImage, left + sgc_icon_pd, cur_y + sgc_icon_pd, skill_icon_width, skill_icon_width)
         fctx.fillStyle = pcolor4
         fctx.fillText(item.skill!.name + ' Lv.' + skillBuild.getSkillState(item.skill!).starGemLevel, left + icon_width_sum + sgc_icon_mr, icon_cy)
-        if (idx % 2 === 1 && idx !== ary.length - 1)
+        if (idx % 2 === 1 && idx !== ary.length - 1) {
           cur_y += skill_icon_width + sgc_margin + sgc_icon_pd * 2
+        }
       })
       cur_y += skill_icon_width + starGemScope_py
     }
@@ -342,10 +343,12 @@ export function exportSkillBuildText(skillBuild: SkillBuild) {
     res += st.name + '<br />'
     st.skills.forEach((skill) => {
       const { level, starGemLevel } = skillBuild.getSkillState(skill)
-      if (level > 0)
+      if (level > 0) {
         res += '｜' + skill.name + ' Lv.' + level + '<br />'
-      if (starGemLevel > 0)
+      }
+      if (starGemLevel > 0) {
         starGems.push({ skill, starGemLevel })
+      }
     })
     res += '<br />'
   })

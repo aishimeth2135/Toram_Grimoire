@@ -137,7 +137,7 @@ const extraStats = computed(() => {
 
 const { valid, calculation, expectedResult } = store.setupDamageCalculationExpectedResult(
   computed(() => props.result),
-  computed(() => props.skillResultsState.basicContainer),
+  computed(() => props.skillResultsState),
   extraStats,
   computed(() => store.targetProperties),
   computed(() => store.calculationOptions),

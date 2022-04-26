@@ -304,7 +304,11 @@ const obtainsDataConvert = (obtains: ItemObtain[]) => {
     return {
       iid: idx,
       isDrop: ['mobs', 'boss', 'mini_boss'].includes(item.type!),
-      type, name, map, dye, icon,
+      type,
+      name,
+      map,
+      dye,
+      icon,
     }
   })
 }
@@ -312,7 +316,6 @@ const obtainsDataConvert = (obtains: ItemObtain[]) => {
 const obtainsDatas = computed(() => obtainsDataConvert(originEquipment.value.obtains))
 
 const firstObtain = computed(() => obtainsDatas.value[0] ?? null)
-
 
 const previewStat = computed(() => {
   const currentStat = modes[SearchModes.Stat].currentStat

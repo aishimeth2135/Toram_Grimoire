@@ -3,6 +3,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import { cloneBranchProps, handleDisplayData } from './utils'
 import MapContainer from './utils/MapContainer'
@@ -60,7 +61,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(branch
   const pureDatas = ['name', 'ailment_name', 'end_condition']
 
   if (props['base'] === 'auto') {
-    const baseSuffix = branchItem.suffixBranches.find(bch => bch.name === 'base')
+    const baseSuffix = branchItem.suffixBranches.find(bch => bch.is(SkillBranchNames.Base))
     if (baseSuffix) {
       if (baseSuffix.prop('type') !== 'custom') {
         props['@custom-base-caption'] = baseSuffix.prop('type')
@@ -97,7 +98,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(branch
     props['frequency_judgment'] = props['title'] !== 'each' ? 'single' : 'multiple'
   }
 
-  const prorationBch = branchItem.suffixBranches.find(suf => suf.name === 'proration')
+  const prorationBch = branchItem.suffixBranches.find(suf => suf.is(SkillBranchNames.Proration))
   if (prorationBch) {
     const _data = ProrationHandler(prorationBch);
     ['damage', 'proration', 'damage: title', 'proration: title'].forEach(key => {

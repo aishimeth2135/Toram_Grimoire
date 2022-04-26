@@ -31,6 +31,7 @@ function getSectorD(cx: number, cy: number, startR: number, endR: number, startA
 }
 
 
+// eslint-disable-next-line id-length
 function drawImage(path: string, x: number, y: number, width: number, height: number, attr: Attrs = {}) {
   const img = document.createElementNS('http://www.w3.org/2000/svg', 'image')
   attr = Object.assign({

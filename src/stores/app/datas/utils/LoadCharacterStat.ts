@@ -5,7 +5,7 @@ import { CharacterStat, CharacterStatCategory, CharacterStatFormula } from '@/li
 
 import type { LangCsvData } from './DownloadDatas'
 
-export default function(characterSystem: CharacterSystem, datas: LangCsvData) {
+export default function (characterSystem: CharacterSystem, datas: LangCsvData) {
   const ID = 0,
     NAME = 1,
     DISPLAY_FORMULA = 2,

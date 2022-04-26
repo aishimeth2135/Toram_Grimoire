@@ -4,7 +4,7 @@ import CharacterSystem from '@/lib/Character'
 
 import type { LangCsvData } from './DownloadDatas'
 
-export default function(characterSystem: CharacterSystem, datas: LangCsvData) {
+export default function (characterSystem: CharacterSystem, datas: LangCsvData) {
   const
     BASE_NAME = 0,
     CAPTION = 1,
@@ -25,8 +25,9 @@ export default function(characterSystem: CharacterSystem, datas: LangCsvData) {
   })
 
   csvData.forEach((row, index) => {
-    if (index === 0 || characterSystem.findStatBase(row[BASE_NAME]))
+    if (index === 0 || characterSystem.findStatBase(row[BASE_NAME])) {
       return
+    }
     const stat = characterSystem.appendStatBase(
       row[BASE_NAME], row[CAPTION], row[HAS_MULTIPLIER] !== '無', row[ORDER] ? parseInt(row[ORDER], 10) : 999)
     if (row[CONSTANT_FORMULA]) {

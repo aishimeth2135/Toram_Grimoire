@@ -52,9 +52,9 @@ class EnchantCategory {
   }
 
   appendItem(params: EnchantItemParams): EnchantItem {
-    const t = markRaw(new EnchantItem(this, params))
-    this.items.push(t)
-    return t
+    const newItem = markRaw(new EnchantItem(this, params))
+    this.items.push(newItem)
+    return newItem
   }
 }
 
@@ -107,8 +107,8 @@ class EnchantItem {
   }
 
   appendConditionalProps(condition: EnchantItemConditions, params: EnchantItemConditionalPropertiesParams): void {
-    const t = new EnchantItemConditionalProperties(condition, params)
-    this.conditionalProps.push(t)
+    const newProp = new EnchantItemConditionalProperties(condition, params)
+    this.conditionalProps.push(newProp)
   }
 
   checkConditionalProps(equipment: EnchantEquipment): EnchantItemConditionalProperties | null {
@@ -149,8 +149,9 @@ class EnchantItem {
   getLimitFromPotentialCapacity(type: StatNormalTypes, add: number = 0) {
     let potentialLimit = STATE.PotentialCapacity + add
     const bp = this.getOriginalPotential(type)
-    if (bp === 6)
+    if (bp === 6) {
       potentialLimit -= 10
+    }
     return Math.floor(potentialLimit / bp)
   }
   getUnitValue(type: StatNormalTypes) {

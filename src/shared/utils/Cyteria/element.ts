@@ -1,7 +1,8 @@
 function setAttributes(ele: Element, dict: Record<string, any>) {
   Object.keys(dict).forEach(key => {
-    if (dict[key] !== null)
+    if (dict[key] !== null) {
       ele.setAttribute(key, dict[key])
+    }
   })
 }
 

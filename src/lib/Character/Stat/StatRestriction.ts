@@ -23,13 +23,9 @@ class StatRestriction extends Stat {
   override get statId() {
     let rtext = 'none++'
     if (this.restriction !== null) {
-      const r = this.restriction
-      const rs = [r.main, r.sub, r.body, r.other]
-      rtext = rs.map(item => {
-        if (typeof item === 'string')
-          return item
-        return 'none'
-      }).join('+')
+      const rst = this.restriction
+      const rstList = [rst.main, rst.sub, rst.body, rst.other]
+      rtext = rstList.map(item => typeof item === 'string' ? item : 'none').join('+')
     }
     return `${this.base.statId(this.type)}|${rtext}`
   }
@@ -105,8 +101,8 @@ class StatRestriction extends Stat {
       main: null, sub: null, body: null, other: null,
     }
 
-    originRestriction.split(/\s*,\s*/).forEach(q => {
-      let [_eqType, _restriction] = q.split('.')
+    originRestriction.split(/\s*,\s*/).forEach(item => {
+      let [_eqType, _restriction] = item.split('.')
       if (!_restriction) {
         _restriction = _eqType
         _eqType = 'main'
@@ -116,7 +112,7 @@ class StatRestriction extends Stat {
       const restrictionIndex = itemStatRestrictionList.indexOf(restriction)
       if (!['main', 'sub', 'body'].includes(eqType) || restrictionIndex === -1) {
         if (restriction !== '') {
-          console.warn('[CharacterEquipment.fromOrigin] unknow restriction of stat: ' + q)
+          console.warn('[CharacterEquipment.fromOrigin] unknow restriction of stat: ' + item)
         }
         return StatRestriction.from(stat, newOriginRestriction)
       }

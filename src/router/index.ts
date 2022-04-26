@@ -50,12 +50,12 @@ export default function createAppRouter() {
   router.afterEach((to) => {
     if (to) {
       { // set title and meta tags
-        const data = to.matched.slice().reverse().find(p => p.meta?.title)
+        const data = to.matched.slice().reverse().find(item => item.meta?.title)
         mainStore.updateTitle(data ? data.meta.title : '')
       }
       {
         document.head.querySelectorAll('*[data-vue-router-mata-tag-controlled]').forEach(el => el.remove())
-        const data = to.matched.slice().reverse().find(p => p.meta && p.meta.metaTags)
+        const data = to.matched.slice().reverse().find(item => item.meta && item.meta.metaTags)
         if (data) {
           const metaTags = data.meta.metaTags
           if (metaTags) {

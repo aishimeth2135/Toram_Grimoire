@@ -56,8 +56,7 @@ function initFoodsBase(foodsBase: FoodsBase) {
     }
     if (Array.isArray(value)) {
       foodsBase.appendFoodBase(base, value)
-    }
-    else {
+    } else {
       foodsBase.appendFoodBase(base, value.positive)
       foodsBase.appendFoodBase(base, value.negative, true)
     }

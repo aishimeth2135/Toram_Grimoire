@@ -4,7 +4,7 @@ import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { StatRestriction } from '@/lib/Character/Stat'
 import { EnemyElements } from '@/lib/Enemy/enums'
 
-export function checkStatRestriction(chara: Character, stat: StatRestriction) {
+export function checkStatRestriction(chara: Character, stat: StatRestriction): boolean {
   const types = stat.restriction
   if (!types) {
     return true
@@ -18,7 +18,7 @@ export function checkStatRestriction(chara: Character, stat: StatRestriction) {
     || (types.body !== null && chara.checkFieldEquipmentType(EquipmentFieldTypes.BodyArmor, types.body))
 }
 
-export function getCharacterElement(chara: Character) {
+export function getCharacterElement(chara: Character): Partial<Record<EnemyElements, number>> {
   const element: Partial<Record<EnemyElements, number>> = {
     'fire': 0,
     'water': 0,

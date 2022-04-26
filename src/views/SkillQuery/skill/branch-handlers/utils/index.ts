@@ -26,20 +26,20 @@ function cloneBranchProps(
   branchItem: SkillBranchItemBaseChilds,
   initValueMap?: Record<string, string | ((value: string) => string)>,
 ): Record<string, string> {
-  const attrs = {} as Record<string, string>
+  const props = {} as Record<string, string>
   Object.entries(branchItem.allProps).forEach(([key, value]) => {
-    attrs[key] = value
+    props[key] = value
   })
   if (typeof initValueMap === 'object') {
     Object.entries(initValueMap).forEach(([key, value]) => {
       if (typeof value === 'function') {
-        attrs[key] = value(attrs[key])
-      } else if (attrs[key] === undefined) {
-        attrs[key] = value
+        props[key] = value(props[key])
+      } else if (props[key] === undefined) {
+        props[key] = value
       }
     })
   }
-  return attrs
+  return props
 }
 
 type SkillDisplayData = Record<string, string>
@@ -168,7 +168,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
         .replace(FORMULA_VALUE_TO_PERCENTAGE_PATTERN, (match, p1, p2, p3) => p1 + p2 + numberStringToPercentage(p3))
         .replace(MUL_PATTERN, '×')
     })
-    container.handle(value => value.replace(FORMULA_FLOAT_TO_FIXED, (m, m1, m2) => m1 + m2.slice(0, 4)))
+    container.handle(value => value.replace(FORMULA_FLOAT_TO_FIXED, (match, m1, m2) => m1 + m2.slice(0, 4)))
     container.handle(trimFloatStringZero)
   }
 
@@ -205,7 +205,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   })
 
   const handleTextResult = (str: string) => {
-    str = str.replace(/\(\(((?:(?!\(\().)+)\)\)/g, (m, m1) => `<span class="cy--text-separate border-light-3">${m1}</span>`)
+    str = str.replace(/\(\(((?:(?!\(\().)+)\)\)/g, (match, m1) => `<span class="cy--text-separate border-light-3">${m1}</span>`)
     str = createTagButtons(str)
     return str
   }

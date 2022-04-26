@@ -90,7 +90,7 @@ const jsepTypes = {
   isArrayExpression(node: jsep.Expression): node is jsep.ArrayExpression {
     return node.type === 'ArrayExpression'
   },
-  isBinaryExpression (node: jsep.Expression): node is jsep.BinaryExpression {
+  isBinaryExpression(node: jsep.Expression): node is jsep.BinaryExpression {
     return node.type === 'BinaryExpression'
   },
   isCallExpression(node: jsep.Expression): node is jsep.CallExpression {

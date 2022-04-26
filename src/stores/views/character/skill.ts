@@ -140,7 +140,9 @@ export const useCharacterSkillStore = defineStore('view-character-skill', () => 
           st.levelSkillTree.levelSkills.forEach(skill => {
             const lv = skill.level(),
               sglv = skill.starGemLevel()
-            if (lv === 0 && sglv === 0) return
+            if (lv === 0 && sglv === 0) {
+              return
+            }
             const p4 = createRow(),
               n4 = 'levelSkill'
             p4[index['type']] = type[n4]

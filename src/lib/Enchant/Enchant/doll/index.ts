@@ -75,8 +75,8 @@ export default class EnchantDoll {
 
   calc(originalNegativeStats: EnchantStat[], originalPotential: number = 0): EnchantEquipment | null {
     // 暫存要附的能力，如果能力都被拿完了表示已經計算完畢
-    const negativeStats = originalNegativeStats.map(p => p.clone())
-    const positiveStats = this._positiveStats.map(p => p.clone())
+    const negativeStats = originalNegativeStats.map(item => item.clone())
+    const positiveStats = this._positiveStats.map(item => item.clone())
     if (negativeStats.find(stat => stat.value === 0) || positiveStats.find(stat => stat.value === 0)) {
       console.warn('[enchant-doll] value of some given stats is zero.')
       return null
@@ -120,7 +120,7 @@ export default class EnchantDoll {
         const eq = res.equipment
         const steps = eq.steps()
         const stepsId = steps
-          .filter((step, i) => i === steps.length - 1 || step.stats[0].value < 0)
+          .filter((step, idx) => idx === steps.length - 1 || step.stats[0].value < 0)
           .map(step => step.stats.map(stat => stat.statId + stat.value).join(','))
           .join('->')
         const pre = eq.lastStep ? `${eq.lastStep.remainingPotential}/${eq.lastStep.potentialExtraRate}` : 'none'
@@ -197,8 +197,7 @@ export default class EnchantDoll {
       const resultEq = result.equipment
       resultEq.steps().forEach(step => step.optimizeType(0))
       return resultEq
-    }
-    else {
+    } else {
       errorEqs.forEach(item => item.finalFill())
       errorEqs.sort(sortResult)
 
@@ -291,7 +290,7 @@ export default class EnchantDoll {
       manuallyStats = manuallyStats.slice(0, this.numNegativeStats - numNegativeStats)
       const originalNegativeStatsList = this.getNegativeStatsList(tshortlist, numNegativeStats)
       const parseStats = (stats: EnchantStat[]) => {
-        const tmpCategorys = EnchantDollCategory.classifyStats(stats).sort((a, b) => b.stats.length - a.stats.length)
+        const tmpCategorys = EnchantDollCategory.classifyStats(stats).sort((item1, item2) => item2.stats.length - item1.stats.length)
         tmpCategorys.forEach(_category => _category.sortStats('max-effect'))
         const categoryEffectSum = tmpCategorys
           .map(_category => _category.originalPotentialEffectMaximumSum())
@@ -377,12 +376,12 @@ export default class EnchantDoll {
     }
 
     negatives.sort((cat1, cat2) => {
-      for (let i = 1; i <= numNegatives; ++i) {
-        if (i >= cat1.stats.length && i >= cat2.stats.length) {
+      for (let idx = 1; idx <= numNegatives; ++idx) {
+        if (idx >= cat1.stats.length && idx >= cat2.stats.length) {
           return 0
         }
-        const av = calcPriority(cat1, i)
-        const bv = calcPriority(cat2, i)
+        const av = calcPriority(cat1, idx)
+        const bv = calcPriority(cat2, idx)
         if (av > bv) {
           return -1
         }
@@ -409,19 +408,19 @@ export default class EnchantDoll {
 
     const merge = (ary: number[][]) => {
       const res = []
-      for (let i = 0; i < ary.length - 1; ++i) {
-        for (let j = 0; j < stats.length; ++j) {
-          const p = ary[i]
-          if (p[p.length - 1] < j) {
-            const newEl = p.slice()
-            newEl.push(j)
+      for (let idx = 0; idx < ary.length - 1; ++idx) {
+        for (let idx2 = 0; idx2 < stats.length; ++idx2) {
+          const items = ary[idx]
+          if (items[items.length - 1] < idx2) {
+            const newEl = items.slice()
+            newEl.push(idx2)
             res.push(newEl)
           }
         }
       }
       return res
     }
-    let res = Array(stats.length).fill([]).map((_, idx) => [idx])
+    let res = Array(stats.length).fill([]).map((value, idx) => [idx])
     while (res.length !== 0 && res[0].length !== stats.length) {
       res = merge(res)
       if (res[0].length === length) {
@@ -430,7 +429,7 @@ export default class EnchantDoll {
       }
     }
 
-    return finaleRes.map(p => p.map(i => stats[i]))
+    return finaleRes.map(item => item.map(idx => stats[idx]))
 
     /**
      * A  B  C  D
@@ -491,27 +490,25 @@ class EnchantDollCategory {
 
   sortStats(type: 'max-effect' | 'max-cost' | 'negaitve--min-material-cost', payload?: { equipment: EnchantEquipment }) {
     if (type === 'max-effect') {
-      this.stats.sort((a, b) => {
-        const av = -1 * a.originalPotential * a.limit[0]
-        const bv = -1 * b.originalPotential * b.limit[0]
+      this.stats.sort((item1, item2) => {
+        const av = -1 * item1.originalPotential * item1.limit[0]
+        const bv = -1 * item2.originalPotential * item2.limit[0]
         return bv - av
       })
-    }
-    else if (type === 'max-cost') {
+    } else if (type === 'max-cost') {
       const { equipment } = payload as { equipment: EnchantEquipment }
-      this.stats.sort((a, b) => {
-        const av = a.itemBase.getPotential(a.type, equipment)
-        const bv = b.itemBase.getPotential(b.type, equipment)
+      this.stats.sort((item1, item2) => {
+        const av = item1.itemBase.getPotential(item1.type, equipment)
+        const bv = item2.itemBase.getPotential(item2.type, equipment)
         if (av === bv) {
-          return b.value - a.value
+          return item2.value - item1.value
         }
         return bv - av
       })
-    }
-    else if (type === 'negaitve--min-material-cost') {
-      this.stats.sort((a, b) => {
-        const av = a.calcMaterialPointCost(a.limit[0], 0)
-        const bv = b.calcMaterialPointCost(b.limit[0], 0)
+    } else if (type === 'negaitve--min-material-cost') {
+      this.stats.sort((item1, item2) => {
+        const av = item1.calcMaterialPointCost(item1.limit[0], 0)
+        const bv = item2.calcMaterialPointCost(item2.limit[0], 0)
         return av - bv
       })
     }

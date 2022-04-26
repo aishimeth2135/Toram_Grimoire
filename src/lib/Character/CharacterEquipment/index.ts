@@ -52,12 +52,15 @@ abstract class CharacterEquipment {
   }
 
   get is() {
-    if (this instanceof Weapon)
+    if (this instanceof Weapon) {
       return 'weapon'
-    if (this instanceof Armor)
+    }
+    if (this instanceof Armor) {
       return 'armor'
-    if (this instanceof Avatar)
+    }
+    if (this instanceof Avatar) {
       return 'avatar'
+    }
     return 'other'
   }
 
@@ -87,16 +90,16 @@ abstract class CharacterEquipment {
     return false
   }
   get allStats() {
-    const all = this.stats.map(p => p.clone())
+    const allStats = this.stats.map(stat => stat.clone())
     if (this.hasCrystal) {
-      (this.crystals as EquipmentCrystal[]).forEach(c => {
-        c.stats.forEach(stat => {
-          const t = all.find(a => a.equals(stat))
-          t ? t.add(stat.value) : all.push(stat.clone())
+      (this.crystals as EquipmentCrystal[]).forEach(crystal => {
+        crystal.stats.forEach(crystalStat => {
+          const find = allStats.find(stat => stat.equals(crystalStat))
+          find ? find.add(crystalStat.value) : allStats.push(crystalStat.clone())
         })
       })
     }
-    return all
+    return allStats
   }
   get isCustom() {
     return this._isCustom
@@ -139,29 +142,31 @@ abstract class CharacterEquipment {
   }
 
   getAllStats(checkRestriction: (stat: StatRestriction) => boolean = () => true): StatRestriction[] {
-    const all = this.stats
-      .map(p => {
-        const stat = p.clone()
-        if (!checkRestriction(stat))
-          stat.value = 0
+    const allStats = this.stats
+      .map(stat => {
+        const newStat = stat.clone()
+        if (!checkRestriction(newStat)) {
+          newStat.value = 0
+        }
         return stat
       })
     if (this.hasCrystal) {
-      (this.crystals as EquipmentCrystal[]).forEach(c => {
-        c.stats.forEach(stat => {
-          const t = all.find(a => a.equals(stat))
-          if (t)
-            t.add(checkRestriction(stat) ? stat.value : 0)
-          else {
-            const a = stat.clone()
-            if (!checkRestriction(a))
-              a.value = 0
-            all.push(a)
+      (this.crystals as EquipmentCrystal[]).forEach(crystal => {
+        crystal.stats.forEach(crystalStat => {
+          const find = allStats.find(stat => stat.equals(crystalStat))
+          if (find) {
+            find.add(checkRestriction(crystalStat) ? crystalStat.value : 0)
+          } else {
+            const stat = crystalStat.clone()
+            if (!checkRestriction(stat)) {
+              stat.value = 0
+            }
+            allStats.push(stat)
           }
         })
       })
     }
-    return all
+    return allStats
   }
 
   setCustom(set: boolean) {
@@ -190,7 +195,7 @@ abstract class CharacterEquipment {
   }
 
   clone(): CharacterEquipment {
-    const stats = this.stats.map(p => p.clone())
+    const stats = this.stats.map(stat => stat.clone())
     const name = this.name
 
     let eq: CharacterEquipment | null = null
@@ -226,14 +231,18 @@ abstract class CharacterEquipment {
       eq = new Avatar(this.origin, name, stats)
     }
 
-    if (this.hasRefining)
+    if (this.hasRefining) {
       eq.refining = this.refining
-    if (this.hasStability)
+    }
+    if (this.hasStability) {
       eq.stability = this.stability
-    if (this.hasCrystal)
-      eq.crystals = (this.crystals as EquipmentCrystal[]).map(p => p.clone())
-    if (this.isCustom)
+    }
+    if (this.hasCrystal) {
+      eq.crystals = (this.crystals as EquipmentCrystal[]).map(crystal => crystal.clone())
+    }
+    if (this.isCustom) {
       eq.setCustom(true)
+    }
 
     return eq
   }
@@ -281,12 +290,15 @@ abstract class CharacterEquipment {
 
     // == [ other ] ===================================================
     data.name = this.name
-    if (this.hasStability)
+    if (this.hasStability) {
       data.stability = this.stability
-    if (this.hasRefining)
+    }
+    if (this.hasRefining) {
       data.refining = this.refining
-    if (this.hasCrystal)
-      data.crystals = (this.crystals as EquipmentCrystal[]).map(p => p.name)
+    }
+    if (this.hasCrystal) {
+      data.crystals = (this.crystals as EquipmentCrystal[]).map(crystal => crystal.name)
+    }
 
     data.isCustom = this.isCustom
 
@@ -308,7 +320,7 @@ abstract class CharacterEquipment {
   static loadEquipment(data: EquipmentSaveData): CharacterEquipment | null {
     try {
       const { id, name, instance, stability, refining, atk, def, crystals, isCustom } = data
-      const stats = data.stats.map(p => StatRestriction.load(p)).filter(stat => stat !== null) as StatRestriction[]
+      const stats = data.stats.map(stat => StatRestriction.load(stat)).filter(stat => stat !== null) as StatRestriction[]
 
       stats.forEach(stat => {
         if (typeof stat.value === 'string') {
@@ -388,8 +400,9 @@ abstract class CharacterEquipment {
       item.name as string,
       item.stats.map((stat, idx) => {
         const statRest = StatRestriction.fromOrigin(stat, item.statRestrictions[idx])
-        if (statValueToNumber && typeof statRest.value === 'string')
+        if (statValueToNumber && typeof statRest.value === 'string') {
           statRest.value = isNumberString(statRest.value) ? parseFloat(statRest.value) : 0
+        }
         return statRest
       }),
     ] as const
@@ -399,12 +412,15 @@ abstract class CharacterEquipment {
     }
 
     const stability = item.baseStability
-    if (item.category === 300)
+    if (item.category === 300) {
       return new BodyArmor(...pre_args, item.baseValue)
-    if (item.category === 400)
+    }
+    if (item.category === 400) {
       return new AdditionalGear(...pre_args, item.baseValue)
-    if (item.category === 500)
+    }
+    if (item.category === 500) {
       return new SpecialGear(...pre_args, item.baseValue)
+    }
     if (item.category < 100) {
       const type = [
         EquipmentTypes.OneHandSword, EquipmentTypes.TwoHandSword,

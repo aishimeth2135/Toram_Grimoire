@@ -1,5 +1,5 @@
 
-import { computed } from '@vue/reactivity'
+import { computed } from 'vue'
 import { Ref } from 'vue'
 
 import { Calculation } from '@/lib/Calculation/Damage/Calculation'

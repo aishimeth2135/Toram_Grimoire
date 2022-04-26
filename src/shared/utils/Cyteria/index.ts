@@ -9,9 +9,9 @@ function copyToClipboard(str: string) {
   input.value = str
   document.body.appendChild(input)
   input.select()
-  const t = document.execCommand('copy')
+  const res = document.execCommand('copy')
   document.body.removeChild(input)
-  return t
+  return res
 }
 
 function storageAvailable(type: 'localStorage' | 'sessionStorage'): boolean {
@@ -22,17 +22,17 @@ function storageAvailable(type: 'localStorage' | 'sessionStorage'): boolean {
     storage.setItem(testKey, testKey)
     storage.removeItem(testKey)
     return true
-  } catch (e) {
-    return e instanceof DOMException && (
+  } catch (err) {
+    return err instanceof DOMException && (
     // everything except Firefox
-      e.code === 22 ||
+      err.code === 22 ||
         // Firefox
-        e.code === 1014 ||
+        err.code === 1014 ||
         // test name field too, because code might not be present
         // everything except Firefox
-        e.name === 'QuotaExceededError' ||
+        err.name === 'QuotaExceededError' ||
         // Firefox
-        e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+        err.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
       // acknowledge QuotaExceededError only if there's something already stored
       (storage && storage.length !== 0)
   }

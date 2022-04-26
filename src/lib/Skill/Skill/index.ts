@@ -354,7 +354,7 @@ class LevelSkillTree {
 
   starGemSkillPoint() {
     return this.levelSkills
-      .reduce((c, skill) => c + Math.max(0, skill.starGemLevel() - skill.level()), 0)
+      .reduce((cur, skill) => cur + Math.max(0, skill.starGemLevel() - skill.level()), 0)
   }
 }
 

@@ -3,7 +3,7 @@ import Iconify from '@iconify/iconify'
 
 import Cyteria from '@/shared/utils/Cyteria'
 
-export default function() {
+export default function () {
   // jsep
   jsep.addIdentifierChar('@')
   jsep.addIdentifierChar('#')

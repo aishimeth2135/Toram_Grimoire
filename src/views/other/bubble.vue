@@ -82,12 +82,11 @@ export default {
     }
 
     const customIconList = Object.keys(customIconDatas)
-    const customIcon = customIconList.find(p => p == iconName)
+    const customIcon = customIconList.find(item => item === iconName)
 
     if (customIcon) {
       setIcon(customIconDatas[customIcon])
-    }
-    else {
+    } else {
       loadIconifyData(iconName)
         .then(({ body, width, height }) => setIcon({ iconData: body, width, height }))
     }
@@ -113,38 +112,39 @@ export default {
 
       const ox = Math.floor(getRandomInt(10, 90) * vw / 100)
 
-      const yf = l => Math.floor((l * vh / 1000)) * 10,
-        xf = l => ox + Math.floor((l * vw / 10000)) * 10,
+      const yf = len => Math.floor((len * vh / 1000)) * 10,
+        xf = len => ox + Math.floor((len * vw / 10000)) * 10,
         yStep = (add = 0) => yf(getRandomInt(8 + add, 12 + add))
 
       const start_x = xf(getRandomInt(-20, -5)),
         start_y = yf(105) - yStep()
       let cur = start_y - yStep(2)
-      let d = `M${ox},${yf(100)}C${start_x},${start_y} ${start_x},${start_y - yf(2)} ${ox},${cur}`
+      let def = `M${ox},${yf(100)}C${start_x},${start_y} ${start_x},${start_y - yf(2)} ${ox},${cur}`
       let flip = true
       while (cur > 0) {
         cur -= yStep()
-        d += `S${xf(flip ? getRandomInt(5, 20) : getRandomInt(-20, -5))},${cur} ${ox},`
+        def += `S${xf(flip ? getRandomInt(5, 20) : getRandomInt(-20, -5))},${cur} ${ox},`
         cur -= yStep()
-        d += cur
+        def += cur
         flip = !flip
       }
 
-      return d
+      return def
     },
     generateColor() {
       if (this.colors) {
-        const l = this.colors.length
-        if (this.colors.length == 1)
+        const len = this.colors.length
+        if (this.colors.length === 1) {
           return this.colors[0]
-        return '#' + this.colors[getRandomInt(0, l - 1)]
+        }
+        return '#' + this.colors[getRandomInt(0, len - 1)]
       }
       return this.randowHexColor()
     },
     randowHexColor() {
       return Array(3).fill()
         .map(() => getRandomInt(0, 255).toString(16))
-        .reduce((c, a) => c + (a.length == 1 ? '0' + a : a), '#')
+        .reduce((cur, item) => cur + (item.length === 1 ? '0' + item : item), '#')
     },
     createIcon() {
       const color = this.generateColor()
@@ -158,8 +158,9 @@ export default {
 
       this.idCounter += 1
       this.counter += 1
-      if (this.counter == this.iconMaximum)
+      if (this.counter === this.iconMaximum) {
         this.counter = 0
+      }
     },
   },
 }
