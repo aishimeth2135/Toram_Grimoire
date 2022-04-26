@@ -31,8 +31,8 @@ function computeBranchValue(str: string, helper: ComputedBranchHelperResult): st
 }
 
 function handleDisplayValue(container: ResultContainer, helper: ComputedBranchHelperResult): void {
-  if (helper.branchItem.hasProp(`${container.key}.display`)) {
-    const displayValue = computeBranchValue(helper.branchItem.prop(`${container.key}.display`), helper)
+  if (helper.branchItem.hasProp(container.key, 'display')) {
+    const displayValue = computeBranchValue(helper.branchItem.prop(container.key, 'display'), helper)
     container.initDisplayValue(displayValue)
   }
 }
@@ -198,7 +198,7 @@ function computedBranchHelper(branchItem: SkillBranchItemBaseChilds, values: str
     mainBranchItem = branchItem.mainBranch
   }
 
-  const formulaExtra = mainBranchItem ? mainBranchItem.suffixBranches.find(suf => suf.name === SkillBranchNames.FormulaExtra) : null
+  const formulaExtra = mainBranchItem?.suffixBranches.find(suf => suf.is(SkillBranchNames.FormulaExtra)) ?? null
 
   if (mainBranchItem && formulaExtra) {
     const extraTexts = (formulaExtra.prop('texts')).split(/\s*,\s*/)
@@ -219,7 +219,7 @@ function computedBranchHelper(branchItem: SkillBranchItemBaseChilds, values: str
           .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (match, p1) => getTextKey(p1))
           .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, p1) => getTextKey(p1))
       }
-      const getFormula = (index: string) => formulaExtra.prop(`values.${index}`)
+      const getFormula = (index: string) => formulaExtra.prop('values', index)
       return str
         .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (match, p1) => getFormulaExtraValue(getFormula(p1))?.toString() ?? getTextKey(p1))
         .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, p1) => getFormulaExtraValue(getFormula(p1))?.toString() ?? getTextKey(p1))
@@ -242,18 +242,18 @@ function computeBranchValueProps<Key extends string>(
   props: Record<string, string>,
   propKeys: Key[],
 ): Record<Key, string> {
-  const attrValues = {} as Record<Key, string>
-  propKeys.forEach(attrKey => {
-    const str = props[attrKey]
+  const propValues = {} as Record<Key, string>
+  propKeys.forEach(propKey => {
+    const str = props[propKey]
     if (str === undefined) {
-      attrValues[attrKey] = '0'
+      propValues[propKey] = '0'
       return
     }
 
-    attrValues[attrKey] = computeBranchValue(str, helper)
+    propValues[propKey] = computeBranchValue(str, helper)
   })
 
-  return attrValues
+  return propValues
 }
 
 // type HandleBranchAttrValuesResultValueType<Value> = Value extends { pure: true } ? number : string;
@@ -270,23 +270,23 @@ function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
   PropMap: PropMap,
 ): HandleBranchValuePropsResult<PropMap> {
   const propKeys = Object.keys(PropMap) as (keyof PropMap)[]
-  const attrValues = computeBranchValueProps(helper, props, propKeys as string[]) as Record<keyof PropMap, string>
-  const attrResult = {} as HandleBranchValuePropsResult<PropMap>
-  propKeys.forEach(attrKey => {
-    const originalFormula = props[attrKey as string]
+  const propValues = computeBranchValueProps(helper, props, propKeys as string[]) as Record<keyof PropMap, string>
+  const propResult = {} as HandleBranchValuePropsResult<PropMap>
+  propKeys.forEach(propKey => {
+    const originalFormula = props[propKey as string]
     if (originalFormula === undefined) {
-      attrResult[attrKey] = new ResultContainer(attrKey as string, '0', '0')
+      propResult[propKey] = new ResultContainer(propKey as string, '0', '0')
       return
     }
-    const options = (PropMap[attrKey] || {}) as HandleBranchValueAttrOptions
-    const container = new ResultContainer(attrKey as string, originalFormula, attrValues[attrKey])
+    const options = (PropMap[propKey] || {}) as HandleBranchValueAttrOptions
+    const container = new ResultContainer(propKey as string, originalFormula, propValues[propKey])
     handleDisplayValue(container, helper)
     handleHighlight(container, options)
 
-    attrResult[attrKey] = container
+    propResult[propKey] = container
   })
 
-  return attrResult
+  return propResult
 }
 
 interface HandleBranchTextPropsMap {
@@ -298,9 +298,9 @@ type HandleBranchTextPropsResult<PropMap extends HandleBranchValuePropsMap> = {
 function computedBranchText(
   helper: ComputedBranchHelperResult,
   propKey: string,
-  attrValue: string | undefined,
+  propValue: string | undefined,
 ) {
-  const textStr = attrValue
+  const textStr = propValue
   if (textStr === undefined) {
     const _parseResult = {
       containers: [],
@@ -317,15 +317,15 @@ function handleBranchTextProps<PropMap extends HandleBranchTextPropsMap>(
   PropMap: PropMap,
 ): HandleBranchTextPropsResult<PropMap> {
   const propKeys = Object.keys(PropMap) as (keyof PropMap)[]
-  const attrResult = {} as HandleBranchTextPropsResult<PropMap>
+  const propResult = {} as HandleBranchTextPropsResult<PropMap>
   propKeys.forEach(propKey => {
     const container = computedBranchText(helper, propKey as string, props[propKey as string])
     const options = (PropMap[propKey] || {}) as HighlightTextOptions
     handleHighlight(container, options)
-    attrResult[propKey] = container
+    propResult[propKey] = container
   })
 
-  return attrResult
+  return propResult
 }
 
 function computedBranchStats(helper: ComputedBranchHelperResult, stats: StatComputed[]): StatComputed[] {
@@ -344,7 +344,7 @@ function handleBranchStats(helper: ComputedBranchHelperResult, stats: StatComput
     const container = new ResultContainerStat(originalStat, stat)
     handleDisplayValue(container, helper)
 
-    const displayTitleKey = `${container.key}.displayTitle`
+    const displayTitleKey = helper.branchItem.propKey(container.key, 'displayTitle')
     if (helper.branchItem.hasProp(displayTitleKey)) {
       const displayTitleContainer = computedBranchText(
         helper,
@@ -354,9 +354,9 @@ function handleBranchStats(helper: ComputedBranchHelperResult, stats: StatComput
       handleHighlight(displayTitleContainer)
       container.setDisplayTitle(displayTitleContainer.result)
     }
-    const conditionValueKey = `${container.key}.conditionValue`
+    const conditionValueKey = helper.branchItem.propKey(container.key, 'conditionValue')
     if (helper.branchItem.hasProp(conditionValueKey)) {
-      container.setConditionValue(conditionValueKey)
+      container.setConditionValue(helper.branchItem.prop(conditionValueKey))
     }
 
     const showData = stat.getShowData()

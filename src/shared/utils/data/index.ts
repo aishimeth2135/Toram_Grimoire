@@ -153,7 +153,10 @@ function parseFormula(formulaStr: string, vars: ParseFormulaVars = {}, options: 
       if (typeof parent !== 'string') {
         return parent[handle(property, node) as string]
       }
-      const child = handle(property, node) as string
+      const child = (handle(property, node) + '')
+      if (isNumberString(child)) {
+        return `${parent}[${child}]`
+      }
       return `${parent}${child.startsWith('[') ? '' : '.'}${child}`
     }
     if (jsepTypes.isCallExpression(node)) {

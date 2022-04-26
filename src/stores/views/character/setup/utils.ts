@@ -6,24 +6,26 @@ import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+import { Stat } from '@/lib/Character/Stat'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/utils/DisplayDataContainer'
 
 import { SkillResultsState } from '.'
 
-
-export function getSkillStatContainerValid(character: Character | null, resultsState: SkillResultsState, statContainer: ResultContainerStat) {
+export function getSkillStatContainerValid(character: Character | null, resultsState: SkillResultsState, statContainer: ResultContainerStat): boolean {
   if (statContainer.conditionValue) {
     const vars = {
-      skillId: resultsState.skill.skillId,
-      skillRange: resultsState.basicContainer ? getSkillRange(character, resultsState.basicContainer) : -1,
+      $skill: {
+        id: resultsState.skill.skillId,
+        range: resultsState.basicContainer ? getSkillRange(character, resultsState.basicContainer) : -1,
+      },
     }
-    return computeFormula(statContainer.conditionValue, vars, true) as boolean
+    return computeFormula(statContainer.conditionValue, vars, false) as boolean
   }
   return true
 }
 
-function getSkillRange(character: Character | null, basicContainer: DisplayDataContainer<SkillBranchItem>) {
+function getSkillRange(character: Character | null, basicContainer: DisplayDataContainer<SkillBranchItem>): number {
   const skillRange = basicContainer.getValue('range')
   if (basicContainer.getOrigin('range') === 'main') {
     if (!character) {
@@ -52,4 +54,14 @@ function getMainWeaponBaseRange(main: EquipmentTypes): number {
     [EquipmentTypes.Katana]: 4,
   }
   return mapping[main] ?? 0
+}
+
+export function mergeStats(allStats: Map<string, Stat>, stats: Stat[]): void {
+  stats.forEach(stat => {
+    if (allStats.has(stat.statId)) {
+      allStats.get(stat.statId)!.add(stat.value)
+    } else {
+      allStats.set(stat.statId, stat.clone())
+    }
+  })
 }

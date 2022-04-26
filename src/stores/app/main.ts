@@ -5,7 +5,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { useLanguageStore } from './language'
 
-const version = '4.4.31'
+const version = '4.4.32'
 
 export const useMainStore = defineStore('app-main', () => {
   const redirectPathName = ref<string | null>(null)

@@ -10,7 +10,7 @@ import MapContainer from './utils/MapContainer'
 export default function AreaHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem, formulaDisplayMode?: FormulaDisplayModes) {
   const props = cloneBranchProps(branchItem)
 
-  const basicBranch = branchItem.parent.branchItems.find(bch => bch.name === SkillBranchNames.Basic)
+  const basicBranch = branchItem.parent.branchItems.find(bch => bch.is(SkillBranchNames.Basic))
   props['@range'] = basicBranch?.prop('range') ?? ''
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({

@@ -26,20 +26,20 @@ function cloneBranchProps(
   branchItem: SkillBranchItemBaseChilds,
   initValueMap?: Record<string, string | ((value: string) => string)>,
 ): Record<string, string> {
-  const attrs = {} as Record<string, string>
+  const props = {} as Record<string, string>
   Object.entries(branchItem.allProps).forEach(([key, value]) => {
-    attrs[key] = value
+    props[key] = value
   })
   if (typeof initValueMap === 'object') {
     Object.entries(initValueMap).forEach(([key, value]) => {
       if (typeof value === 'function') {
-        attrs[key] = value(attrs[key])
-      } else if (attrs[key] === undefined) {
-        attrs[key] = value
+        props[key] = value(props[key])
+      } else if (props[key] === undefined) {
+        props[key] = value
       }
     })
   }
-  return attrs
+  return props
 }
 
 type SkillDisplayData = Record<string, string>

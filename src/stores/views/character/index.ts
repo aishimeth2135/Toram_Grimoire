@@ -326,7 +326,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   const {
     activeSkillResultStates,
     passiveSkillResultStates,
-    allValidSkillsStats,
+    skillPureStats,
     getSkillBranchItemState,
   } = setupCharacterSkills(
     currentCharacter,
@@ -346,7 +346,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     currentCharacter,
     currentSkillBuild,
     {
-      stats: allValidSkillsStats,
+      stats: skillPureStats,
       getSkillBranchItemState,
     },
     allFoodBuildStats,
@@ -358,7 +358,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       comparedCharacter,
       currentSkillBuild,
       {
-        stats: allValidSkillsStats,
+        stats: skillPureStats,
         getSkillBranchItemState,
       },
       allFoodBuildStats,

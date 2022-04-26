@@ -532,12 +532,19 @@ class CharacterStat {
     if (this.id in vars.computedResultStore) {
       return vars.computedResultStore[this.id]
     }
-    const formula = this._formula as CharacterStatFormula
+    const formula = this._formula!
     try {
       const res = formula.calc(currentStats, vars)
       let value = res.value
       if (typeof value !== 'number') {
         value = parseFloat(value)
+      }
+      if (Number.isNaN(value) || !Number.isFinite(value)) {
+        console.warn('[CharacterStatFormula.calc] unexpected reslut:', value,
+          '\nid:', this.id,
+          '\nresult:', res,
+          '\nformula:', formula)
+        value = 0
       }
       const originalValue = value
 
@@ -675,6 +682,10 @@ class CharacterStatFormula {
       ...vars.computed,
 
       reduceValue: (value: number) => {
+        if (typeof value !== 'number' || Number.isNaN(value) || !Number.isFinite(value)) {
+          console.warn('[CharacterStatFormula.calc] unexpected value: ' + value)
+          return 0
+        }
         const neg = value < 0
         value = Math.abs(value)
         let rate = 1, res = neg ? 100 : 0
@@ -704,6 +715,10 @@ class CharacterStatFormula {
       const originalKey = key
       key = '$' + key
       appendGetter(key, () => {
+        if (originalKey === this._parent.id) {
+          console.warn('[CharacterStatFormula.calc] Infinite loop detected.')
+          return 0
+        }
         const src = vars.computed
         if (src[key] !== undefined) {
           return src[key]

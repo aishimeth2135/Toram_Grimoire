@@ -63,7 +63,7 @@ export interface ExtraSuffixBranchData {
 export function setupCommonExtraSuffixBranches(branchItem: Ref<SkillBranchItem>) {
   const extraSuffixBranchDatas = computed(() => {
     return branchItem.value.suffixBranches
-      .filter(suffix => suffix.name === SkillBranchNames.Extra && (suffix.prop('caption') || suffix.stats.length > 0))
+      .filter(suffix => suffix.is(SkillBranchNames.Extra) && (suffix.prop('caption') || suffix.stats.length > 0))
       .map((suffix, idx) => {
         const dataContainer = ExtraHandler(suffix)
         const baseData: ExtraSuffixBranchData = {

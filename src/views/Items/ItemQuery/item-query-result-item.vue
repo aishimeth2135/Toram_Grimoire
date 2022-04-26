@@ -317,7 +317,6 @@ const obtainsDatas = computed(() => obtainsDataConvert(originEquipment.value.obt
 
 const firstObtain = computed(() => obtainsDatas.value[0] ?? null)
 
-
 const previewStat = computed(() => {
   const currentStat = modes[SearchModes.Stat].currentStat
   if (state.currentMode !== SearchModes.Stat || !currentStat) {

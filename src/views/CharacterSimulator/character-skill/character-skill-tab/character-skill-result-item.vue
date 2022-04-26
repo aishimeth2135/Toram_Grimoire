@@ -15,7 +15,6 @@
         <CharacterSkillItemStats
           v-else
           :stat-containers="container.statContainers"
-          :skill-results-state="skillResultsState"
         />
       </div>
     </div>
@@ -33,7 +32,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { SkillResult, SkillResultsState } from '@/stores/views/character/setup'
+import { SkillResult } from '@/stores/views/character/setup'
 
 import CharacterSkillItemStats from './character-skill-item-stats.vue'
 import CharacterSkillResultSuffixItem from './character-skill-result-suffix-item.vue'
@@ -43,7 +42,6 @@ import { setupCharacterStore } from '../../setup'
 
 interface Props {
   result: SkillResult;
-  skillResultsState: SkillResultsState;
   hideName?: boolean;
 }
 

@@ -12,11 +12,9 @@ import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import { EnemyElements } from '@/lib/Enemy/enums'
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
-import { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
-import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/utils/DisplayDataContainer'
-
-import { CharacterStatCategoryResult, SkillResult } from '.'
+import { CharacterStatCategoryResult, SkillResult, SkillResultsState } from '.'
 import { setupCalculationExpectedResult } from '../../damage-calculation/setup'
 import { getCharacterElement } from '../utils'
 
@@ -72,7 +70,7 @@ const againstElementMap: Record<EnemyElements, EnemyElements> = {
 
 export default function setupDamageCalculation(
   character: Ref<Character | null>,
-  setupCharacterStatCategoryResultsExtended: (otherStats: Ref<Stat[]>) => {
+  setupCharacterStatCategoryResultsExtended: (otherStats: Ref<Stat[]>, resultsState: Ref<SkillResultsState>) => {
     categoryResults: ComputedRef<CharacterStatCategoryResult[]>;
     characterPureStats: ComputedRef<Stat[]>;
   },
@@ -98,12 +96,12 @@ export default function setupDamageCalculation(
 
   const setupDamageCalculationExpectedResult = (
     skillResult: Ref<SkillResult>,
-    basicContainer: Ref<DisplayDataContainer<SkillBranchItem<SkillEffectItem>> | null>,
+    resultsState: Ref<SkillResultsState>,
     extraStats: Ref<Stat[]>,
     targetProperties: Ref<TargetProperties>,
     calculationOptions: Ref<CalculationOptions>,
   ) => {
-    const { categoryResults, characterPureStats } = setupCharacterStatCategoryResultsExtended(extraStats)
+    const { categoryResults, characterPureStats } = setupCharacterStatCategoryResultsExtended(extraStats, resultsState)
 
     const container = computed(() => skillResult.value.container)
 

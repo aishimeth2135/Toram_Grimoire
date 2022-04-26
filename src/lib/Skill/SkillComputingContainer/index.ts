@@ -139,7 +139,7 @@ class SkillEffectItem extends SkillEffectItemBase {
     super(parent)
 
     this.branchItems = defaultSef.branches.map(bch => new SkillBranchItem(this, bch))
-    if (!this.branchItems.some(branchItem => branchItem.name === SkillBranchNames.Basic)) {
+    if (!this.branchItems.some(branchItem => branchItem.is(SkillBranchNames.Basic))) {
       const basicBranch = effectAttrsToBranch(defaultSef)
       this.branchItems.unshift(new SkillBranchItem(this, basicBranch))
     }
@@ -357,8 +357,17 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
     return this._props
   }
 
-  prop(key: string): string {
-    return this._props[key] || ''
+  /**
+   * Get sub prop key
+   * @param key - main key
+   * @param subKey - sub key
+   */
+  propKey(key: string, subKey?: string) {
+    return subKey ? `${key}.${subKey}` : key
+  }
+
+  prop(key: string, subKey?: string): string {
+    return this._props[this.propKey(key, subKey)] || ''
   }
 
   propNumber(key: string): number {
@@ -370,8 +379,8 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
     return this._props[key] === '1'
   }
 
-  hasProp(key: string) {
-    return this._props[key] !== undefined
+  hasProp(key: string, subKey?: string) {
+    return this._props[this.propKey(key, subKey)] !== undefined
   }
 
   setProp(key: string, value: string) {

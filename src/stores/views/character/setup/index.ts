@@ -25,7 +25,7 @@ import BasicHandler from '@/views/SkillQuery/skill/branch-handlers/BasicHandler'
 
 import { SkillBuild } from '../skill-build/SkillBuild'
 import { checkStatRestriction, getCharacterElement } from '../utils'
-import { getSkillStatContainerValid } from './utils'
+import { getSkillStatContainerValid, mergeStats } from './utils'
 
 type DisplayDataContainerAlly = DisplayDataContainer<SkillBranchItem<SkillEffectItem>>
 type DisplayDataContainerSuffixAlly = DisplayDataContainer<SkillBranchItemSuffix<SkillEffectItem>>
@@ -262,7 +262,7 @@ export function setupCharacterSkills(
       if (!checkPostpone(suf.mainBranch)) {
         return false
       }
-      return suf.name === SkillBranchNames.Extra && suf.stats.length !== 0 && suf.prop('type') !== 'next'
+      return suf.is(SkillBranchNames.Extra) && suf.stats.length !== 0 && suf.prop('type') !== 'next'
     }
 
     const handleComputingResults = (target: ComputedRef<SkillBranchItem[]>, handler: (bch: SkillBranchItem) => DisplayDataContainer, validBranchNames: SkillBranchNames[]) => {
@@ -308,7 +308,7 @@ export function setupCharacterSkills(
       })
 
       // passive
-      const checkPassive = (bch: SkillBranchItem) => bch.name === SkillBranchNames.Passive && checkPostpone(bch) && checkBranchStats(bch.stats)
+      const checkPassive = (bch: SkillBranchItem) => bch.is(SkillBranchNames.Passive) && checkPostpone(bch) && checkBranchStats(bch.stats)
       const passiveValid = skillItem.effectItems.some(effectItem => effectItem.branchItems.some(checkPassive))
       const passiveSkillBranchItems = !passiveValid ? null : computed(() => {
         return currentEffectItem.value?.branchItems.filter(checkPassive) ?? []
@@ -317,7 +317,7 @@ export function setupCharacterSkills(
       let damageSkillBranchItems: ComputedRef<SkillBranchItem<SkillEffectItem>[]> | null = null
       if (isPostpone) {
         // damage
-        const checkDamage = (bch: SkillBranchItem) => bch.name === SkillBranchNames.Damage && checkPostpone(bch)
+        const checkDamage = (bch: SkillBranchItem) => bch.is(SkillBranchNames.Damage) && checkPostpone(bch)
         const damageValid = skillItem.effectItems.some(effectItem => effectItem.branchItems.some(checkDamage))
         damageSkillBranchItems = !damageValid ? null : computed(() => {
           return currentEffectItem.value?.branchItems.filter(checkDamage) ?? []
@@ -336,7 +336,7 @@ export function setupCharacterSkills(
       if (activeSkillBranchItems || passiveSkillBranchItems || damageSkillBranchItems) {
         stackContainers.set(skill, computed(() => {
           return currentEffectItem.value?.branchItems
-            .filter(_bch => _bch.name === SkillBranchNames.Stack && !_bch.hasProp('value'))
+            .filter(_bch => _bch.is(SkillBranchNames.Stack) && !_bch.hasProp('value'))
             .map(_bch => StackHandler(_bch)) ?? []
         }))
         basicContainers.set(skill, computed(() => {
@@ -400,9 +400,12 @@ export function setupCharacterSkills(
   const passiveSkillResultStates = getSkillResultStatesComputed(passiveSkillResults)
   const damageSkillResultStates = getSkillResultStatesComputed(damageSkillResults)
 
-  const allValidSkillsStats = computed(() => {
+  const skillStatResults = computed(() => {
     if (!skillBuild.value) {
-      return []
+      return {
+        stats: [],
+        conditionalStatContainers: [],
+      }
     }
     const list: SkillResultsState[] = []
     if (handleOptions.value.handleActiveSkill) {
@@ -412,12 +415,20 @@ export function setupCharacterSkills(
       list.push(...passiveSkillResultStates.value)
     }
     if (list.length === 0) {
-      return []
+      return {
+        stats: [],
+        conditionalStatContainers: [],
+      }
     }
 
     const stats: Map<string, Stat> = new Map()
+    const conditionalStatContainers: ResultContainerStat[] = []
     const handleStatContainer = (statContainer: ResultContainerStat) => {
       if (!isNumberString(statContainer.value)) {
+        return
+      }
+      if (statContainer.conditionValue) {
+        conditionalStatContainers.push(statContainer)
         return
       }
       const statId = statContainer.stat.statId
@@ -436,16 +447,14 @@ export function setupCharacterSkills(
         resultState.results
           .filter(result => getSkillBranchItemState(result.container.branchItem.default).enabled)
           .forEach(result => {
-            result.container.statContainers
-              .filter(stat => getSkillStatContainerValid(character.value, resultState, stat))
-              .forEach(handleStatContainer)
-            result.suffixContainers
-              .forEach(suffix => suffix.statContainers
-                .filter(stat => getSkillStatContainerValid(character.value, resultState, stat))
-                .forEach(handleStatContainer))
+            result.container.statContainers.forEach(handleStatContainer)
+            result.suffixContainers.forEach(suffix => suffix.statContainers.forEach(handleStatContainer))
           })
       })
-    return [...stats.values()]
+    return {
+      stats: [...stats.values()],
+      conditionalStatContainers,
+    }
   })
 
   return {
@@ -453,10 +462,10 @@ export function setupCharacterSkills(
     passiveSkillResultStates,
     damageSkillResultStates,
 
-    allValidSkillsStats,
+    skillPureStats: computed(() => skillStatResults.value.stats),
+    skillConditionalStatContainers: computed(() => skillStatResults.value.conditionalStatContainers),
 
     getSkillBranchItemState,
-    getSkillStatContainerValid,
   }
 }
 
@@ -617,19 +626,8 @@ export function setupCharacterStats(
     }
   })
 
-  const mergeStats = (allStats: Map<string, Stat>, stats: Stat[]) => {
-    stats.forEach(stat => {
-      if (allStats.has(stat.statId)) {
-        allStats.get(stat.statId)!.add(stat.value)
-      } else {
-        allStats.set(stat.statId, stat.clone())
-      }
-    })
-  }
-
   const basePureStatsEntries = computed(() => {
     const allStats = new Map<string, Stat>()
-
     mergeStats(allStats, allEquipmentStats.value)
     mergeStats(allStats, skillSetupDatas.stats.value)
     if (handleOptions.value.handleFood) {
@@ -702,7 +700,8 @@ export function setupCharacterStats(
   } = baseResults
 
   const {
-    allValidSkillsStats: postponedAllValidSkillsStats,
+    skillPureStats: postponedSkillPureStats,
+    skillConditionalStatContainers,
     activeSkillResultStates: postponedActiveSkillResultStates,
     passiveSkillResultStates: postponedPassiveSkillResultStates,
     damageSkillResultStates,
@@ -737,30 +736,34 @@ export function setupCharacterStats(
       getSkillBranchItemState: skillSetupDatas.getSkillBranchItemState,
     },
   )
-  const finalResults = setupResults(postponedAllValidSkillsStats, baseResults)
+  const finalResults = setupResults(postponedSkillPureStats, baseResults)
   const { categoryResults: characterStatCategoryResults, characterPureStats } = finalResults
 
-  const setupCharacterStatCategoryResultsExtended = (otherStats: Ref<Stat[]>) => {
-    const stats = computed(() => {
-      if (otherStats.value.length === 0) {
+  const setupCharacterStatCategoryResultsExtended = (otherStats: Ref<Stat[]>, resultsState: Ref<SkillResultsState>) => {
+    const conditionalStats = computed(() => {
+      if (!resultsState.value.basicContainer) {
         return []
       }
-      const _otherStats = otherStats.value.slice()
-      const baseStats = postponedAllValidSkillsStats.value.map(stat => {
-        const statToMergeIdx = _otherStats.findIndex(_stat => _stat.equals(stat))
-        if (statToMergeIdx > -1) {
-          const newStat = stat.clone()
-          const statToMerge = _otherStats[statToMergeIdx]
-          newStat.value += statToMerge.value
-          _otherStats.splice(statToMergeIdx, 1)
-          return newStat
+      const stats: Stat[] = []
+      skillConditionalStatContainers.value.forEach(statContainer => {
+        if (getSkillStatContainerValid(character.value, resultsState.value, statContainer)) {
+          const stat = statContainer.stat.toStat(parseFloat(statContainer.value))
+          stats.push(stat)
         }
-        return stat
       })
-      if (_otherStats.length > 0) {
-        baseStats.push(..._otherStats)
+      const statsMap = new Map<string, Stat>()
+      mergeStats(statsMap, stats)
+      return [...statsMap.values()]
+    })
+    const stats = computed(() => {
+      if (otherStats.value.length === 0 && conditionalStats.value.length === 0) {
+        return []
       }
-      return baseStats
+      const allStats = new Map<string, Stat>()
+      mergeStats(allStats, otherStats.value)
+      mergeStats(allStats, postponedSkillPureStats.value)
+      mergeStats(allStats, conditionalStats.value)
+      return [...allStats.values()]
     })
     return setupResults(stats, finalResults)
   }
