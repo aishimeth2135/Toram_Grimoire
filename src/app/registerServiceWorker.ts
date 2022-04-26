@@ -6,7 +6,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import Notify from '@/setup/Notify'
 
-export default function() {
+export default function () {
   if (import.meta.env.MODE === 'production') {
     const mainStore = useMainStore()
     const { notify } = Notify()

@@ -28,8 +28,9 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
   const handleItemValue = (value: string) => value !== '' ? parseFloat(value) : null
 
   const handleLimit = (str: string): [number | null, number | null] => {
-    if (str === '')
+    if (str === '') {
       return [null, null]
+    }
     const limitStrs = str.split('::')
     const l1 = handleItemValue(limitStrs[0])
     const l2 = limitStrs[1] === undefined ? (l1 !== null ? -1 * l1 : l1) : handleItemValue(limitStrs[1])
@@ -52,16 +53,19 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
 
   let currentCategory: EnchantCategory, currentItem: EnchantItem
   csvData.forEach((row, idx) => {
-    if (idx === 0)
+    if (idx === 0) {
       return
+    }
     if (row[STAT_ID] === '') {
       const check = row[CHECK]
-      if (check === '')
+      if (check === '') {
         return
+      }
       if (check === '0') {
         currentCategory = root.appendCategory(row[CATEGORY_TITLE])
-        if (row[CATEGORY_EXTRA] === 'weapon-only')
+        if (row[CATEGORY_EXTRA] === 'weapon-only') {
           currentCategory.setWeaponOnly()
+        }
         return
       }
       const conditionId = CONDITION_LIST.indexOf(row[CONDITION])

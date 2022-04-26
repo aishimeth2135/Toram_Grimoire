@@ -39,14 +39,15 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
   watch(currentTags, async () => {
     await nextTick()
     if (tagContent.value && tagContent.value.$el && tagContent.value.$el.querySelectorAll) {
-      const click = function(this: HTMLElement, error: Event) {
+      const click = function (this: HTMLElement, error: Event) {
         error.stopPropagation()
         appendTag(this.innerText)
       }
       tagContent.value.$el.querySelectorAll('.' + TAG_BUTTON_CLASS_NAME)
         .forEach(el => {
-          if (el.getAttribute('data-tag-listener-flag') === '1')
+          if (el.getAttribute('data-tag-listener-flag') === '1') {
             return
+          }
           el.addEventListener('click', click)
           el.setAttribute('data-tag-listener-flag', '1')
         })

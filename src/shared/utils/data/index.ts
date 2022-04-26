@@ -20,14 +20,18 @@ type ParseFormulaVars = {
 }
 
 function calcNumberBinaryExpression(left: number, operator: string, right: number): number {
-  if (operator === '+')
+  if (operator === '+') {
     return left + right
-  if (operator === '-')
+  }
+  if (operator === '-') {
     return left - right
-  if (operator === '*')
+  }
+  if (operator === '*') {
     return left * right
-  if (operator === '/')
+  }
+  if (operator === '/') {
     return left / right
+  }
   return 0
 }
 
@@ -104,10 +108,12 @@ function parseFormula(formulaStr: string, vars: ParseFormulaVars = {}, options: 
     if (jsepTypes.isBinaryExpression(node)) {
       let left = handle(node.left, node) as (number | boolean)
       let right = handle(node.right, node) as (number | boolean)
-      if (typeof left === 'string' && isNumberString(left))
+      if (typeof left === 'string' && isNumberString(left)) {
         left = parseFloat(left)
-      if (typeof right === 'string' && isNumberString(right))
+      }
+      if (typeof right === 'string' && isNumberString(right)) {
         right = parseFloat(right)
+      }
       const operator = node.operator
       if (unknowSnippet(left) || unknowSnippet(right)) {
         return ((operator === '+' || operator === '-') && !(parentNode && jsepTypes.isBinaryExpression(parentNode) && (parentNode.operator === '+' || parentNode.operator === '-'))) ?
@@ -115,16 +121,20 @@ function parseFormula(formulaStr: string, vars: ParseFormulaVars = {}, options: 
           `${left}${operator}${right}`
       }
       if (operator === '+' || operator === '-' || operator === '*' || operator === '/') {
-        if (typeof left === 'boolean')
+        if (typeof left === 'boolean') {
           left = left ? 1 : 0
-        if (typeof right === 'boolean')
+        }
+        if (typeof right === 'boolean') {
           right = right ? 1 : 0
+        }
         return calcNumberBinaryExpression(left, operator, right)
       }
-      if (operator === '&&')
+      if (operator === '&&') {
         return left && right
-      if (operator === '||')
+      }
+      if (operator === '||') {
         return left || right
+      }
     }
     if (jsepTypes.isIdentifier(node)) {
       const isRoot = !parentNode || !jsepTypes.isMemberExpression(parentNode) || parentNode.object === node

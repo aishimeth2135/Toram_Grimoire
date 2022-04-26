@@ -116,8 +116,8 @@ const handleConditional = (conditionObj: CharacterStatFormulaResultConditionalBa
     iid: number;
     text: string;
   }[] = []
-  conditionObj.options.forEach(p => {
-    const match = p.match(/^"([^"]+)"$/)
+  conditionObj.options.forEach(opt => {
+    const match = opt.match(/^"([^"]+)"$/)
     match && captions.push({
       iid: captions.length,
       text: match[1],
@@ -158,8 +158,8 @@ const handleConditional = (conditionObj: CharacterStatFormulaResultConditionalBa
 
 const showStatDetailDatas = computed(() => {
   const valueFix = (value: number) => value.toString()
-    .replace(/^(-?\d+\.)(\d{3,})$/, (m, m1, m2) => m1 + m2.slice(0, 3))
-    .replace(/^(-?\d+)(\.0+)$/, (m, m1) => m1)
+    .replace(/^(-?\d+\.)(\d{3,})$/, (match, m1, m2) => m1 + m2.slice(0, 3))
+    .replace(/^(-?\d+)(\.0+)$/, (match, m1) => m1)
 
   const stat = props.characterStatResult
   const base = stat.origin.linkedStatBase
@@ -184,18 +184,19 @@ const showStatDetailDatas = computed(() => {
     .map((item, itemIdx) => {
       const id = item.id,
         type = item.type
-      const v = stat.statValueParts[id]
-      let title = id !== 'base' ? base!.show(type!, v) : {
+      const value = stat.statValueParts[id]
+      let title = id !== 'base' ? base!.show(type!, value) : {
         text: t('character-simulator.character-stat-detail.base-value'),
         value: valueFix(stat.statValueParts['base']),
       }
-      if (id === 'multiplier')
-        title += '｜' + Math.floor(v * stat.statValueParts['base'] / 100).toString()
+      if (id === 'multiplier') {
+        title += '｜' + Math.floor(value * stat.statValueParts['base'] / 100).toString()
+      }
 
       const isBase = id === 'base'
 
       const lines: DetailLine[] = []
-      const adds = stat.statPartsDetail.additionalValues[id].filter(p => p.value != 0)
+      const adds = stat.statPartsDetail.additionalValues[id].filter(add => add.value != 0)
       if (adds.length !== 0) {
         const initValue = stat.statPartsDetail.initValue[id]
         let hasInit = false
@@ -211,34 +212,38 @@ const showStatDetailDatas = computed(() => {
         const _lines = adds
           .sort(addItem => addItem.isMul ? 1 : -1)
           .map((addItem, idx) => {
-            let value = '0'
+            let resValue = '0'
             if (addItem.isMul) {
-              value = addItem.value > 0 ? `×${valueFix(addItem.value)}` : `×(${valueFix(addItem.value)})`
+              resValue = addItem.value > 0 ? `×${valueFix(addItem.value)}` : `×(${valueFix(addItem.value)})`
             } else {
-              value = (addItem.value > 0 && (hasInit || !isBase) ? '+' : '') + valueFix(addItem.value)
-              if (!hasInit)
+              resValue = (addItem.value > 0 && (hasInit || !isBase) ? '+' : '') + valueFix(addItem.value)
+              if (!hasInit) {
                 hasInit = true
+              }
             }
             return {
               iid: idx + 1,
               title: handleConditional(addItem),
-              value,
+              value: resValue,
             } as DetailLine
           })
         lines.push(..._lines)
       }
 
       if (conditionalBase) {
-        const ceqs = conditionalBase.title.equipments
+        const conditionalEqs = conditionalBase.title.equipments
         lines.forEach(line => {
-          if (typeof line.title === 'string')
+          if (typeof line.title === 'string') {
             return
+          }
           const eqs = line.title.equipments
-          eqs.forEach((text, i) => {
-            if (eqs.length - i < ceqs.length)
+          eqs.forEach((text, idx) => {
+            if (eqs.length - idx < conditionalEqs.length) {
               return
-            if (ceqs.every((p, j) => p.text === eqs[i + j].text))
-              eqs.splice(i, ceqs.length)
+            }
+            if (conditionalEqs.every((eq, idx2) => eq.text === eqs[idx + idx2].text)) {
+              eqs.splice(idx, conditionalEqs.length)
+            }
           })
         })
       }

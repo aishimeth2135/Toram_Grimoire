@@ -48,7 +48,7 @@ function load({
   try {
     const input = document.createElement('input')
     input.type = 'file'
-    input.addEventListener('change', function() {
+    input.addEventListener('change', function () {
       if (this.files !== null) {
         beforeLoad && beforeLoad()
 
@@ -59,7 +59,7 @@ function load({
         }
 
         const fr = new FileReader()
-        fr.addEventListener('load', function() {
+        fr.addEventListener('load', function () {
           succeed && succeed(this.result as string)
           document.body.removeChild(input)
         })
@@ -72,8 +72,8 @@ function load({
     input.style.display = 'none'
     document.body.appendChild(input)
     input.click()
-  } catch (e) {
-    error && error(e)
+  } catch (err) {
+    error && error(err)
   }
 }
 

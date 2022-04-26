@@ -3,7 +3,7 @@ import { createI18n } from 'vue-i18n'
 
 import { DEFAULT_LOCALE, useLanguageStore } from '@/stores/app/language'
 
-export default function(app: App<Element>) {
+export default function (app: App<Element>) {
   const languageStore = useLanguageStore()
   languageStore.initLocale()
   const primaryLocale = languageStore.primaryLocale

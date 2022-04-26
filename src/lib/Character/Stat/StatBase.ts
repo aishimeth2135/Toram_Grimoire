@@ -5,9 +5,10 @@ import { StatTypes } from './enums'
 
 type StatValue = number | string
 class StatBase {
-  static sortStats = function(stats: Stat[], type = 'simple') {
-    if (type === 'simple')
+  static sortStats = function (stats: Stat[], type = 'simple') {
+    if (type === 'simple') {
       stats.sort((itema, itemb) => itema.base.order - itemb.base.order)
+    }
     return stats
   }
 

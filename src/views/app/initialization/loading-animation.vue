@@ -55,7 +55,8 @@ const leave = (el: Element, done: Function) => {
   Velocity(el, {
     opacity: 0,
   }, {
-    duration: 400, easing: [0.42, 0, 1.0, 1.0],
+    duration: 400,
+    easing: [0.42, 0, 1.0, 1.0],
     complete: () => {
       end.value = true
       done()

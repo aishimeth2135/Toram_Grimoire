@@ -18,8 +18,9 @@ export default {
   props: ['positionElement'],
   computed: {
     position() {
-      if (!this.positionElement)
+      if (!this.positionElement) {
         return { }
+      }
       const rect = this.positionElement.getBoundingClientRect()
 
       const len2bottom = window.innerHeight - rect.bottom

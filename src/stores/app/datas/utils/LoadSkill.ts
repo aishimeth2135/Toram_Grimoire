@@ -102,8 +102,9 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
           const name = row[SKILL_TREE_NAME]
           curSkillTree = curSkillTreeCategory.appendSkillTree(id, name)
           curElement = 'tree'
-          if (row[SKILL_TREE_SIMULATOR_FLAG])
+          if (row[SKILL_TREE_SIMULATOR_FLAG]) {
             curSkillTree.attrs.simulatorFlag = true
+          }
         } else {
           if (confirmName !== '') {
             const name = row[NAME]
@@ -172,8 +173,7 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
           curSkillBranch.appendStat(propName, propValue, row[EFFECT_BRANCH_ATTRIBUTE_EXTRA])
         }
       }
-    }
-    catch (e) {
+    } catch (err) {
       console.warn('[LoadSkill] unable to parse row:', row)
       //console.log(e);
       // console.log(row);
@@ -212,10 +212,12 @@ function loadSkillMain(skillSystem: SkillSystem, datas: LangCsvData) {
     const data = primaryLangCsvData ? primaryLangCsvData[index] : null,
       sdata = secondaryLangCsvData ? secondaryLangCsvData[index] : null
     const key = (() => {
-      if (cat === CONFIRM_SKILL_TREE_CATEGORY)
+      if (cat === CONFIRM_SKILL_TREE_CATEGORY) {
         return LANG_DATA.CATEGORY_NAME
-      if (cat === CONFIRM_SKILL_TREE)
+      }
+      if (cat === CONFIRM_SKILL_TREE) {
         return LANG_DATA.SKILL_TREE_NAME
+      }
       return LANG_DATA.SKILL_NAME
     })()
     const validDatas = [data, sdata].filter(item => item) as CsvData
@@ -229,25 +231,26 @@ function loadSkillMain(skillSystem: SkillSystem, datas: LangCsvData) {
   }
 
   csvData.forEach((row, idx) => {
-    if (idx === 0 || row[ID] === '')
+    if (idx === 0 || row[ID] === '') {
       return
+    }
     try {
       const cat = row[CATEGORY], id = parseInt(row[ID], 10)
       if (cat === CONFIRM_SKILL_TREE_CATEGORY) {
-        const find = sr.skillTreeCategorys.find(a => a.id === id)
+        const find = sr.skillTreeCategorys.find(item => item.id === id)
         if (find) {
           curSkillTreeCategory = find
           loadLangData(cat, curSkillTreeCategory, idx)
         }
       } else if (cat === CONFIRM_SKILL_TREE) {
-        const find = curSkillTreeCategory.skillTrees.find(a => a.id === id)
+        const find = curSkillTreeCategory.skillTrees.find(item => item.id === id)
         if (find) {
           curSkillTree = find
           curSkillTree.init(row[SKILL_TREE_DRAW_TREE_CODE])
           loadLangData(cat, curSkillTree, idx)
         }
       } else if (cat === '') {
-        const find = curSkillTree.skills.find(a => a.id === id)
+        const find = curSkillTree.skills.find(item => item.id === id)
         if (find) {
           find.init(
             row[PREVIOUS_SKILL] === '-' ? -1 : parseInt(row[PREVIOUS_SKILL], 10),
@@ -256,8 +259,7 @@ function loadSkillMain(skillSystem: SkillSystem, datas: LangCsvData) {
           loadLangData(cat, find, idx)
         }
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.groupCollapsed('[LoadSkillMain] unknown error')
       console.warn(error)
       console.warn(row)

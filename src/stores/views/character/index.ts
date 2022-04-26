@@ -142,9 +142,9 @@ export const useCharacterStore = defineStore('view-character', () => {
     let find = true, cnt = 0
     const list = ['', '--characters', '--equipments', '--skillBuilds', '--skillBuilds-v2', '--foodBuilds']
     while (find) {
-      const cur_prefix = prefix + cnt
-      const finds = list.filter(p => {
-        const item = cur_prefix + p
+      const curPrefix = prefix + cnt
+      const finds = list.filter(suffixKey => {
+        const item = curPrefix + suffixKey
         if (storage.getItem(item) !== null) {
           // backup[item] = storage.getItem(item);
           storage.removeItem(item)
@@ -205,8 +205,9 @@ export const useCharacterStore = defineStore('view-character', () => {
     saveData.foodBuilds.forEach(data => {
       const foods = food.foodsBase!.createFoods()
       const load = foods.load(data)
-      if (!load.error)
+      if (!load.error) {
         food.createFoodBuild({ foodBuild: foods }, false)
+      }
     })
   }
 

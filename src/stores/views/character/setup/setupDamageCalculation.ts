@@ -355,7 +355,7 @@ export default function setupDamageCalculation(
   }
 }
 
-function isValidElement (element: string | EnemyElements): element is EnemyElements {
+function isValidElement(element: string | EnemyElements): element is EnemyElements {
   const elementsList = [
     EnemyElements.Neutral,
     EnemyElements.Fire,

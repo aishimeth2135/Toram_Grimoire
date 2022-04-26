@@ -66,8 +66,7 @@ class EnchantBuild {
     this.name = name
     if (equipment) {
       this.equipment = equipment
-    }
-    else {
+    } else {
       this.equipment = new EnchantEquipment()
       this.equipment.originalPotential = 90
     }
@@ -159,8 +158,8 @@ class EnchantEquipment {
   }
 
   get lastStep(): EnchantStep | null {
-    return this.steps().find((step, i, ary) => {
-      if ((i === ary.length - 1)) {
+    return this.steps().find((step, idx, ary) => {
+      if ((idx === ary.length - 1)) {
         return true
       }
       return step.remainingPotential < 1
@@ -172,8 +171,8 @@ class EnchantEquipment {
     const mats = Array(6).fill(0)
     this.steps().forEach(step =>
       step.stats.forEach(stat => {
-        const t = stat.materialPointCost
-        mats[t.type] += t.value
+        const item = stat.materialPointCost
+        mats[item.type] += item.value
       }),
     )
     return mats
@@ -197,10 +196,10 @@ class EnchantEquipment {
     if (!this.lastStep) {
       return 160
     }
-    const last_index = this.lastStep.index
-    const pot = this.stepRemainingPotential(last_index)
-    const d = Math.max(this.stepRemainingPotential(last_index - 1), this.basePotential)
-    return Math.max(160 + pot * 230 / d, 0)
+    const lastIndex = this.lastStep.index
+    const pot = this.stepRemainingPotential(lastIndex)
+    const previewStepPot = Math.max(this.stepRemainingPotential(lastIndex - 1), this.basePotential)
+    return Math.max(160 + pot * 230 / previewStepPot, 0)
   }
 
   get operationStepsNum() {
@@ -241,7 +240,7 @@ class EnchantEquipment {
    */
   stepRemainingPotential(stepIdx?: number): number {
     return this.steps(stepIdx)
-      .reduce((c, step) => (c - step.potentialCost), this.originalPotential)
+      .reduce((cur, step) => (cur - step.potentialCost), this.originalPotential)
   }
 
   /**
@@ -250,9 +249,9 @@ class EnchantEquipment {
   stepPotentialExtraRate(stepIdx?: number): number {
     const categorys: { category: EnchantCategory; cnt: number }[] = []
     this.stats(stepIdx).forEach(stat => {
-      const cat = stat.itemBase.belongCategory
-      const check = categorys.find(a => a.category === cat)
-      check ? (check.cnt += 1) : categorys.push({ category: cat, cnt: 1 })
+      const category = stat.itemBase.belongCategory
+      const check = categorys.find(_category => _category.category === category)
+      check ? (check.cnt += 1) : categorys.push({ category, cnt: 1 })
     })
     return calcPotentialExtraRate(categorys.map(category => category.cnt))
   }
@@ -273,11 +272,11 @@ class EnchantEquipment {
    * then return EnchantStat which value is sum.
    */
   stat(itemBase: EnchantItem, type: StatNormalTypes, stepIdx?: number): EnchantStat {
-    const v = this.steps(stepIdx).reduce((c, step) => {
-      const t = step.stat(itemBase, type)
-      return t && t.valid ? c + t.value : c
+    const value = this.steps(stepIdx).reduce((cur, step) => {
+      const stepStat = step.stat(itemBase, type)
+      return stepStat?.valid ? cur + stepStat.value : cur
     }, 0)
-    return new EnchantStat(itemBase, type, v)
+    return new EnchantStat(itemBase, type, value)
   }
 
   /**
@@ -287,8 +286,8 @@ class EnchantEquipment {
     const stats: EnchantStat[] = []
     this.steps(stepIdx).forEach(step => {
       step.stats.filter(stat => stat.valid).forEach(stat => {
-        const t = stats.find(b => b.equals(stat))
-        t ?  t.add(stat.value) : stats.push(stat.pure())
+        const find = stats.find(_stat => _stat.equals(stat))
+        find ? find.add(stat.value) : stats.push(stat.pure())
       })
     })
     return stats
@@ -313,13 +312,13 @@ class EnchantEquipment {
   refreshStats() {
     this.stats().forEach(stat => {
       const [min, max] = stat.limit
-      const v = stat.value
-      if (v > max || v < min) {
-        const dif = v > max ? v - max : v - min
+      const value = stat.value
+      if (value > max || value < min) {
+        const dif = value > max ? value - max : value - min
         this.steps().slice().reverse().find(step => {
-          const t = step.stat(stat.itemBase, stat.type)
-          if (t) {
-            t.add(-1 * dif)
+          const find = step.stat(stat.itemBase, stat.type)
+          if (find) {
+            find.add(-1 * dif)
             return true
           }
           return false
@@ -332,14 +331,14 @@ class EnchantEquipment {
     if (i1 < 0 || i2 < 0 || i1 >= this._steps.length || i2 >= this._steps.length) {
       return false
     }
-    const t = this._steps[i1]
+    const tmp = this._steps[i1]
     this._steps[i1] = this._steps[i2]
-    this._steps[i2] = t
+    this._steps[i2] = tmp
     return true
   }
 
   hasStat(stat: EnchantStat | EnchantStepStat, stepIdx?: number) {
-    return this.stats(stepIdx).find(q => q.equals(stat)) ? true : false
+    return this.stats(stepIdx).find(_stat => _stat.equals(stat)) ? true : false
   }
 }
 
@@ -396,11 +395,11 @@ class EnchantStep {
       return 0
     }
     const er = this.potentialExtraRate
-    switch (this.type) {
-      case EnchantStepTypes.Normal:
-        return this.realPotentialCost(this.stats.reduce((a, b) => a + b.potentialCost, 0) * er)
-      case EnchantStepTypes.Each:
-        return this.firstStat ? this.firstStat.potentialCost : 0
+    if (this.type === EnchantStepTypes.Normal) {
+      return this.realPotentialCost(this.stats.reduce((cur, stat) => cur + stat.potentialCost, 0) * er)
+    }
+    if (this.type === EnchantStepTypes.Each) {
+      return this.firstStat ? this.firstStat.potentialCost : 0
     }
     return 0
   }
@@ -410,8 +409,9 @@ class EnchantStep {
 
   get previousStep(): EnchantStep | null {
     const idx = this.index
-    if (idx === 0)
+    if (idx === 0) {
       return null
+    }
     const steps = this.belongEquipment.steps()
     return steps[idx - 1]
   }
@@ -448,12 +448,12 @@ class EnchantStep {
 
   remove() {
     this.belongEquipment.allSteps.splice(this.index, 1)
-    this.stats.forEach(p => p.remove())
+    this.stats.forEach(stat => stat.remove())
   }
 
 
-  realPotentialCost(p: number): number {
-    return p >= 0 ? Math.floor(p) : Math.ceil(p)
+  realPotentialCost(potential: number): number {
+    return potential >= 0 ? Math.floor(potential) : Math.ceil(potential)
   }
 
   hasStat(itemBase: EnchantItem, type: StatTypes): boolean {
@@ -480,9 +480,9 @@ class EnchantStep {
       newStats.push(newStat)
     })
     newStats.forEach(stat => {
-      const t = this.stat(stat.itemBase, stat.type)
-      if (t) {
-        t.value = stat.value
+      const find = this.stat(stat.itemBase, stat.type)
+      if (find) {
+        find.value = stat.value
       } else {
         this.stats.push(stat)
       }
@@ -547,9 +547,9 @@ class EnchantStat {
     return this.stat.value as number
   }
 
-  /** @param {number} v */
-  set value(v: number) {
-    this.stat.value = v
+  /** @param {number} value */
+  set value(value: number) {
+    this.stat.value = value
   }
 
   /** @return {string} */
@@ -598,13 +598,13 @@ class EnchantStat {
    */
   calcMaterialPointCost(from: number, to: number): number {
     if (from > to) {
-      const t = from
+      const tmp = from
       from = to
-      to = t
+      to = tmp
     }
 
     const smithlv = STATE.Character.smithLevel
-    const r = 100 - Math.floor(smithlv / 10) - Math.floor(smithlv / 50)
+    const rate = 100 - Math.floor(smithlv / 10) - Math.floor(smithlv / 50)
     const bv = this.itemBase.getMaterialPointValue(this.type)
 
     const calc = (_from: number, _to: number) => {
@@ -615,7 +615,7 @@ class EnchantStat {
       }
       return Array(_to - _from).fill(0)
         .map((item, idx) => idx + _from + 1)
-        .reduce((item1, item2) => item1 + Math.floor(item2 * item2 * bv * r / 100), 0)
+        .reduce((item1, item2) => item1 + Math.floor(item2 * item2 * bv * rate / 100), 0)
     }
 
     return from * to >= 0 ? calc(from, to) : calc(from, 0) + calc(0, to)
@@ -624,15 +624,15 @@ class EnchantStat {
   showAmount(type: 'current' | 'base' = 'current', previousValue: number = 0): string {
     const [unitValue, unitValue2] = this.itemBase.getUnitValue(this.type)
     const convertThreshold = this.potentialConvertThreshold
-    let v = this.value + previousValue
+    let value = this.value + previousValue
 
-    const sign = v < 0 ? -1 : 1
-    v *= sign
+    const sign = value < 0 ? -1 : 1
+    value *= sign
 
     let v2 = 0
-    if (v > convertThreshold) {
-      v2 = v - convertThreshold
-      v = convertThreshold
+    if (value > convertThreshold) {
+      v2 = value - convertThreshold
+      value = convertThreshold
     }
 
     if (type === 'base') {
@@ -641,14 +641,14 @@ class EnchantStat {
         pv2 = pv - convertThreshold
         pv = convertThreshold
       }
-      v -= pv
+      value -= pv
       v2 -= pv2
     }
 
-    v *= sign
+    value *= sign
     v2 *= sign
 
-    return this.stat.show(v * unitValue + v2 * unitValue2)
+    return this.stat.show(value * unitValue + v2 * unitValue2)
   }
 }
 
@@ -693,10 +693,12 @@ class EnchantStepStat extends EnchantStat {
     const eqstat = this.belongEquipment.stat(this.itemBase, this.type)
     const [min, max] = this.limit
     const ov = eqstat.add(-1 * this.value)
-    if (ov + value > max)
+    if (ov + value > max) {
       value = max - ov
-    if (ov + value < min)
+    }
+    if (ov + value < min) {
       value = min - ov
+    }
 
     this.stat.value = value
   }
@@ -731,18 +733,18 @@ class EnchantStepStat extends EnchantStat {
   get potentialCost(): number {
     const prev = this.previousStepStatValue
 
-    if (this._parent.type === EnchantStepTypes.Normal)
+    if (this._parent.type === EnchantStepTypes.Normal) {
       return this.calcPotentialCost(this.value, prev)
-    else {
+    } else {
       const er = this._parent.potentialExtraRate
 
       let sv = this._parent.step || 1
-      const v = this.value
+      const value = this.value
       let res = 0,
         cur = 0
-      while (cur !== v) {
-        if ((sv > 0 && cur + sv > v) || (sv < 0 && cur + sv < v)) {
-          sv = v - cur
+      while (cur !== value) {
+        if ((sv > 0 && cur + sv > value) || (sv < 0 && cur + sv < value)) {
+          sv = value - cur
         }
         res += this._parent.realPotentialCost(this.calcPotentialCost(sv, cur + prev) * er)
         cur += sv
@@ -796,7 +798,7 @@ class EnchantStepStat extends EnchantStat {
   }
 
   calcPotentialCost(value: number, pre: number = 0): number {
-    const p = this.potential
+    const potential = this.potential
     const convertThreshold = this.itemBase.getPotentialConvertThreshold(this.type)
 
     const sign = value < 0 ? -1 : 1
@@ -819,10 +821,10 @@ class EnchantStepStat extends EnchantStat {
       value = 0
     }
 
-    const r = (5 + STATE.Character.tec / 10)
+    const rate = (5 + STATE.Character.tec / 10)
     return (value + v2) >= 0 ?
-      value * p + v2 * p * 2 :
-      Math.ceil((((value * p) + (v2 * p) / 2) * r) / 100)
+      value * potential + v2 * potential * 2 :
+      Math.ceil((((value * potential) + (v2 * potential) / 2) * rate) / 100)
   }
 
   /**

@@ -229,17 +229,17 @@ class Character {
       this.level = level
       normalBaseStats.forEach(bstat => {
         const find = this.normalBaseStats.find(_bstat => _bstat.name === bstat.name)
-        if (find)
+        if (find) {
           find.value = bstat.value
-        else {
+        } else {
           console.warn('[Character.save] Can not find CharacterBaseStat which name: ' + bstat.name)
         }
       })
       if (optionalBaseStat) {
         this.setOptionalBaseStat(optionalBaseStat.name)
-        if (this.optionalBaseStat)
+        if (this.optionalBaseStat) {
           this.optionalBaseStat.value = optionalBaseStat.value
-        else {
+        } else {
           console.warn('[Character.save] Can not find Optional-CharacterBaseStat which name: ' + optionalBaseStat.name)
         }
       }
@@ -259,8 +259,7 @@ class Character {
             if (eq) {
               find.equipment = eq
             }
-          }
-          else {
+          } else {
             console.warn(`[Character.load] Can not find equipment field of character which type: ${fieldData.type} , index: ${fieldData.index}`)
           }
         }
@@ -500,9 +499,9 @@ class CharacterStat {
 
     if (this.link) {
       const base = Grimoire.Character.findStatBase(this.link)
-      if (!base)
+      if (!base) {
         console.warn(`Link of CharacterStat: ${this.link} is not found.`)
-      else {
+      } else {
         this.isBoolStat = base.checkBoolStat()
         this.linkedStatBase = base
       }
@@ -520,8 +519,9 @@ class CharacterStat {
       displayFormula = '$v' + displayFormula
     }
     return displayFormula.replace(/\$(?:\.(\d))?v/, (match, p1) => {
-      if (ignoreDecimal)
+      if (ignoreDecimal) {
         return value.toString()
+      }
       return p1 !== undefined ?
         value.toFixed(parseInt(p1, 10)) :
         Math.floor(value).toString()
@@ -563,7 +563,7 @@ class CharacterStat {
         statPartsDetail: res.statPartsDetail,
         conditionalBase: res.conditionalBase,
         hidden: hiddenOption === 0 ||
-          (hiddenOption === 1 && (['constant', 'multiplier', 'total'] as const).every(a => res.statValueParts[a] === 0)) ||
+          (hiddenOption === 1 && (['constant', 'multiplier', 'total'] as const).every(key => res.statValueParts[key] === 0)) ||
           (hiddenOption === 2 && originalValue === 0),
       }
     } catch (error) {

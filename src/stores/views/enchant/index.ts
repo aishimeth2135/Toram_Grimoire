@@ -115,9 +115,9 @@ export const useEnchantStore = defineStore('view-enchant', () => {
       currentBuildIndex.value = data.index
 
       resetConfig(data.config)
-    } catch (e) {
+    } catch (err) {
       console.warn('[enchant-simulator] load data fail: ' + target)
-      console.log(e)
+      console.log(err)
       enchantBuilds.value = origin.builds
       currentBuildIndex.value = origin.index
       resetConfig(origin.config)

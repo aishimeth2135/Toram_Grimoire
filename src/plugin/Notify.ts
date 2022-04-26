@@ -4,7 +4,7 @@ import { useLoadingStore } from '@/stores/app/loading'
 
 import Notify from '@/setup/Notify'
 
-export default function(app: App) {
+export default function (app: App) {
   const loadingStore = useLoadingStore()
   const { notify } = Notify()
   app.config.globalProperties.$notify = notify

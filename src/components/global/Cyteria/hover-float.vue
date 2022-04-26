@@ -148,8 +148,10 @@ const contentClick = () => {
 }
 
 const DATA_FLAG_NAME = 'data-cy-hover-float-flag'
-const listenerShow = function(this: HTMLElement) { showCaption(this) }
-const listenerClick = function(evt: MouseEvent) {
+const listenerShow = function (this: HTMLElement) {
+  showCaption(this)
+}
+const listenerClick = function (evt: MouseEvent) {
   evt.stopPropagation()
   enableKeepVisible()
 }

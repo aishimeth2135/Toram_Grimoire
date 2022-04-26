@@ -90,15 +90,19 @@ const areaDatas = computed(() => {
     const chara = {
       type: 'circle',
       attrs: {
-        cx: grid(bx), cy: grid(by),
-        r: grid(unitRadius), fill: charaColor,
+        cx: grid(bx),
+        cy: grid(by),
+        r: grid(unitRadius),
+        fill: charaColor,
       },
     }
     const tar = {
       type: 'circle',
       attrs: {
-        cx: grid(tx), cy: grid(ty),
-        r: grid(unitRadius), fill: targetColor,
+        cx: grid(tx),
+        cy: grid(ty),
+        r: grid(unitRadius),
+        fill: targetColor,
       },
     }
 
@@ -109,8 +113,10 @@ const areaDatas = computed(() => {
     const area: AreaElement = {
       type: 'circle',
       attrs: {
-        cx: grid(ax), cy: grid(ay),
-        r: grid(radius), fill: pcolorl,
+        cx: grid(ax),
+        cy: grid(ay),
+        r: grid(radius),
+        fill: pcolorl,
       },
       animations: [],
     }
@@ -121,7 +127,8 @@ const areaDatas = computed(() => {
         attributeName: 'fill',
         values: `${pcolorl};${pcolorl3};${pcolorl};${pcolorl}`,
         keyTimes: '0;.1;.6;1',
-        dur: '2.5s', repeatCount: 'indefinite',
+        dur: '2.5s',
+        repeatCount: 'indefinite',
       },
     })
 
@@ -145,16 +152,20 @@ const areaDatas = computed(() => {
     const chara: AreaElement = {
       type: 'circle',
       attrs: {
-        cx: grid(bx), cy: grid(by),
-        r: grid(unitRadius), fill: charaColor,
+        cx: grid(bx),
+        cy: grid(by),
+        r: grid(unitRadius),
+        fill: charaColor,
       },
       animations: [],
     }
     const tar: AreaElement = {
       type: 'circle',
       attrs: {
-        cx: grid(tx), cy: grid(ty),
-        r: grid(unitRadius), fill: targetColor,
+        cx: grid(tx),
+        cy: grid(ty),
+        r: grid(unitRadius),
+        fill: targetColor,
       },
     }
 
@@ -165,8 +176,10 @@ const areaDatas = computed(() => {
     const area: AreaElement = {
       type: 'circle',
       attrs: {
-        cx: grid(ax), cy: grid(ay),
-        r: grid(radius), fill: pcolorl,
+        cx: grid(ax),
+        cy: grid(ay),
+        r: grid(radius),
+        fill: pcolorl,
       },
       animations: [],
     }
@@ -180,7 +193,8 @@ const areaDatas = computed(() => {
         attributeName: 'fill',
         values: `${pcolorl};${pcolorl3};${pcolorl3};${pcolorl}`,
         keyTimes: '0;.3;.6;1',
-        dur: '2s', repeatCount: 'indefinite',
+        dur: '2s',
+        repeatCount: 'indefinite',
       },
     }, {
       type: 'animate',
@@ -188,7 +202,8 @@ const areaDatas = computed(() => {
         attributeName: 'cx',
         values: `${grid(ax)};${grid(ax)};${grid(endx)};${grid(endx)}`,
         keyTimes: '0;.3;.4;1',
-        dur: '2s', repeatCount: 'indefinite',
+        dur: '2s',
+        repeatCount: 'indefinite',
       },
     })
 
@@ -199,7 +214,8 @@ const areaDatas = computed(() => {
           attributeName: 'cx',
           values: `${grid(bx)};${grid(bx)};${grid(endx)};${grid(endx)}`,
           keyTimes: '0;.3;.4;1',
-          dur: '2s', repeatCount: 'indefinite',
+          dur: '2s',
+          repeatCount: 'indefinite',
         },
       })
     }
@@ -237,34 +253,50 @@ const areaDatas = computed(() => {
     const chara = {
       type: 'circle',
       attrs: {
-        cx: grid(bx), cy: grid(by),
-        r: grid(unitRadius), fill: charaColor,
+        cx: grid(bx),
+        cy: grid(by),
+        r: grid(unitRadius),
+        fill: charaColor,
       },
     }
     const tar = {
       type: 'circle',
       attrs: {
-        cx: grid(tx), cy: grid(ty),
-        r: grid(unitRadius), fill: targetColor,
+        cx: grid(tx),
+        cy: grid(ty),
+        r: grid(unitRadius),
+        fill: targetColor,
       },
     }
 
     const areaSectorD = createSectorPathD({
-      cx: grid(bx), cy: grid(by), minRadius: grid(minRadius),
+      cx: grid(bx),
+      cy: grid(by),
+      minRadius: grid(minRadius),
       radius: grid(maxRadius),
-      startAngle: angle / 2, endAngle: -angle / 2, clockwise: 1,
+      startAngle: angle / 2,
+      endAngle: -angle / 2,
+      clockwise: 1,
     })
 
     const startSectorD = createSectorPathD({
-      cx: grid(bx), cy: grid(by), minRadius: grid(minRadius),
+      cx: grid(bx),
+      cy: grid(by),
+      minRadius: grid(minRadius),
       radius: grid(minRadius + sectorWidth),
-      startAngle: angle / 2, endAngle: -angle / 2, clockwise: 1,
+      startAngle: angle / 2,
+      endAngle: -angle / 2,
+      clockwise: 1,
     })
 
     const endSectorD = createSectorPathD({
-      cx: grid(bx), cy: grid(by), minRadius: grid(Math.max(maxRadius - sectorWidth, 0)),
+      cx: grid(bx),
+      cy: grid(by),
+      minRadius: grid(Math.max(maxRadius - sectorWidth, 0)),
       radius: grid(maxRadius),
-      startAngle: angle / 2, endAngle: -angle / 2, clockwise: 1,
+      startAngle: angle / 2,
+      endAngle: -angle / 2,
+      clockwise: 1,
     })
 
     datas.push({
@@ -287,7 +319,8 @@ const areaDatas = computed(() => {
           attributeName: 'd',
           values: `${startSectorD};${startSectorD};${endSectorD};${endSectorD}`,
           keyTimes: '0;.3;.4;1',
-          dur: '2s', repeatCount: 'indefinite',
+          dur: '2s',
+          repeatCount: 'indefinite',
         },
       }, {
         type: 'animate',
@@ -295,7 +328,8 @@ const areaDatas = computed(() => {
           attributeName: 'fill',
           values: `${pcolorl};${pcolorl3};${pcolorl3};${pcolorl}`,
           keyTimes: '0;.3;.6;1',
-          dur: '2s', repeatCount: 'indefinite',
+          dur: '2s',
+          repeatCount: 'indefinite',
         },
       }],
     })
@@ -327,8 +361,10 @@ const Render = () => {
 
   return h('svg', {
     xmlns: 'http://www.w3.org/2000/svg',
-    version: '1.1', baseProfile: 'full',
-    width: datas.width, height: datas.height,
+    version: '1.1',
+    baseProfile: 'full',
+    width: datas.width,
+    height: datas.height,
     viewBox: `0 0 ${datas.width} ${datas.height}`,
     preserveAspectRatio: 'xMidYMid meet',
     class: 'max-h-64 max-w-full',

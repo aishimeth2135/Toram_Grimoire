@@ -121,8 +121,9 @@ export function useItemQueryModes() {
           return
         }
         statTypes.forEach(type => {
-          if (type === StatTypes.Multiplier && !stat.hasMultiplier)
+          if (type === StatTypes.Multiplier && !stat.hasMultiplier) {
             return
+          }
           _stats.push({
             origin: stat,
             text: stat.title(type),

@@ -20,7 +20,7 @@ function loadFile(config) {
   }, config)
   const input = document.createElement('input')
   input.type = 'file'
-  input.addEventListener('change', function() {
+  input.addEventListener('change', function () {
     document.body.removeChild(input)
     config.beforeLoadFile()
     const file = this.files[0]
@@ -30,7 +30,7 @@ function loadFile(config) {
       return
     }
     const fr = new FileReader()
-    fr.onload = function() {
+    fr.onload = function () {
       config.loadFileSucceeded(this.result)
     }
     fr.readAsText(file)

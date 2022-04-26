@@ -33,14 +33,16 @@ export default function LoadTagData(root: TagSystem, datas: LangCsvData) {
     }
     try {
       const name = row[INDEX.TAG_NAME]
-      if (name !== '')
+      if (name !== '') {
         curTag = root.appendTag(name)
+      }
       const fn = row[FRAME_NAME],
         fv = row[INDEX.FRAME_VALUE]
-      if (fn !== '')
+      if (fn !== '') {
         curFrame = curTag.appendFrame(fn, fv)
-      else
+      } else {
         curFrame.appendValue(fv)
+      }
     } catch (err) {
       console.warn('[LoadTag] unknown error')
       console.error(err)

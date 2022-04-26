@@ -271,7 +271,7 @@ const clearSpreadsheetsCaches = () => {
 const saveLocalStorage = () => {
   const data = {} as Record<string, string>
   const storage = window.localStorage
-  Array(localStorage.length).fill(null).map((_, i) => i).forEach(idx => {
+  Array(localStorage.length).fill(null).map((value, idx) => idx).forEach(idx => {
     const key = storage.key(idx)!
     const item = storage.getItem(key)!
     if (key.slice(0, 7) !== 'iconify') {
@@ -296,7 +296,7 @@ const loadLocalStorage = () => {
       const jsonData = JSON.parse(data) as Record<string, string>
 
       // reset
-      Array(localStorage.length).fill(null).map((_, i) => i).forEach(idx => {
+      Array(localStorage.length).fill(null).map((value, idx) => idx).forEach(idx => {
         const key = storage.key(idx)
         if (key && !key.startsWith('iconify')) {
           storage.removeItem(key)

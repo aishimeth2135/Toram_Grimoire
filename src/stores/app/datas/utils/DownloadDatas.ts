@@ -9,7 +9,7 @@ type PathItem = string | { path: string; lang?: boolean }
 type CsvData = string[][]
 type LangCsvData = [CsvData, CsvData | null, CsvData | null]
 
-export default async function(...paths: PathItem[]): Promise<LangCsvData[]> {
+export default async function (...paths: PathItem[]): Promise<LangCsvData[]> {
   const promises = paths.map(async (pathItem) => {
     if (typeof pathItem === 'string') {
       pathItem = { path: pathItem }

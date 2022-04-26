@@ -304,7 +304,11 @@ const obtainsDataConvert = (obtains: ItemObtain[]) => {
     return {
       iid: idx,
       isDrop: ['mobs', 'boss', 'mini_boss'].includes(item.type!),
-      type, name, map, dye, icon,
+      type,
+      name,
+      map,
+      dye,
+      icon,
     }
   })
 }

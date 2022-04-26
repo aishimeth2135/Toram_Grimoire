@@ -24,7 +24,7 @@ import CyTransition from '@/components/global/Cyteria/transition.vue'
 import ImageIcon from '@/components/global/image-icon.vue'
 import SvgIcon from '@/components/global/svg-icon.vue'
 
-export default function(app: App<Element>) {
+export default function (app: App<Element>) {
   // /* ==== [ auto regist global components ] ================= */
   // const registComponents = (requireComponent: __WebpackModuleApi.RequireContext, prefix = '', excludes: string[] = []) => {
   //   requireComponent.keys().forEach(fileName => {
@@ -73,7 +73,7 @@ export default function(app: App<Element>) {
 function registButtonAlias(app: App<Element>) {
   const aliasNames = ['icon', 'line', 'border', 'drop-down', 'check', 'inline', 'switch', 'radio', 'circle']
   aliasNames.map(name => {
-    const componentFunction: FunctionalComponent = function(props, context) {
+    const componentFunction: FunctionalComponent = function (props, context) {
       const attrs = mergeProps({
         type: name,
       }, context.attrs)

@@ -45,19 +45,14 @@ rules:
   func-call-spacing: off
   semi: off
   comma-dangle: off
+  object-curly-spacing: off
   # vue/no-mutating-props: off
-  jsdoc/no-undefined-types: warn
-  no-trailing-spaces: warn
-  object-curly-spacing:
-    - warn
-    - always
+  semi-spacing: error
+  space-infix-ops: error
+  no-var: error
   eol-last:
     - error
     - always
-  comma-spacing:
-    - warn
-    - before: false
-      after: true
   no-void:
     - error
     - allowAsStatement: true
@@ -67,39 +62,36 @@ rules:
   space-in-parens:
     - error
     - never
-  semi-spacing:
-    - error
-  space-infix-ops:
-    - error
-  arrow-spacing:
-    - error
   no-plusplus:
     - error
     - allowForLoopAfterthoughts: true
   radix:
     - error
     - always
-  import/no-unresolved:
+  id-length:
     - error
-    - commonjs: true
-      ignore: ['^virtual:']
-  import-helpers/order-imports:
+    - properties: never
+  jsdoc/no-undefined-types: warn
+  no-trailing-spaces: warn
+  arrow-spacing: warn
+  curly: warn
+  brace-style: warn
+  comma-style: warn
+  comma-spacing:
     - warn
-    - newlinesBetween: always
-      groups:
-        - module
-        - /^@\/stores/
-        - /^@\/shared\//
-        - /^@\/lib\//
-        - /^@\/setup\//
-        - /^@\//
-        - /(?!@\/).+\.vue$/
-        - - parent
-          - sibling
-          - index
-      alphabetize:
-        order: ignore
-        ignoreCase: true
+    - before: false
+      after: true
+  space-before-function-paren:
+    - warn
+    - anonymous: always
+      named: never
+      asyncArrow: always
+  array-bracket-spacing:
+    - warn
+    - never
+  object-property-newline:
+    - warn
+    - allowAllPropertiesOnSameLine: true
   "@typescript-eslint/semi":
     - error
     - never
@@ -130,6 +122,32 @@ rules:
   "@typescript-eslint/comma-dangle":
     - warn
     - always-multiline
+  "@typescript-eslint/object-curly-spacing":
+    - warn
+    - always
+  # import
+  import/no-unresolved:
+    - error
+    - commonjs: true
+      ignore: ['^virtual:']
+  import-helpers/order-imports:
+    - warn
+    - newlinesBetween: always
+      groups:
+        - module
+        - /^@\/stores/
+        - /^@\/shared\//
+        - /^@\/lib\//
+        - /^@\/setup\//
+        - /^@\//
+        - /(?!@\/).+\.vue$/
+        - - parent
+          - sibling
+          - index
+      alphabetize:
+        order: ignore
+        ignoreCase: true
+  # vue
   vue/html-indent:
     - warn
     - 2

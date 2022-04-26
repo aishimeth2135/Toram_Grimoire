@@ -52,7 +52,9 @@ const { t } = useI18n()
 const statOptions: StatOptionItem[] = []
 const statTypes = [StatTypes.Constant, StatTypes.Multiplier]
 Grimoire.Character.statList.forEach(stat => {
-  if (stat.hidden) return
+  if (stat.hidden) {
+    return
+  }
   statTypes.forEach(type => {
     if (type === StatTypes.Multiplier && !stat.hasMultiplier) {
       return

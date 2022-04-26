@@ -3,8 +3,8 @@ import Color from '@/shared/services/Color'
 
 const ColorList = Color.List
 
-function colorValidator(v) {
-  return v === 'default' || v === '!default' || ColorList.includes(v)
+function colorValidator(value) {
+  return value === 'default' || value === '!default' || ColorList.includes(value)
 }
 
 const ColorSetProps = {

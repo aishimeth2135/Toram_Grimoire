@@ -62,8 +62,7 @@ export const useNotifyStore = defineStore('app-notify', () => {
       }, 1000)
 
       appendMessage(msg)
-    }
-    else {
+    } else {
       find.counter += 1
       find.removeTime = Math.min(find.removeTime + 1, 8)
     }

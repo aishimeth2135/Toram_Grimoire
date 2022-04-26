@@ -297,7 +297,7 @@ type HandleBranchTextPropsResult<PropMap extends HandleBranchValuePropsMap> = {
 }
 function computedBranchText(
   helper: ComputedBranchHelperResult,
-  attrKey: string,
+  propKey: string,
   attrValue: string | undefined,
 ) {
   const textStr = attrValue
@@ -306,10 +306,10 @@ function computedBranchText(
       containers: [],
       parts: ['0'],
     } as TextResultContainerParseResult
-    return new TextResultContainer(attrKey as string, '0', '0', _parseResult)
+    return new TextResultContainer(propKey as string, '0', '0', _parseResult)
   }
-  const parseResult = TextResultContainer.parse(attrKey, textStr, value => computeBranchValue(value, helper))
-  return new TextResultContainer(attrKey as string, textStr, textStr, parseResult)
+  const parseResult = TextResultContainer.parse(propKey, textStr, value => computeBranchValue(value, helper))
+  return new TextResultContainer(propKey as string, textStr, textStr, parseResult)
 }
 function handleBranchTextProps<PropMap extends HandleBranchTextPropsMap>(
   helper: ComputedBranchHelperResult,
@@ -318,11 +318,11 @@ function handleBranchTextProps<PropMap extends HandleBranchTextPropsMap>(
 ): HandleBranchTextPropsResult<PropMap> {
   const propKeys = Object.keys(PropMap) as (keyof PropMap)[]
   const attrResult = {} as HandleBranchTextPropsResult<PropMap>
-  propKeys.forEach(attrKey => {
-    const container = computedBranchText(helper, attrKey as string, props[attrKey as string])
-    const options = (PropMap[attrKey] || {}) as HighlightTextOptions
+  propKeys.forEach(propKey => {
+    const container = computedBranchText(helper, propKey as string, props[propKey as string])
+    const options = (PropMap[propKey] || {}) as HighlightTextOptions
     handleHighlight(container, options)
-    attrResult[attrKey] = container
+    attrResult[propKey] = container
   })
 
   return attrResult
