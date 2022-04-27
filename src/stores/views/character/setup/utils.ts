@@ -18,8 +18,10 @@ export function getSkillStatContainerValid(character: Character | null, skillRes
     const vars = {
       $skill: {
         id: resultsState.skill.skillId,
-        branchId: skillResult.container.branchItem.id,
         range: resultsState.basicContainer ? getSkillRange(character, resultsState.basicContainer) : -1,
+      },
+      $branch: {
+        id: skillResult.container.branchItem.id,
       },
     }
     return computeFormula(statContainer.conditionValue, vars, false) as boolean
