@@ -7,7 +7,7 @@ import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import { cloneBranchProps, handleDisplayData } from './utils'
 import MapContainer from './utils/MapContainer'
-import type { HandleDisplayDataOptionFilters, HandleBranchLangAttrsMap } from './utils'
+import type { HandleDisplayDataOptionFilters, HandleBranchLangPropsMap } from './utils'
 import ProrationHandler from './ProrationHandler'
 import { createTagButtons } from '../../utils'
 
@@ -46,7 +46,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(branch
   if (branchItem.prop('target_offset') !== 'auto') {
     valuePropsMap.append('target_offset')
   }
-  const langAttrsMap = new MapContainer<HandleBranchLangAttrsMap>([
+  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>([
     'damage_type',
     'type',
     'title',

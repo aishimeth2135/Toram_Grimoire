@@ -148,7 +148,7 @@
             <div class="recipe-attr">
               <cy-icon-text icon="ion-hammer" small>
                 <span>
-                  {{ t('item-query.equipment-detail.recipe.item-difficulty') }}
+                  {{ t('item-query.equipment-detail.recipe.item-level') }}
                 </span>
                 <span class="ml-2 text-light-3">
                   {{ originEquipment.recipe['item_level'] || '?' }}

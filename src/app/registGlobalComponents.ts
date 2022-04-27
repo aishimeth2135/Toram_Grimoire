@@ -2,7 +2,6 @@ import type { App, FunctionalComponent } from 'vue'
 import { h, mergeProps } from 'vue'
 
 import CyButton from '@/components/global/Cyteria/button.vue'
-import CyBottomContent from '@/components/global/Cyteria/bottom-content.vue'
 import CyButtonCheckGroup from '@/components/global/Cyteria/button-check-group.vue'
 import CyDefaultTips from '@/components/global/Cyteria/default-tips.vue'
 import CyDetailWindow from '@/components/global/Cyteria/detail-window.vue'
@@ -44,7 +43,6 @@ export default function (app: App<Element>) {
   // registComponents(requireComponent_cy, 'cy-')
   // /* ========================================================== */
 
-  app.component('cy-bottom-content', CyBottomContent)
   app.component('cy-button-check-group', CyButtonCheckGroup)
   app.component('cy-default-tips', CyDefaultTips)
   app.component('cy-detail-window', CyDetailWindow)

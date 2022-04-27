@@ -27,7 +27,7 @@ export function getCharacterElement(chara: Character): Partial<Record<EnemyEleme
     'light': 0,
     'dark': 0,
   }
-  const setElement = (stat: StatRestriction) => element[stat.baseName.replace('element_', '') as EnemyElements] = 1
+  const setElement = (stat: StatRestriction) => element[stat.baseId.replace('element_', '') as EnemyElements] = 1
 
   const sub = chara.equipmentField(EquipmentFieldTypes.SubWeapon)
   // 主手弓/弩、副手矢時，矢優先於弓

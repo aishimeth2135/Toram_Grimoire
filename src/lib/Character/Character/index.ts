@@ -153,16 +153,16 @@ class Character {
     const chara = new Character(this.name + '*')
     chara.level = this.level
     this.normalBaseStats.forEach(bstat => {
-      const find = chara.normalBaseStats.find(_bstat => _bstat.name === bstat.name) as CharacterBaseStat<CharacterBaseStatTypes>
+      const find = chara.normalBaseStats.find(_bstat => _bstat.name === bstat.name)!
       find.value = bstat.value
     })
     if (this.optionalBaseStat !== null) {
-      chara.setOptionalBaseStat(this.optionalBaseStat.name);
-      (chara.optionalBaseStat as CharacterBaseStat<CharacterOptionalBaseStatTypes>).value = this.optionalBaseStat.value
+      chara.setOptionalBaseStat(this.optionalBaseStat.name)
+      chara.optionalBaseStat!.value = this.optionalBaseStat.value
     }
 
     this.equipmentFields.filter(field => !field.isEmpty).forEach(field => {
-      const find = chara.equipmentFields.find(targetField => field.type === targetField.type && field.index === targetField.index) as EquipmentField
+      const find = chara.equipmentFields.find(targetField => field.type === targetField.type && field.index === targetField.index)!
       find.setEquipment(field.equipment)
     })
 
@@ -452,13 +452,15 @@ interface CharacterStatResultVars {
   };
 }
 class CharacterStat {
-  private _formula: CharacterStatFormula | null
+  private _formula!: CharacterStatFormula
 
-  category: CharacterStatCategory
-  id: string
+  readonly category: CharacterStatCategory
+  readonly id: string
+  readonly displayFormula: string
+  readonly link: string
+  readonly isBoolStat: boolean
+
   name: string
-  displayFormula: string
-  link: string
   max: number | null
   min: number | null
   caption: string
@@ -466,7 +468,6 @@ class CharacterStat {
     hidden: number;
   }
 
-  isBoolStat: boolean
   linkedStatBase: StatBase | null
 
   constructor(
@@ -485,7 +486,7 @@ class CharacterStat {
     this.id = id
     this.name = name
     this.displayFormula = displayFormula
-    this.link = link // const
+    this.link = link
     this.max = max
     this.min = min
     this.caption = caption
@@ -493,14 +494,13 @@ class CharacterStat {
       hidden: hiddenOption, // -1: default, 0: always hidden, 1: hidden when cvalue, mvalue and tvalue are zero
     }
 
-    this._formula = null
     this.isBoolStat = false
     this.linkedStatBase = null
 
     if (this.link) {
       const base = Grimoire.Character.findStatBase(this.link)
       if (!base) {
-        console.warn(`Link of CharacterStat: ${this.link} is not found.`)
+        console.warn(`[CharacterStat] link: ${this.link} is not found.`)
       } else {
         this.isBoolStat = base.checkBoolStat()
         this.linkedStatBase = base
@@ -532,7 +532,7 @@ class CharacterStat {
     if (this.id in vars.computedResultStore) {
       return vars.computedResultStore[this.id]
     }
-    const formula = this._formula!
+    const formula = this._formula
     try {
       const res = formula.calc(currentStats, vars)
       let value = res.value
@@ -615,7 +615,6 @@ class CharacterStat {
   }
 }
 
-
 class CharacterStatFormula {
   private _parent: CharacterStat
 
@@ -647,7 +646,7 @@ class CharacterStatFormula {
       .map(cat => cat.stats).flat()
       .forEach(stat => allCharacterStatMap[stat.id] = stat)
 
-    const checkBaseName = (stat: Stat) => stat.baseName === this.belongCharacterStat.link
+    const checkBaseName = (stat: Stat) => stat.baseId === this.belongCharacterStat.link
     const cstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Constant),
       mstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Multiplier),
       tstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Total)

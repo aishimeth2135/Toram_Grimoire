@@ -54,7 +54,7 @@ class Item {
     this.obtains.push(obtain)
     return obtain
   }
-  appendStat(baseName: string, value: number | string, tail: string, restriction: string) {
+  appendStat(baseId: string, value: number | string, tail: string, restriction: string) {
     if (typeof value === 'string') {
       value = isNumberString(value) ? parseFloat(value) : 0
     }
@@ -67,9 +67,9 @@ class Item {
       }
       return StatTypes.Constant
     })()
-    const statBase = Grimoire.Character.findStatBase(baseName)
+    const statBase = Grimoire.Character.findStatBase(baseId)
     if (!statBase) {
-      console.warn('[Character] Can\'t find stat-base with id: ' + baseName)
+      console.warn('[Character] Can\'t find stat-base with id: ' + baseId)
       return
     }
     const stat = statBase.createStat(type, value)

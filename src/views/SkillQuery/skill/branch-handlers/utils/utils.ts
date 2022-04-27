@@ -1,4 +1,6 @@
-function handleFunctionHighlight(result: string): string {
+import { numberToFixed } from '@/shared/utils/number'
+
+export function handleFunctionHighlight(result: string): string {
   const functionHighlightList: {
     name: string;
     reg: RegExp;
@@ -55,4 +57,6 @@ function handleFunctionHighlight(result: string): string {
   return result
 }
 
-export { handleFunctionHighlight }
+export function numberStringToPercentage(str: string): string {
+  return numberToFixed(100 * parseFloat(str), 1).toString() + '%'
+}

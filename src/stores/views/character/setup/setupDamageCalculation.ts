@@ -14,7 +14,7 @@ import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
-import { CharacterStatCategoryResult, SkillResult, SkillResultsState } from '.'
+import { CharacterStatCategoryResult, SkillResult } from '.'
 import { setupCalculationExpectedResult } from '../../damage-calculation/setup'
 import { getCharacterElement } from '../utils'
 
@@ -70,7 +70,7 @@ const againstElementMap: Record<EnemyElements, EnemyElements> = {
 
 export default function setupDamageCalculation(
   character: Ref<Character | null>,
-  setupCharacterStatCategoryResultsExtended: (otherStats: Ref<Stat[]>, resultsState: Ref<SkillResultsState>) => {
+  setupCharacterStatCategoryResultsExtended: (otherStats: Ref<Stat[]>, skillResult: Ref<SkillResult>) => {
     categoryResults: ComputedRef<CharacterStatCategoryResult[]>;
     characterPureStats: ComputedRef<Stat[]>;
   },
@@ -96,12 +96,11 @@ export default function setupDamageCalculation(
 
   const setupDamageCalculationExpectedResult = (
     skillResult: Ref<SkillResult>,
-    resultsState: Ref<SkillResultsState>,
     extraStats: Ref<Stat[]>,
     targetProperties: Ref<TargetProperties>,
     calculationOptions: Ref<CalculationOptions>,
   ) => {
-    const { categoryResults, characterPureStats } = setupCharacterStatCategoryResultsExtended(extraStats, resultsState)
+    const { categoryResults, characterPureStats } = setupCharacterStatCategoryResultsExtended(extraStats, skillResult)
 
     const container = computed(() => skillResult.value.container)
 
@@ -109,7 +108,7 @@ export default function setupDamageCalculation(
       return categoryResults.value.map(category => category.stats).flat()
     })
 
-    const statValue = (baseName: string) => characterPureStats.value.find(stat => stat.baseName === baseName)?.value ?? 0
+    const statValue = (baseId: string) => characterPureStats.value.find(stat => stat.baseId === baseId)?.value ?? 0
     const resultValue = (id: string) => statResults.value!.find(result => result.id === id)?.resultValue ?? 0
 
     const currentCharacterElement = computed(() => character.value ? getCharacterElement(character.value) : null)
@@ -380,7 +379,7 @@ function createElementMap(): Record<EnemyElements, number> {
 
 function getSkillElement(chara: Character, branchItem: SkillBranchItem) {
   const element = createElementMap()
-  const setElement = (stat: StatRestriction) => element[stat.baseName.replace('element_', '') as EnemyElements] = 1
+  const setElement = (stat: StatRestriction) => element[stat.baseId.replace('element_', '') as EnemyElements] = 1
 
   const skillElement = branchItem.prop('element')
   const skillDualElement = branchItem.prop('dual_element')

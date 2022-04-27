@@ -34,10 +34,7 @@
         </cy-transition>
         <div class="pt-2 pl-2 space-y-2">
           <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
-            <CharacterDamageSkillResultItem
-              :result="result"
-              :skill-results-state="skillResultsState"
-            />
+            <CharacterDamageSkillResultItem :result="result" />
           </div>
         </div>
       </div>

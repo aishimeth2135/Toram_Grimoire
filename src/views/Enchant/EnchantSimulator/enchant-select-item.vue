@@ -139,7 +139,7 @@ const validCategorys = computed(() => {
   const resultCategorys: EnchantStatCategoryOption[] = []
   categorys.forEach(category => {
     const newItems = category.items
-      .filter(item => negativeSuggestedList.value.includes(item.origin.statBase.baseName))
+      .filter(item => negativeSuggestedList.value.includes(item.origin.statBase.baseId))
     if (newItems.length > 0) {
       resultCategorys.push({
         origin: category.origin,

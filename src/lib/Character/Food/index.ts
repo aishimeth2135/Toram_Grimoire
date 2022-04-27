@@ -118,7 +118,7 @@ class FoodBuild {
     data.name = this.name
 
     data.foods = this.foods.map((food, idx) => ({
-      statId: food.foodBase.base.baseName,
+      statId: food.foodBase.base.baseId,
       level: food.level,
       negative: food.foodBase.negative,
       selected: this.foodSelected(idx),
@@ -133,7 +133,7 @@ class FoodBuild {
       const { name, foods } = data
       this.name = name
       foods.forEach(food => {
-        const findIdx = this.foods.findIndex(_food => _food.foodBase.base.baseName === food.statId && _food.foodBase.negative === food.negative)
+        const findIdx = this.foods.findIndex(_food => _food.foodBase.base.baseId === food.statId && _food.foodBase.negative === food.negative)
         if (findIdx !== -1) {
           const find = this.foods[findIdx]
           find.level = food.level

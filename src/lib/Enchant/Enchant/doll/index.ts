@@ -227,7 +227,7 @@ export default class EnchantDoll {
 
     const prioritizedShortList = {
       [EnchantEquipmentTypes.MainWeapon]: ['def', 'mdef', 'dodge', 'natural_hp_regen', {
-        baseName: 'natural_mp_regen',
+        baseId: 'natural_mp_regen',
         types: [StatTypes.Multiplier] as StatNormalTypes[],
       }],
       [EnchantEquipmentTypes.BodyArmor]: ['accuracy'],
@@ -250,9 +250,9 @@ export default class EnchantDoll {
       category.items.forEach(item => {
         const find = prioritizedShortList.find(statBaseItem => {
           if (typeof statBaseItem === 'object') {
-            return statBaseItem.baseName === item.statBase.baseName
+            return statBaseItem.baseId === item.statBase.baseId
           }
-          return statBaseItem === item.statBase.baseName
+          return statBaseItem === item.statBase.baseId
         })
         if (find) {
           const types = typeof find === 'object' ? find.types : [StatTypes.Constant, StatTypes.Multiplier] as StatNormalTypes[]

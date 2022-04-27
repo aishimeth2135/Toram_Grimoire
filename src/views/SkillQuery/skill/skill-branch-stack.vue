@@ -55,7 +55,7 @@ const { branchItem } = toRefs(props)
 const container = computed(() => StackHandler(branchItem.value))
 
 const stackState = computed(() => {
-  return findStackState(branchItem.value.parent, branchItem.value.stackId as number)
+  return findStackState(branchItem.value.parent, branchItem.value.stackId!)
 })
 
 const stackValue: WritableComputedRef<number> = computed({

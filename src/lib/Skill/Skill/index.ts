@@ -304,7 +304,7 @@ class SkillBranch extends SkillNode {
     return this
   }
 
-  appendStat(baseName: string, value: string, tail: string): StatComputed | null {
+  appendStat(baseId: string, value: string, tail: string): StatComputed | null {
     const type = (() => {
       if (tail === '%') {
         return StatTypes.Multiplier
@@ -314,7 +314,7 @@ class SkillBranch extends SkillNode {
       }
       return StatTypes.Constant
     })()
-    const statBase = Grimoire.Character.findStatBase(baseName)
+    const statBase = Grimoire.Character.findStatBase(baseId)
     if (!statBase) {
       return null
     }

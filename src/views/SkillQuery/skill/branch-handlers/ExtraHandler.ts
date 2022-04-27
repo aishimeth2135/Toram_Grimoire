@@ -12,7 +12,7 @@ import DisplayDataContainer from './utils/DisplayDataContainer'
 export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
-  const defaultCondition = branchItem.mainBranch.is(SkillBranchNames.Damage) ?
+  const defaultCondition = branchItem.mainBranch.is(SkillBranchNames.Damage) && branchItem.stats.length > 0 ?
     t('skill-query.branch.damage: extra.condition-default-value') :
     t('skill-query.branch.global-suffix.extra.condition-default-value')
   const props = cloneBranchProps(branchItem, {

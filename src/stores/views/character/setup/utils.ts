@@ -10,13 +10,15 @@ import { Stat } from '@/lib/Character/Stat'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/utils/DisplayDataContainer'
 
-import { SkillResultsState } from '.'
+import { SkillResult } from '.'
 
-export function getSkillStatContainerValid(character: Character | null, resultsState: SkillResultsState, statContainer: ResultContainerStat): boolean {
+export function getSkillStatContainerValid(character: Character | null, skillResult: SkillResult, statContainer: ResultContainerStat): boolean {
   if (statContainer.conditionValue) {
+    const resultsState = skillResult.root
     const vars = {
       $skill: {
         id: resultsState.skill.skillId,
+        branchId: skillResult.container.branchItem.id,
         range: resultsState.basicContainer ? getSkillRange(character, resultsState.basicContainer) : -1,
       },
     }
@@ -32,7 +34,7 @@ function getSkillRange(character: Character | null, basicContainer: DisplayDataC
       return 0
     }
     const main = character.equipmentField(EquipmentFieldTypes.MainWeapon)
-    const weaponRangeAdd = main.equipment?.stats.find(stat => stat.baseName === 'weapon_range')?.value ?? 0
+    const weaponRangeAdd = main.equipment?.stats.find(stat => stat.baseId === 'weapon_range')?.value ?? 0
     return getMainWeaponBaseRange(main.equipmentType) + weaponRangeAdd
   } else if (isNumberString(skillRange)) {
     return parseFloat(skillRange)
