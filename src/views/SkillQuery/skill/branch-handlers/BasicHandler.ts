@@ -1,7 +1,7 @@
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { cloneBranchProps, HandleBranchLangAttrsMap, handleDisplayData } from './utils'
+import { cloneBranchProps, HandleBranchLangPropsMap, handleDisplayData } from './utils'
 import MapContainer from './utils/MapContainer'
 import type { HandleDisplayDataOptionFilters } from './utils'
 import { createTagButtons } from '../../utils'
@@ -20,7 +20,7 @@ export default function BasicHandler<BranchItem extends SkillBranchItem>(branchI
   const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>({
     'casting_time': 's',
   })
-  const langAttrsMap = new MapContainer<HandleBranchLangAttrsMap>({
+  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>({
     'skill_type': { type: 'normal' },
     'in_combo': { type: 'normal' },
     'action_time': { type: 'normal' },

@@ -137,7 +137,7 @@ class StatRestriction extends Stat {
       other: rest.other ? rest.other : null,
     } : null
     return {
-      id: this.baseName,
+      id: this.baseId,
       value: this.value,
       type: this.type,
       restriction,

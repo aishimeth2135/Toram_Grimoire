@@ -1,6 +1,6 @@
 <template>
   <button
-    class="button--main-content inline-flex items-center py-1 px-3 m-1 rounded-2xl border-1 bg-white"
+    class="button--main-content inline-flex items-center py-1 px-3 m-1 rounded-2xl border-1 bg-white shadow-sm"
     :class="baseClassList"
     @click="click"
   >

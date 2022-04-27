@@ -4,9 +4,10 @@ import Grimoire from '@/shared/Grimoire'
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { computeBranchValue, computedBranchHelper, HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { cloneBranchProps, handleDisplayData, numberStringToPercentage } from './utils'
+import { cloneBranchProps, handleDisplayData } from './utils'
 import MapContainer from './utils/MapContainer'
-import type { HandleDisplayDataOptionFilters, HandleBranchLangAttrsMap } from './utils'
+import type { HandleDisplayDataOptionFilters, HandleBranchLangPropsMap } from './utils'
+import { numberStringToPercentage } from './utils/utils'
 
 export default function HealHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
   const { t } = Grimoire.i18n
@@ -25,7 +26,7 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(branchIt
   const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>(['duration', 'cycle', 'constant'])
   valuePropsMap.set('frequency', t('global.times'))
 
-  const langAttrsMap = new MapContainer<HandleBranchLangAttrsMap>(['type'])
+  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>(['type'])
 
   const extraValueList: { text: string; value: string }[] = []
   if (props['extra_value'] && props['extra_text']) {

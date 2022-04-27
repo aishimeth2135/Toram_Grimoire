@@ -3,7 +3,7 @@ import { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/c
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 
-import { cloneBranchProps, HandleBranchLangAttrsMap, handleDisplayData } from './utils'
+import { cloneBranchProps, HandleBranchLangPropsMap, handleDisplayData } from './utils'
 import type { HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
@@ -16,11 +16,11 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(branchIt
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     'move_distance': value => !!value,
     'angle': value => !!value,
-    start_position_offsets: {
+    'start_position_offsets': {
       validation: value => value !== '0',
       calc: true,
     },
-    end_position_offsets: {
+    'end_position_offsets': {
       validation: value => value !== '0',
       calc: true,
     },
@@ -34,10 +34,10 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(branchIt
   })
 
   if (props['effective_area'] !== 'sector') {
-    valuePropsMap.append('radius', 'm')
+    valuePropsMap.set('radius', 'm')
   }
 
-  const langAttrsMap = new MapContainer<HandleBranchLangAttrsMap>(['effective_area'])
+  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>(['effective_area'])
 
   const pureValues = []
   if (props['@range'] && props['@range'] !== 'no_limit' && props['@range'] !== 'main') {

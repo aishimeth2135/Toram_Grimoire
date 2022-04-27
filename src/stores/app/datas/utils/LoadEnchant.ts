@@ -80,7 +80,7 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
     } else {
       currentItem = currentCategory
         .appendItem({
-          baseName: row[STAT_ID],
+          baseId: row[STAT_ID],
           limit: [
             handleLimit(row[LIMIT_CONSTANT]),
             handleLimit(row[LIMIT_MULTIPLIER]),

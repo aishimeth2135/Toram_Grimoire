@@ -190,7 +190,7 @@ const currentStatOptions = computed(() => {
   }
   const stats = equipment.value.stats
   return statOptions.filter(option => stats
-    .some(stat => stat.baseName === option.origin.baseName && stat.type === option.type))
+    .some(stat => stat.baseId === option.origin.baseId && stat.type === option.type))
 })
 
 const appendedStatOptions: Ref<StatOption[]> = ref([])
@@ -239,13 +239,13 @@ const submit = () => {
   if (!equipment.value) {
     return
   }
-  if (realCurrentStatOptions.value.filter(_option => isElementStat(_option.origin.baseName)).length > 1) {
+  if (realCurrentStatOptions.value.filter(_option => isElementStat(_option.origin.baseId)).length > 1) {
     notify(t('character-simulator.equipment-basic-editor.only-one-element-stat-tips'))
     return
   }
   const stats = equipment.value.stats
   removedStatOptions.value.forEach(option => {
-    const stat = equipment.value!.findStat(option.origin.baseName, option.type)!
+    const stat = equipment.value!.findStat(option.origin.baseId, option.type)!
     const idx = stats.indexOf(stat)
     stats.splice(idx, 1)
   })

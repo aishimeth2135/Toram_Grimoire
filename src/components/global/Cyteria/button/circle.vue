@@ -2,7 +2,7 @@
   <button
     class="button--main-content inline-flex items-center justify-center border-1 bg-white rounded-full"
     :style="widthStyle"
-    :class="baseClassList"
+    :class="[baseClassList, { 'shadow': shadow }]"
     @click="click"
   >
     <cy-icon :icon="icon" :src="iconSrc" />
@@ -19,6 +19,10 @@ export default defineComponent({
   emits: ['click'],
   props: {
     small: {
+      type: Boolean,
+      default: false,
+    },
+    shadow: {
       type: Boolean,
       default: false,
     },

@@ -11,7 +11,7 @@ import STATE from './state'
 import { EnchantItemConditions, EnchantEquipmentTypes } from './enums'
 
 interface EnchantItemParams {
-  baseName: string;
+  baseId: string;
   potential: [number, number];
   limit: [EnchantItemOptionCommonValue, EnchantItemOptionCommonValue];
   unitValue: [[number, number], [number, number]];
@@ -71,13 +71,13 @@ class EnchantItem {
   potentialConvertThreshold: EnchantItemPropertyValue<number | null>
 
   constructor(category: EnchantCategory, {
-    baseName, potential,
+    baseId, potential,
     limit, unitValue,
     materialPointType, materialPointValue,
     potentialConvertThreshold,
   }: EnchantItemParams) {
     this._category = category
-    this.statBase = Grimoire.Character.findStatBase(baseName) as StatBase
+    this.statBase = Grimoire.Character.findStatBase(baseId) as StatBase
     this.conditionalProps = []
     this.potential = {
       [StatTypes.Constant]: potential[0],

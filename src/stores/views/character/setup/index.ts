@@ -29,9 +29,13 @@ import { getSkillStatContainerValid, mergeStats } from './utils'
 
 type DisplayDataContainerAlly = DisplayDataContainer<SkillBranchItem<SkillEffectItem>>
 type DisplayDataContainerSuffixAlly = DisplayDataContainer<SkillBranchItemSuffix<SkillEffectItem>>
-export interface SkillResult {
+
+interface SkillResultBase {
   container: DisplayDataContainerAlly;
   suffixContainers: DisplayDataContainerSuffixAlly[];
+}
+export interface SkillResult extends SkillResultBase {
+  root: SkillResultsState;
 }
 
 export interface SkillResultsState {
@@ -251,9 +255,9 @@ export function setupCharacterSkills(
   } = (() => {
     const allSkills: Skill[] = []
     Grimoire.Skill.skillRoot.skillTreeCategorys.forEach(stc => stc.skillTrees.forEach(st => allSkills.push(...st.skills)))
-    const computingResultsActive: Map<Skill, ComputedRef<SkillResult[]>> = new Map()
-    const computingResultsPassive: Map<Skill, ComputedRef<SkillResult[]>> = new Map()
-    const computingResultsDamage: Map<Skill, ComputedRef<SkillResult[]>> = new Map()
+    const computingResultsActive: Map<Skill, ComputedRef<SkillResultBase[]>> = new Map()
+    const computingResultsPassive: Map<Skill, ComputedRef<SkillResultBase[]>> = new Map()
+    const computingResultsDamage: Map<Skill, ComputedRef<SkillResultBase[]>> = new Map()
     const stackContainers: Map<Skill, ComputedRef<DisplayDataContainerAlly[]>> = new Map()
     const basicContainers: Map<Skill, ComputedRef<DisplayDataContainerAlly | null>> = new Map()
 
@@ -278,7 +282,7 @@ export function setupCharacterSkills(
           return {
             container,
             suffixContainers,
-          } as SkillResult
+          } as SkillResultBase
         })
       })
     }
@@ -380,18 +384,24 @@ export function setupCharacterSkills(
     return (skillStackContainers.get(skill)?.value ?? []).filter(container => stackIdList.includes(container.branchItem.stackId!))
   }
 
-  const getSkillResultStatesComputed = (target: Map<Skill, ComputedRef<SkillResult[]>>) => {
+  const getSkillResultStatesComputed = (target: Map<Skill, ComputedRef<SkillResultBase[]>>) => {
     return computed(() => {
       return allSkills.value.filter(skill => target.has(skill)).map(skill => {
-        const results = target.get(skill)!
-        const stackContainers = getUsedStackContainers(results.value.map(result => result.container.branchItem), skill)
-        const basicContainer = skillBasicContainers.get(skill)!
-        return reactive({
+        const resultBases = target.get(skill)!
+        const stackContainers = getUsedStackContainers(resultBases.value.map(result => result.container.branchItem), skill)
+        const basicContainer = skillBasicContainers.get(skill)!.value
+        const resultStates = {
           skill,
-          results,
+          results: [] as SkillResult[],
           stackContainers,
           basicContainer,
-        }) as SkillResultsState
+        } as SkillResultsState
+        const results = resultBases.value.map(item => ({
+          ...item,
+          root: resultStates,
+        } as SkillResult))
+        resultStates.results = results
+        return resultStates
       })
     })
   }
@@ -731,7 +741,7 @@ export function setupCharacterStats(
           type = StatTypes.Total
           id = id.slice(0, id.length - 1)
         }
-        return _characterPureStats.value.find(stat => stat.baseName === id && stat.type === type)?.value ?? 0
+        return _characterPureStats.value.find(stat => stat.baseId === id && stat.type === type)?.value ?? 0
       },
       getSkillBranchItemState: skillSetupDatas.getSkillBranchItemState,
     },
@@ -739,14 +749,14 @@ export function setupCharacterStats(
   const finalResults = setupResults(postponedSkillPureStats, baseResults)
   const { categoryResults: characterStatCategoryResults, characterPureStats } = finalResults
 
-  const setupCharacterStatCategoryResultsExtended = (otherStats: Ref<Stat[]>, resultsState: Ref<SkillResultsState>) => {
+  const setupCharacterStatCategoryResultsExtended = (otherStats: Ref<Stat[]>, skillResult: Ref<SkillResult>) => {
     const conditionalStats = computed(() => {
-      if (!resultsState.value.basicContainer) {
+      if (!skillResult.value.root.basicContainer) {
         return []
       }
       const stats: Stat[] = []
       skillConditionalStatContainers.value.forEach(statContainer => {
-        if (getSkillStatContainerValid(character.value, resultsState.value, statContainer)) {
+        if (getSkillStatContainerValid(character.value, skillResult.value, statContainer)) {
           const stat = statContainer.stat.toStat(parseFloat(statContainer.value))
           stats.push(stat)
         }

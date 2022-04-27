@@ -105,7 +105,7 @@ abstract class CharacterEquipment {
     return this._isCustom
   }
   get elementStat() {
-    return this.stats.find(stat => CharacterEquipment.elementStatIds.includes(stat.baseName))
+    return this.stats.find(stat => CharacterEquipment.elementStatIds.includes(stat.baseId))
   }
 
   get categoryText() {
@@ -148,7 +148,7 @@ abstract class CharacterEquipment {
         if (!checkRestriction(newStat)) {
           newStat.value = 0
         }
-        return stat
+        return newStat
       })
     if (this.hasCrystal) {
       (this.crystals as EquipmentCrystal[]).forEach(crystal => {
@@ -157,11 +157,11 @@ abstract class CharacterEquipment {
           if (find) {
             find.add(checkRestriction(crystalStat) ? crystalStat.value : 0)
           } else {
-            const stat = crystalStat.clone()
-            if (!checkRestriction(stat)) {
-              stat.value = 0
+            const newStat = crystalStat.clone()
+            if (!checkRestriction(newStat)) {
+              newStat.value = 0
             }
-            allStats.push(stat)
+            allStats.push(newStat)
           }
         })
       })
@@ -175,8 +175,8 @@ abstract class CharacterEquipment {
   setCustomType(type: EquipmentTypes) {
     this.type = type
   }
-  findStat(baseName: string, type: string) {
-    return this.stats.find(stat => stat.baseName == baseName && stat.type === type)
+  findStat(baseId: string, type: string) {
+    return this.stats.find(stat => stat.baseId === baseId && stat.type === type)
   }
   appendCrystal(origin: Crystal) {
     if (this.hasCrystal) {

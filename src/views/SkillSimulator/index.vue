@@ -15,14 +15,12 @@
         </cy-button-border>
       </div>
     </div>
-    <div class="sticky bottom-2 z-10 pointer-events-none">
-      <SkillSimulatorMenuSub
-        @go-skill-tree="goSkillTree"
-        @export-image="toggle('modals/exportImage')"
-        @export-text="toggle('modals/exportText')"
-      />
-      <SkillSimulatorMenu @update-menu-data="updateMenuData" />
-    </div>
+    <SkillSimulatorMenu
+      @update-menu-data="updateMenuData"
+      @go-skill-tree="goSkillTree"
+      @export-image="toggle('modals/exportImage')"
+      @export-text="toggle('modals/exportText')"
+    />
     <SkillSimulatorExportImage
       :visible="modals.exportImage"
       :skill-build="currentSkillBuild"
@@ -52,7 +50,6 @@ import ToggleService from '@/setup/ToggleService'
 
 import SkillSimulatorBuild from './skill-simulator-build.vue'
 import SkillSimulatorMenu from './skill-simulator-menu.vue'
-import SkillSimulatorMenuSub from './skill-simulator-menu-sub.vue'
 import SkillSimulatorExportImage from './skill-simulator-export/skill-simulator-export-image.vue'
 import SkillSimulatorExportText from './skill-simulator-export/skill-simulator-export-text.vue'
 

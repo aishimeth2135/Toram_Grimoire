@@ -547,14 +547,12 @@ class EnchantStat {
     return this.stat.value as number
   }
 
-  /** @param {number} value */
   set value(value: number) {
     this.stat.value = value
   }
 
-  /** @return {string} */
-  get baseName(): string {
-    return this.stat.baseName
+  get baseId(): string {
+    return this.stat.baseId
   }
 
   get type(): StatNormalTypes {
@@ -667,14 +665,14 @@ class EnchantStepStat extends EnchantStat {
     return {
       type: EnchantStepStatTypesList.indexOf(this.type),
       value: this.value,
-      base: this.itemBase.statBase.baseName,
+      base: this.itemBase.statBase.baseId,
     }
   }
 
   static load(categorys: EnchantCategory[], step: EnchantStep, data: EnchantStepStatSaveData) {
     let itemBase
     categorys.find(category => {
-      itemBase = category.items.find(item => item.statBase.baseName === data.base)
+      itemBase = category.items.find(item => item.statBase.baseId === data.base)
       return itemBase
     })
     if (!itemBase) {

@@ -33,10 +33,7 @@
           :selected="getSuffixBranchState(extraContainer.branchItem).enabled"
           @click="toggleSuffixBranchEnabled(extraContainer.branchItem)"
         />
-        <CharacterSkillItemStats
-          :skill-results-state="skillResultsState"
-          :stat-containers="extraContainer.statContainers"
-        />
+        <CharacterSkillItemStats :stat-containers="extraContainer.statContainers" />
       </div>
     </div>
     <div v-if="contents.detail" class="text-sm px-4 py-2 border-1 border-light mt-2">
@@ -65,7 +62,7 @@
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { SkillResult, SkillResultsState } from '@/stores/views/character/setup'
+import { SkillResult } from '@/stores/views/character/setup'
 
 import { markText } from '@/shared/utils/view'
 import { isNumberString } from '@/shared/utils/string'
@@ -85,7 +82,6 @@ import { setupCharacterStore } from '../setup'
 
 
 interface Props {
-  skillResultsState: SkillResultsState;
   result: SkillResult;
 }
 
@@ -137,7 +133,6 @@ const extraStats = computed(() => {
 
 const { valid, calculation, expectedResult } = store.setupDamageCalculationExpectedResult(
   computed(() => props.result),
-  computed(() => props.skillResultsState),
   extraStats,
   computed(() => store.targetProperties),
   computed(() => store.calculationOptions),

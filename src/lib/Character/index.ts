@@ -21,8 +21,8 @@ export default class CharacterSystem {
     this.characterStatCategoryList.push(category)
     return category
   }
-  findStatBase(baseName: string): StatBase | null {
-    return this.statList.find(stat => stat.baseName === baseName) || null
+  findStatBase(baseId: string): StatBase | null {
+    return this.statList.find(stat => stat.baseId === baseId) || null
   }
   findStatBaseFromText(text: string): StatBase | undefined {
     return this.statList.find(stat => stat.text === text)

@@ -21,7 +21,7 @@ export interface CommonOption {
 }
 
 export function findStat(target: StatOption, stats: StatRestriction[]) {
-  return stats.find(stat => stat.baseName === target.origin.baseName && stat.type === target.type)
+  return stats.find(stat => stat.baseId === target.origin.baseId && stat.type === target.type)
 }
 
 function dyeConvert(value: string): (number | null)[] {

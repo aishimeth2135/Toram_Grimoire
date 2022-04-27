@@ -787,10 +787,10 @@ const nextStep = async () => {
     const physicals = ['atk', 'physical_pierce']
     const magic = ['matk', 'magic_pierce']
     let current = EnchantDollBaseTypes.None
-    if (doll.value.positiveStats.find(stat => physicals.includes(stat.baseName))) {
+    if (doll.value.positiveStats.find(stat => physicals.includes(stat.baseId))) {
       current = EnchantDollBaseTypes.Physical
     }
-    if (doll.value.positiveStats.find(stat => magic.includes(stat.baseName))) {
+    if (doll.value.positiveStats.find(stat => magic.includes(stat.baseId))) {
       current = current === EnchantDollBaseTypes.Physical ? EnchantDollBaseTypes.None : EnchantDollBaseTypes.Magic
     }
     doll.value.config.baseType = current

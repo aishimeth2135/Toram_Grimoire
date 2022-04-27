@@ -12,7 +12,7 @@ class StatBase {
     return stats
   }
 
-  baseName: string
+  baseId: string
   text: string
   hasMultiplier: boolean
   order: number
@@ -20,8 +20,8 @@ class StatBase {
   multiplierDisplayFormat: string
   hidden: boolean
 
-  constructor(baseName: string, text: string, hasMultiplier: boolean, order: number) {
-    this.baseName = baseName
+  constructor(baseId: string, text: string, hasMultiplier: boolean, order: number) {
+    this.baseId = baseId
     this.text = text
     this.hasMultiplier = hasMultiplier
     this.order = order
@@ -122,7 +122,7 @@ class StatBase {
       [StatTypes.Multiplier]: '%',
       [StatTypes.Total]: '~',
     }[type]
-    return `${this.baseName}${typeShorthand}`
+    return `${this.baseId}${typeShorthand}`
   }
 }
 
@@ -154,8 +154,8 @@ abstract class StatElementBase {
   get title() {
     return this.base.title(this.type)
   }
-  get baseName() {
-    return this.base.baseName
+  get baseId() {
+    return this.base.baseId
   }
 
   show(value?: StatValue) {
@@ -167,7 +167,7 @@ abstract class StatElementBase {
   }
 
   /**
-   * if input_stat.baseName == this.baseName and input_stat.type == this.type, return true.
+   * If baseId and type are equal, return true.
    * (value do not have to be equal)
    */
   equals(stat: StatElementBase): boolean {

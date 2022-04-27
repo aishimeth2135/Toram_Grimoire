@@ -5,7 +5,7 @@ import type { HandleBranchTextPropsMap, HandleBranchValuePropsMap } from '@/lib/
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import { cloneBranchProps, handleDisplayData } from './utils'
-import type { HandleBranchLangAttrsMap, HandleDisplayDataOptionFilters } from './utils'
+import type { HandleBranchLangPropsMap, HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
 export default function EffectHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
@@ -32,7 +32,7 @@ export default function EffectHandler<BranchItem extends SkillBranchItem>(branch
     target: value => !!value,
   })
 
-  const langAttrsMap = new MapContainer<HandleBranchLangAttrsMap>(['is_place', 'type'])
+  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>(['is_place', 'type'])
   if (['auto', 'hit'].includes(props['condition'])) {
     if (props['condition'] === 'auto' && branchItem.realName === SkillBranchNames.Next) {
       props['condition'] = '@next'

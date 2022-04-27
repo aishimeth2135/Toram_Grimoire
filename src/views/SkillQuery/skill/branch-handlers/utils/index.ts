@@ -1,5 +1,4 @@
 import { isNumberString, trimFloatStringZero } from '@/shared/utils/string'
-import { numberToFixed } from '@/shared/utils/number'
 import Grimoire from '@/shared/Grimoire'
 
 import { SkillBranchItemSuffix, SkillEffectItemHistory } from '@/lib/Skill/SkillComputingContainer'
@@ -20,7 +19,7 @@ import { StatComputed } from '@/lib/Character/Stat'
 import { createTagButtons } from '@/views/SkillQuery/utils'
 
 import DisplayDataContainer from './DisplayDataContainer'
-import { handleFunctionHighlight } from './utils'
+import { handleFunctionHighlight, numberStringToPercentage } from './utils'
 
 function cloneBranchProps(
   branchItem: SkillBranchItemBaseChilds,
@@ -44,27 +43,27 @@ function cloneBranchProps(
 
 type SkillDisplayData = Record<string, string>
 
-interface HandleBranchLangAttrsOptions {
+interface HandleBranchLangPropsOptions {
   prefix?: string; // unused now
   type?: 'auto' | 'normal' | 'value' | 'boolean';
   afterHandle?: ((value: string) => string) | null;
 }
-interface HandleBranchLangAttrsMap {
-  [key: string]: HandleBranchLangAttrsOptions | null;
+interface HandleBranchLangPropsMap {
+  [key: string]: HandleBranchLangPropsOptions | null;
 }
-function handleBranchLangAttrs<AttrMap extends HandleBranchLangAttrsMap>(
+function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
   branchItem: SkillBranchItemBaseChilds,
   helper: ComputedBranchHelperResult,
-  attrs: Record<string, string>,
-  attrMap: AttrMap,
-): Record<keyof AttrMap, ResultContainer> {
+  props: Record<string, string>,
+  propMap: PropMap,
+): Record<keyof PropMap, ResultContainer> {
   const { t } = Grimoire.i18n
 
-  const attrValues = {} as Record<keyof AttrMap, ResultContainer>
-  const attrKeys = Object.keys(attrMap) as (keyof AttrMap)[]
+  const attrValues = {} as Record<keyof PropMap, ResultContainer>
+  const attrKeys = Object.keys(propMap) as (keyof PropMap)[]
   attrKeys.forEach((attrKey) => {
-    const { type = 'auto', prefix = '', afterHandle = null } = (attrMap[attrKey] || {}) as HandleBranchLangAttrsOptions
-    const value = attrs[attrKey as string]
+    const { type = 'auto', prefix = '', afterHandle = null } = (propMap[attrKey] || {}) as HandleBranchLangPropsOptions
+    const value = props[attrKey as string]
     if (!value) {
       return
     }
@@ -100,7 +99,7 @@ interface HandleDisplayDataOptionFilters {
 interface HandleDisplayDataOptions {
   values?: HandleBranchValuePropsMap;
   texts?: HandleBranchTextPropsMap;
-  langs?: HandleBranchLangAttrsMap;
+  langs?: HandleBranchLangPropsMap;
   filters?: HandleDisplayDataOptionFilters;
   pureValues?: string[];
   pureDatas?: string[];
@@ -157,7 +156,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 
   const valueDatas = handleBranchValueProps(helper, attrs, values)
   const textDatas = handleBranchTextProps(helper, attrs, texts)
-  const langDatas = handleBranchLangAttrs(branchItem, helper, attrs, langs)
+  const langDatas = handleBranchLangProps(branchItem, helper, attrs, langs)
   const statDatas = handleBranchStats(helper, branchItem.stats)
 
   const result = {} as SkillDisplayData
@@ -172,7 +171,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     container.handle(trimFloatStringZero)
   }
 
-  const handleAttrHistoryHighlight = branchItem.parent instanceof SkillEffectItemHistory ?
+  const handlePropHistoryHighlight = branchItem.parent instanceof SkillEffectItemHistory ?
     (key: string, value: string) => {
       const searchKeys = ['overwrite', 'append', 'remove'] as const
       if (searchKeys.some(searchKey => branchItem.record.props[searchKey].includes(key) || branchItem.historyRecord?.props[searchKey].includes(key))) {
@@ -186,7 +185,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     (stat: StatComputed, value: string) => {
       const searchKeys = ['overwrite', 'append', 'remove'] as const
       const _find = (target: SkillBranchItemOverwriteRecords | null) => searchKeys
-        .some(searchKey => target?.stats[searchKey].some(([baseName, type]) => stat.baseName === baseName && stat.type === type))
+        .some(searchKey => target?.stats[searchKey].some(([baseId, type]) => stat.baseId === baseId && stat.type === type))
       if (_find(branchItem.record) || _find(branchItem.historyRecord)) {
         return `<span class="history-compare--mark">${value}</span>`
       }
@@ -199,7 +198,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 
     let str = container.result
     str = handleFunctionHighlight(str)
-    str = handleAttrHistoryHighlight(key, str)
+    str = handlePropHistoryHighlight(key, str)
 
     result[key] = str
   })
@@ -235,14 +234,14 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 
     str = handleFunctionHighlight(str)
 
-    str = handleAttrHistoryHighlight(key, str)
+    str = handlePropHistoryHighlight(key, str)
 
     result[key] = str
   })
 
   Object.entries(langDatas).forEach(([key, container]) => {
     let str = container.result
-    str = handleAttrHistoryHighlight(key, str)
+    str = handlePropHistoryHighlight(key, str)
     result[key] = str
   })
 
@@ -299,18 +298,13 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   })
 }
 
-function numberStringToPercentage(str: string) {
-  return numberToFixed(100 * parseFloat(str), 1).toString() + '%'
-}
-
 export {
   cloneBranchProps,
   handleDisplayData,
-  numberStringToPercentage,
 }
 export type {
   HandleDisplayDataOptionFilters,
-  HandleBranchLangAttrsMap,
+  HandleBranchLangPropsMap,
   SkillDisplayData,
 }
 
