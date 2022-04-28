@@ -52,12 +52,12 @@ interface HandleBranchLangPropsMap {
   [key: string]: HandleBranchLangPropsOptions | null;
 }
 function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
-  branchItem: SkillBranchItemBaseChilds,
   helper: ComputedBranchHelperResult,
   props: Record<string, string>,
   propMap: PropMap,
 ): Record<keyof PropMap, ResultContainer> {
   const { t } = Grimoire.i18n
+  const { branchItem } = helper
 
   const attrValues = {} as Record<keyof PropMap, ResultContainer>
   const attrKeys = Object.keys(propMap) as (keyof PropMap)[]
@@ -83,7 +83,7 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
       const result = t(`skill-query.branch.${preName}.${attrKey}.${displayValue}`)
       resultStr = afterHandle ? afterHandle(result) : result
     }
-    attrValues[attrKey] = new ResultContainer(attrKey as string, value, resultStr)
+    attrValues[attrKey] = new ResultContainer(branchItem, attrKey as string, value, resultStr)
   })
   return attrValues
 }
@@ -113,7 +113,7 @@ const FORMULA_FLOAT_TO_FIXED = /(\d+\.)(\d{4,})/g
 
 function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   branchItem: Branch,
-  attrs: Record<string, string>, {
+  props: Record<string, string>, {
     values = {},
     texts = {},
     langs = {},
@@ -136,14 +136,14 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   formulaDisplayMode = helper.formulaDisplayMode
 
   Object.entries(filters).forEach(([key, value]) => {
-    const attrValue = attrs[key]
+    const propValue = props[key]
     if (typeof value === 'function') {
       value = { validation: value }
     }
     const { validation, calc = false } = value
-    const validatedValue = calc ? computeBranchValue(attrValue, helper) : attrValue
+    const validatedValue = calc ? computeBranchValue(propValue, helper) : propValue
     if (!validation(validatedValue)) {
-      delete attrs[key]
+      delete props[key]
       delete values[key]
       delete langs[key]
       delete texts[key]
@@ -154,9 +154,9 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     }
   })
 
-  const valueDatas = handleBranchValueProps(helper, attrs, values)
-  const textDatas = handleBranchTextProps(helper, attrs, texts)
-  const langDatas = handleBranchLangProps(branchItem, helper, attrs, langs)
+  const valueDatas = handleBranchValueProps(helper, props, values)
+  const textDatas = handleBranchTextProps(helper, props, texts)
+  const langDatas = handleBranchLangProps(helper, props, langs)
   const statDatas = handleBranchStats(helper, branchItem.stats)
 
   const result = {} as SkillDisplayData
@@ -267,8 +267,8 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   }
 
   pureValues.forEach(key => {
-    const value = computeBranchValue(attrs[key], helper)
-    const container = new ResultContainer(key, attrs[key], value)
+    const value = computeBranchValue(props[key], helper)
+    const container = new ResultContainer(branchItem, key, props[key], value)
 
     if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
       handleContainerFormulaValue(container)
@@ -282,12 +282,12 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   })
 
   pureDatas.forEach(key => {
-    const value = attrs[key]
+    const value = props[key]
     if (value === undefined) {
       return
     }
     result[key] = value
-    containers[key] = new ResultContainer(key, value, value)
+    containers[key] = new ResultContainer(branchItem, key, value, value)
   })
 
   return new DisplayDataContainer({

@@ -20,6 +20,9 @@ export function getSkillStatContainerValid(character: Character | null, skillRes
         id: resultsState.skill.skillId,
         range: resultsState.basicContainer ? getSkillRange(character, resultsState.basicContainer) : -1,
       },
+      $self: {
+        id: statContainer.branch.parent.parent.skill.skillId,
+      },
       $branch: {
         id: skillResult.container.branchItem.id,
       },
@@ -30,21 +33,37 @@ export function getSkillStatContainerValid(character: Character | null, skillRes
 }
 
 function getSkillRange(character: Character | null, basicContainer: DisplayDataContainer<SkillBranchItem>): number {
+  if (!character) {
+    return 0
+  }
   const skillRange = basicContainer.getValue('range')
-  if (basicContainer.getOrigin('range') === 'main') {
-    if (!character) {
-      return 0
+
+  let rangeValue = basicContainer.getOrigin('range')
+  const rangeValueWeaponMap = new Map([
+    ['magic_device', EquipmentTypes.MagicDevice],
+    ['katana', EquipmentTypes.Katana],
+    ['knuckle', EquipmentTypes.Knuckle],
+  ])
+  if (rangeValueWeaponMap.has(rangeValue)) {
+    const eqType = rangeValueWeaponMap.get(rangeValue)!
+    if (character.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, eqType)) {
+      rangeValue = 'main'
+    } else if (character.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, eqType)) {
+      rangeValue = 'sub'
     }
-    const main = character.equipmentField(EquipmentFieldTypes.MainWeapon)
-    const weaponRangeAdd = main.equipment?.stats.find(stat => stat.baseId === 'weapon_range')?.value ?? 0
-    return getMainWeaponBaseRange(main.equipmentType) + weaponRangeAdd
+  }
+
+  if (rangeValue === 'main' || rangeValue === 'sub') {
+    const field = character.equipmentField(rangeValue === 'main' ? EquipmentFieldTypes.MainWeapon : EquipmentFieldTypes.SubWeapon)
+    const weaponRangeAdd = field.equipment?.stats.find(stat => stat.baseId === 'weapon_range')?.value ?? 0
+    return getWeaponBaseRange(field.equipmentType) + weaponRangeAdd
   } else if (isNumberString(skillRange)) {
     return parseFloat(skillRange)
   }
   return 0
 }
 
-function getMainWeaponBaseRange(main: EquipmentTypes): number {
+function getWeaponBaseRange(main: EquipmentTypes): number {
   const mapping: Partial<Record<EquipmentTypes, number>> = {
     [EquipmentTypes.Empty]: 1,
     [EquipmentTypes.OneHandSword]: 2,

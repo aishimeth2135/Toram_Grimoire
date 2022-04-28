@@ -238,7 +238,7 @@ abstract class CharacterEquipment {
       eq.stability = this.stability
     }
     if (this.hasCrystal) {
-      eq.crystals = (this.crystals as EquipmentCrystal[]).map(crystal => crystal.clone())
+      eq.crystals = this.crystals!.map(crystal => crystal.clone())
     }
     if (this.isCustom) {
       eq.setCustom(true)

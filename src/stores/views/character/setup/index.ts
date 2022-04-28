@@ -124,10 +124,6 @@ export function setupCharacterSkills(
           const skill = Grimoire.Skill.skillRoot.findSkillById(skillId)
           return skill ? getSkillLevel(skill) : 0
         },
-        $getSkillLevel: (skillId: string) => {
-          const skill = Grimoire.Skill.skillRoot.findSkillById(skillId)
-          return skill ? getSkillLevel(skill) : 0
-        },
       },
     }
   })

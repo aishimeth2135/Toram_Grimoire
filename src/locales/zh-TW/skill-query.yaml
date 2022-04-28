@@ -82,7 +82,10 @@ branch:
       very_fast: 極快
     range:
       no_limit: 無限制
-      main: "同#施放武器 "
+      main: "同#[施放武器]"
+      magic_device: "同魔導具#[施放武器]"
+      katana: "同拔刀劍#[施放武器]"
+      knuckle: "同拳套#[施放武器]"
   damage:
     base-name: 傷害
     base:
