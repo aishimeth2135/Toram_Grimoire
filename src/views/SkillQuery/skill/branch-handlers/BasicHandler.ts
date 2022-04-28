@@ -31,7 +31,7 @@ export default function BasicHandler<BranchItem extends SkillBranchItem>(branchI
   } else {
     langAttrsMap.set('mp_cost', { type: 'normal' })
   }
-  if (props['range'] === 'main') {
+  if (['main', 'magic_device', 'katana'].includes(props['range'])) {
     langAttrsMap.set('range', { afterHandle: value => createTagButtons(value) })
   } else if (props['range'] === 'no_limit') {
     langAttrsMap.append('range')

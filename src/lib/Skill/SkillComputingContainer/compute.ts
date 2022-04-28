@@ -96,7 +96,6 @@ function computedBranchHelper(branchItem: SkillBranchItemBaseChilds, values: str
     texts: { ...handleFormulaExtends.texts },
     methods: {
       getSkillLevel: () => 0,
-      $getSkillLevel: () => 0,
     },
   }
   branchItem.belongContainer.handleFormulaDynamicExtends.forEach(getter => {
@@ -108,7 +107,7 @@ function computedBranchHelper(branchItem: SkillBranchItemBaseChilds, values: str
     }
   })
 
-  if (formulaDisplayMode === 'original-formula') {
+  if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
     const stack: string[] = []
     const { t } = Grimoire.i18n
 
@@ -256,7 +255,6 @@ function computeBranchValueProps<Key extends string>(
   return propValues
 }
 
-// type HandleBranchAttrValuesResultValueType<Value> = Value extends { pure: true } ? number : string;
 type HandleBranchValueAttrOptions = HighlightTextOptions
 interface HandleBranchValuePropsMap {
   [key: string]: HighlightTextOptions | null;
@@ -275,11 +273,11 @@ function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
   propKeys.forEach(propKey => {
     const originalFormula = props[propKey as string]
     if (originalFormula === undefined) {
-      propResult[propKey] = new ResultContainer(propKey as string, '0', '0')
+      propResult[propKey] = new ResultContainer(helper.branchItem, propKey as string, '0', '0')
       return
     }
     const options = (PropMap[propKey] || {}) as HandleBranchValueAttrOptions
-    const container = new ResultContainer(propKey as string, originalFormula, propValues[propKey])
+    const container = new ResultContainer(helper.branchItem, propKey as string, originalFormula, propValues[propKey])
     handleDisplayValue(container, helper)
     handleHighlight(container, options)
 
@@ -306,10 +304,10 @@ function computedBranchText(
       containers: [],
       parts: ['0'],
     } as TextResultContainerParseResult
-    return new TextResultContainer(propKey as string, '0', '0', _parseResult)
+    return new TextResultContainer(helper.branchItem, propKey as string, '0', '0', _parseResult)
   }
-  const parseResult = TextResultContainer.parse(propKey, textStr, value => computeBranchValue(value, helper))
-  return new TextResultContainer(propKey as string, textStr, textStr, parseResult)
+  const parseResult = TextResultContainer.parse(helper.branchItem, propKey, textStr, value => computeBranchValue(value, helper))
+  return new TextResultContainer(helper.branchItem, propKey as string, textStr, textStr, parseResult)
 }
 function handleBranchTextProps<PropMap extends HandleBranchTextPropsMap>(
   helper: ComputedBranchHelperResult,
@@ -341,7 +339,7 @@ function handleBranchStats(helper: ComputedBranchHelperResult, stats: StatComput
   const newStats = computedBranchStats(helper, stats)
   return newStats.map(stat => {
     const originalStat = stats.find(_stat => _stat.equals(stat)) as StatComputed
-    const container = new ResultContainerStat(originalStat, stat)
+    const container = new ResultContainerStat(helper.branchItem, originalStat, stat)
     handleDisplayValue(container, helper)
 
     const displayTitleKey = helper.branchItem.propKey(container.key, 'displayTitle')

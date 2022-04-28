@@ -1,15 +1,19 @@
 import { StatComputed } from '@/lib/Character/Stat'
 
+import { SkillBranchItemBaseChilds } from '.'
+
 type ResultHandler = (currentResult: string, suffix: string) => string
 
 abstract class ResultContainerBase {
-  /** The key of attr */
+  abstract readonly branch: SkillBranchItemBaseChilds
+
+  /** The key of prop */
   abstract readonly key: string
 
-  /** The original data of attr */
+  /** The original data of prop */
   abstract readonly origin: string
 
-  /** The calculated value of attr */
+  /** The calculated value of prop */
   abstract readonly value: string
 
   /** result to display */
@@ -20,6 +24,7 @@ abstract class ResultContainerBase {
 }
 
 class ResultContainer extends ResultContainerBase {
+  override branch: SkillBranchItemBaseChilds
   override key: string
   override origin: string
   override value: string
@@ -29,8 +34,9 @@ class ResultContainer extends ResultContainerBase {
 
   private _result: string
 
-  constructor(key: string, origin: string, value: string, suffix: string = '') {
+  constructor(branch: SkillBranchItemBaseChilds, key: string, origin: string, value: string, suffix: string = '') {
     super()
+    this.branch = branch
     this.key = key
     this.origin = origin
     this.value = value
@@ -60,8 +66,8 @@ class ResultContainerStat extends ResultContainer {
   displayTitle: string | null
   conditionValue: string | null
 
-  constructor(origin: StatComputed, stat: StatComputed) {
-    super(stat.statId, origin.value, stat.value)
+  constructor(branch: SkillBranchItemBaseChilds, origin: StatComputed, stat: StatComputed) {
+    super(branch, stat.statId, origin.value, stat.value)
     this.stat = stat
     this.displayTitle = null
     this.conditionValue = null
@@ -81,6 +87,7 @@ interface TextResultContainerParseResult {
   parts: (string | ResultContainer)[];
 }
 class TextResultContainer extends ResultContainerBase {
+  override branch: SkillBranchItemBaseChilds
   override key: string
   override origin: string
   override value: string
@@ -94,7 +101,7 @@ class TextResultContainer extends ResultContainerBase {
    * @param calcValueHanlder - handler to calculate value
    * @returns the new TextResultContainer instance
    */
-  static parse(key: string, value: string, calcValueHanlder: (value: string) => string): TextResultContainerParseResult {
+  static parse(branch: SkillBranchItemBaseChilds, key: string, value: string, calcValueHanlder: (value: string) => string): TextResultContainerParseResult {
     const textParts = value.split(/\$\{([^}]+)\}/g)
     const
       parts: (string | ResultContainer)[] = [],
@@ -110,7 +117,7 @@ class TextResultContainer extends ResultContainerBase {
           suffix = '%'
         }
         const calculatedValue = calcValueHanlder(el)
-        const container = new ResultContainer(key, el, calculatedValue, suffix)
+        const container = new ResultContainer(branch, key, el, calculatedValue, suffix)
         containers.push(container)
         parts.push(container)
       }
@@ -122,11 +129,12 @@ class TextResultContainer extends ResultContainerBase {
     }
   }
 
-  constructor(key: string, origin: string, value: string, parseResult: TextResultContainerParseResult) {
+  constructor(branch: SkillBranchItemBaseChilds, key: string, origin: string, value: string, parseResult: TextResultContainerParseResult) {
     super()
 
     const { parts, containers } = parseResult
 
+    this.branch = branch
     this.key = key
     this.parts = parts
     this.containers = containers

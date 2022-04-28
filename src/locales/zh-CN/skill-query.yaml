@@ -82,7 +82,10 @@ branch:
       very_fast: 极快
     range:
       no_limit: 无限制
-      main: "同#施放武器 "
+      main: "同#[施放武器]"
+      magic_device: "同魔导具#[施放武器]"
+      katana: "同拔刀剑#[施放武器]"
+      knuckle: "同拳套#[施放武器]"
   damage:
     base-name: 伤害
     base:
@@ -122,6 +125,7 @@ branch:
       dark: 暗属性
       one_hand_sword: 单手剑属性
       arrow: 箭矢属性
+      against: 有利属性
     judgment:
       common: 每下伤害共用判定
       separate: 每下伤害分开判定
@@ -161,6 +165,8 @@ branch:
       magic: 魔法
       normal_attack: 一般攻击
       none: 不造成惯性
+  "damage: extra":
+    condition-default-value: 此伤害
   proration:
     "damage: title": 伤害惯性
     "proration: title": 造成惯性
