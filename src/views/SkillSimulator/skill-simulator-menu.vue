@@ -40,7 +40,7 @@
         @click="toggle('contents/selectSkillTree', null, false)"
       />
     </template>
-    <template #side-options>
+    <template #side-contents>
       <cy-transition v-if="currentSkillBuild" type="fade" mode="out-in">
         <div
           v-if="contents.mainMenu"

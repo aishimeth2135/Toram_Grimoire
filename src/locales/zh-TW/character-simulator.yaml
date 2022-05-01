@@ -1,10 +1,10 @@
-character-stats: 面板
+character-stats: 角色面板
 character: 角色
 custom-equipment:
   button-title: 自訂裝備
   default-name-pretext: 自訂
 character-basic:
-  title: 角色
+  title: 角色設定
   create-character: 新建角色
   character-level: 角色等級
   character-name: 角色名稱
@@ -25,6 +25,9 @@ browse-equipments:
   move-equipment-title: 移動中
   no-any-equipment-tips: 這裡目前空空的...請點選右上角的按扭來新增裝備0.0
   equipment-item-actions-tips: 請打開左下角的「顯示全部裝備」以使用整理相關的功能。
+  equipped: 裝備中
+  click-edit-tips: 點擊上方各區塊以編輯
+  auto-arrange-success-tips: 自動整理成功。
 append-equipments:
   title: 新增裝備
   search-equipment-placeholder: 搜尋裝備名稱...
@@ -37,7 +40,7 @@ create-custom-equipment:
   select-equipment-type: 選擇裝備類型
   equipment-default-name: 自訂{type}
 equipment-info:
-  equipment: 裝備
+  equipment: 裝備配置
   stability: 穩定度
   confirm-selection: 確定選取
   refining: 精鍊值
@@ -69,7 +72,7 @@ select-crystals:
     - 特殊裝備
     - 通用
 skill-build:
-  title: 技能
+  title: 技能配置
   passive-skills: 被動技能
   active-skills: 主動技能
   disable-skills: 停用{type}
@@ -84,7 +87,7 @@ skill-build:
     target_level: 目標等級
   no-any-build-tips: 還沒有建立任何配置喔～請先透過左上方的選單進入「技能模擬器」，建立新的技能配置。
 character-damage:
-  title: 傷害
+  title: 傷害計算
   target-options-title: 目標數值設定
   options-base-title: 基本設定
   element-none: 無設定
@@ -129,7 +132,7 @@ character-stat-detail:
       defense: 身體防具｜重量化
       none: 身體防具｜無裝備
 food-build:
-  title: 料理
+  title: 料理配置
   disable-foods: 停用料理
   food-build: 料理配置
   create-food-build: 新增料理配置
@@ -158,8 +161,7 @@ save-load-control:
   deleta-all-data-success-tips: 成功刪除角色模擬器所有資料，系統也已關閉自動存檔功能。請重新整理網頁。
   deleta-all-data-counter-title: 計數器
   deleta-all-data-caption:
-    - >-
-      在某些情況下，角色模擬器的檔案可能毀損，導致系統無法正常運行。使用下方的按鈕可以刪除角色模擬器所有資料。自動存檔功能也將暫時失效，意即當前的資料將不會自動儲存。
+    - 在某些情況下，角色模擬器的檔案可能毀損，導致系統無法正常運行。使用下方的按鈕可以刪除角色模擬器所有資料。自動存檔功能也將暫時失效，意即當前的資料將不會自動儲存。
     - 請將下方的計數器數值調整到10，刪除按鈕就會出現。
     - 將資料刪除成功後，請立即重新整理，來讓系統重新初始化。
   export-build: 匯出配置

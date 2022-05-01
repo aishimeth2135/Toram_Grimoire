@@ -32,7 +32,7 @@
   <script id="app--error--script">
     (function() {
       function showMessage(error, extraMessage) {
-        var message = error.message;
+        var message = error ? error.message : 'unknown error';
         var el = document.getElementById('app--error');
         console.log('Something wrong...')
         console.log(message);
@@ -87,6 +87,7 @@
   </noscript>
   <img src="<%- envBaseUrl %>imgs/og-image.png" style="display: none">
   <div id="app"></div>
+
   <div id="app-modals"></div>
   <div id="app-notify"></div>
   <div id="app-popovers"></div>

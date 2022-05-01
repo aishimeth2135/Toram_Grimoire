@@ -17,7 +17,7 @@
       <div v-if="equipment" class="mt-3">
         <CharacterEquipmentBasicEditor :equipment="equipment" />
       </div>
-      <cy-default-tips>
+      <cy-default-tips v-else>
         {{ t('character-simulator.equipment-basic-editor.no-equipment-type-selected-tips') }}
       </cy-default-tips>
       <cy-modal v-model:visible="modals.selectType" footer>

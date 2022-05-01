@@ -172,9 +172,23 @@ abstract class CharacterEquipment {
   setCustom(set: boolean) {
     this._isCustom = set
   }
-  setCustomType(type: EquipmentTypes) {
-    this.type = type
+
+  /**
+   * @param [type] - If not give, it will toggle type to next index
+   */
+  setCustomType(type?: EquipmentTypes) {
+    if (type) {
+      this.type = type
+    } else if (this.customTypeList) {
+      const len = this.customTypeList.length
+      let idx = this.customTypeList.indexOf(this.type) + 1
+      if (idx === len) {
+        idx = 0
+      }
+      this.type = this.customTypeList[idx]
+    }
   }
+
   findStat(baseId: string, type: string) {
     return this.stats.find(stat => stat.baseId === baseId && stat.type === type)
   }

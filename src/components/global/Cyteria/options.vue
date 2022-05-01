@@ -67,9 +67,10 @@ const toggleUnfold = () => {
 <style lang="postcss" scoped>
 .cy--options {
   position: relative;
-  margin: 0.3rem 0.4rem;
   max-width: 20rem;
   background-color: var(--white);
+
+  @apply my-1 mx-1.5;
 
   &.cy--options-inline {
     margin: 0;
@@ -84,7 +85,7 @@ const toggleUnfold = () => {
 
   & > .title-container {
     border: 1px solid var(--primary-light-2);
-    transition: 0.3s ease;
+    transition: 0.2s ease;
   }
 }
 

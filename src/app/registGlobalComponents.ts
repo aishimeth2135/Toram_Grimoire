@@ -18,6 +18,7 @@ import CyStickyHeader from '@/components/global/Cyteria/sticky-header.vue'
 import CyTitleInput from '@/components/global/Cyteria/title-input.vue'
 import CyTopHeaderMenu from '@/components/global/Cyteria/top-header-menu.vue'
 import CyTopHeader from '@/components/global/Cyteria/top-header.vue'
+import CyPopover from '@/components/global/Cyteria/popover.vue'
 import CyTransitionGroup from '@/components/global/Cyteria/transition-group.vue'
 import CyTransition from '@/components/global/Cyteria/transition.vue'
 import ImageIcon from '@/components/global/image-icon.vue'
@@ -59,6 +60,7 @@ export default function (app: App<Element>) {
   app.component('cy-title-input', CyTitleInput)
   app.component('cy-top-header-menu', CyTopHeaderMenu)
   app.component('cy-top-header', CyTopHeader)
+  app.component('cy-popover', CyPopover)
   app.component('cy-transition-group', CyTransitionGroup)
   app.component('cy-transition', CyTransition)
   app.component('image-icon', ImageIcon)

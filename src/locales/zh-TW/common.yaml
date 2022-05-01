@@ -25,6 +25,9 @@ Equipment:
     body-normal: 一般防具
     body-dodge: 輕化防具
     body-defense: 重化防具
+    additional: 追加裝備
+    special: 特殊裝備
+    avatar: 時裝
     empty: 空手
   stat-restriction:
     event: 活動

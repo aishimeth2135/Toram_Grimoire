@@ -305,14 +305,16 @@ class CharacterBaseStat<T> {
 
 class EquipmentField {
   private _parent: Character
-  type: EquipmentFieldTypes
-  index: number
+  readonly type: EquipmentFieldTypes
+  readonly index: number
+  readonly fieldId: string
   equipment: CharacterEquipment | null
 
   constructor(parent: Character, type: EquipmentFieldTypes, index: number = 0) {
     this._parent = parent
     this.type = type
     this.index = index
+    this.fieldId = type + (index === 0 ? '' : `-${index}`)
 
     this.equipment = null
   }
