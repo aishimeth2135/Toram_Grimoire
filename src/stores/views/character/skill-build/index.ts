@@ -12,7 +12,14 @@ export const useCharacterSkillBuildStore = defineStore('view-character-skill-bui
 
   const currentSkillBuild: ComputedRef<SkillBuild | null> = computed(() => skillBuilds.value[currentSkillBuildIndex.value] ?? null)
 
-  const setCurrentSkillBuild = (idx: number) => {
+  const setCurrentSkillBuild = (idx: number | SkillBuild | null) => {
+    if (idx === null) {
+      currentSkillBuildIndex.value = -1
+      return
+    }
+    if (typeof idx !== 'number') {
+      idx = skillBuilds.value.indexOf(idx)
+    }
     currentSkillBuildIndex.value = idx
   }
 

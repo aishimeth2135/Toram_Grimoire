@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-2">
+  <div class="space-y-2 cursor-auto">
     <div class="flex items-center space-x-3 py-0.5">
       <cy-popover class="edit-mask-content">
         <div class="flex">
@@ -9,12 +9,24 @@
           <cy-icon-text icon="ic:round-mode-edit" icon-width="1.5rem" />
         </div>
         <template #popover>
-          <div class="p-4 bg-white border border-light-2 shadow">
+          <div class="p-4 bg-white border border-light-2 space-y-3 shadow">
             <div>
               <cy-title-input
                 v-model:value="equipment.name/* eslint-disable-line vue/no-mutating-props */"
                 icon="mdi-clipboard-edit-outline"
               />
+            </div>
+            <div v-if="equipment.hasRefining">
+              <cy-input-counter
+                v-model:value="equipment.refining/* eslint-disable-line vue/no-mutating-props */"
+                :range="ranges.refining"
+              >
+                <template #title>
+                  <cy-icon-text icon="mdi-cube-send">
+                    {{ t('character-simulator.equipment-info.refining') }}
+                  </cy-icon-text>
+                </template>
+              </cy-input-counter>
             </div>
           </div>
         </template>
@@ -90,18 +102,6 @@
               </template>
             </cy-input-counter>
           </div>
-          <div v-if="equipment.hasRefining && equipment.refining">
-            <cy-input-counter
-              v-model:value="equipment.refining/* eslint-disable-line vue/no-mutating-props */"
-              :range="ranges.refining"
-            >
-              <template #title>
-                <cy-icon-text icon="mdi-cube-send">
-                  {{ t('character-simulator.equipment-info.refining') }}
-                </cy-icon-text>
-              </template>
-            </cy-input-counter>
-          </div>
           <div v-if="equipment.hasStability && equipment.stability">
             <cy-input-counter
               v-model:value="equipment.stability/* eslint-disable-line vue/no-mutating-props */"
@@ -118,7 +118,7 @@
       </template>
     </cy-popover>
     <div :class="{ 'opacity-50': statsDisabled }">
-      <div class="pl-1.5 pr-1">
+      <div v-if="equipment.stats.length > 0" class="pl-1.5 pr-1">
         <cy-popover
           v-for="stat in equipment.stats"
           :key="stat.statId"
@@ -154,9 +154,15 @@
           </template>
         </cy-popover>
       </div>
-      <div class="px-1.5">
+      <div v-else-if="innerItem" class="edit-mask-content text-light-2 text-sm px-1.5" @click="editStat(equipment)">
+        {{ t('character-simulator.equipment-info.stat-empty') }}
+        <div class="edit-mask">
+          <cy-icon-text icon="ic:round-mode-edit" icon-width="1.5rem" />
+        </div>
+      </div>
+      <div v-if="equipment.hasCrystal" class="px-1.5">
         <div
-          v-if="equipment.hasCrystal && equipment.crystals!.length > 0"
+          v-if="equipment.crystals.length > 0"
           class="edit-mask-content py-1 space-x-3 duration-300"
           @click="editCrystal(equipment)"
         >
@@ -170,6 +176,12 @@
           >
             {{ crystal.name }}
           </cy-icon-text>
+          <div class="edit-mask">
+            <cy-icon-text icon="ic:round-mode-edit" icon-width="1.5rem" />
+          </div>
+        </div>
+        <div v-else-if="innerItem" class="edit-mask-content text-light-2 text-sm" @click="editCrystal(equipment)">
+          {{ t('character-simulator.equipment-info.crystal-empty') }}
           <div class="edit-mask">
             <cy-icon-text icon="ic:round-mode-edit" icon-width="1.5rem" />
           </div>

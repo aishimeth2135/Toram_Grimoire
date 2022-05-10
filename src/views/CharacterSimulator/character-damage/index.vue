@@ -114,13 +114,16 @@
         </div>
       </div>
     </div>
-    <div>
+    <div v-if="validResultStates.length > 0">
       <CharacterDamageSkillItem
         v-for="skillResultsState in validResultStates"
         :key="skillResultsState.skill.skillId"
         :skill-results-state="skillResultsState"
       />
     </div>
+    <cy-default-tips v-else>
+      {{ t('character-simulator.character-damage.no-any-skill-tips') }}
+    </cy-default-tips>
   </div>
 </template>
 

@@ -7,6 +7,7 @@ import { initFoodsBase } from './utils'
 
 type FoodAmount = [number, number]
 type FoodsSaveData = {
+  id: number;
   name: string;
   foods: {
     statId: string;
@@ -62,12 +63,14 @@ class FoodBase {
 
 let _foodBuildAutoIncreasement = 0
 class FoodBuild {
+  loadedId: string | null
   instanceId: number
   name: string
   foods: Food[]
   selectedFoodIndexes: number[]
 
   constructor(name: string) {
+    this.loadedId = null
     this.instanceId = _foodBuildAutoIncreasement
     _foodBuildAutoIncreasement += 1
 
@@ -115,6 +118,7 @@ class FoodBuild {
   // save and load with json-data
   save(): FoodsSaveData {
     const data = {} as FoodsSaveData
+    data.id = this.instanceId
     data.name = this.name
 
     data.foods = this.foods.map((food, idx) => ({
@@ -126,11 +130,11 @@ class FoodBuild {
 
     return data
   }
-  load(data: FoodsSaveData): { success?: boolean; error?: boolean } {
+  load(loadCategory: string, data: FoodsSaveData): { success?: boolean; error?: boolean } {
     try {
       let success = true
 
-      const { name, foods } = data
+      const { id, name, foods } = data
       this.name = name
       foods.forEach(food => {
         const findIdx = this.foods.findIndex(_food => _food.foodBase.base.baseId === food.statId && _food.foodBase.negative === food.negative)
@@ -146,6 +150,10 @@ class FoodBuild {
         }
       })
 
+      if (typeof id === 'number') {
+        this.loadedId = `${loadCategory}-${id}`
+      }
+
       return {
         success,
       }
@@ -155,6 +163,10 @@ class FoodBuild {
         error: true,
       }
     }
+  }
+
+  matchLoadedId(loadCategory: string, id: number | null) {
+    return this.loadedId !== null && id !== null && `${loadCategory}-${id}` === this.loadedId
   }
 }
 

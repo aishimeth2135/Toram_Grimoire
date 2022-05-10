@@ -20,7 +20,7 @@
               {{ foodBuild.name }}
             </cy-icon-text>
           </cy-list-item>
-          <cy-list-item @click="store.createFoodBuild()">
+          <cy-list-item @click="characterStore.setCharacterFoodBuild(store.createFoodBuild)()">
             <cy-icon-text icon="ic-round-add-circle-outline">
               {{ t('character-simulator.food-build.create-food-build') }}
             </cy-icon-text>

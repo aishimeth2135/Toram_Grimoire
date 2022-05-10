@@ -148,7 +148,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, Ref, ref } from 'vue'
+import { computed, inject, Ref, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { EquipmentField } from '@/lib/Character/Character'
@@ -186,7 +186,7 @@ const showAll = ref(false)
 const selectedEquipment: Ref<CharacterEquipment | null> = ref(null)
 const movingEquipment: Ref<CharacterEquipment | null> = ref(null)
 
-const { controls, toggle } = ToggleService({ controls: ['edit'] as const })
+const { controls, toggle } = ToggleService({ controls: [{ name: 'edit', default: true }] as const })
 
 const equipmentAvailable = (eq: CharacterEquipment) => {
   if (!props.targetField) {
@@ -276,6 +276,12 @@ const removeSelectedEquipment = () => {
     }],
   })
 }
+
+watch(() => props.targetField, (newValue) => {
+  if (newValue?.equipment) {
+    selectedEquipment.value = newValue.equipment
+  }
+})
 
 const { appendEquipments, createCustomEquipment } = inject(CharacterSimulatorInjectionKey)!
 </script>

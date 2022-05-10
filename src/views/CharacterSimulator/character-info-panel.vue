@@ -96,10 +96,10 @@
             </template>
             <template #options>
               <cy-list-item
-                v-for="(skillBuild, idx) in skillBuilds"
+                v-for="skillBuild in skillBuilds"
                 :key="skillBuild.instanceId"
                 :selected="skillBuild.instanceId === currentSkillBuild.instanceId"
-                @click="skillBuildStore.setCurrentSkillBuild(idx)"
+                @click="store.setCharacterSkillBuild(skillBuild)"
               >
                 <cy-icon-text>
                   {{ skillBuild.name }}
@@ -135,18 +135,13 @@
             </template>
             <template #options>
               <cy-list-item
-                v-for="(foodBuild, idx) in foodBuilds"
+                v-for="foodBuild in foodBuilds"
                 :key="foodBuild.instanceId"
                 :selected="foodBuild.instanceId === currentFoodBuild.instanceId"
-                @click="foodStore.setCurrentFoodBuild(idx)"
+                @click="store.setCharacterFoodBuild(foodBuild)"
               >
                 <cy-icon-text icon="mdi-food-apple">
                   {{ foodBuild.name }}
-                </cy-icon-text>
-              </cy-list-item>
-              <cy-list-item @click="foodStore.createFoodBuild()">
-                <cy-icon-text icon="ic-round-add-circle-outline">
-                  {{ t('character-simulator.food-build.create-food-build') }}
                 </cy-icon-text>
               </cy-list-item>
             </template>
@@ -182,8 +177,8 @@ const emit = defineEmits<Emits>()
 const { t } = useI18n()
 
 const { store, characters, currentCharacter } = setupCharacterStore()
-const { store: skillBuildStore, skillBuilds, currentSkillBuild } = setupCharacterSkillBuildStore()
-const { store: foodStore, foodBuilds, currentFoodBuild } = setupCharacterFoodStore()
+const { skillBuilds, currentSkillBuild } = setupCharacterSkillBuildStore()
+const { foodBuilds, currentFoodBuild } = setupCharacterFoodStore()
 
 const { editEquipmentFieldEquipment } = inject(CharacterSimulatorInjectionKey)!
 </script>

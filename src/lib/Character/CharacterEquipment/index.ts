@@ -11,18 +11,31 @@ import { EquipmentTypes } from './enums'
 
 type EquipmentOrigin = Equipment | null
 
+interface EquipmentSaveData {
+  name: string;
+  instance: number;
+  stats: StatRestrictionSaveData[];
+  id: number;
+  type: EquipmentTypes;
+  atk?: number;
+  def?: number;
+  stability?: number;
+  refining?: number;
+  crystals?: string[];
+}
+
 let characterEquipmentAutoIncreasement = 0
 abstract class CharacterEquipment {
   private _name: string
-  private _isCustom: boolean
 
+  loadedId: string | null
   instanceId: number
   origin: EquipmentOrigin
   stats: StatRestriction[]
 
-  crystals?: EquipmentCrystal[]
-  refining?: number
-  stability?: number
+  crystals: EquipmentCrystal[]
+  refining: number
+  stability: number
   atk?: number
   def?: number
   customTypeList?: EquipmentTypes[]
@@ -30,13 +43,17 @@ abstract class CharacterEquipment {
   abstract type: EquipmentTypes
 
   constructor(origin: EquipmentOrigin = null, name: string = '', stats: StatRestriction[] = []) {
+    this.loadedId = null
     this.instanceId = characterEquipmentAutoIncreasement
     characterEquipmentAutoIncreasement += 1
 
     this.origin = origin
     this.stats = stats
     this._name = name
-    this._isCustom = false
+
+    this.crystals = []
+    this.refining = 0
+    this.stability = 0
   }
 
   // TODO: remove getter to support lagacy
@@ -100,9 +117,6 @@ abstract class CharacterEquipment {
       })
     }
     return allStats
-  }
-  get isCustom() {
-    return this._isCustom
   }
   get elementStat() {
     return this.stats.find(stat => CharacterEquipment.elementStatIds.includes(stat.baseId))
@@ -169,9 +183,6 @@ abstract class CharacterEquipment {
     return allStats
   }
 
-  setCustom(set: boolean) {
-    this._isCustom = set
-  }
 
   /**
    * @param [type] - If not give, it will toggle type to next index
@@ -254,9 +265,6 @@ abstract class CharacterEquipment {
     if (this.hasCrystal) {
       eq.crystals = this.crystals!.map(crystal => crystal.clone())
     }
-    if (this.isCustom) {
-      eq.setCustom(true)
-    }
 
     return eq
   }
@@ -266,7 +274,6 @@ abstract class CharacterEquipment {
     const data: EquipmentSaveData = {
       instance: -1,
       stats: [],
-      isCustom: false,
       id: -1,
       name: '',
       type: EquipmentTypes.Empty,
@@ -314,8 +321,6 @@ abstract class CharacterEquipment {
       data.crystals = (this.crystals as EquipmentCrystal[]).map(crystal => crystal.name)
     }
 
-    data.isCustom = this.isCustom
-
     // == [ id ] ======================================================
     data.id = this.id
 
@@ -331,9 +336,15 @@ abstract class CharacterEquipment {
     'element_dark',
   ]
 
-  static loadEquipment(data: EquipmentSaveData): CharacterEquipment | null {
+  static loadEquipment(loadCategory: string, data: EquipmentSaveData): CharacterEquipment | null {
     try {
-      const { id, name, instance, stability, refining, atk, def, crystals, isCustom } = data
+      const {
+        id, name, instance,
+        stability,
+        refining = 0,
+        atk, def,
+        crystals,
+      } = data
       const stats = data.stats.map(stat => StatRestriction.load(stat)).filter(stat => stat !== null) as StatRestriction[]
 
       stats.forEach(stat => {
@@ -341,8 +352,6 @@ abstract class CharacterEquipment {
           stat.value = isNumberString(stat.value) ? parseFloat(stat.value) : 0
         }
       })
-
-      const origin = Grimoire.Items.equipments.find(item => item.id === id) || null
 
       // const instance = [
       //   MainWeapon, SubWeapon, SubArmor, BodyArmor,
@@ -359,20 +368,20 @@ abstract class CharacterEquipment {
 
       let eq
       if (instance === 0) {
-        eq = new MainWeapon(origin, name, stats, type, atk as number, stability)
+        eq = new MainWeapon(null, name, stats, type, atk as number, stability)
       } else if (instance === 1) {
-        eq = new SubWeapon(origin, name, stats, type, atk as number, stability)
+        eq = new SubWeapon(null, name, stats, type, atk as number, stability)
       } else if (instance === 2) {
-        eq = new SubArmor(origin, name, stats, type, def as number)
+        eq = new SubArmor(null, name, stats, type, def as number)
       } else if (instance === 3) {
-        eq = new BodyArmor(origin, name, stats, def as number)
+        eq = new BodyArmor(null, name, stats, def as number)
         eq.setType(type)
       } else if (instance === 4) {
-        eq = new AdditionalGear(origin, name, stats, def as number)
+        eq = new AdditionalGear(null, name, stats, def as number)
       } else if (instance === 5) {
-        eq = new SpecialGear(origin, name, stats, def as number)
+        eq = new SpecialGear(null, name, stats, def as number)
       } else {
-        eq = new Avatar(origin, name, stats)
+        eq = new Avatar(null, name, stats)
       }
 
       if (eq.hasRefining) {
@@ -389,7 +398,7 @@ abstract class CharacterEquipment {
         }).filter(crystal => crystal) as EquipmentCrystal[]
       }
 
-      eq.setCustom(isCustom)
+      eq.loadedId = `${loadCategory}-${id}`
 
       return eq
     } catch (err) {
@@ -458,20 +467,6 @@ abstract class CharacterEquipment {
 
     return new Avatar(...pre_args)
   }
-}
-
-interface EquipmentSaveData {
-  name: string;
-  instance: number;
-  stats: StatRestrictionSaveData[];
-  isCustom: boolean;
-  id: number;
-  type: EquipmentTypes;
-  atk?: number;
-  def?: number;
-  stability?: number;
-  refining?: number;
-  crystals?: string[];
 }
 
 abstract class Weapon extends CharacterEquipment {

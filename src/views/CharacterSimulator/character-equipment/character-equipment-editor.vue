@@ -46,7 +46,7 @@
     </cy-input-counter>
     <cy-input-counter
       v-if="equipment.hasRefining"
-      v-model:value="refining"
+      v-model:value="equipment.refining/* eslint-disable-line vue/no-mutating-props */"
       class="mb-3"
       :range="[0, 15]"
     >
@@ -87,7 +87,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { computed, inject, toRefs } from 'vue'
+import { inject, toRefs } from 'vue'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
@@ -104,15 +104,6 @@ const { equipment } = toRefs(props)
 const { t } = useI18n()
 
 const baseValueRange = [0, 999]
-
-const refining = computed<number>({
-  get() {
-    return equipment.value.refining!
-  },
-  set(value) {
-    equipment.value.refining = value
-  },
-})
 
 const { editCrystal, editBasic } = inject(CharacterSimulatorInjectionKey)!
 </script>

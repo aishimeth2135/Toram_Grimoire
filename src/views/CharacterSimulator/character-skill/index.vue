@@ -11,10 +11,10 @@
         </template>
         <template #options>
           <cy-list-item
-            v-for="(skillBuild, idx) in skillBuilds"
+            v-for="skillBuild in skillBuilds"
             :key="skillBuild.instanceId"
             :selected="skillBuild.instanceId === currentSkillBuild.instanceId"
-            @click="skillBuildStore.setCurrentSkillBuild(idx)"
+            @click="characterStore.setCharacterSkillBuild(skillBuild)"
           >
             <cy-icon-text>
               {{ skillBuild.name }}
@@ -74,11 +74,11 @@ import { setupCharacterSkillBuildStore } from '../setup'
 const { t } = useI18n()
 
 const { tabs, contents, toggle } = ToggleService({
-  tabs: [{ name:'active', default: true }, 'passive'] as const,
+  tabs: [{ name: 'active', default: true }, 'passive'] as const,
   contents: ['options'] as const,
 })
 
 const characterStore = useCharacterStore()
 
-const { store: skillBuildStore, skillBuilds, currentSkillBuild } = setupCharacterSkillBuildStore()
+const { skillBuilds, currentSkillBuild } = setupCharacterSkillBuildStore()
 </script>

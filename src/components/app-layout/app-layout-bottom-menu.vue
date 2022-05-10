@@ -1,5 +1,5 @@
 <template>
-  <div class="sticky bottom-0 p-2 z-10 pointer-events-none">
+  <div class="sticky bottom-0 p-2 z-20 pointer-events-none">
     <div v-if="slots['side-buttons'] || slots['side-contents']" class="flex items-end justify-end mb-2 space-x-2">
       <div v-if="slots['side-contents']" class="pointer-events-auto overflow-y-auto" style="max-height: calc(75vh - 4rem)">
         <slot name="side-contents"></slot>

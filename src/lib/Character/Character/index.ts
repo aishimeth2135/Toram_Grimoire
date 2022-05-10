@@ -25,6 +25,7 @@ class Character {
   ]
   private _optinalBaseStat: CharacterBaseStat<CharacterOptionalBaseStatTypes> | null
 
+  loadedId: string | null
   instanceId: number
   name: string
   level: number
@@ -41,6 +42,7 @@ class Character {
   ]
 
   constructor(name = 'Potum') {
+    this.loadedId = null
     this.instanceId = _characterAutoIncreasement
     _characterAutoIncreasement += 1
 
@@ -69,10 +71,6 @@ class Character {
     ] as const
   }
 
-  // TODO: remove old character-simulator
-  get iid(): number {
-    return this.instanceId
-  }
   get origin(): Character {
     return this
   }
@@ -141,7 +139,10 @@ class Character {
         validSubs.push(EquipmentTypes.Arrow, EquipmentTypes.Dagger)
         break
       case EquipmentTypes.Katana:
-        validSubs.push(EquipmentTypes.Dagger, EquipmentTypes.NinjutsuScroll)
+        validSubs.push(EquipmentTypes.Dagger)
+        // fall through
+      case EquipmentTypes.MagicDevice:
+        validSubs.push(EquipmentTypes.NinjutsuScroll)
         break
       case EquipmentTypes.Bow:
         validSubs.push(EquipmentTypes.Arrow, EquipmentTypes.Katana)
@@ -172,6 +173,7 @@ class Character {
   // save and load with json-data
   save(equipments: CharacterEquipment[]): CharacterSaveData {
     const data: CharacterSaveData = {
+      id: this.instanceId,
       name: this.name,
       level: this.level,
       normalBaseStats: [],
@@ -222,9 +224,9 @@ class Character {
   /**
    * @returns true if load successfully
    */
-  load(data: CharacterSaveData, equipments: (CharacterEquipment | null)[]): boolean {
+  load(loadCategory: string, data: CharacterSaveData, equipments: (CharacterEquipment | null)[]): boolean {
     try {
-      const { name, level, normalBaseStats, optionalBaseStat, fields } = data
+      const { id, name, level, normalBaseStats, optionalBaseStat, fields } = data
       this.name = name
       this.level = level
       normalBaseStats.forEach(bstat => {
@@ -265,6 +267,10 @@ class Character {
         }
       })
 
+      if (typeof id === 'number') {
+        this.loadedId = `${loadCategory}-${id}`
+      }
+
       return true
     } catch (err) {
       console.warn('[Character.load] An unexpected error occurred.')
@@ -272,9 +278,14 @@ class Character {
       return false
     }
   }
+
+  matchLoadedId(loadCategory: string, id: number) {
+    return this.loadedId !== null && `${loadCategory}-${id}` === this.loadedId
+  }
 }
 
 interface CharacterSaveData {
+  id: number;
   name: string;
   level: number;
   normalBaseStats: {

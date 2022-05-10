@@ -44,8 +44,9 @@ equipment-info:
   stability: 穩定度
   confirm-selection: 確定選取
   refining: 精鍊值
+  stat-empty: 此裝備沒有能力
   crystal: 鍛晶
-  crystal-empty: 空空的鍛晶
+  crystal-empty: 此裝備沒有緞晶
   equipment-type: 裝備類型
 equipment-basic-editor:
   title: 裝備設定
@@ -93,6 +94,7 @@ character-damage:
   element-none: 無設定
   no-result: 傷害公式待更新
   range-damage-title: 目標距離判定
+  no-any-skill-tips: 目前還沒有任何傷害技能～請在技能配置中配置傷害技能以使用傷害計算器0.0
 enemy-elements:
   title: 目標屬性
   neutral: 無屬性

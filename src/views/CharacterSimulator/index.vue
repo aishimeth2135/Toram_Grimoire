@@ -25,14 +25,14 @@
             icon="bx-bxs-user-detail"
             main-color="light-3"
             shadow
-            @click="toggle('tabs/characterStats', null, false)"
+            @click="toggle('tabs/characterStats', true, false)"
           />
           <cy-button-circle
             :selected="tabs.damage"
             icon="ic:outline-calculate"
             main-color="orange"
             shadow
-            @click="toggle('tabs/damage', null, false)"
+            @click="toggle('tabs/damage', true, false)"
           />
           <cy-button-circle
             :selected="sideContents.tabs"

@@ -6,7 +6,6 @@
         text-color="purple"
         :icon="(equipment.isAvatar() as boolean) ? equipment.categoryIcon : equipment.getCategoryImagePath()"
         :icon-src="equipment.isAvatar() ? 'iconify' : 'image'"
-        :icon-color="equipment.isCustom ? 'green' : 'light-2'"
       >
         <span>{{ equipment.name }}</span>
         <span
@@ -16,10 +15,7 @@
           +{{ equipment.refining }}
         </span>
       </cy-icon-text>
-      <span
-        class="flex-shrink-0 text-light-3 text-sm mr-2"
-        :class="[equipment.isCustom ? 'text-green' : 'text-light-3']"
-      >
+      <span class="flex-shrink-0 text-light-3 text-sm mr-2">
         {{ equipment.categoryText }}
       </span>
       <cy-button-icon
