@@ -8,8 +8,8 @@
         <div class="edit-mask">
           <cy-icon-text icon="ic:round-mode-edit" icon-width="1.5rem" />
         </div>
-        <template #popover>
-          <div class="p-4 bg-white border border-light-2 space-y-3 shadow">
+        <template #popper>
+          <div class="p-4 space-y-3">
             <div>
               <cy-title-input
                 v-model:value="equipment.name/* eslint-disable-line vue/no-mutating-props */"
@@ -76,8 +76,8 @@
           <cy-icon-text icon="ic:round-mode-edit" icon-width="1.5rem" />
         </div>
       </div>
-      <template #popover>
-        <div class="p-4 bg-white border border-light-2 space-y-1.5 shadow">
+      <template #popper>
+        <div class="p-4 space-y-1.5">
           <div v-if="equipment.isWeapon() || equipment.isArmor()">
             <cy-input-counter
               v-if="equipment.isWeapon()"
@@ -133,8 +133,8 @@
               <cy-icon-text icon="ic:round-mode-edit" icon-width="1.5rem" />
             </div>
           </div>
-          <template #popover="{ togglePopover }">
-            <div class="border border-light-2 shadow bg-white p-4 flex items-center w-full">
+          <template #popper="{ hide }">
+            <div class="p-4 flex items-center w-full">
               <div class="mr-2">
                 <cy-input-counter
                   v-model:value="stat.value"
@@ -147,7 +147,7 @@
               <div class="ml-auto">
                 <cy-button-icon
                   icon="ic:round-mode-edit"
-                  @click="(togglePopover(), editStat(equipment))"
+                  @click="(hide(), editStat(equipment))"
                 />
               </div>
             </div>

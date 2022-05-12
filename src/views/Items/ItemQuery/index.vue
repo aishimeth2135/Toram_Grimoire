@@ -116,7 +116,11 @@
     </div>
     <div class="sticky bottom-3 px-2 z-10">
       <div class="flex items-end w-full">
-        <cy-options inline>
+        <cy-options
+          :value="modes[state.currentMode]"
+          :options="Object.entries(modes).map(([id, item]) => ({ id, value: item }))"
+          @update:value="selectMode($event.id)"
+        >
           <template #title>
             <div class="mb-2 mr-2">
               <cy-button-circle
@@ -125,16 +129,10 @@
               />
             </div>
           </template>
-          <template #options>
-            <cy-list-item
-              v-for="(mode, id) in modes"
-              :key="id"
-              @click="selectMode(id)"
-            >
-              <cy-icon-text :icon="mode.icon">
-                {{ t('item-query.modes.' + id) }}
-              </cy-icon-text>
-            </cy-list-item>
+          <template #item="{ value }">
+            <cy-icon-text :icon="value.icon">
+              {{ t('item-query.modes.' + value.id) }}
+            </cy-icon-text>
           </template>
         </cy-options>
         <div class="w-full">

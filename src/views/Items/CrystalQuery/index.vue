@@ -66,31 +66,21 @@
         </div>
       </div>
       <div class="flex items-center space-x-2 w-full pointer-events-auto">
-        <cy-options inline>
+        <cy-options
+          :value="modes.find(item => item.id === mode)"
+          :options="modes.map(item => ({ id: item.id, value: item }))"
+          @update:value="selectMode($event.id)"
+        >
           <template #title>
             <cy-button-circle
               icon="heroicons-solid:switch-vertical"
               main-color="water-blue"
             />
           </template>
-          <template #options>
-            <div class="my-1 px-2">
-              <cy-icon-text small text-color="light-2">
-                {{ t('crystal-query.modes.title') }}
-              </cy-icon-text>
-            </div>
-            <div>
-              <cy-list-item
-                v-for="modeItem in modes"
-                :key="modeItem.id"
-                :selected="mode === modeItem.id"
-                @click="selectMode(modeItem.id)"
-              >
-                <cy-icon-text :icon="modeItem.icon">
-                  {{ t('crystal-query.modes.' + modeItem.id) }}
-                </cy-icon-text>
-              </cy-list-item>
-            </div>
+          <template #item="{ value }">
+            <cy-icon-text :icon="value.icon">
+              {{ t('crystal-query.modes.' + value.id) }}
+            </cy-icon-text>
           </template>
         </cy-options>
         <div class="border-1 border-light-2 px-4 py-0.5 rounded-full bg-white w-full">

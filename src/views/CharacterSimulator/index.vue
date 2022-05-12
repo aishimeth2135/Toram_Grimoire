@@ -277,7 +277,7 @@ onMounted(async () => {
   if (characters.value.length === 0) {
     store.createCharacter()
   }
-  if (foodBuilds.value.length === 0) {
+  if (foodBuilds.value.length === 0 || !foodStore.currentFoodBuild) {
     foodStore.createFoodBuild()
   }
   if (mainStore.redirectPathName === 'SkillSimulator') {

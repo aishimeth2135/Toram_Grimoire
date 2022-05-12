@@ -78,7 +78,10 @@ export const useEnchantStore = defineStore('view-enchant', () => {
     enchantBuilds.value.splice(currentBuildIndex.value, 0, newBuild)
   }
 
-  const setCurrentBuild = (idx: number) => {
+  const setCurrentBuild = (idx: number | EnchantBuild) => {
+    if (typeof idx !== 'number') {
+      idx = enchantBuilds.value.indexOf(idx)
+    }
     currentBuildIndex.value = idx
   }
 

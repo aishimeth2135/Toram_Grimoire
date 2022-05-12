@@ -7,26 +7,16 @@
             {{ t('character-simulator.character-basic.title') }}
           </cy-icon-text>
         </div>
-        <div>
-          <cy-options>
-            <template #title>
-              <cy-list-item>
-                <cy-icon-text icon="bx-bxs-face">
-                  {{ currentCharacter.name }}
-                </cy-icon-text>
-              </cy-list-item>
-            </template>
-            <template #options>
-              <cy-list-item
-                v-for="(character, idx) in characters"
-                :key="character.instanceId"
-                :selected="character === currentCharacter"
-                @click="store.setCurrentCharacter(idx)"
-              >
-                <cy-icon-text icon="bx-bx-face">
-                  {{ character.name }}
-                </cy-icon-text>
-              </cy-list-item>
+        <div class="px-1.5">
+          <cy-options
+            :value="currentCharacter"
+            :options="characters.map(chara => ({ id: chara.instanceId, value: chara }))"
+            @update:value="store.setCurrentCharacter($event)"
+          >
+            <template #item="{ value }">
+              <cy-icon-text icon="bx-bxs-face">
+                {{ value.name }}
+              </cy-icon-text>
             </template>
           </cy-options>
         </div>
@@ -85,26 +75,16 @@
             {{ t('character-simulator.skill-build.title') }}
           </cy-icon-text>
         </div>
-        <div>
-          <cy-options>
-            <template #title>
-              <cy-list-item>
-                <cy-icon-text icon="ant-design:build-outlined">
-                  {{ currentSkillBuild.name }}
-                </cy-icon-text>
-              </cy-list-item>
-            </template>
-            <template #options>
-              <cy-list-item
-                v-for="skillBuild in skillBuilds"
-                :key="skillBuild.instanceId"
-                :selected="skillBuild.instanceId === currentSkillBuild.instanceId"
-                @click="store.setCharacterSkillBuild(skillBuild)"
-              >
-                <cy-icon-text>
-                  {{ skillBuild.name }}
-                </cy-icon-text>
-              </cy-list-item>
+        <div class="px-1.5">
+          <cy-options
+            :value="currentSkillBuild"
+            :options="skillBuilds.map(skillBuild => ({ id: skillBuild.instanceId, value: skillBuild }))"
+            @update:value="store.setCharacterSkillBuild($event)"
+          >
+            <template #item="{ value }">
+              <cy-icon-text icon="ant-design:build-outlined">
+                {{ value.name }}
+              </cy-icon-text>
             </template>
           </cy-options>
         </div>
@@ -124,26 +104,16 @@
             {{ t('character-simulator.food-build.title') }}
           </cy-icon-text>
         </div>
-        <div>
-          <cy-options>
-            <template #title>
-              <cy-list-item>
-                <cy-icon-text icon="bx-bxs-face">
-                  {{ currentFoodBuild.name }}
-                </cy-icon-text>
-              </cy-list-item>
-            </template>
-            <template #options>
-              <cy-list-item
-                v-for="foodBuild in foodBuilds"
-                :key="foodBuild.instanceId"
-                :selected="foodBuild.instanceId === currentFoodBuild.instanceId"
-                @click="store.setCharacterFoodBuild(foodBuild)"
-              >
-                <cy-icon-text icon="mdi-food-apple">
-                  {{ foodBuild.name }}
-                </cy-icon-text>
-              </cy-list-item>
+        <div class="px-1.5">
+          <cy-options
+            :value="currentFoodBuild"
+            :options="foodBuilds.map(foodBuild => ({ id: foodBuild.instanceId, value: foodBuild }))"
+            @update:value="store.setCharacterFoodBuild($event)"
+          >
+            <template #item="{ value }">
+              <cy-icon-text icon="mdi-food-apple">
+                {{ value.name }}
+              </cy-icon-text>
             </template>
           </cy-options>
         </div>
@@ -171,6 +141,7 @@ import { setupCharacterFoodStore, setupCharacterSkillBuildStore, setupCharacterS
 interface Emits {
   (evt: 'open-tab', tab: TabIds): void;
 }
+
 
 const emit = defineEmits<Emits>()
 

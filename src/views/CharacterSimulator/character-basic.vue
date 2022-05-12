@@ -1,46 +1,37 @@
 <template>
   <section v-if="currentCharacter" class="px-2">
     <div class="py-2">
-      <cy-options>
-        <template #title>
-          <cy-list-item>
-            <cy-icon-text icon="bx-bxs-face">
-              {{ currentCharacter.name }}
-            </cy-icon-text>
-          </cy-list-item>
-        </template>
-        <template #options>
-          <cy-list-item
-            v-for="(character, idx) in characters"
-            :key="character.instanceId"
-            :selected="character === currentCharacter"
-            @click="store.setCurrentCharacter(idx)"
+      <div class="flex items-center flex-wrap px-2">
+        <div class="inline-block mr-2">
+          <cy-options
+            :value="currentCharacter"
+            :options="characters.map(chara => ({ id: chara.instanceId, value: chara }))"
+            addable
+            @update:value="store.setCurrentCharacter($event)"
+            @add-item="store.createCharacter()"
           >
-            <cy-icon-text icon="bx-bx-face">
-              {{ character.name }}
-            </cy-icon-text>
-          </cy-list-item>
-          <cy-list-item @click="store.createCharacter()">
-            <cy-icon-text icon="ic-round-add-circle-outline" text-color="light-3">
-              {{ t('character-simulator.character-basic.create-character') }}
-            </cy-icon-text>
-          </cy-list-item>
-        </template>
-      </cy-options>
-      <div class="flex items-center">
-        <cy-button-border
-          icon="bx:copy-alt"
-          @click="copyCurrentCharacter"
-        >
-          {{ t('global.copy') }}
-        </cy-button-border>
-        <cy-button-border
-          icon="ic-baseline-delete-outline"
-          main-color="gray"
-          @click="removeCurrentCharacter"
-        >
-          {{ t('global.remove') }}
-        </cy-button-border>
+            <template #item="{ value }">
+              <cy-icon-text icon="bx-bxs-face">
+                {{ value.name }}
+              </cy-icon-text>
+            </template>
+          </cy-options>
+        </div>
+        <div class="flex items-center">
+          <cy-button-border
+            icon="bx:copy-alt"
+            @click="copyCurrentCharacter"
+          >
+            {{ t('global.copy') }}
+          </cy-button-border>
+          <cy-button-border
+            icon="ic-baseline-delete-outline"
+            main-color="gray"
+            @click="removeCurrentCharacter"
+          >
+            {{ t('global.remove') }}
+          </cy-button-border>
+        </div>
       </div>
     </div>
     <div class="mt-3">
@@ -131,7 +122,7 @@
         {{ t('character-simulator.character-basic.character-optional-base-stat') }}
       </cy-icon-text>
     </div>
-    <div class="mt-2 px-2">
+    <div class="px-2">
       <div class="flex items-center flex-wrap">
         <cy-button-radio
           :selected="!currentCharacter.optionalBaseStat"

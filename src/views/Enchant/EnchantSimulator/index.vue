@@ -25,25 +25,20 @@
           icon="ant-design:build-outlined"
           class="w-full"
         />
-        <cy-options inline>
+        <cy-options
+          :value="store.currentBuild"
+          :options="buildDatas.map(item => ({ id: item.id, value: item.origin }))"
+          addable
+          @update:value="store.setCurrentBuild($event)"
+          @add-item="createBuild"
+        >
           <template #title>
             <cy-button-border icon="ant-design:build-outlined" />
           </template>
-          <template #options>
-            <cy-list-item
-              v-for="buildData in buildDatas"
-              :key="buildData.iid"
-              @click="setCurrentBuild(buildData)"
-            >
-              <cy-icon-text icon="ant-design:build-outlined">
-                {{ buildData.origin.name }}
-              </cy-icon-text>
-            </cy-list-item>
-            <cy-list-item @click="createBuild">
-              <cy-icon-text icon="ic-round-add-circle-outline" text-color="light-3">
-                {{ t('enchant-simulator.append-build') }}
-              </cy-icon-text>
-            </cy-list-item>
+          <template #item="{ value }">
+            <cy-icon-text icon="ant-design:build-outlined">
+              {{ value.name }}
+            </cy-icon-text>
           </template>
         </cy-options>
       </div>
@@ -373,7 +368,7 @@ AutoSave({
 const buildDatas = computed(() => {
   return enchantBuilds.value.map((build, idx) => ({
     origin: build,
-    iid: idx,
+    id: idx,
   }))
 })
 
@@ -412,10 +407,6 @@ const currentEquipmentType = computed<number>({
 const isWeapon = computed(() => {
   return currentEquipmentType.value !== 1
 })
-
-const setCurrentBuild = (data: (typeof buildDatas)['value'][number]) => {
-  store.setCurrentBuild(data.iid)
-}
 
 const createBuild = () => {
   const name = t('enchant-simulator.build') + ' ' + (buildCount.value + 1).toString()

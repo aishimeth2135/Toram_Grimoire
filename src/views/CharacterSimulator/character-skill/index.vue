@@ -1,29 +1,22 @@
 <template>
   <section v-if="currentSkillBuild" class="px-2">
-    <div class="border-b border-light py-2">
-      <cy-options>
-        <template #title>
-          <cy-list-item>
+    <div class="px-2">
+      <div class="inline-block">
+        <cy-options
+          :value="currentSkillBuild"
+          :options="skillBuilds.map(skillBuild => ({ id: skillBuild.instanceId, value: skillBuild }))"
+          @update:value="characterStore.setCharacterSkillBuild($event)"
+        >
+          <template #item="{ value }">
             <cy-icon-text icon="ant-design:build-outlined">
-              {{ currentSkillBuild ? currentSkillBuild.name : '0.0' }}
+              {{ value.name }}
             </cy-icon-text>
-          </cy-list-item>
-        </template>
-        <template #options>
-          <cy-list-item
-            v-for="skillBuild in skillBuilds"
-            :key="skillBuild.instanceId"
-            :selected="skillBuild.instanceId === currentSkillBuild.instanceId"
-            @click="characterStore.setCharacterSkillBuild(skillBuild)"
-          >
-            <cy-icon-text>
-              {{ skillBuild.name }}
-            </cy-icon-text>
-          </cy-list-item>
-        </template>
-      </cy-options>
+          </template>
+        </cy-options>
+      </div>
     </div>
-    <div class="pt-3 flex items-center max-w-full overflow-x-auto">
+    <cy-hr />
+    <div class="flex items-center max-w-full overflow-x-auto">
       <cy-button-border :selected="tabs.active" icon="uil:books" @click="toggle('tabs/active', true, false)">
         {{ t('character-simulator.skill-build.active-skills') }}
       </cy-button-border>

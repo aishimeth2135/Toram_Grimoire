@@ -1,46 +1,37 @@
 <template>
   <section class="px-1.5">
     <div class="pb-4">
-      <cy-options>
-        <template #title>
-          <cy-list-item>
-            <cy-icon-text icon="bx-bxs-face">
-              {{ currentFoodBuild.name }}
-            </cy-icon-text>
-          </cy-list-item>
-        </template>
-        <template #options>
-          <cy-list-item
-            v-for="(foodBuild, idx) in foodBuilds"
-            :key="foodBuild.instanceId"
-            :selected="foodBuild.instanceId === currentFoodBuild.instanceId"
-            @click="store.setCurrentFoodBuild(idx)"
+      <div class="flex items-center flex-wrap px-2">
+        <div class="inline-block mr-2">
+          <cy-options
+            :value="currentFoodBuild"
+            :options="foodBuilds.map(foodBuild => ({ id: foodBuild.instanceId, value: foodBuild }))"
+            addable
+            @update:value="characterStore.setCharacterFoodBuild($event)"
+            @add-item="characterStore.setCharacterFoodBuild(store.createFoodBuild())"
           >
-            <cy-icon-text icon="mdi-food-apple">
-              {{ foodBuild.name }}
-            </cy-icon-text>
-          </cy-list-item>
-          <cy-list-item @click="characterStore.setCharacterFoodBuild(store.createFoodBuild)()">
-            <cy-icon-text icon="ic-round-add-circle-outline">
-              {{ t('character-simulator.food-build.create-food-build') }}
-            </cy-icon-text>
-          </cy-list-item>
-        </template>
-      </cy-options>
-      <div class="pt-1">
-        <cy-button-border
-          icon="bx:copy-alt"
-          @click="copyCurrentFoodBuild"
-        >
-          {{ t('global.copy') }}
-        </cy-button-border>
-        <cy-button-border
-          icon="ic-baseline-delete-outline"
-          main-color="gray"
-          @click="removeCurrentFoodBuild"
-        >
-          {{ t('global.remove') }}
-        </cy-button-border>
+            <template #item="{ value }">
+              <cy-icon-text icon="mdi-food-apple">
+                {{ value.name }}
+              </cy-icon-text>
+            </template>
+          </cy-options>
+        </div>
+        <div class="flex items-center">
+          <cy-button-border
+            icon="bx:copy-alt"
+            @click="copyCurrentFoodBuild"
+          >
+            {{ t('global.copy') }}
+          </cy-button-border>
+          <cy-button-border
+            icon="ic-baseline-delete-outline"
+            main-color="gray"
+            @click="removeCurrentFoodBuild"
+          >
+            {{ t('global.remove') }}
+          </cy-button-border>
+        </div>
       </div>
     </div>
     <div class="mb-2 pl-1">

@@ -51,26 +51,20 @@
               v-model:value="currentSkillBuild.name"
               icon="mdi-clipboard-text-outline"
             />
-            <cy-options inline>
+            <cy-options
+              :value="currentSkillBuild"
+              :options="skillBuilds.map(skillBuild => ({ id: skillBuild.instanceId, value: skillBuild }))"
+              addable
+              @update:value="store.setCurrentSkillBuild($event)"
+              @add-item="characterStore.setCharacterSkillBuild(store.createSkillBuild())"
+            >
               <template #title>
                 <cy-button-circle icon="ant-design:build-outlined" small />
               </template>
-              <template #options>
-                <cy-list-item
-                  v-for="(skillBuild, idx) in skillBuilds"
-                  :key="skillBuild.instanceId"
-                  :selected="skillBuild.instanceId === currentSkillBuild.instanceId"
-                  @click="store.setCurrentSkillBuild(idx)"
-                >
-                  <cy-icon-text>
-                    {{ skillBuild.name }}
-                  </cy-icon-text>
-                </cy-list-item>
-                <cy-list-item @click="store.createSkillBuild()">
-                  <cy-icon-text icon="ic-round-add-circle-outline" text-color="light-3">
-                    {{ t('skill-simulator.create-build') }}
-                  </cy-icon-text>
-                </cy-list-item>
+              <template #item="{ value }">
+                <cy-icon-text>
+                  {{ value.name }}
+                </cy-icon-text>
               </template>
             </cy-options>
           </div>
@@ -165,6 +159,8 @@
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
+
 import Grimoire from '@/shared/Grimoire'
 
 import { SkillTree } from '@/lib/Skill/Skill'
@@ -186,6 +182,8 @@ const emit = defineEmits<Emits>()
 
 const { t } = useI18n()
 const { notify } = Notify()
+
+const characterStore = useCharacterStore()
 
 const mode = ref<MenuMode>('skill')
 const levelUnit = ref(5)

@@ -102,7 +102,10 @@ export const useCharacterStore = defineStore('view-character', () => {
     }
   })()
 
-  const setCurrentCharacter = (idx: number) => {
+  const setCurrentCharacter = (idx: number | Character) => {
+    if (typeof idx !== 'number') {
+      idx = characters.value.indexOf(idx)
+    }
     const previou = getCharacterState(currentCharacter.value)
     currentCharacterIndex.value = idx
     const current = getCharacterState(currentCharacter.value)

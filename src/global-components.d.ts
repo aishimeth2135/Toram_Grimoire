@@ -3,6 +3,8 @@ import CyInputCounter from '@/components/global/Cyteria/input-counter.vue'
 import CyListItem from '@/components/global/Cyteria/list-item.vue'
 import CyIconText from '@/components/global/Cyteria/icon-text.vue'
 import CyTitleInput from '@/components/global/Cyteria/title-input.vue'
+import CyOptions from '@/components/global/Cyteria/options.vue'
+import CyPopover from '@/components/global/Cyteria/popover.vue'
 import CyButton from '@/components/global/Cyteria/button.vue'
 // import CyButtonIcon from '@/components/global/Cyteria/button/icon.vue'
 // import CyButtonBorder from '@/components/global/Cyteria/button/border.vue'
@@ -19,6 +21,8 @@ declare module 'vue' {
     CyListItem: typeof CyListItem;
     CyIconText: typeof CyIconText;
     CyTitleInput: typeof CyTitleInput;
+    CyOptions: typeof CyOptions;
+    CyPopover: typeof CyPopover;
 
     CyButton: typeof CyButton;
     // CyButtonIcon: typeof CyButtonIcon;
