@@ -12,10 +12,10 @@ export function checkStatRestriction(chara: Character, stat: StatRestriction): b
   if ((['main', 'sub', 'body', 'other'] as const).every(key => types[key] === null)) {
     return true
   }
-  return !!types.other
-    || (types.main !== null && chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, types.main))
-    || (types.sub !== null && chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, types.sub))
-    || (types.body !== null && chara.checkFieldEquipmentType(EquipmentFieldTypes.BodyArmor, types.body))
+  return !!types.other ||
+    (types.main !== null && chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, types.main)) ||
+    (types.sub !== null && chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, types.sub)) ||
+    (types.body !== null && chara.checkFieldEquipmentType(EquipmentFieldTypes.BodyArmor, types.body))
 }
 
 export function getCharacterElement(chara: Character): Partial<Record<EnemyElements, number>> {
@@ -31,10 +31,10 @@ export function getCharacterElement(chara: Character): Partial<Record<EnemyEleme
 
   const sub = chara.equipmentField(EquipmentFieldTypes.SubWeapon)
   // 主手弓/弩、副手矢時，矢優先於弓
-  if ((chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.Bow)
-    || chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.Bowgun))
-    && chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow)
-    && sub.equipment!.elementStat) {
+  if ((chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.Bow) ||
+    chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.Bowgun)) &&
+    chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow) &&
+    sub.equipment!.elementStat) {
     setElement(sub.equipment!.elementStat)
     return element
   }
@@ -46,8 +46,8 @@ export function getCharacterElement(chara: Character): Partial<Record<EnemyEleme
   }
 
   // 雙劍副手：雙重屬性
-  if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword)
-    && sub.equipment!.elementStat) {
+  if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword) &&
+    sub.equipment!.elementStat) {
     setElement(sub.equipment!.elementStat)
   }
   return element

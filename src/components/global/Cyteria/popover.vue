@@ -1,0 +1,140 @@
+<template>
+  <component
+    :is="tag"
+    v-if="slots['default']"
+    ref="rootElement"
+    class="cy--popover"
+    @click="togglePopper(undefined)"
+  >
+    <slot :shown="shown" />
+    <teleport to="#app-popovers">
+      <cy-transition type="fade">
+        <div
+          v-if="shown"
+          ref="wrapperElement"
+          class="cy--popover-wrapper"
+          :style="wrapperStyle"
+          @cypopperhide="handlePopperHide"
+        >
+          <slot name="popper" :hide="() => togglePopper(false)" />
+        </div>
+      </cy-transition>
+    </teleport>
+  </component>
+</template>
+
+<script lang="ts">
+export default {
+  name: 'CyPopover',
+}
+
+document.body.addEventListener('click', (evt: MouseEvent) => {
+  const customEvent = new CustomEvent('cypopperhide', {
+    detail: {
+      eventTarget: evt.target,
+    },
+  })
+  document.querySelectorAll('#app-popovers > .cy--popover-wrapper').forEach(el => el.dispatchEvent(customEvent))
+}, { capture: true })
+</script>
+
+<script lang="ts" setup>
+import {
+  computePosition, autoUpdate, flip, size, shift, offset, limitShift,
+  DetectOverflowOptions, ComputePositionConfig,
+} from '@floating-ui/dom'
+import { CSSProperties, Ref, ref, nextTick, useSlots } from 'vue'
+
+interface Props {
+  tag?: string;
+}
+
+withDefaults(defineProps<Props>(), {
+  tag: 'div',
+})
+
+const slots = useSlots()
+
+const rootElement: Ref<HTMLElement | null> = ref(null)
+const wrapperElement: Ref<HTMLElement | null> = ref(null)
+const shown = ref(false)
+const wrapperStyle: Ref<CSSProperties> = ref({})
+
+const overFlowOptions: Partial<DetectOverflowOptions> = {
+  padding: 8,
+  rootBoundary: 'viewport',
+}
+const options: Partial<ComputePositionConfig> = {
+  strategy: 'fixed',
+  middleware: [
+    offset(6),
+    flip({
+      ...overFlowOptions,
+      flipAlignment: false, // for size()
+    }),
+    shift({
+      ...overFlowOptions,
+      limiter: limitShift(),
+    }),
+    size({
+      apply({ width, height }) {
+        wrapperStyle.value = {
+          ...wrapperStyle.value,
+          maxWidth: `${width}px`,
+          maxHeight: `${height}px`,
+        }
+      },
+      ...overFlowOptions,
+    }),
+  ],
+  placement: 'bottom-start',
+}
+
+const updatePosition = async () => {
+  await nextTick()
+  if (!rootElement.value || !wrapperElement.value) {
+    return
+  }
+  const data = await computePosition(rootElement.value!, wrapperElement.value!, options)
+  wrapperStyle.value = {
+    ...wrapperStyle.value,
+    left: `${data.x}px`,
+    top: `${data.y}px`,
+  }
+}
+
+const togglePopper = async (force?: boolean) => {
+  shown.value = force ?? !shown.value
+
+  if (shown.value) {
+    await nextTick()
+    if (!rootElement.value || !wrapperElement.value) {
+      return
+    }
+    autoUpdate(rootElement.value, wrapperElement.value, updatePosition)
+  }
+}
+
+const handlePopperHide = (evt: CustomEvent) => {
+  if (evt.detail.eventTarget && [rootElement.value, wrapperElement.value].some(el => el?.contains(evt.detail.eventTarget))) {
+    return
+  }
+  togglePopper(false)
+}
+</script>
+
+<style lang="postcss" scoped>
+.cy--popover {
+  position: relative;
+}
+
+.cy--popover-wrapper {
+  min-width: 15rem;
+  @apply fixed z-100 bg-white border border-light shadow shadow-light-2;
+
+  @media screen and (max-width: 15rem) {
+    min-width: auto;
+    width: 100%;
+  }
+}
+</style>

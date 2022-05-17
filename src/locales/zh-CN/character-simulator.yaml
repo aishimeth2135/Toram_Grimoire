@@ -1,11 +1,10 @@
-character-stats: 面板
+character-stats: 角色面板
 character: 角色
 custom-equipment:
   button-title: 自订装备
   default-name-pretext: 自订
 character-basic:
-  title: 角色
-  create-character: 新建角色
+  title: 角色设定
   character-level: 角色等级
   character-name: 角色名称
   character-stat-points: 角色能力点数
@@ -25,6 +24,9 @@ browse-equipments:
   move-equipment-title: 移动中
   no-any-equipment-tips: 这里目前空空的...请点选右上角的按扭来新增装备0.0
   equipment-item-actions-tips: 请打开左下角的「显示全部装备」以使用整理相关的功能。
+  equipped: 装备中
+  click-edit-tips: 点击上方各区块以编辑
+  auto-arrange-success-tips: 自动整理成功。
 append-equipments:
   title: 新增装备
   search-equipment-placeholder: 搜寻装备名称...
@@ -37,12 +39,11 @@ create-custom-equipment:
   select-equipment-type: 选择装备类型
   equipment-default-name: 自订{type}
 equipment-info:
-  equipment: 装备
+  equipment: 装备配置
   stability: 稳定度
-  confirm-selection: 确定选取
   refining: 精炼值
-  crystal: 锻晶
-  crystal-empty: 空空的锻晶
+  stat-empty: 此装备没有能力
+  crystal-empty: 此装备没有缎晶
   equipment-type: 装备类型
 equipment-basic-editor:
   title: 装备设定
@@ -69,7 +70,7 @@ select-crystals:
     - 特殊装备
     - 通用
 skill-build:
-  title: 技能
+  title: 技能配置
   passive-skills: 被动技能
   active-skills: 主动技能
   disable-skills: 停用{type}
@@ -84,12 +85,13 @@ skill-build:
     target_level: 目标等级
   no-any-build-tips: 还没有建立任何配置喔～请先透过左上方的选单进入「技能模拟器」，建立新的技能配置。
 character-damage:
-  title: 伤害
+  title: 伤害计算
   target-options-title: 目标数值设定
   options-base-title: 基本设定
   element-none: 无设定
   no-result: 伤害公式待更新
   range-damage-title: 目标距离判定
+  no-any-skill-tips: 目前还没有任何伤害技能～请在技能配置中配置伤害技能以使用伤害计算器0.0
 enemy-elements:
   title: 目标属性
   neutral: 无属性
@@ -129,10 +131,9 @@ character-stat-detail:
       defense: 身体防具｜重量化
       none: 身体防具｜无装备
 food-build:
-  title: 料理
+  title: 料理配置
   disable-foods: 停用料理
   food-build: 料理配置
-  create-food-build: 新增料理配置
   food-build-name: 料理配置名称
   food-list: 料理清单
   copy-food-build-success-tips: 复制料理配置成功。

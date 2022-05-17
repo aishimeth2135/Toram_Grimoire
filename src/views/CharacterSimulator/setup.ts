@@ -45,3 +45,14 @@ export function setupCharacterFoodStore() {
     currentFoodBuild: currentFoodBuild as Ref<FoodBuild>,
   }
 }
+
+export const enum TabIds {
+  CharacterStats = 'characterStats',
+  Damage = 'damage',
+  Basic = 'basic',
+  EquipmentFields = 'equipmentFields',
+  Equipments = 'equipments',
+  Skill = 'skill',
+  Food = 'food',
+  Save = 'save',
+}

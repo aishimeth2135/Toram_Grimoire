@@ -17,16 +17,24 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
 
   const currentFoodBuild = computed(() => foodBuilds.value[currentFoodBuildIndex.value])
 
-  const setCurrentFoodBuild = (idx: number) => currentFoodBuildIndex.value = idx
-
-  const createFoodBuild = ({ name, foodBuild }: { name?: string; foodBuild?: FoodBuild } = {}, updateIndex = true) => {
-    if (!foodsBase.value) {
+  const setCurrentFoodBuild = (idx: number | FoodBuild | null) => {
+    if (idx === null) {
+      currentFoodBuildIndex.value = -1
       return
     }
-    foodBuilds.value.push(foodBuild ?? foodsBase.value.createFoods(name || (Grimoire.i18n.t('character-simulator.food-build.food-build') + ' ' + (foodBuilds.value.length + 1))))
+    if (typeof idx !== 'number') {
+      idx = foodBuilds.value.indexOf(idx)
+    }
+    currentFoodBuildIndex.value = idx
+  }
+
+  const createFoodBuild = ({ name, foodBuild }: { name?: string; foodBuild?: FoodBuild } = {}, updateIndex = true) => {
+    const build = foodBuild ?? foodsBase.value!.createFoods(name || (Grimoire.i18n.t('character-simulator.food-build.food-build') + ' ' + (foodBuilds.value.length + 1)))
+    foodBuilds.value.push(build)
     if (updateIndex) {
       currentFoodBuildIndex.value = foodBuilds.value.length - 1
     }
+    return build
   }
 
   const removeFoodBuild = (idx: number) => {

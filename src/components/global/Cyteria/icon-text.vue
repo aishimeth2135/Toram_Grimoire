@@ -98,7 +98,7 @@ export default defineComponent({
   --text-margin-left: 0.625rem;
   font-size: 1rem;
 
-  @apply inline-flex items-center;
+  @apply items-center;
 
   & > .text {
     margin-left: var(--text-margin-left);

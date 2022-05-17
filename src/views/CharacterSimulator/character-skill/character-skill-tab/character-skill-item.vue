@@ -31,19 +31,10 @@
           </div>
         </div>
         <div v-if="skillResultsState.stackContainers.length > 0" class="ml-auto inline-flex">
-          <cy-button-icon
-            icon="ic:baseline-settings"
-            inline
-            @click="toggle('contents/options')"
-          />
+          <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
         </div>
       </div>
       <div :class="{ 'opacity-50': !currentSkillState.enabled }">
-        <cy-transition type="fade">
-          <div v-if="contents.options" class="my-2 flex">
-            <CharacterSkillItemOptions class="ml-auto" :skill-results-state="skillResultsState" />
-          </div>
-        </cy-transition>
         <div v-if="isMutipleItem" class="mt-1 pl-4">
           <CharacterSkillResultItem
             v-for="result in skillResultsState.results"
@@ -64,8 +55,6 @@ import { SkillResultsState } from '@/stores/views/character/setup'
 
 import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
 
-import ToggleService from '@/setup/ToggleService'
-
 import CharacterSkillResultItem from './character-skill-result-item.vue'
 import CharacterSkillItemOptions from './character-skill-item-options.vue'
 
@@ -79,7 +68,6 @@ const props = defineProps<Props>()
 
 const { t } = useI18n()
 const { currentSkillBuild } = setupCharacterSkillBuildStore()
-const { contents, toggle } = ToggleService({ contents: ['options'] })
 
 const skillIconPath = computed(() => getSkillIconPath(props.skillResultsState.skill))
 

@@ -15,15 +15,15 @@
         {{ stepTitle }}
       </cy-icon-text>
       <div class="ml-auto inline-flex items-center mr-1">
-        <cy-options inline>
-          <template #title="{ unfold }">
+        <cy-popover>
+          <template #default="{ shown }">
             <cy-button-icon
               icon="gg-menu-left-alt"
               class="p-0"
-              :selected="unfold"
+              :selected="shown"
             />
           </template>
-          <template #options>
+          <template #popper>
             <cy-list-item @click="insertStepBefore">
               <cy-button-inline
                 class="w-full"
@@ -55,7 +55,7 @@
               </cy-button-inline>
             </cy-list-item>
           </template>
-        </cy-options>
+        </cy-popover>
         <cy-button-icon
           :icon="step.hidden ? 'mdi-checkbox-blank-off-outline' : 'mdi-checkbox-blank-outline'"
           class="p-0"

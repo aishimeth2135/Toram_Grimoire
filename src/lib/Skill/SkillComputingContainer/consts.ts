@@ -22,6 +22,7 @@ const BRANCH_PROPS_DEFAULT_VALUE: Partial<Record<SkillBranchNames, Record<string
     'unsheathe_damage': '0',
     'range_damage': 'none',
     'is_place': '0',
+    'skill_long_range': 'auto',
 
     'effective_area': 'circle',
     'radius': '1',

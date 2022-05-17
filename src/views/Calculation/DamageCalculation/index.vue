@@ -17,25 +17,20 @@
           icon="ant-design:build-outlined"
           class="w-full"
         />
-        <cy-options inline>
+        <cy-options
+          :value="store.currentCalculation"
+          :options="calculationItems.map(item => ({ id: item.index, value: item.origin }))"
+          addable
+          @update:value="store.selectCalculation($event)"
+          @add-item="store.createCalculation()"
+        >
           <template #title>
             <cy-button-circle icon="ant-design:build-outlined" small />
           </template>
-          <template #options>
-            <cy-list-item
-              v-for="item in calculationItems"
-              :key="item.index"
-              @click="store.selectCalculation(item.index)"
-            >
-              <cy-icon-text icon="ant-design:build-outlined">
-                {{ item.origin.name }}
-              </cy-icon-text>
-            </cy-list-item>
-            <cy-list-item @click="store.createCalculation()">
-              <cy-icon-text icon="ic-round-add-circle-outline" text-color="light-3">
-                {{ t('damage-calculation.create-build') }}
-              </cy-icon-text>
-            </cy-list-item>
+          <template #item="{ value }">
+            <cy-icon-text icon="ant-design:build-outlined">
+              {{ value.name }}
+            </cy-icon-text>
           </template>
         </cy-options>
       </div>

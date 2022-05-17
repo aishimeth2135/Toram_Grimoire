@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center w-full">
+    <div class="flex items-center flex-wrap w-full">
       <cy-icon-text icon="ic:round-label" main-color="orange">
         {{ result.container.get('name') }}
       </cy-icon-text>
@@ -21,6 +21,25 @@
           v-html="result.container.get('frequency')"
         />
       </div>
+      <div v-if="valid && store.calculationOptions.armorBreakDisplay" class="flex items-baseline pl-2.5 ml-3 border-l border-light">
+        <div class="text-water-blue-light text-sm mr-2">
+          {{ t('character-simulator.character-damage.armor-break') }}
+        </div>
+        <div class="flex items-center space-x-0.5">
+          <div class="text-water-blue">
+            {{ armorBreakExpectedResult }}
+          </div>
+          <cy-icon-text
+            v-if="frequencyVisible && result.container.get('frequency')"
+            icon="ic-round-close"
+          />
+          <span
+            v-if="frequencyVisible"
+            class="attr-item"
+            v-html="result.container.get('frequency')"
+          />
+        </div>
+      </div>
       <cy-button-icon icon="majesticons:checkbox-list-detail-line" class="ml-auto" @click="toggle('contents/detail')" />
     </div>
     <div v-if="statExtraContainers.length > 0" class="py-1 pl-2">
@@ -30,13 +49,12 @@
         class="flex items-center"
       >
         <cy-button-switch
-          :selected="getSuffixBranchState(extraContainer.branchItem).enabled"
-          @click="toggleSuffixBranchEnabled(extraContainer.branchItem)"
+          v-model:selected="store.getDamageCalculationSkillBranchState(extraContainer.branchItem.default).enabled"
         />
         <CharacterSkillItemStats :stat-containers="extraContainer.statContainers" />
       </div>
     </div>
-    <div v-if="contents.detail" class="text-sm px-4 py-2 border-1 border-light mt-2">
+    <div v-if="contents.detail" class="text-sm px-3 py-2 border-1 border-light mt-2 bg-white">
       <div
         v-for="item in calculationItems"
         :key="item.item.base.id"
@@ -59,7 +77,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { SkillResult } from '@/stores/views/character/setup'
@@ -71,8 +89,6 @@ import { CalcItem } from '@/lib/Calculation/Damage/Calculation'
 import { ContainerTypes } from '@/lib/Calculation/Damage/Calculation/enums'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import { Stat } from '@/lib/Character/Stat'
-import { SkillBranch } from '@/lib/Skill/Skill'
-import { SkillBranchItemSuffix } from '@/lib/Skill/SkillComputingContainer'
 
 import ToggleService from '@/setup/ToggleService'
 
@@ -93,33 +109,10 @@ const { contents, toggle } = ToggleService({
   contents: ['detail'] as const,
 })
 
-const suffixBranchStates = ref(new Map<SkillBranch, { enabled: boolean }>())
-
-watch(() => props.result, newValue => {
-  const current = newValue.suffixContainers.filter(sufContainer => sufContainer.statContainers.length > 0)
-  for (const key of suffixBranchStates.value.keys()) {
-    if (!current.some(sufContainer => sufContainer.branchItem.default === key)) {
-      suffixBranchStates.value.delete(key)
-    }
-  }
-})
-
-const getSuffixBranchState = (branchItem: SkillBranchItemSuffix) => {
-  if (!suffixBranchStates.value.has(branchItem.default)) {
-    suffixBranchStates.value.set(branchItem.default, { enabled: true })
-  }
-  return suffixBranchStates.value.get(branchItem.default)!
-}
-
-const toggleSuffixBranchEnabled = (branchItem: SkillBranchItemSuffix) => {
-  const state = getSuffixBranchState(branchItem)
-  state.enabled = !state.enabled
-}
-
 const extraStats = computed(() => {
   const stats: Stat[] = []
   props.result.suffixContainers.forEach(sufContainer => {
-    if (!suffixBranchStates.value.get(sufContainer.branchItem.default)?.enabled) {
+    if (!store.getDamageCalculationSkillBranchState(sufContainer.branchItem.default)?.enabled) {
       return
     }
     sufContainer.statContainers.forEach(statContainer => {
@@ -135,6 +128,17 @@ const { valid, calculation, expectedResult } = store.setupDamageCalculationExpec
   computed(() => props.result),
   extraStats,
   computed(() => store.targetProperties),
+  computed(() => store.calculationOptions),
+)
+
+const { expectedResult: armorBreakExpectedResult } = store.setupDamageCalculationExpectedResult(
+  computed(() => props.result),
+  extraStats,
+  computed(() => ({
+    ...store.targetProperties,
+    def: Math.floor(store.targetProperties.def / 2),
+    mdef: Math.floor(store.targetProperties.mdef / 2),
+  })),
   computed(() => store.calculationOptions),
 )
 

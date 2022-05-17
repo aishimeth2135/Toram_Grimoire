@@ -20,7 +20,7 @@
         />
       </div>
     </div>
-    <CharacterEquipmentInfo
+    <CharacterEquipmentDetail
       v-if="!equipmentField.isEmpty"
       :equipment="equipmentField.equipment!"
       :stats-disabled="equipmentField.statsDisabled()"
@@ -37,7 +37,7 @@ import { inject } from 'vue'
 
 import { EquipmentField } from '@/lib/Character/Character'
 
-import CharacterEquipmentInfo from '../character-equipment/character-equipment-info.vue'
+import CharacterEquipmentDetail from '../character-equipment/character-equipment-detail.vue'
 
 import { CharacterSimulatorInjectionKey } from '../injection-keys'
 

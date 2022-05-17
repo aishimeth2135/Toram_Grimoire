@@ -1,0 +1,84 @@
+build: Stat build
+base-options: Base settings
+advanced-options: Advanced settings
+common-options: Common settings
+equipment-type: Equipment type
+append-build: New stat build
+equipment-types:
+  main-weapon: Weapon
+  body-armor: Body armor
+  main-weapon_original-element: Weapon｜Original element
+enchant-step: Stat filling step
+append-enchant-step: Add new stat filling step
+last-step: Final step
+invalid-step: Invalid step
+success-rate: Success rate
+expected-success-rate: Expected success rate
+success-rate-unlimited: Unlimited
+equipment-original-potential: Equipment initial potential
+equipment-base-potential: Equipment base potential
+character-level: Character level
+smith-level: Smith level
+material-point-type-list:
+  - Metal point
+  - Beast point
+  - Wood point
+  - Cloth point
+  - Medicine point
+  - Mana point
+step:
+  insert-step-before: Insert a step before this one
+  step-move-up: Move this step up
+  step-move-down: Move this step down
+  auto-fill-positive-stat: Auto fill positive stat (only under certain conditions will appear)
+  select-one-stat-item: Select one stat
+  select-multiple-stat-items: Select multiple stat
+  step-type-each: Split fill mode
+  button-caption-title: About button
+  step-type-each-title: Split fill, Every time fill
+select-item:
+  show-negative-suggested-list: Show suggested negative stat
+result:
+  enchant-step-normal: Fill
+  enchant-step-each: Split fill, Every time fill {stat}, Until {target}
+  stats: Final result
+  materials: Material consumption
+  success-rate-detail:
+    title: About success rate
+    captions:
+      - ((_Success rate))Is the success rate displayed in the game,showing((!single stat success rate)). ( ´ ▽ ` )/
+      - ((_Expected success rate))is the ((!Overall success rate of all positive stat)),The calculation formula is((_single stat success rate power the number of positive attributes)). example：single stat success rate is 90%, the number of positive attributes is 5, then the calculation method is 90% to the 5th power,around 59%.
+      - To facilitate the user to fine-tune the steps,((!single stat success rate))will display more than 100% when is possible, Only on the final step there are remaining potential will display((!Unlimited))。
+      - ((!Expected success rate))has the concept of actual success rate, So it will only show up to 100%.
+stat-display-mode:
+  title: Toggle stat Information
+  potential-cost: Potential cost
+  material-point: Material consumption
+tips:
+  step-stat-repeated: In this step there is already this stat (つд⊂)
+  step-empty: This step is still empty (～￣▽￣)~
+  stats-reached-upper-limit: This equipment reached the maximum number of stats (´-ω-｀)
+  keep-at-least-one-build: Please keep at least one build |ω`)...
+  invalid-enchant-result: Can't produce results with the current configuration desu 0.0/
+  remove-build-confirm: Are you sure to delete this stat build "("´Д｀")"?
+  copy-build-success: Build was successful copied.
+  copy-result-text-success: result text was successful copied.
+save-tips:
+  auto-save-success: Auto save was successful.
+  auto-load-success: Auto load was successful.
+  export-success: Export was successful.
+  import-success: import $0 was successful.
+  import-failed: import failed.
+footer-guide:
+  title: About menu below
+  title-close: add new step to close this window (≧∇≦)/
+  toggle-result:
+    titles:
+      - Normal mode
+      - Floating mode
+    caption: Click the button to toggle how step result is displayed, so you can check step result without scrolling down.
+  toggle-display-mode:
+    titles:
+      - Potential cost
+      - Material consumption
+    caption: About what information is displayed after each step ,you can change betwiting two. by default is "Potential cost".

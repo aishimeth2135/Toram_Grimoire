@@ -92,6 +92,9 @@ rules:
   object-property-newline:
     - warn
     - allowAllPropertiesOnSameLine: true
+  operator-linebreak:
+    - warn
+    - after
   "@typescript-eslint/semi":
     - error
     - never

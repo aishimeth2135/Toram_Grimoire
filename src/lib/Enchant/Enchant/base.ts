@@ -58,7 +58,6 @@ class EnchantCategory {
   }
 }
 
-/** */
 class EnchantItem {
   private _category: EnchantCategory
   statBase: StatBase

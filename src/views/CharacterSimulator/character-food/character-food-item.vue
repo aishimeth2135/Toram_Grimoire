@@ -17,10 +17,6 @@
   </cy-list-item>
 </template>
 
-<script lang="ts">
-const FOOD_LEVEL_RANGE = [0, 10]
-</script>
-
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -40,7 +36,7 @@ const props = defineProps<Props>()
 const { t } = useI18n()
 const { notify } = Notify()
 
-const foodLevelRange = FOOD_LEVEL_RANGE
+const foodLevelRange = [0, 10]
 
 const { currentFoodBuild } = setupCharacterFoodStore()
 
@@ -63,7 +59,7 @@ const selected = computed<boolean>({
 
 const level = computed<number>({
   set(value) {
-    if (props.food.level === 0 && value > 0) {
+    if (props.food.level === 0 && value > 0 && !selected.value) {
       selected.value = true
     }
     props.food.level = value/* eslint-disable-line vue/no-mutating-props */

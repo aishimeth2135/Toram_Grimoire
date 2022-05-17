@@ -64,7 +64,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { computed, reactive, ref, toRefs, watch } from 'vue'
+import { computed, reactive, Ref, ref, toRefs, watch } from 'vue'
 
 import { SkillBuildSaveData } from '@/stores/views/character/skill-build/SkillBuild'
 import { CharacterSimulatorSaveData, EquipmentSaveDataWithIndex } from '@/stores/views/character'
@@ -86,6 +86,8 @@ interface Emits {
 const props = defineProps<Props>()
 const { visible } = toRefs(props)
 const emit = defineEmits<Emits>()
+
+const originalData: Ref<CharacterSimulatorSaveData | null> = ref(null)
 
 const { t } = useI18n()
 const { store } = setupCharacterStore()
@@ -186,11 +188,13 @@ const submit = () => {
       .filter(_item => target.items.has(_item.id))
       .map(_item => _item.origin)
   }
+  const characters = getItems(exportDataItemCharacters)
   const datas: CharacterSimulatorSaveData = {
-    characters: getItems(exportDataItemCharacters),
+    characters,
     equipments: getItems(exportDataItemEquipments),
     skillBuilds: getItems(exportDataItemSkillBuilds),
     foodBuilds: getItems(exportDataItemFoodBuilds),
+    characterStates: originalData.value!.characterStates.filter(state => characters.some(item => item.id === state.id)),
   }
   Cyteria.file.save({
     data: JSON.stringify(datas),
@@ -212,6 +216,7 @@ watch(visible, (newValue) => {
     handle(exportDataItemEquipments, datas.equipments)
     handle(exportDataItemSkillBuilds, datas.skillBuilds)
     handle(exportDataItemFoodBuilds, datas.foodBuilds)
+    originalData.value = datas
     exportFileName.value = 'character-simulator-export.txt'
   }
 })

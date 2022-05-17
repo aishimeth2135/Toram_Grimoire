@@ -182,7 +182,7 @@ function separateSuffixBranches(effectItem: SkillEffectItemBase) {
   const searchSuffixList = (current: SkillBranchItem, bch: SkillBranchItem) => {
     return ([current.name, '@global'] as SuffixBranchListKey[]).find(name => {
       const suffixList = suffixBranchList[name]
-      return suffixList && suffixList.find(item => item === bch.name)
+      return !!suffixList?.find(item => item === bch.name)
     })
   }
 
@@ -217,9 +217,17 @@ function separateSuffixBranches(effectItem: SkillEffectItemBase) {
       resBranches.push(branchItem)
       return
     }
-    if (mainBranch && !spaceFlag && searchSuffixList(mainBranch, branchItem)) {
-      mainBranch.suffixBranches.push(branchItem.toSuffix(mainBranch))
-    } else if (isMainBranch(branchItem)) {
+    if (mainBranch && !spaceFlag) {
+      if (branchItem.name === '') {
+        mainBranch.emptySuffixBranches.push(branchItem.toSuffix(mainBranch))
+        return
+      }
+      if (searchSuffixList(mainBranch, branchItem)) {
+        mainBranch.suffixBranches.push(branchItem.toSuffix(mainBranch))
+        return
+      }
+    }
+    if (isMainBranch(branchItem)) {
       resBranches.push(branchItem)
       spaceFlag = false
     }
@@ -324,7 +332,7 @@ function initHistoryNexts(history: SkillEffectItemHistory) {
   history.modifiedBranchItems.forEach(branchItem => {
     const next = branchItem.id !== -1 ?
       history.nextEffect.branchItems.find(bch => branchItem.id === bch.id) :
-      history.nextEffect.branchItems.find(bch => bch.suffixBranches.some(suf => branchItem.suffixBranches.some(_suf => suf.id === _suf.id)))
+      history.nextEffect.branchItems.find(bch => [...bch.suffixBranches, ...bch.emptySuffixBranches].some(suf => suf.id !== -1 && branchItem.suffixBranches.some(_suf => suf.id === _suf.id)))
     if (next) {
       const nextClone = next.clone(history)
       nextClone.setHistoryRecord(branchItem.record)

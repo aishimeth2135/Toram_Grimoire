@@ -89,23 +89,27 @@ const state: {
 
 const modes = reactive({
   [SearchModes.Normal]: {
+    id: SearchModes.Normal,
     icon: 'ic-round-menu-book',
     targets: handleOptions(['name', 'material', 'obtain-name', 'map']),
     optionsVisible: false,
     searchText: '',
   },
   [SearchModes.Stat]: {
+    id: SearchModes.Stat,
     icon: 'mdi-script-outline',
     stats: [] as StatOption[],
     statSearchText: '',
     currentStat: (null) as (StatOption | null),
   },
   [SearchModes.ItemLevel]: {
+    id: SearchModes.ItemLevel,
     icon: 'jam-hammer',
     min: 0,
     max: 300,
   },
   [SearchModes.Dye]: {
+    id: SearchModes.Dye,
     icon: 'ic-outline-palette',
     searchText: '',
   },

@@ -1,18 +1,43 @@
 <template>
-  <div ref="rootElement" class="cy--options" :class="rootClassList">
-    <div class="title-container" @click="toggleUnfold">
-      <slot name="title" :unfold="unfold" />
-    </div>
-    <teleport to="#app-popovers">
-      <cy-transition type="fade">
-        <div v-if="unfold" class="cy--options-container" :style="optionsPosition" @click="toggleUnfold">
-          <div class="options-items">
-            <slot name="options" />
+  <CyPopover class="cy--options">
+    <template #default="{ shown }">
+      <slot name="title" :shown="shown">
+        <div class="cy--options-item cy--options-title flex items-center bg-white border border-light-2 hover:border-light-3 duration-200">
+          <slot v-if="value !== undefined && value !== null" name="item" :value="value"></slot>
+          <div v-else class="flex w-full justify-center py-0.5">
+            <cy-icon-text icon="ic:outline-help-outline" />
           </div>
+          <!-- <cy-icon-text icon="ic:round-arrow-drop-down" class="ml-auto" /> -->
         </div>
-      </cy-transition>
-    </teleport>
-  </div>
+      </slot>
+    </template>
+    <template #popper="{ hide }">
+      <div class="cy--options-items-wrapper">
+        <slot name="options">
+          <div class="py-0.5">
+            <div
+              v-for="item in options"
+              :key="item.id"
+              class="cy--options-item"
+              :class="{ 'cy--options-item-selected': item.value === value }"
+              @click="(emit('update:value', item.value), hide())"
+            >
+              <slot name="item" :value="item.value"></slot>
+            </div>
+          </div>
+          <div
+            v-if="addable"
+            class="cy--options-item justify-center border-t border-light-2"
+            @click="(emit('add-item'), hide())"
+          >
+            <div class="flex py-0.5">
+              <cy-icon-text icon="ic-round-add-circle-outline" />
+            </div>
+          </div>
+        </slot>
+      </div>
+    </template>
+  </CyPopover>
 </template>
 
 <script lang="ts">
@@ -22,94 +47,53 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, CSSProperties, Ref, ref } from 'vue'
+import CyPopover from './popover.vue'
+
+interface OptionItem {
+  id: string | number | symbol;
+  value: any;
+}
 
 interface Props {
-  inline?: boolean;
+  value: any;
+  options?: OptionItem[];
+  addable?: boolean;
+}
+interface Emits {
+  (evt: 'update:value', value: any): void;
+  (evt: 'add-item'): void;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  inline: false,
+withDefaults(defineProps<Props>(), {
+  options: () => [] as OptionItem[],
+  addable: false,
 })
-
-const rootElement: Ref<HTMLElement | null> = ref(null)
-const unfold = ref(false)
-const optionsPosition: Ref<CSSProperties> = ref({})
-
-const rootClassList = computed(() => ({ 'cy--options-inline': props.inline }))
-
-const toggleUnfold = () => {
-  unfold.value = !unfold.value
-
-  if (unfold.value) {
-    const rect = rootElement.value!.getBoundingClientRect()
-
-    const position = {} as CSSProperties
-    const padding = 8
-
-    const len2bottom = window.innerHeight - rect.bottom
-    if (rect.top >= len2bottom) {
-      position.bottom = ((window.innerHeight - rect.bottom) + rect.height + padding) + 'px'
-    } else {
-      position.top = (rect.top + rect.height + padding) + 'px'
-    }
-    const len2right = window.innerWidth - rect.right
-    if (rect.left >= len2right) {
-      position.right = ((window.innerWidth - rect.right) + padding) + 'px'
-    } else {
-      position.left = (rect.left + padding) + 'px'
-    }
-    optionsPosition.value = position
-  }
-}
+const emit = defineEmits<Emits>()
 </script>
 
 <style lang="postcss" scoped>
-.cy--options {
-  position: relative;
-  margin: 0.3rem 0.4rem;
-  max-width: 20rem;
-  background-color: var(--white);
-
-  &.cy--options-inline {
-    margin: 0;
-    display: inline-block;
-    background-color: transparent;
-
-    & > .title-container {
-      border: 0;
-      display: flex;
-    }
-  }
-
-  & > .title-container {
-    border: 1px solid var(--primary-light-2);
-    transition: 0.3s ease;
-  }
-}
-
-.cy--options-container {
-  position: fixed;
-  z-index: 20;
+.cy--options-title, .cy--options-items-wrapper {
   min-width: 15rem;
 
   @media screen and (max-width: 15rem) {
     min-width: auto;
     width: 100%;
   }
+}
 
-  &::before {
-    content: '';
+.cy--options-items-wrapper {
+  max-height: 40vh;
+  overflow-y: auto;
+}
 
-    @apply fixed w-full h-full bg-white bg-opacity-50 top-0 left-0 -z-1;
+.cy--options-item {
+  @apply duration-200 py-1.5 px-2 flex cursor-pointer;
+
+  &:hover {
+    background-color: rgba(var(--rgb-primary-light), 0.2);
   }
-
-  & > .options-items {
-    max-height: 40vh;
-    overflow-y: auto;
-    border: 1px solid var(--primary-light-2);
-    background-color: var(--white);
-    z-index: 1;
+  &.cy--options-item-selected {
+    background-color: rgba(var(--rgb-primary-light), 0.4);
   }
 }
 </style>

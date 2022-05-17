@@ -145,9 +145,7 @@ const { t } = useI18n()
 
 <style lang="postcss" scoped>
 .cy--modal {
-  @apply fixed h-full w-full top-0 left-0 flex justify-center bg-black bg-opacity-10;
-
-  z-index: 49;
+  @apply fixed h-full w-full top-0 left-0 flex justify-center bg-black bg-opacity-10 z-100;
 
   & > .modal-wrapper {
     @apply relative inline-block mb-2 mt-2.5 mx-2 bg-opacity-100 max-w-full;
@@ -200,7 +198,7 @@ const { t } = useI18n()
   position: absolute;
   top: -0.75rem;
   right: -0.8rem;
-  z-index: 51;
+  z-index: 1;
   padding: 0;
 
   &::before {

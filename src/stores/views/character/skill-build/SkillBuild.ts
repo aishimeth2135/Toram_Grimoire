@@ -16,6 +16,7 @@ interface SkillSaveData extends SkillState {
 }
 
 interface SkillBuildSaveData {
+  id: number;
   name: string;
   skillStates: SkillSaveData[];
   selectedSkillTrees: string[];
@@ -23,14 +24,15 @@ interface SkillBuildSaveData {
 
 let _skillBuildAutoIncreasement = 0
 export class SkillBuild {
-  /** Map<skill-id, skill-level> */
   protected _skillStatesMap: Map<Skill, SkillState>
   protected _skillTreesSet: Set<SkillTree>
 
+  loadedId: string | null
   instanceId: number
   name: string
 
   constructor(name: string = '') {
+    this.loadedId = null
     this.instanceId = _skillBuildAutoIncreasement
     _skillBuildAutoIncreasement += 1
 
@@ -45,14 +47,21 @@ export class SkillBuild {
 
   getSkillState(skill: Skill): SkillState {
     if (!this._skillStatesMap.has(skill)) {
+      let level = 0
+
+      // 忍術表中技能的等級跟隨「忍術」
+      if (skill.skillId.startsWith('5-2-')) {
+        level = this.getSkillState(skill.parent.parent.parent.findSkillById('4-5-0')!).level
+      }
+
       this._skillStatesMap.set(skill, {
-        level: 0,
+        level,
         starGemLevel: 0,
         enabled: skill.type === SkillTypes.Passive,
       })
     }
     const state = this._skillStatesMap.get(skill)!
-    return state as SkillState
+    return state
   }
 
   getSkillLevel(skill: Skill): number {
@@ -141,7 +150,7 @@ export class SkillBuild {
   }
 
   clone(): SkillBuild {
-    return SkillBuild.load(this.save())
+    return SkillBuild.load(null, this.save())
   }
 
   save(): SkillBuildSaveData {
@@ -155,13 +164,14 @@ export class SkillBuild {
       }))
     const selectedSkillTrees = [...this._skillTreesSet.keys()].map(skillTree => skillTree.skillTreeId)
     return {
+      id: this.instanceId,
       name: this.name,
       skillStates,
       selectedSkillTrees,
     }
   }
 
-  static load(data: SkillBuildSaveData): SkillBuild {
+  static load(loadCategory: string | null, data: SkillBuildSaveData): SkillBuild {
     const newBuild = new SkillBuild(data.name)
     data.selectedSkillTrees.forEach(skillTreeId => {
       let skillTree: SkillTree | null = null
@@ -196,7 +206,14 @@ export class SkillBuild {
         _state.starGemLevel = state.starGemLevel
       }
     })
+    if (typeof data.id === 'number' && loadCategory !== null) {
+      newBuild.loadedId = `${loadCategory}-${data.id}`
+    }
     return newBuild
+  }
+
+  matchLoadedId(loadCategory: string, id: number | null) {
+    return this.loadedId !== null && id !== null && `${loadCategory}-${id}` === this.loadedId
   }
 
   static loadFromLagacy(buildState: SkillBuildState): SkillBuild {

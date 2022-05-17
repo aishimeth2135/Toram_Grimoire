@@ -26,49 +26,11 @@
           @click="selectedEquipment = equip"
         >
           <template v-if="selectedEquipment === equip || equip === movingEquipment" #content>
+            <div v-if="controls.edit" class="p-2">
+              <CharacterEquipmentDetail :equipment="equip" inner-item />
+            </div>
             <div class="flex items-center justify-end mt-1 space-x-2" @click.stop>
-              <template v-if="!movingEquipment">
-                <template v-if="showAll">
-                  <cy-button-circle
-                    icon="mdi:cursor-move"
-                    small
-                    main-color="green"
-                    @click="movingEquipment = equip"
-                  />
-                  <cy-button-circle
-                    icon="ic:round-arrow-upward"
-                    small
-                    main-color="water-blue"
-                    @click="store.moveEquipment(equip, -1)"
-                  />
-                  <cy-button-circle
-                    icon="ic:round-arrow-downward"
-                    small
-                    main-color="water-blue"
-                    @click="store.moveEquipment(equip, 1)"
-                  />
-                </template>
-                <template v-else>
-                  <cy-button-circle
-                    icon="ic:outline-tips-and-updates"
-                    small
-                    main-color="blue-green"
-                    @click="notify(t('character-simulator.browse-equipments.equipment-item-actions-tips'))"
-                  />
-                </template>
-                <cy-button-circle
-                  icon="bx:copy-alt"
-                  small
-                  @click="copySelectedEquipment"
-                />
-                <cy-button-circle
-                  icon="ic-baseline-delete-outline"
-                  main-color="gray"
-                  small
-                  @click="removeSelectedEquipment"
-                />
-              </template>
-              <template v-else>
+              <template v-if="movingEquipment">
                 <div v-if="equip === movingEquipment" class="ml-1 mr-auto self-end">
                   <cy-icon-text icon="mdi:cursor-move" text-color="light-3" small>
                     {{ t('character-simulator.browse-equipments.move-equipment-title') }}
@@ -93,6 +55,57 @@
                   small
                   main-color="green"
                   @click="movingEquipment = null"
+                />
+              </template>
+              <template v-else>
+                <div class="mr-auto">
+                  <cy-button-circle
+                    icon="ic:round-format-list-bulleted"
+                    small
+                    :selected="controls.edit"
+                    @click="toggle('controls/edit')"
+                  />
+                </div>
+                <template v-if="!controls.edit">
+                  <template v-if="showAll">
+                    <cy-button-circle
+                      icon="mdi:cursor-move"
+                      small
+                      main-color="green"
+                      @click="movingEquipment = equip"
+                    />
+                    <cy-button-circle
+                      icon="ic:round-arrow-upward"
+                      small
+                      main-color="water-blue"
+                      @click="store.moveEquipment(equip, -1)"
+                    />
+                    <cy-button-circle
+                      icon="ic:round-arrow-downward"
+                      small
+                      main-color="water-blue"
+                      @click="store.moveEquipment(equip, 1)"
+                    />
+                  </template>
+                  <template v-else>
+                    <cy-button-circle
+                      icon="ic:outline-tips-and-updates"
+                      small
+                      main-color="blue-green"
+                      @click="notify(t('character-simulator.browse-equipments.equipment-item-actions-tips'))"
+                    />
+                  </template>
+                </template>
+                <cy-button-circle
+                  icon="bx:copy-alt"
+                  small
+                  @click="copySelectedEquipment"
+                />
+                <cy-button-circle
+                  icon="ic-baseline-delete-outline"
+                  main-color="gray"
+                  small
+                  @click="removeSelectedEquipment"
                 />
               </template>
             </div>
@@ -124,9 +137,6 @@
       </div>
     </template>
     <template v-if="selectedEquipment" #extra-content>
-      <div v-if="selectedEquipment" class="bg-white border-1 border-light-2 py-2 px-3">
-        <CharacterEquipmentInfo :equipment="selectedEquipment" />
-      </div>
       <div v-if="compareCharacter" class="bg-white border-1 border-light-2 p-3 mt-3">
         <CharacterStatCompare
           :before="characterStatCategoryResults"
@@ -138,7 +148,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, Ref, ref } from 'vue'
+import { computed, inject, Ref, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { EquipmentField } from '@/lib/Character/Character'
@@ -146,10 +156,11 @@ import { AdditionalGear, Avatar, BodyArmor, CharacterEquipment, MainWeapon, Spec
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 
 import Notify from '@/setup/Notify'
+import ToggleService from '@/setup/ToggleService'
 
 import EquipmentItem from '@/components/common/equipment-item.vue'
 
-import CharacterEquipmentInfo from './character-equipment/character-equipment-info.vue'
+import CharacterEquipmentDetail from './character-equipment/character-equipment-detail.vue'
 import CharacterStatCompare from './character-stats/character-stat-compare.vue'
 
 import { setupCharacterStore } from './setup'
@@ -174,6 +185,8 @@ const { store, equipments, currentCharacter, characterStatCategoryResults } = se
 const showAll = ref(false)
 const selectedEquipment: Ref<CharacterEquipment | null> = ref(null)
 const movingEquipment: Ref<CharacterEquipment | null> = ref(null)
+
+const { controls, toggle } = ToggleService({ controls: [{ name: 'edit', default: true }] as const })
 
 const equipmentAvailable = (eq: CharacterEquipment) => {
   if (!props.targetField) {
@@ -263,6 +276,12 @@ const removeSelectedEquipment = () => {
     }],
   })
 }
+
+watch(() => props.targetField, (newValue) => {
+  if (newValue?.equipment) {
+    selectedEquipment.value = newValue.equipment
+  }
+})
 
 const { appendEquipments, createCustomEquipment } = inject(CharacterSimulatorInjectionKey)!
 </script>

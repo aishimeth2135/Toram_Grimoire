@@ -10,7 +10,7 @@
         {{ t('common.tips.view-unknow-error-tips') }}
       </div>
       <div class="flex justify-center">
-        <cy-button-border @click="store.createSkillBuild()">
+        <cy-button-border @click="characterStore.setCharacterSkillBuild(store.createSkillBuild())">
           {{ t('skill-simulator.create-build') }}
         </cy-button-border>
       </div>
@@ -44,6 +44,8 @@ export default {
 import { onMounted, Ref, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
+
 import { Skill, SkillTree } from '@/lib/Skill/Skill'
 
 import ToggleService from '@/setup/ToggleService'
@@ -60,6 +62,8 @@ const { t } = useI18n()
 const { modals, toggle } = ToggleService({
   modals: ['exportImage', 'exportText'] as const,
 })
+
+const characterStore = useCharacterStore()
 
 const skillBuildComponent: Ref<InstanceType<typeof SkillSimulatorBuild> | null> = ref(null)
 const menuData = ref<MenuData>({

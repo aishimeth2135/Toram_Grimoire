@@ -34,7 +34,10 @@ export const useDamageCalculationStore = defineStore('views-damage-calculation',
     currentCalculationIndex.value = calculations.value.length - 1
   }
 
-  const selectCalculation = (idx: number) => {
+  const selectCalculation = (idx: number | Calculation) => {
+    if (typeof idx !== 'number') {
+      idx = calculations.value.indexOf(idx)
+    }
     currentCalculationIndex.value = idx
   }
 

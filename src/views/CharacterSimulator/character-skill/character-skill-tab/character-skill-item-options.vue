@@ -1,11 +1,22 @@
 <template>
-  <div class="border-1 border-light-2 p-4 rounded-md bg-white">
-    <CharacterSkillItemOptionsStack
-      v-for="container in skillResultsState.stackContainers"
-      :key="container.branchItem.stackId!"
-      :container="container"
-    />
-  </div>
+  <cy-popover>
+    <template #default="{ shown }">
+      <cy-button-icon
+        icon="ic:baseline-settings"
+        inline
+        :selected="shown"
+      />
+    </template>
+    <template #popper>
+      <div class="p-3">
+        <CharacterSkillItemOptionsStack
+          v-for="container in skillResultsState.stackContainers"
+          :key="container.branchItem.stackId!"
+          :container="container"
+        />
+      </div>
+    </template>
+  </cy-popover>
 </template>
 
 <script lang="ts" setup>
