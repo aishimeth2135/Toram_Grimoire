@@ -420,6 +420,7 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
 
 class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> extends SkillBranchItemBase<Parent> {
   readonly suffixBranches: SkillBranchItemSuffix[]
+  readonly emptySuffixBranches: SkillBranchItemSuffix[]
   readonly linkedStackIds: number[]
   readonly stackId: number | null
 
@@ -429,6 +430,7 @@ class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> 
     super(parent, branch)
 
     this.suffixBranches = markRaw([])
+    this.emptySuffixBranches = markRaw([])
 
     this.stackId = this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
 

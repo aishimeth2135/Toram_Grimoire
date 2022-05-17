@@ -5,7 +5,6 @@ custom-equipment:
   default-name-pretext: 自訂
 character-basic:
   title: 角色設定
-  create-character: 新建角色
   character-level: 角色等級
   character-name: 角色名稱
   character-stat-points: 角色能力點數
@@ -42,10 +41,8 @@ create-custom-equipment:
 equipment-info:
   equipment: 裝備配置
   stability: 穩定度
-  confirm-selection: 確定選取
   refining: 精鍊值
   stat-empty: 此裝備沒有能力
-  crystal: 鍛晶
   crystal-empty: 此裝備沒有緞晶
   equipment-type: 裝備類型
 equipment-basic-editor:
@@ -91,10 +88,16 @@ character-damage:
   title: 傷害計算
   target-options-title: 目標數值設定
   options-base-title: 基本設定
+  options-other-title: 其他設定
+  armor-break-display: 顯示降防時傷害
+  armor-break: 降防
   element-none: 無設定
   no-result: 傷害公式待更新
   range-damage-title: 目標距離判定
   no-any-skill-tips: 目前還沒有任何傷害技能～請在技能配置中配置傷害技能以使用傷害計算器0.0
+  test-version-tips: 此功能目前還在測試階段，某些技能的例外狀況還在補齊資料中，可能導致計算結果有誤。
+  basic-tips:
+    - 傷害計算的結果皆為考慮穩定度、命中率、暴擊率等所計算出的傷害期望值。
 enemy-elements:
   title: 目標屬性
   neutral: 無屬性
@@ -137,7 +140,6 @@ food-build:
   title: 料理配置
   disable-foods: 停用料理
   food-build: 料理配置
-  create-food-build: 新增料理配置
   food-build-name: 料理配置名稱
   food-list: 料理清單
   copy-food-build-success-tips: 複製料理配置成功。
@@ -163,7 +165,8 @@ save-load-control:
   deleta-all-data-success-tips: 成功刪除角色模擬器所有資料，系統也已關閉自動存檔功能。請重新整理網頁。
   deleta-all-data-counter-title: 計數器
   deleta-all-data-caption:
-    - 在某些情況下，角色模擬器的檔案可能毀損，導致系統無法正常運行。使用下方的按鈕可以刪除角色模擬器所有資料。自動存檔功能也將暫時失效，意即當前的資料將不會自動儲存。
+    - >-
+      在某些情況下，角色模擬器的檔案可能毀損，導致系統無法正常運行。使用下方的按鈕可以刪除角色模擬器所有資料。自動存檔功能也將暫時失效，意即當前的資料將不會自動儲存。
     - 請將下方的計數器數值調整到10，刪除按鈕就會出現。
     - 將資料刪除成功後，請立即重新整理，來讓系統重新初始化。
   export-build: 匯出配置

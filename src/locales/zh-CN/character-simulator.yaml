@@ -5,7 +5,6 @@ custom-equipment:
   default-name-pretext: 自订
 character-basic:
   title: 角色设定
-  create-character: 新建角色
   character-level: 角色等级
   character-name: 角色名称
   character-stat-points: 角色能力点数
@@ -42,10 +41,8 @@ create-custom-equipment:
 equipment-info:
   equipment: 装备配置
   stability: 稳定度
-  confirm-selection: 确定选取
   refining: 精炼值
   stat-empty: 此装备没有能力
-  crystal: 锻晶
   crystal-empty: 此装备没有缎晶
   equipment-type: 装备类型
 equipment-basic-editor:
@@ -137,7 +134,6 @@ food-build:
   title: 料理配置
   disable-foods: 停用料理
   food-build: 料理配置
-  create-food-build: 新增料理配置
   food-build-name: 料理配置名称
   food-list: 料理清单
   copy-food-build-success-tips: 复制料理配置成功。
@@ -163,7 +159,8 @@ save-load-control:
   deleta-all-data-success-tips: 成功删除角色模拟器所有资料，系统也已关闭自动存档功能。请重新整理网页。
   deleta-all-data-counter-title: 计数器
   deleta-all-data-caption:
-    - 在某些情况下，角色模拟器的档案可能毁损，导致系统无法正常运行。使用下方的按钮可以删除角色模拟器所有资料。自动存档功能也将暂时失效，意即当前的资料将不会自动储存。
+    - >-
+      在某些情况下，角色模拟器的档案可能毁损，导致系统无法正常运行。使用下方的按钮可以删除角色模拟器所有资料。自动存档功能也将暂时失效，意即当前的资料将不会自动储存。
     - 请将下方的计数器数值调整到10，删除按钮就会出现。
     - 将资料删除成功后，请立即重新整理，来让系统重新初始化。
   export-build: 汇出配置

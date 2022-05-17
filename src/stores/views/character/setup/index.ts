@@ -535,8 +535,8 @@ export function setupCharacterStats(
   const computedVarsBase = computed(() => {
     const chara = character.value!
 
-    const isDualSword = chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.OneHandSword)
-        && chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword)
+    const isDualSword = chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.OneHandSword) &&
+        chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword)
 
     const mainField = chara.fieldEquipment(EquipmentFieldTypes.MainWeapon)
     const subField = chara.fieldEquipment(EquipmentFieldTypes.SubWeapon)

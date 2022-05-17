@@ -41,7 +41,12 @@
           :selected="selectedItems.some(_item => item.origin === _item.origin && item.type === _item.type)"
           @click="itemClick(item)"
         >
-          {{ item.origin.statBase.title(item.type) }}
+          <span>
+            {{ item.origin.statBase.title(item.type) }}
+          </span>
+          <span class="text-sm text-light-2 ml-2">
+            {{ item.origin.getPotential(item.type, tmpEquipment) + 'pt' }}
+          </span>
         </cy-button-check>
       </div>
     </div>
@@ -54,23 +59,24 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, toRefs, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
 import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat/enums'
-import { EnchantCategory } from '@/lib/Enchant/Enchant'
+import { EnchantCategory, EnchantEquipment } from '@/lib/Enchant/Enchant'
+import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
 
 import { EnchantStatOptionBase } from './setup'
 
 interface Props {
   visible: boolean;
+  isWeapon: boolean;
+  selectedItems: EnchantStatOptionBase[];
   once?: boolean;
-  isWeapon?: boolean;
   forPositive?: boolean;
   defaultNegative?: boolean;
-  selectedItems?: EnchantStatOptionBase[];
 }
 interface Emits {
   (evt: 'close'): void;
@@ -79,14 +85,11 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
   once: false,
-  isWeapon: true,
   forPositive: false,
   defaultNegative: false,
-  selectedItems: () => [],
 })
 const emit = defineEmits<Emits>()
 
-const { visible } = toRefs(props)
 const { t } = useI18n()
 
 interface EnchantStatCategoryOption {
@@ -125,6 +128,14 @@ const categorys = (() => {
 
 const showNegativeSuggestedList = ref(false)
 
+const tmpEquipment = computed(() => {
+  const equip = new EnchantEquipment()
+  if (!props.isWeapon) {
+    equip.fieldType = EnchantEquipmentTypes.BodyArmor
+  }
+  return equip
+})
+
 const negativeSuggestedList = computed(() => {
   if (props.isWeapon) {
     return ['def', 'mdef', 'dodge', 'natural_hp_regen', 'natural_mp_regen']
@@ -147,10 +158,10 @@ const validCategorys = computed(() => {
       })
     }
   })
-  return categorys
+  return resultCategorys
 })
 
-watch(visible, newValue => {
+watch(() => props.visible, newValue => {
   if (newValue) {
     showNegativeSuggestedList.value = props.defaultNegative
   }

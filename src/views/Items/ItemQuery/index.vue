@@ -445,8 +445,8 @@ const validEquipments = computed(() => {
   const validObtains = conditions.obtains.filter(obtain => obtain.value !== 'unknow' && obtain.selected)
   return equipments.filter(equip => {
     const checkType = validTypes.some(typeItem => typeItem.types.some(item => item.selected && item.value === equip.type))
-    const checkObtain = (unknowObtain && equip.origin!.obtains.length === 0)
-      || validObtains.find(obtain => equip.origin!.obtains.find(eqObtain => eqObtain['type'] === obtain.value))
+    const checkObtain = (unknowObtain && equip.origin!.obtains.length === 0) ||
+      validObtains.find(obtain => equip.origin!.obtains.find(eqObtain => eqObtain['type'] === obtain.value))
     return checkType && checkObtain
   })
 })

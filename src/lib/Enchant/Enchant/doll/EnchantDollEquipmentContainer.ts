@@ -426,9 +426,9 @@ export default class EnchantDollEquipmentContainer {
             if (lastRemainingPotential !== 1 && (lastRemainingPotential - 1) % POTENTIAL === 0) {
               const _pstat = positiveStats.find(stat => stat.equals(currentSpecial.stat)) as EnchantStat
               const maxv = (lastRemainingPotential - 1) / POTENTIAL
-              if (maxv + special.stat.value <= special.stat.potentialConvertThreshold
-                && maxv <= _pstat.value
-                && maxv * POTENTIAL < currentSpecial.stat.belongStep.remainingPotential
+              if (maxv + special.stat.value <= special.stat.potentialConvertThreshold &&
+                maxv <= _pstat.value &&
+                maxv * POTENTIAL < currentSpecial.stat.belongStep.remainingPotential
               ) {
                 originalPotentialList.splice(originalPotentialList.indexOf(special), 1)
                 pstat.value += (statOriginalValue - cur.stat.value)

@@ -1,5 +1,4 @@
 build: 配置
-create-build: 新增配置
 create-custom-item: 新增
 result:
   title: 计算结果

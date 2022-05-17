@@ -7,7 +7,7 @@ import Grimoire from '@/shared/Grimoire'
 import { Character, CharacterSaveData } from '@/lib/Character/Character'
 import { CharacterEquipment, EquipmentSaveData } from '@/lib/Character/CharacterEquipment'
 import { FoodBuild, FoodsSaveData } from '@/lib/Character/Food'
-import { Skill } from '@/lib/Skill/Skill'
+import { Skill, SkillBranch } from '@/lib/Skill/Skill'
 import { CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
 
 import { SkillBuildState, useCharacterSkillStore } from './skill'
@@ -442,6 +442,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   const calculationOptions: Ref<CalculationOptions> = ref({
     proration: 150,
     comboMultiplier: 250,
+    armorBreakDisplay: false,
   })
 
   const { setupDamageCalculationExpectedResult } = (() => {
@@ -478,6 +479,17 @@ export const useCharacterStore = defineStore('view-character', () => {
         skillStates.value.set(_skill, { enabled: false })
       }
       return skillStates.value.get(_skill)!
+    }
+  })()
+
+  const getDamageCalculationSkillBranchState = (() => {
+    // save state by default branch
+    const skillBranchStates = ref(new Map<SkillBranch, { enabled: boolean }>())
+    return (branch: SkillBranch) => {
+      if (!skillBranchStates.value.has(branch)) {
+        skillBranchStates.value.set(branch, { enabled: true })
+      }
+      return skillBranchStates.value.get(branch)!
     }
   })()
 
@@ -518,6 +530,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     targetProperties,
     calculationOptions,
     getDamageCalculationSkillState,
+    getDamageCalculationSkillBranchState,
 
     deleteAllSavedData,
     loadCharacterSimulator,

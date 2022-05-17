@@ -135,8 +135,8 @@ const allEqupments = Grimoire.Items.equipments.slice().reverse()
 
 const searchResults = computed(() => {
   return allEqupments
-    .filter(equip => (equip.category !== -1 && equip.name.toLowerCase().includes(searchText.value.toLowerCase()))
-      || equip.name === searchText.value)
+    .filter(equip => (equip.category !== -1 && equip.name.toLowerCase().includes(searchText.value.toLowerCase())) ||
+      equip.name === searchText.value)
 })
 
 const { currentItems, page, maxPage } = PageControl({

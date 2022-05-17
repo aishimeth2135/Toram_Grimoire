@@ -34,6 +34,7 @@ export interface TargetProperties {
 export interface CalculationOptions {
   proration: number;
   comboMultiplier: number;
+  armorBreakDisplay: boolean;
 }
 
 const promisedAccuracyRateMapping: Partial<Record<EquipmentTypes, number>> = {
@@ -321,9 +322,9 @@ export default function setupDamageCalculation(
       return new Map([
         [CalculationContainerIds.BaseAtk, baseNone || container.value.getOrigin('base') === 'matk'],
         [CalculationContainerIds.BaseMatk, baseNone || container.value.getOrigin('base') === 'atk'],
-        [CalculationContainerIds.BaseDualSword, !character.value
-          || !character.value.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.OneHandSword)
-          || !character.value.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword),
+        [CalculationContainerIds.BaseDualSword, !character.value ||
+          !character.value.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.OneHandSword) ||
+          !character.value.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword),
         ],
         [CalculationContainerIds.StrongerAgainstElement, targetProperties.value.element === null],
         [CalculationContainerIds.UnsheatheAttackConstant, unsheatheDamageHidden],

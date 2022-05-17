@@ -162,8 +162,7 @@ class EnchantEquipment {
       if ((idx === ary.length - 1)) {
         return true
       }
-      return step.remainingPotential < 1
-        || !step.belongEquipment.checkStats(step.index)
+      return step.remainingPotential < 1 || !step.belongEquipment.checkStats(step.index)
     }) || null
   }
 

@@ -1,10 +1,16 @@
 <template>
-  <div>
+  <div class="px-2">
     <div class="border-b-1 border-light-2 pb-2 mb-3">
-      <cy-icon-text text-color="purple" small>
-        {{ t('character-simulator.character-damage.options-base-title') }}
-      </cy-icon-text>
-      <div class="space-y-1.5 pb-3 px-2 pt-1">
+      <div
+        class="flex items-center cursor-pointer border-l-2 hover:border-light-2 py-1 px-2 duration-200"
+        :class="contents.basicMenu ? 'border-light-2' : 'border-light'"
+        @click="toggle('contents/basicMenu')"
+      >
+        <cy-icon-text icon="ic:round-format-list-bulleted" main-color="purple">
+          {{ t('character-simulator.character-damage.options-base-title') }}
+        </cy-icon-text>
+      </div>
+      <div v-if="contents.basicMenu" class="space-y-1.5 px-2 py-2 border-l-2 border-light-2">
         <div>
           <cy-input-counter v-model:value="store.calculationOptions.proration" :range="[50, 250]">
             <template #title>
@@ -19,21 +25,27 @@
             </template>
           </cy-input-counter>
         </div>
+        <div class="pt-2">
+          <cy-icon-text text-color="purple" small>
+            {{ t('character-simulator.character-damage.options-other-title') }}
+          </cy-icon-text>
+          <div>
+            <cy-button-check v-model:selected="store.calculationOptions.armorBreakDisplay">
+              {{ t('character-simulator.character-damage.armor-break-display') }}
+            </cy-button-check>
+          </div>
+        </div>
       </div>
       <div
-        class="flex items-center cursor-pointer py-2 border-t-1 border-light px-2"
+        class="flex items-center cursor-pointer border-l-2 hover:border-light-2 py-1 px-2 duration-200 mt-3"
+        :class="contents.targetMenu ? 'border-light-2' : 'border-light'"
         @click="toggle('contents/targetMenu')"
       >
-        <cy-icon-text icon="ant-design:build-outlined" main-color="orange">
+        <cy-icon-text icon="ic:round-format-list-bulleted" main-color="purple">
           {{ t('character-simulator.character-damage.target-options-title') }}
         </cy-icon-text>
-        <cy-button-icon
-          class="ml-auto"
-          :icon="contents.targetMenu ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
-          :selected="contents.targetMenu"
-        />
       </div>
-      <div v-if="contents.targetMenu" class="space-y-1.5 px-2">
+      <div v-if="contents.targetMenu" class="space-y-1.5 px-2 py-2 border-l-2 border-light-2">
         <div>
           <cy-input-counter v-model:value="store.targetProperties.level">
             <template #title>
@@ -113,13 +125,27 @@
           />
         </div>
       </div>
+      <div class="space-y-1 pt-3 pb-2">
+        <div>
+          <cy-icon-text icon="ic-outline-info" text-color="light-3" align-v="start" small>
+            {{ t('character-simulator.character-damage.basic-tips.0') }}
+          </cy-icon-text>
+        </div>
+        <div>
+          <cy-icon-text icon="ic-outline-info" text-color="light-3" align-v="start" small>
+            {{ t('character-simulator.character-damage.test-version-tips') }}
+          </cy-icon-text>
+        </div>
+      </div>
     </div>
-    <div v-if="validResultStates.length > 0">
-      <CharacterDamageSkillItem
-        v-for="skillResultsState in validResultStates"
-        :key="skillResultsState.skill.skillId"
-        :skill-results-state="skillResultsState"
-      />
+    <div v-if="validResultStates.length > 0" class="w-full overflow-x-auto">
+      <div style="min-width: 22.5rem">
+        <CharacterDamageSkillItem
+          v-for="skillResultsState in validResultStates"
+          :key="skillResultsState.skill.skillId"
+          :skill-results-state="skillResultsState"
+        />
+      </div>
     </div>
     <cy-default-tips v-else>
       {{ t('character-simulator.character-damage.no-any-skill-tips') }}
@@ -151,7 +177,7 @@ import { setupCharacterSkillBuildStore, setupCharacterStore } from '../setup'
 const { store } = setupCharacterStore()
 const { t } = useI18n()
 const { contents, toggle } = ToggleService({
-  contents: ['targetMenu'] as const,
+  contents: ['basicMenu', 'targetMenu'] as const,
 })
 
 const skillResultsStates = computed(() => {

@@ -19,19 +19,10 @@
           </div>
         </div>
         <div v-if="skillResultsState.stackContainers.length > 0 && enabled" class="ml-auto inline-flex">
-          <cy-button-icon
-            icon="ic:baseline-settings"
-            inline
-            @click="toggle('contents/options')"
-          />
+          <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
         </div>
       </div>
       <div v-if="enabled && !invalid">
-        <cy-transition type="fade">
-          <div v-if="contents.options" class="my-2 flex">
-            <CharacterSkillItemOptions class="ml-auto" :skill-results-state="skillResultsState" />
-          </div>
-        </cy-transition>
         <div class="pt-2 pl-2 space-y-2">
           <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
             <CharacterDamageSkillResultItem :result="result" />
@@ -50,8 +41,6 @@ import { SkillResultsState } from '@/stores/views/character/setup'
 
 import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
 
-import ToggleService from '@/setup/ToggleService'
-
 import CharacterDamageSkillResultItem from './character-damage-skill-result-item.vue'
 import CharacterSkillItemOptions from '../character-skill/character-skill-tab/character-skill-item-options.vue'
 
@@ -65,7 +54,6 @@ const props = defineProps<Props>()
 
 const { store } = setupCharacterStore()
 const { t } = useI18n()
-const { contents, toggle } = ToggleService({ contents: ['options'] })
 
 const enabled = computed<boolean>({
   get() {
