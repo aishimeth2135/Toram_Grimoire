@@ -111,13 +111,12 @@ html.theme--night-mode {
   font-family: 'Itim', 'Noto Sans TC', Microsoft JhengHei, sans-serif;
 }
 
-
 html {
   background-color: var(--white);
   font-size: 16px;
-}
+  height: 100%;
+  width: 100%;
 
-html {
   @apply text-base main--font-base;
 
   & input, & textarea {
@@ -150,6 +149,9 @@ body {
   color: var(--primary-dark);
   position: relative;
   background-color: rgba(var(--rgb-primary-light), 0.1);
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
 }
 
 input, textarea {

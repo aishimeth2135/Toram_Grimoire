@@ -1,5 +1,5 @@
 <template>
-  <AppLayoutBottomMenu>
+  <AppLayoutBottom>
     <template #default>
       <cy-button-inline
         :icon="mode === 'skill' ? 'bx:bxs-book-bookmark' : 'bx:bx-star'"
@@ -42,9 +42,9 @@
     </template>
     <template #side-contents>
       <cy-transition v-if="currentSkillBuild" type="fade" mode="out-in">
-        <div
+        <AppLayoutBottomSideContent
           v-if="contents.mainMenu"
-          class="space-y-2 border-1 border-light-2 rounded-md p-4 bg-white"
+          class="space-y-2 p-3"
         >
           <div class="flex items-center">
             <cy-title-input
@@ -91,10 +91,10 @@
               {{ t('skill-simulator.export-text-title') }}
             </cy-button-border>
           </div>
-        </div>
-        <div
+        </AppLayoutBottomSideContent>
+        <AppLayoutBottomSideContent
           v-else-if="contents.selectSkillTree"
-          class="space-y-2 border-1 border-light-2 rounded-md p-4 bg-white"
+          class="space-y-2 p-3"
         >
           <div v-for="stc in skillTreeCategorys" :key="`stc-${stc.id}`">
             <div>
@@ -111,10 +111,10 @@
               </cy-button-check>
             </div>
           </div>
-        </div>
-        <div
+        </AppLayoutBottomSideContent>
+        <AppLayoutBottomSideContent
           v-else-if="contents.goSkillTree"
-          class="space-y-2 border-1 border-light-2 rounded-md p-4 bg-white"
+          class="space-y-2 p-3"
         >
           <div v-for="categoryItem in jumpSkillTreeCategorys" :key="`stc-${categoryItem.origin.id}`">
             <div>
@@ -131,8 +131,8 @@
               </cy-button-inline>
             </div>
           </div>
-        </div>
-        <div v-else class="space-x-2.5 flex items-center pointer-events-auto">
+        </AppLayoutBottomSideContent>
+        <div v-else class="space-x-2.5 flex items-center">
           <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
             <cy-icon-text icon="mdi:script-outline" small>
               {{ t('skill-simulator.skill-level-point') }}
@@ -152,7 +152,7 @@
         </div>
       </cy-transition>
     </template>
-  </AppLayoutBottomMenu>
+  </AppLayoutBottom>
 </template>
 
 <script lang="ts" setup>
@@ -168,7 +168,8 @@ import { SkillTree } from '@/lib/Skill/Skill'
 import ToggleService from '@/setup/ToggleService'
 import Notify from '@/setup/Notify'
 
-import AppLayoutBottomMenu from '@/components/app-layout/app-layout-bottom-menu.vue'
+import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
+import AppLayoutBottomSideContent from '@/components/app-layout/app-layout-bottom-side-content.vue'
 
 import { MenuMode, MenuData, setupSkillBuildStore } from './setup'
 

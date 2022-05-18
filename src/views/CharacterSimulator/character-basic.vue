@@ -133,7 +133,7 @@
         <cy-button-radio
           v-for="option in characterOptionalBaseStatOptions"
           :key="option"
-          :selected="currentCharacter.baseStat(option) ? true : false"
+          :selected="!!currentCharacter!.baseStat(option)"
           @click="currentCharacter!.setOptionalBaseStat(option)"
         >
           {{ option }}

@@ -1,4 +1,4 @@
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive } from 'vue'
 import type { Ref, UnwrapNestedRefs } from 'vue'
 
 import type { UnionToIntersection } from '@/shared/utils/type'
@@ -30,12 +30,13 @@ type ToggleServiceGroups<Groups extends ToggleServiceOptions> = {
   [GroupId in keyof Groups]: ToggleServiceGroupContents<Groups[GroupId]>;
 }
 type ToggleServiceGroupContents<Group extends ToggleServiceOptionGroup> = {
-  [ContentId in (ContentKeys<Group> | '$inactive')]: Ref<boolean>;
+  [ContentId in ContentKeys<Group>]: Ref<boolean>;
 }
 
-type ToggleServiceResult<Groups extends ToggleServiceOptions> = ToggleServiceGroups<Groups> & { toggle: ToggleHandler<Groups> }
-
-const RESERVED_KEYS = ['$inactive']
+type ToggleServiceResult<Groups extends ToggleServiceOptions> = ToggleServiceGroups<Groups> & {
+  toggle: ToggleHandler<Groups>;
+  inactive: (groupId: keyof Groups) => boolean;
+}
 
 export default function ToggleService<GroupMap extends ToggleServiceOptions>(groups: GroupMap): UnwrapNestedRefs<ToggleServiceResult<GroupMap>> {
   const dataMap = {} as ToggleServiceGroups<GroupMap>
@@ -49,8 +50,6 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(gro
         group[name as (keyof typeof group)] = ref(defaultValue)
       }
     })
-    const subKeys = subs.map(subItem => typeof subItem === 'object' ? subItem.name : subItem) as (keyof typeof group)[]
-    group.$inactive = computed(() => subKeys.every(subItem => !group[subItem].value))
     dataMap[groupKey as keyof GroupMap] = group
   })
 
@@ -66,7 +65,7 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(gro
       targetGroup[sub].value = force
       if (groupForce !== undefined) {
         Object.entries(targetGroup).forEach(([key, item]) => {
-          if (key !== sub && !RESERVED_KEYS.includes(key)) {
+          if (key !== sub) {
             item.value = groupForce
           }
         })
@@ -80,6 +79,11 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(gro
     }
   })
 
+  const inactive = (groupId: keyof GroupMap) => {
+    const subs = Object.values(dataMap[groupId]) as Ref<boolean>[]
+    return subs.every(subItem => subItem.value)
+  }
+
   const resultGroups = {} as ToggleServiceGroups<GroupMap>
   Object.keys(dataMap).forEach((key: keyof typeof resultGroups) => {
     resultGroups[key] = dataMap[key]
@@ -87,6 +91,7 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(gro
 
   return reactive({
     toggle,
+    inactive,
     ...resultGroups,
   })
 }

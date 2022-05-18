@@ -40,6 +40,12 @@
   </nav>
 </template>
 
+<script lang="ts">
+export default {
+  name: 'AppNav',
+}
+</script>
+
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'

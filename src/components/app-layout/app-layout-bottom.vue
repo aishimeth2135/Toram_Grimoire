@@ -1,7 +1,7 @@
 <template>
   <div class="sticky bottom-0 p-2 z-20 pointer-events-none">
     <div v-if="slots['side-buttons'] || slots['side-contents']" class="flex items-end justify-end mb-2 space-x-2">
-      <div v-if="slots['side-contents']" class="pointer-events-auto overflow-y-auto" style="max-height: calc(75vh - 4rem)">
+      <div v-if="slots['side-contents']" class="pointer-events-auto pl-0.5">
         <slot name="side-contents"></slot>
       </div>
       <div v-if="slots['side-buttons']" class="flex flex-col items-end space-y-2 pointer-events-auto">

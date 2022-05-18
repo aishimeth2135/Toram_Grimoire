@@ -51,7 +51,7 @@ result:
       - 為了方便使用者對步驟作微調，((!單項成功率))會顯示超過100%，最後步驟剩潛為正時才會顯示((!無限))。
       - ((!期望成功率))有著實際成功率的概念，因此最高只會顯示100%。
 stat-display-mode:
-  title: 切換能力項目的資訊
+  title: 能力項目的資訊
   potential-cost: 潛力消耗
   material-point: 素材消耗
 tips:
@@ -69,16 +69,3 @@ save-tips:
   export-success: 匯出成功。
   import-success: 匯入$0成功。
   import-failed: 匯入時發生錯誤。
-footer-guide:
-  title: 關於下方選單
-  title-close: 新增一個步驟來關閉這個說明視窗0.0
-  toggle-result:
-    titles:
-      - 正常模式
-      - 懸浮模式
-    caption: 點擊按鈕來切換步驟結果的顯示模式，可以在不用滑動到最下面的情況下快速查看步驟結果。
-  toggle-display-mode:
-    titles:
-      - 潛力消耗
-      - 素材消耗
-    caption: 對於每個步驟的能力項目後方會顯示什麼資訊，可以在兩者之間作切換。預設為「潛力消耗」

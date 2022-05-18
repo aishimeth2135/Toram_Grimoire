@@ -1,5 +1,5 @@
 <template>
-  <CyPopover class="cy--options">
+  <CyPopover class="cy--options" placement="bottom-end">
     <template #default="{ shown }">
       <slot name="title" :shown="shown">
         <div class="cy--options-item cy--options-title flex items-center bg-white border border-light-2 hover:border-light-3 duration-200">
@@ -7,7 +7,6 @@
           <div v-else class="flex w-full justify-center py-0.5">
             <cy-icon-text icon="ic:outline-help-outline" />
           </div>
-          <!-- <cy-icon-text icon="ic:round-arrow-drop-down" class="ml-auto" /> -->
         </div>
       </slot>
     </template>

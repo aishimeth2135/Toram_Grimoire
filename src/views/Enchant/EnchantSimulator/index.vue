@@ -1,6 +1,6 @@
 <template>
   <section v-if="currentBuild">
-    <div class="sticky top-0 border-b border-purple mb-4 z-10 bg-white">
+    <!-- <div class="sticky top-0 border-b border-purple mb-4 z-10 bg-white">
       <div
         class="cursor-pointer px-4 py-1.5 flex items-center border-purple"
         @click="toggle('contents/top')"
@@ -14,138 +14,7 @@
           :selected="contents.top"
         />
       </div>
-    </div>
-    <div
-      class="p-4 top-12 border-1 border-light-2 rounded-lg mx-4 mb-4 z-10 bg-white duration-300"
-      :class="{ sticky: contents.top, 'border-purple': contents.top }"
-    >
-      <div class="flex items-center">
-        <cy-title-input
-          v-model:value="currentBuild.name"
-          icon="ant-design:build-outlined"
-          class="w-full"
-        />
-        <cy-options
-          :value="store.currentBuild"
-          :options="buildDatas.map(item => ({ id: item.id, value: item.origin }))"
-          addable
-          @update:value="store.setCurrentBuild($event)"
-          @add-item="createBuild"
-        >
-          <template #title>
-            <cy-button-border icon="ant-design:build-outlined" />
-          </template>
-          <template #item="{ value }">
-            <cy-icon-text icon="ant-design:build-outlined">
-              {{ value.name }}
-            </cy-icon-text>
-          </template>
-        </cy-options>
-      </div>
-      <div class="flex items-center flex-wrap">
-        <div class="mx-2">
-          <cy-button-border
-            icon="bx-bx-copy"
-            @click="copyBuild"
-          >
-            {{ t('global.copy') }}
-          </cy-button-border>
-          <cy-button-border
-            icon="mdi-export"
-            main-color="blue-green"
-            @click="exportBuild"
-          >
-            {{ t('global.export') }}
-          </cy-button-border>
-          <cy-button-border
-            icon="mdi-import"
-            main-color="blue-green"
-            @click="importBuild"
-          >
-            {{ t('global.import') }}
-          </cy-button-border>
-          <cy-button-border
-            icon="ic-baseline-delete-outline"
-            main-color="gray"
-            @click="removeBuild"
-          >
-            {{ t('global.delete') }}
-          </cy-button-border>
-        </div>
-      </div>
-      <cy-icon-text small text-color="purple" class="mt-4">
-        {{ t('enchant-simulator.base-options') }}
-      </cy-icon-text>
-      <div class="flex items-center flex-wrap p-2 mr-2">
-        <cy-input-counter v-model:value="currentEquipment.originalPotential">
-          <template #title>
-            <cy-icon-text>{{ t('enchant-simulator.equipment-original-potential') }}</cy-icon-text>
-          </template>
-        </cy-input-counter>
-        <cy-button-icon
-          icon="jam-hammer"
-          class="ml-2 my-2"
-          icon-color="water-blue-light"
-          icon-color-hover="water-blue"
-          :selected="contents.extraOptions"
-          @click="toggle('contents/extraOptions')"
-        />
-      </div>
-      <cy-transition type="fade">
-        <div v-if="contents.extraOptions">
-          <cy-icon-text small text-color="water-blue" icon-color="water-blue" class="mt-4">
-            {{ t('enchant-simulator.advanced-options') }}
-          </cy-icon-text>
-          <div class="p-2">
-            <cy-input-counter
-              v-model:value="currentEquipment.basePotential"
-              main-color="water-blue-light"
-            >
-              <template #title>
-                <cy-icon-text>{{ t('enchant-simulator.equipment-base-potential') }}</cy-icon-text>
-              </template>
-            </cy-input-counter>
-          </div>
-          <cy-icon-text small text-color="water-blue" icon-color="water-blue" class="mt-4">
-            {{ t('enchant-simulator.common-options') }}
-          </cy-icon-text>
-          <div class="p-2">
-            <cy-input-counter
-              v-model:value="config.characterLevel"
-              :step="10"
-              main-color="water-blue-light"
-            >
-              <template #title>
-                <cy-icon-text>{{ t('enchant-simulator.common-options') }}</cy-icon-text>
-              </template>
-            </cy-input-counter>
-            <cy-input-counter
-              v-model:value="config.smithLevel"
-              :step="10"
-              class="mt-3"
-              main-color="water-blue-light"
-            >
-              <template #title>
-                <cy-icon-text>{{ t('enchant-simulator.smith-level') }}</cy-icon-text>
-              </template>
-            </cy-input-counter>
-          </div>
-        </div>
-      </cy-transition>
-      <cy-icon-text small text-color="purple" class="mt-3">
-        {{ t('enchant-simulator.equipment-type') }}
-      </cy-icon-text>
-      <div class="py-0.5 px-2">
-        <cy-button-check
-          v-for="option in equipmentTypeOptions"
-          :key="option.id"
-          :selected="currentEquipmentType === option.id"
-          @click="currentEquipmentType = option.id"
-        >
-          {{ option.text }}
-        </cy-button-check>
-      </div>
-    </div>
+    </div> -->
     <div class="steps-content-container">
       <div class="steps-content">
         <div
@@ -174,105 +43,187 @@
         @select-item="selectItem"
       />
     </div>
-    <div
-      class="border-1 border-light-2 pt-2 pb-4 pl-2 pr-4 mx-3 mt-4 rounded-lg bg-white duration-300"
-      :style="contents.result ? 'bottom: 4.25rem; max-height: calc(90vh - 6.5rem)' : 'bottom: 4.25rem'"
-      :class="{
-        'sticky': contents.result,
-        'overflow-y-auto': contents.result,
-        'animate-slide-up': contents.result,
-        'border-purple': contents.result,
-      }"
-    >
-      <EnchantResult :equipment="currentEquipment" />
-    </div>
-    <div class="sticky bottom-3">
-      <div
-        v-if="currentEquipment.allSteps.length === 0 && !contents.result"
-        class="border-1 border-light-2 py-4 px-5 mx-4 mt-3 rounded-lg bg-white"
-      >
-        <div class="text-center">
-          <cy-button-border
-            icon="ic-round-add-circle-outline"
-            main-color="red"
-            @click="appendStep"
-          >
-            {{ t('enchant-simulator.append-enchant-step') }}
-          </cy-button-border>
-        </div>
-        <div class="text-sm text-water-blue pt-1 text-center">
-          {{ t('enchant-simulator.footer-guide.title-close') }}
-        </div>
-        <div class="pt-3">
-          <cy-icon-text small main-color="orange">
-            {{ t('enchant-simulator.footer-guide.title') }}
+    <AppLayoutBottom>
+      <template #default>
+        <div class="flex items-center justify-end py-0.5 px-1">
+          <cy-icon-text icon="bx-bx-star" class="mr-3">
+            {{ t('enchant-simulator.success-rate') }}
           </cy-icon-text>
+          <span class="text-light-4">
+            {{ successRate }}
+          </span>
         </div>
-        <div class="pt-1">
-          <cy-icon-text
-            icon="akar-icons:circle-chevron-down"
-            text-color="purple"
-            small
-            class="mr-3"
-          >
-            {{ t('enchant-simulator.footer-guide.toggle-result.titles.0') }}
-          </cy-icon-text>
-          <cy-icon-text
-            icon="akar-icons:circle-chevron-up"
-            text-color="purple"
-            small
-          >
-            {{ t('enchant-simulator.footer-guide.toggle-result.titles.1') }}
-          </cy-icon-text>
-        </div>
-        <div class="pl-3 text-sm">
-          {{ t('enchant-simulator.footer-guide.toggle-result.caption') }}
-        </div>
-        <div class="mt-3">
-          <cy-icon-text
-            icon="mdi-cube-outline"
-            text-color="purple"
-            icon-color="water-blue"
-            small
-            class="mr-3"
-          >
-            {{ t('enchant-simulator.footer-guide.toggle-display-mode.titles.0') }}
-          </cy-icon-text>
-          <cy-icon-text
-            icon="mdi-cube-off-outline"
-            text-color="purple"
-            icon-color="water-blue"
-            small
-          >
-            {{ t('enchant-simulator.footer-guide.toggle-display-mode.titles.1') }}
-          </cy-icon-text>
-        </div>
-        <div class="pl-3 text-sm">
-          {{ t('enchant-simulator.footer-guide.toggle-display-mode.caption') }}
-        </div>
-      </div>
-      <div class="border-1 border-light-2 py-1 pl-4 pr-6 mx-3 mt-3 rounded-full flex items-center flex-wrap bg-white">
-        <cy-button-icon
-          :icon="contents.result ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
-          :selected="contents.result"
+      </template>
+      <template #main-end>
+        <cy-button-circle
+          icon="ic:round-format-list-bulleted"
+          main-color="water-blue"
           @click="toggle('contents/result')"
         />
-        <cy-button-icon
-          class="ml-2"
-          :icon="state.statDisplayMode === 1 ? 'mdi-cube-outline' : 'mdi-cube-off-outline'"
-          main-color="water-blue"
-          :selected="state.statDisplayMode === 1"
-          @click="state.statDisplayMode = state.statDisplayMode === 1 ? 0 : 1"
+      </template>
+      <template #side-buttons>
+        <cy-button-circle
+          icon="ic:baseline-settings"
+          main-color="light-3"
+          @click="toggle('contents/top')"
         />
-        <!-- <cy-button-icon @click="optimizeSteps" /> -->
-        <cy-icon-text icon="bx-bx-star" class="ml-auto mr-3">
-          {{ t('enchant-simulator.success-rate') }}
-        </cy-icon-text>
-        <span class="text-light-4">
-          {{ successRate }}
-        </span>
-      </div>
-    </div>
+      </template>
+      <template #side-contents>
+        <cy-transition type="fade" mode="out-in">
+          <AppLayoutBottomSideContent v-if="contents.result" class="p-3">
+            <EnchantResult :equipment="currentEquipment" />
+          </AppLayoutBottomSideContent>
+          <AppLayoutBottomSideContent v-else-if="contents.top" class="p-3">
+            <div class="flex items-center">
+              <cy-title-input
+                v-model:value="currentBuild.name"
+                icon="ant-design:build-outlined"
+                class="w-full"
+              />
+              <cy-options
+                :value="store.currentBuild"
+                :options="buildDatas.map(item => ({ id: item.id, value: item.origin }))"
+                addable
+                @update:value="store.setCurrentBuild($event)"
+                @add-item="createBuild"
+              >
+                <template #title>
+                  <cy-button-circle icon="ant-design:build-outlined" small />
+                </template>
+                <template #item="{ value }">
+                  <cy-icon-text icon="ant-design:build-outlined">
+                    {{ value.name }}
+                  </cy-icon-text>
+                </template>
+              </cy-options>
+            </div>
+            <div class="flex items-center flex-wrap">
+              <div class="mx-2">
+                <cy-button-border
+                  icon="bx-bx-copy"
+                  @click="copyBuild"
+                >
+                  {{ t('global.copy') }}
+                </cy-button-border>
+                <cy-button-border
+                  icon="mdi-export"
+                  main-color="blue-green"
+                  @click="exportBuild"
+                >
+                  {{ t('global.export') }}
+                </cy-button-border>
+                <cy-button-border
+                  icon="mdi-import"
+                  main-color="blue-green"
+                  @click="importBuild"
+                >
+                  {{ t('global.import') }}
+                </cy-button-border>
+                <cy-button-border
+                  icon="ic-baseline-delete-outline"
+                  main-color="gray"
+                  @click="removeBuild"
+                >
+                  {{ t('global.delete') }}
+                </cy-button-border>
+              </div>
+            </div>
+            <cy-icon-text small text-color="purple" class="mt-4">
+              {{ t('enchant-simulator.base-options') }}
+            </cy-icon-text>
+            <div class="flex items-center flex-wrap p-2 mr-2">
+              <cy-input-counter v-model:value="currentEquipment.originalPotential">
+                <template #title>
+                  <cy-icon-text>{{ t('enchant-simulator.equipment-original-potential') }}</cy-icon-text>
+                </template>
+              </cy-input-counter>
+              <cy-button-icon
+                icon="jam-hammer"
+                class="ml-2 my-2"
+                icon-color="water-blue-light"
+                icon-color-hover="water-blue"
+                :selected="contents.extraOptions"
+                @click="toggle('contents/extraOptions')"
+              />
+            </div>
+            <cy-transition type="fade">
+              <div v-if="contents.extraOptions">
+                <cy-icon-text small text-color="water-blue" icon-color="water-blue" class="mt-4">
+                  {{ t('enchant-simulator.advanced-options') }}
+                </cy-icon-text>
+                <div class="p-2">
+                  <cy-input-counter
+                    v-model:value="currentEquipment.basePotential"
+                    main-color="water-blue-light"
+                  >
+                    <template #title>
+                      <cy-icon-text>{{ t('enchant-simulator.equipment-base-potential') }}</cy-icon-text>
+                    </template>
+                  </cy-input-counter>
+                </div>
+                <cy-icon-text small text-color="water-blue" icon-color="water-blue" class="mt-4">
+                  {{ t('enchant-simulator.common-options') }}
+                </cy-icon-text>
+                <div class="p-2">
+                  <cy-input-counter
+                    v-model:value="config.characterLevel"
+                    :step="10"
+                    main-color="water-blue-light"
+                  >
+                    <template #title>
+                      <cy-icon-text>{{ t('enchant-simulator.common-options') }}</cy-icon-text>
+                    </template>
+                  </cy-input-counter>
+                  <cy-input-counter
+                    v-model:value="config.smithLevel"
+                    :step="10"
+                    class="mt-3"
+                    main-color="water-blue-light"
+                  >
+                    <template #title>
+                      <cy-icon-text>{{ t('enchant-simulator.smith-level') }}</cy-icon-text>
+                    </template>
+                  </cy-input-counter>
+                </div>
+              </div>
+            </cy-transition>
+            <cy-icon-text small text-color="purple" class="mt-3">
+              {{ t('enchant-simulator.equipment-type') }}
+            </cy-icon-text>
+            <div class="py-0.5 px-2">
+              <cy-button-check
+                v-for="option in equipmentTypeOptions"
+                :key="option.id"
+                :selected="currentEquipmentType === option.id"
+                @click="currentEquipmentType = option.id"
+              >
+                {{ option.text }}
+              </cy-button-check>
+            </div>
+            <div class="pt-2 mt-2 border-t border-light-2">
+              <cy-icon-text small text-color="purple" class="mt-3">
+                {{ t('enchant-simulator.stat-display-mode.title') }}
+              </cy-icon-text>
+              <div class="py-0.5 px-2">
+                <cy-button-check
+                  :selected="state.statDisplayMode === 0"
+                  @update:selected="state.statDisplayMode = 0"
+                >
+                  {{ t('enchant-simulator.footer-guide.toggle-display-mode.titles.0') }}
+                </cy-button-check>
+                <cy-button-check
+                  :selected="state.statDisplayMode === 1"
+                  main-color="water-blue"
+                  @update:selected="state.statDisplayMode = 1"
+                >
+                  {{ t('enchant-simulator.footer-guide.toggle-display-mode.titles.1') }}
+                </cy-button-check>
+              </div>
+            </div>
+          </AppLayoutBottomSideContent>
+        </cy-transition>
+      </template>
+    </AppLayoutBottom>
   </section>
   <div v-else class="p-4">
     <div class="text-center mb-3">
@@ -297,11 +248,15 @@ import { EnchantBuild, EnchantStep } from '@/lib/Enchant/Enchant'
 import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
 import { EnchantBuildSaveData } from '@/lib/Enchant/Enchant/build'
 
+
 import ToggleService from '@/setup/ToggleService'
 import AutoSave from '@/setup/AutoSave'
 import Notify from '@/setup/Notify'
 import Confirm from '@/setup/Confirm'
 import ExportBuild from '@/setup/ExportBuild'
+
+import AppLayoutBottomSideContent from '@/components/app-layout/app-layout-bottom-side-content.vue'
+import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 
 import EnchantResult from './enchant-result.vue'
 import EnchantSelectItem from './enchant-select-item.vue'
@@ -517,7 +472,7 @@ div.steps-content-container {
 
     & > .step-container {
       width: 22rem;
-      @apply m-2 max-w-full;
+      @apply m-1.5 max-w-full;
     }
   }
 }
