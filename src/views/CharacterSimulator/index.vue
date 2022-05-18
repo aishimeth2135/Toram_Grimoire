@@ -17,7 +17,7 @@
         </cy-button-inline>
       </div>
     </div> -->
-    <AppLayoutBottomMenu>
+    <AppLayoutBottom>
       <template #main-end>
         <div class="flex items-center space-x-2">
           <cy-button-circle
@@ -54,7 +54,7 @@
       </template>
       <template #side-contents>
         <cy-transition type="fade" mode="out-in">
-          <div v-if="sideContents.tabs" class="border border-light-2 bg-white overflow-x-auto shadow m-0.5">
+          <AppLayoutBottomSideContent v-if="sideContents.tabs">
             <div style="min-width: 15rem">
               <cy-list-item
                 v-for="content in tabDatas"
@@ -67,13 +67,13 @@
                 </cy-icon-text>
               </cy-list-item>
             </div>
-          </div>
-          <div v-else-if="sideContents.panel" class="border border-light-3 bg-white px-4 py-3 overflow-x-auto m-0.5 shadow">
+          </AppLayoutBottomSideContent>
+          <AppLayoutBottomSideContent v-else-if="sideContents.panel" class="p-2.5 pl-4">
             <CharacterInfoPanel @open-tab="panelOpenTab" />
-          </div>
+          </AppLayoutBottomSideContent>
         </cy-transition>
       </template>
-    </AppLayoutBottomMenu>
+    </AppLayoutBottom>
 
     <CharacterBrowseEquipments
       :visible="modals.browseEquipment"
@@ -122,7 +122,8 @@ import { EquipmentField } from '@/lib/Character/Character'
 import ToggleService from '@/setup/ToggleService'
 import AutoSave from '@/setup/AutoSave'
 
-import AppLayoutBottomMenu from '@/components/app-layout/app-layout-bottom-menu.vue'
+import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
+import AppLayoutBottomSideContent from '@/components/app-layout/app-layout-bottom-side-content.vue'
 
 import CharacterBasic from './character-basic.vue'
 import CharacterStats from './character-stats/index.vue'

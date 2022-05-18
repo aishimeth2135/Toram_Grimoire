@@ -142,7 +142,7 @@ const { tabs, toggle } = ToggleService({
 })
 const datasStore = useDatasStore()
 
-const setTab = (target: keyof typeof tabs) => {
+const setTab = (target: 'skillInfo' | 'skillHistory') => {
   toggle(`tabs/${target}`, true, false)
 }
 

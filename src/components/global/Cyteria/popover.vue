@@ -43,14 +43,16 @@ import {
   computePosition, autoUpdate, flip, size, shift, offset, limitShift,
   DetectOverflowOptions, ComputePositionConfig,
 } from '@floating-ui/dom'
-import { CSSProperties, Ref, ref, nextTick, useSlots } from 'vue'
+import { CSSProperties, Ref, ref, nextTick, useSlots, computed, watch } from 'vue'
 
 interface Props {
   tag?: string;
+  placement?: string;
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   tag: 'div',
+  placement: 'bottom-start',
 })
 
 const slots = useSlots()
@@ -64,7 +66,7 @@ const overFlowOptions: Partial<DetectOverflowOptions> = {
   padding: 8,
   rootBoundary: 'viewport',
 }
-const options: Partial<ComputePositionConfig> = {
+const baseOptions: Partial<ComputePositionConfig> = {
   strategy: 'fixed',
   middleware: [
     offset(6),
@@ -87,15 +89,21 @@ const options: Partial<ComputePositionConfig> = {
       ...overFlowOptions,
     }),
   ],
-  placement: 'bottom-start',
 }
+
+const options = computed(() => {
+  return {
+    ...baseOptions,
+    placement: props.placement,
+  } as Partial<ComputePositionConfig>
+})
 
 const updatePosition = async () => {
   await nextTick()
   if (!rootElement.value || !wrapperElement.value) {
     return
   }
-  const data = await computePosition(rootElement.value!, wrapperElement.value!, options)
+  const data = await computePosition(rootElement.value!, wrapperElement.value!, options.value)
   wrapperStyle.value = {
     ...wrapperStyle.value,
     left: `${data.x}px`,
@@ -121,6 +129,8 @@ const handlePopperHide = (evt: CustomEvent) => {
   }
   togglePopper(false)
 }
+
+watch(options, () => updatePosition())
 </script>
 
 <style lang="postcss" scoped>

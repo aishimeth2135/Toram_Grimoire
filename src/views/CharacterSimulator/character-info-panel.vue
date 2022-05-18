@@ -1,5 +1,5 @@
 <template>
-  <div style="min-width: 18rem" class="space-y-2 pr-2">
+  <div style="min-width: 18rem" class="space-y-2">
     <div v-if="currentCharacter" class="flex flex-start w-full">
       <div class="w-full">
         <div>

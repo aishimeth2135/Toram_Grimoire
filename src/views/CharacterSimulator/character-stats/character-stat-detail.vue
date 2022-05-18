@@ -26,52 +26,56 @@
     >
       <CharacterStatDetailEquipments :equipment-texts="showStatDetailDatas.conditionalBase.title.equipments" />
     </cy-icon-text>
-    <div
-      v-for="data in showStatDetailDatas.datas"
-      :key="data.iid"
-      class="mt-1"
-    >
-      <cy-icon-text icon="mdi:label-outline" text-color="purple">
-        <template v-if="(typeof data.title !== 'object')">
-          {{ data.title }}
-        </template>
-        <template v-else>
-          <span>{{ data.title.text }}</span>
-          <span class="ml-1.5 text-light-3">{{ data.title.value }}</span>
-        </template>
-      </cy-icon-text>
+    <div class="max-w-full overflow-x-auto pb-0.5 mb-0.5">
       <div
-        v-if="data.lines.length !== 0"
-        class="pl-2 mt-0.5 pb-1"
+        v-for="data in showStatDetailDatas.datas"
+        :key="data.iid"
+        class="mt-1"
       >
+        <cy-icon-text icon="mdi:label-outline" text-color="purple">
+          <template v-if="(typeof data.title !== 'object')">
+            {{ data.title }}
+          </template>
+          <template v-else>
+            <span>{{ data.title.text }}</span>
+            <span class="ml-1.5 text-light-3">{{ data.title.value }}</span>
+          </template>
+        </cy-icon-text>
         <div
-          v-for="line in data.lines"
-          :key="'line-' + line.iid"
-          class="flex items-center"
+          v-if="data.lines.length !== 0"
+          class="pl-2 mt-0.5 pb-1"
         >
-          <cy-icon-text
-            v-if="typeof line.title === 'string'"
-            icon="ic-round-add"
-            small
+          <div
+            v-for="line in data.lines"
+            :key="'line-' + line.iid"
+            class="flex items-center flex-wrap w-max"
           >
-            {{ line.title }}
-          </cy-icon-text>
-          <cy-icon-text v-else icon="ic-round-add" small>
-            <CharacterStatDetailEquipments
-              v-if="line.title.equipments.length !== 0"
-              :equipment-texts="line.title.equipments"
-              class="mr-2"
-            />
-            <span class="space-x-1">
-              <span
-                v-for="caption in line.title.captions"
-                :key="caption.iid"
-              >
-                {{ caption.text }}
+            <cy-icon-text
+              v-if="typeof line.title === 'string'"
+              icon="ic-round-add"
+              small
+            >
+              {{ line.title }}
+            </cy-icon-text>
+            <template v-else>
+              <cy-icon-text icon="ic-round-add" small>
+                <CharacterStatDetailEquipments
+                  v-if="line.title.equipments.length !== 0"
+                  :equipment-texts="line.title.equipments"
+                  class="mr-2"
+                />
+              </cy-icon-text>
+              <span class="space-x-1">
+                <span
+                  v-for="caption in line.title.captions"
+                  :key="caption.iid"
+                >
+                  {{ caption.text }}
+                </span>
               </span>
-            </span>
-          </cy-icon-text>
-          <span class="text-sm text-light-3 ml-2">{{ line.value }}</span>
+            </template>
+            <span class="text-sm text-light-3 ml-2">{{ line.value }}</span>
+          </div>
         </div>
       </div>
     </div>

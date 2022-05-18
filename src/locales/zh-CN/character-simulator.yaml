@@ -88,10 +88,16 @@ character-damage:
   title: 伤害计算
   target-options-title: 目标数值设定
   options-base-title: 基本设定
+  options-other-title: 其他设定
+  armor-break-display: 显示降防时伤害
+  armor-break: 降防
   element-none: 无设定
   no-result: 伤害公式待更新
   range-damage-title: 目标距离判定
   no-any-skill-tips: 目前还没有任何伤害技能～请在技能配置中配置伤害技能以使用伤害计算器0.0
+  test-version-tips: 此功能目前还在测试阶段，某些技能的例外状况还在补齐资料中，可能导致计算结果有误。
+  basic-tips:
+    - 伤害计算的结果皆为考虑稳定度、命中率、暴击率等所计算出的伤害期望值。
 enemy-elements:
   title: 目标属性
   neutral: 无属性

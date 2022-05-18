@@ -208,7 +208,7 @@ const enchantResult = computed(() => {
         text: stat.showCurrent(),
         negative: stat.value < 0,
       }]
-      const textParts = t('enchant-simulator.result.enchant-step-each').split(/\{[a-zA-Z]+\}/)
+      const textParts = t('enchant-simulator.result.enchant-step-each', { stat: '{}', target: '{}' }).split('{}')
       insertOdd(textParts, tparts)
       parts = textParts
       text = parts.map(item => typeof item !== 'string' ? item.text : item).join('')
