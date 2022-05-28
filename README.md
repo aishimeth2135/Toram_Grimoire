@@ -5,9 +5,3 @@ This is the web tool of mobile game 🎲 "Toram Online ([Asobimo,Inc.](https://a
 
 - ☕ Author: Cyteria
 - 📧 Email: cyteria39@gmail.com
-
-## License
-
-[MIT](https://opensource.org/licenses/MIT)
-
-Copyright (c) 2019, Cyteria
