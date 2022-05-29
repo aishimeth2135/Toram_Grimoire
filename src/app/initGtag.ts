@@ -8,7 +8,7 @@ export function initGtag(app: App<Element>, router: Router) {
     const options = {
       appName: 'cy-grimoire',
       config: {
-        id: 'UA-140158974-1',
+        id: 'G-RHS8RFJF8S',
       },
       pageTrackerTemplate(to: RouteLocationNormalized) {
         let toPath = to.path
