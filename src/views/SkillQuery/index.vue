@@ -1,5 +1,5 @@
 <template>
-  <section class="app--skill-query--wrapper flex flex-col">
+  <AppLayoutMain>
     <cy-top-header class="cursor-pointer" @click="toggle('contents/search')">
       <cy-icon-text v-if="currentSkill" icon="bx:bxs-book-bookmark">
         {{ currentSkill.name }}
@@ -12,7 +12,7 @@
     </cy-top-header>
     <div class="px-1">
       <div ref="skillTreeCategoryMenuElement" class="p-1">
-        <cy-button-border
+        <cy-button-action
           v-for="stc in skillRoot.skillTreeCategorys"
           :key="stc.id"
           icon="uil:books"
@@ -20,11 +20,11 @@
           @click="selectCurrentSkillTreeCategory(stc)"
         >
           {{ stc.name }}
-        </cy-button-border>
+        </cy-button-action>
       </div>
       <cy-hr />
       <div v-if="currentSkillTreeCategory" class="p-1">
-        <cy-button-border
+        <cy-button-action
           v-for="st in currentSkillTreeCategory.skillTrees"
           :key="st.id"
           icon="bx:bxs-book-bookmark"
@@ -32,7 +32,7 @@
           @click="selectCurrentSkillTree(st)"
         >
           {{ st.name }}
-        </cy-button-border>
+        </cy-button-action>
       </div>
       <div v-if="currentSkillTree" class="max-w-full overflow-x-auto">
         <SkillTreeDiagram
@@ -69,8 +69,14 @@
       @close="toggle('contents/search', false)"
       @submit="selectCurrentSkillFromSearch"
     />
-  </section>
+  </AppLayoutMain>
 </template>
+
+<script lang="ts">
+export default {
+  name: 'SkillQuery',
+}
+</script>
 
 <script setup lang="ts">
 import { computed, ref, nextTick } from 'vue'
@@ -84,6 +90,8 @@ import { SkillRoot, SkillTree, SkillTreeCategory, Skill } from '@/lib/Skill/Skil
 import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer'
 
 import ToggleService from '@/setup/ToggleService'
+
+import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import SkillTreeDiagram from './skill-tree-diagram.vue'
 import SkillEffect from './skill-effect.vue'

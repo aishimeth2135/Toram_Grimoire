@@ -65,7 +65,7 @@ const leave = (el: Element, done: Function) => {
   })
 }
 // const enter = (el: Element, done: Function) => {
-//   const pwhite = getComputedStyle(document.body).getPropertyValue('--white').trim()
+//   const pwhite = getComputedStyle(document.body).getPropertyValue('--app-white').trim()
 //   const opts = window.innerHeight > window.innerWidth ? {
 //     width: '150vh',
 //     height: '150vh',
@@ -110,8 +110,8 @@ onMounted(() => {
 //   width: 5rem;
 //   height: 5rem;
 //   border-radius: 50%;
-//   background-color: var(--primary-light-3);
-//   border: 0.2rem solid var(--primary-light-3);
+//   background-color: var(--app-light-3);
+//   border: 0.2rem solid var(--app-light-3);
 //   position: fixed;
 //   transform-origin: center;
 //   left: calc(50% - 2.6rem);

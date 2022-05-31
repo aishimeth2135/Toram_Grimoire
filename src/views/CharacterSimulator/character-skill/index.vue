@@ -17,12 +17,12 @@
     </div>
     <cy-hr />
     <div class="flex items-center max-w-full overflow-x-auto">
-      <cy-button-border :selected="tabs.active" icon="uil:books" @click="toggle('tabs/active', true, false)">
+      <cy-button-action :selected="tabs.active" icon="uil:books" @click="toggle('tabs/active', true, false)">
         {{ t('character-simulator.skill-build.active-skills') }}
-      </cy-button-border>
-      <cy-button-border :selected="tabs.passive" icon="uil:books" @click="toggle('tabs/passive', true, false)">
+      </cy-button-action>
+      <cy-button-action :selected="tabs.passive" icon="uil:books" @click="toggle('tabs/passive', true, false)">
         {{ t('character-simulator.skill-build.passive-skills') }}
-      </cy-button-border>
+      </cy-button-action>
       <cy-button-icon
         icon="ic:round-settings"
         :selected="contents.options"

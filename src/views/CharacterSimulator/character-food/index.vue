@@ -18,19 +18,19 @@
           </cy-options>
         </div>
         <div class="flex items-center">
-          <cy-button-border
+          <cy-button-action
             icon="bx:copy-alt"
             @click="copyCurrentFoodBuild"
           >
             {{ t('global.copy') }}
-          </cy-button-border>
-          <cy-button-border
+          </cy-button-action>
+          <cy-button-action
             icon="ic-baseline-delete-outline"
-            main-color="gray"
+            color="secondary"
             @click="removeCurrentFoodBuild"
           >
             {{ t('global.remove') }}
-          </cy-button-border>
+          </cy-button-action>
         </div>
       </div>
     </div>

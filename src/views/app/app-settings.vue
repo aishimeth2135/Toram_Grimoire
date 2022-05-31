@@ -1,6 +1,11 @@
 <template>
   <span v-if="storageAvailable" class="app--settings">
-    <cy-button-icon icon="ic-baseline-settings" @click="toggle('modals/main')" />
+    <cy-button-inline
+      icon="ic-baseline-settings"
+      @click="(toggle('modals/main'), leftMenuStore.toggleVisible())"
+    >
+      {{ t('app.settings.title') }}
+    </cy-button-inline>
     <cy-modal
       v-model:visible="modals.main"
       class="main--window"
@@ -24,13 +29,14 @@
         <cy-icon-text icon="mdi-creation" text-color="purple">
           {{ t('app.settings.update.new-version-detected') }}
         </cy-icon-text>
-        <cy-button-border
-          icon="mdi-coffee-outline"
-          class="ml-4"
-          @click="swUpdate"
-        >
-          {{ t('app.settings.update.force-update') }}
-        </cy-button-border>
+        <div class="pl-4">
+          <cy-button-action
+            icon="mdi-coffee-outline"
+            @click="swUpdate"
+          >
+            {{ t('app.settings.update.force-update') }}
+          </cy-button-action>
+        </div>
       </div>
       <div class="space-y-2">
         <div class="app--settings-column">
@@ -164,9 +170,9 @@
               {{ t('app.settings.clear-spreadsheets-caches.tips-3') }}
             </cy-icon-text>
             <div class="buttons">
-              <cy-button-border icon="ic-round-delete" @click="clearSpreadsheetsCaches">
+              <cy-button-action icon="ic-round-delete" @click="clearSpreadsheetsCaches">
                 {{ t('app.settings.clear-spreadsheets-caches.button-text') }}
-              </cy-button-border>
+              </cy-button-action>
             </div>
           </fieldset>
         </div>
@@ -190,12 +196,12 @@
               {{ t('app.settings.storage-backup.restriction-homepage') }}
             </cy-default-tips>
             <div v-else class="buttons">
-              <cy-button-border icon="ic-round-save" @click="saveLocalStorage">
+              <cy-button-action icon="ic-round-save" @click="saveLocalStorage">
                 {{ t('app.settings.storage-backup.save') }}
-              </cy-button-border>
-              <cy-button-border icon="bx-bx-loader-circle" @click="loadLocalStorage">
+              </cy-button-action>
+              <cy-button-action icon="bx-bx-loader-circle" @click="loadLocalStorage">
                 {{ t('app.settings.storage-backup.load') }}
-              </cy-button-border>
+              </cy-button-action>
             </div>
           </fieldset>
         </div>
@@ -217,6 +223,7 @@ import { storeToRefs } from 'pinia'
 
 import { useMainStore } from '@/stores/app/main'
 import { useSettingStore } from '@/stores/app/setting'
+import { useLeftMenuStore } from '@/stores/app/left-menu'
 
 import { APP_STORAGE_KEYS } from '@/shared/consts'
 import CY from '@/shared/utils/Cyteria'
@@ -226,6 +233,7 @@ import Notify from '@/setup/Notify'
 
 const { t } = useI18n()
 const mainStore = useMainStore()
+const leftMenuStore = useLeftMenuStore()
 
 const { modals, toggle } = ToggleService({ modals: ['main'] as const })
 

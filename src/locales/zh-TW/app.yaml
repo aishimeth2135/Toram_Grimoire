@@ -35,14 +35,17 @@ about:
     skill-data: 技能資料
     equipment-data: 裝備資料
     other: 其他
-  donate:
+  sponsor:
     title: 贊助
     sub-title: 感謝所有願意提供贊助的人～
     group: 公會贊助
-    donor: 個人贊助
+    personal: 個人贊助
   words:
     title: 雜談
     sub-title: 就是一些無關緊要的話w
+  cooperation:
+    title: 合作
+    join: 加入
 settings:
   title: 設定
   update:

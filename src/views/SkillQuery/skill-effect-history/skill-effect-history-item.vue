@@ -165,7 +165,7 @@ const { contents, toggle } = ToggleService({
 
 <style lang="postcss" scoped>
 .skill-effect-history-item-wrapper {
-  border-top: 1px solid var(--primary-light);
+  border-top: 1px solid var(--app-light);
   &.detail-active {
     @apply border-l-1 border-light pb-2 mb-2;
   }

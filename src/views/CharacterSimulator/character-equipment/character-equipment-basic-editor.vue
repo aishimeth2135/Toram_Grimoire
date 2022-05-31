@@ -43,9 +43,9 @@
       </div>
     </div>
     <div class="mt-3">
-      <cy-button-border icon="ic-round-add" @click="editStat(currentEquipment)">
+      <cy-button-action icon="ic-round-add" @click="editStat(currentEquipment)">
         {{ t('character-simulator.equipment-basic-editor.edit-stats.title') }}
-      </cy-button-border>
+      </cy-button-action>
     </div>
     <div v-if="hasOther" class="mt-3">
       <cy-icon-text

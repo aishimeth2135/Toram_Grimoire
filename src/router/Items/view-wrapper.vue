@@ -1,9 +1,3 @@
 <template>
-  <article>
-    <router-view />
-  </article>
+  <router-view />
 </template>
-
-<script>
-export default {}
-</script>

@@ -1,9 +1,10 @@
 export default class Color {
   static List = [
     'white',
-    'dark', 'light', 'light-2', 'light-3', 'light-4',
+    'dark', 'dark-light',
+    'light', 'light-2', 'light-3', 'light-4',
 
-    'purple',
+    'purple', 'purple-light',
 
     'red', 'red-light',
 
@@ -18,10 +19,10 @@ export default class Color {
   ]
   static MappingList: Record<string, string> = {
     'white': 'white',
-    'dark': 'light-4',
+    'dark-light': 'dark',
     'light': 'light-2',
     'light-2': 'light-3',
-    'purple': 'light-4',
+    'purple-light': 'purple',
     'red-light': 'red',
     'water-blue-light': 'water-blue',
     'blue-purple-light': 'blue-purple',

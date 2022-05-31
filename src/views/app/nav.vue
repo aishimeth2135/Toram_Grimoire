@@ -1,5 +1,5 @@
 <template>
-  <nav class="border-b border-solid border-light flex items-center py-1 px-3 mb-4 bg-white">
+  <nav class="border-b border-solid border-light flex items-center py-1 px-3 mb-4 bg-white fixed top-0 w-full">
     <cy-button-icon icon="ic:round-menu" @click="leftMenuStore.toggleVisible()" />
     <div class="inline-flex items-center whitespace-nowrap overflow-y-auto px-2 text-sm">
       <!-- <cy-icon-text icon="potum" icon-src="custom" class="mr-2" /> -->
@@ -53,7 +53,7 @@ import { useI18n } from 'vue-i18n'
 import { useNavStore } from '@/stores/app/nav'
 import { useLeftMenuStore } from '@/stores/app/left-menu'
 
-import AppSettings from './settings.vue'
+import AppSettings from './app-settings.vue'
 
 const { t } = useI18n()
 

@@ -1,9 +1,11 @@
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import Color from '@/shared/services/Color'
 
 const ColorList = Color.List
 
-function colorValidator(value) {
+function colorValidator(value: string) {
   return value === 'default' || value === '!default' || ColorList.includes(value)
 }
 
@@ -45,18 +47,18 @@ const ColorSetProps = {
   },
 }
 
-function getColorSetStyle(src) {
-  const props = {}
+type PropKeys = keyof typeof ColorSetProps
 
-  Object.keys(ColorSetProps).forEach(key => props[key] = src[key])
+function getColorSetStyle(src: Record<PropKeys, string>) {
+  const props = {} as Record<PropKeys, string>
 
-  /**
-   * @param {string} id
-   * @param {string} defaultValue
-   */
-  const defaultProp = (id, defaultValue) => {
+  (Object.keys(ColorSetProps) as PropKeys[]).forEach(key => {
+    props[key] = src[key]
+  })
+
+  const defaultProp = (id: string, defaultValue: string) => {
     const [name, type = ''] = id.split('/')
-    const key = name + 'Color' + (type ? (type[0].toUpperCase() + type.slice(1)) : '')
+    const key = (name + 'Color' + (type ? (type[0].toUpperCase() + type.slice(1)) : '')) as PropKeys
     if (props[key] === '!default') {
       props[key] = defaultValue
       return
@@ -78,7 +80,7 @@ function getColorSetStyle(src) {
   defaultProp('border', 'light')
   defaultProp('border/hover', 'light-3')
 
-  const handleColor = color => `var(--primary-${color})`
+  const handleColor = (color: string) => `var(--app-${color})`
 
   return {
     '--color-set--text-color': handleColor(props.textColor),
@@ -87,37 +89,17 @@ function getColorSetStyle(src) {
     '--color-set--text-color-hover': handleColor(props.textColorHover),
     '--color-set--icon-color-hover': handleColor(props.iconColorHover),
     '--color-set--border-color-hover': handleColor(props.borderColorHover),
-  }
+  } as Record<string, string>
 }
 
 export { ColorSetProps, getColorSetStyle }
 
-export default {
+export default defineComponent({
   props: ColorSetProps,
   computed: {
     colorSetStyle() {
       return getColorSetStyle(this)
     },
   },
-}
+})
 </script>
-
-<style lang="less" scoped>
-// .cy--base--color-content {
-//   @colors: ~'dark', ~'light', ~'light-2', ~'light-3', ~'light-4', ~'purple',
-//     ~'red', ~'red-light', ~'water-blue', ~'water-blue-light',
-//     ~'gray', ~'gray-light', ~'orange', ~'orange-light', ~'green',
-//     ~'blue-green', ~'blue-green-light';
-//   @color-texts: ~'text', ~'icon', ~'border';
-//   each(@colors, .(@color) {
-//     each(@color-texts, .(@name) {
-//       &.@{name}-color-@{color} {
-//         --@{name}-color: ~'var(--primary-@{color})';
-//       }
-//       &.@{name}-color-hover-@{color} {
-//         --@{name}-color-hover: ~'var(--primary-@{color})';
-//       }
-//     })
-//   });
-// }
-</style>

@@ -8,12 +8,12 @@
   >
     <template #default>
       <div class="flex items-center justify-end mb-3">
-        <cy-button-border icon="ic:round-add-circle-outline" @click="createCustomEquipment">
+        <cy-button-action icon="ic:round-add-circle-outline" @click="createCustomEquipment">
           {{ t('character-simulator.custom-equipment.button-title') }}
-        </cy-button-border>
-        <cy-button-border icon="ci:table-add" @click="appendEquipments">
+        </cy-button-action>
+        <cy-button-action icon="ci:table-add" @click="appendEquipments">
           {{ t('character-simulator.browse-equipments.append-equipments') }}
-        </cy-button-border>
+        </cy-button-action>
       </div>
       <transition-group v-if="displayEquipments.length > 0" tag="div">
         <EquipmentItem
@@ -122,17 +122,17 @@
           {{ t('global.all') }}
         </cy-button-switch>
         <div class="flex items-center ml-auto">
-          <cy-button-border
+          <cy-button-action
             v-if="targetField"
             icon="ic-round-done"
             :disabled="!selectedEquipmentAvailable"
             @click="submit"
           >
             {{ t('global.confirm') }}
-          </cy-button-border>
-          <cy-button-border icon="ic-round-close" @click="closeModal">
+          </cy-button-action>
+          <cy-button-action icon="ic-round-close" @click="closeModal">
             {{ t('global.close') }}
-          </cy-button-border>
+          </cy-button-action>
         </div>
       </div>
     </template>

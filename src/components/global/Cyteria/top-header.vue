@@ -14,16 +14,17 @@ export default {
 
 <style lang="postcss" scoped>
 .cy--top-header {
-	--shadow-height: 1rem;
-	--container-height: 4rem;
-	--shadow-mask-color: var(--white);
-	--primary-bgcolor: var(--white);
+	--shadow-height: 0.5rem;
+	--container-height: 3.5rem;
+	--shadow-mask-color: var(--app-white);
+	--app-bgcolor: var(--app-white);
 	--base-z-index: 15;
 	position: sticky;
 	top: calc(-1 * var(--shadow-height));
 	height: var(--container-height);
 	z-index: var(--base-z-index);
 	margin-bottom: 1px;
+	margin-top: var(--shadow-height);
 
 	&:not(.transparent) {
 		&::before {
@@ -31,12 +32,12 @@ export default {
 			display: block;
 			height: var(--shadow-height);
 			position: sticky;
-			box-shadow: 0 0.2rem 0.4rem -0.2rem var(--primary-light-2);
+			box-shadow: 0 0.2rem 0.4rem -0.2rem var(--app-light-2);
 			top: calc(var(--container-height) - 2 * var(--shadow-height));
 		}
 
 		& > .content {
-			background-color: var(--primary-bgcolor);
+			background-color: var(--app-bgcolor);
 			border-radius: 0.5rem 0.5rem 0 0;
 		}
 	}

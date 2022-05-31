@@ -46,6 +46,7 @@ rules:
   semi: off
   comma-dangle: off
   object-curly-spacing: off
+  space-before-function-paren: off
   # vue/no-mutating-props: off
   semi-spacing: error
   space-infix-ops: error
@@ -81,11 +82,6 @@ rules:
     - warn
     - before: false
       after: true
-  space-before-function-paren:
-    - warn
-    - anonymous: always
-      named: never
-      asyncArrow: always
   array-bracket-spacing:
     - warn
     - never
@@ -115,6 +111,11 @@ rules:
     - error
   "@typescript-eslint/no-dupe-class-members":
     - error
+  "@typescript-eslint/space-before-function-paren":
+    - warn
+    - anonymous: always
+      named: never
+      asyncArrow: always
   "@typescript-eslint/indent":
     - error
     - 2

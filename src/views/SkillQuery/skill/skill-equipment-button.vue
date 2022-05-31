@@ -1,14 +1,11 @@
 <template>
-  <cy-button-border
-    :icon="null"
-    border-color="light"
-    border-color-hover="light-3"
+  <cy-button-action
     :selected="selected"
     :class="{
       'py-1': iconDatas.every(iconData => iconData.icons.every(icon => !icon.text)),
     }"
   >
-    <template #icon>
+    <template #default>
       <template v-for="(iconData, idx) in iconDatas" :key="iconData.iid">
         <cy-icon-text
           v-if="idx !== 0"
@@ -34,7 +31,7 @@
         </div>
       </template>
     </template>
-  </cy-button-border>
+  </cy-button-action>
 </template>
 
 <script lang="ts" setup>

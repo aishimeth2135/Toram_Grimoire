@@ -46,17 +46,17 @@
     </template>
     <template #footer="{ closeModal }">
       <div class="flex items-center justify-end w-full">
-        <cy-button-border
+        <cy-button-action
           icon="ic-round-done"
           class="ml-auto"
           :disabled="selectedEquipments.length === 0"
           @click="submit"
         >
           {{ t('global.confirm') }}
-        </cy-button-border>
-        <cy-button-border icon="ic-round-close" @click="closeModal">
+        </cy-button-action>
+        <cy-button-action icon="ic-round-close" @click="closeModal">
           {{ t('global.close') }}
-        </cy-button-border>
+        </cy-button-action>
       </div>
     </template>
     <template #extra-content>

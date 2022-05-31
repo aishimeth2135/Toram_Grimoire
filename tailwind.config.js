@@ -1,7 +1,7 @@
 function createColorConfig(varName) {
   const handleValue = !varName ?
-    (colorName, primary = true) => `var(--${primary ? 'primary-' : ''}${colorName})` :
-    (colorName, primary = true) => `rgba(var(--rgb-${primary ? 'primary-' : ''}${colorName}), var(${varName}, 1))`
+    (colorName) => `var(--app-${colorName})` :
+    (colorName) => `rgba(var(--rgb-app-${colorName}), var(${varName}, 1))`
   return {
     light: {
       DEFAULT: handleValue('light'),
@@ -13,8 +13,8 @@ function createColorConfig(varName) {
       DEFAULT: handleValue('dark'),
       light: handleValue('dark-light'),
     },
-    white: handleValue('white', false),
-    black: handleValue('black', false),
+    white: handleValue('white'),
+    black: handleValue('black'),
     red: {
       DEFAULT: handleValue('red'),
       light: handleValue('red-light'),
@@ -47,6 +47,19 @@ function createColorConfig(varName) {
     transparent: 'transparent',
     current: 'currentcolor',
   }
+}
+
+const borderWidth = {
+  DEFAULT: '1px',
+  '0': '0',
+  '1': '0.125rem',
+  '2': '0.25rem',
+  '3': '0.375rem',
+  '4': '0.5rem',
+  '5': '0.625rem',
+  '6': '0.75rem',
+  '7': '0.875rem',
+  '8': '1rem',
 }
 
 module.exports = {
@@ -82,18 +95,9 @@ module.exports = {
       '100': '1',
     },
     borderColor: createColorConfig('--tw-border-opacity'),
-    borderWidth: {
-      DEFAULT: '1px',
-      '0': '0',
-      '1': '0.125rem',
-      '2': '0.25rem',
-      '3': '0.375rem',
-      '4': '0.5rem',
-      '5': '0.625rem',
-      '6': '0.75rem',
-      '7': '0.875rem',
-      '8': '1rem',
-    },
+    borderWidth,
+    outlineWidth: borderWidth,
+    outlineColor: createColorConfig('--tw-border-opacity'),
     zIndex: {
       '-1': '-1',
       '1': '1',

@@ -21,13 +21,13 @@
       </div>
     </template>
     <template #footer-actions>
-      <cy-button-border
+      <cy-button-action
         icon="uil:image-download"
         :disabled="!currentImage"
         @click="downloadImage"
       >
         {{ t('global.export') }}
-      </cy-button-border>
+      </cy-button-action>
     </template>
   </cy-modal>
 </template>

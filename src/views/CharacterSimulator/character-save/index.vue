@@ -10,15 +10,15 @@
         </cy-icon-text>
       </div>
       <div class="pl-3 flex items-center">
-        <cy-button-border
+        <cy-button-action
           icon="mdi:export"
           @click="toggle('modals/exportSaveData', true)"
         >
           {{ t('character-simulator.save-load-control.export-save-data-title') }}
-        </cy-button-border>
-        <cy-button-border icon="mdi:import" @click="importSaveData">
+        </cy-button-action>
+        <cy-button-action icon="mdi:import" @click="importSaveData">
           {{ t('global.import') }}
-        </cy-button-border>
+        </cy-button-action>
       </div>
     </div>
     <div class="p-4 border-t border-light-2">
@@ -26,18 +26,18 @@
         {{ t('character-simulator.save-load-control.manual-save-load-caption') }}
       </cy-default-tips>
       <div class="pl-3">
-        <cy-button-border
+        <cy-button-action
           icon="ic-round-save"
           @click="store.saveCharacterSimulator()"
         >
           {{ t('character-simulator.save-load-control.manual-save-button-title') }}
-        </cy-button-border>
-        <cy-button-border
+        </cy-button-action>
+        <cy-button-action
           icon="bx-bx-loader-circle"
           @click="store.loadCharacterSimulator()"
         >
           {{ t('character-simulator.save-load-control.manual-load-button-title') }}
-        </cy-button-border>
+        </cy-button-action>
       </div>
     </div>
     <div class="p-4 border-t border-light-2">
@@ -58,14 +58,15 @@
             </cy-icon-text>
           </template>
         </cy-input-counter>
-        <cy-button-border
-          v-if="deleteCounter === 10"
-          icon="ic-round-delete"
-          style="margin-top: 0.6rem;"
-          @click="store.deleteAllSavedData(), notify(t('character-simulator.save-load-control.deleta-all-data-success-tips'))"
-        >
-          {{ t('character-simulator.save-load-control.deleta-all-data-title') }}
-        </cy-button-border>
+        <div class="mt-2">
+          <cy-button-action
+            v-if="deleteCounter === 10"
+            icon="ic-round-delete"
+            @click="store.deleteAllSavedData(), notify(t('character-simulator.save-load-control.deleta-all-data-success-tips'))"
+          >
+            {{ t('character-simulator.save-load-control.deleta-all-data-title') }}
+          </cy-button-action>
+        </div>
       </div>
     </div>
     <CharacterSaveExport
@@ -77,6 +78,12 @@
     {{ t('app.features.localStorage-inavailable-tips') }}
   </cy-default-tips>
 </template>
+
+<script lang="ts">
+export default {
+  name: 'CharacterSave',
+}
+</script>
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'

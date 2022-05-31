@@ -182,7 +182,7 @@ export default {
   //   background-color: #fff;
   // }
   &.display-bg {
-    background-color: var(--white);
+    background-color: var(--app-white);
     z-index: 99;
   }
 
@@ -209,7 +209,7 @@ export default {
   right: 0;
   top: 0;
   &:hover {
-    background-color: rgba(var(--rgb-black), 0.3);
+    background-color: rgba(var(--rgb-app-black), 0.3);
   }
 }
 </style>

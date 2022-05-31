@@ -1,5 +1,5 @@
 <template>
-  <section class="main--enchant-doll">
+  <AppLayoutMain>
     <div ref="first-step" class="step-content">
       <div>
         <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
@@ -92,13 +92,13 @@
       </cy-transition>
     </div>
     <div v-if="stepCounter > StepContents.Equipment" class="flex justify-center mb-4">
-      <cy-button-border
+      <cy-button-action
         icon="mdi-leaf"
-        main-color="orange"
+        color="orange"
         @click="backToStep(StepContents.Equipment)"
       >
         {{ t('enchant-doll.back-to-step') }}
-      </cy-button-border>
+      </cy-button-action>
     </div>
     <cy-transition type="fade" @after-enter="stepAfterEnter">
       <div
@@ -150,12 +150,12 @@
           </div>
         </div>
         <div class="text-center">
-          <cy-button-border
+          <cy-button-action
             icon="ic-round-add-circle-outline"
             @click="openSelectItem(SelectItemModes.Positive)"
           >
             {{ t('enchant-doll.select-item') }}
-          </cy-button-border>
+          </cy-button-action>
         </div>
         <div class="flex justify-center mt-4">
           <cy-button-check v-model:selected="selectPositiveStatState.autoFill">
@@ -172,13 +172,13 @@
       </div>
     </cy-transition>
     <div v-if="stepCounter > StepContents.SelectPositiveStat" class="flex justify-center mb-4">
-      <cy-button-border
+      <cy-button-action
         icon="mdi-leaf"
-        main-color="orange"
+        color="orange"
         @click="backToStep(StepContents.SelectPositiveStat)"
       >
         {{ t('enchant-doll.back-to-step') }}
-      </cy-button-border>
+      </cy-button-action>
     </div>
     <cy-transition type="fade" @after-enter="stepAfterEnter">
       <div
@@ -327,12 +327,12 @@
           v-if="!selectNegativeStatState.auto || negativeStats.length < doll.numNegativeStats"
           class="text-center"
         >
-          <cy-button-border
+          <cy-button-action
             icon="ic-round-add-circle-outline"
             @click="openSelectItem(SelectItemModes.Negative)"
           >
             {{ t('enchant-doll.select-item') }}
-          </cy-button-border>
+          </cy-button-action>
           <div v-if="selectNegativeStatState.auto && autoNegativeStats.length < doll.numNegativeStats" class="mt-2">
             <div>
               <cy-icon-text
@@ -359,13 +359,13 @@
       </div>
     </cy-transition>
     <div v-if="stepCounter > StepContents.SelectNegativeStat" class="flex justify-center mb-4">
-      <cy-button-border
+      <cy-button-action
         icon="mdi-leaf"
-        main-color="orange"
+        color="orange"
         @click="backToStep(StepContents.SelectNegativeStat)"
       >
         {{ t('enchant-doll.back-to-step') }}
-      </cy-button-border>
+      </cy-button-action>
     </div>
     <cy-transition type="fade" @after-enter="stepAfterEnter">
       <div
@@ -460,13 +460,13 @@
         {{ t('enchant-doll.next-step') }}
       </cy-button>
       <span :class="{ 'absolute': stepCounter !== 3, 'right-0': stepCounter !== 3 }">
-        <cy-button-border
+        <cy-button-action
           icon="bx-bx-reset"
-          main-color="gray"
+          color="gray"
           @click="reset"
         >
           {{ t('global.reset') }}
-        </cy-button-border>
+        </cy-button-action>
       </span>
     </div>
     <div
@@ -499,7 +499,7 @@
       @select-item="selectItem"
       @close="toggle('windows/selectItem', false)"
     />
-  </section>
+  </AppLayoutMain>
 </template>
 
 <script lang="ts">
@@ -525,6 +525,8 @@ import { AutoFindNegaitveStatsTypes, EnchantDollBaseTypes } from '@/lib/Enchant/
 import ToggleService from '@/setup/ToggleService'
 import Notify from '@/setup/Notify'
 import Confirm from '@/setup/Confirm'
+
+import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import EnchantResult from '../EnchantSimulator/enchant-result.vue'
 import EnchantSelectItem from '../EnchantSimulator/enchant-select-item.vue'
@@ -872,14 +874,17 @@ watch(computed(() => doll.value.config.baseType), () => {
 <style lang="postcss" scoped>
 .step-content {
   padding: 2rem 1rem;
-  border-top: 1px solid var(--primary-purple);
   min-height: 70vh;
   position: relative;
+
+  & + .step-content {
+    border-top: 1px solid var(--app-purple);
+  }
 
   & > .disabled-mask {
     @apply absolute w-full h-full z-5 cursor-not-allowed top-0 left-0;
 
-    background-color: rgba(var(--rgb-white), 0.6);
+    background-color: rgba(var(--rgb-app-white), 0.6);
   }
 }
 </style>

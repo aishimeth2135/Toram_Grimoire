@@ -23,8 +23,8 @@ export default {
 .sticky-header {
 	--shadow-height: 1rem;
 	--container-height: 4rem;
-	--shadow-mask-color: var(--white);
-	--primary-bgcolor: var(--white);
+	--shadow-mask-color: var(--app-white);
+	--app-bgcolor: var(--app-white);
 	--base-z-index: 10;
 	position: sticky;
 	top: calc(-1 * var(--shadow-height));
@@ -38,12 +38,12 @@ export default {
 			display: block;
 			height: var(--shadow-height);
 			position: sticky;
-			box-shadow: 0 0.2rem 0.4rem -0.2rem var(--primary-light-2);
+			box-shadow: 0 0.2rem 0.4rem -0.2rem var(--app-light-2);
 			top: calc(var(--container-height) - 2 * var(--shadow-height));
 		}
 
 		& > .content {
-			background-color: var(--primary-bgcolor);
+			background-color: var(--app-bgcolor);
 			border-radius: 0.6rem 0.6rem 0 0;
 		}
 	}
@@ -67,8 +67,8 @@ export default {
 			z-index: 5;
 
 			& > .menu-container {
-				border: 1px solid var(--primary-light-2);
-				background-color: var(--white);
+				border: 1px solid var(--app-light-2);
+				background-color: var(--app-white);
 				width: 40rem;
 				max-width: calc(100vw - 1rem);
 				max-height: calc(100vh - 5rem);

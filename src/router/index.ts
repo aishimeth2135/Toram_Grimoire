@@ -89,15 +89,7 @@ export default function createAppRouter() {
       {
         const data = to.matched.slice().reverse().find(item => item.meta?.leftMenuViewButtons)
         if (data) {
-          const res = data.meta.leftMenuViewButtons!.map(({ title, icon, pathName }) => {
-            return {
-              title,
-              icon: icon,
-              pathName,
-            }
-          })
-
-          leftMenuStore.setViewButtons(res)
+          leftMenuStore.setViewButtons(data.meta.leftMenuViewButtons!)
         }
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <section class="flex flex-col">
+  <AppLayoutMain>
     <SkillSimulatorBuild
       v-if="currentSkillBuild"
       ref="skillBuildComponent"
@@ -10,9 +10,9 @@
         {{ t('common.tips.view-unknow-error-tips') }}
       </div>
       <div class="flex justify-center">
-        <cy-button-border @click="characterStore.setCharacterSkillBuild(store.createSkillBuild())">
+        <cy-button-action @click="characterStore.setCharacterSkillBuild(store.createSkillBuild())">
           {{ t('skill-simulator.create-build') }}
-        </cy-button-border>
+        </cy-button-action>
       </div>
     </div>
     <SkillSimulatorMenu
@@ -31,7 +31,7 @@
       :skill-build="currentSkillBuild"
       @close="toggle('modals/exportText', false)"
     />
-  </section>
+  </AppLayoutMain>
 </template>
 
 <script lang="ts">
@@ -49,6 +49,8 @@ import { useCharacterStore } from '@/stores/views/character'
 import { Skill, SkillTree } from '@/lib/Skill/Skill'
 
 import ToggleService from '@/setup/ToggleService'
+
+import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import SkillSimulatorBuild from './skill-simulator-build.vue'
 import SkillSimulatorMenu from './skill-simulator-menu.vue'
