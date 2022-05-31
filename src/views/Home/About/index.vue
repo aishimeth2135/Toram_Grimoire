@@ -62,6 +62,7 @@
                   backgroundImage: `url('${discordGroupData.splashUrl}')`,
                 }"
               />
+              <cy-icon-text icon="mdi:discord" class="absolute top-2 right-2" icon-width="2rem" />
               <div class="w-full bg-light flex items-center py-2.5 px-4 rounded-b-lg">
                 <div class="rounded overflow-hidden">
                   <img :src="discordGroupData.iconUrl" alt="#" width="50" height="50">
