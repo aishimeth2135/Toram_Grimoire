@@ -59,10 +59,10 @@ const rootClassList = computed(() => {
     @apply text-sm pl-5;
 
     /* APPLY text-light-3 */
-    color: var(--primary-light-3);
+    color: var(--app-light-3);
 
     & :deep(.text-light-3) {
-      color: var(--primary-purple);
+      color: var(--app-purple);
     }
   }
 

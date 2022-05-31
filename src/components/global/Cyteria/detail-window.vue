@@ -42,10 +42,10 @@ export default {
   z-index: 15;
 
   .content-container {
-    background-color: rgba(var(--rgb-white), 0.95);
-    border: 1px solid var(--primary-light-2);
+    background-color: rgba(var(--rgb-app-white), 0.95);
+    border: 1px solid var(--app-light-2);
     border-bottom: 0;
-    box-shadow: 0.1rem 0.1rem 0.6rem 0.1rem var(--primary-light);
+    box-shadow: 0.1rem 0.1rem 0.6rem 0.1rem var(--app-light);
     max-width: 30rem;
     min-width: 13rem;
     max-height: calc(47vh - 3rem);
@@ -53,7 +53,7 @@ export default {
     margin: 0 0.6rem;
 
     .content {
-      border-bottom: 1px solid var(--primary-light-2);
+      border-bottom: 1px solid var(--app-light-2);
       padding: 1rem;
       padding-bottom: 0;
 
@@ -64,7 +64,7 @@ export default {
         height: 1rem;
         border-radius: 20% 20% 0 0;
         bottom: 0;
-        background-color: rgba(var(--rgb-white), 0.5);
+        background-color: rgba(var(--rgb-app-white), 0.5);
       }
 
       > .title {

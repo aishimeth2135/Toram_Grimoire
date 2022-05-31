@@ -1,0 +1,298 @@
+{
+  "color": {
+    "dark": {
+      "value": "#85005f"
+    },
+    "dark-light": {
+      "value": "#c62899"
+    },
+    "light": {
+      "value": "#ffd1ea"
+    },
+    "light-2": {
+      "value": "#ffa8d7"
+    },
+    "light-3": {
+      "value": "#ff57b2"
+    },
+    "light-4": {
+      "value": "#ff2e9f"
+    },
+    "gray": {
+      "value": "#888"
+    },
+    "gray-light": {
+      "value": "#ddd"
+    },
+    "white": {
+      "value": "#fff"
+    },
+    "black": {
+      "value": "#000"
+    },
+    "purple": {
+      "value": "#c026d3"
+    },
+    "blue-purple": {
+      "value": "#7c3aed"
+    },
+    "water-blue": {
+      "value": "#2196f3"
+    },
+    "blue-green": {
+      "value": "#0891b2"
+    },
+    "orange": {
+      "value": "#d97706"
+    },
+    "green": {
+      "value": "#10b981"
+    },
+    "red": {
+      "value": "#f54747"
+    },
+    "purple-light": {
+      "value": "#db78e7"
+    },
+    "blue-purple-light": {
+      "value": "#ba97f6"
+    },
+    "water-blue-light": {
+      "value": "#82c4f8"
+    },
+    "blue-green-light": {
+      "value": "#2bcef5"
+    },
+    "orange-light": {
+      "value": "#faa94b"
+    },
+    "green-light": {
+      "value": "#40efb5"
+    },
+    "red-light": {
+      "value": "#faa8a8"
+    }
+  },
+  "color-dark": {
+    "dark": {
+      "value": "#fff"
+    },
+    "dark-light": {
+      "value": "#edd3e2"
+    },
+    "light": {
+      "value": "#804665"
+    },
+    "light-2": {
+      "value": "#bd83a2"
+    },
+    "light-3": {
+      "value": "#ffc5e4"
+    },
+    "light-4": {
+      "value": "#ffdefd"
+    },
+    "gray": {
+      "value": "#bbb"
+    },
+    "gray-light": {
+      "value": "#888"
+    },
+    "white": {
+      "value": "#1a1b26"
+    },
+    "black": {
+      "value": "#fff"
+    },
+    "purple": {
+      "value": "#f8e1fc"
+    },
+    "blue-purple": {
+      "value": "#ece0ff"
+    },
+    "water-blue": {
+      "value": "#c7e4fc"
+    },
+    "blue-green": {
+      "value": "#a4f5ed"
+    },
+    "orange": {
+      "value": "#e3c1a3"
+    },
+    "green": {
+      "value": "#ace8b3"
+    },
+    "red": {
+      "value": "#ffb5b5"
+    },
+    "purple-light": {
+      "value": "#e797f5"
+    },
+    "blue-purple-light": {
+      "value": "#ba8eff"
+    },
+    "water-blue-light": {
+      "value": "#7abff8"
+    },
+    "blue-green-light": {
+      "value": "#5aedde"
+    },
+    "orange-light": {
+      "value": "#d09764"
+    },
+    "green-light": {
+      "value": "#6cd678"
+    },
+    "red-light": {
+      "value": "#ff6363"
+    }
+  },
+  "color-rgb": {
+    "dark": {
+      "value": "133, 0, 95"
+    },
+    "dark-light": {
+      "value": "198, 40, 153"
+    },
+    "light": {
+      "value": "255, 209, 234"
+    },
+    "light-2": {
+      "value": "255, 168, 215"
+    },
+    "light-3": {
+      "value": "255, 87, 178"
+    },
+    "light-4": {
+      "value": "255, 46, 159"
+    },
+    "gray": {
+      "value": "136, 136, 136"
+    },
+    "gray-light": {
+      "value": "221, 221, 221"
+    },
+    "white": {
+      "value": "255, 255, 255"
+    },
+    "black": {
+      "value": "0, 0, 0"
+    },
+    "purple": {
+      "value": "192, 38, 211"
+    },
+    "blue-purple": {
+      "value": "124, 58, 237"
+    },
+    "water-blue": {
+      "value": "33, 150, 243"
+    },
+    "blue-green": {
+      "value": "8, 145, 178"
+    },
+    "orange": {
+      "value": "217, 119, 6"
+    },
+    "green": {
+      "value": "16, 185, 129"
+    },
+    "red": {
+      "value": "245, 71, 71"
+    },
+    "purple-light": {
+      "value": "219, 120, 231"
+    },
+    "blue-purple-light": {
+      "value": "186, 151, 246"
+    },
+    "water-blue-light": {
+      "value": "130, 196, 248"
+    },
+    "blue-green-light": {
+      "value": "43, 206, 245"
+    },
+    "orange-light": {
+      "value": "250, 169, 75"
+    },
+    "green-light": {
+      "value": "64, 239, 181"
+    },
+    "red-light": {
+      "value": "250, 168, 168"
+    }
+  },
+  "color-dark-rgb": {
+    "dark": {
+      "value": "255, 255, 255"
+    },
+    "dark-light": {
+      "value": "237, 211, 226"
+    },
+    "light": {
+      "value": "128, 70, 101"
+    },
+    "light-2": {
+      "value": "189, 131, 162"
+    },
+    "light-3": {
+      "value": "255, 197, 228"
+    },
+    "light-4": {
+      "value": "255, 222, 253"
+    },
+    "gray": {
+      "value": "187, 187, 187"
+    },
+    "gray-light": {
+      "value": "136, 136, 136"
+    },
+    "white": {
+      "value": "26, 27, 38"
+    },
+    "black": {
+      "value": "255, 255, 255"
+    },
+    "purple": {
+      "value": "248, 225, 252"
+    },
+    "blue-purple": {
+      "value": "236, 224, 255"
+    },
+    "water-blue": {
+      "value": "199, 228, 252"
+    },
+    "blue-green": {
+      "value": "164, 245, 237"
+    },
+    "orange": {
+      "value": "227, 193, 163"
+    },
+    "green": {
+      "value": "172, 232, 179"
+    },
+    "red": {
+      "value": "255, 181, 181"
+    },
+    "purple-light": {
+      "value": "231, 151, 245"
+    },
+    "blue-purple-light": {
+      "value": "186, 142, 255"
+    },
+    "water-blue-light": {
+      "value": "122, 191, 248"
+    },
+    "blue-green-light": {
+      "value": "90, 237, 222"
+    },
+    "orange-light": {
+      "value": "208, 151, 100"
+    },
+    "green-light": {
+      "value": "108, 214, 120"
+    },
+    "red-light": {
+      "value": "255, 99, 99"
+    }
+  }
+}

@@ -42,7 +42,7 @@
     </template>
     <template #side-contents>
       <cy-transition v-if="currentSkillBuild" type="fade" mode="out-in">
-        <AppLayoutBottomSideContent
+        <AppLayoutBottomContent
           v-if="contents.mainMenu"
           class="space-y-2 p-3"
         >
@@ -69,30 +69,30 @@
             </cy-options>
           </div>
           <div class="flex items-center">
-            <cy-button-border
+            <cy-button-action
               icon="bx:copy-alt"
               @click="store.copyCurrentSkillBuild()"
             >
               {{ t('global.copy') }}
-            </cy-button-border>
-            <cy-button-border
+            </cy-button-action>
+            <cy-button-action
               icon="ic-baseline-delete-outline"
-              main-color="gray"
+              color="secondary"
               @click="removeCurrentSkillBuild"
             >
               {{ t('global.remove') }}
-            </cy-button-border>
+            </cy-button-action>
           </div>
           <div class="mt-3 pt-3 border-t border-light-2 space-x-2">
-            <cy-button-border icon="uil:image-download" @click="emit('export-image')">
+            <cy-button-action icon="uil:image-download" @click="emit('export-image')">
               {{ t('skill-simulator.export-image.title') }}
-            </cy-button-border>
-            <cy-button-border icon="mdi:note-text-outline" @click="emit('export-text')">
+            </cy-button-action>
+            <cy-button-action icon="mdi:note-text-outline" @click="emit('export-text')">
               {{ t('skill-simulator.export-text-title') }}
-            </cy-button-border>
+            </cy-button-action>
           </div>
-        </AppLayoutBottomSideContent>
-        <AppLayoutBottomSideContent
+        </AppLayoutBottomContent>
+        <AppLayoutBottomContent
           v-else-if="contents.selectSkillTree"
           class="space-y-2 p-3"
         >
@@ -111,8 +111,8 @@
               </cy-button-check>
             </div>
           </div>
-        </AppLayoutBottomSideContent>
-        <AppLayoutBottomSideContent
+        </AppLayoutBottomContent>
+        <AppLayoutBottomContent
           v-else-if="contents.goSkillTree"
           class="space-y-2 p-3"
         >
@@ -131,7 +131,7 @@
               </cy-button-inline>
             </div>
           </div>
-        </AppLayoutBottomSideContent>
+        </AppLayoutBottomContent>
         <div v-else class="space-x-2.5 flex items-center">
           <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
             <cy-icon-text icon="mdi:script-outline" small>
@@ -169,7 +169,7 @@ import ToggleService from '@/setup/ToggleService'
 import Notify from '@/setup/Notify'
 
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
-import AppLayoutBottomSideContent from '@/components/app-layout/app-layout-bottom-side-content.vue'
+import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 
 import { MenuMode, MenuData, setupSkillBuildStore } from './setup'
 

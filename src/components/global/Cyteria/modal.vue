@@ -29,9 +29,9 @@
             <div v-if="footer" class="py-1.5 mx-4 bg-white flex justify-end space-x-2">
               <slot name="footer" :close-modal="closeModal">
                 <slot name="footer-actions" />
-                <cy-button-border icon="ic-round-close" @click="closeModal">
+                <cy-button-action icon="ic-round-close" @click="closeModal">
                   {{ t('global.close') }}
-                </cy-button-border>
+                </cy-button-action>
               </slot>
             </div>
           </div>

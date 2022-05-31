@@ -15,7 +15,7 @@
         {{ stepTitle }}
       </cy-icon-text>
       <div class="ml-auto inline-flex items-center mr-1">
-        <cy-popover>
+        <cy-popover class="flex">
           <template #default="{ shown }">
             <cy-button-icon
               icon="gg-menu-left-alt"

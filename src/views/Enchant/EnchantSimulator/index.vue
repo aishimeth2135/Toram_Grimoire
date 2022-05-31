@@ -1,20 +1,5 @@
 <template>
-  <section v-if="currentBuild">
-    <!-- <div class="sticky top-0 border-b border-purple mb-4 z-10 bg-white">
-      <div
-        class="cursor-pointer px-4 py-1.5 flex items-center border-purple"
-        @click="toggle('contents/top')"
-      >
-        <cy-icon-text icon="ant-design:build-outlined">
-          {{ currentBuild.name }}
-        </cy-icon-text>
-        <cy-button-icon
-          class="ml-auto"
-          :icon="contents.top ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
-          :selected="contents.top"
-        />
-      </div>
-    </div> -->
+  <AppLayoutMain v-if="currentBuild">
     <div class="steps-content-container">
       <div class="steps-content">
         <div
@@ -70,10 +55,10 @@
       </template>
       <template #side-contents>
         <cy-transition type="fade" mode="out-in">
-          <AppLayoutBottomSideContent v-if="contents.result" class="p-3">
+          <AppLayoutBottomContent v-if="contents.result" class="p-3">
             <EnchantResult :equipment="currentEquipment" />
-          </AppLayoutBottomSideContent>
-          <AppLayoutBottomSideContent v-else-if="contents.top" class="p-3">
+          </AppLayoutBottomContent>
+          <AppLayoutBottomContent v-else-if="contents.top" class="p-3">
             <div class="flex items-center">
               <cy-title-input
                 v-model:value="currentBuild.name"
@@ -99,33 +84,33 @@
             </div>
             <div class="flex items-center flex-wrap">
               <div class="mx-2">
-                <cy-button-border
+                <cy-button-action
                   icon="bx-bx-copy"
                   @click="copyBuild"
                 >
                   {{ t('global.copy') }}
-                </cy-button-border>
-                <cy-button-border
+                </cy-button-action>
+                <cy-button-action
                   icon="mdi-export"
-                  main-color="blue-green"
+                  color="blue-green"
                   @click="exportBuild"
                 >
                   {{ t('global.export') }}
-                </cy-button-border>
-                <cy-button-border
+                </cy-button-action>
+                <cy-button-action
                   icon="mdi-import"
-                  main-color="blue-green"
+                  color="blue-green"
                   @click="importBuild"
                 >
                   {{ t('global.import') }}
-                </cy-button-border>
-                <cy-button-border
+                </cy-button-action>
+                <cy-button-action
                   icon="ic-baseline-delete-outline"
-                  main-color="gray"
+                  color="secondary"
                   @click="removeBuild"
                 >
                   {{ t('global.delete') }}
-                </cy-button-border>
+                </cy-button-action>
               </div>
             </div>
             <cy-icon-text small text-color="purple" class="mt-4">
@@ -209,33 +194,39 @@
                   :selected="state.statDisplayMode === 0"
                   @update:selected="state.statDisplayMode = 0"
                 >
-                  {{ t('enchant-simulator.footer-guide.toggle-display-mode.titles.0') }}
+                  {{ t('enchant-simulator.stat-display-mode.material-point') }}
                 </cy-button-check>
                 <cy-button-check
                   :selected="state.statDisplayMode === 1"
                   main-color="water-blue"
                   @update:selected="state.statDisplayMode = 1"
                 >
-                  {{ t('enchant-simulator.footer-guide.toggle-display-mode.titles.1') }}
+                  {{ t('enchant-simulator.stat-display-mode.potential-cost') }}
                 </cy-button-check>
               </div>
             </div>
-          </AppLayoutBottomSideContent>
+          </AppLayoutBottomContent>
         </cy-transition>
       </template>
     </AppLayoutBottom>
-  </section>
-  <div v-else class="p-4">
+  </AppLayoutMain>
+  <AppLayoutMain v-else class="p-4">
     <div class="text-center mb-3">
       {{ t('common.tips.view-unknow-error-tips') }}
     </div>
     <div class="flex justify-center w-full">
-      <cy-button-border @click="createBuild">
+      <cy-button-action @click="createBuild">
         {{ t('enchant-simulator.append-build') }}
-      </cy-button-border>
+      </cy-button-action>
     </div>
-  </div>
+  </AppLayoutMain>
 </template>
+
+<script lang="ts">
+export default {
+  name: 'EnchantSimulator',
+}
+</script>
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
@@ -248,14 +239,14 @@ import { EnchantBuild, EnchantStep } from '@/lib/Enchant/Enchant'
 import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
 import { EnchantBuildSaveData } from '@/lib/Enchant/Enchant/build'
 
-
 import ToggleService from '@/setup/ToggleService'
 import AutoSave from '@/setup/AutoSave'
 import Notify from '@/setup/Notify'
 import Confirm from '@/setup/Confirm'
 import ExportBuild from '@/setup/ExportBuild'
 
-import AppLayoutBottomSideContent from '@/components/app-layout/app-layout-bottom-side-content.vue'
+import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
+import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 
 import EnchantResult from './enchant-result.vue'
@@ -457,7 +448,8 @@ div.steps-content-container {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  min-height: 60vh;
+
+  @apply py-4;
 
   & > .steps-content {
     display: flex;

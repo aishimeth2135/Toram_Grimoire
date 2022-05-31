@@ -34,7 +34,7 @@ function createDrawSkillTreeDefs() {
     circle.setAttribute('cx', cx.toString())
     circle.setAttribute('cy', cy.toString())
     circle.setAttribute('r', radius.toString())
-    circle.setAttribute('fill', 'var(--white)')
+    circle.setAttribute('fill', 'var(--app-white)')
     circle.setAttribute('stroke-width', '0')
     return circle
   }
@@ -42,7 +42,7 @@ function createDrawSkillTreeDefs() {
   // @lock
   const lockPattern = CY.svg.createEmpty('pattern', { width: 1, height: 1, id: 'skill-icon-lock' })
   const lock = CY.svg.create(gw, gw, { x: (gw - 24) / 2, y: (gw - 24) / 2 })
-  lock.innerHTML = '<path fill="var(--primary-light)" d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/>'
+  lock.innerHTML = '<path fill="var(--app-light)" d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/>'
   lockPattern.appendChild(drawCircle(gw / 2, gw / 2, gw / 2))
   lockPattern.appendChild(lock)
 

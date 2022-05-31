@@ -7,7 +7,7 @@
     >
       <div class="content-container" @click.stop>
         <div class="h-full overflow-y-auto">
-          <div class="mx-1">
+          <div class="mx-1 mt-6">
             <router-link
               v-for="(data) in viewButtons"
               :key="data.title"
@@ -15,21 +15,27 @@
               :to="{ name: data.pathName }"
               custom
             >
-              <cy-button-line
-                :icon="data.icon"
+              <div
                 class="app-left-menu--link-button"
+                :class="{ 'selected': currentRoute.name === data.pathName }"
                 @click="navigate"
               >
-                {{ t(data.title) }}
-              </cy-button-line>
+                <cy-icon-text :icon="data.icon">{{ t(data.title) }}</cy-icon-text>
+              </div>
             </router-link>
           </div>
         </div>
-        <div v-if="router.currentRoute.value.name !== 'Home'" class="flex mt-auto pt-2 ai-center justify-end space-x-2">
-          <cy-button-circle icon="bx:bx-share-alt" @click="copyCurrentUrl" />
-          <router-link v-slot="{ navigate }" :to="{ name: 'Home' }" custom>
-            <cy-button-circle icon="ant-design:home-outlined" @click="navigate" />
-          </router-link>
+        <div class="flex items-end mt-auto pt-2 m-3">
+          <AppSettings />
+          <div v-if="currentRoute.name !== 'Home'" class="flex items-center ml-auto space-x-2">
+            <cy-button-circle icon="bx:bx-share-alt" @click="copyCurrentUrl" />
+            <router-link v-slot="{ navigate }" :to="{ name: 'Home' }" custom>
+              <cy-button-circle
+                icon="ant-design:home-outlined"
+                @click="(navigate($event), leftMenuStore.toggleVisible())"
+              />
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -53,7 +59,9 @@ import CY from '@/shared/utils/Cyteria'
 
 import Notify from '@/setup/Notify'
 
-const router = useRouter()
+import AppSettings from './app-settings.vue'
+
+const { currentRoute } = useRouter()
 const { t } = useI18n()
 
 const leftMenuStore = useLeftMenuStore()
@@ -73,8 +81,7 @@ const copyCurrentUrl = () => {
 
 <style lang="postcss" scoped>
 .app-left-menu--wrapper {
-  @apply fixed w-64 top-11 left-2 opacity-100;
-  height: calc(100% - 6.5rem);
+  @apply fixed w-64 top-0 left-0 opacity-100 h-full;
 
   &.fade-enter-from, &.fade-leave-to {
     opacity: 0;
@@ -85,7 +92,7 @@ const copyCurrentUrl = () => {
   }
 
   & > .content-container {
-    @apply p-2 pb-1 h-full w-full border-r border-light flex flex-col;
+    @apply h-full w-full border-r border-light flex flex-col;
   }
 }
 
@@ -109,7 +116,10 @@ const copyCurrentUrl = () => {
 }
 
 .app-left-menu--link-button {
-  @apply w-full;
-  @apply mx-0 !important;
+  @apply w-full py-1.5 px-4 cursor-pointer bg-opacity-25;
+
+  &:hover, &.selected {
+    @apply bg-light;
+  }
 }
 </style>

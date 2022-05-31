@@ -1,105 +1,212 @@
-:root {
-  --primary-dark: #85005F;
-  --primary-dark-light: #c62899;
-  --primary-light: #FFD1EA;
-  --primary-light-2: #f7a8d3;
-  --primary-light-3: #ff5fb7;
-  --primary-light-4: #ff008d;
-  --primary-purple: #9c27b0;
-  --primary-purple-light: #c873d7;
-  --primary-blue-purple: #8330ff;
-  --primary-blue-purple-light: #caa6ff;
-  --primary-water-blue: #2196f3;
-  --primary-water-blue-light: #9acbf3;
-  --primary-blue-green: #009688;
-  --primary-blue-green-light: #a0e8e1;
-  --primary-orange: #de761b;
-  --primary-orange-light: #edcbad;
-  --primary-green: #23ad35;
-  --primary-green-light: #8ae696;
-  --primary-red: #f54747;
-  --primary-red-light: #f09797;
-  --primary-gray: #888;
-  --primary-gray-light: #ddd;
-  --white: #fff;
-  --black: #000;
+@design-tokens url('../../../config/color.json') format('style-dictionary3');
 
-  --rgb-primary-dark: 133, 0, 95;
-  --primary-dark-light: 198, 40, 153;
-  --rgb-primary-light: 255, 209, 234;
-  --rgb-primary-light-2: 247, 168, 211;
-  --rgb-primary-light-3: 255, 95, 183;
-  --rgb-primary-light-4: 255, 0, 141;
-  --rgb-primary-purple: 156, 39, 176;
-  --rgb-primary-purple-light: 200, 115, 215;
-  --rgb-primary-blue-purple: 131, 48, 255;
-  --rgb-primary-blue-purple-light: 202, 166, 255;
-  --rgb-primary-water-blue: 33, 150, 243;
-  --rgb-primary-water-blue-light: 154, 203, 243;
-  --rgb-primary-blue-green: 0, 150, 136;
-  --rgb-primary-blue-green-light: 160, 232, 225;
-  --rgb-primary-orange: 222, 118, 27;
-  --rgb-primary-orange-light: 237, 203, 173;
-  --rgb-primary-green: 35, 173, 53;
-  --rgb-primary-green-light: 138, 230, 150;
-  --rgb-primary-red: 245, 71, 71;
-  --rgb-primary-red-light: 240, 151, 151;
-  --rgb-primary-gray: 136, 136, 136;
-  --rgb-primary-gray-light: 221, 221, 221;
-  --rgb-white: 255, 255, 255;
-  --rgb-black: 0, 0, 0;
+:root {
+  --app-dark: design-token('color.dark');
+  --app-dark-light: design-token('color.dark-light');
+  --app-light: design-token('color.light');
+  --app-light-2: design-token('color.light-2');
+  --app-light-3: design-token('color.light-3');
+  --app-light-4: design-token('color.light-4');
+  --app-purple: design-token('color.purple');
+  --app-purple-light: design-token('color.purple-light');
+  --app-blue-purple: design-token('color.blue-purple');
+  --app-blue-purple-light: design-token('color.blue-purple-light');
+  --app-water-blue: design-token('color.water-blue');
+  --app-water-blue-light: design-token('color.water-blue-light');
+  --app-blue-green: design-token('color.blue-green');
+  --app-blue-green-light: design-token('color.blue-green-light');
+  --app-orange: design-token('color.orange');
+  --app-orange-light: design-token('color.orange-light');
+  --app-green: design-token('color.green');
+  --app-green-light: design-token('color.green-light');
+  --app-red: design-token('color.red');
+  --app-red-light: design-token('color.red-light');
+  --app-gray: design-token('color.gray');
+  --app-gray-light: design-token('color.gray-light');
+  --app-white: design-token('color.white');
+  --app-black: design-token('color.black');
+
+  --rgb-app-dark: design-token('color-rgb.dark');
+  --rgb-app-dark-light: design-token('color-rgb.dark-light');
+  --rgb-app-light: design-token('color-rgb.light');
+  --rgb-app-light-2: design-token('color-rgb.light-2');
+  --rgb-app-light-3: design-token('color-rgb.light-3');
+  --rgb-app-light-4: design-token('color-rgb.light-4');
+  --rgb-app-purple: design-token('color-rgb.purple');
+  --rgb-app-purple-light: design-token('color-rgb.purple-light');
+  --rgb-app-blue-purple: design-token('color-rgb.blue-purple');
+  --rgb-app-blue-purple-light: design-token('color-rgb.blue-purple-light');
+  --rgb-app-water-blue: design-token('color-rgb.water-blue');
+  --rgb-app-water-blue-light: design-token('color-rgb.water-blue-light');
+  --rgb-app-blue-green: design-token('color-rgb.blue-green');
+  --rgb-app-blue-green-light: design-token('color-rgb.blue-green-light');
+  --rgb-app-orange: design-token('color-rgb.orange');
+  --rgb-app-orange-light: design-token('color-rgb.orange-light');
+  --rgb-app-green: design-token('color-rgb.green');
+  --rgb-app-green-light: design-token('color-rgb.green-light');
+  --rgb-app-red: design-token('color-rgb.red');
+  --rgb-app-red-light: design-token('color-rgb.red-light');
+  --rgb-app-gray: design-token('color-rgb.gray');
+  --rgb-app-gray-light: design-token('color-rgb.gray-light');
+  --rgb-app-white: design-token('color-rgb.white');
+  --rgb-app-black: design-token('color-rgb.black');
 }
 
 html.theme--night-mode {
-  --primary-dark: #fff;
-  --primary-dark-light: #FFD1EA;
-  --primary-light: #8a225d;
-  --primary-light-2: #a25b82;
-  --primary-light-3: #f7a8d3;
-  --primary-light-4: #ffbde1;
-  --primary-purple: #e8caed;
-  --primary-purple-light: #b357c3;
-  --primary-blue-purple: #e6d6ff;
-  --primary-blue-purple-light: #b485ff;
-  --primary-water-blue: #aed1ef;
-  --primary-water-blue-light: #307cb9;
-  --primary-blue-green: #81ded5;
-  --primary-blue-green-light: #1a6760;
-  --primary-orange: #edcbad;
-  --primary-orange-light: #7e542f;
-  --primary-green: #bff5c6;
-  --primary-green-light: #23ad35;
-  --primary-red: #f97777;
-  --primary-red-light: #802828;
-  --primary-gray: #AAA;
-  --primary-gray-light: #555;
-  --white: #000;
-  --black: #fff;
+  --app-dark: design-token('color-dark.dark');
+  --app-dark-light: design-token('color-dark.dark-light');
+  --app-light: design-token('color-dark.light');
+  --app-light-2: design-token('color-dark.light-2');
+  --app-light-3: design-token('color-dark.light-3');
+  --app-light-4: design-token('color-dark.light-4');
+  --app-purple: design-token('color-dark.purple');
+  --app-purple-light: design-token('color-dark.purple-light');
+  --app-blue-purple: design-token('color-dark.blue-purple');
+  --app-blue-purple-light: design-token('color-dark.blue-purple-light');
+  --app-water-blue: design-token('color-dark.water-blue');
+  --app-water-blue-light: design-token('color-dark.water-blue-light');
+  --app-blue-green: design-token('color-dark.blue-green');
+  --app-blue-green-light: design-token('color-dark.blue-green-light');
+  --app-orange: design-token('color-dark.orange');
+  --app-orange-light: design-token('color-dark.orange-light');
+  --app-green: design-token('color-dark.green');
+  --app-green-light: design-token('color-dark.green-light');
+  --app-red: design-token('color-dark.red');
+  --app-red-light: design-token('color-dark.red-light');
+  --app-gray: design-token('color-dark.gray');
+  --app-gray-light: design-token('color-dark.gray-light');
+  --app-white: design-token('color-dark.white');
+  --app-black: design-token('color-dark.black');
 
-  --rgb-primary-dark: 255, 255, 255;
-  --rgb-primary-light: 109, 23, 72;
-  --rgb-primary-light-2: 162, 91, 130;
-  --rgb-primary-light-3: 247, 168, 211;
-  --rgb-primary-light-4: 255, 189, 225;
-  --rgb-primary-purple: 232, 202, 237;
-  --rgb-primary-purple-light: 179, 87, 195;
-  --rgb-primary-blue-purple: 230, 214, 255;
-  --rgb-primary-blue-purple-light: 180, 133, 255;
-  --rgb-primary-water-blue: 174, 209, 239;
-  --rgb-primary-water-blue-light: 48, 124, 185;
-  --rgb-primary-blue-green: 129, 222, 213;
-  --rgb-primary-blue-green-light: 26, 103, 96;
-  --rgb-primary-orange: 237, 203, 173;
-  --rgb-primary-orange-light: 126, 84, 47;
-  --rgb-primary-green: 191, 245, 198;
-  --rgb-primary-green-light: 35, 173, 53;
-  --rgb-primary-red: 249, 119, 119;
-  --rgb-primary-red-light: 128, 40, 40;
-  --rgb-primary-gray: 170, 170, 170;
-  --rgb-primary-gray-light: 85, 85, 85;
-  --rgb-white: 0, 0, 0;
-  --rgb-black: 255, 255, 255;
+  --rgb-app-dark: design-token('color-dark-rgb.dark');
+  --rgb-app-dark-light: design-token('color-dark-rgb.dark-light');
+  --rgb-app-light: design-token('color-dark-rgb.light');
+  --rgb-app-light-2: design-token('color-dark-rgb.light-2');
+  --rgb-app-light-3: design-token('color-dark-rgb.light-3');
+  --rgb-app-light-4: design-token('color-dark-rgb.light-4');
+  --rgb-app-purple: design-token('color-dark-rgb.purple');
+  --rgb-app-purple-light: design-token('color-dark-rgb.purple-light');
+  --rgb-app-blue-purple: design-token('color-dark-rgb.blue-purple');
+  --rgb-app-blue-purple-light: design-token('color-dark-rgb.blue-purple-light');
+  --rgb-app-water-blue: design-token('color-dark-rgb.water-blue');
+  --rgb-app-water-blue-light: design-token('color-dark-rgb.water-blue-light');
+  --rgb-app-blue-green: design-token('color-dark-rgb.blue-green');
+  --rgb-app-blue-green-light: design-token('color-dark-rgb.blue-green-light');
+  --rgb-app-orange: design-token('color-dark-rgb.orange');
+  --rgb-app-orange-light: design-token('color-dark-rgb.orange-light');
+  --rgb-app-green: design-token('color-dark-rgb.green');
+  --rgb-app-green-light: design-token('color-dark-rgb.green-light');
+  --rgb-app-red: design-token('color-dark-rgb.red');
+  --rgb-app-red-light: design-token('color-dark-rgb.red-light');
+  --rgb-app-gray: design-token('color-dark-rgb.gray');
+  --rgb-app-gray-light: design-token('color-dark-rgb.gray-light');
+  --rgb-app-white: design-token('color-dark-rgb.white');
+  --rgb-app-black: design-token('color-dark-rgb.black');
 }
+
+/* :root {
+  --app-dark: #85005F;
+  --app-dark-light: #c62899;
+  --app-light: #FFD1EA;
+  --app-light-2: #f7a8d3;
+  --app-light-3: #ff5fb7;
+  --app-light-4: #ff008d;
+  --app-purple: #9c27b0;
+  --app-purple-light: #c873d7;
+  --app-blue-purple: #8330ff;
+  --app-blue-purple-light: #caa6ff;
+  --app-water-blue: #2196f3;
+  --app-water-blue-light: #9acbf3;
+  --app-blue-green: #009688;
+  --app-blue-green-light: #a0e8e1;
+  --app-orange: #de761b;
+  --app-orange-light: #edcbad;
+  --app-green: #23ad35;
+  --app-green-light: #8ae696;
+  --app-red: #f54747;
+  --app-red-light: #f09797;
+  --app-gray: #888;
+  --app-gray-light: #ddd;
+  --app-white: #fff;
+  --app-black: #000;
+
+  --rgb-app-dark: 133, 0, 95;
+  --rgb-app-dark-light: 198, 40, 153;
+  --rgb-app-light: 255, 209, 234;
+  --rgb-app-light-2: 247, 168, 211;
+  --rgb-app-light-3: 255, 95, 183;
+  --rgb-app-light-4: 255, 0, 141;
+  --rgb-app-purple: 156, 39, 176;
+  --rgb-app-purple-light: 200, 115, 215;
+  --rgb-app-blue-purple: 131, 48, 255;
+  --rgb-app-blue-purple-light: 202, 166, 255;
+  --rgb-app-water-blue: 33, 150, 243;
+  --rgb-app-water-blue-light: 154, 203, 243;
+  --rgb-app-blue-green: 0, 150, 136;
+  --rgb-app-blue-green-light: 160, 232, 225;
+  --rgb-app-orange: 222, 118, 27;
+  --rgb-app-orange-light: 237, 203, 173;
+  --rgb-app-green: 35, 173, 53;
+  --rgb-app-green-light: 138, 230, 150;
+  --rgb-app-red: 245, 71, 71;
+  --rgb-app-red-light: 240, 151, 151;
+  --rgb-app-gray: 136, 136, 136;
+  --rgb-app-gray-light: 221, 221, 221;
+  --rgb-app-white: 255, 255, 255;
+  --rgb-app-black: 0, 0, 0;
+}
+
+html.theme--night-mode {
+  --app-dark: #fff;
+  --app-dark-light: #edd3e2;
+  --app-light: #a3276e;
+  --app-light-2: #e094be;
+  --app-light-3: #ffd1ea;
+  --app-light-4: #fcdeef;
+  --app-purple: #f8e1fc;
+  --app-purple-light: #c181cc;
+  --app-blue-purple: #e6d6ff;
+  --app-blue-purple-light: #b485ff;
+  --app-water-blue: #c7e4fc;
+  --app-water-blue-light: #6896bd;
+  --app-blue-green: #a4f5ed;
+  --app-blue-green-light: #63c9bf;
+  --app-orange: #fadbc0;
+  --app-orange-light: #bd906a;
+  --app-green: #c8face;
+  --app-green-light: #6aba74;
+  --app-red: #ffb5b5;
+  --app-red-light: #ed6f6f;
+  --app-gray: #BBB;
+  --app-gray-light: #888;
+  --app-white: #1a1b26;
+  --app-black: #fff;
+
+  --rgb-app-dark: 255, 255, 255;
+  --rgb-app-dark-light: 237, 211, 226;
+  --rgb-app-light: 163, 39, 110;
+  --rgb-app-light-2: 224, 148, 190;
+  --rgb-app-light-3: 255, 209, 234;
+  --rgb-app-light-4: 252, 222, 239;
+  --rgb-app-purple: 248, 225, 252;
+  --rgb-app-purple-light: 193, 129, 204;
+  --rgb-app-blue-purple: 230, 214, 255;
+  --rgb-app-blue-purple-light: 180, 133, 255;
+  --rgb-app-water-blue: 199, 228, 252;
+  --rgb-app-water-blue-light: 104, 150, 189;
+  --rgb-app-blue-green: 164, 245, 237;
+  --rgb-app-blue-green-light: 99, 201, 191;
+  --rgb-app-orange: 250, 219, 192;
+  --rgb-app-orange-light: 189, 144, 106;
+  --rgb-app-green: 200, 250, 206;
+  --rgb-app-green-light: 106, 186, 116;
+  --rgb-app-red: 255, 181, 181;
+  --rgb-app-red-light: 237, 111, 111;
+  --rgb-app-gray: 187, 187, 187;
+  --rgb-app-gray-light: 136, 136, 136;
+  --rgb-app-white: 26, 27, 38;
+  --rgb-app-black: 255, 255, 255;
+} */
 
 .main--font-base {
   font-family: 'Itim', Microsoft JhengHei, sans-serif;
@@ -111,8 +218,13 @@ html.theme--night-mode {
   font-family: 'Itim', 'Noto Sans TC', Microsoft JhengHei, sans-serif;
 }
 
+#app {
+  height: 100%;
+  width: 100%;
+}
+
 html {
-  background-color: var(--white);
+  background-color: var(--app-white);
   font-size: 16px;
   height: 100%;
   width: 100%;
@@ -146,23 +258,23 @@ html {
 body {
   margin: 0;
   scroll-behavior: smooth;
-  color: var(--primary-dark);
+  color: var(--app-dark);
   position: relative;
-  background-color: rgba(var(--rgb-primary-light), 0.1);
+  background-color: rgba(var(--rgb-app-light), 0.1);
   height: 100%;
   width: 100%;
-  overflow-y: auto;
 }
 
+
 input, textarea {
-  color: var(--primary-dark);
-  background-color: var(--white);
+  color: var(--app-dark);
+  background-color: var(--app-white);
 
   @apply text-base;
 }
 
 ::placeholder {
-  color: var(--primary-light);
+  color: var(--app-light);
 }
 
 input::-webkit-outer-spin-button,
@@ -191,32 +303,32 @@ input:focus {
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: var(--primary-light)!important;
+    background-color: var(--app-light)!important;
     border-radius: 0.125rem;
   }
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(var(--rgb-primary-light-2), 0.5);
+  background-color: rgba(var(--rgb-app-light-2), 0.5);
   border-radius: 0.2rem;
   transition: 0.2s;
 
   &:hover {
-    background-color: var(--primary-light-2);
+    background-color: var(--app-light-2);
   }
 }
 
 ::-webkit-scrollbar-corner {
-  background-color: var(--white);
+  background-color: var(--app-white);
 }
 
 ::-webkit-scrollbar-button {
-  background-color: rgba(var(--rgb-primary-light-2), 0.5);
+  background-color: rgba(var(--rgb-app-light-2), 0.5);
   border-radius: 0.2rem;
   transition: 0.2s;
 
   &:hover {
-    background-color: var(--primary-light-2);
+    background-color: var(--app-light-2);
   }
 
   @media screen and (max-width: 30rem) {
@@ -226,5 +338,5 @@ input:focus {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: rgba(var(--rgb-primary-light-2), 0.2);
+  background-color: rgba(var(--rgb-app-light-2), 0.2);
 }

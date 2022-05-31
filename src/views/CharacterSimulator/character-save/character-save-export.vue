@@ -45,16 +45,16 @@
             {{ t('global.all') }}
           </cy-button-check>
           <div class="flex items-center ml-auto">
-            <cy-button-border
+            <cy-button-action
               icon="ic-round-done"
               :disabled="submitDisabled"
               @click="submit"
             >
               {{ t('global.export') }}
-            </cy-button-border>
-            <cy-button-border icon="ic-round-close" @click="closeModal">
+            </cy-button-action>
+            <cy-button-action icon="ic-round-close" color="secondary" @click="closeModal">
               {{ t('global.cancel') }}
-            </cy-button-border>
+            </cy-button-action>
           </div>
         </div>
       </div>

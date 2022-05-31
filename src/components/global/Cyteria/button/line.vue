@@ -39,6 +39,6 @@ export default defineComponent({
 <style lang="postcss" scoped>
 .cy-button--line {
   --icon-width: 1.25rem;
-  --border-color: var(--primary-light-2);
+  --border-color: var(--app-light-2);
 }
 </style>

@@ -12,7 +12,7 @@ export default {
 .cy--hr {
   border: 0;
   height: 1px;
-  background-color: var(--primary-light);
+  background-color: var(--app-light);
   margin: 1rem 0.4rem;
 }
 </style>

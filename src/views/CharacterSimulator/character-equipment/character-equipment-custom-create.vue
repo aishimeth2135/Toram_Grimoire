@@ -7,12 +7,12 @@
     </template>
     <template #default>
       <div>
-        <cy-button-border
+        <cy-button-action
           icon="gg-shape-square"
           @click="toggle('modals/selectType', true)"
         >
           {{ equipmentTypeText }}
-        </cy-button-border>
+        </cy-button-action>
       </div>
       <div v-if="equipment" class="mt-3">
         <CharacterEquipmentBasicEditor :equipment="equipment" />
@@ -64,16 +64,16 @@
     </template>
     <template #footer="{ closeModal }">
       <div class="flex items-center justify-end w-full">
-        <cy-button-border
+        <cy-button-action
           icon="ic-round-done"
           :disabled="!equipment"
           @click="submit"
         >
           {{ t('global.confirm') }}
-        </cy-button-border>
-        <cy-button-border icon="ic-round-close" @click="closeModal">
+        </cy-button-action>
+        <cy-button-action icon="ic-round-close" @click="closeModal">
           {{ t('global.cancel') }}
-        </cy-button-border>
+        </cy-button-action>
       </div>
     </template>
   </cy-modal>

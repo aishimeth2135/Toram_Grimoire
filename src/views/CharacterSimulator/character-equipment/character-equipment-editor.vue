@@ -13,12 +13,12 @@
       >
         {{ t('character-simulator.equipment-info.equipment-type') }}
       </cy-icon-text>
-      <cy-button-border
+      <cy-button-action
         icon="heroicons-solid:switch-vertical"
         @click="equipment.setCustomType()"
       >
         {{ t('common.Equipment.category.' + equipment.type) }}
-      </cy-button-border>
+      </cy-button-action>
     </div>
     <cy-input-counter
       v-if="equipment.isWeapon()"
@@ -75,12 +75,12 @@
       </cy-button-line>
     </div>
     <div class="mt-3 pt-2 border-t border-solid border-light">
-      <cy-button-border
+      <cy-button-action
         icon="ic-round-edit"
         @click="editBasic(equipment)"
       >
         {{ t('character-simulator.equipment-basic-editor.title') }}
-      </cy-button-border>
+      </cy-button-action>
     </div>
   </div>
 </template>

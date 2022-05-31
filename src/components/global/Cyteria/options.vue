@@ -1,5 +1,5 @@
 <template>
-  <CyPopover class="cy--options" placement="bottom-end">
+  <CyPopover class="cy--options" :placement="placement">
     <template #default="{ shown }">
       <slot name="title" :shown="shown">
         <div class="cy--options-item cy--options-title flex items-center bg-white border border-light-2 hover:border-light-3 duration-200">
@@ -57,6 +57,7 @@ interface Props {
   value: any;
   options?: OptionItem[];
   addable?: boolean;
+  placement?: string;
 }
 interface Emits {
   (evt: 'update:value', value: any): void;
@@ -66,6 +67,7 @@ interface Emits {
 withDefaults(defineProps<Props>(), {
   options: () => [] as OptionItem[],
   addable: false,
+  placement: 'bottom-end',
 })
 const emit = defineEmits<Emits>()
 </script>
@@ -89,10 +91,10 @@ const emit = defineEmits<Emits>()
   @apply duration-200 py-1.5 px-2 flex cursor-pointer;
 
   &:hover {
-    background-color: rgba(var(--rgb-primary-light), 0.2);
+    background-color: rgba(var(--rgb-app-light), 0.2);
   }
   &.cy--options-item-selected {
-    background-color: rgba(var(--rgb-primary-light), 0.4);
+    background-color: rgba(var(--rgb-app-light), 0.4);
   }
 }
 </style>

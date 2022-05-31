@@ -44,9 +44,9 @@
               </cy-icon-text>
               <span>{{ equipment.def }}</span>
             </template>
-            <template v-else-if="equipment.origin.unknowCategory">
+            <template v-else-if="originEquipment.unknowCategory">
               <cy-icon-text icon="mdi-ghost" text-color="purple">
-                {{ equipment.origin.unknowCategory }}
+                {{ originEquipment.unknowCategory }}
               </cy-icon-text>
             </template>
           </div>
@@ -58,7 +58,7 @@
               type="preview"
             />
           </template>
-          <template v-else-if="state.currentMode === SearchModes.ItemLevel">
+          <template v-else-if="state.currentMode === SearchModes.ItemLevel && originEquipment.recipe">
             <div class="flex items-center">
               <cy-icon-text icon="jam-hammer">
                 {{ t('item-query.equipment-detail.recipe.item-level') }}
@@ -70,15 +70,15 @@
       </cy-list-item>
     </div>
     <cy-transition type="fade">
-      <div v-if="contents.detail" class="pt-2 pb-3 pl-6 pr-4 max-w-full bg-white">
+      <div v-if="contents.detail" class="pt-2 pb-3 pl-6 pr-4 max-w-full bg-white overscroll-none">
         <div class="mb-2 pl-2 flex items-center space-x-2">
           <cy-icon-text
-            v-if="equipment.origin.unknowCategory"
+            v-if="originEquipment.unknowCategory"
             icon="mdi-ghost"
             small
             text-color="orange"
           >
-            {{ equipment.origin.unknowCategory }}
+            {{ originEquipment.unknowCategory }}
           </cy-icon-text>
           <cy-icon-text
             v-else
@@ -340,16 +340,15 @@ const recipeInfoValid = computed(() => {
 .result-item {
   max-height: 70vh;
   overflow-y: auto;
-  overscroll-behavior-y: none;
   & + .result-item {
-    border-top: 1px solid var(--primary-light);
+    border-top: 1px solid var(--app-light);
   }
 }
 
 fieldset.result-item-row {
   padding: 1rem 0.8rem;
   border: 0;
-  border-top: 0.1rem solid var(--primary-orange);
+  border-top: 0.1rem solid var(--app-orange);
   padding-top: 0.4rem;
 
   & > legend {
@@ -360,7 +359,7 @@ fieldset.result-item-row {
 fieldset.recipe {
   & .recipe-attr {
     padding: 0.25rem 0.75rem;
-    border: 1px solid var(--primary-light);
+    border: 1px solid var(--app-light);
     display: inline-flex;
     margin-right: 0.3rem;
     margin-bottom: 0.3rem;
@@ -379,7 +378,7 @@ fieldset.recipe {
     padding: 0.4rem 0.3rem;
 
     & + .item  {
-      border-top: 1px solid var(--primary-light);
+      border-top: 1px solid var(--app-light);
     }
 
     & > .type-name {
@@ -390,7 +389,7 @@ fieldset.recipe {
         margin-right: 0.6rem;
       }
       & > .name {
-        color: var(--primary-purple);
+        color: var(--app-purple);
       }
     }
 

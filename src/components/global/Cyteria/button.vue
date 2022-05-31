@@ -167,12 +167,12 @@ export default defineComponent({
 
   & :deep(.button--text) {
     @apply text-center;
-    color: var(--text-color, var(--primary-dark));
+    color: var(--text-color, var(--app-dark));
   }
 
   &.button--main-content, & :deep(.button--main-content) {
     cursor: pointer;
-    border-color: var(--border-color, var(--primary-light));
+    border-color: var(--border-color, var(--app-light));
 
     &:hover, &.selected {
       --icon-color: var(--color-set--icon-color-hover);

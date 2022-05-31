@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-4 px-1" style="min-height: 75vh">
+  <div class="space-y-4 px-1">
     <cy-default-tips
       v-if="selectedSkillTrees.length === 0"
       icon="bx:message-rounded-edit"

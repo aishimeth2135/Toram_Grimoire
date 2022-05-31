@@ -1,3 +1,5 @@
+import { RouterView, RouterLink } from 'vue-router'
+
 import CyModal from '@/components/global/Cyteria/modal.vue'
 import CyInputCounter from '@/components/global/Cyteria/input-counter.vue'
 import CyListItem from '@/components/global/Cyteria/list-item.vue'
@@ -6,6 +8,7 @@ import CyTitleInput from '@/components/global/Cyteria/title-input.vue'
 import CyOptions from '@/components/global/Cyteria/options.vue'
 import CyPopover from '@/components/global/Cyteria/popover.vue'
 import CyButton from '@/components/global/Cyteria/button.vue'
+import CyButtonAction from '@/components/global/Cyteria/cy-button/cy-button-action.vue'
 // import CyButtonIcon from '@/components/global/Cyteria/button/icon.vue'
 // import CyButtonBorder from '@/components/global/Cyteria/button/border.vue'
 // import CyButtonDropDown from '@/components/global/Cyteria/button/drop-down.vue'
@@ -14,8 +17,12 @@ import CyButton from '@/components/global/Cyteria/button.vue'
 // import CyButtonCircle from '@/components/global/Cyteria/button/circle.vue'
 // import CyButtonInline from '@/components/global/Cyteria/button/inline.vue'
 
+
 declare module 'vue' {
   export interface GlobalComponents {
+    RouterView: typeof RouterView;
+    RouterLink: typeof RouterLink;
+
     CyModal: typeof CyModal;
     CyInputCounter: typeof CyInputCounter;
     CyListItem: typeof CyListItem;
@@ -25,6 +32,7 @@ declare module 'vue' {
     CyPopover: typeof CyPopover;
 
     CyButton: typeof CyButton;
+    CyButtonAction: typeof CyButtonAction;
     // CyButtonIcon: typeof CyButtonIcon;
     // CyButtonLine: typeof CyButton;
     // CyButtonDropDown: typeof CyButtonDropDown;

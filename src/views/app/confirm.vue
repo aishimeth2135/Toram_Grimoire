@@ -9,7 +9,7 @@
         <div class="mb-6 flex">
           <div>
             <cy-icon-text
-              :icon="item.icon"
+              :icon="(typeof item.icon === 'string') ? item.icon : item.icon.name"
               :icon-src="(typeof item.icon === 'string') ? 'iconify' : item.icon.src"
               style="--icon-width: 2rem"
               class="flex-shrink-0 mr-4"
@@ -19,22 +19,20 @@
             {{ item.message }}
           </div>
         </div>
-        <div class="flex items-center">
-          <cy-button-border
+        <div class="flex items-center justify-end">
+          <cy-button-action
             icon="line-md:confirm-circle"
-            class="ml-auto"
             @click="confirm"
           >
             {{ t('global.confirm') }}
-          </cy-button-border>
-          <cy-button-border
+          </cy-button-action>
+          <cy-button-action
             icon="ic-round-cancel"
-            type="border"
-            main-color="gray"
+            color="secondary"
             @click="cancel"
           >
             {{ t('global.cancel') }}
-          </cy-button-border>
+          </cy-button-action>
         </div>
       </div>
     </div>

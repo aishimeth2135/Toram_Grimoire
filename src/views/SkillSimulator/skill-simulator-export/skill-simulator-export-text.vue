@@ -11,13 +11,13 @@
       </div>
     </template>
     <template #footer-actions>
-      <cy-button-border
+      <cy-button-action
         icon="bx:copy-alt"
         :disabled="!currentText || !eportedTextContent"
         @click="copyText"
       >
         {{ t('global.copy') }}
-      </cy-button-border>
+      </cy-button-action>
     </template>
   </cy-modal>
 </template>

@@ -1,9 +1,9 @@
 <template>
   <div v-if="calculationItems.length > 0" class="w-full">
     <div>
-      <cy-button-border icon="bx:bx-git-compare" @click="toggle('contents/selectCalculation', true)">
+      <cy-button-action icon="bx:bx-git-compare" @click="toggle('contents/selectCalculation', true)">
         {{ t('damage-calculation.compare.select-build') }}
-      </cy-button-border>
+      </cy-button-action>
     </div>
     <div v-if="comparedCalculationItems.length > 0" class="pt-4 space-y-2">
       <DamageCalculationCompareItem
@@ -83,7 +83,7 @@ const comparedCalculationItems = computed(() => {
 })
 
 const { contents, toggle } = ToggleService({
-  contents: ['selectCalculation'],
+  contents: ['selectCalculation'] as const,
 })
 
 const { t } = useI18n()

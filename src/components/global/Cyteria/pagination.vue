@@ -4,8 +4,8 @@
       class="flex items-center justify-center w-full px-4 space-x-1 border border-transparent duration-300"
       :class="{ 'border-light-3': inputFocus }"
     >
-      <cy-button-border icon="ic:round-keyboard-double-arrow-left" @click="inputValue = 1" />
-      <cy-button-border icon="ic:round-arrow-back" @click="inputValue -= 1" />
+      <cy-button-action icon="ic:round-keyboard-double-arrow-left" @click="inputValue = 1" />
+      <cy-button-action icon="ic:round-arrow-back" @click="inputValue -= 1" />
       <input
         v-model.number.lazy="inputValue"
         type="number"
@@ -14,8 +14,8 @@
         @focus="inputFocus = true"
         @blur="inputFocus = false"
       />
-      <cy-button-border icon="ic:round-arrow-forward" @click="inputValue += 1" />
-      <cy-button-border icon="ic:round-keyboard-double-arrow-right" @click="inputValue = maxPage" />
+      <cy-button-action icon="ic:round-arrow-forward" @click="inputValue += 1" />
+      <cy-button-action icon="ic:round-keyboard-double-arrow-right" @click="inputValue = maxPage" />
     </div>
     <div class="flex items-center text-light-2 space-x-0.5 text-sm">
       <span>{{ value }}</span>

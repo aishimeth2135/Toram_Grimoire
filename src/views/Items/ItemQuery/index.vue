@@ -1,22 +1,134 @@
 <template>
-  <article class="flex flex-col">
-    <div v-if="searchResult.length > 0">
+  <AppLayoutMain>
+    <div v-if="searchResult.length > 0" class="py-4">
       <ItemQueryResult class="search-result" :equipments="searchResult" />
     </div>
     <cy-default-tips v-else icon="mdi-ghost" style="min-height: 30rem;">
       {{t('item-query.no-result-tips') }}
     </cy-default-tips>
-    <div
-      class="flex items-end ml-auto sticky z-10 px-2"
-      style="bottom: 4.5rem"
-    >
-      <cy-transition type="fade">
-        <div
-          v-if="menus.conditionOptions || menus.sortOptions"
-          class="border-1 border-light rounded-md pt-4 px-5 pb-6 bg-white overflow-y-auto"
-          style="max-height: 70vh"
+    <AppLayoutBottom>
+      <template #default>
+        <div class="flex items-center">
+          <template v-if="state.currentMode === SearchModes.Normal">
+            <div class="mode-normal-title ml-2">
+              <div class="input-container">
+                <cy-icon-text icon="ic-outline-search" class="icon" />
+                <input
+                  v-model="modes[SearchModes.Normal].searchText"
+                  type="text"
+                  :placeholder="t('global.search')"
+                >
+              </div>
+              <cy-button-icon
+                icon="heroicons-solid:menu"
+                @click="modes[SearchModes.Normal].optionsVisible = !modes[SearchModes.Normal].optionsVisible"
+              />
+            </div>
+          </template>
+          <template v-else-if="state.currentMode === SearchModes.Stat">
+            <cy-button-inline
+              class="w-full"
+              @click="toggle('modals/selecteStat')"
+            >
+              {{ modes[SearchModes.Stat].currentStat?.text ?? t('item-query.options-stat.select-stat.title') }}
+            </cy-button-inline>
+          </template>
+          <template v-else-if="state.currentMode === SearchModes.ItemLevel">
+            <div class="flex items-center">
+              <cy-icon-text icon="jam-hammer" class="ml-2" />
+              <input
+                v-model="itemLevelMinimum"
+                type="text"
+                placeholder="0"
+                class="border-0 p-1 inline-block w-14 text-center"
+              >
+              <cy-icon-text icon="mdi-tilde" />
+              <input
+                v-model="itemLevelMaximum"
+                type="text"
+                placeholder="300"
+                class="border-0 p-1 inline-block w-14 text-center"
+              >
+            </div>
+          </template>
+          <template v-else-if="state.currentMode === SearchModes.Dye">
+            <div class="mode-dye-title">
+              <div class="input-container">
+                <cy-icon-text icon="ic-outline-palette" class="ml-2" />
+                <input
+                  v-model="modes[SearchModes.Dye].searchText"
+                  type="text"
+                  :placeholder="t('global.search')"
+                >
+              </div>
+            </div>
+          </template>
+        </div>
+      </template>
+      <template #main-content>
+        <AppLayoutBottomContent
+          v-if="state.currentMode === SearchModes.Normal && modes[SearchModes.Normal].optionsVisible"
+          class="p-3"
         >
-          <div v-if="menus.conditionOptions" class="space-y-3">
+          <cy-icon-text
+            icon="bx-bx-target-lock"
+            small
+            text-color="purple"
+          >
+            {{ t('item-query.options-normal.title') }}
+          </cy-icon-text>
+          <div style="padding: 0.2rem 0.4rem;">
+            <cy-button-check
+              v-for="item in modes[SearchModes.Normal].targets"
+              :key="item.value"
+              v-model:selected="item.selected"
+            >
+              {{ t('item-query.options-normal.' + item.value) }}
+            </cy-button-check>
+          </div>
+        </AppLayoutBottomContent>
+      </template>
+      <template #main-start>
+        <cy-options
+          :value="modes[state.currentMode]"
+          :options="Object.entries(modes).map(([id, item]) => ({ id, value: item }))"
+          placement="top-start"
+          @update:value="selectMode($event.id)"
+        >
+          <template #title>
+            <cy-button-circle
+              icon="ic:baseline-settings"
+              main-color="water-blue"
+            />
+          </template>
+          <template #item="{ value }">
+            <cy-icon-text :icon="value.icon">
+              {{ t('item-query.modes.' + value.id) }}
+            </cy-icon-text>
+          </template>
+        </cy-options>
+      </template>
+      <template #side-buttons>
+        <cy-button-circle
+          v-if="state.currentMode === SearchModes.Stat || state.currentMode === SearchModes.ItemLevel"
+          icon="heroicons-solid:switch-vertical"
+          main-color="orange"
+          @click="state.displayMode = state.displayMode === 0 ? 1 : 0"
+        />
+        <cy-button-circle
+          icon="mdi-sort-variant"
+          main-color="water-blue"
+          @click="toggle('menus/sortOptions')"
+        />
+        <cy-button-circle
+          icon="mdi:filter"
+          border-color="light-3"
+          @click="toggle('menus/conditionOptions')"
+        />
+      </template>
+      <template #side-contents>
+        <cy-transition type="fade">
+          <AppLayoutBottomContent v-if="menus.conditionOptions" class="space-y-3 p-3">
             <div v-for="(type) in conditions.type" :key="type.id">
               <div class="flex items-center space-x-2">
                 <cy-button-check
@@ -62,8 +174,8 @@
                 </cy-button-check>
               </div>
             </div>
-          </div>
-          <div v-else-if="menus.sortOptions">
+          </AppLayoutBottomContent>
+          <AppLayoutBottomContent v-else-if="menus.sortOptions" class="p-3">
             <div>
               <div class="mb-1">
                 <cy-icon-text icon="mdi-sort-variant" text-color="purple" small>
@@ -92,134 +204,10 @@
                 :options="consts.sortOrderOptions"
               />
             </div>
-          </div>
-        </div>
-      </cy-transition>
-      <div class="flex flex-col flex-shrink-0 ml-2 space-y-2">
-        <cy-button-circle
-          v-if="state.currentMode === SearchModes.Stat || state.currentMode === SearchModes.ItemLevel"
-          icon="heroicons-solid:switch-vertical"
-          main-color="orange"
-          @click="state.displayMode = state.displayMode === 0 ? 1 : 0"
-        />
-        <cy-button-circle
-          icon="mdi-sort-variant"
-          main-color="water-blue"
-          @click="toggle('menus/sortOptions')"
-        />
-        <cy-button-circle
-          icon="mdi:filter"
-          border-color="light-3"
-          @click="toggle('menus/conditionOptions')"
-        />
-      </div>
-    </div>
-    <div class="sticky bottom-3 px-2 z-10">
-      <div class="flex items-end w-full">
-        <cy-options
-          :value="modes[state.currentMode]"
-          :options="Object.entries(modes).map(([id, item]) => ({ id, value: item }))"
-          @update:value="selectMode($event.id)"
-        >
-          <template #title>
-            <div class="mb-2 mr-2">
-              <cy-button-circle
-                icon="ic:baseline-settings"
-                main-color="water-blue"
-              />
-            </div>
-          </template>
-          <template #item="{ value }">
-            <cy-icon-text :icon="value.icon">
-              {{ t('item-query.modes.' + value.id) }}
-            </cy-icon-text>
-          </template>
-        </cy-options>
-        <div class="w-full">
-          <cy-transition type="fade">
-            <div
-              v-if="state.currentMode === SearchModes.Normal && modes[SearchModes.Normal].optionsVisible"
-              class="mode-normal-content"
-            >
-              <cy-icon-text
-                icon="bx-bx-target-lock"
-                small
-                text-color="purple"
-              >
-                {{ t('item-query.options-normal.title') }}
-              </cy-icon-text>
-              <div style="padding: 0.2rem 0.4rem;">
-                <cy-button-check
-                  v-for="item in modes[SearchModes.Normal].targets"
-                  :key="item.value"
-                  v-model:selected="item.selected"
-                >
-                  {{ t('item-query.options-normal.' + item.value) }}
-                </cy-button-check>
-              </div>
-            </div>
-          </cy-transition>
-          <div class="flex items-center">
-            <div class="mode-options-container w-full">
-              <template v-if="state.currentMode === SearchModes.Normal">
-                <div class="mode-normal-title ml-2">
-                  <div class="input-container">
-                    <cy-icon-text icon="ic-outline-search" class="icon" />
-                    <input
-                      v-model="modes[SearchModes.Normal].searchText"
-                      type="text"
-                      :placeholder="t('global.search')"
-                    >
-                  </div>
-                  <cy-button-icon
-                    icon="heroicons-solid:menu"
-                    @click="modes[SearchModes.Normal].optionsVisible = !modes[SearchModes.Normal].optionsVisible"
-                  />
-                </div>
-              </template>
-              <template v-else-if="state.currentMode === SearchModes.Stat">
-                <cy-button-inline
-                  class="w-full"
-                  @click="toggle('modals/selecteStat')"
-                >
-                  {{ modes[SearchModes.Stat].currentStat?.text ?? t('item-query.options-stat.select-stat.title') }}
-                </cy-button-inline>
-              </template>
-              <template v-else-if="state.currentMode === SearchModes.ItemLevel">
-                <div class="flex items-center">
-                  <cy-icon-text icon="jam-hammer" class="ml-2" />
-                  <input
-                    v-model="itemLevelMinimum"
-                    type="text"
-                    placeholder="0"
-                    class="border-0 p-1 inline-block w-14 text-center"
-                  >
-                  <cy-icon-text icon="mdi-tilde" />
-                  <input
-                    v-model="itemLevelMaximum"
-                    type="text"
-                    placeholder="300"
-                    class="border-0 p-1 inline-block w-14 text-center"
-                  >
-                </div>
-              </template>
-              <template v-else-if="state.currentMode === SearchModes.Dye">
-                <div class="mode-dye-title">
-                  <div class="input-container">
-                    <cy-icon-text icon="ic-outline-palette" class="ml-2" />
-                    <input
-                      v-model="modes[SearchModes.Dye].searchText"
-                      type="text"
-                      :placeholder="t('global.search')"
-                    >
-                  </div>
-                </div>
-              </template>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </AppLayoutBottomContent>
+        </cy-transition>
+      </template>
+    </AppLayoutBottom>
     <cy-modal v-model:visible="modals.selecteStat" vertical-position="start">
       <template #title>
         <cy-icon-text icon="mdi-rhombus-outline">
@@ -249,7 +237,7 @@
         </cy-default-tips>
       </template>
     </cy-modal>
-  </article>
+  </AppLayoutMain>
 </template>
 
 <script lang="ts">
@@ -269,6 +257,10 @@ import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList, EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 
 import ToggleService from '@/setup/ToggleService'
+
+import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
+import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
+import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 
 import ItemQueryResult from './item-query-result.vue'
 
@@ -537,18 +529,6 @@ const selectMode = (id: SearchModes)  => {
   min-height: 70vh;
 }
 
-.mode-options-container {
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
-  border-radius: 1.4rem;
-  padding: 0.25rem 0.5rem;
-  border: 0.1rem solid var(--primary-light);
-  display: flex;
-  align-items: center;
-  background-color: var(--white);
-  height: 2.7rem;
-}
-
 .mode-normal-title, .mode-dye-title {
   display: flex;
   align-items: center;
@@ -567,13 +547,5 @@ const selectMode = (id: SearchModes)  => {
       width: 100%;
     }
   }
-}
-
-.mode-normal-content {
-  border-radius: 0.8rem;
-  border: 0.1rem solid var(--primary-light);
-  padding: 0.6rem 1rem;
-  background-color: var(--white);
-  margin-top: 0.8rem;
 }
 </style>

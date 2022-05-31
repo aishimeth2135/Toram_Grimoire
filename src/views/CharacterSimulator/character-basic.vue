@@ -17,20 +17,18 @@
             </template>
           </cy-options>
         </div>
-        <div class="flex items-center">
-          <cy-button-border
+        <div class="flex items-center space-x-1">
+          <cy-button-circle
             icon="bx:copy-alt"
+            small
             @click="copyCurrentCharacter"
-          >
-            {{ t('global.copy') }}
-          </cy-button-border>
-          <cy-button-border
+          />
+          <cy-button-circle
             icon="ic-baseline-delete-outline"
             main-color="gray"
+            small
             @click="removeCurrentCharacter"
-          >
-            {{ t('global.remove') }}
-          </cy-button-border>
+          />
         </div>
       </div>
     </div>

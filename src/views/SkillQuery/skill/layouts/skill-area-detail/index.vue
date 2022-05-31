@@ -44,6 +44,10 @@ const ALL_DISPLAY_ATTR_KEYS = [
   'start_position_offsets',
   'end_position_offsets',
 ]
+
+export default {
+  name: 'SkillAreaDetail',
+}
 </script>
 
 <script lang="ts" setup>

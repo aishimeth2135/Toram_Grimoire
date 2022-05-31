@@ -1,22 +1,8 @@
 <template>
-  <article>
-    <div style="min-height: 70vh" class="max-w-full overflow-x-auto">
+  <AppLayoutMain>
+    <div class="w-full overflow-x-auto py-6">
       <component :is="currentTab" />
     </div>
-    <!-- <div class="sticky bottom-2 mx-2 flex items-end justify-end space-x-2">
-      <div class="w-full bg-white border-1 border-light-2 rounded-2xl px-4 py-0.5 z-10 mt-4 space-x-2">
-        <cy-button-inline
-          v-for="content in tabDatas"
-          :key="content.id"
-          :icon="content.icon"
-          :selected="tabs[content.id]"
-          class="my-1"
-          @click="toggle(`tabs/${content.id}`, true, false)"
-        >
-          {{ content.text }}
-        </cy-button-inline>
-      </div>
-    </div> -->
     <AppLayoutBottom>
       <template #main-end>
         <div class="flex items-center space-x-2">
@@ -54,7 +40,7 @@
       </template>
       <template #side-contents>
         <cy-transition type="fade" mode="out-in">
-          <AppLayoutBottomSideContent v-if="sideContents.tabs">
+          <AppLayoutBottomContent v-if="sideContents.tabs">
             <div style="min-width: 15rem">
               <cy-list-item
                 v-for="content in tabDatas"
@@ -67,14 +53,13 @@
                 </cy-icon-text>
               </cy-list-item>
             </div>
-          </AppLayoutBottomSideContent>
-          <AppLayoutBottomSideContent v-else-if="sideContents.panel" class="p-2.5 pl-4">
+          </AppLayoutBottomContent>
+          <AppLayoutBottomContent v-else-if="sideContents.panel" class="p-2.5 pl-4">
             <CharacterInfoPanel @open-tab="panelOpenTab" />
-          </AppLayoutBottomSideContent>
+          </AppLayoutBottomContent>
         </cy-transition>
       </template>
     </AppLayoutBottom>
-
     <CharacterBrowseEquipments
       :visible="modals.browseEquipment"
       :target-field="editEquipmentCurrentEquipmentField ?? undefined"
@@ -100,7 +85,7 @@
       :equipment="editStatCurrentEquipment"
       @close="editStatCurrentEquipment = null"
     />
-  </article>
+  </AppLayoutMain>
 </template>
 
 <script lang="ts">
@@ -122,8 +107,9 @@ import { EquipmentField } from '@/lib/Character/Character'
 import ToggleService from '@/setup/ToggleService'
 import AutoSave from '@/setup/AutoSave'
 
+import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
-import AppLayoutBottomSideContent from '@/components/app-layout/app-layout-bottom-side-content.vue'
+import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 
 import CharacterBasic from './character-basic.vue'
 import CharacterStats from './character-stats/index.vue'

@@ -28,7 +28,7 @@ withDefaults(defineProps<Props>(), {
   border: 1px solid transparent;
 
   &:hover, &.selected {
-    background-color: rgba(var(--rgb-primary-light), 0.2);
+    background-color: rgba(var(--rgb-app-light), 0.2);
   }
 
   &.is-pure {
@@ -36,12 +36,12 @@ withDefaults(defineProps<Props>(), {
   }
 
   &.selected {
-    color: var(--primary-purple);
-    border: 1px solid var(--primary-light-2);
+    color: var(--app-purple);
+    border: 1px solid var(--app-light-2);
   }
 
   &:not(.selected) + .cy--list-item:not(.selected) {
-    border-top: 1px solid var(--primary-light);
+    border-top: 1px solid var(--app-light);
   }
 }
 </style>

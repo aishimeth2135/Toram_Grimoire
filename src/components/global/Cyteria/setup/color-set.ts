@@ -76,8 +76,8 @@ function getColorSetStyles(src: ExtractPropTypes<typeof ColorSetProps>) {
 
   const handle = (key: string, color: string, colorHover: string) => {
     return {
-      [`--color-set--${key}-color`]: `var(--primary-${color})`,
-      [`--color-set--${key}-color-hover`]: `var(--primary-${colorHover})`,
+      [`--color-set--${key}-color`]: `var(--app-${color})`,
+      [`--color-set--${key}-color-hover`]: `var(--app-${colorHover})`,
     } as Record<string, string>
   }
 
