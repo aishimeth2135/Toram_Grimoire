@@ -42,14 +42,20 @@
       <template #main-end>
         <cy-button-circle
           icon="ic:round-format-list-bulleted"
-          main-color="water-blue"
+          color="water-blue"
+          float
+          toggle
+          :selected="contents.result"
           @click="toggle('contents/result')"
         />
       </template>
       <template #side-buttons>
         <cy-button-circle
           icon="ic:baseline-settings"
-          main-color="light-3"
+          color="bright"
+          float
+          toggle
+          :selected="contents.top"
           @click="toggle('contents/top')"
         />
       </template>

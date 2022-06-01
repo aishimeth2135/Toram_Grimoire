@@ -50,14 +50,14 @@
         </cy-input-counter>
       </div>
       <div class="flex justify-center pt-2">
-        <cy-button-inline
-          :icon="contents.setConfig ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
+        <cy-button-plain
+          :icon="contents.setConfig ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
           :selected="contents.setConfig"
-          text-color="light-2"
+          color="secondary"
           @click="toggle('contents/setConfig')"
         >
           {{ t('enchant-doll.equipment.set-config.title') }}
-        </cy-button-inline>
+        </cy-button-plain>
       </div>
       <template v-if="contents.setConfig">
         <div class="flex justify-center pt-2">

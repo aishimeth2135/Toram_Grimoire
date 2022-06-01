@@ -1,11 +1,11 @@
 <template>
   <span v-if="storageAvailable" class="app--settings">
-    <cy-button-inline
+    <cy-button-plain
       icon="ic-baseline-settings"
       @click="(toggle('modals/main'), leftMenuStore.toggleVisible())"
     >
       {{ t('app.settings.title') }}
-    </cy-button-inline>
+    </cy-button-plain>
     <cy-modal
       v-model:visible="modals.main"
       class="main--window"

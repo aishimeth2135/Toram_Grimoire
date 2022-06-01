@@ -40,20 +40,20 @@
                   <cy-button-circle
                     icon="ic:baseline-move-up"
                     small
-                    main-color="water-blue"
+                    color="water-blue"
                     @click="store.moveEquipment(movingEquipment!, -1, equip), movingEquipment = null"
                   />
                   <cy-button-circle
                     icon="ic:baseline-move-down"
                     small
-                    main-color="water-blue"
+                    color="water-blue"
                     @click="store.moveEquipment(movingEquipment!, 1, equip), movingEquipment = null"
                   />
                 </template>
                 <cy-button-circle
                   icon="ic:baseline-stop"
                   small
-                  main-color="green"
+                  color="blue-green"
                   @click="movingEquipment = null"
                 />
               </template>
@@ -71,19 +71,19 @@
                     <cy-button-circle
                       icon="mdi:cursor-move"
                       small
-                      main-color="green"
+                      color="blue-green"
                       @click="movingEquipment = equip"
                     />
                     <cy-button-circle
                       icon="ic:round-arrow-upward"
                       small
-                      main-color="water-blue"
+                      color="water-blue"
                       @click="store.moveEquipment(equip, -1)"
                     />
                     <cy-button-circle
                       icon="ic:round-arrow-downward"
                       small
-                      main-color="water-blue"
+                      color="water-blue"
                       @click="store.moveEquipment(equip, 1)"
                     />
                   </template>
@@ -91,7 +91,7 @@
                     <cy-button-circle
                       icon="ic:outline-tips-and-updates"
                       small
-                      main-color="blue-green"
+                      color="green"
                       @click="notify(t('character-simulator.browse-equipments.equipment-item-actions-tips'))"
                     />
                   </template>
@@ -103,7 +103,7 @@
                 />
                 <cy-button-circle
                   icon="ic-baseline-delete-outline"
-                  main-color="gray"
+                  color="secondary"
                   small
                   @click="removeSelectedEquipment"
                 />

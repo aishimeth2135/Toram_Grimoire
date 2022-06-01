@@ -17,20 +17,18 @@
             </template>
           </cy-options>
         </div>
-        <div class="flex items-center">
-          <cy-button-action
+        <div class="flex items-center space-x-2">
+          <cy-button-circle
             icon="bx:copy-alt"
+            small
             @click="copyCurrentFoodBuild"
-          >
-            {{ t('global.copy') }}
-          </cy-button-action>
-          <cy-button-action
+          />
+          <cy-button-circle
             icon="ic-baseline-delete-outline"
             color="secondary"
+            small
             @click="removeCurrentFoodBuild"
-          >
-            {{ t('global.remove') }}
-          </cy-button-action>
+          />
         </div>
       </div>
     </div>

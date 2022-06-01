@@ -2,7 +2,7 @@
   <AppLayoutMain>
     <div class="flex justify-center items-center h-32">
       <div class="px-4 py-6 sticky top-0">
-        <router-link v-slot="{ navigate }" to="/bubble/potum" custom>
+        <router-link v-slot="{ navigate }" :to="{ name: AppRouteNames.Bubble, params: { iconName: 'potum' } }" custom>
           <div class="text-4xl" @click="navigate">
             Cy's Grimoire
           </div>
@@ -27,10 +27,10 @@
     <footer class="flex items-center justify-center w-full px-2 h-32 mt-auto">
       <div class="flex items-center sticky bottom-0 space-x-4 py-4">
         <AppSetting />
-        <router-link v-slot="{ navigate }" :to="{ name: 'About' }" custom>
-          <cy-button-inline icon="bx-bxs-star-half" @click="navigate">
+        <router-link v-slot="{ navigate }" :to="{ name: AppRouteNames.About }" custom>
+          <cy-button-plain icon="bx-bxs-star-half" @click="navigate">
             {{ t('app.page-title.about') }}
-          </cy-button-inline>
+          </cy-button-plain>
         </router-link>
       </div>
     </footer>
@@ -51,6 +51,7 @@ import { ROUTE_LINK_DATAS } from '@/shared/consts'
 
 import AppSetting from '@/views/app/app-settings.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
+import { AppRouteNames } from '@/router/enums'
 
 import HomeLinkButton from './home-link-button.vue'
 

@@ -34,7 +34,7 @@
           <template #title>
             <cy-button-circle
               icon="heroicons-solid:switch-vertical"
-              main-color="water-blue"
+              color="water-blue"
             />
           </template>
           <template #item="{ value }">
@@ -54,30 +54,33 @@
             :placeholder="t('global.search')"
           />
         </div>
-        <cy-button-inline
+        <cy-button-plain
           v-else-if="mode === 'stat'"
           icon="mdi-rhombus-outline"
-          :main-color="modeStat.statItem ? 'default' : 'red'"
+          :color="modeStat.statItem ? 'primary' : 'purple'"
           @click="toggle('modals/selectStat')"
         >
           {{ modeStat.statItem ? modeStat.statItem.text : t('crystal-query.select-stat.title') }}
-        </cy-button-inline>
+        </cy-button-plain>
       </template>
       <template #side-buttons>
         <cy-button-circle
           v-if="mode === 'stat'"
           icon="ci:list-checklist-alt"
-          main-color="blue-green"
+          color="blue-green"
           @click="resultItemPreviewMode = resultItemPreviewMode === 'default' ? 'mode' : 'default'"
         />
         <cy-button-circle
           icon="mdi:arrow-expand"
-          main-color="water-blue"
+          color="water-blue"
           @click="resultItemsDetailVisibleDefault = !resultItemsDetailVisibleDefault"
         />
         <cy-button-circle
           icon="mdi:filter"
-          main-color="orange"
+          color="orange"
+          :selected="contents.searchFilter"
+          float
+          toggle
           @click="toggle('contents/searchFilter')"
         />
       </template>

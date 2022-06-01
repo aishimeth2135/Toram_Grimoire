@@ -57,7 +57,7 @@ const messageButtonClick = (msg: NotifyMessageItem, btn: MessageNotifyButtonItem
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="postcss" scoped>
 .fade-slide-enter-from {
   opacity: 0;
   transform: translateX(-30%);

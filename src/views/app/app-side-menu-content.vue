@@ -32,6 +32,8 @@ import { ROUTE_LINK_DATAS } from '@/shared/consts'
 
 import ToggleService from '@/setup/ToggleService'
 
+import { AppRouteNames } from '@/router/enums'
+
 import AppRouterLink from './app-router-link.vue'
 
 const { toggle, contents } = ToggleService({
@@ -46,7 +48,7 @@ const { viewButtons } = storeToRefs(leftMenuStore)
 const homeRouteData = {
   title: 'app.page-title.home',
   icon: 'ant-design:home-outlined',
-  pathName: 'Home',
+  pathName: AppRouteNames.Home,
 }
 
 const routeLinks = computed(() => {
@@ -60,5 +62,5 @@ const routeLinks = computed(() => {
     }))
 })
 
-const routeNotHome = (pathName: RouteRecordName) => pathName !== 'Home' && pathName !== 'About'
+const routeNotHome = (pathName: RouteRecordName) => pathName !== AppRouteNames.Home && pathName !== AppRouteNames.About
 </script>

@@ -1,5 +1,6 @@
 <template>
   <cy-button-action
+    :icon="null"
     :selected="selected"
     :class="{
       'py-1': iconDatas.every(iconData => iconData.icons.every(icon => !icon.text)),

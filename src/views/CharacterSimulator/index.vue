@@ -9,22 +9,23 @@
           <cy-button-circle
             :selected="tabs.characterStats"
             icon="bx-bxs-user-detail"
-            main-color="light-3"
-            shadow
+            color="bright"
+            float
             @click="(toggle('tabs/characterStats', true, false), toggle('sideContents/tabs', false))"
           />
           <cy-button-circle
             :selected="tabs.damage"
             icon="ic:outline-calculate"
-            main-color="orange"
-            shadow
+            color="orange"
+            float
             @click="(toggle('tabs/damage', true, false), toggle('sideContents/tabs', false))"
           />
           <cy-button-circle
             :selected="sideContents.tabs"
             icon="ic:round-menu"
-            main-color="water-blue"
-            shadow
+            color="water-blue"
+            float
+            toggle
             @click="toggle('sideContents/tabs', null, false)"
           />
         </div>
@@ -33,8 +34,9 @@
         <cy-button-circle
           :selected="sideContents.panel"
           icon="ic:outline-space-dashboard"
-          main-color="blue-green"
-          shadow
+          color="blue-green"
+          float
+          toggle
           @click="toggle('sideContents/panel', null, false)"
         />
       </template>

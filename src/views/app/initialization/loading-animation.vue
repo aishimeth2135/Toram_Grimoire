@@ -95,29 +95,16 @@ onMounted(() => {
 })
 </script>
 
-<style lang="less" scoped>
+<style lang="postcss" scoped>
 .custom-icon {
   width: 6rem;
   height: 6rem;
-  color: #f7a8d3;
+  color: var(--app-light-2);
 
   &.start-icon {
     animation: loading-page-main-icon ease 4s infinite;
   }
 }
-
-// .ball {
-//   width: 5rem;
-//   height: 5rem;
-//   border-radius: 50%;
-//   background-color: var(--app-light-3);
-//   border: 0.2rem solid var(--app-light-3);
-//   position: fixed;
-//   transform-origin: center;
-//   left: calc(50% - 2.6rem);
-//   top: calc(50% - 2.6rem);
-//   z-index: 100;
-// }
 
 @keyframes loading-page-main-icon {
   0% {

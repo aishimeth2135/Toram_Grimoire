@@ -28,11 +28,13 @@ import { useAttrs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
+import { AppRouteNames } from '@/router/enums'
+
 interface Props {
   data: {
     title: string;
     icon: string;
-    pathName: string;
+    pathName: AppRouteNames;
   };
 }
 

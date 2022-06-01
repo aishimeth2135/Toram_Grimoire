@@ -72,19 +72,25 @@
         <cy-button-circle
           icon="bx:bx-git-compare"
           :selected="contents.compare"
-          main-color="blue-green"
+          color="blue-green"
+          float
+          toggle
           @click="toggle('contents/compare', null, false)"
         />
         <cy-button-circle
           icon="ic:outline-calculate"
           :selected="contents.calcModeDetail"
-          main-color="orange"
+          color="orange"
+          float
+          toggle
           @click="toggle('contents/calcModeDetail', null, false)"
         />
         <cy-button-circle
           icon="ant-design:build-outlined"
           :selected="contents.mainMenu"
-          main-color="light-3"
+          color="bright"
+          float
+          toggle
           @click="toggle('contents/mainMenu', null,  false)"
         />
       </template>

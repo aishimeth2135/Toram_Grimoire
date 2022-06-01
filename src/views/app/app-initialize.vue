@@ -71,10 +71,11 @@ const statusIcon = (value: number) => {
 }
 </script>
 
-<style lang="less" scoped>
-&.loading-circle {
+<style lang="postcss" scoped>
+.loading-circle {
   animation: loading-circle 0.8s ease infinite;
 }
+
 @keyframes loading-circle {
   0% {
     transform: rotateZ(0);

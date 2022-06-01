@@ -1,3 +1,5 @@
+import { AppRouteNames } from '@/router/enums'
+
 export const APP_STORAGE_KEYS = {
   FONT_FAMILY: 'app--font-family',
   PRIMARY_LOCALE: 'app--app-locale',
@@ -6,36 +8,40 @@ export const APP_STORAGE_KEYS = {
   NIGHT_MODE: 'app--night-mode',
 }
 
-export const ROUTE_LINK_DATAS = [{
+export const ROUTE_LINK_DATAS: {
+  name: string;
+  icon: string;
+  pathName: AppRouteNames;
+}[] = [{
   name: 'skill-query',
   icon: 'ic-outline-menu-book',
-  pathName: 'SkillQuery',
+  pathName: AppRouteNames.SkillQuery,
 }, {
   name: 'character-simulator',
   icon: 'mdi-ghost',
-  pathName: 'CharacterSimulator',
+  pathName: AppRouteNames.CharacterSimulator,
 }, {
   name: 'skill-simulator',
   icon: 'ant-design:build-outlined',
-  pathName: 'SkillSimulator',
+  pathName: AppRouteNames.SkillSimulator,
 }, {
   name: 'enchant-simulator',
   icon: 'mdi-cube-scan',
-  pathName: 'EnchantSimulator',
+  pathName: AppRouteNames.EnchantSimulator,
 }, {
   name: 'enchant-doll',
   icon: 'ant-design:calculator-outlined',
-  pathName: 'EnchantDoll',
+  pathName: AppRouteNames.EnchantDoll,
 }, {
   name: 'item-query',
   icon: 'jam-box',
-  pathName: 'ItemQuery',
+  pathName: AppRouteNames.ItemQuery,
 }, {
   name: 'crystal-query',
   icon: 'bx-bx-cube-alt',
-  pathName: 'CrystalQuery',
+  pathName: AppRouteNames.CrystalQuery,
 }, {
   name: 'damage-calculation',
   icon: 'mdi-sword',
-  pathName: 'DamageCalculationMain',
+  pathName: AppRouteNames.DamageCalculation,
 }]

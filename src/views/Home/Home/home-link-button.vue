@@ -24,9 +24,11 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 
+import { AppRouteNames } from '@/router/enums'
+
 interface Props {
   data: {
-    pathName: string;
+    pathName: AppRouteNames;
     name: string;
     icon: string;
   };

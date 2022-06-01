@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <AppLayoutMain class="h-full">
     <div ref="icon-defs" style="position: absolute;" />
-    <div class="main--bubble" :class="{ 'display-bg': displayBg }">
+    <div class="main--bubble pointer-events-none" :class="{ 'display-bg': displayBg }">
       <svg
         v-for="data in icons"
         :key="data.id"
@@ -18,11 +18,13 @@
       </svg>
     </div>
     <div class="toggle-bg-area" @click="toggleBackground" />
-  </div>
+  </AppLayoutMain>
 </template>
 
 <script>
 import { loadIconifyData } from '@/shared/services/SvgIcons'
+
+import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 function getRandomInt(min, max) {
   min = Math.ceil(min)
@@ -40,6 +42,9 @@ const customIconDatas = {
 
 export default {
   name: 'DollBubble',
+  components: {
+    AppLayoutMain,
+  },
   data() {
     return {
       icons: [],
@@ -166,27 +171,22 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="postcss" scoped>
 .main--bubble {
-  width: 99vw;
-  height: 100vh;
+  width: 95%;
+  height: 100%;
   margin: 0 0.5vw;
   position: absolute;
   z-index: -1;
   overflow-y: hidden;
   left: 0;
-  top: 0;
-  // background-color: #fff;
 
-  // @media (prefers-color-scheme: dark) {
-  //   background-color: #fff;
-  // }
   &.display-bg {
     background-color: var(--app-white);
     z-index: 99;
   }
 
-  svg.up {
+  & > svg.up {
     animation: icon-up 20s;
     animation-fill-mode: forwards;
     position: absolute;
@@ -208,6 +208,7 @@ export default {
   position: absolute;
   right: 0;
   top: 0;
+
   &:hover {
     background-color: rgba(var(--rgb-app-black), 0.3);
   }

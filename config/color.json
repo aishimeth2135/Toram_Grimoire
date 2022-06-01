@@ -10,13 +10,13 @@
       "value": "#ffd1ea"
     },
     "light-2": {
-      "value": "#ffa8d7"
+      "value": "#ff9ed3"
     },
     "light-3": {
-      "value": "#ff57b2"
+      "value": "#ff51b0"
     },
     "light-4": {
-      "value": "#ff2e9f"
+      "value": "#ff1e99"
     },
     "gray": {
       "value": "#888"
@@ -52,25 +52,25 @@
       "value": "#f54747"
     },
     "purple-light": {
-      "value": "#db78e7"
+      "value": "#df8aea"
     },
     "blue-purple-light": {
-      "value": "#ba97f6"
+      "value": "#c7aaf7"
     },
     "water-blue-light": {
-      "value": "#82c4f8"
+      "value": "#95cdf9"
     },
     "blue-green-light": {
-      "value": "#2bcef5"
+      "value": "#3ed3f6"
     },
     "orange-light": {
-      "value": "#faa94b"
+      "value": "#fbb25f"
     },
     "green-light": {
-      "value": "#40efb5"
+      "value": "#53f0bc"
     },
     "red-light": {
-      "value": "#faa8a8"
+      "value": "#fbbbbb"
     }
   },
   "color-dark": {
@@ -158,13 +158,13 @@
       "value": "255, 209, 234"
     },
     "light-2": {
-      "value": "255, 168, 215"
+      "value": "255, 158, 211"
     },
     "light-3": {
-      "value": "255, 87, 178"
+      "value": "255, 81, 176"
     },
     "light-4": {
-      "value": "255, 46, 159"
+      "value": "255, 30, 153"
     },
     "gray": {
       "value": "136, 136, 136"
@@ -200,25 +200,25 @@
       "value": "245, 71, 71"
     },
     "purple-light": {
-      "value": "219, 120, 231"
+      "value": "223, 138, 234"
     },
     "blue-purple-light": {
-      "value": "186, 151, 246"
+      "value": "199, 170, 247"
     },
     "water-blue-light": {
-      "value": "130, 196, 248"
+      "value": "149, 205, 249"
     },
     "blue-green-light": {
-      "value": "43, 206, 245"
+      "value": "62, 211, 246"
     },
     "orange-light": {
-      "value": "250, 169, 75"
+      "value": "251, 178, 95"
     },
     "green-light": {
-      "value": "64, 239, 181"
+      "value": "83, 240, 188"
     },
     "red-light": {
-      "value": "250, 168, 168"
+      "value": "251, 187, 187"
     }
   },
   "color-dark-rgb": {

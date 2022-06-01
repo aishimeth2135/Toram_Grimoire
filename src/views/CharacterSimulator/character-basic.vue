@@ -25,7 +25,7 @@
           />
           <cy-button-circle
             icon="ic-baseline-delete-outline"
-            main-color="gray"
+            color="secondary"
             small
             @click="removeCurrentCharacter"
           />

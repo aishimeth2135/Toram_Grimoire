@@ -49,7 +49,7 @@
             <div class="absolute right-4 -bottom-16">
               <cy-button-circle
                 v-show="extraContent.main"
-                main-color="water-blue"
+                color="water-blue"
                 icon="ep:arrow-right-bold"
                 @click="hideExtraContent"
               />

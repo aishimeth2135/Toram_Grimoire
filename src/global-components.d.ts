@@ -9,6 +9,8 @@ import CyOptions from '@/components/global/Cyteria/options.vue'
 import CyPopover from '@/components/global/Cyteria/popover.vue'
 import CyButton from '@/components/global/Cyteria/button.vue'
 import CyButtonAction from '@/components/global/Cyteria/cy-button/cy-button-action.vue'
+import CyButtonCircle from '@/components/global/Cyteria/cy-button/cy-button-circle.vue'
+import CyButtonPlain from '@/components/global/Cyteria/cy-button/cy-button-plain.vue'
 // import CyButtonIcon from '@/components/global/Cyteria/button/icon.vue'
 // import CyButtonBorder from '@/components/global/Cyteria/button/border.vue'
 // import CyButtonDropDown from '@/components/global/Cyteria/button/drop-down.vue'
@@ -33,6 +35,8 @@ declare module 'vue' {
 
     CyButton: typeof CyButton;
     CyButtonAction: typeof CyButtonAction;
+    CyButtonCircle: typeof CyButtonCircle;
+    CyButtonPlain: typeof CyButtonPlain;
     // CyButtonIcon: typeof CyButtonIcon;
     // CyButtonLine: typeof CyButton;
     // CyButtonDropDown: typeof CyButtonDropDown;

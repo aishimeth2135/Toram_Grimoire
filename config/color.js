@@ -26,9 +26,9 @@ const color = {
   'dark': '#85005f',
   'dark-light': '#c62899',
   'light': lightColor.toHexString(),
-  'light-2': lightColor.darken(8).toHexString(),
-  'light-3': lightColor.darken(16).toHexString(),
-  'light-4': lightColor.darken(8).toHexString(),
+  'light-2': lightColor.darken(10).toHexString(),
+  'light-3': lightColor.darken(15).toHexString(),
+  'light-4': lightColor.darken(10).toHexString(),
   'gray': '#888',
   'gray-light': '#ddd',
   'white': '#fff',
@@ -37,7 +37,7 @@ const color = {
 }
 
 Object.entries(baseColors).map(([key, value]) => {
-  color[`${key}-light`] = Color(value).lighten(20).toHexString()
+  color[`${key}-light`] = Color(value).lighten(24).toHexString()
 })
 
 const darkLightColor = Color('#804665')

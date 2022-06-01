@@ -1,42 +1,50 @@
 <template>
   <AppLayoutBottom>
     <template #default>
-      <cy-button-inline
-        :icon="mode === 'skill' ? 'bx:bxs-book-bookmark' : 'bx:bx-star'"
-        @click="mode = mode === 'skill' ? 'star-gem' : 'skill'"
-      >
-        {{ mode === 'skill' ? t('skill-simulator.skill-level') : t('skill-simulator.star-gem-level') }}
-      </cy-button-inline>
-      <cy-button-inline
-        :icon="`mdi:numeric-${levelUnit}-circle-outline`"
-        @click="toggleLevelUnit"
-      >
-        {{ `Lv.${levelUnit}` }}
-      </cy-button-inline>
-      <cy-button-inline
-        :icon="increase ? 'ic:round-add-circle-outline' : 'ic:round-remove-circle-outline'"
-        @click="increase = !increase"
-      >
-        {{ increase ? t('skill-simulator.increase-level') : t('skill-simulator.decrease-level') }}
-      </cy-button-inline>
+      <div class="flex items-center px-2 space-x-2">
+        <cy-button-plain
+          :icon="mode === 'skill' ? 'bx:bxs-book-bookmark' : 'bx:bx-star'"
+          @click="mode = mode === 'skill' ? 'star-gem' : 'skill'"
+        >
+          {{ mode === 'skill' ? t('skill-simulator.skill-level') : t('skill-simulator.star-gem-level') }}
+        </cy-button-plain>
+        <cy-button-plain
+          :icon="`mdi:numeric-${levelUnit}-circle-outline`"
+          @click="toggleLevelUnit"
+        >
+          {{ `Lv.${levelUnit}` }}
+        </cy-button-plain>
+        <cy-button-plain
+          :icon="increase ? 'ic:round-add-circle-outline' : 'ic:round-remove-circle-outline'"
+          @click="increase = !increase"
+        >
+          {{ increase ? t('skill-simulator.increase-level') : t('skill-simulator.decrease-level') }}
+        </cy-button-plain>
+      </div>
     </template>
     <template v-if="currentSkillBuild" #side-buttons>
       <cy-button-circle
         icon="ic:baseline-settings"
-        main-color="orange"
-        shadow
+        color="bright"
+        float
+        toggle
+        :selected="contents.mainMenu"
         @click="toggle('contents/mainMenu', null, false)"
       />
       <cy-button-circle
         icon="carbon:location-current"
-        main-color="green"
-        shadow
+        color="blue-green"
+        float
+        toggle
+        :selected="contents.goSkillTree"
         @click="toggle('contents/goSkillTree', null, false)"
       />
       <cy-button-circle
         icon="uil:books"
-        main-color="water-blue"
-        shadow
+        color="orange"
+        float
+        toggle
+        :selected="contents.selectSkillTree"
         @click="toggle('contents/selectSkillTree', null, false)"
       />
     </template>
@@ -121,14 +129,15 @@
               <cy-icon-text icon="uil:books" main-color="orange" small>{{ categoryItem.origin.name }}</cy-icon-text>
             </div>
             <div class="pl-2">
-              <cy-button-inline
+              <cy-button-plain
                 v-for="st in categoryItem.skillTrees"
                 :key="`st-${st.skillTreeId}`"
                 icon="bx:bxs-book-bookmark"
+                class="pr-2"
                 @click="emit('go-skill-tree', st)"
               >
                 {{ st.name }}
-              </cy-button-inline>
+              </cy-button-plain>
             </div>
           </div>
         </AppLayoutBottomContent>

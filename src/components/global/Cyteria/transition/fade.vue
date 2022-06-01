@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="postcss" scoped>
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
 }
