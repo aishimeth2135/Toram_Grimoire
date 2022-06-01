@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia'
 import { readonly, ref } from 'vue'
 
+import { AppRouteNames } from '@/router/enums'
+
 interface LeftMenuViewButton {
   title: string;
   icon: string;
-  pathName: string;
+  pathName: AppRouteNames;
 }
 
 export const useLeftMenuStore = defineStore('app-left-menu', () => {

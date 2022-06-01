@@ -140,7 +140,7 @@ watch(options, () => updatePosition())
 
 .cy--popover-wrapper {
   min-width: 15rem;
-  @apply fixed z-100 bg-white border border-light shadow shadow-light-2;
+  @apply fixed z-100 bg-white border-1 border-light shadow;
 
   @media screen and (max-width: 15rem) {
     min-width: auto;

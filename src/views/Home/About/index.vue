@@ -4,17 +4,18 @@
       <div
         v-for="column in columns"
         :key="column.title"
-        class="cy--about-column flex p-4 bg-white rounded-md m-4 border-1 border-transparent hover:border-light-2 duration-300"
+        class="cy--about-column flex p-4 bg-white rounded-md m-4 border-1 border-transparent hover:border-light-2 duration-200 overflow-x-auto"
       >
         <div class="flex items-center justify-center w-24 h-24 relative flex-shrink-0 rounded-full mr-3 mb-4 border-1 border-solid border-light-3 bg-white">
-          <div>{{ t(`app.about.${column.title}.title`) }}</div>
+          <div class="text-dark-light">{{ t(`app.about.${column.title}.title`) }}</div>
           <cy-icon-text
             icon="mdi-leaf"
-            style="--icon-width: 2rem; position: absolute;"
+            style="position: absolute;"
             class="-top-1 -left-1"
+            icon-width="2rem"
           />
         </div>
-        <div class="pl-3 mt-2 w-full overflow-x-auto">
+        <div class="pl-3 mt-2">
           <template v-if="column.title !== 'cooperation'">
             <div class="text-sm text-purple mb-3">
               <div>{{ t(`app.about.${column.title}.sub-title`) }}</div>
@@ -84,9 +85,8 @@
         </div>
       </div>
     </section>
-    <section class="pt-4 pb-8 px-3">
-      <div class="content">
-        托蘭異世錄為<a class="text-light-3 underline" href="https://asobimo.com/" target="_blank">アソビモ株式会社（ASOBIMO,Inc.）</a>所營運之遊戲。本網站只是一個分享資料的小地方。
+    <section class="pt-5 pb-12 px-5">
+      <div class="content" v-html="disclaimer">
       </div>
     </section>
   </AppLayoutMain>
@@ -191,6 +191,10 @@ const columns:  {
 }]
 const { t } = useI18n()
 
+const disclaimer = t('app.about.disclaimer', {
+  link: '<a class="text-light-3 underline" href="https://asobimo.com/" target="_blank">アソビモ株式会社（ASOBIMO,Inc.）</a>',
+})
+
 const discordGroupData = ref({
   name: 'Toram\'s Pelulu',
   memberNumbers: '',
@@ -219,7 +223,7 @@ const fetchDiscordData = async () => {
 fetchDiscordData()
 </script>
 
-<style lang="less" scoped>
+<style lang="postcss" scoped>
 .cy--about-column {
   @media screen and (max-width: 50rem) {
     flex-wrap: wrap;

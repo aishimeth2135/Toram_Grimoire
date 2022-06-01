@@ -8,10 +8,12 @@ import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
+import { AppRouteNames } from '../enums'
+
 const SkillQueryView = () => import('@/views/SkillQuery/index.vue')
 
 export default {
-  name: 'Skill',
+  name: AppRouteNames.Skill,
   path: '/skill',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
@@ -22,15 +24,15 @@ export default {
     leftMenuViewButtons: [{
       title: 'app.page-title.skill-query',
       icon: 'ic-outline-menu-book',
-      pathName: 'SkillQuery',
+      pathName: AppRouteNames.SkillQuery,
     }],
   },
   children: [{
-    name: 'SkillQuery',
+    name: AppRouteNames.SkillQuery,
     path: ':skillId?',
     component: SkillQueryView,
     meta: {
-      parentPathName: 'Skill',
+      parentPathName: AppRouteNames.Skill,
       title: 'app.page-title.skill-query',
     },
   }],

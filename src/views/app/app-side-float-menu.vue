@@ -4,7 +4,7 @@
       <div>
         <cy-button-circle
           icon="akar-icons:sidebar-left"
-          main-color="light-3"
+          color="bright"
           @click="toggle('contents/menu')"
         />
       </div>

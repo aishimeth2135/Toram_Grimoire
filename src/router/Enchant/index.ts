@@ -8,11 +8,13 @@ import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
+import { AppRouteNames } from '../enums'
+
 const EnchantSimulatorView = () => import('@/views/Enchant/EnchantSimulator/index.vue')
 const EnchantDollView = () => import('@/views/Enchant/EnchantDoll/index.vue')
 
 export default {
-  name: 'Enchant',
+  name: AppRouteNames.Enchant,
   path: '/enchant',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
@@ -23,22 +25,22 @@ export default {
     leftMenuViewButtons: [{
       title: 'app.page-title.enchant-simulator',
       icon: 'mdi-cube-scan',
-      pathName: 'EnchantSimulator',
+      pathName: AppRouteNames.EnchantSimulator,
     }, {
       title: 'app.page-title.enchant-doll',
       icon: 'mdi-leaf',
-      pathName: 'EnchantDoll',
+      pathName: AppRouteNames.EnchantDoll,
     }],
   },
   children: [{
-    name: 'EnchantSimulator',
+    name: AppRouteNames.EnchantSimulator,
     path: '',
     component: EnchantSimulatorView,
     meta: {
       title: 'app.page-title.enchant-simulator',
     },
   }, {
-    name: 'EnchantDoll',
+    name: AppRouteNames.EnchantDoll,
     path: 'doll',
     component: EnchantDollView,
     meta: {

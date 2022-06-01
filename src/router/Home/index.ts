@@ -6,10 +6,12 @@ import HomeView from '@/views/Home/Home/index.vue'
 
 import ViewWrapper from './view-wrapper.vue'
 
+import { AppRouteNames } from '../enums'
+
 const AboutView = () => import('@/views/Home/About/index.vue')
 
 export default {
-  name: 'AppRoot',
+  name: AppRouteNames.Base,
   path: '/',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
@@ -20,19 +22,19 @@ export default {
     leftMenuViewButtons: [{
       title: 'app.page-title.home',
       icon: 'ant-design:home-outlined',
-      pathName: 'Home',
+      pathName: AppRouteNames.Home,
     }, {
       title: 'app.page-title.about',
       icon: 'bx-bxs-star-half',
-      pathName: 'About',
+      pathName: AppRouteNames.About,
     }],
   },
   children: [{
-    name: 'Home',
+    name: AppRouteNames.Home,
     path: '',
     component: HomeView,
   }, {
-    name: 'About',
+    name: AppRouteNames.About,
     path: 'about',
     component: AboutView,
     meta: {

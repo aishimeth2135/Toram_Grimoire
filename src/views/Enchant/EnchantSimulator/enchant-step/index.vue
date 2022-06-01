@@ -23,37 +23,30 @@
               :selected="shown"
             />
           </template>
-          <template #popper>
-            <cy-list-item @click="insertStepBefore">
-              <cy-button-inline
-                class="w-full"
-                icon="mdi-table-row-plus-before"
+          <template #popper="{ hide }">
+            <div @click="hide">
+              <cy-list-item @click="insertStepBefore">
+                <cy-icon-text icon="mdi-table-row-plus-before">
+                  {{ t('enchant-simulator.step.insert-step-before') }}
+                </cy-icon-text>
+              </cy-list-item>
+              <cy-list-item
+                v-if="step.index !== 0"
+                @click="swapStep(-1)"
               >
-                {{ t('enchant-simulator.step.insert-step-before') }}
-              </cy-button-inline>
-            </cy-list-item>
-            <cy-list-item
-              v-if="step.index !== 0"
-              @click="swapStep(-1)"
-            >
-              <cy-button-inline
-                class="w-full"
-                icon="eva-arrow-ios-upward-fill"
+                <cy-icon-text icon="eva-arrow-ios-upward-fill">
+                  {{ t('enchant-simulator.step.step-move-up') }}
+                </cy-icon-text>
+              </cy-list-item>
+              <cy-list-item
+                v-if="!step.isLastStep"
+                @click="swapStep(1)"
               >
-                {{ t('enchant-simulator.step.step-move-up') }}
-              </cy-button-inline>
-            </cy-list-item>
-            <cy-list-item
-              v-if="!step.isLastStep"
-              @click="swapStep(1)"
-            >
-              <cy-button-inline
-                class="w-full"
-                icon="eva-arrow-ios-downward-outline"
-              >
-                {{ t('enchant-simulator.step.step-move-up') }}
-              </cy-button-inline>
-            </cy-list-item>
+                <cy-icon-text icon="eva-arrow-ios-downward-outline">
+                  {{ t('enchant-simulator.step.step-move-down') }}
+                </cy-icon-text>
+              </cy-list-item>
+            </div>
           </template>
         </cy-popover>
         <cy-button-icon

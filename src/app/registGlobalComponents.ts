@@ -3,6 +3,8 @@ import { h, mergeProps } from 'vue'
 
 import CyButton from '@/components/global/Cyteria/button.vue'
 import CyButtonAction from '@/components/global/Cyteria/cy-button/cy-button-action.vue'
+import CyButtonCircle from '@/components/global/Cyteria/cy-button/cy-button-circle.vue'
+import CyButtonPlain from '@/components/global/Cyteria/cy-button/cy-button-plain.vue'
 import CyButtonCheckGroup from '@/components/global/Cyteria/button-check-group.vue'
 import CyDefaultTips from '@/components/global/Cyteria/default-tips.vue'
 import CyDetailWindow from '@/components/global/Cyteria/detail-window.vue'
@@ -69,11 +71,13 @@ export default function (app: App<Element>) {
 
   app.component('cy-button', CyButton)
   app.component('cy-button-action', CyButtonAction)
+  app.component('cy-button-circle', CyButtonCircle)
+  app.component('cy-button-plain', CyButtonPlain)
   registButtonAlias(app)
 }
 
 function registButtonAlias(app: App<Element>) {
-  const aliasNames = ['icon', 'line', 'border', 'drop-down', 'check', 'inline', 'switch', 'radio', 'circle']
+  const aliasNames = ['icon', 'line', 'border', 'drop-down', 'check', 'inline', 'switch', 'radio']
   aliasNames.map(name => {
     const componentFunction: FunctionalComponent = function (props, context) {
       const attrs = mergeProps({

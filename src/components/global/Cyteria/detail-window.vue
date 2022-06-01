@@ -32,7 +32,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="postcss" scoped>
 .cy--detail-window {
   position: fixed;
   width: 100%;
@@ -41,7 +41,7 @@ export default {
   justify-content: center;
   z-index: 15;
 
-  .content-container {
+  & > .content-container {
     background-color: rgba(var(--rgb-app-white), 0.95);
     border: 1px solid var(--app-light-2);
     border-bottom: 0;
@@ -52,7 +52,7 @@ export default {
     overflow-y: auto;
     margin: 0 0.6rem;
 
-    .content {
+    & > .content {
       border-bottom: 1px solid var(--app-light-2);
       padding: 1rem;
       padding-bottom: 0;
@@ -67,7 +67,7 @@ export default {
         background-color: rgba(var(--rgb-app-white), 0.5);
       }
 
-      > .title {
+      & > .title {
         margin-bottom: 0.4rem;
       }
     }

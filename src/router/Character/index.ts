@@ -8,11 +8,13 @@ import { PrepareLocaleInit, ViewInit } from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
+import { AppRouteNames } from '../enums'
+
 const CharacterSimulatorView = () => import('@/views/CharacterSimulator/index.vue')
 const SkillSimulatorView = () => import('@/views/SkillSimulator/index.vue')
 
 export default {
-  name: 'Character',
+  name: AppRouteNames.Character,
   path: '/character',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
@@ -23,22 +25,22 @@ export default {
     leftMenuViewButtons: [{
       title: 'app.page-title.character-simulator',
       icon: 'gridicons-user',
-      pathName: 'CharacterSimulator',
+      pathName: AppRouteNames.CharacterSimulator,
     }, {
       title: 'app.page-title.skill-simulator',
       icon: 'bx-bxs-star-half',
-      pathName: 'SkillSimulator',
+      pathName: AppRouteNames.SkillSimulator,
     }],
   },
   children: [{
-    name: 'CharacterSimulator',
+    name: AppRouteNames.CharacterSimulator,
     path: '',
     component: CharacterSimulatorView,
     meta: {
       title: 'app.page-title.character-simulator',
     },
   }, {
-    name: 'SkillSimulator',
+    name: AppRouteNames.SkillSimulator,
     path: 'skill',
     component: SkillSimulatorView,
     meta: {

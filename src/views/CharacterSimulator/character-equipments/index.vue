@@ -5,7 +5,7 @@
         <cy-button-circle
           icon="mdi:arrange-send-to-back"
           small
-          main-color="blue-green"
+          color="blue-green"
           @click="autoArrange"
         />
       </div>

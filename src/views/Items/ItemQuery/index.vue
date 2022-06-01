@@ -26,12 +26,12 @@
             </div>
           </template>
           <template v-else-if="state.currentMode === SearchModes.Stat">
-            <cy-button-inline
-              class="w-full"
+            <cy-button-plain
+              width-full
               @click="toggle('modals/selecteStat')"
             >
               {{ modes[SearchModes.Stat].currentStat?.text ?? t('item-query.options-stat.select-stat.title') }}
-            </cy-button-inline>
+            </cy-button-plain>
           </template>
           <template v-else-if="state.currentMode === SearchModes.ItemLevel">
             <div class="flex items-center">
@@ -98,7 +98,7 @@
           <template #title>
             <cy-button-circle
               icon="ic:baseline-settings"
-              main-color="water-blue"
+              color="water-blue"
             />
           </template>
           <template #item="{ value }">
@@ -112,22 +112,28 @@
         <cy-button-circle
           v-if="state.currentMode === SearchModes.Stat || state.currentMode === SearchModes.ItemLevel"
           icon="heroicons-solid:switch-vertical"
-          main-color="orange"
+          color="orange"
           @click="state.displayMode = state.displayMode === 0 ? 1 : 0"
         />
         <cy-button-circle
           icon="mdi-sort-variant"
-          main-color="water-blue"
-          @click="toggle('menus/sortOptions')"
+          color="water-blue"
+          :selected="menus.sortOptions"
+          float
+          toggle
+          @click="toggle('menus/sortOptions', null, false)"
         />
         <cy-button-circle
           icon="mdi:filter"
           border-color="light-3"
-          @click="toggle('menus/conditionOptions')"
+          :selected="menus.conditionOptions"
+          float
+          toggle
+          @click="toggle('menus/conditionOptions', null, false)"
         />
       </template>
       <template #side-contents>
-        <cy-transition type="fade">
+        <cy-transition type="fade" mode="out-in">
           <AppLayoutBottomContent v-if="menus.conditionOptions" class="space-y-3 p-3">
             <div v-for="(type) in conditions.type" :key="type.id">
               <div class="flex items-center space-x-2">

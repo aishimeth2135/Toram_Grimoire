@@ -73,7 +73,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="postcss" scoped>
 .fade-slide-right-enter-from {
   transform: translateX(-20%);
   opacity: 0;

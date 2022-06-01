@@ -2,18 +2,20 @@
   <AppLayoutBottom>
     <template #default>
       <div class="flex items-center">
-        <cy-button-inline icon="mdi:order-numeric-descending" @click="toggleSkillLevel">
-          {{ `Lv.${skillLevel}` }}
-        </cy-button-inline>
-        <cy-button-inline
-          v-for="({ key }) in equipmentOptions"
-          :key="key"
-          :icon="getEquipmentImagePath(selectedEquipment[key])"
-          :icon-src="selectedEquipment[key] === null ? 'iconify' : 'image'"
-          @click="toggleCurrentEquipment(key)"
-        >
-          {{ getEquipmentText(selectedEquipment[key]) }}
-        </cy-button-inline>
+        <div class="flex items-center px-2 space-x-2">
+          <cy-button-plain icon="mdi:order-numeric-descending" @click="toggleSkillLevel">
+            {{ `Lv.${skillLevel}` }}
+          </cy-button-plain>
+          <cy-button-plain
+            v-for="({ key }) in equipmentOptions"
+            :key="key"
+            :icon="getEquipmentImagePath(selectedEquipment[key])"
+            :icon-src="selectedEquipment[key] === null ? 'iconify' : 'image'"
+            @click="toggleCurrentEquipment(key)"
+          >
+            {{ getEquipmentText(selectedEquipment[key]) }}
+          </cy-button-plain>
+        </div>
         <cy-button-icon
           class="ml-auto"
           :icon="contents.advancedMenu ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
@@ -25,12 +27,16 @@
       <cy-button-circle
         v-if="skillItem"
         icon="mdi:checkbox-multiple-blank-circle-outline"
-        main-color="water-blue"
+        color="water-blue"
+        toggle
+        float
+        :selected="contents.switchEffect"
         @click="toggle('contents/switchEffect')"
       />
       <cy-button-circle
         icon="icon-park-outline:to-top-one"
-        main-color="purple"
+        color="purple"
+        float
         @click="emit('go-skill-top')"
       />
     </template>

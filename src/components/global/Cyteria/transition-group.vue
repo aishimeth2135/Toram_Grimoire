@@ -24,46 +24,46 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-::v-deep(.fade-enter-from), ::v-deep(.fade-leave-to) {
+<style lang="postcss" scoped>
+:deep(.fade-enter-from), :deep(.fade-leave-to) {
   opacity: 0;
 }
-::v-deep(.fade-enter-active), ::v-deep(.fade-leave-active) {
+:deep(.fade-enter-active), :deep(.fade-leave-active) {
   transition: 0.3s ease;
 }
-::v-deep(.fade-enter-to), ::v-deep(.fade-leave-from) {
+:deep(.fade-enter-to), :deep(.fade-leave-from) {
   opacity: 1;
 }
 
-::v-deep(.fade-slide-right-enter-from) {
+:deep(.fade-slide-right-enter-from) {
   transform: translateX(-20%);
   opacity: 0;
 }
-::v-deep(.fade-slide-right-enter-to) {
+:deep(.fade-slide-right-enter-to) {
   transform: 0;
   opacity: 1;
 }
-::v-deep(.fade-slide-right-leave-to) {
+:deep(.fade-slide-right-leave-to) {
   transform: translateX(20%);
   opacity: 0;
 }
-::v-deep(.fade-slide-right-enter-active), ::v-deep(.fade-slide-right-leave-active) {
+:deep(.fade-slide-right-enter-active), :deep(.fade-slide-right-leave-active) {
   transition: 0.3s ease;
 }
 
-::v-deep(.fade-slide-up-enter-from) {
+:deep(.fade-slide-up-enter-from) {
   transform: translateY(-20%);
   opacity: 0;
 }
-::v-deep(.fade-slide-up-enter-to) {
+:deep(.fade-slide-up-enter-to) {
   transform: 0;
   opacity: 1;
 }
-::v-deep(.fade-slide-up-leave-to) {
+:deep(.fade-slide-up-leave-to) {
   transform: translateY(20%);
   opacity: 0;
 }
-::v-deep(.fade-slide-up-enter-active), ::v-deep(.fade-slide-up-leave-active) {
+:deep(.fade-slide-up-enter-active), :deep(.fade-slide-up-leave-active) {
   transition: 0.3s ease;
 }
 </style>
