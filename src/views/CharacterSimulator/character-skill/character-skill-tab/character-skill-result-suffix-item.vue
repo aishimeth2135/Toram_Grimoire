@@ -1,13 +1,12 @@
 <template>
   <div v-if="container" class="flex items-center">
     <div v-if="toggleable" class="flex mr-3 flex-shrink-0">
-      <cy-button-switch
+      <cy-button-toggle
         v-model:selected="branchItemState.enabled"
         :disabled="container.statContainers.length === 0"
-        inline
       >
         <span v-html="container.get('condition')"></span>
-      </cy-button-switch>
+      </cy-button-toggle>
     </div>
     <div class="flex items-center">
       <cy-icon-text icon="ic:round-label-important" class="mr-2" />

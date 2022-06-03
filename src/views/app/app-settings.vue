@@ -50,7 +50,7 @@
             <cy-icon-text icon="bx-bx-error-circle" small text-color="light-3" align-v="start">
               {{ t('app.settings.switch-font.tips-1') }}
             </cy-icon-text>
-            <cy-button-check-group v-model:value="appFont" :options="appFontOptions" class="buttons" />
+            <cy-button-radio-group v-model:value="appFont" :options="appFontOptions" class="buttons" />
           </fieldset>
         </div>
         <div class="app--settings-column">
@@ -62,9 +62,9 @@
             </legend>
             <div class="caption">{{ t('app.settings.night-mode.caption') }}</div>
             <div class="mt-4 mb-2">
-              <cy-button-switch v-model:selected="appNightMode">
+              <cy-button-toggle v-model:selected="appNightMode">
                 {{ t('app.settings.night-mode.title') }}
-              </cy-button-switch>
+              </cy-button-toggle>
             </div>
           </fieldset>
         </div>
@@ -111,14 +111,14 @@
               </cy-icon-text>
             </div>
             <div class="buttons">
-              <cy-button-check
+              <cy-button-radio
                 v-for="(item, idx) in primaryLanguageList"
                 :key="item"
                 :selected="primaryLanguage === idx"
                 @click="setLanguage(0, idx)"
               >
                 {{ t('app.settings.primary-language.lang-title.' + item) }}
-              </cy-button-check>
+              </cy-button-radio>
             </div>
           </fieldset>
         </div>
@@ -139,14 +139,14 @@
               {{ t('app.settings.secondary-language.tips-2') }}
             </cy-icon-text>
             <div class="buttons">
-              <cy-button-check
+              <cy-button-radio
                 v-for="(item, idx) in fallbackLanguageList"
                 :key="item"
                 :selected="fallbackLanguage === idx"
                 @click="setLanguage(1, idx)"
               >
                 {{ t('app.settings.primary-language.lang-title.' + item) }}
-              </cy-button-check>
+              </cy-button-radio>
             </div>
           </fieldset>
         </div>

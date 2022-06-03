@@ -55,10 +55,8 @@
             <div class="flex items-start flex-wrap">
               <cy-button-radio
                 v-for="equip in value"
-                :key="equip"
+                :key="equip ?? '--none--'"
                 :selected="equip === selectedEquipment[key]"
-                :selected-icon="getEquipmentImagePath(equip)"
-                :selected-icon-src="equip === null ? 'iconify' : 'image'"
                 @click="toggleCurrentEquipment(key, equip)"
               >
                 {{ getEquipmentText(equip) }}

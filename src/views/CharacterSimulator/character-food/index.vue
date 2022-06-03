@@ -60,9 +60,9 @@
         </cy-icon-text>
       </div>
       <div>
-        <cy-button-switch v-model:selected="disableAll">
+        <cy-button-toggle v-model:selected="disableAll">
           {{ t('character-simulator.food-build.disable-foods') }}
-        </cy-button-switch>
+        </cy-button-toggle>
       </div>
       <div class="pl-4 mt-1">
         <cy-icon-text icon="ic-outline-info" text-color="light-3" small class="mr-2">

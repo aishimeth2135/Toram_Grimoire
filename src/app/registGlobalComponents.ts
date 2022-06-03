@@ -5,7 +5,10 @@ import CyButton from '@/components/global/Cyteria/button.vue'
 import CyButtonAction from '@/components/global/Cyteria/cy-button/cy-button-action.vue'
 import CyButtonCircle from '@/components/global/Cyteria/cy-button/cy-button-circle.vue'
 import CyButtonPlain from '@/components/global/Cyteria/cy-button/cy-button-plain.vue'
-import CyButtonCheckGroup from '@/components/global/Cyteria/button-check-group.vue'
+import CyButtonCheck from '@/components/global/Cyteria/cy-button/cy-button-check.vue'
+import CyButtonRadio from '@/components/global/Cyteria/cy-button/cy-button-radio.vue'
+import CyButtonRadioGroup from '@/components/global/Cyteria/cy-button/cy-button-radio-group.vue'
+import CyButtonToggle from '@/components/global/Cyteria/cy-button/cy-button-toggle.vue'
 import CyDefaultTips from '@/components/global/Cyteria/default-tips.vue'
 import CyDetailWindow from '@/components/global/Cyteria/detail-window.vue'
 import CyHoverFloat from '@/components/global/Cyteria/hover-float.vue'
@@ -28,26 +31,6 @@ import ImageIcon from '@/components/global/image-icon.vue'
 import SvgIcon from '@/components/global/svg-icon.vue'
 
 export default function (app: App<Element>) {
-  // /* ==== [ auto regist global components ] ================= */
-  // const registComponents = (requireComponent: __WebpackModuleApi.RequireContext, prefix = '', excludes: string[] = []) => {
-  //   requireComponent.keys().forEach(fileName => {
-  //     const componentConfig = requireComponent(fileName)
-  //     const componentName = (fileName.split('/').pop() as string).replace(/\.\w+$/, '')
-  //     if (excludes.includes(componentName)) {
-  //       return
-  //     }
-  //     APP.component(prefix + componentName, componentConfig.default || componentConfig)
-  //   })
-  // }
-
-  // const requireComponent_global = require.context('@/components/global', false, /[a-zA-Z-]+\.vue$/)
-  // const requireComponent_cy = require.context('@/components/global/Cyteria', false, /[a-zA-Z-]+\.vue$/)
-
-  // registComponents(requireComponent_global)
-  // registComponents(requireComponent_cy, 'cy-')
-  // /* ========================================================== */
-
-  app.component('cy-button-check-group', CyButtonCheckGroup)
   app.component('cy-default-tips', CyDefaultTips)
   app.component('cy-detail-window', CyDetailWindow)
   app.component('cy-hover-float', CyHoverFloat)
@@ -73,11 +56,15 @@ export default function (app: App<Element>) {
   app.component('cy-button-action', CyButtonAction)
   app.component('cy-button-circle', CyButtonCircle)
   app.component('cy-button-plain', CyButtonPlain)
+  app.component('cy-button-check', CyButtonCheck)
+  app.component('cy-button-radio', CyButtonRadio)
+  app.component('cy-button-radio-group', CyButtonRadioGroup)
+  app.component('cy-button-toggle', CyButtonToggle)
   registButtonAlias(app)
 }
 
 function registButtonAlias(app: App<Element>) {
-  const aliasNames = ['icon', 'line', 'border', 'drop-down', 'check', 'inline', 'switch', 'radio']
+  const aliasNames = ['icon', 'line', 'drop-down', 'inline']
   aliasNames.map(name => {
     const componentFunction: FunctionalComponent = function (props, context) {
       const attrs = mergeProps({

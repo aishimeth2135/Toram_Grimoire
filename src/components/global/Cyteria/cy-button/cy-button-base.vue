@@ -47,7 +47,7 @@ export default defineComponent({
   @apply inline-flex items-center text-base border-0 duration-200;
 
   &:deep(.cy-button-base-icon) {
-    @apply duration-200;
+    @apply duration-200 flex-shrink-0;
     color: var(--button-color-icon);
     width: var(--button-icon-width);
     height: var(--button-icon-width);

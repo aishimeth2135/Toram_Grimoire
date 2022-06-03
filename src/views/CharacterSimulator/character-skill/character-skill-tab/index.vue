@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="flex items-center">
-      <cy-button-switch v-model:selected="allSkillEnabled">
+      <cy-button-toggle v-model:selected="allSkillEnabled">
         {{ t('global.all') }}
-      </cy-button-switch>
-      <cy-button-switch v-model:selected="disableAll">
+      </cy-button-toggle>
+      <cy-button-toggle v-model:selected="disableAll">
         {{ disableAllButtonTitle }}
-      </cy-button-switch>
+      </cy-button-toggle>
     </div>
     <div :class="{ 'opacity-50': disableAll }">
       <CharacterSkillItem

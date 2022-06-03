@@ -9,9 +9,9 @@
       style="max-width: 25rem"
     >
       <template #title>
-        <cy-button-switch v-model:selected="selected" inline>
+        <cy-button-toggle v-model:selected="selected" inline>
           {{ food.stat().show() }}
-        </cy-button-switch>
+        </cy-button-toggle>
       </template>
     </cy-input-counter>
   </cy-list-item>

@@ -6,14 +6,11 @@
           class="mr-3 flex flex-shrink-0"
           style="min-width: 10rem"
         >
-          <cy-button-switch
-            v-model:selected="currentSkillState.enabled"
-            inline
-          >
+          <cy-button-toggle v-model:selected="currentSkillState.enabled">
             <cy-icon-text :text-color="!invalid ? 'purple' : 'gray'" :icon="skillIconPath" icon-src="image">
               {{ skillResultsState.skill.name }}
             </cy-icon-text>
-          </cy-button-switch>
+          </cy-button-toggle>
         </div>
         <div :class="{ 'opacity-50': !currentSkillState.enabled }">
           <template v-if="skillResultsState.results.length > 0">

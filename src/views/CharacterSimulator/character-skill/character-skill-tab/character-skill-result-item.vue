@@ -2,13 +2,12 @@
   <div>
     <div class="flex items-center">
       <div v-if="!hideName" class="flex mr-3 flex-shrink-0">
-        <cy-button-switch
+        <cy-button-toggle
           v-model:selected="branchItemState.enabled"
-          inline
           :disabled="container.statContainers.length === 0"
         >
           {{ container.get('name') || t('skill-query.branch.effect.base-name') }}
-        </cy-button-switch>
+        </cy-button-toggle>
       </div>
       <div>
         <div v-if="container.statContainers.length === 0" v-html="container.get('caption')"></div>
