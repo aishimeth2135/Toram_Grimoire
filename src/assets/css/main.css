@@ -1,4 +1,4 @@
-@design-tokens url('../../../config/color.json') format('style-dictionary3');
+@design-tokens url('./config/color.json') format('style-dictionary3');
 
 :root {
   --app-dark: design-token('color.dark');

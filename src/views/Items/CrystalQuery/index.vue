@@ -184,8 +184,8 @@ const selectMode = (id: 'normal' | 'stat') => {
 
 // ----- search filter
 interface SearchFilterItem {
-  options: unknown[];
-  selectedOptions: unknown[];
+  options: any[];
+  selectedOptions: any[];
 }
 
 const searchFilter = reactive({

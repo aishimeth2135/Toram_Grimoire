@@ -48,7 +48,7 @@
         :key="extraContainer.instanceId"
         class="flex items-center"
       >
-        <cy-button-switch
+        <cy-button-toggle
           v-model:selected="store.getDamageCalculationSkillBranchState(extraContainer.branchItem.default).enabled"
         />
         <CharacterSkillItemStats :stat-containers="extraContainer.statContainers" />

@@ -51,9 +51,9 @@
       </div>
     </div>
     <template #footer-actions>
-      <cy-button-switch v-if="!forPositive" v-model:selected="showNegativeSuggestedList" class="mr-auto">
+      <cy-button-toggle v-if="!forPositive" v-model:selected="showNegativeSuggestedList" class="mr-auto">
         {{ t('enchant-simulator.select-item.show-negative-suggested-list') }}
-      </cy-button-switch>
+      </cy-button-toggle>
     </template>
   </cy-modal>
 </template>

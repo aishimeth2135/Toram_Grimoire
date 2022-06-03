@@ -110,7 +110,7 @@
           <cy-icon-text text-color="purple" small>
             {{ t('character-simulator.character-damage.range-damage-title') }}
           </cy-icon-text>
-          <cy-button-check-group
+          <cy-button-radio-group
             v-model:value="store.targetProperties.rangeDamage"
             :options="rangeDamageOptions"
           />
@@ -119,7 +119,7 @@
           <cy-icon-text text-color="purple" small>
             {{ t('character-simulator.enemy-elements.title') }}
           </cy-icon-text>
-          <cy-button-check-group
+          <cy-button-radio-group
             v-model:value="store.targetProperties.element"
             :options="elementOptions"
           />

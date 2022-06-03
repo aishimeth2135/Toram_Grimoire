@@ -17,10 +17,12 @@
         :key="container.base.id"
         class="flex items-start"
       >
-        <cy-button-switch
-          v-model:selected="container.enabled"
-          :disabled="!container.base.controls.toggle"
-        />
+        <div class="h-10 flex items-center">
+          <cy-button-toggle
+            v-model:selected="container.enabled"
+            :disabled="!container.base.controls.toggle"
+          />
+        </div>
         <div class="space-y-2" :class="{ 'opacity-60': !container.enabled && !container.hidden }">
           <div
             v-for="item in getContainerItems(container)"

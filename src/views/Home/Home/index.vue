@@ -3,8 +3,10 @@
     <div class="flex justify-center items-center h-32">
       <div class="px-4 py-6 sticky top-0">
         <router-link v-slot="{ navigate }" :to="{ name: AppRouteNames.Bubble, params: { iconName: 'potum' } }" custom>
-          <div class="text-4xl" @click="navigate">
-            Cy's Grimoire
+          <div class="relative">
+            <div class="app-title" @click="navigate">
+              Cy's Grimoire
+            </div>
           </div>
         </router-link>
       </div>
@@ -103,10 +105,28 @@ const pointMove = (evt: MouseEvent) => {
     opacity: 1;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.25;
   }
   100% {
     opacity: 1;
+  }
+}
+
+.app-title {
+  @apply bg-clip-text text-transparent text-4xl;
+
+  background-image: linear-gradient(to left, #ff9a9e, #fecfef, #ff9a9e, #fecfef, #ff9a9e);
+  background-size: 200% 200%;
+  background-position: 100% 50%;
+  animation: app-title 2s ease-in infinite;
+}
+
+@keyframes app-title {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 </style>

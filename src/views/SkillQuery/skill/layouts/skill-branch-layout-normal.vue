@@ -34,13 +34,13 @@
       <slot></slot>
       <div v-if="hasArea">
         <div>
-          <cy-button-switch
+          <cy-button-toggle
             :selected="contents.areaDetail"
             icon="carbon:zoom-in-area"
             @click.stop="toggle('contents/areaDetail')"
           >
             {{ t('skill-query.branch.skill-area.button-text') }}
-          </cy-button-switch>
+          </cy-button-toggle>
         </div>
         <div v-if="contents.areaDetail">
           <SkillAreaDetail :skill-branch-item="container.branchItem" />

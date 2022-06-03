@@ -118,9 +118,9 @@
     </template>
     <template #footer="{ closeModal }">
       <div class="flex items-center w-full">
-        <cy-button-switch v-model:selected="showAll">
+        <cy-button-toggle v-model:selected="showAll">
           {{ t('global.all') }}
-        </cy-button-switch>
+        </cy-button-toggle>
         <div class="flex items-center ml-auto">
           <cy-button-action
             v-if="targetField"

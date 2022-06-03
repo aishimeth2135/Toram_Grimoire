@@ -77,7 +77,7 @@
           >
             {{ t('item-query.options-normal.title') }}
           </cy-icon-text>
-          <div style="padding: 0.2rem 0.4rem;">
+          <div class="py-1 px-2">
             <cy-button-check
               v-for="item in modes[SearchModes.Normal].targets"
               :key="item.value"
@@ -154,8 +154,6 @@
                   v-for="item in type.types"
                   :key="item.value"
                   :selected="type.selected && item.selected"
-                  :selected-icon="item.imagePath"
-                  selected-icon-src="image"
                   @click="toggleSelected(item)"
                 >
                   {{ t('common.Equipment.category.' + item.value) }}
@@ -188,7 +186,7 @@
                   {{ t('item-query.sort-options.title') }}
                 </cy-icon-text>
               </div>
-              <cy-button-check-group
+              <cy-button-radio-group
                 v-model:value="sortState.currentSelected"
                 class="px-2"
                 :options="consts.sortOptions"
@@ -204,7 +202,7 @@
                   {{ t('item-query.sort-options.order.title') }}
                 </cy-icon-text>
               </div>
-              <cy-button-check-group
+              <cy-button-radio-group
                 v-model:value="sortState.currentOrder"
                 class="px-2"
                 :options="consts.sortOrderOptions"
