@@ -26,16 +26,16 @@
             {{ t('character-simulator.create-custom-equipment.select-equipment-type') }}
           </cy-icon-text>
         </template>
-        <div class="equipment-type">
-          <cy-button-drop-down
+        <div class="equipment-type space-y-1.5">
+          <cy-button-dropdown
             v-for="category in equipmentTypeCategorys"
             :key="category.id"
             :icon="category.icon"
             :icon-src="category.iconSrc || 'image'"
-            :menu-default-visible="true"
+            content-default-visible
           >
             {{ t('common.Equipment.field.' + category.id) }}
-            <template #menu>
+            <template #content>
               <template v-if="category.list !== null">
                 <cy-list-item
                   v-for="item in category.list"
@@ -58,7 +58,7 @@
                 </cy-icon-text>
               </cy-list-item>
             </template>
-          </cy-button-drop-down>
+          </cy-button-dropdown>
         </div>
       </cy-modal>
     </template>

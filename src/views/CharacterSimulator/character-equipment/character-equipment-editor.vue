@@ -57,7 +57,7 @@
       </template>
     </cy-input-counter>
     <div v-if="equipment.hasCrystal" class="crystals">
-      <cy-button-line
+      <cy-button-action
         v-for="c in equipment.crystals"
         :key="c.id"
         :icon="c.crystalIconPath"
@@ -65,14 +65,14 @@
         @click="editCrystal(equipment)"
       >
         {{ c.name }}
-      </cy-button-line>
-      <cy-button-line
+      </cy-button-action>
+      <cy-button-action
         v-if="equipment.crystals!.length < 2"
         icon="bx-bx-circle"
         @click="editCrystal(equipment)"
       >
         {{ t('character-simulator.equipment-info.crystal-empty') }}
-      </cy-button-line>
+      </cy-button-action>
     </div>
     <div class="mt-3 pt-2 border-t border-solid border-light">
       <cy-button-action

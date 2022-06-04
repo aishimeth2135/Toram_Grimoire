@@ -9,13 +9,15 @@
         >
           <EnchantStepView :step="step" />
         </div>
-        <cy-button
-          icon="ic-round-add-circle-outline"
-          class="step-container border flex items-center justify-center"
-          style="--icon-width: 3.5rem; height: 12rem"
-          hide-focus
+        <div
+          class="step-container flex items-center justify-center border border-light-2 hover:border-light-3 cursor-pointer duration-200 h-48"
           @click="appendStep"
-        />
+        >
+          <cy-icon-text
+            icon="ic-round-add-circle-outline"
+            icon-width="3.5rem"
+          />
+        </div>
       </div>
     </div>
     <div>
