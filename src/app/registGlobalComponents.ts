@@ -1,7 +1,5 @@
-import type { App, FunctionalComponent } from 'vue'
-import { h, mergeProps } from 'vue'
+import type { App } from 'vue'
 
-import CyButton from '@/components/global/Cyteria/button.vue'
 import CyButtonAction from '@/components/global/Cyteria/cy-button/cy-button-action.vue'
 import CyButtonCircle from '@/components/global/Cyteria/cy-button/cy-button-circle.vue'
 import CyButtonPlain from '@/components/global/Cyteria/cy-button/cy-button-plain.vue'
@@ -9,6 +7,8 @@ import CyButtonCheck from '@/components/global/Cyteria/cy-button/cy-button-check
 import CyButtonRadio from '@/components/global/Cyteria/cy-button/cy-button-radio.vue'
 import CyButtonRadioGroup from '@/components/global/Cyteria/cy-button/cy-button-radio-group.vue'
 import CyButtonToggle from '@/components/global/Cyteria/cy-button/cy-button-toggle.vue'
+import CyButtonIcon from '@/components/global/Cyteria/cy-button/cy-button-icon.vue'
+import CyButtonDropdown from '@/components/global/Cyteria/cy-button/cy-button-dropdown.vue'
 import CyDefaultTips from '@/components/global/Cyteria/default-tips.vue'
 import CyDetailWindow from '@/components/global/Cyteria/detail-window.vue'
 import CyHoverFloat from '@/components/global/Cyteria/hover-float.vue'
@@ -52,7 +52,6 @@ export default function (app: App<Element>) {
   app.component('image-icon', ImageIcon)
   app.component('svg-icon', SvgIcon)
 
-  app.component('cy-button', CyButton)
   app.component('cy-button-action', CyButtonAction)
   app.component('cy-button-circle', CyButtonCircle)
   app.component('cy-button-plain', CyButtonPlain)
@@ -60,22 +59,6 @@ export default function (app: App<Element>) {
   app.component('cy-button-radio', CyButtonRadio)
   app.component('cy-button-radio-group', CyButtonRadioGroup)
   app.component('cy-button-toggle', CyButtonToggle)
-  registButtonAlias(app)
-}
-
-function registButtonAlias(app: App<Element>) {
-  const aliasNames = ['icon', 'line', 'drop-down', 'inline']
-  aliasNames.map(name => {
-    const componentFunction: FunctionalComponent = function (props, context) {
-      const attrs = mergeProps({
-        type: name,
-      }, context.attrs)
-      return h(
-        CyButton,
-        attrs,
-        context.slots,
-      )
-    }
-    app.component('cy-button-' + name, componentFunction)
-  })
+  app.component('cy-button-icon', CyButtonIcon)
+  app.component('cy-button-dropdown', CyButtonDropdown)
 }

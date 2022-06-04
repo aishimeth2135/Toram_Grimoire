@@ -10,15 +10,14 @@
         {{ t('enchant-doll.equipment.select-type.caption') }}
       </div>
       <div class="py-4 pl-2 flex justify-center flex-wrap">
-        <cy-button
+        <cy-button-radio
           v-for="option in equipmentTypeOptions"
           :key="option.id"
-          type="check"
           :selected="currentEquipmentType === option.id"
           @click="currentEquipmentType = option.id"
         >
           {{ option.text }}
-        </cy-button>
+        </cy-button-radio>
       </div>
       <div class="mt-4">
         <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
@@ -239,15 +238,14 @@
               {{ t('enchant-doll.select-negatives.select-config.base-type.caption') }}
             </div>
             <div class="py-4 pl-2 flex justify-center flex-wrap">
-              <cy-button
+              <cy-button-radio
                 v-for="option in dollConfigOptions.baseType"
                 :key="option"
-                type="check"
                 :selected="doll.config.baseType === option"
                 @click="doll.config.baseType = option"
               >
                 {{ t('enchant-doll.select-negatives.select-config.base-type.option-texts.' + option) }}
-              </cy-button>
+              </cy-button-radio>
             </div>
           </template>
           <div>
@@ -259,15 +257,14 @@
             {{ t('enchant-doll.select-negatives.select-config.auto-find-negatives.caption') }}
           </div>
           <div class="py-4 pl-2 flex justify-center flex-wrap">
-            <cy-button
+            <cy-button-radio
               v-for="option in dollConfigOptions.autoFindNegaitveStatsType"
               :key="option"
-              type="check"
               :selected="doll.config.autoFindNegaitveStatsType === option"
               @click="doll.config.autoFindNegaitveStatsType = option"
             >
               {{ t('enchant-doll.select-negatives.select-config.auto-find-negatives.option-texts.' + option) }}
-            </cy-button>
+            </cy-button-radio>
           </div>
         </template>
         <div
@@ -303,11 +300,10 @@
                     min-button
                     :range="[stat.limit[0], -1]"
                   />
-                  <cy-button
+                  <cy-button-icon
                     :disabled="autoNegativeStats.includes(stat)"
-                    type="icon"
                     icon="jam-close-circle"
-                    icon-color="gray"
+                    color="gray"
                     class="ml-auto"
                     @click="removeNegativeStat(stat)"
                   />
@@ -427,38 +423,35 @@
           />
         </div>
         <div class="my-2 flex justify-center">
-          <cy-button
+          <cy-button-action
             v-if="!exportState.hasExport"
-            type="border"
             icon="ic-outline-save"
-            main-color="blue-green"
+            color="blue-green"
             @click="exportResult"
           >
             {{ t('global.export') }}
-          </cy-button>
-          <cy-button
+          </cy-button-action>
+          <cy-button-action
             v-else
-            type="border"
             icon="ic-round-open-in-new"
-            main-color="blue-green"
+            color="blue-green"
             @click="$router.replace('/enchant')"
           >
             {{ t('enchant-doll.export-result.redirect-to-enchant-simulator') }}
-          </cy-button>
+          </cy-button-action>
         </div>
       </div>
     </cy-transition>
     <div class="flex items-center justify-center border-t border-purple mt-12 pt-4 relative">
-      <cy-button
+      <cy-button-action
         v-if="stepCounter !== 3"
-        type="border"
         icon="mdi-leaf"
         :disabled="nextStepDisabled"
-        main-color="orange"
+        color="orange"
         @click="nextStep"
       >
         {{ t('enchant-doll.next-step') }}
-      </cy-button>
+      </cy-button-action>
       <span :class="{ 'absolute': stepCounter !== 3, 'right-0': stepCounter !== 3 }">
         <cy-button-action
           icon="bx-bx-reset"

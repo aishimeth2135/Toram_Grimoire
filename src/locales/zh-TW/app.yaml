@@ -43,7 +43,11 @@ about:
   words:
     title: 雜談
     sub-title: 就是一些無關緊要的話w
-  cooperation:
+    contents:
+      - 若有任何聯繫作者的需要，可於巴哈姆特或Twitter私訊。也可以於遊戲中進行私訊，本人比較常在信天翁之巢出沒。
+      - 如果有任何意見、問題或疑似BUG的情形，都歡迎聯繫作者。
+      - 如果有意願協助資料上的測試、輸入或翻譯，或有意願贊助（遊戲內的資源），也歡迎洽詢作者。
+  partnership:
     title: 合作
     join: 加入
   disclaimer: 托蘭異世錄為{link}所營運之遊戲。本網站只是一個分享資料的小地方。

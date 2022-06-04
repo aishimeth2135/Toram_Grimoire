@@ -56,10 +56,10 @@ settings:
       '3': 简体中文
       auto: 自動判定
   secondary-language:
-    title: 次要語言設定
-    caption: 可設定第二優先級的語言。簡單來說，若選擇的語言還沒有翻譯，便會優先顯示這邊設定的語言。
-    tips-1: 設定完畢後，頁面需重新整理方得生效。
-    tips-2: 若第二優先級語言依然沒有翻譯，則會顯示原始資料（一般而言是繁體中文）。
+    title: Secondary language setting
+    caption: Setting for secondary language. If the translation for the primary language is unfinished, it will show the secondary language.
+    tips-1: After setting, please refresh the browser to adopt the new setting.
+    tips-2: If the language is still not finished translating, it will then show the original data (which usually is in Traditional Chinese).
   clear-spreadsheets-caches:
     title: 清除資料庫快取
     caption: 魔法書頁面的載入時間，大約有99%都是用於下載資料庫。為了改善使用者體驗，魔法書使用了快取技術，讓使用者只要下載一次資料庫，之後進入相同的頁面時可以不用重新下載，達到幾乎零讀取時間，並在背景將快取更新到最新。然而有時候資料庫的資料更新後，頁面卻還是一直使用快取（舊的資料庫資料），而可能導致程式無法正確運作。因此下方的按鈕提供刪除資料庫快取的功能，下次進入頁面時資料庫將會重新下載，如此一來可以確保資料庫是最新的。
@@ -98,8 +98,6 @@ about:
     personal: Personal Sponsorship
     sub-title: Thank you to everyone who is willing to sponsor~
     group: Guild Sponsor
-  cooperation:
-    title: Cooperation
+  partnership:
+    title: Partnership
     join: Join
-  words:
-    title: ''

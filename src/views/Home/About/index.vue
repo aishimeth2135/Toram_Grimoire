@@ -6,17 +6,12 @@
         :key="column.title"
         class="cy--about-column flex p-4 bg-white rounded-md m-4 border-1 border-transparent hover:border-light-2 duration-200 overflow-x-auto"
       >
-        <div class="flex items-center justify-center w-24 h-24 relative flex-shrink-0 rounded-full mr-3 mb-4 border-1 border-solid border-light-3 bg-white">
-          <div class="text-dark-light">{{ t(`app.about.${column.title}.title`) }}</div>
-          <cy-icon-text
-            icon="mdi-leaf"
-            style="position: absolute;"
-            class="-top-1 -left-1"
-            icon-width="2rem"
-          />
+        <div class="flex-shrink-0 rounded-full mr-3 mb-4">
+          <div class="text-dark-light px-4">{{ t(`app.about.${column.title}.title`) }}</div>
+          <div class="h-1 rounded-full bg-light mt-0 5" />
         </div>
         <div class="pl-3 mt-2">
-          <template v-if="column.title !== 'cooperation'">
+          <template v-if="column.title !== 'partnership'">
             <div class="text-sm text-purple mb-3">
               <div>{{ t(`app.about.${column.title}.sub-title`) }}</div>
             </div>
@@ -77,7 +72,7 @@
                   </div>
                 </div>
                 <cy-button-action link href="https://discord.com/invite/FKG6RVT975" target="_blank" class="ml-auto">
-                  {{ t('app.about.cooperation.join') }}
+                  {{ t('app.about.partnership.join') }}
                 </cy-button-action>
               </div>
             </div>
@@ -104,6 +99,8 @@ import { ref } from 'vue'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
+const { t } = useI18n()
+
 const columns:  {
   title: string;
   list: {
@@ -129,7 +126,7 @@ const columns:  {
     list: ['萌月', '太極魚'],
   }],
 }, {
-  title: 'cooperation',
+  title: 'partnership',
   list: [],
 }, {
   title: 'sponsor',
@@ -180,16 +177,15 @@ const columns:  {
   title: 'words',
   list: [{
     title: '@1',
-    list: ['若有任何聯繫作者的需要，可於巴哈姆特或Twitter私訊。也可以於遊戲中進行私訊，本人比較常在信天翁之巢出沒。'],
+    list: [t('app.about.words.contents.0')],
   }, {
     title: '@2',
-    list: ['如果有任何意見、問題或疑似BUG的情形，都歡迎聯繫作者。'],
+    list: [t('app.about.words.contents.1')],
   }, {
     title: '@3',
-    list: ['如果有意願協助資料上的測試、輸入或翻譯，或有意願贊助（遊戲內的資源），也歡迎洽詢作者。'],
+    list: [t('app.about.words.contents.2')],
   }],
 }]
-const { t } = useI18n()
 
 const disclaimer = t('app.about.disclaimer', {
   link: '<a class="text-light-3 underline" href="https://asobimo.com/" target="_blank">アソビモ株式会社（ASOBIMO,Inc.）</a>',

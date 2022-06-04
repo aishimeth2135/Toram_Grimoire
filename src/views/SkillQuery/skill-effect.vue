@@ -1,15 +1,15 @@
 <template>
   <div v-if="effectItem">
     <div v-if="tabVisible" class="space-x-2 mb-3 px-2">
-      <cy-button-inline
+      <cy-button-plain
         icon="bx:bxs-book-bookmark"
         class="skill-effect-tab-button"
         :selected="tabs.skillInfo"
         @click="setTab('skillInfo')"
       >
         {{ t('skill-query.skill-info') }}
-      </cy-button-inline>
-      <cy-button-inline
+      </cy-button-plain>
+      <cy-button-plain
         icon="ic:round-history"
         class="skill-effect-tab-button"
         :selected="tabs.skillHistory"
@@ -17,7 +17,7 @@
         @click="setTab('skillHistory')"
       >
         {{ t('skill-query.historical-record') }}
-      </cy-button-inline>
+      </cy-button-plain>
     </div>
     <div ref="skillBranchesElement">
       <div v-if="tabs.skillInfo">
@@ -62,13 +62,13 @@
   >
     <div v-if="currentHoveringSkill" class="flex items-center">
       <SkillTitle :skill="currentHoveringSkill" />
-      <cy-button-inline
+      <cy-button-plain
         icon="carbon:location-current"
         class="ml-4"
         @click="emit('set-current-skill', currentHoveringSkill as Skill)"
       >
         {{ t('skill-query.go-to-skill') }}
-      </cy-button-inline>
+      </cy-button-plain>
     </div>
   </cy-hover-float>
   <cy-hover-float
@@ -207,7 +207,7 @@ const branchButtonHover = (el: HTMLElement) => {
 
 <style lang="postcss" scoped>
 .skill-effect-tab-button {
-  @apply inline-flex items-center border-b-1 border-transparent hover:border-light-2 px-3 cursor-pointer;
+  @apply inline-flex items-center border-b-1 border-transparent hover:border-light-2 px-3 py-0.5 cursor-pointer;
 
   &.selected {
     @apply border-light-4 hover:border-light-4;
