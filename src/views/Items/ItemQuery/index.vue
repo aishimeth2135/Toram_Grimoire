@@ -30,7 +30,15 @@
               width-full
               @click="toggle('modals/selecteStat')"
             >
-              {{ modes[SearchModes.Stat].currentStat?.text ?? t('item-query.options-stat.select-stat.title') }}
+              <template v-if="modes[SearchModes.Stat].currentStats.length === 0">
+                {{ t('item-query.options-stat.select-stat.title') }}
+              </template>
+              <template v-else-if="modes[SearchModes.Stat].currentStats.length === 1">
+                {{ modes[SearchModes.Stat].currentStats[0].text }}
+              </template>
+              <template v-else>
+                {{ t('item-query.options-stat.select-stat.title-multiple', { num: modes[SearchModes.Stat].currentStats.length }) }}
+              </template>
             </cy-button-plain>
           </template>
           <template v-else-if="state.currentMode === SearchModes.ItemLevel">
@@ -125,7 +133,7 @@
         />
         <cy-button-circle
           icon="mdi:filter"
-          border-color="light-3"
+          color="bright"
           :selected="menus.conditionOptions"
           float
           toggle
@@ -136,11 +144,11 @@
         <cy-transition type="fade" mode="out-in">
           <AppLayoutBottomContent v-if="menus.conditionOptions" class="space-y-3 p-3">
             <div v-for="(type) in conditions.type" :key="type.id">
-              <div class="flex items-center space-x-2">
+              <div class="flex items-center space-x-0.5">
                 <cy-button-check
                   v-model:selected="type.selected"
                   class="mr-4 cursor-pointer"
-                  main-color="orange"
+                  color="orange"
                 >
                   {{ t('common.Equipment.field.' + type.id) }}
                 </cy-button-check>
@@ -149,7 +157,7 @@
                   <cy-button-circle icon="eva-close-outline" small @click="cancelAll(type.types)" />
                 </template>
               </div>
-              <div v-if="type.types.length > 1" class="px-2">
+              <div v-if="type.types.length > 1" class="px-2 pt-1.5 py-0.5 space-x-0.5">
                 <cy-button-check
                   v-for="item in type.types"
                   :key="item.value"
@@ -168,7 +176,7 @@
                 <cy-button-circle icon="ic-round-border-all" small @click="selectAll(conditions.obtains)" />
                 <cy-button-circle icon="eva-close-outline" small @click="cancelAll(conditions.obtains)" />
               </div>
-              <div class="px-2">
+              <div class="px-2 space-x-2 pt-1.5 py-0.5">
                 <cy-button-check
                   v-for="obtain in conditions.obtains"
                   :key="obtain.value"
@@ -181,19 +189,19 @@
           </AppLayoutBottomContent>
           <AppLayoutBottomContent v-else-if="menus.sortOptions" class="p-3">
             <div>
-              <div class="mb-1">
+              <div>
                 <cy-icon-text icon="mdi-sort-variant" text-color="purple" small>
                   {{ t('item-query.sort-options.title') }}
                 </cy-icon-text>
               </div>
               <cy-button-radio-group
                 v-model:value="sortState.currentSelected"
-                class="px-2"
+                class="px-2 pb-2"
                 :options="consts.sortOptions"
               />
             </div>
             <div>
-              <div class="mb-1">
+              <div>
                 <cy-icon-text
                   icon="fluent-arrow-sort-24-filled"
                   text-color="purple"
@@ -204,7 +212,7 @@
               </div>
               <cy-button-radio-group
                 v-model:value="sortState.currentOrder"
-                class="px-2"
+                class="px-2 pb-2"
                 :options="consts.sortOrderOptions"
               />
             </div>
@@ -212,33 +220,45 @@
         </cy-transition>
       </template>
     </AppLayoutBottom>
-    <cy-modal v-model:visible="modals.selecteStat" vertical-position="start">
+    <cy-modal v-model:visible="modals.selecteStat" vertical-position="start" footer>
       <template #title>
         <cy-icon-text icon="mdi-rhombus-outline">
           {{ t('item-query.options-stat.select-stat.title') }}
         </cy-icon-text>
       </template>
       <template #default>
-        <cy-title-input
-          v-model:value="modes.stat.statSearchText"
-          icon="ic-outline-category"
-          :placeholder="t('item-query.options-stat.select-stat.search-placeholder')"
-        />
-        <template v-if="statsSearchResult.length != 0">
-          <cy-list-item
+        <div class="sticky top-0 bg-white">
+          <cy-title-input
+            v-model:value="modes.stat.statSearchText"
+            icon="ic-outline-category"
+            :placeholder="t('item-query.options-stat.select-stat.search-placeholder')"
+          />
+        </div>
+        <div v-if="statsSearchResult.length !== 0" class="divide-y divide-light">
+          <div
             v-for="stat in statsSearchResult"
             :key="stat.origin.statId(stat.type)"
-            :selected="stat == modes.stat.currentStat"
+            class="py-1 px-2 hover:bg-light hover:bg-opacity-10 duration-200"
             @click="selectStat(stat)"
           >
-            <cy-icon-text icon="mdi-rhombus-outline">
+            <cy-button-check :selected="modes[SearchModes.Stat].currentStats.includes(stat)" class="w-full">
               {{ stat.text }}
-            </cy-icon-text>
-          </cy-list-item>
-        </template>
+            </cy-button-check>
+          </div>
+        </div>
         <cy-default-tips v-else icon="bx-bx-message-rounded-x">
           {{ t('item-query.no-result-tips') }}
         </cy-default-tips>
+      </template>
+      <template #footer-actions>
+        <cy-button-action
+          color="orange"
+          icon="bx:reset"
+          class="mr-auto"
+          @click="modes[SearchModes.Stat].currentStats = []"
+        >
+          {{ t('global.reset') }}
+        </cy-button-action>
       </template>
     </cy-modal>
   </AppLayoutMain>
@@ -339,13 +359,26 @@ const sortOptions: {
   },
   [SearchModes.Stat]: {
     default: (item1, item2) => {
-      const cs = modes[SearchModes.Stat].currentStat
-      if (!cs) {
+      const stats = modes[SearchModes.Stat].currentStats
+      if (!stats.length) {
         return 0
       }
-      const value1 = findStat(cs, item1.stats)?.value ?? -99999,
-        value2 = findStat(cs, item2.stats)?.value ?? -99999
-      return value1 - value2
+      let sum1 = 0
+      let sum2 = 0
+      stats.some(stat => {
+        const value1 = findStat(stat, item1.stats)?.value ?? -99999,
+          value2 = findStat(stat, item2.stats)?.value ?? -99999
+        if (value1 === value2) {
+          return false
+        }
+        if (value1 > value2) {
+          sum1 += 1
+        } else {
+          sum2 += 1
+        }
+        return true
+      })
+      return sum1 - sum2
     },
   },
   [SearchModes.ItemLevel]: {
@@ -473,11 +506,11 @@ const allSearchResult = computed(() => {
         })
       })
   } else if (state.currentMode === SearchModes.Stat) {
-    const searchStat = modes[SearchModes.Stat].currentStat
-    if (!searchStat) {
+    const searchStats = modes[SearchModes.Stat].currentStats
+    if (searchStats.length === 0) {
       return []
     }
-    return validEquipments.value.filter(equip => findStat(searchStat, equip.stats))
+    return validEquipments.value.filter(equip => searchStats.every(stat => findStat(stat, equip.stats)))
   } else if (state.currentMode === SearchModes.ItemLevel) {
     const min = modes[SearchModes.ItemLevel].min || 0,
       max = modes[SearchModes.ItemLevel].max || 999
@@ -518,8 +551,13 @@ const cancelAll = (list: CommonOption[]) => {
 }
 
 const selectStat = (stat: StatOption) => {
-  modes[SearchModes.Stat].currentStat = stat
-  toggle('modals/selecteStat', false)
+  const searchStats = modes[SearchModes.Stat].currentStats
+  const idx = searchStats.indexOf(stat)
+  if (idx > -1) {
+    searchStats.splice(idx, 1)
+  } else {
+    searchStats.push(stat)
+  }
 }
 
 const selectMode = (id: SearchModes)  => {

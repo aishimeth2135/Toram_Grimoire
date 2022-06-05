@@ -102,7 +102,7 @@
         </AppLayoutBottomContent>
         <AppLayoutBottomContent
           v-else-if="contents.selectSkillTree"
-          class="space-y-2 p-3"
+          class="space-y-2 py-3 px-4"
         >
           <div v-for="stc in skillTreeCategorys" :key="`stc-${stc.id}`">
             <div>
@@ -122,24 +122,33 @@
         </AppLayoutBottomContent>
         <AppLayoutBottomContent
           v-else-if="contents.goSkillTree"
-          class="space-y-2 p-3"
+          class="space-y-2 py-3 px-4"
         >
-          <div v-for="categoryItem in jumpSkillTreeCategorys" :key="`stc-${categoryItem.origin.id}`">
-            <div>
-              <cy-icon-text icon="uil:books" main-color="orange" small>{{ categoryItem.origin.name }}</cy-icon-text>
+          <cy-default-tips
+            v-if="selectedSkillTrees.length === 0"
+            icon="bx:message-rounded-edit"
+            class="my-6"
+          >
+            {{ t('skill-simulator.default-tips') }}
+          </cy-default-tips>
+          <template v-else>
+            <div v-for="categoryItem in jumpSkillTreeCategorys" :key="`stc-${categoryItem.origin.id}`">
+              <div>
+                <cy-icon-text icon="uil:books" main-color="orange" small>{{ categoryItem.origin.name }}</cy-icon-text>
+              </div>
+              <div class="pl-2">
+                <cy-button-plain
+                  v-for="st in categoryItem.skillTrees"
+                  :key="`st-${st.skillTreeId}`"
+                  icon="bx:bxs-book-bookmark"
+                  class="pr-2"
+                  @click="emit('go-skill-tree', st)"
+                >
+                  {{ st.name }}
+                </cy-button-plain>
+              </div>
             </div>
-            <div class="pl-2">
-              <cy-button-plain
-                v-for="st in categoryItem.skillTrees"
-                :key="`st-${st.skillTreeId}`"
-                icon="bx:bxs-book-bookmark"
-                class="pr-2"
-                @click="emit('go-skill-tree', st)"
-              >
-                {{ st.name }}
-              </cy-button-plain>
-            </div>
-          </div>
+          </template>
         </AppLayoutBottomContent>
         <div v-else class="space-x-2.5 flex items-center">
           <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">

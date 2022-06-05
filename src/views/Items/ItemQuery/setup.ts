@@ -100,7 +100,7 @@ const modes = reactive({
     icon: 'mdi-script-outline',
     stats: [] as StatOption[],
     statSearchText: '',
-    currentStat: (null) as (StatOption | null),
+    currentStats: [] as StatOption[],
   },
   [SearchModes.ItemLevel]: {
     id: SearchModes.ItemLevel,

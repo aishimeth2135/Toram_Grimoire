@@ -19,7 +19,7 @@
       <span>{{ stat.show() }}</span>
     </cy-icon-text>
   </div>
-  <div v-else class="w-full text-sm m-0">
+  <div v-else class="w-full text-sm">
     <span
       v-for="text in restrictionTexts"
       :key="text"

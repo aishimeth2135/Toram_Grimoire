@@ -3,6 +3,7 @@
 :root {
   --app-dark: design-token('color.dark');
   --app-dark-light: design-token('color.dark-light');
+  --app-light-0: design-token('color.light-0');
   --app-light: design-token('color.light');
   --app-light-2: design-token('color.light-2');
   --app-light-3: design-token('color.light-3');
@@ -28,6 +29,7 @@
 
   --rgb-app-dark: design-token('color-rgb.dark');
   --rgb-app-dark-light: design-token('color-rgb.dark-light');
+  --rgb-app-light-0: design-token('color-rgb.light-0');
   --rgb-app-light: design-token('color-rgb.light');
   --rgb-app-light-2: design-token('color-rgb.light-2');
   --rgb-app-light-3: design-token('color-rgb.light-3');
@@ -55,6 +57,7 @@
 html.theme--night-mode {
   --app-dark: design-token('color-dark.dark');
   --app-dark-light: design-token('color-dark.dark-light');
+  --app-light-0: design-token('color-dark.light-0');
   --app-light: design-token('color-dark.light');
   --app-light-2: design-token('color-dark.light-2');
   --app-light-3: design-token('color-dark.light-3');
@@ -80,6 +83,7 @@ html.theme--night-mode {
 
   --rgb-app-dark: design-token('color-dark-rgb.dark');
   --rgb-app-dark-light: design-token('color-dark-rgb.dark-light');
+  --rgb-app-light-0: design-token('color-dark-rgb.light-0');
   --rgb-app-light: design-token('color-dark-rgb.light');
   --rgb-app-light-2: design-token('color-dark-rgb.light-2');
   --rgb-app-light-3: design-token('color-dark-rgb.light-3');

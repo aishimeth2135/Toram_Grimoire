@@ -70,6 +70,10 @@ export default defineComponent({
     opacity: 0.5;
   }
 
+  &:focus-visible {
+    @apply outline-light-2;
+  }
+
   &.theme-primary {
     --button-color-text: var(--app-dark-light);
   }

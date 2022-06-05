@@ -12,7 +12,8 @@ options-normal:
   map: 地圖
 options-stat:
   select-stat:
-    title: 選擇一個能力
+    title: 選擇一項或多項能力
+    title-multiple: 選擇了{num}項能力
     search-placeholder: 搜尋能力
 sort-options:
   title: 排序方式

@@ -25,10 +25,11 @@ const baseColors = {
 const color = {
   'dark': '#85005f',
   'dark-light': '#c62899',
+  'light-0': lightColor.clone().lighten(7).toHexString(),
   'light': lightColor.toHexString(),
-  'light-2': lightColor.darken(10).toHexString(),
-  'light-3': lightColor.darken(15).toHexString(),
-  'light-4': lightColor.darken(10).toHexString(),
+  'light-2': lightColor.clone().darken(10).toHexString(),
+  'light-3': lightColor.clone().darken(25).toHexString(),
+  'light-4': lightColor.clone().darken(35).toHexString(),
   'gray': '#888',
   'gray-light': '#ddd',
   'white': '#fff',
@@ -55,13 +56,17 @@ const darkBaseColors = {
   'red': '#ffb5b5',
 }
 
+/**
+ * @type Record<string, string>
+ */
 const dark = {
   'dark': '#fff',
   'dark-light': '#edd3e2',
+  'light-0': '#402b3d',
   'light': darkLightColor.toHexString(),
-  'light-2': darkLightColor.brighten(24).toHexString(),
-  'light-3': darkLightColor.brighten(26).toHexString(),
-  'light-4': darkLightColor.brighten(10).toHexString(),
+  'light-2': darkLightColor.clone().brighten(24).toHexString(),
+  'light-3': darkLightColor.clone().brighten(50).toHexString(),
+  'light-4': darkLightColor.clone().brighten(60).toHexString(),
   'gray': '#bbb',
   'gray-light': '#888',
   'white': '#1a1b26',

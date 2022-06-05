@@ -4,6 +4,7 @@ function createColorConfig(varName) {
     (colorName) => `rgba(var(--rgb-app-${colorName}), var(${varName}, 1))`
   return {
     light: {
+      0: handleValue('light-0'),
       DEFAULT: handleValue('light'),
       2: handleValue('light-2'),
       3: handleValue('light-3'),

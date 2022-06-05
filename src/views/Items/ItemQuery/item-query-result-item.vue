@@ -2,7 +2,7 @@
   <div class="result-item">
     <div class="sticky top-0 z-1 min-w-max bg-white py-0.5">
       <cy-list-item @click="toggle('contents/detail')">
-        <div class="flex items-center w-full">
+        <div class="flex items-start w-full">
           <cy-icon-text
             class="w-48 flex-shrink-0"
             :icon="equipment.is !== 'avatar' ? equipment.getCategoryImagePath() : equipment.categoryIcon"
@@ -27,8 +27,9 @@
             </span>
           </cy-icon-text>
           <div
-            v-if="state.currentMode === 'normal' ||
-              state.currentMode === 'dye' || state.displayMode === 1"
+            v-if="state.currentMode === SearchModes.Normal ||
+              state.currentMode === SearchModes.Dye ||
+              state.displayMode === 1"
             class="flex items-center space-x-2"
           >
             <template v-if="equipment.isWeapon()">
@@ -50,22 +51,23 @@
               </cy-icon-text>
             </template>
           </div>
-          <template v-else-if="state.currentMode === 'stat'">
-            <ShowStat
-              v-if="state.currentMode === SearchModes.Stat && previewStat"
-              :stat="previewStat"
-              :negative-value="previewStat.value < 0"
-              type="preview"
-            />
-          </template>
-          <template v-else-if="state.currentMode === SearchModes.ItemLevel && originEquipment.recipe">
-            <div class="flex items-center">
-              <cy-icon-text icon="jam-hammer">
-                {{ t('item-query.equipment-detail.recipe.item-level') }}
-              </cy-icon-text>
-              <span class="ml-2 text-water-blue">{{ originEquipment.recipe['item_level'] }}</span>
-            </div>
-          </template>
+          <div v-else-if="state.currentMode === SearchModes.Stat" class="mt-0.5">
+            <template v-if="previewStats !== null">
+              <ShowStat
+                v-for="previewStat in previewStats"
+                :key="previewStat.statId"
+                :stat="previewStat"
+                :negative-value="previewStat.value < 0"
+                type="preview"
+              />
+            </template>
+          </div>
+          <div v-else-if="state.currentMode === SearchModes.ItemLevel && originEquipment.recipe" class="flex items-center">
+            <cy-icon-text icon="jam-hammer">
+              {{ t('item-query.equipment-detail.recipe.item-level') }}
+            </cy-icon-text>
+            <span class="ml-2 text-water-blue">{{ originEquipment.recipe['item_level'] }}</span>
+          </div>
         </div>
       </cy-list-item>
     </div>
@@ -256,6 +258,7 @@ import { useI18n } from 'vue-i18n'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { ItemObtain } from '@/lib/Items/Item'
+import { StatRestriction } from '@/lib/Character/Stat'
 
 import ToggleService from '@/setup/ToggleService'
 
@@ -317,12 +320,12 @@ const obtainsDatas = computed(() => obtainsDataConvert(originEquipment.value.obt
 
 const firstObtain = computed(() => obtainsDatas.value[0] ?? null)
 
-const previewStat = computed(() => {
-  const currentStat = modes[SearchModes.Stat].currentStat
-  if (state.currentMode !== SearchModes.Stat || !currentStat) {
+const previewStats = computed(() => {
+  const currentStats = modes[SearchModes.Stat].currentStats
+  if (state.currentMode !== SearchModes.Stat || currentStats.length === 0) {
     return null
   }
-  return findStat(currentStat, props.equipment.stats)
+  return currentStats.map(stat => findStat(stat, props.equipment.stats)).filter(stat => stat) as StatRestriction[]
 })
 
 const dyeObtains = computed(() => {

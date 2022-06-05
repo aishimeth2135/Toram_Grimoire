@@ -51,11 +51,11 @@ const attrs = useAttrs()
   @apply w-full py-1.5 px-4 cursor-pointer bg-opacity-25;
 
   &:hover {
-    @apply bg-light bg-opacity-10;
+    @apply bg-light-0 bg-opacity-50;
   }
 
   &.selected {
-    @apply bg-light bg-opacity-30;
+    @apply bg-light-0 bg-opacity-100;
   }
 }
 </style>

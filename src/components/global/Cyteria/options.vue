@@ -26,7 +26,7 @@
           </div>
           <div
             v-if="addable"
-            class="cy--options-item justify-center border-t border-light-2"
+            class="cy--options-item justify-center border-t border-light-2 sticky bottom-0 bg-white"
             @click="(emit('add-item'), hide())"
           >
             <div class="flex py-0.5">
@@ -90,11 +90,8 @@ const emit = defineEmits<Emits>()
 .cy--options-item {
   @apply duration-200 py-1.5 px-2 flex cursor-pointer;
 
-  &:hover {
-    background-color: rgba(var(--rgb-app-light), 0.2);
-  }
-  &.cy--options-item-selected {
-    background-color: rgba(var(--rgb-app-light), 0.4);
+  &:hover, &.cy--options-item-selected {
+    @apply bg-light-0;
   }
 }
 </style>

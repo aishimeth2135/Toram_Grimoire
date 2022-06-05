@@ -6,6 +6,9 @@
     "dark-light": {
       "value": "#c62899"
     },
+    "light-0": {
+      "value": "#fff5fa"
+    },
     "light": {
       "value": "#ffd1ea"
     },
@@ -80,6 +83,9 @@
     "dark-light": {
       "value": "#edd3e2"
     },
+    "light-0": {
+      "value": "#402b3d"
+    },
     "light": {
       "value": "#804665"
     },
@@ -90,7 +96,7 @@
       "value": "#ffc5e4"
     },
     "light-4": {
-      "value": "#ffdefd"
+      "value": "#ffdffe"
     },
     "gray": {
       "value": "#bbb"
@@ -153,6 +159,9 @@
     },
     "dark-light": {
       "value": "198, 40, 153"
+    },
+    "light-0": {
+      "value": "255, 245, 250"
     },
     "light": {
       "value": "255, 209, 234"
@@ -228,6 +237,9 @@
     "dark-light": {
       "value": "237, 211, 226"
     },
+    "light-0": {
+      "value": "64, 43, 61"
+    },
     "light": {
       "value": "128, 70, 101"
     },
@@ -238,7 +250,7 @@
       "value": "255, 197, 228"
     },
     "light-4": {
-      "value": "255, 222, 253"
+      "value": "255, 223, 254"
     },
     "gray": {
       "value": "187, 187, 187"
