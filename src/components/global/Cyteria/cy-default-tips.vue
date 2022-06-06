@@ -1,5 +1,5 @@
 <template>
-  <div class="cy--default-tips flex items-center justify-center px-2 py-4">
+  <div class="flex items-center justify-center px-2 py-4">
     <div class="flex items-center whitespace-normal">
       <cy-icon-text
         :icon="icon"

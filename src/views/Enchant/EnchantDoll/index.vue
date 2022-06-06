@@ -82,7 +82,7 @@
           </cy-input-counter>
         </div>
       </template>
-      <cy-transition type="fade">
+      <cy-transition>
         <div
           v-if="stepCounter > StepContents.Equipment"
           class="disabled-mask"
@@ -99,7 +99,7 @@
         {{ t('enchant-doll.back-to-step') }}
       </cy-button-action>
     </div>
-    <cy-transition type="fade" @after-enter="stepAfterEnter">
+    <cy-transition @after-enter="stepAfterEnter">
       <div
         v-if="stepCounter >= StepContents.SelectPositiveStat"
         class="step-content"
@@ -161,7 +161,7 @@
             {{ t('enchant-doll.select-positives.auto-fill') }}
           </cy-button-check>
         </div>
-        <cy-transition type="fade">
+        <cy-transition>
           <div
             v-if="stepCounter > StepContents.SelectPositiveStat"
             class="disabled-mask"
@@ -179,7 +179,7 @@
         {{ t('enchant-doll.back-to-step') }}
       </cy-button-action>
     </div>
-    <cy-transition type="fade" @after-enter="stepAfterEnter">
+    <cy-transition @after-enter="stepAfterEnter">
       <div
         v-if="stepCounter >= StepContents.SelectNegativeStat"
         class="step-content"
@@ -345,7 +345,7 @@
             </div>
           </div>
         </div>
-        <cy-transition type="fade">
+        <cy-transition>
           <div
             v-if="stepCounter > StepContents.SelectNegativeStat"
             class="disabled-mask"
@@ -363,7 +363,7 @@
         {{ t('enchant-doll.back-to-step') }}
       </cy-button-action>
     </div>
-    <cy-transition type="fade" @after-enter="stepAfterEnter">
+    <cy-transition @after-enter="stepAfterEnter">
       <div
         v-if="stepCounter >= StepContents.Result && resultEquipment"
         class="step-content"

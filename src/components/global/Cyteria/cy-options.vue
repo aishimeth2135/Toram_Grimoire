@@ -39,14 +39,8 @@
   </CyPopover>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'CyOptions',
-}
-</script>
-
 <script lang="ts" setup>
-import CyPopover from './popover.vue'
+import CyPopover from './cy-popover.vue'
 
 interface OptionItem {
   id: string | number | symbol;

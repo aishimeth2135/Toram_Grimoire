@@ -8,7 +8,7 @@
           @click="toggle('contents/menu')"
         />
       </div>
-      <cy-transition type="fade">
+      <cy-transition>
         <div v-if="contents.menu" class="app--side-menu--menu">
           <AppSideMenuContent @click="toggle('contents/menu')" />
         </div>

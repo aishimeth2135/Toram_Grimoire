@@ -4,10 +4,12 @@
   </transition>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   name: 'CyTransitionFade',
-}
+})
 </script>
 
 <style lang="postcss" scoped>

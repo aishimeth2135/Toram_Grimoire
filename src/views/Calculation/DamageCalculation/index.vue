@@ -95,7 +95,7 @@
         />
       </template>
       <template #side-contents>
-        <cy-transition type="fade" mode="out-in">
+        <cy-transition mode="out-in">
           <AppLayoutBottomContent v-if="contents.mainMenu" class="p-3">
             <div class="flex items-center">
               <cy-title-input

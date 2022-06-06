@@ -62,7 +62,7 @@
         />
       </template>
       <template #side-contents>
-        <cy-transition type="fade" mode="out-in">
+        <cy-transition mode="out-in">
           <AppLayoutBottomContent v-if="contents.result" class="p-3">
             <EnchantResult :equipment="currentEquipment" />
           </AppLayoutBottomContent>
@@ -139,7 +139,7 @@
                 @click="toggle('contents/extraOptions')"
               />
             </div>
-            <cy-transition type="fade">
+            <cy-transition>
               <div v-if="contents.extraOptions">
                 <cy-icon-text small text-color="water-blue" icon-color="water-blue" class="mt-4">
                   {{ t('enchant-simulator.advanced-options') }}

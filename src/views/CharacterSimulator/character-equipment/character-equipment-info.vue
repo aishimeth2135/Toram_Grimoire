@@ -25,7 +25,7 @@
       />
     </div>
     <div>
-      <cy-transition type="fade" mode="out-in">
+      <cy-transition mode="out-in">
         <CharacterSimulatorEquipmentPreview
           v-if="mode === Modes.Info"
           :equipment="equipment"

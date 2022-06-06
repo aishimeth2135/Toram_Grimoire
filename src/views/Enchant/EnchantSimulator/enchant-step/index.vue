@@ -122,7 +122,7 @@
       </cy-default-tips>
     </div>
     <div class="border-t border-purple mt-auto pt-0.5">
-      <cy-transition type="fade">
+      <cy-transition>
         <div v-if="isTypeEach" class="border-b border-light-2 py-0.5">
           <cy-input-counter
             v-model:value="step.step/* eslint-disable-line vue/no-mutating-props */"

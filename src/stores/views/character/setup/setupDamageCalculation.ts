@@ -316,12 +316,15 @@ export default function setupDamageCalculation(
     const containerForceHiddenMap = computed(() => {
       const unsheatheDamageHidden = container.value.getOrigin('unsheathe_damage') !== '1'
       const baseNone = container.value.branchItem.prop('base') === 'none'
+      const baseOrigin = container.value.getOrigin('base')
 
       const mainType = character.value?.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
 
+      console.log(baseSuffixBranch.value)
+
       return new Map([
-        [CalculationContainerIds.BaseAtk, baseNone || container.value.getOrigin('base') === 'matk'],
-        [CalculationContainerIds.BaseMatk, baseNone || container.value.getOrigin('base') === 'atk'],
+        [CalculationContainerIds.BaseAtk, baseNone || baseOrigin === 'matk'],
+        [CalculationContainerIds.BaseMatk, baseNone || baseOrigin === 'atk' || baseSuffixBranch.value?.prop('type') === 'dual_sword'],
         [CalculationContainerIds.BaseDualSword, !character.value ||
           !character.value.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.OneHandSword) ||
           !character.value.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword),

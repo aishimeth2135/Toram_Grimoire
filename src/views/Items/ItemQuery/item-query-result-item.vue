@@ -71,7 +71,7 @@
         </div>
       </cy-list-item>
     </div>
-    <cy-transition type="fade">
+    <cy-transition>
       <div v-if="contents.detail" class="pt-2 pb-3 pl-6 pr-4 max-w-full bg-white overscroll-none">
         <div class="mb-2 pl-2 flex items-center space-x-2">
           <cy-icon-text
