@@ -1,6 +1,6 @@
 <template>
   <div class="sticky bottom-0 p-2 z-20 pointer-events-none w-full mt-auto">
-    <cy-transition type="fade" mode="out-in">
+    <cy-transition mode="out-in">
       <div v-if="hasMainContent" class="mb-2 pointer-events-auto">
         <slot name="main-content"></slot>
       </div>

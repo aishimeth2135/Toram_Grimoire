@@ -8,7 +8,7 @@
         :selected="contents.resultStats"
         @click="toggle('contents/resultStats')"
       />
-      <cy-transition type="fade">
+      <cy-transition>
         <div v-if="contents.resultStats" class="mb-2">
           <div>
             <span

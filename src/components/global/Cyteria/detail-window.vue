@@ -1,5 +1,5 @@
 <template>
-  <cy-transition type="fade">
+  <cy-transition>
     <div class="cy--detail-window" :style="position">
       <div class="content-container">
         <div class="content">

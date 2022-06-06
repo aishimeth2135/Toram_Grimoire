@@ -1,6 +1,6 @@
 <template>
   <teleport to="body">
-    <cy-transition type="fade" appear>
+    <cy-transition appear>
       <div class="w-full h-full bg-black bg-opacity-50 fixed top-0 left-0 z-100" @click="emit('close')">
         <div style="max-width: 40rem;" class="py-5 mx-auto bg-opacity-100" @click.stop>
           <div>

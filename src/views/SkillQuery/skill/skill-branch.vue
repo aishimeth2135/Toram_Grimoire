@@ -18,7 +18,7 @@
           @click="toggle('contents/sub')"
         />
       </div>
-      <cy-transition type="fade">
+      <cy-transition>
         <div v-if="!sub && contents.sub">
           <div class="flex items-center pl-4 pt-2 pb-1 space-x-2">
             <cy-icon-text icon="ic:round-label" class="flex-shrink-0" />

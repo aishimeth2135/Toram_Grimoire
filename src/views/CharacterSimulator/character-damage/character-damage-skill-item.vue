@@ -1,15 +1,12 @@
 <template>
   <cy-list-item pure>
-    <div class="w-full py-0.5">
+    <div class="w-full">
       <div class="flex items-center">
         <div
           class="mr-3 flex flex-shrink-0"
           style="min-width: 10rem"
         >
-          <cy-button-check
-            v-model:selected="enabled"
-            inline
-          >
+          <cy-button-check v-model:selected="enabled">
             <cy-icon-text :text-color="!invalid ? 'purple' : 'gray'" :icon="skillIconPath" icon-src="image">
               {{ skillResultsState.skill.name }}
             </cy-icon-text>
@@ -22,7 +19,7 @@
           <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
         </div>
       </div>
-      <div v-if="enabled && !invalid">
+      <div v-if="enabled && !invalid" class="pl-1 pb-1.5">
         <div class="pt-2 pl-2 space-y-2">
           <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
             <CharacterDamageSkillResultItem :result="result" />

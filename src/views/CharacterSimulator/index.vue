@@ -41,7 +41,7 @@
         />
       </template>
       <template #side-contents>
-        <cy-transition type="fade" mode="out-in">
+        <cy-transition mode="out-in">
           <AppLayoutBottomContent v-if="sideContents.tabs">
             <div style="min-width: 15rem">
               <cy-list-item

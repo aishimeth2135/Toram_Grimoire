@@ -6,14 +6,15 @@
       @click="detailVisible = !detailVisible"
     >
       <cy-list-item>
-        <cy-icon-text
-          class="w-40 flex-shrink-0"
-          :icon="crystal.crystalIconPath"
-          icon-src="image"
-          :text-color="detailVisible ? 'orange' : 'dark'"
-        >
-          {{ crystal.name }}
-        </cy-icon-text>
+        <div class="w-40 flex flex-shrink-0 py-0.5">
+          <cy-icon-text
+            :icon="crystal.crystalIconPath"
+            icon-src="image"
+            :text-color="detailVisible ? 'orange' : 'dark'"
+          >
+            {{ crystal.name }}
+          </cy-icon-text>
+        </div>
         <div v-if="previewMode === 'default'" class="flex items-center space-x-2">
           <template v-if="crystal.origin.enhancer">
             <cy-icon-text icon="mdi:arrow-up-bold-outline" small main-color="blue-green">
@@ -38,7 +39,7 @@
         </div>
       </cy-list-item>
     </div>
-    <cy-transition type="fade">
+    <cy-transition>
       <div v-if="detailVisible" class="pt-2 pb-3 pl-6 pr-4 bg-white max-w-full">
         <div>
           <ShowStat

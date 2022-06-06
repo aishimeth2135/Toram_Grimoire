@@ -10,9 +10,9 @@
       :class="iconClass"
       class="cy-button-toggle-icon"
     />
-    <span v-if="$slots.default" class="ml-2 mr-1.5">
+    <div v-if="$slots.default" class="ml-2 mr-1.5 flex">
       <slot />
-    </span>
+    </div>
   </CyButtonBase>
 </template>
 

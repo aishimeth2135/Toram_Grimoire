@@ -141,7 +141,7 @@
         />
       </template>
       <template #side-contents>
-        <cy-transition type="fade" mode="out-in">
+        <cy-transition mode="out-in">
           <AppLayoutBottomContent v-if="menus.conditionOptions" class="space-y-3 p-3">
             <div v-for="(type) in conditions.type" :key="type.id">
               <div class="flex items-center space-x-0.5">

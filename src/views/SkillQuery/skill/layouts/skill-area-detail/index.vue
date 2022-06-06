@@ -1,5 +1,5 @@
 <template>
-  <cy-transition type="fade">
+  <cy-transition>
     <div class="m-3 p-3 flex items-center flex-wrap">
       <div>
         <SkillAreaAnimation :container="container"/>

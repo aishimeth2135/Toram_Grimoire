@@ -8,7 +8,7 @@
   >
     <slot :shown="shown" />
     <teleport to="#app-popovers">
-      <cy-transition type="fade">
+      <cy-transition>
         <div
           v-if="shown"
           ref="wrapperElement"
@@ -24,14 +24,14 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: 'CyPopover',
+interface PopperHideEventDetail {
+  eventTarget: Node | null;
 }
 
 document.body.addEventListener('click', (evt: MouseEvent) => {
-  const customEvent = new CustomEvent('cypopperhide', {
+  const customEvent = new CustomEvent<PopperHideEventDetail>('cypopperhide', {
     detail: {
-      eventTarget: evt.target,
+      eventTarget: evt.target as (Node | null),
     },
   })
   document.querySelectorAll('#app-popovers > .cy--popover-wrapper').forEach(el => el.dispatchEvent(customEvent))
@@ -123,7 +123,7 @@ const togglePopper = async (force?: boolean) => {
   }
 }
 
-const handlePopperHide = (evt: CustomEvent) => {
+const handlePopperHide = (evt: CustomEvent<PopperHideEventDetail>) => {
   if (evt.detail.eventTarget && [rootElement.value, wrapperElement.value].some(el => el?.contains(evt.detail.eventTarget))) {
     return
   }

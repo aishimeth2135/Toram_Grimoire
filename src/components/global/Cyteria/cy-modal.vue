@@ -1,6 +1,6 @@
 <template>
   <teleport to="#app-modals">
-    <cy-transition type="fade">
+    <cy-transition>
       <div
         v-if="visible"
         class="cy--modal"
