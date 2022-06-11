@@ -17,7 +17,7 @@ export default class MapContainer<AttrMap extends Record<string, any>> {
 
   appendIterable(key: keyof AttrMap, length: number) {
     Array(length).fill(0).forEach((value, idx) => {
-      this._attrMap[`${key}.${idx}` as keyof AttrMap] = (null) as AttrMap[keyof AttrMap]
+      this._attrMap[`${String(key)}.${idx}` as keyof AttrMap] = (null) as AttrMap[keyof AttrMap]
     })
   }
 

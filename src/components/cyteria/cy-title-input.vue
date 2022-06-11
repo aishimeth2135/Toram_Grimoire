@@ -26,7 +26,7 @@
 <script lang="ts">
 import { computed, defineComponent, nextTick, Ref, ref } from 'vue'
 
-import { IconSetProps } from './setup/icon-set'
+import { IconBaseProps } from './icon/setup'
 
 export default defineComponent({
   props: {
@@ -38,7 +38,7 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    ...IconSetProps,
+    ...IconBaseProps,
   },
   emits: ['update:value', 'keyup'],
   setup(props, { emit, expose  }) {

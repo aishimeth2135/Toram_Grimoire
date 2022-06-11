@@ -202,14 +202,14 @@
                   :selected="state.statDisplayMode === 0"
                   @update:selected="state.statDisplayMode = 0"
                 >
-                  {{ t('enchant-simulator.stat-display-mode.material-point') }}
+                  {{ t('enchant-simulator.stat-display-mode.potential-cost') }}
                 </cy-button-check>
                 <cy-button-check
                   :selected="state.statDisplayMode === 1"
                   main-color="water-blue"
                   @update:selected="state.statDisplayMode = 1"
                 >
-                  {{ t('enchant-simulator.stat-display-mode.potential-cost') }}
+                  {{ t('enchant-simulator.stat-display-mode.material-point') }}
                 </cy-button-check>
               </div>
             </div>

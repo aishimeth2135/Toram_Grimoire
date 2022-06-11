@@ -17,7 +17,7 @@
         </div>
         <div v-if="previewMode === 'default'" class="flex items-center space-x-2">
           <template v-if="crystal.origin.enhancer">
-            <cy-icon-text icon="mdi:arrow-up-bold-outline" small main-color="blue-green">
+            <cy-icon-text icon="mdi:arrow-up-bold-outline" small color="blue-green">
               {{ crystal.origin.enhancer }}
             </cy-icon-text>
             <cy-icon-text

@@ -94,7 +94,7 @@
           </template>
         </cy-input-counter>
       </div>
-      <cy-transition type="fade-slide-right" mode="out-in">
+      <cy-transition name="fade-slide-right" mode="out-in">
         <div>
           <cy-input-counter
             v-if="currentCharacter.optionalBaseStat"

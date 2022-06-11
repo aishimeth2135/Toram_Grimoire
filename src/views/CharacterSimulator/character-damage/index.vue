@@ -6,7 +6,7 @@
         :class="contents.basicMenu ? 'border-light-2' : 'border-light'"
         @click="toggle('contents/basicMenu')"
       >
-        <cy-icon-text icon="ic:round-format-list-bulleted" main-color="purple">
+        <cy-icon-text icon="ic:round-format-list-bulleted" color="purple">
           {{ t('character-simulator.character-damage.options-base-title') }}
         </cy-icon-text>
       </div>
@@ -41,7 +41,7 @@
         :class="contents.targetMenu ? 'border-light-2' : 'border-light'"
         @click="toggle('contents/targetMenu')"
       >
-        <cy-icon-text icon="ic:round-format-list-bulleted" main-color="purple">
+        <cy-icon-text icon="ic:round-format-list-bulleted" color="purple">
           {{ t('character-simulator.character-damage.target-options-title') }}
         </cy-icon-text>
       </div>

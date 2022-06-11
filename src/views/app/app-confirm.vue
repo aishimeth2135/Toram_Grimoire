@@ -11,7 +11,7 @@
             <cy-icon-text
               :icon="(typeof item.icon === 'string') ? item.icon : item.icon.name"
               :icon-src="(typeof item.icon === 'string') ? 'iconify' : item.icon.src"
-              style="--icon-width: 2rem"
+              icon-width="2rem"
               class="flex-shrink-0 mr-4"
             />
           </div>

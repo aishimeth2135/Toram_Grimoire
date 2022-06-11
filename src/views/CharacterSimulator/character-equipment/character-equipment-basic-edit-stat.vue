@@ -26,7 +26,7 @@
           @click="toggleStatSelected(stat)"
         >
           <template v-if="statOptionSelected(stat) === '+'">
-            <cy-icon-text icon="mdi-rhombus-outline" main-color="water-blue">
+            <cy-icon-text icon="mdi-rhombus-outline" color="water-blue">
               {{ stat.text }}
             </cy-icon-text>
             <cy-icon-text
@@ -36,7 +36,7 @@
             />
           </template>
           <template v-else-if="statOptionSelected(stat) === '-'">
-            <cy-icon-text icon="mdi-rhombus-outline" main-color="red">
+            <cy-icon-text icon="mdi-rhombus-outline" color="red">
               {{ stat.text }}
             </cy-icon-text>
             <cy-icon-text
@@ -87,7 +87,7 @@
             >
               <cy-button-check
                 :selected="!removedStatOptions.includes(stat)"
-                main-color="orange"
+                color="orange"
                 inline
               >{{ stat.text }}</cy-button-check>
             </cy-list-item>
@@ -105,7 +105,7 @@
               :key="stat.origin.statId(stat.type)"
               @click="toggleStatSelected(stat)"
             >
-              <cy-button-check selected main-color="water-blue" inline>{{ stat.text }}</cy-button-check>
+              <cy-button-check selected color="water-blue" inline>{{ stat.text }}</cy-button-check>
             </cy-list-item>
           </div>
         </div>
@@ -121,7 +121,7 @@
               :key="stat.origin.statId(stat.type)"
               @click="toggleStatSelected(stat)"
             >
-              <cy-button-check selected main-color="red" inline>{{ stat.text }}</cy-button-check>
+              <cy-button-check selected color="red" inline>{{ stat.text }}</cy-button-check>
             </cy-list-item>
           </div>
         </div>

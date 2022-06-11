@@ -6,7 +6,7 @@
       class="cy-button-dropdown-main w-full"
       @click="toggle('contents/content')"
     >
-      <ButtonIcon v-if="icon !== null" :icon="icon" :src="iconSrc" :class="iconClass" />
+      <ButtonIcon :icon="icon" :src="iconSrc" :class="iconClass" />
       <span class="mr-1" :class="icon !== null ? 'ml-2' : 'ml-1'">
         <slot />
       </span>

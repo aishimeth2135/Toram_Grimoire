@@ -2,11 +2,10 @@
   <CyButtonBase
     v-slot="{ iconClass }"
     v-bind="buttonBaseBinds"
-    class="cy-button-plain m-1"
-    :class="{ 'button-width-full': widthFull }"
+    class="cy-button-action m-1"
   >
-    <ButtonIcon v-if="icon !== null" :icon="icon" :src="iconSrc" :class="iconClass" />
-    <span class="mr-1" :class="icon !== null ? 'ml-2' : 'ml-1'">
+    <ButtonIcon :icon="icon" :src="iconSrc" :class="iconClass" />
+    <span v-if="$slots.default" class="mr-1" :class="icon !== null ? 'ml-2' : 'ml-1'">
       <slot />
     </span>
   </CyButtonBase>
@@ -24,10 +23,6 @@ export default defineComponent({
   props: {
     ...ButtonBaseProps,
     ...ButtonIconProps,
-    widthFull: {
-      type: Boolean,
-      default: false,
-    },
   },
   components: {
     CyButtonBase,
@@ -42,21 +37,7 @@ export default defineComponent({
 </script>
 
 <style lang="postcss" scoped>
-.cy-button-plain {
-  --button-color-text: var(--button-color-main-light);
-  --button-color-text-hover: var(--button-color-main);
-
-  &:hover {
-    color: var(--button-color-text-hover);
-  }
-
-  &.button-width-full {
-    @apply w-full;
-  }
-
-  &.theme-secondary {
-    --button-color-main: var(--app-light-3);
-    --button-color-main-light: var(--app-light-2);
-  }
+.cy-button-action {
+  @apply py-1 px-3 rounded-2xl border-1 bg-white bg-opacity-100 shadow-sm;
 }
 </style>

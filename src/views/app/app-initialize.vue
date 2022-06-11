@@ -12,7 +12,7 @@
           <div v-for="item in initItems" :key="item.msg" class="flex justify-center items-center mb-2 pl-1">
             <span class="mr-3 w-full text-light-4">{{ t(item.msg) }}</span>
             <cy-icon-text
-              display-block
+              block
               :icon="statusIcon(item.status)"
               :class="{ 'loading-circle': item.status === InitItemStatus.Loading }"
               :icon-color="item.status === InitItemStatus.Error ? 'red' : 'water-blue'"
@@ -23,7 +23,7 @@
           <div class="flex justify-center items-center pl-1">
             <span class="mr-3 w-full text-light-4">{{ t('app.loading-message.init-locale') }}</span>
             <cy-icon-text
-              display-block
+              block
               :icon="statusIcon(status - 10)"
               :class="{ 'loading-circle': status === InitializeStatus.LocaleLoading }"
               icon-color="water-blue"

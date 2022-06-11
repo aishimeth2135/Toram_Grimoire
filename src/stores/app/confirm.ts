@@ -1,15 +1,17 @@
 import { defineStore } from 'pinia'
 import { readonly, ref } from 'vue'
 
+import { IconSrc } from '@/components/cyteria/icon/setup'
+
 interface ConfirmItemParam {
   message: string;
-  icon?: string | { name: string; src: string };
+  icon?: string | { name: string; src: IconSrc };
   confirm?: () => void;
   cancel?: () => void;
 }
 
 interface ConfirmItem extends ConfirmItemParam {
-  icon: string | { name: string; src: string };
+  icon: string | { name: string; src: IconSrc };
 }
 
 export const useConfirmStore = defineStore('app-confirm', () => {

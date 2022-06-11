@@ -10,7 +10,7 @@
         <div class="flex items-center sticky top-0 bg-white z-1">
           <cy-button-check
             :selected="datasItem.items.size === datasItem.originalItems.length"
-            main-color="orange"
+            color="orange"
             @click="toggleItemAll(datasItem)"
           >
             {{ datasItem.title }}

@@ -1,12 +1,12 @@
 <template>
   <div
     v-if="type !== 'preview'"
-    class="stat-scope inline-block mr-3"
+    class="inline-block mr-3"
     :class="{ 'opacity-60': invalid }"
   >
     <cy-icon-text
       icon="mdi-leaf"
-      type="item"
+      is-item
       :text-color="negativeValue ? 'red' : 'dark'"
     >
       <span
