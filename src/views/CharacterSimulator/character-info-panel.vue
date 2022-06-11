@@ -48,7 +48,7 @@
               :equipment="field.equipment"
             />
             <div v-else class="flex px-3 py-1.5 cursor-pointer">
-              <cy-icon-text main-color="light-2">
+              <cy-icon-text color="light-2">
                 {{ t('common.Equipment.field.' + field.type) }}
               </cy-icon-text>
             </div>

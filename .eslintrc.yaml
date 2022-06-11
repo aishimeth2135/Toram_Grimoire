@@ -4,7 +4,7 @@ env:
 extends:
   - eslint:recommended
   - plugin:vue/vue3-essential
-  - "@vue/typescript"
+  - "@vue/eslint-config-typescript"
 parserOptions:
   parsers:
     ts: "@typescript-eslint/parser"

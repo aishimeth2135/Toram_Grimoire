@@ -49,7 +49,7 @@
       />
     </template>
     <template #side-contents>
-      <cy-transition v-if="currentSkillBuild" type="fade" mode="out-in">
+      <cy-transition v-if="currentSkillBuild" mode="out-in">
         <AppLayoutBottomContent
           v-if="contents.mainMenu"
           class="space-y-2 p-3"
@@ -106,7 +106,7 @@
         >
           <div v-for="stc in skillTreeCategorys" :key="`stc-${stc.id}`">
             <div>
-              <cy-icon-text icon="uil:books" main-color="orange" small>{{ stc.name }}</cy-icon-text>
+              <cy-icon-text icon="uil:books" color="orange" small>{{ stc.name }}</cy-icon-text>
             </div>
             <div class="pl-2">
               <cy-button-check
@@ -134,7 +134,7 @@
           <template v-else>
             <div v-for="categoryItem in jumpSkillTreeCategorys" :key="`stc-${categoryItem.origin.id}`">
               <div>
-                <cy-icon-text icon="uil:books" main-color="orange" small>{{ categoryItem.origin.name }}</cy-icon-text>
+                <cy-icon-text icon="uil:books" color="orange" small>{{ categoryItem.origin.name }}</cy-icon-text>
               </div>
               <div class="pl-2">
                 <cy-button-plain

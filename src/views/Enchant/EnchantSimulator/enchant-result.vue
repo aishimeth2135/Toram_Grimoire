@@ -169,8 +169,8 @@ const props = defineProps<Props>()
 const { equipment } = toRefs(props)
 
 const { windows, contents, toggle } = ToggleService({
-  windows: ['successRateDetail'],
-  contents: [{ name: 'resultStats', default: true }],
+  windows: ['successRateDetail'] as const,
+  contents: [{ name: 'resultStats', default: true }] as const,
 })
 const { t, tm } = useI18n()
 const store = useEnchantStore()

@@ -18,11 +18,11 @@
 <script lang="ts">
 import { computed, defineComponent, StyleValue } from 'vue'
 
-import { IconSetProps } from './setup/icon-set'
+import { IconBaseProps } from './icon/setup'
 
 export default defineComponent({
   props: {
-    ...IconSetProps,
+    ...IconBaseProps,
     'icon': {
       type: String,
       default: 'bx:message-detail',

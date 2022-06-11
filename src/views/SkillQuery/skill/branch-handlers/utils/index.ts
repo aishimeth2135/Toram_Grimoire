@@ -72,7 +72,7 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
       const resultValue = computeBranchValue(value, helper)
       const sign = isNumberString(resultValue) && parseFloat(resultValue) < 0 ? 'negative' : 'positive'
       const displayValue = sign === 'negative' ? -1 * parseFloat(resultValue) : resultValue
-      resultStr = t(`skill-query.branch.${branchItem.name + prefix}.${attrKey}.${sign}`, { value: displayValue.toString() })
+      resultStr = t(`skill-query.branch.${branchItem.name + prefix}.${String(attrKey)}.${sign}`, { value: displayValue.toString() })
     } else {
       let displayValue = value
       if ((type === 'auto' || type === 'boolean') && (displayValue === '1' || displayValue === '0')) {
@@ -80,7 +80,7 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
       }
       let preName = branchItem.name + prefix
       preName = branchItem instanceof SkillBranchItemSuffix ? branchItem.mainBranch.name + ': ' + preName : preName
-      const result = t(`skill-query.branch.${preName}.${attrKey}.${displayValue}`)
+      const result = t(`skill-query.branch.${preName}.${String(attrKey)}.${displayValue}`)
       resultStr = afterHandle ? afterHandle(result) : result
     }
     attrValues[attrKey] = new ResultContainer(branchItem, attrKey as string, value, resultStr)

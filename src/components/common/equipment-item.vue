@@ -1,7 +1,7 @@
 <template>
   <cy-list-item :selected="selected">
     <div class="flex items-center w-full" :class="{ 'opacity-50': disabled }">
-      <EquipmentTitle :equipment="equipment" :text-color="current ? 'purple' : 'default'" />
+      <EquipmentTitle :equipment="equipment" :text-color="current ? 'purple' : 'dark'" />
       <cy-icon-text
         v-if="current"
         icon="carbon-location-current"

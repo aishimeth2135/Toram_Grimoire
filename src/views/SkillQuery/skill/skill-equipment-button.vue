@@ -24,7 +24,7 @@
               v-else
               :icon="icon.icon"
               :icon-src="icon.src"
-              display-block
+              block
             >
               <span class="text-sm">{{ icon.text || '' }}</span>
             </cy-icon-text>
@@ -42,6 +42,8 @@ import { useI18n } from 'vue-i18n'
 import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
+import { IconSrc } from '@/components/cyteria/icon/setup'
+
 interface Props {
   equipments: EquipmentRestriction[];
   selected?: boolean;
@@ -53,9 +55,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n()
 
+interface IconItem {
+  icon: string;
+  src: IconSrc;
+  text?: string;
+}
+
 const iconDatas = computed(() => {
   return props.equipments.map((equip, idx) => {
-    const icons: { icon: string; src: string; text?: string }[] = []
+    const icons: IconItem[] = []
     const fields = (['main', 'sub', 'body'] as const).filter(key => equip[key] !== null)
     if (fields.length === 0) {
       icons.push({ icon: 'mdi:checkbox-multiple-blank-circle-outline', src: 'iconify', text: t('skill-query.equipment.none') })

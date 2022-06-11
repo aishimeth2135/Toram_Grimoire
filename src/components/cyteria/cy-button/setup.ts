@@ -1,15 +1,15 @@
 import { PropType } from 'vue'
 
+import { IconBaseProps } from '../icon/setup'
+
 export const ButtonIconProps = {
+  ...IconBaseProps,
   icon: {
     type: String as PropType<string | null>,
   },
-  iconSrc: {
-    type: String as PropType<'iconify' | 'custom' | 'image'>,
-  },
 }
 
-type ButtonColors = 'primary' | 'bright' | 'secondary' | 'blue-green' | 'water-blue' | 'purple'  | 'orange' | 'green' | 'gray'
+type ButtonColors = 'primary' | 'bright' | 'secondary' | 'blue-green' | 'water-blue' | 'purple' | 'red' | 'orange' | 'green' | 'gray'
 
 export const ButtonBaseProps = {
   color: {

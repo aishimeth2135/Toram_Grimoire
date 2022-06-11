@@ -20,7 +20,7 @@
             small
             :text-color="contentData.color"
             :icon="contentData.icon"
-            :main-color="contentData.type === 'primary' ? 'red' : 'default'"
+            :color="contentData.type === 'primary' ? 'red' : 'default'"
           >
             <span v-html="contentData.title"></span>
           </cy-icon-text>

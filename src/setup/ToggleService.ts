@@ -59,7 +59,7 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(gro
     if (sub) {
       force = force ?? !targetGroup[sub].value
       if (!targetGroup[sub]) {
-        console.warn(`[ToggleService] invalid key "${id}".`)
+        console.warn(`[ToggleService] invalid key "${String(id)}".`)
         return
       }
       targetGroup[sub].value = force

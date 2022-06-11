@@ -2,7 +2,7 @@
   <div>
     <div class="mb-2 flex items-center flex-wrap">
       <div class="flex mr-4">
-        <cy-icon-text icon="gridicons:stats-alt" main-color="orange">
+        <cy-icon-text icon="gridicons:stats-alt" color="orange">
           {{ characterStatResult.name }}
         </cy-icon-text>
       </div>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex items-center flex-wrap w-full">
-      <cy-icon-text icon="ic:round-label" main-color="orange">
+      <cy-icon-text icon="ic:round-label" color="orange">
         {{ result.container.get('name') }}
       </cy-icon-text>
       <div class="flex items-center space-x-0.5 ml-3">

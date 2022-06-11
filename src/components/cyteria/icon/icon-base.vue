@@ -3,11 +3,11 @@
     v-if="src === 'iconify'"
     :icon="icon"
   />
-  <svg-icon
+  <SvgIcon
     v-else-if="src === 'custom'"
     :icon-id="icon"
   />
-  <image-icon
+  <ImageIcon
     v-else-if="src === 'image'"
     :image-path="icon"
   />
@@ -19,6 +19,9 @@
 
 <script lang="ts" setup>
 import { Icon as IconifyIcon } from '@iconify/vue'
+
+import ImageIcon from './image-icon.vue'
+import SvgIcon from './svg-icon.vue'
 
 interface Props {
   icon?: string;

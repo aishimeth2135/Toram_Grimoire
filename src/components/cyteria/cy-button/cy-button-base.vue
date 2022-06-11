@@ -117,5 +117,10 @@ export default defineComponent({
     --button-color-main: var(--app-gray);
     --button-color-main-light: var(--app-gray-light);
   }
+
+  &.theme-red {
+    --button-color-main: var(--app-red);
+    --button-color-main-light: var(--app-red-light);
+  }
 }
 </style>
