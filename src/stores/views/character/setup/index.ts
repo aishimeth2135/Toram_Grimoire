@@ -291,14 +291,11 @@ export function setupCharacterSkills(
       // active
       const checkBranchStats = (stats: StatComputed[]) => !handleOptions.value.skillDisplayStatsOnly || stats.length !== 0
       const checkActive = (bch: SkillBranchItem) => {
-        if (!checkPostpone(bch) || bch.is(SkillBranchNames.Damage)) {
+        if (!checkPostpone(bch)) {
           return false
         }
-        if (bch.is(SkillBranchNames.Effect) && checkBranchStats(bch.stats)) {
-          return true
-        }
-        if (bch.suffixBranches.some(suffixBranchFilter)) {
-          return true
+        if (bch.is(SkillBranchNames.Effect)) {
+          return checkBranchStats(bch.stats) || bch.suffixBranches.some(suffixBranchFilter)
         }
         return false
       }
@@ -308,7 +305,15 @@ export function setupCharacterSkills(
       })
 
       // passive
-      const checkPassive = (bch: SkillBranchItem) => bch.is(SkillBranchNames.Passive) && checkPostpone(bch) && checkBranchStats(bch.stats)
+      const checkPassive = (bch: SkillBranchItem) => {
+        if (!checkPostpone(bch)) {
+          return false
+        }
+        if (bch.is(SkillBranchNames.Passive)) {
+          return checkBranchStats(bch.stats) || bch.suffixBranches.some(suffixBranchFilter)
+        }
+        return false
+      }
       const passiveValid = skillItem.effectItems.some(effectItem => effectItem.branchItems.some(checkPassive))
       const passiveSkillBranchItems = !passiveValid ? null : computed(() => {
         return currentEffectItem.value?.branchItems.filter(checkPassive) ?? []

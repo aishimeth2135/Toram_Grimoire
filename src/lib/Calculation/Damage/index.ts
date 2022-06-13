@@ -293,7 +293,16 @@ export default class DamageCalculationSystem {
       container.appendItem(CalculationItemIds.Stability)
         .setDefaultValue(75)
         .setRange(0, 100, 10)
-      container.setCalcResult(itemContainer => itemContainer.getItemValue(CalculationItemIds.Stability))
+      container.setCalcResult(itemContainer => {
+        const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
+        const stability = itemContainer.getItemValue(CalculationItemIds.Stability)
+        if (currentDamageTypeId === CalculationItemIds.Physical) {
+          return stability / 2 + 50
+        }
+        const baseValue =  50 + stability / 2
+        const extraLimit = baseValue > 90 ? (100 - baseValue) : 0
+        return (Math.min(baseValue, 90) + 100 + extraLimit) / 2
+      })
       // container.setCalcResult((itemContainer) => {
       //   const stability = itemContainer.getItemValue(CalculationItemIds.Stability)
       //   const accuracy = itemContainer.getItemValue(CalculationItemIds.Accuracy)

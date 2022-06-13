@@ -34,7 +34,6 @@ export default {
       return box
     },
     handleHook(hook, el, done) {
-      console.log(hook, el)
       if (this.type === 'slide-up') {
         const height = this.getBox(el).height
         const mb = (-1 * Math.floor(height)) + 'px'

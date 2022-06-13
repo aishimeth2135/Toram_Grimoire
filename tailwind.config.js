@@ -50,6 +50,22 @@ function createColorConfig(varName) {
   }
 }
 
+const getColorList = (prefix) => {
+  prefix = prefix + '-'
+  const config = createColorConfig()
+  const keys = []
+  Object.entries(config).forEach(([key, value]) => {
+    if (typeof value === 'string') {
+      keys.push(prefix + key)
+      return
+    }
+    Object.keys(value).forEach(subkey => {
+      keys.push(prefix + (subkey === 'DEFAULT' ? key : `${key}-${subkey}`))
+    })
+  })
+  return keys
+}
+
 const borderWidth = {
   DEFAULT: '1px',
   '0': '0',
@@ -67,6 +83,10 @@ module.exports = {
   content: [
     './index.html',
     './src/**/*.{vue,js,ts,jsx,tsx}',
+  ],
+  safelist: [
+    ...getColorList('bg'),
+    ...getColorList('text'),
   ],
   theme: {
     colors: createColorConfig(),

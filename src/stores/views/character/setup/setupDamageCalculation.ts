@@ -123,13 +123,9 @@ export default function setupDamageCalculation(
       if (skillElement) {
         const keys = Object.keys(skillElement) as EnemyElements[]
         keys.forEach(key => {
+          const againstKey = againstElementMap[key]
           if (skillElement[key] === 1) {
-            const againstKey = againstElementMap[key]
-            if (currentCharacterElement.value![key] === 1) {
-              newElement[againstKey] = magicExtra
-            } else {
-              newElement[againstKey] = 25 + magicExtra
-            }
+            newElement[againstKey] = magicExtra + 25
           }
         })
       } else {
@@ -137,7 +133,7 @@ export default function setupDamageCalculation(
         keys.forEach(key => {
           if (currentCharacterElement.value![key] === 1) {
             const againstKey = againstElementMap[key]
-            newElement[againstKey] = magicExtra
+            newElement[againstKey] = 25
           }
         })
       }
@@ -167,13 +163,13 @@ export default function setupDamageCalculation(
         [CalculationItemIds.Stability, resultValue('stability')],
         [CalculationItemIds.Accuracy, resultValue('accuracy')],
         [CalculationItemIds.PromisedAccuracyRate, promisedAccuracyRate.value],
-        [CalculationItemIds.StrongerAgainstNeutral, resultValue('stronger_against_neutral')],
-        [CalculationItemIds.StrongerAgainstFire, resultValue('stronger_against_fire') + skillElementExtra.value.fire],
-        [CalculationItemIds.StrongerAgainstWater, resultValue('stronger_against_water') + skillElementExtra.value.water],
-        [CalculationItemIds.StrongerAgainstEarth, resultValue('stronger_against_earth') + skillElementExtra.value.earth],
-        [CalculationItemIds.StrongerAgainstWind, resultValue('stronger_against_wind') + skillElementExtra.value.wind],
-        [CalculationItemIds.StrongerAgainstLight, resultValue('stronger_against_light') + skillElementExtra.value.light],
-        [CalculationItemIds.StrongerAgainstDark, resultValue('stronger_against_dark') + skillElementExtra.value.dark],
+        [CalculationItemIds.StrongerAgainstNeutral, 100 + statValue('stronger_against_neutral')],
+        [CalculationItemIds.StrongerAgainstFire, 100 + statValue('stronger_against_fire') + skillElementExtra.value.fire],
+        [CalculationItemIds.StrongerAgainstWater, 100 + statValue('stronger_against_water') + skillElementExtra.value.water],
+        [CalculationItemIds.StrongerAgainstEarth, 100 + statValue('stronger_against_earth') + skillElementExtra.value.earth],
+        [CalculationItemIds.StrongerAgainstWind, 100 + statValue('stronger_against_wind') + skillElementExtra.value.wind],
+        [CalculationItemIds.StrongerAgainstLight, 100 + statValue('stronger_against_light') + skillElementExtra.value.light],
+        [CalculationItemIds.StrongerAgainstDark, 100 + statValue('stronger_against_dark') + skillElementExtra.value.dark],
 
         [CalculationItemIds.CharacterLevel, character.value.level],
         [CalculationItemIds.SkillLevelTwoHanded, getSkillLevel(skillTwoHanded).level],
@@ -248,7 +244,7 @@ export default function setupDamageCalculation(
 
         [CalculationItemIds.SkillRealMpCost, skillProperties.value.skillRealMpCost],
         [CalculationItemIds.SkillConstant, skillProperties.value.skillConstant + statValue('skill_constant_extra')],
-        [CalculationItemIds.SkillMultiplier, skillProperties.value.skillMultiplier],
+        [CalculationItemIds.SkillMultiplier, (skillProperties.value.skillMultiplier * (100 + statValue('total_skill_multiplier')))],
 
         [CalculationItemIds.TargetPhysicalResistance, targetProperties.value.physicalResistance],
         [CalculationItemIds.TargetMagicResistance, targetProperties.value.magicResistance],
@@ -319,8 +315,6 @@ export default function setupDamageCalculation(
       const baseOrigin = container.value.getOrigin('base')
 
       const mainType = character.value?.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
-
-      console.log(baseSuffixBranch.value)
 
       return new Map([
         [CalculationContainerIds.BaseAtk, baseNone || baseOrigin === 'matk'],
@@ -411,6 +405,10 @@ function getSkillElement(chara: Character, branchItem: SkillBranchItem) {
           }
         } else if (skillDualElement === 'one_hand_sword') {
           if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword)) {
+            setElement(sub.equipment!.elementStat)
+          }
+        } else if (skillDualElement === 'magic_device') {
+          if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.MagicDevice)) {
             setElement(sub.equipment!.elementStat)
           }
         }

@@ -2,7 +2,7 @@
   <div class="cy-icon-text items-center" :class="rootClass">
     <IconBase
       :icon="icon"
-      :icon-src="iconSrc"
+      :src="iconSrc"
       :class="iconClass"
       :style="iconStyle"
     />

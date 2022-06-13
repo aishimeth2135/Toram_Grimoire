@@ -9,14 +9,15 @@ import { CalcResultOptions } from '@/lib/Calculation/Damage/Calculation/base'
 import { calcStructCritical, calcStructWithoutCritical } from './consts'
 
 export function setupCalculationExpectedResult(calculation: Ref<Calculation>, calculationOptions?: Ref<CalcResultOptions>) {
-  const stabilityRef = computed(() => calculation.value.containers.get(CalculationContainerIds.Stability)!.result())
+  const stabilityRef = computed(() => calculation.value.containers.get(CalculationContainerIds.Stability)!.getItemValue(CalculationItemIds.Stability))
+  const stabilityExpectedRef = computed(() => calculation.value.containers.get(CalculationContainerIds.Stability)!.result())
   const baseResultCritical = computed(() => calculation.value.result(calcStructCritical, calculationOptions?.value))
   const baseResultCriticalRate = computed(() => {
     const cr = calculation.value.containers.get(CalculationContainerIds.CriticalRate)!.result()
     const acContainer = calculation.value.containers.get(CalculationContainerIds.Accuracy)!
     const ac = acContainer.result()
     const stability = stabilityRef.value
-    return ((stability + 100) / 2 * ac + (stability / 2 + 100) / 2 * (100 - ac)) * cr / 1000000
+    return (stabilityExpectedRef.value * ac + (stability / 2 + 100) / 2 * (100 - ac)) * cr / 1000000
   })
   const baseResultWithoutCritical = computed(() => calculation.value.result(calcStructWithoutCritical, calculationOptions?.value))
   const baseResultWithoutCriticalRate = computed(() => {
@@ -25,7 +26,7 @@ export function setupCalculationExpectedResult(calculation: Ref<Calculation>, ca
     const ac = acContainer.result()
     const pac = acContainer.getItemValue(CalculationItemIds.PromisedAccuracyRate)
     const stability = stabilityRef.value
-    return ((stability + 100) / 2 * ac + (stability / 2 + 100) / 2 * Math.max(0, pac - ac)) * (100 - cr) / 1000000
+    return (stabilityExpectedRef.value * ac + (stability / 2 + 100) / 2 * Math.max(0, pac - ac)) * (100 - cr) / 1000000
   })
   const expectedResultCritical = computed(() => baseResultCritical.value * baseResultCriticalRate.value)
   const expectedResultWithoutCritical = computed(() => baseResultWithoutCritical.value * baseResultWithoutCriticalRate.value)

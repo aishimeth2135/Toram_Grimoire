@@ -39,6 +39,10 @@ function getSkillRange(character: Character | null, basicContainer: DisplayDataC
   }
   const skillRange = basicContainer.getValue('range')
 
+  if (skillRange === 'no_limit') {
+    return 100
+  }
+
   let rangeValue = basicContainer.getOrigin('range')
   const rangeValueWeaponMap = new Map([
     ['magic_device', EquipmentTypes.MagicDevice],
