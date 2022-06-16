@@ -5,7 +5,7 @@ import { StatComputed } from '@/lib/Character/Stat'
 
 import { SkillBranch, SkillEffect, SkillEffectAttrs } from '../Skill'
 import { SkillBranchItem, SkillEffectItem, SkillEffectItemHistory } from './index'
-import type { SkillEffectItemBase, EquipmentRestriction, BranchGroupState, BranchStackState } from './index'
+import { SkillEffectItemBase, EquipmentRestrictions, BranchGroupState, BranchStackState } from './index'
 import { BRANCH_PROPS_DEFAULT_VALUE, EQUIPMENT_TYPE_MAIN_ORDER, EQUIPMENT_TYPE_SUB_ORDER, EQUIPMENT_TYPE_BODY_ORDER } from './consts'
 import { SkillBranchNames } from '../Skill/enums'
 
@@ -102,23 +102,19 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchIte
 }
 
 /**
- * Convert equipment data of skill to array of EquipmentRestriction
+ * Convert equipment data of skill to array of EquipmentRestrictions
  * @param main - id of skill data of main weapon
  * @param sub - id of skill data of sub weapon
  * @param body - id of skill data of body armor
  * @param operator - 1: and, 0: or
- * @param dualSwordRegress - if true, it will create EquipmentRestriction for dual-sword when main is one-hand-sword
+ * @param dualSwordRegress - if true, it will create EquipmentRestrictions for dual-sword when main is one-hand-sword
  */
-function convertEffectEquipment(main: number, sub: number, body: number, operator: 0 | 1, dualSwordRegress: boolean = false): EquipmentRestriction[] {
+function convertEffectEquipment(main: number, sub: number, body: number, operator: 0 | 1, dualSwordRegress: boolean = false): EquipmentRestrictions[] {
   if (main === -1 && sub === -1 && body === -1) {
-    return [{
-      main: null,
-      sub: null,
-      body: null,
-    }]
+    return [new EquipmentRestrictions()]
   }
-  const results: Map<string, EquipmentRestriction> = new Map()
-  const appendResult = (data: EquipmentRestriction) => {
+  const results: Map<string, EquipmentRestrictions> = new Map()
+  const appendResult = (data: EquipmentRestrictions) => {
     const list = [data.main, data.sub, data.body]
     if (list.every(value => value === null)) {
       return
@@ -127,41 +123,33 @@ function convertEffectEquipment(main: number, sub: number, body: number, operato
     results.set(key, data)
   }
 
-  const mainData = {
+  const mainData = new EquipmentRestrictions({
     main: main === -1 ? null : EQUIPMENT_TYPE_MAIN_ORDER[main],
-    sub: null,
-    body: null,
-  }
+  })
   if (dualSwordRegress && EQUIPMENT_TYPE_MAIN_ORDER[main] === EquipmentTypes.OneHandSword && operator === 0) {
-    appendResult({
+    appendResult(new EquipmentRestrictions({
       main: EquipmentTypes.DualSword,
-      sub: null,
-      body: null,
-    })
+    }))
   }
-  const firstResult: EquipmentRestriction = mainData
+  const firstResult: EquipmentRestrictions = mainData
   appendResult(mainData)
 
   const subItem = sub === -1 ? null : EQUIPMENT_TYPE_SUB_ORDER[sub]
   if (operator === 1) {
     firstResult.sub = subItem
   } else {
-    appendResult({
-      main: null,
+    appendResult(new EquipmentRestrictions({
       sub: subItem,
-      body: null,
-    })
+    }))
   }
 
   const bodyItem = body === -1 ? null : EQUIPMENT_TYPE_BODY_ORDER[body]
   if (operator === 1) {
     firstResult.body = bodyItem
   } else {
-    appendResult({
-      main: null,
-      sub: null,
+    appendResult(new EquipmentRestrictions({
       body: bodyItem,
-    })
+    }))
   }
 
   return Array.from(results.values())

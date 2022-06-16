@@ -461,7 +461,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       }
       return {
         valid: allSkillResultStates.value.some(state => state.skill === targetSkill && state.results.length > 0),
-        level: currentSkillBuild.value.getSkillState(targetSkill).level,
+        level: currentSkillBuild.value.getSkillLevel(targetSkill),
       }
     }
 

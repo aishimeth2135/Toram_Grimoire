@@ -103,7 +103,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useDatasStore } from '@/stores/app/datas'
 
-import { EquipmentRestriction, SkillBranchItem, SkillItem } from '@/lib/Skill/SkillComputingContainer'
+import { EquipmentRestrictions, SkillBranchItem, SkillItem } from '@/lib/Skill/SkillComputingContainer'
 import { Skill, SkillRoot } from '@/lib/Skill/Skill'
 
 import ToggleService from '@/setup/ToggleService'
@@ -118,12 +118,12 @@ import { setupSkillTag } from './setup'
 
 interface Props {
   skillItem: SkillItem;
-  selectedEquipment: EquipmentRestriction;
+  selectedEquipment: EquipmentRestrictions;
 }
 
 interface Emits {
   (evt: 'set-current-skill', skill: Skill): void;
-  (event: 'update:selected-equipment', value: EquipmentRestriction): void;
+  (event: 'update:selected-equipment', value: EquipmentRestrictions): void;
 }
 
 const props = defineProps<Props>()

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center justify-end py-1 sticky top-0">
+    <div class="flex items-center justify-end py-1">
       <div class="flex mr-auto">
         <cy-button-circle
           icon="mdi:arrange-send-to-back"

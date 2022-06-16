@@ -1,24 +1,28 @@
 <template>
   <AppLayoutMain>
     <div class="w-full overflow-x-auto py-6">
-      <component :is="currentTab" />
+      <CharacterStats v-if="mainContents.characterStats" />
+      <CharacterDamage v-else-if="mainContents.damage" />
+      <component :is="currentTab" v-else />
     </div>
     <AppLayoutBottom>
       <template #main-end>
         <div class="flex items-center space-x-2">
           <cy-button-circle
-            :selected="tabs.characterStats"
+            :selected="mainContents.characterStats"
             icon="bx-bxs-user-detail"
             color="bright"
             float
-            @click="(toggle('tabs/characterStats', true, false), toggle('sideContents/tabs', false))"
+            toggle
+            @click="(toggle('mainContents/characterStats', null, false), toggle('sideContents/tabs', false))"
           />
           <cy-button-circle
-            :selected="tabs.damage"
+            :selected="mainContents.damage"
             icon="ic:outline-calculate"
             color="orange"
             float
-            @click="(toggle('tabs/damage', true, false), toggle('sideContents/tabs', false))"
+            toggle
+            @click="(toggle('mainContents/damage', null, false), toggle('sideContents/tabs', false))"
           />
           <cy-button-circle
             :selected="sideContents.tabs"
@@ -48,7 +52,7 @@
                 v-for="content in tabDatas"
                 :key="content.id"
                 :selected="tabs[content.id]"
-                @click="toggle(`tabs/${content.id}`, true, false), toggle('sideContents/tabs', false)"
+                @click="toggle(`tabs/${content.id}`, true, false), toggle('sideContents/tabs', false), toggle('mainContents', false)"
               >
                 <cy-icon-text :icon="content.icon">
                   {{ content.text }}
@@ -133,11 +137,10 @@ import { CharacterSimulatorInjectionKey } from './injection-keys'
 import { setupCharacterFoodStore, setupCharacterStore, TabIds } from './setup'
 
 const { t } = useI18n()
-const { modals, tabs, sideContents, toggle } = ToggleService({
+const { modals, mainContents, tabs, sideContents, toggle } = ToggleService({
   modals: ['browseEquipment', 'appendEquipments', 'createCustomEquipment'] as const,
+  mainContents: ['characterStats', 'damage'] as const,
   tabs: [
-    TabIds.CharacterStats,
-    TabIds.Damage,
     TabIds.Basic,
     { name: TabIds.EquipmentFields, default: true },
     TabIds.Equipments,
@@ -200,17 +203,11 @@ const tabDatas = computed(() => {
 })
 
 const currentTab = computed(() => {
-  if (tabs[TabIds.CharacterStats]) {
-    return CharacterStats
-  }
   if (tabs[TabIds.EquipmentFields]) {
     return CharacterEquipmentFields
   }
   if (tabs[TabIds.Skill]) {
     return CharacterSkill
-  }
-  if (tabs[TabIds.Damage]) {
-    return CharacterDamage
   }
   if (tabs[TabIds.Food]) {
     return CharacterFood

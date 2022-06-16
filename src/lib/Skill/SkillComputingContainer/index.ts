@@ -90,16 +90,33 @@ class SkillItem {
     ]
   }
 
-  findEffectItem(equipment: EquipmentRestriction) {
+  findEffectItem(equipment: EquipmentRestrictions) {
     return this.effectItems.find(effectItem => effectItem.equipmentMatch(equipment)) ?? null
   }
 }
 
-interface EquipmentRestriction {
-  main: EquipmentTypes | null;
-  sub: EquipmentTypes | null;
-  body: EquipmentTypes | null;
+interface EquipmentRestrictionsParam {
+  main?: EquipmentTypes | null;
+  sub?: EquipmentTypes | null;
+  body?: EquipmentTypes | null;
+  other?: string | null;
 }
+
+class EquipmentRestrictions {
+  main: EquipmentTypes | null
+  sub: EquipmentTypes | null
+  body: EquipmentTypes | null
+  other: string | null
+
+  constructor({ main = null, sub = null, body = null, other = null }: EquipmentRestrictionsParam = {}) {
+    this.main = main
+    this.sub = sub
+    this.body = body
+    this.other = other
+  }
+}
+
+type EquipmentRestrictionsBaseKeys = 'main' | 'sub' | 'body'
 
 interface BranchGroupState {
   readonly size: number;
@@ -132,7 +149,7 @@ abstract class SkillEffectItemBase {
 class SkillEffectItem extends SkillEffectItemBase {
   override branchItems: SkillBranchItem<SkillEffectItem>[]
 
-  readonly equipments: EquipmentRestriction[]
+  readonly equipments: EquipmentRestrictions[]
   readonly historys: SkillEffectItemHistory[]
 
   constructor(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect) {
@@ -177,7 +194,7 @@ class SkillEffectItem extends SkillEffectItemBase {
     initStackStates(this)
   }
 
-  equipmentMatch(equipment: EquipmentRestriction): boolean {
+  equipmentMatch(equipment: EquipmentRestrictions): boolean {
     const equipments = this.equipments.slice()
 
     // 雙手合持 (0-6-11)
@@ -187,11 +204,9 @@ class SkillEffectItem extends SkillEffectItemBase {
       if (skillNinjaSpirit) {
         const skillNinjaSpiritLevel = this.parent.parent.varGetters.skillLevel(skillNinjaSpirit)
         if (skillNinjaSpiritLevel === 10) {
-          equipments.push({
-            main: null,
+          equipments.push(new EquipmentRestrictions({
             sub: EquipmentTypes.NinjutsuScroll,
-            body: null,
-          })
+          }))
         }
       }
     }
@@ -522,13 +537,14 @@ export {
   SkillEffectItemHistory,
   SkillBranchItem,
   SkillBranchItemSuffix,
+  EquipmentRestrictions,
 }
 
 export type {
   SkillEffectItemBase,
   SkillBranchItemBaseChilds,
-  EquipmentRestriction,
   BranchGroupState,
   BranchStackState,
   SkillBranchItemOverwriteRecords,
+  EquipmentRestrictionsBaseKeys,
 }

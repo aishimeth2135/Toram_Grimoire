@@ -1,7 +1,5 @@
-import csv from './csv.js'
 import element from './element'
 import file from './file'
-import object from './object'
 import svg from './svg'
 
 function copyToClipboard(str: string) {
@@ -38,5 +36,5 @@ function storageAvailable(type: 'localStorage' | 'sessionStorage'): boolean {
   }
 }
 
-export { element, object, svg, csv, file, copyToClipboard, storageAvailable }
-export default { element, object, svg, csv, file, copyToClipboard, storageAvailable }
+export { element, svg, file, copyToClipboard, storageAvailable }
+export default { element, svg, file, copyToClipboard, storageAvailable }

@@ -2,20 +2,16 @@ import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer'
+import { EquipmentRestrictions } from '@/lib/Skill/SkillComputingContainer'
 
-import { EquipmentTypes } from '../CharacterEquipment/enums'
+import { EquipmentTypes, MainWeaponTypeList, SubArmorTypeList, SubWeaponTypeList } from '../CharacterEquipment/enums'
 import { StatTypes } from './enums'
 import { StatBase, Stat } from './StatBase'
 
-interface StatRestrictionItems extends EquipmentRestriction {
-  other: string | null;
-}
-
 class StatRestriction extends Stat {
-  restriction: StatRestrictionItems | null
+  restriction: EquipmentRestrictions | null
 
-  constructor(base: StatBase, type: StatTypes, value: number, restriction: StatRestrictionItems | null = null) {
+  constructor(base: StatBase, type: StatTypes, value: number, restriction: EquipmentRestrictions | null = null) {
     super(base, type, value)
     this.restriction = restriction !== null ? markRaw(restriction) : restriction
   }
@@ -61,45 +57,30 @@ class StatRestriction extends Stat {
     return showData.map(item => Grimoire.i18n.t('common.Equipment.stat-restriction.' + item))
   }
 
-  static from(stat: Stat, restriction?: StatRestrictionItems | null): StatRestriction {
+  static from(stat: Stat, restriction?: EquipmentRestrictions | null): StatRestriction {
     return new StatRestriction(stat.base, stat.type, stat.value, restriction)
   }
 
   static fromOrigin(stat: Stat, originRestriction: string): StatRestriction {
-    const itemStatRestrictionList = [
-      'event',
+    const restrictionMapping: Record<string, EquipmentTypes> = {
+      '1h_sword': EquipmentTypes.OneHandSword,
+      '2h_sword': EquipmentTypes.TwoHandSword,
+      'magic_device': EquipmentTypes.MagicDevice,
+      'dodge': EquipmentTypes.BodyDodge,
+      'defense': EquipmentTypes.BodyDefense,
+      'normal': EquipmentTypes.BodyNormal,
+    }
+    const restrictionList: string[] = [
+      '', 'event',
 
-      '1h_sword', '2h_sword',
-      'bow', 'bowgun',
-      'staff', 'magic_device',
-      'knuckle', 'halberd',
-      'katana',
-
-      'arrow', 'dagger', 'ninjutsu-scroll',
-
-      'shield',
-
-      'dodge', 'defense', 'normal',
-    ]
-    const itemStatRestrictionMappingList: ('event' | EquipmentTypes)[] = [
-      'event',
-
-      EquipmentTypes.OneHandSword, EquipmentTypes.TwoHandSword,
-      EquipmentTypes.Bow, EquipmentTypes.Bowgun,
-      EquipmentTypes.Staff, EquipmentTypes.MagicDevice,
-      EquipmentTypes.Knuckle, EquipmentTypes.Halberd,
-      EquipmentTypes.Katana,
-
-      EquipmentTypes.Arrow, EquipmentTypes.Dagger, EquipmentTypes.NinjutsuScroll,
-
-      EquipmentTypes.Shield,
+      ...MainWeaponTypeList,
+      ...SubWeaponTypeList,
+      ...SubArmorTypeList,
 
       EquipmentTypes.BodyDodge, EquipmentTypes.BodyDefense, EquipmentTypes.BodyNormal,
     ]
 
-    const newOriginRestriction: StatRestrictionItems = {
-      main: null, sub: null, body: null, other: null,
-    }
+    const newOriginRestriction = new EquipmentRestrictions()
 
     originRestriction.split(/\s*,\s*/).forEach(item => {
       let [_eqType, _restriction] = item.split('.')
@@ -108,20 +89,18 @@ class StatRestriction extends Stat {
         _eqType = 'main'
       }
       const eqType = _eqType as ('main' | 'sub' | 'body')
-      const restriction = _restriction
-      const restrictionIndex = itemStatRestrictionList.indexOf(restriction)
-      if (!['main', 'sub', 'body'].includes(eqType) || restrictionIndex === -1) {
+      const restriction = restrictionList.includes(_restriction) ? _restriction : restrictionMapping[_restriction]
+      if (!['main', 'sub', 'body'].includes(eqType) || !restriction) {
         if (restriction !== '') {
           console.warn('[CharacterEquipment.fromOrigin] unknow restriction of stat: ' + item)
         }
         return StatRestriction.from(stat, newOriginRestriction)
       }
 
-      const restrictionToType = itemStatRestrictionMappingList[restrictionIndex]
-      if (restrictionToType === 'event') {
-        newOriginRestriction.other = restrictionToType
+      if (restriction === 'event') {
+        newOriginRestriction.other = restriction
       } else {
-        newOriginRestriction[eqType] = restrictionToType
+        newOriginRestriction[eqType] = restriction as EquipmentTypes
       }
     })
 
@@ -148,12 +127,7 @@ class StatRestriction extends Stat {
     if (base) {
       const stat = base.createStat(data.type, data.value)
 
-      const restriction: StatRestrictionItems = {
-        main: null,
-        sub: null,
-        body: null,
-        other: null,
-      }
+      const restriction = new EquipmentRestrictions()
       if (data.restriction !== null) {
         const dataRestriction = data.restriction;
         (['main', 'sub', 'body'] as const).forEach(key => {
@@ -175,7 +149,7 @@ interface StatRestrictionSaveData {
   id: string;
   value: number;
   type: StatTypes;
-  restriction: StatRestrictionItems | null;
+  restriction: EquipmentRestrictions | null;
 }
 
 export default StatRestriction

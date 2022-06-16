@@ -187,10 +187,7 @@ const skillResultsStates = computed(() => {
 const { currentSkillBuild } = setupCharacterSkillBuildStore()
 const validResultStates = computed(() => {
   return skillResultsStates.value
-    .filter(state => {
-      const skillState = currentSkillBuild.value!.getSkillState(state.skill)
-      return skillState.level > 0 || skillState.starGemLevel > 0
-    })
+    .filter(state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0)
 })
 
 const elementOptions: {

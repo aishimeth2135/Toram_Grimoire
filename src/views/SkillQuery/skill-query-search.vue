@@ -52,7 +52,7 @@ interface Emits {
 const emit = defineEmits<Emits>()
 
 const datasStore = useDatasStore()
-const skillRoot: ComputedRef<SkillRoot> = computed(() => datasStore.Skill!.skillRoot)
+const skillRoot = computed(() => datasStore.Skill!.skillRoot as SkillRoot)
 
 const searchText = ref('')
 

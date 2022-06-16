@@ -39,13 +39,13 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer'
+import { EquipmentRestrictions } from '@/lib/Skill/SkillComputingContainer'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 import { IconSrc } from '@/components/cyteria/icon/setup'
 
 interface Props {
-  equipments: EquipmentRestriction[];
+  equipments: EquipmentRestrictions[];
   selected?: boolean;
 }
 

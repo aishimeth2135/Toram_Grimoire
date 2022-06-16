@@ -65,7 +65,8 @@ export class SkillBuild {
   }
 
   getSkillLevel(skill: Skill): number {
-    return this.getSkillState(skill).level
+    const state = this.getSkillState(skill)
+    return Math.max(state.level, state.starGemLevel)
   }
 
   addSkillLevel(skill: Skill, level: number) {

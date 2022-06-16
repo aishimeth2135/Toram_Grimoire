@@ -16,21 +16,6 @@ function create(width = 0, height = 0, attr: Attrs = {}) {
   return svg
 }
 
-function getSectorD(cx: number, cy: number, startR: number, endR: number, startAngle: number, endAngle: number, clockwise: number) {
-  const deg = Math.PI / 180
-  const
-    ssx = startR * Math.cos(endAngle * deg) + cx,
-    ssy = -1 * startR * Math.sin(endAngle * deg) + cy,
-    sex = startR * Math.cos(startAngle * deg) + cx,
-    sey = -1 * startR * Math.sin(startAngle * deg) + cy,
-    esx = endR * Math.cos(startAngle * deg) + cx,
-    esy = -1 * endR * Math.sin(startAngle * deg) + cy,
-    eex = endR * Math.cos(endAngle * deg) + cx,
-    eey = -1 * endR * Math.sin(endAngle * deg) + cy
-  return `M${ssx} ${ssy}A${startR} ${startR} 0 0 ${clockwise == 1 ? 0 : 1} ${sex} ${sey}L${esx} ${esy}A${endR} ${endR} 0 0 ${clockwise} ${eex} ${eey}Z`
-}
-
-
 // eslint-disable-next-line id-length
 function drawImage(path: string, x: number, y: number, width: number, height: number, attr: Attrs = {}) {
   const img = document.createElementNS('http://www.w3.org/2000/svg', 'image')
@@ -68,7 +53,6 @@ function createLinearGradient(id: string, x1: AttrValue, y1: AttrValue, x2: Attr
 export default {
   create,
   drawImage,
-  getSectorD,
   createEmpty,
   createLinearGradient,
 }
