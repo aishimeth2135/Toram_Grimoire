@@ -62,6 +62,7 @@
                   <cy-button-circle
                     icon="ic:round-format-list-bulleted"
                     small
+                    toggle
                     :selected="controls.edit"
                     @click="toggle('controls/edit')"
                   />

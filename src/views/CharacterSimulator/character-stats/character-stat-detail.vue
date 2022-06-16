@@ -200,12 +200,11 @@ const showStatDetailDatas = computed(() => {
       const isBase = id === 'base'
 
       const lines: DetailLine[] = []
-      const adds = stat.statPartsDetail.additionalValues[id].filter(add => add.value != 0)
+      const adds = stat.statPartsDetail.additionalValues[id].filter(add => add.value !== 0)
       if (adds.length !== 0) {
         const initValue = stat.statPartsDetail.initValue[id]
         let hasInit = false
         if (initValue !== 0) {
-          // TODO: confirm "value: (id.value > 0 && !isBase ? '+' : '') + vFix(initValue),"
           lines.push({
             title: t('character-simulator.character-stat-detail.init-value'),
             value: valueFix(initValue),

@@ -5,13 +5,13 @@ import Grimoire from '@/shared/Grimoire'
 
 import { SkillTree } from '@/lib/Skill/Skill'
 import { convertEffectEquipment } from '@/lib/Skill/SkillComputingContainer/utils'
-import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer'
+import { EquipmentRestrictions, EquipmentRestrictionsBaseKeys } from '@/lib/Skill/SkillComputingContainer'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 function setupEquipmentSelect(
   skillTree: Ref<SkillTree>,
-  emit: (event: 'update:selected-equipment', data: EquipmentRestriction) => void,
+  emit: (event: 'update:selected-equipment', data: EquipmentRestrictions) => void,
 ) {
   const { t } = Grimoire.i18n
 
@@ -41,17 +41,13 @@ function setupEquipmentSelect(
     }
   })
 
-  const currentEquipment: Ref<EquipmentRestriction> = ref({
-    main: null,
-    sub: null,
-    body: null,
-  })
+  const currentEquipment: Ref<EquipmentRestrictions> = ref(new EquipmentRestrictions())
 
   const submitCurrentEquipment = () => {
     emit('update:selected-equipment', currentEquipment.value)
   }
 
-  function handleToggleCurrentEquipment(key: keyof EquipmentRestriction, confirmConflict: boolean, force?: EquipmentTypes | null) {
+  function handleToggleCurrentEquipment(key: EquipmentRestrictionsBaseKeys, confirmConflict: boolean, force?: EquipmentTypes | null) {
     const list = equipmentOptionsMapping.value[key]
     const idx = list.indexOf(currentEquipment.value[key])
     force = force === undefined ? list[idx > -1 && idx !== list.length - 1 ? idx + 1 : 0] : force
@@ -61,7 +57,7 @@ function setupEquipmentSelect(
     }
   }
 
-  const toggleCurrentEquipment = (key: keyof EquipmentRestriction, force?: EquipmentTypes | null) => {
+  const toggleCurrentEquipment = (key: EquipmentRestrictionsBaseKeys, force?: EquipmentTypes | null) => {
     handleToggleCurrentEquipment(key, true, force)
     submitCurrentEquipment()
   }
@@ -134,12 +130,12 @@ function setupEquipmentSelect(
   }
 
   const equipmentOptions = computed(() => {
-    const datas: { key: keyof EquipmentRestriction; value: (EquipmentTypes | null)[] }[] = []
+    const datas: { key: EquipmentRestrictionsBaseKeys; value: (EquipmentTypes | null)[] }[] = []
     Object.entries(equipmentOptionsMapping.value).forEach(([key, value]) => {
       if (value.length === 1 && value[0] === null) {
         return
       }
-      datas.push({ key: key as keyof EquipmentRestriction, value })
+      datas.push({ key: key as EquipmentRestrictionsBaseKeys, value })
     })
     return datas
   })

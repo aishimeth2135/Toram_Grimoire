@@ -232,7 +232,7 @@ type HandleFormulaOptions = {
   toNumber?: boolean;
   /** If true, result will convert to boolean */
   toBoolean?: boolean;
-  /** If given formula is empty, it will return options.defaultValue. */
+  /** The returned value when given formula is empty. */
   defaultValue?: PureValue | null;
 }
 

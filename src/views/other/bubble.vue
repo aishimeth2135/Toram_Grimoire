@@ -67,7 +67,7 @@ export default {
   },
   mounted() {
     const colors = this.$route.params.color
-    if (colors && colors != 'random') {
+    if (colors && colors !== 'random') {
       this.colors = colors.split('+')
     }
 

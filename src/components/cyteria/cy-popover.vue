@@ -48,11 +48,13 @@ import { CSSProperties, Ref, ref, nextTick, useSlots, computed, watch } from 'vu
 interface Props {
   tag?: string;
   placement?: string;
+  autoSelect?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   tag: 'div',
   placement: 'bottom-start',
+  autoSelect: false,
 })
 
 const slots = useSlots()
@@ -120,6 +122,9 @@ const togglePopper = async (force?: boolean) => {
       return
     }
     autoUpdate(rootElement.value, wrapperElement.value, updatePosition)
+    if (props.autoSelect) {
+      wrapperElement.value.querySelector('input')?.select()
+    }
   }
 }
 

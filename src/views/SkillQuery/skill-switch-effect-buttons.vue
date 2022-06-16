@@ -17,7 +17,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import { EquipmentRestriction, SkillItem } from '@/lib/Skill/SkillComputingContainer'
+import { EquipmentRestrictions, SkillItem } from '@/lib/Skill/SkillComputingContainer'
 
 import SkillEquipmentButton from './skill/skill-equipment-button.vue'
 
@@ -26,7 +26,7 @@ interface Props {
 }
 
 interface Emits {
-  (event: 'select-equipment', value: EquipmentRestriction): void;
+  (event: 'select-equipment', value: EquipmentRestrictions): void;
 }
 
 const props = defineProps<Props>()
@@ -34,7 +34,7 @@ const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
 const allEquipments = computed(() => {
-  const result: Map<string, EquipmentRestriction> = new Map()
+  const result: Map<string, EquipmentRestrictions> = new Map()
   props.skillItem.effectItems
     .map(effect => effect.equipments).flat()
     .forEach(item => {

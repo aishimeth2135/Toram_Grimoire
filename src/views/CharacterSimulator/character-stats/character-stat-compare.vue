@@ -45,8 +45,6 @@ const comparedStatsDatas = computed(() => {
   const before = props.before.map(result => result.stats).flat(),
     after = props.after.map(result => result.stats).flat()
 
-  // const vFix = v => v.toString()
-  //    .replace(/^(-?\d+\.)(\d{3,})$/, (m, m1, m2) => m1 + m2.slice(0, 3));
   const handle = (stat: CharacterStatResultWithId, value: number, hidden: boolean) => {
     const isBoolStat = stat.origin.isBoolStat
     return {

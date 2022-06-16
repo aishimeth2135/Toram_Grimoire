@@ -119,7 +119,7 @@ import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { SkillTree } from '@/lib/Skill/Skill'
-import SkillComputingContainer, { EquipmentRestriction, SkillItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { EquipmentRestrictions, SkillItem } from '@/lib/Skill/SkillComputingContainer'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 
 import ToggleService from '@/setup/ToggleService'
@@ -135,12 +135,12 @@ interface Props {
   skillItem: SkillItem | null;
   skillTree: SkillTree;
   skillComputingContainer: SkillComputingContainer;
-  selectedEquipment: EquipmentRestriction;
+  selectedEquipment: EquipmentRestrictions;
 }
 const props = defineProps<Props>()
 
 interface Emits {
-  (evt: 'update:selected-equipment', value: EquipmentRestriction): void;
+  (evt: 'update:selected-equipment', value: EquipmentRestrictions): void;
   (evt: 'go-skill-top'): void;
 }
 const emit = defineEmits<Emits>()

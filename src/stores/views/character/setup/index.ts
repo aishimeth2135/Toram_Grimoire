@@ -5,7 +5,7 @@ import { isNumberString } from '@/shared/utils/string'
 import { computeFormula } from '@/shared/utils/data'
 
 import { Character, CharacterStatResult, CharacterStatResultVars } from '@/lib/Character/Character'
-import SkillComputingContainer, { EquipmentRestriction, SkillBranchItem, SkillBranchItemSuffix, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { EquipmentRestrictions, SkillBranchItem, SkillBranchItemSuffix, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
 import { Skill, SkillBranch } from '@/lib/Skill/Skill'
 import { CharacterBaseStatTypes, CharacterOptionalBaseStatTypes, EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
@@ -71,13 +71,7 @@ export function setupCharacterSkills(
   const isPostpone = !!postponeOptions
 
   const computingContainer: Ref<SkillComputingContainer> = ref(new SkillComputingContainer())
-  const getSkillLevel = (skill: Skill) => {
-    if (!skillBuild.value) {
-      return 0
-    }
-    const state = skillBuild.value.getSkillState(skill)
-    return Math.max(state.level, state.starGemLevel)
-  }
+  const getSkillLevel = (skill: Skill) => skillBuild.value?.getSkillLevel(skill) ?? 0
   computingContainer.value.varGetters.skillLevel = getSkillLevel
   computingContainer.value.varGetters.characterLevel = () => character.value?.level ?? 0
 
@@ -194,7 +188,7 @@ export function setupCharacterSkills(
       },
       getSkillLevel: (skillId: string) => {
         const skill = Grimoire.Skill.skillRoot.findSkillById(skillId)
-        return skill ? (skillBuild.value?.getSkillState(skill).level ?? 0) : 0
+        return skill ? getSkillLevel(skill) : 0
       },
     } as Record<string, any>
   })
@@ -216,30 +210,21 @@ export function setupCharacterSkills(
     return null
   }
 
-  const currentCharacterEquipment = computed<EquipmentRestriction>(() => {
+  const currentCharacterEquipment = computed<EquipmentRestrictions>(() => {
     if (!character.value) {
-      return {
-        main: null,
-        sub: null,
-        body: null,
-      }
+      return new EquipmentRestrictions()
     }
 
     const main = character.value.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
     const sub = character.value.equipmentField(EquipmentFieldTypes.SubWeapon).equipmentType
     const body = character.value.equipmentField(EquipmentFieldTypes.BodyArmor).equipmentType
     if (main === EquipmentTypes.OneHandSword && sub === EquipmentTypes.OneHandSword) {
-      return {
+      return new EquipmentRestrictions({
         main: EquipmentTypes.DualSword,
-        sub: null,
         body,
-      }
+      })
     }
-    return {
-      main,
-      sub,
-      body,
-    }
+    return new EquipmentRestrictions({ main, sub, body })
   })
 
   const {
@@ -603,7 +588,7 @@ export function setupCharacterStats(
           { stability: 0, atk: 0 },
         '@element': equipmentElement.value,
         '@skill': {
-          'Conversion': skill_Conversion.value ? skillBuild.value?.getSkillState(skill_Conversion.value).level ?? 0 : 0,
+          'Conversion': skill_Conversion.value ? skillBuild.value?.getSkillLevel(skill_Conversion.value) ?? 0 : 0,
         },
       },
       conditional: {

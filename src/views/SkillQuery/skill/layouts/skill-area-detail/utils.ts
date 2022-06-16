@@ -57,7 +57,7 @@ function createSectorPathD({
     a2_ex = radius * cosEnd + cx,
     a2_ey = radius * sinEnd + cy
 
-  return `M${a1_sx} ${a1_sy}A${minRadius} ${minRadius},0 0 ${clockwise == 1 ? 0 : 1},${a1_ex} ${a1_ey}L${a2_sx} ${a2_sy}A${radius} ${radius},0 0 ${clockwise},${a2_ex} ${a2_ey}Z`
+  return `M${a1_sx} ${a1_sy}A${minRadius} ${minRadius},0 0 ${clockwise === 1 ? 0 : 1},${a1_ex} ${a1_ey}L${a2_sx} ${a2_sy}A${radius} ${radius},0 0 ${clockwise},${a2_ex} ${a2_ey}Z`
 }
 
 export { createSectorPathD }

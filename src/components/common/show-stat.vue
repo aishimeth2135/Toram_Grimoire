@@ -1,24 +1,21 @@
 <template>
-  <div
+  <cy-icon-text
     v-if="type !== 'preview'"
-    class="inline-block mr-3"
+    icon="mdi-leaf"
+    is-item
+    :text-color="negativeValue ? 'red' : 'dark'"
     :class="{ 'opacity-60': invalid }"
+    class="mr-3"
   >
-    <cy-icon-text
-      icon="mdi-leaf"
-      is-item
-      :text-color="negativeValue ? 'red' : 'dark'"
+    <span
+      v-for="text in restrictionTexts"
+      :key="text"
+      class="text-water-blue text-sm mr-1"
     >
-      <span
-        v-for="text in restrictionTexts"
-        :key="text"
-        class="text-water-blue text-sm mr-1"
-      >
-        {{ text }}
-      </span>
-      <span>{{ stat.show() }}</span>
-    </cy-icon-text>
-  </div>
+      {{ text }}
+    </span>
+    <span>{{ stat.show() }}</span>
+  </cy-icon-text>
   <div v-else class="w-full text-sm">
     <span
       v-for="text in restrictionTexts"

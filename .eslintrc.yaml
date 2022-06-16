@@ -51,6 +51,7 @@ rules:
   semi-spacing: error
   space-infix-ops: error
   no-var: error
+  eqeqeq: error
   eol-last:
     - error
     - always

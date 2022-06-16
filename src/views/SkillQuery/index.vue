@@ -87,7 +87,7 @@ import { useRoute, useRouter } from 'vue-router'
 import Grimoire from '@/shared/Grimoire'
 
 import { SkillRoot, SkillTree, SkillTreeCategory, Skill } from '@/lib/Skill/Skill'
-import { EquipmentRestriction } from '@/lib/Skill/SkillComputingContainer'
+import { EquipmentRestrictions } from '@/lib/Skill/SkillComputingContainer'
 
 import ToggleService from '@/setup/ToggleService'
 
@@ -193,11 +193,7 @@ if (route.params.skillId) {
   })
 }
 
-const currentEquipment: Ref<EquipmentRestriction> = ref({
-  main: null,
-  sub: null,
-  body: null,
-})
+const currentEquipment: Ref<EquipmentRestrictions> = ref(new EquipmentRestrictions())
 
 const {
   computingContainer,

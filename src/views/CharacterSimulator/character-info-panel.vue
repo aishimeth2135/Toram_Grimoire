@@ -142,7 +142,6 @@ interface Emits {
   (evt: 'open-tab', tab: TabIds): void;
 }
 
-
 const emit = defineEmits<Emits>()
 
 const { t } = useI18n()

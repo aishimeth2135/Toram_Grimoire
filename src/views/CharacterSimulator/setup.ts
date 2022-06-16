@@ -47,8 +47,6 @@ export function setupCharacterFoodStore() {
 }
 
 export const enum TabIds {
-  CharacterStats = 'characterStats',
-  Damage = 'damage',
   Basic = 'basic',
   EquipmentFields = 'equipmentFields',
   Equipments = 'equipments',
