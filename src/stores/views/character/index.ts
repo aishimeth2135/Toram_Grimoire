@@ -34,6 +34,7 @@ interface CharacterStoreCharacterStateSaveData {
 }
 
 interface CharacterSimulatorSaveData {
+  version: string;
   characters: CharacterSaveData[];
   equipments: EquipmentSaveDataWithIndex[];
   skillBuilds: SkillBuildSaveData[];
@@ -219,6 +220,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     }))
 
     return {
+      version: 'v2',
       characters: charactersData,
       equipments: equipmentsData,
       skillBuilds: skillBuildsData,
@@ -320,6 +322,7 @@ export const useCharacterStore = defineStore('view-character', () => {
         }
 
         loadCharacterSimulatorSaveData({
+          version: '',
           characters: characterDatas,
           equipments: equipmentDatas,
           skillBuilds: skillBuildsV2Data ?? [],

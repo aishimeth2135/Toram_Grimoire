@@ -31,7 +31,7 @@
       </template>
     </div>
     <div class="px-1">
-      <slot></slot>
+      <slot />
       <div v-if="hasArea">
         <div>
           <cy-button-toggle
@@ -48,7 +48,7 @@
       </div>
     </div>
     <div>
-      <slot name="extra"></slot>
+      <slot name="extra-columns-start" />
       <SkillBranchExtraColumn
         v-for="suffixData in extraColumns"
         :key="suffixData.id"

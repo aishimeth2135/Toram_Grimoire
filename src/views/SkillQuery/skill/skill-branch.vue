@@ -4,7 +4,7 @@
     :class="rootClass"
     class="skill-branch-wrapper"
   >
-    <div :class="{ 'sub-content-active': contents.sub }">
+    <div class="skill-branch-content" :class="{ 'sub-content-active': contents.sub }">
       <div class="relative pt-1">
         <component
           :is="currentComponent"
@@ -263,8 +263,12 @@ const subButtonAvailable = computed(() => {
   @apply absolute top-0 -right-2;
 }
 
-.sub-content-active {
-  @apply border-l-2 border-light-3 pl-3 pb-2;
+.skill-branch-content {
+  @apply border-l-0 border-light-3 pl-0 duration-200;
+  transition-property: border-left-width, padding-left;
+  &.sub-content-active {
+    @apply border-l-2 pl-3 pb-2;
+  }
 }
 .group-end {
   @apply border-t-1 border-light-3 relative;
