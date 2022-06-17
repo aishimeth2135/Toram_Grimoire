@@ -9,7 +9,17 @@
       :extra-columns="extraSuffixBranchDatas"
     >
       <SkillDamageFormula :container="container" />
-      <template #extra>
+      <template #extra-columns-start>
+        <SkillBranchExtraColumn
+          v-if="container.get('dual_element')"
+          icon="bx-bx-circle"
+          :title="t('skill-query.branch.global-suffix.extra.condition-default-value')"
+        >
+          <div class="py-0 5 pl-1 flex items-center">
+            <div class="text-light-2 mr-2">{{ t('skill-query.branch.dual-element-title') }}</div>
+            <div class="text-blue-purple">{{ container.get('dual_element') }}</div>
+          </div>
+        </SkillBranchExtraColumn>
         <SkillBranchExtraColumn
           v-if="container.get('ailment_name')"
           icon="ri-plant-line"

@@ -11,8 +11,10 @@
       </div>
     </legend>
     <div class="mb-1 flex items-center flex-wrap">
-      <div v-if="text" class="py-0.5 pl-1" v-html="text" />
-      <SkillBranchStats v-else-if="statContainers" :stat-containers="statContainers" />
+      <slot>
+        <div v-if="text" class="py-0.5 pl-1" v-html="text" />
+        <SkillBranchStats v-else-if="statContainers" :stat-containers="statContainers" />
+      </slot>
     </div>
   </fieldset>
 </template>

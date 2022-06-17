@@ -110,7 +110,7 @@ export default function setupDamageCalculation(
     })
 
     const statValue = (baseId: string) => characterPureStats.value.find(stat => stat.baseId === baseId)?.value ?? 0
-    const resultValue = (id: string) => statResults.value!.find(result => result.id === id)?.resultValue ?? 0
+    const resultValue = (id: string) => statResults.value.find(result => result.id === id)?.resultValue ?? 0
 
     const currentCharacterElement = computed(() => character.value ? getCharacterElement(character.value) : null)
     const skillElementExtra = computed(() => {

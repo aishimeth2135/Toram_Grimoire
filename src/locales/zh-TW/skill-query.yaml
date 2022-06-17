@@ -28,6 +28,7 @@ branch:
   ailment-title: 命中成功後
   apply-element: 套用{element}。
   unknow-variable: 未知參數
+  dual-element-title: 雙重屬性
   formula-replaced-text:
     BSTR: 基礎STR
     BINT: 基礎INT
@@ -126,6 +127,9 @@ branch:
       one_hand_sword: 單手劍屬性
       arrow: 箭矢屬性
       against: 有利屬性
+    dual_element:
+      one_hand_sword: 單手劍
+      arrow: 箭矢
     judgment:
       common: 每下傷害共用判定
       separate: 每下傷害分開判定

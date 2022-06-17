@@ -83,18 +83,17 @@ import { useI18n } from 'vue-i18n'
 import { SkillResult } from '@/stores/views/character/setup'
 
 import { markText } from '@/shared/utils/view'
-import { isNumberString } from '@/shared/utils/string'
 
 import { CalcItem } from '@/lib/Calculation/Damage/Calculation'
 import { ContainerTypes } from '@/lib/Calculation/Damage/Calculation/enums'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import { Stat } from '@/lib/Character/Stat'
 
 import ToggleService from '@/setup/ToggleService'
 
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'
 
 import { setupCharacterStore } from '../setup'
+import { setupSkilResultExtraStats, setupStoreDamageCalculationExpectedResult } from './setup'
 
 
 interface Props {
@@ -109,38 +108,13 @@ const { contents, toggle } = ToggleService({
   contents: ['detail'] as const,
 })
 
-const extraStats = computed(() => {
-  const stats: Stat[] = []
-  props.result.suffixContainers.forEach(sufContainer => {
-    if (!store.getDamageCalculationSkillBranchState(sufContainer.branchItem.default)?.enabled) {
-      return
-    }
-    sufContainer.statContainers.forEach(statContainer => {
-      if (isNumberString(statContainer.value)) {
-        stats.push(statContainer.stat.toStat(parseFloat(statContainer.value)))
-      }
-    })
-  })
-  return stats
-})
+const result = computed(() => props.result)
 
-const { valid, calculation, expectedResult } = store.setupDamageCalculationExpectedResult(
-  computed(() => props.result),
-  extraStats,
-  computed(() => store.targetProperties),
-  computed(() => store.calculationOptions),
-)
+const { extraStats } = setupSkilResultExtraStats(result)
 
-const { expectedResult: armorBreakExpectedResult } = store.setupDamageCalculationExpectedResult(
-  computed(() => props.result),
-  extraStats,
-  computed(() => ({
-    ...store.targetProperties,
-    def: Math.floor(store.targetProperties.def / 2),
-    mdef: Math.floor(store.targetProperties.mdef / 2),
-  })),
-  computed(() => store.calculationOptions),
-)
+const { valid, calculation, expectedResult } = setupStoreDamageCalculationExpectedResult(result, extraStats)
+
+const { expectedResult: armorBreakExpectedResult } = setupStoreDamageCalculationExpectedResult(result, extraStats, { armorBreak: true })
 
 const frequencyVisible = computed(() => {
   return props.result.container.branchItem.prop('title') === 'each'
