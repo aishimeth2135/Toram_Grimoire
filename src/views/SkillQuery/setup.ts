@@ -21,6 +21,8 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
     return tag || null
   }
 
+  const getTagText = (el: HTMLElement) => el.getAttribute('data-tag') || el.innerText
+
   const emptyTag = new Tag('0.0')
   emptyTag.appendFrame('caption', t('skill-query.tag.no-data-tips'))
   const appendTag = (tagName: string): void => {
@@ -41,9 +43,9 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
     if (tagContent.value && tagContent.value.$el && tagContent.value.$el.querySelectorAll) {
       const click = function (this: HTMLElement, error: Event) {
         error.stopPropagation()
-        appendTag(this.innerText)
+        appendTag(getTagText(this))
       }
-      tagContent.value.$el.querySelectorAll('.' + TAG_BUTTON_CLASS_NAME)
+      tagContent.value.$el.querySelectorAll(`.${TAG_BUTTON_CLASS_NAME}[data-tag]`)
         .forEach(el => {
           if (el.getAttribute('data-tag-listener-flag') === '1') {
             return
@@ -56,7 +58,7 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
 
   const tagButtonHover = (el: HTMLElement) => {
     clearTag()
-    appendTag(el.innerText)
+    appendTag(getTagText(el))
   }
 
   return {

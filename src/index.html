@@ -32,10 +32,10 @@
   <script id="app--error--script">
     (function() {
       function showMessage(error, extraMessage) {
-        var message = error ? error.message : 'unknown error';
+        var message = error ? error.message : 'unknown error...';
         var el = document.getElementById('app--error');
-        console.log('Something wrong...')
-        console.log(message);
+        console.warn('Something wrong...')
+        console.info({ error: error });
         if (el) {
           if (el.getAttribute('data-flag') === '0') {
             el.setAttribute('data-flag', '1');
@@ -62,8 +62,8 @@
         showMessage(error);
       };
       var scripts = document.head.getElementsByTagName('script');
-      var scriptHandler = function(error) {
-        showMessage(error, 'The script ' + oError.target.src + " didn't load correctly.");
+      var scriptHandler = function(_error) {
+        showMessage(error, 'The script ' + _error.target.src + " didn't load correctly.");
       };
       for (var i=0; i<scripts.length; ++i) {
         scripts[i].onerror = scriptHandler;

@@ -177,6 +177,9 @@ export function setupCharacterSkills(
         'arrow': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow) ?
           { stability: subField!.stability, atk: subField!.atk } :
           { stability: 0, atk: 0 },
+        'ninjutsu_scroll': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.NinjutsuScroll) ?
+          { stability: subField!.stability, atk: subField!.atk } :
+          { stability: 0, atk: 0 },
         'stat': (id: string) => {
           const getter = postponeOptions?.getCharacterStatValue
           return getter ? getter(id) : 0

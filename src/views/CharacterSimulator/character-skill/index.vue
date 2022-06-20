@@ -23,16 +23,20 @@
       <cy-button-action :selected="tabs.passive" icon="uil:books" @click="toggle('tabs/passive', true, false)">
         {{ t('character-simulator.skill-build.passive-skills') }}
       </cy-button-action>
-      <cy-button-icon
-        icon="ic:round-settings"
-        :selected="contents.options"
-        @click="toggle('contents/options')"
-      />
-    </div>
-    <div v-if="contents.options" class="border-1 border-light-2 rounded-md mt-2 mb-4 p-3 bg-white">
-      <cy-button-check v-model:selected="characterStore.setupOptions.skillDisplayStatsOnly">
-        {{ t('character-simulator.skill-build.display-stats-only') }}
-      </cy-button-check>
+      <cy-popover class="flex">
+        <cy-button-icon
+          icon="ic:round-settings"
+          :selected="contents.options"
+          @click="toggle('contents/options')"
+        />
+        <template #popper>
+          <div class="p-3">
+            <cy-button-check v-model:selected="characterStore.setupOptions.skillDisplayStatsOnly">
+              {{ t('character-simulator.skill-build.display-stats-only') }}
+            </cy-button-check>
+          </div>
+        </template>
+      </cy-popover>
     </div>
     <div class="pt-3 overflow-x-auto">
       <div style="min-width: 25rem">
