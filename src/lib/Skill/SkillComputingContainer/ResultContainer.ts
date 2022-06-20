@@ -33,6 +33,7 @@ class ResultContainer extends ResultContainerBase {
   suffix: string
 
   private _result: string
+  private displayResult: string | null
 
   constructor(branch: SkillBranchItemBaseChilds, key: string, origin: string, value: string, suffix: string = '') {
     super()
@@ -41,10 +42,15 @@ class ResultContainer extends ResultContainerBase {
     this.origin = origin
     this.value = value
     this._result = value.toString()
+    this.displayResult = null
     this.suffix = suffix
   }
 
   override get result() {
+    return this.displayResult ?? this._result
+  }
+
+  get valueResult() {
     return this._result
   }
 
@@ -54,10 +60,13 @@ class ResultContainer extends ResultContainerBase {
    */
   override handle(handler: ResultHandler) {
     this._result = handler(this._result, this.suffix)
+    if (this.displayResult !== null) {
+      this.displayResult = handler(this.displayResult, this.suffix)
+    }
   }
 
   initDisplayValue(value: string) {
-    this._result = value
+    this.displayResult = value
   }
 }
 

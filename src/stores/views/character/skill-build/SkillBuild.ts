@@ -47,20 +47,19 @@ export class SkillBuild {
 
   getSkillState(skill: Skill): SkillState {
     if (!this._skillStatesMap.has(skill)) {
-      let level = 0
-
-      // 忍術表中技能的等級跟隨「忍術」
-      if (skill.skillId.startsWith('5-2-')) {
-        level = this.getSkillState(skill.parent.parent.parent.findSkillById('4-5-0')!).level
-      }
-
       this._skillStatesMap.set(skill, {
-        level,
+        level: 0,
         starGemLevel: 0,
         enabled: skill.type === SkillTypes.Passive,
       })
     }
     const state = this._skillStatesMap.get(skill)!
+
+    // 忍術表中技能的等級跟隨「忍術」
+    if (skill.skillId.startsWith('5-2-')) {
+      state.level = this.getSkillState(skill.parent.parent.parent.findSkillById('4-5-0')!).level
+    }
+
     return state
   }
 

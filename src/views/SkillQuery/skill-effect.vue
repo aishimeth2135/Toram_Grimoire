@@ -47,7 +47,7 @@
   <cy-hover-float
     ref="tagHoverFloatComponent"
     :element="skillBranchesElement"
-    target=".click-button--tag"
+    :target="`.${TAG_BUTTON_CLASS_NAME}`"
     custom
     position-mode="h-middle"
     @element-hover="tagButtonHover"
@@ -115,6 +115,7 @@ import SkillTitle from './skill/skill-title.vue'
 import SkillSwitchEffectButtons from './skill-switch-effect-buttons.vue'
 
 import { setupSkillTag } from './setup'
+import { TAG_BUTTON_CLASS_NAME } from './utils'
 
 interface Props {
   skillItem: SkillItem;

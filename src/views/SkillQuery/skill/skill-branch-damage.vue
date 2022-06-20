@@ -16,7 +16,7 @@
           :title="t('skill-query.branch.global-suffix.extra.condition-default-value')"
         >
           <div class="py-0 5 pl-1 flex items-center">
-            <div class="text-light-2 mr-2">{{ t('skill-query.branch.dual-element-title') }}</div>
+            <div class="mr-2" :class="TAG_BUTTON_CLASS_NAME">{{ t('skill-query.branch.dual-element-title') }}</div>
             <div class="text-blue-purple">{{ container.get('dual_element') }}</div>
           </div>
         </SkillBranchExtraColumn>
@@ -49,7 +49,7 @@ import DisplayDataContainer from './branch-handlers/utils/DisplayDataContainer'
 import { ExtraSuffixBranchData } from './setup'
 import { NormalLayoutSubContent } from './layouts/setup'
 
-const ELEMENT_ICON_MAPPING = {
+const ELEMENT_ICON_MAPPING: Record<string, string> = {
   'neutral': 'bx-bx-circle',
   'fire': 'fa-brands:gripfire',
   'water': 'ion-water',
@@ -79,14 +79,15 @@ const nameProps = computed(() => {
 })
 
 const getAilmentText = (dataContainer: DisplayDataContainer) => {
+  const text = dataContainer.get('ailment_name')
   return t('skill-query.branch.damage.ailment-caption', {
     chance: dataContainer.get('ailment_chance'),
-    name: `<span class="${TAG_BUTTON_CLASS_NAME}">${dataContainer.get('ailment_name')}</span>`,
+    name: `<span class="${TAG_BUTTON_CLASS_NAME}">${text}</span>`,
   })
 }
 
 const getElementIcon = (value: string) => {
-  return ELEMENT_ICON_MAPPING[value as keyof typeof ELEMENT_ICON_MAPPING] || 'bx-bx-circle'
+  return ELEMENT_ICON_MAPPING[value] || 'bx-bx-circle'
 }
 
 const getElementCaption = (value: string) => {
