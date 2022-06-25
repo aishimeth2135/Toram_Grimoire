@@ -445,8 +445,8 @@ export const useCharacterStore = defineStore('view-character', () => {
   })
 
   const calculationOptions: Ref<CalculationOptions> = ref({
-    proration: 150,
-    comboMultiplier: 250,
+    proration: 250,
+    comboMultiplier: 150,
     armorBreakDisplay: false,
   })
 
