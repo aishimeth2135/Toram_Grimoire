@@ -58,12 +58,12 @@
           console.log(extraMessage);
         }
       }
-      window.onerror = function(message, source, lineno, colno, error) {
-        showMessage(error);
+      window.onerror = function(message, source, lineno, colno, _error) {
+        showMessage(_error);
       };
       var scripts = document.head.getElementsByTagName('script');
       var scriptHandler = function(_error) {
-        showMessage(error, 'The script ' + _error.target.src + " didn't load correctly.");
+        showMessage(_error, 'The script ' + _error.target.src + " didn't load correctly.");
       };
       for (var i=0; i<scripts.length; ++i) {
         scripts[i].onerror = scriptHandler;

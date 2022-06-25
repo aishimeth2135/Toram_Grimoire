@@ -3,6 +3,7 @@
     <div class="w-full overflow-x-auto py-6">
       <CharacterStats v-if="mainContents.characterStats" />
       <CharacterDamage v-else-if="mainContents.damage" />
+      <CharacterComboView v-else-if="mainContents.combo" />
       <component :is="currentTab" v-else />
     </div>
     <AppLayoutBottom>
@@ -24,6 +25,14 @@
             toggle
             @click="(toggle('mainContents/damage', null, false), toggle('sideContents/tabs', false))"
           />
+          <!-- <cy-button-circle
+            :selected="mainContents.combo"
+            icon="mdi-selection-ellipse-arrow-inside"
+            color="green"
+            float
+            toggle
+            @click="(toggle('mainContents/combo', null, false), toggle('sideContents/tabs', false))"
+          /> -->
           <cy-button-circle
             :selected="sideContents.tabs"
             icon="ic:round-menu"
@@ -91,6 +100,11 @@
       :equipment="editStatCurrentEquipment"
       @close="editStatCurrentEquipment = null"
     />
+    <CharacterComboSelectSkill
+      :visible="!!currentComboSkill"
+      @submit="setComboSkill"
+      @close="currentComboSkill = null"
+    />
   </AppLayoutMain>
 </template>
 
@@ -109,6 +123,8 @@ import { useMainStore } from '@/stores/app/main'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { EquipmentField } from '@/lib/Character/Character'
+import { CharacterComboSkill } from '@/lib/Character/CharacterCombo'
+import { Skill } from '@/lib/Skill/Skill'
 
 import ToggleService from '@/setup/ToggleService'
 import AutoSave from '@/setup/AutoSave'
@@ -132,14 +148,20 @@ import CharacterEquipmentCustomCreate from './character-equipment/character-equi
 import CharacterSave from './character-save/index.vue'
 import CharacterInfoPanel from './character-info-panel.vue'
 import CharacterEquipments from './character-equipments/index.vue'
+import CharacterComboSelectSkill from './character-combo/character-combo-select-skill.vue'
+import CharacterComboView from './character-combo/index.vue'
 
 import { CharacterSimulatorInjectionKey } from './injection-keys'
 import { setupCharacterFoodStore, setupCharacterStore, TabIds } from './setup'
 
 const { t } = useI18n()
 const { modals, mainContents, tabs, sideContents, toggle } = ToggleService({
-  modals: ['browseEquipment', 'appendEquipments', 'createCustomEquipment'] as const,
-  mainContents: ['characterStats', 'damage'] as const,
+  modals: [
+    'browseEquipment',
+    'appendEquipments',
+    'createCustomEquipment',
+  ] as const,
+  mainContents: ['characterStats', 'damage', 'combo'] as const,
   tabs: [
     TabIds.Basic,
     { name: TabIds.EquipmentFields, default: true },
@@ -230,6 +252,7 @@ const editCrystalCurrentEquipment: Ref<CharacterEquipment | null> = ref(null)
 const editBasicCurrentEquipment: Ref<CharacterEquipment | null> = ref(null)
 const editStatCurrentEquipment: Ref<CharacterEquipment | null> = ref(null)
 const editEquipmentCurrentEquipmentField: Ref<EquipmentField | null> = ref(null)
+const currentComboSkill: Ref<CharacterComboSkill | null> = ref(null)
 
 const editCrystal = (equip: CharacterEquipment) => {
   editCrystalCurrentEquipment.value = equip
@@ -244,6 +267,17 @@ const editEquipmentFieldEquipment = (field: EquipmentField) => {
   toggle('modals/browseEquipment', true)
   editEquipmentCurrentEquipmentField.value = field
 }
+const selectComboSkill = (comboSkill: CharacterComboSkill) => {
+  currentComboSkill.value = comboSkill
+}
+
+const setComboSkill = (skill: Skill) => {
+  if (!currentComboSkill.value) {
+    return
+  }
+  currentComboSkill.value.setSkill(skill)
+  currentComboSkill.value = null
+}
 
 provide(CharacterSimulatorInjectionKey, {
   editCrystal,
@@ -252,6 +286,7 @@ provide(CharacterSimulatorInjectionKey, {
   editEquipmentFieldEquipment,
   appendEquipments: () => toggle('modals/appendEquipments', true),
   createCustomEquipment: () => toggle('modals/createCustomEquipment', true),
+  selectComboSkill,
 })
 
 AutoSave({

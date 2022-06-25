@@ -117,7 +117,7 @@ const { valid, calculation, expectedResult } = setupStoreDamageCalculationExpect
 const { expectedResult: armorBreakExpectedResult } = setupStoreDamageCalculationExpectedResult(result, extraStats, { armorBreak: true })
 
 const frequencyVisible = computed(() => {
-  return props.result.container.branchItem.prop('title') === 'each'
+  return valid.value && props.result.container.branchItem.prop('title') === 'each'
 })
 
 const calculationItems = computed(() => {
@@ -151,4 +151,6 @@ const statExtraContainers = computed(() => {
   return props.result.suffixContainers
     .filter(suf => suf.branchItem.is(SkillBranchNames.Extra) && suf.statContainers.length > 0)
 })
+
+defineExpose({ valid, calculation, expectedResult })
 </script>

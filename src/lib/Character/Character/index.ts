@@ -11,6 +11,7 @@ import { StatTypes } from  '@/lib/Character/Stat/enums'
 
 import CharacterSystem from '../index'
 import { EquipmentFieldTypes, CharacterBaseStatTypes, CharacterOptionalBaseStatTypes } from './enums'
+import { CharacterComboBuild, CharacterComboBuildSaveData } from '../CharacterCombo/CharacterComboBuild'
 
 type CharacterBaseStatValidType = CharacterBaseStatTypes | CharacterOptionalBaseStatTypes
 
@@ -29,6 +30,7 @@ class Character {
   instanceId: number
   name: string
   level: number
+  comboBuild: CharacterComboBuild
 
   readonly equipmentFields: readonly [
     EquipmentField,
@@ -69,6 +71,8 @@ class Character {
       new EquipmentField(this, EquipmentFieldTypes.Avatar, 1),
       new EquipmentField(this, EquipmentFieldTypes.Avatar, 2),
     ] as const
+
+    this.comboBuild = new CharacterComboBuild()
   }
 
   get origin(): Character {
@@ -218,6 +222,8 @@ class Character {
       }
     }).filter(field => field !== null) as CharacterSaveDataField[]
 
+    data.combo = this.comboBuild.save()
+
     return data
   }
 
@@ -262,10 +268,13 @@ class Character {
               find.equipment = eq
             }
           } else {
-            console.warn(`[Character.load] Can not find equipment field of character which type: ${fieldData.type} , index: ${fieldData.index}`)
+            console.warn(`[Character.load] Can not find equipment field of character which type: ${fieldData.type}, index: ${fieldData.index}`)
           }
         }
       })
+      if (data.combo){
+        this.comboBuild = CharacterComboBuild.load(data.combo)
+      }
 
       if (typeof id === 'number') {
         this.loadedId = `${loadCategory}-${id}`
@@ -297,6 +306,7 @@ interface CharacterSaveData {
     value: number;
   };
   fields: CharacterSaveDataField[];
+  combo?: CharacterComboBuildSaveData;
 }
 interface CharacterSaveDataField {
   type: 'main_weapon' | 'sub_weapon' | 'body_armor' | 'additional' | 'special' | 'avatar';

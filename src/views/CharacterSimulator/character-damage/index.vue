@@ -180,9 +180,7 @@ const { contents, toggle } = ToggleService({
   contents: ['basicMenu', 'targetMenu'] as const,
 })
 
-const skillResultsStates = computed(() => {
-  return store.damageSkillResultStates as SkillResultsState[]
-})
+const skillResultsStates = computed(() => store.damageSkillResultStates as SkillResultsState[])
 
 const { currentSkillBuild } = setupCharacterSkillBuildStore()
 const validResultStates = computed(() => {

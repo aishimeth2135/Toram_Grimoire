@@ -111,11 +111,11 @@ export const useCharacterStore = defineStore('view-character', () => {
     currentCharacterIndex.value = idx
     const current = getCharacterState(currentCharacter.value)
     if (current.skillBuild === null) {
-      current.skillBuild = previou.skillBuild
+      current.skillBuild = previou.skillBuild ?? (skillBuildStore.skillBuilds[0] as SkillBuild) ?? null
     }
     skillBuildStore.setCurrentSkillBuild(current.skillBuild)
     if (current.foodBuild === null) {
-      current.foodBuild = previou.foodBuild
+      current.foodBuild = previou.foodBuild ?? foodStore.foodBuilds[0] ?? null
     }
     foodStore.setCurrentFoodBuild(current.foodBuild)
   }
@@ -204,6 +204,8 @@ export const useCharacterStore = defineStore('view-character', () => {
       find = finds.length > 0
       cnt += 1
     }
+
+    storage.removeItem(V2_AUTO_SAVE_STORAGE_KEY)
 
     saveDisabled.value = true
   }

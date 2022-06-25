@@ -190,6 +190,7 @@ const submit = () => {
   }
   const characters = getItems(exportDataItemCharacters)
   const datas: CharacterSimulatorSaveData = {
+    version: 'v2',
     characters,
     equipments: getItems(exportDataItemEquipments),
     skillBuilds: getItems(exportDataItemSkillBuilds),
