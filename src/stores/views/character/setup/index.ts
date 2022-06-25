@@ -62,6 +62,13 @@ interface SkillBranchItemState {
   vars?: Record<string, number>;
 }
 
+export interface SetupCharacterStatCategoryResultsExtended {
+  (otherStats: Ref<Stat[]>, skillResult: Ref<SkillResult>): {
+    categoryResults: ComputedRef<CharacterStatCategoryResult[]>;
+    characterPureStats: ComputedRef<Stat[]>;
+  };
+}
+
 export function setupCharacterSkills(
   character: Ref<Character | null>,
   skillBuild: Ref<SkillBuild | null>,
@@ -738,7 +745,7 @@ export function setupCharacterStats(
   const finalResults = setupResults(postponedSkillPureStats, baseResults)
   const { categoryResults: characterStatCategoryResults, characterPureStats } = finalResults
 
-  const setupCharacterStatCategoryResultsExtended = (otherStats: Ref<Stat[]>, skillResult: Ref<SkillResult>) => {
+  const setupCharacterStatCategoryResultsExtended: SetupCharacterStatCategoryResultsExtended = (otherStats, skillResult) => {
     const conditionalStats = computed(() => {
       if (!skillResult.value.root.basicContainer) {
         return []

@@ -105,7 +105,7 @@ const updatePosition = async () => {
   if (!rootElement.value || !wrapperElement.value) {
     return
   }
-  const data = await computePosition(rootElement.value!, wrapperElement.value!, options.value)
+  const data = await computePosition(rootElement.value, wrapperElement.value, options.value)
   wrapperStyle.value = {
     ...wrapperStyle.value,
     left: `${data.x}px`,

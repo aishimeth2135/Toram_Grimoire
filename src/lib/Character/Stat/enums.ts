@@ -6,5 +6,5 @@ const enum StatTypes {
 
 type StatNormalTypes = StatTypes.Constant | StatTypes.Multiplier
 
-export { StatTypes, StatNormalTypes }
-
+export { StatTypes }
+export type { StatNormalTypes }

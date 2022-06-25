@@ -150,6 +150,18 @@ food-build:
   introduction:
     - 透過點擊前方的圓點來選取最多五個料理。
     - 原本是0級的料理在提升等級時會自動選取。
+combo:
+  tags:
+    consecutive: 連擊
+    smite: 增幅
+    save: 補位
+    minds-eye: 心眼
+    tenacity: 強韌
+    swift: 加速
+    invincible: 無敵
+    tough: 執著
+    reflection: 反射
+    bloodsucker: 吸血
 save-load-control:
   title: 存檔
   export-save-data-title: 匯出角色模擬器資料

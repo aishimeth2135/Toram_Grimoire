@@ -14,6 +14,7 @@
     "noImplicitOverride": true,
     "resolveJsonModule": true,
     "sourceMap": true,
+    "isolatedModules": true,
     "baseUrl": ".",
     "outDir": "built",
     "types": [

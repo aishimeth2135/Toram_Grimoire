@@ -14,10 +14,6 @@ const path = require('path')
 export default defineConfig(({ mode }) => {
   const useLagacy = false
 
-  const packageJsonBuffer = fs.readFileSync('package.json')
-  const packageJson = JSON.parse(packageJsonBuffer.toString())
-  const browserslist = packageJson.browserslist
-
   const useExternal = mode === 'production'
   const base = '/'
   const plugins = [
@@ -48,6 +44,10 @@ export default defineConfig(({ mode }) => {
   ]
 
   if (useLagacy) {
+    const packageJsonBuffer = fs.readFileSync('package.json')
+    const packageJson = JSON.parse(packageJsonBuffer.toString())
+    const browserslist = packageJson.browserslist
+
     plugins.push(legacy({
       targets: browserslist,
     }))

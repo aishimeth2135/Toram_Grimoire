@@ -1,5 +1,5 @@
 
-import { computed, ComputedRef, ref, Ref } from 'vue'
+import { computed, ref, Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
@@ -13,8 +13,9 @@ import { EnemyElements } from '@/lib/Enemy/enums'
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import { Calculation } from '@/lib/Calculation/Damage/Calculation'
 
-import { CharacterStatCategoryResult, SkillResult } from '.'
+import { SetupCharacterStatCategoryResultsExtended, SkillResult } from '.'
 import { setupCalculationExpectedResult } from '../../damage-calculation/setup'
 import { getCharacterElement } from '../utils'
 
@@ -71,10 +72,7 @@ const againstElementMap: Record<EnemyElements, EnemyElements> = {
 
 export default function setupDamageCalculation(
   character: Ref<Character | null>,
-  setupCharacterStatCategoryResultsExtended: (otherStats: Ref<Stat[]>, skillResult: Ref<SkillResult>) => {
-    categoryResults: ComputedRef<CharacterStatCategoryResult[]>;
-    characterPureStats: ComputedRef<Stat[]>;
-  },
+  setupCharacterStatCategoryResultsExtended: SetupCharacterStatCategoryResultsExtended,
   getSkillLevel: (skill: Skill) => { valid: boolean; level: number },
 ) {
   const calculationBase = Grimoire.DamageCalculation.calculationBase
@@ -178,23 +176,10 @@ export default function setupDamageCalculation(
         ],
 
         // [CalculationItemIds.SkillRealMpCost, 0],
-        // [CalculationItemIds.SkillConstant, 0],
-        // [CalculationItemIds.SkillMultiplier, 0],
-        // [CalculationItemIds.Proration, 0],
-        // [CalculationItemIds.ComboMultiplier, 0],
-
-        // [CalculationItemIds.TargetPhysicalResistance, targetProperties.physicalResistance],
-        // [CalculationItemIds.TargetMagicResistance, targetProperties.magicResistance],
-        // [CalculationItemIds.TargetLevel, targetProperties.level],
-        // [CalculationItemIds.TargetDef, targetProperties.def],
-        // [CalculationItemIds.TargetMdef, targetProperties.mdef],
-        // [CalculationItemIds.TargetCriticalRateResistance, targetProperties.criticalRateResistance],
-        // [CalculationItemIds.TargetCriticalRateResistanceTotal, targetProperties.criticalRateResistanceTotal],
-        // [CalculationItemIds.TargetDodge, targetProperties.dodge],
       ])
     })
 
-    const calculation = ref(calculationBase.createCalculation(''))
+    const calculation: Ref<Calculation> = ref(calculationBase.createCalculation(''))
 
     for (const ctner of calculation.value.containers.values()) {
       ctner.enabled = true

@@ -93,7 +93,7 @@
               </template>
             </cy-input-counter>
           </div>
-          <div v-if="equipment.hasStability && equipment.stability">
+          <div v-if="equipment.hasStability">
             <cy-input-counter
               v-model:value="equipment.stability/* eslint-disable-line vue/no-mutating-props */"
               :range="ranges.stability"

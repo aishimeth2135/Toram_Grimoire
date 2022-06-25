@@ -226,7 +226,9 @@ export {
   setupExpectedResults,
   setupResultMode,
   setupCalculationCalcOptions,
+}
 
+export type {
   ResultModeIdStability,
   ResultModeIdExpected,
   ResultModeItem,
