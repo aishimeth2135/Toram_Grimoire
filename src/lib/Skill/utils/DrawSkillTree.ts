@@ -52,8 +52,8 @@ function createDrawSkillTreeDefs() {
   const skillIconBg = CY.svg.createLinearGradient('skill-icon-bg',
     '.5', '0', '.5', '1', [
       { offset: '0%', 'stop-color': 'white' },
-      { offset: '50%', 'stop-color': '#FFD1EA' },
-      { offset: '100%', 'stop-color': '#f7a8d3' },
+      { offset: '50%', 'stop-color': '#ffd1ea' },
+      { offset: '100%', 'stop-color': '#ff9ed3' },
     ],
   )
 

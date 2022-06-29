@@ -1,5 +1,5 @@
 <template>
-  <div class="cy-icon-text items-center" :class="rootClass">
+  <div class="cy-icon-text" :class="rootClass">
     <IconBase
       :icon="icon"
       :src="iconSrc"
@@ -92,6 +92,8 @@ export default defineComponent({
         [`align-v-${props.alignV}`]: props.alignV !== 'center',
         'size-small': props.small,
         'text-sm': props.small,
+        'items-center': props.alignV === 'center',
+        'items-start': props.alignV === 'start',
       }
     })
 

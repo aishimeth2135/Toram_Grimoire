@@ -1,8 +1,9 @@
 <template>
   <div v-if="currentCharacter" class="divide-y-1 divide-light">
     <CharacterComboItem
-      v-for="combo in currentCharacter.comboBuild.combos"
+      v-for="(combo, index) in currentCharacter.comboBuild.combos"
       :key="combo.instanceId"
+      :index="index"
       :combo="combo"
     />
     <div

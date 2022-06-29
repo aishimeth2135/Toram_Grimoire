@@ -103,6 +103,11 @@ export default defineComponent({
     --button-color-main-light: var(--app-purple-light);
   }
 
+  &.theme-blue-purple {
+    --button-color-main: var(--app-blue-purple);
+    --button-color-main-light: var(--app-blue-purple-light);
+  }
+
   &.theme-orange {
     --button-color-main: var(--app-orange);
     --button-color-main-light: var(--app-orange-light);
