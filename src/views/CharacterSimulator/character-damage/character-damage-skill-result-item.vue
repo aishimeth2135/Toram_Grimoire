@@ -1,9 +1,12 @@
 <template>
   <div>
     <div class="flex items-center flex-wrap w-full">
-      <cy-icon-text icon="ic:round-label" color="orange">
+      <cy-icon-text v-if="!toggleable" icon="ic:round-label" color="orange">
         {{ result.container.get('name') }}
       </cy-icon-text>
+      <cy-button-check v-else color="orange" :selected="enabled">
+        {{ result.container.get('name') }}
+      </cy-button-check>
       <div class="flex items-center space-x-0.5 ml-3">
         <div v-if="valid" class="text-light-3">
           {{ expectedResult }}
@@ -77,7 +80,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { SkillResult } from '@/stores/views/character/setup'
@@ -98,9 +101,14 @@ import { setupSkilResultExtraStats, setupStoreDamageCalculationExpectedResult } 
 
 interface Props {
   result: SkillResult;
+  toggleable?: boolean;
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  toggleable: false,
+})
+
+const enabled = ref(false)
 
 const { store } = setupCharacterStore()
 const { t } = useI18n()
@@ -152,5 +160,9 @@ const statExtraContainers = computed(() => {
     .filter(suf => suf.branchItem.is(SkillBranchNames.Extra) && suf.statContainers.length > 0)
 })
 
-defineExpose({ valid, calculation, expectedResult })
+defineExpose({
+  valid,
+  calculation,
+  expectedResult: computed(() => enabled.value ? expectedResult.value : 0),
+})
 </script>

@@ -278,11 +278,18 @@ export default function setupDamageCalculation(
         }
       }
 
+      let rangeDamage = targetProperties.value.rangeDamage
+      if (container.value.getOrigin('range_damage') === 'short') {
+        rangeDamage = CalculationItemIds.ShortRangeDamage
+      } else if (container.value.getOrigin('range_damage') === 'long') {
+        rangeDamage = CalculationItemIds.LongRangeDamage
+      }
+
       const resultMap = new Map([
         [CalculationContainerIds.DamageType, damageType],
         [CalculationContainerIds.TargetDefBase, targetDefType],
         [CalculationContainerIds.TargetResistance, targetResistanceType],
-        [CalculationContainerIds.RangeDamage, targetProperties.value.rangeDamage],
+        [CalculationContainerIds.RangeDamage, rangeDamage],
       ])
       if (targetProperties.value.element !== null) {
         resultMap.set(CalculationContainerIds.StrongerAgainstElement, elementsMap[targetProperties.value.element])
@@ -311,7 +318,7 @@ export default function setupDamageCalculation(
         [CalculationContainerIds.StrongerAgainstElement, targetProperties.value.element === null],
         [CalculationContainerIds.UnsheatheAttackConstant, unsheatheDamageHidden],
         [CalculationContainerIds.UnsheatheAttackMultiplier, unsheatheDamageHidden],
-        [CalculationContainerIds.RangeDamage, container.value.getOrigin('range_damage') !== '1'],
+        [CalculationContainerIds.RangeDamage, container.value.getOrigin('range_damage') === '0'],
         [CalculationContainerIds.BaseTwoHanded, !getSkillLevel(skillTwoHanded).valid || mainType !== EquipmentTypes.Katana],
       ])
     })

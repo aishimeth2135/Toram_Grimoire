@@ -3,7 +3,7 @@
     <template #default="{ shown }">
       <slot name="title" :shown="shown">
         <div class="cy--options-item cy--options-title flex items-center bg-white border border-light-2 hover:border-light-3 duration-200">
-          <slot v-if="value !== undefined && value !== null" name="item" :value="value"></slot>
+          <slot v-if="value !== undefined && value !== null" name="item" :value="value" />
           <div v-else class="flex w-full justify-center py-0.5">
             <cy-icon-text icon="ic:outline-help-outline" />
           </div>
@@ -21,7 +21,7 @@
               :class="{ 'cy--options-item-selected': item.value === value }"
               @click="(emit('update:value', item.value), hide())"
             >
-              <slot name="item" :value="item.value"></slot>
+              <slot name="item" :value="item.value" />
             </div>
           </div>
           <div

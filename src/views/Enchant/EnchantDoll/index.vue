@@ -82,6 +82,11 @@
           </cy-input-counter>
         </div>
       </template>
+      <div v-if="config.characterLevel < 250" class="mt-4 flex justify-center">
+        <cy-icon-text color="light-3" align-v="start" small>
+          {{ t('enchant-doll.equipment.set-config.character-level-tips') }}
+        </cy-icon-text>
+      </div>
       <cy-transition>
         <div
           v-if="stepCounter > StepContents.Equipment"
@@ -518,6 +523,7 @@ import { AutoFindNegaitveStatsTypes, EnchantDollBaseTypes } from '@/lib/Enchant/
 import ToggleService from '@/setup/ToggleService'
 import Notify from '@/setup/Notify'
 import Confirm from '@/setup/Confirm'
+import AutoSave from '@/setup/AutoSave'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
@@ -537,7 +543,10 @@ const { confirm } = Confirm()
 
 const { config } = storeToRefs(store)
 
-store.init()
+AutoSave({
+  save: () => store.save(),
+  loadFirst: () => store.init(),
+})
 
 const enum StepContents {
   Equipment = 0,

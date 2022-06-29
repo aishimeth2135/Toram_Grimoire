@@ -126,6 +126,11 @@ class CharacterComboSkill {
     this.skill = skill
   }
 
+  remove() {
+    const idx = this.parent.comboSkills.indexOf(this)
+    this.parent.comboSkills.splice(idx, 1)
+  }
+
   save(): CharacterComboSkillSaveData {
     return {
       skill: this.skill?.skillId ?? null,

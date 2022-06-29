@@ -19,6 +19,7 @@ equipment:
     auto-find-minimum: 自動尋找最低需求
   set-config:
     title: 其他設定點這裡
+    character-level-tips: 目前設定的角色等級並非當前版本的等級上限。如果確實打算設定比較低的角色等級，可以忽略此提醒。
 select-positives:
   title: 請選擇要附的能力。
   caption: 請選擇想要附的正屬。至少要選擇一個，最多可以選擇八個0.0

@@ -19,7 +19,7 @@ interface EnchantStoreSaveData {
 }
 
 export const enchantConfig: EnchantStoreConfig = (() => {
-  const _characterLevel = ref(240)
+  const _characterLevel = ref(250)
   const _smithLevel = ref(0)
   return reactive({
     characterLevel: computed<number>({
@@ -27,7 +27,7 @@ export const enchantConfig: EnchantStoreConfig = (() => {
         return _characterLevel.value
       },
       set(value) {
-        _characterLevel.value = Math.max(0, Math.min(240, value))
+        _characterLevel.value = Math.max(0, Math.min(250, value))
       },
     }),
     smithLevel: computed<number>({
@@ -150,7 +150,6 @@ export const useEnchantStore = defineStore('view-enchant', () => {
     copyBuild,
     setCurrentBuild,
     save,
-    load,
     init,
     exportDollBuild,
   }
