@@ -21,7 +21,7 @@ function setupEquipmentSelect(
     const bodyList = new Set<EquipmentTypes | null>()
     skillTree.value.skills.forEach(skill => {
       skill.effects.forEach(effect => {
-        const data = convertEffectEquipment(effect.mainWeapon, effect.subWeapon, effect.bodyArmor, effect.equipmentOperator)
+        const data = convertEffectEquipment(effect)
         data.forEach(item => {
           mainList.add(item.main)
           subList.add(item.sub)

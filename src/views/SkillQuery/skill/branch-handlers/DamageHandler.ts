@@ -62,49 +62,49 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(branch
 
   const pureDatas = ['name', 'ailment_name', 'end_condition']
 
-  if (props['base'] === 'auto') {
+  if (props.get('base') === 'auto') {
     const baseSuffix = branchItem.suffixBranches.find(bch => bch.is(SkillBranchNames.Base))
     if (baseSuffix) {
       if (baseSuffix.prop('type') !== 'custom') {
-        props['@custom-base-caption'] = baseSuffix.prop('type')
-        props['base'] = `@custom.${baseSuffix.prop('type')}`
+        props.set('@custom-base-caption', baseSuffix.prop('type'))
+        props.set('base', `@custom.${baseSuffix.prop('type')}`)
         langAttrsMap.append('base')
         langAttrsMap.set('@custom-base-caption', {
           afterHandle: value => createTagButtons(markText(value, { mark: 'text-purple' })),
         })
       } else {
         if (baseSuffix.prop('title') === 'auto') {
-          props['base'] = '@custom.default'
+          props.set('base', '@custom.default')
           langAttrsMap.append('base')
         } else {
-          props['base'] = baseSuffix.prop('title')
+          props.set('base', baseSuffix.prop('title'))
           pureDatas.push('base')
         }
         if (baseSuffix.prop('caption')) {
-          props['@custom-base-caption'] = baseSuffix.prop('caption')
+          props.set('@custom-base-caption', baseSuffix.prop('caption'))
           pureDatas.push('@custom-base-caption')
         }
       }
     } else {
-      props['base'] = props['damage_type'] === 'physical' ? 'atk' : 'matk'
+      props.set('base', props.get('damage_type') === 'physical' ? 'atk' : 'matk')
       langAttrsMap.append('base')
     }
   } else {
     langAttrsMap.append('base')
   }
-  if (props['detail_display'] === 'auto') {
-    props['detail_display'] = props['title'] === 'normal_attack' ? '0' : '1'
+  if (props.get('detail_display') === 'auto') {
+    props.set('detail_display', props.get('title') === 'normal_attack' ? '0' : '1')
   }
 
-  if (props['frequency_judgment'] === 'auto') {
-    props['frequency_judgment'] = props['title'] !== 'each' ? 'single' : 'multiple'
+  if (props.get('frequency_judgment') === 'auto') {
+    props.set('frequency_judgment', props.get('title') !== 'each' ? 'single' : 'multiple')
   }
 
   const prorationBch = branchItem.suffixBranches.find(suf => suf.is(SkillBranchNames.Proration))
   if (prorationBch) {
     const _data = ProrationHandler(prorationBch);
     ['damage', 'proration', 'damage: title', 'proration: title'].forEach(key => {
-      props['@proration/' + key] = _data.get(key)
+      props.set('@proration/' + key, _data.get(key))
     })
     pureDatas.push('@proration/damage', '@proration/damage: title', '@proration/proration', '@proration/proration: title')
   }

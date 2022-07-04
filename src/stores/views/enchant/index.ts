@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { computed, reactive, ref } from 'vue'
 import type { Ref } from 'vue'
 
+import { useMainStore } from '@/stores/app/main'
+
 import CY from '@/shared/utils/Cyteria'
 
 import { EnchantBuild } from '@/lib/Enchant/Enchant'
@@ -18,8 +20,10 @@ interface EnchantStoreSaveData {
   config: EnchantStoreConfig;
 }
 
+let characterMaxLevel = 250
+
 export const enchantConfig: EnchantStoreConfig = (() => {
-  const _characterLevel = ref(250)
+  const _characterLevel = ref(characterMaxLevel)
   const _smithLevel = ref(0)
   return reactive({
     characterLevel: computed<number>({
@@ -27,7 +31,7 @@ export const enchantConfig: EnchantStoreConfig = (() => {
         return _characterLevel.value
       },
       set(value) {
-        _characterLevel.value = Math.max(0, Math.min(250, value))
+        _characterLevel.value = Math.max(0, Math.min(characterMaxLevel, value))
       },
     }),
     smithLevel: computed<number>({
@@ -48,6 +52,11 @@ export const useEnchantStore = defineStore('view-enchant', () => {
   const currentBuildIndex = ref(-1)
   const hasInit = ref(false)
   const config = enchantConfig
+
+  const mainStore = useMainStore()
+  if (mainStore.devMode) {
+    characterMaxLevel = 900
+  }
 
   const currentBuild = computed<EnchantBuild | null>(() => enchantBuilds.value[currentBuildIndex.value] ?? null)
 

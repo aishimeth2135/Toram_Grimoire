@@ -11,7 +11,7 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(branchIt
   const props = cloneBranchProps(branchItem)
 
   const basicBranch = branchItem.parent.branchItems.find(bch => bch.is(SkillBranchNames.Basic))
-  props['@range'] = basicBranch?.prop('range') ?? ''
+  props.set('@range', basicBranch?.prop('range') ?? '')
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     'move_distance': value => !!value,
@@ -33,14 +33,14 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(branchIt
     'move_distance': 'm',
   })
 
-  if (props['effective_area'] !== 'sector') {
+  if (props.get('effective_area') !== 'sector') {
     valuePropsMap.set('radius', 'm')
   }
 
   const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>(['effective_area'])
 
   const pureValues = []
-  if (props['@range'] && props['@range'] !== 'no_limit' && props['@range'] !== 'main') {
+  if (props.has('@range') && props.get('@range') !== 'no_limit' && props.get('@range') !== 'main') {
     pureValues.push('@range')
   }
 

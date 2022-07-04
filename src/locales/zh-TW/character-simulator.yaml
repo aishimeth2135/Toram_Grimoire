@@ -162,6 +162,12 @@ combo:
     tough: 執著
     reflection: 反射
     bloodsucker: 吸血
+  damage-calc:
+    damage-sum-title: 總傷害
+    previous-skill-next-title: 上一招技能提供的額外效果
+  tips:
+    - 連擊的傷害計算功能僅用於傷害試算，相關設定並不會儲存。
+    - 使用傷害計算功能時，預設會將每個技能的所有傷害加起來。然而有部分技能帶有多種傷害，這類的技能需要自行選擇哪些傷害要納入計算，這部分還請注意。
 save-load-control:
   title: 存檔
   export-save-data-title: 匯出角色模擬器資料

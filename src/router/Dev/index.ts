@@ -2,19 +2,17 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import { ViewInit } from '@/shared/services/ViewInit'
 
-import { AppRouteNames } from '../enums'
-
-const BubbleView = () => import('@/views/other/bubble.vue')
+const AppDev = () => import('@/views/app/app-dev.vue')
 
 export default {
-  name: AppRouteNames.Bubble,
-  path: '/bubble/:iconName/:color?/:number?',
-  component: BubbleView,
+  name: 'Dev',
+  path: '/doll/dev',
+  component: AppDev,
   beforeEnter(to, from, next) {
     ViewInit().then(next)
   },
   meta: {
-    title: '0.0',
+    title: 'Doll',
     leftMenuViewButtons: [],
   },
 }  as RouteRecordRaw

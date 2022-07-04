@@ -14,10 +14,12 @@ import Home from './Home'
 import Items from './Items'
 import Page404 from './Page404'
 import Skill from './Skill'
+import Dev from './Dev'
 
 export default function createAppRouter() {
   const routes: RouteRecordRaw[] = [
     Home,
+    Dev,
     Character,
     Skill,
     Items,

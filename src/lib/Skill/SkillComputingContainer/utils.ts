@@ -69,7 +69,7 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchIte
     to.clearProp()
   }
 
-  Object.entries(from instanceof SkillBranch ? from.props : from.allProps).forEach(([key, value]) => {
+  [...(from instanceof SkillBranch ? from.props : from.allProps)].forEach(([key, value]) => {
     if (value === '' && to.prop(key)) {
       to.removeProp(key)
       to.record.props.remove.push(key)
@@ -109,7 +109,9 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchIte
  * @param operator - 1: and, 0: or
  * @param dualSwordRegress - if true, it will create EquipmentRestrictions for dual-sword when main is one-hand-sword
  */
-function convertEffectEquipment(main: number, sub: number, body: number, operator: 0 | 1, dualSwordRegress: boolean = false): EquipmentRestrictions[] {
+function convertEffectEquipment(effect: SkillEffect, dualSwordRegress: boolean = false): EquipmentRestrictions[] {
+  const { mainWeapon: main, subWeapon: sub, bodyArmor: body, equipmentOperator: operator } = effect
+
   if (main === -1 && sub === -1 && body === -1) {
     return [new EquipmentRestrictions()]
   }

@@ -55,6 +55,17 @@
           @set-current-skill="skill => selectCurrentSkill(skill, true)"
         />
       </div>
+      <div v-if="mainStore.devMode" class="mt-4">
+        <cy-button-circle
+          icon="ic:round-details"
+          color="blue-purple"
+          small
+          toggle
+          :selected="contents.skillDev"
+          @click="toggle('contents/skillDev')"
+        />
+      </div>
+      <SkillDevDetail v-if="contents.skillDev" :skill="currentSkillItem.skill" class="mt-2" />
     </div>
     <SkillQueryMenu
       v-if="currentSkillTree"
@@ -84,6 +95,8 @@ import type { Ref, ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
+import { useMainStore } from '@/stores/app/main'
+
 import Grimoire from '@/shared/Grimoire'
 
 import { SkillRoot, SkillTree, SkillTreeCategory, Skill } from '@/lib/Skill/Skill'
@@ -97,17 +110,18 @@ import SkillTreeDiagram from './skill-tree-diagram.vue'
 import SkillEffect from './skill-effect.vue'
 import SkillQueryMenu from './skill-query-menu/index.vue'
 import SkillQuerySearch from './skill-query-search.vue'
+import SkillDevDetail from './skill/skill-dev-detail.vue'
 
 import { setupComputingContainer } from './setup'
 
 const { toggle, contents } = ToggleService({
-  contents: ['skillEffect', 'search'] as const,
+  contents: ['skillEffect', 'search', 'skillDev'] as const,
 })
 
 const { t } = useI18n()
-
 const router = useRouter()
 const route = useRoute()
+const mainStore = useMainStore()
 
 const skillEffectElement: Ref<HTMLElement | null> = ref(null)
 const jumpToSkillEffect = async () => {

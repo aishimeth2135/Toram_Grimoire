@@ -1,4 +1,5 @@
 export const enum SkillTypes {
+  Damage = 'damage',
   Active = 'active',
   Passive = 'passive',
 }

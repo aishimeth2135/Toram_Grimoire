@@ -26,14 +26,14 @@ export default function BasicHandler<BranchItem extends SkillBranchItem>(branchI
     'action_time': { type: 'normal' },
   })
 
-  if (props['mp_cost'] !== '0') {
+  if (props.get('mp_cost') !== '0') {
     valuePropsMap.append('mp_cost')
   } else {
     langAttrsMap.set('mp_cost', { type: 'normal' })
   }
-  if (['main', 'magic_device', 'katana'].includes(props['range'])) {
+  if (['main', 'magic_device', 'katana'].includes(props.get('range')!)) {
     langAttrsMap.set('range', { afterHandle: value => createTagButtons(value) })
-  } else if (props['range'] === 'no_limit') {
+  } else if (props.get('range') === 'no_limit') {
     langAttrsMap.append('range')
   } else {
     valuePropsMap.set('range', 'm')

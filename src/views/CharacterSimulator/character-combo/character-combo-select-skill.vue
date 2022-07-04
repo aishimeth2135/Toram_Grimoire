@@ -42,10 +42,15 @@ Grimoire.Skill.skillRoot.skillTreeCategorys.forEach(stc => {
 
 const { currentSkillBuild } = setupCharacterSkillBuildStore()
 const validSkills = computed(() => {
-  const skillResultsStates = store.damageSkillResultStates as SkillResultsState[]
-  return skillResultsStates
+  const skillResultsStates = [
+    ...store.damageSkillResultStates,
+    ...store.activeSkillResultStates,
+    ...store.nextSkillResultStates,
+  ] as SkillResultsState[]
+  const skills = skillResultsStates
     .filter(state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0)
     .map(state => state.skill)
+  return [...new Set(skills)]
 })
 
 const currentSkills = computed(() => showAllSkill.value ? allSkills : validSkills.value)
