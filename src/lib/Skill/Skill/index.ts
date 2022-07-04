@@ -147,7 +147,7 @@ abstract class SkillBase extends SkillElement {
 class Skill extends SkillBase {
   effects: SkillEffect[]
   defaultEffect!: SkillEffect
-  type!: SkillTypes
+  types: SkillTypes[]
 
   readonly skillId: string
 
@@ -156,6 +156,8 @@ class Skill extends SkillBase {
 
     this.effects = []
     this.skillId = `${this.parent.parent.id}-${this.parent.id}-${this.id}`
+
+    this.types = []
   }
 
   get index() {
@@ -163,7 +165,14 @@ class Skill extends SkillBase {
   }
 
   initType() {
-    this.type = this.effects.some(eft => eft.branches.some(bch => bch.name === SkillBranchNames.Passive)) ? SkillTypes.Passive : SkillTypes.Active
+    if (this.effects.some(eft => eft.branches.some(bch => bch.name === SkillBranchNames.Passive))) {
+      this.types.push(SkillTypes.Passive)
+    } else {
+      this.types.push(SkillTypes.Active)
+    }
+    if (this.effects.some(eft => eft.branches.some(bch => bch.name === SkillBranchNames.Damage))) {
+      this.types.push(SkillTypes.Damage)
+    }
   }
 
   appendSkillEffect(main: number, sub: number, body: number) {
@@ -274,7 +283,7 @@ class SkillBranch extends SkillNode {
   // type of branch
   name: SkillBranchNames
 
-  props: Record<string, string>
+  props: Map<string, string>
   stats: StatComputed[]
 
   protected _propsEmpty: boolean
@@ -284,7 +293,7 @@ class SkillBranch extends SkillNode {
     this.parent = sef
     this.id = id
     this.name = name
-    this.props = markRaw({})
+    this.props = markRaw(new Map())
     this.stats = markRaw([])
 
     this._propsEmpty = true
@@ -300,7 +309,7 @@ class SkillBranch extends SkillNode {
       name = prop + valueSub + (subProp ? `.${subProp}` : '')
     }
     this._propsEmpty = false
-    this.props[name] = value
+    this.props.set(name, value)
     return this
   }
 
@@ -325,7 +334,7 @@ class SkillBranch extends SkillNode {
 
   clone(): SkillBranch {
     const newBranch = new SkillBranch(this.parent, this.id, this.name)
-    newBranch.props = markRaw({ ...this.props })
+    newBranch.props = markRaw(new Map(this.props))
     newBranch.stats = markRaw(this.stats.map(stat => stat.clone()))
     newBranch._propsEmpty = this._propsEmpty
     return newBranch

@@ -16,8 +16,8 @@ export default function StackHandler<BranchItem extends SkillBranchItem>(branchI
     name: value => value === 'auto' ? t('skill-query.branch.stack.base-name') + (idx + 1).toString() : value,
   })
 
-  if (props['default'] === 'auto') {
-    props['default'] = props['min']
+  if (props.get('default') === 'auto') {
+    props.set('default', props.get('min')!)
   }
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     max: value => !!value,

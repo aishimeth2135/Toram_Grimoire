@@ -7,30 +7,32 @@
     }"
   >
     <template #default>
-      <template v-for="(iconData, idx) in iconDatas" :key="iconData.iid">
-        <cy-icon-text
-          v-if="idx !== 0"
-          icon="mdi-slash-forward"
-          icon-color="light-3"
-        />
-        <div class="flex items-center space-x-1">
-          <template v-for="icon in iconData.icons" :key="icon.iid">
-            <cy-icon-text
-              v-if="!icon.text"
-              :icon="icon.icon"
-              :icon-src="icon.src"
-            />
-            <cy-icon-text
-              v-else
-              :icon="icon.icon"
-              :icon-src="icon.src"
-              block
-            >
-              <span class="text-sm">{{ icon.text || '' }}</span>
-            </cy-icon-text>
-          </template>
-        </div>
-      </template>
+      <div class="flex items-center">
+        <template v-for="(iconData, idx) in iconDatas" :key="iconData.iid">
+          <cy-icon-text
+            v-if="idx !== 0"
+            icon="mdi-slash-forward"
+            icon-color="light-3"
+          />
+          <div class="flex items-center space-x-1">
+            <template v-for="icon in iconData.icons" :key="icon.iid">
+              <cy-icon-text
+                v-if="!icon.text"
+                :icon="icon.icon"
+                :icon-src="icon.src"
+              />
+              <cy-icon-text
+                v-else
+                :icon="icon.icon"
+                :icon-src="icon.src"
+                block
+              >
+                <span class="text-sm">{{ icon.text || '' }}</span>
+              </cy-icon-text>
+            </template>
+          </div>
+        </template>
+      </div>
     </template>
   </cy-button-action>
 </template>

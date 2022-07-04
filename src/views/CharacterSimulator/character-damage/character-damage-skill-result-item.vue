@@ -4,7 +4,7 @@
       <cy-icon-text v-if="!toggleable" icon="ic:round-label" color="orange">
         {{ result.container.get('name') }}
       </cy-icon-text>
-      <cy-button-check v-else color="orange" :selected="enabled">
+      <cy-button-check v-else v-model:selected="enabled" color="orange" inline>
         {{ result.container.get('name') }}
       </cy-button-check>
       <div class="flex items-center space-x-0.5 ml-3">
@@ -45,7 +45,7 @@
       </div>
       <cy-button-icon icon="majesticons:checkbox-list-detail-line" class="ml-auto" @click="toggle('contents/detail')" />
     </div>
-    <div v-if="statExtraContainers.length > 0" class="py-1 pl-2">
+    <div v-if="statExtraContainers.length > 0" class="pt-2 pb-1 pl-2 space-y-1">
       <div
         v-for="extraContainer in statExtraContainers"
         :key="extraContainer.instanceId"
@@ -80,7 +80,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { SkillResult } from '@/stores/views/character/setup'
@@ -90,6 +90,8 @@ import { markText } from '@/shared/utils/view'
 import { CalcItem } from '@/lib/Calculation/Damage/Calculation'
 import { ContainerTypes } from '@/lib/Calculation/Damage/Calculation/enums'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import { SkillBranch } from '@/lib/Skill/Skill'
+import { Stat } from '@/lib/Character/Stat'
 
 import ToggleService from '@/setup/ToggleService'
 
@@ -101,14 +103,36 @@ import { setupSkilResultExtraStats, setupStoreDamageCalculationExpectedResult } 
 
 interface Props {
   result: SkillResult;
-  toggleable?: boolean;
+  unselectedBranches?: SkillBranch[];
+  extraStats?: Stat[];
+}
+interface Emits {
+  (evt: 'update:unselected-branches', value: SkillBranch[]): void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  toggleable: false,
+  extraStats: () => [],
 })
+const emit = defineEmits<Emits>()
 
-const enabled = ref(false)
+const enabled = computed({
+  get() {
+    return props.unselectedBranches && !props.unselectedBranches.includes(props.result.container.branchItem.default)
+  },
+  set(value) {
+    const unselectedBranches = props.unselectedBranches?.slice()
+    if (unselectedBranches) {
+      const branch = props.result.container.branchItem.default
+      if (value) {
+        const idx = unselectedBranches.indexOf(branch)
+        unselectedBranches.splice(idx, 1)
+      } else {
+        unselectedBranches.push(branch)
+      }
+      emit('update:unselected-branches', unselectedBranches)
+    }
+  },
+})
 
 const { store } = setupCharacterStore()
 const { t } = useI18n()
@@ -116,9 +140,12 @@ const { contents, toggle } = ToggleService({
   contents: ['detail'] as const,
 })
 
+const toggleable = computed(() => !!props.unselectedBranches)
+
 const result = computed(() => props.result)
 
-const { extraStats } = setupSkilResultExtraStats(result)
+const { extraStats: baseExtraStats } = setupSkilResultExtraStats(result)
+const extraStats = computed(() => [...baseExtraStats.value, ...props.extraStats])
 
 const { valid, calculation, expectedResult } = setupStoreDamageCalculationExpectedResult(result, extraStats)
 

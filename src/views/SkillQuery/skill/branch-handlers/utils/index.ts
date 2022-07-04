@@ -24,17 +24,14 @@ import { handleFunctionHighlight, numberStringToPercentage } from './utils'
 function cloneBranchProps(
   branchItem: SkillBranchItemBaseChilds,
   initValueMap?: Record<string, string | ((value: string) => string)>,
-): Record<string, string> {
-  const props = {} as Record<string, string>
-  Object.entries(branchItem.allProps).forEach(([key, value]) => {
-    props[key] = value
-  })
+): Map<string, string> {
+  const props = new Map(branchItem.allProps)
   if (typeof initValueMap === 'object') {
     Object.entries(initValueMap).forEach(([key, value]) => {
       if (typeof value === 'function') {
-        props[key] = value(props[key])
-      } else if (props[key] === undefined) {
-        props[key] = value
+        props.set(key, value(props.get(key) || ''))
+      } else if (!props.has(key)) {
+        props.set(key, value)
       }
     })
   }
@@ -53,7 +50,7 @@ interface HandleBranchLangPropsMap {
 }
 function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
   helper: ComputedBranchHelperResult,
-  props: Record<string, string>,
+  props: Map<string, string>,
   propMap: PropMap,
 ): Record<keyof PropMap, ResultContainer> {
   const { t } = Grimoire.i18n
@@ -63,7 +60,7 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
   const attrKeys = Object.keys(propMap) as (keyof PropMap)[]
   attrKeys.forEach((attrKey) => {
     const { type = 'auto', prefix = '', afterHandle = null } = (propMap[attrKey] || {}) as HandleBranchLangPropsOptions
-    const value = props[attrKey as string]
+    const value = props.get(attrKey as string)
     if (!value) {
       return
     }
@@ -113,7 +110,7 @@ const FORMULA_FLOAT_TO_FIXED = /(\d+\.)(\d{4,})/g
 
 function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   branchItem: Branch,
-  props: Record<string, string>, {
+  props: Map<string, string>, {
     values = {},
     texts = {},
     langs = {},
@@ -136,14 +133,17 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   formulaDisplayMode = helper.formulaDisplayMode
 
   Object.entries(filters).forEach(([key, value]) => {
-    const propValue = props[key]
+    if (!props.has(key)) {
+      return
+    }
+    const propValue = props.get(key)!
     if (typeof value === 'function') {
       value = { validation: value }
     }
     const { validation, calc = false } = value
     const validatedValue = calc ? computeBranchValue(propValue, helper) : propValue
     if (!validation(validatedValue)) {
-      delete props[key]
+      props.delete(key)
       delete values[key]
       delete langs[key]
       delete texts[key]
@@ -267,8 +267,9 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   }
 
   pureValues.forEach(key => {
-    const value = computeBranchValue(props[key], helper)
-    const container = new ResultContainer(branchItem, key, props[key], value)
+    const origin = props.get(key) || '0'
+    const value = computeBranchValue(origin, helper)
+    const container = new ResultContainer(branchItem, key, origin, value)
 
     if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
       handleContainerFormulaValue(container)
@@ -282,10 +283,10 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   })
 
   pureDatas.forEach(key => {
-    const value = props[key]
-    if (value === undefined) {
+    if (!props.has(key)) {
       return
     }
+    const value = props.get(key)!
     result[key] = value
     containers[key] = new ResultContainer(branchItem, key, value, value)
   })

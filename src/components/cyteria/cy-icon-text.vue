@@ -5,6 +5,7 @@
       :src="iconSrc"
       :class="iconClass"
       :style="iconStyle"
+      class="flex-shrink-0"
     />
     <span v-if="$slots.default" :class="textClass">
       <slot />
@@ -111,10 +112,12 @@ export default defineComponent({
       }
     })
 
-    const textClass = {
-      [`text-${textColor.value}`]: true,
-      [props.small ? 'ml-2' : 'ml-1.5']: true,
-    }
+    const textClass = computed(() => {
+      return {
+        [`text-${textColor.value}`]: true,
+        [props.small ? 'ml-2' : 'ml-1.5']: true,
+      }
+    })
 
     return {
       rootClass,

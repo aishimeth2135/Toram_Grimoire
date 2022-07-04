@@ -1,6 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 
-import { Skill } from '@/lib/Skill/Skill'
+import { Skill, SkillBranch } from '@/lib/Skill/Skill'
 
 import { CharacterComboTags } from './enums'
 
@@ -25,11 +25,20 @@ let _CharacterComboAutoIncreasement = 0
 class CharacterCombo {
   instanceId: number
   comboSkills: CharacterComboSkill[]
+  config: {
+    damageCalc: boolean;
+    unselectedBranches: SkillBranch[];
+  }
 
   constructor() {
     this.instanceId = _CharacterComboAutoIncreasement
     _CharacterComboAutoIncreasement += 1
     this.comboSkills = []
+    this.config = {
+      damageCalc: false,
+      unselectedBranches: [],
+    }
+
     this.appendSkill()
   }
 
@@ -114,6 +123,14 @@ class CharacterComboSkill {
     this.skill = null
     this.tag = null
     this.condition = null
+  }
+
+  get previousSkill(): CharacterComboSkill | null {
+    const idx = this.parent.comboSkills.indexOf(this)
+    if (idx > 0) {
+      return this.parent.comboSkills[idx - 1] ?? null
+    }
+    return null
   }
 
   setSkill(skill: Skill | null) {

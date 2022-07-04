@@ -238,18 +238,18 @@ function computedBranchHelper(branchItem: SkillBranchItemBaseChilds, values: str
  */
 function computeBranchValueProps<Key extends string>(
   helper: ComputedBranchHelperResult,
-  props: Record<string, string>,
+  props: Map<string, string>,
   propKeys: Key[],
-): Record<Key, string> {
-  const propValues = {} as Record<Key, string>
+): Map<Key, string> {
+  const propValues = new Map<Key, string>()
   propKeys.forEach(propKey => {
-    const str = props[propKey]
+    const str = props.get(propKey)
     if (str === undefined) {
-      propValues[propKey] = '0'
+      propValues.set(propKey, '0')
       return
     }
 
-    propValues[propKey] = computeBranchValue(str, helper)
+    propValues.set(propKey, computeBranchValue(str, helper))
   })
 
   return propValues
@@ -264,20 +264,20 @@ type HandleBranchValuePropsResult<PropMap extends HandleBranchValuePropsMap> = {
 }
 function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
   helper: ComputedBranchHelperResult,
-  props: Record<string, string>,
+  props: Map<string, string>,
   PropMap: PropMap,
 ): HandleBranchValuePropsResult<PropMap> {
   const propKeys = Object.keys(PropMap) as (keyof PropMap)[]
-  const propValues = computeBranchValueProps(helper, props, propKeys as string[]) as Record<keyof PropMap, string>
+  const propValues = computeBranchValueProps(helper, props, propKeys as string[]) as Map<keyof PropMap, string>
   const propResult = {} as HandleBranchValuePropsResult<PropMap>
   propKeys.forEach(propKey => {
-    const originalFormula = props[propKey as string]
+    const originalFormula = props.get(propKey as string)
     if (originalFormula === undefined) {
       propResult[propKey] = new ResultContainer(helper.branchItem, propKey as string, '0', '0')
       return
     }
     const options = (PropMap[propKey] || {}) as HandleBranchValueAttrOptions
-    const container = new ResultContainer(helper.branchItem, propKey as string, originalFormula, propValues[propKey])
+    const container = new ResultContainer(helper.branchItem, propKey as string, originalFormula, propValues.get(propKey)!)
     handleDisplayValue(container, helper)
     handleHighlight(container, options)
 
@@ -311,13 +311,13 @@ function computedBranchText(
 }
 function handleBranchTextProps<PropMap extends HandleBranchTextPropsMap>(
   helper: ComputedBranchHelperResult,
-  props: Record<string, string>,
+  props: Map<string, string>,
   PropMap: PropMap,
 ): HandleBranchTextPropsResult<PropMap> {
   const propKeys = Object.keys(PropMap) as (keyof PropMap)[]
   const propResult = {} as HandleBranchTextPropsResult<PropMap>
   propKeys.forEach(propKey => {
-    const container = computedBranchText(helper, propKey as string, props[propKey as string])
+    const container = computedBranchText(helper, propKey as string, props.get(propKey as string))
     const options = (PropMap[propKey] || {}) as HighlightTextOptions
     handleHighlight(container, options)
     propResult[propKey] = container

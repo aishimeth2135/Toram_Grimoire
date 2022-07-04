@@ -164,7 +164,7 @@
                     main-color="water-blue-light"
                   >
                     <template #title>
-                      <cy-icon-text>{{ t('enchant-simulator.common-options') }}</cy-icon-text>
+                      <cy-icon-text>{{ t('enchant-simulator.character-level') }}</cy-icon-text>
                     </template>
                   </cy-input-counter>
                   <cy-input-counter

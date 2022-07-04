@@ -6,8 +6,8 @@ import MapContainer from './utils/MapContainer'
 
 export default function ProrationHandler<BranchItem extends SkillBranchItemBaseChilds>(branchItem: BranchItem) {
   const props = cloneBranchProps(branchItem)
-  if (props['proration'] === 'auto') {
-    props['proration'] = props['damage']
+  if (props.get('proration') === 'auto') {
+    props.set('proration', props.get('damage')!)
   }
   const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>(['damage', 'proration'])
   const titles = ['damage', 'proration']

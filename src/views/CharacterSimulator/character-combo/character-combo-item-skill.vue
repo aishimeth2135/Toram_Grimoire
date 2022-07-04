@@ -39,52 +39,31 @@
       </div>
       <div class="text-red">{{ comboSkillState.rate }}%</div>
       <div class="text-water-blue">{{ comboSkillState.mpCost }}</div>
+      <div v-if="damageRatio !== null" class="text-blue-purple">{{ damageRatio }}%</div>
     </div>
-    <cy-popover v-if="currentSkill && useDamageCalc">
-      <cy-button-icon icon="mdi-sword" />
-      <template #popper>
-        <div v-if="currentSkill && skillResultsState" class="p-3">
-          <div class="mb-2">
-            <cy-icon-text small text-color="purple">{{ currentSkill.name }}</cy-icon-text>
-          </div>
-          <div>
-            <CharacterDamageSkillResultItem
-              v-for="result in skillResultsState.results"
-              ref="resultItemRefs"
-              :key="result.container.instanceId"
-              :result="result"
-            />
-          </div>
-        </div>
-      </template>
-    </cy-popover>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, ref, Ref } from 'vue'
+import { computed, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
-
-import { SkillResultsState } from '@/stores/views/character/setup'
 
 import { ComboSkillState } from '@/lib/Character/CharacterCombo'
 import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
 import { CharacterComboTags } from '@/lib/Character/CharacterCombo/enums'
 
-import CharacterDamageSkillResultItem from '../character-damage/character-damage-skill-result-item.vue'
-
-import { setupCharacterStore } from '../setup'
 import { CharacterSimulatorInjectionKey } from '../injection-keys'
 
 interface Props {
   comboSkillState: ComboSkillState;
+  damageRatio?: number | null;
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  damageRatio: null,
+})
 
 const { t } = useI18n()
-const { store } = setupCharacterStore()
-const useDamageCalc = false
 
 const currentSkill = computed(() => props.comboSkillState.comboSkill.skill)
 
@@ -112,29 +91,9 @@ const getTagIcon = (tag: CharacterComboTags | null) => {
   return idx > -1 ? `mdi:numeric-${idx + 1}-circle-outline` : 'mdi:selection-ellipse'
 }
 
-const skillResultsState = computed(() => {
-  const skill = currentSkill.value
-  if (!skill) {
-    return null
-  }
-  return (store.damageSkillResultStates as SkillResultsState[]).find(state => state.skill.skillId === skill.skillId) ?? null
-})
-
 const skillIconPath = computed(() => currentSkill.value ? getSkillIconPath(currentSkill.value) : null)
 
-const resultItemRefs: Ref<(InstanceType<typeof CharacterDamageSkillResultItem>)[]> = ref([])
-
-const expectedResultSum = computed(() => {
-  return resultItemRefs.value
-    .filter(item => item.valid)
-    .reduce((cur, item) => cur + item.expectedResult, 0)
-})
-
 const { selectComboSkill } = inject(CharacterSimulatorInjectionKey)!
-
-defineExpose({
-  expectedResultSum,
-})
 </script>
 
 <style lang="postcss" scoped>

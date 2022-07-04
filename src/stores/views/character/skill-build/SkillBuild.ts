@@ -50,7 +50,7 @@ export class SkillBuild {
       this._skillStatesMap.set(skill, {
         level: 0,
         starGemLevel: 0,
-        enabled: skill.type === SkillTypes.Passive,
+        enabled: skill.types.includes(SkillTypes.Passive),
       })
     }
     const state = this._skillStatesMap.get(skill)!

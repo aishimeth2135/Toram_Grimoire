@@ -163,13 +163,7 @@ class SkillEffectItem extends SkillEffectItemBase {
 
     const current = from ? from : defaultSef
     const dualSwordRegress = defaultSef.parent.effects.every(eft => eft.mainWeapon !== 10)
-    this.equipments = markRaw(convertEffectEquipment(
-      current.mainWeapon,
-      current.subWeapon,
-      current.bodyArmor,
-      current.equipmentOperator,
-      dualSwordRegress,
-    ))
+    this.equipments = markRaw(convertEffectEquipment(current, dualSwordRegress))
 
     this.historys = current.historys.map(history => new SkillEffectItemHistory(parent, this, history))
 
@@ -275,7 +269,7 @@ type SkillBranchItemOverwriteRecords = {
   stats: SkillBranchItemOverwriteRecord<[string, StatTypes]>;
 }
 abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEffectItemBase> {
-  private _props: Record<string, string>
+  private _props: Map<string, string>
 
   private _name: SkillBranchNames
   private _inherit: SkillBranchNames | null
@@ -285,6 +279,7 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
 
   readonly parent: Parent
   readonly stats: StatComputed[]
+  readonly buffs: string[]
 
   readonly isEmpty: boolean
 
@@ -320,13 +315,14 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
     this._inherit = null
     this.name = this._name // init _inherit
 
-    this._props = markRaw(Object.assign({}, branch instanceof SkillBranch ? branch.props : branch.allProps))
+    this._props = markRaw(new Map(branch instanceof SkillBranch ? branch.props : branch.allProps))
     this.stats = markRaw(branch.stats.map(stat => stat.clone()))
+    this.buffs = markRaw([])
 
     this.isEmpty = branch.isEmpty
 
-    this.postpone = this._props['postpone'] === '1'
-    delete this._props['postpone']
+    this.postpone = this._props.get('postpone') === '1'
+    this._props.delete('postpone')
 
     this.default = branch instanceof SkillBranch ? branch : branch.default
 
@@ -382,36 +378,36 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
   }
 
   prop(key: string, subKey?: string): string {
-    return this._props[this.propKey(key, subKey)] || ''
+    return this._props.get(this.propKey(key, subKey)) ?? ''
   }
 
   propNumber(key: string): number {
-    const attr = parseInt(this._props[key], 10)
+    const attr = parseInt(this._props.get(key) ?? '', 10)
     return Number.isNaN(attr) ? 0 : attr
   }
 
   propBoolean(key: string): boolean {
-    return this._props[key] === '1'
+    return this._props.get(key) === '1'
   }
 
   hasProp(key: string, subKey?: string) {
-    return this._props[this.propKey(key, subKey)] !== undefined
+    return this._props.get(this.propKey(key, subKey)) !== undefined
   }
 
   setProp(key: string, value: string) {
-    this._props[key] = value
+    this._props.set(key, value)
   }
 
   removeProp(key: string) {
-    delete this._props[key]
+    this._props.delete(key)
   }
 
   clearProp() {
-    this._props = {}
+    this._props.clear()
   }
 
   is(name: SkillBranchNames) {
-    return this.name === name
+    return this.name === name || this._name === name
   }
 
   syncRecord(record: SkillBranchItemOverwriteRecords) {

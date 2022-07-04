@@ -2,26 +2,36 @@ import { computed } from '@vue/reactivity'
 import { Ref } from 'vue'
 
 import { SkillResult } from '@/stores/views/character/setup'
+import { useCharacterStore } from '@/stores/views/character'
 
 import { isNumberString } from '@/shared/utils/string'
 
 import { Stat } from '@/lib/Character/Stat'
 
+import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/utils/DisplayDataContainer'
+
 import { setupCharacterStore } from '../setup'
+
+export function getContainerStats(store: ReturnType<typeof useCharacterStore>, container: DisplayDataContainer) {
+  const stats: Stat[] = []
+  if (!store.getDamageCalculationSkillBranchState(container.branchItem.default)?.enabled) {
+    return []
+  }
+  container.statContainers.forEach(statContainer => {
+    if (isNumberString(statContainer.value)) {
+      stats.push(statContainer.stat.toStat(parseFloat(statContainer.value)))
+    }
+  })
+  return stats
+}
 
 export function setupSkilResultExtraStats(result: Ref<SkillResult>) {
   const { store } = setupCharacterStore()
+
   const extraStats = computed(() => {
     const stats: Stat[] = []
     result.value.suffixContainers.forEach(sufContainer => {
-      if (!store.getDamageCalculationSkillBranchState(sufContainer.branchItem.default)?.enabled) {
-        return
-      }
-      sufContainer.statContainers.forEach(statContainer => {
-        if (isNumberString(statContainer.value)) {
-          stats.push(statContainer.stat.toStat(parseFloat(statContainer.value)))
-        }
-      })
+      stats.push(...getContainerStats(store, sufContainer))
     })
     return stats
   })

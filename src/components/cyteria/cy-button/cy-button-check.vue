@@ -2,7 +2,10 @@
   <CyButtonBase
     v-slot="{ iconClass }"
     v-bind="buttonBaseBinds"
-    class="cy-button-check py-1 px-2"
+    class="cy-button-check px-2"
+    :class="{
+      'py-1': !inline,
+    }"
     @click="buttonClick"
   >
     <ButtonIcon
@@ -27,6 +30,10 @@ export default defineComponent({
   emits: ['click', 'update:selected'],
   props: {
     ...ButtonBaseProps,
+    inline: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     CyButtonBase,

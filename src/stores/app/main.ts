@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
-import { readonly, ref, shallowReactive } from 'vue'
+import { computed, readonly, ref, shallowReactive } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
 import { useLanguageStore } from './language'
 
-const version = '4.5.13'
+const version = '4.5.14'
 
 export const useMainStore = defineStore('app-main', () => {
   const redirectPathName = ref<string | null>(null)
@@ -51,10 +51,26 @@ export const useMainStore = defineStore('app-main', () => {
     window.document.title = title
   }
 
+  const _devMode = ref(localStorage.getItem('dev-mode') === '1')
+  const devMode = computed({
+    get() {
+      return _devMode.value
+    },
+    set(value) {
+      if (value) {
+        localStorage.setItem('dev-mode', '1')
+      } else {
+        localStorage.removeItem('dev-mode')
+      }
+      _devMode.value = value
+    },
+  })
+
   return {
     redirectPathName: readonly(redirectPathName),
     version,
     serviceWorker: readonly(serviceWorker),
+    devMode,
 
     setRedirectPathName,
     clearRedirectPathName,

@@ -29,8 +29,8 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(branchIt
   const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>(['type'])
 
   const extraValueList: { text: string; value: string }[] = []
-  if (props['extra_value'] && props['extra_text']) {
-    const originalValues = props['extra_value'].split(/\s*,,\s*/)
+  if (props.has('extra_value') && props.has('extra_text')) {
+    const originalValues = props.get('extra_value')!.split(/\s*,,\s*/)
     const helper = computedBranchHelper(branchItem, originalValues)
     const values = originalValues.map(item => {
       let res = computeBranchValue(item, helper)
@@ -39,7 +39,7 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(branchIt
       }
       return res
     })
-    const texts = props['extra_text'].split(/\s*,\s*/)
+    const texts = props.get('extra_text')!.split(/\s*,\s*/)
     extraValueList.push(...values.map((value, idx) => ({
       text: texts[idx] || '@',
       value,
