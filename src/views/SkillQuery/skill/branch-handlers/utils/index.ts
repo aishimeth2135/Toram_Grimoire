@@ -132,8 +132,19 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 
   formulaDisplayMode = helper.formulaDisplayMode
 
+  const ignoreProp = (key: string) => {
+    delete values[key]
+    delete langs[key]
+    delete texts[key]
+    const idxTitle = titles.indexOf(key)
+    idxTitle > -1 && titles.splice(idxTitle, 1)
+    const idxPureValues = pureValues.indexOf(key)
+    idxPureValues > -1 && pureValues.splice(idxPureValues, 1)
+  }
+
   Object.entries(filters).forEach(([key, value]) => {
     if (!props.has(key)) {
+      ignoreProp(key)
       return
     }
     const propValue = props.get(key)!
@@ -144,13 +155,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     const validatedValue = calc ? computeBranchValue(propValue, helper) : propValue
     if (!validation(validatedValue)) {
       props.delete(key)
-      delete values[key]
-      delete langs[key]
-      delete texts[key]
-      const idxTitle = titles.indexOf(key)
-      idxTitle > -1 && titles.splice(idxTitle, 1)
-      const idxPureValues = pureValues.indexOf(key)
-      idxPureValues > -1 && pureValues.splice(idxPureValues, 1)
+      ignoreProp(key)
     }
   })
 
@@ -233,7 +238,6 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     handleReplaceLabel('skill')
 
     str = handleFunctionHighlight(str)
-
     str = handlePropHistoryHighlight(key, str)
 
     result[key] = str
