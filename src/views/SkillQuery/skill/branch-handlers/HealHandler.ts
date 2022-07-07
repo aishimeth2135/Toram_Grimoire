@@ -1,4 +1,4 @@
-import { isNumberString } from '@/shared/utils/string'
+import { isNumberString, splitComma } from '@/shared/utils/string'
 import Grimoire from '@/shared/Grimoire'
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
@@ -39,7 +39,7 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(branchIt
       }
       return res
     })
-    const texts = props.get('extra_text')!.split(/\s*,\s*/)
+    const texts = splitComma(props.get('extra_text')!)
     extraValueList.push(...values.map((value, idx) => ({
       text: texts[idx] || '@',
       value,

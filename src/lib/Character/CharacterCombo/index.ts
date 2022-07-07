@@ -48,13 +48,13 @@ class CharacterCombo {
     return newSkill
   }
 
-  getComboSkillStates(getMpCost: (skill: Skill) => number): ComboSkillState[] {
+  getComboSkillStates(getMpCost: (skill: Skill, previous: Skill | null) => number): ComboSkillState[] {
     const ratesItems = this.comboSkills
-      .map((skill, idx) => ({
+      .map((skill, idx, ary) => ({
         itemId: skill.skill?.skillId ?? `empty-${idx}`,
         comboSkill: skill,
         rate: 100,
-        mpCost: skill.skill ? getMpCost(skill.skill) : 0,
+        mpCost: skill.skill ? getMpCost(skill.skill, idx > 0 ? ary[idx - 1].skill : null) : 0,
       } as ComboSkillState))
 
     const addRate = (idx: number, value: number) => {

@@ -64,6 +64,7 @@ import { numberToFixed } from '@/shared/utils/number'
 
 import { CharacterCombo, ComboSkillState } from '@/lib/Character/CharacterCombo'
 import { Skill } from '@/lib/Skill/Skill'
+import { SkillBuffs } from '@/lib/Skill/SkillComputingContainer/enums'
 
 import CharacterComboItemSkill from './character-combo-item-skill.vue'
 import CharacterComboItemDamageItem from './character-combo-item-damage-item.vue'
@@ -95,15 +96,22 @@ const expectedDamageSum = computed(() => comboDamageItemRefs.value.reduce((sum, 
 const { store } = setupCharacterStore()
 const { t } = useI18n()
 
-const getMpCost = (skill: Skill) => {
+const getMpCost = (skill: Skill, previous: Skill | null) => {
   const states = store.damageSkillResultStates as SkillResultsState[]
-  const resultStateIdx = states.findIndex(state => state.skill.skillId === skill.skillId)
-  const resultState = resultStateIdx > -1 ? states[resultStateIdx] : null
+  const resultState = states.find(state => state.skill.skillId === skill.skillId)
   if (!resultState || !resultState.basicContainer) {
     return 0
   }
+  const previousResultState = previous ? states.find(state => state.skill.skillId === previous.skillId) : null
   const mpCost = resultState.basicContainer.getValue('mp_cost')
-  return isNumberString(mpCost) ? parseInt(mpCost, 10) : 0
+  if (isNumberString(mpCost)) {
+    let value = parseInt(mpCost, 10)
+    if (previousResultState?.results.some(result => result.container.branchItem.buffs?.has(SkillBuffs.MpCostHalf))) {
+      value = Math.ceil(value / 200) * 100
+    }
+    return value
+  }
+  return 0
 }
 
 const comboSkillStates = computed(() => props.combo.getComboSkillStates(getMpCost))

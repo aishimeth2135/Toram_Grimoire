@@ -2,6 +2,7 @@ import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { computeFormula } from '@/shared/utils/data'
+import { splitComma } from '@/shared/utils/string'
 
 import { SubWeapon, SubArmor, CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
@@ -655,7 +656,7 @@ class CharacterStatFormula {
   }
 
   appendConditionValue(conditional: string, formula: string, options: string) {
-    const optionList = options.split(/\s*,\s*/)
+    const optionList = splitComma(options)
     const item = markRaw(new CharacterStatFormulaConditionalItem(conditional, formula, optionList))
     this.conditionValues.push(item)
   }

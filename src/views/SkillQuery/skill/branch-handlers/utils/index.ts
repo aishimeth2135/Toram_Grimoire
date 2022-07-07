@@ -1,4 +1,4 @@
-import { isNumberString, trimFloatStringZero } from '@/shared/utils/string'
+import { isNumberString, splitComma, trimFloatStringZero } from '@/shared/utils/string'
 import Grimoire from '@/shared/Grimoire'
 
 import { SkillBranchItemSuffix, SkillEffectItemHistory } from '@/lib/Skill/SkillComputingContainer'
@@ -41,7 +41,7 @@ function cloneBranchProps(
 type SkillDisplayData = Record<string, string>
 
 interface HandleBranchLangPropsOptions {
-  prefix?: string; // unused now
+  prefix?: string; // unused currently
   type?: 'auto' | 'normal' | 'value' | 'boolean';
   afterHandle?: ((value: string) => string) | null;
 }
@@ -107,6 +107,7 @@ interface HandleDisplayDataOptions {
 const FORMULA_VALUE_TO_PERCENTAGE_PATTERN = /([$_a-zA-Z][$_a-zA-Z0-9]*)(\*)(\d\.\d+)/g
 const MUL_PATTERN = /\*/g
 const FORMULA_FLOAT_TO_FIXED = /(\d+\.)(\d{4,})/g
+const TEXT_SEPARATE_PATTERN = /\(\(((?:(?!\(\().)+)\)\)/g
 
 function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   branchItem: Branch,
@@ -176,9 +177,11 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     container.handle(trimFloatStringZero)
   }
 
+  const branchRecordKeys = ['overwrite', 'append', 'remove'] as const
+
   const handlePropHistoryHighlight = branchItem.parent instanceof SkillEffectItemHistory ?
     (key: string, value: string) => {
-      const searchKeys = ['overwrite', 'append', 'remove'] as const
+      const searchKeys = branchRecordKeys
       if (searchKeys.some(searchKey => branchItem.record.props[searchKey].includes(key) || branchItem.historyRecord?.props[searchKey].includes(key))) {
         return `<span class="history-compare--mark">${value}</span>`
       }
@@ -188,7 +191,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 
   const handleStatHistoryHighlight = branchItem.parent instanceof SkillEffectItemHistory ?
     (stat: StatComputed, value: string) => {
-      const searchKeys = ['overwrite', 'append', 'remove'] as const
+      const searchKeys = branchRecordKeys
       const _find = (target: SkillBranchItemOverwriteRecords | null) => searchKeys
         .some(searchKey => target?.stats[searchKey].some(([baseId, type]) => stat.baseId === baseId && stat.type === type))
       if (_find(branchItem.record) || _find(branchItem.historyRecord)) {
@@ -209,7 +212,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   })
 
   const handleTextResult = (str: string) => {
-    str = str.replace(/\(\(((?:(?!\(\().)+)\)\)/g, (match, m1) => `<span class="cy--text-separate border-light-3">${m1}</span>`)
+    str = str.replace(TEXT_SEPARATE_PATTERN, (match, m1) => `<span class="cy--text-separate border-light-3">${m1}</span>`)
     str = createTagButtons(str)
     return str
   }
@@ -220,7 +223,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     let str = handleTextResult(container.result)
 
     const handleReplaceLabel = (attrKey: string) => {
-      const labels = branchItem.prop(attrKey).split(/\s*,\s*/).filter(item => item)
+      const labels = splitComma(branchItem.prop(attrKey)).filter(item => item)
       labels.forEach((label, idx) => {
         str = str.replace(new RegExp(label, 'g'), () => `__HANDLE_REPLACE_LABEL_${idx}__`)
       })

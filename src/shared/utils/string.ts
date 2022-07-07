@@ -28,3 +28,11 @@ const TRIM_ZERO_PATTERN = /(\d+)(\.[^0]*)(0+)$/g
 export function trimFloatStringZero(num: string): string {
   return num.replace(TRIM_ZERO_PATTERN, (match, m1, m2) => m1 + (m2 === '.' ? '' : m2))
 }
+
+const SPLIT_COMMA_PATTERN = /\s*,\s*/
+export function splitComma(str: string): string[] {
+  if (!str) {
+    return []
+  }
+  return str.split(SPLIT_COMMA_PATTERN)
+}

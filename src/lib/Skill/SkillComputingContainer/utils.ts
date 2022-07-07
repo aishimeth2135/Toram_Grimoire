@@ -4,10 +4,19 @@ import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { StatComputed } from '@/lib/Character/Stat'
 
 import { SkillBranch, SkillEffect, SkillEffectAttrs } from '../Skill'
-import { SkillBranchItem, SkillEffectItem, SkillEffectItemHistory } from './index'
+import { SkillBranchBuffs, SkillBranchItem, SkillEffectItem, SkillEffectItemHistory } from './index'
 import { SkillEffectItemBase, EquipmentRestrictions, BranchGroupState, BranchStackState } from './index'
 import { BRANCH_PROPS_DEFAULT_VALUE, EQUIPMENT_TYPE_MAIN_ORDER, EQUIPMENT_TYPE_SUB_ORDER, EQUIPMENT_TYPE_BODY_ORDER } from './consts'
 import { SkillBranchNames } from '../Skill/enums'
+
+function initBasicBranchItem(effectItem: SkillEffectItem, origin: SkillEffect) {
+  let basicBranch = effectItem.branchItems.find(branchItem => branchItem.is(SkillBranchNames.Basic))
+  if (!basicBranch) {
+    basicBranch = new SkillBranchItem(effectItem, effectBasicPropsToBranch(origin))
+    effectItem.branchItems.unshift(basicBranch)
+  }
+  effectItem.basicBranchItem = basicBranch
+}
 
 function effectOverwrite(to: SkillEffectItem, from: SkillEffect) {
   const fromBranches = from.branches.slice()
@@ -99,14 +108,17 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchIte
       }
     }
   })
+
+  // init special props
+  if (to.hasProp('buffs')) {
+    to.buffs = new SkillBranchBuffs(to.prop('buffs'))
+    to.removeProp('buffs')
+  }
 }
 
 /**
  * Convert equipment data of skill to array of EquipmentRestrictions
- * @param main - id of skill data of main weapon
- * @param sub - id of skill data of sub weapon
- * @param body - id of skill data of body armor
- * @param operator - 1: and, 0: or
+ * @param effect
  * @param dualSwordRegress - if true, it will create EquipmentRestrictions for dual-sword when main is one-hand-sword
  */
 function convertEffectEquipment(effect: SkillEffect, dualSwordRegress: boolean = false): EquipmentRestrictions[] {
@@ -351,9 +363,9 @@ function setBranchAttrsDefaultValue(effectItem: SkillEffectItem) {
 }
 
 export {
+  initBasicBranchItem,
   convertEffectEquipment,
   effectOverwrite,
-  effectBasicPropsToBranch as effectAttrsToBranch,
   separateSuffixBranches,
   handleVirtualBranches,
   initStackStates,
