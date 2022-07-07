@@ -66,6 +66,8 @@ export const useMainStore = defineStore('app-main', () => {
     },
   })
 
+  // const previewMode = window.location.hostname.startsWith('doll-preview')
+
   return {
     redirectPathName: readonly(redirectPathName),
     version,

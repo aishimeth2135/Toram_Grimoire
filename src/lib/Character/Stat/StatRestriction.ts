@@ -1,6 +1,7 @@
 import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { splitComma } from '@/shared/utils/string'
 
 import { EquipmentRestrictions } from '@/lib/Skill/SkillComputingContainer'
 
@@ -82,7 +83,7 @@ class StatRestriction extends Stat {
 
     const newOriginRestriction = new EquipmentRestrictions()
 
-    originRestriction.split(/\s*,\s*/).forEach(item => {
+    splitComma(originRestriction).forEach(item => {
       let [_eqType, _restriction] = item.split('.')
       if (!_restriction) {
         _restriction = _eqType

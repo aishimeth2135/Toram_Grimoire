@@ -65,9 +65,7 @@ const attrDatas = computed(() => {
   return ATTR_DATAS
     .filter(data => container.value.has(data.key))
     .map(({ key, icon }) => {
-      const iconRes = typeof icon === 'object' ?
-        icon[container.value.branchItem.prop(key)] :
-        icon
+      const iconRes = typeof icon === 'object' ? icon[container.value.branchItem.prop(key)] : icon
       const value = container.value.get(key)
       return {
         key,

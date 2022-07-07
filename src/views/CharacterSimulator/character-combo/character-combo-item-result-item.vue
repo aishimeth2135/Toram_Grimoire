@@ -9,6 +9,11 @@
           {{ container.get('name') || t('skill-query.branch.effect.base-name') }}
         </cy-button-toggle>
       </div>
+      <div v-if="container.branchItem.buffs" class="space-x-3">
+        <div v-for="buff in container.branchItem.buffs.items" :key="buff" class="text-orange">
+          {{ t(`skill-query.skill-buffs.${buff}.title`) }}
+        </div>
+      </div>
       <div>
         <CharacterSkillItemStats :stat-containers="container.statContainers" />
       </div>

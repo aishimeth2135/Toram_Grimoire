@@ -1,5 +1,5 @@
 import { handleFormula, HandleFormulaMethods, HandleFormulaTexts, HandleFormulaVars } from '@/shared/utils/data'
-import { isNumberString } from '@/shared/utils/string'
+import { isNumberString, splitComma } from '@/shared/utils/string'
 import Grimoire from '@/shared/Grimoire'
 
 import { StatComputed } from '@/lib/Character/Stat'
@@ -200,7 +200,7 @@ function computedBranchHelper(branchItem: SkillBranchItemBaseChilds, values: str
   const formulaExtra = mainBranchItem?.suffixBranches.find(suf => suf.is(SkillBranchNames.FormulaExtra)) ?? null
 
   if (mainBranchItem && formulaExtra) {
-    const extraTexts = (formulaExtra.prop('texts')).split(/\s*,\s*/)
+    const extraTexts = splitComma(formulaExtra.prop('texts'))
     extraTexts.forEach((text, idx) => {
       const key = getTextKey(idx)
       texts[key] = text

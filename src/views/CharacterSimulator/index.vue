@@ -25,14 +25,15 @@
             toggle
             @click="(toggle('mainContents/damage', null, false), toggle('sideContents/tabs', false))"
           />
-          <!-- <cy-button-circle
+          <cy-button-circle
+            v-if="mainStore.devMode"
             :selected="mainContents.combo"
             icon="mdi-selection-ellipse-arrow-inside"
             color="green"
             float
             toggle
             @click="(toggle('mainContents/combo', null, false), toggle('sideContents/tabs', false))"
-          /> -->
+          />
           <cy-button-circle
             :selected="sideContents.tabs"
             icon="ic:round-menu"

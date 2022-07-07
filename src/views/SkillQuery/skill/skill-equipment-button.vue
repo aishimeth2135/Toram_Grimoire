@@ -26,8 +26,9 @@
                 :icon="icon.icon"
                 :icon-src="icon.src"
                 block
+                text-minimize
               >
-                <span class="text-sm">{{ icon.text || '' }}</span>
+                {{ icon.text || '' }}
               </cy-icon-text>
             </template>
           </div>

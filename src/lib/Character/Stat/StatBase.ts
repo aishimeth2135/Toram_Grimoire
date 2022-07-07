@@ -148,6 +148,9 @@ abstract class StatElementBase {
   get statId() {
     return this.base.statId(this.type)
   }
+  get valueId() {
+    return `${this.statId}_${this.value}`
+  }
   get isBoolStat() {
     return this.base.checkBoolStat(this.type)
   }

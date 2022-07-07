@@ -9,10 +9,18 @@
           <code class="text-blue-purple">
             {{ `[${bch.id === -1 ? '-' : bch.id}] @${bch.name}` }}
           </code>
-          <div class="pl-2 mt-1">
-            <div v-for="([key, value]) in bch.props.entries()" :key="key">
-              <code>{{ `$${key}:` }}</code>
-              <code class="ml-2 text-light-3">{{ value }}</code>
+          <div class="pl-2 mt-1 space-y-1">
+            <div>
+              <div v-for="([key, value]) in bch.props.entries()" :key="key">
+                <code>{{ `$${key}:` }}</code>
+                <code class="ml-2 text-light-3">{{ value }}</code>
+              </div>
+            </div>
+            <div>
+              <div v-for="stat in bch.stats" :key="stat.valueId">
+                <code class="text-dark-light">{{ `${stat.baseId}${getStatTypeShorthand(stat)}:` }}</code>
+                <code class="ml-2 text-light-4">{{ stat.value }}</code>
+              </div>
             </div>
           </div>
         </div>
@@ -23,19 +31,24 @@
           :key="historyIdx"
           class="border-l-2 border-l-water-blue border-t border-t-water-blue-light px-3 pt-2 pb-3"
         >
-          <div class="text-water-blue">{{ `(history-${historyIdx})` }}</div>
-          <div>
-            <SkillEquipmentButton :equipments="convertEffectEquipment(eft)" />
-          </div>
+          <div class="text-water-blue">{{ history.date }}</div>
           <div class="mt-2">
             <div v-for="(bch, idx) in history.branches" :key="idx">
               <code class="text-blue-purple">
                 {{ `[${bch.id === -1 ? '-' : bch.id}] @${bch.name}` }}
               </code>
-              <div class="pl-2 mt-1">
-                <div v-for="([key, value]) in bch.props.entries()" :key="key">
-                  <code>{{ `$${key}:` }}</code>
-                  <code class="ml-2 text-light-3">{{ value }}</code>
+              <div class="pl-2 mt-1 space-y-1">
+                <div>
+                  <div v-for="([key, value]) in bch.props.entries()" :key="key">
+                    <code>{{ `$${key}:` }}</code>
+                    <code class="ml-2 text-light-3">{{ value }}</code>
+                  </div>
+                </div>
+                <div>
+                  <div v-for="stat in bch.stats" :key="stat.valueId">
+                    <code class="text-dark-light">{{ `${stat.baseId}${getStatTypeShorthand(stat)}:` }}</code>
+                    <code class="ml-2 text-light-4">{{ stat.value }}</code>
+                  </div>
                 </div>
               </div>
             </div>
@@ -47,6 +60,8 @@
 </template>
 
 <script lang="ts" setup>
+import { StatComputed } from '@/lib/Character/Stat'
+import { StatTypes } from '@/lib/Character/Stat/enums'
 import { Skill } from '@/lib/Skill/Skill'
 import { convertEffectEquipment } from '@/lib/Skill/SkillComputingContainer/utils'
 
@@ -57,4 +72,14 @@ interface Props {
 }
 
 defineProps<Props>()
+
+const getStatTypeShorthand = (stat: StatComputed) => {
+  if (stat.type === StatTypes.Multiplier) {
+    return '%'
+  }
+  if (stat.type === StatTypes.Total) {
+    return '~'
+  }
+  return ''
+}
 </script>

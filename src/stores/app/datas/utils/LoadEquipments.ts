@@ -1,4 +1,4 @@
-import { isNumberString } from '@/shared/utils/string'
+import { isNumberString, splitComma } from '@/shared/utils/string'
 
 import ItemsSystem from '@/lib/Items'
 import { Equipment, ItemRecipeMaterialItem } from '@/lib/Items/Item'
@@ -30,7 +30,7 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
 
   const processMaterails = (str: string) => {
     const materials: ItemRecipeMaterialItem[] = []
-    const list = str.split(/\s*,\s*/)
+    const list = splitComma(str)
     list.forEach(item => {
       const parts = item.split('#')
       const name = parts[0],

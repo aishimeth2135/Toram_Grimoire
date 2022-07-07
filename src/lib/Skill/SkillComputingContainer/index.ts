@@ -1,6 +1,7 @@
 import { markRaw, reactive } from 'vue'
 
 import { HandleFormulaTexts, HandleFormulaVars, HandleFormulaMethods } from '@/shared/utils/data'
+import { splitComma } from '@/shared/utils/string'
 
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { StatComputed } from '@/lib/Character/Stat'
@@ -15,12 +16,12 @@ import {
   regressHistoryBranches,
   setBranchAttrsDefaultValue,
   initStackStates,
-  effectAttrsToBranch,
+  initBasicBranchItem,
   initHistoryNexts,
   initBranchesPostpone,
 } from './utils'
 import { SkillBranchNames } from '../Skill/enums'
-import { FormulaDisplayModes } from './enums'
+import { FormulaDisplayModes, SkillBuffs } from './enums'
 
 interface HandleFormulaExtends {
   vars: HandleFormulaVars;
@@ -152,14 +153,13 @@ class SkillEffectItem extends SkillEffectItemBase {
   readonly equipments: EquipmentRestrictions[]
   readonly historys: SkillEffectItemHistory[]
 
+  basicBranchItem!: SkillBranchItem<SkillEffectItem>
+
   constructor(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect) {
     super(parent)
 
     this.branchItems = defaultSef.branches.map(bch => new SkillBranchItem(this, bch))
-    if (!this.branchItems.some(branchItem => branchItem.is(SkillBranchNames.Basic))) {
-      const basicBranch = effectAttrsToBranch(defaultSef)
-      this.branchItems.unshift(new SkillBranchItem(this, basicBranch))
-    }
+    initBasicBranchItem(this, defaultSef)
 
     const current = from ? from : defaultSef
     const dualSwordRegress = defaultSef.parent.effects.every(eft => eft.mainWeapon !== 10)
@@ -279,7 +279,7 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
 
   readonly parent: Parent
   readonly stats: StatComputed[]
-  readonly buffs: string[]
+  buffs: SkillBranchBuffs | null
 
   readonly isEmpty: boolean
 
@@ -317,7 +317,7 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
 
     this._props = markRaw(new Map(branch instanceof SkillBranch ? branch.props : branch.allProps))
     this.stats = markRaw(branch.stats.map(stat => stat.clone()))
-    this.buffs = markRaw([])
+    this.buffs = null
 
     this.isEmpty = branch.isEmpty
 
@@ -387,7 +387,7 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
   }
 
   propBoolean(key: string): boolean {
-    return this._props.get(key) === '1'
+    return this._props.get(key) !== '0'
   }
 
   hasProp(key: string, subKey?: string) {
@@ -446,7 +446,7 @@ class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> 
     this.stackId = this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
 
     this.linkedStackIds = this.stackId !== null ? [] :
-      this.prop('stack_id').split(/\s*,\s*/).map(id => parseInt(id, 10))
+      splitComma(this.prop('stack_id')).map(id => parseInt(id, 10))
 
     this.groupState = {
       size: 0,
@@ -523,6 +523,31 @@ class SkillBranchItemSuffix<Parent extends SkillEffectItemBase = SkillEffectItem
   }
 }
 
+class SkillBranchBuffs {
+  private _buffs: Set<SkillBuffs>
+
+  static SkillBuffList: SkillBuffs[] = [
+    SkillBuffs.MpCostHalf,
+  ]
+
+  constructor(str: string) {
+    this._buffs = new Set();
+    (splitComma(str) as SkillBuffs[]).forEach(item => {
+      if (SkillBranchBuffs.SkillBuffList.includes(item)) {
+        this._buffs.add(item)
+      }
+    })
+  }
+
+  get items() {
+    return [...this._buffs]
+  }
+
+  has(str: SkillBuffs) {
+    return this._buffs.has(str)
+  }
+}
+
 type SkillBranchItemBaseChilds = SkillBranchItem | SkillBranchItemSuffix
 
 export default SkillComputingContainer
@@ -533,6 +558,7 @@ export {
   SkillEffectItemHistory,
   SkillBranchItem,
   SkillBranchItemSuffix,
+  SkillBranchBuffs,
   EquipmentRestrictions,
 }
 

@@ -191,7 +191,7 @@ export default function setupDamageCalculation(
       return isNumberString(constant) && isNumberString(multiplier)
     })
 
-    const skillProperties = computed(() => {
+    const skillProperties = computed<SkillProperties>(() => {
       if (!valid.value) {
         return {
           skillRealMpCost: 0,
@@ -205,7 +205,7 @@ export default function setupDamageCalculation(
         skillRealMpCost: 0,
         skillConstant: parseInt(constant, 10),
         skillMultiplier: parseInt(multiplier, 10),
-      } as SkillProperties
+      }
     })
 
     const baseSuffixBranch = computed(() => container.value.branchItem.suffixBranches.find(suf => suf.is(SkillBranchNames.Base)))
@@ -302,7 +302,7 @@ export default function setupDamageCalculation(
     }
 
     const containerForceHiddenMap = computed(() => {
-      const unsheatheDamageHidden = container.value.getOrigin('unsheathe_damage') !== '1'
+      const unsheatheDamageHidden = container.value.branchItem.propBoolean('unsheathe_damage')
       const baseNone = container.value.branchItem.prop('base') === 'none'
       const baseOrigin = container.value.getOrigin('base')
 
@@ -320,6 +320,8 @@ export default function setupDamageCalculation(
         [CalculationContainerIds.UnsheatheAttackMultiplier, unsheatheDamageHidden],
         [CalculationContainerIds.RangeDamage, container.value.getOrigin('range_damage') === '0'],
         [CalculationContainerIds.BaseTwoHanded, !getSkillLevel(skillTwoHanded).valid || mainType !== EquipmentTypes.Katana],
+
+        [CalculationContainerIds.ComboMultiplier, container.value.branchItem.propBoolean('combo_rate')],
       ])
     })
 

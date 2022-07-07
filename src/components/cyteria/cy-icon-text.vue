@@ -59,6 +59,10 @@ export default defineComponent({
         return ['start', 'center'].includes(value)
       },
     },
+    textMinimize: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     IconBase,
@@ -116,6 +120,7 @@ export default defineComponent({
       return {
         [`text-${textColor.value}`]: true,
         [props.small ? 'ml-2' : 'ml-1.5']: true,
+        'cy-icon-text-minimize': props.textMinimize,
       }
     })
 
@@ -142,5 +147,9 @@ export default defineComponent({
   &.size-small > .cy-icon-text-icon {
     margin-top: calc((1.25rem - var(--icon-text-icon-width)) / 2);
   }
+}
+
+.cy-icon-text-minimize {
+  @apply text-sm leading-none;
 }
 </style>

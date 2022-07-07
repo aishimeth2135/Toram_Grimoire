@@ -14,6 +14,7 @@ import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { FoodBuild } from '@/lib/Character/Food'
 import { StatTypes } from '@/lib/Character/Stat/enums'
 import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+import { SkillBuffs } from '@/lib/Skill/SkillComputingContainer/enums'
 
 import EffectHandler from '@/views/SkillQuery/skill/branch-handlers/EffectHandler'
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/utils/DisplayDataContainer'
@@ -84,7 +85,7 @@ export function setupCharacterSkills(
 
   const extendVars = computed(() => {
     if (!character.value) {
-      return {} as Record<string, any>
+      return {} as Record<string, number>
     }
 
     const subField = character.value.fieldEquipment(EquipmentFieldTypes.SubWeapon)
@@ -111,7 +112,7 @@ export function setupCharacterSkills(
       '$DEX': isPostpone ? postponeOptions.getCharacterStatValue('dex') : 0,
 
       '$guard_power': isPostpone ? postponeOptions.getCharacterStatValue('guard_power') : 0,
-    } as Record<string, any>
+    } as Record<string, number>
   })
   computingContainer.value.handleFormulaDynamicExtends.push(() => {
     if (!character.value) {
@@ -329,7 +330,7 @@ export function setupCharacterSkills(
           return false
         }
         if (bch.is(SkillBranchNames.Next)) {
-          return bch.stats.length !== 0 || bch.prop('mp_cost_half') === '1' || bch.suffixBranches.some(suffixBranchFilter)
+          return bch.stats.length !== 0 || !!(bch.buffs?.has(SkillBuffs.MpCostHalf)) || bch.suffixBranches.some(suffixBranchFilter)
         }
         return false
       }
@@ -367,7 +368,7 @@ export function setupCharacterSkills(
             .map(_bch => StackHandler(_bch)) ?? []
         }))
         basicContainers.set(skill, computed(() => {
-          const basicBranch = currentEffectItem.value?.branchItems.find(bch => bch.is(SkillBranchNames.Basic))
+          const basicBranch = currentEffectItem.value?.basicBranchItem
           return basicBranch ? BasicHandler(basicBranch) : null
         }))
       }
