@@ -17,19 +17,19 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
   const currentTags: Ref<Tag[]> = ref([])
 
   const findTag = (tagName: string): Tag | null => {
-    const tag = Grimoire.Tag.tagList.find(item => item.name === tagName)
+    const tag = Grimoire.Tag.tagList.find(item => item.name.toLowerCase() === tagName.toLowerCase())
     return tag || null
   }
 
   const getTagText = (el: HTMLElement) => el.getAttribute('data-tag') || el.innerText
 
-  const emptyTag = new Tag('0.0')
-  emptyTag.appendFrame('caption', t('skill-query.tag.no-data-tips'))
   const appendTag = (tagName: string): void => {
     const tag = findTag(tagName)
     if (tag) {
       currentTags.value.push(tag)
     } else {
+      const emptyTag = new Tag(tagName)
+      emptyTag.appendFrame('caption', t('skill-query.tag.no-data-tips'))
       currentTags.value.push(emptyTag)
     }
   }

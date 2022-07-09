@@ -387,7 +387,7 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
   }
 
   propBoolean(key: string): boolean {
-    return this._props.get(key) !== '0'
+    return this._props.get(key) === '1'
   }
 
   hasProp(key: string, subKey?: string) {
