@@ -302,7 +302,7 @@ export default function setupDamageCalculation(
     }
 
     const containerForceHiddenMap = computed(() => {
-      const unsheatheDamageHidden = container.value.branchItem.propBoolean('unsheathe_damage')
+      const unsheatheDamageHidden = !container.value.branchItem.propBoolean('unsheathe_damage')
       const baseNone = container.value.branchItem.prop('base') === 'none'
       const baseOrigin = container.value.getOrigin('base')
 
