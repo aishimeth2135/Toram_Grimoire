@@ -164,12 +164,15 @@ const subContents = computed(() => {
 
 const extraSuffixBranchDatas = computed(() => {
   return branchItem.value.suffixBranches
-    .filter(suffix => suffix.is(SkillBranchNames.Extra) && (
-      suffix.prop('caption') ||
-      suffix.prop('ailment_name') ||
-      suffix.prop('element') ||
-      suffix.stats.length > 0
-    ))
+    .filter(suffix => {
+      if (!suffix.is(SkillBranchNames.Extra)) {
+        return false
+      }
+      return suffix.hasProp('caption') ||
+        suffix.hasProp('ailment_name') ||
+        suffix.hasProp('element') ||
+        suffix.stats.length > 0
+    })
     .filter(suffix => !suffix.propBoolean('hidden'))
     .map((suffix, idx) => {
       const dataContainer = ExtraHandler(suffix)

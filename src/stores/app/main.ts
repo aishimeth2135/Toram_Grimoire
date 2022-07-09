@@ -5,7 +5,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { useLanguageStore } from './language'
 
-const version = '4.5.15'
+const version = '4.5.16'
 
 export const useMainStore = defineStore('app-main', () => {
   const redirectPathName = ref<string | null>(null)
@@ -66,13 +66,14 @@ export const useMainStore = defineStore('app-main', () => {
     },
   })
 
-  // const previewMode = window.location.hostname.startsWith('doll-preview')
+  const previewMode = window.location.hostname.startsWith('doll-preview') || window.location.hostname.startsWith('localhost')
 
   return {
     redirectPathName: readonly(redirectPathName),
     version,
     serviceWorker: readonly(serviceWorker),
     devMode,
+    previewMode,
 
     setRedirectPathName,
     clearRedirectPathName,

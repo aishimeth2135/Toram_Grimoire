@@ -23,6 +23,9 @@ equipment:
   "body: title": 身体装备
 tag:
   no-data-tips: 这个名词还没有说明(_ _)
+skill-buffs:
+  skill_cost_half:
+    title: 下一招MP消耗减半
 branch:
   duration-caption: "{duration}秒内"
   ailment-title: 命中成功后
@@ -143,6 +146,8 @@ branch:
     range_damage:
       "true": 受距离威力影响
       "false": 不受距离威力影响
+      long: 恒受远距离威力影响
+      short: 恒受近距离威力影响
       none: 未确认是否受距离威力影响
     is_place:
       "true": 设置型技能

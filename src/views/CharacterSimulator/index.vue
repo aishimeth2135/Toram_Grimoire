@@ -26,7 +26,7 @@
             @click="(toggle('mainContents/damage', null, false), toggle('sideContents/tabs', false))"
           />
           <cy-button-circle
-            v-if="mainStore.devMode"
+            v-if="mainStore.previewMode"
             :selected="mainContents.combo"
             icon="mdi-selection-ellipse-arrow-inside"
             color="green"
