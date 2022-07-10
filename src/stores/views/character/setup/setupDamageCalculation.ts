@@ -321,7 +321,7 @@ export default function setupDamageCalculation(
         [CalculationContainerIds.RangeDamage, container.value.getOrigin('range_damage') === '0'],
         [CalculationContainerIds.BaseTwoHanded, !getSkillLevel(skillTwoHanded).valid || mainType !== EquipmentTypes.Katana],
 
-        [CalculationContainerIds.ComboMultiplier, container.value.branchItem.propBoolean('combo_rate')],
+        [CalculationContainerIds.ComboMultiplier, !container.value.branchItem.propBoolean('combo_rate')],
       ])
     })
 
