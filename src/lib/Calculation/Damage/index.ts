@@ -290,6 +290,7 @@ export default class DamageCalculationSystem {
     // })
     normal(CalculationContainerIds.Stability, container => {
       container.markMultiplier()
+      container.disableFloorResult()
       container.appendItem(CalculationItemIds.Stability)
         .setDefaultValue(75)
         .setRange(0, 100, 10)
@@ -297,10 +298,10 @@ export default class DamageCalculationSystem {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
         const stability = itemContainer.getItemValue(CalculationItemIds.Stability)
         if (currentDamageTypeId === CalculationItemIds.Physical) {
-          return stability / 2 + 50
+          return (stability + 50) / 2
         }
         const baseValue =  50 + stability / 2
-        const extraLimit = baseValue > 90 ? (100 - baseValue) : 0
+        const extraLimit = baseValue > 90 ? (baseValue - 90) : 0
         return (Math.min(baseValue, 90) + 100 + extraLimit) / 2
       })
       // container.setCalcResult((itemContainer) => {
@@ -346,6 +347,7 @@ export default class DamageCalculationSystem {
       ])
 
       container.setCalcResult((itemContainer) => {
+        const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
         const cr = itemContainer.belongCalculation.containers.get(CalculationContainerIds.CriticalRate)!.result()
         const cd = itemContainer.belongCalculation.containers.get(CalculationContainerIds.CriticalDamage)!.result()
         const acContainer = itemContainer.belongCalculation.containers.get(CalculationContainerIds.Accuracy)!
@@ -354,10 +356,14 @@ export default class DamageCalculationSystem {
         // no need to check `acContainer.enable` beacause `ac` is `100` when `acContaner.enable` is `false`
         const pac = acContainer.getItemValue(CalculationItemIds.PromisedAccuracyRate)
 
-        const stability = itemContainer.belongCalculation.containers.get(CalculationContainerIds.Stability)!.result()
+        if (currentDamageTypeId === CalculationItemIds.Magic) {
+          const stabilityRes = itemContainer.belongCalculation.containers.get(CalculationContainerIds.Stability)!.result()
+          return (stabilityRes * cr * cd / 100 + stabilityRes * (100 - cr)) / 100
+        }
+        const stability = itemContainer.belongCalculation.containers.get(CalculationContainerIds.Stability)!.getItemValue(CalculationItemIds.Stability)
         return (
-          ((stability + 100) / 2 * ac + (stability / 2 + 100) / 2 * (100 - ac)) * cr * cd / 100 +
-          ((stability + 100) / 2 * ac + (stability / 2 + 100) / 2 * Math.max(0, pac - ac)) * (100 - cr)
+          ((stability + 100) * ac + (stability / 2 + 100) * (100 - ac)) * cr * cd / 200 +
+          ((stability + 100) * ac + (stability / 2 + 100) * Math.max(0, pac - ac)) * (100 - cr) / 2
         ) / 10000
       })
     })
