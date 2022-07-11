@@ -686,9 +686,7 @@ export function setupCharacterStats(
       if (postponeStats && postponeStats.value.length === 0 && resultsCache) {
         return resultsCache.characterPureStats.value
       }
-
       const allStats = new Map<string, Stat>(basePureStatsEntries.value.map(([statId, stat]) => [statId, stat.clone()]))
-
       if (postponeStats) {
         mergeStats(allStats, postponeStats.value)
       }
@@ -736,6 +734,13 @@ export function setupCharacterStats(
     characterPureStats: _characterPureStats,
   } = baseResults
 
+  const baseCharacterStatCategoryResultsMap = new Map<string, number>()
+  _characterStatCategoryResults.value.forEach(categoryResult => {
+    categoryResult.stats.forEach(stat => {
+      baseCharacterStatCategoryResultsMap.set(stat.id, stat.resultValue)
+    })
+  })
+
   const {
     skillPureStats: postponedSkillPureStats,
     skillConditionalStatContainers,
@@ -747,18 +752,7 @@ export function setupCharacterStats(
     skillBuild,
     handleOptions,
     {
-      getCharacterStatValue: (id: string) => {
-        let find!: CharacterStatResultWithId
-        _characterStatCategoryResults.value.some(categoryResult => {
-          const statResult = categoryResult.stats.find(stat => stat.id === id)
-          if (statResult) {
-            find = statResult
-            return true
-          }
-          return false
-        })
-        return find ? find.resultValue : 0
-      },
+      getCharacterStatValue: id => baseCharacterStatCategoryResultsMap.get(id) ?? 0,
       getCharacterPureStatValue: (id: string) => {
         let type = StatTypes.Constant
         if (id.charAt(id.length - 1) === '%') {
