@@ -1,4 +1,4 @@
-import { computed, ComputedRef, reactive, ref, Ref } from 'vue'
+import { computed, ComputedRef, reactive, ref, Ref, watch } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
@@ -12,7 +12,6 @@ import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import { Stat, StatComputed, StatRestriction } from '@/lib/Character/Stat'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { FoodBuild } from '@/lib/Character/Food'
-import { StatTypes } from '@/lib/Character/Stat/enums'
 import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 import { SkillBuffs } from '@/lib/Skill/SkillComputingContainer/enums'
 
@@ -734,12 +733,25 @@ export function setupCharacterStats(
     characterPureStats: _characterPureStats,
   } = baseResults
 
-  const baseCharacterStatCategoryResultsMap = new Map<string, number>()
-  _characterStatCategoryResults.value.forEach(categoryResult => {
-    categoryResult.stats.forEach(stat => {
-      baseCharacterStatCategoryResultsMap.set(stat.id, stat.resultValue)
+  const baseCharacterStatCategoryResultsMap = ref(undefined as unknown as Map<string, number>)
+  watch(_characterStatCategoryResults, newValue => {
+    const newMap = new Map<string, number>()
+    newValue.forEach(categoryResult => {
+      categoryResult.stats.forEach(stat => {
+        newMap.set(stat.id, stat.resultValue)
+      })
     })
-  })
+    baseCharacterStatCategoryResultsMap.value = newMap
+  }, { immediate: true })
+
+  const baseCharacterPureStats = ref(undefined as unknown as Map<string, number>)
+  watch(_characterPureStats, newValue => {
+    const newMap = new Map<string, number>()
+    newValue.forEach(stat => {
+      newMap.set(stat.statId, stat.value)
+    })
+    baseCharacterPureStats.value = newMap
+  }, { immediate: true })
 
   const {
     skillPureStats: postponedSkillPureStats,
@@ -752,18 +764,8 @@ export function setupCharacterStats(
     skillBuild,
     handleOptions,
     {
-      getCharacterStatValue: id => baseCharacterStatCategoryResultsMap.get(id) ?? 0,
-      getCharacterPureStatValue: (id: string) => {
-        let type = StatTypes.Constant
-        if (id.charAt(id.length - 1) === '%') {
-          type = StatTypes.Multiplier
-          id = id.slice(0, id.length - 1)
-        } else if (id.charAt(id.length - 1) === '~') {
-          type = StatTypes.Total
-          id = id.slice(0, id.length - 1)
-        }
-        return _characterPureStats.value.find(stat => stat.baseId === id && stat.type === type)?.value ?? 0
-      },
+      getCharacterStatValue: id => baseCharacterStatCategoryResultsMap.value.get(id) ?? 0,
+      getCharacterPureStatValue: id => baseCharacterPureStats.value.get(id) ?? 0,
       getSkillBranchItemState: skillSetupDatas.getSkillBranchItemState,
     },
   )

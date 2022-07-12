@@ -1,5 +1,5 @@
 <template>
-  <cy-popover>
+  <cy-popover placement="bottom-end">
     <template #default="{ shown }">
       <cy-button-icon
         icon="ic:baseline-settings"
