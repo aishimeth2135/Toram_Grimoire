@@ -229,7 +229,7 @@ export default function setupDamageCalculation(
 
         [CalculationItemIds.SkillRealMpCost, skillProperties.value.skillRealMpCost],
         [CalculationItemIds.SkillConstant, skillProperties.value.skillConstant + statValue('skill_constant_extra')],
-        [CalculationItemIds.SkillMultiplier, (skillProperties.value.skillMultiplier * (100 + statValue('total_skill_multiplier')) / 100)],
+        [CalculationItemIds.SkillMultiplier, ((skillProperties.value.skillMultiplier + statValue('skill_multiplier_extra')) * (100 + statValue('total_skill_multiplier')) / 100)],
 
         [CalculationItemIds.TargetPhysicalResistance, targetProperties.value.physicalResistance],
         [CalculationItemIds.TargetMagicResistance, targetProperties.value.magicResistance],
