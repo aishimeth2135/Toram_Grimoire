@@ -108,12 +108,19 @@ function branchOverwrite(to: SkillBranchItem, from: SkillBranch | SkillBranchIte
       }
     }
   })
+}
 
-  // init special props
-  if (to.hasProp('buffs')) {
-    to.buffs = new SkillBranchBuffs(to.prop('buffs'))
-    to.removeProp('buffs')
-  }
+/**
+ * Should call after branch be overwritten.
+ * @param eft
+ */
+function initBranchSpecialProps(eft: SkillEffectItem) {
+  eft.branchItems.forEach(bch => {
+    if ((bch.is(SkillBranchNames.Effect) || bch.is(SkillBranchNames.Damage)) && bch.hasProp('buffs')) {
+      bch.buffs = new SkillBranchBuffs(bch.prop('buffs'))
+      bch.removeProp('buffs')
+    }
+  })
 }
 
 /**
@@ -366,6 +373,7 @@ export {
   initBasicBranchItem,
   convertEffectEquipment,
   effectOverwrite,
+  initBranchSpecialProps,
   separateSuffixBranches,
   handleVirtualBranches,
   initStackStates,

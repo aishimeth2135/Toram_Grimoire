@@ -24,6 +24,7 @@ select-positives:
   title: 請選擇要附的能力。
   caption: 請選擇想要附的正屬。至少要選擇一個，最多可以選擇八個0.0
   auto-fill: 選取時自動補到最大值
+  use-shorthand: 使用簡寫新增能力
 select-negatives:
   title: 請選擇退潛的能力。
   caption: 請選擇用來退潛的負屬，也可以讓布偶自動選取0.0。布偶將在設定的條件下嘗試找出成功率最高的退潛項目。

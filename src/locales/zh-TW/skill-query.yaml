@@ -24,8 +24,8 @@ equipment:
 tag:
   no-data-tips: 這個名詞還沒有說明(_ _)
 skill-buffs:
-  skill_cost_half:
-    title: 下一招MP消耗減半
+  mp_cost_half:
+    title: MP消耗減半
 branch:
   duration-caption: "{duration}秒內"
   ailment-title: 命中成功後

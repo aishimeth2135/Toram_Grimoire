@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="flex items-center flex-wrap w-full">
-      <cy-icon-text icon="ic:round-label" color="orange">
+      <cy-button-check v-model:selected="enabled" color="orange" inline>
         {{ result.container.get('name') }}
-      </cy-icon-text>
+      </cy-button-check>
       <div class="flex items-center space-x-0.5 ml-3">
         <div v-if="valid" class="text-light-3">
           {{ expectedResult }}
@@ -20,25 +20,6 @@
           class="attr-item"
           v-html="result.container.get('frequency')"
         />
-      </div>
-      <div v-if="valid && store.calculationOptions.armorBreakDisplay" class="flex items-baseline pl-2.5 ml-3 border-l border-light">
-        <div class="text-water-blue-light text-sm mr-2">
-          {{ t('character-simulator.character-damage.armor-break') }}
-        </div>
-        <div class="flex items-center space-x-0.5">
-          <div class="text-water-blue">
-            {{ armorBreakExpectedResult }}
-          </div>
-          <cy-icon-text
-            v-if="frequencyVisible && result.container.get('frequency')"
-            icon="ic-round-close"
-          />
-          <span
-            v-if="frequencyVisible"
-            class="attr-item"
-            v-html="result.container.get('frequency')"
-          />
-        </div>
       </div>
       <cy-button-icon icon="majesticons:checkbox-list-detail-line" class="ml-auto" @click="toggle('contents/detail')" />
     </div>
@@ -87,20 +68,47 @@ import { markText } from '@/shared/utils/view'
 import { CalcItem } from '@/lib/Calculation/Damage/Calculation'
 import { ContainerTypes } from '@/lib/Calculation/Damage/Calculation/enums'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import { SkillBranch } from '@/lib/Skill/Skill'
+import { Stat } from '@/lib/Character/Stat'
 
 import ToggleService from '@/setup/ToggleService'
 
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'
 
 import { setupCharacterStore } from '../setup'
-import { setupSkilResultExtraStats, setupStoreDamageCalculationExpectedResult } from './setup'
-
+import { setupSkilResultExtraStats } from '../character-damage/setup'
 
 interface Props {
   result: SkillResult;
+  comboRate: number;
+  unselectedBranches: SkillBranch[];
+  extraStats: Stat[];
+}
+interface Emits {
+  (evt: 'update:unselected-branches', value: SkillBranch[]): void;
 }
 
 const props = defineProps<Props>()
+const emit = defineEmits<Emits>()
+
+const enabled = computed({
+  get() {
+    return !props.unselectedBranches.includes(props.result.container.branchItem.default)
+  },
+  set(value) {
+    const unselectedBranches = props.unselectedBranches?.slice()
+    if (unselectedBranches) {
+      const branch = props.result.container.branchItem.default
+      if (value) {
+        const idx = unselectedBranches.indexOf(branch)
+        unselectedBranches.splice(idx, 1)
+      } else {
+        unselectedBranches.push(branch)
+      }
+      emit('update:unselected-branches', unselectedBranches)
+    }
+  },
+})
 
 const { store } = setupCharacterStore()
 const { t } = useI18n()
@@ -110,11 +118,18 @@ const { contents, toggle } = ToggleService({
 
 const result = computed(() => props.result)
 
-const { extraStats } = setupSkilResultExtraStats(result)
+const { extraStats: baseExtraStats } = setupSkilResultExtraStats(result)
+const extraStats = computed(() => [...baseExtraStats.value, ...props.extraStats])
 
-const { valid, calculation, expectedResult } = setupStoreDamageCalculationExpectedResult(result, extraStats)
-
-const { expectedResult: armorBreakExpectedResult } = setupStoreDamageCalculationExpectedResult(result, extraStats, { armorBreak: true })
+const { valid, calculation, expectedResult } = store.setupDamageCalculationExpectedResult(
+  result,
+  extraStats,
+  computed(() => store.targetProperties),
+  computed(() => ({
+    ...store.calculationOptions,
+    comboRate: props.comboRate,
+  })),
+)
 
 const frequencyVisible = computed(() => {
   return valid.value && props.result.container.branchItem.prop('title') === 'each'
@@ -150,5 +165,11 @@ const calculationItems = computed(() => {
 const statExtraContainers = computed(() => {
   return props.result.suffixContainers
     .filter(suf => suf.branchItem.is(SkillBranchNames.Extra) && suf.statContainers.length > 0)
+})
+
+defineExpose({
+  valid,
+  calculation,
+  expectedResult: computed(() => enabled.value ? expectedResult.value : 0),
 })
 </script>

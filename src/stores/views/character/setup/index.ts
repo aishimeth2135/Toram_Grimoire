@@ -360,7 +360,7 @@ export function setupCharacterSkills(
       if (damageSkillBranchItems) {
         computingResultsDamage.set(skill, handleComputingResults(damageSkillBranchItems, DamageHandler, [SkillBranchNames.Damage]))
       }
-      if (activeSkillBranchItems || passiveSkillBranchItems || damageSkillBranchItems) {
+      if (activeSkillBranchItems || passiveSkillBranchItems || damageSkillBranchItems || nextSkillBranchItems) {
         stackContainers.set(skill, computed(() => {
           return currentEffectItem.value?.branchItems
             .filter(_bch => _bch.is(SkillBranchNames.Stack) && !_bch.hasProp('value'))

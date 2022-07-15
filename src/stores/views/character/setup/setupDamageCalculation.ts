@@ -34,7 +34,7 @@ export interface TargetProperties {
 
 export interface CalculationOptions {
   proration: number;
-  comboMultiplier: number;
+  comboRate: number;
   armorBreakDisplay: boolean;
 }
 
@@ -241,7 +241,7 @@ export default function setupDamageCalculation(
         [CalculationItemIds.TargetDodge, targetProperties.value.dodge],
 
         [CalculationItemIds.Proration, calculationOptions.value.proration],
-        [CalculationItemIds.ComboMultiplier, calculationOptions.value.comboMultiplier],
+        [CalculationItemIds.ComboMultiplier, calculationOptions.value.comboRate],
       ])
     })
 

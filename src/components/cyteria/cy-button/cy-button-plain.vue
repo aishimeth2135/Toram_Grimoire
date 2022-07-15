@@ -46,7 +46,7 @@ export default defineComponent({
   --button-color-text: var(--button-color-main-light);
   --button-color-text-hover: var(--button-color-main);
 
-  &:hover {
+  &:hover, &.button-selected {
     color: var(--button-color-text-hover);
   }
 
