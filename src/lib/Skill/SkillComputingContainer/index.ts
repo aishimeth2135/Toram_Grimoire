@@ -19,6 +19,7 @@ import {
   initBasicBranchItem,
   initHistoryNexts,
   initBranchesPostpone,
+  initBranchSpecialProps,
 } from './utils'
 import { SkillBranchNames } from '../Skill/enums'
 import { FormulaDisplayModes, SkillBuffs } from './enums'
@@ -171,6 +172,7 @@ class SkillEffectItem extends SkillEffectItemBase {
       effectOverwrite(this, from)
     }
     setBranchAttrsDefaultValue(this)
+    initBranchSpecialProps(this)
 
     regressHistoryBranches(this)
 

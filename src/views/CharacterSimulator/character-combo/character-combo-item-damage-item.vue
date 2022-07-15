@@ -1,45 +1,44 @@
 <template>
-  <cy-list-item pure>
-    <div class="w-full pt-0.5">
-      <div class="flex items-center">
-        <div
-          class="mr-3 flex flex-shrink-0"
-          style="min-width: 10rem"
-        >
-          <cy-icon-text :icon="skillIconPath" icon-src="image" color="purple">
-            {{ skillResultsState.skill.name }}
-          </cy-icon-text>
-        </div>
-        <div v-if="skillResultsState.stackContainers.length > 0" class="ml-auto inline-flex">
-          <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
-        </div>
-      </div>
-      <div class="pl-1 pb-1">
-        <div class="pt-2 pl-2 space-y-2">
-          <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
-            <CharacterDamageSkillResultItem
-              ref="resultItemRefs"
-              v-model:unselected-branches="comboSkillState.comboSkill.parent.config.unselectedBranches/* eslint-disable-line vue/no-mutating-props */"
-              :result="result"
-              :extra-stats="extraStats"
-            />
-          </div>
-        </div>
-      </div>
-      <div v-if="previousSkillNextResultsState" class="pt-1">
-        <cy-icon-text text-color="light-2" small>
-          {{ t('character-simulator.combo.damage-calc.previous-skill-next-title') }}
+  <div class="py-2 px-0.5">
+    <div class="flex items-center">
+      <div
+        class="mr-3 flex flex-shrink-0"
+        style="min-width: 10rem"
+      >
+        <cy-icon-text :icon="skillIconPath" icon-src="image" color="purple">
+          {{ skillResultsState.skill.name }}
         </cy-icon-text>
-        <div class="pl-5">
-          <CharacterComboItemResultItem
-            v-for="result in previousSkillNextResultsState.results"
-            :key="result.container.instanceId"
+      </div>
+      <div v-if="skillResultsState.stackContainers.length > 0" class="ml-auto inline-flex">
+        <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
+      </div>
+    </div>
+    <div class="pl-1 pb-1">
+      <div class="pt-2 pl-2 space-y-2">
+        <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
+          <CharacterComboItemDamageResultItem
+            ref="resultItemRefs"
+            v-model:unselected-branches="comboSkillState.comboSkill.parent.config.unselectedBranches/* eslint-disable-line vue/no-mutating-props */"
             :result="result"
+            :extra-stats="extraStats"
+            :combo-rate="comboSkillState.rate"
           />
         </div>
       </div>
     </div>
-  </cy-list-item>
+    <div v-if="previousSkillNextResultsState" class="pt-1">
+      <cy-icon-text text-color="light-2" small>
+        {{ t('character-simulator.combo.damage-calc.previous-skill-next-title') }}
+      </cy-icon-text>
+      <div class="pl-5">
+        <CharacterComboItemResultItem
+          v-for="result in previousSkillNextResultsState.results"
+          :key="result.container.instanceId"
+          :result="result"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -53,7 +52,7 @@ import { ComboSkillState } from '@/lib/Character/CharacterCombo'
 import { Skill } from '@/lib/Skill/Skill'
 import { Stat } from '@/lib/Character/Stat'
 
-import CharacterDamageSkillResultItem from '../character-damage/character-damage-skill-result-item.vue'
+import CharacterComboItemDamageResultItem from './character-combo-item-damage-result-item.vue'
 import CharacterSkillItemOptions from '../character-skill/character-skill-tab/character-skill-item-options.vue'
 import CharacterComboItemResultItem from './character-combo-item-result-item.vue'
 
@@ -69,11 +68,10 @@ const props = defineProps<Props>()
 const { store } = setupCharacterStore()
 const { t } = useI18n()
 
-const resultItemRefs: Ref<InstanceType<typeof CharacterDamageSkillResultItem>[]> = ref([])
+const resultItemRefs: Ref<InstanceType<typeof CharacterComboItemDamageResultItem>[]> = ref([])
 
 const expectedResultSum = computed(() => {
-  const result = resultItemRefs.value.reduce((cur, item) => cur + item.expectedResult, 0)
-  return Math.floor(result * props.comboSkillState.rate / 100)
+  return resultItemRefs.value.reduce((cur, item) => cur + item.expectedResult, 0)
 })
 
 const skillIconPath = computed(() => getSkillIconPath(props.skillResultsState.skill))

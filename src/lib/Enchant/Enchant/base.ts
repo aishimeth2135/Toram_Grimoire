@@ -76,7 +76,7 @@ class EnchantItem {
     potentialConvertThreshold,
   }: EnchantItemParams) {
     this._category = category
-    this.statBase = Grimoire.Character.findStatBase(baseId) as StatBase
+    this.statBase = Grimoire.Character.findStatBase(baseId)!
     this.conditionalProps = []
     this.potential = {
       [StatTypes.Constant]: potential[0],

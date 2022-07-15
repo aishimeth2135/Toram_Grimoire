@@ -1,5 +1,5 @@
 <template>
-  <div v-if="currentCharacter" class="divide-y-1 divide-light">
+  <div v-if="currentCharacter" class="space-y-2">
     <CharacterComboItem
       v-for="(combo, index) in currentCharacter.comboBuild.combos"
       :key="combo.instanceId"

@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4 py-3">
+  <div class="px-4 py-2 border-l-2 border-light-2">
     <!-- <div class="flex items-center justify-center">
       <div>
         <cy-icon-text icon="mdi-sword" color="red">{{ expectedDamageSum }}</cy-icon-text>
@@ -33,14 +33,15 @@
         </div>
       </div>
     </div>
-    <div v-if="damageCalcEnabled" class="border-t border-light mt-2.5 pt-3">
-      <div class="flex items-center px-1">
-        <cy-icon-text icon="mdi-sword" text-color="light-2">
+    <div v-if="damageCalcEnabled" class="mt-3">
+      <div class="flex items-center border-b border-blue-purple-light px-1 py-0.5 relative">
+        <cy-icon-text icon="mdi-sword" icon-color="blue-purple-light" text-color="blue-purple-light" small>
           {{ t('character-simulator.combo.damage-calc.damage-sum-title') }}
         </cy-icon-text>
-        <span class="text-blue-purple ml-2">{{ expectedDamageSum }}</span>
+        <span class="text-blue-purple ml-3">{{ expectedDamageSum }}</span>
+        <div class="absolute bottom-0 right-0 w-3 h-3 bg-blue-purple-light" />
       </div>
-      <div class="mt-1">
+      <div class="mt-1 divide-y divide-light-2">
         <CharacterComboItemDamageItem
           v-for="{ resultsState, comboSkillState } in comboSkillStateItems"
           :key="resultsState.skill.skillId"
@@ -102,7 +103,7 @@ const getMpCost = (skill: Skill, previous: Skill | null) => {
   if (!resultState || !resultState.basicContainer) {
     return 0
   }
-  const previousResultState = previous ? states.find(state => state.skill.skillId === previous.skillId) : null
+  const previousResultState = previous ? store.nextSkillResultStates.find(state => state.skill.skillId === previous.skillId) : null
   const mpCost = resultState.basicContainer.getValue('mp_cost')
   if (isNumberString(mpCost)) {
     let value = parseInt(mpCost, 10)

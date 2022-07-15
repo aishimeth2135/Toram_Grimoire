@@ -3,6 +3,7 @@
     :is="link ? 'a' : 'button'"
     class="cy-button-base"
     :class="classList"
+    :disabled="disabled"
   >
     <slot icon-class="cy-button-base-icon" />
   </component>

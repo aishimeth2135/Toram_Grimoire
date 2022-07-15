@@ -19,7 +19,7 @@
           </cy-input-counter>
         </div>
         <div>
-          <cy-input-counter v-model:value="store.calculationOptions.comboMultiplier" :range="[10, 150]">
+          <cy-input-counter v-model:value="store.calculationOptions.comboRate" :range="[10, 150]">
             <template #title>
               <cy-icon-text>{{ t('damage-calculation.item-base-titles.combo_multiplier') }}</cy-icon-text>
             </template>

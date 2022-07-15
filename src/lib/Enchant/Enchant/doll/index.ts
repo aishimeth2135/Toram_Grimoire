@@ -180,10 +180,10 @@ export default class EnchantDoll {
       // 回傳成功率最高的裝備
       resultEqs.sort(sortResult)
 
-      // console.group(`%c  %c${resultEqs.length} kinds of results\n%c  %c${errorEqs.length} kinds of error-results`,
-      //   'background-color: #e8caed; border-radius: 50%; margin-right: 12px',
+      // console.group(`%c  %c${resultEqs.length} results\n%c  %c${errorEqs.length} error results`,
+      //   'background-color: #e8caed; border-radius: 50%; margin-right: 12px; font-size: 12px',
       //   'color: #e8caed',
-      //   'background-color: red; border-radius: 50%; margin-right: 12px',
+      //   'background-color: red; border-radius: 50%; margin-right: 12px; font-size: 12px',
       //   'color: #e8caed')
       // resultEqs.forEach(deq => {
       //   console.group(`[ ${deq.equipment.successRate} ] [steps: ${deq.equipment.operationStepsNum}]`)

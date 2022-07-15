@@ -166,6 +166,43 @@
             {{ t('enchant-doll.select-positives.auto-fill') }}
           </cy-button-check>
         </div>
+        <div class="flex justify-center pt-4">
+          <cy-button-plain
+            :icon="contents.positiveShorthand ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
+            :selected="contents.positiveShorthand"
+            color="secondary"
+            @click="toggle('contents/positiveShorthand')"
+          >
+            {{ t('enchant-doll.select-positives.use-shorthand') }}
+          </cy-button-plain>
+        </div>
+        <div v-if="contents.positiveShorthand" class="flex justify-center">
+          <div class="inline-block">
+            <div class="flex items-center justify-center">
+              <cy-title-input
+                v-model:value="positiveStatsShorthand"
+                class="max-w-sm"
+                icon=ic:round-text-format
+                @keyup.enter="appendPositiveShortHandStats"
+              />
+              <cy-button-circle
+                icon="ic-round-done"
+                small
+                class="ml-1.5"
+                :disabled="positiveStatsShorthand === ''"
+                @click="appendPositiveShortHandStats"
+              />
+            </div>
+            <div v-if="positiveShortHandStatItems.length > 0" class="text-light-3 px-1 pt-1">
+              <div v-for="{ origin, type, value } in positiveShortHandStatItems" :key="origin.statBase.statId(type)">
+                {{ origin.statBase.show(type, value) }}
+              </div>
+            </div>
+            <div v-else class="text-light-2 text-center">
+              ex: AD3CD%CDC
+            </div>
+          </div>
+        </div>
         <cy-transition>
           <div
             v-if="stepCounter > StepContents.SelectPositiveStat"
@@ -531,10 +568,11 @@ import EnchantResult from '../EnchantSimulator/enchant-result.vue'
 import EnchantSelectItem from '../EnchantSimulator/enchant-select-item.vue'
 
 import { EnchantStatOptionBase } from '../EnchantSimulator/setup'
+import { setupParseEnchantShorthand } from './setup'
 
 const { windows, contents, toggle } = ToggleService({
   windows: ['selectItem'] as const,
-  contents: ['setConfig'] as const,
+  contents: ['setConfig', 'positiveShorthand'] as const,
 })
 const store = useEnchantStore()
 const { t } = useI18n()
@@ -562,14 +600,11 @@ const enum SelectItemModes {
 }
 
 const doll = ref(new EnchantDoll()) as Ref<EnchantDoll>
-
 const stepCounter = ref(StepContents.Equipment)
-
 const selectItemMode: Ref<SelectItemModes> = ref(SelectItemModes.None)
-
 const autoNegativeStatsData: Ref<ReturnType<EnchantDoll['autoFindNegaitveStats']> | null> = ref(null)
-
 const resultEquipment: Ref<EnchantEquipment | null> = ref(null)
+const positiveStatsShorthand = ref('')
 
 const consts = {
   autoFindPotentialMinimumLimit: 99,
@@ -630,6 +665,18 @@ const currentEquipment = computed(() => doll.value.build.equipment)
 const equipmentIsWeapon = computed(() => currentEquipment.value.fieldType === EnchantEquipmentTypes.MainWeapon)
 
 const autoNegativeStats = computed(()  => autoNegativeStatsData.value ? autoNegativeStatsData.value.stats : [])
+
+const { enchantShortHandStatItems: positiveShortHandStatItems } = setupParseEnchantShorthand(positiveStatsShorthand)
+const appendPositiveShortHandStats = () => {
+  positiveShortHandStatItems.value.forEach(({ origin, type, value }) => {
+    if (doll.value.hasPositiveStat(origin, type)) {
+      return
+    }
+    const _value = value === null ? origin.getLimit(type)[1] : value
+    doll.value.appendPositiveStat(origin, type, _value) // ignore failed
+  })
+  positiveStatsShorthand.value = ''
+}
 
 const negativeStats = computed(() => {
   if (selectNegativeStatState.auto) {

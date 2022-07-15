@@ -236,7 +236,7 @@ export default class EnchantDollEquipmentContainer {
 
           if (pstat.originalPotential === 3 && currentExtraRate === 1.2 && step.remainingPotential > 0)  {
             /**
-             * ==== 遇到耗潛3的能力，且倍率為1.2。
+             * 遇到耗潛3的能力，且倍率為1.2。
              *  - 嘗試在這裡就把耗潛3的能力先分次附完的附法。
              *  - 建立一個副本去做正常的附法。
              */
@@ -354,15 +354,14 @@ export default class EnchantDollEquipmentContainer {
     })
     // removes必定是由小到大排序，陣列從尾端開始刪就不會影響順序
     while (removes.length !== 0) {
-      target.splice(removes.pop() as number, 1)
+      target.splice(removes.pop()!, 1)
     }
   }
 
   /**
    * 退潛之前，嘗試最大化利用剩餘的潛。
-   * @returns {Array<EnchantDollEquipmentContainer>}
    */
-  mostUseRemainingPotential() {
+  mostUseRemainingPotential(): EnchantDollEquipmentContainer[] {
     this.equipment.steps().forEach(step => step.optimizeType(-1))
     return [
       ...this.handleMostUseRemainingPotential(true),
@@ -698,10 +697,19 @@ export default class EnchantDollEquipmentContainer {
           if (value1 === value2) {
             return item2.value - item1.value
           }
-          return value1 - value2 // 大的擺前面
+          return value1 - value2 // 會從最後面開始拿，大的擺後面
         })
-        if (list[0].value < noRatePositiveStats[0].originalPotential) {
-          const tstat = noRatePositiveStats[0]
+        // if (list[0].value < noRatePositiveStats[0].originalPotential) {
+        //   const tstat = noRatePositiveStats[0]
+        //   const value = tstat.itemBase.getPotential(tstat.type, targetEq)
+        //   list.push({
+        //     type: 'unused',
+        //     stat: tstat,
+        //     value,
+        //     existedAndNoRate: false,
+        //   })
+        // }
+        noRatePositiveStats.forEach(tstat => {
           const value = tstat.itemBase.getPotential(tstat.type, targetEq)
           list.push({
             type: 'unused',
@@ -709,7 +717,7 @@ export default class EnchantDollEquipmentContainer {
             value,
             existedAndNoRate: false,
           })
-        }
+        })
       }
     }
     /**
