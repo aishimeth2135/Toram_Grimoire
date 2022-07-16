@@ -312,6 +312,7 @@ export default function setupDamageCalculation(
         [CalculationContainerIds.BaseAtk, baseNone || baseOrigin === 'matk'],
         [CalculationContainerIds.BaseMatk, baseNone || baseOrigin === 'atk' || baseSuffixBranch.value?.prop('type') === 'dual_sword'],
         [CalculationContainerIds.BaseDualSword, !character.value ||
+          baseSuffixBranch.value?.prop('type') !== 'dual_sword' ||
           !character.value.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.OneHandSword) ||
           !character.value.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword),
         ],
