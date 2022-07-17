@@ -2,6 +2,7 @@
   <CyButtonBase
     v-slot="{ iconClass }"
     v-bind="buttonBaseBinds"
+    :style="rootStyle"
     class="cy-button-icon mx-1"
   >
     <ButtonIcon
@@ -26,6 +27,14 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    iconColor: {
+      type: String,
+      default: null,
+    },
+    iconColorHover: {
+      type: String,
+      default: null,
+    },
   },
   components: {
     CyButtonBase,
@@ -34,6 +43,17 @@ export default defineComponent({
   computed: {
     buttonBaseBinds() {
       return getButtonBaseBinds(this)
+    },
+    rootStyle() {
+      const styles = {} as Record<string, string>
+      if (this.iconColor) {
+        styles['--button-color-icon'] = `var(--app-${this.iconColor})`
+        styles['--button-color-icon-hover'] = `var(--app-${this.iconColor})`
+      }
+      if (this.iconColorHover) {
+        styles['--button-color-icon-hover'] = `var(--app-${this.iconColorHover})`
+      }
+      return styles
     },
   },
 })
