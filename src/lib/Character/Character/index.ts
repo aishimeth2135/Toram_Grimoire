@@ -6,9 +6,10 @@ import { splitComma } from '@/shared/utils/string'
 
 import { SubWeapon, SubArmor, CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
-import { StatBase, Stat } from '@/lib/Character/Stat'
-import { StatTypes } from  '@/lib/Character/Stat/enums'
-
+import { StatBase, StatValueSource, StatRecorded } from '@/lib/Character/Stat'
+import { StatTypes, StatValueSourceTypes } from  '@/lib/Character/Stat/enums'
+import { SkillBranch } from '@/lib/Skill/Skill'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import CharacterSystem from '../index'
 import { EquipmentFieldTypes, CharacterBaseStatTypes, CharacterOptionalBaseStatTypes } from './enums'
@@ -440,6 +441,11 @@ interface StatPartsDetail {
     total: number;
     base: number;
   };
+  statRecordeds: {
+    constant: StatRecorded | null;
+    multiplier: StatRecorded | null;
+    total: StatRecorded | null;
+  };
 }
 
 interface CharacterStatOptions {
@@ -552,7 +558,7 @@ class CharacterStat {
     })
   }
 
-  result(currentStats: Stat[], vars: CharacterStatResultVars): CharacterStatResult {
+  result(currentStats: StatRecorded[], vars: CharacterStatResultVars): CharacterStatResult {
     if (this.id in vars.computedResultStore) {
       return vars.computedResultStore[this.id]
     }
@@ -623,6 +629,11 @@ class CharacterStat {
             total: 0,
             base: 0,
           },
+          statRecordeds: {
+            constant: null,
+            multiplier: null,
+            total: null,
+          },
         },
         conditionalBase: {
           conditional: '',
@@ -664,16 +675,25 @@ class CharacterStatFormula {
   /**
    * @param pureStats - pure stats. All stat ID of stat must be unique
    */
-  calc(pureStats: Stat[], vars: CharacterStatResultVars): CharacterStatFormulaResult {
+  calc(pureStats: StatRecorded[], vars: CharacterStatResultVars): CharacterStatFormulaResult {
     const allCharacterStatMap: { [key: string]: CharacterStat } = {}
     this.belongCharacterStat.category.belongCategorys
       .map(cat => cat.stats).flat()
       .forEach(stat => allCharacterStatMap[stat.id] = stat)
 
-    const checkBaseName = (stat: Stat) => stat.baseId === this.belongCharacterStat.link
-    const cstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Constant),
-      mstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Multiplier),
-      tstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Total)
+    const checkBaseName = (stat: StatRecorded) => stat.baseId === this.belongCharacterStat.link
+    let cstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Constant)?.clone(),
+      mstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Multiplier)?.clone(),
+      tstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Total)?.clone()
+
+    // `sub-weapon-atk` will ignore `weapon_atk` provided by active skill
+    if (this.belongCharacterStat.id === 'sub_weapon_atk') {
+      const filter = (src: StatValueSource) => src.type !== StatValueSourceTypes.Skill || (src.src as SkillBranch).name === SkillBranchNames.Passive
+      cstat = cstat?.filterSource(filter)
+      mstat = mstat?.filterSource(filter)
+      tstat = tstat?.filterSource(filter)
+    }
+
     let cvalue = cstat ? cstat.value : 0,
       mvalue = mstat ? mstat.value : 0,
       tvalue = tstat ? tstat.value : 0
@@ -692,6 +712,11 @@ class CharacterStatFormula {
         multiplier: mvalue,
         total: tvalue,
         base: 0,
+      },
+      statRecordeds: {
+        constant: cstat ?? null,
+        multiplier: mstat ?? null,
+        total: tstat ?? null,
       },
     }
 

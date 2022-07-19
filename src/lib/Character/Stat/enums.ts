@@ -1,10 +1,14 @@
-const enum StatTypes {
+export const enum StatTypes {
   Constant = 'constant',
   Multiplier = 'multiplier',
   Total = 'total',
 }
 
-type StatNormalTypes = StatTypes.Constant | StatTypes.Multiplier
+export type StatNormalTypes = StatTypes.Constant | StatTypes.Multiplier
 
-export { StatTypes }
-export type { StatNormalTypes }
+export const enum StatValueSourceTypes {
+  Skill = 'skill',
+  Equipment = 'equipment',
+  Crystal = 'crystal',
+  Food = 'food',
+}

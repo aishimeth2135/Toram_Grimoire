@@ -339,6 +339,60 @@ class EnchantEquipment {
   hasStat(stat: EnchantStat | EnchantStepStat, stepIdx?: number) {
     return this.stats(stepIdx).find(_stat => _stat.equals(stat)) ? true : false
   }
+
+  checkMergeSteps() {
+    const steps = this.steps()
+    type MergeItem = {
+      merged: true;
+    } | {
+      merged: boolean;
+      step: EnchantStep;
+      id: string;
+    }
+    const ids: MergeItem[] = steps.map(step => {
+      if (step.stats.length !== 1 || step.type !== EnchantStepTypes.Each) {
+        return {
+          merged: true,
+        }
+      }
+      return {
+        step,
+        id: (step.firstStat as EnchantStepStat).statId,
+        merged: false,
+      }
+    })
+    ids.forEach((cur, idx) => {
+      if (idx === ids.length - 1) {
+        return
+      }
+      const next = ids[idx + 1]
+      if (cur.merged || next.merged) {
+        return
+      }
+      if (!cur.merged && !next.merged && cur.id === next.id) {
+        const value = next.step.firstStat!.value
+        next.step.remove() // 要先移除才加得進去
+        cur.step.firstStat!.value += value
+        next.merged = true
+      }
+    })
+
+    steps.some((step, idx) => {
+      if (idx === 0) {
+        return false
+      }
+      if (step.potentialExtraRate > 1) {
+        return true
+      }
+      if (step.isLastStep) {
+        return true
+      }
+      const previousStep = step.previousStep!
+      const stats = step.stats.map(stat => stat.clone())
+      step.remove()
+      stats.forEach(stat => previousStep.appendStat(stat.itemBase, stat.type, stat.value))
+    })
+  }
 }
 
 

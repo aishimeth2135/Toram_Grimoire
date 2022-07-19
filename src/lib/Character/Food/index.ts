@@ -194,6 +194,6 @@ class Food {
   }
 }
 
-export { FoodsBase, FoodBuild }
-export type { Food, FoodAmount, FoodsSaveData }
+export { FoodsBase, FoodBuild, Food }
+export type { FoodAmount, FoodsSaveData }
 

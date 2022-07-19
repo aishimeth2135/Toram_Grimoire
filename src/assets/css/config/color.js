@@ -13,8 +13,8 @@ const baseColors = {
   'purple': '#c026d3',
   'blue-purple': '#7c3aed',
   'water-blue': '#2196f3',
-  'blue-green': '#0891b2',
-  'orange': '#d97706',
+  'blue-green': '#14a6c9',
+  'orange': '#f0a51a',
   'green': '#10b981',
   'red': '#f54747',
 }

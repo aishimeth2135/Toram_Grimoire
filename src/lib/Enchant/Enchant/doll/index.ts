@@ -21,11 +21,11 @@ interface AutoFindNegaitveStatsResultPartial {
   equipment: null;
 }
 
-
 export default class EnchantDoll {
   private _positiveStats: EnchantStat[]
 
   build: EnchantBuild
+  lastResults: EnchantEquipment[]
   config: {
     baseType: EnchantDollBaseTypes;
     autoFindNegaitveStatsType: AutoFindNegaitveStatsTypes;
@@ -34,6 +34,7 @@ export default class EnchantDoll {
   constructor() {
     this.build = new EnchantBuild('Potum')
     this._positiveStats = []
+    this.lastResults = []
     this.config = {
       baseType: EnchantDollBaseTypes.None,
       autoFindNegaitveStatsType: AutoFindNegaitveStatsTypes.SuccessRate,
@@ -192,11 +193,8 @@ export default class EnchantDoll {
       // })
       // console.groupEnd()
 
-      const result = resultEqs[0]
-      result.checkMergeSteps()
-      const resultEq = result.equipment
-      resultEq.steps().forEach(step => step.optimizeType(0))
-      return resultEq
+      this.lastResults = resultEqs.slice(0, 6).map(res => res.equipment)
+      return this.lastResults[0]
     } else {
       errorEqs.forEach(item => item.finalFill())
       errorEqs.sort(sortResult)
@@ -211,12 +209,16 @@ export default class EnchantDoll {
       // });
       // console.groupEnd();
 
-      const result = resultEqs[0]
-      result.checkMergeSteps()
-      const resultEq = result.equipment
-      resultEq.steps().forEach(step => step.optimizeType(0))
-      return resultEq
+      this.lastResults = resultEqs.slice(0, 6).map(res => res.equipment)
+      return this.lastResults[0]
     }
+  }
+
+  optimizeResults() {
+    this.lastResults.forEach(eq => {
+      eq.checkMergeSteps()
+      eq.steps().forEach(step => step.optimizeType(0))
+    })
   }
 
   autoFindNegaitveStats(manuallyStats: EnchantStat[] = [], originalPotential: number = 0): AutoFindNegaitveStatsResultIntegral | AutoFindNegaitveStatsResultPartial {

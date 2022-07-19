@@ -50,7 +50,7 @@ import { SkillResultsState } from '@/stores/views/character/setup'
 import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
 import { ComboSkillState } from '@/lib/Character/CharacterCombo'
 import { Skill } from '@/lib/Skill/Skill'
-import { Stat } from '@/lib/Character/Stat'
+import { StatRecorded } from '@/lib/Character/Stat'
 
 import CharacterComboItemDamageResultItem from './character-combo-item-damage-result-item.vue'
 import CharacterSkillItemOptions from '../character-skill/character-skill-tab/character-skill-item-options.vue'
@@ -89,7 +89,7 @@ const extraStats = computed(() => {
   if (!previousSkillNextResultsState.value) {
     return []
   }
-  const stats: Stat[] = []
+  const stats: StatRecorded[] = []
   previousSkillNextResultsState.value.results.forEach(result => {
     stats.push(...getContainerStats(store, result.container))
     result.suffixContainers.forEach(sufContainer => {

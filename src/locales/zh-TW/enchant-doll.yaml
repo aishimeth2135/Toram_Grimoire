@@ -53,6 +53,7 @@ result:
   title: 計算結果～
   caption: 計算結果已出爐0.0。可以單純複製結果，或將結果匯出至附魔模擬器以進行手動的調整。
   current-potential-is: 目前潛力為
+  select-other-result: 選擇其他計算結果
 tips:
   no-stat-selected: 還沒有選擇任何能力...
   stats-reached-upper-limit: 已經選擇八個能力了...

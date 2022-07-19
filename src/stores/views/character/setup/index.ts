@@ -9,11 +9,12 @@ import SkillComputingContainer, { EquipmentRestrictions, SkillBranchItem, SkillB
 import { Skill, SkillBranch } from '@/lib/Skill/Skill'
 import { CharacterBaseStatTypes, CharacterOptionalBaseStatTypes, EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import { Stat, StatComputed, StatRestriction } from '@/lib/Character/Stat'
+import { StatComputed, StatRestriction } from '@/lib/Character/Stat'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { FoodBuild } from '@/lib/Character/Food'
 import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 import { SkillBuffs } from '@/lib/Skill/SkillComputingContainer/enums'
+import { StatRecorded } from '@/lib/Character/Stat'
 
 import EffectHandler from '@/views/SkillQuery/skill/branch-handlers/EffectHandler'
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/utils/DisplayDataContainer'
@@ -63,9 +64,9 @@ interface SkillBranchItemState {
 }
 
 export interface SetupCharacterStatCategoryResultsExtended {
-  (otherStats: Ref<Stat[]>, skillResult: Ref<SkillResult>): {
+  (otherStats: Ref<StatRecorded[]>, skillResult: Ref<SkillResult>): {
     categoryResults: ComputedRef<CharacterStatCategoryResult[]>;
-    characterPureStats: ComputedRef<Stat[]>;
+    characterPureStats: ComputedRef<StatRecorded[]>;
   };
 }
 
@@ -456,7 +457,7 @@ export function setupCharacterSkills(
       }
     }
 
-    const stats: Map<string, Stat> = new Map()
+    const stats: Map<string, StatRecorded> = new Map()
     const conditionalStatContainers: ResultContainerStat[] = []
     const handleStatContainer = (statContainer: ResultContainerStat) => {
       if (!isNumberString(statContainer.value)) {
@@ -468,9 +469,9 @@ export function setupCharacterSkills(
       }
       const statId = statContainer.stat.statId
       if (stats.has(statId)) {
-        stats.get(statId)!.add(parseFloat(statContainer.value))
+        stats.get(statId)!.add(parseFloat(statContainer.value), statContainer.branch.default)
       } else {
-        stats.set(statId, statContainer.stat.toStat(parseFloat(statContainer.value)))
+        stats.set(statId, statContainer.toStatRecord(parseFloat(statContainer.value)))
       }
     }
     list
@@ -507,8 +508,10 @@ export function setupCharacterSkills(
 
 export function setupFoodStats(foodBuild: Ref<FoodBuild>) {
   const allFoodBuildStats = computed(() => {
-    return foodBuild.value.selectedFoods.filter(food => food.level !== 0).map(food => food.stat())
+    const value = foodBuild.value.selectedFoods.filter(food => food.level !== 0).map(food => StatRecorded.from(food.stat(), food))
+    return value
   })
+
 
   return {
     allFoodBuildStats,
@@ -528,10 +531,10 @@ export function setupCharacterStats(
   character: Ref<Character | null>,
   skillBuild: Ref<SkillBuild | null>,
   skillSetupDatas: {
-    stats: Ref<Stat[]>;
+    stats: Ref<StatRecorded[]>;
     getSkillBranchItemState: (skillBranch: SkillBranch) => SkillBranchItemState;
   },
-  foodStats: Ref<Stat[]>,
+  foodStats: Ref<StatRecorded[]>,
   handleOptions: Ref<CharacterSetupOptions>,
 ) {
   const allEquipmentStats = computed(() => {
@@ -539,16 +542,10 @@ export function setupCharacterStats(
       return []
     }
     const _checkStatRestriction = (stat: StatRestriction) => checkStatRestriction(character.value!, stat)
-    const stats: Map<string, Stat> = new Map()
+    const stats: Map<string, StatRecorded> = new Map()
     character.value.equipmentFields.forEach(field => {
       if (!field.isEmpty && !field.statsDisabled()) {
-        field.equipment!.getAllStats(_checkStatRestriction).forEach(stat => {
-          if (stats.has(stat.statId)) {
-            stats.get(stat.statId)!.add(stat.value)
-          } else {
-            stats.set(stat.statId, stat.pure())
-          }
-        })
+        mergeStats(stats, field.equipment!.getAllStats(_checkStatRestriction))
       }
     })
     return [...stats.values()]
@@ -663,7 +660,7 @@ export function setupCharacterStats(
   })
 
   const basePureStatsEntries = computed(() => {
-    const allStats = new Map<string, Stat>()
+    const allStats = new Map<string, StatRecorded>()
     mergeStats(allStats, allEquipmentStats.value)
     mergeStats(allStats, skillSetupDatas.stats.value)
     if (handleOptions.value.handleFood) {
@@ -674,10 +671,10 @@ export function setupCharacterStats(
 
   interface CharacterStatSetupResults {
     categoryResults: ComputedRef<CharacterStatCategoryResult[]>;
-    characterPureStats: ComputedRef<Stat[]>;
+    characterPureStats: ComputedRef<StatRecorded[]>;
   }
 
-  const setupResults = (postponeStats?: Ref<Stat[]>, resultsCache?: CharacterStatSetupResults): CharacterStatSetupResults => {
+  const setupResults = (postponeStats?: Ref<StatRecorded[]>, resultsCache?: CharacterStatSetupResults): CharacterStatSetupResults => {
     const characterPureStats = computed(() => {
       if (!character.value) {
         return []
@@ -685,7 +682,7 @@ export function setupCharacterStats(
       if (postponeStats && postponeStats.value.length === 0 && resultsCache) {
         return resultsCache.characterPureStats.value
       }
-      const allStats = new Map<string, Stat>(basePureStatsEntries.value.map(([statId, stat]) => [statId, stat.clone()]))
+      const allStats = new Map<string, StatRecorded>(basePureStatsEntries.value.map(([statId, stat]) => [statId, stat.clone()]))
       if (postponeStats) {
         mergeStats(allStats, postponeStats.value)
       }
@@ -777,14 +774,14 @@ export function setupCharacterStats(
       if (!skillResult.value.root.basicContainer) {
         return []
       }
-      const stats: Stat[] = []
+      const stats: StatRecorded[] = []
       skillConditionalStatContainers.value.forEach(statContainer => {
         if (getSkillStatContainerValid(character.value, skillResult.value, statContainer)) {
-          const stat = statContainer.stat.toStat(parseFloat(statContainer.value))
+          const stat = statContainer.toStatRecord(parseFloat(statContainer.value))
           stats.push(stat)
         }
       })
-      const statsMap = new Map<string, Stat>()
+      const statsMap = new Map<string, StatRecorded>()
       mergeStats(statsMap, stats)
       return [...statsMap.values()]
     })
@@ -792,7 +789,7 @@ export function setupCharacterStats(
       if (otherStats.value.length === 0 && conditionalStats.value.length === 0) {
         return []
       }
-      const allStats = new Map<string, Stat>()
+      const allStats = new Map<string, StatRecorded>()
       mergeStats(allStats, otherStats.value)
       mergeStats(allStats, postponedSkillPureStats.value)
       mergeStats(allStats, conditionalStats.value)

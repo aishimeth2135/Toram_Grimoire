@@ -161,6 +161,8 @@ import { EnchantStepTypes } from '@/lib/Enchant/Enchant/enums'
 import ToggleService from '@/setup/ToggleService'
 import Notify from '@/setup/Notify'
 
+import { getSuccessRateDisplay } from './utils'
+
 interface Props {
   equipment: EnchantEquipment;
 }
@@ -257,12 +259,7 @@ const enchantResultMaterials = computed(() => {
   }))
 })
 
-const successRate = computed(() => {
-  const rate = equipment.value.successRate
-  return rate === -1 ?
-    t('enchant-simulator.success-rate-unlimited') :
-    Math.floor(rate) + '%'
-})
+const successRate = computed(() => getSuccessRateDisplay(equipment.value))
 const expectedSuccessRate = computed(() => {
   const rate = equipment.value.successRate
   if (rate === -1) {

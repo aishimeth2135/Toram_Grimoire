@@ -29,18 +29,66 @@
     <div class="max-w-full overflow-x-auto pb-0.5 mb-0.5">
       <div
         v-for="data in showStatDetailDatas.datas"
-        :key="data.iid"
+        :key="data.id"
         class="mt-1"
       >
-        <cy-icon-text icon="mdi:label-outline" text-color="purple">
-          <template v-if="(typeof data.title !== 'object')">
-            {{ data.title }}
-          </template>
-          <template v-else>
-            <span>{{ data.title.text }}</span>
-            <span class="ml-1.5 text-light-3">{{ data.title.value }}</span>
-          </template>
-        </cy-icon-text>
+        <div class="flex items-center">
+          <cy-icon-text icon="mdi:label-outline" text-color="purple">
+            <template v-if="(typeof data.title !== 'object')">
+              {{ data.title }}
+            </template>
+            <template v-else>
+              <span>{{ data.title.text }}</span>
+              <span class="ml-1.5 text-light-3">{{ data.title.value }}</span>
+            </template>
+          </cy-icon-text>
+          <div class="ml-auto" @click.stop>
+            <cy-popover v-if="data.statRecorded" placement="bottom-end">
+              <template #default="{ shown }">
+                <cy-button-icon icon="mdi:help-circle-outline" :selected="shown" />
+              </template>
+              <template #popper>
+                <div class="py-2 px-3 text-sm">
+                  <div v-for="(src, idx) in data.statRecorded.sources" :key="idx" class="flex items-center space-x-2">
+                    <template v-if="src.type === StatValueSourceTypes.Skill">
+                      <div v-if="(src.src as SkillBranch).name === SkillBranchNames.Passive" class="text-light-2">
+                        {{ t('character-simulator.skill-build.passive-skills') }}
+                      </div>
+                      <div v-else class="text-light-2">
+                        {{ t('character-simulator.skill-build.active-skills') }}
+                      </div>
+                      <div>
+                        {{ (src.src as SkillBranch).parent.parent.name }}
+                      </div>
+                    </template>
+                    <template v-else-if="src.type === StatValueSourceTypes.Equipment">
+                      <div class="text-orange-light">
+                        {{ t('common.Equipment.category.' + (src.src as CharacterEquipment).type) }}
+                      </div>
+                      <div>
+                        {{ (src.src as CharacterEquipment).name }}
+                      </div>
+                    </template>
+                    <template v-else-if="src.type === StatValueSourceTypes.Crystal">
+                      <div class="text-blue-green-light">
+                        {{ t('character-simulator.character-stat-detail.crystal') }}
+                      </div>
+                      <div>
+                        {{ (src.src as EquipmentCrystal).name }}
+                      </div>
+                    </template>
+                    <div v-else-if="src.type === StatValueSourceTypes.Food" class="text-green-light">
+                      {{ t('character-simulator.character-stat-detail.food') }}
+                    </div>
+                    <div class="text-light-3">
+                      {{ data.statRecorded.showValue(src.value) }}
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </cy-popover>
+          </div>
+        </div>
         <div
           v-if="data.lines.length !== 0"
           class="pl-2 mt-0.5 pb-1"
@@ -88,10 +136,14 @@ import { useI18n } from 'vue-i18n'
 
 import { CharacterStatResultWithId } from '@/stores/views/character/setup'
 
-import { StatTypes } from '@/lib/Character/Stat/enums'
+import { StatTypes, StatValueSourceTypes } from '@/lib/Character/Stat/enums'
 import { CharacterStatFormulaResultConditionalBase, StatPartsDetailAdditionalValueItem } from '@/lib/Character/Character'
+import { SkillBranch } from '@/lib/Skill/Skill'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import { CharacterEquipment, EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
 
 import CharacterStatDetailEquipments from './character-stat-detail-equipments.vue'
+
 
 interface Props {
   characterStatResult: CharacterStatResultWithId;
@@ -185,7 +237,7 @@ const showStatDetailDatas = computed(() => {
   } : null
   const datas = list
     .filter(item => item.id === 'base' || stat.statValueParts[item.id] !== 0)
-    .map((item, itemIdx) => {
+    .map((item) => {
       const id = item.id,
         type = item.type
       const value = stat.statValueParts[id]
@@ -252,8 +304,9 @@ const showStatDetailDatas = computed(() => {
       }
 
       return {
-        iid: itemIdx,
+        id,
         title,
+        statRecorded: id !== 'base' ? stat.statPartsDetail.statRecordeds[id] : null,
         lines,
       }
     })

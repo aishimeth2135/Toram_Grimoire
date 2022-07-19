@@ -5,7 +5,6 @@ import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
 
 import { CalculationContainerIds, CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
-import { Stat, StatRestriction } from '@/lib/Character/Stat'
 import { Character } from '@/lib/Character/Character'
 import { Skill } from '@/lib/Skill/Skill'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
@@ -14,6 +13,8 @@ import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { Calculation } from '@/lib/Calculation/Damage/Calculation'
+import { StatRecorded } from '@/lib/Character/Stat'
+import { StatRestriction } from '@/lib/Character/Stat'
 
 import { SetupCharacterStatCategoryResultsExtended, SkillResult } from '.'
 import { setupCalculationExpectedResult } from '../../damage-calculation/setup'
@@ -95,7 +96,7 @@ export default function setupDamageCalculation(
 
   const setupDamageCalculationExpectedResult = (
     skillResult: Ref<SkillResult>,
-    extraStats: Ref<Stat[]>,
+    extraStats: Ref<StatRecorded[]>,
     targetProperties: Ref<TargetProperties>,
     calculationOptions: Ref<CalculationOptions>,
   ) => {
