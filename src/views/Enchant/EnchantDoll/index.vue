@@ -1,5 +1,5 @@
 <template>
-  <AppLayoutMain>
+  <AppLayoutMain class="pb-6">
     <div ref="first-step" class="step-content">
       <div>
         <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
@@ -482,6 +482,27 @@
             {{ t('enchant-doll.export-result.redirect-to-enchant-simulator') }}
           </cy-button-action>
         </div>
+        <template v-if="doll.lastResults.length > 1 && mainStore.previewMode">
+          <div class="flex justify-center pt-4">
+            <cy-button-plain
+              :icon="contents.selectOtherResults ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
+              :selected="contents.selectOtherResults"
+              color="secondary"
+              @click="toggle('contents/selectOtherResults')"
+            >
+              {{ t('enchant-doll.result.select-other-result') }}
+            </cy-button-plain>
+          </div>
+          <div v-if="contents.selectOtherResults" class="divide-y divide-light px-0.5">
+            <div v-for="(result, idx) in doll.lastResults" :key="idx">
+              <EnchantDollResultItem
+                :result="result"
+                :is-current="result === resultEquipment"
+                @select-result="resultEquipment = $event"
+              />
+            </div>
+          </div>
+        </template>
       </div>
     </cy-transition>
     <div class="flex items-center justify-center border-t border-purple mt-12 pt-4 relative">
@@ -549,6 +570,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 
 import { useEnchantStore } from '@/stores/views/enchant'
+import { useMainStore } from '@/stores/app/main'
 
 import Grimoire from '@/shared/Grimoire'
 
@@ -566,18 +588,21 @@ import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import EnchantResult from '../EnchantSimulator/enchant-result.vue'
 import EnchantSelectItem from '../EnchantSimulator/enchant-select-item.vue'
+import EnchantDollResultItem from './enchant-doll-result-item.vue'
 
 import { EnchantStatOptionBase } from '../EnchantSimulator/setup'
 import { setupParseEnchantShorthand } from './setup'
 
+
 const { windows, contents, toggle } = ToggleService({
   windows: ['selectItem'] as const,
-  contents: ['setConfig', 'positiveShorthand'] as const,
+  contents: ['setConfig', 'positiveShorthand', 'selectOtherResults'] as const,
 })
 const store = useEnchantStore()
 const { t } = useI18n()
 const { notify, loading } = Notify()
 const { confirm } = Confirm()
+const mainStore = useMainStore()
 
 const { config } = storeToRefs(store)
 
@@ -855,6 +880,7 @@ const nextStep = async () => {
         } else {
           resultEquipment.value = doll.value.calc(negativeStats.value)
         }
+        doll.value.optimizeResults()
         await nextTick()
         stepCounter.value += 1
       } catch(err) {

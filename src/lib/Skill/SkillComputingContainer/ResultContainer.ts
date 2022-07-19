@@ -1,4 +1,5 @@
 import { StatComputed } from '@/lib/Character/Stat'
+import { StatRecorded } from '@/lib/Character/Stat'
 
 import { SkillBranchItemBaseChilds } from '.'
 
@@ -88,6 +89,10 @@ class ResultContainerStat extends ResultContainer {
 
   setConditionValue(title: string) {
     this.conditionValue = title
+  }
+
+  toStatRecord(value: number): StatRecorded {
+    return StatRecorded.from(this.stat.toStat(value), this.branch.default)
   }
 }
 

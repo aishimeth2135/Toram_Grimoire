@@ -1,2 +1,2 @@
-export { StatBase, Stat, StatComputed } from './StatBase'
+export { StatBase, Stat, StatRecorded, StatComputed, StatValueSource } from './StatBase'
 export { default as StatRestriction } from './StatRestriction'

@@ -69,7 +69,7 @@ import { CalcItem } from '@/lib/Calculation/Damage/Calculation'
 import { ContainerTypes } from '@/lib/Calculation/Damage/Calculation/enums'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import { SkillBranch } from '@/lib/Skill/Skill'
-import { Stat } from '@/lib/Character/Stat'
+import { StatRecorded } from '@/lib/Character/Stat'
 
 import ToggleService from '@/setup/ToggleService'
 
@@ -82,7 +82,7 @@ interface Props {
   result: SkillResult;
   comboRate: number;
   unselectedBranches: SkillBranch[];
-  extraStats: Stat[];
+  extraStats: StatRecorded[];
 }
 interface Emits {
   (evt: 'update:unselected-branches', value: SkillBranch[]): void;

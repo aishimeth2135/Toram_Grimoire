@@ -26,7 +26,7 @@
             @click="(toggle('mainContents/damage', null, false), toggle('sideContents/tabs', false))"
           />
           <cy-button-circle
-            v-if="mainStore.previewMode"
+            v-if="mainStore.devMode"
             :selected="mainContents.combo"
             icon="mdi-selection-ellipse-arrow-inside"
             color="green"
@@ -247,6 +247,7 @@ const currentTab = computed(() => {
 const panelOpenTab = (tabId: TabIds) => {
   toggle(`tabs/${tabId}`, true, false)
   toggle('sideContents/panel', false)
+  toggle('mainContents', false)
 }
 
 const editCrystalCurrentEquipment: Ref<CharacterEquipment | null> = ref(null)

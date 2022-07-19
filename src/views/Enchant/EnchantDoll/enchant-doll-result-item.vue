@@ -1,0 +1,51 @@
+<template>
+  <div>
+    <div
+      class="flex items-center py-1 pl-1 pr-3 duration-200 hover:bg-light-0 cursor-pointer"
+      @click="unfold = !unfold"
+    >
+      <cy-button-radio :selected="isCurrent" @click.stop="emit('select-result', result)">
+        <div class="text-light-2 mr-2">
+          {{ t('enchant-simulator.success-rate') }}
+        </div>
+        <div class="text-water-blue">
+          {{ getSuccessRateDisplay(result) }}
+        </div>
+      </cy-button-radio>
+      <cy-button-icon
+        :icon="unfold ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
+        class="ml-auto"
+        @click="unfold = !unfold"
+      />
+    </div>
+    <div v-if="unfold" class="border-1 border-light-2 rounded p-3 mx-3 mt-0.5 mb-4">
+      <EnchantResult :equipment="result" />
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+import { EnchantEquipment } from '@/lib/Enchant/Enchant'
+
+import EnchantResult from '../EnchantSimulator/enchant-result.vue'
+
+import { getSuccessRateDisplay } from '../EnchantSimulator/utils'
+
+interface Props {
+  result: EnchantEquipment;
+  isCurrent: boolean;
+}
+interface Emits {
+  (evt: 'select-result', result: EnchantEquipment): void;
+}
+
+defineProps<Props>()
+const emit = defineEmits<Emits>()
+
+const unfold = ref(false)
+
+const { t } = useI18n()
+</script>

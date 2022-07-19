@@ -6,20 +6,20 @@ import { useCharacterStore } from '@/stores/views/character'
 
 import { isNumberString } from '@/shared/utils/string'
 
-import { Stat } from '@/lib/Character/Stat'
+import { StatRecorded } from '@/lib/Character/Stat'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/utils/DisplayDataContainer'
 
 import { setupCharacterStore } from '../setup'
 
 export function getContainerStats(store: ReturnType<typeof useCharacterStore>, container: DisplayDataContainer) {
-  const stats: Stat[] = []
+  const stats: StatRecorded[] = []
   if (!store.getDamageCalculationSkillBranchState(container.branchItem.default)?.enabled) {
-    return []
+    return stats
   }
   container.statContainers.forEach(statContainer => {
     if (isNumberString(statContainer.value)) {
-      stats.push(statContainer.stat.toStat(parseFloat(statContainer.value)))
+      stats.push(statContainer.toStatRecord(parseFloat(statContainer.value)))
     }
   })
   return stats
@@ -29,7 +29,7 @@ export function setupSkilResultExtraStats(result: Ref<SkillResult>) {
   const { store } = setupCharacterStore()
 
   const extraStats = computed(() => {
-    const stats: Stat[] = []
+    const stats: StatRecorded[] = []
     result.value.suffixContainers.forEach(sufContainer => {
       stats.push(...getContainerStats(store, sufContainer))
     })
@@ -39,7 +39,7 @@ export function setupSkilResultExtraStats(result: Ref<SkillResult>) {
   return { extraStats }
 }
 
-export function setupStoreDamageCalculationExpectedResult(result: Ref<SkillResult>, extraStats: Ref<Stat[]>, { armorBreak = false } = {}) {
+export function setupStoreDamageCalculationExpectedResult(result: Ref<SkillResult>, extraStats: Ref<StatRecorded[]>, { armorBreak = false } = {}) {
   const { store } = setupCharacterStore()
 
   return store.setupDamageCalculationExpectedResult(

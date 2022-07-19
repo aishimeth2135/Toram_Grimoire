@@ -5,7 +5,7 @@ import { Images } from '@/shared/services/Images'
 
 import { Equipment, Crystal } from '@/lib/Items/Item'
 
-import { StatRestriction } from '../Stat'
+import { StatRecorded, StatRestriction } from '../Stat'
 import type { StatRestrictionSaveData } from '../Stat/StatRestriction'
 import { EquipmentTypes } from './enums'
 
@@ -106,18 +106,6 @@ abstract class CharacterEquipment {
   get creatable() {
     return false
   }
-  get allStats() {
-    const allStats = this.stats.map(stat => stat.clone())
-    if (this.hasCrystal) {
-      (this.crystals as EquipmentCrystal[]).forEach(crystal => {
-        crystal.stats.forEach(crystalStat => {
-          const find = allStats.find(stat => stat.equals(crystalStat))
-          find ? find.add(crystalStat.value) : allStats.push(crystalStat.clone())
-        })
-      })
-    }
-    return allStats
-  }
   get elementStat() {
     return this.stats.find(stat => CharacterEquipment.elementStatIds.includes(stat.baseId))
   }
@@ -155,27 +143,27 @@ abstract class CharacterEquipment {
     return Images.equipmentIcons.get(type + (fieldId === -1 ? '' : `-${fieldId}`))
   }
 
-  getAllStats(checkRestriction: (stat: StatRestriction) => boolean = () => true): StatRestriction[] {
+  getAllStats(checkRestriction: (stat: StatRestriction) => boolean = () => true): StatRecorded[] {
     const allStats = this.stats
       .map(stat => {
         const newStat = stat.clone()
         if (!checkRestriction(newStat)) {
           newStat.value = 0
         }
-        return newStat
+        return StatRecorded.from(newStat, this)
       })
     if (this.hasCrystal) {
       (this.crystals as EquipmentCrystal[]).forEach(crystal => {
         crystal.stats.forEach(crystalStat => {
           const find = allStats.find(stat => stat.equals(crystalStat))
           if (find) {
-            find.add(checkRestriction(crystalStat) ? crystalStat.value : 0)
+            find.add(checkRestriction(crystalStat) ? crystalStat.value : 0, crystal)
           } else {
-            const newStat = crystalStat.clone()
+            const newStat = crystalStat
             if (!checkRestriction(newStat)) {
               newStat.value = 0
             }
-            allStats.push(newStat)
+            allStats.push(StatRecorded.from(newStat, crystal))
           }
         })
       })

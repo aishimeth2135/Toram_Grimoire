@@ -6,7 +6,7 @@ import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
-import { Stat } from '@/lib/Character/Stat'
+import { StatRecorded } from '@/lib/Character/Stat'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/utils/DisplayDataContainer'
 
@@ -84,10 +84,10 @@ function getWeaponBaseRange(main: EquipmentTypes): number {
   return mapping[main] ?? 0
 }
 
-export function mergeStats(allStats: Map<string, Stat>, stats: Stat[]): void {
+export function mergeStats(allStats: Map<string, StatRecorded>, stats: StatRecorded[]): void {
   stats.forEach(stat => {
     if (allStats.has(stat.statId)) {
-      allStats.get(stat.statId)!.add(stat.value)
+      allStats.get(stat.statId)!.addStat(stat)
     } else {
       allStats.set(stat.statId, stat.clone())
     }

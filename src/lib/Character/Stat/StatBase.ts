@@ -1,7 +1,11 @@
 import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
 
-import { StatTypes } from './enums'
+import { SkillBranch } from '@/lib/Skill/Skill'
+
+import { StatTypes, StatValueSourceTypes } from './enums'
+import { CharacterEquipment, EquipmentCrystal } from '../CharacterEquipment'
+import { Food } from '../Food'
 
 type StatValue = number | string
 class StatBase {
@@ -165,6 +169,12 @@ abstract class StatElementBase {
     return this.base.show(this.type, value ?? this.value)
   }
 
+  showValue(value?: StatValue) {
+    const showData = this.base.getShowData(this.type, this.value)
+    value = value ?? showData.value
+    return `${value >= 0 ? '+' : ''}${value}${showData.tail}`
+  }
+
   getShowData() {
     return this.base.getShowData(this.type, this.value)
   }
@@ -187,17 +197,92 @@ class Stat extends StatElementBase {
   }
 
   add(value: number) {
-    if (typeof this.value === 'number' && typeof value === 'number') {
-      this.value += value
-    }
-    if (typeof this.value !== 'number' || typeof value !== 'number') {
-      console.warn('[Stat.add] not allow to add with string')
-    }
+    this.value += value
     return this.value
   }
 
   clone(): Stat {
     return this.base.createStat(this.type, this.value)
+  }
+}
+
+
+type StatValueSourceDetails = SkillBranch | CharacterEquipment | EquipmentCrystal | Food | null
+class StatValueSource {
+  readonly src: StatValueSourceDetails
+  readonly type: StatValueSourceTypes | null
+  readonly value: number
+
+  constructor(src: StatValueSourceDetails, value: number) {
+    this.src = src
+    this.value = value
+
+    if (this.src instanceof SkillBranch) {
+      this.type = StatValueSourceTypes.Skill
+    } else if (this.src instanceof CharacterEquipment) {
+      this.type = StatValueSourceTypes.Equipment
+    } else if (this.src instanceof Food) {
+      this.type = StatValueSourceTypes.Food
+    } else if (this.src instanceof EquipmentCrystal) {
+      this.type = StatValueSourceTypes.Crystal
+    } else {
+      this.type = null
+    }
+  }
+}
+
+class StatRecorded extends StatElementBase {
+  private _value: number
+  unknownSourceValue: number
+  sources: StatValueSource[]
+
+  static from(stat: Stat, source: StatValueSourceDetails) {
+    return new StatRecorded(stat.base, stat.type, stat.value, source)
+  }
+
+  constructor(base: StatBase, type: StatTypes, value: number = 0, source: StatValueSourceDetails = null) {
+    super(base, type)
+    this._value = 0
+    this.sources = []
+    this.unknownSourceValue = 0
+    this.add(value, source)
+  }
+
+  override get value() {
+    return this._value
+  }
+
+  add(value: number, source: StatValueSourceDetails) {
+    if (value !== 0) {
+      this._value += value
+      if (source) {
+        this.sources.push(new StatValueSource(source, value))
+      } else {
+        this.unknownSourceValue += value
+      }
+    }
+    return this.value
+  }
+
+  addStat(stat: StatRecorded) {
+    this._value += stat.value
+    this.sources.push(...stat.sources)
+    this.unknownSourceValue += stat.unknownSourceValue
+  }
+
+  filterSource(filter: (src: StatValueSource) => boolean): StatRecorded {
+    const sources = this.sources.filter(filter)
+    const newStat = new StatRecorded(this.base, this.type)
+    newStat._value = sources.reduce((cur, src) => cur + src.value, 0)
+    newStat.sources = sources
+    return newStat
+  }
+
+  clone(): StatRecorded {
+    const newStat = new StatRecorded(this.base, this.type)
+    newStat._value = this._value
+    newStat.sources = this.sources.slice()
+    return newStat
   }
 }
 
@@ -218,5 +303,5 @@ class StatComputed extends StatElementBase {
   }
 }
 
-export { Stat, StatComputed, StatBase }
-export type { StatValue }
+export { Stat, StatComputed, StatRecorded, StatBase, StatValueSource }
+export type { StatValue, StatValueSourceDetails }

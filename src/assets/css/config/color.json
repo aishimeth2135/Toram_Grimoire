@@ -43,10 +43,10 @@
       "value": "#2196f3"
     },
     "blue-green": {
-      "value": "#0891b2"
+      "value": "#14a6c9"
     },
     "orange": {
-      "value": "#d97706"
+      "value": "#f0a51a"
     },
     "green": {
       "value": "#10b981"
@@ -64,10 +64,10 @@
       "value": "#95cdf9"
     },
     "blue-green-light": {
-      "value": "#3ed3f6"
+      "value": "#67d6f0"
     },
     "orange-light": {
-      "value": "#fbb25f"
+      "value": "#f8d28d"
     },
     "green-light": {
       "value": "#53f0bc"
@@ -197,10 +197,10 @@
       "value": "33, 150, 243"
     },
     "blue-green": {
-      "value": "8, 145, 178"
+      "value": "20, 166, 201"
     },
     "orange": {
-      "value": "217, 119, 6"
+      "value": "240, 165, 26"
     },
     "green": {
       "value": "16, 185, 129"
@@ -218,10 +218,10 @@
       "value": "149, 205, 249"
     },
     "blue-green-light": {
-      "value": "62, 211, 246"
+      "value": "103, 214, 240"
     },
     "orange-light": {
-      "value": "251, 178, 95"
+      "value": "248, 210, 141"
     },
     "green-light": {
       "value": "83, 240, 188"
