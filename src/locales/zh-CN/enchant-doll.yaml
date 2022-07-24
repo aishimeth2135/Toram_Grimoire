@@ -28,7 +28,7 @@ select-positives:
 select-negatives:
   title: 请选择退潜的能力。
   caption: 请选择用来退潜的负属，也可以让布偶自动选取0.0。布偶将在设定的条件下尝试找出成功率最高的退潜项目。
-  tips-1: 将不会自动选取「MP自然回复」。
+  tips-1: 自动选取时，预设将不会包含「MP自然回复」。如果想在自动选取时包含「MP自然回复」，请将下方的选项打开。
   auto-select: 布偶自动选取
   select-config:
     base-type:
@@ -49,10 +49,12 @@ select-negatives:
     - 退潜项目的数量未补足时，布偶可能无法正确地推算出成功率最高的退潜项目。
   auto-selected: 布偶自动选取
   manually-selected: 手动选取
+  contains-natural-mp-regen-constant: 包含「MP自然回复」
 result:
   title: 计算结果～
   caption: 计算结果已出炉0.0。可以单纯复制结果，或将结果汇出至附魔模拟器以进行手动的调整。
   current-potential-is: 目前潜力为
+  select-other-result: 选择其他计算结果
 tips:
   no-stat-selected: 还没有选择任何能力...
   stats-reached-upper-limit: 已经选择八个能力了...

@@ -48,7 +48,7 @@ abstract class CharacterEquipment {
     characterEquipmentAutoIncreasement += 1
 
     this.origin = origin
-    this.stats = stats
+    this.stats = stats.map(stat => stat.clone())
     this._name = name
 
     this.crystals = []
@@ -153,13 +153,13 @@ abstract class CharacterEquipment {
         return StatRecorded.from(newStat, this)
       })
     if (this.hasCrystal) {
-      (this.crystals as EquipmentCrystal[]).forEach(crystal => {
+      this.crystals.forEach(crystal => {
         crystal.stats.forEach(crystalStat => {
           const find = allStats.find(stat => stat.equals(crystalStat))
           if (find) {
             find.add(checkRestriction(crystalStat) ? crystalStat.value : 0, crystal)
           } else {
-            const newStat = crystalStat
+            const newStat = crystalStat.clone()
             if (!checkRestriction(newStat)) {
               newStat.value = 0
             }
@@ -193,7 +193,7 @@ abstract class CharacterEquipment {
   }
   appendCrystal(origin: Crystal) {
     if (this.hasCrystal) {
-      const crystals = this.crystals!
+      const crystals = this.crystals
       if (crystals.length < 2) {
         crystals.push(new EquipmentCrystal(origin))
       }
@@ -201,14 +201,14 @@ abstract class CharacterEquipment {
   }
   removeCrystal(crystal: EquipmentCrystal) {
     if (this.hasCrystal) {
-      const crystals = this.crystals!
+      const crystals = this.crystals
       const idx = crystals.indexOf(crystal)
       crystals.splice(idx, 1)
     }
   }
 
   clone(): CharacterEquipment {
-    const stats = this.stats.map(stat => stat.clone())
+    const stats = this.stats
     const name = this.name
 
     let eq: CharacterEquipment | null = null
@@ -251,7 +251,7 @@ abstract class CharacterEquipment {
       eq.stability = this.stability
     }
     if (this.hasCrystal) {
-      eq.crystals = this.crystals!.map(crystal => crystal.clone())
+      eq.crystals = this.crystals.map(crystal => crystal.clone())
     }
 
     return eq
@@ -390,7 +390,7 @@ abstract class CharacterEquipment {
 
       return eq
     } catch (err) {
-      console.warn('[CharacterEquipment.load] An unexpected error occurred.')
+      console.warn('[CharacterEquipment.load] Unexpected error.')
       console.warn(err)
       return null
     }

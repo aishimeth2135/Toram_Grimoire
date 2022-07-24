@@ -29,6 +29,7 @@ export default class EnchantDoll {
   config: {
     baseType: EnchantDollBaseTypes;
     autoFindNegaitveStatsType: AutoFindNegaitveStatsTypes;
+    containsNaturalMpRegenConstant: boolean;
   }
 
   constructor() {
@@ -38,6 +39,7 @@ export default class EnchantDoll {
     this.config = {
       baseType: EnchantDollBaseTypes.None,
       autoFindNegaitveStatsType: AutoFindNegaitveStatsTypes.SuccessRate,
+      containsNaturalMpRegenConstant: false,
     }
   }
 
@@ -150,7 +152,7 @@ export default class EnchantDoll {
       const sr1 = Math.floor(build1.equipment.realSuccessRate)
       if (sr2 === sr1) {
         // 步驟少的
-        return build1.equipment.operationStepsNum - build2.equipment.operationStepsNum
+        return build1.equipment.operationStepsQuantity - build2.equipment.operationStepsQuantity
       }
       // 成功率高的
       return sr2 - sr1
@@ -187,13 +189,13 @@ export default class EnchantDoll {
       //   'background-color: red; border-radius: 50%; margin-right: 12px; font-size: 12px',
       //   'color: #e8caed')
       // resultEqs.forEach(deq => {
-      //   console.group(`[ ${deq.equipment.successRate} ] [steps: ${deq.equipment.operationStepsNum}]`)
+      //   console.group(`[ ${deq.equipment.successRate} ] [steps: ${deq.equipment.operationStepsQuantity}]`)
       //   deq.equipment.steps().forEach(step => console.log(step.toString()))
       //   console.groupEnd()
       // })
       // console.groupEnd()
 
-      this.lastResults = resultEqs.slice(0, 6).map(res => res.equipment)
+      this.lastResults = resultEqs.slice(0, 11).map(res => res.equipment)
       return this.lastResults[0]
     } else {
       errorEqs.forEach(item => item.finalFill())
@@ -209,7 +211,7 @@ export default class EnchantDoll {
       // });
       // console.groupEnd();
 
-      this.lastResults = resultEqs.slice(0, 6).map(res => res.equipment)
+      this.lastResults = resultEqs.slice(0, 11).map(res => res.equipment)
       return this.lastResults[0]
     }
   }
@@ -228,10 +230,13 @@ export default class EnchantDoll {
     const buildEquipment = this.build.equipment
 
     const prioritizedShortList = {
-      [EnchantEquipmentTypes.MainWeapon]: ['def', 'mdef', 'dodge', 'natural_hp_regen', {
-        baseId: 'natural_mp_regen',
-        types: [StatTypes.Multiplier] as StatNormalTypes[],
-      }],
+      [EnchantEquipmentTypes.MainWeapon]: [
+        'def', 'mdef', 'dodge', 'natural_hp_regen',
+        this.config.containsNaturalMpRegenConstant ? 'natural_mp_regen' : {
+          baseId: 'natural_mp_regen',
+          types: [StatTypes.Multiplier] as StatNormalTypes[],
+        },
+      ],
       [EnchantEquipmentTypes.BodyArmor]: ['accuracy'],
     }[buildEquipment.fieldType]
 

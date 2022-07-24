@@ -139,7 +139,7 @@
         </CharacterEquipmentEditMask>
         <CharacterEquipmentEditMask class="!absolute top-0 -right-2 h-full w-6 hover:bg-light-0" @click="editStat(equipment)" />
       </div>
-      <CharacterEquipmentEditMask v-else class="text-light-2 text-sm px-1.5" @click="editStat(equipment)">
+      <CharacterEquipmentEditMask v-else class="text-light-2 text-sm px-2.5" @click="editStat(equipment)">
         {{ t('character-simulator.equipment-info.stat-empty') }}
       </CharacterEquipmentEditMask>
       <div v-if="equipment.hasCrystal" class="px-1.5">

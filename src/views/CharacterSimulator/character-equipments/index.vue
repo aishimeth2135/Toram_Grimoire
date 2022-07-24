@@ -39,8 +39,7 @@ export default {
 <script lang="ts" setup>
 import Draggable from 'vuedraggable'
 import { useI18n } from 'vue-i18n'
-import { inject, WritableComputedRef } from 'vue'
-import { computed } from '@vue/reactivity'
+import { inject, WritableComputedRef, computed } from 'vue'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { EquipmentTypes, MainWeaponTypeList, SubArmorTypeList, SubWeaponTypeList } from '@/lib/Character/CharacterEquipment/enums'

@@ -264,10 +264,19 @@
             {{ t('enchant-doll.tips.performance.auto-find-original-potential-minimum-and-auto-find-negatives') }}
           </cy-icon-text>
         </div>
-        <div class="mt-4 mb-6 flex justify-center flex-wrap">
-          <cy-button-check v-model:selected="selectNegativeStatState.auto">
-            {{ t('enchant-doll.select-negatives.auto-select') }}
-          </cy-button-check>
+        <div class="mt-4 mb-6 flex flex-col items-center">
+          <div>
+            <cy-button-check v-model:selected="selectNegativeStatState.auto">
+              {{ t('enchant-doll.select-negatives.auto-select') }}
+            </cy-button-check>
+          </div>
+          <div>
+            <cy-button-toggle v-model:selected="doll.config.containsNaturalMpRegenConstant">
+              <span class="text-light-2">
+                {{ t('enchant-doll.select-negatives.contains-natural-mp-regen-constant') }}
+              </span>
+            </cy-button-toggle>
+          </div>
         </div>
         <template v-if="selectNegativeStatState.auto">
           <template v-if="currentEquipmentType === 1">
@@ -430,9 +439,9 @@
           </span>
         </div>
         <div
-          v-if="equipmentState.autoFindPotentialMinimum
-            && resultEquipment.originalPotential === 99
-            && resultEquipment.realSuccessRate < 100"
+          v-if="equipmentState.autoFindPotentialMinimum &&
+            resultEquipment.originalPotential === 99 &&
+            resultEquipment.realSuccessRate < 100"
           class="mt-2 flex justify-center"
         >
           <cy-icon-text
@@ -482,7 +491,7 @@
             {{ t('enchant-doll.export-result.redirect-to-enchant-simulator') }}
           </cy-button-action>
         </div>
-        <template v-if="doll.lastResults.length > 1 && mainStore.previewMode">
+        <template v-if="doll.lastResults.length > 1 && mainStore.devMode">
           <div class="flex justify-center pt-4">
             <cy-button-plain
               :icon="contents.selectOtherResults ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
@@ -940,6 +949,9 @@ const selectItem = (item: EnchantStatOptionBase) => {
 
 watch(computed(() => selectNegativeStatState.auto), newv => {
   updateAutoFindNegativeStats(newv)
+})
+watch(computed(() => doll.value.config.containsNaturalMpRegenConstant), newv => {
+  updateAutoFindNegativeStats(selectNegativeStatState.auto)
 })
 watch(computed(() => doll.value.config.baseType), () => {
   updateAutoFindNegativeStats(selectNegativeStatState.auto)

@@ -43,6 +43,7 @@ result:
   enchant-step-each: 分次附、每次附{stat}、直到{target}
   stats: 最终结果
   materials: 素材耗量
+  operation-steps-quantity: 步骤数
   success-rate-detail:
     title: 成功率说明
     captions:

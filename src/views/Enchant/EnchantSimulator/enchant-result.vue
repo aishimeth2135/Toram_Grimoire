@@ -38,6 +38,14 @@
         @click="copyEnchantResultText"
       />
     </div>
+    <div class="my-1 flex items-center">
+      <cy-icon-text icon="ic:round-numbers" text-color="light-2">
+        {{ t('enchant-simulator.result.operation-steps-quantity') }}
+      </cy-icon-text>
+      <span class="text-blue-purple ml-3">
+        {{ equipment.operationStepsQuantity }}
+      </span>
+    </div>
     <div
       v-for="(item, idx) in enchantResult"
       :key="item.iid"
@@ -93,10 +101,7 @@
         </cy-icon-text>
       </div>
     </div>
-    <div
-      class="flex items-center mt-4 px-2 cursor-pointer"
-      @click="toggle('windows/successRateDetail')"
-    >
+    <div class="flex items-center mt-4 px-2 cursor-pointer">
       <div class="flex items-center flex-wrap justify-items-end ml-auto">
         <div class="inline-flex items-center mr-4">
           <cy-icon-text icon="ant-design:star-outlined" icon-color="water-blue">
@@ -115,7 +120,23 @@
           </span>
         </div>
       </div>
-      <cy-icon-text icon="bx-bx-info-circle" class="ml-3" />
+      <cy-popover placement="top-end" class="flex ml-3">
+        <template #default="{ shown }">
+          <cy-button-icon icon="bx-bx-info-circle" :selected="shown" />
+        </template>
+        <template #popper>
+          <div class="p-3 space-y-2">
+            <div
+              v-for="text in successRateDetailCaptions"
+              :key="text"
+              class="flex items-start"
+            >
+              <cy-icon-text icon="ic-outline-near-me" class="mr-2" />
+              <span v-html="text"></span>
+            </div>
+          </div>
+        </template>
+      </cy-popover>
     </div>
   </div>
   <div v-else class="flex justify-center w-full">
@@ -123,24 +144,6 @@
       {{ t('enchant-simulator.tips.invalid-enchant-result') }}
     </cy-default-tips>
   </div>
-  <cy-modal
-    footer
-    :visible="windows.successRateDetail"
-    :title="t('enchant-simulator.result.success-rate-detail.title')"
-    title-icon="ant-design:star-outlined"
-    @close="toggle('windows/successRateDetail', false)"
-  >
-    <div class="px-1 space-y-2">
-      <div
-        v-for="text in successRateDetailCaptions"
-        :key="text"
-        class="flex items-start"
-      >
-        <cy-icon-text icon="ic-outline-near-me" class="mr-2" />
-        <span v-html="text"></span>
-      </div>
-    </div>
-  </cy-modal>
 </template>
 
 <script lang="ts" setup>
@@ -170,8 +173,7 @@ interface Props {
 const props = defineProps<Props>()
 const { equipment } = toRefs(props)
 
-const { windows, contents, toggle } = ToggleService({
-  windows: ['successRateDetail'] as const,
+const { contents, toggle } = ToggleService({
   contents: [{ name: 'resultStats', default: true }] as const,
 })
 const { t, tm } = useI18n()
@@ -297,9 +299,10 @@ const copyEnchantResultText = () => {
     `${resultStatsText}\n` +
     `✩ ${t('enchant-simulator.result.materials')}\n` +
     `${materialsText}\n\n` +
+    `${t('enchant-simulator.result.operation-steps-quantity')}｜${equipment.value.operationStepsQuantity}\n\n` +
     `${stepsText}\n\n` +
     `✩ ${t('enchant-simulator.success-rate')}｜${successRate.value}\n` +
-    `✩ ${t('enchant-simulator.expected-success-rate')}｜${expectedSuccessRate.value}\n` +
+    `✩ ${t('enchant-simulator.expected-success-rate')}｜${expectedSuccessRate.value}\n\n` +
     '｜cy-grimoire.netlify.app｜',
   )
   notify(t('enchant-simulator.tips.copy-result-text-success'))

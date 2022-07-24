@@ -67,7 +67,7 @@
         {{ c.name }}
       </cy-button-action>
       <cy-button-action
-        v-if="equipment.crystals!.length < 2"
+        v-if="equipment.crystals.length < 2"
         icon="bx-bx-circle"
         @click="editCrystal(equipment)"
       >

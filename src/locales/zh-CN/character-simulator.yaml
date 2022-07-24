@@ -112,6 +112,8 @@ character-stat-detail:
   init-value: 初始值
   additional-value: 额外加成
   equipped-with-text: 装备为{equip}时
+  crystal: 锻晶
+  food: 料理
   equipment-restriction-text:
     1h_sword: 主手｜单手剑
     2h_sword: 双手剑
