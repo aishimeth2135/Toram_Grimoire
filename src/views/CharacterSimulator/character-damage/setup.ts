@@ -1,5 +1,4 @@
-import { computed } from '@vue/reactivity'
-import { Ref } from 'vue'
+import { Ref, computed } from 'vue'
 
 import { SkillResult } from '@/stores/views/character/setup'
 import { useCharacterStore } from '@/stores/views/character'

@@ -151,7 +151,7 @@ const selectedCrystalIds = computed(() => {
   if (!equipment.value || !equipment.value.hasCrystal) {
     return []
   }
-  return equipment.value.crystals!.map(crystal => crystal.id)
+  return equipment.value.crystals.map(crystal => crystal.id)
 })
 
 const toggleCrystalSelected = (crystal: Crystal) => {
@@ -159,8 +159,8 @@ const toggleCrystalSelected = (crystal: Crystal) => {
     return
   }
   if (selectedCrystalIds.value.includes(crystal.id)) {
-    equipment.value.removeCrystal(equipment.value.crystals!.find(_crystal => _crystal.id === crystal.id)!)
-  } else if (equipment.value.crystals!.length < 2) {
+    equipment.value.removeCrystal(equipment.value.crystals.find(_crystal => _crystal.id === crystal.id)!)
+  } else if (equipment.value.crystals.length < 2) {
     equipment.value.appendCrystal(crystal)
   }
 }

@@ -48,7 +48,7 @@
           float
           toggle
           :selected="contents.result"
-          @click="toggle('contents/result')"
+          @click="toggle('contents/result', null, false)"
         />
       </template>
       <template #side-buttons>
@@ -58,7 +58,7 @@
           float
           toggle
           :selected="contents.top"
-          @click="toggle('contents/top')"
+          @click="toggle('contents/top', null, false)"
         />
       </template>
       <template #side-contents>

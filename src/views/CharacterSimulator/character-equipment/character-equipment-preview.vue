@@ -34,7 +34,7 @@
       />
     </div>
     <div
-      v-if="equipment.hasCrystal && equipment.crystals!.length > 0"
+      v-if="equipment.hasCrystal && equipment.crystals.length > 0"
       class="border-t border-solid border-light mt-2 pt-1.5 space-x-3"
       :class="{ 'opacity-50': statsDisabled }"
     >

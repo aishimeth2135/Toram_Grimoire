@@ -201,7 +201,7 @@ class EnchantEquipment {
     return Math.max(160 + pot * 230 / previewStepPot, 0)
   }
 
-  get operationStepsNum() {
+  get operationStepsQuantity() {
     if (!this.lastStep) {
       return 0
     }

@@ -84,7 +84,7 @@ const baseOptions: Partial<ComputePositionConfig> = {
       apply({ width, height }) {
         wrapperStyle.value = {
           ...wrapperStyle.value,
-          maxWidth: `${width}px`,
+          maxWidth: `${Math.min(width, 480)}px`,
           maxHeight: `${height}px`,
         }
       },

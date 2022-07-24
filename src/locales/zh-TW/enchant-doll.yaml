@@ -28,7 +28,7 @@ select-positives:
 select-negatives:
   title: 請選擇退潛的能力。
   caption: 請選擇用來退潛的負屬，也可以讓布偶自動選取0.0。布偶將在設定的條件下嘗試找出成功率最高的退潛項目。
-  tips-1: 將不會自動選取「MP自然回復」。
+  tips-1: 自動選取時，預設將不會包含「MP自然回復」。如果想在自動選取時包含「MP自然回復」，請將下方的選項打開。
   auto-select: 布偶自動選取
   select-config:
     base-type:
@@ -49,6 +49,7 @@ select-negatives:
     - 退潛項目的數量未補足時，布偶可能無法正確地推算出成功率最高的退潛項目。
   auto-selected: 布偶自動選取
   manually-selected: 手動選取
+  contains-natural-mp-regen-constant: 包含「MP自然回復」
 result:
   title: 計算結果～
   caption: 計算結果已出爐0.0。可以單純複製結果，或將結果匯出至附魔模擬器以進行手動的調整。

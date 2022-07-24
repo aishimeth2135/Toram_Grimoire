@@ -167,15 +167,15 @@ const updateEquipment = () => {
   const originalDefaultName = equipment.value ? t('character-simulator.create-custom-equipment.equipment-default-name', { type: equipment.value.categoryText }) : null
   const equip = (() => {
     const category = selectedEquipmentType.category
-    const type = selectedEquipmentType.type
+    const type = selectedEquipmentType.type!
     if (category === EquipmentCategorys.MainWeapon) {
-      return new MainWeapon(null, '', stats, type!)
+      return new MainWeapon(null, '', stats, type)
     }
     if (category === EquipmentCategorys.SubWeapon) {
-      return new SubWeapon(null, '', stats, type!)
+      return new SubWeapon(null, '', stats, type)
     }
     if (category === EquipmentCategorys.SubArmor) {
-      return new SubArmor(null, '', stats, type!)
+      return new SubArmor(null, '', stats, type)
     }
     if (category === EquipmentCategorys.BodyArmor) {
       return new BodyArmor(null, '', stats)
