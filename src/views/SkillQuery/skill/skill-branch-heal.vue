@@ -1,6 +1,7 @@
 <template>
   <div>
     <SkillBranchLayoutNormal
+      :computing="computing"
       :container="container"
       :sub-contents="subContents"
       :name-props="nameProps"
@@ -15,7 +16,7 @@
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
 import skillHealFormula from './layouts/skill-heal-formula.vue'
@@ -25,6 +26,7 @@ import { setupCommonExtraSuffixBranches } from './setup'
 import { NormalLayoutSubContent } from './layouts/setup'
 
 interface Props {
+  computing: SkillComputingContainer;
   branchItem: SkillBranchItem;
 }
 
@@ -33,7 +35,7 @@ const { t } = useI18n()
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const container = computed(() => HealHandler(branchItem.value))
+const container = computed(() => HealHandler(props.computing, branchItem.value))
 
 const nameProps = computed(() => {
   return [container.value.get('type')]
@@ -58,5 +60,5 @@ const subContents = computed(() => {
   return result
 })
 
-const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(branchItem)
+const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(props.computing, branchItem)
 </script>

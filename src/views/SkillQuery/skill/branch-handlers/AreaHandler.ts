@@ -1,4 +1,4 @@
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
@@ -7,7 +7,7 @@ import { cloneBranchProps, HandleBranchLangPropsMap, handleDisplayData } from '.
 import type { HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
-export default function AreaHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem, formulaDisplayMode?: FormulaDisplayModes) {
+export default function AreaHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem, formulaDisplayMode?: FormulaDisplayModes) {
   const props = cloneBranchProps(branchItem)
 
   const basicBranch = branchItem.parent.branchItems.find(bch => bch.is(SkillBranchNames.Basic))
@@ -44,7 +44,7 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(branchIt
     pureValues.push('@range')
   }
 
-  const titles = formulaDisplayMode === FormulaDisplayModes.Normal ? [] : [
+  const titles = computing.config.formulaDisplayMode === FormulaDisplayModes.Normal ? [] : [
     'effective_area',
     'radius',
     'move_distance',
@@ -55,7 +55,7 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(branchIt
 
   const pureDatas = ['target_offsets', 'end_position']
 
-  return handleDisplayData(branchItem, props, {
+  return handleDisplayData(computing, branchItem, props, {
     filters: filters.value,
     values: valuePropsMap.value,
     langs: langAttrsMap.value,

@@ -43,7 +43,7 @@
           </cy-button-toggle>
         </div>
         <div v-if="contents.areaDetail">
-          <SkillAreaDetail :skill-branch-item="container.branchItem" />
+          <SkillAreaDetail :skill-branch-item="container.branchItem" :computing="computing" />
         </div>
       </div>
     </div>
@@ -65,7 +65,7 @@
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
 import ToggleService from '@/setup/ToggleService'
 
@@ -77,6 +77,7 @@ import { ExtraSuffixBranchData } from '../setup'
 import { NormalLayoutSubContent } from './setup'
 
 interface Props {
+  computing: SkillComputingContainer;
   container: DisplayDataContainer<SkillBranchItem>;
   nameProps?: string[];
   nameIcon?: string;

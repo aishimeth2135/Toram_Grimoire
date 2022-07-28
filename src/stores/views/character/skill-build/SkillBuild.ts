@@ -41,10 +41,6 @@ export class SkillBuild {
     this._skillTreesSet = new Set()
   }
 
-  hasSkillState(skill: Skill) {
-    return this._skillStatesMap.has(skill)
-  }
-
   getSkillState(skill: Skill): SkillState {
     if (!this._skillStatesMap.has(skill)) {
       this._skillStatesMap.set(skill, {

@@ -101,7 +101,7 @@ import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 const { t } = useI18n()
 
-const columns:  {
+const columns: {
   title: string;
   list: {
     title: string;

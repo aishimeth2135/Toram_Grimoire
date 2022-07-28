@@ -81,10 +81,6 @@
       :target-field="editEquipmentCurrentEquipmentField ?? undefined"
       @close="toggle('modals/browseEquipment')"
     />
-    <CharacterEquipmentEditCrystals
-      :equipment="editCrystalCurrentEquipment"
-      @close="editCrystalCurrentEquipment = null"
-    />
     <CharacterAppendEquipments
       :visible="modals.appendEquipments"
       @close="toggle('modals/appendEquipments', false)"
@@ -98,13 +94,19 @@
       @close="toggle('modals/createCustomEquipment', false)"
     />
     <CharacterEquipmentBasicEditStat
+      :visible="modals.editStat"
       :equipment="editStatCurrentEquipment"
-      @close="editStatCurrentEquipment = null"
+      @close="toggle('modals/editStat', false)"
+    />
+    <CharacterEquipmentEditCrystals
+      :equipment="editCrystalCurrentEquipment"
+      @close="editCrystalCurrentEquipment = null"
     />
     <CharacterComboSelectSkill
-      :visible="!!currentComboSkill"
+      :visible="!!currentComboSkillState.current"
+      :is-lead="currentComboSkillState.current?.index === 0"
       @submit="setComboSkill"
-      @close="currentComboSkill = null"
+      @close="currentComboSkillState.current = null"
     />
   </AppLayoutMain>
 </template>
@@ -116,7 +118,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, onMounted, provide, Ref, ref, nextTick } from 'vue'
+import { computed, onMounted, provide, Ref, nextTick, shallowReactive, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
@@ -161,6 +163,7 @@ const { modals, mainContents, tabs, sideContents, toggle } = ToggleService({
     'browseEquipment',
     'appendEquipments',
     'createCustomEquipment',
+    'editStat',
   ] as const,
   mainContents: ['characterStats', 'damage', 'combo'] as const,
   tabs: [
@@ -250,11 +253,13 @@ const panelOpenTab = (tabId: TabIds) => {
   toggle('mainContents', false)
 }
 
-const editCrystalCurrentEquipment: Ref<CharacterEquipment | null> = ref(null)
-const editBasicCurrentEquipment: Ref<CharacterEquipment | null> = ref(null)
-const editStatCurrentEquipment: Ref<CharacterEquipment | null> = ref(null)
-const editEquipmentCurrentEquipmentField: Ref<EquipmentField | null> = ref(null)
-const currentComboSkill: Ref<CharacterComboSkill | null> = ref(null)
+const editCrystalCurrentEquipment: Ref<CharacterEquipment | null> = shallowRef(null)
+const editBasicCurrentEquipment: Ref<CharacterEquipment | null> = shallowRef(null)
+const editStatCurrentEquipment: Ref<CharacterEquipment | null> = shallowRef(null)
+const editEquipmentCurrentEquipmentField: Ref<EquipmentField | null> = shallowRef(null)
+const currentComboSkillState = shallowReactive({
+  current: null as (CharacterComboSkill | null),
+})
 
 const editCrystal = (equip: CharacterEquipment) => {
   editCrystalCurrentEquipment.value = equip
@@ -264,21 +269,22 @@ const editBasic = (equip: CharacterEquipment) => {
 }
 const editStat = (equip: CharacterEquipment) => {
   editStatCurrentEquipment.value = equip
+  toggle('modals/editStat', true)
 }
 const editEquipmentFieldEquipment = (field: EquipmentField) => {
   toggle('modals/browseEquipment', true)
   editEquipmentCurrentEquipmentField.value = field
 }
 const selectComboSkill = (comboSkill: CharacterComboSkill) => {
-  currentComboSkill.value = comboSkill
+  currentComboSkillState.current = comboSkill
 }
 
 const setComboSkill = (skill: Skill) => {
-  if (!currentComboSkill.value) {
+  if (!currentComboSkillState.current) {
     return
   }
-  currentComboSkill.value.setSkill(skill)
-  currentComboSkill.value = null
+  currentComboSkillState.current.setSkill(skill)
+  currentComboSkillState.current = null
 }
 
 provide(CharacterSimulatorInjectionKey, {

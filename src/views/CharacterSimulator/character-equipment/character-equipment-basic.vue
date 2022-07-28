@@ -1,10 +1,11 @@
 <template>
-  <cy-modal :visible="!!equipment" footer @close="emit('close')">
-    <template #title>
-      <cy-icon-text icon="ic-round-edit" text-color="purple">
-        {{ t('character-simulator.equipment-basic-editor.title') }}
-      </cy-icon-text>
-    </template>
+  <cy-modal
+    :visible="!!equipment"
+    :title="t('character-simulator.equipment-basic-editor.title')"
+    title-icon="ic-round-edit"
+    footer
+    @close="emit('close')"
+  >
     <template #default>
       <CharacterEquipmentBasicEditor :equipment="equipment" />
     </template>

@@ -64,9 +64,4 @@ tips:
   remove-build-confirm: 確定要移除這個配置嗎0.0？
   copy-build-success: 複製配置成功。
   copy-result-text-success: 複製結果成功。
-save-tips:
-  auto-save-success: 自動存檔成功。
-  auto-load-success: 自動讀取成功。
-  export-success: 匯出成功。
-  import-success: 匯入$0成功。
-  import-failed: 匯入時發生錯誤。
+

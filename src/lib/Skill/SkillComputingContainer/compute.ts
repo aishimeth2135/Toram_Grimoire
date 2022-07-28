@@ -4,7 +4,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { StatComputed } from '@/lib/Character/Stat'
 
-import { SkillBranchItem, SkillBranchItemBaseChilds, SkillBranchItemSuffix } from '.'
+import SkillComputingContainer, { SkillBranchItem, SkillBranchItemBaseChilds, SkillBranchItemSuffix } from '.'
 import { ResultContainerBase, ResultContainer, ResultContainerStat, TextResultContainer, TextResultContainerParseResult } from './ResultContainer'
 import { FormulaDisplayModes } from './enums'
 import { SkillBranchNames } from '../Skill/enums'
@@ -81,16 +81,21 @@ const HANDLE_FORMULA_EXTRA_PATTERN_2 = /extra\[(\d+)\]/g
  * @param [formulaDisplayMode] - formula display mode, default value is from ComoutingContainer.config
  * @returns data using for compute
  */
-function computedBranchHelper(branchItem: SkillBranchItemBaseChilds, values: string[] = [], formulaDisplayMode?: FormulaDisplayModes): ComputedBranchHelperResult {
+function computedBranchHelper(
+  computing: SkillComputingContainer,
+  branchItem: SkillBranchItemBaseChilds,
+  values: string[] = [],
+  formulaDisplayMode?: FormulaDisplayModes,
+): ComputedBranchHelperResult {
   let vars: HandleFormulaVars
   let texts: HandleFormulaTexts
 
-  formulaDisplayMode = formulaDisplayMode ?? branchItem.parent.parent.parent.config.formulaDisplayMode
+  formulaDisplayMode = formulaDisplayMode ?? computing.config.formulaDisplayMode
 
   const branchItemStack: SkillBranchItem = branchItem instanceof SkillBranchItemSuffix ? branchItem.mainBranch : branchItem
   const stackIds = branchItemStack.linkedStackIds
 
-  const handleFormulaExtends = branchItem.belongContainer.handleFormulaExtends
+  const handleFormulaExtends = computing.handleFormulaExtends
   const extendsDatas = {
     vars: { ...handleFormulaExtends.vars },
     texts: { ...handleFormulaExtends.texts },
@@ -98,7 +103,7 @@ function computedBranchHelper(branchItem: SkillBranchItemBaseChilds, values: str
       getSkillLevel: () => 0,
     },
   }
-  branchItem.belongContainer.handleFormulaDynamicExtends.forEach(getter => {
+  computing.handleFormulaDynamicExtends.forEach(getter => {
     const data = getter()
     Object.assign(extendsDatas.vars, data.vars)
     Object.assign(extendsDatas.texts, data.texts)
@@ -147,7 +152,7 @@ function computedBranchHelper(branchItem: SkillBranchItemBaseChilds, values: str
     const stack: number[] = []
 
     if (stackIds.length > 0) {
-      const getFormulaExtraValue = branchItem.belongContainer.config.getFormulaExtraValue
+      const getFormulaExtraValue = computing.config.getFormulaExtraValue
       const stackStates = branchItem.parent.stackStates
       const stackValues = stackIds.map(id => {
         const item = stackStates.find(state => state.stackId === id)
@@ -179,8 +184,8 @@ function computedBranchHelper(branchItem: SkillBranchItemBaseChilds, values: str
 
     vars = {
       ...extendsDatas.vars,
-      'SLv': branchItem.belongContainer.varGetters.skillLevel?.(branchItem.default.parent.parent) ?? branchItem.belongContainer.vars.skillLevel,
-      'CLv': branchItem.belongContainer.varGetters.characterLevel?.() ?? branchItem.belongContainer.vars.characterLevel,
+      'SLv': computing.varGetters.skillLevel?.(branchItem.default.parent.parent) ?? computing.vars.skillLevel,
+      'CLv': computing.varGetters.characterLevel?.() ?? computing.vars.characterLevel,
       'stack': stack,
     } as HandleFormulaVars
     texts = {
@@ -212,7 +217,7 @@ function computedBranchHelper(branchItem: SkillBranchItemBaseChilds, values: str
     texts,
     methods: extendsDatas.methods,
     handleFormulaExtra: (str) => {
-      const getFormulaExtraValue = branchItem.belongContainer.config.getFormulaExtraValue
+      const getFormulaExtraValue = computing.config.getFormulaExtraValue
       if (!getFormulaExtraValue || !formulaExtra) {
         return str
           .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (match, p1) => getTextKey(p1))

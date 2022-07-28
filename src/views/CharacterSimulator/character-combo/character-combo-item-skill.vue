@@ -3,6 +3,10 @@
     <div class="w-full flex justify-center relative">
       <div
         class="combo-skill-circle"
+        :class="{
+          'combo-skill-invalid': !comboSkillState.valid && currentSkill,
+          'has-skill': !!currentSkill,
+        }"
         @click="selectComboSkill(comboSkillState.comboSkill)"
       >
         <cy-icon-text
@@ -11,6 +15,7 @@
           icon-src="image"
           icon-width="2.5rem"
           class="cursor-pointer"
+          :class="{ 'opacity-50': !comboSkillState.valid }"
         />
       </div>
       <cy-button-icon
@@ -19,7 +24,7 @@
         @click="comboSkillState.comboSkill.remove()"
       />
     </div>
-    <div v-if="currentSkill" class="mt-2 flex flex-col items-center">
+    <div v-if="currentSkill && comboSkillState.valid" class="mt-2 flex flex-col items-center">
       <div class="mb-2">
         <cy-options
           v-model:value="comboSkillState.comboSkill.tag/* eslint-disable-line vue/no-mutating-props */"
@@ -32,8 +37,8 @@
               :icon="getTagIcon(comboSkillState.comboSkill.tag)"
             />
           </template>
-          <template #item="{ value }">
-            <cy-icon-text :icon="getTagIcon(value)">{{ t('character-simulator.combo.tags.' + value) }}</cy-icon-text>
+          <template #item="{ id, value }">
+            <cy-icon-text :icon="getTagIcon(value)">{{ t('character-simulator.combo.tags.' + id) }}</cy-icon-text>
           </template>
         </cy-options>
       </div>
@@ -68,6 +73,7 @@ const { t } = useI18n()
 const currentSkill = computed(() => props.comboSkillState.comboSkill.skill)
 
 const ComboSkillTagOptions = [
+  null,
   CharacterComboTags.Consecutive,
   CharacterComboTags.Smite,
   CharacterComboTags.Save,
@@ -79,7 +85,7 @@ const ComboSkillTagOptions = [
   CharacterComboTags.Bloodsucker,
   CharacterComboTags.Reflection,
 ].map(value => ({
-  id: value,
+  id: value === null ? 'none' : value,
   value,
 }))
 
@@ -100,10 +106,17 @@ const { selectComboSkill } = inject(CharacterSimulatorInjectionKey)!
 .combo-skill-circle {
   @apply
     w-12 h-12
+    bg-white
     border-1 rounded-full border-light-2 hover:border-light-3
     flex items-center justify-center
     cursor-pointer duration-200;
 
-  background: linear-gradient(to bottom, #fff, #ffd1ea, #ff9ed3);
+  &.has-skill:not(.combo-skill-invalid) {
+    background: linear-gradient(to bottom, #fff, #ffd1ea, #ff9ed3);
+  }
+
+  &.combo-skill-invalid {
+    @apply bg-white;
+  }
 }
 </style>

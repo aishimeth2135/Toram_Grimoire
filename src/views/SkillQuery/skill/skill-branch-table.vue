@@ -41,17 +41,18 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
 import TableHandler from './branch-handlers/TableHandler'
 
 interface Props {
+  computing: SkillComputingContainer;
   branchItem: SkillBranchItem;
 }
 
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const datas = computed(() => TableHandler(branchItem.value))
+const datas = computed(() => TableHandler(props.computing, branchItem.value))
 </script>
 

@@ -21,7 +21,7 @@
               :class="{ 'cy--options-item-selected': item.value === value }"
               @click="(emit('update:value', item.value), hide())"
             >
-              <slot name="item" :value="item.value" />
+              <slot :id="item.id" name="item" :value="item.value" />
             </div>
           </div>
           <div
@@ -43,7 +43,7 @@
 import CyPopover from './cy-popover.vue'
 
 interface OptionItem {
-  id: string | number | symbol;
+  id: string | number;
   value: any;
 }
 

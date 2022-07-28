@@ -7,7 +7,7 @@ import { splitComma } from '@/shared/utils/string'
 import { SubWeapon, SubArmor, CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { StatBase, StatValueSource, StatRecorded } from '@/lib/Character/Stat'
-import { StatTypes, StatValueSourceTypes } from  '@/lib/Character/Stat/enums'
+import { StatTypes, StatValueSourceTypes } from '@/lib/Character/Stat/enums'
 import { SkillBranch } from '@/lib/Skill/Skill'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 

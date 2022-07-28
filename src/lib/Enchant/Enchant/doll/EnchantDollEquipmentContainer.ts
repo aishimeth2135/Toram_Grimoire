@@ -234,7 +234,7 @@ export default class EnchantDollEquipmentContainer {
           pstat.value -= 1
           const currentExtraRate = step.potentialExtraRate
 
-          if (pstat.originalPotential === 3 && currentExtraRate === 1.2 && step.remainingPotential > 0)  {
+          if (pstat.originalPotential === 3 && currentExtraRate === 1.2 && step.remainingPotential > 0) {
             /**
              * 遇到耗潛3的能力，且倍率為1.2。
              *  - 嘗試在這裡就把耗潛3的能力先分次附完的附法。
@@ -611,7 +611,7 @@ export default class EnchantDollEquipmentContainer {
           if (this.equipment.stats().length === 7 && !this.equipment.hasStat(find)) {
             return true
           }
-          const pstat = newDollEq.positiveStats.find(stat => stat.equals(find))  as EnchantStat
+          const pstat = newDollEq.positiveStats.find(stat => stat.equals(find)) as EnchantStat
           if (pstat.value > 0) {
             const tstep = ceq.appendStep()
             tstep.type = EnchantStepTypes.Each

@@ -2,7 +2,7 @@
   <cy-modal
     :visible="visible"
     :title="t('character-simulator.browse-equipments.action.select-field-equipment')"
-    title-icon="fluent:apps-list-detail-20-regular"
+    title-icon="mdi:checkbox-blank-badge-outline"
     footer
     @close="closeModal"
   >
@@ -26,7 +26,7 @@
           @click="selectedEquipment = equip"
         >
           <template v-if="selectedEquipment === equip || equip === movingEquipment" #content>
-            <div v-if="controls.edit" class="p-2">
+            <div v-if="controls.edit" class="p-2 pt-2.5">
               <CharacterEquipmentDetail :equipment="equip" inner-item />
             </div>
             <div class="flex items-center justify-end mt-1 space-x-2" @click.stop>

@@ -1,14 +1,11 @@
 <template>
   <cy-modal
-    :visible="!!equipment"
+    :visible="visible"
+    :title="t('character-simulator.equipment-basic-editor.edit-stats.title')"
+    title-icon="mdi-rhombus-outline"
     footer
     @close="emit('close')"
   >
-    <template #title>
-      <cy-icon-text icon="mdi-rhombus-outline">
-        {{ t('character-simulator.equipment-basic-editor.edit-stats.title') }}
-      </cy-icon-text>
-    </template>
     <template #default>
       <div class="sticky top-0">
         <cy-title-input
@@ -73,7 +70,7 @@
     </template>
     <template #extra-content>
       <div class="space-y-3">
-        <div class="p-4 bg-white border-1 border-light-2">
+        <div class="p-3 bg-white border-1 border-light-2">
           <div>
             <cy-icon-text icon="carbon:location-current" small text-color="purple">
               {{ t('character-simulator.equipment-basic-editor.edit-stats.current-stats') }}
@@ -93,7 +90,7 @@
             </cy-list-item>
           </div>
         </div>
-        <div v-if="appendedStatOptions.length !== 0" class="p-4 bg-white border-1 border-light-2">
+        <div v-if="appendedStatOptions.length !== 0" class="p-3 bg-white border-1 border-light-2">
           <div>
             <cy-icon-text icon="ic-round-add" small text-color="purple">
               {{ t('character-simulator.equipment-basic-editor.edit-stats.appended-stats') }}
@@ -109,7 +106,7 @@
             </cy-list-item>
           </div>
         </div>
-        <div v-if="removedStatOptions.length !== 0" class="p-4 bg-white border-1 border-light-2">
+        <div v-if="removedStatOptions.length !== 0" class="p-3 bg-white border-1 border-light-2">
           <div>
             <cy-icon-text icon="ic-round-delete" small text-color="purple">
               {{ t('character-simulator.equipment-basic-editor.edit-stats.removed-stats') }}
@@ -143,6 +140,7 @@ import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import Notify from '@/setup/Notify'
 
 interface Props {
+  visible: boolean;
   equipment: CharacterEquipment | null;
 }
 interface Emits {

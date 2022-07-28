@@ -1,15 +1,12 @@
 <template>
   <cy-modal
     :visible="visible"
+    title-icon="bx-bx-search-alt"
+    :title="t('character-simulator.append-equipments.title')"
     vertical-position="start"
     footer
     @close="emit('close')"
   >
-    <template #title>
-      <cy-icon-text icon="bx-bx-search-alt">
-        {{ t('character-simulator.append-equipments.title') }}
-      </cy-icon-text>
-    </template>
     <template #default>
       <div ref="topElement"></div>
       <cy-title-input
@@ -17,6 +14,7 @@
         icon="ic-outline-category"
         class="sticky top-0 bg-white z-1 pt-1 pb-2"
         :placeholder="t('character-simulator.append-equipments.search-equipment-placeholder')"
+        clearable
       />
       <div v-if="searchResults.length !== 0">
         <EquipmentItem

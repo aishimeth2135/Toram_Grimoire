@@ -18,7 +18,7 @@ export default function (characterSystem: CharacterSystem, datas: LangCsvData) {
     }
 
   const csvData = datas[0]
-  // language data
+
   HandleLanguageData(datas, {
     [CAPTION]: LANG_DATA.CAPTION,
     [CONSTANT_FORMULA]: LANG_DATA.CONSTANT_FORMULA,
@@ -28,11 +28,22 @@ export default function (characterSystem: CharacterSystem, datas: LangCsvData) {
     if (index === 0 || characterSystem.findStatBase(row[BASE_NAME])) {
       return
     }
-    const stat = characterSystem.appendStatBase(
-      row[BASE_NAME], row[CAPTION], row[HAS_MULTIPLIER] !== '無', row[ORDER] ? parseInt(row[ORDER], 10) : 999)
-    if (row[CONSTANT_FORMULA]) {
-      stat.constantDisplayFormat = row[CONSTANT_FORMULA]
+    try {
+      const stat = characterSystem.appendStatBase(
+        row[BASE_NAME],
+        row[CAPTION],
+        row[HAS_MULTIPLIER] !== '無',
+        row[ORDER] ? parseInt(row[ORDER], 10) : 999,
+      )
+      if (row[CONSTANT_FORMULA]) {
+        stat.constantDisplayFormat = row[CONSTANT_FORMULA]
+      }
+      stat.hidden = row[HIDDEN] === '1'
+      stat.devOnly = row[HIDDEN] === 'dev'
+    } catch (err) {
+      console.warn('[LoadStats] unknown error')
+      console.error(err)
+      console.log(row)
     }
-    stat.hidden = row[HIDDEN] !== ''
   })
 }

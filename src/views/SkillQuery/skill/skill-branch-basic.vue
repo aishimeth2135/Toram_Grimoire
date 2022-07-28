@@ -46,18 +46,19 @@ const ATTR_DATAS: {
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
 import BasicHandler from './branch-handlers/BasicHandler'
 
 interface Props {
+  computing: SkillComputingContainer;
   branchItem: SkillBranchItem;
 }
 
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const container = computed(() => BasicHandler(branchItem.value))
+const container = computed(() => BasicHandler(props.computing, branchItem.value))
 
 const { t } = useI18n()
 

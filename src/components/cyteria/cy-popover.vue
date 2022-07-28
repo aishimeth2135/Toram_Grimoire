@@ -4,7 +4,7 @@
     v-if="slots['default']"
     ref="rootElement"
     class="cy--popover"
-    @click="togglePopper(undefined)"
+    @click.stop="togglePopper(undefined)"
   >
     <slot :shown="shown" />
     <teleport to="#app-popovers">

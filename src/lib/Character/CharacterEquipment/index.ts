@@ -7,7 +7,7 @@ import { Equipment, Crystal } from '@/lib/Items/Item'
 
 import { StatRecorded, StatRestriction } from '../Stat'
 import type { StatRestrictionSaveData } from '../Stat/StatRestriction'
-import { EquipmentTypes } from './enums'
+import { EquipmentKinds, EquipmentTypes } from './enums'
 
 type EquipmentOrigin = Equipment | null
 
@@ -17,6 +17,7 @@ interface EquipmentSaveData {
   stats: StatRestrictionSaveData[];
   id: number;
   type: EquipmentTypes;
+  basicValue: number;
   atk?: number;
   def?: number;
   stability?: number;
@@ -33,11 +34,10 @@ abstract class CharacterEquipment {
   origin: EquipmentOrigin
   stats: StatRestriction[]
 
+  basicValue: number
   crystals: EquipmentCrystal[]
   refining: number
   stability: number
-  atk?: number
-  def?: number
   customTypeList?: EquipmentTypes[]
 
   abstract type: EquipmentTypes
@@ -51,6 +51,7 @@ abstract class CharacterEquipment {
     this.stats = stats.map(stat => stat.clone())
     this._name = name
 
+    this.basicValue = 0
     this.crystals = []
     this.refining = 0
     this.stability = 0
@@ -68,27 +69,29 @@ abstract class CharacterEquipment {
     this._name = value
   }
 
-  get is() {
+  // get is() {
+  //   if (this instanceof Weapon) {
+  //     return 'weapon'
+  //   }
+  //   if (this instanceof Armor) {
+  //     return 'armor'
+  //   }
+  //   if (this instanceof Avatar) {
+  //     return 'avatar'
+  //   }
+  //   return 'other'
+  // }
+  is(kind: EquipmentKinds) {
     if (this instanceof Weapon) {
-      return 'weapon'
+      return kind === EquipmentKinds.Weapon
     }
     if (this instanceof Armor) {
-      return 'armor'
+      return kind === EquipmentKinds.Armor
     }
     if (this instanceof Avatar) {
-      return 'avatar'
+      return kind === EquipmentKinds.Avatar
     }
-    return 'other'
-  }
-
-  isWeapon(): this is Weapon {
-    return this instanceof Weapon
-  }
-  isArmor(): this is Armor {
-    return this instanceof Armor
-  }
-  isAvatar(): this is Avatar {
-    return this instanceof Avatar
+    return kind === EquipmentKinds.Other
   }
 
   get hasRefining() {
@@ -129,7 +132,7 @@ abstract class CharacterEquipment {
     if (this instanceof Avatar) {
       return 'eva-star-outline'
     }
-    return this instanceof MainWeapon ? 'mdi-sword' : 'mdi-shield'
+    return this instanceof MainWeapon ? 'mdi-sword' : 'mdi:shield-outline'
   }
 
   getCategoryImagePath(fieldId = -1): string {
@@ -214,26 +217,20 @@ abstract class CharacterEquipment {
     let eq: CharacterEquipment | null = null
     if (this instanceof Weapon) {
       if (this instanceof MainWeapon) {
-        eq = new MainWeapon(this.origin, name, stats, this.type, this.atk)
+        eq = new MainWeapon(this.origin, name, stats, this.type)
       } else if (this instanceof SubWeapon) {
-        eq = new SubWeapon(this.origin, name, stats, this.type, this.atk)
-      }
-      if (eq) {
-        eq.atk = this.atk
+        eq = new SubWeapon(this.origin, name, stats, this.type)
       }
     }
     if (this instanceof Armor) {
       if (this instanceof SubArmor) {
-        eq = new SubArmor(this.origin, name, stats, this.type, this.def)
+        eq = new SubArmor(this.origin, name, stats, this.type)
       } else if (this instanceof BodyArmor) {
-        eq = new BodyArmor(this.origin, name, stats, this.def)
+        eq = new BodyArmor(this.origin, name, stats)
       } else if (this instanceof AdditionalGear) {
-        eq = new AdditionalGear(this.origin, name, stats, this.def)
+        eq = new AdditionalGear(this.origin, name, stats)
       } else if (this instanceof SpecialGear) {
-        eq = new SpecialGear(this.origin, name, stats, this.def)
-      }
-      if (eq) {
-        eq.def = this.def
+        eq = new SpecialGear(this.origin, name, stats)
       }
     }
     if (this instanceof Avatar) {
@@ -243,6 +240,8 @@ abstract class CharacterEquipment {
     if (!eq) {
       eq = new Avatar(this.origin, name, stats)
     }
+
+    eq.basicValue = this.basicValue
 
     if (this.hasRefining) {
       eq.refining = this.refining
@@ -265,6 +264,7 @@ abstract class CharacterEquipment {
       id: -1,
       name: '',
       type: EquipmentTypes.Empty,
+      basicValue: this.basicValue,
     }
 
     let instance = -1
@@ -289,13 +289,6 @@ abstract class CharacterEquipment {
 
     // == [ stats ] ==================================================
     data.stats = this.stats.map(stat => stat.save())
-
-    // == [ atk ] [ def ] ============================================
-    if (this instanceof Weapon) {
-      data.atk = this.atk
-    } else if (this instanceof Armor) {
-      data.def = this.def
-    }
 
     // == [ other ] ===================================================
     data.name = this.name
@@ -330,10 +323,12 @@ abstract class CharacterEquipment {
         id, name, instance,
         stability,
         refining = 0,
-        atk, def,
+        basicValue, atk, def,
         crystals,
       } = data
-      const stats = data.stats.map(stat => StatRestriction.load(stat)).filter(stat => stat !== null) as StatRestriction[]
+      const stats = data.stats
+        .map(stat => StatRestriction.load(stat))
+        .filter(stat => stat !== null && !stat.base.hidden) as StatRestriction[]
 
       stats.forEach(stat => {
         if (typeof stat.value === 'string') {
@@ -354,20 +349,22 @@ abstract class CharacterEquipment {
         return originalType.replace(/_/g, '-')
       })() as EquipmentTypes
 
+      const _basicValue = basicValue ?? atk ?? def ?? 0
+
       let eq
       if (instance === 0) {
-        eq = new MainWeapon(null, name, stats, type, atk as number, stability)
+        eq = new MainWeapon(null, name, stats, type, _basicValue, stability)
       } else if (instance === 1) {
-        eq = new SubWeapon(null, name, stats, type, atk as number, stability)
+        eq = new SubWeapon(null, name, stats, type, _basicValue, stability)
       } else if (instance === 2) {
-        eq = new SubArmor(null, name, stats, type, def as number)
+        eq = new SubArmor(null, name, stats, type, _basicValue)
       } else if (instance === 3) {
-        eq = new BodyArmor(null, name, stats, def as number)
+        eq = new BodyArmor(null, name, stats, _basicValue)
         eq.setType(type)
       } else if (instance === 4) {
-        eq = new AdditionalGear(null, name, stats, def as number)
+        eq = new AdditionalGear(null, name, stats, _basicValue)
       } else if (instance === 5) {
-        eq = new SpecialGear(null, name, stats, def as number)
+        eq = new SpecialGear(null, name, stats, _basicValue)
       } else {
         eq = new Avatar(null, name, stats)
       }
@@ -458,7 +455,6 @@ abstract class CharacterEquipment {
 }
 
 abstract class Weapon extends CharacterEquipment {
-  override atk: number
   override stability: number
 
   constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], atk: number | string = 1, stability: number = 0) {
@@ -466,7 +462,7 @@ abstract class Weapon extends CharacterEquipment {
 
     atk = typeof atk === 'string' ? parseInt(atk, 10) : atk
 
-    this.atk = atk
+    this.basicValue = atk
     this.stability = stability
   }
   override get hasStability() {
@@ -495,7 +491,7 @@ class MainWeapon extends Weapon {
   }
 
   get refiningAdditionAmount() {
-    return Math.floor(this.atk * this.refining * this.refining / 100) + this.refining
+    return Math.floor(this.basicValue * this.refining * this.refining / 100) + this.refining
   }
   override get hasRefining() {
     return true
@@ -534,8 +530,6 @@ class SubWeapon extends Weapon {
 }
 
 abstract class Armor extends CharacterEquipment {
-  override def: number
-
   constructor(
     origin: EquipmentOrigin,
     name: string,
@@ -546,7 +540,7 @@ abstract class Armor extends CharacterEquipment {
 
     def = typeof def === 'string' ? parseInt(def, 10) : def
 
-    this.def = def
+    this.basicValue = def
   }
 }
 

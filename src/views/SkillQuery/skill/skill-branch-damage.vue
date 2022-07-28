@@ -1,6 +1,7 @@
 <template>
   <div>
     <SkillBranchLayoutNormal
+      :computing="computing"
       :container="container"
       name-icon="ri-sword-fill"
       :name-props="nameProps"
@@ -35,7 +36,7 @@
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
@@ -60,6 +61,7 @@ const ELEMENT_ICON_MAPPING: Record<string, string> = {
 }
 
 interface Props {
+  computing: SkillComputingContainer;
   branchItem: SkillBranchItem;
 }
 
@@ -68,7 +70,7 @@ const { t } = useI18n()
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const container = computed(() => DamageHandler(branchItem.value))
+const container = computed(() => DamageHandler(props.computing, branchItem.value))
 
 const nameProps = computed(() => {
   const res = [container.value.get('damage_type')]
@@ -175,7 +177,7 @@ const extraSuffixBranchDatas = computed(() => {
     })
     .filter(suffix => !suffix.propBoolean('hidden'))
     .map((suffix, idx) => {
-      const dataContainer = ExtraHandler(suffix)
+      const dataContainer = ExtraHandler(props.computing, suffix)
       const baseData: ExtraSuffixBranchData = {
         id: idx.toString(),
         icon: 'eva-checkmark-circle-2-outline',

@@ -9,6 +9,7 @@ interface ComboSkillState {
   comboSkill: CharacterComboSkill;
   rate: number;
   mpCost: number;
+  valid: boolean;
 }
 
 interface CharacterComboSaveData {
@@ -18,6 +19,11 @@ interface CharacterComboSkillSaveData {
   skill: string | null;
   tag: CharacterComboTags | null;
   condition: null | 'buff';
+}
+
+interface CharacterComboGetStatesParams {
+  getMpCost: (skill: Skill, previous: Skill | null) => number;
+  checkSkillValid: (skill: Skill) => boolean;
 }
 
 let _CharacterComboAutoIncreasement = 0
@@ -48,13 +54,14 @@ class CharacterCombo {
     return newSkill
   }
 
-  getComboSkillStates(getMpCost: (skill: Skill, previous: Skill | null) => number): ComboSkillState[] {
+  getComboSkillStates(params: CharacterComboGetStatesParams): ComboSkillState[] {
     const ratesItems = this.comboSkills
       .map((skill, idx, ary) => ({
         itemId: skill.skill?.skillId ?? `empty-${idx}`,
         comboSkill: skill,
         rate: 100,
-        mpCost: skill.skill ? getMpCost(skill.skill, idx > 0 ? ary[idx - 1].skill : null) : 0,
+        mpCost: skill.skill ? params.getMpCost(skill.skill, idx > 0 ? ary[idx - 1].skill : null) : 0,
+        valid: skill.skill ? params.checkSkillValid(skill.skill) : false,
       } as ComboSkillState))
 
     const addRate = (idx: number, value: number) => {
@@ -126,11 +133,15 @@ class CharacterComboSkill {
   }
 
   get previousSkill(): CharacterComboSkill | null {
-    const idx = this.parent.comboSkills.indexOf(this)
+    const idx = this.index
     if (idx > 0) {
       return this.parent.comboSkills[idx - 1] ?? null
     }
     return null
+  }
+
+  get index() {
+    return this.parent.comboSkills.indexOf(this)
   }
 
   setSkill(skill: Skill | null) {

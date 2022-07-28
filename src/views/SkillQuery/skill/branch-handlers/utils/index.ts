@@ -1,7 +1,7 @@
 import { isNumberString, splitComma, trimFloatStringZero } from '@/shared/utils/string'
 import Grimoire from '@/shared/Grimoire'
 
-import { SkillBranchItemSuffix, SkillEffectItemHistory } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItemSuffix, SkillEffectItemHistory } from '@/lib/Skill/SkillComputingContainer'
 import type { SkillBranchItemBaseChilds, SkillBranchItemOverwriteRecords } from '@/lib/Skill/SkillComputingContainer'
 import {
   computeBranchValue,
@@ -110,6 +110,7 @@ const FORMULA_FLOAT_TO_FIXED = /(\d+\.)(\d{4,})/g
 const TEXT_SEPARATE_PATTERN = /\(\(((?:(?!\(\().)+)\)\)/g
 
 function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
+  computing: SkillComputingContainer,
   branchItem: Branch,
   props: Map<string, string>, {
     values = {},
@@ -124,7 +125,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 ): DisplayDataContainer<Branch> {
   const { t } = Grimoire.i18n
 
-  const helper = computedBranchHelper(branchItem, [
+  const helper = computedBranchHelper(computing, branchItem, [
     ...Object.keys(values).map(key => branchItem.prop(key)),
     ...Object.keys(texts).map(key => branchItem.prop(key)),
     ...pureValues.map(key => branchItem.prop(key)),

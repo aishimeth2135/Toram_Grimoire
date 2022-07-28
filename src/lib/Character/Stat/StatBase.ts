@@ -23,6 +23,7 @@ class StatBase {
   constantDisplayFormat: string
   multiplierDisplayFormat: string
   hidden: boolean
+  devOnly: boolean
 
   constructor(baseId: string, text: string, hasMultiplier: boolean, order: number) {
     this.baseId = baseId
@@ -32,6 +33,7 @@ class StatBase {
     this.constantDisplayFormat = '$t$s$v$u'
     this.multiplierDisplayFormat = '$t$s$v$u'
     this.hidden = false
+    this.devOnly = false
   }
 
   title(type: StatTypes): string {

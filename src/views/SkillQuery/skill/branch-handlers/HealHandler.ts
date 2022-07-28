@@ -1,7 +1,7 @@
 import { isNumberString, splitComma } from '@/shared/utils/string'
 import Grimoire from '@/shared/Grimoire'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { computeBranchValue, computedBranchHelper, HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
 import { cloneBranchProps, handleDisplayData } from './utils'
@@ -9,7 +9,7 @@ import MapContainer from './utils/MapContainer'
 import type { HandleDisplayDataOptionFilters, HandleBranchLangPropsMap } from './utils'
 import { numberStringToPercentage } from './utils/utils'
 
-export default function HealHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
+export default function HealHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
   const props = cloneBranchProps(branchItem, {
@@ -31,7 +31,7 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(branchIt
   const extraValueList: { text: string; value: string }[] = []
   if (props.has('extra_value') && props.has('extra_text')) {
     const originalValues = props.get('extra_value')!.split(/\s*,,\s*/)
-    const helper = computedBranchHelper(branchItem, originalValues)
+    const helper = computedBranchHelper(computing, branchItem, originalValues)
     const values = originalValues.map(item => {
       let res = computeBranchValue(item, helper)
       if (isNumberString(res)) {
@@ -48,7 +48,7 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(branchIt
 
   const pureDatas = ['name']
 
-  const displayData = handleDisplayData(branchItem, props, {
+  const displayData = handleDisplayData(computing, branchItem, props, {
     values: valuePropsMap.value,
     langs: langAttrsMap.value,
     filters: filters.value,

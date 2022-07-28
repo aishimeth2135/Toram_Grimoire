@@ -11,24 +11,24 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 
-import { SkillResultsState } from '@/stores/views/character/setup'
-
 import Grimoire from '@/shared/Grimoire'
 
 import { Skill } from '@/lib/Skill/Skill'
 import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
+import { SkillTypes } from '@/lib/Skill/Skill/enums'
 
 import { setupCharacterSkillBuildStore, setupCharacterStore } from '../setup'
 
 interface Props {
   visible: boolean;
+  isLead: boolean;
 }
 interface Emits {
   (evt: 'submit', skill: Skill): void;
   (evt: 'close'): void;
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
 const { store } = setupCharacterStore()
@@ -42,15 +42,22 @@ Grimoire.Skill.skillRoot.skillTreeCategorys.forEach(stc => {
 
 const { currentSkillBuild } = setupCharacterSkillBuildStore()
 const validSkills = computed(() => {
-  const skillResultsStates = [
-    ...store.damageSkillResultStates,
-    ...store.activeSkillResultStates,
-    ...store.nextSkillResultStates,
-  ] as SkillResultsState[]
-  const skills = skillResultsStates
-    .filter(state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0)
-    .map(state => state.skill)
-  return [...new Set(skills)]
+  return allSkills
+    .filter(skill => currentSkillBuild.value!.getSkillLevel(skill) > 0 && !skill.types.includes(SkillTypes.Passive))
+    .filter(skill => store.skillItemStates.has(skill))
+    .map(skill => store.skillItemStates.get(skill)!)
+    .filter(state => {
+      const effectItem = state.effectItem.value
+      if (!effectItem) {
+        return false
+      }
+      if (effectItem.basicBranchItem.hasProp('in_combo')) {
+        const inCombo = effectItem.basicBranchItem.prop('in_combo')
+        return inCombo !== '0' && (!props.isLead || inCombo !== 'not_lead')
+      }
+      return true
+    })
+    .map(state => state.skillItem.skill)
 })
 
 const currentSkills = computed(() => showAllSkill.value ? allSkills : validSkills.value)

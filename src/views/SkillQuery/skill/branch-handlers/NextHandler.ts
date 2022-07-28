@@ -1,13 +1,13 @@
 import Grimoire from '@/shared/Grimoire'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import type { HandleBranchTextPropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
 import { cloneBranchProps, handleDisplayData } from './utils'
 import type { HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
-export default function ProrationHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
+export default function ProrationHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
   const props = cloneBranchProps(branchItem, {
@@ -20,7 +20,7 @@ export default function ProrationHandler<BranchItem extends SkillBranchItem>(bra
     condition: value => value !== 'none',
   })
 
-  return handleDisplayData(branchItem, props, {
+  return handleDisplayData(computing, branchItem, props, {
     texts: textPropsMap.value,
     filters: filters.value,
   })

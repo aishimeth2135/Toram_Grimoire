@@ -9,6 +9,7 @@
         <component
           :is="currentComponent"
           :branch-item="skillBranchItem"
+          :computing="computing"
         />
         <cy-button-circle
           v-if="subButtonAvailable"
@@ -37,6 +38,7 @@
           <div v-if="currentOtherEffectBranch">
             <SkillBranch
               :skill-branch-item="currentOtherEffectBranch"
+              :computing="computing"
               sub
             />
           </div>
@@ -58,7 +60,7 @@ export default {
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import ToggleService from '@/setup/ToggleService'
@@ -79,6 +81,7 @@ import skillBranchTable from './skill-branch-table.vue'
 import { setupOtherEffectBranches } from './setup'
 
 interface Props {
+  computing: SkillComputingContainer;
   skillBranchItem: SkillBranchItem;
   sub?: boolean;
   contentAuto?: boolean;

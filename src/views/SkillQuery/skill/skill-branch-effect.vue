@@ -1,6 +1,7 @@
 <template>
   <div>
     <SkillBranchLayoutNormal
+      :computing="computing"
       :container="container"
       :name-props="nameProps"
       :sub-contents="subContents"
@@ -26,7 +27,7 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
 import SkillBranchStats from './layouts/skill-branch-stats.vue'
@@ -36,13 +37,14 @@ import { setupCommonExtraSuffixBranches } from './setup'
 import { NormalLayoutSubContent } from './layouts/setup'
 
 interface Props {
+  computing: SkillComputingContainer;
   branchItem: SkillBranchItem;
 }
 
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const container = computed(() => EffectHandler(branchItem.value))
+const container = computed(() => EffectHandler(props.computing, branchItem.value))
 
 const nameProps = computed(() => {
   const res = []
@@ -70,7 +72,7 @@ const subContents = computed(() => {
   }] as NormalLayoutSubContent[]
 })
 
-const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(branchItem)
+const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(props.computing, branchItem)
 
 const hasArea = computed(() => {
   return container.value.getOrigin('type') === 'aura' || container.value.getOrigin('type') === 'circle'

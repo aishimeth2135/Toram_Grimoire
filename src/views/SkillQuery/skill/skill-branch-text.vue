@@ -16,19 +16,20 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import TextHandler from './branch-handlers/TextHandler'
 
 interface Props {
+  computing: SkillComputingContainer;
   branchItem: SkillBranchItem;
 }
 
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const container = computed(() => TextHandler(branchItem.value))
+const container = computed(() => TextHandler(props.computing, branchItem.value))
 
 if (branchItem.value.isGroup) {
   // not toggle, init only

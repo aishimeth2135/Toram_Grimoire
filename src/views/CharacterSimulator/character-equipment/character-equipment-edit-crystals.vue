@@ -1,14 +1,11 @@
 <template>
   <cy-modal
     :visible="!!equipment"
+    title-icon="bx-bx-cube-alt"
+    :title="t('character-simulator.select-crystals.title')"
     footer
     @close="emit('close')"
   >
-    <template #title>
-      <cy-icon-text icon="bx-bx-cube-alt">
-        {{ t('character-simulator.select-crystals.title') }}
-      </cy-icon-text>
-    </template>
     <template #default>
       <div class="sticky top-0">
         <cy-title-input
@@ -51,14 +48,14 @@
         <div
           v-for="crystal in (equipment?.crystals ?? [])"
           :key="crystal.id"
-          class="p-4 bg-white border border-light-2"
+          class="p-3 bg-white border border-light-2"
         >
           <div>
-            <cy-icon-text icon="bx-bx-cube-alt">
+            <cy-icon-text icon="bx-bx-cube-alt" color="purple">
               {{ crystal.name }}
             </cy-icon-text>
           </div>
-          <div class="mt-2 px-2">
+          <div class="mt-1 px-2">
             <ShowStat
               v-for="stat in crystal.stats"
               :key="stat.statId"

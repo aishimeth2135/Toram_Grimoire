@@ -1,12 +1,12 @@
 import Grimoire from '@/shared/Grimoire'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import { cloneBranchProps, handleDisplayData, HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
-export default function StackHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
+export default function StackHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
   const idx = branchItem.parent.branchItems
@@ -25,7 +25,7 @@ export default function StackHandler<BranchItem extends SkillBranchItem>(branchI
   const pureValues = ['min', 'max', 'default', 'step']
   const pureDatas = ['name', 'unit']
 
-  const displayData = handleDisplayData(branchItem, props, {
+  const displayData = handleDisplayData(computing, branchItem, props, {
     filters: filters.value,
     pureValues,
     pureDatas,
