@@ -19,7 +19,7 @@
       <div v-if="introductionBranchItemDatas.length > 0 && !contents.detail" class="flex items-start w-full">
         <cy-icon-text icon="ic:round-label" class="ml-2 mt-1.5" />
         <div>
-          <SkillBranch :skill-branch-item="introductionBranchItemDatas[0].branchItem" sub />
+          <SkillBranch :skill-branch-item="introductionBranchItemDatas[0].branchItem" :computing="computing" sub />
         </div>
       </div>
     </cy-list-item>
@@ -30,7 +30,7 @@
           :key="iid"
           class="px-2"
         >
-          <SkillBranch :skill-branch-item="branchItem" sub />
+          <SkillBranch :skill-branch-item="branchItem" :computing="computing" sub />
         </div>
       </div>
       <div v-if="stackBranchItemDatas.length > 0" class="space-y-3 pb-4">
@@ -38,7 +38,7 @@
           v-for="({ branchItem, iid }) in stackBranchItemDatas"
           :key="iid"
         >
-          <SkillBranch :skill-branch-item="branchItem" sub />
+          <SkillBranch :skill-branch-item="branchItem" :computing="computing" sub />
         </div>
       </div>
       <div
@@ -47,13 +47,13 @@
         class="history-item-compare"
       >
         <div>
-          <SkillBranch :skill-branch-item="branchItem" sub />
+          <SkillBranch :skill-branch-item="branchItem" :computing="computing" sub />
         </div>
         <div class="history-item-compare-arrow-wrapper">
           <cy-icon-text icon="ic:round-keyboard-double-arrow-down" icon-color="light-4" />
         </div>
         <div v-if="next && !next.isEmpty">
-          <SkillBranch :skill-branch-item="next" sub />
+          <SkillBranch :skill-branch-item="next" :computing="computing" sub />
         </div>
         <div v-else class="history-item-compare-empty">
           <cy-icon-text icon="mdi:book-remove-outline">{{ t('skill-query.branch-removed') }}</cy-icon-text>
@@ -71,7 +71,7 @@
           <cy-icon-text icon="ic:round-keyboard-double-arrow-down" icon-color="light-4" />
         </div>
         <div>
-          <SkillBranch :skill-branch-item="branchItem" sub />
+          <SkillBranch :skill-branch-item="branchItem" :computing="computing" sub />
         </div>
       </div>
       <div
@@ -80,7 +80,7 @@
         class="history-item-compare"
       >
         <div>
-          <SkillBranch :skill-branch-item="branchItem" sub />
+          <SkillBranch :skill-branch-item="branchItem" :computing=computing sub />
         </div>
         <div class="history-item-compare-arrow-wrapper">
           <cy-icon-text icon="ic:round-keyboard-double-arrow-down" icon-color="light-4" />
@@ -97,7 +97,7 @@
 import { computed, toRefs, toRaw } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { SkillEffectItemHistory } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillEffectItemHistory } from '@/lib/Skill/SkillComputingContainer'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import ToggleService from '@/setup/ToggleService'
@@ -105,6 +105,7 @@ import ToggleService from '@/setup/ToggleService'
 import SkillBranch from '../skill/skill-branch.vue'
 
 interface Props {
+  computing: SkillComputingContainer;
   skillEffectHistoryItem: SkillEffectItemHistory;
 }
 

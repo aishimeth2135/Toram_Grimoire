@@ -19,18 +19,19 @@
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
 import ProrationHandler from './branch-handlers/ProrationHandler'
 
 interface Props {
+  computing: SkillComputingContainer;
   branchItem: SkillBranchItem;
 }
 
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const container = computed(() => ProrationHandler(branchItem.value))
+const container = computed(() => ProrationHandler(props.computing, branchItem.value))
 
 const { t } = useI18n()
 </script>

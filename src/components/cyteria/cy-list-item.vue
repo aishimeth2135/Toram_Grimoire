@@ -27,7 +27,7 @@ withDefaults(defineProps<Props>(), {
   @apply flex items-center flex-wrap cursor-pointer py-1.5 px-3 duration-200;
   border: 1px solid transparent;
 
-  &:hover, &.selected {
+  &:hover {
     background-color: rgba(var(--rgb-app-light), 0.2);
   }
 
@@ -38,6 +38,7 @@ withDefaults(defineProps<Props>(), {
   &.selected {
     color: var(--app-purple);
     border: 1px solid var(--app-light-2);
+    background-color: rgba(var(--rgb-app-light), 0.1);
   }
 
   &:not(.selected) + .cy--list-item:not(.selected) {

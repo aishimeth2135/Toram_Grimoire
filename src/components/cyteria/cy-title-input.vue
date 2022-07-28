@@ -1,11 +1,16 @@
 <template>
   <span class="flex items-center flex-wrap my-2 mx-1">
     <div
-      class="flex items-center py-0.5 px-3 border-1 border-solid rounded-3xl w-full duration-300 bg-white"
+      class="flex items-center py-0.5 pl-3 pr-2 border-1 border-solid rounded-3xl w-full duration-300 bg-white"
       :class="{ 'border-light-3': inputFocus, 'border-light': !inputFocus }"
     >
-      <cy-icon-text :icon="icon" :icon-src="iconSrc" class="mr-2" />
-      <div ref="input-content" class="w-full">
+      <cy-icon-text
+        :icon="icon"
+        :icon-src="iconSrc"
+        class="mr-2"
+        :icon-color="inputFocus ? 'light-3' : 'light'"
+      />
+      <div class="w-full">
         <slot />
         <input
           v-if="!$slots.default"
@@ -19,6 +24,11 @@
           @keyup="$emit('keyup', $event)"
         >
       </div>
+      <cy-button-icon
+        v-if="clearable && innerValue !== ''"
+        icon="ic:round-close"
+        @click="innerValue = ''"
+      />
     </div>
   </span>
 </template>
@@ -38,10 +48,14 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    clearable: {
+      type: Boolean,
+      default: false,
+    },
     ...IconBaseProps,
   },
   emits: ['update:value', 'keyup'],
-  setup(props, { emit, expose  }) {
+  setup(props, { emit, expose }) {
     const inputFocus = ref(false)
     const mainInput: Ref<HTMLInputElement | null> = ref(null)
 

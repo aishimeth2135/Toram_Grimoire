@@ -698,7 +698,7 @@ const currentEquipment = computed(() => doll.value.build.equipment)
 
 const equipmentIsWeapon = computed(() => currentEquipment.value.fieldType === EnchantEquipmentTypes.MainWeapon)
 
-const autoNegativeStats = computed(()  => autoNegativeStatsData.value ? autoNegativeStatsData.value.stats : [])
+const autoNegativeStats = computed(() => autoNegativeStatsData.value ? autoNegativeStatsData.value.stats : [])
 
 const { enchantShortHandStatItems: positiveShortHandStatItems } = setupParseEnchantShorthand(positiveStatsShorthand)
 const appendPositiveShortHandStats = () => {

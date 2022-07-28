@@ -5,8 +5,8 @@
         <div class="flex items-start w-full">
           <cy-icon-text
             class="w-48 flex-shrink-0"
-            :icon="equipment.is !== 'avatar' ? equipment.getCategoryImagePath() : equipment.categoryIcon"
-            :icon-src="equipment.is !== 'avatar' ? 'image' : 'iconify'"
+            :icon="equipment.is(EquipmentKinds.Avatar) ? equipment.getCategoryImagePath() : equipment.categoryIcon"
+            :icon-src="equipment.is(EquipmentKinds.Avatar) ? 'image' : 'iconify'"
             :text-color="contents.detail ? 'orange' : 'dark'"
             :icon-color="contents.detail ? 'orange' : 'light-2'"
           >
@@ -32,18 +32,18 @@
               state.displayMode === 1"
             class="flex items-center space-x-2"
           >
-            <template v-if="equipment.isWeapon()">
+            <template v-if="equipment.is(EquipmentKinds.Weapon)">
               <cy-icon-text icon="mdi-sword" text-color="purple">
                 ATK
               </cy-icon-text>
-              <span>{{ equipment.atk }}</span>
+              <span>{{ equipment.basicValue }}</span>
               <span class="text-water-blue pl-2 border-l border-water-blue">{{ equipment.stability }}%</span>
             </template>
-            <template v-else-if="equipment.isArmor()">
-              <cy-icon-text icon="mdi-shield" text-color="purple">
+            <template v-else-if="equipment.is(EquipmentKinds.Armor)">
+              <cy-icon-text icon="mdi:shield-outline" text-color="purple">
                 DEF
               </cy-icon-text>
-              <span>{{ equipment.def }}</span>
+              <span>{{ equipment.basicValue }}</span>
             </template>
             <template v-else-if="originEquipment.unknowCategory">
               <cy-icon-text icon="mdi-ghost" text-color="purple">
@@ -92,20 +92,20 @@
           >
             {{ equipment.categoryText }}
           </cy-icon-text>
-          <template v-if="equipment.isWeapon()">
+          <template v-if="equipment.is(EquipmentKinds.Weapon)">
             <cy-icon-text icon="mdi-sword" small>
               ATK
             </cy-icon-text>
-            <span class="text-light-3 text-sm mr-2">{{ equipment.atk }}</span>
+            <span class="text-light-3 text-sm mr-2">{{ equipment.basicValue }}</span>
             <span class="text-water-blue text-sm border-l border-solid border-water-blue-light pl-2">
               {{ equipment.stability }}%
             </span>
           </template>
-          <template v-else-if="equipment.isArmor()">
-            <cy-icon-text icon="mdi-shield" small>
+          <template v-else-if="equipment.is(EquipmentKinds.Armor)">
+            <cy-icon-text icon="mdi:shield-outline" small>
               DEF
             </cy-icon-text>
-            <span class="text-light-3 text-sm mr-2">{{ equipment.def }}</span>
+            <span class="text-light-3 text-sm mr-2">{{ equipment.basicValue }}</span>
           </template>
         </div>
         <div v-if="originEquipment.extra" class="mb-2 pl-2">
@@ -259,6 +259,7 @@ import { useI18n } from 'vue-i18n'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { ItemObtain } from '@/lib/Items/Item'
 import { StatRestriction } from '@/lib/Character/Stat'
+import { EquipmentKinds } from '@/lib/Character/CharacterEquipment/enums'
 
 import ToggleService from '@/setup/ToggleService'
 
@@ -269,6 +270,7 @@ import { findObtainByDye, findStat, SearchModes, useItemQueryModes } from './set
 interface Props {
   equipment: CharacterEquipment;
 }
+
 
 const props = defineProps<Props>()
 

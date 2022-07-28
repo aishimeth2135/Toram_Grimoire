@@ -1,3 +1,5 @@
+import { shallowReactive } from 'vue'
+
 import { handleFormula } from '@/shared/utils/data'
 
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
@@ -287,25 +289,25 @@ export function initBranchesPostpone(effectItem: SkillEffectItem) {
   })
 }
 
-function initStackStates(effectItem: SkillEffectItemBase) {
-  const vars = {
-    slv: effectItem.parent.parent.vars.skillLevel,
-    clv: effectItem.parent.parent.vars.characterLevel,
-  }
+function initStackStates(effectItem: SkillEffectItemBase, vars?: { slv: number; clv: number }) {
+  // const vars = {
+  //   slv: effectItem.parent.parent.vars.skillLevel,
+  //   clv: effectItem.parent.parent.vars.characterLevel,
+  // }
   const stackStates: BranchStackState[] = effectItem.branchItems
     .filter(branchItem => branchItem.is(SkillBranchNames.Stack))
     .map(branchItem => {
-      return {
-        stackId: branchItem.stackId as number,
+      return shallowReactive({
+        stackId: branchItem.stackId!,
         branch: branchItem,
         value: handleFormula(branchItem.prop('default') === 'auto' ? branchItem.prop('min') : branchItem.prop('default'), {
           vars: {
-            'SLv': vars.slv,
-            'CLv': vars.clv,
+            'SLv': vars ? vars.slv : 0,
+            'CLv': vars ? vars.clv : 0,
           },
           toNumber: true,
         }) as number,
-      }
+      })
     })
   effectItem.stackStates.splice(0, effectItem.stackStates.length, ...stackStates)
 }

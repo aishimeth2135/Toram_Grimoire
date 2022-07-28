@@ -2,7 +2,7 @@
 import { ref, computed, toRaw } from 'vue'
 import type { Ref } from 'vue'
 
-import { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 
@@ -60,12 +60,12 @@ export interface ExtraSuffixBranchData {
   statContainers?: ResultContainerStat[];
 }
 
-export function setupCommonExtraSuffixBranches(branchItem: Ref<SkillBranchItem>) {
+export function setupCommonExtraSuffixBranches(computing: SkillComputingContainer, branchItem: Ref<SkillBranchItem>) {
   const extraSuffixBranchDatas = computed(() => {
     return branchItem.value.suffixBranches
       .filter(suffix => suffix.is(SkillBranchNames.Extra) && (suffix.prop('caption') || suffix.stats.length > 0))
       .map((suffix, idx) => {
-        const dataContainer = ExtraHandler(suffix)
+        const dataContainer = ExtraHandler(computing, suffix)
         const baseData: ExtraSuffixBranchData = {
           id: idx.toString(),
           icon: 'eva-checkmark-circle-2-outline',

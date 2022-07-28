@@ -1,7 +1,7 @@
 <template>
   <cy-icon-text
-    :icon="equipment.is !== 'avatar' ? equipment.getCategoryImagePath() : equipment.categoryIcon"
-    :icon-src="equipment.is !== 'avatar' ? 'image' : 'iconify'"
+    :icon="!equipment.is(EquipmentKinds.Avatar) ? equipment.getCategoryImagePath() : equipment.categoryIcon"
+    :icon-src="!equipment.is(EquipmentKinds.Avatar) ? 'image' : 'iconify'"
     :small="small"
     :text-color="textColor"
   >
@@ -17,6 +17,7 @@
 
 <script lang="ts" setup>
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import { EquipmentKinds } from '@/lib/Character/CharacterEquipment/enums'
 
 interface Props {
   equipment: CharacterEquipment;

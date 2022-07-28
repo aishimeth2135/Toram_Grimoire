@@ -25,6 +25,7 @@
           v-for="branchItemData in skillBranchItemDatas"
           :key="branchItemData.id"
           :skill-branch-item="branchItemData.item"
+          :computing="rootComputingContainer"
         />
       </div>
       <div v-if="tabs.skillHistory">
@@ -65,7 +66,7 @@
       <cy-button-plain
         icon="carbon:location-current"
         class="ml-4"
-        @click="emit('set-current-skill', currentHoveringSkill as Skill)"
+        @click="emit('set-current-skill', currentHoveringSkill!)"
       >
         {{ t('skill-query.go-to-skill') }}
       </cy-button-plain>
@@ -81,6 +82,7 @@
   >
     <div v-if="currentHoveringBranch" class="bg-white bg-opacity-70">
       <SkillBranch
+        :computing="rootComputingContainer"
         :skill-branch-item="currentHoveringBranch"
         class="w-full bg-opacity-100"
         sub
@@ -97,7 +99,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, ref, watch, nextTick } from 'vue'
+import { computed, ref, watch, nextTick, inject } from 'vue'
 import { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -116,6 +118,7 @@ import SkillSwitchEffectButtons from './skill-switch-effect-buttons.vue'
 
 import { setupSkillTag } from './setup'
 import { TAG_BUTTON_CLASS_NAME } from './utils'
+import { ComputingContainerInjectionKey } from './injection-keys'
 
 interface Props {
   skillItem: SkillItem;
@@ -129,6 +132,8 @@ interface Emits {
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
+
+const { rootComputingContainer } = inject(ComputingContainerInjectionKey)!
 
 const effectItem = computed(() => {
   if (!props.skillItem) {

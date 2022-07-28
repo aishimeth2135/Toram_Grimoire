@@ -1,10 +1,10 @@
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import type { HandleBranchTextPropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
 import { cloneBranchProps, handleDisplayData, HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
-export default function ReferenceHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
+export default function ReferenceHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
   const props = cloneBranchProps(branchItem)
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
@@ -14,7 +14,7 @@ export default function ReferenceHandler<BranchItem extends SkillBranchItem>(bra
 
   const pureDatas = ['url', 'url_text']
 
-  return handleDisplayData(branchItem, props, {
+  return handleDisplayData(computing, branchItem, props, {
     filters: filters.value,
     texts: textPropsMap.value,
     pureDatas,

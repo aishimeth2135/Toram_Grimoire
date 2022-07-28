@@ -19,18 +19,19 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
 import ListHandler from './branch-handlers/ListHandler'
 
 interface Props {
+  computing: SkillComputingContainer;
   branchItem: SkillBranchItem;
 }
 
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const containers = computed(() => ListHandler(branchItem.value))
+const containers = computed(() => ListHandler(props.computing, branchItem.value))
 
 const containerStates = computed(() => containers.value.map((container, iid) => ({ iid, container })))
 

@@ -12,7 +12,7 @@ import { CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
 
 import { SkillBuildState, useCharacterSkillStore } from './skill'
 import { useCharacterFoodStore } from './food'
-import { setupCharacterSkills, setupCharacterStats, setupFoodStats } from './setup'
+import { setupCharacterSkillItems, setupCharacterSkills, setupCharacterStats, setupFoodStats } from './setup'
 import { SkillBuild, SkillBuildSaveData } from './skill-build/SkillBuild'
 import { useCharacterSkillBuildStore } from './skill-build'
 import setupDamageCalculation, { CalculationOptions, TargetProperties } from './setup/setupDamageCalculation'
@@ -134,7 +134,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     if (chara) {
       characters.value.push(chara)
     } else {
-      characters.value.push(new Character(Grimoire.i18n.t('character-simulator.character')  + ' ' + (characters.value.length + 1)))
+      characters.value.push(new Character(Grimoire.i18n.t('character-simulator.character') + ' ' + (characters.value.length + 1)))
     }
     if (updateIndex) {
       currentCharacterIndex.value = characters.value.length - 1
@@ -385,6 +385,8 @@ export const useCharacterStore = defineStore('view-character', () => {
 
   const currentSkillBuild = computed(() => skillBuildStore.currentSkillBuild as (SkillBuild | null))
 
+  const { skillItemStates } = setupCharacterSkillItems(currentCharacter, currentSkillBuild)
+
   const {
     activeSkillResultStates,
     passiveSkillResultStates,
@@ -394,6 +396,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   } = setupCharacterSkills(
     currentCharacter,
     currentSkillBuild,
+    skillItemStates,
     setupOptions,
   )
 
@@ -413,10 +416,12 @@ export const useCharacterStore = defineStore('view-character', () => {
       getSkillBranchItemState,
     },
     allFoodBuildStats,
+    skillItemStates,
     setupOptions,
   )
 
   const setupCharacterComparedStatCategoryResults = (comparedCharacter: Ref<Character | null>) => {
+    const { skillItemStates: _skillItemStates } = setupCharacterSkillItems(comparedCharacter, currentSkillBuild)
     const { characterStatCategoryResults: comparedCharacterStatCategoryResults } = setupCharacterStats(
       comparedCharacter,
       currentSkillBuild,
@@ -425,6 +430,7 @@ export const useCharacterStore = defineStore('view-character', () => {
         getSkillBranchItemState,
       },
       allFoodBuildStats,
+      _skillItemStates,
       setupOptions,
     )
     return {
@@ -512,6 +518,8 @@ export const useCharacterStore = defineStore('view-character', () => {
 
     characterStatCategoryResults,
     setupCharacterComparedStatCategoryResults,
+
+    skillItemStates: skillItemStates,
 
     activeSkillResultStates,
     passiveSkillResultStates,

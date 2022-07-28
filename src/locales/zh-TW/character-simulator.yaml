@@ -25,7 +25,7 @@ browse-equipments:
   no-any-equipment-tips: 這裡目前空空的...請點選右上角的按扭來新增裝備0.0
   equipment-item-actions-tips: 請打開左下角的「顯示全部裝備」以使用整理相關的功能。
   equipped: 裝備中
-  click-edit-tips: 點擊上方各區塊以編輯
+  click-edit-tips: 或是點擊上方各區塊可以直接編輯
   auto-arrange-success-tips: 自動整理成功。
 append-equipments:
   title: 新增裝備
@@ -44,7 +44,6 @@ equipment-info:
   refining: 精鍊值
   stat-empty: 此裝備沒有能力
   crystal-empty: 此裝備沒有緞晶
-  equipment-type: 裝備類型
 equipment-basic-editor:
   title: 裝備設定
   edit-stats:
@@ -53,9 +52,11 @@ equipment-basic-editor:
     current-stats: 現存的能力
     appended-stats: 新增的能力
     removed-stats: 移除的能力
+  equipment-basic: 基本設定
   equipment-name: 裝備名稱
   equipment-stats: 裝備能力
-  equipment-other: 其它設定
+  equipment-type: 裝備類型
+  equipment-crystal: 鍛晶
   no-equipment-type-selected-tips: 請先選擇一個裝備類別。
   selected-stats-cleared-tips: 已取消更動。
   only-one-element-stat-tips: 一件裝備只能擁有一個屬性，請確認編輯中的能力清單。
@@ -164,6 +165,7 @@ combo:
     tough: 執著
     reflection: 反射
     bloodsucker: 吸血
+    none: 無
   damage-calc:
     damage-sum-title: 總傷害
     previous-skill-next-title: 上一招技能提供的額外效果

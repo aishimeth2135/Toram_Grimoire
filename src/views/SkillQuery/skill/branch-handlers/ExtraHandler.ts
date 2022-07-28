@@ -1,6 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 
-import { SkillBranchItemSuffix } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItemSuffix } from '@/lib/Skill/SkillComputingContainer'
 import type { HandleBranchTextPropsMap, HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
@@ -9,7 +9,7 @@ import MapContainer from './utils/MapContainer'
 import type { HandleDisplayDataOptionFilters } from './utils'
 import DisplayDataContainer from './utils/DisplayDataContainer'
 
-export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(branchItem: BranchItem) {
+export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(computing: SkillComputingContainer, branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
   const defaultCondition = branchItem.mainBranch.is(SkillBranchNames.Damage) && branchItem.stats.length > 0 ?
@@ -49,7 +49,7 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(b
     textPropsMap.append('caption', 'condition')
   }
 
-  return handleDisplayData(branchItem, props, {
+  return handleDisplayData(computing, branchItem, props, {
     values: valuePropsMap.value,
     texts: textPropsMap.value,
     filters: filters.value,

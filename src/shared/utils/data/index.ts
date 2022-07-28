@@ -287,7 +287,7 @@ function handleFormula(formulaStr: string, {
 
   if (!isNumberString(formulaStr)) {
     try {
-      formulaStr = parseFormula(formulaStr, { ...vars, ...methods }).toString()
+      formulaStr = parseFormula(formulaStr, { ...vars, ...methods })?.toString() || '0'
     } catch (error) {
       console.groupCollapsed('[parse formula] Unable to parse formula:')
       console.warn(originalFormulaStr)
@@ -309,7 +309,7 @@ function handleFormula(formulaStr: string, {
       right = parseFloat(right)
       return calcNumberBinaryExpression(left, operator, right).toString()
     })
-    .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, pre,  left, operator, right) => {
+    .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, pre, left, operator, right) => {
       left = parseFloat(left)
       right = parseFloat(right)
       return pre + calcNumberBinaryExpression(left, operator, right).toString()

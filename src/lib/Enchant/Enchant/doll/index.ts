@@ -376,7 +376,7 @@ export default class EnchantDoll {
       return category.materialPointMaximumSum('min', num)
     }
 
-    const calcPriority =  (category: EnchantDollCategory, nums: number) => {
+    const calcPriority = (category: EnchantDollCategory, nums: number) => {
       return this.config.autoFindNegaitveStatsType === AutoFindNegaitveStatsTypes.SuccessRate ?
         calcPotentialPriority(category, nums) :
         calcMaterialPriority(category, nums)

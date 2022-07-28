@@ -115,7 +115,14 @@ const getMpCost = (skill: Skill, previous: Skill | null) => {
   return 0
 }
 
-const comboSkillStates = computed(() => props.combo.getComboSkillStates(getMpCost))
+const checkSkillValid = (skill: Skill) => {
+  if (!store.skillItemStates.has(skill)) {
+    return false
+  }
+  return store.skillItemStates.get(skill)!.effectItem.value !== null
+}
+
+const comboSkillStates = computed(() => props.combo.getComboSkillStates({ getMpCost, checkSkillValid }))
 
 const comboSkillStateItems = computed(() => {
   const allResultsStates = store.damageSkillResultStates as SkillResultsState[]

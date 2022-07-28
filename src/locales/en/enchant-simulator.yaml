@@ -47,20 +47,20 @@ result:
     title: About success rate
     captions:
       - >-
-        ((_Success rate))Is the success rate displayed in the
-        game,showing((!single stat success rate)). ( ´ ▽ ` )/
+        ((_Success rate)) Is the success rate displayed in the
+        game, showing ((!single stat success rate)). ( ´ ▽ ` )/
       - >-
-        ((_Expected success rate))is the ((!Overall success rate of all positive
-        stat)),The calculation formula is((_single stat success rate power the
+        ((_Expected success rate)) is the ((!Overall success rate of all positive
+        stat)), The calculation formula is ((_single stat success rate power the
         number of positive attributes)). example：single stat success rate is
         90%, the number of positive attributes is 5, then the calculation method
         is 90% to the 5th power,around 59%.
       - >-
-        To facilitate the user to fine-tune the steps,((!single stat success
-        rate))will display more than 100% when is possible, Only on the final
-        step there are remaining potential will display((!Unlimited))。
+        To facilitate the user to fine-tune the steps, ((!single stat success
+        rate)) will display more than 100% when is possible. Only on the final
+        step there are remaining potential will display ((!Unlimited))。
       - >-
-        ((!Expected success rate))has the concept of actual success rate, So it
+        ((!Expected success rate)) has the concept of actual success rate, so it
         will only show up to 100%.
 stat-display-mode:
   title: Toggle stat Information
@@ -75,9 +75,3 @@ tips:
   remove-build-confirm: Are you sure to delete this stat build "("´Д｀")"?
   copy-build-success: Build was successful copied.
   copy-result-text-success: result text was successful copied.
-save-tips:
-  auto-save-success: Auto save was successful.
-  auto-load-success: Auto load was successful.
-  export-success: Export was successful.
-  import-success: import $0 was successful.
-  import-failed: import failed.

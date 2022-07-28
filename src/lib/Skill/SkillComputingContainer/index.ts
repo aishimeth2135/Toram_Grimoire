@@ -1,4 +1,4 @@
-import { markRaw, reactive } from 'vue'
+import { reactive } from 'vue'
 
 import { HandleFormulaTexts, HandleFormulaVars, HandleFormulaMethods } from '@/shared/utils/data'
 import { splitComma } from '@/shared/utils/string'
@@ -30,6 +30,9 @@ interface HandleFormulaExtends {
   methods?: HandleFormulaMethods;
 }
 
+/**
+ * @vue-reactive controller
+ */
 class SkillComputingContainer {
   vars: {
     characterLevel: number;
@@ -51,37 +54,34 @@ class SkillComputingContainer {
   }
 
   constructor() {
-    this.vars = {
+    this.vars = reactive({
       characterLevel: 250,
       skillLevel: 10,
-    }
+    })
     this.varGetters = {
       characterLevel: null,
       skillLevel: null,
     }
-    this.handleFormulaExtends = markRaw({
+    this.handleFormulaExtends = {
       vars: {},
       texts: {},
-    })
+    }
     this.handleFormulaDynamicExtends = []
-    this.config = {
+    this.config = reactive({
       formulaDisplayMode: FormulaDisplayModes.Normal,
       getFormulaExtraValue: null,
-    }
-  }
-
-  createSkillItem(skill: Skill) {
-    return new SkillItem(this, skill)
+    })
   }
 }
 
+/**
+ * @vue-reactive raw
+ */
 class SkillItem {
-  readonly parent: SkillComputingContainer
   readonly skill: Skill
   readonly effectItems: SkillEffectItem[]
 
-  constructor(parent: SkillComputingContainer, skill: Skill) {
-    this.parent = parent
+  constructor(skill: Skill) {
     this.skill = skill
 
     const defaultSef = skill.defaultEffect
@@ -92,8 +92,8 @@ class SkillItem {
     ]
   }
 
-  findEffectItem(equipment: EquipmentRestrictions) {
-    return this.effectItems.find(effectItem => effectItem.equipmentMatch(equipment)) ?? null
+  findEffectItem(equipment: EquipmentRestrictions, getSkillLevel?: (skill: Skill) => number) {
+    return this.effectItems.find(effectItem => effectItem.equipmentMatch(equipment, getSkillLevel)) ?? null
   }
 }
 
@@ -138,16 +138,19 @@ abstract class SkillEffectItemBase {
   abstract readonly branchItems: SkillBranchItem<SkillEffectItemBase>[]
 
   readonly parent: SkillItem
+
+  // reactive: init in `initStackStates`
   readonly stackStates: BranchStackState[]
 
   constructor(parent: SkillItem) {
     this.parent = parent
-
-    // user-set
-    this.stackStates = reactive([])
+    this.stackStates = []
   }
 }
 
+/**
+ * @vue-reactive raw
+ */
 class SkillEffectItem extends SkillEffectItemBase {
   override branchItems: SkillBranchItem<SkillEffectItem>[]
 
@@ -164,7 +167,7 @@ class SkillEffectItem extends SkillEffectItemBase {
 
     const current = from ? from : defaultSef
     const dualSwordRegress = defaultSef.parent.effects.every(eft => eft.mainWeapon !== 10)
-    this.equipments = markRaw(convertEffectEquipment(current, dualSwordRegress))
+    this.equipments = convertEffectEquipment(current, dualSwordRegress)
 
     this.historys = current.historys.map(history => new SkillEffectItemHistory(parent, this, history))
 
@@ -190,15 +193,15 @@ class SkillEffectItem extends SkillEffectItemBase {
     initStackStates(this)
   }
 
-  equipmentMatch(equipment: EquipmentRestrictions): boolean {
+  equipmentMatch(equipment: EquipmentRestrictions, getSkillLevel?: (skill: Skill) => number): boolean {
     const equipments = this.equipments.slice()
 
     // 雙手合持 (0-6-11)
-    if (this.parent.parent.varGetters.skillLevel && this.parent.skill.skillId === '0-6-11') {
+    if (getSkillLevel && this.parent.skill.skillId === '0-6-11') {
       // 忍道 (4-5-1)
       const skillNinjaSpirit = this.parent.skill.parent.parent.parent.findSkillById('4-5-1')
       if (skillNinjaSpirit) {
-        const skillNinjaSpiritLevel = this.parent.parent.varGetters.skillLevel(skillNinjaSpirit)
+        const skillNinjaSpiritLevel = getSkillLevel(skillNinjaSpirit)
         if (skillNinjaSpiritLevel === 10) {
           equipments.push(new EquipmentRestrictions({
             sub: EquipmentTypes.NinjutsuScroll,
@@ -224,8 +227,18 @@ class SkillEffectItem extends SkillEffectItemBase {
     const keys = ['main', 'sub', 'body'] as const
     return this.equipments.map(equip => keys.map(key => equip[key] || 'none').join('+')).join('/')
   }
+
+  resetStackStates(vars: { slv: number; clv: number }) {
+    this.historys.forEach(history => {
+      initStackStates(history, vars)
+    })
+    initStackStates(this, vars)
+  }
 }
 
+/**
+ * @vue-reactive raw
+ */
 class SkillEffectItemHistory extends SkillEffectItemBase {
   override branchItems: SkillBranchItem<SkillEffectItemHistory>[]
 
@@ -247,8 +260,8 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
     this.parentEffect = parentEffect
     this.date = historyEffect.date
     this.nexts = new Map()
-    this.introductionBranches = markRaw([])
-    this.removedBranches = markRaw([])
+    this.introductionBranches = []
+    this.removedBranches = []
   }
 
   get modifiedBranchItems() {
@@ -317,8 +330,8 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
     this._inherit = null
     this.name = this._name // init _inherit
 
-    this._props = markRaw(new Map(branch instanceof SkillBranch ? branch.props : branch.allProps))
-    this.stats = markRaw(branch.stats.map(stat => stat.clone()))
+    this._props = new Map(branch instanceof SkillBranch ? branch.props : branch.allProps)
+    this.stats = branch.stats.map(stat => stat.clone())
     this.buffs = null
 
     this.isEmpty = branch.isEmpty
@@ -360,10 +373,6 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
 
   get realName(): SkillBranchNames {
     return this._name
-  }
-
-  get belongContainer() {
-    return this.parent.parent.parent
   }
 
   get allProps() {
@@ -431,6 +440,9 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
   }
 }
 
+/**
+ * @vue-reactive raw
+ */
 class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> extends SkillBranchItemBase<Parent> {
   readonly suffixBranches: SkillBranchItemSuffix[]
   readonly emptySuffixBranches: SkillBranchItemSuffix[]
@@ -442,8 +454,8 @@ class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> 
   constructor(parent: Parent, branch: SkillBranch | SkillBranchItem) {
     super(parent, branch)
 
-    this.suffixBranches = markRaw([])
-    this.emptySuffixBranches = markRaw([])
+    this.suffixBranches = []
+    this.emptySuffixBranches = []
 
     this.stackId = this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
 
@@ -510,6 +522,9 @@ class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> 
   }
 }
 
+/**
+ * @vue-reactive raw
+ */
 class SkillBranchItemSuffix<Parent extends SkillEffectItemBase = SkillEffectItemBase> extends SkillBranchItemBase<Parent> {
   readonly mainBranch: SkillBranchItem
 
@@ -525,6 +540,9 @@ class SkillBranchItemSuffix<Parent extends SkillEffectItemBase = SkillEffectItem
   }
 }
 
+/**
+ * @vue-reactive raw
+ */
 class SkillBranchBuffs {
   private _buffs: Set<SkillBuffs>
 

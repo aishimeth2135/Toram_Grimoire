@@ -20,7 +20,10 @@ function createColorConfig(varName) {
       DEFAULT: handleValue('red'),
       light: handleValue('red-light'),
     },
-    purple: handleValue('purple'),
+    purple: {
+      DEFAULT: handleValue('purple'),
+      light: handleValue('purple-light'),
+    },
     'blue-purple': {
       DEFAULT: handleValue('blue-purple'),
       light: handleValue('blue-purple-light'),

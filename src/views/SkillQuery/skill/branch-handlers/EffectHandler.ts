@@ -1,6 +1,6 @@
 import Grimoire from '@/shared/Grimoire'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import type { HandleBranchTextPropsMap, HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
@@ -8,7 +8,7 @@ import { cloneBranchProps, handleDisplayData } from './utils'
 import type { HandleBranchLangPropsMap, HandleDisplayDataOptionFilters } from './utils'
 import MapContainer from './utils/MapContainer'
 
-export default function EffectHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
+export default function EffectHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
   const props = cloneBranchProps(branchItem, {
@@ -42,7 +42,7 @@ export default function EffectHandler<BranchItem extends SkillBranchItem>(branch
 
   const pureDatas = ['name', 'target']
 
-  return handleDisplayData(branchItem, props, {
+  return handleDisplayData(computing, branchItem, props, {
     values: valuePropsMap.value,
     texts: textPropsMap.value,
     langs: langAttrsMap.value,

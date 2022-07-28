@@ -42,7 +42,7 @@
               <span class="ml-1.5 text-light-3">{{ data.title.value }}</span>
             </template>
           </cy-icon-text>
-          <div class="ml-auto" @click.stop>
+          <div class="ml-auto">
             <cy-popover v-if="data.statRecorded" placement="bottom-end">
               <template #default="{ shown }">
                 <cy-button-icon icon="mdi:help-circle-outline" :selected="shown" />

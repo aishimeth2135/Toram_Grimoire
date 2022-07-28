@@ -1,7 +1,7 @@
 import { markText } from '@/shared/utils/view'
 import Grimoire from '@/shared/Grimoire'
 
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
@@ -11,7 +11,7 @@ import type { HandleDisplayDataOptionFilters, HandleBranchLangPropsMap } from '.
 import ProrationHandler from './ProrationHandler'
 import { createTagButtons } from '../../utils'
 
-export default function DamageHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
+export default function DamageHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
   const { t } = Grimoire.i18n
 
   const props = cloneBranchProps(branchItem, {
@@ -102,14 +102,14 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(branch
 
   const prorationBch = branchItem.suffixBranches.find(suf => suf.is(SkillBranchNames.Proration))
   if (prorationBch) {
-    const _data = ProrationHandler(prorationBch);
+    const _data = ProrationHandler(computing, prorationBch);
     ['damage', 'proration', 'damage: title', 'proration: title'].forEach(key => {
       props.set('@proration/' + key, _data.get(key))
     })
     pureDatas.push('@proration/damage', '@proration/damage: title', '@proration/proration', '@proration/proration: title')
   }
 
-  const result = handleDisplayData(branchItem, props, {
+  const result = handleDisplayData(computing, branchItem, props, {
     values: valuePropsMap.value,
     langs: langAttrsMap.value,
     filters: filters.value,

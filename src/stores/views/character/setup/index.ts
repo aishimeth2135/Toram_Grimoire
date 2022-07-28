@@ -1,11 +1,11 @@
-import { computed, ComputedRef, reactive, ref, Ref, watch } from 'vue'
+import { computed, ComputedRef, reactive, ref, Ref, shallowReadonly, watch } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
 import { computeFormula } from '@/shared/utils/data'
 
 import { Character, CharacterStatResult, CharacterStatResultVars } from '@/lib/Character/Character'
-import SkillComputingContainer, { EquipmentRestrictions, SkillBranchItem, SkillBranchItemSuffix, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { EquipmentRestrictions, SkillBranchItem, SkillBranchItemSuffix, SkillEffectItem, SkillItem } from '@/lib/Skill/SkillComputingContainer'
 import { Skill, SkillBranch } from '@/lib/Skill/Skill'
 import { CharacterBaseStatTypes, CharacterOptionalBaseStatTypes, EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
@@ -70,18 +70,59 @@ export interface SetupCharacterStatCategoryResultsExtended {
   };
 }
 
+interface SkillItemState {
+  skillItem: SkillItem;
+  effectItem: ComputedRef<SkillEffectItem | null>;
+}
+
+export function setupCharacterSkillItems(character: Ref<Character | null>, skillBuild: Ref<SkillBuild | null>) {
+  const currentCharacterEquipment = computed<EquipmentRestrictions>(() => {
+    if (!character.value) {
+      return new EquipmentRestrictions()
+    }
+
+    const main = character.value.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
+    const sub = character.value.equipmentField(EquipmentFieldTypes.SubWeapon).equipmentType
+    const body = character.value.equipmentField(EquipmentFieldTypes.BodyArmor).equipmentType
+    if (main === EquipmentTypes.OneHandSword && sub === EquipmentTypes.OneHandSword) {
+      return new EquipmentRestrictions({
+        main: EquipmentTypes.DualSword,
+        body,
+      })
+    }
+    return new EquipmentRestrictions({ main, sub, body })
+  })
+
+  const allSkills: Skill[] = []
+  Grimoire.Skill.skillRoot.skillTreeCategorys.forEach(stc => stc.skillTrees.forEach(st => allSkills.push(...st.skills)))
+
+  const skillItemStates: Map<Skill, SkillItemState> = new Map()
+  allSkills.forEach(skill => {
+    const skillItem = new SkillItem(skill)
+    const getSkillLevel = (_skill: Skill) => skillBuild.value?.getSkillLevel(_skill) ?? 0
+    const currentEffectItem = computed(() => skillItem.findEffectItem(currentCharacterEquipment.value, getSkillLevel))
+    skillItemStates.set(skill, shallowReadonly({
+      skillItem,
+      effectItem: currentEffectItem,
+    }))
+  })
+
+  return { skillItemStates }
+}
+
 export function setupCharacterSkills(
   character: Ref<Character | null>,
   skillBuild: Ref<SkillBuild | null>,
+  skillItemStates: Map<Skill, SkillItemState>,
   handleOptions: Ref<CharacterSetupOptions>,
   postponeOptions?: SkillSetupPostponeOptions,
 ) {
   const isPostpone = !!postponeOptions
 
-  const computingContainer: Ref<SkillComputingContainer> = ref(new SkillComputingContainer())
+  const computing = new SkillComputingContainer()
   const getSkillLevel = (skill: Skill) => skillBuild.value?.getSkillLevel(skill) ?? 0
-  computingContainer.value.varGetters.skillLevel = getSkillLevel
-  computingContainer.value.varGetters.characterLevel = () => character.value?.level ?? 0
+  computing.varGetters.skillLevel = getSkillLevel
+  computing.varGetters.characterLevel = () => character.value?.level ?? 0
 
   const extendVars = computed(() => {
     if (!character.value) {
@@ -98,7 +139,7 @@ export function setupCharacterSkills(
       '$BDEX': character.value.baseStatValue(CharacterBaseStatTypes.DEX),
       '$TEC': character.value.baseStatValue(CharacterOptionalBaseStatTypes.TEC),
       '$shield_refining': character.value.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Shield) ? subField?.refining ?? 0 : 0,
-      '$dagger_atk': character.value.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Dagger) ? subField?.atk ?? 0 : 0,
+      '$dagger_atk': character.value.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Dagger) ? subField?.basicValue ?? 0 : 0,
 
       // not used for handling stats of skills
       '$target_def': 0,
@@ -114,7 +155,7 @@ export function setupCharacterSkills(
       '$guard_power': isPostpone ? postponeOptions.getCharacterStatValue('guard_power') : 0,
     } as Record<string, number>
   })
-  computingContainer.value.handleFormulaDynamicExtends.push(() => {
+  computing.handleFormulaDynamicExtends.push(() => {
     if (!character.value) {
       return { vars: {}, texts: {} }
     }
@@ -145,7 +186,7 @@ export function setupCharacterSkills(
     return {
       '@C': {
         'main': mainField ? {
-          atk: mainField.atk,
+          atk: mainField.basicValue,
           refining: mainField.refining,
           stability: mainField.stability,
         } : {
@@ -154,10 +195,10 @@ export function setupCharacterSkills(
           stability: 0,
         },
         'sub': subField ? {
-          atk: subField.atk || 0,
-          def: subField.def || 0,
-          refining: subField.refining || 0,
-          stability: subField.stability || 0,
+          atk: subField.basicValue,
+          def: subField.basicValue,
+          refining: subField.refining,
+          stability: subField.stability,
         } : {
           atk: 0,
           def: 0,
@@ -165,28 +206,28 @@ export function setupCharacterSkills(
           stability: 0,
         },
         'armor': bodyField ? {
-          def: bodyField.def,
+          def: bodyField.basicValue,
           refining: bodyField.refining,
         } : {
           def: 0,
           refining: 0,
         },
         'additional': additionalField ? {
-          def: additionalField.def,
+          def: additionalField.basicValue,
           refining: additionalField.refining,
         } : {
           def: 0,
           refining: 0,
         },
-        'special': specialField ? { def: specialField.def } : { def: 0 },
+        'special': specialField ? { def: specialField.basicValue } : { def: 0 },
         'shield': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Shield) ?
-          { refining: subField!.refining, def: subField!.def } :
+          { refining: subField!.refining, def: subField!.basicValue } :
           { refining: 0, def: 0 },
         'arrow': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow) ?
-          { stability: subField!.stability, atk: subField!.atk } :
+          { stability: subField!.stability, atk: subField!.basicValue } :
           { stability: 0, atk: 0 },
         'ninjutsu_scroll': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.NinjutsuScroll) ?
-          { stability: subField!.stability, atk: subField!.atk } :
+          { stability: subField!.stability, atk: subField!.basicValue } :
           { stability: 0, atk: 0 },
         'stat': (id: string) => {
           const getter = postponeOptions?.getCharacterStatValue
@@ -204,7 +245,7 @@ export function setupCharacterSkills(
     } as Record<string, any>
   })
 
-  computingContainer.value.config.getFormulaExtraValue = (formula) => {
+  computing.config.getFormulaExtraValue = (formula) => {
     if (!character.value) {
       return null
     }
@@ -220,23 +261,6 @@ export function setupCharacterSkills(
     }
     return null
   }
-
-  const currentCharacterEquipment = computed<EquipmentRestrictions>(() => {
-    if (!character.value) {
-      return new EquipmentRestrictions()
-    }
-
-    const main = character.value.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
-    const sub = character.value.equipmentField(EquipmentFieldTypes.SubWeapon).equipmentType
-    const body = character.value.equipmentField(EquipmentFieldTypes.BodyArmor).equipmentType
-    if (main === EquipmentTypes.OneHandSword && sub === EquipmentTypes.OneHandSword) {
-      return new EquipmentRestrictions({
-        main: EquipmentTypes.DualSword,
-        body,
-      })
-    }
-    return new EquipmentRestrictions({ main, sub, body })
-  })
 
   const {
     activeSkillResults,
@@ -268,18 +292,18 @@ export function setupCharacterSkills(
 
     const handleComputingResults = (
       target: ComputedRef<SkillBranchItem[]>,
-      handler: (bch: SkillBranchItem) => DisplayDataContainer,
+      handler: (_computing: SkillComputingContainer, bch: SkillBranchItem) => DisplayDataContainer,
       validBranchNames: SkillBranchNames[],
     ) => {
       return computed(() => {
         return target.value.map(bch => {
           const container = (validBranchNames.some(name => bch.is(name)) ?
-            handler(bch) :
+            handler(computing, bch) :
             new DisplayDataContainer({ branchItem: bch, containers: {}, statContainers: [], value: {} }) // empty container
           ) as DisplayDataContainerAlly
           const suffixContainers = bch.suffixBranches
             .filter(suffixBranchFilter)
-            .map(suf => ExtraHandler(suf) as DisplayDataContainerSuffixAlly)
+            .map(suf => ExtraHandler(computing, suf) as DisplayDataContainerSuffixAlly)
           return {
             container,
             suffixContainers,
@@ -289,9 +313,11 @@ export function setupCharacterSkills(
     }
 
     allSkills.forEach(skill => {
-      const skillItem = computingContainer.value.createSkillItem(skill)
-
-      const currentEffectItem = computed(() => skillItem.findEffectItem(currentCharacterEquipment.value) ?? null)
+      const skillItemState = skillItemStates.get(skill)
+      if (!skillItemState) {
+        return
+      }
+      const { skillItem, effectItem: currentEffectItem } = skillItemState
 
       // active
       const checkBranchStats = (stats: StatComputed[]) => !handleOptions.value.skillDisplayStatsOnly || stats.length !== 0
@@ -365,19 +391,19 @@ export function setupCharacterSkills(
         stackContainers.set(skill, computed(() => {
           return currentEffectItem.value?.branchItems
             .filter(_bch => _bch.is(SkillBranchNames.Stack) && !_bch.hasProp('value'))
-            .map(_bch => StackHandler(_bch)) ?? []
+            .map(_bch => StackHandler(computing, _bch)) ?? []
         }))
         basicContainers.set(skill, computed(() => {
           const basicBranch = currentEffectItem.value?.basicBranchItem
-          return basicBranch ? BasicHandler(basicBranch) : null
+          return basicBranch ? BasicHandler(computing, basicBranch) : null
         }))
       }
     })
     return {
-      activeSkillResults: reactive(computingResultsActive),
-      passiveSkillResults: reactive(computingResultsPassive),
-      nextSkillResults: reactive(computingResultsNext),
-      damageSkillResults: reactive(computingResultsDamage),
+      activeSkillResults: computingResultsActive,
+      passiveSkillResults: computingResultsPassive,
+      nextSkillResults: computingResultsNext,
+      damageSkillResults: computingResultsDamage,
       skillStackContainers: stackContainers,
       skillBasicContainers: basicContainers,
     }
@@ -535,6 +561,7 @@ export function setupCharacterStats(
     getSkillBranchItemState: (skillBranch: SkillBranch) => SkillBranchItemState;
   },
   foodStats: Ref<StatRecorded[]>,
+  skillItemStates: Map<Skill, SkillItemState>,
   handleOptions: Ref<CharacterSetupOptions>,
 ) {
   const allEquipmentStats = computed(() => {
@@ -583,7 +610,7 @@ export function setupCharacterStats(
         '@crt': chara.baseStatValue(CharacterOptionalBaseStatTypes.CRT),
         '@luk': chara.baseStatValue(CharacterOptionalBaseStatTypes.LUK),
         '@main': mainField ? {
-          atk: mainField.atk,
+          atk: mainField.basicValue,
           refining: mainField.refining,
           stability: mainField.stability,
         } : {
@@ -592,10 +619,10 @@ export function setupCharacterStats(
           stability: 0,
         },
         '@sub': subField ? {
-          atk: subField.atk || 0,
-          def: subField.def || 0,
-          refining: subField.refining || 0,
-          stability: subField.stability || 0,
+          atk: subField.basicValue,
+          def: subField.basicValue,
+          refining: subField.refining,
+          stability: subField.stability,
         } : {
           atk: 0,
           def: 0,
@@ -603,25 +630,25 @@ export function setupCharacterStats(
           stability: 0,
         },
         '@armor': bodyField ? {
-          def: bodyField.def,
+          def: bodyField.basicValue,
           refining: bodyField.refining,
         } : {
           def: 0,
           refining: 0,
         },
         '@additional': additionalField ? {
-          def: additionalField.def,
+          def: additionalField.basicValue,
           refining: additionalField.refining,
         } : {
           def: 0,
           refining: 0,
         },
-        '@special': specialField ? { def: specialField.def } : { def: 0 },
+        '@special': specialField ? { def: specialField.basicValue } : { def: 0 },
         '@shield': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Shield) ?
-          { refining: subField!.refining, def: subField!.def } :
+          { refining: subField!.refining, def: subField!.basicValue } :
           { refining: 0, def: 0 },
         '@arrow': chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow) ?
-          { stability: subField!.stability, atk: subField!.atk } :
+          { stability: subField!.stability, atk: subField!.basicValue } :
           { stability: 0, atk: 0 },
         '@element': equipmentElement.value,
         '@skill': {
@@ -703,7 +730,7 @@ export function setupCharacterStats(
         ...computedVarsBase.value,
         computed: {},
         computedResultStore: {},
-      }  as CharacterStatResultVars
+      } as CharacterStatResultVars
 
       return categoryList.map(category => ({
         name: category.name,
@@ -759,6 +786,7 @@ export function setupCharacterStats(
   } = setupCharacterSkills(
     character,
     skillBuild,
+    skillItemStates,
     handleOptions,
     {
       getCharacterStatValue: id => baseCharacterStatCategoryResultsMap.value.get(id) ?? 0,

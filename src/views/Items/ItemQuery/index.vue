@@ -278,7 +278,7 @@ import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList, EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
+import { MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList, EquipmentTypes, EquipmentKinds } from '@/lib/Character/CharacterEquipment/enums'
 
 import ToggleService from '@/setup/ToggleService'
 
@@ -335,18 +335,18 @@ const sortOptions: {
 } = {
   global: {
     'atk': (item1, item2) => {
-      const value1 = item1.isWeapon() ? item1.atk + 9999 : item1.def ?? 0,
-        value2 = item2.isWeapon() ? item2.atk + 9999 : item2.def ?? 0
+      const value1 = item1.basicValue + (item1.is(EquipmentKinds.Weapon) ? 9999 : 0),
+        value2 = item2.basicValue + (item2.is(EquipmentKinds.Weapon) ? 9999 : 0)
       return value1 - value2
     },
     'def': (item1, item2) => {
-      const value1 = item1.isArmor() ? item1.def + 9999 : item2.atk ?? 0,
-        value2 = item2.isArmor() ? item2.def + 9999 : item2.atk ?? 0
+      const value1 = item1.basicValue + (item1.is(EquipmentKinds.Armor) ? 9999 : 0),
+        value2 = item2.basicValue + (item2.is(EquipmentKinds.Armor) ? 9999 : 0)
       return value1 - value2
     },
     'stability': (item1, item2) => {
-      const value1 = item1.isWeapon() ? item1.stability : -1,
-        value2 = item2.isWeapon() ? item2.stability : -1
+      const value1 = item1.is(EquipmentKinds.Weapon) ? item1.stability : -1,
+        value2 = item2.is(EquipmentKinds.Weapon) ? item2.stability : -1
       if (value1 === -1 && value2 === -1) {
         return sortOptions[state.currentMode].default(item1, item2)
       }
@@ -560,7 +560,7 @@ const selectStat = (stat: StatOption) => {
   }
 }
 
-const selectMode = (id: SearchModes)  => {
+const selectMode = (id: SearchModes) => {
   state.currentMode = id
   state.displayMode = 0
 }

@@ -1,4 +1,4 @@
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
 import { cloneBranchProps, HandleBranchLangPropsMap, handleDisplayData } from './utils'
@@ -6,7 +6,7 @@ import MapContainer from './utils/MapContainer'
 import type { HandleDisplayDataOptionFilters } from './utils'
 import { createTagButtons } from '../../utils'
 
-export default function BasicHandler<BranchItem extends SkillBranchItem>(branchItem: BranchItem) {
+export default function BasicHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
   const props = cloneBranchProps(branchItem)
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
@@ -39,7 +39,7 @@ export default function BasicHandler<BranchItem extends SkillBranchItem>(branchI
     valuePropsMap.set('range', 'm')
   }
 
-  return handleDisplayData(branchItem, props, {
+  return handleDisplayData(computing, branchItem, props, {
     values: valuePropsMap.value,
     langs: langAttrsMap.value,
     filters: filters.value,

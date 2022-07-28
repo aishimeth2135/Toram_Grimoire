@@ -1,4 +1,4 @@
-const enum EquipmentTypes {
+export const enum EquipmentTypes {
   OneHandSword = 'one-hand-sword',
   TwoHandSword = 'two-hand-sword',
   Bow = 'bow',
@@ -27,7 +27,7 @@ const enum EquipmentTypes {
   Empty = 'empty',
 }
 
-const enum EquipmentCategorys {
+export const enum EquipmentCategorys {
   MainWeapon = 'main-weapon',
   SubWeapon = 'sub-weapon',
   SubArmor = 'sub-armor',
@@ -37,7 +37,14 @@ const enum EquipmentCategorys {
   Avatar = 'avatar',
 }
 
-const MainWeaponTypeList = [
+export const enum EquipmentKinds {
+  Weapon = 'weapon',
+  Armor = 'armor',
+  Avatar = 'avatar',
+  Other = 'other',
+}
+
+export const MainWeaponTypeList = [
   EquipmentTypes.OneHandSword,
   EquipmentTypes.TwoHandSword,
   EquipmentTypes.Bow,
@@ -49,21 +56,12 @@ const MainWeaponTypeList = [
   EquipmentTypes.Katana,
 ]
 
-const SubWeaponTypeList = [
+export const SubWeaponTypeList = [
   EquipmentTypes.Arrow,
   EquipmentTypes.Dagger,
   EquipmentTypes.NinjutsuScroll,
 ]
 
-const SubArmorTypeList = [
+export const SubArmorTypeList = [
   EquipmentTypes.Shield,
 ]
-
-export {
-  EquipmentTypes,
-  EquipmentCategorys,
-  MainWeaponTypeList,
-  SubWeaponTypeList,
-  SubArmorTypeList,
-}
-

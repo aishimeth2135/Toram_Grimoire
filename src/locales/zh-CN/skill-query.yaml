@@ -133,6 +133,7 @@ branch:
     dual_element:
       one_hand_sword: 单手剑
       arrow: 箭矢
+      magic_device: 魔导具
     judgment:
       common: 每下伤害共用判定
       separate: 每下伤害分开判定

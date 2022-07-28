@@ -300,7 +300,7 @@ export default class DamageCalculationSystem {
         if (currentDamageTypeId === CalculationItemIds.Physical) {
           return (stability + 50) / 2
         }
-        const baseValue =  50 + stability / 2
+        const baseValue = 50 + stability / 2
         const extraLimit = baseValue > 90 ? (baseValue - 90) : 0
         return (Math.min(baseValue, 90) + 100 + extraLimit) / 2
       })

@@ -13,7 +13,7 @@
           @click="equipmentField.removeEquipment()"
         />
         <cy-button-icon
-          icon="ic-round-view-list"
+          icon="mdi:checkbox-blank-badge-outline"
           class="p-0"
           icon-color="orange"
           @click="editEquipment"

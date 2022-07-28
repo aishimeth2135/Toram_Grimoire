@@ -17,4 +17,4 @@ export default {
     title: '0.0',
     leftMenuViewButtons: [],
   },
-}  as RouteRecordRaw
+} as RouteRecordRaw

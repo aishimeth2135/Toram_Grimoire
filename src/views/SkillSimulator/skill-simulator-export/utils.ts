@@ -141,7 +141,7 @@ export async function exportSkillBuildImage(skillBuild: SkillBuild) {
       topInfo_h_sum +
       (starGemDatas.length !== 0 ? starGemScope_h_sum : 0),
     )
-    const sgc_w = final_w / 2 -  sgc_margin - 2 * starGemScope_px
+    const sgc_w = final_w / 2 - sgc_margin - 2 * starGemScope_px
 
     const drawSkillIconDxBase = final_w - (left_icon_scope_mr + left_icon_scope_text_ml + left_icon_scope_icon_w)
     const drawSkillIconDyBase = - 1 * left_icon_scope_icon_w / 2

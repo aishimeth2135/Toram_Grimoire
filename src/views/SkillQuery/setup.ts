@@ -1,4 +1,4 @@
-import { ref, provide, watch, nextTick, reactive } from 'vue'
+import { ref, provide, watch, nextTick, shallowRef } from 'vue'
 import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -69,7 +69,7 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
 }
 
 export function setupComputingContainer(skill: Ref<Skill | null>) {
-  const computingContainer = reactive(new SkillComputingContainer())
+  const computingContainer = new SkillComputingContainer()
   const FORMULA_REPLACED_VARS = [
     'BSTR', 'BINT', 'BAGI', 'BVIT', 'BDEX', 'TEC',
     'STR', 'INT', 'AGI', 'VIT', 'DEX', 'shield_refining',
@@ -79,9 +79,14 @@ export function setupComputingContainer(skill: Ref<Skill | null>) {
     computingContainer.handleFormulaExtends.texts['$' + varName] = Grimoire.i18n.t(`skill-query.branch.formula-replaced-text.${varName}`)
   })
 
-  const currentSkillItem: Ref<SkillItem | null> = ref(null)
+  const currentSkillItem = shallowRef<SkillItem | null>(null)
   watch(skill, newValue => {
-    currentSkillItem.value = newValue ? computingContainer.createSkillItem(newValue) : null
+    currentSkillItem.value = newValue ? new SkillItem(newValue) : null
+    const vars = {
+      slv: computingContainer.vars.skillLevel,
+      clv: computingContainer.vars.characterLevel,
+    }
+    currentSkillItem.value?.effectItems.forEach(effectItem => effectItem.resetStackStates(vars))
   }, { immediate: true })
 
   const setStackValue = (branchItem: SkillBranchItem, value: number) => {
@@ -105,7 +110,10 @@ export function setupComputingContainer(skill: Ref<Skill | null>) {
     }
   }
 
-  provide(ComputingContainerInjectionKey, { setStackValue })
+  provide(ComputingContainerInjectionKey, {
+    rootComputingContainer: computingContainer,
+    setStackValue,
+  })
 
   return {
     currentSkillItem,

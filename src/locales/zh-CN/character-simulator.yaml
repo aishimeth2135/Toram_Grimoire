@@ -25,7 +25,7 @@ browse-equipments:
   no-any-equipment-tips: 这里目前空空的...请点选右上角的按扭来新增装备0.0
   equipment-item-actions-tips: 请打开左下角的「显示全部装备」以使用整理相关的功能。
   equipped: 装备中
-  click-edit-tips: 点击上方各区块以编辑
+  click-edit-tips: 或是点击上方各区块可以直接编辑
   auto-arrange-success-tips: 自动整理成功。
 append-equipments:
   title: 新增装备
@@ -44,7 +44,6 @@ equipment-info:
   refining: 精炼值
   stat-empty: 此装备没有能力
   crystal-empty: 此装备没有缎晶
-  equipment-type: 装备类型
 equipment-basic-editor:
   title: 装备设定
   edit-stats:
@@ -53,9 +52,11 @@ equipment-basic-editor:
     current-stats: 现存的能力
     appended-stats: 新增的能力
     removed-stats: 移除的能力
+  equipment-basic: 基本设定
   equipment-name: 装备名称
   equipment-stats: 装备能力
-  equipment-other: 其它设定
+  equipment-type: 装备类型
+  equipment-crystal: 锻晶
   no-equipment-type-selected-tips: 请先选择一个装备类别。
   selected-stats-cleared-tips: 已取消更动。
   only-one-element-stat-tips: 一件装备只能拥有一个属性，请确认编辑中的能力清单。
@@ -164,6 +165,7 @@ combo:
     tough: 执着
     reflection: 反射
     bloodsucker: 吸血
+    none: 无
   damage-calc:
     damage-sum-title: 总伤害
     previous-skill-next-title: 上一招技能提供的额外效果
