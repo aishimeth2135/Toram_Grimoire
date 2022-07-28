@@ -5,8 +5,8 @@
         <div class="flex items-start w-full">
           <cy-icon-text
             class="w-48 flex-shrink-0"
-            :icon="equipment.is(EquipmentKinds.Avatar) ? equipment.getCategoryImagePath() : equipment.categoryIcon"
-            :icon-src="equipment.is(EquipmentKinds.Avatar) ? 'image' : 'iconify'"
+            :icon="!equipment.is(EquipmentKinds.Avatar) ? equipment.getCategoryImagePath() : equipment.categoryIcon"
+            :icon-src="!equipment.is(EquipmentKinds.Avatar) ? 'image' : 'iconify'"
             :text-color="contents.detail ? 'orange' : 'dark'"
             :icon-color="contents.detail ? 'orange' : 'light-2'"
           >
