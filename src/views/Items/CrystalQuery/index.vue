@@ -129,6 +129,7 @@ import { useI18n } from 'vue-i18n'
 import Grimoire from '@/shared/Grimoire'
 
 import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
+import { Crystal } from '@/lib/Items/Item'
 
 import PageControl from '@/setup/PageControl'
 import ToggleService from '@/setup/ToggleService'
@@ -188,12 +189,12 @@ interface SearchFilterItem {
   selectedOptions: any[];
 }
 
-const searchFilter = reactive({
+const searchFilter = {
   category: {
     options: [0, 1, 2, 3, 4],
-    selectedOptions: [0, 1, 2, 3, 4],
+    selectedOptions: reactive([0, 1, 2, 3, 4]),
   },
-}) as Record<'category', SearchFilterItem>
+} as Record<'category', SearchFilterItem>
 
 const toggleSearchFilter = (target: SearchFilterItem, item: unknown) => {
   const idx = target.selectedOptions.indexOf(item)
@@ -208,12 +209,33 @@ const toggleSearchFilterAll = (target: SearchFilterItem, force: boolean) => {
   target.selectedOptions = force ? target.options.slice() : []
 }
 
+const categoryCrystalsMap = new Map<number, Crystal[]>(searchFilter.category.options.map(item => [item, []]))
+crystals.forEach(_crystal => {
+  const list = categoryCrystalsMap.get(_crystal.origin.category)
+  if (list) {
+    list.push(_crystal.origin)
+  }
+})
+
 // search result
 const resultCrystals = computed(() => {
   const filteredCrystals = crystals.filter(crystal => searchFilter.category.selectedOptions.includes(crystal.origin.category))
   if (mode.value === 'normal') {
     const text = modeNormal.searchText.toLowerCase()
-    return filteredCrystals.filter(crystal => crystal.name.toLowerCase().includes(text))
+    return filteredCrystals.filter(crystal => {
+      if (crystal.name.toLowerCase().includes(text)) {
+        return true
+      }
+      const categoryCrystals = categoryCrystalsMap.get(crystal.origin.category)
+      if (categoryCrystals) {
+        const relatedCrystals = crystal.origin.getRelatedCrystals(categoryCrystals)
+        return [
+          ...relatedCrystals.enhancers,
+          ...relatedCrystals.prependeds,
+        ].some(item => item.name.toLowerCase().includes(text))
+      }
+      return false
+    })
   }
   if (mode.value === 'stat') {
     if (!modeStat.statItem) {

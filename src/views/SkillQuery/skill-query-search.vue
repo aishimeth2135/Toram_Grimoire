@@ -60,10 +60,11 @@ const searchResult: ComputedRef<Skill[]> = computed(() => {
   if (searchText.value === '') {
     return []
   }
+  const text = searchText.value.toLowerCase()
   const result: Skill[] = []
   skillRoot.value.skillTreeCategorys.forEach(stc => {
     stc.skillTrees.forEach(st => {
-      const matchedSkills = st.skills.filter(skill => skill.name.includes(searchText.value))
+      const matchedSkills = st.skills.filter(skill => skill.name.toLowerCase().includes(text))
       result.push(...matchedSkills)
     })
   })

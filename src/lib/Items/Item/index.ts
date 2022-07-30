@@ -131,6 +131,48 @@ class Crystal extends Item {
   get crystalIconPath() {
     return this.enhancer ? Images.crystalIcons.get('enhance') : this.crystalBaseIconPath
   }
+
+  getRelatedCrystals(crystals: Crystal[]) {
+    const findByName = (name: string) => crystals.find(_crystal => _crystal.name === name)
+    const enhancers = (() => {
+      const res: Crystal[] = []
+      let cur: Crystal = this
+      while (cur.enhancer) {
+        const _cur = findByName(cur.enhancer)
+        if (!_cur) {
+          break
+        }
+        res.push(_cur)
+        cur = _cur
+        if (cur.name === this.name) {
+          break
+        }
+      }
+      return res
+    })()
+    const findByEnhancer = (name: string) => crystals.find(_crystal => _crystal.enhancer === name)
+    const prependeds = (() => {
+      const res: Crystal[] = []
+      let cur: Crystal = this
+      while (true) { // eslint-disable-line
+        const _cur = findByEnhancer(cur.name)
+        if (!_cur) {
+          break
+        }
+        res.push(_cur)
+        cur = _cur
+        if (cur.name === this.name) {
+          break
+        }
+      }
+      return res
+    })()
+
+    return {
+      enhancers,
+      prependeds,
+    }
+  }
 }
 
 class ItemRecipeMaterialItem {
