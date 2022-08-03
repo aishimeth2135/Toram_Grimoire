@@ -63,7 +63,7 @@
             </template>
           </div>
           <div v-else-if="state.currentMode === SearchModes.ItemLevel && originEquipment.recipe" class="flex items-center">
-            <cy-icon-text icon="jam-hammer">
+            <cy-icon-text icon="jam-hammer" text-color="light-2">
               {{ t('item-query.equipment-detail.recipe.item-level') }}
             </cy-icon-text>
             <span class="ml-2 text-water-blue">{{ originEquipment.recipe['item_level'] }}</span>
@@ -72,7 +72,7 @@
       </cy-list-item>
     </div>
     <cy-transition>
-      <div v-if="contents.detail" class="pt-2 pb-3 pl-6 pr-4 max-w-full bg-white overscroll-none">
+      <div v-if="contents.detail" class="pt-2 pb-3 pl-4 pr-3 max-w-full bg-white overscroll-none">
         <div class="mb-2 pl-2 flex items-center space-x-2">
           <cy-icon-text
             v-if="originEquipment.unknowCategory"
@@ -118,7 +118,7 @@
             {{ originEquipment.extra['caption'] }}
           </cy-icon-text>
         </div>
-        <fieldset class="stats result-item-row">
+        <fieldset class="result-item-row">
           <legend>
             <cy-icon-text
               icon="ic-baseline-format-list-bulleted"
@@ -146,7 +146,7 @@
               {{ t('item-query.equipment-detail.content-titles.recipe') }}
             </cy-icon-text>
           </legend>
-          <div v-if="recipeInfoValid" class="recipe-info">
+          <div v-if="recipeInfoValid" class="pb-1.5 pt-0.5">
             <div class="recipe-attr">
               <cy-icon-text icon="ion-hammer" small>
                 <span>
@@ -202,19 +202,19 @@
               {{ t('item-query.equipment-detail.content-titles.obtains') }}
             </cy-icon-text>
           </legend>
-          <div v-if="obtainsDatas.length !== 0" class="obtains-list">
-            <div v-for="data in obtainsDatas" :key="data.iid" class="item">
-              <div class="type-name">
-                <cy-icon-text :icon="data.icon" class="type" small text-color="water-blue">
+          <div v-if="obtainsDatas.length !== 0" class="divide-y divide-light -my-1">
+            <div v-for="data in obtainsDatas" :key="data.iid" class="pt-1.5 pb-2 px-1">
+              <div class="flex items-center">
+                <cy-icon-text :icon="data.icon" class="mr-2" small text-color="water-blue">
                   {{ data.type }}
                 </cy-icon-text>
                 <span class="text-purple">{{ data.name }}</span>
               </div>
-              <div v-if="data.dye || data.map" class="info">
-                <cy-icon-text v-if="data.dye" icon="ic-outline-palette" class="dye" small>
+              <div v-if="data.dye || data.map" class="flex items-center mt-1">
+                <cy-icon-text v-if="data.dye" icon="ic-outline-palette" class="ml-3 flex-shrink-0" small>
                   {{ data.dye }}
                 </cy-icon-text>
-                <cy-icon-text v-if="data.map" icon="ic-outline-map" class="map" small>
+                <cy-icon-text v-if="data.map" icon="ic-outline-map" class="ml-3 flex-shrink-0" small>
                   {{ data.map }}
                 </cy-icon-text>
               </div>
@@ -229,19 +229,19 @@
         v-else-if="state.currentMode === SearchModes.Dye"
         class="pl-2 ml-4 border-l-2 border-solid border-light-2 mb-3"
       >
-        <div class="obtains-list">
-          <div v-for="item in dyeObtains" :key="item.iid" class="item">
-            <div class="type-name">
-              <cy-icon-text :icon="item.icon" class="type" small text-color="water-blue">
+        <div class="divide-y divide-light">
+          <div v-for="item in dyeObtains" :key="item.iid" class="pt-1.5 pb-2 px-1">
+            <div class="flex items-center">
+              <cy-icon-text :icon="item.icon" class="mr-2" small text-color="water-blue">
                 {{ item.type }}
               </cy-icon-text>
               <span class="text-purple">{{ item.name }}</span>
             </div>
-            <div class="info">
-              <cy-icon-text v-if="item.dye" icon="ic-outline-palette" class="dye" small>
+            <div class="flex items-center mt-1">
+              <cy-icon-text v-if="item.dye" icon="ic-outline-palette" class="ml-3 flex-shrink-0" small>
                 {{ item.dye }}
               </cy-icon-text>
-              <cy-icon-text v-if="item.map" icon="ic-outline-map" class="map" small>
+              <cy-icon-text v-if="item.map" icon="ic-outline-map" class="ml-3 flex-shrink-0" small>
                 {{ item.map }}
               </cy-icon-text>
             </div>
@@ -357,7 +357,7 @@ fieldset.result-item-row {
   padding-top: 0.4rem;
 
   & > legend {
-    padding: 0.2rem 0.8rem;
+    @apply px-3 pt-1;
   }
 }
 
@@ -373,46 +373,7 @@ fieldset.recipe {
   & > .recipe-materials {
     display: grid;
     grid-template-columns: 10rem 3rem;
-    margin-top: 0.5rem;
     padding-left: 0.75rem;
-  }
-}
-
-.obtains-list {
-  & > .item {
-    padding: 0.4rem 0.3rem;
-
-    & + .item  {
-      border-top: 1px solid var(--app-light);
-    }
-
-    & > .type-name {
-      display: flex;
-      align-items: center;
-
-      & > .type {
-        margin-right: 0.6rem;
-      }
-      & > .name {
-        color: var(--app-purple);
-      }
-    }
-
-    & > .info {
-      display: flex;
-      align-items: center;
-      margin-top: 0.3rem;
-
-      & > .map {
-        margin-left: 0.8rem;
-        flex-shrink: 0;
-      }
-      & > .dye {
-        margin-left: 0.8rem;
-        min-width: 5rem;
-        flex-shrink: 0;
-      }
-    }
   }
 }
 </style>
