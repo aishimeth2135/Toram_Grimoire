@@ -9,8 +9,8 @@
       </div>
       <div v-if="status < InitializeStatus.BeforeFinished" class="pt-8 inline-block">
         <template v-if="status <= InitializeStatus.ViewSuccess">
-          <div v-for="item in initItems" :key="item.msg" class="flex justify-center items-center mb-2 pl-1">
-            <span class="mr-3 w-full text-light-4">{{ t(item.msg) }}</span>
+          <div v-for="item in initItems" :key="item.message" class="flex justify-center items-center mb-2 pl-1">
+            <span class="mr-3 w-full text-light-4">{{ t(item.message) }}</span>
             <cy-icon-text
               block
               :icon="statusIcon(item.status)"

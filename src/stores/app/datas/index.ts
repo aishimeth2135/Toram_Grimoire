@@ -90,69 +90,75 @@ export const useDatasStore = defineStore('app-datas', () => {
     }
   }
 
-  const initItems = async function* () {
+  const initItems = async function () {
     const datas = await DownloadDatas('Equipment', 'Crystal')
-    yield
-    initItemsInstance()
-    loadEquipments(Items.value!, datas[0][0])
-    loadCrystals(Items.value!, datas[1][0])
+    return async () => {
+      initItemsInstance()
+      loadEquipments(Items.value!, datas[0][0])
+      loadCrystals(Items.value!, datas[1][0])
 
-    await InitCrystalIcons()
+      await InitCrystalIcons()
+    }
   }
 
-  const initStats = async function* () {
+  const initStats = async function () {
     const datas = await DownloadDatas({ path: 'Stats', lang: true })
-    yield
-    initCharacterInstance()
-    loadStats(Character.value!, datas[0])
-    await InitEquipmentIcons()
+    return async () => {
+      initCharacterInstance()
+      loadStats(Character.value!, datas[0])
+      await InitEquipmentIcons()
+    }
   }
 
-  const initCharacterStats = async function* () {
+  const initCharacterStats = async function () {
     const datas = await DownloadDatas({ path: 'Character Stats', lang: true })
-    yield
-    initCharacterInstance()
-    loadCharacterStats(Character.value!, datas[0])
+    return async () => {
+      initCharacterInstance()
+      loadCharacterStats(Character.value!, datas[0])
+    }
   }
 
-  const initTag = async function* () {
+  const initTag = async function () {
     const datas = await DownloadDatas({ path: 'Tag', lang: true })
-    yield
-    initTagInstance()
-    loadTag(Tag.value!, datas[0])
+    return async () => {
+      initTagInstance()
+      loadTag(Tag.value!, datas[0])
+    }
   }
 
-  const initSkill = async function* () {
+  const initSkill = async function () {
     const datas = await DownloadDatas({ path: 'Skill', lang: true }, { path: 'Skill Main', lang: true })
-    yield
-    initSkillInstance()
+    return async () => {
+      initSkillInstance()
 
-    loadSkill(Skill.value!, datas[0])
-    loadSkillMain(Skill.value!, datas[1])
-    const skillStore = useCharacterSkillStore()
-    skillStore.initSkillRoot(Skill.value!.skillRoot)
+      loadSkill(Skill.value!, datas[0])
+      loadSkillMain(Skill.value!, datas[1])
+      const skillStore = useCharacterSkillStore()
+      skillStore.initSkillRoot(Skill.value!.skillRoot)
 
-    await InitSkillIcons()
+      await InitSkillIcons()
+    }
   }
 
-  const initFood = async function* () {
-    // do nothing
-    yield
-    const foodStore = useCharacterFoodStore()
-    foodStore.initFoodsBase()
+  const initFood = async function () {
+    return async () => {
+      const foodStore = useCharacterFoodStore()
+      foodStore.initFoodsBase()
+    }
   }
 
-  const initEnchant = async function* () {
+  const initEnchant = async function () {
     const datas = await DownloadDatas('Enchant')
-    yield
-    initEnchantInstance()
-    loadEnchant(Enchant.value!, datas[0][0])
+    return async () => {
+      initEnchantInstance()
+      loadEnchant(Enchant.value!, datas[0][0])
+    }
   }
 
-  const initDamageCalculation = async function* () {
-    // do nothing
-    yield
-    initDamageCalculationInstance()
+  const initDamageCalculation = async function () {
+    return async () => {
+      initDamageCalculationInstance()
+    }
   }
 
   return {

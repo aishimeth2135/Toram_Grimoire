@@ -1,21 +1,74 @@
-import type { RouteHandler } from 'workbox-core'
-import 'workbox-sw'
+import { RouteHandler, setCacheNameDetails } from 'workbox-core'
+import { initialize as googleAnalyticsInitialize } from 'workbox-google-analytics'
+import { registerRoute } from 'workbox-routing'
+import { Strategy, StrategyHandler, CacheFirst, StrategyOptions } from 'workbox-strategies'
+import { ExpirationPlugin } from 'workbox-expiration'
+import { CacheableResponsePlugin } from 'workbox-cacheable-response'
+import { precacheAndRoute } from 'workbox-precaching'
 
 declare const self: ServiceWorkerGlobalScope
 
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.2.0/workbox-sw.js')
+googleAnalyticsInitialize()
 
-workbox.googleAnalytics.initialize()
-
-workbox.core.setCacheNameDetails({
+setCacheNameDetails({
   prefix: 'toram-grimoire',
   suffix: 'v2',
 })
 
-const { registerRoute } = workbox.routing
-const { StaleWhileRevalidate, CacheFirst } = workbox.strategies
-const { ExpirationPlugin } = workbox.expiration
-const { CacheableResponsePlugin } = workbox.cacheableResponse
+// const devMode = true
+
+class StaleWhileRevalidateThrottled extends Strategy {
+  _expirationTime: number // seconds
+
+  constructor(options: StrategyOptions, expirationTime: number) {
+    super(options)
+
+    this._expirationTime = expirationTime
+  }
+
+  /**
+   * Only read date of header to check expiration
+   * @param response
+   */
+  private _responseIsFresh(response: Response): boolean {
+    const dateHeader = response.headers.get('date')
+    const parsedDate = new Date(dateHeader!)
+    const headerTime = parsedDate.getTime()
+    if (isNaN(headerTime)) {
+      return false
+    }
+    const now = Date.now()
+    const remainTime = (this._expirationTime * 1000) - (now - headerTime)
+    const isFresh = remainTime > 0
+    // if (devMode) {
+    //   logs.push(`It's ${Math.floor(remainTime / 1000)} seconds before cache expires...`, {
+    //     expirationTime: this._expirationTime,
+    //     now,
+    //     headerTime,
+    //   })
+    // }
+    return isFresh
+  }
+
+  override async _handle(request: Request, handler: StrategyHandler): Promise<Response> {
+    // const logs: any[] = []
+    let response = await handler.cacheMatch(request)
+    if (!response) {
+      // logs.push('No response found in cache. Will wait for the network response.')
+      response = await handler.fetchAndCachePut(request)
+    } else if (!this._responseIsFresh(response)) {
+      // logs.push('Found a cached response but cache is expire. Will respond with a cache and update with the network response in the background...')
+      handler.fetchAndCachePut(request).catch(() => { /* ignore error */ })
+    }
+    // if (devMode) {
+    //   console.groupCollapsed(`[workbox] Using StaleWhileRevalidateThrottled to respond to ${request.url}`)
+    //   logs.forEach(log => console.log(log))
+    //   console.log(response)
+    //   console.groupEnd()
+    // }
+    return response
+  }
+}
 
 const handleCacheName = (name: string) => name
 
@@ -27,6 +80,9 @@ registerRoute(
   new CacheFirst({
     cacheName: handleCacheName('jsdelivr-cache'),
     plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
       new ExpirationPlugin({
         maxAgeSeconds: daysToSeconds(180),
       }),
@@ -40,6 +96,9 @@ registerRoute(
   new CacheFirst({
     cacheName: handleCacheName('polyfill-io-cache'),
     plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
       new ExpirationPlugin({
         maxAgeSeconds: daysToSeconds(30),
       }),
@@ -53,8 +112,11 @@ registerRoute(
   new CacheFirst({
     cacheName: handleCacheName('iconify-icon-cache'),
     plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
       new ExpirationPlugin({
-        maxAgeSeconds: daysToSeconds(180),
+        maxAgeSeconds: daysToSeconds(90),
       }),
     ],
   }),
@@ -66,8 +128,11 @@ registerRoute(
   new CacheFirst({
     cacheName: handleCacheName('image-cache'),
     plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
       new ExpirationPlugin({
-        maxAgeSeconds: daysToSeconds(60),
+        maxAgeSeconds: daysToSeconds(90),
       }),
     ],
   }),
@@ -79,6 +144,9 @@ registerRoute(
   new CacheFirst({
     cacheName: handleCacheName('font-cache'),
     plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
       new ExpirationPlugin({
         maxAgeSeconds: daysToSeconds(360),
       }),
@@ -88,14 +156,14 @@ registerRoute(
 
 {
   const CACHE_NAME = handleCacheName('google-spreadsheets-csv-files')
-  const strategy = new StaleWhileRevalidate({
+  const strategy = new StaleWhileRevalidateThrottled({
     cacheName: CACHE_NAME,
     plugins: [
       new CacheableResponsePlugin({
         statuses: [0, 200],
       }),
     ],
-  })
+  }, 7200)
   const handler: RouteHandler = async (params) => {
     try {
       return await strategy.handle(params)
@@ -138,6 +206,6 @@ self.addEventListener('message', (event) => {
   }
 })
 
-workbox.precaching.precacheAndRoute(self.__WB_MANIFEST, {
+precacheAndRoute(self.__WB_MANIFEST, {
   ignoreURLParametersMatching: [/source/],
 })

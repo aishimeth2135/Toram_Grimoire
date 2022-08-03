@@ -1,24 +1,30 @@
 import { defineStore } from 'pinia'
 import { readonly, ref } from 'vue'
 
+import { DataStoreIds } from '../datas/enums'
 import { useLanguageStore } from '../language'
 import { LocaleViewNamespaces } from '../language/enums'
 import { InitializeStatus, InitItemStatus } from './enums'
 
 interface InitItem {
-  msg: string;
-  promise: Promise<void>;
+  id: DataStoreIds;
+  message: string;
+  promise: Promise<() => Promise<void>>;
+}
+
+interface InitItemWithStatus extends InitItem {
   status: InitItemStatus;
 }
 
 export const useInitializeStore = defineStore('app-initialize', () => {
-  const initItems = ref<InitItem[]>([])
+  const initItems = ref<InitItemWithStatus[]>([])
   const initLocaleNamespaces = ref<LocaleViewNamespaces[]>([])
   const status = ref<InitializeStatus>(InitializeStatus.ViewLoading)
 
-  const appendInitItems = ({ msg, promise }: { msg: string; promise: Promise<any> }) => {
+  const appendInitItems = ({ id, message, promise }: InitItem) => {
     initItems.value.push({
-      msg,
+      id,
+      message,
       promise,
       status: InitItemStatus.Loading,
     })
@@ -46,14 +52,22 @@ export const useInitializeStore = defineStore('app-initialize', () => {
   }
 
   const startInit = async () => {
-    await Promise.all(
+    const inits = await Promise.all(
       initItems.value.map(async (item) => {
         try {
-          await item.promise
+          const init = await item.promise
           item.status = InitItemStatus.Success
+          return {
+            id: item.id,
+            init,
+          }
         } catch (err) {
           console.error(err)
           item.status = InitItemStatus.Error
+        }
+        return {
+          id: item.id,
+          init: () => Promise.resolve(),
         }
       }),
     )
@@ -62,6 +76,7 @@ export const useInitializeStore = defineStore('app-initialize', () => {
     } else {
       status.value = InitializeStatus.Error
     }
+    return inits
   }
 
   const appendLoadLocaleNamespace = (...namespaces: LocaleViewNamespaces[]) => {

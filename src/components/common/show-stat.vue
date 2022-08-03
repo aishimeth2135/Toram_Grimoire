@@ -1,20 +1,4 @@
 <template>
-  <!-- <cy-icon-text
-    v-if="type !== 'preview'"
-    icon="mdi-leaf"
-    is-item
-    :text-color="negativeValue ? 'red' : 'dark'"
-    :class="{ 'opacity-60': invalid }"
-    class="mr-3"
-  >
-    <span
-      v-for="text in restrictionTexts"
-      :key="text"
-      class="text-water-blue text-sm mr-1"
-    >
-      {{ text }}
-    </span>
-    <span>{{ stat.show() }}</span> -->
   <div
     v-if="type !== 'preview'"
     :class="{
@@ -22,7 +6,7 @@
       'text-red': negativeValue,
       'text-dark': !negativeValue,
     }"
-    class="mr-3 pl-4 flex items-end relative"
+    class="mr-3 pl-4 inline-flex items-baseline relative"
   >
     <div class="absolute left-0 bottom-1 w-2 h-2 bg-light rounded-full" />
     <div

@@ -144,7 +144,7 @@
         <cy-transition mode="out-in">
           <AppLayoutBottomContent v-if="menus.conditionOptions" class="space-y-3 p-3">
             <div v-for="(type) in conditions.type" :key="type.id">
-              <div class="flex items-center space-x-0.5">
+              <div class="flex items-center space-x-1.5">
                 <cy-button-check
                   v-model:selected="type.selected"
                   class="mr-4 cursor-pointer"
@@ -169,8 +169,8 @@
               </div>
             </div>
             <div>
-              <div class="flex items-center space-x-2">
-                <cy-icon-text class="mr-4">
+              <div class="flex items-center space-x-1.5">
+                <cy-icon-text class="mr-4" color="purple">
                   {{ t('item-query.equipment-detail.content-titles.obtains') }}
                 </cy-icon-text>
                 <cy-button-circle icon="ic-round-border-all" small @click="selectAll(conditions.obtains)" />
@@ -188,9 +188,9 @@
             </div>
           </AppLayoutBottomContent>
           <AppLayoutBottomContent v-else-if="menus.sortOptions" class="p-3">
-            <div>
+            <div class="flex items-center">
               <div>
-                <cy-icon-text icon="mdi-sort-variant" text-color="purple" small>
+                <cy-icon-text icon="mdi-sort-variant" color="purple" small>
                   {{ t('item-query.sort-options.title') }}
                 </cy-icon-text>
               </div>

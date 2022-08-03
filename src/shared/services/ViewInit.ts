@@ -8,6 +8,13 @@ import { LocaleViewNamespaces } from '@/stores/app/language/enums'
 import { InitializeStatus } from '@/stores/app/initialize/enums'
 import { useLanguageStore } from '@/stores/app/language'
 
+interface ViewInitItem {
+  id: DataStoreIds;
+  promise: Promise<() => Promise<void>>;
+  message: string;
+  loaded: boolean;
+}
+
 export async function ViewInit(...inits: DataStoreIds[]) {
   const initializeStore = useInitializeStore()
   const datasStore = useDatasStore()
@@ -23,22 +30,19 @@ export async function ViewInit(...inits: DataStoreIds[]) {
   const initItems = inits
     .map(async (id) => {
       const loaded = datasStore.checkLoad(id)
-      const origin = loaded ? null : datasStore[`init${id}`]()
+      const promise = loaded ? Promise.resolve(() => Promise.resolve()) : (datasStore[`init${id}`]())
       console.log(`[Init: ${id}] ${loaded ? 'The item is loaded. Skip loading.' : 'Loading...'}`)
-      const promise: Promise<any> = loaded ? Promise.resolve() : origin!.next()
-      const msg = 'app.loading-message.' + id
-      return { id, origin, promise, msg, loaded }
+      const message = 'app.loading-message.' + id
+      return { id, promise, message, loaded } as ViewInitItem
     })
 
   const resolvedInitItems = await Promise.all(initItems)
   resolvedInitItems.forEach(item => initializeStore.appendInitItems(item))
 
-  await initializeStore.startInit()
-  await Promise.all(resolvedInitItems.map(async item => {
-    if (!item.loaded) {
-      await item.origin!.next()
-      console.log(`[Init: ${item.id}] Loading finished.`)
-    }
+  const finishedInitItems = await initializeStore.startInit()
+  await Promise.all(finishedInitItems.map(async item => {
+    await item.init()
+    console.log(`[Init: ${item.id}] Loading finished.`)
     datasStore.loadFinished(item.id)
   }))
 
