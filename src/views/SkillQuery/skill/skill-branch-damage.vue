@@ -22,6 +22,17 @@
           </div>
         </SkillBranchExtraColumn>
         <SkillBranchExtraColumn
+          v-for="sufContainer in dualElementSuffixBranchItems"
+          :key="sufContainer.instanceId"
+          icon="eva-checkmark-circle-2-outline"
+          :title="sufContainer.get('condition')"
+        >
+          <div class="py-0 5 pl-1 flex items-center">
+            <div class="mr-2" :class="TAG_BUTTON_CLASS_NAME">{{ t('skill-query.branch.dual-element-title') }}</div>
+            <div class="text-blue-purple">{{ sufContainer.get('dual_element') }}</div>
+          </div>
+        </SkillBranchExtraColumn>
+        <SkillBranchExtraColumn
           v-if="container.get('ailment_name')"
           icon="ri-plant-line"
           :title="t('skill-query.branch.ailment-title')"
@@ -167,7 +178,7 @@ const subContents = computed(() => {
 const extraSuffixBranchDatas = computed(() => {
   return branchItem.value.suffixBranches
     .filter(suffix => {
-      if (!suffix.is(SkillBranchNames.Extra)) {
+      if (!suffix.is(SkillBranchNames.Extra) || suffix.hasProp('dual_element')) {
         return false
       }
       return suffix.hasProp('caption') ||
@@ -197,6 +208,14 @@ const extraSuffixBranchDatas = computed(() => {
       }
       return baseData
     })
+})
+
+const dualElementSuffixBranchItems = computed(() => {
+  return branchItem.value.suffixBranches
+    .filter(suffix => {
+      return suffix.hasProp('dual_element')
+    })
+    .map(suffix => ExtraHandler(props.computing, suffix))
 })
 
 const hasArea = computed(() => {

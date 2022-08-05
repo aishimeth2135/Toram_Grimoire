@@ -38,7 +38,7 @@ const props = defineProps<Props>()
 
 const { store } = setupCharacterStore()
 
-const branchItemState = computed(() => store.getSkillBranchItemState(props.container.branchItem.default))
+const branchItemState = computed(() => store.getSkillBranchState(props.container.branchItem.default))
 
 const toggleable = computed(() => props.container.branchItem.prop('condition') !== 'auto')
 </script>

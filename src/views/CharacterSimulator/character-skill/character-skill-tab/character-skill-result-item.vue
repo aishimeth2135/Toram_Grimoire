@@ -53,5 +53,5 @@ const { t } = useI18n()
 
 const container = computed(() => props.result.container)
 
-const branchItemState = computed(() => store.getSkillBranchItemState(container.value.branchItem.default))
+const branchItemState = computed(() => store.getSkillBranchState(container.value.branchItem.default))
 </script>

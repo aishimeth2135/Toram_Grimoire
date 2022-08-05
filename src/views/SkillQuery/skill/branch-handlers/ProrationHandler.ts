@@ -1,4 +1,5 @@
 import SkillComputingContainer, { SkillBranchItemBaseChilds } from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import { cloneBranchProps, handleDisplayData } from './utils'
 import type { HandleBranchLangPropsMap } from './utils'
@@ -9,7 +10,10 @@ export default function ProrationHandler<BranchItem extends SkillBranchItemBaseC
   if (props.get('proration') === 'auto') {
     props.set('proration', props.get('damage')!)
   }
-  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>(['damage', 'proration'])
+  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>({
+    'damage': { rootKey: SkillBranchNames.Proration },
+    'proration': { rootKey: SkillBranchNames.Proration },
+  })
   const titles = ['damage', 'proration']
 
   return handleDisplayData(computing, branchItem, props, {

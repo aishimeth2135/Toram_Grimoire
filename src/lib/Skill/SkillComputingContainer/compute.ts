@@ -152,17 +152,17 @@ function computedBranchHelper(
     const stack: number[] = []
 
     if (stackIds.length > 0) {
-      const getFormulaExtraValue = computing.config.getFormulaExtraValue
+      const computeFormulaExtraValue = computing.config.computeFormulaExtraValue
       const stackStates = branchItem.parent.stackStates
       const stackValues = stackIds.map(id => {
         const item = stackStates.find(state => state.stackId === id)
         if (!item) {
           return 0
         }
-        if (!getFormulaExtraValue || !item.branch.hasProp('value')) {
+        if (!computeFormulaExtraValue || !item.branch.hasProp('value')) {
           return item.value
         }
-        return getFormulaExtraValue(item.branch.prop('value')) ?? item.value
+        return computeFormulaExtraValue(item.branch.prop('value')) ?? item.value
       })
       stack.push(...stackValues)
     }
@@ -204,30 +204,48 @@ function computedBranchHelper(
 
   const formulaExtra = mainBranchItem?.suffixBranches.find(suf => suf.is(SkillBranchNames.FormulaExtra)) ?? null
 
+  let extraTexts: string[] = []
   if (mainBranchItem && formulaExtra) {
-    const extraTexts = splitComma(formulaExtra.prop('texts'))
+    extraTexts = splitComma(formulaExtra.prop('texts'))
     extraTexts.forEach((text, idx) => {
       const key = getTextKey(idx)
       texts[key] = text
     })
   }
 
+  const { getFormulaExtraValue, computeFormulaExtraValue } = computing.config
+
+  const getValue = (index: string) => {
+    if (!formulaExtra) {
+      return null
+    }
+    if (formulaExtra.hasProp('values', index)) {
+      return computeFormulaExtraValue?.(formulaExtra.prop('values', index))?.toString() ?? null
+    }
+    const idx = parseInt(index, 10)
+    if (Number.isNaN(idx)) {
+      return null
+    }
+    return getFormulaExtraValue?.(extraTexts[idx])?.toString() ?? null
+  }
+
+  const handleFormulaExtra = !formulaExtra ?
+    (str: string) => {
+      return str
+        .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (match, p1) => getTextKey(p1))
+        .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, p1) => getTextKey(p1))
+    } :
+    (str: string) => {
+      return str
+        .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (match, p1) => getValue(p1) ?? getTextKey(p1))
+        .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, p1) => getValue(p1) ?? getTextKey(p1))
+    }
+
   return {
     vars,
     texts,
     methods: extendsDatas.methods,
-    handleFormulaExtra: (str) => {
-      const getFormulaExtraValue = computing.config.getFormulaExtraValue
-      if (!getFormulaExtraValue || !formulaExtra) {
-        return str
-          .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (match, p1) => getTextKey(p1))
-          .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, p1) => getTextKey(p1))
-      }
-      const getFormula = (index: string) => formulaExtra.prop('values', index)
-      return str
-        .replace(HANDLE_FORMULA_EXTRA_PATTERN_1, (match, p1) => getFormulaExtraValue(getFormula(p1))?.toString() ?? getTextKey(p1))
-        .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, p1) => getFormulaExtraValue(getFormula(p1))?.toString() ?? getTextKey(p1))
-    },
+    handleFormulaExtra,
     branchItem,
     formulaDisplayMode,
   }

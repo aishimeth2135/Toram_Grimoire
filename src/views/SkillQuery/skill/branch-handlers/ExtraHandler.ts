@@ -4,7 +4,7 @@ import SkillComputingContainer, { SkillBranchItemSuffix } from '@/lib/Skill/Skil
 import type { HandleBranchTextPropsMap, HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
-import { cloneBranchProps, handleDisplayData } from './utils'
+import { cloneBranchProps, HandleBranchLangPropsMap, handleDisplayData } from './utils'
 import MapContainer from './utils/MapContainer'
 import type { HandleDisplayDataOptionFilters } from './utils'
 import DisplayDataContainer from './utils/DisplayDataContainer'
@@ -33,6 +33,7 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(c
   const filters = new MapContainer<HandleDisplayDataOptionFilters>()
   const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>()
   const textPropsMap = new MapContainer<HandleBranchTextPropsMap>()
+  const langPropsMap = new MapContainer<HandleBranchLangPropsMap>()
   const pureValues = []
 
   if (mainBranch.is(SkillBranchNames.Damage)) {
@@ -44,6 +45,9 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(c
     filters.set('element', value => !!value)
     textPropsMap.append('caption', 'condition')
     pureValues.push('element')
+
+    filters.set('dual_element', value => !!value)
+    langPropsMap.set('dual_element', { rootKey: SkillBranchNames.Damage })
   } else if (['effect', 'next', 'passive', 'heal'].includes(mainBranch.name)) {
     filters.set('caption', value => !!value)
     textPropsMap.append('caption', 'condition')
@@ -53,6 +57,7 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(c
     values: valuePropsMap.value,
     texts: textPropsMap.value,
     filters: filters.value,
+    langs: langPropsMap.value,
     pureValues,
   })
 }

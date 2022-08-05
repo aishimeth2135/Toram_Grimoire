@@ -9,7 +9,7 @@ export default function () {
   jsep.addIdentifierChar('#')
 
   // iconify
-  if (import.meta.env.MODE === 'production') {
+  if (import.meta.env.PROD) {
     Iconify.disableCache('all')
     if (Cyteria.storageAvailable('localStorage')) {
       const storage = window.localStorage

@@ -51,7 +51,15 @@
         <cy-button-toggle
           v-model:selected="store.getDamageCalculationSkillBranchState(extraContainer.branchItem.default).enabled"
         />
-        <CharacterSkillItemStats :stat-containers="extraContainer.statContainers" />
+        <CharacterSkillItemStats
+          v-if="extraContainer.statContainers.length > 0"
+          :stat-containers="extraContainer.statContainers"
+        />
+        <div v-else-if="extraContainer.has('dual_element')" class="py-0 5 pl-1 flex items-center">
+          <div v-if="extraContainer.has('condition')" class="text-light-2 text-sm mr-3">{{ extraContainer.get('condition') }}</div>
+          <div class="mr-2 text-orange">{{ t('skill-query.branch.dual-element-title') }}</div>
+          <div class="text-blue-purple">{{ extraContainer.get('dual_element') }}</div>
+        </div>
       </div>
     </div>
     <div v-if="contents.detail" class="text-sm px-3 py-2 border-1 border-light mt-2 bg-white">
@@ -149,6 +157,11 @@ const calculationItems = computed(() => {
 
 const statExtraContainers = computed(() => {
   return props.result.suffixContainers
-    .filter(suf => suf.branchItem.is(SkillBranchNames.Extra) && suf.statContainers.length > 0)
+    .filter(suf => {
+      if (!suf.branchItem.is(SkillBranchNames.Extra)) {
+        return false
+      }
+      return suf.statContainers.length > 0 || suf.has('dual_element')
+    })
 })
 </script>
