@@ -6,7 +6,7 @@ import { isNumberString } from '@/shared/utils/string'
 
 import { CalculationContainerIds, CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
 import { Character } from '@/lib/Character/Character'
-import { Skill } from '@/lib/Skill/Skill'
+import { Skill, SkillBranch } from '@/lib/Skill/Skill'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import { EnemyElements } from '@/lib/Enemy/enums'
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
@@ -94,6 +94,86 @@ export default function setupDamageCalculation(
     skillMultiplier: number;
   }
 
+  const getSkillState = (() => {
+    const skillStates = ref(new Map<Skill, { enabled: boolean }>())
+    return (skill: Skill) => {
+      if (!skillStates.value.has(skill)) {
+        skillStates.value.set(skill, { enabled: false })
+      }
+      return skillStates.value.get(skill)!
+    }
+  })()
+
+  const getSkillBranchState = (() => {
+    // save state by default branch
+    const skillBranchStates = ref(new Map<SkillBranch, { enabled: boolean }>())
+    return (branch: SkillBranch) => {
+      if (!skillBranchStates.value.has(branch)) {
+        skillBranchStates.value.set(branch, { enabled: true })
+      }
+      return skillBranchStates.value.get(branch)!
+    }
+  })()
+
+  const getSkillElement = (branchItem: SkillBranchItem) => {
+    const chara = character.value
+    if (!chara) {
+      return null
+    }
+    const element = createElementMap()
+    const setElement = (stat: StatRestriction) => element[stat.baseId.replace('element_', '') as EnemyElements] = 1
+
+    const skillElement = branchItem.prop('element')
+    let skillDualElement = branchItem.prop('dual_element')
+    if (skillDualElement === 'none') {
+      const extraBch = branchItem.suffixBranches.find(suf => {
+        if(!getSkillBranchState(suf.default).enabled) {
+          return false
+        }
+        return suf.is(SkillBranchNames.Extra) && suf.hasProp('dual_element')
+      })
+      if (extraBch) {
+        skillDualElement = extraBch.prop('dual_element')
+      }
+    }
+
+    const sub = chara.equipmentField(EquipmentFieldTypes.SubWeapon)
+
+    if (skillElement === 'against') {
+      element[EnemyElements.Fire] = 1
+      element[EnemyElements.Water] = 1
+      element[EnemyElements.Earth] = 1
+      element[EnemyElements.Wind] = 1
+      element[EnemyElements.Light] = 1
+      element[EnemyElements.Dark] = 1
+      return element
+    }
+    if (skillElement !== 'none') {
+      if (isValidElement(skillElement)) {
+        element[skillElement] = 1
+      }
+      if (skillDualElement !== 'none') {
+        if (sub.equipment?.elementStat) {
+          if (skillDualElement === 'arrow') {
+            if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow)) {
+              setElement(sub.equipment!.elementStat)
+            }
+          } else if (skillDualElement === 'one_hand_sword') {
+            if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword)) {
+              setElement(sub.equipment!.elementStat)
+            }
+          } else if (skillDualElement === 'magic_device') {
+            if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.MagicDevice)) {
+              setElement(sub.equipment!.elementStat)
+            }
+          }
+        }
+      }
+      return element
+    }
+    return null
+  }
+
   const setupDamageCalculationExpectedResult = (
     skillResult: Ref<SkillResult>,
     extraStats: Ref<StatRecorded[]>,
@@ -117,7 +197,7 @@ export default function setupDamageCalculation(
       if (!currentCharacterElement.value) {
         return newElement
       }
-      const skillElement = getSkillElement(character.value!, container.value.branchItem)
+      const skillElement = getSkillElement(container.value.branchItem)
       const magicExtra = container.value.getOrigin('damage_type') === 'magic' ? resultValue('magic_element_dmg') : 0
       if (skillElement) {
         const keys = Object.keys(skillElement) as EnemyElements[]
@@ -343,6 +423,8 @@ export default function setupDamageCalculation(
 
   return {
     setupDamageCalculationExpectedResult,
+    getDamageCalculationSkillState: getSkillState,
+    getDamageCalculationSkillBranchState: getSkillBranchState,
   }
 }
 
@@ -371,46 +453,3 @@ function createElementMap(): Record<EnemyElements, number> {
   }
 }
 
-function getSkillElement(chara: Character, branchItem: SkillBranchItem) {
-  const element = createElementMap()
-  const setElement = (stat: StatRestriction) => element[stat.baseId.replace('element_', '') as EnemyElements] = 1
-
-  const skillElement = branchItem.prop('element')
-  const skillDualElement = branchItem.prop('dual_element')
-
-  const sub = chara.equipmentField(EquipmentFieldTypes.SubWeapon)
-
-  if (skillElement === 'against') {
-    element[EnemyElements.Fire] = 1
-    element[EnemyElements.Water] = 1
-    element[EnemyElements.Earth] = 1
-    element[EnemyElements.Wind] = 1
-    element[EnemyElements.Light] = 1
-    element[EnemyElements.Dark] = 1
-    return element
-  }
-  if (skillElement !== 'none') {
-    if (isValidElement(skillElement)) {
-      element[skillElement] = 1
-    }
-    if (skillDualElement !== 'none') {
-      if (sub.equipment!.elementStat) {
-        if (skillDualElement === 'arrow') {
-          if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow)) {
-            setElement(sub.equipment!.elementStat)
-          }
-        } else if (skillDualElement === 'one_hand_sword') {
-          if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword)) {
-            setElement(sub.equipment!.elementStat)
-          }
-        } else if (skillDualElement === 'magic_device') {
-          if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.MagicDevice)) {
-            setElement(sub.equipment!.elementStat)
-          }
-        }
-      }
-    }
-    return element
-  }
-  return null
-}

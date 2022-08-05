@@ -15,6 +15,7 @@ import type { HandleBranchValuePropsMap, HandleBranchTextPropsMap } from '@/lib/
 import { ResultContainer, ResultContainerBase } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 import { StatComputed } from '@/lib/Character/Stat'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import { createTagButtons } from '@/views/SkillQuery/utils'
 
@@ -41,7 +42,7 @@ function cloneBranchProps(
 type SkillDisplayData = Record<string, string>
 
 interface HandleBranchLangPropsOptions {
-  prefix?: string; // unused currently
+  rootKey?: SkillBranchNames;
   type?: 'auto' | 'normal' | 'value' | 'boolean';
   afterHandle?: ((value: string) => string) | null;
 }
@@ -59,7 +60,7 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
   const attrValues = {} as Record<keyof PropMap, ResultContainer>
   const attrKeys = Object.keys(propMap) as (keyof PropMap)[]
   attrKeys.forEach((attrKey) => {
-    const { type = 'auto', prefix = '', afterHandle = null } = (propMap[attrKey] || {}) as HandleBranchLangPropsOptions
+    const { type = 'auto', rootKey, afterHandle = null } = (propMap[attrKey] || {}) as HandleBranchLangPropsOptions
     const value = props.get(attrKey as string)
     if (!value) {
       return
@@ -69,14 +70,19 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
       const resultValue = computeBranchValue(value, helper)
       const sign = isNumberString(resultValue) && parseFloat(resultValue) < 0 ? 'negative' : 'positive'
       const displayValue = sign === 'negative' ? -1 * parseFloat(resultValue) : resultValue
-      resultStr = t(`skill-query.branch.${branchItem.name + prefix}.${String(attrKey)}.${sign}`, { value: displayValue.toString() })
+      resultStr = t(`skill-query.branch.${rootKey ?? branchItem.name}.${String(attrKey)}.${sign}`, { value: displayValue.toString() })
     } else {
       let displayValue = value
       if ((type === 'auto' || type === 'boolean') && (displayValue === '1' || displayValue === '0')) {
         displayValue = displayValue === '1' ? 'true' : 'false'
       }
-      let preName = branchItem.name + prefix
-      preName = branchItem instanceof SkillBranchItemSuffix ? branchItem.mainBranch.name + ': ' + preName : preName
+      let preName: string
+      if (rootKey) {
+        preName = rootKey
+      } else {
+        preName = branchItem.name
+        preName = branchItem instanceof SkillBranchItemSuffix ? branchItem.mainBranch.name + ': ' + preName : preName
+      }
       const result = t(`skill-query.branch.${preName}.${String(attrKey)}.${displayValue}`)
       resultStr = afterHandle ? afterHandle(result) : result
     }

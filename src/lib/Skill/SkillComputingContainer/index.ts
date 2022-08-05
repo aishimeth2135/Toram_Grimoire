@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { reactive, shallowReactive } from 'vue'
 
 import { HandleFormulaTexts, HandleFormulaVars, HandleFormulaMethods } from '@/shared/utils/data'
 import { splitComma } from '@/shared/utils/string'
@@ -50,7 +50,8 @@ class SkillComputingContainer {
 
   config: {
     formulaDisplayMode: FormulaDisplayModes;
-    getFormulaExtraValue: ((formula: string) => number | null) | null;
+    getFormulaExtraValue: ((text: string) => number | null) | null;
+    computeFormulaExtraValue: ((formula: string) => number | null) | null;
   }
 
   constructor() {
@@ -67,9 +68,10 @@ class SkillComputingContainer {
       texts: {},
     }
     this.handleFormulaDynamicExtends = []
-    this.config = reactive({
+    this.config = shallowReactive({
       formulaDisplayMode: FormulaDisplayModes.Normal,
       getFormulaExtraValue: null,
+      computeFormulaExtraValue: null,
     })
   }
 }
