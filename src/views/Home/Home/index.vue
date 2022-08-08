@@ -1,12 +1,12 @@
 <template>
   <AppLayoutMain ref="rootEl" class="app-home">
-    <div class="flex justify-center items-center">
-      <div class="pt-2 sticky top-0 h-32">
+    <div class="flex justify-center items-center h-32">
+      <div class="pt-2 sticky top-0">
         <router-link v-slot="{ navigate }" :to="{ name: AppRouteNames.Bubble, params: { iconName: 'potum' } }" custom>
-          <div class="app-title-wrapper" @mouseenter="initAppIconPosition">
+          <div class="app-title-wrapper" @mouseenter="iconWrapperTouchedCount += 1">
             <div
               ref="appIcon"
-              class="mr-5 flex app-title-icon"
+              class="flex app-title-icon"
               :style="appIconPositionStyle"
               :class="{ 'app-title-icon-touched': iconWrapperTouched }"
             >
@@ -16,14 +16,14 @@
                 icon-width="2.75rem"
               />
             </div>
-            <div v-if="iconWrapperTouched" class="mr-5 flex app-title-icon invisible">
+            <div v-if="iconWrapperTouched" class="flex app-title-icon invisible">
               <cy-icon-text
                 icon="grimoire-cat"
                 icon-src="custom"
                 icon-width="2.75rem"
               />
             </div>
-            <div class="app-title" @click="navigate">
+            <div class="ml-5 app-title" @click="navigate">
               Cy's Grimoire
             </div>
           </div>
@@ -110,6 +110,7 @@ const pointLeave = () => {
 const rootEl: Ref<{ $el: HTMLElement } | null> = ref(null)
 const appIcon: Ref<HTMLElement | null> = ref(null)
 const iconWrapperTouched = ref(false)
+const iconWrapperTouchedCount = ref(0)
 const appIconPosition: Ref<{ x: number; y: number } | null> = ref(null)
 const appIconPositionStyle: Ref<Record<string, string> | undefined> = ref(undefined)
 let appIconAnimating = false
@@ -126,6 +127,15 @@ const updateAppIconPositionStyle = async () => {
   } as Record<string, string>
   appIconAnimating = true
   setTimeout(() => appIconAnimating = false, 175)
+}
+
+{
+  const unwatch = watch(iconWrapperTouchedCount, newValue => {
+    if (newValue >= 5) {
+      initAppIconPosition()
+      unwatch()
+    }
+  })
 }
 
 const initAppIconPosition = async () => {
@@ -312,14 +322,18 @@ onUnmounted(() => {
 }
 
 .app-title {
-  /* @apply bg-clip-text text-transparent text-4xl;
+  @apply bg-clip-text text-transparent text-4xl;
 
-  background-image: linear-gradient(to left, #f9a5bf, #fecfef, #f9a5bf, #fecfef, #f9a5bf);
+  background-image: linear-gradient(to left,
+    var(--app-favicon-color-main),
+    var(--app-favicon-color-sub),
+    var(--app-favicon-color-main),
+    var(--app-favicon-color-sub),
+    var(--app-favicon-color-main)
+  );
   background-size: 200% 200%;
   background-position: 100% 50%;
-  animation: app-title 2s ease-in infinite; */
-  @apply text-4xl;
-  color: var(--app-favicon-color-main);
+  animation: app-title 2s ease-in infinite;
 }
 
 @keyframes app-title {
@@ -328,6 +342,12 @@ onUnmounted(() => {
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+@media (max-width: 20rem) {
+  .app-title {
+    display: none;
   }
 }
 
