@@ -34,6 +34,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(comput
     'judgment': value => value !== 'none',
     'ailment_name': value => !!value,
     'frequency_judgment': value => value !== 'none',
+    'combo_rate': value => value === '0',
   })
   const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>({
     'multiplier': '%',
@@ -58,6 +59,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(comput
     'judgment',
     'frequency_judgment',
     'is_place',
+    'combo_rate',
   ])
 
   const pureDatas = ['name', 'ailment_name', 'end_condition']

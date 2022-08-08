@@ -1,11 +1,11 @@
-import { computed, ComputedRef, reactive, ref, Ref, shallowReadonly, watch } from 'vue'
+import { computed, ComputedRef, reactive, ref, Ref, shallowReactive, shallowReadonly, watch } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
 import { computeFormula } from '@/shared/utils/data'
 
 import { Character, CharacterStatResult, CharacterStatResultVars } from '@/lib/Character/Character'
-import SkillComputingContainer, { EquipmentRestrictions, SkillBranchItem, SkillBranchItemSuffix, SkillEffectItem, SkillItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, { EquipmentRestrictions, SkillBranchItem, SkillBranchItemSuffix, SkillEffectItem, SkillFormulaExtraProps, SkillItem } from '@/lib/Skill/SkillComputingContainer'
 import { Skill, SkillBranch } from '@/lib/Skill/Skill'
 import { CharacterBaseStatTypes, CharacterOptionalBaseStatTypes, EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
@@ -44,6 +44,7 @@ export interface SkillResultsState {
   results: SkillResult[];
   stackContainers: DisplayDataContainerAlly[];
   basicContainer: DisplayDataContainerAlly | null;
+  hasOptions: boolean;
 }
 
 interface CharacterSetupOptions {
@@ -58,14 +59,16 @@ interface SkillSetupPostponeOptions {
   getCharacterPureStatValue: (id: string) => number;
 }
 
-interface FormulaExtraVarState {
+export interface SkillFormulaExtraVarState extends SkillFormulaExtraProps {
+  id: string;
   text: string;
   value: number;
 }
 
 interface SkillBranchItemState {
   enabled: boolean;
-  getFormulaExtraState: (text: string) => FormulaExtraVarState;
+  formulaExtraIds: string[];
+  getFormulaExtraState: (text: string, props?: SkillFormulaExtraProps) => SkillFormulaExtraVarState;
 }
 
 export interface SetupCharacterStatCategoryResultsExtended {
@@ -120,14 +123,32 @@ export function prepareSetupCharacter() {
     const skillBranchStates: Map<SkillBranch, SkillBranchItemState> | null = reactive(new Map())
     return (skillBranch: SkillBranch) => {
       if (!skillBranchStates.has(skillBranch)) {
-        const formulaExtraStates = new Map<string, FormulaExtraVarState>()
-        const getFormulaExtraState = (text: string) => {
-          if (!formulaExtraStates.has(text)) {
-            formulaExtraStates.set(text, { text, value: 0 })
+        const formulaExtraStates = ref(new Map<string, SkillFormulaExtraVarState>())
+        const formulaExtraIds = shallowReactive([] as string[])
+        const getFormulaExtraState = (id: string, props?: SkillFormulaExtraProps) => {
+          if (!formulaExtraStates.value.has(id)) {
+            formulaExtraStates.value.set(id, { id, text: id, value: 0, max: null, min: null })
+            formulaExtraIds.push(id)
           }
-          return formulaExtraStates.get(text)!
+          const state = formulaExtraStates.value.get(id)!
+          if (props) {
+            const { max, min } = props
+            state.max = max
+            state.min = min
+            if (max !== null) {
+              state.value = Math.min(max, state.value)
+            }
+            if (min !== null) {
+              state.value = Math.max(min, state.value)
+            }
+          }
+          return state
         }
-        const state: SkillBranchItemState = { enabled: true, getFormulaExtraState }
+        const state: SkillBranchItemState = {
+          enabled: true,
+          formulaExtraIds,
+          getFormulaExtraState,
+        }
         skillBranchStates.set(skillBranch, state)
       }
       return skillBranchStates.get(skillBranch)!
@@ -286,21 +307,8 @@ export function prepareSetupCharacter() {
       return null
     }
 
-    computing.config.getFormulaExtraValue = (formula) => {
-      if (!character.value) {
-        return null
-      }
-      if (!formula) {
-        return null
-      }
-      const res = computeFormula(formula, getFormulaExtraValueVars.value, 0)
-      if (typeof res === 'number') {
-        return res
-      }
-      if (typeof res === 'string' && isNumberString(res)) {
-        return parseFloat(res)
-      }
-      return null
+    computing.config.getFormulaExtraValue = (branch, id, props) => {
+      return getSkillBranchState(branch.default).getFormulaExtraState(id, props).value
     }
 
     const {
@@ -459,28 +467,41 @@ export function prepareSetupCharacter() {
       const stackIds = new Set<number>()
       branchItems.forEach(bch => bch.linkedStackIds.forEach(id => stackIds.add(id)))
       const stackIdList = [...stackIds]
-      return (skillStackContainers.get(skill)?.value ?? []).filter(container => stackIdList.includes(container.branchItem.stackId!))
+      return skillStackContainers.get(skill)?.value.filter(container => stackIdList.includes(container.branchItem.stackId!)) ?? []
     }
 
     const getSkillResultStatesComputed = (target: Map<Skill, ComputedRef<SkillResultBase[]>>) => {
-      return computed(() => {
-        return allSkills.value.filter(skill => target.has(skill)).map(skill => {
-          const resultBases = target.get(skill)!
-          const stackContainers = getUsedStackContainers(resultBases.value.map(result => result.container.branchItem), skill)
-          const basicContainer = skillBasicContainers.get(skill)!.value
-          const resultStates = {
-            skill,
-            results: [] as SkillResult[],
-            stackContainers,
-            basicContainer,
-          } as SkillResultsState
-          const results = resultBases.value.map(item => ({
-            ...item,
-            root: resultStates,
-          } as SkillResult))
-          resultStates.results = results
-          return resultStates
+      const _map = new Map<Skill, SkillResultsState>()
+      for (const [skill, resultBases] of target.entries()) {
+        const stackContainers = computed(() => getUsedStackContainers(resultBases.value.map(result => result.container.branchItem), skill))
+        const basicContainer = skillBasicContainers.get(skill)!
+        const hasOptions = computed(() => {
+          if (stackContainers.value.length > 0) {
+            return true
+          }
+          return resultBases.value.some(resultBase => getSkillBranchState(resultBase.container.branchItem.default).formulaExtraIds.length > 0)
         })
+        const resultStates = reactive({
+          skill,
+          stackContainers,
+          basicContainer,
+          hasOptions,
+        }) as SkillResultsState
+        const results = computed(() => resultBases.value.map(item => ({
+          ...item,
+          root: resultStates,
+        } as SkillResult)))
+        resultStates.results = results as unknown as SkillResult[]
+        _map.set(skill, resultStates)
+      }
+      return computed(() => {
+        const results: SkillResultsState[] = []
+        allSkills.value.forEach(skill => {
+          if (_map.has(skill)) {
+            results.push(_map.get(skill)!)
+          }
+        })
+        return results
       })
     }
 

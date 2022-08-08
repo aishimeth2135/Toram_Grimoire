@@ -153,15 +153,29 @@ const subContents = computed(() => {
       '1': 'ic:round-check-circle-outline',
       '0': 'jam:close-circle',
       'none': 'bx:bx-help-circle',
-    }
-    return mapping[value as keyof typeof mapping]
+    } as Record<string, string>
+    return mapping[value]
+  }
+  const getBoolColorType = (value: string) => {
+    const mapping = {
+      '1': 'blue-green',
+      '0': 'gray',
+      'none': 'normal',
+    } as Record<string, NormalLayoutSubContent['type']>
+    return mapping[value]
   }
   result.push({
     key: 'range_damage',
     icon: getBoolIcon(branchItem.value.prop('range_damage')),
+    type: getBoolColorType(branchItem.value.prop('range_damage')),
   }, {
     key: 'unsheathe_damage',
     icon: getBoolIcon(branchItem.value.prop('unsheathe_damage')),
+    type: getBoolColorType(branchItem.value.prop('unsheathe_damage')),
+  }, {
+    key: 'combo_rate',
+    icon: 'jam:close-circle',
+    type: getBoolColorType(branchItem.value.prop('combo_rate')),
   })
   if (container.value.has('frequency') && parseInt(container.value.getValue('frequency'), 10) > 1) {
     result.push({

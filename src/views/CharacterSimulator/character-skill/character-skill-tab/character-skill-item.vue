@@ -27,7 +27,7 @@
             {{ t('character-simulator.skill-build.skill-invalid') }}
           </div>
         </div>
-        <div v-if="skillResultsState.stackContainers.length > 0" class="ml-auto inline-flex">
+        <div v-if="skillResultsState.hasOptions" class="ml-auto inline-flex">
           <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
         </div>
       </div>
