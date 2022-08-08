@@ -141,17 +141,19 @@ branch:
       single: 限傷時視為單次傷害
       multiple: 限傷時視為多段傷害
     unsheathe_damage:
-      "true": 受拔刀傷害影響
-      "false": 不受拔刀傷害影響
+      "true": 拔刀傷害
+      "false": 拔刀傷害
       none: 未確認是否受拔刀傷害影響
     range_damage:
-      "true": 受距離威力影響
-      "false": 不受距離威力影響
+      "true": 距離威力
+      "false": 距離威力
       long: 恆受遠距離威力影響
       short: 恆受近距離威力影響
       none: 未確認是否受距離威力影響
     is_place:
       "true": 設置型技能
+    combo_rate:
+      "false": 連擊威力
     "@custom-base-caption":
       both: 根據((!角色的ATK及MATK的高低))。ATK比MATK高時，取((!有效ATK))；MATK比ATK高時，取((!有效MATK))。
       dual_sword: 雙劍有自己特殊的有效ATK公式，細節請查看#雙劍特性說明 。

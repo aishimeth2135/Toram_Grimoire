@@ -52,6 +52,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    singleColor: {
+      type: Boolean,
+      default: false,
+    },
     alignV: {
       type: String as PropType<'start' | 'center'>,
       default: 'center',
@@ -81,9 +85,10 @@ export default defineComponent({
     const handleColorValue = (type: 'icon' | 'text', value: undefined | null | string, defaultValue: string) => {
       if (typeof value !== 'string') {
         if (props.color) {
-          return type === 'icon' ? Color.lighten(props.color) : props.color
+          value = type === 'icon' && !props.singleColor ? Color.lighten(props.color) : props.color
+        } else {
+          value = 'default'
         }
-        return defaultValue
       }
       return value === 'default' ? defaultValue : value
     }

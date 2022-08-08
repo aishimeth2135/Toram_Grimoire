@@ -1,4 +1,4 @@
-import { handleFormula, HandleFormulaMethods, HandleFormulaTexts, HandleFormulaVars } from '@/shared/utils/data'
+import { computeFormula, handleFormula, HandleFormulaMethods, HandleFormulaTexts, HandleFormulaVars } from '@/shared/utils/data'
 import { isNumberString, splitComma } from '@/shared/utils/string'
 import Grimoire from '@/shared/Grimoire'
 
@@ -193,19 +193,19 @@ function computedBranchHelper(
     } as HandleFormulaTexts
   }
 
-  const getTextKey = (idx: number) => '__FORMULA_EXTRA_TEXT_' + idx.toString() + '__'
+  const getTextKey = (idx: number) => `__FORMULA_EXTRA_TEXT_${idx.toString()}__`
 
-  let mainBranchItem
-  if (branchItem instanceof SkillBranchItem) {
-    mainBranchItem = branchItem
-  } else if (branchItem instanceof SkillBranchItemSuffix) {
+  let mainBranchItem: SkillBranchItem
+  if (branchItem instanceof SkillBranchItemSuffix) {
     mainBranchItem = branchItem.mainBranch
+  } else {
+    mainBranchItem = branchItem
   }
 
-  const formulaExtra = mainBranchItem?.suffixBranches.find(suf => suf.is(SkillBranchNames.FormulaExtra)) ?? null
+  const formulaExtra = mainBranchItem.suffixBranches.find(suf => suf.is(SkillBranchNames.FormulaExtra)) ?? null
 
   let extraTexts: string[] = []
-  if (mainBranchItem && formulaExtra) {
+  if (formulaExtra) {
     extraTexts = splitComma(formulaExtra.prop('texts'))
     extraTexts.forEach((text, idx) => {
       const key = getTextKey(idx)
@@ -226,7 +226,11 @@ function computedBranchHelper(
     if (Number.isNaN(idx)) {
       return null
     }
-    return getFormulaExtraValue?.(extraTexts[idx])?.toString() ?? null
+    const props = {
+      max: formulaExtra.hasProp('values', index, 'max') ? computeFormula(formulaExtra.prop('values', index, 'max'), vars, 0) as number : null,
+      min: formulaExtra.hasProp('values', index, 'min') ? computeFormula(formulaExtra.prop('values', index, 'min'), vars, 0) as number : null,
+    }
+    return getFormulaExtraValue?.(mainBranchItem, extraTexts[idx], props)?.toString() ?? null
   }
 
   const handleFormulaExtra = !formulaExtra ?

@@ -30,6 +30,11 @@ interface HandleFormulaExtends {
   methods?: HandleFormulaMethods;
 }
 
+interface SkillFormulaExtraProps {
+  max: number | null;
+  min: number | null;
+}
+
 /**
  * @vue-reactive controller
  */
@@ -50,7 +55,7 @@ class SkillComputingContainer {
 
   config: {
     formulaDisplayMode: FormulaDisplayModes;
-    getFormulaExtraValue: ((text: string) => number | null) | null;
+    getFormulaExtraValue: ((branch: SkillBranchItem, id: string, props?: SkillFormulaExtraProps) => number | null) | null;
     computeFormulaExtraValue: ((formula: string) => number | null) | null;
   }
 
@@ -386,25 +391,25 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
    * @param key - main key
    * @param subKey - sub key
    */
-  propKey(key: string, subKey?: string) {
-    return subKey ? `${key}.${subKey}` : key
+  propKey(...keys: string[]) {
+    return keys.join('.')
   }
 
-  prop(key: string, subKey?: string): string {
-    return this._props.get(this.propKey(key, subKey)) ?? ''
+  prop(...keys: string[]): string {
+    return this._props.get(this.propKey(...keys)) ?? ''
   }
 
-  propNumber(key: string): number {
-    const attr = parseInt(this._props.get(key) ?? '', 10)
+  propNumber(...keys: string[]): number {
+    const attr = parseInt(this._props.get(this.propKey(...keys)) ?? '', 10)
     return Number.isNaN(attr) ? 0 : attr
   }
 
-  propBoolean(key: string): boolean {
-    return this._props.get(key) === '1'
+  propBoolean(...keys: string[]): boolean {
+    return this._props.get(this.propKey(...keys)) === '1'
   }
 
-  hasProp(key: string, subKey?: string) {
-    return this._props.get(this.propKey(key, subKey)) !== undefined
+  hasProp(...keys: string[]) {
+    return this._props.get(this.propKey(...keys)) !== undefined
   }
 
   setProp(key: string, value: string) {
@@ -591,4 +596,5 @@ export type {
   BranchStackState,
   SkillBranchItemOverwriteRecords,
   EquipmentRestrictionsBaseKeys,
+  SkillFormulaExtraProps,
 }

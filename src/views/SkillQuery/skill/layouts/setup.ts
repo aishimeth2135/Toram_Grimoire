@@ -2,7 +2,6 @@ export interface NormalLayoutSubContent {
   key: string;
   icon: string;
   title?: string;
-  color?: string;
   value?: string;
-  type?: 'primary' | 'normal';
+  type?: 'primary' | 'normal' | 'blue-green' | 'gray';
 }

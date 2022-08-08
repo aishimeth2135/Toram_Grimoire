@@ -13,14 +13,14 @@
         </span>
       </div>
     </legend>
-    <div v-if="subContentDatas" class="flex items-center flex-wrap px-1 space-x-3">
+    <div v-if="subContentDatas" class="flex items-center flex-wrap pl-3">
       <template v-for="contentData in subContentDatas" :key="contentData.key">
-        <span class="sub-content-item">
+        <span class="sub-content-item mr-3">
           <cy-icon-text
             small
-            :text-color="contentData.color"
             :icon="contentData.icon"
-            :color="contentData.type === 'primary' ? 'red' : 'default'"
+            :color="contentData.color"
+            single-color
           >
             <span v-html="contentData.title"></span>
           </cy-icon-text>
@@ -99,6 +99,13 @@ const { toggle, contents } = ToggleService({
   contents: ['areaDetail'] as const,
 })
 
+const typeMainColorMapping = {
+  normal: 'light-3',
+  primary: 'red',
+  gray: 'gray',
+  'blue-green': 'blue-green',
+}
+
 const subContentDatas = computed(() => {
   if (!subContents?.value) {
     return []
@@ -106,13 +113,15 @@ const subContentDatas = computed(() => {
   return subContents.value
     .filter(subContent => subContent.key.split('|').every(key => container.value.has(key)))
     .map(subContent => {
+      const type = subContent.type ?? 'normal'
+      const color = typeMainColorMapping[type]
       return {
         key: subContent.key,
         icon: subContent.icon,
         title: subContent.title ?? container.value.get(subContent.key),
-        color: subContent.value ? 'light-2' : (subContent.color || (subContent.type === 'primary' ? 'red' : 'light-3')),
+        color,
         value: subContent.value ?? '',
-        type: subContent.type ?? 'normal',
+        type,
       }
     })
     .filter(item => item.title || (item.title && item.value))

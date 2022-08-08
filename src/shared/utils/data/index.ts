@@ -44,21 +44,30 @@ interface ParseFormulaOptions {
  * Parse formula. Computed the literal and identifier of formula.
  *
  * #### ex1:
+ * ```
  *   formula: "100+30*2+(10+10)*2"
- *   => "200"
+ *   => 200
+ * ```
  * #### ex2:
+ * ```
  *   formula: "100+a*2+b*3"
  *   vars: { a: 60, b: "40" }  // b will be convert to number before calculate
- *   => "300"
+ *   => 300
+ * ```
  * #### ex3:
+ * ```
  *   formula: "100+50+abc+200*3"
- *   => "150+abc+600"
+ *   => 150+abc+600
+ * ```
  * #### ex4:
+ * ```
  *   formula: func1(20, 30)+100
  *   vars: { func1: (value1, value2) => value1 + value2 }
- *   => "50+100"
- *   => "150"
+ *   => 50+100
+ *   => 150
+ * ```
  * #### ex5:
+ * ```
  *   formula: "20*5+func1(20, 3)+100+foo+20*a+user.func2(20*b, user.age)+func1(20, c)+func1(20, user.age*bar)"
  *   vars: {
  *     func1: (value1, value2) => value1 * value2
@@ -69,10 +78,13 @@ interface ParseFormulaOptions {
  *       func2: (value1, value2) => value + value2
  *     },
  *   }
- *   => "100+60+100+foo+100+50+200+func1(20, 10*bar)"
- *   => "260+foo+350+func1(20, 10*bar)"
+ *   => 100+60+100+foo+100+50+200+func1(20, 10*bar)
+ *   => 260+foo+350+func1(20, 10*bar)
+ * ```
  *
- * note: "window.Math" will auto inject to vars as "Math"
+ * note:
+ *   1. `window.Math` will auto inject to vars as `Math`
+ *   2. The error of `jsep.parse` will be throw directly.
  *
  * @param formulaStr - formula to parse
  * @param vars - given variables, this function will try to look inside variables
@@ -361,17 +373,14 @@ function computeFormula(formula: string, vars: Record<string, any>, defaultValue
     handle = _computeFormulaCaches.get(formula)!
   } else {
     const paramName = '__VARS__'
-    const body = parseFormula(formula, {}, { compile: paramName })
     let func: Function
     try {
+      const body = parseFormula(formula, {}, { compile: paramName }) as string
       func = new Function(paramName, `return (${body});`)
-    } catch (error) {
+    } catch (err) {
       console.warn('[computeFormula] unknown error when try to create function.')
-      console.log({
-        origin: formula,
-        body: body,
-      })
-      console.log(error)
+      console.log(formula)
+      console.log(err)
       func = () => defaultValue
     }
     _computeFormulaCaches.set(formula, func)

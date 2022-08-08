@@ -141,17 +141,19 @@ branch:
       single: 限伤时视为单次伤害
       multiple: 限伤时视为多段伤害
     unsheathe_damage:
-      "true": 受拔刀伤害影响
-      "false": 不受拔刀伤害影响
+      "true": 拔刀伤害
+      "false": 拔刀伤害
       none: 未确认是否受拔刀伤害影响
     range_damage:
-      "true": 受距离威力影响
-      "false": 不受距离威力影响
+      "true": 距离威力
+      "false": 距离威力
       long: 恒受远距离威力影响
       short: 恒受近距离威力影响
       none: 未确认是否受距离威力影响
     is_place:
       "true": 设置型技能
+    combo_rate:
+      "false": 连击威力
     "@custom-base-caption":
       both: 根据((!角色的ATK及MATK的高低))。ATK比MATK高时，取((!有效ATK))；MATK比ATK高时，取((!有效MATK))。
       dual_sword: 双剑有自己特殊的有效ATK公式，细节请查看#双剑特性说明 。
@@ -162,19 +164,6 @@ branch:
     "start_position_offsets: title": 起点位置
     "end_position_offsets: title": 终点位置
     duration-caption-with-cycle: 持续{duration}秒，每{cycle}秒一次伤害
-  "damage: proration":
-    "damage: title": 伤害惯性
-    "proration: title": 造成惯性
-    damage:
-      physical: 物理
-      magic: 魔法
-      normal_attack: 一般攻击
-      none: 不受惯性影响
-    proration:
-      physical: 物理
-      magic: 魔法
-      normal_attack: 一般攻击
-      none: 不造成惯性
   "damage: extra":
     condition-default-value: 此伤害
   proration:

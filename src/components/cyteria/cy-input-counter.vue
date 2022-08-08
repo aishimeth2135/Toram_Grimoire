@@ -5,8 +5,12 @@
       :class="rootClassList"
       :style="rootStyle"
     >
-      <div v-if="$slots['title']" class="inline-flex mr-3">
-        <slot name="title" />
+      <div v-if="$slots['title'] || title" class="inline-flex mr-3">
+        <slot name="title">
+          <cy-icon-text :icon="titleIcon">
+            {{ title }}
+          </cy-icon-text>
+        </slot>
       </div>
       <div class="counter-content">
         <cy-button-icon
@@ -72,6 +76,8 @@ interface Props {
   minButton?: boolean;
   mainColor?: string;
   inputWidth?: string | null;
+  title?: string;
+  titleIcon?: string;
 }
 interface Emits {
   (evt: 'update:value', value: number): void;
