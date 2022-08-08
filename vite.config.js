@@ -19,6 +19,7 @@ export default defineConfig(({ mode }) => {
   const plugins = [
     vue(),
     VitePWA({
+      includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: getPWAManifestConfig(),
       strategies: 'injectManifest',
       injectManifest: {
@@ -80,50 +81,18 @@ function getPWAManifestConfig() {
     'short_name': 'Grimoire',
     'name': 'Toram Grimoire',
     'icons': [{
-      'src': './imgs/favicon/favicon16.png',
-      'type': 'image/png',
-      'sizes': '16x16',
-    },
-    {
-      'src': './imgs/favicon/favicon24.png',
-      'type': 'image/png',
-      'sizes': '24x24',
-    },
-    {
-      'src': './imgs/favicon/favicon32.png',
-      'type': 'image/png',
-      'sizes': '32x32',
-    },
-    {
-      'src': './imgs/favicon/favicon48.png',
-      'type': 'image/png',
-      'sizes': '48x48',
-    },
-    {
-      'src': './imgs/favicon/favicon64.png',
-      'type': 'image/png',
-      'sizes': '64x64',
-    },
-    {
-      'src': './imgs/favicon/favicon128.png',
-      'type': 'image/png',
-      'sizes': '128x128',
-    },
-    {
-      'src': './imgs/favicon/favicon192.png',
-      'type': 'image/png',
+      'src': '/android-chrome-192x192.png',
       'sizes': '192x192',
-    },
-    {
-      'src': './imgs/favicon/favicon512.png',
       'type': 'image/png',
+    }, {
+      'src': '/android-chrome-512x512.png',
       'sizes': '512x512',
-    },
-    ],
+      'type': 'image/png',
+    }],
     'start_url': './?source=pwa',
     'background_color': '#FFD1EA',
     'display': 'standalone',
     'theme_color': '#FFD1EA',
-    'description': '一名托蘭小玩家自製的工具。',
+    'description': 'The web tool for Toram Online.',
   }
 }
