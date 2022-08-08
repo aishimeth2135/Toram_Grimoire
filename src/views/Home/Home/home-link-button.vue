@@ -63,8 +63,6 @@ const { t } = useI18n()
 .cy--home-link-button {
   @apply py-2 relative cursor-pointer;
 
-  max-width: 16rem;
-
   & > .cy--home-link-button-underline {
     @apply h-1 rounded-full bg-light mt-1 duration-200;
   }

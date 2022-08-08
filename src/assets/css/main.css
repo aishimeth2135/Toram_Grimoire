@@ -52,6 +52,9 @@
   --rgb-app-gray-light: design-token('color-rgb.gray-light');
   --rgb-app-white: design-token('color-rgb.white');
   --rgb-app-black: design-token('color-rgb.black');
+
+  --app-favicon-color-main: #ffa3a9;
+  --app-favicon-color-sub: #fbd3d9;
 }
 
 html.theme--night-mode {
@@ -106,111 +109,10 @@ html.theme--night-mode {
   --rgb-app-gray-light: design-token('color-dark-rgb.gray-light');
   --rgb-app-white: design-token('color-dark-rgb.white');
   --rgb-app-black: design-token('color-dark-rgb.black');
+
+  --app-favicon-color-main: #ffabbb;
+  --app-favicon-color-sub: #efdae0;
 }
-
-/* :root {
-  --app-dark: #85005F;
-  --app-dark-light: #c62899;
-  --app-light: #FFD1EA;
-  --app-light-2: #f7a8d3;
-  --app-light-3: #ff5fb7;
-  --app-light-4: #ff008d;
-  --app-purple: #9c27b0;
-  --app-purple-light: #c873d7;
-  --app-blue-purple: #8330ff;
-  --app-blue-purple-light: #caa6ff;
-  --app-water-blue: #2196f3;
-  --app-water-blue-light: #9acbf3;
-  --app-blue-green: #009688;
-  --app-blue-green-light: #a0e8e1;
-  --app-orange: #de761b;
-  --app-orange-light: #edcbad;
-  --app-green: #23ad35;
-  --app-green-light: #8ae696;
-  --app-red: #f54747;
-  --app-red-light: #f09797;
-  --app-gray: #888;
-  --app-gray-light: #ddd;
-  --app-white: #fff;
-  --app-black: #000;
-
-  --rgb-app-dark: 133, 0, 95;
-  --rgb-app-dark-light: 198, 40, 153;
-  --rgb-app-light: 255, 209, 234;
-  --rgb-app-light-2: 247, 168, 211;
-  --rgb-app-light-3: 255, 95, 183;
-  --rgb-app-light-4: 255, 0, 141;
-  --rgb-app-purple: 156, 39, 176;
-  --rgb-app-purple-light: 200, 115, 215;
-  --rgb-app-blue-purple: 131, 48, 255;
-  --rgb-app-blue-purple-light: 202, 166, 255;
-  --rgb-app-water-blue: 33, 150, 243;
-  --rgb-app-water-blue-light: 154, 203, 243;
-  --rgb-app-blue-green: 0, 150, 136;
-  --rgb-app-blue-green-light: 160, 232, 225;
-  --rgb-app-orange: 222, 118, 27;
-  --rgb-app-orange-light: 237, 203, 173;
-  --rgb-app-green: 35, 173, 53;
-  --rgb-app-green-light: 138, 230, 150;
-  --rgb-app-red: 245, 71, 71;
-  --rgb-app-red-light: 240, 151, 151;
-  --rgb-app-gray: 136, 136, 136;
-  --rgb-app-gray-light: 221, 221, 221;
-  --rgb-app-white: 255, 255, 255;
-  --rgb-app-black: 0, 0, 0;
-}
-
-html.theme--night-mode {
-  --app-dark: #fff;
-  --app-dark-light: #edd3e2;
-  --app-light: #a3276e;
-  --app-light-2: #e094be;
-  --app-light-3: #ffd1ea;
-  --app-light-4: #fcdeef;
-  --app-purple: #f8e1fc;
-  --app-purple-light: #c181cc;
-  --app-blue-purple: #e6d6ff;
-  --app-blue-purple-light: #b485ff;
-  --app-water-blue: #c7e4fc;
-  --app-water-blue-light: #6896bd;
-  --app-blue-green: #a4f5ed;
-  --app-blue-green-light: #63c9bf;
-  --app-orange: #fadbc0;
-  --app-orange-light: #bd906a;
-  --app-green: #c8face;
-  --app-green-light: #6aba74;
-  --app-red: #ffb5b5;
-  --app-red-light: #ed6f6f;
-  --app-gray: #BBB;
-  --app-gray-light: #888;
-  --app-white: #1a1b26;
-  --app-black: #fff;
-
-  --rgb-app-dark: 255, 255, 255;
-  --rgb-app-dark-light: 237, 211, 226;
-  --rgb-app-light: 163, 39, 110;
-  --rgb-app-light-2: 224, 148, 190;
-  --rgb-app-light-3: 255, 209, 234;
-  --rgb-app-light-4: 252, 222, 239;
-  --rgb-app-purple: 248, 225, 252;
-  --rgb-app-purple-light: 193, 129, 204;
-  --rgb-app-blue-purple: 230, 214, 255;
-  --rgb-app-blue-purple-light: 180, 133, 255;
-  --rgb-app-water-blue: 199, 228, 252;
-  --rgb-app-water-blue-light: 104, 150, 189;
-  --rgb-app-blue-green: 164, 245, 237;
-  --rgb-app-blue-green-light: 99, 201, 191;
-  --rgb-app-orange: 250, 219, 192;
-  --rgb-app-orange-light: 189, 144, 106;
-  --rgb-app-green: 200, 250, 206;
-  --rgb-app-green-light: 106, 186, 116;
-  --rgb-app-red: 255, 181, 181;
-  --rgb-app-red-light: 237, 111, 111;
-  --rgb-app-gray: 187, 187, 187;
-  --rgb-app-gray-light: 136, 136, 136;
-  --rgb-app-white: 26, 27, 38;
-  --rgb-app-black: 255, 255, 255;
-} */
 
 .main--font-base {
   font-family: 'Itim', Microsoft JhengHei, sans-serif;
