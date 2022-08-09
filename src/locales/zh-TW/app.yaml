@@ -3,7 +3,7 @@ loading-message:
   CharacterStats: 載入角色模擬器資料
   Items: 載入裝備資料
   Skill: 載入技能資料
-  Tag: 載入標籤清單
+  Glossary: 載入標籤清單
   Enchant: 載入附魔資料
   DamageCalculation: 載入傷害計算器
   Food: 載入料理資料
@@ -22,6 +22,7 @@ page-title:
   damage-calculation: 傷害計算
   enchant-simulator: 附魔模擬
   enchant-doll: 附魔布偶
+  glossary-query: 名詞清單
   home: 主頁
   about: 關於
 about:

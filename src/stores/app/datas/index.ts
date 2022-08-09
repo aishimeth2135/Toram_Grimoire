@@ -11,7 +11,7 @@ import CharacterSystem from '@/lib/Character'
 import EnchantSystem from '@/lib/Enchant'
 import ItemsSystem from '@/lib/Items'
 import SkillSystem from '@/lib/Skill'
-import TagSystem from '@/lib/Tag'
+import GlossarySystem from '@/lib/Glossary'
 
 import DownloadDatas from './utils/DownloadDatas'
 import loadCharacterStats from './utils/LoadCharacterStat'
@@ -20,20 +20,20 @@ import loadEnchant from './utils/LoadEnchant'
 import loadEquipments from './utils/LoadEquipments'
 import { loadSkill, loadSkillMain } from './utils/LoadSkill'
 import loadStats from './utils/LoadStats'
-import loadTag from './utils/LoadTag'
+import loadGlossaryTagData from './utils/LoadTag'
 import { DataStoreIds } from './enums'
 
 export const DatasStoreBase: {
   Items: ItemsSystem | null;
   Character: CharacterSystem | null;
-  Tag: TagSystem | null;
+  Glossary: GlossarySystem | null;
   Skill: SkillSystem | null;
   Enchant: EnchantSystem | null;
   DamageCalculation: DamageCalculationSystem | null;
 } = shallowReactive({
   Items: null,
   Character: null,
-  Tag: null,
+  Glossary: null,
   Skill: null,
   Enchant: null,
   DamageCalculation: null,
@@ -42,7 +42,7 @@ export const DatasStoreBase: {
 export const useDatasStore = defineStore('app-datas', () => {
   const Items = computed(() => DatasStoreBase.Items)
   const Character = computed(() => DatasStoreBase.Character)
-  const Tag = computed(() => DatasStoreBase.Tag)
+  const Glossary = computed(() => DatasStoreBase.Glossary)
   const Skill = computed(() => DatasStoreBase.Skill)
   const Enchant = computed(() => DatasStoreBase.Enchant)
   const DamageCalculation = computed(() => DatasStoreBase.DamageCalculation)
@@ -66,9 +66,9 @@ export const useDatasStore = defineStore('app-datas', () => {
     }
   }
 
-  const initTagInstance = () => {
-    if (Tag.value === null) {
-      DatasStoreBase.Tag = new TagSystem()
+  const initGlossaryInstance = () => {
+    if (Glossary.value === null) {
+      DatasStoreBase.Glossary = new GlossarySystem()
     }
   }
 
@@ -118,11 +118,11 @@ export const useDatasStore = defineStore('app-datas', () => {
     }
   }
 
-  const initTag = async function () {
-    const datas = await DownloadDatas({ path: 'Tag', lang: true })
+  const initGlossary = async function () {
+    const datas = await DownloadDatas({ path: 'Glossary', lang: true })
     return async () => {
-      initTagInstance()
-      loadTag(Tag.value!, datas[0])
+      initGlossaryInstance()
+      loadGlossaryTagData(Glossary.value!, datas[0])
     }
   }
 
@@ -165,7 +165,7 @@ export const useDatasStore = defineStore('app-datas', () => {
     Items,
     Character,
     Skill,
-    Tag,
+    Glossary,
     Enchant,
     DamageCalculation,
 
@@ -174,7 +174,7 @@ export const useDatasStore = defineStore('app-datas', () => {
     initItems,
     initStats,
     initCharacterStats,
-    initTag,
+    initGlossary,
     initSkill,
     initFood,
     initEnchant,

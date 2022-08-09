@@ -20,7 +20,7 @@
         />
       </div>
       <div class="px-2">
-        <template v-for="frame in currentTag.frames" :key="frame.type + frame.value.join(',')">
+        <template v-for="frame in currentTag.rows" :key="frame.type + frame.value.join(',')">
           <div
             v-if="frame.type === 'category'"
             class="my-2"
@@ -58,12 +58,12 @@ import { computed, toRefs, ref, watch } from 'vue'
 
 import { markText } from '@/shared/utils/view'
 
-import Tag from '@/lib/Tag/Tag'
+import GlossaryTag from '@/lib/Glossary/GlossaryTag'
 
 import { createTagButtons } from './utils'
 
 interface Props {
-  tags: Tag[];
+  tags: GlossaryTag[];
 }
 
 const props = defineProps<Props>()

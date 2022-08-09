@@ -6,7 +6,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import SkillComputingContainer, { SkillBranchItem, SkillEffectItem, SkillEffectItemHistory, SkillItem } from '@/lib/Skill/SkillComputingContainer'
 import { Skill } from '@/lib/Skill/Skill'
-import Tag from '@/lib/Tag/Tag'
+import GlossaryTag from '@/lib/Glossary/GlossaryTag'
 
 import { findStackState, TAG_BUTTON_CLASS_NAME } from './utils'
 import { ComputingContainerInjectionKey } from './injection-keys'
@@ -14,10 +14,10 @@ import { ComputingContainerInjectionKey } from './injection-keys'
 export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
   const { t } = useI18n()
 
-  const currentTags: Ref<Tag[]> = ref([])
+  const currentTags: Ref<GlossaryTag[]> = ref([])
 
-  const findTag = (tagName: string): Tag | null => {
-    const tag = Grimoire.Tag.tagList.find(item => item.name.toLowerCase() === tagName.toLowerCase())
+  const findTag = (tagName: string): GlossaryTag | null => {
+    const tag = Grimoire.Glossary.tags.find(item => item.name.toLowerCase() === tagName.toLowerCase())
     return tag || null
   }
 
@@ -28,8 +28,8 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
     if (tag) {
       currentTags.value.push(tag)
     } else {
-      const emptyTag = new Tag(tagName)
-      emptyTag.appendFrame('caption', t('skill-query.tag.no-data-tips'))
+      const emptyTag = new GlossaryTag(tagName)
+      emptyTag.appendRow('caption', t('skill-query.tag.no-data-tips'))
       currentTags.value.push(emptyTag)
     }
   }

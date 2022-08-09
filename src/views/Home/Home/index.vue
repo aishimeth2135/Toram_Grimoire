@@ -2,32 +2,34 @@
   <AppLayoutMain ref="rootEl" class="app-home">
     <div class="flex justify-center items-center h-32">
       <div class="pt-2 sticky top-0">
-        <router-link v-slot="{ navigate }" :to="{ name: AppRouteNames.Bubble, params: { iconName: 'potum' } }" custom>
-          <div class="app-title-wrapper" @mouseenter="iconWrapperTouchedCount += 1">
-            <div
-              ref="appIcon"
-              class="flex app-title-icon"
-              :style="appIconPositionStyle"
-              :class="{ 'app-title-icon-touched': iconWrapperTouched }"
-            >
-              <cy-icon-text
-                icon="grimoire-cat"
-                icon-src="custom"
-                icon-width="2.75rem"
-              />
-            </div>
-            <div v-if="iconWrapperTouched" class="flex app-title-icon invisible">
-              <cy-icon-text
-                icon="grimoire-cat"
-                icon-src="custom"
-                icon-width="2.75rem"
-              />
-            </div>
-            <div class="ml-5 app-title" @click="navigate">
-              Cy's Grimoire
-            </div>
+        <div
+          class="app-title-wrapper"
+          @click="iconWrapperTouchedCount += 1"
+          @mouseenter="iconWrapperTouchedCount += 1"
+        >
+          <div
+            ref="appIcon"
+            class="flex app-title-icon"
+            :style="appIconPositionStyle"
+            :class="{ 'app-title-icon-touched': iconWrapperTouched }"
+          >
+            <cy-icon-text
+              icon="grimoire-cat"
+              icon-src="custom"
+              icon-width="2.75rem"
+            />
           </div>
-        </router-link>
+          <div v-if="iconWrapperTouched" class="flex app-title-icon invisible">
+            <cy-icon-text
+              icon="grimoire-cat"
+              icon-src="custom"
+              icon-width="2.75rem"
+            />
+          </div>
+          <div class="ml-5 app-title">
+            Cy's Grimoire
+          </div>
+        </div>
       </div>
     </div>
     <div class="w-full px-2 mt-auto">

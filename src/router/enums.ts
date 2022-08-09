@@ -22,6 +22,9 @@ export const enum AppRouteNames {
   DamageCalculationBase = 'DamageCalculationBase',
   DamageCalculation = 'DamageCalculation',
 
+  Glossary = 'Glossary',
+  GlossaryQuery = 'GlossaryQuery',
+
   Bubble = 'Bubble',
 
   UnrecognizedPath = 'UnrecognizedPath',
