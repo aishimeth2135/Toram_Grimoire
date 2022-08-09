@@ -469,13 +469,13 @@ class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> 
     this.linkedStackIds = this.stackId !== null ? [] :
       splitComma(this.prop('stack_id')).map(id => parseInt(id, 10))
 
-    this.groupState = {
+    this.groupState = reactive({
       size: 0,
       expandable: false,
       expanded: true,
       parentExpanded: true,
       isGroupEnd: false,
-    }
+    })
   }
 
   get isGroup(): boolean {

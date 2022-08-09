@@ -14,6 +14,7 @@ import Home from './Home'
 import Items from './Items'
 import Page404 from './Page404'
 import Skill from './Skill'
+import Glossary from './Glossary'
 import Dev from './Dev'
 
 export default function createAppRouter() {
@@ -24,6 +25,7 @@ export default function createAppRouter() {
     Skill,
     Items,
     Enchant,
+    Glossary,
     Page404,
     Bubble,
     DamageCalculation,

@@ -15,8 +15,8 @@ const Grimoire = {
     return DatasStoreBase.Skill!
   },
 
-  get Tag() {
-    return DatasStoreBase.Tag!
+  get Glossary() {
+    return DatasStoreBase.Glossary!
   },
 
   get Enchant() {

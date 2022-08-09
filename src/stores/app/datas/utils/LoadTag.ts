@@ -1,11 +1,11 @@
 import { HandleLanguageData } from '@/shared/services/Language'
 
-import TagSystem from '@/lib/Tag'
-import { Tag, TagFrame } from '@/lib/Tag/Tag'
+import GlossarySystem from '@/lib/Glossary'
+import { GlossaryTag, GlossaryTagRow } from '@/lib/Glossary/GlossaryTag'
 
 import { LangCsvData } from './DownloadDatas'
 
-export default function LoadTagData(root: TagSystem, datas: LangCsvData) {
+export default function loadGlossaryTagData(root: GlossarySystem, datas: LangCsvData) {
   const
     // TAG_NAME = 0,
     FRAME_NAME = 1,
@@ -25,8 +25,8 @@ export default function LoadTagData(root: TagSystem, datas: LangCsvData) {
     [INDEX.FRAME_VALUE]: LANG_DATA.FRAME_VALUE,
   })
   const data = datas[0]
-  let curTag: Tag
-  let curFrame: TagFrame
+  let curTag: GlossaryTag
+  let curFrame: GlossaryTagRow
   data.forEach((row, idx) => {
     if (idx === 0) {
       return
@@ -39,7 +39,7 @@ export default function LoadTagData(root: TagSystem, datas: LangCsvData) {
       const fn = row[FRAME_NAME],
         fv = row[INDEX.FRAME_VALUE]
       if (fn !== '') {
-        curFrame = curTag.appendFrame(fn, fv)
+        curFrame = curTag.appendRow(fn, fv)
       } else {
         curFrame.appendValue(fv)
       }

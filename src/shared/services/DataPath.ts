@@ -8,7 +8,7 @@ function DataPath(id: string): string{
       return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=616452461&single=true&output=csv&range=A:F'
     case 'Character Stats':
       return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTHrEp60Q4BFKM2yI09FyJWZFKnxif0oZfTkWiXXL-7am6BWoAtN___hxKtFDkbofflHQgrON74qOdk/pub?gid=0&single=true&output=csv&range=A:I'
-    case 'Tag':
+    case 'Glossary':
       return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=1107380961&single=true&output=csv&range=A:C'
     case 'Equipment':
       return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwaGM9CClGkSw-6iUFmdOyIeI-_9i5RvIuHdSCTCUgFCk7GV4v1evt5C79JSG5P66ZGopM2-ZJJaEA/pub?gid=0&single=true&output=csv&range=A:I'
@@ -54,7 +54,7 @@ function DataPathLang(id: string): (string | null)[] {
         null,
         null,
       ]
-    case 'Tag':
+    case 'Glossary':
       return [
         'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=1107380961&single=true&output=csv&range=D:E',
         null,

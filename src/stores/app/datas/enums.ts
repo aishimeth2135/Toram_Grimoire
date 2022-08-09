@@ -2,7 +2,7 @@ const enum DataStoreIds {
   Items = 'Items',
   Stats = 'Stats',
   CharacterStats = 'CharacterStats',
-  Tag = 'Tag',
+  Glossary = 'Glossary',
   Skill = 'Skill',
   Food = 'Food',
   Enchant = 'Enchant',

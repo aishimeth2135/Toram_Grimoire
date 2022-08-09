@@ -2,11 +2,22 @@
   <AppLayoutMain>
     <section>
       <div
-        v-for="column in columns"
+        v-for="(column, idx) in columns"
         :key="column.title"
         class="cy--about-column flex p-4 bg-white rounded-md m-4 border-1 border-transparent hover:border-light-2 duration-200 overflow-x-auto"
       >
-        <div class="flex-shrink-0 rounded-full mr-3 mb-4">
+        <router-link
+          v-if="idx === 0"
+          v-slot="{ navigate }"
+          :to="{ name: AppRouteNames.Bubble, params: { iconName: 'potum' } }"
+          custom
+        >
+          <div class="flex-shrink-0 rounded-full mr-3 mb-4" @click="navigate">
+            <div class="text-dark-light px-4">{{ t(`app.about.${column.title}.title`) }}</div>
+            <div class="h-1 rounded-full bg-light mt-0 5" />
+          </div>
+        </router-link>
+        <div v-else class="flex-shrink-0 rounded-full mr-3 mb-4">
           <div class="text-dark-light px-4">{{ t(`app.about.${column.title}.title`) }}</div>
           <div class="h-1 rounded-full bg-light mt-0 5" />
         </div>
@@ -33,13 +44,9 @@
                   </template>
                   <span
                     v-else
-                    class="inline-flex pr-3"
+                    class="inline-flex pr-3 relative pl-4"
                   >
-                    <cy-icon-text
-                      icon="mdi-leaf"
-                      style="--icon-width: 0.8rem;"
-                      class="mr-1 self-start"
-                    />
+                    <div class="absolute left-0 top-1 w-2 h-2 bg-light rounded-full" />
                     <span v-if="(typeof value === 'string')">{{ value }}</span>
                     <span v-else class="inline-flex items-center flex-wrap">
                       <span>{{ value.main }}</span>
@@ -97,6 +104,7 @@ export default {
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 
+import { AppRouteNames } from '@/router/enums'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 const { t } = useI18n()

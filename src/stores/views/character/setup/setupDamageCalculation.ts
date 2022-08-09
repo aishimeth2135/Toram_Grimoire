@@ -11,7 +11,7 @@ import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import { EnemyElements } from '@/lib/Enemy/enums'
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
-import { SkillBranchItem, SkillBranchItemBaseChilds } from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { Calculation } from '@/lib/Calculation/Damage/Calculation'
 import { StatRecorded } from '@/lib/Character/Stat'
 import { StatRestriction } from '@/lib/Character/Stat'
@@ -107,8 +107,7 @@ export default function setupDamageCalculation(
   const getSkillBranchState = (() => {
     // save state by default branch
     const skillBranchStates = ref(new Map<SkillBranch, { enabled: boolean }>())
-    return (branchItem: SkillBranchItemBaseChilds) => {
-      const branch = branchItem.default
+    return (branch: SkillBranch) => {
       if (!skillBranchStates.value.has(branch)) {
         skillBranchStates.value.set(branch, { enabled: true })
       }
@@ -128,7 +127,7 @@ export default function setupDamageCalculation(
     let skillDualElement = branchItem.prop('dual_element')
     if (skillDualElement === 'none') {
       const extraBch = branchItem.suffixBranches.find(suf => {
-        if(!getSkillBranchState(suf).enabled) {
+        if(!getSkillBranchState(suf.default).enabled) {
           return false
         }
         return suf.is(SkillBranchNames.Extra) && suf.hasProp('dual_element')
