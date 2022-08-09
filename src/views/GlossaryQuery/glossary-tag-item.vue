@@ -76,7 +76,7 @@ const handleText = (html: string) => {
   return html
 }
 
-const otherTags = computed(() => searchTags(props.tag))
+const otherTags = computed(() => props.sub ? [] : searchTags(props.tag))
 </script>
 
 <style lang="postcss" scoped>

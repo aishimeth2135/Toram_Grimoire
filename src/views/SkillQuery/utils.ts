@@ -45,7 +45,7 @@ function searchTags(rootTag: GlossaryTag): GlossaryTag[] {
     tag.rows.forEach(row => {
       row.value.forEach(item => {
         searchTagValueTags(item).forEach(_item => {
-          if (!resMap.has(_item)) {
+          if (!resMap.has(_item) && _item !== rootTag.name) {
             set.add(_item)
           }
         })
