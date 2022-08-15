@@ -82,14 +82,14 @@ const handleText = (html: string) => {
 
 <style lang="postcss" scoped>
 .skill-tag-content-wrapper {
-  @apply bg-white bg-opacity-95 border border-b-0 border-light-2 shadow-sm mx-2;
+  @apply bg-white bg-opacity-95 border-1 border-b-0 border-light-2 shadow-sm mx-0.5;
 
   max-width: 30rem;
   min-width: 12.5rem;
   /* max-height: calc(47vh - 3rem); */
 
   & > .skill-tag-content {
-    @apply border-b border-light-2 p-4 pb-0;
+    @apply border-b-1 border-light-2 p-4 pb-0;
 
     &::after {
       content: '';

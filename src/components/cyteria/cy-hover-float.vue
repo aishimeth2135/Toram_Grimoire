@@ -11,13 +11,6 @@
     @mouseleave="onLeave"
   >
     <div class="cy--hover-float--content" :class="{ 'content-default-theme': !custom }">
-      <cy-icon-text
-        v-if="keepVisible"
-        icon="ic:outline-lock"
-        icon-color="light-4"
-        class="absolute top-1 right-2"
-        icon-width="1.5rem"
-      />
       <slot />
     </div>
   </CyPopper>
@@ -113,7 +106,7 @@ defineExpose({
 .cy--hover-float--content {
   max-width: 50rem;
 
-  @apply overflow-y-auto relative;
+  @apply overflow-y-auto;
 
   &.content-default-theme {
     @apply border-1 rounded-md drop-shadow border-light-3 px-4 py-2 bg-white;

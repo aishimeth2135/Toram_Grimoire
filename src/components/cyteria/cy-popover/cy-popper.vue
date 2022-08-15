@@ -140,7 +140,8 @@ defineExpose({
 <style lang="postcss" scoped>
 .cy--popper {
   min-width: 15rem;
-  @apply fixed z-100;
+
+  @apply fixed z-100 overflow-y-auto;
 
   @media screen and (max-width: 15rem) {
     min-width: auto;
