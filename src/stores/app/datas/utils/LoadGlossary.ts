@@ -26,7 +26,7 @@ export default function loadGlossaryTagData(root: GlossarySystem, datas: LangCsv
   })
   const data = datas[0]
   let curTag: GlossaryTag
-  let curFrame: GlossaryTagRow
+  let curRow: GlossaryTagRow
   data.forEach((row, idx) => {
     if (idx === 0) {
       return
@@ -39,9 +39,9 @@ export default function loadGlossaryTagData(root: GlossarySystem, datas: LangCsv
       const fn = row[FRAME_NAME],
         fv = row[INDEX.FRAME_VALUE]
       if (fn !== '') {
-        curFrame = curTag.appendRow(fn, fv)
+        curRow = curTag.appendRow(fn, fv)
       } else {
-        curFrame.appendValue(fv)
+        curRow?.appendValue(fv)
       }
     } catch (err) {
       console.warn('[LoadTag] unknown error')

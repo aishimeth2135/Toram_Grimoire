@@ -54,7 +54,16 @@ const homeRouteData = {
 const routeLinks = computed(() => {
   const items = contents.menuLinks ? ROUTE_LINK_DATAS : []
   return items
-    .filter(item => item.pathName !== currentRoute.value.name)
+    .filter(item => {
+      if (item.pathName === currentRoute.value.name) {
+        return false
+      }
+      const { leftMenuViewButtons } = currentRoute.value.meta
+      if (leftMenuViewButtons) {
+        return leftMenuViewButtons.every(viewButton => item.pathName !== viewButton.pathName)
+      }
+      return true
+    })
     .map(item => ({
       title: 'app.page-title.' + item.name,
       icon: item.icon,

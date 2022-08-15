@@ -190,10 +190,10 @@ interface SearchFilterItem {
 }
 
 const searchFilter = {
-  category: {
+  category: reactive({
     options: [0, 1, 2, 3, 4],
-    selectedOptions: reactive([0, 1, 2, 3, 4]),
-  },
+    selectedOptions: [0, 1, 2, 3, 4],
+  }),
 } as Record<'category', SearchFilterItem>
 
 const toggleSearchFilter = (target: SearchFilterItem, item: unknown) => {

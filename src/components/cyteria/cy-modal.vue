@@ -5,7 +5,7 @@
         v-if="visible"
         class="cy--modal"
         :class="rootClass"
-        v-bind="$attrs"
+        v-bind="attrs"
         @click="closeModal"
       >
         <div class="modal-wrapper">
@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { computed, CSSProperties, ref, Ref, useSlots } from 'vue'
+import { computed, CSSProperties, ref, Ref, useAttrs, useSlots } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { remToPixels } from '@/shared/utils/element'
@@ -96,6 +96,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emit = defineEmits<Emits>()
 
+const attrs = useAttrs()
 const slots = useSlots()
 
 const rootClass = computed(() => {

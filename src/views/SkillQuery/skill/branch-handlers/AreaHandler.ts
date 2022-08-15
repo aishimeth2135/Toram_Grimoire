@@ -44,7 +44,7 @@ export default function AreaHandler<BranchItem extends SkillBranchItem>(computin
     pureValues.push('@range')
   }
 
-  const titles = computing.config.formulaDisplayMode === FormulaDisplayModes.Normal ? [] : [
+  const titles = [
     'effective_area',
     'radius',
     'move_distance',

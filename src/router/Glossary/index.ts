@@ -16,7 +16,7 @@ export default {
   path: '/glossary',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
-    ViewInit(DataStoreIds.Skill, DataStoreIds.Glossary).then(next)
+    ViewInit(DataStoreIds.Glossary).then(next)
   },
   meta: {
     leftMenuViewButtons: [{
@@ -25,7 +25,7 @@ export default {
       pathName: AppRouteNames.SkillQuery,
     }, {
       title: 'app.page-title.glossary-query',
-      icon: 'ic-outline-menu-book',
+      icon: 'mdi:tag-outline',
       pathName: AppRouteNames.GlossaryQuery,
     }],
   },

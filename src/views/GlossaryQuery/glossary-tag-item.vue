@@ -83,4 +83,8 @@ const otherTags = computed(() => props.sub ? [] : searchTags(props.tag))
 :deep(.click-button--tag) {
   @apply text-orange;
 }
+
+:deep(.bracket-text) {
+  @apply border-l-1 border-r-1 border-current mx-2 px-2 text-light-4 font-mono;
+}
 </style>

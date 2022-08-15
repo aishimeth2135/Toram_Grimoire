@@ -1,40 +1,32 @@
 <template>
-  <teleport to="body">
-    <div
-      v-if="(visible || keepVisible)"
-      ref="rootElement"
-      class="cy--hover-float-wrapper z-10 fixed py-0.5 px-4"
-      :style="position ?? undefined"
-      @mouseenter="visible = true"
-      @mouseleave="hideCaption"
-    >
-      <div
-        class="absolute -top-9 right-4"
-        :class="{ 'invisible': !keepVisible }"
-        @click="contentClick"
-      >
-        <div class="flex items-center border-1 rounded-md border-light py-1 px-2 bg-white bg-opacity-85">
-          <cy-icon-text icon="fluent:cursor-click-24-regular" class="ml-auto" />
-          <cy-icon-text icon="ic:round-arrow-forward" />
-          <cy-icon-text icon="jam:close-circle" />
-        </div>
-      </div>
-      <div
-        :class="contentClass"
-        style="max-height: calc(45vh - 5rem);"
-        @click="contentClick"
-      >
-        <slot />
-      </div>
+  <CyPopper
+    ref="popper"
+    :element="currentElement"
+    :options="{
+      custom: true,
+      offset: 0,
+    }"
+    @hidden="keepVisible = false"
+    @mouseenter="show"
+    @mouseleave="onLeave"
+  >
+    <div class="cy--hover-float--content" :class="{ 'content-default-theme': !custom }">
+      <cy-icon-text
+        v-if="keepVisible"
+        icon="ic:outline-lock"
+        icon-color="light-4"
+        class="absolute top-1 right-2"
+        icon-width="1.5rem"
+      />
+      <slot />
     </div>
-  </teleport>
+  </CyPopper>
 </template>
 
 <script lang="ts" setup>
-import { ref, toRefs, computed, nextTick } from 'vue'
-import type { Ref, CSSProperties } from 'vue'
+import { ref, toRefs, nextTick, Ref } from 'vue'
 
-import { remToPixels } from '@/shared/utils/element'
+import CyPopper from './cy-popover/cy-popper.vue'
 
 interface Props {
   element: HTMLElement | null;
@@ -53,107 +45,41 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emit = defineEmits<Emits>()
 
-const { element, target, positionMode, custom } = toRefs(props)
+const { element, target } = toRefs(props)
+const popper: Ref<InstanceType<typeof CyPopper> | null> = ref(null)
 
-const contentClass = computed(() => {
-  let classList = 'overflow-y-auto max-w-full'
-  if (!custom.value) {
-    classList += ' border-1 rounded-md drop-shadow border-light-3 px-4 py-2 bg-white'
-  }
-  return classList
-})
-
-const visible = ref(false)
-const position: Ref<CSSProperties | null> = ref(null)
 const currentElement: Ref<HTMLElement | null> = ref(null)
-const rootElement: Ref<HTMLElement | null> = ref(null)
 const keepVisible = ref(false)
 
-const targetElement = computed(() => {
-  return currentElement.value || null
-})
-
-const fixPosition = () => {
-  const el = rootElement.value
-  if (!el || position.value === null) {
-    return
-  }
-  const rect = el.getBoundingClientRect()
-  const ww = window.innerWidth
-  const pd = remToPixels(1)
-
-  if (positionMode.value === 'h-middle') {
-    const spacing = (ww - rect.width) / 2
-    position.value.left = spacing + 'px'
-    position.value.right = 'auto'
-    return
-  }
-  if (rect.left < pd) {
-    position.value.left = pd.toString() + 'px'
-    position.value.right = 'auto'
-  } else if (rect.right > ww - pd) {
-    position.value.right = pd.toString() + 'px'
-    position.value.left = 'auto'
-  }
+const show = () => {
+  popper.value?.togglePopper(true)
 }
-const updateCaptionPosition = async () => {
-  const el = targetElement.value
-  if (!el) {
-    position.value = null
-    return
-  }
-  const rect = el.getBoundingClientRect()
 
-  const resultPosition: CSSProperties = {}
-
-  const margin = remToPixels(-0.1)
-  const wh = window.innerHeight, ww = window.innerWidth
-  const len2bottom = wh - rect.bottom
-  if (rect.top >= len2bottom) {
-    resultPosition.bottom = (wh - rect.bottom + rect.height + margin) + 'px'
-  } else {
-    resultPosition.top = (rect.top + rect.height + margin) + 'px'
-  }
-  if (positionMode.value !== 'h-middle') {
-    const len2right = window.innerWidth - rect.right
-    if (rect.left >= len2right) {
-      resultPosition.right = (ww - rect.right + margin) + 'px'
-    } else {
-      resultPosition.left = (rect.left + margin) + 'px'
-    }
-  }
-  position.value = resultPosition
-
-  await nextTick()
-  fixPosition()
-}
 const showCaption = (el: HTMLElement) => {
-  visible.value = true
   currentElement.value = el
+  show()
   emit('element-hover', el)
-  updateCaptionPosition()
 }
 const hideCaption = () => {
-  visible.value = false
-  if (!keepVisible.value) {
-    currentElement.value = null
-  }
+  popper.value?.togglePopper(false)
 }
 const enableKeepVisible = () => {
   keepVisible.value = true
 }
-const contentClick = () => {
-  keepVisible.value = false
-  hideCaption()
-}
 
 const DATA_FLAG_NAME = 'data-cy-hover-float-flag'
-const listenerShow = function (this: HTMLElement) {
+const onEnter = function (this: HTMLElement) {
   showCaption(this)
 }
-const listenerClick = function (evt: MouseEvent) {
+const onLeave = function () {
+  if (!keepVisible.value) {
+    hideCaption()
+  }
+}
+const onClick = function (this: HTMLElement, evt: MouseEvent) {
   evt.stopPropagation()
   enableKeepVisible()
+  showCaption(this)
 }
 const updateListenerBinding = async () => {
   await nextTick()
@@ -165,11 +91,9 @@ const updateListenerBinding = async () => {
     if (node.getAttribute(DATA_FLAG_NAME) !== null) {
       return
     }
-    node.addEventListener('mouseenter', listenerShow)
-    node.addEventListener('mouseleave', hideCaption)
-    // node.addEventListener('touchstart', show);
-    // node.addEventListener('touchend', hideCaption);
-    node.addEventListener('click', listenerClick)
+    node.addEventListener('mouseenter', onEnter)
+    node.addEventListener('mouseleave', onLeave)
+    node.addEventListener('click', onClick)
     node.setAttribute(DATA_FLAG_NAME, 'true')
   }
   if (target?.value === undefined) {
@@ -182,24 +106,17 @@ const updateListenerBinding = async () => {
 
 defineExpose({
   update: updateListenerBinding,
-  fixPosition,
 })
 </script>
 
 <style lang="postcss" scoped>
-.cy--hover-float-wrapper {
-  @apply flex;
+.cy--hover-float--content {
   max-width: 50rem;
 
-  &.layout-h-middle {
-    width: 50rem;
-    @apply justify-center;
-    left: auto;
-    right: auto;
-  }
+  @apply overflow-y-auto relative;
 
-  @media screen and (max-width: 50rem) {
-    max-width: 100vw;
+  &.content-default-theme {
+    @apply border-1 rounded-md drop-shadow border-light-3 px-4 py-2 bg-white;
   }
 }
 </style>

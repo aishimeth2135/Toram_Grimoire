@@ -1,4 +1,4 @@
-import { ref, provide, watch, nextTick, shallowRef } from 'vue'
+import { ref, provide, watch, nextTick, shallowRef, computed } from 'vue'
 import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -15,6 +15,18 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
   const { t } = useI18n()
 
   const currentTags: Ref<GlossaryTag[]> = ref([])
+  const currentTagIndex = ref(-1)
+
+  const currentTag = computed(() => {
+    if (currentTags.value.length === 0) {
+      return null
+    }
+    return currentTags.value[currentTagIndex.value]
+  })
+
+  const changeTag = (offset: number) => {
+    currentTagIndex.value += offset
+  }
 
   const findTag = (tagName: string): GlossaryTag | null => {
     const tag = Grimoire.Glossary.tags.find(item => item.name.toLowerCase() === tagName.toLowerCase())
@@ -26,19 +38,20 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
   const appendTag = (tagName: string): void => {
     const tag = findTag(tagName)
     if (tag) {
-      currentTags.value.push(tag)
+      currentTags.value.splice(currentTagIndex.value + 1, currentTags.value.length - currentTagIndex.value, tag)
     } else {
       const emptyTag = new GlossaryTag(tagName)
       emptyTag.appendRow('caption', t('skill-query.tag.no-data-tips'))
       currentTags.value.push(emptyTag)
     }
+    currentTagIndex.value = currentTags.value.length - 1
   }
 
   const clearTag = () => {
     currentTags.value = []
   }
 
-  watch(currentTags, async () => {
+  watch(currentTagIndex, async () => {
     await nextTick()
     if (tagContent.value && tagContent.value.$el && tagContent.value.$el.querySelectorAll) {
       const click = function (this: HTMLElement, error: Event) {
@@ -63,7 +76,9 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
 
   return {
     currentTags,
-    clearTag,
+    currentTag,
+    currentTagIndex,
+    changeTag,
     tagButtonHover,
   }
 }

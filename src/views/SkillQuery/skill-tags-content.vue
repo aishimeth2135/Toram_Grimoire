@@ -3,20 +3,20 @@
     <div class="skill-tag-content">
       <div class="mb-1 flex items-center">
         <cy-button-icon
-          v-if="tags.length > 1"
+          v-if="currentTags.length > 1"
           icon="ic:round-arrow-back"
-          :disabled="currentTagIdx === 0"
-          @click.stop="goPreviousTag"
+          :disabled="currentTagIndex === 0"
+          @click.stop="emit('change-tag', -1)"
         />
         <cy-icon-text icon="ri-leaf-fill" text-color="purple">
           {{ currentTag.name }}
         </cy-icon-text>
         <cy-button-icon
-          v-if="tags.length > 1"
+          v-if="currentTags.length > 1"
           icon="ic:round-arrow-forward"
           class="ml-auto"
-          :disabled="currentTagIdx === tags.length - 1"
-          @click.stop="goNextTag"
+          :disabled="currentTagIndex === currentTags.length - 1"
+          @click.stop="emit('change-tag', 1)"
         />
       </div>
       <div class="px-2">
@@ -54,8 +54,6 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs, ref, watch } from 'vue'
-
 import { markText } from '@/shared/utils/view'
 
 import GlossaryTag from '@/lib/Glossary/GlossaryTag'
@@ -63,37 +61,22 @@ import GlossaryTag from '@/lib/Glossary/GlossaryTag'
 import { createTagButtons } from './utils'
 
 interface Props {
-  tags: GlossaryTag[];
+  currentTags: GlossaryTag[];
+  currentTag: GlossaryTag | null;
+  currentTagIndex: number;
+}
+interface Emits {
+  (evt: 'change-tag', offset: number): void;
 }
 
-const props = defineProps<Props>()
-
-const { tags } = toRefs(props)
-
-const currentTagIdx = ref(0)
-const currentTag = computed(() => {
-  if (tags.value.length === 0) {
-    return null
-  }
-  return tags.value[currentTagIdx.value]
-})
-
-watch(tags, (value) => {
-  currentTagIdx.value = value.length - 1
-}, { deep: true })
+defineProps<Props>()
+const emit = defineEmits<Emits>()
 
 const handleText = (html: string) => {
   html = markText(html)
   html = html.replace(/\(\(((?:(?!\(\().)+)\)\)/g, (match, p1) => `<span class="bracket-text">${p1}</span>`)
   html = createTagButtons(html)
   return html
-}
-
-const goPreviousTag = () => {
-  currentTagIdx.value -= 1
-}
-const goNextTag = () => {
-  currentTagIdx.value += 1
 }
 </script>
 
@@ -115,7 +98,7 @@ const goNextTag = () => {
     }
   }
   &:deep(.bracket-text) {
-    @apply border-l-1 border-r-1 border-current mx-2 px-2 text-light-4;
+    @apply border-l-1 border-r-1 border-current mx-2 px-2 text-light-4 font-mono;
   }
 
   &:deep(.click-button--tag) {

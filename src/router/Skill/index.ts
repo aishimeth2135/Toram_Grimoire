@@ -27,7 +27,7 @@ export default {
       pathName: AppRouteNames.SkillQuery,
     }, {
       title: 'app.page-title.glossary-query',
-      icon: 'ic-outline-menu-book',
+      icon: 'mdi:tag-outline',
       pathName: AppRouteNames.GlossaryQuery,
     }],
   },
