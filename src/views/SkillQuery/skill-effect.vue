@@ -53,7 +53,13 @@
     position-mode="h-middle"
     @element-hover="tagButtonHover"
   >
-    <skillTagsContent ref="tagDetailContent" :tags="currentTags" />
+    <skillTagsContent
+      ref="tagDetailContent"
+      :current-tags="currentTags"
+      :current-tag="currentTag"
+      :current-tag-index="currentTagIndex"
+      @change-tag="changeTag"
+    />
   </cy-hover-float>
   <cy-hover-float
     ref="skillHoverFloatComponent"
@@ -170,6 +176,9 @@ const tagDetailContent: Ref<{ $el: HTMLElement } | null> = ref(null)
 
 const {
   currentTags,
+  currentTag,
+  currentTagIndex,
+  changeTag,
   tagButtonHover,
 } = setupSkillTag(tagDetailContent)
 

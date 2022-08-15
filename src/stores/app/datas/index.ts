@@ -20,7 +20,7 @@ import loadEnchant from './utils/LoadEnchant'
 import loadEquipments from './utils/LoadEquipments'
 import { loadSkill, loadSkillMain } from './utils/LoadSkill'
 import loadStats from './utils/LoadStats'
-import loadGlossaryTagData from './utils/LoadTag'
+import loadGlossaryTagData from './utils/LoadGlossary'
 import { DataStoreIds } from './enums'
 
 export const DatasStoreBase: {

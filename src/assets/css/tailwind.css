@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  code, kbd, samp, pre {
+    font-family: 'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", var(--app-main-font), monospace;
+    font-size: 1em;
+  }
+}
+
 @layer utilities {
   .content-auto {
     content-visibility: auto;

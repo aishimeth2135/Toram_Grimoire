@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import CyPopover from './cy-popover.vue'
+import CyPopover from './cy-popover/cy-popover.vue'
 
 interface OptionItem {
   id: string | number;

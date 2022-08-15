@@ -20,9 +20,10 @@ import CyOptions from '@/components/cyteria/cy-options.vue'
 import CyPagination from '@/components/cyteria/cy-pagination.vue'
 import CyTitleInput from '@/components/cyteria/cy-title-input.vue'
 import CyTopHeader from '@/components/cyteria/cy-top-header.vue'
-import CyPopover from '@/components/cyteria/cy-popover.vue'
+import CyPopover from '@/components/cyteria/cy-popover/cy-popover.vue'
 import CyTransition from '@/components/cyteria/cy-transition.vue'
 import SvgIcon from '@/components/cyteria/icon/svg-icon.vue'
+import { initCyPopper } from '@/components/cyteria/cy-popover/setup'
 
 export default function (app: App<Element>) {
   app.component('cy-default-tips', CyDefaultTips)
@@ -50,4 +51,6 @@ export default function (app: App<Element>) {
   app.component('cy-button-dropdown', CyButtonDropdown)
 
   app.component('svg-icon', SvgIcon)
+
+  initCyPopper()
 }
