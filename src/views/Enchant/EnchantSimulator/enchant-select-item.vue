@@ -39,6 +39,7 @@
           v-for="item in category.items"
           :key="item.id"
           :selected="selectedItems.some(_item => item.origin === _item.origin && item.type === _item.type)"
+          :disabled="disabledItems.some(_item => item.origin === _item.origin && item.type === _item.type)"
           @click="itemClick(item)"
         >
           <span>
@@ -74,6 +75,7 @@ interface Props {
   visible: boolean;
   isWeapon: boolean;
   selectedItems: EnchantStatOptionBase[];
+  disabledItems?: EnchantStatOptionBase[];
   once?: boolean;
   forPositive?: boolean;
   defaultNegative?: boolean;
@@ -87,6 +89,7 @@ const props = withDefaults(defineProps<Props>(), {
   once: false,
   forPositive: false,
   defaultNegative: false,
+  disabledItems: () => [],
 })
 const emit = defineEmits<Emits>()
 

@@ -561,6 +561,7 @@
       :for-positive="stepCounter === StepContents.SelectPositiveStat"
       :default-negative="stepCounter === StepContents.SelectNegativeStat"
       :selected-items="selectedItems"
+      :disabled-items="disabledItems"
       @select-item="selectItem"
       @close="toggle('windows/selectItem', false)"
     />
@@ -744,12 +745,20 @@ const currentEquipmentType = computed<number>({
   },
 })
 
+const toItem = (stat: EnchantStat) => ({ origin: stat.itemBase, type: stat.type })
+
 const selectedItems = computed(() => {
-  const toItem = (stat: EnchantStat) => ({ origin: stat.itemBase, type: stat.type })
   const posItems = doll.value.positiveStats.map(toItem)
   const negItems = selectNegativeStatState.auto ? [] :
     selectNegativeStatState.manually.map(toItem)
   return [...posItems, ...negItems] as EnchantStatOptionBase[]
+})
+
+const disabledItems = computed(() => {
+  if (stepCounter.value === StepContents.SelectNegativeStat) {
+    return doll.value.positiveStats.map(toItem)
+  }
+  return []
 })
 
 const autoFindNegaitveStats = async (manuallyStats: EnchantStat[], originalPotentialUnknow = false) => {
