@@ -16,20 +16,25 @@
     <div v-if="equipment.is(EquipmentKinds.Weapon) || equipment.is(EquipmentKinds.Armor)" class="flex items-center pt-0.5">
       <cy-popover>
         <CharacterEquipmentEditMask>
-          <div class="flex items-center rounded-2xl border-1 border-solid border-light py-0.5 px-3 w-72">
+          <div class="flex items-center rounded-2xl border-1 border-solid border-light py-0.5 px-3 w-72" :class="{ 'opacity-50': !baseValueValid }">
             <template v-if="equipment.is(EquipmentKinds.Weapon)">
               <cy-icon-text icon="mdi-sword" text-color="light-2">
                 ATK
               </cy-icon-text>
-              <span class="ml-2 text-purple">
+              <div class="ml-2 text-purple flex items-center">
                 {{ equipment.basicValue }}
                 <span
-                  v-if="(equipment instanceof MainWeapon) && equipment.refining > 0"
-                  class="ml-1 text-water-blue"
+                  v-if="refiningAdditionAmount > 0"
+                  class="ml-1"
+                  :class="!isSub ? 'text-water-blue' : 'text-green'"
                 >
-                  +{{ equipment.refiningAdditionAmount! }}
+                  +{{ refiningAdditionAmount }}
                 </span>
-              </span>
+                <div v-else-if="baseValueArrowRate" class="flex items-center ml-2">
+                  <cy-icon-text icon="ic-round-close" icon-width="0.75rem" icon-color="green" />
+                  <span class="text-green ml-1">{{ baseValueArrowRate }}</span>
+                </div>
+              </div>
               <span class="ml-auto text-dark-light">{{ equipment.stability }}%</span>
             </template>
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
@@ -134,10 +139,10 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { inject } from 'vue'
+import { computed, inject } from 'vue'
 
-import { CharacterEquipment, MainWeapon } from '@/lib/Character/CharacterEquipment'
-import { EquipmentKinds } from '@/lib/Character/CharacterEquipment/enums'
+import { CharacterEquipment, SubArmor, SubWeapon } from '@/lib/Character/CharacterEquipment'
+import { EquipmentKinds, EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 
 import EquipmentTitle from '@/components/common/equipment-title.vue'
 import ShowStat from '@/components/common/show-stat.vue'
@@ -151,11 +156,15 @@ interface Props {
   equipment: CharacterEquipment;
   innerItem?: boolean;
   statsDisabled?: boolean;
+  isSub?: boolean;
+  mainWeapon?: CharacterEquipment | null;
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   innerItem: false,
   statsDisabled: false,
+  isSub: false,
+  mainWeapon: null,
 })
 
 const { t } = useI18n()
@@ -167,6 +176,42 @@ const ranges = {
   stat: [null, null],
   boolStat: [1, 1],
 }
+
+const isSub = computed(() => props.isSub)
+
+const baseValueValid = computed(() => {
+  const eq = props.equipment
+  if (isSub.value) {
+    if (eq.type === EquipmentTypes.Arrow && props.mainWeapon &&
+      props.mainWeapon.type !== EquipmentTypes.Bow &&
+      props.mainWeapon.type !== EquipmentTypes.Bowgun) {
+      return false
+    }
+    return eq instanceof SubWeapon || eq instanceof SubArmor || eq.type === EquipmentTypes.OneHandSword
+  }
+  return true
+})
+
+const baseValueArrowRate = computed(() => {
+  const eq = props.equipment
+  if (props.mainWeapon && eq.type === EquipmentTypes.Arrow) {
+    if (props.mainWeapon.type === EquipmentTypes.Bowgun) {
+      return '50%'
+    }
+  }
+  return ''
+})
+
+const refiningAdditionAmount = computed(() => {
+  const eq = props.equipment
+  if (isSub.value) {
+    if (eq.type === EquipmentTypes.OneHandSword) {
+      return Math.floor(eq.basicValue * eq.refining * eq.refining / 200) + eq.refining
+    }
+    return 0
+  }
+  return Math.floor(eq.basicValue * eq.refining * eq.refining / 100) + eq.refining
+})
 
 const { editCrystal, editStat, editBasic } = inject(CharacterSimulatorInjectionKey)!
 </script>

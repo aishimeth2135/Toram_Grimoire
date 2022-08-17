@@ -676,7 +676,7 @@ class CharacterStatFormula {
    * @param pureStats - pure stats. All stat ID of stat must be unique
    */
   calc(pureStats: StatRecorded[], vars: CharacterStatResultVars): CharacterStatFormulaResult {
-    const allCharacterStatMap: { [key: string]: CharacterStat } = {}
+    const allCharacterStatMap: Record<string, CharacterStat> = {}
     this.belongCharacterStat.category.belongCategorys
       .map(cat => cat.stats).flat()
       .forEach(stat => allCharacterStatMap[stat.id] = stat)

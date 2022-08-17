@@ -24,6 +24,8 @@
       v-if="!equipmentField.isEmpty"
       :equipment="equipmentField.equipment!"
       :stats-disabled="equipmentField.statsDisabled()"
+      :is-sub="equipmentField.type === EquipmentFieldTypes.SubWeapon"
+      :main-weapon="equipmentField.belongCharacter.fieldEquipment(EquipmentFieldTypes.MainWeapon)"
     />
     <cy-default-tips v-else icon="mdi:dots-horizontal-circle-outline">
       {{ t('character-simulator.main-tips.no-equipment-selected') }}
@@ -36,6 +38,7 @@ import { useI18n } from 'vue-i18n'
 import { inject } from 'vue'
 
 import { EquipmentField } from '@/lib/Character/Character'
+import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 
 import CharacterEquipmentDetail from '../character-equipment/character-equipment-detail.vue'
 

@@ -1,15 +1,18 @@
 <template>
-  <div
-    v-show="store.active"
-    class="app--loading fixed w-full h-full top-0 left-0 flex justify-center z-100 p-4"
-  >
-    <div class="main-container">
-      <svg-icon icon-id="potum" class="custom-icon" />
-      <div class="mt-4 text-xl">
-        {{ store.loadingText }}
+  <teleport to="#app-loading">
+    <div
+      v-show="store.active"
+      class="app--loading fixed w-full h-full top-0 left-0 flex justify-center z-100 p-4"
+      @click.stop
+    >
+      <div class="main-container">
+        <svg-icon icon-id="potum" class="custom-icon" />
+        <div class="mt-4 text-xl">
+          {{ store.loadingText }}
+        </div>
       </div>
     </div>
-  </div>
+  </teleport>
 </template>
 
 <script lang="ts">

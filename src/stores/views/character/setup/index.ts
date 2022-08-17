@@ -866,10 +866,10 @@ export function prepareSetupCharacter() {
 
 export function setupFoodStats(foodBuild: Ref<FoodBuild>) {
   const allFoodBuildStats = computed(() => {
-    const value = foodBuild.value.selectedFoods.filter(food => food.level !== 0).map(food => StatRecorded.from(food.stat(), food))
-    return value
+    return foodBuild.value.selectedFoods
+      .filter(food => food.level !== 0)
+      .map(food => StatRecorded.from(food.stat(), food))
   })
-
 
   return {
     allFoodBuildStats,
