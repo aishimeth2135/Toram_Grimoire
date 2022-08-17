@@ -231,18 +231,8 @@
             {{ t('enchant-doll.select-negatives.title') }}
           </cy-icon-text>
         </div>
-        <div class="mt-1 text-sm pl-4">
+        <div class="mt-1 text-sm pl-4 pb-2">
           {{ t('enchant-doll.select-negatives.caption') }}
-        </div>
-        <div class="mt-2 ml-4 mr-2">
-          <cy-icon-text
-            icon="ic-outline-info"
-            small
-            text-color="water-blue"
-            icon-color="water-blue-light"
-          >
-            {{ t('enchant-doll.select-negatives.tips-1') }}
-          </cy-icon-text>
         </div>
         <div class="mt-1 ml-4 mr-2">
           <cy-icon-text
@@ -252,6 +242,16 @@
             icon-color="water-blue-light"
           >
             {{ t('enchant-doll.tips.performance.auto-find-negatives') }}
+          </cy-icon-text>
+        </div>
+        <div v-if="currentEquipmentType !== 1" class="mt-1 ml-4 mr-2">
+          <cy-icon-text
+            icon="ic-outline-info"
+            small
+            text-color="water-blue"
+            icon-color="water-blue-light"
+          >
+            {{ t('enchant-doll.select-negatives.tips-1') }}
           </cy-icon-text>
         </div>
         <div v-if="equipmentState.autoFindPotentialMinimum" class="mt-1 ml-4 mr-2">
@@ -271,7 +271,10 @@
             </cy-button-check>
           </div>
           <div>
-            <cy-button-toggle v-model:selected="doll.config.containsNaturalMpRegenConstant">
+            <cy-button-toggle
+              v-if="currentEquipmentType !== 1"
+              v-model:selected="doll.config.containsNaturalMpRegenConstant"
+            >
               <span class="text-light-2">
                 {{ t('enchant-doll.select-negatives.contains-natural-mp-regen-constant') }}
               </span>
