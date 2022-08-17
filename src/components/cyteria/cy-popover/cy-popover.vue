@@ -10,7 +10,10 @@
     <CyPopper
       ref="popper"
       :element="mainElement"
-      :options="options"
+      :options="{
+        placement,
+        autoSelect,
+      }"
     >
       <slot name="popper" />
     </CyPopper>
@@ -22,15 +25,16 @@ import { Ref, ref, useSlots } from 'vue'
 
 import CyPopper from './cy-popper.vue'
 
-import { PopperOptions } from './setup'
-
 interface Props {
   tag?: string;
-  options?: PopperOptions;
+  autoSelect?: boolean;
+  placement?: string;
 }
 
 withDefaults(defineProps<Props>(), {
   tag: 'div',
+  placement: 'bottom-start',
+  autoSelect: false,
 })
 
 const slots = useSlots()
