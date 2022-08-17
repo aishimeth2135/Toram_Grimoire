@@ -2,27 +2,54 @@
   <AppLayoutMain>
     <section>
       <div
-        v-for="(column, idx) in columns"
+        v-for="column in columns"
         :key="column.title"
         class="cy--about-column flex p-4 bg-white rounded-md m-4 border-1 border-transparent hover:border-light-2 duration-200 overflow-x-auto"
       >
         <router-link
-          v-if="idx === 0"
+          v-if="column.title === 'author'"
           v-slot="{ navigate }"
           :to="{ name: AppRouteNames.Bubble, params: { iconName: 'potum' } }"
           custom
         >
           <div class="flex-shrink-0 rounded-full mr-3 mb-4" @click="navigate">
             <div class="text-dark-light px-4">{{ t(`app.about.${column.title}.title`) }}</div>
-            <div class="h-1 rounded-full bg-light mt-0 5" />
+            <div class="h-1 rounded-full bg-light mt-0.5" />
           </div>
         </router-link>
         <div v-else class="flex-shrink-0 rounded-full mr-3 mb-4">
           <div class="text-dark-light px-4">{{ t(`app.about.${column.title}.title`) }}</div>
-          <div class="h-1 rounded-full bg-light mt-0 5" />
+          <div class="h-1 rounded-full bg-light mt-0.5" />
         </div>
         <div class="pl-3 mt-2">
-          <template v-if="column.title !== 'partnership'">
+          <template v-if="column.title === 'partnership'">
+            <div class="relative rounded-b-lg w-96 shadow-lg">
+              <div
+                class="h-28 bg-cover bg-no-repeat bg-center"
+                :style="{
+                  backgroundImage: `url('${discordGroupData.splashUrl}')`,
+                }"
+              />
+              <cy-icon-text icon="mdi:discord" class="absolute top-2 right-2" icon-width="2rem" />
+              <div class="w-full bg-light flex items-center py-2.5 px-4 rounded-b-lg">
+                <div class="rounded overflow-hidden">
+                  <img :src="discordGroupData.iconUrl" alt="#" width="50" height="50">
+                </div>
+                <div class="pl-4">
+                  <div class="text-xl text-dark">Toram's Pelulu</div>
+                  <div>
+                    <cy-icon-text icon="ic:baseline-person" small text-color="purple" icon-color="purple-light">
+                      {{ discordGroupData.memberNumbers }}
+                    </cy-icon-text>
+                  </div>
+                </div>
+                <cy-button-action link href="https://discord.com/invite/FKG6RVT975" target="_blank" class="ml-auto">
+                  {{ t('app.about.partnership.join') }}
+                </cy-button-action>
+              </div>
+            </div>
+          </template>
+          <template v-else>
             <div class="text-sm text-purple mb-3">
               <div>{{ t(`app.about.${column.title}.sub-title`) }}</div>
             </div>
@@ -57,39 +84,20 @@
               </div>
             </div>
           </template>
-          <template v-else>
-            <div class="relative rounded-b-lg w-96 shadow-lg">
-              <div
-                class="h-28 bg-cover bg-no-repeat bg-center"
-                :style="{
-                  backgroundImage: `url('${discordGroupData.splashUrl}')`,
-                }"
-              />
-              <cy-icon-text icon="mdi:discord" class="absolute top-2 right-2" icon-width="2rem" />
-              <div class="w-full bg-light flex items-center py-2.5 px-4 rounded-b-lg">
-                <div class="rounded overflow-hidden">
-                  <img :src="discordGroupData.iconUrl" alt="#" width="50" height="50">
-                </div>
-                <div class="pl-4">
-                  <div class="text-xl text-dark">Toram's Pelulu</div>
-                  <div>
-                    <cy-icon-text icon="ic:baseline-person" small text-color="purple" icon-color="purple-light">
-                      {{ discordGroupData.memberNumbers }}
-                    </cy-icon-text>
-                  </div>
-                </div>
-                <cy-button-action link href="https://discord.com/invite/FKG6RVT975" target="_blank" class="ml-auto">
-                  {{ t('app.about.partnership.join') }}
-                </cy-button-action>
-              </div>
-            </div>
-          </template>
+          <div v-if="column.title === 'author'" class="mt-4 px-3">
+            <a href="https://github.com/aishimeth2135/Toram_Grimoire" target="_blank">
+              <cy-icon-text icon="mdi:github" icon-color="blue-green" icon-width="2rem" />
+            </a>
+          </div>
         </div>
       </div>
     </section>
     <section class="pt-5 pb-12 px-5">
-      <div class="content" v-html="disclaimer">
-      </div>
+      <i18n-t keypath="app.about.disclaimer" tag="div" class="content">
+        <template #link>
+          <a class="text-light-3 underline" href="https://asobimo.com/" target="_blank">アソビモ株式会社（ASOBIMO,Inc.）</a>
+        </template>
+      </i18n-t>
     </section>
   </AppLayoutMain>
 </template>
@@ -194,10 +202,6 @@ const columns: {
     list: [t('app.about.words.contents.2')],
   }],
 }]
-
-const disclaimer = t('app.about.disclaimer', {
-  link: '<a class="text-light-3 underline" href="https://asobimo.com/" target="_blank">アソビモ株式会社（ASOBIMO,Inc.）</a>',
-})
 
 const discordGroupData = ref({
   name: 'Toram\'s Pelulu',

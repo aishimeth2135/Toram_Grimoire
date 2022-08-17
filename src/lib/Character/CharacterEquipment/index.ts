@@ -490,9 +490,6 @@ class MainWeapon extends Weapon {
     this.refining = 0
   }
 
-  get refiningAdditionAmount() {
-    return Math.floor(this.basicValue * this.refining * this.refining / 100) + this.refining
-  }
   override get hasRefining() {
     return true
   }
