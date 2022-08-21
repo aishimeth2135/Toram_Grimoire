@@ -227,6 +227,7 @@ abstract class CharacterEquipment {
         eq = new SubArmor(this.origin, name, stats, this.type)
       } else if (this instanceof BodyArmor) {
         eq = new BodyArmor(this.origin, name, stats)
+        eq.type = this.type
       } else if (this instanceof AdditionalGear) {
         eq = new AdditionalGear(this.origin, name, stats)
       } else if (this instanceof SpecialGear) {
