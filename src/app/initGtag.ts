@@ -3,6 +3,8 @@ import { App } from 'vue'
 import VueGtag, { PageView } from 'vue-gtag'
 import { RouteLocationNormalized, Router } from 'vue-router'
 
+import { AppRouteNames } from '@/router/enums'
+
 export function initGtag(app: App<Element>, router: Router) {
   try {
     const options = {
@@ -24,7 +26,7 @@ export function initGtag(app: App<Element>, router: Router) {
         } as PageView
       },
       pageTrackerExcludedRoutes: [
-        'SkillQuery',
+        AppRouteNames.SkillQuery,
       ],
     }
     app.use(VueGtag, options, router)

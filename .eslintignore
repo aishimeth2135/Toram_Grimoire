@@ -1,5 +1,1 @@
-src/_other
-src/views/_tmp
-
-# service worker
-src/sw.js
+src/dev
