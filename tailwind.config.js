@@ -92,9 +92,6 @@ module.exports = {
     ...getColorList('text'),
   ],
   theme: {
-    fontFamily: {
-      mono: '\'Cascadia Code\', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \'Liberation Mono\', \'Courier New\', var(--app-main-font), monospace',
-    },
     colors: createColorConfig(),
     textColor: createColorConfig('--tw-text-opacity'),
     backgroundColor: createColorConfig('--tw-bg-opacity'),
@@ -153,6 +150,7 @@ module.exports = {
     },
   },
   corePlugins: {
+    fontFamily: false,
     float: false,
     objectFit: false,
     objectPosition: false,
