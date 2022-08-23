@@ -8,7 +8,7 @@ import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 import { StatRecorded } from '@/lib/Character/Stat'
 
-import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/utils/DisplayDataContainer'
+import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 
 import { SkillResult } from '.'
 

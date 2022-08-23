@@ -26,16 +26,16 @@ export function handleFunctionHighlight(result: string): string {
   result.split('').forEach((char, idx) => {
     if (char === '(') {
       if (idx === 0 || !varCharPattern.test(result[idx - 1 + offset])) {
-        result = result.slice(0, idx + offset) + '#left~' + result.slice(idx + offset + 1)
-        offset += 5
+        result = result.slice(0, idx + offset) + '<#--' + result.slice(idx + offset + 1)
+        offset += 4
         handleStack.push('normal')
       } else {
         handleStack.push('function')
       }
     } else if (char === ')') {
       if (handleStack[handleStack.length - 1] === 'normal') {
-        result = result.slice(0, idx + offset) + '~right#' + result.slice(idx + offset + 1)
-        offset += 6
+        result = result.slice(0, idx + offset) + '--#>' + result.slice(idx + offset + 1)
+        offset += 4
       }
       handleStack.pop()
     }
@@ -48,9 +48,10 @@ export function handleFunctionHighlight(result: string): string {
       result = result.replace(item.reg, item.target ?? ((match, p1) => createFormulaText(item.name, p1)))
     })
   }
+  console.log(result)
   result = result
-    .replace(/#left~/g, '(')
-    .replace(/~right#/g, ')')
+    .replace(/<#--/g, '(')
+    .replace(/--#>/g, ')')
 
   result = result.replace(/,/g, '<span class="param-separate"></span>')
 

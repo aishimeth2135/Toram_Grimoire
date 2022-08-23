@@ -4,10 +4,9 @@ import SkillComputingContainer, { SkillBranchItemSuffix } from '@/lib/Skill/Skil
 import type { HandleBranchTextPropsMap, HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
-import { cloneBranchProps, HandleBranchLangPropsMap, handleDisplayData } from './utils'
-import MapContainer from './utils/MapContainer'
-import type { HandleDisplayDataOptionFilters } from './utils'
-import DisplayDataContainer from './utils/DisplayDataContainer'
+import { cloneBranchProps, HandleBranchLangPropsMap, handleDisplayData, HandleDisplayDataOptionFilters } from './handle'
+import MapContainer from './handle/MapContainer'
+import DisplayDataContainer from './handle/DisplayDataContainer'
 
 export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(computing: SkillComputingContainer, branchItem: BranchItem) {
   const { t } = Grimoire.i18n

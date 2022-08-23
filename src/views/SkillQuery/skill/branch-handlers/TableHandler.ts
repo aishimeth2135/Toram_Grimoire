@@ -5,8 +5,8 @@ import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import SkillComputingContainer, { SkillBranchItem, SkillBranchItemSuffix } from '@/lib/Skill/SkillComputingContainer'
 import { HandleBranchTextPropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { cloneBranchProps, handleDisplayData } from './utils'
-import MapContainer from './utils/MapContainer'
+import { cloneBranchProps, handleDisplayData } from './handle'
+import MapContainer from './handle/MapContainer'
 
 export default function TableHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
   const labels = splitComma(branchItem.prop('labels'))

@@ -4,7 +4,7 @@ import { ResultContainerBase, ResultContainerStat } from '@/lib/Skill/SkillCompu
 import type { SkillDisplayData } from '.'
 
 let _autoIncreasement = 0
-export default class DisplayDataContainer<Branch extends SkillBranchItemBaseChilds = SkillBranchItemBaseChilds> {
+export default class _DisplayDataContainer<Branch extends SkillBranchItemBaseChilds = SkillBranchItemBaseChilds> {
   private _value: SkillDisplayData
   private _customDatas!: Record<string, any>
 

@@ -7,7 +7,7 @@ import { isNumberString } from '@/shared/utils/string'
 
 import { StatRecorded } from '@/lib/Character/Stat'
 
-import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/utils/DisplayDataContainer'
+import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 
 import { setupCharacterStore } from '../setup'
 

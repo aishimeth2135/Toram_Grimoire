@@ -24,7 +24,7 @@ import { computed } from 'vue'
 
 import { SkillBranchItemSuffix } from '@/lib/Skill/SkillComputingContainer'
 
-import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/utils/DisplayDataContainer'
+import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 
 import CharacterSkillItemStats from './character-skill-item-stats.vue'
 

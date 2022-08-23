@@ -4,9 +4,8 @@ import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillCompu
 import type { HandleBranchTextPropsMap, HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
-import { cloneBranchProps, handleDisplayData } from './utils'
-import type { HandleBranchLangPropsMap, HandleDisplayDataOptionFilters } from './utils'
-import MapContainer from './utils/MapContainer'
+import { cloneBranchProps, handleDisplayData, HandleBranchLangPropsMap, HandleDisplayDataOptionFilters } from './handle'
+import MapContainer from './handle/MapContainer'
 
 export default function EffectHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
   const { t } = Grimoire.i18n

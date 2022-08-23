@@ -41,7 +41,7 @@ import { useI18n } from 'vue-i18n'
 
 import { isNumberString } from '@/shared/utils/string'
 
-import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer'
+import DisplayDataContainer from '../branch-handlers/handle/DisplayDataContainer'
 
 interface Props {
   container: DisplayDataContainer;

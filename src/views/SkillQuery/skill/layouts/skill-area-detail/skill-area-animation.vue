@@ -9,7 +9,7 @@ import { isNumberString } from '@/shared/utils/string'
 import { numberToFixed } from '@/shared/utils/number'
 
 import { createSectorPathD } from './utils'
-import DisplayDataContainer from '../../branch-handlers/utils/DisplayDataContainer'
+import DisplayDataContainer from '../../branch-handlers/handle/DisplayDataContainer'
 
 interface Props {
   container: DisplayDataContainer;
