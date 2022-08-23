@@ -1,9 +1,8 @@
 import SkillComputingContainer, { SkillBranchItemBaseChilds } from '@/lib/Skill/SkillComputingContainer'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
-import { cloneBranchProps, handleDisplayData } from './utils'
-import type { HandleBranchLangPropsMap } from './utils'
-import MapContainer from './utils/MapContainer'
+import { cloneBranchProps, handleDisplayData, HandleBranchLangPropsMap } from './handle'
+import MapContainer from './handle/MapContainer'
 
 export default function ProrationHandler<BranchItem extends SkillBranchItemBaseChilds>(computing: SkillComputingContainer, branchItem: BranchItem) {
   const props = cloneBranchProps(branchItem)

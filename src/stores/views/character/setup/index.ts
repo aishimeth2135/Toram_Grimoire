@@ -17,7 +17,7 @@ import { SkillBuffs } from '@/lib/Skill/SkillComputingContainer/enums'
 import { StatRecorded } from '@/lib/Character/Stat'
 
 import EffectHandler from '@/views/SkillQuery/skill/branch-handlers/EffectHandler'
-import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/utils/DisplayDataContainer'
+import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 import PassiveHandler from '@/views/SkillQuery/skill/branch-handlers/PassiveHandler'
 import ExtraHandler from '@/views/SkillQuery/skill/branch-handlers/ExtraHandler'
 import StackHandler from '@/views/SkillQuery/skill/branch-handlers/StackHandler'

@@ -5,9 +5,8 @@ import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillCompu
 import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
-import { cloneBranchProps, handleDisplayData } from './utils'
-import MapContainer from './utils/MapContainer'
-import type { HandleDisplayDataOptionFilters, HandleBranchLangPropsMap } from './utils'
+import { cloneBranchProps, handleDisplayData, HandleDisplayDataOptionFilters, HandleBranchLangPropsMap } from './handle'
+import MapContainer from './handle/MapContainer'
 import ProrationHandler from './ProrationHandler'
 import { createTagButtons } from '../../utils'
 

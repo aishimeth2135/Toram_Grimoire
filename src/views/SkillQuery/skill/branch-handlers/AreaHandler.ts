@@ -3,9 +3,8 @@ import { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/c
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 
-import { cloneBranchProps, HandleBranchLangPropsMap, handleDisplayData } from './utils'
-import type { HandleDisplayDataOptionFilters } from './utils'
-import MapContainer from './utils/MapContainer'
+import { cloneBranchProps, HandleBranchLangPropsMap, handleDisplayData, HandleDisplayDataOptionFilters } from './handle'
+import MapContainer from './handle/MapContainer'
 
 export default function AreaHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem, formulaDisplayMode?: FormulaDisplayModes) {
   const props = cloneBranchProps(branchItem)

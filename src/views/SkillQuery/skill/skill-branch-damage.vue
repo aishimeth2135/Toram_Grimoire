@@ -57,7 +57,7 @@ import SkillBranchExtraColumn from './layouts/skill-branch-extra-column.vue'
 import DamageHandler from './branch-handlers/DamageHandler'
 import ExtraHandler from './branch-handlers/ExtraHandler'
 import { TAG_BUTTON_CLASS_NAME } from '../utils'
-import DisplayDataContainer from './branch-handlers/utils/DisplayDataContainer'
+import DisplayDataContainer from './branch-handlers/handle/DisplayDataContainer'
 import { ExtraSuffixBranchData } from './setup'
 import { NormalLayoutSubContent } from './layouts/setup'
 

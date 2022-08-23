@@ -4,10 +4,9 @@ import Grimoire from '@/shared/Grimoire'
 import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { computeBranchValue, computedBranchHelper, HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { cloneBranchProps, handleDisplayData } from './utils'
-import MapContainer from './utils/MapContainer'
-import type { HandleDisplayDataOptionFilters, HandleBranchLangPropsMap } from './utils'
-import { numberStringToPercentage } from './utils/utils'
+import { cloneBranchProps, handleDisplayData, HandleDisplayDataOptionFilters, HandleBranchLangPropsMap } from './handle'
+import MapContainer from './handle/MapContainer'
+import { numberStringToPercentage } from './handle/utils'
 
 export default function HealHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
   const { t } = Grimoire.i18n

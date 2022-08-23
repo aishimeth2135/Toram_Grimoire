@@ -72,7 +72,7 @@ import ToggleService from '@/setup/ToggleService'
 import SkillAreaDetail from './skill-area-detail/index.vue'
 import SkillBranchExtraColumn from './skill-branch-extra-column.vue'
 
-import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer'
+import DisplayDataContainer from '../branch-handlers/handle/DisplayDataContainer'
 import { ExtraSuffixBranchData } from '../setup'
 import { NormalLayoutSubContent } from './setup'
 

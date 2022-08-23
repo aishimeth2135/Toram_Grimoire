@@ -54,7 +54,7 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import DisplayDataContainer from '../branch-handlers/utils/DisplayDataContainer'
+import DisplayDataContainer from '../branch-handlers/handle/DisplayDataContainer'
 
 interface Props {
   container: DisplayDataContainer;

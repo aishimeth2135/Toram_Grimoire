@@ -3,8 +3,8 @@ import Grimoire from '@/shared/Grimoire'
 import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import type { HandleBranchTextPropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { cloneBranchProps, handleDisplayData, HandleDisplayDataOptionFilters } from './utils'
-import MapContainer from './utils/MapContainer'
+import { cloneBranchProps, handleDisplayData, HandleDisplayDataOptionFilters } from './handle'
+import MapContainer from './handle/MapContainer'
 
 export default function PassiveHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
   const { t } = Grimoire.i18n
