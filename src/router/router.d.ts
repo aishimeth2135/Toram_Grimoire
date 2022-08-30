@@ -5,6 +5,7 @@ declare module 'vue-router' {
     title?: string | null;
     leftMenuViewButtons?: LeftMenuViewButton[];
     metaTags?: Record<string, string>[];
+    twoColumnsLayout?: boolean;
 
     // parent path name to get pure path without params
     parentPathName?: string;

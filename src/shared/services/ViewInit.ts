@@ -1,4 +1,3 @@
-// import { InitLanguageData } from "./Language";
 import { nextTick } from 'vue'
 
 import { useInitializeStore } from '@/stores/app/initialize'
@@ -15,6 +14,26 @@ interface ViewInitItem {
   loaded: boolean;
 }
 
+export async function ViewInitSlient(...inits: DataStoreIds[]) {
+  const datasStore = useDatasStore()
+  const initItems = inits
+    .map((id) => {
+      const loaded = datasStore.checkLoaded(id)
+      const promise = loaded ? Promise.resolve(() => Promise.resolve()) : (datasStore[`init${id}`]())
+      return { id, promise, loaded }
+    })
+
+  await Promise.all(initItems.map(async item => {
+    try {
+      const init = await item.promise
+      await init()
+      datasStore.loadFinished(item.id)
+    } catch (err) {
+      console.error(err)
+    }
+  }))
+}
+
 export async function ViewInit(...inits: DataStoreIds[]) {
   const initializeStore = useInitializeStore()
   const datasStore = useDatasStore()
@@ -23,21 +42,21 @@ export async function ViewInit(...inits: DataStoreIds[]) {
   await nextTick()
 
   if (inits.length === 0) {
+    await initializeStore.startInitLocale()
     initializeStore.skipInit()
     return
   }
 
   const initItems = inits
-    .map(async (id) => {
-      const loaded = datasStore.checkLoad(id)
+    .map((id) => {
+      const loaded = datasStore.checkLoaded(id)
       const promise = loaded ? Promise.resolve(() => Promise.resolve()) : (datasStore[`init${id}`]())
       console.log(`[Init: ${id}] ${loaded ? 'The item is loaded. Skip loading.' : 'Loading...'}`)
       const message = 'app.loading-message.' + id
       return { id, promise, message, loaded } as ViewInitItem
     })
 
-  const resolvedInitItems = await Promise.all(initItems)
-  resolvedInitItems.forEach(item => initializeStore.appendInitItems(item))
+  initItems.forEach(item => initializeStore.appendInitItems(item))
 
   const finishedInitItems = await initializeStore.startInit()
   await Promise.all(finishedInitItems.map(async item => {

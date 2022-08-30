@@ -13,6 +13,7 @@ export const enum LocaleViewNamespaces {
   EnchantDoll = 'enchant-doll',
   CrystalQuery = 'crystal-query',
   ItemQuery = 'item-query',
+  BookTemplate = 'book-template',
 }
 
 export type LocaleNamespaces = LocaleGlobalNamespaces | LocaleViewNamespaces

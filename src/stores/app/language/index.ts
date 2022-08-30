@@ -144,6 +144,7 @@ export const useLanguageStore = defineStore('app-language', () => {
       console.warn('[Init language data] instance is no found')
       return
     }
+    console.log('load global locales...')
     await loadLocaleMessages(LOCALE_GLOBAL_NAMESPACE_LIST)
 
     i18nMessageLoaded.value = true

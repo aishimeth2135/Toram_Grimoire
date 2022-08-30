@@ -11,7 +11,7 @@
       @click="navigate"
     >
       <cy-icon-text :icon="data.icon" :text-color="currentRoute.name === data.pathName ? 'dark-light' : 'dark'">
-        {{ t(data.title) }}
+        <span :class="{ 'ml-4': isMain }">{{ t(data.title) }}</span>
       </cy-icon-text>
     </div>
   </router-link>
@@ -36,9 +36,12 @@ interface Props {
     icon: string;
     pathName: AppRouteNames;
   };
+  isMain?: boolean;
 }
 
-defineProps<Props>()
+withDefaults(defineProps<Props>(), {
+  isMain: false,
+})
 
 const { t } = useI18n()
 const { currentRoute } = useRouter()
