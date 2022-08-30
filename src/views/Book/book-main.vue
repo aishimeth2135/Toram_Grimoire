@@ -75,7 +75,6 @@ const checkQuery = async () => {
     if (typeof currentRoute.query.latest === 'string' && currentRoute.query.latest === '1') {
       url += ('&cytime=' + Date.now())
     }
-    console.log(url)
     const datas = await downloadCsv(url)
     pages.value = parseBook(datas)
     loading.value = false

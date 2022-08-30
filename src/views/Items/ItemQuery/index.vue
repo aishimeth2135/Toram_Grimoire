@@ -188,7 +188,7 @@
             </div>
           </AppLayoutBottomContent>
           <AppLayoutBottomContent v-else-if="menus.sortOptions" class="p-3">
-            <div class="flex items-center">
+            <div>
               <div>
                 <cy-icon-text icon="mdi-sort-variant" color="purple" small>
                   {{ t('item-query.sort-options.title') }}

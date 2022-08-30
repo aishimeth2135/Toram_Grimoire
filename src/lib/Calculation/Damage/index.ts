@@ -298,7 +298,7 @@ export default class DamageCalculationSystem {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
         const stability = itemContainer.getItemValue(CalculationItemIds.Stability)
         if (currentDamageTypeId === CalculationItemIds.Physical) {
-          return (stability + 50) / 2
+          return (stability + 100) / 2
         }
         const baseValue = 50 + stability / 2
         const extraLimit = baseValue > 90 ? (baseValue - 90) : 0
@@ -347,23 +347,19 @@ export default class DamageCalculationSystem {
       ])
 
       container.setCalcResult((itemContainer) => {
-        const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
-        const cr = itemContainer.belongCalculation.containers.get(CalculationContainerIds.CriticalRate)!.result()
-        const cd = itemContainer.belongCalculation.containers.get(CalculationContainerIds.CriticalDamage)!.result()
-        const acContainer = itemContainer.belongCalculation.containers.get(CalculationContainerIds.Accuracy)!
+        const containers = itemContainer.belongCalculation.containers
+        const cr = containers.get(CalculationContainerIds.CriticalRate)!.result()
+        const cd = containers.get(CalculationContainerIds.CriticalDamage)!.result()
+        const acContainer = containers.get(CalculationContainerIds.Accuracy)!
         const ac = acContainer.result()
 
         // no need to check `acContainer.enable` beacause `ac` is `100` when `acContaner.enable` is `false`
         const pac = acContainer.getItemValue(CalculationItemIds.PromisedAccuracyRate)
-
-        if (currentDamageTypeId === CalculationItemIds.Magic) {
-          const stabilityRes = itemContainer.belongCalculation.containers.get(CalculationContainerIds.Stability)!.result()
-          return (stabilityRes * cr * cd / 100 + stabilityRes * (100 - cr)) / 100
-        }
-        const stability = itemContainer.belongCalculation.containers.get(CalculationContainerIds.Stability)!.getItemValue(CalculationItemIds.Stability)
+        const stabilityExpected = containers.get(CalculationContainerIds.Stability)!.result()
+        const grazeStability = Math.floor(containers.get(CalculationContainerIds.Stability)!.getItemValue(CalculationItemIds.Stability) / 2)
         return (
-          ((stability + 100) * ac + (stability / 2 + 100) * (100 - ac)) * cr * cd / 200 +
-          ((stability + 100) * ac + (stability / 2 + 100) * Math.max(0, pac - ac)) * (100 - cr) / 2
+          (stabilityExpected * 2 * ac + (grazeStability + 100) * (100 - ac)) * cr * cd / 200 +
+          (stabilityExpected * 2 * ac + (grazeStability + 100) * Math.max(0, pac - ac)) * (100 - cr) / 2
         ) / 10000
       })
     })
