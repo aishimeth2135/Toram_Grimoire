@@ -39,6 +39,10 @@ export const DatasStoreBase: {
   DamageCalculation: null,
 })
 
+interface DataStoreInitHandler {
+  (): Promise<() => Promise<void>>;
+}
+
 export const useDatasStore = defineStore('app-datas', () => {
   const Items = computed(() => DatasStoreBase.Items)
   const Character = computed(() => DatasStoreBase.Character)
@@ -46,12 +50,23 @@ export const useDatasStore = defineStore('app-datas', () => {
   const Skill = computed(() => DatasStoreBase.Skill)
   const Enchant = computed(() => DatasStoreBase.Enchant)
   const DamageCalculation = computed(() => DatasStoreBase.DamageCalculation)
+
   const loaded = ref<Map<DataStoreIds, boolean>>(new Map())
+  const waitLoadedTicks = ref<Map<DataStoreIds, ((value: boolean) => void)[]>>(new Map())
 
-  const checkLoad = (id: DataStoreIds) => loaded.value.has(id)
+  const checkLoaded = (id: DataStoreIds) => loaded.value.has(id)
 
+  const waitLoaded = (id: DataStoreIds) => {
+    if (!waitLoadedTicks.value.has(id)) {
+      waitLoadedTicks.value.set(id, [])
+    }
+    return new Promise(resolve => {
+      waitLoadedTicks.value.get(id)!.push(resolve)
+    })
+  }
   const loadFinished = (id: DataStoreIds) => {
     loaded.value.set(id, true)
+    waitLoadedTicks.value.get(id)?.forEach(ticks => ticks(true))
   }
 
   const initItemsInstance = () => {
@@ -90,10 +105,10 @@ export const useDatasStore = defineStore('app-datas', () => {
     }
   }
 
-  const initItems = async function () {
+  const initItems: DataStoreInitHandler = async function () {
+    initItemsInstance()
     const datas = await DownloadDatas('Equipment', 'Crystal')
     return async () => {
-      initItemsInstance()
       loadEquipments(Items.value!, datas[0][0])
       loadCrystals(Items.value!, datas[1][0])
 
@@ -101,36 +116,35 @@ export const useDatasStore = defineStore('app-datas', () => {
     }
   }
 
-  const initStats = async function () {
+  const initStats: DataStoreInitHandler = async function () {
+    initCharacterInstance()
     const datas = await DownloadDatas({ path: 'Stats', lang: true })
     return async () => {
-      initCharacterInstance()
       loadStats(Character.value!, datas[0])
       await InitEquipmentIcons()
     }
   }
 
-  const initCharacterStats = async function () {
+  const initCharacterStats: DataStoreInitHandler = async function () {
+    initCharacterInstance()
     const datas = await DownloadDatas({ path: 'Character Stats', lang: true })
     return async () => {
-      initCharacterInstance()
       loadCharacterStats(Character.value!, datas[0])
     }
   }
 
-  const initGlossary = async function () {
+  const initGlossary: DataStoreInitHandler = async function () {
+    initGlossaryInstance()
     const datas = await DownloadDatas({ path: 'Glossary', lang: true })
     return async () => {
-      initGlossaryInstance()
       loadGlossaryTagData(Glossary.value!, datas[0])
     }
   }
 
-  const initSkill = async function () {
+  const initSkill: DataStoreInitHandler = async function () {
+    initSkillInstance()
     const datas = await DownloadDatas({ path: 'Skill', lang: true }, { path: 'Skill Main', lang: true })
     return async () => {
-      initSkillInstance()
-
       loadSkill(Skill.value!, datas[0])
       loadSkillMain(Skill.value!, datas[1])
       const skillStore = useCharacterSkillStore()
@@ -140,25 +154,23 @@ export const useDatasStore = defineStore('app-datas', () => {
     }
   }
 
-  const initFood = async function () {
-    return async () => {
-      const foodStore = useCharacterFoodStore()
-      foodStore.initFoodsBase()
-    }
+  const initFood: DataStoreInitHandler = async function () {
+    const foodStore = useCharacterFoodStore()
+    foodStore.initFoodsBase()
+    return () => Promise.resolve()
   }
 
-  const initEnchant = async function () {
+  const initEnchant: DataStoreInitHandler = async function () {
+    initEnchantInstance()
     const datas = await DownloadDatas('Enchant')
     return async () => {
-      initEnchantInstance()
       loadEnchant(Enchant.value!, datas[0][0])
     }
   }
 
-  const initDamageCalculation = async function () {
-    return async () => {
-      initDamageCalculationInstance()
-    }
+  const initDamageCalculation: DataStoreInitHandler = async function () {
+    initDamageCalculationInstance()
+    return () => Promise.resolve()
   }
 
   return {
@@ -169,7 +181,8 @@ export const useDatasStore = defineStore('app-datas', () => {
     Enchant,
     DamageCalculation,
 
-    checkLoad,
+    checkLoaded,
+    waitLoaded,
     loadFinished,
     initItems,
     initStats,

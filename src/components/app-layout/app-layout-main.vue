@@ -1,22 +1,41 @@
 <template>
-  <main class="app-layout-main">
+  <main class="app-layout-main" :class="{ 'two-columns': twoColumns }">
     <slot></slot>
+    <template v-if="twoColumns">
+      <div class="two-columns-column">
+        <slot name="column(0)" />
+      </div>
+      <div class="two-columns-column">
+        <slot name="column(1)" />
+      </div>
+    </template>
   </main>
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 
-export default defineComponent({})
+const currentRoute = useRoute()
+
+const twoColumns = computed(() => currentRoute.meta.twoColumnsLayout === true)
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 .app-layout-main {
-  min-height: 100%;
   max-width: 48rem;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
+  @apply min-h-full mx-auto flex flex-col
+}
+
+@media (min-width: 55rem) {
+  .app-layout-main.two-columns {
+    @apply flex-row h-full w-full pl-14;
+    max-width: none;
+
+    & > .two-columns-column {
+      width: 50%;
+      @apply h-full overflow-y-auto border-1 border-light-2 rounded-sm mr-1;
+    }
+  }
 }
 </style>

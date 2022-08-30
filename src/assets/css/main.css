@@ -55,6 +55,8 @@
 
   --app-favicon-color-main: #ffa3a9;
   --app-favicon-color-sub: #fbd3d9;
+
+  --app-body-bg-color: #fffafd;
 }
 
 html.theme--night-mode {
@@ -112,6 +114,8 @@ html.theme--night-mode {
 
   --app-favicon-color-main: #ffabbb;
   --app-favicon-color-sub: #efdae0;
+
+  --app-body-bg-color: #241f2c;
 }
 
 .main--font-base {
@@ -169,7 +173,7 @@ body {
   scroll-behavior: smooth;
   color: var(--app-dark);
   position: relative;
-  background-color: rgba(var(--rgb-app-light), 0.1);
+  background-color: var(--app-body-bg-color);
   height: 100%;
   width: 100%;
 }

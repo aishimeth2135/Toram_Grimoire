@@ -17,7 +17,7 @@ export default async function (...paths: PathItem[]): Promise<LangCsvData[]> {
     const { path: pathId, lang = false } = pathItem
     const results: LangCsvData = lang ?
       await loadLangDatas(pathId) :
-      [await createLoadPromise(DataPath(pathId)), null, null]
+      [await downloadCsv(DataPath(pathId)), null, null]
     return results
   })
   const result = await Promise.all(promises)
@@ -25,7 +25,7 @@ export default async function (...paths: PathItem[]): Promise<LangCsvData[]> {
   return result
 }
 
-async function createLoadPromise(path: string): Promise<CsvData> {
+export async function downloadCsv(path: string): Promise<CsvData> {
   if (path) {
     try {
       const res = await fetch(path)
@@ -64,14 +64,14 @@ async function loadLangDatas(pathId: string): Promise<LangCsvData> {
     second = languageStore.secondaryLang
   const datas: (CsvData | null)[] = Array(3)
 
-  promises.push(createLoadPromise(DataPath(pathId)))
+  promises.push(downloadCsv(DataPath(pathId)))
   if (current !== DEFAULT_LANG) {
     const path = DataPathLang(pathId)
     if (path[current] !== null) {
-      promises.push(createLoadPromise(path[current] as string))
+      promises.push(downloadCsv(path[current] as string))
     }
     if (current !== second && path[second] !== null) {
-      promises.push(createLoadPromise(path[second] as string))
+      promises.push(downloadCsv(path[second] as string))
     }
   }
 

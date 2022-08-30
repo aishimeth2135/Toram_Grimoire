@@ -1,11 +1,16 @@
 <template>
   <div>
     <div>
-      <AppRouterLink v-if="routeNotHome(currentRoute.name!)" :data="homeRouteData" />
+      <AppRouterLink
+        v-if="routeNotHome(currentRoute.name!)"
+        :data="homeRouteData"
+        :is-main="isMain"
+      />
       <AppRouterLink
         v-for="data in viewButtons"
         :key="data.title"
         :data="data"
+        :is-main="isMain"
       />
     </div>
     <div v-if="routeNotHome(currentRoute.name!)" class="mt-0.5 pt-0.5">
@@ -13,6 +18,7 @@
         v-for="data in routeLinks"
         :key="data.title"
         :data="data"
+        :is-main="isMain"
       />
       <div class="flex justify-center cursor-pointer py-0.5 hover:bg-light-0 duration-200" @click.stop="toggle('contents/menuLinks')">
         <cy-icon-text :icon="contents.menuLinks ? 'ic:round-keyboard-double-arrow-up' : 'ic:round-keyboard-double-arrow-down'" />
@@ -35,6 +41,14 @@ import ToggleService from '@/setup/ToggleService'
 import { AppRouteNames } from '@/router/enums'
 
 import AppRouterLink from './app-router-link.vue'
+
+interface Props {
+  isMain?: boolean;
+}
+
+withDefaults(defineProps<Props>(), {
+  isMain: false,
+})
 
 const { toggle, contents } = ToggleService({
   contents: ['menuLinks'] as const,

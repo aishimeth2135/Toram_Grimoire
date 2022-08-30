@@ -45,7 +45,7 @@ watch(() => props.visible, value => {
 .app--side-menu {
   @apply fixed top-3 right-3 z-40 flex flex-col items-end;
 
-  @media screen and (min-width: 82rem) {
+  @media (min-width: 55rem) {
     display: none !important;
   }
 
@@ -65,7 +65,7 @@ watch(() => props.visible, value => {
 
   @apply border-1 border-light-2 mt-2 rounded shadow bg-white;
 
-  @media screen and (max-width: 15rem) {
+  @media (max-width: 15rem) {
     width: 100%;
   }
 }

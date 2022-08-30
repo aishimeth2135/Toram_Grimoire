@@ -25,6 +25,10 @@ export const enum AppRouteNames {
   Glossary = 'Glossary',
   GlossaryQuery = 'GlossaryQuery',
 
+  Book = 'Book',
+  BookView = 'BookView',
+  BookPreview = 'BookPreview',
+
   Bubble = 'Bubble',
 
   UnrecognizedPath = 'UnrecognizedPath',
