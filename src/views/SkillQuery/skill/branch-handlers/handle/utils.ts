@@ -48,7 +48,7 @@ export function handleFunctionHighlight(result: string): string {
       result = result.replace(item.reg, item.target ?? ((match, p1) => createFormulaText(item.name, p1)))
     })
   }
-  console.log(result)
+
   result = result
     .replace(/<#--/g, '(')
     .replace(/--#>/g, ')')
