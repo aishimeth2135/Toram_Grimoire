@@ -1,20 +1,17 @@
 <template>
-  <div class="py-3 px-1 flex items-center space-x-5">
-    <div v-if="loading">
-      loading...
-    </div>
-    <div v-else class="w-full">
+  <cy-loading-content :loading="loading" class="py-3 px-1">
+    <div>
       <EquipmentItem
         v-for="equip in equipments"
         :key="equip.id"
         :equipment="equip"
       />
     </div>
-  </div>
+  </cy-loading-content>
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref, shallowRef } from 'vue'
+import { ref, watch, Ref, shallowRef } from 'vue'
 
 import { useDatasStore } from '@/stores/app/datas'
 import { DataStoreIds } from '@/stores/app/datas/enums'
@@ -27,7 +24,6 @@ import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import EquipmentItem from '@/components/common/equipment-item.vue'
 
 import { BookPageSection } from '../setup/Book'
-
 
 interface Props {
   section: BookPageSection;
@@ -44,16 +40,20 @@ const updateEquipments = async () => {
   if (!query) {
     return
   }
-  loading.value = true
-  await datasStore.waitLoaded(DataStoreIds.Items)
   if (query.startsWith('-')) {
     const num = parseInt(query, 10)
     if (!Number.isNaN(num)) {
+      loading.value = true
+      await datasStore.waitLoaded(DataStoreIds.Items)
       equipments.value = Grimoire.Items.equipments.slice(num).map(equip => CharacterEquipment.fromOriginEquipment(equip))
+      loading.value = false
     }
   }
-  loading.value = false
 }
 
 updateEquipments()
+
+watch(() => props.section, () => {
+  updateEquipments()
+})
 </script>

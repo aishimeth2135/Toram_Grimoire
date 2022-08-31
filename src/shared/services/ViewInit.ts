@@ -23,10 +23,24 @@ export async function ViewInitSlient(...inits: DataStoreIds[]) {
       return { id, promise, loaded }
     })
 
-  await Promise.all(initItems.map(async item => {
+  const finishedInitItems = await Promise.all(initItems.map(async item => {
     try {
       const init = await item.promise
-      await init()
+      return {
+        id: item.id,
+        init,
+      }
+    } catch (err) {
+      console.error(err)
+    }
+    return {
+      id: item.id,
+      init: () => Promise.resolve(),
+    }
+  }))
+  await Promise.all(finishedInitItems.map(async item => {
+    try {
+      await item.init()
       datasStore.loadFinished(item.id)
     } catch (err) {
       console.error(err)

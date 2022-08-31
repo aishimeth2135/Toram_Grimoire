@@ -57,6 +57,9 @@ export const useDatasStore = defineStore('app-datas', () => {
   const checkLoaded = (id: DataStoreIds) => loaded.value.has(id)
 
   const waitLoaded = (id: DataStoreIds) => {
+    if (checkLoaded(id)) {
+      return Promise.resolve()
+    }
     if (!waitLoadedTicks.value.has(id)) {
       waitLoadedTicks.value.set(id, [])
     }
@@ -156,8 +159,9 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initFood: DataStoreInitHandler = async function () {
     const foodStore = useCharacterFoodStore()
-    foodStore.initFoodsBase()
-    return () => Promise.resolve()
+    return async () => {
+      foodStore.initFoodsBase()
+    }
   }
 
   const initEnchant: DataStoreInitHandler = async function () {

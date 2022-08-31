@@ -8,22 +8,24 @@
           placeholder="https://"
         />
       </div>
-      <div class="bg-light-0 rounded-r-md py-3 px-4 mt-6">
+      <div class="bg-light-0 rounded-r-md py-3 px-4 mt-6 relative" style="min-height: 5rem">
+        <cy-button-icon
+          icon="mdi:content-copy"
+          class="absolute top-2 right-2"
+          @click="copyToClipboard(convertedUrl)"
+        />
         {{ convertedUrl }}
       </div>
     </div>
-    <div v-else>
-      <div v-if="loading">
-        Loading...
-      </div>
+    <cy-loading-content v-else :loading="loading">
       <BookPages
-        v-else-if="pages.length > 0"
+        v-if="pages.length > 0"
         :pages="pages"
       />
       <div v-else>
         No Data
       </div>
-    </div>
+    </cy-loading-content>
   </AppLayoutMain>
 </template>
 
@@ -32,6 +34,8 @@ import { computed, ref, shallowRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { downloadCsv } from '@/stores/app/datas/utils/DownloadDatas'
+
+import { copyToClipboard } from '@/shared/utils/Cyteria'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 import { AppRouteNames } from '@/router/enums'

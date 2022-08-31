@@ -6,12 +6,13 @@ import CyListItem from '@/components/cyteria/cy-list-item.vue'
 import CyIconText from '@/components/cyteria/cy-icon-text.vue'
 import CyTitleInput from '@/components/cyteria/cy-title-input.vue'
 import CyOptions from '@/components/cyteria/cy-options.vue'
-import CyPopover from '@/components/cyteria/cy-popover.vue'
+import CyPopover from '@/components/cyteria/cy-popover/cy-popover.vue'
 import CyDefaultTips from '@/components/cyteria/cy-default-tips.vue'
 import CyTransition from '@/components/cyteria/cy-transition.vue'
 import CyPagination from '@/components/cyteria/cy-pagination.vue'
 import CyTopHeader from '@/components/cyteria/cy-top-header.vue'
 import CyHoverFloat from '@/components/cyteria/cy-hover-float.vue'
+import CyLoadingContent from '@/components/cyteria/cy-loading-content.vue'
 import CyHr from '@/components/cyteria/cy-hr.vue'
 import CyButtonAction from '@/components/cyteria/cy-button/cy-button-action.vue'
 import CyButtonCircle from '@/components/cyteria/cy-button/cy-button-circle.vue'
@@ -40,6 +41,7 @@ declare module 'vue' {
     CyPagination: typeof CyPagination;
     CyTopHeader: typeof CyTopHeader;
     CyHoverFloat: typeof CyHoverFloat;
+    CyLoadingContent: typeof CyLoadingContent;
     CyHr: typeof CyHr;
 
     CyButtonAction: typeof CyButtonAction;
