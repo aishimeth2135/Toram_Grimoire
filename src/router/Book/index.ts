@@ -24,6 +24,10 @@ export default {
   },
   meta: {
     leftMenuViewButtons: [{
+      title: 'app.page-title.book-main',
+      icon: 'mdi:tag-outline',
+      pathName: AppRouteNames.BookView,
+    }, {
       title: 'app.page-title.book-preview',
       icon: 'mdi:tag-outline',
       pathName: AppRouteNames.BookPreview,
@@ -34,7 +38,7 @@ export default {
     path: '',
     component: BookMain,
     meta: {
-      title: 'app.page-title.book-preview',
+      title: 'app.page-title.book-main',
     },
   }, {
     name: AppRouteNames.BookPreview,

@@ -93,6 +93,6 @@ function getPWAManifestConfig() {
     'background_color': '#FFD1EA',
     'display': 'standalone',
     'theme_color': '#FFD1EA',
-    'description': 'The web tool for Toram Online.',
+    'description': 'The web tool of "Toram Online".',
   }
 }
