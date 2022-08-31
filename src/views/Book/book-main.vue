@@ -63,7 +63,7 @@ const convertedUrl = computed(() => {
   const uri = fixedEncodeURIComponent(urlText.value)
   const href = router.resolve({
     name: AppRouteNames.BookView,
-    query: { csv: uri, latest: '1' },
+    query: { csv: uri },
   }).href
   return `${location.protocol}//${location.host}${href}`
 })
