@@ -14,8 +14,8 @@
       <div v-else class="flex justify-center py-8">
         <cy-icon-text icon="mdi:image-outline" icon-width="3rem" />
       </div>
-      <div class="p-3 border border-light-2 mt-6" style="max-width: 27.5rem">
-        <cy-icon-text icon="ic:outline-info" small align-v="start" text-color="light-2">
+      <div class="p-3 border border-primary-30 mt-6" style="max-width: 27.5rem">
+        <cy-icon-text icon="ic:outline-info" small align-v="start" text-color="primary-30">
           {{ t('skill-simulator.export-image.preview-ios-tips') }}
         </cy-icon-text>
       </div>

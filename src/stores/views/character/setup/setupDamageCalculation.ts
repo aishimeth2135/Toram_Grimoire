@@ -1,4 +1,3 @@
-
 import { computed, ref, Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'

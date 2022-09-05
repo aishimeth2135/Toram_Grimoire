@@ -7,21 +7,21 @@
             class="w-48 flex-shrink-0"
             :icon="!equipment.is(EquipmentKinds.Avatar) ? equipment.getCategoryImagePath() : equipment.categoryIcon"
             :icon-src="!equipment.is(EquipmentKinds.Avatar) ? 'image' : 'iconify'"
-            :text-color="contents.detail ? 'orange' : 'dark'"
-            :icon-color="contents.detail ? 'orange' : 'light-2'"
+            :text-color="contents.detail ? 'orange-60' : 'primary-90'"
+            :icon-color="contents.detail ? 'orange-60' : 'primary-30'"
           >
             <span class="inline-flex items-center flex-wrap">
               <span>{{ equipment.name }}</span>
               <cy-icon-text
                 v-if="firstObtain && firstObtain.isDrop"
                 icon="jam-box"
-                icon-color="red"
+                icon-color="orange-60"
                 class="ml-2"
               />
             </span>
             <span
               v-if="equipment.hasRefining && equipment.refining !== 0"
-              class="ml-1 text-water-blue"
+              class="ml-1 text-blue-60"
             >
               +{{ equipment.refining }}
             </span>
@@ -33,20 +33,20 @@
             class="flex items-center space-x-2"
           >
             <template v-if="equipment.is(EquipmentKinds.Weapon)">
-              <cy-icon-text icon="mdi-sword" text-color="purple">
+              <cy-icon-text icon="mdi-sword" text-color="fuchsia-60">
                 ATK
               </cy-icon-text>
               <span>{{ equipment.basicValue }}</span>
-              <span class="text-water-blue pl-2 border-l border-water-blue">{{ equipment.stability }}%</span>
+              <span class="text-blue-60 pl-2 border-l border-blue-60">{{ equipment.stability }}%</span>
             </template>
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
-              <cy-icon-text icon="mdi:shield-outline" text-color="purple">
+              <cy-icon-text icon="mdi:shield-outline" text-color="fuchsia-60">
                 DEF
               </cy-icon-text>
               <span>{{ equipment.basicValue }}</span>
             </template>
             <template v-else-if="originEquipment.unknowCategory">
-              <cy-icon-text icon="mdi-ghost" text-color="purple">
+              <cy-icon-text icon="mdi-ghost" text-color="fuchsia-60">
                 {{ originEquipment.unknowCategory }}
               </cy-icon-text>
             </template>
@@ -63,10 +63,10 @@
             </template>
           </div>
           <div v-else-if="state.currentMode === SearchModes.ItemLevel && originEquipment.recipe" class="flex items-center">
-            <cy-icon-text icon="jam-hammer" text-color="light-2">
+            <cy-icon-text icon="jam-hammer" text-color="primary-30">
               {{ t('item-query.equipment-detail.recipe.item-level') }}
             </cy-icon-text>
-            <span class="ml-2 text-water-blue">{{ originEquipment.recipe['item_level'] }}</span>
+            <span class="ml-2 text-blue-60">{{ originEquipment.recipe['item_level'] }}</span>
           </div>
         </div>
       </cy-list-item>
@@ -78,7 +78,7 @@
             v-if="originEquipment.unknowCategory"
             icon="mdi-ghost"
             small
-            text-color="orange"
+            text-color="orange-60"
           >
             {{ originEquipment.unknowCategory }}
           </cy-icon-text>
@@ -86,7 +86,7 @@
             v-else
             :icon="equipment.getCategoryImagePath()"
             icon-src="image"
-            text-color="orange"
+            text-color="orange-60"
             small
             class="mr-4"
           >
@@ -96,8 +96,8 @@
             <cy-icon-text icon="mdi-sword" small>
               ATK
             </cy-icon-text>
-            <span class="text-light-3 text-sm mr-2">{{ equipment.basicValue }}</span>
-            <span class="text-water-blue text-sm border-l border-solid border-water-blue-light pl-2">
+            <span class="text-primary-50 text-sm mr-2">{{ equipment.basicValue }}</span>
+            <span class="text-blue-60 text-sm border-l border-solid border-blue-30 pl-2">
               {{ equipment.stability }}%
             </span>
           </template>
@@ -105,7 +105,7 @@
             <cy-icon-text icon="mdi:shield-outline" small>
               DEF
             </cy-icon-text>
-            <span class="text-light-3 text-sm mr-2">{{ equipment.basicValue }}</span>
+            <span class="text-primary-50 text-sm mr-2">{{ equipment.basicValue }}</span>
           </template>
         </div>
         <div v-if="originEquipment.extra" class="mb-2 pl-2">
@@ -113,7 +113,7 @@
             v-if="originEquipment.extra['caption']"
             icon="ic-outline-info"
             small
-            text-color="light-3"
+            text-color="primary-50"
           >
             {{ originEquipment.extra['caption'] }}
           </cy-icon-text>
@@ -123,7 +123,7 @@
             <cy-icon-text
               icon="ic-baseline-format-list-bulleted"
               small
-              text-color="purple"
+              text-color="fuchsia-60"
             >
               {{ t('item-query.equipment-detail.content-titles.stats') }}
             </cy-icon-text>
@@ -142,7 +142,7 @@
         </fieldset>
         <fieldset v-if="originEquipment.recipe" class="recipe result-item-row">
           <legend>
-            <cy-icon-text icon="ion-hammer" small text-color="purple">
+            <cy-icon-text icon="ion-hammer" small text-color="fuchsia-60">
               {{ t('item-query.equipment-detail.content-titles.recipe') }}
             </cy-icon-text>
           </legend>
@@ -152,7 +152,7 @@
                 <span>
                   {{ t('item-query.equipment-detail.recipe.item-level') }}
                 </span>
-                <span class="ml-2 text-light-3">
+                <span class="ml-2 text-primary-50">
                   {{ originEquipment.recipe['item_level'] || '?' }}
                 </span>
               </cy-icon-text>
@@ -162,7 +162,7 @@
                 <span>
                   {{ t('item-query.equipment-detail.recipe.item-difficulty') }}
                 </span>
-                <span class="ml-2 text-light-3">
+                <span class="ml-2 text-primary-50">
                   {{ originEquipment.recipe['item_difficulty'] || '?' }}
                 </span>
               </cy-icon-text>
@@ -172,7 +172,7 @@
                 <span>
                   {{ t('item-query.equipment-detail.recipe.base-potential') }}
                 </span>
-                <span class="ml-2 text-light-3">
+                <span class="ml-2 text-primary-50">
                   {{ originEquipment.recipe['potential'] || '?' }}
                 </span>
               </cy-icon-text>
@@ -183,7 +183,7 @@
               <cy-icon-text icon="la-coins">
                 {{ t('item-query.equipment-detail.recipe.spina') }}
               </cy-icon-text>
-              <span class="text-light-4">{{ originEquipment.recipe['cost'] + 's' }}</span>
+              <span class="text-primary-60">{{ originEquipment.recipe['cost'] + 's' }}</span>
             </template>
             <template
               v-for="m in originEquipment.recipe['materials']"
@@ -198,17 +198,17 @@
         </fieldset>
         <fieldset class="result-item-row pt-0">
           <legend>
-            <cy-icon-text icon="bx-bx-search-alt" small text-color="purple">
+            <cy-icon-text icon="bx-bx-search-alt" small text-color="fuchsia-60">
               {{ t('item-query.equipment-detail.content-titles.obtains') }}
             </cy-icon-text>
           </legend>
           <div v-if="obtainsDatas.length !== 0" class="divide-y divide-light -my-1">
             <div v-for="data in obtainsDatas" :key="data.iid" class="pt-1.5 pb-2 px-1">
               <div class="flex items-center">
-                <cy-icon-text :icon="data.icon" class="mr-2" small text-color="water-blue">
+                <cy-icon-text :icon="data.icon" class="mr-2" small text-color="blue-60">
                   {{ data.type }}
                 </cy-icon-text>
-                <span class="text-purple">{{ data.name }}</span>
+                <span class="text-fuchsia-60">{{ data.name }}</span>
               </div>
               <div v-if="data.dye || data.map" class="flex items-center mt-1">
                 <cy-icon-text v-if="data.dye" icon="ic-outline-palette" class="ml-3 flex-shrink-0" small>
@@ -227,15 +227,15 @@
       </div>
       <div
         v-else-if="state.currentMode === SearchModes.Dye"
-        class="pl-2 ml-4 border-l-2 border-solid border-light-2 mb-3"
+        class="pl-2 ml-4 border-l-2 border-solid border-primary-30 mb-3"
       >
         <div class="divide-y divide-light">
           <div v-for="item in dyeObtains" :key="item.iid" class="pt-1.5 pb-2 px-1">
             <div class="flex items-center">
-              <cy-icon-text :icon="item.icon" class="mr-2" small text-color="water-blue">
+              <cy-icon-text :icon="item.icon" class="mr-2" small text-color="blue-60">
                 {{ item.type }}
               </cy-icon-text>
-              <span class="text-purple">{{ item.name }}</span>
+              <span class="text-fuchsia-60">{{ item.name }}</span>
             </div>
             <div class="flex items-center mt-1">
               <cy-icon-text v-if="item.dye" icon="ic-outline-palette" class="ml-3 flex-shrink-0" small>
@@ -346,14 +346,14 @@ const recipeInfoValid = computed(() => {
   max-height: 70vh;
   overflow-y: auto;
   & + .result-item {
-    border-top: 1px solid var(--app-light);
+    border-top: 1px solid var(--app-primary-30);
   }
 }
 
 fieldset.result-item-row {
   padding: 1rem 0.8rem;
   border: 0;
-  border-top: 0.1rem solid var(--app-orange);
+  border-top: 0.1rem solid var(--app-orange-60);
   padding-top: 0.4rem;
 
   & > legend {
@@ -364,7 +364,7 @@ fieldset.result-item-row {
 fieldset.recipe {
   & .recipe-attr {
     padding: 0.25rem 0.75rem;
-    border: 1px solid var(--app-light);
+    border: 1px solid var(--app-primary-30);
     display: inline-flex;
     margin-right: 0.3rem;
     margin-bottom: 0.3rem;

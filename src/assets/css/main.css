@@ -1,123 +1,3 @@
-@design-tokens url('./config/color.json') format('style-dictionary3');
-
-:root {
-  --app-dark: design-token('color.dark');
-  --app-dark-light: design-token('color.dark-light');
-  --app-light-0: design-token('color.light-0');
-  --app-light: design-token('color.light');
-  --app-light-2: design-token('color.light-2');
-  --app-light-3: design-token('color.light-3');
-  --app-light-4: design-token('color.light-4');
-  --app-purple: design-token('color.purple');
-  --app-purple-light: design-token('color.purple-light');
-  --app-blue-purple: design-token('color.blue-purple');
-  --app-blue-purple-light: design-token('color.blue-purple-light');
-  --app-water-blue: design-token('color.water-blue');
-  --app-water-blue-light: design-token('color.water-blue-light');
-  --app-blue-green: design-token('color.blue-green');
-  --app-blue-green-light: design-token('color.blue-green-light');
-  --app-orange: design-token('color.orange');
-  --app-orange-light: design-token('color.orange-light');
-  --app-green: design-token('color.green');
-  --app-green-light: design-token('color.green-light');
-  --app-red: design-token('color.red');
-  --app-red-light: design-token('color.red-light');
-  --app-gray: design-token('color.gray');
-  --app-gray-light: design-token('color.gray-light');
-  --app-white: design-token('color.white');
-  --app-black: design-token('color.black');
-
-  --rgb-app-dark: design-token('color-rgb.dark');
-  --rgb-app-dark-light: design-token('color-rgb.dark-light');
-  --rgb-app-light-0: design-token('color-rgb.light-0');
-  --rgb-app-light: design-token('color-rgb.light');
-  --rgb-app-light-2: design-token('color-rgb.light-2');
-  --rgb-app-light-3: design-token('color-rgb.light-3');
-  --rgb-app-light-4: design-token('color-rgb.light-4');
-  --rgb-app-purple: design-token('color-rgb.purple');
-  --rgb-app-purple-light: design-token('color-rgb.purple-light');
-  --rgb-app-blue-purple: design-token('color-rgb.blue-purple');
-  --rgb-app-blue-purple-light: design-token('color-rgb.blue-purple-light');
-  --rgb-app-water-blue: design-token('color-rgb.water-blue');
-  --rgb-app-water-blue-light: design-token('color-rgb.water-blue-light');
-  --rgb-app-blue-green: design-token('color-rgb.blue-green');
-  --rgb-app-blue-green-light: design-token('color-rgb.blue-green-light');
-  --rgb-app-orange: design-token('color-rgb.orange');
-  --rgb-app-orange-light: design-token('color-rgb.orange-light');
-  --rgb-app-green: design-token('color-rgb.green');
-  --rgb-app-green-light: design-token('color-rgb.green-light');
-  --rgb-app-red: design-token('color-rgb.red');
-  --rgb-app-red-light: design-token('color-rgb.red-light');
-  --rgb-app-gray: design-token('color-rgb.gray');
-  --rgb-app-gray-light: design-token('color-rgb.gray-light');
-  --rgb-app-white: design-token('color-rgb.white');
-  --rgb-app-black: design-token('color-rgb.black');
-
-  --app-favicon-color-main: #ffa3a9;
-  --app-favicon-color-sub: #fbd3d9;
-
-  --app-body-bg-color: #fffafd;
-}
-
-html.theme--night-mode {
-  --app-dark: design-token('color-dark.dark');
-  --app-dark-light: design-token('color-dark.dark-light');
-  --app-light-0: design-token('color-dark.light-0');
-  --app-light: design-token('color-dark.light');
-  --app-light-2: design-token('color-dark.light-2');
-  --app-light-3: design-token('color-dark.light-3');
-  --app-light-4: design-token('color-dark.light-4');
-  --app-purple: design-token('color-dark.purple');
-  --app-purple-light: design-token('color-dark.purple-light');
-  --app-blue-purple: design-token('color-dark.blue-purple');
-  --app-blue-purple-light: design-token('color-dark.blue-purple-light');
-  --app-water-blue: design-token('color-dark.water-blue');
-  --app-water-blue-light: design-token('color-dark.water-blue-light');
-  --app-blue-green: design-token('color-dark.blue-green');
-  --app-blue-green-light: design-token('color-dark.blue-green-light');
-  --app-orange: design-token('color-dark.orange');
-  --app-orange-light: design-token('color-dark.orange-light');
-  --app-green: design-token('color-dark.green');
-  --app-green-light: design-token('color-dark.green-light');
-  --app-red: design-token('color-dark.red');
-  --app-red-light: design-token('color-dark.red-light');
-  --app-gray: design-token('color-dark.gray');
-  --app-gray-light: design-token('color-dark.gray-light');
-  --app-white: design-token('color-dark.white');
-  --app-black: design-token('color-dark.black');
-
-  --rgb-app-dark: design-token('color-dark-rgb.dark');
-  --rgb-app-dark-light: design-token('color-dark-rgb.dark-light');
-  --rgb-app-light-0: design-token('color-dark-rgb.light-0');
-  --rgb-app-light: design-token('color-dark-rgb.light');
-  --rgb-app-light-2: design-token('color-dark-rgb.light-2');
-  --rgb-app-light-3: design-token('color-dark-rgb.light-3');
-  --rgb-app-light-4: design-token('color-dark-rgb.light-4');
-  --rgb-app-purple: design-token('color-dark-rgb.purple');
-  --rgb-app-purple-light: design-token('color-dark-rgb.purple-light');
-  --rgb-app-blue-purple: design-token('color-dark-rgb.blue-purple');
-  --rgb-app-blue-purple-light: design-token('color-dark-rgb.blue-purple-light');
-  --rgb-app-water-blue: design-token('color-dark-rgb.water-blue');
-  --rgb-app-water-blue-light: design-token('color-dark-rgb.water-blue-light');
-  --rgb-app-blue-green: design-token('color-dark-rgb.blue-green');
-  --rgb-app-blue-green-light: design-token('color-dark-rgb.blue-green-light');
-  --rgb-app-orange: design-token('color-dark-rgb.orange');
-  --rgb-app-orange-light: design-token('color-dark-rgb.orange-light');
-  --rgb-app-green: design-token('color-dark-rgb.green');
-  --rgb-app-green-light: design-token('color-dark-rgb.green-light');
-  --rgb-app-red: design-token('color-dark-rgb.red');
-  --rgb-app-red-light: design-token('color-dark-rgb.red-light');
-  --rgb-app-gray: design-token('color-dark-rgb.gray');
-  --rgb-app-gray-light: design-token('color-dark-rgb.gray-light');
-  --rgb-app-white: design-token('color-dark-rgb.white');
-  --rgb-app-black: design-token('color-dark-rgb.black');
-
-  --app-favicon-color-main: #ffabbb;
-  --app-favicon-color-sub: #efdae0;
-
-  --app-body-bg-color: #241f2c;
-}
-
 .main--font-base {
   font-family: 'Itim', Microsoft JhengHei, sans-serif;
   --app-main-font: Microsoft JhengHei;
@@ -171,7 +51,7 @@ html {
 body {
   margin: 0;
   scroll-behavior: smooth;
-  color: var(--app-dark);
+  color: var(--app-primary-90);
   position: relative;
   background-color: var(--app-body-bg-color);
   height: 100%;
@@ -179,14 +59,14 @@ body {
 }
 
 input, textarea {
-  color: var(--app-dark);
+  color: var(--app-primary-90);
   background-color: var(--app-white);
 
   @apply text-base;
 }
 
 ::placeholder {
-  color: var(--app-light);
+  color: var(--app-primary-5);
 }
 
 input::-webkit-outer-spin-button,
@@ -202,7 +82,6 @@ input:focus {
   outline: none;
 }
 
-
 ::-webkit-scrollbar {
   width: 0.375rem;
   height: 0.375rem;
@@ -215,18 +94,18 @@ input:focus {
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: var(--app-light)!important;
+    background-color: var(--app-primary-30)!important;
     border-radius: 0.125rem;
   }
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(var(--rgb-app-light-2), 0.5);
+  background-color: rgba(var(--app-rgb-primary-30), 0.5);
   border-radius: 0.2rem;
   transition: 0.2s;
 
   &:hover {
-    background-color: var(--app-light-2);
+    background-color: var(--app-primary-30);
   }
 }
 
@@ -235,12 +114,12 @@ input:focus {
 }
 
 ::-webkit-scrollbar-button {
-  background-color: rgba(var(--rgb-app-light-2), 0.5);
+  background-color: rgba(var(--app-rgb-primary-30), 0.5);
   border-radius: 0.2rem;
   transition: 0.2s;
 
   &:hover {
-    background-color: var(--app-light-2);
+    background-color: var(--app-primary-30);
   }
 
   @media screen and (max-width: 30rem) {
@@ -250,5 +129,5 @@ input:focus {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: rgba(var(--rgb-app-light-2), 0.2);
+  background-color: rgba(var(--app-rgb-primary-30), 0.2);
 }

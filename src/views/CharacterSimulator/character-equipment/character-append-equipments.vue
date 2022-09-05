@@ -24,7 +24,7 @@
           @click="appendEquipment(item)"
         >
           <template #title-end>
-            <span class="text-sm text-light-2 ml-4">
+            <span class="text-sm text-primary-30 ml-4">
               {{ getObtainText(item) }}
             </span>
             <cy-icon-text icon="ic-round-add" class="ml-auto" />
@@ -58,7 +58,7 @@
       </div>
     </template>
     <template #extra-content>
-      <div class="bg-white border-1 border-light-2 px-1">
+      <div class="bg-white border-1 border-primary-30 px-1">
         <div class="flex items-center px-3 py-2">
           <i18n-t
             keypath="character-simulator.append-equipments.search-equipment-selected-text"
@@ -67,12 +67,12 @@
             scope="global"
           >
             <template #num>
-              <span class="inline-flex items-center justify-center h-7 w-7 border-1 border-light-3 mr-3 rounded-full">
+              <span class="inline-flex items-center justify-center h-7 w-7 border-1 border-primary-50 mr-3 rounded-full">
                 <span>{{ selectedEquipments.length }}</span>
               </span>
             </template>
           </i18n-t>
-          <span class="ml-auto text-light-3 cursor-pointer" @click="clearSelectedEquipments">
+          <span class="ml-auto text-primary-50 cursor-pointer" @click="clearSelectedEquipments">
             {{ t('global.clear') }}
           </span>
         </div>
@@ -84,7 +84,7 @@
             @click="removeEquipment(item)"
           >
             <template #title-end>
-              <span class="text-sm text-light-2 ml-4">
+              <span class="text-sm text-primary-30 ml-4">
                 {{ getObtainText(item) }}
               </span>
               <cy-icon-text icon="ic-round-close" class="ml-auto" />

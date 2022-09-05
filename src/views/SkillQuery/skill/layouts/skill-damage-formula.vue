@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="inline-flex items-center flex-wrap">
-      <span v-if="container.get('extra_constant') && frequencyVisible" class="divider border-orange" />
+      <span v-if="container.get('extra_constant') && frequencyVisible" class="divider border-orange-60" />
       <span v-if="container.get('constant')" class="divider" />
       <span v-if="container.get('base')" class="attr-item">{{ container.get('base') }}</span>
       <cy-icon-text
@@ -27,7 +27,7 @@
       />
       <span
         v-if="container.get('extra_constant') && frequencyVisible"
-        class="divider border-orange"
+        class="divider border-orange-60"
       />
       <cy-icon-text
         v-if="frequencyVisible && container.get('frequency')"
@@ -43,10 +43,10 @@
       v-if="container.get('@custom-base-caption')"
       class="pl-4 mb-2.5 flex items-center flex-wrap"
     >
-      <cy-icon-text text-color="purple" small class="mt-1">
+      <cy-icon-text text-color="fuchsia-60" small class="mt-1">
         {{ container.get('base') }}
       </cy-icon-text>
-      <div class="pl-3 text-light-3 text-sm mt-1" v-html="container.get('@custom-base-caption')" />
+      <div class="pl-3 text-primary-50 text-sm mt-1" v-html="container.get('@custom-base-caption')" />
     </div>
   </div>
 </template>
@@ -71,7 +71,7 @@ const frequencyVisible = computed(() => {
 
 <style lang="postcss" scoped>
 .divider {
-  @apply border-l-1 border-light-2 mx-2 h-6;
+  @apply border-l-1 border-primary-30 mx-2 h-6;
 }
 
 .attr-item {

@@ -11,7 +11,7 @@
       v-for="skillTree in selectedSkillTrees"
       :key="skillTree.skillTreeId"
       :ref="(el) => skillTreeElements.set(skillTree.skillTreeId, el as (HTMLElement | null))"
-      class="border-l-2 border-light-2 pl-3 pt-1"
+      class="border-l-2 border-primary-30 pl-3 pt-1"
     >
       <div>
         <cy-icon-text icon="bx:bxs-book-bookmark">{{ skillTree.name }}</cy-icon-text>

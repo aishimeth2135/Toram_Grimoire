@@ -29,7 +29,7 @@
             v-if="mainStore.devMode"
             :selected="mainContents.combo"
             icon="mdi-selection-ellipse-arrow-inside"
-            color="green"
+            color="emerald"
             float
             toggle
             @click="(toggle('mainContents/combo', null, false), toggle('sideContents/tabs', false))"
@@ -37,7 +37,7 @@
           <cy-button-circle
             :selected="sideContents.tabs"
             icon="ic:round-menu"
-            color="water-blue"
+            color="blue"
             float
             toggle
             @click="toggle('sideContents/tabs', null, false)"
@@ -48,7 +48,7 @@
         <cy-button-circle
           :selected="sideContents.panel"
           icon="ic:outline-space-dashboard"
-          color="blue-green"
+          color="cyan"
           float
           toggle
           @click="toggle('sideContents/panel', null, false)"

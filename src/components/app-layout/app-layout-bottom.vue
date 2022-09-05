@@ -17,7 +17,7 @@
       <div v-if="slots['main-start']" class="pointer-events-auto">
         <slot name="main-start"></slot>
       </div>
-      <div v-if="slots['default']" class="border-1 border-light-2 px-3 py-1 rounded-full bg-white shadow w-full pointer-events-auto">
+      <div v-if="slots['default']" class="border-1 border-primary-30 px-3 py-1 rounded-full bg-white shadow w-full pointer-events-auto">
         <slot></slot>
       </div>
       <div v-if="slots['main-end']" class="ml-auto pointer-events-auto">

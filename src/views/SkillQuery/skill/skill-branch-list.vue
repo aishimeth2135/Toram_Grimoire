@@ -47,16 +47,16 @@ const isTips = computed(() => {
   &.tips {
     @apply text-sm pl-5;
 
-    /* APPLY text-light-3 */
-    color: var(--app-light-3);
+    /* APPLY text-primary-50 */
+    color: var(--app-primary-50);
 
-    & :deep(.text-light-3) {
-      color: var(--app-purple);
+    & :deep(.text-primary-50) {
+      color: var(--app-fuchsia-60);
     }
   }
 
   &.is-mark {
-    @apply border-light-3 border-1 py-3;
+    @apply border-primary-50 border-1 py-3;
   }
 }
 </style>

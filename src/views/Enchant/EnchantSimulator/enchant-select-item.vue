@@ -4,16 +4,16 @@
       <cy-icon-text
         v-if="once"
         icon="fluent-list-16-filled"
-        text-color="water-blue"
-        icon-color="water-blue"
+        text-color="blue-60"
+        icon-color="blue-60"
       >
         {{ t('enchant-simulator.step.select-one-stat-item') }}
       </cy-icon-text>
       <cy-icon-text
         v-else
         icon="fluent-list-16-filled"
-        text-color="red"
-        icon-color="red"
+        text-color="orange-60"
+        icon-color="orange-60"
       >
         {{ t('enchant-simulator.step.select-multiple-stat-items') }}
       </cy-icon-text>
@@ -30,7 +30,7 @@
       <cy-icon-text
         class="w-full"
         small
-        text-color="purple"
+        text-color="fuchsia-60"
       >
         {{ category.origin.title }}
       </cy-icon-text>
@@ -45,7 +45,7 @@
           <span>
             {{ item.origin.statBase.title(item.type) }}
           </span>
-          <span class="text-sm text-light-2 ml-2">
+          <span class="text-sm text-primary-30 ml-2">
             {{ item.origin.getPotential(item.type, tmpEquipment) + 'pt' }}
           </span>
         </cy-button-check>

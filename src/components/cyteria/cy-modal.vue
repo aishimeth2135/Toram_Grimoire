@@ -49,7 +49,7 @@
             <div class="absolute right-4 -bottom-16">
               <cy-button-circle
                 v-show="extraContent.main"
-                color="water-blue"
+                color="blue"
                 icon="ep:arrow-right-bold"
                 @click="hideExtraContent"
               />
@@ -154,7 +154,7 @@ const { t } = useI18n()
     height: calc(100% - 1.125rem);
 
     & > .modal-container {
-      @apply w-full max-h-full pt-3 border-1 border-light bg-white flex flex-col;
+      @apply w-full max-h-full pt-3 border-1 border-primary-30 bg-white flex flex-col;
 
       min-height: 10rem;
     }

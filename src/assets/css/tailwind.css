@@ -1,3 +1,5 @@
+@design-tokens url('./config/color.json') format('style-dictionary3');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

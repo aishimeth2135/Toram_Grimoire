@@ -222,10 +222,10 @@ const branchButtonHover = (el: HTMLElement) => {
 
 <style lang="postcss" scoped>
 .skill-effect-tab-button {
-  @apply inline-flex items-center border-b-1 border-transparent hover:border-light-2 px-3 py-0.5 cursor-pointer;
+  @apply inline-flex items-center border-b-1 border-transparent hover:border-primary-30 px-3 py-0.5 cursor-pointer;
 
   &.selected {
-    @apply border-light-4 hover:border-light-4;
+    @apply border-primary-60 hover:border-primary-60;
   }
 }
 </style>

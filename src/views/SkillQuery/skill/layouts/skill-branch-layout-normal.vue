@@ -1,13 +1,13 @@
 <template>
-  <fieldset class="skill-branch-layout-normal border-1 border-light p-2 pt-1 bg-white">
+  <fieldset class="skill-branch-layout-normal border-1 border-primary-30 p-2 pt-1 bg-white">
     <legend class="flex items-center px-3">
       <cy-icon-text
         :icon="nameIcon"
-        text-color="purple"
+        text-color="fuchsia-60"
       >
         {{ container.get('name') }}
       </cy-icon-text>
-      <div v-if="nameProps" class="flex text-sm text-green space-x-1.5 ml-3">
+      <div v-if="nameProps" class="flex text-sm text-emerald-60 space-x-1.5 ml-3">
         <span v-for="nameProp in nameProps" :key="nameProp" class="inline-block">
           {{ nameProp }}
         </span>
@@ -24,7 +24,7 @@
           >
             <span v-html="contentData.title"></span>
           </cy-icon-text>
-          <span v-if="contentData.value" class="text-sm ml-1.5 text-light-3">
+          <span v-if="contentData.value" class="text-sm ml-1.5 text-primary-50">
             {{ contentData.value }}
           </span>
         </span>
@@ -100,10 +100,10 @@ const { toggle, contents } = ToggleService({
 })
 
 const typeMainColorMapping = {
-  normal: 'light-3',
+  normal: 'primary-50',
   primary: 'red',
-  gray: 'gray',
-  'blue-green': 'blue-green',
+  gray: 'gray-40',
+  cyan: 'cyan',
 }
 
 const subContentDatas = computed(() => {
@@ -132,8 +132,8 @@ const subContentDatas = computed(() => {
 .sub-content-item {
   @apply my-0.5 inline-flex items-center;
 
-  & .text-light-3 {
-    @apply text-purple;
+  & .text-primary-50 {
+    @apply text-fuchsia-60;
   }
 }
 

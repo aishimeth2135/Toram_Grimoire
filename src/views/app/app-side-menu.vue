@@ -1,9 +1,16 @@
 <template>
   <div class="app-left-menu--wrapper" :class="{ 'wrapper-minimize': minimize }">
     <div class="content-container" @click.stop>
-      <div class="h-full overflow-y-auto">
+      <div class="h-full overflow-y-auto flex flex-col">
         <div class="mx-1 mt-6">
           <AppSideMenuContent is-main />
+        </div>
+        <div class="mt-auto mx-2 pl-2 py-4">
+          <cy-button-icon
+            v-if="storageAvailable"
+            icon="ic-baseline-settings"
+            @click="(mainStore.toggleSetting(true), leftMenuStore.toggleVisible())"
+          />
         </div>
       </div>
     </div>
@@ -20,9 +27,18 @@ export default {
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
+import { useLeftMenuStore } from '@/stores/app/left-menu'
+import { useMainStore } from '@/stores/app/main'
+
+import Cyteria from '@/shared/utils/Cyteria'
+
 import AppSideMenuContent from './app-side-menu-content.vue'
 
+const storageAvailable = Cyteria.storageAvailable('localStorage')
+
 const currentRoute = useRoute()
+const mainStore = useMainStore()
+const leftMenuStore = useLeftMenuStore()
 
 const minimize = computed(() => currentRoute.meta.twoColumnsLayout === true)
 </script>
@@ -42,7 +58,7 @@ const minimize = computed(() => currentRoute.meta.twoColumnsLayout === true)
   background-color: var(--app-body-bg-color);
 
   & > .content-container {
-    @apply h-full w-64 border-r border-light;
+    @apply h-full w-64 border-r border-primary-30;
   }
 }
 
@@ -51,7 +67,7 @@ const minimize = computed(() => currentRoute.meta.twoColumnsLayout === true)
     @apply w-14 duration-300 border-r-1 border-transparent;
 
     &:hover {
-      @apply w-64 border-light-2;
+      @apply w-64 border-primary-30;
     }
 
     & > .content-container {
@@ -65,7 +81,7 @@ const minimize = computed(() => currentRoute.meta.twoColumnsLayout === true)
     @apply w-14 duration-300 border-r-1 border-transparent;
 
     &:hover {
-      @apply w-64 border-light-2;
+      @apply w-64 border-primary-30;
     }
 
     & > .content-container {

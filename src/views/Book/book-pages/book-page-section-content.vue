@@ -29,7 +29,7 @@ defineProps<Props>()
     @apply text-lg;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply border-light-2 mt-6 mb-4 pb-0.5 px-0.5 text-dark-light;
+    @apply border-primary-30 mt-6 mb-4 pb-0.5 px-0.5 text-primary-70;
   }
 
   p, blockquote, dl, table, pre {
@@ -41,7 +41,7 @@ defineProps<Props>()
   }
 
   strong {
-    @apply font-normal text-light-4 decoration-light-4;
+    @apply font-normal text-primary-60 decoration-primary-60;
   }
 
   mark {
@@ -49,7 +49,7 @@ defineProps<Props>()
   }
 
   blockquote {
-    @apply px-4 py-1 border-l-2 border-light text-dark-light;
+    @apply px-4 py-1 border-l-2 border-primary-30 text-primary-70;
 
     & > *:last-child {
       @apply mb-0;
@@ -57,7 +57,7 @@ defineProps<Props>()
   }
 
   a {
-    @apply text-light-3 underline;
+    @apply text-primary-50 underline;
   }
 
   ul, ol {
@@ -78,7 +78,7 @@ defineProps<Props>()
   }
   ul > li::before {
     content: '';
-    @apply absolute left-0 top-1 w-2 h-2 bg-light rounded-full;
+    @apply absolute left-0 top-1 w-2 h-2 bg-primary-30 rounded-full;
   }
   ol {
     list-style-type: decimal;
@@ -88,16 +88,16 @@ defineProps<Props>()
     @apply pl-1.5 pb-1 ml-2;
   }
   ol > li::marker {
-    @apply text-light-2;
+    @apply text-primary-30;
   }
 
   hr {
     height: 1px;
-    @apply my-4 mx-1 bg-light border-0;
+    @apply my-4 mx-1 bg-primary-30 border-0;
   }
 
   code {
-    @apply bg-light-0 mx-0.5 rounded-sm text-sm;
+    @apply bg-primary-5 mx-0.5 rounded-sm text-sm;
     padding: 0.125em 0;
     color: inherit !important;
 
@@ -108,7 +108,7 @@ defineProps<Props>()
   }
 
   pre {
-    @apply px-4 py-3 bg-light-0 rounded-md mx-0.5 overflow-x-auto;
+    @apply px-4 py-3 bg-primary-5 rounded-md mx-0.5 overflow-x-auto;
 
     code {
       @apply m-0 p-0 bg-opacity-0;
@@ -121,10 +121,10 @@ defineProps<Props>()
 
   table > thead > tr, table > tbody > tr {
     & > th {
-      @apply text-sm text-light-2 text-left font-normal border-b-1 border-light-2 px-3 py-1.5;
+      @apply text-sm text-primary-30 text-left font-normal border-b-1 border-primary-30 px-3 py-1.5;
     }
     & > td {
-      @apply border-b border-light px-3 py-1.5;
+      @apply border-b border-primary-30 px-3 py-1.5;
     }
     & > th:first-child, & > td:first-child {
       @apply pl-5;

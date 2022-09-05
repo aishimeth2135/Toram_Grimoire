@@ -32,7 +32,7 @@ export default {
 			display: block;
 			height: var(--shadow-height);
 			position: sticky;
-			box-shadow: 0 0.2rem 0.4rem -0.2rem var(--app-light-2);
+			box-shadow: 0 0.2rem 0.4rem -0.2rem var(--app-primary-30);
 			top: calc(var(--container-height) - 2 * var(--shadow-height));
 		}
 

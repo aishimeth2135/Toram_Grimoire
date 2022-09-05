@@ -8,7 +8,7 @@
       </div>
       <div
         v-if="characterStatResult.origin.max ||characterStatResult.origin.min"
-        class="flex items-center ml-auto text-light-2 text-sm space-x-0.5"
+        class="flex items-center ml-auto text-primary-30 text-sm space-x-0.5"
       >
         <div v-if="characterStatResult.origin.min">{{ characterStatResult.origin.min }}</div>
         <cy-icon-text icon="mdi:tilde" icon-width="0.8rem" />
@@ -33,13 +33,13 @@
         class="mt-1"
       >
         <div class="flex items-center">
-          <cy-icon-text icon="mdi:label-outline" text-color="purple">
+          <cy-icon-text icon="mdi:label-outline" text-color="fuchsia-60">
             <template v-if="(typeof data.title !== 'object')">
               {{ data.title }}
             </template>
             <template v-else>
               <span>{{ data.title.text }}</span>
-              <span class="ml-1.5 text-light-3">{{ data.title.value }}</span>
+              <span class="ml-1.5 text-primary-50">{{ data.title.value }}</span>
             </template>
           </cy-icon-text>
           <div class="ml-auto">
@@ -51,10 +51,10 @@
                 <div class="py-2 px-3 text-sm">
                   <div v-for="(src, idx) in data.statRecorded.sources" :key="idx" class="flex items-center space-x-2">
                     <template v-if="src.type === StatValueSourceTypes.Skill">
-                      <div v-if="(src.src as SkillBranch).name === SkillBranchNames.Passive" class="text-light-2">
+                      <div v-if="(src.src as SkillBranch).name === SkillBranchNames.Passive" class="text-primary-30">
                         {{ t('character-simulator.skill-build.passive-skills') }}
                       </div>
-                      <div v-else class="text-light-2">
+                      <div v-else class="text-primary-30">
                         {{ t('character-simulator.skill-build.active-skills') }}
                       </div>
                       <div>
@@ -62,7 +62,7 @@
                       </div>
                     </template>
                     <template v-else-if="src.type === StatValueSourceTypes.Equipment">
-                      <div class="text-orange-light">
+                      <div class="text-orange-30">
                         {{ t('common.Equipment.category.' + (src.src as CharacterEquipment).type) }}
                       </div>
                       <div>
@@ -70,17 +70,17 @@
                       </div>
                     </template>
                     <template v-else-if="src.type === StatValueSourceTypes.Crystal">
-                      <div class="text-blue-green-light">
+                      <div class="text-cyan-30">
                         {{ t('character-simulator.character-stat-detail.crystal') }}
                       </div>
                       <div>
                         {{ (src.src as EquipmentCrystal).name }}
                       </div>
                     </template>
-                    <div v-else-if="src.type === StatValueSourceTypes.Food" class="text-green-light">
+                    <div v-else-if="src.type === StatValueSourceTypes.Food" class="text-emerald-30">
                       {{ t('character-simulator.character-stat-detail.food') }}
                     </div>
-                    <div class="text-light-3">
+                    <div class="text-primary-50">
                       {{ data.statRecorded.showValue(src.value) }}
                     </div>
                   </div>
@@ -122,7 +122,7 @@
                 </span>
               </span>
             </template>
-            <span class="text-sm text-light-3 ml-2">{{ line.value }}</span>
+            <span class="text-sm text-primary-50 ml-2">{{ line.value }}</span>
           </div>
         </div>
       </div>

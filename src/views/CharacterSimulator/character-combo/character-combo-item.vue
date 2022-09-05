@@ -1,16 +1,16 @@
 <template>
-  <div class="px-4 py-2 border-l-2 border-light-2">
+  <div class="px-4 py-2 border-l-2 border-primary-30">
     <!-- <div class="flex items-center justify-center">
       <div>
         <cy-icon-text icon="mdi-sword" color="red">{{ expectedDamageSum }}</cy-icon-text>
       </div>
     </div> -->
     <div class="flex items-start max-w-full overflow-x-auto">
-      <div class="text-light-2">
+      <div class="text-primary-30">
         <div class="mb-4">{{ `#${index + 1}` }}</div>
         <cy-button-icon
           icon="mdi-sword"
-          color="blue-green"
+          color="cyan"
           :selected="damageCalcEnabled"
           @click="damageCalcEnabled = !damageCalcEnabled/* eslint-disable-line vue/no-mutating-props */"
         />
@@ -23,7 +23,7 @@
       />
       <div class="w-28 flex justify-center">
         <div
-          class="w-12 h-12 border-1 rounded-full border-light-2 hover:border-light-3 flex items-center justify-center cursor-pointer duration-200"
+          class="w-12 h-12 border-1 rounded-full border-primary-30 hover:border-primary-50 flex items-center justify-center cursor-pointer duration-200"
           @click="selectComboSkill(combo.appendSkill())"
         >
           <cy-icon-text
@@ -34,14 +34,14 @@
       </div>
     </div>
     <div v-if="damageCalcEnabled" class="mt-3">
-      <div class="flex items-center border-b border-blue-purple-light px-1 py-0.5 relative">
-        <cy-icon-text icon="mdi-sword" icon-color="blue-purple-light" text-color="blue-purple-light" small>
+      <div class="flex items-center border-b border-violet-30 px-1 py-0.5 relative">
+        <cy-icon-text icon="mdi-sword" icon-color="violet-30" text-color="violet-30" small>
           {{ t('character-simulator.combo.damage-calc.damage-sum-title') }}
         </cy-icon-text>
-        <span class="text-blue-purple ml-3">{{ expectedDamageSum }}</span>
-        <div class="absolute bottom-0 right-0 w-3 h-3 bg-blue-purple-light" />
+        <span class="text-violet-60 ml-3">{{ expectedDamageSum }}</span>
+        <div class="absolute bottom-0 right-0 w-3 h-3 bg-violet-30" />
       </div>
-      <div class="mt-1 divide-y divide-light-2">
+      <div class="mt-1 divide-y divide-primary-30">
         <CharacterComboItemDamageItem
           v-for="{ resultsState, comboSkillState } in comboSkillStateItems"
           :key="resultsState.skill.skillId"

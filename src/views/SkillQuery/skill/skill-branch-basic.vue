@@ -2,12 +2,12 @@
   <div class="pl-3">
     <table class="align-middle">
       <tr v-for="{ key, icon, title, value } in attrDatas" :key="key">
-        <td class="pr-2 border-r border-light">
+        <td class="pr-2 border-r border-primary-30">
           <div class="flex">
             <cy-icon-text :icon="icon">{{ title }}</cy-icon-text>
           </div>
         </td>
-        <td class="pl-2 text-light-4" v-html="value"></td>
+        <td class="pl-2 text-primary-60" v-html="value"></td>
       </tr>
     </table>
   </div>

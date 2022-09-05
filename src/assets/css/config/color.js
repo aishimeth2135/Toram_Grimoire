@@ -1,81 +1,81 @@
-
 // @ts-check
 const path = require('path')
 const fs = require('fs/promises')
 const Color = require('tinycolor2')
-
-const lightColor = Color('#ffd1ea')
+const tcColors = require('tailwindcss/colors')
 
 /**
- * @type Record<string, string>
+ * @type Record<string, Record<string, string>>
  */
 const baseColors = {
-  'purple': '#c026d3',
-  'blue-purple': '#7c3aed',
-  'water-blue': '#2196f3',
-  'blue-green': '#14a6c9',
-  'orange': '#f0a51a',
-  'green': '#10b981',
-  'red': '#f54747',
+  // 'purple': '#c026d3',
+  // 'blue-purple': '#7c3aed',
+  // 'water-blue': '#2196f3',
+  // 'blue-green': '#14a6c9',
+  // 'orange': '#f0a51a',
+  // 'green': '#10b981',
+  // 'red': '#f54747',
+  fuchsia: tcColors.fuchsia,
+  violet: tcColors.violet,
+  blue: tcColors.blue,
+  cyan: tcColors.cyan,
+  orange: tcColors.amber,
+  emerald: tcColors.emerald,
+  red: tcColors.red,
+  gray: tcColors.gray,
+}
+
+// pattern: fuchsia|violet|blue|cyan|orange|emerald|red|gray
+
+const primary = {
+  '50': '#FCF2F8',
+  '100': '#FCE8F5',
+  '200': '#FBCFEB',
+  '300': '#FAADDB',
+  '400': '#F77BC5',
+  '500': '#F254B0',
+  '600': '#E43A9D',
+  '700': '#CD268C',
+  '800': '#AB1872',
+  '900': '#800D58',
+}
+
+/**
+ * @type Record<string, Record<string, string>>
+ */
+const colors = {
+  ...baseColors,
+  primary,
 }
 
 /**
  * @type Record<string, string>
  */
 const color = {
-  'dark': '#85005f',
-  'dark-light': '#c62899',
-  'light-0': lightColor.clone().lighten(7).toHexString(),
-  'light': lightColor.toHexString(),
-  'light-2': lightColor.clone().darken(10).toHexString(),
-  'light-3': lightColor.clone().darken(25).toHexString(),
-  'light-4': lightColor.clone().darken(35).toHexString(),
-  'gray': '#888',
-  'gray-light': '#ddd',
-  'white': '#fff',
-  'black': '#000',
-  ...baseColors,
+  'white': '#ffffff',
+  'black': '#171717',
 }
-
-Object.entries(baseColors).map(([key, value]) => {
-  color[`${key}-light`] = Color(value).lighten(24).toHexString()
-})
-
-const darkLightColor = Color('#804665')
-
-/**
- * @type Record<string, string>
- */
-const darkBaseColors = {
-  'purple': '#f8e1fc',
-  'blue-purple': '#ece0ff',
-  'water-blue': '#c7e4fc',
-  'blue-green': '#a4f5ed',
-  'orange': '#e3c1a3',
-  'green': '#ace8b3',
-  'red': '#ffb5b5',
-}
+const colorOrders = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900']
 
 /**
  * @type Record<string, string>
  */
 const dark = {
-  'dark': '#fff',
-  'dark-light': '#edd3e2',
-  'light-0': '#402b3d',
-  'light': darkLightColor.toHexString(),
-  'light-2': darkLightColor.clone().brighten(24).toHexString(),
-  'light-3': darkLightColor.clone().brighten(50).toHexString(),
-  'light-4': darkLightColor.clone().brighten(60).toHexString(),
-  'gray': '#bbb',
-  'gray-light': '#888',
-  'white': '#1a1b26',
-  'black': '#fff',
-  ...darkBaseColors,
+  'white': '#171717',
+  'black': '#ffffff',
 }
 
-Object.entries(darkBaseColors).map(([key, value]) => {
-  dark[`${key}-light`] = Color(value).darken(16).toHexString()
+Object.entries(colors).map(([key, value]) => {
+  colorOrders.forEach((num, idx) => {
+    const subkey = num.slice(0, -1)
+    color[`${key}-${subkey}`] = value[num]
+    const reversedIdx = 9 - idx
+    const darkColor = Color(value[colorOrders[reversedIdx]])
+    const darkColorHsl = darkColor.toHsl()
+    const desaturate = Math.min(10 + Math.floor((30 * reversedIdx * reversedIdx) / 81), Math.ceil((darkColorHsl.s * 100) / 2))
+    const lighten = Math.min(Math.floor((20 * (81 - reversedIdx * reversedIdx)) / 81), Math.ceil((100 - darkColorHsl.l * 100) / 2))
+    dark[`${key}-${subkey}`] = darkColor.desaturate(desaturate).lighten(lighten).toHexString()
+  })
 })
 
 /**
@@ -125,31 +125,3 @@ async function handle() {
 
 console.log('start...')
 handle()
-
-// const colors = {
-//   'dark': '#85005F',
-//   'dark-light': '#c62899',
-//   'light': '#ffd1ea',
-//   'light-2': '#f7a8d3',
-//   'light-3': '#ff5fb7',
-//   'light-4': '#ff008d',
-//   'purple': '#9c27b0',
-//   'purple-light': '#c873d7',
-//   'blue-purple': '#8330ff',
-//   'blue-purple-light': '#caa6ff',
-//   'water-blue': '#2196f3',
-//   'water-blue-light': '#9acbf3',
-//   'blue-green': '#009688',
-//   'blue-green-light': '#a0e8e1',
-//   'orange': '#de761b',
-//   'orange-light': '#edcbad',
-//   'green': '#23ad35',
-//   'green-light': '#8ae696',
-//   'red': '#f54747',
-//   'red-light': '#f09797',
-//   'gray': '#888',
-//   'gray-light': '#ddd',
-//   'white': '#fff',
-//   'black': '#000',
-// }
-

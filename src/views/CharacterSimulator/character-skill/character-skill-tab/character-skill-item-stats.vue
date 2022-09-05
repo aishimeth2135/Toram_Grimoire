@@ -3,9 +3,9 @@
     <div
       v-for="container in statContainers"
       :key="container.stat.statId"
-      class="text-light mr-3"
+      class="text-primary-30 mr-3"
     >
-      <span class="text-dark" v-html="getResultDisplay(container)"></span>
+      <span class="text-primary-90" v-html="getResultDisplay(container)"></span>
     </div>
   </div>
 </template>

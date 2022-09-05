@@ -1,5 +1,3 @@
-
-
 interface MarkTextOptions {
   mark?: string;
   underline?: string;
@@ -9,8 +7,8 @@ interface MarkTextOptions {
  * Mark the text by html code.
  */
 export function markText(str: string, {
-  mark = 'text-light-4',
-  underline = 'text-light-4',
+  mark = 'text-primary-60',
+  underline = 'text-primary-60',
 }: MarkTextOptions = {}): string {
   return str
     .replace(/\(\(!((?:(?!\(\().)+)\)\)/g, (match, p1) => `<span class="${mark}">${p1}</span>`)

@@ -10,14 +10,14 @@
           <cy-icon-text
             :icon="crystal.crystalIconPath"
             icon-src="image"
-            :text-color="detailVisible ? 'orange' : 'dark'"
+            :text-color="detailVisible ? 'orange-60' : 'primary-90'"
           >
             {{ crystal.name }}
           </cy-icon-text>
         </div>
         <div v-if="previewMode === 'default'" class="flex items-center space-x-2">
           <template v-if="crystal.origin.enhancer">
-            <cy-icon-text icon="mdi:arrow-up-bold-outline" small color="blue-green">
+            <cy-icon-text icon="mdi:arrow-up-bold-outline" small color="cyan">
               {{ crystal.origin.enhancer }}
             </cy-icon-text>
             <cy-icon-text
@@ -50,10 +50,10 @@
           />
         </div>
         <div v-if="crystal.origin.enhancer" class="flex items-center mt-3">
-          <cy-icon-text icon="mdi:arrow-up-bold-outline" small icon-color="blue-green" text-color="light-2">
+          <cy-icon-text icon="mdi:arrow-up-bold-outline" small icon-color="cyan-60" text-color="primary-30">
             {{ t('crystal-query.enhancer-pretext') }}
           </cy-icon-text>
-          <span class="text-blue-green text-sm ml-0.5">{{ crystal.origin.enhancer }}</span>
+          <span class="text-cyan-60 text-sm ml-0.5">{{ crystal.origin.enhancer }}</span>
         </div>
       </div>
     </cy-transition>

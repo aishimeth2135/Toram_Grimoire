@@ -1,5 +1,5 @@
 <template>
-  <nav class="border-b border-solid border-light flex items-center py-1 px-3 mb-4 bg-white fixed top-0 w-full">
+  <nav class="border-b border-solid border-primary-30 flex items-center py-1 px-3 mb-4 bg-white fixed top-0 w-full">
     <cy-button-icon icon="ic:round-menu" @click="leftMenuStore.toggleVisible()" />
     <div class="inline-flex items-center whitespace-nowrap overflow-y-auto px-2 text-sm">
       <!-- <cy-icon-text icon="potum" icon-src="custom" class="mr-2" /> -->
@@ -20,7 +20,7 @@
             custom
           >
             <span
-              class="cursor-pointer text-light-3 underline"
+              class="cursor-pointer text-primary-50 underline"
               role="link"
               @click="navigate"
               @keypress.enter="navigate"

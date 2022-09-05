@@ -7,11 +7,11 @@
           style="min-width: 10rem"
         >
           <cy-button-check v-model:selected="enabled">
-            <cy-icon-text :text-color="!invalid ? 'purple' : 'gray'" :icon="skillIconPath" icon-src="image">
+            <cy-icon-text :text-color="!invalid ? 'purple-70' : 'gray-60'" :icon="skillIconPath" icon-src="image">
               {{ skillResultsState.skill.name }}
             </cy-icon-text>
           </cy-button-check>
-          <div v-if="invalid" class="text-light-2 ml-3">
+          <div v-if="invalid" class="text-primary-30 ml-3">
             {{ t('character-simulator.skill-build.skill-invalid') }}
           </div>
         </div>
@@ -68,10 +68,10 @@ const invalid = computed(() => props.skillResultsState.results.length === 0)
 
 <style lang="postcss" scoped>
 :deep(.result-value--stack) {
-  @apply text-water-blue;
+  @apply text-blue-60;
 
   &.value-dark {
-    @apply text-blue-green;
+    @apply text-cyan-60;
   }
 }
 </style>

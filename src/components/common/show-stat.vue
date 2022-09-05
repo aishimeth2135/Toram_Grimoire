@@ -3,16 +3,16 @@
     v-if="type !== 'preview'"
     :class="{
       'opacity-60': invalid,
-      'text-red': negativeValue,
-      'text-dark': !negativeValue,
+      'text-red-60': negativeValue,
+      'text-primary-90': !negativeValue,
     }"
     class="mr-3 pl-4 inline-flex items-baseline relative"
   >
-    <div class="absolute left-0 bottom-1 w-2 h-2 bg-light rounded-full" />
+    <div class="absolute left-0 bottom-1 w-2 h-2 bg-primary-30 rounded-full" />
     <div
       v-for="text in restrictionTexts"
       :key="text"
-      class="text-water-blue text-sm mr-1"
+      class="text-blue-60 text-sm mr-1"
     >
       {{ text }}
     </div>
@@ -22,11 +22,11 @@
     <span
       v-for="text in restrictionTexts"
       :key="text"
-      class="text-water-blue text-sm mr-1"
+      class="text-blue-60 text-sm mr-1"
     >
       {{ text }}
     </span>
-    <span :class="negativeValue ? 'text-red' : 'text-purple'">{{ stat.show() }}</span>
+    <span :class="negativeValue ? 'text-red-60' : 'text-fuchsia-60'">{{ stat.show() }}</span>
   </div>
 </template>
 

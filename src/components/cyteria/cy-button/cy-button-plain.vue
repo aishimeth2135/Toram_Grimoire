@@ -55,8 +55,8 @@ export default defineComponent({
   }
 
   &.theme-secondary {
-    --button-color-main: var(--app-light-3);
-    --button-color-main-light: var(--app-light-2);
+    --button-color-main: var(--app-primary-50);
+    --button-color-main-light: var(--app-primary-30);
   }
 }
 </style>

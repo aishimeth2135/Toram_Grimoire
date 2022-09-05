@@ -7,14 +7,14 @@
             {{ data.text }}
           </cy-icon-text>
           <span
-            class="text-sm ml-1 text-light-3"
+            class="text-sm ml-1 text-primary-50"
             :class="{ 'text-gray': data.negative }"
           >{{ data.displayValue }}</span>
         </template>
         <cy-icon-text
           v-else
           small
-          :text-color="data.negative ? 'gray' : 'light-3'"
+          :text-color="data.negative ? 'gray-60' : 'primary-50'"
         >
           {{ data.text }}
         </cy-icon-text>

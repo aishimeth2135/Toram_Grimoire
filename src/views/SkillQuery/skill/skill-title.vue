@@ -3,15 +3,15 @@
     <cy-icon-text
       :icon="getSkillIconPath(skill)"
       icon-src="image"
-      text-color="purple"
+      text-color="fuchsia-60"
       class="mr-3"
     >
       {{ skill.name }}
     </cy-icon-text>
     <div class="flex items-center space-x-1 pl-1 my-0.5">
-      <div class="text-sm text-light-2">{{ skill.parent.parent.name }}</div>
+      <div class="text-sm text-primary-30">{{ skill.parent.parent.name }}</div>
       <cy-icon-text icon="ic:round-keyboard-arrow-right" small />
-      <div class="text-sm text-light-2">{{ skill.parent.name }}</div>
+      <div class="text-sm text-primary-30">{{ skill.parent.name }}</div>
     </div>
   </div>
 </template>

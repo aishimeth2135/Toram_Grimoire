@@ -1,4 +1,3 @@
-
 import Grimoire from '@/shared/Grimoire'
 import { HandleLanguageData } from '@/shared/services/Language'
 

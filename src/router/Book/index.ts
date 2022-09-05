@@ -1,4 +1,3 @@
-
 import type { RouteRecordRaw } from 'vue-router'
 
 import { LocaleViewNamespaces } from '@/stores/app/language/enums'

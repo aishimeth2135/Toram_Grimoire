@@ -1,53 +1,20 @@
-function createColorConfig(varName) {
-  const handleValue = !varName ?
-    (colorName) => `var(--app-${colorName})` :
-    (colorName) => `rgba(var(--rgb-app-${colorName}), var(${varName}, 1))`
+const plugin = require('tailwindcss/plugin')
+
+const colorOrders = ['5', '10', '20', '30', '40', '50', '60', '70', '80', '90']
+const colorGroups = ['primary', 'fuchsia', 'violet', 'blue', 'cyan', 'orange', 'emerald', 'red', 'gray']
+
+function createColorConfig() {
+  const colors = {}
+  colorGroups.forEach(group => {
+    colors[group] = {}
+    colorOrders.forEach(order => {
+      colors[group][order] = `rgba(var(--app-rgb-${group}-${order}), <alpha-value>)`
+    })
+  })
   return {
-    light: {
-      0: handleValue('light-0'),
-      DEFAULT: handleValue('light'),
-      2: handleValue('light-2'),
-      3: handleValue('light-3'),
-      4: handleValue('light-4'),
-    },
-    dark: {
-      DEFAULT: handleValue('dark'),
-      light: handleValue('dark-light'),
-    },
-    white: handleValue('white'),
-    black: handleValue('black'),
-    red: {
-      DEFAULT: handleValue('red'),
-      light: handleValue('red-light'),
-    },
-    purple: {
-      DEFAULT: handleValue('purple'),
-      light: handleValue('purple-light'),
-    },
-    'blue-purple': {
-      DEFAULT: handleValue('blue-purple'),
-      light: handleValue('blue-purple-light'),
-    },
-    'water-blue': {
-      DEFAULT: handleValue('water-blue'),
-      light: handleValue('water-blue-light'),
-    },
-    'blue-green': {
-      DEFAULT: handleValue('blue-green'),
-      light: handleValue('blue-green-light'),
-    },
-    orange: {
-      DEFAULT: handleValue('orange'),
-      light: handleValue('orange-light'),
-    },
-    green: {
-      DEFAULT: handleValue('green'),
-      light: handleValue('green-light'),
-    },
-    gray: {
-      DEFAULT: handleValue('gray'),
-      light: handleValue('gray-light'),
-    },
+    ...colors,
+    'black': 'rgba(var(--app-rgb-black), <alpha-value>)',
+    'white': 'rgba(var(--app-rgb-white), <alpha-value>)',
     transparent: 'transparent',
     current: 'currentcolor',
   }
@@ -82,6 +49,43 @@ const borderWidth = {
   '8': '1rem',
 }
 
+const colorCssPlugin = plugin(function ({ addBase }) {
+  const rootVars = {}
+  const darkVars = {}
+  colorGroups.forEach(group => {
+    colorOrders.forEach(order => {
+      rootVars[`--app-${group}-${order}`] = `design-token('color.${group}-${order}')`
+      rootVars[`--app-rgb-${group}-${order}`] = `design-token('color-rgb.${group}-${order}')`
+
+      darkVars[`--app-${group}-${order}`] = `design-token('color-dark.${group}-${order}')`
+      darkVars[`--app-rgb-${group}-${order}`] = `design-token('color-dark-rgb.${group}-${order}')`
+    })
+  })
+
+  addBase({
+    ':root': {
+      ...rootVars,
+      '--app-favicon-color-main': '#ffa3a9',
+      '--app-favicon-color-sub': '#fbd3d9',
+      '--app-body-bg-color': '#fefcfd',
+      '--app-black': 'design-token(\'color.black\')',
+      '--app-white': 'design-token(\'color.white\')',
+      '--app-rgb-black': 'design-token(\'color-rgb.black\')',
+      '--app-rgb-white': 'design-token(\'color-rgb.white\')',
+    },
+    'html.theme--night-mode': {
+      ...darkVars,
+      '--app-favicon-color-main': '#ffabbb',
+      '--app-favicon-color-sub': '#efdae0',
+      '--app-body-bg-color': '#241f2c',
+      '--app-black': 'design-token(\'color-dark.black\')',
+      '--app-white': 'design-token(\'color-dark.white\')',
+      '--app-rgb-black': 'design-token(\'color-dark-rgb.black\')',
+      '--app-rgb-white': 'design-token(\'color-dark-rgb.white\')',
+    },
+  })
+})
+
 module.exports = {
   content: [
     './index.html',
@@ -91,13 +95,15 @@ module.exports = {
     ...getColorList('bg'),
     ...getColorList('text'),
   ],
+  plugins: [
+    colorCssPlugin,
+  ],
+  darkMode: ['class', '.theme--night-mode'],
   theme: {
     fontFamily: {
       mono: '\'Cascadia Code\', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \'Liberation Mono\', \'Courier New\', var(--app-main-font), monospace',
     },
     colors: createColorConfig(),
-    textColor: createColorConfig('--tw-text-opacity'),
-    backgroundColor: createColorConfig('--tw-bg-opacity'),
     opacity: {
       '0': '0',
       '5': '0.05',
@@ -121,10 +127,8 @@ module.exports = {
       '95': '0.95',
       '100': '1',
     },
-    borderColor: createColorConfig('--tw-border-opacity'),
     borderWidth,
     outlineWidth: borderWidth,
-    outlineColor: createColorConfig('--tw-border-opacity'),
     zIndex: {
       '-1': '-1',
       '1': '1',

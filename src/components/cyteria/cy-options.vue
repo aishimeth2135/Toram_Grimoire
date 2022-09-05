@@ -2,7 +2,7 @@
   <CyPopover class="cy--options" :placement="placement">
     <template #default="{ shown }">
       <slot name="title" :shown="shown">
-        <div class="cy--options-item cy--options-title flex items-center bg-white border border-light-2 hover:border-light-3 duration-200">
+        <div class="cy--options-item cy--options-title flex items-center bg-white border border-primary-30 hover:border-primary-50 duration-200">
           <slot v-if="value !== undefined && value !== null" name="item" :value="value" />
           <div v-else class="flex w-full justify-center py-0.5">
             <cy-icon-text icon="ic:outline-help-outline" />
@@ -26,7 +26,7 @@
           </div>
           <div
             v-if="addable"
-            class="cy--options-item justify-center border-t border-light-2 sticky bottom-0 bg-white"
+            class="cy--options-item justify-center border-t border-primary-30 sticky bottom-0 bg-white"
             @click="(emit('add-item'), hide())"
           >
             <div class="flex py-0.5">
@@ -85,7 +85,7 @@ const emit = defineEmits<Emits>()
   @apply duration-200 py-1.5 px-2 flex cursor-pointer;
 
   &:hover, &.cy--options-item-selected {
-    @apply bg-light-0;
+    @apply bg-primary-5;
   }
 }
 </style>

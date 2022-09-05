@@ -3,7 +3,7 @@
     <cy-icon-text
       icon="entypo-link"
       small
-      text-color="purple"
+      text-color="fuchsia-60"
     >
       {{ t('skill-query.branch.reference.base-title') }}
     </cy-icon-text>
@@ -11,7 +11,7 @@
       {{ container.get('text') }}
     </div>
     <div>
-      <a target="_blank" :href="container.get('url')" class="text-light-3 underline">{{ container.get('url_text') }}</a>
+      <a target="_blank" :href="container.get('url')" class="text-primary-50 underline">{{ container.get('url_text') }}</a>
     </div>
   </div>
 </template>

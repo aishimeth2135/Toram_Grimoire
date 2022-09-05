@@ -8,6 +8,7 @@ import { useLanguageStore } from './language'
 const version = '4.5.31'
 
 export const useMainStore = defineStore('app-main', () => {
+  const settingVisible = ref(false)
   const redirectPathName = ref<string | null>(null)
   const serviceWorker = shallowReactive<{
     update: Function | null;
@@ -69,6 +70,7 @@ export const useMainStore = defineStore('app-main', () => {
   const previewMode = window.location.hostname.startsWith('doll-preview') || window.location.hostname.startsWith('localhost')
 
   return {
+    settingVisible: settingVisible,
     redirectPathName: readonly(redirectPathName),
     version,
     serviceWorker: readonly(serviceWorker),
@@ -80,6 +82,7 @@ export const useMainStore = defineStore('app-main', () => {
     serviceWorkerHasUpdate,
     updateTitle,
 
+    toggleSetting: (force?: boolean) => settingVisible.value = force ?? !settingVisible.value,
     startRouting: () => routerGuiding.value = true,
     endRouting: () => routerGuiding.value = false,
     routerGuiding: readonly(routerGuiding),

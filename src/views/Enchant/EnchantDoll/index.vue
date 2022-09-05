@@ -2,7 +2,7 @@
   <AppLayoutMain class="pb-6">
     <div ref="first-step" class="step-content">
       <div>
-        <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
+        <cy-icon-text icon="gg-menu-left-alt" text-color="fuchsia-60">
           {{ t('enchant-doll.equipment.select-type.title') }}
         </cy-icon-text>
       </div>
@@ -20,7 +20,7 @@
         </cy-button-radio>
       </div>
       <div class="mt-4">
-        <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
+        <cy-icon-text icon="gg-menu-left-alt" text-color="fuchsia-60">
           {{ t('enchant-doll.equipment.original-potential.title') }}
         </cy-icon-text>
       </div>
@@ -63,7 +63,7 @@
           <cy-input-counter
             v-model:value="config.characterLevel"
             :step="10"
-            main-color="water-blue-light"
+            main-color="blue-30"
           >
             <template #title>
               <cy-icon-text>{{ t('enchant-simulator.character-level') }}</cy-icon-text>
@@ -74,7 +74,7 @@
           <cy-input-counter
             v-model:value="config.smithLevel"
             :step="10"
-            main-color="water-blue-light"
+            main-color="blue-30"
           >
             <template #title>
               <cy-icon-text>{{ t('enchant-simulator.smith-level') }}</cy-icon-text>
@@ -83,7 +83,7 @@
         </div>
       </template>
       <div v-if="config.characterLevel < 250" class="mt-4 flex justify-center">
-        <cy-icon-text color="light-3" align-v="start" small>
+        <cy-icon-text color="primary-50" align-v="start" small>
           {{ t('enchant-doll.equipment.set-config.character-level-tips') }}
         </cy-icon-text>
       </div>
@@ -110,7 +110,7 @@
         class="step-content"
       >
         <div>
-          <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
+          <cy-icon-text icon="gg-menu-left-alt" text-color="fuchsia-60">
             {{ t('enchant-doll.select-positives.title') }}
           </cy-icon-text>
         </div>
@@ -118,11 +118,11 @@
           {{ t('enchant-doll.select-positives.caption') }}
         </div>
         <div class="flex justify-center my-4">
-          <div class="mt-2 border border-purple max-w-xs">
+          <div class="mt-2 border border-fuchsia-60 max-w-xs">
             <template v-if="doll.positiveStats.length !== 0">
               <cy-list-item v-for="stat in doll.positiveStats" :key="stat.statId">
                 <cy-icon-text
-                  :text-color="stat.value >= 0 ? 'dark' : 'orange'"
+                  :text-color="stat.value >= 0 ? 'primary-90' : 'orange-60'"
                   class="w-full"
                 >
                   {{ stat.showAmount() }}
@@ -137,7 +137,7 @@
                   />
                   <cy-button-icon
                     icon="jam-close-circle"
-                    icon-color="gray"
+                    icon-color="gray-60"
                     class="ml-auto"
                     @click="removePositiveStat(stat)"
                   />
@@ -193,12 +193,12 @@
                 @click="appendPositiveShortHandStats"
               />
             </div>
-            <div v-if="positiveShortHandStatItems.length > 0" class="text-light-3 px-1 pt-1">
+            <div v-if="positiveShortHandStatItems.length > 0" class="text-primary-50 px-1 pt-1">
               <div v-for="{ origin, type, value } in positiveShortHandStatItems" :key="origin.statBase.statId(type)">
                 {{ origin.statBase.show(type, value) }}
               </div>
             </div>
-            <div v-else class="text-light-2 text-center">
+            <div v-else class="text-primary-30 text-center">
               ex: AD3CD%CDC
             </div>
           </div>
@@ -227,7 +227,7 @@
         class="step-content"
       >
         <div>
-          <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
+          <cy-icon-text icon="gg-menu-left-alt" text-color="fuchsia-60">
             {{ t('enchant-doll.select-negatives.title') }}
           </cy-icon-text>
         </div>
@@ -238,8 +238,8 @@
           <cy-icon-text
             icon="ic-outline-info"
             small
-            text-color="water-blue"
-            icon-color="water-blue-light"
+            text-color="blue-60"
+            icon-color="blue-30"
           >
             {{ t('enchant-doll.tips.performance.auto-find-negatives') }}
           </cy-icon-text>
@@ -248,8 +248,8 @@
           <cy-icon-text
             icon="ic-outline-info"
             small
-            text-color="water-blue"
-            icon-color="water-blue-light"
+            text-color="blue-60"
+            icon-color="blue-30"
           >
             {{ t('enchant-doll.select-negatives.tips-1') }}
           </cy-icon-text>
@@ -258,8 +258,8 @@
           <cy-icon-text
             icon="ic-outline-info"
             small
-            text-color="water-blue"
-            icon-color="water-blue-light"
+            text-color="blue-60"
+            icon-color="blue-30"
           >
             {{ t('enchant-doll.tips.performance.auto-find-original-potential-minimum-and-auto-find-negatives') }}
           </cy-icon-text>
@@ -275,7 +275,7 @@
               v-if="currentEquipmentType !== 1"
               v-model:selected="doll.config.containsNaturalMpRegenConstant"
             >
-              <span class="text-light-2">
+              <span class="text-primary-30">
                 {{ t('enchant-doll.select-negatives.contains-natural-mp-regen-constant') }}
               </span>
             </cy-button-toggle>
@@ -284,7 +284,7 @@
         <template v-if="selectNegativeStatState.auto">
           <template v-if="currentEquipmentType === 1">
             <div>
-              <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
+              <cy-icon-text icon="gg-menu-left-alt" text-color="fuchsia-60">
                 {{ t('enchant-doll.select-negatives.select-config.base-type.title') }}
               </cy-icon-text>
             </div>
@@ -303,7 +303,7 @@
             </div>
           </template>
           <div>
-            <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
+            <cy-icon-text icon="gg-menu-left-alt" text-color="fuchsia-60">
               {{ t('enchant-doll.select-negatives.select-config.auto-find-negatives.title') }}
             </cy-icon-text>
           </div>
@@ -326,7 +326,7 @@
           class="flex justify-center mt-4"
         >
           <div>
-            <cy-icon-text small icon-color="water-blue" class="mr-4">
+            <cy-icon-text small icon-color="blue-60" class="mr-4">
               {{ t('enchant-doll.select-negatives.auto-select') }}
             </cy-icon-text>
             <cy-icon-text small>
@@ -335,12 +335,12 @@
           </div>
         </div>
         <div class="flex justify-center mb-4">
-          <div class="mt-2 border border-purple max-w-xs">
+          <div class="mt-2 border border-fuchsia-60 max-w-xs">
             <template v-if="negativeStats.length !== 0">
               <cy-list-item v-for="stat in negativeStats" :key="stat.statId">
                 <cy-icon-text
-                  :text-color="stat.value >= 0 ? 'dark' : 'orange'"
-                  :icon-color="autoNegativeStats.includes(stat) ? 'water-blue' : 'light-2'"
+                  :text-color="stat.value >= 0 ? 'primary-90' : 'orange-60'"
+                  :icon-color="autoNegativeStats.includes(stat) ? 'blue-60' : 'primary-30'"
                   class="w-full"
                 >
                   {{ stat.showAmount() }}
@@ -388,13 +388,13 @@
               <cy-icon-text
                 icon="ic-outline-info"
                 small
-                text-color="water-blue"
-                icon-color="water-blue-light"
+                text-color="blue-60"
+                icon-color="blue-30"
               >
                 {{ t('enchant-doll.select-negatives.stats-from-auto-not-enough.0') }}
               </cy-icon-text>
             </div>
-            <div class="text-water-blue text-sm">
+            <div class="text-blue-60 text-sm">
               {{ t('enchant-doll.select-negatives.stats-from-auto-not-enough.1') }}
             </div>
           </div>
@@ -423,7 +423,7 @@
         class="step-content"
       >
         <div>
-          <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
+          <cy-icon-text icon="gg-menu-left-alt" text-color="fuchsia-60">
             {{ t('enchant-doll.result.title') }}
           </cy-icon-text>
         </div>
@@ -437,7 +437,7 @@
           <cy-icon-text icon="bx-bx-star" class="mr-3">
             {{ t('enchant-doll.result.current-potential-is') }}
           </cy-icon-text>
-          <span class="text-purple">
+          <span class="text-fuchsia-60">
             {{ currentEquipment.originalPotential }}
           </span>
         </div>
@@ -450,19 +450,19 @@
           <cy-icon-text
             icon="ic-outline-info"
             small
-            text-color="water-blue"
-            icon-color="water-blue-light"
+            text-color="blue-60"
+            icon-color="blue-30"
           >
             {{ t('enchant-doll.tips.cannot-auto-find-original-potential-minimum') }}
           </cy-icon-text>
         </div>
         <div class="mt-6 mb-4 flex justify-center">
-          <div class="border-1 border-purple rounded-lg pt-3 pb-5 pl-4 pr-6 bg-white">
+          <div class="border-1 border-fuchsia-60 rounded-lg pt-3 pb-5 pl-4 pr-6 bg-white">
             <EnchantResult :equipment="resultEquipment" />
           </div>
         </div>
         <div class="mt-6">
-          <cy-icon-text icon="gg-menu-left-alt" text-color="purple">
+          <cy-icon-text icon="gg-menu-left-alt" text-color="fuchsia-60">
             {{ t('enchant-doll.export-result.title') }}
           </cy-icon-text>
         </div>
@@ -480,7 +480,7 @@
           <cy-button-action
             v-if="!exportState.hasExport"
             icon="ic-outline-save"
-            color="blue-green"
+            color="cyan"
             @click="exportResult"
           >
             {{ t('global.export') }}
@@ -488,7 +488,7 @@
           <cy-button-action
             v-else
             icon="ic-round-open-in-new"
-            color="blue-green"
+            color="cyan"
             @click="$router.replace('/enchant')"
           >
             {{ t('enchant-doll.export-result.redirect-to-enchant-simulator') }}
@@ -517,7 +517,7 @@
         </template>
       </div>
     </cy-transition>
-    <div class="flex items-center justify-center border-t border-purple mt-12 pt-4 relative">
+    <div class="flex items-center justify-center border-t border-fuchsia-60 mt-12 pt-4 relative">
       <cy-button-action
         v-if="stepCounter !== 3"
         icon="mdi-leaf"
@@ -544,8 +544,8 @@
       <cy-icon-text
         icon="ic-outline-info"
         small
-        text-color="water-blue"
-        icon-color="water-blue-light"
+        text-color="blue-60"
+        icon-color="blue-30"
       >
         {{ t('enchant-doll.tips.performance.auto-find-original-potential-minimum') }}
       </cy-icon-text>
@@ -553,7 +553,7 @@
     <div
       v-if="stepCounter === StepContents.Equipment"
       ref="top"
-      class="text-light-3 text-sm text-center px-8 py-8 space-y-2"
+      class="text-primary-50 text-sm text-center px-8 py-8 space-y-2"
     >
       <div>{{ t('enchant-doll.top-caption.0') }}</div>
       <div>{{ t('enchant-doll.top-caption.1') }}</div>
@@ -977,7 +977,7 @@ watch(computed(() => doll.value.config.baseType), () => {
   position: relative;
 
   & + .step-content {
-    border-top: 1px solid var(--app-purple);
+    border-top: 1px solid var(--app-fuchsia-60);
   }
 
   & > .disabled-mask {

@@ -1,7 +1,7 @@
 <template>
   <div v-if="equipment">
     <div>
-      <cy-icon-text icon="mdi-clipboard-edit-outline" small text-color="purple">
+      <cy-icon-text icon="mdi-clipboard-edit-outline" small text-color="fuchsia-60">
         {{ t('character-simulator.equipment-basic-editor.equipment-name') }}
       </cy-icon-text>
     </div>
@@ -13,7 +13,7 @@
     </div>
     <template v-if="currentEquipment.customTypeList">
       <div class="mt-3">
-        <cy-icon-text icon="mdi-clipboard-edit-outline" small text-color="purple">
+        <cy-icon-text icon="mdi-clipboard-edit-outline" small text-color="fuchsia-60">
           {{ t('character-simulator.equipment-basic-editor.equipment-type') }}
         </cy-icon-text>
       </div>
@@ -28,7 +28,7 @@
     </template>
     <template v-if="equipment.is(EquipmentKinds.Weapon) || equipment.is(EquipmentKinds.Armor)">
       <div class="mt-3">
-        <cy-icon-text icon="mdi-clipboard-edit-outline" small text-color="purple">
+        <cy-icon-text icon="mdi-clipboard-edit-outline" small text-color="fuchsia-60">
           {{ t('character-simulator.equipment-basic-editor.equipment-basic') }}
         </cy-icon-text>
       </div>
@@ -61,7 +61,7 @@
       </div>
     </template>
     <div class="mt-3">
-      <cy-icon-text icon="mdi-rhombus-outline" small text-color="purple">
+      <cy-icon-text icon="mdi-rhombus-outline" small text-color="fuchsia-60">
         {{ t('character-simulator.equipment-basic-editor.equipment-stats') }}
       </cy-icon-text>
     </div>
@@ -94,7 +94,7 @@
     </div>
     <template v-if="equipment.hasCrystal">
       <div class="mt-3">
-        <cy-icon-text icon="mdi-rhombus-outline" small text-color="purple">
+        <cy-icon-text icon="mdi-rhombus-outline" small text-color="fuchsia-60">
           {{ t('character-simulator.equipment-basic-editor.equipment-crystal') }}
         </cy-icon-text>
       </div>
@@ -106,7 +106,7 @@
           <cy-icon-text
             :icon="crystal.crystalIconPath"
             icon-src="image"
-            text-color="blue-green"
+            text-color="cyan-60"
           >
             {{ crystal.name }}
           </cy-icon-text>

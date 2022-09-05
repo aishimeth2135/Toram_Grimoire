@@ -51,7 +51,13 @@
     </div>
     <footer class="flex items-center justify-center w-full px-2 h-32 mt-auto">
       <div class="flex items-center sticky bottom-0 space-x-4 py-4">
-        <AppSetting />
+        <cy-button-plain
+          v-if="storageAvailable"
+          icon="ic-baseline-settings"
+          @click="(mainStore.toggleSetting(true), leftMenuStore.toggleVisible())"
+        >
+          {{ t('app.settings.title') }}
+        </cy-button-plain>
         <router-link v-slot="{ navigate }" :to="{ name: AppRouteNames.About }" custom>
           <cy-button-plain icon="bx-bxs-star-half" @click="navigate">
             {{ t('app.page-title.about') }}
@@ -72,19 +78,25 @@ export default {
 import { useI18n } from 'vue-i18n'
 import { nextTick, onMounted, onUnmounted, reactive, ref, Ref, watch } from 'vue'
 
+import { useMainStore } from '@/stores/app/main'
+import { useLeftMenuStore } from '@/stores/app/left-menu'
+
 import { ROUTE_LINK_DATAS } from '@/shared/consts'
 import { debounce } from '@/shared/utils/function'
 import { getRandomInt, numberToFixed } from '@/shared/utils/number'
+import Cyteria from '@/shared/utils/Cyteria'
 
-import AppSetting from '@/views/app/app-settings.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 import { AppRouteNames } from '@/router/enums'
 
 import HomeLinkButton from './home-link-button.vue'
 
 const columns = ROUTE_LINK_DATAS
+const storageAvailable = Cyteria.storageAvailable('localStorage')
 
 const { t } = useI18n()
+const mainStore = useMainStore()
+const leftMenuStore = useLeftMenuStore()
 
 const mainSection: Ref<HTMLElement | null> = ref(null)
 const pointPosition = reactive({
@@ -273,7 +285,7 @@ onUnmounted(() => {
 <style lang="postcss" scoped>
 .app-home {
   &:deep(.app-icon-touched-text) {
-    @apply text-light-3 fixed pointer-events-none opacity-0;
+    @apply text-primary-50 fixed pointer-events-none opacity-0;
     animation: app-icon-touched-text 2.5s linear;
   }
 }
@@ -300,7 +312,7 @@ onUnmounted(() => {
   }
 
   & > .app-home-main-point {
-    @apply bg-light bg-opacity-50 w-8 h-8 absolute rounded-full pointer-events-none duration-200 ease-out;
+    @apply bg-primary-30 bg-opacity-50 w-8 h-8 absolute rounded-full pointer-events-none duration-200 ease-out;
     transform: translate(-50%, -50%);
     animation: app-home-main-point 2.5s ease infinite;
   }
@@ -407,37 +419,37 @@ onUnmounted(() => {
 
 /* @keyframes app-title-icon-path-fill {
   0% {
-    fill: var(--app-light);
+    fill: var(--app-primary-30);
   }
   10% {
-    fill: var(--app-light-3);
+    fill: var(--app-primary-50);
   }
   20% {
-    fill: var(--app-dark-light);
+    fill: var(--app-primary-70);
   }
   30% {
-    fill: var(--app-purple);
+    fill: var(--app-fuchsia-60);
   }
   40% {
-    fill: var(--app-blue-purple);
+    fill: var(--app-violet-60);
   }
   50% {
-    fill: var(--app-water-blue);
+    fill: var(--app-blue-60);
   }
   60% {
-    fill: var(--app-blue-green);
+    fill: var(--app-cyan-60);
   }
   70% {
     fill: var(--app-green);
   }
   80% {
-    fill: var(--app-orange);
+    fill: var(--app-orange-60);
   }
   90% {
-    fill: var(--app-red);
+    fill: var(--app-orange-60);
   }
   100% {
-    fill: var(--app-light);
+    fill: var(--app-primary-30);
   }
 } */
 

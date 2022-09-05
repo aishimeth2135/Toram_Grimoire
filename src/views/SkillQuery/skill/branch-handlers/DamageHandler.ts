@@ -71,7 +71,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(comput
         props.set('base', `@custom.${baseSuffix.prop('type')}`)
         langAttrsMap.append('base')
         langAttrsMap.set('@custom-base-caption', {
-          afterHandle: value => createTagButtons(markText(value, { mark: 'text-purple' })),
+          afterHandle: value => createTagButtons(markText(value, { mark: 'text-fuchsia-60' })),
         })
       } else {
         if (baseSuffix.prop('title') === 'auto') {

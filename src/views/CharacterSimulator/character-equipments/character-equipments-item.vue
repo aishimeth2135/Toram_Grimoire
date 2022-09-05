@@ -4,8 +4,8 @@
       <div class="flex mr-2">
         <cy-icon-text icon="ic:baseline-drag-indicator" />
       </div>
-      <EquipmentTitle :equipment="equipment" :text-color="contents.detail ? 'orange' : 'default'" />
-      <span v-if="equipped" class="text-red text-sm ml-3">
+      <EquipmentTitle :equipment="equipment" :text-color="contents.detail ? 'orange-60' : 'default'" />
+      <span v-if="equipped" class="text-red-60 text-sm ml-3">
         {{ t('character-simulator.browse-equipments.equipped') }}
       </span>
     </cy-list-item>

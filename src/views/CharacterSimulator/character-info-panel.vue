@@ -3,7 +3,7 @@
     <div v-if="currentCharacter" class="flex flex-start w-full">
       <div class="w-full">
         <div>
-          <cy-icon-text icon="bx-bxs-face" text-color="light-2" small>
+          <cy-icon-text icon="bx-bxs-face" text-color="primary-30" small>
             {{ t('character-simulator.character-basic.title') }}
           </cy-icon-text>
         </div>
@@ -32,7 +32,7 @@
     <div v-if="currentCharacter" class="flex flex-start w-full">
       <div class="w-full">
         <div>
-          <cy-icon-text icon="ant-design:build-outlined" text-color="light-2" small>
+          <cy-icon-text icon="ant-design:build-outlined" text-color="primary-30" small>
             {{ t('character-simulator.equipment-info.equipment') }}
           </cy-icon-text>
         </div>
@@ -40,7 +40,7 @@
           <div
             v-for="field in currentCharacter.equipmentFields"
             :key="field.fieldId"
-            class="border border-light-2"
+            class="border border-primary-30"
             @click="editEquipmentFieldEquipment(field)"
           >
             <EquipmentItem
@@ -48,7 +48,7 @@
               :equipment="field.equipment"
             />
             <div v-else class="flex px-3 py-1.5 cursor-pointer">
-              <cy-icon-text color="light-2">
+              <cy-icon-text color="primary-30">
                 {{ t('common.Equipment.field.' + field.type) }}
               </cy-icon-text>
             </div>
@@ -71,7 +71,7 @@
     <div v-if="currentSkillBuild" class="flex flex-start w-full">
       <div class="w-full">
         <div>
-          <cy-icon-text icon="ant-design:build-outlined" text-color="light-2" small>
+          <cy-icon-text icon="ant-design:build-outlined" text-color="primary-30" small>
             {{ t('character-simulator.skill-build.title') }}
           </cy-icon-text>
         </div>
@@ -100,7 +100,7 @@
     <div v-if="currentFoodBuild" class="flex flex-start w-full">
       <div class="w-full">
         <div>
-          <cy-icon-text icon="mdi-food-apple" text-color="light-2" small>
+          <cy-icon-text icon="mdi-food-apple" text-color="primary-30" small>
             {{ t('character-simulator.food-build.title') }}
           </cy-icon-text>
         </div>

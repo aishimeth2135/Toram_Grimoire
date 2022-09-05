@@ -5,10 +5,10 @@
         :icon="icon"
         :icon-src="iconSrc"
         icon-width="2.75rem"
-        icon-color="light-2"
+        icon-color="primary-30"
         class="mr-3"
       />
-      <span :style="contentStyle" class="text-dark">
+      <span :style="contentStyle" class="text-primary-90">
         <slot />
       </span>
     </div>

@@ -36,13 +36,13 @@ withDefaults(defineProps<Props>(), {
   }
 
   &.selected {
-    color: var(--app-purple);
-    border: 1px solid var(--app-light-2);
+    color: var(--app-fuchsia-60);
+    border: 1px solid var(--app-primary-30);
     background-color: rgba(var(--rgb-app-light), 0.1);
   }
 
   &:not(.selected) + .cy--list-item:not(.selected) {
-    border-top: 1px solid var(--app-light);
+    border-top: 1px solid var(--app-primary-30);
   }
 }
 </style>

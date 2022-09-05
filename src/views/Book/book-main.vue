@@ -1,14 +1,14 @@
 <template>
   <AppLayoutMain class="py-6">
     <div v-if="!hasQuery">
-      <div class="py-3 px-4 border-1 border-light-2 rounded-sm bg-white">
+      <div class="py-3 px-4 border-1 border-primary-30 rounded-sm bg-white">
         <textarea
           v-model="urlText"
           class="border-0 bg-transparent resize-none w-full outline-none"
           placeholder="https://"
         />
       </div>
-      <div class="bg-light-0 rounded-r-md py-3 px-4 mt-6 relative" style="min-height: 5rem">
+      <div class="bg-primary-5 rounded-r-md py-3 px-4 mt-6 relative" style="min-height: 5rem">
         <cy-button-icon
           icon="mdi:content-copy"
           class="absolute top-2 right-2"

@@ -109,7 +109,7 @@ defineExpose({
   @apply overflow-y-auto;
 
   &.content-default-theme {
-    @apply border-1 rounded-md drop-shadow border-light-3 px-4 py-2 bg-white;
+    @apply border-1 rounded-md drop-shadow border-primary-50 px-4 py-2 bg-white;
   }
 }
 </style>

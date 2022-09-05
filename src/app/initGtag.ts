@@ -1,4 +1,3 @@
-
 import { App } from 'vue'
 import VueGtag, { PageView } from 'vue-gtag'
 import { RouteLocationNormalized, Router } from 'vue-router'

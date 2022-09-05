@@ -18,7 +18,7 @@
         >
           <div class="py-0 5 pl-1 flex items-center">
             <div class="mr-2" :class="TAG_BUTTON_CLASS_NAME">{{ t('skill-query.branch.dual-element-title') }}</div>
-            <div class="text-blue-purple">{{ container.get('dual_element') }}</div>
+            <div class="text-violet-60">{{ container.get('dual_element') }}</div>
           </div>
         </SkillBranchExtraColumn>
         <SkillBranchExtraColumn
@@ -29,7 +29,7 @@
         >
           <div class="py-0 5 pl-1 flex items-center">
             <div class="mr-2" :class="TAG_BUTTON_CLASS_NAME">{{ t('skill-query.branch.dual-element-title') }}</div>
-            <div class="text-blue-purple">{{ sufContainer.get('dual_element') }}</div>
+            <div class="text-violet-60">{{ sufContainer.get('dual_element') }}</div>
           </div>
         </SkillBranchExtraColumn>
         <SkillBranchExtraColumn
@@ -104,7 +104,7 @@ const getElementIcon = (value: string) => {
 }
 
 const getElementCaption = (value: string) => {
-  const str = `<span class="text-light-3">${t('skill-query.branch.damage.element.' + value)}</span>`
+  const str = `<span class="text-primary-50">${t('skill-query.branch.damage.element.' + value)}</span>`
   return t('skill-query.branch.apply-element', { element: str })
 }
 
@@ -158,7 +158,7 @@ const subContents = computed(() => {
   }
   const getBoolColorType = (value: string) => {
     const mapping = {
-      '1': 'blue-green',
+      '1': 'cyan',
       '0': 'gray',
       'none': 'normal',
     } as Record<string, NormalLayoutSubContent['type']>

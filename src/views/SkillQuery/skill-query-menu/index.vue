@@ -27,7 +27,7 @@
       <cy-button-circle
         v-if="skillItem"
         icon="mdi:checkbox-multiple-blank-circle-outline"
-        color="water-blue"
+        color="blue"
         toggle
         float
         :selected="contents.switchEffect"
@@ -35,7 +35,7 @@
       />
       <cy-button-circle
         icon="icon-park-outline:to-top-one"
-        color="purple"
+        color="fuchsia"
         float
         @click="emit('go-skill-top')"
       />
@@ -48,7 +48,7 @@
             :key="key"
           >
             <div>
-              <cy-icon-text text-color="purple" small>
+              <cy-icon-text text-color="fuchsia-60" small>
                 {{ t(`skill-query.equipment.${key}: title`) }}
               </cy-icon-text>
             </div>
@@ -76,7 +76,7 @@
         </div>
         <div class="mt-3">
           <div>
-            <cy-icon-text text-color="purple" small>
+            <cy-icon-text text-color="fuchsia-60" small>
               {{ t(`skill-query.formula-display-mode.title`) }}
             </cy-icon-text>
           </div>

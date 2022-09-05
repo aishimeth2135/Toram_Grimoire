@@ -189,30 +189,30 @@ const subButtonAvailable = computed(() => {
 <style lang="postcss" scoped>
 .skill-branch-wrapper {
   & :deep(.click-button--tag) {
-    @apply text-orange cursor-pointer inline-block px-0.5;
+    @apply text-orange-60 cursor-pointer inline-block px-0.5;
   }
 
   & :deep(.click-button--skill) {
-    @apply text-red cursor-pointer inline-block px-0.5;
+    @apply text-red-60 cursor-pointer inline-block px-0.5;
   }
 
   & :deep(.click-button--mark) {
-    @apply text-light-3;
+    @apply text-primary-50;
   }
 
   & :deep(.click-button--branch) {
-    @apply text-blue-green cursor-pointer inline-block px-0.5;
+    @apply text-cyan-60 cursor-pointer inline-block px-0.5;
   }
 
   & :deep(.history-compare--mark) {
-    @apply bg-blue-purple bg-opacity-10;
+    @apply bg-violet-60 bg-opacity-10;
   }
 
   & :deep(.result-value--stack) {
-    @apply text-water-blue;
+    @apply text-blue-60;
 
     &.value-dark {
-      @apply text-blue-green;
+      @apply text-cyan-60;
     }
   }
 
@@ -220,30 +220,30 @@ const subButtonAvailable = computed(() => {
     @apply rounded-md pr-1 pl-1.5 mx-0.5 inline-flex items-center;
 
     &.key--floor {
-      @apply bg-light;
+      @apply bg-primary-30;
       & > .name {
-        @apply text-light-4;
+        @apply text-primary-60;
       }
       & > .value > .param-separate {
-        @apply border-light;
+        @apply border-primary-30;
       }
     }
     &.key--min {
-      @apply bg-water-blue-light bg-opacity-50;
+      @apply bg-blue-30 bg-opacity-50;
       & > .name {
-        @apply text-water-blue;
+        @apply text-blue-60;
       }
       & > .value > .param-separate {
-        @apply border-water-blue-light;
+        @apply border-blue-30;
       }
     }
     &.key--max {
-      @apply bg-blue-green-light bg-opacity-50;
+      @apply bg-cyan-30 bg-opacity-50;
       & > .name {
-        @apply text-blue-green;
+        @apply text-cyan-60;
       }
       & > .value >  .param-separate {
-        @apply border-blue-green-light;
+        @apply border-cyan-30;
       }
     }
 
@@ -267,18 +267,18 @@ const subButtonAvailable = computed(() => {
 }
 
 .skill-branch-content {
-  @apply border-l-0 border-light-3 pl-0 duration-200;
+  @apply border-l-0 border-primary-50 pl-0 duration-200;
   transition-property: border-left-width, padding-left;
   &.sub-content-active {
     @apply border-l-2 pl-3 pb-2;
   }
 }
 .group-end {
-  @apply border-t-1 border-light-3 relative;
+  @apply border-t-1 border-primary-50 relative;
 
   &::before {
     content: '';
-    @apply absolute -right-2 -top-2 w-4 h-4 bg-light-3;
+    @apply absolute -right-2 -top-2 w-4 h-4 bg-primary-50;
   }
 }
 </style>

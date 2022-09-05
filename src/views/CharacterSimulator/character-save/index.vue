@@ -5,7 +5,7 @@
         {{ t('character-simulator.save-load-control.export-save-data-caption') }}
       </cy-default-tips>
       <div class="pb-2 px-4">
-        <cy-icon-text small icon="ic:outline-info" text-color="light-3">
+        <cy-icon-text small icon="ic:outline-info" text-color="primary-50">
           {{ t('character-simulator.save-load-control.export-save-data-tips[0]') }}
         </cy-icon-text>
       </div>
@@ -21,7 +21,7 @@
         </cy-button-action>
       </div>
     </div>
-    <div class="p-4 border-t border-light-2">
+    <div class="p-4 border-t border-primary-30">
       <cy-default-tips icon="bx-bx-message-square-dots" text-align="left">
         {{ t('character-simulator.save-load-control.manual-save-load-caption') }}
       </cy-default-tips>
@@ -40,13 +40,13 @@
         </cy-button-action>
       </div>
     </div>
-    <div class="p-4 border-t border-light-2">
+    <div class="p-4 border-t border-primary-30">
       <cy-default-tips icon="mdi-food-apple-outline" text-align="left">
         <div>{{ t('character-simulator.save-load-control.deleta-all-data-caption.0') }}</div>
-        <cy-icon-text icon="ic-outline-info" text-color="light-3" small class="mt-2">
+        <cy-icon-text icon="ic-outline-info" text-color="primary-50" small class="mt-2">
           {{ t('character-simulator.save-load-control.deleta-all-data-caption.1') }}
         </cy-icon-text>
-        <cy-icon-text icon="ic-outline-info" text-color="light-3" small class="mt-2">
+        <cy-icon-text icon="ic-outline-info" text-color="primary-50" small class="mt-2">
           {{ t('character-simulator.save-load-control.deleta-all-data-caption.2') }}
         </cy-icon-text>
       </cy-default-tips>

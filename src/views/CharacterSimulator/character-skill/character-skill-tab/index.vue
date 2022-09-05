@@ -15,7 +15,7 @@
         :skill-results-state="skillResultsState"
       />
     </div>
-    <div class="border-t-1 border-light mt-2 pt-0.5" :class="{ 'opacity-50': disableAll }">
+    <div class="border-t-1 border-primary-30 mt-2 pt-0.5" :class="{ 'opacity-50': disableAll }">
       <CharacterSkillItem
         v-for="skillResultsState in postponedValidResultStates"
         :key="skillResultsState.skill.skillId"

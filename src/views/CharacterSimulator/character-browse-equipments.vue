@@ -32,7 +32,7 @@
             <div class="flex items-center justify-end mt-1 space-x-2" @click.stop>
               <template v-if="movingEquipment">
                 <div v-if="equip === movingEquipment" class="ml-1 mr-auto self-end">
-                  <cy-icon-text icon="mdi:cursor-move" text-color="light-3" small>
+                  <cy-icon-text icon="mdi:cursor-move" text-color="primary-50" small>
                     {{ t('character-simulator.browse-equipments.move-equipment-title') }}
                   </cy-icon-text>
                 </div>
@@ -40,20 +40,20 @@
                   <cy-button-circle
                     icon="ic:baseline-move-up"
                     small
-                    color="water-blue"
+                    color="blue"
                     @click="store.moveEquipment(movingEquipment!, -1, equip), movingEquipment = null"
                   />
                   <cy-button-circle
                     icon="ic:baseline-move-down"
                     small
-                    color="water-blue"
+                    color="blue"
                     @click="store.moveEquipment(movingEquipment!, 1, equip), movingEquipment = null"
                   />
                 </template>
                 <cy-button-circle
                   icon="ic:baseline-stop"
                   small
-                  color="blue-green"
+                  color="cyan"
                   @click="movingEquipment = null"
                 />
               </template>
@@ -72,19 +72,19 @@
                     <cy-button-circle
                       icon="mdi:cursor-move"
                       small
-                      color="blue-green"
+                      color="cyan"
                       @click="movingEquipment = equip"
                     />
                     <cy-button-circle
                       icon="ic:round-arrow-upward"
                       small
-                      color="water-blue"
+                      color="blue"
                       @click="store.moveEquipment(equip, -1)"
                     />
                     <cy-button-circle
                       icon="ic:round-arrow-downward"
                       small
-                      color="water-blue"
+                      color="blue"
                       @click="store.moveEquipment(equip, 1)"
                     />
                   </template>
@@ -92,7 +92,7 @@
                     <cy-button-circle
                       icon="ic:outline-tips-and-updates"
                       small
-                      color="green"
+                      color="emerald"
                       @click="notify(t('character-simulator.browse-equipments.equipment-item-actions-tips'))"
                     />
                   </template>
@@ -138,7 +138,7 @@
       </div>
     </template>
     <template v-if="selectedEquipment" #extra-content>
-      <div v-if="compareCharacter" class="bg-white border-1 border-light-2 p-3 mt-3">
+      <div v-if="compareCharacter" class="bg-white border-1 border-primary-30 p-3 mt-3">
         <CharacterStatCompare
           :before="characterStatCategoryResults"
           :after="comparedCharacterStatCategoryResults"

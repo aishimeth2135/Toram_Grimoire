@@ -1,12 +1,12 @@
 <template>
   <cy-list-item :selected="selected">
     <div class="flex items-center w-full" :class="{ 'opacity-50': disabled }">
-      <EquipmentTitle :equipment="equipment" :text-color="current ? 'purple' : 'dark'" />
+      <EquipmentTitle :equipment="equipment" :text-color="current ? 'fuchsia' : 'primary-90'" />
       <cy-icon-text
         v-if="current"
         icon="carbon-location-current"
         class="ml-auto"
-        icon-color="purple"
+        icon-color="fuchsia-60"
       />
       <slot name="title-end" />
     </div>

@@ -3,5 +3,5 @@ export interface NormalLayoutSubContent {
   icon: string;
   title?: string;
   value?: string;
-  type?: 'primary' | 'normal' | 'blue-green' | 'gray';
+  type?: 'primary' | 'normal' | 'cyan' | 'gray';
 }

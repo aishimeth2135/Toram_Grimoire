@@ -12,7 +12,7 @@
           <cy-icon-text
             v-if="idx !== 0"
             icon="mdi-slash-forward"
-            icon-color="light-3"
+            icon-color="primary-50"
           />
           <div class="flex items-center space-x-1">
             <template v-for="icon in iconData.icons" :key="icon.iid">
@@ -94,10 +94,10 @@ const iconDatas = computed(() => {
 
 <style lang="postcss" scoped>
 .skill-equipment-button {
-  @apply inline-flex items-center space-x-2 border-b-1 border-transparent hover:border-light-2 px-3 cursor-pointer;
+  @apply inline-flex items-center space-x-2 border-b-1 border-transparent hover:border-primary-30 px-3 cursor-pointer;
 
   &.selected {
-    @apply border-light-4 hover:border-light-4;
+    @apply border-primary-60 hover:border-primary-60;
   }
 }
 </style>

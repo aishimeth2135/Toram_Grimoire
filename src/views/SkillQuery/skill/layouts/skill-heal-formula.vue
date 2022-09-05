@@ -3,7 +3,7 @@
     <div class="inline-flex items-center flex-wrap">
       <span
         v-if="isSingleValue"
-        class="text-sm mr-1 text-light-2 attr-item"
+        class="text-sm mr-1 text-primary-30 attr-item"
       >
         {{ t('skill-query.branch.heal.constant-pretext') }}
       </span>
@@ -24,7 +24,7 @@
         <span class="attr-item space-x-0.5">
           <span>{{ item.text }}</span>
           <cy-icon-text icon="ic-round-close" />
-          <span class="text-light-3" v-html="item.value" />
+          <span class="text-primary-50" v-html="item.value" />
         </span>
         <cy-icon-text
           v-if="idx !== extraValueList.length - 1"

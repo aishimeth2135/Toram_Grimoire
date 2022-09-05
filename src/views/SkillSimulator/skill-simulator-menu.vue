@@ -33,7 +33,7 @@
       />
       <cy-button-circle
         icon="carbon:location-current"
-        color="blue-green"
+        color="cyan"
         float
         toggle
         :selected="contents.goSkillTree"
@@ -91,7 +91,7 @@
               {{ t('global.remove') }}
             </cy-button-action>
           </div>
-          <div class="mt-3 pt-3 border-t border-light-2 space-x-2">
+          <div class="mt-3 pt-3 border-t border-primary-30 space-x-2">
             <cy-button-action icon="uil:image-download" @click="emit('export-image')">
               {{ t('skill-simulator.export-image.title') }}
             </cy-button-action>
@@ -151,19 +151,19 @@
           </template>
         </AppLayoutBottomContent>
         <div v-else class="space-x-2.5 flex items-center">
-          <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
+          <div class="border border-primary-30 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
             <cy-icon-text icon="mdi:script-outline" small>
               {{ t('skill-simulator.skill-level-point') }}
             </cy-icon-text>
-            <div class="text-sm text-light-3">
+            <div class="text-sm text-primary-50">
               {{ skillPointSum.level }}
             </div>
           </div>
-          <div class="border border-light-2 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
+          <div class="border border-primary-30 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
             <cy-icon-text icon="mdi:judaism" small>
               {{ t('skill-simulator.star-gem-level-point') }}
             </cy-icon-text>
-            <div class="text-sm text-water-blue">
+            <div class="text-sm text-blue-60">
               {{ skillPointSum.starGemLevel }}
             </div>
           </div>

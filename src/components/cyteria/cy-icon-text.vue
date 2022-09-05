@@ -85,7 +85,11 @@ export default defineComponent({
     const handleColorValue = (type: 'icon' | 'text', value: undefined | null | string, defaultValue: string) => {
       if (typeof value !== 'string') {
         if (props.color) {
-          value = type === 'icon' && !props.singleColor ? Color.lighten(props.color) : props.color
+          let color = props.color
+          if (!color.includes('-')) {
+            color += '-60'
+          }
+          value = type === 'icon' && !props.singleColor ? Color.lighten(color) : color
         } else {
           value = 'default'
         }
@@ -93,8 +97,8 @@ export default defineComponent({
       return value === 'default' ? defaultValue : value
     }
 
-    const iconColor = computed(() => handleColorValue('icon', props.iconColor, 'light-2'))
-    const textColor = computed(() => handleColorValue('text', props.textColor, 'dark'))
+    const iconColor = computed(() => handleColorValue('icon', props.iconColor, 'primary-30'))
+    const textColor = computed(() => handleColorValue('text', props.textColor, 'primary-90'))
 
     const rootClass = computed(() => {
       return {

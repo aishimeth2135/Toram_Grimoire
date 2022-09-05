@@ -9,7 +9,7 @@ export const ButtonIconProps = {
   },
 }
 
-type ButtonColors = 'primary' | 'bright' | 'secondary' | 'blue-green' | 'water-blue' | 'purple' | 'blue-purple' | 'red' | 'orange' | 'green' | 'gray'
+type ButtonColors = 'primary' | 'bright' | 'secondary' | 'cyan' | 'blue' | 'fuchsia' | 'violet' | 'red' | 'orange' | 'emerald' | 'gray'
 
 export const ButtonBaseProps = {
   color: {

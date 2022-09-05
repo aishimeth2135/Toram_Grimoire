@@ -4,29 +4,29 @@
     class="w-full h-full fixed top-0 left-0 bg-white z-100 flex items-center justify-center p-4"
   >
     <div class="max-w-full text-center w-128">
-      <div class="border-light pb-4" :class="{ 'border-b': status < InitializeStatus.BeforeFinished }">
+      <div class="border-primary-30 pb-4" :class="{ 'border-b': status < InitializeStatus.BeforeFinished }">
         <LoadingAnimation :status="status" @done="initializeStore.initFinished()" />
       </div>
       <div v-if="status < InitializeStatus.BeforeFinished" class="pt-8 inline-block">
         <template v-if="status <= InitializeStatus.ViewSuccess">
           <div v-for="item in initItems" :key="item.message" class="flex justify-center items-center mb-2 pl-1">
-            <span class="mr-3 w-full text-light-4">{{ t(item.message) }}</span>
+            <span class="mr-3 w-full text-primary-60">{{ t(item.message) }}</span>
             <cy-icon-text
               block
               :icon="statusIcon(item.status)"
               :class="{ 'loading-circle': item.status === InitItemStatus.Loading }"
-              :icon-color="item.status === InitItemStatus.Error ? 'red' : 'water-blue'"
+              :icon-color="item.status === InitItemStatus.Error ? 'orange-60' : 'blue-60'"
             />
           </div>
         </template>
         <template v-else-if="status <= InitializeStatus.LocaleSuccess">
           <div class="flex justify-center items-center pl-1">
-            <span class="mr-3 w-full text-light-4">{{ t('app.loading-message.init-locale') }}</span>
+            <span class="mr-3 w-full text-primary-60">{{ t('app.loading-message.init-locale') }}</span>
             <cy-icon-text
               block
               :icon="statusIcon(status - 10)"
               :class="{ 'loading-circle': status === InitializeStatus.LocaleLoading }"
-              icon-color="water-blue"
+              icon-color="blue-60"
             />
           </div>
         </template>

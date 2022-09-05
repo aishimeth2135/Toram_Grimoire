@@ -1,7 +1,7 @@
 <template>
-  <div class="px-3 py-2 border border-solid border-light m-1.5 bg-white" style="width: 23.25rem">
-    <div class="flex items-center border-b border-solid border-light pb-1 mb-2.5">
-      <cy-icon-text icon="gg-shape-square" small text-color="light-2">
+  <div class="px-3 py-2 border border-solid border-primary-30 m-1.5 bg-white" style="width: 23.25rem">
+    <div class="flex items-center border-b border-solid border-primary-30 pb-1 mb-2.5">
+      <cy-icon-text icon="gg-shape-square" small text-color="primary-30">
         {{ t('common.Equipment.field.' + equipmentField.type) }}
       </cy-icon-text>
       <div class="ml-auto leading-none">
@@ -9,13 +9,13 @@
           v-if="!equipmentField.isEmpty"
           icon="ic-round-close"
           class="p-0"
-          icon-color="red"
+          icon-color="orange-60"
           @click="equipmentField.removeEquipment()"
         />
         <cy-button-icon
           icon="mdi:checkbox-blank-badge-outline"
           class="p-0"
-          icon-color="orange"
+          icon-color="orange-60"
           @click="editEquipment"
         />
       </div>

@@ -4,7 +4,7 @@
       <cy-button-icon
         :icon="contents.resultStats ? 'ant-design:star-filled' : 'ant-design:star-outlined'"
         class="flex-shrink-0"
-        icon-color="orange"
+        icon-color="orange-60"
         :selected="contents.resultStats"
         @click="toggle('contents/resultStats')"
       />
@@ -14,7 +14,7 @@
             <span
               v-for="item in enchantResultStats"
               :key="item.stat.statId"
-              :class="item.negative ? ['text-orange', 'border-orange'] : ['text-light-4', 'border-light-4']"
+              :class="item.negative ? ['text-orange-60', 'border-orange-60'] : ['text-primary-60', 'border-primary-60']"
               class="stat-scope"
             >
               {{ item.text }}
@@ -24,10 +24,10 @@
             <span
               v-for="item in enchantResultMaterials"
               :key="item.title"
-              class="stat-scope border-water-blue-light text-water-blue-light text-sm"
+              class="stat-scope border-blue-30 text-blue-30 text-sm"
             >
-              <span class="text-dark">{{ item.title }}</span>
-              <span class="text-water-blue ml-2">{{ item.value }}</span>
+              <span class="text-primary-90">{{ item.title }}</span>
+              <span class="text-blue-60 ml-2">{{ item.value }}</span>
             </span>
           </div>
         </div>
@@ -39,10 +39,10 @@
       />
     </div>
     <div class="my-1 flex items-center">
-      <cy-icon-text icon="ic:round-numbers" text-color="light-2">
+      <cy-icon-text icon="ic:round-numbers" text-color="primary-30">
         {{ t('enchant-simulator.result.operation-steps-quantity') }}
       </cy-icon-text>
-      <span class="text-blue-purple ml-3">
+      <span class="text-violet-60 ml-3">
         {{ equipment.operationStepsQuantity }}
       </span>
     </div>
@@ -51,7 +51,7 @@
       :key="item.iid"
       class="flex items-start"
     >
-      <div class="text-light-2 mr-3 my-1 w-6 text-right flex-shrink-0">
+      <div class="text-primary-30 mr-3 my-1 w-6 text-right flex-shrink-0">
         {{ idx + 1 }}.
       </div>
       <template v-if="item.type === 'normal'">
@@ -61,15 +61,15 @@
             v-for="part in (item.parts.slice(1) as EnchantResultPart[])"
             :key="part.text"
             class="stat-scope"
-            :class="part.negative ? ['text-orange', 'border-orange'] : ['text-light-4', 'border-light-4']"
+            :class="part.negative ? ['text-orange-60', 'border-orange-60'] : ['text-primary-60', 'border-primary-60']"
           >
             {{ part.text }}
           </span>
           <cy-icon-text
             icon="mdi-creation"
             small
-            icon-color="water-blue"
-            text-color="water-blue"
+            icon-color="blue-60"
+            text-color="blue-60"
             class="ml-2"
           >
             {{ item.remainingPotential }}
@@ -82,7 +82,7 @@
             v-if="(typeof part !== 'string')"
             :key="part.text"
             class="stat-scope"
-            :class="part.negative ? ['text-orange', 'border-orange'] : ['text-light-4', 'border-light-4']"
+            :class="part.negative ? ['text-orange-60', 'border-orange-60'] : ['text-primary-60', 'border-primary-60']"
           >
             {{ part.text }}
           </span>
@@ -93,8 +93,8 @@
         <cy-icon-text
           icon="mdi-creation"
           small
-          icon-color="water-blue"
-          text-color="water-blue"
+          icon-color="blue-60"
+          text-color="blue-60"
           class="ml-2 my-1"
         >
           {{ item.remainingPotential }}
@@ -104,18 +104,18 @@
     <div class="flex items-center mt-4 px-2 cursor-pointer">
       <div class="flex items-center flex-wrap justify-items-end ml-auto">
         <div class="inline-flex items-center mr-4">
-          <cy-icon-text icon="ant-design:star-outlined" icon-color="water-blue">
+          <cy-icon-text icon="ant-design:star-outlined" icon-color="blue-60">
             {{ t('enchant-simulator.success-rate') }}
           </cy-icon-text>
-          <span class="text-water-blue ml-2">
+          <span class="text-blue-60 ml-2">
             {{ successRate }}
           </span>
         </div>
         <div class="inline-flex items-center">
-          <cy-icon-text icon="ant-design:star-outlined" icon-color="light-4">
+          <cy-icon-text icon="ant-design:star-outlined" icon-color="primary-60">
             {{ t('enchant-simulator.expected-success-rate') }}
           </cy-icon-text>
-          <span class="text-light-4 ml-2">
+          <span class="text-primary-60 ml-2">
             {{ expectedSuccessRate }}
           </span>
         </div>

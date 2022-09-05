@@ -2,7 +2,7 @@
   <div class="cy--pagination-wrapper">
     <div
       class="flex items-center justify-center w-full px-4 space-x-1 border border-transparent duration-300"
-      :class="{ 'border-light-3': inputFocus }"
+      :class="{ 'border-primary-50': inputFocus }"
     >
       <cy-button-action icon="ic:round-keyboard-double-arrow-left" @click="inputValue = 1" />
       <cy-button-action icon="ic:round-arrow-back" @click="inputValue -= 1" />
@@ -17,9 +17,9 @@
       <cy-button-action icon="ic:round-arrow-forward" @click="inputValue += 1" />
       <cy-button-action icon="ic:round-keyboard-double-arrow-right" @click="inputValue = maxPage" />
     </div>
-    <div class="flex items-center text-light-2 space-x-0.5 text-sm">
+    <div class="flex items-center text-primary-30 space-x-0.5 text-sm">
       <span>{{ value }}</span>
-      <cy-icon-text icon="mdi:slash-forward" icon-color="light-2" small />
+      <cy-icon-text icon="mdi:slash-forward" icon-color="primary-30" small />
       <span>{{ maxPage }}</span>
     </div>
   </div>

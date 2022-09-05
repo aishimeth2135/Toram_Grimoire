@@ -59,23 +59,23 @@ const rootClassList = computed(() => {
   &.is-tips {
     @apply text-sm pl-5;
 
-    /* APPLY text-light-3 */
-    color: var(--app-light-3);
+    /* APPLY text-primary-50 */
+    color: var(--app-primary-50);
 
-    & :deep(.text-light-3) {
-      color: var(--app-purple);
+    & :deep(.text-primary-50) {
+      color: var(--app-fuchsia-60);
     }
   }
 
   &.is-mark {
-    @apply border-light-3 border-1 border-l-3 py-3 px-4;
+    @apply border-primary-50 border-1 border-l-3 py-3 px-4;
   }
 
   &.is-group {
-    @apply border-light-2 border-1 duration-300 cursor-pointer px-5 py-2 relative;
+    @apply border-primary-30 border-1 duration-300 cursor-pointer px-5 py-2 relative;
 
     &.group-active {
-      @apply border-light-3;
+      @apply border-primary-50;
       border-left-color: transparent;
       border-right-color: transparent;
       border-bottom-color: transparent;
@@ -86,16 +86,16 @@ const rootClassList = computed(() => {
     }
 
     &:hover {
-      @apply border-light-4;
+      @apply border-primary-60;
 
       &::before {
-        @apply bg-light-4;
+        @apply bg-primary-60;
       }
     }
 
     &::before, &::after {
       content: '';
-      @apply absolute w-4 h-4 bg-light-3;
+      @apply absolute w-4 h-4 bg-primary-50;
     }
     &::before {
       @apply -top-2 -left-2;
