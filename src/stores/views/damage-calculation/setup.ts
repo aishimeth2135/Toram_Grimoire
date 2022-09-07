@@ -36,6 +36,9 @@ export function setupCalculationExpectedResult(calculation: Ref<Calculation>, ca
   })
 
   return {
+    baseResultCritical,
+    baseResultWithoutCritical,
+
     expectedResult,
   }
 }

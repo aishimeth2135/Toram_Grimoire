@@ -1,7 +1,7 @@
 import { CalcStructExpression } from '@/lib/Calculation/Damage/Calculation/base'
 import { CalculationContainerIds } from '@/lib/Calculation/Damage/Calculation/enums'
 
-export { calcStructCritical, calcStructWithoutCritical } from '@/stores/views/damage-calculation/consts'
+export { calcStructCritical as calcStructDisplayCritical } from '@/stores/views/damage-calculation/consts'
 
 const calcStructDisplay: CalcStructExpression = {
   id: 'display',
