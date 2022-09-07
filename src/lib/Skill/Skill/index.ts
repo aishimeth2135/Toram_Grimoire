@@ -1,4 +1,3 @@
-
 import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
@@ -120,7 +119,6 @@ class SkillTree extends SkillElement {
     return el
   }
 }
-
 
 
 abstract class SkillBase extends SkillElement {

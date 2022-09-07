@@ -37,7 +37,7 @@
         <cy-icon-text
           icon="mdi-checkbox-multiple-blank-circle-outline"
           small
-          text-color="purple"
+          text-color="fuchsia-60"
         >
           {{ t('character-simulator.food-build.food-build-name') }}
         </cy-icon-text>
@@ -54,7 +54,7 @@
         <cy-icon-text
           icon="mdi-checkbox-multiple-blank-circle-outline"
           small
-          text-color="purple"
+          text-color="fuchsia-60"
         >
           {{ t('character-simulator.food-build.food-list') }}
         </cy-icon-text>
@@ -65,10 +65,10 @@
         </cy-button-toggle>
       </div>
       <div class="pl-4 mt-1">
-        <cy-icon-text icon="ic-outline-info" text-color="light-3" small class="mr-2">
+        <cy-icon-text icon="ic-outline-info" text-color="primary-50" small class="mr-2">
           {{ t('character-simulator.food-build.introduction.0') }}
         </cy-icon-text>
-        <cy-icon-text icon="ic-outline-info" text-color="light-3" small>
+        <cy-icon-text icon="ic-outline-info" text-color="primary-50" small>
           {{ t('character-simulator.food-build.introduction.1') }}
         </cy-icon-text>
       </div>

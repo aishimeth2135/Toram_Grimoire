@@ -1,4 +1,3 @@
-
 <!-- this component is splitted to handle EnchantStepStat -->
 <template>
   <div class="pt-1">
@@ -7,7 +6,7 @@
       :class="{ 'opacity-50': !stat.valid }"
     >
       <cy-icon-text
-        :text-color="stat.value >= 0 ? 'dark' : 'orange'"
+        :text-color="stat.value >= 0 ? 'primary-90' : 'orange-60'"
         :icon="stat.valid ? 'gg-shape-rhombus' : 'ic-round-close'"
       >
         {{ stat.showBase() }}
@@ -17,15 +16,15 @@
         icon="mdi-creation"
         class="ml-auto mr-2"
         small
-        text-color="purple"
+        text-color="fuchsia-60"
       >
         {{ potentialEffect }}
       </cy-icon-text>
       <div v-else class="inline-flex items-center ml-auto">
-        <cy-icon-text icon="mdi-cube-outline" small icon-color="water-blue-light">
+        <cy-icon-text icon="mdi-cube-outline" small icon-color="blue-30">
           {{ materialPoint.title }}
         </cy-icon-text>
-        <span class="text-sm ml-2 text-water-blue">
+        <span class="text-sm ml-2 text-blue-60">
           {{ materialPoint.value }}
         </span>
       </div>
@@ -42,7 +41,7 @@
       <cy-button-icon
         icon="jam-close-circle"
         class="ml-auto"
-        icon-color="gray"
+        icon-color="gray-60"
         @click="stat.remove()"
       />
     </div>

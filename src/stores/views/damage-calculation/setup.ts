@@ -1,4 +1,3 @@
-
 import { computed } from 'vue'
 import { Ref } from 'vue'
 
@@ -37,6 +36,9 @@ export function setupCalculationExpectedResult(calculation: Ref<Calculation>, ca
   })
 
   return {
+    baseResultCritical,
+    baseResultWithoutCritical,
+
     expectedResult,
   }
 }

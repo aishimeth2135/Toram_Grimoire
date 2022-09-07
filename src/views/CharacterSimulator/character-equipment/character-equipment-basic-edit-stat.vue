@@ -23,12 +23,12 @@
           @click="toggleStatSelected(stat)"
         >
           <template v-if="statOptionSelected(stat) === '+'">
-            <cy-icon-text icon="mdi-rhombus-outline" color="water-blue">
+            <cy-icon-text icon="mdi-rhombus-outline" color="blue">
               {{ stat.text }}
             </cy-icon-text>
             <cy-icon-text
               icon="ic-round-add"
-              icon-color="water-blue-light"
+              icon-color="blue-30"
               class="ml-auto"
             />
           </template>
@@ -38,14 +38,14 @@
             </cy-icon-text>
             <cy-icon-text
               icon="ic-round-delete"
-              icon-color="red-light"
+              icon-color="red-30"
               class="ml-auto"
             />
           </template>
           <cy-icon-text
             v-else-if="statOptionSelected(stat) === '#'"
             icon="mdi-rhombus-outline"
-            text-color="purple"
+            text-color="fuchsia-60"
           >
             {{ stat.text }}
           </cy-icon-text>
@@ -70,9 +70,9 @@
     </template>
     <template #extra-content>
       <div class="space-y-3">
-        <div class="p-3 bg-white border-1 border-light-2">
+        <div class="p-3 bg-white border-1 border-primary-30">
           <div>
-            <cy-icon-text icon="carbon:location-current" small text-color="purple">
+            <cy-icon-text icon="carbon:location-current" small text-color="fuchsia-60">
               {{ t('character-simulator.equipment-basic-editor.edit-stats.current-stats') }}
             </cy-icon-text>
           </div>
@@ -90,9 +90,9 @@
             </cy-list-item>
           </div>
         </div>
-        <div v-if="appendedStatOptions.length !== 0" class="p-3 bg-white border-1 border-light-2">
+        <div v-if="appendedStatOptions.length !== 0" class="p-3 bg-white border-1 border-primary-30">
           <div>
-            <cy-icon-text icon="ic-round-add" small text-color="purple">
+            <cy-icon-text icon="ic-round-add" small text-color="fuchsia-60">
               {{ t('character-simulator.equipment-basic-editor.edit-stats.appended-stats') }}
             </cy-icon-text>
           </div>
@@ -102,13 +102,13 @@
               :key="stat.origin.statId(stat.type)"
               @click="toggleStatSelected(stat)"
             >
-              <cy-button-check selected color="water-blue" inline>{{ stat.text }}</cy-button-check>
+              <cy-button-check selected color="blue" inline>{{ stat.text }}</cy-button-check>
             </cy-list-item>
           </div>
         </div>
-        <div v-if="removedStatOptions.length !== 0" class="p-3 bg-white border-1 border-light-2">
+        <div v-if="removedStatOptions.length !== 0" class="p-3 bg-white border-1 border-primary-30">
           <div>
-            <cy-icon-text icon="ic-round-delete" small text-color="purple">
+            <cy-icon-text icon="ic-round-delete" small text-color="fuchsia-60">
               {{ t('character-simulator.equipment-basic-editor.edit-stats.removed-stats') }}
             </cy-icon-text>
           </div>

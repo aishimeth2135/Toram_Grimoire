@@ -20,7 +20,7 @@
         :data="data"
         :is-main="isMain"
       />
-      <div class="flex justify-center cursor-pointer py-0.5 hover:bg-light-0 duration-200" @click.stop="toggle('contents/menuLinks')">
+      <div class="flex justify-center cursor-pointer py-0.5 hover:bg-primary-5 duration-200" @click.stop="toggle('contents/menuLinks')">
         <cy-icon-text :icon="contents.menuLinks ? 'ic:round-keyboard-double-arrow-up' : 'ic:round-keyboard-double-arrow-down'" />
       </div>
     </div>

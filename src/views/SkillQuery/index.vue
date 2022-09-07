@@ -4,7 +4,7 @@
       <cy-icon-text v-if="currentSkill" icon="bx:bxs-book-bookmark">
         {{ currentSkill.name }}
       </cy-icon-text>
-      <div v-else class="text-light-2 ml-2">{{ t('skill-query.search-tips') }}</div>
+      <div v-else class="text-primary-30 ml-2">{{ t('skill-query.search-tips') }}</div>
       <cy-button-icon
         class="ml-auto"
         icon="bx:bx-search"
@@ -48,7 +48,7 @@
       class="pt-10"
       style="min-height: 50vh;"
     >
-      <div v-if="contents.skillEffect" class="border-t-1 border-orange pt-4">
+      <div v-if="contents.skillEffect" class="border-t-1 border-orange-60 pt-4">
         <SkillEffect
           v-model:selected-equipment="currentEquipment"
           :skill-item="currentSkillItem"
@@ -58,7 +58,7 @@
       <div v-if="mainStore.devMode" class="mt-4">
         <cy-button-circle
           icon="ic:round-details"
-          color="blue-purple"
+          color="fuchsia"
           small
           toggle
           :selected="contents.skillDev"

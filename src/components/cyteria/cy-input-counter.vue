@@ -91,7 +91,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   maxButton: false,
   minButton: false,
-  mainColor: 'light-2',
+  mainColor: 'primary-30',
   inputWidth: null,
 })
 const emit = defineEmits<Emits>()

@@ -31,8 +31,8 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 .cy-button-base {
-  --button-color-main: var(--app-light-3);
-  --button-color-main-light: var(--app-light-2);
+  --button-color-main: var(--app-primary-50);
+  --button-color-main-light: var(--app-primary-30);
 
   --button-color-text: var(--button-color-main);
   --button-color-icon: var(--button-color-main-light);
@@ -72,61 +72,61 @@ export default defineComponent({
   }
 
   &:focus-visible {
-    @apply outline-light-2;
+    @apply outline-primary-30;
   }
 
   &.theme-primary {
-    --button-color-text: var(--app-dark-light);
+    --button-color-text: var(--app-primary-70);
   }
 
   &.theme-bright {
-    --button-color-main: var(--app-light-4);
-    --button-color-main-light: var(--app-light-3);
+    --button-color-main: var(--app-primary-60);
+    --button-color-main-light: var(--app-primary-50);
   }
 
   &.theme-secondary {
-    --button-color-main: var(--app-light-2);
-    --button-color-main-light: var(--app-light);
+    --button-color-main: var(--app-primary-30);
+    --button-color-main-light: var(--app-primary-30);
   }
 
-  &.theme-blue-green {
-    --button-color-main: var(--app-blue-green);
-    --button-color-main-light: var(--app-blue-green-light);
+  &.theme-cyan {
+    --button-color-main: var(--app-cyan-60);
+    --button-color-main-light: var(--app-cyan-30);
   }
 
-  &.theme-water-blue {
-    --button-color-main: var(--app-water-blue);
-    --button-color-main-light: var(--app-water-blue-light);
+  &.theme-blue {
+    --button-color-main: var(--app-blue-60);
+    --button-color-main-light: var(--app-blue-30);
   }
 
-  &.theme-purple {
-    --button-color-main: var(--app-purple);
-    --button-color-main-light: var(--app-purple-light);
+  &.theme-fuchsia {
+    --button-color-main: var(--app-fuchsia-60);
+    --button-color-main-light: var(--app-fuchsia-30);
   }
 
-  &.theme-blue-purple {
-    --button-color-main: var(--app-blue-purple);
-    --button-color-main-light: var(--app-blue-purple-light);
+  &.theme-violet {
+    --button-color-main: var(--app-violet-60);
+    --button-color-main-light: var(--app-violet-30);
   }
 
   &.theme-orange {
-    --button-color-main: var(--app-orange);
-    --button-color-main-light: var(--app-orange-light);
+    --button-color-main: var(--app-orange-60);
+    --button-color-main-light: var(--app-orange-30);
   }
 
   &.theme-green {
     --button-color-main: var(--app-green);
-    --button-color-main-light: var(--app-green-light);
+    --button-color-main-light: var(--app-emerald-30);
   }
 
   &.theme-gray {
     --button-color-main: var(--app-gray);
-    --button-color-main-light: var(--app-gray-light);
+    --button-color-main-light: var(--app-gray-30);
   }
 
   &.theme-red {
-    --button-color-main: var(--app-red);
-    --button-color-main-light: var(--app-red-light);
+    --button-color-main: var(--app-orange-60);
+    --button-color-main-light: var(--app-red-30);
   }
 }
 </style>

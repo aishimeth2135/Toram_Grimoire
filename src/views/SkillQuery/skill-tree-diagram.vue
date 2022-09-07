@@ -147,11 +147,11 @@ const handleSkillCircleClass = (data: DrawSkillTreeData) => {
 
 <style lang="postcss" scoped>
 .app--draw-skill-tree {
-  stroke: var(--app-light);
+  stroke: var(--app-primary-30);
   stroke-width: 2px;
 
   & > circle.dot {
-    fill: var(--app-light);
+    fill: var(--app-primary-30);
   }
 
   & > circle.skill-circle {
@@ -163,7 +163,7 @@ const handleSkillCircleClass = (data: DrawSkillTreeData) => {
     transition: 0.3s;
 
     &:hover, &.cur, &.selected {
-      stroke: var(--app-water-blue);
+      stroke: var(--app-blue-60);
     }
 
     &.disabled {
@@ -176,13 +176,13 @@ const handleSkillCircleClass = (data: DrawSkillTreeData) => {
 
     &.lock {
       fill: url(#skill-icon-lock);
-      stroke: var(--app-light);
+      stroke: var(--app-primary-30);
     }
   }
   & > text.skill-name {
     text-anchor: middle;
     stroke-width: 0;
-    fill: var(--app-purple);
+    fill: var(--app-fuchsia-60);
     transition: 0.3s;
     display: none;
   }
@@ -202,7 +202,7 @@ const handleSkillCircleClass = (data: DrawSkillTreeData) => {
   }
 
   & > text.skill-level-text {
-    fill: var(--app-light-4);
+    fill: var(--app-primary-60);
     text-anchor: middle;
     stroke-width: 0;
     dominant-baseline: middle;
@@ -215,7 +215,7 @@ const handleSkillCircleClass = (data: DrawSkillTreeData) => {
     fill: #9acbf3;
   }
   & > text.star-gem-level-text {
-    fill: var(--app-water-blue);
+    fill: var(--app-blue-60);
     text-anchor: middle;
     stroke-width: 0;
     dominant-baseline: middle;

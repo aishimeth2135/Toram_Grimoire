@@ -8,6 +8,7 @@
   >
     <slot :shown="popper ? popper.shown : false" />
     <CyPopper
+      #default="{ hide }"
       ref="popper"
       :element="mainElement"
       :options="{
@@ -15,7 +16,7 @@
         autoSelect,
       }"
     >
-      <slot name="popper" />
+      <slot name="popper" :hide="hide" />
     </CyPopper>
   </component>
 </template>

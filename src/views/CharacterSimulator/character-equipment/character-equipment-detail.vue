@@ -1,8 +1,8 @@
 <template>
   <div class="space-y-1.5 cursor-auto">
     <div v-if="!innerItem" class="flex items-center pt-0.5">
-      <EquipmentTitle :equipment="equipment" text-color="purple" :small="innerItem" />
-      <div class="text-light-3 text-sm ml-3">
+      <EquipmentTitle :equipment="equipment" text-color="fuchsia-60" :small="innerItem" />
+      <div class="text-primary-50 text-sm ml-3">
         {{ t('common.Equipment.category.' + equipment.type) }}
       </div>
       <div class="flex ml-auto">
@@ -16,32 +16,32 @@
     <div v-if="equipment.is(EquipmentKinds.Weapon) || equipment.is(EquipmentKinds.Armor)" class="flex items-center pt-0.5">
       <cy-popover>
         <CharacterEquipmentEditMask>
-          <div class="flex items-center rounded-2xl border-1 border-solid border-light py-0.5 px-3 w-72" :class="{ 'opacity-50': !baseValueValid }">
+          <div class="flex items-center rounded-2xl border-1 border-solid border-primary-30 py-0.5 px-3 w-72" :class="{ 'opacity-50': !baseValueValid }">
             <template v-if="equipment.is(EquipmentKinds.Weapon)">
-              <cy-icon-text icon="mdi-sword" text-color="light-2">
+              <cy-icon-text icon="mdi-sword" text-color="primary-30">
                 ATK
               </cy-icon-text>
-              <div class="ml-2 text-purple flex items-center">
+              <div class="ml-2 text-fuchsia-60 flex items-center">
                 {{ equipment.basicValue }}
                 <span
                   v-if="refiningAdditionAmount > 0"
                   class="ml-1"
-                  :class="!isSub ? 'text-water-blue' : 'text-green'"
+                  :class="!isSub ? 'text-blue-60' : 'text-emerald'"
                 >
                   +{{ refiningAdditionAmount }}
                 </span>
                 <div v-else-if="baseValueArrowRate" class="flex items-center ml-2">
-                  <cy-icon-text icon="ic-round-close" icon-width="0.75rem" icon-color="green" />
-                  <span class="text-green ml-1">{{ baseValueArrowRate }}</span>
+                  <cy-icon-text icon="ic-round-close" icon-width="0.75rem" icon-color="emerald" />
+                  <span class="text-emerald-60 ml-1">{{ baseValueArrowRate }}</span>
                 </div>
               </div>
-              <span class="ml-auto text-dark-light">{{ equipment.stability }}%</span>
+              <span class="ml-auto text-primary-70">{{ equipment.stability }}%</span>
             </template>
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
-              <cy-icon-text icon="mdi:shield-outline" text-color="light-2">
+              <cy-icon-text icon="mdi:shield-outline" text-color="primary-30">
                 DEF
               </cy-icon-text>
-              <span class="ml-2 text-purple">{{ equipment.basicValue }}</span>
+              <span class="ml-2 text-fuchsia-60">{{ equipment.basicValue }}</span>
             </template>
           </div>
         </CharacterEquipmentEditMask>
@@ -95,9 +95,9 @@
             </template>
           </cy-popover>
         </CharacterEquipmentEditMask>
-        <CharacterEquipmentEditMask class="!absolute top-0 -right-2 h-full w-6 hover:bg-light-0" @click="editStat(equipment)" />
+        <CharacterEquipmentEditMask class="!absolute top-0 -right-2 h-full w-6 hover:bg-primary-5" @click="editStat(equipment)" />
       </div>
-      <CharacterEquipmentEditMask v-else class="text-light-2 text-sm px-2.5" @click="editStat(equipment)">
+      <CharacterEquipmentEditMask v-else class="text-primary-30 text-sm px-2.5" @click="editStat(equipment)">
         {{ t('character-simulator.equipment-info.stat-empty') }}
       </CharacterEquipmentEditMask>
       <div v-if="equipment.hasCrystal" class="px-1.5">
@@ -111,13 +111,13 @@
             :key="crystal.id"
             :icon="crystal.crystalIconPath"
             icon-src="image"
-            text-color="blue-green"
+            text-color="cyan-60"
             small
           >
             {{ crystal.name }}
           </cy-icon-text>
         </CharacterEquipmentEditMask>
-        <CharacterEquipmentEditMask v-else class="text-light-2 text-sm px-1" @click="editCrystal(equipment)">
+        <CharacterEquipmentEditMask v-else class="text-primary-30 text-sm px-1" @click="editCrystal(equipment)">
           {{ t('character-simulator.equipment-info.crystal-empty') }}
         </CharacterEquipmentEditMask>
       </div>
@@ -130,7 +130,7 @@
           @click="editBasic(equipment)"
         />
       </div>
-      <span class="text-red text-sm">
+      <span class="text-red-60 text-sm">
         {{ t('character-simulator.browse-equipments.click-edit-tips') }}
       </span>
     </div>

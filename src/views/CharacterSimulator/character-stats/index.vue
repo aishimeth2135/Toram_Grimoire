@@ -6,11 +6,11 @@
         :key="data.name"
         class="px-2 mb-4"
       >
-        <fieldset class="border-t border-solid border-light">
+        <fieldset class="border-t border-solid border-primary-30">
           <legend class="py-0 px-2 ml-3">
             <cy-icon-text
               icon="mdi-creation"
-              text-color="light-2"
+              text-color="primary-30"
               small
             >
               {{ data.name }}
@@ -21,14 +21,14 @@
           <span
             v-for="stat in data.stats"
             :key="stat.id"
-            class="stat-scope px-2 mx-2 my-1 inline-flex cursor-pointer relative border-b border-solid border-light"
+            class="stat-scope px-2 mx-2 my-1 inline-flex cursor-pointer relative border-b border-solid border-primary-30"
             :data-stat-id="stat.id"
           >
             <template v-if="!stat.origin.isBoolStat">
               <span class="mr-3">{{ stat.name }}</span>
-              <span class="text-light-4">{{ stat.displayValue }}</span>
+              <span class="text-primary-60">{{ stat.displayValue }}</span>
             </template>
-            <span v-else class="text-light-4">{{ stat.name }}</span>
+            <span v-else class="text-primary-60">{{ stat.name }}</span>
           </span>
         </div>
       </div>

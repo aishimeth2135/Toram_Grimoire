@@ -257,8 +257,8 @@ class EnchantEquipment {
 
   /**
    * Insert EnchantStep before given step
-   * @param {EnchantStep} target
-   * @returns {EnchantStep} - new EnchantStep be inserted
+   * @param target
+   * @returns new EnchantStep be inserted
    */
   insertStepBefore(target: EnchantStep): EnchantStep {
     const step = new EnchantStep(this)
@@ -479,7 +479,7 @@ class EnchantStep {
   }
 
   get afterLastStep() {
-    return (this.belongEquipment.lastStep as EnchantStep).index < this.index
+    return this.belongEquipment.lastStep!.index < this.index
   }
 
   get firstStat(): EnchantStepStat | null {

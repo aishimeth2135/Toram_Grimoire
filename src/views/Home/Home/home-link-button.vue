@@ -6,14 +6,14 @@
         role="link"
         @click="navigate"
       >
-        <div class="text-lg text-center text-dark-light pl-6 pr-10">
+        <div class="text-lg text-center text-primary-70 pl-6 pr-10">
           {{ t('app.page-title.' + data.name) }}
         </div>
         <div class="cy--home-link-button-underline"></div>
         <cy-icon-text
           :icon="data.icon"
           icon-width="1.5rem"
-          icon-color="light-2"
+          icon-color="primary-30"
           class="cy--home-link-button-icon"
         />
       </div>
@@ -41,9 +41,9 @@ const { t } = useI18n()
 
 <style lang="postcss" scoped>
 .content-title:hover {
-  @apply border-light-3;
+  @apply border-primary-50;
   & > .router-link-icon {
-    @apply text-light-3;
+    @apply text-primary-50;
     animation: move-rotate 1.3s ease;
   }
 }
@@ -64,7 +64,7 @@ const { t } = useI18n()
   @apply py-2 relative cursor-pointer;
 
   & > .cy--home-link-button-underline {
-    @apply h-1 rounded-full bg-light mt-1 duration-200;
+    @apply h-1 rounded-full bg-primary-30 mt-1 duration-200;
   }
 
   & > .cy--home-link-button-icon {
@@ -73,7 +73,7 @@ const { t } = useI18n()
 
   &:hover {
     & > .cy--home-link-button-underline {
-      @apply bg-light-2;
+      @apply bg-primary-30;
     }
     & > .cy--home-link-button-icon {
       @apply rotate-12;

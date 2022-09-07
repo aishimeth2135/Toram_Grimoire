@@ -7,7 +7,7 @@
     @close="emit('close')"
   >
     <template #default>
-      <div ref="eportedTextContent" class="border border-light-3 p-4 text-sm" v-html="currentText">
+      <div ref="eportedTextContent" class="border border-primary-50 p-4 text-sm" v-html="currentText">
       </div>
     </template>
     <template #footer-actions>

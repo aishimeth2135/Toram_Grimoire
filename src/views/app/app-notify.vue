@@ -9,14 +9,14 @@
         >
           <span
             v-if="msg.counter > 1"
-            class="inline-flex justify-center items-center w-8 h-8 bg-dark rounded-full border border-solid border-light-2 text-light-2 absolute -right-4 -top-4"
+            class="inline-flex justify-center items-center w-8 h-8 bg-dark rounded-full border border-solid border-primary-30 text-primary-30 absolute -right-4 -top-4"
           >
             <span>{{ msg.counter }}</span>
           </span>
           <div class="inline-flex items-center">
             <cy-icon-text
               :icon="msg.icon"
-              icon-color="light"
+              icon-color="primary-5"
               class="mr-3"
             />
             <span class="text">{{ msg.message }}</span>
@@ -25,7 +25,7 @@
             <span
               v-for="btn in msg.options.buttons"
               :key="btn.iid"
-              class="cursor-pointer ml-3 text-light-2 text-right hover:text-light"
+              class="cursor-pointer ml-3 text-primary-30 text-right hover:text-primary-30"
               @click="messageButtonClick(msg, btn)"
             >
               {{ btn.text || '|' + btn.iid + '|' }}

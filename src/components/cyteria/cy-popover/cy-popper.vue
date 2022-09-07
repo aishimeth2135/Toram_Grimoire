@@ -149,7 +149,7 @@ defineExpose({
   }
 
   & > .popper-content {
-    @apply bg-white border-1 border-light shadow;
+    @apply bg-white border-1 border-primary-30 shadow;
   }
 }
 </style>

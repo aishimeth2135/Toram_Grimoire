@@ -36,7 +36,7 @@
       <cy-icon-text
         icon="mdi-checkbox-multiple-blank-circle-outline"
         small
-        text-color="purple"
+        text-color="fuchsia-60"
       >
         {{ t('character-simulator.character-basic.character-name') }}
       </cy-icon-text>
@@ -51,7 +51,7 @@
       <cy-icon-text
         icon="mdi-checkbox-multiple-blank-circle-outline"
         small
-        text-color="purple"
+        text-color="fuchsia-60"
       >
         {{ t('character-simulator.character-basic.character-level') }}
       </cy-icon-text>
@@ -73,7 +73,7 @@
       <cy-icon-text
         icon="mdi-checkbox-multiple-blank-circle-outline"
         small
-        text-color="purple"
+        text-color="fuchsia-60"
       >
         {{ t('character-simulator.character-basic.character-stat-points') }}
       </cy-icon-text>
@@ -115,7 +115,7 @@
       <cy-icon-text
         icon="mdi-checkbox-multiple-blank-circle-outline"
         small
-        text-color="purple"
+        text-color="fuchsia-60"
       >
         {{ t('character-simulator.character-basic.character-optional-base-stat') }}
       </cy-icon-text>

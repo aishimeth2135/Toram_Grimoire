@@ -99,7 +99,7 @@ onMounted(() => {
 .custom-icon {
   width: 6rem;
   height: 6rem;
-  color: var(--app-light-2);
+  color: var(--app-primary-30);
 
   &.start-icon {
     animation: loading-page-main-icon ease 4s infinite;

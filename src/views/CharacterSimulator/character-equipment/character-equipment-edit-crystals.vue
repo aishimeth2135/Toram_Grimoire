@@ -18,7 +18,7 @@
       <div>
         <div v-for="category in currentCrystalCategorys" :key="category.id">
           <div>
-            <cy-icon-text icon="bx-bx-cube-alt" small text-color="purple">
+            <cy-icon-text icon="bx-bx-cube-alt" small text-color="fuchsia-60">
               {{ t(`character-simulator.select-crystals.category-title.${category.id}`) }}
             </cy-icon-text>
             <div class="mt-2 px-2">
@@ -48,10 +48,10 @@
         <div
           v-for="crystal in (equipment?.crystals ?? [])"
           :key="crystal.id"
-          class="p-3 bg-white border border-light-2"
+          class="p-3 bg-white border border-primary-30"
         >
           <div>
-            <cy-icon-text icon="bx-bx-cube-alt" color="purple">
+            <cy-icon-text icon="bx-bx-cube-alt" color="fuchsia">
               {{ crystal.name }}
             </cy-icon-text>
           </div>

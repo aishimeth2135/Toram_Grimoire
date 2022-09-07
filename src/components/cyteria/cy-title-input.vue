@@ -2,13 +2,13 @@
   <span class="flex items-center flex-wrap my-2 mx-1">
     <div
       class="flex items-center py-0.5 pl-3 pr-2 border-1 border-solid rounded-3xl w-full duration-300 bg-white"
-      :class="{ 'border-light-3': inputFocus, 'border-light': !inputFocus }"
+      :class="{ 'border-primary-50': inputFocus, 'border-primary-20': !inputFocus }"
     >
       <cy-icon-text
         :icon="icon"
         :icon-src="iconSrc"
         class="mr-2"
-        :icon-color="inputFocus ? 'light-3' : 'light'"
+        :icon-color="inputFocus ? 'primary-50' : 'primary-20'"
       />
       <div class="w-full">
         <slot />

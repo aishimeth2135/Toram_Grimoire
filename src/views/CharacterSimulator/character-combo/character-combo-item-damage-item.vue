@@ -5,7 +5,7 @@
         class="mr-3 flex flex-shrink-0"
         style="min-width: 10rem"
       >
-        <cy-icon-text :icon="skillIconPath" icon-src="image" color="purple">
+        <cy-icon-text :icon="skillIconPath" icon-src="image" color="fuchsia">
           {{ skillResultsState.skill.name }}
         </cy-icon-text>
       </div>
@@ -27,7 +27,7 @@
       </div>
     </div>
     <div v-if="previousSkillNextResultsState" class="pt-1">
-      <cy-icon-text text-color="light-2" small>
+      <cy-icon-text text-color="primary-30" small>
         {{ t('character-simulator.combo.damage-calc.previous-skill-next-title') }}
       </cy-icon-text>
       <div class="pl-5">
@@ -107,10 +107,10 @@ defineExpose({
 
 <style lang="postcss" scoped>
 :deep(.result-value--stack) {
-  @apply text-water-blue;
+  @apply text-blue-60;
 
   &.value-dark {
-    @apply text-blue-green;
+    @apply text-cyan-60;
   }
 }
 </style>

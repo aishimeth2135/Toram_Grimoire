@@ -5,10 +5,10 @@
         {{ result.container.get('name') }}
       </cy-icon-text>
       <div class="flex items-center space-x-0.5 ml-3">
-        <div v-if="valid" class="text-light-3">
+        <div v-if="valid" class="text-primary-50">
           {{ expectedResult }}
         </div>
-        <div v-else class="text-light-2">
+        <div v-else class="text-primary-30">
           {{ t('character-simulator.character-damage.no-result') }}
         </div>
         <cy-icon-text
@@ -21,12 +21,12 @@
           v-html="result.container.get('frequency')"
         />
       </div>
-      <div v-if="valid && store.calculationOptions.armorBreakDisplay" class="flex items-baseline pl-2.5 ml-3 border-l border-light">
-        <div class="text-water-blue-light text-sm mr-2">
+      <div v-if="valid && store.calculationOptions.armorBreakDisplay" class="flex items-baseline pl-2.5 ml-3 border-l border-primary-30">
+        <div class="text-blue-30 text-sm mr-2">
           {{ t('character-simulator.character-damage.armor-break') }}
         </div>
         <div class="flex items-center space-x-0.5">
-          <div class="text-water-blue">
+          <div class="text-blue-60">
             {{ armorBreakExpectedResult }}
           </div>
           <cy-icon-text
@@ -56,13 +56,13 @@
           :stat-containers="extraContainer.statContainers"
         />
         <div v-else-if="extraContainer.has('dual_element')" class="py-0 5 pl-1 flex items-center">
-          <div v-if="extraContainer.has('condition')" class="text-light-2 text-sm mr-3">{{ extraContainer.get('condition') }}</div>
-          <div class="mr-2 text-orange">{{ t('skill-query.branch.dual-element-title') }}</div>
-          <div class="text-blue-purple">{{ extraContainer.get('dual_element') }}</div>
+          <div v-if="extraContainer.has('condition')" class="text-primary-30 text-sm mr-3">{{ extraContainer.get('condition') }}</div>
+          <div class="mr-2 text-orange-60">{{ t('skill-query.branch.dual-element-title') }}</div>
+          <div class="text-violet-60">{{ extraContainer.get('dual_element') }}</div>
         </div>
       </div>
     </div>
-    <div v-if="contents.detail" class="text-sm px-3 py-2 border-1 border-light mt-2 bg-white">
+    <div v-if="contents.detail" class="text-sm px-3 py-2 border-1 border-primary-30 mt-2 bg-white">
       <div
         v-for="item in calculationItems"
         :key="item.item.base.id"
@@ -70,12 +70,12 @@
         :class="{ 'opacity-50': item.hidden }"
       >
         <div
-          :class="{ 'text-orange': !item.valueValid }"
+          :class="{ 'text-orange-60': !item.valueValid }"
           v-html="markText(t('damage-calculation.item-base-titles.' + item.item.base.id))"
         ></div>
         <div
           v-if="item.valueValid"
-          class="text-light-3"
+          class="text-primary-50"
         >
           {{ item.item.value + item.item.base.unit }}
         </div>

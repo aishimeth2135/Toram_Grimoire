@@ -1,14 +1,14 @@
 <template>
   <div>
     <div
-      class="flex items-center py-1 pl-1 pr-3 duration-200 hover:bg-light-0 cursor-pointer"
+      class="flex items-center py-1 pl-1 pr-3 duration-200 hover:bg-primary-5 cursor-pointer"
       @click="unfold = !unfold"
     >
       <cy-button-radio :selected="isCurrent" @click.stop="emit('select-result', result)" />
-      <cy-icon-text icon="ant-design:star-outlined" color="water-blue" class="ml-4">
+      <cy-icon-text icon="ant-design:star-outlined" color="blue" class="ml-4">
         {{ getSuccessRateDisplay(result) }}
       </cy-icon-text>
-      <cy-icon-text icon="ic:round-numbers" color="blue-purple" class="ml-4">
+      <cy-icon-text icon="ic:round-numbers" color="blue-fuchsia-60" class="ml-4">
         {{ result.operationStepsQuantity }}
       </cy-icon-text>
       <cy-button-icon
@@ -17,7 +17,7 @@
         @click="unfold = !unfold"
       />
     </div>
-    <div v-if="unfold" class="border-1 border-light-2 rounded p-3 mx-3 mt-0.5 mb-4">
+    <div v-if="unfold" class="border-1 border-primary-30 rounded p-3 mx-3 mt-0.5 mb-4">
       <EnchantResult :equipment="result" />
     </div>
   </div>

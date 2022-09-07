@@ -1,4 +1,3 @@
-
 import { DatasStoreBase } from '@/stores/app/datas'
 import { I18nStore } from '@/stores/app/language'
 

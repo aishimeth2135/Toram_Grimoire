@@ -52,13 +52,13 @@
         <cy-button-icon
           :icon="step.hidden ? 'mdi-checkbox-blank-off-outline' : 'mdi-checkbox-blank-outline'"
           class="p-0"
-          :icon-color="step.hidden ? 'red' : 'red-light'"
+          :icon-color="step.hidden ? 'orange-60' : 'red-30'"
           @click="step.hidden = !step.hidden/* eslint-disable-line vue/no-mutating-props */"
         />
         <cy-button-icon
           icon="jam-close-circle"
           class="p-0"
-          icon-color="gray"
+          icon-color="gray-60"
           @click="step.remove()"
         />
       </div>
@@ -69,12 +69,12 @@
           v-for="(stat, idx) in step.stats"
           :key="stat.statId"
           :stat="stat"
-          :class="idx !== 0 ? 'border-t border-light' : ''"
+          :class="idx !== 0 ? 'border-t border-primary-30' : ''"
         />
       </template>
       <div v-else-if="step.index === 0" class="pt-3 pb-2 px-2">
         <div>
-          <cy-icon-text small text-color="purple">
+          <cy-icon-text small text-color="fuchsia-60">
             {{ t('enchant-simulator.step.button-caption-title') }}
           </cy-icon-text>
         </div>
@@ -83,7 +83,7 @@
             <cy-icon-text
               small
               icon="ic-round-add-circle-outline"
-              icon-color="water-blue"
+              icon-color="blue-60"
             >
               {{ t('enchant-simulator.step.select-one-stat-item') }}
             </cy-icon-text>
@@ -92,7 +92,7 @@
             <cy-icon-text
               small
               icon="ic-round-add-circle-outline"
-              icon-color="red"
+              icon-color="orange-60"
             >
               {{ t('enchant-simulator.step.select-multiple-stat-items') }}
             </cy-icon-text>
@@ -101,7 +101,7 @@
             <cy-icon-text
               small
               icon="ic-outline-near-me"
-              icon-color="blue-green"
+              icon-color="cyan-60"
             >
               {{ t('enchant-simulator.step.step-type-each') }}
             </cy-icon-text>
@@ -110,7 +110,7 @@
             <cy-icon-text
               small
               icon="ant-design:star-outlined"
-              icon-color="orange"
+              icon-color="orange-60"
             >
               {{ t('enchant-simulator.step.auto-fill-positive-stat') }}
             </cy-icon-text>
@@ -121,16 +121,16 @@
         {{ t('enchant-simulator.tips.step-empty') }}
       </cy-default-tips>
     </div>
-    <div class="border-t border-purple mt-auto pt-0.5">
+    <div class="border-t border-fuchsia-60 mt-auto pt-0.5">
       <cy-transition>
-        <div v-if="isTypeEach" class="border-b border-light-2 py-0.5">
+        <div v-if="isTypeEach" class="border-b border-primary-30 py-0.5">
           <cy-input-counter
             v-model:value="step.step/* eslint-disable-line vue/no-mutating-props */"
             inline
-            main-color="blue-green"
+            main-color="cyan-60"
           >
             <template #title>
-              <cy-icon-text icon="ic-outline-near-me" icon-color="blue-green">
+              <cy-icon-text icon="ic-outline-near-me" icon-color="cyan-60">
                 {{ t('enchant-simulator.step.step-type-each-title') }}
               </cy-icon-text>
             </template>
@@ -140,27 +140,27 @@
       <div class="flex items-center py-0.5">
         <cy-button-icon
           icon="ic-round-add-circle-outline"
-          icon-color="water-blue"
+          icon-color="blue-60"
           @click="openSelectItem('step', step, true)"
         />
         <cy-button-icon
           icon="ic-round-add-circle-outline"
-          icon-color="red"
+          icon-color="orange-60"
           @click="openSelectItem('step', step)"
         />
         <cy-button-icon
           :icon="typeIcon"
-          :icon-color="isTypeEach ? 'blue-green' : 'blue-green-light'"
-          icon-color-hover="blue-green"
+          :icon-color="isTypeEach ? 'emerald-60' : 'emerald-30'"
+          icon-color-hover="emerald-60"
           @click="toggleStepType"
         />
         <cy-button-icon
           v-if="step.belongEquipment.stats(step.index - 1).length >= 6"
           icon="ant-design:star-outlined"
-          icon-color="orange"
+          icon-color="orange-60"
           @click="step.autoFill()"
         />
-        <cy-icon-text icon="mdi-creation" class="ml-auto mr-2" text-color="purple">
+        <cy-icon-text icon="mdi-creation" class="ml-auto mr-2" text-color="fuchsia-60">
           {{ step.remainingPotential }}
         </cy-icon-text>
       </div>
@@ -202,22 +202,22 @@ const isTypeEach = computed(() => step.value.type === EnchantStepTypes.Each)
 
 const mainTextColor = computed(() => {
   if (step.value.isLastStep) {
-    return 'water-blue'
+    return 'blue-60'
   }
   if (step.value.afterLastStep) {
-    return 'gray'
+    return 'gray-60'
   }
-  return 'purple'
+  return 'purple-70'
 })
 
 const mainBorderColor = computed(() => {
   if (step.value.isLastStep) {
-    return 'border-water-blue'
+    return 'border-blue-60'
   }
   if (step.value.afterLastStep) {
-    return 'border-gray'
+    return 'border-gray-60'
   }
-  return 'border-purple'
+  return 'border-fuchsia-60'
 })
 const stepTitle = computed(() => {
   if (step.value.isLastStep) {

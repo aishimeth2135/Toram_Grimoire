@@ -63,7 +63,7 @@ watch(() => props.visible, value => {
 .app--side-menu--menu {
   min-width: 15rem;
 
-  @apply border-1 border-light-2 mt-2 rounded shadow bg-white;
+  @apply border-1 border-primary-30 mt-2 rounded shadow bg-white;
 
   @media (max-width: 15rem) {
     width: 100%;
@@ -74,11 +74,11 @@ watch(() => props.visible, value => {
   @apply w-full py-1.5 px-4 cursor-pointer bg-opacity-25;
 
   &:hover {
-    @apply bg-light bg-opacity-10;
+    @apply bg-primary-30 bg-opacity-10;
   }
 
   &.selected {
-    @apply bg-light bg-opacity-30;
+    @apply bg-primary-30 bg-opacity-30;
   }
 }
 </style>

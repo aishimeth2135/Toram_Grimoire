@@ -42,9 +42,9 @@
           </template>
         </cy-options>
       </div>
-      <div class="text-red">{{ comboSkillState.rate }}%</div>
-      <div class="text-water-blue">{{ comboSkillState.mpCost }}</div>
-      <div v-if="damageRatio !== null" class="text-blue-purple">{{ damageRatio }}%</div>
+      <div class="text-red-60">{{ comboSkillState.rate }}%</div>
+      <div class="text-blue-60">{{ comboSkillState.mpCost }}</div>
+      <div v-if="damageRatio !== null" class="text-violet-60">{{ damageRatio }}%</div>
     </div>
   </div>
 </template>
@@ -107,7 +107,7 @@ const { selectComboSkill } = inject(CharacterSimulatorInjectionKey)!
   @apply
     w-12 h-12
     bg-white
-    border-1 rounded-full border-light-2 hover:border-light-3
+    border-1 rounded-full border-primary-30 hover:border-primary-50
     flex items-center justify-center
     cursor-pointer duration-200;
 

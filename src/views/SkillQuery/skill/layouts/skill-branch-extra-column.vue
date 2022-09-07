@@ -1,10 +1,10 @@
 <template>
-  <fieldset class="pt-1 pb-0.5 mt-1 pl-1.5 border-t-1 border-light-2">
+  <fieldset class="pt-1 pb-0.5 mt-1 pl-1.5 border-t-1 border-primary-30">
     <legend class="flex items-center px-2">
       <cy-icon-text :icon="icon" small color="red">
         <span v-html="title"></span>
       </cy-icon-text>
-      <div v-if="titleProps" class="flex items-center text-sm text-green space-x-1.5 ml-3">
+      <div v-if="titleProps" class="flex items-center text-sm text-emerald-60 space-x-1.5 ml-3">
         <span v-for="titleProp in titleProps" :key="titleProp" class="inline-block">
           {{ titleProp }}
         </span>

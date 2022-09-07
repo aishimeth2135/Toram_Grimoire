@@ -60,7 +60,7 @@ function handleHighlight(container: ResultContainerBase, options: HighlightTextO
   const originalFormula = container.origin
   const className = isNumberString(container.value) && parseFloat(container.value) < 0 ?
     (originalFormula.includes('stack') ? 'result-value--stack value-dark' : 'text-gray') :
-    (originalFormula.includes('stack') ? 'result-value--stack' : 'text-light-3')
+    (originalFormula.includes('stack') ? 'result-value--stack' : 'text-primary-50')
   container.handle((value, suffix) => `<span class="${className}">${value + suffix}</span>`)
 }
 

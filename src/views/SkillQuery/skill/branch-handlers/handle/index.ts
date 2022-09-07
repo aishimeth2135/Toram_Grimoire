@@ -219,7 +219,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   })
 
   const handleTextResult = (str: string) => {
-    str = str.replace(TEXT_SEPARATE_PATTERN, (match, m1) => `<span class="cy--text-separate border-light-3">${m1}</span>`)
+    str = str.replace(TEXT_SEPARATE_PATTERN, (match, m1) => `<span class="cy--text-separate border-primary-50">${m1}</span>`)
     str = createTagButtons(str)
     return str
   }
@@ -237,7 +237,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
       labels.forEach((label, idx) => {
         let firstFlag = true
         str = str.replace(new RegExp(`__HANDLE_REPLACE_LABEL_${idx}__`, 'g'), () => {
-          const className = firstFlag ? `click-button--${attrKey}` : 'text-light-3'
+          const className = firstFlag ? `click-button--${attrKey}` : 'text-primary-50'
           firstFlag = false
           return `<span class="${className}">${label}</span>`
         })

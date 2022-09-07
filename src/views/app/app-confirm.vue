@@ -5,7 +5,7 @@
   >
     <div class="absolute w-full h-full bg-black opacity-30 -z-1" />
     <div class="w-full h-full flex items-center justify-center">
-      <div class="w-full max-w-sm max-h-full overflow-y-auto border border-light-2 bg-white p-6 m-4 app-confirm-slide-up">
+      <div class="w-full max-w-sm max-h-full overflow-y-auto border border-primary-30 bg-white p-6 m-4 app-confirm-slide-up">
         <div class="mb-6 flex">
           <div>
             <cy-icon-text

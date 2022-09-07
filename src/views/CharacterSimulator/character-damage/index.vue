@@ -1,16 +1,16 @@
 <template>
   <div class="px-2">
-    <div class="border-b-1 border-light-2 pb-2 mb-3">
+    <div class="border-b-1 border-primary-30 pb-2 mb-3">
       <div
-        class="flex items-center cursor-pointer border-l-2 hover:border-light-2 py-1 px-2 duration-200"
-        :class="contents.basicMenu ? 'border-light-2' : 'border-light'"
+        class="flex items-center cursor-pointer border-l-2 hover:border-primary-30 py-1 px-2 duration-200"
+        :class="contents.basicMenu ? 'border-primary-30' : 'border-primary-30'"
         @click="toggle('contents/basicMenu')"
       >
-        <cy-icon-text icon="ic:round-format-list-bulleted" color="purple">
+        <cy-icon-text icon="ic:round-format-list-bulleted" color="fuchsia">
           {{ t('character-simulator.character-damage.options-base-title') }}
         </cy-icon-text>
       </div>
-      <div v-if="contents.basicMenu" class="space-y-1.5 px-2 py-2 border-l-2 border-light-2">
+      <div v-if="contents.basicMenu" class="space-y-1.5 px-2 py-2 border-l-2 border-primary-30">
         <div>
           <cy-input-counter v-model:value="store.calculationOptions.proration" :range="[50, 250]">
             <template #title>
@@ -26,7 +26,7 @@
           </cy-input-counter>
         </div>
         <div class="pt-2">
-          <cy-icon-text text-color="purple" small>
+          <cy-icon-text text-color="fuchsia-60" small>
             {{ t('character-simulator.character-damage.options-other-title') }}
           </cy-icon-text>
           <div>
@@ -37,15 +37,15 @@
         </div>
       </div>
       <div
-        class="flex items-center cursor-pointer border-l-2 hover:border-light-2 py-1 px-2 duration-200 mt-3"
-        :class="contents.targetMenu ? 'border-light-2' : 'border-light'"
+        class="flex items-center cursor-pointer border-l-2 hover:border-primary-30 py-1 px-2 duration-200 mt-3"
+        :class="contents.targetMenu ? 'border-primary-30' : 'border-primary-30'"
         @click="toggle('contents/targetMenu')"
       >
-        <cy-icon-text icon="ic:round-format-list-bulleted" color="purple">
+        <cy-icon-text icon="ic:round-format-list-bulleted" color="fuchsia">
           {{ t('character-simulator.character-damage.target-options-title') }}
         </cy-icon-text>
       </div>
-      <div v-if="contents.targetMenu" class="space-y-1.5 px-2 py-2 border-l-2 border-light-2">
+      <div v-if="contents.targetMenu" class="space-y-1.5 px-2 py-2 border-l-2 border-primary-30">
         <div>
           <cy-input-counter v-model:value="store.targetProperties.level">
             <template #title>
@@ -107,7 +107,7 @@
           </cy-input-counter>
         </div>
         <div class="pt-2.5">
-          <cy-icon-text text-color="purple" small>
+          <cy-icon-text text-color="fuchsia-60" small>
             {{ t('character-simulator.character-damage.range-damage-title') }}
           </cy-icon-text>
           <cy-button-radio-group
@@ -116,7 +116,7 @@
           />
         </div>
         <div class="pt-2">
-          <cy-icon-text text-color="purple" small>
+          <cy-icon-text text-color="fuchsia-60" small>
             {{ t('character-simulator.enemy-elements.title') }}
           </cy-icon-text>
           <cy-button-radio-group
@@ -127,12 +127,12 @@
       </div>
       <div class="space-y-1 pt-3 pb-2">
         <div>
-          <cy-icon-text icon="ic-outline-info" text-color="light-3" align-v="start" small>
+          <cy-icon-text icon="ic-outline-info" text-color="primary-50" align-v="start" small>
             {{ t('character-simulator.character-damage.basic-tips.0') }}
           </cy-icon-text>
         </div>
         <div>
-          <cy-icon-text icon="ic-outline-info" text-color="light-3" align-v="start" small>
+          <cy-icon-text icon="ic-outline-info" text-color="primary-50" align-v="start" small>
             {{ t('character-simulator.character-damage.test-version-tips') }}
           </cy-icon-text>
         </div>

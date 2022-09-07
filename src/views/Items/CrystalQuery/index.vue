@@ -34,7 +34,7 @@
           <template #title>
             <cy-button-circle
               icon="heroicons-solid:switch-vertical"
-              color="water-blue"
+              color="blue"
             />
           </template>
           <template #item="{ value }">
@@ -57,7 +57,7 @@
         <cy-button-plain
           v-else-if="mode === 'stat'"
           icon="mdi-rhombus-outline"
-          :color="modeStat.statItem ? 'primary' : 'purple'"
+          :color="modeStat.statItem ? 'primary' : 'fuchsia'"
           @click="toggle('modals/selectStat')"
         >
           {{ modeStat.statItem ? modeStat.statItem.text : t('crystal-query.select-stat.title') }}
@@ -67,12 +67,12 @@
         <cy-button-circle
           v-if="mode === 'stat'"
           icon="ci:list-checklist-alt"
-          color="blue-green"
+          color="cyan"
           @click="resultItemPreviewMode = resultItemPreviewMode === 'default' ? 'mode' : 'default'"
         />
         <cy-button-circle
           icon="mdi:arrow-expand"
-          color="water-blue"
+          color="blue"
           @click="resultItemsDetailVisibleDefault = !resultItemsDetailVisibleDefault"
         />
         <cy-button-circle
@@ -87,7 +87,7 @@
       <template #side-contents>
         <AppLayoutBottomContent v-if="contents.searchFilter" class="p-3">
           <div class="flex items-center">
-            <cy-icon-text small text-color="purple">
+            <cy-icon-text small text-color="fuchsia-60">
               {{ t('crystal-query.crystal-category.title') }}
             </cy-icon-text>
             <div class="inline-flex items-center ml-4 space-x-2">

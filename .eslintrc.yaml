@@ -93,6 +93,10 @@ rules:
   operator-linebreak:
     - warn
     - after
+  no-multiple-empty-lines:
+    - warn
+    - max: 2
+      maxBOF: 0
   "@typescript-eslint/semi":
     - error
     - never

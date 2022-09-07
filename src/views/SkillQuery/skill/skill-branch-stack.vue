@@ -14,7 +14,7 @@
           </cy-icon-text>
         </template>
         <template v-if="container.get('unit')" #unit>
-          <span class="text-light-3">{{ container.get('unit') }}</span>
+          <span class="text-primary-50">{{ container.get('unit') }}</span>
         </template>
       </cy-input-counter>
       <cy-icon-text v-else icon="ion-leaf">
@@ -23,9 +23,9 @@
     </div>
     <div class="flex items-center space-x-1 ml-4 mt-0.5">
       <cy-icon-text icon="icon-park-outline:inner-shadow-top-right" class="mr-2" />
-      <div v-if="stackValueRangeOrigin[0]" class="text-light-3">{{ stackValueRangeOrigin[0] }}</div>
+      <div v-if="stackValueRangeOrigin[0]" class="text-primary-50">{{ stackValueRangeOrigin[0] }}</div>
       <cy-icon-text icon="mdi:tilde" icon-width="0.8rem" />
-      <div v-if="stackValueRangeOrigin[1]" class="text-light-3">{{ stackValueRangeOrigin[1] }}</div>
+      <div v-if="stackValueRangeOrigin[1]" class="text-primary-50">{{ stackValueRangeOrigin[1] }}</div>
     </div>
   </div>
 </template>

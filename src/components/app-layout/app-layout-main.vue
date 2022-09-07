@@ -34,7 +34,7 @@ const twoColumns = computed(() => currentRoute.meta.twoColumnsLayout === true)
 
     & > .two-columns-column {
       width: 50%;
-      @apply h-full overflow-y-auto border-1 border-light-2 rounded-sm mr-1;
+      @apply h-full overflow-y-auto border-1 border-primary-30 rounded-sm mr-1;
     }
   }
 }

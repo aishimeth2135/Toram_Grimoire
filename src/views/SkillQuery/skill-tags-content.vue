@@ -8,7 +8,7 @@
           :disabled="currentTagIndex === 0"
           @click.stop="emit('change-tag', -1)"
         />
-        <cy-icon-text icon="ri-leaf-fill" text-color="purple">
+        <cy-icon-text icon="ri-leaf-fill" text-color="fuchsia-60">
           {{ currentTag.name }}
         </cy-icon-text>
         <cy-button-icon
@@ -82,14 +82,14 @@ const handleText = (html: string) => {
 
 <style lang="postcss" scoped>
 .skill-tag-content-wrapper {
-  @apply bg-white bg-opacity-95 border-1 border-b-0 border-light-2 shadow-sm mx-0.5;
+  @apply bg-white bg-opacity-95 border-1 border-b-0 border-primary-30 shadow-sm mx-0.5;
 
   max-width: 30rem;
   min-width: 12.5rem;
   /* max-height: calc(47vh - 3rem); */
 
   & > .skill-tag-content {
-    @apply border-b-1 border-light-2 p-4 pb-0;
+    @apply border-b-1 border-primary-30 p-4 pb-0;
 
     &::after {
       content: '';
@@ -98,11 +98,11 @@ const handleText = (html: string) => {
     }
   }
   &:deep(.bracket-text) {
-    @apply border-l-1 border-r-1 border-current mx-2 px-2 text-light-4;
+    @apply border-l-1 border-r-1 border-current mx-2 px-2 text-primary-60;
   }
 
   &:deep(.click-button--tag) {
-    @apply text-orange cursor-pointer inline-block px-0.5;
+    @apply text-orange-60 cursor-pointer inline-block px-0.5;
   }
 }
 </style>

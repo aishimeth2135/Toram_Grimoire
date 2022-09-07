@@ -10,7 +10,7 @@
         </cy-button-toggle>
       </div>
       <div v-if="container.branchItem.buffs" class="space-x-3">
-        <div v-for="buff in container.branchItem.buffs.items" :key="buff" class="text-orange">
+        <div v-for="buff in container.branchItem.buffs.items" :key="buff" class="text-orange-60">
           {{ t(`skill-query.skill-buffs.${buff}.title`) }}
         </div>
       </div>

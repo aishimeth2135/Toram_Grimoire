@@ -1,44 +1,30 @@
+import { isNumberString } from '../utils/string'
+
 export default class Color {
-  static List = [
-    'white',
-    'dark', 'dark-light',
-    'light', 'light-2', 'light-3', 'light-4',
-
-    'purple', 'purple-light',
-
-    'red', 'red-light',
-
-    'blue-purple', 'blue-purple-light',
-    'water-blue', 'water-blue-light',
-    'blue-green', 'blue-green-light',
-    'green', 'green-light',
-
-    'orange', 'orange-light',
-
-    'gray', 'gray-light',
-  ]
-  static MappingList: Record<string, string> = {
-    'white': 'white',
-    'dark-light': 'dark',
-    'light': 'light-2',
-    'light-2': 'light-3',
-    'purple-light': 'purple',
-    'red-light': 'red',
-    'water-blue-light': 'water-blue',
-    'blue-purple-light': 'blue-purple',
-    'gray-light': 'gray',
-    'blue-green-light': 'blue-green',
-    'orange-light': 'orange',
-    'green-light': 'green',
-  }
-
   static darken(color: string): string {
-    return Color.MappingList[color] || 'light-4'
+    const parts = color.split('-')
+    const _num = parts.pop()
+    if (typeof _num === 'string' && isNumberString(_num)) {
+      let num = parseInt(_num, 10)
+      num = num === 5 ? 10 : num
+      num = Math.min(90, num + 30)
+      parts.push(num.toString())
+      return parts.join('-')
+    }
+    return color
   }
 
   static lighten(color: string): string {
-    return Object.keys(Color.MappingList)
-      .find(key => Color.MappingList[key] === color) || 'light'
+    const parts = color.split('-')
+    const _num = parts.pop()
+    if (typeof _num === 'string' && isNumberString(_num)) {
+      let num = parseInt(_num, 10)
+      num = num === 5 ? 10 : num
+      num = Math.max(5, num - 30)
+      parts.push(num.toString())
+      return parts.join('-')
+    }
+    return color
   }
 
   value: string

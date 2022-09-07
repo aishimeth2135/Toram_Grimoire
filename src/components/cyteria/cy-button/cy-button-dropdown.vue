@@ -61,10 +61,10 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 .cy-button-dropdown-wrapper {
-  @apply border-l-2 border-light duration-200;
+  @apply border-l-2 border-primary-30 duration-200;
 
   &.content-visble {
-    @apply border-light-2;
+    @apply border-primary-30;
   }
 }
 

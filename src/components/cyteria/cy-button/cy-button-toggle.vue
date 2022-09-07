@@ -54,7 +54,7 @@ export default defineComponent({
   --button-icon-width: 2rem;
 
   &:focus:not(:active) {
-    @apply bg-light bg-opacity-15;
+    @apply bg-primary-30 bg-opacity-15;
   }
 
   & > .cy-button-toggle-icon {

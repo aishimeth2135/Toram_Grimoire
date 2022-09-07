@@ -7,14 +7,14 @@
           <cy-icon-text
             icon="bx-bxs-circle"
             class="mr-2"
-            icon-color="water-blue"
+            icon-color="blue-60"
             small
           >
             {{ t('skill-query.branch.skill-area.point: character') }}
           </cy-icon-text>
           <cy-icon-text
             icon="bx-bxs-circle"
-            icon-color="red"
+            icon-color="orange-60"
             small
           >
             {{ t('skill-query.branch.skill-area.point: target') }}
@@ -25,8 +25,8 @@
         <table>
           <tbody>
             <tr v-for="key in displayAttrsKeys" :key="key">
-              <td class="text-right pr-2 border-r border-light">{{ displayContainer.get(`${key}: title`) }}</td>
-              <td class="pl-2 text-light-4" v-html="displayContainer.get(key)" />
+              <td class="text-right pr-2 border-r border-primary-30">{{ displayContainer.get(`${key}: title`) }}</td>
+              <td class="pl-2 text-primary-60" v-html="displayContainer.get(key)" />
             </tr>
           </tbody>
         </table>

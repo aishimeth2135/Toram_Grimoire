@@ -1,5 +1,3 @@
-
-
 import { reactive } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'

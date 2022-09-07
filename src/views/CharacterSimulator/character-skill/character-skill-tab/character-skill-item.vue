@@ -7,14 +7,14 @@
           style="min-width: 10rem"
         >
           <cy-button-toggle v-model:selected="currentSkillState.enabled">
-            <cy-icon-text :text-color="!invalid ? 'purple' : 'gray'" :icon="skillIconPath" icon-src="image">
+            <cy-icon-text :text-color="!invalid ? 'purple-70' : 'gray-60'" :icon="skillIconPath" icon-src="image">
               {{ skillResultsState.skill.name }}
             </cy-icon-text>
           </cy-button-toggle>
         </div>
         <div :class="{ 'opacity-50': !currentSkillState.enabled }">
           <template v-if="skillResultsState.results.length > 0">
-            <div v-if="isMutipleItem" class="text-light-2">
+            <div v-if="isMutipleItem" class="text-primary-30">
               {{ t('character-simulator.skill-build.skill-multiple-effects') }}
             </div>
             <CharacterSkillResultItem
@@ -82,10 +82,10 @@ const invalid = computed(() => props.skillResultsState.results.length === 0)
 
 <style lang="postcss" scoped>
 :deep(.result-value--stack) {
-  @apply text-water-blue;
+  @apply text-blue-60;
 
   &.value-dark {
-    @apply text-blue-green;
+    @apply text-cyan-60;
   }
 }
 </style>

@@ -14,8 +14,8 @@ export async function exportSkillBuildImage(skillBuild: SkillBuild) {
     const bodyComputedStyle = getComputedStyle(document.body)
     const whiteColor = bodyComputedStyle.getPropertyValue('--app-white').trim(),
       pcolorl = bodyComputedStyle.getPropertyValue('--app-light').trim(),
-      pcolor3 = bodyComputedStyle.getPropertyValue('--app-light-3').trim(),
-      pcolor4 = bodyComputedStyle.getPropertyValue('--app-light-4').trim(),
+      pcolor3 = bodyComputedStyle.getPropertyValue('--app-primary-50').trim(),
+      pcolor4 = bodyComputedStyle.getPropertyValue('--app-primary-60').trim(),
       fontFamily = bodyComputedStyle.getPropertyValue('font-family').trim()
 
     // icon
@@ -182,8 +182,8 @@ export async function exportSkillBuildImage(skillBuild: SkillBuild) {
           ctx.textBaseline = 'middle'
           ctx.fillStyle = bodyComputedStyle.getPropertyValue(
             item.type === DrawSkillTreeDataTypes.SkillLevelText ?
-              '--app-light-4' :
-              '--app-water-blue',
+              '--app-primary-60' :
+              '--app-blue-60',
           )
           ctx.fillText(item.innerText, item.x, item.y)
         }

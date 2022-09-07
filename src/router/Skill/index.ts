@@ -1,4 +1,3 @@
-
 import type { RouteRecordRaw } from 'vue-router'
 
 import { DataStoreIds } from '@/stores/app/datas/enums'

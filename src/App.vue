@@ -7,6 +7,7 @@
     <template v-if="languageStore.i18nMessageLoaded">
       <AppSideMenu />
       <router-view />
+      <AppSetting />
       <AppInitialize />
       <AppConfirm />
       <AppNotify />
@@ -16,7 +17,7 @@
     <div v-else class="fixed w-full h-full top-0 left-0 flex items-center justify-center bg-white z-100">
       <div class="flex justify-center flex-wrap">
         <LoadingAnimation :status="0" />
-        <div class="text-xl w-full text-center mt-2 text-light-2">
+        <div class="text-xl w-full text-center mt-2 text-primary-30">
           Initializing...
         </div>
       </div>
@@ -40,6 +41,7 @@ import AppInitialize from '@/views/app/app-initialize.vue'
 import AppLoading from '@/views/app/app-loading.vue'
 import AppNotify from '@/views/app/app-notify.vue'
 import AppConfirm from '@/views/app/app-confirm.vue'
+import AppSetting from '@/views/app/app-settings.vue'
 import AppSideFloatMenu from '@/views/app/app-side-float-menu.vue'
 import LoadingAnimation from '@/views/app/initialization/loading-animation.vue'
 

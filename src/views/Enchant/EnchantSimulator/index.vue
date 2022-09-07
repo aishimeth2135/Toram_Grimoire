@@ -10,7 +10,7 @@
           <EnchantStepView :step="step" />
         </div>
         <div
-          class="step-container flex items-center justify-center border border-light-2 hover:border-light-3 cursor-pointer duration-200 h-48"
+          class="step-container flex items-center justify-center border border-primary-30 hover:border-primary-50 cursor-pointer duration-200 h-48"
           @click="appendStep"
         >
           <cy-icon-text
@@ -36,7 +36,7 @@
           <cy-icon-text icon="bx-bx-star" class="mr-3">
             {{ t('enchant-simulator.success-rate') }}
           </cy-icon-text>
-          <span class="text-light-4">
+          <span class="text-primary-60">
             {{ successRate }}
           </span>
         </div>
@@ -44,7 +44,7 @@
       <template #main-end>
         <cy-button-circle
           icon="ic:round-format-list-bulleted"
-          color="water-blue"
+          color="blue"
           float
           toggle
           :selected="contents.result"
@@ -100,14 +100,14 @@
                 </cy-button-action>
                 <cy-button-action
                   icon="mdi-export"
-                  color="blue-green"
+                  color="cyan"
                   @click="exportBuild"
                 >
                   {{ t('global.export') }}
                 </cy-button-action>
                 <cy-button-action
                   icon="mdi-import"
-                  color="blue-green"
+                  color="cyan"
                   @click="importBuild"
                 >
                   {{ t('global.import') }}
@@ -121,7 +121,7 @@
                 </cy-button-action>
               </div>
             </div>
-            <cy-icon-text small text-color="purple" class="mt-4">
+            <cy-icon-text small text-color="fuchsia-60" class="mt-4">
               {{ t('enchant-simulator.base-options') }}
             </cy-icon-text>
             <div class="flex items-center flex-wrap p-2 mr-2">
@@ -133,35 +133,35 @@
               <cy-button-icon
                 icon="jam-hammer"
                 class="ml-2 my-2"
-                icon-color="water-blue-light"
-                icon-color-hover="water-blue"
+                icon-color="blue-30"
+                icon-color-hover="blue"
                 :selected="contents.extraOptions"
                 @click="toggle('contents/extraOptions')"
               />
             </div>
             <cy-transition>
               <div v-if="contents.extraOptions">
-                <cy-icon-text small text-color="water-blue" icon-color="water-blue" class="mt-4">
+                <cy-icon-text small text-color="blue-60" icon-color="blue-60" class="mt-4">
                   {{ t('enchant-simulator.advanced-options') }}
                 </cy-icon-text>
                 <div class="p-2">
                   <cy-input-counter
                     v-model:value="currentEquipment.basePotential"
-                    main-color="water-blue-light"
+                    main-color="blue-30"
                   >
                     <template #title>
                       <cy-icon-text>{{ t('enchant-simulator.equipment-base-potential') }}</cy-icon-text>
                     </template>
                   </cy-input-counter>
                 </div>
-                <cy-icon-text small text-color="water-blue" icon-color="water-blue" class="mt-4">
+                <cy-icon-text small text-color="blue-60" icon-color="blue-60" class="mt-4">
                   {{ t('enchant-simulator.common-options') }}
                 </cy-icon-text>
                 <div class="p-2">
                   <cy-input-counter
                     v-model:value="config.characterLevel"
                     :step="10"
-                    main-color="water-blue-light"
+                    main-color="blue-30"
                   >
                     <template #title>
                       <cy-icon-text>{{ t('enchant-simulator.character-level') }}</cy-icon-text>
@@ -171,7 +171,7 @@
                     v-model:value="config.smithLevel"
                     :step="10"
                     class="mt-3"
-                    main-color="water-blue-light"
+                    main-color="blue-30"
                   >
                     <template #title>
                       <cy-icon-text>{{ t('enchant-simulator.smith-level') }}</cy-icon-text>
@@ -180,7 +180,7 @@
                 </div>
               </div>
             </cy-transition>
-            <cy-icon-text small text-color="purple" class="mt-3">
+            <cy-icon-text small text-color="fuchsia-60" class="mt-3">
               {{ t('enchant-simulator.equipment-type') }}
             </cy-icon-text>
             <div class="py-0.5 px-2">
@@ -193,8 +193,8 @@
                 {{ option.text }}
               </cy-button-check>
             </div>
-            <div class="pt-2 mt-2 border-t border-light-2">
-              <cy-icon-text small text-color="purple" class="mt-3">
+            <div class="pt-2 mt-2 border-t border-primary-30">
+              <cy-icon-text small text-color="fuchsia-60" class="mt-3">
                 {{ t('enchant-simulator.stat-display-mode.title') }}
               </cy-icon-text>
               <div class="py-0.5 px-2">
@@ -206,7 +206,7 @@
                 </cy-button-check>
                 <cy-button-check
                   :selected="state.statDisplayMode === 1"
-                  main-color="water-blue"
+                  main-color="blue-60"
                   @update:selected="state.statDisplayMode = 1"
                 >
                   {{ t('enchant-simulator.stat-display-mode.material-point') }}

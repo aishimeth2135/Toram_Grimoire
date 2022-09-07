@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 
 import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
+import { setupCalculationExpectedResult } from '@/stores/views/damage-calculation/setup'
 
 import { CalcItemContainer, Calculation } from '@/lib/Calculation/Damage/Calculation'
 import { CalcStructExpression } from '@/lib/Calculation/Damage/Calculation/base'
@@ -11,7 +12,7 @@ import { CalculationContainerIds, CalculationItemIds } from '@/lib/Calculation/D
 
 import Notify from '@/setup/Notify'
 
-import { calcStructDisplay, calcStructCritical, calcStructWithoutCritical } from './consts'
+import { calcStructDisplay, calcStructDisplayCritical } from './consts'
 
 interface CalcModeItem {
   id: 'common' | 'critical';
@@ -28,7 +29,7 @@ const setupCalcMode = () => {
     maxLayer: 4,
   }, {
     id: 'critical',
-    calcStruct: calcStructCritical,
+    calcStruct: calcStructDisplayCritical,
     outsideItems: [CalculationContainerIds.Critical_Accuracy_Stability],
     maxLayer: 6,
   }]
@@ -105,34 +106,17 @@ const setupCalculationStore = () => {
 }
 
 const setupExpectedResults = (calculation: Ref<Calculation>) => {
-  const stabilityRef = computed(() => calculation.value.containers.get(CalculationContainerIds.Stability)!.result())
-  const baseResultCritical = computed(() => calculation.value.result(calcStructCritical))
-  const baseResultCriticalRate = computed(() => {
-    const cr = calculation.value.containers.get(CalculationContainerIds.CriticalRate)!.result()
-    const acContainer = calculation.value.containers.get(CalculationContainerIds.Accuracy)!
-    const ac = acContainer.result()
-    const stability = stabilityRef.value
-    return ((stability + 100) / 2 * ac + (stability / 2 + 100) / 2 * (100 - ac)) * cr / 1000000
-  })
-  const baseResultWithoutCritical = computed(() => calculation.value.result(calcStructWithoutCritical))
-  const baseResultWithoutCriticalRate = computed(() => {
-    const cr = calculation.value.containers.get(CalculationContainerIds.CriticalRate)!.result()
-    const acContainer = calculation.value.containers.get(CalculationContainerIds.Accuracy)!
-    const ac = acContainer.result()
-    const pac = acContainer.getItemValue(CalculationItemIds.PromisedAccuracyRate)
-    const stability = stabilityRef.value
-    return ((stability + 100) / 2 * ac + (stability / 2 + 100) / 2 * Math.max(0, pac - ac)) * (100 - cr) / 1000000
-  })
-  const expectedResultCritical = computed(() => baseResultCritical.value * baseResultCriticalRate.value)
-  const expectedResultWithoutCritical = computed(() => baseResultWithoutCritical.value * baseResultWithoutCriticalRate.value)
+  const {
+    baseResultCritical,
+    baseResultWithoutCritical,
+    expectedResult,
+  } = setupCalculationExpectedResult(calculation)
+
+  const getStability = () => calculation.value.containers.get(CalculationContainerIds.Stability)!.getItemValue(CalculationItemIds.Stability)
 
   const expectedResultMax = computed(() => Math.floor(baseResultCritical.value))
-  const expectedResultMin = computed(() => Math.floor(baseResultWithoutCritical.value * stabilityRef.value / 100))
-  const expectedResultGrazeMin = computed(() => Math.floor(baseResultWithoutCritical.value * stabilityRef.value / 200))
-
-  const expectedResult = computed(() => {
-    return Math.floor(expectedResultCritical.value + expectedResultWithoutCritical.value)
-  })
+  const expectedResultMin = computed(() => Math.floor(baseResultWithoutCritical.value * getStability() / 100))
+  const expectedResultGrazeMin = computed(() => Math.floor(baseResultWithoutCritical.value * getStability() / 200))
 
   const stabilityResult = computed(() => ({
     min: expectedResultMin.value,

@@ -42,7 +42,7 @@
       <template #main-content>
         <AppLayoutBottomContent v-if="contents.resultDetail" class="py-3 px-4">
           <div>
-            <cy-icon-text icon="ant-design:star-outlined" small text-color="purple">
+            <cy-icon-text icon="ant-design:star-outlined" small text-color="fuchsia-60">
               {{ t('damage-calculation.result.title') }}
             </cy-icon-text>
           </div>
@@ -58,7 +58,7 @@
               <cy-icon-text
                 icon="bx-bx-info-circle"
                 small
-                text-color="light-2"
+                text-color="primary-30"
                 class="ml-6"
                 align-v="start"
               >
@@ -72,7 +72,7 @@
         <cy-button-circle
           icon="bx:bx-git-compare"
           :selected="contents.compare"
-          color="blue-green"
+          color="cyan"
           float
           toggle
           @click="toggle('contents/compare', null, false)"
@@ -130,14 +130,14 @@
                 </cy-button-action>
                 <cy-button-action
                   icon="mdi-export"
-                  color="blue-green"
+                  color="cyan"
                   @click="exportBuild"
                 >
                   {{ t('global.export') }}
                 </cy-button-action>
                 <cy-button-action
                   icon="mdi-import"
-                  color="blue-green"
+                  color="cyan"
                   @click="importBuild"
                 >
                   {{ t('global.import') }}
@@ -154,12 +154,12 @@
           </AppLayoutBottomContent>
           <AppLayoutBottomContent v-else-if="contents.compare" class="px-4 py-3">
             <div>
-              <cy-icon-text icon="bx:bx-git-compare" small text-color="purple">
+              <cy-icon-text icon="bx:bx-git-compare" small text-color="fuchsia-60">
                 {{ t('damage-calculation.compare.title') }}
               </cy-icon-text>
             </div>
             <div class="mb-2">
-              <cy-icon-text icon="bx-bx-info-circle" small text-color="light-3" align-v="center" class="ml-2">
+              <cy-icon-text icon="bx-bx-info-circle" small text-color="primary-50" align-v="center" class="ml-2">
                 {{ t('damage-calculation.compare.caption') }}
               </cy-icon-text>
             </div>
@@ -167,12 +167,12 @@
           </AppLayoutBottomContent>
           <AppLayoutBottomContent v-else-if="contents.calcModeDetail" class="py-3 px-4">
             <div>
-              <cy-icon-text icon="ant-design:star-outlined" small text-color="purple">
+              <cy-icon-text icon="ant-design:star-outlined" small text-color="fuchsia-60">
                 {{ t('damage-calculation.calc-mode.title') }}
               </cy-icon-text>
             </div>
             <div>
-              <cy-icon-text icon="bx-bx-info-circle" small text-color="light-3" align-v="center" class="ml-2">
+              <cy-icon-text icon="bx-bx-info-circle" small text-color="primary-50" align-v="center" class="ml-2">
                 {{ t('damage-calculation.calc-mode.caption') }}
               </cy-icon-text>
             </div>
@@ -189,7 +189,7 @@
                 <cy-icon-text
                   icon="bx-bx-info-circle"
                   small
-                  text-color="light-2"
+                  text-color="primary-30"
                   class="ml-6"
                   align-v="start"
                 >

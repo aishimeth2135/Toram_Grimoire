@@ -2,10 +2,10 @@
   <div class="py-0.5" :class="{ 'bg-white': detailVisible }">
     <div>
       <cy-list-item @click="detailVisible = !detailVisible">
-        <cy-icon-text icon="mdi:tag-outline" :text-color="!sub ? 'dark-light' : 'orange'">
+        <cy-icon-text icon="mdi:tag-outline" :text-color="!sub ? 'primary-80' : 'orange-60'">
           {{ tag.name }}
         </cy-icon-text>
-        <div class="flex items-center ml-3 space-x-1.5 text-light-2 text-sm">
+        <div class="flex items-center ml-3 space-x-1.5 text-primary-30 text-sm">
           <div v-for="row in categoryRows" :key="row.value.join(',')">
             {{ row.value[0] }}
           </div>
@@ -32,7 +32,7 @@
             </div>
           </template>
         </div>
-        <div v-if="otherTags.length > 0" class="my-2 ml-2 divide-y divide-light border-l-2 border-light-3">
+        <div v-if="otherTags.length > 0" class="my-2 ml-2 divide-y divide-light border-l-2 border-primary-50">
           <GlossaryTagItem v-for="otherTag in otherTags" :key="otherTag.name" :tag="otherTag" sub />
         </div>
       </div>
@@ -81,10 +81,10 @@ const otherTags = computed(() => props.sub ? [] : searchTags(props.tag))
 
 <style lang="postcss" scoped>
 :deep(.click-button--tag) {
-  @apply text-orange;
+  @apply text-orange-60;
 }
 
 :deep(.bracket-text) {
-  @apply border-l-1 border-r-1 border-current mx-2 px-2 text-light-4;
+  @apply border-l-1 border-r-1 border-current mx-2 px-2 text-primary-60;
 }
 </style>

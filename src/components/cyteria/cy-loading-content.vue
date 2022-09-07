@@ -23,14 +23,14 @@ defineProps<Props>()
 
 <style lang="postcss" scoped>
 .cy-loading-wrapper {
-  @apply flex items-center justify-center w-full h-full bg-light-0 rounded-lg;
+  @apply flex items-center justify-center w-full h-full bg-primary-5 rounded-lg;
   min-height: 15rem;
 
   & > .dots-wrapper {
     @apply flex items-center space-x-6;
 
     & > .dot {
-      @apply w-5 h-5 bg-light rounded-full;
+      @apply w-5 h-5 bg-primary-30 rounded-full;
       animation: dot 3.5s linear infinite;
     }
 
@@ -45,13 +45,13 @@ defineProps<Props>()
 
 @keyframes dot {
   5% {
-    @apply bg-light-3;
+    @apply bg-primary-50;
   }
   32% {
-    @apply bg-light;
+    @apply bg-primary-30;
   }
   100% {
-    @apply bg-light;
+    @apply bg-primary-30;
   }
 }
 </style>

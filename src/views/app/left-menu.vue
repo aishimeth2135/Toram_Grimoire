@@ -92,7 +92,7 @@ const copyCurrentUrl = () => {
   }
 
   & > .content-container {
-    @apply h-full w-full border-r border-light flex flex-col;
+    @apply h-full w-full border-r border-primary-30 flex flex-col;
   }
 }
 
@@ -119,7 +119,7 @@ const copyCurrentUrl = () => {
   @apply w-full py-1.5 px-4 cursor-pointer bg-opacity-25;
 
   &:hover, &.selected {
-    @apply bg-light;
+    @apply bg-primary-30;
   }
 }
 </style>

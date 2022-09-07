@@ -81,7 +81,7 @@
           <cy-icon-text
             icon="bx-bx-target-lock"
             small
-            text-color="purple"
+            text-color="fuchsia-60"
           >
             {{ t('item-query.options-normal.title') }}
           </cy-icon-text>
@@ -106,7 +106,7 @@
           <template #title>
             <cy-button-circle
               icon="ic:baseline-settings"
-              color="water-blue"
+              color="blue"
             />
           </template>
           <template #item="{ value }">
@@ -125,7 +125,7 @@
         />
         <cy-button-circle
           icon="mdi-sort-variant"
-          color="water-blue"
+          color="blue"
           :selected="menus.sortOptions"
           float
           toggle
@@ -170,7 +170,7 @@
             </div>
             <div>
               <div class="flex items-center space-x-1.5">
-                <cy-icon-text class="mr-4" color="purple">
+                <cy-icon-text class="mr-4" color="fuchsia">
                   {{ t('item-query.equipment-detail.content-titles.obtains') }}
                 </cy-icon-text>
                 <cy-button-circle icon="ic-round-border-all" small @click="selectAll(conditions.obtains)" />
@@ -190,7 +190,7 @@
           <AppLayoutBottomContent v-else-if="menus.sortOptions" class="p-3">
             <div>
               <div>
-                <cy-icon-text icon="mdi-sort-variant" color="purple" small>
+                <cy-icon-text icon="mdi-sort-variant" color="fuchsia" small>
                   {{ t('item-query.sort-options.title') }}
                 </cy-icon-text>
               </div>
@@ -204,7 +204,7 @@
               <div>
                 <cy-icon-text
                   icon="fluent-arrow-sort-24-filled"
-                  text-color="purple"
+                  text-color="fuchsia-60"
                   small
                 >
                   {{ t('item-query.sort-options.order.title') }}
@@ -238,7 +238,7 @@
           <div
             v-for="stat in statsSearchResult"
             :key="stat.origin.statId(stat.type)"
-            class="py-1 px-2 hover:bg-light hover:bg-opacity-10 duration-200"
+            class="py-1 px-2 hover:bg-primary-30 hover:bg-opacity-10 duration-200"
             @click="selectStat(stat)"
           >
             <cy-button-check :selected="modes[SearchModes.Stat].currentStats.includes(stat)" class="w-full">

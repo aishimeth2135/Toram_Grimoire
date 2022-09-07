@@ -10,7 +10,7 @@
       v-bind="attrs"
       @click="navigate"
     >
-      <cy-icon-text :icon="data.icon" :text-color="currentRoute.name === data.pathName ? 'dark-light' : 'dark'">
+      <cy-icon-text :icon="data.icon" :text-color="currentRoute.name === data.pathName ? 'primary-80' : 'primary-90'">
         <span :class="{ 'ml-4': isMain }">{{ t(data.title) }}</span>
       </cy-icon-text>
     </div>
@@ -54,11 +54,11 @@ const attrs = useAttrs()
   @apply w-full py-1.5 px-4 cursor-pointer bg-opacity-25;
 
   &:hover {
-    @apply bg-light-0 bg-opacity-50;
+    @apply bg-primary-5 bg-opacity-50;
   }
 
   &.selected {
-    @apply bg-light-0 bg-opacity-100;
+    @apply bg-primary-5 bg-opacity-100;
   }
 }
 </style>

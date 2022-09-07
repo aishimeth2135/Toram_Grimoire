@@ -7,7 +7,7 @@
       <div class="flex items-center w-full">
         <cy-icon-text
           icon="ic:round-history"
-          :text-color="contents.detail ? 'light-3' : 'dark'"
+          :text-color="contents.detail ? 'primary-50' : 'primary-90'"
         >
           {{ historyItem.date }}
         </cy-icon-text>
@@ -50,7 +50,7 @@
           <SkillBranch :skill-branch-item="branchItem" :computing="computing" sub />
         </div>
         <div class="history-item-compare-arrow-wrapper">
-          <cy-icon-text icon="ic:round-keyboard-double-arrow-down" icon-color="light-4" />
+          <cy-icon-text icon="ic:round-keyboard-double-arrow-down" icon-color="primary-60" />
         </div>
         <div v-if="next && !next.isEmpty">
           <SkillBranch :skill-branch-item="next" :computing="computing" sub />
@@ -68,7 +68,7 @@
           <cy-icon-text icon="mdi:book-plus-outline">{{ t('skill-query.branch-added') }}</cy-icon-text>
         </div>
         <div class="history-item-compare-arrow-wrapper">
-          <cy-icon-text icon="ic:round-keyboard-double-arrow-down" icon-color="light-4" />
+          <cy-icon-text icon="ic:round-keyboard-double-arrow-down" icon-color="primary-60" />
         </div>
         <div>
           <SkillBranch :skill-branch-item="branchItem" :computing="computing" sub />
@@ -83,7 +83,7 @@
           <SkillBranch :skill-branch-item="branchItem" :computing=computing sub />
         </div>
         <div class="history-item-compare-arrow-wrapper">
-          <cy-icon-text icon="ic:round-keyboard-double-arrow-down" icon-color="light-4" />
+          <cy-icon-text icon="ic:round-keyboard-double-arrow-down" icon-color="primary-60" />
         </div>
         <div class="history-item-compare-empty">
           <cy-icon-text icon="mdi:book-remove-outline">{{ t('skill-query.branch-removed') }}</cy-icon-text>
@@ -166,14 +166,14 @@ const { contents, toggle } = ToggleService({
 
 <style lang="postcss" scoped>
 .skill-effect-history-item-wrapper {
-  border-top: 1px solid var(--app-light);
+  border-top: 1px solid var(--app-primary-30);
   &.detail-active {
-    @apply border-l-1 border-light pb-2 mb-2;
+    @apply border-l-1 border-primary-30 pb-2 mb-2;
   }
 }
 
 .history-item-compare {
-  @apply p-2 pl-4 border-l-2 border-light-3;
+  @apply p-2 pl-4 border-l-2 border-primary-50;
 }
 
 .history-item-compare + .history-item-compare {
@@ -183,6 +183,6 @@ const { contents, toggle } = ToggleService({
   @apply flex justify-center w-full py-2;
 }
 .history-item-compare-empty {
-  @apply border border-light-2 p-4 flex justify-center;
+  @apply border border-primary-30 p-4 flex justify-center;
 }
 </style>
