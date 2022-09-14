@@ -23,21 +23,58 @@ const baseColors = {
   emerald: tcColors.emerald,
   red: tcColors.red,
   gray: tcColors.gray,
+  stone: tcColors.stone,
 }
 
-// pattern: fuchsia|violet|blue|cyan|orange|emerald|red|gray
+// pattern: fuchsia|violet|blue|cyan|orange|emerald|red|gray|stone
 
+// const primary = {
+//   '50': '#FCF2F8',
+//   '100': '#FCE8F5',
+//   '200': '#FBCFEB',
+//   '300': '#FAADDB',
+//   '400': '#F77BC5',
+//   '500': '#F254B0',
+//   '600': '#E43A9D',
+//   '700': '#CD268C',
+//   '800': '#AB1872',
+//   '900': '#800D58',
+// }
+// const primary = {
+//   '50': '#FCF2F3',
+//   '100': '#FCE8E9',
+//   '200': '#FBD6D9',
+//   '300': '#FDC1C5',
+//   '400': '#FFA3A9',
+//   '500': '#FD7A83',
+//   '600': '#F6545F',
+//   '700': '#E33641',
+//   '800': '#BD222C',
+//   '900': '#801219',
+// }
+// const primary = {
+//   '50': '#FCFAFA',
+//   '100': '#FEE9EB',
+//   '200': '#FFCCCF',
+//   '300': '#FFA3A9',
+//   '400': '#FD7A8B',
+//   '500': '#F5577A',
+//   '600': '#E83B6D',
+//   '700': '#CF2862',
+//   '800': '#A91954',
+//   '900': '#790F40',
+// }
 const primary = {
-  '50': '#FCF2F8',
-  '100': '#FCE8F5',
-  '200': '#FBCFEB',
-  '300': '#FAADDB',
-  '400': '#F77BC5',
-  '500': '#F254B0',
-  '600': '#E43A9D',
-  '700': '#CD268C',
-  '800': '#AB1872',
-  '900': '#800D58',
+  '50': '#FCF7F9',
+  '100': '#FFE7EF',
+  '200': '#FFCCDD',
+  '300': '#FFA3C2',
+  '400': '#FD7AA6',
+  '500': '#F5578C',
+  '600': '#E83B7F',
+  '700': '#CF286B',
+  '800': '#A91956',
+  '900': '#790F3F',
 }
 
 /**

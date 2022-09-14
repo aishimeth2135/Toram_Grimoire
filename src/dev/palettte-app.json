@@ -178,5 +178,230 @@
         "color": "800D58"
       }
     ]
+  },
+  {
+    "paletteName": "Sakura 1",
+    "swatches": [
+      {
+        "name": "New Swatch",
+        "color": "FCF2F3"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FCE8E9"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FBCFD2"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FAADB2"
+      },
+      {
+        "name": "New Swatch",
+        "color": "F77B83"
+      },
+      {
+        "name": "New Swatch",
+        "color": "F2545F"
+      },
+      {
+        "name": "New Swatch",
+        "color": "E43A45"
+      },
+      {
+        "name": "New Swatch",
+        "color": "CD2631"
+      },
+      {
+        "name": "New Swatch",
+        "color": "AB1822"
+      },
+      {
+        "name": "New Swatch",
+        "color": "800D15"
+      }
+    ]
+  },
+  {
+    "paletteName": "Sakura 2",
+    "swatches": [
+      {
+        "name": "New Swatch",
+        "color": "FCF2F3"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FCE8E9"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FBCFD2"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FAADB5"
+      },
+      {
+        "name": "New Swatch",
+        "color": "F77B8B"
+      },
+      {
+        "name": "New Swatch",
+        "color": "F2546E"
+      },
+      {
+        "name": "New Swatch",
+        "color": "E43A58"
+      },
+      {
+        "name": "New Swatch",
+        "color": "CD2647"
+      },
+      {
+        "name": "New Swatch",
+        "color": "AB1834"
+      },
+      {
+        "name": "New Swatch",
+        "color": "800D25"
+      }
+    ]
+  },
+  {
+    "paletteName": "Sakura 3",
+    "swatches": [
+      {
+        "name": "New Swatch",
+        "color": "FCF2F3"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FCE8E9"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FBD6D9"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FDC1C5"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FFA3A9"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FD7A83"
+      },
+      {
+        "name": "New Swatch",
+        "color": "F6545F"
+      },
+      {
+        "name": "New Swatch",
+        "color": "E33641"
+      },
+      {
+        "name": "New Swatch",
+        "color": "BD222C"
+      },
+      {
+        "name": "New Swatch",
+        "color": "801219"
+      }
+    ]
+  },
+  {
+    "paletteName": "Sakura 4",
+    "swatches": [
+      {
+        "name": "New Swatch",
+        "color": "FCFAFA"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FEE9EB"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FFCCCF"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FFA3A9"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FD7A8B"
+      },
+      {
+        "name": "New Swatch",
+        "color": "F5577A"
+      },
+      {
+        "name": "New Swatch",
+        "color": "E83B6D"
+      },
+      {
+        "name": "New Swatch",
+        "color": "CF2862"
+      },
+      {
+        "name": "New Swatch",
+        "color": "A91954"
+      },
+      {
+        "name": "New Swatch",
+        "color": "790F40"
+      }
+    ]
+  },
+  {
+    "paletteName": "pink 1",
+    "swatches": [
+      {
+        "name": "New Swatch",
+        "color": "FFFAFC"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FFE7EF"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FFCCDD"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FFA3C2"
+      },
+      {
+        "name": "New Swatch",
+        "color": "FD7AA6"
+      },
+      {
+        "name": "New Swatch",
+        "color": "F5578C"
+      },
+      {
+        "name": "New Swatch",
+        "color": "E83B7F"
+      },
+      {
+        "name": "New Swatch",
+        "color": "CF286B"
+      },
+      {
+        "name": "New Swatch",
+        "color": "A91956"
+      },
+      {
+        "name": "New Swatch",
+        "color": "790F3F"
+      }
+    ]
   }
 ]

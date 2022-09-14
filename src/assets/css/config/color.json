@@ -246,35 +246,65 @@
     "gray-90": {
       "value": "#111827"
     },
+    "stone-5": {
+      "value": "#fafaf9"
+    },
+    "stone-10": {
+      "value": "#f5f5f4"
+    },
+    "stone-20": {
+      "value": "#e7e5e4"
+    },
+    "stone-30": {
+      "value": "#d6d3d1"
+    },
+    "stone-40": {
+      "value": "#a8a29e"
+    },
+    "stone-50": {
+      "value": "#78716c"
+    },
+    "stone-60": {
+      "value": "#57534e"
+    },
+    "stone-70": {
+      "value": "#44403c"
+    },
+    "stone-80": {
+      "value": "#292524"
+    },
+    "stone-90": {
+      "value": "#1c1917"
+    },
     "primary-5": {
-      "value": "#FCF2F8"
+      "value": "#FCF7F9"
     },
     "primary-10": {
-      "value": "#FCE8F5"
+      "value": "#FFE7EF"
     },
     "primary-20": {
-      "value": "#FBCFEB"
+      "value": "#FFCCDD"
     },
     "primary-30": {
-      "value": "#FAADDB"
+      "value": "#FFA3C2"
     },
     "primary-40": {
-      "value": "#F77BC5"
+      "value": "#FD7AA6"
     },
     "primary-50": {
-      "value": "#F254B0"
+      "value": "#F5578C"
     },
     "primary-60": {
-      "value": "#E43A9D"
+      "value": "#E83B7F"
     },
     "primary-70": {
-      "value": "#CD268C"
+      "value": "#CF286B"
     },
     "primary-80": {
-      "value": "#AB1872"
+      "value": "#A91956"
     },
     "primary-90": {
-      "value": "#800D58"
+      "value": "#790F3F"
     }
   },
   "color-dark": {
@@ -524,35 +554,65 @@
     "gray-90": {
       "value": "#fcfdfd"
     },
+    "stone-5": {
+      "value": "#1b1918"
+    },
+    "stone-10": {
+      "value": "#32302f"
+    },
+    "stone-20": {
+      "value": "#545250"
+    },
+    "stone-30": {
+      "value": "#716f6c"
+    },
+    "stone-40": {
+      "value": "#969391"
+    },
+    "stone-50": {
+      "value": "#cdcccb"
+    },
+    "stone-60": {
+      "value": "#ebeaea"
+    },
+    "stone-70": {
+      "value": "#f3f2f2"
+    },
+    "stone-80": {
+      "value": "#fcfcfc"
+    },
+    "stone-90": {
+      "value": "#ffffff"
+    },
     "primary-5": {
-      "value": "#64294f"
+      "value": "#5e2a41"
     },
     "primary-10": {
-      "value": "#993e76"
+      "value": "#973f64"
     },
     "primary-20": {
-      "value": "#ba5c96"
+      "value": "#ba6084"
     },
     "primary-30": {
-      "value": "#d77fb2"
+      "value": "#db80a4"
     },
     "primary-40": {
-      "value": "#eb9dcb"
+      "value": "#eea0ba"
     },
     "primary-50": {
-      "value": "#f6c3e2"
+      "value": "#f9c5d7"
     },
     "primary-60": {
-      "value": "#fadbed"
+      "value": "#fcd9e5"
     },
     "primary-70": {
-      "value": "#fcecf6"
+      "value": "#fee7ee"
     },
     "primary-80": {
-      "value": "#fdf6fb"
+      "value": "#fff7f9"
     },
     "primary-90": {
-      "value": "#fefbfc"
+      "value": "#fffeff"
     }
   },
   "color-rgb": {
@@ -802,35 +862,65 @@
     "gray-90": {
       "value": "17, 24, 39"
     },
+    "stone-5": {
+      "value": "250, 250, 249"
+    },
+    "stone-10": {
+      "value": "245, 245, 244"
+    },
+    "stone-20": {
+      "value": "231, 229, 228"
+    },
+    "stone-30": {
+      "value": "214, 211, 209"
+    },
+    "stone-40": {
+      "value": "168, 162, 158"
+    },
+    "stone-50": {
+      "value": "120, 113, 108"
+    },
+    "stone-60": {
+      "value": "87, 83, 78"
+    },
+    "stone-70": {
+      "value": "68, 64, 60"
+    },
+    "stone-80": {
+      "value": "41, 37, 36"
+    },
+    "stone-90": {
+      "value": "28, 25, 23"
+    },
     "primary-5": {
-      "value": "252, 242, 248"
+      "value": "252, 247, 249"
     },
     "primary-10": {
-      "value": "252, 232, 245"
+      "value": "255, 231, 239"
     },
     "primary-20": {
-      "value": "251, 207, 235"
+      "value": "255, 204, 221"
     },
     "primary-30": {
-      "value": "250, 173, 219"
+      "value": "255, 163, 194"
     },
     "primary-40": {
-      "value": "247, 123, 197"
+      "value": "253, 122, 166"
     },
     "primary-50": {
-      "value": "242, 84, 176"
+      "value": "245, 87, 140"
     },
     "primary-60": {
-      "value": "228, 58, 157"
+      "value": "232, 59, 127"
     },
     "primary-70": {
-      "value": "205, 38, 140"
+      "value": "207, 40, 107"
     },
     "primary-80": {
-      "value": "171, 24, 114"
+      "value": "169, 25, 86"
     },
     "primary-90": {
-      "value": "128, 13, 88"
+      "value": "121, 15, 63"
     }
   },
   "color-dark-rgb": {
@@ -1080,35 +1170,65 @@
     "gray-90": {
       "value": "252, 253, 253"
     },
+    "stone-5": {
+      "value": "27, 25, 24"
+    },
+    "stone-10": {
+      "value": "50, 48, 47"
+    },
+    "stone-20": {
+      "value": "84, 82, 80"
+    },
+    "stone-30": {
+      "value": "113, 111, 108"
+    },
+    "stone-40": {
+      "value": "150, 147, 145"
+    },
+    "stone-50": {
+      "value": "205, 204, 203"
+    },
+    "stone-60": {
+      "value": "235, 234, 234"
+    },
+    "stone-70": {
+      "value": "243, 242, 242"
+    },
+    "stone-80": {
+      "value": "252, 252, 252"
+    },
+    "stone-90": {
+      "value": "255, 255, 255"
+    },
     "primary-5": {
-      "value": "100, 41, 79"
+      "value": "94, 42, 65"
     },
     "primary-10": {
-      "value": "153, 62, 118"
+      "value": "151, 63, 100"
     },
     "primary-20": {
-      "value": "186, 92, 150"
+      "value": "186, 96, 132"
     },
     "primary-30": {
-      "value": "215, 127, 178"
+      "value": "219, 128, 164"
     },
     "primary-40": {
-      "value": "235, 157, 203"
+      "value": "238, 160, 186"
     },
     "primary-50": {
-      "value": "246, 195, 226"
+      "value": "249, 197, 215"
     },
     "primary-60": {
-      "value": "250, 219, 237"
+      "value": "252, 217, 229"
     },
     "primary-70": {
-      "value": "252, 236, 246"
+      "value": "254, 231, 238"
     },
     "primary-80": {
-      "value": "253, 246, 251"
+      "value": "255, 247, 249"
     },
     "primary-90": {
-      "value": "254, 251, 252"
+      "value": "255, 254, 255"
     }
   }
 }

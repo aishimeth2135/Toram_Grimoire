@@ -38,6 +38,6 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 .cy-button-action {
-  @apply py-1 px-3 rounded-2xl border-1 bg-white bg-opacity-100 shadow-sm;
+  @apply py-1 px-3 rounded-2xl border-1 bg-white bg-opacity-100 shadow;
 }
 </style>

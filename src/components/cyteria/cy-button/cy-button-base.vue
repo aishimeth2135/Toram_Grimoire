@@ -31,7 +31,7 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 .cy-button-base {
-  --button-color-main: var(--app-primary-50);
+  --button-color-main: var(--app-primary-60);
   --button-color-main-light: var(--app-primary-30);
 
   --button-color-text: var(--button-color-main);
@@ -76,12 +76,12 @@ export default defineComponent({
   }
 
   &.theme-primary {
-    --button-color-text: var(--app-primary-70);
+    --button-color-text: var(--app-primary-80);
   }
 
   &.theme-bright {
     --button-color-main: var(--app-primary-60);
-    --button-color-main-light: var(--app-primary-50);
+    --button-color-main-light: var(--app-primary-30);
   }
 
   &.theme-secondary {
@@ -114,8 +114,8 @@ export default defineComponent({
     --button-color-main-light: var(--app-orange-30);
   }
 
-  &.theme-green {
-    --button-color-main: var(--app-green);
+  &.theme-emerald {
+    --button-color-main: var(--app-emerald);
     --button-color-main-light: var(--app-emerald-30);
   }
 

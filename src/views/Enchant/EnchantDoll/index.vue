@@ -983,7 +983,7 @@ watch(computed(() => doll.value.config.baseType), () => {
   & > .disabled-mask {
     @apply absolute w-full h-full z-5 cursor-not-allowed top-0 left-0;
 
-    background-color: rgba(var(--rgb-app-white), 0.6);
+    background-color: rgba(var(--app-rgb-white), 0.6);
   }
 }
 </style>
