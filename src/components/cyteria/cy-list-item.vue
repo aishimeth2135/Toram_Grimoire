@@ -28,7 +28,7 @@ withDefaults(defineProps<Props>(), {
   border: 1px solid transparent;
 
   &:hover {
-    background-color: rgba(var(--rgb-app-light), 0.2);
+    background-color: rgba(var(--app-rgb-primary-10), 0.2);
   }
 
   &.is-pure {
@@ -38,7 +38,7 @@ withDefaults(defineProps<Props>(), {
   &.selected {
     color: var(--app-fuchsia-60);
     border: 1px solid var(--app-primary-30);
-    background-color: rgba(var(--rgb-app-light), 0.1);
+    background-color: rgba(var(--app-rgb-primary-10), 0.1);
   }
 
   &:not(.selected) + .cy--list-item:not(.selected) {

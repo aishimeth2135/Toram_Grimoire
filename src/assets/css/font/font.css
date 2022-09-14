@@ -2,6 +2,7 @@
   font-family: naikaifont;
   src: url("https://cdn.jsdelivr.net/gh/max32002/naikaifont@1.0/webfont/NaikaiFont-Regular-Lite.woff2") format("woff2"),
       url("https://cdn.jsdelivr.net/gh/max32002/naikaifont@1.0/webfont/NaikaiFont-Regular-Lite.woff") format("woff");
+  font-weight: normal;
 }
 
 @font-face {
@@ -10,6 +11,7 @@
     url("https://cdn.jsdelivr.net/npm/@xz/fonts@1.0.2/serve/src/cascadia-code/CascadiaCode-Regular.woff2") format("woff2"),
     url("https://cdn.jsdelivr.net/npm/@xz/fonts@1.0.2/serve/src/cascadia-code/CascadiaCode-Regular.woff") format("woff");
   unicode-range: U+0028, U+0029, U+002A, U+002B, U+002D, U+002F, U+005B, U+005D, U+00D7, U+00F7;
+  font-weight: normal;
 }
 
 @font-face {
@@ -17,5 +19,6 @@
   src: local('Cascadia Code'),
     url("https://cdn.jsdelivr.net/npm/@xz/fonts@1.0.2/serve/src/cascadia-code/CascadiaCode-Regular.woff2") format("woff2"),
     url("https://cdn.jsdelivr.net/npm/@xz/fonts@1.0.2/serve/src/cascadia-code/CascadiaCode-Regular.woff") format("woff");
+  font-weight: normal;
 }
 

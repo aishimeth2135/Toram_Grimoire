@@ -29,7 +29,7 @@ const store = useLoadingStore()
 
 <style lang="postcss" scoped>
 .app--loading {
-  background-color: rgba(var(--rgb-app-white), 0.6);
+  background-color: rgba(var(--app-rgb-white), 0.6);
 }
 .custom-icon {
   width: 6rem;

@@ -210,7 +210,7 @@ export default {
   top: 0;
 
   &:hover {
-    background-color: rgba(var(--rgb-app-black), 0.3);
+    background-color: rgba(var(--app-rgb-black), 0.3);
   }
 }
 </style>

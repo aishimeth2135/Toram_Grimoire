@@ -1,7 +1,7 @@
 const plugin = require('tailwindcss/plugin')
 
 const colorOrders = ['5', '10', '20', '30', '40', '50', '60', '70', '80', '90']
-const colorGroups = ['primary', 'fuchsia', 'violet', 'blue', 'cyan', 'orange', 'emerald', 'red', 'gray']
+const colorGroups = ['primary', 'fuchsia', 'violet', 'blue', 'cyan', 'orange', 'emerald', 'red', 'gray', 'stone']
 
 function createColorConfig() {
   const colors = {}

@@ -72,7 +72,7 @@ export default defineComponent({
   @apply px-3 py-2;
 
   &:hover {
-    background-color: rgba(var(--rgb-app-light), 0.25);
+    background-color: rgba(var(--app-rgb-light), 0.25);
   }
 }
 </style>
