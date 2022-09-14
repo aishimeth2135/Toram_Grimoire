@@ -681,17 +681,41 @@ class CharacterStatFormula {
       .map(cat => cat.stats).flat()
       .forEach(stat => allCharacterStatMap[stat.id] = stat)
 
-    const checkBaseName = (stat: StatRecorded) => stat.baseId === this.belongCharacterStat.link
-    let cstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Constant)?.clone(),
-      mstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Multiplier)?.clone(),
-      tstat = pureStats.find(stat => checkBaseName(stat) && stat.type === StatTypes.Total)?.clone()
+    const checkBaseId = (stat: StatRecorded) => stat.baseId === this.belongCharacterStat.link
+    let cstat = pureStats.find(stat => checkBaseId(stat) && stat.type === StatTypes.Constant)?.clone() ?? null,
+      mstat = pureStats.find(stat => checkBaseId(stat) && stat.type === StatTypes.Multiplier)?.clone() ?? null,
+      tstat = pureStats.find(stat => checkBaseId(stat) && stat.type === StatTypes.Total)?.clone() ?? null
 
     // `sub-weapon-atk` will ignore `weapon_atk` provided by active skill
     if (this.belongCharacterStat.id === 'sub_weapon_atk') {
       const filter = (src: StatValueSource) => src.type !== StatValueSourceTypes.Skill || (src.src as SkillBranch).name === SkillBranchNames.Passive
-      cstat = cstat?.filterSource(filter)
-      mstat = mstat?.filterSource(filter)
-      tstat = tstat?.filterSource(filter)
+      cstat = cstat?.filterSource(filter) ?? null
+      mstat = mstat?.filterSource(filter) ?? null
+      tstat = tstat?.filterSource(filter) ?? null
+    }
+
+    const getStat = (query: string): StatRecorded | null => {
+      let statType = StatTypes.Constant
+      if (query.endsWith('%')) {
+        query = query.slice(0, -1)
+        statType = StatTypes.Multiplier
+      }
+      return pureStats.find(stat => stat.baseId === query && stat.type === statType) ?? null
+    }
+
+    const excludeActive = (query: string): number => {
+      let stat: StatRecorded | null
+      if (query === '#cvalue') {
+        stat = cstat
+      } else if (query === '#mvalue') {
+        stat = mstat
+      } else if (query === '#tvalue') {
+        stat = tstat
+      } else {
+        stat = getStat(query)
+      }
+      const filter = (src: StatValueSource) => src.type !== StatValueSourceTypes.Skill || (src.src as SkillBranch).name === SkillBranchNames.Passive
+      return stat?.filterSource(filter).value ?? 0
     }
 
     let cvalue = cstat ? cstat.value : 0,
@@ -746,6 +770,9 @@ class CharacterStatFormula {
 
         return neg ? -1 * (res - 100) : res
       },
+
+      stat: (query: string) => getStat(query)?.value ?? 0,
+      excludeActive,
     }
     const appendGetter = (key: string, handler: () => number) => {
       Object.defineProperty(handlerVars, key, {

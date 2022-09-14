@@ -34,14 +34,13 @@ const calcStructDisplay: CalcStructExpression = {
   right: {
     operator: '***',
     list: [
-      CalculationContainerIds.SkillMultiplier,
       CalculationContainerIds.Critical_Accuracy_Stability,
-      CalculationContainerIds.RangeDamage,
-      CalculationContainerIds.UnsheatheAttackMultiplier,
       CalculationContainerIds.StrongerAgainstElement,
+      CalculationContainerIds.SkillMultiplier,
+      CalculationContainerIds.UnsheatheAttackMultiplier,
       CalculationContainerIds.Proration,
       CalculationContainerIds.ComboMultiplier,
-      // CalculationContainerIds.Stability,
+      CalculationContainerIds.RangeDamage,
       CalculationContainerIds.OtherMultiplier,
     ],
   },

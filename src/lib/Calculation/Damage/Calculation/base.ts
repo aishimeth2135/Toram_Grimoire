@@ -4,16 +4,24 @@ import { CalcItemContainer, Calculation } from './index'
 type CalcStructExpression = CalcStructSingle | CalcStructMultiple
 type CalcStructItem = CalcStructExpression | CalculationContainerIds
 
+type CalcStructAction = '@floor'
+
 interface CalcStructSingle {
   id?: string;
   operator: '*' | '+';
   left: CalcStructItem;
   right: CalcStructItem;
 }
-interface CalcStructMultiple {
+type CalcStructMultiple = CalcStructMultipleAdd | CalcStructMultipleMul
+interface CalcStructMultipleAdd {
   id?: string;
-  operator: '***' | '+++';
+  operator: '+++';
   list: CalcStructItem[];
+}
+interface CalcStructMultipleMul {
+  id?: string;
+  operator: '***';
+  list: (CalcStructItem | CalcStructAction)[];
 }
 interface CalcResultOptions {
   containerResults?: {
@@ -28,6 +36,10 @@ interface HiddenGetter {
 }
 interface CalcResult {
   (itemContainer: CalcItemContainer): number;
+}
+
+function isCalcStructItem(payload: CalcStructItem | CalcStructAction): payload is CalcStructItem {
+  return typeof payload !== 'string' || !payload.startsWith('@')
 }
 
 /** */
@@ -103,7 +115,15 @@ class CalculationBase {
         return item.list.reduce((cur, subItem) => cur + handle(subItem), 0)
       }
       if (item.operator === '***') {
-        return item.list.reduce((cur, subItem) => cur * handle(subItem), 1)
+        return item.list.reduce((cur, subItem) => {
+          if (isCalcStructItem(subItem)) {
+            return cur * handle(subItem)
+          }
+          if (subItem === '@floor') {
+            return Math.floor(cur)
+          }
+          return cur
+        }, 1)
       }
       console.warn('[DamageCalculation.result] Invalid CalcItem:', item)
       return 0
@@ -282,5 +302,5 @@ class CalcItemBase {
   }
 }
 
-export { CalcItemBase, CalculationBase, CalcItemContainerBase }
-export type { CalcStructItem, CalcStructSingle, CalcStructMultiple, CalcStructExpression, CalcResultOptions, CurrentItemIdGetter }
+export { CalcItemBase, CalculationBase, CalcItemContainerBase, isCalcStructItem }
+export type { CalcStructItem, CalcStructSingle, CalcStructMultiple, CalcStructExpression, CalcStructAction, CalcResultOptions, CurrentItemIdGetter }

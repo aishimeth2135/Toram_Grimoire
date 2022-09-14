@@ -6,7 +6,7 @@
     :class="{ 'opacity-50': currentContainer.hidden }"
   >
     <div
-      class="p-2 w-20 text-center rounded-md bg-primary-30 bg-opacity-30 text-fuchsia-60"
+      class="p-2 w-20 text-center rounded-md bg-primary-10 bg-opacity-50 text-primary-80"
       :class="{ 'opacity-60': !currentContainerEnabled }"
     >
       {{ currentContainerResult }}
@@ -109,7 +109,10 @@
         <DamageCalculationItem :calc-struct-item="calcStructItem.right" :layer="layer + 1" />
       </template>
       <template v-else-if="calcStructItem.operator === '+++' || calcStructItem.operator === '***'">
-        <template v-for="(structItem, idx) in calcStructItem.list" :key="getCalcItemId(structItem)">
+        <template
+          v-for="(structItem, idx) in handleCalcStructList(calcStructItem)"
+          :key="getCalcItemId(structItem)"
+        >
           <div v-if="idx !== 0">
             <cy-icon-text
               :icon="calcStructItem.operator === '+++' ? 'mono-icons:add' : 'eva:close-fill'"
@@ -118,7 +121,10 @@
               :style="{ 'margin-left': ((maxLayer + 2 - layer) * 0.5) + 'rem' }"
             />
           </div>
-          <DamageCalculationItem :calc-struct-item="structItem" :layer="layer + 1" />
+          <DamageCalculationItem
+            :calc-struct-item="structItem"
+            :layer="layer + 1"
+          />
         </template>
       </template>
     </div>
@@ -141,11 +147,12 @@ import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 import { numberToFixed } from '@/shared/utils/number'
 import { markText } from '@/shared/utils/view'
 
-import { CalcStructItem } from '@/lib/Calculation/Damage/Calculation/base'
+import { CalcStructAction, CalcStructItem, CalcStructMultiple, isCalcStructItem } from '@/lib/Calculation/Damage/Calculation/base'
 import { CalcItem, CalcItemContainer, CalcItemCustom } from '@/lib/Calculation/Damage/Calculation'
 import { ContainerTypes } from '@/lib/Calculation/Damage/Calculation/enums'
 
 import { DamageCalculationRootInjectionKey } from './injection-keys'
+
 
 interface Props {
   calcStructItem: CalcStructItem;
@@ -210,7 +217,17 @@ const getContainerItems = (container: CalcItemContainer) => {
   ]
 }
 
-const getCalcItemId = (structItem: CalcStructItem): string => {
+const handleCalcStructList = (structItem: CalcStructMultiple) => {
+  if (structItem.operator === '+++') {
+    return structItem.list
+  }
+  return structItem.list.filter(item => isCalcStructItem(item)) as CalcStructItem[]
+}
+
+const getCalcItemId = (structItem: CalcStructItem | CalcStructAction): string => {
+  if (!isCalcStructItem(structItem)) {
+    return structItem
+  }
   if (typeof structItem === 'string') {
     return structItem
   }
