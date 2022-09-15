@@ -65,8 +65,8 @@ const colorCssPlugin = plugin(function ({ addBase }) {
   addBase({
     ':root': {
       ...rootVars,
-      '--app-favicon-color-main': '#ffa3a9',
-      '--app-favicon-color-sub': '#fbd3d9',
+      '--app-favicon-color-main': '#ffa4c5',
+      '--app-favicon-color-sub': '#f7e4eb',
       '--app-body-bg-color': '#fefcfd',
       '--app-black': 'design-token(\'color.black\')',
       '--app-white': 'design-token(\'color.white\')',
