@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="inline-flex items-center flex-wrap">
+    <div class="inline-flex items-center flex-wrap damage-formula-main">
+      <div class="damage-formula-main-first" />
       <span v-if="container.get('extra_constant') && frequencyVisible" class="divider border-orange-60" />
       <span v-if="container.get('constant')" class="divider" />
       <span v-if="container.get('base')" class="attr-item">{{ container.get('base') }}</span>
@@ -76,5 +77,13 @@ const frequencyVisible = computed(() => {
 
 .attr-item {
   @apply inline-flex items-center my-1 py-0.5 px-1.5;
+}
+
+.damage-formula-main > .damage-formula-main-first + .divider {
+  @apply ml-0.5;
+}
+
+.damage-formula-main > .damage-formula-main-first + .attr-item {
+  @apply pl-0;
 }
 </style>

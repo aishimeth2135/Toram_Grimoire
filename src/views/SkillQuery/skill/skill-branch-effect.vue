@@ -7,11 +7,13 @@
       :sub-contents="subContents"
       :has-area="hasArea"
       :extra-columns="extraSuffixBranchDatas"
+      :main-title="container.get('condition')"
+      main-icon="ic:round-done"
     >
       <div class="mb-1">
         <div
           v-if="container.get('caption')"
-          class="py-0.5 pl-2 pr-1 inline-block"
+          class="py-0.5 pr-1 inline-block"
           v-html="container.get('caption')"
         >
         </div>
@@ -56,10 +58,6 @@ const nameProps = computed(() => {
 
 const subContents = computed(() => {
   return [{
-    key: 'condition',
-    icon: 'eva-checkmark-circle-2-outline',
-    type: 'primary',
-  }, {
     key: 'duration',
     icon: 'zmdi-time-interval',
   }, {

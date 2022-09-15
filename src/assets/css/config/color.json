@@ -277,10 +277,10 @@
       "value": "#1c1917"
     },
     "primary-5": {
-      "value": "#FCF7F9"
+      "value": "#FCFAFB"
     },
     "primary-10": {
-      "value": "#FFE7EF"
+      "value": "#FFE9F1"
     },
     "primary-20": {
       "value": "#FFCCDD"
@@ -609,10 +609,10 @@
       "value": "#fee7ee"
     },
     "primary-80": {
-      "value": "#fff7f9"
+      "value": "#fff9fb"
     },
     "primary-90": {
-      "value": "#fffeff"
+      "value": "#fefdfe"
     }
   },
   "color-rgb": {
@@ -893,10 +893,10 @@
       "value": "28, 25, 23"
     },
     "primary-5": {
-      "value": "252, 247, 249"
+      "value": "252, 250, 251"
     },
     "primary-10": {
-      "value": "255, 231, 239"
+      "value": "255, 233, 241"
     },
     "primary-20": {
       "value": "255, 204, 221"
@@ -1225,10 +1225,10 @@
       "value": "254, 231, 238"
     },
     "primary-80": {
-      "value": "255, 247, 249"
+      "value": "255, 249, 251"
     },
     "primary-90": {
-      "value": "255, 254, 255"
+      "value": "254, 253, 254"
     }
   }
 }

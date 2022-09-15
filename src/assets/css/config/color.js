@@ -65,8 +65,8 @@ const baseColors = {
 //   '900': '#790F40',
 // }
 const primary = {
-  '50': '#FCF7F9',
-  '100': '#FFE7EF',
+  '50': '#FCFAFB',
+  '100': '#FFE9F1',
   '200': '#FFCCDD',
   '300': '#FFA3C2',
   '400': '#FD7AA6',

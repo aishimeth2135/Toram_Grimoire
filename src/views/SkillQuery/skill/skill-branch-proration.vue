@@ -1,17 +1,24 @@
 <template>
-  <div class="flex items-center flex-wrap">
-    <div class="text-primary-30 flex items-center mt-1 pl-2 pr-3 py-0.5 border border-primary-30 rounded-sm bg-white mr-3">
-      <cy-icon-text icon="mdi-sword" block>
-        {{ t('skill-query.branch.proration.proration: title') }}
-      </cy-icon-text>
-      <div class="text-primary-50 ml-1.5" v-html="container.get('proration')"></div>
+  <div>
+    <div class="flex items-center flex-wrap py-1 px-4 rounded border-1 border-primary-10 bg-white">
+      <div class="flex items-center my-1">
+        <cy-icon-text icon="mdi-sword" block>
+          {{ t('skill-query.branch.proration.proration: title') }}
+        </cy-icon-text>
+        <div class="text-primary-50 ml-1.5" v-html="container.get('proration')"></div>
+      </div>
+      <div class="border-l-1 border-primary-20 h-5 mx-4" />
+      <div class="flex items-center my-1">
+        <cy-icon-text icon="mdi-sword" block>
+          {{ t('skill-query.branch.proration.damage: title') }}
+        </cy-icon-text>
+        <div class="text-primary-50 ml-1.5" v-html="container.get('damage')"></div>
+      </div>
     </div>
-    <div class="text-primary-30 flex items-center mt-1 pl-2 pr-3 py-0.5 border border-primary-30 rounded-sm bg-white">
-      <cy-icon-text icon="mdi-sword" block>
-        {{ t('skill-query.branch.proration.damage: title') }}
-      </cy-icon-text>
-      <div class="text-primary-50 ml-1.5" v-html="container.get('damage')"></div>
-    </div>
+    <div
+      v-if="nextBranch && nextBranch.name === SkillBranchNames.Damage"
+      class="ml-[1.625rem] w-1 h-4 bg-primary-20 scale-x-50"
+    />
   </div>
 </template>
 
@@ -20,6 +27,7 @@ import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import ProrationHandler from './branch-handlers/ProrationHandler'
 
@@ -34,5 +42,14 @@ const { branchItem } = toRefs(props)
 const container = computed(() => ProrationHandler(props.computing, branchItem.value))
 
 const { t } = useI18n()
+
+const nextBranch = computed(() => {
+  const bchs = branchItem.value.parent.branchItems
+  const idx = bchs.indexOf(branchItem.value)
+  if (idx === -1 || idx === bchs.length - 1) {
+    return null
+  }
+  return bchs[idx + 1]
+})
 </script>
 
