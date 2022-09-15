@@ -47,7 +47,7 @@ const areaDatas = computed(() => {
   const datas: AreaElement[] = []
 
   const body_style = getComputedStyle(document.body)
-  const pcolorl = body_style.getPropertyValue('--app-light').trim(),
+  const pcolorl = body_style.getPropertyValue('--app-primary-20').trim(),
     pcolorl3 = body_style.getPropertyValue('--app-primary-50').trim(),
     pcolorWaterBlue = body_style.getPropertyValue('--app-blue-60').trim(),
     pcolorRed = body_style.getPropertyValue('--app-orange-60').trim()

@@ -5,7 +5,7 @@
     class="skill-branch-wrapper"
   >
     <div class="skill-branch-content" :class="{ 'sub-content-active': contents.sub }">
-      <div class="relative pt-1">
+      <div class="relative">
         <component
           :is="currentComponent"
           :branch-item="skillBranchItem"
@@ -144,30 +144,36 @@ const paddingBottomClass = computed(() => {
   const nextNormalLayout = NORMAL_LAYOUT_BRANCH_NAMES.includes(next)
 
   if (nextBch.isGroup || (curBch.isGroup && !curBch.groupState.expanded)) {
-    return nextNormalLayout ? 'pb-4' : 'pb-5'
-  }
-  if (curBch.propBoolean('is_mark') || nextBch.propBoolean('is_mark')) {
     return nextNormalLayout ? 'pb-3' : 'pb-4'
   }
+  if (curBch.propBoolean('is_mark') || nextBch.propBoolean('is_mark')) {
+    return nextNormalLayout ? 'pb-4' : 'pb-5'
+  }
+  if (cur === SkillBranchNames.Proration && next === SkillBranchNames.Damage) {
+    return 'pb-0'
+  }
   if ([SkillBranchNames.Tips, SkillBranchNames.Text, SkillBranchNames.List].includes(cur) && next === SkillBranchNames.Tips) {
-    return 'pb-1.5'
+    return 'pb-2.5'
   }
   if (cur === SkillBranchNames.Reference && next === SkillBranchNames.Reference) {
-    return 'pb-1'
+    return 'pb-2'
   }
   if (next === SkillBranchNames.Reference) {
-    return 'pb-4'
+    return 'pb-5'
   }
   if (next === SkillBranchNames.List) {
-    return 'pb-4'
+    return 'pb-5'
   }
-  return nextNormalLayout ? 'pb-2' : 'pb-3'
+  if (next === SkillBranchNames.Proration) {
+    return 'pb-5'
+  }
+  return nextNormalLayout ? 'pb-4' : 'pb-4'
 })
 
 const rootClass = computed(() => {
   return {
     [paddingBottomClass.value]: true,
-    'px-3': !sub.value,
+    'px-2.5': !sub.value,
     'content-auto': contentAuto.value,
   }
 })
@@ -263,7 +269,7 @@ const subButtonAvailable = computed(() => {
 }
 
 .toggle-sub-button {
-  @apply absolute top-0 -right-2;
+  @apply absolute top-1 right-1 z-5;
 }
 
 .skill-branch-content {

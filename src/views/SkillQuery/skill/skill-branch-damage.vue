@@ -8,6 +8,8 @@
       :sub-contents="subContents"
       :has-area="hasArea"
       :extra-columns="extraSuffixBranchDatas"
+      main-icon="mdi-sword"
+      :main-title="container.get('damage_type')"
     >
       <SkillDamageFormula :container="container" />
       <template #extra-columns-start>
@@ -24,7 +26,7 @@
         <SkillBranchExtraColumn
           v-for="sufContainer in dualElementSuffixBranchItems"
           :key="sufContainer.instanceId"
-          icon="eva-checkmark-circle-2-outline"
+          icon="ic:round-done"
           :title="sufContainer.get('condition')"
         >
           <div class="py-0 5 pl-1 flex items-center">
@@ -34,7 +36,7 @@
         </SkillBranchExtraColumn>
         <SkillBranchExtraColumn
           v-if="container.get('ailment_name')"
-          icon="ri-plant-line"
+          icon="mdi:creation"
           :title="t('skill-query.branch.ailment-title')"
           :text="getAilmentText(container)"
         />
@@ -84,7 +86,7 @@ const { branchItem } = toRefs(props)
 const container = computed(() => DamageHandler(props.computing, branchItem.value))
 
 const nameProps = computed(() => {
-  const res = [container.value.get('damage_type')]
+  const res = []
   if (container.value.get('type')) {
     res.push(container.value.get('type'))
   }
@@ -205,7 +207,7 @@ const extraSuffixBranchDatas = computed(() => {
       const dataContainer = ExtraHandler(props.computing, suffix)
       const baseData: ExtraSuffixBranchData = {
         id: idx.toString(),
-        icon: 'eva-checkmark-circle-2-outline',
+        icon: 'ic:round-done',
         title: dataContainer.get('condition'),
       }
       if (dataContainer.get('target')) {

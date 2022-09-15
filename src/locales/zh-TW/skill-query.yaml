@@ -27,7 +27,7 @@ skill-buffs:
   mp_cost_half:
     title: MP消耗減半
 branch:
-  duration-caption: "{duration}秒內"
+  duration-caption: "持續{duration}秒"
   ailment-title: 命中成功後
   apply-element: 套用{element}。
   unknow-variable: 未知參數

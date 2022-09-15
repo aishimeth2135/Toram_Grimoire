@@ -72,7 +72,7 @@ const rootClassList = computed(() => {
   }
 
   &.is-group {
-    @apply border-primary-30 border-1 duration-300 cursor-pointer px-5 py-2 relative;
+    @apply border-primary-30 border-1 duration-300 cursor-pointer px-5 py-2 my-2 relative;
 
     &.group-active {
       @apply border-primary-50;
