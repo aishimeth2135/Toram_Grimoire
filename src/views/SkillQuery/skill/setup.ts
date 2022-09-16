@@ -67,7 +67,7 @@ export function setupCommonExtraSuffixBranches(computing: SkillComputingContaine
         const dataContainer = ExtraHandler(computing, suffix)
         const baseData: ExtraSuffixBranchData = {
           id: idx.toString(),
-          icon: 'eva-checkmark-circle-2-outline',
+          icon: 'ic:round-done',
           title: dataContainer.get('condition'),
         }
         if (dataContainer.get('target')) {

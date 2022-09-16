@@ -1,9 +1,9 @@
 <template>
-  <div class="pt-0.5">
+  <div class="py-0.5">
     <div
       v-for="container in statContainers"
       :key="container.stat.statId"
-      class="cy--text-underline text-primary-30 pb-0.5 mb-1.5 mr-2"
+      class="cy--text-underline text-primary-30 pb-0.5 mb-1.5 mr-4"
     >
       <div class="text-primary-90" v-html="container.result"></div>
     </div>

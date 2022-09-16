@@ -4,8 +4,9 @@
       :computing="computing"
       :container="container"
       :sub-contents="subContents"
-      :name-props="nameProps"
       :extra-columns="extraSuffixBranchDatas"
+      main-icon="icon-park-outline:cross-society"
+      :main-title="container.get('type')"
     >
       <skillHealFormula :container="container" />
     </SkillBranchLayoutNormal>
@@ -36,10 +37,6 @@ const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
 const container = computed(() => HealHandler(props.computing, branchItem.value))
-
-const nameProps = computed(() => {
-  return [container.value.get('type')]
-})
 
 const subContents = computed(() => {
   const result: NormalLayoutSubContent[] = []

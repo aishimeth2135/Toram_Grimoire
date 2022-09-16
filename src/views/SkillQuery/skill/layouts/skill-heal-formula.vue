@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="inline-flex items-center flex-wrap">
+    <div class="inline-flex items-center flex-wrap heal-formula-main">
+      <div class="heal-formula-main-first" />
       <span
         v-if="isSingleValue"
         class="text-sm mr-1 text-primary-30 attr-item"
@@ -62,5 +63,9 @@ const isSingleValue = computed(() => {
 <style lang="postcss" scoped>
 .attr-item {
   @apply inline-flex items-center my-1 py-0.5 px-1.5;
+}
+
+.heal-formula-main > .heal-formula-main-first + .attr-item {
+  @apply pl-0;
 }
 </style>

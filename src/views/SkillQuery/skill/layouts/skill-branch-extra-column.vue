@@ -1,7 +1,7 @@
 <template>
-  <div class="flex items-start pb-2 pl-2.5">
-    <div class="flex bg-white border border-primary-20 rounded-full p-1.5 flex-shrink-0">
-      <cy-icon-text :icon="icon" icon-color="red-30" />
+  <div class="flex items-start pb-1.5 pl-2.5">
+    <div class="flex bg-white border border-primary-30 rounded-full p-1.5 flex-shrink-0">
+      <cy-icon-text :icon="icon" icon-color="primary-30" />
     </div>
     <div class="pl-3 pt-1">
       <div class="flex items-center">

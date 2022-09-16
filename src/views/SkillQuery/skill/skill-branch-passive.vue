@@ -4,6 +4,7 @@
       :computing="computing"
       :container="container"
       :extra-columns="extraSuffixBranchDatas"
+      main-icon="icon-park-outline:effects"
     >
       <div
         v-if="container.has('caption')"

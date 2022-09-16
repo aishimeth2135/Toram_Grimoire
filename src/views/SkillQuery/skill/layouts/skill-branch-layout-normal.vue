@@ -8,7 +8,7 @@
       </div>
       <div class="pb-2">
         <div class="bg-primary-5 py-2 flex items-start">
-          <div class="pl-2.5 flex-shrink-0" :class="{ 'invisible': !mainTitle }">
+          <div class="pl-2.5 flex-shrink-0" :class="{ 'invisible': !mainIcon }">
             <div class="flex p-1.5 flex-shrink-0 border border-red-40 rounded-full bg-white">
               <cy-icon-text :icon="mainIcon" icon-color="red-40" />
             </div>
@@ -31,7 +31,7 @@
       <div v-if="subContentDatas && subContentDatas.length > 0" class="pb-2 flex items-start">
         <div class="pl-2.5 flex-shrink-0">
           <div class="flex p-1.5 flex-shrink-0 border border-primary-30 rounded-full bg-white">
-            <cy-icon-text icon="mdi:help" />
+            <cy-icon-text icon="mdi:help" icon-color="primary-30" />
           </div>
         </div>
         <div class="pl-4 pr-2 pt-1 border-y border-transparent">
@@ -50,7 +50,7 @@
           </span>
         </div>
       </div>
-      <div v-if="hasArea" class="pt-2.5">
+      <div v-if="hasArea" class="pt-2.5 pb-2">
         <div class="flex items-center pl-2">
           <cy-button-circle
             :selected="contents.areaDetail"
@@ -64,7 +64,7 @@
           <SkillAreaDetail :skill-branch-item="container.branchItem" :computing="computing" />
         </div>
       </div>
-      <div v-if="extraColumns.length > 0" class="pt-5">
+      <div v-if="extraColumns.length > 0" class="pt-4">
         <slot name="extra-columns-start" />
         <SkillBranchExtraColumn
           v-for="suffixData in extraColumns"
