@@ -86,7 +86,7 @@
     position-mode="h-middle"
     @element-hover="branchButtonHover"
   >
-    <div v-if="currentHoveringBranch" class="bg-white bg-opacity-70">
+    <div v-if="currentHoveringBranch" class="bg-white bg-opacity-50">
       <SkillBranch
         :computing="rootComputingContainer"
         :skill-branch-item="currentHoveringBranch"

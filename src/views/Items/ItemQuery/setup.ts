@@ -59,7 +59,7 @@ export function findObtainByDye(text: string, eq: CharacterEquipment): ItemObtai
   return obtains.filter(obtain => {
     const dye = obtain['dye']!
     const data = dyeConvert(dye)
-    return data.every((item, idx) => item === searchData[idx])
+    return data.every((item, idx) => searchData[idx] === null || item === searchData[idx])
   })
 }
 

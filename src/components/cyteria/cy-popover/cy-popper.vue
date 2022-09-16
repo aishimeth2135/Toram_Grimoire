@@ -72,7 +72,7 @@ const baseMiddlewares: Middleware[] = [
     apply({ width, height }) {
       popperStyle.value = {
         ...popperStyle.value,
-        maxWidth: `${Math.min(width, 480)}px`,
+        maxWidth: `${Math.min(width, 512)}px`,
         maxHeight: `${height}px`,
       }
     },
