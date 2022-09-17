@@ -64,7 +64,7 @@
           <SkillAreaDetail :skill-branch-item="container.branchItem" :computing="computing" />
         </div>
       </div>
-      <div v-if="extraColumns.length > 0" class="pt-4">
+      <div v-if="extraColumns.length > 0 || slots['extra-columns-start']?.().length" class="pt-4">
         <slot name="extra-columns-start" />
         <SkillBranchExtraColumn
           v-for="suffixData in extraColumns"
@@ -80,7 +80,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue'
+import { computed, toRefs, useSlots } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
@@ -113,6 +113,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const { container, subContents, hasArea } = toRefs(props)
 
+const slots = useSlots()
 const { t } = useI18n()
 
 const { toggle, contents } = ToggleService({

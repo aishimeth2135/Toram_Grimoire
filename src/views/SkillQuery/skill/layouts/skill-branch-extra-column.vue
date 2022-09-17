@@ -12,9 +12,9 @@
           </span>
         </div>
       </div>
-      <div class="flex items-center flex-wrap">
+      <div class="flex items-center flex-wrap" style="min-height: 2.125rem">
         <slot>
-          <div v-if="text" class="py-0.5" style="min-height: 2.125rem" v-html="text" />
+          <div v-if="text" class="py-0.5" v-html="text" />
           <SkillBranchStats v-else-if="statContainers" :stat-containers="statContainers" />
         </slot>
       </div>

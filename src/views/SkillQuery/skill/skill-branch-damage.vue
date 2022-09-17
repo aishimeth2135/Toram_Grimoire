@@ -18,7 +18,7 @@
           icon="bx-bx-circle"
           :title="t('skill-query.branch.global-suffix.extra.condition-default-value')"
         >
-          <div class="py-0 5 pl-1 flex items-center">
+          <div class="py-0.5 flex items-center">
             <div class="mr-2" :class="TAG_BUTTON_CLASS_NAME">{{ t('skill-query.branch.dual-element-title') }}</div>
             <div class="text-violet-60">{{ container.get('dual_element') }}</div>
           </div>
@@ -29,7 +29,7 @@
           icon="ic:round-done"
           :title="sufContainer.get('condition')"
         >
-          <div class="py-0 5 pl-1 flex items-center">
+          <div class="py-0.5 flex items-center">
             <div class="mr-2" :class="TAG_BUTTON_CLASS_NAME">{{ t('skill-query.branch.dual-element-title') }}</div>
             <div class="text-violet-60">{{ sufContainer.get('dual_element') }}</div>
           </div>
