@@ -146,11 +146,11 @@ const paddingBottomClass = computed(() => {
   if (nextBch.isGroup || (curBch.isGroup && !curBch.groupState.expanded)) {
     return nextNormalLayout ? 'pb-3' : 'pb-4'
   }
-  if (curBch.propBoolean('is_mark') || nextBch.propBoolean('is_mark')) {
-    return nextNormalLayout ? 'pb-4' : 'pb-5'
-  }
   if (cur === SkillBranchNames.Proration && next === SkillBranchNames.Damage) {
     return 'pb-0'
+  }
+  if (curBch.propBoolean('is_mark') || nextBch.propBoolean('is_mark')) {
+    return nextNormalLayout ? 'pb-4' : 'pb-5'
   }
   if ([SkillBranchNames.Tips, SkillBranchNames.Text, SkillBranchNames.List].includes(cur) && next === SkillBranchNames.Tips) {
     return 'pb-2.5'
@@ -269,7 +269,7 @@ const subButtonAvailable = computed(() => {
 }
 
 .toggle-sub-button {
-  @apply absolute top-1 right-1 z-5;
+  @apply absolute top-0.5 right-1 z-5;
 }
 
 .skill-branch-content {
