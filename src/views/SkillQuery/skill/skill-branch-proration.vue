@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center flex-wrap py-1 px-4 rounded border-1 border-primary-10 bg-white">
+    <div class="flex items-center flex-wrap py-0.5 px-4 rounded border-1 border-primary-10 bg-white">
       <div class="flex items-center my-1">
         <cy-icon-text icon="mdi-sword" block>
           {{ t('skill-query.branch.proration.proration: title') }}
@@ -17,7 +17,7 @@
     </div>
     <div
       v-if="nextBranch && nextBranch.name === SkillBranchNames.Damage"
-      class="ml-[1.625rem] w-1 h-4 bg-primary-20 scale-x-50"
+      class="ml-[1.625rem] w-1 h-3 bg-primary-20 scale-x-50"
     />
   </div>
 </template>

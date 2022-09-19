@@ -1,6 +1,8 @@
 import { StatBase } from '@/lib/Character/Stat'
 import { Skill } from '@/lib/Skill/Skill'
 
+import { RegistletCategoryIds } from './enums'
+
 interface RegistletInfos {
   id: number;
   category: string;
@@ -8,6 +10,16 @@ interface RegistletInfos {
   obtainLevels: number[];
   maxLevel: number;
   caption: string;
+}
+
+class RegistletCategory<ItemBase extends RegistletItemBase> {
+  id: RegistletCategoryIds
+  items: ItemBase[]
+
+  constructor(id: RegistletCategoryIds) {
+    this.id = id
+    this.items = []
+  }
 }
 
 abstract class RegistletItemBase {
@@ -48,4 +60,4 @@ class RegistletItemBaseStat extends RegistletItemBase {
   }
 }
 
-export { RegistletItemBaseSkill, RegistletItemBaseStat }
+export { RegistletCategory, RegistletItemBaseSkill, RegistletItemBaseStat }

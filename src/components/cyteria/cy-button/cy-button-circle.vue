@@ -63,7 +63,7 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 .cy-button-circle {
-  @apply justify-center border-1 rounded-full bg-white bg-opacity-100 shadow-sm w-11 h-11;
+  @apply justify-center border-1 rounded-full bg-white bg-opacity-100 shadow w-11 h-11;
 
   --button-icon-width: 1.25rem;
 

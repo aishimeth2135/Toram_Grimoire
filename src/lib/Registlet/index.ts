@@ -1,13 +1,14 @@
 import { markRaw } from 'vue'
 
-import { RegistletItemBaseSkill, RegistletItemBaseStat } from './Registlet'
+import { RegistletCategory, RegistletItemBaseSkill, RegistletItemBaseStat } from './Registlet'
+import { RegistletCategoryIds } from './Registlet/enums'
 
-export class RegistletSystem {
-  skillRegistletItems: RegistletItemBaseSkill[]
-  statRegistletItems: RegistletItemBaseStat[]
+export default class RegistletSystem {
+  skillCategory: RegistletCategory<RegistletItemBaseSkill>
+  statCategory: RegistletCategory<RegistletItemBaseStat>
 
   constructor() {
-    this.skillRegistletItems = markRaw([])
-    this.statRegistletItems = markRaw([])
+    this.skillCategory = markRaw(new RegistletCategory<RegistletItemBaseSkill>(RegistletCategoryIds.skill))
+    this.statCategory = markRaw(new RegistletCategory<RegistletItemBaseStat>(RegistletCategoryIds.skill))
   }
 }

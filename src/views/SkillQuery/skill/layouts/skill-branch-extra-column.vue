@@ -1,8 +1,6 @@
 <template>
-  <div class="flex items-start pb-1.5 pl-2.5">
-    <div class="flex bg-white border border-primary-30 rounded-full p-1.5 flex-shrink-0">
-      <cy-icon-text :icon="icon" icon-color="primary-30" />
-    </div>
+  <div class="flex items-start pb-0.5 pl-2.5">
+    <IconCircle :icon="icon" />
     <div class="pl-3 pt-1">
       <div class="flex items-center">
         <div class="text-red-60" v-html="title"></div>
@@ -12,9 +10,9 @@
           </span>
         </div>
       </div>
-      <div class="flex items-center flex-wrap" style="min-height: 2.125rem">
+      <div class="flex items-center flex-wrap" style="min-height: 2rem">
         <slot>
-          <div v-if="text" class="py-0.5" v-html="text" />
+          <div v-if="text" v-html="text" />
           <SkillBranchStats v-else-if="statContainers" :stat-containers="statContainers" />
         </slot>
       </div>
@@ -26,6 +24,7 @@
 import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 
 import SkillBranchStats from './skill-branch-stats.vue'
+import IconCircle from './skill-branch-layout-icon-circle.vue'
 
 interface Props {
   icon: string;

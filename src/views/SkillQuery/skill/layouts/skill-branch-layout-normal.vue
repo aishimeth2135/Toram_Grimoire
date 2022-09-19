@@ -1,12 +1,12 @@
 <template>
   <div class="skill-branch-layout-normal bg-white rounded border-1 border-primary-10 relative">
-    <div class="absolute top-4 left-6 w-1 bg-primary-10 z-0 scale-x-50" style="height: calc(100% - 1rem);" />
+    <div class="absolute top-0 left-6 h-full w-1 bg-primary-10 z-0 scale-x-50" />
     <div class="relative z-1 pb-2">
-      <div class="flex items-center pl-4 pr-2 py-2 bg-white border-b border-primary-20 mb-4">
+      <div class="flex items-center pl-4 pr-2 py-1.5 bg-white border-b border-primary-20 mb-3">
         <cy-icon-text :icon="nameIcon" />
         <div class="pl-3 text-primary-80">{{ container.get('name') }}</div>
       </div>
-      <div class="pb-2">
+      <div class="pb-1">
         <div class="bg-primary-5 py-2 flex items-start">
           <div class="pl-2.5 flex-shrink-0" :class="{ 'invisible': !mainIcon }">
             <div class="flex p-1.5 flex-shrink-0 border border-red-40 rounded-full bg-white">
@@ -28,12 +28,8 @@
           </div>
         </div>
       </div>
-      <div v-if="subContentDatas && subContentDatas.length > 0" class="pb-2 flex items-start">
-        <div class="pl-2.5 flex-shrink-0">
-          <div class="flex p-1.5 flex-shrink-0 border border-primary-30 rounded-full bg-white">
-            <cy-icon-text icon="mdi:help" icon-color="primary-30" />
-          </div>
-        </div>
+      <div v-if="subContentDatas && subContentDatas.length > 0" class="pl-2.5 py-1 flex items-start">
+        <IconCircle icon="mdi:help" />
         <div class="pl-4 pr-2 pt-1 border-y border-transparent">
           <span v-for="contentData in subContentDatas" :key="contentData.key" class="sub-content-item mr-3">
             <cy-icon-text
@@ -50,7 +46,7 @@
           </span>
         </div>
       </div>
-      <div v-if="hasArea" class="pt-2.5 pb-2">
+      <div v-if="hasArea" class="py-1.5">
         <div class="flex items-center pl-2">
           <cy-button-circle
             :selected="contents.areaDetail"
@@ -58,13 +54,21 @@
             small
             @click.stop="toggle('contents/areaDetail')"
           />
-          <div class="pl-4 text-primary-30">{{ t('skill-query.branch.skill-area.button-text') }}</div>
+          <div
+            class="pl-4 text-primary-30 cursor-pointer"
+            @click.stop="toggle('contents/areaDetail')"
+          >
+            {{ t('skill-query.branch.skill-area.button-text') }}
+          </div>
         </div>
         <div v-if="contents.areaDetail" class="pl-6">
           <SkillAreaDetail :skill-branch-item="container.branchItem" :computing="computing" />
         </div>
       </div>
-      <div v-if="extraColumns.length > 0 || slots['extra-columns-start']?.().length" class="pt-4">
+      <div
+        v-if="extraColumns.length > 0 || slots['extra-columns-start']?.().length"
+        class="bg-white border-y border-primary-10 pt-2.5 pb-2 mt-2 mb-1"
+      >
         <slot name="extra-columns-start" />
         <SkillBranchExtraColumn
           v-for="suffixData in extraColumns"
@@ -89,6 +93,7 @@ import ToggleService from '@/setup/ToggleService'
 
 import SkillAreaDetail from './skill-area-detail/index.vue'
 import SkillBranchExtraColumn from './skill-branch-extra-column.vue'
+import IconCircle from './skill-branch-layout-icon-circle.vue'
 
 import DisplayDataContainer from '../branch-handlers/handle/DisplayDataContainer'
 import { ExtraSuffixBranchData } from '../setup'
