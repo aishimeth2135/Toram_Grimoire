@@ -146,9 +146,9 @@ const paddingBottomClass = computed(() => {
   if (nextBch.isGroup || (curBch.isGroup && !curBch.groupState.expanded)) {
     return nextNormalLayout ? 'pb-3' : 'pb-4'
   }
-  if (cur === SkillBranchNames.Proration && next === SkillBranchNames.Damage) {
-    return 'pb-0'
-  }
+  // if (cur === SkillBranchNames.Proration && next === SkillBranchNames.Damage) {
+  //   return 'pb-0'
+  // }
   if (curBch.propBoolean('is_mark') || nextBch.propBoolean('is_mark')) {
     return nextNormalLayout ? 'pb-4' : 'pb-5'
   }

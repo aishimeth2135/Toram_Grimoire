@@ -15,10 +15,6 @@
         <div class="text-primary-50 ml-1.5" v-html="container.get('damage')"></div>
       </div>
     </div>
-    <div
-      v-if="nextBranch && nextBranch.name === SkillBranchNames.Damage"
-      class="ml-[1.625rem] w-1 h-3 bg-primary-20 scale-x-50"
-    />
   </div>
 </template>
 
@@ -27,7 +23,6 @@ import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import ProrationHandler from './branch-handlers/ProrationHandler'
 
@@ -43,13 +38,13 @@ const container = computed(() => ProrationHandler(props.computing, branchItem.va
 
 const { t } = useI18n()
 
-const nextBranch = computed(() => {
-  const bchs = branchItem.value.parent.branchItems
-  const idx = bchs.indexOf(branchItem.value)
-  if (idx === -1 || idx === bchs.length - 1) {
-    return null
-  }
-  return bchs[idx + 1]
-})
+// const nextBranch = computed(() => {
+//   const bchs = branchItem.value.parent.branchItems
+//   const idx = bchs.indexOf(branchItem.value)
+//   if (idx === -1 || idx === bchs.length - 1) {
+//     return null
+//   }
+//   return bchs[idx + 1]
+// })
 </script>
 

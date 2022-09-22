@@ -3,7 +3,7 @@
     <div ref="topElement" />
     <div class="overflow-x-auto py-4" style="min-height: 75vh">
       <template v-if="currentItems.length !== 0">
-        <div class="min-w-min divide-y divide-light">
+        <div class="min-w-min divide-y divide-primary-20">
           <CrystalQueryResultItem
             v-for="crystal in currentItems"
             :key="crystal.id"
