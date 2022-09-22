@@ -1,34 +1,31 @@
 <template>
-  <div class="skill-branch-layout-normal bg-white rounded border-1 border-primary-10 relative">
-    <div class="absolute top-0 left-6 h-full w-1 bg-primary-10 z-0 scale-x-50" />
-    <div class="relative z-1 pb-2">
-      <div class="flex items-center pl-4 pr-2 py-1.5 bg-white border-b border-primary-20 mb-3">
-        <cy-icon-text :icon="nameIcon" />
-        <div class="pl-3 text-primary-80">{{ container.get('name') }}</div>
+  <div class="skill-branch-layout-normal bg-white rounded">
+    <div class="border border-red-40 border-l-2 bg-white pb-2">
+      <div class="flex items-center pl-4 mb-3 py-1.5 border-b border-red-20">
+        <cy-icon-text :icon="nameIcon" icon-color="red-40" />
+        <div class="ml-2 text-red-40">{{ container.get('name') }}</div>
       </div>
-      <div class="pb-1">
-        <div class="bg-primary-5 py-2 flex items-start">
-          <div class="pl-2.5 flex-shrink-0" :class="{ 'invisible': !mainIcon }">
-            <div class="flex p-1.5 flex-shrink-0 border border-red-40 rounded-full bg-white">
-              <cy-icon-text :icon="mainIcon" icon-color="red-40" />
+      <div class="flex items-start">
+        <div class="pl-2.5 flex-shrink-0">
+          <div class="flex p-1.5 flex-shrink-0 border border-red-40 rounded-full bg-white">
+            <cy-icon-text :icon="mainIcon" icon-color="red-40" />
+          </div>
+        </div>
+        <div class="pl-4 pr-2 pt-1">
+          <div v-if="mainTitle" class="flex items-center">
+            <div class="text-primary-80" v-html="mainTitle"></div>
+            <div v-if="nameProps" class="flex text-sm text-emerald-60 space-x-2 pl-4">
+              <span v-for="nameProp in nameProps" :key="nameProp" class="inline-block">
+                {{ nameProp }}
+              </span>
             </div>
           </div>
-          <div class="pl-4 pr-2 pt-1">
-            <div v-if="mainTitle" class="flex items-center">
-              <div class="text-primary-80">{{ mainTitle }}</div>
-              <div v-if="nameProps" class="flex text-sm text-emerald-60 space-x-2 pl-4">
-                <span v-for="nameProp in nameProps" :key="nameProp" class="inline-block">
-                  {{ nameProp }}
-                </span>
-              </div>
-            </div>
-            <div>
-              <slot />
-            </div>
+          <div>
+            <slot />
           </div>
         </div>
       </div>
-      <div v-if="subContentDatas && subContentDatas.length > 0" class="pl-2.5 py-1 flex items-start">
+      <div v-if="subContentDatas && subContentDatas.length > 0" class="pl-2.5 py-1.5 flex items-start">
         <IconCircle icon="mdi:help" />
         <div class="pl-4 pr-2 pt-1 border-y border-transparent">
           <span v-for="contentData in subContentDatas" :key="contentData.key" class="sub-content-item mr-3">
@@ -65,10 +62,10 @@
           <SkillAreaDetail :skill-branch-item="container.branchItem" :computing="computing" />
         </div>
       </div>
-      <div
-        v-if="extraColumns.length > 0 || slots['extra-columns-start']?.().length"
-        class="bg-white border-y border-primary-10 pt-2.5 pb-2 mt-2 mb-1"
-      >
+    </div>
+    <template v-if="extraColumns.length > 0 || extraColumnsEmpty">
+      <div class="ml-[1.625rem] w-1 h-3 bg-primary-20 scale-x-50" />
+      <div class="rounded border-1 border-primary-20 bg-white pt-2.5 pb-2">
         <slot name="extra-columns-start" />
         <SkillBranchExtraColumn
           v-for="suffixData in extraColumns"
@@ -79,13 +76,15 @@
           :stat-containers="suffixData.statContainers"
         />
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed, toRefs, useSlots } from 'vue'
 import { useI18n } from 'vue-i18n'
+
+import { slotNotEmpty } from '@/shared/utils/vue'
 
 import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
@@ -124,6 +123,8 @@ const { t } = useI18n()
 const { toggle, contents } = ToggleService({
   contents: ['areaDetail'] as const,
 })
+
+const extraColumnsEmpty = computed(() => slotNotEmpty(slots['extra-columns-start']))
 
 const typeMainColorMapping = {
   normal: 'primary-50',

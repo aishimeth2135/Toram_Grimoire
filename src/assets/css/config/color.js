@@ -65,9 +65,9 @@ const baseColors = {
 //   '900': '#790F40',
 // }
 const primary = {
-  '50': '#FCFAFB',
-  '100': '#FFE9F1',
-  '200': '#FFCCDD',
+  '50': '#FFF7FA',
+  '100': '#FFE7EF',
+  '200': '#FFCBDC',
   '300': '#FFA3C2',
   '400': '#FD7AA6',
   '500': '#F5578C',
@@ -105,13 +105,21 @@ const dark = {
 Object.entries(colors).map(([key, value]) => {
   colorOrders.forEach((num, idx) => {
     const subkey = num.slice(0, -1)
+
     color[`${key}-${subkey}`] = value[num]
+
     const reversedIdx = 9 - idx
     const darkColor = Color(value[colorOrders[reversedIdx]])
     const darkColorHsl = darkColor.toHsl()
-    const desaturate = Math.min(10 + Math.floor((30 * reversedIdx * reversedIdx) / 81), Math.ceil((darkColorHsl.s * 100) / 2))
-    const lighten = Math.min(Math.floor((20 * (81 - reversedIdx * reversedIdx)) / 81), Math.ceil((100 - darkColorHsl.l * 100) / 2))
-    dark[`${key}-${subkey}`] = darkColor.desaturate(desaturate).lighten(lighten).toHexString()
+    const fixedIdx = (reversedIdx + 11) / 2
+
+    const desaturate = Math.min(10 + Math.floor((30 * fixedIdx) / 10), Math.ceil((darkColorHsl.s * 100) / 2))
+    darkColor.desaturate(desaturate)
+
+    const lighten = Math.min(Math.floor((20 * (8 - reversedIdx) / 5)), Math.ceil((100 - darkColorHsl.l * 100) / 2))
+    lighten > 0 ? darkColor.lighten(lighten) : darkColor.darken(-1 * lighten)
+
+    dark[`${key}-${subkey}`] = darkColor.toHexString()
   })
 })
 
@@ -148,7 +156,8 @@ const toDesignTokenData = (data) => {
   return designTokenData
 }
 
-async function handle() {
+async function start() {
+  console.log('start...')
   const data = {
     color: toDesignTokenData(color),
     'color-dark': toDesignTokenData(dark),
@@ -160,5 +169,4 @@ async function handle() {
   console.log('done.')
 }
 
-console.log('start...')
-handle()
+start()

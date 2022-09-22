@@ -8,7 +8,7 @@
       :has-area="hasArea"
       :extra-columns="extraSuffixBranchDatas"
       :main-title="container.get('condition')"
-      main-icon="ic:round-done"
+      main-icon="icon-park-outline:effects"
     >
       <div class="mb-1">
         <div

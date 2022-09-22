@@ -28,7 +28,7 @@ withDefaults(defineProps<Props>(), {
   border: 1px solid transparent;
 
   &:hover {
-    background-color: rgba(var(--app-rgb-primary-10), 0.2);
+    @apply bg-primary-5;
   }
 
   &.is-pure {

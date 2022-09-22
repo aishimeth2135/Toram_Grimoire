@@ -4,12 +4,11 @@
       :computing="computing"
       :container="container"
       name-icon="ri-sword-fill"
-      :name-props="nameProps"
       :sub-contents="subContents"
       :has-area="hasArea"
       :extra-columns="extraSuffixBranchDatas"
       main-icon="mdi-sword"
-      :main-title="container.get('damage_type')"
+      :main-title="mainTitie"
     >
       <SkillDamageFormula :container="container" />
       <template #extra-columns-start>
@@ -85,10 +84,10 @@ const { branchItem } = toRefs(props)
 
 const container = computed(() => DamageHandler(props.computing, branchItem.value))
 
-const nameProps = computed(() => {
-  const res = []
+const mainTitie = computed(() => {
+  let res = container.value.get('damage_type')
   if (container.value.get('type')) {
-    res.push(container.value.get('type'))
+    res = container.value.get('type') + res
   }
   return res
 })
