@@ -169,6 +169,7 @@ module.exports = {
     'flexWrap',
     'fontFamily',
     'fontSize',
+    'fontWeight',
 
     'height',
 

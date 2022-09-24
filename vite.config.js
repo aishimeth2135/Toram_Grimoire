@@ -67,7 +67,7 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       assetsInlineLimit: 8192,
-      chunkSizeWarningLimit: 800,
+      chunkSizeWarningLimit: 900,
       target: 'ios11',
       minify: 'terser',
       cssCodeSplit: false,
