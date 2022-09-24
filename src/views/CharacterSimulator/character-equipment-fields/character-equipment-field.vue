@@ -1,10 +1,10 @@
 <template>
-  <div class="px-3 py-2 border border-solid border-primary-30 m-1.5 bg-white" style="width: 23.25rem">
-    <div class="flex items-center border-b border-solid border-primary-30 pb-1 mb-2.5">
-      <cy-icon-text icon="gg-shape-square" small text-color="primary-30">
+  <div class="border-1 border-red-20 rounded m-1.5 bg-white" style="width: 23.25rem">
+    <div class="pl-3 pr-1.5 py-1 flex items-center border-b border-solid border-red-20 mb-2.5">
+      <cy-icon-text icon="gg-shape-square" small color="red-30" single-color>
         {{ t('common.Equipment.field.' + equipmentField.type) }}
       </cy-icon-text>
-      <div class="ml-auto leading-none">
+      <div class="flex ml-auto leading-none">
         <cy-button-icon
           v-if="!equipmentField.isEmpty"
           icon="ic-round-close"
@@ -20,16 +20,18 @@
         />
       </div>
     </div>
-    <CharacterEquipmentDetail
-      v-if="!equipmentField.isEmpty"
-      :equipment="equipmentField.equipment!"
-      :stats-disabled="equipmentField.statsDisabled()"
-      :is-sub="equipmentField.type === EquipmentFieldTypes.SubWeapon"
-      :main-weapon="equipmentField.belongCharacter.fieldEquipment(EquipmentFieldTypes.MainWeapon)"
-    />
-    <cy-default-tips v-else icon="mdi:dots-horizontal-circle-outline">
-      {{ t('character-simulator.main-tips.no-equipment-selected') }}
-    </cy-default-tips>
+    <div class="px-3 pb-2">
+      <CharacterEquipmentDetail
+        v-if="!equipmentField.isEmpty"
+        :equipment="equipmentField.equipment!"
+        :stats-disabled="equipmentField.statsDisabled()"
+        :is-sub="equipmentField.type === EquipmentFieldTypes.SubWeapon"
+        :main-weapon="equipmentField.belongCharacter.fieldEquipment(EquipmentFieldTypes.MainWeapon)"
+      />
+      <cy-default-tips v-else icon="mdi:dots-horizontal-circle-outline">
+        {{ t('character-simulator.main-tips.no-equipment-selected') }}
+      </cy-default-tips>
+    </div>
   </div>
 </template>
 

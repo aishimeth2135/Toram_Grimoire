@@ -141,7 +141,7 @@ defineExpose({
 .cy--popper {
   min-width: 15rem;
 
-  @apply fixed z-100 overflow-y-auto;
+  @apply fixed z-100 overflow-y-auto shadow-md;
 
   @media screen and (max-width: 15rem) {
     min-width: auto;
@@ -149,7 +149,7 @@ defineExpose({
   }
 
   & > .popper-content {
-    @apply bg-white border-1 border-primary-30 shadow;
+    @apply bg-white border-1 border-primary-30;
   }
 }
 </style>
