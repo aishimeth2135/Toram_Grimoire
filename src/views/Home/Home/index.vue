@@ -336,8 +336,9 @@ onUnmounted(() => {
 }
 
 .app-title {
-  @apply bg-clip-text text-transparent text-4xl;
+  @apply text-transparent text-4xl;
 
+  background-clip: text;
   background-image: linear-gradient(to left,
     var(--app-favicon-color-main),
     var(--app-favicon-color-sub),
