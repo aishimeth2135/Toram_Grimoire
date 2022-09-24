@@ -146,16 +146,14 @@ const { t } = useI18n()
 
 <style lang="postcss" scoped>
 .cy--modal {
-  @apply fixed h-full w-full top-0 left-0 flex justify-center bg-black bg-opacity-15 z-100;
+  @apply fixed h-full w-full top-0 left-0 flex justify-center bg-black bg-opacity-20 z-100;
 
   & > .modal-wrapper {
     @apply relative inline-block mb-2 mt-2.5 mx-2 bg-opacity-100 max-w-full;
-
     height: calc(100% - 1.125rem);
 
     & > .modal-container {
       @apply w-full max-h-full pt-3 border-1 border-primary-30 bg-white flex flex-col;
-
       min-height: 10rem;
     }
   }
@@ -177,7 +175,6 @@ const { t } = useI18n()
 
 .modal-extra-wrapper {
   @apply absolute w-80 h-full max-w-full mx-2 my-4 duration-300 flex items-center;
-
   left: calc(50% + 13rem);
 
   @media screen and (max-width: 32rem) {
@@ -187,12 +184,12 @@ const { t } = useI18n()
 
 .modal-extra-container {
   @apply w-full relative flex flex-col;
-
   max-height: calc(100% - 12rem);
 }
 
 .modal-extra {
-  @apply w-full h-full pr-2 overflow-y-auto overscroll-none;
+  @apply w-full h-full pr-2 overflow-y-auto;
+  overscroll-behavior: none;
 }
 
 .cy--modal--close-btn {

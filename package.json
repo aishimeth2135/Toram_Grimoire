@@ -33,7 +33,6 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.5",
-    "@csstools/postcss-design-tokens": "^1.0.0",
     "@iconify/vue": "^3.0.0",
     "@originjs/vite-plugin-content": "^1.0.1",
     "@types/dompurify": "^2.3.3",

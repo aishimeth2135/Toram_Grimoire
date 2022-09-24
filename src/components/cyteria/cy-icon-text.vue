@@ -86,7 +86,7 @@ export default defineComponent({
       if (typeof value !== 'string') {
         if (props.color) {
           let color = props.color
-          if (!color.includes('-')) {
+          if (!color.includes('-') && color !== 'white') {
             color += '-60'
           }
           value = type === 'icon' && !props.singleColor ? Color.lighten(color) : color

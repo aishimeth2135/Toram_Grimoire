@@ -58,7 +58,7 @@ export default defineComponent({
   @apply rounded-full duration-200;
 
   &:focus:not(:active) {
-    @apply bg-primary-30 bg-opacity-15;
+    @apply bg-primary-30 bg-opacity-20;
   }
 }
 </style>

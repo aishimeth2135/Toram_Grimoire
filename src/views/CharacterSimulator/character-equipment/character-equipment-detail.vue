@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-1.5 cursor-auto">
     <div v-if="!innerItem" class="flex items-center pt-0.5">
-      <EquipmentTitle :equipment="equipment" text-color="fuchsia-60" :small="innerItem" />
+      <EquipmentTitle :equipment="equipment" text-color="primary-70" :small="innerItem" />
       <div class="text-primary-50 text-sm ml-3">
         {{ t('common.Equipment.category.' + equipment.type) }}
       </div>
@@ -16,17 +16,17 @@
     <div v-if="equipment.is(EquipmentKinds.Weapon) || equipment.is(EquipmentKinds.Armor)" class="flex items-center pt-0.5">
       <cy-popover>
         <CharacterEquipmentEditMask>
-          <div class="flex items-center rounded-2xl border-1 border-solid border-primary-30 py-0.5 px-3 w-72" :class="{ 'opacity-50': !baseValueValid }">
+          <div class="flex items-center rounded-2xl border-1 border-solid border-red-20 py-0.5 px-3 w-72" :class="{ 'opacity-50': !baseValueValid }">
             <template v-if="equipment.is(EquipmentKinds.Weapon)">
-              <cy-icon-text icon="mdi-sword" text-color="primary-30">
+              <cy-icon-text icon="mdi-sword" color="red-20" single-color>
                 ATK
               </cy-icon-text>
-              <div class="ml-2 text-fuchsia-60 flex items-center">
+              <div class="ml-2 text-red-60 flex items-center">
                 {{ equipment.basicValue }}
                 <span
                   v-if="refiningAdditionAmount > 0"
                   class="ml-1"
-                  :class="!isSub ? 'text-blue-60' : 'text-emerald'"
+                  :class="!isSub ? 'text-blue-60' : 'text-emerald-60'"
                 >
                   +{{ refiningAdditionAmount }}
                 </span>
@@ -41,7 +41,7 @@
               <cy-icon-text icon="mdi:shield-outline" text-color="primary-30">
                 DEF
               </cy-icon-text>
-              <span class="ml-2 text-fuchsia-60">{{ equipment.basicValue }}</span>
+              <span class="ml-2 text-red-60">{{ equipment.basicValue }}</span>
             </template>
           </div>
         </CharacterEquipmentEditMask>

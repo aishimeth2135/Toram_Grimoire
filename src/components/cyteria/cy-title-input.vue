@@ -18,7 +18,7 @@
           v-model="innerValue"
           type="text"
           :placeholder="placeholder"
-          class="p-0.5 border-0 duration-200 text-base w-full"
+          class="p-0.5 border-0 duration-200 w-full"
           @focus="setInputFocus(true)"
           @blur="setInputFocus(false)"
           @keyup="$emit('keyup', $event)"

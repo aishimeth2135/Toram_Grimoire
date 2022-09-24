@@ -1,16 +1,3 @@
-.main--font-base {
-  font-family: 'Itim', Microsoft JhengHei, sans-serif;
-  --app-main-font: Microsoft JhengHei;
-}
-.main--font-1 {
-  font-family: 'Itim', 'naikaifont', Microsoft JhengHei, sans-serif;
-  --app-main-font: 'naikaifont';
-}
-.main--font-2 {
-  font-family: 'Itim', 'Noto Sans TC', Microsoft JhengHei, sans-serif;
-  --app-main-font: 'Noto Sans TC',;
-}
-
 #app {
   height: 100%;
   width: 100%;
@@ -18,29 +5,19 @@
 
 html {
   background-color: var(--app-white);
-  font-size: 16px;
   height: 100%;
   width: 100%;
 
-  @apply text-base main--font-base;
-
-  & input, & textarea {
-    @apply main--font-base;
-  }
+  font-family: 'Itim', Microsoft JhengHei, sans-serif;
+  --app-main-font: Microsoft JhengHei;
 
   &.font-1 {
-    @apply main--font-1;
-
-    & input, & textarea {
-      @apply main--font-1;
-    }
+    font-family: 'Itim', 'naikaifont', Microsoft JhengHei, sans-serif;
+    --app-main-font: 'naikaifont';
   }
   &.font-2 {
-    @apply main--font-2;
-
-    & input, & textarea {
-      @apply main--font-2;
-    }
+    font-family: 'Itim', 'Noto Sans TC', Microsoft JhengHei, sans-serif;
+    --app-main-font: 'Noto Sans TC';
   }
 }
 
@@ -49,20 +26,12 @@ html {
 }
 
 body {
-  margin: 0;
   scroll-behavior: smooth;
   color: var(--app-stone-90);
   position: relative;
   background-color: var(--app-body-bg-color);
   height: 100%;
   width: 100%;
-}
-
-input, textarea {
-  color: var(--app-stone-90);
-  background-color: var(--app-white);
-
-  @apply text-base;
 }
 
 ::placeholder {

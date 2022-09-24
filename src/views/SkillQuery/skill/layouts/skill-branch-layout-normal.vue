@@ -1,14 +1,14 @@
 <template>
   <div class="skill-branch-layout-normal bg-white rounded">
-    <div class="border border-red-40 border-l-2 bg-white pb-2">
+    <div class="border-1 border-red-30 border-l-2 rounded bg-white pb-2">
       <div class="flex items-center pl-4 mb-3 py-1.5 border-b border-red-20">
-        <cy-icon-text :icon="nameIcon" icon-color="red-40" />
+        <cy-icon-text :icon="nameIcon" icon-color="red-30" />
         <div class="ml-2 text-red-40">{{ container.get('name') }}</div>
       </div>
       <div class="flex items-start">
         <div class="pl-2.5 flex-shrink-0">
-          <div class="flex p-1.5 flex-shrink-0 border border-red-40 rounded-full bg-white">
-            <cy-icon-text :icon="mainIcon" icon-color="red-40" />
+          <div class="flex p-1.5 flex-shrink-0 border border-red-30 rounded-full bg-white">
+            <cy-icon-text :icon="mainIcon" icon-color="red-30" />
           </div>
         </div>
         <div class="pl-4 pr-2 pt-1">
@@ -64,7 +64,7 @@
       </div>
     </div>
     <template v-if="extraColumns.length > 0 || extraColumnsEmpty">
-      <div class="ml-[1.625rem] w-1 h-3 bg-primary-20 scale-x-50" />
+      <div class="ml-7 border-l-1 h-3 border-primary-20" />
       <div class="rounded border-1 border-primary-20 bg-white pt-2.5 pb-2">
         <slot name="extra-columns-start" />
         <SkillBranchExtraColumn
