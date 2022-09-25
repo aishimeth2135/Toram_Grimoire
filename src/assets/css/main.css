@@ -38,6 +38,10 @@ body {
   color: var(--app-primary-5);
 }
 
+input, textarea {
+  background-color: var(--app-white);
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
