@@ -25,7 +25,7 @@ export function getSkillStatContainerValid(character: Character | null, skillRes
       },
       $branch: {
         id: skillResult.container.branchItem.id,
-        prop: skillResult.container.branchItem.prop,
+        prop: (key: string) => skillResult.container.branchItem.prop(key),
       },
     }
     return computeFormula(statContainer.conditionValue, vars, false) as boolean
