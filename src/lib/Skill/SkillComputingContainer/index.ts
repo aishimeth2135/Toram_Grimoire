@@ -210,9 +210,13 @@ class SkillEffectItem extends SkillEffectItemBase {
       if (skillNinjaSpirit) {
         const skillNinjaSpiritLevel = getSkillLevel(skillNinjaSpirit)
         if (skillNinjaSpiritLevel === 10) {
-          equipments.push(new EquipmentRestrictions({
-            sub: EquipmentTypes.NinjutsuScroll,
-          }))
+          const mainRest = equipments.find(rest => rest.main !== null && rest.sub === null)
+          if (mainRest) {
+            equipments.push(new EquipmentRestrictions({
+              main: mainRest.main,
+              sub: EquipmentTypes.NinjutsuScroll,
+            }))
+          }
         }
       }
     }
