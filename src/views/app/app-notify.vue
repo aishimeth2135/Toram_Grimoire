@@ -5,11 +5,11 @@
         <div
           v-for="msg in store.messages"
           :key="msg.iid"
-          class="duration-300 bg-dark text-white p-3 flex items-center mt-4 rounded w-full flex-wrap relative"
+          class="duration-300 bg-primary-90 text-white p-3 flex items-center mt-4 rounded w-full flex-wrap relative"
         >
           <span
             v-if="msg.counter > 1"
-            class="inline-flex justify-center items-center w-8 h-8 bg-dark rounded-full border border-solid border-primary-30 text-primary-30 absolute -right-4 -top-4"
+            class="inline-flex justify-center items-center w-8 h-8 bg-primary-90 rounded-full border border-solid border-primary-30 text-primary-30 absolute -right-4 -top-4"
           >
             <span>{{ msg.counter }}</span>
           </span>

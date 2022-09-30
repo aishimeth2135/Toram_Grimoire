@@ -145,6 +145,8 @@ module.exports = {
 
     'backgroundColor',
     'backgroundOpacity',
+    'backgroundSize',
+    'backgroundPosition',
     'borderColor',
     'borderOpacity',
     'borderRadius',
