@@ -1,6 +1,6 @@
 import { SkillRoot } from './Skill'
 
-export default class {
+export default class SkillSystem {
   skillRoot: SkillRoot
 
   constructor() {

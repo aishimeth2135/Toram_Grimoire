@@ -152,6 +152,8 @@ module.exports = {
     'borderStyle',
     'boxShadow',
     'boxShadowColor',
+    'borderCollapse',
+    'borderSpacing',
 
     'cursor',
 
