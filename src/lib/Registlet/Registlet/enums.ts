@@ -1,5 +1,5 @@
 export const enum RegistletCategoryIds {
-  stat = 'stat',
-  special = 'special',
-  skill = 'skill',
+  Stat = 'stat',
+  Special = 'special',
+  Skill = 'skill',
 }

@@ -4,15 +4,15 @@ import { Skill } from '@/lib/Skill/Skill'
 import { RegistletCategoryIds } from './enums'
 
 interface RegistletInfos {
-  id: number;
-  category: string;
+  id: string;
   name: string;
   obtainLevels: number[];
   maxLevel: number;
-  caption: string;
+  powderCost: number;
+  powderCostAdditional: number | null;
 }
 
-class RegistletCategory<ItemBase extends RegistletItemBase> {
+class RegistletCategory<ItemBase extends RegistletItemBase = RegistletItemBase> {
   id: RegistletCategoryIds
   items: ItemBase[]
 
@@ -25,39 +25,76 @@ class RegistletCategory<ItemBase extends RegistletItemBase> {
 abstract class RegistletItemBase {
   abstract link: any
 
-  id: number
-  category: string
+  category: RegistletCategory
+  id: string
   name: string
   obtainLevels: number[]
   maxLevel: number
-  caption: string
+  powderCost: number
+  powderCostAdditional: number | null
+  rows: RegistletItemRow[]
 
-  constructor(infos: RegistletInfos) {
-    this.id = infos.id
-    this.category = infos.category
+  constructor(category: RegistletCategory, infos: RegistletInfos) {
+    this.category = category
+    this.id = `${category.id}-${infos.id}`
     this.name = infos.name
     this.obtainLevels = infos.obtainLevels
     this.maxLevel = infos.maxLevel
-    this.caption = infos.caption
+    this.powderCost = infos.powderCost
+    this.powderCostAdditional = infos.powderCostAdditional
+    this.rows = []
   }
 }
 
 class RegistletItemBaseSkill extends RegistletItemBase {
-  override link: Skill
+  override link: Skill | null
+  declare category: RegistletCategory<RegistletItemBaseSkill>
 
-  constructor(infos: RegistletInfos, skill: Skill) {
-    super(infos)
+  constructor(category: RegistletCategory<RegistletItemBaseSkill>, infos: RegistletInfos, skill: Skill | null) {
+    super(category, infos)
     this.link = skill
   }
 }
 
 class RegistletItemBaseStat extends RegistletItemBase {
   override link: StatBase
+  declare category: RegistletCategory<RegistletItemBaseStat>
 
-  constructor(infos: RegistletInfos, statBase: StatBase) {
-    super(infos)
+  constructor(category: RegistletCategory<RegistletItemBaseStat>, infos: RegistletInfos, statBase: StatBase) {
+    super(category, infos)
     this.link = statBase
   }
 }
 
-export { RegistletCategory, RegistletItemBaseSkill, RegistletItemBaseStat }
+class RegistletItemBaseSpecial extends RegistletItemBase {
+  override link: string
+  declare category: RegistletCategory<RegistletItemBaseSpecial>
+
+  constructor(category: RegistletCategory<RegistletItemBaseSpecial>, infos: RegistletInfos) {
+    super(category, infos)
+    this.link = ''
+  }
+}
+
+class RegistletItemRow {
+  type: string
+  value: string
+
+  constructor(type: string, value: string) {
+    this.type = type
+    this.value = value
+  }
+}
+
+export type {
+  RegistletInfos,
+}
+
+export {
+  RegistletCategory,
+  RegistletItemBase,
+  RegistletItemBaseSkill,
+  RegistletItemBaseStat,
+  RegistletItemBaseSpecial,
+  RegistletItemRow,
+}
