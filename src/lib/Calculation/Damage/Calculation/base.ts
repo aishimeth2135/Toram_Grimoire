@@ -120,7 +120,7 @@ class CalculationBase {
             return cur * handle(subItem)
           }
           if (subItem === '@floor') {
-            return Math.floor(cur)
+            return Math.floor(cur * 100) / 100
           }
           return cur
         }, 1)
