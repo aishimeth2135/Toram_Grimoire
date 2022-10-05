@@ -113,6 +113,10 @@ rules:
     - error
   "@typescript-eslint/prefer-enum-initializers":
     - error
+  "@typescript-eslint/no-duplicate-enum-values":
+    - error
+  "@typescript-eslint/prefer-literal-enum-member":
+    - error
   "@typescript-eslint/array-type":
     - error
   "@typescript-eslint/no-dupe-class-members":
