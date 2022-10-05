@@ -26,6 +26,10 @@ const Grimoire = {
     return DatasStoreBase.DamageCalculation!
   },
 
+  get Registlet() {
+    return DatasStoreBase.Registlet!
+  },
+
   get i18n() {
     return I18nStore.i18n!
   },

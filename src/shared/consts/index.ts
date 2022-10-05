@@ -44,4 +44,8 @@ export const ROUTE_LINK_DATAS: {
   name: 'damage-calculation',
   icon: 'mdi-sword',
   pathName: AppRouteNames.DamageCalculation,
+}, {
+  name: 'registlet-query',
+  icon: 'mdi:book-outline',
+  pathName: AppRouteNames.RegistletQuery,
 }]

@@ -16,6 +16,7 @@ import Page404 from './Page404'
 import Skill from './Skill'
 import Glossary from './Glossary'
 import Book from './Book'
+import Registlet from './Registlet'
 import Dev from './Dev'
 
 export default function createAppRouter() {
@@ -31,6 +32,7 @@ export default function createAppRouter() {
     Page404,
     Bubble,
     DamageCalculation,
+    Registlet,
   ]
 
   const router = createRouter({

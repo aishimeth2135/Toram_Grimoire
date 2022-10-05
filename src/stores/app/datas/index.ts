@@ -5,6 +5,7 @@ import { useCharacterFoodStore } from '@/stores/views/character/food'
 import { useCharacterSkillStore } from '@/stores/views/character/skill'
 
 import { InitCrystalIcons, InitEquipmentIcons, InitSkillIcons } from '@/shared/services/Images'
+import { DataPathIds } from '@/shared/services/DataPath'
 
 import DamageCalculationSystem from '@/lib/Calculation/Damage'
 import CharacterSystem from '@/lib/Character'
@@ -12,6 +13,7 @@ import EnchantSystem from '@/lib/Enchant'
 import ItemsSystem from '@/lib/Items'
 import SkillSystem from '@/lib/Skill'
 import GlossarySystem from '@/lib/Glossary'
+import RegistletSystem from '@/lib/Registlet'
 
 import DownloadDatas from './utils/DownloadDatas'
 import loadCharacterStats from './utils/LoadCharacterStat'
@@ -22,6 +24,7 @@ import { loadSkill, loadSkillMain } from './utils/LoadSkill'
 import loadStats from './utils/LoadStats'
 import loadGlossaryTagData from './utils/LoadGlossary'
 import { DataStoreIds } from './enums'
+import LoadRegistlet from './utils/LoadRegistlet'
 
 export const DatasStoreBase: {
   Items: ItemsSystem | null;
@@ -30,6 +33,7 @@ export const DatasStoreBase: {
   Skill: SkillSystem | null;
   Enchant: EnchantSystem | null;
   DamageCalculation: DamageCalculationSystem | null;
+  Registlet: RegistletSystem | null;
 } = shallowReactive({
   Items: null,
   Character: null,
@@ -37,6 +41,7 @@ export const DatasStoreBase: {
   Skill: null,
   Enchant: null,
   DamageCalculation: null,
+  Registlet: null,
 })
 
 interface DataStoreInitHandler {
@@ -50,6 +55,7 @@ export const useDatasStore = defineStore('app-datas', () => {
   const Skill = computed(() => DatasStoreBase.Skill)
   const Enchant = computed(() => DatasStoreBase.Enchant)
   const DamageCalculation = computed(() => DatasStoreBase.DamageCalculation)
+  const Registlet = computed(() => DatasStoreBase.Registlet)
 
   const loaded = ref<Map<DataStoreIds, boolean>>(new Map())
   const waitLoadedTicks = ref<Map<DataStoreIds, ((value: boolean) => void)[]>>(new Map())
@@ -108,9 +114,15 @@ export const useDatasStore = defineStore('app-datas', () => {
     }
   }
 
+  const initRegistletInstance = () => {
+    if (Registlet.value === null) {
+      DatasStoreBase.Registlet = new RegistletSystem()
+    }
+  }
+
   const initItems: DataStoreInitHandler = async function () {
     initItemsInstance()
-    const datas = await DownloadDatas('Equipment', 'Crystal')
+    const datas = await DownloadDatas(DataPathIds.Equipment, DataPathIds.Crystal)
     return async () => {
       loadEquipments(Items.value!, datas[0][0])
       loadCrystals(Items.value!, datas[1][0])
@@ -121,7 +133,7 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initStats: DataStoreInitHandler = async function () {
     initCharacterInstance()
-    const datas = await DownloadDatas({ path: 'Stats', lang: true })
+    const datas = await DownloadDatas({ path: DataPathIds.Stats, lang: true })
     return async () => {
       loadStats(Character.value!, datas[0])
       await InitEquipmentIcons()
@@ -130,7 +142,7 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initCharacterStats: DataStoreInitHandler = async function () {
     initCharacterInstance()
-    const datas = await DownloadDatas({ path: 'Character Stats', lang: true })
+    const datas = await DownloadDatas({ path: DataPathIds.CharacterStats, lang: true })
     return async () => {
       loadCharacterStats(Character.value!, datas[0])
     }
@@ -138,7 +150,7 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initGlossary: DataStoreInitHandler = async function () {
     initGlossaryInstance()
-    const datas = await DownloadDatas({ path: 'Glossary', lang: true })
+    const datas = await DownloadDatas({ path: DataPathIds.Glossary, lang: true })
     return async () => {
       loadGlossaryTagData(Glossary.value!, datas[0])
     }
@@ -146,7 +158,7 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initSkill: DataStoreInitHandler = async function () {
     initSkillInstance()
-    const datas = await DownloadDatas({ path: 'Skill', lang: true }, { path: 'Skill Main', lang: true })
+    const datas = await DownloadDatas({ path: DataPathIds.Skill, lang: true }, { path: DataPathIds.SkillMain, lang: true })
     return async () => {
       loadSkill(Skill.value!, datas[0])
       loadSkillMain(Skill.value!, datas[1])
@@ -166,7 +178,7 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initEnchant: DataStoreInitHandler = async function () {
     initEnchantInstance()
-    const datas = await DownloadDatas('Enchant')
+    const datas = await DownloadDatas(DataPathIds.Enchant)
     return async () => {
       loadEnchant(Enchant.value!, datas[0][0])
     }
@@ -175,6 +187,14 @@ export const useDatasStore = defineStore('app-datas', () => {
   const initDamageCalculation: DataStoreInitHandler = async function () {
     initDamageCalculationInstance()
     return () => Promise.resolve()
+  }
+
+  const initRegistlet: DataStoreInitHandler = async function () {
+    initRegistletInstance()
+    const datas = await DownloadDatas(DataPathIds.Registlet)
+    return async () => {
+      LoadRegistlet(Registlet.value!, datas[0][0])
+    }
   }
 
   return {
@@ -196,6 +216,7 @@ export const useDatasStore = defineStore('app-datas', () => {
     initFood,
     initEnchant,
     initDamageCalculation,
+    initRegistlet,
   }
 })
 

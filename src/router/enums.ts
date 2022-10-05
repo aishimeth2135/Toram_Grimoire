@@ -25,6 +25,9 @@ export const enum AppRouteNames {
   Glossary = 'Glossary',
   GlossaryQuery = 'GlossaryQuery',
 
+  Registlet = 'Registlet',
+  RegistletQuery = 'RegistletQuery',
+
   Book = 'Book',
   BookView = 'BookView',
   BookPreview = 'BookPreview',

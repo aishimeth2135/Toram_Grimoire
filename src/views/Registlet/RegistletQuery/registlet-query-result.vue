@@ -2,7 +2,7 @@
   <div>
     <div ref="topElement"></div>
     <div class="overflow-x-auto">
-      <div class="min-w-min">
+      <div class="min-w-min divide-y divide-primary-20">
         <RegistletQueryResultItem
           v-for="item in currentItems"
           :key="item.id"
