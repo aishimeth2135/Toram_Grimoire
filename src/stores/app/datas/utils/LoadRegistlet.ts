@@ -18,7 +18,7 @@ export default function (root: RegistletSystem, csvData: CsvData) {
     ROW_TYPE = 7,
     ROW_VALUE = 8,
     CATEGORY = {
-      ID: 1,
+      ID: 0,
     }
   const categoryIdList: string[] = [
     RegistletCategoryIds.Skill,

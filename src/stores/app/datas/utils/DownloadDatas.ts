@@ -2,16 +2,17 @@ import Papa from 'papaparse'
 
 import { useLanguageStore } from '@/stores/app/language'
 
-import { DataPath, DataPathLang } from '@/shared/services/DataPath'
+import { DataPath, DataPathIds, DataPathLang } from '@/shared/services/DataPath'
 
 
-type PathItem = string | { path: string; lang?: boolean }
+type PathItem = DataPathIds | { path: DataPathIds; lang?: boolean }
 type CsvData = string[][]
 type LangCsvData = [CsvData, CsvData | null, CsvData | null]
 
 export default async function (...paths: PathItem[]): Promise<LangCsvData[]> {
+  const isDataPathId = (value: any): value is DataPathIds => typeof value === 'number'
   const promises = paths.map(async (pathItem) => {
-    if (typeof pathItem === 'string') {
+    if (isDataPathId(pathItem)) {
       pathItem = { path: pathItem }
     }
     const { path: pathId, lang = false } = pathItem
@@ -32,7 +33,6 @@ export async function downloadCsv(path: string): Promise<CsvData> {
       const csvstr = await res.text()
 
       return Papa.parse(csvstr).data as CsvData
-
     } catch (err) {
       console.warn(`[DownloadData] load "${path}" failed. Try to use backup...`)
       console.log(err)
@@ -56,7 +56,7 @@ export async function downloadCsv(path: string): Promise<CsvData> {
 }
 
 const DEFAULT_LANG = 1
-async function loadLangDatas(pathId: string): Promise<LangCsvData> {
+async function loadLangDatas(pathId: DataPathIds): Promise<LangCsvData> {
   const languageStore = useLanguageStore()
 
   const promises: Promise<CsvData>[] = []

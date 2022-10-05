@@ -1,6 +1,6 @@
 import type { LangCsvData } from '@/stores/app/datas/utils/DownloadDatas'
 
-function HandleLanguageData(datas: LangCsvData, mapping: { [key: number]: number }): void {
+function HandleLanguageData(datas: LangCsvData, mapping: Record<number, number>): void {
   if (!datas[0]) {
     return
   }
