@@ -52,6 +52,7 @@ const BRANCH_PROPS_DEFAULT_VALUE: Partial<
     radius: '1',
     start_position_offsets: '0',
     end_position_offsets: '0',
+    target_offsets: 'auto',
     effect_self: '1',
   },
   [SkillBranchNames.Heal]: {

@@ -427,6 +427,10 @@ function computeFormula(
   vars: Record<string, any>,
   defaultValue: any = 0
 ): unknown {
+  if (isNumberString(formula)) {
+    return parseInt(formula, 10)
+  }
+
   // auto inject Math
   vars.Math = window.Math
 
