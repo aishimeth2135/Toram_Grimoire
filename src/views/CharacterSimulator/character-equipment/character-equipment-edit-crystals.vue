@@ -30,7 +30,7 @@
             <div class="mt-2 px-2">
               <template v-for="crystal in category.crystals" :key="crystal.id">
                 <cy-list-item
-                  v-if="checkEnchaner(category, crystal)"
+                  v-if="checkEnchaner(crystal)"
                   :selected="selectedCrystalIds.includes(crystal.id)"
                   @click="toggleCrystalSelected(crystal)"
                 >
@@ -187,45 +187,18 @@ const toggleCrystalSelected = (crystal: Crystal) => {
   }
 }
 
-const checkEnchaner = (category: CategoryItem, crystal: Crystal) => {
-  const findByName = (name: string) =>
-    category.crystals.find(_crystal => _crystal.name === name)
-  const check1 =
-    equipment.value &&
-    (equipment.value.crystals ?? []).every(equipCrystal => {
-      let cur = equipCrystal.origin
-      while (cur.enhancer) {
-        const _cur = findByName(cur.enhancer)
-        if (!_cur) {
-          break
-        }
-        cur = _cur
-        if (cur.name === crystal.name) {
-          return false
-        }
-      }
-      return true
+const currentEquipmentRelatedCrystals = computed(() => {
+  if (!equipment.value) {
+    return []
+  }
+  return equipment.value.crystals
+    .map(crystal => {
+      const data = crystal.origin.getRelatedCrystals(Grimoire.Items.crystals)
+      return [...data.enhancers, ...data.prependeds].map(item => item.name)
     })
-  const findByEnhancer = (name: string) =>
-    category.crystals.find(_crystal => _crystal.enhancer === name)
-  const check2 =
-    equipment.value &&
-    (equipment.value.crystals ?? []).every(equipCrystal => {
-      let cur = equipCrystal.origin
-      while (true) {
-        // eslint-disable-line
-        const _cur = findByEnhancer(cur.name)
-        if (!_cur) {
-          break
-        }
-        cur = _cur
-        if (cur.name === crystal.name) {
-          return false
-        }
-      }
-      return true
-    })
+    .flat()
+})
 
-  return check1 && check2
-}
+const checkEnchaner = (crystal: Crystal) =>
+  !currentEquipmentRelatedCrystals.value.includes(crystal.name)
 </script>

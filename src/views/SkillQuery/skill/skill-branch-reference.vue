@@ -11,8 +11,9 @@
         target="_blank"
         :href="container.get('url')"
         class="text-primary-50 underline"
-        >{{ container.get('url_text') }}</a
       >
+        {{ container.get('url_text') }}
+      </a>
     </div>
   </div>
 </template>

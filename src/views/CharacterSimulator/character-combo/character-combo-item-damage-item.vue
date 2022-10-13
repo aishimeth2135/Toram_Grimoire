@@ -19,8 +19,8 @@
           <CharacterComboItemDamageResultItem
             ref="resultItemRefs"
             v-model:unselected-branches="
-              comboSkillState.comboSkill.parent.config
-                .unselectedBranches /* eslint-disable-line vue/no-mutating-props */
+              /* eslint-disable-next-line vue/no-mutating-props */
+              comboSkillState.comboSkill.parent.config.unselectedBranches
             "
             :result="result"
             :extra-stats="extraStats"

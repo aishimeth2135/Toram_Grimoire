@@ -13,8 +13,9 @@
           <span
             class="ml-1 text-sm text-primary-50"
             :class="{ 'text-gray': data.negative }"
-            >{{ data.displayValue }}</span
           >
+            {{ data.displayValue }}
+          </span>
         </template>
         <cy-icon-text
           v-else

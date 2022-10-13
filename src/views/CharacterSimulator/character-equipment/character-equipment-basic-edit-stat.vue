@@ -98,8 +98,9 @@
                 :selected="!removedStatOptions.includes(stat)"
                 color="orange"
                 inline
-                >{{ stat.text }}</cy-button-check
               >
+                {{ stat.text }}
+              </cy-button-check>
             </cy-list-item>
           </div>
         </div>
