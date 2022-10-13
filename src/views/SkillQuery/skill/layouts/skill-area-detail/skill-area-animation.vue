@@ -41,8 +41,15 @@ const areaDatas = computed(() => {
   /* "1 m" to "x px" */
   const grid = (value: number): number => numberToFixed(value * 15, 1)
 
-  const getAttrNumValue = (key: string) =>
-    ctner.has(key) ? parseFloat(ctner.getValue(key)) : 0
+  const getAttrNumValue = (key: string) => {
+    if (ctner.has(key)) {
+      const value = ctner.getValue(key)
+      if (isNumberString(value)) {
+        return parseFloat(value)
+      }
+    }
+    return 0
+  }
 
   const radius = getAttrNumValue('radius'),
     startPositionOffsets = getAttrNumValue('start_position_offsets'),
@@ -78,8 +85,9 @@ const areaDatas = computed(() => {
       type === 'circle' && ctner.getOrigin('end_position') === 'self'
         ? radius * 0.5
         : Math.min(7, skillRange)
-  } else {
-    targetOffset = parseFloat(ctner.getValue('target_offsets'))
+  } else if (ctner.has('target_offsets')) {
+    const value = ctner.getValue('target_offsets')
+    targetOffset = isNumberString(value) ? parseFloat(value) : 0
   }
   const moveDistance = Math.min(
     Math.max(targetOffset + moveDistanceFix, moveDistanceOrigin),
@@ -154,7 +162,8 @@ const areaDatas = computed(() => {
     datas.push(tar)
 
     height = grid(by + radius + padding)
-    width = grid(tx + padding + radius + Math.max(0, endPositionOffsets))
+    const widthBx = radius > tx - bx ? bx : tx
+    width = grid(widthBx + padding + radius + Math.max(0, endPositionOffsets))
   } else if (type === 'line') {
     // character
     let bx = padding + radius

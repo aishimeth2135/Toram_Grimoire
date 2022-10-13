@@ -62,6 +62,32 @@
           </span>
         </div>
       </div>
+      <div v-if="actionFrameData" class="flex items-start py-1.5 pl-2.5">
+        <IconCircle icon="ic:outline-share-arrival-time" />
+        <div class="pl-4 pr-2 pt-1">
+          <div class="text-red-50">
+            {{ t('skill-query.branch.action-frame.title') }}
+          </div>
+          <div class="flex flex-wrap items-center">
+            <div class="mr-5 flex flex-wrap items-center">
+              <div class="text-sm text-primary-30">
+                {{ t('skill-query.branch.action-frame.title-base') }}
+              </div>
+              <div class="ml-2 text-red-60">
+                {{ actionFrameData.base }}
+              </div>
+            </div>
+            <div class="flex items-center">
+              <div class="text-sm text-primary-30">
+                {{ t('skill-query.branch.action-frame.title-min') }}
+              </div>
+              <div class="ml-2 text-red-60">
+                {{ actionFrameData.min }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div v-if="hasArea" class="py-1.5">
         <div class="flex items-center pl-2">
           <cy-button-circle
@@ -180,6 +206,18 @@ const subContentDatas = computed(() => {
       }
     })
     .filter(item => item.title || (item.title && item.value))
+})
+
+const actionFrameData = computed(() => {
+  const branchItem = container.value.branchItem
+  if (branchItem.hasProp('action_frame')) {
+    const actionFrames = branchItem.prop('action_frame').split('~')
+    return {
+      base: actionFrames[0] + 'F',
+      min: actionFrames[1] + 'F',
+    }
+  }
+  return null
 })
 </script>
 
