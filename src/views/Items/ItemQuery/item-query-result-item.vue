@@ -45,9 +45,9 @@
                 ATK
               </cy-icon-text>
               <span>{{ equipment.basicValue }}</span>
-              <span class="border-l border-blue-60 pl-2 text-blue-60"
-                >{{ equipment.stability }}%</span
-              >
+              <span class="border-l border-blue-60 pl-2 text-blue-60">
+                {{ equipment.stability }}%
+              </span>
             </template>
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
               <cy-icon-text icon="mdi:shield-outline" text-color="fuchsia-60">

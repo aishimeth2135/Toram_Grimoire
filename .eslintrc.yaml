@@ -144,9 +144,9 @@ rules:
     - commonjs: true
       ignore: ['^virtual:']
   # vue
-  vue/html-indent:
-    - warn
-    - 2
+  # vue/html-indent:
+  #   - warn
+  #   - 2
   vue/max-attributes-per-line:
     - warn
     - singleline: 5
@@ -155,9 +155,9 @@ rules:
     - warn
     - singleline: never
       multiline: always
-  vue/comma-dangle:
-    - warn
-    - always-multiline
+  # vue/comma-dangle:
+  #   - warn
+  #   - always-multiline
   vue/custom-event-name-casing:
     - error
     - kebab-case

@@ -31,8 +31,8 @@
       <div class="mb-2">
         <cy-options
           v-model:value="
-            comboSkillState.comboSkill
-              .tag /* eslint-disable-line vue/no-mutating-props */
+            /* eslint-disable-next-line vue/no-mutating-props */
+            comboSkillState.comboSkill.tag
           "
           :options="ComboSkillTagOptions"
         >

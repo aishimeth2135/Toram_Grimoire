@@ -57,9 +57,9 @@
                   }}</span>
                 </div>
               </div>
-              <span class="ml-auto text-primary-70"
-                >{{ equipment.stability }}%</span
-              >
+              <span class="ml-auto text-primary-70">
+                {{ equipment.stability }}%
+              </span>
             </template>
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
               <cy-icon-text icon="mdi:shield-outline" text-color="primary-30">

@@ -109,8 +109,9 @@
                       <span>{{ value.main }}</span>
                       <span
                         class="ml-2 border-l border-r border-solid border-blue-60 px-2 text-blue-60"
-                        >{{ value.sub }}</span
                       >
+                        {{ value.sub }}
+                      </span>
                     </span>
                   </span>
                 </template>
@@ -139,8 +140,9 @@
             class="text-primary-50 underline"
             href="https://asobimo.com/"
             target="_blank"
-            >アソビモ株式会社（ASOBIMO,Inc.）</a
           >
+            アソビモ株式会社（ASOBIMO,Inc.）
+          </a>
         </template>
       </i18n-t>
     </section>
