@@ -4,17 +4,18 @@
     :title="t('crystal-query.select-stat.title')"
     @close="emit('close')"
   >
-    <div class="mb-3 sticky top-0">
-      <cy-title-input
-        v-model:value="searchText"
-        icon="ic:baseline-search"
-      />
+    <div class="sticky top-0 mb-3">
+      <cy-title-input v-model:value="searchText" icon="ic:baseline-search" />
     </div>
     <div>
       <cy-list-item
         v-for="option in searchResult"
         :key="option.origin.statId(option.type)"
-        :selected="!!selectedStatItem && selectedStatItem.origin === option.origin && selectedStatItem.type === option.type"
+        :selected="
+          !!selectedStatItem &&
+          selectedStatItem.origin === option.origin &&
+          selectedStatItem.type === option.type
+        "
         @click="selectStat(option)"
       >
         <cy-icon-text icon="mdi-rhombus-outline">
@@ -26,8 +27,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
@@ -36,12 +37,12 @@ import { StatTypes } from '@/lib/Character/Stat/enums'
 import { StatOptionItem } from './setup'
 
 interface Props {
-  visible: boolean;
-  selectedStatItem: StatOptionItem | null;
+  visible: boolean
+  selectedStatItem: StatOptionItem | null
 }
 interface Emits {
-  (evt: 'close'): void;
-  (evt: 'update:selected-stat-item', statOptionItem: StatOptionItem): void;
+  (evt: 'close'): void
+  (evt: 'update:selected-stat-item', statOptionItem: StatOptionItem): void
 }
 
 defineProps<Props>()
@@ -71,7 +72,9 @@ const searchText = ref('')
 
 const searchResult = computed(() => {
   const _searchText = searchText.value.toLowerCase()
-  return statOptions.filter(option => option.text.toLowerCase().includes(_searchText))
+  return statOptions.filter(option =>
+    option.text.toLowerCase().includes(_searchText)
+  )
 })
 
 const selectStat = (option: StatOptionItem) => {

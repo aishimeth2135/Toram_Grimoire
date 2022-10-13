@@ -1,5 +1,5 @@
 <template>
-  <hr class="cy--hr">
+  <hr class="cy--hr" />
 </template>
 
 <script>

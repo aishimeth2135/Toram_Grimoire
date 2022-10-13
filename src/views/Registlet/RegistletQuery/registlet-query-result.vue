@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick, Ref, computed } from 'vue'
+import { Ref, computed, nextTick, ref } from 'vue'
 
 import { RegistletItemBase } from '@/lib/Registlet/Registlet'
 
@@ -30,7 +30,7 @@ import PageControl from '@/setup/PageControl'
 import RegistletQueryResultItem from './registlet-query-result-item.vue'
 
 interface Props {
-  registletItems: RegistletItemBase[];
+  registletItems: RegistletItemBase[]
 }
 
 const props = defineProps<Props>()

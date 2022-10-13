@@ -1,41 +1,44 @@
-import { computed, ref, Ref } from 'vue'
+import { Ref, computed, ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
 
-import { CalculationContainerIds, CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
+import { Calculation } from '@/lib/Calculation/Damage/Calculation'
+import {
+  CalculationContainerIds,
+  CalculationItemIds,
+} from '@/lib/Calculation/Damage/Calculation/enums'
 import { Character } from '@/lib/Character/Character'
-import { Skill, SkillBranch } from '@/lib/Skill/Skill'
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import { EnemyElements } from '@/lib/Enemy/enums'
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
-import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
-import { Calculation } from '@/lib/Calculation/Damage/Calculation'
 import { StatRecorded } from '@/lib/Character/Stat'
 import { StatRestriction } from '@/lib/Character/Stat'
+import { EnemyElements } from '@/lib/Enemy/enums'
+import { Skill, SkillBranch } from '@/lib/Skill/Skill'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
 import { SetupCharacterStatCategoryResultsExtended, SkillResult } from '.'
 import { setupCalculationExpectedResult } from '../../damage-calculation/setup'
 import { getCharacterElement } from '../utils'
 
 export interface TargetProperties {
-  physicalResistance: number;
-  magicResistance: number;
-  def: number;
-  mdef: number;
-  level: number;
-  criticalRateResistance: number;
-  criticalRateResistanceTotal: number;
-  dodge: number;
-  element: null | EnemyElements;
-  rangeDamage: CalculationItemIds;
+  physicalResistance: number
+  magicResistance: number
+  def: number
+  mdef: number
+  level: number
+  criticalRateResistance: number
+  criticalRateResistanceTotal: number
+  dodge: number
+  element: null | EnemyElements
+  rangeDamage: CalculationItemIds
 }
 
 export interface CalculationOptions {
-  proration: number;
-  comboRate: number;
-  armorBreakDisplay: boolean;
+  proration: number
+  comboRate: number
+  armorBreakDisplay: boolean
 }
 
 const promisedAccuracyRateMapping: Partial<Record<EquipmentTypes, number>> = {
@@ -73,7 +76,7 @@ const againstElementMap: Record<EnemyElements, EnemyElements> = {
 export default function setupDamageCalculation(
   character: Ref<Character | null>,
   setupCharacterStatCategoryResultsExtended: SetupCharacterStatCategoryResultsExtended,
-  getSkillLevel: (skill: Skill) => { valid: boolean; level: number },
+  getSkillLevel: (skill: Skill) => { valid: boolean; level: number }
 ) {
   const calculationBase = Grimoire.DamageCalculation.calculationBase
 
@@ -83,14 +86,16 @@ export default function setupDamageCalculation(
     if (!character.value) {
       return 0
     }
-    const mainType = character.value.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
+    const mainType = character.value.equipmentField(
+      EquipmentFieldTypes.MainWeapon
+    ).equipmentType
     return promisedAccuracyRateMapping[mainType] ?? 0
   })
 
   interface SkillProperties {
-    skillRealMpCost: number;
-    skillConstant: number;
-    skillMultiplier: number;
+    skillRealMpCost: number
+    skillConstant: number
+    skillMultiplier: number
   }
 
   const getSkillState = (() => {
@@ -120,13 +125,14 @@ export default function setupDamageCalculation(
       return null
     }
     const element = createElementMap()
-    const setElement = (stat: StatRestriction) => element[stat.baseId.replace('element_', '') as EnemyElements] = 1
+    const setElement = (stat: StatRestriction) =>
+      (element[stat.baseId.replace('element_', '') as EnemyElements] = 1)
 
     const skillElement = branchItem.prop('element')
     let skillDualElement = branchItem.prop('dual_element')
     if (skillDualElement === 'none') {
       const extraBch = branchItem.suffixBranches.find(suf => {
-        if(!getSkillBranchState(suf.default).enabled) {
+        if (!getSkillBranchState(suf.default).enabled) {
           return false
         }
         return suf.is(SkillBranchNames.Extra) && suf.hasProp('dual_element')
@@ -154,15 +160,30 @@ export default function setupDamageCalculation(
       if (skillDualElement !== 'none') {
         if (sub.equipment?.elementStat) {
           if (skillDualElement === 'arrow') {
-            if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.Arrow)) {
+            if (
+              chara.checkFieldEquipmentType(
+                EquipmentFieldTypes.SubWeapon,
+                EquipmentTypes.Arrow
+              )
+            ) {
               setElement(sub.equipment!.elementStat)
             }
           } else if (skillDualElement === 'one_hand_sword') {
-            if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword)) {
+            if (
+              chara.checkFieldEquipmentType(
+                EquipmentFieldTypes.SubWeapon,
+                EquipmentTypes.OneHandSword
+              )
+            ) {
               setElement(sub.equipment!.elementStat)
             }
           } else if (skillDualElement === 'magic_device') {
-            if (chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.MagicDevice)) {
+            if (
+              chara.checkFieldEquipmentType(
+                EquipmentFieldTypes.SubWeapon,
+                EquipmentTypes.MagicDevice
+              )
+            ) {
               setElement(sub.equipment!.elementStat)
             }
           }
@@ -177,9 +198,10 @@ export default function setupDamageCalculation(
     skillResult: Ref<SkillResult>,
     extraStats: Ref<StatRecorded[]>,
     targetProperties: Ref<TargetProperties>,
-    calculationOptions: Ref<CalculationOptions>,
+    calculationOptions: Ref<CalculationOptions>
   ) => {
-    const { categoryResults, characterPureStats } = setupCharacterStatCategoryResultsExtended(extraStats, skillResult)
+    const { categoryResults, characterPureStats } =
+      setupCharacterStatCategoryResultsExtended(extraStats, skillResult)
 
     const container = computed(() => skillResult.value.container)
 
@@ -187,17 +209,24 @@ export default function setupDamageCalculation(
       return categoryResults.value.map(category => category.stats).flat()
     })
 
-    const statValue = (baseId: string) => characterPureStats.value.find(stat => stat.baseId === baseId)?.value ?? 0
-    const resultValue = (id: string) => statResults.value.find(result => result.id === id)?.resultValue ?? 0
+    const statValue = (baseId: string) =>
+      characterPureStats.value.find(stat => stat.baseId === baseId)?.value ?? 0
+    const resultValue = (id: string) =>
+      statResults.value.find(result => result.id === id)?.resultValue ?? 0
 
-    const currentCharacterElement = computed(() => character.value ? getCharacterElement(character.value) : null)
+    const currentCharacterElement = computed(() =>
+      character.value ? getCharacterElement(character.value) : null
+    )
     const skillElementExtra = computed(() => {
       const newElement = createElementMap()
       if (!currentCharacterElement.value) {
         return newElement
       }
       const skillElement = getSkillElement(container.value.branchItem)
-      const magicExtra = container.value.getOrigin('damage_type') === 'magic' ? resultValue('magic_element_dmg') : 0
+      const magicExtra =
+        container.value.getOrigin('damage_type') === 'magic'
+          ? resultValue('magic_element_dmg')
+          : 0
       if (skillElement) {
         const keys = Object.keys(skillElement) as EnemyElements[]
         keys.forEach(key => {
@@ -207,7 +236,9 @@ export default function setupDamageCalculation(
           }
         })
       } else {
-        const keys = Object.keys(currentCharacterElement.value) as EnemyElements[]
+        const keys = Object.keys(
+          currentCharacterElement.value
+        ) as EnemyElements[]
         keys.forEach(key => {
           if (currentCharacterElement.value![key] === 1) {
             const againstKey = againstElementMap[key]
@@ -230,36 +261,92 @@ export default function setupDamageCalculation(
         [CalculationItemIds.SubStability, resultValue('sub_stability')],
         [CalculationItemIds.PhysicalPierce, resultValue('physical_pierce')],
         [CalculationItemIds.MagicPierce, resultValue('magic_pierce')],
-        [CalculationItemIds.UnsheatheAttackConstant, resultValue('unsheathe_attack')],
-        [CalculationItemIds.UnsheatheAttackMultiplier, resultValue('unsheathe_attack_multiplier')],
+        [
+          CalculationItemIds.UnsheatheAttackConstant,
+          resultValue('unsheathe_attack'),
+        ],
+        [
+          CalculationItemIds.UnsheatheAttackMultiplier,
+          resultValue('unsheathe_attack_multiplier'),
+        ],
         [CalculationItemIds.CriticalDamage, resultValue('critical_damage')],
-        [CalculationItemIds.MagicCriticalDamageConversionRate, 50 + statValue('magic_cd_percentage')],
+        [
+          CalculationItemIds.MagicCriticalDamageConversionRate,
+          50 + statValue('magic_cd_percentage'),
+        ],
         [CalculationItemIds.CriticalRate, resultValue('critical_rate')],
-        [CalculationItemIds.MagicCriticalRateConversionRate, statValue('magic_crt_percentage')],
-        [CalculationItemIds.ShortRangeDamage, resultValue('short_range_damage')],
+        [
+          CalculationItemIds.MagicCriticalRateConversionRate,
+          statValue('magic_crt_percentage'),
+        ],
+        [
+          CalculationItemIds.ShortRangeDamage,
+          resultValue('short_range_damage'),
+        ],
         [CalculationItemIds.LongRangeDamage, resultValue('long_range_damage')],
         [CalculationItemIds.Stability, resultValue('stability')],
         [CalculationItemIds.Accuracy, resultValue('accuracy')],
         [CalculationItemIds.PromisedAccuracyRate, promisedAccuracyRate.value],
-        [CalculationItemIds.StrongerAgainstNeutral, 100 + statValue('stronger_against_neutral')],
-        [CalculationItemIds.StrongerAgainstFire, 100 + statValue('stronger_against_fire') + skillElementExtra.value.fire],
-        [CalculationItemIds.StrongerAgainstWater, 100 + statValue('stronger_against_water') + skillElementExtra.value.water],
-        [CalculationItemIds.StrongerAgainstEarth, 100 + statValue('stronger_against_earth') + skillElementExtra.value.earth],
-        [CalculationItemIds.StrongerAgainstWind, 100 + statValue('stronger_against_wind') + skillElementExtra.value.wind],
-        [CalculationItemIds.StrongerAgainstLight, 100 + statValue('stronger_against_light') + skillElementExtra.value.light],
-        [CalculationItemIds.StrongerAgainstDark, 100 + statValue('stronger_against_dark') + skillElementExtra.value.dark],
+        [
+          CalculationItemIds.StrongerAgainstNeutral,
+          100 + statValue('stronger_against_neutral'),
+        ],
+        [
+          CalculationItemIds.StrongerAgainstFire,
+          100 +
+            statValue('stronger_against_fire') +
+            skillElementExtra.value.fire,
+        ],
+        [
+          CalculationItemIds.StrongerAgainstWater,
+          100 +
+            statValue('stronger_against_water') +
+            skillElementExtra.value.water,
+        ],
+        [
+          CalculationItemIds.StrongerAgainstEarth,
+          100 +
+            statValue('stronger_against_earth') +
+            skillElementExtra.value.earth,
+        ],
+        [
+          CalculationItemIds.StrongerAgainstWind,
+          100 +
+            statValue('stronger_against_wind') +
+            skillElementExtra.value.wind,
+        ],
+        [
+          CalculationItemIds.StrongerAgainstLight,
+          100 +
+            statValue('stronger_against_light') +
+            skillElementExtra.value.light,
+        ],
+        [
+          CalculationItemIds.StrongerAgainstDark,
+          100 +
+            statValue('stronger_against_dark') +
+            skillElementExtra.value.dark,
+        ],
 
         [CalculationItemIds.CharacterLevel, character.value.level],
-        [CalculationItemIds.SkillLevelTwoHanded, getSkillLevel(skillTwoHanded).level],
-        [CalculationItemIds.OtherMultiplier,
-          (100 + statValue('total_damage_A')) * (100 + statValue('total_damage_B')) / 100,
+        [
+          CalculationItemIds.SkillLevelTwoHanded,
+          getSkillLevel(skillTwoHanded).level,
+        ],
+        [
+          CalculationItemIds.OtherMultiplier,
+          ((100 + statValue('total_damage_A')) *
+            (100 + statValue('total_damage_B'))) /
+            100,
         ],
 
         // [CalculationItemIds.SkillRealMpCost, 0],
       ])
     })
 
-    const calculation: Ref<Calculation> = ref(calculationBase.createCalculation(''))
+    const calculation: Ref<Calculation> = ref(
+      calculationBase.createCalculation('')
+    )
 
     for (const ctner of calculation.value.containers.values()) {
       ctner.enabled = true
@@ -288,7 +375,11 @@ export default function setupDamageCalculation(
       }
     })
 
-    const baseSuffixBranch = computed(() => container.value.branchItem.suffixBranches.find(suf => suf.is(SkillBranchNames.Base)))
+    const baseSuffixBranch = computed(() =>
+      container.value.branchItem.suffixBranches.find(suf =>
+        suf.is(SkillBranchNames.Base)
+      )
+    )
 
     const varsMap = computed(() => {
       let atkRate = 100
@@ -307,26 +398,56 @@ export default function setupDamageCalculation(
         [CalculationItemIds.AtkRate, atkRate],
         [CalculationItemIds.MatkRate, matkRate],
 
-        [CalculationItemIds.SkillRealMpCost, skillProperties.value.skillRealMpCost],
-        [CalculationItemIds.SkillConstant, skillProperties.value.skillConstant + statValue('skill_constant_extra')],
-        [CalculationItemIds.SkillMultiplier, ((skillProperties.value.skillMultiplier + statValue('skill_multiplier_extra')) * (100 + statValue('total_skill_multiplier')) / 100)],
+        [
+          CalculationItemIds.SkillRealMpCost,
+          skillProperties.value.skillRealMpCost,
+        ],
+        [
+          CalculationItemIds.SkillConstant,
+          skillProperties.value.skillConstant +
+            statValue('skill_constant_extra'),
+        ],
+        [
+          CalculationItemIds.SkillMultiplier,
+          ((skillProperties.value.skillMultiplier +
+            statValue('skill_multiplier_extra')) *
+            (100 + statValue('total_skill_multiplier'))) /
+            100,
+        ],
 
-        [CalculationItemIds.TargetPhysicalResistance, targetProperties.value.physicalResistance],
-        [CalculationItemIds.TargetMagicResistance, targetProperties.value.magicResistance],
+        [
+          CalculationItemIds.TargetPhysicalResistance,
+          targetProperties.value.physicalResistance,
+        ],
+        [
+          CalculationItemIds.TargetMagicResistance,
+          targetProperties.value.magicResistance,
+        ],
         [CalculationItemIds.TargetLevel, targetProperties.value.level],
         [CalculationItemIds.TargetDef, targetProperties.value.def],
         [CalculationItemIds.TargetMdef, targetProperties.value.mdef],
-        [CalculationItemIds.TargetCriticalRateResistance, targetProperties.value.criticalRateResistance],
-        [CalculationItemIds.TargetCriticalRateResistanceTotal, targetProperties.value.criticalRateResistanceTotal],
+        [
+          CalculationItemIds.TargetCriticalRateResistance,
+          targetProperties.value.criticalRateResistance,
+        ],
+        [
+          CalculationItemIds.TargetCriticalRateResistanceTotal,
+          targetProperties.value.criticalRateResistanceTotal,
+        ],
         [CalculationItemIds.TargetDodge, targetProperties.value.dodge],
 
         [CalculationItemIds.Proration, calculationOptions.value.proration],
-        [CalculationItemIds.ComboMultiplier, calculationOptions.value.comboRate],
+        [
+          CalculationItemIds.ComboMultiplier,
+          calculationOptions.value.comboRate,
+        ],
       ])
     })
 
-    calculation.value.config.getItemValue = (itemId) => {
-      return calculationVars.value.get(itemId) ?? varsMap.value.get(itemId) ?? null
+    calculation.value.config.getItemValue = itemId => {
+      return (
+        calculationVars.value.get(itemId) ?? varsMap.value.get(itemId) ?? null
+      )
     }
 
     const containerCurrentItemMap = computed(() => {
@@ -372,41 +493,79 @@ export default function setupDamageCalculation(
         [CalculationContainerIds.RangeDamage, rangeDamage],
       ])
       if (targetProperties.value.element !== null) {
-        resultMap.set(CalculationContainerIds.StrongerAgainstElement, elementsMap[targetProperties.value.element])
+        resultMap.set(
+          CalculationContainerIds.StrongerAgainstElement,
+          elementsMap[targetProperties.value.element]
+        )
       }
       return resultMap
     })
 
-    calculation.value.config.getContainerCurrentItemId = (containerId) => {
+    calculation.value.config.getContainerCurrentItemId = containerId => {
       return containerCurrentItemMap.value.get(containerId) ?? null
     }
 
     const containerForceHiddenMap = computed(() => {
-      const unsheatheDamageHidden = !container.value.branchItem.propBoolean('unsheathe_damage')
+      const unsheatheDamageHidden =
+        !container.value.branchItem.propBoolean('unsheathe_damage')
       const baseNone = container.value.branchItem.prop('base') === 'none'
       const baseOrigin = container.value.getOrigin('base')
 
-      const mainType = character.value?.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
+      const mainType = character.value?.equipmentField(
+        EquipmentFieldTypes.MainWeapon
+      ).equipmentType
 
       return new Map([
         [CalculationContainerIds.BaseAtk, baseNone || baseOrigin === 'matk'],
-        [CalculationContainerIds.BaseMatk, baseNone || baseOrigin === 'atk' || baseSuffixBranch.value?.prop('type') === 'dual_sword'],
-        [CalculationContainerIds.BaseDualSword, !character.value ||
-          baseSuffixBranch.value?.prop('type') !== 'dual_sword' ||
-          !character.value.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, EquipmentTypes.OneHandSword) ||
-          !character.value.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, EquipmentTypes.OneHandSword),
+        [
+          CalculationContainerIds.BaseMatk,
+          baseNone ||
+            baseOrigin === 'atk' ||
+            baseSuffixBranch.value?.prop('type') === 'dual_sword',
         ],
-        [CalculationContainerIds.StrongerAgainstElement, targetProperties.value.element === null],
-        [CalculationContainerIds.UnsheatheAttackConstant, unsheatheDamageHidden],
-        [CalculationContainerIds.UnsheatheAttackMultiplier, unsheatheDamageHidden],
-        [CalculationContainerIds.RangeDamage, container.value.getOrigin('range_damage') === '0'],
-        [CalculationContainerIds.BaseTwoHanded, !getSkillLevel(skillTwoHanded).valid || mainType !== EquipmentTypes.Katana],
+        [
+          CalculationContainerIds.BaseDualSword,
+          !character.value ||
+            baseSuffixBranch.value?.prop('type') !== 'dual_sword' ||
+            !character.value.checkFieldEquipmentType(
+              EquipmentFieldTypes.MainWeapon,
+              EquipmentTypes.OneHandSword
+            ) ||
+            !character.value.checkFieldEquipmentType(
+              EquipmentFieldTypes.SubWeapon,
+              EquipmentTypes.OneHandSword
+            ),
+        ],
+        [
+          CalculationContainerIds.StrongerAgainstElement,
+          targetProperties.value.element === null,
+        ],
+        [
+          CalculationContainerIds.UnsheatheAttackConstant,
+          unsheatheDamageHidden,
+        ],
+        [
+          CalculationContainerIds.UnsheatheAttackMultiplier,
+          unsheatheDamageHidden,
+        ],
+        [
+          CalculationContainerIds.RangeDamage,
+          container.value.getOrigin('range_damage') === '0',
+        ],
+        [
+          CalculationContainerIds.BaseTwoHanded,
+          !getSkillLevel(skillTwoHanded).valid ||
+            mainType !== EquipmentTypes.Katana,
+        ],
 
-        [CalculationContainerIds.ComboMultiplier, !container.value.branchItem.propBoolean('combo_rate')],
+        [
+          CalculationContainerIds.ComboMultiplier,
+          !container.value.branchItem.propBoolean('combo_rate'),
+        ],
       ])
     })
 
-    calculation.value.config.getContainerForceHidden = (containerId) => {
+    calculation.value.config.getContainerForceHidden = containerId => {
       return containerForceHiddenMap.value.get(containerId) ?? null
     }
 
@@ -427,7 +586,9 @@ export default function setupDamageCalculation(
   }
 }
 
-function isValidElement(element: string | EnemyElements): element is EnemyElements {
+function isValidElement(
+  element: string | EnemyElements
+): element is EnemyElements {
   const elementsList = [
     EnemyElements.Neutral,
     EnemyElements.Fire,
@@ -451,4 +612,3 @@ function createElementMap(): Record<EnemyElements, number> {
     [EnemyElements.Dark]: 0,
   }
 }
-

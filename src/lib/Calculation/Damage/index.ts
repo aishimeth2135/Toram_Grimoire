@@ -1,38 +1,60 @@
 import { markRaw } from 'vue'
 
 import { CalcItemContainer } from './Calculation'
-import { CalculationBase, CalcItemContainerBase } from './Calculation/base'
+import { CalcItemContainerBase, CalculationBase } from './Calculation/base'
 import type { CurrentItemIdGetter } from './Calculation/base'
-import { CalculationContainerIds, CalculationItemIds, ContainerTypes } from './Calculation/enums'
+import {
+  CalculationContainerIds,
+  CalculationItemIds,
+  ContainerTypes,
+} from './Calculation/enums'
 
 export default class DamageCalculationSystem {
   calculationBase: CalculationBase
   constructor() {
     type FactoryCreated = (container: CalcItemContainerBase) => void
-    type FactoryAlly = (id: CalculationContainerIds, callback: FactoryCreated) => void
+    type FactoryAlly = (
+      id: CalculationContainerIds,
+      callback: FactoryCreated
+    ) => void
     type DamageTypeHandlerCallback = (result: boolean) => CalculationItemIds
 
     const base = new CalculationBase()
 
-    const factory = (id: CalculationContainerIds, type: ContainerTypes, callback: FactoryCreated): void => {
+    const factory = (
+      id: CalculationContainerIds,
+      type: ContainerTypes,
+      callback: FactoryCreated
+    ): void => {
       const container = base.appendContainer(id, type)
       callback(container)
     }
-    const normal: FactoryAlly = (id, callback) => factory(id, ContainerTypes.Normal, callback)
-    const options: FactoryAlly = (id, callback) => factory(id, ContainerTypes.Options, callback)
+    const normal: FactoryAlly = (id, callback) =>
+      factory(id, ContainerTypes.Normal, callback)
+    const options: FactoryAlly = (id, callback) =>
+      factory(id, ContainerTypes.Options, callback)
 
     const utils = {
-      getCurrentItemId(itemContainer: CalcItemContainer, containerId: CalculationContainerIds) {
-        return itemContainer.belongCalculation.containers.get(containerId)!.currentItem.base.id
+      getCurrentItemId(
+        itemContainer: CalcItemContainer,
+        containerId: CalculationContainerIds
+      ) {
+        return itemContainer.belongCalculation.containers.get(containerId)!
+          .currentItem.base.id
       },
       getCurrentDamageTypeId(itemContainer: CalcItemContainer) {
-        return utils.getCurrentItemId(itemContainer, CalculationContainerIds.DamageType)
+        return utils.getCurrentItemId(
+          itemContainer,
+          CalculationContainerIds.DamageType
+        )
       },
-      damageTypeHandler(handlerCallback: DamageTypeHandlerCallback): CurrentItemIdGetter {
-        return ((itemContainer: CalcItemContainer) => {
+      damageTypeHandler(
+        handlerCallback: DamageTypeHandlerCallback
+      ): CurrentItemIdGetter {
+        return (itemContainer: CalcItemContainer) => {
           const currentId = utils.getCurrentDamageTypeId(itemContainer)
           return handlerCallback(currentId === CalculationItemIds.Physical)
-        })
+        }
       },
     }
 
@@ -43,42 +65,59 @@ export default class DamageCalculationSystem {
     })
     normal(CalculationContainerIds.BaseAtk, container => {
       container.appendItem(CalculationItemIds.Atk)
-      container.appendItem(CalculationItemIds.AtkRate)
-        .setDefaultValue(100).setRange(0).setUnit('%')
-      container.setCalcResult((itemContainer) => {
+      container
+        .appendItem(CalculationItemIds.AtkRate)
+        .setDefaultValue(100)
+        .setRange(0)
+        .setUnit('%')
+      container.setCalcResult(itemContainer => {
         const atk = itemContainer.getItemValue(CalculationItemIds.Atk)
         const atkr = itemContainer.getItemValue(CalculationItemIds.AtkRate)
-        return Math.floor(atk * atkr / 100)
+        return Math.floor((atk * atkr) / 100)
       })
     })
     normal(CalculationContainerIds.BaseMatk, container => {
       container.appendItem(CalculationItemIds.Matk)
-      container.appendItem(CalculationItemIds.MatkRate)
-        .setDefaultValue(100).setRange(0).setUnit('%')
-      container.setCalcResult((itemContainer) => {
+      container
+        .appendItem(CalculationItemIds.MatkRate)
+        .setDefaultValue(100)
+        .setRange(0)
+        .setUnit('%')
+      container.setCalcResult(itemContainer => {
         const matk = itemContainer.getItemValue(CalculationItemIds.Matk)
         const matkr = itemContainer.getItemValue(CalculationItemIds.MatkRate)
-        return Math.floor(matk * matkr / 100)
+        return Math.floor((matk * matkr) / 100)
       })
     })
     normal(CalculationContainerIds.Base, container => {
-      container.setVirtual([CalculationContainerIds.BaseAtk, CalculationContainerIds.BaseMatk])
-      container.setCalcResult((itemContainer) => {
-        const baseAtk = itemContainer.belongCalculation.containers.get(CalculationContainerIds.BaseAtk)!.result()
-        const baseMatk = itemContainer.belongCalculation.containers.get(CalculationContainerIds.BaseMatk)!.result()
+      container.setVirtual([
+        CalculationContainerIds.BaseAtk,
+        CalculationContainerIds.BaseMatk,
+      ])
+      container.setCalcResult(itemContainer => {
+        const baseAtk = itemContainer.belongCalculation.containers
+          .get(CalculationContainerIds.BaseAtk)!
+          .result()
+        const baseMatk = itemContainer.belongCalculation.containers
+          .get(CalculationContainerIds.BaseMatk)!
+          .result()
         return baseAtk + baseMatk
       })
     })
     normal(CalculationContainerIds.BaseDualSword, container => {
       container.appendItem(CalculationItemIds.SubAtk)
-      container.appendItem(CalculationItemIds.SubStability)
-        .setRange(0).setUnit('%')
-      container.setCalcResult((itemContainer) => {
+      container
+        .appendItem(CalculationItemIds.SubStability)
+        .setRange(0)
+        .setUnit('%')
+      container.setCalcResult(itemContainer => {
         const subAtk = itemContainer.getItemValue(CalculationItemIds.SubAtk)
-        const subStability = itemContainer.getItemValue(CalculationItemIds.SubStability)
-        return subAtk * subStability / 100
+        const subStability = itemContainer.getItemValue(
+          CalculationItemIds.SubStability
+        )
+        return (subAtk * subStability) / 100
       })
-      container.setGetHidden((itemContainer) => {
+      container.setGetHidden(itemContainer => {
         const currentBaseTypeId = utils.getCurrentDamageTypeId(itemContainer)
         return currentBaseTypeId === CalculationItemIds.Magic
       })
@@ -86,32 +125,37 @@ export default class DamageCalculationSystem {
     normal(CalculationContainerIds.BaseTwoHanded, container => {
       container.markMultiplier()
       container.defaultDisabled()
-      container.appendItem(CalculationItemIds.SkillLevelTwoHanded)
+      container
+        .appendItem(CalculationItemIds.SkillLevelTwoHanded)
         .setDefaultValue(0)
         .setRange(0, 10)
         .setUnit('')
-      container.setCalcResult((itemContainer) => {
-        const value = itemContainer.getItemValue(CalculationItemIds.SkillLevelTwoHanded)
-        return (100 + value * 5)
+      container.setCalcResult(itemContainer => {
+        const value = itemContainer.getItemValue(
+          CalculationItemIds.SkillLevelTwoHanded
+        )
+        return 100 + value * 5
       })
-      container.setGetHidden((itemContainer) => {
+      container.setGetHidden(itemContainer => {
         const currentBaseTypeId = utils.getCurrentDamageTypeId(itemContainer)
         return currentBaseTypeId === CalculationItemIds.Magic
       })
     })
     options(CalculationContainerIds.TargetResistance, container => {
       container.markMultiplier()
-      container.appendItem(CalculationItemIds.TargetPhysicalResistance)
+      container
+        .appendItem(CalculationItemIds.TargetPhysicalResistance)
         .setDefaultValue(0)
         .setRange(null)
-      container.appendItem(CalculationItemIds.TargetMagicResistance)
+      container
+        .appendItem(CalculationItemIds.TargetMagicResistance)
         .setDefaultValue(0)
         .setRange(null)
-      container.setCalcResult((itemContainer) => {
+      container.setCalcResult(itemContainer => {
         const value = itemContainer.currentItem.value
-        return (100 - value)
+        return 100 - value
       })
-      container.setGetCurrentItemId((itemContainer) => {
+      container.setGetCurrentItemId(itemContainer => {
         const currentBaseTypeId = utils.getCurrentDamageTypeId(itemContainer)
         if (currentBaseTypeId === CalculationItemIds.Physical) {
           return CalculationItemIds.TargetPhysicalResistance
@@ -126,8 +170,10 @@ export default class DamageCalculationSystem {
     normal(CalculationContainerIds.LevelDifference, container => {
       container.appendItem(CalculationItemIds.CharacterLevel)
       container.appendItem(CalculationItemIds.TargetLevel)
-      container.setCalcResult((itemContainer) => {
-        const clv = itemContainer.getItemValue(CalculationItemIds.CharacterLevel)
+      container.setCalcResult(itemContainer => {
+        const clv = itemContainer.getItemValue(
+          CalculationItemIds.CharacterLevel
+        )
         const tlv = itemContainer.getItemValue(CalculationItemIds.TargetLevel)
         return clv - tlv
       })
@@ -135,11 +181,11 @@ export default class DamageCalculationSystem {
     options(CalculationContainerIds.TargetDefBase, container => {
       container.appendItem(CalculationItemIds.TargetDef)
       container.appendItem(CalculationItemIds.TargetMdef)
-      container.setCalcResult((itemContainer) => {
+      container.setCalcResult(itemContainer => {
         const value = itemContainer.currentItem.value
         return -1 * value
       })
-      container.setGetCurrentItemId((itemContainer) => {
+      container.setGetCurrentItemId(itemContainer => {
         const currentBaseTypeId = utils.getCurrentDamageTypeId(itemContainer)
         if (currentBaseTypeId === CalculationItemIds.Physical) {
           return CalculationItemIds.TargetDef
@@ -154,12 +200,15 @@ export default class DamageCalculationSystem {
       container.markMultiplier()
       container.appendItem(CalculationItemIds.PhysicalPierce).setDefaultValue(0)
       container.appendItem(CalculationItemIds.MagicPierce).setDefaultValue(0)
-      container.setCalcResult((itemContainer) => {
+      container.setCalcResult(itemContainer => {
         const value = itemContainer.currentItem.value
-        return (100 - value)
+        return 100 - value
       })
-      container.setGetCurrentItemId((itemContainer) => {
-        const currentDefBaseId = utils.getCurrentItemId(itemContainer, CalculationContainerIds.TargetDefBase)
+      container.setGetCurrentItemId(itemContainer => {
+        const currentDefBaseId = utils.getCurrentItemId(
+          itemContainer,
+          CalculationContainerIds.TargetDefBase
+        )
         if (currentDefBaseId === CalculationItemIds.TargetDef) {
           return CalculationItemIds.PhysicalPierce
         }
@@ -177,9 +226,11 @@ export default class DamageCalculationSystem {
     })
     normal(CalculationContainerIds.OtherConstant, container => {
       container.appendItem(CalculationItemIds.OtherConstant)
-      container.setCalcResult((itemContainer) => {
-        return itemContainer.customItems
-          .reduce((cur, item) => cur + item.value, itemContainer.getItemValue(CalculationItemIds.OtherConstant))
+      container.setCalcResult(itemContainer => {
+        return itemContainer.customItems.reduce(
+          (cur, item) => cur + item.value,
+          itemContainer.getItemValue(CalculationItemIds.OtherConstant)
+        )
       })
     })
 
@@ -203,46 +254,64 @@ export default class DamageCalculationSystem {
     normal(CalculationContainerIds.CriticalDamage, container => {
       container.markMultiplier()
 
-      container.appendItem(CalculationItemIds.CriticalDamage)
+      container
+        .appendItem(CalculationItemIds.CriticalDamage)
         .setDefaultValue(150)
-      container.appendItem(CalculationItemIds.MagicCriticalDamageConversionRate)
+      container
+        .appendItem(CalculationItemIds.MagicCriticalDamageConversionRate)
         .setDefaultValue(50)
 
-      container.setCalcResult((itemContainer) => {
+      container.setCalcResult(itemContainer => {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
         const cd = itemContainer.getItemValue(CalculationItemIds.CriticalDamage)
-        const mcdr = itemContainer.getItemValue(CalculationItemIds.MagicCriticalDamageConversionRate)
+        const mcdr = itemContainer.getItemValue(
+          CalculationItemIds.MagicCriticalDamageConversionRate
+        )
         let result = cd
-        result = currentDamageTypeId === CalculationItemIds.Physical ?
-          result :
-          Math.floor((result - 100) * mcdr / 100) + 100
+        result =
+          currentDamageTypeId === CalculationItemIds.Physical
+            ? result
+            : Math.floor(((result - 100) * mcdr) / 100) + 100
         return result
       })
     })
     normal(CalculationContainerIds.CriticalRate, container => {
       container.markMultiplier()
 
-      container.appendItem(CalculationItemIds.CriticalRate)
+      container
+        .appendItem(CalculationItemIds.CriticalRate)
         .setDefaultValue(25)
         .setRange(0, null, 10)
-      container.appendItem(CalculationItemIds.MagicCriticalRateConversionRate)
+      container
+        .appendItem(CalculationItemIds.MagicCriticalRateConversionRate)
         .setDefaultValue(0)
-      container.appendItem(CalculationItemIds.TargetCriticalRateResistance)
+      container
+        .appendItem(CalculationItemIds.TargetCriticalRateResistance)
         .setDefaultValue(0)
         .setRange(null)
-      container.appendItem(CalculationItemIds.TargetCriticalRateResistanceTotal)
+      container
+        .appendItem(CalculationItemIds.TargetCriticalRateResistanceTotal)
         .setDefaultValue(0)
         .setRange(0, 100)
 
-      container.setCalcResult((itemContainer) => {
+      container.setCalcResult(itemContainer => {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
         const cr = itemContainer.getItemValue(CalculationItemIds.CriticalRate)
-        const cr_r = itemContainer.getItemValue(CalculationItemIds.TargetCriticalRateResistance)
-        const cr_rt = itemContainer.getItemValue(CalculationItemIds.TargetCriticalRateResistanceTotal)
-        const mcrr = itemContainer.getItemValue(CalculationItemIds.MagicCriticalRateConversionRate)
+        const cr_r = itemContainer.getItemValue(
+          CalculationItemIds.TargetCriticalRateResistance
+        )
+        const cr_rt = itemContainer.getItemValue(
+          CalculationItemIds.TargetCriticalRateResistanceTotal
+        )
+        const mcrr = itemContainer.getItemValue(
+          CalculationItemIds.MagicCriticalRateConversionRate
+        )
         let result = Math.max(cr - cr_r, 0)
-        result = Math.max(0, Math.floor(result * (100 - cr_rt) / 100))
-        result = currentDamageTypeId === CalculationItemIds.Physical ? result : Math.floor(result * mcrr / 100)
+        result = Math.max(0, Math.floor((result * (100 - cr_rt)) / 100))
+        result =
+          currentDamageTypeId === CalculationItemIds.Physical
+            ? result
+            : Math.floor((result * mcrr) / 100)
         return Math.min(100, result)
       })
     })
@@ -267,13 +336,15 @@ export default class DamageCalculationSystem {
     })
     normal(CalculationContainerIds.Proration, container => {
       container.markMultiplier()
-      container.appendItem(CalculationItemIds.Proration)
+      container
+        .appendItem(CalculationItemIds.Proration)
         .setDefaultValue(250)
         .setRange(50, 250, 50)
     })
     normal(CalculationContainerIds.ComboMultiplier, container => {
       container.markMultiplier()
-      container.appendItem(CalculationItemIds.ComboMultiplier)
+      container
+        .appendItem(CalculationItemIds.ComboMultiplier)
         .setDefaultValue(150)
     })
     // normal(CalculationContainerIds.SkillLongRange, container => {
@@ -291,17 +362,20 @@ export default class DamageCalculationSystem {
     normal(CalculationContainerIds.Stability, container => {
       container.markMultiplier()
       container.disableFloorResult()
-      container.appendItem(CalculationItemIds.Stability)
+      container
+        .appendItem(CalculationItemIds.Stability)
         .setDefaultValue(75)
         .setRange(0, 100, 10)
       container.setCalcResult(itemContainer => {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
-        const stability = itemContainer.getItemValue(CalculationItemIds.Stability)
+        const stability = itemContainer.getItemValue(
+          CalculationItemIds.Stability
+        )
         if (currentDamageTypeId === CalculationItemIds.Physical) {
           return (stability + 100) / 2
         }
         const baseValue = 50 + stability / 2
-        const extraLimit = baseValue > 90 ? (baseValue - 90) : 0
+        const extraLimit = baseValue > 90 ? baseValue - 90 : 0
         return (Math.min(baseValue, 90) + 100 + extraLimit) / 2
       })
       // container.setCalcResult((itemContainer) => {
@@ -317,22 +391,37 @@ export default class DamageCalculationSystem {
     normal(CalculationContainerIds.Accuracy, container => {
       container.markMultiplier()
       container.appendItem(CalculationItemIds.Accuracy).setUnit('')
-      container.appendItem(CalculationItemIds.SkillRealMpCost)
+      container
+        .appendItem(CalculationItemIds.SkillRealMpCost)
         .setRange(0, null, 100)
         .setDefaultValue(0)
         .setUnit('')
       container.appendItem(CalculationItemIds.TargetDodge).setUnit('')
-      container.appendItem(CalculationItemIds.PromisedAccuracyRate)
+      container
+        .appendItem(CalculationItemIds.PromisedAccuracyRate)
         .setRange(0, 100, 10)
-      container.setCalcResult((itemContainer) => {
+      container.setCalcResult(itemContainer => {
         const currentDamageTypeId = utils.getCurrentDamageTypeId(itemContainer)
         if (currentDamageTypeId === CalculationItemIds.Magic) {
           return 100
         }
         const accuracy = itemContainer.getItemValue(CalculationItemIds.Accuracy)
-        const skillRealMpCost = itemContainer.getItemValue(CalculationItemIds.SkillRealMpCost)
-        const targetDodge = itemContainer.getItemValue(CalculationItemIds.TargetDodge)
-        return Math.min(100, Math.max(0, 300 + accuracy + Math.floor(skillRealMpCost / 100) * 30 - targetDodge) / 3)
+        const skillRealMpCost = itemContainer.getItemValue(
+          CalculationItemIds.SkillRealMpCost
+        )
+        const targetDodge = itemContainer.getItemValue(
+          CalculationItemIds.TargetDodge
+        )
+        return Math.min(
+          100,
+          Math.max(
+            0,
+            300 +
+              accuracy +
+              Math.floor(skillRealMpCost / 100) * 30 -
+              targetDodge
+          ) / 3
+        )
       })
     })
     normal(CalculationContainerIds.Critical_Accuracy_Stability, container => {
@@ -346,30 +435,51 @@ export default class DamageCalculationSystem {
         CalculationContainerIds.Accuracy,
       ])
 
-      container.setCalcResult((itemContainer) => {
+      container.setCalcResult(itemContainer => {
         const containers = itemContainer.belongCalculation.containers
-        const cr = containers.get(CalculationContainerIds.CriticalRate)!.result()
-        const cd = containers.get(CalculationContainerIds.CriticalDamage)!.result()
+        const cr = containers
+          .get(CalculationContainerIds.CriticalRate)!
+          .result()
+        const cd = containers
+          .get(CalculationContainerIds.CriticalDamage)!
+          .result()
         const acContainer = containers.get(CalculationContainerIds.Accuracy)!
         const ac = acContainer.result()
 
         // no need to check `acContainer.enable` beacause `ac` is `100` when `acContaner.enable` is `false`
-        const pac = acContainer.getItemValue(CalculationItemIds.PromisedAccuracyRate)
-        const stabilityExpected = containers.get(CalculationContainerIds.Stability)!.result()
-        const grazeStability = Math.floor(containers.get(CalculationContainerIds.Stability)!.getItemValue(CalculationItemIds.Stability) / 2)
+        const pac = acContainer.getItemValue(
+          CalculationItemIds.PromisedAccuracyRate
+        )
+        const stabilityExpected = containers
+          .get(CalculationContainerIds.Stability)!
+          .result()
+        const grazeStability = Math.floor(
+          containers
+            .get(CalculationContainerIds.Stability)!
+            .getItemValue(CalculationItemIds.Stability) / 2
+        )
         return (
-          (stabilityExpected * 2 * ac + (grazeStability + 100) * (100 - ac)) * cr * cd / 200 +
-          (stabilityExpected * 2 * ac + (grazeStability + 100) * Math.max(0, pac - ac)) * (100 - cr) / 2
-        ) / 10000
+          (((stabilityExpected * 2 * ac + (grazeStability + 100) * (100 - ac)) *
+            cr *
+            cd) /
+            200 +
+            ((stabilityExpected * 2 * ac +
+              (grazeStability + 100) * Math.max(0, pac - ac)) *
+              (100 - cr)) /
+              2) /
+          10000
+        )
       })
     })
     normal(CalculationContainerIds.OtherMultiplier, container => {
       container.markMultiplier()
       container.disableFloorResult()
       container.appendItem(CalculationItemIds.OtherMultiplier)
-      container.setCalcResult((itemContainer) => {
-        return itemContainer.customItems
-          .reduce((cur, item) => cur * item.value / 100, itemContainer.getItemValue(CalculationItemIds.OtherMultiplier))
+      container.setCalcResult(itemContainer => {
+        return itemContainer.customItems.reduce(
+          (cur, item) => (cur * item.value) / 100,
+          itemContainer.getItemValue(CalculationItemIds.OtherMultiplier)
+        )
       })
     })
 

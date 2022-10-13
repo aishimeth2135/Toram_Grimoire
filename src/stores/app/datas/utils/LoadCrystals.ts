@@ -34,7 +34,11 @@ export default function (root: ItemsSystem, csvData: CsvData) {
       }
 
       if (row[NAME] !== '' && row[ATTRIBUTE_CATEGORY] !== '') {
-        currentCrystal = root.appendCrystal(row[NAME], currentType, currentBossType)
+        currentCrystal = root.appendCrystal(
+          row[NAME],
+          currentType,
+          currentBossType
+        )
       }
       if (row[ATTRIBUTE_CATEGORY] !== '') {
         currentCategory = row[ATTRIBUTE_CATEGORY]
@@ -52,9 +56,14 @@ export default function (root: ItemsSystem, csvData: CsvData) {
         } else {
           value = propValue.slice(0, -1)
         }
-        currentCrystal.appendStat(propName, value, tail, row[ATTRIBUTE_VALUES[1]])
+        currentCrystal.appendStat(
+          propName,
+          value,
+          tail,
+          row[ATTRIBUTE_VALUES[1]]
+        )
       } else if (currentCategory === 'obtain') {
-        if ((['name', 'map', 'dye', 'type', 'npc']).includes(propName)) {
+        if (['name', 'map', 'dye', 'type', 'npc'].includes(propName)) {
           currentObtain[propName as keyof ItemObtain] = propValue
         }
       } else if (currentCategory === 'other') {

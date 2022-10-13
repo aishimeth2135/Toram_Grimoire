@@ -6,13 +6,13 @@
       'text-red-60': negativeValue,
       'text-primary-90': !negativeValue,
     }"
-    class="mr-3 pl-4 inline-flex items-baseline relative"
+    class="relative mr-3 inline-flex items-baseline pl-4"
   >
-    <div class="absolute left-0 bottom-1 w-2 h-2 bg-primary-30 rounded-full" />
+    <div class="absolute left-0 bottom-1 h-2 w-2 rounded-full bg-primary-30" />
     <div
       v-for="text in restrictionTexts"
       :key="text"
-      class="text-blue-60 text-sm mr-1"
+      class="mr-1 text-sm text-blue-60"
     >
       {{ text }}
     </div>
@@ -22,11 +22,13 @@
     <span
       v-for="text in restrictionTexts"
       :key="text"
-      class="text-blue-60 text-sm mr-1"
+      class="mr-1 text-sm text-blue-60"
     >
       {{ text }}
     </span>
-    <span :class="negativeValue ? 'text-red-60' : 'text-fuchsia-60'">{{ stat.show() }}</span>
+    <span :class="negativeValue ? 'text-red-60' : 'text-fuchsia-60'">{{
+      stat.show()
+    }}</span>
   </div>
 </template>
 
@@ -36,10 +38,10 @@ import { computed } from 'vue'
 import { Stat, StatRestriction } from '@/lib/Character/Stat'
 
 interface Props {
-  stat: Stat | StatRestriction;
-  type?: 'normal' | 'preview';
-  negativeValue?: boolean;
-  invalid?: boolean;
+  stat: Stat | StatRestriction
+  type?: 'normal' | 'preview'
+  negativeValue?: boolean
+  invalid?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {

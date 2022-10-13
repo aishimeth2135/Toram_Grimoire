@@ -1,7 +1,7 @@
 import EnchantSystem from '@/lib/Enchant'
 import { EnchantCategory, EnchantItem } from '@/lib/Enchant/Enchant'
-import { EnchantItemConditions } from '@/lib/Enchant/Enchant/enums'
 import type { MaterialPointTypeRange } from '@/lib/Enchant/Enchant/base'
+import { EnchantItemConditions } from '@/lib/Enchant/Enchant/enums'
 
 import type { CsvData } from './DownloadDatas'
 
@@ -25,7 +25,8 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
     CATEGORY_TITLE = 2,
     CATEGORY_EXTRA = 3
 
-  const handleItemValue = (value: string) => value !== '' ? parseFloat(value) : null
+  const handleItemValue = (value: string) =>
+    value !== '' ? parseFloat(value) : null
 
   const handleLimit = (str: string): [number | null, number | null] => {
     if (str === '') {
@@ -33,7 +34,12 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
     }
     const limitStrs = str.split('::')
     const l1 = handleItemValue(limitStrs[0])
-    const l2 = limitStrs[1] === undefined ? (l1 !== null ? -1 * l1 : l1) : handleItemValue(limitStrs[1])
+    const l2 =
+      limitStrs[1] === undefined
+        ? l1 !== null
+          ? -1 * l1
+          : l1
+        : handleItemValue(limitStrs[1])
     return [l1, l2]
   }
 
@@ -75,31 +81,34 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
           EnchantItemConditions.BodyArmor,
           EnchantItemConditions.OriginalElement,
         ][conditionId]
-        currentItem.appendConditionalProps(cond, { potential: processItemProps(row) })
-      }
-    } else {
-      currentItem = currentCategory
-        .appendItem({
-          baseId: row[STAT_ID],
-          limit: [
-            handleLimit(row[LIMIT_CONSTANT]),
-            handleLimit(row[LIMIT_MULTIPLIER]),
-          ],
-          unitValue: [
-            handleUnitValue(row[UNIT_VALUE_CONSTANT]),
-            handleUnitValue(row[UNIT_VALUE_MULTIPLIER]),
-          ],
-          materialPointType: MATERIAL_POINT_TYPE_LIST.indexOf(row[MATERIAL_POINT_TYPE]) as MaterialPointTypeRange,
-          materialPointValue: [
-            handleItemValue(row[MATERIAL_POINT_VALUE_CONSTANT]),
-            handleItemValue(row[MATERIAL_POINT_VALUE_MULTIPLIER]),
-          ],
-          potentialConvertThreshold: [
-            handleItemValue(row[POTENTIAL_CONVERT_THRESHOLD_CONSTANT]),
-            handleItemValue(row[POTENTIAL_CONVERT_THRESHOLD_MULTIPLIER]),
-          ],
+        currentItem.appendConditionalProps(cond, {
           potential: processItemProps(row),
         })
+      }
+    } else {
+      currentItem = currentCategory.appendItem({
+        baseId: row[STAT_ID],
+        limit: [
+          handleLimit(row[LIMIT_CONSTANT]),
+          handleLimit(row[LIMIT_MULTIPLIER]),
+        ],
+        unitValue: [
+          handleUnitValue(row[UNIT_VALUE_CONSTANT]),
+          handleUnitValue(row[UNIT_VALUE_MULTIPLIER]),
+        ],
+        materialPointType: MATERIAL_POINT_TYPE_LIST.indexOf(
+          row[MATERIAL_POINT_TYPE]
+        ) as MaterialPointTypeRange,
+        materialPointValue: [
+          handleItemValue(row[MATERIAL_POINT_VALUE_CONSTANT]),
+          handleItemValue(row[MATERIAL_POINT_VALUE_MULTIPLIER]),
+        ],
+        potentialConvertThreshold: [
+          handleItemValue(row[POTENTIAL_CONVERT_THRESHOLD_CONSTANT]),
+          handleItemValue(row[POTENTIAL_CONVERT_THRESHOLD_MULTIPLIER]),
+        ],
+        potential: processItemProps(row),
+      })
     }
   })
 }

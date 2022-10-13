@@ -1,16 +1,22 @@
 <template>
   <div class="result-item">
-    <div class="sticky top-0 z-1 min-w-max bg-white py-0.5">
+    <div class="min-w-max sticky top-0 z-1 bg-white py-0.5">
       <cy-list-item @click="toggle('contents/detail')">
-        <div class="flex items-start w-full">
+        <div class="flex w-full items-start">
           <cy-icon-text
             class="w-48 flex-shrink-0"
-            :icon="!equipment.is(EquipmentKinds.Avatar) ? equipment.getCategoryImagePath() : equipment.categoryIcon"
-            :icon-src="!equipment.is(EquipmentKinds.Avatar) ? 'image' : 'iconify'"
+            :icon="
+              !equipment.is(EquipmentKinds.Avatar)
+                ? equipment.getCategoryImagePath()
+                : equipment.categoryIcon
+            "
+            :icon-src="
+              !equipment.is(EquipmentKinds.Avatar) ? 'image' : 'iconify'
+            "
             :text-color="contents.detail ? 'orange-60' : 'primary-90'"
             :icon-color="contents.detail ? 'orange-60' : 'primary-30'"
           >
-            <span class="inline-flex items-center flex-wrap">
+            <span class="inline-flex flex-wrap items-center">
               <span>{{ equipment.name }}</span>
               <cy-icon-text
                 v-if="firstObtain && firstObtain.isDrop"
@@ -27,9 +33,11 @@
             </span>
           </cy-icon-text>
           <div
-            v-if="state.currentMode === SearchModes.Normal ||
+            v-if="
+              state.currentMode === SearchModes.Normal ||
               state.currentMode === SearchModes.Dye ||
-              state.displayMode === 1"
+              state.displayMode === 1
+            "
             class="flex items-center space-x-2"
           >
             <template v-if="equipment.is(EquipmentKinds.Weapon)">
@@ -37,7 +45,9 @@
                 ATK
               </cy-icon-text>
               <span>{{ equipment.basicValue }}</span>
-              <span class="text-blue-60 pl-2 border-l border-blue-60">{{ equipment.stability }}%</span>
+              <span class="border-l border-blue-60 pl-2 text-blue-60"
+                >{{ equipment.stability }}%</span
+              >
             </template>
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
               <cy-icon-text icon="mdi:shield-outline" text-color="fuchsia-60">
@@ -51,7 +61,10 @@
               </cy-icon-text>
             </template>
           </div>
-          <div v-else-if="state.currentMode === SearchModes.Stat" class="mt-0.5">
+          <div
+            v-else-if="state.currentMode === SearchModes.Stat"
+            class="mt-0.5"
+          >
             <template v-if="previewStats !== null">
               <ShowStat
                 v-for="previewStat in previewStats"
@@ -62,18 +75,29 @@
               />
             </template>
           </div>
-          <div v-else-if="state.currentMode === SearchModes.ItemLevel && originEquipment.recipe" class="flex items-center">
+          <div
+            v-else-if="
+              state.currentMode === SearchModes.ItemLevel &&
+              originEquipment.recipe
+            "
+            class="flex items-center"
+          >
             <cy-icon-text icon="jam-hammer" text-color="primary-30">
               {{ t('item-query.equipment-detail.recipe.item-level') }}
             </cy-icon-text>
-            <span class="ml-2 text-blue-60">{{ originEquipment.recipe['item_level'] }}</span>
+            <span class="ml-2 text-blue-60">{{
+              originEquipment.recipe['item_level']
+            }}</span>
           </div>
         </div>
       </cy-list-item>
     </div>
     <cy-transition>
-      <div v-if="contents.detail" class="pt-2 pb-3 pl-4 pr-3 max-w-full bg-white overscroll-none">
-        <div class="mb-2 pl-2 flex items-center space-x-2">
+      <div
+        v-if="contents.detail"
+        class="overscroll-none max-w-full bg-white pt-2 pb-3 pl-4 pr-3"
+      >
+        <div class="mb-2 flex items-center space-x-2 pl-2">
           <cy-icon-text
             v-if="originEquipment.unknowCategory"
             icon="mdi-ghost"
@@ -93,19 +117,21 @@
             {{ equipment.categoryText }}
           </cy-icon-text>
           <template v-if="equipment.is(EquipmentKinds.Weapon)">
-            <cy-icon-text icon="mdi-sword" small>
-              ATK
-            </cy-icon-text>
-            <span class="text-primary-50 text-sm mr-2">{{ equipment.basicValue }}</span>
-            <span class="text-blue-60 text-sm border-l border-solid border-blue-30 pl-2">
+            <cy-icon-text icon="mdi-sword" small> ATK </cy-icon-text>
+            <span class="mr-2 text-sm text-primary-50">{{
+              equipment.basicValue
+            }}</span>
+            <span
+              class="border-l border-solid border-blue-30 pl-2 text-sm text-blue-60"
+            >
               {{ equipment.stability }}%
             </span>
           </template>
           <template v-else-if="equipment.is(EquipmentKinds.Armor)">
-            <cy-icon-text icon="mdi:shield-outline" small>
-              DEF
-            </cy-icon-text>
-            <span class="text-primary-50 text-sm mr-2">{{ equipment.basicValue }}</span>
+            <cy-icon-text icon="mdi:shield-outline" small> DEF </cy-icon-text>
+            <span class="mr-2 text-sm text-primary-50">{{
+              equipment.basicValue
+            }}</span>
           </template>
         </div>
         <div v-if="originEquipment.extra" class="mb-2 pl-2">
@@ -183,7 +209,9 @@
               <cy-icon-text icon="la-coins">
                 {{ t('item-query.equipment-detail.recipe.spina') }}
               </cy-icon-text>
-              <span class="text-primary-60">{{ originEquipment.recipe['cost'] + 's' }}</span>
+              <span class="text-primary-60">{{
+                originEquipment.recipe['cost'] + 's'
+              }}</span>
             </template>
             <template
               v-for="m in originEquipment.recipe['materials']"
@@ -202,19 +230,41 @@
               {{ t('item-query.equipment-detail.content-titles.obtains') }}
             </cy-icon-text>
           </legend>
-          <div v-if="obtainsDatas.length !== 0" class="divide-y divide-light -my-1">
-            <div v-for="data in obtainsDatas" :key="data.iid" class="pt-1.5 pb-2 px-1">
+          <div
+            v-if="obtainsDatas.length !== 0"
+            class="divide-light -my-1 divide-y"
+          >
+            <div
+              v-for="data in obtainsDatas"
+              :key="data.iid"
+              class="px-1 pt-1.5 pb-2"
+            >
               <div class="flex items-center">
-                <cy-icon-text :icon="data.icon" class="mr-2" small text-color="blue-60">
+                <cy-icon-text
+                  :icon="data.icon"
+                  class="mr-2"
+                  small
+                  text-color="blue-60"
+                >
                   {{ data.type }}
                 </cy-icon-text>
                 <span class="text-fuchsia-60">{{ data.name }}</span>
               </div>
-              <div v-if="data.dye || data.map" class="flex items-center mt-1">
-                <cy-icon-text v-if="data.dye" icon="ic-outline-palette" class="ml-3 flex-shrink-0" small>
+              <div v-if="data.dye || data.map" class="mt-1 flex items-center">
+                <cy-icon-text
+                  v-if="data.dye"
+                  icon="ic-outline-palette"
+                  class="ml-3 flex-shrink-0"
+                  small
+                >
                   {{ data.dye }}
                 </cy-icon-text>
-                <cy-icon-text v-if="data.map" icon="ic-outline-map" class="ml-3 flex-shrink-0" small>
+                <cy-icon-text
+                  v-if="data.map"
+                  icon="ic-outline-map"
+                  class="ml-3 flex-shrink-0"
+                  small
+                >
                   {{ data.map }}
                 </cy-icon-text>
               </div>
@@ -227,21 +277,40 @@
       </div>
       <div
         v-else-if="state.currentMode === SearchModes.Dye"
-        class="pl-2 ml-4 border-l-2 border-solid border-primary-30 mb-3"
+        class="ml-4 mb-3 border-l-2 border-solid border-primary-30 pl-2"
       >
-        <div class="divide-y divide-light">
-          <div v-for="item in dyeObtains" :key="item.iid" class="pt-1.5 pb-2 px-1">
+        <div class="divide-light divide-y">
+          <div
+            v-for="item in dyeObtains"
+            :key="item.iid"
+            class="px-1 pt-1.5 pb-2"
+          >
             <div class="flex items-center">
-              <cy-icon-text :icon="item.icon" class="mr-2" small text-color="blue-60">
+              <cy-icon-text
+                :icon="item.icon"
+                class="mr-2"
+                small
+                text-color="blue-60"
+              >
                 {{ item.type }}
               </cy-icon-text>
               <span class="text-fuchsia-60">{{ item.name }}</span>
             </div>
-            <div class="flex items-center mt-1">
-              <cy-icon-text v-if="item.dye" icon="ic-outline-palette" class="ml-3 flex-shrink-0" small>
+            <div class="mt-1 flex items-center">
+              <cy-icon-text
+                v-if="item.dye"
+                icon="ic-outline-palette"
+                class="ml-3 flex-shrink-0"
+                small
+              >
                 {{ item.dye }}
               </cy-icon-text>
-              <cy-icon-text v-if="item.map" icon="ic-outline-map" class="ml-3 flex-shrink-0" small>
+              <cy-icon-text
+                v-if="item.map"
+                icon="ic-outline-map"
+                class="ml-3 flex-shrink-0"
+                small
+              >
                 {{ item.map }}
               </cy-icon-text>
             </div>
@@ -257,27 +326,28 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { ItemObtain } from '@/lib/Items/Item'
-import { StatRestriction } from '@/lib/Character/Stat'
 import { EquipmentKinds } from '@/lib/Character/CharacterEquipment/enums'
+import { StatRestriction } from '@/lib/Character/Stat'
+import { ItemObtain } from '@/lib/Items/Item'
 
 import ToggleService from '@/setup/ToggleService'
 
 import ShowStat from '@/components/common/show-stat.vue'
 
-import { findObtainByDye, findStat, SearchModes, useItemQueryModes } from './setup'
+import {
+  SearchModes,
+  findObtainByDye,
+  findStat,
+  useItemQueryModes,
+} from './setup'
 
 interface Props {
-  equipment: CharacterEquipment;
+  equipment: CharacterEquipment
 }
-
 
 const props = defineProps<Props>()
 
-const {
-  state,
-  modes,
-} = useItemQueryModes()
+const { state, modes } = useItemQueryModes()
 
 const { t } = useI18n()
 const { contents, toggle } = ToggleService({
@@ -290,21 +360,24 @@ const originEquipment = computed(() => {
 
 const obtainsDataConvert = (obtains: ItemObtain[]) => {
   const icons: Record<string, string> = {
-    'mobs': 'jam-box',
-    'boss': 'jam-box',
-    'mini_boss': 'jam-box',
-    'quest': 'mdi-script-outline',
-    'smith': 'ion-hammer',
-    'unknow': 'ri-file-unknow-line',
-    'other': 'gg-shape-rhombus',
-    'box': 'mdi-treasure-chest',
-    'exchange': 'bx-bx-shopping-bag',
-    'ex_skill': 'gg-shape-rhombus',
+    mobs: 'jam-box',
+    boss: 'jam-box',
+    mini_boss: 'jam-box',
+    quest: 'mdi-script-outline',
+    smith: 'ion-hammer',
+    unknow: 'ri-file-unknow-line',
+    other: 'gg-shape-rhombus',
+    box: 'mdi-treasure-chest',
+    exchange: 'bx-bx-shopping-bag',
+    ex_skill: 'gg-shape-rhombus',
   }
   return obtains.map((item, idx) => {
     const type = t('common.Equipment.obtain.' + item.type)
     const icon = icons[item.type!] ?? ''
-    const name = item.type !== 'smith' ? item.name : t('item-query.equipment-detail.production-equipment')
+    const name =
+      item.type !== 'smith'
+        ? item.name
+        : t('item-query.equipment-detail.production-equipment')
     const { map = null, dye = null } = item
     return {
       iid: idx,
@@ -318,7 +391,9 @@ const obtainsDataConvert = (obtains: ItemObtain[]) => {
   })
 }
 
-const obtainsDatas = computed(() => obtainsDataConvert(originEquipment.value.obtains))
+const obtainsDatas = computed(() =>
+  obtainsDataConvert(originEquipment.value.obtains)
+)
 
 const firstObtain = computed(() => obtainsDatas.value[0] ?? null)
 
@@ -327,17 +402,25 @@ const previewStats = computed(() => {
   if (state.currentMode !== SearchModes.Stat || currentStats.length === 0) {
     return null
   }
-  return currentStats.map(stat => findStat(stat, props.equipment.stats)).filter(stat => stat) as StatRestriction[]
+  return currentStats
+    .map(stat => findStat(stat, props.equipment.stats))
+    .filter(stat => stat) as StatRestriction[]
 })
 
 const dyeObtains = computed(() => {
-  const obtain = findObtainByDye(modes[SearchModes.Dye].searchText, props.equipment)
+  const obtain = findObtainByDye(
+    modes[SearchModes.Dye].searchText,
+    props.equipment
+  )
   return obtainsDataConvert(obtain)
 })
 
 const recipeInfoValid = computed(() => {
   const recipe = originEquipment.value.recipe!
-  return props.equipment.creatable && (recipe['item_level'] || recipe['item_difficulty'])
+  return (
+    props.equipment.creatable &&
+    (recipe['item_level'] || recipe['item_difficulty'])
+  )
 })
 </script>
 

@@ -18,12 +18,20 @@
         <CharacterEquipmentBasicEditor :equipment="equipment" />
       </div>
       <cy-default-tips v-else>
-        {{ t('character-simulator.equipment-basic-editor.no-equipment-type-selected-tips') }}
+        {{
+          t(
+            'character-simulator.equipment-basic-editor.no-equipment-type-selected-tips'
+          )
+        }}
       </cy-default-tips>
       <cy-modal v-model:visible="modals.selectType" footer>
         <template #title>
           <cy-icon-text icon="gg-shape-square">
-            {{ t('character-simulator.create-custom-equipment.select-equipment-type') }}
+            {{
+              t(
+                'character-simulator.create-custom-equipment.select-equipment-type'
+              )
+            }}
           </cy-icon-text>
         </template>
         <div class="equipment-type space-y-1.5">
@@ -43,7 +51,10 @@
                   :selected="selectedEquipmentType.type === item"
                   @click="selectEquipmentType(category.id, item)"
                 >
-                  <cy-icon-text :icon="CharacterEquipment.getImagePath(item)" icon-src="image">
+                  <cy-icon-text
+                    :icon="CharacterEquipment.getImagePath(item)"
+                    icon-src="image"
+                  >
                     {{ t('common.Equipment.category.' + item) }}
                   </cy-icon-text>
                 </cy-list-item>
@@ -63,7 +74,7 @@
       </cy-modal>
     </template>
     <template #footer="{ closeModal }">
-      <div class="flex items-center justify-end w-full">
+      <div class="flex w-full items-center justify-end">
         <cy-button-action
           icon="ic-round-done"
           :disabled="!equipment"
@@ -80,11 +91,26 @@
 </template>
 
 <script lang="ts" setup>
+import { Ref, computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { computed, reactive, Ref, ref } from 'vue'
 
-import { AdditionalGear, Avatar, BodyArmor, CharacterEquipment, MainWeapon, SpecialGear, SubArmor, SubWeapon } from '@/lib/Character/CharacterEquipment'
-import { EquipmentCategorys, EquipmentTypes, MainWeaponTypeList, SubArmorTypeList, SubWeaponTypeList } from '@/lib/Character/CharacterEquipment/enums'
+import {
+  AdditionalGear,
+  Avatar,
+  BodyArmor,
+  CharacterEquipment,
+  MainWeapon,
+  SpecialGear,
+  SubArmor,
+  SubWeapon,
+} from '@/lib/Character/CharacterEquipment'
+import {
+  EquipmentCategorys,
+  EquipmentTypes,
+  MainWeaponTypeList,
+  SubArmorTypeList,
+  SubWeaponTypeList,
+} from '@/lib/Character/CharacterEquipment/enums'
 
 import ToggleService from '@/setup/ToggleService'
 
@@ -93,10 +119,10 @@ import CharacterEquipmentBasicEditor from './character-equipment-basic-editor.vu
 import { setupCharacterStore } from '../setup'
 
 interface Props {
-  visible: boolean;
+  visible: boolean
 }
 interface Emits {
-  (evt: 'close'): void;
+  (evt: 'close'): void
 }
 
 defineProps<Props>()
@@ -110,61 +136,75 @@ const equipment: Ref<CharacterEquipment | null> = ref(null)
 
 const equipmentTypeText = computed(() => {
   if (!equipment.value) {
-    return t('character-simulator.create-custom-equipment.select-equipment-type')
+    return t(
+      'character-simulator.create-custom-equipment.select-equipment-type'
+    )
   }
   return equipment.value.categoryText
 })
 
 interface EquipmentTypeCategoryItem {
-  id: EquipmentCategorys;
-  icon: string;
-  iconSrc?: string;
-  list: EquipmentTypes[] | null;
+  id: EquipmentCategorys
+  icon: string
+  iconSrc?: string
+  list: EquipmentTypes[] | null
 }
 
-const equipmentTypeCategorys: EquipmentTypeCategoryItem[] = [{
-  id: EquipmentCategorys.MainWeapon,
-  icon: CharacterEquipment.getImagePath(EquipmentTypes.OneHandSword),
-  list: MainWeaponTypeList,
-}, {
-  id: EquipmentCategorys.SubWeapon,
-  icon: CharacterEquipment.getImagePath(EquipmentTypes.Arrow),
-  list: SubWeaponTypeList,
-}, {
-  id: EquipmentCategorys.SubArmor,
-  icon: CharacterEquipment.getImagePath(EquipmentTypes.Shield),
-  list: SubArmorTypeList,
-}, {
-  id: EquipmentCategorys.BodyArmor,
-  icon: CharacterEquipment.getImagePath(EquipmentTypes.BodyNormal),
-  list: null,
-}, {
-  id: EquipmentCategorys.Additional,
-  icon: CharacterEquipment.getImagePath(EquipmentTypes.Additional),
-  list: null,
-}, {
-  id: EquipmentCategorys.Special,
-  icon: CharacterEquipment.getImagePath(EquipmentTypes.Special),
-  list: null,
-}, {
-  id: EquipmentCategorys.Avatar,
-  icon: 'eva-star-outline',
-  iconSrc: 'iconify',
-  list: null,
-}]
+const equipmentTypeCategorys: EquipmentTypeCategoryItem[] = [
+  {
+    id: EquipmentCategorys.MainWeapon,
+    icon: CharacterEquipment.getImagePath(EquipmentTypes.OneHandSword),
+    list: MainWeaponTypeList,
+  },
+  {
+    id: EquipmentCategorys.SubWeapon,
+    icon: CharacterEquipment.getImagePath(EquipmentTypes.Arrow),
+    list: SubWeaponTypeList,
+  },
+  {
+    id: EquipmentCategorys.SubArmor,
+    icon: CharacterEquipment.getImagePath(EquipmentTypes.Shield),
+    list: SubArmorTypeList,
+  },
+  {
+    id: EquipmentCategorys.BodyArmor,
+    icon: CharacterEquipment.getImagePath(EquipmentTypes.BodyNormal),
+    list: null,
+  },
+  {
+    id: EquipmentCategorys.Additional,
+    icon: CharacterEquipment.getImagePath(EquipmentTypes.Additional),
+    list: null,
+  },
+  {
+    id: EquipmentCategorys.Special,
+    icon: CharacterEquipment.getImagePath(EquipmentTypes.Special),
+    list: null,
+  },
+  {
+    id: EquipmentCategorys.Avatar,
+    icon: 'eva-star-outline',
+    iconSrc: 'iconify',
+    list: null,
+  },
+]
 
 const selectedEquipmentType = reactive({
   category: null,
   type: null,
 }) as {
-  category: EquipmentCategorys | null;
-  type: EquipmentTypes | null;
+  category: EquipmentCategorys | null
+  type: EquipmentTypes | null
 }
 
 const updateEquipment = () => {
   const stats = equipment.value?.stats ?? []
   const name = equipment.value?.name ?? null
-  const originalDefaultName = equipment.value ? t('character-simulator.create-custom-equipment.equipment-default-name', { type: equipment.value.categoryText }) : null
+  const originalDefaultName = equipment.value
+    ? t('character-simulator.create-custom-equipment.equipment-default-name', {
+        type: equipment.value.categoryText,
+      })
+    : null
   const equip = (() => {
     const category = selectedEquipmentType.category
     const type = selectedEquipmentType.type!
@@ -188,11 +228,20 @@ const updateEquipment = () => {
     }
     return new Avatar(null, '', [])
   })()
-  equip.name = name === originalDefaultName ? t('character-simulator.create-custom-equipment.equipment-default-name', { type: equip.categoryText }) : name!
+  equip.name =
+    name === originalDefaultName
+      ? t(
+          'character-simulator.create-custom-equipment.equipment-default-name',
+          { type: equip.categoryText }
+        )
+      : name!
   equipment.value = equip
 }
 
-const selectEquipmentType = (category: EquipmentCategorys, type: EquipmentTypes | null) => {
+const selectEquipmentType = (
+  category: EquipmentCategorys,
+  type: EquipmentTypes | null
+) => {
   selectedEquipmentType.category = category
   selectedEquipmentType.type = type
   updateEquipment()

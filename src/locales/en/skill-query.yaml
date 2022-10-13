@@ -18,11 +18,11 @@ no-any-skill-effect-match-message:
 equipment:
   no-select: 無選取
   none: 通用
-  "main: title": 主手武器
-  "sub: title": 副手裝備
-  "body: title": 身體裝備
+  'main: title': 主手武器
+  'sub: title': 副手裝備
+  'body: title': 身體裝備
 branch:
-  duration-caption: "持續{duration}秒"
+  duration-caption: '持續{duration}秒'
   ailment-title: 命中成功後
   apply-element: 套用{element}。
   unknow-variable: 未知參數
@@ -45,18 +45,18 @@ branch:
     guard_power: 阻檔力
   skill-area:
     button-text: 查看技能範圍
-    "point: character": 角色
-    "point: target": 目標
+    'point: character': 角色
+    'point: target': 目標
   global-suffix:
     extra:
       condition-default-value: 額外效果
   basic:
-    "mp_cost: title": MP消耗
-    "range: title": 射程
-    "skill_type: title": 技能類型
-    "in_combo: title": 連擊
-    "action_time: title": 動作時間
-    "casting_time: title": 詠唱時間
+    'mp_cost: title': MP消耗
+    'range: title': 射程
+    'skill_type: title': 技能類型
+    'in_combo: title': 連擊
+    'action_time: title': 動作時間
+    'casting_time: title': 詠唱時間
     mp_cost:
       0: 無消耗
     skill_type:
@@ -79,13 +79,13 @@ branch:
       very_fast: 極快
     range:
       no_limit: 無限制
-      main: "同#施放武器 "
+      main: '同#施放武器 '
   damage:
     base-name: 傷害
     base:
       atk: 有效ATK
       matk: 有效MATK
-      "@custom":
+      '@custom':
         default: 有效攻擊力
         both: 有效ATK/有效MATK
         dual_sword: 雙劍有效ATK
@@ -126,28 +126,28 @@ branch:
       single: 限傷時視為單次傷害
       multiple: 限傷時視為多段傷害
     unsheathe_damage:
-      "true": 受拔刀傷害影響
-      "false": 不受拔刀傷害影響
+      'true': 受拔刀傷害影響
+      'false': 不受拔刀傷害影響
       none: 未確認是否受拔刀傷害影響
     range_damage:
-      "true": 受距離威力影響
-      "false": 不受距離威力影響
+      'true': 受距離威力影響
+      'false': 不受距離威力影響
       none: 未確認是否受距離威力影響
     is_place:
-      "true": 設置型技能
-    "@custom-base-caption":
+      'true': 設置型技能
+    '@custom-base-caption':
       both: 根據((!角色的ATK及MATK的高低))。ATK比MATK高時，取((!有效ATK))；MATK比ATK高時，取((!有效MATK))。
       dual_sword: 雙劍有自己特殊的有效ATK公式，細節請查看#雙劍特性說明 。
-    "effective_area: title": 類型
-    "radius: title": 傷害半徑
-    "move_distance: title": 移動距離
-    "angle: title": 作用角度
-    "start_position_offsets: title": 起點位置
-    "end_position_offsets: title": 終點位置
+    'effective_area: title': 類型
+    'radius: title': 傷害半徑
+    'move_distance: title': 移動距離
+    'angle: title': 作用角度
+    'start_position_offsets: title': 起點位置
+    'end_position_offsets: title': 終點位置
     duration-caption-with-cycle: 持續{duration}秒，每{cycle}秒一次傷害。
-  "damage: proration":
-    "damage: title": 傷害慣性
-    "proration: title": 造成慣性
+  'damage: proration':
+    'damage: title': 傷害慣性
+    'proration: title': 造成慣性
     damage:
       physical: 物理
       magic: 魔法
@@ -159,8 +159,8 @@ branch:
       normal_attack: 一般攻擊
       none: 不造成慣性
   proration:
-    "damage: title": 傷害慣性
-    "proration: title": 造成慣性
+    'damage: title': 傷害慣性
+    'proration: title': 造成慣性
     damage:
       physical: 物理
       magic: 魔法
@@ -178,7 +178,7 @@ branch:
     condition:
       auto: 施放成功後
       hit: 命中成功後
-      "@next": 下一招技能
+      '@next': 下一招技能
     type:
       self: 自身增益
       party: 全隊伍增益
@@ -186,12 +186,12 @@ branch:
       circle: 領域
       target: 單體增益
     is_place:
-      "true": 設置型技能
+      'true': 設置型技能
     effective_area:
       circle: 圓形
-    "effective_area: title": 類型
-    "radius: title": 作用半徑
-    "angle: title": 作用角度
+    'effective_area: title': 類型
+    'radius: title': 作用半徑
+    'angle: title': 作用角度
   passive:
     base-name: 被動效果
   global:

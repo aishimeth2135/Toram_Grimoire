@@ -26,20 +26,40 @@ export default {
 <script lang="ts" setup>
 import { Middleware } from '@floating-ui/core'
 import {
-  computePosition, autoUpdate, flip, size, shift, offset, limitShift,
-  DetectOverflowOptions, ComputePositionConfig,
+  ComputePositionConfig,
+  DetectOverflowOptions,
+  autoUpdate,
+  computePosition,
+  flip,
+  limitShift,
+  offset,
+  shift,
+  size,
 } from '@floating-ui/dom'
-import { CSSProperties, Ref, ref, nextTick, computed, watch, toRef, useAttrs } from 'vue'
+import {
+  CSSProperties,
+  Ref,
+  computed,
+  nextTick,
+  ref,
+  toRef,
+  useAttrs,
+  watch,
+} from 'vue'
 
-import { setupPopperOptions, PopperHideEventDetail, PopperOptions } from './setup'
+import {
+  PopperHideEventDetail,
+  PopperOptions,
+  setupPopperOptions,
+} from './setup'
 
 interface Props {
-  element: HTMLElement | null;
-  options?: PopperOptions;
+  element: HTMLElement | null
+  options?: PopperOptions
 }
 interface Emits {
-  (evt: 'shown'): void;
-  (evt: 'hidden'): void;
+  (evt: 'shown'): void
+  (evt: 'hidden'): void
 }
 
 const props = defineProps<Props>()
@@ -83,10 +103,7 @@ const baseMiddlewares: Middleware[] = [
 const computePositionOptions = computed(() => {
   return {
     strategy: 'fixed',
-    middleware: [
-      offset(popperOptions.offset),
-      ...baseMiddlewares,
-    ],
+    middleware: [offset(popperOptions.offset), ...baseMiddlewares],
     placement: popperOptions.placement,
   } as Partial<ComputePositionConfig>
 })
@@ -96,7 +113,11 @@ const updatePosition = async () => {
   if (!mainElement.value || !popperElement.value) {
     return
   }
-  const data = await computePosition(mainElement.value, popperElement.value, computePositionOptions.value)
+  const data = await computePosition(
+    mainElement.value,
+    popperElement.value,
+    computePositionOptions.value
+  )
   popperStyle.value = {
     ...popperStyle.value,
     left: `${data.x}px`,
@@ -123,13 +144,21 @@ const togglePopper = async (force?: boolean) => {
 }
 
 const handlePopperHide = (evt: CustomEvent<PopperHideEventDetail>) => {
-  if (evt.detail.eventTarget && [mainElement.value, popperElement.value].some(el => el?.contains(evt.detail.eventTarget))) {
+  if (
+    evt.detail.eventTarget &&
+    [mainElement.value, popperElement.value].some(el =>
+      el?.contains(evt.detail.eventTarget)
+    )
+  ) {
     return
   }
   togglePopper(false)
 }
 
-watch(() => props.options, () => updatePosition())
+watch(
+  () => props.options,
+  () => updatePosition()
+)
 
 defineExpose({
   shown,
@@ -149,7 +178,7 @@ defineExpose({
   }
 
   & > .popper-content {
-    @apply bg-white border-1 border-primary-30;
+    @apply border-1 border-primary-30 bg-white;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <AppLayoutMain ref="rootEl" class="app-home">
-    <div class="flex justify-center items-center h-32">
-      <div class="pt-2 sticky top-0">
+    <div class="flex h-32 items-center justify-center">
+      <div class="sticky top-0 pt-2">
         <div
           class="app-title-wrapper"
           @click="iconWrapperTouchedCount += 1"
@@ -9,7 +9,7 @@
         >
           <div
             ref="appIcon"
-            class="flex app-title-icon"
+            class="app-title-icon flex"
             :style="appIconPositionStyle"
             :class="{ 'app-title-icon-touched': iconWrapperTouched }"
           >
@@ -19,23 +19,21 @@
               icon-width="2.75rem"
             />
           </div>
-          <div v-if="iconWrapperTouched" class="flex app-title-icon invisible">
+          <div v-if="iconWrapperTouched" class="app-title-icon invisible flex">
             <cy-icon-text
               icon="grimoire-cat"
               icon-src="custom"
               icon-width="2.75rem"
             />
           </div>
-          <div class="ml-5 app-title">
-            Cy's Grimoire
-          </div>
+          <div class="app-title ml-5">Cy's Grimoire</div>
         </div>
       </div>
     </div>
-    <div class="w-full px-2 mt-auto">
+    <div class="mt-auto w-full px-2">
       <section
         ref="mainSection"
-        class="flex justify-center flex-wrap py-6 rounded-3xl app-home-main-section"
+        class="app-home-main-section flex flex-wrap justify-center rounded-3xl py-6"
         @mousemove="pointMove"
         @mouseleave="pointLeave"
       >
@@ -49,16 +47,20 @@
         />
       </section>
     </div>
-    <footer class="flex items-center justify-center w-full px-2 h-32 mt-auto">
-      <div class="flex items-center sticky bottom-0 space-x-4 py-4">
+    <footer class="mt-auto flex h-32 w-full items-center justify-center px-2">
+      <div class="sticky bottom-0 flex items-center space-x-4 py-4">
         <cy-button-plain
           v-if="storageAvailable"
           icon="ic-baseline-settings"
-          @click="(mainStore.toggleSetting(true), leftMenuStore.toggleVisible())"
+          @click="mainStore.toggleSetting(true), leftMenuStore.toggleVisible()"
         >
           {{ t('app.settings.title') }}
         </cy-button-plain>
-        <router-link v-slot="{ navigate }" :to="{ name: AppRouteNames.About }" custom>
+        <router-link
+          v-slot="{ navigate }"
+          :to="{ name: AppRouteNames.About }"
+          custom
+        >
           <cy-button-plain icon="bx-bxs-star-half" @click="navigate">
             {{ t('app.page-title.about') }}
           </cy-button-plain>
@@ -75,16 +77,24 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import {
+  Ref,
+  nextTick,
+  onMounted,
+  onUnmounted,
+  reactive,
+  ref,
+  watch,
+} from 'vue'
 import { useI18n } from 'vue-i18n'
-import { nextTick, onMounted, onUnmounted, reactive, ref, Ref, watch } from 'vue'
 
-import { useMainStore } from '@/stores/app/main'
 import { useLeftMenuStore } from '@/stores/app/left-menu'
+import { useMainStore } from '@/stores/app/main'
 
 import { ROUTE_LINK_DATAS } from '@/shared/consts'
+import Cyteria from '@/shared/utils/Cyteria'
 import { debounce } from '@/shared/utils/function'
 import { getRandomInt, numberToFixed } from '@/shared/utils/number'
-import Cyteria from '@/shared/utils/Cyteria'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 import { AppRouteNames } from '@/router/enums'
@@ -108,8 +118,8 @@ const pointPosition = reactive({
 const pointMove = debounce((evt: MouseEvent) => {
   if (mainSection.value) {
     const rect = mainSection.value.getBoundingClientRect()
-    const left = (evt.clientX - rect.left)
-    const top = (evt.clientY - rect.top)
+    const left = evt.clientX - rect.left
+    const top = evt.clientY - rect.top
     if (left >= 0 && top >= 0) {
       pointPosition.left = left + 'px'
       pointPosition.top = top + 'px'
@@ -118,7 +128,7 @@ const pointMove = debounce((evt: MouseEvent) => {
   }
 }, 10)
 const pointLeave = () => {
-  setTimeout(() => pointPosition.display = 'none', 20)
+  setTimeout(() => (pointPosition.display = 'none'), 20)
 }
 
 const rootEl: Ref<{ $el: HTMLElement } | null> = ref(null)
@@ -126,7 +136,8 @@ const appIcon: Ref<HTMLElement | null> = ref(null)
 const iconWrapperTouched = ref(false)
 const iconWrapperTouchedCount = ref(0)
 const appIconPosition: Ref<{ x: number; y: number } | null> = ref(null)
-const appIconPositionStyle: Ref<Record<string, string> | undefined> = ref(undefined)
+const appIconPositionStyle: Ref<Record<string, string> | undefined> =
+  ref(undefined)
 let appIconAnimating = false
 let mouseTrackIconListener: ((evt: MouseEvent) => void) | null = null
 
@@ -140,7 +151,7 @@ const updateAppIconPositionStyle = async () => {
     top: numberToFixed(appIconPosition.value.y, 2) + '%',
   } as Record<string, string>
   appIconAnimating = true
-  setTimeout(() => appIconAnimating = false, 175)
+  setTimeout(() => (appIconAnimating = false), 175)
 }
 
 {
@@ -155,8 +166,8 @@ const updateAppIconPositionStyle = async () => {
 const initAppIconPosition = async () => {
   const rect = appIcon.value!.getBoundingClientRect()
   appIconPosition.value = {
-    x: rect.left * 100 / window.innerWidth,
-    y: rect.top * 100 / window.innerHeight,
+    x: (rect.left * 100) / window.innerWidth,
+    y: (rect.top * 100) / window.innerHeight,
   }
   await updateAppIconPositionStyle()
   await nextTick()
@@ -181,15 +192,17 @@ const unwatchIconTouched = watch(iconWrapperTouched, newValue => {
     let directionXRandomOffset = 0
     let directionYRandomOffset = 0
 
-    const getXP = (value: number) => value * 100 / window.innerWidth
-    const getYP = (value: number) => value * 100 / window.innerHeight
+    const getXP = (value: number) => (value * 100) / window.innerWidth
+    const getYP = (value: number) => (value * 100) / window.innerHeight
 
     const setRemoveText = (() => {
       let removeTextTimer: any | null = null
       return () => {
         clearTimeout(removeTextTimer)
         removeTextTimer = setTimeout(() => {
-          rootEl.value?.$el.querySelectorAll('.app-icon-touched-text').forEach(el => el.remove())
+          rootEl.value?.$el
+            .querySelectorAll('.app-icon-touched-text')
+            .forEach(el => el.remove())
         }, 3000)
       }
     })()
@@ -200,7 +213,7 @@ const unwatchIconTouched = watch(iconWrapperTouched, newValue => {
         return
       }
       const rect = appIcon.value!.getBoundingClientRect()
-      const iconRadius = (rect.width / 2)
+      const iconRadius = rect.width / 2
       const iconRadiusXP = getXP(iconRadius)
       const iconRadiusYP = getYP(iconRadius)
       const distanceX = Math.abs(evt.clientX - rect.left - iconRadius)
@@ -215,10 +228,26 @@ const unwatchIconTouched = watch(iconWrapperTouched, newValue => {
         let newY = 0
         let maxRetries = 10
         do {
-          newX = appIconPosition.value!.x + getRandomInt(Math.min(iconRadiusXP + 2, BOUNDING - 3) + directionXExtra, BOUNDING + directionXExtra) * directionX
-          newY = appIconPosition.value!.y + getRandomInt(Math.min(iconRadiusYP + 2, BOUNDING - 3) + directionYExtra, BOUNDING + directionYExtra) * directionY
+          newX =
+            appIconPosition.value!.x +
+            getRandomInt(
+              Math.min(iconRadiusXP + 2, BOUNDING - 3) + directionXExtra,
+              BOUNDING + directionXExtra
+            ) *
+              directionX
+          newY =
+            appIconPosition.value!.y +
+            getRandomInt(
+              Math.min(iconRadiusYP + 2, BOUNDING - 3) + directionYExtra,
+              BOUNDING + directionYExtra
+            ) *
+              directionY
           maxRetries -= 1
-        } while (((clientXP - newX) ** 2 + (clientYP - newY) ** 2) * 10 <= (hitboxXP ** 2 + hitboxYP ** 2) * 12 && maxRetries >= 0)
+        } while (
+          ((clientXP - newX) ** 2 + (clientYP - newY) ** 2) * 10 <=
+            (hitboxXP ** 2 + hitboxYP ** 2) * 12 &&
+          maxRetries >= 0
+        )
 
         if (newX >= 100 - BOUNDING) {
           directionX = -1
@@ -227,7 +256,11 @@ const unwatchIconTouched = watch(iconWrapperTouched, newValue => {
           directionX = 1
           directionXExtra = 5
         } else {
-          directionX = ((Math.random() * directionRandomRange - directionXRandomOffset) >= directionRandomRange / 2) ? 1 : -1
+          directionX =
+            Math.random() * directionRandomRange - directionXRandomOffset >=
+            directionRandomRange / 2
+              ? 1
+              : -1
           directionXRandomOffset += directionX * getRandomInt(1, 4)
           directionXExtra = 0
         }
@@ -238,7 +271,11 @@ const unwatchIconTouched = watch(iconWrapperTouched, newValue => {
           directionY = 1
           directionYExtra = 5
         } else {
-          directionY = ((Math.random() * directionRandomRange - directionYRandomOffset) >= directionRandomRange / 2) ? 1 : -1
+          directionY =
+            Math.random() * directionRandomRange - directionYRandomOffset >=
+            directionRandomRange / 2
+              ? 1
+              : -1
           directionYRandomOffset += directionY * getRandomInt(1, 4)
           directionYExtra = 0
         }
@@ -265,7 +302,9 @@ let linkButtonWrapperStyle: Ref<string | null> = ref(null)
 onMounted(async () => {
   await nextTick()
   if (mainSection.value && mainSection.value.offsetHeight) {
-    const wrappers = mainSection.value.querySelectorAll('.cy--home-link-button-wrapper')
+    const wrappers = mainSection.value.querySelectorAll(
+      '.cy--home-link-button-wrapper'
+    )
     let max = 0
     wrappers.forEach(node => {
       const rect = node.getBoundingClientRect()
@@ -285,7 +324,7 @@ onUnmounted(() => {
 <style lang="postcss" scoped>
 .app-home {
   &:deep(.app-icon-touched-text) {
-    @apply text-primary-50 fixed pointer-events-none opacity-0;
+    @apply pointer-events-none fixed text-primary-50 opacity-0;
     animation: app-icon-touched-text 2.5s linear;
   }
 }
@@ -308,11 +347,11 @@ onUnmounted(() => {
     content: '';
     opacity: 0.75;
 
-    @apply w-full h-full bg-white absolute top-0 left-0;
+    @apply absolute top-0 left-0 h-full w-full bg-white;
   }
 
   & > .app-home-main-point {
-    @apply bg-primary-30 bg-opacity-50 w-8 h-8 absolute rounded-full pointer-events-none duration-200 ease-out;
+    @apply pointer-events-none absolute h-8 w-8 rounded-full bg-primary-30 bg-opacity-50 duration-200 ease-out;
     transform: translate(-50%, -50%);
     animation: app-home-main-point 2.5s ease infinite;
   }
@@ -331,15 +370,16 @@ onUnmounted(() => {
 }
 
 .app-title-wrapper {
-  @apply flex items-center pt-4 px-6 rounded-2xl;
+  @apply flex items-center rounded-2xl px-6 pt-4;
   padding-bottom: 1.5rem;
 }
 
 .app-title {
-  @apply text-transparent text-4xl;
+  @apply text-4xl text-transparent;
 
   background-clip: text;
-  background-image: linear-gradient(to left,
+  background-image: linear-gradient(
+    to left,
     var(--app-favicon-color-main),
     var(--app-favicon-color-sub),
     var(--app-favicon-color-main),

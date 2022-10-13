@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="flex items-center flex-wrap w-full">
+    <div class="flex w-full flex-wrap items-center">
       <cy-button-check v-model:selected="enabled" color="orange" inline>
         {{ result.container.get('name') }}
       </cy-button-check>
-      <div class="flex items-center space-x-0.5 ml-3">
+      <div class="ml-3 flex items-center space-x-0.5">
         <div v-if="valid" class="text-primary-50">
           {{ expectedResult }}
         </div>
@@ -21,21 +21,34 @@
           v-html="result.container.get('frequency')"
         />
       </div>
-      <cy-button-icon icon="majesticons:checkbox-list-detail-line" class="ml-auto" @click="toggle('contents/detail')" />
+      <cy-button-icon
+        icon="majesticons:checkbox-list-detail-line"
+        class="ml-auto"
+        @click="toggle('contents/detail')"
+      />
     </div>
-    <div v-if="statExtraContainers.length > 0" class="pt-2 pb-1 pl-2 space-y-1">
+    <div v-if="statExtraContainers.length > 0" class="space-y-1 pt-2 pb-1 pl-2">
       <div
         v-for="extraContainer in statExtraContainers"
         :key="extraContainer.instanceId"
         class="flex items-center"
       >
         <cy-button-toggle
-          v-model:selected="store.getDamageCalculationSkillBranchState(extraContainer.branchItem.default).enabled"
+          v-model:selected="
+            store.getDamageCalculationSkillBranchState(
+              extraContainer.branchItem.default
+            ).enabled
+          "
         />
-        <CharacterSkillItemStats :stat-containers="extraContainer.statContainers" />
+        <CharacterSkillItemStats
+          :stat-containers="extraContainer.statContainers"
+        />
       </div>
     </div>
-    <div v-if="contents.detail" class="text-sm px-3 py-2 border-1 border-primary-30 mt-2 bg-white">
+    <div
+      v-if="contents.detail"
+      class="mt-2 border-1 border-primary-30 bg-white px-3 py-2 text-sm"
+    >
       <div
         v-for="item in calculationItems"
         :key="item.item.base.id"
@@ -44,12 +57,13 @@
       >
         <div
           :class="{ 'text-orange-60': !item.valueValid }"
-          v-html="markText(t('damage-calculation.item-base-titles.' + item.item.base.id))"
+          v-html="
+            markText(
+              t('damage-calculation.item-base-titles.' + item.item.base.id)
+            )
+          "
         ></div>
-        <div
-          v-if="item.valueValid"
-          class="text-primary-50"
-        >
+        <div v-if="item.valueValid" class="text-primary-50">
           {{ item.item.value + item.item.base.unit }}
         </div>
       </div>
@@ -67,25 +81,25 @@ import { markText } from '@/shared/utils/view'
 
 import { CalcItem } from '@/lib/Calculation/Damage/Calculation'
 import { ContainerTypes } from '@/lib/Calculation/Damage/Calculation/enums'
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import { SkillBranch } from '@/lib/Skill/Skill'
 import { StatRecorded } from '@/lib/Character/Stat'
+import { SkillBranch } from '@/lib/Skill/Skill'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import ToggleService from '@/setup/ToggleService'
 
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'
 
-import { setupCharacterStore } from '../setup'
 import { setupSkilResultExtraStats } from '../character-damage/setup'
+import { setupCharacterStore } from '../setup'
 
 interface Props {
-  result: SkillResult;
-  comboRate: number;
-  unselectedBranches: SkillBranch[];
-  extraStats: StatRecorded[];
+  result: SkillResult
+  comboRate: number
+  unselectedBranches: SkillBranch[]
+  extraStats: StatRecorded[]
 }
 interface Emits {
-  (evt: 'update:unselected-branches', value: SkillBranch[]): void;
+  (evt: 'update:unselected-branches', value: SkillBranch[]): void
 }
 
 const props = defineProps<Props>()
@@ -93,7 +107,9 @@ const emit = defineEmits<Emits>()
 
 const enabled = computed({
   get() {
-    return !props.unselectedBranches.includes(props.result.container.branchItem.default)
+    return !props.unselectedBranches.includes(
+      props.result.container.branchItem.default
+    )
   },
   set(value) {
     const unselectedBranches = props.unselectedBranches?.slice()
@@ -119,28 +135,34 @@ const { contents, toggle } = ToggleService({
 const result = computed(() => props.result)
 
 const { extraStats: baseExtraStats } = setupSkilResultExtraStats(result)
-const extraStats = computed(() => [...baseExtraStats.value, ...props.extraStats])
+const extraStats = computed(() => [
+  ...baseExtraStats.value,
+  ...props.extraStats,
+])
 
-const { valid, calculation, expectedResult } = store.setupDamageCalculationExpectedResult(
-  result,
-  extraStats,
-  computed(() => store.targetProperties),
-  computed(() => ({
-    ...store.calculationOptions,
-    comboRate: props.comboRate,
-  })),
-)
+const { valid, calculation, expectedResult } =
+  store.setupDamageCalculationExpectedResult(
+    result,
+    extraStats,
+    computed(() => store.targetProperties),
+    computed(() => ({
+      ...store.calculationOptions,
+      comboRate: props.comboRate,
+    }))
+  )
 
 const frequencyVisible = computed(() => {
-  return valid.value && props.result.container.branchItem.prop('title') === 'each'
+  return (
+    valid.value && props.result.container.branchItem.prop('title') === 'each'
+  )
 })
 
 const calculationItems = computed(() => {
   const containers = [...calculation.value.containers.values()]
   const items: {
-    item: CalcItem;
-    hidden: boolean;
-    valueValid: boolean;
+    item: CalcItem
+    hidden: boolean
+    valueValid: boolean
   }[] = []
   containers.forEach(container => {
     const hidden = container.hidden
@@ -152,24 +174,28 @@ const calculationItems = computed(() => {
         valueValid,
       })
     } else {
-      items.push(...[...container.items.values()].map(item => ({
-        item,
-        hidden,
-        valueValid,
-      })))
+      items.push(
+        ...[...container.items.values()].map(item => ({
+          item,
+          hidden,
+          valueValid,
+        }))
+      )
     }
   })
   return items
 })
 
 const statExtraContainers = computed(() => {
-  return props.result.suffixContainers
-    .filter(suf => suf.branchItem.is(SkillBranchNames.Extra) && suf.statContainers.length > 0)
+  return props.result.suffixContainers.filter(
+    suf =>
+      suf.branchItem.is(SkillBranchNames.Extra) && suf.statContainers.length > 0
+  )
 })
 
 defineExpose({
   valid,
   calculation,
-  expectedResult: computed(() => enabled.value ? expectedResult.value : 0),
+  expectedResult: computed(() => (enabled.value ? expectedResult.value : 0)),
 })
 </script>

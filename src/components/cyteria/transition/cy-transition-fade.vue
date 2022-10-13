@@ -13,13 +13,16 @@ export default defineComponent({
 </script>
 
 <style lang="postcss" scoped>
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: 0.1s ease;
 }
-.fade-enter-to, .fade-leave-from {
+.fade-enter-to,
+.fade-leave-from {
   opacity: 1;
 }
 
@@ -35,7 +38,8 @@ export default defineComponent({
   transform: translateX(20%);
   opacity: 0;
 }
-.fade-slide-right-enter-active, .fade-slide-right-leave-active {
+.fade-slide-right-enter-active,
+.fade-slide-right-leave-active {
   transition: 0.3s ease;
 }
 </style>

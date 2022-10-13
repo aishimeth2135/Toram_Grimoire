@@ -3,7 +3,9 @@
     :icon="null"
     :selected="selected"
     :class="{
-      'py-1': iconDatas.every(iconData => iconData.icons.every(icon => !icon.text)),
+      'py-1': iconDatas.every(iconData =>
+        iconData.icons.every(icon => !icon.text)
+      ),
     }"
   >
     <template #default>
@@ -42,14 +44,14 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { EquipmentRestrictions } from '@/lib/Skill/SkillComputingContainer'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import { EquipmentRestrictions } from '@/lib/Skill/SkillComputingContainer'
 
 import { IconSrc } from '@/components/cyteria/icon/setup'
 
 interface Props {
-  equipments: EquipmentRestrictions[];
-  selected?: boolean;
+  equipments: EquipmentRestrictions[]
+  selected?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -59,17 +61,23 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n()
 
 interface IconItem {
-  icon: string;
-  src: IconSrc;
-  text?: string;
+  icon: string
+  src: IconSrc
+  text?: string
 }
 
 const iconDatas = computed(() => {
   return props.equipments.map((equip, idx) => {
     const icons: IconItem[] = []
-    const fields = (['main', 'sub', 'body'] as const).filter(key => equip[key] !== null)
+    const fields = (['main', 'sub', 'body'] as const).filter(
+      key => equip[key] !== null
+    )
     if (fields.length === 0) {
-      icons.push({ icon: 'mdi:checkbox-multiple-blank-circle-outline', src: 'iconify', text: t('skill-query.equipment.none') })
+      icons.push({
+        icon: 'mdi:checkbox-multiple-blank-circle-outline',
+        src: 'iconify',
+        text: t('skill-query.equipment.none'),
+      })
     }
     const operatorIcon = 'ic-round-add'
     fields.forEach((key, fieldIdx) => {
@@ -94,7 +102,7 @@ const iconDatas = computed(() => {
 
 <style lang="postcss" scoped>
 .skill-equipment-button {
-  @apply inline-flex items-center space-x-2 border-b-1 border-transparent hover:border-primary-30 px-3 cursor-pointer;
+  @apply inline-flex cursor-pointer items-center space-x-2 border-b-1 border-transparent px-3 hover:border-primary-30;
 
   &.selected {
     @apply border-primary-60 hover:border-primary-60;

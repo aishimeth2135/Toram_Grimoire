@@ -1,7 +1,7 @@
 import { reactive } from 'vue'
 
 let registletQueryState: {
-  itemDefaultVisible: boolean;
+  itemDefaultVisible: boolean
 }
 
 export function useRegistletQueryState() {

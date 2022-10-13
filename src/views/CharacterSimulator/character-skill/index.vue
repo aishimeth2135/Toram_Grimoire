@@ -4,7 +4,12 @@
       <div class="inline-block">
         <cy-options
           :value="currentSkillBuild"
-          :options="skillBuilds.map(skillBuild => ({ id: skillBuild.instanceId, value: skillBuild }))"
+          :options="
+            skillBuilds.map(skillBuild => ({
+              id: skillBuild.instanceId,
+              value: skillBuild,
+            }))
+          "
           @update:value="characterStore.setCharacterSkillBuild($event)"
         >
           <template #item="{ value }">
@@ -16,11 +21,19 @@
       </div>
     </div>
     <cy-hr />
-    <div class="flex items-center max-w-full overflow-x-auto">
-      <cy-button-action :selected="tabs.active" icon="uil:books" @click="toggle('tabs/active', true, false)">
+    <div class="flex max-w-full items-center overflow-x-auto">
+      <cy-button-action
+        :selected="tabs.active"
+        icon="uil:books"
+        @click="toggle('tabs/active', true, false)"
+      >
         {{ t('character-simulator.skill-build.active-skills') }}
       </cy-button-action>
-      <cy-button-action :selected="tabs.passive" icon="uil:books" @click="toggle('tabs/passive', true, false)">
+      <cy-button-action
+        :selected="tabs.passive"
+        icon="uil:books"
+        @click="toggle('tabs/passive', true, false)"
+      >
         {{ t('character-simulator.skill-build.passive-skills') }}
       </cy-button-action>
       <cy-popover class="flex">
@@ -31,16 +44,22 @@
         />
         <template #popper>
           <div class="p-3">
-            <cy-button-check v-model:selected="characterStore.setupOptions.skillDisplayStatsOnly">
+            <cy-button-check
+              v-model:selected="
+                characterStore.setupOptions.skillDisplayStatsOnly
+              "
+            >
               {{ t('character-simulator.skill-build.display-stats-only') }}
             </cy-button-check>
           </div>
         </template>
       </cy-popover>
     </div>
-    <div class="pt-3 overflow-x-auto">
+    <div class="overflow-x-auto pt-3">
       <div style="min-width: 25rem">
-        <CharacterSkillTab :type="tabs.active ? SkillTypes.Active : SkillTypes.Passive" />
+        <CharacterSkillTab
+          :type="tabs.active ? SkillTypes.Active : SkillTypes.Passive"
+        />
       </div>
     </div>
   </section>

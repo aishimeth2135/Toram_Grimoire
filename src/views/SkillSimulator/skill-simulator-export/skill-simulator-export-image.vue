@@ -9,13 +9,18 @@
   >
     <template #default>
       <div v-if="currentImage" class="overflow-x-auto">
-        <img :src="currentImage || '#'" class="max-w-none">
+        <img :src="currentImage || '#'" class="max-w-none" />
       </div>
       <div v-else class="flex justify-center py-8">
         <cy-icon-text icon="mdi:image-outline" icon-width="3rem" />
       </div>
-      <div class="p-3 border border-primary-30 mt-6" style="max-width: 27.5rem">
-        <cy-icon-text icon="ic:outline-info" small align-v="start" text-color="primary-30">
+      <div class="mt-6 border border-primary-30 p-3" style="max-width: 27.5rem">
+        <cy-icon-text
+          icon="ic:outline-info"
+          small
+          align-v="start"
+          text-color="primary-30"
+        >
           {{ t('skill-simulator.export-image.preview-ios-tips') }}
         </cy-icon-text>
       </div>
@@ -43,11 +48,11 @@ import Cyteria from '@/shared/utils/Cyteria'
 import { exportSkillBuildImage } from './utils'
 
 interface Props {
-  visible: boolean;
-  skillBuild: SkillBuild | null;
+  visible: boolean
+  skillBuild: SkillBuild | null
 }
 interface Emits {
-  (evt: 'close'): void;
+  (evt: 'close'): void
 }
 
 const props = defineProps<Props>()
@@ -59,7 +64,7 @@ const { t } = useI18n()
 
 const currentImage = ref('')
 
-watch(visible, async (value) => {
+watch(visible, async value => {
   if (value) {
     if (props.skillBuild) {
       const res = await exportSkillBuildImage(props.skillBuild)

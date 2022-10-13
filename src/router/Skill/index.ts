@@ -17,26 +17,35 @@ export default {
   component: ViewWrapper,
   beforeEnter(to, from, next) {
     PrepareLocaleInit(LocaleViewNamespaces.SkillQuery)
-    ViewInit(DataStoreIds.Stats, DataStoreIds.Skill, DataStoreIds.Glossary).then(next)
+    ViewInit(
+      DataStoreIds.Stats,
+      DataStoreIds.Skill,
+      DataStoreIds.Glossary
+    ).then(next)
   },
   meta: {
-    leftMenuViewButtons: [{
-      title: 'app.page-title.skill-query',
-      icon: 'ic-outline-menu-book',
-      pathName: AppRouteNames.SkillQuery,
-    }, {
-      title: 'app.page-title.glossary-query',
-      icon: 'mdi:tag-outline',
-      pathName: AppRouteNames.GlossaryQuery,
-    }],
+    leftMenuViewButtons: [
+      {
+        title: 'app.page-title.skill-query',
+        icon: 'ic-outline-menu-book',
+        pathName: AppRouteNames.SkillQuery,
+      },
+      {
+        title: 'app.page-title.glossary-query',
+        icon: 'mdi:tag-outline',
+        pathName: AppRouteNames.GlossaryQuery,
+      },
+    ],
   },
-  children: [{
-    name: AppRouteNames.SkillQuery,
-    path: ':skillId?',
-    component: SkillQueryView,
-    meta: {
-      parentPathName: AppRouteNames.Skill,
-      title: 'app.page-title.skill-query',
+  children: [
+    {
+      name: AppRouteNames.SkillQuery,
+      path: ':skillId?',
+      component: SkillQueryView,
+      meta: {
+        parentPathName: AppRouteNames.Skill,
+        title: 'app.page-title.skill-query',
+      },
     },
-  }],
+  ],
 } as RouteRecordRaw

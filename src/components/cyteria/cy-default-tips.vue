@@ -16,18 +16,18 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, StyleValue } from 'vue'
+import { StyleValue, computed, defineComponent } from 'vue'
 
 import { IconBaseProps } from './icon/setup'
 
 export default defineComponent({
   props: {
     ...IconBaseProps,
-    'icon': {
+    icon: {
       type: String,
       default: 'bx:message-detail',
     },
-    'textAlign': {
+    textAlign: {
       type: String,
       default: 'center',
     },

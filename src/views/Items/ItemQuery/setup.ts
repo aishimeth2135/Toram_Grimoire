@@ -9,17 +9,19 @@ import { StatTypes } from '@/lib/Character/Stat/enums'
 import { ItemObtain } from '@/lib/Items/Item'
 
 export interface StatOption {
-  origin: StatBase;
-  text: string;
-  type: StatTypes;
+  origin: StatBase
+  text: string
+  type: StatTypes
 }
 export interface CommonOption {
-  value: string;
-  selected: boolean;
+  value: string
+  selected: boolean
 }
 
 export function findStat(target: StatOption, stats: StatRestriction[]) {
-  return stats.find(stat => stat.baseId === target.origin.baseId && stat.type === target.type)
+  return stats.find(
+    stat => stat.baseId === target.origin.baseId && stat.type === target.type
+  )
 }
 
 function dyeConvert(value: string): (number | null)[] {
@@ -37,7 +39,10 @@ function dyeConvert(value: string): (number | null)[] {
   return result
 }
 
-export function findObtainByDye(text: string, eq: CharacterEquipment): ItemObtain[] {
+export function findObtainByDye(
+  text: string,
+  eq: CharacterEquipment
+): ItemObtain[] {
   if (text === '') {
     return []
   }
@@ -59,7 +64,9 @@ export function findObtainByDye(text: string, eq: CharacterEquipment): ItemObtai
   return obtains.filter(obtain => {
     const dye = obtain['dye']!
     const data = dyeConvert(dye)
-    return data.every((item, idx) => searchData[idx] === null || item === searchData[idx])
+    return data.every(
+      (item, idx) => searchData[idx] === null || item === searchData[idx]
+    )
   })
 }
 
@@ -78,8 +85,8 @@ export const enum SearchModes {
 }
 
 const state: {
-  currentMode: SearchModes;
-  displayMode: 0 | 1;
+  currentMode: SearchModes
+  displayMode: 0 | 1
 } = reactive({
   currentMode: SearchModes.Normal,
   displayMode: 0,

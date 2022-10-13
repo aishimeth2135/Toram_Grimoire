@@ -1,15 +1,17 @@
 <template>
   <div class="app-left-menu--wrapper" :class="{ 'wrapper-minimize': minimize }">
     <div class="content-container" @click.stop>
-      <div class="h-full overflow-y-auto flex flex-col">
+      <div class="flex h-full flex-col overflow-y-auto">
         <div class="mx-1 mt-6">
           <AppSideMenuContent is-main />
         </div>
-        <div class="mt-auto mx-2 pl-2 py-4">
+        <div class="mx-2 mt-auto py-4 pl-2">
           <cy-button-icon
             v-if="storageAvailable"
             icon="ic-baseline-settings"
-            @click="(mainStore.toggleSetting(true), leftMenuStore.toggleVisible())"
+            @click="
+              mainStore.toggleSetting(true), leftMenuStore.toggleVisible()
+            "
           />
         </div>
       </div>
@@ -54,7 +56,7 @@ const minimize = computed(() => currentRoute.meta.twoColumnsLayout === true)
  */
 
 .app-left-menu--wrapper {
-  @apply fixed w-64 top-0 left-0 opacity-100 h-full overflow-x-hidden z-50;
+  @apply fixed top-0 left-0 z-50 h-full w-64 overflow-x-hidden opacity-100;
   background-color: var(--app-body-bg-color);
 
   & > .content-container {
@@ -64,7 +66,7 @@ const minimize = computed(() => currentRoute.meta.twoColumnsLayout === true)
 
 @media (min-width: 55rem) and (max-width: 82rem) {
   .app-left-menu--wrapper {
-    @apply w-14 duration-300 border-r-1 border-transparent;
+    @apply w-14 border-r-1 border-transparent duration-300;
 
     &:hover {
       @apply w-64 border-primary-30;
@@ -78,7 +80,7 @@ const minimize = computed(() => currentRoute.meta.twoColumnsLayout === true)
 
 @media (min-width: 82rem) {
   .app-left-menu--wrapper.wrapper-minimize {
-    @apply w-14 duration-300 border-r-1 border-transparent;
+    @apply w-14 border-r-1 border-transparent duration-300;
 
     &:hover {
       @apply w-64 border-primary-30;

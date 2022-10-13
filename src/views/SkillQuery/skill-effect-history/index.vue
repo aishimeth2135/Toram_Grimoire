@@ -24,9 +24,8 @@ import SkillEffectItemHistory from './skill-effect-history-item.vue'
 
 import { ComputingContainerInjectionKey } from '../injection-keys'
 
-
 interface Props {
-  skillEffectItem: SkillEffectItem;
+  skillEffectItem: SkillEffectItem
 }
 
 defineProps<Props>()

@@ -4,15 +4,17 @@ import { Skill } from '@/lib/Skill/Skill'
 import { RegistletCategoryIds } from './enums'
 
 interface RegistletInfos {
-  id: string;
-  name: string;
-  obtainLevels: number[];
-  maxLevel: number;
-  powderCost: number;
-  powderCostAdditional: number | null;
+  id: string
+  name: string
+  obtainLevels: number[]
+  maxLevel: number
+  powderCost: number
+  powderCostAdditional: number | null
 }
 
-class RegistletCategory<ItemBase extends RegistletItemBase = RegistletItemBase> {
+class RegistletCategory<
+  ItemBase extends RegistletItemBase = RegistletItemBase
+> {
   id: RegistletCategoryIds
   items: ItemBase[]
 
@@ -50,7 +52,11 @@ class RegistletItemBaseSkill extends RegistletItemBase {
   override link: Skill | null
   declare category: RegistletCategory<RegistletItemBaseSkill>
 
-  constructor(category: RegistletCategory<RegistletItemBaseSkill>, infos: RegistletInfos, skill: Skill | null) {
+  constructor(
+    category: RegistletCategory<RegistletItemBaseSkill>,
+    infos: RegistletInfos,
+    skill: Skill | null
+  ) {
     super(category, infos)
     this.link = skill
   }
@@ -60,7 +66,11 @@ class RegistletItemBaseStat extends RegistletItemBase {
   override link: StatBase
   declare category: RegistletCategory<RegistletItemBaseStat>
 
-  constructor(category: RegistletCategory<RegistletItemBaseStat>, infos: RegistletInfos, statBase: StatBase) {
+  constructor(
+    category: RegistletCategory<RegistletItemBaseStat>,
+    infos: RegistletInfos,
+    statBase: StatBase
+  ) {
     super(category, infos)
     this.link = statBase
   }
@@ -70,7 +80,10 @@ class RegistletItemBaseSpecial extends RegistletItemBase {
   override link: string
   declare category: RegistletCategory<RegistletItemBaseSpecial>
 
-  constructor(category: RegistletCategory<RegistletItemBaseSpecial>, infos: RegistletInfos) {
+  constructor(
+    category: RegistletCategory<RegistletItemBaseSpecial>,
+    infos: RegistletInfos
+  ) {
     super(category, infos)
     this.link = ''
   }
@@ -86,9 +99,7 @@ class RegistletItemRow {
   }
 }
 
-export type {
-  RegistletInfos,
-}
+export type { RegistletInfos }
 
 export {
   RegistletCategory,

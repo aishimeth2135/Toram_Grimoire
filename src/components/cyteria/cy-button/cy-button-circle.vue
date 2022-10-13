@@ -14,12 +14,7 @@
         icon="ic-round-close"
         :class="iconClass"
       />
-      <ButtonIcon
-        v-else
-        :icon="icon"
-        :src="iconSrc"
-        :class="iconClass"
-      />
+      <ButtonIcon v-else :icon="icon" :src="iconSrc" :class="iconClass" />
     </template>
   </CyButtonBase>
 </template>
@@ -27,8 +22,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import CyButtonBase from './cy-button-base.vue'
 import ButtonIcon from './button-icon.vue'
+import CyButtonBase from './cy-button-base.vue'
 
 import { ButtonBaseProps, ButtonIconProps, getButtonBaseBinds } from './setup'
 
@@ -63,12 +58,12 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 .cy-button-circle {
-  @apply justify-center border-1 rounded-full bg-white bg-opacity-100 shadow w-11 h-11;
+  @apply h-11 w-11 justify-center rounded-full border-1 bg-white bg-opacity-100 shadow;
 
   --button-icon-width: 1.25rem;
 
   &.button-small {
-    @apply w-9 h-9;
+    @apply h-9 w-9;
 
     --button-icon-width: 1rem;
   }

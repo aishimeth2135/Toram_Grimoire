@@ -9,7 +9,8 @@ import { AppRouteNames } from '@/router/enums'
 
 import ViewWrapper from './view-wrapper.vue'
 
-const DamageCalculatiomView = () => import('@/views/Calculation/DamageCalculation/index.vue')
+const DamageCalculatiomView = () =>
+  import('@/views/Calculation/DamageCalculation/index.vue')
 
 export default {
   name: AppRouteNames.DamageCalculationBase,
@@ -20,18 +21,22 @@ export default {
     ViewInit(DataStoreIds.DamageCalculation).then(next)
   },
   meta: {
-    leftMenuViewButtons: [{
-      title: 'app.page-title.damage-calculation',
-      icon: 'mdi-sword',
-      pathName: AppRouteNames.DamageCalculation,
-    }],
+    leftMenuViewButtons: [
+      {
+        title: 'app.page-title.damage-calculation',
+        icon: 'mdi-sword',
+        pathName: AppRouteNames.DamageCalculation,
+      },
+    ],
   },
-  children: [{
-    name: AppRouteNames.DamageCalculation,
-    path: '',
-    component: DamageCalculatiomView,
-    meta: {
-      title: 'app.page-title.damage-calculation',
+  children: [
+    {
+      name: AppRouteNames.DamageCalculation,
+      path: '',
+      component: DamageCalculatiomView,
+      meta: {
+        title: 'app.page-title.damage-calculation',
+      },
     },
-  }],
+  ],
 } as RouteRecordRaw

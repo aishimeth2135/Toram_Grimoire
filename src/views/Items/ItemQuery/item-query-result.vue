@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick, toRefs, Ref } from 'vue'
+import { Ref, nextTick, ref, toRefs } from 'vue'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
@@ -30,7 +30,7 @@ import PageControl from '@/setup/PageControl'
 import ItemQueryResultItem from './item-query-result-item.vue'
 
 interface Props {
-  equipments: CharacterEquipment[];
+  equipments: CharacterEquipment[]
 }
 
 const props = defineProps<Props>()

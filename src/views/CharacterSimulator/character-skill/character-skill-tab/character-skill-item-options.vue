@@ -1,11 +1,7 @@
 <template>
   <cy-popover placement="bottom-end">
     <template #default="{ shown }">
-      <cy-button-icon
-        icon="ic:baseline-settings"
-        inline
-        :selected="shown"
-      />
+      <cy-button-icon icon="ic:baseline-settings" inline :selected="shown" />
     </template>
     <template #popper>
       <div class="p-3">
@@ -32,14 +28,17 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import { SkillFormulaExtraVarState, SkillResultsState } from '@/stores/views/character/setup'
+import {
+  SkillFormulaExtraVarState,
+  SkillResultsState,
+} from '@/stores/views/character/setup'
 
 import CharacterSkillItemOptionsStack from './character-skill-item-options-stack.vue'
 
 import { setupCharacterStore } from '../../setup'
 
 interface Props {
-  skillResultsState: SkillResultsState;
+  skillResultsState: SkillResultsState
 }
 
 const props = defineProps<Props>()
@@ -49,8 +48,14 @@ const { store } = setupCharacterStore()
 const formulaExtraStates = computed(() => {
   const states: SkillFormulaExtraVarState[] = []
   props.skillResultsState.results.forEach(result => {
-    const branchState = store.getSkillBranchState(result.container.branchItem.default)
-    states.push(...branchState.formulaExtraIds.map(id => branchState.getFormulaExtraState(id)))
+    const branchState = store.getSkillBranchState(
+      result.container.branchItem.default
+    )
+    states.push(
+      ...branchState.formulaExtraIds.map(id =>
+        branchState.getFormulaExtraState(id)
+      )
+    )
   })
   return states
 })

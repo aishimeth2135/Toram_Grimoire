@@ -1,10 +1,6 @@
 <template>
   <div class="space-y-3">
-    <BookPageView
-      v-for="(page, idx) in pages"
-      :key="idx"
-      :page="page"
-    />
+    <BookPageView v-for="(page, idx) in pages" :key="idx" :page="page" />
   </div>
 </template>
 
@@ -20,7 +16,7 @@ import BookPageView from './book-page.vue'
 import { BookPage } from '../setup/Book'
 
 interface Props {
-  pages: BookPage[];
+  pages: BookPage[]
 }
 
 defineProps<Props>()

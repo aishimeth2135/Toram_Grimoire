@@ -1,8 +1,11 @@
-import { ref, computed, toRaw } from 'vue'
+import { computed, ref, toRaw } from 'vue'
 import type { Ref } from 'vue'
 
-import SkillComputingContainer, { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import SkillComputingContainer, {
+  SkillBranchItem,
+  SkillEffectItem,
+} from '@/lib/Skill/SkillComputingContainer'
 import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 
 import ExtraHandler from './branch-handlers/ExtraHandler'
@@ -36,7 +39,9 @@ export function setupOtherEffectBranches(branchItem: Ref<SkillBranchItem>) {
   const currentOtherEffectBranchesIdx = ref(0)
 
   const currentOtherEffectBranch = computed(() => {
-    return otherEffectBranches.value[currentOtherEffectBranchesIdx.value] || null
+    return (
+      otherEffectBranches.value[currentOtherEffectBranchesIdx.value] || null
+    )
   })
 
   const setCurrentOtherEffectBranch = (idx: number) => {
@@ -51,18 +56,25 @@ export function setupOtherEffectBranches(branchItem: Ref<SkillBranchItem>) {
 }
 
 export interface ExtraSuffixBranchData {
-  id: string;
-  icon: string;
-  title: string;
-  titleProps?: string[];
-  text?: string;
-  statContainers?: ResultContainerStat[];
+  id: string
+  icon: string
+  title: string
+  titleProps?: string[]
+  text?: string
+  statContainers?: ResultContainerStat[]
 }
 
-export function setupCommonExtraSuffixBranches(computing: SkillComputingContainer, branchItem: Ref<SkillBranchItem>) {
+export function setupCommonExtraSuffixBranches(
+  computing: SkillComputingContainer,
+  branchItem: Ref<SkillBranchItem>
+) {
   const extraSuffixBranchDatas = computed(() => {
     return branchItem.value.suffixBranches
-      .filter(suffix => suffix.is(SkillBranchNames.Extra) && (suffix.prop('caption') || suffix.stats.length > 0))
+      .filter(
+        suffix =>
+          suffix.is(SkillBranchNames.Extra) &&
+          (suffix.prop('caption') || suffix.stats.length > 0)
+      )
       .map((suffix, idx) => {
         const dataContainer = ExtraHandler(computing, suffix)
         const baseData: ExtraSuffixBranchData = {

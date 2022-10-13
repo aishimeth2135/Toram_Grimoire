@@ -5,14 +5,24 @@ import { splitComma } from '@/shared/utils/string'
 
 import { EquipmentRestrictions } from '@/lib/Skill/SkillComputingContainer'
 
-import { EquipmentTypes, MainWeaponTypeList, SubArmorTypeList, SubWeaponTypeList } from '../CharacterEquipment/enums'
+import {
+  EquipmentTypes,
+  MainWeaponTypeList,
+  SubArmorTypeList,
+  SubWeaponTypeList,
+} from '../CharacterEquipment/enums'
+import { Stat, StatBase } from './StatBase'
 import { StatTypes } from './enums'
-import { StatBase, Stat } from './StatBase'
 
 class StatRestriction extends Stat {
   restriction: EquipmentRestrictions | null
 
-  constructor(base: StatBase, type: StatTypes, value: number, restriction: EquipmentRestrictions | null = null) {
+  constructor(
+    base: StatBase,
+    type: StatTypes,
+    value: number,
+    restriction: EquipmentRestrictions | null = null
+  ) {
     super(base, type, value)
     this.restriction = restriction !== null ? markRaw(restriction) : restriction
   }
@@ -22,13 +32,20 @@ class StatRestriction extends Stat {
     if (this.restriction !== null) {
       const rst = this.restriction
       const rstList = [rst.main, rst.sub, rst.body, rst.other]
-      rtext = rstList.map(item => typeof item === 'string' ? item : 'none').join('+')
+      rtext = rstList
+        .map(item => (typeof item === 'string' ? item : 'none'))
+        .join('+')
     }
     return `${this.base.statId(this.type)}|${rtext}`
   }
 
   override clone() {
-    return new StatRestriction(this.base, this.type, this.value, this.restriction)
+    return new StatRestriction(
+      this.base,
+      this.type,
+      this.value,
+      this.restriction
+    )
   }
 
   pure() {
@@ -39,26 +56,37 @@ class StatRestriction extends Stat {
     const showData: string[] = []
     if (this.restriction !== null) {
       const restriction = this.restriction
-      const items = [{
-        key: 'main',
-        value: restriction.main,
-      }, {
-        key: 'sub',
-        value: restriction.sub,
-      }, {
-        key: 'body',
-        value: restriction.body,
-      }] as const
-      items.filter(item => item.value !== null).forEach(item => {
-        const [instance, originalType] = (item.value as string).split('|')
-        const type = originalType ? originalType : instance
-        showData.push((item.key === 'main' ? '' : item.key + '.') + type)
-      })
+      const items = [
+        {
+          key: 'main',
+          value: restriction.main,
+        },
+        {
+          key: 'sub',
+          value: restriction.sub,
+        },
+        {
+          key: 'body',
+          value: restriction.body,
+        },
+      ] as const
+      items
+        .filter(item => item.value !== null)
+        .forEach(item => {
+          const [instance, originalType] = (item.value as string).split('|')
+          const type = originalType ? originalType : instance
+          showData.push((item.key === 'main' ? '' : item.key + '.') + type)
+        })
     }
-    return showData.map(item => Grimoire.i18n.t('common.Equipment.stat-restriction.' + item))
+    return showData.map(item =>
+      Grimoire.i18n.t('common.Equipment.stat-restriction.' + item)
+    )
   }
 
-  static from(stat: Stat, restriction?: EquipmentRestrictions | null): StatRestriction {
+  static from(
+    stat: Stat,
+    restriction?: EquipmentRestrictions | null
+  ): StatRestriction {
     return new StatRestriction(stat.base, stat.type, stat.value, restriction)
   }
 
@@ -72,13 +100,16 @@ class StatRestriction extends Stat {
       'normal': EquipmentTypes.BodyNormal,
     }
     const restrictionList: string[] = [
-      '', 'event',
+      '',
+      'event',
 
       ...MainWeaponTypeList,
       ...SubWeaponTypeList,
       ...SubArmorTypeList,
 
-      EquipmentTypes.BodyDodge, EquipmentTypes.BodyDefense, EquipmentTypes.BodyNormal,
+      EquipmentTypes.BodyDodge,
+      EquipmentTypes.BodyDefense,
+      EquipmentTypes.BodyNormal,
     ]
 
     const newOriginRestriction = new EquipmentRestrictions()
@@ -89,11 +120,16 @@ class StatRestriction extends Stat {
         _restriction = _eqType
         _eqType = 'main'
       }
-      const eqType = _eqType as ('main' | 'sub' | 'body')
-      const restriction = restrictionList.includes(_restriction) ? _restriction : restrictionMapping[_restriction]
+      const eqType = _eqType as 'main' | 'sub' | 'body'
+      const restriction = restrictionList.includes(_restriction)
+        ? _restriction
+        : restrictionMapping[_restriction]
       if (!['main', 'sub', 'body'].includes(eqType) || !restriction) {
         if (restriction !== '') {
-          console.warn('[CharacterEquipment.fromOrigin] unknow restriction of stat: ' + item)
+          console.warn(
+            '[CharacterEquipment.fromOrigin] unknow restriction of stat: ' +
+              item
+          )
         }
         return StatRestriction.from(stat, newOriginRestriction)
       }
@@ -110,12 +146,15 @@ class StatRestriction extends Stat {
 
   save(): StatRestrictionSaveData {
     const rest = this.restriction
-    const restriction = rest && (rest.main || rest.sub || rest.body || rest.other) ? {
-      main: rest.main ? rest.main : null,
-      sub: rest.sub ? rest.sub : null,
-      body: rest.body ? rest.body : null,
-      other: rest.other ? rest.other : null,
-    } : null
+    const restriction =
+      rest && (rest.main || rest.sub || rest.body || rest.other)
+        ? {
+            main: rest.main ? rest.main : null,
+            sub: rest.sub ? rest.sub : null,
+            body: rest.body ? rest.body : null,
+            other: rest.other ? rest.other : null,
+          }
+        : null
     return {
       id: this.baseId,
       value: this.value,
@@ -130,8 +169,8 @@ class StatRestriction extends Stat {
 
       const restriction = new EquipmentRestrictions()
       if (data.restriction !== null) {
-        const dataRestriction = data.restriction;
-        (['main', 'sub', 'body'] as const).forEach(key => {
+        const dataRestriction = data.restriction
+        ;(['main', 'sub', 'body'] as const).forEach(key => {
           const type = dataRestriction[key]
           restriction[key] = type
         })
@@ -141,16 +180,18 @@ class StatRestriction extends Stat {
       return StatRestriction.from(stat, restriction)
     }
 
-    console.warn('[CharacterEquipment.load] can not find stat which id: ' + data.id)
+    console.warn(
+      '[CharacterEquipment.load] can not find stat which id: ' + data.id
+    )
     return null
   }
 }
 
 interface StatRestrictionSaveData {
-  id: string;
-  value: number;
-  type: StatTypes;
-  restriction: EquipmentRestrictions | null;
+  id: string
+  value: number
+  type: StatTypes
+  restriction: EquipmentRestrictions | null
 }
 
 export default StatRestriction

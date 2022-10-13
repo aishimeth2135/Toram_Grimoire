@@ -1,7 +1,10 @@
-import { CharacterCombo, CharacterComboSaveData } from '@/lib/Character/CharacterCombo'
+import {
+  CharacterCombo,
+  CharacterComboSaveData,
+} from '@/lib/Character/CharacterCombo'
 
 interface CharacterComboBuildSaveData {
-  combos: CharacterComboSaveData[];
+  combos: CharacterComboSaveData[]
 }
 
 export class CharacterComboBuild {

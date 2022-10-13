@@ -1,8 +1,11 @@
 <template>
-  <span class="flex items-center flex-wrap my-2 mx-1">
+  <span class="my-2 mx-1 flex flex-wrap items-center">
     <div
-      class="flex items-center py-0.5 pl-3 pr-2 border-1 border-solid rounded-3xl w-full duration-300 bg-white"
-      :class="{ 'border-primary-50': inputFocus, 'border-primary-20': !inputFocus }"
+      class="flex w-full items-center rounded-3xl border-1 border-solid bg-white py-0.5 pl-3 pr-2 duration-300"
+      :class="{
+        'border-primary-50': inputFocus,
+        'border-primary-20': !inputFocus,
+      }"
     >
       <cy-icon-text
         :icon="icon"
@@ -18,11 +21,11 @@
           v-model="innerValue"
           type="text"
           :placeholder="placeholder"
-          class="p-0.5 border-0 duration-200 w-full"
+          class="w-full border-0 p-0.5 duration-200"
           @focus="setInputFocus(true)"
           @blur="setInputFocus(false)"
           @keyup="$emit('keyup', $event)"
-        >
+        />
       </div>
       <cy-button-icon
         v-if="clearable && innerValue !== ''"
@@ -34,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, Ref, ref } from 'vue'
+import { Ref, computed, defineComponent, nextTick, ref } from 'vue'
 
 import { IconBaseProps } from './icon/setup'
 

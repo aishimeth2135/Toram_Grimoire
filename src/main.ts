@@ -1,23 +1,22 @@
-import '@/assets/css/font/font.css'
-import '@/assets/css/main.css'
-import '@/assets/css/global.css'
-import '@/assets/css/tailwind.css'
-
-import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { createApp } from 'vue'
 
+import '@/assets/css/font/font.css'
+import '@/assets/css/global.css'
+import '@/assets/css/main.css'
+import '@/assets/css/tailwind.css'
 import Confirm from '@/plugin/Confirm'
 import Notify from '@/plugin/Notify'
 
 import AppView from './App.vue'
 
-import registerServiceWorker from './app/registerServiceWorker'
-import registGlobalComponents from './app/registGlobalComponents'
-import initPackages from './app/initPackages'
+import { initGtag } from './app/initGtag'
 import initI18n from './app/initI18n'
+import initPackages from './app/initPackages'
+import registGlobalComponents from './app/registGlobalComponents'
+import registerServiceWorker from './app/registerServiceWorker'
 import createAppRouter from './router'
 import { useSettingStore } from './stores/app/setting'
-import { initGtag } from './app/initGtag'
 
 const app = createApp(AppView)
 
@@ -39,9 +38,6 @@ initI18n(app)
 }
 
 // custom pulgins
-app
-  .use(Notify)
-  .use(Confirm)
+app.use(Notify).use(Confirm)
 
 app.mount('#app')
-

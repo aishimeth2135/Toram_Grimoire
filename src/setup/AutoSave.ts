@@ -4,8 +4,8 @@ import { useI18n } from 'vue-i18n'
 import Notify from './Notify'
 
 type AutoSaveOptions = {
-  readonly save: () => void;
-  readonly loadFirst: () => void;
+  readonly save: () => void
+  readonly loadFirst: () => void
 }
 
 export default function ({ save, loadFirst }: AutoSaveOptions): void {
@@ -26,7 +26,8 @@ export default function ({ save, loadFirst }: AutoSaveOptions): void {
     }
   }
   const beforeunload = () => saveHandler()
-  const visibilitychange = () => document.visibilityState === 'hidden' && saveHandler()
+  const visibilitychange = () =>
+    document.visibilityState === 'hidden' && saveHandler()
   window.addEventListener('beforeunload', beforeunload)
   document.addEventListener('visibilitychange', visibilitychange)
   onUnmounted(() => {

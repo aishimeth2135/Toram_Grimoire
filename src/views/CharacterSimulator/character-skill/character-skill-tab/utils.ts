@@ -1,4 +1,7 @@
-import { SkillBranchItem, SkillEffectItem } from '@/lib/Skill/SkillComputingContainer'
+import {
+  SkillBranchItem,
+  SkillEffectItem,
+} from '@/lib/Skill/SkillComputingContainer'
 
 import { findStackState } from '@/views/SkillQuery/utils'
 

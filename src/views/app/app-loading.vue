@@ -2,7 +2,7 @@
   <teleport to="#app-loading">
     <div
       v-show="store.active"
-      class="app--loading fixed w-full h-full top-0 left-0 flex justify-center z-100 p-4"
+      class="app--loading fixed top-0 left-0 z-100 flex h-full w-full justify-center p-4"
       @click.stop
     >
       <div class="main-container">

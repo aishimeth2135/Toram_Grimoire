@@ -9,8 +9,8 @@ import { GetSkillLevelHandler } from '@/lib/Skill/utils/DrawSkillTree'
 type MenuMode = 'skill' | 'star-gem'
 
 interface MenuData {
-  levelUnit: number;
-  mode: MenuMode;
+  levelUnit: number
+  mode: MenuMode
 }
 
 export function setupSkillBuildStore() {
@@ -25,7 +25,7 @@ export function setupSkillBuildStore() {
 
 export function setupSkillLevel() {
   const { currentSkillBuild } = setupSkillBuildStore()
-  const getSkillLevel: GetSkillLevelHandler = (skill) => {
+  const getSkillLevel: GetSkillLevelHandler = skill => {
     if (!currentSkillBuild.value) {
       return {
         level: 0,

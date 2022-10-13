@@ -65,16 +65,16 @@ const baseColors = {
 //   '900': '#790F40',
 // }
 const primary = {
-  '50': '#FFF7FA',
-  '100': '#FFE7EF',
-  '200': '#FFCBDC',
-  '300': '#FFA3C2',
-  '400': '#FD7AA6',
-  '500': '#F5578C',
-  '600': '#E83B7F',
-  '700': '#CF286B',
-  '800': '#A91956',
-  '900': '#790F3F',
+  50: '#FFF7FA',
+  100: '#FFE7EF',
+  200: '#FFCBDC',
+  300: '#FFA3C2',
+  400: '#FD7AA6',
+  500: '#F5578C',
+  600: '#E83B7F',
+  700: '#CF286B',
+  800: '#A91956',
+  900: '#790F3F',
 }
 
 /**
@@ -89,17 +89,28 @@ const colors = {
  * @type Record<string, string>
  */
 const color = {
-  'white': '#ffffff',
-  'black': '#171717',
+  white: '#ffffff',
+  black: '#171717',
 }
-const colorOrders = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900']
+const colorOrders = [
+  '50',
+  '100',
+  '200',
+  '300',
+  '400',
+  '500',
+  '600',
+  '700',
+  '800',
+  '900',
+]
 
 /**
  * @type Record<string, string>
  */
 const dark = {
-  'white': '#171717',
-  'black': '#ffffff',
+  white: '#171717',
+  black: '#ffffff',
 }
 
 Object.entries(colors).map(([key, value]) => {
@@ -113,10 +124,16 @@ Object.entries(colors).map(([key, value]) => {
     const darkColorHsl = darkColor.toHsl()
     const fixedIdx = (reversedIdx + 11) / 2
 
-    const desaturate = Math.min(10 + Math.floor((30 * fixedIdx) / 10), Math.ceil((darkColorHsl.s * 100) / 2))
+    const desaturate = Math.min(
+      10 + Math.floor((30 * fixedIdx) / 10),
+      Math.ceil((darkColorHsl.s * 100) / 2)
+    )
     darkColor.desaturate(desaturate)
 
-    const lighten = Math.min(Math.floor((20 * (8 - reversedIdx) / 5)), Math.ceil((100 - darkColorHsl.l * 100) / 2))
+    const lighten = Math.min(
+      Math.floor((20 * (8 - reversedIdx)) / 5),
+      Math.ceil((100 - darkColorHsl.l * 100) / 2)
+    )
     lighten > 0 ? darkColor.lighten(lighten) : darkColor.darken(-1 * lighten)
 
     dark[`${key}-${subkey}`] = darkColor.toHexString()
@@ -126,7 +143,7 @@ Object.entries(colors).map(([key, value]) => {
 /**
  * @param {Record<string, string>} data
  */
-const toRgbData = (data) => {
+const toRgbData = data => {
   /**
    * @type Record<string, string>
    */
@@ -143,7 +160,7 @@ const toRgbData = (data) => {
 /**
  * @param {Record<string, string>} data
  */
-const toDesignTokenData = (data) => {
+const toDesignTokenData = data => {
   /**
    * @type Record<string, { value: string }>
    */
@@ -159,13 +176,16 @@ const toDesignTokenData = (data) => {
 async function start() {
   console.log('start...')
   const data = {
-    color: toDesignTokenData(color),
+    'color': toDesignTokenData(color),
     'color-dark': toDesignTokenData(dark),
     'color-rgb': toDesignTokenData(toRgbData(color)),
     'color-dark-rgb': toDesignTokenData(toRgbData(dark)),
   }
 
-  await fs.writeFile(path.join(__dirname, 'color.json'), JSON.stringify(data, null, 2))
+  await fs.writeFile(
+    path.join(__dirname, 'color.json'),
+    JSON.stringify(data, null, 2)
+  )
   console.log('done.')
 }
 

@@ -16,17 +16,22 @@
             @click.stop="closeModal"
           />
           <div class="modal-container" @click.stop>
-            <div v-if="slots['title'] || title" class="pb-2 px-4">
+            <div v-if="slots['title'] || title" class="px-4 pb-2">
               <slot name="title">
                 <cy-icon-text :icon="titleIcon" text-color="dark-light">
                   {{ title }}
                 </cy-icon-text>
               </slot>
             </div>
-            <div class="p-4 pt-0 relative h-full overflow-y-auto overscroll-none">
+            <div
+              class="overscroll-none relative h-full overflow-y-auto p-4 pt-0"
+            >
               <slot />
             </div>
-            <div v-if="footer" class="py-1.5 mx-4 bg-white flex justify-end space-x-2">
+            <div
+              v-if="footer"
+              class="mx-4 flex justify-end space-x-2 bg-white py-1.5"
+            >
               <slot name="footer" :close-modal="closeModal">
                 <slot name="footer-actions" />
                 <cy-button-action icon="ic-round-close" @click="closeModal">
@@ -62,7 +67,7 @@
 </template>
 
 <script lang="ts">
-import { computed, CSSProperties, ref, Ref, useAttrs, useSlots } from 'vue'
+import { CSSProperties, Ref, computed, ref, useAttrs, useSlots } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { remToPixels } from '@/shared/utils/element'
@@ -77,16 +82,16 @@ export default {
 
 <script lang="ts" setup>
 interface Props {
-  visible: boolean;
-  verticalPosition?: 'start' | 'center';
-  width?: 'normal' | 'auto' | 'wide';
-  footer?: boolean;
-  title?: string;
-  titleIcon?: string;
+  visible: boolean
+  verticalPosition?: 'start' | 'center'
+  width?: 'normal' | 'auto' | 'wide'
+  footer?: boolean
+  title?: string
+  titleIcon?: string
 }
 interface Emits {
-  (evt: 'close'): void;
-  (evt: 'update:visible', value: boolean): void;
+  (evt: 'close'): void
+  (evt: 'update:visible', value: boolean): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -112,7 +117,9 @@ const closeModal = () => {
   emit('close')
 }
 
-const { extraContent, toggle } = ToggleService({ extraContent: ['main'] as const })
+const { extraContent, toggle } = ToggleService({
+  extraContent: ['main'] as const,
+})
 
 const extraContentElement: Ref<HTMLElement | null> = ref(null)
 const extraContentStyle = ref<CSSProperties>({})
@@ -128,7 +135,9 @@ const showExtraContent = () => {
     }
     if (rect.right > ww - pd) {
       const base = ww <= remToPixels(32) ? '50% + 40vw' : '50% + 13rem'
-      extraContentStyle.value = { left: `calc(${base} - ${rect.right - ww + pd}px)` }
+      extraContentStyle.value = {
+        left: `calc(${base} - ${rect.right - ww + pd}px)`,
+      }
       toggle('extraContent/main', true)
       return
     }
@@ -146,14 +155,14 @@ const { t } = useI18n()
 
 <style lang="postcss" scoped>
 .cy--modal {
-  @apply fixed h-full w-full top-0 left-0 flex justify-center bg-black bg-opacity-20 z-100;
+  @apply fixed top-0 left-0 z-100 flex h-full w-full justify-center bg-black bg-opacity-20;
 
   & > .modal-wrapper {
-    @apply relative inline-block mb-2 mt-2.5 mx-2 bg-opacity-100 max-w-full;
+    @apply relative mx-2 mb-2 mt-2.5 inline-block max-w-full bg-opacity-100;
     height: calc(100% - 1.125rem);
 
     & > .modal-container {
-      @apply w-full max-h-full pt-3 border-1 border-primary-30 bg-white flex flex-col;
+      @apply flex max-h-full w-full flex-col border-1 border-primary-30 bg-white pt-3;
       min-height: 10rem;
     }
   }
@@ -174,7 +183,7 @@ const { t } = useI18n()
 }
 
 .modal-extra-wrapper {
-  @apply absolute w-80 h-full max-w-full mx-2 my-4 duration-300 flex items-center;
+  @apply absolute mx-2 my-4 flex h-full w-80 max-w-full items-center duration-300;
   left: calc(50% + 13rem);
 
   @media screen and (max-width: 32rem) {
@@ -183,12 +192,12 @@ const { t } = useI18n()
 }
 
 .modal-extra-container {
-  @apply w-full relative flex flex-col;
+  @apply relative flex w-full flex-col;
   max-height: calc(100% - 12rem);
 }
 
 .modal-extra {
-  @apply w-full h-full pr-2 overflow-y-auto;
+  @apply h-full w-full overflow-y-auto pr-2;
   overscroll-behavior: none;
 }
 

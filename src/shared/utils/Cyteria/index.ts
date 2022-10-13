@@ -21,9 +21,10 @@ function storageAvailable(type: 'localStorage' | 'sessionStorage'): boolean {
     storage.removeItem(testKey)
     return true
   } catch (err) {
-    return err instanceof DOMException && (
-    // everything except Firefox
-      err.code === 22 ||
+    return (
+      err instanceof DOMException &&
+      // everything except Firefox
+      (err.code === 22 ||
         // Firefox
         err.code === 1014 ||
         // test name field too, because code might not be present
@@ -32,7 +33,9 @@ function storageAvailable(type: 'localStorage' | 'sessionStorage'): boolean {
         // Firefox
         err.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
       // acknowledge QuotaExceededError only if there's something already stored
-      (storage && storage.length !== 0)
+      storage &&
+      storage.length !== 0
+    )
   }
 }
 

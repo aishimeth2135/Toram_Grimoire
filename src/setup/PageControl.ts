@@ -1,11 +1,11 @@
-import { computed, Ref, ref, watch } from 'vue'
+import { Ref, computed, ref, watch } from 'vue'
 
 export default function PageControl<Item = unknown>({
   items,
   step,
 }: {
-  items: Ref<Item[]>;
-  step: number;
+  items: Ref<Item[]>
+  step: number
 }) {
   const maxPage = computed(() => Math.ceil(items.value.length / step))
   const page = (() => {
@@ -19,7 +19,9 @@ export default function PageControl<Item = unknown>({
       },
     })
   })()
-  const currentItems = computed(() => items.value.slice((page.value - 1) * step, page.value * step))
+  const currentItems = computed(() =>
+    items.value.slice((page.value - 1) * step, page.value * step)
+  )
 
   watch(items, () => {
     page.value = 1

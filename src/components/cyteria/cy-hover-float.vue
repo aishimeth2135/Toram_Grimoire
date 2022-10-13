@@ -10,26 +10,29 @@
     @mouseenter="show"
     @mouseleave="onLeave"
   >
-    <div class="cy--hover-float--content" :class="{ 'content-default-theme': !custom }">
+    <div
+      class="cy--hover-float--content"
+      :class="{ 'content-default-theme': !custom }"
+    >
       <slot />
     </div>
   </CyPopper>
 </template>
 
 <script lang="ts" setup>
-import { ref, toRefs, nextTick, Ref } from 'vue'
+import { Ref, nextTick, ref, toRefs } from 'vue'
 
 import CyPopper from './cy-popover/cy-popper.vue'
 
 interface Props {
-  element: HTMLElement | null;
-  target?: string;
-  custom?: boolean;
-  positionMode?: 'auto' | 'h-middle';
+  element: HTMLElement | null
+  target?: string
+  custom?: boolean
+  positionMode?: 'auto' | 'h-middle'
 }
 
 interface Emits {
-  (evt: 'element-hover', el: HTMLElement): void;
+  (evt: 'element-hover', el: HTMLElement): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -109,7 +112,7 @@ defineExpose({
   @apply overflow-y-auto;
 
   &.content-default-theme {
-    @apply border-1 rounded-md drop-shadow border-primary-50 px-4 py-2 bg-white;
+    @apply rounded-md border-1 border-primary-50 bg-white px-4 py-2 drop-shadow;
   }
 }
 </style>

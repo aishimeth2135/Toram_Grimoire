@@ -1,14 +1,18 @@
 import sanitize from 'sanitize-filename'
 
-
 type FileSaveOptions = {
-  data?: string;
-  fileType?: string;
-  fileName: string;
-  dataUrl?: string;
+  data?: string
+  fileType?: string
+  fileName: string
+  dataUrl?: string
 }
 
-function save({ data, fileType = 'text/txt', fileName, dataUrl }: FileSaveOptions): void {
+function save({
+  data,
+  fileType = 'text/txt',
+  fileName,
+  dataUrl,
+}: FileSaveOptions): void {
   if (!dataUrl) {
     if (!data) {
       console.warn('[file.save] data and dataUrl must give at least one.')
@@ -26,17 +30,16 @@ function save({ data, fileType = 'text/txt', fileName, dataUrl }: FileSaveOption
   document.body.removeChild(link)
 }
 
-
 type FileLoadSucceed = (fileResult: string) => void
 type FileLoadError = (error: any) => void
 type FileLoadBefore = () => void
 type FileLoadCheckType = (fileType: string) => boolean
 
 type FileLoadOptions = {
-  succeed: FileLoadSucceed | null;
-  error?: FileLoadError | null;
-  beforeLoad?: FileLoadBefore | null;
-  checkFileType?: FileLoadCheckType | null;
+  succeed: FileLoadSucceed | null
+  error?: FileLoadError | null
+  beforeLoad?: FileLoadBefore | null
+  checkFileType?: FileLoadCheckType | null
 }
 
 function load({

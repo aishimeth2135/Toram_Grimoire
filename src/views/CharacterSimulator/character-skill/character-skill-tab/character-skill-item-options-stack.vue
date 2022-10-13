@@ -1,5 +1,5 @@
 <template>
-  <div class="p-1 pr-3 flex items-center flex-wrap">
+  <div class="flex flex-wrap items-center p-1 pr-3">
     <div class="mt-0.5 mr-2">
       <cy-input-counter
         v-model:value="stackValue"
@@ -16,17 +16,24 @@
         </template>
       </cy-input-counter>
     </div>
-    <div class="flex items-center space-x-1 pl-2 mt-0.5">
-      <cy-icon-text icon="icon-park-outline:inner-shadow-top-right" class="mr-2" />
-      <div v-if="stackValueRangeOrigin[0]" class="text-primary-50">{{ stackValueRangeOrigin[0] }}</div>
+    <div class="mt-0.5 flex items-center space-x-1 pl-2">
+      <cy-icon-text
+        icon="icon-park-outline:inner-shadow-top-right"
+        class="mr-2"
+      />
+      <div v-if="stackValueRangeOrigin[0]" class="text-primary-50">
+        {{ stackValueRangeOrigin[0] }}
+      </div>
       <cy-icon-text icon="mdi:tilde" icon-width="0.75rem" />
-      <div v-if="stackValueRangeOrigin[1]" class="text-primary-50">{{ stackValueRangeOrigin[1] }}</div>
+      <div v-if="stackValueRangeOrigin[1]" class="text-primary-50">
+        {{ stackValueRangeOrigin[1] }}
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs, ComputedRef } from 'vue'
+import { ComputedRef, computed, toRefs } from 'vue'
 import type { WritableComputedRef } from 'vue'
 
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
@@ -37,7 +44,7 @@ import { findStackState } from '@/views/SkillQuery/utils'
 import { setStackValue } from './utils'
 
 interface Props {
-  container: DisplayDataContainer<SkillBranchItem>;
+  container: DisplayDataContainer<SkillBranchItem>
 }
 
 const props = defineProps<Props>()
@@ -45,7 +52,10 @@ const props = defineProps<Props>()
 const { container } = toRefs(props)
 
 const stackState = computed(() => {
-  return findStackState(container.value.branchItem.parent, container.value.branchItem.stackId as number)
+  return findStackState(
+    container.value.branchItem.parent,
+    container.value.branchItem.stackId as number
+  )
 })
 
 const stackValue: WritableComputedRef<number> = computed({
@@ -71,4 +81,3 @@ const stackValueRange = computed(() => {
   return [min, max]
 })
 </script>
-

@@ -1,12 +1,12 @@
 <template>
   <div>
     <div
-      class="sticky top-0 z-1 min-w-max"
+      class="min-w-max sticky top-0 z-1"
       :class="{ 'bg-white': detailVisible }"
       @click="detailVisible = !detailVisible"
     >
       <cy-list-item>
-        <div class="w-40 flex flex-shrink-0 py-0.5">
+        <div class="flex w-40 flex-shrink-0 py-0.5">
           <cy-icon-text
             :icon="crystal.crystalIconPath"
             icon-src="image"
@@ -15,7 +15,10 @@
             {{ crystal.name }}
           </cy-icon-text>
         </div>
-        <div v-if="previewMode === 'default'" class="flex items-center space-x-2">
+        <div
+          v-if="previewMode === 'default'"
+          class="flex items-center space-x-2"
+        >
           <template v-if="crystal.origin.enhancer">
             <cy-icon-text icon="mdi:arrow-up-bold-outline" small color="cyan">
               {{ crystal.origin.enhancer }}
@@ -40,7 +43,7 @@
       </cy-list-item>
     </div>
     <cy-transition>
-      <div v-if="detailVisible" class="pt-2 pb-3 pl-6 pr-4 bg-white max-w-full">
+      <div v-if="detailVisible" class="max-w-full bg-white pt-2 pb-3 pl-6 pr-4">
         <div>
           <ShowStat
             v-for="stat in crystal.stats"
@@ -49,11 +52,18 @@
             :negative-value="stat.value < 0"
           />
         </div>
-        <div v-if="crystal.origin.enhancer" class="flex items-center mt-3">
-          <cy-icon-text icon="mdi:arrow-up-bold-outline" small icon-color="cyan-60" text-color="primary-30">
+        <div v-if="crystal.origin.enhancer" class="mt-3 flex items-center">
+          <cy-icon-text
+            icon="mdi:arrow-up-bold-outline"
+            small
+            icon-color="cyan-60"
+            text-color="primary-30"
+          >
             {{ t('crystal-query.enhancer-pretext') }}
           </cy-icon-text>
-          <span class="text-cyan-60 text-sm ml-0.5">{{ crystal.origin.enhancer }}</span>
+          <span class="ml-0.5 text-sm text-cyan-60">{{
+            crystal.origin.enhancer
+          }}</span>
         </div>
       </div>
     </cy-transition>
@@ -71,10 +81,10 @@ import ShowStat from '@/components/common/show-stat.vue'
 import { StatOptionItem } from './setup'
 
 interface Props {
-  crystal: EquipmentCrystal;
-  detailVisibleDefault: boolean;
-  previewStat: StatOptionItem | null;
-  previewMode: 'default' | 'mode';
+  crystal: EquipmentCrystal
+  detailVisibleDefault: boolean
+  previewStat: StatOptionItem | null
+  previewMode: 'default' | 'mode'
 }
 
 const props = defineProps<Props>()
@@ -93,7 +103,11 @@ const previewStats = computed(() => {
     .sort((stat1, stat2) => stat2.value - stat1.value)
 })
 
-watch(computed(() => props.detailVisibleDefault), value => {
-  detailVisible.value = value
-}, { immediate: true })
+watch(
+  computed(() => props.detailVisibleDefault),
+  value => {
+    detailVisible.value = value
+  },
+  { immediate: true }
+)
 </script>

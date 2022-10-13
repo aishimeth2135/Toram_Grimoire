@@ -3,12 +3,12 @@
     <RegistletQueryResult :registlet-items="currentItems" />
     <AppLayoutBottom>
       <template #default>
-        <div class="flex items-center w-full">
+        <div class="flex w-full items-center">
           <cy-icon-text icon="ic-outline-search" />
           <input
             v-model="searchText"
             type="text"
-            class="border-0 p-1 ml-2 inline-block w-full bg-transparent"
+            class="ml-2 inline-block w-full border-0 bg-transparent p-1"
             :placeholder="t('global.search')"
           />
         </div>
@@ -31,15 +31,15 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
 import { RegistletItemBase } from '@/lib/Registlet/Registlet'
 
-import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
+import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import RegistletQueryResult from './registlet-query-result.vue'
 

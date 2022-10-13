@@ -1,10 +1,7 @@
 <template>
   <div class="py-2 px-0.5">
     <div class="flex items-center">
-      <div
-        class="mr-3 flex flex-shrink-0"
-        style="min-width: 10rem"
-      >
+      <div class="mr-3 flex flex-shrink-0" style="min-width: 10rem">
         <cy-icon-text :icon="skillIconPath" icon-src="image" color="fuchsia">
           {{ skillResultsState.skill.name }}
         </cy-icon-text>
@@ -14,11 +11,17 @@
       </div>
     </div>
     <div class="pl-1 pb-1">
-      <div class="pt-2 pl-2 space-y-2">
-        <div v-for="result in skillResultsState.results" :key="result.container.instanceId">
+      <div class="space-y-2 pt-2 pl-2">
+        <div
+          v-for="result in skillResultsState.results"
+          :key="result.container.instanceId"
+        >
           <CharacterComboItemDamageResultItem
             ref="resultItemRefs"
-            v-model:unselected-branches="comboSkillState.comboSkill.parent.config.unselectedBranches/* eslint-disable-line vue/no-mutating-props */"
+            v-model:unselected-branches="
+              comboSkillState.comboSkill.parent.config
+                .unselectedBranches /* eslint-disable-line vue/no-mutating-props */
+            "
             :result="result"
             :extra-stats="extraStats"
             :combo-rate="comboSkillState.rate"
@@ -28,7 +31,9 @@
     </div>
     <div v-if="previousSkillNextResultsState" class="pt-1">
       <cy-icon-text text-color="primary-30" small>
-        {{ t('character-simulator.combo.damage-calc.previous-skill-next-title') }}
+        {{
+          t('character-simulator.combo.damage-calc.previous-skill-next-title')
+        }}
       </cy-icon-text>
       <div class="pl-5">
         <CharacterComboItemResultItem
@@ -42,46 +47,55 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, Ref, ref } from 'vue'
+import { Ref, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { SkillResultsState } from '@/stores/views/character/setup'
 
-import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
 import { ComboSkillState } from '@/lib/Character/CharacterCombo'
-import { Skill } from '@/lib/Skill/Skill'
 import { StatRecorded } from '@/lib/Character/Stat'
+import { Skill } from '@/lib/Skill/Skill'
+import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
 
-import CharacterComboItemDamageResultItem from './character-combo-item-damage-result-item.vue'
 import CharacterSkillItemOptions from '../character-skill/character-skill-tab/character-skill-item-options.vue'
+import CharacterComboItemDamageResultItem from './character-combo-item-damage-result-item.vue'
 import CharacterComboItemResultItem from './character-combo-item-result-item.vue'
 
-import { setupCharacterStore } from '../setup'
 import { getContainerStats } from '../character-damage/setup'
+import { setupCharacterStore } from '../setup'
 
 interface Props {
-  comboSkillState: ComboSkillState;
-  skillResultsState: SkillResultsState;
+  comboSkillState: ComboSkillState
+  skillResultsState: SkillResultsState
 }
 
 const props = defineProps<Props>()
 const { store } = setupCharacterStore()
 const { t } = useI18n()
 
-const resultItemRefs: Ref<InstanceType<typeof CharacterComboItemDamageResultItem>[]> = ref([])
+const resultItemRefs: Ref<
+  InstanceType<typeof CharacterComboItemDamageResultItem>[]
+> = ref([])
 
 const expectedResultSum = computed(() => {
-  return resultItemRefs.value.reduce((cur, item) => cur + item.expectedResult, 0)
+  return resultItemRefs.value.reduce(
+    (cur, item) => cur + item.expectedResult,
+    0
+  )
 })
 
-const skillIconPath = computed(() => getSkillIconPath(props.skillResultsState.skill))
+const skillIconPath = computed(() =>
+  getSkillIconPath(props.skillResultsState.skill)
+)
 
 const previousSkillNextResultsState = computed(() => {
   const previousSkill = props.comboSkillState.comboSkill.previousSkill?.skill
   if (!previousSkill) {
     return null
   }
-  const resultsState = store.nextSkillResultStates.find(state => (state.skill as Skill) === previousSkill) as (SkillResultsState | undefined)
+  const resultsState = store.nextSkillResultStates.find(
+    state => (state.skill as Skill) === previousSkill
+  ) as SkillResultsState | undefined
   return resultsState ?? null
 })
 

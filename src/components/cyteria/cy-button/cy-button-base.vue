@@ -45,16 +45,17 @@ export default defineComponent({
   color: var(--button-color-text);
   border-color: var(--button-color-border);
 
-  @apply inline-flex items-center text-base border-0 duration-200;
+  @apply inline-flex items-center border-0 text-base duration-200;
 
   &:deep(.cy-button-base-icon) {
-    @apply duration-200 flex-shrink-0;
+    @apply flex-shrink-0 duration-200;
     color: var(--button-color-icon);
     width: var(--button-icon-width);
     height: var(--button-icon-width);
   }
 
-  &:hover, &.button-selected {
+  &:hover,
+  &.button-selected {
     border-color: var(--button-color-border-hover);
 
     &:deep(.cy-button-base-icon) {

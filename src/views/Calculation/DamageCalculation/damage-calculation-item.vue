@@ -2,11 +2,11 @@
   <div
     v-if="currentContainer"
     class="flex items-start"
-    :style="{ marginLeft: root ? '1.8rem' : ((maxLayer - layer) * 0.5) + 'rem' }"
+    :style="{ marginLeft: root ? '1.8rem' : (maxLayer - layer) * 0.5 + 'rem' }"
     :class="{ 'opacity-50': currentContainer.hidden }"
   >
     <div
-      class="p-2 w-20 text-center rounded-md bg-primary-10 bg-opacity-50 text-primary-80"
+      class="w-20 rounded-md bg-primary-10 bg-opacity-50 p-2 text-center text-primary-80"
       :class="{ 'opacity-60': !currentContainerEnabled }"
     >
       {{ currentContainerResult }}
@@ -17,13 +17,16 @@
         :key="container.base.id"
         class="flex items-start"
       >
-        <div class="h-10 flex items-center">
+        <div class="flex h-10 items-center">
           <cy-button-toggle
             v-model:selected="container.enabled"
             :disabled="!container.base.controls.toggle"
           />
         </div>
-        <div class="space-y-2" :class="{ 'opacity-60': !container.enabled && !container.hidden }">
+        <div
+          class="space-y-2"
+          :class="{ 'opacity-60': !container.enabled && !container.hidden }"
+        >
           <div
             v-for="item in getContainerItems(container)"
             :key="item.base.id"
@@ -38,7 +41,14 @@
             >
               <template #title>
                 <cy-icon-text v-if="!container.selectable">
-                  <span v-if="!item.isCustom()" v-html="markText(t('damage-calculation.item-base-titles.' + item.base.id))"></span>
+                  <span
+                    v-if="!item.isCustom()"
+                    v-html="
+                      markText(
+                        t('damage-calculation.item-base-titles.' + item.base.id)
+                      )
+                    "
+                  ></span>
                   <template v-else>
                     {{ (item as CalcItemCustom).name }}
                   </template>
@@ -57,7 +67,7 @@
               </template>
             </cy-input-counter>
             <cy-title-input
-              v-else-if="(item instanceof CalcItemCustom)"
+              v-else-if="item instanceof CalcItemCustom"
               v-model:value="item.name"
               class="w-64"
               @keyup.enter="toggleEditedItem(null)"
@@ -78,10 +88,13 @@
           </div>
           <div
             v-if="container.customItemAddable"
-            class="flex items-center justify-center p-1.5 border border-primary-50 bg-white w-64 cursor-pointer duration-300 opacity-60 hover:opacity-100"
+            class="flex w-64 cursor-pointer items-center justify-center border border-primary-50 bg-white p-1.5 opacity-60 duration-300 hover:opacity-100"
             @click="createCustomItem"
           >
-            <cy-icon-text icon="ic:round-add-circle-outline" text-color="primary-50">
+            <cy-icon-text
+              icon="ic:round-add-circle-outline"
+              text-color="primary-50"
+            >
               {{ t('damage-calculation.create-custom-item') }}
             </cy-icon-text>
           </div>
@@ -91,34 +104,56 @@
   </div>
   <div
     v-else
-    class="border-primary-50 border-opacity-70 relative py-3 px-2"
+    class="relative border-primary-50 border-opacity-70 py-3 px-2"
     :class="{ 'border-l-2': !root }"
-    style="margin-left: -0.2rem;"
+    style="margin-left: -0.2rem"
   >
     <div v-if="typeof calcStructItem !== 'string'">
-      <template v-if="calcStructItem.operator === '+' || calcStructItem.operator === '*'">
-        <DamageCalculationItem :calc-struct-item="calcStructItem.left" :layer="layer + 1" />
+      <template
+        v-if="
+          calcStructItem.operator === '+' || calcStructItem.operator === '*'
+        "
+      >
+        <DamageCalculationItem
+          :calc-struct-item="calcStructItem.left"
+          :layer="layer + 1"
+        />
         <div>
           <cy-icon-text
-            :icon="calcStructItem.operator === '+' ? 'mono-icons:add' : 'eva:close-fill'"
+            :icon="
+              calcStructItem.operator === '+'
+                ? 'mono-icons:add'
+                : 'eva:close-fill'
+            "
             icon-width="2rem"
             class="mt-1"
-            :style="{ 'margin-left': ((maxLayer + 2 - layer) * 0.5) + 'rem' }"
+            :style="{ 'margin-left': (maxLayer + 2 - layer) * 0.5 + 'rem' }"
           />
         </div>
-        <DamageCalculationItem :calc-struct-item="calcStructItem.right" :layer="layer + 1" />
+        <DamageCalculationItem
+          :calc-struct-item="calcStructItem.right"
+          :layer="layer + 1"
+        />
       </template>
-      <template v-else-if="calcStructItem.operator === '+++' || calcStructItem.operator === '***'">
+      <template
+        v-else-if="
+          calcStructItem.operator === '+++' || calcStructItem.operator === '***'
+        "
+      >
         <template
           v-for="(structItem, idx) in handleCalcStructList(calcStructItem)"
           :key="getCalcItemId(structItem)"
         >
           <div v-if="idx !== 0">
             <cy-icon-text
-              :icon="calcStructItem.operator === '+++' ? 'mono-icons:add' : 'eva:close-fill'"
+              :icon="
+                calcStructItem.operator === '+++'
+                  ? 'mono-icons:add'
+                  : 'eva:close-fill'
+              "
               icon-width="2rem"
               class="mt-1"
-              :style="{ 'margin-left': ((maxLayer + 2 - layer) * 0.5) + 'rem' }"
+              :style="{ 'margin-left': (maxLayer + 2 - layer) * 0.5 + 'rem' }"
             />
           </div>
           <DamageCalculationItem
@@ -138,8 +173,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, toRefs, ref, inject } from 'vue'
 import { storeToRefs } from 'pinia'
+import { computed, inject, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
@@ -147,17 +182,25 @@ import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 import { numberToFixed } from '@/shared/utils/number'
 import { markText } from '@/shared/utils/view'
 
-import { CalcStructAction, CalcStructItem, CalcStructMultiple, isCalcStructItem } from '@/lib/Calculation/Damage/Calculation/base'
-import { CalcItem, CalcItemContainer, CalcItemCustom } from '@/lib/Calculation/Damage/Calculation'
+import {
+  CalcItem,
+  CalcItemContainer,
+  CalcItemCustom,
+} from '@/lib/Calculation/Damage/Calculation'
+import {
+  CalcStructAction,
+  CalcStructItem,
+  CalcStructMultiple,
+  isCalcStructItem,
+} from '@/lib/Calculation/Damage/Calculation/base'
 import { ContainerTypes } from '@/lib/Calculation/Damage/Calculation/enums'
 
 import { DamageCalculationRootInjectionKey } from './injection-keys'
 
-
 interface Props {
-  calcStructItem: CalcStructItem;
-  root?: boolean;
-  layer?: number;
+  calcStructItem: CalcStructItem
+  root?: boolean
+  layer?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -188,12 +231,17 @@ const editableContainers = computed(() => {
     return []
   }
   if (currentContainer.value.base.isVirtual) {
-    return currentContainer.value.base.references.map(reference => currentContainer.value!.belongCalculation.containers.get(reference)!)
+    return currentContainer.value.base.references.map(
+      reference =>
+        currentContainer.value!.belongCalculation.containers.get(reference)!
+    )
   }
   return [currentContainer.value]
 })
 
-const currentContainerEnabled = computed(() => editableContainers.value.some(container => container.enabled))
+const currentContainerEnabled = computed(() =>
+  editableContainers.value.some(container => container.enabled)
+)
 
 const currentContainerResult = computed(() => {
   if (currentContainer.value) {
@@ -211,20 +259,21 @@ const getContainerItems = (container: CalcItemContainer) => {
   if (!container.selectable && container.base.type === ContainerTypes.Options) {
     return [container.currentItem]
   }
-  return [
-    ...Array.from(container.items.values()),
-    ...container.customItems,
-  ]
+  return [...Array.from(container.items.values()), ...container.customItems]
 }
 
 const handleCalcStructList = (structItem: CalcStructMultiple) => {
   if (structItem.operator === '+++') {
     return structItem.list
   }
-  return structItem.list.filter(item => isCalcStructItem(item)) as CalcStructItem[]
+  return structItem.list.filter(item =>
+    isCalcStructItem(item)
+  ) as CalcStructItem[]
 }
 
-const getCalcItemId = (structItem: CalcStructItem | CalcStructAction): string => {
+const getCalcItemId = (
+  structItem: CalcStructItem | CalcStructAction
+): string => {
   if (!isCalcStructItem(structItem)) {
     return structItem
   }
@@ -232,10 +281,14 @@ const getCalcItemId = (structItem: CalcStructItem | CalcStructAction): string =>
     return structItem
   }
   if (structItem.operator === '+' || structItem.operator === '*') {
-    return `(${getCalcItemId(structItem.left)})${structItem.operator}(${getCalcItemId(structItem.right)})`
+    return `(${getCalcItemId(structItem.left)})${
+      structItem.operator
+    }(${getCalcItemId(structItem.right)})`
   }
   if (structItem.operator === '+++' || structItem.operator === '***') {
-    return structItem.list.map(item => `(${getCalcItemId(item)})`).join(structItem.operator)
+    return structItem.list
+      .map(item => `(${getCalcItemId(item)})`)
+      .join(structItem.operator)
   }
   return structItem.toString()
 }
@@ -246,7 +299,10 @@ const createCustomItem = () => {
   }
   const newItem = currentContainer.value.createCustomItem()
   if (newItem) {
-    newItem.name = t('damage-calculation.item-base-titles.' + currentContainer.value.currentItem.base.id)
+    newItem.name = t(
+      'damage-calculation.item-base-titles.' +
+        currentContainer.value.currentItem.base.id
+    )
   }
 }
 const removeCustomItem = (item: CalcItemCustom) => {

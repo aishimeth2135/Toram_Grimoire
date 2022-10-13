@@ -1,11 +1,15 @@
 <template>
-  <div class="space-y-1.5 cursor-auto">
+  <div class="cursor-auto space-y-1.5">
     <div v-if="!innerItem" class="flex items-center pt-0.5">
-      <EquipmentTitle :equipment="equipment" text-color="primary-70" :small="innerItem" />
-      <div class="text-primary-50 text-sm ml-3">
+      <EquipmentTitle
+        :equipment="equipment"
+        text-color="primary-70"
+        :small="innerItem"
+      />
+      <div class="ml-3 text-sm text-primary-50">
         {{ t('common.Equipment.category.' + equipment.type) }}
       </div>
-      <div class="flex ml-auto">
+      <div class="ml-auto flex">
         <cy-button-icon
           icon="ic:round-mode-edit"
           color="orange"
@@ -13,15 +17,24 @@
         />
       </div>
     </div>
-    <div v-if="equipment.is(EquipmentKinds.Weapon) || equipment.is(EquipmentKinds.Armor)" class="flex items-center pt-0.5">
+    <div
+      v-if="
+        equipment.is(EquipmentKinds.Weapon) ||
+        equipment.is(EquipmentKinds.Armor)
+      "
+      class="flex items-center pt-0.5"
+    >
       <cy-popover>
         <CharacterEquipmentEditMask>
-          <div class="flex items-center rounded-2xl border-1 border-solid border-red-20 py-0.5 px-3 w-72" :class="{ 'opacity-50': !baseValueValid }">
+          <div
+            class="flex w-72 items-center rounded-2xl border-1 border-solid border-red-20 py-0.5 px-3"
+            :class="{ 'opacity-50': !baseValueValid }"
+          >
             <template v-if="equipment.is(EquipmentKinds.Weapon)">
               <cy-icon-text icon="mdi-sword" color="red-20" single-color>
                 ATK
               </cy-icon-text>
-              <div class="ml-2 text-red-60 flex items-center">
+              <div class="ml-2 flex items-center text-red-60">
                 {{ equipment.basicValue }}
                 <span
                   v-if="refiningAdditionAmount > 0"
@@ -30,12 +43,23 @@
                 >
                   +{{ refiningAdditionAmount }}
                 </span>
-                <div v-else-if="baseValueArrowRate" class="flex items-center ml-2">
-                  <cy-icon-text icon="ic-round-close" icon-width="0.75rem" icon-color="emerald" />
-                  <span class="text-emerald-60 ml-1">{{ baseValueArrowRate }}</span>
+                <div
+                  v-else-if="baseValueArrowRate"
+                  class="ml-2 flex items-center"
+                >
+                  <cy-icon-text
+                    icon="ic-round-close"
+                    icon-width="0.75rem"
+                    icon-color="emerald"
+                  />
+                  <span class="ml-1 text-emerald-60">{{
+                    baseValueArrowRate
+                  }}</span>
                 </div>
               </div>
-              <span class="ml-auto text-primary-70">{{ equipment.stability }}%</span>
+              <span class="ml-auto text-primary-70"
+                >{{ equipment.stability }}%</span
+              >
             </template>
             <template v-else-if="equipment.is(EquipmentKinds.Armor)">
               <cy-icon-text icon="mdi:shield-outline" text-color="primary-30">
@@ -46,11 +70,13 @@
           </div>
         </CharacterEquipmentEditMask>
         <template #popper>
-          <div class="p-4 space-y-1.5">
+          <div class="space-y-1.5 p-4">
             <CharacterEquipmentBasicValue :equipment="equipment" />
             <div v-if="equipment.hasRefining">
               <cy-input-counter
-                v-model:value="equipment.refining/* eslint-disable-line vue/no-mutating-props */"
+                v-model:value="
+                  equipment.refining /* eslint-disable-line vue/no-mutating-props */
+                "
                 :range="ranges.refining"
               >
                 <template #title>
@@ -62,7 +88,9 @@
             </div>
             <div v-if="equipment.hasStability">
               <cy-input-counter
-                v-model:value="equipment.stability/* eslint-disable-line vue/no-mutating-props */"
+                v-model:value="
+                  equipment.stability /* eslint-disable-line vue/no-mutating-props */
+                "
                 :range="ranges.stability"
               >
                 <template #title>
@@ -77,15 +105,19 @@
       </cy-popover>
     </div>
     <div :class="{ 'opacity-50': statsDisabled }">
-      <div v-if="equipment.stats.length > 0" class="pl-1.5 pr-2 pt-0.5 pb-1.5 flex flex-wrap items-center relative">
-        <CharacterEquipmentEditMask v-for="stat in equipment.stats" :key="stat.statId" class="mt-0.5">
+      <div
+        v-if="equipment.stats.length > 0"
+        class="relative flex flex-wrap items-center pl-1.5 pr-2 pt-0.5 pb-1.5"
+      >
+        <CharacterEquipmentEditMask
+          v-for="stat in equipment.stats"
+          :key="stat.statId"
+          class="mt-0.5"
+        >
           <cy-popover auto-select class="flex">
-            <ShowStat
-              :stat="stat"
-              :negative-value="stat.value < 0"
-            />
+            <ShowStat :stat="stat" :negative-value="stat.value < 0" />
             <template #popper>
-              <div class="p-4 flex items-center w-full">
+              <div class="flex w-full items-center p-4">
                 <cy-input-counter
                   v-model:value="stat.value"
                   input-width="2.75rem"
@@ -95,15 +127,22 @@
             </template>
           </cy-popover>
         </CharacterEquipmentEditMask>
-        <CharacterEquipmentEditMask class="!absolute top-0 -right-2 h-full w-6 hover:bg-primary-5" @click="editStat(equipment)" />
+        <CharacterEquipmentEditMask
+          class="!absolute top-0 -right-2 h-full w-6 hover:bg-primary-5"
+          @click="editStat(equipment)"
+        />
       </div>
-      <CharacterEquipmentEditMask v-else class="text-primary-30 text-sm px-2.5" @click="editStat(equipment)">
+      <CharacterEquipmentEditMask
+        v-else
+        class="px-2.5 text-sm text-primary-30"
+        @click="editStat(equipment)"
+      >
         {{ t('character-simulator.equipment-info.stat-empty') }}
       </CharacterEquipmentEditMask>
       <div v-if="equipment.hasCrystal" class="px-1.5">
         <CharacterEquipmentEditMask
           v-if="equipment.crystals.length > 0"
-          class="py-1 space-x-3"
+          class="space-x-3 py-1"
           @click="editCrystal(equipment)"
         >
           <cy-icon-text
@@ -117,7 +156,11 @@
             {{ crystal.name }}
           </cy-icon-text>
         </CharacterEquipmentEditMask>
-        <CharacterEquipmentEditMask v-else class="text-primary-30 text-sm px-1" @click="editCrystal(equipment)">
+        <CharacterEquipmentEditMask
+          v-else
+          class="px-1 text-sm text-primary-30"
+          @click="editCrystal(equipment)"
+        >
           {{ t('character-simulator.equipment-info.crystal-empty') }}
         </CharacterEquipmentEditMask>
       </div>
@@ -130,7 +173,7 @@
           @click="editBasic(equipment)"
         />
       </div>
-      <span class="text-red-60 text-sm">
+      <span class="text-sm text-red-60">
         {{ t('character-simulator.browse-equipments.click-edit-tips') }}
       </span>
     </div>
@@ -138,26 +181,33 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
 import { computed, inject } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { CharacterEquipment, SubArmor, SubWeapon } from '@/lib/Character/CharacterEquipment'
-import { EquipmentKinds, EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
+import {
+  CharacterEquipment,
+  SubArmor,
+  SubWeapon,
+} from '@/lib/Character/CharacterEquipment'
+import {
+  EquipmentKinds,
+  EquipmentTypes,
+} from '@/lib/Character/CharacterEquipment/enums'
 
 import EquipmentTitle from '@/components/common/equipment-title.vue'
 import ShowStat from '@/components/common/show-stat.vue'
 
-import CharacterEquipmentEditMask from './character-equipment-edit-mask.vue'
 import CharacterEquipmentBasicValue from './character-equipment-basic-value.vue'
+import CharacterEquipmentEditMask from './character-equipment-edit-mask.vue'
 
 import { CharacterSimulatorInjectionKey } from '../injection-keys'
 
 interface Props {
-  equipment: CharacterEquipment;
-  innerItem?: boolean;
-  statsDisabled?: boolean;
-  isSub?: boolean;
-  mainWeapon?: CharacterEquipment | null;
+  equipment: CharacterEquipment
+  innerItem?: boolean
+  statsDisabled?: boolean
+  isSub?: boolean
+  mainWeapon?: CharacterEquipment | null
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -182,12 +232,19 @@ const isSub = computed(() => props.isSub)
 const baseValueValid = computed(() => {
   const eq = props.equipment
   if (isSub.value) {
-    if (eq.type === EquipmentTypes.Arrow && props.mainWeapon &&
+    if (
+      eq.type === EquipmentTypes.Arrow &&
+      props.mainWeapon &&
       props.mainWeapon.type !== EquipmentTypes.Bow &&
-      props.mainWeapon.type !== EquipmentTypes.Bowgun) {
+      props.mainWeapon.type !== EquipmentTypes.Bowgun
+    ) {
       return false
     }
-    return eq instanceof SubWeapon || eq instanceof SubArmor || eq.type === EquipmentTypes.OneHandSword
+    return (
+      eq instanceof SubWeapon ||
+      eq instanceof SubArmor ||
+      eq.type === EquipmentTypes.OneHandSword
+    )
   }
   return true
 })
@@ -206,12 +263,19 @@ const refiningAdditionAmount = computed(() => {
   const eq = props.equipment
   if (isSub.value) {
     if (eq.type === EquipmentTypes.OneHandSword) {
-      return Math.floor(eq.basicValue * eq.refining * eq.refining / 200) + eq.refining
+      return (
+        Math.floor((eq.basicValue * eq.refining * eq.refining) / 200) +
+        eq.refining
+      )
     }
     return 0
   }
-  return Math.floor(eq.basicValue * eq.refining * eq.refining / 100) + eq.refining
+  return (
+    Math.floor((eq.basicValue * eq.refining * eq.refining) / 100) + eq.refining
+  )
 })
 
-const { editCrystal, editStat, editBasic } = inject(CharacterSimulatorInjectionKey)!
+const { editCrystal, editStat, editBasic } = inject(
+  CharacterSimulatorInjectionKey
+)!
 </script>

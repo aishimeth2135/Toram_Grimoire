@@ -24,17 +24,17 @@ const twoColumns = computed(() => currentRoute.meta.twoColumnsLayout === true)
 <style lang="postcss" scoped>
 .app-layout-main {
   max-width: 48rem;
-  @apply min-h-full mx-auto flex flex-col
+  @apply mx-auto flex min-h-full flex-col;
 }
 
 @media (min-width: 55rem) {
   .app-layout-main.two-columns {
-    @apply flex-row h-full w-full pl-14;
+    @apply h-full w-full flex-row pl-14;
     max-width: none;
 
     & > .two-columns-column {
       width: 50%;
-      @apply h-full overflow-y-auto border-1 border-primary-30 rounded-sm mr-1;
+      @apply mr-1 h-full overflow-y-auto rounded-sm border-1 border-primary-30;
     }
   }
 }

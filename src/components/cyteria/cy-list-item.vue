@@ -12,8 +12,8 @@ export default {
 
 <script lang="ts" setup>
 interface Props {
-  selected?: boolean;
-  pure?: boolean;
+  selected?: boolean
+  pure?: boolean
 }
 
 withDefaults(defineProps<Props>(), {
@@ -24,7 +24,7 @@ withDefaults(defineProps<Props>(), {
 
 <style lang="postcss" scoped>
 .cy--list-item {
-  @apply flex items-center flex-wrap cursor-pointer py-1.5 px-3 duration-200;
+  @apply flex cursor-pointer flex-wrap items-center py-1.5 px-3 duration-200;
   border: 1px solid transparent;
 
   &:hover {

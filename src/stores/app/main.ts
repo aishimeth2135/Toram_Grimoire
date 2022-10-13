@@ -11,8 +11,8 @@ export const useMainStore = defineStore('app-main', () => {
   const settingVisible = ref(false)
   const redirectPathName = ref<string | null>(null)
   const serviceWorker = shallowReactive<{
-    update: Function | null;
-    hasUpdate: boolean;
+    update: Function | null
+    hasUpdate: boolean
   }>({
     update: null,
     hasUpdate: false,
@@ -67,7 +67,9 @@ export const useMainStore = defineStore('app-main', () => {
     },
   })
 
-  const previewMode = window.location.hostname.startsWith('doll-preview') || window.location.hostname.startsWith('localhost')
+  const previewMode =
+    window.location.hostname.startsWith('doll-preview') ||
+    window.location.hostname.startsWith('localhost')
 
   return {
     settingVisible: settingVisible,
@@ -82,10 +84,10 @@ export const useMainStore = defineStore('app-main', () => {
     serviceWorkerHasUpdate,
     updateTitle,
 
-    toggleSetting: (force?: boolean) => settingVisible.value = force ?? !settingVisible.value,
-    startRouting: () => routerGuiding.value = true,
-    endRouting: () => routerGuiding.value = false,
+    toggleSetting: (force?: boolean) =>
+      (settingVisible.value = force ?? !settingVisible.value),
+    startRouting: () => (routerGuiding.value = true),
+    endRouting: () => (routerGuiding.value = false),
     routerGuiding: readonly(routerGuiding),
   }
 })
-

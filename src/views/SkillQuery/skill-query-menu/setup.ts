@@ -1,17 +1,23 @@
-import { ref, computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { SkillTree } from '@/lib/Skill/Skill'
-import { convertEffectEquipment } from '@/lib/Skill/SkillComputingContainer/utils'
-import { EquipmentRestrictions, EquipmentRestrictionsBaseKeys } from '@/lib/Skill/SkillComputingContainer'
-import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
+import { SkillTree } from '@/lib/Skill/Skill'
+import {
+  EquipmentRestrictions,
+  EquipmentRestrictionsBaseKeys,
+} from '@/lib/Skill/SkillComputingContainer'
+import { convertEffectEquipment } from '@/lib/Skill/SkillComputingContainer/utils'
 
 function setupEquipmentSelect(
   skillTree: Ref<SkillTree>,
-  emit: (event: 'update:selected-equipment', data: EquipmentRestrictions) => void,
+  emit: (
+    event: 'update:selected-equipment',
+    data: EquipmentRestrictions
+  ) => void
 ) {
   const { t } = Grimoire.i18n
 
@@ -41,23 +47,35 @@ function setupEquipmentSelect(
     }
   })
 
-  const currentEquipment: Ref<EquipmentRestrictions> = ref(new EquipmentRestrictions())
+  const currentEquipment: Ref<EquipmentRestrictions> = ref(
+    new EquipmentRestrictions()
+  )
 
   const submitCurrentEquipment = () => {
     emit('update:selected-equipment', currentEquipment.value)
   }
 
-  function handleToggleCurrentEquipment(key: EquipmentRestrictionsBaseKeys, confirmConflict: boolean, force?: EquipmentTypes | null) {
+  function handleToggleCurrentEquipment(
+    key: EquipmentRestrictionsBaseKeys,
+    confirmConflict: boolean,
+    force?: EquipmentTypes | null
+  ) {
     const list = equipmentOptionsMapping.value[key]
     const idx = list.indexOf(currentEquipment.value[key])
-    force = force === undefined ? list[idx > -1 && idx !== list.length - 1 ? idx + 1 : 0] : force
+    force =
+      force === undefined
+        ? list[idx > -1 && idx !== list.length - 1 ? idx + 1 : 0]
+        : force
     currentEquipment.value[key] = force
     if (key !== 'body' && confirmConflict) {
       confirmWeaponConflict(key)
     }
   }
 
-  const toggleCurrentEquipment = (key: EquipmentRestrictionsBaseKeys, force?: EquipmentTypes | null) => {
+  const toggleCurrentEquipment = (
+    key: EquipmentRestrictionsBaseKeys,
+    force?: EquipmentTypes | null
+  ) => {
     handleToggleCurrentEquipment(key, true, force)
     submitCurrentEquipment()
   }
@@ -92,14 +110,10 @@ function setupEquipmentSelect(
             .add(EquipmentTypes.NinjutsuScroll)
           break
         case EquipmentTypes.Halberd:
-          validSubs
-            .add(EquipmentTypes.Arrow)
-            .add(EquipmentTypes.Dagger)
+          validSubs.add(EquipmentTypes.Arrow).add(EquipmentTypes.Dagger)
           break
         case EquipmentTypes.Bow:
-          validSubs
-            .add(EquipmentTypes.Arrow)
-            .add(EquipmentTypes.Katana)
+          validSubs.add(EquipmentTypes.Arrow).add(EquipmentTypes.Katana)
           break
         case EquipmentTypes.MagicDevice:
           validSubs.add(EquipmentTypes.NinjutsuScroll)
@@ -113,24 +127,34 @@ function setupEquipmentSelect(
   }
 
   const getEquipmentText = (value: EquipmentTypes | null) => {
-    return value !== null ? t(`common.Equipment.category.${value}`) : t('skill-query.equipment.no-select')
+    return value !== null
+      ? t(`common.Equipment.category.${value}`)
+      : t('skill-query.equipment.no-select')
   }
 
   const getEquipmentImagePath = (value: EquipmentTypes | null) => {
-    return value !== null ? CharacterEquipment.getImagePath(value) : 'mdi:radiobox-marked'
+    return value !== null
+      ? CharacterEquipment.getImagePath(value)
+      : 'mdi:radiobox-marked'
   }
 
   const resetCurrentEquipment = () => {
     const options = equipmentOptionsMapping.value
-    currentEquipment.value.main = options.main.length === 0 ? null : options.main[0]
-    currentEquipment.value.sub = options.sub.length === 0 ? null : options.sub[0]
-    currentEquipment.value.body = options.body.length === 0 ? null : options.body[0]
+    currentEquipment.value.main =
+      options.main.length === 0 ? null : options.main[0]
+    currentEquipment.value.sub =
+      options.sub.length === 0 ? null : options.sub[0]
+    currentEquipment.value.body =
+      options.body.length === 0 ? null : options.body[0]
     confirmWeaponConflict('main')
     submitCurrentEquipment()
   }
 
   const equipmentOptions = computed(() => {
-    const datas: { key: EquipmentRestrictionsBaseKeys; value: (EquipmentTypes | null)[] }[] = []
+    const datas: {
+      key: EquipmentRestrictionsBaseKeys
+      value: (EquipmentTypes | null)[]
+    }[] = []
     Object.entries(equipmentOptionsMapping.value).forEach(([key, value]) => {
       if (value.length === 1 && value[0] === null) {
         return
@@ -154,7 +178,8 @@ function setupSkillLevel(skillLevel: Ref<number>) {
   const levels = [1, 5, 10]
   const toggleSkillLevel = () => {
     const idx = levels.indexOf(skillLevel.value)
-    const newValue = levels[idx !== -1 && idx !== levels.length - 1 ? idx + 1 : 0]
+    const newValue =
+      levels[idx !== -1 && idx !== levels.length - 1 ? idx + 1 : 0]
     skillLevel.value = newValue
   }
 
@@ -163,8 +188,4 @@ function setupSkillLevel(skillLevel: Ref<number>) {
   }
 }
 
-export {
-  setupEquipmentSelect,
-  setupSkillLevel,
-}
-
+export { setupEquipmentSelect, setupSkillLevel }

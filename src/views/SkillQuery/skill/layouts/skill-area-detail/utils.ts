@@ -7,14 +7,14 @@ function createSectorPathD({
   endAngle,
   clockwise = 0,
 }: {
-  cx: number;
-  cy: number;
-  minRadius?: number;
-  radius: number;
-  startAngle: number;
-  endAngle: number;
-  clockwise?: number;
-}){
+  cx: number
+  cy: number
+  minRadius?: number
+  radius: number
+  startAngle: number
+  endAngle: number
+  clockwise?: number
+}) {
   /**
    -- Draw Sector --
     * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -47,8 +47,7 @@ function createSectorPathD({
     sinStart = -1 * Math.sin(startAngle * deg)
 
   // a: arc, s: start, e: end
-  const
-    a1_sx = minRadius * cosEnd + cx,
+  const a1_sx = minRadius * cosEnd + cx,
     a1_sy = minRadius * sinEnd + cy,
     a1_ex = minRadius * cosStart + cx,
     a1_ey = minRadius * sinStart + cy,
@@ -57,7 +56,9 @@ function createSectorPathD({
     a2_ex = radius * cosEnd + cx,
     a2_ey = radius * sinEnd + cy
 
-  return `M${a1_sx} ${a1_sy}A${minRadius} ${minRadius},0 0 ${clockwise === 1 ? 0 : 1},${a1_ex} ${a1_ey}L${a2_sx} ${a2_sy}A${radius} ${radius},0 0 ${clockwise},${a2_ex} ${a2_ey}Z`
+  return `M${a1_sx} ${a1_sy}A${minRadius} ${minRadius},0 0 ${
+    clockwise === 1 ? 0 : 1
+  },${a1_ex} ${a1_ey}L${a2_sx} ${a2_sy}A${radius} ${radius},0 0 ${clockwise},${a2_ex} ${a2_ey}Z`
 }
 
 export { createSectorPathD }

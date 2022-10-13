@@ -1,9 +1,13 @@
 import type { RouteRecordRaw } from 'vue-router'
 
-import { LocaleViewNamespaces } from '@/stores/app/language/enums'
 import { DataStoreIds } from '@/stores/app/datas/enums'
+import { LocaleViewNamespaces } from '@/stores/app/language/enums'
 
-import { PrepareLocaleInit, ViewInit, ViewInitSlient } from '@/shared/services/ViewInit'
+import {
+  PrepareLocaleInit,
+  ViewInit,
+  ViewInitSlient,
+} from '@/shared/services/ViewInit'
 
 import ViewWrapper from './view-wrapper.vue'
 
@@ -22,30 +26,36 @@ export default {
     ViewInit().then(next)
   },
   meta: {
-    leftMenuViewButtons: [{
-      title: 'app.page-title.book-main',
-      icon: 'mdi:tag-outline',
-      pathName: AppRouteNames.BookView,
-    }, {
-      title: 'app.page-title.book-preview',
-      icon: 'mdi:tag-outline',
-      pathName: AppRouteNames.BookPreview,
-    }],
+    leftMenuViewButtons: [
+      {
+        title: 'app.page-title.book-main',
+        icon: 'mdi:tag-outline',
+        pathName: AppRouteNames.BookView,
+      },
+      {
+        title: 'app.page-title.book-preview',
+        icon: 'mdi:tag-outline',
+        pathName: AppRouteNames.BookPreview,
+      },
+    ],
   },
-  children: [{
-    name: AppRouteNames.BookView,
-    path: '',
-    component: BookMain,
-    meta: {
-      title: 'app.page-title.book-main',
+  children: [
+    {
+      name: AppRouteNames.BookView,
+      path: '',
+      component: BookMain,
+      meta: {
+        title: 'app.page-title.book-main',
+      },
     },
-  }, {
-    name: AppRouteNames.BookPreview,
-    path: 'preview',
-    component: BookPreview,
-    meta: {
-      title: 'app.page-title.book-preview',
-      twoColumnsLayout: true,
+    {
+      name: AppRouteNames.BookPreview,
+      path: 'preview',
+      component: BookPreview,
+      meta: {
+        title: 'app.page-title.book-preview',
+        twoColumnsLayout: true,
+      },
     },
-  }],
+  ],
 } as RouteRecordRaw

@@ -1,10 +1,13 @@
 <template>
   <div class="cy--pagination-wrapper">
     <div
-      class="flex items-center justify-center w-full px-4 space-x-1 border border-transparent duration-300"
+      class="flex w-full items-center justify-center space-x-1 border border-transparent px-4 duration-300"
       :class="{ 'border-primary-50': inputFocus }"
     >
-      <cy-button-action icon="ic:round-keyboard-double-arrow-left" @click="inputValue = 1" />
+      <cy-button-action
+        icon="ic:round-keyboard-double-arrow-left"
+        @click="inputValue = 1"
+      />
       <cy-button-action icon="ic:round-arrow-back" @click="inputValue -= 1" />
       <input
         v-model.number.lazy="inputValue"
@@ -14,10 +17,16 @@
         @focus="inputFocus = true"
         @blur="inputFocus = false"
       />
-      <cy-button-action icon="ic:round-arrow-forward" @click="inputValue += 1" />
-      <cy-button-action icon="ic:round-keyboard-double-arrow-right" @click="inputValue = maxPage" />
+      <cy-button-action
+        icon="ic:round-arrow-forward"
+        @click="inputValue += 1"
+      />
+      <cy-button-action
+        icon="ic:round-keyboard-double-arrow-right"
+        @click="inputValue = maxPage"
+      />
     </div>
-    <div class="flex items-center text-primary-30 space-x-0.5 text-sm">
+    <div class="flex items-center space-x-0.5 text-sm text-primary-30">
       <span>{{ value }}</span>
       <cy-icon-text icon="mdi:slash-forward" icon-color="primary-30" small />
       <span>{{ maxPage }}</span>
@@ -35,13 +44,13 @@ export default {
 import { computed, ref } from 'vue'
 
 interface Props {
-  value: number;
-  maxPage: number;
+  value: number
+  maxPage: number
 }
 
 interface Emits {
-  (evt: 'update:value', value: number): void;
-  (evt: 'changed'): void;
+  (evt: 'update:value', value: number): void
+  (evt: 'changed'): void
 }
 
 const props = defineProps<Props>()
@@ -60,7 +69,7 @@ const inputValue = computed<number>({
 })
 
 const selectInput = (evt: MouseEvent) => {
-  (evt.target as HTMLInputElement).select()
+  ;(evt.target as HTMLInputElement).select()
 }
 </script>
 
@@ -68,7 +77,7 @@ const selectInput = (evt: MouseEvent) => {
 .cy--pagination-wrapper {
   --input-width: 2.125rem;
 
-  @apply flex flex-wrap justify-center w-full;
+  @apply flex w-full flex-wrap justify-center;
 }
 .cy--pagination-input {
   width: var(--input-width);

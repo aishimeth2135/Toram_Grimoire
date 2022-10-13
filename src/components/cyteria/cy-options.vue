@@ -2,8 +2,14 @@
   <CyPopover class="cy--options" :placement="placement">
     <template #default="{ shown }">
       <slot name="title" :shown="shown">
-        <div class="cy--options-item cy--options-title flex items-center bg-white border border-primary-30 hover:border-primary-50 duration-200">
-          <slot v-if="value !== undefined && value !== null" name="item" :value="value" />
+        <div
+          class="cy--options-item cy--options-title flex items-center border border-primary-30 bg-white duration-200 hover:border-primary-50"
+        >
+          <slot
+            v-if="value !== undefined && value !== null"
+            name="item"
+            :value="value"
+          />
           <div v-else class="flex w-full justify-center py-0.5">
             <cy-icon-text icon="ic:outline-help-outline" />
           </div>
@@ -19,15 +25,15 @@
               :key="item.id"
               class="cy--options-item"
               :class="{ 'cy--options-item-selected': item.value === value }"
-              @click="(emit('update:value', item.value), hide())"
+              @click="emit('update:value', item.value), hide()"
             >
               <slot :id="item.id" name="item" :value="item.value" />
             </div>
           </div>
           <div
             v-if="addable"
-            class="cy--options-item justify-center border-t border-primary-30 sticky bottom-0 bg-white"
-            @click="(emit('add-item'), hide())"
+            class="cy--options-item sticky bottom-0 justify-center border-t border-primary-30 bg-white"
+            @click="emit('add-item'), hide()"
           >
             <div class="flex py-0.5">
               <cy-icon-text icon="ic-round-add-circle-outline" />
@@ -43,19 +49,19 @@
 import CyPopover from './cy-popover/cy-popover.vue'
 
 interface OptionItem {
-  id: string | number;
-  value: any;
+  id: string | number
+  value: any
 }
 
 interface Props {
-  value: any;
-  options?: OptionItem[];
-  addable?: boolean;
-  placement?: string;
+  value: any
+  options?: OptionItem[]
+  addable?: boolean
+  placement?: string
 }
 interface Emits {
-  (evt: 'update:value', value: any): void;
-  (evt: 'add-item'): void;
+  (evt: 'update:value', value: any): void
+  (evt: 'add-item'): void
 }
 
 withDefaults(defineProps<Props>(), {
@@ -67,7 +73,8 @@ const emit = defineEmits<Emits>()
 </script>
 
 <style lang="postcss" scoped>
-.cy--options-title, .cy--options-items-wrapper {
+.cy--options-title,
+.cy--options-items-wrapper {
   min-width: 15rem;
 
   @media screen and (max-width: 15rem) {
@@ -82,9 +89,10 @@ const emit = defineEmits<Emits>()
 }
 
 .cy--options-item {
-  @apply duration-200 py-1.5 px-2 flex cursor-pointer;
+  @apply flex cursor-pointer py-1.5 px-2 duration-200;
 
-  &:hover, &.cy--options-item-selected {
+  &:hover,
+  &.cy--options-item-selected {
     @apply bg-primary-5;
   }
 }

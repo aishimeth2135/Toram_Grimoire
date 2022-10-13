@@ -2,16 +2,20 @@ import { defineStore } from 'pinia'
 import { computed, reactive, readonly, ref, shallowReactive } from 'vue'
 import { Composer } from 'vue-i18n'
 
-import CY from '@/shared/utils/Cyteria'
 import { APP_STORAGE_KEYS } from '@/shared/consts'
+import CY from '@/shared/utils/Cyteria'
 
 import Notify from '@/setup/Notify'
 
 import { useMainStore } from '../main'
-import { LocaleGlobalNamespaces, LocaleNamespaces, LocaleViewNamespaces } from './enums'
+import {
+  LocaleGlobalNamespaces,
+  LocaleNamespaces,
+  LocaleViewNamespaces,
+} from './enums'
 
 interface LangData {
-  [key: string]: LangData | string;
+  [key: string]: LangData | string
 }
 
 type LangInjectData = Record<string, LangData | (() => LangData)>
@@ -25,7 +29,7 @@ const LOCALE_GLOBAL_NAMESPACE_LIST: LocaleGlobalNamespaces[] = [
 ]
 
 export const I18nStore: {
-  i18n: Composer | null;
+  i18n: Composer | null
 } = shallowReactive({
   i18n: null,
 })
@@ -51,7 +55,9 @@ export const useLanguageStore = defineStore('app-language', () => {
 
   const autoSetLang = () => {
     // @ts-ignore
-    const lang = (window.navigator.language || window.navigator.userLanguage).toLowerCase()
+    const lang = (
+      window.navigator.language || window.navigator.userLanguage
+    ).toLowerCase()
     const list: Record<string, number> = {
       'zh-tw': 1,
       'zh-hk': 1,
@@ -78,7 +84,10 @@ export const useLanguageStore = defineStore('app-language', () => {
         primaryLang.value = parseInt(curLangSet, 10)
       }
 
-      secondaryLang.value = parseInt(localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE)!, 10)
+      secondaryLang.value = parseInt(
+        localStorage.getItem(APP_STORAGE_KEYS.FALLBACK_LOCALE)!,
+        10
+      )
     } else {
       autoSetLang()
     }
@@ -86,9 +95,12 @@ export const useLanguageStore = defineStore('app-language', () => {
 
   const mainStore = useMainStore()
 
-  type LoadLocaleMessages<Namespace extends LocaleNamespaces = LocaleNamespaces> = (namespaces: Namespace | Namespace[]) => Promise<void>
-  const loadLocaleMessages: LoadLocaleMessages = async (namespaces) => {
-    const namespaceList = typeof namespaces === 'string' ? [namespaces] : namespaces
+  type LoadLocaleMessages<
+    Namespace extends LocaleNamespaces = LocaleNamespaces
+  > = (namespaces: Namespace | Namespace[]) => Promise<void>
+  const loadLocaleMessages: LoadLocaleMessages = async namespaces => {
+    const namespaceList =
+      typeof namespaces === 'string' ? [namespaces] : namespaces
     if (!i18n.value) {
       console.warn('[Init language data] instance is no found')
       return
@@ -98,12 +110,14 @@ export const useLanguageStore = defineStore('app-language', () => {
 
     const loadData = async (locale: string) => {
       const data = {} as Record<string, object>
-      const promises = namespaceList.map(async (namespace) => {
+      const promises = namespaceList.map(async namespace => {
         let count = 0
         let resultData!: object
         const retry = async () => {
           try {
-            const dataModule = await import(`../../../locales/${locale}/${namespace}.yaml`)
+            const dataModule = await import(
+              `../../../locales/${locale}/${namespace}.yaml`
+            )
             resultData = dataModule.default ?? {}
           } catch (err) {
             count += 1
@@ -126,16 +140,23 @@ export const useLanguageStore = defineStore('app-language', () => {
     i18n.value.mergeLocaleMessage(primaryLocale.value, messages)
     i18n.value.mergeLocaleMessage(fallbackLocale.value, fallbackMessages)
 
-    if (primaryLocale.value !== DEFAULT_LOCALE && fallbackLocale.value !== DEFAULT_LOCALE) {
+    if (
+      primaryLocale.value !== DEFAULT_LOCALE &&
+      fallbackLocale.value !== DEFAULT_LOCALE
+    ) {
       const defaultMessages = await loadData(DEFAULT_LOCALE)
       i18n.value.mergeLocaleMessage(DEFAULT_LOCALE, defaultMessages)
     }
 
-    namespaceList.forEach(namespace => i18nLoadedLocaleNamespaces.add(namespace))
+    namespaceList.forEach(namespace =>
+      i18nLoadedLocaleNamespaces.add(namespace)
+    )
 
     if (unknownError) {
       const { notify } = Notify()
-      notify('An unknown error occurred while initializing the locale datas, texts on the page will be displayed abnormally. Please refresh the page later to try to reinitialize.')
+      notify(
+        'An unknown error occurred while initializing the locale datas, texts on the page will be displayed abnormally. Please refresh the page later to try to reinitialize.'
+      )
     }
   }
 
@@ -161,7 +182,8 @@ export const useLanguageStore = defineStore('app-language', () => {
 
     setI18nInstance,
     initLocale,
-    loadLocaleMessages: loadLocaleMessages as LoadLocaleMessages<LocaleViewNamespaces>,
+    loadLocaleMessages:
+      loadLocaleMessages as LoadLocaleMessages<LocaleViewNamespaces>,
     updateLocaleGlobalMessages,
   }
 })

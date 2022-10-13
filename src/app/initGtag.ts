@@ -14,7 +14,9 @@ export function initGtag(app: App<Element>, router: Router) {
       pageTrackerTemplate(to: RouteLocationNormalized) {
         let toPath = to.path
         if (to.meta.parentPathName) {
-          const match = to.matched.find(item => item.name === to.meta.parentPathName)
+          const match = to.matched.find(
+            item => item.name === to.meta.parentPathName
+          )
           if (match) {
             toPath = match.path
           }
@@ -24,9 +26,7 @@ export function initGtag(app: App<Element>, router: Router) {
           page_path: toPath,
         } as PageView
       },
-      pageTrackerExcludedRoutes: [
-        AppRouteNames.SkillQuery,
-      ],
+      pageTrackerExcludedRoutes: [AppRouteNames.SkillQuery],
     }
     app.use(VueGtag, options, router)
   } catch (err) {

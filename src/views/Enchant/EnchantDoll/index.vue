@@ -6,10 +6,10 @@
           {{ t('enchant-doll.equipment.select-type.title') }}
         </cy-icon-text>
       </div>
-      <div class="mt-1 text-sm pl-4">
+      <div class="mt-1 pl-4 text-sm">
         {{ t('enchant-doll.equipment.select-type.caption') }}
       </div>
-      <div class="py-4 pl-2 flex justify-center flex-wrap">
+      <div class="flex flex-wrap justify-center py-4 pl-2">
         <cy-button-radio
           v-for="option in equipmentTypeOptions"
           :key="option.id"
@@ -24,17 +24,19 @@
           {{ t('enchant-doll.equipment.original-potential.title') }}
         </cy-icon-text>
       </div>
-      <div class="mt-1 text-sm pl-4">
+      <div class="mt-1 pl-4 text-sm">
         {{ t('enchant-doll.equipment.original-potential.caption') }}
       </div>
-      <div class="mt-4 flex justify-center flex-wrap">
-        <cy-button-check v-model:selected="equipmentState.autoFindPotentialMinimum">
+      <div class="mt-4 flex flex-wrap justify-center">
+        <cy-button-check
+          v-model:selected="equipmentState.autoFindPotentialMinimum"
+        >
           {{ t('enchant-doll.equipment.original-potential.auto-find-minimum') }}
         </cy-button-check>
       </div>
       <div
         v-if="!equipmentState.autoFindPotentialMinimum"
-        class="py-4 pl-4 flex justify-center"
+        class="flex justify-center py-4 pl-4"
       >
         <cy-input-counter
           v-model:value="currentEquipment.originalPotential"
@@ -50,7 +52,11 @@
       </div>
       <div class="flex justify-center pt-2">
         <cy-button-plain
-          :icon="contents.setConfig ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
+          :icon="
+            contents.setConfig
+              ? 'akar-icons:circle-chevron-up'
+              : 'akar-icons:circle-chevron-down'
+          "
           :selected="contents.setConfig"
           color="secondary"
           @click="toggle('contents/setConfig')"
@@ -66,18 +72,22 @@
             main-color="blue-30"
           >
             <template #title>
-              <cy-icon-text>{{ t('enchant-simulator.character-level') }}</cy-icon-text>
+              <cy-icon-text>{{
+                t('enchant-simulator.character-level')
+              }}</cy-icon-text>
             </template>
           </cy-input-counter>
         </div>
-        <div class="pt-2 flex justify-center">
+        <div class="flex justify-center pt-2">
           <cy-input-counter
             v-model:value="config.smithLevel"
             :step="10"
             main-color="blue-30"
           >
             <template #title>
-              <cy-icon-text>{{ t('enchant-simulator.smith-level') }}</cy-icon-text>
+              <cy-icon-text>{{
+                t('enchant-simulator.smith-level')
+              }}</cy-icon-text>
             </template>
           </cy-input-counter>
         </div>
@@ -95,7 +105,10 @@
         />
       </cy-transition>
     </div>
-    <div v-if="stepCounter > StepContents.Equipment" class="flex justify-center mb-4">
+    <div
+      v-if="stepCounter > StepContents.Equipment"
+      class="mb-4 flex justify-center"
+    >
       <cy-button-action
         icon="mdi-leaf"
         color="orange"
@@ -114,20 +127,23 @@
             {{ t('enchant-doll.select-positives.title') }}
           </cy-icon-text>
         </div>
-        <div class="mt-1 text-sm pl-4">
+        <div class="mt-1 pl-4 text-sm">
           {{ t('enchant-doll.select-positives.caption') }}
         </div>
-        <div class="flex justify-center my-4">
-          <div class="mt-2 border border-fuchsia-60 max-w-xs">
+        <div class="my-4 flex justify-center">
+          <div class="mt-2 max-w-xs border border-fuchsia-60">
             <template v-if="doll.positiveStats.length !== 0">
-              <cy-list-item v-for="stat in doll.positiveStats" :key="stat.statId">
+              <cy-list-item
+                v-for="stat in doll.positiveStats"
+                :key="stat.statId"
+              >
                 <cy-icon-text
                   :text-color="stat.value >= 0 ? 'primary-90' : 'orange-60'"
                   class="w-full"
                 >
                   {{ stat.showAmount() }}
                 </cy-icon-text>
-                <div class="flex items-center w-full mt-1">
+                <div class="mt-1 flex w-full items-center">
                   <cy-input-counter
                     v-model:value="stat.value"
                     inline
@@ -161,14 +177,18 @@
             {{ t('enchant-doll.select-item') }}
           </cy-button-action>
         </div>
-        <div class="flex justify-center mt-4">
+        <div class="mt-4 flex justify-center">
           <cy-button-check v-model:selected="selectPositiveStatState.autoFill">
             {{ t('enchant-doll.select-positives.auto-fill') }}
           </cy-button-check>
         </div>
         <div class="flex justify-center pt-4">
           <cy-button-plain
-            :icon="contents.positiveShorthand ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
+            :icon="
+              contents.positiveShorthand
+                ? 'akar-icons:circle-chevron-up'
+                : 'akar-icons:circle-chevron-down'
+            "
             :selected="contents.positiveShorthand"
             color="secondary"
             @click="toggle('contents/positiveShorthand')"
@@ -182,7 +202,7 @@
               <cy-title-input
                 v-model:value="positiveStatsShorthand"
                 class="max-w-sm"
-                icon=ic:round-text-format
+                icon="ic:round-text-format"
                 @keyup.enter="appendPositiveShortHandStats"
               />
               <cy-button-circle
@@ -193,14 +213,18 @@
                 @click="appendPositiveShortHandStats"
               />
             </div>
-            <div v-if="positiveShortHandStatItems.length > 0" class="text-primary-50 px-1 pt-1">
-              <div v-for="{ origin, type, value } in positiveShortHandStatItems" :key="origin.statBase.statId(type)">
+            <div
+              v-if="positiveShortHandStatItems.length > 0"
+              class="px-1 pt-1 text-primary-50"
+            >
+              <div
+                v-for="{ origin, type, value } in positiveShortHandStatItems"
+                :key="origin.statBase.statId(type)"
+              >
                 {{ origin.statBase.show(type, value) }}
               </div>
             </div>
-            <div v-else class="text-primary-30 text-center">
-              ex: AD3CD%CDC
-            </div>
+            <div v-else class="text-center text-primary-30">ex: AD3CD%CDC</div>
           </div>
         </div>
         <cy-transition>
@@ -212,7 +236,10 @@
         </cy-transition>
       </div>
     </cy-transition>
-    <div v-if="stepCounter > StepContents.SelectPositiveStat" class="flex justify-center mb-4">
+    <div
+      v-if="stepCounter > StepContents.SelectPositiveStat"
+      class="mb-4 flex justify-center"
+    >
       <cy-button-action
         icon="mdi-leaf"
         color="orange"
@@ -231,7 +258,7 @@
             {{ t('enchant-doll.select-negatives.title') }}
           </cy-icon-text>
         </div>
-        <div class="mt-1 text-sm pl-4 pb-2">
+        <div class="mt-1 pl-4 pb-2 text-sm">
           {{ t('enchant-doll.select-negatives.caption') }}
         </div>
         <div class="mt-1 ml-4 mr-2">
@@ -254,14 +281,21 @@
             {{ t('enchant-doll.select-negatives.tips-1') }}
           </cy-icon-text>
         </div>
-        <div v-if="equipmentState.autoFindPotentialMinimum" class="mt-1 ml-4 mr-2">
+        <div
+          v-if="equipmentState.autoFindPotentialMinimum"
+          class="mt-1 ml-4 mr-2"
+        >
           <cy-icon-text
             icon="ic-outline-info"
             small
             text-color="blue-60"
             icon-color="blue-30"
           >
-            {{ t('enchant-doll.tips.performance.auto-find-original-potential-minimum-and-auto-find-negatives') }}
+            {{
+              t(
+                'enchant-doll.tips.performance.auto-find-original-potential-minimum-and-auto-find-negatives'
+              )
+            }}
           </cy-icon-text>
         </div>
         <div class="mt-4 mb-6 flex flex-col items-center">
@@ -276,7 +310,11 @@
               v-model:selected="doll.config.containsNaturalMpRegenConstant"
             >
               <span class="text-primary-30">
-                {{ t('enchant-doll.select-negatives.contains-natural-mp-regen-constant') }}
+                {{
+                  t(
+                    'enchant-doll.select-negatives.contains-natural-mp-regen-constant'
+                  )
+                }}
               </span>
             </cy-button-toggle>
           </div>
@@ -285,45 +323,74 @@
           <template v-if="currentEquipmentType === 1">
             <div>
               <cy-icon-text icon="gg-menu-left-alt" text-color="fuchsia-60">
-                {{ t('enchant-doll.select-negatives.select-config.base-type.title') }}
+                {{
+                  t(
+                    'enchant-doll.select-negatives.select-config.base-type.title'
+                  )
+                }}
               </cy-icon-text>
             </div>
-            <div class="mt-1 text-sm pl-4">
-              {{ t('enchant-doll.select-negatives.select-config.base-type.caption') }}
+            <div class="mt-1 pl-4 text-sm">
+              {{
+                t(
+                  'enchant-doll.select-negatives.select-config.base-type.caption'
+                )
+              }}
             </div>
-            <div class="py-4 pl-2 flex justify-center flex-wrap">
+            <div class="flex flex-wrap justify-center py-4 pl-2">
               <cy-button-radio
                 v-for="option in dollConfigOptions.baseType"
                 :key="option"
                 :selected="doll.config.baseType === option"
                 @click="doll.config.baseType = option"
               >
-                {{ t('enchant-doll.select-negatives.select-config.base-type.option-texts.' + option) }}
+                {{
+                  t(
+                    'enchant-doll.select-negatives.select-config.base-type.option-texts.' +
+                      option
+                  )
+                }}
               </cy-button-radio>
             </div>
           </template>
           <div>
             <cy-icon-text icon="gg-menu-left-alt" text-color="fuchsia-60">
-              {{ t('enchant-doll.select-negatives.select-config.auto-find-negatives.title') }}
+              {{
+                t(
+                  'enchant-doll.select-negatives.select-config.auto-find-negatives.title'
+                )
+              }}
             </cy-icon-text>
           </div>
-          <div class="mt-1 text-sm pl-4">
-            {{ t('enchant-doll.select-negatives.select-config.auto-find-negatives.caption') }}
+          <div class="mt-1 pl-4 text-sm">
+            {{
+              t(
+                'enchant-doll.select-negatives.select-config.auto-find-negatives.caption'
+              )
+            }}
           </div>
-          <div class="py-4 pl-2 flex justify-center flex-wrap">
+          <div class="flex flex-wrap justify-center py-4 pl-2">
             <cy-button-radio
               v-for="option in dollConfigOptions.autoFindNegaitveStatsType"
               :key="option"
               :selected="doll.config.autoFindNegaitveStatsType === option"
               @click="doll.config.autoFindNegaitveStatsType = option"
             >
-              {{ t('enchant-doll.select-negatives.select-config.auto-find-negatives.option-texts.' + option) }}
+              {{
+                t(
+                  'enchant-doll.select-negatives.select-config.auto-find-negatives.option-texts.' +
+                    option
+                )
+              }}
             </cy-button-radio>
           </div>
         </template>
         <div
-          v-if="selectNegativeStatState.auto && autoNegativeStats.length < doll.numNegativeStats"
-          class="flex justify-center mt-4"
+          v-if="
+            selectNegativeStatState.auto &&
+            autoNegativeStats.length < doll.numNegativeStats
+          "
+          class="mt-4 flex justify-center"
         >
           <div>
             <cy-icon-text small icon-color="blue-60" class="mr-4">
@@ -334,18 +401,20 @@
             </cy-icon-text>
           </div>
         </div>
-        <div class="flex justify-center mb-4">
-          <div class="mt-2 border border-fuchsia-60 max-w-xs">
+        <div class="mb-4 flex justify-center">
+          <div class="mt-2 max-w-xs border border-fuchsia-60">
             <template v-if="negativeStats.length !== 0">
               <cy-list-item v-for="stat in negativeStats" :key="stat.statId">
                 <cy-icon-text
                   :text-color="stat.value >= 0 ? 'primary-90' : 'orange-60'"
-                  :icon-color="autoNegativeStats.includes(stat) ? 'blue-60' : 'primary-30'"
+                  :icon-color="
+                    autoNegativeStats.includes(stat) ? 'blue-60' : 'primary-30'
+                  "
                   class="w-full"
                 >
                   {{ stat.showAmount() }}
                 </cy-icon-text>
-                <div class="flex items-center flex-wrap w-full mt-1">
+                <div class="mt-1 flex w-full flex-wrap items-center">
                   <cy-input-counter
                     v-model:value="stat.value"
                     :disabled="autoNegativeStats.includes(stat)"
@@ -374,7 +443,10 @@
           </div>
         </div>
         <div
-          v-if="!selectNegativeStatState.auto || negativeStats.length < doll.numNegativeStats"
+          v-if="
+            !selectNegativeStatState.auto ||
+            negativeStats.length < doll.numNegativeStats
+          "
           class="text-center"
         >
           <cy-button-action
@@ -383,7 +455,13 @@
           >
             {{ t('enchant-doll.select-item') }}
           </cy-button-action>
-          <div v-if="selectNegativeStatState.auto && autoNegativeStats.length < doll.numNegativeStats" class="mt-2">
+          <div
+            v-if="
+              selectNegativeStatState.auto &&
+              autoNegativeStats.length < doll.numNegativeStats
+            "
+            class="mt-2"
+          >
             <div>
               <cy-icon-text
                 icon="ic-outline-info"
@@ -391,11 +469,17 @@
                 text-color="blue-60"
                 icon-color="blue-30"
               >
-                {{ t('enchant-doll.select-negatives.stats-from-auto-not-enough.0') }}
+                {{
+                  t(
+                    'enchant-doll.select-negatives.stats-from-auto-not-enough.0'
+                  )
+                }}
               </cy-icon-text>
             </div>
-            <div class="text-blue-60 text-sm">
-              {{ t('enchant-doll.select-negatives.stats-from-auto-not-enough.1') }}
+            <div class="text-sm text-blue-60">
+              {{
+                t('enchant-doll.select-negatives.stats-from-auto-not-enough.1')
+              }}
             </div>
           </div>
         </div>
@@ -408,7 +492,10 @@
         </cy-transition>
       </div>
     </cy-transition>
-    <div v-if="stepCounter > StepContents.SelectNegativeStat" class="flex justify-center mb-4">
+    <div
+      v-if="stepCounter > StepContents.SelectNegativeStat"
+      class="mb-4 flex justify-center"
+    >
       <cy-button-action
         icon="mdi-leaf"
         color="orange"
@@ -427,12 +514,12 @@
             {{ t('enchant-doll.result.title') }}
           </cy-icon-text>
         </div>
-        <div class="mt-1 text-sm pl-4">
+        <div class="mt-1 pl-4 text-sm">
           {{ t('enchant-doll.result.caption') }}
         </div>
         <div
           v-if="equipmentState.autoFindPotentialMinimum"
-          class="mt-6 flex justify-center items-center"
+          class="mt-6 flex items-center justify-center"
         >
           <cy-icon-text icon="bx-bx-star" class="mr-3">
             {{ t('enchant-doll.result.current-potential-is') }}
@@ -442,9 +529,11 @@
           </span>
         </div>
         <div
-          v-if="equipmentState.autoFindPotentialMinimum &&
+          v-if="
+            equipmentState.autoFindPotentialMinimum &&
             resultEquipment.originalPotential === 99 &&
-            resultEquipment.realSuccessRate < 100"
+            resultEquipment.realSuccessRate < 100
+          "
           class="mt-2 flex justify-center"
         >
           <cy-icon-text
@@ -453,11 +542,15 @@
             text-color="blue-60"
             icon-color="blue-30"
           >
-            {{ t('enchant-doll.tips.cannot-auto-find-original-potential-minimum') }}
+            {{
+              t('enchant-doll.tips.cannot-auto-find-original-potential-minimum')
+            }}
           </cy-icon-text>
         </div>
         <div class="mt-6 mb-4 flex justify-center">
-          <div class="border-1 border-fuchsia-60 rounded-lg pt-3 pb-5 pl-4 pr-6 bg-white">
+          <div
+            class="rounded-lg border-1 border-fuchsia-60 bg-white pt-3 pb-5 pl-4 pr-6"
+          >
             <EnchantResult :equipment="resultEquipment" />
           </div>
         </div>
@@ -466,7 +559,7 @@
             {{ t('enchant-doll.export-result.title') }}
           </cy-icon-text>
         </div>
-        <div class="mt-1 text-sm pl-4">
+        <div class="mt-1 pl-4 text-sm">
           {{ t('enchant-doll.export-result.caption') }}
         </div>
         <div class="mt-4 flex justify-center">
@@ -497,7 +590,11 @@
         <template v-if="doll.lastResults.length > 1 && mainStore.devMode">
           <div class="flex justify-center pt-4">
             <cy-button-plain
-              :icon="contents.selectOtherResults ? 'akar-icons:circle-chevron-up' : 'akar-icons:circle-chevron-down'"
+              :icon="
+                contents.selectOtherResults
+                  ? 'akar-icons:circle-chevron-up'
+                  : 'akar-icons:circle-chevron-down'
+              "
               :selected="contents.selectOtherResults"
               color="secondary"
               @click="toggle('contents/selectOtherResults')"
@@ -505,7 +602,10 @@
               {{ t('enchant-doll.result.select-other-result') }}
             </cy-button-plain>
           </div>
-          <div v-if="contents.selectOtherResults" class="divide-y divide-light px-0.5">
+          <div
+            v-if="contents.selectOtherResults"
+            class="divide-light divide-y px-0.5"
+          >
             <div v-for="(result, idx) in doll.lastResults" :key="idx">
               <EnchantDollResultItem
                 :result="result"
@@ -517,7 +617,9 @@
         </template>
       </div>
     </cy-transition>
-    <div class="flex items-center justify-center border-t border-fuchsia-60 mt-12 pt-4 relative">
+    <div
+      class="relative mt-12 flex items-center justify-center border-t border-fuchsia-60 pt-4"
+    >
       <cy-button-action
         v-if="stepCounter !== 3"
         icon="mdi-leaf"
@@ -527,18 +629,19 @@
       >
         {{ t('enchant-doll.next-step') }}
       </cy-button-action>
-      <span :class="{ 'absolute': stepCounter !== 3, 'right-0': stepCounter !== 3 }">
-        <cy-button-action
-          icon="bx-bx-reset"
-          color="gray"
-          @click="reset"
-        >
+      <span
+        :class="{ 'absolute': stepCounter !== 3, 'right-0': stepCounter !== 3 }"
+      >
+        <cy-button-action icon="bx-bx-reset" color="gray" @click="reset">
           {{ t('global.reset') }}
         </cy-button-action>
       </span>
     </div>
     <div
-      v-if="equipmentState.autoFindPotentialMinimum && stepCounter === StepContents.SelectNegativeStat"
+      v-if="
+        equipmentState.autoFindPotentialMinimum &&
+        stepCounter === StepContents.SelectNegativeStat
+      "
       class="my-2 flex justify-center"
     >
       <cy-icon-text
@@ -547,13 +650,17 @@
         text-color="blue-60"
         icon-color="blue-30"
       >
-        {{ t('enchant-doll.tips.performance.auto-find-original-potential-minimum') }}
+        {{
+          t(
+            'enchant-doll.tips.performance.auto-find-original-potential-minimum'
+          )
+        }}
       </cy-icon-text>
     </div>
     <div
       v-if="stepCounter === StepContents.Equipment"
       ref="top"
-      class="text-primary-50 text-sm text-center px-8 py-8 space-y-2"
+      class="space-y-2 px-8 py-8 text-center text-sm text-primary-50"
     >
       <div>{{ t('enchant-doll.top-caption.0') }}</div>
       <div>{{ t('enchant-doll.top-caption.1') }}</div>
@@ -578,24 +685,31 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, nextTick, reactive, ref, Ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
+import { Ref, computed, nextTick, reactive, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { useEnchantStore } from '@/stores/views/enchant'
 import { useMainStore } from '@/stores/app/main'
+import { useEnchantStore } from '@/stores/views/enchant'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { EnchantBuild, EnchantEquipment, EnchantStat } from '@/lib/Enchant/Enchant'
+import {
+  EnchantBuild,
+  EnchantEquipment,
+  EnchantStat,
+} from '@/lib/Enchant/Enchant'
 import EnchantDoll from '@/lib/Enchant/Enchant/doll'
+import {
+  AutoFindNegaitveStatsTypes,
+  EnchantDollBaseTypes,
+} from '@/lib/Enchant/Enchant/doll/enums'
 import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
-import { AutoFindNegaitveStatsTypes, EnchantDollBaseTypes } from '@/lib/Enchant/Enchant/doll/enums'
 
-import ToggleService from '@/setup/ToggleService'
-import Notify from '@/setup/Notify'
-import Confirm from '@/setup/Confirm'
 import AutoSave from '@/setup/AutoSave'
+import Confirm from '@/setup/Confirm'
+import Notify from '@/setup/Notify'
+import ToggleService from '@/setup/ToggleService'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
@@ -605,7 +719,6 @@ import EnchantDollResultItem from './enchant-doll-result-item.vue'
 
 import { EnchantStatOptionBase } from '../EnchantSimulator/setup'
 import { setupParseEnchantShorthand } from './setup'
-
 
 const { windows, contents, toggle } = ToggleService({
   windows: ['selectItem'] as const,
@@ -640,7 +753,9 @@ const enum SelectItemModes {
 const doll = ref(new EnchantDoll()) as Ref<EnchantDoll>
 const stepCounter = ref(StepContents.Equipment)
 const selectItemMode: Ref<SelectItemModes> = ref(SelectItemModes.None)
-const autoNegativeStatsData: Ref<ReturnType<EnchantDoll['autoFindNegaitveStats']> | null> = ref(null)
+const autoNegativeStatsData: Ref<ReturnType<
+  EnchantDoll['autoFindNegaitveStats']
+> | null> = ref(null)
 const resultEquipment: Ref<EnchantEquipment | null> = ref(null)
 const positiveStatsShorthand = ref('')
 
@@ -665,8 +780,8 @@ const selectNegativeStatState = reactive({
   auto: false,
   manually: [],
 }) as {
-  auto: boolean;
-  manually: EnchantStat[];
+  auto: boolean
+  manually: EnchantStat[]
 }
 
 const dollConfigOptions = {
@@ -681,30 +796,39 @@ const dollConfigOptions = {
   ],
 }
 
-const equipmentTypeOptions = [{
-  id: 0,
-  text: t('enchant-simulator.equipment-types.main-weapon'),
-  type: EnchantEquipmentTypes.MainWeapon,
-  isOriginalElement: false,
-}, {
-  id: 1,
-  text: t('enchant-simulator.equipment-types.body-armor'),
-  type: EnchantEquipmentTypes.BodyArmor,
-  isOriginalElement: false,
-}, {
-  id: 2,
-  text: t('enchant-simulator.equipment-types.main-weapon_original-element'),
-  type: EnchantEquipmentTypes.MainWeapon,
-  isOriginalElement: true,
-}]
+const equipmentTypeOptions = [
+  {
+    id: 0,
+    text: t('enchant-simulator.equipment-types.main-weapon'),
+    type: EnchantEquipmentTypes.MainWeapon,
+    isOriginalElement: false,
+  },
+  {
+    id: 1,
+    text: t('enchant-simulator.equipment-types.body-armor'),
+    type: EnchantEquipmentTypes.BodyArmor,
+    isOriginalElement: false,
+  },
+  {
+    id: 2,
+    text: t('enchant-simulator.equipment-types.main-weapon_original-element'),
+    type: EnchantEquipmentTypes.MainWeapon,
+    isOriginalElement: true,
+  },
+]
 
 const currentEquipment = computed(() => doll.value.build.equipment)
 
-const equipmentIsWeapon = computed(() => currentEquipment.value.fieldType === EnchantEquipmentTypes.MainWeapon)
+const equipmentIsWeapon = computed(
+  () => currentEquipment.value.fieldType === EnchantEquipmentTypes.MainWeapon
+)
 
-const autoNegativeStats = computed(() => autoNegativeStatsData.value ? autoNegativeStatsData.value.stats : [])
+const autoNegativeStats = computed(() =>
+  autoNegativeStatsData.value ? autoNegativeStatsData.value.stats : []
+)
 
-const { enchantShortHandStatItems: positiveShortHandStatItems } = setupParseEnchantShorthand(positiveStatsShorthand)
+const { enchantShortHandStatItems: positiveShortHandStatItems } =
+  setupParseEnchantShorthand(positiveStatsShorthand)
 const appendPositiveShortHandStats = () => {
   positiveShortHandStatItems.value.forEach(({ origin, type, value }) => {
     if (doll.value.hasPositiveStat(origin, type)) {
@@ -748,12 +872,16 @@ const currentEquipmentType = computed<number>({
   },
 })
 
-const toItem = (stat: EnchantStat) => ({ origin: stat.itemBase, type: stat.type })
+const toItem = (stat: EnchantStat) => ({
+  origin: stat.itemBase,
+  type: stat.type,
+})
 
 const selectedItems = computed(() => {
   const posItems = doll.value.positiveStats.map(toItem)
-  const negItems = selectNegativeStatState.auto ? [] :
-    selectNegativeStatState.manually.map(toItem)
+  const negItems = selectNegativeStatState.auto
+    ? []
+    : selectNegativeStatState.manually.map(toItem)
   return [...posItems, ...negItems] as EnchantStatOptionBase[]
 })
 
@@ -764,20 +892,27 @@ const disabledItems = computed(() => {
   return []
 })
 
-const autoFindNegaitveStats = async (manuallyStats: EnchantStat[], originalPotentialUnknow = false) => {
+const autoFindNegaitveStats = async (
+  manuallyStats: EnchantStat[],
+  originalPotentialUnknow = false
+) => {
   autoNegativeStatsData.value = null
   loading.show()
   await nextTick()
   setTimeout(() => {
     try {
       if (originalPotentialUnknow) {
-        autoNegativeStatsData.value = doll.value.autoFindNegaitveStats(manuallyStats, 99)
+        autoNegativeStatsData.value = doll.value.autoFindNegaitveStats(
+          manuallyStats,
+          99
+        )
         // if (this.autoNegativeStatsData.realSuccessRate >= 100) {
         //   this.autoFindPotentialMinimumEquipment();
         //   this.autoNegativeStatsData = doll.value.autoFindNegaitveStats(manuallyStats);
         // }
       } else {
-        autoNegativeStatsData.value = doll.value.autoFindNegaitveStats(manuallyStats)
+        autoNegativeStatsData.value =
+          doll.value.autoFindNegaitveStats(manuallyStats)
       }
     } catch (err) {
       console.warn('[enchant-doll] unknown error when auto find negative stats')
@@ -810,7 +945,8 @@ const autoFindPotentialMinimumEquipment = () => {
   if (autoNegativeStatsData.value?.equipment) {
     const data = autoNegativeStatsData.value
     if (data.realSuccessRate < 100) {
-      currentEquipment.value.originalPotential = consts.autoFindPotentialMinimumLimit
+      currentEquipment.value.originalPotential =
+        consts.autoFindPotentialMinimumLimit
       return data.equipment
     }
   }
@@ -838,7 +974,10 @@ const exportResult = () => {
   if (!resultEquipment.value) {
     return
   }
-  const build = new EnchantBuild(exportState.name, resultEquipment.value.clone(Grimoire.Enchant.categorys))
+  const build = new EnchantBuild(
+    exportState.name,
+    resultEquipment.value.clone(Grimoire.Enchant.categorys)
+  )
   store.exportDollBuild(build)
   exportState.hasExport = true
 }
@@ -854,7 +993,10 @@ const reset = async () => {
 }
 
 const removePositiveStat = (stat: EnchantStat) => {
-  if (stepCounter.value !== StepContents.SelectPositiveStat && doll.value.positiveStats.length === 1) {
+  if (
+    stepCounter.value !== StepContents.SelectPositiveStat &&
+    doll.value.positiveStats.length === 1
+  ) {
     notify(t('enchant-doll.tips.at-least-one-positive'))
     return
   }
@@ -884,11 +1026,16 @@ const nextStep = async () => {
     const physicals = ['atk', 'physical_pierce']
     const magic = ['matk', 'magic_pierce']
     let current = EnchantDollBaseTypes.None
-    if (doll.value.positiveStats.find(stat => physicals.includes(stat.baseId))) {
+    if (
+      doll.value.positiveStats.find(stat => physicals.includes(stat.baseId))
+    ) {
       current = EnchantDollBaseTypes.Physical
     }
     if (doll.value.positiveStats.find(stat => magic.includes(stat.baseId))) {
-      current = current === EnchantDollBaseTypes.Physical ? EnchantDollBaseTypes.None : EnchantDollBaseTypes.Magic
+      current =
+        current === EnchantDollBaseTypes.Physical
+          ? EnchantDollBaseTypes.None
+          : EnchantDollBaseTypes.Magic
     }
     doll.value.config.baseType = current
   } else if (stepCounter.value === StepContents.SelectNegativeStat) {
@@ -904,8 +1051,10 @@ const nextStep = async () => {
         doll.value.optimizeResults()
         await nextTick()
         stepCounter.value += 1
-      } catch(err) {
-        console.warn('[enchant-doll] some error when auto find potential minimum')
+      } catch (err) {
+        console.warn(
+          '[enchant-doll] some error when auto find potential minimum'
+        )
         console.log(err)
         notify(t('enchant-doll.tips.unknown-error-when-calc'))
       } finally {
@@ -936,7 +1085,9 @@ const selectItem = (item: EnchantStatOptionBase) => {
       doll.value.removePositiveStat(findPosStat)
       return
     }
-    const value = selectPositiveStatState.autoFill ? item.origin.getLimit(item.type)[1] : 1
+    const value = selectPositiveStatState.autoFill
+      ? item.origin.getLimit(item.type)[1]
+      : 1
     if (!doll.value.appendPositiveStat(item.origin, item.type, value)) {
       notify(t('enchant-doll.tips.stats-reached-upper-limit'))
     }
@@ -946,7 +1097,9 @@ const selectItem = (item: EnchantStatOptionBase) => {
       notify(t('enchant-doll.tips.stat-repeated'))
       return
     }
-    const findNegStat = nstats.find(stat => stat.itemBase === item.origin && stat.type === item.type)
+    const findNegStat = nstats.find(
+      stat => stat.itemBase === item.origin && stat.type === item.type
+    )
     if (findNegStat) {
       removeNegativeStat(findNegStat)
       return
@@ -955,19 +1108,34 @@ const selectItem = (item: EnchantStatOptionBase) => {
       notify(t('enchant-doll.tips.stats-reached-upper-limit'))
       return
     }
-    selectNegativeStatState.manually.push(new EnchantStat(item.origin, item.type, item.origin.getLimit(item.type)[0]))
+    selectNegativeStatState.manually.push(
+      new EnchantStat(
+        item.origin,
+        item.type,
+        item.origin.getLimit(item.type)[0]
+      )
+    )
   }
 }
 
-watch(computed(() => selectNegativeStatState.auto), newv => {
-  updateAutoFindNegativeStats(newv)
-})
-watch(computed(() => doll.value.config.containsNaturalMpRegenConstant), newv => {
-  updateAutoFindNegativeStats(selectNegativeStatState.auto)
-})
-watch(computed(() => doll.value.config.baseType), () => {
-  updateAutoFindNegativeStats(selectNegativeStatState.auto)
-})
+watch(
+  computed(() => selectNegativeStatState.auto),
+  newv => {
+    updateAutoFindNegativeStats(newv)
+  }
+)
+watch(
+  computed(() => doll.value.config.containsNaturalMpRegenConstant),
+  newv => {
+    updateAutoFindNegativeStats(selectNegativeStatState.auto)
+  }
+)
+watch(
+  computed(() => doll.value.config.baseType),
+  () => {
+    updateAutoFindNegativeStats(selectNegativeStatState.auto)
+  }
+)
 </script>
 
 <style lang="postcss" scoped>
@@ -981,7 +1149,7 @@ watch(computed(() => doll.value.config.baseType), () => {
   }
 
   & > .disabled-mask {
-    @apply absolute w-full h-full z-5 cursor-not-allowed top-0 left-0;
+    @apply absolute top-0 left-0 z-5 h-full w-full cursor-not-allowed;
 
     background-color: rgba(var(--app-rgb-white), 0.6);
   }

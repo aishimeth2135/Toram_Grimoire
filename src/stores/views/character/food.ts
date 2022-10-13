@@ -1,6 +1,6 @@
+import { defineStore } from 'pinia'
 import { computed, markRaw, readonly, ref } from 'vue'
 import type { Ref } from 'vue'
-import { defineStore } from 'pinia'
 
 import Grimoire from '@/shared/Grimoire'
 
@@ -15,7 +15,9 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
     foodsBase.value = markRaw(new FoodsBase())
   }
 
-  const currentFoodBuild = computed(() => foodBuilds.value[currentFoodBuildIndex.value])
+  const currentFoodBuild = computed(
+    () => foodBuilds.value[currentFoodBuildIndex.value]
+  )
 
   const setCurrentFoodBuild = (idx: number | FoodBuild | null) => {
     if (idx === null) {
@@ -28,8 +30,18 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
     currentFoodBuildIndex.value = idx
   }
 
-  const createFoodBuild = ({ name, foodBuild }: { name?: string; foodBuild?: FoodBuild } = {}, updateIndex = true) => {
-    const build = foodBuild ?? foodsBase.value!.createFoods(name || (Grimoire.i18n.t('character-simulator.food-build.food-build') + ' ' + (foodBuilds.value.length + 1)))
+  const createFoodBuild = (
+    { name, foodBuild }: { name?: string; foodBuild?: FoodBuild } = {},
+    updateIndex = true
+  ) => {
+    const build =
+      foodBuild ??
+      foodsBase.value!.createFoods(
+        name ||
+          Grimoire.i18n.t('character-simulator.food-build.food-build') +
+            ' ' +
+            (foodBuilds.value.length + 1)
+      )
     foodBuilds.value.push(build)
     if (updateIndex) {
       currentFoodBuildIndex.value = foodBuilds.value.length - 1
@@ -61,4 +73,3 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
     resetFoodBuilds,
   }
 })
-

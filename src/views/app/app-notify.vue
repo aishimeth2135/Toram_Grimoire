@@ -1,15 +1,18 @@
 <template>
   <teleport to="#app-notify">
-    <div class="fixed bottom-14 right-5 w-80 z-100" style="max-width: calc(100vw - 2rem)">
+    <div
+      class="fixed bottom-14 right-5 z-100 w-80"
+      style="max-width: calc(100vw - 2rem)"
+    >
       <transition-group name="fade-slide">
         <div
           v-for="msg in store.messages"
           :key="msg.iid"
-          class="duration-300 bg-primary-90 text-white p-3 flex items-center mt-4 rounded w-full flex-wrap relative"
+          class="relative mt-4 flex w-full flex-wrap items-center rounded bg-primary-90 p-3 text-white duration-300"
         >
           <span
             v-if="msg.counter > 1"
-            class="inline-flex justify-center items-center w-8 h-8 bg-primary-90 rounded-full border border-solid border-primary-30 text-primary-30 absolute -right-4 -top-4"
+            class="absolute -right-4 -top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border border-solid border-primary-30 bg-primary-90 text-primary-30"
           >
             <span>{{ msg.counter }}</span>
           </span>
@@ -25,7 +28,7 @@
             <span
               v-for="btn in msg.options.buttons"
               :key="btn.iid"
-              class="cursor-pointer ml-3 text-primary-30 text-right hover:text-primary-30"
+              class="ml-3 cursor-pointer text-right text-primary-30 hover:text-primary-30"
               @click="messageButtonClick(msg, btn)"
             >
               {{ btn.text || '|' + btn.iid + '|' }}
@@ -45,11 +48,17 @@ export default {
 
 <script lang="ts" setup>
 import { useNotifyStore } from '@/stores/app/notify'
-import type { NotifyMessageItem, MessageNotifyButtonItemWithId } from '@/stores/app/notify'
+import type {
+  MessageNotifyButtonItemWithId,
+  NotifyMessageItem,
+} from '@/stores/app/notify'
 
 const store = useNotifyStore()
 
-const messageButtonClick = (msg: NotifyMessageItem, btn: MessageNotifyButtonItemWithId) => {
+const messageButtonClick = (
+  msg: NotifyMessageItem,
+  btn: MessageNotifyButtonItemWithId
+) => {
   btn?.click()
   if (btn.removeMessageAfterClick) {
     store.removeMessage(msg)

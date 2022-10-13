@@ -1,12 +1,14 @@
 <template>
-  <div class="flex justify-center bg-white border border-primary-30 rounded-full p-1.5 flex-shrink-0">
+  <div
+    class="flex flex-shrink-0 justify-center rounded-full border border-primary-30 bg-white p-1.5"
+  >
     <cy-icon-text :icon="icon" icon-color="primary-30" />
   </div>
 </template>
 
 <script lang="ts" setup>
 interface Props {
-  icon: string;
+  icon: string
 }
 
 defineProps<Props>()

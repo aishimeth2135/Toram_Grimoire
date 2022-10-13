@@ -3,9 +3,9 @@ import { isNumberString } from '@/shared/utils/string'
 
 import { SkillBranch } from '@/lib/Skill/Skill'
 
-import { StatTypes, StatValueSourceTypes } from './enums'
 import { CharacterEquipment, EquipmentCrystal } from '../CharacterEquipment'
 import { Food } from '../Food'
+import { StatTypes, StatValueSourceTypes } from './enums'
 
 type StatValue = number | string
 class StatBase {
@@ -25,7 +25,12 @@ class StatBase {
   hidden: boolean
   devOnly: boolean
 
-  constructor(baseId: string, text: string, hasMultiplier: boolean, order: number) {
+  constructor(
+    baseId: string,
+    text: string,
+    hasMultiplier: boolean,
+    order: number
+  ) {
     this.baseId = baseId
     this.text = text
     this.hasMultiplier = hasMultiplier
@@ -52,7 +57,9 @@ class StatBase {
   }
 
   show(type: StatTypes, value: StatValue): string {
-    const calc = (typeof value === 'string' && isNumberString(value)) || typeof value === 'number'
+    const calc =
+      (typeof value === 'string' && isNumberString(value)) ||
+      typeof value === 'number'
     if (typeof value !== 'number' && calc) {
       value = parseFloat(value)
     }
@@ -67,22 +74,31 @@ class StatBase {
       if (typeof value === 'number') {
         res = res
           .replace('$v', (calc ? Math.floor(value) : value).toString())
-          .replace(/\$(\d+)d/, (match, p1) => (value as number).toFixed(parseInt(p1, 10)))
+          .replace(/\$(\d+)d/, (match, p1) =>
+            (value as number).toFixed(parseInt(p1, 10))
+          )
       }
       return res
     }
     switch (type) {
       case StatTypes.Constant:
-        return handleFormula(this.constantDisplayFormat, this.hasMultiplier ? '' : '%')
+        return handleFormula(
+          this.constantDisplayFormat,
+          this.hasMultiplier ? '' : '%'
+        )
       case StatTypes.Multiplier:
         return handleFormula(this.multiplierDisplayFormat, '%')
       case StatTypes.Total:
-        return handleFormula(Grimoire.i18n.t('common.Stat.type-total', { text: '$t$s$v$u' }), '%')
+        return handleFormula(
+          Grimoire.i18n.t('common.Stat.type-total', { text: '$t$s$v$u' }),
+          '%'
+        )
     }
   }
 
   getShowData(type: StatTypes, value: StatValue) {
-    let title = '', tail = ''
+    let title = '',
+      tail = ''
     if (type === StatTypes.Constant) {
       title = this.text
       if (!this.hasMultiplier && this.constantDisplayFormat.includes('$u')) {
@@ -208,8 +224,12 @@ class Stat extends StatElementBase {
   }
 }
 
-
-type StatValueSourceDetails = SkillBranch | CharacterEquipment | EquipmentCrystal | Food | null
+type StatValueSourceDetails =
+  | SkillBranch
+  | CharacterEquipment
+  | EquipmentCrystal
+  | Food
+  | null
 class StatValueSource {
   readonly src: StatValueSourceDetails
   readonly type: StatValueSourceTypes | null
@@ -242,7 +262,12 @@ class StatRecorded extends StatElementBase {
     return new StatRecorded(stat.base, stat.type, stat.value, source)
   }
 
-  constructor(base: StatBase, type: StatTypes, value: number = 0, source: StatValueSourceDetails = null) {
+  constructor(
+    base: StatBase,
+    type: StatTypes,
+    value: number = 0,
+    source: StatValueSourceDetails = null
+  ) {
     super(base, type)
     this._value = 0
     this.sources = []

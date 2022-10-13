@@ -20,10 +20,10 @@ import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import CharacterEquipmentBasicEditor from './character-equipment-basic-editor.vue'
 
 interface Props {
-  equipment: CharacterEquipment | null;
+  equipment: CharacterEquipment | null
 }
 interface Emits {
-  (evt: 'close'): void;
+  (evt: 'close'): void
 }
 
 defineProps<Props>()

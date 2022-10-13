@@ -4,7 +4,10 @@
     :class="rootClass"
     class="skill-branch-wrapper"
   >
-    <div class="skill-branch-content" :class="{ 'sub-content-active': contents.sub }">
+    <div
+      class="skill-branch-content"
+      :class="{ 'sub-content-active': contents.sub }"
+    >
       <div class="relative">
         <component
           :is="currentComponent"
@@ -21,9 +24,9 @@
       </div>
       <cy-transition>
         <div v-if="!sub && contents.sub">
-          <div class="flex items-center pl-4 pt-2 pb-1 space-x-2">
+          <div class="flex items-center space-x-2 pl-4 pt-2 pb-1">
             <cy-icon-text icon="ic:round-label" class="flex-shrink-0" />
-            <div class="flex items-center flex-wrap">
+            <div class="flex flex-wrap items-center">
               <div class="mr-2">
                 <SkillEquipmentButton
                   v-for="(branch, idx) in otherEffectBranches"
@@ -60,31 +63,33 @@ export default {
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import SkillComputingContainer, {
+  SkillBranchItem,
+} from '@/lib/Skill/SkillComputingContainer'
 
 import ToggleService from '@/setup/ToggleService'
 
+import SkillBranchBasic from './skill-branch-basic.vue'
 import SkillBranchDamage from './skill-branch-damage.vue'
 import SkillBranchEffect from './skill-branch-effect.vue'
 import SkillBranchHeal from './skill-branch-heal.vue'
-import SkillBranchPassive from './skill-branch-passive.vue'
-import SkillBranchStack from './skill-branch-stack.vue'
-import SkillBranchText from './skill-branch-text.vue'
 import SkillBranchList from './skill-branch-list.vue'
+import SkillBranchPassive from './skill-branch-passive.vue'
 import SkillBranchProration from './skill-branch-proration.vue'
-import SkillBranchBasic from './skill-branch-basic.vue'
 import SkillBranchReference from './skill-branch-reference.vue'
-import SkillEquipmentButton from './skill-equipment-button.vue'
+import SkillBranchStack from './skill-branch-stack.vue'
 import skillBranchTable from './skill-branch-table.vue'
+import SkillBranchText from './skill-branch-text.vue'
+import SkillEquipmentButton from './skill-equipment-button.vue'
 
 import { setupOtherEffectBranches } from './setup'
 
 interface Props {
-  computing: SkillComputingContainer;
-  skillBranchItem: SkillBranchItem;
-  sub?: boolean;
-  contentAuto?: boolean;
+  computing: SkillComputingContainer
+  skillBranchItem: SkillBranchItem
+  sub?: boolean
+  contentAuto?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -152,10 +157,20 @@ const paddingBottomClass = computed(() => {
   if (curBch.propBoolean('is_mark') || nextBch.propBoolean('is_mark')) {
     return nextNormalLayout ? 'pb-4' : 'pb-5'
   }
-  if ([SkillBranchNames.Tips, SkillBranchNames.Text, SkillBranchNames.List].includes(cur) && next === SkillBranchNames.Tips) {
+  if (
+    [
+      SkillBranchNames.Tips,
+      SkillBranchNames.Text,
+      SkillBranchNames.List,
+    ].includes(cur) &&
+    next === SkillBranchNames.Tips
+  ) {
     return 'pb-2.5'
   }
-  if (cur === SkillBranchNames.Reference && next === SkillBranchNames.Reference) {
+  if (
+    cur === SkillBranchNames.Reference &&
+    next === SkillBranchNames.Reference
+  ) {
     return 'pb-2'
   }
   if (next === SkillBranchNames.Reference) {
@@ -195,11 +210,11 @@ const subButtonAvailable = computed(() => {
 <style lang="postcss" scoped>
 .skill-branch-wrapper {
   & :deep(.click-button--tag) {
-    @apply text-orange-60 cursor-pointer inline-block px-0.5 underline;
+    @apply inline-block cursor-pointer px-0.5 text-orange-60 underline;
   }
 
   & :deep(.click-button--skill) {
-    @apply text-red-60 cursor-pointer inline-block px-0.5 underline;
+    @apply inline-block cursor-pointer px-0.5 text-red-60 underline;
   }
 
   & :deep(.click-button--mark) {
@@ -207,7 +222,7 @@ const subButtonAvailable = computed(() => {
   }
 
   & :deep(.click-button--branch) {
-    @apply text-cyan-60 cursor-pointer inline-block px-0.5 underline;
+    @apply inline-block cursor-pointer px-0.5 text-cyan-60 underline;
   }
 
   & :deep(.history-compare--mark) {
@@ -223,7 +238,7 @@ const subButtonAvailable = computed(() => {
   }
 
   & :deep(.skill-formula-function-wrapper) {
-    @apply rounded-md pr-1 pl-1.5 mx-0.5 inline-flex items-center;
+    @apply mx-0.5 inline-flex items-center rounded-md pr-1 pl-1.5;
 
     &.key--floor {
       @apply bg-primary-30;
@@ -248,19 +263,19 @@ const subButtonAvailable = computed(() => {
       & > .name {
         @apply text-cyan-60;
       }
-      & > .value >  .param-separate {
+      & > .value > .param-separate {
         @apply border-cyan-30;
       }
     }
 
     & > .name {
-      @apply text-sm
+      @apply text-sm;
     }
     & > .value {
-      @apply ml-1.5 mr-1 px-2 inline-flex items-center text-sm bg-white bg-opacity-75;
+      @apply ml-1.5 mr-1 inline-flex items-center bg-white bg-opacity-75 px-2 text-sm;
 
       & > .param-separate {
-        @apply inline-block mx-2 mt-0.5 h-4 bg-opacity-0;
+        @apply mx-2 mt-0.5 inline-block h-4 bg-opacity-0;
 
         border-left-width: 0.1875rem;
       }
@@ -280,11 +295,11 @@ const subButtonAvailable = computed(() => {
   }
 }
 .group-end {
-  @apply border-t-1 border-primary-50 relative;
+  @apply relative border-t-1 border-primary-50;
 
   &::before {
     content: '';
-    @apply absolute -right-2 -top-2 w-4 h-4 bg-primary-50;
+    @apply absolute -right-2 -top-2 h-4 w-4 bg-primary-50;
   }
 }
 </style>

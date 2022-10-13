@@ -4,13 +4,9 @@
       v-for="{ container, iid } in containerStates"
       :key="iid"
       class="list-text-content"
-      :class="{ 'tips': isTips }"
+      :class="{ tips: isTips }"
     >
-      <cy-icon-text
-        icon="jam:leaf"
-        class="mr-2"
-        icon-width="1rem"
-      />
+      <cy-icon-text icon="jam:leaf" class="mr-2" icon-width="1rem" />
       <div v-html="container.get('text')"></div>
     </div>
   </div>
@@ -19,21 +15,27 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, {
+  SkillBranchItem,
+} from '@/lib/Skill/SkillComputingContainer'
 
 import ListHandler from './branch-handlers/ListHandler'
 
 interface Props {
-  computing: SkillComputingContainer;
-  branchItem: SkillBranchItem;
+  computing: SkillComputingContainer
+  branchItem: SkillBranchItem
 }
 
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const containers = computed(() => ListHandler(props.computing, branchItem.value))
+const containers = computed(() =>
+  ListHandler(props.computing, branchItem.value)
+)
 
-const containerStates = computed(() => containers.value.map((container, iid) => ({ iid, container })))
+const containerStates = computed(() =>
+  containers.value.map((container, iid) => ({ iid, container }))
+)
 
 const isTips = computed(() => {
   return branchItem.value.propBoolean('is_tips')
@@ -42,10 +44,10 @@ const isTips = computed(() => {
 
 <style lang="postcss" scoped>
 .list-text-content {
-  @apply px-3 py-0.5 w-full flex items-start;
+  @apply flex w-full items-start px-3 py-0.5;
 
   &.tips {
-    @apply text-sm pl-5;
+    @apply pl-5 text-sm;
 
     /* APPLY text-primary-50 */
     color: var(--app-primary-50);
@@ -56,7 +58,7 @@ const isTips = computed(() => {
   }
 
   &.is-mark {
-    @apply border-primary-50 border-1 py-3;
+    @apply border-1 border-primary-50 py-3;
   }
 }
 </style>

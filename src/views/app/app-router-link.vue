@@ -1,16 +1,17 @@
 <template>
-  <router-link
-    v-slot="{ navigate }"
-    :to="{ name: data.pathName }"
-    custom
-  >
+  <router-link v-slot="{ navigate }" :to="{ name: data.pathName }" custom>
     <div
       class="app--router-link-button"
-      :class="{ 'selected': currentRoute.name === data.pathName }"
+      :class="{ selected: currentRoute.name === data.pathName }"
       v-bind="attrs"
       @click="navigate"
     >
-      <cy-icon-text :icon="data.icon" :text-color="currentRoute.name === data.pathName ? 'primary-80' : 'primary-90'">
+      <cy-icon-text
+        :icon="data.icon"
+        :text-color="
+          currentRoute.name === data.pathName ? 'primary-80' : 'primary-90'
+        "
+      >
         <span :class="{ 'ml-4': isMain }">{{ t(data.title) }}</span>
       </cy-icon-text>
     </div>
@@ -32,11 +33,11 @@ import { AppRouteNames } from '@/router/enums'
 
 interface Props {
   data: {
-    title: string;
-    icon: string;
-    pathName: AppRouteNames;
-  };
-  isMain?: boolean;
+    title: string
+    icon: string
+    pathName: AppRouteNames
+  }
+  isMain?: boolean
 }
 
 withDefaults(defineProps<Props>(), {
@@ -51,7 +52,7 @@ const attrs = useAttrs()
 
 <style lang="postcss" scoped>
 .app--router-link-button {
-  @apply w-full py-1.5 px-4 cursor-pointer bg-opacity-25;
+  @apply w-full cursor-pointer bg-opacity-25 py-1.5 px-4;
 
   &:hover {
     @apply bg-primary-5 bg-opacity-50;

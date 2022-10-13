@@ -21,38 +21,46 @@
     <div
       v-for="category in validCategorys"
       :key="category.origin.title"
-      class="p-1 mb-2 relative"
+      class="relative mb-2 p-1"
     >
       <div
         v-if="category.origin.weaponOnly && !isWeapon"
-        class="absolute w-full h-full top-0 left-0 z-1 bg-white opacity-50 cursor-not-allowed"
+        class="absolute top-0 left-0 z-1 h-full w-full cursor-not-allowed bg-white opacity-50"
       />
-      <cy-icon-text
-        class="w-full"
-        small
-        text-color="fuchsia-60"
-      >
+      <cy-icon-text class="w-full" small text-color="fuchsia-60">
         {{ category.origin.title }}
       </cy-icon-text>
       <div>
         <cy-button-check
           v-for="item in category.items"
           :key="item.id"
-          :selected="selectedItems.some(_item => item.origin === _item.origin && item.type === _item.type)"
-          :disabled="disabledItems.some(_item => item.origin === _item.origin && item.type === _item.type)"
+          :selected="
+            selectedItems.some(
+              _item => item.origin === _item.origin && item.type === _item.type
+            )
+          "
+          :disabled="
+            disabledItems.some(
+              _item => item.origin === _item.origin && item.type === _item.type
+            )
+          "
           @click="itemClick(item)"
         >
           <span>
             {{ item.origin.statBase.title(item.type) }}
           </span>
-          <span class="text-sm text-primary-30 ml-2">
+          <span class="ml-2 text-sm text-primary-30">
             {{ item.origin.getPotential(item.type, tmpEquipment) + 'pt' }}
           </span>
         </cy-button-check>
       </div>
     </div>
     <template #footer-actions>
-      <cy-button-toggle v-if="!forPositive" v-model:selected="showNegativeSuggestedList" class="mr-auto">
+      <cy-button-toggle
+        v-if="!forPositive"
+        v-model:selected="showNegativeSuggestedList"
+        class="mr-auto"
+      >
         {{ t('enchant-simulator.select-item.show-negative-suggested-list') }}
       </cy-button-toggle>
     </template>
@@ -72,17 +80,17 @@ import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
 import { EnchantStatOptionBase } from './setup'
 
 interface Props {
-  visible: boolean;
-  isWeapon: boolean;
-  selectedItems: EnchantStatOptionBase[];
-  disabledItems?: EnchantStatOptionBase[];
-  once?: boolean;
-  forPositive?: boolean;
-  defaultNegative?: boolean;
+  visible: boolean
+  isWeapon: boolean
+  selectedItems: EnchantStatOptionBase[]
+  disabledItems?: EnchantStatOptionBase[]
+  once?: boolean
+  forPositive?: boolean
+  defaultNegative?: boolean
 }
 interface Emits {
-  (evt: 'close'): void;
-  (evt: 'select-item', item: EnchantStatOption): void;
+  (evt: 'close'): void
+  (evt: 'select-item', item: EnchantStatOption): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -96,12 +104,12 @@ const emit = defineEmits<Emits>()
 const { t } = useI18n()
 
 interface EnchantStatCategoryOption {
-  origin: EnchantCategory;
-  items: EnchantStatOption[];
+  origin: EnchantCategory
+  items: EnchantStatOption[]
 }
 
 interface EnchantStatOption extends EnchantStatOptionBase {
-  id: string;
+  id: string
 }
 
 const categorys = (() => {
@@ -152,8 +160,9 @@ const validCategorys = computed(() => {
   }
   const resultCategorys: EnchantStatCategoryOption[] = []
   categorys.forEach(category => {
-    const newItems = category.items
-      .filter(item => negativeSuggestedList.value.includes(item.origin.statBase.baseId))
+    const newItems = category.items.filter(item =>
+      negativeSuggestedList.value.includes(item.origin.statBase.baseId)
+    )
     if (newItems.length > 0) {
       resultCategorys.push({
         origin: category.origin,
@@ -164,11 +173,14 @@ const validCategorys = computed(() => {
   return resultCategorys
 })
 
-watch(() => props.visible, newValue => {
-  if (newValue) {
-    showNegativeSuggestedList.value = props.defaultNegative
+watch(
+  () => props.visible,
+  newValue => {
+    if (newValue) {
+      showNegativeSuggestedList.value = props.defaultNegative
+    }
   }
-})
+)
 
 const itemClick = (item: EnchantStatOption) => {
   emit('select-item', item)

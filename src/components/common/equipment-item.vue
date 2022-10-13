@@ -1,7 +1,10 @@
 <template>
   <cy-list-item :selected="selected">
-    <div class="flex items-center w-full" :class="{ 'opacity-50': disabled }">
-      <EquipmentTitle :equipment="equipment" :text-color="current ? 'fuchsia' : 'primary-90'" />
+    <div class="flex w-full items-center" :class="{ 'opacity-50': disabled }">
+      <EquipmentTitle
+        :equipment="equipment"
+        :text-color="current ? 'fuchsia' : 'primary-90'"
+      />
       <cy-icon-text
         v-if="current"
         icon="carbon-location-current"
@@ -22,10 +25,10 @@ import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import EquipmentTitle from './equipment-title.vue'
 
 interface Props {
-  equipment: CharacterEquipment;
-  disabled?: boolean;
-  current?: boolean;
-  selected?: boolean;
+  equipment: CharacterEquipment
+  disabled?: boolean
+  current?: boolean
+  selected?: boolean
 }
 
 withDefaults(defineProps<Props>(), {

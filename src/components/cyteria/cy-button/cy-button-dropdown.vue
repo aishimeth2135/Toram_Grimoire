@@ -1,5 +1,8 @@
 <template>
-  <div class="cy-button-dropdown-wrapper" :class="{ 'content-visble': contents.content }">
+  <div
+    class="cy-button-dropdown-wrapper"
+    :class="{ 'content-visble': contents.content }"
+  >
     <CyButtonBase
       v-slot="{ iconClass }"
       v-bind="buttonBaseBinds"
@@ -22,8 +25,8 @@ import { defineComponent } from 'vue'
 
 import ToggleService from '@/setup/ToggleService'
 
-import CyButtonBase from './cy-button-base.vue'
 import ButtonIcon from './button-icon.vue'
+import CyButtonBase from './cy-button-base.vue'
 
 import { ButtonBaseProps, ButtonIconProps, getButtonBaseBinds } from './setup'
 
@@ -38,7 +41,9 @@ export default defineComponent({
   },
   setup(props) {
     const { contents, toggle } = ToggleService({
-      contents: [{ name: 'content', default: props.contentDefaultVisible }] as const,
+      contents: [
+        { name: 'content', default: props.contentDefaultVisible },
+      ] as const,
     })
     return {
       contents,

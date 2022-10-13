@@ -1,11 +1,8 @@
 <template>
   <div>
-    <div class="inline-flex items-center flex-wrap heal-formula-main">
+    <div class="heal-formula-main inline-flex flex-wrap items-center">
       <div class="heal-formula-main-first" />
-      <span
-        v-if="isSingleValue"
-        class="text-sm mr-1 text-primary-30 attr-item"
-      >
+      <span v-if="isSingleValue" class="attr-item mr-1 text-sm text-primary-30">
         {{ t('skill-query.branch.heal.constant-pretext') }}
       </span>
       <span
@@ -45,7 +42,7 @@ import { isNumberString } from '@/shared/utils/string'
 import DisplayDataContainer from '../branch-handlers/handle/DisplayDataContainer'
 
 interface Props {
-  container: DisplayDataContainer;
+  container: DisplayDataContainer
 }
 
 const props = defineProps<Props>()
@@ -53,16 +50,25 @@ const props = defineProps<Props>()
 const { container } = toRefs(props)
 const { t } = useI18n()
 
-const extraValueList = computed(() => container.value.getCustomData('extraValueList') as { text: string; value: string }[])
+const extraValueList = computed(
+  () =>
+    container.value.getCustomData('extraValueList') as {
+      text: string
+      value: string
+    }[]
+)
 
 const isSingleValue = computed(() => {
-  return extraValueList.value.length === 0 && isNumberString(container.value.containers['constant'].value)
+  return (
+    extraValueList.value.length === 0 &&
+    isNumberString(container.value.containers['constant'].value)
+  )
 })
 </script>
 
 <style lang="postcss" scoped>
 .attr-item {
-  @apply inline-flex items-center my-1 py-0.5 px-1.5;
+  @apply my-1 inline-flex items-center py-0.5 px-1.5;
 }
 
 .heal-formula-main > .heal-formula-main-first + .attr-item {

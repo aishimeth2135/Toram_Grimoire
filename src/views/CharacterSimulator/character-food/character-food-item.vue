@@ -28,7 +28,7 @@ import Notify from '@/setup/Notify'
 import { setupCharacterFoodStore } from './setup'
 
 interface Props {
-  food: Food;
+  food: Food
 }
 
 const props = defineProps<Props>()
@@ -40,7 +40,9 @@ const foodLevelRange = [0, 10]
 
 const { currentFoodBuild } = setupCharacterFoodStore()
 
-const foodIndex = computed(() => currentFoodBuild.value.foods.indexOf(props.food))
+const foodIndex = computed(() =>
+  currentFoodBuild.value.foods.indexOf(props.food)
+)
 
 const selected = computed<boolean>({
   set(value) {
@@ -62,7 +64,7 @@ const level = computed<number>({
     if (props.food.level === 0 && value > 0 && !selected.value) {
       selected.value = true
     }
-    props.food.level = value/* eslint-disable-line vue/no-mutating-props */
+    props.food.level = value /* eslint-disable-line vue/no-mutating-props */
   },
   get() {
     return props.food.level

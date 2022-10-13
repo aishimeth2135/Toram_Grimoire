@@ -1,10 +1,15 @@
 <template>
   <div>
-    <div class="inline-flex items-center flex-wrap damage-formula-main">
+    <div class="damage-formula-main inline-flex flex-wrap items-center">
       <div class="damage-formula-main-first" />
-      <span v-if="container.get('extra_constant') && frequencyVisible" class="divider border-orange-60" />
+      <span
+        v-if="container.get('extra_constant') && frequencyVisible"
+        class="divider border-orange-60"
+      />
       <span v-if="container.get('constant')" class="divider" />
-      <span v-if="container.get('base')" class="attr-item">{{ container.get('base') }}</span>
+      <span v-if="container.get('base')" class="attr-item">{{
+        container.get('base')
+      }}</span>
       <cy-icon-text
         v-if="container.get('base') && container.get('constant')"
         icon="ic-round-add"
@@ -42,12 +47,15 @@
     </div>
     <div
       v-if="container.get('@custom-base-caption')"
-      class="pl-2 mb-2.5 flex items-center flex-wrap"
+      class="mb-2.5 flex flex-wrap items-center pl-2"
     >
       <cy-icon-text text-color="fuchsia-60" small class="mt-1">
         {{ container.get('base') }}
       </cy-icon-text>
-      <div class="pl-3 text-primary-50 text-sm mt-1" v-html="container.get('@custom-base-caption')" />
+      <div
+        class="mt-1 pl-3 text-sm text-primary-50"
+        v-html="container.get('@custom-base-caption')"
+      />
     </div>
   </div>
 </template>
@@ -58,7 +66,7 @@ import { computed, toRefs } from 'vue'
 import DisplayDataContainer from '../branch-handlers/handle/DisplayDataContainer'
 
 interface Props {
-  container: DisplayDataContainer;
+  container: DisplayDataContainer
 }
 
 const props = defineProps<Props>()
@@ -72,11 +80,11 @@ const frequencyVisible = computed(() => {
 
 <style lang="postcss" scoped>
 .divider {
-  @apply border-l-1 border-primary-30 mx-2 h-6;
+  @apply mx-2 h-6 border-l-1 border-primary-30;
 }
 
 .attr-item {
-  @apply inline-flex items-center my-1 py-0.5 px-1.5;
+  @apply my-1 inline-flex items-center py-0.5 px-1.5;
 }
 
 .damage-formula-main > .damage-formula-main-first + .divider {

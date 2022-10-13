@@ -1,31 +1,54 @@
 <template>
   <div
     v-if="status !== InitializeStatus.Finished"
-    class="w-full h-full fixed top-0 left-0 bg-white z-100 flex items-center justify-center p-4"
+    class="fixed top-0 left-0 z-100 flex h-full w-full items-center justify-center bg-white p-4"
   >
-    <div class="max-w-full text-center w-128">
-      <div class="border-primary-30 pb-4" :class="{ 'border-b': status < InitializeStatus.BeforeFinished }">
-        <LoadingAnimation :status="status" @done="initializeStore.initFinished()" />
+    <div class="w-128 max-w-full text-center">
+      <div
+        class="border-primary-30 pb-4"
+        :class="{ 'border-b': status < InitializeStatus.BeforeFinished }"
+      >
+        <LoadingAnimation
+          :status="status"
+          @done="initializeStore.initFinished()"
+        />
       </div>
-      <div v-if="status < InitializeStatus.BeforeFinished" class="pt-8 inline-block">
+      <div
+        v-if="status < InitializeStatus.BeforeFinished"
+        class="inline-block pt-8"
+      >
         <template v-if="status <= InitializeStatus.ViewSuccess">
-          <div v-for="item in initItems" :key="item.message" class="flex justify-center items-center mb-2 pl-1">
-            <span class="mr-3 w-full text-primary-60">{{ t(item.message) }}</span>
+          <div
+            v-for="item in initItems"
+            :key="item.message"
+            class="mb-2 flex items-center justify-center pl-1"
+          >
+            <span class="mr-3 w-full text-primary-60">{{
+              t(item.message)
+            }}</span>
             <cy-icon-text
               block
               :icon="statusIcon(item.status)"
-              :class="{ 'loading-circle': item.status === InitItemStatus.Loading }"
-              :icon-color="item.status === InitItemStatus.Error ? 'orange-60' : 'blue-60'"
+              :class="{
+                'loading-circle': item.status === InitItemStatus.Loading,
+              }"
+              :icon-color="
+                item.status === InitItemStatus.Error ? 'orange-60' : 'blue-60'
+              "
             />
           </div>
         </template>
         <template v-else-if="status <= InitializeStatus.LocaleSuccess">
-          <div class="flex justify-center items-center pl-1">
-            <span class="mr-3 w-full text-primary-60">{{ t('app.loading-message.init-locale') }}</span>
+          <div class="flex items-center justify-center pl-1">
+            <span class="mr-3 w-full text-primary-60">{{
+              t('app.loading-message.init-locale')
+            }}</span>
             <cy-icon-text
               block
               :icon="statusIcon(status - 10)"
-              :class="{ 'loading-circle': status === InitializeStatus.LocaleLoading }"
+              :class="{
+                'loading-circle': status === InitializeStatus.LocaleLoading,
+              }"
               icon-color="blue-60"
             />
           </div>
@@ -46,21 +69,17 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
 import { useInitializeStore } from '@/stores/app/initialize'
-import { InitializeStatus, InitItemStatus } from '@/stores/app/initialize/enums'
+import { InitItemStatus, InitializeStatus } from '@/stores/app/initialize/enums'
 
 import LoadingAnimation from './initialization/loading-animation.vue'
 
-
 const initializeStore = useInitializeStore()
 
-const {
-  initItems,
-  status,
-} = storeToRefs(initializeStore)
+const { initItems, status } = storeToRefs(initializeStore)
 
 const { t } = useI18n()
 const statusIcon = (value: number) => {

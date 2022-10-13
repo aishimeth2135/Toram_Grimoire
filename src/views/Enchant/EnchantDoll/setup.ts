@@ -1,4 +1,4 @@
-import { computed, Ref } from 'vue'
+import { Ref, computed } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
@@ -7,25 +7,48 @@ import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat/enums'
 import { EnchantItem } from '@/lib/Enchant/Enchant'
 
 export function setupParseEnchantShorthand(shorthandStr: Ref<string>) {
-  const displayOrder = ['atk', 'matk', 'str', 'dex', 'int', 'vit', 'age', 'critical_damage', 'critical_rate']
+  const displayOrder = [
+    'atk',
+    'matk',
+    'str',
+    'dex',
+    'int',
+    'vit',
+    'age',
+    'critical_damage',
+    'critical_rate',
+  ]
   const shorthands = Object.entries({
     // longer in front
-    'AGI': 'agi',
-    'CD': 'critical_damage',
-    'A': 'atk',
-    'M': 'matk',
-    'S': 'str',
-    'D': 'dex',
-    'V': 'vit',
-    'I': 'int',
-    'C': 'critical_rate',
+    AGI: 'agi',
+    CD: 'critical_damage',
+    A: 'atk',
+    M: 'matk',
+    S: 'str',
+    D: 'dex',
+    V: 'vit',
+    I: 'int',
+    C: 'critical_rate',
   })
-    .map(([key, id]) => [key, Grimoire.Character.findStatBase(id)] as [string, StatBase])
+    .map(
+      ([key, id]) =>
+        [key, Grimoire.Character.findStatBase(id)] as [string, StatBase]
+    )
     .filter(([, value]) => value !== null)
-    .map(([key, value]) => [key, Grimoire.Enchant.findEnchantItem(value!)!] as [string, EnchantItem])
+    .map(
+      ([key, value]) =>
+        [key, Grimoire.Enchant.findEnchantItem(value!)!] as [
+          string,
+          EnchantItem
+        ]
+    )
 
   const parseEnchantShortHand = (str: string) => {
-    const statItems: { origin: EnchantItem; type: StatNormalTypes; value: number }[] = []
+    const statItems: {
+      origin: EnchantItem
+      type: StatNormalTypes
+      value: number
+    }[] = []
     if (!str) {
       return statItems
     }
@@ -83,10 +106,16 @@ export function setupParseEnchantShorthand(shorthandStr: Ref<string>) {
         return ''
       })
     })
-    return statItems.sort((item1, item2) => displayOrder.indexOf(item1.origin.statBase.baseId) - displayOrder.indexOf(item2.origin.statBase.baseId))
+    return statItems.sort(
+      (item1, item2) =>
+        displayOrder.indexOf(item1.origin.statBase.baseId) -
+        displayOrder.indexOf(item2.origin.statBase.baseId)
+    )
   }
 
-  const enchantShortHandStatItems = computed(() => parseEnchantShortHand(shorthandStr.value))
+  const enchantShortHandStatItems = computed(() =>
+    parseEnchantShortHand(shorthandStr.value)
+  )
 
   return { enchantShortHandStatItems }
 }

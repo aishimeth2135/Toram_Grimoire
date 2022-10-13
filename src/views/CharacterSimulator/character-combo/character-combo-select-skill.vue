@@ -1,6 +1,10 @@
 <template>
   <cy-modal :visible="visible" footer @close="emit('close')">
-    <cy-list-item v-for="skill in currentSkills" :key="skill.skillId" @click="emit('submit', skill)">
+    <cy-list-item
+      v-for="skill in currentSkills"
+      :key="skill.skillId"
+      @click="emit('submit', skill)"
+    >
       <cy-icon-text :icon="getSkillIconPath(skill)" icon-src="image">
         {{ skill.name }}
       </cy-icon-text>
@@ -14,18 +18,18 @@ import { computed, ref } from 'vue'
 import Grimoire from '@/shared/Grimoire'
 
 import { Skill } from '@/lib/Skill/Skill'
-import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
 import { SkillTypes } from '@/lib/Skill/Skill/enums'
+import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
 
 import { setupCharacterSkillBuildStore, setupCharacterStore } from '../setup'
 
 interface Props {
-  visible: boolean;
-  isLead: boolean;
+  visible: boolean
+  isLead: boolean
 }
 interface Emits {
-  (evt: 'submit', skill: Skill): void;
-  (evt: 'close'): void;
+  (evt: 'submit', skill: Skill): void
+  (evt: 'close'): void
 }
 
 const props = defineProps<Props>()
@@ -43,7 +47,11 @@ Grimoire.Skill.skillRoot.skillTreeCategorys.forEach(stc => {
 const { currentSkillBuild } = setupCharacterSkillBuildStore()
 const validSkills = computed(() => {
   return allSkills
-    .filter(skill => currentSkillBuild.value!.getSkillLevel(skill) > 0 && !skill.types.includes(SkillTypes.Passive))
+    .filter(
+      skill =>
+        currentSkillBuild.value!.getSkillLevel(skill) > 0 &&
+        !skill.types.includes(SkillTypes.Passive)
+    )
     .filter(skill => store.skillItemStates.has(skill))
     .map(skill => store.skillItemStates.get(skill)!)
     .filter(state => {
@@ -60,5 +68,7 @@ const validSkills = computed(() => {
     .map(state => state.skillItem.skill)
 })
 
-const currentSkills = computed(() => showAllSkill.value ? allSkills : validSkills.value)
+const currentSkills = computed(() =>
+  showAllSkill.value ? allSkills : validSkills.value
+)
 </script>

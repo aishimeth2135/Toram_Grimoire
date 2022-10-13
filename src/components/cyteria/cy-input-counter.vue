@@ -1,11 +1,11 @@
 <template>
   <div class="cy--input-counter-container">
     <div
-      class="cy--input-counter border bg-white duration-300 outline-none"
+      class="cy--input-counter border bg-white outline-none duration-300"
       :class="rootClassList"
       :style="rootStyle"
     >
-      <div v-if="$slots['title'] || title" class="inline-flex mr-3">
+      <div v-if="$slots['title'] || title" class="mr-3 inline-flex">
         <slot name="title">
           <cy-icon-text :icon="titleIcon">
             {{ title }}
@@ -32,7 +32,7 @@
           @click="selectInput($event)"
           @focus="setInputFocus(true)"
           @blur="setInputFocus(false)"
-        >
+        />
         <cy-button-icon
           icon="ic-round-add-circle-outline"
           :icon-color="mainColor"
@@ -46,7 +46,7 @@
           :icon-color-hover="mainColorInstance.darken"
           @click="setValue(range[1]!)"
         />
-        <span v-if="$slots['unit']" class="text-sm ml-1">
+        <span v-if="$slots['unit']" class="ml-1 text-sm">
           <slot name="unit" />
         </span>
       </div>
@@ -66,21 +66,21 @@ import { computed, ref } from 'vue'
 import Color from '@/shared/services/Color'
 
 interface Props {
-  value: number;
-  range?: (number | null)[];
-  step?: number;
-  type?: 'normal' | 'line';
-  inline?: boolean;
-  disabled?: boolean;
-  maxButton?: boolean;
-  minButton?: boolean;
-  mainColor?: string;
-  inputWidth?: string | null;
-  title?: string;
-  titleIcon?: string;
+  value: number
+  range?: (number | null)[]
+  step?: number
+  type?: 'normal' | 'line'
+  inline?: boolean
+  disabled?: boolean
+  maxButton?: boolean
+  minButton?: boolean
+  mainColor?: string
+  inputWidth?: string | null
+  title?: string
+  titleIcon?: string
 }
 interface Emits {
-  (evt: 'update:value', value: number): void;
+  (evt: 'update:value', value: number): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -143,7 +143,7 @@ const setInputFocus = (value: boolean) => {
   focus.value = value
 }
 const selectInput = (evt: MouseEvent) => {
-  (evt.target as HTMLInputElement).select()
+  ;(evt.target as HTMLInputElement).select()
 }
 const setValue = (value: number) => {
   inputValue.value = value

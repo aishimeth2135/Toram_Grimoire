@@ -1,39 +1,43 @@
 import { defineStore } from 'pinia'
-import { computed, shallowReactive, ref } from 'vue'
+import { computed, ref, shallowReactive } from 'vue'
 
 import { useCharacterFoodStore } from '@/stores/views/character/food'
 import { useCharacterSkillStore } from '@/stores/views/character/skill'
 
-import { InitCrystalIcons, InitEquipmentIcons, InitSkillIcons } from '@/shared/services/Images'
 import { DataPathIds } from '@/shared/services/DataPath'
+import {
+  InitCrystalIcons,
+  InitEquipmentIcons,
+  InitSkillIcons,
+} from '@/shared/services/Images'
 
 import DamageCalculationSystem from '@/lib/Calculation/Damage'
 import CharacterSystem from '@/lib/Character'
 import EnchantSystem from '@/lib/Enchant'
-import ItemsSystem from '@/lib/Items'
-import SkillSystem from '@/lib/Skill'
 import GlossarySystem from '@/lib/Glossary'
+import ItemsSystem from '@/lib/Items'
 import RegistletSystem from '@/lib/Registlet'
+import SkillSystem from '@/lib/Skill'
 
+import { DataStoreIds } from './enums'
 import DownloadDatas from './utils/DownloadDatas'
 import loadCharacterStats from './utils/LoadCharacterStat'
 import loadCrystals from './utils/LoadCrystals'
 import loadEnchant from './utils/LoadEnchant'
 import loadEquipments from './utils/LoadEquipments'
+import loadGlossaryTagData from './utils/LoadGlossary'
+import LoadRegistlet from './utils/LoadRegistlet'
 import { loadSkill, loadSkillMain } from './utils/LoadSkill'
 import loadStats from './utils/LoadStats'
-import loadGlossaryTagData from './utils/LoadGlossary'
-import { DataStoreIds } from './enums'
-import LoadRegistlet from './utils/LoadRegistlet'
 
 export const DatasStoreBase: {
-  Items: ItemsSystem | null;
-  Character: CharacterSystem | null;
-  Glossary: GlossarySystem | null;
-  Skill: SkillSystem | null;
-  Enchant: EnchantSystem | null;
-  DamageCalculation: DamageCalculationSystem | null;
-  Registlet: RegistletSystem | null;
+  Items: ItemsSystem | null
+  Character: CharacterSystem | null
+  Glossary: GlossarySystem | null
+  Skill: SkillSystem | null
+  Enchant: EnchantSystem | null
+  DamageCalculation: DamageCalculationSystem | null
+  Registlet: RegistletSystem | null
 } = shallowReactive({
   Items: null,
   Character: null,
@@ -45,7 +49,7 @@ export const DatasStoreBase: {
 })
 
 interface DataStoreInitHandler {
-  (): Promise<() => Promise<void>>;
+  (): Promise<() => Promise<void>>
 }
 
 export const useDatasStore = defineStore('app-datas', () => {
@@ -58,7 +62,9 @@ export const useDatasStore = defineStore('app-datas', () => {
   const Registlet = computed(() => DatasStoreBase.Registlet)
 
   const loaded = ref<Map<DataStoreIds, boolean>>(new Map())
-  const waitLoadedTicks = ref<Map<DataStoreIds, ((value: boolean) => void)[]>>(new Map())
+  const waitLoadedTicks = ref<Map<DataStoreIds, ((value: boolean) => void)[]>>(
+    new Map()
+  )
 
   const checkLoaded = (id: DataStoreIds) => loaded.value.has(id)
 
@@ -122,7 +128,10 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initItems: DataStoreInitHandler = async function () {
     initItemsInstance()
-    const datas = await DownloadDatas(DataPathIds.Equipment, DataPathIds.Crystal)
+    const datas = await DownloadDatas(
+      DataPathIds.Equipment,
+      DataPathIds.Crystal
+    )
     return async () => {
       loadEquipments(Items.value!, datas[0][0])
       loadCrystals(Items.value!, datas[1][0])
@@ -142,7 +151,10 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initCharacterStats: DataStoreInitHandler = async function () {
     initCharacterInstance()
-    const datas = await DownloadDatas({ path: DataPathIds.CharacterStats, lang: true })
+    const datas = await DownloadDatas({
+      path: DataPathIds.CharacterStats,
+      lang: true,
+    })
     return async () => {
       loadCharacterStats(Character.value!, datas[0])
     }
@@ -150,7 +162,10 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initGlossary: DataStoreInitHandler = async function () {
     initGlossaryInstance()
-    const datas = await DownloadDatas({ path: DataPathIds.Glossary, lang: true })
+    const datas = await DownloadDatas({
+      path: DataPathIds.Glossary,
+      lang: true,
+    })
     return async () => {
       loadGlossaryTagData(Glossary.value!, datas[0])
     }
@@ -158,7 +173,10 @@ export const useDatasStore = defineStore('app-datas', () => {
 
   const initSkill: DataStoreInitHandler = async function () {
     initSkillInstance()
-    const datas = await DownloadDatas({ path: DataPathIds.Skill, lang: true }, { path: DataPathIds.SkillMain, lang: true })
+    const datas = await DownloadDatas(
+      { path: DataPathIds.Skill, lang: true },
+      { path: DataPathIds.SkillMain, lang: true }
+    )
     return async () => {
       loadSkill(Skill.value!, datas[0])
       loadSkillMain(Skill.value!, datas[1])
@@ -219,4 +237,3 @@ export const useDatasStore = defineStore('app-datas', () => {
     initRegistlet,
   }
 })
-

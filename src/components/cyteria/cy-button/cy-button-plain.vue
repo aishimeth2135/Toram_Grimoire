@@ -15,8 +15,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import CyButtonBase from './cy-button-base.vue'
 import ButtonIcon from './button-icon.vue'
+import CyButtonBase from './cy-button-base.vue'
 
 import { ButtonBaseProps, ButtonIconProps, getButtonBaseBinds } from './setup'
 
@@ -46,7 +46,8 @@ export default defineComponent({
   --button-color-text: var(--button-color-main-light);
   --button-color-text-hover: var(--button-color-main);
 
-  &:hover, &.button-selected {
+  &:hover,
+  &.button-selected {
     color: var(--button-color-text-hover);
   }
 

@@ -15,7 +15,10 @@
         :skill-results-state="skillResultsState"
       />
     </div>
-    <div class="border-t-1 border-primary-30 mt-2 pt-0.5" :class="{ 'opacity-50': disableAll }">
+    <div
+      class="mt-2 border-t-1 border-primary-30 pt-0.5"
+      :class="{ 'opacity-50': disableAll }"
+    >
       <CharacterSkillItem
         v-for="skillResultsState in postponedValidResultStates"
         :key="skillResultsState.skill.skillId"
@@ -44,7 +47,7 @@ import CharacterSkillItem from './character-skill-item.vue'
 import { setupCharacterSkillBuildStore, setupCharacterStore } from '../../setup'
 
 interface Props {
-  type: SkillTypes;
+  type: SkillTypes
 }
 
 const props = defineProps<Props>()
@@ -53,39 +56,53 @@ const { t } = useI18n()
 const { store } = setupCharacterStore()
 
 const skillResultsStates = computed(() => {
-  return (props.type === SkillTypes.Active ? store.activeSkillResultStates : store.passiveSkillResultStates) as SkillResultsState[]
+  return (
+    props.type === SkillTypes.Active
+      ? store.activeSkillResultStates
+      : store.passiveSkillResultStates
+  ) as SkillResultsState[]
 })
 
 const { currentSkillBuild } = setupCharacterSkillBuildStore()
 const validResultStates = computed(() => {
-  return skillResultsStates.value
-    .filter(state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0)
+  return skillResultsStates.value.filter(
+    state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0
+  )
 })
 
 const postponedSkillResultsStates = computed(() => {
-  return (props.type === SkillTypes.Active ? store.postponedActiveSkillResultStates : store.postponedPassiveSkillResultStates) as SkillResultsState[]
+  return (
+    props.type === SkillTypes.Active
+      ? store.postponedActiveSkillResultStates
+      : store.postponedPassiveSkillResultStates
+  ) as SkillResultsState[]
 })
 
 const postponedValidResultStates = computed(() => {
-  return postponedSkillResultsStates.value
-    .filter(state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0)
+  return postponedSkillResultsStates.value.filter(
+    state => currentSkillBuild.value!.getSkillLevel(state.skill) > 0
+  )
 })
 
-const validSkillStates = computed(() => validResultStates.value.map(state => currentSkillBuild.value!.getSkillState(state.skill)))
+const validSkillStates = computed(() =>
+  validResultStates.value.map(state =>
+    currentSkillBuild.value!.getSkillState(state.skill)
+  )
+)
 const allSkillEnabled = computed<boolean>({
   get() {
     return validSkillStates.value.every(state => state.enabled)
   },
   set(value) {
-    validSkillStates.value.forEach(state => state.enabled = value)
+    validSkillStates.value.forEach(state => (state.enabled = value))
   },
 })
 
 const disableAll = computed<boolean>({
   get() {
-    return !(props.type === SkillTypes.Active ?
-      store.setupOptions.handleActiveSkill :
-      store.setupOptions.handlePassiveSkill)
+    return !(props.type === SkillTypes.Active
+      ? store.setupOptions.handleActiveSkill
+      : store.setupOptions.handlePassiveSkill)
   },
   set(value) {
     if (props.type === SkillTypes.Active) {
@@ -97,9 +114,10 @@ const disableAll = computed<boolean>({
 })
 
 const disableAllButtonTitle = computed(() => {
-  const type = props.type === SkillTypes.Active ?
-    t('character-simulator.skill-build.active-skills') :
-    t('character-simulator.skill-build.passive-skills')
+  const type =
+    props.type === SkillTypes.Active
+      ? t('character-simulator.skill-build.active-skills')
+      : t('character-simulator.skill-build.passive-skills')
   return t('character-simulator.skill-build.disable-skills', { type })
 })
 </script>

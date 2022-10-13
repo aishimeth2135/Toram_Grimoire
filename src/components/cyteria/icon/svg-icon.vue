@@ -18,7 +18,7 @@ function SvgIcon(props, context) {
   })
 }
 SvgIcon.props = {
-  'iconId': {
+  iconId: {
     type: String,
     default: '',
   },

@@ -1,11 +1,14 @@
 <!-- this component is splitted to handle EnchantStep -->
 <template>
   <div
-    class="px-2 pt-1 flex flex-col h-full bg-white border"
+    class="flex h-full flex-col border bg-white px-2 pt-1"
     style="min-height: 12.5rem"
     :class="{ [mainBorderColor]: true, 'opacity-50': step.hidden }"
   >
-    <div class="border-b pl-2 flex items-center py-0.5" :class="[mainBorderColor]">
+    <div
+      class="flex items-center border-b py-0.5 pl-2"
+      :class="[mainBorderColor]"
+    >
       <cy-icon-text
         icon="bx-bxs-book-content"
         small
@@ -14,7 +17,7 @@
       >
         {{ stepTitle }}
       </cy-icon-text>
-      <div class="ml-auto inline-flex items-center mr-1">
+      <div class="ml-auto mr-1 inline-flex items-center">
         <cy-popover class="flex">
           <template #default="{ shown }">
             <cy-button-icon
@@ -30,18 +33,12 @@
                   {{ t('enchant-simulator.step.insert-step-before') }}
                 </cy-icon-text>
               </cy-list-item>
-              <cy-list-item
-                v-if="step.index !== 0"
-                @click="swapStep(-1)"
-              >
+              <cy-list-item v-if="step.index !== 0" @click="swapStep(-1)">
                 <cy-icon-text icon="eva-arrow-ios-upward-fill">
                   {{ t('enchant-simulator.step.step-move-up') }}
                 </cy-icon-text>
               </cy-list-item>
-              <cy-list-item
-                v-if="!step.isLastStep"
-                @click="swapStep(1)"
-              >
+              <cy-list-item v-if="!step.isLastStep" @click="swapStep(1)">
                 <cy-icon-text icon="eva-arrow-ios-downward-outline">
                   {{ t('enchant-simulator.step.step-move-down') }}
                 </cy-icon-text>
@@ -50,10 +47,17 @@
           </template>
         </cy-popover>
         <cy-button-icon
-          :icon="step.hidden ? 'mdi-checkbox-blank-off-outline' : 'mdi-checkbox-blank-outline'"
+          :icon="
+            step.hidden
+              ? 'mdi-checkbox-blank-off-outline'
+              : 'mdi-checkbox-blank-outline'
+          "
           class="p-0"
           :icon-color="step.hidden ? 'orange-60' : 'red-30'"
-          @click="step.hidden = !step.hidden/* eslint-disable-line vue/no-mutating-props */"
+          @click="
+            step.hidden =
+              !step.hidden /* eslint-disable-line vue/no-mutating-props */
+          "
         />
         <cy-button-icon
           icon="jam-close-circle"
@@ -72,7 +76,7 @@
           :class="idx !== 0 ? 'border-t border-primary-30' : ''"
         />
       </template>
-      <div v-else-if="step.index === 0" class="pt-3 pb-2 px-2">
+      <div v-else-if="step.index === 0" class="px-2 pt-3 pb-2">
         <div>
           <cy-icon-text small text-color="fuchsia-60">
             {{ t('enchant-simulator.step.button-caption-title') }}
@@ -98,11 +102,7 @@
             </cy-icon-text>
           </div>
           <div>
-            <cy-icon-text
-              small
-              icon="ic-outline-near-me"
-              icon-color="cyan-60"
-            >
+            <cy-icon-text small icon="ic-outline-near-me" icon-color="cyan-60">
               {{ t('enchant-simulator.step.step-type-each') }}
             </cy-icon-text>
           </div>
@@ -121,11 +121,13 @@
         {{ t('enchant-simulator.tips.step-empty') }}
       </cy-default-tips>
     </div>
-    <div class="border-t border-fuchsia-60 mt-auto pt-0.5">
+    <div class="mt-auto border-t border-fuchsia-60 pt-0.5">
       <cy-transition>
         <div v-if="isTypeEach" class="border-b border-primary-30 py-0.5">
           <cy-input-counter
-            v-model:value="step.step/* eslint-disable-line vue/no-mutating-props */"
+            v-model:value="
+              step.step /* eslint-disable-line vue/no-mutating-props */
+            "
             inline
             main-color="cyan-60"
           >
@@ -160,7 +162,11 @@
           icon-color="orange-60"
           @click="step.autoFill()"
         />
-        <cy-icon-text icon="mdi-creation" class="ml-auto mr-2" text-color="fuchsia-60">
+        <cy-icon-text
+          icon="mdi-creation"
+          class="ml-auto mr-2"
+          text-color="fuchsia-60"
+        >
           {{ step.remainingPotential }}
         </cy-icon-text>
       </div>
@@ -186,7 +192,7 @@ import EnchantStepStatView from './enchant-step-stat.vue'
 import { EnchantSimulatorInjectionKey } from '../injection-keys'
 
 interface Props {
-  step: EnchantStep;
+  step: EnchantStep
 }
 
 const props = defineProps<Props>()
@@ -196,7 +202,11 @@ const { t } = useI18n()
 
 const { openSelectItem } = inject(EnchantSimulatorInjectionKey)!
 
-const typeIcon = computed(() => step.value.type === EnchantStepTypes.Normal ? 'ic-outline-near-me-disabled' : 'ic-outline-near-me')
+const typeIcon = computed(() =>
+  step.value.type === EnchantStepTypes.Normal
+    ? 'ic-outline-near-me-disabled'
+    : 'ic-outline-near-me'
+)
 
 const isTypeEach = computed(() => step.value.type === EnchantStepTypes.Each)
 
@@ -226,11 +236,18 @@ const stepTitle = computed(() => {
   if (step.value.afterLastStep) {
     return t('enchant-simulator.invalid-step')
   }
-  return t('enchant-simulator.enchant-step') + ' ' + (step.value.index + 1).toString()
+  return (
+    t('enchant-simulator.enchant-step') +
+    ' ' +
+    (step.value.index + 1).toString()
+  )
 })
 
 const toggleStepType = () => {
-  step.value.type = step.value.type === EnchantStepTypes.Normal ? EnchantStepTypes.Each : EnchantStepTypes.Normal
+  step.value.type =
+    step.value.type === EnchantStepTypes.Normal
+      ? EnchantStepTypes.Each
+      : EnchantStepTypes.Normal
 }
 const swapStep = (offset: number) => {
   const index = step.value.index

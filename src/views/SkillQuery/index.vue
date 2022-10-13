@@ -4,11 +4,10 @@
       <cy-icon-text v-if="currentSkill" icon="bx:bxs-book-bookmark">
         {{ currentSkill.name }}
       </cy-icon-text>
-      <div v-else class="text-primary-30 ml-2">{{ t('skill-query.search-tips') }}</div>
-      <cy-button-icon
-        class="ml-auto"
-        icon="bx:bx-search"
-      />
+      <div v-else class="ml-2 text-primary-30">
+        {{ t('skill-query.search-tips') }}
+      </div>
+      <cy-button-icon class="ml-auto" icon="bx:bx-search" />
     </cy-top-header>
     <div class="px-1">
       <div ref="skillTreeCategoryMenuElement" class="p-1">
@@ -46,7 +45,7 @@
       v-if="currentSkillItem"
       ref="skillEffectElement"
       class="pt-10"
-      style="min-height: 50vh;"
+      style="min-height: 50vh"
     >
       <div v-if="contents.skillEffect" class="border-t-1 border-orange-60 pt-4">
         <SkillEffect
@@ -65,7 +64,11 @@
           @click="toggle('contents/skillDev')"
         />
       </div>
-      <SkillDevDetail v-if="contents.skillDev" :skill="currentSkillItem.skill" class="mt-2" />
+      <SkillDevDetail
+        v-if="contents.skillDev"
+        :skill="currentSkillItem.skill"
+        class="mt-2"
+      />
     </div>
     <SkillQueryMenu
       v-if="currentSkillTree"
@@ -90,8 +93,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, ref, nextTick } from 'vue'
-import type { Ref, ComputedRef } from 'vue'
+import { computed, nextTick, ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -99,17 +102,22 @@ import { useMainStore } from '@/stores/app/main'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { SkillRoot, SkillTree, SkillTreeCategory, Skill } from '@/lib/Skill/Skill'
+import {
+  Skill,
+  SkillRoot,
+  SkillTree,
+  SkillTreeCategory,
+} from '@/lib/Skill/Skill'
 import { EquipmentRestrictions } from '@/lib/Skill/SkillComputingContainer'
 
 import ToggleService from '@/setup/ToggleService'
 
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
-import SkillTreeDiagram from './skill-tree-diagram.vue'
 import SkillEffect from './skill-effect.vue'
 import SkillQueryMenu from './skill-query-menu/index.vue'
 import SkillQuerySearch from './skill-query-search.vue'
+import SkillTreeDiagram from './skill-tree-diagram.vue'
 import SkillDevDetail from './skill/skill-dev-detail.vue'
 
 import { setupComputingContainer } from './setup'
@@ -138,7 +146,9 @@ const goToSkillTop = async () => {
   }
 }
 
-const skillRoot: ComputedRef<SkillRoot> = computed(() => Grimoire.Skill.skillRoot)
+const skillRoot: ComputedRef<SkillRoot> = computed(
+  () => Grimoire.Skill.skillRoot
+)
 
 const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null)
 const currentSkillTree: Ref<SkillTree | null> = ref(null)
@@ -185,13 +195,17 @@ if (route.params.skillId) {
   skillId.split('-').every((idStr, idx) => {
     const id = parseInt(idStr, 10)
     if (idx === 0) {
-      const stc = skillRoot.value.skillTreeCategorys.find(item => item.id === id)
+      const stc = skillRoot.value.skillTreeCategorys.find(
+        item => item.id === id
+      )
       if (stc) {
         selectCurrentSkillTreeCategory(stc)
         return true
       }
     } else if (idx === 1) {
-      const st = currentSkillTreeCategory.value!.skillTrees.find(item => item.id === id)
+      const st = currentSkillTreeCategory.value!.skillTrees.find(
+        item => item.id === id
+      )
       if (st) {
         selectCurrentSkillTree(st)
         return true
@@ -207,10 +221,10 @@ if (route.params.skillId) {
   })
 }
 
-const currentEquipment: Ref<EquipmentRestrictions> = ref(new EquipmentRestrictions())
+const currentEquipment: Ref<EquipmentRestrictions> = ref(
+  new EquipmentRestrictions()
+)
 
-const {
-  computingContainer,
-  currentSkillItem,
-} = setupComputingContainer(currentSkill)
+const { computingContainer, currentSkillItem } =
+  setupComputingContainer(currentSkill)
 </script>

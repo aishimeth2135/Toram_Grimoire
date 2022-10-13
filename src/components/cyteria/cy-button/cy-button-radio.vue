@@ -5,7 +5,11 @@
     class="cy-button-radio py-1 px-2"
   >
     <ButtonIcon
-      :icon="selected ? 'ic:round-radio-button-checked' : 'ic:round-radio-button-unchecked'"
+      :icon="
+        selected
+          ? 'ic:round-radio-button-checked'
+          : 'ic:round-radio-button-unchecked'
+      "
       :class="iconClass"
     />
     <div v-if="$slots.default" class="ml-2 mr-1.5 flex">
@@ -17,8 +21,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import CyButtonBase from './cy-button-base.vue'
 import ButtonIcon from './button-icon.vue'
+import CyButtonBase from './cy-button-base.vue'
 
 import { ButtonBaseProps, getButtonBaseBinds } from './setup'
 
@@ -47,4 +51,3 @@ export default defineComponent({
   }
 }
 </style>
-

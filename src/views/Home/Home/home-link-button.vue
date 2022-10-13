@@ -1,12 +1,8 @@
 <template>
-  <div class="inline-block mx-5 my-3">
+  <div class="mx-5 my-3 inline-block">
     <router-link v-slot="{ navigate }" :to="{ name: data.pathName }" custom>
-      <div
-        class="cy--home-link-button"
-        role="link"
-        @click="navigate"
-      >
-        <div class="text-lg text-center text-primary-70 pl-6 pr-10">
+      <div class="cy--home-link-button" role="link" @click="navigate">
+        <div class="pl-6 pr-10 text-center text-lg text-primary-70">
           {{ t('app.page-title.' + data.name) }}
         </div>
         <div class="cy--home-link-button-underline"></div>
@@ -28,10 +24,10 @@ import { AppRouteNames } from '@/router/enums'
 
 interface Props {
   data: {
-    pathName: AppRouteNames;
-    name: string;
-    icon: string;
-  };
+    pathName: AppRouteNames
+    name: string
+    icon: string
+  }
 }
 
 defineProps<Props>()
@@ -61,10 +57,10 @@ const { t } = useI18n()
 }
 
 .cy--home-link-button {
-  @apply py-2 relative cursor-pointer;
+  @apply relative cursor-pointer py-2;
 
   & > .cy--home-link-button-underline {
-    @apply h-1 rounded-full bg-primary-30 mt-1 duration-200;
+    @apply mt-1 h-1 rounded-full bg-primary-30 duration-200;
   }
 
   & > .cy--home-link-button-icon {

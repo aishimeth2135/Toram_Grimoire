@@ -1,6 +1,6 @@
 <template>
   <div v-if="effectItem">
-    <div v-if="tabVisible" class="space-x-2 mb-3 px-2">
+    <div v-if="tabVisible" class="mb-3 space-x-2 px-2">
       <cy-button-plain
         icon="bx:bxs-book-bookmark"
         class="skill-effect-tab-button"
@@ -105,35 +105,39 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, ref, watch, nextTick, inject } from 'vue'
+import { computed, inject, nextTick, ref, watch } from 'vue'
 import { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useDatasStore } from '@/stores/app/datas'
 
-import { EquipmentRestrictions, SkillBranchItem, SkillItem } from '@/lib/Skill/SkillComputingContainer'
 import { Skill, SkillRoot } from '@/lib/Skill/Skill'
+import {
+  EquipmentRestrictions,
+  SkillBranchItem,
+  SkillItem,
+} from '@/lib/Skill/SkillComputingContainer'
 
 import ToggleService from '@/setup/ToggleService'
 
-import SkillBranch from './skill/skill-branch.vue'
-import skillTagsContent from './skill-tags-content.vue'
 import SkillEffectHistory from './skill-effect-history/index.vue'
-import SkillTitle from './skill/skill-title.vue'
 import SkillSwitchEffectButtons from './skill-switch-effect-buttons.vue'
+import skillTagsContent from './skill-tags-content.vue'
+import SkillBranch from './skill/skill-branch.vue'
+import SkillTitle from './skill/skill-title.vue'
 
+import { ComputingContainerInjectionKey } from './injection-keys'
 import { setupSkillTag } from './setup'
 import { TAG_BUTTON_CLASS_NAME } from './utils'
-import { ComputingContainerInjectionKey } from './injection-keys'
 
 interface Props {
-  skillItem: SkillItem;
-  selectedEquipment: EquipmentRestrictions;
+  skillItem: SkillItem
+  selectedEquipment: EquipmentRestrictions
 }
 
 interface Emits {
-  (evt: 'set-current-skill', skill: Skill): void;
-  (event: 'update:selected-equipment', value: EquipmentRestrictions): void;
+  (evt: 'set-current-skill', skill: Skill): void
+  (event: 'update:selected-equipment', value: EquipmentRestrictions): void
 }
 
 const props = defineProps<Props>()
@@ -159,7 +163,11 @@ const setTab = (target: 'skillInfo' | 'skillHistory') => {
 }
 
 const tabVisible = computed(() => {
-  return effectItem.value?.parent.effectItems.some(item => item.historys.length > 0) ?? false
+  return (
+    effectItem.value?.parent.effectItems.some(
+      item => item.historys.length > 0
+    ) ?? false
+  )
 })
 
 const skillBranchItemDatas = computed(() => {
@@ -174,26 +182,25 @@ const skillBranchItemDatas = computed(() => {
 
 const tagDetailContent: Ref<{ $el: HTMLElement } | null> = ref(null)
 
-const {
-  currentTags,
-  currentTag,
-  currentTagIndex,
-  changeTag,
-  tagButtonHover,
-} = setupSkillTag(tagDetailContent)
+const { currentTags, currentTag, currentTagIndex, changeTag, tagButtonHover } =
+  setupSkillTag(tagDetailContent)
 
 const skillBranchesElement: Ref<HTMLElement | null> = ref(null)
 const tagHoverFloatComponent: Ref<{ update: Function } | null> = ref(null)
 const skillHoverFloatComponent: Ref<{ update: Function } | null> = ref(null)
 const branchHoverFloatComponent: Ref<{ update: Function } | null> = ref(null)
 
-watch(effectItem, async () => {
-  setTab('skillInfo')
-  await nextTick()
-  tagHoverFloatComponent.value?.update()
-  skillHoverFloatComponent.value?.update()
-  branchHoverFloatComponent.value?.update()
-}, { immediate: true })
+watch(
+  effectItem,
+  async () => {
+    setTab('skillInfo')
+    await nextTick()
+    tagHoverFloatComponent.value?.update()
+    skillHoverFloatComponent.value?.update()
+    branchHoverFloatComponent.value?.update()
+  },
+  { immediate: true }
+)
 
 const currentHoveringSkill: Ref<Skill | null> = ref(null)
 const skillButtonHover = (el: HTMLElement) => {
@@ -216,13 +223,16 @@ const skillButtonHover = (el: HTMLElement) => {
 const currentHoveringBranch: Ref<SkillBranchItem | null> = ref(null)
 const branchButtonHover = (el: HTMLElement) => {
   const branchName = el.innerText
-  currentHoveringBranch.value = effectItem.value!.branchItems.find(bch => bch.prop('name') === branchName) ?? null
+  currentHoveringBranch.value =
+    effectItem.value!.branchItems.find(
+      bch => bch.prop('name') === branchName
+    ) ?? null
 }
 </script>
 
 <style lang="postcss" scoped>
 .skill-effect-tab-button {
-  @apply inline-flex items-center border-b-1 border-transparent hover:border-primary-30 px-3 py-0.5 cursor-pointer;
+  @apply inline-flex cursor-pointer items-center border-b-1 border-transparent px-3 py-0.5 hover:border-primary-30;
 
   &.selected {
     @apply border-primary-60 hover:border-primary-60;

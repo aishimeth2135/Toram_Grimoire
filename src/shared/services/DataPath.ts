@@ -10,7 +10,7 @@ export const enum DataPathIds {
   Registlet = 8,
 }
 
-function DataPath(id: DataPathIds): string{
+function DataPath(id: DataPathIds): string {
   switch (id) {
     case DataPathIds.Skill:
       return 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=170573319&single=true&output=csv&range=A:Q'
@@ -60,12 +60,7 @@ function DataPathLang(id: DataPathIds): (string | null)[] {
         'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=1353062937&single=true&output=csv&range=F:G',
       ]
     case DataPathIds.CharacterStats:
-      return [
-        null,
-        null,
-        null,
-        null,
-      ]
+      return [null, null, null, null]
     case DataPathIds.Glossary:
       return [
         'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_XhF85gZ5sd9AtOMSM6JY4OuQwFlD6kToQynQ4bMq_fiaUNr26c7dbrIs6WeWnscKe1rau1npWYe7/pub?gid=1107380961&single=true&output=csv&range=D:E',

@@ -1,13 +1,26 @@
 import Grimoire from '@/shared/Grimoire'
 
-import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
-import type { HandleBranchTextPropsMap, HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import SkillComputingContainer, {
+  SkillBranchItem,
+} from '@/lib/Skill/SkillComputingContainer'
+import type {
+  HandleBranchTextPropsMap,
+  HandleBranchValuePropsMap,
+} from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { cloneBranchProps, handleDisplayData, HandleBranchLangPropsMap, HandleDisplayDataOptionFilters } from './handle'
+import {
+  HandleBranchLangPropsMap,
+  HandleDisplayDataOptionFilters,
+  cloneBranchProps,
+  handleDisplayData,
+} from './handle'
 import MapContainer from './handle/MapContainer'
 
-export default function EffectHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
+export default function EffectHandler<BranchItem extends SkillBranchItem>(
+  computing: SkillComputingContainer,
+  branchItem: BranchItem
+) {
   const { t } = Grimoire.i18n
 
   const props = cloneBranchProps(branchItem, {
@@ -17,10 +30,15 @@ export default function EffectHandler<BranchItem extends SkillBranchItem>(comput
   const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>({
     radius: 'm',
     duration: {
-      beforeHighlight: value => t('skill-query.branch.duration-caption', { duration: value }),
+      beforeHighlight: value =>
+        t('skill-query.branch.duration-caption', { duration: value }),
     },
   })
-  const textPropsMap = new MapContainer<HandleBranchTextPropsMap>(['caption', 'condition', 'end_condition'])
+  const textPropsMap = new MapContainer<HandleBranchTextPropsMap>([
+    'caption',
+    'condition',
+    'end_condition',
+  ])
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
     caption: value => !!value,
     condition: value => value !== 'none',
@@ -31,9 +49,15 @@ export default function EffectHandler<BranchItem extends SkillBranchItem>(comput
     target: value => !!value,
   })
 
-  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>(['is_place', 'type'])
+  const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>([
+    'is_place',
+    'type',
+  ])
   if (['auto', 'hit'].includes(props.get('condition')!)) {
-    if (props.get('condition') === 'auto' && branchItem.realName === SkillBranchNames.Next) {
+    if (
+      props.get('condition') === 'auto' &&
+      branchItem.realName === SkillBranchNames.Next
+    ) {
       props.set('condition', '@next')
     }
     langAttrsMap.append('condition')

@@ -27,9 +27,9 @@ import { Ref, ref, useSlots } from 'vue'
 import CyPopper from './cy-popper.vue'
 
 interface Props {
-  tag?: string;
-  autoSelect?: boolean;
-  placement?: string;
+  tag?: string
+  autoSelect?: boolean
+  placement?: string
 }
 
 withDefaults(defineProps<Props>(), {

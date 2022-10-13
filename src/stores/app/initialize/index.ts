@@ -4,16 +4,16 @@ import { readonly, ref } from 'vue'
 import { DataStoreIds } from '../datas/enums'
 import { useLanguageStore } from '../language'
 import { LocaleViewNamespaces } from '../language/enums'
-import { InitializeStatus, InitItemStatus } from './enums'
+import { InitItemStatus, InitializeStatus } from './enums'
 
 interface InitItem {
-  id: DataStoreIds;
-  message: string;
-  promise: Promise<() => Promise<void>>;
+  id: DataStoreIds
+  message: string
+  promise: Promise<() => Promise<void>>
 }
 
 interface InitItemWithStatus extends InitItem {
-  status: InitItemStatus;
+  status: InitItemStatus
 }
 
 export const useInitializeStore = defineStore('app-initialize', () => {
@@ -41,7 +41,9 @@ export const useInitializeStore = defineStore('app-initialize', () => {
 
   const initFinished = () => {
     if (status.value !== InitializeStatus.BeforeFinished) {
-      throw new Error(`[ViewInit] Unknow error. The status should be 101 instead of ${status.value}`)
+      throw new Error(
+        `[ViewInit] Unknow error. The status should be 101 instead of ${status.value}`
+      )
     }
     status.value = InitializeStatus.Finished
     initItems.value = []
@@ -53,7 +55,7 @@ export const useInitializeStore = defineStore('app-initialize', () => {
 
   const startInit = async () => {
     const inits = await Promise.all(
-      initItems.value.map(async (item) => {
+      initItems.value.map(async item => {
         try {
           const init = await item.promise
           item.status = InitItemStatus.Success
@@ -69,7 +71,7 @@ export const useInitializeStore = defineStore('app-initialize', () => {
           id: item.id,
           init: () => Promise.resolve(),
         }
-      }),
+      })
     )
     if (initItems.value.every(item => item.status !== InitItemStatus.Error)) {
       status.value = InitializeStatus.ViewSuccess

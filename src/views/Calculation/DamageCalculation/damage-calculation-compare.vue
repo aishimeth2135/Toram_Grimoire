@@ -1,11 +1,14 @@
 <template>
   <div v-if="calculationItems.length > 0" class="w-full">
     <div>
-      <cy-button-action icon="bx:bx-git-compare" @click="toggle('contents/selectCalculation', true)">
+      <cy-button-action
+        icon="bx:bx-git-compare"
+        @click="toggle('contents/selectCalculation', true)"
+      >
         {{ t('damage-calculation.compare.select-build') }}
       </cy-button-action>
     </div>
-    <div v-if="comparedCalculationItems.length > 0" class="pt-4 space-y-2">
+    <div v-if="comparedCalculationItems.length > 0" class="space-y-2 pt-4">
       <DamageCalculationCompareItem
         v-for="item in comparedCalculationItems"
         :key="item.index"
@@ -32,7 +35,10 @@
         :key="item.index"
         @click="toggleComparedCalculation(item.origin)"
       >
-        <cy-button-check :selected="comparedCalculationItems.includes(item)" inline>
+        <cy-button-check
+          :selected="comparedCalculationItems.includes(item)"
+          inline
+        >
           {{ item.origin.name }}
         </cy-button-check>
       </cy-list-item>
@@ -44,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch, Ref } from 'vue'
+import { Ref, computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { Calculation } from '@/lib/Calculation/Damage/Calculation'
@@ -55,7 +61,8 @@ import DamageCalculationCompareItem from './damage-calculation-compare-item.vue'
 
 import { setupCalculationStoreState } from './setup'
 
-const { currentCalculation: mainCalculation, calculations } = setupCalculationStoreState()
+const { currentCalculation: mainCalculation, calculations } =
+  setupCalculationStoreState()
 
 const calculationItems = computed(() => {
   return calculations.value
@@ -75,11 +82,15 @@ const toggleComparedCalculation = (calc: Calculation) => {
 }
 
 watch(calculations, newValue => {
-  comparedCalculations.value = comparedCalculations.value.filter(calc => newValue.includes(calc))
+  comparedCalculations.value = comparedCalculations.value.filter(calc =>
+    newValue.includes(calc)
+  )
 })
 
 const comparedCalculationItems = computed(() => {
-  return calculationItems.value.filter(calcItem => comparedCalculations.value.includes(calcItem.origin))
+  return calculationItems.value.filter(calcItem =>
+    comparedCalculations.value.includes(calcItem.origin)
+  )
 })
 
 const { contents, toggle } = ToggleService({

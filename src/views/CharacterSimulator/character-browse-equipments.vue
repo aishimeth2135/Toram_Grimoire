@@ -1,14 +1,19 @@
 <template>
   <cy-modal
     :visible="visible"
-    :title="t('character-simulator.browse-equipments.action.select-field-equipment')"
+    :title="
+      t('character-simulator.browse-equipments.action.select-field-equipment')
+    "
     title-icon="mdi:checkbox-blank-badge-outline"
     footer
     @close="closeModal"
   >
     <template #default>
-      <div class="flex items-center justify-end mb-3">
-        <cy-button-action icon="ic:round-add-circle-outline" @click="createCustomEquipment">
+      <div class="mb-3 flex items-center justify-end">
+        <cy-button-action
+          icon="ic:round-add-circle-outline"
+          @click="createCustomEquipment"
+        >
           {{ t('character-simulator.custom-equipment.button-title') }}
         </cy-button-action>
         <cy-button-action icon="ci:table-add" @click="appendEquipments">
@@ -20,20 +25,41 @@
           v-for="equip in displayEquipments"
           :key="equip.id"
           :equipment="equip"
-          :current="!!targetField && !!selectedEquipment && targetField.equipment === equip"
+          :current="
+            !!targetField &&
+            !!selectedEquipment &&
+            targetField.equipment === equip
+          "
           :selected="selectedEquipment === equip"
           :disabled="showAll && !equipmentAvailable(equip)"
           @click="selectedEquipment = equip"
         >
-          <template v-if="selectedEquipment === equip || equip === movingEquipment" #content>
+          <template
+            v-if="selectedEquipment === equip || equip === movingEquipment"
+            #content
+          >
             <div v-if="controls.edit" class="p-2 pt-2.5">
               <CharacterEquipmentDetail :equipment="equip" inner-item />
             </div>
-            <div class="flex items-center justify-end mt-1 space-x-2" @click.stop>
+            <div
+              class="mt-1 flex items-center justify-end space-x-2"
+              @click.stop
+            >
               <template v-if="movingEquipment">
-                <div v-if="equip === movingEquipment" class="ml-1 mr-auto self-end">
-                  <cy-icon-text icon="mdi:cursor-move" text-color="primary-50" small>
-                    {{ t('character-simulator.browse-equipments.move-equipment-title') }}
+                <div
+                  v-if="equip === movingEquipment"
+                  class="ml-1 mr-auto self-end"
+                >
+                  <cy-icon-text
+                    icon="mdi:cursor-move"
+                    text-color="primary-50"
+                    small
+                  >
+                    {{
+                      t(
+                        'character-simulator.browse-equipments.move-equipment-title'
+                      )
+                    }}
                   </cy-icon-text>
                 </div>
                 <template v-if="equip !== movingEquipment">
@@ -41,13 +67,19 @@
                     icon="ic:baseline-move-up"
                     small
                     color="blue"
-                    @click="store.moveEquipment(movingEquipment!, -1, equip), movingEquipment = null"
+                    @click="
+                      store.moveEquipment(movingEquipment!, -1, equip),
+                        (movingEquipment = null)
+                    "
                   />
                   <cy-button-circle
                     icon="ic:baseline-move-down"
                     small
                     color="blue"
-                    @click="store.moveEquipment(movingEquipment!, 1, equip), movingEquipment = null"
+                    @click="
+                      store.moveEquipment(movingEquipment!, 1, equip),
+                        (movingEquipment = null)
+                    "
                   />
                 </template>
                 <cy-button-circle
@@ -93,7 +125,13 @@
                       icon="ic:outline-tips-and-updates"
                       small
                       color="emerald"
-                      @click="notify(t('character-simulator.browse-equipments.equipment-item-actions-tips'))"
+                      @click="
+                        notify(
+                          t(
+                            'character-simulator.browse-equipments.equipment-item-actions-tips'
+                          )
+                        )
+                      "
                     />
                   </template>
                 </template>
@@ -118,11 +156,11 @@
       </cy-default-tips>
     </template>
     <template #footer="{ closeModal }">
-      <div class="flex items-center w-full">
+      <div class="flex w-full items-center">
         <cy-button-toggle v-model:selected="showAll">
           {{ t('global.all') }}
         </cy-button-toggle>
-        <div class="flex items-center ml-auto">
+        <div class="ml-auto flex items-center">
           <cy-button-action
             v-if="targetField"
             icon="ic-round-done"
@@ -138,7 +176,10 @@
       </div>
     </template>
     <template v-if="selectedEquipment" #extra-content>
-      <div v-if="compareCharacter" class="bg-white border-1 border-primary-30 p-3 mt-3">
+      <div
+        v-if="compareCharacter"
+        class="mt-3 border-1 border-primary-30 bg-white p-3"
+      >
         <CharacterStatCompare
           :before="characterStatCategoryResults"
           :after="comparedCharacterStatCategoryResults"
@@ -149,12 +190,21 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, Ref, ref, watch } from 'vue'
+import { Ref, computed, inject, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { EquipmentField } from '@/lib/Character/Character'
-import { AdditionalGear, Avatar, BodyArmor, CharacterEquipment, MainWeapon, SpecialGear, SubArmor, SubWeapon } from '@/lib/Character/CharacterEquipment'
 import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
+import {
+  AdditionalGear,
+  Avatar,
+  BodyArmor,
+  CharacterEquipment,
+  MainWeapon,
+  SpecialGear,
+  SubArmor,
+  SubWeapon,
+} from '@/lib/Character/CharacterEquipment'
 
 import Notify from '@/setup/Notify'
 import ToggleService from '@/setup/ToggleService'
@@ -164,15 +214,15 @@ import EquipmentItem from '@/components/common/equipment-item.vue'
 import CharacterEquipmentDetail from './character-equipment/character-equipment-detail.vue'
 import CharacterStatCompare from './character-stats/character-stat-compare.vue'
 
-import { setupCharacterStore } from './setup'
 import { CharacterSimulatorInjectionKey } from './injection-keys'
+import { setupCharacterStore } from './setup'
 
 interface Props {
-  visible: boolean;
-  targetField?: EquipmentField;
+  visible: boolean
+  targetField?: EquipmentField
 }
 interface Emits {
-  (evt: 'close'): void;
+  (evt: 'close'): void
 }
 
 const props = defineProps<Props>()
@@ -181,13 +231,16 @@ const emit = defineEmits<Emits>()
 const { t } = useI18n()
 const { notify } = Notify()
 
-const { store, equipments, currentCharacter, characterStatCategoryResults } = setupCharacterStore()
+const { store, equipments, currentCharacter, characterStatCategoryResults } =
+  setupCharacterStore()
 
 const showAll = ref(false)
 const selectedEquipment: Ref<CharacterEquipment | null> = ref(null)
 const movingEquipment: Ref<CharacterEquipment | null> = ref(null)
 
-const { controls, toggle } = ToggleService({ controls: [{ name: 'edit', default: true }] as const })
+const { controls, toggle } = ToggleService({
+  controls: [{ name: 'edit', default: true }] as const,
+})
 
 const equipmentAvailable = (eq: CharacterEquipment) => {
   if (!props.targetField) {
@@ -198,7 +251,11 @@ const equipmentAvailable = (eq: CharacterEquipment) => {
     return eq instanceof MainWeapon
   }
   if (type === EquipmentFieldTypes.SubWeapon) {
-    if (eq instanceof MainWeapon || eq instanceof SubWeapon || eq instanceof SubArmor) {
+    if (
+      eq instanceof MainWeapon ||
+      eq instanceof SubWeapon ||
+      eq instanceof SubArmor
+    ) {
       return currentCharacter.value!.subWeaponValid(eq.type)
     }
     return false
@@ -218,22 +275,37 @@ const equipmentAvailable = (eq: CharacterEquipment) => {
   return true
 }
 
-const availableEquipments = computed(() => equipments.value.filter(equip => equipmentAvailable(equip)))
+const availableEquipments = computed(() =>
+  equipments.value.filter(equip => equipmentAvailable(equip))
+)
 
-const displayEquipments = computed(() => showAll.value ? equipments.value : availableEquipments.value)
+const displayEquipments = computed(() =>
+  showAll.value ? equipments.value : availableEquipments.value
+)
 
-const selectedEquipmentAvailable = computed(() => selectedEquipment.value && equipmentAvailable(selectedEquipment.value))
+const selectedEquipmentAvailable = computed(
+  () => selectedEquipment.value && equipmentAvailable(selectedEquipment.value)
+)
 
 const compareCharacter = computed(() => {
-  if (!currentCharacter.value || !props.targetField || !selectedEquipment.value || selectedEquipment.value === props.targetField.equipment || !equipmentAvailable(selectedEquipment.value)) {
+  if (
+    !currentCharacter.value ||
+    !props.targetField ||
+    !selectedEquipment.value ||
+    selectedEquipment.value === props.targetField.equipment ||
+    !equipmentAvailable(selectedEquipment.value)
+  ) {
     return null
   }
   const newCharacter = currentCharacter.value.clone()
-  newCharacter.equipmentField(props.targetField.type, props.targetField.index).setEquipment(selectedEquipment.value)
+  newCharacter
+    .equipmentField(props.targetField.type, props.targetField.index)
+    .setEquipment(selectedEquipment.value)
   return newCharacter
 })
 
-const { comparedCharacterStatCategoryResults } = store.setupCharacterComparedStatCategoryResults(compareCharacter)
+const { comparedCharacterStatCategoryResults } =
+  store.setupCharacterComparedStatCategoryResults(compareCharacter)
 
 const submit = () => {
   if (!props.targetField || !selectedEquipment.value) {
@@ -255,8 +327,15 @@ const copySelectedEquipment = () => {
   }
   const newEquip = selectedEquipment.value.clone()
   newEquip.name = selectedEquipment.value.name + ' *'
-  store.appendEquipments([newEquip], equipments.value.indexOf(selectedEquipment.value) + 1)
-  notify(t('character-simulator.browse-equipments.copy-equipment-tips'), 'bx:copy-alt', 'copy-equipment-tips')
+  store.appendEquipments(
+    [newEquip],
+    equipments.value.indexOf(selectedEquipment.value) + 1
+  )
+  notify(
+    t('character-simulator.browse-equipments.copy-equipment-tips'),
+    'bx:copy-alt',
+    'copy-equipment-tips'
+  )
 }
 
 const removeSelectedEquipment = () => {
@@ -266,23 +345,42 @@ const removeSelectedEquipment = () => {
   const eq = selectedEquipment.value
   selectedEquipment.value = null
   store.removeEquipment(eq)
-  notify(t('character-simulator.browse-equipments.remove-equipment-tips', { name: eq.name }), 'ic-baseline-delete-outline', null, {
-    buttons: [{
-      text: t('global.recovery'),
-      click: () => {
-        store.appendEquipments([eq])
-        notify(t('character-simulator.browse-equipments.removed-equipment-restore-tips', { name: eq.name }))
-      },
-      removeMessageAfterClick: true,
-    }],
-  })
+  notify(
+    t('character-simulator.browse-equipments.remove-equipment-tips', {
+      name: eq.name,
+    }),
+    'ic-baseline-delete-outline',
+    null,
+    {
+      buttons: [
+        {
+          text: t('global.recovery'),
+          click: () => {
+            store.appendEquipments([eq])
+            notify(
+              t(
+                'character-simulator.browse-equipments.removed-equipment-restore-tips',
+                { name: eq.name }
+              )
+            )
+          },
+          removeMessageAfterClick: true,
+        },
+      ],
+    }
+  )
 }
 
-watch(() => props.targetField, (newValue) => {
-  if (newValue?.equipment) {
-    selectedEquipment.value = newValue.equipment
+watch(
+  () => props.targetField,
+  newValue => {
+    if (newValue?.equipment) {
+      selectedEquipment.value = newValue.equipment
+    }
   }
-})
+)
 
-const { appendEquipments, createCustomEquipment } = inject(CharacterSimulatorInjectionKey)!
+const { appendEquipments, createCustomEquipment } = inject(
+  CharacterSimulatorInjectionKey
+)!
 </script>

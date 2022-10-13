@@ -4,9 +4,9 @@ import { readonly, ref } from 'vue'
 import { AppRouteNames } from '@/router/enums'
 
 interface LeftMenuViewButton {
-  title: string;
-  icon: string;
-  pathName: AppRouteNames;
+  title: string
+  icon: string
+  pathName: AppRouteNames
 }
 
 export const useLeftMenuStore = defineStore('app-left-menu', () => {

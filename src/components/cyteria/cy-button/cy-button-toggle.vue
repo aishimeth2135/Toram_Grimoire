@@ -19,8 +19,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import CyButtonBase from './cy-button-base.vue'
 import ButtonIcon from './button-icon.vue'
+import CyButtonBase from './cy-button-base.vue'
 
 import { ButtonBaseProps, getButtonBaseBinds } from './setup'
 
@@ -62,4 +62,3 @@ export default defineComponent({
   }
 }
 </style>
-

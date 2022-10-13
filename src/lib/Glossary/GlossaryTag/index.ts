@@ -30,4 +30,3 @@ class GlossaryTagRow {
 
 export default GlossaryTag
 export { GlossaryTag, GlossaryTagRow }
-

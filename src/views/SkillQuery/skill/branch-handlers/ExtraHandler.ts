@@ -1,23 +1,41 @@
 import Grimoire from '@/shared/Grimoire'
 
-import SkillComputingContainer, { SkillBranchItemSuffix } from '@/lib/Skill/SkillComputingContainer'
-import type { HandleBranchTextPropsMap, HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import SkillComputingContainer, {
+  SkillBranchItemSuffix,
+} from '@/lib/Skill/SkillComputingContainer'
+import type {
+  HandleBranchTextPropsMap,
+  HandleBranchValuePropsMap,
+} from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { cloneBranchProps, HandleBranchLangPropsMap, handleDisplayData, HandleDisplayDataOptionFilters } from './handle'
-import MapContainer from './handle/MapContainer'
+import {
+  HandleBranchLangPropsMap,
+  HandleDisplayDataOptionFilters,
+  cloneBranchProps,
+  handleDisplayData,
+} from './handle'
 import DisplayDataContainer from './handle/DisplayDataContainer'
+import MapContainer from './handle/MapContainer'
 
-export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(computing: SkillComputingContainer, branchItem: BranchItem) {
+export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(
+  computing: SkillComputingContainer,
+  branchItem: BranchItem
+) {
   const { t } = Grimoire.i18n
 
-  const defaultCondition = branchItem.mainBranch.is(SkillBranchNames.Damage) && branchItem.stats.length > 0 ?
-    t('skill-query.branch.damage: extra.condition-default-value') :
-    t('skill-query.branch.global-suffix.extra.condition-default-value')
+  const defaultCondition =
+    branchItem.mainBranch.is(SkillBranchNames.Damage) &&
+    branchItem.stats.length > 0
+      ? t('skill-query.branch.damage: extra.condition-default-value')
+      : t('skill-query.branch.global-suffix.extra.condition-default-value')
   const props = cloneBranchProps(branchItem, {
-    condition: branchItem.prop('type') === 'normal' ?
-      defaultCondition :
-      t('skill-query.branch.global-suffix.extra.condition-next-default-value'),
+    condition:
+      branchItem.prop('type') === 'normal'
+        ? defaultCondition
+        : t(
+            'skill-query.branch.global-suffix.extra.condition-next-default-value'
+          ),
   })
 
   const mainBranch = branchItem.mainBranch

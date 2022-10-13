@@ -4,7 +4,7 @@
       <div
         v-for="column in columns"
         :key="column.title"
-        class="cy--about-column flex p-4 bg-white rounded-md m-4 border-1 border-transparent hover:border-primary-30 duration-200 overflow-x-auto"
+        class="cy--about-column m-4 flex overflow-x-auto rounded-md border-1 border-transparent bg-white p-4 duration-200 hover:border-primary-30"
       >
         <router-link
           v-if="column.title === 'author'"
@@ -12,45 +12,70 @@
           :to="{ name: AppRouteNames.Bubble, params: { iconName: 'potum' } }"
           custom
         >
-          <div class="flex-shrink-0 rounded-full mr-3 mb-4" @click="navigate">
-            <div class="text-primary-70 px-4">{{ t(`app.about.${column.title}.title`) }}</div>
-            <div class="h-1 rounded-full bg-primary-30 mt-0.5" />
+          <div class="mr-3 mb-4 flex-shrink-0 rounded-full" @click="navigate">
+            <div class="px-4 text-primary-70">
+              {{ t(`app.about.${column.title}.title`) }}
+            </div>
+            <div class="mt-0.5 h-1 rounded-full bg-primary-30" />
           </div>
         </router-link>
-        <div v-else class="flex-shrink-0 rounded-full mr-3 mb-4">
-          <div class="text-primary-70 px-4">{{ t(`app.about.${column.title}.title`) }}</div>
-          <div class="h-1 rounded-full bg-primary-30 mt-0.5" />
+        <div v-else class="mr-3 mb-4 flex-shrink-0 rounded-full">
+          <div class="px-4 text-primary-70">
+            {{ t(`app.about.${column.title}.title`) }}
+          </div>
+          <div class="mt-0.5 h-1 rounded-full bg-primary-30" />
         </div>
-        <div class="pl-3 mt-2">
+        <div class="mt-2 pl-3">
           <template v-if="column.title === 'partnership'">
-            <div class="relative rounded-b-lg w-96 shadow-lg">
+            <div class="relative w-96 rounded-b-lg shadow-lg">
               <div
-                class="h-28 bg-cover bg-no-repeat bg-center"
+                class="bg-no-repeat h-28 bg-cover bg-center"
                 :style="{
                   backgroundImage: `url('${discordGroupData.splashUrl}')`,
                 }"
               />
-              <cy-icon-text icon="mdi:discord" class="absolute top-2 right-2" icon-width="2rem" />
-              <div class="w-full bg-primary-30 flex items-center py-2.5 px-4 rounded-b-lg">
-                <div class="rounded overflow-hidden">
-                  <img :src="discordGroupData.iconUrl" alt="#" width="50" height="50">
+              <cy-icon-text
+                icon="mdi:discord"
+                class="absolute top-2 right-2"
+                icon-width="2rem"
+              />
+              <div
+                class="flex w-full items-center rounded-b-lg bg-primary-30 py-2.5 px-4"
+              >
+                <div class="overflow-hidden rounded">
+                  <img
+                    :src="discordGroupData.iconUrl"
+                    alt="#"
+                    width="50"
+                    height="50"
+                  />
                 </div>
                 <div class="pl-4">
                   <div class="text-xl text-primary-90">Toram's Pelulu</div>
                   <div>
-                    <cy-icon-text icon="ic:baseline-person" small text-color="fuchsia-60" icon-color="purple-30">
+                    <cy-icon-text
+                      icon="ic:baseline-person"
+                      small
+                      text-color="fuchsia-60"
+                      icon-color="purple-30"
+                    >
                       {{ discordGroupData.memberNumbers }}
                     </cy-icon-text>
                   </div>
                 </div>
-                <cy-button-action link href="https://discord.com/invite/FKG6RVT975" target="_blank" class="ml-auto">
+                <cy-button-action
+                  link
+                  href="https://discord.com/invite/FKG6RVT975"
+                  target="_blank"
+                  class="ml-auto"
+                >
                   {{ t('app.about.partnership.join') }}
                 </cy-button-action>
               </div>
             </div>
           </template>
           <template v-else>
-            <div class="text-sm text-fuchsia-60 mb-3">
+            <div class="mb-3 text-sm text-fuchsia-60">
               <div>{{ t(`app.about.${column.title}.sub-title`) }}</div>
             </div>
             <div v-for="item in column.list" :key="item.title" class="mx-3">
@@ -63,21 +88,29 @@
               <div class="py-2 pl-4">
                 <template
                   v-for="value in item.list"
-                  :key="typeof value === 'object' ? `${value.main}|${value.sub}` : value"
+                  :key="
+                    typeof value === 'object'
+                      ? `${value.main}|${value.sub}`
+                      : value
+                  "
                 >
-                  <template v-if="(typeof value === 'string') && value.startsWith('@')">
+                  <template
+                    v-if="typeof value === 'string' && value.startsWith('@')"
+                  >
                     <div v-if="value === '@line'" class="my-2.5" />
                     <div v-if="value === '@end'" class="mb-3" />
                   </template>
-                  <span
-                    v-else
-                    class="inline-flex pr-3 relative pl-4"
-                  >
-                    <div class="absolute left-0 top-1 w-2 h-2 bg-primary-30 rounded-full" />
-                    <span v-if="(typeof value === 'string')">{{ value }}</span>
-                    <span v-else class="inline-flex items-center flex-wrap">
+                  <span v-else class="relative inline-flex pr-3 pl-4">
+                    <div
+                      class="absolute left-0 top-1 h-2 w-2 rounded-full bg-primary-30"
+                    />
+                    <span v-if="typeof value === 'string'">{{ value }}</span>
+                    <span v-else class="inline-flex flex-wrap items-center">
                       <span>{{ value.main }}</span>
-                      <span class="px-2 ml-2 text-blue-60 border-l border-r border-solid border-blue-60">{{ value.sub }}</span>
+                      <span
+                        class="ml-2 border-l border-r border-solid border-blue-60 px-2 text-blue-60"
+                        >{{ value.sub }}</span
+                      >
                     </span>
                   </span>
                 </template>
@@ -85,17 +118,29 @@
             </div>
           </template>
           <div v-if="column.title === 'author'" class="mt-4 px-3">
-            <a href="https://github.com/aishimeth2135/Toram_Grimoire" target="_blank">
-              <cy-icon-text icon="mdi:github" icon-color="cyan-60" icon-width="2rem" />
+            <a
+              href="https://github.com/aishimeth2135/Toram_Grimoire"
+              target="_blank"
+            >
+              <cy-icon-text
+                icon="mdi:github"
+                icon-color="cyan-60"
+                icon-width="2rem"
+              />
             </a>
           </div>
         </div>
       </div>
     </section>
-    <section class="pt-5 pb-12 px-5">
+    <section class="px-5 pt-5 pb-12">
       <i18n-t keypath="app.about.disclaimer" tag="div" class="content">
         <template #link>
-          <a class="text-primary-50 underline" href="https://asobimo.com/" target="_blank">アソビモ株式会社（ASOBIMO,Inc.）</a>
+          <a
+            class="text-primary-50 underline"
+            href="https://asobimo.com/"
+            target="_blank"
+            >アソビモ株式会社（ASOBIMO,Inc.）</a
+          >
         </template>
       </i18n-t>
     </section>
@@ -109,102 +154,143 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import { AppRouteNames } from '@/router/enums'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
+import { AppRouteNames } from '@/router/enums'
 
 const { t } = useI18n()
 
 const columns: {
-  title: string;
+  title: string
   list: {
-    title: string;
-    list: (string | { main: string; sub: string })[];
-  }[];
-}[] = [{
-  title: 'author',
-  list: [{
-    title: 'toram-id',
-    list: ['Cyteria'],
-  }],
-}, {
-  title: 'team',
-  list: [{
-    title: 'skill-data',
-    list: ['緋月音', '(Discord) Phantom\'s Library'],
-  }, {
-    title: 'equipment-data',
-    list: ['緋月音', '真白', '萌月'],
-  }, {
-    title: 'other',
-    list: ['萌月', '太極魚'],
-  }],
-}, {
-  title: 'partnership',
-  list: [],
-}, {
-  title: 'sponsor',
-  list: [{
-    title: 'group',
-    list: [{
-      main: '曼珠沙華',
-      sub: '眾神幣',
-    }, '@line', {
-      main: '被世人遺忘的角落',
-      sub: '眾神幣',
-    }, '@line', {
-      main: '奇鴉譜月',
-      sub: '眾神幣',
-    }, '@end'],
-  }, {
-    title: 'personal',
-    list: [{
-      main: '繆絢ゞ',
-      sub: '眾神幣',
-    }, {
-      main: '憂子迷',
-      sub: '眾神幣',
-    }, {
-      main: 'Miriam魚蔥',
-      sub: '眾神幣',
-    }, '@line', {
-      main: '溫柔善良大方得體的匿名者',
-      sub: '單手劍穿孔0~2',
-    }, '@line', {
-      main: '律',
-      sub: '眾神幣',
-    }, '@line', {
-      main: '曄痕/櫻雨痕',
-      sub: '眾神幣',
-    }, {
-      main: '夜神散華 禮彌/（曄之妹）',
-      sub: '眾神幣',
-    }, '@line', {
-      main: '✩cuxin',
-      sub: '眾神幣',
-    }, {
-      main: '紺野木綿季、優紀',
-      sub: '眾神幣',
-    }, '@end'],
-  }],
-}, {
-  title: 'words',
-  list: [{
-    title: '@1',
-    list: [t('app.about.words.contents.0')],
-  }, {
-    title: '@2',
-    list: [t('app.about.words.contents.1')],
-  }, {
-    title: '@3',
-    list: [t('app.about.words.contents.2')],
-  }],
-}]
+    title: string
+    list: (string | { main: string; sub: string })[]
+  }[]
+}[] = [
+  {
+    title: 'author',
+    list: [
+      {
+        title: 'toram-id',
+        list: ['Cyteria'],
+      },
+    ],
+  },
+  {
+    title: 'team',
+    list: [
+      {
+        title: 'skill-data',
+        list: ['緋月音', "(Discord) Phantom's Library"],
+      },
+      {
+        title: 'equipment-data',
+        list: ['緋月音', '真白', '萌月'],
+      },
+      {
+        title: 'other',
+        list: ['萌月', '太極魚'],
+      },
+    ],
+  },
+  {
+    title: 'partnership',
+    list: [],
+  },
+  {
+    title: 'sponsor',
+    list: [
+      {
+        title: 'group',
+        list: [
+          {
+            main: '曼珠沙華',
+            sub: '眾神幣',
+          },
+          '@line',
+          {
+            main: '被世人遺忘的角落',
+            sub: '眾神幣',
+          },
+          '@line',
+          {
+            main: '奇鴉譜月',
+            sub: '眾神幣',
+          },
+          '@end',
+        ],
+      },
+      {
+        title: 'personal',
+        list: [
+          {
+            main: '繆絢ゞ',
+            sub: '眾神幣',
+          },
+          {
+            main: '憂子迷',
+            sub: '眾神幣',
+          },
+          {
+            main: 'Miriam魚蔥',
+            sub: '眾神幣',
+          },
+          '@line',
+          {
+            main: '溫柔善良大方得體的匿名者',
+            sub: '單手劍穿孔0~2',
+          },
+          '@line',
+          {
+            main: '律',
+            sub: '眾神幣',
+          },
+          '@line',
+          {
+            main: '曄痕/櫻雨痕',
+            sub: '眾神幣',
+          },
+          {
+            main: '夜神散華 禮彌/（曄之妹）',
+            sub: '眾神幣',
+          },
+          '@line',
+          {
+            main: '✩cuxin',
+            sub: '眾神幣',
+          },
+          {
+            main: '紺野木綿季、優紀',
+            sub: '眾神幣',
+          },
+          '@end',
+        ],
+      },
+    ],
+  },
+  {
+    title: 'words',
+    list: [
+      {
+        title: '@1',
+        list: [t('app.about.words.contents.0')],
+      },
+      {
+        title: '@2',
+        list: [t('app.about.words.contents.1')],
+      },
+      {
+        title: '@3',
+        list: [t('app.about.words.contents.2')],
+      },
+    ],
+  },
+]
 
 const discordGroupData = ref({
-  name: 'Toram\'s Pelulu',
+  name: "Toram's Pelulu",
   memberNumbers: '',
   iconUrl: '#',
   splashUrl: '#',
@@ -213,7 +299,9 @@ const discordGroupData = ref({
 
 const fetchDiscordData = async () => {
   try {
-    const res = await fetch('https://discord.com/api/v9/invites/FKG6RVT975?with_counts=true')
+    const res = await fetch(
+      'https://discord.com/api/v9/invites/FKG6RVT975?with_counts=true'
+    )
     const data = await res.json()
     const guild = data.guild
     discordGroupData.value = {

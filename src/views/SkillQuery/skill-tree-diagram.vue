@@ -53,7 +53,10 @@
         :y2="data.y2"
       />
       <text
-        v-else-if="data.type === DrawSkillTreeDataTypes.SkillLevelText || data.type === DrawSkillTreeDataTypes.StarGemLevelText"
+        v-else-if="
+          data.type === DrawSkillTreeDataTypes.SkillLevelText ||
+          data.type === DrawSkillTreeDataTypes.StarGemLevelText
+        "
         :key="`level-text-${data.type}x${data.x}y${data.y}`"
         :x="data.x"
         :y="data.y"
@@ -62,10 +65,7 @@
         {{ data.innerText }}
       </text>
     </template>
-    <template
-      v-for="(data, idx) in drawCircleDatas"
-      :key="data.skill.id"
-    >
+    <template v-for="(data, idx) in drawCircleDatas" :key="data.skill.id">
       <circle
         :cx="data.cx"
         :cy="data.cy"
@@ -91,18 +91,25 @@ import { computed, toRefs } from 'vue'
 import CY from '@/shared/utils/Cyteria'
 
 import { Skill, SkillTree } from '@/lib/Skill/Skill'
-import { computeDrawSkillTreeData, getSkillIconPatternData, createDrawSkillTreeDefs, DrawSkillTreeData, SetSkillButtonExtraDataHandle, GetSkillLevelHandler } from '@/lib/Skill/utils/DrawSkillTree'
+import {
+  DrawSkillTreeData,
+  GetSkillLevelHandler,
+  SetSkillButtonExtraDataHandle,
+  computeDrawSkillTreeData,
+  createDrawSkillTreeDefs,
+  getSkillIconPatternData,
+} from '@/lib/Skill/utils/DrawSkillTree'
 import { DrawSkillTreeDataTypes } from '@/lib/Skill/utils/enums'
 
 interface Props {
-  skillTree: SkillTree;
-  setSkillButtonExtraData?: SetSkillButtonExtraDataHandle;
-  getSkillLevel?: GetSkillLevelHandler;
-  currentSkill?: Skill | null;
+  skillTree: SkillTree
+  setSkillButtonExtraData?: SetSkillButtonExtraDataHandle
+  getSkillLevel?: GetSkillLevelHandler
+  currentSkill?: Skill | null
 }
 
 interface Emits {
-  (evt: 'skill-click', skill: Skill): void;
+  (evt: 'skill-click', skill: Skill): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -119,7 +126,8 @@ if (!document.getElementById('app--draw-skill-tree-defs')) {
   document.body.append(svg)
 }
 
-const { skillTree, setSkillButtonExtraData, currentSkill, getSkillLevel } = toRefs(props)
+const { skillTree, setSkillButtonExtraData, currentSkill, getSkillLevel } =
+  toRefs(props)
 
 const drawTreeData = computed(() => {
   return computeDrawSkillTreeData(skillTree.value, {
@@ -128,13 +136,29 @@ const drawTreeData = computed(() => {
   })
 })
 
-const skillIconPatternData = computed(() => getSkillIconPatternData(skillTree.value))
+const skillIconPatternData = computed(() =>
+  getSkillIconPatternData(skillTree.value)
+)
 
-const drawCircleDatas = computed(() => drawTreeData.value.data.filter(item => item.type === DrawSkillTreeDataTypes.SkillCircle))
+const drawCircleDatas = computed(() =>
+  drawTreeData.value.data.filter(
+    item => item.type === DrawSkillTreeDataTypes.SkillCircle
+  )
+)
 
-const drawNameDatas = computed(() => drawTreeData.value.data.filter(item => item.type === DrawSkillTreeDataTypes.SkillName))
+const drawNameDatas = computed(() =>
+  drawTreeData.value.data.filter(
+    item => item.type === DrawSkillTreeDataTypes.SkillName
+  )
+)
 
-const drawOtherDatas = computed(() => drawTreeData.value.data.filter(item => item.type !== DrawSkillTreeDataTypes.SkillName && item.type !== DrawSkillTreeDataTypes.SkillCircle))
+const drawOtherDatas = computed(() =>
+  drawTreeData.value.data.filter(
+    item =>
+      item.type !== DrawSkillTreeDataTypes.SkillName &&
+      item.type !== DrawSkillTreeDataTypes.SkillCircle
+  )
+)
 
 const handleSkillCircleClass = (data: DrawSkillTreeData) => {
   const classList = data.class?.slice() ?? []
@@ -155,22 +179,25 @@ const handleSkillCircleClass = (data: DrawSkillTreeData) => {
   }
 
   & > circle.skill-circle {
-    fill: #FFF;
+    fill: #fff;
     z-index: 5;
     stroke: #ff5fb7;
     stroke-width: 2px;
     cursor: pointer;
     transition: 0.3s;
 
-    &:hover, &.cur, &.selected {
+    &:hover,
+    &.cur,
+    &.selected {
       stroke: var(--app-blue-60);
     }
 
     &.disabled {
-      stroke: #BBB;
+      stroke: #bbb;
     }
 
-    &:not(.disabled):hover + text.skill-name, &.selected + text.skill-name {
+    &:not(.disabled):hover + text.skill-name,
+    &.selected + text.skill-name {
       display: block;
     }
 

@@ -15,7 +15,7 @@ import { BookPageSection } from '../setup/Book'
 import { BookPageSectionTypes } from '../setup/Book/enums'
 
 interface Props {
-  section: BookPageSection;
+  section: BookPageSection
 }
 
 const props = defineProps<Props>()
@@ -37,19 +37,28 @@ const sectionComponent = computed(() => {
 <style lang="postcss" scoped>
 :deep(.book-page-section-md-content) {
   h1 {
-    @apply text-2xl border-b;
+    @apply border-b text-2xl;
   }
   h2 {
-    @apply text-xl border-b;
+    @apply border-b text-xl;
   }
   h3 {
     @apply text-lg;
   }
-  h1, h2, h3, h4, h5, h6 {
-    @apply border-primary-30 mt-6 mb-4 pb-0.5 px-0.5 text-primary-70;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply mt-6 mb-4 border-primary-30 px-0.5 pb-0.5 text-primary-70;
   }
 
-  p, blockquote, dl, table, pre {
+  p,
+  blockquote,
+  dl,
+  table,
+  pre {
     @apply mt-0 mb-4;
   }
 
@@ -66,7 +75,7 @@ const sectionComponent = computed(() => {
   }
 
   blockquote {
-    @apply px-4 py-1 border-l-2 border-primary-30 text-primary-70;
+    @apply border-l-2 border-primary-30 px-4 py-1 text-primary-70;
 
     & > *:last-child {
       @apply mb-0;
@@ -77,14 +86,15 @@ const sectionComponent = computed(() => {
     @apply text-primary-50 underline;
   }
 
-  ul, ol {
-    @apply pr-2 py-1 mb-3;
+  ul,
+  ol {
+    @apply mb-3 py-1 pr-2;
   }
   li {
     @apply items-start;
 
     & > svg {
-      @apply inline-block mb-0.5;
+      @apply mb-0.5 inline-block;
     }
   }
   ul {
@@ -95,14 +105,14 @@ const sectionComponent = computed(() => {
   }
   ul > li::before {
     content: '';
-    @apply absolute left-0 top-1 w-2 h-2 bg-primary-30 rounded-full;
+    @apply absolute left-0 top-1 h-2 w-2 rounded-full bg-primary-30;
   }
   ol {
     list-style-type: decimal;
     @apply pl-4;
   }
   ol > li {
-    @apply pl-1.5 pb-1 ml-2;
+    @apply ml-2 pl-1.5 pb-1;
   }
   ol > li::marker {
     @apply text-primary-30;
@@ -110,43 +120,48 @@ const sectionComponent = computed(() => {
 
   hr {
     height: 1px;
-    @apply my-4 mx-1 bg-primary-30 border-0;
+    @apply my-4 mx-1 border-0 bg-primary-30;
   }
 
   code {
-    @apply bg-primary-5 mx-0.5 rounded-sm text-sm;
+    @apply mx-0.5 rounded-sm bg-primary-5 text-sm;
     padding: 0.125em 0;
     color: inherit !important;
 
-    &::before, &::after {
+    &::before,
+    &::after {
       letter-spacing: -0.2em;
-      content: "\00a0";
+      content: '\00a0';
     }
   }
 
   pre {
-    @apply px-4 py-3 bg-primary-5 rounded-md mx-0.5 overflow-x-auto;
+    @apply mx-0.5 overflow-x-auto rounded-md bg-primary-5 px-4 py-3;
 
     code {
-      @apply m-0 p-0 bg-opacity-0;
+      @apply m-0 bg-opacity-0 p-0;
 
-      &::before, &::after {
+      &::before,
+      &::after {
         content: none;
       }
     }
   }
 
-  table > thead > tr, table > tbody > tr {
+  table > thead > tr,
+  table > tbody > tr {
     & > th {
-      @apply text-sm text-primary-30 text-left font-normal border-b-1 border-primary-30 px-3 py-1.5;
+      @apply border-b-1 border-primary-30 px-3 py-1.5 text-left text-sm font-normal text-primary-30;
     }
     & > td {
       @apply border-b border-primary-30 px-3 py-1.5;
     }
-    & > th:first-child, & > td:first-child {
+    & > th:first-child,
+    & > td:first-child {
       @apply pl-5;
     }
-    & > th:last-child, & > td:last-child {
+    & > th:last-child,
+    & > td:last-child {
       @apply pr-5;
     }
   }

@@ -33,7 +33,10 @@ export function parseBook(rows: string[][]) {
       } else if (sectionId.startsWith('@')) {
         appendSection(sectionId.slice(1) as BookPageSectionTypes)
       } else {
-        const idx = row.slice().reverse().findIndex(value => value !== '')
+        const idx = row
+          .slice()
+          .reverse()
+          .findIndex(value => value !== '')
         const cells = row.slice(0, row.length - idx)
         if (cells.length === 0) {
           return

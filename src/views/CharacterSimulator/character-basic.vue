@@ -1,11 +1,16 @@
 <template>
   <section v-if="currentCharacter" class="px-2">
     <div class="py-2">
-      <div class="flex items-center flex-wrap px-2">
-        <div class="inline-block mr-2">
+      <div class="flex flex-wrap items-center px-2">
+        <div class="mr-2 inline-block">
           <cy-options
             :value="currentCharacter"
-            :options="characters.map(chara => ({ id: chara.instanceId, value: chara }))"
+            :options="
+              characters.map(chara => ({
+                id: chara.instanceId,
+                value: chara,
+              }))
+            "
             addable
             @update:value="store.setCurrentCharacter($event)"
             @add-item="store.createCharacter()"
@@ -78,15 +83,12 @@
         {{ t('character-simulator.character-basic.character-stat-points') }}
       </cy-icon-text>
     </div>
-    <div class="space-y-2 px-2 mt-2">
+    <div class="mt-2 space-y-2 px-2">
       <div
         v-for="baseStat in currentCharacter.normalBaseStats"
         :key="baseStat.name"
       >
-        <cy-input-counter
-          v-model:value="baseStat.value"
-          :range="baseStatRange"
-        >
+        <cy-input-counter v-model:value="baseStat.value" :range="baseStatRange">
           <template #title>
             <cy-icon-text icon="mdi-rhombus-outline">
               {{ baseStat.name }}
@@ -117,11 +119,13 @@
         small
         text-color="fuchsia-60"
       >
-        {{ t('character-simulator.character-basic.character-optional-base-stat') }}
+        {{
+          t('character-simulator.character-basic.character-optional-base-stat')
+        }}
       </cy-icon-text>
     </div>
     <div class="px-2">
-      <div class="flex items-center flex-wrap">
+      <div class="flex flex-wrap items-center">
         <cy-button-radio
           :selected="!currentCharacter.optionalBaseStat"
           @click="currentCharacter!.clearOptinalBaseStat()"
@@ -176,16 +180,29 @@ const removeCurrentCharacter = () => {
   }
   const from = currentCharacter.value!
   store.removeCharacter()
-  notify(t('character-simulator.character-basic.remove-character-success', { name: from.name }),
-    'ic-round-delete', null, {
-      buttons: [{
-        text: t('global.recovery'),
-        click: () => {
-          store.createCharacter(from)
-          notify(t('character-simulator.character-basic.restore-character-success', { name: from.name }))
+  notify(
+    t('character-simulator.character-basic.remove-character-success', {
+      name: from.name,
+    }),
+    'ic-round-delete',
+    null,
+    {
+      buttons: [
+        {
+          text: t('global.recovery'),
+          click: () => {
+            store.createCharacter(from)
+            notify(
+              t(
+                'character-simulator.character-basic.restore-character-success',
+                { name: from.name }
+              )
+            )
+          },
+          removeMessageAfterClick: true,
         },
-        removeMessageAfterClick: true,
-      }],
-    })
+      ],
+    }
+  )
 }
 </script>

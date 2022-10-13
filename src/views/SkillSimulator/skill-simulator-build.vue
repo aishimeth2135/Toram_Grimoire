@@ -14,7 +14,9 @@
       class="border-l-2 border-primary-30 pl-3 pt-1"
     >
       <div>
-        <cy-icon-text icon="bx:bxs-book-bookmark">{{ skillTree.name }}</cy-icon-text>
+        <cy-icon-text icon="bx:bxs-book-bookmark">{{
+          skillTree.name
+        }}</cy-icon-text>
       </div>
       <div class="max-w-full overflow-x-auto">
         <SkillTreeDiagram
@@ -40,7 +42,7 @@ import SkillTreeDiagram from '@/views/SkillQuery/skill-tree-diagram.vue'
 import { setupSkillBuildStore, setupSkillLevel } from './setup'
 
 interface Emits {
-  (evt: 'skill-click', skill: Skill): void;
+  (evt: 'skill-click', skill: Skill): void
 }
 const emit = defineEmits<Emits>()
 
@@ -48,9 +50,13 @@ const { t } = useI18n()
 const { currentSkillBuild } = setupSkillBuildStore()
 
 const skillTrees: SkillTree[] = []
-Grimoire.Skill.skillRoot.skillTreeCategorys.forEach(stc => skillTrees.push(...stc.skillTrees))
+Grimoire.Skill.skillRoot.skillTreeCategorys.forEach(stc =>
+  skillTrees.push(...stc.skillTrees)
+)
 
-const selectedSkillTrees = computed<SkillTree[]>(() => currentSkillBuild.value?.selectedSkillTrees ?? [])
+const selectedSkillTrees = computed<SkillTree[]>(
+  () => currentSkillBuild.value?.selectedSkillTrees ?? []
+)
 
 const skillClick = (skill: Skill) => {
   emit('skill-click', skill)
@@ -60,7 +66,9 @@ const { getSkillLevel } = setupSkillLevel()
 
 const skillTreeElements = reactive(new Map<string, HTMLElement | null>())
 const goSkillTree = (skillTree: SkillTree) => {
-  skillTreeElements.get(skillTree.skillTreeId)?.scrollIntoView({ behavior: 'smooth' })
+  skillTreeElements
+    .get(skillTree.skillTreeId)
+    ?.scrollIntoView({ behavior: 'smooth' })
 }
 
 defineExpose({

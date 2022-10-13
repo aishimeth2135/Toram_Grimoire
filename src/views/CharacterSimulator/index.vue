@@ -15,7 +15,10 @@
             color="bright"
             float
             toggle
-            @click="(toggle('mainContents/characterStats', null, false), toggle('sideContents/tabs', false))"
+            @click="
+              toggle('mainContents/characterStats', null, false),
+                toggle('sideContents/tabs', false)
+            "
           />
           <cy-button-circle
             :selected="mainContents.damage"
@@ -23,7 +26,10 @@
             color="orange"
             float
             toggle
-            @click="(toggle('mainContents/damage', null, false), toggle('sideContents/tabs', false))"
+            @click="
+              toggle('mainContents/damage', null, false),
+                toggle('sideContents/tabs', false)
+            "
           />
           <cy-button-circle
             v-if="mainStore.devMode"
@@ -32,7 +38,10 @@
             color="emerald"
             float
             toggle
-            @click="(toggle('mainContents/combo', null, false), toggle('sideContents/tabs', false))"
+            @click="
+              toggle('mainContents/combo', null, false),
+                toggle('sideContents/tabs', false)
+            "
           />
           <cy-button-circle
             :selected="sideContents.tabs"
@@ -62,7 +71,11 @@
                 v-for="content in tabDatas"
                 :key="content.id"
                 :selected="tabs[content.id]"
-                @click="toggle(`tabs/${content.id}`, true, false), toggle('sideContents/tabs', false), toggle('mainContents', false)"
+                @click="
+                  toggle(`tabs/${content.id}`, true, false),
+                    toggle('sideContents/tabs', false),
+                    toggle('mainContents', false)
+                "
               >
                 <cy-icon-text :icon="content.icon">
                   {{ content.text }}
@@ -70,7 +83,10 @@
               </cy-list-item>
             </div>
           </AppLayoutBottomContent>
-          <AppLayoutBottomContent v-else-if="sideContents.panel" class="p-2.5 pl-4">
+          <AppLayoutBottomContent
+            v-else-if="sideContents.panel"
+            class="p-2.5 pl-4"
+          >
             <CharacterInfoPanel @open-tab="panelOpenTab" />
           </AppLayoutBottomContent>
         </cy-transition>
@@ -118,44 +134,52 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, onMounted, provide, Ref, nextTick, shallowReactive, shallowRef } from 'vue'
+import {
+  Ref,
+  computed,
+  nextTick,
+  onMounted,
+  provide,
+  shallowReactive,
+  shallowRef,
+} from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 import { useMainStore } from '@/stores/app/main'
 
-import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { EquipmentField } from '@/lib/Character/Character'
 import { CharacterComboSkill } from '@/lib/Character/CharacterCombo'
+import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { Skill } from '@/lib/Skill/Skill'
 
-import ToggleService from '@/setup/ToggleService'
 import AutoSave from '@/setup/AutoSave'
+import ToggleService from '@/setup/ToggleService'
 
-import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
-import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
+import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
+import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import CharacterBasic from './character-basic.vue'
-import CharacterStats from './character-stats/index.vue'
-import CharacterEquipmentFields from './character-equipment-fields/index.vue'
-import CharacterSkill from './character-skill/index.vue'
-import CharacterDamage from './character-damage/index.vue'
-import CharacterFood from './character-food/index.vue'
-import CharacterEquipmentEditCrystals from './character-equipment/character-equipment-edit-crystals.vue'
-import CharacterEquipmentBasic from './character-equipment/character-equipment-basic.vue'
-import CharacterEquipmentBasicEditStat from './character-equipment/character-equipment-basic-edit-stat.vue'
 import CharacterBrowseEquipments from './character-browse-equipments.vue'
-import CharacterAppendEquipments from './character-equipment/character-append-equipments.vue'
-import CharacterEquipmentCustomCreate from './character-equipment/character-equipment-custom-create.vue'
-import CharacterSave from './character-save/index.vue'
-import CharacterInfoPanel from './character-info-panel.vue'
-import CharacterEquipments from './character-equipments/index.vue'
 import CharacterComboSelectSkill from './character-combo/character-combo-select-skill.vue'
 import CharacterComboView from './character-combo/index.vue'
+import CharacterDamage from './character-damage/index.vue'
+import CharacterEquipmentFields from './character-equipment-fields/index.vue'
+import CharacterAppendEquipments from './character-equipment/character-append-equipments.vue'
+import CharacterEquipmentBasicEditStat from './character-equipment/character-equipment-basic-edit-stat.vue'
+import CharacterEquipmentBasic from './character-equipment/character-equipment-basic.vue'
+import CharacterEquipmentCustomCreate from './character-equipment/character-equipment-custom-create.vue'
+import CharacterEquipmentEditCrystals from './character-equipment/character-equipment-edit-crystals.vue'
+import CharacterEquipments from './character-equipments/index.vue'
+import CharacterFood from './character-food/index.vue'
+import CharacterInfoPanel from './character-info-panel.vue'
+import CharacterSave from './character-save/index.vue'
+import CharacterSkill from './character-skill/index.vue'
+import CharacterStats from './character-stats/index.vue'
 
 import { CharacterSimulatorInjectionKey } from './injection-keys'
-import { setupCharacterFoodStore, setupCharacterStore, TabIds } from './setup'
+import { TabIds, setupCharacterFoodStore, setupCharacterStore } from './setup'
 
 const { t } = useI18n()
 const { modals, mainContents, tabs, sideContents, toggle } = ToggleService({
@@ -199,31 +223,38 @@ const tabDatas = computed(() => {
   //   })
   // }
 
-  options.push({
-    id: TabIds.Basic,
-    icon: 'bx-bxs-face',
-    text: t('character-simulator.character-basic.title'),
-  }, {
-    id: TabIds.EquipmentFields,
-    icon: 'gg-shape-square',
-    text: t('character-simulator.equipment-info.equipment'),
-  }, {
-    id: TabIds.Equipments,
-    icon: 'mdi:sack',
-    text: t('character-simulator.browse-equipments.action.normal'),
-  }, {
-    id: TabIds.Skill,
-    icon: 'ant-design:build-outlined',
-    text: t('character-simulator.skill-build.title'),
-  }, {
-    id: TabIds.Food,
-    icon: 'mdi-food-apple',
-    text: t('character-simulator.food-build.title'),
-  }, {
-    id: TabIds.Save,
-    icon: 'mdi-ghost',
-    text: t('character-simulator.save-load-control.title'),
-  })
+  options.push(
+    {
+      id: TabIds.Basic,
+      icon: 'bx-bxs-face',
+      text: t('character-simulator.character-basic.title'),
+    },
+    {
+      id: TabIds.EquipmentFields,
+      icon: 'gg-shape-square',
+      text: t('character-simulator.equipment-info.equipment'),
+    },
+    {
+      id: TabIds.Equipments,
+      icon: 'mdi:sack',
+      text: t('character-simulator.browse-equipments.action.normal'),
+    },
+    {
+      id: TabIds.Skill,
+      icon: 'ant-design:build-outlined',
+      text: t('character-simulator.skill-build.title'),
+    },
+    {
+      id: TabIds.Food,
+      icon: 'mdi-food-apple',
+      text: t('character-simulator.food-build.title'),
+    },
+    {
+      id: TabIds.Save,
+      icon: 'mdi-ghost',
+      text: t('character-simulator.save-load-control.title'),
+    }
+  )
 
   return options
 })
@@ -253,12 +284,16 @@ const panelOpenTab = (tabId: TabIds) => {
   toggle('mainContents', false)
 }
 
-const editCrystalCurrentEquipment: Ref<CharacterEquipment | null> = shallowRef(null)
-const editBasicCurrentEquipment: Ref<CharacterEquipment | null> = shallowRef(null)
-const editStatCurrentEquipment: Ref<CharacterEquipment | null> = shallowRef(null)
-const editEquipmentCurrentEquipmentField: Ref<EquipmentField | null> = shallowRef(null)
+const editCrystalCurrentEquipment: Ref<CharacterEquipment | null> =
+  shallowRef(null)
+const editBasicCurrentEquipment: Ref<CharacterEquipment | null> =
+  shallowRef(null)
+const editStatCurrentEquipment: Ref<CharacterEquipment | null> =
+  shallowRef(null)
+const editEquipmentCurrentEquipmentField: Ref<EquipmentField | null> =
+  shallowRef(null)
 const currentComboSkillState = shallowReactive({
-  current: null as (CharacterComboSkill | null),
+  current: null as CharacterComboSkill | null,
 })
 
 const editCrystal = (equip: CharacterEquipment) => {

@@ -17,33 +17,42 @@ export default {
   path: '/items',
   component: ViewWrapper,
   beforeEnter(to, from, next) {
-    PrepareLocaleInit(LocaleViewNamespaces.ItemQuery, LocaleViewNamespaces.CrystalQuery)
+    PrepareLocaleInit(
+      LocaleViewNamespaces.ItemQuery,
+      LocaleViewNamespaces.CrystalQuery
+    )
     ViewInit(DataStoreIds.Stats, DataStoreIds.Items).then(next)
   },
   meta: {
-    leftMenuViewButtons: [{
-      title: 'app.page-title.item-query',
-      icon: 'jam-box-f',
-      pathName: AppRouteNames.ItemQuery,
-    }, {
-      title: 'app.page-title.crystal-query',
-      icon: 'bx-bx-cube-alt',
-      pathName: AppRouteNames.CrystalQuery,
-    }],
+    leftMenuViewButtons: [
+      {
+        title: 'app.page-title.item-query',
+        icon: 'jam-box-f',
+        pathName: AppRouteNames.ItemQuery,
+      },
+      {
+        title: 'app.page-title.crystal-query',
+        icon: 'bx-bx-cube-alt',
+        pathName: AppRouteNames.CrystalQuery,
+      },
+    ],
   },
-  children: [{
-    name: AppRouteNames.ItemQuery,
-    path: '',
-    component: ItemQueryView,
-    meta: {
-      title: 'app.page-title.item-query',
+  children: [
+    {
+      name: AppRouteNames.ItemQuery,
+      path: '',
+      component: ItemQueryView,
+      meta: {
+        title: 'app.page-title.item-query',
+      },
     },
-  }, {
-    name: AppRouteNames.CrystalQuery,
-    path: 'crystal',
-    component: CrystalQueryView,
-    meta: {
-      title: 'app.page-title.crystal-query',
+    {
+      name: AppRouteNames.CrystalQuery,
+      path: 'crystal',
+      component: CrystalQueryView,
+      meta: {
+        title: 'app.page-title.crystal-query',
+      },
     },
-  }],
+  ],
 } as RouteRecordRaw

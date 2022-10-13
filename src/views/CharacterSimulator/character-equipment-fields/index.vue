@@ -1,7 +1,11 @@
 <template>
   <section>
-    <div v-if="currentCharacter" class="flex items-start justify-center" style="min-width: 24.5rem">
-      <div class="inline-flex flex-start items-start flex-wrap">
+    <div
+      v-if="currentCharacter"
+      class="flex items-start justify-center"
+      style="min-width: 24.5rem"
+    >
+      <div class="flex-start inline-flex flex-wrap items-start">
         <CharacterEquipmentField
           v-for="field in currentCharacter.equipmentFields"
           :key="`${field.type}-${field.index}`"

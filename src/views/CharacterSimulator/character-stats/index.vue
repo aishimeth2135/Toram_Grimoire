@@ -1,18 +1,10 @@
 <template>
   <section>
     <div ref="categorysElement">
-      <div
-        v-for="data in categoryResults"
-        :key="data.name"
-        class="px-2 mb-4"
-      >
+      <div v-for="data in categoryResults" :key="data.name" class="mb-4 px-2">
         <fieldset class="border-t border-solid border-primary-30">
-          <legend class="py-0 px-2 ml-3">
-            <cy-icon-text
-              icon="mdi-creation"
-              text-color="primary-30"
-              small
-            >
+          <legend class="ml-3 py-0 px-2">
+            <cy-icon-text icon="mdi-creation" text-color="primary-30" small>
               {{ data.name }}
             </cy-icon-text>
           </legend>
@@ -21,7 +13,7 @@
           <span
             v-for="stat in data.stats"
             :key="stat.id"
-            class="stat-scope px-2 mx-2 my-1 inline-flex cursor-pointer relative border-b border-solid border-primary-30"
+            class="stat-scope relative mx-2 my-1 inline-flex cursor-pointer border-b border-solid border-primary-30 px-2"
             :data-stat-id="stat.id"
           >
             <template v-if="!stat.origin.isBoolStat">
@@ -56,7 +48,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref, Ref, watch } from 'vue'
+import { Ref, computed, nextTick, ref, watch } from 'vue'
 
 import { CharacterStatResultWithId } from '@/stores/views/character/setup'
 
@@ -83,13 +75,15 @@ const currentHoverStat = computed(() => {
   }
   let stat: CharacterStatResultWithId | null = null
   characterStatCategoryResults.value.some(categoryResult => {
-    const find = categoryResult.stats.find(stat => stat.id === currentHoverStatId.value)
+    const find = categoryResult.stats.find(
+      stat => stat.id === currentHoverStatId.value
+    )
     if (find) {
       stat = find
       return true
     }
   })
-  return stat as (CharacterStatResultWithId | null)
+  return stat as CharacterStatResultWithId | null
 })
 
 const statHover = (el: HTMLElement) => {
@@ -99,8 +93,12 @@ const statHover = (el: HTMLElement) => {
   }
 }
 
-watch(categoryResults, async () => {
-  await nextTick()
-  statHoverFloatComponent.value?.update()
-}, { immediate: true, deep: true })
+watch(
+  categoryResults,
+  async () => {
+    await nextTick()
+    statHoverFloatComponent.value?.update()
+  },
+  { immediate: true, deep: true }
+)
 </script>

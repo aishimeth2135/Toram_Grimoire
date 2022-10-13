@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="text-content"
-    :class="rootClassList"
-    @click="rootClicked"
-  >
+  <div class="text-content" :class="rootClassList" @click="rootClicked">
     <cy-icon-text
       v-if="branchItem.is(SkillBranchNames.Tips)"
       icon="ic:outline-tips-and-updates"
@@ -16,14 +12,16 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import SkillComputingContainer, {
+  SkillBranchItem,
+} from '@/lib/Skill/SkillComputingContainer'
 
 import TextHandler from './branch-handlers/TextHandler'
 
 interface Props {
-  computing: SkillComputingContainer;
-  branchItem: SkillBranchItem;
+  computing: SkillComputingContainer
+  branchItem: SkillBranchItem
 }
 
 const props = defineProps<Props>()
@@ -33,7 +31,10 @@ const container = computed(() => TextHandler(props.computing, branchItem.value))
 
 if (branchItem.value.isGroup) {
   // not toggle, init only
-  branchItem.value.toggleGroupExpanded(true, branchItem.value.groupState.expanded)
+  branchItem.value.toggleGroupExpanded(
+    true,
+    branchItem.value.groupState.expanded
+  )
 }
 
 const rootClicked = () => {
@@ -54,10 +55,10 @@ const rootClassList = computed(() => {
 
 <style lang="postcss" scoped>
 .text-content {
-  @apply px-3 py-1 w-full flex items-start;
+  @apply flex w-full items-start px-3 py-1;
 
   &.is-tips {
-    @apply text-sm pl-5;
+    @apply pl-5 text-sm;
 
     /* APPLY text-primary-50 */
     color: var(--app-primary-50);
@@ -68,11 +69,11 @@ const rootClassList = computed(() => {
   }
 
   &.is-mark {
-    @apply border-primary-50 border-1 border-l-3 py-3 px-4;
+    @apply border-1 border-l-3 border-primary-50 py-3 px-4;
   }
 
   &.is-group {
-    @apply border-primary-30 border-1 duration-300 cursor-pointer px-5 py-2 my-2 relative;
+    @apply relative my-2 cursor-pointer border-1 border-primary-30 px-5 py-2 duration-300;
 
     &.group-active {
       @apply border-primary-50;
@@ -93,9 +94,10 @@ const rootClassList = computed(() => {
       }
     }
 
-    &::before, &::after {
+    &::before,
+    &::after {
       content: '';
-      @apply absolute w-4 h-4 bg-primary-50;
+      @apply absolute h-4 w-4 bg-primary-50;
     }
     &::before {
       @apply -top-2 -left-2;

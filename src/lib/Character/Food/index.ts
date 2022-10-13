@@ -7,14 +7,14 @@ import { initFoodsBase } from './utils'
 
 type FoodAmount = [number, number]
 type FoodsSaveData = {
-  id: number;
-  name: string;
+  id: number
+  name: string
   foods: {
-    statId: string;
-    level: number;
-    negative: boolean;
-    selected: boolean;
-  }[];
+    statId: string
+    level: number
+    negative: boolean
+    selected: boolean
+  }[]
 }
 
 class FoodsBase {
@@ -25,7 +25,11 @@ class FoodsBase {
     initFoodsBase(this)
   }
 
-  appendFoodBase(base: StatBase, amount: FoodAmount, negative: boolean = false) {
+  appendFoodBase(
+    base: StatBase,
+    amount: FoodAmount,
+    negative: boolean = false
+  ) {
     const foodBase = markRaw(new FoodBase(base, amount, negative))
     this.foodBases.push(foodBase)
     return foodBase
@@ -47,18 +51,21 @@ class FoodBase {
 
   constructor(base: StatBase, amount: FoodAmount, negative: boolean) {
     this.base = base
-    this.amount = amount,
-    this.negative = negative
+    ;(this.amount = amount), (this.negative = negative)
     this.foodBaseId = this.base.statId(StatTypes.Constant)
   }
   getStat(level: number) {
-    const value = Math.min(level, 5) * this.amount[0] + Math.max(level - 5, 0) * this.amount[1]
-    return this.base.createStat(StatTypes.Constant, this.negative ? -1 * value : value)
+    const value =
+      Math.min(level, 5) * this.amount[0] +
+      Math.max(level - 5, 0) * this.amount[1]
+    return this.base.createStat(
+      StatTypes.Constant,
+      this.negative ? -1 * value : value
+    )
   }
   statTitle() {
     return this.base.title(StatTypes.Constant)
   }
-
 }
 
 let _foodBuildAutoIncreasement = 0
@@ -130,14 +137,21 @@ class FoodBuild {
 
     return data
   }
-  load(loadCategory: string, data: FoodsSaveData): { success?: boolean; error?: boolean } {
+  load(
+    loadCategory: string,
+    data: FoodsSaveData
+  ): { success?: boolean; error?: boolean } {
     try {
       let success = true
 
       const { id, name, foods } = data
       this.name = name
       foods.forEach(food => {
-        const findIdx = this.foods.findIndex(_food => _food.foodBase.base.baseId === food.statId && _food.foodBase.negative === food.negative)
+        const findIdx = this.foods.findIndex(
+          _food =>
+            _food.foodBase.base.baseId === food.statId &&
+            _food.foodBase.negative === food.negative
+        )
         if (findIdx !== -1) {
           const find = this.foods[findIdx]
           find.level = food.level
@@ -146,7 +160,9 @@ class FoodBuild {
           }
         } else {
           success = false
-          console.warn(`[FoodBuild.load] Can not find Food which stat-base-name: ${food.statId}, negative: ${food.negative}`)
+          console.warn(
+            `[FoodBuild.load] Can not find Food which stat-base-name: ${food.statId}, negative: ${food.negative}`
+          )
         }
       })
 
@@ -157,7 +173,7 @@ class FoodBuild {
       return {
         success,
       }
-    } catch(error) {
+    } catch (error) {
       console.warn(error)
       return {
         error: true,
@@ -166,7 +182,11 @@ class FoodBuild {
   }
 
   matchLoadedId(loadCategory: string, id: number | null) {
-    return this.loadedId !== null && id !== null && `${loadCategory}-${id}` === this.loadedId
+    return (
+      this.loadedId !== null &&
+      id !== null &&
+      `${loadCategory}-${id}` === this.loadedId
+    )
   }
 }
 
@@ -196,4 +216,3 @@ class Food {
 
 export { FoodsBase, FoodBuild, Food }
 export type { FoodAmount, FoodsSaveData }
-

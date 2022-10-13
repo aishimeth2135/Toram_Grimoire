@@ -2,12 +2,13 @@
   <cy-list-item pure>
     <div class="w-full">
       <div class="flex items-center">
-        <div
-          class="mr-3 flex flex-shrink-0"
-          style="min-width: 10rem"
-        >
+        <div class="mr-3 flex flex-shrink-0" style="min-width: 10rem">
           <cy-button-toggle v-model:selected="currentSkillState.enabled">
-            <cy-icon-text :text-color="!invalid ? 'purple-70' : 'gray-60'" :icon="skillIconPath" icon-src="image">
+            <cy-icon-text
+              :text-color="!invalid ? 'purple-70' : 'gray-60'"
+              :icon="skillIconPath"
+              icon-src="image"
+            >
               {{ skillResultsState.skill.name }}
             </cy-icon-text>
           </cy-button-toggle>
@@ -17,11 +18,7 @@
             <div v-if="isMutipleItem" class="text-primary-30">
               {{ t('character-simulator.skill-build.skill-multiple-effects') }}
             </div>
-            <CharacterSkillResultItem
-              v-else
-              :result="firstResult"
-              hide-name
-            />
+            <CharacterSkillResultItem v-else :result="firstResult" hide-name />
           </template>
           <div v-else-if="invalid" class="text-gray">
             {{ t('character-simulator.skill-build.skill-invalid') }}
@@ -52,13 +49,13 @@ import { SkillResultsState } from '@/stores/views/character/setup'
 
 import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
 
-import CharacterSkillResultItem from './character-skill-result-item.vue'
 import CharacterSkillItemOptions from './character-skill-item-options.vue'
+import CharacterSkillResultItem from './character-skill-result-item.vue'
 
 import { setupCharacterSkillBuildStore } from '../../setup'
 
 interface Props {
-  skillResultsState: SkillResultsState;
+  skillResultsState: SkillResultsState
 }
 
 const props = defineProps<Props>()
@@ -66,15 +63,22 @@ const props = defineProps<Props>()
 const { t } = useI18n()
 const { currentSkillBuild } = setupCharacterSkillBuildStore()
 
-const skillIconPath = computed(() => getSkillIconPath(props.skillResultsState.skill))
+const skillIconPath = computed(() =>
+  getSkillIconPath(props.skillResultsState.skill)
+)
 
-const currentSkillState = computed(() => currentSkillBuild.value!.getSkillState(props.skillResultsState.skill))
+const currentSkillState = computed(() =>
+  currentSkillBuild.value!.getSkillState(props.skillResultsState.skill)
+)
 
 const firstResult = computed(() => props.skillResultsState.results[0]!)
 
 const isMutipleItem = computed(() => {
   const results = props.skillResultsState.results
-  return results.length > 1 || (results.length === 1 && results[0].suffixContainers.length !== 0)
+  return (
+    results.length > 1 ||
+    (results.length === 1 && results[0].suffixContainers.length !== 0)
+  )
 })
 
 const invalid = computed(() => props.skillResultsState.results.length === 0)

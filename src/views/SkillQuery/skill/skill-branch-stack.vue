@@ -1,8 +1,10 @@
 <template>
-  <div class="p-1 pr-3 flex items-center flex-wrap pb-0.5">
+  <div class="flex flex-wrap items-center p-1 pr-3 pb-0.5">
     <div class="mt-0.5">
       <cy-input-counter
-        v-if="computing.config.formulaDisplayMode === FormulaDisplayModes.Normal"
+        v-if="
+          computing.config.formulaDisplayMode === FormulaDisplayModes.Normal
+        "
         v-model:value="stackValue"
         :range="stackValueRange"
         :input-width="container.getCustomData('stackInputWidth')"
@@ -21,31 +23,40 @@
         {{ container.get('name') }}
       </cy-icon-text>
     </div>
-    <div class="flex items-center space-x-1 ml-4 mt-0.5">
-      <cy-icon-text icon="icon-park-outline:inner-shadow-top-right" class="mr-2" />
-      <div v-if="stackValueRangeOrigin[0]" class="text-primary-50">{{ stackValueRangeOrigin[0] }}</div>
+    <div class="ml-4 mt-0.5 flex items-center space-x-1">
+      <cy-icon-text
+        icon="icon-park-outline:inner-shadow-top-right"
+        class="mr-2"
+      />
+      <div v-if="stackValueRangeOrigin[0]" class="text-primary-50">
+        {{ stackValueRangeOrigin[0] }}
+      </div>
       <cy-icon-text icon="mdi:tilde" icon-width="0.8rem" />
-      <div v-if="stackValueRangeOrigin[1]" class="text-primary-50">{{ stackValueRangeOrigin[1] }}</div>
+      <div v-if="stackValueRangeOrigin[1]" class="text-primary-50">
+        {{ stackValueRangeOrigin[1] }}
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs, inject, ComputedRef } from 'vue'
+import { ComputedRef, computed, inject, toRefs } from 'vue'
 import type { WritableComputedRef } from 'vue'
 
 import { isNumberString } from '@/shared/utils/string'
 
-import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, {
+  SkillBranchItem,
+} from '@/lib/Skill/SkillComputingContainer'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 
-import { findStackState } from '../utils'
 import { ComputingContainerInjectionKey } from '../injection-keys'
+import { findStackState } from '../utils'
 import StackHandler from './branch-handlers/StackHandler'
 
 interface Props {
-  computing: SkillComputingContainer;
-  branchItem: SkillBranchItem;
+  computing: SkillComputingContainer
+  branchItem: SkillBranchItem
 }
 
 const { setStackValue } = inject(ComputingContainerInjectionKey)!
@@ -53,7 +64,9 @@ const { setStackValue } = inject(ComputingContainerInjectionKey)!
 const props = defineProps<Props>()
 const { branchItem } = toRefs(props)
 
-const container = computed(() => StackHandler(props.computing, branchItem.value))
+const container = computed(() =>
+  StackHandler(props.computing, branchItem.value)
+)
 
 const stackState = computed(() => {
   return findStackState(branchItem.value.parent, branchItem.value.stackId!)
@@ -87,4 +100,3 @@ const stackStep = computed(() => {
   return isNumberString(step) ? parseInt(step, 10) : 1
 })
 </script>
-

@@ -4,14 +4,14 @@ env:
 extends:
   - eslint:recommended
   - plugin:vue/vue3-essential
-  - "@vue/eslint-config-typescript"
+  - '@vue/eslint-config-typescript'
+  - prettier
 parserOptions:
   parsers:
-    ts: "@typescript-eslint/parser"
+    ts: '@typescript-eslint/parser'
 plugins:
   - jsdoc
   - import
-  - import-helpers
 settings:
   import/resolver:
     node:
@@ -20,7 +20,7 @@ settings:
         - .ts
     alias:
       map:
-        - - "@"
+        - - '@'
           - ./src
       extensions:
         - .js
@@ -37,31 +37,31 @@ globals:
   defineExpose: readonly
   withDefaults: readonly
 rules:
-  no-use-before-define: off
-  no-unused-vars: off
-  no-shadow: off
-  no-dupe-class-members: off
-  indent: off
-  func-call-spacing: off
-  semi: off
-  comma-dangle: off
-  object-curly-spacing: off
-  space-before-function-paren: off
+  # no-use-before-define: off
+  # no-unused-vars: off
+  # no-shadow: off
+  # no-dupe-class-members: off
+  # indent: off
+  # func-call-spacing: off
+  # semi: off
+  # comma-dangle: off
+  # object-curly-spacing: off
+  # space-before-function-paren: off
   # vue/no-mutating-props: off
-  semi-spacing: error
-  space-infix-ops: error
+  # semi-spacing: error
+  # space-infix-ops: error
   no-var: error
   eqeqeq: error
-  no-multi-spaces: warn
-  eol-last:
-    - error
-    - always
+  # no-multi-spaces: warn
+  # eol-last:
+  #   - error
+  #   - always
   no-void:
     - error
     - allowAsStatement: true
-  quotes:
-    - error
-    - single
+  # quotes:
+  #   - error
+  #   - single
   space-in-parens:
     - error
     - never
@@ -74,93 +74,75 @@ rules:
   id-length:
     - error
     - properties: never
-  jsdoc/no-undefined-types: warn
-  no-trailing-spaces: warn
-  arrow-spacing: warn
-  curly: warn
-  brace-style: warn
-  comma-style: warn
-  comma-spacing:
-    - warn
-    - before: false
-      after: true
-  array-bracket-spacing:
-    - warn
-    - never
-  object-property-newline:
-    - warn
-    - allowAllPropertiesOnSameLine: true
-  operator-linebreak:
-    - warn
-    - after
-  no-multiple-empty-lines:
-    - warn
-    - max: 2
-      maxBOF: 0
-  "@typescript-eslint/semi":
-    - error
-    - never
-  "@typescript-eslint/member-delimiter-style":
-    - error
-  "@typescript-eslint/no-use-before-define":
+  # no-trailing-spaces: warn
+  # arrow-spacing: warn
+  # curly: warn
+  # brace-style: warn
+  # comma-style: warn
+  # comma-spacing:
+  #   - warn
+  #   - before: false
+  #     after: true
+  # array-bracket-spacing:
+  #   - warn
+  #   - never
+  # object-property-newline:
+  #   - warn
+  #   - allowAllPropertiesOnSameLine: true
+  # operator-linebreak:
+  #   - warn
+  #   - after
+  # no-multiple-empty-lines:
+  #   - warn
+  #   - max: 2
+  #     maxBOF: 0
+  # "@typescript-eslint/semi":
+  #   - error
+  #   - never
+  # "@typescriptmember-delimiter-style-eslint/":
+  #   - error
+  '@typescript-eslint/no-use-before-define':
     - error
     - functions: false
       classes: false
       typedefs: false
-  "@typescript-eslint/no-unused-vars":
+  '@typescript-eslint/no-unused-vars':
     - error
-  "@typescript-eslint/no-shadow":
+  '@typescript-eslint/no-shadow':
     - error
-  "@typescript-eslint/prefer-enum-initializers":
+  '@typescript-eslint/prefer-enum-initializers':
     - error
-  "@typescript-eslint/no-duplicate-enum-values":
+  '@typescript-eslint/no-duplicate-enum-values':
     - error
-  "@typescript-eslint/prefer-literal-enum-member":
+  '@typescript-eslint/prefer-literal-enum-member':
     - error
-  "@typescript-eslint/array-type":
+  '@typescript-eslint/array-type':
     - error
-  "@typescript-eslint/no-dupe-class-members":
+  '@typescript-eslint/no-dupe-class-members':
     - error
-  "@typescript-eslint/space-before-function-paren":
-    - warn
-    - anonymous: always
-      named: never
-      asyncArrow: always
-  "@typescript-eslint/indent":
-    - error
-    - 2
-    - SwitchCase: 1
-  "@typescript-eslint/func-call-spacing":
-    - error
-    - never
-  "@typescript-eslint/comma-dangle":
-    - warn
-    - always-multiline
-  "@typescript-eslint/object-curly-spacing":
-    - warn
-    - always
+  # "@typescript-eslint/space-before-function-paren":
+  #   - warn
+  #   - anonymous: always
+  #     named: never
+  #     asyncArrow: always
+  # "@typescript-eslint/indent":
+  #   - error
+  #   - 2
+  #   - SwitchCase: 1
+  # "@typescript-eslint/func-call-spacing":
+  #   - error
+  #   - never
+  # "@typescript-eslint/comma-dangle":
+  #   - warn
+  #   - always-multiline
+  # "@typescript-eslint/object-curly-spacing":
+  #   - warn
+  #   - always
   # import
   import/no-unresolved:
     - error
     - commonjs: true
       ignore: ['^virtual:']
-  import-helpers/order-imports:
-    - warn
-    - newlinesBetween: always
-      groups:
-        - module
-        - /^@\/stores/
-        - /^@\/shared\//
-        - /^@\/lib\//
-        - /^@\/setup\//
-        - /^@\//
-        - /(?!@\/).+\.vue$/
-        - - parent
-          - sibling
-          - index
-      alphabetize:
-        order: ignore
-        ignoreCase: true
   # vue
   vue/html-indent:
     - warn

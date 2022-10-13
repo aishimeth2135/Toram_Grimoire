@@ -1,17 +1,17 @@
 import { EnemyElements } from './enums'
 
 interface EnemyBaseParams {
-  def?: number;
-  mdef?: number;
-  physicalResistance?: number;
-  magicResistance?: number;
-  dodge?: number;
-  accuracy?: number;
-  element?: EnemyElements;
-  prorationNormal?: number;
-  prorationPhysical?: number;
-  prorationMagic?: number;
-  criticalResistance?: number;
+  def?: number
+  mdef?: number
+  physicalResistance?: number
+  magicResistance?: number
+  dodge?: number
+  accuracy?: number
+  element?: EnemyElements
+  prorationNormal?: number
+  prorationPhysical?: number
+  prorationMagic?: number
+  criticalResistance?: number
 }
 
 class EnemyBasic {
@@ -57,10 +57,10 @@ class EnemyBasic {
 type EnemyBasicConditionalType = '#' | '+' | '-'
 
 interface EnemyBasicConditional {
-  id: number;
-  type: EnemyBasicConditionalType;
-  condition: string;
-  basic: EnemyBasic;
+  id: number
+  type: EnemyBasicConditionalType
+  condition: string
+  basic: EnemyBasic
 }
 
 class EnemyBase {
@@ -77,7 +77,11 @@ class EnemyBase {
     this.basic = new EnemyBasic(params)
   }
 
-  appendConditionalBasic(type: EnemyBasicConditionalType, condition: string, basicParams: EnemyBaseParams) {
+  appendConditionalBasic(
+    type: EnemyBasicConditionalType,
+    condition: string,
+    basicParams: EnemyBaseParams
+  ) {
     this.conditionalBasics.push({
       id: this.conditionalBasics.length,
       type,

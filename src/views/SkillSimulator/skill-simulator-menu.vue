@@ -1,12 +1,16 @@
 <template>
   <AppLayoutBottom>
     <template #default>
-      <div class="flex items-center px-2 space-x-2">
+      <div class="flex items-center space-x-2 px-2">
         <cy-button-plain
           :icon="mode === 'skill' ? 'bx:bxs-book-bookmark' : 'bx:bx-star'"
           @click="mode = mode === 'skill' ? 'star-gem' : 'skill'"
         >
-          {{ mode === 'skill' ? t('skill-simulator.skill-level') : t('skill-simulator.star-gem-level') }}
+          {{
+            mode === 'skill'
+              ? t('skill-simulator.skill-level')
+              : t('skill-simulator.star-gem-level')
+          }}
         </cy-button-plain>
         <cy-button-plain
           :icon="`mdi:numeric-${levelUnit}-circle-outline`"
@@ -15,10 +19,18 @@
           {{ `Lv.${levelUnit}` }}
         </cy-button-plain>
         <cy-button-plain
-          :icon="increase ? 'ic:round-add-circle-outline' : 'ic:round-remove-circle-outline'"
+          :icon="
+            increase
+              ? 'ic:round-add-circle-outline'
+              : 'ic:round-remove-circle-outline'
+          "
           @click="increase = !increase"
         >
-          {{ increase ? t('skill-simulator.increase-level') : t('skill-simulator.decrease-level') }}
+          {{
+            increase
+              ? t('skill-simulator.increase-level')
+              : t('skill-simulator.decrease-level')
+          }}
         </cy-button-plain>
       </div>
     </template>
@@ -50,10 +62,7 @@
     </template>
     <template #side-contents>
       <cy-transition v-if="currentSkillBuild" mode="out-in">
-        <AppLayoutBottomContent
-          v-if="contents.mainMenu"
-          class="space-y-2 p-3"
-        >
+        <AppLayoutBottomContent v-if="contents.mainMenu" class="space-y-2 p-3">
           <div class="flex items-center">
             <cy-title-input
               v-model:value="currentSkillBuild.name"
@@ -61,10 +70,17 @@
             />
             <cy-options
               :value="currentSkillBuild"
-              :options="skillBuilds.map(skillBuild => ({ id: skillBuild.instanceId, value: skillBuild }))"
+              :options="
+                skillBuilds.map(skillBuild => ({
+                  id: skillBuild.instanceId,
+                  value: skillBuild,
+                }))
+              "
               addable
               @update:value="store.setCurrentSkillBuild($event)"
-              @add-item="characterStore.setCharacterSkillBuild(store.createSkillBuild())"
+              @add-item="
+                characterStore.setCharacterSkillBuild(store.createSkillBuild())
+              "
             >
               <template #title>
                 <cy-button-circle icon="ant-design:build-outlined" small />
@@ -91,11 +107,17 @@
               {{ t('global.remove') }}
             </cy-button-action>
           </div>
-          <div class="mt-3 pt-3 border-t border-primary-30 space-x-2">
-            <cy-button-action icon="uil:image-download" @click="emit('export-image')">
+          <div class="mt-3 space-x-2 border-t border-primary-30 pt-3">
+            <cy-button-action
+              icon="uil:image-download"
+              @click="emit('export-image')"
+            >
               {{ t('skill-simulator.export-image.title') }}
             </cy-button-action>
-            <cy-button-action icon="mdi:note-text-outline" @click="emit('export-text')">
+            <cy-button-action
+              icon="mdi:note-text-outline"
+              @click="emit('export-text')"
+            >
               {{ t('skill-simulator.export-text-title') }}
             </cy-button-action>
           </div>
@@ -106,7 +128,9 @@
         >
           <div v-for="stc in skillTreeCategorys" :key="`stc-${stc.id}`">
             <div>
-              <cy-icon-text icon="uil:books" color="orange" small>{{ stc.name }}</cy-icon-text>
+              <cy-icon-text icon="uil:books" color="orange" small>{{
+                stc.name
+              }}</cy-icon-text>
             </div>
             <div class="pl-2">
               <cy-button-check
@@ -132,9 +156,14 @@
             {{ t('skill-simulator.default-tips') }}
           </cy-default-tips>
           <template v-else>
-            <div v-for="categoryItem in jumpSkillTreeCategorys" :key="`stc-${categoryItem.origin.id}`">
+            <div
+              v-for="categoryItem in jumpSkillTreeCategorys"
+              :key="`stc-${categoryItem.origin.id}`"
+            >
               <div>
-                <cy-icon-text icon="uil:books" color="orange" small>{{ categoryItem.origin.name }}</cy-icon-text>
+                <cy-icon-text icon="uil:books" color="orange" small>{{
+                  categoryItem.origin.name
+                }}</cy-icon-text>
               </div>
               <div class="pl-2">
                 <cy-button-plain
@@ -150,8 +179,10 @@
             </div>
           </template>
         </AppLayoutBottomContent>
-        <div v-else class="space-x-2.5 flex items-center">
-          <div class="border border-primary-30 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
+        <div v-else class="flex items-center space-x-2.5">
+          <div
+            class="flex items-center space-x-1.5 whitespace-nowrap border border-primary-30 bg-white py-1 px-2"
+          >
             <cy-icon-text icon="mdi:script-outline" small>
               {{ t('skill-simulator.skill-level-point') }}
             </cy-icon-text>
@@ -159,7 +190,9 @@
               {{ skillPointSum.level }}
             </div>
           </div>
-          <div class="border border-primary-30 py-1 px-2 flex items-center space-x-1.5 bg-white whitespace-nowrap">
+          <div
+            class="flex items-center space-x-1.5 whitespace-nowrap border border-primary-30 bg-white py-1 px-2"
+          >
             <cy-icon-text icon="mdi:judaism" small>
               {{ t('skill-simulator.star-gem-level-point') }}
             </cy-icon-text>
@@ -183,19 +216,19 @@ import Grimoire from '@/shared/Grimoire'
 
 import { SkillTree } from '@/lib/Skill/Skill'
 
-import ToggleService from '@/setup/ToggleService'
 import Notify from '@/setup/Notify'
+import ToggleService from '@/setup/ToggleService'
 
-import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
+import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 
-import { MenuMode, MenuData, setupSkillBuildStore } from './setup'
+import { MenuData, MenuMode, setupSkillBuildStore } from './setup'
 
 interface Emits {
-  (evt: 'update-menu-data', data: MenuData): void;
-  (evt: 'go-skill-tree', skillTree: SkillTree): void;
-  (evt: 'export-image'): void;
-  (evt: 'export-text'): void;
+  (evt: 'update-menu-data', data: MenuData): void
+  (evt: 'go-skill-tree', skillTree: SkillTree): void
+  (evt: 'export-image'): void
+  (evt: 'export-text'): void
 }
 const emit = defineEmits<Emits>()
 
@@ -224,11 +257,15 @@ watch([mode, levelUnit, increase], ([newMode, newLevelUnit, newIncrease]) => {
 const skillTreeCategorys = Grimoire.Skill.skillRoot.skillTreeCategorys
 
 const { store, skillBuilds, currentSkillBuild } = setupSkillBuildStore()
-const selectedSkillTrees = computed<SkillTree[]>(() => currentSkillBuild.value?.selectedSkillTrees ?? [])
+const selectedSkillTrees = computed<SkillTree[]>(
+  () => currentSkillBuild.value?.selectedSkillTrees ?? []
+)
 
 const jumpSkillTreeCategorys = computed(() => {
   const categorys = skillTreeCategorys.map(category => {
-    const skillTrees = category.skillTrees.filter(_st => selectedSkillTrees.value.includes(_st))
+    const skillTrees = category.skillTrees.filter(_st =>
+      selectedSkillTrees.value.includes(_st)
+    )
     return {
       origin: category,
       skillTrees,
@@ -239,7 +276,11 @@ const jumpSkillTreeCategorys = computed(() => {
 
 const removeCurrentSkillBuild = () => {
   store.removeCurrentSkillBuild()
-  notify(t('skill-simulator.remove-build-tips'), undefined, 'skill-simulator.remove-build-tips')
+  notify(
+    t('skill-simulator.remove-build-tips'),
+    undefined,
+    'skill-simulator.remove-build-tips'
+  )
 }
 
 const { contents, toggle } = ToggleService({

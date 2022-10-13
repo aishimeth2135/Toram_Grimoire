@@ -1,23 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
+import { useLeftMenuStore } from '@/stores/app/left-menu'
 import { useMainStore } from '@/stores/app/main'
 import { useNavStore } from '@/stores/app/nav'
 import type { NavItem } from '@/stores/app/nav'
-import { useLeftMenuStore } from '@/stores/app/left-menu'
 
+import Book from './Book'
 import Bubble from './Bubble'
 import DamageCalculation from './Calculation/Damage'
 import Character from './Character'
+import Dev from './Dev'
 import Enchant from './Enchant'
+import Glossary from './Glossary'
 import Home from './Home'
 import Items from './Items'
 import Page404 from './Page404'
-import Skill from './Skill'
-import Glossary from './Glossary'
-import Book from './Book'
 import Registlet from './Registlet'
-import Dev from './Dev'
+import Skill from './Skill'
 
 export default function createAppRouter() {
   const routes: RouteRecordRaw[] = [
@@ -55,15 +55,24 @@ export default function createAppRouter() {
     }
   })
 
-  router.afterEach((to) => {
+  router.afterEach(to => {
     if (to) {
-      { // set title and meta tags
-        const data = to.matched.slice().reverse().find(item => item.meta?.title)
+      {
+        // set title and meta tags
+        const data = to.matched
+          .slice()
+          .reverse()
+          .find(item => item.meta?.title)
         mainStore.updateTitle(data ? data.meta.title : '')
       }
       {
-        document.head.querySelectorAll('*[data-vue-router-mata-tag-controlled]').forEach(el => el.remove())
-        const data = to.matched.slice().reverse().find(item => item.meta && item.meta.metaTags)
+        document.head
+          .querySelectorAll('*[data-vue-router-mata-tag-controlled]')
+          .forEach(el => el.remove())
+        const data = to.matched
+          .slice()
+          .reverse()
+          .find(item => item.meta && item.meta.metaTags)
         if (data) {
           const metaTags = data.meta.metaTags
           if (metaTags) {
@@ -95,7 +104,10 @@ export default function createAppRouter() {
 
       // set left menu
       {
-        const data = to.matched.slice().reverse().find(item => item.meta?.leftMenuViewButtons)
+        const data = to.matched
+          .slice()
+          .reverse()
+          .find(item => item.meta?.leftMenuViewButtons)
         if (data) {
           leftMenuStore.setViewButtons(data.meta.leftMenuViewButtons!)
         }

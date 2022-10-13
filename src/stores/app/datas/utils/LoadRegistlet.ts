@@ -2,7 +2,15 @@ import Grimoire from '@/shared/Grimoire'
 import { isIntegerString } from '@/shared/utils/string'
 
 import RegistletSystem from '@/lib/Registlet'
-import { RegistletCategory, RegistletInfos, RegistletItemBase, RegistletItemBaseSkill, RegistletItemBaseSpecial, RegistletItemBaseStat, RegistletItemRow } from '@/lib/Registlet/Registlet'
+import {
+  RegistletCategory,
+  RegistletInfos,
+  RegistletItemBase,
+  RegistletItemBaseSkill,
+  RegistletItemBaseSpecial,
+  RegistletItemBaseStat,
+  RegistletItemRow,
+} from '@/lib/Registlet/Registlet'
 import { RegistletCategoryIds } from '@/lib/Registlet/Registlet/enums'
 
 import type { CsvData } from './DownloadDatas'
@@ -25,7 +33,8 @@ export default function (root: RegistletSystem, csvData: CsvData) {
     RegistletCategoryIds.Special,
     RegistletCategoryIds.Stat,
   ]
-  const isCategoryId = (str: string): str is RegistletCategoryIds => categoryIdList.includes(str)
+  const isCategoryId = (str: string): str is RegistletCategoryIds =>
+    categoryIdList.includes(str)
 
   let currentCategory: RegistletCategory | null = null
   let currentItem: RegistletItemBase | null = null
@@ -47,7 +56,8 @@ export default function (root: RegistletSystem, csvData: CsvData) {
       return
     }
 
-    const handleIntegerData = (data: string) => isIntegerString(data) ? parseInt(data, 10) : 0
+    const handleIntegerData = (data: string) =>
+      isIntegerString(data) ? parseInt(data, 10) : 0
 
     if (row[ID] && row[NAME]) {
       const powderCost = handleIntegerData(row[POWDER_COST])
@@ -59,23 +69,38 @@ export default function (root: RegistletSystem, csvData: CsvData) {
           .map(item => parseInt(item, 10)),
         maxLevel: handleIntegerData(row[MAX_LEVEL]),
         powderCost,
-        powderCostAdditional: row[POWDER_COST_ADDITIONAL] ? handleIntegerData(row[POWDER_COST_ADDITIONAL]) : powderCost * 10,
+        powderCostAdditional: row[POWDER_COST_ADDITIONAL]
+          ? handleIntegerData(row[POWDER_COST_ADDITIONAL])
+          : powderCost * 10,
       }
 
       if (currentCategory.id === RegistletCategoryIds.Stat) {
         const statBase = Grimoire.Character.findStatBase(row[LINK])
         if (statBase) {
-          const newItem = new RegistletItemBaseStat(currentCategory as RegistletCategory<RegistletItemBaseStat>, infos, statBase)
+          const newItem = new RegistletItemBaseStat(
+            currentCategory as RegistletCategory<RegistletItemBaseStat>,
+            infos,
+            statBase
+          )
           currentCategory.items.push(newItem)
           currentItem = newItem
         }
       } else if (currentCategory.id === RegistletCategoryIds.Skill) {
-        const skill = row[LINK] ? Grimoire.Skill.skillRoot.findSkillById(row[LINK]) : null
-        const newItem = new RegistletItemBaseSkill(currentCategory as RegistletCategory<RegistletItemBaseSkill>, infos, skill)
+        const skill = row[LINK]
+          ? Grimoire.Skill.skillRoot.findSkillById(row[LINK])
+          : null
+        const newItem = new RegistletItemBaseSkill(
+          currentCategory as RegistletCategory<RegistletItemBaseSkill>,
+          infos,
+          skill
+        )
         currentCategory.items.push(newItem)
         currentItem = newItem
       } else if (currentCategory.id === RegistletCategoryIds.Special) {
-        const newItem = new RegistletItemBaseSpecial(currentCategory as RegistletCategory<RegistletItemBaseSpecial>, infos)
+        const newItem = new RegistletItemBaseSpecial(
+          currentCategory as RegistletCategory<RegistletItemBaseSpecial>,
+          infos
+        )
         currentCategory.items.push(newItem)
         currentItem = newItem
       }

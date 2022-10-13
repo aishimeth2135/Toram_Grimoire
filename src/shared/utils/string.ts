@@ -26,7 +26,10 @@ const TRIM_ZERO_PATTERN = /(\d+)(\.[^0]*)(0+)$/g
  * (ex: number.toFixed(n) may cause useless 0 at the end)
  */
 export function trimFloatStringZero(num: string): string {
-  return num.replace(TRIM_ZERO_PATTERN, (match, m1, m2) => m1 + (m2 === '.' ? '' : m2))
+  return num.replace(
+    TRIM_ZERO_PATTERN,
+    (match, m1, m2) => m1 + (m2 === '.' ? '' : m2)
+  )
 }
 
 const SPLIT_COMMA_PATTERN = /\s*,\s*/

@@ -1,6 +1,6 @@
 <template>
   <AppLayoutMain v-if="currentCalculation" class="flex flex-col">
-    <div class="max-w-full px-1 py-4 overflow-x-auto scrollbar-hide">
+    <div class="scrollbar-hide max-w-full overflow-x-auto px-1 py-4">
       <div v-if="currentCalculation" class="min-w-max">
         <div
           v-for="containerOption in calculationContainerOptions"
@@ -16,14 +16,11 @@
           </cy-button-check>
         </div>
         <cy-hr />
-        <DamageCalculationItem
-          :calc-struct-item="calcMode.calcStruct"
-          root
-        />
+        <DamageCalculationItem :calc-struct-item="calcMode.calcStruct" root />
         <cy-hr />
         <DamageCalculationItem
           v-for="outsideItem in calcMode.outsideItems"
-          :key='outsideItem'
+          :key="outsideItem"
           :calc-struct-item="outsideItem"
           root
         />
@@ -31,9 +28,16 @@
     </div>
     <AppLayoutBottom>
       <template #default>
-        <div class="flex items-center justify-end py-0.5 px-3 cursor-pointer" @click="toggle('contents/resultDetail', null, false)">
+        <div
+          class="flex cursor-pointer items-center justify-end py-0.5 px-3"
+          @click="toggle('contents/resultDetail', null, false)"
+        >
           <cy-icon-text
-            :icon="contents.resultDetail ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
+            :icon="
+              contents.resultDetail
+                ? 'akar-icons:circle-chevron-down'
+                : 'akar-icons:circle-chevron-up'
+            "
             class="mr-auto"
           />
           <DamageCalculationResultItem :result-item="resultMode" />
@@ -42,13 +46,17 @@
       <template #main-content>
         <AppLayoutBottomContent v-if="contents.resultDetail" class="py-3 px-4">
           <div>
-            <cy-icon-text icon="ant-design:star-outlined" small text-color="fuchsia-60">
+            <cy-icon-text
+              icon="ant-design:star-outlined"
+              small
+              text-color="fuchsia-60"
+            >
               {{ t('damage-calculation.result.title') }}
             </cy-icon-text>
           </div>
           <template v-for="modeItem in resultModeList" :key="modeItem.id">
             <div
-              class="flex items-center cursor-pointer min-w-max pr-3"
+              class="min-w-max flex cursor-pointer items-center pr-3"
               @click="selectResultMode(modeItem.id)"
             >
               <cy-button-check :selected="modeItem === resultMode" />
@@ -62,7 +70,9 @@
                 class="ml-6"
                 align-v="start"
               >
-                {{ t('damage-calculation.result.modes-caption.' + modeItem.id) }}
+                {{
+                  t('damage-calculation.result.modes-caption.' + modeItem.id)
+                }}
               </cy-icon-text>
             </div>
           </template>
@@ -91,7 +101,7 @@
           color="bright"
           float
           toggle
-          @click="toggle('contents/mainMenu', null,  false)"
+          @click="toggle('contents/mainMenu', null, false)"
         />
       </template>
       <template #side-contents>
@@ -105,7 +115,12 @@
               />
               <cy-options
                 :value="store.currentCalculation"
-                :options="calculationItems.map(item => ({ id: item.index, value: item.origin }))"
+                :options="
+                  calculationItems.map(item => ({
+                    id: item.index,
+                    value: item.origin,
+                  }))
+                "
                 addable
                 @update:value="store.selectCalculation($event)"
                 @add-item="store.createCalculation()"
@@ -120,7 +135,7 @@
                 </template>
               </cy-options>
             </div>
-            <div class="flex items-center flex-wrap">
+            <div class="flex flex-wrap items-center">
               <div class="mx-2">
                 <cy-button-action
                   icon="bx-bx-copy"
@@ -152,33 +167,59 @@
               </div>
             </div>
           </AppLayoutBottomContent>
-          <AppLayoutBottomContent v-else-if="contents.compare" class="px-4 py-3">
+          <AppLayoutBottomContent
+            v-else-if="contents.compare"
+            class="px-4 py-3"
+          >
             <div>
-              <cy-icon-text icon="bx:bx-git-compare" small text-color="fuchsia-60">
+              <cy-icon-text
+                icon="bx:bx-git-compare"
+                small
+                text-color="fuchsia-60"
+              >
                 {{ t('damage-calculation.compare.title') }}
               </cy-icon-text>
             </div>
             <div class="mb-2">
-              <cy-icon-text icon="bx-bx-info-circle" small text-color="primary-50" align-v="center" class="ml-2">
+              <cy-icon-text
+                icon="bx-bx-info-circle"
+                small
+                text-color="primary-50"
+                align-v="center"
+                class="ml-2"
+              >
                 {{ t('damage-calculation.compare.caption') }}
               </cy-icon-text>
             </div>
             <DamageCalculationCompare />
           </AppLayoutBottomContent>
-          <AppLayoutBottomContent v-else-if="contents.calcModeDetail" class="py-3 px-4">
+          <AppLayoutBottomContent
+            v-else-if="contents.calcModeDetail"
+            class="py-3 px-4"
+          >
             <div>
-              <cy-icon-text icon="ant-design:star-outlined" small text-color="fuchsia-60">
+              <cy-icon-text
+                icon="ant-design:star-outlined"
+                small
+                text-color="fuchsia-60"
+              >
                 {{ t('damage-calculation.calc-mode.title') }}
               </cy-icon-text>
             </div>
             <div>
-              <cy-icon-text icon="bx-bx-info-circle" small text-color="primary-50" align-v="center" class="ml-2">
+              <cy-icon-text
+                icon="bx-bx-info-circle"
+                small
+                text-color="primary-50"
+                align-v="center"
+                class="ml-2"
+              >
                 {{ t('damage-calculation.calc-mode.caption') }}
               </cy-icon-text>
             </div>
             <template v-for="modeItem in calcModeList" :key="modeItem.id">
               <div
-                class="flex items-center cursor-pointer min-w-max pr-3"
+                class="min-w-max flex cursor-pointer items-center pr-3"
                 @click="selectCalcMode(modeItem.id)"
               >
                 <cy-button-check :selected="modeItem === calcMode">
@@ -193,7 +234,12 @@
                   class="ml-6"
                   align-v="start"
                 >
-                  {{ t('damage-calculation.calc-mode.modes-caption.' + modeItem.id) }}
+                  {{
+                    t(
+                      'damage-calculation.calc-mode.modes-caption.' +
+                        modeItem.id
+                    )
+                  }}
                 </cy-icon-text>
               </div>
             </template>
@@ -221,8 +267,8 @@ export default {
 import { computed, provide } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 import { useDatasStore } from '@/stores/app/datas'
+import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 
 import { CalculationSaveData } from '@/lib/Calculation/Damage/Calculation'
 
@@ -230,16 +276,21 @@ import AutoSave from '@/setup/AutoSave'
 import ExportBuild from '@/setup/ExportBuild'
 import ToggleService from '@/setup/ToggleService'
 
-import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
-import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
+import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
+import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import DamageCalculationCompare from './damage-calculation-compare.vue'
 import DamageCalculationItem from './damage-calculation-item.vue'
 import DamageCalculationResultItem from './damage-calculation-result-item.vue'
 
-import { setupCalcMode, setupCalculationStore, setupResultMode, setupCalculationCalcOptions } from './setup'
 import { DamageCalculationRootInjectionKey } from './injection-keys'
+import {
+  setupCalcMode,
+  setupCalculationCalcOptions,
+  setupCalculationStore,
+  setupResultMode,
+} from './setup'
 
 const store = useDamageCalculationStore()
 const datasStore = useDatasStore()
@@ -249,11 +300,7 @@ AutoSave({
   loadFirst: () => store.load(),
 })
 
-const {
-  calcModeList,
-  calcMode,
-  selectCalcMode,
-} = setupCalcMode()
+const { calcModeList, calcMode, selectCalcMode } = setupCalcMode()
 
 const {
   // calculations,
@@ -264,18 +311,14 @@ const {
   copyCurrentCalculation,
 } = setupCalculationStore()
 
-const {
-  resultMode,
-  resultModeList,
-  selectResultMode,
-} = setupResultMode(currentCalculation)
+const { resultMode, resultModeList, selectResultMode } =
+  setupResultMode(currentCalculation)
 
-const {
-  calculationContainerOptions,
-} = setupCalculationCalcOptions(currentCalculation)
+const { calculationContainerOptions } =
+  setupCalculationCalcOptions(currentCalculation)
 
 const { exportBuild, importBuild } = ExportBuild({
-  save: (handleSave) => {
+  save: handleSave => {
     const fileName = currentCalculation.value.name + '.txt'
     const data = JSON.stringify(currentCalculation.value.save())
     handleSave(fileName, data)
@@ -297,7 +340,9 @@ const { t } = useI18n()
 
 provide(DamageCalculationRootInjectionKey, {
   currentExpectedResult: computed(() => {
-    const resultItem = resultModeList.value.find(item => item.id === 'expected')!.value
+    const resultItem = resultModeList.value.find(
+      item => item.id === 'expected'
+    )!.value
     return resultItem as number
   }),
   currentCalcMode: calcMode,

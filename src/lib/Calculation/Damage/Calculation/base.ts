@@ -1,4 +1,8 @@
-import { CalculationContainerIds, CalculationItemIds, ContainerTypes } from './enums'
+import {
+  CalculationContainerIds,
+  CalculationItemIds,
+  ContainerTypes,
+} from './enums'
 import { CalcItemContainer, Calculation } from './index'
 
 type CalcStructExpression = CalcStructSingle | CalcStructMultiple
@@ -7,38 +11,42 @@ type CalcStructItem = CalcStructExpression | CalculationContainerIds
 type CalcStructAction = '@floor'
 
 interface CalcStructSingle {
-  id?: string;
-  operator: '*' | '+';
-  left: CalcStructItem;
-  right: CalcStructItem;
+  id?: string
+  operator: '*' | '+'
+  left: CalcStructItem
+  right: CalcStructItem
 }
 type CalcStructMultiple = CalcStructMultipleAdd | CalcStructMultipleMul
 interface CalcStructMultipleAdd {
-  id?: string;
-  operator: '+++';
-  list: CalcStructItem[];
+  id?: string
+  operator: '+++'
+  list: CalcStructItem[]
 }
 interface CalcStructMultipleMul {
-  id?: string;
-  operator: '***';
-  list: (CalcStructItem | CalcStructAction)[];
+  id?: string
+  operator: '***'
+  list: (CalcStructItem | CalcStructAction)[]
 }
 interface CalcResultOptions {
   containerResults?: {
-    [key in CalculationContainerIds]?: number | ((itemContainer: CalcItemContainer) => number);
-  };
+    [key in CalculationContainerIds]?:
+      | number
+      | ((itemContainer: CalcItemContainer) => number)
+  }
 }
 interface CurrentItemIdGetter {
-  (itemContainer: CalcItemContainer): CalculationItemIds | null;
+  (itemContainer: CalcItemContainer): CalculationItemIds | null
 }
 interface HiddenGetter {
-  (itemContainer: CalcItemContainer): boolean;
+  (itemContainer: CalcItemContainer): boolean
 }
 interface CalcResult {
-  (itemContainer: CalcItemContainer): number;
+  (itemContainer: CalcItemContainer): number
 }
 
-function isCalcStructItem(payload: CalcStructItem | CalcStructAction): payload is CalcStructItem {
+function isCalcStructItem(
+  payload: CalcStructItem | CalcStructAction
+): payload is CalcStructItem {
   return typeof payload !== 'string' || !payload.startsWith('@')
 }
 
@@ -56,7 +64,10 @@ class CalculationBase {
     this.items = new Map()
   }
 
-  appendContainer(id: CalculationContainerIds, type: ContainerTypes): CalcItemContainerBase {
+  appendContainer(
+    id: CalculationContainerIds,
+    type: ContainerTypes
+  ): CalcItemContainerBase {
     const container = new CalcItemContainerBase(this, id, type)
     this.containers.set(id, container)
     return container
@@ -75,7 +86,11 @@ class CalculationBase {
     return new Calculation(this, name)
   }
 
-  result(calculation: Calculation, calcStruct: CalcStructItem, options: CalcResultOptions = {}): number {
+  result(
+    calculation: Calculation,
+    calcStruct: CalcStructItem,
+    options: CalcResultOptions = {}
+  ): number {
     if (!calcStruct) {
       return 0
     }
@@ -146,13 +161,17 @@ class CalcItemContainerBase {
   enabledDefaultValue: boolean
   _disabledValue: number | null
   controls: {
-    toggle: boolean;
-    valueValid: boolean;
+    toggle: boolean
+    valueValid: boolean
   }
 
   readonly references: CalculationContainerIds[]
 
-  constructor(parent: CalculationBase, id: CalculationContainerIds, type: ContainerTypes) {
+  constructor(
+    parent: CalculationBase,
+    id: CalculationContainerIds,
+    type: ContainerTypes
+  ) {
     this.id = id
     this._parent = parent
     this.type = type ?? ContainerTypes.Normal
@@ -184,7 +203,9 @@ class CalcItemContainerBase {
 
   setVirtual(referenceContainerIds: CalculationContainerIds[]) {
     if (this.items.size > 0) {
-      console.warn('[CalcItemContainerBase.setVirtual] Unable to set container to virtual if container already have item')
+      console.warn(
+        '[CalcItemContainerBase.setVirtual] Unable to set container to virtual if container already have item'
+      )
       return
     }
     this.references.push(...referenceContainerIds)
@@ -194,12 +215,12 @@ class CalcItemContainerBase {
     const exist = this._parent.items.has(id)
     const item = this._parent.appendItem(id)
     if (!exist && this.isMultiplier) {
-      item.setRange(0, null)
-        .setDefaultValue(100)
-        .setUnit('%')
+      item.setRange(0, null).setDefaultValue(100).setUnit('%')
     }
     if (this.isVirtual) {
-      console.warn('[CalcItemContainerBase.appendItem] Unable to append item to virtual container')
+      console.warn(
+        '[CalcItemContainerBase.appendItem] Unable to append item to virtual container'
+      )
       return item
     }
     this.items.set(id, item)
@@ -284,7 +305,11 @@ class CalcItemBase {
     return this._max === null ? 9999 : this._max
   }
 
-  setRange(min: number | null, max: number | null = null, step: number = 1): this {
+  setRange(
+    min: number | null,
+    max: number | null = null,
+    step: number = 1
+  ): this {
     this._min = min
     this._max = max
     this.step = step
@@ -302,5 +327,18 @@ class CalcItemBase {
   }
 }
 
-export { CalcItemBase, CalculationBase, CalcItemContainerBase, isCalcStructItem }
-export type { CalcStructItem, CalcStructSingle, CalcStructMultiple, CalcStructExpression, CalcStructAction, CalcResultOptions, CurrentItemIdGetter }
+export {
+  CalcItemBase,
+  CalculationBase,
+  CalcItemContainerBase,
+  isCalcStructItem,
+}
+export type {
+  CalcStructItem,
+  CalcStructSingle,
+  CalcStructMultiple,
+  CalcStructExpression,
+  CalcStructAction,
+  CalcResultOptions,
+  CurrentItemIdGetter,
+}

@@ -4,18 +4,31 @@ import Grimoire from '@/shared/Grimoire'
 import { computeFormula } from '@/shared/utils/data'
 import { splitComma } from '@/shared/utils/string'
 
-import { SubWeapon, SubArmor, CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import {
+  CharacterEquipment,
+  SubArmor,
+  SubWeapon,
+} from '@/lib/Character/CharacterEquipment'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
-import { StatBase, StatValueSource, StatRecorded } from '@/lib/Character/Stat'
+import { StatBase, StatRecorded, StatValueSource } from '@/lib/Character/Stat'
 import { StatTypes, StatValueSourceTypes } from '@/lib/Character/Stat/enums'
 import { SkillBranch } from '@/lib/Skill/Skill'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
+import {
+  CharacterComboBuild,
+  CharacterComboBuildSaveData,
+} from '../CharacterCombo/CharacterComboBuild'
 import CharacterSystem from '../index'
-import { EquipmentFieldTypes, CharacterBaseStatTypes, CharacterOptionalBaseStatTypes } from './enums'
-import { CharacterComboBuild, CharacterComboBuildSaveData } from '../CharacterCombo/CharacterComboBuild'
+import {
+  CharacterBaseStatTypes,
+  CharacterOptionalBaseStatTypes,
+  EquipmentFieldTypes,
+} from './enums'
 
-type CharacterBaseStatValidType = CharacterBaseStatTypes | CharacterOptionalBaseStatTypes
+type CharacterBaseStatValidType =
+  | CharacterBaseStatTypes
+  | CharacterOptionalBaseStatTypes
 
 let _characterAutoIncreasement = 0
 class Character {
@@ -24,7 +37,7 @@ class Character {
     CharacterBaseStat<CharacterBaseStatTypes.DEX>,
     CharacterBaseStat<CharacterBaseStatTypes.INT>,
     CharacterBaseStat<CharacterBaseStatTypes.AGI>,
-    CharacterBaseStat<CharacterBaseStatTypes.VIT>,
+    CharacterBaseStat<CharacterBaseStatTypes.VIT>
   ]
   private _optinalBaseStat: CharacterBaseStat<CharacterOptionalBaseStatTypes> | null
 
@@ -42,7 +55,7 @@ class Character {
     EquipmentField,
     EquipmentField,
     EquipmentField,
-    EquipmentField,
+    EquipmentField
   ]
 
   constructor(name = 'Potum') {
@@ -82,7 +95,9 @@ class Character {
   }
 
   get baseStats() {
-    const res: CharacterBaseStat<CharacterBaseStatTypes | CharacterOptionalBaseStatTypes>[] = this._baseStats.slice()
+    const res: CharacterBaseStat<
+      CharacterBaseStatTypes | CharacterOptionalBaseStatTypes
+    >[] = this._baseStats.slice()
     if (this._optinalBaseStat !== null) {
       res.push(this._optinalBaseStat)
     }
@@ -96,7 +111,9 @@ class Character {
   }
 
   equipmentField(type: EquipmentFieldTypes, index: number = 0): EquipmentField {
-    return this.equipmentFields.find(item => item.type === type && item.index === index)!
+    return this.equipmentFields.find(
+      item => item.type === type && item.index === index
+    )!
   }
   fieldEquipment(type: EquipmentFieldTypes) {
     return this.equipmentField(type)?.equipment ?? null
@@ -111,9 +128,15 @@ class Character {
     this._optinalBaseStat = null
   }
   baseStat(name: CharacterBaseStatValidType) {
-    if ((Object.values(CharacterOptionalBaseStatTypes) as readonly string[]).includes(name)) {
-      return this._optinalBaseStat === null || this._optinalBaseStat.name !== name ?
-        null : this._optinalBaseStat
+    if (
+      (
+        Object.values(CharacterOptionalBaseStatTypes) as readonly string[]
+      ).includes(name)
+    ) {
+      return this._optinalBaseStat === null ||
+        this._optinalBaseStat.name !== name
+        ? null
+        : this._optinalBaseStat
     }
     return this._baseStats.find(bstat => bstat.name === name)
   }
@@ -121,32 +144,39 @@ class Character {
     const stat = this.baseStat(name)
     return stat ? stat.value : 0
   }
-  checkFieldEquipmentType(fieldType: EquipmentFieldTypes, eqType: EquipmentTypes | null) {
-    return eqType === null || this.equipmentField(fieldType).equipmentType === eqType
+  checkFieldEquipmentType(
+    fieldType: EquipmentFieldTypes,
+    eqType: EquipmentTypes | null
+  ) {
+    return (
+      eqType === null || this.equipmentField(fieldType).equipmentType === eqType
+    )
   }
   subWeaponValid(subType: EquipmentTypes, mainType?: EquipmentTypes) {
     const validSubs: EquipmentTypes[] = []
-    mainType = mainType ?? this.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
+    mainType =
+      mainType ??
+      this.equipmentField(EquipmentFieldTypes.MainWeapon).equipmentType
     switch (mainType) {
       case EquipmentTypes.OneHandSword:
         validSubs.push(EquipmentTypes.OneHandSword)
-        // fall through
+      // fall through
       case EquipmentTypes.Empty:
       case EquipmentTypes.Staff:
         validSubs.push(EquipmentTypes.NinjutsuScroll)
-        // fall through
+      // fall through
       case EquipmentTypes.Bowgun:
         validSubs.push(EquipmentTypes.Knuckle)
-        // fall through
+      // fall through
       case EquipmentTypes.Knuckle:
         validSubs.push(EquipmentTypes.MagicDevice, EquipmentTypes.Shield)
-        // fall through
+      // fall through
       case EquipmentTypes.Halberd:
         validSubs.push(EquipmentTypes.Arrow, EquipmentTypes.Dagger)
         break
       case EquipmentTypes.Katana:
         validSubs.push(EquipmentTypes.Dagger)
-        // fall through
+      // fall through
       case EquipmentTypes.MagicDevice:
         validSubs.push(EquipmentTypes.NinjutsuScroll)
         break
@@ -160,7 +190,9 @@ class Character {
     const chara = new Character(this.name + '*')
     chara.level = this.level
     this.normalBaseStats.forEach(bstat => {
-      const find = chara.normalBaseStats.find(_bstat => _bstat.name === bstat.name)!
+      const find = chara.normalBaseStats.find(
+        _bstat => _bstat.name === bstat.name
+      )!
       find.value = bstat.value
     })
     if (this.optionalBaseStat !== null) {
@@ -168,10 +200,15 @@ class Character {
       chara.optionalBaseStat!.value = this.optionalBaseStat.value
     }
 
-    this.equipmentFields.filter(field => !field.isEmpty).forEach(field => {
-      const find = chara.equipmentFields.find(targetField => field.type === targetField.type && field.index === targetField.index)!
-      find.setEquipment(field.equipment)
-    })
+    this.equipmentFields
+      .filter(field => !field.isEmpty)
+      .forEach(field => {
+        const find = chara.equipmentFields.find(
+          targetField =>
+            field.type === targetField.type && field.index === targetField.index
+        )!
+        find.setEquipment(field.equipment)
+      })
 
     return chara
   }
@@ -208,21 +245,23 @@ class Character {
       [EquipmentFieldTypes.Special]: 'special',
       [EquipmentFieldTypes.Avatar]: 'avatar',
     } as const
-    data.fields = this.equipmentFields.map(field => {
-      let idx = -1
-      if (field.equipment !== null) {
-        idx = equipments.indexOf(field.equipment)
-        if (idx === -1) {
-          console.warn('[Character.save] Can not find equipment in list.')
-          return null
+    data.fields = this.equipmentFields
+      .map(field => {
+        let idx = -1
+        if (field.equipment !== null) {
+          idx = equipments.indexOf(field.equipment)
+          if (idx === -1) {
+            console.warn('[Character.save] Can not find equipment in list.')
+            return null
+          }
         }
-      }
-      return {
-        type: fieldTypes[field.type],
-        index: field.index,
-        equipmentIndex: idx,
-      }
-    }).filter(field => field !== null) as CharacterSaveDataField[]
+        return {
+          type: fieldTypes[field.type],
+          index: field.index,
+          equipmentIndex: idx,
+        }
+      })
+      .filter(field => field !== null) as CharacterSaveDataField[]
 
     data.combo = this.comboBuild.save()
 
@@ -232,17 +271,27 @@ class Character {
   /**
    * @returns true if load successfully
    */
-  load(loadCategory: string, data: CharacterSaveData, equipments: (CharacterEquipment | null)[]): boolean {
+  load(
+    loadCategory: string,
+    data: CharacterSaveData,
+    equipments: (CharacterEquipment | null)[]
+  ): boolean {
     try {
-      const { id, name, level, normalBaseStats, optionalBaseStat, fields } = data
+      const { id, name, level, normalBaseStats, optionalBaseStat, fields } =
+        data
       this.name = name
       this.level = level
       normalBaseStats.forEach(bstat => {
-        const find = this.normalBaseStats.find(_bstat => _bstat.name === bstat.name)
+        const find = this.normalBaseStats.find(
+          _bstat => _bstat.name === bstat.name
+        )
         if (find) {
           find.value = bstat.value
         } else {
-          console.warn('[Character.save] Can not find CharacterBaseStat which name: ' + bstat.name)
+          console.warn(
+            '[Character.save] Can not find CharacterBaseStat which name: ' +
+              bstat.name
+          )
         }
       })
       if (optionalBaseStat) {
@@ -250,31 +299,40 @@ class Character {
         if (this.optionalBaseStat) {
           this.optionalBaseStat.value = optionalBaseStat.value
         } else {
-          console.warn('[Character.save] Can not find Optional-CharacterBaseStat which name: ' + optionalBaseStat.name)
+          console.warn(
+            '[Character.save] Can not find Optional-CharacterBaseStat which name: ' +
+              optionalBaseStat.name
+          )
         }
       }
       const fieldTypes = {
-        'main_weapon': EquipmentFieldTypes.MainWeapon,
-        'sub_weapon': EquipmentFieldTypes.SubWeapon,
-        'body_armor': EquipmentFieldTypes.BodyArmor,
-        'additional': EquipmentFieldTypes.Additional,
-        'special': EquipmentFieldTypes.Special,
-        'avatar': EquipmentFieldTypes.Avatar,
+        main_weapon: EquipmentFieldTypes.MainWeapon,
+        sub_weapon: EquipmentFieldTypes.SubWeapon,
+        body_armor: EquipmentFieldTypes.BodyArmor,
+        additional: EquipmentFieldTypes.Additional,
+        special: EquipmentFieldTypes.Special,
+        avatar: EquipmentFieldTypes.Avatar,
       } as const
       fields.forEach(fieldData => {
         if (fieldData.equipmentIndex !== -1) {
-          const find = this.equipmentFields.find(field => field.type === fieldTypes[fieldData.type] && field.index === fieldData.index)
+          const find = this.equipmentFields.find(
+            field =>
+              field.type === fieldTypes[fieldData.type] &&
+              field.index === fieldData.index
+          )
           if (find) {
             const eq = equipments[fieldData.equipmentIndex]
             if (eq) {
               find.equipment = eq
             }
           } else {
-            console.warn(`[Character.load] Can not find equipment field of character which type: ${fieldData.type}, index: ${fieldData.index}`)
+            console.warn(
+              `[Character.load] Can not find equipment field of character which type: ${fieldData.type}, index: ${fieldData.index}`
+            )
           }
         }
       })
-      if (data.combo){
+      if (data.combo) {
         this.comboBuild = CharacterComboBuild.load(data.combo)
       }
 
@@ -296,24 +354,30 @@ class Character {
 }
 
 interface CharacterSaveData {
-  id: number;
-  name: string;
-  level: number;
+  id: number
+  name: string
+  level: number
   normalBaseStats: {
-    name: CharacterBaseStatTypes;
-    value: number;
-  }[];
+    name: CharacterBaseStatTypes
+    value: number
+  }[]
   optionalBaseStat?: {
-    name: CharacterOptionalBaseStatTypes;
-    value: number;
-  };
-  fields: CharacterSaveDataField[];
-  combo?: CharacterComboBuildSaveData;
+    name: CharacterOptionalBaseStatTypes
+    value: number
+  }
+  fields: CharacterSaveDataField[]
+  combo?: CharacterComboBuildSaveData
 }
 interface CharacterSaveDataField {
-  type: 'main_weapon' | 'sub_weapon' | 'body_armor' | 'additional' | 'special' | 'avatar';
-  index: number;
-  equipmentIndex: number;
+  type:
+    | 'main_weapon'
+    | 'sub_weapon'
+    | 'body_armor'
+    | 'additional'
+    | 'special'
+    | 'avatar'
+  index: number
+  equipmentIndex: number
 }
 
 class CharacterBaseStat<T> {
@@ -399,87 +463,85 @@ class CharacterStatCategory {
   }
 }
 
-
 interface CharacterStatFormulaResult {
-  value: number;
+  value: number
   readonly statValueParts: {
-    base: number;
-    constant: number;
-    multiplier: number;
-    total: number;
-  };
-  readonly statPartsDetail: StatPartsDetail;
-  readonly conditionalBase: CharacterStatFormulaResultConditionalBase | null;
+    base: number
+    constant: number
+    multiplier: number
+    total: number
+  }
+  readonly statPartsDetail: StatPartsDetail
+  readonly conditionalBase: CharacterStatFormulaResultConditionalBase | null
 }
 interface CharacterStatResult extends CharacterStatFormulaResult {
-  origin: CharacterStat;
-  resultValue: number;
-  displayValue: string;
-  hidden: boolean;
+  origin: CharacterStat
+  resultValue: number
+  displayValue: string
+  hidden: boolean
 }
 
 interface CharacterStatFormulaResultConditionalBase {
-  conditional: string;
-  formula: string;
-  options: string[];
-  result: boolean;
-  statBasePart: string | null;
-  isMul: boolean;
-  isBase: boolean;
+  conditional: string
+  formula: string
+  options: string[]
+  result: boolean
+  statBasePart: string | null
+  isMul: boolean
+  isBase: boolean
 }
 
 interface StatPartsDetail {
   additionalValues: {
-    constant: StatPartsDetailAdditionalValueItem[];
-    multiplier: StatPartsDetailAdditionalValueItem[];
-    total: StatPartsDetailAdditionalValueItem[];
-    base: StatPartsDetailAdditionalValueItem[];
-  };
+    constant: StatPartsDetailAdditionalValueItem[]
+    multiplier: StatPartsDetailAdditionalValueItem[]
+    total: StatPartsDetailAdditionalValueItem[]
+    base: StatPartsDetailAdditionalValueItem[]
+  }
   initValue: {
-    constant: number;
-    multiplier: number;
-    total: number;
-    base: number;
-  };
+    constant: number
+    multiplier: number
+    total: number
+    base: number
+  }
   statRecordeds: {
-    constant: StatRecorded | null;
-    multiplier: StatRecorded | null;
-    total: StatRecorded | null;
-  };
+    constant: StatRecorded | null
+    multiplier: StatRecorded | null
+    total: StatRecorded | null
+  }
 }
 
 interface CharacterStatOptions {
-  id: string;
-  name: string;
-  displayFormula: string;
-  link: string;
-  max: number | null;
-  min: number | null;
-  caption: string;
-  hiddenOption: number;
+  id: string
+  name: string
+  displayFormula: string
+  link: string
+  max: number | null
+  min: number | null
+  caption: string
+  hiddenOption: number
 }
 
 interface StatPartsDetailAdditionalValueItem {
-  readonly conditional: string;
-  readonly options: string[];
-  readonly value: number;
-  readonly isMul?: boolean;
+  readonly conditional: string
+  readonly options: string[]
+  readonly value: number
+  readonly isMul?: boolean
 }
-
 
 interface CharacterStatResultVars {
   value: {
-    [key: string]: number | Record<string, number>;
-  };
+    [key: string]: number | Record<string, number>
+  }
   conditional: {
-    [key: string]: boolean | Record<string, boolean>;
-  };
+    [key: string]: boolean | Record<string, boolean>
+  }
   computed: {
-    [key: string]: number;
-  };
+    [key: string]: number
+  }
   computedResultStore: {
-    [key: string]: CharacterStatResult;
-  };
+    [key: string]: CharacterStatResult
+  }
 }
 class CharacterStat {
   private _formula!: CharacterStatFormula
@@ -495,13 +557,14 @@ class CharacterStat {
   min: number | null
   caption: string
   options: {
-    hidden: number;
+    hidden: number
   }
 
   linkedStatBase: StatBase | null
 
   constructor(
-    category: CharacterStatCategory, {
+    category: CharacterStatCategory,
+    {
       id,
       name,
       displayFormula,
@@ -510,7 +573,8 @@ class CharacterStat {
       min,
       caption,
       hiddenOption,
-    }: CharacterStatOptions) {
+    }: CharacterStatOptions
+  ) {
     this.category = category
 
     this.id = id
@@ -552,13 +616,16 @@ class CharacterStat {
       if (ignoreDecimal) {
         return value.toString()
       }
-      return p1 !== undefined ?
-        value.toFixed(parseInt(p1, 10)) :
-        Math.floor(value).toString()
+      return p1 !== undefined
+        ? value.toFixed(parseInt(p1, 10))
+        : Math.floor(value).toString()
     })
   }
 
-  result(currentStats: StatRecorded[], vars: CharacterStatResultVars): CharacterStatResult {
+  result(
+    currentStats: StatRecorded[],
+    vars: CharacterStatResultVars
+  ): CharacterStatResult {
     if (this.id in vars.computedResultStore) {
       return vars.computedResultStore[this.id]
     }
@@ -570,10 +637,16 @@ class CharacterStat {
         value = parseFloat(value)
       }
       if (Number.isNaN(value) || !Number.isFinite(value)) {
-        console.warn('[CharacterStatFormula.calc] unexpected reslut:', value,
-          '\nid:', this.id,
-          '\nresult:', res,
-          '\nformula:', formula)
+        console.warn(
+          '[CharacterStatFormula.calc] unexpected reslut:',
+          value,
+          '\nid:',
+          this.id,
+          '\nresult:',
+          res,
+          '\nformula:',
+          formula
+        )
         value = 0
       }
       const originalValue = value
@@ -599,8 +672,12 @@ class CharacterStat {
         statValueParts: res.statValueParts,
         statPartsDetail: res.statPartsDetail,
         conditionalBase: res.conditionalBase,
-        hidden: hiddenOption === 0 ||
-          (hiddenOption === 1 && (['constant', 'multiplier', 'total'] as const).every(key => res.statValueParts[key] === 0)) ||
+        hidden:
+          hiddenOption === 0 ||
+          (hiddenOption === 1 &&
+            (['constant', 'multiplier', 'total'] as const).every(
+              key => res.statValueParts[key] === 0
+            )) ||
           (hiddenOption === 2 && originalValue === 0),
       }
     } catch (error) {
@@ -668,27 +745,45 @@ class CharacterStatFormula {
 
   appendConditionValue(conditional: string, formula: string, options: string) {
     const optionList = splitComma(options)
-    const item = markRaw(new CharacterStatFormulaConditionalItem(conditional, formula, optionList))
+    const item = markRaw(
+      new CharacterStatFormulaConditionalItem(conditional, formula, optionList)
+    )
     this.conditionValues.push(item)
   }
 
   /**
    * @param pureStats - pure stats. All stat ID of stat must be unique
    */
-  calc(pureStats: StatRecorded[], vars: CharacterStatResultVars): CharacterStatFormulaResult {
+  calc(
+    pureStats: StatRecorded[],
+    vars: CharacterStatResultVars
+  ): CharacterStatFormulaResult {
     const allCharacterStatMap: Record<string, CharacterStat> = {}
     this.belongCharacterStat.category.belongCategorys
-      .map(cat => cat.stats).flat()
-      .forEach(stat => allCharacterStatMap[stat.id] = stat)
+      .map(cat => cat.stats)
+      .flat()
+      .forEach(stat => (allCharacterStatMap[stat.id] = stat))
 
-    const checkBaseId = (stat: StatRecorded) => stat.baseId === this.belongCharacterStat.link
-    let cstat = pureStats.find(stat => checkBaseId(stat) && stat.type === StatTypes.Constant)?.clone() ?? null,
-      mstat = pureStats.find(stat => checkBaseId(stat) && stat.type === StatTypes.Multiplier)?.clone() ?? null,
-      tstat = pureStats.find(stat => checkBaseId(stat) && stat.type === StatTypes.Total)?.clone() ?? null
+    const checkBaseId = (stat: StatRecorded) =>
+      stat.baseId === this.belongCharacterStat.link
+    let cstat =
+        pureStats
+          .find(stat => checkBaseId(stat) && stat.type === StatTypes.Constant)
+          ?.clone() ?? null,
+      mstat =
+        pureStats
+          .find(stat => checkBaseId(stat) && stat.type === StatTypes.Multiplier)
+          ?.clone() ?? null,
+      tstat =
+        pureStats
+          .find(stat => checkBaseId(stat) && stat.type === StatTypes.Total)
+          ?.clone() ?? null
 
     // `sub-weapon-atk` will ignore `weapon_atk` provided by active skill
     if (this.belongCharacterStat.id === 'sub_weapon_atk') {
-      const filter = (src: StatValueSource) => src.type !== StatValueSourceTypes.Skill || (src.src as SkillBranch).name === SkillBranchNames.Passive
+      const filter = (src: StatValueSource) =>
+        src.type !== StatValueSourceTypes.Skill ||
+        (src.src as SkillBranch).name === SkillBranchNames.Passive
       cstat = cstat?.filterSource(filter) ?? null
       mstat = mstat?.filterSource(filter) ?? null
       tstat = tstat?.filterSource(filter) ?? null
@@ -700,7 +795,11 @@ class CharacterStatFormula {
         query = query.slice(0, -1)
         statType = StatTypes.Multiplier
       }
-      return pureStats.find(stat => stat.baseId === query && stat.type === statType) ?? null
+      return (
+        pureStats.find(
+          stat => stat.baseId === query && stat.type === statType
+        ) ?? null
+      )
     }
 
     const excludeActive = (query: string): number => {
@@ -714,7 +813,9 @@ class CharacterStatFormula {
       } else {
         stat = getStat(query)
       }
-      const filter = (src: StatValueSource) => src.type !== StatValueSourceTypes.Skill || (src.src as SkillBranch).name === SkillBranchNames.Passive
+      const filter = (src: StatValueSource) =>
+        src.type !== StatValueSourceTypes.Skill ||
+        (src.src as SkillBranch).name === SkillBranchNames.Passive
       return stat?.filterSource(filter).value ?? 0
     }
 
@@ -754,16 +855,21 @@ class CharacterStatFormula {
       ...vars.computed,
 
       reduceValue: (value: number) => {
-        if (typeof value !== 'number' || Number.isNaN(value) || !Number.isFinite(value)) {
+        if (
+          typeof value !== 'number' ||
+          Number.isNaN(value) ||
+          !Number.isFinite(value)
+        ) {
           console.warn('[CharacterStatFormula.calc] unexpected value: ' + value)
           return 0
         }
         const neg = value < 0
         value = Math.abs(value)
-        let rate = 1, res = neg ? 100 : 0
+        let rate = 1,
+          res = neg ? 100 : 0
         while (value !== 0) {
           const fixedValue = Math.min(value, 50)
-          res = neg ? res * (100 + fixedValue) / 100 : res + fixedValue / rate
+          res = neg ? (res * (100 + fixedValue)) / 100 : res + fixedValue / rate
           value -= fixedValue
           rate *= 2
         }
@@ -807,7 +913,10 @@ class CharacterStatFormula {
         return res
       })
     })
-    const formulaHandler = (formulaStr: string, { ignoreStatValue = false } = {}) => {
+    const formulaHandler = (
+      formulaStr: string,
+      { ignoreStatValue = false } = {}
+    ) => {
       if (ignoreStatValue) {
         statValueVars.cvalue = 0
         statValueVars.mvalue = 0
@@ -820,44 +929,48 @@ class CharacterStatFormula {
       return (computeFormula(formulaStr, handlerVars) ?? 0) as number
     }
 
-
     const conditionalHandlerVars = {
       ...vars.conditional,
     }
 
-    const conditions: CharacterStatFormulaResultConditionalBase[] = this.conditionValues
-      .map(item => {
-        let statBasePart: string | null = null,
-          result = true,
-          isMul = false,
-          isBase = false
+    const conditions: CharacterStatFormulaResultConditionalBase[] =
+      this.conditionValues
+        .map(item => {
+          let statBasePart: string | null = null,
+            result = true,
+            isMul = false,
+            isBase = false
 
-        if (item.conditional !== '#') {
-          result = computeFormula(item.conditional, conditionalHandlerVars, true) as boolean
-        }
-        item.options.forEach(option => {
-          const match = option.match(/#([cmt]value)/)
-          if (match) {
-            if (statBasePart === null) {
-              statBasePart = match[1]
+          if (item.conditional !== '#') {
+            result = computeFormula(
+              item.conditional,
+              conditionalHandlerVars,
+              true
+            ) as boolean
+          }
+          item.options.forEach(option => {
+            const match = option.match(/#([cmt]value)/)
+            if (match) {
+              if (statBasePart === null) {
+                statBasePart = match[1]
+              }
+            } else if (option === '#base') {
+              isBase = true
+            } else if (option === '#mul') {
+              isMul = true
             }
-          } else if (option === '#base') {
-            isBase = true
-          } else if (option === '#mul') {
-            isMul = true
+          })
+          return {
+            conditional: item.conditional,
+            formula: item.formula,
+            options: item.options,
+            result,
+            statBasePart,
+            isMul,
+            isBase,
           }
         })
-        return {
-          conditional: item.conditional,
-          formula: item.formula,
-          options: item.options,
-          result,
-          statBasePart,
-          isMul,
-          isBase,
-        }
-      })
-      .filter(item => item.result)
+        .filter(item => item.result)
 
     // #base不能和#[cmt]value共存，同時存在時，#base優先級高於#[cmt]value
     conditions
@@ -905,12 +1018,15 @@ class CharacterStatFormula {
         }
       })
 
-    const addValues = extraValues
-      .filter(item => !item.isMul).map(item => item.value)
-    const mulValues = extraValues
-      .filter(item => item.isMul).map(item => item.value)
+    const addValues: number[] = []
+    const mulValues: number[] = []
+    extraValues.forEach(item =>
+      (item.isMul ? mulValues : addValues).push(item.value)
+    )
 
-    let res = 0, basev = 0, initBasev = 0
+    let res = 0,
+      basev = 0,
+      initBasev = 0
 
     const formula = conditionalBase ? conditionalBase.formula : this.formula
 
@@ -925,7 +1041,9 @@ class CharacterStatFormula {
       } else {
         initBasev = formula ? formulaHandler(formula) : 0
         basev = sum([initBasev, ...addValues]) * mul(mulValues)
-        res = defaultFormula ? (basev * (100 + mvalue) / 100 + cvalue) * (100 + tvalue) / 100 : basev
+        res = defaultFormula
+          ? (((basev * (100 + mvalue)) / 100 + cvalue) * (100 + tvalue)) / 100
+          : basev
       }
     }
 
@@ -956,5 +1074,17 @@ class CharacterStatFormulaConditionalItem {
   }
 }
 
-export { CharacterStatCategory, CharacterStat, CharacterStatFormula, Character, EquipmentField }
-export type { CharacterSaveData, CharacterStatResultVars, CharacterStatResult, CharacterStatFormulaResultConditionalBase, StatPartsDetailAdditionalValueItem }
+export {
+  CharacterStatCategory,
+  CharacterStat,
+  CharacterStatFormula,
+  Character,
+  EquipmentField,
+}
+export type {
+  CharacterSaveData,
+  CharacterStatResultVars,
+  CharacterStatResult,
+  CharacterStatFormulaResultConditionalBase,
+  StatPartsDetailAdditionalValueItem,
+}

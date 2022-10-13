@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex items-center justify-end py-1">
-      <div class="flex mr-auto">
+      <div class="mr-auto flex">
         <cy-button-circle
           icon="mdi:arrange-send-to-back"
           small
@@ -9,7 +9,10 @@
           @click="autoArrange"
         />
       </div>
-      <cy-button-action icon="ic:round-add-circle-outline" @click="createCustomEquipment">
+      <cy-button-action
+        icon="ic:round-add-circle-outline"
+        @click="createCustomEquipment"
+      >
         {{ t('character-simulator.custom-equipment.button-title') }}
       </cy-button-action>
       <cy-button-action icon="ci:table-add" @click="appendEquipments">
@@ -19,7 +22,7 @@
     <div class="overflow-auto" style="height: calc(95vh - 6rem)">
       <Draggable
         v-model="equipments"
-        class="divide-y divide-light"
+        class="divide-light divide-y"
         :item-key="getItemKey"
       >
         <template #item="{ element }">
@@ -37,26 +40,33 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Draggable from 'vuedraggable'
+import { WritableComputedRef, computed, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { inject, WritableComputedRef, computed } from 'vue'
+import Draggable from 'vuedraggable'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { EquipmentTypes, MainWeaponTypeList, SubArmorTypeList, SubWeaponTypeList } from '@/lib/Character/CharacterEquipment/enums'
+import {
+  EquipmentTypes,
+  MainWeaponTypeList,
+  SubArmorTypeList,
+  SubWeaponTypeList,
+} from '@/lib/Character/CharacterEquipment/enums'
 
 import Notify from '@/setup/Notify'
 
 import CharacterEquipmentsItem from './character-equipments-item.vue'
 
-import { setupCharacterStore } from '../setup'
 import { CharacterSimulatorInjectionKey } from '../injection-keys'
+import { setupCharacterStore } from '../setup'
 
 const { t } = useI18n()
 const { notify } = Notify()
 
 const { store } = setupCharacterStore()
 
-const equipments: WritableComputedRef<CharacterEquipment[]> = computed<CharacterEquipment[]>({
+const equipments: WritableComputedRef<CharacterEquipment[]> = computed<
+  CharacterEquipment[]
+>({
   get() {
     return store.equipments as CharacterEquipment[]
   },
@@ -91,18 +101,27 @@ const autoArrange = () => {
     return typeOrder1 - typeOrder2
   })
   store.equipments = equips
-  notify(t('character-simulator.browse-equipments.auto-arrange-success-tips'), undefined, null, {
-    buttons: [{
-      text: t('global.recovery'),
-      click: () => {
-        store.equipments = originalEquips
-      },
-      removeMessageAfterClick: true,
-    }],
-  })
+  notify(
+    t('character-simulator.browse-equipments.auto-arrange-success-tips'),
+    undefined,
+    null,
+    {
+      buttons: [
+        {
+          text: t('global.recovery'),
+          click: () => {
+            store.equipments = originalEquips
+          },
+          removeMessageAfterClick: true,
+        },
+      ],
+    }
+  )
 }
 
-const { appendEquipments, createCustomEquipment } = inject(CharacterSimulatorInjectionKey)!
+const { appendEquipments, createCustomEquipment } = inject(
+  CharacterSimulatorInjectionKey
+)!
 
 const getItemKey = (el: CharacterEquipment) => el.instanceId
 </script>

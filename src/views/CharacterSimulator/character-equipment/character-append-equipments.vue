@@ -12,8 +12,12 @@
       <cy-title-input
         v-model:value="searchText"
         icon="ic-outline-category"
-        class="sticky top-0 bg-white z-1 pt-1 pb-2"
-        :placeholder="t('character-simulator.append-equipments.search-equipment-placeholder')"
+        class="sticky top-0 z-1 bg-white pt-1 pb-2"
+        :placeholder="
+          t(
+            'character-simulator.append-equipments.search-equipment-placeholder'
+          )
+        "
         clearable
       />
       <div v-if="searchResults.length !== 0">
@@ -24,7 +28,7 @@
           @click="appendEquipment(item)"
         >
           <template #title-end>
-            <span class="text-sm text-primary-30 ml-4">
+            <span class="ml-4 text-sm text-primary-30">
               {{ getObtainText(item) }}
             </span>
             <cy-icon-text icon="ic-round-add" class="ml-auto" />
@@ -43,7 +47,7 @@
       </div>
     </template>
     <template #footer="{ closeModal }">
-      <div class="flex items-center justify-end w-full">
+      <div class="flex w-full items-center justify-end">
         <cy-button-action
           icon="ic-round-done"
           class="ml-auto"
@@ -58,7 +62,7 @@
       </div>
     </template>
     <template #extra-content>
-      <div class="bg-white border-1 border-primary-30 px-1">
+      <div class="border-1 border-primary-30 bg-white px-1">
         <div class="flex items-center px-3 py-2">
           <i18n-t
             keypath="character-simulator.append-equipments.search-equipment-selected-text"
@@ -67,12 +71,17 @@
             scope="global"
           >
             <template #num>
-              <span class="inline-flex items-center justify-center h-7 w-7 border-1 border-primary-50 mr-3 rounded-full">
+              <span
+                class="mr-3 inline-flex h-7 w-7 items-center justify-center rounded-full border-1 border-primary-50"
+              >
                 <span>{{ selectedEquipments.length }}</span>
               </span>
             </template>
           </i18n-t>
-          <span class="ml-auto text-primary-50 cursor-pointer" @click="clearSelectedEquipments">
+          <span
+            class="ml-auto cursor-pointer text-primary-50"
+            @click="clearSelectedEquipments"
+          >
             {{ t('global.clear') }}
           </span>
         </div>
@@ -84,7 +93,7 @@
             @click="removeEquipment(item)"
           >
             <template #title-end>
-              <span class="text-sm text-primary-30 ml-4">
+              <span class="ml-4 text-sm text-primary-30">
                 {{ getObtainText(item) }}
               </span>
               <cy-icon-text icon="ic-round-close" class="ml-auto" />
@@ -97,25 +106,25 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, Ref, ref, nextTick } from 'vue'
+import { Ref, computed, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
-import PageControl from '@/setup/PageControl'
 import Notify from '@/setup/Notify'
+import PageControl from '@/setup/PageControl'
 
 import EquipmentItem from '@/components/common/equipment-item.vue'
 
 import { setupCharacterStore } from '../setup'
 
 interface Props {
-  visible: boolean;
+  visible: boolean
 }
 interface Emits {
-  (evt: 'close'): void;
+  (evt: 'close'): void
 }
 
 defineProps<Props>()
@@ -132,9 +141,12 @@ const selectedEquipments: Ref<CharacterEquipment[]> = ref([])
 const allEqupments = Grimoire.Items.equipments.slice().reverse()
 
 const searchResults = computed(() => {
-  return allEqupments
-    .filter(equip => (equip.category !== -1 && equip.name.toLowerCase().includes(searchText.value.toLowerCase())) ||
-      equip.name === searchText.value)
+  return allEqupments.filter(
+    equip =>
+      (equip.category !== -1 &&
+        equip.name.toLowerCase().includes(searchText.value.toLowerCase())) ||
+      equip.name === searchText.value
+  )
 })
 
 const { currentItems, page, maxPage } = PageControl({
@@ -142,7 +154,9 @@ const { currentItems, page, maxPage } = PageControl({
   step: 30,
 })
 
-const currentResults = computed(() => currentItems.value.map(equip => CharacterEquipment.fromOriginEquipment(equip)))
+const currentResults = computed(() =>
+  currentItems.value.map(equip => CharacterEquipment.fromOriginEquipment(equip))
+)
 
 const getObtainText = (equip: CharacterEquipment) => {
   const origin = equip.origin
@@ -165,15 +179,22 @@ const removeEquipment = (equip: CharacterEquipment) => {
 const clearSelectedEquipments = () => {
   const original = selectedEquipments.value
   selectedEquipments.value = []
-  notify(t('character-simulator.append-equipments.selected-equipments-cleared-tips'), 'ic-round-done', null, {
-    buttons: [{
-      text: t('global.recovery'),
-      click: () => {
-        selectedEquipments.value = original
-      },
-      removeMessageAfterClick: true,
-    }],
-  })
+  notify(
+    t('character-simulator.append-equipments.selected-equipments-cleared-tips'),
+    'ic-round-done',
+    null,
+    {
+      buttons: [
+        {
+          text: t('global.recovery'),
+          click: () => {
+            selectedEquipments.value = original
+          },
+          removeMessageAfterClick: true,
+        },
+      ],
+    }
+  )
 }
 
 const submit = () => {

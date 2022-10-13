@@ -1,16 +1,22 @@
 <template>
   <div>
     <div class="flex items-center">
-      <div class="flex mr-3 flex-shrink-0">
+      <div class="mr-3 flex flex-shrink-0">
         <cy-button-toggle
           v-model:selected="branchItemState.enabled"
           :disabled="container.statContainers.length === 0"
         >
-          {{ container.get('name') || t('skill-query.branch.effect.base-name') }}
+          {{
+            container.get('name') || t('skill-query.branch.effect.base-name')
+          }}
         </cy-button-toggle>
       </div>
       <div v-if="container.branchItem.buffs" class="space-x-3">
-        <div v-for="buff in container.branchItem.buffs.items" :key="buff" class="text-orange-60">
+        <div
+          v-for="buff in container.branchItem.buffs.items"
+          :key="buff"
+          class="text-orange-60"
+        >
           {{ t(`skill-query.skill-buffs.${buff}.title`) }}
         </div>
       </div>
@@ -25,16 +31,25 @@
         :container="suffixContainer"
         class="flex items-center"
       >
-        <div class="flex mr-3 flex-shrink-0">
+        <div class="mr-3 flex flex-shrink-0">
           <cy-button-toggle
-            v-model:selected="store.getDamageCalculationSkillBranchState(suffixContainer.branchItem.default).enabled"
+            v-model:selected="
+              store.getDamageCalculationSkillBranchState(
+                suffixContainer.branchItem.default
+              ).enabled
+            "
             :disabled="suffixContainer.statContainers.length === 0"
           >
-            {{ suffixContainer.get('name') || t('skill-query.branch.effect.base-name') }}
+            {{
+              suffixContainer.get('name') ||
+              t('skill-query.branch.effect.base-name')
+            }}
           </cy-button-toggle>
         </div>
         <div>
-          <CharacterSkillItemStats :stat-containers="suffixContainer.statContainers" />
+          <CharacterSkillItemStats
+            :stat-containers="suffixContainer.statContainers"
+          />
         </div>
       </div>
     </div>
@@ -51,9 +66,8 @@ import CharacterSkillItemStats from '../character-skill/character-skill-tab/char
 
 import { setupCharacterStore } from '../setup'
 
-
 interface Props {
-  result: SkillResult;
+  result: SkillResult
 }
 
 const props = defineProps<Props>()
@@ -63,5 +77,7 @@ const { t } = useI18n()
 
 const container = computed(() => props.result.container)
 
-const branchItemState = computed(() => store.getDamageCalculationSkillBranchState(container.value.branchItem.default))
+const branchItemState = computed(() =>
+  store.getDamageCalculationSkillBranchState(container.value.branchItem.default)
+)
 </script>

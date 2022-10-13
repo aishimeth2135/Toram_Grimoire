@@ -17,18 +17,20 @@
 import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, {
+  SkillBranchItem,
+} from '@/lib/Skill/SkillComputingContainer'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
 import skillHealFormula from './layouts/skill-heal-formula.vue'
 
 import HealHandler from './branch-handlers/HealHandler'
-import { setupCommonExtraSuffixBranches } from './setup'
 import { NormalLayoutSubContent } from './layouts/setup'
+import { setupCommonExtraSuffixBranches } from './setup'
 
 interface Props {
-  computing: SkillComputingContainer;
-  branchItem: SkillBranchItem;
+  computing: SkillComputingContainer
+  branchItem: SkillBranchItem
 }
 
 const { t } = useI18n()
@@ -44,7 +46,10 @@ const subContents = computed(() => {
     key: 'frequency',
     icon: 'bi-circle-square',
   })
-  if (container.value.getValue('duration') !== '0' && container.value.getValue('cycle') !== '0') {
+  if (
+    container.value.getValue('duration') !== '0' &&
+    container.value.getValue('cycle') !== '0'
+  ) {
     result.push({
       key: 'duration|cycle',
       icon: 'ic-round-timer',
@@ -57,5 +62,8 @@ const subContents = computed(() => {
   return result
 })
 
-const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(props.computing, branchItem)
+const { extraSuffixBranchDatas } = setupCommonExtraSuffixBranches(
+  props.computing,
+  branchItem
+)
 </script>

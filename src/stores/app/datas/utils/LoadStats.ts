@@ -5,8 +5,7 @@ import CharacterSystem from '@/lib/Character'
 import type { LangCsvData } from './DownloadDatas'
 
 export default function (characterSystem: CharacterSystem, datas: LangCsvData) {
-  const
-    BASE_NAME = 0,
+  const BASE_NAME = 0,
     CAPTION = 1,
     CONSTANT_FORMULA = 2,
     HAS_MULTIPLIER = 3,
@@ -33,7 +32,7 @@ export default function (characterSystem: CharacterSystem, datas: LangCsvData) {
         row[BASE_NAME],
         row[CAPTION],
         row[HAS_MULTIPLIER] !== '無',
-        row[ORDER] ? parseInt(row[ORDER], 10) : 999,
+        row[ORDER] ? parseInt(row[ORDER], 10) : 999
       )
       if (row[CONSTANT_FORMULA]) {
         stat.constantDisplayFormat = row[CONSTANT_FORMULA]

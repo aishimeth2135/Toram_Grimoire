@@ -1,14 +1,21 @@
 <template>
   <section class="px-1.5">
     <div class="pb-4">
-      <div class="flex items-center flex-wrap px-2">
-        <div class="inline-block mr-2">
+      <div class="flex flex-wrap items-center px-2">
+        <div class="mr-2 inline-block">
           <cy-options
             :value="currentFoodBuild"
-            :options="foodBuilds.map(foodBuild => ({ id: foodBuild.instanceId, value: foodBuild }))"
+            :options="
+              foodBuilds.map(foodBuild => ({
+                id: foodBuild.instanceId,
+                value: foodBuild,
+              }))
+            "
             addable
             @update:value="characterStore.setCharacterFoodBuild($event)"
-            @add-item="characterStore.setCharacterFoodBuild(store.createFoodBuild())"
+            @add-item="
+              characterStore.setCharacterFoodBuild(store.createFoodBuild())
+            "
           >
             <template #item="{ value }">
               <cy-icon-text icon="mdi-food-apple">
@@ -64,8 +71,13 @@
           {{ t('character-simulator.food-build.disable-foods') }}
         </cy-button-toggle>
       </div>
-      <div class="pl-4 mt-1">
-        <cy-icon-text icon="ic-outline-info" text-color="primary-50" small class="mr-2">
+      <div class="mt-1 pl-4">
+        <cy-icon-text
+          icon="ic-outline-info"
+          text-color="primary-50"
+          small
+          class="mr-2"
+        >
           {{ t('character-simulator.food-build.introduction.0') }}
         </cy-icon-text>
         <cy-icon-text icon="ic-outline-info" text-color="primary-50" small>
@@ -90,8 +102,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
 
@@ -121,17 +133,27 @@ const removeCurrentFoodBuild = () => {
   }
   const from = currentFoodBuild.value
   store.removeFoodBuild(store.currentFoodBuildIndex)
-  notify(t('character-simulator.food-build.remove-food-build-success-tips'),
-    'ic-round-delete', null, {
-      buttons: [{
-        text: t('global.recovery'),
-        click: () => {
-          store.createFoodBuild({ foodBuild: from })
-          notify(t('character-simulator.food-build.restore-food-build-success-tips'))
+  notify(
+    t('character-simulator.food-build.remove-food-build-success-tips'),
+    'ic-round-delete',
+    null,
+    {
+      buttons: [
+        {
+          text: t('global.recovery'),
+          click: () => {
+            store.createFoodBuild({ foodBuild: from })
+            notify(
+              t(
+                'character-simulator.food-build.restore-food-build-success-tips'
+              )
+            )
+          },
+          removeMessageAfterClick: true,
         },
-        removeMessageAfterClick: true,
-      }],
-    })
+      ],
+    }
+  )
 }
 
 const disableAll = computed<boolean>({

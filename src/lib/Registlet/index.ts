@@ -1,6 +1,11 @@
 import { markRaw } from 'vue'
 
-import { RegistletCategory, RegistletItemBaseSkill, RegistletItemBaseSpecial, RegistletItemBaseStat } from './Registlet'
+import {
+  RegistletCategory,
+  RegistletItemBaseSkill,
+  RegistletItemBaseSpecial,
+  RegistletItemBaseStat,
+} from './Registlet'
 import { RegistletCategoryIds } from './Registlet/enums'
 
 export default class RegistletSystem {
@@ -9,8 +14,16 @@ export default class RegistletSystem {
   specialCategory: RegistletCategory<RegistletItemBaseSpecial>
 
   constructor() {
-    this.skillCategory = markRaw(new RegistletCategory<RegistletItemBaseSkill>(RegistletCategoryIds.Skill))
-    this.statCategory = markRaw(new RegistletCategory<RegistletItemBaseStat>(RegistletCategoryIds.Stat))
-    this.specialCategory = markRaw(new RegistletCategory<RegistletItemBaseSpecial>(RegistletCategoryIds.Special))
+    this.skillCategory = markRaw(
+      new RegistletCategory<RegistletItemBaseSkill>(RegistletCategoryIds.Skill)
+    )
+    this.statCategory = markRaw(
+      new RegistletCategory<RegistletItemBaseStat>(RegistletCategoryIds.Stat)
+    )
+    this.specialCategory = markRaw(
+      new RegistletCategory<RegistletItemBaseSpecial>(
+        RegistletCategoryIds.Special
+      )
+    )
   }
 }

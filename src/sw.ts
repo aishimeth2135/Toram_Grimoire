@@ -1,10 +1,15 @@
-import { RouteHandler, setCacheNameDetails } from 'workbox-core'
-import { initialize as googleAnalyticsInitialize } from 'workbox-google-analytics'
-import { registerRoute } from 'workbox-routing'
-import { Strategy, StrategyHandler, CacheFirst, StrategyOptions } from 'workbox-strategies'
-import { ExpirationPlugin } from 'workbox-expiration'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
+import { RouteHandler, setCacheNameDetails } from 'workbox-core'
+import { ExpirationPlugin } from 'workbox-expiration'
+import { initialize as googleAnalyticsInitialize } from 'workbox-google-analytics'
 import { precacheAndRoute } from 'workbox-precaching'
+import { registerRoute } from 'workbox-routing'
+import {
+  CacheFirst,
+  Strategy,
+  StrategyHandler,
+  StrategyOptions,
+} from 'workbox-strategies'
 
 declare const self: ServiceWorkerGlobalScope
 
@@ -38,7 +43,7 @@ class StaleWhileRevalidateThrottled extends Strategy {
       return false
     }
     const now = Date.now()
-    const remainTime = (this._expirationTime * 1000) - (now - headerTime)
+    const remainTime = this._expirationTime * 1000 - (now - headerTime)
     const isFresh = remainTime > 0
     // if (devMode) {
     //   logs.push(`It's ${Math.floor(remainTime / 1000)} seconds before cache expires...`, {
@@ -50,7 +55,10 @@ class StaleWhileRevalidateThrottled extends Strategy {
     return isFresh
   }
 
-  override async _handle(request: Request, handler: StrategyHandler): Promise<Response> {
+  override async _handle(
+    request: Request,
+    handler: StrategyHandler
+  ): Promise<Response> {
     // const logs: any[] = []
     let response = await handler.cacheMatch(request)
     if (!response) {
@@ -58,7 +66,9 @@ class StaleWhileRevalidateThrottled extends Strategy {
       response = await handler.fetchAndCachePut(request)
     } else if (!this._responseIsFresh(response)) {
       // logs.push('Found a cached response but cache is expire. Will respond with a cache and update with the network response in the background...')
-      handler.fetchAndCachePut(request).catch(() => { /* ignore error */ })
+      handler.fetchAndCachePut(request).catch(() => {
+        /* ignore error */
+      })
     }
     // if (devMode) {
     //   console.groupCollapsed(`[workbox] Using StaleWhileRevalidateThrottled to respond to ${request.url}`)
@@ -87,7 +97,7 @@ registerRoute(
         maxAgeSeconds: daysToSeconds(180),
       }),
     ],
-  }),
+  })
 )
 
 // polyfill.io CDN
@@ -103,7 +113,7 @@ registerRoute(
         maxAgeSeconds: daysToSeconds(30),
       }),
     ],
-  }),
+  })
 )
 
 // iconify
@@ -119,7 +129,7 @@ registerRoute(
         maxAgeSeconds: daysToSeconds(90),
       }),
     ],
-  }),
+  })
 )
 
 // image
@@ -135,7 +145,7 @@ registerRoute(
         maxAgeSeconds: daysToSeconds(90),
       }),
     ],
-  }),
+  })
 )
 
 // font
@@ -151,26 +161,31 @@ registerRoute(
         maxAgeSeconds: daysToSeconds(360),
       }),
     ],
-  }),
+  })
 )
 
 {
   const CACHE_NAME = handleCacheName('google-spreadsheets-csv-files')
-  const strategy = new StaleWhileRevalidateThrottled({
-    cacheName: CACHE_NAME,
-    plugins: [
-      new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
-    ],
-  }, 7200)
-  const handler: RouteHandler = async (params) => {
+  const strategy = new StaleWhileRevalidateThrottled(
+    {
+      cacheName: CACHE_NAME,
+      plugins: [
+        new CacheableResponsePlugin({
+          statuses: [0, 200],
+        }),
+      ],
+    },
+    7200
+  )
+  const handler: RouteHandler = async params => {
     try {
       return await strategy.handle(params)
     } catch (error) {
       const url = params.url.href
       let path = encodeURIComponent(url)
-      path = 'https://script.google.com/macros/s/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo/exec?url=' + path
+      path =
+        'https://script.google.com/macros/s/AKfycbxGeeJVBuTL23gNtaC489L_rr8GoKfaQHONtl2HQuX0B1lCGbEo/exec?url=' +
+        path
 
       const res = await fetch(path)
       const csvstr = await res.text()
@@ -196,11 +211,11 @@ registerRoute(
   // Register this strategy to handle all navigations.
   registerRoute(
     /^https:\/\/docs\.google\.com\/spreadsheets\/.+output=csv.+/,
-    handler,
+    handler
   )
 }
 
-self.addEventListener('message', (event) => {
+self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting()
   }

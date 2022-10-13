@@ -15,15 +15,15 @@
 import CyButtonRadio from './cy-button-radio.vue'
 
 interface Props {
-  value: any;
+  value: any
   options: {
-    text: string;
-    value: any;
-  }[];
+    text: string
+    value: any
+  }[]
 }
 
 interface Emits {
-  (evt: 'update:value', value: any): void;
+  (evt: 'update:value', value: any): void
 }
 
 defineProps<Props>()

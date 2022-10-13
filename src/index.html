@@ -1,100 +1,132 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <title>布偶的魔法書｜Cy's Grimoire</title>
+    <meta name="description" content="The web tool of Toram Online." />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0"
+    />
+    <meta
+      name="keywords"
+      content="toram,toram online,cysgrimoire,布偶的魔法書,托蘭魔法書,toram grimoire"
+    />
+    <meta name="author" content="Cyteria" />
 
-<head>
-  <meta charset="UTF-8">
-  <title>布偶的魔法書｜Cy's Grimoire</title>
-  <meta name="description" content="The web tool of Toram Online.">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
-  <meta name="keywords" content="toram,toram online,cysgrimoire,布偶的魔法書,托蘭魔法書,toram grimoire">
-  <meta name="author" content="Cyteria">
+    <meta property="og:title" content="布偶的魔法書｜Cy's Grimoire" />
+    <meta property="og:description" content="The web tool of Toram Online." />
+    <meta
+      property="og:image"
+      content="https://cy-grimoire.netlify.app/imgs/og-image.png"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:title" content="布偶的魔法書｜Cy's Grimoire" />
+    <meta
+      property="twitter:description"
+      content="The web tool of Toram Online."
+    />
+    <meta
+      property="twitter:image"
+      content="https://cy-grimoire.netlify.app/imgs/og-image.png"
+    />
 
-  <meta property="og:title" content="布偶的魔法書｜Cy's Grimoire"/>
-  <meta property="og:description" content="The web tool of Toram Online."/>
-  <meta property="og:image" content="https://cy-grimoire.netlify.app/imgs/og-image.png"/>
-  <meta property="og:type" content="website" />
-  <meta property="twitter:card" content="summary">
-  <meta property="twitter:title" content="布偶的魔法書｜Cy's Grimoire"/>
-  <meta property="twitter:description" content="The web tool of Toram Online."/>
-  <meta property="twitter:image" content="https://cy-grimoire.netlify.app/imgs/og-image.png"/>
+    <meta name="msapplication-TileColor" content="#ffffff" />
 
-  <meta name="msapplication-TileColor" content="#ffffff">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" sizes="any" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff51b0" />
+    <link rel="shortcut icon" href="/favicon.ico" />
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" sizes="any" href="/favicon.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff51b0">
-  <link rel="shortcut icon" href="/favicon.ico">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Itim&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
-
-  <script id="app--error--script">
-    (function() {
-      function showMessage(error, extraMessage) {
-        var message = error ? error.message : 'unknown error...';
-        var el = document.getElementById('app--error');
-        console.warn('Something wrong...')
-        console.info({ error: error });
-        if (el) {
-          if (el.getAttribute('data-flag') === '0') {
-            el.setAttribute('data-flag', '1');
-            var top = document.createElement('div');
-            top.innerText = '發生未知的錯誤，請將下方的錯誤訊息回報給作者。\nAn unknown error has occurred, please report the error message below to the author.';
-            top.style.marginBottom = '32px';
-            top.style.padding = '16px';
-            el.appendChild(top);
+    <script id="app--error--script">
+      ;(function () {
+        function showMessage(error, extraMessage) {
+          var message = error ? error.message : 'unknown error...'
+          var el = document.getElementById('app--error')
+          console.warn('Something wrong...')
+          console.info({ error: error })
+          if (el) {
+            if (el.getAttribute('data-flag') === '0') {
+              el.setAttribute('data-flag', '1')
+              var top = document.createElement('div')
+              top.innerText =
+                '發生未知的錯誤，請將下方的錯誤訊息回報給作者。\nAn unknown error has occurred, please report the error message below to the author.'
+              top.style.marginBottom = '32px'
+              top.style.padding = '16px'
+              el.appendChild(top)
+            }
+            var row = document.createElement('div')
+            row.innerText = message
+            if (extraMessage) {
+              row.innerText += '\n' + extraMessage
+            }
+            row.style.marginBottom = '16px'
+            row.style.padding = '16px'
+            el.appendChild(row)
           }
-          var row = document.createElement('div');
-          row.innerText = message;
           if (extraMessage) {
-            row.innerText += '\n' + extraMessage;
+            console.log(extraMessage)
           }
-          row.style.marginBottom = '16px';
-          row.style.padding = '16px';
-          el.appendChild(row);
         }
-        if (extraMessage) {
-          console.log(extraMessage);
+        window.onerror = function (message, source, lineno, colno, _error) {
+          showMessage(_error)
         }
-      }
-      window.onerror = function(message, source, lineno, colno, _error) {
-        showMessage(_error);
-      };
-      var scripts = document.head.getElementsByTagName('script');
-      var scriptHandler = function(_error) {
-        showMessage(_error, 'The script ' + _error.target.src + " didn't load correctly.");
-      };
-      for (var i=0; i<scripts.length; ++i) {
-        scripts[i].onerror = scriptHandler;
-      }
-      setTimeout(function() {
-        var el = document.getElementById('app--error--script');
-        if (el) {
-          el.parentElement.removeChild(el);
+        var scripts = document.head.getElementsByTagName('script')
+        var scriptHandler = function (_error) {
+          showMessage(
+            _error,
+            'The script ' + _error.target.src + " didn't load correctly."
+          )
         }
-      }, 500);
-    })();
-  </script>
+        for (var i = 0; i < scripts.length; ++i) {
+          scripts[i].onerror = scriptHandler
+        }
+        setTimeout(function () {
+          var el = document.getElementById('app--error--script')
+          if (el) {
+            el.parentElement.removeChild(el)
+          }
+        }, 500)
+      })()
+    </script>
 
-  <%- externalScripts %>
-</head>
+    <%- externalScripts %>
+  </head>
 
-<body>
-  <noscript>
-    <strong>We're sorry but this page doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    <strong>很抱歉，此網站無法在禁用JavaScript的情況下運作。請到瀏覽器的設定中開啟JavaScript。</strong>
-  </noscript>
-  <div id="app"></div>
+  <body>
+    <noscript>
+      <strong
+        >We're sorry but this page doesn't work properly without JavaScript
+        enabled. Please enable it to continue.</strong
+      >
+      <strong
+        >很抱歉，此網站無法在禁用JavaScript的情況下運作。請到瀏覽器的設定中開啟JavaScript。</strong
+      >
+    </noscript>
+    <div id="app"></div>
 
-  <div id="app-modals"></div>
-  <div id="app-notify"></div>
-  <div id="app-popovers"></div>
-  <div id="app-loading"></div>
+    <div id="app-modals"></div>
+    <div id="app-notify"></div>
+    <div id="app-popovers"></div>
+    <div id="app-loading"></div>
 
-  <div id="app--error" data-flag="0" style="max-width: 800px; margin: 16px auto;"></div>
-</body>
-
+    <div
+      id="app--error"
+      data-flag="0"
+      style="max-width: 800px; margin: 16px auto"
+    ></div>
+  </body>
 </html>

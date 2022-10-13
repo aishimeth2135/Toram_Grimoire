@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 interface Props {
-  loading: boolean;
+  loading: boolean
 }
 
 defineProps<Props>()
@@ -23,14 +23,14 @@ defineProps<Props>()
 
 <style lang="postcss" scoped>
 .cy-loading-wrapper {
-  @apply flex items-center justify-center w-full h-full bg-primary-5 rounded-lg;
+  @apply flex h-full w-full items-center justify-center rounded-lg bg-primary-5;
   min-height: 15rem;
 
   & > .dots-wrapper {
     @apply flex items-center space-x-6;
 
     & > .dot {
-      @apply w-5 h-5 bg-primary-30 rounded-full;
+      @apply h-5 w-5 rounded-full bg-primary-30;
       animation: dot 3.5s linear infinite;
     }
 

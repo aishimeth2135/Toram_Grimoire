@@ -6,11 +6,15 @@
       @skill-click="skillClick"
     />
     <div v-else>
-      <div class="text-center mb-3">
+      <div class="mb-3 text-center">
         {{ t('common.tips.view-unknow-error-tips') }}
       </div>
       <div class="flex justify-center">
-        <cy-button-action @click="characterStore.setCharacterSkillBuild(store.createSkillBuild())">
+        <cy-button-action
+          @click="
+            characterStore.setCharacterSkillBuild(store.createSkillBuild())
+          "
+        >
           {{ t('skill-simulator.create-build') }}
         </cy-button-action>
       </div>
@@ -41,7 +45,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { onMounted, Ref, ref } from 'vue'
+import { Ref, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCharacterStore } from '@/stores/views/character'
@@ -53,11 +57,11 @@ import ToggleService from '@/setup/ToggleService'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import SkillSimulatorBuild from './skill-simulator-build.vue'
-import SkillSimulatorMenu from './skill-simulator-menu.vue'
 import SkillSimulatorExportImage from './skill-simulator-export/skill-simulator-export-image.vue'
 import SkillSimulatorExportText from './skill-simulator-export/skill-simulator-export-text.vue'
+import SkillSimulatorMenu from './skill-simulator-menu.vue'
 
-import { setupSkillBuildStore, MenuData } from './setup'
+import { MenuData, setupSkillBuildStore } from './setup'
 
 const { store, currentSkillBuild } = setupSkillBuildStore()
 const { t } = useI18n()
@@ -67,7 +71,9 @@ const { modals, toggle } = ToggleService({
 
 const characterStore = useCharacterStore()
 
-const skillBuildComponent: Ref<InstanceType<typeof SkillSimulatorBuild> | null> = ref(null)
+const skillBuildComponent: Ref<InstanceType<
+  typeof SkillSimulatorBuild
+> | null> = ref(null)
 const menuData = ref<MenuData>({
   levelUnit: 5,
   mode: 'skill',
@@ -85,7 +91,8 @@ const skillClick = (skill: Skill) => {
   }
 }
 
-const goSkillTree = (st: SkillTree) => skillBuildComponent.value?.goSkillTree(st)
+const goSkillTree = (st: SkillTree) =>
+  skillBuildComponent.value?.goSkillTree(st)
 
 onMounted(() => {
   if (currentSkillBuild.value === null) {

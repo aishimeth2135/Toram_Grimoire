@@ -1,24 +1,24 @@
 import Grimoire from '@/shared/Grimoire'
 
-import { StatTypes, StatNormalTypes } from '@/lib/Character/Stat/enums'
+import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat/enums'
 
 import { EnchantCategory, EnchantItem } from '../base'
-import { EnchantBuild, EnchantStat, EnchantEquipment } from '../build'
-import STATE from '../state'
-import { EnchantDollBaseTypes, AutoFindNegaitveStatsTypes } from './enums'
-import EnchantDollEquipmentContainer from './EnchantDollEquipmentContainer'
+import { EnchantBuild, EnchantEquipment, EnchantStat } from '../build'
 import { EnchantEquipmentTypes } from '../enums'
+import STATE from '../state'
+import EnchantDollEquipmentContainer from './EnchantDollEquipmentContainer'
+import { AutoFindNegaitveStatsTypes, EnchantDollBaseTypes } from './enums'
 
 interface AutoFindNegaitveStatsResultIntegral {
-  stats: EnchantStat[];
-  realSuccessRate: number;
-  equipment: EnchantEquipment;
+  stats: EnchantStat[]
+  realSuccessRate: number
+  equipment: EnchantEquipment
 }
 
 interface AutoFindNegaitveStatsResultPartial {
-  stats: EnchantStat[];
-  realSuccessRate: null;
-  equipment: null;
+  stats: EnchantStat[]
+  realSuccessRate: null
+  equipment: null
 }
 
 export default class EnchantDoll {
@@ -27,9 +27,9 @@ export default class EnchantDoll {
   build: EnchantBuild
   lastResults: EnchantEquipment[]
   config: {
-    baseType: EnchantDollBaseTypes;
-    autoFindNegaitveStatsType: AutoFindNegaitveStatsTypes;
-    containsNaturalMpRegenConstant: boolean;
+    baseType: EnchantDollBaseTypes
+    autoFindNegaitveStatsType: AutoFindNegaitveStatsTypes
+    containsNaturalMpRegenConstant: boolean
   }
 
   constructor() {
@@ -54,7 +54,11 @@ export default class EnchantDoll {
     return this._positiveStats
   }
 
-  appendPositiveStat(itemBase: EnchantItem, type: StatNormalTypes, value: number) {
+  appendPositiveStat(
+    itemBase: EnchantItem,
+    type: StatNormalTypes,
+    value: number
+  ) {
     const stat = new EnchantStat(itemBase, type, value)
     if (this._positiveStats.length === STATE.EquipmentItemMaximumNumber) {
       return null
@@ -68,24 +72,33 @@ export default class EnchantDoll {
   }
 
   getPositiveStat(itemBase: EnchantItem, type: StatNormalTypes) {
-    return this._positiveStats.find(stat => stat.itemBase === itemBase && stat.type === type)
+    return this._positiveStats.find(
+      stat => stat.itemBase === itemBase && stat.type === type
+    )
   }
 
   hasPositiveStat(itemBase: EnchantItem, type: StatNormalTypes) {
     return this.getPositiveStat(itemBase, type) ? true : false
   }
 
-
-  calc(originalNegativeStats: EnchantStat[], originalPotential: number = 0): EnchantEquipment | null {
+  calc(
+    originalNegativeStats: EnchantStat[],
+    originalPotential: number = 0
+  ): EnchantEquipment | null {
     // 暫存要附的能力，如果能力都被拿完了表示已經計算完畢
     const negativeStats = originalNegativeStats.map(item => item.clone())
     const positiveStats = this._positiveStats.map(item => item.clone())
-    if (negativeStats.find(stat => stat.value === 0) || positiveStats.find(stat => stat.value === 0)) {
+    if (
+      negativeStats.find(stat => stat.value === 0) ||
+      positiveStats.find(stat => stat.value === 0)
+    ) {
       console.warn('[enchant-doll] value of some given stats is zero.')
       return null
     }
     if (negativeStats.length > 7) {
-      console.warn('[enchant-doll] number given negative stats cannot exceed 7.')
+      console.warn(
+        '[enchant-doll] number given negative stats cannot exceed 7.'
+      )
       return null
     }
 
@@ -123,10 +136,16 @@ export default class EnchantDoll {
         const eq = res.equipment
         const steps = eq.steps()
         const stepsId = steps
-          .filter((step, idx) => idx === steps.length - 1 || step.stats[0].value < 0)
-          .map(step => step.stats.map(stat => stat.statId + stat.value).join(','))
+          .filter(
+            (step, idx) => idx === steps.length - 1 || step.stats[0].value < 0
+          )
+          .map(step =>
+            step.stats.map(stat => stat.statId + stat.value).join(',')
+          )
           .join('->')
-        const pre = eq.lastStep ? `${eq.lastStep.remainingPotential}/${eq.lastStep.potentialExtraRate}` : 'none'
+        const pre = eq.lastStep
+          ? `${eq.lastStep.remainingPotential}/${eq.lastStep.potentialExtraRate}`
+          : 'none'
         const id = `${pre}/${steps.length}::${stepsId}`
         if (!map.has(id)) {
           map.set(id, res)
@@ -147,12 +166,18 @@ export default class EnchantDoll {
     //   console.groupEnd()
     // }
 
-    const sortResult = (build1: EnchantDollEquipmentContainer, build2: EnchantDollEquipmentContainer) => {
+    const sortResult = (
+      build1: EnchantDollEquipmentContainer,
+      build2: EnchantDollEquipmentContainer
+    ) => {
       const sr2 = Math.floor(build2.equipment.realSuccessRate)
       const sr1 = Math.floor(build1.equipment.realSuccessRate)
       if (sr2 === sr1) {
         // 步驟少的
-        return build1.equipment.operationStepsQuantity - build2.equipment.operationStepsQuantity
+        return (
+          build1.equipment.operationStepsQuantity -
+          build2.equipment.operationStepsQuantity
+        )
       }
       // 成功率高的
       return sr2 - sr1
@@ -163,17 +188,25 @@ export default class EnchantDoll {
       resultEqs.forEach(cdollEq => cdollEq.clearVirtualStats())
       clearRepeatEquipment()
 
-      resultEqs.forEach(cdollEq => resultEqs.push(...cdollEq.mostUseRemainingPotential()))
+      resultEqs.forEach(cdollEq =>
+        resultEqs.push(...cdollEq.mostUseRemainingPotential())
+      )
       clearRepeatEquipment()
       // logResultEqs('1', resultEqs)
 
       // 負屬全上
-      resultEqs.forEach(cdollEq => cdollEq.checkRemainingPotentialBeforeFillNegative())
-      resultEqs.forEach(cdollEq => resultEqs.push(...cdollEq.checkMergeStepToFillNegative()))
+      resultEqs.forEach(cdollEq =>
+        cdollEq.checkRemainingPotentialBeforeFillNegative()
+      )
+      resultEqs.forEach(cdollEq =>
+        resultEqs.push(...cdollEq.checkMergeStepToFillNegative())
+      )
       resultEqs.forEach(cdollEq => cdollEq.fillNegative())
       // logResultEqs('2', resultEqs);
 
-      resultEqs.forEach(cdollEq => resultEqs.push(...cdollEq.checkStepTypeEach()))
+      resultEqs.forEach(cdollEq =>
+        resultEqs.push(...cdollEq.checkStepTypeEach())
+      )
       // logResultEqs('3', resultEqs);
 
       // 正屬和剩下來的負屬全上
@@ -223,7 +256,10 @@ export default class EnchantDoll {
     })
   }
 
-  autoFindNegaitveStats(manuallyStats: EnchantStat[] = [], originalPotential: number = 0): AutoFindNegaitveStatsResultIntegral | AutoFindNegaitveStatsResultPartial {
+  autoFindNegaitveStats(
+    manuallyStats: EnchantStat[] = [],
+    originalPotential: number = 0
+  ): AutoFindNegaitveStatsResultIntegral | AutoFindNegaitveStatsResultPartial {
     const limit = this.numNegativeStats
     const categorys = Grimoire.Enchant.categorys
 
@@ -231,11 +267,16 @@ export default class EnchantDoll {
 
     const prioritizedShortList = {
       [EnchantEquipmentTypes.MainWeapon]: [
-        'def', 'mdef', 'dodge', 'natural_hp_regen',
-        this.config.containsNaturalMpRegenConstant ? 'natural_mp_regen' : {
-          baseId: 'natural_mp_regen',
-          types: [StatTypes.Multiplier] as StatNormalTypes[],
-        },
+        'def',
+        'mdef',
+        'dodge',
+        'natural_hp_regen',
+        this.config.containsNaturalMpRegenConstant
+          ? 'natural_mp_regen'
+          : {
+              baseId: 'natural_mp_regen',
+              types: [StatTypes.Multiplier] as StatNormalTypes[],
+            },
       ],
       [EnchantEquipmentTypes.BodyArmor]: ['accuracy'],
     }[buildEquipment.fieldType]
@@ -243,11 +284,18 @@ export default class EnchantDoll {
     if (buildEquipment.fieldType === EnchantEquipmentTypes.BodyArmor) {
       switch (this.config.baseType) {
         case 'physical':
-          prioritizedShortList.unshift('matk', 'magic_pierce'); break
+          prioritizedShortList.unshift('matk', 'magic_pierce')
+          break
         case 'magic':
-          prioritizedShortList.unshift('atk', 'physical_pierce'); break
+          prioritizedShortList.unshift('atk', 'physical_pierce')
+          break
         case 'none':
-          prioritizedShortList.unshift('atk', 'matk', 'physical_pierce', 'magic_pierce')
+          prioritizedShortList.unshift(
+            'atk',
+            'matk',
+            'physical_pierce',
+            'magic_pierce'
+          )
       }
     }
 
@@ -262,7 +310,13 @@ export default class EnchantDoll {
           return statBaseItem === item.statBase.baseId
         })
         if (find) {
-          const types = typeof find === 'object' ? find.types : [StatTypes.Constant, StatTypes.Multiplier] as StatNormalTypes[]
+          const types =
+            typeof find === 'object'
+              ? find.types
+              : ([
+                  StatTypes.Constant,
+                  StatTypes.Multiplier,
+                ] as StatNormalTypes[])
           types.forEach(type => {
             if (type === StatTypes.Multiplier && !item.statBase.hasMultiplier) {
               return
@@ -277,7 +331,8 @@ export default class EnchantDoll {
       })
     })
 
-    const negatives: EnchantDollCategory[] = EnchantDollCategory.classifyStats(shortlist)
+    const negatives: EnchantDollCategory[] =
+      EnchantDollCategory.classifyStats(shortlist)
 
     // 先排好能力
     negatives.forEach(category => {
@@ -289,15 +344,28 @@ export default class EnchantDoll {
       }
     })
     const tshortlist = negatives.map(category => category.stats).flat()
-    manuallyStats = manuallyStats.filter(mstat => !tshortlist.find(nstat => nstat.equals(mstat)))
+    manuallyStats = manuallyStats.filter(
+      mstat => !tshortlist.find(nstat => nstat.equals(mstat))
+    )
 
-    const numNegativeStats = Math.min(Math.max(this.numNegativeStats - manuallyStats.length, tshortlist.length), this.numNegativeStats)
+    const numNegativeStats = Math.min(
+      Math.max(this.numNegativeStats - manuallyStats.length, tshortlist.length),
+      this.numNegativeStats
+    )
 
     if (tshortlist.length >= numNegativeStats) {
-      manuallyStats = manuallyStats.slice(0, this.numNegativeStats - numNegativeStats)
-      const originalNegativeStatsList = this.getNegativeStatsList(tshortlist, numNegativeStats)
+      manuallyStats = manuallyStats.slice(
+        0,
+        this.numNegativeStats - numNegativeStats
+      )
+      const originalNegativeStatsList = this.getNegativeStatsList(
+        tshortlist,
+        numNegativeStats
+      )
       const parseStats = (stats: EnchantStat[]) => {
-        const tmpCategorys = EnchantDollCategory.classifyStats(stats).sort((item1, item2) => item2.stats.length - item1.stats.length)
+        const tmpCategorys = EnchantDollCategory.classifyStats(stats).sort(
+          (item1, item2) => item2.stats.length - item1.stats.length
+        )
         tmpCategorys.forEach(_category => _category.sortStats('max-effect'))
         const categoryEffectSum = tmpCategorys
           .map(_category => _category.originalPotentialEffectMaximumSum())
@@ -305,7 +373,9 @@ export default class EnchantDoll {
         const materialPointSum = tmpCategorys
           .map(_category => _category.materialPointMaximumSum('min'))
           .reduce((cur, mpt) => cur + mpt, 0)
-        const categorysId = tmpCategorys.map(_category => _category.stats.length).join('|')
+        const categorysId = tmpCategorys
+          .map(_category => _category.stats.length)
+          .join('|')
         return {
           categorysId,
           potentialEffect: categoryEffectSum,
@@ -314,10 +384,14 @@ export default class EnchantDoll {
       }
       const statsMap = new Map()
       originalNegativeStatsList.forEach(stats => {
-        const { categorysId, potentialEffect, materialPoint } = parseStats(stats)
+        const { categorysId, potentialEffect, materialPoint } =
+          parseStats(stats)
         if (statsMap.has(categorysId)) {
           const data = statsMap.get(categorysId)
-          if (data.potentialEffect === potentialEffect && data.materialPoint <= materialPoint) {
+          if (
+            data.potentialEffect === potentialEffect &&
+            data.materialPoint <= materialPoint
+          ) {
             // 退潛量一樣時，保留素材耗量較低的，否則覆蓋
             return
           }
@@ -333,19 +407,23 @@ export default class EnchantDoll {
         })
       })
       const negativeStatsList = Array.from(statsMap, el => el[1].stats)
-      const finaleList = negativeStatsList.map(stats => {
-        const _stats = [...stats, ...manuallyStats]
-        const eq = this.calc(_stats, originalPotential)
-        if (!eq) {
-          return null
-        }
-        return {
-          realSuccessRate: eq.realSuccessRate,
-          stats: _stats,
-          equipment: eq,
-        }
-      }).filter(item => item !== null) as AutoFindNegaitveStatsResultIntegral[]
-      return finaleList.sort((item1, item2) => item2.realSuccessRate - item1.realSuccessRate)[0]
+      const finaleList = negativeStatsList
+        .map(stats => {
+          const _stats = [...stats, ...manuallyStats]
+          const eq = this.calc(_stats, originalPotential)
+          if (!eq) {
+            return null
+          }
+          return {
+            realSuccessRate: eq.realSuccessRate,
+            stats: _stats,
+            equipment: eq,
+          }
+        })
+        .filter(item => item !== null) as AutoFindNegaitveStatsResultIntegral[]
+      return finaleList.sort(
+        (item1, item2) => item2.realSuccessRate - item1.realSuccessRate
+      )[0]
     }
 
     return {
@@ -355,7 +433,10 @@ export default class EnchantDoll {
     }
   }
 
-  parseNegativeCategorys(negatives: EnchantDollCategory[], limit: number): EnchantStat[] {
+  parseNegativeCategorys(
+    negatives: EnchantDollCategory[],
+    limit: number
+  ): EnchantStat[] {
     const numNegatives = limit
 
     /**
@@ -363,7 +444,10 @@ export default class EnchantDoll {
      * @param category
      * @param num - 指定的能力數量
      */
-    const calcPotentialPriority = (category: EnchantDollCategory, num: number) => {
+    const calcPotentialPriority = (
+      category: EnchantDollCategory,
+      num: number
+    ) => {
       return category.originalPotentialEffectMaximumSum(num)
     }
 
@@ -372,14 +456,18 @@ export default class EnchantDoll {
      * @param category
      * @param num - 指定的能力數量
      */
-    const calcMaterialPriority = (category: EnchantDollCategory, num: number) => {
+    const calcMaterialPriority = (
+      category: EnchantDollCategory,
+      num: number
+    ) => {
       return category.materialPointMaximumSum('min', num)
     }
 
     const calcPriority = (category: EnchantDollCategory, nums: number) => {
-      return this.config.autoFindNegaitveStatsType === AutoFindNegaitveStatsTypes.SuccessRate ?
-        calcPotentialPriority(category, nums) :
-        calcMaterialPriority(category, nums)
+      return this.config.autoFindNegaitveStatsType ===
+        AutoFindNegaitveStatsTypes.SuccessRate
+        ? calcPotentialPriority(category, nums)
+        : calcMaterialPriority(category, nums)
     }
 
     negatives.sort((cat1, cat2) => {
@@ -427,7 +515,9 @@ export default class EnchantDoll {
       }
       return res
     }
-    let res = Array(stats.length).fill([]).map((value, idx) => [idx])
+    let res = Array(stats.length)
+      .fill([])
+      .map((value, idx) => [idx])
     while (res.length !== 0 && res[0].length !== stats.length) {
       res = merge(res)
       if (res[0].length === length) {
@@ -495,7 +585,10 @@ class EnchantDollCategory {
     return target
   }
 
-  sortStats(type: 'max-effect' | 'max-cost' | 'negaitve--min-material-cost', payload?: { equipment: EnchantEquipment }) {
+  sortStats(
+    type: 'max-effect' | 'max-cost' | 'negaitve--min-material-cost',
+    payload?: { equipment: EnchantEquipment }
+  ) {
     if (type === 'max-effect') {
       this.stats.sort((item1, item2) => {
         const av = -1 * item1.originalPotential * item1.limit[0]
@@ -526,8 +619,12 @@ class EnchantDollCategory {
    */
   originalPotentialEffectMaximumSum(num?: number): number {
     num = num === undefined ? this.stats.length : num
-    return -1 * this.stats.slice(0, num)
-      .reduce((cur, stat) => cur + stat.originalPotential * stat.limit[0], 0)
+    return (
+      -1 *
+      this.stats
+        .slice(0, num)
+        .reduce((cur, stat) => cur + stat.originalPotential * stat.limit[0], 0)
+    )
   }
 
   /**
@@ -536,10 +633,15 @@ class EnchantDollCategory {
    * @returns sum of material point of stats
    */
   materialPointMaximumSum(type: 'min' | 'max', num?: number): number {
-    const typeToIdx = { 'min': 0, 'max': 1 }[type]
+    const typeToIdx = { min: 0, max: 1 }[type]
     num = num === undefined ? this.stats.length : num
-    return this.stats.slice(0, num)
-      .reduce((cur, stat) => cur + stat.calcMaterialPointCost(stat.limit[typeToIdx], 0), 0)
+    return this.stats
+      .slice(0, num)
+      .reduce(
+        (cur, stat) =>
+          cur + stat.calcMaterialPointCost(stat.limit[typeToIdx], 0),
+        0
+      )
   }
 }
 

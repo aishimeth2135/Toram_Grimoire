@@ -22,4 +22,8 @@ enum CharacterOptionalBaseStatTypes {
   CRT = 'CRT',
 }
 
-export { EquipmentFieldTypes, CharacterBaseStatTypes, CharacterOptionalBaseStatTypes }
+export {
+  EquipmentFieldTypes,
+  CharacterBaseStatTypes,
+  CharacterOptionalBaseStatTypes,
+}

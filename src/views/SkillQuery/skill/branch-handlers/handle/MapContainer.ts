@@ -12,13 +12,16 @@ export default class MapContainer<AttrMap extends Record<string, any>> {
   }
 
   append(...keys: (keyof AttrMap)[]) {
-    keys.forEach(key => this._attrMap[key] = (null) as AttrMap[keyof AttrMap])
+    keys.forEach(key => (this._attrMap[key] = null as AttrMap[keyof AttrMap]))
   }
 
   appendIterable(key: keyof AttrMap, length: number) {
-    Array(length).fill(0).forEach((value, idx) => {
-      this._attrMap[`${String(key)}.${idx}` as keyof AttrMap] = (null) as AttrMap[keyof AttrMap]
-    })
+    Array(length)
+      .fill(0)
+      .forEach((value, idx) => {
+        this._attrMap[`${String(key)}.${idx}` as keyof AttrMap] =
+          null as AttrMap[keyof AttrMap]
+      })
   }
 
   remove(key: keyof AttrMap) {
@@ -36,6 +39,6 @@ export default class MapContainer<AttrMap extends Record<string, any>> {
 
 function keysToAttrMap<T extends Record<string, any>>(keys: string[]): T {
   const newAttrMap = {} as Record<string, any>
-  keys.forEach(key => newAttrMap[key] = null)
+  keys.forEach(key => (newAttrMap[key] = null))
   return newAttrMap as T
 }

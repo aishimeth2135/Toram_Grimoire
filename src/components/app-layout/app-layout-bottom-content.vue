@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border-1 border-primary-30 rounded bg-white overflow-auto shadow"
+    class="overflow-auto rounded border-1 border-primary-30 bg-white shadow"
     style="max-height: calc(75vh - 4rem)"
   >
     <slot></slot>

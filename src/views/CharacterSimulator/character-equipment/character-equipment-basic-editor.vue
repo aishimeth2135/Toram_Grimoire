@@ -1,7 +1,11 @@
 <template>
   <div v-if="equipment">
     <div>
-      <cy-icon-text icon="mdi-clipboard-edit-outline" small text-color="fuchsia-60">
+      <cy-icon-text
+        icon="mdi-clipboard-edit-outline"
+        small
+        text-color="fuchsia-60"
+      >
         {{ t('character-simulator.equipment-basic-editor.equipment-name') }}
       </cy-icon-text>
     </div>
@@ -13,22 +17,37 @@
     </div>
     <template v-if="currentEquipment.customTypeList">
       <div class="mt-3">
-        <cy-icon-text icon="mdi-clipboard-edit-outline" small text-color="fuchsia-60">
+        <cy-icon-text
+          icon="mdi-clipboard-edit-outline"
+          small
+          text-color="fuchsia-60"
+        >
           {{ t('character-simulator.equipment-basic-editor.equipment-type') }}
         </cy-icon-text>
       </div>
       <cy-button-radio-group
         v-model:value="currentEquipment.type"
-        :options="currentEquipment.customTypeList.map(item => ({
-          text: t('common.Equipment.category.' + item),
-          value: item,
-        }))"
+        :options="
+          currentEquipment.customTypeList.map(item => ({
+            text: t('common.Equipment.category.' + item),
+            value: item,
+          }))
+        "
         class="mt-1"
       />
     </template>
-    <template v-if="equipment.is(EquipmentKinds.Weapon) || equipment.is(EquipmentKinds.Armor)">
+    <template
+      v-if="
+        equipment.is(EquipmentKinds.Weapon) ||
+        equipment.is(EquipmentKinds.Armor)
+      "
+    >
       <div class="mt-3">
-        <cy-icon-text icon="mdi-clipboard-edit-outline" small text-color="fuchsia-60">
+        <cy-icon-text
+          icon="mdi-clipboard-edit-outline"
+          small
+          text-color="fuchsia-60"
+        >
           {{ t('character-simulator.equipment-basic-editor.equipment-basic') }}
         </cy-icon-text>
       </div>
@@ -95,14 +114,16 @@
     <template v-if="equipment.hasCrystal">
       <div class="mt-3">
         <cy-icon-text icon="mdi-rhombus-outline" small text-color="fuchsia-60">
-          {{ t('character-simulator.equipment-basic-editor.equipment-crystal') }}
+          {{
+            t('character-simulator.equipment-basic-editor.equipment-crystal')
+          }}
         </cy-icon-text>
       </div>
-      <CharacterEquipmentEditMask class="!block px-3 py-2" @click="editCrystal(currentEquipment)">
-        <div
-          v-for="crystal in equipment.crystals"
-          :key="crystal.id"
-        >
+      <CharacterEquipmentEditMask
+        class="!block px-3 py-2"
+        @click="editCrystal(currentEquipment)"
+      >
+        <div v-for="crystal in equipment.crystals" :key="crystal.id">
           <cy-icon-text
             :icon="crystal.crystalIconPath"
             icon-src="image"
@@ -117,13 +138,13 @@
 </template>
 
 <script lang="ts" setup>
-import Draggable from 'vuedraggable'
-import { useI18n } from 'vue-i18n'
 import { computed, inject } from 'vue'
+import { useI18n } from 'vue-i18n'
+import Draggable from 'vuedraggable'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { StatRestriction } from '@/lib/Character/Stat'
 import { EquipmentKinds } from '@/lib/Character/CharacterEquipment/enums'
+import { StatRestriction } from '@/lib/Character/Stat'
 
 import CharacterEquipmentBasicValue from './character-equipment-basic-value.vue'
 import CharacterEquipmentEditMask from './character-equipment-edit-mask.vue'
@@ -131,7 +152,7 @@ import CharacterEquipmentEditMask from './character-equipment-edit-mask.vue'
 import { CharacterSimulatorInjectionKey } from '../injection-keys'
 
 interface Props {
-  equipment: CharacterEquipment | null;
+  equipment: CharacterEquipment | null
 }
 
 const props = defineProps<Props>()

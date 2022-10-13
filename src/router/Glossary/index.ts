@@ -18,22 +18,27 @@ export default {
     ViewInit(DataStoreIds.Glossary).then(next)
   },
   meta: {
-    leftMenuViewButtons: [{
-      title: 'app.page-title.skill-query',
-      icon: 'ic-outline-menu-book',
-      pathName: AppRouteNames.SkillQuery,
-    }, {
-      title: 'app.page-title.glossary-query',
-      icon: 'mdi:tag-outline',
-      pathName: AppRouteNames.GlossaryQuery,
-    }],
+    leftMenuViewButtons: [
+      {
+        title: 'app.page-title.skill-query',
+        icon: 'ic-outline-menu-book',
+        pathName: AppRouteNames.SkillQuery,
+      },
+      {
+        title: 'app.page-title.glossary-query',
+        icon: 'mdi:tag-outline',
+        pathName: AppRouteNames.GlossaryQuery,
+      },
+    ],
   },
-  children: [{
-    name: AppRouteNames.GlossaryQuery,
-    path: '',
-    component: GlossaryView,
-    meta: {
-      title: 'app.page-title.glossary-query',
+  children: [
+    {
+      name: AppRouteNames.GlossaryQuery,
+      path: '',
+      component: GlossaryView,
+      meta: {
+        title: 'app.page-title.glossary-query',
+      },
     },
-  }],
+  ],
 } as RouteRecordRaw

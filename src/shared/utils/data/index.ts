@@ -2,7 +2,13 @@ import jsep from 'jsep'
 
 import { isNumberString } from '@/shared/utils/string'
 
-import { getVarsMap, getGettersMap, varMapToArray, handleReplacedKey, jsepTypes } from './utils'
+import {
+  getGettersMap,
+  getVarsMap,
+  handleReplacedKey,
+  jsepTypes,
+  varMapToArray,
+} from './utils'
 
 function trimBrackets(value: string) {
   while (value[0] === '(' && value[value.length - 1] === ')') {
@@ -16,10 +22,14 @@ type CommonValue = PureValue | boolean[] | string[] | number[]
 type CommonFunction = (...args: any[]) => PureValue
 type CommonValueExtended = CommonValue | CommonFunction
 type ParseFormulaVars = {
-  [key: string]: CommonValueExtended | ParseFormulaVars;
+  [key: string]: CommonValueExtended | ParseFormulaVars
 }
 
-function calcNumberBinaryExpression(left: number, operator: string, right: number): number {
+function calcNumberBinaryExpression(
+  left: number,
+  operator: string,
+  right: number
+): number {
   if (operator === '+') {
     return left + right
   }
@@ -37,7 +47,7 @@ function calcNumberBinaryExpression(left: number, operator: string, right: numbe
 
 interface ParseFormulaOptions {
   /** if true, formula will for compile and param vars will be ignore */
-  compile?: string;
+  compile?: string
 }
 
 /**
@@ -93,18 +103,30 @@ interface ParseFormulaOptions {
  * @param options
  * @returns parse result of formula
  */
-function parseFormula(formulaStr: string, vars: ParseFormulaVars = {}, options: ParseFormulaOptions = {}): PureValue {
+function parseFormula(
+  formulaStr: string,
+  vars: ParseFormulaVars = {},
+  options: ParseFormulaOptions = {}
+): PureValue {
   // inject Math
   vars.Math = window.Math as unknown as ParseFormulaVars
 
   const _options = options
   const unknowSnippet = (value: unknown) => typeof value === 'string'
-  const handleArray = (ary: jsep.Expression[], parentNode: jsep.Expression): unknown[] => {
+  const handleArray = (
+    ary: jsep.Expression[],
+    parentNode: jsep.Expression
+  ): unknown[] => {
     return ary
       .map(arg => handle(arg, parentNode))
-      .map(el => typeof el === 'string' && isNumberString(el) ? parseFloat(el) : el)
+      .map(el =>
+        typeof el === 'string' && isNumberString(el) ? parseFloat(el) : el
+      )
   }
-  function handle(node: jsep.Expression, parentNode: jsep.Expression | null): CommonValueExtended | object {
+  function handle(
+    node: jsep.Expression,
+    parentNode: jsep.Expression | null
+  ): CommonValueExtended | object {
     if (jsepTypes.isLiteral(node)) {
       if (typeof node.value === 'string') {
         return node.raw as PureValue
@@ -113,13 +135,13 @@ function parseFormula(formulaStr: string, vars: ParseFormulaVars = {}, options: 
     }
     if (jsepTypes.isUnaryExpression(node)) {
       const arg = handle(node.argument, node)
-      return typeof arg !== 'string' || isNumberString(arg) ?
-        (arg as number) * -1 :
-        '-' + handle(node.argument, node)
+      return typeof arg !== 'string' || isNumberString(arg)
+        ? (arg as number) * -1
+        : '-' + handle(node.argument, node)
     }
     if (jsepTypes.isBinaryExpression(node)) {
-      let left = handle(node.left, node) as (number | boolean)
-      let right = handle(node.right, node) as (number | boolean)
+      let left = handle(node.left, node) as number | boolean
+      let right = handle(node.right, node) as number | boolean
       if (typeof left === 'string' && isNumberString(left)) {
         left = parseFloat(left)
       }
@@ -128,11 +150,21 @@ function parseFormula(formulaStr: string, vars: ParseFormulaVars = {}, options: 
       }
       const operator = node.operator
       if (unknowSnippet(left) || unknowSnippet(right)) {
-        return ((operator === '+' || operator === '-') && !(parentNode && jsepTypes.isBinaryExpression(parentNode) && (parentNode.operator === '+' || parentNode.operator === '-'))) ?
-          `(${left}${operator}${right})` :
-          `${left}${operator}${right}`
+        return (operator === '+' || operator === '-') &&
+          !(
+            parentNode &&
+            jsepTypes.isBinaryExpression(parentNode) &&
+            (parentNode.operator === '+' || parentNode.operator === '-')
+          )
+          ? `(${left}${operator}${right})`
+          : `${left}${operator}${right}`
       }
-      if (operator === '+' || operator === '-' || operator === '*' || operator === '/') {
+      if (
+        operator === '+' ||
+        operator === '-' ||
+        operator === '*' ||
+        operator === '/'
+      ) {
         if (typeof left === 'boolean') {
           left = left ? 1 : 0
         }
@@ -149,9 +181,14 @@ function parseFormula(formulaStr: string, vars: ParseFormulaVars = {}, options: 
       }
     }
     if (jsepTypes.isIdentifier(node)) {
-      const isRoot = !parentNode || !jsepTypes.isMemberExpression(parentNode) || parentNode.object === node
+      const isRoot =
+        !parentNode ||
+        !jsepTypes.isMemberExpression(parentNode) ||
+        parentNode.object === node
       if (_options.compile) {
-        return isRoot ? `${_options.compile}['${node.name}']` : `['${node.name}']`
+        return isRoot
+          ? `${_options.compile}['${node.name}']`
+          : `['${node.name}']`
       }
       if (node.name in vars && isRoot) {
         return vars[node.name]
@@ -161,11 +198,11 @@ function parseFormula(formulaStr: string, vars: ParseFormulaVars = {}, options: 
     if (jsepTypes.isMemberExpression(node)) {
       const object = node.object
       const property = node.property
-      const parent = handle(object, node) as (ParseFormulaVars | string)
+      const parent = handle(object, node) as ParseFormulaVars | string
       if (typeof parent !== 'string') {
         return parent[handle(property, node) as string]
       }
-      const child = (handle(property, node) + '')
+      const child = handle(property, node) + ''
       if (isNumberString(child)) {
         return `${parent}[${child}]`
       }
@@ -184,19 +221,24 @@ function parseFormula(formulaStr: string, vars: ParseFormulaVars = {}, options: 
         if (options.compile) {
           chain.push(options.compile)
         }
-        const argStrings = (args as PureValue[]).map(arg => trimBrackets(arg.toString()))
+        const argStrings = (args as PureValue[]).map(arg =>
+          trimBrackets(arg.toString())
+        )
         const funcName = (chain.reverse() as string[])
           .map((item, idx) => {
             if (idx === 0) {
               return item
             }
             return options.compile ? `['${item}']` : `.${item}`
-          }).join('')
+          })
+          .join('')
         return `${funcName}(${argStrings.join(', ')})`
       }
-      const callee = handle(node.callee, node) as (Function | string)
+      const callee = handle(node.callee, node) as Function | string
       if (typeof callee === 'string') {
-        const argStrings = (args as PureValue[]).map(arg => trimBrackets(arg.toString()))
+        const argStrings = (args as PureValue[]).map(arg =>
+          trimBrackets(arg.toString())
+        )
         return `${callee}(${argStrings.join(', ')})`
       }
       return callee(...args)
@@ -219,47 +261,52 @@ function parseFormula(formulaStr: string, vars: ParseFormulaVars = {}, options: 
 }
 
 type HandleFormulaVars = {
-  [key: string]: CommonValue | HandleFormulaVars;
+  [key: string]: CommonValue | HandleFormulaVars
 }
 type HandleFormulaTexts = {
-  [key: string]: string | string[] | HandleFormulaTexts;
+  [key: string]: string | string[] | HandleFormulaTexts
 }
 type HandleFormulaMethods = {
-  [key: string]: CommonFunction | HandleFormulaMethods;
+  [key: string]: CommonFunction | HandleFormulaMethods
 }
 type HandleFormulaGetters = {
-  [key: string]: (() => PureValue) | HandleFormulaGetters;
+  [key: string]: (() => PureValue) | HandleFormulaGetters
 }
 
 type HandleFormulaOptions = {
   /** mapping of vars */
-  vars?: HandleFormulaVars;
+  vars?: HandleFormulaVars
   /** mapping of texts */
-  texts?: HandleFormulaTexts;
+  texts?: HandleFormulaTexts
   /** mapping of methods */
-  methods?: HandleFormulaMethods;
+  methods?: HandleFormulaMethods
   /** mapping of getters */
-  getters?: HandleFormulaGetters;
+  getters?: HandleFormulaGetters
   /** If true, result will convert to number */
-  toNumber?: boolean;
+  toNumber?: boolean
   /** If true, result will convert to boolean */
-  toBoolean?: boolean;
+  toBoolean?: boolean
   /** The returned value when given formula is empty. */
-  defaultValue?: PureValue | null;
+  defaultValue?: PureValue | null
 }
 
-const HANDLE_FORMULA_EXTRA_PATTERN_1 = /^(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g
-const HANDLE_FORMULA_EXTRA_PATTERN_2 = /([^/\d])(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g
+const HANDLE_FORMULA_EXTRA_PATTERN_1 =
+  /^(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g
+const HANDLE_FORMULA_EXTRA_PATTERN_2 =
+  /([^/\d])(-?\d+(?:\.\d+)?)([*/])(-?\d+(?:\.\d+)?)/g
 
-function handleFormula(formulaStr: string, {
-  vars = {},
-  texts = {},
-  methods = {},
-  getters = {},
-  toNumber = false,
-  toBoolean = false,
-  defaultValue = null,
-}: HandleFormulaOptions = {}): PureValue {
+function handleFormula(
+  formulaStr: string,
+  {
+    vars = {},
+    texts = {},
+    methods = {},
+    getters = {},
+    toNumber = false,
+    toBoolean = false,
+    defaultValue = null,
+  }: HandleFormulaOptions = {}
+): PureValue {
   if (formulaStr === '') {
     if (defaultValue === null) {
       if (toNumber) {
@@ -284,7 +331,9 @@ function handleFormula(formulaStr: string, {
   })
 
   // replace '--' to '+', '--+' to '+', etc...
-  formulaStr = formulaStr.replace(/-{2,}/g, match => match.length % 2 === 0 ? '+' : '-')
+  formulaStr = formulaStr.replace(/-{2,}/g, match =>
+    match.length % 2 === 0 ? '+' : '-'
+  )
 
   const textsMap = getVarsMap<string>(texts)
   const getTextVarName = (value: number) => `__HANDLE_FORMULA_TEXT_${value}__`
@@ -299,7 +348,8 @@ function handleFormula(formulaStr: string, {
 
   if (!isNumberString(formulaStr)) {
     try {
-      formulaStr = parseFormula(formulaStr, { ...vars, ...methods })?.toString() || '0'
+      formulaStr =
+        parseFormula(formulaStr, { ...vars, ...methods })?.toString() || '0'
     } catch (error) {
       console.groupCollapsed('[parse formula] Unable to parse formula:')
       console.warn(originalFormulaStr)
@@ -321,11 +371,16 @@ function handleFormula(formulaStr: string, {
       right = parseFloat(right)
       return calcNumberBinaryExpression(left, operator, right).toString()
     })
-    .replace(HANDLE_FORMULA_EXTRA_PATTERN_2, (match, pre, left, operator, right) => {
-      left = parseFloat(left)
-      right = parseFloat(right)
-      return pre + calcNumberBinaryExpression(left, operator, right).toString()
-    })
+    .replace(
+      HANDLE_FORMULA_EXTRA_PATTERN_2,
+      (match, pre, left, operator, right) => {
+        left = parseFloat(left)
+        right = parseFloat(right)
+        return (
+          pre + calcNumberBinaryExpression(left, operator, right).toString()
+        )
+      }
+    )
   // .replace(/(-?\d+(?:\.\d+)?)([+-])(-?\d+(?:\.\d+)?)/g, (match, left, operator, right) => {
   //   left = parseFloat(left);
   //   right = parseFloat(right);
@@ -347,7 +402,10 @@ function handleFormula(formulaStr: string, {
   formulaStr = trimBrackets(formulaStr)
 
   textsAry.forEach(([key], idx) => {
-    formulaStr = formulaStr.replace(new RegExp(getTextVarName(idx), 'g'), textsMap.get(key) as string)
+    formulaStr = formulaStr.replace(
+      new RegExp(getTextVarName(idx), 'g'),
+      textsMap.get(key) as string
+    )
   })
 
   return formulaStr
@@ -364,7 +422,11 @@ const _computeFormulaCaches: Map<string, Function> = new Map()
  * @param defaultValue - default return value if error
  * @returns result after computing formula
  */
-function computeFormula(formula: string, vars: Record<string, any>, defaultValue: any = 0): unknown {
+function computeFormula(
+  formula: string,
+  vars: Record<string, any>,
+  defaultValue: any = 0
+): unknown {
   // auto inject Math
   vars.Math = window.Math
 
@@ -378,7 +440,9 @@ function computeFormula(formula: string, vars: Record<string, any>, defaultValue
       const body = parseFormula(formula, {}, { compile: paramName }) as string
       func = new Function(paramName, `return (${body});`)
     } catch (err) {
-      console.warn('[computeFormula] unknown error when try to create function.')
+      console.warn(
+        '[computeFormula] unknown error when try to create function.'
+      )
       console.log(formula)
       console.log(err)
       func = () => defaultValue
@@ -446,4 +510,9 @@ function computeFormula(formula: string, vars: Record<string, any>, defaultValue
 // }, 1000)
 
 export { handleFormula, computeFormula }
-export type { HandleFormulaVars, HandleFormulaTexts, HandleFormulaGetters, HandleFormulaMethods }
+export type {
+  HandleFormulaVars,
+  HandleFormulaTexts,
+  HandleFormulaGetters,
+  HandleFormulaMethods,
+}

@@ -1,7 +1,7 @@
 import escapeStringRegexp from 'escape-string-regexp'
 import jsep from 'jsep'
 
-import type { HandleFormulaVars, HandleFormulaGetters } from './index'
+import type { HandleFormulaGetters, HandleFormulaVars } from './index'
 
 type HandledVars = HandleFormulaVars
 type HandledGetters = HandleFormulaGetters
@@ -108,9 +108,17 @@ const jsepTypes = {
   isUnaryExpression(node: jsep.Expression): node is jsep.UnaryExpression {
     return node.type === 'UnaryExpression'
   },
-  isConditionalExpression(node: jsep.Expression): node is jsep.ConditionalExpression {
+  isConditionalExpression(
+    node: jsep.Expression
+  ): node is jsep.ConditionalExpression {
     return node.type === 'ConditionalExpression'
   },
 }
 
-export { getVarsMap, getGettersMap, varMapToArray, handleReplacedKey, jsepTypes }
+export {
+  getVarsMap,
+  getGettersMap,
+  varMapToArray,
+  handleReplacedKey,
+  jsepTypes,
+}

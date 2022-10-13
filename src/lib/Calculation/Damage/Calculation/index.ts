@@ -1,32 +1,40 @@
-import { CalculationBase, CalcItemBase, CalcItemContainerBase } from './base'
-import type { CalcStructItem, CalcResultOptions } from './base'
-import { CalculationContainerIds, CalculationItemIds, ContainerTypes } from './enums'
+import { CalcItemBase, CalcItemContainerBase, CalculationBase } from './base'
+import type { CalcResultOptions, CalcStructItem } from './base'
+import {
+  CalculationContainerIds,
+  CalculationItemIds,
+  ContainerTypes,
+} from './enums'
 
 interface CalculationSaveData {
-  name: string;
+  name: string
   containers: {
-    id: CalculationContainerIds;
-    enabled: boolean;
-    currentItemId: CalculationItemIds | null;
-  }[];
+    id: CalculationContainerIds
+    enabled: boolean
+    currentItemId: CalculationItemIds | null
+  }[]
   items: {
-    id: CalculationItemIds;
-    value: number;
-  }[];
+    id: CalculationItemIds
+    value: number
+  }[]
   containerCustomItems: {
-    containerId: CalculationContainerIds;
+    containerId: CalculationContainerIds
     items: {
-      id: CalculationItemIds;
-      name: string;
-      value: number;
-    }[];
-  }[];
+      id: CalculationItemIds
+      name: string
+      value: number
+    }[]
+  }[]
 }
 
 interface CalculationConfig {
-  getItemValue: ((itemId: CalculationItemIds) => number | null) | null;
-  getContainerCurrentItemId: ((containerId: CalculationContainerIds) => CalculationItemIds | null) | null;
-  getContainerForceHidden: ((containerId: CalculationContainerIds) => boolean | null) | null;
+  getItemValue: ((itemId: CalculationItemIds) => number | null) | null
+  getContainerCurrentItemId:
+    | ((containerId: CalculationContainerIds) => CalculationItemIds | null)
+    | null
+  getContainerForceHidden:
+    | ((containerId: CalculationContainerIds) => boolean | null)
+    | null
 }
 
 class Calculation {
@@ -66,9 +74,14 @@ class Calculation {
     }
   }
 
-  appendCustomItem(containerId: CalculationContainerIds, itemId: CalculationItemIds): CalcItemCustom | null {
+  appendCustomItem(
+    containerId: CalculationContainerIds,
+    itemId: CalculationItemIds
+  ): CalcItemCustom | null {
     if (!this.containerCustomItems.has(containerId)) {
-      console.warn(`[Calculation.appendCustomItem] container with id ${containerId} is not exist in additional list.`)
+      console.warn(
+        `[Calculation.appendCustomItem] container with id ${containerId} is not exist in additional list.`
+      )
       return null
     }
     const container = this.containers.get(containerId)
@@ -83,7 +96,9 @@ class Calculation {
 
   removeCustomItem(containerId: CalculationContainerIds, item: CalcItemCustom) {
     if (!this.containerCustomItems.has(containerId)) {
-      console.warn(`[Calculation.removeCustomItem] container with id ${containerId} is not exist in additional list.`)
+      console.warn(
+        `[Calculation.removeCustomItem] container with id ${containerId} is not exist in additional list.`
+      )
       return
     }
     const items = this.containerCustomItems.get(containerId) as CalcItemCustom[]
@@ -107,10 +122,14 @@ class Calculation {
         return {
           id: container.base.id,
           enabled: container.enabled,
-          currentItemId: container.selectable ? container.currentItem.base.id : null,
+          currentItemId: container.selectable
+            ? container.currentItem.base.id
+            : null,
         }
       })
-    const containerCustomItems = Array.from(this.containerCustomItems.entries()).map(([containerId, customItems]) => {
+    const containerCustomItems = Array.from(
+      this.containerCustomItems.entries()
+    ).map(([containerId, customItems]) => {
       const itemsData = customItems.map(item => ({
         id: item.base.id,
         name: item.name,
@@ -134,7 +153,9 @@ class Calculation {
     data.items.forEach(itemData => {
       const item = this.items.get(itemData.id)
       if (!item) {
-        console.warn(`[DamageCalculation.load] Item.id: ${itemData.id} is not exist`)
+        console.warn(
+          `[DamageCalculation.load] Item.id: ${itemData.id} is not exist`
+        )
         return
       }
       item.value = itemData.value
@@ -142,18 +163,25 @@ class Calculation {
     data.containers.forEach(containerData => {
       const container = this.containers.get(containerData.id)
       if (!container) {
-        console.warn(`[DamageCalculation.load] Container.id: ${containerData.id} is not exist`)
+        console.warn(
+          `[DamageCalculation.load] Container.id: ${containerData.id} is not exist`
+        )
         return
       }
       // enabled will always be true if container is virtual
-      container.enabled = container.base.isVirtual ? true : containerData.enabled
+      container.enabled = container.base.isVirtual
+        ? true
+        : containerData.enabled
       if (containerData.currentItemId !== null) {
         container.selectItem(containerData.currentItemId)
       }
     })
     data.containerCustomItems.forEach(customItemData => {
       customItemData.items.forEach(itemData => {
-        const item = this.appendCustomItem(customItemData.containerId, itemData.id)
+        const item = this.appendCustomItem(
+          customItemData.containerId,
+          itemData.id
+        )
         if (item) {
           item.name = itemData.name
           item.value = itemData.value
@@ -203,14 +231,18 @@ class CalcItemContainer {
 
   get selectable(): boolean {
     if (this.base.type === ContainerTypes.Options) {
-      return !this.base.getCurrentItemId || this.base.getCurrentItemId(this) === null
+      return (
+        !this.base.getCurrentItemId || this.base.getCurrentItemId(this) === null
+      )
     }
     return false
   }
 
   get hidden(): boolean {
     if (this._calculation.config.getContainerForceHidden) {
-      const value = this._calculation.config.getContainerForceHidden(this.base.id)
+      const value = this._calculation.config.getContainerForceHidden(
+        this.base.id
+      )
       if (value !== null) {
         return value
       }
@@ -224,7 +256,9 @@ class CalcItemContainer {
 
   get currentItem(): CalcItem {
     if (this._calculation.config.getContainerCurrentItemId) {
-      const itemId = this._calculation.config.getContainerCurrentItemId(this.base.id)
+      const itemId = this._calculation.config.getContainerCurrentItemId(
+        this.base.id
+      )
       const item = itemId ? this.items.get(itemId) : null
       if (item) {
         return item
@@ -245,12 +279,17 @@ class CalcItemContainer {
   }
 
   get customItems(): CalcItemCustom[] {
-    return this.customItemAddable ? this.belongCalculation.containerCustomItems.get(this.base.id)! : []
+    return this.customItemAddable
+      ? this.belongCalculation.containerCustomItems.get(this.base.id)!
+      : []
   }
 
   createCustomItem(): CalcItemCustom | null {
     if (this.customItemAddable) {
-      return this.belongCalculation.appendCustomItem(this.base.id, this.currentItem.base.id)
+      return this.belongCalculation.appendCustomItem(
+        this.base.id,
+        this.currentItem.base.id
+      )
     }
     return null
   }

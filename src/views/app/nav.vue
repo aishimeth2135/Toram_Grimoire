@@ -1,12 +1,16 @@
 <template>
-  <nav class="border-b border-solid border-primary-30 flex items-center py-1 px-3 mb-4 bg-white fixed top-0 w-full">
-    <cy-button-icon icon="ic:round-menu" @click="leftMenuStore.toggleVisible()" />
-    <div class="inline-flex items-center whitespace-nowrap overflow-y-auto px-2 text-sm">
+  <nav
+    class="fixed top-0 mb-4 flex w-full items-center border-b border-solid border-primary-30 bg-white py-1 px-3"
+  >
+    <cy-button-icon
+      icon="ic:round-menu"
+      @click="leftMenuStore.toggleVisible()"
+    />
+    <div
+      class="inline-flex items-center overflow-y-auto whitespace-nowrap px-2 text-sm"
+    >
       <!-- <cy-icon-text icon="potum" icon-src="custom" class="mr-2" /> -->
-      <template
-        v-for="(item, idx) in navItems"
-        :key="item.path"
-      >
+      <template v-for="(item, idx) in navItems" :key="item.path">
         <cy-icon-text
           v-if="idx !== 0"
           icon="ic-round-keyboard-arrow-right"
@@ -50,8 +54,8 @@ export default {
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 
-import { useNavStore } from '@/stores/app/nav'
 import { useLeftMenuStore } from '@/stores/app/left-menu'
+import { useNavStore } from '@/stores/app/nav'
 
 import AppSettings from './app-settings.vue'
 
@@ -62,4 +66,3 @@ const { navItems } = storeToRefs(navStore)
 
 const leftMenuStore = useLeftMenuStore()
 </script>
-

@@ -38,7 +38,8 @@ body {
   color: var(--app-primary-5);
 }
 
-input, textarea {
+input,
+textarea {
   background-color: var(--app-white);
 }
 
@@ -47,7 +48,7 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 
@@ -67,7 +68,7 @@ input:focus {
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: var(--app-primary-30)!important;
+    background-color: var(--app-primary-30) !important;
     border-radius: 0.125rem;
   }
 }

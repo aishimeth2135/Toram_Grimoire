@@ -8,5 +8,5 @@ export function getGcd(value1: number, value2: number): number {
 }
 
 export function getLcm(value1: number, value2: number) {
-  return value1 * value2 / getGcd(value1, value2)
+  return (value1 * value2) / getGcd(value1, value2)
 }

@@ -3,7 +3,7 @@
     <div
       v-for="container in statContainers"
       :key="container.stat.statId"
-      class="cy--text-underline text-primary-30 pb-0.5 mb-1.5 mr-4"
+      class="cy--text-underline mb-1.5 mr-4 pb-0.5 text-primary-30"
     >
       <div class="text-primary-90" v-html="container.result"></div>
     </div>
@@ -14,7 +14,7 @@
 import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 
 interface Props {
-  statContainers: ResultContainerStat[];
+  statContainers: ResultContainerStat[]
 }
 
 defineProps<Props>()

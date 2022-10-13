@@ -10,7 +10,7 @@
           <EnchantStepView :step="step" />
         </div>
         <div
-          class="step-container flex items-center justify-center border border-primary-30 hover:border-primary-50 cursor-pointer duration-200 h-48"
+          class="step-container flex h-48 cursor-pointer items-center justify-center border border-primary-30 duration-200 hover:border-primary-50"
           @click="appendStep"
         >
           <cy-icon-text
@@ -75,7 +75,12 @@
               />
               <cy-options
                 :value="store.currentBuild"
-                :options="buildDatas.map(item => ({ id: item.id, value: item.origin }))"
+                :options="
+                  buildDatas.map(item => ({
+                    id: item.id,
+                    value: item.origin,
+                  }))
+                "
                 addable
                 @update:value="store.setCurrentBuild($event)"
                 @add-item="createBuild"
@@ -90,12 +95,9 @@
                 </template>
               </cy-options>
             </div>
-            <div class="flex items-center flex-wrap">
+            <div class="flex flex-wrap items-center">
               <div class="mx-2">
-                <cy-button-action
-                  icon="bx-bx-copy"
-                  @click="copyBuild"
-                >
+                <cy-button-action icon="bx-bx-copy" @click="copyBuild">
                   {{ t('global.copy') }}
                 </cy-button-action>
                 <cy-button-action
@@ -124,15 +126,19 @@
             <cy-icon-text small text-color="fuchsia-60" class="mt-4">
               {{ t('enchant-simulator.base-options') }}
             </cy-icon-text>
-            <div class="flex items-center flex-wrap p-2 mr-2">
-              <cy-input-counter v-model:value="currentEquipment.originalPotential">
+            <div class="mr-2 flex flex-wrap items-center p-2">
+              <cy-input-counter
+                v-model:value="currentEquipment.originalPotential"
+              >
                 <template #title>
-                  <cy-icon-text>{{ t('enchant-simulator.equipment-original-potential') }}</cy-icon-text>
+                  <cy-icon-text>{{
+                    t('enchant-simulator.equipment-original-potential')
+                  }}</cy-icon-text>
                 </template>
               </cy-input-counter>
               <cy-button-icon
                 icon="jam-hammer"
-                class="ml-2 my-2"
+                class="my-2 ml-2"
                 icon-color="blue-30"
                 icon-color-hover="blue"
                 :selected="contents.extraOptions"
@@ -141,7 +147,12 @@
             </div>
             <cy-transition>
               <div v-if="contents.extraOptions">
-                <cy-icon-text small text-color="blue-60" icon-color="blue-60" class="mt-4">
+                <cy-icon-text
+                  small
+                  text-color="blue-60"
+                  icon-color="blue-60"
+                  class="mt-4"
+                >
                   {{ t('enchant-simulator.advanced-options') }}
                 </cy-icon-text>
                 <div class="p-2">
@@ -150,11 +161,18 @@
                     main-color="blue-30"
                   >
                     <template #title>
-                      <cy-icon-text>{{ t('enchant-simulator.equipment-base-potential') }}</cy-icon-text>
+                      <cy-icon-text>{{
+                        t('enchant-simulator.equipment-base-potential')
+                      }}</cy-icon-text>
                     </template>
                   </cy-input-counter>
                 </div>
-                <cy-icon-text small text-color="blue-60" icon-color="blue-60" class="mt-4">
+                <cy-icon-text
+                  small
+                  text-color="blue-60"
+                  icon-color="blue-60"
+                  class="mt-4"
+                >
                   {{ t('enchant-simulator.common-options') }}
                 </cy-icon-text>
                 <div class="p-2">
@@ -164,7 +182,9 @@
                     main-color="blue-30"
                   >
                     <template #title>
-                      <cy-icon-text>{{ t('enchant-simulator.character-level') }}</cy-icon-text>
+                      <cy-icon-text>{{
+                        t('enchant-simulator.character-level')
+                      }}</cy-icon-text>
                     </template>
                   </cy-input-counter>
                   <cy-input-counter
@@ -174,7 +194,9 @@
                     main-color="blue-30"
                   >
                     <template #title>
-                      <cy-icon-text>{{ t('enchant-simulator.smith-level') }}</cy-icon-text>
+                      <cy-icon-text>{{
+                        t('enchant-simulator.smith-level')
+                      }}</cy-icon-text>
                     </template>
                   </cy-input-counter>
                 </div>
@@ -193,7 +215,7 @@
                 {{ option.text }}
               </cy-button-check>
             </div>
-            <div class="pt-2 mt-2 border-t border-primary-30">
+            <div class="mt-2 border-t border-primary-30 pt-2">
               <cy-icon-text small text-color="fuchsia-60" class="mt-3">
                 {{ t('enchant-simulator.stat-display-mode.title') }}
               </cy-icon-text>
@@ -219,10 +241,10 @@
     </AppLayoutBottom>
   </AppLayoutMain>
   <AppLayoutMain v-else class="p-4">
-    <div class="text-center mb-3">
+    <div class="mb-3 text-center">
       {{ t('common.tips.view-unknow-error-tips') }}
     </div>
-    <div class="flex justify-center w-full">
+    <div class="flex w-full justify-center">
       <cy-button-action @click="createBuild">
         {{ t('enchant-simulator.append-build') }}
       </cy-button-action>
@@ -238,31 +260,31 @@ export default {
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
+import { Ref, computed, onMounted, provide, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, provide, reactive, Ref, ref } from 'vue'
 
 import { useEnchantStore } from '@/stores/views/enchant'
 
 import { EnchantBuild, EnchantStep } from '@/lib/Enchant/Enchant'
-import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
 import { EnchantBuildSaveData } from '@/lib/Enchant/Enchant/build'
+import { EnchantEquipmentTypes } from '@/lib/Enchant/Enchant/enums'
 
-import ToggleService from '@/setup/ToggleService'
 import AutoSave from '@/setup/AutoSave'
-import Notify from '@/setup/Notify'
 import Confirm from '@/setup/Confirm'
 import ExportBuild from '@/setup/ExportBuild'
+import Notify from '@/setup/Notify'
+import ToggleService from '@/setup/ToggleService'
 
-import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
+import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import EnchantResult from './enchant-result.vue'
 import EnchantSelectItem from './enchant-select-item.vue'
 import EnchantStepView from './enchant-step/index.vue'
 
-import { EnchantStatOptionBase } from './setup'
 import { EnchantSimulatorInjectionKey } from './injection-keys'
+import { EnchantStatOptionBase } from './setup'
 
 const { windows, contents, toggle } = ToggleService({
   windows: ['selectItem'] as const,
@@ -274,7 +296,11 @@ const { notify } = Notify()
 const { confirm } = Confirm()
 
 const { enchantBuilds, currentBuild, config } = (() => {
-  const { enchantBuilds: _enchantBuilds, currentBuild: _currentBuild, config: _config } = storeToRefs(store)
+  const {
+    enchantBuilds: _enchantBuilds,
+    currentBuild: _currentBuild,
+    config: _config,
+  } = storeToRefs(store)
   return {
     enchantBuilds: _enchantBuilds as Ref<EnchantBuild[]>,
     currentBuild: _currentBuild as Ref<EnchantBuild | null>,
@@ -291,28 +317,32 @@ const selectItemTarget = reactive({
   type: 'step',
   once: false,
 }) as {
-  target: EnchantStep | null;
-  type: 'step';
-  once: boolean;
+  target: EnchantStep | null
+  type: 'step'
+  once: boolean
 }
 const buildCount = ref(0)
 
-const equipmentTypeOptions = [{
-  id: 0,
-  text: t('enchant-simulator.equipment-types.main-weapon'),
-  type: EnchantEquipmentTypes.MainWeapon,
-  isOriginalElement: false,
-}, {
-  id: 1,
-  text: t('enchant-simulator.equipment-types.body-armor'),
-  type: EnchantEquipmentTypes.BodyArmor,
-  isOriginalElement: false,
-}, {
-  id: 2,
-  text: t('enchant-simulator.equipment-types.main-weapon_original-element'),
-  type: EnchantEquipmentTypes.MainWeapon,
-  isOriginalElement: true,
-}]
+const equipmentTypeOptions = [
+  {
+    id: 0,
+    text: t('enchant-simulator.equipment-types.main-weapon'),
+    type: EnchantEquipmentTypes.MainWeapon,
+    isOriginalElement: false,
+  },
+  {
+    id: 1,
+    text: t('enchant-simulator.equipment-types.body-armor'),
+    type: EnchantEquipmentTypes.BodyArmor,
+    isOriginalElement: false,
+  },
+  {
+    id: 2,
+    text: t('enchant-simulator.equipment-types.main-weapon_original-element'),
+    type: EnchantEquipmentTypes.MainWeapon,
+    isOriginalElement: true,
+  },
+]
 
 AutoSave({
   save: () => store.save(),
@@ -330,9 +360,9 @@ const currentEquipment = computed(() => currentBuild.value!.equipment)
 
 const successRate = computed(() => {
   const rate = currentEquipment.value.successRate
-  return rate === -1 ?
-    t('enchant-simulator.success-rate-unlimited') :
-    Math.floor(rate) + '%'
+  return rate === -1
+    ? t('enchant-simulator.success-rate-unlimited')
+    : Math.floor(rate) + '%'
 })
 
 const selectedItems = computed(() => {
@@ -363,7 +393,8 @@ const isWeapon = computed(() => {
 })
 
 const createBuild = () => {
-  const name = t('enchant-simulator.build') + ' ' + (buildCount.value + 1).toString()
+  const name =
+    t('enchant-simulator.build') + ' ' + (buildCount.value + 1).toString()
   const build = new EnchantBuild(name)
   store.appendBuild(build)
   buildCount.value += 1
@@ -384,10 +415,7 @@ const copyBuild = () => {
   notify(t('enchant-simulator.tips.copy-build-success'))
 }
 
-const {
-  exportBuild,
-  importBuild,
-} = ExportBuild({
+const { exportBuild, importBuild } = ExportBuild({
   save(handler) {
     const build = currentBuild.value!
     const data = build.save()
@@ -427,8 +455,14 @@ const selectItem = (item: EnchantStatOptionBase) => {
     const eq = stat.belongEquipment
     const min = stat.limit[0]
     const pot = stat.itemBase.getPotential(stat.type, eq)
-    stat.value = pot > stat.originalPotential ?
-      (min - Math.min(eq.stat(stat.itemBase, stat.type, eq.lastStep!.index).value, 0)) : 0
+    stat.value =
+      pot > stat.originalPotential
+        ? min -
+          Math.min(
+            eq.stat(stat.itemBase, stat.type, eq.lastStep!.index).value,
+            0
+          )
+        : 0
   }
 }
 
@@ -467,7 +501,7 @@ div.steps-content-container {
     width: calc(46rem + 5px);
 
     @media screen and (max-width: 50rem) {
-     width: 100%;
+      width: 100%;
     }
 
     & > .step-container {

@@ -10,12 +10,15 @@ function findStackState(effectItem: SkillEffectItemBase, stackId: number) {
 const TAG_BUTTON_CLASS_NAME = 'click-button--tag'
 function createTagButtons(html: string): string {
   return html
-    .replace(/#\[([^\]]+)\](?:\[([^\]]+)\])?/g, (match, p1: string, p2: string) => {
-      if (!p2) {
-        return `<span class="${TAG_BUTTON_CLASS_NAME}" data-tag="${p1.toLowerCase()}">${p1}</span>`
+    .replace(
+      /#\[([^\]]+)\](?:\[([^\]]+)\])?/g,
+      (match, p1: string, p2: string) => {
+        if (!p2) {
+          return `<span class="${TAG_BUTTON_CLASS_NAME}" data-tag="${p1.toLowerCase()}">${p1}</span>`
+        }
+        return `<span class="${TAG_BUTTON_CLASS_NAME}" data-tag="${p2.toLowerCase()}">${p1}</span>`
       }
-      return `<span class="${TAG_BUTTON_CLASS_NAME}" data-tag="${p2.toLowerCase()}">${p1}</span>`
-    })
+    )
     .replace(/#([^\s]+)\s(\w?)/g, (match, m1: string, m2: string) => {
       const text = m1.replace(new RegExp('_', 'g'), ' ')
       let res = `<span class="${TAG_BUTTON_CLASS_NAME}" data-tag="${text.toLowerCase()}">${text}</span>`
@@ -69,10 +72,4 @@ function searchTags(rootTag: GlossaryTag): GlossaryTag[] {
   return [...resMap.values()]
 }
 
-export {
-  findStackState,
-  createTagButtons,
-  searchTags,
-  TAG_BUTTON_CLASS_NAME,
-}
-
+export { findStackState, createTagButtons, searchTags, TAG_BUTTON_CLASS_NAME }

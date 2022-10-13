@@ -1,8 +1,8 @@
 import Grimoire from '@/shared/Grimoire'
-import { isNumberString } from '@/shared/utils/string'
 import { Images } from '@/shared/services/Images'
+import { isNumberString } from '@/shared/utils/string'
 
-import { Equipment, Crystal } from '@/lib/Items/Item'
+import { Crystal, Equipment } from '@/lib/Items/Item'
 
 import { StatRecorded, StatRestriction } from '../Stat'
 import type { StatRestrictionSaveData } from '../Stat/StatRestriction'
@@ -11,17 +11,17 @@ import { EquipmentKinds, EquipmentTypes } from './enums'
 type EquipmentOrigin = Equipment | null
 
 interface EquipmentSaveData {
-  name: string;
-  instance: number;
-  stats: StatRestrictionSaveData[];
-  id: number;
-  type: EquipmentTypes;
-  basicValue: number;
-  atk?: number;
-  def?: number;
-  stability?: number;
-  refining?: number;
-  crystals?: string[];
+  name: string
+  instance: number
+  stats: StatRestrictionSaveData[]
+  id: number
+  type: EquipmentTypes
+  basicValue: number
+  atk?: number
+  def?: number
+  stability?: number
+  refining?: number
+  crystals?: string[]
 }
 
 let characterEquipmentAutoIncreasement = 0
@@ -41,7 +41,11 @@ abstract class CharacterEquipment {
 
   abstract type: EquipmentTypes
 
-  constructor(origin: EquipmentOrigin = null, name: string = '', stats: StatRestriction[] = []) {
+  constructor(
+    origin: EquipmentOrigin = null,
+    name: string = '',
+    stats: StatRestriction[] = []
+  ) {
     this.loadedId = null
     this.instanceId = characterEquipmentAutoIncreasement
     characterEquipmentAutoIncreasement += 1
@@ -62,7 +66,7 @@ abstract class CharacterEquipment {
   }
 
   get name() {
-    return this._name ? this._name : (this.origin ? this.origin.name : '')
+    return this._name ? this._name : this.origin ? this.origin.name : ''
   }
   set name(value: string) {
     this._name = value
@@ -109,11 +113,17 @@ abstract class CharacterEquipment {
     return false
   }
   get elementStat() {
-    return this.stats.find(stat => CharacterEquipment.elementStatIds.includes(stat.baseId))
+    return this.stats.find(stat =>
+      CharacterEquipment.elementStatIds.includes(stat.baseId)
+    )
   }
 
   get categoryText() {
-    if (this.type === EquipmentTypes.Additional || this.type === EquipmentTypes.Special || this.type === EquipmentTypes.Avatar) {
+    if (
+      this.type === EquipmentTypes.Additional ||
+      this.type === EquipmentTypes.Special ||
+      this.type === EquipmentTypes.Avatar
+    ) {
       return Grimoire.i18n.t('common.Equipment.field.' + this.type)
     }
     return Grimoire.i18n.t('common.Equipment.category.' + this.type)
@@ -142,24 +152,30 @@ abstract class CharacterEquipment {
   }
 
   static getImagePath(type: EquipmentTypes, fieldId: number = -1): string {
-    return Images.equipmentIcons.get(type + (fieldId === -1 ? '' : `-${fieldId}`))
+    return Images.equipmentIcons.get(
+      type + (fieldId === -1 ? '' : `-${fieldId}`)
+    )
   }
 
-  getAllStats(checkRestriction: (stat: StatRestriction) => boolean = () => true): StatRecorded[] {
-    const allStats = this.stats
-      .map(stat => {
-        const newStat = stat.clone()
-        if (!checkRestriction(newStat)) {
-          newStat.value = 0
-        }
-        return StatRecorded.from(newStat, this)
-      })
+  getAllStats(
+    checkRestriction: (stat: StatRestriction) => boolean = () => true
+  ): StatRecorded[] {
+    const allStats = this.stats.map(stat => {
+      const newStat = stat.clone()
+      if (!checkRestriction(newStat)) {
+        newStat.value = 0
+      }
+      return StatRecorded.from(newStat, this)
+    })
     if (this.hasCrystal) {
       this.crystals.forEach(crystal => {
         crystal.stats.forEach(crystalStat => {
           const find = allStats.find(stat => stat.equals(crystalStat))
           if (find) {
-            find.add(checkRestriction(crystalStat) ? crystalStat.value : 0, crystal)
+            find.add(
+              checkRestriction(crystalStat) ? crystalStat.value : 0,
+              crystal
+            )
           } else {
             const newStat = crystalStat.clone()
             if (!checkRestriction(newStat)) {
@@ -172,7 +188,6 @@ abstract class CharacterEquipment {
     }
     return allStats
   }
-
 
   /**
    * @param [type] - If not give, it will toggle type to next index
@@ -299,7 +314,9 @@ abstract class CharacterEquipment {
       data.refining = this.refining
     }
     if (this.hasCrystal) {
-      data.crystals = (this.crystals as EquipmentCrystal[]).map(crystal => crystal.name)
+      data.crystals = (this.crystals as EquipmentCrystal[]).map(
+        crystal => crystal.name
+      )
     }
 
     // == [ id ] ======================================================
@@ -317,13 +334,20 @@ abstract class CharacterEquipment {
     'element_dark',
   ]
 
-  static loadEquipment(loadCategory: string, data: EquipmentSaveData): CharacterEquipment | null {
+  static loadEquipment(
+    loadCategory: string,
+    data: EquipmentSaveData
+  ): CharacterEquipment | null {
     try {
       const {
-        id, name, instance,
+        id,
+        name,
+        instance,
         stability,
         refining = 0,
-        basicValue, atk, def,
+        basicValue,
+        atk,
+        def,
         crystals,
       } = data
       const stats = data.stats
@@ -343,7 +367,12 @@ abstract class CharacterEquipment {
 
       const type: EquipmentTypes = (() => {
         const originalType = (data.type || EquipmentTypes.Avatar) as string
-        if (instance === 3 && (originalType === 'normal' || originalType === 'dodge' || originalType === 'defense')) {
+        if (
+          instance === 3 &&
+          (originalType === 'normal' ||
+            originalType === 'dodge' ||
+            originalType === 'defense')
+        ) {
           return 'body-' + originalType
         }
         return originalType.replace(/_/g, '-')
@@ -373,14 +402,20 @@ abstract class CharacterEquipment {
         eq.refining = refining
       }
       if (eq.hasCrystal && crystals) {
-        eq.crystals = crystals.map(crystalName => {
-          const crystal = Grimoire.Items.crystals.find(_crystal => _crystal.name === crystalName)
-          if (crystal) {
-            return new EquipmentCrystal(crystal)
-          }
-          console.warn('[CharacterEquipment.load] Can not find crystal: ' + crystalName)
-          return null
-        }).filter(crystal => crystal) as EquipmentCrystal[]
+        eq.crystals = crystals
+          .map(crystalName => {
+            const crystal = Grimoire.Items.crystals.find(
+              _crystal => _crystal.name === crystalName
+            )
+            if (crystal) {
+              return new EquipmentCrystal(crystal)
+            }
+            console.warn(
+              '[CharacterEquipment.load] Can not find crystal: ' + crystalName
+            )
+            return null
+          })
+          .filter(crystal => crystal) as EquipmentCrystal[]
       }
 
       eq.loadedId = `${loadCategory}-${id}`
@@ -393,9 +428,10 @@ abstract class CharacterEquipment {
     }
   }
 
-  static fromOriginEquipment(item: Equipment, {
-    statValueToNumber = true,
-  } = {}): CharacterEquipment {
+  static fromOriginEquipment(
+    item: Equipment,
+    { statValueToNumber = true } = {}
+  ): CharacterEquipment {
     /* [
       0'單手劍', 1'雙手劍', 2'弓', 3'弩', 4'法杖',
       5'魔導具', 6'拳套', 7'旋風槍', 8'拔刀劍',
@@ -407,9 +443,14 @@ abstract class CharacterEquipment {
       item,
       item.name as string,
       item.stats.map((stat, idx) => {
-        const statRest = StatRestriction.fromOrigin(stat, item.statRestrictions[idx])
+        const statRest = StatRestriction.fromOrigin(
+          stat,
+          item.statRestrictions[idx]
+        )
         if (statValueToNumber && typeof statRest.value === 'string') {
-          statRest.value = isNumberString(statRest.value) ? parseFloat(statRest.value) : 0
+          statRest.value = isNumberString(statRest.value)
+            ? parseFloat(statRest.value)
+            : 0
         }
         return statRest
       }),
@@ -431,10 +472,14 @@ abstract class CharacterEquipment {
     }
     if (item.category < 100) {
       const type = [
-        EquipmentTypes.OneHandSword, EquipmentTypes.TwoHandSword,
-        EquipmentTypes.Bow, EquipmentTypes.Bowgun,
-        EquipmentTypes.Staff, EquipmentTypes.MagicDevice,
-        EquipmentTypes.Knuckle, EquipmentTypes.Halberd,
+        EquipmentTypes.OneHandSword,
+        EquipmentTypes.TwoHandSword,
+        EquipmentTypes.Bow,
+        EquipmentTypes.Bowgun,
+        EquipmentTypes.Staff,
+        EquipmentTypes.MagicDevice,
+        EquipmentTypes.Knuckle,
+        EquipmentTypes.Halberd,
         EquipmentTypes.Katana,
       ][item.category]
 
@@ -442,7 +487,9 @@ abstract class CharacterEquipment {
     }
     if (item.category < 200) {
       const type = [
-        EquipmentTypes.Arrow, EquipmentTypes.Dagger, EquipmentTypes.NinjutsuScroll,
+        EquipmentTypes.Arrow,
+        EquipmentTypes.Dagger,
+        EquipmentTypes.NinjutsuScroll,
       ][item.category - 100]
       return new SubWeapon(...pre_args, type, item.baseValue, stability)
     }
@@ -457,7 +504,13 @@ abstract class CharacterEquipment {
 abstract class Weapon extends CharacterEquipment {
   override stability: number
 
-  constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], atk: number | string = 1, stability: number = 0) {
+  constructor(
+    origin: EquipmentOrigin,
+    name: string,
+    stats: StatRestriction[],
+    atk: number | string = 1,
+    stability: number = 0
+  ) {
     super(origin, name, stats)
 
     atk = typeof atk === 'string' ? parseInt(atk, 10) : atk
@@ -481,7 +534,7 @@ class MainWeapon extends Weapon {
     stats: StatRestriction[],
     type: EquipmentTypes,
     atk?: number,
-    stability?: number,
+    stability?: number
   ) {
     super(origin, name, stats, atk, stability)
 
@@ -504,7 +557,6 @@ class MainWeapon extends Weapon {
   }
 }
 
-
 class SubWeapon extends Weapon {
   type: EquipmentTypes
 
@@ -514,7 +566,7 @@ class SubWeapon extends Weapon {
     stats: StatRestriction[],
     type: EquipmentTypes,
     atk?: number,
-    stability?: number,
+    stability?: number
   ) {
     super(origin, name, stats, atk, stability)
 
@@ -531,7 +583,7 @@ abstract class Armor extends CharacterEquipment {
     origin: EquipmentOrigin,
     name: string,
     stats: StatRestriction[],
-    def: number | string = 0,
+    def: number | string = 0
   ) {
     super(origin, name, stats)
 
@@ -550,7 +602,7 @@ class SubArmor extends Armor {
     name: string,
     stats: StatRestriction[],
     type: EquipmentTypes,
-    def?: number | string,
+    def?: number | string
   ) {
     super(origin, name, stats, def)
 
@@ -569,7 +621,12 @@ class BodyArmor extends Armor {
 
   type: EquipmentTypes
 
-  constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], def?: number | string) {
+  constructor(
+    origin: EquipmentOrigin,
+    name: string,
+    stats: StatRestriction[],
+    def?: number | string
+  ) {
     super(origin, name, stats, def)
 
     this.type = EquipmentTypes.BodyNormal
@@ -602,7 +659,12 @@ class AdditionalGear extends Armor {
 
   readonly type: EquipmentTypes
 
-  constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], def?: number | string) {
+  constructor(
+    origin: EquipmentOrigin,
+    name: string,
+    stats: StatRestriction[],
+    def?: number | string
+  ) {
     super(origin, name, stats, def)
 
     this.refining = 0
@@ -622,7 +684,12 @@ class SpecialGear extends Armor {
 
   readonly type: EquipmentTypes
 
-  constructor(origin: EquipmentOrigin, name: string, stats: StatRestriction[], def?: number | string) {
+  constructor(
+    origin: EquipmentOrigin,
+    name: string,
+    stats: StatRestriction[],
+    def?: number | string
+  ) {
     super(origin, name, stats, def)
 
     this.crystals = []
@@ -648,8 +715,9 @@ class EquipmentCrystal {
 
   constructor(origin: Crystal) {
     this.origin = origin
-    this.stats = this.origin.stats
-      .map((stat, idx) => StatRestriction.fromOrigin(stat, this.origin.statRestrictions[idx]))
+    this.stats = this.origin.stats.map((stat, idx) =>
+      StatRestriction.fromOrigin(stat, this.origin.statRestrictions[idx])
+    )
   }
 
   get id() {
@@ -671,7 +739,6 @@ class EquipmentCrystal {
 export {
   CharacterEquipment,
   EquipmentCrystal,
-
   MainWeapon,
   SubWeapon,
   SubArmor,

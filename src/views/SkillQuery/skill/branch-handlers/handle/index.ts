@@ -1,21 +1,37 @@
-import { isNumberString, splitComma, trimFloatStringZero } from '@/shared/utils/string'
 import Grimoire from '@/shared/Grimoire'
-
-import SkillComputingContainer, { SkillBranchItemSuffix, SkillEffectItemHistory } from '@/lib/Skill/SkillComputingContainer'
-import type { SkillBranchItemBaseChilds, SkillBranchItemOverwriteRecords } from '@/lib/Skill/SkillComputingContainer'
 import {
+  isNumberString,
+  splitComma,
+  trimFloatStringZero,
+} from '@/shared/utils/string'
+
+import { StatComputed } from '@/lib/Character/Stat'
+import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import SkillComputingContainer, {
+  SkillBranchItemSuffix,
+  SkillEffectItemHistory,
+} from '@/lib/Skill/SkillComputingContainer'
+import type {
+  SkillBranchItemBaseChilds,
+  SkillBranchItemOverwriteRecords,
+} from '@/lib/Skill/SkillComputingContainer'
+import {
+  ResultContainer,
+  ResultContainerBase,
+} from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+import {
+  ComputedBranchHelperResult,
   computeBranchValue,
   computedBranchHelper,
-  ComputedBranchHelperResult,
   handleBranchStats,
   handleBranchTextProps,
   handleBranchValueProps,
 } from '@/lib/Skill/SkillComputingContainer/compute'
-import type { HandleBranchValuePropsMap, HandleBranchTextPropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
-import { ResultContainer, ResultContainerBase } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+import type {
+  HandleBranchTextPropsMap,
+  HandleBranchValuePropsMap,
+} from '@/lib/Skill/SkillComputingContainer/compute'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
-import { StatComputed } from '@/lib/Character/Stat'
-import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import { createTagButtons } from '@/views/SkillQuery/utils'
 
@@ -24,7 +40,7 @@ import { handleFunctionHighlight, numberStringToPercentage } from './utils'
 
 function cloneBranchProps(
   branchItem: SkillBranchItemBaseChilds,
-  initValueMap?: Record<string, string | ((value: string) => string)>,
+  initValueMap?: Record<string, string | ((value: string) => string)>
 ): Map<string, string> {
   const props = new Map(branchItem.allProps)
   if (typeof initValueMap === 'object') {
@@ -42,25 +58,29 @@ function cloneBranchProps(
 type SkillDisplayData = Record<string, string>
 
 interface HandleBranchLangPropsOptions {
-  rootKey?: SkillBranchNames;
-  type?: 'auto' | 'normal' | 'value' | 'boolean';
-  afterHandle?: ((value: string) => string) | null;
+  rootKey?: SkillBranchNames
+  type?: 'auto' | 'normal' | 'value' | 'boolean'
+  afterHandle?: ((value: string) => string) | null
 }
 interface HandleBranchLangPropsMap {
-  [key: string]: HandleBranchLangPropsOptions | null;
+  [key: string]: HandleBranchLangPropsOptions | null
 }
 function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
   helper: ComputedBranchHelperResult,
   props: Map<string, string>,
-  propMap: PropMap,
+  propMap: PropMap
 ): Record<keyof PropMap, ResultContainer> {
   const { t } = Grimoire.i18n
   const { branchItem } = helper
 
   const attrValues = {} as Record<keyof PropMap, ResultContainer>
   const attrKeys = Object.keys(propMap) as (keyof PropMap)[]
-  attrKeys.forEach((attrKey) => {
-    const { type = 'auto', rootKey, afterHandle = null } = (propMap[attrKey] || {}) as HandleBranchLangPropsOptions
+  attrKeys.forEach(attrKey => {
+    const {
+      type = 'auto',
+      rootKey,
+      afterHandle = null,
+    } = (propMap[attrKey] || {}) as HandleBranchLangPropsOptions
     const value = props.get(attrKey as string)
     if (!value) {
       return
@@ -68,12 +88,24 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
     let resultStr: string
     if (type === 'value') {
       const resultValue = computeBranchValue(value, helper)
-      const sign = isNumberString(resultValue) && parseFloat(resultValue) < 0 ? 'negative' : 'positive'
-      const displayValue = sign === 'negative' ? -1 * parseFloat(resultValue) : resultValue
-      resultStr = t(`skill-query.branch.${rootKey ?? branchItem.name}.${String(attrKey)}.${sign}`, { value: displayValue.toString() })
+      const sign =
+        isNumberString(resultValue) && parseFloat(resultValue) < 0
+          ? 'negative'
+          : 'positive'
+      const displayValue =
+        sign === 'negative' ? -1 * parseFloat(resultValue) : resultValue
+      resultStr = t(
+        `skill-query.branch.${rootKey ?? branchItem.name}.${String(
+          attrKey
+        )}.${sign}`,
+        { value: displayValue.toString() }
+      )
     } else {
       let displayValue = value
-      if ((type === 'auto' || type === 'boolean') && (displayValue === '1' || displayValue === '0')) {
+      if (
+        (type === 'auto' || type === 'boolean') &&
+        (displayValue === '1' || displayValue === '0')
+      ) {
         displayValue = displayValue === '1' ? 'true' : 'false'
       }
       let preName: string
@@ -81,36 +113,49 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
         preName = rootKey
       } else {
         preName = branchItem.name
-        preName = branchItem instanceof SkillBranchItemSuffix ? branchItem.mainBranch.name + ': ' + preName : preName
+        preName =
+          branchItem instanceof SkillBranchItemSuffix
+            ? branchItem.mainBranch.name + ': ' + preName
+            : preName
       }
-      const result = t(`skill-query.branch.${preName}.${String(attrKey)}.${displayValue}`)
+      const result = t(
+        `skill-query.branch.${preName}.${String(attrKey)}.${displayValue}`
+      )
       resultStr = afterHandle ? afterHandle(result) : result
     }
-    attrValues[attrKey] = new ResultContainer(branchItem, attrKey as string, value, resultStr)
+    attrValues[attrKey] = new ResultContainer(
+      branchItem,
+      attrKey as string,
+      value,
+      resultStr
+    )
   })
   return attrValues
 }
 
 type HandleDisplayDataOptionFilterValidation = (value: string) => boolean
 interface HandleDisplayDataOptionFilterItem {
-  validation: HandleDisplayDataOptionFilterValidation;
-  calc?: boolean;
+  validation: HandleDisplayDataOptionFilterValidation
+  calc?: boolean
 }
 interface HandleDisplayDataOptionFilters {
-  [key: string]: HandleDisplayDataOptionFilterValidation | HandleDisplayDataOptionFilterItem;
+  [key: string]:
+    | HandleDisplayDataOptionFilterValidation
+    | HandleDisplayDataOptionFilterItem
 }
 interface HandleDisplayDataOptions {
-  values?: HandleBranchValuePropsMap;
-  texts?: HandleBranchTextPropsMap;
-  langs?: HandleBranchLangPropsMap;
-  filters?: HandleDisplayDataOptionFilters;
-  pureValues?: string[];
-  pureDatas?: string[];
-  titles?: string[];
-  formulaDisplayMode?: FormulaDisplayModes;
+  values?: HandleBranchValuePropsMap
+  texts?: HandleBranchTextPropsMap
+  langs?: HandleBranchLangPropsMap
+  filters?: HandleDisplayDataOptionFilters
+  pureValues?: string[]
+  pureDatas?: string[]
+  titles?: string[]
+  formulaDisplayMode?: FormulaDisplayModes
 }
 
-const FORMULA_VALUE_TO_PERCENTAGE_PATTERN = /([$_a-zA-Z][$_a-zA-Z0-9]*)(\*)(\d\.\d+)/g
+const FORMULA_VALUE_TO_PERCENTAGE_PATTERN =
+  /([$_a-zA-Z][$_a-zA-Z0-9]*)(\*)(\d\.\d+)/g
 const MUL_PATTERN = /\*/g
 const FORMULA_FLOAT_TO_FIXED = /(\d+\.)(\d{4,})/g
 const TEXT_SEPARATE_PATTERN = /\(\(((?:(?!\(\().)+)\)\)/g
@@ -118,7 +163,8 @@ const TEXT_SEPARATE_PATTERN = /\(\(((?:(?!\(\().)+)\)\)/g
 function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   computing: SkillComputingContainer,
   branchItem: Branch,
-  props: Map<string, string>, {
+  props: Map<string, string>,
+  {
     values = {},
     texts = {},
     langs = {},
@@ -127,16 +173,21 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     pureDatas = [],
     titles = [],
     formulaDisplayMode,
-  }: HandleDisplayDataOptions,
+  }: HandleDisplayDataOptions
 ): DisplayDataContainer<Branch> {
   const { t } = Grimoire.i18n
 
-  const helper = computedBranchHelper(computing, branchItem, [
-    ...Object.keys(values).map(key => branchItem.prop(key)),
-    ...Object.keys(texts).map(key => branchItem.prop(key)),
-    ...pureValues.map(key => branchItem.prop(key)),
-    ...branchItem.stats.map(stat => stat.value),
-  ], formulaDisplayMode)
+  const helper = computedBranchHelper(
+    computing,
+    branchItem,
+    [
+      ...Object.keys(values).map(key => branchItem.prop(key)),
+      ...Object.keys(texts).map(key => branchItem.prop(key)),
+      ...pureValues.map(key => branchItem.prop(key)),
+      ...branchItem.stats.map(stat => stat.value),
+    ],
+    formulaDisplayMode
+  )
 
   formulaDisplayMode = helper.formulaDisplayMode
 
@@ -160,7 +211,9 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
       value = { validation: value }
     }
     const { validation, calc = false } = value
-    const validatedValue = calc ? computeBranchValue(propValue, helper) : propValue
+    const validatedValue = calc
+      ? computeBranchValue(propValue, helper)
+      : propValue
     if (!validation(validatedValue)) {
       props.delete(key)
       ignoreProp(key)
@@ -177,36 +230,56 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   const handleContainerFormulaValue = (container: ResultContainerBase) => {
     container.handle(value => {
       return value
-        .replace(FORMULA_VALUE_TO_PERCENTAGE_PATTERN, (match, p1, p2, p3) => p1 + p2 + numberStringToPercentage(p3))
+        .replace(
+          FORMULA_VALUE_TO_PERCENTAGE_PATTERN,
+          (match, p1, p2, p3) => p1 + p2 + numberStringToPercentage(p3)
+        )
         .replace(MUL_PATTERN, '×')
     })
-    container.handle(value => value.replace(FORMULA_FLOAT_TO_FIXED, (match, m1, m2) => m1 + m2.slice(0, 4)))
+    container.handle(value =>
+      value.replace(
+        FORMULA_FLOAT_TO_FIXED,
+        (match, m1, m2) => m1 + m2.slice(0, 4)
+      )
+    )
     container.handle(trimFloatStringZero)
   }
 
   const branchRecordKeys = ['overwrite', 'append', 'remove'] as const
 
-  const handlePropHistoryHighlight = branchItem.parent instanceof SkillEffectItemHistory ?
-    (key: string, value: string) => {
-      const searchKeys = branchRecordKeys
-      if (searchKeys.some(searchKey => branchItem.record.props[searchKey].includes(key) || branchItem.historyRecord?.props[searchKey].includes(key))) {
-        return `<span class="history-compare--mark">${value}</span>`
-      }
-      return value
-    } :
-    (key: string, value: string) => value
+  const handlePropHistoryHighlight =
+    branchItem.parent instanceof SkillEffectItemHistory
+      ? (key: string, value: string) => {
+          const searchKeys = branchRecordKeys
+          if (
+            searchKeys.some(
+              searchKey =>
+                branchItem.record.props[searchKey].includes(key) ||
+                branchItem.historyRecord?.props[searchKey].includes(key)
+            )
+          ) {
+            return `<span class="history-compare--mark">${value}</span>`
+          }
+          return value
+        }
+      : (key: string, value: string) => value
 
-  const handleStatHistoryHighlight = branchItem.parent instanceof SkillEffectItemHistory ?
-    (stat: StatComputed, value: string) => {
-      const searchKeys = branchRecordKeys
-      const _find = (target: SkillBranchItemOverwriteRecords | null) => searchKeys
-        .some(searchKey => target?.stats[searchKey].some(([baseId, type]) => stat.baseId === baseId && stat.type === type))
-      if (_find(branchItem.record) || _find(branchItem.historyRecord)) {
-        return `<span class="history-compare--mark">${value}</span>`
-      }
-      return value
-    } :
-    (stat: StatComputed, value: string) => value
+  const handleStatHistoryHighlight =
+    branchItem.parent instanceof SkillEffectItemHistory
+      ? (stat: StatComputed, value: string) => {
+          const searchKeys = branchRecordKeys
+          const _find = (target: SkillBranchItemOverwriteRecords | null) =>
+            searchKeys.some(searchKey =>
+              target?.stats[searchKey].some(
+                ([baseId, type]) => stat.baseId === baseId && stat.type === type
+              )
+            )
+          if (_find(branchItem.record) || _find(branchItem.historyRecord)) {
+            return `<span class="history-compare--mark">${value}</span>`
+          }
+          return value
+        }
+      : (stat: StatComputed, value: string) => value
 
   Object.entries(valueDatas).forEach(([key, container]) => {
     handleContainerFormulaValue(container)
@@ -219,7 +292,11 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   })
 
   const handleTextResult = (str: string) => {
-    str = str.replace(TEXT_SEPARATE_PATTERN, (match, m1) => `<span class="cy--text-separate border-primary-50">${m1}</span>`)
+    str = str.replace(
+      TEXT_SEPARATE_PATTERN,
+      (match, m1) =>
+        `<span class="cy--text-separate border-primary-50">${m1}</span>`
+    )
     str = createTagButtons(str)
     return str
   }
@@ -232,15 +309,23 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     const handleReplaceLabel = (attrKey: string) => {
       const labels = splitComma(branchItem.prop(attrKey)).filter(item => item)
       labels.forEach((label, idx) => {
-        str = str.replace(new RegExp(label, 'g'), () => `__HANDLE_REPLACE_LABEL_${idx}__`)
+        str = str.replace(
+          new RegExp(label, 'g'),
+          () => `__HANDLE_REPLACE_LABEL_${idx}__`
+        )
       })
       labels.forEach((label, idx) => {
         let firstFlag = true
-        str = str.replace(new RegExp(`__HANDLE_REPLACE_LABEL_${idx}__`, 'g'), () => {
-          const className = firstFlag ? `click-button--${attrKey}` : 'text-primary-50'
-          firstFlag = false
-          return `<span class="${className}">${label}</span>`
-        })
+        str = str.replace(
+          new RegExp(`__HANDLE_REPLACE_LABEL_${idx}__`, 'g'),
+          () => {
+            const className = firstFlag
+              ? `click-button--${attrKey}`
+              : 'text-primary-50'
+            firstFlag = false
+            return `<span class="${className}">${label}</span>`
+          }
+        )
       })
     }
     handleReplaceLabel('mark')
@@ -264,14 +349,21 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     container.handle(value => handleStatHistoryHighlight(container.stat, value))
     container.handle(value => handleFunctionHighlight(value))
 
-    const sign = isNumberString(container.value) && parseFloat(container.value) < 0 ? '' : '+'
+    const sign =
+      isNumberString(container.value) && parseFloat(container.value) < 0
+        ? ''
+        : '+'
     const showData = container.stat.getShowData()
-    const title = container.displayTitle ? handleTextResult(container.displayTitle) : showData.title
+    const title = container.displayTitle
+      ? handleTextResult(container.displayTitle)
+      : showData.title
     container.handle(value => title + sign + value)
   })
 
   titles.forEach(key => {
-    result[key + ': title'] = t(`skill-query.branch.${branchItem.name}.${key}: title`)
+    result[key + ': title'] = t(
+      `skill-query.branch.${branchItem.name}.${key}: title`
+    )
   })
 
   const containers = {
@@ -313,13 +405,9 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   })
 }
 
-export {
-  cloneBranchProps,
-  handleDisplayData,
-}
+export { cloneBranchProps, handleDisplayData }
 export type {
   HandleDisplayDataOptionFilters,
   HandleBranchLangPropsMap,
   SkillDisplayData,
 }
-

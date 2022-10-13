@@ -1,10 +1,7 @@
 <template>
   <div class="flex justify-center">
     <div class="flex flex-col">
-      <div
-        v-for="equipment in allEquipments"
-        :key="equipment.id"
-      >
+      <div v-for="equipment in allEquipments" :key="equipment.id">
         <SkillEquipmentButton
           :equipments="[equipment.value]"
           @click="emit('select-equipment', equipment.value)"
@@ -17,16 +14,19 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import { EquipmentRestrictions, SkillItem } from '@/lib/Skill/SkillComputingContainer'
+import {
+  EquipmentRestrictions,
+  SkillItem,
+} from '@/lib/Skill/SkillComputingContainer'
 
 import SkillEquipmentButton from './skill/skill-equipment-button.vue'
 
 interface Props {
-  skillItem: SkillItem;
+  skillItem: SkillItem
 }
 
 interface Emits {
-  (event: 'select-equipment', value: EquipmentRestrictions): void;
+  (event: 'select-equipment', value: EquipmentRestrictions): void
 }
 
 const props = defineProps<Props>()
@@ -36,7 +36,8 @@ const emit = defineEmits<Emits>()
 const allEquipments = computed(() => {
   const result: Map<string, EquipmentRestrictions> = new Map()
   props.skillItem.effectItems
-    .map(effect => effect.equipments).flat()
+    .map(effect => effect.equipments)
+    .flat()
     .forEach(item => {
       const id = (['main', 'sub', 'body'] as const)
         .map(key => item[key] ?? 'none')

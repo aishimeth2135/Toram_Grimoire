@@ -1,16 +1,23 @@
 import {
-  computePosition, autoUpdate, flip, size, shift, offset, limitShift,
-  DetectOverflowOptions, ComputePositionConfig,
+  ComputePositionConfig,
+  DetectOverflowOptions,
+  autoUpdate,
+  computePosition,
+  flip,
+  limitShift,
+  offset,
+  shift,
+  size,
 } from '@floating-ui/dom'
-import { CSSProperties, Ref, ref, nextTick, computed, watch, isRef } from 'vue'
+import { CSSProperties, Ref, computed, isRef, nextTick, ref, watch } from 'vue'
 
 interface CreatePopperOptions {
-  placement?: string;
-  autoSelect?: boolean;
+  placement?: string
+  autoSelect?: boolean
 }
 
 interface PopperHideEventDetail {
-  eventTarget: Node | null;
+  eventTarget: Node | null
 }
 
 const HIDE_POPPER_EVENT_NAME = 'cypopperhide'
@@ -18,7 +25,7 @@ const HIDE_POPPER_EVENT_NAME = 'cypopperhide'
 export function createPopover(
   main: HTMLElement | Ref<HTMLElement | null>,
   popper: HTMLElement | Ref<HTMLElement | null>,
-  options: CreatePopperOptions = {},
+  options: CreatePopperOptions = {}
 ) {
   const mainElement = isRef(main) ? main : { value: main }
   const popperElement = isRef(popper) ? popper : { value: popper }
@@ -54,11 +61,14 @@ export function createPopover(
     ],
   }
 
-  const _options = computed(() => ({
-    placement: 'bottom-start',
-    autoSelect: false,
-    ...options,
-  } as Required<CreatePopperOptions>))
+  const _options = computed(
+    () =>
+      ({
+        placement: 'bottom-start',
+        autoSelect: false,
+        ...options,
+      } as Required<CreatePopperOptions>)
+  )
 
   const computePositionOptions = computed(() => {
     return {
@@ -72,7 +82,11 @@ export function createPopover(
     if (!mainElement.value || !popperElement.value) {
       return
     }
-    const data = await computePosition(mainElement.value, popperElement.value, computePositionOptions.value)
+    const data = await computePosition(
+      mainElement.value,
+      popperElement.value,
+      computePositionOptions.value
+    )
     popperStyle.value = {
       ...popperStyle.value,
       left: `${data.x}px`,
@@ -96,20 +110,28 @@ export function createPopover(
   }
 
   const handlePopperHide = ((evt: CustomEvent<PopperHideEventDetail>) => {
-    if (evt.detail.eventTarget && [mainElement.value, popperElement.value].some(el => el?.contains(evt.detail.eventTarget))) {
+    if (
+      evt.detail.eventTarget &&
+      [mainElement.value, popperElement.value].some(el =>
+        el?.contains(evt.detail.eventTarget)
+      )
+    ) {
       return
     }
     togglePopper(false)
   }) as EventListener
 
-  popperElement.value?.addEventListener(HIDE_POPPER_EVENT_NAME, handlePopperHide)
+  popperElement.value?.addEventListener(
+    HIDE_POPPER_EVENT_NAME,
+    handlePopperHide
+  )
 
   watch(_options, () => updatePosition())
 
   watch(popperStyle, () => {
     if (popperElement) {
       Object.entries(popperStyle).forEach(([key, value]) => {
-        (popperElement.value!.style as any)[key] = value
+        ;(popperElement.value!.style as any)[key] = value
       })
     }
   })

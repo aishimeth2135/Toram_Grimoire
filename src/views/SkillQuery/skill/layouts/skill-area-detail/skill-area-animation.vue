@@ -3,27 +3,31 @@
 </template>
 
 <script lang="ts" setup>
-import { h, toRefs, computed } from 'vue'
+import { computed, h, toRefs } from 'vue'
 
-import { isNumberString } from '@/shared/utils/string'
 import { numberToFixed } from '@/shared/utils/number'
+import { isNumberString } from '@/shared/utils/string'
 
-import { createSectorPathD } from './utils'
 import DisplayDataContainer from '../../branch-handlers/handle/DisplayDataContainer'
+import { createSectorPathD } from './utils'
 
 interface Props {
-  container: DisplayDataContainer;
+  container: DisplayDataContainer
 }
 
 const props = defineProps<Props>()
 const { container } = toRefs(props)
 
-const valid = computed(() => container.value.has('radius') || container.value.getOrigin('effective_area') === 'sector')
+const valid = computed(
+  () =>
+    container.value.has('radius') ||
+    container.value.getOrigin('effective_area') === 'sector'
+)
 
 type AreaElement = {
-  type: string;
-  attrs: Record<string, string | number>;
-  animations?: AreaElement[];
+  type: string
+  attrs: Record<string, string | number>
+  animations?: AreaElement[]
 }
 
 const areaDatas = computed(() => {
@@ -37,7 +41,8 @@ const areaDatas = computed(() => {
   /* "1 m" to "x px" */
   const grid = (value: number): number => numberToFixed(value * 15, 1)
 
-  const getAttrNumValue = (key: string) => ctner.has(key) ? parseFloat(ctner.getValue(key)) : 0
+  const getAttrNumValue = (key: string) =>
+    ctner.has(key) ? parseFloat(ctner.getValue(key)) : 0
 
   const radius = getAttrNumValue('radius'),
     startPositionOffsets = getAttrNumValue('start_position_offsets'),
@@ -60,20 +65,31 @@ const areaDatas = computed(() => {
 
   const skillRangeDefault = '100'
   let skillRangeOrigin: string | null = ctner.getValue('range') || null
-  skillRangeOrigin = skillRangeOrigin ? parseFloat(skillRangeOrigin).toFixed(2) : skillRangeDefault
-  const skillRange: number = parseFloat(isNumberString(skillRangeOrigin) ? skillRangeOrigin : skillRangeDefault)
+  skillRangeOrigin = skillRangeOrigin
+    ? parseFloat(skillRangeOrigin).toFixed(2)
+    : skillRangeDefault
+  const skillRange: number = parseFloat(
+    isNumberString(skillRangeOrigin) ? skillRangeOrigin : skillRangeDefault
+  )
 
   let targetOffset = 0
   if (ctner.getOrigin('target_offsets') === 'auto') {
-    targetOffset = type === 'circle' && ctner.getOrigin('end_position') === 'self' ? radius * 0.5 : Math.min(7, skillRange)
+    targetOffset =
+      type === 'circle' && ctner.getOrigin('end_position') === 'self'
+        ? radius * 0.5
+        : Math.min(7, skillRange)
   } else {
     targetOffset = parseFloat(ctner.getValue('target_offsets'))
   }
-  const moveDistance = Math.min(Math.max(targetOffset + moveDistanceFix, moveDistanceOrigin), 9)
+  const moveDistance = Math.min(
+    Math.max(targetOffset + moveDistanceFix, moveDistanceOrigin),
+    9
+  )
 
   if (type === 'circle') {
     // character
-    let bx = ctner.getOrigin('end_position') === 'self' ? padding + radius : padding
+    let bx =
+      ctner.getOrigin('end_position') === 'self' ? padding + radius : padding
     const by = padding + radius
 
     // bx += Math.max(0, -1 * startPositionOffsets);
@@ -107,7 +123,8 @@ const areaDatas = computed(() => {
     }
 
     // area center
-    const ax = ctner.getOrigin('end_position') === 'self' ? bx : tx + endPositionOffsets
+    const ax =
+      ctner.getOrigin('end_position') === 'self' ? bx : tx + endPositionOffsets
     const ay = ctner.getOrigin('end_position') === 'self' ? by : ty
 
     const area: AreaElement = {
@@ -184,28 +201,33 @@ const areaDatas = computed(() => {
       animations: [],
     }
 
-    const endx = ctner.has('move_distance') ? bx + moveDistance : tx + endPositionOffsets
+    const endx = ctner.has('move_distance')
+      ? bx + moveDistance
+      : tx + endPositionOffsets
     const endy = ty
 
-    area.animations!.push({
-      type: 'animate',
-      attrs: {
-        attributeName: 'fill',
-        values: `${pcolorl};${pcolorl3};${pcolorl3};${pcolorl}`,
-        keyTimes: '0;.3;.6;1',
-        dur: '2s',
-        repeatCount: 'indefinite',
+    area.animations!.push(
+      {
+        type: 'animate',
+        attrs: {
+          attributeName: 'fill',
+          values: `${pcolorl};${pcolorl3};${pcolorl3};${pcolorl}`,
+          keyTimes: '0;.3;.6;1',
+          dur: '2s',
+          repeatCount: 'indefinite',
+        },
       },
-    }, {
-      type: 'animate',
-      attrs: {
-        attributeName: 'cx',
-        values: `${grid(ax)};${grid(ax)};${grid(endx)};${grid(endx)}`,
-        keyTimes: '0;.3;.4;1',
-        dur: '2s',
-        repeatCount: 'indefinite',
-      },
-    })
+      {
+        type: 'animate',
+        attrs: {
+          attributeName: 'cx',
+          values: `${grid(ax)};${grid(ax)};${grid(endx)};${grid(endx)}`,
+          keyTimes: '0;.3;.4;1',
+          dur: '2s',
+          repeatCount: 'indefinite',
+        },
+      }
+    )
 
     if (ctner.getOrigin('end_position') === 'self') {
       chara.animations!.push({
@@ -223,7 +245,13 @@ const areaDatas = computed(() => {
     const areaBg: AreaElement = {
       type: 'path',
       attrs: {
-        d: `M${grid(ax)} ${grid(ay + radius)}A${grid(radius)} ${grid(radius)},0 0 1,${grid(ax)} ${grid(ay - radius)}L${grid(endx)} ${grid(endy - radius)}A${grid(radius)} ${grid(radius)},0 0 1,${grid(endx)} ${grid(endy + radius)}Z`,
+        d: `M${grid(ax)} ${grid(ay + radius)}A${grid(radius)} ${grid(
+          radius
+        )},0 0 1,${grid(ax)} ${grid(ay - radius)}L${grid(endx)} ${grid(
+          endy - radius
+        )}A${grid(radius)} ${grid(radius)},0 0 1,${grid(endx)} ${grid(
+          endy + radius
+        )}Z`,
         fill: pcolorl,
       },
     }
@@ -244,7 +272,7 @@ const areaDatas = computed(() => {
 
     // character
     let bx = padding
-    const by = padding + maxRadius * Math.sin(angle * deg / 2)
+    const by = padding + maxRadius * Math.sin((angle * deg) / 2)
 
     // target
     const tx = bx + targetOffset,
@@ -313,31 +341,34 @@ const areaDatas = computed(() => {
         d: startSectorD,
         fill: pcolorl3,
       },
-      animations: [{
-        type: 'animate',
-        attrs: {
-          attributeName: 'd',
-          values: `${startSectorD};${startSectorD};${endSectorD};${endSectorD}`,
-          keyTimes: '0;.3;.4;1',
-          dur: '2s',
-          repeatCount: 'indefinite',
+      animations: [
+        {
+          type: 'animate',
+          attrs: {
+            attributeName: 'd',
+            values: `${startSectorD};${startSectorD};${endSectorD};${endSectorD}`,
+            keyTimes: '0;.3;.4;1',
+            dur: '2s',
+            repeatCount: 'indefinite',
+          },
         },
-      }, {
-        type: 'animate',
-        attrs: {
-          attributeName: 'fill',
-          values: `${pcolorl};${pcolorl3};${pcolorl3};${pcolorl}`,
-          keyTimes: '0;.3;.6;1',
-          dur: '2s',
-          repeatCount: 'indefinite',
+        {
+          type: 'animate',
+          attrs: {
+            attributeName: 'fill',
+            values: `${pcolorl};${pcolorl3};${pcolorl3};${pcolorl}`,
+            keyTimes: '0;.3;.6;1',
+            dur: '2s',
+            repeatCount: 'indefinite',
+          },
         },
-      }],
+      ],
     })
 
     datas.push(chara)
     datas.push(tar)
 
-    height = grid(by + padding + maxRadius * Math.sin(angle * deg / 2))
+    height = grid(by + padding + maxRadius * Math.sin((angle * deg) / 2))
     width = grid(bx + moveDistance + padding)
   }
 
@@ -359,15 +390,19 @@ const Render = () => {
     return h(data.type, data.attrs, anis)
   })
 
-  return h('svg', {
-    xmlns: 'http://www.w3.org/2000/svg',
-    version: '1.1',
-    baseProfile: 'full',
-    width: datas.width,
-    height: datas.height,
-    viewBox: `0 0 ${datas.width} ${datas.height}`,
-    preserveAspectRatio: 'xMidYMid meet',
-    class: 'max-h-64 max-w-full',
-  }, childs)
+  return h(
+    'svg',
+    {
+      xmlns: 'http://www.w3.org/2000/svg',
+      version: '1.1',
+      baseProfile: 'full',
+      width: datas.width,
+      height: datas.height,
+      viewBox: `0 0 ${datas.width} ${datas.height}`,
+      preserveAspectRatio: 'xMidYMid meet',
+      class: 'max-h-64 max-w-full',
+    },
+    childs
+  )
 }
 </script>

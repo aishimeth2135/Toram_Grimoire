@@ -9,7 +9,9 @@
     @click="buttonClick"
   >
     <ButtonIcon
-      :icon="selected ? 'ic:round-check-box' : 'ic:round-check-box-outline-blank'"
+      :icon="
+        selected ? 'ic:round-check-box' : 'ic:round-check-box-outline-blank'
+      "
       :class="iconClass"
     />
     <div v-if="$slots.default" class="ml-2 mr-1.5 flex">
@@ -21,8 +23,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import CyButtonBase from './cy-button-base.vue'
 import ButtonIcon from './button-icon.vue'
+import CyButtonBase from './cy-button-base.vue'
 
 import { ButtonBaseProps, getButtonBaseBinds } from './setup'
 

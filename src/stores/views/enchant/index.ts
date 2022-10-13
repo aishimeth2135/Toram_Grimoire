@@ -10,14 +10,14 @@ import { EnchantBuild } from '@/lib/Enchant/Enchant'
 import type { EnchantBuildSaveData } from '@/lib/Enchant/Enchant/build'
 
 interface EnchantStoreConfig {
-  characterLevel: number;
-  smithLevel: number;
+  characterLevel: number
+  smithLevel: number
 }
 
 interface EnchantStoreSaveData {
-  builds: EnchantBuildSaveData[];
-  index: number;
-  config: EnchantStoreConfig;
+  builds: EnchantBuildSaveData[]
+  index: number
+  config: EnchantStoreConfig
 }
 
 let characterMaxLevel = 250
@@ -58,7 +58,9 @@ export const useEnchantStore = defineStore('view-enchant', () => {
     characterMaxLevel = 900
   }
 
-  const currentBuild = computed<EnchantBuild | null>(() => enchantBuilds.value[currentBuildIndex.value] ?? null)
+  const currentBuild = computed<EnchantBuild | null>(
+    () => enchantBuilds.value[currentBuildIndex.value] ?? null
+  )
 
   const resetConfig = (configToSet: EnchantStoreConfig) => {
     config.characterLevel = configToSet.characterLevel
@@ -123,7 +125,9 @@ export const useEnchantStore = defineStore('view-enchant', () => {
         return
       }
       const data = JSON.parse(odata) as EnchantStoreSaveData
-      enchantBuilds.value = data.builds.map(buildData => EnchantBuild.load(buildData))
+      enchantBuilds.value = data.builds.map(buildData =>
+        EnchantBuild.load(buildData)
+      )
       currentBuildIndex.value = data.index
 
       resetConfig(data.config)

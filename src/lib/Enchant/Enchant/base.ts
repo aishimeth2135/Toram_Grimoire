@@ -3,33 +3,32 @@ import { markRaw } from 'vue'
 import Grimoire from '@/shared/Grimoire'
 
 import { StatBase } from '@/lib/Character/Stat'
-import { StatTypes, StatNormalTypes } from '@/lib/Character/Stat/enums'
-
+import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat/enums'
 
 import { EnchantEquipment } from './build'
+import { EnchantEquipmentTypes, EnchantItemConditions } from './enums'
 import STATE from './state'
-import { EnchantItemConditions, EnchantEquipmentTypes } from './enums'
 
 interface EnchantItemParams {
-  baseId: string;
-  potential: [number, number];
-  limit: [EnchantItemOptionCommonValue, EnchantItemOptionCommonValue];
-  unitValue: [[number, number], [number, number]];
-  materialPointType: MaterialPointTypeRange;
-  materialPointValue: EnchantItemOptionCommonValue;
-  potentialConvertThreshold: EnchantItemOptionCommonValue;
+  baseId: string
+  potential: [number, number]
+  limit: [EnchantItemOptionCommonValue, EnchantItemOptionCommonValue]
+  unitValue: [[number, number], [number, number]]
+  materialPointType: MaterialPointTypeRange
+  materialPointValue: EnchantItemOptionCommonValue
+  potentialConvertThreshold: EnchantItemOptionCommonValue
 }
 
 interface EnchantItemConditionalPropertiesParams {
-  potential: [number, number];
+  potential: [number, number]
 }
 
 type EnchantItemOptionCommonValue = [number | null, number | null]
 type MaterialPointTypeRange = 0 | 1 | 2 | 3 | 4 | 5
 
 interface EnchantItemPropertyValue<T> {
-  [StatTypes.Constant]: T;
-  [StatTypes.Multiplier]: T;
+  [StatTypes.Constant]: T
+  [StatTypes.Multiplier]: T
 }
 
 class EnchantCategory {
@@ -69,12 +68,18 @@ class EnchantItem {
   materialPointValue: EnchantItemPropertyValue<number | null>
   potentialConvertThreshold: EnchantItemPropertyValue<number | null>
 
-  constructor(category: EnchantCategory, {
-    baseId, potential,
-    limit, unitValue,
-    materialPointType, materialPointValue,
-    potentialConvertThreshold,
-  }: EnchantItemParams) {
+  constructor(
+    category: EnchantCategory,
+    {
+      baseId,
+      potential,
+      limit,
+      unitValue,
+      materialPointType,
+      materialPointValue,
+      potentialConvertThreshold,
+    }: EnchantItemParams
+  ) {
     this._category = category
     this.statBase = Grimoire.Character.findStatBase(baseId)!
     this.conditionalProps = []
@@ -105,22 +110,29 @@ class EnchantItem {
     return this._category
   }
 
-  appendConditionalProps(condition: EnchantItemConditions, params: EnchantItemConditionalPropertiesParams): void {
+  appendConditionalProps(
+    condition: EnchantItemConditions,
+    params: EnchantItemConditionalPropertiesParams
+  ): void {
     const newProp = new EnchantItemConditionalProperties(condition, params)
     this.conditionalProps.push(newProp)
   }
 
-  checkConditionalProps(equipment: EnchantEquipment): EnchantItemConditionalProperties | null {
-    return this.conditionalProps.find(conditionProp => {
-      switch (conditionProp.condition) {
-        case EnchantItemConditions.MainWeapon:
-          return equipment.fieldType === EnchantEquipmentTypes.MainWeapon
-        case EnchantItemConditions.BodyArmor:
-          return equipment.fieldType === EnchantEquipmentTypes.BodyArmor
-        case EnchantItemConditions.OriginalElement:
-          return equipment.isOriginalElement
-      }
-    }) || null
+  checkConditionalProps(
+    equipment: EnchantEquipment
+  ): EnchantItemConditionalProperties | null {
+    return (
+      this.conditionalProps.find(conditionProp => {
+        switch (conditionProp.condition) {
+          case EnchantItemConditions.MainWeapon:
+            return equipment.fieldType === EnchantEquipmentTypes.MainWeapon
+          case EnchantItemConditions.BodyArmor:
+            return equipment.fieldType === EnchantEquipmentTypes.BodyArmor
+          case EnchantItemConditions.OriginalElement:
+            return equipment.isOriginalElement
+        }
+      }) || null
+    )
   }
 
   getPotential(type: StatNormalTypes, equipment: EnchantEquipment): number {
@@ -141,7 +153,9 @@ class EnchantItem {
 
     const limit = Math.min(potentialCapacityLimit, lvLimit)
     return [
-      originalLimit[1] === null ? -1 * limit : Math.max(originalLimit[1], -1 * lvLimit),
+      originalLimit[1] === null
+        ? -1 * limit
+        : Math.max(originalLimit[1], -1 * lvLimit),
       originalLimit[0] === null ? limit : Math.min(originalLimit[0], lvLimit),
     ]
   }
@@ -167,13 +181,19 @@ class EnchantItem {
         '6': 33.5,
         '10': 50,
         '20': 100,
-      } [this.getOriginalPotential(type).toString()] as number
+      }[this.getOriginalPotential(type).toString()] as number
     }
     return value
   }
   getPotentialConvertThreshold(type: StatNormalTypes) {
     const value = this.potentialConvertThreshold[type]
-    return value || Math.min(STATE.PotentialConvertDefaultThreshold, this.getLimitFromPotentialCapacity(type))
+    return (
+      value ||
+      Math.min(
+        STATE.PotentialConvertDefaultThreshold,
+        this.getLimitFromPotentialCapacity(type)
+      )
+    )
   }
 }
 
@@ -181,7 +201,10 @@ class EnchantItemConditionalProperties {
   condition: EnchantItemConditions
   potential: EnchantItemPropertyValue<number>
 
-  constructor(condition: EnchantItemConditions, { potential }: EnchantItemConditionalPropertiesParams) {
+  constructor(
+    condition: EnchantItemConditions,
+    { potential }: EnchantItemConditionalPropertiesParams
+  ) {
     this.condition = condition
     this.potential = {
       [StatTypes.Constant]: potential[0],

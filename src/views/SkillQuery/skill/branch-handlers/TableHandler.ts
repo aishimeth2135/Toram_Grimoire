@@ -1,13 +1,19 @@
 import { splitComma } from '@/shared/utils/string'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
-import SkillComputingContainer, { SkillBranchItem, SkillBranchItemSuffix } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, {
+  SkillBranchItem,
+  SkillBranchItemSuffix,
+} from '@/lib/Skill/SkillComputingContainer'
 import { HandleBranchTextPropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
 import { cloneBranchProps, handleDisplayData } from './handle'
 import MapContainer from './handle/MapContainer'
 
-export default function TableHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
+export default function TableHandler<BranchItem extends SkillBranchItem>(
+  computing: SkillComputingContainer,
+  branchItem: BranchItem
+) {
   const labels = splitComma(branchItem.prop('labels'))
   const rows = branchItem.suffixBranches
     .filter(suf => suf.is(SkillBranchNames.Row))
@@ -18,7 +24,11 @@ export default function TableHandler<BranchItem extends SkillBranchItem>(computi
   }
 }
 
-function RowHandler<BranchItem extends SkillBranchItemSuffix>(computing: SkillComputingContainer, branchItem: BranchItem, cellsLength: number) {
+function RowHandler<BranchItem extends SkillBranchItemSuffix>(
+  computing: SkillComputingContainer,
+  branchItem: BranchItem,
+  cellsLength: number
+) {
   const attrs = cloneBranchProps(branchItem)
   const textPropsMap = new MapContainer<HandleBranchTextPropsMap>()
   textPropsMap.appendIterable('cell', cellsLength)

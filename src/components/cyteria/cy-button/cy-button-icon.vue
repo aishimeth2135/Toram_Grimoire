@@ -5,18 +5,15 @@
     :style="rootStyle"
     class="cy-button-icon mx-1"
   >
-    <ButtonIcon
-      :icon="icon"
-      :class="iconClass"
-    />
+    <ButtonIcon :icon="icon" :class="iconClass" />
   </CyButtonBase>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import CyButtonBase from './cy-button-base.vue'
 import ButtonIcon from './button-icon.vue'
+import CyButtonBase from './cy-button-base.vue'
 
 import { ButtonBaseProps, getButtonBaseBinds } from './setup'
 
@@ -51,7 +48,9 @@ export default defineComponent({
         styles['--button-color-icon-hover'] = `var(--app-${this.iconColor})`
       }
       if (this.iconColorHover) {
-        styles['--button-color-icon-hover'] = `var(--app-${this.iconColorHover})`
+        styles[
+          '--button-color-icon-hover'
+        ] = `var(--app-${this.iconColorHover})`
       }
       return styles
     },

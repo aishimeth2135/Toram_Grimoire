@@ -45,12 +45,12 @@
         </cy-options>
       </template>
       <template #default>
-        <div v-if="mode === 'normal'" class="flex items-center w-full">
+        <div v-if="mode === 'normal'" class="flex w-full items-center">
           <cy-icon-text icon="ic-outline-search" />
           <input
             v-model="modeNormal.searchText"
             type="text"
-            class="border-0 p-1 ml-2 inline-block w-full bg-transparent"
+            class="ml-2 inline-block w-full border-0 bg-transparent p-1"
             :placeholder="t('global.search')"
           />
         </div>
@@ -60,7 +60,11 @@
           :color="modeStat.statItem ? 'primary' : 'fuchsia'"
           @click="toggle('modals/selectStat')"
         >
-          {{ modeStat.statItem ? modeStat.statItem.text : t('crystal-query.select-stat.title') }}
+          {{
+            modeStat.statItem
+              ? modeStat.statItem.text
+              : t('crystal-query.select-stat.title')
+          }}
         </cy-button-plain>
       </template>
       <template #side-buttons>
@@ -68,12 +72,17 @@
           v-if="mode === 'stat'"
           icon="ci:list-checklist-alt"
           color="cyan"
-          @click="resultItemPreviewMode = resultItemPreviewMode === 'default' ? 'mode' : 'default'"
+          @click="
+            resultItemPreviewMode =
+              resultItemPreviewMode === 'default' ? 'mode' : 'default'
+          "
         />
         <cy-button-circle
           icon="mdi:arrow-expand"
           color="blue"
-          @click="resultItemsDetailVisibleDefault = !resultItemsDetailVisibleDefault"
+          @click="
+            resultItemsDetailVisibleDefault = !resultItemsDetailVisibleDefault
+          "
         />
         <cy-button-circle
           icon="mdi:filter"
@@ -90,9 +99,17 @@
             <cy-icon-text small text-color="fuchsia-60">
               {{ t('crystal-query.crystal-category.title') }}
             </cy-icon-text>
-            <div class="inline-flex items-center ml-4 space-x-2">
-              <cy-button-circle small icon="ic-round-border-all" @click="toggleSearchFilterAll(searchFilter.category, true)" />
-              <cy-button-circle small icon="eva-close-outline" @click="toggleSearchFilterAll(searchFilter.category, false)" />
+            <div class="ml-4 inline-flex items-center space-x-2">
+              <cy-button-circle
+                small
+                icon="ic-round-border-all"
+                @click="toggleSearchFilterAll(searchFilter.category, true)"
+              />
+              <cy-button-circle
+                small
+                icon="eva-close-outline"
+                @click="toggleSearchFilterAll(searchFilter.category, false)"
+              />
             </div>
           </div>
           <div>
@@ -123,7 +140,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, reactive, Ref, ref } from 'vue'
+import { Ref, computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
@@ -134,9 +151,9 @@ import { Crystal } from '@/lib/Items/Item'
 import PageControl from '@/setup/PageControl'
 import ToggleService from '@/setup/ToggleService'
 
-import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
-import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
+import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
+import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import CrystalQueryResultItem from './crystal-query-result-item.vue'
 import CrystalQuerySelectStat from './crystal-query-select-stat.vue'
@@ -149,22 +166,27 @@ const { modals, contents, toggle } = ToggleService({
   contents: ['searchFilter'] as const,
 })
 
-const crystals = Grimoire.Items.crystals.map(crystal => new EquipmentCrystal(crystal))
+const crystals = Grimoire.Items.crystals.map(
+  crystal => new EquipmentCrystal(crystal)
+)
 const resultItemsDetailVisibleDefault = ref(false)
 const topElement: Ref<HTMLElement | null> = ref(null)
 
 // ----- mode
 const mode: Ref<'normal' | 'stat'> = ref('normal')
 const modes: {
-  id: 'normal' | 'stat';
-  icon: string;
-}[] = [{
-  id: 'normal',
-  icon: 'ic:baseline-search',
-}, {
-  id: 'stat',
-  icon: 'mdi:script-outline',
-}]
+  id: 'normal' | 'stat'
+  icon: string
+}[] = [
+  {
+    id: 'normal',
+    icon: 'ic:baseline-search',
+  },
+  {
+    id: 'stat',
+    icon: 'mdi:script-outline',
+  },
+]
 
 const resultItemPreviewMode: Ref<'default' | 'mode'> = ref('default')
 
@@ -175,7 +197,7 @@ const modeNormal = reactive({
 const modeStat = reactive({
   statItem: null,
 }) as {
-  statItem: StatOptionItem | null;
+  statItem: StatOptionItem | null
 }
 
 const selectMode = (id: 'normal' | 'stat') => {
@@ -185,8 +207,8 @@ const selectMode = (id: 'normal' | 'stat') => {
 
 // ----- search filter
 interface SearchFilterItem {
-  options: any[];
-  selectedOptions: any[];
+  options: any[]
+  selectedOptions: any[]
 }
 
 const searchFilter = {
@@ -209,7 +231,9 @@ const toggleSearchFilterAll = (target: SearchFilterItem, force: boolean) => {
   target.selectedOptions = force ? target.options.slice() : []
 }
 
-const categoryCrystalsMap = new Map<number, Crystal[]>(searchFilter.category.options.map(item => [item, []]))
+const categoryCrystalsMap = new Map<number, Crystal[]>(
+  searchFilter.category.options.map(item => [item, []])
+)
 crystals.forEach(_crystal => {
   const list = categoryCrystalsMap.get(_crystal.origin.category)
   if (list) {
@@ -219,7 +243,9 @@ crystals.forEach(_crystal => {
 
 // search result
 const resultCrystals = computed(() => {
-  const filteredCrystals = crystals.filter(crystal => searchFilter.category.selectedOptions.includes(crystal.origin.category))
+  const filteredCrystals = crystals.filter(crystal =>
+    searchFilter.category.selectedOptions.includes(crystal.origin.category)
+  )
   if (mode.value === 'normal') {
     const text = modeNormal.searchText.toLowerCase()
     return filteredCrystals.filter(crystal => {
@@ -228,7 +254,8 @@ const resultCrystals = computed(() => {
       }
       const categoryCrystals = categoryCrystalsMap.get(crystal.origin.category)
       if (categoryCrystals) {
-        const relatedCrystals = crystal.origin.getRelatedCrystals(categoryCrystals)
+        const relatedCrystals =
+          crystal.origin.getRelatedCrystals(categoryCrystals)
         return [
           ...relatedCrystals.enhancers,
           ...relatedCrystals.prependeds,
@@ -242,14 +269,21 @@ const resultCrystals = computed(() => {
       return []
     }
     const statItem = modeStat.statItem
-    const result = filteredCrystals
-      .filter(crystal => crystal.stats.find(stat => stat.base === statItem.origin && stat.type === statItem.type))
+    const result = filteredCrystals.filter(crystal =>
+      crystal.stats.find(
+        stat => stat.base === statItem.origin && stat.type === statItem.type
+      )
+    )
     result.sort((item1, item2) => {
       const value1 = item1.stats
-        .filter(stat => stat.base === statItem.origin && stat.type === statItem.type)
+        .filter(
+          stat => stat.base === statItem.origin && stat.type === statItem.type
+        )
         .reduce((cur, stat) => cur + stat.value, 0)
       const value2 = item2.stats
-        .filter(stat => stat.base === statItem.origin && stat.type === statItem.type)
+        .filter(
+          stat => stat.base === statItem.origin && stat.type === statItem.type
+        )
         .reduce((cur, stat) => cur + stat.value, 0)
       return value2 - value1
     })

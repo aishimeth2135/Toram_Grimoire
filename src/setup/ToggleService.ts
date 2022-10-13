@@ -1,59 +1,70 @@
-import { ref, reactive } from 'vue'
-import type { Ref, UnwrapNestedRefs } from 'vue'
+import { Ref, UnwrapNestedRefs, reactive, ref } from 'vue'
 
 import type { UnionToIntersection } from '@/shared/utils/type'
+
 interface ToggleItemDetail {
-  readonly name: string;
-  readonly default?: boolean;
+  readonly name: string
+  readonly default?: boolean
 }
 
 type ToggleHandlerGroupContentsIdsTmp<Groups extends ToggleServiceOptions> = {
   [GroupId in keyof Groups]: {
-    [Id in `${GroupId & string}/${ContentKeys<Groups[GroupId]>}`]: never;
-  };
+    [Id in `${GroupId & string}/${ContentKeys<Groups[GroupId]>}`]: never
+  }
 }[keyof Groups]
-type ToggleHandlerGroupContentsIds<Groups extends ToggleServiceOptions> = keyof UnionToIntersection<ToggleHandlerGroupContentsIdsTmp<Groups>>
-type ToggleHandleIds<Groups extends ToggleServiceOptions> = ToggleHandlerGroupContentsIds<Groups>
+type ToggleHandlerGroupContentsIds<Groups extends ToggleServiceOptions> =
+  keyof UnionToIntersection<ToggleHandlerGroupContentsIdsTmp<Groups>>
+type ToggleHandleIds<Groups extends ToggleServiceOptions> =
+  ToggleHandlerGroupContentsIds<Groups>
 interface ToggleHandler<Groups extends ToggleServiceOptions> {
-  (id: ToggleHandleIds<Groups>, force?: boolean | null, groupForce?: boolean): void;
-  (id: keyof Groups, groupForce: boolean): void;
+  (
+    id: ToggleHandleIds<Groups>,
+    force?: boolean | null,
+    groupForce?: boolean
+  ): void
+  (id: keyof Groups, groupForce: boolean): void
 }
 
 type ToggleItem = ToggleItemDetail | string
 
 type ContentKey<Content> = Content extends { name: infer Name } ? Name : Content
-type ContentKeys<Contents extends ToggleServiceOptionGroup> = ContentKey<Contents[number]>
+type ContentKeys<Contents extends ToggleServiceOptionGroup> = ContentKey<
+  Contents[number]
+>
 
 type ToggleServiceOptionGroup = readonly ToggleItem[]
 type ToggleServiceOptions = Record<string, ToggleServiceOptionGroup>
 type ToggleServiceGroups<Groups extends ToggleServiceOptions> = {
-  [GroupId in keyof Groups]: ToggleServiceGroupContents<Groups[GroupId]>;
+  [GroupId in keyof Groups]: ToggleServiceGroupContents<Groups[GroupId]>
 }
 type ToggleServiceGroupContents<Group extends ToggleServiceOptionGroup> = {
-  [ContentId in ContentKeys<Group>]: Ref<boolean>;
+  [ContentId in ContentKeys<Group>]: Ref<boolean>
 }
 
-type ToggleServiceResult<Groups extends ToggleServiceOptions> = ToggleServiceGroups<Groups> & {
-  toggle: ToggleHandler<Groups>;
-  inactive: (groupId: keyof Groups) => boolean;
-}
+type ToggleServiceResult<Groups extends ToggleServiceOptions> =
+  ToggleServiceGroups<Groups> & {
+    toggle: ToggleHandler<Groups>
+    inactive: (groupId: keyof Groups) => boolean
+  }
 
-export default function ToggleService<GroupMap extends ToggleServiceOptions>(groups: GroupMap): UnwrapNestedRefs<ToggleServiceResult<GroupMap>> {
+export default function ToggleService<GroupMap extends ToggleServiceOptions>(
+  groups: GroupMap
+): UnwrapNestedRefs<ToggleServiceResult<GroupMap>> {
   const dataMap = {} as ToggleServiceGroups<GroupMap>
   Object.entries(groups).forEach(([groupKey, subs]) => {
     const group = {} as ToggleServiceGroupContents<GroupMap[typeof groupKey]>
-    subs.forEach((subItem) => {
+    subs.forEach(subItem => {
       if (typeof subItem === 'string') {
-        group[subItem as (keyof typeof group)] = ref(false)
+        group[subItem as keyof typeof group] = ref(false)
       } else if (typeof subItem === 'object') {
         const { name, default: defaultValue = false } = subItem
-        group[name as (keyof typeof group)] = ref(defaultValue)
+        group[name as keyof typeof group] = ref(defaultValue)
       }
     })
     dataMap[groupKey as keyof GroupMap] = group
   })
 
-  const toggle = <ToggleHandler<GroupMap>>((id, force, groupForce) => {
+  const toggle = ((id, force, groupForce) => {
     const [group, sub] = (id as string).split('/')
     const targetGroup = dataMap[group] as Record<string, Ref<boolean>>
     if (sub) {
@@ -72,12 +83,14 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(gro
       }
     } else {
       if (force === undefined || force === null) {
-        console.warn('[ToggleService] Toggle the group must pass param: groupForce.')
+        console.warn(
+          '[ToggleService] Toggle the group must pass param: groupForce.'
+        )
         return
       }
-      Object.values(targetGroup).forEach(item => item.value = force!)
+      Object.values(targetGroup).forEach(item => (item.value = force!))
     }
-  })
+  }) as ToggleHandler<GroupMap>
 
   const inactive = (groupId: keyof GroupMap) => {
     const subs = Object.values(dataMap[groupId]) as Ref<boolean>[]
@@ -95,7 +108,6 @@ export default function ToggleService<GroupMap extends ToggleServiceOptions>(gro
     ...resultGroups,
   })
 }
-
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 // const { contents1, contents2 } = ToggleService({

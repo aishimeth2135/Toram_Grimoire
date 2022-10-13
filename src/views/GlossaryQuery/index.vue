@@ -1,7 +1,7 @@
 <template>
   <AppLayoutMain class="py-2">
     <div ref="topElement"></div>
-    <div class="divide-y divide-light">
+    <div class="divide-light divide-y">
       <GlossaryTagItem v-for="tag in currentItems" :key="tag.name" :tag="tag" />
     </div>
     <div class="mt-3">
@@ -13,12 +13,12 @@
     </div>
     <AppLayoutBottom>
       <template #default>
-        <div class="flex items-center w-full">
+        <div class="flex w-full items-center">
           <cy-icon-text icon="ic-outline-search" />
           <input
             v-model="searchText"
             type="text"
-            class="border-0 p-1 ml-2 inline-block w-full bg-transparent"
+            class="ml-2 inline-block w-full border-0 bg-transparent p-1"
             :placeholder="t('global.search')"
           />
         </div>
@@ -34,15 +34,15 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, nextTick, Ref, ref } from 'vue'
+import { Ref, computed, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
 import PageControl from '@/setup/PageControl'
 
-import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
+import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import GlossaryTagItem from './glossary-tag-item.vue'
 
@@ -55,8 +55,12 @@ const searchText = ref('')
 const currentTags = computed(() => {
   const text = searchText.value.toLowerCase()
   return allTags.filter(tag => {
-    return tag.name.toLowerCase().includes(text) ||
-      tag.rows.some(row => row.value.some(item => item.toLowerCase().includes(text)))
+    return (
+      tag.name.toLowerCase().includes(text) ||
+      tag.rows.some(row =>
+        row.value.some(item => item.toLowerCase().includes(text))
+      )
+    )
   })
 })
 

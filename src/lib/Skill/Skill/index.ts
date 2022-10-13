@@ -2,8 +2,8 @@ import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { StatTypes } from '@/lib/Character/Stat/enums'
 import { StatComputed } from '@/lib/Character/Stat'
+import { StatTypes } from '@/lib/Character/Stat/enums'
 
 import { SkillBranchNames, SkillTypes } from './enums'
 
@@ -59,7 +59,6 @@ class SkillRoot extends SkillNode {
   }
 }
 
-
 class SkillTreeCategory extends SkillElement {
   parent: SkillRoot
   skillTrees: SkillTree[]
@@ -81,12 +80,11 @@ class SkillTreeCategory extends SkillElement {
   }
 }
 
-
 class SkillTree extends SkillElement {
   parent: SkillTreeCategory
   skills: Skill[]
   attrs: {
-    simulatorFlag: boolean;
+    simulatorFlag: boolean
   }
   drawTreeCode: string
   readonly skillTreeId: string
@@ -120,7 +118,6 @@ class SkillTree extends SkillElement {
   }
 }
 
-
 abstract class SkillBase extends SkillElement {
   parent: SkillTree
   caption: string
@@ -140,7 +137,6 @@ abstract class SkillBase extends SkillElement {
     this.drawOrder = drawOrder
   }
 }
-
 
 class Skill extends SkillBase {
   effects: SkillEffect[]
@@ -163,26 +159,42 @@ class Skill extends SkillBase {
   }
 
   initType() {
-    if (this.effects.some(eft => eft.branches.some(bch => bch.name === SkillBranchNames.Passive))) {
+    if (
+      this.effects.some(eft =>
+        eft.branches.some(bch => bch.name === SkillBranchNames.Passive)
+      )
+    ) {
       this.types.push(SkillTypes.Passive)
     } else {
       this.types.push(SkillTypes.Active)
     }
-    if (this.effects.some(eft => eft.branches.some(bch => bch.name === SkillBranchNames.Damage))) {
+    if (
+      this.effects.some(eft =>
+        eft.branches.some(bch => bch.name === SkillBranchNames.Damage)
+      )
+    ) {
       this.types.push(SkillTypes.Damage)
     }
   }
 
   appendSkillEffect(main: number, sub: number, body: number) {
-    const el = markRaw(new SkillEffect(this, this.effects.length, main, sub, body))
+    const el = markRaw(
+      new SkillEffect(this, this.effects.length, main, sub, body)
+    )
     this.effects.push(el)
     return el
   }
 
-  appendSkillEffectHistory(effectId: number, date: string): SkillEffectHistory | void {
+  appendSkillEffectHistory(
+    effectId: number,
+    date: string
+  ): SkillEffectHistory | void {
     const effect = this.effects.find(eft => eft.effectId === effectId)
     if (!effect) {
-      console.warn(`[SkillEffect.appendSkillEffectHistory] can not find target effect with id: ${effectId}.`, this.effects)
+      console.warn(
+        `[SkillEffect.appendSkillEffectHistory] can not find target effect with id: ${effectId}.`,
+        this.effects
+      )
       return
     }
     return effect.appendHistory(date)
@@ -218,12 +230,12 @@ class SkillEffectBase extends SkillNode {
 }
 
 interface SkillEffectBasicProps {
-  mpCost: string | null;
-  range: string | null;
-  skillType: number | null;
-  inCombo: number | null;
-  actionTime: number | null;
-  castingTime: string | null;
+  mpCost: string | null
+  range: string | null
+  skillType: number | null
+  inCombo: number | null
+  actionTime: number | null
+  castingTime: string | null
 }
 class SkillEffect extends SkillEffectBase {
   effectId: number
@@ -236,7 +248,13 @@ class SkillEffect extends SkillEffectBase {
   // 0: or, 1: and
   equipmentOperator: 0 | 1
 
-  constructor(skill: Skill, effectId: number, main: number, sub: number, body: number) {
+  constructor(
+    skill: Skill,
+    effectId: number,
+    main: number,
+    sub: number,
+    body: number
+  ) {
     super(skill)
     this.effectId = effectId
     this.historys = []
@@ -339,7 +357,6 @@ class SkillBranch extends SkillNode {
   }
 }
 
-
 class LevelSkillTree {
   base: SkillTree
   levelSkills: LevelSkill[]
@@ -360,8 +377,10 @@ class LevelSkillTree {
   }
 
   starGemSkillPoint() {
-    return this.levelSkills
-      .reduce((cur, skill) => cur + Math.max(0, skill.starGemLevel() - skill.level()), 0)
+    return this.levelSkills.reduce(
+      (cur, skill) => cur + Math.max(0, skill.starGemLevel() - skill.level()),
+      0
+    )
   }
 }
 
@@ -395,7 +414,9 @@ class LevelSkill {
     if (!forward) {
       let current: LevelSkill = this
       while (current.base.previous !== -1) {
-        const pre = current.parent.levelSkills.find(sk => sk.base.id === current.base.previous)
+        const pre = current.parent.levelSkills.find(
+          sk => sk.base.id === current.base.previous
+        )
         if (!pre) {
           break
         }
@@ -432,7 +453,6 @@ class LevelSkill {
     return this.base.id
   }
 }
-
 
 export {
   SkillElement,

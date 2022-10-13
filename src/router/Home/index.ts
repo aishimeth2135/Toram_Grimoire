@@ -19,26 +19,32 @@ export default {
   },
   meta: {
     title: null,
-    leftMenuViewButtons: [{
-      title: 'app.page-title.home',
-      icon: 'ant-design:home-outlined',
-      pathName: AppRouteNames.Home,
-    }, {
-      title: 'app.page-title.about',
-      icon: 'bx-bxs-star-half',
-      pathName: AppRouteNames.About,
-    }],
+    leftMenuViewButtons: [
+      {
+        title: 'app.page-title.home',
+        icon: 'ant-design:home-outlined',
+        pathName: AppRouteNames.Home,
+      },
+      {
+        title: 'app.page-title.about',
+        icon: 'bx-bxs-star-half',
+        pathName: AppRouteNames.About,
+      },
+    ],
   },
-  children: [{
-    name: AppRouteNames.Home,
-    path: '',
-    component: HomeView,
-  }, {
-    name: AppRouteNames.About,
-    path: 'about',
-    component: AboutView,
-    meta: {
-      title: 'app.page-title.about',
+  children: [
+    {
+      name: AppRouteNames.Home,
+      path: '',
+      component: HomeView,
     },
-  }],
+    {
+      name: AppRouteNames.About,
+      path: 'about',
+      component: AboutView,
+      meta: {
+        title: 'app.page-title.about',
+      },
+    },
+  ],
 } as RouteRecordRaw

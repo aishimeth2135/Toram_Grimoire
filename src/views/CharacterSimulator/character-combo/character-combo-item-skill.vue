@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col items-center w-28">
-    <div class="w-full flex justify-center relative">
+  <div class="flex w-28 flex-col items-center">
+    <div class="relative flex w-full justify-center">
       <div
         class="combo-skill-circle"
         :class="{
@@ -24,10 +24,16 @@
         @click="comboSkillState.comboSkill.remove()"
       />
     </div>
-    <div v-if="currentSkill && comboSkillState.valid" class="mt-2 flex flex-col items-center">
+    <div
+      v-if="currentSkill && comboSkillState.valid"
+      class="mt-2 flex flex-col items-center"
+    >
       <div class="mb-2">
         <cy-options
-          v-model:value="comboSkillState.comboSkill.tag/* eslint-disable-line vue/no-mutating-props */"
+          v-model:value="
+            comboSkillState.comboSkill
+              .tag /* eslint-disable-line vue/no-mutating-props */
+          "
           :options="ComboSkillTagOptions"
         >
           <template #title="{ shown }">
@@ -38,13 +44,17 @@
             />
           </template>
           <template #item="{ id, value }">
-            <cy-icon-text :icon="getTagIcon(value)">{{ t('character-simulator.combo.tags.' + id) }}</cy-icon-text>
+            <cy-icon-text :icon="getTagIcon(value)">{{
+              t('character-simulator.combo.tags.' + id)
+            }}</cy-icon-text>
           </template>
         </cy-options>
       </div>
       <div class="text-red-60">{{ comboSkillState.rate }}%</div>
       <div class="text-blue-60">{{ comboSkillState.mpCost }}</div>
-      <div v-if="damageRatio !== null" class="text-violet-60">{{ damageRatio }}%</div>
+      <div v-if="damageRatio !== null" class="text-violet-60">
+        {{ damageRatio }}%
+      </div>
     </div>
   </div>
 </template>
@@ -54,14 +64,14 @@ import { computed, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { ComboSkillState } from '@/lib/Character/CharacterCombo'
-import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
 import { CharacterComboTags } from '@/lib/Character/CharacterCombo/enums'
+import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
 
 import { CharacterSimulatorInjectionKey } from '../injection-keys'
 
 interface Props {
-  comboSkillState: ComboSkillState;
-  damageRatio?: number | null;
+  comboSkillState: ComboSkillState
+  damageRatio?: number | null
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -94,22 +104,25 @@ const getTagIcon = (tag: CharacterComboTags | null) => {
     return 'mdi:selection-ellipse'
   }
   const idx = ComboSkillTagOptions.findIndex(item => item.value === tag)
-  return idx > -1 ? `mdi:numeric-${idx + 1}-circle-outline` : 'mdi:selection-ellipse'
+  return idx > -1
+    ? `mdi:numeric-${idx + 1}-circle-outline`
+    : 'mdi:selection-ellipse'
 }
 
-const skillIconPath = computed(() => currentSkill.value ? getSkillIconPath(currentSkill.value) : null)
+const skillIconPath = computed(() =>
+  currentSkill.value ? getSkillIconPath(currentSkill.value) : null
+)
 
 const { selectComboSkill } = inject(CharacterSimulatorInjectionKey)!
 </script>
 
 <style lang="postcss" scoped>
 .combo-skill-circle {
-  @apply
-    w-12 h-12
-    bg-white
-    border-1 rounded-full border-primary-30 hover:border-primary-50
-    flex items-center justify-center
-    cursor-pointer duration-200;
+  @apply flex h-12
+    w-12
+    cursor-pointer items-center justify-center rounded-full
+    border-1 border-primary-30 bg-white
+    duration-200 hover:border-primary-50;
 
   &.has-skill:not(.combo-skill-invalid) {
     background: linear-gradient(to bottom, #fff, #ffd1ea, #ff9ed3);

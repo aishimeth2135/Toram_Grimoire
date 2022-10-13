@@ -1,23 +1,23 @@
 import { defineStore } from 'pinia'
-import { readonly, Ref, ref } from 'vue'
+import { Ref, readonly, ref } from 'vue'
 
 import { MessageNotifyButtonItem, MessageNotifyOptions } from '@/setup/Notify'
 
 interface NotifyMessageItem {
-  icon: string;
-  message: string;
-  id: string | null;
+  icon: string
+  message: string
+  id: string | null
   options: {
-    buttons?: MessageNotifyButtonItemWithId[];
-    afterHide?: () => void;
-  };
-  counter: number;
-  removeTime: number;
-  iid: number;
+    buttons?: MessageNotifyButtonItemWithId[]
+    afterHide?: () => void
+  }
+  counter: number
+  removeTime: number
+  iid: number
 }
 
 interface MessageNotifyButtonItemWithId extends MessageNotifyButtonItem {
-  iid: number;
+  iid: number
 }
 
 export const useNotifyStore = defineStore('app-notify', () => {
@@ -36,11 +36,29 @@ export const useNotifyStore = defineStore('app-notify', () => {
     }
   }
 
-  const createMessage = ({ icon, message, id, options }: { icon: string; message: string; id: string | null; options: MessageNotifyOptions }) => {
-    const find = id !== null ? messages.value.find(item => item.id !== null && item.id === id) : null
+  const createMessage = ({
+    icon,
+    message,
+    id,
+    options,
+  }: {
+    icon: string
+    message: string
+    id: string | null
+    options: MessageNotifyOptions
+  }) => {
+    const find =
+      id !== null
+        ? messages.value.find(item => item.id !== null && item.id === id)
+        : null
     if (!find) {
       const newOptions = {
-        buttons: options.buttons ? (options.buttons.map((item, iid) => ({ iid, ...item })) as MessageNotifyButtonItemWithId[]) : undefined,
+        buttons: options.buttons
+          ? (options.buttons.map((item, iid) => ({
+              iid,
+              ...item,
+            })) as MessageNotifyButtonItemWithId[])
+          : undefined,
         afterHide: options.afterHide,
       }
       const msg: NotifyMessageItem = {

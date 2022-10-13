@@ -1,6 +1,5 @@
 <template>
-  <AppLayoutMain>
-  </AppLayoutMain>
+  <AppLayoutMain> </AppLayoutMain>
 </template>
 
 <script lang="ts">
@@ -10,8 +9,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useRoute } from 'vue-router'
 import { computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 import { downloadCsv } from '@/stores/app/datas/utils/DownloadDatas'
 

@@ -1,13 +1,13 @@
 import Grimoire from '@/shared/Grimoire'
 
 import { Stat } from '@/lib/Character/Stat'
-import { StatTypes, StatNormalTypes } from '@/lib/Character/Stat/enums'
+import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat/enums'
 
 import { EnchantCategory, EnchantItem } from './base'
+import type { MaterialPointTypeRange } from './base'
+import { EnchantEquipmentTypes, EnchantStepTypes } from './enums'
 import STATE from './state'
 import { calcPotentialExtraRate } from './utils'
-import { EnchantEquipmentTypes, EnchantStepTypes } from './enums'
-import type { MaterialPointTypeRange } from './base'
 
 const EnchantEquipmentTypesList = [
   EnchantEquipmentTypes.MainWeapon,
@@ -25,36 +25,36 @@ const EnchantStepStatTypesList = [
 ] as const
 
 type EnchantBuildSaveData = {
-  name: string;
-  equipment: EnchantEquipmentSaveData;
+  name: string
+  equipment: EnchantEquipmentSaveData
 }
 
 type EnchantEquipmentSaveData = {
-  basePotential: number;
-  originalPotential: number;
-  fieldType: number;
-  isOriginalElement: boolean;
-  steps: EnchantStepSaveData[];
+  basePotential: number
+  originalPotential: number
+  fieldType: number
+  isOriginalElement: boolean
+  steps: EnchantStepSaveData[]
 }
 
 type EnchantStepSaveData = {
-  type: number;
-  hidden: boolean;
-  step: number;
-  stats: EnchantStepStatSaveData[];
+  type: number
+  hidden: boolean
+  step: number
+  stats: EnchantStepStatSaveData[]
 }
 
 type EnchantStepStatSaveData = {
-  type: number;
-  value: number;
+  type: number
+  value: number
 
   // basename of EnchantItem.statBase
-  base: string;
+  base: string
 }
 
 interface MaterialPointCost {
-  type: MaterialPointTypeRange;
-  value: number;
+  type: MaterialPointTypeRange
+  value: number
 }
 
 class EnchantBuild {
@@ -102,8 +102,8 @@ class EnchantEquipment {
 
   constructor() {
     this._steps = []
-    this.basePotential = STATE.EquipmentBasePotentialMinimum,
-    this.originalPotential = 1
+    ;(this.basePotential = STATE.EquipmentBasePotentialMinimum),
+      (this.originalPotential = 1)
     this.fieldType = EnchantEquipmentTypes.MainWeapon
     this.isOriginalElement = false
   }
@@ -120,15 +120,23 @@ class EnchantEquipment {
     }
   }
 
-  static load(categorys: EnchantCategory[], data: EnchantEquipmentSaveData): EnchantEquipment {
+  static load(
+    categorys: EnchantCategory[],
+    data: EnchantEquipmentSaveData
+  ): EnchantEquipment {
     const equipment = new EnchantEquipment()
     equipment.basePotential = data.basePotential
     equipment.originalPotential = data.originalPotential
     equipment.fieldType = EnchantEquipmentTypesList[data.fieldType]
-    equipment.isOriginalElement = typeof data.isOriginalElement === 'number' ?
-      (data.isOriginalElement ? true : false) :
-      data.isOriginalElement
-    const steps = data.steps.map(stepData => EnchantStep.load(categorys, equipment, stepData))
+    equipment.isOriginalElement =
+      typeof data.isOriginalElement === 'number'
+        ? data.isOriginalElement
+          ? true
+          : false
+        : data.isOriginalElement
+    const steps = data.steps.map(stepData =>
+      EnchantStep.load(categorys, equipment, stepData)
+    )
     equipment.loadSteps(steps)
     return equipment
   }
@@ -150,7 +158,9 @@ class EnchantEquipment {
     if (!this.lastStep) {
       return []
     }
-    return this.steps(this.lastStep.index).filter(step => step.stats.length !== 0)
+    return this.steps(this.lastStep.index).filter(
+      step => step.stats.length !== 0
+    )
   }
 
   get firstStep(): EnchantStep | null {
@@ -158,12 +168,17 @@ class EnchantEquipment {
   }
 
   get lastStep(): EnchantStep | null {
-    return this.steps().find((step, idx, ary) => {
-      if ((idx === ary.length - 1)) {
-        return true
-      }
-      return step.remainingPotential < 1 || !step.belongEquipment.checkStats(step.index)
-    }) || null
+    return (
+      this.steps().find((step, idx, ary) => {
+        if (idx === ary.length - 1) {
+          return true
+        }
+        return (
+          step.remainingPotential < 1 ||
+          !step.belongEquipment.checkStats(step.index)
+        )
+      }) || null
+    )
   }
 
   get allMaterialPointCost(): number[] {
@@ -172,7 +187,7 @@ class EnchantEquipment {
       step.stats.forEach(stat => {
         const item = stat.materialPointCost
         mats[item.type] += item.value
-      }),
+      })
     )
     return mats
   }
@@ -197,8 +212,11 @@ class EnchantEquipment {
     }
     const lastIndex = this.lastStep.index
     const pot = this.stepRemainingPotential(lastIndex)
-    const previewStepPot = Math.max(this.stepRemainingPotential(lastIndex - 1), this.basePotential)
-    return Math.max(160 + pot * 230 / previewStepPot, 0)
+    const previewStepPot = Math.max(
+      this.stepRemainingPotential(lastIndex - 1),
+      this.basePotential
+    )
+    return Math.max(160 + (pot * 230) / previewStepPot, 0)
   }
 
   get operationStepsQuantity() {
@@ -230,16 +248,19 @@ class EnchantEquipment {
    */
   steps(stepIdx?: number): EnchantStep[] {
     stepIdx = stepIdx === undefined ? this._steps.length - 1 : stepIdx
-    return stepIdx < 0 ? [] :
-      this._steps.slice(0, stepIdx + 1).filter(step => !step.hidden)
+    return stepIdx < 0
+      ? []
+      : this._steps.slice(0, stepIdx + 1).filter(step => !step.hidden)
   }
 
   /**
    * @returns Remaining potential of specified step index
    */
   stepRemainingPotential(stepIdx?: number): number {
-    return this.steps(stepIdx)
-      .reduce((cur, step) => (cur - step.potentialCost), this.originalPotential)
+    return this.steps(stepIdx).reduce(
+      (cur, step) => cur - step.potentialCost,
+      this.originalPotential
+    )
   }
 
   /**
@@ -270,7 +291,11 @@ class EnchantEquipment {
    * Calc sum of value of specified stat of all steps before step index,
    * then return EnchantStat which value is sum.
    */
-  stat(itemBase: EnchantItem, type: StatNormalTypes, stepIdx?: number): EnchantStat {
+  stat(
+    itemBase: EnchantItem,
+    type: StatNormalTypes,
+    stepIdx?: number
+  ): EnchantStat {
     const value = this.steps(stepIdx).reduce((cur, step) => {
       const stepStat = step.stat(itemBase, type)
       return stepStat?.valid ? cur + stepStat.value : cur
@@ -284,10 +309,12 @@ class EnchantEquipment {
   stats(stepIdx?: number): EnchantStat[] {
     const stats: EnchantStat[] = []
     this.steps(stepIdx).forEach(step => {
-      step.stats.filter(stat => stat.valid).forEach(stat => {
-        const find = stats.find(_stat => _stat.equals(stat))
-        find ? find.add(stat.value) : stats.push(stat.pure())
-      })
+      step.stats
+        .filter(stat => stat.valid)
+        .forEach(stat => {
+          const find = stats.find(_stat => _stat.equals(stat))
+          find ? find.add(stat.value) : stats.push(stat.pure())
+        })
     })
     return stats
   }
@@ -307,27 +334,34 @@ class EnchantEquipment {
     return this.stepRemainingPotential(stepIdx) > 0
   }
 
-
   refreshStats() {
     this.stats().forEach(stat => {
       const [min, max] = stat.limit
       const value = stat.value
       if (value > max || value < min) {
         const dif = value > max ? value - max : value - min
-        this.steps().slice().reverse().find(step => {
-          const find = step.stat(stat.itemBase, stat.type)
-          if (find) {
-            find.add(-1 * dif)
-            return true
-          }
-          return false
-        })
+        this.steps()
+          .slice()
+          .reverse()
+          .find(step => {
+            const find = step.stat(stat.itemBase, stat.type)
+            if (find) {
+              find.add(-1 * dif)
+              return true
+            }
+            return false
+          })
       }
     })
   }
 
   swapStep(i1: number, i2: number) {
-    if (i1 < 0 || i2 < 0 || i1 >= this._steps.length || i2 >= this._steps.length) {
+    if (
+      i1 < 0 ||
+      i2 < 0 ||
+      i1 >= this._steps.length ||
+      i2 >= this._steps.length
+    ) {
       return false
     }
     const tmp = this._steps[i1]
@@ -342,13 +376,15 @@ class EnchantEquipment {
 
   checkMergeSteps() {
     const steps = this.steps()
-    type MergeItem = {
-      merged: true;
-    } | {
-      merged: boolean;
-      step: EnchantStep;
-      id: string;
-    }
+    type MergeItem =
+      | {
+          merged: true
+        }
+      | {
+          merged: boolean
+          step: EnchantStep
+          id: string
+        }
     const ids: MergeItem[] = steps.map(step => {
       if (step.stats.length !== 1 || step.type !== EnchantStepTypes.Each) {
         return {
@@ -390,11 +426,12 @@ class EnchantEquipment {
       const previousStep = step.previousStep!
       const stats = step.stats.map(stat => stat.clone())
       step.remove()
-      stats.forEach(stat => previousStep.appendStat(stat.itemBase, stat.type, stat.value))
+      stats.forEach(stat =>
+        previousStep.appendStat(stat.itemBase, stat.type, stat.value)
+      )
     })
   }
 }
-
 
 class EnchantStep {
   private _parent: EnchantEquipment
@@ -411,7 +448,6 @@ class EnchantStep {
     this.hidden = false
   }
 
-
   save(): EnchantStepSaveData {
     return {
       type: EnchantStepTypesList.indexOf(this.type),
@@ -421,11 +457,22 @@ class EnchantStep {
     }
   }
 
-  static load(categorys: EnchantCategory[], equipment: EnchantEquipment, data: EnchantStepSaveData): EnchantStep {
+  static load(
+    categorys: EnchantCategory[],
+    equipment: EnchantEquipment,
+    data: EnchantStepSaveData
+  ): EnchantStep {
     const step = new EnchantStep(equipment)
     step.type = EnchantStepTypesList[data.type] ?? EnchantStepTypes.Normal
-    step.hidden = typeof data.hidden === 'number' ? (data.hidden === 1 ? true : false) : data.hidden
-    const stats = data.stats.map(statData => EnchantStepStat.load(categorys, step, statData)).filter(stat => stat)
+    step.hidden =
+      typeof data.hidden === 'number'
+        ? data.hidden === 1
+          ? true
+          : false
+        : data.hidden
+    const stats = data.stats
+      .map(statData => EnchantStepStat.load(categorys, step, statData))
+      .filter(stat => stat)
     step.stats = stats as EnchantStepStat[]
 
     return step
@@ -449,7 +496,9 @@ class EnchantStep {
     }
     const er = this.potentialExtraRate
     if (this.type === EnchantStepTypes.Normal) {
-      return this.realPotentialCost(this.stats.reduce((cur, stat) => cur + stat.potentialCost, 0) * er)
+      return this.realPotentialCost(
+        this.stats.reduce((cur, stat) => cur + stat.potentialCost, 0) * er
+      )
     }
     if (this.type === EnchantStepTypes.Each) {
       return this.firstStat ? this.firstStat.potentialCost : 0
@@ -486,9 +535,16 @@ class EnchantStep {
     return this.stats[0] || null
   }
 
-  appendStat(itemBase: EnchantItem, type: StatNormalTypes, value: number): EnchantStepStat | null {
+  appendStat(
+    itemBase: EnchantItem,
+    type: StatNormalTypes,
+    value: number
+  ): EnchantStepStat | null {
     const stat = new EnchantStepStat(this, itemBase, type, value)
-    if (!this.belongEquipment.checkStats() && !this.belongEquipment.hasStat(stat)) {
+    if (
+      !this.belongEquipment.checkStats() &&
+      !this.belongEquipment.hasStat(stat)
+    ) {
       return null
     }
     this.stats.push(stat)
@@ -496,14 +552,17 @@ class EnchantStep {
   }
 
   stat(itemBase: EnchantItem, type: StatTypes): EnchantStepStat | null {
-    return this.stats.find(stat => stat.itemBase === itemBase && stat.type === type) ?? null
+    return (
+      this.stats.find(
+        stat => stat.itemBase === itemBase && stat.type === type
+      ) ?? null
+    )
   }
 
   remove() {
     this.belongEquipment.allSteps.splice(this.index, 1)
     this.stats.forEach(stat => stat.remove())
   }
-
 
   realPotentialCost(potential: number): number {
     return potential >= 0 ? Math.floor(potential) : Math.ceil(potential)
@@ -517,21 +576,30 @@ class EnchantStep {
     if (this.index === 0 || !this.belongEquipment.lastStep) {
       return
     }
-    const stats = this.belongEquipment.stats(this.belongEquipment.lastStep.index)
+    const stats = this.belongEquipment.stats(
+      this.belongEquipment.lastStep.index
+    )
     const newStats: EnchantStepStat[] = []
-    stats.filter(stat => stat.value > 0).forEach(stat => {
-      const max = stat.limit[1]
-      const find = this.stat(stat.itemBase, stat.type)
-      if (find && find.value === stat.value) {
-        return
-      }
-      const value = max - stat.value
-      if (value === 0) {
-        return
-      }
-      const newStat = new EnchantStepStat(this, stat.itemBase, stat.type, value)
-      newStats.push(newStat)
-    })
+    stats
+      .filter(stat => stat.value > 0)
+      .forEach(stat => {
+        const max = stat.limit[1]
+        const find = this.stat(stat.itemBase, stat.type)
+        if (find && find.value === stat.value) {
+          return
+        }
+        const value = max - stat.value
+        if (value === 0) {
+          return
+        }
+        const newStat = new EnchantStepStat(
+          this,
+          stat.itemBase,
+          stat.type,
+          value
+        )
+        newStats.push(newStat)
+      })
     newStats.forEach(stat => {
       const find = this.stat(stat.itemBase, stat.type)
       if (find) {
@@ -562,7 +630,10 @@ class EnchantStep {
       if (old <= 0) {
         return -2
       }
-      this.type = this.type === EnchantStepTypes.Normal ? EnchantStepTypes.Each : EnchantStepTypes.Normal
+      this.type =
+        this.type === EnchantStepTypes.Normal
+          ? EnchantStepTypes.Each
+          : EnchantStepTypes.Normal
       if (this.potentialCost > old) {
         return -1
       }
@@ -583,7 +654,9 @@ class EnchantStep {
   }
 
   toString() {
-    return `${this.type === EnchantStepTypes.Each ? '@' : '#'}|${this.stats.map(stat => stat.showBase()).join(', ')}|${this.remainingPotential}pt`
+    return `${this.type === EnchantStepTypes.Each ? '@' : '#'}|${this.stats
+      .map(stat => stat.showBase())
+      .join(', ')}|${this.remainingPotential}pt`
   }
 }
 
@@ -662,17 +735,25 @@ class EnchantStat {
       _to = Math.abs(_to)
       _from = Math.abs(_from)
       if (_from > _to) {
-        [_from, _to] = [_to, _from]
+        ;[_from, _to] = [_to, _from]
       }
-      return Array(_to - _from).fill(0)
+      return Array(_to - _from)
+        .fill(0)
         .map((item, idx) => idx + _from + 1)
-        .reduce((item1, item2) => item1 + Math.floor(item2 * item2 * bv * rate / 100), 0)
+        .reduce(
+          (item1, item2) =>
+            item1 + Math.floor((item2 * item2 * bv * rate) / 100),
+          0
+        )
     }
 
     return from * to >= 0 ? calc(from, to) : calc(from, 0) + calc(0, to)
   }
 
-  showAmount(type: 'current' | 'base' = 'current', previousValue: number = 0): string {
+  showAmount(
+    type: 'current' | 'base' = 'current',
+    previousValue: number = 0
+  ): string {
     const [unitValue, unitValue2] = this.itemBase.getUnitValue(this.type)
     const convertThreshold = this.potentialConvertThreshold
     let value = this.value + previousValue
@@ -687,7 +768,8 @@ class EnchantStat {
     }
 
     if (type === 'base') {
-      let pv = previousValue * sign, pv2 = 0
+      let pv = previousValue * sign,
+        pv2 = 0
       if (pv > convertThreshold) {
         pv2 = pv - convertThreshold
         pv = convertThreshold
@@ -703,13 +785,17 @@ class EnchantStat {
   }
 }
 
-
 class EnchantStepStat extends EnchantStat {
   static POTENTIAL_CONVERT_DEFAULT_THRESHOLD = 20
 
   private _parent: EnchantStep
 
-  constructor(parent: EnchantStep, itemBase: EnchantItem, type: StatNormalTypes, value: number) {
+  constructor(
+    parent: EnchantStep,
+    itemBase: EnchantItem,
+    type: StatNormalTypes,
+    value: number
+  ) {
     super(itemBase, type, value)
     this._parent = parent
   }
@@ -722,14 +808,20 @@ class EnchantStepStat extends EnchantStat {
     }
   }
 
-  static load(categorys: EnchantCategory[], step: EnchantStep, data: EnchantStepStatSaveData) {
+  static load(
+    categorys: EnchantCategory[],
+    step: EnchantStep,
+    data: EnchantStepStatSaveData
+  ) {
     let itemBase
     categorys.find(category => {
       itemBase = category.items.find(item => item.statBase.baseId === data.base)
       return itemBase
     })
     if (!itemBase) {
-      console.warn(`can not find the EnchantItem "${data.base}" when load EnchantStepStat`)
+      console.warn(
+        `can not find the EnchantItem "${data.base}" when load EnchantStepStat`
+      )
       return null
     }
     const type = EnchantStepStatTypesList[data.type]
@@ -754,7 +846,6 @@ class EnchantStepStat extends EnchantStat {
     this.stat.value = value
   }
 
-
   get index(): number {
     return this._parent.stats.indexOf(this)
   }
@@ -763,7 +854,10 @@ class EnchantStepStat extends EnchantStat {
     if (this._parent.type === EnchantStepTypes.Each && this.index !== 0) {
       return false
     }
-    if (this.itemBase.belongCategory.weaponOnly && this.belongEquipment.fieldType !== EnchantEquipmentTypes.MainWeapon) {
+    if (
+      this.itemBase.belongCategory.weaponOnly &&
+      this.belongEquipment.fieldType !== EnchantEquipmentTypes.MainWeapon
+    ) {
       return false
     }
     return true
@@ -797,7 +891,9 @@ class EnchantStepStat extends EnchantStat {
         if ((sv > 0 && cur + sv > value) || (sv < 0 && cur + sv < value)) {
           sv = value - cur
         }
-        res += this._parent.realPotentialCost(this.calcPotentialCost(sv, cur + prev) * er)
+        res += this._parent.realPotentialCost(
+          this.calcPotentialCost(sv, cur + prev) * er
+        )
         cur += sv
       }
       return res
@@ -805,9 +901,9 @@ class EnchantStepStat extends EnchantStat {
   }
 
   get finalPotentialEffect(): number {
-    return this._parent.type === EnchantStepTypes.Normal ?
-      -1 * this.potentialCost * this._parent.potentialExtraRate :
-      -1 * this._parent.potentialCost
+    return this._parent.type === EnchantStepTypes.Normal
+      ? -1 * this.potentialCost * this._parent.potentialExtraRate
+      : -1 * this._parent.potentialCost
   }
 
   get materialPointCost(): MaterialPointCost {
@@ -820,8 +916,11 @@ class EnchantStepStat extends EnchantStat {
   }
 
   get previousStepStatValue(): number {
-    const stat = this.belongEquipment
-      .stat(this.itemBase, this.type, this._parent.index - 1)
+    const stat = this.belongEquipment.stat(
+      this.itemBase,
+      this.type,
+      this._parent.index - 1
+    )
     return stat ? stat.value : 0
   }
 
@@ -850,7 +949,9 @@ class EnchantStepStat extends EnchantStat {
 
   calcPotentialCost(value: number, pre: number = 0): number {
     const potential = this.potential
-    const convertThreshold = this.itemBase.getPotentialConvertThreshold(this.type)
+    const convertThreshold = this.itemBase.getPotentialConvertThreshold(
+      this.type
+    )
 
     const sign = value < 0 ? -1 : 1
 
@@ -872,10 +973,10 @@ class EnchantStepStat extends EnchantStat {
       value = 0
     }
 
-    const rate = (5 + STATE.Character.tec / 10)
-    return (value + v2) >= 0 ?
-      value * potential + v2 * potential * 2 :
-      Math.ceil((((value * potential) + (v2 * potential) / 2) * rate) / 100)
+    const rate = 5 + STATE.Character.tec / 10
+    return value + v2 >= 0
+      ? value * potential + v2 * potential * 2
+      : Math.ceil(((value * potential + (v2 * potential) / 2) * rate) / 100)
   }
 
   /**
@@ -891,5 +992,11 @@ class EnchantStepStat extends EnchantStat {
   }
 }
 
-export { EnchantStat, EnchantStepStat, EnchantStep, EnchantEquipment, EnchantBuild }
+export {
+  EnchantStat,
+  EnchantStepStat,
+  EnchantStep,
+  EnchantEquipment,
+  EnchantBuild,
+}
 export type { EnchantBuildSaveData }

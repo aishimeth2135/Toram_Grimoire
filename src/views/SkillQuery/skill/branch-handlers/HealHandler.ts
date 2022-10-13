@@ -1,14 +1,28 @@
-import { isNumberString, splitComma } from '@/shared/utils/string'
 import Grimoire from '@/shared/Grimoire'
+import { isNumberString, splitComma } from '@/shared/utils/string'
 
-import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
-import { computeBranchValue, computedBranchHelper, HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
+import SkillComputingContainer, {
+  SkillBranchItem,
+} from '@/lib/Skill/SkillComputingContainer'
+import {
+  HandleBranchValuePropsMap,
+  computeBranchValue,
+  computedBranchHelper,
+} from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { cloneBranchProps, handleDisplayData, HandleDisplayDataOptionFilters, HandleBranchLangPropsMap } from './handle'
+import {
+  HandleBranchLangPropsMap,
+  HandleDisplayDataOptionFilters,
+  cloneBranchProps,
+  handleDisplayData,
+} from './handle'
 import MapContainer from './handle/MapContainer'
 import { numberStringToPercentage } from './handle/utils'
 
-export default function HealHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
+export default function HealHandler<BranchItem extends SkillBranchItem>(
+  computing: SkillComputingContainer,
+  branchItem: BranchItem
+) {
   const { t } = Grimoire.i18n
 
   const props = cloneBranchProps(branchItem, {
@@ -22,7 +36,11 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(computin
       calc: true,
     },
   })
-  const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>(['duration', 'cycle', 'constant'])
+  const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>([
+    'duration',
+    'cycle',
+    'constant',
+  ])
   valuePropsMap.set('frequency', t('global.times'))
 
   const langAttrsMap = new MapContainer<HandleBranchLangPropsMap>(['type'])
@@ -39,10 +57,12 @@ export default function HealHandler<BranchItem extends SkillBranchItem>(computin
       return res
     })
     const texts = splitComma(props.get('extra_text')!)
-    extraValueList.push(...values.map((value, idx) => ({
-      text: texts[idx] || '@',
-      value,
-    })))
+    extraValueList.push(
+      ...values.map((value, idx) => ({
+        text: texts[idx] || '@',
+        value,
+      }))
+    )
   }
 
   const pureDatas = ['name']

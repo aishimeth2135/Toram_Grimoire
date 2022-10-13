@@ -1,28 +1,28 @@
 import Grimoire from '@/shared/Grimoire'
-import { isNumberString } from '@/shared/utils/string'
 import { Images } from '@/shared/services/Images'
+import { isNumberString } from '@/shared/utils/string'
 
-import { StatTypes } from '@/lib/Character/Stat/enums'
 import { Stat } from '@/lib/Character/Stat'
+import { StatTypes } from '@/lib/Character/Stat/enums'
 
 interface ItemObtain {
-  name: string;
-  map?: string;
-  dye?: string;
-  type?: string;
-  npc?: string;
+  name: string
+  map?: string
+  dye?: string
+  type?: string
+  npc?: string
 }
 
 interface ItemRecipe {
-  item_level?: number;
-  item_difficulty?: number;
-  materials?: ItemRecipeMaterialItem[];
-  cost?: number;
-  potential?: number;
+  item_level?: number
+  item_difficulty?: number
+  materials?: ItemRecipeMaterialItem[]
+  cost?: number
+  potential?: number
 }
 
 interface ItemExtra {
-  caption?: string;
+  caption?: string
 }
 
 class Item {
@@ -53,7 +53,12 @@ class Item {
     this.obtains.push(obtain)
     return obtain
   }
-  appendStat(baseId: string, value: number | string, tail: string, restriction: string) {
+  appendStat(
+    baseId: string,
+    value: number | string,
+    tail: string,
+    restriction: string
+  ) {
     if (typeof value === 'string') {
       value = isNumberString(value) ? parseFloat(value) : 0
     }
@@ -68,7 +73,7 @@ class Item {
     })()
     const statBase = Grimoire.Character.findStatBase(baseId)
     if (!statBase) {
-      console.warn('[Character] Can\'t find stat-base with id: ' + baseId)
+      console.warn("[Character] Can't find stat-base with id: " + baseId)
       return
     }
     const stat = statBase.createStat(type, value)
@@ -88,7 +93,14 @@ class Equipment extends Item {
   caption: string
   unknowCategory: null | string
 
-  constructor(id: number, name: string, category: number, baseValue: number, stability: number, caption: string) {
+  constructor(
+    id: number,
+    name: string,
+    category: number,
+    baseValue: number,
+    stability: number,
+    caption: string
+  ) {
     super(id, name)
 
     this.category = category
@@ -111,7 +123,12 @@ class Crystal extends Item {
   bossCategory: number
   enhancer: null | string
 
-  constructor(id: number, name: string, category: number, bossCategory: number) {
+  constructor(
+    id: number,
+    name: string,
+    category: number,
+    bossCategory: number
+  ) {
     super(id, name)
 
     this.category = category
@@ -123,21 +140,32 @@ class Crystal extends Item {
   }
 
   get crystalBaseIconPath() {
-    const type = ['weapon', 'body', 'additional', 'special', 'normal'][this.category]
+    const type = ['weapon', 'body', 'additional', 'special', 'normal'][
+      this.category
+    ]
     return type ? Images.crystalIcons.get(type) : '#'
   }
 
   get crystalIconPath() {
-    return this.enhancer ? Images.crystalIcons.get('enhance') : this.crystalBaseIconPath
+    return this.enhancer
+      ? Images.crystalIcons.get('enhance')
+      : this.crystalBaseIconPath
   }
 
   getRelatedCrystals(crystals: Crystal[]) {
-    const findByName = (name: string) => crystals.find(_crystal => _crystal.name === name)
+    const nameMap = new Map<string, Crystal>()
+    const enhancerMap = new Map<string, Crystal>()
+    crystals.forEach(crystal => {
+      nameMap.set(crystal.name, crystal)
+      if (crystal.enhancer) {
+        enhancerMap.set(crystal.enhancer, crystal)
+      }
+    })
     const enhancers = (() => {
       const res: Crystal[] = []
       let cur: Crystal = this
       while (cur.enhancer) {
-        const _cur = findByName(cur.enhancer)
+        const _cur = nameMap.get(cur.enhancer)
         if (!_cur) {
           break
         }
@@ -149,21 +177,17 @@ class Crystal extends Item {
       }
       return res
     })()
-    const findByEnhancer = (name: string) => crystals.find(_crystal => _crystal.enhancer === name)
     const prependeds = (() => {
       const res: Crystal[] = []
       let cur: Crystal = this
-      while (true) { // eslint-disable-line
-        const _cur = findByEnhancer(cur.name)
+      do {
+        const _cur = enhancerMap.get(cur.name)
         if (!_cur) {
           break
         }
         res.push(_cur)
         cur = _cur
-        if (cur.name === this.name) {
-          break
-        }
-      }
+      } while (cur.name !== this.name)
       return res
     })()
 

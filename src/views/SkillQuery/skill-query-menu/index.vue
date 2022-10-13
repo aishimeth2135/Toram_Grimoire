@@ -2,12 +2,15 @@
   <AppLayoutBottom>
     <template #default>
       <div class="flex items-center">
-        <div class="flex items-center px-2 space-x-2">
-          <cy-button-plain icon="mdi:order-numeric-descending" @click="toggleSkillLevel">
+        <div class="flex items-center space-x-2 px-2">
+          <cy-button-plain
+            icon="mdi:order-numeric-descending"
+            @click="toggleSkillLevel"
+          >
             {{ `Lv.${skillLevel}` }}
           </cy-button-plain>
           <cy-button-plain
-            v-for="({ key }) in equipmentOptions"
+            v-for="{ key } in equipmentOptions"
             :key="key"
             :icon="getEquipmentImagePath(selectedEquipment[key])"
             :icon-src="selectedEquipment[key] === null ? 'iconify' : 'image'"
@@ -18,7 +21,11 @@
         </div>
         <cy-button-icon
           class="ml-auto"
-          :icon="contents.advancedMenu ? 'akar-icons:circle-chevron-down' : 'akar-icons:circle-chevron-up'"
+          :icon="
+            contents.advancedMenu
+              ? 'akar-icons:circle-chevron-down'
+              : 'akar-icons:circle-chevron-up'
+          "
           @click="toggle('contents/advancedMenu', null, false)"
         />
       </div>
@@ -43,16 +50,13 @@
     <template #main-content>
       <AppLayoutBottomContent v-if="contents.advancedMenu" class="p-4">
         <div class="space-y-3">
-          <div
-            v-for="({ key, value }) in equipmentOptions"
-            :key="key"
-          >
+          <div v-for="{ key, value } in equipmentOptions" :key="key">
             <div>
               <cy-icon-text text-color="fuchsia-60" small>
                 {{ t(`skill-query.equipment.${key}: title`) }}
               </cy-icon-text>
             </div>
-            <div class="flex items-start flex-wrap">
+            <div class="flex flex-wrap items-start">
               <cy-button-radio
                 v-for="equip in value"
                 :key="equip ?? '--none--'"
@@ -70,7 +74,11 @@
           </cy-input-counter>
         </div>
         <div class="mt-3">
-          <cy-input-counter v-model:value="characterLevel" :range="[1, 250]" :step="10">
+          <cy-input-counter
+            v-model:value="characterLevel"
+            :range="[1, 250]"
+            :step="10"
+          >
             <template #title>{{ t('skill-query.character-level') }}</template>
           </cy-input-counter>
         </div>
@@ -80,7 +88,7 @@
               {{ t(`skill-query.formula-display-mode.title`) }}
             </cy-icon-text>
           </div>
-          <div class="flex items-center flex-wrap">
+          <div class="flex flex-wrap items-center">
             <cy-button-radio
               :selected="formulaDisplayMode === FormulaDisplayModes.Normal"
               @click="formulaDisplayMode = FormulaDisplayModes.Normal"
@@ -88,7 +96,9 @@
               {{ t('skill-query.formula-display-mode.normal') }}
             </cy-button-radio>
             <cy-button-radio
-              :selected="formulaDisplayMode === FormulaDisplayModes.OriginalFormula"
+              :selected="
+                formulaDisplayMode === FormulaDisplayModes.OriginalFormula
+              "
               @click="formulaDisplayMode = FormulaDisplayModes.OriginalFormula"
             >
               {{ t('skill-query.formula-display-mode.original-formula') }}
@@ -119,29 +129,32 @@ import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { SkillTree } from '@/lib/Skill/Skill'
-import SkillComputingContainer, { EquipmentRestrictions, SkillItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, {
+  EquipmentRestrictions,
+  SkillItem,
+} from '@/lib/Skill/SkillComputingContainer'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 
 import ToggleService from '@/setup/ToggleService'
 
-import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
+import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 
 import SkillSwitchEffectButtons from '../skill-switch-effect-buttons.vue'
 
 import { setupEquipmentSelect, setupSkillLevel } from './setup'
 
 interface Props {
-  skillItem: SkillItem | null;
-  skillTree: SkillTree;
-  skillComputingContainer: SkillComputingContainer;
-  selectedEquipment: EquipmentRestrictions;
+  skillItem: SkillItem | null
+  skillTree: SkillTree
+  skillComputingContainer: SkillComputingContainer
+  selectedEquipment: EquipmentRestrictions
 }
 const props = defineProps<Props>()
 
 interface Emits {
-  (evt: 'update:selected-equipment', value: EquipmentRestrictions): void;
-  (evt: 'go-skill-top'): void;
+  (evt: 'update:selected-equipment', value: EquipmentRestrictions): void
+  (evt: 'go-skill-top'): void
 }
 const emit = defineEmits<Emits>()
 
@@ -183,9 +196,7 @@ const {
   toggleCurrentEquipment,
 } = setupEquipmentSelect(skillTree, emit)
 
-const {
-  toggleSkillLevel,
-} = setupSkillLevel(skillLevel)
+const { toggleSkillLevel } = setupSkillLevel(skillLevel)
 
 const { t } = useI18n()
 </script>

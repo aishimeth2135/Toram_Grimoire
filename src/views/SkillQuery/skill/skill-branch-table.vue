@@ -1,12 +1,15 @@
 <template>
-  <div class="px-2 w-full overflow-x-auto">
-    <table class="border-0" :style="{ 'min-width': `${10 * datas.labels.length}rem` }">
+  <div class="w-full overflow-x-auto px-2">
+    <table
+      class="border-0"
+      :style="{ 'min-width': `${10 * datas.labels.length}rem` }"
+    >
       <thead>
         <tr>
           <th
             v-for="(label, idx) in datas.labels"
             :key="idx"
-            class="text-sm text-primary-30 text-left font-normal border-b-1 border-primary-30 px-3 py-1.5"
+            class="border-b-1 border-primary-30 px-3 py-1.5 text-left text-sm font-normal text-primary-30"
             :class="{
               'pl-5': idx === 0,
               'pr-5': idx === datas.labels.length - 1,
@@ -17,10 +20,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="container in datas.rows"
-          :key="container.instanceId"
-        >
+        <tr v-for="container in datas.rows" :key="container.instanceId">
           <td
             v-for="num in datas.labels.length"
             :key="num"
@@ -41,13 +41,15 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
-import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, {
+  SkillBranchItem,
+} from '@/lib/Skill/SkillComputingContainer'
 
 import TableHandler from './branch-handlers/TableHandler'
 
 interface Props {
-  computing: SkillComputingContainer;
-  branchItem: SkillBranchItem;
+  computing: SkillComputingContainer
+  branchItem: SkillBranchItem
 }
 
 const props = defineProps<Props>()
@@ -55,4 +57,3 @@ const { branchItem } = toRefs(props)
 
 const datas = computed(() => TableHandler(props.computing, branchItem.value))
 </script>
-

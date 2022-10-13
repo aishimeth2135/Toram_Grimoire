@@ -1,15 +1,20 @@
-import { ref, provide, watch, nextTick, shallowRef, computed } from 'vue'
+import { computed, nextTick, provide, ref, shallowRef, watch } from 'vue'
 import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
-import SkillComputingContainer, { SkillBranchItem, SkillEffectItem, SkillEffectItemHistory, SkillItem } from '@/lib/Skill/SkillComputingContainer'
-import { Skill } from '@/lib/Skill/Skill'
 import GlossaryTag from '@/lib/Glossary/GlossaryTag'
+import { Skill } from '@/lib/Skill/Skill'
+import SkillComputingContainer, {
+  SkillBranchItem,
+  SkillEffectItem,
+  SkillEffectItemHistory,
+  SkillItem,
+} from '@/lib/Skill/SkillComputingContainer'
 
-import { findStackState, TAG_BUTTON_CLASS_NAME } from './utils'
 import { ComputingContainerInjectionKey } from './injection-keys'
+import { TAG_BUTTON_CLASS_NAME, findStackState } from './utils'
 
 export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
   const { t } = useI18n()
@@ -29,16 +34,23 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
   }
 
   const findTag = (tagName: string): GlossaryTag | null => {
-    const tag = Grimoire.Glossary.tags.find(item => item.name.toLowerCase() === tagName.toLowerCase())
+    const tag = Grimoire.Glossary.tags.find(
+      item => item.name.toLowerCase() === tagName.toLowerCase()
+    )
     return tag || null
   }
 
-  const getTagText = (el: HTMLElement) => el.getAttribute('data-tag') || el.innerText
+  const getTagText = (el: HTMLElement) =>
+    el.getAttribute('data-tag') || el.innerText
 
   const appendTag = (tagName: string): void => {
     const tag = findTag(tagName)
     if (tag) {
-      currentTags.value.splice(currentTagIndex.value + 1, currentTags.value.length - currentTagIndex.value, tag)
+      currentTags.value.splice(
+        currentTagIndex.value + 1,
+        currentTags.value.length - currentTagIndex.value,
+        tag
+      )
     } else {
       const emptyTag = new GlossaryTag(tagName)
       emptyTag.appendRow('caption', t('skill-query.tag.no-data-tips'))
@@ -53,12 +65,17 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
 
   watch(currentTagIndex, async () => {
     await nextTick()
-    if (tagContent.value && tagContent.value.$el && tagContent.value.$el.querySelectorAll) {
+    if (
+      tagContent.value &&
+      tagContent.value.$el &&
+      tagContent.value.$el.querySelectorAll
+    ) {
       const click = function (this: HTMLElement, error: Event) {
         error.stopPropagation()
         appendTag(getTagText(this))
       }
-      tagContent.value.$el.querySelectorAll(`.${TAG_BUTTON_CLASS_NAME}[data-tag]`)
+      tagContent.value.$el
+        .querySelectorAll(`.${TAG_BUTTON_CLASS_NAME}[data-tag]`)
         .forEach(el => {
           if (el.getAttribute('data-tag-listener-flag') === '1') {
             return
@@ -86,23 +103,43 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
 export function setupComputingContainer(skill: Ref<Skill | null>) {
   const computingContainer = new SkillComputingContainer()
   const FORMULA_REPLACED_VARS = [
-    'BSTR', 'BINT', 'BAGI', 'BVIT', 'BDEX', 'TEC',
-    'STR', 'INT', 'AGI', 'VIT', 'DEX', 'shield_refining',
-    'dagger_atk', 'target_def', 'target_level', 'guard_power',
+    'BSTR',
+    'BINT',
+    'BAGI',
+    'BVIT',
+    'BDEX',
+    'TEC',
+    'STR',
+    'INT',
+    'AGI',
+    'VIT',
+    'DEX',
+    'shield_refining',
+    'dagger_atk',
+    'target_def',
+    'target_level',
+    'guard_power',
   ]
   FORMULA_REPLACED_VARS.forEach(varName => {
-    computingContainer.handleFormulaExtends.texts['$' + varName] = Grimoire.i18n.t(`skill-query.branch.formula-replaced-text.${varName}`)
+    computingContainer.handleFormulaExtends.texts['$' + varName] =
+      Grimoire.i18n.t(`skill-query.branch.formula-replaced-text.${varName}`)
   })
 
   const currentSkillItem = shallowRef<SkillItem | null>(null)
-  watch(skill, newValue => {
-    currentSkillItem.value = newValue ? new SkillItem(newValue) : null
-    const vars = {
-      slv: computingContainer.vars.skillLevel,
-      clv: computingContainer.vars.characterLevel,
-    }
-    currentSkillItem.value?.effectItems.forEach(effectItem => effectItem.resetStackStates(vars))
-  }, { immediate: true })
+  watch(
+    skill,
+    newValue => {
+      currentSkillItem.value = newValue ? new SkillItem(newValue) : null
+      const vars = {
+        slv: computingContainer.vars.skillLevel,
+        clv: computingContainer.vars.characterLevel,
+      }
+      currentSkillItem.value?.effectItems.forEach(effectItem =>
+        effectItem.resetStackStates(vars)
+      )
+    },
+    { immediate: true }
+  )
 
   const setStackValue = (branchItem: SkillBranchItem, value: number) => {
     const stackId = branchItem.stackId

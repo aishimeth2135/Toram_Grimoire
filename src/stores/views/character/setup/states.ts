@@ -1,14 +1,14 @@
-import { computed, Ref, ref } from 'vue'
+import { Ref, computed, ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
 import { Character } from '@/lib/Character/Character'
-import { FoodBuild } from '@/lib/Character/Food'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import { FoodBuild } from '@/lib/Character/Food'
 
-import { SkillBuild } from '../skill-build/SkillBuild'
-import { useCharacterSkillBuildStore } from '../skill-build'
 import { useCharacterFoodStore } from '../food'
+import { useCharacterSkillBuildStore } from '../skill-build'
+import { SkillBuild } from '../skill-build/SkillBuild'
 
 export function setupCharacters() {
   const foodStore = useCharacterFoodStore()
@@ -18,10 +18,13 @@ export function setupCharacters() {
   const characters: Ref<Character[]> = ref([])
 
   const getCharacterState = (() => {
-    const characterStates = new Map<Character, {
-      skillBuild: SkillBuild | null;
-      foodBuild: FoodBuild | null;
-    }>()
+    const characterStates = new Map<
+      Character,
+      {
+        skillBuild: SkillBuild | null
+        foodBuild: FoodBuild | null
+      }
+    >()
     return (chara: Character) => {
       if (!characterStates.has(chara)) {
         characterStates.set(chara, {
@@ -33,7 +36,9 @@ export function setupCharacters() {
     }
   })()
 
-  const currentCharacter = computed<Character>(() => characters.value[currentCharacterIndex.value])
+  const currentCharacter = computed<Character>(
+    () => characters.value[currentCharacterIndex.value]
+  )
 
   const setCurrentCharacter = (idx: number | Character) => {
     if (typeof idx !== 'number') {
@@ -43,7 +48,10 @@ export function setupCharacters() {
     currentCharacterIndex.value = idx
     const current = getCharacterState(currentCharacter.value)
     if (current.skillBuild === null) {
-      current.skillBuild = previou.skillBuild ?? (skillBuildStore.skillBuilds[0] as SkillBuild) ?? null
+      current.skillBuild =
+        previou.skillBuild ??
+        (skillBuildStore.skillBuilds[0] as SkillBuild) ??
+        null
     }
     skillBuildStore.setCurrentSkillBuild(current.skillBuild)
     if (current.foodBuild === null) {
@@ -66,7 +74,13 @@ export function setupCharacters() {
     if (chara) {
       characters.value.push(chara)
     } else {
-      characters.value.push(new Character(Grimoire.i18n.t('character-simulator.character') + ' ' + (characters.value.length + 1)))
+      characters.value.push(
+        new Character(
+          Grimoire.i18n.t('character-simulator.character') +
+            ' ' +
+            (characters.value.length + 1)
+        )
+      )
     }
     if (updateIndex) {
       currentCharacterIndex.value = characters.value.length - 1
@@ -117,7 +131,11 @@ export function setupEquipments(currentCharacter: Ref<Character>) {
     }
   }
 
-  const moveEquipment = (equipment: CharacterEquipment, offset: number, datum?: CharacterEquipment) => {
+  const moveEquipment = (
+    equipment: CharacterEquipment,
+    offset: number,
+    datum?: CharacterEquipment
+  ) => {
     if (offset === 0) {
       return
     }
@@ -126,7 +144,7 @@ export function setupEquipments(currentCharacter: Ref<Character>) {
     if (datumIdx > -1 && equipmentIdx > -1) {
       let targetIdx = datumIdx + offset
       if (datum) {
-        targetIdx += (targetIdx > equipmentIdx ? -1 : 1)
+        targetIdx += targetIdx > equipmentIdx ? -1 : 1
       }
       equipments.value.splice(equipmentIdx, 1)
       equipments.value.splice(targetIdx, 0, equipment)

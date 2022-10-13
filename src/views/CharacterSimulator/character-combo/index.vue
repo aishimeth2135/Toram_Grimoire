@@ -7,19 +7,26 @@
       :combo="combo"
     />
     <div
-      class="h-24 w-full flex items-center justify-center cursor-pointer"
+      class="flex h-24 w-full cursor-pointer items-center justify-center"
       @click="currentCharacter!.comboBuild.appendCombo()"
     >
-      <cy-icon-text
-        icon="ic-round-add-circle-outline"
-        icon-width="2.5rem"
-      />
+      <cy-icon-text icon="ic-round-add-circle-outline" icon-width="2.5rem" />
     </div>
     <div class="border-t border-primary-50 pt-3">
-      <cy-icon-text icon="ic:outline-info" align-v="start" small text-color="primary-50">
+      <cy-icon-text
+        icon="ic:outline-info"
+        align-v="start"
+        small
+        text-color="primary-50"
+      >
         {{ t('character-simulator.combo.tips.0') }}
       </cy-icon-text>
-      <cy-icon-text icon="ic:outline-info" align-v="start" small text-color="primary-50">
+      <cy-icon-text
+        icon="ic:outline-info"
+        align-v="start"
+        small
+        text-color="primary-50"
+      >
         {{ t('character-simulator.combo.tips.1') }}
       </cy-icon-text>
     </div>

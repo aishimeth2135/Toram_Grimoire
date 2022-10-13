@@ -5,9 +5,11 @@ import { GlossaryTag, GlossaryTagRow } from '@/lib/Glossary/GlossaryTag'
 
 import { LangCsvData } from './DownloadDatas'
 
-export default function loadGlossaryTagData(root: GlossarySystem, datas: LangCsvData) {
-  const
-    // TAG_NAME = 0,
+export default function loadGlossaryTagData(
+  root: GlossarySystem,
+  datas: LangCsvData
+) {
+  const // TAG_NAME = 0,
     FRAME_NAME = 1,
     // FRAME_VALUE = 2,
     INDEX = {

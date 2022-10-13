@@ -6,20 +6,20 @@ import { SkillTypes } from '@/lib/Skill/Skill/enums'
 import { SkillBuildState } from '../skill'
 
 interface SkillState {
-  level: number;
-  starGemLevel: number;
-  enabled: boolean;
+  level: number
+  starGemLevel: number
+  enabled: boolean
 }
 
 interface SkillSaveData extends SkillState {
-  skillId: string;
+  skillId: string
 }
 
 interface SkillBuildSaveData {
-  id: number;
-  name: string;
-  skillStates: SkillSaveData[];
-  selectedSkillTrees: string[];
+  id: number
+  name: string
+  skillStates: SkillSaveData[]
+  selectedSkillTrees: string[]
 }
 
 let _skillBuildAutoIncreasement = 0
@@ -53,7 +53,9 @@ export class SkillBuild {
 
     // 忍術表中技能的等級跟隨「忍術」
     if (skill.skillId.startsWith('5-2-')) {
-      state.level = this.getSkillState(skill.parent.parent.parent.findSkillById('4-5-0')!).level
+      state.level = this.getSkillState(
+        skill.parent.parent.parent.findSkillById('4-5-0')!
+      ).level
     }
 
     return state
@@ -109,7 +111,9 @@ export class SkillBuild {
   }
 
   get selectedSkillTrees(): SkillTree[] {
-    return [...this._skillTreesSet.keys()].sort((item1, item2) => item1.skillTreeId.localeCompare(item2.skillTreeId))
+    return [...this._skillTreesSet.keys()].sort((item1, item2) =>
+      item1.skillTreeId.localeCompare(item2.skillTreeId)
+    )
   }
 
   get validSkills(): Skill[] {
@@ -158,7 +162,9 @@ export class SkillBuild {
         level: state.level,
         starGemLevel: state.starGemLevel,
       }))
-    const selectedSkillTrees = [...this._skillTreesSet.keys()].map(skillTree => skillTree.skillTreeId)
+    const selectedSkillTrees = [...this._skillTreesSet.keys()].map(
+      skillTree => skillTree.skillTreeId
+    )
     return {
       id: this.instanceId,
       name: this.name,
@@ -167,7 +173,10 @@ export class SkillBuild {
     }
   }
 
-  static load(loadCategory: string | null, data: SkillBuildSaveData): SkillBuild {
+  static load(
+    loadCategory: string | null,
+    data: SkillBuildSaveData
+  ): SkillBuild {
     const newBuild = new SkillBuild(data.name)
     data.selectedSkillTrees.forEach(skillTreeId => {
       let skillTree: SkillTree | null = null
@@ -187,7 +196,9 @@ export class SkillBuild {
       let skill!: Skill
       Grimoire.Skill.skillRoot.skillTreeCategorys.some(stc => {
         return stc.skillTrees.some(st => {
-          const find = st.skills.find(_skill => _skill.skillId === state.skillId)
+          const find = st.skills.find(
+            _skill => _skill.skillId === state.skillId
+          )
           if (find) {
             skill = find
             return true
@@ -209,7 +220,11 @@ export class SkillBuild {
   }
 
   matchLoadedId(loadCategory: string, id: number | null) {
-    return this.loadedId !== null && id !== null && `${loadCategory}-${id}` === this.loadedId
+    return (
+      this.loadedId !== null &&
+      id !== null &&
+      `${loadCategory}-${id}` === this.loadedId
+    )
   }
 
   static loadFromLagacy(buildState: SkillBuildState): SkillBuild {
@@ -222,7 +237,9 @@ export class SkillBuild {
         }
         let skillTree: SkillTree | null = null
         Grimoire.Skill.skillRoot.skillTreeCategorys.some(stc => {
-          const find = stc.skillTrees.find(st => st.skillTreeId === stState.origin.skillTreeId)
+          const find = stc.skillTrees.find(
+            st => st.skillTreeId === stState.origin.skillTreeId
+          )
           if (find) {
             skillTree = find
             return true
@@ -240,7 +257,9 @@ export class SkillBuild {
           let skill: Skill | null = null
           Grimoire.Skill.skillRoot.skillTreeCategorys.some(stc => {
             return stc.skillTrees.some(st => {
-              const find = st.skills.find(_skill => _skill.skillId === levelSkill.base.skillId)
+              const find = st.skills.find(
+                _skill => _skill.skillId === levelSkill.base.skillId
+              )
               if (find) {
                 skill = find
                 return true

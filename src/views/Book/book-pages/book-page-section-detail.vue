@@ -1,6 +1,9 @@
 <template>
-  <div class="py-3 px-1 flex items-center space-x-5">
-    <div v-if="cellMap.has('latest_update')" class="flex items-center space-x-2">
+  <div class="flex items-center space-x-5 py-3 px-1">
+    <div
+      v-if="cellMap.has('latest_update')"
+      class="flex items-center space-x-2"
+    >
       <cy-icon-text icon="ic:round-access-time" color="primary-30" single-color>
         {{ t('book-template.page-sections.detail.latest-update') }}
       </cy-icon-text>
@@ -27,7 +30,7 @@ import { BookPageSection } from '../setup/Book'
 import { getSectionCellMap } from './utils'
 
 interface Props {
-  section: BookPageSection;
+  section: BookPageSection
 }
 
 const props = defineProps<Props>()

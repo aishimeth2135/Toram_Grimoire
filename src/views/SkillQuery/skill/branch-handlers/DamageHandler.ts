@@ -1,16 +1,26 @@
-import { markText } from '@/shared/utils/view'
 import Grimoire from '@/shared/Grimoire'
+import { markText } from '@/shared/utils/view'
 
-import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
-import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
+import SkillComputingContainer, {
+  SkillBranchItem,
+} from '@/lib/Skill/SkillComputingContainer'
+import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { cloneBranchProps, handleDisplayData, HandleDisplayDataOptionFilters, HandleBranchLangPropsMap } from './handle'
-import MapContainer from './handle/MapContainer'
-import ProrationHandler from './ProrationHandler'
 import { createTagButtons } from '../../utils'
+import ProrationHandler from './ProrationHandler'
+import {
+  HandleBranchLangPropsMap,
+  HandleDisplayDataOptionFilters,
+  cloneBranchProps,
+  handleDisplayData,
+} from './handle'
+import MapContainer from './handle/MapContainer'
 
-export default function DamageHandler<BranchItem extends SkillBranchItem>(computing: SkillComputingContainer, branchItem: BranchItem) {
+export default function DamageHandler<BranchItem extends SkillBranchItem>(
+  computing: SkillComputingContainer,
+  branchItem: BranchItem
+) {
   const { t } = Grimoire.i18n
 
   const props = cloneBranchProps(branchItem, {
@@ -18,31 +28,31 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(comput
   })
 
   const filters = new MapContainer<HandleDisplayDataOptionFilters>({
-    'constant': value => value !== '0',
-    'multiplier': value => value !== '0',
-    'extra_constant': value => value !== '0',
-    'is_place': value => value === '1',
-    'frequency': value => value !== '1',
-    'base': value => value !== 'none',
-    'element': value => value !== 'none',
-    'dual_element': value => value !== 'none',
-    'type': value => value !== 'single',
-    'title':  value => value === 'normal_attack',
-    'range_damage': value => value !== 'unused',
-    'unsheathe_damage': value => value !== 'unused',
-    'judgment': value => value !== 'none',
-    'ailment_name': value => !!value,
-    'frequency_judgment': value => value !== 'none',
-    'combo_rate': value => value === '0',
+    constant: value => value !== '0',
+    multiplier: value => value !== '0',
+    extra_constant: value => value !== '0',
+    is_place: value => value === '1',
+    frequency: value => value !== '1',
+    base: value => value !== 'none',
+    element: value => value !== 'none',
+    dual_element: value => value !== 'none',
+    type: value => value !== 'single',
+    title: value => value === 'normal_attack',
+    range_damage: value => value !== 'unused',
+    unsheathe_damage: value => value !== 'unused',
+    judgment: value => value !== 'none',
+    ailment_name: value => !!value,
+    frequency_judgment: value => value !== 'none',
+    combo_rate: value => value === '0',
   })
   const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>({
-    'multiplier': '%',
-    'constant': null,
-    'extra_constant': null,
-    'frequency': t('global.times'),
-    'ailment_chance': '%',
-    'duration': null,
-    'cycle': null,
+    multiplier: '%',
+    constant: null,
+    extra_constant: null,
+    frequency: t('global.times'),
+    ailment_chance: '%',
+    duration: null,
+    cycle: null,
   })
   if (branchItem.prop('target_offset') !== 'auto') {
     valuePropsMap.append('target_offset')
@@ -64,14 +74,17 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(comput
   const pureDatas = ['name', 'ailment_name', 'end_condition']
 
   if (props.get('base') === 'auto') {
-    const baseSuffix = branchItem.suffixBranches.find(bch => bch.is(SkillBranchNames.Base))
+    const baseSuffix = branchItem.suffixBranches.find(bch =>
+      bch.is(SkillBranchNames.Base)
+    )
     if (baseSuffix) {
       if (baseSuffix.prop('type') !== 'custom') {
         props.set('@custom-base-caption', baseSuffix.prop('type'))
         props.set('base', `@custom.${baseSuffix.prop('type')}`)
         langAttrsMap.append('base')
         langAttrsMap.set('@custom-base-caption', {
-          afterHandle: value => createTagButtons(markText(value, { mark: 'text-fuchsia-60' })),
+          afterHandle: value =>
+            createTagButtons(markText(value, { mark: 'text-fuchsia-60' })),
         })
       } else {
         if (baseSuffix.prop('title') === 'auto') {
@@ -87,27 +100,45 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(comput
         }
       }
     } else {
-      props.set('base', props.get('damage_type') === 'physical' ? 'atk' : 'matk')
+      props.set(
+        'base',
+        props.get('damage_type') === 'physical' ? 'atk' : 'matk'
+      )
       langAttrsMap.append('base')
     }
   } else {
     langAttrsMap.append('base')
   }
   if (props.get('detail_display') === 'auto') {
-    props.set('detail_display', props.get('title') === 'normal_attack' ? '0' : '1')
+    props.set(
+      'detail_display',
+      props.get('title') === 'normal_attack' ? '0' : '1'
+    )
   }
 
   if (props.get('frequency_judgment') === 'auto') {
-    props.set('frequency_judgment', props.get('title') !== 'each' ? 'single' : 'multiple')
+    props.set(
+      'frequency_judgment',
+      props.get('title') !== 'each' ? 'single' : 'multiple'
+    )
   }
 
-  const prorationBch = branchItem.suffixBranches.find(suf => suf.is(SkillBranchNames.Proration))
+  const prorationBch = branchItem.suffixBranches.find(suf =>
+    suf.is(SkillBranchNames.Proration)
+  )
   if (prorationBch) {
-    const _data = ProrationHandler(computing, prorationBch);
-    ['damage', 'proration', 'damage: title', 'proration: title'].forEach(key => {
-      props.set('@proration/' + key, _data.get(key))
-    })
-    pureDatas.push('@proration/damage', '@proration/damage: title', '@proration/proration', '@proration/proration: title')
+    const _data = ProrationHandler(computing, prorationBch)
+    ;['damage', 'proration', 'damage: title', 'proration: title'].forEach(
+      key => {
+        props.set('@proration/' + key, _data.get(key))
+      }
+    )
+    pureDatas.push(
+      '@proration/damage',
+      '@proration/damage: title',
+      '@proration/proration',
+      '@proration/proration: title'
+    )
   }
 
   const result = handleDisplayData(computing, branchItem, props, {

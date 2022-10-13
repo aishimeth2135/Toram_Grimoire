@@ -3,7 +3,7 @@
     <div
       v-for="container in statContainers"
       :key="container.stat.statId"
-      class="text-primary-30 mr-3"
+      class="mr-3 text-primary-30"
     >
       <span class="text-primary-90" v-html="getResultDisplay(container)"></span>
     </div>
@@ -16,10 +16,11 @@ import { isNumberString } from '@/shared/utils/string'
 import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 
 interface Props {
-  statContainers: ResultContainerStat[];
+  statContainers: ResultContainerStat[]
 }
 
 defineProps<Props>()
 
-const getResultDisplay = (ctner: ResultContainerStat) => isNumberString(ctner.value) ? ctner.valueResult : ctner.result
+const getResultDisplay = (ctner: ResultContainerStat) =>
+  isNumberString(ctner.value) ? ctner.valueResult : ctner.result
 </script>

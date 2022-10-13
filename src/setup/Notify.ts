@@ -2,14 +2,14 @@ import { useLoadingStore } from '@/stores/app/loading'
 import { useNotifyStore } from '@/stores/app/notify'
 
 interface MessageNotifyButtonItem {
-  text: string;
-  click: () => void;
-  removeMessageAfterClick: boolean;
+  text: string
+  click: () => void
+  removeMessageAfterClick: boolean
 }
 
 interface MessageNotifyOptions {
-  buttons?: MessageNotifyButtonItem[];
-  afterHide?: () => void;
+  buttons?: MessageNotifyButtonItem[]
+  afterHide?: () => void
 }
 
 let notifyStore: ReturnType<typeof useNotifyStore>
@@ -17,7 +17,7 @@ function MessageNotify(
   message: string,
   icon: string | MessageNotifyOptions = 'bx-bx-message-rounded-dots',
   id: string | null = null,
-  options: MessageNotifyOptions = {},
+  options: MessageNotifyOptions = {}
 ): void {
   if (!notifyStore) {
     notifyStore = useNotifyStore()

@@ -1,14 +1,17 @@
 <template>
   <AppLayoutMain class="py-6">
     <div v-if="!hasQuery">
-      <div class="py-3 px-4 border-1 border-primary-30 rounded-sm bg-white">
+      <div class="rounded-sm border-1 border-primary-30 bg-white py-3 px-4">
         <textarea
           v-model="urlText"
-          class="border-0 bg-transparent resize-none w-full outline-none"
+          class="w-full resize-none border-0 bg-transparent outline-none"
           placeholder="https://"
         />
       </div>
-      <div class="bg-primary-5 rounded-r-md py-3 px-4 mt-6 relative" style="min-height: 5rem">
+      <div
+        class="relative mt-6 rounded-r-md bg-primary-5 py-3 px-4"
+        style="min-height: 5rem"
+      >
         <cy-button-icon
           icon="mdi:content-copy"
           class="absolute top-2 right-2"
@@ -18,13 +21,8 @@
       </div>
     </div>
     <cy-loading-content v-else :loading="loading">
-      <BookPages
-        v-if="pages.length > 0"
-        :pages="pages"
-      />
-      <div v-else>
-        No Data
-      </div>
+      <BookPages v-if="pages.length > 0" :pages="pages" />
+      <div v-else>No Data</div>
     </cy-loading-content>
   </AppLayoutMain>
 </template>
@@ -76,8 +74,11 @@ const checkQuery = async () => {
   if (typeof currentRoute.query.csv === 'string') {
     loading.value = true
     let url = decodeURIComponent(currentRoute.query.csv)
-    if (typeof currentRoute.query.latest === 'string' && currentRoute.query.latest === '1') {
-      url += ('&cytime=' + Date.now())
+    if (
+      typeof currentRoute.query.latest === 'string' &&
+      currentRoute.query.latest === '1'
+    ) {
+      url += '&cytime=' + Date.now()
     }
     const datas = await downloadCsv(url)
     pages.value = parseBook(datas)

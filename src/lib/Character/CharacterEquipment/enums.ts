@@ -62,6 +62,4 @@ export const SubWeaponTypeList = [
   EquipmentTypes.NinjutsuScroll,
 ]
 
-export const SubArmorTypeList = [
-  EquipmentTypes.Shield,
-]
+export const SubArmorTypeList = [EquipmentTypes.Shield]

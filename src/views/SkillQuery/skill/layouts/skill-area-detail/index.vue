@@ -1,8 +1,8 @@
 <template>
   <cy-transition>
-    <div class="m-3 p-3 flex items-center flex-wrap">
+    <div class="m-3 flex flex-wrap items-center p-3">
       <div>
-        <SkillAreaAnimation :container="container"/>
+        <SkillAreaAnimation :container="container" />
         <div class="text-center">
           <cy-icon-text
             icon="bx-bxs-circle"
@@ -12,11 +12,7 @@
           >
             {{ t('skill-query.branch.skill-area.point: character') }}
           </cy-icon-text>
-          <cy-icon-text
-            icon="bx-bxs-circle"
-            icon-color="orange-60"
-            small
-          >
+          <cy-icon-text icon="bx-bxs-circle" icon-color="orange-60" small>
             {{ t('skill-query.branch.skill-area.point: target') }}
           </cy-icon-text>
         </div>
@@ -25,8 +21,13 @@
         <table>
           <tbody>
             <tr v-for="key in displayAttrsKeys" :key="key">
-              <td class="text-right pr-2 border-r border-primary-30">{{ displayContainer.get(`${key}: title`) }}</td>
-              <td class="pl-2 text-primary-60" v-html="displayContainer.get(key)" />
+              <td class="border-r border-primary-30 pr-2 text-right">
+                {{ displayContainer.get(`${key}: title`) }}
+              </td>
+              <td
+                class="pl-2 text-primary-60"
+                v-html="displayContainer.get(key)"
+              />
             </tr>
           </tbody>
         </table>
@@ -51,10 +52,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { toRefs, computed } from 'vue'
+import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import SkillComputingContainer, { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
+import SkillComputingContainer, {
+  SkillBranchItem,
+} from '@/lib/Skill/SkillComputingContainer'
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 
 import SkillAreaAnimation from './skill-area-animation.vue'
@@ -62,19 +65,24 @@ import SkillAreaAnimation from './skill-area-animation.vue'
 import AreaHandler from '../../branch-handlers/AreaHandler'
 
 interface Props {
-  computing: SkillComputingContainer;
-  skillBranchItem: SkillBranchItem;
+  computing: SkillComputingContainer
+  skillBranchItem: SkillBranchItem
 }
 
 const props = defineProps<Props>()
 const { skillBranchItem: branchItem } = toRefs(props)
 
-const displayContainer = computed(() => AreaHandler(props.computing, branchItem.value))
+const displayContainer = computed(() =>
+  AreaHandler(props.computing, branchItem.value)
+)
 
-const container = computed(() => AreaHandler(props.computing, branchItem.value, FormulaDisplayModes.Normal))
+const container = computed(() =>
+  AreaHandler(props.computing, branchItem.value, FormulaDisplayModes.Normal)
+)
 
 const { t } = useI18n()
 
-const displayAttrsKeys = computed(() => ALL_DISPLAY_ATTR_KEYS.filter(key => container.value.has(key)))
+const displayAttrsKeys = computed(() =>
+  ALL_DISPLAY_ATTR_KEYS.filter(key => container.value.has(key))
+)
 </script>
-

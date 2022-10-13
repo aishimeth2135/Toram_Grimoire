@@ -1,7 +1,11 @@
 import { isNumberString } from '@/shared/utils/string'
 
 import CharacterSystem from '@/lib/Character'
-import { CharacterStat, CharacterStatCategory, CharacterStatFormula } from '@/lib/Character/Character'
+import {
+  CharacterStat,
+  CharacterStatCategory,
+  CharacterStatFormula,
+} from '@/lib/Character/Character'
 
 import type { LangCsvData } from './DownloadDatas'
 
@@ -20,7 +24,8 @@ export default function (characterSystem: CharacterSystem, datas: LangCsvData) {
     CONFIRM_CATEGORY = '0',
     CATEGORY_NAME = 1
 
-  const handleHiddenOption = (value: string) => ['永久', '變數值為0時', '計算結果為0時'].indexOf(value)
+  const handleHiddenOption = (value: string) =>
+    ['永久', '變數值為0時', '計算結果為0時'].indexOf(value)
 
   const csvData = datas[0]
 
@@ -37,9 +42,15 @@ export default function (characterSystem: CharacterSystem, datas: LangCsvData) {
 
     const id = row[ID]
     if (id === CONFIRM_CATEGORY) {
-      curCategory = characterSystem.appendCharacterStatCategory(row[CATEGORY_NAME])
+      curCategory = characterSystem.appendCharacterStatCategory(
+        row[CATEGORY_NAME]
+      )
     } else if (id === '') {
-      curFormula.appendConditionValue(row[CONDITIONAL], row[CONDITION_VALUE], row[CONDITIONAL_OPTIONS])
+      curFormula.appendConditionValue(
+        row[CONDITIONAL],
+        row[CONDITION_VALUE],
+        row[CONDITIONAL_OPTIONS]
+      )
     } else {
       const [minStr, maxStr] = row[LIMIT].split('~')
       const min = isNumberString(minStr) ? parseFloat(minStr) : null

@@ -1,8 +1,15 @@
 <template>
   <teleport to="body">
     <cy-transition appear>
-      <div class="w-full h-full bg-black bg-opacity-50 fixed top-0 left-0 z-100" @click="emit('close')">
-        <div style="max-width: 40rem;" class="py-5 mx-auto bg-opacity-100" @click.stop>
+      <div
+        class="fixed top-0 left-0 z-100 h-full w-full bg-black bg-opacity-50"
+        @click="emit('close')"
+      >
+        <div
+          style="max-width: 40rem"
+          class="mx-auto bg-opacity-100 py-5"
+          @click.stop
+        >
           <div>
             <cy-title-input
               ref="searchInputComponent"
@@ -16,8 +23,8 @@
           </div>
           <div
             v-if="searchResult.length !== 0"
-            class="bg-white overflow-y-auto mx-2"
-            style="max-height: 70vh;"
+            class="mx-2 overflow-y-auto bg-white"
+            style="max-height: 70vh"
           >
             <cy-list-item
               v-for="(skill, idx) in searchResult"
@@ -35,8 +42,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted, nextTick } from 'vue'
-import type { Ref, ComputedRef, WritableComputedRef } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import type { ComputedRef, Ref, WritableComputedRef } from 'vue'
 
 import { useDatasStore } from '@/stores/app/datas'
 
@@ -45,8 +52,8 @@ import { Skill, SkillRoot } from '@/lib/Skill/Skill'
 import SkillTitle from './skill/skill-title.vue'
 
 interface Emits {
-  (evt: 'submit', skill: Skill): void;
-  (evt: 'close'): void;
+  (evt: 'submit', skill: Skill): void
+  (evt: 'close'): void
 }
 
 const emit = defineEmits<Emits>()
@@ -64,7 +71,9 @@ const searchResult: ComputedRef<Skill[]> = computed(() => {
   const result: Skill[] = []
   skillRoot.value.skillTreeCategorys.forEach(stc => {
     stc.skillTrees.forEach(st => {
-      const matchedSkills = st.skills.filter(skill => skill.name.toLowerCase().includes(text))
+      const matchedSkills = st.skills.filter(skill =>
+        skill.name.toLowerCase().includes(text)
+      )
       result.push(...matchedSkills)
     })
   })

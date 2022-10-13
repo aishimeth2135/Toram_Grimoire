@@ -9,7 +9,7 @@
         <div class="h-full overflow-y-auto">
           <div class="mx-1 mt-6">
             <router-link
-              v-for="(data) in viewButtons"
+              v-for="data in viewButtons"
               :key="data.title"
               v-slot="{ navigate }"
               :to="{ name: data.pathName }"
@@ -17,22 +17,27 @@
             >
               <div
                 class="app-left-menu--link-button"
-                :class="{ 'selected': currentRoute.name === data.pathName }"
+                :class="{ selected: currentRoute.name === data.pathName }"
                 @click="navigate"
               >
-                <cy-icon-text :icon="data.icon">{{ t(data.title) }}</cy-icon-text>
+                <cy-icon-text :icon="data.icon">{{
+                  t(data.title)
+                }}</cy-icon-text>
               </div>
             </router-link>
           </div>
         </div>
-        <div class="flex items-end mt-auto pt-2 m-3">
+        <div class="m-3 mt-auto flex items-end pt-2">
           <AppSettings />
-          <div v-if="currentRoute.name !== 'Home'" class="flex items-center ml-auto space-x-2">
+          <div
+            v-if="currentRoute.name !== 'Home'"
+            class="ml-auto flex items-center space-x-2"
+          >
             <cy-button-circle icon="bx:bx-share-alt" @click="copyCurrentUrl" />
             <router-link v-slot="{ navigate }" :to="{ name: 'Home' }" custom>
               <cy-button-circle
                 icon="ant-design:home-outlined"
-                @click="(navigate($event), leftMenuStore.toggleVisible())"
+                @click="navigate($event), leftMenuStore.toggleVisible()"
               />
             </router-link>
           </div>
@@ -49,9 +54,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { storeToRefs } from 'pinia'
 
 import { useLeftMenuStore } from '@/stores/app/left-menu'
 
@@ -66,10 +71,7 @@ const { t } = useI18n()
 
 const leftMenuStore = useLeftMenuStore()
 
-const {
-  viewButtons,
-  visible,
-} = storeToRefs(leftMenuStore)
+const { viewButtons, visible } = storeToRefs(leftMenuStore)
 
 const { notify } = Notify()
 
@@ -81,27 +83,30 @@ const copyCurrentUrl = () => {
 
 <style lang="postcss" scoped>
 .app-left-menu--wrapper {
-  @apply fixed w-64 top-0 left-0 opacity-100 h-full;
+  @apply fixed top-0 left-0 h-full w-64 opacity-100;
 
-  &.fade-enter-from, &.fade-leave-to {
+  &.fade-enter-from,
+  &.fade-leave-to {
     opacity: 0;
   }
 
-  &.fade-enter-active, &.fade-leave-active {
+  &.fade-enter-active,
+  &.fade-leave-active {
     @apply duration-200;
   }
 
   & > .content-container {
-    @apply h-full w-full border-r border-primary-30 flex flex-col;
+    @apply flex h-full w-full flex-col border-r border-primary-30;
   }
 }
 
 @media screen and (max-width: 82rem) {
   .app-left-menu--wrapper {
-    @apply top-0 left-0 right-auto bg-black bg-opacity-50 h-full z-100;
+    @apply top-0 left-0 right-auto z-100 h-full bg-black bg-opacity-50;
     width: calc(100% + 30rem);
 
-    &.fade-enter-from, &.fade-leave-to {
+    &.fade-enter-from,
+    &.fade-leave-to {
       @apply -left-80 opacity-100;
     }
 
@@ -116,9 +121,10 @@ const copyCurrentUrl = () => {
 }
 
 .app-left-menu--link-button {
-  @apply w-full py-1.5 px-4 cursor-pointer bg-opacity-25;
+  @apply w-full cursor-pointer bg-opacity-25 py-1.5 px-4;
 
-  &:hover, &.selected {
+  &:hover,
+  &.selected {
     @apply bg-primary-30;
   }
 }

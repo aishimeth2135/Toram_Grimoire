@@ -3,8 +3,8 @@
     <div v-if="searchResult.length > 0" class="py-4">
       <ItemQueryResult class="search-result" :equipments="searchResult" />
     </div>
-    <cy-default-tips v-else icon="mdi-ghost" style="min-height: 30rem;">
-      {{t('item-query.no-result-tips') }}
+    <cy-default-tips v-else icon="mdi-ghost" style="min-height: 30rem">
+      {{ t('item-query.no-result-tips') }}
     </cy-default-tips>
     <AppLayoutBottom>
       <template #default>
@@ -17,27 +17,35 @@
                   v-model="modes[SearchModes.Normal].searchText"
                   type="text"
                   :placeholder="t('global.search')"
-                >
+                />
               </div>
               <cy-button-icon
                 icon="heroicons-solid:menu"
-                @click="modes[SearchModes.Normal].optionsVisible = !modes[SearchModes.Normal].optionsVisible"
+                @click="
+                  modes[SearchModes.Normal].optionsVisible =
+                    !modes[SearchModes.Normal].optionsVisible
+                "
               />
             </div>
           </template>
           <template v-else-if="state.currentMode === SearchModes.Stat">
-            <cy-button-plain
-              width-full
-              @click="toggle('modals/selecteStat')"
-            >
-              <template v-if="modes[SearchModes.Stat].currentStats.length === 0">
+            <cy-button-plain width-full @click="toggle('modals/selecteStat')">
+              <template
+                v-if="modes[SearchModes.Stat].currentStats.length === 0"
+              >
                 {{ t('item-query.options-stat.select-stat.title') }}
               </template>
-              <template v-else-if="modes[SearchModes.Stat].currentStats.length === 1">
+              <template
+                v-else-if="modes[SearchModes.Stat].currentStats.length === 1"
+              >
                 {{ modes[SearchModes.Stat].currentStats[0].text }}
               </template>
               <template v-else>
-                {{ t('item-query.options-stat.select-stat.title-multiple', { num: modes[SearchModes.Stat].currentStats.length }) }}
+                {{
+                  t('item-query.options-stat.select-stat.title-multiple', {
+                    num: modes[SearchModes.Stat].currentStats.length,
+                  })
+                }}
               </template>
             </cy-button-plain>
           </template>
@@ -48,15 +56,15 @@
                 v-model="itemLevelMinimum"
                 type="text"
                 placeholder="0"
-                class="border-0 p-1 inline-block w-14 text-center"
-              >
+                class="inline-block w-14 border-0 p-1 text-center"
+              />
               <cy-icon-text icon="mdi-tilde" />
               <input
                 v-model="itemLevelMaximum"
                 type="text"
                 placeholder="300"
-                class="border-0 p-1 inline-block w-14 text-center"
-              >
+                class="inline-block w-14 border-0 p-1 text-center"
+              />
             </div>
           </template>
           <template v-else-if="state.currentMode === SearchModes.Dye">
@@ -67,7 +75,7 @@
                   v-model="modes[SearchModes.Dye].searchText"
                   type="text"
                   :placeholder="t('global.search')"
-                >
+                />
               </div>
             </div>
           </template>
@@ -75,14 +83,13 @@
       </template>
       <template #main-content>
         <AppLayoutBottomContent
-          v-if="state.currentMode === SearchModes.Normal && modes[SearchModes.Normal].optionsVisible"
+          v-if="
+            state.currentMode === SearchModes.Normal &&
+            modes[SearchModes.Normal].optionsVisible
+          "
           class="p-3"
         >
-          <cy-icon-text
-            icon="bx-bx-target-lock"
-            small
-            text-color="fuchsia-60"
-          >
+          <cy-icon-text icon="bx-bx-target-lock" small text-color="fuchsia-60">
             {{ t('item-query.options-normal.title') }}
           </cy-icon-text>
           <div class="py-1 px-2">
@@ -99,15 +106,14 @@
       <template #main-start>
         <cy-options
           :value="modes[state.currentMode]"
-          :options="Object.entries(modes).map(([id, item]) => ({ id, value: item }))"
+          :options="
+            Object.entries(modes).map(([id, item]) => ({ id, value: item }))
+          "
           placement="top-start"
           @update:value="selectMode($event.id)"
         >
           <template #title>
-            <cy-button-circle
-              icon="ic:baseline-settings"
-              color="blue"
-            />
+            <cy-button-circle icon="ic:baseline-settings" color="blue" />
           </template>
           <template #item="{ value }">
             <cy-icon-text :icon="value.icon">
@@ -118,7 +124,10 @@
       </template>
       <template #side-buttons>
         <cy-button-circle
-          v-if="state.currentMode === SearchModes.Stat || state.currentMode === SearchModes.ItemLevel"
+          v-if="
+            state.currentMode === SearchModes.Stat ||
+            state.currentMode === SearchModes.ItemLevel
+          "
           icon="heroicons-solid:switch-vertical"
           color="orange"
           @click="state.displayMode = state.displayMode === 0 ? 1 : 0"
@@ -142,8 +151,11 @@
       </template>
       <template #side-contents>
         <cy-transition mode="out-in">
-          <AppLayoutBottomContent v-if="menus.conditionOptions" class="space-y-3 p-3">
-            <div v-for="(type) in conditions.type" :key="type.id">
+          <AppLayoutBottomContent
+            v-if="menus.conditionOptions"
+            class="space-y-3 p-3"
+          >
+            <div v-for="type in conditions.type" :key="type.id">
               <div class="flex items-center space-x-1.5">
                 <cy-button-check
                   v-model:selected="type.selected"
@@ -153,11 +165,22 @@
                   {{ t('common.Equipment.field.' + type.id) }}
                 </cy-button-check>
                 <template v-if="type.types.length > 1">
-                  <cy-button-circle icon="ic-round-border-all" small @click="selectAll(type.types)" />
-                  <cy-button-circle icon="eva-close-outline" small @click="cancelAll(type.types)" />
+                  <cy-button-circle
+                    icon="ic-round-border-all"
+                    small
+                    @click="selectAll(type.types)"
+                  />
+                  <cy-button-circle
+                    icon="eva-close-outline"
+                    small
+                    @click="cancelAll(type.types)"
+                  />
                 </template>
               </div>
-              <div v-if="type.types.length > 1" class="px-2 pt-1.5 py-0.5 space-x-0.5">
+              <div
+                v-if="type.types.length > 1"
+                class="space-x-0.5 px-2 py-0.5 pt-1.5"
+              >
                 <cy-button-check
                   v-for="item in type.types"
                   :key="item.value"
@@ -173,10 +196,18 @@
                 <cy-icon-text class="mr-4" color="fuchsia">
                   {{ t('item-query.equipment-detail.content-titles.obtains') }}
                 </cy-icon-text>
-                <cy-button-circle icon="ic-round-border-all" small @click="selectAll(conditions.obtains)" />
-                <cy-button-circle icon="eva-close-outline" small @click="cancelAll(conditions.obtains)" />
+                <cy-button-circle
+                  icon="ic-round-border-all"
+                  small
+                  @click="selectAll(conditions.obtains)"
+                />
+                <cy-button-circle
+                  icon="eva-close-outline"
+                  small
+                  @click="cancelAll(conditions.obtains)"
+                />
               </div>
-              <div class="px-2 space-x-2 pt-1.5 py-0.5">
+              <div class="space-x-2 px-2 py-0.5 pt-1.5">
                 <cy-button-check
                   v-for="obtain in conditions.obtains"
                   :key="obtain.value"
@@ -220,7 +251,11 @@
         </cy-transition>
       </template>
     </AppLayoutBottom>
-    <cy-modal v-model:visible="modals.selecteStat" vertical-position="start" footer>
+    <cy-modal
+      v-model:visible="modals.selecteStat"
+      vertical-position="start"
+      footer
+    >
       <template #title>
         <cy-icon-text icon="mdi-rhombus-outline">
           {{ t('item-query.options-stat.select-stat.title') }}
@@ -231,17 +266,25 @@
           <cy-title-input
             v-model:value="modes.stat.statSearchText"
             icon="ic-outline-category"
-            :placeholder="t('item-query.options-stat.select-stat.search-placeholder')"
+            :placeholder="
+              t('item-query.options-stat.select-stat.search-placeholder')
+            "
           />
         </div>
-        <div v-if="statsSearchResult.length !== 0" class="divide-y divide-light">
+        <div
+          v-if="statsSearchResult.length !== 0"
+          class="divide-light divide-y"
+        >
           <div
             v-for="stat in statsSearchResult"
             :key="stat.origin.statId(stat.type)"
-            class="py-1 px-2 hover:bg-primary-30 hover:bg-opacity-10 duration-200"
+            class="py-1 px-2 duration-200 hover:bg-primary-30 hover:bg-opacity-10"
             @click="selectStat(stat)"
           >
-            <cy-button-check :selected="modes[SearchModes.Stat].currentStats.includes(stat)" class="w-full">
+            <cy-button-check
+              :selected="modes[SearchModes.Stat].currentStats.includes(stat)"
+              class="w-full"
+            >
               {{ stat.text }}
             </cy-button-check>
           </div>
@@ -278,27 +321,40 @@ import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
 
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { MainWeaponTypeList, SubWeaponTypeList, SubArmorTypeList, EquipmentTypes, EquipmentKinds } from '@/lib/Character/CharacterEquipment/enums'
+import {
+  EquipmentKinds,
+  EquipmentTypes,
+  MainWeaponTypeList,
+  SubArmorTypeList,
+  SubWeaponTypeList,
+} from '@/lib/Character/CharacterEquipment/enums'
 
 import ToggleService from '@/setup/ToggleService'
 
-import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
-import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
+import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
+import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
 
 import ItemQueryResult from './item-query-result.vue'
 
-import { CommonOption, StatOption, SearchModes, handleOptions, findStat, findObtainByDye, useItemQueryModes } from './setup'
+import {
+  CommonOption,
+  SearchModes,
+  StatOption,
+  findObtainByDye,
+  findStat,
+  handleOptions,
+  useItemQueryModes,
+} from './setup'
 
-const equipments = Grimoire.Items.equipments
-  .map(equip => CharacterEquipment.fromOriginEquipment(equip, { statValueToNumber: false }))
+const equipments = Grimoire.Items.equipments.map(equip =>
+  CharacterEquipment.fromOriginEquipment(equip, { statValueToNumber: false })
+)
 
-const handleCompareValue = (value: string) => isNumberString(value) ? parseFloat(value) : -99999
+const handleCompareValue = (value: string) =>
+  isNumberString(value) ? parseFloat(value) : -99999
 
-const {
-  state,
-  modes,
-} = useItemQueryModes()
+const { state, modes } = useItemQueryModes()
 
 const { menus, modals, toggle } = ToggleService({
   menus: ['conditionOptions', 'sortOptions'] as const,
@@ -308,9 +364,11 @@ const { menus, modals, toggle } = ToggleService({
 const { t } = useI18n()
 
 interface EquipmentTypeOption extends CommonOption {
-  imagePath: string;
+  imagePath: string
 }
-const handleEquipmentTypes = (opts: EquipmentTypes[]): EquipmentTypeOption[] => {
+const handleEquipmentTypes = (
+  opts: EquipmentTypes[]
+): EquipmentTypeOption[] => {
   const newOpts = handleOptions(opts)
   const finalOpts = newOpts.map(opt => ({
     ...opt,
@@ -324,27 +382,32 @@ const sortState = reactive({
   currentOrder: 'down',
 })
 
-type SortHandler =(item1: CharacterEquipment, item2: CharacterEquipment) => number
+type SortHandler = (
+  item1: CharacterEquipment,
+  item2: CharacterEquipment
+) => number
 
 const sortOptions: {
   [mode in SearchModes]: {
-    default: SortHandler;
-  };
+    default: SortHandler
+  }
 } & {
-  'global': Record<string, SortHandler>;
+  global: Record<string, SortHandler>
 } = {
   global: {
-    'atk': (item1, item2) => {
-      const value1 = item1.basicValue + (item1.is(EquipmentKinds.Weapon) ? 9999 : 0),
+    atk: (item1, item2) => {
+      const value1 =
+          item1.basicValue + (item1.is(EquipmentKinds.Weapon) ? 9999 : 0),
         value2 = item2.basicValue + (item2.is(EquipmentKinds.Weapon) ? 9999 : 0)
       return value1 - value2
     },
-    'def': (item1, item2) => {
-      const value1 = item1.basicValue + (item1.is(EquipmentKinds.Armor) ? 9999 : 0),
+    def: (item1, item2) => {
+      const value1 =
+          item1.basicValue + (item1.is(EquipmentKinds.Armor) ? 9999 : 0),
         value2 = item2.basicValue + (item2.is(EquipmentKinds.Armor) ? 9999 : 0)
       return value1 - value2
     },
-    'stability': (item1, item2) => {
+    stability: (item1, item2) => {
       const value1 = item1.is(EquipmentKinds.Weapon) ? item1.stability : -1,
         value2 = item2.is(EquipmentKinds.Weapon) ? item2.stability : -1
       if (value1 === -1 && value2 === -1) {
@@ -352,7 +415,7 @@ const sortOptions: {
       }
       return value1 - value2
     },
-    'name':  (item1, item2) => item1.name.localeCompare(item2.name),
+    name: (item1, item2) => item1.name.localeCompare(item2.name),
   },
   [SearchModes.Normal]: {
     default: (item1, item2) => item1.origin!.id - item2.origin!.id,
@@ -383,8 +446,12 @@ const sortOptions: {
   },
   [SearchModes.ItemLevel]: {
     default: (item1, item2) => {
-      const value1 = handleCompareValue(item1.origin!.recipe?.['item_level']?.toString() ?? ''),
-        value2 = handleCompareValue(item2.origin!.recipe?.['item_level']?.toString() ?? '')
+      const value1 = handleCompareValue(
+          item1.origin!.recipe?.['item_level']?.toString() ?? ''
+        ),
+        value2 = handleCompareValue(
+          item2.origin!.recipe?.['item_level']?.toString() ?? ''
+        )
       return value1 - value2
     },
   },
@@ -395,37 +462,53 @@ const sortOptions: {
 
 const conditions: {
   type: {
-    id: string;
-    types: EquipmentTypeOption[];
-    selected: boolean;
-  }[];
-  obtains: CommonOption[];
+    id: string
+    types: EquipmentTypeOption[]
+    selected: boolean
+  }[]
+  obtains: CommonOption[]
 } = reactive({
-  type: [{
-    id: 'main-weapon',
-    types: handleEquipmentTypes(MainWeaponTypeList),
-    selected: true,
-  }, {
-    id: 'sub-weapon',
-    types: [
-      ...handleEquipmentTypes(SubWeaponTypeList),
-      ...handleEquipmentTypes(SubArmorTypeList),
-    ],
-    selected: true,
-  }, {
-    id: 'body-armor',
-    types: handleEquipmentTypes([EquipmentTypes.BodyNormal]),
-    selected: true,
-  }, {
-    id: 'additional',
-    types: handleEquipmentTypes([EquipmentTypes.Additional]),
-    selected: true,
-  }, {
-    id: 'special',
-    types: handleEquipmentTypes([EquipmentTypes.Special]),
-    selected: true,
-  }],
-  obtains: handleOptions(['smith', 'boss', 'mini_boss', 'mobs', 'quest', 'box', 'exchange', 'other', 'unknow']),
+  type: [
+    {
+      id: 'main-weapon',
+      types: handleEquipmentTypes(MainWeaponTypeList),
+      selected: true,
+    },
+    {
+      id: 'sub-weapon',
+      types: [
+        ...handleEquipmentTypes(SubWeaponTypeList),
+        ...handleEquipmentTypes(SubArmorTypeList),
+      ],
+      selected: true,
+    },
+    {
+      id: 'body-armor',
+      types: handleEquipmentTypes([EquipmentTypes.BodyNormal]),
+      selected: true,
+    },
+    {
+      id: 'additional',
+      types: handleEquipmentTypes([EquipmentTypes.Additional]),
+      selected: true,
+    },
+    {
+      id: 'special',
+      types: handleEquipmentTypes([EquipmentTypes.Special]),
+      selected: true,
+    },
+  ],
+  obtains: handleOptions([
+    'smith',
+    'boss',
+    'mini_boss',
+    'mobs',
+    'quest',
+    'box',
+    'exchange',
+    'other',
+    'unknow',
+  ]),
 })
 
 const consts = {
@@ -458,7 +541,9 @@ const itemLevelMinimum = computed<number>({
 
 const statsSearchResult = computed(() => {
   const searchText = modes[SearchModes.Stat].statSearchText.toLowerCase()
-  return modes[SearchModes.Stat].stats.filter(stat => stat.text.toLowerCase().includes(searchText))
+  return modes[SearchModes.Stat].stats.filter(stat =>
+    stat.text.toLowerCase().includes(searchText)
+  )
 })
 
 const validEquipments = computed(() => {
@@ -470,12 +555,23 @@ const validEquipments = computed(() => {
       selected: true,
     })
   }
-  const unknowObtain = conditions.obtains.find(obtain => obtain.value === 'unknow' && obtain.selected)
-  const validObtains = conditions.obtains.filter(obtain => obtain.value !== 'unknow' && obtain.selected)
+  const unknowObtain = conditions.obtains.find(
+    obtain => obtain.value === 'unknow' && obtain.selected
+  )
+  const validObtains = conditions.obtains.filter(
+    obtain => obtain.value !== 'unknow' && obtain.selected
+  )
   return equipments.filter(equip => {
-    const checkType = validTypes.some(typeItem => typeItem.types.some(item => item.selected && item.value === equip.type))
-    const checkObtain = (unknowObtain && equip.origin!.obtains.length === 0) ||
-      validObtains.find(obtain => equip.origin!.obtains.find(eqObtain => eqObtain['type'] === obtain.value))
+    const checkType = validTypes.some(typeItem =>
+      typeItem.types.some(item => item.selected && item.value === equip.type)
+    )
+    const checkObtain =
+      (unknowObtain && equip.origin!.obtains.length === 0) ||
+      validObtains.find(obtain =>
+        equip.origin!.obtains.find(
+          eqObtain => eqObtain['type'] === obtain.value
+        )
+      )
     return checkType && checkObtain
   })
 })
@@ -489,28 +585,39 @@ const allSearchResult = computed(() => {
     const targets = modes[SearchModes.Normal].targets
       .filter(opt => opt.selected)
       .map(opt => opt.value)
-    return validEquipments.value
-      .filter(equip => {
-        const origin = equip.origin!
-        return targets.find(target => {
-          if (target === 'name') {
-            return origin.name.toLowerCase().includes(searchText)
-          } else if (target === 'material') {
-            return origin.recipe && origin.recipe['materials'] &&
-              origin.recipe['materials'].find(item => item.name.toLowerCase().includes(searchText))
-          } else if (target === 'obtain-name') {
-            return origin.obtains.find(obtain => obtain['name']?.toLowerCase().includes(searchText) ?? false)
-          } else if (target === 'map') {
-            return origin.obtains.find(obtain => obtain['map']?.toLowerCase().includes(searchText) ?? false)
-          }
-        })
+    return validEquipments.value.filter(equip => {
+      const origin = equip.origin!
+      return targets.find(target => {
+        if (target === 'name') {
+          return origin.name.toLowerCase().includes(searchText)
+        } else if (target === 'material') {
+          return (
+            origin.recipe &&
+            origin.recipe['materials'] &&
+            origin.recipe['materials'].find(item =>
+              item.name.toLowerCase().includes(searchText)
+            )
+          )
+        } else if (target === 'obtain-name') {
+          return origin.obtains.find(
+            obtain =>
+              obtain['name']?.toLowerCase().includes(searchText) ?? false
+          )
+        } else if (target === 'map') {
+          return origin.obtains.find(
+            obtain => obtain['map']?.toLowerCase().includes(searchText) ?? false
+          )
+        }
       })
+    })
   } else if (state.currentMode === SearchModes.Stat) {
     const searchStats = modes[SearchModes.Stat].currentStats
     if (searchStats.length === 0) {
       return []
     }
-    return validEquipments.value.filter(equip => searchStats.every(stat => findStat(stat, equip.stats)))
+    return validEquipments.value.filter(equip =>
+      searchStats.every(stat => findStat(stat, equip.stats))
+    )
   } else if (state.currentMode === SearchModes.ItemLevel) {
     const min = modes[SearchModes.ItemLevel].min || 0,
       max = modes[SearchModes.ItemLevel].max || 999
@@ -527,7 +634,9 @@ const allSearchResult = computed(() => {
     if (searchText === '') {
       return []
     }
-    return validEquipments.value.filter(equip => findObtainByDye(searchText, equip).length > 0)
+    return validEquipments.value.filter(
+      equip => findObtainByDye(searchText, equip).length > 0
+    )
   }
   return []
 })
@@ -536,7 +645,11 @@ const searchResult = computed(() => {
   let sr = allSearchResult.value.slice()
   const mode = state.currentMode,
     target = sortState.currentSelected
-  sr.sort(target === 'default' ? sortOptions[mode].default : sortOptions.global[target])
+  sr.sort(
+    target === 'default'
+      ? sortOptions[mode].default
+      : sortOptions.global[target]
+  )
   return sortState.currentOrder === 'down' ? sr.reverse() : sr.slice()
 })
 
@@ -544,10 +657,10 @@ const toggleSelected = (item: CommonOption) => {
   item.selected = !item.selected
 }
 const selectAll = (list: CommonOption[]) => {
-  list.forEach(item => item.selected = true)
+  list.forEach(item => (item.selected = true))
 }
 const cancelAll = (list: CommonOption[]) => {
-  list.forEach(item => item.selected = false)
+  list.forEach(item => (item.selected = false))
 }
 
 const selectStat = (stat: StatOption) => {
@@ -571,7 +684,8 @@ const selectMode = (id: SearchModes) => {
   min-height: 70vh;
 }
 
-.mode-normal-title, .mode-dye-title {
+.mode-normal-title,
+.mode-dye-title {
   display: flex;
   align-items: center;
   width: 100%;

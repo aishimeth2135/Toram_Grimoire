@@ -1,6 +1,6 @@
 <template>
   <div v-if="container" class="flex items-center">
-    <div v-if="toggleable" class="flex mr-3 flex-shrink-0">
+    <div v-if="toggleable" class="mr-3 flex flex-shrink-0">
       <cy-button-toggle
         v-model:selected="branchItemState.enabled"
         :disabled="container.statContainers.length === 0"
@@ -10,7 +10,10 @@
     </div>
     <div class="flex items-center">
       <cy-icon-text icon="ic:round-label-important" class="mr-2" />
-      <div v-if="container.statContainers.length === 0" v-html="container.get('caption')"></div>
+      <div
+        v-if="container.statContainers.length === 0"
+        v-html="container.get('caption')"
+      ></div>
       <CharacterSkillItemStats
         v-else
         :stat-containers="container.statContainers"
@@ -31,14 +34,18 @@ import CharacterSkillItemStats from './character-skill-item-stats.vue'
 import { setupCharacterStore } from '../../setup'
 
 interface Props {
-  container: DisplayDataContainer<SkillBranchItemSuffix>;
+  container: DisplayDataContainer<SkillBranchItemSuffix>
 }
 
 const props = defineProps<Props>()
 
 const { store } = setupCharacterStore()
 
-const branchItemState = computed(() => store.getSkillBranchState(props.container.branchItem.default))
+const branchItemState = computed(() =>
+  store.getSkillBranchState(props.container.branchItem.default)
+)
 
-const toggleable = computed(() => props.container.branchItem.prop('condition') !== 'auto')
+const toggleable = computed(
+  () => props.container.branchItem.prop('condition') !== 'auto'
+)
 </script>

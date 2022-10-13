@@ -5,25 +5,25 @@ import { Skill, SkillBranch } from '@/lib/Skill/Skill'
 import { CharacterComboTags } from './enums'
 
 interface ComboSkillState {
-  itemId: string;
-  comboSkill: CharacterComboSkill;
-  rate: number;
-  mpCost: number;
-  valid: boolean;
+  itemId: string
+  comboSkill: CharacterComboSkill
+  rate: number
+  mpCost: number
+  valid: boolean
 }
 
 interface CharacterComboSaveData {
-  skills: CharacterComboSkillSaveData[];
+  skills: CharacterComboSkillSaveData[]
 }
 interface CharacterComboSkillSaveData {
-  skill: string | null;
-  tag: CharacterComboTags | null;
-  condition: null | 'buff';
+  skill: string | null
+  tag: CharacterComboTags | null
+  condition: null | 'buff'
 }
 
 interface CharacterComboGetStatesParams {
-  getMpCost: (skill: Skill, previous: Skill | null) => number;
-  checkSkillValid: (skill: Skill) => boolean;
+  getMpCost: (skill: Skill, previous: Skill | null) => number
+  checkSkillValid: (skill: Skill) => boolean
 }
 
 let _CharacterComboAutoIncreasement = 0
@@ -32,8 +32,8 @@ class CharacterCombo {
   instanceId: number
   comboSkills: CharacterComboSkill[]
   config: {
-    damageCalc: boolean;
-    unselectedBranches: SkillBranch[];
+    damageCalc: boolean
+    unselectedBranches: SkillBranch[]
   }
 
   constructor() {
@@ -54,15 +54,21 @@ class CharacterCombo {
     return newSkill
   }
 
-  getComboSkillStates(params: CharacterComboGetStatesParams): ComboSkillState[] {
-    const ratesItems = this.comboSkills
-      .map((skill, idx, ary) => ({
-        itemId: skill.skill?.skillId ?? `empty-${idx}`,
-        comboSkill: skill,
-        rate: 100,
-        mpCost: skill.skill ? params.getMpCost(skill.skill, idx > 0 ? ary[idx - 1].skill : null) : 0,
-        valid: skill.skill ? params.checkSkillValid(skill.skill) : false,
-      } as ComboSkillState))
+  getComboSkillStates(
+    params: CharacterComboGetStatesParams
+  ): ComboSkillState[] {
+    const ratesItems = this.comboSkills.map(
+      (skill, idx, ary) =>
+        ({
+          itemId: skill.skill?.skillId ?? `empty-${idx}`,
+          comboSkill: skill,
+          rate: 100,
+          mpCost: skill.skill
+            ? params.getMpCost(skill.skill, idx > 0 ? ary[idx - 1].skill : null)
+            : 0,
+          valid: skill.skill ? params.checkSkillValid(skill.skill) : false,
+        } as ComboSkillState)
+    )
 
     const addRate = (idx: number, value: number) => {
       if (idx < ratesItems.length) {
@@ -90,7 +96,10 @@ class CharacterCombo {
         addRate(idx + 4, -20)
         savedMp += item.mpCost
         item.mpCost = 0
-      } else if (skill.tag === CharacterComboTags.Bloodsucker && skill.condition === 'buff') {
+      } else if (
+        skill.tag === CharacterComboTags.Bloodsucker &&
+        skill.condition === 'buff'
+      ) {
         addRate(idx, 110 + comboIdx)
       }
       if (savedMp > 0 && item.mpCost > 0) {
@@ -114,7 +123,9 @@ class CharacterCombo {
 
   static load(data: CharacterComboSaveData): CharacterCombo {
     const newCombo = new CharacterCombo()
-    newCombo.comboSkills = data.skills.map(_data => CharacterComboSkill.load(newCombo, _data))
+    newCombo.comboSkills = data.skills.map(_data =>
+      CharacterComboSkill.load(newCombo, _data)
+    )
     return newCombo
   }
 }
@@ -146,7 +157,9 @@ class CharacterComboSkill {
 
   setSkill(skill: Skill | null) {
     if (skill !== null) {
-      const used = this.parent.comboSkills.find(comboSkill => comboSkill.skill === skill)
+      const used = this.parent.comboSkills.find(
+        comboSkill => comboSkill.skill === skill
+      )
       if (used) {
         used.skill = null
       }
@@ -167,9 +180,14 @@ class CharacterComboSkill {
     }
   }
 
-  static load(parent: CharacterCombo, data: CharacterComboSkillSaveData): CharacterComboSkill {
+  static load(
+    parent: CharacterCombo,
+    data: CharacterComboSkillSaveData
+  ): CharacterComboSkill {
     const newSkill = new CharacterComboSkill(parent)
-    newSkill.skill = data.skill ? Grimoire.Skill.skillRoot.findSkillById(data.skill) : null
+    newSkill.skill = data.skill
+      ? Grimoire.Skill.skillRoot.findSkillById(data.skill)
+      : null
     newSkill.tag = data.tag
     newSkill.condition = data.condition
     return newSkill

@@ -1,16 +1,21 @@
 <template>
   <div>
     <div class="flex items-center">
-      <div v-if="!hideName" class="flex mr-3 flex-shrink-0">
+      <div v-if="!hideName" class="mr-3 flex flex-shrink-0">
         <cy-button-toggle
           v-model:selected="branchItemState.enabled"
           :disabled="container.statContainers.length === 0"
         >
-          {{ container.get('name') || t('skill-query.branch.effect.base-name') }}
+          {{
+            container.get('name') || t('skill-query.branch.effect.base-name')
+          }}
         </cy-button-toggle>
       </div>
       <div>
-        <div v-if="container.statContainers.length === 0" v-html="container.get('caption')"></div>
+        <div
+          v-if="container.statContainers.length === 0"
+          v-html="container.get('caption')"
+        ></div>
         <CharacterSkillItemStats
           v-else
           :stat-containers="container.statContainers"
@@ -38,10 +43,9 @@ import CharacterSkillResultSuffixItem from './character-skill-result-suffix-item
 
 import { setupCharacterStore } from '../../setup'
 
-
 interface Props {
-  result: SkillResult;
-  hideName?: boolean;
+  result: SkillResult
+  hideName?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -53,5 +57,7 @@ const { t } = useI18n()
 
 const container = computed(() => props.result.container)
 
-const branchItemState = computed(() => store.getSkillBranchState(container.value.branchItem.default))
+const branchItemState = computed(() =>
+  store.getSkillBranchState(container.value.branchItem.default)
+)
 </script>

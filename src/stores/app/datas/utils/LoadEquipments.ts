@@ -2,7 +2,7 @@ import { isNumberString, splitComma } from '@/shared/utils/string'
 
 import ItemsSystem from '@/lib/Items'
 import { Equipment, ItemRecipeMaterialItem } from '@/lib/Items/Item'
-import type { ItemObtain, ItemRecipe, ItemExtra } from '@/lib/Items/Item'
+import type { ItemExtra, ItemObtain, ItemRecipe } from '@/lib/Items/Item'
 
 import type { CsvData } from './DownloadDatas'
 
@@ -17,15 +17,24 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
     CAPTION = 8,
     CATEGORY_LIST = {
       // eslint-disable-next-line object-property-newline
-      '單手劍': 0, '雙手劍': 1, '弓': 2, '弩': 3, '法杖': 4,
+      單手劍: 0,
+      雙手劍: 1,
+      弓: 2,
+      弩: 3,
+      法杖: 4,
       // eslint-disable-next-line object-property-newline
-      '魔導具': 5, '拳套': 6, '旋風槍': 7, '拔刀劍': 8,
+      魔導具: 5,
+      拳套: 6,
+      旋風槍: 7,
+      拔刀劍: 8,
       // eslint-disable-next-line object-property-newline
-      '箭矢': 100, '小刀': 101, '忍術卷軸': 102,
-      '盾牌': 200,
-      '身體裝備': 300,
-      '追加裝備': 400,
-      '特殊裝備': 500,
+      箭矢: 100,
+      小刀: 101,
+      忍術卷軸: 102,
+      盾牌: 200,
+      身體裝備: 300,
+      追加裝備: 400,
+      特殊裝備: 500,
     } as Record<string, number>
 
   const processMaterails = (str: string) => {
@@ -59,8 +68,10 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
           row[NAME],
           type === undefined ? -1 : type,
           isNumberString(row[BASE_VALUE]) ? parseInt(row[BASE_VALUE], 10) : 0,
-          isNumberString(row[BASE_STABILITY]) ? parseInt(row[BASE_STABILITY], 10) : 0,
-          row[CAPTION],
+          isNumberString(row[BASE_STABILITY])
+            ? parseInt(row[BASE_STABILITY], 10)
+            : 0,
+          row[CAPTION]
         )
         if (type === undefined) {
           currentEquipment.unknowCategory = row[CATEGORY]
@@ -90,9 +101,14 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
         } else {
           value = valueStr.slice(0, -1)
         }
-        currentEquipment.appendStat(propName, value, tail, row[ATTRIBUTE_VALUES[1]])
+        currentEquipment.appendStat(
+          propName,
+          value,
+          tail,
+          row[ATTRIBUTE_VALUES[1]]
+        )
       } else if (currentCategory === 'obtain') {
-        if ((['name', 'map', 'dye', 'type', 'npc']).includes(propName)) {
+        if (['name', 'map', 'dye', 'type', 'npc'].includes(propName)) {
           currentObtain[propName as keyof ItemObtain] = propValue
         }
       } else if (currentCategory === 'extra') {
@@ -100,9 +116,17 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
           currentExtra[propName] = propValue
         }
       } else if (currentCategory === 'recipe') {
-        const keys = ['item_level', 'item_difficulty', 'cost', 'potential'] as const
+        const keys = [
+          'item_level',
+          'item_difficulty',
+          'cost',
+          'potential',
+        ] as const
         if (keys.includes(propName as typeof keys[number])) {
-          currentRecipe[propName as typeof keys[number]] = parseInt(propValue, 10)
+          currentRecipe[propName as typeof keys[number]] = parseInt(
+            propValue,
+            10
+          )
         } else if (propName === 'materials') {
           currentRecipe.materials = processMaterails(propValue)
         }

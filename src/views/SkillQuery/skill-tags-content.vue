@@ -20,11 +20,11 @@
         />
       </div>
       <div class="px-2">
-        <template v-for="frame in currentTag.rows" :key="frame.type + frame.value.join(',')">
-          <div
-            v-if="frame.type === 'category'"
-            class="my-2"
-          >
+        <template
+          v-for="frame in currentTag.rows"
+          :key="frame.type + frame.value.join(',')"
+        >
+          <div v-if="frame.type === 'category'" class="my-2">
             <cy-icon-text icon="ic-baseline-label" small>
               {{ frame.value[0] }}
             </cy-icon-text>
@@ -34,16 +34,13 @@
             class="py-1"
             v-html="handleText(frame.value[0])"
           />
-          <div
-            v-else-if="frame.type === 'list'"
-            class="mt-2"
-          >
-            <div v-for="frameValue in frame.value" :key="frameValue" class="flex items-start py-0.5">
-              <cy-icon-text
-                icon="jam:leaf"
-                class="mr-2"
-                icon-width="1rem"
-              />
+          <div v-else-if="frame.type === 'list'" class="mt-2">
+            <div
+              v-for="frameValue in frame.value"
+              :key="frameValue"
+              class="flex items-start py-0.5"
+            >
+              <cy-icon-text icon="jam:leaf" class="mr-2" icon-width="1rem" />
               <div v-html="handleText(frameValue)" />
             </div>
           </div>
@@ -61,12 +58,12 @@ import GlossaryTag from '@/lib/Glossary/GlossaryTag'
 import { createTagButtons } from './utils'
 
 interface Props {
-  currentTags: GlossaryTag[];
-  currentTag: GlossaryTag | null;
-  currentTagIndex: number;
+  currentTags: GlossaryTag[]
+  currentTag: GlossaryTag | null
+  currentTagIndex: number
 }
 interface Emits {
-  (evt: 'change-tag', offset: number): void;
+  (evt: 'change-tag', offset: number): void
 }
 
 defineProps<Props>()
@@ -74,7 +71,10 @@ const emit = defineEmits<Emits>()
 
 const handleText = (html: string) => {
   html = markText(html)
-  html = html.replace(/\(\(((?:(?!\(\().)+)\)\)/g, (match, p1) => `<span class="bracket-text">${p1}</span>`)
+  html = html.replace(
+    /\(\(((?:(?!\(\().)+)\)\)/g,
+    (match, p1) => `<span class="bracket-text">${p1}</span>`
+  )
   html = createTagButtons(html)
   return html
 }
@@ -82,7 +82,7 @@ const handleText = (html: string) => {
 
 <style lang="postcss" scoped>
 .skill-tag-content-wrapper {
-  @apply bg-white bg-opacity-95 border-1 border-b-0 border-primary-30 shadow-sm mx-0.5;
+  @apply mx-0.5 border-1 border-b-0 border-primary-30 bg-white bg-opacity-95 shadow-sm;
 
   max-width: 30rem;
   min-width: 12.5rem;
@@ -93,16 +93,16 @@ const handleText = (html: string) => {
 
     &::after {
       content: '';
-      @apply block sticky h-4 bottom-0 bg-white bg-opacity-60;
+      @apply sticky bottom-0 block h-4 bg-white bg-opacity-60;
       border-radius: 20% 20% 0 0;
     }
   }
   &:deep(.bracket-text) {
-    @apply border-l-1 border-r-1 border-current mx-2 px-2 text-primary-60;
+    @apply mx-2 border-l-1 border-r-1 border-current px-2 text-primary-60;
   }
 
   &:deep(.click-button--tag) {
-    @apply text-orange-60 cursor-pointer inline-block px-0.5;
+    @apply inline-block cursor-pointer px-0.5 text-orange-60;
   }
 }
 </style>

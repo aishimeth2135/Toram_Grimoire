@@ -1,0 +1,18 @@
+trailingComma: es5
+tabWidth: 2
+semi: false
+singleQuote: true
+quoteProps: consistent
+printWidth: 80
+arrowParens: 'avoid'
+tailwindConfig: ./tailwind.config.js
+importOrder:
+  - ^@/stores/
+  - ^@/shared/
+  - ^@/lib/
+  - ^@/setup/
+  - ^@/
+  - (?!@/).+\.vue$
+  - ^[./]
+importOrderSeparation: true
+importOrderSortSpecifiers: true

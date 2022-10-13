@@ -1,6 +1,10 @@
 import { reactive, shallowReactive } from 'vue'
 
-import { HandleFormulaTexts, HandleFormulaVars, HandleFormulaMethods } from '@/shared/utils/data'
+import {
+  HandleFormulaMethods,
+  HandleFormulaTexts,
+  HandleFormulaVars,
+} from '@/shared/utils/data'
 import { splitComma } from '@/shared/utils/string'
 
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
@@ -8,31 +12,31 @@ import { StatComputed } from '@/lib/Character/Stat'
 import { StatTypes } from '@/lib/Character/Stat/enums'
 
 import { Skill, SkillBranch, SkillEffect, SkillEffectHistory } from '../Skill'
+import { SkillBranchNames } from '../Skill/enums'
+import { FormulaDisplayModes, SkillBuffs } from './enums'
 import {
   convertEffectEquipment,
   effectOverwrite,
-  separateSuffixBranches,
   handleVirtualBranches,
-  regressHistoryBranches,
-  setBranchAttrsDefaultValue,
-  initStackStates,
   initBasicBranchItem,
-  initHistoryNexts,
-  initBranchesPostpone,
   initBranchSpecialProps,
+  initBranchesPostpone,
+  initHistoryNexts,
+  initStackStates,
+  regressHistoryBranches,
+  separateSuffixBranches,
+  setBranchAttrsDefaultValue,
 } from './utils'
-import { SkillBranchNames } from '../Skill/enums'
-import { FormulaDisplayModes, SkillBuffs } from './enums'
 
 interface HandleFormulaExtends {
-  vars: HandleFormulaVars;
-  texts: HandleFormulaTexts;
-  methods?: HandleFormulaMethods;
+  vars: HandleFormulaVars
+  texts: HandleFormulaTexts
+  methods?: HandleFormulaMethods
 }
 
 interface SkillFormulaExtraProps {
-  max: number | null;
-  min: number | null;
+  max: number | null
+  min: number | null
 }
 
 /**
@@ -40,13 +44,13 @@ interface SkillFormulaExtraProps {
  */
 class SkillComputingContainer {
   vars: {
-    characterLevel: number;
-    skillLevel: number;
+    characterLevel: number
+    skillLevel: number
   }
 
   varGetters: {
-    characterLevel: (() => number) | null;
-    skillLevel: ((skill: Skill) => number) | null;
+    characterLevel: (() => number) | null
+    skillLevel: ((skill: Skill) => number) | null
   }
 
   handleFormulaExtends: HandleFormulaExtends
@@ -54,9 +58,15 @@ class SkillComputingContainer {
   handleFormulaDynamicExtends: (() => HandleFormulaExtends)[]
 
   config: {
-    formulaDisplayMode: FormulaDisplayModes;
-    getFormulaExtraValue: ((branch: SkillBranchItem, id: string, props?: SkillFormulaExtraProps) => number | null) | null;
-    computeFormulaExtraValue: ((formula: string) => number | null) | null;
+    formulaDisplayMode: FormulaDisplayModes
+    getFormulaExtraValue:
+      | ((
+          branch: SkillBranchItem,
+          id: string,
+          props?: SkillFormulaExtraProps
+        ) => number | null)
+      | null
+    computeFormulaExtraValue: ((formula: string) => number | null) | null
   }
 
   constructor() {
@@ -99,16 +109,23 @@ class SkillItem {
     ]
   }
 
-  findEffectItem(equipment: EquipmentRestrictions, getSkillLevel?: (skill: Skill) => number) {
-    return this.effectItems.find(effectItem => effectItem.equipmentMatch(equipment, getSkillLevel)) ?? null
+  findEffectItem(
+    equipment: EquipmentRestrictions,
+    getSkillLevel?: (skill: Skill) => number
+  ) {
+    return (
+      this.effectItems.find(effectItem =>
+        effectItem.equipmentMatch(equipment, getSkillLevel)
+      ) ?? null
+    )
   }
 }
 
 interface EquipmentRestrictionsParam {
-  main?: EquipmentTypes | null;
-  sub?: EquipmentTypes | null;
-  body?: EquipmentTypes | null;
-  other?: string | null;
+  main?: EquipmentTypes | null
+  sub?: EquipmentTypes | null
+  body?: EquipmentTypes | null
+  other?: string | null
 }
 
 class EquipmentRestrictions {
@@ -117,7 +134,12 @@ class EquipmentRestrictions {
   body: EquipmentTypes | null
   other: string | null
 
-  constructor({ main = null, sub = null, body = null, other = null }: EquipmentRestrictionsParam = {}) {
+  constructor({
+    main = null,
+    sub = null,
+    body = null,
+    other = null,
+  }: EquipmentRestrictionsParam = {}) {
     this.main = main
     this.sub = sub
     this.body = body
@@ -128,17 +150,17 @@ class EquipmentRestrictions {
 type EquipmentRestrictionsBaseKeys = 'main' | 'sub' | 'body'
 
 interface BranchGroupState {
-  readonly size: number;
-  readonly expandable: boolean;
-  expanded: boolean;
-  parentExpanded: boolean;
-  isGroupEnd: boolean;
+  readonly size: number
+  readonly expandable: boolean
+  expanded: boolean
+  parentExpanded: boolean
+  isGroupEnd: boolean
 }
 
 interface BranchStackState {
-  readonly stackId: number;
-  readonly branch: SkillBranchItem;
-  value: number;
+  readonly stackId: number
+  readonly branch: SkillBranchItem
+  value: number
 }
 
 abstract class SkillEffectItemBase {
@@ -169,14 +191,20 @@ class SkillEffectItem extends SkillEffectItemBase {
   constructor(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect) {
     super(parent)
 
-    this.branchItems = defaultSef.branches.map(bch => new SkillBranchItem(this, bch))
+    this.branchItems = defaultSef.branches.map(
+      bch => new SkillBranchItem(this, bch)
+    )
     initBasicBranchItem(this, defaultSef)
 
     const current = from ? from : defaultSef
-    const dualSwordRegress = defaultSef.parent.effects.every(eft => eft.mainWeapon !== 10)
+    const dualSwordRegress = defaultSef.parent.effects.every(
+      eft => eft.mainWeapon !== 10
+    )
     this.equipments = convertEffectEquipment(current, dualSwordRegress)
 
-    this.historys = current.historys.map(history => new SkillEffectItemHistory(parent, this, history))
+    this.historys = current.historys.map(
+      history => new SkillEffectItemHistory(parent, this, history)
+    )
 
     if (from) {
       effectOverwrite(this, from)
@@ -200,29 +228,41 @@ class SkillEffectItem extends SkillEffectItemBase {
     initStackStates(this)
   }
 
-  equipmentMatch(equipment: EquipmentRestrictions, getSkillLevel?: (skill: Skill) => number): boolean {
+  equipmentMatch(
+    equipment: EquipmentRestrictions,
+    getSkillLevel?: (skill: Skill) => number
+  ): boolean {
     const equipments = this.equipments.slice()
 
     // 雙手合持 (0-6-11)
     if (getSkillLevel && this.parent.skill.skillId === '0-6-11') {
       // 忍道 (4-5-1)
-      const skillNinjaSpirit = this.parent.skill.parent.parent.parent.findSkillById('4-5-1')
+      const skillNinjaSpirit =
+        this.parent.skill.parent.parent.parent.findSkillById('4-5-1')
       if (skillNinjaSpirit) {
         const skillNinjaSpiritLevel = getSkillLevel(skillNinjaSpirit)
         if (skillNinjaSpiritLevel === 10) {
-          const mainRest = equipments.find(rest => rest.main !== null && rest.sub === null)
+          const mainRest = equipments.find(
+            rest => rest.main !== null && rest.sub === null
+          )
           if (mainRest) {
-            equipments.push(new EquipmentRestrictions({
-              main: mainRest.main,
-              sub: EquipmentTypes.NinjutsuScroll,
-            }))
+            equipments.push(
+              new EquipmentRestrictions({
+                main: mainRest.main,
+                sub: EquipmentTypes.NinjutsuScroll,
+              })
+            )
           }
         }
       }
     }
 
     return equipments.some(effectEquipment => {
-      if (effectEquipment.main === null && effectEquipment.sub === null && effectEquipment.body === null) {
+      if (
+        effectEquipment.main === null &&
+        effectEquipment.sub === null &&
+        effectEquipment.body === null
+      ) {
         return true
       }
       return (['main', 'sub', 'body'] as const).every(key => {
@@ -236,7 +276,9 @@ class SkillEffectItem extends SkillEffectItemBase {
 
   equipmentId() {
     const keys = ['main', 'sub', 'body'] as const
-    return this.equipments.map(equip => keys.map(key => equip[key] || 'none').join('+')).join('/')
+    return this.equipments
+      .map(equip => keys.map(key => equip[key] || 'none').join('+'))
+      .join('/')
   }
 
   resetStackStates(vars: { slv: number; clv: number }) {
@@ -263,9 +305,15 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
   // store the previous branch of every item in branchItems
   nexts: Map<SkillBranchItem, SkillBranchItem | null>
 
-  constructor(parent: SkillItem, parentEffect: SkillEffectItem, historyEffect: SkillEffectHistory) {
+  constructor(
+    parent: SkillItem,
+    parentEffect: SkillEffectItem,
+    historyEffect: SkillEffectHistory
+  ) {
     super(parent)
-    this.branchItems = historyEffect.branches.map(bch => new SkillBranchItem(this, bch))
+    this.branchItems = historyEffect.branches.map(
+      bch => new SkillBranchItem(this, bch)
+    )
 
     this.origin = historyEffect
     this.parentEffect = parentEffect
@@ -277,24 +325,33 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
 
   get modifiedBranchItems() {
     return this.branchItems.filter(branchItem => {
-      if (branchItem.id !== -1 && this.origin.branches.find(bch => bch.id === branchItem.id)) {
+      if (
+        branchItem.id !== -1 &&
+        this.origin.branches.find(bch => bch.id === branchItem.id)
+      ) {
         return true
       }
-      return branchItem.suffixBranches.some(suffix => suffix.id !== -1 && this.origin.branches.find(bch => suffix.id === bch.id))
+      return branchItem.suffixBranches.some(
+        suffix =>
+          suffix.id !== -1 &&
+          this.origin.branches.find(bch => suffix.id === bch.id)
+      )
     })
   }
 }
 
 type SkillBranchItemOverwriteRecord<T> = {
-  overwrite: T[];
-  append: T[];
-  remove: T[];
+  overwrite: T[]
+  append: T[]
+  remove: T[]
 }
 type SkillBranchItemOverwriteRecords = {
-  props: SkillBranchItemOverwriteRecord<string>;
-  stats: SkillBranchItemOverwriteRecord<[string, StatTypes]>;
+  props: SkillBranchItemOverwriteRecord<string>
+  stats: SkillBranchItemOverwriteRecord<[string, StatTypes]>
 }
-abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEffectItemBase> {
+abstract class SkillBranchItemBase<
+  Parent extends SkillEffectItemBase = SkillEffectItemBase
+> {
   private _props: Map<string, string>
 
   private _name: SkillBranchNames
@@ -341,7 +398,9 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
     this._inherit = null
     this.name = this._name // init _inherit
 
-    this._props = new Map(branch instanceof SkillBranch ? branch.props : branch.allProps)
+    this._props = new Map(
+      branch instanceof SkillBranch ? branch.props : branch.allProps
+    )
     this.stats = branch.stats.map(stat => stat.clone())
     this.buffs = null
 
@@ -437,9 +496,15 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
     this.record.props.append = record.props.append.slice()
     this.record.props.remove = record.props.remove.slice()
 
-    this.record.stats.overwrite = record.stats.overwrite.map(item => item.slice() as [string, StatTypes])
-    this.record.stats.append = record.stats.append.map(item => item.slice() as [string, StatTypes])
-    this.record.stats.remove = record.stats.remove.map(item => item.slice() as [string, StatTypes])
+    this.record.stats.overwrite = record.stats.overwrite.map(
+      item => item.slice() as [string, StatTypes]
+    )
+    this.record.stats.append = record.stats.append.map(
+      item => item.slice() as [string, StatTypes]
+    )
+    this.record.stats.remove = record.stats.remove.map(
+      item => item.slice() as [string, StatTypes]
+    )
   }
 
   setHistoryRecord(record: SkillBranchItemOverwriteRecords) {
@@ -454,7 +519,9 @@ abstract class SkillBranchItemBase<Parent extends SkillEffectItemBase = SkillEff
 /**
  * @vue-reactive raw
  */
-class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> extends SkillBranchItemBase<Parent> {
+class SkillBranchItem<
+  Parent extends SkillEffectItemBase = SkillEffectItemBase
+> extends SkillBranchItemBase<Parent> {
   readonly suffixBranches: SkillBranchItemSuffix[]
   readonly emptySuffixBranches: SkillBranchItemSuffix[]
   readonly linkedStackIds: number[]
@@ -468,10 +535,13 @@ class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> 
     this.suffixBranches = []
     this.emptySuffixBranches = []
 
-    this.stackId = this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
+    this.stackId =
+      this.name === SkillBranchNames.Stack ? this.propNumber('id') : null
 
-    this.linkedStackIds = this.stackId !== null ? [] :
-      splitComma(this.prop('stack_id')).map(id => parseInt(id, 10))
+    this.linkedStackIds =
+      this.stackId !== null
+        ? []
+        : splitComma(this.prop('stack_id')).map(id => parseInt(id, 10))
 
     this.groupState = reactive({
       size: 0,
@@ -523,11 +593,15 @@ class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> 
     return suffix
   }
 
-  override clone<TargetParent extends SkillEffectItemBase = SkillEffectItem>(parent?: TargetParent): SkillBranchItem<TargetParent> {
+  override clone<TargetParent extends SkillEffectItemBase = SkillEffectItem>(
+    parent?: TargetParent
+  ): SkillBranchItem<TargetParent> {
     parent = (parent ?? this.parent) as TargetParent
     const clone = new SkillBranchItem(parent, this)
 
-    clone.suffixBranches.push(...this.suffixBranches.map(suf => suf.clone(parent)))
+    clone.suffixBranches.push(
+      ...this.suffixBranches.map(suf => suf.clone(parent))
+    )
 
     return clone
   }
@@ -536,16 +610,24 @@ class SkillBranchItem<Parent extends SkillEffectItemBase = SkillEffectItemBase> 
 /**
  * @vue-reactive raw
  */
-class SkillBranchItemSuffix<Parent extends SkillEffectItemBase = SkillEffectItemBase> extends SkillBranchItemBase<Parent> {
+class SkillBranchItemSuffix<
+  Parent extends SkillEffectItemBase = SkillEffectItemBase
+> extends SkillBranchItemBase<Parent> {
   readonly mainBranch: SkillBranchItem
 
-  constructor(parent: Parent, branch: SkillBranchItemBase, mainBranch: SkillBranchItem) {
+  constructor(
+    parent: Parent,
+    branch: SkillBranchItemBase,
+    mainBranch: SkillBranchItem
+  ) {
     super(parent, branch)
 
     this.mainBranch = mainBranch
   }
 
-  override clone<TargetParent extends SkillEffectItemBase = SkillEffectItem>(parent?: TargetParent): SkillBranchItemSuffix<TargetParent> {
+  override clone<TargetParent extends SkillEffectItemBase = SkillEffectItem>(
+    parent?: TargetParent
+  ): SkillBranchItemSuffix<TargetParent> {
     parent = (parent ?? this.parent) as TargetParent
     return new SkillBranchItemSuffix(parent, this, this.mainBranch)
   }
@@ -557,13 +639,11 @@ class SkillBranchItemSuffix<Parent extends SkillEffectItemBase = SkillEffectItem
 class SkillBranchBuffs {
   private _buffs: Set<SkillBuffs>
 
-  static SkillBuffList: SkillBuffs[] = [
-    SkillBuffs.MpCostHalf,
-  ]
+  static SkillBuffList: SkillBuffs[] = [SkillBuffs.MpCostHalf]
 
   constructor(str: string) {
-    this._buffs = new Set();
-    (splitComma(str) as SkillBuffs[]).forEach(item => {
+    this._buffs = new Set()
+    ;(splitComma(str) as SkillBuffs[]).forEach(item => {
       if (SkillBranchBuffs.SkillBuffList.includes(item)) {
         this._buffs.add(item)
       }

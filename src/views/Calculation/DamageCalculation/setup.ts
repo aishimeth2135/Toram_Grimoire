@@ -1,41 +1,52 @@
+import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import type { Ref } from 'vue'
-import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 
 import { useDamageCalculationStore } from '@/stores/views/damage-calculation'
 import { setupCalculationExpectedResult } from '@/stores/views/damage-calculation/setup'
 
-import { CalcItemContainer, Calculation } from '@/lib/Calculation/Damage/Calculation'
+import {
+  CalcItemContainer,
+  Calculation,
+} from '@/lib/Calculation/Damage/Calculation'
 import { CalcStructExpression } from '@/lib/Calculation/Damage/Calculation/base'
-import { CalculationContainerIds, CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
+import {
+  CalculationContainerIds,
+  CalculationItemIds,
+} from '@/lib/Calculation/Damage/Calculation/enums'
 
 import Notify from '@/setup/Notify'
 
 import { calcStructDisplay, calcStructDisplayCritical } from './consts'
 
 interface CalcModeItem {
-  id: 'common' | 'critical';
-  calcStruct: CalcStructExpression;
-  outsideItems: CalculationContainerIds[];
-  maxLayer: number;
+  id: 'common' | 'critical'
+  calcStruct: CalcStructExpression
+  outsideItems: CalculationContainerIds[]
+  maxLayer: number
 }
 
 const setupCalcMode = () => {
-  const calcModeList: CalcModeItem[] = [{
-    id: 'common',
-    calcStruct: calcStructDisplay,
-    outsideItems: [CalculationContainerIds.BaseTwoHanded],
-    maxLayer: 4,
-  }, {
-    id: 'critical',
-    calcStruct: calcStructDisplayCritical,
-    outsideItems: [CalculationContainerIds.Critical_Accuracy_Stability],
-    maxLayer: 6,
-  }]
+  const calcModeList: CalcModeItem[] = [
+    {
+      id: 'common',
+      calcStruct: calcStructDisplay,
+      outsideItems: [CalculationContainerIds.BaseTwoHanded],
+      maxLayer: 4,
+    },
+    {
+      id: 'critical',
+      calcStruct: calcStructDisplayCritical,
+      outsideItems: [CalculationContainerIds.Critical_Accuracy_Stability],
+      maxLayer: 6,
+    },
+  ]
   const currentCalcModeId = ref('common')
-  const selectCalcMode = (id: string) => currentCalcModeId.value = id
-  const calcMode = computed(() => calcModeList.find(item => item.id === currentCalcModeId.value)!)
+  const selectCalcMode = (id: string) => (currentCalcModeId.value = id)
+  const calcMode = computed(
+    () => calcModeList.find(item => item.id === currentCalcModeId.value)!
+  )
 
   return {
     calcModeList,
@@ -50,8 +61,8 @@ const setupCalculationStoreState = () => {
     calculations,
     currentCalculation,
   }: {
-    calculations: Ref<Calculation[]>;
-    currentCalculation: Ref<Calculation>;
+    calculations: Ref<Calculation[]>
+    currentCalculation: Ref<Calculation>
   } = storeToRefs(store)
 
   return {
@@ -74,13 +85,20 @@ const setupCalculationStore = () => {
     }
     const calculation = currentCalculation.value
     store.removeCalculation(calculation)
-    notify(t('damage-calculation.tips.removed-build-success', { name: calculation.name }), {
-      buttons: [{
-        text: t('global.recovery'),
-        removeMessageAfterClick: true,
-        click: () => store.appendCalculation(calculation),
-      }],
-    })
+    notify(
+      t('damage-calculation.tips.removed-build-success', {
+        name: calculation.name,
+      }),
+      {
+        buttons: [
+          {
+            text: t('global.recovery'),
+            removeMessageAfterClick: true,
+            click: () => store.appendCalculation(calculation),
+          },
+        ],
+      }
+    )
   }
 
   const copyCurrentCalculation = () => {
@@ -106,17 +124,21 @@ const setupCalculationStore = () => {
 }
 
 const setupExpectedResults = (calculation: Ref<Calculation>) => {
-  const {
-    baseResultCritical,
-    baseResultWithoutCritical,
-    expectedResult,
-  } = setupCalculationExpectedResult(calculation)
+  const { baseResultCritical, baseResultWithoutCritical, expectedResult } =
+    setupCalculationExpectedResult(calculation)
 
-  const getStability = () => calculation.value.containers.get(CalculationContainerIds.Stability)!.getItemValue(CalculationItemIds.Stability)
+  const getStability = () =>
+    calculation.value.containers
+      .get(CalculationContainerIds.Stability)!
+      .getItemValue(CalculationItemIds.Stability)
 
   const expectedResultMax = computed(() => Math.floor(baseResultCritical.value))
-  const expectedResultMin = computed(() => Math.floor(baseResultWithoutCritical.value * getStability() / 100))
-  const expectedResultGrazeMin = computed(() => Math.floor(baseResultWithoutCritical.value * getStability() / 200))
+  const expectedResultMin = computed(() =>
+    Math.floor((baseResultWithoutCritical.value * getStability()) / 100)
+  )
+  const expectedResultGrazeMin = computed(() =>
+    Math.floor((baseResultWithoutCritical.value * getStability()) / 200)
+  )
 
   const stabilityResult = computed(() => ({
     min: expectedResultMin.value,
@@ -138,20 +160,19 @@ type ResultModeIdStability = 'stability' | 'stability-with-graze'
 type ResultModeIdExpected = 'expected'
 type ResultModeId = ResultModeIdStability | ResultModeIdExpected
 interface ResultModeItem<Id extends ResultModeId = ResultModeId> {
-  id: Id;
-  icon: string;
-  value: Id extends ResultModeIdExpected ? number : {
-    min: number;
-    max: number;
-  };
+  id: Id
+  icon: string
+  value: Id extends ResultModeIdExpected
+    ? number
+    : {
+        min: number
+        max: number
+      }
 }
 
 const setupResultMode = (calculation: Ref<Calculation>) => {
-  const {
-    expectedResult,
-    stabilityResult,
-    stabilityResultGraze,
-  } = setupExpectedResults(calculation)
+  const { expectedResult, stabilityResult, stabilityResultGraze } =
+    setupExpectedResults(calculation)
 
   const resultModeId = ref<ResultModeId>('expected')
 
@@ -160,21 +181,27 @@ const setupResultMode = (calculation: Ref<Calculation>) => {
   }
 
   const resultModeList = computed<ResultModeItem[]>(() => {
-    return [{
-      id: 'stability',
-      icon: 'tabler:angle',
-      value: stabilityResult.value,
-    }, {
-      id: 'stability-with-graze',
-      icon: 'tabler:angle',
-      value: stabilityResultGraze.value,
-    }, {
-      id: 'expected',
-      icon: 'ant-design:star-outlined',
-      value: expectedResult.value,
-    }]
+    return [
+      {
+        id: 'stability',
+        icon: 'tabler:angle',
+        value: stabilityResult.value,
+      },
+      {
+        id: 'stability-with-graze',
+        icon: 'tabler:angle',
+        value: stabilityResultGraze.value,
+      },
+      {
+        id: 'expected',
+        icon: 'ant-design:star-outlined',
+        value: expectedResult.value,
+      },
+    ]
   })
-  const resultMode = computed(() => resultModeList.value.find(item => item.id === resultModeId.value)!)
+  const resultMode = computed(
+    () => resultModeList.value.find(item => item.id === resultModeId.value)!
+  )
 
   return {
     resultMode,
@@ -184,13 +211,17 @@ const setupResultMode = (calculation: Ref<Calculation>) => {
 }
 
 const setupCalculationCalcOptions = (calculation: Ref<Calculation>) => {
-  const options = [{
-    containerId: CalculationContainerIds.DamageType,
-  }]
+  const options = [
+    {
+      containerId: CalculationContainerIds.DamageType,
+    },
+  ]
 
   const calculationContainerOptions = computed(() => {
     return options.map(item => {
-      const container = calculation.value.containers.get(item.containerId) as CalcItemContainer
+      const container = calculation.value.containers.get(
+        item.containerId
+      ) as CalcItemContainer
       return {
         container,
         containerItems: Array.from(container.items.values()),

@@ -11,11 +11,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, Ref, shallowRef } from 'vue'
+import { Ref, ref, shallowRef, watch } from 'vue'
 
 import { useDatasStore } from '@/stores/app/datas'
 import { DataStoreIds } from '@/stores/app/datas/enums'
-
 
 import Grimoire from '@/shared/Grimoire'
 
@@ -26,7 +25,7 @@ import EquipmentItem from '@/components/common/equipment-item.vue'
 import { BookPageSection } from '../setup/Book'
 
 interface Props {
-  section: BookPageSection;
+  section: BookPageSection
 }
 
 const props = defineProps<Props>()
@@ -45,7 +44,9 @@ const updateEquipments = async () => {
     if (!Number.isNaN(num)) {
       loading.value = true
       await datasStore.waitLoaded(DataStoreIds.Items)
-      equipments.value = Grimoire.Items.equipments.slice(num).map(equip => CharacterEquipment.fromOriginEquipment(equip))
+      equipments.value = Grimoire.Items.equipments
+        .slice(num)
+        .map(equip => CharacterEquipment.fromOriginEquipment(equip))
       loading.value = false
     }
   }
@@ -53,7 +54,10 @@ const updateEquipments = async () => {
 
 updateEquipments()
 
-watch(() => props.section, () => {
-  updateEquipments()
-})
+watch(
+  () => props.section,
+  () => {
+    updateEquipments()
+  }
+)
 </script>

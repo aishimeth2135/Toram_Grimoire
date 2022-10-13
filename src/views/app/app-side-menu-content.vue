@@ -20,17 +20,26 @@
         :data="data"
         :is-main="isMain"
       />
-      <div class="flex justify-center cursor-pointer py-0.5 hover:bg-primary-5 duration-200" @click.stop="toggle('contents/menuLinks')">
-        <cy-icon-text :icon="contents.menuLinks ? 'ic:round-keyboard-double-arrow-up' : 'ic:round-keyboard-double-arrow-down'" />
+      <div
+        class="flex cursor-pointer justify-center py-0.5 duration-200 hover:bg-primary-5"
+        @click.stop="toggle('contents/menuLinks')"
+      >
+        <cy-icon-text
+          :icon="
+            contents.menuLinks
+              ? 'ic:round-keyboard-double-arrow-up'
+              : 'ic:round-keyboard-double-arrow-down'
+          "
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { RouteRecordName, useRouter } from 'vue-router'
-import { storeToRefs } from 'pinia'
 
 import { useLeftMenuStore } from '@/stores/app/left-menu'
 
@@ -43,7 +52,7 @@ import { AppRouteNames } from '@/router/enums'
 import AppRouterLink from './app-router-link.vue'
 
 interface Props {
-  isMain?: boolean;
+  isMain?: boolean
 }
 
 withDefaults(defineProps<Props>(), {
@@ -74,7 +83,9 @@ const routeLinks = computed(() => {
       }
       const { leftMenuViewButtons } = currentRoute.value.meta
       if (leftMenuViewButtons) {
-        return leftMenuViewButtons.every(viewButton => item.pathName !== viewButton.pathName)
+        return leftMenuViewButtons.every(
+          viewButton => item.pathName !== viewButton.pathName
+        )
       }
       return true
     })
@@ -85,5 +96,6 @@ const routeLinks = computed(() => {
     }))
 })
 
-const routeNotHome = (pathName: RouteRecordName) => pathName !== AppRouteNames.Home && pathName !== AppRouteNames.About
+const routeNotHome = (pathName: RouteRecordName) =>
+  pathName !== AppRouteNames.Home && pathName !== AppRouteNames.About
 </script>

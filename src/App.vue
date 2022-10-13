@@ -14,10 +14,13 @@
       <AppSideFloatMenu :visible="sideMenuButtonVisible" />
       <AppLoading />
     </template>
-    <div v-else class="fixed w-full h-full top-0 left-0 flex items-center justify-center bg-white z-100">
-      <div class="flex justify-center flex-wrap">
+    <div
+      v-else
+      class="fixed top-0 left-0 z-100 flex h-full w-full items-center justify-center bg-white"
+    >
+      <div class="flex flex-wrap justify-center">
         <LoadingAnimation :status="0" />
-        <div class="text-xl w-full text-center mt-2 text-primary-30">
+        <div class="mt-2 w-full text-center text-xl text-primary-30">
           Initializing...
         </div>
       </div>
@@ -32,21 +35,21 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { onMounted, Ref, ref, watch } from 'vue'
+import { Ref, onMounted, ref, watch } from 'vue'
 
 import { useLanguageStore } from '@/stores/app/language'
 
-import AppSideMenu from '@/views/app/app-side-menu.vue'
+import AppConfirm from '@/views/app/app-confirm.vue'
 import AppInitialize from '@/views/app/app-initialize.vue'
 import AppLoading from '@/views/app/app-loading.vue'
 import AppNotify from '@/views/app/app-notify.vue'
-import AppConfirm from '@/views/app/app-confirm.vue'
 import AppSetting from '@/views/app/app-settings.vue'
 import AppSideFloatMenu from '@/views/app/app-side-float-menu.vue'
+import AppSideMenu from '@/views/app/app-side-menu.vue'
 import LoadingAnimation from '@/views/app/initialization/loading-animation.vue'
 
-import { useMainStore } from './stores/app/main'
 import { debounce } from './shared/utils/function'
+import { useMainStore } from './stores/app/main'
 
 const sideMenuButtonVisible = ref(false)
 const appElement: Ref<HTMLElement | null> = ref(null)
@@ -57,7 +60,8 @@ const startDetectScroll = (el: HTMLElement) => {
   const handler = () => {
     const top = el.scrollTop
     const height = el.scrollHeight
-    const lastTopFix = lastTop + (top < height / 2 ? lastHeight - height : height - lastHeight)
+    const lastTopFix =
+      lastTop + (top < height / 2 ? lastHeight - height : height - lastHeight)
     if (top <= 0) {
       sideMenuButtonVisible.value = true
     } else if (top < lastTopFix) {
@@ -72,7 +76,7 @@ const startDetectScroll = (el: HTMLElement) => {
   el.addEventListener('scroll', debounce(handler, 200), { passive: true })
 }
 
-watch(appElement, (value) => {
+watch(appElement, value => {
   if (value) {
     startDetectScroll(value)
   }

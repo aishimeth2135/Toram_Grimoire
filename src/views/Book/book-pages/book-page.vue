@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4 py-4 bg-white">
+  <div class="bg-white px-4 py-4">
     <BookPageSectionView
       v-for="(section, idx) in page.sections"
       :key="idx"
@@ -14,7 +14,7 @@ import BookPageSectionView from './book-page-section.vue'
 import { BookPage } from '../setup/Book'
 
 interface Props {
-  page: BookPage;
+  page: BookPage
 }
 
 defineProps<Props>()

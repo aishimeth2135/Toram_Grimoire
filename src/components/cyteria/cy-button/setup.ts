@@ -9,7 +9,18 @@ export const ButtonIconProps = {
   },
 }
 
-type ButtonColors = 'primary' | 'bright' | 'secondary' | 'cyan' | 'blue' | 'fuchsia' | 'violet' | 'red' | 'orange' | 'emerald' | 'gray'
+type ButtonColors =
+  | 'primary'
+  | 'bright'
+  | 'secondary'
+  | 'cyan'
+  | 'blue'
+  | 'fuchsia'
+  | 'violet'
+  | 'red'
+  | 'orange'
+  | 'emerald'
+  | 'gray'
 
 export const ButtonBaseProps = {
   color: {
@@ -31,10 +42,10 @@ export const ButtonBaseProps = {
 }
 
 interface ButtonBaseComponent {
-  color: ButtonColors;
-  selected: boolean;
-  disabled: boolean;
-  link: boolean;
+  color: ButtonColors
+  selected: boolean
+  disabled: boolean
+  link: boolean
 }
 
 export function getButtonBaseBinds(component: ButtonBaseComponent) {

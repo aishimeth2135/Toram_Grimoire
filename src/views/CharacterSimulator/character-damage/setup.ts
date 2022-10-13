@@ -1,7 +1,7 @@
 import { Ref, computed } from 'vue'
 
-import { SkillResult } from '@/stores/views/character/setup'
 import { useCharacterStore } from '@/stores/views/character'
+import { SkillResult } from '@/stores/views/character/setup'
 
 import { isNumberString } from '@/shared/utils/string'
 
@@ -11,9 +11,15 @@ import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handl
 
 import { setupCharacterStore } from '../setup'
 
-export function getContainerStats(store: ReturnType<typeof useCharacterStore>, container: DisplayDataContainer) {
+export function getContainerStats(
+  store: ReturnType<typeof useCharacterStore>,
+  container: DisplayDataContainer
+) {
   const stats: StatRecorded[] = []
-  if (!store.getDamageCalculationSkillBranchState(container.branchItem.default)?.enabled) {
+  if (
+    !store.getDamageCalculationSkillBranchState(container.branchItem.default)
+      ?.enabled
+  ) {
     return stats
   }
   container.statContainers.forEach(statContainer => {
@@ -38,19 +44,23 @@ export function setupSkilResultExtraStats(result: Ref<SkillResult>) {
   return { extraStats }
 }
 
-export function setupStoreDamageCalculationExpectedResult(result: Ref<SkillResult>, extraStats: Ref<StatRecorded[]>, { armorBreak = false } = {}) {
+export function setupStoreDamageCalculationExpectedResult(
+  result: Ref<SkillResult>,
+  extraStats: Ref<StatRecorded[]>,
+  { armorBreak = false } = {}
+) {
   const { store } = setupCharacterStore()
 
   return store.setupDamageCalculationExpectedResult(
     result,
     extraStats,
-    armorBreak ?
-      computed(() => ({
-        ...store.targetProperties,
-        def: Math.floor(store.targetProperties.def / 2),
-        mdef: Math.floor(store.targetProperties.mdef / 2),
-      })) :
-      computed(() => store.targetProperties),
-    computed(() => store.calculationOptions),
+    armorBreak
+      ? computed(() => ({
+          ...store.targetProperties,
+          def: Math.floor(store.targetProperties.def / 2),
+          mdef: Math.floor(store.targetProperties.mdef / 2),
+        }))
+      : computed(() => store.targetProperties),
+    computed(() => store.calculationOptions)
   )
 }

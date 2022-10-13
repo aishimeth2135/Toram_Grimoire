@@ -7,8 +7,11 @@
     @close="emit('close')"
   >
     <template #default>
-      <div ref="eportedTextContent" class="border border-primary-50 p-4 text-sm" v-html="currentText">
-      </div>
+      <div
+        ref="eportedTextContent"
+        class="border border-primary-50 p-4 text-sm"
+        v-html="currentText"
+      ></div>
     </template>
     <template #footer-actions>
       <cy-button-action
@@ -35,11 +38,11 @@ import Notify from '@/setup/Notify'
 import { exportSkillBuildText } from './utils'
 
 interface Props {
-  visible: boolean;
-  skillBuild: SkillBuild | null;
+  visible: boolean
+  skillBuild: SkillBuild | null
 }
 interface Emits {
-  (evt: 'close'): void;
+  (evt: 'close'): void
 }
 
 const props = defineProps<Props>()
@@ -53,9 +56,11 @@ const { notify } = Notify()
 const eportedTextContent: Ref<HTMLElement | null> = ref(null)
 const currentText = ref('')
 
-watch(visible, async (value) => {
+watch(visible, async value => {
   if (value) {
-    currentText.value = props.skillBuild ? exportSkillBuildText(props.skillBuild) : ''
+    currentText.value = props.skillBuild
+      ? exportSkillBuildText(props.skillBuild)
+      : ''
   }
 })
 

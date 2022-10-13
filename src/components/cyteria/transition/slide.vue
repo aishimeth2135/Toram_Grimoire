@@ -5,7 +5,6 @@
     @before-enter="beforeEnter"
     @enter="enter"
     @after-enter="afterEnter"
-
     @before-leave="beforeLeave"
     @leave="leave"
     @after-leave="afterLeave"
@@ -36,7 +35,7 @@ export default {
     handleHook(hook, el, done) {
       if (this.type === 'slide-up') {
         const height = this.getBox(el).height
-        const mb = (-1 * Math.floor(height)) + 'px'
+        const mb = -1 * Math.floor(height) + 'px'
         const ops = {
           easing: 'ease',
           duration: 400,
@@ -85,15 +84,18 @@ export default {
   transform: translateX(20%);
   opacity: 0;
 }
-.fade-slide-right-enter-active, .fade-slide-right-leave-active {
+.fade-slide-right-enter-active,
+.fade-slide-right-leave-active {
   transition: 0.3s ease;
 }
 
-.slide-up-enter-from, .slide-up-leave-to {
+.slide-up-enter-from,
+.slide-up-leave-to {
   transform: translateY(100%);
   opacity: 0;
 }
-.slide-up-enter-active, .slide-up-leave-active {
+.slide-up-enter-active,
+.slide-up-leave-active {
   transition: 0.4s ease;
 }
 </style>
