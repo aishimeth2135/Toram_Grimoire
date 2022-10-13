@@ -232,7 +232,7 @@
           </legend>
           <div
             v-if="obtainsDatas.length !== 0"
-            class="divide-light -my-1 divide-y"
+            class="-my-1 divide-y divide-primary-20"
           >
             <div
               v-for="data in obtainsDatas"
@@ -279,7 +279,7 @@
         v-else-if="state.currentMode === SearchModes.Dye"
         class="ml-4 mb-3 border-l-2 border-solid border-primary-30 pl-2"
       >
-        <div class="divide-light divide-y">
+        <div class="divide-y divide-primary-20">
           <div
             v-for="item in dyeObtains"
             :key="item.iid"

@@ -273,7 +273,7 @@
         </div>
         <div
           v-if="statsSearchResult.length !== 0"
-          class="divide-light divide-y"
+          class="divide-y divide-primary-20"
         >
           <div
             v-for="stat in statsSearchResult"

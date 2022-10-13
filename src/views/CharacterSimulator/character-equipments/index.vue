@@ -22,7 +22,7 @@
     <div class="overflow-auto" style="height: calc(95vh - 6rem)">
       <Draggable
         v-model="equipments"
-        class="divide-light divide-y"
+        class="divide-y divide-primary-20"
         :item-key="getItemKey"
       >
         <template #item="{ element }">

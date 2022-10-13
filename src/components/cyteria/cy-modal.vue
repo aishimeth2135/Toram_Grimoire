@@ -18,7 +18,7 @@
           <div class="modal-container" @click.stop>
             <div v-if="slots['title'] || title" class="px-4 pb-2">
               <slot name="title">
-                <cy-icon-text :icon="titleIcon" text-color="dark-light">
+                <cy-icon-text :icon="titleIcon" text-color="primary-70">
                   {{ title }}
                 </cy-icon-text>
               </slot>

@@ -1,5 +1,5 @@
 <template>
-  <div class="divide-light divide-y bg-white text-sm">
+  <div class="divide-y divide-primary-20 bg-white text-sm">
     <div v-for="eft in skill.effects" :key="eft.effectId" class="py-2">
       <div class="space-y-3 border-l-2 border-primary-50 px-3 py-2">
         <div>

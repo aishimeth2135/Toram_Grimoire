@@ -1,7 +1,7 @@
 <template>
   <AppLayoutMain class="py-2">
     <div ref="topElement"></div>
-    <div class="divide-light divide-y">
+    <div class="divide-y divide-primary-20">
       <GlossaryTagItem v-for="tag in currentItems" :key="tag.name" :tag="tag" />
     </div>
     <div class="mt-3">

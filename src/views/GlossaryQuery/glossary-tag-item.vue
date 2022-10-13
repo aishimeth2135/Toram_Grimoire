@@ -40,7 +40,7 @@
         </div>
         <div
           v-if="otherTags.length > 0"
-          class="divide-light my-2 ml-2 divide-y border-l-2 border-primary-50"
+          class="my-2 ml-2 divide-y divide-primary-20 border-l-2 border-primary-50"
         >
           <GlossaryTagItem
             v-for="otherTag in otherTags"

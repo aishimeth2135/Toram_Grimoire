@@ -604,7 +604,7 @@
           </div>
           <div
             v-if="contents.selectOtherResults"
-            class="divide-light divide-y px-0.5"
+            class="divide-y divide-primary-20 px-0.5"
           >
             <div v-for="(result, idx) in doll.lastResults" :key="idx">
               <EnchantDollResultItem
