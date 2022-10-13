@@ -155,36 +155,36 @@
             v-if="menus.conditionOptions"
             class="space-y-3 p-3"
           >
-            <div v-for="type in conditions.type" :key="type.id">
+            <div v-for="typeItem in conditions.type" :key="typeItem.id">
               <div class="flex items-center space-x-1.5">
                 <cy-button-check
-                  v-model:selected="type.selected"
+                  v-model:selected="typeItem.selected"
                   class="mr-4 cursor-pointer"
                   color="orange"
                 >
-                  {{ t('common.Equipment.field.' + type.id) }}
+                  {{ t('common.Equipment.field.' + typeItem.id) }}
                 </cy-button-check>
-                <template v-if="type.types.length > 1">
+                <template v-if="typeItem.types.length > 1">
                   <cy-button-circle
                     icon="ic-round-border-all"
                     small
-                    @click="selectAll(type.types)"
+                    @click="selectAll(typeItem.types)"
                   />
                   <cy-button-circle
                     icon="eva-close-outline"
                     small
-                    @click="cancelAll(type.types)"
+                    @click="cancelAll(typeItem.types)"
                   />
                 </template>
               </div>
               <div
-                v-if="type.types.length > 1"
+                v-if="typeItem.types.length > 1"
                 class="space-x-0.5 px-2 py-0.5 pt-1.5"
               >
                 <cy-button-check
-                  v-for="item in type.types"
+                  v-for="item in typeItem.types"
                   :key="item.value"
-                  :selected="type.selected && item.selected"
+                  :selected="typeItem.selected && item.selected"
                   @click="toggleSelected(item)"
                 >
                   {{ t('common.Equipment.category.' + item.value) }}
