@@ -7,6 +7,7 @@ loading-message:
   Enchant: 载入附魔资料
   DamageCalculation: 载入伤害计算器
   Food: 载入料理资料
+  Registlet: 载入雷吉斯托环资料
   init: 初始化
   bottom-tips:
     0: 初次载入需要较长的时间，请稍后...
@@ -19,6 +20,7 @@ page-title:
   skill-query: 技能查询
   item-query: 道具查询
   crystal-query: 锻晶查询
+  registlet-query: 托环查询
   damage-calculation: 伤害计算
   enchant-simulator: 附魔模拟
   enchant-doll: 附魔布偶

@@ -53,6 +53,10 @@ branch:
     button-text: 查看技能范围
     'point: character': 角色
     'point: target': 目标
+  action-frame:
+    title: 动作时间帧数
+    title-base: 行动时间100%时
+    title-min: 行动时间50%时
   global-suffix:
     extra:
       condition-default-value: 额外效果

@@ -1,0 +1,14 @@
+display-mode:
+  title: 显示模式
+  category: 类别
+  obtain-levels: 取得关卡
+category:
+  stat: 角色能力
+  skill: 技能
+  special: 功能
+detail:
+  obtain-levels: 取得关卡
+  obtain-levels-all: 所有关卡
+  max-level: 最大等级
+  powder-cost: 升级粉末消耗
+  registlet-level: 等级

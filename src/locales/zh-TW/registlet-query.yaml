@@ -1,3 +1,11 @@
+display-mode:
+  title: 顯示模式
+  category: 類別
+  obtain-levels: 取得關卡
+category:
+  stat: 角色能力
+  skill: 技能
+  special: 功能
 detail:
   obtain-levels: 取得關卡
   obtain-levels-all: 所有關卡
