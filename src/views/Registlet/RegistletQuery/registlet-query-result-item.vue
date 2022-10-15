@@ -14,6 +14,31 @@
             {{ item.name }}
           </cy-icon-text>
         </div>
+        <div
+          v-if="registletQueryState.displayMode === 'category'"
+          class="text-primary-40"
+        >
+          {{ t(`registlet-query.category.${item.category.id}`) }}
+        </div>
+        <template
+          v-else-if="registletQueryState.displayMode === 'obtain-levels'"
+        >
+          <div
+            v-if="item.obtainLevels.length > 0"
+            class="flex items-center space-x-2"
+          >
+            <div
+              v-for="level in item.obtainLevels"
+              :key="level"
+              class="rounded bg-emerald-5 px-2 text-emerald-60"
+            >
+              {{ level }}
+            </div>
+          </div>
+          <div v-else class="text-sm text-emerald-50">
+            {{ t('registlet-query.detail.obtain-levels-all') }}
+          </div>
+        </template>
       </cy-list-item>
     </div>
     <cy-transition>
@@ -21,7 +46,8 @@
         <div
           class="mt-1 mb-2 rounded border border-l-2 border-red-10 py-3 px-4"
         >
-          <div v-if="item.link instanceof StatBase" class="flex items-center">
+          <!-- prettier-ignore-attribute v-if -->
+          <div v-if="(item.link instanceof StatBase)" class="flex items-center">
             <div>{{ item.link.text }}</div>
             <div>+</div>
             <div class="ml-2 border-x border-primary-20 px-2 text-primary-60">
@@ -81,9 +107,9 @@
               </td>
               <td class="text-primary-60">
                 <span>{{ item.powderCost }}</span>
-                <span class="ml-3 text-blue-40">{{
-                  `(${item.powderCostAdditional})`
-                }}</span>
+                <span class="ml-3 text-blue-40">
+                  {{ `(${item.powderCostAdditional})` }}
+                </span>
               </td>
             </tr>
           </table>
