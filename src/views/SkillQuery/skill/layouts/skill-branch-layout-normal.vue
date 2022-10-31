@@ -65,7 +65,7 @@
       <div v-if="actionFrameData" class="flex items-start py-1.5 pl-2.5">
         <IconCircle icon="ic:outline-share-arrival-time" />
         <div class="pl-4 pr-2 pt-1">
-          <div class="text-red-50">
+          <div class="mb-1 text-sm text-red-50">
             {{ t('skill-query.branch.action-frame.title') }}
           </div>
           <div class="flex flex-wrap items-center">
@@ -73,7 +73,7 @@
               <div class="text-sm text-primary-30">
                 {{ t('skill-query.branch.action-frame.title-base') }}
               </div>
-              <div class="ml-2 text-red-60">
+              <div class="ml-2.5 text-sm text-red-60">
                 {{ actionFrameData.base }}
               </div>
             </div>
@@ -81,7 +81,7 @@
               <div class="text-sm text-primary-30">
                 {{ t('skill-query.branch.action-frame.title-min') }}
               </div>
-              <div class="ml-2 text-red-60">
+              <div class="ml-2.5 text-sm text-red-60">
                 {{ actionFrameData.min }}
               </div>
             </div>
