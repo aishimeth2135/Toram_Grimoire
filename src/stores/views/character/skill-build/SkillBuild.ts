@@ -129,10 +129,13 @@ export class SkillBuild {
   get skillPointSum() {
     let level = 0
     let starGemLevel = 0
-    ;[...this._skillStatesMap.values()].forEach(state => {
+    for (const [skill, state] of this._skillStatesMap.entries()) {
+      if (skill.parent.attrs.simulatorFlag) {
+        continue
+      }
       level += state.level
       starGemLevel += Math.max(state.starGemLevel - state.level, 0)
-    })
+    }
 
     return {
       level,
