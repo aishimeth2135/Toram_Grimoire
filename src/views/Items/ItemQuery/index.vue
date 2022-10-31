@@ -207,11 +207,12 @@
                   @click="cancelAll(conditions.obtains)"
                 />
               </div>
-              <div class="space-x-2 px-2 py-0.5 pt-1.5">
+              <div class="px-2 py-0.5 pt-1.5">
                 <cy-button-check
                   v-for="obtain in conditions.obtains"
                   :key="obtain.value"
                   v-model:selected="obtain.selected"
+                  class="mr-2"
                 >
                   {{ t('common.Equipment.obtain.' + obtain.value) }}
                 </cy-button-check>
@@ -350,6 +351,8 @@ import {
 const equipments = Grimoire.Items.equipments.map(equip =>
   CharacterEquipment.fromOriginEquipment(equip, { statValueToNumber: false })
 )
+
+console.log(equipments.filter(eq => eq.type === EquipmentTypes.NinjutsuScroll))
 
 const handleCompareValue = (value: string) =>
   isNumberString(value) ? parseFloat(value) : -99999
@@ -508,6 +511,7 @@ const conditions: {
     'exchange',
     'other',
     'unknow',
+    'ex_skill',
   ]),
 })
 

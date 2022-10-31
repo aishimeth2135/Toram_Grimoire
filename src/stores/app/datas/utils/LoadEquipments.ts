@@ -16,18 +16,17 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
     ATTRIBUTE_VALUES = [6, 7],
     CAPTION = 8,
     CATEGORY_LIST = {
-      // eslint-disable-next-line object-property-newline
       單手劍: 0,
       雙手劍: 1,
       弓: 2,
       弩: 3,
       法杖: 4,
-      // eslint-disable-next-line object-property-newline
+
       魔導具: 5,
       拳套: 6,
       旋風槍: 7,
       拔刀劍: 8,
-      // eslint-disable-next-line object-property-newline
+
       箭矢: 100,
       小刀: 101,
       忍術卷軸: 102,
