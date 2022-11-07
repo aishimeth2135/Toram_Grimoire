@@ -249,6 +249,9 @@ export function prepareSetupCharacter() {
         $BVIT: character.value.baseStatValue(CharacterBaseStatTypes.VIT),
         $BDEX: character.value.baseStatValue(CharacterBaseStatTypes.DEX),
         $TEC: character.value.baseStatValue(CharacterOptionalBaseStatTypes.TEC),
+        $CRT: character.value.baseStatValue(CharacterOptionalBaseStatTypes.CRT),
+        $MEN: character.value.baseStatValue(CharacterOptionalBaseStatTypes.MEN),
+        $LUK: character.value.baseStatValue(CharacterOptionalBaseStatTypes.LUK),
         $shield_refining: character.value.checkFieldEquipmentType(
           EquipmentFieldTypes.SubWeapon,
           EquipmentTypes.Shield
