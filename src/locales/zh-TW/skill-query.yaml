@@ -4,6 +4,11 @@ select-skill: 選擇技能
 close-select-skill: 關閉
 skill-level: 技能等級
 character-level: 角色等級
+registlet-level: 雷吉斯托環等級
+registlet-title: 雷吉斯托環
+registlet-level-abbreviation: 托環等級
+registlet-info-tip: 關於雷吉斯托環的詳細資訊，請查看{link}。
+registlet-max-level-title: 最大等級
 search-tips: 點擊這裡來搜尋技能
 go-to-skill: 查看
 formula-display-mode:
@@ -39,6 +44,9 @@ branch:
     BVIT: 基礎VIT
     BDEX: 基礎DEX
     TEC: 基礎TEC
+    CRT: 基礎CRT
+    LUK: 基礎LUK
+    MEN: 基礎MEN
     STR: 總STR
     INT: 總INT
     AGI: 總AGI

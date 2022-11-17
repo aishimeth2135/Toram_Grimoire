@@ -11,11 +11,11 @@
       main-icon="icon-park-outline:effects"
     >
       <div class="mb-1">
-        <div
-          v-if="container.get('caption')"
+        <SkillBranchPropValue
+          v-if="container.has('caption')"
           class="inline-block py-0.5 pr-1"
-          v-html="container.get('caption')"
-        ></div>
+          :result="container.result('caption')"
+        />
         <SkillBranchStats
           v-else-if="container.statContainers.length !== 0"
           :stat-containers="container.statContainers"
@@ -33,6 +33,7 @@ import SkillComputingContainer, {
 } from '@/lib/Skill/SkillComputingContainer'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
+import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 import SkillBranchStats from './layouts/skill-branch-stats.vue'
 
 import EffectHandler from './branch-handlers/EffectHandler'

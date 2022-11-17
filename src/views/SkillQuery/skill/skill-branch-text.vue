@@ -5,7 +5,7 @@
       icon="ic:outline-tips-and-updates"
       class="mr-2 mt-0.5"
     />
-    <div v-html="container.get('text')"></div>
+    <SkillBranchPropValue :result="container.result('text')" />
   </div>
 </template>
 
@@ -16,6 +16,8 @@ import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import SkillComputingContainer, {
   SkillBranchItem,
 } from '@/lib/Skill/SkillComputingContainer'
+
+import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 
 import TextHandler from './branch-handlers/TextHandler'
 

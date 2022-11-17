@@ -30,8 +30,10 @@ export default function EffectHandler<BranchItem extends SkillBranchItem>(
   const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>({
     radius: 'm',
     duration: {
-      beforeHighlight: value =>
-        t('skill-query.branch.duration-caption', { duration: value }),
+      message: {
+        id: 'skill-query.branch.duration-caption',
+        param: 'duration',
+      },
     },
   })
   const textPropsMap = new MapContainer<HandleBranchTextPropsMap>([

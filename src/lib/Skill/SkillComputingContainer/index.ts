@@ -51,6 +51,7 @@ class SkillComputingContainer {
   varGetters: {
     characterLevel: (() => number) | null
     skillLevel: ((skill: Skill) => number) | null
+    registletLevel: ((skill: Skill) => number[]) | null
   }
 
   handleFormulaExtends: HandleFormulaExtends
@@ -77,6 +78,7 @@ class SkillComputingContainer {
     this.varGetters = {
       characterLevel: null,
       skillLevel: null,
+      registletLevel: null,
     }
     this.handleFormulaExtends = {
       vars: {},

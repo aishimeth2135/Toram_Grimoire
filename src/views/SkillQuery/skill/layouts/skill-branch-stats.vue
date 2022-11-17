@@ -5,13 +5,15 @@
       :key="container.stat.statId"
       class="cy--text-underline mb-1.5 mr-4 pb-0.5 text-primary-30"
     >
-      <div class="text-primary-90" v-html="container.result"></div>
+      <SkillBranchPropValue :result="container" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+
+import SkillBranchPropValue from './skill-branch-prop-value.vue'
 
 interface Props {
   statContainers: ResultContainerStat[]

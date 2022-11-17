@@ -118,13 +118,3 @@ defineExpose({
   skill: computed(() => props.skillResultsState.skill),
 })
 </script>
-
-<style lang="postcss" scoped>
-:deep(.result-value--stack) {
-  @apply text-blue-60;
-
-  &.value-dark {
-    @apply text-cyan-60;
-  }
-}
-</style>

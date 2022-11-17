@@ -790,7 +790,7 @@ export function prepareSetupCharacter() {
         } else {
           stats.set(
             statId,
-            statContainer.toStatRecord(parseFloat(statContainer.value))
+            statContainer.toStatRecorded(parseFloat(statContainer.value))
           )
         }
       }
@@ -1209,7 +1209,7 @@ export function prepareSetupCharacter() {
                 statContainer
               )
             ) {
-              const stat = statContainer.toStatRecord(
+              const stat = statContainer.toStatRecorded(
                 parseFloat(statContainer.value)
               )
               stats.push(stat)

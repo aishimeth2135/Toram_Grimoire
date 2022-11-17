@@ -54,10 +54,8 @@ export const useLanguageStore = defineStore('app-language', () => {
   }
 
   const autoSetLang = () => {
-    // @ts-ignore
-    const lang = (
-      window.navigator.language || window.navigator.userLanguage
-    ).toLowerCase()
+    const lang = // @ts-ignore
+      (window.navigator.language || window.navigator.userLanguage).toLowerCase()
     const list: Record<string, number> = {
       'zh-tw': 1,
       'zh-hk': 1,

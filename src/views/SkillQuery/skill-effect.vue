@@ -19,7 +19,7 @@
         {{ t('skill-query.historical-record') }}
       </cy-button-plain>
     </div>
-    <div ref="skillBranchesElement">
+    <div ref="skillBranchesElement" class="skill-effect-main">
       <div v-if="tabs.skillInfo">
         <SkillBranch
           v-for="branchItemData in skillBranchItemDatas"
@@ -27,6 +27,13 @@
           :skill-branch-item="branchItemData.item"
           :computing="rootComputingContainer"
         />
+        <div v-if="registletItemStates.length > 0" class="mt-5 space-y-3 px-3">
+          <SkillRegistletInfo
+            v-for="registletItemState in registletItemStates"
+            :key="registletItemState.item.id"
+            :registlet-item-state="registletItemState"
+          />
+        </div>
       </div>
       <div v-if="tabs.skillHistory">
         <SkillEffectHistory :skill-effect-item="effectItem" />
@@ -123,6 +130,7 @@ import ToggleService from '@/setup/ToggleService'
 import SkillEffectHistory from './skill-effect-history/index.vue'
 import SkillSwitchEffectButtons from './skill-switch-effect-buttons.vue'
 import skillTagsContent from './skill-tags-content.vue'
+import SkillRegistletInfo from './skill/layouts/skill-registlet-info.vue'
 import SkillBranch from './skill/skill-branch.vue'
 import SkillTitle from './skill/skill-title.vue'
 
@@ -143,13 +151,22 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-const { rootComputingContainer } = inject(ComputingContainerInjectionKey)!
+const { rootComputingContainer, getSkillRegistletItemsState } = inject(
+  ComputingContainerInjectionKey
+)!
 
 const effectItem = computed(() => {
   if (!props.skillItem) {
     return null
   }
   return props.skillItem.findEffectItem(props.selectedEquipment) || null
+})
+
+const registletItemStates = computed(() => {
+  if (!props.skillItem) {
+    return []
+  }
+  return getSkillRegistletItemsState(props.skillItem.skill)
 })
 
 const { t } = useI18n()
@@ -236,6 +253,11 @@ const branchButtonHover = (el: HTMLElement) => {
 
   &.selected {
     @apply border-primary-60 hover:border-primary-60;
+  }
+}
+.skill-effect-main {
+  & :deep(.click-button--tag) {
+    @apply inline-block cursor-pointer px-0.5 text-orange-60 underline;
   }
 }
 </style>

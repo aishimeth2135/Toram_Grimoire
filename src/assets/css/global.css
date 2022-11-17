@@ -1,5 +1,5 @@
 .cy--text-separate {
-  @apply mx-1.5 inline-block border-l border-r border-current px-1.5;
+  @apply mx-1.5 inline-block border-x border-current px-1.5;
 }
 .cy--text-underline {
   @apply relative mr-3 mb-1 inline-block border-b border-current px-2;

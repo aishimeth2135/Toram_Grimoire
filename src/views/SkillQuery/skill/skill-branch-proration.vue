@@ -7,20 +7,20 @@
         <cy-icon-text icon="mdi-sword" block>
           {{ t('skill-query.branch.proration.proration: title') }}
         </cy-icon-text>
-        <div
+        <SkillBranchPropValue
           class="ml-1.5 text-primary-50"
-          v-html="container.get('proration')"
-        ></div>
+          :result="container.result('proration')"
+        />
       </div>
       <div class="mx-4 h-5 border-l-1 border-primary-20" />
       <div class="my-1 flex items-center">
         <cy-icon-text icon="mdi-sword" block>
           {{ t('skill-query.branch.proration.damage: title') }}
         </cy-icon-text>
-        <div
+        <SkillBranchPropValue
           class="ml-1.5 text-primary-50"
-          v-html="container.get('damage')"
-        ></div>
+          :result="container.result('damage')"
+        />
       </div>
     </div>
   </div>
@@ -33,6 +33,8 @@ import { useI18n } from 'vue-i18n'
 import SkillComputingContainer, {
   SkillBranchItem,
 } from '@/lib/Skill/SkillComputingContainer'
+
+import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 
 import ProrationHandler from './branch-handlers/ProrationHandler'
 

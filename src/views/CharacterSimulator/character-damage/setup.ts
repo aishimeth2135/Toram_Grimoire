@@ -24,7 +24,7 @@ export function getContainerStats(
   }
   container.statContainers.forEach(statContainer => {
     if (isNumberString(statContainer.value)) {
-      stats.push(statContainer.toStatRecord(parseFloat(statContainer.value)))
+      stats.push(statContainer.toStatRecorded(parseFloat(statContainer.value)))
     }
   })
   return stats
