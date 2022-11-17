@@ -83,13 +83,3 @@ const isMutipleItem = computed(() => {
 
 const invalid = computed(() => props.skillResultsState.results.length === 0)
 </script>
-
-<style lang="postcss" scoped>
-:deep(.result-value--stack) {
-  @apply text-blue-60;
-
-  &.value-dark {
-    @apply text-cyan-60;
-  }
-}
-</style>

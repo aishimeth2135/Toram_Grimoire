@@ -1,26 +1,39 @@
 const plugin = require('tailwindcss/plugin')
 
 const colorOrders = ['5', '10', '20', '30', '40', '50', '60', '70', '80', '90']
-const colorGroups = ['primary', 'fuchsia', 'violet', 'blue', 'cyan', 'orange', 'emerald', 'red', 'gray', 'stone']
+const colorGroups = [
+  'primary',
+  'fuchsia',
+  'violet',
+  'blue',
+  'cyan',
+  'orange',
+  'emerald',
+  'red',
+  'gray',
+  'stone',
+]
 
 const colorsConfig = (() => {
   const colors = {}
   colorGroups.forEach(group => {
     colors[group] = {}
     colorOrders.forEach(order => {
-      colors[group][order] = `rgba(var(--app-rgb-${group}-${order}), <alpha-value>)`
+      colors[group][
+        order
+      ] = `rgba(var(--app-rgb-${group}-${order}), <alpha-value>)`
     })
   })
   return {
     ...colors,
-    'black': 'rgba(var(--app-rgb-black), <alpha-value>)',
-    'white': 'rgba(var(--app-rgb-white), <alpha-value>)',
+    black: 'rgba(var(--app-rgb-black), <alpha-value>)',
+    white: 'rgba(var(--app-rgb-white), <alpha-value>)',
     transparent: 'transparent',
     current: 'currentcolor',
   }
 })()
 
-const getColorList = (prefix) => {
+const getColorList = prefix => {
   prefix = prefix + '-'
   const config = colorsConfig
   const keys = []
@@ -38,15 +51,15 @@ const getColorList = (prefix) => {
 
 const borderWidth = {
   DEFAULT: '1px',
-  '0': '0',
-  '1': '0.125rem',
-  '2': '0.25rem',
-  '3': '0.375rem',
-  '4': '0.5rem',
-  '5': '0.625rem',
-  '6': '0.75rem',
-  '7': '0.875rem',
-  '8': '1rem',
+  0: '0',
+  1: '0.125rem',
+  2: '0.25rem',
+  3: '0.375rem',
+  4: '0.5rem',
+  5: '0.625rem',
+  6: '0.75rem',
+  7: '0.875rem',
+  8: '1rem',
 }
 
 const _designTokens = require('./src/assets/css/config/color.json')
@@ -64,11 +77,19 @@ const colorCssPlugin = plugin(function ({ addBase }) {
   const darkVars = {}
   colorGroups.forEach(group => {
     colorOrders.forEach(order => {
-      rootVars[`--app-${group}-${order}`] = designToken(`color.${group}-${order}`)
-      rootVars[`--app-rgb-${group}-${order}`] = designToken(`color-rgb.${group}-${order}`)
+      rootVars[`--app-${group}-${order}`] = designToken(
+        `color.${group}-${order}`
+      )
+      rootVars[`--app-rgb-${group}-${order}`] = designToken(
+        `color-rgb.${group}-${order}`
+      )
 
-      darkVars[`--app-${group}-${order}`] = designToken(`color-dark.${group}-${order}`)
-      darkVars[`--app-rgb-${group}-${order}`] = designToken(`color-dark-rgb.${group}-${order}`)
+      darkVars[`--app-${group}-${order}`] = designToken(
+        `color-dark.${group}-${order}`
+      )
+      darkVars[`--app-rgb-${group}-${order}`] = designToken(
+        `color-dark-rgb.${group}-${order}`
+      )
     })
   })
 
@@ -98,22 +119,18 @@ const colorCssPlugin = plugin(function ({ addBase }) {
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './index.html',
-    './src/**/*.{vue,js,ts,jsx,tsx}',
-  ],
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   safelist: [
     ...getColorList('bg'),
     ...getColorList('text'),
+    ...getColorList('border'),
     ...getColorList('ring'),
   ],
-  plugins: [
-    colorCssPlugin,
-  ],
+  plugins: [colorCssPlugin],
   darkMode: ['class', '.theme--night-mode'],
   theme: {
     fontFamily: {
-      mono: '\'Cascadia Code\', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \'Liberation Mono\', \'Courier New\', var(--app-main-font), monospace',
+      mono: "'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', var(--app-main-font), monospace",
     },
     colors: colorsConfig,
     borderWidth,
@@ -132,7 +149,7 @@ module.exports = {
     },
     extend: {
       spacing: {
-        '128': '32rem',
+        128: '32rem',
       },
     },
   },

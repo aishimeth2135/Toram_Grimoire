@@ -69,23 +69,24 @@
           </div>
         </div>
         <div class="mt-3">
-          <cy-input-counter v-model:value="skillLevel" :range="[1, 10]">
-            <template #title>{{ t('skill-query.skill-level') }}</template>
-          </cy-input-counter>
+          <cy-input-counter
+            v-model:value="skillLevel"
+            :range="[1, 10]"
+            :title="t('skill-query.skill-level')"
+          />
         </div>
         <div class="mt-3">
           <cy-input-counter
             v-model:value="characterLevel"
             :range="[1, 250]"
             :step="10"
-          >
-            <template #title>{{ t('skill-query.character-level') }}</template>
-          </cy-input-counter>
+            :title="t('skill-query.character-level')"
+          />
         </div>
         <div class="mt-3">
           <div>
             <cy-icon-text text-color="fuchsia-60" small>
-              {{ t(`skill-query.formula-display-mode.title`) }}
+              {{ t('skill-query.formula-display-mode.title') }}
             </cy-icon-text>
           </div>
           <div class="flex flex-wrap items-center">
@@ -176,6 +177,7 @@ const characterLevel = computed<number>({
     computingContainer.value.vars.characterLevel = value
   },
 })
+
 const formulaDisplayMode = computed<FormulaDisplayModes>({
   get() {
     return computingContainer.value.config.formulaDisplayMode

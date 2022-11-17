@@ -8,12 +8,10 @@ import {
 import { StatComputed } from '@/lib/Character/Stat'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import SkillComputingContainer, {
-  SkillBranchItemSuffix,
-  SkillEffectItemHistory,
-} from '@/lib/Skill/SkillComputingContainer'
-import type {
   SkillBranchItemBaseChilds,
   SkillBranchItemOverwriteRecords,
+  SkillBranchItemSuffix,
+  SkillEffectItemHistory,
 } from '@/lib/Skill/SkillComputingContainer'
 import {
   ResultContainer,
@@ -21,17 +19,18 @@ import {
 } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 import {
   ComputedBranchHelperResult,
+  HandleBranchTextPropsMap,
+  HandleBranchValuePropsMap,
   computeBranchValue,
   computedBranchHelper,
   handleBranchStats,
   handleBranchTextProps,
   handleBranchValueProps,
 } from '@/lib/Skill/SkillComputingContainer/compute'
-import type {
-  HandleBranchTextPropsMap,
-  HandleBranchValuePropsMap,
-} from '@/lib/Skill/SkillComputingContainer/compute'
-import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
+import {
+  FormulaDisplayModes,
+  ResultContainerTypes,
+} from '@/lib/Skill/SkillComputingContainer/enums'
 
 import { createTagButtons } from '@/views/SkillQuery/utils'
 
@@ -124,6 +123,7 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
       resultStr = afterHandle ? afterHandle(result) : result
     }
     attrValues[attrKey] = new ResultContainer(
+      ResultContainerTypes.String,
       branchItem,
       attrKey as string,
       value,
@@ -155,7 +155,7 @@ interface HandleDisplayDataOptions {
 }
 
 const FORMULA_VALUE_TO_PERCENTAGE_PATTERN =
-  /([$_a-zA-Z][$_a-zA-Z0-9]*)(\*)(\d\.\d+)/g
+  /([$_a-zA-Z][$_a-zA-Z0-9]*)\*(\d\.\d+)/g
 const MUL_PATTERN = /\*/g
 const FORMULA_FLOAT_TO_FIXED = /(\d+\.)(\d{4,})/g
 const TEXT_SEPARATE_PATTERN = /\(\(((?:(?!\(\().)+)\)\)/g
@@ -232,7 +232,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
       return value
         .replace(
           FORMULA_VALUE_TO_PERCENTAGE_PATTERN,
-          (match, p1, p2, p3) => p1 + p2 + numberStringToPercentage(p3)
+          (match, p1, p2) => p1 + '*' + numberStringToPercentage(p2)
         )
         .replace(MUL_PATTERN, '×')
     })
@@ -304,9 +304,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   Object.entries(textDatas).forEach(([key, container]) => {
     handleContainerFormulaValue(container)
 
-    let str = handleTextResult(container.result)
-
-    const handleReplaceLabel = (attrKey: string) => {
+    const handleReplaceLabel = (str: string, attrKey: string) => {
       const labels = splitComma(branchItem.prop(attrKey)).filter(item => item)
       labels.forEach((label, idx) => {
         str = str.replace(
@@ -327,15 +325,20 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
           }
         )
       })
+      return str
     }
-    handleReplaceLabel('mark')
-    handleReplaceLabel('branch')
-    handleReplaceLabel('skill')
 
-    str = handleFunctionHighlight(str)
-    str = handlePropHistoryHighlight(key, str)
+    container.handleStrings(str => {
+      str = createTagButtons(str)
+      str = handleReplaceLabel(str, 'mark')
+      str = handleReplaceLabel(str, 'branch')
+      str = handleReplaceLabel(str, 'skill')
+      str = handleFunctionHighlight(str)
+      str = handlePropHistoryHighlight(key, str)
+      return str
+    })
 
-    result[key] = str
+    result[key] = container.result
   })
 
   Object.entries(langDatas).forEach(([key, container]) => {
@@ -357,7 +360,8 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     const title = container.displayTitle
       ? handleTextResult(container.displayTitle)
       : showData.title
-    container.handle(value => title + sign + value)
+    container.storeStatResultData({ title, sign })
+    // container.handle(value => title + sign + value)
   })
 
   titles.forEach(key => {
@@ -375,7 +379,13 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   pureValues.forEach(key => {
     const origin = props.get(key) || '0'
     const value = computeBranchValue(origin, helper)
-    const container = new ResultContainer(branchItem, key, origin, value)
+    const container = new ResultContainer(
+      ResultContainerTypes.Number,
+      branchItem,
+      key,
+      origin,
+      value
+    )
 
     if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
       handleContainerFormulaValue(container)
@@ -394,7 +404,13 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     }
     const value = props.get(key)!
     result[key] = value
-    containers[key] = new ResultContainer(branchItem, key, value, value)
+    containers[key] = new ResultContainer(
+      ResultContainerTypes.String,
+      branchItem,
+      key,
+      value,
+      value
+    )
   })
 
   return new DisplayDataContainer({

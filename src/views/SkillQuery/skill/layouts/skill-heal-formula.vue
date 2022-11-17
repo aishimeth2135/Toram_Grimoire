@@ -5,13 +5,12 @@
       <span v-if="isSingleValue" class="attr-item mr-1 text-sm text-primary-30">
         {{ t('skill-query.branch.heal.constant-pretext') }}
       </span>
-      <span
-        v-if="container.get('constant')"
+      <SkillBranchPropValue
         class="attr-item"
-        v-html="container.get('constant')"
+        :result="container.result('constant')"
       />
       <cy-icon-text
-        v-if="container.get('constant') && extraValueList.length !== 0"
+        v-if="container.has('constant') && extraValueList.length !== 0"
         icon="ic-round-add"
       />
 
@@ -38,6 +37,8 @@ import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { isNumberString } from '@/shared/utils/string'
+
+import SkillBranchPropValue from './skill-branch-prop-value.vue'
 
 import DisplayDataContainer from '../branch-handlers/handle/DisplayDataContainer'
 

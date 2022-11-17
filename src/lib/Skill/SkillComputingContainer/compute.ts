@@ -17,13 +17,13 @@ import SkillComputingContainer, {
 } from '.'
 import { SkillBranchNames } from '../Skill/enums'
 import {
+  PropDisplayOptions,
   ResultContainer,
-  ResultContainerBase,
   ResultContainerStat,
   TextResultContainer,
   TextResultContainerParseResult,
 } from './ResultContainer'
-import { FormulaDisplayModes } from './enums'
+import { FormulaDisplayModes, ResultContainerTypes } from './enums'
 
 function computeBranchValue(
   str: string,
@@ -59,47 +59,60 @@ function handleDisplayValue(
   }
 }
 
-interface HighlightTextOptionsDetail {
-  beforeHighlight?: (current: string) => string | string
+function handleRegistletValue(
+  container: ResultContainer,
+  helper: ComputedBranchHelperResult
+): void {
+  const bch = helper.branchItem
+  if (bch.hasProp(container.key, 'registlet')) {
+    const originalValue = bch.prop(container.key, 'registlet')
+    const value = computeBranchValue(originalValue, helper)
+    const subContainer = new ResultContainer(
+      ResultContainerTypes.Number,
+      bch,
+      bch.propKey(container.key, 'registlet'),
+      originalValue,
+      value
+    )
+    container.subContainers.registlet = subContainer
+  }
 }
-type HighlightTextOptions = string | HighlightTextOptionsDetail
-function handleHighlight(
-  container: ResultContainerBase,
-  options: HighlightTextOptions = {}
-) {
-  if (typeof options === 'string') {
-    const unit = options
-    options = {
-      beforeHighlight: value => value + unit,
-    }
-  }
-  let { beforeHighlight } = options
-  if (typeof beforeHighlight === 'string') {
-    const unit = beforeHighlight
-    beforeHighlight = value => value + unit
-  }
-  container.handle(value =>
-    !isNumberString(value)
-      ? `<span class="cy--text-separate">${value}</span>`
-      : value
-  )
-  if (beforeHighlight) {
-    container.handle(beforeHighlight)
-  }
+
+function handleHighlight(container: ResultContainer) {
+  // if (typeof options === 'string') {
+  //   const unit = options
+  //   options = {
+  //     end: unit,
+  //   }
+  // }
+  // const { end } = options
+  // if (end) {
+  //   container.handle(value => value + end)
+  // }
+  // container.handle(value =>
+  //   !isNumberString(value)
+  //     ? `<span class="cy--text-separate">${value}</span>`
+  //     : value
+  // )
+  // if (beforeHighlight) {
+  //   container.handle(beforeHighlight)
+  // }
   const originalFormula = container.origin
   const className =
     isNumberString(container.value) && parseFloat(container.value) < 0
       ? originalFormula.includes('stack')
-        ? 'result-value--stack value-dark'
+        ? 'text-cyan-60'
         : 'text-gray'
       : originalFormula.includes('stack')
-      ? 'result-value--stack'
+      ? 'text-blue-60'
       : 'text-primary-50'
-  container.handle(
-    (value, suffix) => `<span class="${className}">${value + suffix}</span>`
-  )
+  container.setDisplayOptions({ classNames: [className] })
+  // container.handle(value => `<span class="${className}">${value}</span>`)
 }
 
+/**
+ * generated from `computedBranchHelper()`
+ */
 interface ComputedBranchHelperResult {
   vars: HandleFormulaVars
   texts: HandleFormulaTexts
@@ -114,7 +127,7 @@ const HANDLE_FORMULA_EXTRA_PATTERN_2 = /extra\[(\d+)\]/g
  * Create data contains vars and texts of branchItem to compute formula.
  * @param branchItem
  * @param values - it will check value of every values whether it contains "stack[n]", and ensure stack[n] is not undefined
- * @param [formulaDisplayMode] - formula display mode, default value is from ComoutingContainer.config
+ * @param [formulaDisplayMode] - formula display mode, default value is from ComputingContainer.config
  * @returns data using for compute
  */
 function computedBranchHelper(
@@ -151,6 +164,9 @@ function computedBranchHelper(
     }
   })
 
+  const STACK_ACCESS_PATTERN = /stack\[(\d+)\]/g
+  const RLV_ACCESS_PATTERN = /RLv\[(\d+)\]/g
+
   if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
     const stack: string[] = []
     const { t } = Grimoire.i18n
@@ -169,7 +185,7 @@ function computedBranchHelper(
     }
 
     values.forEach(value => {
-      const stackMatches = Array.from(value.matchAll(/stack\[(\d+)\]/g))
+      const stackMatches = Array.from(value.matchAll(STACK_ACCESS_PATTERN))
       stackMatches.forEach(match => {
         const idxValue = parseInt(match[1], 10)
         if (stack[idxValue] === undefined) {
@@ -192,6 +208,11 @@ function computedBranchHelper(
   } else {
     const stack: number[] = []
 
+    const hasRLv = !!computing.varGetters.registletLevel
+    const RLv: number[] =
+      computing.varGetters.registletLevel?.(branchItem.default.parent.parent) ??
+      []
+
     if (stackIds.length > 0) {
       const computeFormulaExtraValue = computing.config.computeFormulaExtraValue
       const stackStates = branchItem.parent.stackStates
@@ -208,19 +229,30 @@ function computedBranchHelper(
       stack.push(...stackValues)
     }
 
-    const STACK_ITEM_PATTERN = /stack\[(\d+)\]/g
     values.forEach(value => {
-      const stackMatches = Array.from(value.matchAll(STACK_ITEM_PATTERN))
+      const stackMatches = Array.from(value.matchAll(STACK_ACCESS_PATTERN))
       stackMatches.forEach(match => {
         const idxValue = parseInt(match[1], 10)
         if (stack[idxValue] === undefined) {
           stack[idxValue] = 0
         }
       })
+      if (!hasRLv) {
+        const rlvMatches = Array.from(value.matchAll(RLV_ACCESS_PATTERN))
+        rlvMatches.forEach(match => {
+          const idxValue = parseInt(match[1], 10)
+          if (RLv[idxValue] === undefined) {
+            RLv[idxValue] = 0
+          }
+        })
+      }
     })
 
     if (stack.length === 0) {
       stack.push(0)
+    }
+    if (RLv.length === 0) {
+      RLv.push(0)
     }
 
     vars = {
@@ -232,6 +264,7 @@ function computedBranchHelper(
         computing.varGetters.characterLevel?.() ??
         computing.vars.characterLevel,
       stack: stack,
+      RLv,
     } as HandleFormulaVars
     texts = {
       ...extendsDatas.texts,
@@ -263,7 +296,7 @@ function computedBranchHelper(
 
   const { getFormulaExtraValue, computeFormulaExtraValue } = computing.config
 
-  const getValue = (index: string) => {
+  const getValue = (index: string): string | null => {
     if (!formulaExtra) {
       return null
     }
@@ -362,9 +395,9 @@ function computeBranchValueProps<Key extends string>(
   return propValues
 }
 
-type HandleBranchValueAttrOptions = HighlightTextOptions
+type HandleBranchValueAttrOptions = PropDisplayOptions
 interface HandleBranchValuePropsMap {
-  [key: string]: HighlightTextOptions | null
+  [key: string]: PropDisplayOptions | null
 }
 type HandleBranchValuePropsResult<PropMap extends HandleBranchValuePropsMap> = {
   [key in keyof PropMap]: ResultContainer
@@ -372,9 +405,9 @@ type HandleBranchValuePropsResult<PropMap extends HandleBranchValuePropsMap> = {
 function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
   helper: ComputedBranchHelperResult,
   props: Map<string, string>,
-  PropMap: PropMap
+  propMap: PropMap
 ): HandleBranchValuePropsResult<PropMap> {
-  const propKeys = Object.keys(PropMap) as (keyof PropMap)[]
+  const propKeys = Object.keys(propMap) as (keyof PropMap)[]
   const propValues = computeBranchValueProps(
     helper,
     props,
@@ -385,6 +418,7 @@ function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
     const originalFormula = props.get(propKey as string)
     if (originalFormula === undefined) {
       propResult[propKey] = new ResultContainer(
+        ResultContainerTypes.Number,
         helper.branchItem,
         propKey as string,
         '0',
@@ -392,15 +426,20 @@ function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
       )
       return
     }
-    const options = (PropMap[propKey] || {}) as HandleBranchValueAttrOptions
     const container = new ResultContainer(
+      ResultContainerTypes.Number,
       helper.branchItem,
       propKey as string,
       originalFormula,
       propValues.get(propKey)!
     )
+    container.setDisplayOptions(
+      propMap[propKey] as HandleBranchValueAttrOptions
+    )
+
     handleDisplayValue(container, helper)
-    handleHighlight(container, options)
+    handleRegistletValue(container, helper)
+    handleHighlight(container)
 
     propResult[propKey] = container
   })
@@ -450,9 +489,9 @@ function computedBranchText(
 function handleBranchTextProps<PropMap extends HandleBranchTextPropsMap>(
   helper: ComputedBranchHelperResult,
   props: Map<string, string>,
-  PropMap: PropMap
+  propMap: PropMap
 ): HandleBranchTextPropsResult<PropMap> {
-  const propKeys = Object.keys(PropMap) as (keyof PropMap)[]
+  const propKeys = Object.keys(propMap) as (keyof PropMap)[]
   const propResult = {} as HandleBranchTextPropsResult<PropMap>
   propKeys.forEach(propKey => {
     const container = computedBranchText(
@@ -460,8 +499,7 @@ function handleBranchTextProps<PropMap extends HandleBranchTextPropsMap>(
       propKey as string,
       props.get(propKey as string)
     )
-    const options = (PropMap[propKey] || {}) as HighlightTextOptions
-    handleHighlight(container, options)
+    container.containers.forEach(ctner => handleHighlight(ctner))
     propResult[propKey] = container
   })
 
@@ -493,6 +531,7 @@ function handleBranchStats(
       stat
     )
     handleDisplayValue(container, helper)
+    handleRegistletValue(container, helper)
 
     const displayTitleKey = helper.branchItem.propKey(
       container.key,
@@ -504,7 +543,7 @@ function handleBranchStats(
         displayTitleKey,
         helper.branchItem.prop(displayTitleKey)
       )
-      handleHighlight(displayTitleContainer)
+      displayTitleContainer.containers.forEach(ctner => handleHighlight(ctner))
       container.setDisplayTitle(displayTitleContainer.result)
     }
     const conditionValueKey = helper.branchItem.propKey(
@@ -516,9 +555,10 @@ function handleBranchStats(
     }
 
     const showData = stat.getShowData()
-    handleHighlight(container, {
-      beforeHighlight: value => value + showData.tail,
-    })
+    container.setDisplayOptions(showData.tail)
+
+    handleHighlight(container)
+
     return container
   })
 }

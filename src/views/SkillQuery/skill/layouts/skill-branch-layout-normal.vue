@@ -51,11 +51,20 @@
               :color="contentData.color"
               single-color
             >
-              <span v-html="contentData.title"></span>
+              <span
+                v-if="typeof contentData.title === 'string'"
+                class="prop-value-wrapper"
+                v-html="contentData.title"
+              />
+              <SkillBranchPropValue
+                v-else
+                class="prop-value-wrapper"
+                :result="contentData.title"
+              />
             </cy-icon-text>
             <span
               v-if="contentData.value"
-              class="ml-1.5 text-sm text-primary-50"
+              class="prop-value-wrapper ml-1.5 text-sm text-primary-50"
             >
               {{ contentData.value }}
             </span>
@@ -65,8 +74,13 @@
       <div v-if="actionFrameData" class="flex items-start py-1.5 pl-2.5">
         <IconCircle icon="ic:outline-share-arrival-time" />
         <div class="pl-4 pr-2 pt-1">
-          <div class="mb-1 text-sm text-red-50">
-            {{ t('skill-query.branch.action-frame.title') }}
+          <div class="mb-1 flex items-center text-sm text-red-50">
+            <div>{{ t('skill-query.branch.action-frame.title') }}</div>
+            <cy-icon-text
+              class="ml-2"
+              icon="material-symbols:60fps-select-rounded"
+              icon-color="blue-30"
+            />
           </div>
           <div class="flex flex-wrap items-center">
             <div class="mr-5 flex flex-wrap items-center">
@@ -143,6 +157,7 @@ import ToggleService from '@/setup/ToggleService'
 import SkillAreaDetail from './skill-area-detail/index.vue'
 import SkillBranchExtraColumn from './skill-branch-extra-column.vue'
 import IconCircle from './skill-branch-layout-icon-circle.vue'
+import SkillBranchPropValue from './skill-branch-prop-value.vue'
 
 import DisplayDataContainer from '../branch-handlers/handle/DisplayDataContainer'
 import { ExtraSuffixBranchData } from '../setup'
@@ -199,7 +214,7 @@ const subContentDatas = computed(() => {
       return {
         key: subContent.key,
         icon: subContent.icon,
-        title: subContent.title ?? container.value.get(subContent.key),
+        title: subContent.title ?? container.value.result(subContent.key),
         color,
         value: subContent.value ?? '',
         type,
@@ -224,10 +239,10 @@ const actionFrameData = computed(() => {
 <style lang="postcss" scoped>
 .sub-content-item {
   @apply my-0.5 inline-flex items-center;
+}
 
-  & .text-primary-50 {
-    @apply text-fuchsia-60;
-  }
+.prop-value-wrapper :deep(.text-primary-50) {
+  @apply text-fuchsia-60;
 }
 
 .skill-branch-layout-normal {

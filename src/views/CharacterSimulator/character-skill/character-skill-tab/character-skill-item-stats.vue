@@ -5,7 +5,10 @@
       :key="container.stat.statId"
       class="mr-3 text-primary-30"
     >
-      <span class="text-primary-90" v-html="getResultDisplay(container)"></span>
+      <SkillBranchPropValue
+        :result="container"
+        :display-result="getResultDisplay(container)"
+      />
     </div>
   </div>
 </template>
@@ -14,6 +17,8 @@
 import { isNumberString } from '@/shared/utils/string'
 
 import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+
+import SkillBranchPropValue from '@/views/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
 
 interface Props {
   statContainers: ResultContainerStat[]

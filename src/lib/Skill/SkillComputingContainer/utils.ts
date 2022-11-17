@@ -14,16 +14,14 @@ import {
   EQUIPMENT_TYPE_SUB_ORDER,
 } from './consts'
 import {
-  SkillBranchBuffs,
-  SkillBranchItem,
-  SkillEffectItem,
-  SkillEffectItemHistory,
-} from './index'
-import {
   BranchGroupState,
   BranchStackState,
   EquipmentRestrictions,
+  SkillBranchBuffs,
+  SkillBranchItem,
+  SkillEffectItem,
   SkillEffectItemBase,
+  SkillEffectItemHistory,
 } from './index'
 
 function initBasicBranchItem(effectItem: SkillEffectItem, origin: SkillEffect) {

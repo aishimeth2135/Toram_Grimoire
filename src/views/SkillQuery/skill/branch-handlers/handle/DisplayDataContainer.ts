@@ -39,6 +39,10 @@ export default class _DisplayDataContainer<
     this._value = value
   }
 
+  result(key: string) {
+    return this.containers[key] ?? null
+  }
+
   get(key: string): string {
     return this._value[key]
   }

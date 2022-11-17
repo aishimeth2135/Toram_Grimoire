@@ -6,11 +6,11 @@
       :extra-columns="extraSuffixBranchDatas"
       main-icon="icon-park-outline:effects"
     >
-      <div
+      <SkillBranchPropValue
         v-if="container.has('caption')"
         class="inline-block py-0.5 pl-2 pr-1"
-        v-html="container.get('caption')"
-      ></div>
+        :result="container.result('caption')"
+      />
       <SkillBranchStats
         v-else-if="container.statContainers.length !== 0"
         :stat-containers="container.statContainers"
@@ -27,6 +27,7 @@ import SkillComputingContainer, {
 } from '@/lib/Skill/SkillComputingContainer'
 
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
+import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 import SkillBranchStats from './layouts/skill-branch-stats.vue'
 
 import PassiveHandler from './branch-handlers/PassiveHandler'

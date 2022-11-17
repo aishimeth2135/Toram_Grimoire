@@ -7,7 +7,7 @@
       :class="{ tips: isTips }"
     >
       <cy-icon-text icon="jam:leaf" class="mr-2" icon-width="1rem" />
-      <div v-html="container.get('text')"></div>
+      <SkillBranchPropValue :result="container.result('text')" />
     </div>
   </div>
 </template>
@@ -18,6 +18,8 @@ import { computed, toRefs } from 'vue'
 import SkillComputingContainer, {
   SkillBranchItem,
 } from '@/lib/Skill/SkillComputingContainer'
+
+import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 
 import ListHandler from './branch-handlers/ListHandler'
 

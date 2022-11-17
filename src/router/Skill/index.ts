@@ -20,7 +20,8 @@ export default {
     ViewInit(
       DataStoreIds.Stats,
       DataStoreIds.Skill,
-      DataStoreIds.Glossary
+      DataStoreIds.Glossary,
+      DataStoreIds.Registlet
     ).then(next)
   },
   meta: {

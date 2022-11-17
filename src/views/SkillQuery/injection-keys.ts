@@ -1,12 +1,16 @@
 import { InjectionKey } from 'vue'
 
+import { Skill } from '@/lib/Skill/Skill'
 import SkillComputingContainer, {
-  SkillBranchItemBaseChilds,
+  SkillBranchItem,
 } from '@/lib/Skill/SkillComputingContainer'
 
+import { SkillRegistletItemState } from './setup'
+
 interface ComputingContainerInjection {
-  setStackValue: (branchItem: SkillBranchItemBaseChilds, value: number) => void
+  setStackValue: (branchItem: SkillBranchItem, value: number) => void
   rootComputingContainer: SkillComputingContainer
+  getSkillRegistletItemsState: (sklll: Skill) => SkillRegistletItemState[]
 }
 
 const ComputingContainerInjectionKey: InjectionKey<ComputingContainerInjection> =

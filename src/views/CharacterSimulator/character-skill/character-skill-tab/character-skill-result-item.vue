@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center">
+    <div class="flex items-start">
       <div v-if="!hideName" class="mr-3 flex flex-shrink-0">
         <cy-button-toggle
           v-model:selected="branchItemState.enabled"
@@ -11,11 +11,11 @@
           }}
         </cy-button-toggle>
       </div>
-      <div>
-        <div
+      <div class="py-1">
+        <SkillBranchPropValue
           v-if="container.statContainers.length === 0"
-          v-html="container.get('caption')"
-        ></div>
+          :result="container.result('caption')"
+        />
         <CharacterSkillItemStats
           v-else
           :stat-containers="container.statContainers"
@@ -37,6 +37,8 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { SkillResult } from '@/stores/views/character/setup'
+
+import SkillBranchPropValue from '@/views/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
 
 import CharacterSkillItemStats from './character-skill-item-stats.vue'
 import CharacterSkillResultSuffixItem from './character-skill-result-suffix-item.vue'

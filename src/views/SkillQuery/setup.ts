@@ -1,10 +1,19 @@
-import { computed, nextTick, provide, ref, shallowRef, watch } from 'vue'
+import {
+  computed,
+  nextTick,
+  provide,
+  reactive,
+  ref,
+  shallowRef,
+  watch,
+} from 'vue'
 import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
 import GlossaryTag from '@/lib/Glossary/GlossaryTag'
+import { RegistletItemBaseSkill } from '@/lib/Registlet/Registlet'
 import { Skill } from '@/lib/Skill/Skill'
 import SkillComputingContainer, {
   SkillBranchItem,
@@ -100,7 +109,34 @@ export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
   }
 }
 
-export function setupComputingContainer(skill: Ref<Skill | null>) {
+export interface SkillRegistletItemState {
+  index: number
+  item: RegistletItemBaseSkill
+  level: number
+}
+
+export function setupComputingContainer(skillRef: Ref<Skill | null>) {
+  const skillRegistletItemsStates = new Map<Skill, SkillRegistletItemState[]>()
+  const getSkillRegistletItemsState = (
+    skill: Skill
+  ): SkillRegistletItemState[] => {
+    if (!skillRegistletItemsStates.has(skill)) {
+      const registletItems = Grimoire.Registlet.getRegistletItemsBySkill(skill)
+      skillRegistletItemsStates.set(
+        skill,
+        registletItems.map((registletItem, index) => {
+          const maxLevel = registletItem.maxLevel
+          return reactive({
+            index,
+            item: registletItem,
+            level: ref(maxLevel),
+          }) as SkillRegistletItemState
+        })
+      )
+    }
+    return skillRegistletItemsStates.get(skill)!
+  }
+
   const computingContainer = new SkillComputingContainer()
   const FORMULA_REPLACED_VARS = [
     'BSTR',
@@ -109,6 +145,9 @@ export function setupComputingContainer(skill: Ref<Skill | null>) {
     'BVIT',
     'BDEX',
     'TEC',
+    'CRT',
+    'LUK',
+    'MEN',
     'STR',
     'INT',
     'AGI',
@@ -124,10 +163,12 @@ export function setupComputingContainer(skill: Ref<Skill | null>) {
     computingContainer.handleFormulaExtends.texts['$' + varName] =
       Grimoire.i18n.t(`skill-query.branch.formula-replaced-text.${varName}`)
   })
+  computingContainer.varGetters.registletLevel = skill =>
+    getSkillRegistletItemsState(skill).map(state => state.level)
 
   const currentSkillItem = shallowRef<SkillItem | null>(null)
   watch(
-    skill,
+    skillRef,
     newValue => {
       currentSkillItem.value = newValue ? new SkillItem(newValue) : null
       const vars = {
@@ -165,6 +206,7 @@ export function setupComputingContainer(skill: Ref<Skill | null>) {
   provide(ComputingContainerInjectionKey, {
     rootComputingContainer: computingContainer,
     setStackValue,
+    getSkillRegistletItemsState,
   })
 
   return {

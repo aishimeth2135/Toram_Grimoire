@@ -9,11 +9,10 @@
       </cy-button-toggle>
     </div>
     <div class="flex items-center">
-      <cy-icon-text icon="ic:round-label-important" class="mr-2" />
-      <div
+      <SkillBranchPropValue
         v-if="container.statContainers.length === 0"
-        v-html="container.get('caption')"
-      ></div>
+        :result="container.result('caption')"
+      />
       <CharacterSkillItemStats
         v-else
         :stat-containers="container.statContainers"
@@ -28,6 +27,7 @@ import { computed } from 'vue'
 import { SkillBranchItemSuffix } from '@/lib/Skill/SkillComputingContainer'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
+import SkillBranchPropValue from '@/views/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
 
 import CharacterSkillItemStats from './character-skill-item-stats.vue'
 

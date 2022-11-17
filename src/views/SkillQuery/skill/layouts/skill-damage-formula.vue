@@ -3,50 +3,52 @@
     <div class="damage-formula-main inline-flex flex-wrap items-center">
       <div class="damage-formula-main-first" />
       <span
-        v-if="container.get('extra_constant') && frequencyVisible"
+        v-if="container.has('extra_constant') && frequencyVisible"
         class="divider border-orange-60"
       />
-      <span v-if="container.get('constant')" class="divider" />
-      <span v-if="container.get('base')" class="attr-item">{{
-        container.get('base')
-      }}</span>
+      <span v-if="container.has('constant')" class="divider" />
+      <span v-if="container.has('base')" class="attr-item">
+        {{ container.get('base') }}
+      </span>
       <cy-icon-text
-        v-if="container.get('base') && container.get('constant')"
+        v-if="container.has('base') && container.has('constant')"
         icon="ic-round-add"
       />
-      <span
-        v-if="container.get('constant')"
+      <SkillBranchPropValue
         class="attr-item"
-        v-html="container.get('constant')"
+        :result="container.result('constant')"
       />
-      <span v-if="container.get('constant')" class="divider" />
+      <span v-if="container.has('constant')" class="divider" />
       <cy-icon-text icon="ic-round-close" />
-      <span class="attr-item" v-html="container.get('multiplier')" />
+      <SkillBranchPropValue
+        class="attr-item"
+        :result="container.result('multiplier')"
+      />
       <cy-icon-text
-        v-if="container.get('extra_constant')"
+        v-if="container.has('extra_constant')"
         icon="ic-round-add"
       />
-      <span
-        v-if="container.get('extra_constant')"
+      <SkillBranchPropValue
+        v-if="container.has('extra_constant')"
         class="attr-item"
-        v-html="container.get('extra_constant')"
+        :result="container.result('extra_constant')"
       />
       <span
-        v-if="container.get('extra_constant') && frequencyVisible"
+        v-if="container.has('extra_constant') && frequencyVisible"
         class="divider border-orange-60"
       />
       <cy-icon-text
-        v-if="frequencyVisible && container.get('frequency')"
+        v-if="frequencyVisible && container.has('frequency')"
         icon="ic-round-close"
       />
-      <span
+      <SkillBranchPropValue
         v-if="frequencyVisible"
         class="attr-item"
-        v-html="container.get('frequency')"
+        :result="container.result('frequency')"
       />
     </div>
     <div
-      v-if="container.get('@custom-base-caption')"
+      v-if="container.has('@custom-base-caption')"
       class="mb-2.5 flex flex-wrap items-center pl-2"
     >
       <cy-icon-text text-color="fuchsia-60" small class="mt-1">
@@ -62,6 +64,8 @@
 
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
+
+import SkillBranchPropValue from './skill-branch-prop-value.vue'
 
 import DisplayDataContainer from '../branch-handlers/handle/DisplayDataContainer'
 
