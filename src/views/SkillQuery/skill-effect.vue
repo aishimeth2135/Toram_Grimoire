@@ -22,9 +22,9 @@
     <div ref="skillBranchesElement" class="skill-effect-main">
       <div v-if="tabs.skillInfo">
         <SkillBranch
-          v-for="branchItemData in skillBranchItemDatas"
-          :key="branchItemData.id"
-          :skill-branch-item="branchItemData.item"
+          v-for="branchItem in effectItem.branchItems"
+          :key="branchItem.instanceId"
+          :skill-branch-item="branchItem"
           :computing="rootComputingContainer"
         />
         <div v-if="registletItemStates.length > 0" class="mt-5 space-y-3 px-3">
@@ -33,6 +33,21 @@
             :key="registletItemState.item.id"
             :registlet-item-state="registletItemState"
           />
+          <div class="px-3 py-2 text-sm">
+            <cy-icon-text
+              icon="ic:outline-tips-and-updates"
+              class="mr-2 mt-0.5"
+            >
+              <span
+                class="text-primary-30"
+                v-html="
+                  t('skill-query.registlet-info-tip', {
+                    link: registletTipLink,
+                  })
+                "
+              />
+            </cy-icon-text>
+          </div>
         </div>
       </div>
       <div v-if="tabs.skillHistory">
@@ -169,6 +184,11 @@ const registletItemStates = computed(() => {
   return getSkillRegistletItemsState(props.skillItem.skill)
 })
 
+const registletTipLink = computed(() => {
+  const title = t('skill-query.registlet-title')
+  return `<span class="click-button--tag" data-tag="${title}">${title}</span>`
+})
+
 const { t } = useI18n()
 const { tabs, toggle } = ToggleService({
   tabs: [{ name: 'skillInfo', default: true }, 'skillHistory'] as const,
@@ -185,16 +205,6 @@ const tabVisible = computed(() => {
       item => item.historys.length > 0
     ) ?? false
   )
-})
-
-const skillBranchItemDatas = computed(() => {
-  if (!effectItem.value) {
-    return []
-  }
-  return effectItem.value.branchItems.map((item, idx) => ({
-    item,
-    id: `branch--${item.id !== -1 ? item.id : 'none-' + idx}`,
-  }))
 })
 
 const tagDetailContent: Ref<{ $el: HTMLElement } | null> = ref(null)

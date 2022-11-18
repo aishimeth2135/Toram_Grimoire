@@ -17,6 +17,10 @@ interface PropDisplayOptionsDetail {
 type PropDisplayOptions = PropDisplayOptionsDetail | string
 
 abstract class ResultContainerBase {
+  private static _incrementId = 0
+
+  instanceId: number
+
   abstract readonly branch: SkillBranchItemBaseChilds
 
   /** The key of prop */
@@ -33,6 +37,11 @@ abstract class ResultContainerBase {
 
   /** method to modify result */
   abstract handle(handler: ResultHandler): void
+
+  constructor() {
+    this.instanceId = ResultContainerBase._incrementId
+    ResultContainerBase._incrementId += 1
+  }
 }
 
 class ResultContainer extends ResultContainerBase {

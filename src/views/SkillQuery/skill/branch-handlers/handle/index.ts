@@ -44,9 +44,12 @@ function cloneBranchProps(
   const props = new Map(branchItem.allProps)
   if (typeof initValueMap === 'object') {
     Object.entries(initValueMap).forEach(([key, value]) => {
+      if (props.has(key)) {
+        return
+      }
       if (typeof value === 'function') {
         props.set(key, value(props.get(key) || ''))
-      } else if (!props.has(key)) {
+      } else {
         props.set(key, value)
       }
     })

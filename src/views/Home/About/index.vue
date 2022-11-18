@@ -134,7 +134,12 @@
       </div>
     </section>
     <section class="px-5 pt-5 pb-12">
-      <i18n-t keypath="app.about.disclaimer" tag="div" class="content">
+      <i18n-t
+        keypath="app.about.disclaimer"
+        tag="div"
+        class="content"
+        scope="global"
+      >
         <template #link>
           <a
             class="text-primary-50 underline"

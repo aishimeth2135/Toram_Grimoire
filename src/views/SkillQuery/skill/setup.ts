@@ -6,7 +6,10 @@ import SkillComputingContainer, {
   SkillBranchItem,
   SkillEffectItem,
 } from '@/lib/Skill/SkillComputingContainer'
-import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+import {
+  ResultContainerBase,
+  ResultContainerStat,
+} from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 
 import ExtraHandler from './branch-handlers/ExtraHandler'
 
@@ -60,8 +63,9 @@ export interface ExtraSuffixBranchData {
   icon: string
   title: string
   titleProps?: string[]
-  text?: string
+  result?: ResultContainerBase
   statContainers?: ResultContainerStat[]
+  otherResults?: Map<string, ResultContainerBase>
 }
 
 export function setupCommonExtraSuffixBranches(
@@ -86,7 +90,7 @@ export function setupCommonExtraSuffixBranches(
           baseData.titleProps = [dataContainer.get('target')]
         }
         if (dataContainer.get('caption')) {
-          baseData.text = dataContainer.get('caption')
+          baseData.result = dataContainer.result('caption')
         } else {
           baseData.statContainers = dataContainer.statContainers
         }

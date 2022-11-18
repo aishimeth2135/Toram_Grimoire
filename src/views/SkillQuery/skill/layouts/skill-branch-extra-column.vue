@@ -19,7 +19,7 @@
       </div>
       <div class="flex flex-wrap items-center" style="min-height: 2rem">
         <slot>
-          <div v-if="text" v-html="text" />
+          <SkillBranchPropValue v-if="result" :result="result" />
           <SkillBranchStats
             v-else-if="statContainers"
             :stat-containers="statContainers"
@@ -31,16 +31,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+import {
+  ResultContainerBase,
+  ResultContainerStat,
+} from '@/lib/Skill/SkillComputingContainer/ResultContainer'
 
 import IconCircle from './skill-branch-layout-icon-circle.vue'
+import SkillBranchPropValue from './skill-branch-prop-value.vue'
 import SkillBranchStats from './skill-branch-stats.vue'
 
 interface Props {
   icon: string
   title: string
   titleProps?: string[]
-  text?: string
+  result?: ResultContainerBase
   statContainers?: ResultContainerStat[]
 }
 

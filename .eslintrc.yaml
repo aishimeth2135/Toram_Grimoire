@@ -147,14 +147,14 @@ rules:
   # vue/html-indent:
   #   - warn
   #   - 2
-  vue/max-attributes-per-line:
-    - warn
-    - singleline: 5
-      multiline: 1
-  vue/html-closing-bracket-newline:
-    - warn
-    - singleline: never
-      multiline: always
+  # vue/max-attributes-per-line:
+  #   - warn
+  #   - singleline: 5
+  #     multiline: 1
+  # vue/html-closing-bracket-newline:
+  #   - warn
+  #   - singleline: never
+  #     multiline: always
   # vue/comma-dangle:
   #   - warn
   #   - always-multiline

@@ -6,10 +6,10 @@
     <span class="text-primary-90">{{ result.statResultData.title }}</span>
     <span class="text-primary-50">{{ result.statResultData.sign }}</span>
     <span>
-      <RenderResult />
+      <RenderResult :key="result.instanceId" />
     </span>
   </span>
-  <RenderResult v-else />
+  <RenderResult v-else :key="result.instanceId" />
 </template>
 
 <script lang="ts" setup>
@@ -35,7 +35,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const RenderContainerResult = (container: ResultContainer) => {
+const _RenderContainerResult = (container: ResultContainer) => {
   const res = props.displayResult ?? container.result
 
   const {
@@ -50,14 +50,15 @@ const RenderContainerResult = (container: ResultContainer) => {
   const end = message ? '' : _end
 
   const registletResult = container.subContainers.registlet?.result
-  const registletNode = registletResult
-    ? h('span', {
-        class: 'ml-1 text-emerald-50',
-        innerHTML: registletResult.startsWith('-')
-          ? registletResult
-          : `+${registletResult}`,
-      })
-    : null
+  const registletNode =
+    registletResult && registletResult !== '0'
+      ? h('span', {
+          class: 'ml-1 text-emerald-50',
+          innerHTML: registletResult.startsWith('-')
+            ? registletResult
+            : `+${registletResult}`,
+        })
+      : null
 
   if (container.type === ResultContainerTypes.Number) {
     if (!isNumberString(res) || registletNode) {
@@ -73,6 +74,14 @@ const RenderContainerResult = (container: ResultContainer) => {
       return h('span', { class: classNames }, [mainNode, end])
     }
   }
+  return h('span', {
+    innerHTML: res + end,
+    class: classNames,
+  })
+}
+
+const RenderContainerResult = (container: ResultContainer) => {
+  const message = container.displayOptions?.message
   if (message) {
     const { id, param } = message
     return h(
@@ -83,19 +92,11 @@ const RenderContainerResult = (container: ResultContainer) => {
         scope: 'global',
       },
       {
-        [param]: () =>
-          h('span', {
-            innerHTML: res,
-            class: classNames,
-          }),
+        [param]: () => _RenderContainerResult(container),
       }
     )
   }
-
-  return h('span', {
-    innerHTML: res + end,
-    class: classNames,
-  })
+  return _RenderContainerResult(container)
 }
 
 const RenderTextParts = (parts: TextResultContainerPartValue[]) => {

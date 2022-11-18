@@ -34,12 +34,12 @@ export default class RegistletSystem {
     if (!this._skillItemMap) {
       this._skillItemMap = new Map()
       this.skillCategory.items.forEach(item => {
-        if (item.link) {
-          if (!this._skillItemMap.has(item.link)) {
-            this._skillItemMap.set(item.link, [])
+        item.link.forEach(link => {
+          if (!this._skillItemMap.has(link)) {
+            this._skillItemMap.set(link, [])
           }
-          this._skillItemMap.get(item.link)!.push(item)
-        }
+          this._skillItemMap.get(link)!.push(item)
+        })
       })
     }
     return this._skillItemMap.get(skill) ?? []

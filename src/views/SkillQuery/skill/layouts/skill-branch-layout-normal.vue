@@ -43,7 +43,7 @@
           <span
             v-for="contentData in subContentDatas"
             :key="contentData.key"
-            class="sub-content-item mr-3"
+            class="my-0.5 mr-3 inline-flex items-center"
           >
             <cy-icon-text
               small
@@ -51,16 +51,18 @@
               :color="contentData.color"
               single-color
             >
-              <span
-                v-if="typeof contentData.title === 'string'"
-                class="prop-value-wrapper"
-                v-html="contentData.title"
-              />
-              <SkillBranchPropValue
-                v-else
-                class="prop-value-wrapper"
-                :result="contentData.title"
-              />
+              <slot :name="`sub-content(${contentData.key})`">
+                <span
+                  v-if="typeof contentData.title === 'string'"
+                  class="prop-value-wrapper"
+                  v-html="contentData.title"
+                />
+                <SkillBranchPropValue
+                  v-else
+                  class="prop-value-wrapper"
+                  :result="contentData.title"
+                />
+              </slot>
             </cy-icon-text>
             <span
               v-if="contentData.value"
@@ -69,6 +71,10 @@
               {{ contentData.value }}
             </span>
           </span>
+          <slot
+            name="sub-content-extra"
+            item-class="my-0.5 inline-flex items-center"
+          />
         </div>
       </div>
       <div v-if="actionFrameData" class="flex items-start py-1.5 pl-2.5">
@@ -134,7 +140,7 @@
           :key="suffixData.id"
           :icon="suffixData.icon"
           :title="suffixData.title"
-          :text="suffixData.text"
+          :result="suffixData.result"
           :stat-containers="suffixData.statContainers"
         />
       </div>
@@ -183,7 +189,7 @@ const props = withDefaults(defineProps<Props>(), {
 const { container, subContents, hasArea } = toRefs(props)
 
 const slots = useSlots()
-const { t } = useI18n()
+const { t } = useI18n({ useScope: 'global' })
 
 const { toggle, contents } = ToggleService({
   contents: ['areaDetail'] as const,
@@ -218,9 +224,10 @@ const subContentDatas = computed(() => {
         color,
         value: subContent.value ?? '',
         type,
+        custom: subContent.custom,
       }
     })
-    .filter(item => item.title || (item.title && item.value))
+    .filter(item => item.title || (item.title && item.value) || item.custom)
 })
 
 const actionFrameData = computed(() => {
@@ -237,10 +244,6 @@ const actionFrameData = computed(() => {
 </script>
 
 <style lang="postcss" scoped>
-.sub-content-item {
-  @apply my-0.5 inline-flex items-center;
-}
-
 .prop-value-wrapper :deep(.text-primary-50) {
   @apply text-fuchsia-60;
 }

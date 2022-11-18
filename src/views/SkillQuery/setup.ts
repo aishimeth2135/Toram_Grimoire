@@ -113,6 +113,7 @@ export interface SkillRegistletItemState {
   index: number
   item: RegistletItemBaseSkill
   level: number
+  enabled: boolean
 }
 
 export function setupComputingContainer(skillRef: Ref<Skill | null>) {
@@ -130,6 +131,7 @@ export function setupComputingContainer(skillRef: Ref<Skill | null>) {
             index,
             item: registletItem,
             level: ref(maxLevel),
+            enabled: false,
           }) as SkillRegistletItemState
         })
       )
@@ -163,8 +165,11 @@ export function setupComputingContainer(skillRef: Ref<Skill | null>) {
     computingContainer.handleFormulaExtends.texts['$' + varName] =
       Grimoire.i18n.t(`skill-query.branch.formula-replaced-text.${varName}`)
   })
-  computingContainer.varGetters.registletLevel = skill =>
-    getSkillRegistletItemsState(skill).map(state => state.level)
+  computingContainer.varGetters.registletLevel = skill => {
+    return getSkillRegistletItemsState(skill).map(state =>
+      state.enabled ? state.level : 0
+    )
+  }
 
   const currentSkillItem = shallowRef<SkillItem | null>(null)
   watch(

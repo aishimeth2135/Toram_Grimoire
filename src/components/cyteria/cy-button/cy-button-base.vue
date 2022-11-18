@@ -116,7 +116,7 @@ export default defineComponent({
   }
 
   &.theme-emerald {
-    --button-color-main: var(--app-emerald);
+    --button-color-main: var(--app-emerald-60);
     --button-color-main-light: var(--app-emerald-30);
   }
 
