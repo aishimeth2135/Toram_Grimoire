@@ -61,7 +61,7 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(
     filters.set('caption', value => !!value)
     filters.set('element', value => !!value)
     textPropsMap.append('caption', 'condition')
-    pureValues.push('element')
+    langPropsMap.append('element')
 
     filters.set('dual_element', value => !!value)
     langPropsMap.set('dual_element', { rootKey: SkillBranchNames.Damage })

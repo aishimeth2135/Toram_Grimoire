@@ -1,5 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
-import { isIntegerString } from '@/shared/utils/string'
+import { isIntegerString, splitComma } from '@/shared/utils/string'
 
 import RegistletSystem from '@/lib/Registlet'
 import {
@@ -12,6 +12,7 @@ import {
   RegistletItemRow,
 } from '@/lib/Registlet/Registlet'
 import { RegistletCategoryIds } from '@/lib/Registlet/Registlet/enums'
+import { Skill } from '@/lib/Skill/Skill'
 
 import type { CsvData } from './DownloadDatas'
 
@@ -86,13 +87,13 @@ export default function (root: RegistletSystem, csvData: CsvData) {
           currentItem = newItem
         }
       } else if (currentCategory.id === RegistletCategoryIds.Skill) {
-        const skill = row[LINK]
-          ? Grimoire.Skill.skillRoot.findSkillById(row[LINK])
-          : null
+        const skills = splitComma(row[LINK])
+          .map(item => Grimoire.Skill.skillRoot.findSkillById(item))
+          .filter(item => item) as Skill[]
         const newItem = new RegistletItemBaseSkill(
           currentCategory as RegistletCategory<RegistletItemBaseSkill>,
           infos,
-          skill
+          skills
         )
         currentCategory.items.push(newItem)
         currentItem = newItem

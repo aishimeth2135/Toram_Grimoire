@@ -11,9 +11,23 @@
       :main-title="mainTitie"
     >
       <SkillDamageFormula :container="container" />
+      <template #sub-content(duration|cycle)>
+        <i18n-t
+          keypath="skill-query.branch.damage.duration-caption-with-cycle"
+          tag="span"
+          scope="global"
+        >
+          <template #duration>
+            <SkillBranchPropValue :result="container.result('duration')" />
+          </template>
+          <template #cycle>
+            <SkillBranchPropValue :result="container.result('cycle')" />
+          </template>
+        </i18n-t>
+      </template>
       <template #extra-columns-start>
         <SkillBranchExtraColumn
-          v-if="container.get('dual_element')"
+          v-if="container.has('dual_element')"
           icon="bx-bx-circle"
           :title="
             t('skill-query.branch.global-suffix.extra.condition-default-value')
@@ -47,8 +61,45 @@
           v-if="container.get('ailment_name')"
           icon="mdi:creation"
           :title="t('skill-query.branch.ailment-title')"
-          :text="getAilmentText(container)"
-        />
+        >
+          <i18n-t
+            keypath="skill-query.branch.damage.ailment-caption"
+            scope="global"
+          >
+            <template #chance>
+              <SkillBranchPropValue
+                :result="container.result('ailment_chance')"
+              />
+            </template>
+            <template #name>
+              <span :class="TAG_BUTTON_CLASS_NAME">
+                {{ container.get('ailment_name') }}
+              </span>
+            </template>
+          </i18n-t>
+        </SkillBranchExtraColumn>
+        <SkillBranchExtraColumn
+          v-for="sufContainer in ailmentSuffixBranchItems"
+          :key="sufContainer.instanceId"
+          icon="mdi:creation"
+          :title="sufContainer.get('condition')"
+        >
+          <i18n-t
+            keypath="skill-query.branch.damage.ailment-caption"
+            scope="global"
+          >
+            <template #chance>
+              <SkillBranchPropValue
+                :result="sufContainer.result('ailment_chance')"
+              />
+            </template>
+            <template #name>
+              <span :class="TAG_BUTTON_CLASS_NAME">
+                {{ sufContainer.get('ailment_name') }}
+              </span>
+            </template>
+          </i18n-t>
+        </SkillBranchExtraColumn>
       </template>
     </SkillBranchLayoutNormal>
   </div>
@@ -65,12 +116,12 @@ import SkillComputingContainer, {
 
 import SkillBranchExtraColumn from './layouts/skill-branch-extra-column.vue'
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
+import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 import SkillDamageFormula from './layouts/skill-damage-formula.vue'
 
 import { TAG_BUTTON_CLASS_NAME } from '../utils'
 import DamageHandler from './branch-handlers/DamageHandler'
 import ExtraHandler from './branch-handlers/ExtraHandler'
-import DisplayDataContainer from './branch-handlers/handle/DisplayDataContainer'
 import { NormalLayoutSubContent } from './layouts/setup'
 import { ExtraSuffixBranchData } from './setup'
 
@@ -106,23 +157,8 @@ const mainTitie = computed(() => {
   return res
 })
 
-const getAilmentText = (dataContainer: DisplayDataContainer) => {
-  const text = dataContainer.get('ailment_name')
-  return t('skill-query.branch.damage.ailment-caption', {
-    chance: dataContainer.get('ailment_chance'),
-    name: `<span class="${TAG_BUTTON_CLASS_NAME}">${text}</span>`,
-  })
-}
-
 const getElementIcon = (value: string) => {
   return ELEMENT_ICON_MAPPING[value] || 'bx-bx-circle'
-}
-
-const getElementCaption = (value: string) => {
-  const str = `<span class="text-primary-50">${t(
-    'skill-query.branch.damage.element.' + value
-  )}</span>`
-  return t('skill-query.branch.apply-element', { element: str })
 }
 
 const subContents = computed(() => {
@@ -155,10 +191,7 @@ const subContents = computed(() => {
     result.push({
       key: 'duration|cycle',
       icon: 'ic-round-timer',
-      title: t('skill-query.branch.damage.duration-caption-with-cycle', {
-        duration: container.value.get('duration'),
-        cycle: container.value.get('cycle'),
-      }),
+      custom: true,
     })
   }
   result.push(
@@ -231,16 +264,12 @@ const extraSuffixBranchDatas = computed(() => {
     .filter(suffix => {
       if (
         !suffix.is(SkillBranchNames.Extra) ||
-        suffix.hasProp('dual_element')
+        suffix.hasProp('dual_element') ||
+        suffix.hasProp('ailment_name')
       ) {
         return false
       }
-      return (
-        suffix.hasProp('caption') ||
-        suffix.hasProp('ailment_name') ||
-        suffix.hasProp('element') ||
-        suffix.stats.length > 0
-      )
+      return suffix.hasProp('caption') || suffix.stats.length > 0
     })
     .filter(suffix => !suffix.propBoolean('hidden'))
     .map((suffix, idx) => {
@@ -254,11 +283,7 @@ const extraSuffixBranchDatas = computed(() => {
         baseData.titleProps = [dataContainer.get('target')]
       }
       if (dataContainer.get('caption')) {
-        baseData.text = dataContainer.get('caption')
-      } else if (dataContainer.get('ailment_name')) {
-        baseData.text = getAilmentText(dataContainer)
-      } else if (dataContainer.get('element')) {
-        baseData.text = getElementCaption(dataContainer.get('element'))
+        baseData.result = dataContainer.result('caption')
       } else {
         baseData.statContainers = dataContainer.statContainers
       }
@@ -270,6 +295,14 @@ const dualElementSuffixBranchItems = computed(() => {
   return branchItem.value.suffixBranches
     .filter(suffix => {
       return suffix.hasProp('dual_element')
+    })
+    .map(suffix => ExtraHandler(props.computing, suffix))
+})
+
+const ailmentSuffixBranchItems = computed(() => {
+  return branchItem.value.suffixBranches
+    .filter(suffix => {
+      return suffix.hasProp('ailment_name')
     })
     .map(suffix => ExtraHandler(props.computing, suffix))
 })

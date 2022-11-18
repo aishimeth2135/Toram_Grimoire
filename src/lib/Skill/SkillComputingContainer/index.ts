@@ -354,6 +354,10 @@ type SkillBranchItemOverwriteRecords = {
 abstract class SkillBranchItemBase<
   Parent extends SkillEffectItemBase = SkillEffectItemBase
 > {
+  private static _incrementId = 0
+
+  readonly instanceId: number
+
   private _props: Map<string, string>
 
   private _name: SkillBranchNames
@@ -393,6 +397,9 @@ abstract class SkillBranchItemBase<
    * @param branch - branch from default effect of skill, branch should be overwrite later
    */
   constructor(parent: Parent, branch: SkillBranch | SkillBranchItemBase) {
+    this.instanceId = SkillBranchItemBase._incrementId
+    SkillBranchItemBase._incrementId += 1
+
     this.parent = parent
     this.id = branch.id
 

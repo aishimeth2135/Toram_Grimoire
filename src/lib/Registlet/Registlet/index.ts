@@ -49,16 +49,16 @@ abstract class RegistletItemBase {
 }
 
 class RegistletItemBaseSkill extends RegistletItemBase {
-  override link: Skill | null
+  override link: Skill[]
   declare category: RegistletCategory<RegistletItemBaseSkill>
 
   constructor(
     category: RegistletCategory<RegistletItemBaseSkill>,
     infos: RegistletInfos,
-    skill: Skill | null
+    skills: Skill[]
   ) {
     super(category, infos)
-    this.link = skill
+    this.link = skills
   }
 }
 

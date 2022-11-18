@@ -8,7 +8,7 @@
         <div class="flex items-center">
           <div class="text-emerald-60">{{ item.name }}</div>
           <div class="ml-3 text-sm text-emerald-30">
-            {{ $t('skill-query.registlet-title') }}
+            {{ t('skill-query.registlet-title') }}
           </div>
         </div>
         <div
@@ -32,7 +32,7 @@
     </div>
     <cy-transition>
       <div
-        v-show="optionsVisible"
+        v-show="registletItemState.enabled"
         class="mt-2 border-t border-emerald-20 px-4 pt-4 pb-2"
       >
         <div>
@@ -40,7 +40,7 @@
             v-model:value="
               registletItemState.level /* eslint-disable-line vue/no-mutating-props */
             "
-            :title="$t('skill-query.registlet-level')"
+            :title="t('skill-query.registlet-level')"
             :range="[0, registletItemState.item.maxLevel]"
           />
           <div class="mt-3 inline-flex items-center pl-0.5">
@@ -57,27 +57,21 @@
             </div>
           </div>
         </div>
-        <div
-          class="mt-3 pl-0.5 pr-2 text-sm text-primary-30"
-          v-html="$t('skill-query.registlet-info-tip', { link: tipLink })"
-        />
       </div>
     </cy-transition>
-    <cy-button-icon
-      color="emerald"
-      :icon="
-        optionsVisible
-          ? 'ic:round-keyboard-double-arrow-up'
-          : 'ic:round-keyboard-double-arrow-down'
+    <cy-button-toggle
+      v-model:selected="
+        // eslint-disable-next-line vue/no-mutating-props
+        registletItemState.enabled
       "
-      class="absolute bottom-1 right-0"
-      @click="optionsVisible = !optionsVisible"
+      color="emerald"
+      class="absolute top-1.5 right-0"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import IconCircle from './skill-branch-layout-icon-circle.vue'
@@ -90,7 +84,6 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const optionsVisible = ref(false)
 const item = computed(() => props.registletItemState.item)
 
 const { t } = useI18n()
@@ -108,11 +101,4 @@ const handleCaptionValue = (str: string) =>
       return `<span class="cy--text-separate text-primary-30"><span class="text-primary-60">${value}</span></span>${value2}`
     })
     .replace(/\*/g, '×')
-
-const tipLink = computed(() => {
-  const title = t('skill-query.registlet-title')
-  return `<span class="click-button--tag" data-tag="${title}">${t(
-    title
-  )}</span>`
-})
 </script>
