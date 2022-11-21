@@ -1,6 +1,6 @@
 <template>
   <div class="cy--top-header">
-    <div class="content">
+    <div class="top-header-content">
       <slot />
     </div>
   </div>
@@ -36,13 +36,13 @@ export default {
       top: calc(var(--container-height) - 2 * var(--shadow-height));
     }
 
-    & > .content {
+    & > .top-header-content {
       background-color: var(--app-bgcolor);
       border-radius: 0.5rem 0.5rem 0 0;
     }
   }
 
-  & > .content {
+  & > .top-header-content {
     position: sticky;
     height: calc(var(--container-height) - var(--shadow-height));
     margin-top: calc(-1 * var(--shadow-height));
