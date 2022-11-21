@@ -126,7 +126,7 @@ export default defineComponent({
   }
 
   &.theme-red {
-    --button-color-main: var(--app-orange-60);
+    --button-color-main: var(--app-red-60);
     --button-color-main-light: var(--app-red-30);
   }
 }

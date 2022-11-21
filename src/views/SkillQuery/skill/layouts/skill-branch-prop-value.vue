@@ -26,7 +26,10 @@ import {
   TextResultContainerPart,
   TextResultContainerPartValue,
 } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
-import { ResultContainerTypes } from '@/lib/Skill/SkillComputingContainer/enums'
+import {
+  ResultContainerTypes,
+  TextResultContainerPartTypes,
+} from '@/lib/Skill/SkillComputingContainer/enums'
 
 interface Props {
   result: ResultContainerBase
@@ -105,12 +108,15 @@ const RenderTextParts = (parts: TextResultContainerPartValue[]) => {
       return h('span', { innerHTML: part })
     }
     if (part instanceof TextResultContainerPart) {
-      const childs = RenderTextParts(part.parts)
-      const classNames = part.type === 'separate' ? ['cy--text-separate'] : []
-      if (part.end) {
+      const childs = part.value
+      const classNames =
+        part.type === TextResultContainerPartTypes.Separate
+          ? ['cy--text-separate']
+          : []
+      if (part.unit) {
         return h('span', { class: 'text-primary-50' }, [
           h('span', { class: classNames }, childs),
-          part.end,
+          part.unit,
         ])
       }
       classNames.push('text-primary-50')

@@ -2,7 +2,7 @@ import { StatComputed } from '@/lib/Character/Stat'
 import { StatRecorded } from '@/lib/Character/Stat'
 
 import { SkillBranchItemBaseChilds } from '.'
-import { ResultContainerTypes } from './enums'
+import { ResultContainerTypes, TextResultContainerPartTypes } from './enums'
 
 type ResultHandler = (currentResult: string) => string
 
@@ -182,6 +182,85 @@ class ResultContainerStat extends ResultContainer {
   }
 }
 
+/** ---------- TextResultContainer ---------- */
+interface TextParseInnerHandler {
+  (value: string): {
+    parts: TextResultContainerPartValue[]
+    containers: ResultContainer[]
+  }
+}
+interface TextParseContext {
+  unit: string
+  containers: ResultContainer[]
+  parseHandlers: Record<string, TextParseInnerHandler>
+}
+interface TextParseHandler {
+  (value: string, context: TextParseContext): TextResultContainerPartValue
+}
+interface TextParseItem {
+  id: string
+  pattern: RegExp | string
+  handler: TextParseHandler
+  units?: string[]
+}
+function handleTextParse(rootValue: string, order: TextParseItem[]) {
+  const handle = (
+    value: string,
+    currentIdx: number,
+    containers: ResultContainer[]
+  ) => {
+    const { pattern, handler, units = [] } = order[currentIdx]
+    const parseParts = value.split(pattern)
+    const parts: TextResultContainerPartValue[] = []
+
+    const parseHandlers: Record<string, TextParseInnerHandler> = {}
+    order.forEach((item, idx) => {
+      parseHandlers[item.id] = _value => handle(_value, idx, containers)
+    })
+
+    parseParts.forEach((str, idx) => {
+      if (str === '') {
+        return
+      }
+      if (idx % 2 === 0) {
+        if (currentIdx === order.length - 1) {
+          parts.push(str)
+          return
+        }
+        const parseResult = handle(str, currentIdx + 1, containers)
+        if (parseResult.parts.length === 1) {
+          parts.push(str)
+          return
+        }
+        parts.push(...parseResult.parts)
+        containers.push(...parseResult.containers)
+        return
+      }
+      const next = idx === parseParts.length - 1 ? null : parseParts[idx + 1]
+      let unit = ''
+      if (next && units.includes(next[0])) {
+        parseParts[idx + 1] = next.slice(1)
+        unit = next[0]
+      }
+      const context: TextParseContext = {
+        unit,
+        containers,
+        parseHandlers,
+      }
+      const part = handler(str, context)
+      parts.push(part)
+      if (part instanceof ResultContainer) {
+        containers.push(part)
+      }
+    })
+    return {
+      parts,
+      containers,
+    }
+  }
+  return handle(rootValue, 0, [])
+}
+
 type TextResultContainerPartValue =
   | TextResultContainerPart
   | ResultContainer
@@ -189,8 +268,6 @@ type TextResultContainerPartValue =
 
 const TEXT_SEPARATE_PARSE_PATTERN = /\(\(((?:(?!\(\().)+)\)\)/g
 const TEXT_VALUE_PARSE_PATTERN = /\$\{([^}]+)\}/g
-
-const PART_UNIT_LIST = ['%', 'm']
 
 interface TextResultContainerParseResult {
   containers: ResultContainer[]
@@ -207,7 +284,7 @@ class TextResultContainer extends ResultContainerBase {
 
   /**
    * Parse the text-type string data and convert it to TextResultContainer.
-   * @param value - value to parse
+   * @param rootValue - value to parse
    * @param calcValueHanlder - handler to calculate value
    * @returns the new TextResultContainer instance
    */
@@ -217,86 +294,118 @@ class TextResultContainer extends ResultContainerBase {
     rootValue: string,
     calcValueHanlder: (value: string) => string
   ): TextResultContainerParseResult {
-    const subParse = (value: string) => {
-      const textParts = value.split(TEXT_VALUE_PARSE_PATTERN)
-      const parts: (string | ResultContainer)[] = [],
-        containers: ResultContainer[] = []
-      textParts.forEach((el, idx) => {
-        if (idx % 2 === 0) {
-          if (el === '') {
-            return
-          }
-          parts.push(el)
-        } else {
-          const next = idx === textParts.length - 1 ? null : textParts[idx + 1]
-          let suffix = ''
-          if (next && PART_UNIT_LIST.includes(next[0])) {
-            textParts[idx + 1] = next.slice(1)
-            suffix = next[0]
-          }
-          const calculatedValue = calcValueHanlder(el)
-          const container = new ResultContainer(
-            ResultContainerTypes.Number,
-            branch,
-            key,
-            el,
-            calculatedValue
-          )
-          container.setDisplayOptions(suffix)
-          containers.push(container)
-          parts.push(container)
-        }
-      })
+    // const subParse = (value: string) => {
+    //   const textParts = value.split(TEXT_VALUE_PARSE_PATTERN)
+    //   const parts: (string | ResultContainer)[] = [],
+    //     containers: ResultContainer[] = []
+    //   textParts.forEach((el, idx) => {
+    //     if (idx % 2 === 0) {
+    //       if (el === '') {
+    //         return
+    //       }
+    //       parts.push(el)
+    //     } else {
+    //       const next = idx === textParts.length - 1 ? null : textParts[idx + 1]
+    //       let suffix = ''
+    //       if (next && PART_UNIT_LIST.includes(next[0])) {
+    //         textParts[idx + 1] = next.slice(1)
+    //         suffix = next[0]
+    //       }
+    //       const calculatedValue = calcValueHanlder(el)
+    //       const container = new ResultContainer(
+    //         ResultContainerTypes.Number,
+    //         branch,
+    //         key,
+    //         el,
+    //         calculatedValue
+    //       )
+    //       container.setDisplayOptions(suffix)
+    //       containers.push(container)
+    //       parts.push(container)
+    //     }
+    //   })
 
-      return {
-        parts,
-        containers,
-      }
-    }
+    //   return {
+    //     parts,
+    //     containers,
+    //   }
+    // }
 
-    const mainParse = (
-      value: string,
-      containersStore: ResultContainer[]
-    ): TextResultContainerParseResult => {
-      const mainParts = value.split(TEXT_SEPARATE_PARSE_PATTERN)
-      const parts: TextResultContainerPartValue[] = []
-      mainParts.forEach((part, idx) => {
-        if (idx % 2 === 0) {
-          if (part === '') {
-            return
-          }
-          const parseResult = subParse(part)
-          if (parseResult.containers.length === 0) {
-            parts.push(part)
-            return
-          }
-          parts.push(...parseResult.parts)
-          containersStore.push(...parseResult.containers)
-          return
-        }
-        const next = idx === mainParts.length - 1 ? null : mainParts[idx + 1]
-        let end = ''
-        if (next && PART_UNIT_LIST.includes(next[0])) {
-          mainParts[idx + 1] = next.slice(1)
-          end = next[0]
-        }
-        const parseResult = mainParse(part, containersStore)
-        containersStore.push(...parseResult.containers)
-        const newPart = new TextResultContainerPart(
-          'separate',
-          parseResult.containers.slice(),
-          parseResult.parts,
-          end
+    // const mainParse = (
+    //   value: string,
+    //   containersStore: ResultContainer[]
+    // ): TextResultContainerParseResult => {
+    //   const mainParts = value.split(TEXT_SEPARATE_PARSE_PATTERN)
+    //   const parts: TextResultContainerPartValue[] = []
+    //   mainParts.forEach((part, idx) => {
+    //     if (idx % 2 === 0) {
+    //       if (part === '') {
+    //         return
+    //       }
+    //       const parseResult = subParse(part)
+    //       if (parseResult.containers.length === 0) {
+    //         parts.push(part)
+    //         return
+    //       }
+    //       parts.push(...parseResult.parts)
+    //       containersStore.push(...parseResult.containers)
+    //       return
+    //     }
+    //     const next = idx === mainParts.length - 1 ? null : mainParts[idx + 1]
+    //     let end = ''
+    //     if (next && PART_UNIT_LIST.includes(next[0])) {
+    //       mainParts[idx + 1] = next.slice(1)
+    //       end = next[0]
+    //     }
+    //     const parseResult = mainParse(part, containersStore)
+    //     containersStore.push(...parseResult.containers)
+    //     const newPart = new TextResultContainerPart(
+    //       TextResultContainerPartTypes.Separate,
+    //       parseResult.containers.slice(),
+    //       parseResult.parts,
+    //       end
+    //     )
+    //     parts.push(newPart)
+    //   })
+
+    //   return {
+    //     containers: containersStore,
+    //     parts,
+    //   }
+    // }
+    // return mainParse(rootValue, [])
+    const units = ['%', 'm']
+    const separateParse: TextParseItem = {
+      id: 'separate',
+      pattern: TEXT_SEPARATE_PARSE_PATTERN,
+      handler(value, context) {
+        return new TextResultContainerPart(
+          TextResultContainerPartTypes.Separate,
+          value,
+          context.unit
         )
-        parts.push(newPart)
-      })
-
-      return {
-        containers: containersStore,
-        parts,
-      }
+      },
+      units,
     }
-    return mainParse(rootValue, [])
+    const valueParse: TextParseItem = {
+      id: 'value',
+      pattern: TEXT_VALUE_PARSE_PATTERN,
+      handler(value, context) {
+        const calculatedValue = calcValueHanlder(value)
+        const container = new ResultContainer(
+          ResultContainerTypes.Number,
+          branch,
+          key,
+          value,
+          calculatedValue
+        )
+        container.setDisplayOptions(context.unit)
+        return container
+      },
+      units,
+    }
+
+    return handleTextParse(rootValue, [separateParse, valueParse])
   }
 
   constructor(
@@ -329,41 +438,33 @@ class TextResultContainer extends ResultContainerBase {
   }
 
   handleStrings(handler: (value: string) => string) {
-    const handle = (parts: TextResultContainerPartValue[]) => {
-      parts.forEach((part, idx) => {
-        if (typeof part === 'string') {
-          parts[idx] = handler(part)
-        } else if (part instanceof TextResultContainerPart) {
-          handle(part.parts)
-        }
-      })
-    }
-    handle(this.parts)
+    this.parts.forEach((part, idx) => {
+      if (typeof part === 'string') {
+        this.parts[idx] = handler(part)
+      } else if (part instanceof TextResultContainerPart) {
+        part.value = handler(part.value)
+      }
+    })
   }
 }
 
 class TextResultContainerPart {
-  type: 'separate'
-  containers: ResultContainer[]
-  parts: TextResultContainerPartValue[]
-  end: string
+  type: TextResultContainerPartTypes
+  value: string
+  unit: string
 
   constructor(
-    type: 'separate',
-    containers: ResultContainer[],
-    parts: TextResultContainerPartValue[],
-    end: string = ''
+    type: TextResultContainerPartTypes.Separate,
+    value: string,
+    unit: string = ''
   ) {
     this.type = type
-    this.containers = containers
-    this.parts = parts
-    this.end = end
+    this.value = value
+    this.unit = unit
   }
 
   get result(): string {
-    return this.parts
-      .map(part => (typeof part === 'string' ? part : part.result))
-      .join('')
+    return this.value
   }
 }
 

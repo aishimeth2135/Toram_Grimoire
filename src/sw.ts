@@ -210,7 +210,7 @@ registerRoute(
 
   // Register this strategy to handle all navigations.
   registerRoute(
-    /^https:\/\/docs\.google\.com\/spreadsheets\/.+output=csv.+/,
+    /^https:\/\/docs\.google\.com\/spreadsheets\/.+output=csv.*/,
     handler
   )
 }
