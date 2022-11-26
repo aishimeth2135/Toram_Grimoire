@@ -1,21 +1,12 @@
-import {
-  computed,
-  nextTick,
-  provide,
-  reactive,
-  ref,
-  shallowRef,
-  watch,
-} from 'vue'
+import { provide, reactive, ref, shallowRef, watch } from 'vue'
 import type { Ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 import Grimoire from '@/shared/Grimoire'
 
-import GlossaryTag from '@/lib/Glossary/GlossaryTag'
 import { RegistletItemBaseSkill } from '@/lib/Registlet/Registlet'
-import { Skill } from '@/lib/Skill/Skill'
+import { Skill, SkillTree, SkillTreeCategory } from '@/lib/Skill/Skill'
 import SkillComputingContainer, {
+  EquipmentRestrictions,
   SkillBranchItem,
   SkillEffectItem,
   SkillEffectItemHistory,
@@ -23,91 +14,24 @@ import SkillComputingContainer, {
 } from '@/lib/Skill/SkillComputingContainer'
 
 import { ComputingContainerInjectionKey } from './injection-keys'
-import { TAG_BUTTON_CLASS_NAME, findStackState } from './utils'
 
-export function setupSkillTag(tagContent: Ref<{ $el: HTMLElement } | null>) {
-  const { t } = useI18n()
+export const useSkillQueryState = (() => {
+  const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null)
+  const currentSkillTree: Ref<SkillTree | null> = ref(null)
+  const currentSkill: Ref<Skill | null> = ref(null)
+  const currentEquipment: Ref<EquipmentRestrictions> = ref(
+    new EquipmentRestrictions()
+  )
 
-  const currentTags: Ref<GlossaryTag[]> = ref([])
-  const currentTagIndex = ref(-1)
-
-  const currentTag = computed(() => {
-    if (currentTags.value.length === 0) {
-      return null
+  return function () {
+    return {
+      currentSkill,
+      currentSkillTree,
+      currentSkillTreeCategory,
+      currentEquipment,
     }
-    return currentTags.value[currentTagIndex.value]
-  })
-
-  const changeTag = (offset: number) => {
-    currentTagIndex.value += offset
   }
-
-  const findTag = (tagName: string): GlossaryTag | null => {
-    const tag = Grimoire.Glossary.tags.find(
-      item => item.name.toLowerCase() === tagName.toLowerCase()
-    )
-    return tag || null
-  }
-
-  const getTagText = (el: HTMLElement) =>
-    el.getAttribute('data-tag') || el.innerText
-
-  const appendTag = (tagName: string): void => {
-    const tag = findTag(tagName)
-    if (tag) {
-      currentTags.value.splice(
-        currentTagIndex.value + 1,
-        currentTags.value.length - currentTagIndex.value,
-        tag
-      )
-    } else {
-      const emptyTag = new GlossaryTag(tagName)
-      emptyTag.appendRow('caption', t('skill-query.tag.no-data-tips'))
-      currentTags.value.push(emptyTag)
-    }
-    currentTagIndex.value = currentTags.value.length - 1
-  }
-
-  const clearTag = () => {
-    currentTags.value = []
-  }
-
-  watch(currentTagIndex, async () => {
-    await nextTick()
-    if (
-      tagContent.value &&
-      tagContent.value.$el &&
-      tagContent.value.$el.querySelectorAll
-    ) {
-      const click = function (this: HTMLElement, error: Event) {
-        error.stopPropagation()
-        appendTag(getTagText(this))
-      }
-      tagContent.value.$el
-        .querySelectorAll(`.${TAG_BUTTON_CLASS_NAME}[data-tag]`)
-        .forEach(el => {
-          if (el.getAttribute('data-tag-listener-flag') === '1') {
-            return
-          }
-          el.addEventListener('click', click)
-          el.setAttribute('data-tag-listener-flag', '1')
-        })
-    }
-  })
-
-  const tagButtonHover = (el: HTMLElement) => {
-    clearTag()
-    appendTag(getTagText(el))
-  }
-
-  return {
-    currentTags,
-    currentTag,
-    currentTagIndex,
-    changeTag,
-    tagButtonHover,
-  }
-}
+})()
 
 export interface SkillRegistletItemState {
   index: number
@@ -195,13 +119,13 @@ export function setupComputingContainer(skillRef: Ref<Skill | null>) {
     const effect = branchItem.parent
     if (effect instanceof SkillEffectItem) {
       effect.parent.effectItems.forEach(effectItem => {
-        const stackState = findStackState(effectItem, stackId)
+        const stackState = effectItem.getStackState(stackId)
         if (stackState) {
           stackState.value = value
         }
       })
     } else if (effect instanceof SkillEffectItemHistory) {
-      const stackState = findStackState(effect, stackId)
+      const stackState = effect.getStackState(stackId)
       if (stackState) {
         stackState.value = value
       }
@@ -212,6 +136,7 @@ export function setupComputingContainer(skillRef: Ref<Skill | null>) {
     rootComputingContainer: computingContainer,
     setStackValue,
     getSkillRegistletItemsState,
+    currentSkillItem,
   })
 
   return {

@@ -6,7 +6,7 @@ import { EquipmentFieldTypes } from '@/lib/Character/Character/enums'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { StatRecorded } from '@/lib/Character/Stat'
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
-import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+import { SkillBranchStatResult } from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 
@@ -15,7 +15,7 @@ import { SkillResult } from '.'
 export function getSkillStatContainerValid(
   character: Character | null,
   skillResult: SkillResult,
-  statContainer: ResultContainerStat
+  statContainer: SkillBranchStatResult
 ): boolean {
   if (statContainer.conditionValue) {
     const resultsState = skillResult.root

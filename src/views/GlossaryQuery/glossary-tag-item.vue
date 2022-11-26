@@ -17,33 +17,13 @@
     </div>
     <cy-transition>
       <div v-if="detailVisible" class="pb-2">
-        <div class="space-y-2.5 py-1 pl-6 pr-4">
-          <template
-            v-for="row in infoRows"
-            :key="row.type + row.value.join(',')"
-          >
-            <div
-              v-if="row.type === 'caption'"
-              v-html="handleText(row.value[0])"
-            />
-            <div v-else-if="row.type === 'list'">
-              <div
-                v-for="rowValue in row.value"
-                :key="rowValue"
-                class="flex items-start py-0.5"
-              >
-                <cy-icon-text icon="jam:leaf" class="mr-2" icon-width="1rem" />
-                <div v-html="handleText(rowValue)" />
-              </div>
-            </div>
-          </template>
-        </div>
+        <GlossaryTagContentRows class="py-2 pl-6 pr-4" :tag="tag" />
         <div
-          v-if="otherTags.length > 0"
+          v-if="includedTags.length > 0"
           class="my-2 ml-2 divide-y divide-primary-20 border-l-2 border-primary-50"
         >
           <GlossaryTagItem
-            v-for="otherTag in otherTags"
+            v-for="otherTag in includedTags"
             :key="otherTag.name"
             :tag="otherTag"
             sub
@@ -63,11 +43,11 @@ export default {
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 
-import { markText } from '@/shared/utils/view'
+import Grimoire from '@/shared/Grimoire'
 
 import GlossaryTag from '@/lib/Glossary/GlossaryTag'
 
-import { createTagButtons, searchTags } from '@/views/SkillQuery/utils'
+import GlossaryTagContentRows from './glossary-tag-content-rows.vue'
 
 interface Props {
   tag: GlossaryTag
@@ -83,29 +63,8 @@ const detailVisible = ref(false)
 const categoryRows = computed(() =>
   props.tag.rows.filter(row => row.type === 'category')
 )
-const infoRows = computed(() =>
-  props.tag.rows.filter(row => row.type === 'caption' || row.type === 'list')
+
+const includedTags = computed(() =>
+  props.sub ? [] : Grimoire.Glossary.getIncludedTags(props.tag)
 )
-
-const handleText = (html: string) => {
-  html = markText(html)
-  html = html.replace(
-    /\(\(((?:(?!\(\().)+)\)\)/g,
-    (match, p1) => `<span class="bracket-text">${p1}</span>`
-  )
-  html = createTagButtons(html)
-  return html
-}
-
-const otherTags = computed(() => (props.sub ? [] : searchTags(props.tag)))
 </script>
-
-<style lang="postcss" scoped>
-:deep(.click-button--tag) {
-  @apply text-orange-60;
-}
-
-:deep(.bracket-text) {
-  @apply mx-2 border-l-1 border-r-1 border-current px-2 text-primary-60;
-}
-</style>

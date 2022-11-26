@@ -7,9 +7,9 @@ import SkillComputingContainer, {
   SkillEffectItem,
 } from '@/lib/Skill/SkillComputingContainer'
 import {
-  ResultContainerBase,
-  ResultContainerStat,
-} from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+  SkillBranchResultBase,
+  SkillBranchStatResult,
+} from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
 
 import ExtraHandler from './branch-handlers/ExtraHandler'
 
@@ -63,9 +63,9 @@ export interface ExtraSuffixBranchData {
   icon: string
   title: string
   titleProps?: string[]
-  result?: ResultContainerBase
-  statContainers?: ResultContainerStat[]
-  otherResults?: Map<string, ResultContainerBase>
+  result?: SkillBranchResultBase
+  statContainers?: SkillBranchStatResult[]
+  otherResults?: Map<string, SkillBranchResultBase>
 }
 
 export function setupCommonExtraSuffixBranches(

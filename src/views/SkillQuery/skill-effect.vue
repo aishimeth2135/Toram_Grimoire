@@ -33,19 +33,23 @@
             :key="registletItemState.item.id"
             :registlet-item-state="registletItemState"
           />
-          <div class="px-3 py-2 text-sm">
+          <div class="px-4 py-2 text-sm">
             <cy-icon-text
               icon="ic:outline-tips-and-updates"
               class="mr-2 mt-0.5"
             >
-              <span
-                class="text-primary-30"
-                v-html="
-                  t('skill-query.registlet-info-tip', {
-                    link: registletTipLink,
-                  })
-                "
-              />
+              <i18n-t
+                tag="span"
+                class="text-primary-50"
+                keypath="skill-query.registlet-info-tip"
+                scope="global"
+              >
+                <template #link>
+                  <GlossaryTagPopover
+                    :name="t('skill-query.registlet-title')"
+                  />
+                </template>
+              </i18n-t>
             </cy-icon-text>
           </div>
         </div>
@@ -60,64 +64,13 @@
       <div>{{ t('skill-query.no-any-skill-effect-match-message.0') }}</div>
       <div>{{ t('skill-query.no-any-skill-effect-match-message.1') }}</div>
     </cy-default-tips>
-    <div class="mt-4">
+    <div v-if="currentSkillItem" class="mt-4">
       <SkillSwitchEffectButtons
-        :skill-item="skillItem"
+        :skill-item="currentSkillItem"
         @select-equipment="emit('update:selected-equipment', $event)"
       />
     </div>
   </div>
-  <cy-hover-float
-    ref="tagHoverFloatComponent"
-    :element="skillBranchesElement"
-    :target="`.${TAG_BUTTON_CLASS_NAME}`"
-    custom
-    position-mode="h-middle"
-    @element-hover="tagButtonHover"
-  >
-    <skillTagsContent
-      ref="tagDetailContent"
-      :current-tags="currentTags"
-      :current-tag="currentTag"
-      :current-tag-index="currentTagIndex"
-      @change-tag="changeTag"
-    />
-  </cy-hover-float>
-  <cy-hover-float
-    ref="skillHoverFloatComponent"
-    :element="skillBranchesElement"
-    target=".click-button--skill"
-    @element-hover="skillButtonHover"
-  >
-    <div v-if="currentHoveringSkill" class="flex items-center">
-      <SkillTitle :skill="currentHoveringSkill" />
-      <cy-button-plain
-        icon="carbon:location-current"
-        class="ml-4"
-        @click="emit('set-current-skill', currentHoveringSkill!)"
-      >
-        {{ t('skill-query.go-to-skill') }}
-      </cy-button-plain>
-    </div>
-  </cy-hover-float>
-  <cy-hover-float
-    ref="branchHoverFloatComponent"
-    :element="skillBranchesElement"
-    target=".click-button--branch"
-    custom
-    position-mode="h-middle"
-    @element-hover="branchButtonHover"
-  >
-    <div v-if="currentHoveringBranch" class="bg-white bg-opacity-50">
-      <SkillBranch
-        :computing="rootComputingContainer"
-        :skill-branch-item="currentHoveringBranch"
-        class="w-full bg-opacity-100"
-        sub
-        :content-auto="false"
-      />
-    </div>
-  </cy-hover-float>
 </template>
 
 <script lang="ts">
@@ -127,73 +80,62 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, inject, nextTick, ref, watch } from 'vue'
+import { computed, inject, provide, ref, watch } from 'vue'
 import { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useDatasStore } from '@/stores/app/datas'
-
-import { Skill, SkillRoot } from '@/lib/Skill/Skill'
-import {
-  EquipmentRestrictions,
-  SkillBranchItem,
-  SkillItem,
-} from '@/lib/Skill/SkillComputingContainer'
+import { Skill } from '@/lib/Skill/Skill'
+import { EquipmentRestrictions } from '@/lib/Skill/SkillComputingContainer'
 
 import ToggleService from '@/setup/ToggleService'
 
+import GlossaryTagPopover from '../GlossaryQuery/glossary-tag-popover.vue'
 import SkillEffectHistory from './skill-effect-history/index.vue'
 import SkillSwitchEffectButtons from './skill-switch-effect-buttons.vue'
-import skillTagsContent from './skill-tags-content.vue'
 import SkillRegistletInfo from './skill/layouts/skill-registlet-info.vue'
 import SkillBranch from './skill/skill-branch.vue'
-import SkillTitle from './skill/skill-title.vue'
 
-import { ComputingContainerInjectionKey } from './injection-keys'
-import { setupSkillTag } from './setup'
-import { TAG_BUTTON_CLASS_NAME } from './utils'
+import {
+  ComputingContainerInjectionKey,
+  SkillEffectInjectionKey,
+} from './injection-keys'
 
 interface Props {
-  skillItem: SkillItem
   selectedEquipment: EquipmentRestrictions
 }
 
 interface Emits {
   (evt: 'set-current-skill', skill: Skill): void
-  (event: 'update:selected-equipment', value: EquipmentRestrictions): void
+  (evt: 'update:selected-equipment', value: EquipmentRestrictions): void
 }
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-const { rootComputingContainer, getSkillRegistletItemsState } = inject(
-  ComputingContainerInjectionKey
-)!
+const {
+  rootComputingContainer,
+  getSkillRegistletItemsState,
+  currentSkillItem,
+} = inject(ComputingContainerInjectionKey)!
 
 const effectItem = computed(() => {
-  if (!props.skillItem) {
+  if (!currentSkillItem.value) {
     return null
   }
-  return props.skillItem.findEffectItem(props.selectedEquipment) || null
+  return currentSkillItem.value.findEffectItem(props.selectedEquipment) || null
 })
 
 const registletItemStates = computed(() => {
-  if (!props.skillItem) {
+  if (!currentSkillItem.value) {
     return []
   }
-  return getSkillRegistletItemsState(props.skillItem.skill)
-})
-
-const registletTipLink = computed(() => {
-  const title = t('skill-query.registlet-title')
-  return `<span class="click-button--tag" data-tag="${title}">${title}</span>`
+  return getSkillRegistletItemsState(currentSkillItem.value.skill)
 })
 
 const { t } = useI18n()
 const { tabs, toggle } = ToggleService({
   tabs: [{ name: 'skillInfo', default: true }, 'skillHistory'] as const,
 })
-const datasStore = useDatasStore()
 
 const setTab = (target: 'skillInfo' | 'skillHistory') => {
   toggle(`tabs/${target}`, true, false)
@@ -207,54 +149,13 @@ const tabVisible = computed(() => {
   )
 })
 
-const tagDetailContent: Ref<{ $el: HTMLElement } | null> = ref(null)
-
-const { currentTags, currentTag, currentTagIndex, changeTag, tagButtonHover } =
-  setupSkillTag(tagDetailContent)
-
 const skillBranchesElement: Ref<HTMLElement | null> = ref(null)
-const tagHoverFloatComponent: Ref<{ update: Function } | null> = ref(null)
-const skillHoverFloatComponent: Ref<{ update: Function } | null> = ref(null)
-const branchHoverFloatComponent: Ref<{ update: Function } | null> = ref(null)
 
-watch(
-  effectItem,
-  async () => {
-    setTab('skillInfo')
-    await nextTick()
-    tagHoverFloatComponent.value?.update()
-    skillHoverFloatComponent.value?.update()
-    branchHoverFloatComponent.value?.update()
-  },
-  { immediate: true }
-)
+watch(effectItem, () => setTab('skillInfo'), { immediate: true })
 
-const currentHoveringSkill: Ref<Skill | null> = ref(null)
-const skillButtonHover = (el: HTMLElement) => {
-  const skillRoot = datasStore.Skill!.skillRoot as SkillRoot
-  const skillName = el.innerText
-  let result: Skill | null = null
-  skillRoot.skillTreeCategorys.some(stc => {
-    return stc.skillTrees.some(st => {
-      const matchedSkill = st.skills.find(skill => skill.name === skillName)
-      if (matchedSkill) {
-        result = matchedSkill
-        return true
-      }
-      return false
-    })
-  })
-  currentHoveringSkill.value = result
-}
-
-const currentHoveringBranch: Ref<SkillBranchItem | null> = ref(null)
-const branchButtonHover = (el: HTMLElement) => {
-  const branchName = el.innerText
-  currentHoveringBranch.value =
-    effectItem.value!.branchItems.find(
-      bch => bch.prop('name') === branchName
-    ) ?? null
-}
+provide(SkillEffectInjectionKey, {
+  currentEffectItem: effectItem,
+})
 </script>
 
 <style lang="postcss" scoped>
@@ -263,11 +164,6 @@ const branchButtonHover = (el: HTMLElement) => {
 
   &.selected {
     @apply border-primary-60 hover:border-primary-60;
-  }
-}
-.skill-effect-main {
-  & :deep(.click-button--tag) {
-    @apply inline-block cursor-pointer px-0.5 text-orange-60 underline;
   }
 }
 </style>

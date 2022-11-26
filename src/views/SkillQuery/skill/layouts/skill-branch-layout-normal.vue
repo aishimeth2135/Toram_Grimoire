@@ -235,8 +235,8 @@ const actionFrameData = computed(() => {
   if (branchItem.hasProp('action_frame')) {
     const actionFrames = branchItem.prop('action_frame').split('~')
     return {
-      base: actionFrames[0] + 'F',
-      min: actionFrames[1] + 'F',
+      base: (actionFrames[0] || '?') + 'F',
+      min: (actionFrames[1] || '?') + 'F',
     }
   }
   return null

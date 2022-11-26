@@ -49,7 +49,7 @@ import { useDatasStore } from '@/stores/app/datas'
 
 import { Skill, SkillRoot } from '@/lib/Skill/Skill'
 
-import SkillTitle from './skill/skill-title.vue'
+import SkillTitle from './skill/layouts/skill-title.vue'
 
 interface Emits {
   (evt: 'submit', skill: Skill): void

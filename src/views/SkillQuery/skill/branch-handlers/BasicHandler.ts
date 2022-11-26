@@ -3,7 +3,6 @@ import SkillComputingContainer, {
 } from '@/lib/Skill/SkillComputingContainer'
 import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { createTagButtons } from '../../utils'
 import {
   HandleBranchLangPropsMap,
   HandleDisplayDataOptionFilters,
@@ -41,9 +40,7 @@ export default function BasicHandler<BranchItem extends SkillBranchItem>(
     langAttrsMap.set('mp_cost', { type: 'normal' })
   }
   if (['main', 'magic_device', 'katana'].includes(props.get('range')!)) {
-    langAttrsMap.set('range', {
-      afterHandle: value => createTagButtons(value),
-    })
+    langAttrsMap.append('range')
   } else if (props.get('range') === 'no_limit') {
     langAttrsMap.append('range')
   } else {

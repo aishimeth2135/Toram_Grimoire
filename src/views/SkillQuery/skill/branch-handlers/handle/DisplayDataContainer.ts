@@ -1,8 +1,8 @@
 import type { SkillBranchItemBaseChilds } from '@/lib/Skill/SkillComputingContainer'
 import {
-  ResultContainerBase,
-  ResultContainerStat,
-} from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+  SkillBranchResultBase,
+  SkillBranchStatResult,
+} from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
 
 import type { SkillDisplayData } from '.'
 
@@ -16,8 +16,8 @@ export default class _DisplayDataContainer<
   readonly instanceId: number
 
   readonly branchItem: Branch
-  readonly containers: Record<string, ResultContainerBase>
-  readonly statContainers: ResultContainerStat[]
+  readonly containers: Record<string, SkillBranchResultBase>
+  readonly statContainers: SkillBranchStatResult[]
 
   constructor({
     branchItem,
@@ -26,8 +26,8 @@ export default class _DisplayDataContainer<
     value,
   }: {
     branchItem: Branch
-    containers: Record<string, ResultContainerBase>
-    statContainers: ResultContainerStat[]
+    containers: Record<string, SkillBranchResultBase>
+    statContainers: SkillBranchStatResult[]
     value: SkillDisplayData
   }) {
     this.instanceId = _autoIncreasement

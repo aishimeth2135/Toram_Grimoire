@@ -1,6 +1,6 @@
 <script lang="ts">
 import {
-  ConcreteComponent,
+  Component,
   FunctionalComponent,
   Transition,
   TransitionProps,
@@ -14,7 +14,7 @@ interface Props extends TransitionProps {
 }
 
 const CyTransition = function (props, context) {
-  const getComponent = (): ConcreteComponent<TransitionProps> => {
+  const getComponent = (): Component => {
     const name = props.name || 'fade'
     const main = name.split('-')[0]
     if (main === 'fade') {

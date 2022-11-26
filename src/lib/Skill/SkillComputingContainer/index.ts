@@ -177,6 +177,10 @@ abstract class SkillEffectItemBase {
     this.parent = parent
     this.stackStates = []
   }
+
+  getStackState(stackId: number) {
+    return this.stackStates.find(state => state.stackId === stackId) ?? null
+  }
 }
 
 /**

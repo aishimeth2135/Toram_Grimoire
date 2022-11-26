@@ -209,18 +209,6 @@ const subButtonAvailable = computed(() => {
 
 <style lang="postcss" scoped>
 .skill-branch-wrapper {
-  & :deep(.click-button--skill) {
-    @apply inline-block cursor-pointer px-0.5 text-red-60 underline;
-  }
-
-  & :deep(.click-button--mark) {
-    @apply text-primary-50;
-  }
-
-  & :deep(.click-button--branch) {
-    @apply inline-block cursor-pointer px-0.5 text-cyan-60 underline;
-  }
-
   & :deep(.history-compare--mark) {
     @apply bg-violet-60 bg-opacity-10;
   }

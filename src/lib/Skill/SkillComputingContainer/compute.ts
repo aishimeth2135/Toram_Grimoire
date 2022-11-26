@@ -9,6 +9,8 @@ import {
 import { isNumberString, splitComma } from '@/shared/utils/string'
 
 import { StatComputed } from '@/lib/Character/Stat'
+import { ResultContainerDisplayOptions } from '@/lib/common/ResultContainer'
+import { ResultContainerTypes } from '@/lib/common/ResultContainer/enums'
 
 import SkillComputingContainer, {
   SkillBranchItem,
@@ -17,13 +19,12 @@ import SkillComputingContainer, {
 } from '.'
 import { SkillBranchNames } from '../Skill/enums'
 import {
-  PropDisplayOptions,
-  ResultContainer,
-  ResultContainerStat,
-  TextResultContainer,
-  TextResultContainerParseResult,
-} from './ResultContainer'
-import { FormulaDisplayModes, ResultContainerTypes } from './enums'
+  SkillBranchResult,
+  SkillBranchStatResult,
+  SkillBranchTextResult,
+  SkillBranchTextResultParseResult,
+} from './SkillBranchResult'
+import { FormulaDisplayModes } from './enums'
 
 function computeBranchValue(
   str: string,
@@ -47,7 +48,7 @@ function computeBranchValue(
 }
 
 function handleDisplayValue(
-  container: ResultContainer,
+  container: SkillBranchResult,
   helper: ComputedBranchHelperResult
 ): void {
   if (helper.branchItem.hasProp(container.key, 'display')) {
@@ -60,14 +61,14 @@ function handleDisplayValue(
 }
 
 function handleRegistletValue(
-  container: ResultContainer,
+  container: SkillBranchResult,
   helper: ComputedBranchHelperResult
 ): void {
   const bch = helper.branchItem
   if (bch.hasProp(container.key, 'registlet')) {
     const originalValue = bch.prop(container.key, 'registlet')
     const value = computeBranchValue(originalValue, helper)
-    const subContainer = new ResultContainer(
+    const subContainer = new SkillBranchResult(
       ResultContainerTypes.Number,
       bch,
       bch.propKey(container.key, 'registlet'),
@@ -78,7 +79,7 @@ function handleRegistletValue(
   }
 }
 
-function handleHighlight(container: ResultContainer) {
+function handleHighlight(container: SkillBranchResult) {
   // if (typeof options === 'string') {
   //   const unit = options
   //   options = {
@@ -106,7 +107,7 @@ function handleHighlight(container: ResultContainer) {
       : originalFormula.includes('stack')
       ? 'text-blue-60'
       : 'text-primary-50'
-  container.setDisplayOptions({ classNames: [className] })
+  container.mergeDisplayOptions({ classNames: [className] })
   // container.handle(value => `<span class="${className}">${value}</span>`)
 }
 
@@ -395,12 +396,11 @@ function computeBranchValueProps<Key extends string>(
   return propValues
 }
 
-type HandleBranchValueAttrOptions = PropDisplayOptions
 interface HandleBranchValuePropsMap {
-  [key: string]: PropDisplayOptions | null
+  [key: string]: ResultContainerDisplayOptions | string | null
 }
 type HandleBranchValuePropsResult<PropMap extends HandleBranchValuePropsMap> = {
-  [key in keyof PropMap]: ResultContainer
+  [key in keyof PropMap]: SkillBranchResult
 }
 function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
   helper: ComputedBranchHelperResult,
@@ -417,7 +417,7 @@ function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
   propKeys.forEach(propKey => {
     const originalFormula = props.get(propKey as string)
     if (originalFormula === undefined) {
-      propResult[propKey] = new ResultContainer(
+      propResult[propKey] = new SkillBranchResult(
         ResultContainerTypes.Number,
         helper.branchItem,
         propKey as string,
@@ -426,15 +426,15 @@ function handleBranchValueProps<PropMap extends HandleBranchValuePropsMap>(
       )
       return
     }
-    const container = new ResultContainer(
+    const container = new SkillBranchResult(
       ResultContainerTypes.Number,
       helper.branchItem,
       propKey as string,
       originalFormula,
       propValues.get(propKey)!
     )
-    container.setDisplayOptions(
-      propMap[propKey] as HandleBranchValueAttrOptions
+    container.mergeDisplayOptions(
+      propMap[propKey] as ResultContainerDisplayOptions | string
     )
 
     handleDisplayValue(container, helper)
@@ -451,7 +451,7 @@ interface HandleBranchTextPropsMap {
   [key: string]: null
 }
 type HandleBranchTextPropsResult<PropMap extends HandleBranchValuePropsMap> = {
-  [key in keyof PropMap]: TextResultContainer
+  [key in keyof PropMap]: SkillBranchTextResult
 }
 function computedBranchText(
   helper: ComputedBranchHelperResult,
@@ -463,8 +463,8 @@ function computedBranchText(
     const _parseResult = {
       containers: [],
       parts: ['0'],
-    } as TextResultContainerParseResult
-    return new TextResultContainer(
+    } as SkillBranchTextResultParseResult
+    return new SkillBranchTextResult(
       helper.branchItem,
       propKey as string,
       '0',
@@ -472,13 +472,13 @@ function computedBranchText(
       _parseResult
     )
   }
-  const parseResult = TextResultContainer.parse(
+  const parseResult = SkillBranchTextResult.parse(
     helper.branchItem,
     propKey,
     textStr,
     value => computeBranchValue(value, helper)
   )
-  return new TextResultContainer(
+  return new SkillBranchTextResult(
     helper.branchItem,
     propKey as string,
     textStr,
@@ -521,11 +521,11 @@ function computedBranchStats(
 function handleBranchStats(
   helper: ComputedBranchHelperResult,
   stats: StatComputed[]
-): ResultContainerStat[] {
+): SkillBranchStatResult[] {
   const newStats = computedBranchStats(helper, stats)
   return newStats.map(stat => {
     const originalStat = stats.find(_stat => _stat.equals(stat)) as StatComputed
-    const container = new ResultContainerStat(
+    const container = new SkillBranchStatResult(
       helper.branchItem,
       originalStat,
       stat
@@ -555,7 +555,7 @@ function handleBranchStats(
     }
 
     const showData = stat.getShowData()
-    container.setDisplayOptions(showData.tail)
+    container.mergeDisplayOptions(showData.tail)
 
     handleHighlight(container)
 

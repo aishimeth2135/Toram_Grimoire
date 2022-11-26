@@ -57,6 +57,21 @@ class SkillRoot extends SkillNode {
     })
     return find
   }
+
+  findSkillByName(skillName: string): Skill | null {
+    let find: Skill | null = null
+    this.skillTreeCategorys.some(stc => {
+      return stc.skillTrees.some(st => {
+        const skill = st.skills.find(sk => sk.name === skillName)
+        if (skill) {
+          find = skill
+          return true
+        }
+        return false
+      })
+    })
+    return find
+  }
 }
 
 class SkillTreeCategory extends SkillElement {

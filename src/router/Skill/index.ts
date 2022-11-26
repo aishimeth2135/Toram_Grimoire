@@ -31,11 +31,6 @@ export default {
         icon: 'ic-outline-menu-book',
         pathName: AppRouteNames.SkillQuery,
       },
-      {
-        title: 'app.page-title.glossary-query',
-        icon: 'mdi:tag-outline',
-        pathName: AppRouteNames.GlossaryQuery,
-      },
     ],
   },
   children: [

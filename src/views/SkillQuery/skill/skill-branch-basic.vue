@@ -1,13 +1,15 @@
 <template>
   <div class="pl-3">
     <table class="align-middle">
-      <tr v-for="{ key, icon, title, value } in attrDatas" :key="key">
+      <tr v-for="{ key, icon, title, result } in attrDatas" :key="key">
         <td class="border-r border-primary-30 pr-2">
           <div class="flex">
             <cy-icon-text :icon="icon">{{ title }}</cy-icon-text>
           </div>
         </td>
-        <td class="pl-2 text-primary-60" v-html="value"></td>
+        <td class="pl-2 text-primary-60">
+          <SkillBranchPropValue :result="result" parse-glossary-tag />
+        </td>
       </tr>
     </table>
   </div>
@@ -57,6 +59,8 @@ import SkillComputingContainer, {
   SkillBranchItem,
 } from '@/lib/Skill/SkillComputingContainer'
 
+import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
+
 import BasicHandler from './branch-handlers/BasicHandler'
 
 interface Props {
@@ -80,12 +84,11 @@ const attrDatas = computed(() => {
         typeof icon === 'object'
           ? icon[container.value.branchItem.prop(key)]
           : icon
-      const value = container.value.get(key)
       return {
         key,
         icon: iconRes,
         title: t(`skill-query.branch.basic.${key}: title`),
-        value,
+        result: container.value.result(key),
       }
     }
   )

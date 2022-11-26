@@ -34,9 +34,10 @@
           "
         >
           <div class="flex items-center py-0.5">
-            <div class="mr-2" :class="TAG_BUTTON_CLASS_NAME">
-              {{ t('skill-query.branch.dual-element-title') }}
-            </div>
+            <GlossaryTagPopover
+              class="mr-2"
+              :name="t('skill-query.branch.dual-element-title')"
+            />
             <div class="text-violet-60">
               {{ container.get('dual_element') }}
             </div>
@@ -49,9 +50,10 @@
           :title="sufContainer.get('condition')"
         >
           <div class="flex items-center py-0.5">
-            <div class="mr-2" :class="TAG_BUTTON_CLASS_NAME">
-              {{ t('skill-query.branch.dual-element-title') }}
-            </div>
+            <GlossaryTagPopover
+              class="mr-2"
+              :name="t('skill-query.branch.dual-element-title')"
+            />
             <div class="text-violet-60">
               {{ sufContainer.get('dual_element') }}
             </div>
@@ -72,9 +74,10 @@
               />
             </template>
             <template #name>
-              <span :class="TAG_BUTTON_CLASS_NAME">
-                {{ container.get('ailment_name') }}
-              </span>
+              <GlossaryTagPopover
+                class="mr-2"
+                :name="container.get('ailment_name')"
+              />
             </template>
           </i18n-t>
         </SkillBranchExtraColumn>
@@ -94,9 +97,10 @@
               />
             </template>
             <template #name>
-              <span :class="TAG_BUTTON_CLASS_NAME">
-                {{ sufContainer.get('ailment_name') }}
-              </span>
+              <GlossaryTagPopover
+                class="mr-2"
+                :name="sufContainer.get('ailment_name')"
+              />
             </template>
           </i18n-t>
         </SkillBranchExtraColumn>
@@ -114,12 +118,13 @@ import SkillComputingContainer, {
   SkillBranchItem,
 } from '@/lib/Skill/SkillComputingContainer'
 
+import GlossaryTagPopover from '@/views/GlossaryQuery/glossary-tag-popover.vue'
+
 import SkillBranchExtraColumn from './layouts/skill-branch-extra-column.vue'
 import SkillBranchLayoutNormal from './layouts/skill-branch-layout-normal.vue'
 import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 import SkillDamageFormula from './layouts/skill-damage-formula.vue'
 
-import { TAG_BUTTON_CLASS_NAME } from '../utils'
 import DamageHandler from './branch-handlers/DamageHandler'
 import ExtraHandler from './branch-handlers/ExtraHandler'
 import { NormalLayoutSubContent } from './layouts/setup'
