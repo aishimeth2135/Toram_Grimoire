@@ -56,10 +56,10 @@
           </div>
           <div v-else class="space-y-2">
             <template v-for="row in item.rows" :key="row.type + row.value">
-              <div
+              <RenderCaptionValue
                 v-if="row.type === 'caption'"
-                v-html="handleCaptionValue(row.value)"
-              ></div>
+                :text="row.value"
+              />
               <div
                 v-else-if="row.type === 'remark'"
                 class="text-sm text-primary-40"
@@ -126,7 +126,7 @@ import { useI18n } from 'vue-i18n'
 import { StatBase } from '@/lib/Character/Stat'
 import { RegistletItemBase } from '@/lib/Registlet/Registlet'
 
-import { useRegistletQueryState } from './setup'
+import { getRegistletCaptionRender, useRegistletQueryState } from './setup'
 
 interface Props {
   item: RegistletItemBase
@@ -147,12 +147,9 @@ watch(
 )
 
 const handleValue = (str: string) =>
-  str.replace(/Lv/g, t('registlet-query.detail.registlet-level'))
+  str
+    .replace(/Lv/g, t('registlet-query.detail.registlet-level'))
+    .replace(/\*/g, '×')
 
-const handleCaptionValue = (str: string) =>
-  str.replace(/\$\{([^}]+)\}/g, (match, p1) => {
-    return `<span class="inline-block border-x border-primary-30 text-primary-60 px-2 mx-2">${handleValue(
-      p1
-    )}</span>`
-  })
+const RenderCaptionValue = getRegistletCaptionRender(handleValue)
 </script>

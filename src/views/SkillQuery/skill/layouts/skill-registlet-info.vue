@@ -16,9 +16,9 @@
           style="min-height: 2rem"
         >
           <template v-for="row in item.rows" :key="row.type + row.value">
-            <div
+            <RenderCaptionValue
               v-if="row.type === 'caption'"
-              v-html="handleCaptionValue(row.value)"
+              :text="row.value"
             />
             <div
               v-else-if="row.type === 'remark'"
@@ -74,6 +74,8 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { getRegistletCaptionRender } from '@/views/Registlet/RegistletQuery/setup'
+
 import IconCircle from './skill-branch-layout-icon-circle.vue'
 
 import { SkillRegistletItemState } from '../../setup'
@@ -91,14 +93,5 @@ const { t } = useI18n()
 const handleValue = (str: string) =>
   str.replace(/Lv/g, t('skill-query.registlet-level-abbreviation'))
 
-const handleCaptionValue = (str: string) =>
-  str
-    .replace(/\$\{([^}]+)\}(%?)/g, (match, p1, p2) => {
-      const value = handleValue(p1)
-      const value2: string = p2
-        ? `<span class="text-primary-60">${p2}</span>`
-        : ''
-      return `<span class="cy--text-separate text-primary-30"><span class="text-primary-60">${value}</span></span>${value2}`
-    })
-    .replace(/\*/g, '×')
+const RenderCaptionValue = getRegistletCaptionRender(handleValue)
 </script>

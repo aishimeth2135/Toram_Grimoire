@@ -1,9 +1,5 @@
 import Grimoire from '@/shared/Grimoire'
-import {
-  isNumberString,
-  splitComma,
-  trimFloatStringZero,
-} from '@/shared/utils/string'
+import { isNumberString, trimFloatStringZero } from '@/shared/utils/string'
 
 import { StatComputed } from '@/lib/Character/Stat'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
@@ -14,9 +10,9 @@ import SkillComputingContainer, {
   SkillEffectItemHistory,
 } from '@/lib/Skill/SkillComputingContainer'
 import {
-  ResultContainer,
-  ResultContainerBase,
-} from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+  SkillBranchResult,
+  SkillBranchResultBase,
+} from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
 import {
   ComputedBranchHelperResult,
   HandleBranchTextPropsMap,
@@ -27,12 +23,8 @@ import {
   handleBranchTextProps,
   handleBranchValueProps,
 } from '@/lib/Skill/SkillComputingContainer/compute'
-import {
-  FormulaDisplayModes,
-  ResultContainerTypes,
-} from '@/lib/Skill/SkillComputingContainer/enums'
-
-import { createTagButtons } from '@/views/SkillQuery/utils'
+import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
+import { ResultContainerTypes } from '@/lib/common/ResultContainer/enums'
 
 import DisplayDataContainer from './DisplayDataContainer'
 import { handleFunctionHighlight, numberStringToPercentage } from './utils'
@@ -71,11 +63,11 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
   helper: ComputedBranchHelperResult,
   props: Map<string, string>,
   propMap: PropMap
-): Record<keyof PropMap, ResultContainer> {
+): Record<keyof PropMap, SkillBranchResult> {
   const { t } = Grimoire.i18n
   const { branchItem } = helper
 
-  const attrValues = {} as Record<keyof PropMap, ResultContainer>
+  const attrValues = {} as Record<keyof PropMap, SkillBranchResult>
   const attrKeys = Object.keys(propMap) as (keyof PropMap)[]
   attrKeys.forEach(attrKey => {
     const {
@@ -125,7 +117,7 @@ function handleBranchLangProps<PropMap extends HandleBranchLangPropsMap>(
       )
       resultStr = afterHandle ? afterHandle(result) : result
     }
-    attrValues[attrKey] = new ResultContainer(
+    attrValues[attrKey] = new SkillBranchResult(
       ResultContainerTypes.String,
       branchItem,
       attrKey as string,
@@ -230,7 +222,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 
   const result = {} as SkillDisplayData
 
-  const handleContainerFormulaValue = (container: ResultContainerBase) => {
+  const handleContainerFormulaValue = (container: SkillBranchResultBase) => {
     container.handle(value => {
       return value
         .replace(
@@ -252,20 +244,21 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 
   const handlePropHistoryHighlight =
     branchItem.parent instanceof SkillEffectItemHistory
-      ? (key: string, value: string) => {
+      ? (targetResult: SkillBranchResult) => {
+          const key = targetResult.key
           const searchKeys = branchRecordKeys
-          if (
-            searchKeys.some(
-              searchKey =>
-                branchItem.record.props[searchKey].includes(key) ||
-                branchItem.historyRecord?.props[searchKey].includes(key)
-            )
-          ) {
-            return `<span class="history-compare--mark">${value}</span>`
+          const check = searchKeys.some(
+            searchKey =>
+              branchItem.record.props[searchKey].includes(key) ||
+              branchItem.historyRecord?.props[searchKey].includes(key)
+          )
+          if (check) {
+            targetResult.mergeDisplayOptions({
+              classNames: ['history-compare--mark'],
+            })
           }
-          return value
         }
-      : (key: string, value: string) => value
+      : () => {}
 
   const handleStatHistoryHighlight =
     branchItem.parent instanceof SkillEffectItemHistory
@@ -289,7 +282,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
 
     let str = container.result
     str = handleFunctionHighlight(str)
-    str = handlePropHistoryHighlight(key, str)
+    handlePropHistoryHighlight(container)
 
     result[key] = str
   })
@@ -300,54 +293,24 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
       (match, m1) =>
         `<span class="cy--text-separate border-primary-50">${m1}</span>`
     )
-    str = createTagButtons(str)
     return str
   }
 
   Object.entries(textDatas).forEach(([key, container]) => {
     handleContainerFormulaValue(container)
 
-    const handleReplaceLabel = (str: string, attrKey: string) => {
-      const labels = splitComma(branchItem.prop(attrKey)).filter(item => item)
-      labels.forEach((label, idx) => {
-        str = str.replace(
-          new RegExp(label, 'g'),
-          () => `__HANDLE_REPLACE_LABEL_${idx}__`
-        )
-      })
-      labels.forEach((label, idx) => {
-        let firstFlag = true
-        str = str.replace(
-          new RegExp(`__HANDLE_REPLACE_LABEL_${idx}__`, 'g'),
-          () => {
-            const className = firstFlag
-              ? `click-button--${attrKey}`
-              : 'text-primary-50'
-            firstFlag = false
-            return `<span class="${className}">${label}</span>`
-          }
-        )
-      })
-      return str
-    }
-
     container.handleStrings(str => {
-      str = createTagButtons(str)
-      str = handleReplaceLabel(str, 'mark')
-      str = handleReplaceLabel(str, 'branch')
-      str = handleReplaceLabel(str, 'skill')
       str = handleFunctionHighlight(str)
-      str = handlePropHistoryHighlight(key, str)
       return str
     })
+    container.containers.forEach(ctner => handlePropHistoryHighlight(ctner))
 
     result[key] = container.result
   })
 
   Object.entries(langDatas).forEach(([key, container]) => {
-    let str = container.result
-    str = handlePropHistoryHighlight(key, str)
-    result[key] = str
+    handlePropHistoryHighlight(container)
+    result[key] = container.result
   })
 
   statDatas.forEach(container => {
@@ -382,7 +345,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   pureValues.forEach(key => {
     const origin = props.get(key) || '0'
     const value = computeBranchValue(origin, helper)
-    const container = new ResultContainer(
+    const container = new SkillBranchResult(
       ResultContainerTypes.Number,
       branchItem,
       key,
@@ -407,7 +370,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
     }
     const value = props.get(key)!
     result[key] = value
-    containers[key] = new ResultContainer(
+    containers[key] = new SkillBranchResult(
       ResultContainerTypes.String,
       branchItem,
       key,

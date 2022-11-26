@@ -11,12 +11,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+import { SkillBranchStatResult } from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
 
 import SkillBranchPropValue from './skill-branch-prop-value.vue'
 
 interface Props {
-  statContainers: ResultContainerStat[]
+  statContainers: SkillBranchStatResult[]
 }
 
 defineProps<Props>()

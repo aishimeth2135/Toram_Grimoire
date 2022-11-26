@@ -51,7 +51,6 @@ import SkillComputingContainer, {
 import { FormulaDisplayModes } from '@/lib/Skill/SkillComputingContainer/enums'
 
 import { ComputingContainerInjectionKey } from '../injection-keys'
-import { findStackState } from '../utils'
 import StackHandler from './branch-handlers/StackHandler'
 
 interface Props {
@@ -69,7 +68,7 @@ const container = computed(() =>
 )
 
 const stackState = computed(() => {
-  return findStackState(branchItem.value.parent, branchItem.value.stackId!)
+  return branchItem.value.parent.getStackState(branchItem.value.stackId!)
 })
 
 const stackValue: WritableComputedRef<number> = computed({

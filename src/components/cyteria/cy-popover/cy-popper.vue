@@ -9,7 +9,9 @@
         v-bind="attrs"
         @cypopperhide="handlePopperHide"
       >
-        <div :class="{ 'popper-content': !popperOptions.custom }">
+        <div
+          :class="[{ 'popper-content': !popperOptions.custom }, contentClass]"
+        >
           <slot :hide="() => togglePopper(false)" />
         </div>
       </div>
@@ -56,6 +58,7 @@ import {
 interface Props {
   element: HTMLElement | null
   options?: PopperOptions
+  contentClass?: any
 }
 interface Emits {
   (evt: 'shown'): void

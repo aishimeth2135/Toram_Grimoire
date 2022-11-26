@@ -32,9 +32,9 @@
 
 <script lang="ts" setup>
 import {
-  ResultContainerBase,
-  ResultContainerStat,
-} from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+  SkillBranchResultBase,
+  SkillBranchStatResult,
+} from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
 
 import IconCircle from './skill-branch-layout-icon-circle.vue'
 import SkillBranchPropValue from './skill-branch-prop-value.vue'
@@ -44,8 +44,8 @@ interface Props {
   icon: string
   title: string
   titleProps?: string[]
-  result?: ResultContainerBase
-  statContainers?: ResultContainerStat[]
+  result?: SkillBranchResultBase
+  statContainers?: SkillBranchStatResult[]
 }
 
 defineProps<Props>()

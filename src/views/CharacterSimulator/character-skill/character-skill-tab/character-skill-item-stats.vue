@@ -16,16 +16,16 @@
 <script lang="ts" setup>
 import { isNumberString } from '@/shared/utils/string'
 
-import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+import { SkillBranchStatResult } from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
 
 import SkillBranchPropValue from '@/views/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
 
 interface Props {
-  statContainers: ResultContainerStat[]
+  statContainers: SkillBranchStatResult[]
 }
 
 defineProps<Props>()
 
-const getResultDisplay = (ctner: ResultContainerStat) =>
+const getResultDisplay = (ctner: SkillBranchStatResult) =>
   isNumberString(ctner.value) ? ctner.valueResult : ctner.result
 </script>

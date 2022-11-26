@@ -50,7 +50,6 @@
       <div v-if="contents.skillEffect" class="border-t-1 border-orange-60 pt-4">
         <SkillEffect
           v-model:selected-equipment="currentEquipment"
-          :skill-item="currentSkillItem"
           @set-current-skill="skill => selectCurrentSkill(skill, true)"
         />
       </div>
@@ -108,7 +107,6 @@ import {
   SkillTree,
   SkillTreeCategory,
 } from '@/lib/Skill/Skill'
-import { EquipmentRestrictions } from '@/lib/Skill/SkillComputingContainer'
 
 import ToggleService from '@/setup/ToggleService'
 
@@ -120,7 +118,7 @@ import SkillQuerySearch from './skill-query-search.vue'
 import SkillTreeDiagram from './skill-tree-diagram.vue'
 import SkillDevDetail from './skill/skill-dev-detail.vue'
 
-import { setupComputingContainer } from './setup'
+import { setupComputingContainer, useSkillQueryState } from './setup'
 
 const { toggle, contents } = ToggleService({
   contents: ['skillEffect', 'search', 'skillDev'] as const,
@@ -150,9 +148,12 @@ const skillRoot: ComputedRef<SkillRoot> = computed(
   () => Grimoire.Skill.skillRoot
 )
 
-const currentSkillTreeCategory: Ref<SkillTreeCategory | null> = ref(null)
-const currentSkillTree: Ref<SkillTree | null> = ref(null)
-const currentSkill: Ref<Skill | null> = ref(null)
+const {
+  currentSkill,
+  currentSkillTree,
+  currentSkillTreeCategory,
+  currentEquipment,
+} = useSkillQueryState()
 
 const updateRouteParam = (skillId: string) => {
   router.replace({ name: 'SkillQuery', params: { skillId } })
@@ -220,10 +221,6 @@ if (route.params.skillId) {
     return false
   })
 }
-
-const currentEquipment: Ref<EquipmentRestrictions> = ref(
-  new EquipmentRestrictions()
-)
 
 const { computingContainer, currentSkillItem } =
   setupComputingContainer(currentSkill)

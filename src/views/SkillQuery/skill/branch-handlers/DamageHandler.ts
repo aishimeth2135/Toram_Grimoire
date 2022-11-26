@@ -7,7 +7,6 @@ import SkillComputingContainer, {
 } from '@/lib/Skill/SkillComputingContainer'
 import type { HandleBranchValuePropsMap } from '@/lib/Skill/SkillComputingContainer/compute'
 
-import { createTagButtons } from '../../utils'
 import ProrationHandler from './ProrationHandler'
 import {
   HandleBranchLangPropsMap,
@@ -83,8 +82,7 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
         props.set('base', `@custom.${baseSuffix.prop('type')}`)
         langAttrsMap.append('base')
         langAttrsMap.set('@custom-base-caption', {
-          afterHandle: value =>
-            createTagButtons(markText(value, { mark: 'text-fuchsia-60' })),
+          afterHandle: value => markText(value, { mark: 'text-fuchsia-60' }),
         })
       } else {
         if (baseSuffix.prop('title') === 'auto') {

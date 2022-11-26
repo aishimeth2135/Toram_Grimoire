@@ -21,7 +21,8 @@ export default {
     ViewInit(
       DataStoreIds.Skill,
       DataStoreIds.Stats,
-      DataStoreIds.Registlet
+      DataStoreIds.Registlet,
+      DataStoreIds.Glossary
     ).then(next)
   },
   meta: {

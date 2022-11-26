@@ -39,7 +39,6 @@ import type { WritableComputedRef } from 'vue'
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
-import { findStackState } from '@/views/SkillQuery/utils'
 
 import { setStackValue } from './utils'
 
@@ -52,8 +51,7 @@ const props = defineProps<Props>()
 const { container } = toRefs(props)
 
 const stackState = computed(() => {
-  return findStackState(
-    container.value.branchItem.parent,
+  return container.value.branchItem.parent.getStackState(
     container.value.branchItem.stackId as number
   )
 })

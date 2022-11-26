@@ -58,4 +58,9 @@ export const ROUTE_LINK_DATAS: {
     icon: 'mdi:book-outline',
     pathName: AppRouteNames.RegistletQuery,
   },
+  {
+    name: 'glossary-query',
+    icon: 'mdi:tag-outline',
+    pathName: AppRouteNames.GlossaryQuery,
+  },
 ]

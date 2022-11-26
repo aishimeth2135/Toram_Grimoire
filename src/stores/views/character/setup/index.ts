@@ -37,7 +37,7 @@ import SkillComputingContainer, {
   SkillFormulaExtraProps,
   SkillItem,
 } from '@/lib/Skill/SkillComputingContainer'
-import { ResultContainerStat } from '@/lib/Skill/SkillComputingContainer/ResultContainer'
+import { SkillBranchStatResult } from '@/lib/Skill/SkillComputingContainer/SkillBranchResult'
 import { SkillBuffs } from '@/lib/Skill/SkillComputingContainer/enums'
 
 import BasicHandler from '@/views/SkillQuery/skill/branch-handlers/BasicHandler'
@@ -773,8 +773,8 @@ export function prepareSetupCharacter() {
       }
 
       const stats: Map<string, StatRecorded> = new Map()
-      const conditionalStatContainers: ResultContainerStat[] = []
-      const handleStatContainer = (statContainer: ResultContainerStat) => {
+      const conditionalStatContainers: SkillBranchStatResult[] = []
+      const handleStatContainer = (statContainer: SkillBranchStatResult) => {
         if (!isNumberString(statContainer.value)) {
           return
         }
