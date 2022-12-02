@@ -4,11 +4,13 @@ import type { Ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
 
-import { FoodBuild, FoodsBase } from '@/lib/Character/Food'
+import { FoodsBase } from '@/lib/Character/Food'
+
+import { FoodsBuild } from '../../../../lib/Character/Food/FoodBuild'
 
 export const useCharacterFoodStore = defineStore('view-character-food', () => {
   const foodsBase: Ref<FoodsBase | null> = ref(null)
-  const foodBuilds: Ref<FoodBuild[]> = ref([])
+  const foodBuilds: Ref<FoodsBuild[]> = ref([])
   const currentFoodBuildIndex = ref(-1)
 
   const initFoodsBase = () => {
@@ -19,7 +21,7 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
     () => foodBuilds.value[currentFoodBuildIndex.value]
   )
 
-  const setCurrentFoodBuild = (idx: number | FoodBuild | null) => {
+  const setCurrentFoodBuild = (idx: number | FoodsBuild | null) => {
     if (idx === null) {
       currentFoodBuildIndex.value = -1
       return
@@ -31,12 +33,13 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
   }
 
   const createFoodBuild = (
-    { name, foodBuild }: { name?: string; foodBuild?: FoodBuild } = {},
+    { name, foodBuild }: { name?: string; foodBuild?: FoodsBuild } = {},
     updateIndex = true
   ) => {
     const build =
       foodBuild ??
-      foodsBase.value!.createFoods(
+      new FoodsBuild(
+        foodsBase.value!,
         name ||
           Grimoire.i18n.t('character-simulator.food-build.food-build') +
             ' ' +

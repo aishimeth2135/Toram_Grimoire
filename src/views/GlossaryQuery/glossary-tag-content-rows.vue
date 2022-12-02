@@ -59,10 +59,10 @@ const RenderText = ({ text }: { text: string }) => {
         },
         part.metadata.get('display-name') ?? part.value
       )
-    } else if (part.type === TextResultContainerPartTypes.Custom) {
-      if (part.customType === 'mark') {
+    } else if (part.type === TextResultContainerPartTypes.Other) {
+      if (part.subType === 'mark') {
         return h('span', { class: 'text-primary-60' }, part.value)
-      } else if (part.customType === 'underline') {
+      } else if (part.subType === 'underline') {
         return h('span', { class: 'text-primary-60 underline' }, part.value)
       }
     }

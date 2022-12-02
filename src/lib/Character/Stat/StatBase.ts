@@ -1,10 +1,10 @@
 import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
 
+import { Food } from '@/lib/Character/Food/FoodBuild'
 import { SkillBranch } from '@/lib/Skill/Skill'
 
 import { CharacterEquipment, EquipmentCrystal } from '../CharacterEquipment'
-import { Food } from '../Food'
 import { StatTypes, StatValueSourceTypes } from './enums'
 
 type StatValue = number | string

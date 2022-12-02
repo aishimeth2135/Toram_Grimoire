@@ -5,7 +5,7 @@
         <div class="mr-3 flex flex-shrink-0" style="min-width: 10rem">
           <cy-button-check v-model:selected="enabled">
             <cy-icon-text
-              :text-color="!invalid ? 'purple-70' : 'gray-60'"
+              :text-color="!invalid ? 'fuchsia-70' : 'gray-60'"
               :icon="skillIconPath"
               icon-src="image"
             >

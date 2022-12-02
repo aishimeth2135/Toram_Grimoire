@@ -3,6 +3,7 @@ import { markRaw } from 'vue'
 import { Skill } from '../Skill/Skill'
 import {
   RegistletCategory,
+  RegistletItemBase,
   RegistletItemBaseSkill,
   RegistletItemBaseSpecial,
   RegistletItemBaseStat,
@@ -14,6 +15,7 @@ export default class RegistletSystem {
   statCategory: RegistletCategory<RegistletItemBaseStat>
   specialCategory: RegistletCategory<RegistletItemBaseSpecial>
 
+  private _idItemMap!: Map<string, RegistletItemBase>
   private _skillItemMap!: Map<Skill, RegistletItemBaseSkill[]>
 
   constructor() {
@@ -28,6 +30,21 @@ export default class RegistletSystem {
         RegistletCategoryIds.Special
       )
     )
+  }
+
+  getRegistletItemById(id: string): RegistletItemBase | null {
+    if (!this._idItemMap) {
+      this._idItemMap = new Map()
+      const handle = (items: RegistletItemBase[]) => {
+        items.forEach(item => {
+          this._idItemMap.set(item.id, item)
+        })
+      }
+      handle(this.skillCategory.items)
+      handle(this.statCategory.items)
+      handle(this.specialCategory.items)
+    }
+    return this._idItemMap.get(id) ?? null
   }
 
   getRegistletItemsBySkill(skill: Skill): RegistletItemBaseSkill[] {

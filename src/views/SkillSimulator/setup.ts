@@ -2,8 +2,8 @@ import { storeToRefs } from 'pinia'
 import { Ref } from 'vue'
 
 import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
-import { SkillBuild } from '@/stores/views/character/skill-build/SkillBuild'
 
+import { SkillBuild } from '@/lib/Character/SkillBuild/SkillBuild'
 import { GetSkillLevelHandler } from '@/lib/Skill/utils/DrawSkillTree'
 
 type MenuMode = 'skill' | 'star-gem'

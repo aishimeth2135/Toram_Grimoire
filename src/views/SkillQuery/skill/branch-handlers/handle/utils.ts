@@ -1,26 +1,14 @@
 import { numberToFixed } from '@/shared/utils/number'
 
 export function handleFunctionHighlight(result: string): string {
-  const functionHighlightList: {
-    name: string
-    reg: RegExp
-    target?: (match: string, p1: string) => string
-  }[] = [
-    {
-      name: 'floor',
-      reg: /Math\.floor\(([^()]+)\)/g,
-      target: (match: string, p1: string) => '[' + p1 + ']',
-    },
-    { name: 'min', reg: /Math\.min\(([^()]+)\)/g },
-    { name: 'max', reg: /Math\.max\(([^()]+)\)/g },
-  ]
+  const functionPattern = /Math\.(floor|min|max)\(([^()]+)\)/g
 
-  if (functionHighlightList.every(item => !result.match(item.reg))) {
+  if (!result.match(functionPattern)) {
     return result
   }
 
   const handleStack: ('normal' | 'function')[] = []
-  let offset = 0 // offset for "#left~" and "~right#"
+  let offset = 0 // offset for "<#--" and "--#>"
 
   const varCharPattern = /[_a-zA-Z0-9]/
   result.split('').forEach((char, idx) => {
@@ -47,16 +35,17 @@ export function handleFunctionHighlight(result: string): string {
     }
   })
 
-  const createFormulaText = (name: string, value: string) =>
-    `<span class="skill-formula-function-wrapper key--${name}"><span class="name">${name.toUpperCase()}</span><span class="value">${value}</span></span>`
+  const createFormulaText = (name: string, params: string) => {
+    if (name === 'floor') {
+      return `[${params}]`
+    }
+    return `<span class="skill-formula-function-wrapper key--${name}"><span class="name">${name.toUpperCase()}</span><span class="value">${params}</span></span>`
+  }
 
-  while (functionHighlightList.some(item => result.match(item.reg))) {
-    functionHighlightList.forEach(item => {
-      result = result.replace(
-        item.reg,
-        item.target ?? ((match, p1) => createFormulaText(item.name, p1))
-      )
-    })
+  while (result.match(functionPattern)) {
+    result = result.replace(functionPattern, (match, funcName, params) =>
+      createFormulaText(funcName, params)
+    )
   }
 
   result = result.replace(/<#--/g, '(').replace(/--#>/g, ')')

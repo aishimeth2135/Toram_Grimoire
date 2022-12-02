@@ -6,5 +6,5 @@ export const enum ResultContainerTypes {
 export const enum TextResultContainerPartTypes {
   Separate = 'separate',
   GlossaryTag = 'glossary-tag',
-  Custom = 'custom',
+  Other = 'other',
 }

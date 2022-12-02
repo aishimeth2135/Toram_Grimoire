@@ -57,7 +57,7 @@
                       icon="ic:baseline-person"
                       small
                       text-color="fuchsia-60"
-                      icon-color="purple-30"
+                      icon-color="fuchsia-30"
                     >
                       {{ discordGroupData.memberNumbers }}
                     </cy-icon-text>

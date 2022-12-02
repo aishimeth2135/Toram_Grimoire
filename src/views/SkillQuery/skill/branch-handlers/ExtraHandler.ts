@@ -40,12 +40,7 @@ export default function ExtraHandler<BranchItem extends SkillBranchItemSuffix>(
 
   const mainBranch = branchItem.mainBranch
   if (!mainBranch) {
-    return new DisplayDataContainer({
-      branchItem,
-      containers: {},
-      statContainers: [],
-      value: {},
-    })
+    return new DisplayDataContainer({ branchItem })
   }
   const filters = new MapContainer<HandleDisplayDataOptionFilters>()
   const valuePropsMap = new MapContainer<HandleBranchValuePropsMap>()

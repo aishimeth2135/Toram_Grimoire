@@ -44,7 +44,7 @@ interface Props {
   icon: string
   title: string
   titleProps?: string[]
-  result?: SkillBranchResultBase
+  result?: SkillBranchResultBase | null
   statContainers?: SkillBranchStatResult[]
 }
 

@@ -38,7 +38,7 @@ abstract class RegistletItemBase {
 
   constructor(category: RegistletCategory, infos: RegistletInfos) {
     this.category = category
-    this.id = `${category.id}-${category.items.length}`
+    this.id = `${category.id}-${infos.id}`
     this.name = infos.name
     this.obtainLevels = infos.obtainLevels
     this.maxLevel = infos.maxLevel

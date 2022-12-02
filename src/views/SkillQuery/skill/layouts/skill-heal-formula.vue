@@ -62,7 +62,7 @@ const extraValueList = computed(
 const isSingleValue = computed(() => {
   return (
     extraValueList.value.length === 0 &&
-    isNumberString(container.value.containers['constant'].value)
+    isNumberString(container.value.getValue('constant'))
   )
 })
 </script>

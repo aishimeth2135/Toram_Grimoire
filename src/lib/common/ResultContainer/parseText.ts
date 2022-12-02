@@ -189,10 +189,10 @@ export function getMarkTextParseItems() {
     handler(values) {
       const [value] = values
       const newPart = new TextResultContainerPart(
-        TextResultContainerPartTypes.Custom,
+        TextResultContainerPartTypes.Other,
         value
       )
-      newPart.customType = 'mark'
+      newPart.subType = 'mark'
       return newPart
     },
   }
@@ -202,10 +202,10 @@ export function getMarkTextParseItems() {
     handler(values) {
       const [value] = values
       const newPart = new TextResultContainerPart(
-        TextResultContainerPartTypes.Custom,
+        TextResultContainerPartTypes.Other,
         value
       )
-      newPart.customType = 'underline'
+      newPart.subType = 'underline'
       return newPart
     },
   }

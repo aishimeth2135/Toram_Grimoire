@@ -3,7 +3,8 @@ import Grimoire from '@/shared/Grimoire'
 import { Skill, SkillTree } from '@/lib/Skill/Skill'
 import { SkillTypes } from '@/lib/Skill/Skill/enums'
 
-import { SkillBuildState } from '../skill'
+import { SkillBuildState } from '../../../stores/views/character/skill'
+import { CharacterBuildBindOnCharacter } from '../Character'
 
 interface SkillState {
   level: number
@@ -23,7 +24,7 @@ interface SkillBuildSaveData {
 }
 
 let _skillBuildAutoIncreasement = 0
-export class SkillBuild {
+export class SkillBuild implements CharacterBuildBindOnCharacter {
   protected _skillStatesMap: Map<Skill, SkillState>
   protected _skillTreesSet: Set<SkillTree>
 

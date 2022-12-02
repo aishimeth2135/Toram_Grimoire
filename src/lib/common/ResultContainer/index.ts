@@ -157,7 +157,7 @@ class TextResultContainerPart {
   unit: string
 
   // must be init when type is "custom"
-  customType?: string
+  subType?: string
 
   readonly parts: TextResultContainerPartValue[]
 

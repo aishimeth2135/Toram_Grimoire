@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref, shallowReactive } from 'vue'
 
-import { useCharacterFoodStore } from '@/stores/views/character/food'
+import { useCharacterFoodStore } from '@/stores/views/character/food-build'
 import { useCharacterSkillStore } from '@/stores/views/character/skill'
 
 import { DataPathIds } from '@/shared/services/DataPath'

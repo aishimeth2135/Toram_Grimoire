@@ -1,9 +1,9 @@
 import { storeToRefs } from 'pinia'
 import { Ref } from 'vue'
 
-import { useCharacterFoodStore } from '@/stores/views/character/food'
+import { useCharacterFoodStore } from '@/stores/views/character/food-build'
 
-import { FoodBuild } from '@/lib/Character/Food'
+import { FoodsBuild } from '@/lib/Character/Food/FoodBuild'
 
 export function setupCharacterFoodStore() {
   const store = useCharacterFoodStore()
@@ -11,7 +11,7 @@ export function setupCharacterFoodStore() {
 
   return {
     store,
-    foodBuilds: foodBuilds as Ref<FoodBuild[]>,
-    currentFoodBuild: currentFoodBuild as Ref<FoodBuild>,
+    foodBuilds: foodBuilds as Ref<FoodsBuild[]>,
+    currentFoodBuild: currentFoodBuild as Ref<FoodsBuild>,
   }
 }
