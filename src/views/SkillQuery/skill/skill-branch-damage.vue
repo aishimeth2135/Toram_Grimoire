@@ -283,6 +283,7 @@ const extraSuffixBranchDatas = computed(() => {
         id: idx.toString(),
         icon: 'ic:round-done',
         title: dataContainer.get('condition'),
+        result: null,
       }
       if (dataContainer.get('target')) {
         baseData.titleProps = [dataContainer.get('target')]

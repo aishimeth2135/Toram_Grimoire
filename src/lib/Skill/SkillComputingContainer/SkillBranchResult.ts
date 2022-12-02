@@ -1,7 +1,6 @@
 import { splitComma } from '@/shared/utils/string'
 
-import { StatComputed } from '@/lib/Character/Stat'
-import { StatRecorded } from '@/lib/Character/Stat'
+import { StatComputed, StatRecorded } from '@/lib/Character/Stat'
 import {
   ResultContainerTypes,
   TextResultContainerPartTypes,
@@ -93,6 +92,13 @@ class SkillBranchResult
     }
   }
 
+  handleDisplay(handler: ResultHandler) {
+    if (this.displayResult === null) {
+      this.displayResult = this._result
+    }
+    this.displayResult = handler(this.displayResult)
+  }
+
   initDisplayValue(value: string) {
     this.displayResult = value
   }
@@ -106,13 +112,13 @@ class SkillBranchStatResult extends SkillBranchResult {
    * note: init in `handleDisplayData`
    */
   statResultData!: {
-    title: string
+    title: string | SkillBranchTextResult
     sign: string
     value: string
   }
 
   // The display title that priority is higher than the original title of `stat`.
-  displayTitle: string | null
+  displayTitle: SkillBranchTextResult | null
 
   // The condition value that will be calc and result is `boolean`.
   conditionValue: string | null
@@ -134,7 +140,7 @@ class SkillBranchStatResult extends SkillBranchResult {
     this.conditionValue = null
   }
 
-  setDisplayTitle(title: string) {
+  setDisplayTitle(title: SkillBranchTextResult) {
     this.displayTitle = title
   }
 
@@ -142,7 +148,10 @@ class SkillBranchStatResult extends SkillBranchResult {
     this.conditionValue = title
   }
 
-  storeStatResultData(data: { title: string; sign: string }) {
+  storeStatResultData(data: {
+    title: string | SkillBranchTextResult
+    sign: string
+  }) {
     this.statResultData = {
       title: data.title,
       sign: data.sign,
@@ -219,10 +228,10 @@ class SkillBranchTextResult
           pattern: new RegExp(`(${values.join('|')})`, 'g'),
           handler([value]) {
             const newPart = new SkillBranchTextResultPart(
-              TextResultContainerPartTypes.Custom,
+              TextResultContainerPartTypes.Other,
               value
             )
-            newPart.customType = propKey
+            newPart.subType = propKey
             return newPart
           },
         }

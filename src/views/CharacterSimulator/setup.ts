@@ -2,14 +2,14 @@ import { storeToRefs } from 'pinia'
 import { Ref } from 'vue'
 
 import { useCharacterStore } from '@/stores/views/character'
-import { useCharacterFoodStore } from '@/stores/views/character/food'
+import { useCharacterFoodStore } from '@/stores/views/character/food-build'
 import { CharacterStatCategoryResult } from '@/stores/views/character/setup'
 import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
-import { SkillBuild } from '@/stores/views/character/skill-build/SkillBuild'
 
 import { Character } from '@/lib/Character/Character'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { FoodBuild } from '@/lib/Character/Food'
+import { FoodsBuild } from '@/lib/Character/Food/FoodBuild'
+import { SkillBuild } from '@/lib/Character/SkillBuild/SkillBuild'
 
 export function setupCharacterStore() {
   const store = useCharacterStore()
@@ -48,8 +48,8 @@ export function setupCharacterFoodStore() {
 
   return {
     store,
-    foodBuilds: foodBuilds as Ref<FoodBuild[]>,
-    currentFoodBuild: currentFoodBuild as Ref<FoodBuild>,
+    foodBuilds: foodBuilds as Ref<FoodsBuild[]>,
+    currentFoodBuild: currentFoodBuild as Ref<FoodsBuild>,
   }
 }
 

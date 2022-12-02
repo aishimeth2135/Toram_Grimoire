@@ -1,8 +1,7 @@
-import { SkillBuild } from '@/stores/views/character/skill-build/SkillBuild'
-
 import Grimoire from '@/shared/Grimoire'
 import Cyteria from '@/shared/utils/Cyteria'
 
+import { SkillBuild } from '@/lib/Character/SkillBuild/SkillBuild'
 import { Skill, SkillTree } from '@/lib/Skill/Skill'
 import {
   DrawSkillTreeData,

@@ -21,7 +21,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { Food } from '@/lib/Character/Food'
+import { Food } from '@/lib/Character/Food/FoodBuild'
 
 import Notify from '@/setup/Notify'
 

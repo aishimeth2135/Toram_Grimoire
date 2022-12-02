@@ -7,28 +7,28 @@ import {
 import type { SkillDisplayData } from '.'
 
 let _autoIncreasement = 0
-export default class _DisplayDataContainer<
+export default class DisplayDataContainer<
   Branch extends SkillBranchItemBaseChilds = SkillBranchItemBaseChilds
 > {
-  private _value: SkillDisplayData
+  private _titles: SkillDisplayData
   private _customDatas!: Record<string, any>
 
   readonly instanceId: number
 
   readonly branchItem: Branch
-  readonly containers: Record<string, SkillBranchResultBase>
+  readonly containers: Map<string, SkillBranchResultBase>
   readonly statContainers: SkillBranchStatResult[]
 
   constructor({
     branchItem,
-    containers,
-    statContainers,
-    value,
+    containers = new Map(),
+    statContainers = [],
+    titles = new Map(),
   }: {
     branchItem: Branch
-    containers: Record<string, SkillBranchResultBase>
-    statContainers: SkillBranchStatResult[]
-    value: SkillDisplayData
+    containers?: Map<string, SkillBranchResultBase>
+    statContainers?: SkillBranchStatResult[]
+    titles?: SkillDisplayData
   }) {
     this.instanceId = _autoIncreasement
     _autoIncreasement += 1
@@ -36,27 +36,31 @@ export default class _DisplayDataContainer<
     this.branchItem = branchItem
     this.containers = containers
     this.statContainers = statContainers
-    this._value = value
+    this._titles = titles
   }
 
   result(key: string) {
-    return this.containers[key] ?? null
+    return this.containers.get(key) ?? null
   }
 
   get(key: string): string {
-    return this._value[key]
+    return this.containers.get(key)?.result ?? ''
   }
 
   has(key: string): boolean {
-    return this._value[key] !== undefined
+    return this.containers.get(key) !== undefined
   }
 
   getValue(key: string): string {
-    return this.containers[key]?.value ?? ''
+    return this.containers.get(key)?.value ?? ''
   }
 
   getOrigin(key: string): string {
-    return this.containers[key]?.origin ?? ''
+    return this.containers.get(key)?.origin ?? ''
+  }
+
+  title(key: string) {
+    return this._titles.get(key) ?? ''
   }
 
   setCustomData(key: string, value: any): void {

@@ -5,7 +5,11 @@
         <div class="mr-3 flex flex-shrink-0" style="min-width: 10rem">
           <cy-button-toggle v-model:selected="currentSkillState.enabled">
             <cy-icon-text
-              :text-color="!invalid ? 'purple-70' : 'gray-60'"
+              :text-color="
+                !invalid
+                  ? `primary-${currentSkillState.enabled ? '70' : '40'}`
+                  : 'gray-60'
+              "
               :icon="skillIconPath"
               icon-src="image"
             >

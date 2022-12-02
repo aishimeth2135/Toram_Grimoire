@@ -46,10 +46,19 @@ export default function BasicHandler<BranchItem extends SkillBranchItem>(
   } else {
     valuePropsMap.set('range', 'm')
   }
+  const titles = [
+    'mp_cost',
+    'range',
+    'skill_type',
+    'in_combo',
+    'action_time',
+    'casting_time',
+  ]
 
   return handleDisplayData(computing, branchItem, props, {
     values: valuePropsMap.value,
     langs: langAttrsMap.value,
     filters: filters.value,
+    titles,
   })
 }

@@ -126,11 +126,10 @@ export default function DamageHandler<BranchItem extends SkillBranchItem>(
   )
   if (prorationBch) {
     const _data = ProrationHandler(computing, prorationBch)
-    ;['damage', 'proration', 'damage: title', 'proration: title'].forEach(
-      key => {
-        props.set('@proration/' + key, _data.get(key))
-      }
-    )
+    ;['damage', 'proration'].forEach(key => {
+      props.set('@proration/' + key, _data.get(key))
+      props.set(`@proration/${key}: title`, _data.title(key))
+    })
     pureDatas.push(
       '@proration/damage',
       '@proration/damage: title',

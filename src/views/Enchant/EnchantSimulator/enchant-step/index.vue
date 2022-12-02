@@ -217,7 +217,7 @@ const mainTextColor = computed(() => {
   if (step.value.afterLastStep) {
     return 'gray-60'
   }
-  return 'purple-70'
+  return 'fuchsia-70'
 })
 
 const mainBorderColor = computed(() => {

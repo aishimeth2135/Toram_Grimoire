@@ -5,7 +5,7 @@
     >
       <div class="my-1 flex items-center">
         <cy-icon-text icon="mdi-sword" block>
-          {{ t('skill-query.branch.proration.proration: title') }}
+          {{ container.title('proration') }}
         </cy-icon-text>
         <SkillBranchPropValue
           class="ml-1.5 text-primary-50"
@@ -15,7 +15,7 @@
       <div class="mx-4 h-5 border-l-1 border-primary-20" />
       <div class="my-1 flex items-center">
         <cy-icon-text icon="mdi-sword" block>
-          {{ t('skill-query.branch.proration.damage: title') }}
+          {{ container.title('damage') }}
         </cy-icon-text>
         <SkillBranchPropValue
           class="ml-1.5 text-primary-50"
@@ -28,7 +28,6 @@
 
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 import SkillComputingContainer, {
   SkillBranchItem,
@@ -49,15 +48,4 @@ const { branchItem } = toRefs(props)
 const container = computed(() =>
   ProrationHandler(props.computing, branchItem.value)
 )
-
-const { t } = useI18n()
-
-// const nextBranch = computed(() => {
-//   const bchs = branchItem.value.parent.branchItems
-//   const idx = bchs.indexOf(branchItem.value)
-//   if (idx === -1 || idx === bchs.length - 1) {
-//     return null
-//   }
-//   return bchs[idx + 1]
-// })
 </script>

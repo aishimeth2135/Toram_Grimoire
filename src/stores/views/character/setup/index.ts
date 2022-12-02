@@ -24,7 +24,6 @@ import {
   EquipmentFieldTypes,
 } from '@/lib/Character/Character/enums'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
-import { FoodBuild } from '@/lib/Character/Food'
 import { StatComputed, StatRestriction } from '@/lib/Character/Stat'
 import { StatRecorded } from '@/lib/Character/Stat'
 import { Skill, SkillBranch } from '@/lib/Skill/Skill'
@@ -48,7 +47,8 @@ import PassiveHandler from '@/views/SkillQuery/skill/branch-handlers/PassiveHand
 import StackHandler from '@/views/SkillQuery/skill/branch-handlers/StackHandler'
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 
-import { SkillBuild } from '../skill-build/SkillBuild'
+import { FoodsBuild } from '../../../../lib/Character/Food/FoodBuild'
+import { SkillBuild } from '../../../../lib/Character/SkillBuild/SkillBuild'
 import { checkStatRestriction, getCharacterElement } from '../utils'
 import { getSkillStatContainerValid, mergeStats } from './utils'
 
@@ -480,12 +480,7 @@ export function prepareSetupCharacter() {
             const container = (
               validBranchNames.some(name => bch.is(name))
                 ? handler(computing, bch)
-                : new DisplayDataContainer({
-                    branchItem: bch,
-                    containers: {},
-                    statContainers: [],
-                    value: {},
-                  })
+                : new DisplayDataContainer({ branchItem: bch })
             ) as DisplayDataContainerAlly // empty container
             const suffixContainers = bch.suffixBranches
               .filter(suffixBranchFilter)
@@ -1252,7 +1247,7 @@ export function prepareSetupCharacter() {
   }
 }
 
-export function setupFoodStats(foodBuild: Ref<FoodBuild>) {
+export function setupFoodStats(foodBuild: Ref<FoodsBuild>) {
   const allFoodBuildStats = computed(() => {
     return foodBuild.value.selectedFoods
       .filter(food => food.level !== 0)

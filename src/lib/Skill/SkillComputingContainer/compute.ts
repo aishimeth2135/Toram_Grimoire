@@ -42,6 +42,7 @@ function computeBranchValue(
     .join('+')
     // convert "stack+A" to "stack[0]+A"
     .replace(/stack(?!\[)/g, 'stack[0]')
+    .replace(/RLv(?!\[)/g, 'RLv[0]')
 
   str = handleFormulaExtra(str)
   return handleFormula(str, { vars, texts, methods }) as string
@@ -67,37 +68,21 @@ function handleRegistletValue(
   const bch = helper.branchItem
   if (bch.hasProp(container.key, 'registlet')) {
     const originalValue = bch.prop(container.key, 'registlet')
-    const value = computeBranchValue(originalValue, helper)
-    const subContainer = new SkillBranchResult(
-      ResultContainerTypes.Number,
-      bch,
-      bch.propKey(container.key, 'registlet'),
-      originalValue,
-      value
-    )
-    container.subContainers.registlet = subContainer
+    if (helper.checkRegistletLevel(originalValue)) {
+      const value = computeBranchValue(originalValue, helper)
+      const subContainer = new SkillBranchResult(
+        ResultContainerTypes.Number,
+        bch,
+        bch.propKey(container.key, 'registlet'),
+        originalValue,
+        value
+      )
+      container.subContainers.registlet = subContainer
+    }
   }
 }
 
 function handleHighlight(container: SkillBranchResult) {
-  // if (typeof options === 'string') {
-  //   const unit = options
-  //   options = {
-  //     end: unit,
-  //   }
-  // }
-  // const { end } = options
-  // if (end) {
-  //   container.handle(value => value + end)
-  // }
-  // container.handle(value =>
-  //   !isNumberString(value)
-  //     ? `<span class="cy--text-separate">${value}</span>`
-  //     : value
-  // )
-  // if (beforeHighlight) {
-  //   container.handle(beforeHighlight)
-  // }
   const originalFormula = container.origin
   const className =
     isNumberString(container.value) && parseFloat(container.value) < 0
@@ -108,7 +93,6 @@ function handleHighlight(container: SkillBranchResult) {
       ? 'text-blue-60'
       : 'text-primary-50'
   container.mergeDisplayOptions({ classNames: [className] })
-  // container.handle(value => `<span class="${className}">${value}</span>`)
 }
 
 /**
@@ -121,6 +105,7 @@ interface ComputedBranchHelperResult {
   branchItem: SkillBranchItemBaseChilds
   handleFormulaExtra: (formula: string) => string
   formulaDisplayMode: FormulaDisplayModes
+  checkRegistletLevel: (value: string) => boolean
 }
 const HANDLE_FORMULA_EXTRA_PATTERN_1 = /&(\d+):/g
 const HANDLE_FORMULA_EXTRA_PATTERN_2 = /extra\[(\d+)\]/g
@@ -165,12 +150,30 @@ function computedBranchHelper(
     }
   })
 
+  const RLv: number[] =
+    computing.varGetters.registletLevel?.(branchItem.default.parent.parent) ??
+    []
+  const hasRLv = RLv.length > 0 && RLv.some(item => item > 0)
+
   const STACK_ACCESS_PATTERN = /stack\[(\d+)\]/g
   const RLV_ACCESS_PATTERN = /RLv\[(\d+)\]/g
 
+  const checkRegistletLevel = (str: string) => {
+    if (/RLv(?!\[)/.test(str)) {
+      return RLv[0] > 0
+    }
+    const match = str.match(RLV_ACCESS_PATTERN)
+    if (match) {
+      return RLv[parseInt(match[1], 10)] > 0
+    }
+    return true
+  }
+
   if (formulaDisplayMode === FormulaDisplayModes.OriginalFormula) {
-    const stack: string[] = []
     const { t } = Grimoire.i18n
+
+    const stack: string[] = []
+    let RLvLength = 1
 
     if (stackIds.length > 0) {
       const stackStates = branchItem.parent.stackStates
@@ -195,6 +198,15 @@ function computedBranchHelper(
           }`
         }
       })
+      if (!hasRLv) {
+        const rlvMatches = Array.from(value.matchAll(RLV_ACCESS_PATTERN))
+        rlvMatches.forEach(match => {
+          const idxValue = parseInt(match[1], 10)
+          if (RLvLength < idxValue) {
+            RLvLength = idxValue
+          }
+        })
+      }
     })
 
     vars = {
@@ -203,16 +215,12 @@ function computedBranchHelper(
     texts = {
       SLv: t('skill-query.skill-level'),
       CLv: t('skill-query.character-level'),
+      RLv: Array(RLvLength).fill(t('skill-query.registlet-level-abbreviation')),
       stack: stack,
       ...extendsDatas.texts,
     } as HandleFormulaTexts
   } else {
     const stack: number[] = []
-
-    const hasRLv = !!computing.varGetters.registletLevel
-    const RLv: number[] =
-      computing.varGetters.registletLevel?.(branchItem.default.parent.parent) ??
-      []
 
     if (stackIds.length > 0) {
       const computeFormulaExtraValue = computing.config.computeFormulaExtraValue
@@ -366,6 +374,7 @@ function computedBranchHelper(
     handleFormulaExtra,
     branchItem,
     formulaDisplayMode,
+    checkRegistletLevel,
   }
 }
 
@@ -544,7 +553,7 @@ function handleBranchStats(
         helper.branchItem.prop(displayTitleKey)
       )
       displayTitleContainer.containers.forEach(ctner => handleHighlight(ctner))
-      container.setDisplayTitle(displayTitleContainer.result)
+      container.setDisplayTitle(displayTitleContainer)
     }
     const conditionValueKey = helper.branchItem.propKey(
       container.key,

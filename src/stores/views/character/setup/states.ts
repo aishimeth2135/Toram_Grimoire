@@ -4,11 +4,12 @@ import Grimoire from '@/shared/Grimoire'
 
 import { Character } from '@/lib/Character/Character'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
-import { FoodBuild } from '@/lib/Character/Food'
+import { RegistletBuild } from '@/lib/Character/RegistletBuild/RegistletBuild'
 
-import { useCharacterFoodStore } from '../food'
+import { FoodsBuild } from '../../../../lib/Character/Food/FoodBuild'
+import { SkillBuild } from '../../../../lib/Character/SkillBuild/SkillBuild'
+import { useCharacterFoodStore } from '../food-build'
 import { useCharacterSkillBuildStore } from '../skill-build'
-import { SkillBuild } from '../skill-build/SkillBuild'
 
 export function setupCharacters() {
   const foodStore = useCharacterFoodStore()
@@ -22,7 +23,8 @@ export function setupCharacters() {
       Character,
       {
         skillBuild: SkillBuild | null
-        foodBuild: FoodBuild | null
+        foodBuild: FoodsBuild | null
+        registletBuild: RegistletBuild | null
       }
     >()
     return (chara: Character) => {
@@ -30,6 +32,7 @@ export function setupCharacters() {
         characterStates.set(chara, {
           skillBuild: null,
           foodBuild: null,
+          registletBuild: null,
         })
       }
       return characterStates.get(chara)!
@@ -65,7 +68,7 @@ export function setupCharacters() {
     skillBuildStore.setCurrentSkillBuild(skillBuild)
   }
 
-  const setCharacterFoodBuild = (foodBuild: FoodBuild) => {
+  const setCharacterFoodBuild = (foodBuild: FoodsBuild) => {
     getCharacterState(currentCharacter.value).foodBuild = foodBuild
     foodStore.setCurrentFoodBuild(foodBuild)
   }

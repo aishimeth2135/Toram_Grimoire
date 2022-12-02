@@ -3,13 +3,17 @@
     v-if="!!(result instanceof SkillBranchStatResult)"
     class="inline-flex items-center"
   >
-    <span class="text-primary-90">{{ result.statResultData.title }}</span>
+    <RenderDisplayTitle
+      class="text-primary-90"
+      :title="result.statResultData.title"
+    />
     <span class="text-primary-50">{{ result.statResultData.sign }}</span>
     <span>
       <RenderResult :key="result.instanceId" />
     </span>
   </span>
-  <RenderResult v-else :key="result.instanceId" />
+  <RenderResult v-else-if="result" :key="result.instanceId" />
+  <span v-else>0</span>
 </template>
 
 <script lang="ts" setup>
@@ -44,7 +48,7 @@ import SkillBranchPopover from './skill-branch-popover.vue'
 import SkillLinkPopover from './skill-link-popover.vue'
 
 interface Props {
-  result: SkillBranchResultBase
+  result: SkillBranchResultBase | null
   displayResult?: string
   parseGlossaryTag?: boolean
 }
@@ -141,12 +145,12 @@ const RenderTextParts = (parts: SkillBranchTextResultPartValue[]) => {
           name: part.value,
           displayName: part.metadata.get('display-name'),
         })
-      } else if (part.type === TextResultContainerPartTypes.Custom) {
-        if (part.customType === 'skill') {
+      } else if (part.type === TextResultContainerPartTypes.Other) {
+        if (part.subType === 'skill') {
           return h(SkillLinkPopover, { name: part.value })
-        } else if (part.customType === 'branch') {
+        } else if (part.subType === 'branch') {
           return h(SkillBranchPopover, { branchName: part.value })
-        } else if (part.customType === 'mark') {
+        } else if (part.subType === 'mark') {
           return h('span', { class: 'text-primary-50' }, part.value)
         }
       }
@@ -175,6 +179,21 @@ const RenderPlainTextParts = (parts: TextResultContainerPartValue[]) => {
 
 const glossaryTagParseItem = getCommonTextParseItems().glossaryTag
 
+const RenderTextResult = (res: SkillBranchTextResult) => {
+  return h('div', RenderTextParts(res.parts))
+}
+
+const RenderDisplayTitle = ({
+  title,
+}: {
+  title: SkillBranchTextResult | string
+}) => {
+  if (typeof title === 'string') {
+    return h('div', title)
+  }
+  return RenderTextResult(title)
+}
+
 const RenderResult = () => {
   if (props.result instanceof SkillBranchResult) {
     if (props.parseGlossaryTag) {
@@ -186,7 +205,7 @@ const RenderResult = () => {
     return RenderContainerResult(props.result)
   }
   if (props.result instanceof SkillBranchTextResult) {
-    return h('div', RenderTextParts(props.result.parts))
+    return RenderTextResult(props.result)
   }
   return h('span', '')
 }

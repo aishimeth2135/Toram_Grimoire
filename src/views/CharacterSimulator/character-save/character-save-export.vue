@@ -78,12 +78,12 @@ import {
   CharacterSimulatorSaveData,
   EquipmentSaveDataWithIndex,
 } from '@/stores/views/character'
-import { SkillBuildSaveData } from '@/stores/views/character/skill-build/SkillBuild'
 
 import Cyteria from '@/shared/utils/Cyteria'
 
 import { CharacterSaveData } from '@/lib/Character/Character'
-import { FoodsSaveData } from '@/lib/Character/Food'
+import { FoodsBuildSaveData } from '@/lib/Character/Food/FoodBuild'
+import { SkillBuildSaveData } from '@/lib/Character/SkillBuild/SkillBuild'
 
 import { setupCharacterStore } from '../setup'
 
@@ -147,7 +147,7 @@ const exportDataItemSkillBuilds: ExportDataItem<SkillBuildSaveData> = reactive({
   items: new Set(),
   originalItems: [],
 })
-const exportDataItemFoodBuilds: ExportDataItem<FoodsSaveData> = reactive({
+const exportDataItemFoodBuilds: ExportDataItem<FoodsBuildSaveData> = reactive({
   id: ExportDataItemIds.FoodBuilds,
   title: t('character-simulator.food-build.food-build'),
   collapse: false,
@@ -220,6 +220,7 @@ const submit = () => {
     equipments: getItems(exportDataItemEquipments),
     skillBuilds: getItems(exportDataItemSkillBuilds),
     foodBuilds: getItems(exportDataItemFoodBuilds),
+    registletBuilds: [],
     characterStates: originalData.value!.characterStates.filter(state =>
       characters.some(item => item.id === state.id)
     ),

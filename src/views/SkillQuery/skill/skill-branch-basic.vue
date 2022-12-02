@@ -53,7 +53,6 @@ const ATTR_DATAS: {
 
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 import SkillComputingContainer, {
   SkillBranchItem,
@@ -75,8 +74,6 @@ const container = computed(() =>
   BasicHandler(props.computing, branchItem.value)
 )
 
-const { t } = useI18n()
-
 const attrDatas = computed(() => {
   return ATTR_DATAS.filter(data => container.value.has(data.key)).map(
     ({ key, icon }) => {
@@ -87,7 +84,7 @@ const attrDatas = computed(() => {
       return {
         key,
         icon: iconRes,
-        title: t(`skill-query.branch.basic.${key}: title`),
+        title: container.value.title(key),
         result: container.value.result(key),
       }
     }

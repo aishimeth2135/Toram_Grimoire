@@ -49,8 +49,6 @@ function cloneBranchProps(
   return props
 }
 
-type SkillDisplayData = Record<string, string>
-
 interface HandleBranchLangPropsOptions {
   rootKey?: SkillBranchNames
   type?: 'auto' | 'normal' | 'value' | 'boolean'
@@ -149,11 +147,12 @@ interface HandleDisplayDataOptions {
   formulaDisplayMode?: FormulaDisplayModes
 }
 
+type SkillDisplayData = Map<string, string>
+
 const FORMULA_VALUE_TO_PERCENTAGE_PATTERN =
   /([$_a-zA-Z][$_a-zA-Z0-9]*)\*(\d\.\d+)/g
 const MUL_PATTERN = /\*/g
 const FORMULA_FLOAT_TO_FIXED = /(\d+\.)(\d{4,})/g
-const TEXT_SEPARATE_PATTERN = /\(\(((?:(?!\(\().)+)\)\)/g
 
 function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   computing: SkillComputingContainer,
@@ -220,7 +219,7 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
   const langDatas = handleBranchLangProps(helper, props, langs)
   const statDatas = handleBranchStats(helper, branchItem.stats)
 
-  const result = {} as SkillDisplayData
+  const titlesResult: SkillDisplayData = new Map()
 
   const handleContainerFormulaValue = (container: SkillBranchResultBase) => {
     container.handle(value => {
@@ -277,70 +276,52 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
         }
       : (stat: StatComputed, value: string) => value
 
-  Object.entries(valueDatas).forEach(([key, container]) => {
+  Object.values(valueDatas).forEach(container => {
     handleContainerFormulaValue(container)
-
-    let str = container.result
-    str = handleFunctionHighlight(str)
+    container.handleDisplay(str => handleFunctionHighlight(str))
     handlePropHistoryHighlight(container)
-
-    result[key] = str
   })
 
-  const handleTextResult = (str: string) => {
-    str = str.replace(
-      TEXT_SEPARATE_PATTERN,
-      (match, m1) =>
-        `<span class="cy--text-separate border-primary-50">${m1}</span>`
-    )
-    return str
-  }
-
-  Object.entries(textDatas).forEach(([key, container]) => {
+  Object.values(textDatas).forEach(container => {
     handleContainerFormulaValue(container)
 
-    container.handleStrings(str => {
-      str = handleFunctionHighlight(str)
-      return str
+    container.containers.forEach(ctner => {
+      handlePropHistoryHighlight(ctner)
+      ctner.handleDisplay(str => handleFunctionHighlight(str))
     })
-    container.containers.forEach(ctner => handlePropHistoryHighlight(ctner))
-
-    result[key] = container.result
   })
 
-  Object.entries(langDatas).forEach(([key, container]) => {
+  Object.values(langDatas).forEach(container => {
     handlePropHistoryHighlight(container)
-    result[key] = container.result
   })
 
   statDatas.forEach(container => {
     handleContainerFormulaValue(container)
     container.handle(value => handleStatHistoryHighlight(container.stat, value))
-    container.handle(value => handleFunctionHighlight(value))
+    container.handleDisplay(value => handleFunctionHighlight(value))
 
     const sign =
       isNumberString(container.value) && parseFloat(container.value) < 0
         ? ''
         : '+'
     const showData = container.stat.getShowData()
-    const title = container.displayTitle
-      ? handleTextResult(container.displayTitle)
-      : showData.title
+    const title = container.displayTitle ?? showData.title
     container.storeStatResultData({ title, sign })
     // container.handle(value => title + sign + value)
   })
 
   titles.forEach(key => {
-    result[key + ': title'] = t(
-      `skill-query.branch.${branchItem.name}.${key}: title`
+    titlesResult.set(
+      key,
+      t(`skill-query.branch.${branchItem.name}.${key}: title`)
     )
   })
 
-  const containers = {
-    ...valueDatas,
-    ...textDatas,
-    ...langDatas,
-  }
+  const containers = new Map([
+    ...Object.entries(valueDatas),
+    ...Object.entries(textDatas),
+    ...Object.entries(langDatas),
+  ] as [string, SkillBranchResult][])
 
   pureValues.forEach(key => {
     const origin = props.get(key) || '0'
@@ -357,11 +338,9 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
       handleContainerFormulaValue(container)
     }
 
-    let str = container.result
-    str = handleFunctionHighlight(str)
+    container.handleDisplay(str => handleFunctionHighlight(str))
 
-    containers[key] = container
-    result[key] = str
+    containers.set(key, container)
   })
 
   pureDatas.forEach(key => {
@@ -369,20 +348,22 @@ function handleDisplayData<Branch extends SkillBranchItemBaseChilds>(
       return
     }
     const value = props.get(key)!
-    result[key] = value
-    containers[key] = new SkillBranchResult(
-      ResultContainerTypes.String,
-      branchItem,
+    containers.set(
       key,
-      value,
-      value
+      new SkillBranchResult(
+        ResultContainerTypes.String,
+        branchItem,
+        key,
+        value,
+        value
+      )
     )
   })
 
   return new DisplayDataContainer({
     branchItem,
     containers,
-    value: result,
+    titles: titlesResult,
     statContainers: statDatas,
   })
 }

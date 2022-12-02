@@ -63,7 +63,7 @@ export interface ExtraSuffixBranchData {
   icon: string
   title: string
   titleProps?: string[]
-  result?: SkillBranchResultBase
+  result: SkillBranchResultBase | null
   statContainers?: SkillBranchStatResult[]
   otherResults?: Map<string, SkillBranchResultBase>
 }
@@ -85,6 +85,7 @@ export function setupCommonExtraSuffixBranches(
           id: idx.toString(),
           icon: 'ic:round-done',
           title: dataContainer.get('condition'),
+          result: null,
         }
         if (dataContainer.get('target')) {
           baseData.titleProps = [dataContainer.get('target')]

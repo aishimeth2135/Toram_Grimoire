@@ -22,7 +22,7 @@
           <tbody>
             <tr v-for="key in displayAttrsKeys" :key="key">
               <td class="border-r border-primary-30 pr-2 text-right">
-                {{ displayContainer.get(`${key}: title`) }}
+                {{ displayContainer.title(key) }}
               </td>
               <td
                 class="pl-2 text-primary-60"

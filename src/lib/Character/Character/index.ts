@@ -26,12 +26,18 @@ import {
   EquipmentFieldTypes,
 } from './enums'
 
+interface CharacterBuildBindOnCharacter {
+  instanceId: number
+  loadedId: string | null
+  matchLoadedId: (loadCategory: string, id: number | null) => boolean
+}
+
 type CharacterBaseStatValidType =
   | CharacterBaseStatTypes
   | CharacterOptionalBaseStatTypes
 
 let _characterAutoIncreasement = 0
-class Character {
+class Character implements CharacterBuildBindOnCharacter {
   private _baseStats: readonly [
     CharacterBaseStat<CharacterBaseStatTypes.STR>,
     CharacterBaseStat<CharacterBaseStatTypes.DEX>,
@@ -348,7 +354,7 @@ class Character {
     }
   }
 
-  matchLoadedId(loadCategory: string, id: number) {
+  matchLoadedId(loadCategory: string, id: number | null) {
     return this.loadedId !== null && `${loadCategory}-${id}` === this.loadedId
   }
 }
@@ -1087,4 +1093,5 @@ export type {
   CharacterStatResult,
   CharacterStatFormulaResultConditionalBase,
   StatPartsDetailAdditionalValueItem,
+  CharacterBuildBindOnCharacter,
 }
