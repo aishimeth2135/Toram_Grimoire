@@ -39,6 +39,7 @@ export default function (root: RegistletSystem, csvData: CsvData) {
 
   let currentCategory: RegistletCategory | null = null
   let currentItem: RegistletItemBase | null = null
+  let idPrefix = ''
 
   csvData.forEach(row => {
     if (row[CATEGORY.ID] && row[CATEGORY.ID].startsWith('@')) {
@@ -90,6 +91,7 @@ export default function (root: RegistletSystem, csvData: CsvData) {
         const skills = splitComma(row[LINK])
           .map(item => Grimoire.Skill.skillRoot.findSkillById(item))
           .filter(item => item) as Skill[]
+        infos.id = `-${idPrefix}-${infos.id}`
         const newItem = new RegistletItemBaseSkill(
           currentCategory as RegistletCategory<RegistletItemBaseSkill>,
           infos,
@@ -105,6 +107,8 @@ export default function (root: RegistletSystem, csvData: CsvData) {
         currentCategory.items.push(newItem)
         currentItem = newItem
       }
+    } else if (row[ID]) {
+      idPrefix = row[ID]
     }
 
     if (!currentItem) {

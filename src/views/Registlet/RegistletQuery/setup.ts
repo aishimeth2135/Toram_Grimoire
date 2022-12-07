@@ -1,5 +1,6 @@
 import { h, reactive } from 'vue'
 
+import { ResultContainer } from '@/lib/common/ResultContainer'
 import { TextResultContainerPartTypes } from '@/lib/common/ResultContainer/enums'
 import {
   TextParseItem,
@@ -29,8 +30,7 @@ const getTextParseItems = (() => {
   return () => {
     if (!items) {
       const commonTextParseItems = getCommonTextParseItems()
-      commonTextParseItems.separate.pattern = /\$\{([^}]+)\}/g
-      items = [commonTextParseItems.separate, commonTextParseItems.glossaryTag]
+      items = [commonTextParseItems.value, commonTextParseItems.glossaryTag]
     }
     return items
   }
@@ -45,13 +45,21 @@ export function getRegistletCaptionRender(
       if (typeof part === 'string') {
         return h('span', part)
       }
-      if (part.type === TextResultContainerPartTypes.Separate) {
-        return h(
+      if (part instanceof ResultContainer) {
+        const mainNode = h(
           'span',
           { class: 'cy--text-separate text-primary-50' },
           handleValue(part.value)
         )
-      } else if (part.type === TextResultContainerPartTypes.GlossaryTag) {
+        if (part.displayOptions.unit) {
+          return h('span', { class: 'text-primary-50' }, [
+            mainNode,
+            part.displayOptions.unit,
+          ])
+        }
+        return mainNode
+      }
+      if (part.type === TextResultContainerPartTypes.GlossaryTag) {
         return h(GlossaryTagPopover, {
           name: part.value,
           displayName: part.metadata.get('display-name'),

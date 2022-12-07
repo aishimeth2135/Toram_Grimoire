@@ -179,7 +179,13 @@ import CharacterSkill from './character-skill/index.vue'
 import CharacterStats from './character-stats/index.vue'
 
 import { CharacterSimulatorInjectionKey } from './injection-keys'
-import { TabIds, setupCharacterFoodStore, setupCharacterStore } from './setup'
+import {
+  TabIds,
+  setupCharacterFoodStore,
+  setupCharacterStore,
+  setupCharacterRegistletStore,
+} from './setup'
+import CharacterRegistlet from './character-registlet/index.vue'
 
 const { t } = useI18n()
 const { modals, mainContents, tabs, sideContents, toggle } = ToggleService({
@@ -197,12 +203,15 @@ const { modals, mainContents, tabs, sideContents, toggle } = ToggleService({
     TabIds.Skill,
     TabIds.Food,
     TabIds.Save,
+    TabIds.Registlet,
   ] as TabIds[],
   sideContents: ['tabs', 'panel'] as const,
 })
 
 const { store, characters } = setupCharacterStore()
 const { store: foodStore, foodBuilds } = setupCharacterFoodStore()
+const { store: registletStore, registletBuilds } =
+  setupCharacterRegistletStore()
 
 const mainStore = useMainStore()
 const router = useRouter()
@@ -249,12 +258,24 @@ const tabDatas = computed(() => {
       icon: 'mdi-food-apple',
       text: t('character-simulator.food-build.title'),
     },
+    // {
+    //   id: TabIds.Registlet,
+    //   icon: 'game-icons:beveled-star',
+    //   text: t('character-simulator.registlet-build.title'),
+    // },
     {
       id: TabIds.Save,
       icon: 'mdi-ghost',
       text: t('character-simulator.save-load-control.title'),
     }
   )
+  if (mainStore.devMode) {
+    options.push({
+      id: TabIds.Registlet,
+      icon: 'game-icons:beveled-star',
+      text: t('character-simulator.registlet-build.title'),
+    })
+  }
 
   return options
 })
@@ -268,6 +289,9 @@ const currentTab = computed(() => {
   }
   if (tabs[TabIds.Food]) {
     return CharacterFood
+  }
+  if (tabs[TabIds.Registlet]) {
+    return CharacterRegistlet
   }
   if (tabs[TabIds.Save]) {
     return CharacterSave
@@ -343,6 +367,12 @@ onMounted(async () => {
   }
   if (foodBuilds.value.length === 0 || !foodStore.currentFoodBuild) {
     foodStore.createFoodBuild()
+  }
+  if (
+    registletBuilds.value.length === 0 ||
+    !registletStore.currentRegistletBuild
+  ) {
+    registletStore.createRegistletBuild()
   }
   if (mainStore.redirectPathName === 'SkillSimulator') {
     await nextTick()

@@ -153,6 +153,11 @@ food-build:
   introduction:
     - 透過點擊前方的圓點來選取最多五個料理。
     - 原本是0級的料理在提升等級時會自動選取。
+registlet-build:
+  title: 雷吉斯托環配置
+  registlet-build: 托環配置
+  edit-registlet: 編輯托環
+  show-detail: 顯示詳細資訊
 combo:
   tags:
     consecutive: 連擊

@@ -5,6 +5,7 @@ import { RegistletItemBase } from '@/lib/Registlet/Registlet'
 import { CharacterBuildBindOnCharacter } from '../Character'
 
 interface RegistletBuildSaveData {
+  id: number
   name: string
   items: RegistletItemSaveData[]
 }
@@ -32,12 +33,23 @@ class RegistletBuild implements CharacterBuildBindOnCharacter {
     this.items = []
   }
 
-  appendItem(base: RegistletItemBase) {
-    this.items.push(new RegistletItem(base))
+  itemSelected(base: RegistletItemBase): boolean {
+    return this.items.some(item => item.base.id === base.id)
+  }
+
+  toggleItem(base: RegistletItemBase): void {
+    const idx = this.items.findIndex(item => item.base.id === base.id)
+    if (idx > -1) {
+      // eslint-disable-next-line vue/no-mutating-props
+      this.items.splice(idx, 1)
+    } else {
+      this.items.push(new RegistletItem(this, base))
+    }
   }
 
   save(): RegistletBuildSaveData {
     return {
+      id: this.instanceId,
       name: this.name,
       items: this.items.map(item => item.save()),
     }
@@ -57,24 +69,31 @@ class RegistletBuild implements CharacterBuildBindOnCharacter {
     )
   }
 
-  static load(data: RegistletBuildSaveData) {
+  static load(loadedCategory: string, data: RegistletBuildSaveData) {
     const newBuild = new RegistletBuild(data.name)
+    newBuild.loadedId = `${loadedCategory}-${data.id}`
     newBuild.items = data.items
-      .map(item => RegistletItem.load(item))
+      .map(item => RegistletItem.load(newBuild, item))
       .filter(item => item) as RegistletItem[]
     return newBuild
   }
 }
 
 class RegistletItem {
+  private build: RegistletBuild
   base: RegistletItemBase
   level: number
   enabled: boolean
 
-  constructor(base: RegistletItemBase) {
+  constructor(build: RegistletBuild, base: RegistletItemBase) {
+    this.build = build
     this.base = base
     this.level = base.maxLevel
     this.enabled = true
+  }
+
+  remove() {
+    this.build.toggleItem(this.base)
   }
 
   save(): RegistletItemSaveData {
@@ -86,16 +105,16 @@ class RegistletItem {
   }
 
   clone(): RegistletItem {
-    const newItem = new RegistletItem(this.base)
+    const newItem = new RegistletItem(this.build, this.base)
     newItem.level = this.level
     newItem.enabled = this.enabled
     return newItem
   }
 
-  static load(data: RegistletItemSaveData) {
+  static load(build: RegistletBuild, data: RegistletItemSaveData) {
     const base = Grimoire.Registlet.getRegistletItemById(data.id)
     if (base) {
-      const newItem = new RegistletItem(base)
+      const newItem = new RegistletItem(build, base)
       newItem.level = data.level
       newItem.enabled = data.enabled
       return newItem

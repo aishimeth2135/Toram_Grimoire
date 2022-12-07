@@ -8,7 +8,10 @@ import {
   EquipmentSaveData,
 } from '@/lib/Character/CharacterEquipment'
 import { FoodsBase } from '@/lib/Character/Food'
-import { RegistletBuildSaveData } from '@/lib/Character/RegistletBuild/RegistletBuild'
+import {
+  RegistletBuild,
+  RegistletBuildSaveData,
+} from '@/lib/Character/RegistletBuild/RegistletBuild'
 import { Skill } from '@/lib/Skill/Skill'
 
 import {
@@ -25,6 +28,7 @@ import {
   prepareSetupCharacter,
   setupCharacterSkillItems,
   setupFoodStats,
+  setupRegistletStats,
 } from './setup'
 import setupDamageCalculation, {
   CalculationOptions,
@@ -88,6 +92,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     handleFood: true,
     handleActiveSkill: true,
     handlePassiveSkill: true,
+    handleRegistlet: true,
     skillDisplayStatsOnly: true,
   })
 
@@ -103,6 +108,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     setCurrentCharacter,
     setCharacterSkillBuild,
     setCharacterFoodBuild,
+    setCharacterRegistletBuild,
     createCharacter,
     removeCharacter,
   } = setupCharacters()
@@ -120,6 +126,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     equipments.value = []
     skillBuildStore.reset()
     foodStore.resetFoodBuilds()
+    registletBuildStore.resetRegistletBuildStore()
   }
 
   const deleteAllSavedData = () => {
@@ -183,8 +190,8 @@ export const useCharacterStore = defineStore('view-character', () => {
       equipments: equipmentsData,
       skillBuilds: skillBuildsData,
       foodBuilds: foodBuildsData,
-      characterStates,
       registletBuilds: registletBuildsData,
+      characterStates,
     }
   }
   const loadCharacterSimulatorSaveData = (() => {
@@ -195,7 +202,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       { ignoreSkillBuilds = false }: { ignoreSkillBuilds?: boolean } = {}
     ) => {
       _loadCount += 1
-      const loadCategory = 'common-' + _loadCount
+      const loadedCategory = 'common-' + _loadCount
 
       // lagacy
       if (saveData.equipments.some(data => typeof data.idx !== 'number')) {
@@ -212,13 +219,13 @@ export const useCharacterStore = defineStore('view-character', () => {
         allValidEquipmentsLength
       ).fill(null)
       saveData.equipments.forEach(data => {
-        const equip = CharacterEquipment.loadEquipment(loadCategory, data)
+        const equip = CharacterEquipment.loadEquipment(loadedCategory, data)
         allValidEquipments[data.idx] = equip
       })
 
       saveData.characters.forEach(charaRow => {
         const chara = new Character()
-        const load = chara.load(loadCategory, charaRow, allValidEquipments)
+        const load = chara.load(loadedCategory, charaRow, allValidEquipments)
         if (load) {
           createCharacter(chara, false)
         }
@@ -230,31 +237,50 @@ export const useCharacterStore = defineStore('view-character', () => {
 
       if (!ignoreSkillBuilds) {
         saveData.skillBuilds.forEach(buildData => {
-          const build = SkillBuild.load(loadCategory, buildData)
+          const build = SkillBuild.load(loadedCategory, buildData)
           skillBuildStore.appendSkillBuild(build, false)
         })
       }
 
       saveData.foodBuilds.forEach(data => {
         const foods = new FoodsBuild(foodStore.foodsBase as FoodsBase)
-        const load = foods.load(loadCategory, data)
+        const load = foods.load(loadedCategory, data)
         if (!load.error) {
           foodStore.createFoodBuild({ foodBuild: foods }, false)
         }
       })
-      ;(saveData.characterStates || []).forEach(item => {
+
+      saveData.registletBuilds.forEach(data => {
+        const build = RegistletBuild.load(loadedCategory, data)
+        registletBuildStore.appendRegistletBuild(build, false)
+      })
+
+      saveData.characterStates.forEach(item => {
         const chara = characters.value.find(ch =>
-          ch.matchLoadedId(loadCategory, item.id)
+          ch.matchLoadedId(loadedCategory, item.id)
         )
         if (chara) {
-          const skillBuild = (skillBuildStore.skillBuilds.find(build =>
-            build.matchLoadedId(loadCategory, item.skillBuildId)
-          ) ?? null) as SkillBuild | null
-          getCharacterState(chara).skillBuild = skillBuild
-          const foodBuild = (foodStore.foodBuilds.find(build =>
-            build.matchLoadedId(loadCategory, item.foodBuildId)
-          ) ?? null) as FoodsBuild | null
-          getCharacterState(chara).foodBuild = foodBuild
+          const charaState = getCharacterState(chara)
+
+          // skill
+          const skillBuild = (skillBuildStore.skillBuilds as SkillBuild[]).find(
+            build => build.matchLoadedId(loadedCategory, item.skillBuildId)
+          )
+          charaState.skillBuild = skillBuild ?? null
+
+          // food
+          const foodBuild = (foodStore.foodBuilds as FoodsBuild[]).find(build =>
+            build.matchLoadedId(loadedCategory, item.foodBuildId)
+          )
+          charaState.foodBuild = foodBuild ?? null
+
+          // registlet
+          const registletBuild = (
+            registletBuildStore.registletBuilds as RegistletBuild[]
+          ).find(build =>
+            build.matchLoadedId(loadedCategory, item.registletBuildId)
+          )
+          charaState.registletBuild = registletBuild ?? null
         }
       })
     }
@@ -274,6 +300,9 @@ export const useCharacterStore = defineStore('view-character', () => {
         // migrate
         if (!datas.registletBuilds) {
           datas.registletBuilds = []
+        }
+        if (!datas.characterStates) {
+          datas.characterStates = []
         }
 
         loadCharacterSimulatorSaveData(datas)
@@ -427,6 +456,10 @@ export const useCharacterStore = defineStore('view-character', () => {
     computed(() => foodStore.currentFoodBuild)
   )
 
+  const { allRegistletBuildStats } = setupRegistletStats(
+    computed(() => registletBuildStore.currentRegistletBuild)
+  )
+
   const {
     characterStatCategoryResults,
     postponedActiveSkillResultStates,
@@ -438,6 +471,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     currentSkillBuild,
     skillPureStats,
     allFoodBuildStats,
+    allRegistletBuildStats,
     skillItemStates,
     setupOptions
   )
@@ -456,6 +490,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       currentSkillBuild,
       skillPureStats,
       allFoodBuildStats,
+      allRegistletBuildStats,
       _skillItemStates,
       setupOptions
     )
@@ -545,6 +580,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     setCurrentCharacter,
     setCharacterSkillBuild,
     setCharacterFoodBuild,
+    setCharacterRegistletBuild,
     createCharacter,
     removeCharacter,
     appendEquipments,

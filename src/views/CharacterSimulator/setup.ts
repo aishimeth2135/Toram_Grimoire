@@ -3,12 +3,14 @@ import { Ref } from 'vue'
 
 import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterFoodStore } from '@/stores/views/character/food-build'
+import { useCharacterRegistletBuildStore } from '@/stores/views/character/registlet-build'
 import { CharacterStatCategoryResult } from '@/stores/views/character/setup'
 import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
 
 import { Character } from '@/lib/Character/Character'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { FoodsBuild } from '@/lib/Character/Food/FoodBuild'
+import { RegistletBuild } from '@/lib/Character/RegistletBuild/RegistletBuild'
 import { SkillBuild } from '@/lib/Character/SkillBuild/SkillBuild'
 
 export function setupCharacterStore() {
@@ -53,6 +55,17 @@ export function setupCharacterFoodStore() {
   }
 }
 
+export function setupCharacterRegistletStore() {
+  const store = useCharacterRegistletBuildStore()
+  const { registletBuilds, currentRegistletBuild } = storeToRefs(store)
+
+  return {
+    store,
+    registletBuilds: registletBuilds as Ref<RegistletBuild[]>,
+    currentRegistletBuild: currentRegistletBuild as Ref<RegistletBuild>,
+  }
+}
+
 export const enum TabIds {
   Basic = 'basic',
   EquipmentFields = 'equipmentFields',
@@ -60,4 +73,5 @@ export const enum TabIds {
   Skill = 'skill',
   Food = 'food',
   Save = 'save',
+  Registlet = 'registlet',
 }

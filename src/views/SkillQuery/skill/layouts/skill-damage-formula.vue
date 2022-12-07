@@ -29,7 +29,6 @@
         icon="ic-round-add"
       />
       <SkillBranchPropValue
-        v-if="container.has('extra_constant')"
         class="attr-item"
         :result="container.result('extra_constant')"
       />
