@@ -1,17 +1,20 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { ComputedRef, Ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { RegistletBuild } from '@/lib/Character/RegistletBuild/RegistletBuild'
 
 export const useCharacterRegistletBuildStore = defineStore(
   'view-character-registlet-build',
   () => {
+    const { t } = useI18n()
+
     const builds: Ref<RegistletBuild[]> = ref([])
     const currentBuildIndex = ref(-1)
 
-    const currentBuild: ComputedRef<RegistletBuild | null> = computed(
-      () => builds.value[currentBuildIndex.value] ?? null
+    const currentBuild: ComputedRef<RegistletBuild> = computed(
+      () => builds.value[currentBuildIndex.value]
     )
 
     const setCurrentRegistletBuild = (idx: number | RegistletBuild | null) => {
@@ -26,7 +29,11 @@ export const useCharacterRegistletBuildStore = defineStore(
     }
 
     const createRegistletBuild = () => {
-      const newBuild = new RegistletBuild('')
+      const newBuild = new RegistletBuild(
+        t('character-simulator.registlet-build.registlet-build') +
+          ' ' +
+          (builds.value.length + 1).toString()
+      )
       builds.value.push(newBuild)
       currentBuildIndex.value = builds.value.length - 1
       return newBuild
@@ -58,7 +65,7 @@ export const useCharacterRegistletBuildStore = defineStore(
       return builds.value.map(build => build.save())
     }
 
-    const reset = () => {
+    const resetRegistletBuildStore = () => {
       builds.value = []
       currentBuildIndex.value = -1
     }
@@ -73,7 +80,7 @@ export const useCharacterRegistletBuildStore = defineStore(
       removeCurrentRegistletBuild,
       appendRegistletBuild,
       saveRegistletBuilds,
-      reset,
+      resetRegistletBuildStore,
     }
   }
 )

@@ -24,8 +24,12 @@ import {
   EquipmentFieldTypes,
 } from '@/lib/Character/Character/enums'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
-import { StatComputed, StatRestriction } from '@/lib/Character/Stat'
+import { FoodsBuild } from '@/lib/Character/Food/FoodBuild'
+import { RegistletBuild } from '@/lib/Character/RegistletBuild/RegistletBuild'
+import { SkillBuild } from '@/lib/Character/SkillBuild/SkillBuild'
+import { StatBase, StatComputed, StatRestriction } from '@/lib/Character/Stat'
 import { StatRecorded } from '@/lib/Character/Stat'
+import { StatTypes } from '@/lib/Character/Stat/enums'
 import { Skill, SkillBranch } from '@/lib/Skill/Skill'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import SkillComputingContainer, {
@@ -47,8 +51,6 @@ import PassiveHandler from '@/views/SkillQuery/skill/branch-handlers/PassiveHand
 import StackHandler from '@/views/SkillQuery/skill/branch-handlers/StackHandler'
 import DisplayDataContainer from '@/views/SkillQuery/skill/branch-handlers/handle/DisplayDataContainer'
 
-import { FoodsBuild } from '../../../../lib/Character/Food/FoodBuild'
-import { SkillBuild } from '../../../../lib/Character/SkillBuild/SkillBuild'
 import { checkStatRestriction, getCharacterElement } from '../utils'
 import { getSkillStatContainerValid, mergeStats } from './utils'
 
@@ -77,6 +79,7 @@ export interface SkillResultsState {
 
 interface CharacterSetupOptions {
   handleFood: boolean
+  handleRegistlet: boolean
   handleActiveSkill: boolean
   handlePassiveSkill: boolean
   skillDisplayStatsOnly: boolean
@@ -222,7 +225,7 @@ export function prepareSetupCharacter() {
     character: Ref<Character | null>,
     skillBuild: Ref<SkillBuild | null>,
     skillItemStates: Map<Skill, SkillItemState>,
-    handleOptions: Ref<CharacterSetupOptions>,
+    setupOptions: Ref<CharacterSetupOptions>,
     postponeOptions?: SkillSetupPostponeOptions
   ) => {
     const isPostpone = !!postponeOptions
@@ -424,22 +427,11 @@ export function prepareSetupCharacter() {
       Grimoire.Skill.skillRoot.skillTreeCategorys.forEach(stc =>
         stc.skillTrees.forEach(st => allSkills.push(...st.skills))
       )
-      const computingResultsActive: Map<
-        Skill,
-        ComputedRef<SkillResultBase[]>
-      > = new Map()
-      const computingResultsPassive: Map<
-        Skill,
-        ComputedRef<SkillResultBase[]>
-      > = new Map()
-      const computingResultsDamage: Map<
-        Skill,
-        ComputedRef<SkillResultBase[]>
-      > = new Map()
-      const computingResultsNext: Map<
-        Skill,
-        ComputedRef<SkillResultBase[]>
-      > = new Map()
+      type ComputingResultsMap = Map<Skill, ComputedRef<SkillResultBase[]>>
+      const computingResultsActive: ComputingResultsMap = new Map()
+      const computingResultsPassive: ComputingResultsMap = new Map()
+      const computingResultsDamage: ComputingResultsMap = new Map()
+      const computingResultsNext: ComputingResultsMap = new Map()
       const stackContainers: Map<
         Skill,
         ComputedRef<DisplayDataContainerAlly[]>
@@ -505,7 +497,7 @@ export function prepareSetupCharacter() {
 
         // active
         const checkBranchStats = (stats: StatComputed[]) =>
-          !handleOptions.value.skillDisplayStatsOnly || stats.length !== 0
+          !setupOptions.value.skillDisplayStatsOnly || stats.length !== 0
         const checkActive = (bch: SkillBranchItem) => {
           if (!checkPostpone(bch)) {
             return false
@@ -754,10 +746,10 @@ export function prepareSetupCharacter() {
         }
       }
       const list: SkillResultsState[] = []
-      if (handleOptions.value.handleActiveSkill) {
+      if (setupOptions.value.handleActiveSkill) {
         list.push(...activeSkillResultStates.value)
       }
-      if (handleOptions.value.handlePassiveSkill) {
+      if (setupOptions.value.handlePassiveSkill) {
         list.push(...passiveSkillResultStates.value)
       }
       if (list.length === 0) {
@@ -833,8 +825,9 @@ export function prepareSetupCharacter() {
     skillBuild: Ref<SkillBuild | null>,
     skillStats: Ref<StatRecorded[]>,
     foodStats: Ref<StatRecorded[]>,
+    registletStats: Ref<StatRecorded[]>,
     skillItemStates: Map<Skill, SkillItemState>,
-    handleOptions: Ref<CharacterSetupOptions>
+    setupOptions: Ref<CharacterSetupOptions>
   ) => {
     const allEquipmentStats = computed(() => {
       if (!character.value) {
@@ -1053,8 +1046,11 @@ export function prepareSetupCharacter() {
       const allStats = new Map<string, StatRecorded>()
       mergeStats(allStats, allEquipmentStats.value)
       mergeStats(allStats, skillStats.value)
-      if (handleOptions.value.handleFood) {
+      if (setupOptions.value.handleFood) {
         mergeStats(allStats, foodStats.value)
+      }
+      if (setupOptions.value.handleRegistlet) {
+        mergeStats(allStats, registletStats.value)
       }
       return [...allStats]
     })
@@ -1175,7 +1171,7 @@ export function prepareSetupCharacter() {
       character,
       skillBuild,
       skillItemStates,
-      handleOptions,
+      setupOptions,
       {
         getCharacterStatValue: id =>
           baseCharacterStatCategoryResultsMap.value.get(id) ?? 0,
@@ -1256,6 +1252,34 @@ export function setupFoodStats(foodBuild: Ref<FoodsBuild>) {
 
   return {
     allFoodBuildStats,
+  }
+}
+
+export function setupRegistletStats(registletBuild: Ref<RegistletBuild>) {
+  const _items = computed(() => {
+    return registletBuild.value.items
+      .filter(item => item.base.link instanceof StatBase)
+      .map(item => {
+        const statBase = item.base.link as StatBase
+        const value = computeFormula(item.base.rows[0].value, {
+          RLv: item.level,
+        }) as number
+        return {
+          stat: StatRecorded.from(
+            statBase.createStat(StatTypes.Constant, value),
+            item.base
+          ),
+          item,
+        }
+      })
+  })
+  const allRegistletBuildStats = computed(() => {
+    console.log(_items.value)
+    return _items.value.filter(item => item.item.enabled).map(item => item.stat)
+  })
+
+  return {
+    allRegistletBuildStats,
   }
 }
 

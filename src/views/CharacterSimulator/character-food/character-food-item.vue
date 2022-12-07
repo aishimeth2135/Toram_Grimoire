@@ -1,19 +1,13 @@
 <template>
   <cy-list-item>
-    <cy-input-counter
-      v-model:value="level"
-      :range="foodLevelRange"
-      type="line"
+    <cy-button-toggle
+      v-model:selected="selected"
       inline
-      class="w-full"
-      style="max-width: 25rem"
+      style="min-width: 15rem"
     >
-      <template #title>
-        <cy-button-toggle v-model:selected="selected" inline>
-          {{ food.stat().show() }}
-        </cy-button-toggle>
-      </template>
-    </cy-input-counter>
+      {{ food.stat().show() }}
+    </cy-button-toggle>
+    <cy-input-counter v-model:value="level" :range="foodLevelRange" inline />
   </cy-list-item>
 </template>
 

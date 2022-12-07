@@ -13,7 +13,6 @@
     </span>
   </span>
   <RenderResult v-else-if="result" :key="result.instanceId" />
-  <span v-else>0</span>
 </template>
 
 <script lang="ts" setup>

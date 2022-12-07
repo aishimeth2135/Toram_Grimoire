@@ -9,11 +9,13 @@ import { RegistletBuild } from '@/lib/Character/RegistletBuild/RegistletBuild'
 import { FoodsBuild } from '../../../../lib/Character/Food/FoodBuild'
 import { SkillBuild } from '../../../../lib/Character/SkillBuild/SkillBuild'
 import { useCharacterFoodStore } from '../food-build'
+import { useCharacterRegistletBuildStore } from '../registlet-build'
 import { useCharacterSkillBuildStore } from '../skill-build'
 
 export function setupCharacters() {
   const foodStore = useCharacterFoodStore()
   const skillBuildStore = useCharacterSkillBuildStore()
+  const registletBuildStore = useCharacterRegistletBuildStore()
 
   const currentCharacterIndex = ref(-1)
   const characters: Ref<Character[]> = ref([])
@@ -57,20 +59,34 @@ export function setupCharacters() {
         null
     }
     skillBuildStore.setCurrentSkillBuild(current.skillBuild)
+
     if (current.foodBuild === null) {
       current.foodBuild = previou.foodBuild ?? foodStore.foodBuilds[0] ?? null
     }
     foodStore.setCurrentFoodBuild(current.foodBuild)
+
+    if (current.registletBuild === null) {
+      current.registletBuild =
+        previou.registletBuild ??
+        (registletBuildStore.registletBuilds[0] as RegistletBuild) ??
+        null
+    }
+    registletBuildStore.setCurrentRegistletBuild(current.registletBuild)
   }
 
-  const setCharacterSkillBuild = (skillBuild: SkillBuild) => {
-    getCharacterState(currentCharacter.value).skillBuild = skillBuild
-    skillBuildStore.setCurrentSkillBuild(skillBuild)
+  const setCharacterSkillBuild = (build: SkillBuild) => {
+    getCharacterState(currentCharacter.value).skillBuild = build
+    skillBuildStore.setCurrentSkillBuild(build)
   }
 
-  const setCharacterFoodBuild = (foodBuild: FoodsBuild) => {
-    getCharacterState(currentCharacter.value).foodBuild = foodBuild
-    foodStore.setCurrentFoodBuild(foodBuild)
+  const setCharacterFoodBuild = (build: FoodsBuild) => {
+    getCharacterState(currentCharacter.value).foodBuild = build
+    foodStore.setCurrentFoodBuild(build)
+  }
+
+  const setCharacterRegistletBuild = (build: RegistletBuild) => {
+    getCharacterState(currentCharacter.value).registletBuild = build
+    registletBuildStore.setCurrentRegistletBuild(build)
   }
 
   const createCharacter = (chara?: Character, updateIndex = true) => {
@@ -106,6 +122,7 @@ export function setupCharacters() {
     setCurrentCharacter,
     setCharacterSkillBuild,
     setCharacterFoodBuild,
+    setCharacterRegistletBuild,
     createCharacter,
     removeCharacter,
   }

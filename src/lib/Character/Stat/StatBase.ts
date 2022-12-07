@@ -2,6 +2,7 @@ import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
 
 import { Food } from '@/lib/Character/Food/FoodBuild'
+import { RegistletItemBase } from '@/lib/Registlet/Registlet'
 import { SkillBranch } from '@/lib/Skill/Skill'
 
 import { CharacterEquipment, EquipmentCrystal } from '../CharacterEquipment'
@@ -229,6 +230,7 @@ type StatValueSourceDetails =
   | CharacterEquipment
   | EquipmentCrystal
   | Food
+  | RegistletItemBase
   | null
 class StatValueSource {
   readonly src: StatValueSourceDetails

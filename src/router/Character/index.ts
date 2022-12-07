@@ -22,7 +22,8 @@ export default {
       LocaleViewNamespaces.CharacterSimulator,
       LocaleViewNamespaces.SkillSimulator,
       LocaleViewNamespaces.SkillQuery,
-      LocaleViewNamespaces.DamageCalculation
+      LocaleViewNamespaces.DamageCalculation,
+      LocaleViewNamespaces.RegistletQuery
     )
     ViewInit(
       DataStoreIds.Stats,
@@ -30,7 +31,9 @@ export default {
       DataStoreIds.CharacterStats,
       DataStoreIds.Skill,
       DataStoreIds.Food,
-      DataStoreIds.DamageCalculation
+      DataStoreIds.DamageCalculation,
+      DataStoreIds.Registlet,
+      DataStoreIds.Glossary
     ).then(next)
   },
   meta: {
