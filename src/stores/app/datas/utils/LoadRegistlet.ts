@@ -84,7 +84,7 @@ export default function (root: RegistletSystem, csvData: CsvData) {
             infos,
             statBase
           )
-          currentCategory.items.push(newItem)
+          currentCategory.appendItem(newItem)
           currentItem = newItem
         }
       } else if (currentCategory.id === RegistletCategoryIds.Skill) {
@@ -97,14 +97,14 @@ export default function (root: RegistletSystem, csvData: CsvData) {
           infos,
           skills
         )
-        currentCategory.items.push(newItem)
+        currentCategory.appendItem(newItem)
         currentItem = newItem
       } else if (currentCategory.id === RegistletCategoryIds.Special) {
         const newItem = new RegistletItemBaseSpecial(
           currentCategory as RegistletCategory<RegistletItemBaseSpecial>,
           infos
         )
-        currentCategory.items.push(newItem)
+        currentCategory.appendItem(newItem)
         currentItem = newItem
       }
     } else if (row[ID]) {

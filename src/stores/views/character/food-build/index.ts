@@ -17,8 +17,8 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
     foodsBase.value = markRaw(new FoodsBase())
   }
 
-  const currentFoodBuild = computed(
-    () => foodBuilds.value[currentFoodBuildIndex.value]
+  const currentFoodBuild = computed<FoodsBuild | null>(
+    () => foodBuilds.value[currentFoodBuildIndex.value] ?? null
   )
 
   const setCurrentFoodBuild = (idx: number | FoodsBuild | null) => {
@@ -65,7 +65,7 @@ export const useCharacterFoodStore = defineStore('view-character-food', () => {
 
   return {
     foodsBase: readonly(foodsBase),
-    foodBuilds: foodBuilds,
+    foodBuilds,
     currentFoodBuildIndex: readonly(currentFoodBuildIndex),
 
     initFoodsBase,

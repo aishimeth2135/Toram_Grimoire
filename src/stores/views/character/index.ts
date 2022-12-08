@@ -428,8 +428,10 @@ export const useCharacterStore = defineStore('view-character', () => {
     }
   }
 
-  const currentSkillBuild = computed(
-    () => skillBuildStore.currentSkillBuild as SkillBuild | null
+  const currentSkillBuild = computed(() => skillBuildStore.currentSkillBuild)
+
+  const currentRegistletBuild = computed(
+    () => registletBuildStore.currentRegistletBuild
   )
 
   const { skillItemStates } = setupCharacterSkillItems(
@@ -449,6 +451,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     currentCharacter,
     currentSkillBuild,
     skillItemStates,
+    currentRegistletBuild,
     setupOptions
   )
 
@@ -471,6 +474,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     currentSkillBuild,
     skillPureStats,
     allFoodBuildStats,
+    currentRegistletBuild,
     allRegistletBuildStats,
     skillItemStates,
     setupOptions
@@ -490,6 +494,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       currentSkillBuild,
       skillPureStats,
       allFoodBuildStats,
+      currentRegistletBuild,
       allRegistletBuildStats,
       _skillItemStates,
       setupOptions

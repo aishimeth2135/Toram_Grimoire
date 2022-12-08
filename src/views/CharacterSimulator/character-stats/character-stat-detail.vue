@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="mb-2 flex flex-wrap items-center">
+    <div class="mt-0.5 mb-2 flex flex-wrap items-center">
       <div class="mr-4 flex">
-        <cy-icon-text icon="gridicons:stats-alt" color="orange">
+        <cy-icon-text icon="gridicons:stats-alt" color="primary-80">
           {{ characterStatResult.name }}
         </cy-icon-text>
       </div>
@@ -37,7 +37,7 @@
       >
         <div class="flex items-center">
           <cy-icon-text icon="mdi:label-outline" text-color="fuchsia-60">
-            <template v-if="typeof data.title !== 'object'">
+            <template v-if="!!(typeof data.title !== 'object')">
               {{ data.title }}
             </template>
             <template v-else>
@@ -45,13 +45,15 @@
               <span class="ml-1.5 text-primary-50">{{ data.title.value }}</span>
             </template>
           </cy-icon-text>
-          <div class="ml-auto">
-            <cy-popover v-if="data.statRecorded" placement="bottom-end">
+          <div class="ml-3">
+            <cy-popover v-if="data.statRecorded" placement="bottom-start">
               <template #default="{ shown }">
-                <cy-button-icon
-                  icon="mdi:help-circle-outline"
-                  :selected="shown"
-                />
+                <div class="flex">
+                  <cy-button-icon
+                    icon="mdi:help-circle-outline"
+                    :selected="shown"
+                  />
+                </div>
               </template>
               <template #popper>
                 <div class="py-2 px-3 text-sm">
@@ -109,6 +111,14 @@
                     >
                       {{ t('character-simulator.character-stat-detail.food') }}
                     </div>
+                    <template
+                      v-else-if="src.type === StatValueSourceTypes.Registlet"
+                    >
+                      <div class="text-blue-30">
+                        {{ t('common.Registlet.title') }}
+                      </div>
+                      <div>{{ (src.src as RegistletItemBase).name }}</div>
+                    </template>
                     <div class="text-primary-50">
                       {{ data.statRecorded.showValue(src.value) }}
                     </div>
@@ -118,7 +128,10 @@
             </cy-popover>
           </div>
         </div>
-        <div v-if="data.lines.length !== 0" class="mt-0.5 pl-2 pb-1">
+        <div
+          v-if="data.lines.length !== 0"
+          class="mt-0.5 pl-2 pb-1 space-y-0.5"
+        >
           <div
             v-for="line in data.lines"
             :key="'line-' + line.iid"
@@ -139,7 +152,7 @@
                   class="mr-2"
                 />
               </cy-icon-text>
-              <span class="space-x-1">
+              <span class="space-x-1 text-sm">
                 <span v-for="caption in line.title.captions" :key="caption.iid">
                   {{ caption.text }}
                 </span>
@@ -168,6 +181,7 @@ import {
   EquipmentCrystal,
 } from '@/lib/Character/CharacterEquipment'
 import { StatTypes, StatValueSourceTypes } from '@/lib/Character/Stat/enums'
+import { RegistletItemBase } from '@/lib/Registlet/Registlet'
 import { SkillBranch } from '@/lib/Skill/Skill'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 

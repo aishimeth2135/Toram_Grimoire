@@ -225,6 +225,7 @@ export function prepareSetupCharacter() {
     character: Ref<Character | null>,
     skillBuild: Ref<SkillBuild | null>,
     skillItemStates: Map<Skill, SkillItemState>,
+    registletBuild: Ref<RegistletBuild | null>,
     setupOptions: Ref<CharacterSetupOptions>,
     postponeOptions?: SkillSetupPostponeOptions
   ) => {
@@ -235,6 +236,28 @@ export function prepareSetupCharacter() {
       skillBuild.value?.getSkillLevel(skill) ?? 0
     computing.varGetters.skillLevel = getSkillLevel
     computing.varGetters.characterLevel = () => character.value?.level ?? 0
+    computing.varGetters.registletLevel = (() => {
+      const _computeds = new Map<Skill, Ref<number[]>>()
+      return skill => {
+        if (!_computeds.has(skill)) {
+          _computeds.set(
+            skill,
+            computed(() => {
+              const registletItems =
+                Grimoire.Registlet.getRegistletItemsBySkill(skill)
+              if (!registletBuild.value) {
+                return registletItems.map(() => 0)
+              }
+              return registletItems.map(itemBase => {
+                const item = registletBuild.value!.getItem(itemBase)
+                return item && item.enabled ? item.level : 0
+              })
+            })
+          )
+        }
+        return _computeds.get(skill)!.value
+      }
+    })()
 
     const extendVars = computed(() => {
       if (!character.value) {
@@ -773,11 +796,11 @@ export function prepareSetupCharacter() {
         if (stats.has(statId)) {
           stats
             .get(statId)!
-            .add(parseFloat(statContainer.value), statContainer.branch.default)
+            .add(statContainer.valueSum, statContainer.branch.default)
         } else {
           stats.set(
             statId,
-            statContainer.toStatRecorded(parseFloat(statContainer.value))
+            statContainer.toStatRecorded(statContainer.valueSum)
           )
         }
       }
@@ -825,6 +848,7 @@ export function prepareSetupCharacter() {
     skillBuild: Ref<SkillBuild | null>,
     skillStats: Ref<StatRecorded[]>,
     foodStats: Ref<StatRecorded[]>,
+    registletBuild: Ref<RegistletBuild | null>,
     registletStats: Ref<StatRecorded[]>,
     skillItemStates: Map<Skill, SkillItemState>,
     setupOptions: Ref<CharacterSetupOptions>
@@ -1171,6 +1195,7 @@ export function prepareSetupCharacter() {
       character,
       skillBuild,
       skillItemStates,
+      registletBuild,
       setupOptions,
       {
         getCharacterStatValue: id =>
@@ -1243,8 +1268,11 @@ export function prepareSetupCharacter() {
   }
 }
 
-export function setupFoodStats(foodBuild: Ref<FoodsBuild>) {
+export function setupFoodStats(foodBuild: Ref<FoodsBuild | null>) {
   const allFoodBuildStats = computed(() => {
+    if (!foodBuild.value) {
+      return []
+    }
     return foodBuild.value.selectedFoods
       .filter(food => food.level !== 0)
       .map(food => StatRecorded.from(food.stat(), food))
@@ -1255,14 +1283,19 @@ export function setupFoodStats(foodBuild: Ref<FoodsBuild>) {
   }
 }
 
-export function setupRegistletStats(registletBuild: Ref<RegistletBuild>) {
+export function setupRegistletStats(
+  registletBuild: Ref<RegistletBuild | null>
+) {
   const _items = computed(() => {
+    if (!registletBuild.value) {
+      return []
+    }
     return registletBuild.value.items
       .filter(item => item.base.link instanceof StatBase)
       .map(item => {
         const statBase = item.base.link as StatBase
         const value = computeFormula(item.base.rows[0].value, {
-          RLv: item.level,
+          Lv: item.level,
         }) as number
         return {
           stat: StatRecorded.from(
@@ -1274,7 +1307,6 @@ export function setupRegistletStats(registletBuild: Ref<RegistletBuild>) {
       })
   })
   const allRegistletBuildStats = computed(() => {
-    console.log(_items.value)
     return _items.value.filter(item => item.item.enabled).map(item => item.stat)
   })
 

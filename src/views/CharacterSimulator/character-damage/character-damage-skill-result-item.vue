@@ -12,13 +12,12 @@
           {{ t('character-simulator.character-damage.no-result') }}
         </div>
         <cy-icon-text
-          v-if="frequencyVisible && result.container.get('frequency')"
+          v-if="frequencyVisible && result.container.has('frequency')"
           icon="ic-round-close"
         />
-        <span
+        <SkillBranchPropValue
           v-if="frequencyVisible"
-          class="attr-item"
-          v-html="result.container.get('frequency')"
+          :result="result.container.result('frequency')"
         />
       </div>
       <div
@@ -33,13 +32,12 @@
             {{ armorBreakExpectedResult }}
           </div>
           <cy-icon-text
-            v-if="frequencyVisible && result.container.get('frequency')"
+            v-if="frequencyVisible && result.container.has('frequency')"
             icon="ic-round-close"
           />
-          <span
+          <SkillBranchPropValue
             v-if="frequencyVisible"
-            class="attr-item"
-            v-html="result.container.get('frequency')"
+            :result="result.container.result('frequency')"
           />
         </div>
       </div>
@@ -124,6 +122,8 @@ import { ContainerTypes } from '@/lib/Calculation/Damage/Calculation/enums'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 
 import ToggleService from '@/setup/ToggleService'
+
+import SkillBranchPropValue from '@/views/SkillQuery/skill/layouts/skill-branch-prop-value.vue'
 
 import CharacterSkillItemStats from '../character-skill/character-skill-tab/character-skill-item-stats.vue'
 
