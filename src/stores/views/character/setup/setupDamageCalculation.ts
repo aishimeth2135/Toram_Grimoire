@@ -366,12 +366,12 @@ export default function setupDamageCalculation(
           skillMultiplier: 0,
         }
       }
-      const constant = container.value.getValue('constant') || '0'
-      const multiplier = container.value.getValue('multiplier') || '0'
+      const constant = container.value.getValueSum('constant')
+      const multiplier = container.value.getValueSum('multiplier')
       return {
         skillRealMpCost: 0,
-        skillConstant: parseInt(constant, 10),
-        skillMultiplier: parseInt(multiplier, 10),
+        skillConstant: constant,
+        skillMultiplier: multiplier,
       }
     })
 

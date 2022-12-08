@@ -67,6 +67,8 @@ Equipment:
     ex_skill: EX技能
 Stat:
   type-total: 總{text}
+Registlet:
+  title: 雷吉斯托環
 auto-save:
   save-unknow-error-tips: 自動存檔時發生未知的錯誤。
   load-unknow-error-tips: 自動讀取時發生未知的錯誤。

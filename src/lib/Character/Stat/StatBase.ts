@@ -249,6 +249,8 @@ class StatValueSource {
       this.type = StatValueSourceTypes.Food
     } else if (this.src instanceof EquipmentCrystal) {
       this.type = StatValueSourceTypes.Crystal
+    } else if (this.src instanceof RegistletItemBase) {
+      this.type = StatValueSourceTypes.Registlet
     } else {
       this.type = null
     }

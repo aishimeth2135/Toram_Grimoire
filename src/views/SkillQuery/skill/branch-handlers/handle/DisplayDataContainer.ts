@@ -55,6 +55,10 @@ export default class DisplayDataContainer<
     return this.containers.get(key)?.value ?? ''
   }
 
+  getValueSum(key: string): number {
+    return this.containers.get(key)?.valueSum ?? 0
+  }
+
   getOrigin(key: string): string {
     return this.containers.get(key)?.origin ?? ''
   }

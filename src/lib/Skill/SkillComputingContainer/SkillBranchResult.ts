@@ -1,4 +1,4 @@
-import { splitComma } from '@/shared/utils/string'
+import { isNumberString, splitComma } from '@/shared/utils/string'
 
 import { StatComputed, StatRecorded } from '@/lib/Character/Stat'
 import {
@@ -26,6 +26,8 @@ interface SkillBranchResultBase extends ResultContainerBase {
 
   /** The key of prop */
   readonly key: string
+
+  get valueSum(): number
 }
 
 class SkillBranchResult
@@ -79,6 +81,19 @@ class SkillBranchResult
 
   get valueResult() {
     return this._result
+  }
+
+  get valueSum() {
+    const value = this.value
+    const registletValue = this.subContainers.registlet?.value
+    let result = 0
+    if (isNumberString(value)) {
+      result += parseInt(value, 10)
+    }
+    if (registletValue && isNumberString(registletValue)) {
+      result += parseInt(value, 10)
+    }
+    return result
   }
 
   /**
@@ -138,6 +153,20 @@ class SkillBranchStatResult extends SkillBranchResult {
     this.stat = stat
     this.displayTitle = null
     this.conditionValue = null
+  }
+
+  override get valueSum() {
+    // `parseFloat` instead of `parseInt`
+    const value = this.value
+    const registletValue = this.subContainers.registlet?.value
+    let result = 0
+    if (isNumberString(value)) {
+      result += parseFloat(value)
+    }
+    if (registletValue && isNumberString(registletValue)) {
+      result += parseFloat(value)
+    }
+    return result
   }
 
   setDisplayTitle(title: SkillBranchTextResult) {
@@ -260,6 +289,10 @@ class SkillBranchTextResult
     super(origin, value, parseResult)
     this.branch = branch
     this.key = key
+  }
+
+  get valueSum() {
+    return 0
   }
 }
 

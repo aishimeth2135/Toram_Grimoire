@@ -1,5 +1,5 @@
 <template>
-  <div class="border-1 border-primary-30 rounded p-2 pr-4">
+  <div class="border-1 border-primary-30 rounded py-2 pl-2 pr-4 bg-white">
     <div class="flex items-center">
       <cy-button-toggle
         v-model:selected="
@@ -10,6 +10,7 @@
         {{ item.base.name }}
       </cy-button-toggle>
       <div class="flex items-center ml-auto">
+        <span class="text-primary-30">Lv.</span>
         <cy-input-counter
           v-model:value="
             // eslint-disable-next-line vue/no-mutating-props

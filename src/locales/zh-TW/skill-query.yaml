@@ -5,7 +5,6 @@ close-select-skill: 關閉
 skill-level: 技能等級
 character-level: 角色等級
 registlet-level: 雷吉斯托環等級
-registlet-title: 雷吉斯托環
 registlet-level-abbreviation: 托環等級
 registlet-info-tip: 關於雷吉斯托環的詳細資訊，請查看{link}。
 registlet-max-level-title: 最大等級

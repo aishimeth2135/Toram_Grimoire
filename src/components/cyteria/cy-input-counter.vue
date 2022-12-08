@@ -1,53 +1,55 @@
 <template>
-  <div
-    class="cy--input-counter border bg-white outline-none duration-300 rounded-sm"
-    :class="rootClassList"
-    :style="rootStyle"
-  >
-    <div v-if="$slots['title'] || title" class="mr-3 inline-flex">
-      <slot name="title">
-        <cy-icon-text :icon="titleIcon">
-          {{ title }}
-        </cy-icon-text>
-      </slot>
-    </div>
-    <div class="counter-content">
-      <cy-button-icon
-        v-if="minButton && range[0] !== null"
-        icon="akar-icons:circle-chevron-left"
-        :icon-color="mainColor"
-        :icon-color-hover="mainColorInstance.darken"
-        @click="setValue(range[0]!)"
-      />
-      <cy-button-icon
-        icon="ic-round-remove-circle-outline"
-        :icon-color="mainColor"
-        :icon-color-hover="mainColorInstance.darken"
-        @click="setValue(value - step)"
-      />
-      <input
-        v-model.number.lazy="inputValue"
-        type="number"
-        @click="selectInput($event)"
-        @focus="setInputFocus(true)"
-        @blur="setInputFocus(false)"
-      />
-      <cy-button-icon
-        icon="ic-round-add-circle-outline"
-        :icon-color="mainColor"
-        :icon-color-hover="mainColorInstance.darken"
-        @click="setValue(value + step)"
-      />
-      <cy-button-icon
-        v-if="maxButton && range[1] !== null"
-        icon="akar-icons:circle-chevron-right"
-        :icon-color="mainColor"
-        :icon-color-hover="mainColorInstance.darken"
-        @click="setValue(range[1]!)"
-      />
-      <span v-if="$slots['unit']" class="ml-1 text-sm">
-        <slot name="unit" />
-      </span>
+  <div class="flex">
+    <div
+      class="cy--input-counter border bg-white outline-none duration-300 rounded-sm"
+      :class="rootClassList"
+      :style="rootStyle"
+    >
+      <div v-if="$slots['title'] || title" class="mr-3 inline-flex">
+        <slot name="title">
+          <cy-icon-text :icon="titleIcon">
+            {{ title }}
+          </cy-icon-text>
+        </slot>
+      </div>
+      <div class="counter-content">
+        <cy-button-icon
+          v-if="minButton && range[0] !== null"
+          icon="akar-icons:circle-chevron-left"
+          :icon-color="mainColor"
+          :icon-color-hover="mainColorInstance.darken"
+          @click="setValue(range[0]!)"
+        />
+        <cy-button-icon
+          icon="ic-round-remove-circle-outline"
+          :icon-color="mainColor"
+          :icon-color-hover="mainColorInstance.darken"
+          @click="setValue(value - step)"
+        />
+        <input
+          v-model.number.lazy="inputValue"
+          type="number"
+          @click="selectInput($event)"
+          @focus="setInputFocus(true)"
+          @blur="setInputFocus(false)"
+        />
+        <cy-button-icon
+          icon="ic-round-add-circle-outline"
+          :icon-color="mainColor"
+          :icon-color-hover="mainColorInstance.darken"
+          @click="setValue(value + step)"
+        />
+        <cy-button-icon
+          v-if="maxButton && range[1] !== null"
+          icon="akar-icons:circle-chevron-right"
+          :icon-color="mainColor"
+          :icon-color-hover="mainColorInstance.darken"
+          @click="setValue(range[1]!)"
+        />
+        <span v-if="$slots['unit']" class="ml-1 text-sm">
+          <slot name="unit" />
+        </span>
+      </div>
     </div>
   </div>
 </template>

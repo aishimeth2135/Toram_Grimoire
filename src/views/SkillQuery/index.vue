@@ -119,6 +119,7 @@ import SkillTreeDiagram from './skill-tree-diagram.vue'
 import SkillDevDetail from './skill/skill-dev-detail.vue'
 
 import { setupComputingContainer, useSkillQueryState } from './setup'
+import { AppRouteNames } from '@/router/enums'
 
 const { toggle, contents } = ToggleService({
   contents: ['skillEffect', 'search', 'skillDev'] as const,
@@ -189,6 +190,10 @@ const selectCurrentSkill = (skill: Skill, syncParent = false) => {
 const selectCurrentSkillFromSearch = (skill: Skill) => {
   toggle('contents/search')
   selectCurrentSkill(skill, true)
+}
+
+if (route.name === AppRouteNames.SkillQuery && currentSkill.value) {
+  selectCurrentSkill(currentSkill.value, true)
 }
 
 if (route.params.skillId) {

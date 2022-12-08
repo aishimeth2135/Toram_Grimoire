@@ -1,3 +1,5 @@
+import { markRaw } from 'vue'
+
 import { StatBase } from '@/lib/Character/Stat'
 import { Skill } from '@/lib/Skill/Skill'
 
@@ -21,6 +23,10 @@ class RegistletCategory<
   constructor(id: RegistletCategoryIds) {
     this.id = id
     this.items = []
+  }
+
+  appendItem(item: ItemBase) {
+    this.items.push(markRaw(item))
   }
 }
 

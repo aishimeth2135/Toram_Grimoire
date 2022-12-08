@@ -13,8 +13,8 @@ export const useCharacterRegistletBuildStore = defineStore(
     const builds: Ref<RegistletBuild[]> = ref([])
     const currentBuildIndex = ref(-1)
 
-    const currentBuild: ComputedRef<RegistletBuild> = computed(
-      () => builds.value[currentBuildIndex.value]
+    const currentBuild: ComputedRef<RegistletBuild | null> = computed(
+      () => builds.value[currentBuildIndex.value] ?? null
     )
 
     const setCurrentRegistletBuild = (idx: number | RegistletBuild | null) => {

@@ -45,9 +45,7 @@
                 scope="global"
               >
                 <template #link>
-                  <GlossaryTagPopover
-                    :name="t('skill-query.registlet-title')"
-                  />
+                  <GlossaryTagPopover :name="t('common.Registlet.title')" />
                 </template>
               </i18n-t>
             </cy-icon-text>

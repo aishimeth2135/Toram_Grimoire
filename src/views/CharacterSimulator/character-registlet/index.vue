@@ -15,7 +15,11 @@
         @add-item="registletStore.createRegistletBuild()"
       >
         <template #title>
-          <cy-button-circle icon="ant-design:build-outlined" small />
+          <cy-button-circle
+            icon="ant-design:build-outlined"
+            small
+            color="blue"
+          />
         </template>
         <template #item="{ value }">
           <cy-icon-text icon="ant-design:build-outlined">
@@ -27,6 +31,19 @@
         v-model:value="currentRegistletBuild.name"
         icon="ic:baseline-drive-file-rename-outline"
       />
+      <div class="flex items-center space-x-2 ml-4">
+        <cy-button-circle
+          icon="bx:copy-alt"
+          small
+          @click="registletStore.copyCurrentRegistletBuild()"
+        />
+        <cy-button-circle
+          icon="ic-baseline-delete-outline"
+          color="secondary"
+          small
+          @click="registletStore.removeCurrentRegistletBuild()"
+        />
+      </div>
     </div>
     <div class="py-2 flex items-center space-x-2">
       <cy-button-action @click="toggle('modals/edit', true)">
@@ -36,7 +53,7 @@
         {{ t('character-simulator.registlet-build.show-detail') }}
       </cy-button-toggle>
     </div>
-    <div class="space-y-2">
+    <div class="space-y-2.5">
       <div v-for="item in currentRegistletBuild.items" :key="item.base.id">
         <CharacterRegistletItem
           :item="item"

@@ -8,7 +8,7 @@
         <div class="flex items-center">
           <div class="text-emerald-60">{{ item.name }}</div>
           <div class="ml-3 text-sm text-emerald-30">
-            {{ t('skill-query.registlet-title') }}
+            {{ t('common.Registlet.title') }}
           </div>
         </div>
         <div

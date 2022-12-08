@@ -19,10 +19,12 @@ interface RegistletItemSaveData {
 class RegistletBuild implements CharacterBuildBindOnCharacter {
   private static _autoIncrement: number = 0
 
+  private _itemsMap: Map<RegistletItemBase, RegistletItem>
+
   instanceId: number
   name: string
-  items: RegistletItem[]
   loadedId: string | null
+  items: RegistletItem[]
 
   constructor(name: string = '') {
     this.instanceId = RegistletBuild._autoIncrement
@@ -30,21 +32,31 @@ class RegistletBuild implements CharacterBuildBindOnCharacter {
 
     this.loadedId = null
     this.name = name
+    this._itemsMap = new Map()
     this.items = []
   }
 
+  getItem(base: RegistletItemBase): RegistletItem | null {
+    return this._itemsMap.get(base) ?? null
+  }
+
   itemSelected(base: RegistletItemBase): boolean {
-    return this.items.some(item => item.base.id === base.id)
+    return this._itemsMap.has(base)
   }
 
   toggleItem(base: RegistletItemBase): void {
-    const idx = this.items.findIndex(item => item.base.id === base.id)
-    if (idx > -1) {
-      // eslint-disable-next-line vue/no-mutating-props
+    if (this._itemsMap.has(base)) {
+      const idx = this.items.findIndex(item => item.base.id === base.id)
       this.items.splice(idx, 1)
+      this._itemsMap.delete(base)
     } else {
-      this.items.push(new RegistletItem(this, base))
+      this._appendItem(new RegistletItem(this, base))
     }
+  }
+
+  private _appendItem(newItem: RegistletItem) {
+    this._itemsMap.set(newItem.base, newItem)
+    this.items.push(newItem)
   }
 
   save(): RegistletBuildSaveData {
@@ -72,9 +84,12 @@ class RegistletBuild implements CharacterBuildBindOnCharacter {
   static load(loadedCategory: string, data: RegistletBuildSaveData) {
     const newBuild = new RegistletBuild(data.name)
     newBuild.loadedId = `${loadedCategory}-${data.id}`
-    newBuild.items = data.items
-      .map(item => RegistletItem.load(newBuild, item))
-      .filter(item => item) as RegistletItem[]
+    data.items.forEach(item => {
+      const newItem = RegistletItem.load(newBuild, item)
+      if (newItem) {
+        newBuild._appendItem(newItem)
+      }
+    })
     return newBuild
   }
 }
