@@ -1,15 +1,20 @@
 <template>
-  <div class="border-1 border-primary-30 rounded py-2 pl-2 pr-4 bg-white">
-    <div class="flex items-center">
-      <cy-button-toggle
-        v-model:selected="
-          // eslint-disable-next-line vue/no-mutating-props
-          item.enabled
-        "
-      >
-        {{ item.base.name }}
-      </cy-button-toggle>
-      <div class="flex items-center ml-auto">
+  <div
+    class="border-1 border-primary-20 rounded py-2 pl-2 pr-4 bg-white"
+    :class="item.enabled ? 'opacity-100' : 'opacity-60'"
+  >
+    <div class="flex items-center flex-wrap">
+      <div class="flex mr-auto" style="min-width: 14rem">
+        <cy-button-toggle
+          v-model:selected="
+            // eslint-disable-next-line vue/no-mutating-props
+            item.enabled
+          "
+        >
+          {{ item.base.name }}
+        </cy-button-toggle>
+      </div>
+      <div class="flex items-center ml-4">
         <span class="text-primary-30">Lv.</span>
         <cy-input-counter
           v-model:value="

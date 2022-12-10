@@ -25,11 +25,7 @@
           v-for="equip in displayEquipments"
           :key="equip.id"
           :equipment="equip"
-          :current="
-            !!targetField &&
-            !!selectedEquipment &&
-            targetField.equipment === equip
-          "
+          :current="!!targetField && targetField.equipment === equip"
           :selected="selectedEquipment === equip"
           :disabled="showAll && !equipmentAvailable(equip)"
           @click="selectedEquipment = equip"
@@ -38,7 +34,7 @@
             v-if="selectedEquipment === equip || equip === movingEquipment"
             #content
           >
-            <div v-if="controls.edit" class="p-2 pt-2.5">
+            <div v-if="controls.edit" class="pb-2 pt-2.5">
               <CharacterEquipmentDetail :equipment="equip" inner-item />
             </div>
             <div

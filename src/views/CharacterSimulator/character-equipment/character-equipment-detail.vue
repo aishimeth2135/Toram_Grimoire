@@ -167,9 +167,10 @@
     </div>
     <div v-if="innerItem" class="flex items-center space-x-2 py-0.5">
       <div class="flex">
-        <cy-button-icon
+        <cy-button-circle
           icon="ic:round-mode-edit"
           color="orange"
+          small
           @click="editBasic(equipment)"
         />
       </div>

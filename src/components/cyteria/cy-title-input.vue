@@ -29,7 +29,7 @@
       </div>
       <cy-button-icon
         v-if="clearable && innerValue !== ''"
-        icon="ic:round-close"
+        icon="mdi:close-circle"
         @click="innerValue = ''"
       />
     </div>

@@ -3,13 +3,13 @@
     <div class="flex w-full items-center" :class="{ 'opacity-50': disabled }">
       <EquipmentTitle
         :equipment="equipment"
-        :text-color="current ? 'fuchsia' : 'primary-90'"
+        :text-color="current ? 'primary-70' : 'primary-90'"
       />
       <cy-icon-text
         v-if="current"
         icon="carbon-location-current"
         class="ml-auto"
-        icon-color="fuchsia-60"
+        icon-color="red-50"
       />
       <slot name="title-end" />
     </div>
