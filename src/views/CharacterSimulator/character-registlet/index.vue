@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="px-2 flex items-center">
+  <div class="px-2">
+    <div class="flex items-center">
       <cy-options
         :value="currentRegistletBuild"
         :options="

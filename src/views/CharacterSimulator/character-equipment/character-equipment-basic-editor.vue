@@ -123,14 +123,19 @@
         class="!block px-3 py-2"
         @click="editCrystal(currentEquipment)"
       >
-        <div v-for="crystal in equipment.crystals" :key="crystal.id">
-          <cy-icon-text
-            :icon="crystal.crystalIconPath"
-            icon-src="image"
-            text-color="cyan-60"
-          >
-            {{ crystal.name }}
-          </cy-icon-text>
+        <template v-if="equipment.crystals.length > 0">
+          <div v-for="crystal in equipment.crystals" :key="crystal.id">
+            <cy-icon-text
+              :icon="crystal.crystalIconPath"
+              icon-src="image"
+              text-color="cyan-60"
+            >
+              {{ crystal.name }}
+            </cy-icon-text>
+          </div>
+        </template>
+        <div class="px-1 text-sm text-primary-30">
+          {{ t('character-simulator.equipment-info.crystal-empty') }}
         </div>
       </CharacterEquipmentEditMask>
     </template>

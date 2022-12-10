@@ -4,7 +4,7 @@
     style="width: 23.25rem"
   >
     <div
-      class="mb-2.5 flex items-center border-b border-solid border-red-20 py-1 pl-3 pr-1.5"
+      class="mb-1.5 flex items-center border-b border-solid border-red-20 py-1 pl-3 pr-1.5"
     >
       <cy-icon-text icon="gg-shape-square" small color="red-30" single-color>
         {{ t('common.Equipment.field.' + equipmentField.type) }}

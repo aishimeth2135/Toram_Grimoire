@@ -10,34 +10,26 @@
           </legend>
         </fieldset>
         <div>
-          <span
+          <cy-popover
             v-for="stat in data.stats"
             :key="stat.id"
-            class="stat-scope relative mx-2 my-1 inline-flex cursor-pointer border-b border-solid border-primary-30 px-2"
-            :data-stat-id="stat.id"
+            class="relative mx-2 my-1 inline-flex cursor-pointer border-b border-solid border-primary-30 px-2"
+            show-triggers="hover click"
           >
             <template v-if="!stat.origin.isBoolStat">
               <span class="mr-3">{{ stat.name }}</span>
               <span class="text-primary-60">{{ stat.displayValue }}</span>
             </template>
             <span v-else class="text-primary-60">{{ stat.name }}</span>
-          </span>
+            <template #popper>
+              <div class="py-2 px-4">
+                <CharacterStatDetail :character-stat-result="stat" />
+              </div>
+            </template>
+          </cy-popover>
         </div>
       </div>
     </div>
-    <cy-hover-float
-      ref="statHoverFloatComponent"
-      :element="categorysElement"
-      target="span[data-stat-id]"
-      @element-hover="statHover"
-    >
-      <div style="max-width: 30rem">
-        <CharacterStatDetail
-          v-if="currentHoverStat"
-          :character-stat-result="currentHoverStat"
-        />
-      </div>
-    </cy-hover-float>
   </section>
 </template>
 
@@ -48,9 +40,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { Ref, computed, nextTick, ref, watch } from 'vue'
-
-import { CharacterStatResultWithId } from '@/stores/views/character/setup'
+import { Ref, computed, ref } from 'vue'
 
 import CharacterStatDetail from './character-stat-detail.vue'
 
@@ -59,46 +49,13 @@ import { setupCharacterStore } from '../setup'
 const { characterStatCategoryResults } = setupCharacterStore()
 
 const categorysElement: Ref<HTMLElement | null> = ref(null)
-const statHoverFloatComponent: Ref<{ update: Function } | null> = ref(null)
 
 const categoryResults = computed(() => {
-  return characterStatCategoryResults.value.map(result => ({
-    name: result.name,
-    stats: result.stats.filter(stat => !stat.hidden),
-  }))
+  return characterStatCategoryResults.value
+    .map(result => ({
+      name: result.name,
+      stats: result.stats.filter(stat => !stat.hidden),
+    }))
+    .filter(item => item.stats.length > 0)
 })
-
-const currentHoverStatId = ref<string | null>(null)
-const currentHoverStat = computed(() => {
-  if (!currentHoverStatId.value) {
-    return null
-  }
-  let stat: CharacterStatResultWithId | null = null
-  characterStatCategoryResults.value.some(categoryResult => {
-    const find = categoryResult.stats.find(
-      stat => stat.id === currentHoverStatId.value
-    )
-    if (find) {
-      stat = find
-      return true
-    }
-  })
-  return stat as CharacterStatResultWithId | null
-})
-
-const statHover = (el: HTMLElement) => {
-  const id = el.getAttribute('data-stat-id')
-  if (id) {
-    currentHoverStatId.value = id
-  }
-}
-
-watch(
-  categoryResults,
-  async () => {
-    await nextTick()
-    statHoverFloatComponent.value?.update()
-  },
-  { immediate: true, deep: true }
-)
 </script>
