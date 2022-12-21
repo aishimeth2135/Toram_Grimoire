@@ -173,7 +173,7 @@ class Skill extends SkillBase {
     return this.parent.skills.indexOf(this)
   }
 
-  initType() {
+  initTypes() {
     if (
       this.effects.some(eft =>
         eft.branches.some(bch => bch.name === SkillBranchNames.Passive)

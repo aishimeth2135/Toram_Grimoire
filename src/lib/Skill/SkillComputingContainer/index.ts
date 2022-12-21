@@ -23,6 +23,7 @@ import {
   initBranchesPostpone,
   initHistoryNexts,
   initStackStates,
+  normalizeBaseBranches,
   regressHistoryBranches,
   separateSuffixBranches,
   setBranchAttrsDefaultValue,
@@ -43,11 +44,6 @@ interface SkillFormulaExtraProps {
  * @vue-reactive controller
  */
 class SkillComputingContainer {
-  vars: {
-    characterLevel: number
-    skillLevel: number
-  }
-
   varGetters: {
     characterLevel: (() => number) | null
     skillLevel: ((skill: Skill) => number) | null
@@ -71,10 +67,6 @@ class SkillComputingContainer {
   }
 
   constructor() {
-    this.vars = reactive({
-      characterLevel: 250,
-      skillLevel: 10,
-    })
     this.varGetters = {
       characterLevel: null,
       skillLevel: null,
@@ -197,7 +189,7 @@ class SkillEffectItem extends SkillEffectItemBase {
   constructor(parent: SkillItem, defaultSef: SkillEffect, from?: SkillEffect) {
     super(parent)
 
-    this.branchItems = defaultSef.branches.map(
+    this.branchItems = normalizeBaseBranches(defaultSef.branches).map(
       bch => new SkillBranchItem(this, bch)
     )
     initBasicBranchItem(this, defaultSef)
@@ -317,7 +309,7 @@ class SkillEffectItemHistory extends SkillEffectItemBase {
     historyEffect: SkillEffectHistory
   ) {
     super(parent)
-    this.branchItems = historyEffect.branches.map(
+    this.branchItems = normalizeBaseBranches(historyEffect.branches).map(
       bch => new SkillBranchItem(this, bch)
     )
 
@@ -462,11 +454,6 @@ abstract class SkillBranchItemBase<
     return this._props
   }
 
-  /**
-   * Get sub prop key
-   * @param key - main key
-   * @param subKey - sub key
-   */
   propKey(...keys: string[]) {
     return keys.join('.')
   }

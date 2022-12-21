@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="flex items-center">
+  <div class="border-1 border-primary-20 rounded-md bg-white">
+    <div class="flex items-center pb-4 pt-3 px-2">
       <cy-button-toggle v-model:selected="allSkillEnabled">
         {{ t('global.all') }}
       </cy-button-toggle>
@@ -8,7 +8,7 @@
         {{ disableAllButtonTitle }}
       </cy-button-toggle>
     </div>
-    <div :class="{ 'opacity-50': disableAll }">
+    <div class="skill-tab-content" :class="{ 'opacity-50': disableAll }">
       <CharacterSkillItem
         v-for="skillResultsState in validResultStates"
         :key="skillResultsState.skill.skillId"
@@ -16,7 +16,8 @@
       />
     </div>
     <div
-      class="mt-2 border-t-1 border-primary-30 pt-0.5"
+      v-if="postponedValidResultStates.length > 0"
+      class="border-t-1 border-primary-30 pt-0.5 skill-tab-content"
       :class="{ 'opacity-50': disableAll }"
     >
       <CharacterSkillItem
@@ -121,3 +122,14 @@ const disableAllButtonTitle = computed(() => {
   return t('character-simulator.skill-build.disable-skills', { type })
 })
 </script>
+
+<style lang="postcss" scoped>
+.skill-tab-content {
+  background-color: rgba(var(--app-rgb-primary-5), 0.45);
+  @apply px-1;
+
+  & > div:nth-child(even) {
+    @apply bg-white;
+  }
+}
+</style>

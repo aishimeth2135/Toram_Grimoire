@@ -258,7 +258,7 @@ function loadSkill(skillSystem: SkillSystem, datas: LangCsvData) {
 
   skillSystem.skillRoot.skillTreeCategorys.forEach(stc => {
     stc.skillTrees.forEach(st => {
-      st.skills.forEach(skill => skill.initType())
+      st.skills.forEach(skill => skill.initTypes())
     })
   })
 }

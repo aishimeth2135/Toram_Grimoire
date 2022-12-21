@@ -38,8 +38,9 @@ export function checkStatRestriction(
 
 export function getCharacterElement(
   chara: Character
-): Partial<Record<EnemyElements, number>> {
-  const element: Partial<Record<EnemyElements, number>> = {
+): Record<EnemyElements, number> {
+  const element: Record<EnemyElements, number> = {
+    neutral: 0,
     fire: 0,
     water: 0,
     earth: 0,
@@ -47,8 +48,12 @@ export function getCharacterElement(
     light: 0,
     dark: 0,
   }
-  const setElement = (stat: StatRestriction) =>
-    (element[stat.baseId.replace('element_', '') as EnemyElements] = 1)
+
+  let neutralFlag = true
+  const setElement = (stat: StatRestriction) => {
+    element[stat.baseId.replace('element_', '') as EnemyElements] = 1
+    neutralFlag = false
+  }
 
   const sub = chara.equipmentField(EquipmentFieldTypes.SubWeapon)
   // 主手弓/弩、副手矢時，矢優先於弓
@@ -87,5 +92,10 @@ export function getCharacterElement(
   ) {
     setElement(sub.equipment!.elementStat)
   }
+
+  if (neutralFlag) {
+    element.neutral = 1
+  }
+
   return element
 }

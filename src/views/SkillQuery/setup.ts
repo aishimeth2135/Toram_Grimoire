@@ -23,8 +23,13 @@ export const useSkillQueryState = (() => {
     new EquipmentRestrictions()
   )
 
+  const skillLevel = ref(10)
+  const characterLevel = ref(300)
+
   return function () {
     return {
+      skillLevel,
+      characterLevel,
       currentSkill,
       currentSkillTree,
       currentSkillTreeCategory,
@@ -63,6 +68,8 @@ export function setupComputingContainer(skillRef: Ref<Skill | null>) {
     return skillRegistletItemsStates.get(skill)!
   }
 
+  const { skillLevel, characterLevel } = useSkillQueryState()
+
   const computingContainer = new SkillComputingContainer()
   const FORMULA_REPLACED_VARS = [
     'BSTR',
@@ -89,6 +96,8 @@ export function setupComputingContainer(skillRef: Ref<Skill | null>) {
     computingContainer.handleFormulaExtends.texts['$' + varName] =
       Grimoire.i18n.t(`skill-query.branch.formula-replaced-text.${varName}`)
   })
+  computingContainer.varGetters.skillLevel = () => skillLevel.value
+  computingContainer.varGetters.characterLevel = () => characterLevel.value
   computingContainer.varGetters.registletLevel = skill => {
     return getSkillRegistletItemsState(skill).map(state =>
       state.enabled ? state.level : 0
@@ -101,8 +110,8 @@ export function setupComputingContainer(skillRef: Ref<Skill | null>) {
     newValue => {
       currentSkillItem.value = newValue ? new SkillItem(newValue) : null
       const vars = {
-        slv: computingContainer.vars.skillLevel,
-        clv: computingContainer.vars.characterLevel,
+        slv: skillLevel.value,
+        clv: characterLevel.value,
       }
       currentSkillItem.value?.effectItems.forEach(effectItem =>
         effectItem.resetStackStates(vars)

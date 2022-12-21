@@ -1,12 +1,12 @@
 <template>
   <div v-if="container" class="flex items-center">
     <div v-if="toggleable" class="mr-3 flex flex-shrink-0">
-      <cy-button-toggle
+      <cy-button-check
         v-model:selected="branchItemState.enabled"
         :disabled="container.statContainers.length === 0"
       >
         <span v-html="container.get('condition')"></span>
-      </cy-button-toggle>
+      </cy-button-check>
     </div>
     <div class="flex items-center">
       <SkillBranchPropValue
