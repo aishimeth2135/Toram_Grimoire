@@ -1,7 +1,9 @@
 <template>
-  <cy-popover placement="bottom-end">
+  <cy-popover placement="bottom-start">
     <template #default="{ shown }">
-      <cy-button-icon icon="ic:baseline-settings" inline :selected="shown" />
+      <div class="flex">
+        <cy-button-icon icon="ic:baseline-settings" inline :selected="shown" />
+      </div>
     </template>
     <template #popper>
       <div class="p-3">

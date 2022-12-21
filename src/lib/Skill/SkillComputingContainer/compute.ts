@@ -268,10 +268,8 @@ function computedBranchHelper(
       ...extendsDatas.vars,
       SLv:
         computing.varGetters.skillLevel?.(branchItem.default.parent.parent) ??
-        computing.vars.skillLevel,
-      CLv:
-        computing.varGetters.characterLevel?.() ??
-        computing.vars.characterLevel,
+        0,
+      CLv: computing.varGetters.characterLevel?.() ?? 0,
       stack: stack,
       RLv,
     } as HandleFormulaVars

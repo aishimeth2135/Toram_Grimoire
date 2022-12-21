@@ -479,6 +479,9 @@ export function prepareSetupCharacter() {
         if (!suf.is(SkillBranchNames.Extra)) {
           return false
         }
+        if (suf.propBoolean('display_only')) {
+          return false
+        }
         return suf.stats.length !== 0 || suf.hasProp('dual_element')
       }
 

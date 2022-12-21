@@ -214,13 +214,28 @@ export default function setupDamageCalculation(
     const resultValue = (id: string) =>
       statResults.value.find(result => result.id === id)?.resultValue ?? 0
 
+    const isMagicWeapon = () => {
+      if (!character.value) {
+        return false
+      }
+      const isMainStaff = character.value.checkFieldEquipmentType(
+        EquipmentFieldTypes.MainWeapon,
+        EquipmentTypes.Staff
+      )
+      const isMainMagicDevice = character.value.checkFieldEquipmentType(
+        EquipmentFieldTypes.MainWeapon,
+        EquipmentTypes.MagicDevice
+      )
+      return isMainStaff || isMainMagicDevice
+    }
+
     const currentCharacterElement = computed(() =>
       character.value ? getCharacterElement(character.value) : null
     )
     const skillElementExtra = computed(() => {
-      const newElement = createElementMap()
+      const elementsRate = createElementMap()
       if (!currentCharacterElement.value) {
-        return newElement
+        return elementsRate
       }
       const skillElement = getSkillElement(container.value.branchItem)
       const magicExtra =
@@ -230,9 +245,14 @@ export default function setupDamageCalculation(
       if (skillElement) {
         const keys = Object.keys(skillElement) as EnemyElements[]
         keys.forEach(key => {
+          if (key === EnemyElements.Neutral) {
+            return
+          }
           const againstKey = againstElementMap[key]
           if (skillElement[key] === 1) {
-            newElement[againstKey] = magicExtra + 25
+            elementsRate[againstKey] = magicExtra + 25
+          } else if (isMagicWeapon()) {
+            elementsRate[againstKey] = magicExtra
           }
         })
       } else {
@@ -240,18 +260,32 @@ export default function setupDamageCalculation(
           currentCharacterElement.value
         ) as EnemyElements[]
         keys.forEach(key => {
+          if (key === EnemyElements.Neutral) {
+            return
+          }
           if (currentCharacterElement.value![key] === 1) {
             const againstKey = againstElementMap[key]
-            newElement[againstKey] = 25
+            elementsRate[againstKey] = 25
           }
         })
       }
-      return newElement
+      return elementsRate
     })
 
     const calculationVars = computed(() => {
       if (!character.value) {
         return new Map<CalculationItemIds, number>()
+      }
+
+      let extraMagicCriticalRateConvertionRate = 0
+      if (isMagicWeapon()) {
+        const skillElement = getSkillElement(container.value.branchItem)
+        if (
+          skillElement?.neutral === 1 ||
+          currentCharacterElement.value?.neutral === 1
+        ) {
+          extraMagicCriticalRateConvertionRate = 25
+        }
       }
 
       return new Map<CalculationItemIds, number>([
@@ -277,7 +311,8 @@ export default function setupDamageCalculation(
         [CalculationItemIds.CriticalRate, resultValue('critical_rate')],
         [
           CalculationItemIds.MagicCriticalRateConversionRate,
-          statValue('magic_crt_percentage'),
+          statValue('magic_crt_percentage') +
+            extraMagicCriticalRateConvertionRate,
         ],
         [
           CalculationItemIds.ShortRangeDamage,

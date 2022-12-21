@@ -144,6 +144,7 @@ import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import SkillSwitchEffectButtons from '../skill-switch-effect-buttons.vue'
 
 import { setupEquipmentSelect, setupSkillLevel } from './setup'
+import { useSkillQueryState } from '../setup'
 
 interface Props {
   skillItem: SkillItem | null
@@ -161,22 +162,7 @@ const emit = defineEmits<Emits>()
 
 const { skillTree, skillComputingContainer: computingContainer } = toRefs(props)
 
-const skillLevel = computed<number>({
-  get() {
-    return computingContainer.value.vars.skillLevel
-  },
-  set(value) {
-    computingContainer.value.vars.skillLevel = value
-  },
-})
-const characterLevel = computed<number>({
-  get() {
-    return computingContainer.value.vars.characterLevel
-  },
-  set(value) {
-    computingContainer.value.vars.characterLevel = value
-  },
-})
+const { skillLevel, characterLevel } = useSkillQueryState()
 
 const formulaDisplayMode = computed<FormulaDisplayModes>({
   get() {

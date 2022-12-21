@@ -19,6 +19,9 @@ export const enum SkillBranchNames {
   Import = 'import',
 
   //
+  Extend = 'extend',
+
+  //
   Table = 'table',
   Row = 'row',
 

@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-wrap">
+  <div class="flex flex-wrap space-x-3">
     <div
       v-for="container in statContainers"
       :key="container.stat.statId"
-      class="mr-3 text-primary-30"
+      class="text-primary-30"
     >
       <SkillBranchPropValue
         :result="container"

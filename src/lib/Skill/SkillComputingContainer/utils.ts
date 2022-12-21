@@ -1,6 +1,7 @@
 import { shallowReactive } from 'vue'
 
 import { handleFormula } from '@/shared/utils/data'
+import { isNumberString } from '@/shared/utils/string'
 
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { StatComputed } from '@/lib/Character/Stat'
@@ -502,6 +503,30 @@ function setBranchAttrsDefaultValue(effectItem: SkillEffectItem) {
   })
 }
 
+function normalizeBaseBranches(branches: SkillBranch[]): SkillBranch[] {
+  return branches
+    .map(bch => {
+      if (bch.name === SkillBranchNames.Extend) {
+        const extendedId = bch.props.get('extend')
+        if (!extendedId || !isNumberString(extendedId)) {
+          return null
+        }
+        const targetId = parseInt(extendedId, 10)
+        const newBch = branches.find(item => item.id === targetId)?.clone()
+        if (!newBch) {
+          return null
+        }
+        newBch.id = bch.id
+        for (const [key, value] of bch.props.entries()) {
+          newBch.props.set(key, value)
+        }
+        return newBch
+      }
+      return bch
+    })
+    .filter(bch => bch !== null) as SkillBranch[]
+}
+
 export {
   initBasicBranchItem,
   convertEffectEquipment,
@@ -513,4 +538,5 @@ export {
   regressHistoryBranches,
   initHistoryNexts,
   setBranchAttrsDefaultValue,
+  normalizeBaseBranches,
 }

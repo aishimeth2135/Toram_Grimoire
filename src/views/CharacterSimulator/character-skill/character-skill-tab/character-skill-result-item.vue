@@ -1,17 +1,16 @@
 <template>
-  <div>
-    <div class="flex items-start">
-      <div v-if="!hideName" class="mr-3 flex flex-shrink-0">
-        <cy-button-toggle
-          v-model:selected="branchItemState.enabled"
-          :disabled="container.statContainers.length === 0"
-        >
-          {{
-            container.get('name') || t('skill-query.branch.effect.base-name')
-          }}
-        </cy-button-toggle>
+  <div class="flex items-start py-0.5">
+    <div v-if="!hideName" class="flex flex-shrink-0 pr-1.5">
+      <cy-button-check
+        v-model:selected="branchItemState.enabled"
+        :disabled="container.statContainers.length === 0"
+      />
+    </div>
+    <div class="w-full">
+      <div v-if="!hideName" class="text-primary-70 pt-0.5">
+        {{ container.get('name') || t('skill-query.branch.effect.base-name') }}
       </div>
-      <div class="py-1">
+      <div class="py-0.5">
         <SkillBranchPropValue
           v-if="container.statContainers.length === 0"
           :result="container.result('caption')"
@@ -21,13 +20,13 @@
           :stat-containers="container.statContainers"
         />
       </div>
-    </div>
-    <div class="pl-4">
-      <CharacterSkillResultSuffixItem
-        v-for="suffixContainer in result.suffixContainers"
-        :key="suffixContainer.instanceId"
-        :container="suffixContainer"
-      />
+      <div class="pl-4 pt-1">
+        <CharacterSkillResultSuffixItem
+          v-for="suffixContainer in result.suffixContainers"
+          :key="suffixContainer.instanceId"
+          :container="suffixContainer"
+        />
+      </div>
     </div>
   </div>
 </template>
