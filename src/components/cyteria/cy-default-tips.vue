@@ -8,7 +8,7 @@
         icon-color="primary-30"
         class="mr-3"
       />
-      <span :style="contentStyle" class="text-primary-90">
+      <span :style="contentStyle" class="text-primary-70">
         <slot />
       </span>
     </div>

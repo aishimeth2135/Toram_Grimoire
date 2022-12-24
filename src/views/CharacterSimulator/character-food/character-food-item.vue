@@ -1,14 +1,19 @@
 <template>
-  <cy-list-item>
-    <cy-button-toggle
-      v-model:selected="selected"
-      inline
-      style="min-width: 15rem"
-    >
-      {{ food.stat().show() }}
-    </cy-button-toggle>
-    <cy-input-counter v-model:value="level" :range="foodLevelRange" inline />
-  </cy-list-item>
+  <CardRow class="flex items-center flex-wrap py-2.5 px-1.5">
+    <div class="pl-0.5 flex">
+      <cy-button-check
+        v-model:selected="selected"
+        inline
+        style="min-width: 15rem"
+      >
+        {{ food.stat().show() }}
+      </cy-button-check>
+    </div>
+    <div class="flex items-center ml-10">
+      <div class="text-primary-30">Lv.</div>
+      <cy-input-counter v-model:value="level" :range="foodLevelRange" inline />
+    </div>
+  </CardRow>
 </template>
 
 <script lang="ts" setup>
@@ -18,6 +23,8 @@ import { useI18n } from 'vue-i18n'
 import { Food } from '@/lib/Character/Food/FoodBuild'
 
 import Notify from '@/setup/Notify'
+
+import CardRow from '@/components/card/card-row.vue'
 
 import { setupCharacterFoodStore } from './setup'
 

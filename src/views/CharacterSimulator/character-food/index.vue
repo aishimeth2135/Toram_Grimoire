@@ -85,12 +85,14 @@
         </cy-icon-text>
       </div>
     </div>
-    <div class="mt-1" :class="{ 'opacity-50': disableAll }">
-      <CharacterFoodItem
-        v-for="food in currentFoodBuild.foods"
-        :key="food.foodBase.foodBaseId"
-        :food="food"
-      />
+    <div class="border-1 border-primary-20 rounded-md overflow-hidden mt-3">
+      <CardRows :class="{ 'opacity-50': disableAll }">
+        <CharacterFoodItem
+          v-for="food in currentFoodBuild.foods"
+          :key="food.foodBase.foodBaseId"
+          :food="food"
+        />
+      </CardRows>
     </div>
   </section>
 </template>
@@ -112,6 +114,8 @@ import Notify from '@/setup/Notify'
 import CharacterFoodItem from './character-food-item.vue'
 
 import { setupCharacterFoodStore } from './setup'
+
+import CardRows from '@/components/card/card-rows.vue'
 
 const { t } = useI18n()
 const { notify } = Notify()

@@ -14,7 +14,7 @@
       "
       :class="iconClass"
     />
-    <div v-if="$slots.default" class="ml-2 mr-1.5 flex">
+    <div v-if="$slots.default" class="ml-2.5 mr-1.5 flex">
       <slot />
     </div>
   </CyButtonBase>

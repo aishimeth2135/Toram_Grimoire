@@ -521,14 +521,22 @@ export function prepareSetupCharacter() {
         }
         const { skillItem, effectItem: currentEffectItem } = skillItemState
 
+        interface BranchItemArrayFilter {
+          (bch: SkillBranchItem): boolean
+        }
+
         // active
-        const checkBranchStats = (stats: StatComputed[]) =>
-          !setupOptions.value.skillDisplayStatsOnly || stats.length !== 0
-        const checkActive = (bch: SkillBranchItem) => {
+        const checkBranchStats = (stats: StatComputed[]): boolean => {
+          return !setupOptions.value.skillDisplayStatsOnly || stats.length !== 0
+        }
+        const checkActive: BranchItemArrayFilter = bch => {
           if (!checkPostpone(bch)) {
             return false
           }
           if (bch.is(SkillBranchNames.Effect)) {
+            if (bch.propBoolean('display_only')) {
+              return false
+            }
             return (
               checkBranchStats(bch.stats) ||
               bch.suffixBranches.some(suffixBranchFilter)
@@ -548,7 +556,7 @@ export function prepareSetupCharacter() {
             })
 
         // passive
-        const checkPassive = (bch: SkillBranchItem) => {
+        const checkPassive: BranchItemArrayFilter = bch => {
           if (!checkPostpone(bch)) {
             return false
           }
@@ -572,7 +580,7 @@ export function prepareSetupCharacter() {
             })
 
         // next
-        const checkNext = (bch: SkillBranchItem) => {
+        const checkNext: BranchItemArrayFilter = bch => {
           if (!checkPostpone(bch)) {
             return false
           }
@@ -601,7 +609,7 @@ export function prepareSetupCharacter() {
         > | null = null
         if (isPostpone) {
           // damage
-          const checkDamage = (bch: SkillBranchItem) =>
+          const checkDamage: BranchItemArrayFilter = bch =>
             bch.is(SkillBranchNames.Damage) && checkPostpone(bch)
           const damageValid = skillItem.effectItems.some(effectItem =>
             effectItem.branchItems.some(checkDamage)
@@ -696,13 +704,12 @@ export function prepareSetupCharacter() {
         bch.linkedStackIds.forEach(id => stackIds.add(id))
       )
       const stackIdList = [...stackIds]
-      return (
-        skillStackContainers
-          .get(skill)
-          ?.value.filter(container =>
-            stackIdList.includes(container.branchItem.stackId!)
-          ) ?? []
-      )
+      const res = skillStackContainers
+        .get(skill)
+        ?.value.filter(container =>
+          stackIdList.includes(container.branchItem.stackId!)
+        )
+      return res ?? []
     }
 
     const getSkillResultStatesComputed = (

@@ -1,12 +1,7 @@
 <template>
-  <div class="pt-2.5 pb-2">
+  <CardRow class="pt-2.5 pb-2 px-1">
     <div class="flex items-start h-full">
       <div class="flex-shrink-0 self-stretch pl-2 pr-3">
-        <!-- <cy-button-check
-          :selected="currentSkillState.enabled"
-          :class="{ invisible: invalid }"
-          color="red"
-        /> -->
         <div
           class="p-1.5 border-1 rounded-full flex relative bg-white cursor-pointer duration-150 hover:border-primary-40"
           :class="
@@ -68,7 +63,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </CardRow>
 </template>
 
 <script lang="ts" setup>
@@ -78,6 +73,8 @@ import { useI18n } from 'vue-i18n'
 import { SkillResultsState } from '@/stores/views/character/setup'
 
 import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
+
+import CardRow from '@/components/card/card-row.vue'
 
 import CharacterSkillItemOptions from './character-skill-item-options.vue'
 import CharacterSkillResultItem from './character-skill-result-item.vue'
