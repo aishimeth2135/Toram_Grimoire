@@ -45,7 +45,7 @@
         />
       </div>
     </div>
-    <div class="py-2 flex items-center space-x-2">
+    <div class="py-3 flex items-center space-x-2">
       <cy-button-action @click="toggle('modals/edit', true)">
         {{ t('character-simulator.registlet-build.edit-registlet') }}
       </cy-button-action>
@@ -53,12 +53,39 @@
         {{ t('character-simulator.registlet-build.show-detail') }}
       </cy-button-toggle>
     </div>
-    <div class="space-y-2.5">
-      <div v-for="item in currentRegistletBuild.items" :key="item.base.id">
+    <div class="border-1 border-primary-20 rounded-md overflow-hidden">
+      <CardRows v-if="currentRegistletBuild.items.length > 0">
         <CharacterRegistletItem
+          v-for="item in currentRegistletBuild.items"
+          :key="item.base.id"
           :item="item"
           :detail-visible="controls.itemDetail"
         />
+      </CardRows>
+      <cy-default-tips v-else>
+        {{ t('character-simulator.registlet-build.default-tips') }}
+      </cy-default-tips>
+    </div>
+    <div class="space-y-1 pt-6 pb-2">
+      <div>
+        <cy-icon-text
+          icon="ic-outline-info"
+          text-color="primary-50"
+          align-v="start"
+          small
+        >
+          {{ t('character-simulator.registlet-build.main-tips-1') }}
+        </cy-icon-text>
+      </div>
+      <div>
+        <cy-icon-text
+          icon="ic-outline-info"
+          text-color="primary-50"
+          align-v="start"
+          small
+        >
+          {{ t('character-simulator.registlet-build.main-tips-2') }}
+        </cy-icon-text>
       </div>
     </div>
     <CharacterRegistletEdit
@@ -82,6 +109,7 @@ import { useI18n } from 'vue-i18n'
 import { setupCharacterRegistletStore } from '../setup'
 import CharacterRegistletEdit from './character-registlet-edit.vue'
 import CharacterRegistletItem from './character-registlet-item.vue'
+import CardRows from '@/components/card/card-rows.vue'
 
 const characterStore = useCharacterStore()
 const {

@@ -1,20 +1,25 @@
 <template>
-  <div
-    class="border-1 border-primary-20 rounded py-2 pl-2 pr-4 bg-white"
+  <CardRow
+    class="py-2 pl-2 pr-4 relative"
     :class="item.enabled ? 'opacity-100' : 'opacity-60'"
   >
+    <cy-button-icon
+      icon="ic:round-delete-outline"
+      color="gray"
+      class="absolute top-3.5 right-3"
+      @click="item.remove()"
+    />
     <div class="flex items-center flex-wrap">
-      <div class="flex mr-auto" style="min-width: 14rem">
-        <cy-button-toggle
+      <div class="flex items-center mr-auto" style="min-width: 14rem">
+        <cy-button-check
           v-model:selected="
             // eslint-disable-next-line vue/no-mutating-props
             item.enabled
           "
-        >
-          {{ item.base.name }}
-        </cy-button-toggle>
+        />
+        <div class="ml-1 text-primary-80">{{ item.base.name }}</div>
       </div>
-      <div class="flex items-center ml-4">
+      <div v-if="item.enabled" class="flex items-center ml-10 mr-6">
         <span class="text-primary-30">Lv.</span>
         <cy-input-counter
           v-model:value="
@@ -24,15 +29,9 @@
           inline
           class="!flex"
         />
-        <cy-button-icon
-          icon="ic:round-delete-outline"
-          class="ml-4"
-          color="gray"
-          @click="item.remove()"
-        />
       </div>
     </div>
-    <div v-if="detailVisible" class="p-2 pl-4">
+    <div v-if="item.enabled && detailVisible" class="p-2 pl-10">
       <div
         v-if="!!(item.base.link instanceof StatBase)"
         class="flex items-center"
@@ -55,7 +54,7 @@
         </template>
       </template>
     </div>
-  </div>
+  </CardRow>
 </template>
 
 <script lang="ts" setup>
@@ -64,6 +63,7 @@ import { useI18n } from 'vue-i18n'
 import { RegistletItem } from '@/lib/Character/RegistletBuild/RegistletBuild'
 import { StatBase } from '@/lib/Character/Stat'
 
+import CardRow from '@/components/card/card-row.vue'
 import { getRegistletCaptionRender } from '@/views/Registlet/RegistletQuery/setup'
 
 interface Props {

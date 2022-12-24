@@ -1,5 +1,5 @@
 <template>
-  <div class="border-1 border-primary-20 rounded-md bg-white">
+  <div class="border-1 border-primary-20 rounded-md overflow-hidden">
     <div class="flex items-center pb-4 pt-3 px-2">
       <cy-button-toggle v-model:selected="allSkillEnabled">
         {{ t('global.all') }}
@@ -8,16 +8,16 @@
         {{ disableAllButtonTitle }}
       </cy-button-toggle>
     </div>
-    <div class="skill-tab-content" :class="{ 'opacity-50': disableAll }">
+    <CardRows :class="{ 'opacity-50': disableAll }">
       <CharacterSkillItem
         v-for="skillResultsState in validResultStates"
         :key="skillResultsState.skill.skillId"
         :skill-results-state="skillResultsState"
       />
-    </div>
-    <div
+    </CardRows>
+    <CardRows
       v-if="postponedValidResultStates.length > 0"
-      class="border-t-1 border-primary-30 pt-0.5 skill-tab-content"
+      class="border-t-1 border-primary-30 pt-0.5"
       :class="{ 'opacity-50': disableAll }"
     >
       <CharacterSkillItem
@@ -25,7 +25,7 @@
         :key="skillResultsState.skill.skillId"
         :skill-results-state="skillResultsState"
       />
-    </div>
+    </CardRows>
   </div>
 </template>
 
@@ -46,6 +46,8 @@ import { SkillTypes } from '@/lib/Skill/Skill/enums'
 import CharacterSkillItem from './character-skill-item.vue'
 
 import { setupCharacterSkillBuildStore, setupCharacterStore } from '../../setup'
+
+import CardRows from '@/components/card/card-rows.vue'
 
 interface Props {
   type: SkillTypes
@@ -122,14 +124,3 @@ const disableAllButtonTitle = computed(() => {
   return t('character-simulator.skill-build.disable-skills', { type })
 })
 </script>
-
-<style lang="postcss" scoped>
-.skill-tab-content {
-  background-color: rgba(var(--app-rgb-primary-5), 0.45);
-  @apply px-1;
-
-  & > div:nth-child(even) {
-    @apply bg-white;
-  }
-}
-</style>
