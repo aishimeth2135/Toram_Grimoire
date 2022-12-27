@@ -1,4 +1,4 @@
-import UnknowSkillIcon from '@/assets/images/skill-icons/unknow.svg'
+import UnknowSkillIcon from '@/assets/images/skill-icons/unknown.svg'
 
 class ImageStore {
   private _items: Map<string, string>

@@ -328,7 +328,7 @@ import { useI18n } from 'vue-i18n'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { EquipmentKinds } from '@/lib/Character/CharacterEquipment/enums'
 import { StatRestriction } from '@/lib/Character/Stat'
-import { ItemObtain } from '@/lib/Items/Item'
+import { BagItemObtain } from '@/lib/Items/BagItem'
 
 import ToggleService from '@/setup/ToggleService'
 
@@ -358,14 +358,14 @@ const originEquipment = computed(() => {
   return props.equipment.origin!
 })
 
-const obtainsDataConvert = (obtains: ItemObtain[]) => {
+const obtainsDataConvert = (obtains: BagItemObtain[]) => {
   const icons: Record<string, string> = {
     mobs: 'jam-box',
     boss: 'jam-box',
     mini_boss: 'jam-box',
     quest: 'mdi-script-outline',
     smith: 'ion-hammer',
-    unknow: 'ri-file-unknow-line',
+    unknown: 'ri-file-unknown-line',
     other: 'gg-shape-rhombus',
     box: 'mdi-treasure-chest',
     exchange: 'bx-bx-shopping-bag',

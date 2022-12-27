@@ -30,7 +30,7 @@ branch:
   duration-caption: '持续{duration}秒'
   ailment-title: 命中成功后
   apply-element: 套用{element}。
-  unknow-variable: 未知参数
+  unknown-variable: 未知参数
   dual-element-title: 双重属性
   formula-replaced-text:
     BSTR: 基础STR

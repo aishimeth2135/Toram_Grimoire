@@ -60,7 +60,7 @@ Equipment:
     mini_boss: 地图BOSS
     quest: 任务
     smith: 铁匠铺
-    unknow: 未知
+    unknown: 未知
     other: 其它
     box: 箱子道具
     exchange: 交换所
@@ -68,13 +68,13 @@ Equipment:
 Stat:
   type-total: 总{text}
 auto-save:
-  save-unknow-error-tips: 自动存档时发生未知的错误。
-  load-unknow-error-tips: 自动读取时发生未知的错误。
+  save-unknown-error-tips: 自动存档时发生未知的错误。
+  load-unknown-error-tips: 自动读取时发生未知的错误。
 export-build:
-  save-unknow-error-tips: 产生档案时发生未知的错误。
+  save-unknown-error-tips: 产生档案时发生未知的错误。
   load-success-tips: 读取成功。
-  load-unknow-error-tips: 读取时发生未知的错误。
+  load-unknown-error-tips: 读取时发生未知的错误。
   load-failed-tips: 解析档案时发生错误，档案内容的格式可能有误。
   load-wrong-file-type-tips: 读取的档案必须为文字（.txt）档。
 tips:
-  view-unknow-error-tips: 发生未知的错误，请点击下方的按钮尝试还原介面。
+  view-unknown-error-tips: 发生未知的错误，请点击下方的按钮尝试还原介面。

@@ -1,25 +1,29 @@
 import { markRaw } from 'vue'
 
-import { Crystal, Equipment } from './Item'
+import { BagCrystal, BagEquipment } from './BagItem'
+import { BagPotionsRoot } from './BagItem/BagPotion'
 
 export default class ItemsSystem {
-  equipments: Equipment[]
-  crystals: Crystal[]
+  equipments: BagEquipment[]
+  crystals: BagCrystal[]
+  potionsRoot: BagPotionsRoot
 
   constructor() {
     this.equipments = markRaw([])
     this.crystals = markRaw([])
+    this.potionsRoot = markRaw(new BagPotionsRoot())
   }
+
   appendEquipment(
     name: string,
     category: number,
     baseValue: number,
     stability: number,
     caption: string
-  ) {
+  ): BagEquipment {
     const item = markRaw(
-      new Equipment(
-        this.equipments.length,
+      new BagEquipment(
+        this.equipments.length.toString(),
         name,
         category,
         baseValue,
@@ -30,9 +34,19 @@ export default class ItemsSystem {
     this.equipments.push(item)
     return item
   }
-  appendCrystal(name: string, category: number, bossCategory: number) {
+
+  appendCrystal(
+    name: string,
+    category: number,
+    bossCategory: number
+  ): BagCrystal {
     const item = markRaw(
-      new Crystal(this.crystals.length, name, category, bossCategory)
+      new BagCrystal(
+        this.crystals.length.toString(),
+        name,
+        category,
+        bossCategory
+      )
     )
     this.crystals.push(item)
     return item

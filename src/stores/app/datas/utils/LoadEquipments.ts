@@ -1,8 +1,12 @@
 import { isNumberString, splitComma } from '@/shared/utils/string'
 
 import ItemsSystem from '@/lib/Items'
-import { Equipment, ItemRecipeMaterialItem } from '@/lib/Items/Item'
-import type { ItemExtra, ItemObtain, ItemRecipe } from '@/lib/Items/Item'
+import { BagEquipment, BagItemRecipeMaterial } from '@/lib/Items/BagItem'
+import type {
+  BagItemExtra,
+  BagItemObtain,
+  BagItemRecipe,
+} from '@/lib/Items/BagItem'
 
 import type { CsvData } from './DownloadDatas'
 
@@ -37,23 +41,23 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
     } as Record<string, number>
 
   const processMaterails = (str: string) => {
-    const materials: ItemRecipeMaterialItem[] = []
+    const materials: BagItemRecipeMaterial[] = []
     const list = splitComma(str)
     list.forEach(item => {
       const parts = item.split('#')
       const name = parts[0],
         value = parts[1]
       if (name && value) {
-        materials.push(new ItemRecipeMaterialItem(name, parseInt(value, 10)))
+        materials.push(new BagItemRecipeMaterial(name, parseInt(value, 10)))
       }
     })
     return materials
   }
 
-  let currentEquipment: Equipment
-  let currentObtain: ItemObtain
-  let currentRecipe: ItemRecipe
-  let currentExtra: ItemExtra
+  let currentEquipment: BagEquipment
+  let currentObtain: BagItemObtain
+  let currentRecipe: BagItemRecipe
+  let currentExtra: BagItemExtra
   let currentCategory: string = ''
   csvData.forEach((row, index) => {
     if (!row || index === 0 || row.every(col => col === '')) {
@@ -108,7 +112,7 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
         )
       } else if (currentCategory === 'obtain') {
         if (['name', 'map', 'dye', 'type', 'npc'].includes(propName)) {
-          currentObtain[propName as keyof ItemObtain] = propValue
+          currentObtain[propName as keyof BagItemObtain] = propValue
         }
       } else if (currentCategory === 'extra') {
         if (propName === 'caption') {
@@ -131,7 +135,7 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
         }
       }
     } catch (error) {
-      console.warn('[LoadEquipment] unknow error')
+      console.warn('[LoadEquipment] unknown error')
       console.warn(row, index)
       console.warn(error)
     }

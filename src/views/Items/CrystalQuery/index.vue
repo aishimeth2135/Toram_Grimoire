@@ -146,7 +146,7 @@ import { useI18n } from 'vue-i18n'
 import Grimoire from '@/shared/Grimoire'
 
 import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
-import { Crystal } from '@/lib/Items/Item'
+import { BagCrystal } from '@/lib/Items/BagItem'
 
 import PageControl from '@/setup/PageControl'
 import ToggleService from '@/setup/ToggleService'
@@ -231,7 +231,7 @@ const toggleSearchFilterAll = (target: SearchFilterItem, force: boolean) => {
   target.selectedOptions = force ? target.options.slice() : []
 }
 
-const categoryCrystalsMap = new Map<number, Crystal[]>(
+const categoryCrystalsMap = new Map<number, BagCrystal[]>(
   searchFilter.category.options.map(item => [item, []])
 )
 crystals.forEach(_crystal => {

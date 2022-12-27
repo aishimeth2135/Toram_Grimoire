@@ -6,7 +6,7 @@ import { isIntegerString } from '@/shared/utils/string'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { StatBase, StatRestriction } from '@/lib/Character/Stat'
 import { StatTypes } from '@/lib/Character/Stat/enums'
-import { ItemObtain } from '@/lib/Items/Item'
+import { BagItemObtain } from '@/lib/Items/BagItem'
 
 export interface StatOption {
   origin: StatBase
@@ -42,7 +42,7 @@ function dyeConvert(value: string): (number | null)[] {
 export function findObtainByDye(
   text: string,
   eq: CharacterEquipment
-): ItemObtain[] {
+): BagItemObtain[] {
   if (text === '') {
     return []
   }

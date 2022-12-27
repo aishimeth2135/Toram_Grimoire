@@ -167,7 +167,7 @@ const importSaveData = () => {
         notify(t('common.export-build.load-failed-tips'))
       }
     },
-    error: () => notify(t('common.export-build.load-unknow-error-tips')),
+    error: () => notify(t('common.export-build.load-unknown-error-tips')),
     checkFileType: fileType => {
       if (fileType !== 'txt') {
         notify(t('common.export-build.load-wrong-file-type-tips'))

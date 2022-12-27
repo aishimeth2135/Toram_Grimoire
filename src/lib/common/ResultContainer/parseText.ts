@@ -163,14 +163,18 @@ export function getCommonTextParseItems(options: ParseValueOptions = {}) {
     pattern: /#\[([^\]]+)\](?:\[([^\]]+)\])?/g,
     handler(values) {
       const [value1, value2] = values
-      const newPart = new TextResultContainerPart(
+      if (value2) {
+        const newPart = new TextResultContainerPart(
+          TextResultContainerPartTypes.GlossaryTag,
+          value2
+        )
+        newPart.metadata.set('display-name', value1)
+        return newPart
+      }
+      return new TextResultContainerPart(
         TextResultContainerPartTypes.GlossaryTag,
         value1
       )
-      if (value2) {
-        newPart.metadata.set('display-name', value2)
-      }
-      return newPart
     },
     patternGroupsLength: 2,
   }

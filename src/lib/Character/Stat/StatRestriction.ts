@@ -25,9 +25,7 @@ class StatRestriction extends Stat {
   ) {
     super(base, type, value)
     this.restriction = restriction !== null ? markRaw(restriction) : restriction
-  }
 
-  override get statId() {
     let rtext = 'none++'
     if (this.restriction !== null) {
       const rst = this.restriction
@@ -36,7 +34,7 @@ class StatRestriction extends Stat {
         .map(item => (typeof item === 'string' ? item : 'none'))
         .join('+')
     }
-    return `${this.base.statId(this.type)}|${rtext}`
+    this.statId = `${this.statId}|${rtext}`
   }
 
   override clone() {
@@ -126,10 +124,12 @@ class StatRestriction extends Stat {
         : restrictionMapping[_restriction]
       if (!['main', 'sub', 'body'].includes(eqType) || !restriction) {
         if (restriction !== '') {
-          console.warn(
-            '[CharacterEquipment.fromOrigin] unknow restriction of stat: ' +
-              item
+          Grimoire.Logger.start(
+            'StatRestriction.fromOrigin',
+            'unknown restriction of stat'
           )
+            .log(item)
+            .end()
         }
         return StatRestriction.from(stat, newOriginRestriction)
       }

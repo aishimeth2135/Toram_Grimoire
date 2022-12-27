@@ -95,7 +95,7 @@ import {
   MainWeapon,
   SpecialGear,
 } from '@/lib/Character/CharacterEquipment'
-import { Crystal } from '@/lib/Items/Item'
+import { BagCrystal } from '@/lib/Items/BagItem'
 
 import ShowStat from '@/components/common/show-stat.vue'
 
@@ -149,7 +149,7 @@ const availableCrystalCategoryIds = computed(() => {
 
 interface CategoryItem {
   id: number
-  crystals: Crystal[]
+  crystals: BagCrystal[]
 }
 
 const currentCrystalCategorys: ComputedRef<CategoryItem[]> = computed(() => {
@@ -174,7 +174,7 @@ const selectedCrystalIds = computed(() => {
   return equipment.value.crystals.map(crystal => crystal.id)
 })
 
-const toggleCrystalSelected = (crystal: Crystal) => {
+const toggleCrystalSelected = (crystal: BagCrystal) => {
   if (!equipment.value) {
     return
   }
@@ -199,6 +199,6 @@ const currentEquipmentRelatedCrystals = computed(() => {
     .flat()
 })
 
-const checkEnchaner = (crystal: Crystal) =>
+const checkEnchaner = (crystal: BagCrystal) =>
   !currentEquipmentRelatedCrystals.value.includes(crystal.name)
 </script>

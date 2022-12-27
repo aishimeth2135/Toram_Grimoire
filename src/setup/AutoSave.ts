@@ -15,14 +15,14 @@ export default function ({ save, loadFirst }: AutoSaveOptions): void {
   try {
     loadFirst()
   } catch (error) {
-    notify(t('common.auto-save.load-unknow-error-tips'))
+    notify(t('common.auto-save.load-unknown-error-tips'))
     return
   }
   const saveHandler = () => {
     try {
       save()
     } catch (error) {
-      notify(t('common.auto-save.save-unknow-error-tips'))
+      notify(t('common.auto-save.save-unknown-error-tips'))
     }
   }
   const beforeunload = () => saveHandler()

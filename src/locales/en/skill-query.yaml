@@ -25,7 +25,7 @@ branch:
   duration-caption: '持續{duration}秒'
   ailment-title: 命中成功後
   apply-element: 套用{element}。
-  unknow-variable: 未知參數
+  unknown-variable: 未知參數
   formula-replaced-text:
     BSTR: 基礎STR
     BINT: 基礎INT

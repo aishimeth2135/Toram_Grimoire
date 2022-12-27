@@ -306,11 +306,15 @@ class SkillBranchTextResultPart extends TextResultContainerPart {
       }
       return part
     })
-    return new SkillBranchTextResultPart(
+    const newPart = new SkillBranchTextResultPart(
       resultPart.type,
       parts,
       resultPart.unit
     )
+    for (const [key, value] of resultPart.metadata.entries()) {
+      newPart.metadata.set(key, value)
+    }
+    return newPart
   }
 }
 
