@@ -2,13 +2,13 @@ import Grimoire from '@/shared/Grimoire'
 import { Images } from '@/shared/services/Images'
 import { isNumberString } from '@/shared/utils/string'
 
-import { Crystal, Equipment } from '@/lib/Items/Item'
+import { BagCrystal, BagEquipment } from '@/lib/Items/BagItem'
 
 import { StatRecorded, StatRestriction } from '../Stat'
 import type { StatRestrictionSaveData } from '../Stat/StatRestriction'
 import { EquipmentKinds, EquipmentTypes } from './enums'
 
-type EquipmentOrigin = Equipment | null
+type EquipmentOrigin = BagEquipment | null
 
 interface EquipmentSaveData {
   name: string
@@ -208,7 +208,7 @@ abstract class CharacterEquipment {
   findStat(baseId: string, type: string) {
     return this.stats.find(stat => stat.baseId === baseId && stat.type === type)
   }
-  appendCrystal(origin: Crystal) {
+  appendCrystal(origin: BagCrystal) {
     if (this.hasCrystal) {
       const crystals = this.crystals
       if (crystals.length < 2) {
@@ -428,10 +428,7 @@ abstract class CharacterEquipment {
     }
   }
 
-  static fromOriginEquipment(
-    item: Equipment,
-    { statValueToNumber = true } = {}
-  ): CharacterEquipment {
+  static fromOriginEquipment(item: BagEquipment): CharacterEquipment {
     /* [
       0'單手劍', 1'雙手劍', 2'弓', 3'弩', 4'法杖',
       5'魔導具', 6'拳套', 7'旋風槍', 8'拔刀劍',
@@ -442,18 +439,7 @@ abstract class CharacterEquipment {
     const pre_args = [
       item,
       item.name as string,
-      item.stats.map((stat, idx) => {
-        const statRest = StatRestriction.fromOrigin(
-          stat,
-          item.statRestrictions[idx]
-        )
-        if (statValueToNumber && typeof statRest.value === 'string') {
-          statRest.value = isNumberString(statRest.value)
-            ? parseFloat(statRest.value)
-            : 0
-        }
-        return statRest
-      }),
+      item.stats.map(stat => stat.clone()),
     ] as const
 
     if (item.category === -1) {
@@ -710,14 +696,12 @@ class Avatar extends CharacterEquipment {
 }
 
 class EquipmentCrystal {
-  origin: Crystal
+  origin: BagCrystal
   stats: StatRestriction[]
 
-  constructor(origin: Crystal) {
+  constructor(origin: BagCrystal) {
     this.origin = origin
-    this.stats = this.origin.stats.map((stat, idx) =>
-      StatRestriction.fromOrigin(stat, this.origin.statRestrictions[idx])
-    )
+    this.stats = this.origin.stats.map(stat => stat.clone())
   }
 
   get id() {

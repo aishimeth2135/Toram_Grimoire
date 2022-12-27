@@ -98,7 +98,7 @@ export const useDamageCalculationStore = defineStore(
           currentCalculationIndex: data.currentCalculationIndex,
         })
       } catch (error) {
-        console.warn('[store/damage-calculation/load] unknow error')
+        console.warn('[store/damage-calculation/load] unknown error')
         console.log(error)
         throw error
       }

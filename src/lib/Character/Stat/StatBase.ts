@@ -17,10 +17,10 @@ class StatBase {
     return stats
   }
 
-  baseId: string
-  text: string
-  hasMultiplier: boolean
-  order: number
+  readonly baseId: string
+  readonly text: string
+  readonly hasMultiplier: boolean
+  readonly order: number
   constantDisplayFormat: string
   multiplierDisplayFormat: string
   hidden: boolean
@@ -150,27 +150,24 @@ class StatBase {
 }
 
 abstract class StatElementBase {
-  private _base: StatBase
-  private _type: StatTypes
+  readonly base: StatBase
+  readonly type: StatTypes
+
+  /**
+   * @readonly
+   */
+  statId: string
 
   abstract value: StatValue
 
   abstract clone(): StatElementBase
 
   constructor(base: StatBase, type: StatTypes) {
-    this._base = base
-    this._type = type
+    this.base = base
+    this.type = type
+    this.statId = this.base.statId(this.type)
   }
 
-  get base() {
-    return this._base
-  }
-  get type() {
-    return this._type
-  }
-  get statId() {
-    return this.base.statId(this.type)
-  }
   get valueId() {
     return `${this.statId}_${this.value}`
   }

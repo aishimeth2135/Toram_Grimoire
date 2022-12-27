@@ -349,7 +349,7 @@ import {
 } from './setup'
 
 const equipments = Grimoire.Items.equipments.map(equip =>
-  CharacterEquipment.fromOriginEquipment(equip, { statValueToNumber: false })
+  CharacterEquipment.fromOriginEquipment(equip)
 )
 
 console.log(equipments.filter(eq => eq.type === EquipmentTypes.NinjutsuScroll))
@@ -421,7 +421,7 @@ const sortOptions: {
     name: (item1, item2) => item1.name.localeCompare(item2.name),
   },
   [SearchModes.Normal]: {
-    default: (item1, item2) => item1.origin!.id - item2.origin!.id,
+    default: (item1, item2) => item1.origin!.id.localeCompare(item2.origin!.id),
   },
   [SearchModes.Stat]: {
     default: (item1, item2) => {
@@ -459,7 +459,7 @@ const sortOptions: {
     },
   },
   [SearchModes.Dye]: {
-    default: (item1, item2) => item1.origin!.id - item2.origin!.id,
+    default: (item1, item2) => item1.origin!.id.localeCompare(item2.origin!.id),
   },
 }
 
@@ -510,7 +510,7 @@ const conditions: {
     'box',
     'exchange',
     'other',
-    'unknow',
+    'unknown',
     'ex_skill',
   ]),
 })
@@ -560,10 +560,10 @@ const validEquipments = computed(() => {
     })
   }
   const unknowObtain = conditions.obtains.find(
-    obtain => obtain.value === 'unknow' && obtain.selected
+    obtain => obtain.value === 'unknown' && obtain.selected
   )
   const validObtains = conditions.obtains.filter(
-    obtain => obtain.value !== 'unknow' && obtain.selected
+    obtain => obtain.value !== 'unknown' && obtain.selected
   )
   return equipments.filter(equip => {
     const checkType = validTypes.some(typeItem =>

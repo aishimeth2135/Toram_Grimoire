@@ -112,9 +112,9 @@ const HANDLE_FORMULA_EXTRA_PATTERN_2 = /extra\[(\d+)\]/g
 /**
  * Create data contains vars and texts of branchItem to compute formula.
  * @param branchItem
- * @param values - it will check value of every values whether it contains "stack[n]", and ensure stack[n] is not undefined
- * @param [formulaDisplayMode] - formula display mode, default value is from ComputingContainer.config
- * @returns data using for compute
+ * @param values - it will check value of every values whether it contains "stack[n]", and ensure `stack[n]` is not undefined
+ * @param [formulaDisplayMode] - formula display mode, default value is from `ComputingContainer.config`
+ * @returns datas using for compute
  */
 function computedBranchHelper(
   computing: SkillComputingContainer,

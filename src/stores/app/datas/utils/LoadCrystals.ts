@@ -1,5 +1,5 @@
 import ItemsSystem from '@/lib/Items'
-import { Crystal, ItemObtain } from '@/lib/Items/Item'
+import { BagCrystal, BagItemObtain } from '@/lib/Items/BagItem'
 
 import type { CsvData } from './DownloadDatas'
 
@@ -11,8 +11,8 @@ export default function (root: ItemsSystem, csvData: CsvData) {
     TYPE_ID = 1,
     BOSS_TYPE_ID = 1
 
-  let currentCrystal: Crystal
-  let currentObtain: ItemObtain
+  let currentCrystal: BagCrystal
+  let currentObtain: BagItemObtain
   let currentCategory: string
   let currentType: number
   let currentBossType: number
@@ -64,7 +64,7 @@ export default function (root: ItemsSystem, csvData: CsvData) {
         )
       } else if (currentCategory === 'obtain') {
         if (['name', 'map', 'dye', 'type', 'npc'].includes(propName)) {
-          currentObtain[propName as keyof ItemObtain] = propValue
+          currentObtain[propName as keyof BagItemObtain] = propValue
         }
       } else if (currentCategory === 'other') {
         if (propName === 'enhancer') {
@@ -72,7 +72,7 @@ export default function (root: ItemsSystem, csvData: CsvData) {
         }
       }
     } catch (error) {
-      console.warn('[LoadCrystal] unknow error')
+      console.warn('[LoadCrystal] unknown error')
       console.log(row, index)
       console.log(error)
     }

@@ -2,10 +2,10 @@ import Grimoire from '@/shared/Grimoire'
 import { Images } from '@/shared/services/Images'
 import { isNumberString } from '@/shared/utils/string'
 
-import { Stat } from '@/lib/Character/Stat'
+import { StatRestriction } from '@/lib/Character/Stat'
 import { StatTypes } from '@/lib/Character/Stat/enums'
 
-interface ItemObtain {
+interface BagItemObtain {
   name: string
   map?: string
   dye?: string
@@ -13,46 +13,46 @@ interface ItemObtain {
   npc?: string
 }
 
-interface ItemRecipe {
+interface BagItemRecipe {
   item_level?: number
   item_difficulty?: number
-  materials?: ItemRecipeMaterialItem[]
+  materials?: BagItemRecipeMaterial[]
   cost?: number
   potential?: number
 }
 
-interface ItemExtra {
+interface BagItemExtra {
   caption?: string
 }
 
-class Item {
-  id: number
+abstract class BagItem {
+  id: string
   name: string
-  stats: Stat[]
-  statRestrictions: string[]
-  obtains: ItemObtain[]
-  recipe: null | ItemRecipe
-  extra: null | ItemExtra
+  stats: StatRestriction[]
+  obtains: BagItemObtain[]
+  recipe: BagItemRecipe | null
+  extra: BagItemExtra | null
 
-  constructor(id: number, name: string) {
+  constructor(id: string, name: string) {
     this.id = id
     this.name = name
 
     this.stats = []
-    this.statRestrictions = []
 
     this.obtains = []
 
     this.recipe = null
     this.extra = null
   }
-  appendObtain(): ItemObtain {
+
+  appendObtain(): BagItemObtain {
     const obtain = {
       name: '',
     }
     this.obtains.push(obtain)
     return obtain
   }
+
   appendStat(
     baseId: string,
     value: number | string,
@@ -77,16 +77,17 @@ class Item {
       return
     }
     const stat = statBase.createStat(type, value)
-    this.stats.push(stat)
-    this.statRestrictions.push(restriction)
+    const statr = StatRestriction.fromOrigin(stat, restriction)
+    this.stats.push(statr)
   }
-  setExtra(): ItemExtra {
+
+  setExtra(): BagItemExtra {
     this.extra = {}
     return this.extra
   }
 }
 
-class Equipment extends Item {
+class BagEquipment extends BagItem {
   category: number
   baseValue: number
   baseStability: number
@@ -94,7 +95,7 @@ class Equipment extends Item {
   unknowCategory: null | string
 
   constructor(
-    id: number,
+    id: string,
     name: string,
     category: number,
     baseValue: number,
@@ -112,19 +113,19 @@ class Equipment extends Item {
 
     this.unknowCategory = null
   }
-  setRecipe(): ItemRecipe {
+  setRecipe(): BagItemRecipe {
     this.recipe = {}
     return this.recipe
   }
 }
 
-class Crystal extends Item {
+class BagCrystal extends BagItem {
   category: number
   bossCategory: number
   enhancer: null | string
 
   constructor(
-    id: number,
+    id: string,
     name: string,
     category: number,
     bossCategory: number
@@ -152,9 +153,9 @@ class Crystal extends Item {
       : this.crystalBaseIconPath
   }
 
-  getRelatedCrystals(crystals: Crystal[]) {
-    const nameMap = new Map<string, Crystal>()
-    const enhancerMap = new Map<string, Crystal>()
+  getRelatedCrystals(crystals: BagCrystal[]) {
+    const nameMap = new Map<string, BagCrystal>()
+    const enhancerMap = new Map<string, BagCrystal>()
     crystals.forEach(crystal => {
       nameMap.set(crystal.name, crystal)
       if (crystal.enhancer) {
@@ -162,8 +163,8 @@ class Crystal extends Item {
       }
     })
     const enhancers = (() => {
-      const res: Crystal[] = []
-      let cur: Crystal = this
+      const res: BagCrystal[] = []
+      let cur: BagCrystal = this
       while (cur.enhancer) {
         const _cur = nameMap.get(cur.enhancer)
         if (!_cur) {
@@ -178,8 +179,8 @@ class Crystal extends Item {
       return res
     })()
     const prependeds = (() => {
-      const res: Crystal[] = []
-      let cur: Crystal = this
+      const res: BagCrystal[] = []
+      let cur: BagCrystal = this
       do {
         const _cur = enhancerMap.get(cur.name)
         if (!_cur) {
@@ -198,7 +199,7 @@ class Crystal extends Item {
   }
 }
 
-class ItemRecipeMaterialItem {
+class BagItemRecipeMaterial {
   name: string
   quantity: number
 
@@ -208,5 +209,5 @@ class ItemRecipeMaterialItem {
   }
 }
 
-export { Equipment, Crystal, ItemRecipeMaterialItem }
-export type { ItemObtain, ItemRecipe, ItemExtra }
+export { BagEquipment, BagCrystal, BagItemRecipeMaterial, BagItem }
+export type { BagItemObtain, BagItemRecipe, BagItemExtra }

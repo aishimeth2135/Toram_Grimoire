@@ -163,7 +163,7 @@ const getObtainText = (equip: CharacterEquipment) => {
   if (!origin) {
     return ''
   }
-  return t('common.Equipment.obtain.' + (origin.obtains[0]?.type ?? 'unknow'))
+  return t('common.Equipment.obtain.' + (origin.obtains[0]?.type ?? 'unknown'))
 }
 
 const appendEquipment = (equip: CharacterEquipment) => {

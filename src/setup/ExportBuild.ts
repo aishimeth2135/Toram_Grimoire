@@ -25,7 +25,7 @@ export default function ExportBuild({ save, loaded }: ExportBuildsOptions) {
       }
       save(handleSave)
     } catch (error) {
-      notify(t('common.export-build.save-unknow-error-tips'))
+      notify(t('common.export-build.save-unknown-error-tips'))
       return
     }
   }
@@ -40,7 +40,7 @@ export default function ExportBuild({ save, loaded }: ExportBuildsOptions) {
           notify(t('common.export-build.load-failed-tips'))
         }
       },
-      error: () => notify(t('common.export-build.load-unknow-error-tips')),
+      error: () => notify(t('common.export-build.load-unknown-error-tips')),
       checkFileType: fileType => {
         if (fileType !== 'txt') {
           notify(t('common.export-build.load-wrong-file-type-tips'))

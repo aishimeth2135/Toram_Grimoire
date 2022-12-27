@@ -7,7 +7,7 @@
     />
     <div v-else>
       <div class="mb-3 text-center">
-        {{ t('common.tips.view-unknow-error-tips') }}
+        {{ t('common.tips.view-unknown-error-tips') }}
       </div>
       <div class="flex justify-center">
         <cy-button-action

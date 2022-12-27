@@ -414,7 +414,7 @@ export async function exportSkillBuildImage(skillBuild: SkillBuild) {
     // finale
     return finalCanvas.toDataURL('image/png', 1)
   } catch (err) {
-    console.warn('[exportSkillBuildImage] unknow error')
+    console.warn('[exportSkillBuildImage] unknown error')
     console.error(err)
     return null
   }
