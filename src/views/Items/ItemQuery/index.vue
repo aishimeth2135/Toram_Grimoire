@@ -390,6 +390,15 @@ type SortHandler = (
   item2: CharacterEquipment
 ) => number
 
+const idComparation = (
+  item1: CharacterEquipment,
+  item2: CharacterEquipment
+) => {
+  const id1 = parseInt(item1.origin!.id, 10)
+  const id2 = parseInt(item1.origin!.id, 10)
+  return id2 - id1
+}
+
 const sortOptions: {
   [mode in SearchModes]: {
     default: SortHandler
@@ -421,7 +430,7 @@ const sortOptions: {
     name: (item1, item2) => item1.name.localeCompare(item2.name),
   },
   [SearchModes.Normal]: {
-    default: (item1, item2) => item1.origin!.id.localeCompare(item2.origin!.id),
+    default: idComparation,
   },
   [SearchModes.Stat]: {
     default: (item1, item2) => {
@@ -459,7 +468,7 @@ const sortOptions: {
     },
   },
   [SearchModes.Dye]: {
-    default: (item1, item2) => item1.origin!.id.localeCompare(item2.origin!.id),
+    default: idComparation,
   },
 }
 
