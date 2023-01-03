@@ -161,6 +161,11 @@ registlet-build:
   default-tips: 這裡空空如也0.0，請點擊上方的「編輯托環」來新增項目。
   main-tips-1: 目前還是測試版，部分技能的資料可能尚未補齊而導致該托環沒有效果。發現有哪些托環漏掉時可以反應給開發團隊。
   main-tips-2: 目前僅支援與數值相關的托環，例如：角色能力加成、技能倍率、技能傷害次數等。部分條件較複雜的托環可能尚未支援。
+potion-build:
+  title: 消耗品配置
+  potion-build: 消耗品配置
+  edit-potion: 編輯消耗品
+  default-tips: 這裡空空如也0.0，請點擊上方的「編輯消耗品」來新增項目。
 combo:
   tags:
     consecutive: 連擊

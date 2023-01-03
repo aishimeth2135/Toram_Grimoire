@@ -48,7 +48,7 @@ class Character implements CharacterBuildBindOnCharacter {
   private _optinalBaseStat: CharacterBaseStat<CharacterOptionalBaseStatTypes> | null
 
   loadedId: string | null
-  instanceId: number
+  readonly instanceId: number
   name: string
   level: number
   comboBuild: CharacterComboBuild
@@ -462,7 +462,7 @@ class CharacterStatCategory {
     return this._parent.characterStatCategoryList
   }
 
-  appendStat(options: CharacterStatOptions) {
+  appendStat(options: CharacterStatOptions): CharacterStat {
     const stat = markRaw(new CharacterStat(this, options))
     this.stats.push(stat)
     return stat

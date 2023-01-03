@@ -3,11 +3,12 @@ loading-message:
   CharacterStats: 載入角色模擬器資料
   Items: 載入裝備資料
   Skill: 載入技能資料
-  Glossary: 載入標籤清單
+  Glossary: 載入名詞解釋
   Enchant: 載入附魔資料
   DamageCalculation: 載入傷害計算器
   Food: 載入料理資料
   Registlet: 載入雷吉斯托環資料
+  ItemsPotion: 載入消耗品資料
   init: 初始化
   bottom-tips:
     0: 初次載入需要較長的時間，請稍後...

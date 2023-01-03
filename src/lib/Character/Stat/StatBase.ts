@@ -2,6 +2,7 @@ import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
 
 import { Food } from '@/lib/Character/Food/FoodBuild'
+import { BagPotion } from '@/lib/Items/BagItem/BagPotion'
 import { RegistletItemBase } from '@/lib/Registlet/Registlet'
 import { SkillBranch } from '@/lib/Skill/Skill'
 
@@ -228,6 +229,7 @@ type StatValueSourceDetails =
   | EquipmentCrystal
   | Food
   | RegistletItemBase
+  | BagPotion
   | null
 class StatValueSource {
   readonly src: StatValueSourceDetails
@@ -248,6 +250,8 @@ class StatValueSource {
       this.type = StatValueSourceTypes.Crystal
     } else if (this.src instanceof RegistletItemBase) {
       this.type = StatValueSourceTypes.Registlet
+    } else if (this.src instanceof BagPotion) {
+      this.type = StatValueSourceTypes.Potion
     } else {
       this.type = null
     }

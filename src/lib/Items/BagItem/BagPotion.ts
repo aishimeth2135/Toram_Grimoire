@@ -12,9 +12,13 @@ class BagPotionsRoot {
   }
 
   appendCategory(id: string, name: string): BagPotionsCategory {
-    const category = new BagPotionsCategory(this, id, name)
+    const category = markRaw(new BagPotionsCategory(this, id, name))
     this.categorys.push(category)
     return category
+  }
+
+  findPotionById(id: string) {
+    return this.allPotions.find(potion => potion.id === id) ?? null
   }
 }
 
@@ -33,10 +37,8 @@ class BagPotionsCategory {
   }
 
   appendObtainCategory(id: string, name: string): BagPotionsObtainCategory {
-    const obtainCategory = new BagPotionsObtainCategory(
-      this,
-      `${this.id}-${id}`,
-      name
+    const obtainCategory = markRaw(
+      new BagPotionsObtainCategory(this, `${this.id}-${id}`, name)
     )
     this.obtainCategorys.push(obtainCategory)
     return obtainCategory
@@ -57,7 +59,9 @@ class BagPotionsObtainCategory {
   }
 
   appendPotion(name: string): BagPotion {
-    const potion = new BagPotion(`${this.id}-${this.potions.length}`, name)
+    const potion = markRaw(
+      new BagPotion(`${this.id}-${this.potions.length}`, name)
+    )
     this._parent.root.allPotions.push(potion)
     return potion
   }
@@ -72,5 +76,5 @@ class BagPotion extends BagItem {
   }
 }
 
-export { BagPotionsRoot }
-export type { BagPotionsCategory, BagPotionsObtainCategory, BagPotion }
+export { BagPotionsRoot, BagPotion }
+export type { BagPotionsCategory, BagPotionsObtainCategory }

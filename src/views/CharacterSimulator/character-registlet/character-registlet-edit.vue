@@ -12,11 +12,11 @@
         <div class="text-sm text-primary-40 pt-2">
           {{ t(`registlet-query.category.${category.id}`) }}
         </div>
-        <div class="divide-y-1 divide-primary-10">
-          <div
+        <CardRows class="mt-1">
+          <CardRow
             v-for="item in category.items"
             :key="item.id"
-            class="flex items-center pl-3 pr-3 py-2 hover:bg-primary-5 cursor-pointer duration-150"
+            class="flex items-center pl-3 pr-3 py-2 hover:!bg-primary-5 cursor-pointer duration-150"
             @click="registletBuild.toggleItem(item)"
           >
             <cy-icon-text
@@ -30,10 +30,11 @@
                   ? 'text-primary-70'
                   : 'text-gray-50'
               "
-              >{{ item.name }}</span
             >
-          </div>
-        </div>
+              {{ item.name }}
+            </span>
+          </CardRow>
+        </CardRows>
       </div>
     </div>
   </cy-modal>
@@ -47,6 +48,9 @@ import Grimoire from '@/shared/Grimoire'
 
 import { RegistletBuild } from '@/lib/Character/RegistletBuild/RegistletBuild'
 import { RegistletCategory, RegistletItemBase } from '@/lib/Registlet/Registlet'
+
+import CardRow from '@/components/card/card-row.vue'
+import CardRows from '@/components/card/card-rows.vue'
 
 interface Props {
   visible: boolean

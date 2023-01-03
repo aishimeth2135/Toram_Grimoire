@@ -26,7 +26,8 @@ import loadCrystals from './utils/LoadCrystals'
 import loadEnchant from './utils/LoadEnchant'
 import loadEquipments from './utils/LoadEquipments'
 import loadGlossaryTagData from './utils/LoadGlossary'
-import LoadRegistlet from './utils/LoadRegistlet'
+import LoadPotions from './utils/LoadPotions'
+import loadRegistlet from './utils/LoadRegistlet'
 import { loadSkill, loadSkillMain } from './utils/LoadSkill'
 import loadStats from './utils/LoadStats'
 
@@ -211,7 +212,15 @@ export const useDatasStore = defineStore('app-datas', () => {
     initRegistletInstance()
     const datas = await DownloadDatas(DataPathIds.Registlet)
     return async () => {
-      LoadRegistlet(Registlet.value!, datas[0][0])
+      loadRegistlet(Registlet.value!, datas[0][0])
+    }
+  }
+
+  const initItemsPotion: DataStoreInitHandler = async function () {
+    initItemsInstance()
+    const datas = await DownloadDatas(DataPathIds.Potion)
+    return async () => {
+      LoadPotions(Items.value!.potionsRoot, datas[0][0])
     }
   }
 
@@ -235,5 +244,6 @@ export const useDatasStore = defineStore('app-datas', () => {
     initEnchant,
     initDamageCalculation,
     initRegistlet,
+    initItemsPotion,
   }
 })

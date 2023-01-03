@@ -17,11 +17,7 @@ export const useCharacterRegistletBuildStore = defineStore(
       () => builds.value[currentBuildIndex.value] ?? null
     )
 
-    const setCurrentRegistletBuild = (idx: number | RegistletBuild | null) => {
-      if (idx === null) {
-        currentBuildIndex.value = -1
-        return
-      }
+    const setCurrentRegistletBuild = (idx: number | RegistletBuild) => {
       if (typeof idx !== 'number') {
         idx = builds.value.indexOf(idx)
       }

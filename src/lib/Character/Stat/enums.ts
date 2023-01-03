@@ -12,4 +12,5 @@ export const enum StatValueSourceTypes {
   Crystal = 'crystal',
   Food = 'food',
   Registlet = 'registlet',
+  Potion = 'potion',
 }

@@ -3,6 +3,7 @@ import { Ref } from 'vue'
 
 import { useCharacterStore } from '@/stores/views/character'
 import { useCharacterFoodStore } from '@/stores/views/character/food-build'
+import { useCharacterPotionBuildStore } from '@/stores/views/character/potion-build'
 import { useCharacterRegistletBuildStore } from '@/stores/views/character/registlet-build'
 import { CharacterStatCategoryResult } from '@/stores/views/character/setup'
 import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-build'
@@ -10,6 +11,7 @@ import { useCharacterSkillBuildStore } from '@/stores/views/character/skill-buil
 import { Character } from '@/lib/Character/Character'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { FoodsBuild } from '@/lib/Character/Food/FoodBuild'
+import { PotionBuild } from '@/lib/Character/PotionBuild/PotionBuild'
 import { RegistletBuild } from '@/lib/Character/RegistletBuild/RegistletBuild'
 import { SkillBuild } from '@/lib/Character/SkillBuild/SkillBuild'
 
@@ -66,6 +68,17 @@ export function setupCharacterRegistletStore() {
   }
 }
 
+export function setupCharacterPotionStore() {
+  const store = useCharacterPotionBuildStore()
+  const { potionBuilds, currentPotionBuild } = storeToRefs(store)
+
+  return {
+    store,
+    potionBuilds: potionBuilds as Ref<PotionBuild[]>,
+    currentPotionBuild: currentPotionBuild as Ref<PotionBuild>,
+  }
+}
+
 export const enum TabIds {
   Basic = 'basic',
   EquipmentFields = 'equipmentFields',
@@ -74,4 +87,5 @@ export const enum TabIds {
   Food = 'food',
   Save = 'save',
   Registlet = 'registlet',
+  Potion = 'potion',
 }
