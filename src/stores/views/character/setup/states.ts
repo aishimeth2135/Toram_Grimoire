@@ -4,6 +4,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { Character } from '@/lib/Character/Character'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
+import { PotionBuild } from '@/lib/Character/PotionBuild/PotionBuild'
 import { RegistletBuild } from '@/lib/Character/RegistletBuild/RegistletBuild'
 
 import { FoodsBuild } from '../../../../lib/Character/Food/FoodBuild'
@@ -27,6 +28,7 @@ export function setupCharacters() {
         skillBuild: SkillBuild | null
         foodBuild: FoodsBuild | null
         registletBuild: RegistletBuild | null
+        potionBuild: PotionBuild | null
       }
     >()
     return (chara: Character) => {
@@ -35,6 +37,7 @@ export function setupCharacters() {
           skillBuild: null,
           foodBuild: null,
           registletBuild: null,
+          potionBuild: null,
         })
       }
       return characterStates.get(chara)!

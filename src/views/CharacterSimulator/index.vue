@@ -177,6 +177,8 @@ import CharacterInfoPanel from './character-info-panel.vue'
 import CharacterSave from './character-save/index.vue'
 import CharacterSkill from './character-skill/index.vue'
 import CharacterStats from './character-stats/index.vue'
+import CharacterRegistlet from './character-registlet/index.vue'
+import CharacterPotion from './character-potion/index.vue'
 
 import { CharacterSimulatorInjectionKey } from './injection-keys'
 import {
@@ -184,8 +186,8 @@ import {
   setupCharacterFoodStore,
   setupCharacterStore,
   setupCharacterRegistletStore,
+  setupCharacterPotionStore,
 } from './setup'
-import CharacterRegistlet from './character-registlet/index.vue'
 
 const { t } = useI18n()
 const { modals, mainContents, tabs, sideContents, toggle } = ToggleService({
@@ -204,6 +206,7 @@ const { modals, mainContents, tabs, sideContents, toggle } = ToggleService({
     TabIds.Food,
     TabIds.Save,
     TabIds.Registlet,
+    TabIds.Potion,
   ] as TabIds[],
   sideContents: ['tabs', 'panel'] as const,
 })
@@ -212,6 +215,7 @@ const { store, characters } = setupCharacterStore()
 const { store: foodStore, foodBuilds } = setupCharacterFoodStore()
 const { store: registletStore, registletBuilds } =
   setupCharacterRegistletStore()
+const { store: potionStore, potionBuilds } = setupCharacterPotionStore()
 
 const mainStore = useMainStore()
 const router = useRouter()
@@ -275,6 +279,11 @@ const tabDatas = computed(() => {
       icon: 'game-icons:beveled-star',
       text: t('character-simulator.registlet-build.title'),
     })
+    options.push({
+      id: TabIds.Potion,
+      icon: 'mdi:bottle-tonic-outline',
+      text: t('character-simulator.potion-build.title'),
+    })
   }
 
   return options
@@ -292,6 +301,9 @@ const currentTab = computed(() => {
   }
   if (tabs[TabIds.Registlet]) {
     return CharacterRegistlet
+  }
+  if (tabs[TabIds.Potion]) {
+    return CharacterPotion
   }
   if (tabs[TabIds.Save]) {
     return CharacterSave
@@ -373,6 +385,9 @@ onMounted(async () => {
     !registletStore.currentRegistletBuild
   ) {
     registletStore.createRegistletBuild()
+  }
+  if (potionBuilds.value.length === 0 || !potionStore.currentPotionBuild) {
+    potionStore.createPotionBuild()
   }
   if (mainStore.redirectPathName === 'SkillSimulator') {
     await nextTick()

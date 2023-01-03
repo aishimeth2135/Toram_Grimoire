@@ -9,6 +9,10 @@ import {
 } from '@/lib/Character/CharacterEquipment'
 import { FoodsBase } from '@/lib/Character/Food'
 import {
+  PotionBuild,
+  PotionBuildSaveData,
+} from '@/lib/Character/PotionBuild/PotionBuild'
+import {
   RegistletBuild,
   RegistletBuildSaveData,
 } from '@/lib/Character/RegistletBuild/RegistletBuild'
@@ -23,11 +27,13 @@ import {
   SkillBuildSaveData,
 } from '../../../lib/Character/SkillBuild/SkillBuild'
 import { useCharacterFoodStore } from './food-build'
+import { useCharacterPotionBuildStore } from './potion-build'
 import { useCharacterRegistletBuildStore } from './registlet-build'
 import {
   prepareSetupCharacter,
   setupCharacterSkillItems,
   setupFoodStats,
+  setupPotionStats,
   setupRegistletStats,
 } from './setup'
 import setupDamageCalculation, {
@@ -53,6 +59,7 @@ interface CharacterStoreCharacterStateSaveData {
   skillBuildId: number | null
   foodBuildId: number | null
   registletBuildId: number | null
+  potionBuildId: number | null
 }
 
 interface CharacterSimulatorSaveData {
@@ -68,6 +75,8 @@ interface CharacterSimulatorSaveData {
   foodBuilds: FoodsBuildSaveData[]
 
   registletBuilds: RegistletBuildSaveData[]
+
+  potionBuilds: PotionBuildSaveData[]
 }
 
 interface CharacterSimulatorSaveDataRoot {
@@ -85,6 +94,7 @@ export const useCharacterStore = defineStore('view-character', () => {
   const foodStore = useCharacterFoodStore()
   const skillBuildStore = useCharacterSkillBuildStore()
   const registletBuildStore = useCharacterRegistletBuildStore()
+  const potionBuildStore = useCharacterPotionBuildStore()
 
   const saveDisabled = ref(false)
 
@@ -93,6 +103,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     handleActiveSkill: true,
     handlePassiveSkill: true,
     handleRegistlet: true,
+    handlePotion: true,
     skillDisplayStatsOnly: true,
   })
 
@@ -127,6 +138,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     skillBuildStore.reset()
     foodStore.resetFoodBuilds()
     registletBuildStore.resetRegistletBuildStore()
+    potionBuildStore.resetPotionBuildStore()
   }
 
   const deleteAllSavedData = () => {
@@ -176,13 +188,20 @@ export const useCharacterStore = defineStore('view-character', () => {
     const registletBuildsData = registletBuildStore.registletBuilds.map(item =>
       item.save()
     )
-    const characterStates = characters.value.map(chara => ({
-      id: chara.instanceId,
-      skillBuildId: getCharacterState(chara).skillBuild?.instanceId ?? null,
-      foodBuildId: getCharacterState(chara).foodBuild?.instanceId ?? null,
-      registletBuildId:
-        getCharacterState(chara).registletBuild?.instanceId ?? null,
-    }))
+    const potionBuildsData = potionBuildStore.potionBuilds.map(item =>
+      item.save()
+    )
+
+    const characterStates = characters.value.map(chara => {
+      const state = getCharacterState(chara)
+      return {
+        id: chara.instanceId,
+        skillBuildId: state.skillBuild?.instanceId ?? null,
+        foodBuildId: state.foodBuild?.instanceId ?? null,
+        registletBuildId: state.registletBuild?.instanceId ?? null,
+        potionBuildId: state.registletBuild?.instanceId ?? null,
+      }
+    })
 
     return {
       version: 'v2',
@@ -191,6 +210,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       skillBuilds: skillBuildsData,
       foodBuilds: foodBuildsData,
       registletBuilds: registletBuildsData,
+      potionBuilds: potionBuildsData,
       characterStates,
     }
   }
@@ -255,6 +275,11 @@ export const useCharacterStore = defineStore('view-character', () => {
         registletBuildStore.appendRegistletBuild(build, false)
       })
 
+      saveData.potionBuilds.forEach(data => {
+        const build = PotionBuild.load(loadedCategory, data)
+        potionBuildStore.appendPotionBuild(build, false)
+      })
+
       saveData.characterStates.forEach(item => {
         const chara = characters.value.find(ch =>
           ch.matchLoadedId(loadedCategory, item.id)
@@ -281,6 +306,14 @@ export const useCharacterStore = defineStore('view-character', () => {
             build.matchLoadedId(loadedCategory, item.registletBuildId)
           )
           charaState.registletBuild = registletBuild ?? null
+
+          // potion
+          const potionBuild = (
+            potionBuildStore.potionBuilds as PotionBuild[]
+          ).find(build =>
+            build.matchLoadedId(loadedCategory, item.potionBuildId)
+          )
+          charaState.potionBuild = potionBuild ?? null
         }
       })
     }
@@ -300,6 +333,9 @@ export const useCharacterStore = defineStore('view-character', () => {
         // migrate
         if (!datas.registletBuilds) {
           datas.registletBuilds = []
+        }
+        if (!datas.potionBuilds) {
+          datas.potionBuilds = []
         }
         if (!datas.characterStates) {
           datas.characterStates = []
@@ -360,6 +396,7 @@ export const useCharacterStore = defineStore('view-character', () => {
             foodBuilds,
             registletBuilds: [],
             characterStates: [],
+            potionBuilds: [],
           },
           { ignoreSkillBuilds: loadSkillBuildLagacy }
         )
@@ -463,6 +500,10 @@ export const useCharacterStore = defineStore('view-character', () => {
     computed(() => registletBuildStore.currentRegistletBuild)
   )
 
+  const { allPotionBuildStats } = setupPotionStats(
+    computed(() => potionBuildStore.currentPotionBuild)
+  )
+
   const {
     characterStatCategoryResults,
     postponedActiveSkillResultStates,
@@ -476,6 +517,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     allFoodBuildStats,
     currentRegistletBuild,
     allRegistletBuildStats,
+    allPotionBuildStats,
     skillItemStates,
     setupOptions
   )
@@ -496,6 +538,7 @@ export const useCharacterStore = defineStore('view-character', () => {
       allFoodBuildStats,
       currentRegistletBuild,
       allRegistletBuildStats,
+      allPotionBuildStats,
       _skillItemStates,
       setupOptions
     )

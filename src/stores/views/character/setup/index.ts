@@ -25,6 +25,10 @@ import {
 } from '@/lib/Character/Character/enums'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
 import { FoodsBuild } from '@/lib/Character/Food/FoodBuild'
+import {
+  PotionBuild,
+  PotionItem,
+} from '@/lib/Character/PotionBuild/PotionBuild'
 import { RegistletBuild } from '@/lib/Character/RegistletBuild/RegistletBuild'
 import { SkillBuild } from '@/lib/Character/SkillBuild/SkillBuild'
 import { StatBase, StatComputed, StatRestriction } from '@/lib/Character/Stat'
@@ -80,6 +84,7 @@ export interface SkillResultsState {
 interface CharacterSetupOptions {
   handleFood: boolean
   handleRegistlet: boolean
+  handlePotion: boolean
   handleActiveSkill: boolean
   handlePassiveSkill: boolean
   skillDisplayStatsOnly: boolean
@@ -860,6 +865,7 @@ export function prepareSetupCharacter() {
     foodStats: Ref<StatRecorded[]>,
     registletBuild: Ref<RegistletBuild | null>,
     registletStats: Ref<StatRecorded[]>,
+    potionStats: Ref<StatRecorded[]>,
     skillItemStates: Map<Skill, SkillItemState>,
     setupOptions: Ref<CharacterSetupOptions>
   ) => {
@@ -1085,6 +1091,9 @@ export function prepareSetupCharacter() {
       }
       if (setupOptions.value.handleRegistlet) {
         mergeStats(allStats, registletStats.value)
+      }
+      if (setupOptions.value.handlePotion) {
+        mergeStats(allStats, potionStats.value)
       }
       return [...allStats]
     })
@@ -1322,6 +1331,31 @@ export function setupRegistletStats(
 
   return {
     allRegistletBuildStats,
+  }
+}
+
+export function setupPotionStats(potionBuild: Ref<PotionBuild | null>) {
+  const _items = computed(() => {
+    if (!potionBuild.value) {
+      return []
+    }
+    const statItems: { stat: StatRecorded; item: PotionItem }[] = []
+    potionBuild.value.items.forEach(item => {
+      item.base.stats.forEach(potionStat => {
+        statItems.push({
+          stat: StatRecorded.from(potionStat, item.base),
+          item,
+        })
+      })
+    })
+    return statItems
+  })
+  const allPotionBuildStats = computed(() => {
+    return _items.value.filter(item => item.item.enabled).map(item => item.stat)
+  })
+
+  return {
+    allPotionBuildStats,
   }
 }
 

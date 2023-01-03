@@ -33,6 +33,7 @@ export default {
       DataStoreIds.Food,
       DataStoreIds.DamageCalculation,
       DataStoreIds.Registlet,
+      DataStoreIds.ItemsPotion,
       DataStoreIds.Glossary
     ).then(next)
   },
