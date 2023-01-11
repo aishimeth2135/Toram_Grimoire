@@ -113,6 +113,7 @@ class BagEquipment extends BagItem {
 
     this.unknowCategory = null
   }
+
   setRecipe(): BagItemRecipe {
     this.recipe = {}
     return this.recipe

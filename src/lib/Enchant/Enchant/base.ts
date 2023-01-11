@@ -1,6 +1,7 @@
 import { markRaw } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
+import { computeFormula } from '@/shared/utils/data'
 
 import { StatBase } from '@/lib/Character/Stat'
 import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat/enums'
@@ -13,6 +14,7 @@ interface EnchantItemParams {
   baseId: string
   potential: [number, number]
   limit: [EnchantItemOptionCommonValue, EnchantItemOptionCommonValue]
+  extraLimit: [[string | null, string | null], [string | null, string | null]]
   unitValue: [[number, number], [number, number]]
   materialPointType: MaterialPointTypeRange
   materialPointValue: EnchantItemOptionCommonValue
@@ -27,15 +29,15 @@ type EnchantItemOptionCommonValue = [number | null, number | null]
 type MaterialPointTypeRange = 0 | 1 | 2 | 3 | 4 | 5
 
 interface EnchantItemPropertyValue<T> {
-  [StatTypes.Constant]: T
-  [StatTypes.Multiplier]: T
+  readonly [StatTypes.Constant]: T
+  readonly [StatTypes.Multiplier]: T
 }
 
 class EnchantCategory {
   private _weaponOnly: boolean
 
-  title: string
-  items: EnchantItem[]
+  readonly title: string
+  readonly items: EnchantItem[]
 
   constructor(title: string) {
     this.title = title
@@ -46,7 +48,8 @@ class EnchantCategory {
   get weaponOnly(): boolean {
     return this._weaponOnly
   }
-  setWeaponOnly() {
+
+  setWeaponOnly(): void {
     this._weaponOnly = true
   }
 
@@ -58,15 +61,25 @@ class EnchantCategory {
 }
 
 class EnchantItem {
-  private _category: EnchantCategory
-  statBase: StatBase
-  conditionalProps: EnchantItemConditionalProperties[]
-  potential: EnchantItemPropertyValue<number>
-  limit: EnchantItemPropertyValue<[number | null, number | null]>
-  unitValue: EnchantItemPropertyValue<[number, number]>
-  materialPointType: MaterialPointTypeRange
-  materialPointValue: EnchantItemPropertyValue<number | null>
-  potentialConvertThreshold: EnchantItemPropertyValue<number | null>
+  private readonly _category: EnchantCategory
+  readonly statBase: StatBase
+  readonly conditionalProps: EnchantItemConditionalProperties[]
+  readonly potential: EnchantItemPropertyValue<number>
+  readonly limit: EnchantItemPropertyValue<{
+    base: number | null
+    negative: number | null
+  }>
+  readonly extraLimit: EnchantItemPropertyValue<{
+    base: string | null
+    negative: string | null
+  }>
+  readonly unitValue: EnchantItemPropertyValue<{
+    base: number
+    advanced: number
+  }>
+  readonly materialPointType: MaterialPointTypeRange
+  readonly materialPointValue: EnchantItemPropertyValue<number | null>
+  readonly potentialConvertThreshold: EnchantItemPropertyValue<number | null>
 
   constructor(
     category: EnchantCategory,
@@ -74,6 +87,7 @@ class EnchantItem {
       baseId,
       potential,
       limit,
+      extraLimit,
       unitValue,
       materialPointType,
       materialPointValue,
@@ -88,12 +102,34 @@ class EnchantItem {
       [StatTypes.Multiplier]: potential[1],
     }
     this.limit = {
-      [StatTypes.Constant]: limit[0],
-      [StatTypes.Multiplier]: limit[1],
+      [StatTypes.Constant]: {
+        base: limit[0][0],
+        negative: limit[0][1],
+      },
+      [StatTypes.Multiplier]: {
+        base: limit[1][0],
+        negative: limit[1][1],
+      },
+    }
+    this.extraLimit = {
+      [StatTypes.Constant]: {
+        base: extraLimit[0][0],
+        negative: extraLimit[0][1],
+      },
+      [StatTypes.Multiplier]: {
+        base: extraLimit[1][0],
+        negative: extraLimit[1][1],
+      },
     }
     this.unitValue = {
-      [StatTypes.Constant]: unitValue[0],
-      [StatTypes.Multiplier]: unitValue[1],
+      [StatTypes.Constant]: {
+        base: unitValue[0][0],
+        advanced: unitValue[0][1],
+      },
+      [StatTypes.Multiplier]: {
+        base: unitValue[1][0],
+        advanced: unitValue[1][1],
+      },
     }
     this.materialPointType = materialPointType
     this.materialPointValue = {
@@ -144,7 +180,7 @@ class EnchantItem {
     return this.potential[type]
   }
 
-  getLimit(type: StatNormalTypes): [number, number] {
+  getLimit(type: StatNormalTypes): { max: number; min: number } {
     const originalLimit = this.limit[type]
 
     const add = Math.max(Math.floor((STATE.Character.level - 200) / 10) * 5, 0)
@@ -152,12 +188,29 @@ class EnchantItem {
     const lvLimit = Math.floor(STATE.Character.level / 10)
 
     const limit = Math.min(potentialCapacityLimit, lvLimit)
-    return [
-      originalLimit[1] === null
-        ? -1 * limit
-        : Math.max(originalLimit[1], -1 * lvLimit),
-      originalLimit[0] === null ? limit : Math.min(originalLimit[0], lvLimit),
-    ]
+
+    const min =
+      originalLimit.negative === null ? -1 * limit : originalLimit.negative
+    const max = originalLimit.base === null ? limit : originalLimit.base
+
+    const { base: extraLimitBase, negative: extraLimitNegative } =
+      this.extraLimit[type]
+    const CLv = STATE.Character.level - 200
+    const vars = { CLv }
+    const extraLimitMax =
+      extraLimitBase !== null && CLv > 0
+        ? (computeFormula(extraLimitBase, vars) as number)
+        : 0
+    const extraLimitMin =
+      extraLimitNegative === null
+        ? extraLimitMax * -1
+        : -1 *
+          (CLv > 0 ? (computeFormula(extraLimitNegative, vars) as number) : 0)
+
+    return {
+      min: Math.max(min + extraLimitMin, -1 * lvLimit),
+      max: Math.min(max + extraLimitMax, lvLimit),
+    }
   }
   getLimitFromPotentialCapacity(type: StatNormalTypes, add: number = 0) {
     let potentialLimit = STATE.PotentialCapacity + add
@@ -198,8 +251,8 @@ class EnchantItem {
 }
 
 class EnchantItemConditionalProperties {
-  condition: EnchantItemConditions
-  potential: EnchantItemPropertyValue<number>
+  readonly condition: EnchantItemConditions
+  readonly potential: EnchantItemPropertyValue<number>
 
   constructor(
     condition: EnchantItemConditions,

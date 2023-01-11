@@ -5,14 +5,19 @@ singleQuote: true
 quoteProps: consistent
 printWidth: 80
 arrowParens: 'avoid'
+plugins:
+  - '@trivago/prettier-plugin-sort-imports'
+  - prettier-plugin-tailwindcss
+pluginSearchDirs: false
 tailwindConfig: ./tailwind.config.js
 importOrder:
-  - ^@/stores/
-  - ^@/shared/
-  - ^@/lib/
-  - ^@/setup/
-  - ^@/
+  - <THIRD_PARTY_MODULES>
+  - ^@/stores/.+$
+  - ^@/shared/.+$
+  - ^@/lib/.+$
+  - ^@/setup/.+$
+  - ^@/.+$
   - (?!@/).+\.vue$
-  - ^[./]
+  - ^[./].+$
 importOrderSeparation: true
 importOrderSortSpecifiers: true

@@ -206,6 +206,7 @@ module.exports = {
     'maxHeight',
     'maxWidth',
     'minHeight',
+    'minWidth',
     'maxWidth',
 
     'opacity',

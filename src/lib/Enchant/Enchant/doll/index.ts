@@ -324,7 +324,7 @@ export default class EnchantDoll {
             if (this.hasPositiveStat(item, type)) {
               return
             }
-            const stat = new EnchantStat(item, type, item.getLimit(type)[0])
+            const stat = new EnchantStat(item, type, item.getLimit(type).min)
             shortlist.push(stat)
           })
         }
@@ -591,8 +591,8 @@ class EnchantDollCategory {
   ) {
     if (type === 'max-effect') {
       this.stats.sort((item1, item2) => {
-        const av = -1 * item1.originalPotential * item1.limit[0]
-        const bv = -1 * item2.originalPotential * item2.limit[0]
+        const av = -1 * item1.originalPotential * item1.limit.min
+        const bv = -1 * item2.originalPotential * item2.limit.min
         return bv - av
       })
     } else if (type === 'max-cost') {
@@ -607,8 +607,8 @@ class EnchantDollCategory {
       })
     } else if (type === 'negaitve--min-material-cost') {
       this.stats.sort((item1, item2) => {
-        const av = item1.calcMaterialPointCost(item1.limit[0], 0)
-        const bv = item2.calcMaterialPointCost(item2.limit[0], 0)
+        const av = item1.calcMaterialPointCost(item1.limit.min, 0)
+        const bv = item2.calcMaterialPointCost(item2.limit.min, 0)
         return av - bv
       })
     }
@@ -623,7 +623,7 @@ class EnchantDollCategory {
       -1 *
       this.stats
         .slice(0, num)
-        .reduce((cur, stat) => cur + stat.originalPotential * stat.limit[0], 0)
+        .reduce((cur, stat) => cur + stat.originalPotential * stat.limit.min, 0)
     )
   }
 
@@ -633,13 +633,11 @@ class EnchantDollCategory {
    * @returns sum of material point of stats
    */
   materialPointMaximumSum(type: 'min' | 'max', num?: number): number {
-    const typeToIdx = { min: 0, max: 1 }[type]
     num = num === undefined ? this.stats.length : num
     return this.stats
       .slice(0, num)
       .reduce(
-        (cur, stat) =>
-          cur + stat.calcMaterialPointCost(stat.limit[typeToIdx], 0),
+        (cur, stat) => cur + stat.calcMaterialPointCost(stat.limit[type], 0),
         0
       )
   }

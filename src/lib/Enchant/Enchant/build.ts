@@ -336,7 +336,7 @@ class EnchantEquipment {
 
   refreshStats() {
     this.stats().forEach(stat => {
-      const [min, max] = stat.limit
+      const { min, max } = stat.limit
       const value = stat.value
       if (value > max || value < min) {
         const dif = value > max ? value - max : value - min
@@ -583,7 +583,7 @@ class EnchantStep {
     stats
       .filter(stat => stat.value > 0)
       .forEach(stat => {
-        const max = stat.limit[1]
+        const { max } = stat.limit
         const find = this.stat(stat.itemBase, stat.type)
         if (find && find.value === stat.value) {
           return
@@ -661,8 +661,12 @@ class EnchantStep {
 }
 
 class EnchantStat {
-  itemBase: EnchantItem
-  stat: Stat
+  readonly itemBase: EnchantItem
+  readonly stat: Stat
+
+  // init in `get limit()`
+  private _lastCharacterLevel!: number
+  private _limit!: { max: number; min: number }
 
   constructor(itemBase: EnchantItem, type: StatNormalTypes, value: number) {
     this.itemBase = itemBase
@@ -690,7 +694,11 @@ class EnchantStat {
   }
 
   get limit() {
-    return this.itemBase.getLimit(this.type)
+    if (STATE.Character.level !== this._lastCharacterLevel) {
+      this._lastCharacterLevel = STATE.Character.level
+      this._limit = this.itemBase.getLimit(this.type)
+    }
+    return this._limit
   }
 
   get originalPotential() {
@@ -754,7 +762,7 @@ class EnchantStat {
     type: 'current' | 'base' = 'current',
     previousValue: number = 0
   ): string {
-    const [unitValue, unitValue2] = this.itemBase.getUnitValue(this.type)
+    const { base, advanced } = this.itemBase.getUnitValue(this.type)
     const convertThreshold = this.potentialConvertThreshold
     let value = this.value + previousValue
 
@@ -781,7 +789,7 @@ class EnchantStat {
     value *= sign
     v2 *= sign
 
-    return this.stat.show(value * unitValue + v2 * unitValue2)
+    return this.stat.show(value * base + v2 * advanced)
   }
 }
 
@@ -834,7 +842,7 @@ class EnchantStepStat extends EnchantStat {
 
   override set value(value: number) {
     const eqstat = this.belongEquipment.stat(this.itemBase, this.type)
-    const [min, max] = this.limit
+    const { min, max } = this.limit
     const ov = eqstat.add(-1 * this.value)
     if (ov + value > max) {
       value = max - ov

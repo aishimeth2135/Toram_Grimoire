@@ -53,19 +53,17 @@
         {{ t('character-simulator.registlet-build.show-detail') }}
       </cy-button-toggle>
     </div>
-    <div class="border-1 border-primary-20 rounded-md overflow-hidden">
-      <CardRows v-if="currentPotionBuild.items.length > 0">
-        <CharacterPotionItem
-          v-for="item in currentPotionBuild.items"
-          :key="item.base.id"
-          :item="item"
-          :detail-visible="controls.itemDetail"
-        />
-      </CardRows>
-      <cy-default-tips v-else>
-        {{ t('character-simulator.potion-build.default-tips') }}
-      </cy-default-tips>
+    <div v-if="currentPotionBuild.items.length > 0" class="space-y-4">
+      <CharacterPotionCategory
+        v-for="category in currentPotionBuild.categorys"
+        :key="category.base.id"
+        :category="category"
+        :detail-visible="controls.itemDetail"
+      />
     </div>
+    <cy-default-tips v-else>
+      {{ t('character-simulator.potion-build.default-tips') }}
+    </cy-default-tips>
     <CharacterPotionEdit
       :visible="modals.edit"
       :potion-build="currentPotionBuild"
@@ -81,13 +79,16 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import ToggleService from '@/setup/ToggleService'
-import { useCharacterStore } from '@/stores/views/character'
 import { useI18n } from 'vue-i18n'
-import { setupCharacterPotionStore } from '../setup'
+
+import { useCharacterStore } from '@/stores/views/character'
+
+import ToggleService from '@/setup/ToggleService'
+
 import CharacterPotionEdit from './character-potion-edit.vue'
-import CharacterPotionItem from './character-potion-item.vue'
-import CardRows from '@/components/card/card-rows.vue'
+import CharacterPotionCategory from './character-potion-category.vue'
+
+import { setupCharacterPotionStore } from '../setup'
 
 const characterStore = useCharacterStore()
 const {

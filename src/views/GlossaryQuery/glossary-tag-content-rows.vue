@@ -2,14 +2,14 @@
   <div class="space-y-3">
     <template v-for="row in infoRows" :key="row.type + row.value.join(',')">
       <RenderText v-if="row.type === 'caption'" :text="row.value[0]" />
-      <div v-else-if="row.type === 'list'">
+      <div v-else-if="row.type === 'list'" class="pl-2">
         <div
           v-for="rowValue in row.value"
           :key="rowValue"
           class="relative py-0.5 pl-5"
         >
           <span
-            class="absolute left-0 top-1 inline-block h-2 w-2 rounded-full bg-primary-30"
+            class="absolute left-0 top-1 inline-block h-2 w-2 bg-primary-30 rounded-full"
           />
           <RenderText :text="rowValue" />
         </div>

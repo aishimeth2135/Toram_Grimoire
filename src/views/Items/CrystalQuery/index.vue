@@ -1,27 +1,31 @@
 <template>
   <AppLayoutMain>
     <div ref="topElement" />
-    <div class="overflow-x-auto py-4" style="min-height: 75vh">
-      <template v-if="currentItems.length !== 0">
-        <div class="min-w-min divide-y divide-primary-20">
-          <CrystalQueryResultItem
-            v-for="crystal in currentItems"
-            :key="crystal.id"
-            :crystal="crystal"
-            :detail-visible-default="resultItemsDetailVisibleDefault"
-            :preview-stat="mode === 'stat' ? modeStat.statItem : null"
-            :preview-mode="resultItemPreviewMode"
-          />
+    <div class="py-4 px-1">
+      <CardRowsWrapper class="mb-4">
+        <div class="overflow-x-auto" style="min-height: 75vh">
+          <template v-if="currentItems.length !== 0">
+            <CardRows class="min-w-min">
+              <CrystalQueryResultItem
+                v-for="crystal in currentItems"
+                :key="crystal.id"
+                :crystal="crystal"
+                :detail-visible-default="resultItemsDetailVisibleDefault"
+                :preview-stat="mode === 'stat' ? modeStat.statItem : null"
+                :preview-mode="resultItemPreviewMode"
+              />
+            </CardRows>
+          </template>
+          <cy-default-tips v-else>
+            {{ t('crystal-query.no-results-tips') }}
+          </cy-default-tips>
         </div>
-        <cy-pagination
-          v-model:value="page"
-          :max-page="maxPage"
-          @changed="pageChanged"
-        />
-      </template>
-      <cy-default-tips v-else>
-        {{ t('crystal-query.no-results-tips') }}
-      </cy-default-tips>
+      </CardRowsWrapper>
+      <cy-pagination
+        v-model:value="page"
+        :max-page="maxPage"
+        @changed="pageChanged"
+      />
     </div>
     <AppLayoutBottom>
       <template #main-start>
@@ -154,10 +158,11 @@ import ToggleService from '@/setup/ToggleService'
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
+import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
+import CardRows from '@/components/card/card-rows.vue'
 
 import CrystalQueryResultItem from './crystal-query-result-item.vue'
 import CrystalQuerySelectStat from './crystal-query-select-stat.vue'
-
 import { StatOptionItem } from './setup'
 
 const { t } = useI18n()

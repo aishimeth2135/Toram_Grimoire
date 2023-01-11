@@ -65,10 +65,10 @@ export function setupParseEnchantShorthand(shorthandStr: Ref<string>) {
             value = parseInt(m1, 10)
             value = Number.isNaN(value) ? 0 : value
             if (typeof value === 'number') {
-              value = Math.max(limit[0], Math.min(limit[1], value))
+              value = Math.max(limit.min, Math.min(limit.max, value))
             }
           } else {
-            value = limit[1]
+            value = limit.max
           }
           if (value !== 0) {
             statItems.push({ origin, type, value })
@@ -89,14 +89,14 @@ export function setupParseEnchantShorthand(shorthandStr: Ref<string>) {
             value = parseInt(m1, 10)
             value = Number.isNaN(value) ? 0 : value
             if (typeof value === 'number') {
-              if (type === StatTypes.Multiplier && value > limit[1]) {
+              if (type === StatTypes.Multiplier && value > limit.max) {
                 type = StatTypes.Constant
                 limit = origin.getLimit(type)
               }
-              value = Math.max(limit[0], Math.min(limit[1], value))
+              value = Math.max(limit.min, Math.min(limit.max, value))
             }
           } else {
-            value = limit[1]
+            value = limit.max
           }
           if (value !== 0) {
             statItems.push({ origin, type, value })

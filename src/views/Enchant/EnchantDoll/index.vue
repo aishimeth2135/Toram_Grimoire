@@ -149,7 +149,7 @@
                     inline
                     max-button
                     min-button
-                    :range="[1, stat.limit[1]]"
+                    :range="[1, stat.limit.max]"
                   />
                   <cy-button-icon
                     icon="jam-close-circle"
@@ -421,7 +421,7 @@
                     inline
                     max-button
                     min-button
-                    :range="[stat.limit[0], -1]"
+                    :range="[stat.limit.min, -1]"
                   />
                   <cy-button-icon
                     :disabled="autoNegativeStats.includes(stat)"
@@ -834,7 +834,7 @@ const appendPositiveShortHandStats = () => {
     if (doll.value.hasPositiveStat(origin, type)) {
       return
     }
-    const _value = value === null ? origin.getLimit(type)[1] : value
+    const _value = value === null ? origin.getLimit(type).max : value
     doll.value.appendPositiveStat(origin, type, _value) // ignore failed
   })
   positiveStatsShorthand.value = ''
@@ -1086,7 +1086,7 @@ const selectItem = (item: EnchantStatOptionBase) => {
       return
     }
     const value = selectPositiveStatState.autoFill
-      ? item.origin.getLimit(item.type)[1]
+      ? item.origin.getLimit(item.type).max
       : 1
     if (!doll.value.appendPositiveStat(item.origin, item.type, value)) {
       notify(t('enchant-doll.tips.stats-reached-upper-limit'))
@@ -1112,7 +1112,7 @@ const selectItem = (item: EnchantStatOptionBase) => {
       new EnchantStat(
         item.origin,
         item.type,
-        item.origin.getLimit(item.type)[0]
+        item.origin.getLimit(item.type).min
       )
     )
   }

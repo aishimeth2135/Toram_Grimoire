@@ -60,19 +60,30 @@ class BagPotionsObtainCategory {
 
   appendPotion(name: string): BagPotion {
     const potion = markRaw(
-      new BagPotion(`${this.id}-${this.potions.length}`, name)
+      new BagPotion(this, `${this.id}-${this.potions.length}`, name)
     )
     this._parent.root.allPotions.push(potion)
+    this.potions.push(potion)
     return potion
+  }
+
+  get belongCategory() {
+    return this._parent
   }
 }
 
 class BagPotion extends BagItem {
+  private readonly _parent: BagPotionsObtainCategory
   healType: 'hp' | 'mp' | null
 
-  constructor(id: string, name: string) {
+  constructor(parent: BagPotionsObtainCategory, id: string, name: string) {
     super(id, name)
+    this._parent = parent
     this.healType = null
+  }
+
+  get belongCategory() {
+    return this._parent.belongCategory
   }
 }
 

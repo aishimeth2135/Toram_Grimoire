@@ -8,11 +8,11 @@
     }"
     class="relative mr-3 inline-flex items-baseline pl-4"
   >
-    <div class="absolute left-0 bottom-1 h-2 w-2 rounded-full bg-primary-30" />
+    <div class="absolute left-0 bottom-1 h-2 w-2 rounded-full bg-primary-20" />
     <div
       v-for="text in restrictionTexts"
       :key="text"
-      class="mr-1 text-sm text-blue-60"
+      class="mr-1 text-sm text-primary-40"
     >
       {{ text }}
     </div>
@@ -22,13 +22,13 @@
     <span
       v-for="text in restrictionTexts"
       :key="text"
-      class="mr-1 text-sm text-blue-60"
+      class="mr-1 text-sm text-primary-40"
     >
       {{ text }}
     </span>
-    <span :class="negativeValue ? 'text-red-60' : 'text-fuchsia-60'">{{
-      stat.show()
-    }}</span>
+    <span :class="negativeValue ? 'text-red-60' : 'text-fuchsia-60'">
+      {{ stat.show() }}
+    </span>
   </div>
 </template>
 
