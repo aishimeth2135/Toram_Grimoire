@@ -453,7 +453,7 @@ const selectItem = (item: EnchantStatOptionBase) => {
       return
     }
     const eq = stat.belongEquipment
-    const min = stat.limit[0]
+    const { min } = stat.limit
     const pot = stat.itemBase.getPotential(stat.type, eq)
     stat.value =
       pot > stat.originalPotential

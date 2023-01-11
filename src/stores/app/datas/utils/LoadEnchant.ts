@@ -10,9 +10,11 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
     CONDITION = 1,
     CONDITION_LIST = ['主手武器', '身體裝備', '原有屬性'],
     POTENTIAL_CONSTANT = 2,
-    LIMIT_CONSTANT = 3,
     POTENTIAL_MULTIPLIER = 4,
+    LIMIT_CONSTANT = 3,
     LIMIT_MULTIPLIER = 5,
+    EXTRA_LIMIT_CONSTANT = 13,
+    EXTRA_LIMIT_MULTIPLIER = 14,
     UNIT_VALUE_CONSTANT = 6,
     UNIT_VALUE_MULTIPLIER = 7,
     MATERIAL_POINT_TYPE = 8,
@@ -40,6 +42,15 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
           ? -1 * l1
           : l1
         : handleItemValue(limitStrs[1])
+    return [l1, l2]
+  }
+  const handleExtraLimit = (str: string): [string | null, string | null] => {
+    if (str === '') {
+      return [null, null]
+    }
+    const limitStrs = str.split('::')
+    const l1 = limitStrs[0] || null
+    const l2 = limitStrs[1] || null
     return [l1, l2]
   }
 
@@ -91,6 +102,10 @@ export default function LoadEnchantData(root: EnchantSystem, csvData: CsvData) {
         limit: [
           handleLimit(row[LIMIT_CONSTANT]),
           handleLimit(row[LIMIT_MULTIPLIER]),
+        ],
+        extraLimit: [
+          handleExtraLimit(row[EXTRA_LIMIT_CONSTANT]),
+          handleExtraLimit(row[EXTRA_LIMIT_MULTIPLIER]),
         ],
         unitValue: [
           handleUnitValue(row[UNIT_VALUE_CONSTANT]),

@@ -1,6 +1,6 @@
 <!-- this component is splitted to handle EnchantStepStat -->
 <template>
-  <div class="pt-1">
+  <div class="pt-1 pb-1">
     <div
       class="flex flex-wrap items-center py-0.5"
       :class="{ 'opacity-50': !stat.valid }"
@@ -37,7 +37,7 @@
         inline
         max-button
         min-button
-        :range="stat.limit"
+        :range="[stat.limit.min, stat.limit.max]"
         :disabled="!stat.valid"
       />
       <cy-button-icon
