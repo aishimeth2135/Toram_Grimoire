@@ -1,37 +1,40 @@
 <template>
-  <div class="py-0.5" :class="{ 'bg-white': detailVisible }">
-    <div>
-      <cy-list-item @click="detailVisible = !detailVisible">
-        <cy-icon-text
-          icon="mdi:tag-outline"
-          :text-color="!sub ? 'primary-80' : 'orange-60'"
-        >
-          {{ tag.name }}
-        </cy-icon-text>
-        <div class="ml-3 flex items-center space-x-1.5 text-sm text-primary-30">
-          <div v-for="row in categoryRows" :key="row.value.join(',')">
-            {{ row.value[0] }}
-          </div>
+  <CardRow
+    class="result-item"
+    :class="{ 'result-item-selected': detailVisible }"
+  >
+    <div
+      class="flex cursor-pointer items-center py-2.5 px-3.5 duration-150 hover:bg-primary-5"
+      @click="detailVisible = !detailVisible"
+    >
+      <cy-icon-text
+        icon="mdi:tag-outline"
+        :text-color="!sub ? 'primary-80' : 'orange-60'"
+      >
+        {{ tag.name }}
+      </cy-icon-text>
+      <div class="ml-3 flex items-center space-x-1.5 text-sm text-primary-30">
+        <div v-for="row in categoryRows" :key="row.value.join(',')">
+          {{ row.value[0] }}
         </div>
-      </cy-list-item>
+      </div>
     </div>
     <cy-transition>
-      <div v-if="detailVisible" class="pb-2">
+      <div v-if="detailVisible" class="bg-white pb-4 pl-3.5 pr-2">
         <GlossaryTagContentRows class="py-2 pl-6 pr-4" :tag="tag" />
-        <div
-          v-if="includedTags.length > 0"
-          class="my-2 ml-2 divide-y divide-primary-20 border-l-2 border-primary-50"
-        >
-          <GlossaryTagItem
-            v-for="otherTag in includedTags"
-            :key="otherTag.name"
-            :tag="otherTag"
-            sub
-          />
+        <div v-if="includedTags.length > 0">
+          <CardRows class="border-l-2 border-primary-30">
+            <GlossaryTagItem
+              v-for="otherTag in includedTags"
+              :key="otherTag.name"
+              :tag="otherTag"
+              sub
+            />
+          </CardRows>
         </div>
       </div>
     </cy-transition>
-  </div>
+  </CardRow>
 </template>
 
 <script lang="ts">
@@ -46,6 +49,9 @@ import { computed, ref } from 'vue'
 import Grimoire from '@/shared/Grimoire'
 
 import GlossaryTag from '@/lib/Glossary/GlossaryTag'
+
+import CardRow from '@/components/card/card-row.vue'
+import CardRows from '@/components/card/card-rows.vue'
 
 import GlossaryTagContentRows from './glossary-tag-content-rows.vue'
 
@@ -68,3 +74,15 @@ const includedTags = computed(() =>
   props.sub ? [] : Grimoire.Glossary.getIncludedTags(props.tag)
 )
 </script>
+
+<style lang="postcss" scoped>
+.result-item {
+  &.result-item-selected + .result-item {
+    border-top: 1px solid var(--app-primary-30);
+  }
+
+  & + .result-item.result-item-selected {
+    border-top: 1px solid var(--app-primary-30);
+  }
+}
+</style>

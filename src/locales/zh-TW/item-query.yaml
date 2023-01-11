@@ -29,6 +29,8 @@ sort-options:
     down: 由大至小
 equipment-detail:
   production-equipment: 製作裝備
+  equipment-type: 裝備類型
+  stability: 穩定度
   content-titles:
     stats: 裝備能力
     recipe: 製作配方

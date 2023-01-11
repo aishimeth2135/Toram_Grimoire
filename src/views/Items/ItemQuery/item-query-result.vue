@@ -1,15 +1,17 @@
 <template>
   <div>
     <div ref="topElement"></div>
-    <div class="overflow-x-auto">
-      <div class="min-w-min">
-        <ItemQueryResultItem
-          v-for="eq in currentItems"
-          :key="eq.origin!.id"
-          :equipment="eq"
-        />
+    <CardRowsWrapper class="mx-1">
+      <div class="overflow-x-auto">
+        <CardRows class="min-w-min">
+          <ItemQueryResultItem
+            v-for="eq in currentItems"
+            :key="eq.origin!.id"
+            :equipment="eq"
+          />
+        </CardRows>
       </div>
-    </div>
+    </CardRowsWrapper>
     <div class="mt-3">
       <cy-pagination
         v-model:value="page"
@@ -26,6 +28,9 @@ import { Ref, nextTick, ref, toRefs } from 'vue'
 import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 
 import PageControl from '@/setup/PageControl'
+
+import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
+import CardRows from '@/components/card/card-rows.vue'
 
 import ItemQueryResultItem from './item-query-result-item.vue'
 

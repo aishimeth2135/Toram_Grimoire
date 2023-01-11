@@ -17,10 +17,10 @@
             item.enabled
           "
         />
-        <div class="ml-1 text-primary-80">{{ item.base.name }}</div>
+        <div class="ml-1 text-primary-70">{{ item.base.name }}</div>
       </div>
     </div>
-    <div v-if="item.enabled && detailVisible" class="p-2 pl-10">
+    <div v-if="detailVisible" class="py-1 px-2 pl-10">
       <ShowStat
         v-for="stat in item.base.stats"
         :key="stat.statId"

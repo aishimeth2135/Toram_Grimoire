@@ -5,7 +5,7 @@ import Grimoire from '@/shared/Grimoire'
 
 import { useLanguageStore } from './language'
 
-const version = '4.6.10'
+const version = '4.6.11'
 
 export const useMainStore = defineStore('app-main', () => {
   const settingVisible = ref(false)

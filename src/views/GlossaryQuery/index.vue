@@ -1,9 +1,15 @@
 <template>
   <AppLayoutMain class="py-2">
     <div ref="topElement"></div>
-    <div class="divide-y divide-primary-20">
-      <GlossaryTagItem v-for="tag in currentItems" :key="tag.name" :tag="tag" />
-    </div>
+    <CardRowsWrapper>
+      <CardRows>
+        <GlossaryTagItem
+          v-for="tag in currentItems"
+          :key="tag.name"
+          :tag="tag"
+        />
+      </CardRows>
+    </CardRowsWrapper>
     <div class="mt-3">
       <cy-pagination
         v-model:value="page"
@@ -43,6 +49,9 @@ import PageControl from '@/setup/PageControl'
 
 import AppLayoutBottom from '@/components/app-layout/app-layout-bottom.vue'
 import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
+
+import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
+import CardRows from '@/components/card/card-rows.vue'
 
 import GlossaryTagItem from './glossary-tag-item.vue'
 

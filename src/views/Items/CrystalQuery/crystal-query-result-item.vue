@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <CardRow
+    class="result-item"
+    :class="{ 'result-item-selected': detailVisible }"
+  >
     <div
       class="min-w-max sticky top-0 z-1"
       :class="{ 'bg-white': detailVisible }"
@@ -61,13 +64,13 @@
           >
             {{ t('crystal-query.enhancer-pretext') }}
           </cy-icon-text>
-          <span class="ml-0.5 text-sm text-cyan-60">{{
-            crystal.origin.enhancer
-          }}</span>
+          <span class="ml-0.5 text-sm text-cyan-60">
+            {{ crystal.origin.enhancer }}
+          </span>
         </div>
       </div>
     </cy-transition>
-  </div>
+  </CardRow>
 </template>
 
 <script lang="ts" setup>
@@ -76,6 +79,7 @@ import { useI18n } from 'vue-i18n'
 
 import { EquipmentCrystal } from '@/lib/Character/CharacterEquipment'
 
+import CardRow from '@/components/card/card-row.vue'
 import ShowStat from '@/components/common/show-stat.vue'
 
 import { StatOptionItem } from './setup'
@@ -111,3 +115,15 @@ watch(
   { immediate: true }
 )
 </script>
+
+<style lang="postcss" scoped>
+.result-item {
+  &.result-item-selected + .result-item {
+    border-top: 1px solid var(--app-primary-30);
+  }
+
+  & + .result-item.result-item-selected {
+    border-top: 1px solid var(--app-primary-30);
+  }
+}
+</style>

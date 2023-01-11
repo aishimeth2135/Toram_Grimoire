@@ -69,14 +69,14 @@ export default function (root: ItemsSystem, csvData: CsvData): void {
         const type = CATEGORY_LIST[category] ?? -1
         currentEquipment = root.appendEquipment(
           row[NAME],
-          type === undefined ? -1 : type,
+          type,
           isNumberString(row[BASE_VALUE]) ? parseInt(row[BASE_VALUE], 10) : 0,
           isNumberString(row[BASE_STABILITY])
             ? parseInt(row[BASE_STABILITY], 10)
             : 0,
           row[CAPTION]
         )
-        if (type === undefined) {
+        if (type === -1) {
           currentEquipment.unknowCategory = row[CATEGORY]
         }
       }
