@@ -4,6 +4,7 @@ import { computed, ref, shallowReactive } from 'vue'
 import { useCharacterFoodStore } from '@/stores/views/character/food-build'
 import { useCharacterSkillStore } from '@/stores/views/character/skill'
 
+import Grimoire from '@/shared/Grimoire'
 import { DataPathIds } from '@/shared/services/DataPath'
 import {
   InitCrystalIcons,
@@ -202,7 +203,7 @@ export const useDatasStore = defineStore('app-datas', () => {
     const datas = await DownloadDatas(DataPathIds.Enchant)
     if (!datas[0][0][0][4].startsWith('額外上限')) {
       const { notify } = Notify()
-      notify('app.notices.enchant-refactor')
+      notify(Grimoire.i18n.t('app.notices.enchant-refactor'))
       throw Error('[cy] init error')
     }
     return async () => {
