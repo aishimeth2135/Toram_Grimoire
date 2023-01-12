@@ -19,6 +19,8 @@ import ItemsSystem from '@/lib/Items'
 import RegistletSystem from '@/lib/Registlet'
 import SkillSystem from '@/lib/Skill'
 
+import Notify from '@/setup/Notify'
+
 import { DataStoreIds } from './enums'
 import DownloadDatas from './utils/DownloadDatas'
 import loadCharacterStats from './utils/LoadCharacterStat'
@@ -198,6 +200,11 @@ export const useDatasStore = defineStore('app-datas', () => {
   const initEnchant: DataStoreInitHandler = async function () {
     initEnchantInstance()
     const datas = await DownloadDatas(DataPathIds.Enchant)
+    if (!datas[0][0][0][4].startsWith('額外上限')) {
+      const { notify } = Notify()
+      notify('app.notices.enchant-refactor')
+      throw Error('[cy] init error')
+    }
     return async () => {
       loadEnchant(Enchant.value!, datas[0][0])
     }
