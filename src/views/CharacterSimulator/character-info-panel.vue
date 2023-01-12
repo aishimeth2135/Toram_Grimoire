@@ -149,6 +149,44 @@
         />
       </div>
     </div>
+    <div v-if="currentRegistletBuild" class="flex-start flex w-full">
+      <div class="w-full">
+        <div>
+          <cy-icon-text
+            icon="game-icons:beveled-star"
+            text-color="primary-30"
+            small
+          >
+            {{ t('character-simulator.registlet-build.title') }}
+          </cy-icon-text>
+        </div>
+        <div class="px-1.5">
+          <cy-options
+            :value="currentRegistletBuild"
+            :options="
+              registletBuilds.map(build => ({
+                id: build.instanceId,
+                value: build,
+              }))
+            "
+            @update:value="store.setCharacterRegistletBuild($event)"
+          >
+            <template #item="{ value }">
+              <cy-icon-text icon="game-icons:beveled-star">
+                {{ value.name }}
+              </cy-icon-text>
+            </template>
+          </cy-options>
+        </div>
+      </div>
+      <div class="flex-shrink-0">
+        <cy-button-circle
+          icon="ic:round-mode-edit"
+          small
+          @click="emit('open-tab', TabIds.Registlet)"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -162,6 +200,7 @@ import { CharacterSimulatorInjectionKey } from './injection-keys'
 import {
   TabIds,
   setupCharacterFoodStore,
+  setupCharacterRegistletStore,
   setupCharacterSkillBuildStore,
   setupCharacterStore,
 } from './setup'
@@ -177,6 +216,8 @@ const { t } = useI18n()
 const { store, characters, currentCharacter } = setupCharacterStore()
 const { skillBuilds, currentSkillBuild } = setupCharacterSkillBuildStore()
 const { foodBuilds, currentFoodBuild } = setupCharacterFoodStore()
+const { registletBuilds, currentRegistletBuild } =
+  setupCharacterRegistletStore()
 
 const { editEquipmentFieldEquipment } = inject(CharacterSimulatorInjectionKey)!
 </script>

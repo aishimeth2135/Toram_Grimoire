@@ -262,11 +262,11 @@ const tabDatas = computed(() => {
       icon: 'mdi-food-apple',
       text: t('character-simulator.food-build.title'),
     },
-    // {
-    //   id: TabIds.Registlet,
-    //   icon: 'game-icons:beveled-star',
-    //   text: t('character-simulator.registlet-build.title'),
-    // },
+    {
+      id: TabIds.Registlet,
+      icon: 'game-icons:beveled-star',
+      text: t('character-simulator.registlet-build.title'),
+    },
     {
       id: TabIds.Save,
       icon: 'mdi-ghost',
@@ -274,11 +274,6 @@ const tabDatas = computed(() => {
     }
   )
   if (mainStore.devMode) {
-    options.push({
-      id: TabIds.Registlet,
-      icon: 'game-icons:beveled-star',
-      text: t('character-simulator.registlet-build.title'),
-    })
     options.push({
       id: TabIds.Potion,
       icon: 'mdi:bottle-tonic-outline',
