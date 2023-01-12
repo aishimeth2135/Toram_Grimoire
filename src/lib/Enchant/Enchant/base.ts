@@ -183,8 +183,8 @@ class EnchantItem {
   getLimit(type: StatNormalTypes): { max: number; min: number } {
     const originalLimit = this.limit[type]
 
-    const add = Math.max(Math.floor((STATE.Character.level - 200) / 10) * 5, 0)
-    const potentialCapacityLimit = this.getLimitFromPotentialCapacity(type, add)
+    // const add = Math.max(Math.floor((STATE.Character.level - 200) / 10) * 5, 0)
+    const potentialCapacityLimit = this.getLimitFromPotentialCapacity(type)
     const lvLimit = Math.floor(STATE.Character.level / 10)
 
     const limit = Math.min(potentialCapacityLimit, lvLimit)

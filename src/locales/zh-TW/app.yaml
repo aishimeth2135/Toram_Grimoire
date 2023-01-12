@@ -116,3 +116,5 @@ features:
   copy-to-clipboard-success-tips: 已複製文本至剪貼簿。
   copy-url-to-clipboard-success-tips: 已複製網址至剪貼簿。
   localStorage-inavailable-tips: 此瀏覽器版本無法使用內建儲存功能。
+notices:
+  enchant-refactor: 由於附魔系統的更新，如果遇到錯誤請到「設定」裡進行「清除資料庫快取」，資料庫重新下載後就能正常運作。
