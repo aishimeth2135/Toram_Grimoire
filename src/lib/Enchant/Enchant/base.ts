@@ -199,13 +199,15 @@ class EnchantItem {
     const vars = { CLv }
     const extraLimitMax =
       extraLimitBase !== null && CLv > 0
-        ? (computeFormula(extraLimitBase, vars) as number)
+        ? Math.floor(computeFormula(extraLimitBase, vars) as number)
         : 0
     const extraLimitMin =
       extraLimitNegative === null
         ? extraLimitMax * -1
         : -1 *
-          (CLv > 0 ? (computeFormula(extraLimitNegative, vars) as number) : 0)
+          (CLv > 0
+            ? Math.floor(computeFormula(extraLimitNegative, vars) as number)
+            : 0)
 
     return {
       min: Math.max(min + extraLimitMin, -1 * lvLimit),
