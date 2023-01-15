@@ -1,4 +1,6 @@
-import { isNumberString, splitComma } from '@/shared/utils/string'
+import { SkillBranchItemBaseChilds } from '.'
+
+import { escapeRegExp, isNumberString, splitComma } from '@/shared/utils/string'
 
 import { StatComputed, StatRecorded } from '@/lib/Character/Stat'
 import {
@@ -16,8 +18,6 @@ import {
   getCommonTextParseItems,
   handleParseText,
 } from '@/lib/common/ResultContainer/parseText'
-
-import { SkillBranchItemBaseChilds } from '.'
 
 type ResultHandler = (currentResult: string) => string
 
@@ -252,9 +252,15 @@ class SkillBranchTextResult
     const handleOtherParse = (propKey: string) => {
       if (branch.hasProp(propKey)) {
         const values = splitComma(branch.prop(propKey))
+        if (values.length === 1 && !values[0]) {
+          return
+        }
         const item: TextParseItem<SkillBranchTextResultPart> = {
           id: propKey,
-          pattern: new RegExp(`(${values.join('|')})`, 'g'),
+          pattern: new RegExp(
+            `(${values.map(value => escapeRegExp(value)).join('|')})`,
+            'g'
+          ),
           handler([value]) {
             const newPart = new SkillBranchTextResultPart(
               TextResultContainerPartTypes.Other,

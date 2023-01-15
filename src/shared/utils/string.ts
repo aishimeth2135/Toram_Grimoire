@@ -39,3 +39,7 @@ export function splitComma(str: string): string[] {
   }
   return str.split(SPLIT_COMMA_PATTERN)
 }
+
+export function escapeRegExp(str: string) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}

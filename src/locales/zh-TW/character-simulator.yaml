@@ -155,6 +155,7 @@ food-build:
     - 原本是0級的料理在提升等級時會自動選取。
 registlet-build:
   title: 雷吉斯托環配置
+  disable-registlet: 停用雷吉斯托環
   registlet-build: 托環配置
   edit-registlet: 編輯托環
   show-detail: 顯示詳細資訊
@@ -163,6 +164,8 @@ registlet-build:
   main-tips-2: 目前僅支援與數值相關的托環，例如：角色能力加成、技能倍率、技能傷害次數等。部分條件較複雜的托環可能尚未支援。
 potion-build:
   title: 消耗品配置
+  disable-potion: 停用消耗品
+  potion: 消耗品
   potion-build: 消耗品配置
   edit-potion: 編輯消耗品
   default-tips: 這裡空空如也0.0，請點擊上方的「編輯消耗品」來新增項目。
@@ -200,8 +203,7 @@ save-load-control:
   deleta-all-data-success-tips: 成功刪除角色模擬器所有資料，系統也已關閉自動存檔功能。請重新整理網頁。
   deleta-all-data-counter-title: 計數器
   deleta-all-data-caption:
-    - >-
-      在某些情況下，角色模擬器的檔案可能毀損，導致系統無法正常運行。使用下方的按鈕可以刪除角色模擬器所有資料。自動存檔功能也將暫時失效，意即當前的資料將不會自動儲存。
+    - 在某些情況下，角色模擬器的檔案可能毀損，導致系統無法正常運行。使用下方的按鈕可以刪除角色模擬器所有資料。自動存檔功能也將暫時失效，意即當前的資料將不會自動儲存。
     - 請將下方的計數器數值調整到10，刪除按鈕就會出現。
     - 將資料刪除成功後，請立即重新整理，來讓系統重新初始化。
   export-build: 匯出配置

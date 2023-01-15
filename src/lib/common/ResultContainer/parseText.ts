@@ -1,10 +1,11 @@
-import Grimoire from '@/shared/Grimoire'
-
 import {
   ResultContainer,
   TextResultContainerPart,
   TextResultContainerPartValue,
 } from '.'
+
+import Grimoire from '@/shared/Grimoire'
+
 import { ResultContainerTypes, TextResultContainerPartTypes } from './enums'
 
 interface TextParseInnerHandler {

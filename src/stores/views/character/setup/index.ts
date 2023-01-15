@@ -20,7 +20,6 @@ import {
 } from '@/lib/Character/Character'
 import {
   CharacterBaseStatTypes,
-  CharacterOptionalBaseStatTypes,
   EquipmentFieldTypes,
 } from '@/lib/Character/Character/enums'
 import { EquipmentTypes } from '@/lib/Character/CharacterEquipment/enums'
@@ -279,10 +278,10 @@ export function prepareSetupCharacter() {
         $BAGI: character.value.baseStatValue(CharacterBaseStatTypes.AGI),
         $BVIT: character.value.baseStatValue(CharacterBaseStatTypes.VIT),
         $BDEX: character.value.baseStatValue(CharacterBaseStatTypes.DEX),
-        $TEC: character.value.baseStatValue(CharacterOptionalBaseStatTypes.TEC),
-        $CRT: character.value.baseStatValue(CharacterOptionalBaseStatTypes.CRT),
-        $MEN: character.value.baseStatValue(CharacterOptionalBaseStatTypes.MEN),
-        $LUK: character.value.baseStatValue(CharacterOptionalBaseStatTypes.LUK),
+        $TEC: character.value.baseStatValue(CharacterBaseStatTypes.TEC),
+        $CRT: character.value.baseStatValue(CharacterBaseStatTypes.CRT),
+        $MEN: character.value.baseStatValue(CharacterBaseStatTypes.MEN),
+        $LUK: character.value.baseStatValue(CharacterBaseStatTypes.LUK),
         $shield_refining: character.value.checkFieldEquipmentType(
           EquipmentFieldTypes.SubWeapon,
           EquipmentTypes.Shield
@@ -924,10 +923,10 @@ export function prepareSetupCharacter() {
           '@int': chara.baseStatValue(CharacterBaseStatTypes.INT),
           '@agi': chara.baseStatValue(CharacterBaseStatTypes.AGI),
           '@vit': chara.baseStatValue(CharacterBaseStatTypes.VIT),
-          '@tec': chara.baseStatValue(CharacterOptionalBaseStatTypes.TEC),
-          '@men': chara.baseStatValue(CharacterOptionalBaseStatTypes.MEN),
-          '@crt': chara.baseStatValue(CharacterOptionalBaseStatTypes.CRT),
-          '@luk': chara.baseStatValue(CharacterOptionalBaseStatTypes.LUK),
+          '@tec': chara.baseStatValue(CharacterBaseStatTypes.TEC),
+          '@men': chara.baseStatValue(CharacterBaseStatTypes.MEN),
+          '@crt': chara.baseStatValue(CharacterBaseStatTypes.CRT),
+          '@luk': chara.baseStatValue(CharacterBaseStatTypes.LUK),
           '@main': mainField
             ? {
                 atk: mainField.basicValue,
