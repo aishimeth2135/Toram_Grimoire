@@ -31,7 +31,7 @@
         v-model:value="currentRegistletBuild.name"
         icon="ic:baseline-drive-file-rename-outline"
       />
-      <div class="flex items-center space-x-2 ml-4">
+      <div class="ml-4 flex items-center space-x-2">
         <cy-button-circle
           icon="bx:copy-alt"
           small
@@ -45,7 +45,7 @@
         />
       </div>
     </div>
-    <div class="py-3 flex items-center space-x-2">
+    <div class="flex items-center space-x-2 py-3">
       <cy-button-action @click="toggle('modals/edit', true)">
         {{ t('character-simulator.registlet-build.edit-registlet') }}
       </cy-button-action>
@@ -53,8 +53,16 @@
         {{ t('character-simulator.registlet-build.show-detail') }}
       </cy-button-toggle>
     </div>
-    <div class="border-1 border-primary-20 rounded-md overflow-hidden">
-      <CardRows v-if="currentRegistletBuild.items.length > 0">
+    <div>
+      <cy-button-toggle v-model:selected="disableAll">
+        {{ t('character-simulator.registlet-build.disable-registlet') }}
+      </cy-button-toggle>
+    </div>
+    <CardRowsWrapper>
+      <CardRows
+        v-if="currentRegistletBuild.items.length > 0"
+        :class="{ 'opacity-50': disableAll }"
+      >
         <CharacterRegistletItem
           v-for="item in currentRegistletBuild.items"
           :key="item.base.id"
@@ -65,7 +73,7 @@
       <cy-default-tips v-else>
         {{ t('character-simulator.registlet-build.default-tips') }}
       </cy-default-tips>
-    </div>
+    </CardRowsWrapper>
     <div class="space-y-1 pt-6 pb-2">
       <div>
         <cy-icon-text
@@ -103,13 +111,20 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import ToggleService from '@/setup/ToggleService'
-import { useCharacterStore } from '@/stores/views/character'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { setupCharacterRegistletStore } from '../setup'
+
+import { useCharacterStore } from '@/stores/views/character'
+
+import ToggleService from '@/setup/ToggleService'
+
+import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
+import CardRows from '@/components/card/card-rows.vue'
+
 import CharacterRegistletEdit from './character-registlet-edit.vue'
 import CharacterRegistletItem from './character-registlet-item.vue'
-import CardRows from '@/components/card/card-rows.vue'
+
+import { setupCharacterRegistletStore } from '../setup'
 
 const characterStore = useCharacterStore()
 const {
@@ -122,5 +137,14 @@ const { t } = useI18n()
 const { toggle, modals, controls } = ToggleService({
   modals: ['edit'] as const,
   controls: ['itemDetail'] as const,
+})
+
+const disableAll = computed<boolean>({
+  get() {
+    return !characterStore.setupOptions.handleRegistlet
+  },
+  set(value) {
+    characterStore.setupOptions.handleRegistlet = !value
+  },
 })
 </script>

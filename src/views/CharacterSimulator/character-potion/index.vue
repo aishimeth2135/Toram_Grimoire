@@ -31,7 +31,7 @@
         v-model:value="currentPotionBuild.name"
         icon="ic:baseline-drive-file-rename-outline"
       />
-      <div class="flex items-center space-x-2 ml-4">
+      <div class="ml-4 flex items-center space-x-2">
         <cy-button-circle
           icon="bx:copy-alt"
           small
@@ -45,7 +45,7 @@
         />
       </div>
     </div>
-    <div class="py-3 flex items-center space-x-2">
+    <div class="flex items-center space-x-2 py-3">
       <cy-button-action @click="toggle('modals/edit', true)">
         {{ t('character-simulator.potion-build.edit-potion') }}
       </cy-button-action>
@@ -53,7 +53,16 @@
         {{ t('character-simulator.registlet-build.show-detail') }}
       </cy-button-toggle>
     </div>
-    <div v-if="currentPotionBuild.items.length > 0" class="space-y-4">
+    <div>
+      <cy-button-toggle v-model:selected="disableAll">
+        {{ t('character-simulator.potion-build.disable-potion') }}
+      </cy-button-toggle>
+    </div>
+    <div
+      v-if="currentPotionBuild.items.length > 0"
+      class="space-y-4"
+      :class="{ 'opacity-50': disableAll }"
+    >
       <CharacterPotionCategory
         v-for="category in currentPotionBuild.categorys"
         :key="category.base.id"
@@ -79,14 +88,15 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
-
 import { useCharacterStore } from '@/stores/views/character'
+import { computed } from 'vue'
+
+import { useI18n } from 'vue-i18n'
 
 import ToggleService from '@/setup/ToggleService'
 
-import CharacterPotionEdit from './character-potion-edit.vue'
 import CharacterPotionCategory from './character-potion-category.vue'
+import CharacterPotionEdit from './character-potion-edit.vue'
 
 import { setupCharacterPotionStore } from '../setup'
 
@@ -101,5 +111,14 @@ const { t } = useI18n()
 const { toggle, modals, controls } = ToggleService({
   modals: ['edit'] as const,
   controls: [{ name: 'itemDetail', default: true }] as const,
+})
+
+const disableAll = computed<boolean>({
+  get() {
+    return !characterStore.setupOptions.handlePotion
+  },
+  set(value) {
+    characterStore.setupOptions.handlePotion = !value
+  },
 })
 </script>

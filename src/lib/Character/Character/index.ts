@@ -20,11 +20,7 @@ import {
   CharacterComboBuildSaveData,
 } from '../CharacterCombo/CharacterComboBuild'
 import CharacterSystem from '../index'
-import {
-  CharacterBaseStatTypes,
-  CharacterOptionalBaseStatTypes,
-  EquipmentFieldTypes,
-} from './enums'
+import { CharacterBaseStatTypes, EquipmentFieldTypes } from './enums'
 
 interface CharacterBuildBindOnCharacter {
   instanceId: number
@@ -32,36 +28,24 @@ interface CharacterBuildBindOnCharacter {
   matchLoadedId: (loadCategory: string, id: number | null) => boolean
 }
 
-type CharacterBaseStatValidType =
-  | CharacterBaseStatTypes
-  | CharacterOptionalBaseStatTypes
-
 let _characterAutoIncreasement = 0
 class Character implements CharacterBuildBindOnCharacter {
-  private _baseStats: readonly [
-    CharacterBaseStat<CharacterBaseStatTypes.STR>,
-    CharacterBaseStat<CharacterBaseStatTypes.DEX>,
-    CharacterBaseStat<CharacterBaseStatTypes.INT>,
-    CharacterBaseStat<CharacterBaseStatTypes.AGI>,
-    CharacterBaseStat<CharacterBaseStatTypes.VIT>
-  ]
-  private _optinalBaseStat: CharacterBaseStat<CharacterOptionalBaseStatTypes> | null
+  private _baseStats: CharacterBaseStat[]
+  private _optinalBaseStat: CharacterBaseStat | null
 
-  loadedId: string | null
   readonly instanceId: number
+  loadedId: string | null
   name: string
   level: number
   comboBuild: CharacterComboBuild
 
-  readonly equipmentFields: readonly [
-    EquipmentField,
-    EquipmentField,
-    EquipmentField,
-    EquipmentField,
-    EquipmentField,
-    EquipmentField,
-    EquipmentField,
-    EquipmentField
+  readonly equipmentFields: EquipmentField[]
+
+  static optionalBaseStatTypeList = [
+    CharacterBaseStatTypes.TEC,
+    CharacterBaseStatTypes.MEN,
+    CharacterBaseStatTypes.LUK,
+    CharacterBaseStatTypes.CRT,
   ]
 
   constructor(name = 'Potum') {
@@ -78,7 +62,7 @@ class Character implements CharacterBuildBindOnCharacter {
       new CharacterBaseStat(CharacterBaseStatTypes.INT),
       new CharacterBaseStat(CharacterBaseStatTypes.AGI),
       new CharacterBaseStat(CharacterBaseStatTypes.VIT),
-    ] as const
+    ]
 
     this._optinalBaseStat = null
 
@@ -91,7 +75,7 @@ class Character implements CharacterBuildBindOnCharacter {
       new EquipmentField(this, EquipmentFieldTypes.Avatar, 0),
       new EquipmentField(this, EquipmentFieldTypes.Avatar, 1),
       new EquipmentField(this, EquipmentFieldTypes.Avatar, 2),
-    ] as const
+    ]
 
     this.comboBuild = new CharacterComboBuild()
   }
@@ -101,9 +85,7 @@ class Character implements CharacterBuildBindOnCharacter {
   }
 
   get baseStats() {
-    const res: CharacterBaseStat<
-      CharacterBaseStatTypes | CharacterOptionalBaseStatTypes
-    >[] = this._baseStats.slice()
+    const res: CharacterBaseStat[] = this._baseStats.slice()
     if (this._optinalBaseStat !== null) {
       res.push(this._optinalBaseStat)
     }
@@ -127,26 +109,19 @@ class Character implements CharacterBuildBindOnCharacter {
   hasOptinalBaseStat() {
     return this._optinalBaseStat ? true : false
   }
-  setOptionalBaseStat(name: CharacterOptionalBaseStatTypes) {
+  setOptionalBaseStat(name: CharacterBaseStatTypes) {
     this._optinalBaseStat = new CharacterBaseStat(name)
   }
   clearOptinalBaseStat() {
     this._optinalBaseStat = null
   }
-  baseStat(name: CharacterBaseStatValidType) {
-    if (
-      (
-        Object.values(CharacterOptionalBaseStatTypes) as readonly string[]
-      ).includes(name)
-    ) {
-      return this._optinalBaseStat === null ||
-        this._optinalBaseStat.name !== name
-        ? null
-        : this._optinalBaseStat
+  baseStat(name: CharacterBaseStatTypes) {
+    if (this._optinalBaseStat !== null && this._optinalBaseStat.name === name) {
+      return this._optinalBaseStat
     }
-    return this._baseStats.find(bstat => bstat.name === name)
+    return this._baseStats.find(bstat => bstat.name === name) ?? null
   }
-  baseStatValue(name: CharacterBaseStatValidType) {
+  baseStatValue(name: CharacterBaseStatTypes) {
     const stat = this.baseStat(name)
     return stat ? stat.value : 0
   }
@@ -219,7 +194,6 @@ class Character implements CharacterBuildBindOnCharacter {
     return chara
   }
 
-  // save and load with json-data
   save(equipments: CharacterEquipment[]): CharacterSaveData {
     const data: CharacterSaveData = {
       id: this.instanceId,
@@ -368,7 +342,7 @@ interface CharacterSaveData {
     value: number
   }[]
   optionalBaseStat?: {
-    name: CharacterOptionalBaseStatTypes
+    name: CharacterBaseStatTypes
     value: number
   }
   fields: CharacterSaveDataField[]
@@ -386,11 +360,11 @@ interface CharacterSaveDataField {
   equipmentIndex: number
 }
 
-class CharacterBaseStat<T> {
-  name: T
+class CharacterBaseStat {
+  name: CharacterBaseStatTypes
   value: number
 
-  constructor(name: T, value: number = 1) {
+  constructor(name: CharacterBaseStatTypes, value: number = 1) {
     this.name = name
     this.value = value
   }

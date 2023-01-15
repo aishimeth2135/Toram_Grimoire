@@ -9,7 +9,7 @@
           class="relative py-0.5 pl-5"
         >
           <span
-            class="absolute left-0 top-1 inline-block h-2 w-2 bg-primary-30 rounded-full"
+            class="absolute left-0 top-1 inline-block h-2 w-2 rounded-full bg-primary-30"
           />
           <RenderText :text="rowValue" />
         </div>
@@ -43,7 +43,7 @@ const RenderText = ({ text }: { text: string }) => {
   const { parts } = handleParseText(text, textParseItems)
   const childs = parts.map(part => {
     if (typeof part === 'string') {
-      return h('span', part)
+      return h('span', { innerHTML: part })
     }
     if (part.type === TextResultContainerPartTypes.Separate) {
       return h(

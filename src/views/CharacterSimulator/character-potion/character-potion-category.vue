@@ -1,7 +1,7 @@
 <template>
-  <div class="border-1 border-primary-20 rounded-md overflow-hidden">
+  <CardRowsWrapper>
     <div
-      class="border-b border-primary-20 text-primary-30 text-sm py-0.5 px-3 bg-white"
+      class="border-b border-primary-20 bg-white py-0.5 px-3 text-sm text-primary-30"
     >
       {{ category.base.name }}
     </div>
@@ -13,12 +13,13 @@
         :detail-visible="detailVisible"
       />
     </CardRows>
-  </div>
+  </CardRowsWrapper>
 </template>
 
 <script lang="ts" setup>
 import { PotionItemsCategory } from '@/lib/Character/PotionBuild/PotionBuild'
 
+import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
 import CardRows from '@/components/card/card-rows.vue'
 
 import CharacterPotionItem from './character-potion-item.vue'

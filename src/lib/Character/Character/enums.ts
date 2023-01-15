@@ -13,17 +13,12 @@ enum CharacterBaseStatTypes {
   INT = 'INT',
   AGI = 'AGI',
   VIT = 'VIT',
-}
 
-enum CharacterOptionalBaseStatTypes {
+  // optional
   TEC = 'TEC',
   MEN = 'MEN',
   LUK = 'LUK',
   CRT = 'CRT',
 }
 
-export {
-  EquipmentFieldTypes,
-  CharacterBaseStatTypes,
-  CharacterOptionalBaseStatTypes,
-}
+export { EquipmentFieldTypes, CharacterBaseStatTypes }

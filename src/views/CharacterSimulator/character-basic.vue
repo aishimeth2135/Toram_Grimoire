@@ -146,10 +146,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { CharacterOptionalBaseStatTypes } from '@/lib/Character/Character/enums'
+import { Character } from '@/lib/Character/Character'
 
 import Notify from '@/setup/Notify'
 
@@ -163,9 +162,7 @@ const { notify } = Notify()
 const baseStatRange = [1, 500]
 const optionalBaseStatRange = [0, 255]
 
-const characterOptionalBaseStatOptions = computed(() => {
-  return Object.values(CharacterOptionalBaseStatTypes)
-})
+const characterOptionalBaseStatOptions = Character.optionalBaseStatTypeList
 
 const copyCurrentCharacter = () => {
   if (currentCharacter.value) {

@@ -119,6 +119,14 @@
                       </div>
                       <div>{{ (src.src as RegistletItemBase).name }}</div>
                     </template>
+                    <template
+                      v-else-if="src.type === StatValueSourceTypes.Potion"
+                    >
+                      <div class="text-orange-30">
+                        {{ t('character-simulator.potion-build.potion') }}
+                      </div>
+                      <div>{{ (src.src as BagPotion).name }}</div>
+                    </template>
                     <div class="text-primary-50">
                       {{ data.statRecorded.showValue(src.value) }}
                     </div>
@@ -130,7 +138,7 @@
         </div>
         <div
           v-if="data.lines.length !== 0"
-          class="mt-0.5 pl-2 pb-1 space-y-0.5"
+          class="mt-0.5 space-y-0.5 pl-2 pb-1"
         >
           <div
             v-for="line in data.lines"
@@ -181,6 +189,7 @@ import {
   EquipmentCrystal,
 } from '@/lib/Character/CharacterEquipment'
 import { StatTypes, StatValueSourceTypes } from '@/lib/Character/Stat/enums'
+import { BagPotion } from '@/lib/Items/BagItem/BagPotion'
 import { RegistletItemBase } from '@/lib/Registlet/Registlet'
 import { SkillBranch } from '@/lib/Skill/Skill'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
