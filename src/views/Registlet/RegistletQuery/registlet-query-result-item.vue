@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <div
-      class="min-w-max sticky top-0 z-1"
-      :class="{ 'bg-white': detailVisible }"
-      @click="detailVisible = !detailVisible"
-    >
-      <cy-list-item>
-        <div class="flex w-60 flex-shrink-0 py-0.5">
+  <CardRow :selected="detailVisible">
+    <div class="sticky top-0 z-1 min-w-max">
+      <div
+        class="flex cursor-pointer items-center py-2.5 px-3.5 duration-150 hover:bg-primary-5"
+        :class="{ 'bg-white': detailVisible }"
+        @click="detailVisible = !detailVisible"
+      >
+        <div class="flex w-60 flex-shrink-0">
           <cy-icon-text
             icon="mdi:book-outline"
             :text-color="detailVisible ? 'red-70' : 'primary-90'"
@@ -39,10 +39,13 @@
             {{ t('registlet-query.detail.obtain-levels-all') }}
           </div>
         </template>
-      </cy-list-item>
+      </div>
     </div>
     <cy-transition>
-      <div v-if="detailVisible" class="max-w-full bg-white pb-3 pl-4 pr-3">
+      <div
+        v-if="detailVisible"
+        class="max-w-full bg-white pt-1.5 pb-3 pl-4 pr-3"
+      >
         <div
           class="mt-1 mb-2 rounded border border-l-2 border-red-10 py-3 px-4"
         >
@@ -116,7 +119,7 @@
         </div>
       </div>
     </cy-transition>
-  </div>
+  </CardRow>
 </template>
 
 <script lang="ts" setup>
@@ -125,6 +128,8 @@ import { useI18n } from 'vue-i18n'
 
 import { StatBase } from '@/lib/Character/Stat'
 import { RegistletItemBase } from '@/lib/Registlet/Registlet'
+
+import CardRow from '@/components/card/card-row.vue'
 
 import { getRegistletCaptionRender, useRegistletQueryState } from './setup'
 

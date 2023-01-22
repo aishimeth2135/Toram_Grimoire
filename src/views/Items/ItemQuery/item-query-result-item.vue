@@ -1,11 +1,8 @@
 <template>
-  <CardRow
-    class="result-item"
-    :class="{ 'result-item-selected': contents.detail }"
-  >
-    <div class="min-w-max sticky top-0 z-1">
+  <CardRow :selected="contents.detail">
+    <div class="sticky top-0 z-1 min-w-max">
       <div
-        class="flex items-center py-2.5 px-3.5 hover:bg-primary-5 cursor-pointer duration-150"
+        class="flex cursor-pointer items-center py-2.5 px-3.5 duration-150 hover:bg-primary-5"
         :class="{ 'bg-white': contents.detail }"
         @click="toggle('contents/detail')"
       >
@@ -179,7 +176,7 @@
                   :negative-value="stat.value < 0"
                 />
               </template>
-              <div v-else class="text-gray-40 text-sm">
+              <div v-else class="text-sm text-gray-40">
                 {{ t('item-query.equipment-detail.no-any-stat-tips') }}
               </div>
             </div>
@@ -271,7 +268,7 @@
               {{ t('item-query.equipment-detail.content-titles.obtains') }}
             </cy-icon-text>
           </div>
-          <div class="pl-5 py-1.5">
+          <div class="py-1.5 pl-5">
             <div
               v-if="obtainsDatas.length !== 0"
               class="-my-1 divide-y divide-primary-20"
@@ -313,7 +310,7 @@
                 </div>
               </div>
             </div>
-            <div v-else class="text-gray-40 text-sm">
+            <div v-else class="text-sm text-gray-40">
               {{ t('item-query.equipment-detail.no-any-obtain-tips') }}
             </div>
           </div>
@@ -466,14 +463,6 @@ const dyeObtains = computed(() => {
 .result-item {
   max-height: 70vh;
   overflow-y: auto;
-
-  &.result-item-selected + .result-item {
-    border-top: 1px solid var(--app-primary-30);
-  }
-
-  & + .result-item.result-item-selected {
-    border-top: 1px solid var(--app-primary-30);
-  }
 }
 
 .row-attr {

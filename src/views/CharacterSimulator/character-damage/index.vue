@@ -1,6 +1,6 @@
 <template>
   <div class="px-2">
-    <div class="mb-3 border-b-1 border-primary-30 pb-2">
+    <div class="mb-3">
       <div
         class="flex cursor-pointer items-center border-l-2 py-1 px-2 duration-200 hover:border-primary-30"
         :class="contents.basicMenu ? 'border-primary-30' : 'border-primary-30'"
@@ -199,13 +199,15 @@
       </div>
     </div>
     <div v-if="validResultStates.length > 0" class="w-full overflow-x-auto">
-      <div style="min-width: 22.5rem">
-        <CharacterDamageSkillItem
-          v-for="skillResultsState in validResultStates"
-          :key="skillResultsState.skill.skillId"
-          :skill-results-state="skillResultsState"
-        />
-      </div>
+      <CardRowsWrapper>
+        <CardRows>
+          <CharacterDamageSkillItem
+            v-for="skillResultsState in validResultStates"
+            :key="skillResultsState.skill.skillId"
+            :skill-results-state="skillResultsState"
+          />
+        </CardRows>
+      </CardRowsWrapper>
     </div>
     <cy-default-tips v-else>
       {{ t('character-simulator.character-damage.no-any-skill-tips') }}
@@ -229,6 +231,9 @@ import { CalculationItemIds } from '@/lib/Calculation/Damage/Calculation/enums'
 import { EnemyElements } from '@/lib/Enemy/enums'
 
 import ToggleService from '@/setup/ToggleService'
+
+import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
+import CardRows from '@/components/card/card-rows.vue'
 
 import CharacterDamageSkillItem from './character-damage-skill-item.vue'
 

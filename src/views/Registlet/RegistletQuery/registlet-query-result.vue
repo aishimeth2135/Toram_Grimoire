@@ -1,15 +1,17 @@
 <template>
   <div>
     <div ref="topElement"></div>
-    <div class="overflow-x-auto">
-      <div class="min-w-min divide-y divide-primary-20">
-        <RegistletQueryResultItem
-          v-for="item in currentItems"
-          :key="item.id"
-          :item="item"
-        />
+    <CardRowsWrapper class="mx-1">
+      <div class="overflow-x-auto">
+        <CardRows class="min-w-min">
+          <RegistletQueryResultItem
+            v-for="item in currentItems"
+            :key="item.id"
+            :item="item"
+          />
+        </CardRows>
       </div>
-    </div>
+    </CardRowsWrapper>
     <div class="mt-3">
       <cy-pagination
         v-model:value="page"
@@ -26,6 +28,9 @@ import { Ref, computed, nextTick, ref } from 'vue'
 import { RegistletItemBase } from '@/lib/Registlet/Registlet'
 
 import PageControl from '@/setup/PageControl'
+
+import CardRowsWrapper from '@/components/card/card-rows-wrapper.vue'
+import CardRows from '@/components/card/card-rows.vue'
 
 import RegistletQueryResultItem from './registlet-query-result-item.vue'
 

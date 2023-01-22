@@ -8,12 +8,12 @@
       />
     </div>
     <div v-for="category in categoryResults" :key="category.id" class="pb-3">
-      <div class="text-primary-30 text-sm pb-1.5">{{ category.name }}</div>
+      <div class="pb-1.5 text-sm text-primary-30">{{ category.name }}</div>
       <CardRows>
         <CardRow
           v-for="item in category.items"
           :key="item.id"
-          class="flex items-center pl-3 pr-3 py-2 hover:!bg-primary-5 cursor-pointer duration-150"
+          class="flex cursor-pointer items-center py-2 pl-3 pr-3 duration-150 hover:!bg-primary-5"
           @click="potionBuild.toggleItem(item)"
         >
           <cy-icon-text
@@ -59,13 +59,6 @@ defineProps<Props>()
 const emit = defineEmits<Emits>()
 
 const searchText = ref('')
-
-// const itemsResult = computed(() => {
-//   if (!searchText.value) {
-//     return items
-//   }
-//   return items.filter(item => item.name.includes(searchText.value))
-// })
 
 const categorys = Grimoire.Items!.potionsRoot.categorys.map(category => {
   const items: BagPotion[] = []

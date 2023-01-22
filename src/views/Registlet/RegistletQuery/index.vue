@@ -134,7 +134,7 @@ const currentItems = computed(() => {
     if (item.name.toLowerCase().includes(text)) {
       return true
     }
-    return item.rows.some(row => row.value.toLocaleLowerCase().includes(text))
+    return item.rows.some(row => row.value.toLowerCase().includes(text))
   })
 })
 </script>
