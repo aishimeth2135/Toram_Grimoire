@@ -1,9 +1,10 @@
 <template>
   <div>
     <div class="flex w-full flex-wrap items-center">
-      <cy-icon-text icon="ic:round-label" color="orange">
+      <cy-icon-text icon="ic:round-label" />
+      <div class="ml-2 text-primary-70">
         {{ result.container.get('name') }}
-      </cy-icon-text>
+      </div>
       <div class="ml-3 flex items-center space-x-0.5">
         <div v-if="valid" class="text-primary-50">
           {{ expectedResult }}
@@ -85,7 +86,7 @@
     </div>
     <div
       v-if="contents.detail"
-      class="mt-2 border-1 border-primary-30 bg-white px-3 py-2 text-sm"
+      class="mt-2 rounded border-1 border-primary-20 bg-white px-3 py-2 text-sm"
     >
       <div
         v-for="item in calculationItems"

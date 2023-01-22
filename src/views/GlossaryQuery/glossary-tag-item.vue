@@ -1,8 +1,5 @@
 <template>
-  <CardRow
-    class="result-item"
-    :class="{ 'result-item-selected': detailVisible }"
-  >
+  <CardRow :selected="detailVisible">
     <div
       class="flex cursor-pointer items-center py-2.5 px-3.5 duration-150 hover:bg-primary-5"
       @click="detailVisible = !detailVisible"
@@ -74,15 +71,3 @@ const includedTags = computed(() =>
   props.sub ? [] : Grimoire.Glossary.getIncludedTags(props.tag)
 )
 </script>
-
-<style lang="postcss" scoped>
-.result-item {
-  &.result-item-selected + .result-item {
-    border-top: 1px solid var(--app-primary-30);
-  }
-
-  & + .result-item.result-item-selected {
-    border-top: 1px solid var(--app-primary-30);
-  }
-}
-</style>

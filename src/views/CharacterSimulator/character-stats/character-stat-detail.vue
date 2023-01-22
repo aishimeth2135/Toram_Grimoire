@@ -251,8 +251,7 @@ const handleConditional = (
       .replace(/@([a-zA-Z0-9._]+)/g, (match, p1) => {
         return (
           t(
-            'character-simulator.character-stat-detail.equipment-restriction-text.' +
-              p1
+            `character-simulator.character-stat-detail.equipment-restriction-text.${p1}`
           ) + ','
         )
       })
@@ -416,7 +415,7 @@ const showStatDetailDatas = computed(() => {
 const statDetailCaption = computed(() => {
   return props.characterStatResult.origin.caption.replace(
     /\(\(([^)]+)\)\)/g,
-    (match, m1) => `<span class="separate-scope">${m1}</span>`
+    (match, m1) => `<span class="cy--text-separate">${m1}</span>`
   )
 })
 </script>

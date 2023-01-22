@@ -1,40 +1,45 @@
 <template>
-  <cy-list-item pure>
-    <div class="w-full">
-      <div class="flex items-center">
-        <div class="mr-3 flex flex-shrink-0" style="min-width: 10rem">
-          <cy-button-check v-model:selected="enabled">
-            <cy-icon-text
-              :text-color="!invalid ? 'fuchsia-70' : 'gray-60'"
-              :icon="skillIconPath"
-              icon-src="image"
-            >
-              {{ skillResultsState.skill.name }}
-            </cy-icon-text>
-          </cy-button-check>
-          <div v-if="invalid" class="ml-3 text-primary-30">
-            {{ t('character-simulator.skill-build.skill-invalid') }}
-          </div>
-        </div>
-        <div
-          v-if="skillResultsState.hasOptions && enabled"
-          class="ml-auto inline-flex"
-        >
-          <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
+  <CardRow :selected="enabled">
+    <div
+      class="flex cursor-pointer items-center py-2 pl-1.5 pr-2.5 duration-150 hover:bg-primary-5"
+      @click="enabled = !enabled"
+    >
+      <div
+        class="mr-3 flex flex-shrink-0 items-center"
+        style="min-width: 10rem"
+      >
+        <cy-button-check :selected="enabled" />
+        <cy-icon-text
+          :text-color="!invalid ? 'fuchsia-70' : 'gray-60'"
+          :icon="skillIconPath"
+          icon-src="image"
+          class="ml-1.5"
+        />
+        <span class="ml-2 text-primary-70">
+          {{ skillResultsState.skill.name }}
+        </span>
+        <div v-if="invalid" class="ml-3 text-primary-30">
+          {{ t('character-simulator.skill-build.skill-invalid') }}
         </div>
       </div>
-      <div v-if="enabled && !invalid" class="pl-1 pb-1.5">
-        <div class="space-y-2 pt-2 pl-2">
-          <div
-            v-for="result in skillResultsState.results"
-            :key="result.container.instanceId"
-          >
-            <CharacterDamageSkillResultItem :result="result" />
-          </div>
+      <div
+        v-if="skillResultsState.hasOptions && enabled"
+        class="ml-auto inline-flex"
+      >
+        <CharacterSkillItemOptions :skill-results-state="skillResultsState" />
+      </div>
+    </div>
+    <div v-if="enabled && !invalid" class="pl-10 pr-3 pt-2 pb-5">
+      <div class="space-y-2 pl-2">
+        <div
+          v-for="result in skillResultsState.results"
+          :key="result.container.instanceId"
+        >
+          <CharacterDamageSkillResultItem :result="result" />
         </div>
       </div>
     </div>
-  </cy-list-item>
+  </CardRow>
 </template>
 
 <script lang="ts" setup>
@@ -44,6 +49,8 @@ import { useI18n } from 'vue-i18n'
 import { SkillResultsState } from '@/stores/views/character/setup'
 
 import { getSkillIconPath } from '@/lib/Skill/utils/DrawSkillTree'
+
+import CardRow from '@/components/card/card-row.vue'
 
 import CharacterSkillItemOptions from '../character-skill/character-skill-tab/character-skill-item-options.vue'
 import CharacterDamageSkillResultItem from './character-damage-skill-result-item.vue'

@@ -1,10 +1,7 @@
 <template>
-  <CardRow
-    class="result-item"
-    :class="{ 'result-item-selected': detailVisible }"
-  >
+  <CardRow :selected="detailVisible">
     <div
-      class="min-w-max sticky top-0 z-1"
+      class="sticky top-0 z-1 min-w-max"
       :class="{ 'bg-white': detailVisible }"
       @click="detailVisible = !detailVisible"
     >
@@ -115,15 +112,3 @@ watch(
   { immediate: true }
 )
 </script>
-
-<style lang="postcss" scoped>
-.result-item {
-  &.result-item-selected + .result-item {
-    border-top: 1px solid var(--app-primary-30);
-  }
-
-  & + .result-item.result-item-selected {
-    border-top: 1px solid var(--app-primary-30);
-  }
-}
-</style>
