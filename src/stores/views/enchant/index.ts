@@ -20,7 +20,7 @@ interface EnchantStoreSaveData {
   config: EnchantStoreConfig
 }
 
-let characterMaxLevel = 250
+let characterMaxLevel = 260
 
 export const enchantConfig: EnchantStoreConfig = (() => {
   const _characterLevel = ref(characterMaxLevel)
