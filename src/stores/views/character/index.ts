@@ -8,6 +8,7 @@ import {
   EquipmentSaveData,
 } from '@/lib/Character/CharacterEquipment'
 import { FoodsBase } from '@/lib/Character/Food'
+import { FoodsBuild, FoodsBuildSaveData } from '@/lib/Character/Food/FoodBuild'
 import {
   PotionBuild,
   PotionBuildSaveData,
@@ -16,16 +17,12 @@ import {
   RegistletBuild,
   RegistletBuildSaveData,
 } from '@/lib/Character/RegistletBuild/RegistletBuild'
-import { Skill } from '@/lib/Skill/Skill'
-
-import {
-  FoodsBuild,
-  FoodsBuildSaveData,
-} from '../../../lib/Character/Food/FoodBuild'
 import {
   SkillBuild,
   SkillBuildSaveData,
-} from '../../../lib/Character/SkillBuild/SkillBuild'
+} from '@/lib/Character/SkillBuild/SkillBuild'
+import { Skill } from '@/lib/Skill/Skill'
+
 import { useCharacterFoodStore } from './food-build'
 import { useCharacterPotionBuildStore } from './potion-build'
 import { useCharacterRegistletBuildStore } from './registlet-build'
@@ -120,6 +117,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     setCharacterSkillBuild,
     setCharacterFoodBuild,
     setCharacterRegistletBuild,
+    setCharacterPotionBuild,
     createCharacter,
     removeCharacter,
   } = setupCharacters()
@@ -629,6 +627,7 @@ export const useCharacterStore = defineStore('view-character', () => {
     setCharacterSkillBuild,
     setCharacterFoodBuild,
     setCharacterRegistletBuild,
+    setCharacterPotionBuild,
     createCharacter,
     removeCharacter,
     appendEquipments,
