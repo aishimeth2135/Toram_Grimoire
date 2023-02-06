@@ -11,7 +11,7 @@
         "
         addable
         placement="bottom-start"
-        @update:value="characterStore.setCharacterRegistletBuild($event)"
+        @update:value="characterStore.setCharacterPotionBuild($event)"
         @add-item="potionStore.createPotionBuild()"
       >
         <template #title>
@@ -41,7 +41,7 @@
           icon="ic-baseline-delete-outline"
           color="secondary"
           small
-          @click="potionStore.removeCurrentPotionBuild()"
+          @click="removeCurrentPotionBuild"
         />
       </div>
     </div>
@@ -88,11 +88,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useCharacterStore } from '@/stores/views/character'
 import { computed } from 'vue'
-
 import { useI18n } from 'vue-i18n'
 
+import { useCharacterStore } from '@/stores/views/character'
+
+import Notify from '@/setup/Notify'
 import ToggleService from '@/setup/ToggleService'
 
 import CharacterPotionCategory from './character-potion-category.vue'
@@ -121,4 +122,14 @@ const disableAll = computed<boolean>({
     characterStore.setupOptions.handlePotion = !value
   },
 })
+
+const { notify } = Notify()
+
+const removeCurrentPotionBuild = () => {
+  if (potionBuilds.value.length <= 1) {
+    notify(t('character-simulator.build-common.at-least-one-build-tips'))
+    return
+  }
+  potionStore.removeCurrentPotionBuild()
+}
 </script>

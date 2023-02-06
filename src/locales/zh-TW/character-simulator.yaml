@@ -139,6 +139,8 @@ character-stat-detail:
       dodge: 身體防具｜輕量化
       defense: 身體防具｜重量化
       none: 身體防具｜無裝備
+build-common:
+  at-least-one-build-tips: 必須至少留下一個配置。
 food-build:
   title: 料理配置
   disable-foods: 停用料理
@@ -148,7 +150,6 @@ food-build:
   copy-food-build-success-tips: 複製料理配置成功。
   remove-food-build-success-tips: 移除料理配置成功。
   restore-food-build-success-tips: 復原料理配置成功。
-  at-least-one-food-build-tips: 必須至少留下一個配置。
   selected-food-limit-reached: 可選取的料理數量已達上限。
   introduction:
     - 透過點擊前方的圓點來選取最多五個料理。

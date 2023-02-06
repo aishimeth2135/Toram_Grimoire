@@ -41,7 +41,7 @@
           icon="ic-baseline-delete-outline"
           color="secondary"
           small
-          @click="registletStore.removeCurrentRegistletBuild()"
+          @click="removeCurrentRegistletBuild"
         />
       </div>
     </div>
@@ -125,6 +125,7 @@ import CharacterRegistletEdit from './character-registlet-edit.vue'
 import CharacterRegistletItem from './character-registlet-item.vue'
 
 import { setupCharacterRegistletStore } from '../setup'
+import Notify from '@/setup/Notify'
 
 const characterStore = useCharacterStore()
 const {
@@ -147,4 +148,14 @@ const disableAll = computed<boolean>({
     characterStore.setupOptions.handleRegistlet = !value
   },
 })
+
+const { notify } = Notify()
+
+const removeCurrentRegistletBuild = () => {
+  if (registletBuilds.value.length <= 1) {
+    notify(t('character-simulator.build-common.at-least-one-build-tips'))
+    return
+  }
+  registletStore.removeCurrentRegistletBuild()
+}
 </script>

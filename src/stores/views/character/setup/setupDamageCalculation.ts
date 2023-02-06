@@ -1,3 +1,4 @@
+import { SetupCharacterStatCategoryResultsExtended, SkillResult } from '.'
 import { Ref, computed, ref } from 'vue'
 
 import Grimoire from '@/shared/Grimoire'
@@ -18,7 +19,6 @@ import { Skill, SkillBranch } from '@/lib/Skill/Skill'
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
 import { SkillBranchItem } from '@/lib/Skill/SkillComputingContainer'
 
-import { SetupCharacterStatCategoryResultsExtended, SkillResult } from '.'
 import { setupCalculationExpectedResult } from '../../damage-calculation/setup'
 import { getCharacterElement } from '../utils'
 
@@ -159,32 +159,24 @@ export default function setupDamageCalculation(
       }
       if (skillDualElement !== 'none') {
         if (sub.equipment?.elementStat) {
-          if (skillDualElement === 'arrow') {
-            if (
-              chara.checkFieldEquipmentType(
-                EquipmentFieldTypes.SubWeapon,
-                EquipmentTypes.Arrow
-              )
-            ) {
-              setElement(sub.equipment!.elementStat)
-            }
-          } else if (skillDualElement === 'one_hand_sword') {
-            if (
-              chara.checkFieldEquipmentType(
-                EquipmentFieldTypes.SubWeapon,
-                EquipmentTypes.OneHandSword
-              )
-            ) {
-              setElement(sub.equipment!.elementStat)
-            }
-          } else if (skillDualElement === 'magic_device') {
-            if (
-              chara.checkFieldEquipmentType(
-                EquipmentFieldTypes.SubWeapon,
-                EquipmentTypes.MagicDevice
-              )
-            ) {
-              setElement(sub.equipment!.elementStat)
+          let subType: EquipmentTypes | undefined
+          switch (skillDualElement) {
+            case 'arrow':
+              subType = EquipmentTypes.Arrow
+              break
+            case 'one_hand_sword':
+              subType = EquipmentTypes.OneHandSword
+              break
+            case 'magic_device':
+              subType = EquipmentTypes.MagicDevice
+          }
+          if (subType) {
+            const checkSub = chara.checkFieldEquipmentType(
+              EquipmentFieldTypes.SubWeapon,
+              subType
+            )
+            if (checkSub) {
+              setElement(sub.equipment.elementStat)
             }
           }
         }

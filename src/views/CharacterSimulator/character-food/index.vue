@@ -85,7 +85,7 @@
         </cy-icon-text>
       </div>
     </div>
-    <div class="border-1 border-primary-20 rounded-md overflow-hidden mt-3">
+    <div class="mt-3 overflow-hidden rounded-md border-1 border-primary-20">
       <CardRows :class="{ 'opacity-50': disableAll }">
         <CharacterFoodItem
           v-for="food in currentFoodBuild.foods"
@@ -132,7 +132,7 @@ const copyCurrentFoodBuild = () => {
 
 const removeCurrentFoodBuild = () => {
   if (foodBuilds.value.length <= 1) {
-    notify(t('character-simulator.food-build.at-least-one-food-build-tips'))
+    notify(t('character-simulator.build-common.at-least-one-build-tips'))
     return
   }
   const from = currentFoodBuild.value

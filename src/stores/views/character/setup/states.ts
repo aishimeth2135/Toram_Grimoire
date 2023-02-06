@@ -10,6 +10,7 @@ import { RegistletBuild } from '@/lib/Character/RegistletBuild/RegistletBuild'
 import { FoodsBuild } from '../../../../lib/Character/Food/FoodBuild'
 import { SkillBuild } from '../../../../lib/Character/SkillBuild/SkillBuild'
 import { useCharacterFoodStore } from '../food-build'
+import { useCharacterPotionBuildStore } from '../potion-build'
 import { useCharacterRegistletBuildStore } from '../registlet-build'
 import { useCharacterSkillBuildStore } from '../skill-build'
 
@@ -17,6 +18,7 @@ export function setupCharacters() {
   const foodStore = useCharacterFoodStore()
   const skillBuildStore = useCharacterSkillBuildStore()
   const registletBuildStore = useCharacterRegistletBuildStore()
+  const potionBuildStore = useCharacterPotionBuildStore()
 
   const currentCharacterIndex = ref(-1)
   const characters: Ref<Character[]> = ref([])
@@ -92,6 +94,11 @@ export function setupCharacters() {
     registletBuildStore.setCurrentRegistletBuild(build)
   }
 
+  const setCharacterPotionBuild = (build: PotionBuild) => {
+    getCharacterState(currentCharacter.value).potionBuild = build
+    potionBuildStore.setCurrentPotionBuild(build)
+  }
+
   const createCharacter = (chara?: Character, updateIndex = true) => {
     if (chara) {
       characters.value.push(chara)
@@ -126,6 +133,7 @@ export function setupCharacters() {
     setCharacterSkillBuild,
     setCharacterFoodBuild,
     setCharacterRegistletBuild,
+    setCharacterPotionBuild,
     createCharacter,
     removeCharacter,
   }
