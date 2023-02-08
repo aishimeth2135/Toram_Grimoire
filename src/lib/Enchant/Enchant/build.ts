@@ -319,6 +319,22 @@ class EnchantEquipment {
     return stats
   }
 
+  /**
+   * Get the map of all stats of steps
+   */
+  statsMap(stepIdx?: number): Map<string, EnchantStat> {
+    const statsMap: Map<string, EnchantStat> = new Map()
+    this.steps(stepIdx).forEach(step => {
+      step.stats
+        .filter(stat => stat.valid)
+        .forEach(stat => {
+          const find = statsMap.get(stat.statId)
+          find ? find.add(stat.value) : statsMap.set(stat.statId, stat.pure())
+        })
+    })
+    return statsMap
+  }
+
   checkStats(stepIdx?: number): boolean {
     return this.checkStatsMaximumNumber(stepIdx)
   }
@@ -957,9 +973,7 @@ class EnchantStepStat extends EnchantStat {
 
   calcPotentialCost(value: number, pre: number = 0): number {
     const potential = this.potential
-    const convertThreshold = this.itemBase.getPotentialConvertThreshold(
-      this.type
-    )
+    const convertThreshold = this.potentialConvertThreshold
 
     const sign = value < 0 ? -1 : 1
 

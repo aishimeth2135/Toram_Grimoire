@@ -450,13 +450,17 @@ export default class EnchantDollEquipmentContainer {
     if (originalPotentialList.length > 0) {
       const ceq = newDollEq.equipment
       const positiveStats = newDollEq.positiveStats
+      const currentStatsMap = newDollEq.equipment.statsMap()
       let special = checkSpecial
-        ? originalPotentialList.find(
-            item =>
+        ? originalPotentialList.find(item => {
+            const value = currentStatsMap.get(item.stat.statId)?.value ?? 0
+            return (
               item.type === 'step' &&
               item.stat.potential === 3 &&
-              item.stat.belongStep.potentialExtraRate <= 1.2
-          ) || null
+              item.stat.belongStep.potentialExtraRate <= 1.2 &&
+              value < item.stat.potentialConvertThreshold
+            )
+          }) || null
         : null
 
       // 從最大的開始拿
