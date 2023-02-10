@@ -301,6 +301,10 @@ export default class EnchantDoll {
 
     const shortlist: EnchantStat[] = []
 
+    const defaultStatTypes: StatNormalTypes[] = [
+      StatTypes.Constant,
+      StatTypes.Multiplier,
+    ]
     categorys.forEach(category => {
       category.items.forEach(item => {
         const find = prioritizedShortList.find(statBaseItem => {
@@ -310,13 +314,7 @@ export default class EnchantDoll {
           return statBaseItem === item.statBase.baseId
         })
         if (find) {
-          const types =
-            typeof find === 'object'
-              ? find.types
-              : ([
-                  StatTypes.Constant,
-                  StatTypes.Multiplier,
-                ] as StatNormalTypes[])
+          const types = typeof find === 'object' ? find.types : defaultStatTypes
           types.forEach(type => {
             if (type === StatTypes.Multiplier && !item.statBase.hasMultiplier) {
               return

@@ -481,15 +481,11 @@ class EnchantStep {
     const step = new EnchantStep(equipment)
     step.type = EnchantStepTypesList[data.type] ?? EnchantStepTypes.Normal
     step.hidden =
-      typeof data.hidden === 'number'
-        ? data.hidden === 1
-          ? true
-          : false
-        : data.hidden
+      typeof data.hidden === 'number' ? data.hidden === 1 : data.hidden
     const stats = data.stats
       .map(statData => EnchantStepStat.load(categorys, step, statData))
-      .filter(stat => stat)
-    step.stats = stats as EnchantStepStat[]
+      .filter(stat => stat) as EnchantStepStat[]
+    step.stats = stats
 
     return step
   }
@@ -630,11 +626,11 @@ class EnchantStep {
    * check whether the cost of potential will reduce after modify type
    * @param autoFix - if return value greater than autoFix, it will auto modify type to optimize
    * @returns number between -2 and 2
-   *                    - 2: cost will reduce
-   *                    - 1: TYPE_EACH is unnecessary
-   *                    - 0: potential cost will not reduce, but cost may reduce if stat.value increased
-   *                    - -1: cost will not reduce
-   *                    - -2: stats.length != 1 or cost <= 0
+   *           - 2: cost will reduce
+   *           - 1: TYPE_EACH is unnecessary
+   *           - 0: potential cost will not reduce, but cost may reduce if stat.value increased
+   *           - -1: cost will not reduce
+   *           - -2: stats.length != 1 or cost <= 0
    */
   optimizeType(autoFix: number = 2): number {
     if (this.stats.length !== 1) {
