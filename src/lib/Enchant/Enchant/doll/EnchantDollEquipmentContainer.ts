@@ -87,10 +87,10 @@ export default class EnchantDollEquipmentContainer {
    * 退潛之前，把有倍率的能力先至少都附1，確保退最多的潛力值。
    * 1. 能力格優先保留給負屬，中途隨時確認剩下的格子夠不夠負屬全上，不夠的話就直接中止。
    * 2. 過程中裝備原本的潛力不夠用時，就從負屬裡拿能力去補。
-   *   - 如果負屬被拿完了還是不夠用，就直接中止。
+   *    - 如果負屬被拿完了還是不夠用，就直接中止。
    * 3. 過程中確保附正屬的步驟都只有附一個正屬，不附任何其他能力。
-   *   - 先確保步驟單純，在「判定step.type要不要轉成TYPE_EACH」和「退潛前最大化利用剩餘潛力」時不會出錯。
-   *   - 全部事情做完後才開始將可以合併的step合併、可以把type轉回TYPE_NORMAL的step轉回去。
+   *    - 先確保步驟單純，在「判定step.type要不要轉成each」和「退潛前最大化利用剩餘潛力」時不會出錯。
+   *    - 全部事情做完後才開始將可以合併的step合併、可以把type轉回TYPE_NORMAL的step轉回去。
    */
   beforeFillNegative(): EnchantDollEquipmentContainer[] {
     if (this.equipment.stats().length === 0) {
@@ -129,7 +129,7 @@ export default class EnchantDollEquipmentContainer {
     negatives.sort((item1, item2) => item1.stats.length - item2.stats.length)
 
     const rateBetweenBoth = positives.find(category =>
-      negatives.find(ncategory => ncategory.category === category.category)
+      negatives.some(ncategory => ncategory.category === category.category)
     )
     // both只用於正屬和負屬有倍率時。如果正屬和負屬之間沒倍率就略過。
     if (positivesFilter === 'both' && !rateBetweenBoth) {
@@ -143,7 +143,7 @@ export default class EnchantDollEquipmentContainer {
         : positives.filter(
             category =>
               category.stats.length > 1 ||
-              negatives.find(
+              negatives.some(
                 ncategory => ncategory.category === category.category
               )
           )
@@ -202,11 +202,10 @@ export default class EnchantDollEquipmentContainer {
             const cstat = cstep.firstStat as EnchantStepStat
             cstat.value += 1
             curv = cstat.value
-            ;(
-              newDollEq.positiveStats.find(_pstat =>
-                _pstat.equals(cstat)
-              ) as EnchantStat
-            ).value -= 1
+
+            newDollEq.positiveStats.find(_pstat =>
+              _pstat.equals(cstat)
+            )!.value -= 1
             newDollEq.flags.hasHandleFirstStep = true
             newDollEqs.push(newDollEq)
           }
@@ -257,7 +256,8 @@ export default class EnchantDollEquipmentContainer {
           _pstat.value -= 1
           this.checkMakeUpPotential()
         })
-        if ((eq.lastStep as EnchantStep).potentialExtraRate > 1.2) {
+
+        if (eq.lastStep!.potentialExtraRate > 1.2) {
           // 例外狀況，補潛力導致倍率不正確。還原至原本的狀態
           while (eq.allSteps.length !== 1) {
             eq.allSteps[eq.allSteps.length - 1].remove()
@@ -270,7 +270,7 @@ export default class EnchantDollEquipmentContainer {
     }
 
     let appendFlag = false
-    positivesHasRate.find(category => {
+    positivesHasRate.forEach(category => {
       category.stats.forEach(pstat => {
         if (!this.checkFillNegativeStats() && !appendFlag) {
           /**
@@ -283,7 +283,7 @@ export default class EnchantDollEquipmentContainer {
         }
         if (
           eq.hasStat(pstat) ||
-          this.virtualStats.find(_stat => _stat.equals(pstat))
+          this.virtualStats.some(_stat => _stat.equals(pstat))
         ) {
           // 表示這件裝備這能力已經做過了
           return
@@ -310,15 +310,16 @@ export default class EnchantDollEquipmentContainer {
 
           const newStep = eq.appendStep()
           newStep.type = EnchantStepTypes.Each
-          const value = Math.min(pstat.value, pstat.potentialConvertThreshold)
+          const value = Math.min(
+            pstat.value,
+            pstat.potentialConvertThreshold - 1
+          )
           newStep.appendStat(pstat.itemBase, pstat.type, value)
           pstat.value -= value
         }
 
         this.checkMakeUpPotential()
-        return
       })
-      return false
     })
     return resultEqs
   }
@@ -333,10 +334,9 @@ export default class EnchantDollEquipmentContainer {
   checkFillNegativeStats(): boolean {
     const cstats = this.equipment.stats()
     const numNegs = cstats.filter(stat =>
-      this.negativeStats.find(nstat => nstat.equals(stat))
+      this.negativeStats.some(nstat => nstat.equals(stat))
     ).length
-    const negativeStatsLength = this.negativeStats.length
-    return cstats.length + negativeStatsLength - numNegs < 7
+    return cstats.length + this.negativeStats.length - numNegs < 7
   }
 
   /**
@@ -350,10 +350,8 @@ export default class EnchantDollEquipmentContainer {
     this.refreshCategorys(negatives)
 
     const restore = () => {
-      const cstat = step.firstStat as EnchantStepStat
-      const pstat = this.positiveStats.find(stat =>
-        stat.equals(cstat)
-      ) as EnchantStat
+      const cstat = step.firstStat!
+      const pstat = this.positiveStats.find(stat => stat.equals(cstat))!
       pstat.value += cstat.value
       step.remove()
     }
@@ -509,7 +507,7 @@ export default class EnchantDollEquipmentContainer {
             ) {
               const _pstat = positiveStats.find(stat =>
                 stat.equals(currentSpecial.stat)
-              ) as EnchantStat
+              )!
               const maxv = (lastRemainingPotential - 1) / POTENTIAL
               if (
                 maxv + special.stat.value <=
@@ -568,17 +566,17 @@ export default class EnchantDollEquipmentContainer {
       return
     }
     const minPotential = Math.min(...stepPotentials)
-    const lastStep = eq.lastStep as EnchantStep
+    const lastStep = eq.lastStep!
     if (lastStep.remainingPotential > minPotential) {
       const firstNegativeStep = steps.find(
         step => (step.firstStat as EnchantStepStat).value < -1
       )
       if (firstNegativeStep && firstNegativeStep !== lastStep) {
-        const nextStep = firstNegativeStep.nextStep as EnchantStep
-        const nstat = firstNegativeStep.firstStat as EnchantStepStat
-        const pstat = nextStep.firstStat as EnchantStepStat
+        const nextStep = firstNegativeStep.nextStep!
+        const nstat = firstNegativeStep.firstStat!
+        const pstat = nextStep.firstStat!
         if (pstat.value > 1 && nextStep !== lastStep) {
-          const lastStepStat = lastStep.firstStat as EnchantStepStat
+          const lastStepStat = lastStep.firstStat!
           const lastStepStatValueOffset = lastStepStat.value - 1
           nstat.value += 1
           lastStepStat.value = 1
@@ -596,17 +594,10 @@ export default class EnchantDollEquipmentContainer {
             pstat.value -= 1
             pv += 1
           }
-          ;(
-            this.positiveStats.find(stat => stat.equals(pstat)) as EnchantStat
-          ).value += pv
-          ;(
-            this.positiveStats.find(stat =>
-              stat.equals(lastStepStat)
-            ) as EnchantStat
-          ).value += lastStepStatValueOffset
-          ;(
-            this.negativeStats.find(stat => stat.equals(nstat)) as EnchantStat
-          ).value -= 1
+          this.positiveStats.find(stat => stat.equals(pstat))!.value += pv
+          this.positiveStats.find(stat => stat.equals(lastStepStat))!.value +=
+            lastStepStatValueOffset
+          this.negativeStats.find(stat => stat.equals(nstat))!.value -= 1
         }
       }
     }

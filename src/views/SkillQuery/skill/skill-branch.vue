@@ -55,12 +55,6 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: 'SkillBranch',
-}
-</script>
-
-<script lang="ts" setup>
 import { computed, toRefs } from 'vue'
 
 import { SkillBranchNames } from '@/lib/Skill/Skill/enums'
@@ -85,6 +79,19 @@ import SkillEquipmentButton from './skill-equipment-button.vue'
 
 import { setupOtherEffectBranches } from './setup'
 
+const NORMAL_LAYOUT_BRANCH_NAMES = [
+  SkillBranchNames.Damage,
+  SkillBranchNames.Effect,
+  SkillBranchNames.Heal,
+  SkillBranchNames.Passive,
+]
+
+export default {
+  name: 'SkillBranch',
+}
+</script>
+
+<script lang="ts" setup>
 interface Props {
   computing: SkillComputingContainer
   skillBranchItem: SkillBranchItem
@@ -103,36 +110,31 @@ const { contents, toggle } = ToggleService({
 })
 
 const currentComponent = computed(() => {
-  if (branchItem.value.is(SkillBranchNames.Damage)) {
-    return SkillBranchDamage
-  } else if (branchItem.value.is(SkillBranchNames.Effect)) {
-    return SkillBranchEffect
-  } else if (branchItem.value.is(SkillBranchNames.Heal)) {
-    return SkillBranchHeal
-  } else if (branchItem.value.is(SkillBranchNames.Passive)) {
-    return SkillBranchPassive
-  } else if (branchItem.value.is(SkillBranchNames.Stack)) {
-    return SkillBranchStack
-  } else if (branchItem.value.is(SkillBranchNames.Proration)) {
-    return SkillBranchProration
-  } else if (branchItem.value.is(SkillBranchNames.List)) {
-    return SkillBranchList
-  } else if (branchItem.value.is(SkillBranchNames.Basic)) {
-    return SkillBranchBasic
-  } else if (branchItem.value.is(SkillBranchNames.Reference)) {
-    return SkillBranchReference
-  } else if (branchItem.value.is(SkillBranchNames.Table)) {
-    return skillBranchTable
+  switch (branchItem.value.name) {
+    case SkillBranchNames.Damage:
+      return SkillBranchDamage
+    case SkillBranchNames.Effect:
+      return SkillBranchEffect
+    case SkillBranchNames.Heal:
+      return SkillBranchHeal
+    case SkillBranchNames.Passive:
+      return SkillBranchPassive
+    case SkillBranchNames.Stack:
+      return SkillBranchStack
+    case SkillBranchNames.Proration:
+      return SkillBranchProration
+    case SkillBranchNames.List:
+      return SkillBranchList
+    case SkillBranchNames.Basic:
+      return SkillBranchBasic
+    case SkillBranchNames.Reference:
+      return SkillBranchReference
+    case SkillBranchNames.Table:
+      return skillBranchTable
+    default:
+      return SkillBranchText
   }
-  return SkillBranchText
 })
-
-const NORMAL_LAYOUT_BRANCH_NAMES = [
-  SkillBranchNames.Damage,
-  SkillBranchNames.Effect,
-  SkillBranchNames.Heal,
-  SkillBranchNames.Passive,
-]
 
 const paddingBottomClass = computed(() => {
   const curBch = branchItem.value
