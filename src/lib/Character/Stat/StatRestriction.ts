@@ -93,6 +93,7 @@ class StatRestriction extends Stat {
       '1h_sword': EquipmentTypes.OneHandSword,
       '2h_sword': EquipmentTypes.TwoHandSword,
       'magic_device': EquipmentTypes.MagicDevice,
+      'ninjutsu_scroll': EquipmentTypes.NinjutsuScroll,
       'dodge': EquipmentTypes.BodyDodge,
       'defense': EquipmentTypes.BodyDefense,
       'normal': EquipmentTypes.BodyNormal,
