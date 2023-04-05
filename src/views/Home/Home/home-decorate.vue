@@ -35,8 +35,8 @@ const getRandomShadow = (): StarShadow => {
   }
 }
 
-const stars = createEmptyArray(15).map(() => ({
-  shadows: createEmptyArray(18).map(() => getRandomShadow()),
+const stars = createEmptyArray(9).map(() => ({
+  shadows: createEmptyArray(15).map(() => getRandomShadow()),
   animationDuration: getRandomInt(60, 120),
   animationDelay: getRandomInt(-45, 30),
   width: getRandomInt(4, 12),
