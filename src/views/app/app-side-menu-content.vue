@@ -47,6 +47,7 @@ import { ROUTE_LINK_DATAS } from '@/shared/consts'
 
 import ToggleService from '@/setup/ToggleService'
 
+import { IconSrc } from '@/components/cyteria/icon/setup'
 import { AppRouteNames } from '@/router/enums'
 
 import AppRouterLink from './app-router-link.vue'
@@ -68,7 +69,14 @@ const leftMenuStore = useLeftMenuStore()
 
 const { viewButtons } = storeToRefs(leftMenuStore)
 
-const homeRouteData = {
+interface HomeRouteData {
+  title: string
+  icon: string
+  iconSrc?: IconSrc
+  pathName: AppRouteNames
+}
+
+const homeRouteData: HomeRouteData = {
   title: 'app.page-title.home',
   icon: 'ant-design:home-outlined',
   pathName: AppRouteNames.Home,
@@ -89,11 +97,15 @@ const routeLinks = computed(() => {
       }
       return true
     })
-    .map(item => ({
-      title: 'app.page-title.' + item.name,
-      icon: item.icon,
-      pathName: item.pathName,
-    }))
+    .map(
+      item =>
+        ({
+          title: 'app.page-title.' + item.name,
+          icon: item.icon,
+          iconSrc: item.iconSrc,
+          pathName: item.pathName,
+        } as HomeRouteData)
+    )
 })
 
 const routeNotHome = (pathName: RouteRecordName) =>

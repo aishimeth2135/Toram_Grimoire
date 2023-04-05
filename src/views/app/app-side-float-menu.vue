@@ -48,7 +48,7 @@ watch(
 .app--side-menu {
   @apply fixed top-3 right-3 z-40 flex flex-col items-end;
 
-  @media (min-width: 55rem) {
+  @media (min-width: 880px) {
     display: none !important;
   }
 

@@ -9,6 +9,13 @@ import { SkillBranch } from '@/lib/Skill/Skill'
 import { CharacterEquipment, EquipmentCrystal } from '../CharacterEquipment'
 import { StatTypes, StatValueSourceTypes } from './enums'
 
+interface StatShowData {
+  result: string
+  title: string
+  value: string
+  tail: string
+}
+
 type StatValue = number | string
 class StatBase {
   static sortStats = function (stats: Stat[], type = 'simple') {
@@ -98,7 +105,7 @@ class StatBase {
     }
   }
 
-  getShowData(type: StatTypes, value: StatValue) {
+  getShowData(type: StatTypes, value: StatValue): StatShowData {
     let title = '',
       tail = ''
     if (type === StatTypes.Constant) {
@@ -116,7 +123,7 @@ class StatBase {
     return {
       result: this.show(type, value),
       title,
-      value,
+      value: typeof value === 'number' ? value.toString() : value,
       tail,
     }
   }
@@ -213,7 +220,7 @@ class Stat extends StatElementBase {
     this.value = value
   }
 
-  add(value: number) {
+  add(value: number): number {
     this.value += value
     return this.value
   }
@@ -263,7 +270,7 @@ class StatRecorded extends StatElementBase {
   unknownSourceValue: number
   sources: StatValueSource[]
 
-  static from(stat: Stat, source: StatValueSourceDetails) {
+  static from(stat: Stat, source: StatValueSourceDetails): StatRecorded {
     return new StatRecorded(stat.base, stat.type, stat.value, source)
   }
 
@@ -280,11 +287,11 @@ class StatRecorded extends StatElementBase {
     this.add(value, source)
   }
 
-  override get value() {
+  override get value(): number {
     return this._value
   }
 
-  add(value: number, source: StatValueSourceDetails) {
+  add(value: number, source: StatValueSourceDetails): number {
     if (value !== 0) {
       this._value += value
       if (source) {
@@ -330,7 +337,7 @@ class StatComputed extends StatElementBase {
     return this.base.createStatComputed(this.type, this.value)
   }
 
-  toStat(value: number) {
+  toStat(value: number): Stat {
     return new Stat(this.base, this.type, value)
   }
 }

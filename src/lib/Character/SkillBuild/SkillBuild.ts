@@ -82,7 +82,7 @@ export class SkillBuild implements CharacterBuildBindOnCharacter {
     state.starGemLevel = levelSet
   }
 
-  regressSkillTree(start: Skill, level: number) {
+  regressSkillTree(start: Skill, level: number): void {
     if (level < 5) {
       const stk: Skill[] = [start]
       while (stk.length !== 0) {
@@ -127,7 +127,7 @@ export class SkillBuild implements CharacterBuildBindOnCharacter {
     return [...this._skillStatesMap.keys()]
   }
 
-  get skillPointSum() {
+  get skillPointSum(): { level: number; starGemLevel: number } {
     let level = 0
     let starGemLevel = 0
     for (const [skill, state] of this._skillStatesMap.entries()) {
@@ -144,7 +144,7 @@ export class SkillBuild implements CharacterBuildBindOnCharacter {
     }
   }
 
-  toggleSkillTreeSelected(skillTree: SkillTree) {
+  toggleSkillTreeSelected(skillTree: SkillTree): void {
     if (this._skillTreesSet.has(skillTree)) {
       this._skillTreesSet.delete(skillTree)
       skillTree.skills.forEach(skill => this._skillStatesMap.delete(skill))
@@ -223,7 +223,7 @@ export class SkillBuild implements CharacterBuildBindOnCharacter {
     return newBuild
   }
 
-  matchLoadedId(loadCategory: string, id: number | null) {
+  matchLoadedId(loadCategory: string, id: number | null): boolean {
     return (
       this.loadedId !== null &&
       id !== null &&

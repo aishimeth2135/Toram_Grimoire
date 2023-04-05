@@ -1,6 +1,6 @@
 <template>
   <div class="px-2">
-    <div class="flex items-center">
+    <div class="flex items-center px-1">
       <cy-options
         :value="currentPotionBuild"
         :options="
@@ -49,9 +49,9 @@
       <cy-button-action @click="toggle('modals/edit', true)">
         {{ t('character-simulator.potion-build.edit-potion') }}
       </cy-button-action>
-      <cy-button-toggle v-model:selected="controls.itemDetail">
+      <cy-button-check v-model:selected="controls.itemDetail">
         {{ t('character-simulator.registlet-build.show-detail') }}
-      </cy-button-toggle>
+      </cy-button-check>
     </div>
     <div>
       <cy-button-toggle v-model:selected="disableAll">
@@ -60,7 +60,7 @@
     </div>
     <div
       v-if="currentPotionBuild.items.length > 0"
-      class="space-y-4"
+      class="space-y-4 pt-2"
       :class="{ 'opacity-50': disableAll }"
     >
       <CharacterPotionCategory

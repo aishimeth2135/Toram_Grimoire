@@ -7,7 +7,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint --ext .js,.ts,.vue src/",
-    "lint-ts": "vue-tsc --noEmit",
+    "lint-ts": "vue-tsc",
     "pretty": "prettier --write src"
   },
   "dependencies": {
@@ -66,7 +66,7 @@
     "tailwindcss": "^3.0.7",
     "terser": "^5.14.2",
     "tinycolor2": "^1.4.2",
-    "typescript": "^4.4.2",
+    "typescript": "^5.0.3",
     "vite": "^3.0.4",
     "vite-plugin-eslint": "^1.3.0",
     "vite-plugin-html": "3.0.6",

@@ -1,83 +1,69 @@
 <template>
-  <div class="mx-5 my-3 inline-block">
+  <div class="mx-4 my-4 flex">
     <router-link v-slot="{ navigate }" :to="{ name: data.pathName }" custom>
-      <div class="cy--home-link-button" role="link" @click="navigate">
-        <div class="pl-6 pr-10 text-center text-lg text-primary-70">
+      <div :class="classes.wrapper" @click="navigate">
+        <div :class="classes.bg1" />
+        <div :class="classes.bg2" />
+        <div class="relative z-1 pl-[1.625rem] pt-[1.125rem]">
+          <cy-icon-text
+            :icon="data.icon"
+            :icon-src="data.iconSrc"
+            icon-width="2.5rem"
+            icon-color="blue-20"
+            class="cy--home-link-button-icon"
+          />
+        </div>
+        <div :class="classes.title">
           {{ t('app.page-title.' + data.name) }}
         </div>
-        <div class="cy--home-link-button-underline"></div>
-        <cy-icon-text
-          :icon="data.icon"
-          icon-width="1.5rem"
-          icon-color="primary-30"
-          class="cy--home-link-button-icon"
-        />
       </div>
     </router-link>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { useCssModule } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { AppRouteNames } from '@/router/enums'
+import { RouteLinkData } from '@/shared/consts'
 
 interface Props {
-  data: {
-    pathName: AppRouteNames
-    name: string
-    icon: string
-  }
+  data: RouteLinkData
 }
 
 defineProps<Props>()
 
 const { t } = useI18n()
+
+const classes = useCssModule()
 </script>
 
-<style lang="postcss" scoped>
-.content-title:hover {
-  @apply border-primary-50;
-  & > .router-link-icon {
-    @apply text-primary-50;
-    animation: move-rotate 1.3s ease;
-  }
-}
-@keyframes move-rotate {
-  0% {
-    top: 3.1rem;
-    left: 3.1rem;
-    transform: rotate(-135deg) translateX(4.5rem) rotate(135deg);
-  }
-  100% {
-    top: 3.1rem;
-    left: 3.1rem;
-    transform: rotate(225deg) translateX(4.5rem) rotate(-225deg);
+<style lang="postcss" module>
+.wrapper {
+  @apply relative flex h-28 w-44 cursor-pointer;
+
+  &:hover > .bg2 {
+    background-color: var(--app-white);
+    border-color: rgba(var(--app-rgb-primary-80), 0.75);
   }
 }
 
-.cy--home-link-button {
-  @apply relative cursor-pointer py-2;
+.title {
+  @apply absolute bottom-0 right-0 px-3 pb-2 text-right text-blue-80;
+}
 
-  & > .cy--home-link-button-underline {
-    @apply mt-1 h-1 rounded-full bg-primary-30 duration-200;
-  }
+.bg1 {
+  @apply absolute left-2.5 top-2.5 -z-1 rounded-lg;
+  width: 10.75rem;
+  height: 6.75rem;
+  background-color: rgba(var(--app-rgb-primary-30), 0.2);
+}
 
-  & > .cy--home-link-button-icon {
-    @apply absolute top-0 right-1 duration-200;
-  }
-
-  &:hover {
-    & > .cy--home-link-button-underline {
-      @apply bg-primary-30;
-    }
-    & > .cy--home-link-button-icon {
-      @apply rotate-12;
-    }
-  }
-
-  @media screen and (max-width: 17.5rem) {
-    max-width: 100%;
-  }
+.bg2 {
+  @apply absolute left-0 top-0 -z-1 h-28 w-44 rounded-lg duration-150;
+  background-color: rgba(var(--app-rgb-white), 0.9);
+  border-color: rgba(var(--app-rgb-primary-80), 0.3);
+  border-width: 1px;
+  border-style: solid;
 }
 </style>

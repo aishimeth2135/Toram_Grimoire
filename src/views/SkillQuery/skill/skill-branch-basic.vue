@@ -16,6 +16,16 @@
 </template>
 
 <script lang="ts">
+import { computed, toRefs } from 'vue'
+
+import SkillComputingContainer, {
+  SkillBranchItem,
+} from '@/lib/Skill/SkillComputingContainer'
+
+import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
+
+import BasicHandler from './branch-handlers/BasicHandler'
+
 const ATTR_DATAS: {
   key: string
   icon: string | Record<string, string>
@@ -52,16 +62,6 @@ const ATTR_DATAS: {
 </script>
 
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue'
-
-import SkillComputingContainer, {
-  SkillBranchItem,
-} from '@/lib/Skill/SkillComputingContainer'
-
-import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
-
-import BasicHandler from './branch-handlers/BasicHandler'
-
 interface Props {
   computing: SkillComputingContainer
   branchItem: SkillBranchItem

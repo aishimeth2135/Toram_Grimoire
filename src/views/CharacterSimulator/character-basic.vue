@@ -1,8 +1,8 @@
 <template>
   <section v-if="currentCharacter" class="px-2">
-    <div class="py-2">
+    <div class="pb-2">
       <div class="flex flex-wrap items-center px-2">
-        <div class="mr-2 inline-block">
+        <div class="mt-2 mr-2 w-60">
           <cy-options
             :value="currentCharacter"
             :options="
@@ -22,7 +22,7 @@
             </template>
           </cy-options>
         </div>
-        <div class="flex items-center space-x-1">
+        <div class="mt-2 flex items-center space-x-1">
           <cy-button-circle
             icon="bx:copy-alt"
             small

@@ -11,9 +11,11 @@ import { Icon as IconifyIcon } from '@iconify/vue'
 import ImageIcon from './image-icon.vue'
 import SvgIcon from './svg-icon.vue'
 
+import { IconSrc } from './setup'
+
 interface Props {
   icon?: string
-  src?: 'iconify' | 'custom' | 'image'
+  src?: IconSrc
 }
 
 withDefaults(defineProps<Props>(), {

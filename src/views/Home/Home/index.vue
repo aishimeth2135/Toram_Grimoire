@@ -1,514 +1,98 @@
 <template>
-  <AppLayoutMain ref="rootEl" class="app-home">
-    <div class="flex h-32 items-center justify-center">
-      <div class="sticky top-0 pt-2">
-        <div
-          class="app-title-wrapper"
-          @click="iconWrapperTouchedCount += 1"
-          @mouseenter="iconWrapperTouchedCount += 1"
-        >
+  <div ref="rootEl" class="relative h-full">
+    <HomeBackgroud />
+    <HomeDecorate />
+    <div class="flex h-full w-full flex-col items-center">
+      <div class="flex h-full min-h-0 w-full" style="max-width: 1024px">
+        <div class="h-full w-full overflow-hidden">
           <div
-            ref="appIcon"
-            class="app-title-icon flex"
-            :style="appIconPositionStyle"
-            :class="{ 'app-title-icon-touched': iconWrapperTouched }"
+            class="ml-5 flex h-full w-full flex-col overflow-y-auto py-5 pr-11"
           >
-            <cy-icon-text
-              icon="grimoire-cat"
-              icon-src="custom"
-              icon-width="2.75rem"
-            />
+            <HomeMainSection class="my-auto bg-opacity-100" />
+            <div v-if="!device.hasAside" class="relative z-1 mt-3">
+              <div
+                class="flex w-full items-center justify-center space-x-4 py-6"
+              >
+                <router-link
+                  v-slot="{ navigate }"
+                  :to="{ name: AppRouteNames.About }"
+                  custom
+                >
+                  <cy-button-circle icon="bx-bxs-star-half" @click="navigate" />
+                </router-link>
+                <cy-button-circle
+                  v-if="storageAvailable"
+                  icon="ic-baseline-settings"
+                  @click="mainStore.toggleSetting(true)"
+                />
+              </div>
+              <div class="flex items-center justify-center py-6">
+                <div
+                  class="flex items-center rounded-full bg-white bg-opacity-50 p-5 duration-150"
+                >
+                  <HomeIconTitle :root-el="rootEl" />
+                </div>
+                <div class="ml-5">
+                  <div class="text-3xl text-primary-80">Cy's Grimoire</div>
+                  <div class="mt-0.5 text-primary-50">布偶的魔法書</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div v-if="iconWrapperTouched" class="app-title-icon invisible flex">
-            <cy-icon-text
-              icon="grimoire-cat"
-              icon-src="custom"
-              icon-width="2.75rem"
-            />
-          </div>
-          <div class="app-title ml-5">Cy's Grimoire</div>
         </div>
       </div>
-    </div>
-    <div class="mt-auto w-full px-2">
-      <section
-        ref="mainSection"
-        class="app-home-main-section flex flex-wrap justify-center rounded-3xl py-6"
-        @mousemove="pointMove"
-        @mouseleave="pointLeave"
+      <div
+        v-if="device.hasAside"
+        class="absolute right-4 top-4 flex flex-col items-center space-y-3"
       >
-        <div class="app-home-main-point" :style="pointPosition" />
-        <HomeLinkButton
-          v-for="data in columns"
-          :key="data.name + '|' + data.pathName"
-          :data="data"
-          :style="linkButtonWrapperStyle"
-          class="cy--home-link-button-wrapper"
-        />
-      </section>
-    </div>
-    <footer class="mt-auto flex h-32 w-full items-center justify-center px-2">
-      <div class="sticky bottom-0 flex items-center space-x-4 py-4">
-        <cy-button-plain
-          v-if="storageAvailable"
-          icon="ic-baseline-settings"
-          @click="mainStore.toggleSetting(true), leftMenuStore.toggleVisible()"
-        >
-          {{ t('app.settings.title') }}
-        </cy-button-plain>
         <router-link
           v-slot="{ navigate }"
           :to="{ name: AppRouteNames.About }"
           custom
         >
-          <cy-button-plain icon="bx-bxs-star-half" @click="navigate">
-            {{ t('app.page-title.about') }}
-          </cy-button-plain>
+          <cy-button-circle icon="bx-bxs-star-half" @click="navigate" />
         </router-link>
+        <cy-button-circle
+          v-if="storageAvailable"
+          icon="ic-baseline-settings"
+          @click="mainStore.toggleSetting(true)"
+        />
       </div>
-    </footer>
-  </AppLayoutMain>
+      <HomeTitle v-if="device.hasAside" :root-el="rootEl" />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
+import { Ref, ref } from 'vue'
+
+// import { useBookmarkStore } from '@/stores/app/bookmark'
+import { useMainStore } from '@/stores/app/main'
+
+import Cyteria from '@/shared/utils/Cyteria'
+
+import { useDevice } from '@/setup/Device'
+
+import { AppRouteNames } from '@/router/enums'
+
+import HomeBackgroud from './home-backgroud.vue'
+import HomeDecorate from './home-decorate.vue'
+import HomeIconTitle from './home-icon-title.vue'
+import HomeMainSection from './home-main-section.vue'
+import HomeTitle from './home-title.vue'
+
 export default {
   name: 'AppHome',
 }
 </script>
 
 <script lang="ts" setup>
-import {
-  Ref,
-  nextTick,
-  onMounted,
-  onUnmounted,
-  reactive,
-  ref,
-  watch,
-} from 'vue'
-import { useI18n } from 'vue-i18n'
-
-import { useLeftMenuStore } from '@/stores/app/left-menu'
-import { useMainStore } from '@/stores/app/main'
-
-import { ROUTE_LINK_DATAS } from '@/shared/consts'
-import Cyteria from '@/shared/utils/Cyteria'
-import { debounce } from '@/shared/utils/function'
-import { getRandomInt, numberToFixed } from '@/shared/utils/number'
-
-import AppLayoutMain from '@/components/app-layout/app-layout-main.vue'
-import { AppRouteNames } from '@/router/enums'
-
-import HomeLinkButton from './home-link-button.vue'
-
-const columns = ROUTE_LINK_DATAS
 const storageAvailable = Cyteria.storageAvailable('localStorage')
 
-const { t } = useI18n()
 const mainStore = useMainStore()
-const leftMenuStore = useLeftMenuStore()
+const { device } = useDevice()
 
-const mainSection: Ref<HTMLElement | null> = ref(null)
-const pointPosition = reactive({
-  top: '0px',
-  left: '0px',
-  display: 'none',
-})
+const rootEl: Ref<HTMLElement | null> = ref(null)
 
-const pointMove = debounce((evt: MouseEvent) => {
-  if (mainSection.value) {
-    const rect = mainSection.value.getBoundingClientRect()
-    const left = evt.clientX - rect.left
-    const top = evt.clientY - rect.top
-    if (left >= 0 && top >= 0) {
-      pointPosition.left = left + 'px'
-      pointPosition.top = top + 'px'
-      pointPosition.display = 'block'
-    }
-  }
-}, 10)
-const pointLeave = () => {
-  setTimeout(() => (pointPosition.display = 'none'), 20)
-}
-
-const rootEl: Ref<{ $el: HTMLElement } | null> = ref(null)
-const appIcon: Ref<HTMLElement | null> = ref(null)
-const iconWrapperTouched = ref(false)
-const iconWrapperTouchedCount = ref(0)
-const appIconPosition: Ref<{ x: number; y: number } | null> = ref(null)
-const appIconPositionStyle: Ref<Record<string, string> | undefined> =
-  ref(undefined)
-let appIconAnimating = false
-let mouseTrackIconListener: ((evt: MouseEvent) => void) | null = null
-
-const updateAppIconPositionStyle = async () => {
-  if (!appIconPosition.value) {
-    return
-  }
-  await nextTick()
-  appIconPositionStyle.value = {
-    left: numberToFixed(appIconPosition.value.x, 2) + '%',
-    top: numberToFixed(appIconPosition.value.y, 2) + '%',
-  } as Record<string, string>
-  appIconAnimating = true
-  setTimeout(() => (appIconAnimating = false), 175)
-}
-
-{
-  const unwatch = watch(iconWrapperTouchedCount, newValue => {
-    if (newValue >= 5) {
-      initAppIconPosition()
-      unwatch()
-    }
-  })
-}
-
-const initAppIconPosition = async () => {
-  const rect = appIcon.value!.getBoundingClientRect()
-  appIconPosition.value = {
-    x: (rect.left * 100) / window.innerWidth,
-    y: (rect.top * 100) / window.innerHeight,
-  }
-  await updateAppIconPositionStyle()
-  await nextTick()
-  iconWrapperTouched.value = true
-}
-
-const unwatchIconTouched = watch(iconWrapperTouched, newValue => {
-  if (rootEl.value && appIcon.value) {
-    const BOUNDING = 8 // persentage
-    const ICON_HITBOX_PADDING = 4 // px
-
-    // direction
-    let directionX = 1
-    let directionY = 1
-
-    // control extra move distance when touching bounding
-    let directionXExtra = 0
-    let directionYExtra = 0
-
-    // offset of random probability
-    const directionRandomRange = 128
-    let directionXRandomOffset = 0
-    let directionYRandomOffset = 0
-
-    const getXP = (value: number) => (value * 100) / window.innerWidth
-    const getYP = (value: number) => (value * 100) / window.innerHeight
-
-    const setRemoveText = (() => {
-      let removeTextTimer: any | null = null
-      return () => {
-        clearTimeout(removeTextTimer)
-        removeTextTimer = setTimeout(() => {
-          rootEl.value?.$el
-            .querySelectorAll('.app-icon-touched-text')
-            .forEach(el => el.remove())
-        }, 3000)
-      }
-    })()
-
-    unwatchIconTouched()
-    mouseTrackIconListener = debounce((evt: MouseEvent) => {
-      if (appIconAnimating) {
-        return
-      }
-      const rect = appIcon.value!.getBoundingClientRect()
-      const iconRadius = rect.width / 2
-      const iconRadiusXP = getXP(iconRadius)
-      const iconRadiusYP = getYP(iconRadius)
-      const distanceX = Math.abs(evt.clientX - rect.left - iconRadius)
-      const distanceY = Math.abs(evt.clientY - rect.top - iconRadius)
-      const hitboxRadius = iconRadius + ICON_HITBOX_PADDING
-      if (distanceX <= hitboxRadius || distanceY <= hitboxRadius) {
-        const clientXP = getXP(evt.clientX)
-        const clientYP = getYP(evt.clientY)
-        const hitboxXP = getXP(hitboxRadius)
-        const hitboxYP = getYP(hitboxRadius)
-        let newX = 0
-        let newY = 0
-        let maxRetries = 10
-        do {
-          newX =
-            appIconPosition.value!.x +
-            getRandomInt(
-              Math.min(iconRadiusXP + 2, BOUNDING - 3) + directionXExtra,
-              BOUNDING + directionXExtra
-            ) *
-              directionX
-          newY =
-            appIconPosition.value!.y +
-            getRandomInt(
-              Math.min(iconRadiusYP + 2, BOUNDING - 3) + directionYExtra,
-              BOUNDING + directionYExtra
-            ) *
-              directionY
-          maxRetries -= 1
-        } while (
-          ((clientXP - newX) ** 2 + (clientYP - newY) ** 2) * 10 <=
-            (hitboxXP ** 2 + hitboxYP ** 2) * 12 &&
-          maxRetries >= 0
-        )
-
-        if (newX >= 100 - BOUNDING) {
-          directionX = -1
-          directionXExtra = 5
-        } else if (newX <= BOUNDING) {
-          directionX = 1
-          directionXExtra = 5
-        } else {
-          directionX =
-            Math.random() * directionRandomRange - directionXRandomOffset >=
-            directionRandomRange / 2
-              ? 1
-              : -1
-          directionXRandomOffset += directionX * getRandomInt(1, 4)
-          directionXExtra = 0
-        }
-        if (newY >= 100 - BOUNDING) {
-          directionY = -1
-          directionYExtra = 5
-        } else if (newY <= BOUNDING) {
-          directionY = 1
-          directionYExtra = 5
-        } else {
-          directionY =
-            Math.random() * directionRandomRange - directionYRandomOffset >=
-            directionRandomRange / 2
-              ? 1
-              : -1
-          directionYRandomOffset += directionY * getRandomInt(1, 4)
-          directionYExtra = 0
-        }
-        const textEl = document.createElement('div')
-        textEl.innerHTML = 'MISS'
-        textEl.classList.add('app-icon-touched-text')
-        textEl.style.left = `${appIconPosition.value!.x + iconRadiusXP}%`
-        textEl.style.top = `${appIconPosition.value!.y - iconRadiusXP * 3}%`
-        rootEl.value!.$el.append(textEl)
-        setRemoveText()
-        appIconPosition.value = {
-          x: newX,
-          y: newY,
-        }
-        updateAppIconPositionStyle()
-      }
-    }, 10)
-    document.body.addEventListener('mousemove', mouseTrackIconListener)
-  }
-})
-
-let linkButtonWrapperStyle: Ref<string | null> = ref(null)
-
-onMounted(async () => {
-  await nextTick()
-  if (mainSection.value && mainSection.value.offsetHeight) {
-    const wrappers = mainSection.value.querySelectorAll(
-      '.cy--home-link-button-wrapper'
-    )
-    let max = 0
-    wrappers.forEach(node => {
-      const rect = node.getBoundingClientRect()
-      max = Math.max(max, rect.width)
-    })
-    linkButtonWrapperStyle.value = `width: ${max}px`
-  }
-})
-
-onUnmounted(() => {
-  if (mouseTrackIconListener) {
-    document.body.removeEventListener('mousemove', mouseTrackIconListener)
-  }
-})
+// const { bookmarks } = useBookmarkStore()
 </script>
-
-<style lang="postcss" scoped>
-.app-home {
-  &:deep(.app-icon-touched-text) {
-    @apply pointer-events-none fixed text-primary-50 opacity-0;
-    animation: app-icon-touched-text 2.5s linear;
-  }
-}
-
-@keyframes app-icon-touched-text {
-  0% {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(0, -200%);
-  }
-}
-
-.app-home-main-section {
-  @apply relative overflow-hidden;
-
-  &::before {
-    content: '';
-    opacity: 0.75;
-
-    @apply absolute top-0 left-0 h-full w-full bg-white;
-  }
-
-  & > .app-home-main-point {
-    @apply pointer-events-none absolute h-8 w-8 rounded-full bg-primary-30 bg-opacity-50 duration-200 ease-out;
-    transform: translate(-50%, -50%);
-    animation: app-home-main-point 2.5s ease infinite;
-  }
-}
-
-@keyframes app-home-main-point {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.25;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.app-title-wrapper {
-  @apply flex items-center rounded-2xl px-6 pt-4;
-  padding-bottom: 1.5rem;
-}
-
-.app-title {
-  @apply text-4xl text-transparent;
-
-  background-clip: text;
-  background-image: linear-gradient(
-    to left,
-    var(--app-favicon-color-main),
-    var(--app-favicon-color-sub),
-    var(--app-favicon-color-main),
-    var(--app-favicon-color-sub),
-    var(--app-favicon-color-main)
-  );
-  background-size: 200% 200%;
-  background-position: 100% 50%;
-  animation: app-title 2s ease-in infinite;
-}
-
-@keyframes app-title {
-  0% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@media (max-width: 20rem) {
-  .app-title {
-    display: none;
-  }
-}
-
-.app-title-icon {
-  /* &:deep(path:nth-child(1)) {
-    animation: app-title-icon-path-fill 1.5s ease infinite;
-  }
-  &:deep(path:nth-child(2)) {
-    animation: app-title-icon-path-fill 2s ease infinite;
-  }
-  &:deep(path:nth-child(3)) {
-    animation: app-title-icon-path-fill 2.5s ease infinite;
-  }
-  &:deep(path:nth-child(4)) {
-    animation: app-title-icon-path-fill 3s ease infinite;
-  }
-  &:deep(path:nth-child(5)) {
-    animation: app-title-icon-path-fill 3.5s ease infinite;
-  }
-  &:deep(path:nth-child(6)) {
-    animation: app-title-icon-path-fill 4s ease infinite;
-  }
-  animation: move-rotate ease 0.75s infinite;
-  z-index: 200;
-  position: fixed;
-  top: calc(50% - 20rem);
-  left: calc(50% - 20rem); */
-  /* &:deep(path:nth-child(5)) {
-    animation: loading-icon 4s ease infinite;
-  } */
-  animation: loading-icon 4s ease infinite;
-
-  @apply pointer-events-none;
-
-  &.app-title-icon-touched {
-    animation: none;
-    transition: 0.2s;
-    z-index: 200;
-    position: fixed;
-    margin-right: 0;
-  }
-}
-
-@keyframes app-title-icon-path-bg {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.75;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-/* @keyframes app-title-icon-path-fill {
-  0% {
-    fill: var(--app-primary-30);
-  }
-  10% {
-    fill: var(--app-primary-50);
-  }
-  20% {
-    fill: var(--app-primary-70);
-  }
-  30% {
-    fill: var(--app-fuchsia-60);
-  }
-  40% {
-    fill: var(--app-violet-60);
-  }
-  50% {
-    fill: var(--app-blue-60);
-  }
-  60% {
-    fill: var(--app-cyan-60);
-  }
-  70% {
-    fill: var(--app-green);
-  }
-  80% {
-    fill: var(--app-orange-60);
-  }
-  90% {
-    fill: var(--app-orange-60);
-  }
-  100% {
-    fill: var(--app-primary-30);
-  }
-} */
-
-@keyframes loading-icon {
-  0% {
-    transform: translate(0, 5%);
-  }
-  25% {
-    transform: translate(0, -10%);
-  }
-  50% {
-    transform: translate(0, 5%);
-  }
-  75% {
-    transform: translate(0, -5%);
-  }
-  100% {
-    transform: translate(0, 5%);
-  }
-}
-</style>

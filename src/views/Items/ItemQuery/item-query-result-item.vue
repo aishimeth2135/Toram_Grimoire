@@ -88,9 +88,9 @@
             <cy-icon-text icon="jam-hammer" text-color="primary-30">
               {{ t('item-query.equipment-detail.recipe.item-level') }}
             </cy-icon-text>
-            <span class="ml-2 text-blue-60">{{
-              originEquipment.recipe['item_level']
-            }}</span>
+            <span class="ml-2 text-blue-60">
+              {{ originEquipment.recipe['item_level'] }}
+            </span>
           </div>
         </div>
       </div>
@@ -98,7 +98,7 @@
     <cy-transition>
       <div
         v-if="contents.detail"
-        class="overscroll-none max-w-full bg-white pt-2 pb-3 pl-4 pr-3"
+        class="overscroll-none relative max-w-full bg-white pt-2 pb-3 pl-4 pr-3"
       >
         <div v-if="originEquipment.extra" class="mb-2">
           <cy-icon-text

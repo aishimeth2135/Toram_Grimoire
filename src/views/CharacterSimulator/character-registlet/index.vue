@@ -1,6 +1,6 @@
 <template>
   <div class="px-2">
-    <div class="flex items-center">
+    <div class="flex items-center px-1">
       <cy-options
         :value="currentRegistletBuild"
         :options="
@@ -49,9 +49,9 @@
       <cy-button-action @click="toggle('modals/edit', true)">
         {{ t('character-simulator.registlet-build.edit-registlet') }}
       </cy-button-action>
-      <cy-button-toggle v-model:selected="controls.itemDetail">
+      <cy-button-check v-model:selected="controls.itemDetail">
         {{ t('character-simulator.registlet-build.show-detail') }}
-      </cy-button-toggle>
+      </cy-button-check>
     </div>
     <div>
       <cy-button-toggle v-model:selected="disableAll">
