@@ -29,15 +29,16 @@ interface StarShadow {
 
 const getRandomShadow = (): StarShadow => {
   return {
-    x: getRandomInt(-1200, 1201),
-    y: getRandomInt(-1200, 1201),
+    x: getRandomInt(20, 981),
+    y: getRandomInt(20, 981),
     opacity: getRandomInt(65, 101),
   }
 }
 
-const stars = createEmptyArray(12).map(() => ({
-  shadows: createEmptyArray(120).map(() => getRandomShadow()),
-  animationDuration: getRandomInt(900, 1200),
+const stars = createEmptyArray(15).map(() => ({
+  shadows: createEmptyArray(18).map(() => getRandomShadow()),
+  animationDuration: getRandomInt(60, 120),
+  animationDelay: getRandomInt(-45, 30),
   width: getRandomInt(4, 12),
 }))
 
@@ -51,21 +52,24 @@ const starStyles = computed(() => {
   const { width: _width, height: _height } = viewport
   const width = _width * 2
   const height = _height * 2
-  return stars.map(({ shadows, animationDuration, width: starWidth }, idx) => {
-    const shadowDatas = shadows.map(item => {
-      const shadowX = Math.floor((width * item.x) / 1000)
-      const shadowY = Math.floor((height * item.y) / 1000)
-      const opacity = numberToFixed(item.opacity / 100, 2)
-      return `${shadowX}px ${shadowY}px rgba(255, 255, 255, ${opacity})`
-    })
-    return {
-      id: idx,
-      boxShadow: shadowDatas.join(','),
-      animationDuration: `${animationDuration}s`,
-      width: `${starWidth}px`,
-      height: `${starWidth}px`,
-    } as CSSPropertiesWithId
-  })
+  return stars.map(
+    ({ shadows, animationDuration, animationDelay, width: starWidth }, idx) => {
+      const shadowDatas = shadows.map(item => {
+        const shadowX = Math.floor((width * item.x) / 1000)
+        const shadowY = Math.floor((height * item.y) / 1000)
+        const opacity = numberToFixed(item.opacity / 100, 2)
+        return `${shadowX}px ${shadowY}px rgba(255, 255, 255, ${opacity})`
+      })
+      return {
+        id: idx,
+        boxShadow: shadowDatas.join(','),
+        animationDuration: `${animationDuration}s`,
+        animationDelay: `${animationDelay}s`,
+        width: `${starWidth}px`,
+        height: `${starWidth}px`,
+      } as CSSPropertiesWithId
+    }
+  )
 })
 
 const classes = useCssModule()
@@ -79,16 +83,26 @@ const classes = useCssModule()
   animation-iteration-count: infinite;
   animation-timing-function: linear;
   position: absolute;
-  top: -50%;
-  left: -50%;
+  top: -75%;
+  left: 0;
+  opacity: 0;
 }
 
 @keyframes star-floating {
   0% {
-    transform: rotate(0deg);
+    top: -75%;
+    opacity: 0;
+  }
+  2% {
+    opacity: 1;
+  }
+  98% {
+    top: 100%;
+    opacity: 1;
   }
   100% {
-    transform: rotate(360deg);
+    top: 100%;
+    opacity: 0;
   }
 }
 </style>
