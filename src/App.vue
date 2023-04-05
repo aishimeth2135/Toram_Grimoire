@@ -5,7 +5,7 @@
     :class="{ 'overscroll-none': mainStore.routerGuiding }"
   >
     <template v-if="languageStore.i18nMessageLoaded">
-      <AppSideMenu />
+      <AppSideMenu v-if="currentRoute.name !== AppRouteNames.Home" />
       <router-view />
       <AppSetting />
       <AppInitialize />
@@ -29,13 +29,8 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: 'App',
-}
-</script>
-
-<script lang="ts" setup>
 import { Ref, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { useLanguageStore } from '@/stores/app/language'
 
@@ -48,9 +43,16 @@ import AppSideFloatMenu from '@/views/app/app-side-float-menu.vue'
 import AppSideMenu from '@/views/app/app-side-menu.vue'
 import LoadingAnimation from '@/views/app/initialization/loading-animation.vue'
 
+import { AppRouteNames } from './router/enums'
 import { debounce } from './shared/utils/function'
 import { useMainStore } from './stores/app/main'
 
+export default {
+  name: 'App',
+}
+</script>
+
+<script lang="ts" setup>
 const sideMenuButtonVisible = ref(false)
 const appElement: Ref<HTMLElement | null> = ref(null)
 
@@ -93,4 +95,6 @@ const languageStore = useLanguageStore()
 languageStore.updateLocaleGlobalMessages()
 
 const mainStore = useMainStore()
+
+const { currentRoute } = useRouter()
 </script>

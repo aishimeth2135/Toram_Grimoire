@@ -30,7 +30,9 @@
               'pr-5': num === datas.labels.length,
             }"
           >
-            <span v-html="container.get(`cell.${num - 1}`)"></span>
+            <SkillBranchPropValue
+              :result="container.result(`cell.${num - 1}`)"
+            />
           </td>
         </tr>
       </tbody>
@@ -44,6 +46,8 @@ import { computed, toRefs } from 'vue'
 import SkillComputingContainer, {
   SkillBranchItem,
 } from '@/lib/Skill/SkillComputingContainer'
+
+import SkillBranchPropValue from './layouts/skill-branch-prop-value.vue'
 
 import TableHandler from './branch-handlers/TableHandler'
 

@@ -1,6 +1,17 @@
 <template>
   <AppLayoutMain>
     <div v-if="searchResult.length > 0" class="py-4">
+      <div class="mb-3 flex items-end" style="display: none">
+        <cy-button-icon
+          :icon="
+            hasBookmark
+              ? 'material-symbols:bookmark-added-rounded'
+              : 'material-symbols:bookmark-add-outline-rounded'
+          "
+          :selected="hasBookmark"
+          @click="toggleBookmark"
+        />
+      </div>
       <ItemQueryResult class="search-result" :equipments="searchResult" />
     </div>
     <cy-default-tips v-else icon="mdi-ghost" style="min-height: 30rem">
@@ -309,14 +320,10 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: 'ItemQuery',
-}
-</script>
-
-<script lang="ts" setup>
 import { computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
+
+import { BookmarkTypes, useBookmarkStore } from '@/stores/app/bookmark'
 
 import Grimoire from '@/shared/Grimoire'
 import { isNumberString } from '@/shared/utils/string'
@@ -348,11 +355,15 @@ import {
   useItemQueryModes,
 } from './setup'
 
+export default {
+  name: 'ItemQuery',
+}
+</script>
+
+<script lang="ts" setup>
 const equipments = Grimoire.Items.equipments.map(equip =>
   CharacterEquipment.fromOriginEquipment(equip)
 )
-
-console.log(equipments.filter(eq => eq.type === EquipmentTypes.NinjutsuScroll))
 
 const handleCompareValue = (value: string) =>
   isNumberString(value) ? parseFloat(value) : -99999
@@ -365,6 +376,41 @@ const { menus, modals, toggle } = ToggleService({
 })
 
 const { t } = useI18n()
+
+const bookmarkStore = useBookmarkStore()
+const currentBookmarkItem = computed(() => {
+  const item = {
+    type: BookmarkTypes.Item,
+    payload: '',
+  }
+  switch (state.currentMode) {
+    case SearchModes.Normal:
+      item.payload = `${SearchModes.Normal}:${
+        modes[SearchModes.Normal].searchText
+      }`
+      break
+    case SearchModes.Stat:
+      item.payload = `${SearchModes.Stat}:${modes[SearchModes.Stat].currentStats
+        .map(stat => stat.origin.statId(stat.type))
+        .join(',')}`
+      break
+    case SearchModes.ItemLevel:
+      item.payload = `${SearchModes.ItemLevel}:${
+        modes[SearchModes.ItemLevel].min
+      }~${modes[SearchModes.ItemLevel].max}`
+      break
+    case SearchModes.Dye:
+      item.payload = `${SearchModes.Dye}:${modes[SearchModes.Dye].searchText}`
+      break
+  }
+  return item
+})
+const toggleBookmark = () => {
+  bookmarkStore.toggleBookmark(currentBookmarkItem.value)
+}
+const hasBookmark = computed(() => {
+  return bookmarkStore.hasBookmark(currentBookmarkItem.value)
+})
 
 interface EquipmentTypeOption extends CommonOption {
   imagePath: string

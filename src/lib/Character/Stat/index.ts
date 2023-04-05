@@ -5,4 +5,4 @@ export {
   StatComputed,
   StatValueSource,
 } from './StatBase'
-export { default as StatRestriction } from './StatRestriction'
+export { StatRestriction } from './StatRestriction'

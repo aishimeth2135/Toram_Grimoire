@@ -8,32 +8,25 @@ export function checkStatRestriction(
   chara: Character,
   stat: StatRestriction
 ): boolean {
-  const types = stat.restriction
-  if (!types) {
+  if (stat.isEmpty()) {
     return true
   }
-  if (
-    (['main', 'sub', 'body', 'other'] as const).every(
-      key => types[key] === null
-    )
-  ) {
-    return true
-  }
-  return (
-    !!types.other ||
-    (types.main !== null &&
-      chara.checkFieldEquipmentType(
-        EquipmentFieldTypes.MainWeapon,
-        types.main
-      )) ||
-    (types.sub !== null &&
-      chara.checkFieldEquipmentType(
-        EquipmentFieldTypes.SubWeapon,
-        types.sub
-      )) ||
-    (types.body !== null &&
-      chara.checkFieldEquipmentType(EquipmentFieldTypes.BodyArmor, types.body))
-  )
+  const types = stat.restriction!
+
+  const checkMain =
+    types.main !== null &&
+    chara.checkFieldEquipmentType(EquipmentFieldTypes.MainWeapon, types.main)
+  const checkMainSub =
+    types.main !== null &&
+    chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, types.main)
+  const checkSub =
+    types.sub !== null &&
+    chara.checkFieldEquipmentType(EquipmentFieldTypes.SubWeapon, types.sub)
+  const checkBody =
+    types.body !== null &&
+    chara.checkFieldEquipmentType(EquipmentFieldTypes.BodyArmor, types.body)
+
+  return !!types.other || checkMain || checkMainSub || checkSub || checkBody
 }
 
 export function getCharacterElement(

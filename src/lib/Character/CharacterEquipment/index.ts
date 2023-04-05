@@ -29,8 +29,8 @@ abstract class CharacterEquipment {
   private _name: string
 
   loadedId: string | null
-  instanceId: number
-  origin: EquipmentOrigin
+  readonly instanceId: number
+  readonly origin: EquipmentOrigin
   stats: StatRestriction[]
 
   basicValue: number
@@ -72,18 +72,6 @@ abstract class CharacterEquipment {
     this._name = value
   }
 
-  // get is() {
-  //   if (this instanceof Weapon) {
-  //     return 'weapon'
-  //   }
-  //   if (this instanceof Armor) {
-  //     return 'armor'
-  //   }
-  //   if (this instanceof Avatar) {
-  //     return 'avatar'
-  //   }
-  //   return 'other'
-  // }
   is(kind: EquipmentKinds) {
     if (this instanceof Weapon) {
       return kind === EquipmentKinds.Weapon
@@ -359,11 +347,6 @@ abstract class CharacterEquipment {
           stat.value = isNumberString(stat.value) ? parseFloat(stat.value) : 0
         }
       })
-
-      // const instance = [
-      //   MainWeapon, SubWeapon, SubArmor, BodyArmor,
-      //   AdditionalGear, SpecialGear, Avatar,
-      // ][data.instance];
 
       const type: EquipmentTypes = (() => {
         const originalType = (data.type || EquipmentTypes.Avatar) as string

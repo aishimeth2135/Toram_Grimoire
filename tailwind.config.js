@@ -96,9 +96,6 @@ const colorCssPlugin = plugin(function ({ addBase }) {
   addBase({
     ':root': {
       ...rootVars,
-      '--app-favicon-color-main': '#ffa4c5',
-      '--app-favicon-color-sub': '#f7e4eb',
-      '--app-body-bg-color': '#fefcfd',
       '--app-black': designToken('color.black'),
       '--app-white': designToken('color.white'),
       '--app-rgb-black': designToken('color-rgb.black'),
@@ -106,9 +103,6 @@ const colorCssPlugin = plugin(function ({ addBase }) {
     },
     'html.theme--night-mode': {
       ...darkVars,
-      '--app-favicon-color-main': '#ffabbb',
-      '--app-favicon-color-sub': '#efdae0',
-      '--app-body-bg-color': '#241f2c',
       '--app-black': designToken('color-dark.black'),
       '--app-white': designToken('color-dark.white'),
       '--app-rgb-black': designToken('color-dark-rgb.black'),

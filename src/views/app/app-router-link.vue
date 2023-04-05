@@ -8,6 +8,7 @@
     >
       <cy-icon-text
         :icon="data.icon"
+        :icon-src="data.iconSrc"
         :text-color="
           currentRoute.name === data.pathName ? 'primary-80' : 'primary-90'
         "
@@ -30,11 +31,13 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 import { AppRouteNames } from '@/router/enums'
+import { IconSrc } from '@/components/cyteria/icon/setup'
 
 interface Props {
   data: {
     title: string
     icon: string
+    iconSrc?: IconSrc
     pathName: AppRouteNames
   }
   isMain?: boolean

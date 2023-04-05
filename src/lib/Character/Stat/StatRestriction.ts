@@ -46,6 +46,18 @@ class StatRestriction extends Stat {
     )
   }
 
+  isEmpty() {
+    if (!this.restriction) {
+      return true
+    }
+    return (
+      this.restriction.main === null &&
+      this.restriction.sub === null &&
+      this.restriction.body === null &&
+      this.restriction.other === null
+    )
+  }
+
   pure() {
     return new Stat(this.base, this.type, this.value)
   }
@@ -195,5 +207,5 @@ interface StatRestrictionSaveData {
   restriction: EquipmentRestrictions | null
 }
 
-export default StatRestriction
+export { StatRestriction }
 export type { StatRestrictionSaveData }

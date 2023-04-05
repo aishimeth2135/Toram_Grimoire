@@ -1,3 +1,4 @@
+import { IconSrc } from '@/components/cyteria/icon/setup'
 import { AppRouteNames } from '@/router/enums'
 
 export const APP_STORAGE_KEYS = {
@@ -8,11 +9,14 @@ export const APP_STORAGE_KEYS = {
   NIGHT_MODE: 'app--night-mode',
 }
 
-export const ROUTE_LINK_DATAS: {
+export interface RouteLinkData {
   name: string
   icon: string
   pathName: AppRouteNames
-}[] = [
+  iconSrc?: IconSrc
+}
+
+export const ROUTE_LINK_DATAS: RouteLinkData[] = [
   {
     name: 'skill-query',
     icon: 'ic-outline-menu-book',
@@ -20,8 +24,9 @@ export const ROUTE_LINK_DATAS: {
   },
   {
     name: 'character-simulator',
-    icon: 'mdi-ghost',
+    icon: 'potum',
     pathName: AppRouteNames.CharacterSimulator,
+    iconSrc: 'custom',
   },
   {
     name: 'skill-simulator',

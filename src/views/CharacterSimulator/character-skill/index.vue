@@ -1,7 +1,7 @@
 <template>
   <section v-if="currentSkillBuild" class="px-2">
     <div class="px-2">
-      <div class="inline-block">
+      <div class="w-60">
         <cy-options
           :value="currentSkillBuild"
           :options="

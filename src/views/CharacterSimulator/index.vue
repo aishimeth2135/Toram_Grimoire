@@ -53,7 +53,7 @@
           />
         </div>
       </template>
-      <template #side-buttons>
+      <template v-if="!device.hasAside" #side-buttons>
         <cy-button-circle
           :selected="sideContents.panel"
           icon="ic:outline-space-dashboard"
@@ -84,10 +84,12 @@
             </div>
           </AppLayoutBottomContent>
           <AppLayoutBottomContent
-            v-else-if="sideContents.panel"
+            v-else-if="sideContents.panel && !device.hasAside"
             class="p-2.5 pl-4"
           >
-            <CharacterInfoPanel @open-tab="panelOpenTab" />
+            <div style="min-width: 18rem">
+              <CharacterInfoPanel @open-tab="panelOpenTab" />
+            </div>
           </AppLayoutBottomContent>
         </cy-transition>
       </template>
@@ -124,16 +126,16 @@
       @submit="setComboSkill"
       @close="currentComboSkillState.current = null"
     />
+
+    <template v-if="device.hasAside" #aside>
+      <div style="max-width: 25rem" class="p-4 pl-6">
+        <CharacterInfoPanel @open-tab="panelOpenTab" />
+      </div>
+    </template>
   </AppLayoutMain>
 </template>
 
 <script lang="ts">
-export default {
-  name: 'CharacterSimulator',
-}
-</script>
-
-<script lang="ts" setup>
 import {
   Ref,
   computed,
@@ -154,6 +156,7 @@ import { CharacterEquipment } from '@/lib/Character/CharacterEquipment'
 import { Skill } from '@/lib/Skill/Skill'
 
 import AutoSave from '@/setup/AutoSave'
+import { useDevice } from '@/setup/Device'
 import ToggleService from '@/setup/ToggleService'
 
 import AppLayoutBottomContent from '@/components/app-layout/app-layout-bottom-content.vue'
@@ -174,21 +177,27 @@ import CharacterEquipmentEditCrystals from './character-equipment/character-equi
 import CharacterEquipments from './character-equipments/index.vue'
 import CharacterFood from './character-food/index.vue'
 import CharacterInfoPanel from './character-info-panel.vue'
+import CharacterPotion from './character-potion/index.vue'
+import CharacterRegistlet from './character-registlet/index.vue'
 import CharacterSave from './character-save/index.vue'
 import CharacterSkill from './character-skill/index.vue'
 import CharacterStats from './character-stats/index.vue'
-import CharacterRegistlet from './character-registlet/index.vue'
-import CharacterPotion from './character-potion/index.vue'
 
 import { CharacterSimulatorInjectionKey } from './injection-keys'
 import {
   TabIds,
   setupCharacterFoodStore,
-  setupCharacterStore,
-  setupCharacterRegistletStore,
   setupCharacterPotionStore,
+  setupCharacterRegistletStore,
+  setupCharacterStore,
 } from './setup'
 
+export default {
+  name: 'CharacterSimulator',
+}
+</script>
+
+<script lang="ts" setup>
 const { t } = useI18n()
 const { modals, mainContents, tabs, sideContents, toggle } = ToggleService({
   modals: [
@@ -219,22 +228,10 @@ const { store: potionStore, potionBuilds } = setupCharacterPotionStore()
 
 const mainStore = useMainStore()
 const router = useRouter()
+const { device } = useDevice()
 
 const tabDatas = computed(() => {
   const options = []
-  // const options = [{
-  //   id: TabIds.CharacterStats,
-  //   icon: 'bx-bxs-user-detail',
-  //   text: t('character-simulator.character-stats'),
-  // }]
-
-  // if (characters.value.some(chara => chara.name === '__DOLL_DAMAGE__')) {
-  //   options.push({
-  //     id: TabIds.Damage,
-  //     icon: 'ic:outline-calculate',
-  //     text: t('character-simulator.character-damage.title'),
-  //   })
-  // }
 
   options.push(
     {
@@ -268,18 +265,16 @@ const tabDatas = computed(() => {
       text: t('character-simulator.registlet-build.title'),
     },
     {
+      id: TabIds.Potion,
+      icon: 'mdi:bottle-tonic-outline',
+      text: t('character-simulator.potion-build.title'),
+    },
+    {
       id: TabIds.Save,
       icon: 'mdi-ghost',
       text: t('character-simulator.save-load-control.title'),
     }
   )
-  if (mainStore.devMode) {
-    options.push({
-      id: TabIds.Potion,
-      icon: 'mdi:bottle-tonic-outline',
-      text: t('character-simulator.potion-build.title'),
-    })
-  }
 
   return options
 })

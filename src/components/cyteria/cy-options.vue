@@ -75,12 +75,8 @@ const emit = defineEmits<Emits>()
 <style lang="postcss" scoped>
 .cy--options-title,
 .cy--options-items-wrapper {
-  min-width: 15rem;
-
-  @media screen and (max-width: 15rem) {
-    min-width: auto;
-    width: 100%;
-  }
+  max-width: 20rem;
+  width: 100%;
 }
 
 .cy--options-items-wrapper {

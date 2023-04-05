@@ -2,7 +2,7 @@
   <section class="px-1.5">
     <div class="pb-4">
       <div class="flex flex-wrap items-center px-2">
-        <div class="mr-2 inline-block">
+        <div class="mr-2 mt-2 w-60">
           <cy-options
             :value="currentFoodBuild"
             :options="
@@ -24,7 +24,7 @@
             </template>
           </cy-options>
         </div>
-        <div class="flex items-center space-x-2">
+        <div class="mt-2 flex items-center space-x-2">
           <cy-button-circle
             icon="bx:copy-alt"
             small
@@ -49,7 +49,7 @@
           {{ t('character-simulator.food-build.food-build-name') }}
         </cy-icon-text>
       </div>
-      <div class="pl-4">
+      <div class="pl-2">
         <cy-title-input
           v-model:value="currentFoodBuild.name"
           icon="mdi-clipboard-text-outline"

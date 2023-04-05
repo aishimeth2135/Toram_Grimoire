@@ -83,7 +83,10 @@ export function handleParseText(rootValue: string, order: TextParseItem[]) {
           return
         }
         const parseResult = handle(str, currentIdx + 1, containers)
-        if (parseResult.parts.length === 1) {
+        if (
+          parseResult.parts.length === 1 &&
+          typeof parseResult.parts[0] === 'string'
+        ) {
           parts.push(str)
           return
         }

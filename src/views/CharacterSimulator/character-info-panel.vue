@@ -1,5 +1,5 @@
 <template>
-  <div style="min-width: 18rem" class="space-y-2">
+  <div class="space-y-4">
     <div v-if="currentCharacter" class="flex-start flex w-full">
       <div class="w-full">
         <div>
@@ -187,6 +187,44 @@
         />
       </div>
     </div>
+    <div v-if="currentPotionBuild" class="flex-start flex w-full">
+      <div class="w-full">
+        <div>
+          <cy-icon-text
+            icon="mdi:bottle-tonic-outline"
+            text-color="primary-30"
+            small
+          >
+            {{ t('character-simulator.potion-build.title') }}
+          </cy-icon-text>
+        </div>
+        <div class="px-1.5">
+          <cy-options
+            :value="currentPotionBuild"
+            :options="
+              potionBuilds.map(build => ({
+                id: build.instanceId,
+                value: build,
+              }))
+            "
+            @update:value="store.setCharacterRegistletBuild($event)"
+          >
+            <template #item="{ value }">
+              <cy-icon-text icon="mdi:bottle-tonic-outline">
+                {{ value.name }}
+              </cy-icon-text>
+            </template>
+          </cy-options>
+        </div>
+      </div>
+      <div class="flex-shrink-0">
+        <cy-button-circle
+          icon="ic:round-mode-edit"
+          small
+          @click="emit('open-tab', TabIds.Potion)"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -200,6 +238,7 @@ import { CharacterSimulatorInjectionKey } from './injection-keys'
 import {
   TabIds,
   setupCharacterFoodStore,
+  setupCharacterPotionStore,
   setupCharacterRegistletStore,
   setupCharacterSkillBuildStore,
   setupCharacterStore,
@@ -218,6 +257,7 @@ const { skillBuilds, currentSkillBuild } = setupCharacterSkillBuildStore()
 const { foodBuilds, currentFoodBuild } = setupCharacterFoodStore()
 const { registletBuilds, currentRegistletBuild } =
   setupCharacterRegistletStore()
+const { potionBuilds, currentPotionBuild } = setupCharacterPotionStore()
 
 const { editEquipmentFieldEquipment } = inject(CharacterSimulatorInjectionKey)!
 </script>

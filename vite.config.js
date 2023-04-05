@@ -1,11 +1,10 @@
-// @ts-check
-import { defineConfig } from 'vite'
+import content from '@originjs/vite-plugin-content'
+import legacy from '@vitejs/plugin-legacy'
 import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
+import eslintPlugin from 'vite-plugin-eslint'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import { VitePWA } from 'vite-plugin-pwa'
-import content from '@originjs/vite-plugin-content'
-import eslintPlugin from 'vite-plugin-eslint'
-import legacy from '@vitejs/plugin-legacy'
 
 const fs = require('fs')
 const path = require('path')
@@ -19,7 +18,12 @@ export default defineConfig(({ mode }) => {
   const plugins = [
     vue(),
     VitePWA({
-      includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+      includeAssets: [
+        'favicon.svg',
+        'favicon.ico',
+        'robots.txt',
+        'apple-touch-icon.png',
+      ],
       manifest: getPWAManifestConfig(),
       strategies: 'injectManifest',
       injectManifest: {
@@ -36,7 +40,9 @@ export default defineConfig(({ mode }) => {
       inject: {
         data: {
           envBaseUrl: base,
-          externalScripts: !useExternal ? '' : '<script defer src="https://polyfill.io/v3/polyfill.min.js"></script>',
+          externalScripts: !useExternal
+            ? ''
+            : '<script defer src="https://polyfill.io/v3/polyfill.min.js"></script>',
         },
       },
     }),
@@ -49,9 +55,11 @@ export default defineConfig(({ mode }) => {
     const packageJson = JSON.parse(packageJsonBuffer.toString())
     const browserslist = packageJson.browserslist
 
-    plugins.push(legacy({
-      targets: browserslist,
-    }))
+    plugins.push(
+      legacy({
+        targets: browserslist,
+      })
+    )
   }
 
   return {
@@ -78,21 +86,24 @@ export default defineConfig(({ mode }) => {
 
 function getPWAManifestConfig() {
   return {
-    'short_name': 'Grimoire',
-    'name': 'Toram Grimoire',
-    'icons': [{
-      'src': '/android-chrome-192x192.png',
-      'sizes': '192x192',
-      'type': 'image/png',
-    }, {
-      'src': '/android-chrome-512x512.png',
-      'sizes': '512x512',
-      'type': 'image/png',
-    }],
-    'start_url': './?source=pwa',
-    'background_color': '#FFD1EA',
-    'display': 'standalone',
-    'theme_color': '#FFD1EA',
-    'description': 'The web tool of "Toram Online".',
+    short_name: 'Grimoire',
+    name: 'Toram Grimoire',
+    icons: [
+      {
+        src: '/android-chrome-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
+      },
+      {
+        src: '/android-chrome-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+      },
+    ],
+    start_url: './?source=pwa',
+    background_color: '#FFD1EA',
+    display: 'standalone',
+    theme_color: '#FFD1EA',
+    description: 'The web tool of "Toram Online".',
   }
 }
