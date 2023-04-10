@@ -1,3 +1,4 @@
+import { createEmptyArray } from '@/shared/utils/array'
 import { getRandomInt } from '@/shared/utils/number'
 
 type MessageData =
@@ -18,8 +19,6 @@ const viewport = {
   height: 0,
 }
 
-let currentHandle: number
-
 self.addEventListener('message', function (evt) {
   const data = evt.data as MessageData
   if (data.type === 'start') {
@@ -34,6 +33,8 @@ self.addEventListener('message', function (evt) {
   }
 })
 
+let currentHandle: number
+
 function startDraw(ctx: OffscreenCanvasRenderingContext2D) {
   if (typeof currentHandle === 'number') {
     cancelAnimationFrame(currentHandle)
@@ -47,33 +48,55 @@ function startDraw(ctx: OffscreenCanvasRenderingContext2D) {
     radius: number
   }
 
-  const getRandomSnow = (randowY: boolean = false): SnowItem => {
+  const getRandomSnow = (randowY: boolean, frames: number = 1): SnowItem => {
+    let snowY = -6
+    const speed = getRandomInt(2, 5) / 8
+    if (randowY) {
+      snowY = Math.floor((viewport.height * getRandomInt(20, 950)) / 1000)
+    } else if (frames > 1) {
+      snowY += speed * (frames - 1)
+    }
     return {
-      x: (viewport.width * getRandomInt(20, 981)) / 1000,
-      y: randowY ? (viewport.height * getRandomInt(20, 900)) / 1000 : 0,
-      speed: getRandomInt(3, 5) / 32,
+      x: Math.floor((viewport.width * getRandomInt(20, 981)) / 1000),
+      y: snowY,
+      speed,
       opacity: getRandomInt(65, 101) / 100,
       radius: getRandomInt(2, 6),
     }
   }
 
-  let snows: SnowItem[] = Array(50)
-    .fill(null)
-    .map(() => getRandomSnow(true))
+  let lastTime = 0
+  let snows: SnowItem[] = createEmptyArray(60).map(() => getRandomSnow(true))
   let count = 0
 
   const draw = () => {
+    const now = Date.now()
+    let frames = 1
+    const timeOffset = now - lastTime
+    if (lastTime === 0) {
+      lastTime = now
+    } else if (timeOffset > 16) {
+      frames = Math.max(Math.floor(timeOffset / 16), 1)
+      lastTime = now
+    } else {
+      currentHandle = requestAnimationFrame(draw)
+      return
+    }
+
     if (count === 0) {
-      snows.push(getRandomSnow())
-      count = 80
+      const newSnows = createEmptyArray(frames).map((item, idx) =>
+        getRandomSnow(false, idx + 1)
+      )
+      snows.push(...newSnows)
+      count = 30
     }
     count -= 1
     ctx.clearRect(0, 0, viewport.width, viewport.height)
     snows = snows.filter(snow => snow.y < viewport.height)
     snows.forEach(snow => {
+      snow.y += snow.speed * frames
       ctx.fillStyle = `rgba(255, 255, 255, ${snow.opacity.toFixed(2)})`
       ctx.beginPath()
-      snow.y += snow.speed
       ctx.arc(snow.x, snow.y, snow.radius, 0, 2 * Math.PI)
       ctx.fill()
     })

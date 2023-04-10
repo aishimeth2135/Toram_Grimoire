@@ -1,5 +1,8 @@
 <template>
-  <div class="absolute left-0 top-0 h-full w-full overflow-hidden">
+  <div
+    class="absolute left-0 top-0 h-full w-full overflow-hidden opacity-100 duration-500"
+    :class="{ ['!opacity-0']: !started }"
+  >
     <canvas
       ref="mainCanvas"
       :width="viewport.width"
@@ -24,6 +27,7 @@ import RenderSnowWorker from './render-snow?worker'
 const { viewport } = useViewport()
 
 const mainCanvas: Ref<HTMLCanvasElement | null> = ref(null)
+const started = ref(false)
 
 try {
   const worker = new RenderSnowWorker()
@@ -48,6 +52,8 @@ try {
           height: newViewport.height,
         })
       })
+
+      setTimeout(() => (started.value = true), 1000)
     }
   })
 } catch (err) {

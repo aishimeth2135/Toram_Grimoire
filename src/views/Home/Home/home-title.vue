@@ -36,22 +36,6 @@ const classes = useCssModule()
 </script>
 
 <style lang="postcss" module>
-.icon-touched-text {
-  @apply pointer-events-none fixed z-5 text-primary-50 opacity-0;
-  animation: app-icon-touched-text 2.5s linear;
-}
-
-@keyframes app-icon-touched-text {
-  0% {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(0, -200%);
-  }
-}
-
 .root {
   @apply absolute bottom-0 left-0 flex h-48 items-center duration-150;
   padding-left: calc((100% - 1024px) / 2 - 12rem);

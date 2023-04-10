@@ -90,7 +90,7 @@ const initAppIconPosition = async () => {
 }
 
 const unwatchTouchingIcon = watch(iconWrapperTouchedCount, newValue => {
-  if (newValue >= 5) {
+  if (newValue >= 12) {
     initAppIconPosition()
     unwatchTouchingIcon()
   }
@@ -203,7 +203,7 @@ const unwatchIconTouched = watch(appIconTouched, appIconTouchedEl => {
         }
         const textEl = document.createElement('div')
         textEl.innerHTML = 'MISS'
-        textEl.classList.add(classes['icon-touched-text'])
+        textEl.classList.add(classes['iconTouchedText'])
         textEl.style.left = `${appIconPosition.value!.x + iconRadiusXP}%`
         textEl.style.top = `${appIconPosition.value!.y - iconRadiusXP * 3}%`
         rootEl.value!.append(textEl)
@@ -236,6 +236,22 @@ onUnmounted(() => {
     z-index: 200;
     position: fixed;
     margin-right: 0;
+  }
+}
+
+.iconTouchedText {
+  @apply pointer-events-none fixed z-5 text-primary-50 opacity-0;
+  animation: app-icon-touched-text 2.5s linear;
+}
+
+@keyframes app-icon-touched-text {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, -200%);
   }
 }
 </style>
