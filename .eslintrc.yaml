@@ -142,7 +142,7 @@ rules:
   import/no-unresolved:
     - error
     - commonjs: true
-      ignore: ['^virtual:']
+      ignore: ['^virtual:', '\?worker$']
   # vue
   # vue/html-indent:
   #   - warn

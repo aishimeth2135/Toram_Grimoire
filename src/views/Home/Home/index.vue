@@ -1,7 +1,7 @@
 <template>
   <div ref="rootEl" class="relative h-full">
     <HomeBackgroud />
-    <HomeDecorate />
+    <HomeBackgroundSnow />
     <div class="flex h-full w-full flex-col items-center">
       <div class="flex h-full min-h-0 w-full" style="max-width: 1024px">
         <div class="h-full w-full overflow-hidden">
@@ -76,7 +76,7 @@ import { useDevice } from '@/setup/Device'
 import { AppRouteNames } from '@/router/enums'
 
 import HomeBackgroud from './home-backgroud.vue'
-import HomeDecorate from './home-decorate.vue'
+import HomeBackgroundSnow from './home-background-snow.vue'
 import HomeIconTitle from './home-icon-title.vue'
 import HomeMainSection from './home-main-section.vue'
 import HomeTitle from './home-title.vue'
