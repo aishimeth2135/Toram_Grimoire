@@ -7,7 +7,7 @@
       ref="appIcon"
       class="flex"
       :class="{
-        [classes.titleIcon]: true,
+        [classes['title-icon']]: true,
         invisible: iconWrapperTouched,
       }"
     >
@@ -17,7 +17,7 @@
       <div
         ref="appIconTouched"
         class="flex"
-        :class="[classes.titleIcon, classes.titleIconTouched]"
+        :class="[classes['title-icon'], classes['title-icon-touched']]"
         :style="appIconPositionStyle"
       >
         <cy-icon-text
@@ -203,7 +203,7 @@ const unwatchIconTouched = watch(appIconTouched, appIconTouchedEl => {
         }
         const textEl = document.createElement('div')
         textEl.innerHTML = 'MISS'
-        textEl.classList.add(classes['iconTouchedText'])
+        textEl.classList.add(classes['icon-touched-text'])
         textEl.style.left = `${appIconPosition.value!.x + iconRadiusXP}%`
         textEl.style.top = `${appIconPosition.value!.y - iconRadiusXP * 3}%`
         rootEl.value!.append(textEl)
@@ -227,10 +227,10 @@ onUnmounted(() => {
 </script>
 
 <style lang="postcss" module>
-.titleIcon {
+.title-icon {
   @apply pointer-events-none;
 
-  &.titleIconTouched {
+  &.title-icon-touched {
     animation: none;
     transition: 0.2s;
     z-index: 200;
@@ -239,7 +239,7 @@ onUnmounted(() => {
   }
 }
 
-.iconTouchedText {
+.icon-touched-text {
   @apply pointer-events-none fixed z-5 text-primary-50 opacity-0;
   animation: app-icon-touched-text 2.5s linear;
 }

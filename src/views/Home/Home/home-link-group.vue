@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div v-if="!device.isMobile" class="relative z-1 flex py-1">
     <div class="pt-6">
       <div
         class="flex h-10 w-10 items-center justify-center rounded-full bg-white bg-opacity-75"
@@ -7,19 +7,35 @@
         <cy-icon-text :icon="icon" :color="color" icon-width="1.25rem" />
       </div>
     </div>
-    <div class="relative z-1 flex flex-wrap pl-2 pr-6">
+    <div class="flex flex-wrap pl-2 pr-6">
+      <slot />
+    </div>
+  </div>
+  <div v-else class="relative z-1 flex py-2">
+    <div class="pt-4">
+      <div
+        class="flex h-8 w-8 items-center justify-center rounded-full bg-white bg-opacity-75"
+      >
+        <cy-icon-text :icon="icon" :color="color" icon-width="1.125rem" />
+      </div>
+    </div>
+    <div class="flex flex-wrap pl-2">
       <slot />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { useDevice } from '@/setup/Device'
+
 interface Props {
   icon: string
   color: string
 }
 
 defineProps<Props>()
+
+const { device } = useDevice()
 </script>
 <!--
 <style lang="postcss" module>

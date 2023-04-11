@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute top-0 left-0 h-full w-full overflow-hidden">
+  <div class="absolute left-0 top-0 h-full w-full overflow-hidden">
     <div :class="classes.pink" />
   </div>
 </template>
@@ -28,6 +28,7 @@ const classes = useCssModule()
     background: radial-gradient(
       circle at 0% 0%,
       var(--app-blue-20) 0%,
+      var(--app-blue-20) 30%,
       transparent 70%,
       transparent 100%
     );
@@ -43,6 +44,7 @@ const classes = useCssModule()
     background: radial-gradient(
       circle at 100% 0%,
       var(--app-blue-20) 0%,
+      var(--app-blue-20) 8%,
       transparent 50%,
       transparent 100%
     );
