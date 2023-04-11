@@ -14,28 +14,24 @@ type MessageData =
       height: number
     }
 
-const viewport = {
-  width: 0,
-  height: 0,
-}
-
 self.addEventListener('message', function (evt) {
   const data = evt.data as MessageData
   if (data.type === 'start') {
     const offscreenCanvas = data.canvas
     const ctx = offscreenCanvas.getContext('2d')!
-    viewport.width = data.width
-    viewport.height = data.height
-    startDraw(ctx)
-  } else if (data.type === 'viewport-changed') {
-    viewport.width = data.width
-    viewport.height = data.height
+    startDraw(ctx, {
+      width: data.width,
+      height: data.height,
+    })
   }
 })
 
 let currentHandle: number
 
-function startDraw(ctx: OffscreenCanvasRenderingContext2D) {
+function startDraw(
+  ctx: OffscreenCanvasRenderingContext2D,
+  viewport: { width: number; height: number }
+) {
   if (typeof currentHandle === 'number') {
     cancelAnimationFrame(currentHandle)
   }

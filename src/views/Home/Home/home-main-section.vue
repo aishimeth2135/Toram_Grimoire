@@ -1,6 +1,9 @@
 <template>
   <section class="flex flex-col">
-    <div class="relative z-5 mt-auto mb-auto space-y-3 py-2">
+    <div
+      class="relative z-5 mb-auto mt-auto space-y-3 py-2"
+      :class="{ 'pt-8': device.isMobile }"
+    >
       <div v-for="(group, idx) in groups" :key="group.id">
         <HomeLinkGroup v-bind="groupDatas[idx]">
           <HomeLinkButton
@@ -17,10 +20,14 @@
 <script lang="ts" setup>
 import { ROUTE_LINK_DATAS } from '@/shared/consts'
 
+import { useDevice } from '@/setup/Device'
+
 import { AppRouteNames } from '@/router/enums'
 
 import HomeLinkButton from './home-link-button.vue'
 import HomeLinkGroup from './home-link-group.vue'
+
+const { device } = useDevice()
 
 const columns = ROUTE_LINK_DATAS
 

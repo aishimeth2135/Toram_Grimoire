@@ -1,6 +1,11 @@
 <template>
-  <div class="mx-4 my-4 flex">
-    <router-link v-slot="{ navigate }" :to="{ name: data.pathName }" custom>
+  <div class="flex" :class="!device.isMobile ? 'm-4' : 'm-2'">
+    <router-link
+      v-if="!device.isMobile"
+      v-slot="{ navigate }"
+      :to="{ name: data.pathName }"
+      custom
+    >
       <div :class="classes.wrapper" @click="navigate">
         <div :class="classes.bg1" />
         <div :class="classes.bg2" />
@@ -9,6 +14,32 @@
             :icon="data.icon"
             :icon-src="data.iconSrc"
             icon-width="2.5rem"
+            icon-color="blue-20"
+            class="cy--home-link-button-icon"
+          />
+        </div>
+        <div :class="classes.title">
+          {{ t('app.page-title.' + data.name) }}
+        </div>
+      </div>
+    </router-link>
+    <router-link
+      v-else
+      v-slot="{ navigate }"
+      :to="{ name: data.pathName }"
+      custom
+    >
+      <div
+        :class="[classes.wrapper, classes['wrapper-mobile']]"
+        @click="navigate"
+      >
+        <div :class="classes.bg1" />
+        <div :class="classes.bg2" />
+        <div class="relative z-1 pl-3 pt-2">
+          <cy-icon-text
+            :icon="data.icon"
+            :icon-src="data.iconSrc"
+            icon-width="1.5rem"
             icon-color="blue-20"
             class="cy--home-link-button-icon"
           />
@@ -27,6 +58,8 @@ import { useI18n } from 'vue-i18n'
 
 import { RouteLinkData } from '@/shared/consts'
 
+import { useDevice } from '@/setup/Device'
+
 interface Props {
   data: RouteLinkData
 }
@@ -34,6 +67,7 @@ interface Props {
 defineProps<Props>()
 
 const { t } = useI18n()
+const { device } = useDevice()
 
 const classes = useCssModule()
 </script>
@@ -41,6 +75,10 @@ const classes = useCssModule()
 <style lang="postcss" module>
 .wrapper {
   @apply relative flex h-28 w-44 cursor-pointer;
+
+  &.wrapper-mobile {
+    @apply h-16 w-44;
+  }
 
   &:hover > .bg2 {
     background-color: var(--app-white);
@@ -54,13 +92,13 @@ const classes = useCssModule()
 
 .bg1 {
   @apply absolute left-2.5 top-2.5 -z-1 rounded-lg;
-  width: 10.75rem;
-  height: 6.75rem;
+  width: calc(100% - 0.25rem);
+  height: calc(100% - 0.25rem);
   background-color: rgba(var(--app-rgb-primary-30), 0.2);
 }
 
 .bg2 {
-  @apply absolute left-0 top-0 -z-1 h-28 w-44 rounded-lg duration-150;
+  @apply absolute left-0 top-0 -z-1 h-full w-full rounded-lg duration-150;
   background-color: rgba(var(--app-rgb-white), 0.9);
   border-color: rgba(var(--app-rgb-primary-80), 0.3);
   border-width: 1px;
