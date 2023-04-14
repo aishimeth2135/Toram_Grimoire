@@ -59,7 +59,6 @@ tips:
   no-stat-selected: 还没有选择任何能力...
   stats-reached-upper-limit: 已经选择八个能力了...
   stat-repeated: 已经有这个能力了0.0
-  at-least-one-positive: 要保留至少一个正属。
   reset-confirm: 确定要重置吗？目前的设定都将被清空。
   performance:
     auto-find-negatives: 根据选择的能力，布偶在自动选取退潜时可能需要一些计算量，而导致页面卡住数秒钟，为正常的现象。

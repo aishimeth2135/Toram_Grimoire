@@ -371,7 +371,7 @@ const copyEnchantResultText = () => {
     background-color: currentcolor;
     position: absolute;
 
-    @apply -right-1 -bottom-1 h-2 w-2 rounded-full;
+    @apply -bottom-1 -right-1 h-2 w-2 rounded-full;
   }
 }
 </style>

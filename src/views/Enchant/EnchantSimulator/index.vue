@@ -32,7 +32,7 @@
     </div>
     <AppLayoutBottom>
       <template #default>
-        <div class="flex items-center justify-end py-0.5 px-1">
+        <div class="flex items-center justify-end px-1 py-0.5">
           <cy-icon-text icon="bx-bx-star" class="mr-3">
             {{ t('enchant-simulator.success-rate') }}
           </cy-icon-text>
@@ -205,7 +205,7 @@
             <cy-icon-text small text-color="fuchsia-60" class="mt-3">
               {{ t('enchant-simulator.equipment-type') }}
             </cy-icon-text>
-            <div class="py-0.5 px-2">
+            <div class="px-2 py-0.5">
               <cy-button-check
                 v-for="option in equipmentTypeOptions"
                 :key="option.id"
@@ -219,7 +219,7 @@
               <cy-icon-text small text-color="fuchsia-60" class="mt-3">
                 {{ t('enchant-simulator.stat-display-mode.title') }}
               </cy-icon-text>
-              <div class="py-0.5 px-2">
+              <div class="px-2 py-0.5">
                 <cy-button-check
                   :selected="state.statDisplayMode === 0"
                   @update:selected="state.statDisplayMode = 0"

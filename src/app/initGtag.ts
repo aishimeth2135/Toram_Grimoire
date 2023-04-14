@@ -6,12 +6,13 @@ import { AppRouteNames } from '@/router/enums'
 
 export function initGtag(app: App<Element>, router: Router) {
   try {
+    // type definition of vue-gtag options is incorrect?
     const options = {
       appName: 'cy-grimoire',
       config: {
         id: 'G-RHS8RFJF8S',
       },
-      pageTrackerTemplate(to: RouteLocationNormalized) {
+      pageTrackerTemplate: ((to: RouteLocationNormalized) => {
         let toPath = to.path
         if (to.meta.parentPathName) {
           const match = to.matched.find(
@@ -25,7 +26,7 @@ export function initGtag(app: App<Element>, router: Router) {
           page_title: to.name as string,
           page_path: toPath,
         } as PageView
-      },
+      }) as () => PageView,
       pageTrackerExcludedRoutes: [AppRouteNames.SkillQuery],
     }
     app.use(VueGtag, options, router)

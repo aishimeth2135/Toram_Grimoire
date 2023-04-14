@@ -6,6 +6,19 @@ import { StatBase } from '@/lib/Character/Stat'
 import { StatNormalTypes, StatTypes } from '@/lib/Character/Stat/enums'
 import { EnchantItem } from '@/lib/Enchant/Enchant'
 
+export const enum StepIds {
+  Equipment = 0,
+  SelectPositiveStat = 1,
+  SelectNegativeStat = 2,
+  Result = 3,
+}
+
+export const enum SelectItemModes {
+  Positive = 'positive',
+  Negative = 'negative',
+  None = 'none',
+}
+
 export function setupParseEnchantShorthand(shorthandStr: Ref<string>) {
   const displayOrder = [
     'atk',
