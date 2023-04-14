@@ -187,38 +187,27 @@ export default class EnchantDollEquipmentContainer {
       pstat.value -= 1
 
       {
-        const pstatPotentialCost = pstat.itemBase.getPotential(pstat.type, eq)
-        const maxv = Math.min(
-          Math.floor((eq.originalPotential - 1) / pstatPotentialCost),
-          pstat.value + 1
-        )
-        if (maxv > 1) {
-          let newDollEq: EnchantDollEquipmentContainer = this,
-            curv = 1
-          const newDollEqs = []
-          while (curv < maxv) {
-            newDollEq = newDollEq.clone()
-            const cstep = newDollEq.equipment.firstStep as EnchantStep
-            const cstat = cstep.firstStat as EnchantStepStat
-            cstat.value += 1
-            curv = cstat.value
+        let newDollEq: EnchantDollEquipmentContainer = this
+        const newDollEqs = []
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          newDollEq = newDollEq.clone()
+          const cstep = newDollEq.equipment.firstStep!
+          const cstat = cstep.firstStat!
+          cstat.value += 1
 
-            newDollEq.positiveStats.find(_pstat =>
-              _pstat.equals(cstat)
-            )!.value -= 1
-            newDollEq.flags.hasHandleFirstStep = true
-            newDollEqs.push(newDollEq)
+          if (cstep.remainingPotential <= 0) {
+            break
           }
-          newDollEqs.forEach(dollEq =>
-            resultEqs.push(dollEq, ...dollEq.beforeFillNegative())
-          )
-          // const newDollEq = this.clone();
-          // const cstep = newDollEq.equipment.steps()[0];
-          // const cstat = cstep.stats[0];
-          // cstat.value = maxv;
-          // newDollEq.positiveStats.find(_pstat => _pstat.equals(cstat)).value -= (cstat.value - 1);
-          // resultEqs.push(newDollEq, ...newDollEq.beforeFillNegative());
+          newDollEq.positiveStats.find(_pstat =>
+            _pstat.equals(cstat)
+          )!.value -= 1
+          newDollEq.flags.hasHandleFirstStep = true
+          newDollEqs.push(newDollEq)
         }
+        newDollEqs.forEach(dollEq =>
+          resultEqs.push(dollEq, ...dollEq.beforeFillNegative())
+        )
       }
 
       this.checkMakeUpPotential()

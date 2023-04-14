@@ -4,6 +4,7 @@
     v-bind="buttonBaseBinds"
     class="cy-button-plain m-1"
     :class="{ 'button-width-full': widthFull }"
+    @click="buttonClick"
   >
     <ButtonIcon :icon="icon" :src="iconSrc" :class="iconClass" />
     <span class="mr-1" :class="icon !== null ? 'ml-2' : 'ml-1'">
@@ -21,6 +22,7 @@ import CyButtonBase from './cy-button-base.vue'
 import { ButtonBaseProps, ButtonIconProps, getButtonBaseBinds } from './setup'
 
 export default defineComponent({
+  emits: ['click', 'update:selected'],
   props: {
     ...ButtonBaseProps,
     ...ButtonIconProps,
@@ -36,6 +38,12 @@ export default defineComponent({
   computed: {
     buttonBaseBinds() {
       return getButtonBaseBinds(this)
+    },
+  },
+  methods: {
+    buttonClick(evt: MouseEvent) {
+      this.$emit('click', evt)
+      this.$emit('update:selected', !this.selected)
     },
   },
 })

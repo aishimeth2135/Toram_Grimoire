@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="supportOffscreenCanvas"
-    class="absolute left-0 top-0 h-full w-full overflow-hidden opacity-100 duration-500"
+    class="pointer-events-none absolute left-0 top-0 h-full w-full overflow-hidden opacity-100 duration-500"
     :class="{ ['!opacity-0']: !ready }"
   >
     <canvas

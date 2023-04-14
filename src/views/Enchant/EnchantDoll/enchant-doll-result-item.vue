@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="flex cursor-pointer items-center py-1 pl-1 pr-3 duration-200 hover:bg-primary-5"
+      class="flex cursor-pointer items-center py-1.5 pl-1 pr-3 duration-200 hover:bg-primary-5"
       @click="unfold = !unfold"
     >
       <cy-button-radio
@@ -18,19 +18,18 @@
       >
         {{ result.operationStepsQuantity }}
       </cy-icon-text>
-      <cy-button-icon
+      <cy-icon-text
         :icon="
           unfold
             ? 'akar-icons:circle-chevron-up'
             : 'akar-icons:circle-chevron-down'
         "
         class="ml-auto"
-        @click="unfold = !unfold"
       />
     </div>
     <div
       v-if="unfold"
-      class="mx-3 mt-0.5 mb-4 rounded border-1 border-primary-30 p-3"
+      class="mx-3 mb-4 mt-0.5 rounded border-1 border-primary-30 p-3"
     >
       <EnchantResult :equipment="result" />
     </div>

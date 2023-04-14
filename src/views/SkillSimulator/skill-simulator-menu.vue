@@ -124,7 +124,7 @@
         </AppLayoutBottomContent>
         <AppLayoutBottomContent
           v-else-if="contents.selectSkillTree"
-          class="space-y-2 py-3 px-4"
+          class="space-y-2 px-4 py-3"
         >
           <div v-for="stc in skillTreeCategorys" :key="`stc-${stc.id}`">
             <div>
@@ -146,7 +146,7 @@
         </AppLayoutBottomContent>
         <AppLayoutBottomContent
           v-else-if="contents.goSkillTree"
-          class="space-y-2 py-3 px-4"
+          class="space-y-2 px-4 py-3"
         >
           <cy-default-tips
             v-if="selectedSkillTrees.length === 0"
@@ -181,7 +181,7 @@
         </AppLayoutBottomContent>
         <div v-else class="flex items-center space-x-2.5">
           <div
-            class="flex items-center space-x-1.5 whitespace-nowrap border border-primary-30 bg-white py-1 px-2"
+            class="flex items-center space-x-1.5 whitespace-nowrap border border-primary-30 bg-white px-2 py-1"
           >
             <cy-icon-text icon="mdi:script-outline" small>
               {{ t('skill-simulator.skill-level-point') }}
@@ -191,7 +191,7 @@
             </div>
           </div>
           <div
-            class="flex items-center space-x-1.5 whitespace-nowrap border border-primary-30 bg-white py-1 px-2"
+            class="flex items-center space-x-1.5 whitespace-nowrap border border-primary-30 bg-white px-2 py-1"
           >
             <cy-icon-text icon="mdi:judaism" small>
               {{ t('skill-simulator.star-gem-level-point') }}

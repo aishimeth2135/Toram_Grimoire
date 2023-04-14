@@ -55,7 +55,6 @@ tips:
   no-stat-selected: You have not chosen any stats...
   stats-reached-upper-limit: 8 stats have been already selected...
   stat-repeated: Already have this stat 0.0
-  at-least-one-positive: At least one positive stats.
   reset-confirm: Are you sure you want to reset?The current settings will be deleted.
   performance:
     auto-find-negatives: According to the selected stats,stats filling doll may need some calculations when automatically selecting negatives, And may cause the page to be freeze for a few seconds, which is normal.
