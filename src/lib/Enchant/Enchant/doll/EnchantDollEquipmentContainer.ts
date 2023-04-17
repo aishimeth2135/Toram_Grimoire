@@ -196,12 +196,14 @@ export default class EnchantDollEquipmentContainer {
           const cstat = cstep.firstStat!
           cstat.value += 1
 
-          if (cstep.remainingPotential <= 0) {
+          const newDollEqPstat = newDollEq.positiveStats.find(_pstat =>
+            _pstat.equals(cstat)
+          )!
+          newDollEqPstat.value -= 1
+
+          if (cstep.remainingPotential <= 0 || newDollEqPstat.value === 0) {
             break
           }
-          newDollEq.positiveStats.find(_pstat =>
-            _pstat.equals(cstat)
-          )!.value -= 1
           newDollEq.flags.hasHandleFirstStep = true
           newDollEqs.push(newDollEq)
         }
